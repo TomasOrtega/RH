@@ -8,13 +8,13 @@ namespace Formalism.HermitianLatticeCounting.P
 open NumberField
 
 /- English proof (translation)
-Establish `hfw` using `Finset.sum_fiberwise Finset.univ (fun φ : E →+* ℂ => InfinitePlace.mk φ) F`. Rewrite using `[← hfw]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `hne : ComplexEmbedding.conjugate w.embedding ≠ w.embedding`. Introduce `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(InfinitePlace.isComplex_iff.mp (hc w)) (ComplexEmbedding.isReal_iff.mpr h)`. Rewrite using `[← Finset.sum_pair (f := F) hne.symm]`. Use `congr 1`. Use extensionality with `φ`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Finset.mem_singleton]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Break down `InfinitePlace.embedding_mk_eq φ with h | h` into its components or cases. Conclude with `Or.inl h.symm`. Use `right`.
+Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[h]`. Conclude with `(star_star φ).symm`. Introduce and unpack `(rfl | rfl)`. Conclude with `InfinitePlace.mk_embedding w`. Rewrite using `[InfinitePlace.mk_conjugate_eq, InfinitePlace.mk_embedding]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma sum_complexEmbeddings_eq_sum_infinitePlace {E : Type} [Field E] [NumberField E]
     (hc : ∀ w : InfinitePlace E, w.IsComplex) (F : (E →+* ℂ) → ℂ) :
@@ -44,11 +44,9 @@ lemma sum_complexEmbeddings_eq_sum_infinitePlace {E : Type} [Field E] [NumberFie
     · rw [InfinitePlace.mk_conjugate_eq, InfinitePlace.mk_embedding]
 
 /- English proof (translation)
-Establish `h : algebraMap ℚ ℂ (Algebra.trace ℚ E a) = ∑ σ : E →ₐ[ℚ] ℂ, σ a`. Conclude with `trace_eq_sum_embeddings ℂ`. Rewrite `h` using `[eq_ratCast]`. Establish `h1 : ((Algebra.trace ℚ E a : ℚ) : ℂ) = ∑ φ : E →+* ℂ, φ a`. Rewrite using `[h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Conclude with `(Equiv.sum_comp (RingHom.equivRatAlgHom E ℂ) (fun σ : E →ₐ[ℚ] ℂ => σ a)).symm`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[sum_complexEmbeddings_eq_sum_infinitePlace hc (fun φ => φ a)]`. Use `_ = ∑ w : InfinitePlace E, 2 * (w.embedding a).re := by`. Rewrite using `[Complex.re_sum]`.
-
-Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Simplify using `[ComplexEmbedding.conjugate_coe_eq, two_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma trace_eq_sum_infinitePlace {E : Type} [Field E] [NumberField E]
     (hc : ∀ w : InfinitePlace E, w.IsComplex) (a : E) :
@@ -71,37 +69,33 @@ lemma trace_eq_sum_infinitePlace {E : Type} [Field E] [NumberField E]
         simp [ComplexEmbedding.conjugate_coe_eq, two_mul]
 
 /- English proof (translation)
-Establish `hH : ∀ a : 𝓞 E, ∃ m : ℤ, Algebra.trace ℚ E (z * (a : E)) = m` using `by assumption`. Establish `hone : (1 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) ≠ 0` using `one_ne_zero`. Establish `hzD : z ∈ FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E)`. Rewrite using `[FractionalIdeal.mem_dual hone]`. Introduce `a ha`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨b, hb⟩ : ∃ b : 𝓞 E, algebraMap (𝓞 E) E b = a` from `by first`. Consider the case `exact (FractionalIdeal.mem_one_iff _).mp ha`. Consider the case `exact FractionalIdeal.mem_one_iff.mp ha`. Substitute `hb` using the available equality. Take `⟨m, hm⟩` from `hH b`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Use `⟨m, ?_⟩` and prove the remaining obligations. Establish `ht : Algebra.traceForm ℚ E z (algebraMap (𝓞 E) E b) = Algebra.trace ℚ E (z * (b : E))`. Rewrite using `[Algebra.traceForm_apply]`. Rewrite using `[ht, hm]`. Use `first`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `simp`. Consider the case `exact eq_intCast _ _`. Establish `hDne : FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) ≠ 0`. Introduce `h`. Rewrite `hzD` using `[h]`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately.
 
-Use `first`. Consider the case `exact hz ((FractionalIdeal.mem_zero_iff _).mp hzD)`. Consider the case `exact hz (FractionalIdeal.mem_zero_iff.mp hzD)`. Consider the case `simp_all`. Establish `hdiff : ((differentIdeal ℤ (𝓞 E) : Ideal (𝓞 E)) : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) = (FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E))⁻¹`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Establish `hcd` using `coeIdeal_differentIdeal ℤ ℚ E (𝓞 E)`. Use `first`. Consider the case `exact hcd`. Consider the case `exact hcd.symm`. Consider the case `simpa using hcd`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `(rw [hcd]; simp)`. Establish `hc0 : ∀ I0 : Ideal (𝓞 E), FractionalIdeal.absNorm (I0 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) = (Ideal.absNorm I0 : ℚ)`. Introduce `I0`. Use `first`. Consider the case `exact FractionalIdeal.coeIdeal_absNorm I0`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact FractionalIdeal.absNorm_coeIdeal I0`. Consider the case `simp`. Establish `hdn : (Ideal.absNorm (differentIdeal ℤ (𝓞 E)) : ℚ) = |(NumberField.discr E : ℚ)|` using `by first`. Consider the case `rw [NumberField.absNorm_differentIdeal (K := E)]`. Consider the case `rw [NumberField.absNorm_differentIdeal E]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `rw [NumberField.absNorm_differentIdeal (K := E) (𝒪 := 𝓞 E)]`. Consider the case `rw [NumberField.absNorm_differentIdeal (𝒪 := 𝓞 E)]`. Consider the case `rw [NumberField.absNorm_differentIdeal E (𝓞 E)]`. Use `first`. Consider the case `simp`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `(push_cast; rfl)`. Consider the case `simp [Nat.cast_natAbs, Int.cast_abs]`. Take `⟨J, hJ⟩ : ∃ J : FractionalIdeal (nonZeroDivisors (𝓞 E)) E, J = FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 E)) z * ((differentIdeal ℤ (𝓞 E) : Ideal (𝓞 E)) : FractionalIdeal (nonZeroDivisors (𝓞 E)) E)` from `⟨_, rfl⟩`. Establish `hle : FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 E)) z ≤ FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E)` using `FractionalIdeal.spanSingleton_le_iff_mem.mpr hzD`. Establish `hJle : J ≤ 1`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[hJ, hdiff]`. Combine the equalities or inequalities in the displayed calculation. Consider the case `exact mul_le_mul_right' hle _`. Consider the case `exact mul_le_mul' hle le_rfl`. Consider the case `exact FractionalIdeal.mul_le_mul_right hle _`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `gcongr`. Use `_ = 1 := mul_inv_cancel₀ hDne`. Establish `hJne : J ≠ 0`. Rewrite using `[hJ]`. Use `mul_ne_zero ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h`. Conclude with `hz (FractionalIdeal.spanSingleton_eq_zero_iff.mp h)`. Rewrite using `[hdiff]`. Conclude with `inv_ne_zero hDne`. Take `⟨I0, hI0⟩` from `FractionalIdeal.le_one_iff_exists_coeIdeal.mp hJle`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hI0ne : I0 ≠ ⊥`. Introduce and unpack `rfl`. Apply `hJne` to reduce the goal to its premises. Rewrite using `[← hI0]`. Use `first`.
-
-Consider the case `exact FractionalIdeal.coeIdeal_bot`. Consider the case `simp`. Establish `hN1 : (1 : ℚ) ≤ FractionalIdeal.absNorm J`. Rewrite using `[← hI0, hc0]`. Establish `h0 : Ideal.absNorm I0 ≠ 0` using `fun h => hI0ne (Ideal.absNorm_eq_zero_iff.mp h)`.
-
-Conclude with `Nat.one_le_iff_ne_zero.mpr h0` after adjusting the coercions. Establish `hNJ : FractionalIdeal.absNorm J = |(Algebra.norm ℚ z : ℚ)| * |(NumberField.discr E : ℚ)|`. Rewrite using `[hJ, map_mul, FractionalIdeal.absNorm_span_singleton, hc0, hdn]`. Rewrite using `[← hNJ]`. Conclude with `hN1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma one_le_abs_norm_mul_abs_discr {E : Type} [Field E] [NumberField E] (z : E) (hz : z ≠ 0)
     (hint : ∀ a : 𝓞 E, ∃ m : ℤ, Algebra.trace ℚ E (z * (a : E)) = m) :
@@ -215,9 +209,7 @@ Both sides reduce to the same expression.
 lemma s5bSig_apply (a : E) (w : InfinitePlace E) : complexEmbeddingVector a w = w.embedding a := rfl
 
 /- English proof (translation)
-Use `first`. Consider the case `(simp only [PiLp.inner_apply, Complex.inner]; done)`. Consider the case `(rw [PiLp.inner_apply]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Simplify using `only [real_inner_eq_re_inner, RCLike.inner_apply, RCLike.re_to_complex, Complex.mul_re, Complex.conj_re, Complex.conj_im]`.
-
-Use the proof step `ring1)`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma inner_complexPlaceSpace (x y : s5bV E) : inner ℝ x y = ∑ w, (conj (x w) * y w).re := by
   first
@@ -255,13 +247,11 @@ instance (hc : ∀ w : InfinitePlace E, w.IsComplex) : IsZLattice ℝ (integerEm
   simp_rw [integerEmbeddingLattice]; infer_instance
 
 /- English proof (translation)
-Establish `key : ∀ a : 𝓞 E, (complexSpaceMixedEquivCLM hc).symm (mixedEmbedding E (a : E)) = complexEmbeddingVector (a : E)`. Introduce `a`. Use extensionality with `w`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hx`. Establish `hx' : (complexSpaceMixedEquivCLM hc) x ∈ mixedEmbedding.integerLattice E` using `hx`. Take `⟨a, ha⟩` from `LinearMap.mem_range.mp hx'`. Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `h2 : (complexSpaceMixedEquivCLM hc).symm (mixedEmbedding E (a : E)) = x` using `(complexSpaceMixedEquivCLM hc).symm_apply_eq.mpr ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← h2, key a]`. Introduce and unpack `⟨a, rfl⟩`. Establish `h3 : (complexSpaceMixedEquivCLM hc) (complexEmbeddingVector (a : E)) ∈ mixedEmbedding.integerLattice E`. Rewrite using `[← key a, ContinuousLinearEquiv.apply_symm_apply]`. Conclude with `LinearMap.mem_range.mpr ⟨a, rfl⟩`.
-
-Conclude with `h3`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma s5bLat_mem (hc : ∀ w : InfinitePlace E, w.IsComplex) (x : s5bV E) :
     x ∈ integerEmbeddingLattice hc ↔ ∃ a : 𝓞 E, x = complexEmbeddingVector (a : E) := by
@@ -296,7 +286,7 @@ section Cov2
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Rewrite using `[inner_complexPlaceSpace, trace_eq_sum_infinitePlace hc]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Simplify using `[s5bSig_apply, Complex.mul_re, Complex.mul_im]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma inner_placeEmbedding_eq_trace (hc : ∀ w : InfinitePlace E, w.IsComplex) (a z : E) :
     inner ℝ (complexEmbeddingVector a) (WithLp.toLp 2 (fun w : InfinitePlace E => 2 * conj (w.embedding z)) : s5bV E) =
@@ -307,49 +297,45 @@ lemma inner_placeEmbedding_eq_trace (hc : ∀ w : InfinitePlace E, w.IsComplex) 
   ring
 
 /- English proof (translation)
-Establish `hL : ∀ x ∈ integerEmbeddingLattice hc, ∃ n : ℤ, inner ℝ x y = (n : ℝ)` using `by assumption`. Establish `hr0 : (0 : ℝ) < Fintype.card (InfinitePlace E)` using `by exact_mod_cast Fintype.card_pos`. Establish `hmem : ∀ a : 𝓞 E, complexEmbeddingVector (a : E) ∈ integerEmbeddingLattice hc` using `fun a => (s5bLat_mem hc _).mpr ⟨a, rfl⟩`. Establish `hn0 : ∀ i, ∃ n : ℤ, inner ℝ (complexEmbeddingVector (integralBasis E i)) y = (n : ℝ)`. Introduce `i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hi : integralBasis E i = ((RingOfIntegers.basis E i : 𝓞 E) : E)` using `by first`. Consider the case `(rw [NumberField.integralBasis_apply]; rfl)`. Consider the case `exact NumberField.integralBasis_apply E i`. Consider the case `simp [NumberField.integralBasis_apply]`. Rewrite using `[hi]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hL _ (hmem _)`. Use `choose n hn using hn0`. Choose the witnesses or unpack the hypotheses as in `⟨z, hzB⟩ : ∃ z : E, ∀ j, Algebra.trace ℚ E (z * integralBasis E j) = (n j : ℚ) := by`. Establish `hnd : (Algebra.traceForm ℚ E).Nondegenerate` using `by first`. Consider the case `exact traceForm_nondegenerate ℚ E`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact Algebra.traceForm_nondegenerate ℚ E`. Consider the case `exact traceForm_nondegenerate _ _`. Use `⟨∑ i, (n i : ℚ) • LinearMap.BilinForm.dualBasis (Algebra.traceForm ℚ E) hnd (integralBasis E) i, fun j => ?_⟩` and prove the remaining obligations. Establish `h : ∀ i, Algebra.trace ℚ E (LinearMap.BilinForm.dualBasis (Algebra.traceForm ℚ E) hnd (integralBasis E) i * integralBasis E j) = if j = i then 1 else 0`. Introduce `i`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[← Algebra.traceForm_apply]`. Use `first`. Consider the case `rw [LinearMap.BilinForm.apply_dualBasis_left]`. Consider the case `exact LinearMap.BilinForm.apply_dualBasis_left _ _ _ _ _`. Rewrite using `[Finset.sum_mul, map_sum]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h' : ∀ i, Algebra.trace ℚ E ((n i : ℚ) • LinearMap.BilinForm.dualBasis (Algebra.traceForm ℚ E) hnd (integralBasis E) i * integralBasis E j) = if j = i then (n i : ℚ) else 0`. Introduce `i`. Rewrite using `[smul_mul_assoc, map_smul, h i, smul_eq_mul, mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_congr rfl fun i _ => h' i]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨yz, hyzdef⟩ : ∃ yz : s5bV E, yz = (WithLp.toLp 2 (fun w : InfinitePlace E => 2 * conj (w.embedding z)) : s5bV E)` from `⟨_, rfl⟩`. Establish `hsig : ∀ t : E, (complexSpaceMixedLinearEquiv hc).symm (mixedEmbedding E t) = complexEmbeddingVector t`. Introduce `t`. Use extensionality with `w`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨ψ, hψ⟩ : ∃ ψ : mixedEmbedding.mixedSpace E →ₗ[ℝ] ℝ, ∀ v, ψ v = inner ℝ ((complexSpaceMixedLinearEquiv hc).symm v) (y - yz)` from `⟨{ toFun := fun v => inner ℝ ((complexSpaceMixedLinearEquiv hc).symm v) (y - yz) map_add' := fun a b => by simp [inner_add_left] map_smul' := fun c a => by simp [real_inner_smul_left] }, fun v => rfl⟩`. Establish `hψ0 : ψ = 0`. Use `(mixedEmbedding.latticeBasis E).ext fun i => ?_` and prove the remaining obligations. Rewrite using `[hψ, LinearMap.zero_apply, mixedEmbedding.latticeBasis_apply, hsig, inner_sub_right, hn, hyzdef, inner_placeEmbedding_eq_trace hc, hzB]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hyz : y = yz`. Establish `h0` using `hψ ((complexSpaceMixedLinearEquiv hc) (y - yz))`. Rewrite `h0` using `[hψ0, LinearMap.zero_apply, LinearEquiv.symm_apply_apply]`. Use `first`. Consider the case `exact sub_eq_zero.mp (inner_self_eq_zero.mp h0.symm)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `exact sub_eq_zero.mp ((inner_self_eq_zero (𝕜 := ℝ)).mp h0.symm)`. Consider the case `(have h1 : ‖y - yz‖ ^ 2 = 0 := by rw [← real_inner_self_eq_norm_sq]; exact h0.symm`. Conclude with `sub_eq_zero.mp (norm_eq_zero.mp (pow_eq_zero_iff two_ne_zero |>.mp h1)))`. Establish `hcod : ∀ a : 𝓞 E, ∃ m : ℤ, Algebra.trace ℚ E (z * (a : E)) = m`. Introduce `a`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨m, hm⟩` from `hL _ (hmem a)`. Use `⟨m, ?_⟩` and prove the remaining obligations. Rewrite `hm` using `[hyz, hyzdef, inner_placeEmbedding_eq_trace hc]`. Conclude with `hm` after adjusting the coercions. Establish `hz0 : z ≠ 0`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Apply `hy` to reduce the goal to its premises. Rewrite using `[hyz, hyzdef]`. Use extensionality with `w`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `cod` using `one_le_abs_norm_mul_abs_discr z hz0 hcod`. Establish `cod' : (1 : ℝ) ≤ |((Algebra.norm ℚ z : ℚ) : ℝ)| * |(discr E : ℝ)|`. Establish `h` using `(Rat.cast_le (K := ℝ)).mpr cod`. Move the coercions through the operations in `at h`. Conclude with `h`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : ∀ w : InfinitePlace E, w.mult = 2`. Introduce `w`. Use `first`. Consider the case `exact NumberField.InfinitePlace.mult_isComplex ⟨w, hc w⟩`. Consider the case `simp [NumberField.InfinitePlace.mult, NumberField.InfinitePlace.not_isReal_iff_isComplex.mpr (hc w)]`.
+Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hprod : |((Algebra.norm ℚ z : ℚ) : ℝ)| = ∏ w : InfinitePlace E, ‖w.embedding z‖ ^ 2`. Establish `h` using `NumberField.InfinitePlace.prod_eq_abs_norm z`. Establish `h2 : ∏ w : InfinitePlace E, w z ^ w.mult = ∏ w : InfinitePlace E, ‖w.embedding z‖ ^ 2` using `Finset.prod_congr rfl fun w _ => by rw [hm w, NumberField.InfinitePlace.norm_embedding_eq]`. Rewrite `h` using `[h2]`. Use `first`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `(push_cast at h ⊢; linarith)`. Consider the case `exact_mod_cast h.symm`. Consider the case `simp [h]`. Establish `hnorm : ‖y‖ ^ 2 = 4 * ∑ w : InfinitePlace E, ‖w.embedding z‖ ^ 2`. Rewrite using `[hyz, hyzdef, EuclideanSpace.norm_eq, Real.sq_sqrt (Finset.sum_nonneg fun _ _ => sq_nonneg _), Finset.mul_sum]`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Apply the tactic sequence `simp [norm_mul, mul_pow] <;> norm_num`. Establish `hamgm : (∏ w : InfinitePlace E, ‖w.embedding z‖ ^ 2) ^ (1 / (Fintype.card (InfinitePlace E) : ℝ)) ≤ (∑ w : InfinitePlace E, ‖w.embedding z‖ ^ 2) / (Fintype.card (InfinitePlace E) : ℝ)`. Establish `h` using `Real.geom_mean_le_arith_mean Finset.univ (fun _ : InfinitePlace E => (1 : ℝ)) (fun w => ‖w.embedding z‖ ^ 2) (fun _ _ => zero_le_one) (by simpa using hr0) (fun _ _ => sq_nonneg _)`. Simplify `h` using `[one_div]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨S, hS⟩ : ∃ S : ℝ, S = ∑ w : InfinitePlace E, ‖w.embedding z‖ ^ 2` from `⟨_, rfl⟩`. Take `⟨P, hP⟩ : ∃ P : ℝ, P = ∏ w : InfinitePlace E, ‖w.embedding z‖ ^ 2` from `⟨_, rfl⟩`. Take `⟨r, hr⟩ : ∃ r : ℝ, r = (Fintype.card (InfinitePlace E) : ℝ)` from `⟨_, rfl⟩`. Rewrite `hnorm`, `hamgm` using `[← hS]`. Rewrite `hamgm`, `hprod` using `[← hP]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hamgm`, `hr0`, the goal using `[← hr]`. Establish `hP0 : 0 ≤ P`. Rewrite using `[hP]`. Conclude with `Finset.prod_nonneg fun _ _ => sq_nonneg _`. Establish `hD0 : 0 ≤ |(discr E : ℝ)|` using `abs_nonneg _`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `hDr : 0 ≤ |(discr E : ℝ)| ^ (1 / r)` using `Real.rpow_nonneg hD0 _`. Establish `h1 : 1 ≤ P ^ (1 / r) * |(discr E : ℝ)| ^ (1 / r)`. Rewrite using `[← Real.mul_rpow hP0 hD0, ← hprod]`. Conclude with `Real.one_le_rpow cod' (div_nonneg zero_le_one hr0.le)`. Establish `h2 : 1 ≤ S / r * |(discr E : ℝ)| ^ (1 / r)` using `h1.trans (mul_le_mul_of_nonneg_right hamgm hDr)`.
-
-Establish `hr' : r ≠ 0` using `hr0.ne'`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hnorm]`. Use `first`. Consider the case `(field_simp; ring)`.
-
-Consider the case `field_simp`. Consider the case `(rw [← mul_assoc r, mul_div_cancel₀ _ hr']; ring)`.
+A detailed English derivation is pending.
 -/
 lemma four_mul_card_le_norm_sq_mul_discr (hc : ∀ w : InfinitePlace E, w.IsComplex) (y : s5bV E) (hy : y ≠ 0)
     (hint : ∀ x ∈ integerEmbeddingLattice hc, ∃ n : ℤ, inner ℝ x y = (n : ℝ)) :
@@ -487,9 +473,9 @@ lemma four_mul_card_le_norm_sq_mul_discr (hc : ∀ w : InfinitePlace E, w.IsComp
 end Cov2
 
 /- English proof (translation)
-Establish `h` using `sum_complexEmbeddings_eq_sum_infinitePlace hc (fun _ => (1 : ℂ))`. Simplify using `only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_one, NumberField.Embeddings.card] at h`. Establish `h' : (((Module.finrank ℚ E : ℝ)) : ℂ) = ((2 * (Fintype.card (InfinitePlace E) : ℝ) : ℝ) : ℂ)`. Use `push_cast`. Rewrite using `[h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Conclude with `Complex.ofReal_injective h'`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem finrank_eq_two_mul_card_infinitePlace_of_isComplex {E : Type} [Field E] [NumberField E]
     (hc : ∀ w : InfinitePlace E, w.IsComplex) :
@@ -505,13 +491,13 @@ private theorem finrank_eq_two_mul_card_infinitePlace_of_isComplex {E : Type} [F
   exact Complex.ofReal_injective h'
 
 /- English proof (translation)
-Establish `hT : 0 < D ^ (1 / r)` using `Real.rpow_pos_of_pos hD _`. Establish `hT' : D ^ (1 / r) ≠ 0` using `hT.ne'`. Establish `hr' : r ≠ 0` using `hr.ne'`. Establish `ht2 : (D ^ (1 / (2 * r))) ^ 2 = D ^ (1 / r)`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hD.le]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `h4 : 0 ≤ 4 * r / D ^ (1 / r)` using `div_nonneg (by linarith) hT.le`. Establish `h2r : 0 ≤ 2 * r` using `by linarith`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs0 : 0 ≤ Real.sqrt (4 * r / D ^ (1 / r)) * (Real.sqrt (2 * r) * D ^ (1 / (2 * r)))` using `mul_nonneg (Real.sqrt_nonneg _) (mul_nonneg (Real.sqrt_nonneg _) (Real.rpow_nonneg hD.le _))`. Establish `hs2 : (Real.sqrt (4 * r / D ^ (1 / r)) * (Real.sqrt (2 * r) * D ^ (1 / (2 * r)))) ^ 2 = 8 * r ^ 2`. Rewrite using `[mul_pow, mul_pow, ht2, Real.sq_sqrt h4, Real.sq_sqrt h2r]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Use polynomial arithmetic with `[hs0, hs2, hr]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 private theorem two_mul_div_two_le_sqrt_mul_sqrt_mul_rpow (r D : ℝ) (hr : 0 < r) (hD : 0 < D) :
     2 * r / 2 ≤ Real.sqrt (4 * r / D ^ (1 / r)) * (Real.sqrt (2 * r) * D ^ (1 / (2 * r))) := by
@@ -537,21 +523,19 @@ private theorem two_mul_div_two_le_sqrt_mul_sqrt_mul_rpow (r D : ℝ) (hr : 0 < 
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticeCounting.LatticeSumBounds.CoveringO`. Unfold `Formalism.HermitianLatticeCounting.LatticeSumBounds.Transference at hT`. Introduce `E _ _ hc x`. Establish `hr0 : (0 : ℝ) < Fintype.card (InfinitePlace E)` using `by exact_mod_cast Fintype.card_pos`. Establish `hcard` using `finrank_eq_two_mul_card_infinitePlace_of_isComplex hc`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : (finrank ℝ (s5bV E) : ℝ) = finrank ℚ E`. Conclude with `((complexSpaceMixedLinearEquiv hc).finrank_eq.trans (mixedEmbedding.finrank E))` after adjusting the coercions. Establish `hd : (discr E : ℝ) ≠ 0`. Conclude with `NumberField.discr_ne_zero E` after adjusting the coercions. Establish `hD : (0 : ℝ) < |(discr E : ℝ)|` using `abs_pos.mpr hd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hDr : 0 < |(discr E : ℝ)| ^ (1 / (Fintype.card (InfinitePlace E) : ℝ))` using `Real.rpow_pos_of_pos hD _`. Take `⟨lam, hlam_def⟩ : ∃ lam : ℝ, lam = Real.sqrt (4 * (Fintype.card (InfinitePlace E) : ℝ) / |(discr E : ℝ)| ^ (1 / (Fintype.card (InfinitePlace E) : ℝ)))` from `⟨_, rfl⟩`. Establish `hlampos : 0 < lam`. Rewrite using `[hlam_def]`. Conclude with `Real.sqrt_pos.mpr (div_pos (by linarith) hDr)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hdual : ∀ y : s5bV E, y ≠ 0 → (∀ v ∈ integerEmbeddingLattice hc, ∃ m : ℤ, inner ℝ v y = (m : ℝ)) → lam ≤ ‖y‖`. Introduce `y hy hint_r`. Establish `h` using `four_mul_card_le_norm_sq_mul_discr hc y hy hint_r`. Rewrite using `[hlam_def, ← Real.sqrt_sq (norm_nonneg y)]`. Conclude with `Real.sqrt_le_sqrt ((div_le_iff₀ hDr).mpr h)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨l, hl, hlx⟩` from `hT (s5bV E) (integerEmbeddingLattice hc) lam hlampos hdual (WithLp.toLp 2 x)`. Take `⟨a, rfl⟩` from `(s5bLat_mem hc l).mp hl`. Use `⟨a, fun w => ?_⟩` and prove the remaining obligations. Establish `hcomp : ‖x w - w.embedding (a : E)‖ ≤ ‖(WithLp.toLp 2 x : s5bV E) - complexEmbeddingVector (a : E)‖`. Establish `hsq : ‖x w - w.embedding (a : E)‖ ^ 2 ≤ ‖(WithLp.toLp 2 x : s5bV E) - complexEmbeddingVector (a : E)‖ ^ 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[EuclideanSpace.norm_eq, Real.sq_sqrt (Finset.sum_nonneg fun _ _ => sq_nonneg _)]`. Establish `h` using `Finset.single_le_sum (f := fun v : InfinitePlace E => ‖((WithLp.toLp 2 x : s5bV E) - complexEmbeddingVector (a : E)) v‖ ^ 2) (fun _ _ => sq_nonneg _) (Finset.mem_univ w)`. Simplify `h` using `[s5bSig_apply]`. Use polynomial arithmetic with `[norm_nonneg (x w - w.embedding (a : E)), norm_nonneg ((WithLp.toLp 2 x : s5bV E) - complexEmbeddingVector (a : E))]`. Establish `hconst` using `two_mul_div_two_le_sqrt_mul_sqrt_mul_rpow _ _ hr0 hD`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hconst` using `[← hlam_def]`. Rewrite `hlx` using `[hfin, hcard]`. Rewrite using `[hcard]`. Establish `key : ‖(WithLp.toLp 2 x : s5bV E) - complexEmbeddingVector (a : E)‖ * lam ≤ (Real.sqrt (2 * (Fintype.card (InfinitePlace E) : ℝ)) * |(discr E : ℝ)| ^ (1 / (2 * (Fintype.card (InfinitePlace E) : ℝ)))) * lam`. Combine the equalities or inequalities in the displayed calculation.
-
-Conclude with `hcomp.trans (le_of_mul_le_mul_right key hlampos)`.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem coveringO_of_transference (hT : Transference) : CoveringO := by
   unfold Formalism.HermitianLatticeCounting.LatticeSumBounds.CoveringO

@@ -4,7 +4,7 @@ import Mathlib
 open IsLocalRing Polynomial
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.EtaleSpreadReg.isRegularLocalRing_atPrime) | (exact GlobalTheory.EtaleSpreadReg.isRegularLocalRing_atPrime) | (intros; apply GlobalTheory.EtaleSpreadReg.isRegularLocalRing_atPrime <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.regular_height_one_localization : ∀ (A : Type) [CommRing A] [IsDomain A] [IsNoetherianRing A] [IsIntegrallyClosed A]
     (EA : Type) [CommRing EA] [Algebra (Polynomial A) EA] [Algebra A EA]

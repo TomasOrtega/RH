@@ -5,31 +5,27 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing MvPowerSeries UpperTheory.V.Alg
 
 /- English proof (translation)
-Introduce `P _ m _ J hmJ hJ N₀ p hp`. Establish `hsm : ∀ n, (m ^ n • ⊤ : Submodule P P) = m ^ n`. Introduce `n`. Rewrite using `[Ideal.smul_eq_mul, Ideal.mul_top]`. Establish `step : ∀ (k : ℕ) (y : P), ∃ y' : P, y - p (N₀ + k) ∈ J (N₀ + k) → y' - p (N₀ + k + 1) ∈ J (N₀ + k + 1) ∧ y' - y ∈ m ^ (N₀ + k + 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `k y`. Distinguish the cases in `hy : y - p (N₀ + k) ∈ J (N₀ + k)`. Establish `h1 : y - p (N₀ + k + 1) ∈ J (N₀ + k)`. Establish `h` using `sub_mem hy (hp (N₀ + k) (Nat.le_add_right _ _))`. Establish `e : y - p (N₀ + k + 1) = y - p (N₀ + k) - (p (N₀ + k + 1) - p (N₀ + k))` using `by ring`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `h`. Take `⟨j, hj, t, ht, hjt⟩` from `Submodule.mem_sup.1 (hJ (N₀ + k) h1)`. Use `⟨y - t, fun _ => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `e : y - t - p (N₀ + k + 1) = j`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_right_comm, ← hjt]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `hj`. Rewrite using `[sub_sub_cancel_left]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Conclude with `neg_mem ht`. Conclude with `⟨y, fun h => absurd h hy⟩`. Use `choose g hg using step`. Set `q : ℕ → P` to `fun k => Nat.rec (p N₀) (fun k y => g k y) k`. Establish `hq0 : q 0 = p N₀` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hqs : ∀ k, q (k + 1) = g k (q k)` using `fun k => rfl`. Establish `hqJ : ∀ k, q k - p (N₀ + k) ∈ J (N₀ + k) ∧ q (k + 1) - q k ∈ m ^ (N₀ + k + 1)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`.
+Treat this case separately. Establish an intermediate fact. Supply the required witnesses or components. Treat this case separately. Establish an intermediate fact.
 
-Establish `h0 : q 0 - p (N₀ + 0) ∈ J (N₀ + 0)` using `by simp [hq0]`. Conclude with `⟨h0, by rw [hqs]; exact (hg 0 (q 0) h0).2⟩`. Consider the case `succ k ih`. Establish `h0 : q (k + 1) - p (N₀ + (k + 1)) ∈ J (N₀ + (k + 1))`. Rewrite using `[hqs]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Conclude with `(hg k (q k) ih.1).1`. Conclude with `⟨h0, by rw [hqs (k + 1)]; exact (hg (k + 1) (q (k + 1)) h0).2⟩`. Establish `hcau : ∀ a b, a ≤ b → q b - q a ∈ m ^ (N₀ + a + 1)`. Introduce `a b hab`. Proceed by induction on `b, hab using Nat.le_induction with`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Consider the case `base => simp`. Consider the case `succ b hab ih`. Establish `h` using `add_mem (Ideal.pow_le_pow_right (by omega) (hqJ b).2) ih`. Rewrite `h` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Take `⟨L, hL⟩` from `IsPrecomplete.prec' (I := m) q (fun {a b} hab => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hsm, SModEq.sub_mem, ← neg_sub]`. Conclude with `neg_mem (Ideal.pow_le_pow_right (by omega) (hcau a b hab)))`. Establish `hx : ∀ k, L - q k ∈ m ^ (N₀ + k + 1)`. Introduce `k`. Establish `h1` using `hL (N₀ + k + 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite `h1` using `[hsm, SModEq.sub_mem]`. Establish `h2` using `hcau k (N₀ + k + 1) (by omega)`. Establish `e : L - q k = -(q (N₀ + k + 1) - L) + (q (N₀ + k + 1) - q k)` using `by ring`. Rewrite using `[e]`. Conclude with `add_mem (neg_mem h1) h2`.
-
-Use `⟨L, fun N hN => ?_, ?_⟩` and prove the remaining obligations. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hN`. Establish `e : L - p (N₀ + k) = (L - q k) + (q k - p (N₀ + k))` using `by ring`. Rewrite using `[e]`. Conclude with `add_mem (hmJ (N₀ + k) (hx k)) (hqJ k).1`.
-
-Simplify `hx 0` using `[hq0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_limit_of_successive_diff_mem_filtration :
     ∀ (P : Type) [CommRing P] (m : Ideal P) [IsPrecomplete m P] (J : ℕ → Ideal P), (∀ N, m ^ (N + 1) ≤ J N) → (∀ N, J N ≤ J (N + 1) ⊔ m ^ (N + 1)) → ∀ (N₀ : ℕ) (p : ℕ → P), (∀ N, N₀ ≤ N → p (N + 1) - p N ∈ J N) → ∃ x : P, (∀ N, N₀ ≤ N → x - p N ∈ J N) ∧ x - p N₀ ∈ m ^ (N₀ + 1) := by

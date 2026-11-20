@@ -21,9 +21,9 @@ open Classical
 namespace GlobalTheory.GenRestrict
 
 /- English proof (translation)
-Use `U.gen_hom` as an intermediate fact. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `: IsMonHom U.gen.symm.hom` using `by show IsMonHom U.gen.inv; infer_instance`. Conclude with `((isGrpPullback_of_iso U.gen.symm).comp (isGrpPullback_pullback G (jK R))).congr (Category.id_comp _) rfl`. Establish `hgi : U.gen.inv.left ≫ U.gen.hom.left = 𝟙 _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Over.comp_left, Iso.inv_hom_id, Over.id_left]`. Establish `hext : LBIso (A.L.pull U.gen.hom.left) (U.LG.L.pull (pullback.fst G.hom (jK R)))` using `U.ext`. Establish `h1 : LBIso (A.L.pull (U.gen.inv.left ≫ U.gen.hom.left)) (U.LG.L.pull (U.gen.inv.left ≫ pullback.fst G.hom (jK R)))` using `LBIso.chartPull (chartPullSame A.L _ (fun _ => U.gen.hom.left) _ U.gen.inv.left fun _ => rfl) (chartPullSame U.LG.L _ (fun _ => pullback.fst G.hom (jK R)) _ U.gen.inv.left fun _ => rfl) hext`. Conclude with `LBIso.chartPull (chartPullUnpull A.L _ hgi) (chartPullSame U.LG.L _ _ _ (𝟙 _) fun _ => (Category.id_comp _).symm) h1`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unifPre_generic {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
     {A : PolAV (Sp (FractionRing R))} {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] (U : UnifPre I D A G) :
@@ -44,14 +44,14 @@ theorem unifPre_generic {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : 
       (chartPullSame U.LG.L _ _ _ (𝟙 _) fun _ => (Category.id_comp _).symm) h1
 
 /- English proof (translation)
-Rewrite using `[spMap, CommRingCat.ofHom_comp, Spec.map_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem spMap_comp_eq {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (a : B →+* C) (b : A →+* B) :
     spMap (a.comp b) = spMap a ≫ spMap b := by
   rw [spMap, CommRingCat.ofHom_comp, Spec.map_comp]
 
 /- English proof (translation)
-Substitute `hab` using the available equality. Take `rfl : x = x'` from `Over.OverMorphism.ext hx`. Take `rfl : y = y'` from `Over.OverMorphism.ext hy`. Conclude with `Iff.rfl`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem weilIs_congr_base {S X : Scheme.{0}} (G : Over S) [GrpObj G] (L : LB G.left) (k : ℤ) {a b : X ⟶ S}
     (hab : a = b) (x y : Over.mk a ⟶ G) (x' y' : Over.mk b ⟶ G) (hx : x.left = x'.left) (hy : y.left = y'.left)

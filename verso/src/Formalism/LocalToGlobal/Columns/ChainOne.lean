@@ -47,7 +47,7 @@ def NonVanSym (m2 : ℕ) : Prop :=
 variable {Ch sel mu cst Λ}
 
 /- English proof (translation)
-Use `⟨fun i hi b P => ⟨(⟨(), by omega⟩ : {_u : Unit // i ≤ m2 + 1}), hn i hi P⟩, fun i _ b b' => by cases b; cases b'; rfl, fun i hi hh hstab _ hE => ⟨(⟨(), by omega⟩ : {_u : Unit // i + 1 ≤ m2 + 1}), h.surj i hi hh hstab fun P => ?_⟩⟩` and prove the remaining obligations. Take `⟨_, hP⟩` from `hE P`. Conclude with `hP`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem oneIdx_clauses {m2 : ℕ} (h : OneCosetSym Ch sel mu cst Λ m2) (hn : NonVanSym Ch sel mu cst m2) :
     (∀ i, i < m2 → ∀ (b : (oneIdx Λ (QE sel (mu : Chr X.F X.E X.K)) m2).β (i + 1)) (P : rowSG Pr sel mu),

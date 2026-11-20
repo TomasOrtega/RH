@@ -9,25 +9,25 @@ open GlobalTheory.Nef
 namespace GlobalTheory.Nef
 
 /- English proof (translation)
-Introduce `k F _ _ _ _ _ hFF v n M d hM hMinv`. Take `⟨hmul, hzpow, -, -, -, ⟨π, hπ0, hπ⟩, -⟩` from `GlobalTheory.T.functionFieldPlaceOrder_calculus k F v`. Establish `hvπ : v.1 π = WithZero.exp (-1)`. Establish `hne : v.1 π ≠ 0` using `by simpa using hπ0`. Establish `: WithZero.log (v.1 π) = -1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `ord at hπ`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← this, WithZero.exp_log hne]`. Use `set c : F := π ^ d with hcdef`. Establish `hc0 : c ≠ 0` using `pow_ne_zero _ hπ0`.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvc : v.1 c = WithZero.exp (-(d : ℤ))`. Rewrite using `[hcdef, map_pow, hvπ]`. Use `show WithZero.exp (-1) ^ d = _`. Rewrite using `[← WithZero.exp_nsmul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Use `set h : Matrix (Fin n) (Fin n) F := c⁻¹ • M with hhdef`. Establish `hdet : h.det = (c⁻¹) ^ n * M.det` using `by rw [hhdef, Matrix.det_smul, Fintype.card_fin]`. Establish `hdet0 : h.det ≠ 0` using `by rw [hdet]; exact mul_ne_zero (pow_ne_zero _ (inv_ne_zero hc0)) hM`. Establish `hinv : h⁻¹ = c • M⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hhdef]`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, mul_inv_cancel₀ hc0, one_smul, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr hM)]`. Establish `hinvb : ∀ i j, v.1 (h⁻¹ i j) ≤ 1`. Introduce `i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hinv, Matrix.smul_apply, smul_eq_mul, map_mul, hvc]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨N, φ₀, hN, hφ₀⟩` from `GlobalTheory.T.functionFieldPlace_local_index_colength k F hFF v n h hdet0 hinvb`. Establish `hord : ord v h.det = -(n * d : ℤ) + ord v M.det`. Establish `e : (c⁻¹) ^ n = π ^ (-(n * d : ℤ))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hcdef, inv_pow, ← pow_mul, ← zpow_natCast, ← zpow_neg]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hdet, hmul _ _ (pow_ne_zero _ (inv_ne_zero hc0)) hM, e, hzpow π hπ0, hπ, mul_one]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Set `sc : (Fin n → F) →ₗ[k] (Fin n → F)` to `{ toFun := fun p => c • p map_add' := fun p q => smul_add c p q map_smul' := fun a p => by`. Use extensionality with `i`. Use `show c * (a • p i) = a • (c * p i)`. Rewrite using `[Algebra.smul_def, Algebra.smul_def]`. Use `ring }`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨N, φ₀ ∘ₗ sc, by rw [hN, hord]; ring, ?_⟩` and prove the remaining obligations. Introduce `p hp hφ i`. Establish `hx : ∀ i, v.1 ((c • p) i) ≤ 1`. Introduce `i`. Rewrite using `[Pi.smul_apply, smul_eq_mul, map_mul, hvc]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Use `hφ₀ (c • p) hx hφ i` as an intermediate fact. Establish `e2 : h.mulVec (c • p) = M.mulVec p`. Rewrite using `[hhdef, Matrix.mulVec_smul, Matrix.smul_mulVec, smul_smul, mul_inv_cancel₀ hc0, one_smul]`. Rewrite `this` using `[e2]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem local_index_scaled : ∀ (k F : Type) [Field k] [IsAlgClosed k] [CharZero k] [Field F] [Algebra k F], IsFF k F →
   ∀ (v : Place k F) (n : ℕ) (M : Matrix (Fin n) (Fin n) F) (d : ℕ), M.det ≠ 0 →

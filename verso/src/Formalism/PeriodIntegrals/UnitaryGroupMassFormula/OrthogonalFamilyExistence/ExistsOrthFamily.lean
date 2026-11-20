@@ -12,7 +12,7 @@ section Lemmas
 variable {E : Type} [Field E] [StarRing E] {n : ℕ}
 
 /- English proof (translation)
-Unfold `hform`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem hform_eq (J : Matrix (Fin n) (Fin n) E) (x y : Fin n → E) :
     hform (starRingEnd E) J x y = ∑ j, (∑ i, starRingEnd E (x i) * J i j) * y j := by
@@ -22,11 +22,11 @@ theorem hform_eq (J : Matrix (Fin n) (Fin n) E) (x y : Fin n → E) :
   rw [Finset.sum_mul]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hdet` to reduce the goal to its premises. Rewrite using `[← Matrix.exists_vecMul_eq_zero_iff]`. Use `⟨fun i => starRingEnd E (y i), ?_, ?_⟩` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Apply `hy` to reduce the goal to its premises. Use extensionality with `i`. Establish `h1` using `congrFun h i`. Simplify using `using h1`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components.
 
-Use extensionality with `j`. Establish `h1` using `hcon (Pi.single j 1)`. Rewrite `h1` using `[hform_eq]`. Simplify `h1` using `[Matrix.vecMul, dotProduct, Pi.single_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_pair (J : Matrix (Fin n) (Fin n) E) (hdet : J.det ≠ 0) (y : Fin n → E)
     (hy : y ≠ 0) : ∃ z, hform (starRingEnd E) J y z ≠ 0 := by

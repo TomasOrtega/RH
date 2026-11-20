@@ -10,11 +10,11 @@ namespace GlobalTheory.K5.ZetaNonvanishing₂
 variable {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `exists_add_pow_prime_eq hp (⟨x, hx⟩ : v.integer) (-1)`. Establish `hr'` using `congrArg Subtype.val hr`. Move the coercions through the operations in `at hr'`. Establish `hodd : Odd p` using `hp.odd_of_ne_two hp2`. Rewrite `hr'` using `[hodd.neg_one_pow]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : (x - 1) ^ p - (x ^ p - 1) = (p : Ω) * (-(x * (r : Ω)))`. Rewrite using `[sub_eq_add_neg x 1, hr']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, v.map_mul, v.map_neg, v.map_mul]`. Establish `hr1 : v (r : Ω) ≤ 1` using `r.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem valuation_sub_one_pow_sub_le (p : ℕ) (hp : p.Prime) (hp2 : p ≠ 2)
     (v : Valuation Ω ℝ≥0) (x : Ω) (hx : v x ≤ 1) :
@@ -32,25 +32,23 @@ theorem valuation_sub_one_pow_sub_le (p : ℕ) (hp : p.Prime) (hp2 : p ≠ 2)
     _ = v (p : Ω) := by simp
 
 /- English proof (translation)
-Introduce `p hpf Ω _ _ hp2 T v hvp`. Establish `hp` using `hpf.out`. Establish `hvz : ∀ n, v (T.ζ n) = 1`. Introduce `n`. Establish `h1 : v (T.ζ n) ^ (p ^ n) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← v.map_pow, (T.prim n).pow_eq_one, v.map_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (zero_le') (pow_ne_zero _ hp.ne_zero)).1 h1`. Establish `hlt : ∀ n, v (T.ζ n - 1) < 1`. Introduce `n`. Proceed by induction on `n with`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero`. Establish `: T.ζ 0 = 1`. Use `T.prim 0` as an intermediate fact. Rewrite `this` using `[pow_zero]`. Conclude with `IsPrimitiveRoot.one_right_iff.1 this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using `[this]`. Consider the case `succ n ih`. Establish `hb` using `valuation_sub_one_pow_sub_le p hp hp2 v (T.ζ (n + 1)) (hvz _).le`. Rewrite `hb` using `[T.ζpow n]`. Establish `h2 : v ((T.ζ (n + 1) - 1) ^ p) < 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (T.ζ (n + 1) - 1) ^ p = ((T.ζ (n + 1) - 1) ^ p - (T.ζ n - 1)) + (T.ζ n - 1)` using `by ring`. Rewrite using `[this]`. Conclude with `lt_of_le_of_lt (v.map_add _ _) (max_lt (lt_of_le_of_lt hb hvp) ih)`. Rewrite `h2` using `[v.map_pow]`. Assume the negation of the conclusion as `hc`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `push_neg at hc`. Conclude with `absurd h2 (not_lt.2 (one_le_pow₀ hc))`. Introduce `n hn`. Use `⟨hlt n, ?_⟩` and prove the remaining obligations. Establish `hge : v (T.ζ 1 - 1) ≤ v (T.ζ n - 1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by omega⟩`. Establish `hz : ∀ k, T.ζ (k + 1) ^ (p ^ k) = T.ζ 1`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ k ih`. Rewrite using `[pow_succ', pow_mul, T.ζpow, ih]`. Establish `e : T.ζ 1 - 1 = (∑ i ∈ Finset.range (p ^ m), T.ζ (m + 1) ^ i) * (T.ζ (m + 1) - 1)`. Rewrite using `[geom_sum_mul, hz m]`. Rewrite using `[e, v.map_mul]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : v (∑ i ∈ Finset.range (p ^ m), T.ζ (m + 1) ^ i) ≤ 1` using `v.map_sum_le fun i _ => by rw [v.map_pow, hvz, one_pow]`. Combine the equalities or inequalities in the displayed calculation. Establish `h1` using `GlobalTheory.T.valuation_primitiveRoot_sub_one_pow_pred_eq Ω v p hp (T.ζ 1) (by simpa using T.prim 1)`. Establish `ha1 : v (T.ζ 1 - 1) ≤ 1` using `(hlt 1).le`. Establish `hp3 : 2 ≤ p - 1` using `by have := hp.two_le; omega`.
-
-Rewrite using `[← h1]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem valuation_zeta_sub_one : ∀ (p : ℕ) [hpf : Fact p.Prime] (Ω : Type) [Field Ω] [Algebra (O0 p) Ω], p ≠ 2 → ∀ (T : Tower p Ω) (v : Valuation Ω ℝ≥0), v (p : Ω) < 1 → ∀ n : ℕ, 1 ≤ n → v (T.ζ n - 1) < 1 ∧ v (p : Ω) ≤ v (T.ζ 1 - 1) * v (T.ζ n - 1) := by
   intro p hpf Ω _ _ hp2 T v hvp

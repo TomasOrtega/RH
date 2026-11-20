@@ -10,21 +10,21 @@ open scoped IntermediateField BigOperators Topology
 namespace GlobalTheory.CMModel
 
 /- English proof (translation)
-Introduce `p V hp h3`. Establish `h2 : p % 2 = 1`. Assume the negation of the conclusion as `h`. Apply the tactic sequence `rcases hp.eq_one_or_self_of_dvd 2 (by omega) with h' | h' <;> omega`. Establish `h3' : p % 3 ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Introduce `h`. Apply the tactic sequence `rcases hp.eq_one_or_self_of_dvd 3 (by omega) with h' | h' <;> omega`. Break down `(by omega : p % 3 = 1 ∨ p % 3 = 2) with h1 | h1` into its components or cases. Establish `hcop : Nat.Coprime (2 ^ 2 + p) (4 ^ 2 + p)`. Establish `hg1` using `Nat.gcd_dvd_left (2 ^ 2 + p) (4 ^ 2 + p)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg2` using `Nat.gcd_dvd_right (2 ^ 2 + p) (4 ^ 2 + p)`. Establish `h12 : Nat.gcd (2 ^ 2 + p) (4 ^ 2 + p) ∣ 12`. Use `Nat.dvd_sub hg2 hg1` as an intermediate fact. Establish `e : 4 ^ 2 + p - (2 ^ 2 + p) = 12` using `by omega`. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hle` using `Nat.le_of_dvd (by norm_num) h12`. Unfold `Nat.Coprime`. Generalize the expression as in `Nat.gcd (2 ^ 2 + p) (4 ^ 2 + p) = g at hg1 hg2 h12 hle`. Evaluate the numerical expressions using `at hg1 hg2`. Apply the tactic sequence `interval_cases g <;> omega`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable. Evaluate the numerical expressions. Apply the first step, then apply the next step to every resulting obligation.
 
-Break down `GlobalTheory.T.valuation_natCast_eq_one_or_of_coprime V _ _ hcop with hv | hv` into its components or cases. Conclude with `⟨2, 2 ^ 2 + p, rfl, by rw [Nat.odd_iff]; omega, by omega, by exact_mod_cast hv⟩`. Conclude with `⟨4, 4 ^ 2 + p, rfl, by rw [Nat.odd_iff]; omega, by omega, by exact_mod_cast hv⟩`. Establish `hcop : Nat.Coprime (0 ^ 2 + p) (6 ^ 2 + p)`. Establish `hg1` using `Nat.gcd_dvd_left (0 ^ 2 + p) (6 ^ 2 + p)`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg2` using `Nat.gcd_dvd_right (0 ^ 2 + p) (6 ^ 2 + p)`. Establish `h36 : Nat.gcd (0 ^ 2 + p) (6 ^ 2 + p) ∣ 36`. Use `Nat.dvd_sub hg2 hg1` as an intermediate fact. Establish `e : 6 ^ 2 + p - (0 ^ 2 + p) = 36` using `by omega`. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hle` using `Nat.le_of_dvd (by norm_num) h36`. Unfold `Nat.Coprime`. Generalize the expression as in `Nat.gcd (0 ^ 2 + p) (6 ^ 2 + p) = g at hg1 hg2 h36 hle`. Evaluate the numerical expressions using `at hg1 hg2`. Apply the tactic sequence `interval_cases g <;> omega`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable. Evaluate the numerical expressions. Apply the first step, then apply the next step to every resulting obligation.
 
-Break down `GlobalTheory.T.valuation_natCast_eq_one_or_of_coprime V _ _ hcop with hv | hv` into its components or cases. Conclude with `⟨0, 0 ^ 2 + p, rfl, by rw [Nat.odd_iff]; omega, by omega, by exact_mod_cast hv⟩`. Conclude with `⟨6, 6 ^ 2 + p, rfl, by rw [Nat.odd_iff]; omega, by omega, by exact_mod_cast hv⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_sq_add_prime_odd_mod_three_unit :
     ∀ (p : ℕ) (V : ValuationSubring ℂ), p.Prime → 3 < p →

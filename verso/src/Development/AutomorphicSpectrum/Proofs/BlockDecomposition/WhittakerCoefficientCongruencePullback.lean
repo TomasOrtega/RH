@@ -13,19 +13,17 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.WeilSiegel.Deg
 
 /- English proof (translation)
-Set `e : G ≃ᵐ G` to `(Homeomorph.mk T.toEquiv hc hc').toMeasurableEquiv`. Establish `he : ∀ x, e x = T x` using `fun _ => rfl`. Use `haveI hH : (μ.map e).IsAddHaarMeasure := T.isAddHaarMeasure_map μ hc hc'`. Establish `hs : μ.map e = Measure.addHaarScalarFactor (μ.map e) μ • μ` using `Measure.isAddLeftInvariant_eq_smul _ _`. Establish `hpos` using `Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure (μ.map e) μ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set c := Measure.addHaarScalarFactor (μ.map e) μ with hcdef`. Establish `hq : Measure.QuasiMeasurePreserving e μ μ`. Use `⟨e.measurable, ?_⟩` and prove the remaining obligations. Rewrite using `[hs]`. Conclude with `Measure.smul_absolutelyContinuous`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `σ : Γ → Γ` to `fun g => ⟨T.symm g, hT' g g.2⟩`. Establish `hσ : Function.Bijective σ`. Use `⟨fun g g' h => ?_, fun g => ⟨⟨T g, hT g g.2⟩, ?_⟩⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `T.symm.injective (congrArg Subtype.val h)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[σ]`. Establish `hpre : IsAddFundamentalDomain Γ (e ⁻¹' 𝓕) μ`. Use `hF.preimage_of_equiv hq hσ ?_` and prove the remaining obligations. Introduce `g x`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show T (T.symm g + x) = g + T x`. Simplify using the standard rewrite rules. Establish `heq : μ (e ⁻¹' 𝓕) = μ 𝓕` using `hpre.measure_eq hF`. Establish `hmap : (μ.map e) 𝓕 = 1` using `by rw [e.map_apply, heq, h1]`. Establish `hc1 : c = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Rewrite `hmap` using `[hs]`. Simplify using `only [Measure.smul_apply, h1] at hmap`. Establish `: ((c : ENNReal)) = 1` using `by simpa [ENNReal.smul_def] using hmap`. Conclude with `this` after adjusting the coercions. Establish `: μ.map e = μ` using `by rw [hs, hc1, one_smul]`.
-
-Conclude with `⟨e.measurable, this⟩`.
+A detailed English derivation is pending.
 -/
 theorem measurePreserving_of_covol {G : Type*} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G]
     [LocallyCompactSpace G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
@@ -65,7 +63,7 @@ theorem measurePreserving_of_covol {G : Type*} [AddCommGroup G] [TopologicalSpac
   exact ⟨e.measurable, this⟩
 
 /- English proof (translation)
-The claim follows from `(measurePreserving_of_covol Γ μ 𝓕 hF h1 T hc hc' hT hT').integral_comp (Homeomorph.mk T.toEquiv hc hc').toMeasurableEquiv.measurableEmbedding g`.
+A detailed English derivation is pending.
 -/
 theorem integral_comp_of_covol {G : Type*} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G]
     [LocallyCompactSpace G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
@@ -90,7 +88,7 @@ def mulRightE {m r : ℕ} (A B : Mx D r r) (h1 : A * B = 1) (h2 : B * A = 1) : M
   map_add' x y := Matrix.add_mul x y A
 
 /- English proof (translation)
-Establish `hb : adj b.1 = b.1` using `b.2`. Use `show adj (A ⬝ b.1 ⬝ adj A) = A ⬝ b.1 ⬝ adj A`. Rewrite using `[adj_mul, adj_mul, adj_adj, hb, Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adj_cong_mem {r : ℕ} (A : Mx D r r) (b : hermA D r) : A ⬝ b.1 ⬝ adj A ∈ hermA D r := by
   have hb : adj b.1 = b.1 := b.2
@@ -98,9 +96,9 @@ theorem adj_cong_mem {r : ℕ} (A : Mx D r r) (b : hermA D r) : A ⬝ b.1 ⬝ ad
   rw [adj_mul, adj_mul, adj_adj, hb, Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `h3 : adj A ⬝ adj B = 1` using `by rw [← adj_mul, h2, adj_one]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = b := by`. Rewrite using `[h2]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `erw [h3]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem cong_cancel {r : ℕ} (A B : Mx D r r) (h2 : B * A = 1) (b : Mx D r r) :
     B ⬝ (A ⬝ b ⬝ adj A) ⬝ adj B = b := by
@@ -122,23 +120,21 @@ def congA {r : ℕ} (A B : Mx D r r) (h1 : A * B = 1) (h2 : B * A = 1) : hermA D
     rw [Matrix.mul_add, Matrix.add_mul])
 
 /- English proof (translation)
-Rewrite using `[← rat_mul, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 ha), rat_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rat_mul_inv {r : ℕ} (a : Matrix (Fin r) (Fin r) D.host.E) (ha : a.det ≠ 0) :
     rat a * rat a⁻¹ = (1 : Mx D r r) := by
   rw [← rat_mul, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 ha), rat_one]
 
 /- English proof (translation)
-Rewrite using `[← rat_mul, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 ha), rat_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rat_inv_mul {r : ℕ} (a : Matrix (Fin r) (Fin r) D.host.E) (ha : a.det ≠ 0) :
     rat a⁻¹ * rat a = (1 : Mx D r r) := by
   rw [← rat_mul, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 ha), rat_one]
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.TowerRestrict.lattice_Mx D m r`. Use `haveI : BorelSpace (Mx D m r) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AE D) := (Formalism.IndefR.Eqv.ae_facts D).1`. Use `haveI i6 : DiscreteTopology (ratMx D m r) := i5`. Use `haveI i7 : SecondCountableTopology (ratMx D m r) := TopologicalSpace.Subtype.secondCountableTopology _`.
-
-Use `haveI : Countable (ratMx D m r) := TopologicalSpace.separableSpace_iff_countable.1 (TopologicalSpace.SecondCountableTopology.to_separableSpace)`. Take `⟨hH, hF, h1⟩` from `hμ`. Conclude with `integral_comp_of_covol (ratMx D m r) μ 𝓕 hF h1 (mulRightE (rat a) (rat a⁻¹) (rat_mul_inv a ha) (rat_inv_mul a ha)) (continuous_id.matrix_mul continuous_const) (continuous_id.matrix_mul continuous_const) (by rintro _ ⟨γ, rfl⟩; exact ⟨γ * a, rat_mul γ a⟩) (by rintro _ ⟨γ, rfl⟩; exa …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem integral_mulRight {m r : ℕ} {μ : Measure (Mx D m r)} {𝓕 : Set (Mx D m r)}
     (hμ : IsCovolOne (ratMx D m r) μ 𝓕) (a : Matrix (Fin r) (Fin r) D.host.E) (ha : a.det ≠ 0)
@@ -158,15 +154,11 @@ theorem integral_mulRight {m r : ℕ} {μ : Measure (Mx D m r)} {𝓕 : Set (Mx 
     (by rintro _ ⟨γ, rfl⟩; exact ⟨γ * a⁻¹, rat_mul γ a⁻¹⟩) g
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.TowerRestrict.lattice_Mx D r r`. Use `haveI : BorelSpace (Mx D r r) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AE D) := (Formalism.IndefR.Eqv.ae_facts D).1`. Use `haveI i6 : DiscreteTopology (ratMx D r r) := i5`. Use `haveI i7 : SecondCountableTopology (ratMx D r r) := TopologicalSpace.Subtype.secondCountableTopology _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : Countable (ratMx D r r) := TopologicalSpace.separableSpace_iff_countable.1 (TopologicalSpace.SecondCountableTopology.to_separableSpace)`. Use `haveI i8 : SecondCountableTopology (hermA D r) := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI i9 : BorelSpace (hermA D r) := Subtype.borelSpace _`. Establish `hcl : IsClosed ((hermA D r : AddSubgroup (Mx D r r)) : Set (Mx D r r))` using `isClosed_eq continuous_adj continuous_id`. Use `haveI : LocallyCompactSpace (hermA D r) := hcl.isClosedEmbedding_subtypeVal.locallyCompactSpace`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Countable (ratHerm D r) := by`. Set `f : ratHerm D r → ratMx D r r` to `fun x => ⟨x.1.1, x.2⟩`. Establish `hf : Function.Injective f` using `fun x y h => Subtype.ext (Subtype.ext (congrArg (fun z : ratMx D r r => z.1) h))`. Conclude with `hf.countable`. Take `⟨hH, hF, h1⟩` from `hl`.
-
-Establish `hcont : ∀ A : Mx D r r, Continuous (fun b : hermA D r => A ⬝ b.1 ⬝ adj A)` using `fun A => (continuous_const.matrix_mul continuous_subtype_val).matrix_mul continuous_const`. Establish `hrat : ∀ (c : Matrix (Fin r) (Fin r) D.host.E) (γ : hermA D r), γ ∈ ratHerm D r → rat c ⬝ γ.1 ⬝ adj (rat c) ∈ ratMx D r r`. Introduce and unpack `c ⟨_, _⟩ ⟨γ, rfl⟩`. Use `⟨c * γ * cᴴ, ?_⟩` and prove the remaining obligations. Use `show rat (c * γ * cᴴ) = _`.
-
-Rewrite using `[rat_mul, rat_mul, rat_conjTranspose]`. Both sides reduce to the same expression. Conclude with `integral_comp_of_covol (ratHerm D r) lam 𝓖 hF h1 (congA (rat a) (rat a⁻¹) (rat_mul_inv a ha) (rat_inv_mul a ha)) ((hcont _).subtype_mk _) ((hcont _).subtype_mk _) (fun γ hγ => hrat a γ hγ) (fun γ hγ => hrat a⁻¹ γ hγ) g`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem integral_congA {r : ℕ} {lam : Measure (hermA D r)} {𝓖 : Set (hermA D r)}
     (hl : IsCovolOneH lam 𝓖) (a : Matrix (Fin r) (Fin r) D.host.E) (ha : a.det ≠ 0)
@@ -205,14 +197,14 @@ theorem integral_congA {r : ℕ} {lam : Measure (hermA D r)} {𝓖 : Set (hermA 
     (fun γ hγ => hrat a γ hγ) (fun γ hγ => hrat a⁻¹ γ hγ) g
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.StdUnn.inner, adj_mul, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inner_mul_right (V : HSp D) {r : ℕ} (y : Mx D V.rank r) (A : Mx D r r) :
     GlobalTheory.StdUnn.inner V (y ⬝ A) (y ⬝ A) = adj A ⬝ GlobalTheory.StdUnn.inner V y y ⬝ A := by
   simp only [GlobalTheory.StdUnn.inner, adj_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Matrix.trace (Q ⬝ (P ⬝ A ⬝ b)) := Matrix.trace_mul_comm _ _`. Use `_ = Matrix.trace (Q ⬝ P ⬝ A ⬝ b) := by simp only [Matrix.mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trace_cong_left {r : ℕ} (P A b Q : Mx D r r) :
     Matrix.trace (P ⬝ (A ⬝ b ⬝ Q)) = Matrix.trace (Q ⬝ P ⬝ A ⬝ b) := by
@@ -222,9 +214,9 @@ theorem trace_cong_left {r : ℕ} (P A b Q : Mx D r r) :
     _ = Matrix.trace (Q ⬝ P ⬝ A ⬝ b) := by simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `h3 : adj B ⬝ adj A = 1` using `by rw [← adj_mul, h1, adj_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h3]`. Simplify using the standard rewrite rules. Use `_ = Matrix.trace ((b ⬝ (I ⬝ A)) ⬝ B) := Matrix.trace_mul_comm _ _`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `_ = Matrix.trace (b ⬝ I ⬝ (A ⬝ B)) := by simp only [Matrix.mul_assoc]`. Use `_ = Matrix.trace (b ⬝ I) := by`. Rewrite using `[h1]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trace_cong_inner {r : ℕ} (A B b I : Mx D r r) (h1 : A * B = 1) (h2 : B * A = 1) :
     Matrix.trace ((B ⬝ b ⬝ adj B) ⬝ (adj A ⬝ I ⬝ A)) = Matrix.trace (b ⬝ I) := by
@@ -241,7 +233,7 @@ theorem trace_cong_inner {r : ℕ} (A B b I : Mx D r r) (h1 : A * B = 1) (h2 : B
         simp
 
 /- English proof (translation)
-Establish `h : (congrH a β).1 = aᴴ * β.1 * a` using `rfl`. Rewrite using `[h]`. Use `show rat (aᴴ * β.1 * a) = _`. Rewrite using `[rat_mul, rat_mul, rat_conjTranspose]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rat_congrH {r : ℕ} (a : Matrix (Fin r) (Fin r) D.host.E) (β : HermE D r) :
     (congrH a β).1.map (incA D) = adj (rat a) ⬝ β.1.map (incA D) ⬝ rat a := by
@@ -252,13 +244,13 @@ theorem rat_congrH {r : ℕ} (a : Matrix (Fin r) (Fin r) D.host.E) (β : HermE D
   rfl
 
 /- English proof (translation)
-Introduce `D r V ψ μ lam φ β a ha ⟨𝓕, hμ⟩ ⟨𝓖, hl⟩`. Use `set S := congA (rat a) (rat a⁻¹) (rat_mul_inv a ha) (rat_inv_mul a ha) with hS`. Establish `hJ : ∀ b, Jt ψ V μ (pull a φ) b = Jt ψ V μ φ (S.symm b)`. Introduce `b`. Unfold `Jt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (integral_mulRight hμ a ha _)` and prove the remaining obligations. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Use `show φ (y ⬝ rat a) * _ = φ (y ⬝ rat a) * _`. Use `congr 3`. Establish `: (S.symm b).1 = rat a⁻¹ ⬝ b.1 ⬝ adj (rat a⁻¹)` using `rfl`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[this, inner_mul_right, trace_cong_inner _ _ _ _ (rat_mul_inv a ha) (rat_inv_mul a ha)]`. Unfold `W`. Simplify using `only [hJ]`. Use `(integral_congA hl a ha _).symm.trans ?_` and prove the remaining obligations. Use `integral_congr_ae (Filter.Eventually.of_forall fun b => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [← hS, AddEquiv.symm_apply_apply]`. Use `congr 4`. Establish `: (S b).1 = rat a ⬝ b.1 ⬝ adj (rat a)` using `rfl`. Rewrite using `[this, trace_cong_left, rat_congrH]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem W_congr : ∀ (D : D7) (r : ℕ) (V : HSp D) (ψ : AddChar (AF D.host.F) ℂ) (μ : Measure (Mx D V.rank r)) (lam : Measure (hermA D r)) (φ : Mx D V.rank r → ℂ) (β : HermE D r) (a : Matrix (Fin r) (Fin r) D.host.E), a.det ≠ 0 → (∃ 𝓕, IsCovolOne (ratMx D V.rank r) μ 𝓕) → (∃ 𝓖, IsCovolOneH lam 𝓖) → W ψ V μ lam (pull a φ) β = W ψ V μ lam φ (GlobalTheory.CompanionTheory.WeilSiegel.Deg.congrH a β) := by
   intro D r V ψ μ lam φ β a ha ⟨𝓕, hμ⟩ ⟨𝓖, hl⟩

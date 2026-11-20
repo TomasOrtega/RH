@@ -23,7 +23,7 @@ section SlopeTestRemainingChoices
 variable {O : Type} [CommRing O] [IsLocalRing O] {Γ : Type} [Group Γ] (η : Γ →* ℤˣ) (Ψ : Γ →* Oˣ)
 
 /- English proof (translation)
-Use `LinearMap.ext fun Y => Subtype.ext ?_` and prove the remaining obligations. Use `show emb (rbar O η Ψ g) * Y.1 * emb (rbar O η Ψ g⁻¹) = Y.1`. Rewrite using `[map_inv, h, inv_one, map_one, one_mul, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem adBar_eq_one (j : ℤ) {g : Γ} (h : rbar O η Ψ g = 1) : adBar O η Ψ j g = 1 := by
   refine LinearMap.ext fun Y => Subtype.ext ?_
@@ -34,21 +34,21 @@ variable [TopologicalSpace Γ] [IsTopologicalGroup Γ]
 
 omit [IsTopologicalGroup Γ] in
 /- English proof (translation)
-The claim follows from `((hη.prodMk hΨ).comp fun p => (⟨tor _ p.2, p.1⟩ : GG 3 (ResidueField O))).isOpen_fiber 1`.
+A detailed English derivation is pending.
 -/
 private theorem rbar_open (hη : IsLocallyConstant η) (hΨ : IsLocallyConstant (barChar O Ψ)) :
     IsOpen ((rbar O η Ψ).ker : Set Γ) :=
   ((hη.prodMk hΨ).comp fun p => (⟨tor _ p.2, p.1⟩ : GG 3 (ResidueField O))).isOpen_fiber 1
 
 /- English proof (translation)
-The claim follows from `Subgroup.isOpen_mono (fun _ hg => adBar_eq_one η Ψ j hg) (rbar_open η Ψ hη hΨ)`.
+A detailed English derivation is pending.
 -/
 private theorem adBar_open (hη : IsLocallyConstant η) (hΨ : IsLocallyConstant (barChar O Ψ)) (j : ℤ) :
     IsOpen ((adBar O η Ψ j).ker : Set Γ) :=
   Subgroup.isOpen_mono (fun _ hg => adBar_eq_one η Ψ j hg) (rbar_open η Ψ hη hΨ)
 
 /- English proof (translation)
-The claim follows from `kill_loc O _ ℤ wt6 (form6 O) h2 Γ _ ((baseLift O η Ψ hΨ').toLift hη) (blockPairingForm_normalises_baseLift O η (barChar O Ψ)) (blockPairingForm_normalises_baseLift O η Ψ) N (fun n hn => by show emb (r0 η Ψ n) = 1 rw [h0 n hn, map_one]) fun j => exists_locallyConstant_dOne_eq_cocy …`.
+A detailed English derivation is pending.
 -/
 private theorem locCond (l : ℕ) [Fact l.Prime] [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O]
     [Finite (ResidueField O)] [CharP (ResidueField O) l] (h2 : IsUnit (2 : O)) [CompactSpace Γ]
@@ -68,7 +68,7 @@ private theorem locCond (l : ℕ) [Fact l.Prime] [IsNoetherianRing O] [IsAdicCom
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `s` and use `hq.isOpen_preimage.1 (h s)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem lc_desc {X Y Z : Type} [TopologicalSpace X] [TopologicalSpace Y] {π : X → Y}
     (hq : Topology.IsQuotientMap π) {f : Y → Z} (h : IsLocallyConstant fun x => f (π x)) : IsLocallyConstant f :=
@@ -76,23 +76,21 @@ private theorem lc_desc {X Y Z : Type} [TopologicalSpace X] [TopologicalSpace Y]
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Use `haveI : IsGalois ℚ Ω := IsAlgClosure.isGalois ℚ Ω`. Take `⟨hΦ, _, _, _⟩` from `UpperTheory.galois_group_phi_condition hI.gf Ω l S hS`. Establish `hq : Topology.IsQuotientMap (toGS Ω (S : Set (HeightOneSpectrum (𝓞 ℚ))))` using `QuotientGroup.isQuotientMap_mk _`. Establish `hπ` using `hq.continuous`. Establish `e1' : ∀ g, η' (toGS Ω _ g) = η g` using `DFunLike.congr_fun e1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2' : ∀ g, Ψ' (toGS Ω _ g) = Ψ g` using `DFunLike.congr_fun e2`. Establish `e3 : ∀ g, barChar O Ψ' (toGS Ω _ g) = barChar O Ψ g` using `fun g => congrArg (Units.map (residue O).toMonoidHom) (e2' g)`. Establish `e4 : ∀ g, rbar O η' Ψ' (toGS Ω _ g) = rbar O η Ψ g` using `fun g => SemidirectProduct.ext (congrArg (tor _) (e3 g)) (e1' g)`. Establish `e5 : ∀ g, r0 η' Ψ' (toGS Ω _ g) = r0 η Ψ g` using `fun g => SemidirectProduct.ext (congrArg (tor _) (e2' g)) (e1' g)`. Establish `hη' : IsLocallyConstant η'` using `lc_desc hq (by simpa only [e1'] using hη)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΨ' : IsLocallyConstant (barChar O Ψ')` using `lc_desc hq (by simpa only [e3] using hΨ)`. Establish `hΨ'' : ∀ j : ℤ, AdicCont (maximalIdeal O) fun g => ((Ψ' g ^ j : Oˣ) : O)` using `fun j n => lc_desc hq (by simpa only [e2'] using hΨc' j n)`. Set `H` to `(rbar O η Ψ).ker`. Establish `hHc : IsClosed (H : Set (G ℚ Ω))` using `H.isClosed_of_isOpen (rbar_open _ _ hη hΨ)`. Set `Nq : {v : S // v ≠ v₀} → Subgroup (G ℚ Ω)` to `fun q => Ine (F := ℚ) (A q.1) ⊓ H`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hKill` using `UpperTheory.inertia_le_normal_iff_ker_le_and_inertia_le Ω l S A v₀ hS hA hv H fun g hg => by show rbar O η Ψ g = 1`. Rewrite using `[← e4, show toGS Ω _ g = 1 from hg, map_one]`. Establish `hN0 : ∀ q, ∀ n ∈ Nq q, r0 η' Ψ' (toGS Ω _ n) = 1` using `fun q n hn => by`. Rewrite using `[e5]`. Use `hK n ((hKi n).2 ⟨A q.1, fun h => q.2 ((hv q.1).1 ?_), hn.1, hn.2⟩)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h'` using `hA q.1 ((l : ℕ) : 𝓞 ℚ)`. Establish `e : algebraMap ℚ Ω (((l : ℕ) : 𝓞 ℚ) : ℚ) = (l : Ω)` using `by simp`. Rewrite `h'` using `[e]`. Conclude with `h'.1 h`. Establish `hNn : ∀ q, ((Nq q).subgroupOf (Dec (F` using `ℚ) (A q.1))).Normal := fun q => by haveI := (UpperTheory.exists_decompositionField_frobenius_data Ω (A q.1) q.1.1 (hA q.1)).2.1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `inferInstanceAs ((Ine (F := ℚ) (A q.1)).subgroupOf (Dec (F := ℚ) (A q.1)) ⊓ H.subgroupOf _).Normal`. Establish `hNc : ∀ q, IsClosed (Nq q : Set (G ℚ Ω))` using `fun q => (UpperTheory.exists_decompositionField_frobenius_data Ω (A q.1) q.1.1 (hA q.1)).2.2.1.inter hHc`. Establish `hNi : ∀ q, ¬ l ∣ (Nq q).relIndex (Ine (F` using `ℚ) (A q.1)) := fun q => UpperTheory.not_prime_dvd_relIndex_ker_inducedUnitaryRep l _ hl2 η (barChar O Ψ) _`. Establish `key` using `boxPres_abs hP l hl2 (toGS Ω _) hq hΦ hη' hΨ'' (Kill := Kill) hι (fun q : {v : S // v ≠ v₀} => Dec (F := ℚ) (A q.1)) Nq (fun q => inf_le_left.trans (Ine_le_Dec _)) (fun M _ hM => ((forall_congr' fun g => imp_congr_left (hKi g)).trans (hKill M hM)).trans (and_congr_right' Subtype. …`. Take `⟨d1, d2, d3, d4, d5⟩` from `UpperTheory.exists_decompositionField_frobenius_data Ω (A q.1) q.1.1 (hA q.1)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := hNn q`. Establish `hφ : Continuous ((toGS Ω (S : Set (HeightOneSpectrum (𝓞 ℚ)))).comp (Dec (F` using `ℚ) (A q.1)).subtype) := hπ.comp continuous_subtype_val`. Use `locCond (η'.comp ((toGS Ω _).comp (Dec (F := ℚ) (A q.1)).subtype)) (Ψ'.comp ((toGS Ω _).comp (Dec (F := ℚ) (A q.1)).subtype)) l h2 (hη'.comp_continuous hφ) (hΨ'.comp_continuous hφ) (fun j n => (hΨ'' j n).comp_continuous hφ) _ _ (d3.preimage continuous_subtype_val) ((hNc q).preima …` and prove the remaining obligations. Rewrite using `[Subgroup.relIndex_subgroupOf (Ine_le_Dec _)]`. Conclude with `hNi q)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `(fun j => by`. Take `⟨g, g1, g2, g3⟩` from `hg`. Establish `h` using `box_count hI Ω l _ _ hl2 S A v₀ hS hA hv ι hι hinj hr (adBar O η' Ψ' j) (adBar_open _ _ hη' hΨ' j) Nq (fun q => inf_le_left) hNn hNc (fun q n hn => adBar_eq_one _ _ j ((e4 n).trans hn.2)) hNi ⟨g, g3, adBar_eq_one _ _ j ((e4 g).trans (SemidirectProduct.ext (by show tor _ (barChar …`. Rewrite using `[g2, map_one]) g1))⟩ cc hcc`. Establish `h2' : (2 : ResidueField O) ≠ 0` using `map_ofNat (residue O) 2 ▸ (h2.map (residue O)).ne_zero`.
-
-Establish `h3` using `UpperTheory.finrank_ker_adRep_complexConj_sub_one_eq_boxDef O _ h2' η' (barChar O Ψ') (toGS Ω _ cc) ((e1' _).trans hηc) ((e3 _).trans (by show Units.map (residue O).toMonoidHom (Ψ cc) = 1`. Rewrite using `[hΨc, map_one])) j`. Conclude with `⟨h.1, h.2.trans (congrArg _ h3)⟩)`. Substitute `e1 e2` using the available equality. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem aux (hI : CohInp) (hP : LemmaP) {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ)
     [hl : Fact l.Prime] (hl2 : l ≠ 2) {O : Type} [CommRing O] [IsLocalRing O] [IsNoetherianRing O]
@@ -181,11 +179,9 @@ private theorem aux (hI : CohInp) (hP : LemmaP) {Ω : Type} [Field Ω] [CharZero
   exact key
 
 /- English proof (translation)
-Introduce `hI hP Ω _ _ _ K _ _ _ l hl c N hN e ψ D U B WB hW`. Take `⟨hc, hf, hlm, -⟩` from `UpperTheory.V.abelian₂.dvr_finite l c.O`. Use `haveI := hc`. Use `haveI : Finite (ResidueField c.O) := hf`. Use `haveI : CharP (ResidueField c.O) l := (CharP.charP_iff_prime_eq_zero hl.out).2 (by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← map_natCast (residue c.O), residue_eq_zero_iff]`. Conclude with `hlm)`. Use `haveI : IsNoetherianRing c.O := @PrincipalIdealRing.isNoetherianRing c.O _ c.dvr.toIsPrincipalIdealRing`. Take `⟨-, hηc, hΨc, hη, hΨ, hK, h2, -⟩` from `dat_facts D`. Take `⟨-, -, -, -, hinj, -⟩` from `dat_loc D`.
-
-Take `⟨S, A, v₀, η', Ψ', hS, hA, hr, hv, e1, e2⟩` from `UpperTheory.exists_finite_place_set_factoring_through_GS D`. Conclude with `aux hI hP l D.gd.l_odd h2 D.η D.Ψ hη hΨ D.Ψ_cont D.cc D.conj hηc hΨc D.ι D.ι_cont hinj D.Kill (fun _ => Iff.rfl) hK (UpperTheory.exists_galois_cyclotomic_neg_one_trivial_on_eta_psi D) S A v₀ η' Ψ' hS hA hr hv e1 e2 U _ B WB hW`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.U3.boxPres :
     CohInp → LemmaP → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {K : Type} [Field K] [NumberField K] [Algebra K Ω]

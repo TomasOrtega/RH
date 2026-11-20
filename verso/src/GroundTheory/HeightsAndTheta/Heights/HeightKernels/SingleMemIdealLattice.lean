@@ -17,11 +17,11 @@ variable {K : Type} [Field K] [NumberField K]
 omit [NumberField K] in
 
 /- English proof (translation)
-Simplify using `only [coordLine, satSub, Submodule.mem_comap, Submodule.subtype_apply, Submodule.restrictScalars_mem, Set.range_const, Submodule.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht⟩ y hy`. Rewrite using `[← ht]`. Simplify using `[hy]`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `h`. Use `⟨(w : Fin n → K) x, funext fun y => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hy : y = x`. Substitute `hy` using the available equality. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[hy, h y hy]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_coordLine {n : ℕ} {a : Fin n → FractionalIdeal (𝓞 K)⁰ K} {x : Fin n}
     {w : idealLattice a} : w ∈ coordLine a x ↔ ∀ y, y ≠ x → (w : Fin n → K) y = 0 := by
@@ -40,9 +40,9 @@ theorem mem_coordLine {n : ℕ} {a : Fin n → FractionalIdeal (𝓞 K)⁰ K} {x
 omit [NumberField K] in
 
 /- English proof (translation)
-Establish `hv` using `v.2`. Unfold `idealLattice at hv ⊢`. Rewrite `hv`, the goal using `[Submodule.mem_pi]`. Introduce `y _`. Distinguish the cases in `hy : y = x`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Substitute `hy` using the available equality. Simplify using `using hv y (Set.mem_univ _)`. Simplify using `[Pi.single_apply, hy]`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 -/
 theorem single_mem_idealLattice {n : ℕ} {a : Fin n → FractionalIdeal (𝓞 K)⁰ K} (v : idealLattice a)
     (x : Fin n) : (Pi.single x ((v : Fin n → K) x) : Fin n → K) ∈ idealLattice a := by
@@ -55,15 +55,15 @@ theorem single_mem_idealLattice {n : ℕ} {a : Fin n → FractionalIdeal (𝓞 K
   · simp [Pi.single_apply, hy]
 
 /- English proof (translation)
-Apply `DirectSum.isInternal_submodule_of_iSupIndep_of_iSup_eq_top` to reduce the goal to its premises. Rewrite using `[iSupIndep_def]`. Introduce `x`. Rewrite using `[Submodule.disjoint_def]`. Introduce `w hw hw'`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hle : (⨆ j, ⨆ (_ : j ≠ x), coordLine a j) ≤ LinearMap.ker ((LinearMap.proj (R` using `𝓞 K) (φ := fun _ : Fin n => K) x) ∘ₗ (idealLattice a).subtype) := iSup₂_le fun j hj v hv => by`. Simplify using `[mem_coordLine.mp hv x (Ne.symm hj)]`. Establish `h0 : (w : Fin n → K) x = 0` using `by simpa using hle hw'`. Use extensionality with `y`. Distinguish the cases in `hy : y = x`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Substitute `hy` using the available equality. Simplify using `using h0`. Simplify using `using mem_coordLine.mp hw y hy`. Use `eq_top_iff.mpr fun w _ => ?_` and prove the remaining obligations. Establish `hw : w = ∑ x, (⟨_, single_mem_idealLattice w x⟩ : idealLattice a)`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use extensionality with `y`. Simplify using `[Submodule.coe_sum, Finset.sum_apply, Pi.single_apply]`. Rewrite using `[hw]`. Use `Submodule.sum_mem _ fun x _ => Submodule.mem_iSup_of_mem x (mem_coordLine.mpr ?_)` and prove the remaining obligations. Introduce `y hy`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Pi.single_apply, hy]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coordLine_isInternal {n : ℕ} (a : Fin n → FractionalIdeal (𝓞 K)⁰ K) :
     DirectSum.IsInternal (coordLine a) := by
@@ -93,9 +93,9 @@ theorem coordLine_isInternal {n : ℕ} (a : Fin n → FractionalIdeal (𝓞 K)�
     simp [Pi.single_apply, hy]
 
 /- English proof (translation)
-Introduce `σ x y hxy l hl l' hl'`. Use `(matrixMetric_inner_one_tmul (idealLattice a) (diagMetric d) (diagMetric_posDef hd) (diagMetric_conj hc) σ l l').trans ?_` and prove the remaining obligations. Simplify using `only [diagMetric, mulVec_diagonal, dotProduct, embVec, Pi.star_apply]`. Use `Finset.sum_eq_zero fun z _ => ?_` and prove the remaining obligations. Distinguish the cases in `hz : z = x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `hz` using the available equality. Simplify using `[mem_coordLine.mp hl' z hxy]`. Simplify using `[mem_coordLine.mp hl z hz]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem coordLine_orthogonal {n : ℕ} (a : Fin n → FractionalIdeal (𝓞 K)⁰ K)
     (d : (K →+* ℂ) → Fin n → ℝ) (hd : ∀ σ x, 0 < d σ x) (hc : ∀ σ x, d (conjugate σ) x = d σ x) :
@@ -111,15 +111,13 @@ theorem coordLine_orthogonal {n : ℕ} (a : Fin n → FractionalIdeal (𝓞 K)�
   · simp [mem_coordLine.mp hl z hz]
 
 /- English proof (translation)
-Introduce `K _ _ n a d ha hd hc`. Establish `hspan` using `(LinesIdealLatticeFG.full K n a ha).2`. Establish `hline : ∀ x : Fin n, LinearIndependent K (fun _ : Fin 1 => (Pi.single x 1 : Fin n → K))` using `fun x => linearIndependent_unique_iff.mpr (by simp)`. Use `⟨latticeBundle a d hd hc, coordLine a, coordLine_isInternal a, fun x => ?_, coordLine_orthogonal a d hd hc, fun x => ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hS K n (idealLattice a) (diagMetric d) (diagMetric_posDef hd) (diagMetric_conj hc) hspan 1 _ (hline x)).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `(hS K n (idealLattice a) (diagMetric d) (diagMetric_posDef hd) (diagMetric_conj hc) hspan 1 _ (hline x)).2`. Unfold `HermitianBundle.normDegree normalise`. Conclude with `congrArg (· / (Module.finrank ℚ K : ℝ)) h`. Introduce `m k b c hli hmk`. Take `⟨X, -, -⟩` from `hE K n a d hd hc ha m k b c hli hmk`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hspan'', hdeg⟩` from `hQ K n a d ha hd m k b c hli hmk`. Establish `hstd : (fun j : Fin k => (Pi.single j 1 : Fin k → K)) = ⇑(Pi.basisFun K (Fin k))`. Use function extensionality and compare the values at `fun j => (Pi.basisFun_apply K (Fin k) j).symm`. Establish `htop : satSub (quotLattice a b c hli hmk) (fun j : Fin k => (Pi.single j 1 : Fin k → K)) = ⊤`. Use `eq_top_iff.mpr fun w _ => ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [satSub, Submodule.mem_comap, Submodule.restrictScalars_mem, hstd, (Pi.basisFun K (Fin k)).span_eq, Submodule.mem_top]`. Take `⟨hr, hdg⟩` from `hS K k (quotLattice a b c hli hmk) (schurMetric d b c) (schurMetric_posDef hd hli) (schurMetric_conj hc b c) hspan'' k _ (hstd ▸ (Pi.basisFun K (Fin k)).linearIndependent)`. Rewrite `hr`, `hdg` using `[htop]`. Use `⟨subBundle a d hd hc b, quotBundle a d hd hc b c hli hmk, ⟨X⟩, hr, ?_⟩` and prove the remaining obligations. Unfold `HermitianBundle.normDegree normalise`.
-
-Conclude with `congrArg (· / (Module.finrank ℚ K : ℝ)) (hdg.trans hdeg)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem S6.LatticeAsBundle.proof (hS : S6.MatrixSubDegree.Statement)
     (hE : S6.QuotExtension.Statement) (hQ : S6.QuotDegree.Statement) :

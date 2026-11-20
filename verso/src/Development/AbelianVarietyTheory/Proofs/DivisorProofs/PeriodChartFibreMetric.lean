@@ -20,15 +20,13 @@ noncomputable section
 namespace GlobalTheory.RelCotAb
 
 /- English proof (translation)
-Introduce `k _ S p D A _ g hA hs`. Use `haveI := hA.proper`. Use `⟨GlobalTheory.RelCotAb.relCotIso A, fun w σ c τ ex H P hP W F F' hx => ?_⟩` and prove the remaining obligations. Take `⟨v, z⟩` from `P`. Establish `hv : v ∈ c.e.target` using `hP.1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h₁, -, -, -, hmet⟩` from `H.2.2 v hv`. Establish `hy : Points.PtsOver.map A.hom rfl _ (ex (v, z)) = c.e.symm v` using `Subtype.ext (h₁ z)`. Establish `hpick` using `(w.met σ).isVB.mem_pick (c.e.symm v)`. Take `⟨U, W₁, hxU, hle, ch⟩` from `GlobalTheory.Conormal.exists_isChart (GlobalTheory.LieVB.sec_hom η[A]) (mem_ptsIn.1 hpick)`. Set `c₀ : GlobalTheory.VB.Chart (omega A) g` to `⟨U, _, ((w.met σ).isVB.pick (c.e.symm v)).isFrame.res hle⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `choose h hh using fun a => ch.d_surjective (GlobalTheory.LieVB.sec_hom η[A]) (c₀.e a)`. Establish `hU : c.e.symm v ∈ ptsIn p σ U` using `mem_ptsIn.2 hxU`. Set `C : Matrix (Fin g) (Fin g) ℂ` to `Matrix.of fun i a => cot ex W₁ (h a) v i`. Establish `hG : (w.met σ).G c₀ (c.e.symm v) = HermFrame.chg C ((2 : ℂ) • imPart τ v)`. Use extensionality with `a b`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← (w.met σ).form_frame c₀ hU, ← hh, ← hh, HermFrame.chg_apply]`. Conclude with `hmet U W₁ ch.le _ _ hU`. Establish `hK` using `GlobalTheory.T.period_chart_section_trivialisation k S p D A g w σ c τ ex H v z hv c₀ W₁ ch.le h (fun a => (hh a).symm) hU`. Establish `hyc : Points.PtsOver.map A.hom rfl _ (ex (v, z)) ∈ ptsIn p σ c₀.U` using `hy ▸ hU`. Establish `hxc : ex (v, z) ∈ ptsIn _ σ (c₀.pull w.isVB A.hom).U` using `hyc`.
-
-Express the relevant statement in the definitionally equal form `(((w.met σ).pull A.hom rfl).map (GlobalTheory.RelCotAb.relCotIso A)).form _ _ _ = _`. Rewrite using `[Met.form_eq _ ((c₀.pull w.isVB A.hom).map (GlobalTheory.RelCotAb.relCotIso A)) hxc _ _ hx, Met.map_G _ _ (c₀.pull w.isVB A.hom) hxc, Met.pull_G _ _ _ c₀ hyc, hy, hG, HermFrame.form_chg, hK W F hx, hK W F' hx]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relCot_isFibreMetric : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k) (D : ℕ) (A : Over S) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∃ φ : (Scheme.Modules.pullback A.hom).obj (omega A) ≅ relCot A.hom, ∀ (w : VMetric p (omega A) g) (σ : k →+* ℂ), ∀ (c : AlgChart p σ D) (τ : V D → Matrix (Fin g) (Fin g) ℂ) (ex : Pt (V D) g → CxPts (A.hom ≫ p) σ), IsPeriodChart w c τ ex → IsFibreMetric ((w.pull A.hom rfl).map φ) c.e.target τ ex := by
   intro k _ S p D A _ g hA hs

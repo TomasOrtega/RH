@@ -6,7 +6,7 @@ open Matrix
 namespace GlobalTheory.CompanionTheory.UnitaryLog
 
 /- English proof (translation)
-Introduce `n g`. Establish `hA : (g : Matrix (Fin n) (Fin n) ℂ)ᴴ * (g : Matrix (Fin n) (Fin n) ℂ) = 1` using `Matrix.mem_unitaryGroup_iff'.1 g.2`. Take `⟨B, h1, h2⟩` from `Formalism.FourierDecayAlt.P.HermitianFormRankFour.unitary_log _ hA`. Conclude with `⟨B, h1, h2.symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem main : ∀ (n : ℕ) (g : Matrix.unitaryGroup (Fin n) ℂ),
     ∃ X : Matrix (Fin n) (Fin n) ℂ, Xᴴ = -X ∧

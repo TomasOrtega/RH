@@ -17,21 +17,19 @@ variable {m n : ℕ} {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGro
   {sec I : PX m n →ₗ[ℂ] (G → ℂ)} {Λ : Set ((G → ℂ) → ℂ)}
 
 /- English proof (translation)
-Establish `hswap : ∀ Φ : GR n → ℂ, Continuous Φ → ∫ k : KR n, (F0 p q e (k : GR n))⁻¹ * (∫ x, Φ ((k : GR n) * a * nb x * b) * ψ x) ∂μ = ∫ x, (∫ k : KR n, (F0 p q e (k : GR n))⁻¹ * Φ ((k : GR n) * (a * nb x * b)) ∂μ) * ψ x`. Introduce `Φ hΦ`. Establish `hcont : Continuous (fun z : KR n × (Fin n → Fin n → ℝ) => (F0 p q e (z.1 : GR n))⁻¹ * (Φ ((z.1 : GR n) * a * nb z.2 * b) * ψ z.2))`. Use `Continuous.mul ?_ (Continuous.mul ?_ (hψc.comp continuous_snd))` and prove the remaining obligations. Conclude with `((continuous_weight_factor hD p q e).comp (continuous_subtype_val.comp continuous_fst)).inv₀ (fun z => spherical_section_ne_zero hD p q e _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hΦ.comp ((((continuous_subtype_val.comp continuous_fst).mul continuous_const).mul (hnbc.comp continuous_snd)).mul continuous_const)`. Establish `hsupp : HasCompactSupport (fun z : KR n × (Fin n → Fin n → ℝ) => (F0 p q e (z.1 : GR n))⁻¹ * (Φ ((z.1 : GR n) * a * nb z.2 * b) * ψ z.2))`. Use `HasCompactSupport.intro' (K := univ ×ˢ tsupport ψ) (isCompact_univ.prod hψs) (isClosed_univ.prod (isClosed_tsupport ψ)) ?_` and prove the remaining obligations. Introduce `z hz`. Establish `hz2 : z.2 ∉ tsupport ψ` using `fun h => hz ⟨mem_univ _, h⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[image_eq_zero_of_notMem_tsupport hz2]`. Establish `hint` using `hcont.integrable_of_hasCompactSupport (μ := μ.prod volume) hsupp`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `k`.
+Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(integral_const_mul _ _).symm`. Use `_ = ∫ x, (∫ k : KR n, (F0 p q e (k : GR n))⁻¹ * (Φ ((k : GR n) * a * nb x * b) * ψ x) ∂μ) := integral_integral_swap (f := fun (k : KR n) (x : Fin n → Fin n → ℝ) => (F0 p q e (k : GR n))⁻¹ * (Φ ((k : GR n) * a * nb x * b) * ψ x)) hint`. Use `_ = _ := by`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← integral_mul_const]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `only [mul_assoc]`. Establish `h1` using `hswap (fun y => I1 (g * ι y)) (hIc.comp (continuous_const.mul hιc))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `hswap (F0 p q e) (continuous_weight_factor hD p q e)`. Establish `hc` using `hceig 0 1`. Simplify using `only [Complex.cpow_zero, one_mul, mul_one, weight_factor_one] at hc`. Unfold `Top`. Rewrite using `[h1]`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Repeatedly rewrite using `[hTS g]`. Establish `hpull : ∫ x, (I1 g * ∫ k : KR n, (F0 p q e (k : GR n))⁻¹ * F0 p q e ((k : GR n) * (a * nb x * b)) ∂μ) * ψ x = I1 g * ∫ x, (∫ k : KR n, (F0 p q e (k : GR n))⁻¹ * F0 p q e ((k : GR n) * (a * nb x * b)) ∂μ) * ψ x`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hpull, ← h2, hc, mul_comm]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem top_theta [MeasurableSpace (KR n)] [BorelSpace (KR n)] [CompactSpace (KR n)] (μ : Measure (KR n))
     [IsFiniteMeasure μ] (hD : CayleyBlocksInvertible) (hιc : Continuous ι) {a b : GR n} {nb : (Fin n → Fin n → ℝ) → GR n}

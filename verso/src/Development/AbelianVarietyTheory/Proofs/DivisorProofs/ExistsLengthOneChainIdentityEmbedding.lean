@@ -17,14 +17,14 @@ abbrev sO (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] :
     (Model.base O).X.Modules := GlobalTheory.QCoh.structureModule (Model.base O).X
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.QCoh.mono_of_locally_app_injective _ fun W x hx => ⟨W, hx, le_rfl, fun _ _ h => (mul_cancel_left_mem_nonZeroDivisors ((Model.base O).isRegularFn_const ha W le_top)).1 h⟩`.
+A detailed English derivation is pending.
 -/
 theorem mono_smulHom_const {a : O} (ha : a ≠ 0) : Mono (smulHom (sO O) ((Model.base O).const a)) :=
   GlobalTheory.QCoh.mono_of_locally_app_injective _ fun W x hx => ⟨W, hx, le_rfl, fun _ _ h =>
     (mul_cancel_left_mem_nonZeroDivisors ((Model.base O).isRegularFn_const ha W le_top)).1 h⟩
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(Scheme.ΓSpecIso (CommRingCat.of O)).hom.hom (Scheme.Hom.appTop (𝟙 (Spec (CommRingCat.of O))) ((Scheme.ΓSpecIso (CommRingCat.of O)).inv.hom a)) = a`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem gammaSpec_const (a : O) :
     (Scheme.ΓSpecIso (CommRingCat.of O)).hom.hom ((Model.base O).const a) = a := by
@@ -33,7 +33,7 @@ theorem gammaSpec_const (a : O) :
   simp
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `h`. Unfold `Kills`. Rewrite using `[← cancel_epi (cokernel.π (smulHom (sO O) a)), comp_zero, ← smulHom_comp, smulHom_mul, Category.assoc, cokernel.condition, comp_zero]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem kills_cokernel {a b : Γ((Model.base O).X, ⊤)} (h : a ∣ b) :
     Kills b (cokernel (smulHom (sO O) a)) := by
@@ -43,7 +43,7 @@ theorem kills_cokernel {a b : Γ((Model.base O).X, ⊤)} (h : a ∣ b) :
     Category.assoc, cokernel.condition, comp_zero]
 
 /- English proof (translation)
-Introduce `h` and use `by have : Epi (smulHom (sO O) ((Model.base O).const a)) := Preadditive.epi_of_isZero_cokernel _ h have := (VB.isVB_structureModule (Model.base O).X).isQuasicoherent haveI : IsAffine (Model.base O).X := inferInstanceAs (IsAffine (Spec (CommRingCat.of O))) obtain ⟨s, hs⟩ := QCoh.su …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_isZero_cokernel {a : O} (hu : ¬ IsUnit a) :
     ¬ IsZero (cokernel (smulHom (sO O) ((Model.base O).const a))) := fun h => by

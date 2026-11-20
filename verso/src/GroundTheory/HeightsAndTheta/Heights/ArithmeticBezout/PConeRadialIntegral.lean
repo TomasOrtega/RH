@@ -11,37 +11,33 @@ open scoped ENNReal Pointwise
 noncomputable section
 
 /- English proof (translation)
-Introduce `n m hm C hC hfin f hf`. Use `set d : ℝ := ((2 * m : ℕ) : ℝ) with hd_def`. Use `set c := Measure.hausdorffMeasure d {y : EuclideanSpace ℂ (Fin n) | ‖y‖ < 1 ∧ y ∈ C} with hc_def`. Establish `hd : 0 ≤ d` using `Nat.cast_nonneg _`. Use `set D : ℝ → ℝ≥0∞ := fun r => ENNReal.ofReal (2 * m * r ^ (2 * m - 1)) with hD_def`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDm : Measurable D` using `ENNReal.measurable_ofReal.comp (by fun_prop)`. Use `set ν : Measure ℝ := Measure.map (fun y : EuclideanSpace ℂ (Fin n) => ‖y‖) ((Measure.hausdorffMeasure d).restrict C) with hν_def`. Use `set ρ : Measure ℝ := c • (volume.restrict (Ioi (0 : ℝ))).withDensity D with hρ_def`. Establish `h2m : 2 * m ≠ 0` using `by omega`. Establish `hνIio : ∀ r : ℝ, ν (Iio r) = ENNReal.ofReal (max r 0 ^ (2 * m)) * c`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Introduce `r`. Rewrite using `[hν_def, Measure.map_apply continuous_norm.measurable measurableSet_Iio, Measure.restrict_apply (measurableSet_Iio.preimage continuous_norm.measurable)]`. Break down `le_or_gt r 0 with hr | hr` into its components or cases. Establish `hempty : (fun y : EuclideanSpace ℂ (Fin n) => ‖y‖) ⁻¹' Iio r ∩ C = ∅`. Use extensionality with `y`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [mem_inter_iff, mem_preimage, mem_Iio, mem_empty_iff_false, iff_false, not_and]`. Introduce `h`. Conclude with `absurd (lt_of_lt_of_le h hr) (not_lt.2 (norm_nonneg y))`. Rewrite using `[hempty, measure_empty, max_eq_right hr, zero_pow h2m, ENNReal.ofReal_zero, zero_mul]`. Establish `hset : (fun y : EuclideanSpace ℂ (Fin n) => ‖y‖) ⁻¹' Iio r ∩ C = r • {y : EuclideanSpace ℂ (Fin n) | ‖y‖ < 1 ∧ y ∈ C}`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `y`. Simplify using `only [mem_inter_iff, mem_preimage, mem_Iio, mem_smul_set, mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hy, hyC⟩`. Use `⟨r⁻¹ • y, ⟨?_, hC y hyC r⁻¹ (inv_pos.2 hr)⟩, smul_inv_smul₀ hr.ne' y⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_smul, Real.norm_eq_abs, abs_inv, abs_of_pos hr, inv_mul_lt_iff₀ hr, mul_one]`. Conclude with `hy`. Introduce and unpack `⟨z, ⟨hz, hzC⟩, rfl⟩`. Use `⟨?_, hC z hzC r hr⟩` and prove the remaining obligations. Rewrite using `[norm_smul, Real.norm_eq_abs, abs_of_pos hr]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hset, Measure.hausdorffMeasure_smul₀ hd hr.ne', max_eq_left hr.le, ENNReal.smul_def, smul_eq_mul]`. Use `congr 1`. Rewrite using `[hd_def, NNReal.rpow_natCast, ENNReal.ofReal_pow hr.le, ENNReal.coe_pow]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite using `[Real.nnnorm_of_nonneg hr.le, ENNReal.ofReal_eq_coe_nnreal hr.le]`. Establish `hρIio : ∀ r : ℝ, ρ (Iio r) = ENNReal.ofReal (max r 0 ^ (2 * m)) * c`. Introduce `r`. Rewrite using `[hρ_def, Measure.smul_apply, smul_eq_mul, withDensity_apply _ measurableSet_Iio, Measure.restrict_restrict measurableSet_Iio, mul_comm]`. Use `congr 1`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Break down `le_or_gt r 0 with hr | hr` into its components or cases. Establish `hempty : Iio r ∩ Ioi (0 : ℝ) = ∅`. Use extensionality with `t`. Simplify using `only [mem_inter_iff, mem_Iio, mem_Ioi, mem_empty_iff_false, iff_false, not_and]`. Introduce `h1 h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hempty, Measure.restrict_empty, lintegral_zero_measure, max_eq_right hr, zero_pow h2m, ENNReal.ofReal_zero]`. Rewrite using `[max_eq_left hr.le, inter_comm, Ioi_inter_Iio]`. Establish `hcont : Continuous (fun t : ℝ => 2 * (m : ℝ) * t ^ (2 * m - 1))` using `by fun_prop`. Rewrite using `[← ofReal_integral_eq_lintegral_ofReal (hcont.integrableOn_Icc.mono_set Ioo_subset_Icc_self)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[← integral_Ioc_eq_integral_Ioo, ← intervalIntegral.integral_of_le hr.le, intervalIntegral.integral_const_mul, integral_pow]`. Use `congr 1`. Take `⟨k, hk⟩ : ∃ k, 2 * m = k + 1` from `⟨2 * m - 1, by omega⟩`. Establish `hk' : 2 * m - 1 = k` using `by omega`. Establish `hkR : 2 * (m : ℝ) = (k : ℝ) + 1` using `by exact_mod_cast hk`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hk', hkR, hk, zero_pow (Nat.succ_ne_zero k), sub_zero]`. Clear the denominators using the available nonvanishing facts. Use `filter_upwards [ae_restrict_mem measurableSet_Ioo] with t ht`. Conclude with `mul_nonneg (by positivity) (pow_nonneg ht.1.le _)`. Establish `hfinG : ∀ r : ℝ, ENNReal.ofReal (max r 0 ^ (2 * m)) * c ≠ ⊤` using `fun r => ENNReal.mul_ne_top ENNReal.ofReal_ne_top hfin.ne`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. The claim follows by propositional logic. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hνρ : ν = ρ`. Use `Measure.ext_of_Ico' ν ρ (fun a b _ => ?_) (fun a b hab => ?_)` and prove the remaining obligations. Conclude with `ne_top_of_le_ne_top (by rw [hνIio b]; exact hfinG b) (measure_mono Ico_subset_Iio_self)`. Establish `hsub : Iio a ⊆ Iio b` using `Iio_subset_Iio hab.le`. Establish `hIco : Ico a b = Iio b \ Iio a`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use extensionality with `t`. Simplify using `only [mem_Ico, mem_sdiff, mem_Iio, not_lt]`. The claim follows by propositional logic. Rewrite using `[hIco, measure_sdiff hsub measurableSet_Iio.nullMeasurableSet (by rw [hνIio a]; exact hfinG a), measure_sdiff hsub measurableSet_Iio.nullMeasurableSet (by rw [hρIio a]; exact hfinG a), hνIio, hνIio, hρIio, hρIio]`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[hν_def, lintegral_map hf continuous_norm.measurable]`. Use `_ = ∫⁻ r, f r ∂ρ := by rw [hνρ]`. Use `_ = c * ∫⁻ r in Ioi 0, f r * D r := by`. Rewrite using `[hρ_def, lintegral_smul_measure, smul_eq_mul, lintegral_withDensity_eq_lintegral_mul _ hDm hf]`. Use `congr 1`.
-
-Use `lintegral_congr fun r => ?_` and prove the remaining obligations. Simplify using `only [Pi.mul_apply]`. Conclude with `mul_comm _ _`.
+A detailed English derivation is pending.
 -/
 theorem ConeRadialIntegral.proof : ConeRadialIntegral.Statement := by
   intro n m hm C hC hfin f hf

@@ -14,14 +14,14 @@ def withBk (D : D7) (B : ∀ u, (D.div.Nu u).V →ₗ[D.what₂.LL] Module.Dual 
   { D with div := { D.div with Bk := B } }
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem buRational_withBk (D : D7) (B) : (withBk D B).BuRational ↔
     ∀ u (φ : (D.div.Nu u).V) (x : D.div.RR.V),
       D.what₂.Bu u (D.jN u φ) (D.jEE x) = D.what₂.embLL (B u φ x) := Iff.rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Use extensionality with `φ x`. Conclude with `D.what₂.embLL.injective (((buRational_withBk D B).1 h u φ x).symm.trans ((buRational_withBk D B').1 h' u φ x))`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem bk_unique (D : D7) (B B') (h : (withBk D B).BuRational) (h' : (withBk D B').BuRational) : B = B' := by
   funext u
@@ -29,9 +29,9 @@ theorem bk_unique (D : D7) (B B') (h : (withBk D B).BuRational) (h' : (withBk D 
   exact D.what₂.embLL.injective (((buRational_withBk D B).1 h u φ x).symm.trans ((buRational_withBk D B').1 h' u φ x))
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hall`. Use `push Not at hall`. Take `⟨φ, hφ⟩` from `exists_ne (0 : (D.div.Nu u).V)`. Take `⟨x, hx⟩` from `exists_ne (0 : D.div.RR.V)`. Take `⟨f, hf⟩` from `Module.Projective.exists_dual_eq_one D.what₂.LL hφ`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩` from `Module.Projective.exists_dual_eq_one D.what₂.LL hx`. Use `bk_unique D (fun _ => 0) (Function.update (fun _ => 0) u (f.smulRight g)) (hall _) (hall _)` as an intermediate fact. Establish `h2` using `congrArg (fun B => B u φ x) this`. Simplify using `[hf, hg] at h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_not_buRational (D : D7) (u : D.what₂.Word) [Nontrivial (D.div.Nu u).V] [Nontrivial D.div.RR.V] :
     ∃ B, ¬ (withBk D B).BuRational := by
@@ -50,13 +50,13 @@ def ValuesRational (D : D7) : Prop := ∀ u (φ : (D.div.Nu u).V) (x : D.div.RR.
   D.what₂.Bu u (D.jN u φ) (D.jEE x) ∈ Set.range D.what₂.embLL
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨B, hB⟩ u φ x`. Conclude with `⟨_, ((buRational_withBk D B).1 hB u φ x).symm⟩`. Introduce `h choose b hb using h`. Establish `inj` using `D.what₂.embLL.injective`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨fun u => LinearMap.mk₂ D.what₂.LL (b u) ?_ ?_ ?_ ?_, fun u φ x => (hb u φ x).symm⟩` and prove the remaining obligations. Introduce `a a' x`. Apply `inj` to reduce the goal to its premises. Rewrite using `[map_add, hb, hb, hb, map_add, (D.Bu_linL u _).map_add]`. Introduce `c a x`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `inj` to reduce the goal to its premises. Rewrite using `[smul_eq_mul, map_mul, hb, hb, map_smulₛₗ, (D.Bu_linL u _).map_smul, smul_eq_mul]`. Introduce `a x x'`. Apply `inj` to reduce the goal to its premises. Rewrite using `[map_add, hb, hb, hb, map_add, (D.Bu_linR u _).map_add]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `c a x`. Apply `inj` to reduce the goal to its premises. Rewrite using `[smul_eq_mul, map_mul, hb, hb, map_smulₛₗ, (D.Bu_linR u _).map_smul, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_bk_iff (D : D7) : (∃ B, (withBk D B).BuRational) ↔ ValuesRational D := by
   constructor

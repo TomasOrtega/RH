@@ -16,7 +16,7 @@ noncomputable section
 namespace GlobalTheory.HeatTransWt
 
 /- English proof (translation)
-Establish `h' : ⊤ ≤ (w ≫ T) ⁻¹ᵁ U` using `h.trans (w.preimage_mono hU)`. Unfold `valR`. Rewrite using `[dif_pos h, dif_pos h', GlobalTheory.KS.pbT_of_le T hU]`. Rewrite using `[← Scheme.Hom.appLE_comp_appLE w T U U' ⊤ hU h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem valR_pbT_le {A : Type} [CommRing A] {X Z : Scheme.{0}} (w : Sp A ⟶ Z) (T : Z ⟶ X) {U : X.Opens}
     {U' : Z.Opens} (hU : U' ≤ T ⁻¹ᵁ U) (h : ⊤ ≤ w ⁻¹ᵁ U') (f : Γ(X, U)) :
@@ -28,15 +28,15 @@ theorem valR_pbT_le {A : Type} [CommRing A] {X Z : Scheme.{0}} (w : Sp A ⟶ Z) 
   rfl
 
 /- English proof (translation)
-Introduce `R _ _ Q O _ _ _ oa Y x α U U' hU f hf S _ φ x₁ x₁' c a a' ha ha' hV hV' hq hc`. Establish `hqm : IsMonHom Y.q` using `Y.q_linear.isMonHom`. Set `z : Over.mk (spMap φ) ⟶ Y.H` to `toUnit _ ≫ x`. Establish `hleft : ∀ w : Over.mk (spMap φ) ⟶ Y.H, (w * z).left = w.left ≫ GlobalTheory.HeatTrans.tr Y.H x` using `fun w => by`. Establish `e : w ≫ (𝟙 Y.H * (toUnit Y.H ≫ x)) = w * z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[MonObj.comp_mul, Category.comp_id, ← Category.assoc, toUnit_unique (w ≫ toUnit Y.H) (toUnit _)]`. Rewrite using `[← e]`. Both sides reduce to the same expression. Rewrite using `[valR_pbT_le a' _ hU hV', valR_pbT_le a _ hU hV]`. Substitute `ha ha'` using the available equality.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Rewrite using `[← hleft, ← hleft]`. Use `hf S φ (x₁ * z) (x₁' * z) c _ _ rfl rfl ?_ ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[hleft]`. Conclude with `hV.trans (x₁.left.preimage_mono hU)`. Rewrite using `[hleft]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hV'.trans (x₁'.left.preimage_mono hU)`. Rewrite using `[MonObj.mul_comp, MonObj.mul_comp, hq]`. Introduce `χ y J hJ`. Establish `h1` using `((GlobalTheory.TorusModel.isAdd_iff _ _ _).1 (Y.rep.2 _ x₁ z)).2 χ y J hJ`. Establish `h1'` using `((GlobalTheory.TorusModel.isAdd_iff _ _ _).1 (Y.rep.2 _ x₁' z)).2 χ y J hJ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Y.Φ_b, GlobalTheory.TorusModel.cv] at h1 h1'`. Rewrite `h1'` using `[hq]`. Use `mul_right_cancel (h1'.trans ?_)` and prove the remaining obligations. Rewrite using `[hc χ y J hJ, _root_.mul_assoc, ← h1, _root_.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isWt_pbT_tr : ∀ (R : Type) [CommRing R] [IsDomain R] (Q : DegPre R) (O : Type) [CommRing O] [StarRing O] [Module O Q.X] (oa : Q.OAct O) (Y : Ray oa) (x : 𝟙_ (Over (Sp R)) ⟶ Y.H) (α : Q.X) (U U' : Y.H.left.Opens), U' ≤ GlobalTheory.HeatTrans.tr Y.H x ⁻¹ᵁ U → ∀ f : Γ(Y.H.left, U), IsWt Y α U f → IsWt Y α U' (pbT (GlobalTheory.HeatTrans.tr Y.H x) f U') := by
   intro R _ _ Q O _ _ _ oa Y x α U U' hU f hf S _ φ x₁ x₁' c a a' ha ha' hV hV' hq hc

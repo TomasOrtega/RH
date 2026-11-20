@@ -11,21 +11,21 @@ section NabLin
 variable {R : Type} [CommRing R] {d n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [DofN, map_add, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dofN_add (F : Fin d → PS R 2 d) (b : Fin n) (u : Fin d → R) (f g : PS R n d) :
     DofN F b u (f + g) = DofN F b u f + DofN F b u g := by
   simp only [DofN, map_add, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [DofN, Derivation.map_smul, map_smul, mul_smul_comm, Finset.smul_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dofN_smul (F : Fin d → PS R 2 d) (b : Fin n) (u : Fin d → R) (t : R) (f : PS R n d) :
     DofN F b u (t • f) = t • DofN F b u f := by
   simp only [DofN, Derivation.map_smul, map_smul, mul_smul_comm, Finset.smul_sum]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih => simp only [Function.iterate_succ_apply', ih, dofN_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem dofN_iterate_add (F : Fin d → PS R 2 d) (b : Fin n) (u : Fin d → R) (k : ℕ)
     (f g : PS R n d) :
@@ -35,7 +35,7 @@ theorem dofN_iterate_add (F : Fin d → PS R 2 d) (b : Fin n) (u : Fin d → R) 
   | succ k ih => simp only [Function.iterate_succ_apply', ih, dofN_add]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih => simp only [Function.iterate_succ_apply', ih, dofN_smul]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem dofN_iterate_smul (F : Fin d → PS R 2 d) (b : Fin n) (u : Fin d → R) (k : ℕ)
     (t : R) (f : PS R n d) :
@@ -47,7 +47,7 @@ theorem dofN_iterate_smul (F : Fin d → PS R 2 d) (b : Fin n) (u : Fin d → R)
 variable {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Unfold `DmonN`. Proceed by induction on `(Finset.univ : Finset ι).toList with`. Consider the case `nil => rfl`. Consider the case `cons a l ih => simp only [List.foldr_cons, ih, dofN_iterate_add]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem dmonN_add (F : Fin d → PS R 2 d) (cp : ι → Fin n) (u : ι → Fin d → R) (m : ι →₀ ℕ)
     (f g : PS R n d) :
@@ -58,7 +58,7 @@ theorem dmonN_add (F : Fin d → PS R 2 d) (cp : ι → Fin n) (u : ι → Fin d
   | cons a l ih => simp only [List.foldr_cons, ih, dofN_iterate_add]
 
 /- English proof (translation)
-Unfold `DmonN`. Proceed by induction on `(Finset.univ : Finset ι).toList with`. Consider the case `nil => rfl`. Consider the case `cons a l ih => simp only [List.foldr_cons, ih, dofN_iterate_smul]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem dmonN_smul (F : Fin d → PS R 2 d) (cp : ι → Fin n) (u : ι → Fin d → R) (m : ι →₀ ℕ)
     (t : R) (f : PS R n d) :
@@ -69,7 +69,7 @@ theorem dmonN_smul (F : Fin d → PS R 2 d) (cp : ι → Fin n) (u : ι → Fin 
   | cons a l ih => simp only [List.foldr_cons, ih, dofN_iterate_smul]
 
 /- English proof (translation)
-Unfold `DpolyN`. Use `Finset.sum_subset hs fun m _ hm => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.notMem_support_iff.mp hm, map_zero, zero_mul]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem dpolyN_eq_sum_of_subset (F : Fin d → PS R 2 d) (cp : ι → Fin n) (u : ι → Fin d → R)
     (P : MvPolynomial ι R) (f : PS R n d) (s : Finset (ι →₀ ℕ)) (hs : P.support ⊆ s) :
@@ -79,7 +79,7 @@ theorem dpolyN_eq_sum_of_subset (F : Fin d → PS R 2 d) (cp : ι → Fin n) (u 
   rw [MvPolynomial.notMem_support_iff.mp hm, map_zero, zero_mul]
 
 /- English proof (translation)
-Simplify using `only [DpolyN, dmonN_add, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dpolyN_add_right (F : Fin d → PS R 2 d) (cp : ι → Fin n) (u : ι → Fin d → R)
     (P : MvPolynomial ι R) (f g : PS R n d) :
@@ -87,7 +87,7 @@ theorem dpolyN_add_right (F : Fin d → PS R 2 d) (cp : ι → Fin n) (u : ι �
   simp only [DpolyN, dmonN_add, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [DpolyN, dmonN_smul, mul_smul_comm, Finset.smul_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dpolyN_smul_right (F : Fin d → PS R 2 d) (cp : ι → Fin n) (u : ι → Fin d → R)
     (P : MvPolynomial ι R) (t : R) (f : PS R n d) :
@@ -95,7 +95,7 @@ theorem dpolyN_smul_right (F : Fin d → PS R 2 d) (cp : ι → Fin n) (u : ι �
   simp only [DpolyN, dmonN_smul, mul_smul_comm, Finset.smul_sum]
 
 /- English proof (translation)
-Rewrite using `[dpolyN_eq_sum_of_subset F cp u (P + Q) f (P.support ∪ Q.support) MvPolynomial.support_add, dpolyN_eq_sum_of_subset F cp u P f (P.support ∪ Q.support) Finset.subset_union_left, dpolyN_eq_sum_of_subset F cp u Q f (P.support ∪ Q.support) Finset.subset_union_right, ← Finset.sum_add_ …`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_add, map_add, add_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem dpolyN_add_left (F : Fin d → PS R 2 d) (cp : ι → Fin n) (u : ι → Fin d → R)
     (P Q : MvPolynomial ι R) (f : PS R n d) :
@@ -109,9 +109,9 @@ theorem dpolyN_add_left (F : Fin d → PS R 2 d) (cp : ι → Fin n) (u : ι →
   rw [MvPolynomial.coeff_add, map_add, add_mul]
 
 /- English proof (translation)
-Establish `hs : (MvPolynomial.C t * P).support ⊆ P.support`. Introduce `m hm`. Rewrite `hm`, the goal using `[MvPolynomial.mem_support_iff]`. Introduce `h0`. Conclude with `hm (by rw [MvPolynomial.coeff_C_mul, h0, mul_zero])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dpolyN_eq_sum_of_subset F cp u _ f P.support hs, DpolyN, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_C_mul, map_mul, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dpolyN_C_mul_left (F : Fin d → PS R 2 d) (cp : ι → Fin n) (u : ι → Fin d → R)
     (t : R) (P : MvPolynomial ι R) (f : PS R n d) :
@@ -128,9 +128,9 @@ theorem dpolyN_C_mul_left (F : Fin d → PS R 2 d) (cp : ι → Fin n) (u : ι �
 end NabLin
 
 /- English proof (translation)
-Introduce `K _ _ d O _ _ B h w0 m n ι _ cp u`. Use `⟨fun f g P => ?_, fun t f P => ?_, fun f P Q => ?_, fun t f P => ?_⟩` and prove the remaining obligations. Simplify using `only [nabValN, add_mul, dpolyN_add_right, map_add]`. Simplify using `only [nabValN]`. Rewrite using `[smul_mul_assoc, dpolyN_smul_right, MvPowerSeries.smul_eq_C_mul, map_mul, MvPowerSeries.constantCoeff_C]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [nabValN, dpolyN_add_left, map_add]`. Simplify using `only [nabValN]`. Rewrite using `[dpolyN_C_mul_left, map_mul, MvPowerSeries.constantCoeff_C]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem nabValN_bilinear : ∀ (K : Type) [CommRing K] [Algebra ℚ K] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (B : FB K d O) (h : PS K 2 d) (w0 : O) (m n : ℕ) (ι : Type) [Fintype ι] (cp : ι → Fin n) (u : ι → Fin d → K), (∀ (f g : PS K n d) (P : MvPolynomial ι K), nabValN B K h w0 m (f + g) cp u P = nabValN B K h w0 m f cp u P + nabValN B K h w0 m g cp u P) ∧ (∀ (t : K) (f : PS K n d) (P : MvPolynomial ι K), nabValN B K h w0 m (t • f) cp u P = t * nabValN B K h w0 m f cp u P) ∧ (∀ (f : PS K n d) (P Q : MvPolynomial ι K), nabValN B K h w0 m f cp u (P + Q) = nabValN B K h w0 m f cp u P + nabValN B K h w0 m f cp u Q) ∧ (∀ (t : K) (f : PS K n d) (P : MvPolynomial ι K), nabValN B K h w0 m f cp u (MvPolynomial.C t * P) = t * nabValN B K h w0 m f cp u P) := by
   intro K _ _ d O _ _ B h w0 m n ι _ cp u

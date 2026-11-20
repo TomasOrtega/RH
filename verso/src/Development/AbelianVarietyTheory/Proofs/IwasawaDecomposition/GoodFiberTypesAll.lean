@@ -20,7 +20,7 @@ namespace GlobalTheory.GoodFirst
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Use `GlobalTheory.T.labels_of_depth_zero hG hZ hL D a.A.wdT a.A.row rep (fun k => @GlobalTheory.Mem.TypePl.labDat (D.host.g k) ⟨D.host.g_prime k⟩) a.row a.depth hlab (fun k => @GlobalTheory.DepthZeroCusp.depthZeroCuspidal (D.host.g k) ⟨D.host.g_prime k⟩) ?_ hloc` and prove the remaining obligations. Introduce `I rc hrc k v`. Use `GlobalTheory.TameRecord.tameParam_record hDZ hL D a.A.wdT I rc hrc (fun k => @GlobalTheory.Mem.TypePl.labDat (D.host.g k) ⟨D.host.g_prime k⟩) k v (a.A.grp.kv k v) ?_` and prove the remaining obligations. Rewrite using `[← a.zeta k]`. Conclude with `a.A.grp.tg_tame k v`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goodFTAll_stA (hG : GlobalTheory.GLq.Green) (hZ : GlobalTheory.Published.ZelevinskyPolynomialRing) (hDZ : GlobalTheory.Published.DepthZeroInertia)
     (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (cf : CharFrame D) (rep : D.what₂.FT → NG.FinTyp D.host.E D.R.r)
@@ -40,9 +40,9 @@ theorem goodFTAll_stA (hG : GlobalTheory.GLq.Green) (hZ : GlobalTheory.Published
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `hP hL`. Establish `h` using `GlobalTheory.HeightCounting.Up.RowModel.overRows_allSt (GlobalTheory.T.conjugate_vector_in_subspace hP)`. Use `EvG.imp h fun _ _ _ _ _ hK => large₂.imp hK fun B f T _ H kp fo tr w s P x l => ?_` and prove the remaining obligations. Establish `hloc` using `H kp fo tr w s P x`. Establish `ty : TypesTrue (Dof x).ntypes (Fr.at (w.st x.o.Z) f).P (Fr.at (w.st x.o.Z) f).W` using `x.fits.grp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `goodFTAll_stA hP.green hP.zel hP.dz hL (Dof x) (cfOf x) (repOf x.r.Y) l.a (GlobalTheory.CoefDuty.OPinModel.labFixed_of_typesTrue ty) hloc`.
+A detailed English derivation is pending.
 -/
 theorem goodFTAll_allSt : PrN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AllSt fun _ _ _ _ _ _ x => LA hL x → GoodFTAll (Dof x) := by
   intro hP hL

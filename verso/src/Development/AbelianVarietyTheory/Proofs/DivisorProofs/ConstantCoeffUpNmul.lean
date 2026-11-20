@@ -27,7 +27,7 @@ open MvPowerSeries TensorProduct in
 variable {R Q : Type} [CommRing R] [CommRing Q] [Algebra R Q] {d : ℕ} in
 variable {S : Type} [CommRing S] in
 /- English proof (translation)
-Rewrite using `[_root_.GlobalTheory.QLog.nmul, _root_.GlobalTheory.QLog.nmul, Function.iterate_succ_apply']`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma nmul_succ_eq_op_X (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) S) (k : ℕ) :
     _root_.GlobalTheory.QLog.nmul μ (k + 1) =
@@ -39,7 +39,7 @@ open MvPowerSeries TensorProduct in
 variable {R Q : Type} [CommRing R] [CommRing Q] [Algebra R Q] {d : ℕ} in
 variable {S : Type} [CommRing S] in
 /- English proof (translation)
-The claim follows from `hasSubst_of_constantCoeff_zero fun s => by cases s <;> simp [hv, hw]`.
+A detailed English derivation is pending.
 -/
 private lemma hasSubst_sumElim_of_constantCoeff_eq_zero {τ : Type} {v w : Fin d → MvPowerSeries τ S}
     (hv : ∀ i, constantCoeff (v i) = 0) (hw : ∀ i, constantCoeff (w i) = 0) :
@@ -51,7 +51,7 @@ open MvPowerSeries TensorProduct in
 variable {R Q : Type} [CommRing R] [CommRing Q] [Algebra R Q] {d : ℕ} in
 variable {S : Type} [CommRing S] in
 /- English proof (translation)
-The claim follows from `constantCoeff_subst_eq_zero (hasSubst_sumElim_of_constantCoeff_eq_zero hv hw) (fun s => by cases s <;> simp [hv, hw]) (hμ i)`.
+A detailed English derivation is pending.
 -/
 private lemma constantCoeff_katz_op_eq_zero {τ : Type} (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) S)
     (hμ : ∀ i, constantCoeff (μ i) = 0) {v w : Fin d → MvPowerSeries τ S}
@@ -65,7 +65,7 @@ open MvPowerSeries TensorProduct in
 variable {R Q : Type} [CommRing R] [CommRing Q] [Algebra R Q] {d : ℕ} in
 variable {S : Type} [CommRing S] in
 /- English proof (translation)
-Proceed by induction on `k generalizing i with`. Consider the case `zero => simp [nmul_zero]`. Consider the case `succ k ih`. Rewrite using `[nmul_succ_eq_op_X]`. Conclude with `constantCoeff_katz_op_eq_zero μ hμ ih (fun j => constantCoeff_X j) i`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma constantCoeff_nmul_eq_zero' (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) S)
     (hμ : ∀ i, constantCoeff (μ i) = 0) (k : ℕ) (i : Fin d) :
@@ -81,7 +81,7 @@ open MvPowerSeries TensorProduct in
 variable {R Q : Type} [CommRing R] [CommRing Q] [Algebra R Q] {d : ℕ} in
 variable {S : Type} [CommRing S] in
 /- English proof (translation)
-Introduce `p q hpq` and use `by ext n apply hh simpa using congrArg (coeff n) hpq`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private lemma mvPowerSeries_map_injective {σ A B : Type} [CommRing A] [CommRing B] {h : A →+* B}
     (hh : Function.Injective h) : Function.Injective (map (σ := σ) h) := fun p q hpq => by
@@ -94,7 +94,7 @@ open MvPowerSeries TensorProduct in
 variable {R Q : Type} [CommRing R] [CommRing Q] [Algebra R Q] {d : ℕ} in
 variable {S : Type} [CommRing S] in
 /- English proof (translation)
-Rewrite using `[← coe_substAlgHom hc, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma subst_zero_divisor {σ τ : Type} {c : σ → MvPowerSeries τ S} (hc : HasSubst c) :
     subst c (0 : MvPowerSeries σ S) = 0 := by
@@ -105,7 +105,7 @@ open MvPowerSeries TensorProduct in
 variable {R Q : Type} [CommRing R] [CommRing Q] [Algebra R Q] {d : ℕ} in
 variable {S : Type} [CommRing S] in
 /- English proof (translation)
-Rewrite using `[subst_comp_subst_apply (hasSubst_sumElim_of_constantCoeff_eq_zero hv hw) hc]`. Use `congr 1`. Use function extensionality and compare the values at `s`. Apply the tactic sequence `cases s <;> rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma subst_subst_sumElim_eq_subst_sumElim_subst {τ υ : Type} {v w : Fin d → MvPowerSeries τ S}
     (hv : ∀ i, constantCoeff (v i) = 0) (hw : ∀ i, constantCoeff (w i) = 0)
@@ -122,7 +122,7 @@ open MvPowerSeries TensorProduct in
 variable {R Q : Type} [CommRing R] [CommRing Q] [Algebra R Q] {d : ℕ} in
 variable {S : Type} [CommRing S] in
 /- English proof (translation)
-The claim follows from `subst_subst_sumElim_eq_subst_sumElim_subst hv hw hc (μ i)`.
+A detailed English derivation is pending.
 -/
 private lemma subst_katz_op_eq_op_subst {τ υ : Type} (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) S)
     {v w : Fin d → MvPowerSeries τ S}
@@ -137,17 +137,15 @@ open MvPowerSeries TensorProduct in
 variable {R Q : Type} [CommRing R] [CommRing Q] [Algebra R Q] {d : ℕ} in
 variable {S : Type} [CommRing S] in
 /- English proof (translation)
-Establish `hμ` using `hG.const`. Establish `hN` using `constantCoeff_nmul_eq_zero' μ hμ`. Establish `ha : HasSubst (_root_.GlobalTheory.QLog.nmul μ a)` using `hasSubst_of_constantCoeff_zero (hN a)`. Proceed by induction on `b with`. Consider the case `zero`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Use function extensionality and compare the values at `i`. Establish `h` using `congrArg (subst (_root_.GlobalTheory.QLog.nmul μ a)) (congrFun hG.unit i)`. Rewrite `h` using `[subst_katz_op_eq_op_subst μ (fun j => constantCoeff_X j) (fun _ => by simp) ha]`. Simplify using `only [subst_X ha, subst_zero_divisor ha] at h`. Rewrite using `[Nat.add_zero, nmul_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h.symm`. Consider the case `succ b ih`. Rewrite using `[← Nat.add_assoc, nmul_succ_eq_op_X, ih, nmul_succ_eq_op_X]`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `have hc : HasSubst (Sum.elim (_root_.GlobalTheory.QLog.nmul μ a) (Sum.elim (_root_.GlobalTheory.QLog.nmul μ b) fun j => (X j : MvPowerSeries (Fin d) S))) := hasSubst_of_constantCoeff_zero fun s => by rcases s with s | s | s <;> simp [hN]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `h` using `congrArg (subst (Sum.elim (_root_.GlobalTheory.QLog.nmul μ a) (Sum.elim (_root_.GlobalTheory.QLog.nmul μ b) fun j => (X j : MvPowerSeries (Fin d) S)))) (congrFun hG.assoc i)`. Establish `h1 : ∀ j, constantCoeff (_root_.GlobalTheory.Katz.x1 (R` using `S) (d := d) j) = 0 := fun j => by`. Simplify using `[_root_.GlobalTheory.Katz.x1]`. Establish `h2 : ∀ j, constantCoeff (_root_.GlobalTheory.Katz.x2 (R` using `S) (d := d) j) = 0 := fun j => by`. Simplify using `[_root_.GlobalTheory.Katz.x2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h3 : ∀ j, constantCoeff (_root_.GlobalTheory.Katz.x3 (R` using `S) (d := d) j) = 0 := fun j => by`. Simplify using `[_root_.GlobalTheory.Katz.x3]`. Rewrite `h` using `[subst_katz_op_eq_op_subst μ (constantCoeff_katz_op_eq_zero μ hμ h1 h2) h3 hc, subst_katz_op_eq_op_subst μ h1 (constantCoeff_katz_op_eq_zero μ hμ h2 h3) hc]`. Rewrite `h` using `[subst_katz_op_eq_op_subst μ h1 h2 hc, subst_katz_op_eq_op_subst μ h2 h3 hc]`. Simplify using `only [_root_.GlobalTheory.Katz.x1, _root_.GlobalTheory.Katz.x2, _root_.GlobalTheory.Katz.x3, subst_X hc, Sum.elim_inl, Sum.elim_inr] at h`.
-
-Conclude with `h`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses repeatedly using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma nmul_add_eq_op {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) S}
     (hG : _root_.GlobalTheory.Katz.IsLaw μ) (a b : ℕ) :
@@ -192,11 +190,11 @@ open MvPowerSeries TensorProduct in
 variable {R Q : Type} [CommRing R] [CommRing Q] [Algebra R Q] {d : ℕ} in
 variable {S : Type} [CommRing S] in
 /- English proof (translation)
-Establish `hμ` using `hG.const`. Establish `hN` using `constantCoeff_nmul_eq_zero' μ hμ`. Establish `hm : HasSubst (_root_.GlobalTheory.QLog.nmul μ m)` using `hasSubst_of_constantCoeff_zero (hN m)`. Proceed by induction on `k generalizing i with`. Consider the case `zero`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Simplify using `only [Nat.zero_mul, nmul_zero]`. Conclude with `subst_zero_divisor hm`. Consider the case `succ k ih`. Rewrite using `[nmul_succ_eq_op_X, subst_katz_op_eq_op_subst μ (hN k) (fun j => constantCoeff_X j) hm]`. Repeatedly rewrite using `[ih, subst_X hm]`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.succ_mul, nmul_add_eq_op hG]`.
+A detailed English derivation is pending.
 -/
 private lemma subst_nmul_nmul_eq_nmul_mul {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) S}
     (hG : _root_.GlobalTheory.Katz.IsLaw μ) (k m : ℕ) (i : Fin d) :
@@ -220,11 +218,11 @@ variable {R Q : Type} [CommRing R] [CommRing Q] [Algebra R Q] {d : ℕ} in
 variable {S : Type} [CommRing S] in
 
 /- English proof (translation)
-Introduce `R Q _ _ _ d μ hG hinj f _ k m s t u hs ht hu`. Establish `hμ` using `hG.const`. Establish `hm : HasSubst (_root_.GlobalTheory.QLog.nmul μ m)` using `hasSubst_of_constantCoeff_zero (constantCoeff_nmul_eq_zero' μ hμ m)`. Establish `hmQ` using `_root_.GlobalTheory.QLog.hasSubst_up_nmul (Q := Q) hμ m`. Establish `hkQ` using `_root_.GlobalTheory.QLog.hasSubst_up_nmul (Q := Q) hμ k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `mvPowerSeries_map_injective hinj` to reduce the goal to its premises. Rewrite using `[map_add, map_subst hm, hs, hu, Nat.cast_smul_eq_nsmul, map_nsmul, ht]`. Express the relevant statement in the definitionally equal form `_ = subst (_root_.GlobalTheory.QLog.up Q (_root_.GlobalTheory.QLog.nmul μ m)) (_root_.GlobalTheory.QLog.defect μ k f) + _`. Simplify using `only [_root_.GlobalTheory.QLog.defect]`. Rewrite using `[subst_sub hmQ, subst_smul hmQ, subst_comp_subst_apply hkQ hmQ]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hcomp : (fun i => subst (_root_.GlobalTheory.QLog.up Q (_root_.GlobalTheory.QLog.nmul μ m)) (_root_.GlobalTheory.QLog.up Q (_root_.GlobalTheory.QLog.nmul μ k) i)) = _root_.GlobalTheory.QLog.up Q (_root_.GlobalTheory.QLog.nmul μ (k * m))`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `subst (fun j => map (algebraMap R Q) (_root_.GlobalTheory.QLog.nmul μ m j)) (map (algebraMap R Q) (_root_.GlobalTheory.QLog.nmul μ k i)) = map (algebraMap R Q) (_root_.GlobalTheory.QLog.nmul μ (k * m) i)`. Rewrite using `[← map_subst hm, subst_nmul_nmul_eq_nmul_mul hG]`. Rewrite using `[hcomp, ← Nat.cast_smul_eq_nsmul Q, Nat.cast_mul, mul_smul, smul_sub]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Normalize the expressions using the abelian group laws.
 -/

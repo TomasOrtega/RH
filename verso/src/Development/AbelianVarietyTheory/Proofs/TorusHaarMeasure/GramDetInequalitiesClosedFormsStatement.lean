@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.TorusHaarMeasure.GramDetInequalit
 open MeasureTheory Topology Matrix
 open scoped ComplexOrder ENNReal Pointwise
 /- English proof (citation)
-Apply `GlobalTheory.gramDet_closed_forms` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTorusHaarMeasure%2FGramDetInequalitiesClosedForms.lean&line=18#L18)
 -/

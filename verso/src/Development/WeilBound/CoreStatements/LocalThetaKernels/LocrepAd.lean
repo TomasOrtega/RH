@@ -43,23 +43,23 @@ def inF : (κ → Fv F v) →+ (κ → Af F) where
   map_add' x y := by funext i; simp
 
 /- English proof (translation)
-The claim follows from `funext fun i => evFin_atPlace v (y i)`.
+A detailed English derivation is pending.
 -/
 theorem evA_inA (y : κ → Fv F v) : evA κ v (inA κ v y) = y := funext fun i => evFin_atPlace v (y i)
 
 /- English proof (translation)
-The claim follows from `funext fun i => evalV_singleFin_self v (y i)`.
+A detailed English derivation is pending.
 -/
 theorem evF_inF (y : κ → Fv F v) : evF κ v (inF κ v y) = y := funext fun i => evalV_singleFin_self v (y i)
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun i => (RestrictedProduct.continuous_eval v).comp (continuous_apply i)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_evF : Continuous (evF (F := F) κ v) :=
   continuous_pi fun i => (RestrictedProduct.continuous_eval v).comp (continuous_apply i)
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun i => (continuous_singleFin v).comp (continuous_apply i)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_inF : Continuous (inF (F := F) κ v) :=
   continuous_pi fun i => (continuous_singleFin v).comp (continuous_apply i)
@@ -69,7 +69,7 @@ abbrev putA (x : κ → AF F) (y : κ → Fv F v) : κ → AF F := put (evA κ v
 abbrev PA (φ : (κ → Fv F v) → ℂ) (y : κ → Fv F v) : Module.End ℂ ((κ → AF F) → ℂ) := Pm (evA κ v) (inA κ v) φ y
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(x i).1 - 0 + 0 = _`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem putA_fst (x : κ → AF F) (y : κ → Fv F v) (i : κ) : (putA v x y i).1 = (x i).1 := by
   change (x i).1 - 0 + 0 = _
@@ -82,7 +82,7 @@ theorem putA_snd (x : κ → AF F) (y : κ → Fv F v) :
     (fun i => (putA v x y i).2) = put (evF κ v) (inF κ v) (fun i => (x i).2) y := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [Pm_apply, pureA, putA_fst, putA_snd]`. Conclude with `mul_left_comm _ _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem PA_pureA (φ : (κ → Fv F v) → ℂ) (y : κ → Fv F v) (f : (κ → mixedEmbedding.mixedSpace F) → ℂ)
     (g : (κ → Af F) → ℂ) : PA v φ y (pureA F f g) = pureA F f (Pm (evF κ v) (inF κ v) φ y g) := by
@@ -91,33 +91,33 @@ theorem PA_pureA (φ : (κ → Fv F v) → ℂ) (y : κ → Fv F v) (f : (κ →
   exact mul_left_comm _ _ _
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.VacAny.at_pi fun i => GlobalTheory.VacAny.at_atPlace (y i)`.
+A detailed English derivation is pending.
 -/
 theorem at_inA (y : κ → Fv F v) : At (evFin F v) (inA κ v y) :=
   GlobalTheory.VacAny.at_pi fun i => GlobalTheory.VacAny.at_atPlace (y i)
 
 /- English proof (translation)
-The claim follows from `funext fun i => (GlobalTheory.SchrLoc.eq_atPlace_of_at (fun u hu => congrFun (hz u hu) i)).symm`.
+A detailed English derivation is pending.
 -/
 theorem inA_evA {z : κ → AF F} (hz : At (evFin F v) z) : inA κ v (evA κ v z) = z :=
   funext fun i => (GlobalTheory.SchrLoc.eq_atPlace_of_at (fun u hu => congrFun (hz u hu) i)).symm
 
 /- English proof (translation)
-Rewrite using `[putA, put, map_add, map_add, inA_evA v hz, putA, put]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem putA_add {z : κ → AF F} (hz : At (evFin F v) z) (x : κ → AF F) (y : κ → Fv F v) :
     putA v (x + z) y = putA v x y := by
   rw [putA, put, map_add, map_add, inA_evA v hz, putA, put]; abel
 
 /- English proof (translation)
-Rewrite using `[putA, put, hr _ _ (at_inA v y), sub_eq_add_neg, ← map_neg, hr _ _ (at_inA v _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_putA {r : (κ → AF F) → ℂ} (hr : ∀ x z, At (evFin F v) z → r (x + z) = r x) (x : κ → AF F)
     (y : κ → Fv F v) : r (putA v x y) = r x := by
   rw [putA, put, hr _ _ (at_inA v y), sub_eq_add_neg, ← map_neg, hr _ _ (at_inA v _)]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Express the relevant statement in the definitionally equal form `φ (evA κ v x) * (φ₁ (evA κ v (putA v x y)) * r (putA v x y)) = φ₁ y * (φ (evA κ v x) * r x)`. Rewrite using `[ev_put (evA_inA v), inv_putA v hr, mul_left_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem PA_tens {r : (κ → AF F) → ℂ} (hr : ∀ x z, At (evFin F v) z → r (x + z) = r x) (φ φ₁ : (κ → Fv F v) → ℂ)
     (y : κ → Fv F v) : PA v φ y (tens (evFin F v) φ₁ r) = φ₁ y • tens (evFin F v) φ r := by
@@ -133,21 +133,21 @@ def pureL (f : (κ → mixedEmbedding.mixedSpace F) → ℂ) : ((κ → Af F) �
 variable [Fintype κ]
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨f, g, hg, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem pureA_mem (f : SInf F κ) {g : (κ → Af F) → ℂ} (hg : g ∈ SB _) : pureA F f g ∈ schA F κ :=
   Submodule.subset_span ⟨f, g, hg, rfl⟩
 
 omit [Fintype κ] in
 /- English proof (translation)
-The claim follows from `Pm_mem_SB (evF_inF v) (continuous_evF v) (continuous_inF v) hφ y hg`.
+A detailed English derivation is pending.
 -/
 theorem PF_mem {φ : (κ → Fv F v) → ℂ} (hφ : φ ∈ SB _) (y : κ → Fv F v) {g : (κ → Af F) → ℂ} (hg : g ∈ SB _) :
     Pm (evF κ v) (inF κ v) φ y g ∈ SB _ :=
   Pm_mem_SB (evF_inF v) (continuous_evF v) (continuous_inF v) hφ y hg
 
 /- English proof (translation)
-Use `(Submodule.span_le (p := (schA F κ).comap (PA v φ y))).2 ?_ hΦ` and prove the remaining obligations. Introduce and unpack `_ ⟨f, g, hg, rfl⟩`. Express the relevant statement in the definitionally equal form `PA v φ y _ ∈ schA F κ`. Rewrite using `[PA_pureA]`. Conclude with `pureA_mem f (PF_mem v hφ y hg)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PA_mem {φ : (κ → Fv F v) → ℂ} (hφ : φ ∈ SB _) (y : κ → Fv F v) {Φ : (κ → AF F) → ℂ} (hΦ : Φ ∈ schA F κ) :
     PA v φ y Φ ∈ schA F κ := by
@@ -158,7 +158,7 @@ theorem PA_mem {φ : (κ → Fv F v) → ℂ} (hφ : φ ∈ SB _) (y : κ → Fv
   exact pureA_mem f (PF_mem v hφ y hg)
 
 /- English proof (translation)
-Introduce `g hg` and use `by obtain ⟨T, hT⟩ := hl _ (PF_mem v hφ y hg) exact ⟨T, fun f => by rw [LinearMap.comp_apply, PA_pureA, hT]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem PA_adm {φ : (κ → Fv F v) → ℂ} (hφ : φ ∈ SB _) (y : κ → Fv F v) {l : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ}
     (hl : l ∈ (adeleClass F).adm κ) : l ∘ₗ PA v φ y ∈ (adeleClass F).adm κ := fun g hg => by
@@ -166,9 +166,9 @@ theorem PA_adm {φ : (κ → Fv F v) → ℂ} (hφ : φ ∈ SB _) (y : κ → Fv
   exact ⟨T, fun f => by rw [LinearMap.comp_apply, PA_pureA, hT]⟩
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, g, hg, rfl⟩`. Use `(Submodule.span_le (p := N.comap (pureL f))).2 ?_ (mem_span_Pm (evF_inF v) (continuous_evF v) (continuous_inF v) hg)` and prove the remaining obligations. Introduce and unpack `_ ⟨φ, hφ, y, rfl⟩`. Use `h φ hφ y _ (pureA_mem f hg)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite `this` using `[PA_pureA]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem schA_le (N : Submodule ℂ ((κ → AF F) → ℂ))
     (h : ∀ φ ∈ SB (κ → Fv F v), ∀ y, ∀ Ψ ∈ schA F κ, PA v φ y Ψ ∈ N) : schA F κ ≤ N := by
@@ -181,11 +181,11 @@ theorem schA_le (N : Submodule ℂ ((κ → AF F) → ℂ))
   rwa [PA_pureA] at this
 
 /- English proof (translation)
-Introduce `g hg`. Establish `hs` using `mem_span_Pm (evF_inF v) (continuous_evF v) (continuous_inF v) hg`. Use `Submodule.span_induction (p := fun g' _ => ∃ T : SInf F κ →L[ℂ] ℂ, ∀ f : SInf F κ, l (pureA F f g') = T f) ?_ ⟨0, fun f => ?_⟩ ?_ ?_ hs` and prove the remaining obligations. Introduce and unpack `_ ⟨φ, hφ, y, rfl⟩`. Take `⟨T, hT⟩` from `h φ hφ y g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨T, fun f => by rw [← hT, LinearMap.comp_apply, PA_pureA]⟩`. Conclude with `map_zero (l ∘ₗ pureL f)`. Introduce and unpack `a b - - ⟨T, hT⟩ ⟨T', hT'⟩`. Conclude with `⟨T + T', fun f => (map_add (l ∘ₗ pureL f) a b).trans (congrArg₂ (· + ·) (hT f) (hT' f))⟩`. Introduce and unpack `c a - ⟨T, hT⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨c • T, fun f => (map_smul (l ∘ₗ pureL f) c a).trans (congrArg (c • ·) (hT f))⟩`.
+A detailed English derivation is pending.
 -/
 theorem admissible_of_integral_conj_le (l : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ)
     (h : ∀ φ ∈ SB (κ → Fv F v), ∀ y, l ∘ₗ PA v φ y ∈ (adeleClass F).adm κ) : l ∈ (adeleClass F).adm κ := by
@@ -208,9 +208,9 @@ def res (x₀ : κ → AF F) : ((κ → AF F) → ℂ) →ₗ[ℂ] (κ → Fv F 
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-Use `schA_le v ((SB _).comap (res v x₀)) (fun φ hφ y Ψ _ => ?_) hΦ` and prove the remaining obligations. Establish `: res v x₀ (PA v φ y Ψ) = Ψ (putA v x₀ y) • φ`. Use function extensionality and compare the values at `z`. Express the relevant statement in the definitionally equal form `φ (evA κ v (putA v x₀ z)) * Ψ (putA v (putA v x₀ z) y) = _`. Rewrite using `[ev_put (evA_inA v), putA, putA, put_put (evA_inA v), mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[Submodule.mem_comap, this]`. Conclude with `Submodule.smul_mem _ _ hφ`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_mem (x₀ : κ → AF F) {Φ : (κ → AF F) → ℂ} (hΦ : Φ ∈ schA F κ) : res v x₀ Φ ∈ SB _ := by
   refine schA_le v ((SB _).comap (res v x₀)) (fun φ hφ y Ψ _ => ?_) hΦ
@@ -223,9 +223,9 @@ theorem res_mem (x₀ : κ → AF F) {Φ : (κ → AF F) → ℂ} (hΦ : Φ ∈ 
 
 open Classical in
 /- English proof (translation)
-Introduce `g _`. Use `⟨l (fun y => g (put (evF κ v) (inF κ v) (fun i => (x₀ i).2) y)) • (BoundedContinuousFunction.evalCLM ℂ (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x₀ i).1)).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ _ ℂ), fun f => ?_⟩` and prove the remaining obligations. Establish `: res v x₀ (pureA F f g) = f (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x₀ i).1) • fun y => g (put (evF κ v) (inF κ v) (fun i => (x₀ i).2) y)`. Use function extensionality and compare the values at `y`. Express the relevant statement in the definitionally equal form `pureA F f g (putA v x₀ y) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [pureA, putA_fst, putA_snd]`. Both sides reduce to the same expression. Rewrite using `[LinearMap.comp_apply, this, map_smul, smul_eq_mul, mul_comm]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem res_adm (x₀ : κ → AF F) (l : ((κ → Fv F v) → ℂ) →ₗ[ℂ] ℂ) : l ∘ₗ res v x₀ ∈ (adeleClass F).adm κ := by
   intro g _
@@ -248,9 +248,9 @@ def tensL (r : (κ → AF F) → ℂ) : ((κ → Fv F v) → ℂ) →ₗ[ℂ] (�
 
 variable (κ) in
 /- English proof (translation)
-Take `⟨Φ, hΦ, hne⟩` from `(GlobalTheory.CompanionTheory.ThetaAdm.theta_adm F κ).2.2`. Choose the witnesses or unpack the hypotheses as in `⟨x₀, hx⟩ : ∃ x₀, Φ x₀ ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hne (by simp [thetaSum, h])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨fun x => ((Φ x₀)⁻¹ • Φ) (putA v x (evA κ v x₀)), x₀, fun φ hφ => ⟨fun x z hz => ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [putA_add v hz]`. Conclude with `PA_mem v hφ (evA κ v x₀) (Submodule.smul_mem _ _ hΦ)`. Simplify using `only [putA, put_self, Pi.smul_apply, smul_eq_mul]`. Conclude with `inv_mul_cancel₀ hx`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_base : ∃ (r₀ : (κ → AF F) → ℂ) (x₀ : κ → AF F), (∀ φ ∈ SB _, Rest (evFin F v) φ r₀) ∧ r₀ x₀ = 1 := by
   obtain ⟨Φ, hΦ, hne⟩ := (GlobalTheory.CompanionTheory.ThetaAdm.theta_adm F κ).2.2
@@ -265,7 +265,7 @@ theorem exists_base : ∃ (r₀ : (κ → AF F) → ℂ) (x₀ : κ → AF F), (
     exact inv_mul_cancel₀ hx
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Rewrite using `[h r₀ h₀]`. Express the relevant statement in the definitionally equal form `_ = φ₁ (evA κ v (putA v x₀ y)) * r₀ (putA v x₀ y)`. Rewrite using `[ev_put (evA_inA v), inv_putA v h₀.1, h₁, mul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_of_acts {r₀ : (κ → AF F) → ℂ} {x₀ : κ → AF F} (h₁ : r₀ x₀ = 1)
     {T : ((κ → AF F) → ℂ) → (κ → AF F) → ℂ} {φ φ₁ : (κ → Fv F v) → ℂ} (h₀ : Rest (evFin F v) φ r₀)
@@ -283,7 +283,7 @@ def Sop (T : Module.End ℂ ((κ → AF F) → ℂ)) (φ : (κ → Fv F v) → �
 
 omit [Fintype κ] in
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Express the relevant statement in the definitionally equal form `T (PA v φ (evA κ v x) (PA v φ₁ y₁ Ψ)) (putA v x y) = _`. Rewrite using `[Pm_Pm (evA_inA v), map_smul]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Sop_PA (T : Module.End ℂ ((κ → AF F) → ℂ)) (φ φ₁ : (κ → Fv F v) → ℂ) (y y₁ : κ → Fv F v)
     (Ψ : (κ → AF F) → ℂ) : Sop v T φ y (PA v φ₁ y₁ Ψ) = PA v φ₁ y (T (PA v φ y₁ Ψ)) := by
@@ -294,20 +294,20 @@ theorem Sop_PA (T : Module.End ℂ ((κ → AF F) → ℂ)) (φ φ₁ : (κ → 
 
 omit [Fintype κ] in
 /- English proof (translation)
-Rewrite using `[atPlace_mul_right, one_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem putA_apply (x : κ → AF F) (y : κ → Fv F v) (i : κ) :
     putA v x y i = x i - atPlace v 1 * x i + atPlace v (y i) := by
   rw [atPlace_mul_right, one_mul]; rfl
 
 /- English proof (translation)
-Rewrite using `[atPlace_mul_right, evFin_atPlace, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem idem_at (t : Fv F v) : atPlace v 1 * atPlace v t = atPlace v t := by
   rw [atPlace_mul_right, evFin_atPlace, one_mul]
 
 /- English proof (translation)
-Simplify using `only [dotProduct, ← Finset.sum_add_distrib, putA_apply, Pi.zero_apply, map_zero]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = _ + atPlace v (a i) * w i`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dot₁ (z w : κ → AF F) (a : κ → Fv F v) : putA v z a ⬝ᵥ w = z ⬝ᵥ putA v w 0 + inA κ v a ⬝ᵥ w := by
   simp only [dotProduct, ← Finset.sum_add_distrib, putA_apply, Pi.zero_apply, map_zero]
@@ -316,7 +316,7 @@ theorem dot₁ (z w : κ → AF F) (a : κ → Fv F v) : putA v z a ⬝ᵥ w = z
   ring
 
 /- English proof (translation)
-Simplify using `only [dotProduct, ← Finset.sum_add_distrib, putA_apply, Pi.zero_apply, map_zero]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `e : inA κ v (evA κ v x) i = atPlace v 1 * x i` using `by rw [atPlace_mul_right, one_mul]; rfl`. Rewrite using `[e]`. Take the linear combination `(x i * w i) * idem_at v 1 - w i * idem_at v (y i)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem dot₂ (x w : κ → AF F) (y : κ → Fv F v) :
     inA κ v (evA κ v x) ⬝ᵥ w + putA v x y ⬝ᵥ putA v w 0 = x ⬝ᵥ w := by
@@ -327,9 +327,9 @@ theorem dot₂ (x w : κ → AF F) (y : κ → Fv F v) :
   linear_combination (x i * w i) * idem_at v 1 - w i * idem_at v (y i)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Establish `e1 : evA κ v (z + putA v w.1 0) = evA κ v z` using `by rw [map_add, ev_put (evA_inA v), add_zero]`. Establish `e2 : putA v (z + putA v w.1 0) (a + evA κ v w.1) = putA v z a + w.1`. Rewrite using `[putA, put, e1, putA, putA, put, put, map_add, map_zero]`. Normalize the expressions using the abelian group laws.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Express the relevant statement in the definitionally equal form `φ (evA κ v z) * (ψ (putA v z a ⬝ᵥ w.2 + _) * Φ (putA v z a + w.1)) = ψ _ * (ψ (z ⬝ᵥ putA v w.2 0 + ⅟(2 : AF F) * (putA v w.1 0 ⬝ᵥ putA v w.2 0)) * (φ (evA κ v (z + putA v w.1 0)) * Φ (putA v (z + putA v w.1 0) (a + evA κ v w.1))))`. Rewrite using `[e1, e2, ← mul_assoc (ψ _), ← AddChar.map_add_eq_mul, mul_left_comm, dot₁]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem PA_schr (ψ : AddChar (AF F) ℂ) (φ : (κ → Fv F v) → ℂ) (a : κ → Fv F v) (w : (κ → AF F) × (κ → AF F))
     (Φ : (κ → AF F) → ℂ) : PA v φ a (schr ψ w Φ) =
@@ -351,9 +351,9 @@ section Main
 variable {ψ : AddChar (AF F) ℂ} {T : Module.End ℂ ((κ → AF F) → ℂ)}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Establish `e2 : putA v (x + w.1) y = putA v x y + putA v w.1 0`. Simplify using `only [putA, put, map_add, map_zero]`. Normalize the expressions using the abelian group laws. Express the relevant statement in the definitionally equal form `T (PA v φ (evA κ v x) (schr ψ w Φ)) (putA v x y) = ψ (x ⬝ᵥ w.2 + _) * T (PA v φ (evA κ v (x + w.1)) Φ) (putA v (x + w.1) y)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[PA_schr, map_smul, hc _ (ev_put (evA_inA v) _ _) (ev_put (evA_inA v) _ _) _ (PA_mem v hφ _ hΦ), e2, map_add (evA κ v) x]`. Express the relevant statement in the definitionally equal form `ψ _ * (ψ (putA v x y ⬝ᵥ putA v w.2 0 + ⅟(2 : AF F) * (putA v w.1 0 ⬝ᵥ putA v w.2 0)) * _) = _`. Rewrite using `[← mul_assoc (ψ _), ← AddChar.map_add_eq_mul, ← dot₂ v x w.2 y]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Sop_schr (hc : ∀ w : (κ → AF F) × (κ → AF F), evA κ v w.1 = 0 → evA κ v w.2 = 0 →
       ∀ Φ ∈ schA F κ, T (schr ψ w Φ) = schr ψ w (T Φ)) {φ : (κ → Fv F v) → ℂ} (hφ : φ ∈ SB _) (y : κ → Fv F v)
@@ -372,15 +372,13 @@ theorem Sop_schr (hc : ∀ w : (κ → AF F) × (κ → AF F), evA κ v w.1 = 0 
   ring
 
 /- English proof (translation)
-Distinguish the cases in `h0 : φ = 0`. Introduce `r _`. Establish `e : ∀ r, tens (evFin F v) (0 : (κ → Fv F v) → ℂ) r = 0` using `fun r => map_zero (tensL v r)`. Simplify using `only [h0, e, map_zero]`. Take `⟨b, hb⟩` from `Function.ne_iff.1 h0`.
+Consider separately whether the proposition holds or fails. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ y, ∃ a : ℂ, ∀ r, Rest (evFin F v) φ r → ∀ x, T (tens (evFin F v) φ r) (putA v x y) = a * r x`. Introduce `y`. Take `⟨a, hA⟩` from `GlobalTheory.CompanionTheory.AdelicSchur.schur F κ ψ h1 h2 h3 (Sop v T φ y) (fun Φ hΦ => schA_le v ((schA F κ).comap (Sop v T φ y)) (fun φ₁ hφ₁ y₁ Ψ hΨ => by`. Rewrite using `[Submodule.mem_comap, Sop_PA]`. Conclude with `PA_mem v hφ₁ _ (hp _ (PA_mem v hφ _ hΨ))) hΦ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun l hl => admissible_of_integral_conj_le v _ fun φ₁ hφ₁ y₁ => by`. Rewrite using `[show (l ∘ₗ Sop v T φ y) ∘ₗ PA v φ₁ y₁ = ((l ∘ₗ PA v φ₁ y) ∘ₗ T) ∘ₗ PA v φ y₁ from LinearMap.ext fun Ψ => congrArg l (Sop_PA v T φ φ₁ y y₁ Ψ)]`. Conclude with `PA_adm v hφ _ (ha _ (PA_adm v hφ₁ _ hl)))`. Use the proof step `(fun w Φ hΦ => Sop_schr v hc hφ y w hΦ)`. Use `⟨a, fun r hr x => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrFun (hA _ hr.2) (putA v x b)` as an intermediate fact. Express the relevant statement in the definitionally equal form `T (PA v φ (evA κ v (putA v x b)) (tens (evFin F v) φ r)) (putA v (putA v x b) y) = a * (φ (evA κ v (putA v x b)) * r (putA v x b)) at this`. Rewrite `this` using `[ev_put (evA_inA v), PA_tens v hr.1, map_smul, inv_putA v hr.1, putA, putA, put_put (evA_inA v), mul_left_comm]`. Conclude with `mul_left_cancel₀ hb this`. Introduce `r hr`.
-
-Use function extensionality and compare the values at `x`. Take `⟨a, hA⟩` from `key (evA κ v x)`. Express the relevant statement in the definitionally equal form `_ = T (tens (evFin F v) φ r₀) (putA v x₀ (evA κ v x)) * r x`. Rewrite using `[hA r₀ h₀, h₁, mul_one, ← hA r hr, putA, put_self]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem acts_res (h1 : Continuous ψ) (h2 : ψ ≠ 1) (h3 : ∀ a : F, ψ (algebraMap F (AF F) a) = 1)
     (hp : ∀ Φ ∈ schA F κ, T Φ ∈ schA F κ) (ha : ∀ l ∈ (adeleClass F).adm κ, l ∘ₗ T ∈ (adeleClass F).adm κ)

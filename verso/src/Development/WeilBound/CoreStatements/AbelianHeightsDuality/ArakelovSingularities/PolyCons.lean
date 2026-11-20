@@ -13,9 +13,9 @@ namespace GlobalTheory.Amb
 variable {k : Type} [CommRing k]
 
 /- English proof (translation)
-Use `hf` as an intermediate fact. Establish `: Algebra.IsIntegral ℤ k` using `Algebra.IsIntegral.of_finite ℤ k`. Establish `: Ring.DimensionLEOne k` using `Ring.DimensionLEOne.of_isIntegral (R := ℤ) k`. Apply `eq_of_le_of_not_lt` to reduce the goal to its premises. Rewrite using `[← Nat.cast_one, ← Ring.krullDimLE_iff] infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `h'`. Establish `h'' : ringKrullDim k ≤ 0` using `Order.le_of_lt_succ h'`. Rewrite `h''` using `[← Nat.cast_zero, ← Ring.krullDimLE_iff]`. Establish `hk : IsField k` using `Ring.KrullDimLE.isField_of_isDomain`. Conclude with `Int.not_isField (isField_of_isIntegral_of_isField (R := ℤ) (S := k) Int.cast_injective hk)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ringKrullDim_eq_one' [IsDomain k] [CharZero k] (hf : Module.Finite ℤ k) : ringKrullDim k = 1 := by
   have := hf
@@ -31,15 +31,15 @@ theorem ringKrullDim_eq_one' [IsDomain k] [CharZero k] (hf : Module.Finite ℤ k
     exact Int.not_isField (isField_of_isIntegral_of_isField (R := ℤ) (S := k) Int.cast_injective hk)
 
 /- English proof (translation)
-Take `⟨ξ, -, hcov⟩` from `h`. Establish `hdim : ∀ (σ : Type) [Fintype σ], Fintype.card σ = d → topologicalKrullDim (Sp (MvPolynomial σ k)) = ((d + 1 : ℕ) : WithBot ℕ∞)`. Introduce `σ _ hσ`. Express the relevant statement in the definitionally equal form `topologicalKrullDim (PrimeSpectrum (MvPolynomial σ k)) = _`. Rewrite using `[PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim, MvPolynomial.ringKrullDim_of_isNoetherianRing, hk, Nat.card_eq_fintype_card, hσ, add_comm]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `norm_cast`. Apply `le_antisymm` to reduce the goal to its premises. Unfold `topologicalKrullDim`. Rewrite using `[Order.krullDim_eq_iSup_coheight]`. Use `iSup_le fun Z => ?_` and prove the remaining obligations.
+Put the expressions in a common number system so they can be compared. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, hx⟩` from `Z.isIrreducible.nonempty`. Take `⟨σ, _, e, he, hσ, -, ⟨y, rfl⟩, -⟩` from `hcov x`. Use `haveI := he`. Set `Φ` to `TopologicalSpace.IrreducibleCloseds.orderIsoOfIsOpenEmbedding e e.isOpenEmbedding`. Establish `hZ : TopologicalSpace.IrreducibleCloseds.map e e.isOpenEmbedding.continuous (Φ.symm ⟨Z, ⟨y, hx⟩⟩) = Z` using `congrArg Subtype.val (Φ.apply_symm_apply ⟨Z, ⟨y, hx⟩⟩)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hZ, e.isOpenEmbedding.coheight_map]`. Establish `h1` using `Order.coheight_le_krullDim (Φ.symm ⟨Z, ⟨y, hx⟩⟩)`. Establish `h2` using `hdim σ hσ`. Unfold `topologicalKrullDim at h2`. Rewrite `h1` using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `h1`. Take `⟨σ, _, e, he, hσ, -, -, -⟩` from `hcov ξ haveI := he`. Rewrite using `[← hdim σ hσ]`. Conclude with `e.isOpenEmbedding.isInducing.topologicalKrullDim_le`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem topologicalKrullDim_of_polyCovered' [IsDomain k] [IsNoetherianRing k] (hk : ringKrullDim k = 1)
     {X : Scheme.{0}} (f : X ⟶ Sp k) (d : ℕ) (h : PolyCovered f d) : topologicalKrullDim X = (d + 1 : ℕ) := by
@@ -74,15 +74,13 @@ theorem topologicalKrullDim_of_polyCovered' [IsDomain k] [IsNoetherianRing k] (h
     exact e.isOpenEmbedding.isInducing.topologicalKrullDim_le
 
 /- English proof (translation)
-Take `⟨ξ, -, hcov⟩` from `h`. Use `haveI : ∀ x : X, _root_.IsReduced (X.presheaf.stalk x) := by`. Introduce `x`. Take `⟨σ, _, e, he, -, -, ⟨y, rfl⟩, -⟩` from `hcov x`. Use `haveI := he`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `isReduced_of_injective (e.stalkMap y).hom (asIso (e.stalkMap y)).commRingCatIsoToRingEquiv.injective`. Use `haveI : IsReduced X := isReduced_of_isReduced_stalk X`. Establish `hirr : ∀ x : X, ∃ R : Set X, IsOpen R ∧ IsIrreducible R ∧ x ∈ R ∧ ξ ∈ R`. Introduce `x`. Take `⟨σ, _, e, he, -, -, hx, hξ⟩` from `hcov x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `haveI := he`. Use `⟨Set.range e, e.isOpenEmbedding.isOpen_range, ?_, hx, hξ⟩` and prove the remaining obligations. Rewrite using `[← Set.image_univ]`. Conclude with `(IrreducibleSpace.isIrreducible_univ (Sp (MvPolynomial σ k))).image _ e.continuous.continuousOn`. Use `haveI : IrreducibleSpace X := by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `(irreducibleSpace_def X).mpr ⟨⟨ξ, trivial⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `u v hu hv ⟨a, -, ha⟩ ⟨b, -, hb⟩`. Take `⟨Ra, hRa, iRa, haRa, hξa⟩` from `hirr a`. Take `⟨Rb, hRb, iRb, hbRb, hξb⟩` from `hirr b`. Take `⟨p, hpa, hpu, hpb⟩` from `iRa.2 u Rb hu hRb ⟨a, haRa, ha⟩ ⟨ξ, hξa, hξb⟩`.
-
-Take `⟨q, -, ⟨hqu, -⟩, hqv⟩` from `iRb.2 (u ∩ Ra) v (hu.inter hRa) hv ⟨p, hpb, hpu, hpa⟩ ⟨b, hbRb, hb⟩`. Conclude with `⟨q, trivial, hqu, hqv⟩`. Conclude with `isIntegral_of_irreducibleSpace_of_isReduced X`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_of_polyCovered' [IsDomain k] {X : Scheme.{0}} (f : X ⟶ Sp k) (d : ℕ) (h : PolyCovered f d) :
     IsIntegral X := by
@@ -114,23 +112,21 @@ theorem isIntegral_of_polyCovered' [IsDomain k] {X : Scheme.{0}} (f : X ⟶ Sp k
   exact isIntegral_of_irreducibleSpace_of_isReduced X
 
 /- English proof (translation)
-Use `letI : GradedAlgebra (ProjSpace.grading k N) := MvPolynomial.gradedAlgebra`. Establish `hX : ∀ i : Fin (N + 1), (MvPolynomial.X i : MvPolynomial (Fin (N + 1)) k) ≠ 0` using `fun i => MvPolynomial.X_ne_zero i`. Set `ξ0 : PSpace k N` to `(⟨⊥, by rw [HomogeneousIdeal.toIdeal_bot]; exact Ideal.bot_prime, fun hle => hX 0 (by`. Establish `h0 : MvPolynomial.X 0 ∈ HomogeneousIdeal.irrelevant (ProjSpace.grading k N)`. Rewrite using `[HomogeneousIdeal.mem_irrelevant_iff, GradedRing.proj_apply]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `DirectSum.decompose_of_mem_ne _ (ProjSpace.X_mem k N 0) one_ne_zero`. Establish `h1` using `hle h0`. Express the relevant statement in the definitionally equal form `_ ∈ (⊥ : HomogeneousIdeal (ProjSpace.grading k N)).toIdeal at h1`. Rewrite using `[HomogeneousIdeal.toIdeal_bot, Ideal.mem_bot] at h1)⟩ :` and apply the resulting hypothesis. Use `ProjectiveSpectrum (ProjSpace.grading k N))`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hmem : ∀ i, ξ0 ∈ ProjSpace.chart k N i` using `fun i => (Proj.mem_basicOpen _ _ _).mpr fun h => hX i (by`. Express the relevant statement in the definitionally equal form `_ ∈ (⊥ : HomogeneousIdeal (ProjSpace.grading k N)).toIdeal at h`. Rewrite using `[HomogeneousIdeal.toIdeal_bot, Ideal.mem_bot] at h)` and apply the resulting hypothesis. Establish `hspec : ∀ z : PSpace k N, ξ0 ⤳ z` using `fun z => specializes_iff_mem_closure.mpr ((ProjectiveSpectrum.le_iff_mem_closure (𝒜 := ProjSpace.grading k N) (ξ0 : ProjectiveSpectrum (ProjSpace.grading k N)) (z : ProjectiveSpectrum (ProjSpace.grading k N))).mp (show (⊥ : HomogeneousIdeal (ProjSpace.grading k N)) ≤ z.asHomogene …`. Establish `hr : ∀ i, ξ0 ∈ Set.range (ProjSpace.chartι k N i)` using `fun i => by`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hmem i` as an intermediate fact. Rewrite `this` using `[← ProjSpace.opensRange_chartι]`. Conclude with `this`. Take `⟨η, hη⟩` from `hr 0`. Set `w : Sp (MvPolynomial {j : Fin (N + 1) // j ≠ 0} k)` to `⟨⊥, Ideal.bot_prime⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hηw : η ⤳ w`. Establish `h1 : ProjSpace.chartι k N 0 η ⤳ ProjSpace.chartι k N 0 w`. Rewrite using `[hη]`. Conclude with `hspec _`. Conclude with `(ProjSpace.chartι k N 0).isOpenEmbedding.isInducing.specializes_iff.mp h1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hηbot : η.asIdeal = ⊥` using `le_bot_iff.mp ((PrimeSpectrum.le_iff_specializes _ _).mpr hηw)`. Use `⟨ξ0, fun y => ?_, fun x => ?_⟩` and prove the remaining obligations. Establish `hs : PSpace.str k N ξ0 = (spMap MvPolynomial.C) η`. Rewrite using `[← hη, ← ProjSpace.chartι_str k N 0]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hs]`. Use `(PrimeSpectrum.le_iff_specializes _ _).mp ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ideal.comap (MvPolynomial.C : k →+* MvPolynomial {j : Fin (N + 1) // j ≠ 0} k) η.asIdeal ≤ y.asIdeal`. Introduce `a ha`. Rewrite `ha` using `[Ideal.mem_comap, hηbot, Ideal.mem_bot, MvPolynomial.C_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[ha]`. Conclude with `zero_mem _`. Take `⟨i, hi⟩` from `ProjSpace.exists_mem_chart k N x`. Use `⟨{j : Fin (N + 1) // j ≠ i}, inferInstance, ProjSpace.chartι k N i, inferInstance, ?_, ProjSpace.chartι_str k N i, ?_, hr i⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
-
-Rewrite `hi` using `[← ProjSpace.opensRange_chartι]`. Conclude with `hi`.
+A detailed English derivation is pending.
 -/
 theorem polyCovered_pSpace' [IsDomain k] (N : ℕ) : PolyCovered (PSpace.str k N) N := by
   classical

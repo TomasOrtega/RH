@@ -18,15 +18,15 @@ namespace GlobalTheory.IntStruct
 open MvPolynomial in
 
 /- English proof (translation)
-Set `s : Finset (σ →₀ ℕ)` to `Finset.univ.biUnion fun j => ((B j : V) : MvPolynomial σ ℂ).support`. Set `R : V →ₗ[ℂ] (s → ℂ)` to `LinearMap.pi fun m => (lcoeff ℂ m.1).comp V.subtype`. Establish `hR : LinearMap.ker R = ⊥`. Use `LinearMap.ker_eq_bot'.2 fun v hv => ?_` and prove the remaining obligations. Establish `h0 : ∀ m : s, coeff m.1 (v : MvPolynomial σ ℂ) = 0` using `fun m => congrFun hv m`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Subtype.ext (MvPolynomial.ext _ _ fun m => ?_)` and prove the remaining obligations. Distinguish the cases in `hm : m ∈ s`. Simplify using `using h0 ⟨m, hm⟩`. Establish `hv' : (v : MvPolynomial σ ℂ) = ∑ j, B.repr v j • ((B j : V) : MvPolynomial σ ℂ)`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hv', coeff_sum]`. Simplify using `only [coeff_smul, ZeroMemClass.coe_zero, coeff_zero]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Establish `: m ∉ ((B j : V) : MvPolynomial σ ℂ).support` using `fun h => hm (Finset.mem_biUnion.2 ⟨j, Finset.mem_univ _, h⟩)`. Rewrite using `[notMem_support_iff.1 this, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨L, hL⟩` from `LinearMap.exists_leftInverse_of_injective R hR`. Use `⟨s, fun m => B.repr (L (Pi.single m 1)) i, fun v => ?_⟩` and prove the remaining obligations. Establish `e1 : B.repr v i = ((B.coord i).comp L) (R v)`. Rewrite using `[LinearMap.comp_apply, ← LinearMap.comp_apply L R, hL, LinearMap.id_apply, Module.Basis.coord_apply]`. Rewrite using `[e1, LinearMap.pi_apply_eq_sum_univ ((B.coord i).comp L) (R v)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Establish `hs : (fun j => if m = j then (1 : ℂ) else 0) = Pi.single m 1`. Use function extensionality and compare the values at `j`. Simplify using `[Pi.single_apply, eq_comm]`. Rewrite using `[hs, smul_eq_mul, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

@@ -12,7 +12,7 @@ namespace GlobalTheory.GaugeEx.CharZero
 open NumberField IsDedekindDomain MeasureTheory Topology in
 open scoped TensorProduct NNReal ENNReal in
 /- English proof (translation)
-Simplify using `[InfinitePlace.Completion.extensionEmbedding_coe]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem extensionEmbedding_infiniteAdele_algebraMap (F : Type) [Field F] [NumberField F]
     (x : F) (v : InfinitePlace F) :
@@ -23,7 +23,7 @@ private theorem extensionEmbedding_infiniteAdele_algebraMap (F : Type) [Field F]
 open NumberField IsDedekindDomain MeasureTheory Topology in
 open scoped TensorProduct NNReal ENNReal in
 /- English proof (translation)
-Set `e : InfinitePlace F ≃ (F →+* ℂ)` to `{ toFun := fun v => v.embedding invFun := InfinitePlace.mk left_inv := fun v => InfinitePlace.mk_embedding v right_inv := fun φ => InfinitePlace.embedding_mk_eq_of_isReal (IsTotallyReal.complexEmbedding_isReal φ) }`. Rewrite using `[Fintype.sum_equiv e (fun v => v.embedding x) (fun φ => φ x) (fun _ => rfl)]`. Establish `h` using `trace_eq_sum_embeddings (K := ℚ) (L := F) (E := ℂ) (x := x)`. Rewrite using `[← eq_ratCast (algebraMap ℚ ℂ), h]`. Use `Fintype.sum_equiv (RingHom.equivRatAlgHom F ℂ) (fun φ : F →+* ℂ => φ x) (fun φ : F →ₐ[ℚ] ℂ => φ x) (fun _ => rfl)` and compare the differences between its conclusion and the goal.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 -/
 private theorem sum_infinitePlace_embedding_eq_trace (F : Type) [Field F] [NumberField F]
     [IsTotallyReal F] (x : F) :
@@ -44,11 +44,11 @@ open NumberField IsDedekindDomain MeasureTheory Topology in
 open scoped TensorProduct NNReal ENNReal in
 
 /- English proof (translation)
-Introduce `F _ _ _`. Set `L : _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf F →+ ℂ` to `∑ v : InfinitePlace F, (InfinitePlace.Completion.extensionEmbedding v).toAddMonoidHom.comp (Pi.evalAddMonoidHom (fun w : InfinitePlace F => w.Completion) v)`. Establish `hLapply : (L : _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf F → ℂ) = fun a => ∑ v : InfinitePlace F, InfinitePlace.Completion.extensionEmbedding v (a v)`. Use extensionality with `a`. Simplify using `only [L, AddMonoidHom.finset_sum_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `hL : Continuous L`. Rewrite using `[hLapply]`. Conclude with `continuous_finset_sum _ fun v _ => (InfinitePlace.Completion.isometry_extensionEmbedding v).continuous.comp (continuous_apply v)`. Take `⟨ψ, hψ, -⟩` from `_root_.GlobalTheory.StdAdelicChar.exists_char_of_trace F L hL (fun x => by`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hLapply]`. Express the relevant statement in the definitionally equal form `∑ v : InfinitePlace F, InfinitePlace.Completion.extensionEmbedding v ((algebraMap F (InfiniteAdeleRing F) x) v) = _`. Simplify using `only [extensionEmbedding_infiniteAdele_algebraMap]`. Conclude with `sum_infinitePlace_embedding_eq_trace F x)`. Conclude with `⟨ψ, hψ⟩`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.GaugeEx.CharZero.exists_isCharAF :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F], ∃ ψ, _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCharAF F ψ := by

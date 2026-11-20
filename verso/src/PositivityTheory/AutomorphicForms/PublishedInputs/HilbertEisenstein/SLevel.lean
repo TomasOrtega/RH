@@ -12,7 +12,7 @@ namespace UpperTheory.HilbertEisensteinWeightOne.LevelEisenstein
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-The claim follows from `| 0, a, _ => by rw [Nat.cast_zero, neg_zero, WithZero.exp_zero]; exact a.2 | n + 1, a, ha => by rw [pow_succ] at ha refine Submodule.mul_induction_on (C := fun a : w.adicCompletionIntegers F => Valued.v (a : w.adicCompletion F) ≤ WithZero.exp (-((n + 1 : ℕ) : ℤ))) ha ?_ ?_ · intr …`.
+A detailed English derivation is pending.
 -/
 theorem v_le_of_mem_pow (w : HeightOneSpectrum (𝓞 F)) : ∀ (n : ℕ) (a : w.adicCompletionIntegers F),
     a ∈ IsLocalRing.maximalIdeal (w.adicCompletionIntegers F) ^ n →
@@ -46,11 +46,11 @@ theorem v_le_of_mem_pow (w : HeightOneSpectrum (𝓞 F)) : ∀ (n : ℕ) (a : w.
       exact (Valued.v.map_add _ _).trans (max_le hx hy)
 
 /- English proof (translation)
-Take `⟨k', hk', rfl⟩` from `hk`. Establish `hk''` using `hk'`. Express the relevant statement in the definitionally equal form `![0, 1] ᵥ* _ = ![0, 1] at hk''`. Establish `h0` using `congrFun hk'' 0`. Establish `h1` using `congrFun hk'' 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m0 : k' 1 0 ∈ IsLocalRing.maximalIdeal (w.adicCompletionIntegers F) ^ n`. Simplify `h0` using `[Matrix.vecMul, dotProduct, Fin.sum_univ_succ, Ideal.Quotient.eq_zero_iff_mem]`. Establish `m1 : k' 1 1 - 1 ∈ IsLocalRing.maximalIdeal (w.adicCompletionIntegers F) ^ n`. Use `Ideal.Quotient.eq.1 ?_` and prove the remaining obligations. Simplify `h1` using `[Matrix.vecMul, dotProduct, Fin.sum_univ_succ]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨fun i j => (k' i j).2, v_le_of_mem_pow w n _ m0, ?_⟩` and prove the remaining obligations. Use `v_le_of_mem_pow w n _ m1` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem congruence_subgroup_entries_bound {w : HeightOneSpectrum (𝓞 F)} {n : ℕ} {k : GL (Fin 2) (w.adicCompletion F)} (hk : k ∈ K1 w n) :
     (∀ i j, Valued.v ((k : Matrix (Fin 2) (Fin 2) (w.adicCompletion F)) i j) ≤ 1) ∧
@@ -71,13 +71,13 @@ theorem congruence_subgroup_entries_bound {w : HeightOneSpectrum (𝓞 F)} {n : 
   simpa using this
 
 /- English proof (translation)
-Take `⟨he, h10, h11⟩` from `congruence_subgroup_entries_bound hk`. Establish `hε : WithZero.exp (-(n : ℤ)) ≤ 1`. Rewrite using `[← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Establish `hmul : ∀ {a b : w.adicCompletion F} {A B : WithZero (Multiplicative ℤ)}, Valued.v a ≤ A → Valued.v b ≤ B → Valued.v (a * b) ≤ A * B` using `fun ha hb => by rw [map_mul]; exact mul_le_mul' ha hb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hadd : ∀ {a b : w.adicCompletion F} {C : WithZero (Multiplicative ℤ)}, Valued.v a ≤ C → Valued.v b ≤ C → Valued.v (a + b) ≤ C` using `fun ha hb => (Valued.v.map_add _ _).trans (max_le ha hb)`. Establish `hy1 : Valued.v (y 1) ≤ 1`. Establish `: y 1 = (y 1 - 1) + 1` using `by ring`. Rewrite using `[this]`. Conclude with `hadd (hy.2.trans hε) (by rw [map_one])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Establish `e : (y ᵥ* (k : Matrix (Fin 2) (Fin 2) (w.adicCompletion F))) 0 = y 0 * (k : Matrix (Fin 2) (Fin 2) (w.adicCompletion F)) 0 0 + y 1 * (k : Matrix (Fin 2) (Fin 2) (w.adicCompletion F)) 1 0`. Simplify using `[Matrix.vecMul, dotProduct, Fin.sum_univ_two]`. Rewrite using `[e]`. Conclude with `hadd ((hmul hy.1 (he 0 0)).trans_eq (mul_one _)) ((hmul hy1 h10).trans_eq (one_mul _))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e : (y ᵥ* (k : Matrix (Fin 2) (Fin 2) (w.adicCompletion F))) 1 - 1 = y 0 * (k : Matrix (Fin 2) (Fin 2) (w.adicCompletion F)) 0 1 + (y 1 - 1) * (k : Matrix (Fin 2) (Fin 2) (w.adicCompletion F)) 1 1 + ((k : Matrix (Fin 2) (Fin 2) (w.adicCompletion F)) 1 1 - 1)`. Simplify using `only [Matrix.vecMul, dotProduct, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `hadd (hadd ((hmul hy.1 (he 0 1)).trans_eq (mul_one _)) ((hmul hy.2 (he 1 1)).trans_eq (mul_one _))) h11`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem loc_vecMul {w : HeightOneSpectrum (𝓞 F)} {n : ℕ} {k : GL (Fin 2) (w.adicCompletion F)} (hk : k ∈ K1 w n)
     {y : Fin 2 → w.adicCompletion F}
@@ -112,7 +112,7 @@ theorem loc_vecMul {w : HeightOneSpectrum (𝓞 F)} {n : ℕ} {k : GL (Fin 2) (w
     exact hadd (hadd ((hmul hy.1 (he 0 1)).trans_eq (mul_one _)) ((hmul hy.2 (he 1 1)).trans_eq (mul_one _))) h11
 
 /- English proof (translation)
-Take `⟨k', -, rfl⟩` from `hk`. Rewrite using `[det_map]`. Use `GroundTheory.Global.IdeleGroup.norm_eq_one_of_mul_eq_one (b := (w.adicCompletionIntegers F).subtype ((Matrix.GeneralLinearGroup.det k')⁻¹ : (w.adicCompletionIntegers F)ˣ)) ?_ (SetLike.coe_mem _) (SetLike.coe_mem _)` and prove the remaining obligations. Rewrite using `[← map_mul, Units.mul_inv, map_one]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_det_congruence_subgroup {w : HeightOneSpectrum (𝓞 F)} {n : ℕ} {k : GL (Fin 2) (w.adicCompletion F)} (hk : k ∈ K1 w n) :
     ‖((Matrix.GeneralLinearGroup.det k : (w.adicCompletion F)ˣ) : w.adicCompletion F)‖ = 1 := by
@@ -126,7 +126,7 @@ theorem norm_det_congruence_subgroup {w : HeightOneSpectrum (𝓞 F)} {n : ℕ} 
 variable [IsTotallyReal F]
 
 /- English proof (translation)
-Establish `hK` using `UpperTheory.V.TR.pInf_finGL (E := F) (a := 2) (locGL F 2 w k)`. Establish `hKij : ∀ a b, UpperTheory.V.TR.pInf F (((finGL F 2 (locGL F 2 w k) : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F)) a b) = (1 : Matrix (Fin 2) (Fin 2) (UpperTheory.V.TR.Rinf F)) a b` using `fun a b => congrArg (fun M : GL (Fin 2) (UpperTheory.V.TR.Rinf F) => (M : Matrix (Fin 2) (Fin 2) (UpperTheory.V.TR.Rinf F)) a b) hK`. Simplify using `only [Matrix.vecMul, dotProduct, map_sum, map_mul, hKij]`. Apply the tactic sequence `fin_cases i <;> simp [Fin.sum_univ_two, Matrix.one_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pInf_vecMul (w : HeightOneSpectrum (𝓞 F)) (k : GL (Fin 2) (w.adicCompletion F)) (x : Fin 2 → Ad F) (i : Fin 2) :
     UpperTheory.V.TR.pInf F ((x ᵥ* ((finGL F 2 (locGL F 2 w k) : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F))) i) =
@@ -139,7 +139,7 @@ theorem pInf_vecMul (w : HeightOneSpectrum (𝓞 F)) (k : GL (Fin 2) (w.adicComp
   fin_cases i <;> simp [Fin.sum_univ_two, Matrix.one_apply]
 
 /- English proof (translation)
-Establish `hK` using `pFin_finGL (E := F) (a := 2) (locGL F 2 w k)`. Establish `hKij : ∀ a b, pFin F (((finGL F 2 (locGL F 2 w k) : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F)) a b) = ((locGL F 2 w k : GL (Fin 2) (Af F)) : Matrix (Fin 2) (Fin 2) (Af F)) a b` using `fun a b => congrArg (fun M : GL (Fin 2) (Af F) => (M : Matrix (Fin 2) (Fin 2) (Af F)) a b) hK`. Simplify using `only [Matrix.vecMul, dotProduct, map_sum, map_mul, hKij]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem pLoc_vecMul (w v : HeightOneSpectrum (𝓞 F)) (k : GL (Fin 2) (w.adicCompletion F)) (x : Fin 2 → Ad F)
     (i : Fin 2) :
@@ -159,9 +159,9 @@ def cond (c : HeightOneSpectrum (𝓞 F) → ℕ) (x : Fin 2 → Ad F) : Prop :=
     Valued.v (pLoc F v (pFin F (x 1)) - 1) ≤ WithZero.exp (-(c v : ℤ))
 
 /- English proof (translation)
-Introduce `v`. Rewrite using `[pLoc_vecMul, pLoc_vecMul]`. Distinguish the cases in `hv : v = w`. Substitute `hv` using the available equality. Rewrite using `[pLoc_locGL]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `loc_vecMul hk (hx v)`. Rewrite using `[pLoc_locGL_of_ne hv, Units.val_one, Matrix.vecMul_one]`. Conclude with `hx v`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cond_mul (c : HeightOneSpectrum (𝓞 F) → ℕ) {w : HeightOneSpectrum (𝓞 F)} {k : GL (Fin 2) (w.adicCompletion F)}
     (hk : k ∈ K1 w (c w)) {x : Fin 2 → Ad F} (hx : cond c x) :
@@ -176,7 +176,7 @@ theorem cond_mul (c : HeightOneSpectrum (𝓞 F) → ℕ) {w : HeightOneSpectrum
     exact hx v
 
 /- English proof (translation)
-Use `⟨fun h => ?_, cond_mul c hk⟩` and prove the remaining obligations. Use `cond_mul c (inv_mem hk) h` as an intermediate fact. Rewrite `this` using `[Matrix.vecMul_vecMul, ← Units.val_mul, map_inv, map_inv, mul_inv_cancel, Units.val_one, Matrix.vecMul_one]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem cond_iff (c : HeightOneSpectrum (𝓞 F) → ℕ) {w : HeightOneSpectrum (𝓞 F)} {k : GL (Fin 2) (w.adicCompletion F)}
     (hk : k ∈ K1 w (c w)) (x : Fin 2 → Ad F) :
@@ -187,7 +187,7 @@ theorem cond_iff (c : HeightOneSpectrum (𝓞 F) → ℕ) {w : HeightOneSpectrum
     Matrix.vecMul_one] at this
 
 /- English proof (translation)
-Unfold `Phi`. Rewrite using `[pInf_vecMul, pInf_vecMul]`. Use `congr 2`. Conclude with `propext (cond_iff c hk x)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem Phi_vecMul (c : HeightOneSpectrum (𝓞 F) → ℕ) {w : HeightOneSpectrum (𝓞 F)} {k : GL (Fin 2) (w.adicCompletion F)}
     (hk : k ∈ K1 w (c w)) (x : Fin 2 → Ad F) :
@@ -198,7 +198,7 @@ theorem Phi_vecMul (c : HeightOneSpectrum (𝓞 F) → ℕ) {w : HeightOneSpectr
   exact propext (cond_iff c hk x)
 
 /- English proof (translation)
-Unfold `thetaS`. Use `tsum_congr fun ξ => ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, ← Matrix.vecMul_vecMul, Phi_vecMul c hk]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem thetaS_mul (c : HeightOneSpectrum (𝓞 F) → ℕ) {w : HeightOneSpectrum (𝓞 F)} {k : GL (Fin 2) (w.adicCompletion F)}
     (hk : k ∈ K1 w (c w)) (h : GA F 2) :
@@ -208,22 +208,22 @@ theorem thetaS_mul (c : HeightOneSpectrum (𝓞 F) → ℕ) {w : HeightOneSpectr
   rw [Units.val_mul, ← Matrix.vecMul_vecMul, Phi_vecMul c hk]
 
 /- English proof (translation)
-Unfold `absD`. Rewrite using `[map_mul, map_mul, Positive.val_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem absD_mul (g h : GA F 2) : absD (g * h) = absD g * absD h := by
   unfold absD
   rw [map_mul, map_mul, Positive.val_mul]
 
 /- English proof (translation)
-Unfold `absD`. Rewrite using `[GroundTheory.Global.IdeleGroup.ideleModule_eq]`. Establish `hp : UpperTheory.V.TR.pInf F ((Matrix.GeneralLinearGroup.det (finGL F 2 (locGL F 2 w k)) : (Ad F)ˣ) : Ad F) = 1`. Rewrite using `[← det_map, UpperTheory.V.TR.pInf_finGL]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hinf' : ((Matrix.GeneralLinearGroup.det (finGL F 2 (locGL F 2 w k)) : (Ad F)ˣ) : Ad F).1 = 1` using `(UpperTheory.V.TR.infEq F).symm.injective (hp.trans (map_one _).symm)`. Establish `hfin : ∀ v : HeightOneSpectrum (𝓞 F), ‖((Matrix.GeneralLinearGroup.det (finGL F 2 (locGL F 2 w k)) : (Ad F)ˣ) : Ad F).2 v‖ = 1`. Introduce `v`. Establish `e : ((Matrix.GeneralLinearGroup.det (finGL F 2 (locGL F 2 w k)) : (Ad F)ˣ) : Ad F).2 v = ((Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.map (pLoc F v) (locGL F 2 w k)) : (v.adicCompletion F)ˣ) : v.adicCompletion F)`. Express the relevant statement in the definitionally equal form `pLoc F v (pFin F ((Matrix.GeneralLinearGroup.det (finGL F 2 (locGL F 2 w k)) : (Ad F)ˣ) : Ad F)) = _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← det_map (pFin F), pFin_finGL, ← det_map]`. Rewrite using `[e]`. Distinguish the cases in `hv : v = w`. Substitute `hv` using the available equality. Rewrite using `[pLoc_locGL]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `norm_det_congruence_subgroup hk`. Rewrite using `[pLoc_locGL_of_ne hv]`. Simplify using the standard rewrite rules. Rewrite using `[hinf', finprod_eq_one_of_forall_eq_one hfin, mul_one]`. Use `Finset.prod_eq_one fun v _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (1 : InfiniteAdeleRing F) v = 1 from rfl, norm_one, one_pow]`.
+A detailed English derivation is pending.
 -/
 theorem absD_K {w : HeightOneSpectrum (𝓞 F)} {n : ℕ} {k : GL (Fin 2) (w.adicCompletion F)} (hk : k ∈ K1 w n) :
     absD (finGL F 2 (locGL F 2 w k)) = 1 := by
@@ -260,9 +260,9 @@ namespace UpperTheory.HilbertEisensteinWeightOne
 
 open LevelEisenstein in
 /- English proof (translation)
-Introduce `_ _ _ F _ _ _ ω c _ w k hk g`. Establish `e : eisInt ω (Phi c) (g * finGL F 2 (locGL F 2 w k)) = eisInt ω (Phi c) g`. Use function extensionality and compare the values at `t u`. Unfold `eisInt`. Rewrite using `[← mul_assoc, thetaS_mul c hk, absD_mul, absD_K hk, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `Eis`. Rewrite using `[e]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem level_holds : SPois → SInt → SSmooth → SLevel := by
   intro _ _ _ F _ _ _ ω c _ w k hk g

@@ -19,9 +19,7 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Φ : 
   {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N j : ℕ} {M : FlagModel y Ψ N j} {n d : ℕ} {BM : BaseMetric M n}
 
 /- English proof (translation)
-Unfold `detFac`. Use `AnalyticAt.mul ?_ ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `Fib.analyticAt_minorIJ_of_entries _ w h _ _`. Conclude with `analyticAt_const`.
-
-Use `split_ifs`. Conclude with `Fib.analyticAt_minorIJ_of_entries _ w h _ _`. Conclude with `analyticAt_const`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem analyticAt_detFac {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (i : Fin N)
     {H : E → Matrix (Fin N) (Fin N) ℂ} {w : E} (h : ∀ r s, AnalyticAt ℂ (fun u => H u r s) w) :
@@ -36,7 +34,7 @@ theorem analyticAt_detFac {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] 
     · exact analyticAt_const
 
 /- English proof (translation)
-Introduce `k t ht`. Use `show AnalyticAt ℂ (fun w => (P ((A.chart k).symm w) * Q ((A.chart k).symm w)) a b) t`. Simplify using `only [Matrix.mul_apply]`. Conclude with `Finset.analyticAt_fun_sum _ fun c _ => (hP a c k t ht).mul (hQ c b k t ht)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem holoOn_mul {e : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas e X} {W : Set X}
     {P Q : X → Matrix (Fin N) (Fin N) ℂ} (hP : ∀ a b, A.HoloOn W fun x => P x a b)
@@ -47,21 +45,19 @@ theorem holoOn_mul {e : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas e 
   exact Finset.analyticAt_fun_sum _ fun c _ => (hP a c k t ht).mul (hQ c b k t ht)
 
 /- English proof (translation)
-Establish `hj` using `M.j_le`. Establish `hg` using `GlobalTheory.T.base_vector_properties K ι Φ y Ψ N j M n BM l`. Establish `hl1 : ∀ x' ∈ W, FA.pr x' ∈ BM.O l` using `fun x' h => (hl x' h).1.1`. Establish `hbv` using `bvec_holo BM FA.pr_holo hW hl1`. Establish `hst` using `fun (p : Ψ × Fin N) x' (hx' : x' ∈ W) => GlobalTheory.T.flag_potential_block_decomposition N j p.2 (Pi p.1 (FA.pr x')) (BM.G l p.1 (FA.pr x')) (H p.1 x') hj (hPi.2.2 p.1 _ (hl x' hx').2) (BM.G_pos l p.1 _ (hl x' hx').1).1 (BM.G_pos l p.1 _ (hl x' hx').1).2 (hHb p.1 x' hx').1 (hHb …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `FA.S.A.cover x`. Use `set c := FA.S.A.chart k with hc`. Establish `hO : IsOpen (c.target ∩ c.symm ⁻¹' W)` using `c.isOpen_inter_preimage_symm hW`. Establish `hxO : c x ∈ c.target ∩ c.symm ⁻¹' W` using `⟨c.map_source hk, by simpa [c.left_inv hk] using hx⟩`. Establish `hsx : c.symm (c x) = x` using `c.left_inv hk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ p : Ψ × Fin N, ∃ V : Set FA.S.X, IsOpen V ∧ x ∈ V ∧ ∃ G : FA.S.X → ℂ, FA.S.A.HoloOn V G ∧ ∀ x' ∈ V, ((FA.S.comap some).potH p).φ x x' - stepPot N j p.2 (Pi p.1 (FA.pr x') * H p.1 x') = (G x').re`. Introduce `p`. Take `⟨H1, hH1, he1⟩` from `GlobalTheory.T.local_holomorphic_lift_realisation K ι (d + 1) _ FA.S (mCoordIdeal y) FA.Re (some p) (d + 1) (c.target ∩ c.symm ⁻¹' W) c.symm (fun u => FC.flagPt M (BM.F l) (FC.bvec BM l (FA.pr (c.symm u))) fun τ => H τ (c.symm u)) (c x) FA.J_top FA.deg_one FA.br_empty hO hxO (fun …`. Take `⟨H2, hH2, he2⟩` from `GlobalTheory.T.log_norm_nonvanishing_analytic_harmonic (d + 1) (fun u => detFac j p.2 (H p.1 (c.symm u))) (c x) (analyticAt_detFac p.2 fun r s => hH p.1 r s k _ hxO) (CPts.detFac_ne_zero hj p.2 (hHb p.1 _ hxO.2).1 (hHb p.1 _ hxO.2).2)`. Choose the witnesses or unpack the hypotheses as in `⟨H3, hH3, he3⟩ : ∃ H3 : (Fin (d + 1) → ℂ) → ℂ, AnalyticAt ℂ H3 (c x) ∧ ∀ᶠ u in 𝓝 (c x), Fib.upsLogAt BM l p (FA.pr (c.symm u)) = (H3 u).re := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hp : M.blk p = none`. Simplify using `only [Fib.upsLogAt, if_pos hp]`. Use `GlobalTheory.T.log_norm_nonvanishing_analytic_harmonic (d + 1) (fun u => Fib.upsVal BM l p (FA.pr (c.symm u))) (c x) ?_ (GlobalTheory.T.unipotent_value_ne_zero K ι Φ y Ψ N j M n d BM l p _ (hl1 _ hxO.2) hp)` and prove the remaining obligations. Conclude with `GlobalTheory.T.regular_function_analytic_on_chart _ _ M.Ω M.x ((BM.F l).υ p) (d + 1) n BM.Rb (c.target ∩ c.symm ⁻¹' W) (FA.pr ∘ c.symm) (c x) hO hxO (FA.pr_holo.1.comp_continuousOn (c.continuousOn_symm.mono Set.inter_subset_left)) (fun m => (FA.pr_holo.2 k m).mono fun t ht => ⟨ht …`. Conclude with `⟨fun _ => 0, analyticAt_const, Eventually.of_forall fun u => by simp [Fib.upsLogAt, hp]⟩`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `exists_holoOn_of_germ FA.S.A hk (H := fun u => H1 u - H2 u - H3 u) ((hH1.sub hH2).sub hH3) ?_` and prove the remaining obligations. Use `filter_upwards [he1, he2, he3, hO.mem_nhds hxO] with u h1 h2 h3 hu`. Take `⟨x₀, hx₀⟩` from `hsurj (c.symm u)`. Establish `hline` using `GlobalTheory.T.flag_analytic_orbit_off_boundary K ι Φ y Ψ N j M n d BM FA l x₀ _ (FA.pr (c.symm u)) p (H p.1 (c.symm u)) (hl _ hu.2).1 (ho _ hu.2 x₀ hx₀) (by rw [FC.basePart_flagPt]; exact (hg _ (hl1 _ hu.2)).2.2.2) (FC.exactAt_flagPt M (BM.F l) (hg _ (hl1 _ hu.2)).2.2.1 (fun τ = …`. Establish `hphi : ((FA.S.comap some).potH p).φ x (c.symm u) = (FA.S.th (some p)).φ x (c.symm u) + FA.S.ph (some p) (c.symm u)` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[hsx, FA.ref_some]`. Rewrite `hline` using `[hx₀, Fib.potAt]`. Rewrite using `[hphi, h1, (hst p _ hu.2).2, Complex.sub_re, Complex.sub_re, ← h2, ← h3]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `choose V hVo hxV G hG hGe using key`.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `⟨W ∩ ⋂ p, V p, hW.inter (isOpen_iInter_of_finite hVo), ⟨hx, Set.mem_iInter.2 hxV⟩, fun τ a b => ?_, fun τ x' hx' => ?_, fun p => ⟨G p, holoOn_mono (hG p) fun x' hx' => Set.mem_iInter.1 hx'.2 p, fun x' hx' => ?_⟩⟩` and prove the remaining obligations. Use `holoOn_mono (holoOn_mul (W := W) (fun a b => ?_) (hH τ) a b) Set.inter_subset_left` and prove the remaining obligations. Conclude with `holoOn_mono (holoOn_comp FA.pr_holo (hPi.2.1 τ a b)) fun x' hx' => (hl x' hx').2`. Conclude with `StepBlock.inFlagDomain_mul (hPi.2.2 τ _ (hl x' hx'.1).2).1 (hHb τ x' hx'.1).1 (hHb τ x' hx'.1).2`. Use `hGe p x' (Set.mem_iInter.1 hx'.2 p)` as an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem period_chart (FA : FlagAn BM d) (hsurj : Function.Surjective FA.Re.π) {l : Fin BM.q} {Vb : Set BM.Rb.X}
     {Pi : Ψ → BM.Rb.X → Matrix (Fin N) (Fin N) ℂ} (hPi : IsPeriodOn BM.Rb.A j Vb Pi (BM.G l)) {W : Set FA.S.X}

@@ -17,7 +17,7 @@ namespace GlobalTheory.VacScalar
 open GlobalTheory.FinPl
 
 /- English proof (translation)
-Introduce `h` and use `by have := AddChar.map_add_eq_mul ψ a (-a) rw [h, zero_mul, add_neg_cancel, AddChar.map_zero_eq_one] at this exact one_ne_zero this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem psi_ne {A : Type} [AddGroup A] (ψ : AddChar A ℂ) (a : A) : ψ a ≠ 0 := fun h => by
   have := AddChar.map_add_eq_mul ψ a (-a)
@@ -25,23 +25,21 @@ theorem psi_ne {A : Type} [AddGroup A] (ψ : AddChar A ℂ) (a : A) : ψ a ≠ 0
   exact one_ne_zero this
 
 /- English proof (translation)
-Conclude with `eq_inv_of_mul_eq_one_left (by rw [← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one])`.
+A detailed English derivation is pending.
 -/
 theorem psi_neg {A : Type} [AddGroup A] (ψ : AddChar A ℂ) (a : A) : ψ (-a) = (ψ a)⁻¹ := by
   exact eq_inv_of_mul_eq_one_left (by rw [← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one])
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro z _ _ _ j hj`. Simplify using `at hj`. Consider the case `insert a s ha ih`. Introduce `z hz hl hsum`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hsum` using `[Finset.sum_insert ha]`. Establish `hs : ∀ b ∈ s, z b ∈ U`. Introduce `b hb`. Establish `hne : l b ≠ l a` using `fun h => ha (by`. Rewrite using `[← hl b (Finset.mem_insert_of_mem hb) a (Finset.mem_insert_self a s) h]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hb)`. Take `⟨i, hi⟩` from `Function.ne_iff.1 hne`. Establish `h1 : A i (z a + ∑ j ∈ s, z j) - l a i • (z a + ∑ j ∈ s, z j) ∈ U` using `U.sub_mem (hU i _ hsum) (U.smul_mem _ hsum)`. Establish `h2 : A i (z a + ∑ j ∈ s, z j) - l a i • (z a + ∑ j ∈ s, z j) = ∑ j ∈ s, (l j i - l a i) • z j`. Rewrite using `[map_add, map_sum, hz a (Finset.mem_insert_self a s), smul_add, Finset.smul_sum, Finset.sum_congr rfl (fun j hj => hz j (Finset.mem_insert_of_mem hj) i), add_sub_add_comm, sub_self, zero_add, ← Finset.sum_sub_distrib]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun j _ => (sub_smul _ _ _).symm`. Rewrite `h1` using `[h2]`. Establish `h3` using `ih (fun j => (l j i - l a i) • z j) (fun j hj i' => by`. Simplify using `only [map_smul, hz j (Finset.mem_insert_of_mem hj) i', smul_comm (l j i')])`. Use the proof step `(fun j hj j' hj' h => hl j (Finset.mem_insert_of_mem hj) j' (Finset.mem_insert_of_mem hj') h) h1 b hb`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hc : l b i - l a i ≠ 0` using `sub_ne_zero.2 hi`. Establish `h4` using `U.smul_mem (l b i - l a i)⁻¹ h3`. Simplify using `only [smul_smul, inv_mul_cancel₀ hc, one_smul] at h4`. Conclude with `h4`. Introduce `j hj`.
-
-Break down `Finset.mem_insert.1 hj with rfl | hj` into its components or cases. Establish `: z j = (z j + ∑ j ∈ s, z j) - ∑ j ∈ s, z j` using `by abel`. Rewrite using `[this]`. Conclude with `U.sub_mem hsum (U.sum_mem hs)`. Conclude with `hs j hj`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iso_mem {V ι J : Type} [AddCommGroup V] [Module ℂ V] (A : ι → V →ₗ[ℂ] V) (U : Submodule ℂ V)
     (hU : ∀ i, ∀ x ∈ U, A i x ∈ U) (l : J → ι → ℂ) (s : Finset J) :
@@ -82,7 +80,7 @@ theorem iso_mem {V ι J : Type} [AddCommGroup V] [Module ℂ V] (A : ι → V �
 variable {D : D7}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `[heisO]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem heisO_zero_fun (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (u : WO S T) : heisO ψ S T u 0 = 0 := by
   funext w; simp [heisO]
@@ -93,14 +91,14 @@ def hL (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (u : WO S T) : (WO S T →
   map_smul' c f := by funext w; simp [heisO]; ring
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.SplitScalar.heisO_heisO, neg_add_cancel, GlobalTheory.LatVac.heisO_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem heisO_inv (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (m : WO S T) (f : WO S T → ℂ) :
     heisO ψ S T (-m) (heisO ψ S T m f) = ψ (symplOH S T (-m) m) • f := by
   rw [GlobalTheory.SplitScalar.heisO_heisO, neg_add_cancel, GlobalTheory.LatVac.heisO_zero]
 
 /- English proof (translation)
-Introduce `hc` and use `hf (by have h1 := heisO_inv ψ S T m f rw [h, hc, zero_smul, heisO_zero_fun] at h1 exact (smul_eq_zero.1 h1.symm).resolve_left (psi_ne _ _))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem eig_ne (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) {m : WO S T} {f : WO S T → ℂ} {c : ℂ}
     (h : heisO ψ S T m f = c • f) (hf : f ≠ 0) : c ≠ 0 := fun hc => hf (by
@@ -109,9 +107,9 @@ theorem eig_ne (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) {m : WO S T} {f : 
   exact (smul_eq_zero.1 h1.symm).resolve_left (psi_ne _ _))
 
 /- English proof (translation)
-Unfold `symplOH`. Rewrite using `[GlobalTheory.SplitScalar.symplO_skew S T m y]`. Establish `ha : (algebraMap D.host.F (AF D.host.F)) (1 / 2) + (algebraMap D.host.F (AF D.host.F)) (1 / 2) = 1`. Rewrite using `[← map_add]`. Evaluate the numerical expressions.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Take the linear combination `(symplO S T m y) * ha`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem symplOH_eq (S T : HSp D) (m y : WO S T) :
     symplOH S T m y = symplO S T m y + symplOH S T y m := by
@@ -122,7 +120,7 @@ theorem symplOH_eq (S T : HSp D) (m y : WO S T) :
   linear_combination (symplO S T m y) * ha
 
 /- English proof (translation)
-Establish `h2` using `GlobalTheory.SplitScalar.heisO_heisO ψ S T y m f`. Rewrite `h2` using `[h, GlobalTheory.LatVac.heisO_smul, add_comm]`. Rewrite using `[GlobalTheory.SplitScalar.heisO_heisO, symplOH_eq, AddChar.map_add_eq_mul, mul_smul, ← h2, smul_smul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem heisO_eig (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) {m y : WO S T} {f : WO S T → ℂ} {c : ℂ}
     (h : heisO ψ S T m f = c • f) :
@@ -140,27 +138,25 @@ open GlobalTheory.FinPl
 variable {D : D7}
 
 /- English proof (translation)
-Set `H : AddSubgroup (WO S T)` to `{ carrier := {m | ∃ c : ℂ, ∀ f, GlobalTheory.FinPl.Vac ψ S T LS LT (· ∈ Q) f → heisO ψ S T m f = c • f} zero_mem' := ⟨1, fun f _ => by rw [GlobalTheory.LatVac.heisO_zero, one_smul]⟩ add_mem' := by`. Introduce and unpack `a b ⟨ca, ha⟩ ⟨cb, hb⟩`. Use `⟨(ψ (symplOH S T a b))⁻¹ * (ca * cb), fun f hf => ?_⟩` and prove the remaining obligations. Establish `hk` using `psi_ne ψ (symplOH S T a b)`. Combine the equalities or inequalities in the displayed calculation.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[smul_smul, inv_mul_cancel₀ hk, one_smul]`. Use `_ = _ := by`. Rewrite using `[← GlobalTheory.SplitScalar.heisO_heisO, hb f hf, GlobalTheory.LatVac.heisO_smul, ha f hf, smul_smul, smul_smul, mul_assoc, mul_comm cb ca]`. Use the proof step `neg_mem' := by`. Introduce and unpack `a ⟨ca, ha⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hc : ca = 0`. Use `⟨0, fun f hf => ?_⟩` and prove the remaining obligations. Establish `hf0 : f = 0`. Establish `h` using `heisO_inv ψ S T a f`. Rewrite `h` using `[ha f hf, hc, zero_smul, heisO_zero_fun]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(smul_eq_zero.1 h.symm).resolve_left (psi_ne _ _)`. Substitute `hf0` using the available equality. Rewrite using `[heisO_zero_fun, smul_zero]`. Use `⟨ca⁻¹ * ψ (symplOH S T (-a) a), fun f hf => ?_⟩` and prove the remaining obligations. Establish `h` using `heisO_inv ψ S T a f`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite `h` using `[ha f hf, GlobalTheory.LatVac.heisO_smul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hHmem : ∀ m, (∃ c : ℂ, ∀ f, GlobalTheory.FinPl.Vac ψ S T LS LT (· ∈ Q) f → heisO ψ S T m f = c • f) → m ∈ H` using `fun m h => h`. Establish `hHmem' : ∀ m, m ∈ H → (∃ c : ℂ, ∀ f, GlobalTheory.FinPl.Vac ψ S T LS LT (· ∈ Q) f → heisO ψ S T m f = c • f)` using `fun m h => h`. Establish `hmono : latO S T (LS : Set _) (LT : Set _) (fun _ => True) ≤ latO S T (LS : Set _) (LT : Set _) (fun p => p ∈ Q ∨ p ∉ Q)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Apply `AddSubgroup.closure_mono` to reduce the goal to its premises. Introduce and unpack `w ⟨α, hα, hv, rest⟩`. Conclude with `⟨α, hα, fun v hv' => (hv' (em _)).elim, rest⟩`. Establish `hmono' : latO S T (LS : Set _) (LT : Set _) (· ∈ Q) ≤ latO S T (LS : Set _) (LT : Set _) (fun _ => True)`. Apply `AddSubgroup.closure_mono` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce and unpack `w ⟨α, hα, hv, rest⟩`. Conclude with `⟨α, hα, fun v hv' => (hv' trivial).elim, rest⟩`. Establish `hsplit : ∀ u ∈ latO S T (LS : Set _) (LT : Set _) (fun _ => True), GlobalTheory.DisjComb.idem (· ∈ Q) • u ∈ latO S T (LS : Set _) (LT : Set _) (· ∈ Q)` using `fun u hu => (GlobalTheory.DisjComb.split_latO ψ hψ hLS hLT (P := (· ∈ Q)) (P' := (· ∉ Q)) (fun p h h' => h' h) (hmono hu)).2.2.1`. Set `G : AddSubgroup (WO S T)` to `H.comap (DistribMulAction.toAddMonoidHom (WO S T) (GlobalTheory.DisjComb.idem (· ∈ Q)))`. Establish `hG : ∀ {u : WO S T}, u ∈ latO S T (LS : Set _) (LT : Set _) (fun _ => True) → u ∈ G`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `u hu`. Use `GlobalTheory.LatVac.le_of_two_of_half G (fun u hu => ?_) (fun e he u hu hh => ?_) hu` and prove the remaining obligations. Use `AddSubgroup.mem_comap.2 ?_` and prove the remaining obligations. Rewrite using `[DistribMulAction.toAddMonoidHom_apply, smul_comm]`. Conclude with `hHmem _ ⟨1, fun f hf => by rw [one_smul]; exact hf.2.1 _ (hsplit u hu)⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `AddSubgroup.mem_comap.2 ?_` and prove the remaining obligations. Rewrite using `[DistribMulAction.toAddMonoidHom_apply]`. Conclude with `hHmem _ ⟨1, fun f hf => by rw [one_smul]; exact hf.2.2 e he _ (hsplit u hu) (GlobalTheory.DisjComb.isHalf_parts hh).1⟩`. Establish `hH : ∀ m ∈ latO S T (LS : Set _) (LT : Set _) (· ∈ Q), m ∈ H`. Introduce `m hm`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h1 : GlobalTheory.DisjComb.idem (· ∈ Q) • m ∈ H` using `hG (hmono' hm)`. Establish `h2 : GlobalTheory.DisjComb.idem (· ∈ Q) • m = m`. Use extensionality with `i j`. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`. Conclude with `GlobalTheory.DisjComb.idem_mul (GlobalTheory.FinPl.LatMem.latO_mxAt hm i j)`.
-
-Rewrite `h1` using `[h2]`. Then use the resulting hypothesis. Use `⟨fun m => if h : m ∈ H then (hHmem' m h).choose else 0, fun m hm f hf => ?_⟩` and prove the remaining obligations. Establish `h` using `hH m hm`. Simplify using `only [dif_pos h]`. Conclude with `(hHmem' m h).choose_spec f hf`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vac_eigen (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) (S T : HSp D) (LS : GlobalTheory.FinPl.Lat S)
     (LT : GlobalTheory.FinPl.Lat T) (hLS : IsSelfDualC S LS) (hLT : IsSelfDualC T LT) (Q : Finset (GlobalTheory.FinPl.Pl D)) :
@@ -242,9 +238,9 @@ open GlobalTheory.FinPl
 variable {D : D7}
 
 /- English proof (translation)
-Establish `e1` using `GlobalTheory.SplitScalar.symplO_skew S T m (x' + (x - x'))`. Establish `e2` using `GlobalTheory.SplitScalar.symplO_skew S T m x'`. Establish `e3` using `GlobalTheory.SplitScalar.symplO_skew S T m (x - x')`. Establish `e4` using `GlobalTheory.LatVac.symplO_add_left S T x' (x - x') m`. Establish `hx : x = x' + (x - x')` using `by abel`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `conv_lhs => rw [hx]`. Take the linear combination `e1 - e4 - e2 - e3`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem symplO_split (S T : HSp D) (m x x' : WO S T) :
     symplO S T m x = symplO S T m x' + symplO S T m (x - x') := by
@@ -257,25 +253,25 @@ theorem symplO_split (S T : HSp D) (m x x' : WO S T) :
   linear_combination e1 - e4 - e2 - e3
 
 /- English proof (translation)
-Set `mk : WO S T → WO S T ⧸ Λ` to `QuotientAddGroup.mk`. Set `z : (WO S T ⧸ Λ) → (WO S T → ℂ)` to `fun C => ∑ j ∈ s with mk (y j) = C, c j • heisO ψ S T (y j) f`. Set `l : (WO S T ⧸ Λ) → Λ → ℂ` to `fun C m => ψ (symplO S T m (Quotient.out C)) * q m`. Establish `hout : ∀ x : WO S T, Quotient.out (mk x) - x ∈ Λ`. Introduce `x`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h : mk (Quotient.out (mk x)) = mk x` using `Quotient.out_eq _`. Rewrite `h` using `[QuotientAddGroup.eq]`. Use `Λ.neg_mem h` as an intermediate fact. Rewrite `this` using `[neg_add, neg_neg]`. Rewrite using `[sub_eq_add_neg]` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `hsym : ∀ m ∈ Λ, ∀ x x', x - x' ∈ Λ → ψ (symplO S T m x) = ψ (symplO S T m x')`. Introduce `m hm x x' hx`. Rewrite using `[symplO_split S T m x x', AddChar.map_add_eq_mul, hself m hm _ hx, mul_one]`. Establish `hPout : ∀ x, P x → P (Quotient.out (mk x))`. Introduce `x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : P (x - Quotient.out (mk x))` using `hPΛ _ (by rw [← neg_sub]; exact Λ.neg_mem (hout x))`. Use `hPsub _ _ hx h1` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Establish `hz : ∀ C, ∀ m : Λ, hL ψ S T m (z C) = l C m • z C`. Introduce `C m`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [z, map_sum, map_smul, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Establish `hjC : mk (y j) = C` using `(Finset.mem_filter.1 hj).2`. Establish `e : hL ψ S T m (heisO ψ S T (y j) f) = (ψ (symplO S T m (y j)) * q m) • heisO ψ S T (y j) f` using `heisO_eig ψ S T (hq m m.2)`. Establish `hl' : ψ (symplO S T m (y j)) * q m = l C m`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [l]`. Rewrite using `[← hjC, hsym m m.2 _ _ (hout (y j))]`. Rewrite using `[e, smul_smul, smul_smul, hl', mul_comm (c j)]`. Establish `hl : ∀ C ∈ s.image (fun i => mk (y i)), ∀ C' ∈ s.image (fun i => mk (y i)), l C = l C' → C = C'`. Introduce `C hC C' hC' h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨i, hi, rfl⟩` from `Finset.mem_image.1 hC`. Take `⟨i', hi', rfl⟩` from `Finset.mem_image.1 hC'`. Establish `hP : P (Quotient.out (mk (y i)) - Quotient.out (mk (y i')))` using `hPsub _ _ (hPout _ (hy i hi)) (hPout _ (hy i' hi'))`. Establish `hd : ∀ m ∈ Λ, ψ (symplO S T m (Quotient.out (mk (y i)) - Quotient.out (mk (y i')))) = 1`. Introduce `m hm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `congrFun h ⟨m, hm⟩`. Simplify using `only [l] at h1`. Establish `h2` using `mul_right_cancel₀ (hq0 m hm) h1`. Rewrite `h2` using `[symplO_split S T m (Quotient.out (mk (y i))) (Quotient.out (mk (y i'))), AddChar.map_add_eq_mul]`. Conclude with `mul_left_cancel₀ (psi_ne ψ _) (h2.trans (mul_one _).symm)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hmk : mk (Quotient.out (mk (y i))) = mk (Quotient.out (mk (y i')))`. Rewrite using `[QuotientAddGroup.eq]`. Use `Λ.neg_mem (hann _ hP hd)` as an intermediate fact. Rewrite `this` using `[neg_sub, sub_eq_neg_add]`. Then use the resulting hypothesis. Rewrite `hmk` using `[show mk (Quotient.out (mk (y i))) = mk (y i) from Quotient.out_eq _, show mk (Quotient.out (mk (y i'))) = mk (y i') from Quotient.out_eq _]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hmk`. Establish `hsumJ : ∑ C ∈ s.image (fun i => mk (y i)), z C = ∑ i ∈ s, c i • heisO ψ S T (y i) f` using `Finset.sum_fiberwise_of_maps_to (fun i hi => Finset.mem_image_of_mem _ hi) _`. Establish `key` using `iso_mem (fun m : Λ => hL ψ S T m) U (fun m x hx => hU m m.2 x hx) l (s.image (fun i => mk (y i))) z (fun C _ m => hz C m) hl (hsumJ ▸ hsum)`. Introduce `i hi`. Conclude with `key _ (Finset.mem_image_of_mem _ hi)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem class_mem (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (Λ : AddSubgroup (WO S T)) (P : WO S T → Prop)
     (hself : ∀ m ∈ Λ, ∀ m' ∈ Λ, ψ (symplO S T m m') = 1)
@@ -344,11 +340,11 @@ theorem class_mem (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (Λ : AddSubgro
   exact key _ (Finset.mem_image_of_mem _ hi)
 
 /- English proof (translation)
-Use `Submodule.sum_mem _ fun j hj => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Establish `hj'` using `(Finset.mem_filter.1 hj).2`. Rewrite `hj'` using `[QuotientAddGroup.eq]`. Establish `hm : y j - y i ∈ Λ`. Use `Λ.neg_mem hj'` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[neg_add, neg_neg, ← sub_eq_add_neg]`. Then use the resulting hypothesis. Establish `h` using `GlobalTheory.SplitScalar.heisO_heisO ψ S T (y i) (y j - y i) f`. Rewrite `h` using `[hq _ hm, GlobalTheory.LatVac.heisO_smul, add_sub_cancel]`. Rewrite using `[Submodule.mem_span_singleton]`. Use `⟨(ψ (symplOH S T (y i) (y j - y i)))⁻¹ * q (y j - y i), ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_smul, h, smul_smul, inv_mul_cancel₀ (psi_ne _ _), one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem class_line (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (Λ : AddSubgroup (WO S T))
     (f q : WO S T → ℂ) (hq : ∀ m ∈ Λ, heisO ψ S T m f = q m • f)
@@ -375,49 +371,43 @@ namespace GlobalTheory.VacScalar
 open GlobalTheory.FinPl
 
 /- English proof (translation)
-Introduce `D ψ S T M N M' N' Q o o' g₀ hψ hM hM' hN hN' ho ho' hg hF hF' hne`. Set `P : WO S T → Prop` to `GlobalTheory.FinPl.MxAt (· ∈ Q)`. Establish `hPsub : ∀ x y, P x → P y → P (x - y)` using `fun x y hx hy i j => by`. Rewrite using `[Matrix.sub_apply]`. Conclude with `Submodule.sub_mem _ (hx i j) (hy i j)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hPadd : ∀ x y, P x → P y → P (x + y)` using `fun x y hx hy i j => by`. Rewrite using `[Matrix.add_apply]`. Conclude with `Submodule.add_mem _ (hx i j) (hy i j)`. Establish `hPneg : ∀ x, P x → P (-x)` using `fun x hx i j => by`. Rewrite using `[Matrix.neg_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Submodule.neg_mem _ (hx i j)`. Establish `hP0 : P 0` using `fun i j => by rw [Matrix.zero_apply]; exact Submodule.zero_mem _`. Establish `hann : ∀ (LS : GlobalTheory.FinPl.Lat S) (LT : GlobalTheory.FinPl.Lat T), IsSelfDualC S LS → IsSelfDualC T LT → (∀ m ∈ latO S T (LS : Set _) (LT : Set _) (· ∈ Q), ∀ m' ∈ latO S T (LS : Set _) (LT : Set _) (· ∈ Q), ψ (symplO S T m m') = 1) ∧ (∀ x, P x → (∀ m ∈ latO S T (LS : Set _ …`. Introduce `LS LT h1 h2`. Establish `A` using `GlobalTheory.SelfDualAt.latO_ann_at D ψ hψ S T LS LT h1 h2 (· ∈ Q)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨fun m hm m' hm' => (A m (GlobalTheory.FinPl.LatMem.latO_mxAt hm)).1 hm m' hm', fun x hx h => (A x hx).2 fun u' hu' => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.SplitScalar.symplO_skew S T u' x, psi_neg, h u' hu', inv_one]`. Take `⟨qM, hqM⟩` from `vac_eigen ψ hψ S T M M' hM hM' Q`. Take `⟨qN, hqN⟩` from `vac_eigen ψ hψ S T N N' hN hN' Q`. Establish `hcomb : ∀ (c : WO S T →₀ ℂ) f, comb ψ S T c f = ∑ u ∈ c.support, c u • heisO ψ S T u f` using `fun _ _ => rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hg0 : g₀ ≠ 0`. Introduce and unpack `rfl`. Apply `hne` to reduce the goal to its premises. Rewrite using `[hcomb]`. Conclude with `Finset.sum_eq_zero fun u _ => by rw [heisO_zero_fun, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `set F' := comb ψ S T o' g₀ with hF'def`. Establish `hqM0 : ∀ m ∈ latO S T (M : Set _) (M' : Set _) (· ∈ Q), qM m ≠ 0` using `fun m hm => eig_ne ψ S T (hqM m hm g₀ hg) hg0`. Establish `hqN0 : ∀ m ∈ latO S T (N : Set _) (N' : Set _) (· ∈ Q), qN m ≠ 0` using `fun m hm => eig_ne ψ S T (hqN m hm F' hF') hne`. Set `U : Submodule ℂ (WO S T → ℂ)` to `Submodule.span ℂ {x | ∃ y, P y ∧ x = heisO ψ S T y F'}`. Establish `hU : ∀ m, P m → ∀ x ∈ U, heisO ψ S T m x ∈ U`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `m hm x hx`. Establish `hle : U ≤ U.comap (hL ψ S T m)` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap]`. Express the relevant statement in the definitionally equal form `heisO ψ S T m (heisO ψ S T y F') ∈ U`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.SplitScalar.heisO_heisO]`. Conclude with `U.smul_mem _ (Submodule.subset_span ⟨m + y, hPadd _ _ hm hy, rfl⟩))`. Conclude with `hle hx`. Establish `hF'U0 : F' ∈ U` using `Submodule.subset_span ⟨0, hP0, (GlobalTheory.LatVac.heisO_zero ψ F').symm⟩`. Establish `hF'U : ∑ u ∈ o'.support, o' u • heisO ψ S T (id u) g₀ ∈ U`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `hF'U0` using `[hF'def, hcomb]`. Conclude with `hF'U0`. Establish `tM1 : ∀ m ∈ latO S T (M : Set _) (M' : Set _) (· ∈ Q), ∀ m' ∈ latO S T (M : Set _) (M' : Set _) (· ∈ Q), ψ (symplO S T m m') = 1` using `(hann M M' hM hM').1`. Establish `tM2 : ∀ x, P x → (∀ m ∈ latO S T (M : Set _) (M' : Set _) (· ∈ Q), ψ (symplO S T m x) = 1) → x ∈ latO S T (M : Set _) (M' : Set _) (· ∈ Q)` using `(hann M M' hM hM').2`. Establish `tM3 : ∀ m ∈ latO S T (M : Set _) (M' : Set _) (· ∈ Q), P m` using `fun m hm => GlobalTheory.FinPl.LatMem.latO_mxAt hm`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `tMq : ∀ m ∈ latO S T (M : Set _) (M' : Set _) (· ∈ Q), heisO ψ S T m g₀ = qM m • g₀` using `fun m hm => hqM m hm g₀ hg`. Establish `hA` using `class_mem ψ S T _ P tM1 tM2 tM3 hPsub g₀ qM tMq hqM0 U (fun m hm => hU m (tM3 m hm)) o'.support id o' ho' hF'U`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi, hne'⟩ : ∃ i ∈ o'.support, (∑ j ∈ o'.support with (QuotientAddGroup.mk (id j) : WO S T ⧸ latO S T (M : Set _) (M' : Set _) (· ∈ Q)) = QuotientAddGroup.mk (id i), o' j • heisO ψ S T (id j) g₀) ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Apply `hne` to reduce the goal to its premises. Use `show ∑ u ∈ o'.support, o' u • heisO ψ S T u g₀ = 0`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to (g := fun j => (QuotientAddGroup.mk j : WO S T ⧸ latO S T (M : Set _) (M' : Set _) (· ∈ Q))) (t := o'.support.image (fun j => (QuotientAddGroup.mk j : WO S T ⧸ latO S T (M : Set _) (M' : Set _) (· ∈ Q)))) (fun x hx => Finset.mem_image_of_mem _ h …`. Use `Finset.sum_eq_zero fun C hC => ?_` and prove the remaining obligations. Take `⟨i, hi, rfl⟩` from `Finset.mem_image.1 hC`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hcon i hi`. Take `⟨κ, hκ⟩` from `Submodule.mem_span_singleton.1 (class_line ψ S T _ g₀ qM tMq o'.support id o' i)`. Establish `hκ0 : κ ≠ 0` using `by rintro rfl; rw [zero_smul] at hκ; exact hne' hκ.symm`. Establish `hyU : heisO ψ S T i g₀ ∈ U`. Use `U.smul_mem κ⁻¹ (hA i hi)` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[← hκ, smul_smul, inv_mul_cancel₀ hκ0, one_smul]`. Then use the resulting hypothesis. Establish `hg0U : g₀ ∈ U`. Use `U.smul_mem (ψ (symplOH S T (-i) i))⁻¹ (hU (-i) (hPneg _ (ho' i hi)) _ hyU)` as an intermediate fact. Rewrite `this` using `[heisO_inv, smul_smul, inv_mul_cancel₀ (psi_ne _ _), one_smul]`. Then use the resulting hypothesis. Establish `hFU : comb ψ S T o g₀ ∈ U`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hcomb]`. Conclude with `U.sum_mem fun u hu => U.smul_mem _ (hU u (ho u hu) g₀ hg0U)`. Distinguish the cases in `hF0 : comb ψ S T o g₀ = 0`. Conclude with `⟨0, by rw [hF0, zero_smul]⟩`. Take `⟨n, cf, gf, hgf⟩` from `(Submodule.mem_span_set').1 hFU`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hgf' : ∀ i, ∃ y, P y ∧ (gf i : WO S T → ℂ) = heisO ψ S T y F'` using `fun i => (gf i).2`. Use `choose y hyP hyeq using hgf'`. Establish `hFsum : ∑ i ∈ Finset.univ, cf i • heisO ψ S T (y i) F' = comb ψ S T o g₀`. Rewrite using `[← hgf]; exact Finset.sum_congr rfl fun i _ => by rw [hyeq i]`. Use `set F := comb ψ S T o g₀ with hFdef`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `tN1 : ∀ m ∈ latO S T (N : Set _) (N' : Set _) (· ∈ Q), ∀ m' ∈ latO S T (N : Set _) (N' : Set _) (· ∈ Q), ψ (symplO S T m m') = 1` using `(hann N N' hN hN').1`. Establish `tN2 : ∀ x, P x → (∀ m ∈ latO S T (N : Set _) (N' : Set _) (· ∈ Q), ψ (symplO S T m x) = 1) → x ∈ latO S T (N : Set _) (N' : Set _) (· ∈ Q)` using `(hann N N' hN hN').2`. Establish `tN3 : ∀ m ∈ latO S T (N : Set _) (N' : Set _) (· ∈ Q), P m` using `fun m hm => GlobalTheory.FinPl.LatMem.latO_mxAt hm`. Establish `tNq : ∀ m ∈ latO S T (N : Set _) (N' : Set _) (· ∈ Q), heisO ψ S T m F' = qN m • F'` using `fun m hm => hqN m hm F' hF'`. Establish `hB` using `class_mem ψ S T _ P tN1 tN2 tN3 hPsub F' qN tNq hqN0 (ℂ ∙ F) (fun m hm x hx => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 hx`. Rewrite using `[GlobalTheory.LatVac.heisO_smul, hqN m hm F hF, smul_smul]`. Conclude with `Submodule.mem_span_singleton.2 ⟨a * qN m, rfl⟩)`. Use the proof step `Finset.univ y cf (fun i _ => hyP i) (by rw [hFsum]; exact Submodule.mem_span_singleton_self F)`. Choose the witnesses or unpack the hypotheses as in `⟨i, -, hne2⟩ : ∃ i ∈ (Finset.univ : Finset (Fin n)), (∑ j ∈ Finset.univ with (QuotientAddGroup.mk (y j) : WO S T ⧸ latO S T (N : Set _) (N' : Set _) (· ∈ Q)) = QuotientAddGroup.mk (y i), cf j • heisO ψ S T (y j) F') ≠ 0 := by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hF0` to reduce the goal to its premises. Rewrite using `[← hFsum, ← Finset.sum_fiberwise_of_maps_to (g := fun j => (QuotientAddGroup.mk (y j) : WO S T ⧸ latO S T (N : Set _) (N' : Set _) (· ∈ Q))) (t := Finset.univ.image (fun j => (QuotientAddGroup.mk (y j) : WO S T ⧸ latO S T (N : Set _) (N' : Set _) (· ∈ Q)))) (fun x hx => Finset.me …`. Use `Finset.sum_eq_zero fun C hC => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨i, hi, rfl⟩` from `Finset.mem_image.1 hC`. Conclude with `hcon i hi`. Take `⟨κ', hκ'⟩` from `Submodule.mem_span_singleton.1 (class_line ψ S T _ F' qN tNq Finset.univ y cf i)`. Take `⟨μ, hμ⟩` from `Submodule.mem_span_singleton.1 (hB i (Finset.mem_univ _))`. Establish `hκ'0 : κ' ≠ 0` using `by rintro rfl; rw [zero_smul] at hκ'; exact hne2 hκ'.symm`.
-
-Establish `hμ0 : μ ≠ 0` using `by rintro rfl; rw [zero_smul] at hμ; exact hne2 hμ.symm`. Establish `hX : heisO ψ S T (y i) F' = (κ'⁻¹ * μ) • F`. Rewrite using `[mul_smul, hμ, ← hκ', smul_smul, inv_mul_cancel₀ hκ'0, one_smul]`. Establish `hyN : y i ∈ latO S T (N : Set _) (N' : Set _) (· ∈ Q)`. Use `tN2 _ (hyP i) fun m hm => ?_` and prove the remaining obligations.
-
-Establish `e1` using `heisO_eig ψ S T (y := y i) (hqN m hm F' hF')`. Rewrite `e1` using `[hX, GlobalTheory.LatVac.heisO_smul, hqN m hm F hF, smul_smul, smul_smul]`. Establish `e2` using `smul_left_injective ℂ hF0 e1`. Establish `hk : κ'⁻¹ * μ ≠ 0` using `mul_ne_zero (inv_ne_zero hκ'0) hμ0`. Establish `e3 : (κ'⁻¹ * μ * qN m) * ψ (symplO S T m (y i)) = (κ'⁻¹ * μ * qN m) * 1`.
-
-Take the linear combination `-e2`. Conclude with `mul_left_cancel₀ (mul_ne_zero hk (hqN0 m hm)) e3`. Use `⟨μ⁻¹ * κ' * qN (y i), ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul, ← hqN _ hyN F' hF', hX, smul_smul, show μ⁻¹ * κ' * (κ'⁻¹ * μ) = 1 by field_simp, one_smul]`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (M N : GlobalTheory.FinPl.Lat S) (M' N' : GlobalTheory.FinPl.Lat T) (Q : Finset (GlobalTheory.FinPl.Pl D)) (o o' : WO S T →₀ ℂ) (g₀ : WO S T → ℂ), IsStdChar D ψ (-1) → IsSelfDualC S M → IsSelfDualC T M' → IsSelfDualC S N → IsSelfDualC T N' → GlobalTheory.FinPl.CombAt (· ∈ Q) o → GlobalTheory.FinPl.CombAt (· ∈ Q) o' → GlobalTheory.FinPl.Vac ψ S T M M' (· ∈ Q) g₀ → GlobalTheory.FinPl.Vac ψ S T N N' (· ∈ Q) (comb ψ S T o g₀) → GlobalTheory.FinPl.Vac ψ S T N N' (· ∈ Q) (comb ψ S T o' g₀) → comb ψ S T o' g₀ ≠ 0 → ∃ c : ℂ, comb ψ S T o g₀ = c • comb ψ S T o' g₀ := by
   intro D ψ S T M N M' N' Q o o' g₀ hψ hM hM' hN hN' ho ho' hg hF hF' hne

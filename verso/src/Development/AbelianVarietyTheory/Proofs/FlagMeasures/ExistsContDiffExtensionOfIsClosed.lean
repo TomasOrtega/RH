@@ -9,15 +9,15 @@ namespace GlobalTheory
 open scoped ContDiff Manifold Topology in
 
 /- English proof (translation)
-Set `t : E → Set ℂ` to `fun y => if y ∈ S then {f y} else Set.univ`. Establish `ht : ∀ y, Convex ℝ (t y)`. Introduce `y`. Distinguish the cases in `hy : y ∈ S`. Simplify using `only [t, if_pos hy]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Conclude with `convex_singleton _`. Simplify using `only [t, if_neg hy]`. Conclude with `convex_univ`. Establish `hloc : ∀ x : E, ∃ U ∈ 𝓝 x, ∃ g : E → ℂ, ContMDiffOn 𝓘(ℝ, E) 𝓘(ℝ, ℂ) ((⊤ : ℕ∞) : WithTop ℕ∞) g U ∧ ∀ y ∈ U, g y ∈ t y`. Introduce `x`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hx : x ∈ S`. Take `⟨U, F, hU, hxU, hF, hfF⟩` from `hf x hx`. Use `⟨U, hU.mem_nhds hxU, F, hF.contMDiffOn, fun y hy => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hyS : y ∈ S`. Simplify using `only [t, if_pos hyS, Set.mem_singleton_iff]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hfF y hy hyS).symm`. Simplify using `only [t, if_neg hyS, Set.mem_univ]`. Use `⟨Sᶜ, hS.isOpen_compl.mem_nhds hx, fun _ => 0, contMDiffOn_const, fun y hy => ?_⟩` and prove the remaining obligations. Simplify using `only [t, if_neg (show y ∉ S from hy), Set.mem_univ]`. Take `⟨g, hg⟩` from `exists_contMDiffMap_forall_mem_convex_of_local 𝓘(ℝ, E) (n := ⊤) ht hloc`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨g, g.contMDiff.contDiff, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hgy` using `hg y`. Simplify `hgy` using `only [t, if_pos hy, Set.mem_singleton_iff]`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.exists_contDiff_extension_of_isClosed {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] {S : Set E} (hS : IsClosed S) (f : E → ℂ)
@@ -50,13 +50,13 @@ theorem _root_.GlobalTheory.exists_contDiff_extension_of_isClosed {E : Type*} [N
 open scoped ContDiff Manifold Topology in
 
 /- English proof (translation)
-Introduce `n ε f hf`. Set `S : Set (Fin n → Fin n → ℂ)` to `{x | _root_.Formalism.REAL.inUJ ε (Matrix.of x)}`. Establish `hS : IsClosed S`. Establish `h0 : Continuous (fun x : Fin n → Fin n → ℂ => Matrix.of x)` using `continuous_id`. Establish `hc : Continuous (fun x : Fin n → Fin n → ℂ => Matrix.conjTranspose (Matrix.of x) * _root_.Formalism.REAL.Jm ε * Matrix.of x)` using `(h0.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul h0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `isClosed_eq hc continuous_const`. Take `⟨F, hF, hFS⟩` from `_root_.GlobalTheory.exists_contDiff_extension_of_isClosed hS (fun x => f (Matrix.of x)) (by`. Introduce `x hx`. Unfold `_root_.Formalism.REAL.SmoothOnG at hf`. Take `⟨U, G, hU, hxU, hG, hfG⟩` from `hf (Matrix.of x) hx`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `U' : Set (Fin n → Fin n → ℂ)` to `U`. Set `G' : (Fin n → Fin n → ℂ) → ℂ` to `G`. Establish `hU' : IsOpen U'` using `hU`. Establish `hG' : ContDiffOn ℝ ∞ G' U'` using `hG`. Conclude with `⟨U', G', hU', hxU, hG', fun y hy hyS => hfG (Matrix.of y) hy hyS⟩)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨F, hF, fun g hg => hFS (fun i j => g i j) hg⟩`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.smoothOnG_exists_contDiff_extension :
     ∀ (n : ℕ) (ε : Fin n → Bool) (f : Matrix (Fin n) (Fin n) ℂ → ℂ), _root_.Formalism.REAL.SmoothOnG ε f →

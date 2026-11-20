@@ -19,9 +19,9 @@ noncomputable section
 namespace GlobalTheory.Fam
 
 /- English proof (translation)
-Introduce `D ψ _ a y βT PP l FY sc hN hx N M hsdN hIntN _ _ j ρ h`. Establish `hs` using `l.hs`. Establish `hc : j + 1 + 2 * ρ = l.s + 1` using `by omega`. Establish `hm` using `GlobalTheory.JacMono.monoAt_of_jacFrame l.q l.unit ((y.jac j ρ h).lev (a.x (j + 1)).vol) (hsdN (j + 1) (by omega)) (hx (j + 1) (by omega)).sd (hN.1 j) (hN.2.2.1 j ρ h) (hN.2.2.2.2.1 j ρ h _ hc) (hIntN (j + 1) _ hc) (l.latX (j + 1) (by omega))`. Rewrite `hm` using `[l.under]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hm`.
+A detailed English derivation is pending.
 -/
 theorem monoW_of_normalFrames : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ {a : XGeo D} (y : YRat a) {βT : GL (Fin D.sp.X'.rank) (Lev.EAf D)} {PP : Pl D.host.E} (l : LocX a βT PP) (FY : FYFam l) (sc : ℕ → l.k), IsNormalFr l y FY sc → (∀ j, j ≤ D.R.m → (a.x j).Is) → ∀ (N : ∀ j, GlobalTheory.FinPl.Lat (Yc D j)) (M : ∀ j ρ (h : j + 2 * ρ + 2 = D.R.m), GlobalTheory.FinPl.Lat (y.bes j ρ h).V₀), (∀ j, j < D.R.m → IsSelfDualC (Yc D j) (N j)) → (∀ j c (hc : j + c = l.s + 1), IntIn l.q (Yc D j) (FY j c hc) (N j)) → (∀ j ρ h, IsSelfDualC (y.bes j ρ h).V₀ (M j ρ h)) → (∀ j ρ h (hj : j ≤ l.s + 1) (F₀ : Frame l.k ((y.bes j ρ h).lev (a.x j).vol).V₀.rank (XIx (Fin D.R.k) (Fin D.R.t) j ⊕ Unit)), (ofSplit l.q).IsCoreFrame ((y.bes j ρ h).lev (a.x j).vol) (sc j) (l.FX j hj) F₀ → IntIn l.q _ F₀ (M j ρ h)) → ∀ j ρ (h : j + 2 * ρ + 2 = D.R.m), GlobalTheory.FinPl.MonoAt ((y.jac j ρ h).lev (a.x (j + 1)).vol).d (N (j + 1)) (a.x (j + 1)).L (PP.under (𝓞 D.host.F)) := by
   intro D ψ _ a y βT PP l FY sc hN hx N M hsdN hIntN _ _ j ρ h

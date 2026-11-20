@@ -7,19 +7,17 @@ open Filter Topology
 namespace Formalism.IndefR.Fin.U1
 
 /- English proof (translation)
-Use `set θ := Complex.arg (z : ℂ) with hθ`. Establish `hz : (z : ℂ) = Complex.exp (θ * Complex.I)`. Use `Complex.norm_mul_exp_arg_mul_I (z : ℂ)` as an intermediate fact. Rewrite `this` using `[Circle.norm_coe, Complex.ofReal_one, one_mul]`. Conclude with `this.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hre : ∀ n : ℕ, ((z ^ n : Circle) : ℂ).re = Real.cos (n * θ)`. Introduce `n`. Rewrite using `[Circle.coe_pow, hz, ← Complex.exp_nat_mul, ← mul_assoc, ← Complex.ofReal_natCast, ← Complex.ofReal_mul, Complex.exp_ofReal_mul_I_re]`. Distinguish the cases in `h0 : θ = 0`. Apply `Circle.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction.
 
-Rewrite using `[hz, h0, Complex.ofReal_zero, zero_mul, Complex.exp_zero, Circle.coe_one]`. Use `exfalso set t := |θ| with ht`. Establish `ht0 : 0 < t` using `abs_pos.mpr h0`. Establish `htpi : t ≤ Real.pi` using `Complex.abs_arg_le_pi _`. Use `set n := ⌈Real.pi / (2 * t)⌉₊ with hn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : Real.pi / 2 ≤ n * t`. Use `Nat.le_ceil (Real.pi / (2 * t))` as an intermediate fact. Rewrite `this` using `[← hn]`. Establish `e : Real.pi / 2 = Real.pi / (2 * t) * t` using `by field_simp`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_right this ht0.le`. Establish `h2 : (n : ℝ) * t < Real.pi / 2 + t`. Use `Nat.ceil_lt_add_one (div_nonneg Real.pi_pos.le (by positivity : (0 : ℝ) ≤ 2 * t))` as an intermediate fact. Rewrite `this` using `[← hn]`. Establish `e : Real.pi / 2 + t = (Real.pi / (2 * t) + 1) * t` using `by field_simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `mul_lt_mul_of_pos_right this ht0`. Establish `hc : Real.cos (n * θ) = Real.cos (n * t)`. Rewrite using `[← Real.cos_abs (n * θ), abs_mul, Nat.abs_cast]`. Use `h n` as an intermediate fact.
-
-Rewrite `this` using `[hre, hc]`. Use `Real.cos_nonpos_of_pi_div_two_le_of_le h1 (by linarith)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem circle_eq_one_of_re_pos (z : Circle) (h : ∀ n : ℕ, 0 < ((z ^ n : Circle) : ℂ).re) : z = 1 := by
   set θ := Complex.arg (z : ℂ) with hθ
@@ -73,15 +71,15 @@ section Loc
 variable {K : Type*} [NormedField K]
 
 /- English proof (translation)
-Establish `hcN : Continuous fun y : K × K => nrm Δ y.1 y.2` using `by unfold nrm; fun_prop`. Establish `hn1 : Continuous fun y : K × K => a * (y.1 * y.1 + Δ * (y.2 * y.2)) - Δ * b * (2 * y.1 * y.2)` using `by fun_prop`. Establish `hn2 : Continuous fun y : K × K => b * (y.1 * y.1 + Δ * (y.2 * y.2)) - a * (2 * y.1 * y.2)` using `by fun_prop`. Establish `hA' : ContinuousAt (fun y : K × K => cAq Δ a b y.1 y.2) (p0, r0)`. Unfold `cAq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `hn1.continuousAt.div hcN.continuousAt hN`. Establish `hB' : ContinuousAt (fun y : K × K => cBq Δ a b y.1 y.2) (p0, r0)`. Unfold `cBq`. Conclude with `hn2.continuousAt.div hcN.continuousAt hN`. Establish `e1 : ∀ᶠ y in 𝓝 ((p0, r0) : K × K), nrm Δ y.1 y.2 ≠ 0` using `hcN.continuousAt.eventually_ne hN`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : ∀ᶠ y in 𝓝 ((p0, r0) : K × K), ‖cAq Δ a b y.1 y.2 - 1‖ < ε`. Establish `t` using `hA'.tendsto`. Simplify using `only [hA] at t`. Conclude with `(Metric.tendsto_nhds.1 t ε hε).mono fun y hy => by rwa [dist_eq_norm] at hy`. Establish `e3 : ∀ᶠ y in 𝓝 ((p0, r0) : K × K), ‖cBq Δ a b y.1 y.2‖ < ε`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `t` using `hB'.tendsto`. Simplify using `only [hB] at t`. Conclude with `(Metric.tendsto_nhds.1 t ε hε).mono fun y hy => by rwa [dist_zero_right] at hy`. Take `⟨η, hη, hball⟩` from `Metric.eventually_nhds_iff.1 (e1.and (e2.and e3))`. Use `⟨η, hη, fun p r hp hr => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hd : dist ((p, r) : K × K) (p0, r0) < η`. Rewrite using `[Prod.dist_eq, max_lt_iff, dist_eq_norm, dist_eq_norm]`. Conclude with `⟨hp, hr⟩`. Take `⟨h1, h2, h3⟩` from `hball hd`. Conclude with `⟨h1, h2, h3⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem loc_of (Δ a b p0 r0 : K) (hN : nrm Δ p0 r0 ≠ 0) (hA : cAq Δ a b p0 r0 = 1) (hB : cBq Δ a b p0 r0 = 0)
     (ε : ℝ) (hε : 0 < ε) :
@@ -113,17 +111,15 @@ theorem loc_of (Δ a b p0 r0 : K) (hN : nrm Δ p0 r0 ≠ 0) (hA : cAq Δ a b p0 
   exact ⟨h1, h2, h3⟩
 
 /- English proof (translation)
-Distinguish the cases in `ha : 1 + a = 0`. Establish `hb : b = 0`. Establish `hbb : Δ * (b * b) = 0`. Establish `: a = -1` using `by linear_combination ha`. Substitute `this` using the available equality.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Take the linear combination `-hab`. Conclude with `mul_self_eq_zero.mp ((mul_eq_zero.mp hbb).resolve_left hΔ)`. Establish `hN : nrm Δ 0 1 = -Δ` using `by unfold nrm; ring`. Establish `hN0 : nrm Δ 0 1 ≠ 0` using `by rw [hN]; exact neg_ne_zero.mpr hΔ`. Use `⟨0, 1, loc_of Δ a b 0 1 hN0 ?_ ?_ ε hε⟩` and prove the remaining obligations.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `cAq`. Rewrite using `[div_eq_one_iff_eq hN0, hN, hb]`. Take the linear combination `Δ * ha`. Unfold `cBq`. Rewrite using `[hb]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hN : nrm Δ (1 + a) b = 2 * (1 + a)` using `by unfold nrm; linear_combination hab`. Establish `hN0 : nrm Δ (1 + a) b ≠ 0` using `by rw [hN]; exact mul_ne_zero h2 ha`. Use `⟨1 + a, b, loc_of Δ a b (1 + a) b hN0 ?_ ?_ ε hε⟩` and prove the remaining obligations. Unfold `cAq`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_eq_one_iff_eq hN0, hN]`. Take the linear combination `(a + 2) * hab`. Unfold `cBq`. Rewrite using `[div_eq_zero_iff]`. Use `left`.
-
-Take the linear combination `(-b) * hab`.
+Take a linear combination of the given relations to obtain the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem loc_near (Δ a b : K) (h2 : (2 : K) ≠ 0) (hΔ : Δ ≠ 0) (hab : a * a - Δ * (b * b) = 1)
     (ε : ℝ) (hε : 0 < ε) :

@@ -6,11 +6,9 @@ open scoped ContDiff
 namespace GlobalTheory.SetIntegralSmoothness
 
 /- English proof (translation)
-Establish `hKm : MeasurableSet K` using `hK.isClosed.measurableSet`. Establish `hΨ1 : ContDiff ℝ 1 Ψ` using `hΨ.of_le (by exact_mod_cast le_top)`. Establish `hdΨ : Continuous (fderiv ℝ Ψ)` using `hΨ1.continuous_fderiv one_ne_zero`. Establish `hS : IsCompact (closedBall p₀ 1 ×ˢ (a '' K))` using `(isCompact_closedBall p₀ 1).prod (hK.image ha)`. Take `⟨C, hC⟩` from `hS.exists_bound_of_continuousOn hdΨ.continuousOn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hcont : ∀ p : P, Continuous fun x : X => Ψ (p, a x)` using `fun p => hΨ.continuous.comp (continuous_const.prodMk ha)`. Use `hasFDerivAt_integral_of_dominated_of_fderiv_le (𝕜 := ℝ) (μ := μ.restrict K) (x₀ := p₀) (F := fun p x => Ψ (p, a x)) (F' := fun p x => (fderiv ℝ Ψ (p, a x)).comp (ContinuousLinearMap.inl ℝ P E)) (bound := fun _ => C * ‖ContinuousLinearMap.inl ℝ P E‖) (closedBall_mem_nhds p₀ one_po …` and prove the remaining obligations. Conclude with `Filter.Eventually.of_forall fun p => (hcont p).continuousOn.aestronglyMeasurable_of_isCompact hK hKm`. Conclude with `(hcont p₀).continuousOn.integrableOn_compact hK`. Conclude with `((hdΨ.comp (continuous_const.prodMk ha)).clm_comp continuous_const).continuousOn.aestronglyMeasurable_of_isCompact hK hKm`.
-
-Use `(ae_restrict_iff' hKm).mpr (Filter.Eventually.of_forall fun x hx p hp => ?_)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Conclude with `integrableOn_const hK.measure_ne_top`. Conclude with `Filter.Eventually.of_forall fun x p _ => ((hΨ1.differentiable one_ne_zero) (p, a x)).hasFDerivAt.comp p (hasFDerivAt_prodMk_left p (a x))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_setIntegral {X P E : Type} [TopologicalSpace X] [T2Space X]
     [MeasurableSpace X] [BorelSpace X] [NormedAddCommGroup P] [NormedSpace ℝ P]
@@ -45,9 +43,9 @@ theorem hasFDerivAt_setIntegral {X P E : Type} [TopologicalSpace X] [T2Space X]
       ((hΨ1.differentiable one_ne_zero) (p, a x)).hasFDerivAt.comp p (hasFDerivAt_prodMk_left p (a x))
 
 /- English proof (translation)
-Proceed by induction on `m generalizing F with`. Consider the case `zero`. Rewrite using `[Nat.cast_zero, contDiff_zero]`. Conclude with `continuous_iff_continuousAt.mpr fun p₀ => (hasFDerivAt_setIntegral μ hK ha Ψ hΨ p₀).continuousAt`. Consider the case `succ m IH`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show ((m + 1 : ℕ) : WithTop ℕ∞) = (m : WithTop ℕ∞) + 1 by norm_cast, contDiff_succ_iff_hasFDerivAt]`. Use `⟨fun p => ∫ x in K, (fderiv ℝ Ψ (p, a x)).comp (ContinuousLinearMap.inl ℝ P E) ∂μ, ?_, fun p₀ => hasFDerivAt_setIntegral μ hK ha Ψ hΨ p₀⟩` and prove the remaining obligations. Establish `hΨ' : ContDiff ℝ ∞ fun q : P × E => (fderiv ℝ Ψ q).comp (ContinuousLinearMap.inl ℝ P E)` using `(hΨ.fderiv_right (m := ∞) (by simp)).clm_comp contDiff_const`. Conclude with `IH (fun q : P × E => (fderiv ℝ Ψ q).comp (ContinuousLinearMap.inl ℝ P E)) hΨ'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiff_setIntegral {X P E : Type} [TopologicalSpace X] [T2Space X]
     [MeasurableSpace X] [BorelSpace X] [NormedAddCommGroup P] [NormedSpace ℝ P]

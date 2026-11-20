@@ -6,11 +6,11 @@ open CategoryTheory AlgebraicGeometry CrystallineSemistableComparison Crystallin
 namespace GlobalTheory.CompanionTheory.NormalForm
 
 /- English proof (translation)
-Introduce `S _ ϖ hd f M`. Proceed by induction on `M generalizing f with`. Consider the case `zero => exact Or.inl (by simp)`. Consider the case `succ M ih`. Break down `hd f with ⟨g, rfl⟩ | hf` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `ih g with hg | ⟨j, f', hg, hf'⟩` into its components or cases. Use `left`. Rewrite using `[pow_succ']`. Conclude with `mul_dvd_mul_left ϖ hg`. Use `right`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the second alternative.
 
-Use `⟨j + 1, f', ?_, hf'⟩` and prove the remaining obligations. Rewrite using `[hg, pow_succ', mul_assoc]`. Conclude with `Or.inr ⟨0, f, by simp, hf⟩`.
+A detailed English derivation is pending.
 -/
 theorem normal_form_of_dichotomy :
     ∀ {S : Type} [CommRing S] (ϖ : S), (∀ f : S, ϖ ∣ f ∨ f ∣ ϖ) →

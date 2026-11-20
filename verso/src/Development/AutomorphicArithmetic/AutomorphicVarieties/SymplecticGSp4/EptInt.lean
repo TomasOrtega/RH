@@ -4,9 +4,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.Eii
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `g₀`. Rewrite using `[ContinuousAt, Metric.tendsto_nhds]`. Introduce `ε hε`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one hε ha1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `filter_upwards [(hf n).eventually_eq g₀] with g hg`. Rewrite using `[dist_eq_norm, ← map_sub]`. Conclude with `lt_of_le_of_lt (hy n _ (Ideal.Quotient.eq.1 hg)) hn`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cont_of_adic {Γ R K : Type} [TopologicalSpace Γ] [CommRing R] [NormedRing K] (I : Ideal R)
     (y : R →+* K) (a : ℝ) (ha1 : a < 1) (ha0 : 0 ≤ a) (hy : ∀ n, ∀ x ∈ I ^ n, ‖y x‖ ≤ a ^ n)
@@ -21,15 +21,15 @@ private theorem cont_of_adic {Γ R K : Type} [TopologicalSpace Γ] [CommRing R] 
   exact lt_of_le_of_lt (hy n _ (Ideal.Quotient.eq.1 hg)) hn
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D hD r hr`. Take `⟨R, _, _, _, ρ, y, hρ, rfl⟩` from `hr`. Take `⟨⟨c', hc', hy'⟩, a, ha1, ha0, hy⟩` from `(coPt c R).1 y`. Use `⟨?_, fun g i j => ?_, c', hc', fun g i j => hy' _, fun i => ?_⟩` and prove the remaining obligations. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `cont_of_adic (maximalIdeal R) (y : R →+* PadicAlgCl l) a ha1 ha0 hy _ (ρ.cont i j)`. Establish `hm : ρ.hom g i j - algebraMap c.O R (D.r0 g i j) ∈ maximalIdeal R ^ 1`. Rewrite using `[pow_one, ← res_eq_zero_iff c.O, map_sub, AlgHom.commutes, ρ.red, sub_eq_zero]`. Both sides reduce to the same expression. Establish `h` using `hy 1 _ hm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[map_sub, AlgHom.commutes, pow_one]`. Conclude with `lt_of_le_of_lt h ha1`. Establish `h` using `eii D hD R ρ hρ.mult hρ.nrm i`. Take `⟨b, hb⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.1 h`. Use `⟨b.support, fun g => y (b g), fun g => hy' _, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use extensionality with `p q`. Establish `h2` using `congrArg y (congrFun (congrFun hb p) q)`. Rewrite `h2` using `[Finsupp.sum, Matrix.sum_apply, map_sum]`. Rewrite using `[Matrix.sum_apply]`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, map_mul] at h2 ⊢`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : y (Matrix.single i i (1 : R) p q) = Matrix.single i i (1 : PadicAlgCl l) p q`. Rewrite using `[Matrix.single_apply, Matrix.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[← h3, ← h2]`. Both sides reduce to the same expression.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.GradeZeroInterpolatingElement.eptInt :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ r, D.EPt r → Continuous r ∧ (∀ g i j, ‖r g i j - D.r0E g i j‖ < 1) ∧ ∃ c' : Coef l, c.O ≤ c'.O ∧ (∀ g i j, r g i j ∈ c'.O) ∧ ∀ i, ∃ (s : Finset (G ℚ Ω)) (a : G ℚ Ω → PadicAlgCl l), (∀ g, a g ∈ c'.O) ∧ Matrix.single i i (1 : PadicAlgCl l) = ∑ g ∈ s, a g • r g := by

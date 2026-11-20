@@ -13,9 +13,9 @@ variable {R R' Γ Γ' M : Type} [CommRing R] [CommRing R'] [Group Γ] [Topologic
 
 include h in
 /- English proof (translation)
-Use `⟨Equiv.subtypeEquivRight fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_riemannRochSpace_iff_regularAt_everywhere, mem_riemannRochSpace_iff_regularAt_everywhere]`. Prove the components needed by the constructor for the conclusion. Introduce `H g`. Rewrite using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `H _`. Introduce `H g`. Use `H (e.symm g)` as an intermediate fact. Rewrite `this` using `[h, e.apply_symm_apply]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem invariants_equiv : Nonempty (H0 ρ ≃ H0 ρ') := by
   refine ⟨Equiv.subtypeEquivRight fun m => ?_⟩
@@ -30,19 +30,17 @@ private theorem invariants_equiv : Nonempty (H0 ρ ≃ H0 ρ') := by
 
 include he he' h in
 /- English proof (translation)
-Establish `key : ∀ f : Γ → M, f ∈ Z1 ρ ↔ (fun g => f (e g)) ∈ Z1 ρ'`. Introduce `f`. Use `show (Continuous f ∧ _) ↔ (Continuous _ ∧ _)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hc, hf⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hc.comp he, fun a b => ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, h]`. Conclude with `hf _ _`. Introduce and unpack `⟨hc, hf⟩`. Use `⟨?_, fun a b => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `hc.comp he'` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Use `hf (e.symm a) (e.symm b)` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `[map_mul, h]`. Establish `keyB : ∀ f : Γ → M, f ∈ B1 ρ ↔ (fun g => f (e g)) ∈ B1 ρ'`. Introduce `f`. Rewrite using `[mem_coboundaries1, mem_coboundaries1]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨m, hm⟩`. Conclude with `⟨m, fun g => by simp [hm, h]⟩`. Introduce and unpack `⟨m, hm⟩`. Use `⟨m, fun g => ?_⟩` and prove the remaining obligations. Use `hm (e.symm g)` as an intermediate fact.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Simplify `this` using `[h]`. Set `φ : Z1 ρ ≃ Z1 ρ'` to `{ toFun := fun f => ⟨fun g => f.1 (e g), (key f.1).1 f.2⟩ invFun := fun f => ⟨fun g => f.1 (e.symm g), (key _).2 (by`. Rewrite using `[show (fun g => f.1 (e.symm (e g))) = f.1 from funext fun g => by simp]`. Conclude with `f.2)⟩`. Use `left_inv := fun f => Subtype.ext (funext fun g => by simp)`.
-
-Use `right_inv := fun f => Subtype.ext (funext fun g => by simp) }`. Use `⟨Quotient.congr φ fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.quotientRel_def, Submodule.quotientRel_def, Submodule.mem_comap, Submodule.mem_comap]`. Conclude with `keyB _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem first_cohomology_equiv : Nonempty (H1 ρ ≃ H1 ρ') := by
   have key : ∀ f : Γ → M, f ∈ Z1 ρ ↔ (fun g => f (e g)) ∈ Z1 ρ' := by
@@ -84,21 +82,19 @@ private theorem first_cohomology_equiv : Nonempty (H1 ρ ≃ H1 ρ') := by
 
 include he he' h in
 /- English proof (translation)
-Establish `key : ∀ f : Γ × Γ → M, f ∈ Z2 ρ ↔ (fun p => f (e p.1, e p.2)) ∈ Z2 ρ'`. Introduce `f`. Use `show (Continuous f ∧ _) ↔ (Continuous _ ∧ _)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hc, hf⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hc.comp (he.prodMap he), fun a b c => ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, h]`. Conclude with `hf _ _ _`. Introduce and unpack `⟨hc, hf⟩`. Use `⟨?_, fun a b c => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `hc.comp (he'.prodMap he')` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Use `hf (e.symm a) (e.symm b) (e.symm c)` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `[map_mul, h]`. Establish `keyB : ∀ f : Γ × Γ → M, f ∈ B2 ρ ↔ (fun p => f (e p.1, e p.2)) ∈ B2 ρ'`. Introduce `f`. Rewrite using `[separated_dvr_second_cohomology_mem, separated_dvr_second_cohomology_mem]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨c, hc, rfl⟩`. Use `⟨fun g => c (e g), hc.comp he, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `⟨a, b⟩`. Simplify using `[d1_apply, h, map_mul]`. Introduce and unpack `⟨c, hc, hcf⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨fun g => c (e.symm g), hc.comp he', ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `⟨a, b⟩`. Use `congrFun hcf (e.symm a, e.symm b)` as an intermediate fact. Rewrite `this` using `[d1_apply]`. Rewrite using `[d1_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Simplify `this` using `[h, map_mul]`. Set `φ : Z2 ρ ≃ Z2 ρ'` to `{ toFun := fun f => ⟨fun p => f.1 (e p.1, e p.2), (key f.1).1 f.2⟩ invFun := fun f => ⟨fun p => f.1 (e.symm p.1, e.symm p.2), (key _).2 (by`. Rewrite using `[show (fun p : Γ' × Γ' => f.1 (e.symm (e p.1), e.symm (e p.2))) = f.1 from`. Use function extensionality and compare the values at `fun p => by simp]`. Conclude with `f.2)⟩`.
-
-Use `left_inv := fun f => Subtype.ext (funext fun p => by simp)`. Use `right_inv := fun f => Subtype.ext (funext fun p => by simp) }`. Use `⟨Quotient.congr φ fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.quotientRel_def, Submodule.quotientRel_def, Submodule.mem_comap, Submodule.mem_comap]`. Conclude with `keyB _`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem second_cohomology_equiv : Nonempty (H2 ρ ≃ H2 ρ') := by
   have key : ∀ f : Γ × Γ → M, f ∈ Z2 ρ ↔ (fun p => f (e p.1, e p.2)) ∈ Z2 ρ' := by
@@ -153,17 +149,13 @@ private def resC (R : Type) {k Γ M : Type} [CommRing R] [CommRing k] [Algebra R
   map_mul' g h := by ext; simp
 
 /- English proof (translation)
-Introduce `hfin hec Ω _ _ _ l _ k M _ _ _ _ _ _ _ _ _ _ A v hv hl ρ hc`. Use `haveI : Finite M := Module.finite_of_finite k`. Use `haveI : CharP k (l ^ 1) := by rw [pow_one]; infer_instance`. Use `letI : Algebra (ZMod (l ^ 1)) k := ZMod.algebra k (l ^ 1)`. Use `letI : Module (ZMod (l ^ 1)) M := Module.compHom M (algebraMap (ZMod (l ^ 1)) k)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : IsScalarTower (ZMod (l ^ 1)) k M := ⟨fun a b m => by rw [Algebra.smul_def, mul_smul]; rfl⟩`. Set `ρ₀` to `resC (ZMod (l ^ 1)) ρ`. Establish `hc₀ : ContAction ρ₀` using `hc`. Take `⟨-, hF1, hF2, -⟩` from `hfin ℚ Ω l 1 M A ρ₀ v one_pos hv hc₀`. Establish `hE` using `(hec ℚ Ω l 1 M A ρ₀ v one_pos hv hc₀).2 hl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hr : ∀ g m, ρ g m = ρ₀ (MulEquiv.refl _ g) m` using `fun _ _ => rfl`. Take `⟨e0⟩` from `invariants_equiv ρ₀ ρ (MulEquiv.refl _) hr`. Take `⟨e1⟩` from `first_cohomology_equiv ρ₀ ρ (MulEquiv.refl _) continuous_id continuous_id hr`. Take `⟨e2⟩` from `second_cohomology_equiv ρ₀ ρ (MulEquiv.refl _) continuous_id continuous_id hr`. Use `haveI : Finite (H1 ρ) := Finite.of_equiv _ e1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : Finite (H2 ρ) := Finite.of_equiv _ e2`. Use `⟨Module.Finite.of_finite, Module.Finite.of_finite, ?_⟩` and prove the remaining obligations. Establish `hcard : Nat.card (H1 ρ) = Nat.card (H0 ρ) * Nat.card (H2 ρ)`. Rewrite using `[← Nat.card_congr e1, ← Nat.card_congr e0, ← Nat.card_congr e2]`. Conclude with `hE`.
-
-Establish `pw : ∀ (V : Type) [AddCommGroup V] [Module k V] [Finite V], Nat.card V = Nat.card k ^ Module.finrank k V`. Introduce `V _ _ _`. Use `haveI := Fintype.ofFinite V`. Use `haveI := Fintype.ofFinite k`. Rewrite using `[Nat.card_eq_fintype_card, Nat.card_eq_fintype_card]`.
-
-Conclude with `Module.card_eq_pow_finrank`. Rewrite `hcard` using `[pw (H1 ρ), pw (H0 ρ), pw (H2 ρ), ← pow_add]`. Conclude with `Nat.pow_right_injective Finite.one_lt_card hcard`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.local_euler_characteristic_of_prime_not_mem :
     LocalFiniteness → LocalEulerChar → ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (k M : Type) [Field k] [Finite k] [CharP k l] [AddCommGroup M] [Module k M] [Module.Finite k M] [TopologicalSpace M] [DiscreteTopology M] [IsTopologicalAddGroup M] [ContinuousConstSMul k M] (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 ℚ)), IsPlaceOver A v → ((l : ℕ) : 𝓞 ℚ) ∉ v.asIdeal →

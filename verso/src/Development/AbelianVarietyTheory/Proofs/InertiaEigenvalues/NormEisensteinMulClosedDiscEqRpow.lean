@@ -14,11 +14,11 @@ noncomputable section
 namespace GlobalTheory.BSP
 
 /- English proof (translation)
-Establish `h : Polynomial.C (l : Wq l bk.a) ∣ bk.Ep - Polynomial.X ^ bk.Ep.natDegree`. Rewrite using `[Polynomial.C_dvd_iff_dvd_coeff]`. Introduce `i`. Rewrite using `[Polynomial.coeff_sub, Polynomial.coeff_X_pow]`. Break down `lt_trichotomy i bk.Ep.natDegree with hi | hi | hi` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[if_neg hi.ne, sub_zero]`. Conclude with `bk.dvd_coeff i hi`. Rewrite using `[if_pos hi, hi, bk.monic.coeff_natDegree, sub_self]`. Conclude with `dvd_zero _`. Rewrite using `[if_neg hi.ne', Polynomial.coeff_eq_zero_of_natDegree_lt hi, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `dvd_zero _`. Take `⟨q, hq⟩` from `h`. Conclude with `⟨q, by rw [← hq]; ring⟩`.
+A detailed English derivation is pending.
 -/
 theorem BK.exists_Ep_eq_X_pow_add {l : ℕ} [Fact l.Prime] {K : FinExt l} (bk : BK K) :
     ∃ q : Polynomial (Wq l bk.a),
@@ -35,17 +35,17 @@ theorem BK.exists_Ep_eq_X_pow_add {l : ℕ} [Fact l.Prime] {K : FinExt l} (bk : 
   exact ⟨q, by rw [← hq]; ring⟩
 
 /- English proof (translation)
-Introduce `l _ K bk ρ h0 h1 y`. Take `⟨_, _, ⟨hρ0, _, hρe⟩, _⟩` from `GlobalTheory.T.breuilKisin_flat_radius_ideal_facts l K bk`. Establish `hρ : 0 < ρ` using `hρ0.trans_le h0`. Rewrite using `[GlobalTheory.T.breuilKisin_closedDisc_norm_mul_multiplicative l K bk ρ hρ h1]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hl0 : (0 : ℝ) < l` using `Nat.cast_pos.2 (Fact.out : l.Prime).pos`. Apply `le_antisymm` to reduce the goal to its premises. Take `⟨q, hq⟩` from `bk.exists_Ep_eq_X_pow_add`. Establish `hE : bk.E = (X : bk.S) ^ bk.Ep.natDegree + (l : bk.S) * (q : bk.S)`. Simplify using `only [BK.E]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `conv_lhs => rw [hq]`. Rewrite using `[Polynomial.coe_add, Polynomial.coe_pow, Polynomial.coe_X, Polynomial.coe_mul, Polynomial.coe_C, map_natCast]`. Establish `hl' : ‖algebraMap bk.S (PreDisc l (X : bk.S) ρ) (l : bk.S)‖ ≤ (l : ℝ)⁻¹` using `gauge_le l (X : bk.S) ρ (by positivity) (Submodule.subset_span ⟨1, 0, 0, by rw [pow_zero, pow_zero, pow_one, inv_mul_cancel₀ hl0.ne', mul_one], by simp⟩)`. Establish `hX : ‖algebraMap bk.S (PreDisc l (X : bk.S) ρ) ((X : bk.S) ^ bk.Ep.natDegree)‖ ≤ (ρ : ℝ) ^ bk.Ep.natDegree` using `(norm_ofPre l (X : bk.S) ρ _).symm.trans_le (norm_toDisc_pow_le (l := l) (u := (X : bk.S)) _ hρ)`. Establish `hup : ‖algebraMap bk.S (PreDisc l (X : bk.S) ρ) bk.E‖ ≤ (ρ : ℝ) ^ bk.Ep.natDegree`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hE, map_add, map_mul, norm_preDisc]`. Use `(gauge_add_le_max l (X : bk.S) ρ _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[← norm_preDisc]`. Conclude with `hX`. Rewrite using `[← norm_preDisc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[NNReal.coe_pow]; exact pow_le_pow_left₀ (NNReal.coe_nonneg _) (by exact_mod_cast h0) _`. Conclude with `(norm_ofPre l (X : bk.S) ρ _).trans_le hup`. Take `⟨a, ha1, ha2, -, -⟩` from `GlobalTheory.T.exists_gaussNorm_coeff_wittDisc l K bk ρ hρ h1`. Take `⟨-, -, -, hk⟩` from `GlobalTheory.T.closedDiscGaugeCompletion_zero_one_properties l K bk`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : coeff bk.Ep.natDegree bk.E = 1`. Rewrite using `[BK.E, Polynomial.coeff_coe, bk.monic.coeff_natDegree]`. Establish `h` using `ha2 bk.Ep.natDegree (toDisc l (X : bk.S) ρ bk.E)`. Rewrite `h` using `[ha1, hc, hk 1 isUnit_one, one_mul]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem BK.norm_toDisc_E_mul : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (ρ : ℝ≥0), bk.ρ₀ ≤ ρ → ρ < 1 →
     ∀ y : bk.DS ρ, ‖toDisc l (X : bk.S) ρ bk.E * y‖ = (ρ : ℝ) ^ bk.Ep.natDegree * ‖y‖ := by

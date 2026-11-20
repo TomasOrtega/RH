@@ -18,21 +18,21 @@ def extZ : SB (RankIn k (Fin n) (Fin d) {n}) →ₗ[ℂ] (Matrix (Fin n) (Fin d)
   map_smul' c φ := funext fun Y => by by_cases h : Yᵀ.rank = n <;> simp [h, -rank_transpose]
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem extZ_pos (φ : SB (RankIn k (Fin n) (Fin d) {n})) {Y : Matrix (Fin n) (Fin d) k} (h : Yᵀ.rank = n) :
     extZ φ Y = φ.1 ⟨Yᵀ, h⟩ := dif_pos h
 
 /- English proof (translation)
-The claim follows from `dif_neg h`.
+A detailed English derivation is pending.
 -/
 theorem extZ_neg (φ : SB (RankIn k (Fin n) (Fin d) {n})) {Y : Matrix (Fin n) (Fin d) k} (h : Yᵀ.rank ≠ n) :
     extZ φ Y = 0 := dif_neg h
 
 /- English proof (translation)
-Establish `hXo : IsOpen {x : Matrix (Fin d) (Fin n) k | x.rank ∈ ({n} : Set ℕ)}`. Use `isOpen_le_rank (k := k) (a := Fin n) (b := Fin d) n using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Simplify using `only [Set.mem_setOf_eq, Set.mem_singleton_iff]`. Conclude with `⟨fun h => h.ge, fun h => le_antisymm (Matrix.rank_le_width x) h⟩`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Set `T : Matrix (Fin d) (Fin n) k ≃ₜ Matrix (Fin n) (Fin d) k` to `{ toFun := transpose, invFun := transpose, left_inv := fun _ => rfl, right_inv := fun _ => rfl, continuous_toFun := continuous_id.matrix_transpose, continuous_invFun := continuous_id.matrix_transpose }`. Conclude with `T.isOpenEmbedding.comp hXo.isOpenEmbedding_subtypeVal`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem isOpenEmb : IsOpenEmbedding fun x : RankIn k (Fin n) (Fin d) {n} => x.1ᵀ := by
   have hXo : IsOpen {x : Matrix (Fin d) (Fin n) k | x.rank ∈ ({n} : Set ℕ)} := by
@@ -46,15 +46,13 @@ theorem isOpenEmb : IsOpenEmbedding fun x : RankIn k (Fin n) (Fin d) {n} => x.1�
   exact T.isOpenEmbedding.comp hXo.isOpenEmbedding_subtypeVal
 
 /- English proof (translation)
-Take `⟨_, _⟩` from `GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Establish `hi` using `isOpenEmb (k := k) (n := n) (d := d)`. Establish `hC : IsCompact ((fun x : RankIn k (Fin n) (Fin d) {n} => x.1ᵀ) '' tsupport φ.1)` using `φ.2.2.image hi.continuous`. Establish `h0 : ∀ Y ∉ (fun x : RankIn k (Fin n) (Fin d) {n} => x.1ᵀ) '' tsupport φ.1, extZ φ Y = 0` using `fun Y hY => by`. Distinguish the cases in `h : Yᵀ.rank = n`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[extZ_pos φ h]`. Conclude with `image_eq_zero_of_notMem_tsupport fun hm => hY ⟨_, hm, rfl⟩`. Conclude with `extZ_neg φ h`. Use `⟨(IsLocallyConstant.iff_eventually_eq _).2 fun Y => ?_, HasCompactSupport.intro hC h0⟩` and prove the remaining obligations. Distinguish the cases in `h : Yᵀ.rank = n`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `hi.map_nhds_eq ⟨Yᵀ, h⟩`. Rewrite `e` using `[transpose_transpose]`. Rewrite using `[← e, Filter.eventually_map, extZ_pos φ h]`. Use `filter_upwards [(IsLocallyConstant.iff_eventually_eq _).1 φ.2.1 ⟨Yᵀ, h⟩] with x hx`. Rewrite using `[extZ_pos φ (Y := x.1ᵀ) x.2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`. Establish `hY : Y ∉ (fun x : RankIn k (Fin n) (Fin d) {n} => x.1ᵀ) '' tsupport φ.1`. Introduce and unpack `⟨x, -, rfl⟩`. Conclude with `h x.2`. Use `filter_upwards [hC.isClosed.isOpen_compl.mem_nhds hY] with Z hZ`.
-
-Rewrite using `[h0 Z hZ, h0 Y hY]`.
+A detailed English derivation is pending.
 -/
 theorem extZ_mem (φ : SB (RankIn k (Fin n) (Fin d) {n})) : extZ φ ∈ SB (Matrix (Fin n) (Fin d) k) := by
   obtain ⟨_, _⟩ := GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)
@@ -80,7 +78,7 @@ theorem extZ_mem (φ : SB (RankIn k (Fin n) (Fin d) {n})) : extZ φ ∈ SB (Matr
     rw [h0 Z hZ, h0 Y hY]
 
 /- English proof (translation)
-Use `⟨⟨_, comp_mem_SB_of_isInducing (isOpenEmb (k := k) (n := n) (d := d)).isInducing ⟨Φ, h.1⟩ isClosed_univ (fun _ => trivial) fun Y _ hY => ⟨⟨Yᵀ, (rank_transpose Y).trans (not_not.1 fun e => hY (h.2 Y e))⟩, rfl⟩⟩, funext fun Y => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hY : Yᵀ.rank = n`. Conclude with `extZ_pos _ hY`. Rewrite using `[extZ_neg _ hY, h.2 Y (by rwa [rank_transpose] at hY)]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_extZ {Φ : Matrix (Fin n) (Fin d) k → ℂ} (h : Full Φ) : ∃ φ, extZ φ = Φ := by
   refine ⟨⟨_, comp_mem_SB_of_isInducing (isOpenEmb (k := k) (n := n) (d := d)).isInducing ⟨Φ, h.1⟩ isClosed_univ (fun _ => trivial)
@@ -90,9 +88,9 @@ theorem exists_extZ {Φ : Matrix (Fin n) (Fin d) k → ℂ} (h : Full Φ) : ∃ 
   · rw [extZ_neg _ hY, h.2 Y (by rwa [rank_transpose] at hY)]
 
 /- English proof (translation)
-Establish `e : (g.valᵀ * Y * (invT h).val)ᵀ = act Yᵀ (g, h)`. Simplify using `only [act, invT, transpose_mul, MonoidHom.coe_mk, OneHom.coe_mk, transpose_transpose, Matrix.mul_assoc]`. Distinguish the cases in `hY : Yᵀ.rank = n`. Rewrite using `[extZ_pos _ hY, extZ_pos φ (by rw [e, rank_act]; exact hY)]`. Conclude with `congrArg (fun x => (omChar (Fin n) (Fin d) μ (g, h) : ℂ) * φ.1 x) (Subtype.ext e.symm)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[extZ_neg _ hY, extZ_neg φ (by rw [e, rank_act]; exact hY), mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem extZ_act (μ : kˣ →* ℂˣ) (g : GL (Fin n) k) (h : GL (Fin d) k) (φ : SB (RankIn k (Fin n) (Fin d) {n}))
     (Y : Matrix (Fin n) (Fin d) k) : extZ (omegaOn (Fin n) (Fin d) μ {n} (g, h) φ) Y =
@@ -105,11 +103,11 @@ theorem extZ_act (μ : kˣ →* ℂˣ) (g : GL (Fin n) k) (h : GL (Fin d) k) (φ
   · rw [extZ_neg _ hY, extZ_neg φ (by rw [e, rank_act]; exact hY), mul_zero]
 
 /- English proof (translation)
-Establish `hE : ∀ γ φ, E.toLinearEquiv (τ γ φ) = τ' γ (E.toLinearEquiv φ)` using `fun γ φ => LinearMap.congr_fun (E.isIntertwining' γ) φ`. Establish `h1 : twRel (τ'.comp (MonoidHom.inl _ _)) 1 ≤ (twRel (τ.comp (MonoidHom.inl _ _)) 1).map E.toLinearEquiv.toLinearMap` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨g, f, rfl⟩`. Take `⟨φ, rfl⟩` from `E.toLinearEquiv.surjective f`. Conclude with `⟨_, Submodule.subset_span ⟨g, φ, rfl⟩, by rw [map_sub, map_smul]; exact congrArg (· - _) (hE (g, 1) φ)⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Break down `H (N.map E.toLinearEquiv.toLinearMap) (h1.trans (Submodule.map_mono hR)) (by` into its components or cases. Introduce and unpack `h _ ⟨f, hf, rfl⟩`. Conclude with `⟨_, hN h f hf, hE _ f⟩) with h | h`. Conclude with `Or.inl (top_of_map E.toLinearEquiv.toLinearMap (R := ⊥) (fun f hf => E.toLinearEquiv.map_eq_zero_iff.1 hf) bot_le h)`. Use `Or.inr fun f hf => ?_` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Prove the first alternative. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨g, hg, e⟩` from `h1 (h ⟨f, hf, rfl⟩)`. Rewrite using `[← E.toLinearEquiv.injective e]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem irr_equiv {Γ G V U : Type} [Group Γ] [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup U] [Module ℂ U]
     {τ : Representation ℂ (Γ × G) V} {τ' : Representation ℂ (Γ × G) U} (E : τ.Equiv τ')
@@ -132,17 +130,17 @@ theorem irr_equiv {Γ G V U : Type} [Group Γ] [Group G] [AddCommGroup V] [Modul
     rwa [← E.toLinearEquiv.injective e]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n d ν α hnd hν hα N hA hN`. Take `⟨t, rfl⟩` from `Nat.exists_eq_add_of_le hnd`. Establish `hμ : IsSmoothChar ν⁻¹` using `IsSmoothChar.inv hν.2`. Take `⟨E⟩` from `GlobalTheory.T.omega_equiv_induced_fibre k (Fin n) (Fin (n + t)) (Fin n) (Fin t) (stdSum rfl) n (Fintype.card_fin n).symm ν⁻¹ hμ`. Establish `hR : twRel ((omegaOn (Fin n) (Fin (n + t)) ν⁻¹ {n}).comp (MonoidHom.inl _ _)) 1 ≤ (aug n (n + t) ν α).comap extZ` using `Submodule.span_le.2 (by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨g, φ, rfl⟩`. Use `Submodule.subset_span ⟨g, extZ φ, extZ_mem φ, ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.one_apply, Units.val_one, one_smul, map_sub]`. Use `congr 1`. Use `funext fun Y => (extZ_act _ g 1 φ Y).trans ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Establish `n1 : nabs k 1 = 1` using `by simp [nabs]`. Simplify using `[omB, omChar, apow, val_absPow, n1])`. Break down `irr_equiv E (irr_ind hB n t hμ (fun y => by simp [hν.1 y])) (N.comap extZ) (hR.trans (Submodule.comap_mono hA)) (by` into its components or cases. Introduce `h φ hf`. Establish `h1` using `hN (invT h) _ hf (extZ_mem φ)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Submodule.mem_comap]`. Establish `c0 : (α (gdet (invT h)) : ℂ) * apow (gdet (invT h)) ((n : ℂ) / 2) ≠ 0` using `mul_ne_zero (Units.ne_zero _) (Units.ne_zero (absPow k ((n : ℂ) / 2) (gdet (invT h))))`. Use `N.smul_mem ((omChar (Fin n) (Fin (n + t)) ν⁻¹ (1, h) : ℂ) / ((α (gdet (invT h)) : ℂ) * apow (gdet (invT h)) ((n : ℂ) / 2))) h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `Y`. Establish `e1 : omB ν α 1 (invT h) (extZ φ) Y = (α (gdet (invT h)) : ℂ) * apow (gdet (invT h)) ((n : ℂ) / 2) * extZ φ ((1 : GL (Fin n) k).valᵀ * Y * (invT h).val)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `[omB, apow, nabs]`. Rewrite using `[extZ_act, Pi.smul_apply, e1, smul_eq_mul, ← mul_assoc, div_mul_cancel₀ _ c0]) with h | h`. Use `Or.inl fun Φ hΦ => ?_` and prove the remaining obligations. Take `⟨φ, rfl⟩` from `exists_extZ hΦ`. Conclude with `(h ▸ Submodule.mem_top : φ ∈ N.comap extZ)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Or.inr fun Φ hm hΦ => ?_` and prove the remaining obligations. Take `⟨φ, rfl⟩` from `exists_extZ hΦ`. Conclude with `hR (h hm)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem irrSt_of (hB : GlobalTheory.Published.BernsteinUnitaryProductIrreducible) : IrrSt := by
   intro k _ _ _ _ n d ν α hnd hν hα N hA hN

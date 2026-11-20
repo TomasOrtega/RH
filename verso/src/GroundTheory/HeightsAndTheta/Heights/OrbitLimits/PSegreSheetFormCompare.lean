@@ -15,9 +15,9 @@ noncomputable section
 namespace SegreSheetFormComparison
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use extensionality with `i j`. Simplify using `[hessC]`. Consider the case `insert a s ha ih`.
+Proceed by induction. Treat this case separately. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using `only [Finset.sum_insert ha]`. Rewrite using `[ReciprocityTheory.AnForm.A.hessC_add (f a) (fun w => ∑ b ∈ s, f b w) z (hf a (Finset.mem_insert_self a s)) (ContDiffAt.sum fun b hb => hf b (Finset.mem_insert_of_mem hb)), ih fun b hb => hf b (Finset.mem_insert_of_mem hb)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hessC_finset_sum {D : ℕ} {α : Type*} (s : Finset α) (f : α → (Fin D → ℂ) → ℝ) (z : Fin D → ℂ)
     (hf : ∀ a ∈ s, ContDiffAt ℝ 2 (f a) z) :
@@ -34,7 +34,7 @@ theorem hessC_finset_sum {D : ℕ} {α : Type*} (s : Finset α) (f : α → (Fin
       ih fun b hb => hf b (Finset.mem_insert_of_mem hb)]
 
 /- English proof (translation)
-Establish `hc : ∀ a, ContDiffAt ℝ 2 (fun w => c a * Real.log ‖g a w‖) z` using `fun a => contDiffAt_const.mul ((((hg a).contDiffAt (n := 2)).restrict_scalars ℝ).norm ℝ (hz a) |>.log (norm_ne_zero_iff.2 (hz a)))`. Rewrite using `[ReciprocityTheory.AnForm.A.hessC_add _ _ z hφ (ContDiffAt.sum fun a _ => hc a), hessC_finset_sum s _ z fun a _ => hc a]`. Simplify using `[ReciprocityTheory.AnForm.M.hessC_const_mul', ReciprocityTheory.AnForm.A.hessC_log_norm _ z (hg _) (hz _)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hessC_add_sum_log {D : ℕ} {α : Type*} (s : Finset α) (φ : (Fin D → ℂ) → ℝ) (c : α → ℝ)
     (g : α → (Fin D → ℂ) → ℂ) (z : Fin D → ℂ) (hφ : ContDiffAt ℝ 2 φ z) (hg : ∀ a, AnalyticAt ℂ (g a) z)
@@ -52,7 +52,7 @@ variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintyp
 omit [DecidableEq K] in
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ]`. Simplify using `[segre, norm_prod, Finset.prod_pow]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_norm_segre_sq [DecidableEq K] (w : (Σ k, ι k) → ℂ) :
     ∑ i', ‖segre w i'‖ ^ 2 = ∏ k, ∑ j, ‖w ⟨k, j⟩‖ ^ 2 := by
@@ -62,7 +62,7 @@ theorem sum_norm_segre_sq [DecidableEq K] (w : (Σ k, ι k) → ℂ) :
 omit [DecidableEq K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Establish `hp : ∀ k, 0 < ‖c k‖ ^ A.a k` using `fun k => zpow_pos (norm_pos_iff.2 (hc k)) _`. Rewrite using `[A.smul c w hc, Real.log_mul (Finset.prod_pos fun k _ => hp k).ne' (A.pos w hw).ne', Real.log_prod (fun k _ => (hp k).ne'), add_comm]`. Simplify using `[Real.log_zpow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem log_h_smul (A : HermLine ι) (c : K → ℂ) (w : (Σ k, ι k) → ℂ) (hc : ∀ k, c k ≠ 0)
     (hw : ∀ k, ∃ j, w ⟨k, j⟩ ≠ 0) :
@@ -115,14 +115,14 @@ variable (jj : (k : K) → ι k)
 
 omit [DecidableEq K] in
 /- English proof (translation)
-Simplify using `[ins]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ins_anchor (t : Fin (NN ι) → ℂ) (k : K) : ins jj t ⟨k, jj k⟩ = 1 := by
   simp [ins]
 
 omit [DecidableEq K] in
 /- English proof (translation)
-Simplify using `[ins, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ins_ne (t : Fin (NN ι) → ℂ) {k : K} {j : ι k} (h : j ≠ jj k) :
     ins jj t ⟨k, j⟩ = t (eS ι ⟨k, eK jj k ⟨j, h⟩⟩) := by
@@ -131,16 +131,16 @@ theorem ins_ne (t : Fin (NN ι) → ℂ) {k : K} {j : ι k} (h : j ≠ jj k) :
 omit [DecidableEq K] in
 
 /- English proof (translation)
-Introduce `k` and use `⟨jj k, by rw [ins_anchor]; exact one_ne_zero⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem ins_blockNonzero (t : Fin (NN ι) → ℂ) : ∀ k, ∃ j, ins jj t ⟨k, j⟩ ≠ 0 :=
   fun k => ⟨jj k, by rw [ins_anchor]; exact one_ne_zero⟩
 
 omit [DecidableEq K] in
 /- English proof (translation)
-Use `contDiff_pi.2 fun p => ?_` and prove the remaining obligations. Take `⟨k, j⟩` from `p`. Distinguish the cases in `h : j = jj k`. Substitute `h` using the available equality. Simplify using `only [ins_anchor]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Conclude with `contDiff_const`. Simplify using `only [ins_ne jj _ h]`. Conclude with `contDiff_apply ℝ ℂ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiff_ins : ContDiff ℝ ∞ (ins jj) := by
   refine contDiff_pi.2 fun p => ?_
@@ -154,7 +154,7 @@ theorem contDiff_ins : ContDiff ℝ ∞ (ins jj) := by
 
 omit [DecidableEq K] in
 /- English proof (translation)
-Unfold `pt`. Rewrite using `[Equiv.symm_apply_apply]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pt_eS {k : K} {j : ι k} (h : j ≠ jj k) : pt jj (eS ι ⟨k, eK jj k ⟨j, h⟩⟩) = ⟨k, j⟩ := by
   unfold pt
@@ -164,9 +164,9 @@ theorem pt_eS {k : K} {j : ι k} (h : j ≠ jj k) : pt jj (eS ι ⟨k, eK jj k �
 omit [DecidableEq K] in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `⟨k, j⟩`. Distinguish the cases in `h : j = jj k`. Substitute `h` using the available equality. Simplify using `[ins_anchor]`. Rewrite using `[ins_ne jj _ h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [nrm]`. Rewrite using `[pt_eS jj h]`. Simplify using `only`. Rewrite using `[mul_div_cancel₀ _ (hw k)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_smul_ins (w : (Σ k, ι k) → ℂ) (hw : ∀ k, w ⟨k, jj k⟩ ≠ 0) :
     w = fun p => w ⟨p.1, jj p.1⟩ * ins jj (nrm jj w) p := by
@@ -183,9 +183,9 @@ theorem eq_smul_ins (w : (Σ k, ι k) → ℂ) (hw : ∀ k, w ⟨k, jj k⟩ ≠ 
 omit [DecidableEq K] in
 
 /- English proof (translation)
-Rewrite using `[← Finset.add_sum_erase _ _ (Finset.mem_univ (jj k)), ins_anchor, norm_one, one_pow]`. Use `congr 1`. Rewrite using `[Finset.sum_subtype (p := fun j => j ≠ jj k) _ (fun j => by simp)]`. Rewrite using `[← Equiv.sum_comp (eK jj k).symm]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ins_ne jj _ ((eK jj k).symm r).2]`. Simplify using `[blk]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_ins_sq (t : Fin (NN ι) → ℂ) (k : K) :
     ∑ j, ‖ins jj t ⟨k, j⟩‖ ^ 2 = 1 + ∑ r, ‖blk ι k t r‖ ^ 2 := by
@@ -201,7 +201,7 @@ theorem sum_ins_sq (t : Fin (NN ι) → ℂ) (k : K) :
 omit [DecidableEq K] in
 
 /- English proof (translation)
-Use `(pi_norm_le_iff_of_nonneg zero_le_one).2 fun a => ?_` and prove the remaining obligations. Simplify using `only [nrm, norm_div]`. Conclude with `div_le_one_of_le₀ (hmax _ _) (norm_nonneg _)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_nrm_le (w : (Σ k, ι k) → ℂ) (hmax : ∀ k j, ‖w ⟨k, j⟩‖ ≤ ‖w ⟨k, jj k⟩‖) :
     ‖nrm jj w‖ ≤ 1 := by
@@ -210,11 +210,11 @@ theorem norm_nrm_le (w : (Σ k, ι k) → ℂ) (hmax : ∀ k j, ‖w ⟨k, j⟩�
   exact div_le_one_of_le₀ (hmax _ _) (norm_nonneg _)
 
 /- English proof (translation)
-Establish `he` using `eq_smul_ins jj w hw`. Establish `hk : ∀ k, ∑ j, ‖w ⟨k, j⟩‖ ^ 2 = ‖w ⟨k, jj k⟩‖ ^ 2 * (1 + ∑ r, ‖blk ι k (nrm jj w) r‖ ^ 2)`. Introduce `k`. Rewrite using `[← sum_ins_sq, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrFun he ⟨k, j⟩` as an intermediate fact. Simplify using `only at this`. Rewrite using `[this, norm_mul, mul_pow]`. Establish `hpos : ∀ k, 0 < ‖w ⟨k, jj k⟩‖ ^ 2 * (1 + ∑ r, ‖blk ι k (nrm jj w) r‖ ^ 2)` using `fun k => mul_pos (pow_pos (norm_pos_iff.2 (hw k)) 2) (by positivity)`. Establish `hlp : ∀ k, HilbertSamuel.ProjFS.logPot (blk ι k (nrm jj w)) = Real.log (1 + ∑ r, ‖blk ι k (nrm jj w) r‖ ^ 2)` using `fun k => rfl`.
+Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[sum_norm_segre_sq, Finset.prod_congr rfl fun k _ => hk k, Real.log_sqrt (Finset.prod_nonneg fun k _ => (hpos k).le), Real.log_prod (fun k _ => (hpos k).ne'), FSG, Finset.sum_div, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Real.log_mul (pow_pos (norm_pos_iff.2 (hw k)) 2).ne' (by positivity), Real.log_pow, hlp]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem log_segre_eq (w : (Σ k, ι k) → ℂ) (hw : ∀ k, w ⟨k, jj k⟩ ≠ 0) :
     Real.log (Real.sqrt (∑ i', ‖segre w i'‖ ^ 2)) =
@@ -243,7 +243,7 @@ theorem log_segre_eq (w : (Σ k, ι k) → ℂ) (hw : ∀ k, w ⟨k, jj k⟩ ≠
 omit [DecidableEq K] in
 
 /- English proof (translation)
-Establish `he` using `eq_smul_ins jj w hw`. Use `show Real.log ((L j).h w) = Real.log ((L j).h _) + _`. Use `conv_lhs => rw [he]`. Conclude with `log_h_smul (L j) (fun k => w ⟨k, jj k⟩) _ hw (ins_blockNonzero jj _)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pot_eq {e : ℕ} (L : Fin e → HermLine ι) (j : Fin e) (w : (Σ k, ι k) → ℂ)
     (hw : ∀ k, w ⟨k, jj k⟩ ≠ 0) :
@@ -261,7 +261,7 @@ variable (jj : (k : K) → ι k)
 
 omit [DecidableEq K] in
 /- English proof (translation)
-Unfold `FSG`. Conclude with `ContDiff.sum fun k _ => contDiff_const.mul (((SheetFormComparison.contDiff_logPot _).of_le (WithTop.coe_le_coe.2 le_top)).comp ((blk ι k).contDiff.restrict_scalars ℝ))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem contDiff_FSG : ContDiff ℝ 2 (FSG ι) := by
   unfold FSG
@@ -272,7 +272,7 @@ theorem contDiff_FSG : ContDiff ℝ 2 (FSG ι) := by
 omit [DecidableEq K] in
 
 /- English proof (translation)
-Use `contDiff_iff_contDiffAt.2 fun t => ?_` and prove the remaining obligations. Establish `hh : ContDiffAt ℝ 2 (L j).h (ins jj t)` using `(hL.contDiffAt (ReciprocityTheory.ChartRestriction.G.Geo.isOpen_blockNonzero.mem_nhds (ins_blockNonzero jj t))).of_le (WithTop.coe_le_coe.2 le_top)`. Conclude with `(hh.comp t ((contDiff_ins jj).of_le (WithTop.coe_le_coe.2 le_top)).contDiffAt).log ((L j).pos _ (ins_blockNonzero jj t)).ne'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiff_pot_ins {e : ℕ} (L : Fin e → HermLine ι) (j : Fin e) (hL : IsSmoothHerm (L j)) :
     ContDiff ℝ 2 (fun t => pot L j (ins jj t)) := by
@@ -286,9 +286,9 @@ theorem contDiff_pot_ins {e : ℕ} (L : Fin e → HermLine ι) (j : Fin e) (hL :
 omit [DecidableEq K] in
 
 /- English proof (translation)
-Establish `hj : ∀ k, jacC (⇑(blk ι k)) t = Matrix.of fun r b => (Pi.single b (1 : ℂ) : Fin (NN ι) → ℂ) (eS ι ⟨k, r⟩)`. Introduce `k`. Use extensionality with `r b`. Simplify using `only [jacC, Matrix.of_apply, ContinuousLinearMap.fderiv]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Use extensionality with `b c`. Simplify using `only [hj, Matrix.sum_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Matrix.of_apply]`. Rewrite using `[← Fintype.sum_sigma (fun q : Σ k, Fin (nk ι k) => (Pi.single b (1 : ℂ) : Fin (NN ι) → ℂ) (eS ι q) * (starRingEnd ℂ) ((Pi.single c (1 : ℂ) : Fin (NN ι) → ℂ) (eS ι q))), Equiv.sum_comp (eS ι) (fun a => (Pi.single b (1 : ℂ) : Fin (NN ι) → ℂ) a * (starRingEnd ℂ) ((Pi.single c (1 : ℂ …`. Simplify using `[Pi.single_apply, Matrix.one_apply, eq_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_jacC_blk (t : Fin (NN ι) → ℂ) :
     ∑ k, (jacC (⇑(blk ι k)) t)ᵀ * (jacC (⇑(blk ι k)) t).map (starRingEnd ℂ) = 1 := by
@@ -311,21 +311,19 @@ theorem sum_jacC_blk (t : Fin (NN ι) → ℂ) :
 omit [DecidableEq K] in
 
 /- English proof (translation)
-Use `set m : ℝ := (1 + NN ι : ℝ) ^ 2 with hm`. Establish `hlp : ∀ k, ContDiffAt ℝ 2 (HilbertSamuel.ProjFS.logPot (N` using `nk ι k)) (blk ι k t) := fun k => ((SheetFormComparison.contDiff_logPot _).of_le (WithTop.coe_le_coe.2 le_top)).contDiffAt`. Establish `hH : hessC (FSG ι) t = ∑ k, ((1 / 2 : ℝ) : ℂ) • ((jacC (⇑(blk ι k)) t)ᵀ * hessC HilbertSamuel.ProjFS.logPot (blk ι k t) * (jacC (⇑(blk ι k)) t).map (starRingEnd ℂ))`. Rewrite using `[show FSG ι = fun t => ∑ k, (1 / 2 : ℝ) * HilbertSamuel.ProjFS.logPot (blk ι k t) from rfl, hessC_finset_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ReciprocityTheory.AnForm.M.hessC_const_mul', show (fun w => HilbertSamuel.ProjFS.logPot (blk ι k w)) = HilbertSamuel.ProjFS.logPot ∘ ⇑(blk ι k) from rfl, ReciprocityTheory.AnForm.A.hessC_comp _ _ t ((blk ι k).analyticAt t) (hlp k)]`. Introduce `k _`. Conclude with `contDiffAt_const.mul ((hlp k).comp t ((blk ι k).contDiff.restrict_scalars ℝ).contDiffAt)`. Establish `hnk : ∀ k, (nk ι k : ℝ) ≤ NN ι` using `fun k => by`. Establish `: NN ι = ∑ k, nk ι k` using `by simp [NN, Fintype.card_sigma]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `Finset.single_le_sum (f := fun k => nk ι k) (fun _ _ => Nat.zero_le _) (Finset.mem_univ k)` after adjusting the coercions. Establish `hP1 : ∀ k, (((m : ℝ) : ℂ) • hessC HilbertSamuel.ProjFS.logPot (blk ι k t) - 1).PosSemidef` using `fun k => by`. Establish `hb : ‖blk ι k t‖ ≤ 1` using `(pi_norm_le_iff_of_nonneg zero_le_one).2 fun r => by`. Simplify using `only [blk, ContinuousLinearMap.pi_apply, ContinuousLinearMap.proj_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(norm_le_pi_norm t _).trans ht`. Establish `h1` using `SheetFormComparison.posSemidef_hessC_logPot_sub hb`. Establish `h0 : (hessC (HilbertSamuel.ProjFS.logPot (N` using `nk ι k)) (blk ι k t)).PosSemidef := ReciprocityTheory.AnForm.M.hessC_posSemidef _ _ (hlp k) (fun w => HilbertSamuel.ProjFS.levi_logPot_nonneg _ w)`. Establish `hd : (0 : ℂ) ≤ ((m - (1 + nk ι k : ℝ) ^ 2 : ℝ) : ℂ)` using `Complex.zero_le_real.2 (by`. Rewrite using `[hm, sub_nonneg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use `hnk k` as an intermediate fact. Establish `h0 : (0 : ℝ) ≤ nk ι k` using `Nat.cast_nonneg _`. Use the proof step `nlinarith)`. Establish `e1 : ((m : ℝ) : ℂ) • hessC HilbertSamuel.ProjFS.logPot (blk ι k t) - 1 = ((m - (1 + nk ι k : ℝ) ^ 2 : ℝ) : ℂ) • hessC HilbertSamuel.ProjFS.logPot (blk ι k t) + ((((1 + nk ι k : ℝ) ^ 2 : ℝ) : ℂ) • hessC HilbertSamuel.ProjFS.logPot (blk ι k t) - 1)`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `module`. Rewrite using `[e1]`. Conclude with `(h0.smul hd).add h1`. Establish `hBJ : ∀ k, ((jacC (⇑(blk ι k)) t).map (starRingEnd ℂ))ᴴ = (jacC (⇑(blk ι k)) t)ᵀ` using `fun k => by`. Use extensionality with `a b`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Simplify using the standard rewrite rules. Establish `key : (((2 * m : ℝ)) : ℂ) • hessC (FSG ι) t - 1 = ∑ k, ((jacC (⇑(blk ι k)) t).map (starRingEnd ℂ))ᴴ * (((m : ℝ) : ℂ) • hessC HilbertSamuel.ProjFS.logPot (blk ι k t) - 1) * (jacC (⇑(blk ι k)) t).map (starRingEnd ℂ)`. Rewrite using `[hH, ← sum_jacC_blk t, Finset.smul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hBJ k, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.mul_smul, Matrix.smul_mul, smul_smul]`.
-
-Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Conclude with `Matrix.posSemidef_sum _ fun k _ => (hP1 k).conjTranspose_mul_mul_same _`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hessC_FSG_lower (t : Fin (NN ι) → ℂ) (ht : ‖t‖ ≤ 1) :
     ((((2 * (1 + NN ι : ℝ) ^ 2 : ℝ)) : ℂ) • hessC (FSG ι) t - 1).PosSemidef := by
@@ -389,35 +387,29 @@ end SegreSheetFormComparison
 open SegreSheetFormComparison in
 
 /- English proof (translation)
-Introduce `K _ _ ι _ e L hL`. Establish `hb : ∀ jj : (k : K) → ι k, ∃ a : ℝ, 0 ≤ a ∧ ∀ j, ∀ t ∈ Metric.closedBall (0 : Fin (NN ι) → ℂ) 1, (hessC (fun t => pot L j (ins jj t)) t + (a : ℂ) • 1).PosSemidef ∧ (-hessC (fun t => pot L j (ins jj t)) t + (a : ℂ) • 1).PosSemidef` using `fun jj => TubeFormComparison.exists_hessC_bound (fun j t => pot L j (ins jj t)) _ (isCompact_closedBall 0 1) (fun _ => Set.univ) (fun _ => isOpen_univ) (fun _ => Set.subset_univ _) (fun j => (contDiff_pot_ins jj L j (hL j)).contDiffOn)`. Use `choose a ha0 ha using hb`. Use `set A : ℝ := ∑ jj, a jj with hAdef`. Establish `hA0 : 0 ≤ A` using `Finset.sum_nonneg fun jj _ => ha0 jj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set C0 : ℝ := 2 * A * (1 + NN ι : ℝ) ^ 2 with hC0`. Establish `hC00 : 0 ≤ C0` using `by positivity`. Use `⟨3 ^ e * C0 ^ e, fun z U y hU hyU hzd hzy => ?_⟩` and prove the remaining obligations. Establish `hmax : ∀ k, ∃ j, ∀ j', ‖z y ⟨k, j'⟩‖ ≤ ‖z y ⟨k, j⟩‖` using `fun k => by`. Take `⟨j0, -⟩` from `hzy k`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `: Nonempty (ι k)` using `⟨j0⟩`. Take `⟨j, -, hj⟩` from `Finset.exists_max_image Finset.univ (fun j => ‖z y ⟨k, j⟩‖) Finset.univ_nonempty`. Conclude with `⟨j, fun j' => hj j' (Finset.mem_univ _)⟩`. Use `choose jj hjj using hmax`. Establish `hd0 : ∀ k, z y ⟨k, jj k⟩ ≠ 0` using `fun k => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Take `⟨j0, hj0⟩` from `hzy k`. Introduce `h0`. Apply `hj0` to reduce the goal to its premises. Use `hjj k j0` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `norm_le_zero_iff.1 this`. Establish `hza : ∀ p, AnalyticAt ℂ (fun y' => z y' p) y` using `fun p => ReciprocityTheory.AnForm.Osgood.osgood _ U (fun y' => z y' p) hU (differentiableOn_pi.1 hzd p) y hyU`. Use `set τ : (Fin e → ℂ) → Fin (NN ι) → ℂ := fun y' => nrm jj (z y') with hτdef`. Establish `hτa : AnalyticAt ℂ τ y` using `analyticAt_pi_iff.2 fun b => (hza _).div (hza _) (hd0 _)`. Establish `hτK : τ y ∈ Metric.closedBall (0 : Fin (NN ι) → ℂ) 1` using `mem_closedBall_zero_iff.2 (norm_nrm_le jj (z y) hjj)`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hev : ∀ᶠ y' in 𝓝 y, ∀ k, z y' ⟨k, jj k⟩ ≠ 0` using `Filter.eventually_all.2 fun k => (hza _).continuousAt.eventually_ne (hd0 k)`. Establish `hτc : ContDiffAt ℝ 2 τ y` using `(hτa.contDiffAt (n := 2)).restrict_scalars ℝ`. Use `set Bm := (jacC τ y).map (starRingEnd ℂ) with hBm`. Establish `hBJ : Bmᴴ = (jacC τ y)ᵀ`. Use extensionality with `a b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hBm]`. Establish `hLs : hessC ((fun w => Real.log (Real.sqrt (∑ i', ‖segre w i'‖ ^ 2))) ∘ z) y = Bmᴴ * hessC (FSG ι) (τ y) * Bm`. Establish `hg : ((fun w => Real.log (Real.sqrt (∑ i', ‖segre w i'‖ ^ 2))) ∘ z) =ᶠ[𝓝 y] fun y' => (FSG ι ∘ τ) y' + ∑ k, (1 : ℝ) * Real.log ‖z y' ⟨k, jj k⟩‖` using `by filter_upwards [hev] with y' hy'`. Conclude with `log_segre_eq jj (z y') hy'`. Rewrite using `[SheetFormComparison.hessC_congr hg, hessC_add_sum_log _ _ _ (fun k y' => z y' ⟨k, jj k⟩) y ((contDiff_FSG (ι := ι)).contDiffAt.comp y hτc) (fun k => hza _) hd0, hBJ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ReciprocityTheory.AnForm.A.hessC_comp (FSG ι) τ y hτa (contDiff_FSG (ι := ι)).contDiffAt`. Establish `hη : ∀ j, hessC (pot L j ∘ z) y = Bmᴴ * hessC (fun t => pot L j (ins jj t)) (τ y) * Bm` using `fun j => by`. Establish `hg : pot L j ∘ z =ᶠ[𝓝 y] fun y' => ((fun t => pot L j (ins jj t)) ∘ τ) y' + ∑ k, ((L j).a k : ℝ) * Real.log ‖z y' ⟨k, jj k⟩‖` using `by filter_upwards [hev] with y' hy'`. Conclude with `pot_eq jj L j (z y') hy'`. Rewrite using `[SheetFormComparison.hessC_congr hg, hessC_add_sum_log _ _ _ (fun k y' => z y' ⟨k, jj k⟩) y ((contDiff_pot_ins jj L j (hL j)).contDiffAt.comp y hτc) (fun k => hza _) hd0, hBJ]`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Conclude with `ReciprocityTheory.AnForm.A.hessC_comp _ τ y hτa (contDiff_pot_ins jj L j (hL j)).contDiffAt`. Establish `hlow` using `hessC_FSG_lower (τ y) (mem_closedBall_zero_iff.1 hτK)`. Establish `haj : a jj ≤ A` using `Finset.single_le_sum (f := a) (fun j _ => ha0 j) (Finset.mem_univ jj)`. Establish `hAa : (0 : ℂ) ≤ ((A - a jj : ℝ) : ℂ)` using `Complex.zero_le_real.2 (by linarith)`. Establish `hAc : (0 : ℂ) ≤ (A : ℂ)` using `Complex.zero_le_real.2 hA0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Establish `hmid : ∀ j, ((C0 : ℂ) • hessC (FSG ι) (τ y) - hessC (fun t => pot L j (ins jj t)) (τ y)).PosSemidef ∧ (hessC (fun t => pot L j (ins jj t)) (τ y) + (C0 : ℂ) • hessC (FSG ι) (τ y)).PosSemidef` using `fun j => by`. Take `⟨hP1, hP2⟩` from `ha jj j (τ y) hτK`. Prove the components needed by the constructor for the conclusion. Establish `e1 : (C0 : ℂ) • hessC (FSG ι) (τ y) - hessC (fun t => pot L j (ins jj t)) (τ y) = (A : ℂ) • ((((2 * (1 + NN ι : ℝ) ^ 2 : ℝ)) : ℂ) • hessC (FSG ι) (τ y) - 1) + (-hessC (fun t => pot L j (ins jj t)) (τ y) + (a jj : ℂ) • 1) + ((A - a jj : ℝ) : ℂ) • 1`. Rewrite using `[hC0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `push_cast`. Use `module`. Rewrite using `[e1]`. Conclude with `((hlow.smul hAc).add hP2).add (Matrix.PosSemidef.one.smul hAa)`. Establish `e1 : hessC (fun t => pot L j (ins jj t)) (τ y) + (C0 : ℂ) • hessC (FSG ι) (τ y) = (A : ℂ) • ((((2 * (1 + NN ι : ℝ) ^ 2 : ℝ)) : ℂ) • hessC (FSG ι) (τ y) - 1) + (hessC (fun t => pot L j (ins jj t)) (τ y) + (a jj : ℂ) • 1) + ((A - a jj : ℝ) : ℂ) • 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hC0]`. Use `push_cast`. Use `module`. Rewrite using `[e1]`. Conclude with `((hlow.smul hAc).add hP1).add (Matrix.PosSemidef.one.smul hAa)`.
-
-Establish `hmain` using `ReciprocityTheory.AnForm.A.norm_mdisc_le_of_abs_le (fun j => hessC (pot L j ∘ z) y) (fun _ => (C0 : ℂ) • hessC ((fun w => Real.log (Real.sqrt (∑ i', ‖segre w i'‖ ^ 2))) ∘ z) y) (fun j => by`. Rewrite using `[hLs, hη j, ← Matrix.smul_mul, ← Matrix.mul_smul, ← Matrix.sub_mul, ← Matrix.mul_sub]`. Conclude with `(hmid j).1.conjTranspose_mul_mul_same Bm)`. Use the proof step `(fun j => by`. Rewrite using `[hLs, hη j, ← Matrix.smul_mul, ← Matrix.mul_smul, ← Matrix.add_mul, ← Matrix.mul_add]`.
-
-Conclude with `(hmid j).2.conjTranspose_mul_mul_same Bm)`. Establish `hs : mdisc (fun _ : Fin e => (C0 : ℂ) • hessC ((fun w => Real.log (Real.sqrt (∑ i', ‖segre w i'‖ ^ 2))) ∘ z) y) = (C0 : ℂ) ^ e * mdisc (fun _ : Fin e => hessC ((fun w => Real.log (Real.sqrt (∑ i', ‖segre w i'‖ ^ 2))) ∘ z) y)` using `IndefiniteRowSideFullHecke.ComplexSets.mdisc_const_smul _ _`. Rewrite `hmain` using `[hs, ← Complex.ofReal_pow, Complex.re_ofReal_mul]`. Establish `hmd : ∀ Φ : Fin e → (Fin e → ℂ) → ℝ, maDens Φ y = (e.factorial : ℝ) * (2 / Real.pi) ^ e * (mdisc fun k => hessC (Φ k) y).re` using `fun Φ => rfl`. Rewrite using `[hmd, hmd, abs_mul]`.
-
-Establish `hK0 : 0 ≤ (e.factorial : ℝ) * (2 / Real.pi) ^ e` using `by positivity`. Rewrite using `[abs_of_nonneg hK0]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem SegreSheetFormCompare.proof : SegreSheetFormCompare.Statement := by
   classical

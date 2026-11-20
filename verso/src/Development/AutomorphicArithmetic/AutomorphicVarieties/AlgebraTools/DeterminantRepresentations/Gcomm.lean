@@ -5,7 +5,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open Polynomial UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.CA
 
 /- English proof (translation)
-Introduce `n A G _ _ D`. Use `⟨fun B _ _ x y => ?_, D.toDet.ker, fun y => (UpperTheory.V.CA.d_ker D.toDet y).1.trans (UpperTheory.V.CA.d_toDet D y).2.2.2⟩` and prove the remaining obligations. Establish `h` using `UpperTheory.V.CA.d_comm D.toDet B (toT A G B x) (toT A G B y)`. Express the relevant statement in the definitionally equal form `D.D B (ofT A G B _) = D.D B (ofT A G B _) at h`. Simplify `h` using `only [map_add, map_one, map_mul, ofT_toT]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem UpperTheory.V.AlgebraTools.Det.gcomm :
     ∀ {n : ℕ} {A G : Type} [CommRing A] [Group G] (D : GDet n A G),

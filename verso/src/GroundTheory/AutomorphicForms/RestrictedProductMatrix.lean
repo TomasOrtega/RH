@@ -48,7 +48,7 @@ def matrixProdRingEquiv : Matrix m m (R₁ × R₂) ≃+* Matrix m m R₁ × Mat
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem matrixProdRingEquiv_apply_fst (M : Matrix m m (R₁ × R₂)) (a b : m) :
     (matrixProdRingEquiv m R₁ R₂ M).1 a b = (M a b).1 :=
@@ -65,7 +65,7 @@ theorem matrixProdRingEquiv_apply_snd (M : Matrix m m (R₁ × R₂)) (a b : m) 
 variable [TopologicalSpace R₁] [TopologicalSpace R₂]
 
 /- English proof (translation)
-The claim follows from `(continuous_pi fun a => continuous_pi fun b => continuous_fst.comp ((continuous_apply b).comp (continuous_apply a))).prodMk (continuous_pi fun a => continuous_pi fun b => continuous_snd.comp ((continuous_apply b).comp (continuous_apply a)))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_matrixProdRingEquiv : Continuous (matrixProdRingEquiv m R₁ R₂) :=
   (continuous_pi fun a => continuous_pi fun b =>
@@ -74,7 +74,7 @@ theorem continuous_matrixProdRingEquiv : Continuous (matrixProdRingEquiv m R₁ 
       continuous_snd.comp ((continuous_apply b).comp (continuous_apply a)))
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun a => continuous_pi fun b => ((continuous_apply_apply a b).comp continuous_fst).prodMk ((continuous_apply_apply a b).comp continuous_snd)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_matrixProdRingEquiv_symm : Continuous (matrixProdRingEquiv m R₁ R₂).symm :=
   continuous_pi fun a => continuous_pi fun b =>
@@ -94,7 +94,7 @@ def glProdEquiv : GL m (R₁ × R₂) ≃ₜ* GL m R₁ × GL m R₂ :=
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem glProdEquiv_apply_fst (g : GL m (R₁ × R₂)) (a b : m) :
     (glProdEquiv m R₁ R₂ g).1 a b = (g a b).1 :=
@@ -135,14 +135,14 @@ theorem matrixPiRingEquiv_apply (M : Matrix m m (Π j, R j)) (j : ι) (a b : m) 
 variable [∀ j, TopologicalSpace (R j)]
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun j => continuous_pi fun a => continuous_pi fun b => (continuous_apply j).comp ((continuous_apply b).comp (continuous_apply a))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_matrixPiRingEquiv : Continuous (matrixPiRingEquiv m R) :=
   continuous_pi fun j => continuous_pi fun a => continuous_pi fun b =>
     (continuous_apply j).comp ((continuous_apply b).comp (continuous_apply a))
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun a => continuous_pi fun b => continuous_pi fun j => (continuous_apply b).comp ((continuous_apply a).comp (continuous_apply j))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_matrixPiRingEquiv_symm : Continuous (matrixPiRingEquiv m R).symm :=
   continuous_pi fun a => continuous_pi fun b => continuous_pi fun j =>
@@ -297,7 +297,7 @@ theorem matrixRingEquiv_apply (hC : ∀ i (M : Matrix m m (R i)), M ∈ C i ↔ 
 
 omit [∀ i, TopologicalSpace (R i)] [∀ i, SubringClass (S i) (R i)] in
 /- English proof (translation)
-The claim follows from `Set.ext fun M => hC i M`.
+A detailed English derivation is pending.
 -/
 theorem coe_eq_setOf (hC : ∀ i (M : Matrix m m (R i)), M ∈ C i ↔ ∀ a b, M a b ∈ B i) (i : ι) :
     (C i : Set (Matrix m m (R i))) = {M | ∀ a b, M a b ∈ B i} :=
@@ -311,7 +311,7 @@ def matrixHomeomorph (hC : ∀ i (M : Matrix m m (R i)), M ∈ C i ↔ ∀ a b, 
 omit [∀ i, SubringClass (S i) (R i)] in
 
 /- English proof (translation)
-Rewrite using `[coe_eq_setOf m hC i]`. Simplify using `only [Set.ofPred_forall]`. Conclude with `isOpen_iInter_of_finite fun a => isOpen_iInter_of_finite fun b => (hB i).preimage ((continuous_apply b).comp (continuous_apply a))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isOpen_coe_of_forall (hC : ∀ i (M : Matrix m m (R i)), M ∈ C i ↔ ∀ a b, M a b ∈ B i)
     (hB : ∀ i, IsOpen (B i : Set (R i))) (i : ι) : IsOpen (C i : Set (Matrix m m (R i))) := by

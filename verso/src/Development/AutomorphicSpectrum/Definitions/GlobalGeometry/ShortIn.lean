@@ -63,7 +63,7 @@ def ShortIn {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [Module (�
   ∃ (n : ℕ) (ω : Fin n → V), Submodule.span ℤ (Set.range ω) = L.restrictScalars ℤ ∧ ∀ σ j, (ip σ (ω j) (ω j)).re ≤ Λ ^ 2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, Fin.elim0, by simp, fun _ j => j.elim0⟩`.
+Supply the required witnesses or components.
 -/
 example {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [Module (𝓞 K) V] (ip : (K →+* ℂ) → V → V → ℂ) (Λ : ℝ) :
     ShortIn (⊥ : Submodule (𝓞 K) V) ip Λ := ⟨0, Fin.elim0, by simp, fun _ j => j.elim0⟩

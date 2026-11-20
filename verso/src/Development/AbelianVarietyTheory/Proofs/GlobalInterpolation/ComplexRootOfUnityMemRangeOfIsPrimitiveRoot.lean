@@ -3,7 +3,7 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K _ s n ζ hn hζ z hz`. Use `haveI : NeZero n := ⟨hn.ne'⟩`. Establish `h1 : IsPrimitiveRoot (s ζ) n` using `hζ.map_of_injective s.injective`. Take `⟨i, -, hi⟩` from `h1.eq_pow_of_pow_eq_one hz`. Conclude with `⟨ζ ^ i, by rw [map_pow, hi]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem complex_rootOfUnity_mem_range_of_isPrimitiveRoot :
     ∀ (K : Type) [Field K] (s : K →+* ℂ) (n : ℕ) (ζ : K), 0 < n → IsPrimitiveRoot ζ n →

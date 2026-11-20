@@ -65,7 +65,7 @@ def trivialLB (X : Scheme.{0}) : LB X where
   g := fun _ _ => 1
 
 /- English proof (translation)
-Simplify using `[trivialLB] g_self := fun _ => map_one _ cocycle := fun _ _ _ => by`. Express the relevant statement in the definitionally equal form `res _ 1 * res _ 1 = res _ 1`. Rewrite using `[map_one, map_one, map_one, one_mul]`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 lemma trivialLB_isLB (X : Scheme.{0}) : (trivialLB X).IsLB where
   cover := by simp [trivialLB]
@@ -75,13 +75,13 @@ lemma trivialLB_isLB (X : Scheme.{0}) : (trivialLB X).IsLB where
     rw [map_one, map_one, map_one, one_mul]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨fun _ => 1⟩, fun i j => by simp [h]⟩`.
+Supply the required witnesses or components.
 -/
 lemma isTrivialLB_of_g {X : Scheme.{0}} (L : LB X) (h : ∀ i j, L.g i j = 1) : IsTrivialLB L :=
   ⟨⟨fun _ => 1⟩, fun i j => by simp [h]⟩
 
 /- English proof (translation)
-Use `Finset.prod_eq_one fun k _ => ?_` and prove the remaining obligations. Rewrite using `[h, map_one]`. Use `erw [map_one, one_zpow]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma linComb_g {X Y : Scheme.{0}} (L : LB X) (h : ∀ i j, L.g i j = 1) {K : Type} [Fintype K]
     (φ : K → (Y ⟶ X)) (ε : K → ℤ) (i j) : (L.LinComb φ ε).g i j = 1 := by
@@ -91,18 +91,18 @@ lemma linComb_g {X Y : Scheme.{0}} (L : LB X) (h : ∀ i j, L.g i j = 1) {K : Ty
   rfl
 
 /- English proof (translation)
-The claim follows from `h A (𝟙 A) (isTrivialLB_of_g _ (linComb_g _ (linComb_g _ (fun _ _ => rfl) _ _) _ _))`.
+A detailed English derivation is pending.
 -/
 example {S : Scheme.{0}} (A : Over S) [GrpObj A] (h : KTrivial A (trivialLB A.left)) :
     𝟙 A = pzero A A :=
   h A (𝟙 A) (isTrivialLB_of_g _ (linComb_g _ (linComb_g _ (fun _ _ => rfl) _ _) _ _))
 
 /- English proof (translation)
-Use `⟨inferInstance, fun x => ⟨1, one_pos, ⟨fun _ => 1, fun i j => ?_⟩, ?_⟩⟩` and prove the remaining obligations. Establish `: (powLB L 1).g i j = 1` using `(pow_one _).trans (h i j)`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Establish `: ∀ s : LB.Sec (powLB L 1), (∀ i, s.f i = 1) → nonvanishingLocus s = ⊤`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `s hs`. Rewrite using `[← hc]`. Unfold `nonvanishingLocus`. Use `iSup_congr fun i => ?_` and prove the remaining obligations. Rewrite using `[hs i]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `X.basicOpen_one`. Rewrite using `[this _ (fun _ => rfl)]`. Conclude with `⟨trivial, isAffineOpen_top X⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma isAmpleLB_of_isAffine {X : Scheme.{0}} [IsAffine X] (L : LB X) (h : ∀ i j, L.g i j = 1)
     (hc : ⨆ i, L.U i = ⊤) : IsAmpleLB L := by
@@ -121,7 +121,7 @@ lemma isAmpleLB_of_isAffine {X : Scheme.{0}} [IsAffine X] (L : LB X) (h : ∀ i 
   exact ⟨trivial, isAffineOpen_top X⟩
 
 /- English proof (translation)
-Use `⟨geometrically_iff_of_isClosedUnderIsomorphisms.mpr fun K _ x => ?_⟩` and prove the remaining obligations. Rewrite using `[(pullback.snd (𝟙 S) x).homeomorph.connectedSpace_iff]`. Use `infer_instance`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma geometricallyConnected_id (S : Scheme.{0}) : GeometricallyConnected (𝟙 S) := by
   refine ⟨geometrically_iff_of_isClosedUnderIsomorphisms.mpr fun K _ x => ?_⟩

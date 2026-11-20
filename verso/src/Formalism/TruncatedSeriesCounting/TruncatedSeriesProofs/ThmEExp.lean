@@ -77,7 +77,7 @@ private lemma sigma_exponent_le_real (ℓ : ℕ) (hℓ : 3 ≤ ℓ) (g h j : ℕ
   linarith
 
 /- English proof (authored)
-Put T = h/(ℓ−1)^(j+1), U = g·ell, and L = log base ℓ of h. Unfold the total exponent to obtain 4rr+8sigE+4U+2kap. Since G/ℓ ≤ g/3, the rr bound is 20(g/3+T+L+1). Using (ℓ−1)^(j+1) ≥ 4 in the sigma estimate gives sigE ≤ 3T/2+3g+11/4. For kap, use 4g/(ℓ−1) ≤ 2g and log base ℓ of 2h ≤ L+1.
+Put T = h/(ℓ−1)^(j+1), U = g·ell, and L = log base ℓ of h. Unfold the total exponent to obtain 4rr+8σ+4U+2kap. Since G/ℓ ≤ g/3, the rr bound is 20(g/3+T+L+1). Using (ℓ−1)^(j+1) ≥ 4 in the sigma estimate gives the sigma exponent σ ≤ 3T/2+3g+11/4. For kap, use 4g/(ℓ−1) ≤ 2g and log base ℓ of 2h ≤ L+1.
 
 Substitution gives coefficients 92 for T and 90 for L. All remaining terms are bounded by 269U, using g ≤ U, ell ≤ U, and 1 ≤ U. Since T, U, and L are nonnegative, the resulting sum is at most 800(T+U+L).
 -/

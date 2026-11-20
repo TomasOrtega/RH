@@ -17,7 +17,7 @@ namespace GlobalTheory.CoefMapRecord
 open Formalism.L2.NTheta
 
 /- English proof (translation)
-Substitute `hz` using the available equality. Rewrite using `[Int.floor_intCast]`. Establish `h : 0 ≤ z` using `by exact_mod_cast h0`. Rewrite using `[← Int.cast_natCast, Int.toNat_of_nonneg h]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma floor_toNat_cast {x : ℚ} (z : ℤ) (hz : x = z) (h0 : 0 ≤ x) : ((⌊x⌋.toNat : ℕ) : ℚ) = x := by
   subst hz
@@ -26,7 +26,7 @@ lemma floor_toNat_cast {x : ℚ} (z : ℤ) (hz : x = z) (h0 : 0 ≤ x) : ((⌊x�
   rw [← Int.cast_natCast, Int.toNat_of_nonneg h]
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Unfold `lamAt`. Rewrite using `[dif_neg (by omega), dif_pos (by omega)]`. Use `congr 3`. Use linear arithmetic over natural numbers and integers.
+Substitute using the available equality. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 -/
 lemma lamAt_b {R : Ranks} (h : HCParam R) (n c : ℕ) (hc : c < R.m) (hn : n = R.k - 1 + c) : lamAt h n = -h.b ⟨c, hc⟩ := by
   subst hn
@@ -38,13 +38,13 @@ lemma lamAt_b {R : Ranks} (h : HCParam R) (n c : ℕ) (hc : c < R.m) (hn : n = R
 variable (D : D7) (i : Fin D.R.m) (τ : D.what₂.Tau)
 
 /- English proof (translation)
-Establish `hk` using `D.R.m_add_three_le_k`. Establish `hi` using `i.2`. Take `⟨z, hz⟩` from `lamAt_int (D.hc τ) n`. Take `⟨e, he⟩` from `(D.hc τ).e_int i`. Take `⟨s, hs⟩` from `D.R.t_odd`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hs' : (D.R.t : ℚ) = 2 * s + 1` using `by exact_mod_cast hs`. Rewrite using `[aPl, if_pos hn]`. Use `floor_toNat_cast (z + e - ((D.R.k + i : ℕ) - (n + 1)) - (s + 1)) ?_ ?_` and prove the remaining obligations. Rewrite using `[hz, he, hs']`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨d, hd⟩` from `Nat.exists_eq_add_of_lt hn`. Establish `h1` using `lamAt_add_add_le (D.hc τ) d n (by unfold Ranks.r; omega)`. Rewrite `h1` using `[lamAt_b (D.hc τ) (n + d) i hi (by omega)]`. Establish `h2` using `(D.hc τ).gap_be i`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hd]`. Use `push_cast`. Simplify using `only [Fin.eta] at h1`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma aPl_cast (n : ℕ) (hn : n < D.R.k + i) :
     (aPl D i (D.R.k + i) τ n : ℚ) =
@@ -68,11 +68,11 @@ lemma aPl_cast (n : ℕ) (hn : n < D.R.k + i) :
     linarith
 
 /- English proof (translation)
-Establish `hk` using `D.R.m_add_three_le_k`. Take `⟨z, hz⟩` from `(D.hc τ).b_int ⟨i + 1 + c, by omega⟩`. Take `⟨e, he⟩` from `(D.hc τ).e_int i`. Take `⟨s, hs⟩` from `D.R.t_odd`. Establish `hs' : (D.R.t : ℚ) = 2 * s + 1` using `by exact_mod_cast hs`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0` using `lamAt_b (D.hc τ) (D.R.k + i + c) (i + 1 + c) (by omega) (by omega)`. Rewrite using `[aMi, if_pos (by omega), show q - n = c + 1 by omega, show D.R.k + i + (c + 1) - 1 = D.R.k + i + c by omega, h0, ← sub_eq_add_neg, Nat.cast_succ]`. Use `floor_toNat_cast (-(e - z + (c + 1) + s)) ?_ ?_` and prove the remaining obligations. Rewrite using `[hz, he, hs']`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `lamAt_add_add_le (D.hc τ) c (D.R.k + i) (by unfold Ranks.r; omega)`. Rewrite `h1` using `[h0, lamAt_b (D.hc τ) (D.R.k + i) (i + 1) (by omega) (by omega)]`. Establish `h2` using `(D.hc τ).gap_eb i (by omega)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma aMi_cast (q n c : ℕ) (hq : i + 1 + q = D.R.m) (hn : n + c + 1 = q) :
     (aMi D i (D.R.k + i) q τ n : ℚ) =
@@ -93,25 +93,25 @@ lemma aMi_cast (q n c : ℕ) (hq : i + 1 + q = D.R.m) (hn : n + c + 1 = q) :
     linarith
 
 /- English proof (translation)
-Establish `hk` using `D.R.m_add_three_le_k`. Establish `hi` using `i.2`. Take `⟨hj, W, hWk, hWm, hWt, hWj, hWe, hWv, hWb, hW⟩` from `GlobalTheory.ForcedWeights.lamLForced D (i + 1) (Nat.le_add_left _ _) hi τ`. Establish `hWe' : (W.e : ℚ) = (D.hc τ).e i` using `hWe`. Establish `hr : (Vc D i).rank = D.R.k + D.R.m - 1 + D.R.t` using `D.sp.V_rank _ (Nat.le_add_left _ _) hi`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨q, hq⟩ : ∃ q, i + 1 + q = D.R.m` from `⟨D.R.m - (i + 1), by omega⟩`. Establish `hp : W.p = D.R.k + i` using `by unfold IndefiniteWeightData.WeightData.p; omega`. Establish `hq' : W.q = q` using `by unfold IndefiniteWeightData.WeightData.q; omega`. Establish `hnV : W.nV = D.R.k + i + q + D.R.t` using `by unfold IndefiniteWeightData.WeightData.nV IndefiniteWeightData.WeightData.r; omega`. Take `⟨a, ha⟩` from `D.R.k_even`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `D.R.m_even`. Establish `ha' : (D.R.k : ℚ) = a + a` using `by exact_mod_cast ha`. Establish `hb' : (q : ℚ) = b + b - i - 1`. Establish `: ((i : ℕ) : ℚ) + 1 + q = b + b` using `by exact_mod_cast hq.trans hb`. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hd : W.dTau = ((a + (i : ℕ) - b - W.e : ℤ) : ℚ)`. Unfold `IndefiniteWeightData.WeightData.dTau`. Rewrite using `[hp, hq']`. Use `push_cast`. Rewrite using `[ha', hb']`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Generalize the expression as in `(a + (i : ℕ) - b - W.e : ℤ) = s at hd`. Rewrite using `[show D.R.m - (i + 1) = q by omega]`. Use `⟨s, fun n => ?_⟩` and prove the remaining obligations. Establish `hn` using `n.2`.
+Expand and normalize the polynomial expressions, which then agree. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← Int.cast_inj (α := ℚ), hW n, IndefiniteWeightData.WeightData.lamPrime, hd, IndefiniteWeightData.WeightData.thetaWt, hp, hq', hWt, Fin.val_rev, Int.cast_sub, Int.cast_add]`. Distinguish the cases in `h1 : (n : ℕ) < D.R.k + i`. Rewrite using `[if_pos (by omega), if_pos h1, if_neg (by omega), Int.cast_natCast, aPl_cast D i τ n h1, IndefiniteWeightData.WeightData.aPlus, hp, hq', hnV, hWe']`. Establish `hl : (W.lam (n + 1) : ℚ) = lamAt (D.hc τ) n`. Unfold `IndefiniteWeightData.WeightData.lam`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hWk]`. Use `split_ifs with h2`. Rewrite using `[lamAt, dif_pos (by omega)]`. Conclude with `hWv ⟨n, by omega⟩`. Rewrite using `[lamAt_b (D.hc τ) n (n - (D.R.k - 1)) (by omega) (by omega), Int.cast_neg, show (n : ℕ) + 1 - (D.R.k - 1) = n - (D.R.k - 1) + 1 by omega]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Conclude with `congrArg _ (hWb ⟨n - (D.R.k - 1), by omega⟩)`. Rewrite using `[hl]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg (by omega), if_neg h1]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Distinguish the cases in `h2 : (n : ℕ) + 1 ≤ D.R.k + i + D.R.t`. Rewrite using `[if_pos h2, if_neg (by omega)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨c, hc⟩ : ∃ c, (n : ℕ) = D.R.k + i + D.R.t + c` from `⟨n - (D.R.k + i + D.R.t), by omega⟩`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[if_neg h2, if_pos (by omega), Int.cast_natCast, aMi_cast D i τ q _ c hq (by omega), IndefiniteWeightData.WeightData.aMinus, hq', hWj, hWt, hWe', show q + 1 - (q + 1 - (n + 1 - (D.R.k + i) - D.R.t)) = c + 1 by omega, show (i : ℕ) + 1 + (c + 1) = i + 1 + c + 1 by omega, hWb ⟨i + 1 …`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 lemma lamV_eq : ∃ s : ℤ, ∀ n : Fin (Vc D i).rank, (lamV D i τ).w n =
     s + (if (n : ℕ) < D.R.k + i then (aPl D i (D.R.k + i) τ n : ℤ) else 0) -
@@ -172,17 +172,17 @@ lemma lamV_eq : ∃ s : ℤ, ∀ n : Fin (Vc D i).rank, (lamV D i τ).w n =
       ring
 
 /- English proof (translation)
-Introduce `D Q hQ κ hκ i c'`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `hi` using `i.2`. Take `⟨-, hinj, hΨ, -, hval⟩` from `GlobalTheory.WeightExponents.weight_exponents D Q hQ _ (inR i) (κ i)`. Take `⟨hp, hq, -⟩` from `hQ.2.2.2 _ (inR i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hp1 : (D.R.sigW ((i : ℕ) + 1)).1 = D.R.k + i` using `rfl`. Establish `hq1 : (D.R.sigW ((i : ℕ) + 1)).2 = D.R.m - (i + 1)` using `rfl`. Use `choose s hs using lamV_eq D i`. Use `GlobalTheory.FrameRead.CoefMap.exists_ioLFRec D.host.E Q.H (Q.Dw ((i : ℕ) + 1)) (Vc D i).rank D.what₂.Tau (DV.tauEmb D) ⟨hinj, fun τ => (hΨ τ).trans (exists_congr fun _ => eq_comm)⟩ ?_ Q.l c' (wtA (κ i)) s (lamV D i) (dom_wtA (κ i)).1 ?_` and prove the remaining obligations. Use `le_trans ?_ (r_le_V i)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hp, hq, hp1, hq1, Ranks.r]`. Use linear arithmetic over natural numbers and integers. Introduce `τ n`. Establish `ht` using `hQ.1.2.2.2 τ`. Establish `hc : ¬ ComplexEmbedding.conjugate (DV.tauEmb D τ) (Q.H.rt : D.host.E) = Q.H.rt0` using `GlobalTheory.WeightExponents.not_inPsi_conj hQ.1 τ`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsig : (Wc D i).sig (tauE D τ) = D.R.sigW ((i : ℕ) + 1)` using `D.sp.W_sigval _ (inR i).1 (inR i).2 _`. Take `⟨h1, h2, -⟩` from `hκ i τ`. Rewrite `h1`, `h2` using `[hsig]`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum.mult, ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum.mult, if_pos ht, if_neg hc, hp, hq, hs τ n, (hval τ _).1, (hval τ _).2]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `if_ctx_congr Iff.rfl (fun h => ?_) fun _ => rfl` and prove the remaining obligations. Rewrite using `[ext0, dif_pos (show (n : ℕ) < (D.R.sigW ((i : ℕ) + 1)).1 from h), h1]`. Both sides reduce to the same expression. Use `if_ctx_congr Iff.rfl (fun h => ?_) fun _ => rfl` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ext0, dif_pos (show (Fin.rev n : ℕ) < (D.R.sigW ((i : ℕ) + 1)).2 from h), h2]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_io_record : ∀ (D : D7) (Q : Formalism.L2.Pj.Par D), Q.Pins → ∀ (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)), KapIs κ → ∀ (i : Fin D.R.m) (c' : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff Q.l), ∃ (io : VsV D i c'.F →ₗ[c'.F] MvPolynomial (LtN (Q.Dw ((i : ℕ) + 1)) (Vc D i).rank) c'.F) (hw : VsV D i c'.F), IoLFRec c' (fun τ => embF c' (tauE D τ)) (lamV D i) (wtA (κ i)) io hw := by
   intro D Q hQ κ hκ i c'

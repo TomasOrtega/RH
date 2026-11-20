@@ -9,15 +9,15 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 namespace MultiProjectiveCoordinates
 
 /- English proof (translation)
-Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact ⟨1, one_pos, by simpa using Algebra.subset_adjoin hx⟩`. Consider the case `algebraMap r`. Use `⟨r.den, r.den_pos, ?_⟩` and prove the remaining obligations. Establish `: (r.den : Ω) * algebraMap ℚ Ω r = ((r.num : ℤ) : Ω)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h : ((r.den : ℚ) * r) = (r.num : ℚ)` using `Rat.den_mul_eq_num r`. Use `congrArg (algebraMap ℚ Ω) h` as an intermediate fact. Rewrite `this` using `[map_mul, map_natCast, map_intCast]`. Then use the resulting hypothesis. Rewrite using `[this]`. Conclude with `intCast_mem _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨N, hN, hx⟩` from `hx`. Take `⟨M, hM, hy⟩` from `hy`. Use `⟨N * M, mul_pos hN hM, ?_⟩` and prove the remaining obligations. Establish `: ((N * M : ℕ) : Ω) * (x + y) = (M : Ω) * (N * x) + (N : Ω) * (M * y)` using `by push_cast; ring`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `add_mem (mul_mem (natCast_mem _ _) hx) (mul_mem (natCast_mem _ _) hy)`. Consider the case `mul x y _ _ hx hy`. Take `⟨N, hN, hx⟩` from `hx`. Take `⟨M, hM, hy⟩` from `hy`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨N * M, mul_pos hN hM, ?_⟩` and prove the remaining obligations. Establish `: ((N * M : ℕ) : Ω) * (x * y) = (N * x) * (M * y)` using `by push_cast; ring`. Rewrite using `[this]`. Conclude with `mul_mem hx hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjoin_rat_clear {Ω : Type} [Field Ω] [CharZero Ω] (T : Set Ω) (x : Ω) (hx : x ∈ Algebra.adjoin ℚ T) :
     ∃ N : ℕ, 0 < N ∧ (N : Ω) * x ∈ Algebra.adjoin ℤ T := by
@@ -47,17 +47,17 @@ theorem adjoin_rat_clear {Ω : Type} [Field Ω] [CharZero Ω] (T : Set Ω) (x : 
     exact mul_mem hx hy
 
 /- English proof (translation)
-Take `⟨p, hmon, hp⟩` from `hx`. Establish `hc : ∀ i, ∃ N : ℕ, 0 < N ∧ (N : Ω) * (p.coeff i : Ω) ∈ Algebra.adjoin ℤ T` using `fun i => adjoin_rat_clear T _ (p.coeff i).2`. Use `choose N hN hNm using hc`. Take `⟨M, hM⟩ : ∃ M, M = ∏ i ∈ Finset.range (p.natDegree + 1), N i` from `⟨_, rfl⟩`. Establish `hMpos : 0 < M` using `hM ▸ Finset.prod_pos fun i _ => hN i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMc : ∀ i, (M : Ω) * (p.coeff i : Ω) ∈ Algebra.adjoin ℤ T`. Introduce `i`. Distinguish the cases in `hi : i ∈ Finset.range (p.natDegree + 1)`. Rewrite using `[hM, ← Finset.mul_prod_erase _ _ hi, Nat.cast_mul, mul_comm (N i : Ω), mul_assoc]`. Conclude with `mul_mem (natCast_mem _ _) (hNm i)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hi` using `[Finset.mem_range, not_lt]`. Rewrite using `[Polynomial.coeff_eq_zero_of_natDegree_lt (by omega)]`. Simplify using the standard rewrite rules. Establish `hlift : Polynomial.C (M : Ω) * p.map (algebraMap (Algebra.adjoin ℚ T) Ω) ∈ Polynomial.lifts (algebraMap (Algebra.adjoin ℤ T) Ω)`. Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `n`. Rewrite using `[Polynomial.coeff_C_mul, Polynomial.coeff_map]`. Conclude with `⟨⟨_, hMc n⟩, rfl⟩`. Take `⟨q, hq⟩` from `(Polynomial.mem_lifts _).mp hlift`. Establish `hinj : Function.Injective (algebraMap (Algebra.adjoin ℤ T) Ω)` using `Subtype.val_injective`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpm : (p.map (algebraMap (Algebra.adjoin ℚ T) Ω)).Monic` using `hmon.map _`. Establish `hlc : algebraMap _ Ω q.leadingCoeff = (M : Ω)`. Rewrite using `[← Polynomial.leadingCoeff_map_of_injective hinj, hq, Polynomial.leadingCoeff_mul, Polynomial.leadingCoeff_C, hpm.leadingCoeff, mul_one]`. Establish `hroot : Polynomial.aeval x q = 0`. Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map, hq, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_map, hp, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hint` using `isIntegral_leadingCoeff_smul q x hroot`. Use `⟨M, hMpos, ?_⟩` and prove the remaining obligations. Rewrite `hint` using `[Algebra.smul_def, hlc]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem integral_rat_clear {Ω : Type} [Field Ω] [CharZero Ω] (T : Set Ω) (x : Ω)
     (hx : IsIntegral (Algebra.adjoin ℚ T) x) :
@@ -97,11 +97,11 @@ theorem integral_rat_clear {Ω : Type} [Field Ω] [CharZero Ω] (T : Set Ω) (x 
   rwa [Algebra.smul_def, hlc] at hint
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ y _ d a s hs`. Establish `hc : ∀ c : ∀ k, ι k, ∃ N : ℕ, 0 < N ∧ ((∀ k, y ⟨k, c k⟩ ≠ 0) → IsIntegral (chartRingZ y c) ((N : Ω) * (s * ∏ k, y ⟨k, c k⟩ ^ (-(a k)))))`. Introduce `c`. Distinguish the cases in `hy : ∀ k, y ⟨k, c k⟩ ≠ 0`. Take `⟨N, hN, hint⟩` from `integral_rat_clear _ _ (hs c hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨N, hN, fun _ => hint⟩`. Conclude with `⟨1, one_pos, fun h => absurd h hy⟩`. Use `choose N hN hNint using hc`. Use `⟨∏ c, N c, Finset.prod_pos fun c _ => hN c, ?_⟩` and prove the remaining obligations. Introduce `c hy`.
+Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_integralClosure_iff]`. Simplify using `only [Nat.cast_one, one_mul]`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ c), Nat.cast_mul, mul_comm (N c : Ω), mul_assoc, mul_assoc]`. Conclude with `IsIntegral.mul (isIntegral_natCast _) (by simpa only [mul_assoc] using hNint c hy)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_integer_multiple_in_lattice : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] (y : (Σ k, ι k) → Ω) [CharZero Ω] (d : ℕ) (a : K → ℤ) (s : Ω), (∀ c : ∀ k, ι k, (∀ k, y ⟨k, c k⟩ ≠ 0) → IsIntegral (Algebra.adjoin ℚ (Set.range fun p : Σ k, ι k => y p / y ⟨p.1, c p.1⟩)) (s * ∏ k, y ⟨k, c k⟩ ^ (-(a k)))) → ∃ N₀ : ℕ, 0 < N₀ ∧ (N₀ : Ω) * s ∈ chartLatNm y a 1 := by
   intro K _ ι _ Ω _ y _ d a s hs

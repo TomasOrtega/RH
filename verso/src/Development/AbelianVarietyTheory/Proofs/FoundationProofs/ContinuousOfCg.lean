@@ -21,7 +21,7 @@ namespace GlobalTheory.LambdaValuationPowers.AllRoots
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Use `⟨Empty, inferInstance, fun i => i.elim, fun i => i.elim, hζ, fun i => i.elim, fun i => i.elim, fun i => i.elim, ?_⟩` and prove the remaining obligations. Establish `h` using `GlobalTheory.Col.kumPres_empty A (n := m - 0) (r := m) (ζ := ζ ^ l ^ 0) (by simpa using hζ) (by omega) (Z m) hZ`. Apply the tactic sequence `convert h using 2 <;> exact Empty.elim ‹_›`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pres_of_vanish (A : ValuationSubring Ω) (c : Coef l) (Z : ∀ r : ℕ, G ℚ Ω → (ZMod (l ^ r))ˣ → Qbar l) (m : ℕ) (ζ : Ω)
     (hζ : IsPrimitiveRoot ζ (l ^ m)) (hZ : ∀ s ∈ Ine (F := ℚ) A, cycMod ℚ Ω l m s = 1 → Z m s 1 = 0) :
@@ -31,15 +31,15 @@ theorem pres_of_vanish (A : ValuationSubring Ω) (c : Coef l) (Z : ∀ r : ℕ, 
   convert h using 2 <;> exact Empty.elim ‹_›
 
 /- English proof (translation)
-Establish `hnl : ‖(l : PadicAlgCl l)‖ = (l : ℝ)⁻¹`. Establish `: (l : PadicAlgCl l) = algebraMap ℚ_[l] (PadicAlgCl l) (l : ℚ_[l])` using `by simp`. Rewrite using `[this, norm_algebraMap', Padic.norm_p]`. Establish `hlt1 : (l : ℝ)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : l.Prime).one_lt)`. Rewrite using `[continuous_iff_continuousAt]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `s`. Rewrite using `[ContinuousAt, Metric.tendsto_nhds]`. Introduce `ε hε`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one hε hlt1`. Take `⟨E0, hE⟩` from `h n`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hopen : ∀ᶠ t in nhds (1 : G ℚ Ω), ∀ z ∈ E0, t z = z`. Rewrite using `[Filter.eventually_all_finset]`. Introduce `z _`. Establish `ho` using `stabilizer_isOpen_of_isIntegral (K := ℚ) (L := Ω) z`. Conclude with `ho.mem_nhds (one_mem _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont : Filter.Tendsto (fun t : G ℚ Ω => s⁻¹ * t) (nhds s) (nhds 1)`. Use `(continuous_const_mul s⁻¹).tendsto s` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel]`. Then use the resulting hypothesis. Use `filter_upwards [hcont.eventually hopen] with t ht`. Use `hE s (s⁻¹ * t) ht` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[mul_inv_cancel_left, Cg, norm_pow, hnl]`. Rewrite using `[dist_eq_norm]`. Conclude with `this.trans_lt hn`.
+A detailed English derivation is pending.
 -/
 theorem continuous_of_cg [Algebra.IsAlgebraic ℚ Ω] (f : G ℚ Ω → Qbar l)
     (h : ∀ n : ℕ, ∃ E0 : Finset Ω, ∀ s s' : G ℚ Ω, (∀ z ∈ E0, s' z = z) → Cg n (f (s * s')) (f s)) : Continuous f := by

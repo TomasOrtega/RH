@@ -68,11 +68,11 @@ Both sides reduce to the same expression.
     (unitaryIncl n u : Matrix (Fin n) (Fin n) ℂ) = u := rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `e : (embGL R n (n + 1) rfl g : Matrix (Fin (n + 1)) (Fin (n + 1)) R) a b = Matrix.fromBlocks (g : Matrix (Fin n) (Fin n) R) 0 0 (1 : Matrix (Fin 1) (Fin 1) R) (finSumFinEquiv.symm a) (finSumFinEquiv.symm b)` using `rfl`. Rewrite using `[e]`. Take `⟨a, rfl⟩` from `finSumFinEquiv.surjective a`. Take `⟨b, rfl⟩` from `finSumFinEquiv.surjective b`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Equiv.symm_apply_apply, EmbeddingLike.apply_eq_iff_eq]`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Subsingleton.elim a b]`.
+Simplify using the standard rewrite rules.
 -/
 theorem embGL_apply (R : Type) [CommRing R] {n N : ℕ} (h : n + 1 = N) (g : GL (Fin n) R) (a b : Fin N) :
     (embGL R n N h g : Matrix (Fin N) (Fin N) R) a b =

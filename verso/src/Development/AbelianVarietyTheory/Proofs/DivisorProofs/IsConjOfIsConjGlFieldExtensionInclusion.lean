@@ -9,11 +9,11 @@ namespace GlobalTheory.Shin.ConjDesc
 noncomputable section
 
 /- English proof (translation)
-Use `revert m`. Proceed by induction on `p using Polynomial.induction_on with`. Consider the case `C a`. Introduce `m`. Rewrite using `[← Polynomial.algebraMap_eq, algebraMap_smul, algebraMap_smul]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `e.map_smul a m`. Consider the case `add p q hp hq`. Introduce `m`. Rewrite using `[add_smul, add_smul, map_add, hp, hq]`. Consider the case `monomial k a ih`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `m`. Rewrite using `[pow_succ, ← mul_assoc, mul_smul (C a * X ^ k) X m, ih, h, ← mul_smul]`.
+A detailed English derivation is pending.
 -/
 theorem smul_of_X {F : Type} [Field F] {M N : Type} [AddCommGroup M] [Module F M] [Module F[X] M]
     [IsScalarTower F F[X] M] [AddCommGroup N] [Module F N] [Module F[X] N] [IsScalarTower F F[X] N]
@@ -52,7 +52,7 @@ theorem coordE_apply {F F' : Type} [Field F] [Field F'] [Algebra F F'] {l : ℕ}
     (v : Fin n → F') (k : Fin l) (i : Fin n) : coordE b n v k i = b.equivFun (v i) k := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k i`. Rewrite using `[coordE_apply]`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, ← Algebra.smul_def, map_sum, map_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, coordE_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coordE_mulVec {F F' : Type} [Field F] [Field F'] [Algebra F F'] {l : ℕ} (b : Module.Basis (Fin l) F F') (n : ℕ)
     (A : Matrix (Fin n) (Fin n) F) (v : Fin n → F') :
@@ -71,25 +71,23 @@ namespace GlobalTheory.Shin
 open ConjDesc in
 
 /- English proof (translation)
-Introduce `F F' _ _ _ _ n γ γ' hc`. Take `⟨c, hc⟩` from `isConj_iff.mp hc`. Establish `hcA : (c : Matrix (Fin n) (Fin n) F') * ((γ : Matrix (Fin n) (Fin n) F).map (algebraMap F F')) = ((γ' : Matrix (Fin n) (Fin n) F).map (algebraMap F F')) * (c : Matrix (Fin n) (Fin n) F')`. Establish `h2 : c * incl F F' n γ = incl F F' n γ' * c` using `by rw [← hc]; group`. Conclude with `congrArg (fun x : GL (Fin n) F' => (x : Matrix (Fin n) (Fin n) F')) h2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Finite F := Finite.of_injective _ (algebraMap F F').injective`. Use `haveI : FiniteDimensional F F' := inferInstance`. Establish `hl : 0 < Module.finrank F F'` using `Module.finrank_pos`. Set `b` to `Module.finBasis F F'`. Set `f` to `Matrix.toLin' (γ : Matrix (Fin n) (Fin n) F)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `g` to `Matrix.toLin' (γ' : Matrix (Fin n) (Fin n) F)`. Set `Fc : (Fin n → F') ≃ₗ[F] (Fin n → F')` to `(LinearEquiv.ofLinear (Matrix.toLin' (c : Matrix (Fin n) (Fin n) F')) (Matrix.toLin' ((c⁻¹ : GL (Fin n) F') : Matrix (Fin n) (Fin n) F')) (by rw [← Matrix.toLin'_mul, Units.mul_inv, Matrix.toLin'_one]) (by rw [← Matrix.toLin'_mul, Units.inv_mul, Matrix.toLin'_one])).restrictScala …`. Establish `hFc : ∀ w, Fc w = Matrix.mulVec (c : Matrix (Fin n) (Fin n) F') w` using `fun w => rfl`. Set `core : (Fin (Module.finrank F F') → Fin n → F) ≃ₗ[F] (Fin (Module.finrank F F') → Fin n → F)` to `(coordE b n).symm.trans (Fc.trans (coordE b n))`. Establish `hcore : ∀ x, core (fun k => f (x k)) = fun k => g (core x k)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `x`. Take `⟨v, rfl⟩` from `(coordE b n).surjective x`. Establish `h1 : (fun k => f (coordE b n v k)) = coordE b n (Matrix.mulVec ((γ : Matrix (Fin n) (Fin n) F).map (algebraMap F F')) v)`. Rewrite using `[coordE_mulVec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h1]`. Use `show coordE b n (Fc ((coordE b n).symm (coordE b n (Matrix.mulVec ((γ : Matrix (Fin n) (Fin n) F).map (algebraMap F F')) v)))) = fun k => g (coordE b n (Fc ((coordE b n).symm (coordE b n v))) k)`. Rewrite using `[LinearEquiv.symm_apply_apply, LinearEquiv.symm_apply_apply, hFc, hFc, Matrix.mulVec_mulVec, hcA, ← Matrix.mulVec_mulVec, coordE_mulVec]`. Both sides reduce to the same expression. Set `Θ : (Fin (Module.finrank F F') → Module.AEval' f) ≃ₗ[F] (Fin (Module.finrank F F') → Module.AEval' g)` to `(LinearEquiv.piCongrRight fun _ => (Module.AEval'.of f).symm).trans (core.trans (LinearEquiv.piCongrRight fun _ => Module.AEval'.of g))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hΘ : ∀ x, Θ ((X : F[X]) • x) = (X : F[X]) • Θ x`. Introduce `x`. Establish `h3 : (fun k => (Module.AEval'.of f).symm (((X : F[X]) • x) k)) = fun k => f ((Module.AEval'.of f).symm (x k))`. Use function extensionality and compare the values at `fun k => Module.AEval'.of_symm_X_smul f (x k)`. Use function extensionality and compare the values at `k`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `show Module.AEval'.of g (core (fun k => (Module.AEval'.of f).symm (((X : F[X]) • x) k)) k) = (X : F[X]) • Module.AEval'.of g (core (fun k => (Module.AEval'.of f).symm (x k)) k)`. Rewrite using `[h3, hcore, Module.AEval'.X_smul_of]`. Use `haveI : Finite (Module.AEval' f) := Finite.of_equiv _ (Module.AEval'.of f).toEquiv`. Use `haveI : Finite (Module.AEval' g) := Finite.of_equiv _ (Module.AEval'.of g).toEquiv`. Take `⟨ψ⟩` from `GlobalTheory.T.nonempty_linearEquiv_of_pi_fin_pow_finite F[X] (Module.AEval' f) (Module.AEval' g) (Module.finrank F F') hl ⟨equivOfX Θ hΘ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `e : (Fin n → F) ≃ₗ[F] (Fin n → F)` to `(Module.AEval'.of f).trans ((ψ.restrictScalars F).trans (Module.AEval'.of g).symm)`. Establish `he : ∀ v, e (f v) = g (e v)`. Introduce `v`. Establish `h1 : Module.AEval'.of f (f v) = (X : F[X]) • Module.AEval'.of f v` using `(Module.AEval'.X_smul_of f v).symm`. Simplify using `only [e, LinearEquiv.trans_apply, LinearEquiv.restrictScalars_apply, h1, map_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Module.AEval'.of_symm_X_smul g _`. Set `P : GL (Fin n) F` to `⟨LinearMap.toMatrix' e.toLinearMap, LinearMap.toMatrix' e.symm.toLinearMap, by rw [← LinearMap.toMatrix'_comp]; simp, by rw [← LinearMap.toMatrix'_comp]; simp⟩`. Use `isConj_iff.mpr ⟨P, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_inv_eq_iff_eq_mul]`. Apply `Units.ext` to reduce the goal to its premises.
-
-Establish `h4 : e.toLinearMap ∘ₗ f = g ∘ₗ e.toLinearMap` using `LinearMap.ext he`. Establish `h5` using `congrArg LinearMap.toMatrix' h4`. Rewrite `h5` using `[LinearMap.toMatrix'_comp, LinearMap.toMatrix'_comp]`. Simplify `h5` using `[P, f, g, LinearMap.toMatrix'_toLin']`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isConj_of_isConj_incl : ∀ (F F' : Type) [Field F] [Field F'] [Algebra F F'] [Finite F'] (n : ℕ)
     (γ γ' : GL (Fin n) F), IsConj (incl F F' n γ) (incl F F' n γ') → IsConj γ γ' := by

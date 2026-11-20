@@ -19,9 +19,9 @@ variable {α : Type*} [MeasurableSpace α] {μ : Measure α} {E : Type*} [Normed
   [CompleteSpace E]
 
 /- English proof (translation)
-Distinguish the cases in `hf : Integrable f μ`. Conclude with `L.integral_comp_comm hf`. Establish `hLf : ¬ Integrable (fun x => L (f x)) μ`. Introduce `h`. Apply `hf` to reduce the goal to its premises.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `M.integrable_comp h` as an intermediate fact. Simplify `this` using `[hML]`. Rewrite using `[integral_undef hf, integral_undef hLf, map_zero]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_clm_leftInv (L M : E →L[ℂ] E) (hML : ∀ v, M (L v) = v) (f : α → E) :
     ∫ x, L (f x) ∂μ = L (∫ x, f x ∂μ) := by
@@ -89,30 +89,26 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq] [CompleteSpace Wp]
 
 /- English proof (translation)
-The claim follows from `Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh hw.1`.
+A detailed English derivation is pending.
 -/
 theorem unit_of_uw {z : Fin (2 * r + k + 1) → ℂ} {w : B.Mat k r} (hw : w ∈ UWset k r z) : IsUnit w.det := Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh hw.1
 
 /- English proof (translation)
-Establish `hU` using `unit_of_uw hw`. Establish `hwi : w⁻¹ ∈ UWset k r Bs.z'` using `LieBracketMultiplication.uw_inv hw`. Use `PBG.sigmaFinite_of_haar Bs.haarN` as an intermediate fact. Use `PBG.sigmaFinite_of_haar Bs.haarW'` as an intermediate fact. Use `set e1 := (PBG.lmulHomeo w hU).toMeasurableEquiv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set e2 := (conjHomeo w hU).toMeasurableEquiv`. Use `set Φ : Mt k r × Mt k r ≃ᵐ Mt k r × Mt k r := MeasurableEquiv.prodCongr e1 e2`. Establish `hmp1 : MeasurePreserving e1 Bs.μW' Bs.μW'`. Use `⟨e1.measurable, ?_⟩` and prove the remaining obligations. Establish `ee : ⇑e1 = lmulM w` using `by funext x; rfl`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ee]`. Conclude with `Bs.haarW'.left w hw`. Establish `hmp2 : MeasurePreserving e2 Bs.μN Bs.μN`. Use `⟨e2.measurable, ?_⟩` and prove the remaining obligations. Establish `ee : ⇑e2 = conjM w` using `by funext x; rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ee]`. Conclude with `Formalism.FourierDecayAlt.P.b2_conjInvRaw_proof k r Bs.z' Bs.μN Bs.z'_mem Bs.T'_pos Bs.haarN w hw`. Establish `hmp : MeasurePreserving Φ (Bs.μW'.prod Bs.μN) (Bs.μW'.prod Bs.μN)` using `hmp1.prod hmp2`. Use `set f : Mt k r × Mt k r → (Wq →L[ℂ] Wp) := fun p => star (psi k r Bs.z' cStd (Matrix.of p.2)) • (F (x * Matrix.of p.2 * Matrix.of p.1)).comp (Bs.π' (Matrix.of p.1)⁻¹)`. Use `set g : Mt k r × Mt k r → (Wq →L[ℂ] Wp) := fun p => star (psi k r Bs.z' cStd (Matrix.of p.2)) • (F (x * w * Matrix.of p.2 * Matrix.of p.1)).comp (Bs.π' (Matrix.of p.1)⁻¹)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hK1 : PBG.Kr Bs F x = ∫ p, f (Φ p) ∂(Bs.μW'.prod Bs.μN)` using `(hmp.integral_comp' f).symm`. Establish `hae : ∀ᵐ p ∂(Bs.μW'.prod Bs.μN), (Matrix.of p.1 : B.Mat k r) ∈ UWset k r Bs.z'` using `Measure.quasiMeasurePreserving_fst.ae (Formalism.FourierDecayAlt.P.B5.haar_ae Bs.haarW')`. Establish `hK2 : ∫ p, f (Φ p) ∂(Bs.μW'.prod Bs.μN) = ∫ p, pre (Bs.π' w⁻¹) (g p) ∂(Bs.μW'.prod Bs.μN)`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hae] with p hp`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpsi : psi k r Bs.z' cStd (w * Matrix.of p.2 * w⁻¹) = psi k r Bs.z' cStd (Matrix.of p.2)`. Use `Formalism.FourierDecayAlt.P.PBM.psi_conj_UW Bs.z' cStd w⁻¹ hwi (Matrix.of p.2)` as an intermediate fact. Rewrite `this` using `[Matrix.nonsing_inv_nonsing_inv _ hU]`. Then use the resulting hypothesis. Establish `hmat : x * (w * Matrix.of p.2 * w⁻¹) * (w * Matrix.of p.1) = x * w * Matrix.of p.2 * Matrix.of p.1`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mul_assoc w⁻¹ w, Matrix.nonsing_inv_mul _ hU, Matrix.one_mul]`. Establish `hpi : Bs.π' (w * Matrix.of p.1)⁻¹ = (Bs.π' (Matrix.of p.1)⁻¹).comp (Bs.π' w⁻¹)`. Rewrite using `[Matrix.mul_inv_rev]`. Conclude with `Bs.π'_rep.2 _ (LieBracketMultiplication.uw_inv hp) _ hwi`. Use `show star (psi k r Bs.z' cStd (w * Matrix.of p.2 * w⁻¹)) • (F (x * (w * Matrix.of p.2 * w⁻¹) * (w * Matrix.of p.1))).comp (Bs.π' (w * Matrix.of p.1)⁻¹) = _`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hpsi, hmat, hpi, pre_apply, ContinuousLinearMap.smul_comp]`. Both sides reduce to the same expression. Establish `hML : ∀ v : Wq →L[ℂ] Wp, pre (Bs.π' w) (pre (Bs.π' w⁻¹) v) = v`. Introduce `v`. Rewrite using `[pre_apply, pre_apply, ContinuousLinearMap.comp_assoc, ← Bs.π'_rep.2 _ hwi _ hw, Matrix.nonsing_inv_mul _ hU, Bs.π'_rep.1]`.
-
-Both sides reduce to the same expression. Establish `hK3 : PBG.Kr Bs F x = (PBG.Kr Bs F (x * w)).comp (Bs.π' w⁻¹)`. Rewrite using `[hK1, hK2, integral_clm_leftInv _ _ hML]`. Both sides reduce to the same expression. Rewrite using `[hK3, ContinuousLinearMap.comp_assoc, ← Bs.π'_rep.2 _ hwi _ hw, Matrix.nonsing_inv_mul _ hU, Bs.π'_rep.1]`.
-
-Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem kr_right_uw (Bs : B.RealPlaceData k r Wp Wq) (F : B.Mat k r → (Wq →L[ℂ] Wp)) (x w : B.Mat k r)
     (hw : w ∈ UWset k r Bs.z') : PBG.Kr Bs F (x * w) = (PBG.Kr Bs F x).comp (Bs.π' w) := by
@@ -174,11 +170,11 @@ variable {k p ρ n : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSp
   [InnerProductSpace ℂ Wq] [CompleteSpace Wp]
 
 /- English proof (translation)
-Establish `hU` using `unit_of_uw hw`. Establish `hwi : w⁻¹ ∈ UWset k n B0.z'` using `LieBracketMultiplication.uw_inv hw`. Establish `hML : ∀ v : Wq →L[ℂ] Wp, pre (B0.π' w⁻¹) (pre (B0.π' w) v) = v`. Introduce `v`. Rewrite using `[pre_apply, pre_apply, ContinuousLinearMap.comp_assoc, ← B0.π'_rep.2 _ hw _ hwi, Matrix.mul_nonsing_inv _ hU, B0.π'_rep.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Unfold `PBQ.pbF`. Rewrite using `[← pre_apply, ← integral_clm_leftInv _ _ hML]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Unfold `PBQ.pbI`. Rewrite using `[← Matrix.mul_assoc, kr_right_uw B0 H _ w hw, pre_apply, ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem pbF_right_uw (Bj : B.RealPlaceData k ρ Wp Wq) (B0 : B.RealPlaceData k n Wp Wq) (e : p + ρ = n)
     (H : B.Mat k n → (Wq →L[ℂ] Wp)) (g w : B.Mat k n) (hw : w ∈ UWset k n B0.z') :
@@ -199,27 +195,23 @@ theorem pbF_right_uw (Bj : B.RealPlaceData k ρ Wp Wq) (B0 : B.RealPlaceData k n
     ContinuousLinearMap.comp_assoc]
 
 /- English proof (translation)
-Establish `hU` using `unit_of_uw hh`. Establish `hi : h⁻¹ ∈ UWset k ρ Bj.z` using `LieBracketMultiplication.uw_inv hh`. Establish `hiU` using `unit_of_uw hi`. Use `PBG.sigmaFinite_of_haar Bj.haarN` as an intermediate fact. Use `PBG.sigmaFinite_of_haar Bj.haarW` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : SigmaFinite (U.muRC k p ρ) := Formalism.FourierDecayAlt.P.Dx2.SplitF.sf_RC (k := k) p ρ`. Use `set e1 := (PBG.lmulHomeo h⁻¹ hiU).toMeasurableEquiv`. Use `set e2 := (conjHomeo h⁻¹ hiU).toMeasurableEquiv`. Use `set Φ : PBQ.XP k p ρ ≃ᵐ PBQ.XP k p ρ := MeasurableEquiv.prodCongr (MeasurableEquiv.prodCongr e1 e2) (MeasurableEquiv.refl _)`. Establish `hmp1 : MeasurePreserving e1 Bj.μW Bj.μW`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨e1.measurable, ?_⟩` and prove the remaining obligations. Establish `ee : ⇑e1 = lmulM h⁻¹` using `by funext x; rfl`. Rewrite using `[ee]`. Conclude with `Bj.haarW.left h⁻¹ hi`. Establish `hmp2 : MeasurePreserving e2 Bj.μN Bj.μN`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨e2.measurable, ?_⟩` and prove the remaining obligations. Establish `ee : ⇑e2 = conjM h⁻¹` using `by funext x; rfl`. Rewrite using `[ee]`. Conclude with `Formalism.FourierDecayAlt.P.b2_conjInvRaw_proof k ρ Bj.z Bj.μN Bj.z_mem Bj.T_pos Bj.haarN h⁻¹ hi`. Establish `hmp : MeasurePreserving Φ (PBQ.muXP (p` using `p) Bj) (PBQ.muXP (p := p) Bj) := (hmp1.prod hmp2).prod (MeasurePreserving.id _)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hML : ∀ v : Wq →L[ℂ] Wp, post (Bj.π h⁻¹) (post (Bj.π h) v) = v`. Introduce `v`. Rewrite using `[post_apply, post_apply, ← ContinuousLinearMap.comp_assoc, ← Bj.π_rep.2 _ hi _ hh, Matrix.nonsing_inv_mul _ hU, Bj.π_rep.1]`. Both sides reduce to the same expression. Establish `hF : PBQ.pbF Bj B0 e H g = ∫ x, PBQ.pbI Bj B0 e H g (Φ x) ∂(PBQ.muXP Bj)` using `(hmp.integral_comp' (PBQ.pbI Bj B0 e H g)).symm`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hF, ← post_apply, ← integral_clm_leftInv _ _ hML]`. Unfold `PBQ.pbF`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [PBQ.ae_goodP Bj] with x hx`. Establish `hx1 : (Matrix.of x.1.1 : B.Mat k ρ) ∈ UWset k ρ Bj.z` using `hx.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hx2 : (Matrix.of x.1.2 : B.Mat k ρ) ∈ Nset k ρ` using `hx.2`. Establish `hΦ : PBQ.GoodP Bj (Φ x)` using `⟨LieBracketMultiplication.uw_mul hi hx1, (Formalism.QuantumDeterminants.uWNormal k ρ Bj.z Bj.z_mem h⁻¹ hi _ hx2).1⟩`. Establish `hsP : D.castM e (PBQ.sP Bj x) * (D.castM e (U.embG k p ρ h) * g) = D.castM e (PBQ.sP Bj (Φ x)) * g`. Rewrite using `[← Matrix.mul_assoc, ← PBQ.castM_mul]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Unfold `PBQ.sP`. Rewrite using `[if_pos hx, if_pos hΦ]`. Use `show U.Rn k p ρ (-x.2) * U.embG k p ρ ((Matrix.of x.1.1)⁻¹ * (Matrix.of x.1.2)⁻¹) * U.embG k p ρ h = U.Rn k p ρ (-x.2) * U.embG k p ρ ((h⁻¹ * Matrix.of x.1.1)⁻¹ * (h⁻¹ * Matrix.of x.1.2 * h⁻¹⁻¹)⁻¹)`. Rewrite using `[Matrix.mul_assoc, ← Formalism.FourierDecayAlt.P.Dx2.Split.embG_mul]`. Use `congr 2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[Matrix.nonsing_inv_nonsing_inv h hU]`. Simplify using `only [Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv h hU, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc h h⁻¹, Matrix.mul_nonsing_inv _ hU, Matrix.one_mul]`. Establish `hcP : PBQ.cP Bj (Φ x) = PBQ.cP Bj x`. Unfold `PBQ.cP`.
-
-Use `show psi k ρ Bj.z cStd (h⁻¹ * Matrix.of x.1.2 * h⁻¹⁻¹) * _ = _`. Rewrite using `[Matrix.nonsing_inv_nonsing_inv h hU, Formalism.FourierDecayAlt.P.PBM.psi_conj_UW Bj.z cStd h hh]`. Both sides reduce to the same expression. Establish `hπ : Bj.π (Matrix.of x.1.1) = (Bj.π h).comp (Bj.π (h⁻¹ * Matrix.of x.1.1))`. Rewrite using `[← Bj.π_rep.2 _ hh _ (LieBracketMultiplication.uw_mul hi hx1), ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hU, Matrix.one_mul]`.
-
-Unfold `PBQ.pbI`. Rewrite using `[hsP, ← hcP, hπ, post_apply, ContinuousLinearMap.comp_smul, ContinuousLinearMap.comp_assoc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pbF_left_uw (Bj : B.RealPlaceData k ρ Wp Wq) (B0 : B.RealPlaceData k n Wp Wq) (e : p + ρ = n)
     (H : B.Mat k n → (Wq →L[ℂ] Wp)) (h : B.Mat k ρ) (hh : h ∈ UWset k ρ Bj.z) (g : B.Mat k n) :
@@ -291,11 +283,11 @@ namespace Formalism.FourierDecayAlt.P
 open CutEXPbEquiv
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P p G _ Z _ μ _ h hh h' hh'`. Use `haveI : CompleteSpace Wp := FiniteDimensional.complete ℂ Wp`. Establish `hw : D.castM (by omega : P.r + (P.r - P.r) = P.r) (U.embG P.k P.r (P.r - P.r) h') ∈ UWset P.k P.r p.T.base.z'`. Establish `h1` using `Formalism.FourierDecayAlt.P.Dx2.Tower.lev_UW (k := P.k) P.r (P.r - P.r) _ h' hh'`. Rewrite `h1` using `[Formalism.FourierDecayAlt.P.Dx2.Tower.lev_eq_embG]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `Formalism.FourierDecayAlt.P.Dx2.Tower.castM_UW (by omega : P.r + (P.r - P.r) = P.r) _ _ h1`. Rewrite `h2` using `[p.T.z'_lev P.r le_rfl]`. Conclude with `h2`. Establish `hpi : p.T.base.π' (D.castM (by omega : P.r + (P.r - P.r) = P.r) (U.embG P.k P.r (P.r - P.r) h')) = (p.T.bs P.r).π' h'`. Rewrite using `[p.T.π'_lev P.r le_rfl, Formalism.FourierDecayAlt.P.Dx2.Tower.lev_eq_embG]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions.
 
-Both sides reduce to the same expression. Unfold `CutEX.pbTop PBQ.pbT CutEX.xT`. Rewrite using `[LeftFubiniLemmas.embedding_map_embedded_group, PBQ.castM_mul, PBQ.castM_mul, pbF_right_uw _ _ _ _ _ _ hw, pbF_left_uw _ _ _ _ _ hh, hpi, ContinuousLinearMap.comp_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pullback_equivalence : CutEX.PbEquiv := by
   intro Wp Wq _ _ _ _ _ _ P p G _ Z _ μ _ h hh h' hh'

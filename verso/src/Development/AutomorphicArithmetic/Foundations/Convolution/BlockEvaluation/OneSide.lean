@@ -13,22 +13,22 @@ open GroundTheory.Automorphic GroundTheory.Automorphic.CuspidalSpectrum Positivi
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
 /- English proof (translation)
-Unfold `cheb`. Conclude with `(Polynomial.continuous _).comp (by fun_prop)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem cheb_cont (η : ℝ) (m : ℕ) : Continuous (cheb η m) := by
   unfold cheb
   exact (Polynomial.continuous _).comp (by fun_prop)
 
 /- English proof (translation)
-Establish `e1 : fcalc (fun x : ℝ => 2 * x / η - 1) A = ((2 / η : ℝ) : ℂ) • A - 1`. Unfold `fcalc`. Establish `: (fun x : ℝ => 2 * x / η - 1) = fun x : ℝ => (2 / η) • x - 1`. Use function extensionality and compare the values at `x`. Simplify using `only [smul_eq_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, cfc_sub _ _ A, cfc_smul (2 / η) (fun x : ℝ => x) A, cfc_id' ℝ A, cfc_const_one ℝ A]`. Both sides reduce to the same expression. Establish `e2 : fcalc (cheb η m) A = Polynomial.aeval (((2 / η : ℝ) : ℂ) • A - 1) (Polynomial.Chebyshev.T ℝ m)`. Rewrite using `[← e1]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `fcalc`. Rewrite using `[← cfc_polynomial (R := ℝ) (Polynomial.Chebyshev.T ℝ m) (cfc (fun x : ℝ => 2 * x / η - 1) A), ← cfc_comp' (fun y => (Polynomial.Chebyshev.T ℝ m).eval y) (fun x : ℝ => 2 * x / η - 1) A]`. Both sides reduce to the same expression. Set `φ : MvPolynomial (Option (Ix K n)) ℂ →ₐ[ℤ] (H →L[ℂ] H)` to `(ψ.comp C).toIntAlgHom`. Establish `e3 : ψ (chebP η m) = φ (Polynomial.aeval (C ((2 / η : ℝ) : ℂ) * X none - 1 : MvPolynomial (Option (Ix K n)) ℂ) (Polynomial.Chebyshev.T ℤ m))`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Unfold `chebP`. Rewrite using `[← Polynomial.Chebyshev.map_T (algebraMap ℤ ℂ), Polynomial.aeval_map_algebraMap]`. Both sides reduce to the same expression. Establish `e4 : φ (C ((2 / η : ℝ) : ℂ) * X none - 1) = ((2 / η : ℝ) : ℂ) • A - 1`. Rewrite using `[map_sub, map_mul, map_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show ψ (C (C _)) * ψ (C (X none)) - 1 = _`. Rewrite using `[hc, hA, smul_mul_assoc, one_mul]`. Rewrite using `[e3, ← Polynomial.aeval_algHom_apply, e4, e2, ← Polynomial.Chebyshev.map_T (algebraMap ℤ ℝ), Polynomial.aeval_map_algebraMap]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ev_cheb {K : Type} [Field K] [NumberField K] {n : ℕ} (ψ : PR K n →+* (H →L[ℂ] H))
     (hc : ∀ c : ℂ, ψ (C (C c)) = c • 1) (A : H →L[ℂ] H) (hA : ψ (C (X none)) = A) (hsa : IsSelfAdjoint A)
@@ -60,7 +60,7 @@ private theorem ev_cheb {K : Type} [Field K] [NumberField K] {n : ℕ} (ψ : PR 
     Polynomial.aeval_map_algebraMap]
 
 /- English proof (translation)
-Unfold `fcalc`. Use `norm_cfc_le hc fun x hx => h x ⟨spectrum_nonneg_of_nonneg h0 hx, ?_⟩` and prove the remaining obligations. Break down `subsingleton_or_nontrivial (H →L[ℂ] H) with hs | hs` into its components or cases. Simplify using `[spectrum.of_subsingleton] at hx`. Conclude with `(le_abs_self x).trans ((spectrum.norm_le_norm_of_mem hx).trans h1)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem fcalc_norm_le (A : H →L[ℂ] H) (h0 : 0 ≤ A) (h1 : ‖A‖ ≤ 1) (φ : ℝ → ℝ) (c : ℝ) (hc : 0 ≤ c)
     (h : ∀ x ∈ Set.Icc (0 : ℝ) 1, |φ x| ≤ c) : ‖fcalc φ A‖ ≤ c := by
@@ -71,17 +71,15 @@ private theorem fcalc_norm_le (A : H →L[ℂ] H) (h0 : 0 ≤ A) (h1 : ‖A‖ �
   · exact (le_abs_self x).trans ((spectrum.norm_le_norm_of_mem hx).trans h1)
 
 /- English proof (translation)
-Establish `hsa : IsSelfAdjoint A` using `isSelfAdjoint_of_nonneg h0`. Establish `hcm : Commute (fcalc χ A) Q` using `hQ.cfc_real χ`. Establish `e1 : fcalc t A = fcalc (fun x => t x * (1 - χ x)) A + fcalc t A * fcalc χ A`. Unfold `fcalc`. Rewrite using `[← cfc_mul t χ A, ← cfc_add A _ _]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `x`. Expand and normalize the polynomial expressions, which then agree. Establish `n1 : ‖fcalc (fun x => t x * (1 - χ x)) A‖ ≤ 1`. Use `fcalc_norm_le A h0 h1 _ 1 zero_le_one fun x hx => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Break down `le_total x η with h | h` into its components or cases. Rewrite using `[abs_mul]`. Apply the tactic sequence `have : |1 - χ x| ≤ 1 := by rw [abs_le]; constructor <;> linarith [hχ1 x]`. Conclude with `mul_le_one₀ (ht1 x ⟨hx.1, h⟩) (abs_nonneg _) this`. Simplify using `[hχ2 x h]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `n2` using `fcalc_norm_le A h0 h1 t c hc ht2`. Establish `hW' : W * (1 - P) = (1 - P) * W` using `((Commute.one_right W).sub_right hW).eq`. Establish `e2 : fcalc t A * Q * W * (1 - P) = (fcalc (fun x => t x * (1 - χ x)) A * (Q * (1 - P)) + fcalc t A * (Q * (fcalc χ A * (1 - P)))) * W`. Rewrite using `[mul_assoc _ W, hW', ← mul_assoc]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [e1]`. Rewrite using `[add_mul, add_mul, mul_assoc (fcalc t A), hcm.eq]`. Simplify using `only [mul_assoc]`. Rewrite using `[e2, mul_comm ‖W‖]`. Use `(norm_mul_le _ _).trans (mul_le_mul_of_nonneg_right ((norm_add_le _ _).trans (add_le_add ?_ ?_)) (norm_nonneg _))` and prove the remaining obligations.
-
-Combine the equalities or inequalities in the displayed calculation. Conclude with `(norm_mul_le _ _).trans (mul_le_mul_of_nonneg_right n2 (norm_nonneg _))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem off_est (A Q W P : H →L[ℂ] H) (h0 : 0 ≤ A) (h1 : ‖A‖ ≤ 1) (hQ : Commute A Q) (hW : Commute W P)
     (hP : ‖1 - P‖ ≤ 1) (η c : ℝ) (hc : 0 ≤ c) (t χ : ℝ → ℝ) (ht : Continuous t) (hχ : Continuous χ)
@@ -120,7 +118,7 @@ private theorem off_est (A Q W P : H →L[ℂ] H) (h0 : 0 ≤ A) (h1 : ‖A‖ �
 
 omit [CompleteSpace H] in
 /- English proof (translation)
-Break down `j with _ | j` into its components or cases. Rewrite using `[pow_zero, pow_zero]`. Conclude with `ContinuousLinearMap.norm_id_le`. Conclude with `norm_pow_le' U j.succ_pos`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem norm_pow_le_clm (U : H →L[ℂ] H) (j : ℕ) : ‖U ^ j‖ ≤ ‖U‖ ^ j := by
   rcases j with _ | j
@@ -129,7 +127,7 @@ private theorem norm_pow_le_clm (U : H →L[ℂ] H) (j : ℕ) : ‖U ^ j‖ ≤ 
   · exact norm_pow_le' U j.succ_pos
 
 /- English proof (translation)
-Establish `hc : V.topologicalClosure = V` using `hV.submodule_topologicalClosure_eq`. Establish `hm : ∀ v, v ∈ V.topologicalClosure ↔ v ∈ V` using `fun v => by rw [hc]`. Conclude with `⟨fun v => (hm _).1 (Submodule.starProjection_apply_mem _ v), fun v hv => Submodule.starProjection_eq_self_iff.2 ((hm _).2 hv), isSelfAdjoint_starProjection _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private theorem prj_facts (V : Submodule ℂ H) (hV : IsClosed (V : Set H)) :
     (∀ v, prj V v ∈ V) ∧ (∀ v ∈ V, prj V v = v) ∧ IsSelfAdjoint (prj V) := by
@@ -139,9 +137,9 @@ private theorem prj_facts (V : Submodule ℂ H) (hV : IsClosed (V : Set H)) :
     fun v hv => Submodule.starProjection_eq_self_iff.2 ((hm _).2 hv), isSelfAdjoint_starProjection _⟩
 
 /- English proof (translation)
-Introduce `v hv`. Take `⟨a1, a2, -⟩` from `prj_facts V hV`. Use `congrArg (fun S : H →L[ℂ] H => S v) h` as an intermediate fact. Simplify using `only [ContinuousLinearMap.mul_apply, a2 v hv] at this`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `a1 _`.
+A detailed English derivation is pending.
 -/
 private theorem pres_of_comm (V : Submodule ℂ H) (hV : IsClosed (V : Set H)) (T : H →L[ℂ] H)
     (h : T * prj V = prj V * T) : ∀ v ∈ V, T v ∈ V := by
@@ -152,9 +150,9 @@ private theorem pres_of_comm (V : Submodule ℂ H) (hV : IsClosed (V : Set H)) (
   rw [this]; exact a1 _
 
 /- English proof (translation)
-Introduce `v hv`. Use `⟨pres_of_comm V hV T h.eq v hv.1, ?_⟩` and prove the remaining obligations. Establish `h2 : A v = (x : ℂ) • v` using `Module.End.mem_eigenspace_iff.1 hv.2`. Use `Module.End.mem_eigenspace_iff.2 ?_` and prove the remaining obligations. Use `congrArg (fun S : H →L[ℂ] H => S v) hA.eq` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [ContinuousLinearMap.mul_apply, h2, map_smul] at this`. Conclude with `this.symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem eig_pres (V : Submodule ℂ H) (hV : IsClosed (V : Set H)) (A T : H →L[ℂ] H) (x : ℝ)
     (h : Commute T (prj V)) (hA : Commute T A) : ∀ v ∈ eigIn V A x, T v ∈ eigIn V A x := by
@@ -167,17 +165,17 @@ private theorem eig_pres (V : Submodule ℂ H) (hV : IsClosed (V : Set H)) (A T 
   exact this.symm
 
 /- English proof (translation)
-Establish `hE : IsClosed (eigIn V A x : Set H)` using `(eigIn V A x).closed_of_finiteDimensional`. Take `⟨a1, a2, a3⟩` from `prj_facts _ hE`. Take `⟨-, -, b3⟩` from `prj_facts _ hV`. Establish `hc : (eigIn V A x).topologicalClosure = eigIn V A x` using `hE.submodule_topologicalClosure_eq`. Establish `hT1 : Commute (A * Q) (prj V)` using `hAV.mul_left hQV`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT2 : Commute (A * Q) A` using `(Commute.refl A).mul_left hQA`. Establish `hcomm : (A * Q) ∘L prj (eigIn V A x) = prj (eigIn V A x) ∘L (A * Q)`. Use `K.commProj _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[hc]`. Conclude with `eig_pres V hV A _ x hT1 hT2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`. Use `eig_pres V hV A _ x ?_ ?_` and prove the remaining obligations. Use `hT1.star_star` as an intermediate fact. Rewrite `this` using `[b3.star_eq]`. Then use the resulting hypothesis. Use `hT2.star_star` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[hsa.star_eq]`. Then use the resulting hypothesis. Establish `e : prj (eigIn V A x) ∘L (A * Q * B) ∘L prj (eigIn V A x) = ((x : ℂ) * a) • (prj (eigIn V A x) ∘L B ∘L prj (eigIn V A x))`. Use `ContinuousLinearMap.ext fun v => ?_` and prove the remaining obligations. Establish `h1` using `congrArg (fun S : H →L[ℂ] H => S (B (prj (eigIn V A x) v))) hcomm`. Establish `hm` using `a1 (B (prj (eigIn V A x) v))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : A (prj (eigIn V A x) (B (prj (eigIn V A x) v))) = (x : ℂ) • _` using `Module.End.mem_eigenspace_iff.1 hm.2`. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.mul_apply, ContinuousLinearMap.smul_apply] at h1 ⊢`. Rewrite using `[← h1, hQ _ hm, map_smul, h2, smul_smul, mul_comm]`. Unfold `trOn`. Rewrite using `[e]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `trace`. Simplify using `only [ContinuousLinearMap.smul_apply, inner_smul_right]`. Conclude with `tsum_mul_left`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem trOn_scalar (V : Submodule ℂ H) (hV : IsClosed (V : Set H)) (A Q B : H →L[ℂ] H) (x : ℝ) (a : ℂ)
     (hsa : IsSelfAdjoint A) (hAV : Commute A (prj V)) (hQV : Commute Q (prj V)) (hQA : Commute Q A)
@@ -213,11 +211,11 @@ private theorem trOn_scalar (V : Submodule ℂ H) (hV : IsClosed (V : Set H)) (A
   exact tsum_mul_left
 
 /- English proof (translation)
-Establish `hz0 : 0 ≤ zN` using `zero_le_one.trans hz`. Establish `h1 : C * zN * x ≤ |C| * zN * (u * (q + k * r))`. Use `le_abs_self C` as an intermediate fact. Use `gcongr`. Establish `h2 : C * zN' * y ≤ |C| * zN' * (k * q * u)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `le_abs_self C` as an intermediate fact. Use `gcongr`. Establish `h3 : q ≤ zN * (q + k * r) + k * zN' * q`. Establish `a : 0 ≤ k * r` using `by positivity`. Establish `b : 0 ≤ k * zN' * q` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `h4 : τ * u * q ≤ τ * u * (zN * (q + k * r) + k * zN' * q)` using `by gcongr`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private theorem final_arith (C τ u q r k zN zN' x y : ℝ) (hτ : 0 ≤ τ) (hu : 0 ≤ u) (hq : 0 ≤ q) (hr : 0 ≤ r)
     (hk : 0 ≤ k) (hz : 1 ≤ zN) (hz' : 0 ≤ zN') (hx0 : 0 ≤ x) (hy0 : 0 ≤ y) (hx : x ≤ u * (q + k * r)) (hy : y ≤ k * q * u) :
@@ -241,37 +239,33 @@ end SlopeTestRemainingChoices
 set_option maxHeartbeats 1600000 in
 open GroundTheory.Automorphic GroundTheory.Automorphic.CuspidalSpectrum PositivityTheory.Rg.Fx PositivityTheory.Rg.Tf.Core in
 /- English proof (translation)
-Introduce `hK hPB hSD hDT hCB hMO hEv K _ _ _ n l hn μ _ θ 𝔰 ev hev hin`. Take `⟨h0, h1, -, -⟩` from `hEv K n hn μ 𝔰.toAmp`. Establish `da` using `hSD K n μ 𝔰.a 𝔰.a_smooth`. Establish `dg` using `hSD K n μ _ 𝔰.g_smooth`. Take `⟨N, hN⟩` from `hK K n μ θ 𝔰.a 𝔰.g (hPB K n μ _) da (hPB K n μ _) dg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨N, fun η hη hη1 χ hχ hχ1 hχ2 => ?_⟩` and prove the remaining obligations. Establish `hsa : IsSelfAdjoint 𝔰.toAmp.A` using `isSelfAdjoint_of_nonneg h0`. Establish `hPc : prj (cuspidalL2 μ) = Pc μ`. Unfold `prj Pc`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `(isClosed_cuspidalL2 μ).submodule_topologicalClosure_eq`. Establish `hcP : ∀ T, Inner μ T → Commute T (Pc μ)` using `fun T hT => by`. Rewrite using `[← hPc]`. Conclude with `hT _ (isClosed_cuspidalL2 μ) (isInvariant_cuspidalL2 μ)`. Establish `hcV : ∀ T, Inner μ T → ∀ V, IsSummand μ V → Commute T (prj V)` using `fun T hT V hV => hT _ hV.closed hV.inv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAin : Inner μ 𝔰.toAmp.A` using `hev.amp ▸ hin _`. Establish `hQA : ∀ Q, Commute (ev Q) 𝔰.toAmp.A` using `fun Q => hev.amp ▸ (Commute.all Q _).map ev`. Establish `hcomp : IsCompactOperator (𝔰.toAmp.A ∘L Pc μ)`. Rewrite using `[← hPc, ← 𝔰.a_op]`. Conclude with `(opBasics K n μ 𝔰.a).2.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs1, hs2, hs3⟩` from `hCB K n μ θ (hMO K n μ) 𝔰.toAmp.A h0 (fun V hV => pres_of_comm V hV.closed _ (hcV _ hAin V hV).eq) hcomp η hη`. Use `⟨s, hs1, hs2, fun N' => ?_⟩` and prove the remaining obligations. Take `⟨C₀, hC⟩` from `hN N'`. Establish `htc : IsTraceClass (Pc μ * (𝔰.toAmp.A * Rop μ 𝔰.g) * Pc μ)`. Use `hDT K n μ 𝔰.a 𝔰.g 1 da dg (Commute.one_left (Pc μ)).eq` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[𝔰.a_op]`. Conclude with `this`. Use `⟨|C₀| + (traceNorm (Pc μ * (𝔰.toAmp.A * Rop μ 𝔰.g) * Pc μ)).toReal, fun Q a ha m j Z f hZ hf => ?_⟩` and prove the remaining obligations. Take `⟨hb1, hb2, -⟩` from `FX.cheb_bound η m hη hη1`. Establish `hk : 0 ≤ (4 / η) ^ m` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hch : ev (chebP η m * Q) = fcalc (cheb η m) 𝔰.toAmp.A * ev Q`. Rewrite using `[map_mul, ev_cheb ev hev.const _ hev.amp hsa]`. Establish `hUP : Commute (𝔰.Uq 0 ^ j) (Pc μ)` using `(hcP _ (𝔰.Uq_inner 0)).pow_left j`. Establish `hUA : Commute (𝔰.Uq 0 ^ j) 𝔰.toAmp.A` using `(𝔰.Uq_amp 0).pow_left j`. Establish `hMP : Commute (ev (chebP η m * Q) * 𝔰.Uq 0 ^ j) (Pc μ)` using `(hcP _ (hin _)).mul_left hUP`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `k1` using `hC f (ev (chebP η m * Q) * 𝔰.Uq 0 ^ j) Z hZ hMP.eq (by rw [𝔰.a_op]; exact hf.1) hf.2`. Establish `hP : ‖1 - Pc μ‖ ≤ 1`. Establish `: 1 - Pc μ = (cuspidalL2 μ)ᗮ.starProjection`. Unfold `Pc`. Rewrite using `[Submodule.starProjection_orthogonal]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `Submodule.starProjection_norm_le _`. Establish `hu` using `norm_pow_le_clm (𝔰.Uq 0) j`. Establish `k2` using `off_est 𝔰.toAmp.A (ev Q) (𝔰.Uq 0 ^ j) (Pc μ) h0 h1 (hQA Q).symm hUP hP η _ hk (cheb η m) χ (cheb_cont η m) hχ hb1 hb2 hχ1 hχ2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `k2'` using `k2.trans (mul_le_mul_of_nonneg_right hu (by positivity))`. Rewrite `k2'` using `[← hch]`. Establish `k3 : ‖ev (chebP η m * Q) * 𝔰.Uq 0 ^ j‖ ≤ (4 / η) ^ m * ‖ev Q‖ * ‖𝔰.Uq 0‖ ^ j`. Rewrite using `[hch]`. Use `(norm_mul_le _ _).trans (mul_le_mul ((norm_mul_le _ _).trans ?_) hu (norm_nonneg _) (by positivity))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_right (fcalc_norm_le _ h0 h1 _ _ hk hb2) (norm_nonneg _)`. Establish `eT : Pc μ * (𝔰.toAmp.A * ev Q * (𝔰.Uq 0 ^ j * Rop μ 𝔰.g)) * Pc μ = (ev Q * 𝔰.Uq 0 ^ j) * (Pc μ * (𝔰.toAmp.A * Rop μ 𝔰.g) * Pc μ)`. Establish `c1 : Commute (ev Q * 𝔰.Uq 0 ^ j) (Pc μ * 𝔰.toAmp.A)` using `((hcP _ (hin Q)).mul_left hUP).mul_right ((hQA Q).mul_left hUA)`. Combine the equalities or inequalities in the displayed calculation. Establish `hTt : IsTraceClass (Pc μ * (𝔰.toAmp.A * ev Q * (𝔰.Uq 0 ^ j * Rop μ 𝔰.g)) * Pc μ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[eT]`. Conclude with `htc.comp_left _`. Establish `hTn : (traceNorm (Pc μ * (𝔰.toAmp.A * ev Q * (𝔰.Uq 0 ^ j * Rop μ 𝔰.g)) * Pc μ)).toReal ≤ ‖ev Q‖ * ‖𝔰.Uq 0‖ ^ j * (traceNorm (Pc μ * (𝔰.toAmp.A * Rop μ 𝔰.g) * Pc μ)).toReal`. Rewrite using `[eT]`. Use `(ENNReal.toReal_mono (ENNReal.mul_ne_top enorm_ne_top htc.ne) (traceNorm_comp_left_le _ _)).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[ENNReal.toReal_mul, toReal_enorm]`. Conclude with `mul_le_mul_of_nonneg_right ((norm_mul_le _ _).trans (mul_le_mul_of_nonneg_left hu (norm_nonneg _))) ENNReal.toReal_nonneg`. Establish `k4` using `hs3 (cheb η m) 1 (𝔰.toAmp.A * ev Q * (𝔰.Uq 0 ^ j * Rop μ 𝔰.g)) (cheb_cont η m) zero_le_one hb1 (fun V hV v hv => pres_of_comm V hV.closed (𝔰.toAmp.A * ev Q * 𝔰.Uq 0 ^ j) (((hcV _ hAin V hV).mul_left (hcV _ (hin Q) V hV)).mul_left ((hcV _ (𝔰.Uq_inner 0) V hV).pow_left j)).eq _ ((o …`. Establish `e1 : cuspTr μ θ f = trace (Pc μ ∘L fcalc (cheb η m) 𝔰.toAmp.A ∘L (𝔰.toAmp.A * ev Q * (𝔰.Uq 0 ^ j * Rop μ 𝔰.g)) ∘L θ.U ∘L Pc μ)`. Establish `c : Commute (fcalc (cheb η m) 𝔰.toAmp.A) 𝔰.toAmp.A` using `(Commute.refl _).cfc_real _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `cuspTr`. Rewrite using `[hf.1, hch]`. Simplify using `only [← ContinuousLinearMap.mul_def, mul_assoc]`. Rewrite using `[← mul_assoc 𝔰.toAmp.A, ← c.eq, mul_assoc]`. Establish `e2 : ∑ p ∈ s, (cheb η m p.1 : ℂ) * (p.1 * a p * trOn (eigIn p.2 𝔰.toAmp.A p.1) ((𝔰.Uq 0 ^ j) ∘L Rop μ 𝔰.g ∘L θ.U)) = ∑ p ∈ s, (cheb η m p.1 : ℂ) * trOn (eigIn p.2 𝔰.toAmp.A p.1) ((𝔰.toAmp.A * ev Q * (𝔰.Uq 0 ^ j * Rop μ 𝔰.g)) ∘L θ.U)`.
-
-Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Establish `hV` using `((hs1 p).1 hp).2.1`. Use `haveI := hs2 p hp`. Rewrite using `[← trOn_scalar p.2 hV.closed 𝔰.toAmp.A (ev Q) _ p.1 (a p) hsa (hcV _ hAin _ hV) (hcV _ (hin Q) _ hV) (hQA Q) (ha p hp)]`. Both sides reduce to the same expression.
-
-Rewrite using `[e2]`. Rewrite `k4` using `[← e1]`. Use `(norm_sub_le_norm_sub_add_norm_sub _ (cuspTr μ θ f) _).trans ((add_le_add k1 (k4.trans (mul_le_mul_of_nonneg_left hTn zero_le_one))).trans ?_)` and prove the remaining obligations. Conclude with `final_arith _ _ _ _ _ _ _ _ _ _ ENNReal.toReal_nonneg (by positivity) (norm_nonneg _) (norm_nonneg _) hk (one_le_pow₀ hZ) (by have := zero_le_one.trans hZ; positivity) (norm_nonneg _) (norm_nonneg _) k2' k3`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Ci.oneSide :
     K.Kern2 → PolyBdAll → SmoothDecay → DecayTraceClass → CuspTrBand → CuspidalMultiplicityOneTotallyComplex → EvEx → OneSide := by

@@ -33,12 +33,12 @@ variable {A}
 def mk : (∀ i, A i) →+* Ult U A := Ideal.Quotient.mk _
 
 /- English proof (translation)
-The claim follows from `Ideal.Quotient.mk_surjective`.
+A detailed English derivation is pending.
 -/
 lemma mk_surjective : Function.Surjective (mk U (A := A)) := Ideal.Quotient.mk_surjective
 
 /- English proof (translation)
-Unfold `mk`. Rewrite using `[Ideal.Quotient.eq]`. Express the relevant statement in the definitionally equal form `(∀ᶠ i in (U : Filter ι), (a - b) i = 0) ↔ _`. Simplify using `[sub_eq_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 lemma mk_eq_mk_iff {a b : ∀ i, A i} : mk U a = mk U b ↔ ∀ᶠ i in (U : Filter ι), a i = b i := by
   unfold mk
@@ -47,15 +47,15 @@ lemma mk_eq_mk_iff {a b : ∀ i, A i} : mk U a = mk U b ↔ ∀ᶠ i in (U : Fil
   simp [sub_eq_zero]
 
 /- English proof (translation)
-Rewrite using `[← map_zero (mk U), mk_eq_mk_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma mk_eq_zero_iff {a : ∀ i, A i} : mk U a = 0 ↔ ∀ᶠ i in (U : Filter ι), a i = 0 := by
   rw [← map_zero (mk U), mk_eq_mk_iff]; rfl
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.ne_top_iff_one]`. Introduce `h`. Take `⟨i, hi⟩` from `Filter.Eventually.exists (show ∀ᶠ i in (U : Filter ι), (1 : ∀ i, A i) i = 0 from h)`. Conclude with `one_ne_zero hi`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b h`. Establish `h' : ∀ᶠ i in (U : Filter ι), a i = 0 ∨ b i = 0` using `by filter_upwards [show ∀ᶠ i in (U : Filter ι), (a * b) i = 0 from h] with i hi`. Simplify using `using hi`. Conclude with `Ultrafilter.eventually_or.1 h'`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma nullIdeal_isPrime [∀ i, IsDomain (A i)] : (nullIdeal U A).IsPrime := by
   refine ⟨?_, ?_⟩
@@ -80,9 +80,9 @@ section Field
 variable (K : ι → Type) [∀ i, Field (K i)]
 
 /- English proof (translation)
-Use `⟨⟨0, 1, zero_ne_one⟩, mul_comm, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨a, rfl⟩` from `mk_surjective U x`. Use `⟨mk U (fun i => (a i)⁻¹), ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul, ← map_one (mk U), mk_eq_mk_iff]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: ∀ᶠ i in (U : Filter ι), a i ≠ 0`. Establish `h` using `(not_congr (mk_eq_zero_iff U)).1 hx`. Conclude with `Ultrafilter.eventually_not.2 h`. Use `filter_upwards [this] with i hi`. Simplify using `[hi]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma isField_ult : IsField (Ult U K) := by
   refine ⟨⟨0, 1, zero_ne_one⟩, mul_comm, ?_⟩
@@ -239,13 +239,13 @@ def Rep (h : ∀ i, B → A i) (g : B →+* Ult U A) : Prop :=
   IsAEHom U h ∧ ∀ b, g b = mk U (fun i => h i b)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hh, fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 lemma rep_homOf (h : ∀ i, B → A i) (hh : IsAEHom U h) : Rep U h (homOf U h hh) :=
   ⟨hh, fun _ => rfl⟩
 
 /- English proof (translation)
-Use `⟨fun i => if hx : ∃ p : B →+* A i, Q i p then ⇑hx.choose else 0, ?_⟩` and prove the remaining obligations. Use `filter_upwards [H] with i hi`. Conclude with `⟨hi.choose, by simp [dif_pos hi], hi.choose_spec⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma exists_family {Q : ∀ i, (B →+* A i) → Prop}
     (H : ∀ᶠ i in (U : Filter ι), ∃ p : B →+* A i, Q i p) :
@@ -256,11 +256,9 @@ lemma exists_family {Q : ∀ i, (B →+* A i) → Prop}
   exact ⟨hi.choose, by simp [dif_pos hi], hi.choose_spec⟩
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `(Algebra.FiniteType.out : (⊤ : Subalgebra ℤ B).FG)`. Establish `h1 : ∀ᶠ i in (U : Filter ι), ∀ s ∈ S, h i s = h' i s` using `(Filter.eventually_all_finset S).2 fun s _ => (mk_eq_mk_iff U).1 (H s)`. Use `filter_upwards [h1, hh, hh'] with i hi ⟨p, hp⟩ ⟨q, hq⟩`. Establish `: p.toIntAlgHom = q.toIntAlgHom`. Use `AlgHom.ext_of_adjoin_eq_top hS ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hs`. Use `hi s hs` as an intermediate fact. Rewrite `this` using `[← hp, ← hq]`. Conclude with `this`. Rewrite using `[← hp, ← hq]`.
-
-Use extensionality with `b`. Conclude with `DFunLike.congr_fun this b`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 lemma ae_eq_of_fg [Algebra.FiniteType ℤ B] {h h' : ∀ i, B → A i} (hh : IsAEHom U h)
     (hh' : IsAEHom U h') (H : ∀ b, mk U (fun i => h i b) = mk U (fun i => h' i b)) :
@@ -280,19 +278,19 @@ lemma ae_eq_of_fg [Algebra.FiniteType ℤ B] {h h' : ∀ i, B → A i} (hh : IsA
   exact DFunLike.congr_fun this b
 
 /- English proof (translation)
-Take `⟨n, π, hπ, hfg⟩` from `(Algebra.FinitePresentation.out : ∃ (n : ℕ) (f : MvPolynomial (Fin n) ℤ →ₐ[ℤ] B), Function.Surjective f ∧ (RingHom.ker f.toRingHom).FG)`. Use `choose c hc using fun k => mk_surjective U (g (π (MvPolynomial.X k)))`. Set `e : ∀ i, MvPolynomial (Fin n) ℤ →+* A i` to `fun i => MvPolynomial.eval₂Hom (Int.castRingHom _) (fun k => c k i)`. Establish `key : (mk U).comp (Pi.ringHom e) = g.comp π.toRingHom`. Use `MvPolynomial.ringHom_ext (fun r => ?_) (fun k => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`. Rewrite using `[← hc k]`. Use `congr 1`. Use extensionality with `i`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `e i (MvPolynomial.X k) = c k i`. Simplify using `[e]`. Establish `key' : ∀ x, mk U (fun i => e i x) = g (π x)` using `fun x => RingHom.congr_fun key x`. Take `⟨S, hS⟩` from `hfg`. Establish `h1 : ∀ᶠ i in (U : Filter ι), ∀ s ∈ S, e i s = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Filter.eventually_all_finset S).2 fun s hs => ?_` and prove the remaining obligations. Establish `hs' : s ∈ RingHom.ker π.toRingHom` using `hS ▸ Ideal.subset_span hs`. Use `key' s` as an intermediate fact. Rewrite `this` using `[show π s = 0 from hs', map_zero, mk_eq_zero_iff]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨fun i b => e i (Function.surjInv hπ b), ?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [h1] with i hi`. Establish `hk : RingHom.ker π.toRingHom ≤ RingHom.ker (e i)`. Rewrite using `[← hS, Ideal.span_le]`. Conclude with `fun s hs => hi s hs`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Set `p : B →+* A i` to `(RingHom.liftOfRightInverse π.toRingHom _ (Function.rightInverse_surjInv hπ)) ⟨e i, hk⟩`. Use `⟨p, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `b`. Establish `: p (π.toRingHom (Function.surjInv hπ b)) = e i (Function.surjInv hπ b)` using `RingHom.liftOfRightInverse_comp_apply _ _ _ _ _`. Rewrite using `[← this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Function.surjInv_eq hπ]`. Introduce `b`. Rewrite using `[key', Function.surjInv_eq hπ]`.
+A detailed English derivation is pending.
 -/
 lemma exists_rep [Algebra.FinitePresentation ℤ B] (g : B →+* Ult U A) :
     ∃ h : ∀ i, B → A i, Rep U h g := by
@@ -350,7 +348,7 @@ def pt (W : X.affineOpens) {A : Type} [CommRing A] (p : Γ(X, W.1) →+* A) :
   Spec.map (CommRingCat.ofHom p) ≫ W.2.fromSpec
 
 /- English proof (translation)
-Simplify using `[pt, CommRingCat.ofHom_comp, Spec.map_comp]`.
+Simplify using the standard rewrite rules.
 -/
 lemma map_pt (W : X.affineOpens) {A B : Type} [CommRing A] [CommRing B] (p : Γ(X, W.1) →+* A)
     (q : A →+* B) :
@@ -358,7 +356,7 @@ lemma map_pt (W : X.affineOpens) {A B : Type} [CommRing A] [CommRing B] (p : Γ(
   simp [pt, CommRingCat.ofHom_comp, Spec.map_comp]
 
 /- English proof (translation)
-Establish `h'` using `(cancel_mono W.2.fromSpec).1 h`. Use `Spec.map_injective h'` as an intermediate fact. Conclude with `congrArg CommRingCat.Hom.hom this`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma pt_injective (W : X.affineOpens) {A : Type} [CommRing A] {p q : Γ(X, W.1) →+* A}
     (h : pt W p = pt W q) : p = q := by
@@ -370,7 +368,7 @@ def res {W W' : X.affineOpens} (h : W.1 ≤ W'.1) : Γ(X, W'.1) →+* Γ(X, W.1)
   (X.presheaf.map (homOfLE h).op).hom
 
 /- English proof (translation)
-Use `IsAffineOpen.map_fromSpec W'.2 W.2 (homOfLE h).op` as an intermediate fact. Simplify using `only [pt, res, CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc]`. Simplify using `[this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma pt_res {W W' : X.affineOpens} (h : W.1 ≤ W'.1) {A : Type} [CommRing A]
     (p : Γ(X, W.1) →+* A) : pt W' (p.comp (res h)) = pt W p := by
@@ -379,7 +377,7 @@ lemma pt_res {W W' : X.affineOpens} (h : W.1 ≤ W'.1) {A : Type} [CommRing A]
   simp [this]
 
 /- English proof (translation)
-Establish `: (W.2.fromSpec) ((Spec.map (CommRingCat.ofHom p)) x) ∈ Set.range W.2.fromSpec` using `⟨_, rfl⟩`. Rewrite `this` using `[W.2.range_fromSpec]`. Simplify `this` using `[pt]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma pt_mem (W : X.affineOpens) {A : Type} [CommRing A] (p : Γ(X, W.1) →+* A)
     (x : Spec (CommRingCat.of A)) : (pt W p) x ∈ W.1 := by
@@ -389,9 +387,9 @@ lemma pt_mem (W : X.affineOpens) {A : Type} [CommRing A] (p : Γ(X, W.1) →+* A
   simpa [pt] using this
 
 /- English proof (translation)
-Establish `hr : Set.range g ⊆ Set.range W.2.fromSpec`. Rewrite using `[W.2.range_fromSpec]`. Introduce and unpack `_ ⟨x, rfl⟩`. Establish `hs : (x : PrimeSpectrum A) ⤳ IsLocalRing.closedPoint A` using `IsLocalRing.specializes_closedPoint x`. Conclude with `(hs.map g.continuous).mem_open W.1.2 hW`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(Spec.preimage (IsOpenImmersion.lift W.2.fromSpec g hr)).hom, ?_⟩` and prove the remaining obligations. Simplify using `[pt]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma exists_pt_of_isLocalRing {A : Type} [CommRing A] [IsLocalRing A]
     (g : Spec (CommRingCat.of A) ⟶ X) (W : X.affineOpens)
@@ -405,7 +403,7 @@ lemma exists_pt_of_isLocalRing {A : Type} [CommRing A] [IsLocalRing A]
   simp [pt]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `: ∀ᶠ i in (U : Filter ι), ∀ W ∈ S, ¬ Q W i` using `(Filter.eventually_all_finite hS).2 fun W hW => hcon W hW`. Take `⟨i, ⟨W, hW, h1⟩, h2⟩` from `(H.and this).exists`. Conclude with `h2 W hW h1`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 lemma exists_of_finite {α : Type} {S : Set α} (hS : S.Finite) {Q : α → ι → Prop}
     (H : ∀ᶠ i in (U : Filter ι), ∃ W ∈ S, Q W i) : ∃ W ∈ S, ∀ᶠ i in (U : Filter ι), Q W i := by
@@ -417,7 +415,7 @@ lemma exists_of_finite {α : Type} {S : Set α} (hS : S.Finite) {Q : α → ι �
   exact h2 W hW h1
 
 /- English proof (translation)
-Take `⟨W, hW, hxW, hWO⟩` from `exists_isAffineOpen_mem_and_subset hx`. Conclude with `⟨⟨W, hW⟩, hxW, hWO⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma exists_affine_le {O : X.Opens} {x : X} (hx : x ∈ O) :
     ∃ W : X.affineOpens, x ∈ W.1 ∧ W.1 ≤ O := by
@@ -425,11 +423,11 @@ lemma exists_affine_le {O : X.Opens} {x : X} (hx : x ∈ O) :
   exact ⟨⟨W, hW⟩, hxW, hWO⟩
 
 /- English proof (translation)
-Establish `h : ∀ x : X, ∃ W : X.affineOpens, x ∈ O → x ∈ W.1 ∧ W.1 ≤ O`. Introduce `x`. Distinguish the cases in `hx : x ∈ O`. Take `⟨W, h1, h2⟩` from `exists_affine_le hx`. Conclude with `⟨W, fun _ => ⟨h1, h2⟩⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨W, h1, h2⟩` from `exists_affine_le (show x ∈ (⊤ : X.Opens) from trivial)`. Conclude with `⟨W, fun h => absurd h hx⟩`. Use `choose w hw using h`. Take `⟨t, ht, hcov⟩` from `hO.elim_nhds_subcover (fun x => ((w x).1 : Set X)) (fun x hx => ((w x).1.2.mem_nhds (hw x hx).1))`. Use `⟨w '' (t : Set X), t.finite_toSet.image _, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `(hw x (ht x hx)).2`. Introduce `x hx`. Take `⟨y, hy, hxy⟩` from `Set.mem_iUnion₂.1 (hcov hx)`. Conclude with `⟨w y, ⟨y, hy, rfl⟩, hxy⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma exists_finite_affine_cover (O : X.Opens) (hO : IsCompact (O : Set X)) :
     ∃ S : Set X.affineOpens, S.Finite ∧ (∀ W ∈ S, W.1 ≤ O) ∧ ∀ x ∈ O, ∃ W ∈ S, x ∈ W.1 := by
@@ -454,19 +452,17 @@ lemma exists_finite_affine_cover (O : X.Opens) (hO : IsCompact (O : Set X)) :
 variable {A : ι → Type} [∀ i, CommRing (A i)]
 
 /- English proof (translation)
-Use `set x : X := (pt W₁ g₁) (IsLocalRing.closedPoint (Ult U A) : PrimeSpectrum (Ult U A)) with hx`. Establish `hx₁ : x ∈ W₁.1` using `pt_mem _ _ _`. Establish `hx₂ : x ∈ W₂.1` using `by rw [hx, H]; exact pt_mem _ _ _`. Take `⟨W, hxW, hle⟩` from `exists_affine_le (show x ∈ W₁.1 ⊓ W₂.1 from ⟨hx₁, hx₂⟩)`. Establish `hle₁ : W.1 ≤ W₁.1` using `hle.trans inf_le_left`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle₂ : W.1 ≤ W₂.1` using `hle.trans inf_le_right`. Take `⟨T, hT⟩` from `exists_pt_of_isLocalRing (pt W₁ g₁) W hxW`. Establish `e₁ : g₁ = T.comp (res hle₁)` using `pt_injective W₁ (by rw [pt_res]; exact hT)`. Establish `e₂ : g₂ = T.comp (res hle₂)` using `pt_injective W₂ (by rw [pt_res, ← H]; exact hT)`. Use `haveI := hfp W`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := hfp W₁`. Use `haveI := hfp W₂`. Take `⟨h, hr⟩` from `exists_rep U T`. Establish `aeh : ∀ {W' : X.affineOpens} (hl : W.1 ≤ W'.1), IsAEHom U (fun i b => h i (res hl b))`. Introduce `W' hl`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `filter_upwards [hr.1] with i ⟨t, ht⟩`. Conclude with `⟨t.comp (res hl), by funext b; simp [← ht]⟩`. Establish `a₁` using `ae_eq_of_fg U r₁.1 (aeh hle₁) (fun b => by`. Rewrite using `[← r₁.2, e₁]`. Conclude with `hr.2 _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `a₂` using `ae_eq_of_fg U r₂.1 (aeh hle₂) (fun b => by`. Rewrite using `[← r₂.2, e₂]`. Conclude with `hr.2 _)`. Use `filter_upwards [a₁, a₂, hr.1] with i b₁ b₂ ⟨t, ht⟩ p q hp hq`. Establish `p_eq : p = t.comp (res hle₁)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use extensionality with `b`. Use `congrFun b₁ b` as an intermediate fact. Rewrite `this` using `[← hp]`. Simplify `this` using `[← ht]`. Establish `q_eq : q = t.comp (res hle₂)`.
-
-Use extensionality with `b`. Use `congrFun b₂ b` as an intermediate fact. Rewrite `this` using `[← hq]`. Simplify `this` using `[← ht]`. Rewrite using `[p_eq, q_eq, pt_res, pt_res]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ae_pt_eq_of_pt_eq [IsLocalRing (Ult U A)]
     (hfp : ∀ W : X.affineOpens, Algebra.FinitePresentation ℤ Γ(X, W.1))
@@ -511,19 +507,17 @@ theorem ae_pt_eq_of_pt_eq [IsLocalRing (Ult U A)]
   rw [p_eq, q_eq, pt_res, pt_res]
 
 /- English proof (translation)
-Establish `hc : IsCompact (((W₁.1 ⊓ W₂.1 : X.Opens)) : Set X)` using `QuasiSeparatedSpace.inter_isCompact _ _ W₁.1.2 W₁.2.isCompact W₂.1.2 W₂.2.isCompact`. Take `⟨S, hSf, hS1, hS2⟩` from `exists_finite_affine_cover (W₁.1 ⊓ W₂.1) hc`. Establish `hQ : ∀ᶠ i in (U : Filter ι), ∃ W ∈ S, ∃ t : Γ(X, W.1) →+* A i, ∃ (p : Γ(X, W₁.1) →+* A i) (q : Γ(X, W₂.1) →+* A i), ⇑p = h₁ i ∧ ⇑q = h₂ i ∧ pt W t = pt W₁ p ∧ pt W t = pt W₂ q` using `by filter_upwards [H] with i ⟨p, q, hp, hq, e⟩`. Establish `hx₁ : (pt W₁ p) (IsLocalRing.closedPoint (A i) : PrimeSpectrum (A i)) ∈ W₁.1` using `pt_mem _ _ _`. Establish `hx₂ : (pt W₁ p) (IsLocalRing.closedPoint (A i) : PrimeSpectrum (A i)) ∈ W₂.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `pt_mem _ _ _`. Take `⟨W, hW, hxW⟩` from `hS2 _ (show _ ∈ W₁.1 ⊓ W₂.1 from ⟨hx₁, hx₂⟩)`. Take `⟨t, ht⟩` from `exists_pt_of_isLocalRing (pt W₁ p) W hxW`. Conclude with `⟨W, hW, t, p, q, hp, hq, ht.symm, ht.symm.trans e⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨W, hW, hQ⟩` from `exists_of_finite U hSf hQ`. Take `⟨h, hh⟩` from `exists_family U hQ`. Establish `ae : IsAEHom U h` using `by filter_upwards [hh] with i ⟨t, ht, _⟩`. Conclude with `⟨t, ht⟩`. Establish `hle₁ : W.1 ≤ W₁.1` using `(hS1 W hW).trans inf_le_left`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle₂ : W.1 ≤ W₂.1` using `(hS1 W hW).trans inf_le_right`. Establish `e₁ : g₁ = (homOf U h ae).comp (res hle₁)`. Use `RingHom.ext fun b => ?_` and prove the remaining obligations. Rewrite using `[r₁.2, RingHom.comp_apply, homOf_apply, mk_eq_mk_iff]`. Use `filter_upwards [hh] with i ⟨t, ht, p, q, hp, hq, e1, e2⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: p = t.comp (res hle₁)` using `pt_injective W₁ (by rw [pt_res]; exact e1.symm)`. Rewrite using `[← hp, ← ht, this]`. Both sides reduce to the same expression. Establish `e₂ : g₂ = (homOf U h ae).comp (res hle₂)`. Use `RingHom.ext fun b => ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[r₂.2, RingHom.comp_apply, homOf_apply, mk_eq_mk_iff]`. Use `filter_upwards [hh] with i ⟨t, ht, p, q, hp, hq, e1, e2⟩`. Establish `: q = t.comp (res hle₂)` using `pt_injective W₂ (by rw [pt_res]; exact e2.symm)`. Rewrite using `[← hq, ← ht, this]`. Both sides reduce to the same expression.
-
-Rewrite using `[e₁, e₂, pt_res, pt_res]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pt_eq_of_ae_pt_eq [QuasiSeparatedSpace X] [∀ i, IsLocalRing (A i)]
     {W₁ W₂ : X.affineOpens} {h₁ : ∀ i, Γ(X, W₁.1) → A i} {h₂ : ∀ i, Γ(X, W₂.1) → A i}

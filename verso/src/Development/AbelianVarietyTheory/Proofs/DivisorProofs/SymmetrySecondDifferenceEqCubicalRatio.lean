@@ -12,23 +12,23 @@ namespace GlobalTheory.PolDeg.SymCube
 open GlobalTheory.UU
 
 /- English proof (translation)
-Set `G` to `D.P.A`. Set `a` to `x3 G 0`. Set `b` to `x3 G 1`. Set `sy` to `fun p : G3 G ⟶ G => LB.pullGen D.P.L _ _ D.sym p.left`. Set `cu` to `fun p q r : G3 G ⟶ G => LB.pullGen D.P.L (thφ G (x3 G)) thε D.cub.t (lift p (lift q r)).left`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `gs : ∀ p, (sy p).IsGen` using `fun p => DVR.pullGen_isGen _ _ _ _ D.sym_gen _`. Establish `gc : ∀ p q r, (cu p q r).IsGen` using `fun p q r => DVR.pullGen_isGen _ _ _ _ D.cub.isGen _`. Establish `vs : ∀ {T' : Over (Spec (CommRingCat.of R))} (σ : T' ⟶ G3 G) {z : T'.left} {J}, Good D.P.L z J → ∀ p, val (sy p) σ.left z J = val D.sym (σ ≫ p).left z J` using `fun σ z J hJ p => val_pull hJ _ _ _`. Set `t₁` to `LB.mulGen D.P.L _ _ _ _ (sy (a * b)) (cu b b⁻¹ a⁻¹)`. Set `t₂` to `LB.mulGen D.P.L _ _ _ _ (LB.mulGen D.P.L _ _ _ _ (sy a) (sy b)) (cu a a⁻¹ b)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `ev : ∀ {T' : Over (Spec (CommRingCat.of R))} (σ : T' ⟶ G3 G) {z : T'.left} {J}, Good D.P.L z J → val t₁ σ.left z J = val D.sym ((σ ≫ a) * (σ ≫ b)).left z J * cubV D.cub z J (σ ≫ b) (σ ≫ b)⁻¹ (σ ≫ a)⁻¹ ∧ val t₂ σ.left z J = val D.sym (σ ≫ a).left z J * val D.sym (σ ≫ b).left z J * …` using `fun σ z J hJ => by`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← MonObj.comp_mul, ← GrpObj.comp_inv, ← GrpObj.comp_inv]`. Conclude with `(val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (vs σ hJ _) (val_cub D.cub σ hJ _ _ _))`. Rewrite using `[← GrpObj.comp_inv]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `(val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (vs σ hJ _) (vs σ hJ _))) (val_cub D.cub σ hJ _ _ _))`. Set `e : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ G3 G` to `lift 1 (lift 1 1)`. Establish `e₀ : e ≫ a = 1` using `by simp [e, a, x3]`. Establish `e₁ : e ≫ b = 1` using `by simp [e, b, x3]`. Set `ρ : T ⟶ G3 G` to `lift x (lift y 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `r₀ : ρ ≫ a = x` using `by simp [ρ, a, x3]`. Establish `r₁ : ρ ≫ b = y` using `by simp [ρ, b, x3]`. Establish `h3` using `GlobalTheory.UU.surjective_cube GlobalTheory.globalFns_holds D.P.isAb`. Establish `key : val t₁ ρ.left z J = val t₂ ρ.left z J`. Use `gen_unique' D.P.isLB (fun V _ k => ?_) (G3 G).hom e.left (Over.w e) h3 (DVR.mulGen_isGen _ _ _ _ _ _ _ (gs _) (gc _ _ _)) (DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.mulGen_isGen _ _ _ _ _ _ _ (gs _) (gs _)) (gc _ _ _)) (fun y I hI => ?_) _ ρ.left z J hJ` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(DVR.prod_sum₂ (K := Fin 2 ⊕ Fin 2) (K' := thK) (U := V) _ (DVR.prod_sum₂ (K := Fin 2) (K' := Fin 2) (U := V) _ (prod_sym a k) (prod_sym b k)) (prod_cub a a⁻¹ b k)).trans (Eq.trans ?_ (DVR.prod_sum₂ (K := Fin 2) (K' := thK) (U := V) _ (prod_sym (a * b) k) (prod_cub b b⁻¹ a⁻¹ k)). …` and prove the remaining obligations. Establish `m₁ : b * b⁻¹ * a⁻¹ = a⁻¹` using `by rw [mul_inv_cancel, _root_.one_mul]`. Establish `m₂ : b * b⁻¹ = 1` using `mul_inv_cancel b`. Establish `m₃ : b * a⁻¹ = a⁻¹ * b` using `mul_comm _ _`. Establish `m₄ : b⁻¹ * a⁻¹ = (a * b)⁻¹` using `(mul_inv_rev a b).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m₅ : a * a⁻¹ * b = b` using `by rw [mul_inv_cancel, _root_.one_mul]`. Establish `m₆ : a * a⁻¹ = 1` using `mul_inv_cancel a`. Rewrite using `[m₁, m₂, m₃, m₄, m₅, m₆]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Establish `s1 : val D.sym (1 : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ G).left y I = 1`. Rewrite using `[one_left]`. Conclude with `(val_pull hI D.sym (eSec G) _).symm.trans ((val_corr hI D.sym_rig _).trans (val_one _))`. Use `(ev e hI).1.trans (Eq.trans ?_ (ev e hI).2.symm)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[e₀, e₁]`. Simplify using `only [inv_one, _root_.mul_one, s1, _root_.one_mul]`. Use `(ev ρ hJ).1.symm.trans (key.trans (ev ρ hJ).2)` as an intermediate fact. Rewrite `this` using `[r₀, r₁]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem sym_cube (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (T : Over (Spec (CommRingCat.of R)))
     (x y : T ⟶ D.P.A) (z : T.left) (J : (T.left ⟶ D.P.A.left) → D.P.L.ι) (hJ : Good D.P.L z J) :

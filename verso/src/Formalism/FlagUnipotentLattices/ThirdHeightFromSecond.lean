@@ -11,20 +11,20 @@ import Formalism.FlagUnipotentLattices.MinkowskiFactorialBounds.IntegrableOnAndS
 namespace Formalism.HermitianLatticeCounting.Final.S8
 
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticeCounting.P.conjugate_dual_representation`.
+A detailed English derivation is pending.
 -/
 theorem conjDual : Formalism.HermitianLatticeCounting.S8.ConjDual := Formalism.HermitianLatticeCounting.P.conjugate_dual_representation
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticeCounting.P.assembly_of_second_bound`.
+A detailed English derivation is pending.
 -/
 theorem assemblyB : Formalism.HermitianLatticeCounting.S8.AssemblyB := Formalism.HermitianLatticeCounting.P.assembly_of_second_bound
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticeCounting.P.residue_formula`.
+A detailed English derivation is pending.
 -/
 theorem residue : Formalism.HermitianLatticeCounting.S8.Residue := Formalism.HermitianLatticeCounting.P.residue_formula
 
 /- English proof (translation)
-The claim follows from `Formalism.HermitianLatticeCounting.P.explicit_constant_bound`.
+A detailed English derivation is pending.
 -/
 theorem explicitC : Formalism.HermitianLatticeCounting.S8.ExplicitC := Formalism.HermitianLatticeCounting.P.explicit_constant_bound
 

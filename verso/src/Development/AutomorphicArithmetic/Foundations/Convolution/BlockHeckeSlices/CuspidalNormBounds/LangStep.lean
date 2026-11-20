@@ -29,11 +29,11 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {n r s : ℕ}
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Take `⟨C, hφ⟩` from `h`. Take `⟨D, hD, hsub⟩` from `exists_isCompact_superset_unipFundamentalDomain (K := E) (n := n) (r := r)`. Take `⟨M, hM⟩` from `exists_height_le_of_isCompact (hD.image continuous_unipGL)`. Establish `hc0 : 0 ≤ heightConst E n` using `le_trans zero_le_one one_le_heightConst`. Establish `hfin : unipMeasure E n r (unipFundamentalDomain E n r) < ⊤` using `(measure_mono hsub).trans_lt hD.measure_lt_top`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨|C| * (heightConst E n * |M|) ^ N * (unipMeasure E n r).real (unipFundamentalDomain E n r), fun g => ?_⟩` and prove the remaining obligations. Establish `hg` using `(height_pos g).le`. Establish `hb : ∀ X ∈ unipFundamentalDomain E n r, ‖φ (unipGL X * g)‖ ≤ |C| * (heightConst E n * |M| * AutomorphicForm.height g) ^ N`. Introduce `X hX`. Establish `h1 : AutomorphicForm.height (unipGL X * g) ≤ heightConst E n * |M| * AutomorphicForm.height g` using `(height_mul_le _ _).trans (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left ((hM _ ⟨X, hsub hX, rfl⟩).trans (le_abs_self M)) hc0) hg)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(hφ _).trans (mul_le_mul (le_abs_self C) (pow_le_pow_left₀ (height_pos _).le h1 N) (pow_nonneg (height_pos _).le N) (abs_nonneg C))`. Use `(norm_setIntegral_le_of_norm_le_const hfin hb).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[mul_pow (heightConst E n * |M|)]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem ct_growth {φ : GA E n → ℂ} {N : ℕ} (h : HasGrowth φ N) : HasGrowth (constantTerm r φ) N := by
   obtain ⟨C, hφ⟩ := h
@@ -57,25 +57,25 @@ private theorem ct_growth {φ : GA E n → ℂ} {N : ℕ} (h : HasGrowth φ N) :
   ring
 
 /- English proof (translation)
-Rewrite using `[← UpperTheory.blockDiagonal_eq_leviEmbedding, blk, map_one, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem emb_eq {R : Type} [CommRing R] (x : GL (Fin r) R) : emb (e1 r s) x = lev R r s (x, 1) := by
   rw [← UpperTheory.blockDiagonal_eq_leviEmbedding, blk, map_one, mul_one]
 
 /- English proof (translation)
-Take `⟨f, hf, hl⟩` from `UpperTheory.exists_restriction_blockEmbedding_intertwines_lie E r n e h`. Establish `key : ∀ u : UEnv E r, ∃ u' : UEnv E n, ∀ G, uAction u (f G) = f (uAction u' G)`. Introduce `u`. Proceed by induction on `u using UEnv.induction with`. Consider the case `halg c`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Use `⟨algebraMap ℝ _ c, fun G => ?_⟩` and prove the remaining obligations. Rewrite using `[AlgHom.commutes, AlgHom.commutes, Module.algebraMap_end_apply, Module.algebraMap_end_apply, LinearMap.map_smul_of_tower]`. Consider the case `hι Y`. Take `⟨X, rfl⟩` from `(toLie E r).surjective Y`. Conclude with `⟨UniversalEnvelopingAlgebra.ι ℝ (toLie E n (ext0 e X)), fun G => (hl X G).symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `hmul a b ha hb`. Take `⟨a', ha⟩` from `ha`. Take `⟨b', hb⟩` from `hb`. Conclude with `⟨a' * b', fun G => by rw [map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, hb, ha]⟩`. Consider the case `hadd a b ha hb`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨a', ha⟩` from `ha`. Take `⟨b', hb⟩` from `hb`. Conclude with `⟨a' + b', fun G => by rw [map_add, map_add, LinearMap.add_apply, LinearMap.add_apply, hb, ha, map_add]⟩`. Use `⟨(smEq E r).symm.toLinearMap ∘ₗ f ∘ₗ (smEq E n).toLinearMap, fun G x => hf _ x, fun u => ?_⟩` and prove the remaining obligations. Proceed by induction on `u using TensorProduct.induction_on with`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Consider the case `zero => exact ⟨0, fun G => by simp⟩`. Consider the case `tmul c x`. Take `⟨x', hx⟩` from `key x`. Use `⟨c ⊗ₜ x', fun G => ?_⟩` and prove the remaining obligations. Rewrite using `[uC_tmul, uC_tmul, LinearMap.smul_apply, LinearMap.smul_apply, map_smul]`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `e : (uAction x (f (smEq E n G))).1 = (f (uAction x' (smEq E n G))).1` using `congrArg Subtype.val (hx (smEq E n G))`. Conclude with `Subtype.ext e`. Consider the case `add a b ha hb`. Take `⟨a', ha⟩` from `ha`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b', hb⟩` from `hb`. Conclude with `⟨a' + b', fun G => by rw [map_add, map_add, LinearMap.add_apply, LinearMap.add_apply, hb, ha, map_add]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_res (e : Fin r ↪ Fin n) (h : GA E n) : ∃ T : Sm E n →ₗ[ℂ] Sm E r,
     (∀ G x, (T G).1 x = G.1 (h * emb e x)) ∧ ∀ u, ∃ u', ∀ G, uC E r u (T G) = T (uC E n u' G) := by
@@ -126,7 +126,7 @@ private def stab (ψ : Sm E n) : Subgroup (GL (Fin n) (Af E)) where
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Rewrite using `[← map_mul, Prod.mk_mul_mk, mul_one, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem lev_right (z g y : GA E r) (m : GA E s) :
     lev (Ad E) r s (z * (g * y), m) = lev (Ad E) r s (z * g, m) * lev (Ad E) r s (y, 1) := by
@@ -134,7 +134,7 @@ private theorem lev_right (z g y : GA E r) (m : GA E s) :
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Establish `: zt E r t * y = y * zt E r t` using `centralSection_mul_comm _ y`. Rewrite using `[← map_mul, Prod.mk_mul_mk, one_mul, ← mul_assoc, this, mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem lev_left (t : ℝ) (g y : GA E r) (m : GA E s) :
     lev (Ad E) r s (zt E r t * (y * g), m) = lev (Ad E) r s (y, 1) * lev (Ad E) r s (zt E r t * g, m) := by
@@ -143,7 +143,7 @@ private theorem lev_left (t : ℝ) (g y : GA E r) (m : GA E s) :
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Simplify using `only [constantTerm, lev_right, ← mul_assoc _ _ (lev (Ad E) r s (y, 1)), h]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem ct_right {φ : GA E (r + s) → ℂ} {y : GA E r} (h : ∀ x, φ (x * lev (Ad E) r s (y, 1)) = φ x)
     (z g : GA E r) (m : GA E s) :
@@ -151,19 +151,17 @@ private theorem ct_right {φ : GA E (r + s) → ℂ} {y : GA E r} (h : ∀ x, φ
   simp only [constantTerm, lev_right, ← mul_assoc _ _ (lev (Ad E) r s (y, 1)), h]
 
 /- English proof (translation)
-Take `⟨F, hF, -, hL, hu⟩` from `ctOps E r s φ hU`. Take `⟨T, hT, hTu⟩` from `exists_res (E := E) (e1 r s) (lev (Ad E) r s (zt E r t, m))`. Establish `hv : ∀ x, (T F).1 x = constantTerm r φ.1 (lev (Ad E) r s (zt E r t * x, m))` using `fun x => by`. Rewrite using `[hT, hF, emb_eq, ← map_mul, Prod.mk_mul_mk, mul_one]`. Use `⟨T F, hv, fun γ g => ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hL (γ, 1) (lev (Ad E) r s (zt E r t * g, m))` as an intermediate fact. Rewrite `this` using `[hF, map_one]`. Rewrite using `[hv, hv, lev_left]`. Conclude with `this`. Establish `ho : IsOpen ((emb (e1 r s) : GL (Fin r) (Af E) → GL (Fin (r + s)) (Af E)) ⁻¹' (stab φ : Set _))` using `IsOpen.preimage (UpperTheory.blockEmbedding_finiteAdelicGL_compat_continuous E r (r + s) (e1 r s)).2.2 hU.level`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subgroup.isOpen_of_mem_nhds (stab (T F)) (g := 1) (Filter.mem_of_superset (ho.mem_nhds ?_) fun k hk => ?_)` and prove the remaining obligations. Rewrite using `[Set.mem_preimage, map_one]`. Conclude with `(stab φ).one_mem`. Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(T F).1 (g * finGL E r k) = (T F).1 g`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hv, hv]`. Use `ct_right (fun x => ?_) _ _ _` and prove the remaining obligations. Establish `e` using `(UpperTheory.blockEmbedding_finiteAdelicGL_compat_continuous E r (r + s) (e1 r s)).1 k`. Rewrite `e` using `[UpperTheory.V.Fb.finEmb_eq, UpperTheory.V.Fb.finEmb_eq, emb_eq]`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrFun (congrArg Subtype.val (show GlobalTheory.CuspRep.finRep E (r + s) (emb (e1 r s) k) φ = φ from hk)) x`. Take `⟨N, hN⟩` from `hU.growth`. Use `⟨N, fun u => ?_⟩` and prove the remaining obligations. Take `⟨u', hu'⟩` from `hTu u`. Take `⟨B, hB⟩` from `ct_growth (r := r) (show HasGrowth (uC E (r + s) u' φ).1 N from hN u')`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨|B| * (heightConst E (r + s) * AutomorphicForm.height (lev (Ad E) r s (zt E r t, m))) ^ N, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[hu', hT, hu]`. Use `(hB _).trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, ← mul_pow]`. Establish `hc0 : 0 ≤ heightConst E (r + s)` using `le_trans zero_le_one one_le_heightConst`.
-
-Conclude with `mul_le_mul (le_abs_self _) (pow_le_pow_left₀ (height_pos _).le ((height_mul_le _ _).trans (mul_le_mul_of_nonneg_left (UpperTheory.height_blockEmbedding_le E _ _ _ g) (mul_nonneg hc0 (height_pos _).le))) N) (pow_nonneg (height_pos _).le N) (abs_nonneg _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem exists_umg {φ : Sm E (r + s)} (hU : Umg φ) (t : ℝ) (m : GA E s) :
     ∃ ψ : Sm E r, (∀ x, ψ.1 x = constantTerm r φ.1 (lev (Ad E) r s (zt E r t * x, m))) ∧ Umg ψ := by
@@ -203,7 +201,7 @@ private theorem exists_umg {φ : Sm E (r + s)} (hU : Umg φ) (t : ℝ) (m : GA E
         (mul_nonneg hc0 (height_pos _).le))) N) (pow_nonneg (height_pos _).le N) (abs_nonneg _)
 
 /- English proof (translation)
-Introduce `p hp hpr g`. Rewrite using `[constantTerm_eq_integral]`. Simplify using `only [lev_left, lev_unipGL_left r s p hpr]`. Rewrite using `[← integral_box_reindex (eL r s p hpr) (fun b => constantTerm r φ (parGL (joinPos (r := r) 0 b) * lev (Ad E) r s (zt E r t * g, m))), ← constantTermPar_eq_top hpr hc, constantTermPar_eq_bot hpr hc hl]`. Simplify using `only [h p hp hpr, integral_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem cusp_of {φ : GA E (r + s) → ℂ} (hc : Continuous φ) (hl : IsLeftInvariant φ)
     (h : ∀ r', 0 < r' → r' < r → ∀ g, constantTerm r' φ g = 0) (t : ℝ) (m : GA E s) :
@@ -218,11 +216,11 @@ private theorem cusp_of {φ : GA E (r + s) → ℂ} (hc : Continuous φ) (hl : I
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Introduce `x hx g`. Set `ι : KA E r → KA E (r + s)` to `fun k => ⟨_, hlev k⟩`. Establish `h1 : ∀ y, (x.sum fun k c => c * φ (y * lev (Ad E) r s ((k : GA E r), 1))) = 0` using `fun y => by`. Use `hK (x.mapDomain ι) (by` as an intermediate fact. Rewrite using `[Finsupp.sum_mapDomain_index (h := fun k (c : ℂ) => c • ρ k) (fun _ => zero_smul _ _) (fun _ _ _ => add_smul _ _ _), ← hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finsupp.sum_congr fun k _ => ?_` and prove the remaining obligations. Rewrite using `[resL, dif_pos (hlev k)]) y`. Rewrite `this` using `[Finsupp.sum_mapDomain_index (h := fun (k : KA E (r + s)) (c : ℂ) => c * φ (y * (k : GA E (r + s)))) (fun _ => zero_mul _) (fun _ _ _ => add_mul _ _ _)]`. Then use the resulting hypothesis. Simplify using `only [Finsupp.sum, lev_right, constantTerm, ← integral_const_mul] at h1 ⊢`. Rewrite using `[← integral_finset_sum _ fun k _ => (integrableOn_constantTerm hc _).const_mul _]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [← mul_assoc, h1, integral_zero]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem killed_of {d : ℕ} {ρ : KA E (r + s) → Matrix (Fin d) (Fin d) ℂ} {φ : GA E (r + s) → ℂ}
     (hc : Continuous φ) (hK : Killed ρ φ) (hlev : ∀ k : KA E r, lev (Ad E) r s ((k : GA E r), 1) ∈ KA E (r + s))
@@ -243,23 +241,19 @@ private theorem killed_of {d : ℕ} {ρ : KA E (r + s) → Matrix (Fin d) (Fin d
 end UpperTheory.ConvolutionTheory.BW
 
 /- English proof (translation)
-Introduce `E _ _ _ S r s ρ φ hr hU hK hS h0 hsl g`. Assume the negation of the conclusion as `hne`. Take `⟨b₀, hb₀, k₀, hk₀, rfl⟩` from `exists_adelicBorel_mul_maxCompact g`. Take `⟨X, m₁, m, rfl⟩` from `UpperTheory.upperTriangular_eq_unipotent_mul_levi _ r s b₀ hb₀`. Take `⟨σ, y, hy, rfl⟩` from `exists_centralSection_mul_mem_normOneGL m₁`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hσ : centralSection E r σ = zt E r (Real.log σ.1)`. Unfold `zt`. Use `congr 1`. Conclude with `Subtype.ext (Real.exp_log σ.2).symm`. Rewrite `hne` using `[mul_assoc, constantTerm_unipGL_mul hU.left, UpperTheory.blockDiagonal_eq_leviEmbedding, hσ]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `k : KA E (r + s)` to `⟨k₀, hk₀⟩`. Establish `hct : ∀ p g, constantTerm p (rt E (r + s) k φ).1 g = constantTerm p φ.1 (g * k₀)` using `fun p g => constantTerm_rightTranslate φ.1 k₀ g`. Establish `hU' : Umg (rt E (r + s) k φ)` using `((umgOps E (r + s)).2 φ hU).2.2.2.2.1 _`. Establish `hc' : Continuous (rt E (r + s) k φ).1` using `((umgOps E (r + s)).2 _ hU').1`. Take `⟨⟨ρ', hρc, hρ'⟩, -, hlev⟩` from `resTyp E r s ρ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ψ, hψ, hψU⟩` from `exists_umg hU' (Real.log σ.1) m`. Establish `hψ'` using `funext hψ`. Take `⟨b, hb, hI⟩` from `eigComp E S r ⟨ρ.d, ρ', hρc⟩ ψ hr hψU (by`. Rewrite using `[show ψ.1 = _ from hψ']`. Conclude with `cusp_of hc' hU'.left (fun p h1 h2 g => by rw [hct, h0 p h1 h2]) _ _)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `(by show Killed (⇑ρ') ψ.1`. Rewrite using `[hρ', show ψ.1 = _ from hψ']`. Conclude with `killed_of hc' ((killedOps E _ ρ φ hK).1 k) (fun k => hlev k 1) _ _)`. Use the proof step `(by`. Introduce `w hw κ hκ`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ψ.1 (g * finGL E r (locGL E r w κ)) = ψ.1 g`. Rewrite using `[hψ, hψ]`. Use `ct_right (fun x => ?_) _ _ _` and prove the remaining obligations. Take `⟨b1, -, -, b4⟩` from `UpperTheory.V.Cj.S.gl2_local_to_adelic_embedding E w r s`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hS'` using `((((hkOps E (r + s) w 0).2.2.2 S φ hw hS).2.2.1 k).1) w hw _ (b4 κ hκ 1 (one_mem _))`. Establish `e : (rt E (r + s) k φ).1 (x * finGL E _ (locGL E _ w (blk κ 1))) = (rt E (r + s) k φ).1 x` using `congrFun (congrArg Subtype.val hS') x`. Rewrite `e` using `[b1, map_one, map_one, UpperTheory.blockDiagonal_eq_leviEmbedding]`. Conclude with `e)`. Use the proof step `⟨⟨y, hy⟩, by rw [hψ, hct]; exact hne⟩`.
-
-Establish `hb' : Killed (resL ρ.ρ) b.f.1`. Rewrite using `[← hρ']`. Conclude with `hb`. Use `hI ?_` and prove the remaining obligations. Simplify using `only [hψ]`.
-
-Conclude with `congrFun (hsl k b hb' (Real.log σ.1)) m`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.BW.langStep :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E], UpperTheory.ConvolutionTheory.BW.LangStep E := by

@@ -15,14 +15,14 @@ noncomputable section
 namespace GlobalTheory.XGeoPlace
 
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.ExistsPrimeMem.exists_prime_mem P hP n hn h`.
+A detailed English derivation is pending.
 -/
 theorem exists_prime_mem {A : Type} [CommRing A] (P : Ideal A) (hP : P.IsPrime) (n : ℕ) (hn : n ≠ 0)
     (h : (n : A) ∈ P) : ∃ ℓ : ℕ, ℓ.Prime ∧ (ℓ : A) ∈ P :=
   _root_.GlobalTheory.ExistsPrimeMem.exists_prime_mem P hP n hn h
 
 /- English proof (translation)
-The claim follows from `exists_prime_mem PP.asIdeal PP.isPrime _ (fun h => PP.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)) (Ideal.absNorm_mem _)`.
+A detailed English derivation is pending.
 -/
 theorem exists_prime_mem_pl {E : Type} [Field E] [NumberField E] (PP : HeightOneSpectrum (𝓞 E)) :
     ∃ ℓ : ℕ, ℓ.Prime ∧ (ℓ : 𝓞 E) ∈ PP.asIdeal :=
@@ -31,29 +31,25 @@ theorem exists_prime_mem_pl {E : Type} [Field E] [NumberField E] (PP : HeightOne
 end GlobalTheory.XGeoPlace
 
 /- English proof (translation)
-Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u PP hPP`. Establish `hC` using `hW.pk.bot.hyp.2.2.2.1`. Establish `hnc : ¬ Lev.IsConjPl PP PP`. Break down `hPP with hg | ⟨t, ht⟩` into its components or cases. Conclude with `GlobalTheory.SeeConjPlaces.pg_not_isConjPl (pk W) W.Q.F.lv2 hC.lev hC.grp PP hg PP hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `(hC.lev.Q_pl t PP ht).2 PP ht`. Take `⟨e, he⟩` from `GlobalTheory.ParahoricLift.exists_isIdemAt hnc`. Take `⟨k, _, _, _, _, q, hqe, hqv, hint, -⟩` from `GlobalTheory.LocMod.SplitCompl.exists_place _ PP e he`. Choose the witnesses or unpack the hypotheses as in `⟨ℓ, hℓ, hℓP, h2q, hd⟩ : ∃ ℓ : ℕ, ℓ.Prime ∧ (ℓ : 𝓞 (I.rec7 l Z).host.E) ∈ PP.asIdeal ∧ (B.host.QS * B.host.q).Coprime ℓ ∧ B.host.d.Coprime ℓ := by`. Break down `hPP with hg | ⟨t, ht⟩` into its components or cases.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hgg` using `hW.lev.1.1 PP hg`. Rewrite `hgg` using `[Nat.cast_mul]`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i : Fin 2, ((B.host.g i : ℕ) : 𝓞 (I.rec7 l Z).host.E) ∈ PP.asIdeal := by`. Break down `PP.isPrime.mem_or_mem hgg with h | h` into its components or cases. Conclude with `⟨0, h⟩`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨1, h⟩`. Establish `hc : (B.host.g i).Coprime (B.host.QS * B.host.q * B.host.d)`. Rewrite using `[Nat.Coprime, Nat.gcd_comm, Nat.gcd_rec, B.g_cond i, Nat.gcd_one_left]`. Use `⟨B.host.g i, B.host.g_prime i, hi, (hc.coprime_dvd_right ⟨B.host.d, rfl⟩).symm, (hc.coprime_dvd_right (Dvd.intro_left _ rfl)).symm⟩` and prove the remaining obligations. Establish `hoff` using `(hC.lev.Q_off t PP ht).1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ℓ, hℓ, hℓP⟩` from `GlobalTheory.XGeoPlace.exists_prime_mem_pl PP`. Establish `key : ∀ m : ℕ, m ∣ B.host.QS * B.host.q * B.host.d * (I.rec7 l Z).sp.T → m.Coprime ℓ` using `fun m hm => Nat.Coprime.symm ((Nat.Prime.coprime_iff_not_dvd hℓ).2 fun hdv => hoff (Ideal.mem_of_dvd _ (Nat.cast_dvd_cast (hdv.trans hm)) hℓP))`. Conclude with `⟨ℓ, hℓ, hℓP, key _ ⟨B.host.d * (I.rec7 l Z).sp.T, by ring⟩, key _ ⟨B.host.QS * B.host.q * (I.rec7 l Z).sp.T, by ring⟩⟩`. Establish `hv : (ℓ : 𝓞 (I.rec7 l Z).host.F) ∈ q.v.asIdeal`. Rewrite using `[hqv, HeightOneSpectrum.under_asIdeal, Ideal.mem_comap, map_natCast]`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hℓP`. Establish `hcc : (Ideal.absNorm (I.rec7 l Z).host.ccK).Coprime ℓ` using `by show Nat.Coprime (Ideal.absNorm B.host.ccK) _`. Rewrite using `[B.ccK_top, Ideal.absNorm_top]`. Conclude with `Nat.coprime_one_left _`. Establish `hU : q.UnitAA` using `GlobalTheory.SeeSaw.StdOff.unitAA_of q hℓ hv h2q hd hcc`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : (((B.T u : ℕ)) : 𝓞 (I.rec7 l Z).host.E) ∉ PP.asIdeal`. Break down `hPP with hg | ⟨t, ht⟩` into its components or cases. Conclude with `Formalism.L2.Col.T_notMem_vGs l.pr u ⟨PP, (hW.lev.2.1 PP).1 hg⟩`. Conclude with `(hC.lev.Q_off t PP ht).2 u`. Use `set π : 𝓞 (I.rec7 l Z).host.E := X.piT u with hπdef`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hπ : π ∉ PP.asIdeal` using `fun h => hT (by`. Establish `h2` using `PP.asIdeal.mul_mem_left (B.fields.conjO ((B.primes X).piT u)) h`. Establish `h3 : (B.primes X).piT u * B.fields.conjO ((B.primes X).piT u) ∈ PP.asIdeal`. Rewrite using `[mul_comm]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[l.pr.piT_norm u]`. Conclude with `h3)`. Establish `hπ0 : (π : (I.rec7 l Z).host.E) ≠ 0` using `fun h0 => hπ (by`. Rewrite using `[show π = 0 from RingOfIntegers.coe_injective (by simpa using h0)]`. Conclude with `zero_mem _)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1 : (GlobalTheory.XGeoStd.piE I l Z u) = (π : (I.rec7 l Z).host.E)` using `rfl`. Establish `hin1` using `(hint (π : (I.rec7 l Z).host.E)).2 ⟨π, 1, fun h => PP.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h), by simp⟩`. Establish `hin2` using `(hint (π : (I.rec7 l Z).host.E)⁻¹).2 ⟨1, π, hπ, by simp [hπ0]⟩`. Establish `hinv : (GlobalTheory.LocMod.ofSplit q).pr ((π : (I.rec7 l Z).host.E)⁻¹) = ((GlobalTheory.LocMod.ofSplit q).pr (π : (I.rec7 l Z).host.E))⁻¹` using `by show ((GlobalTheory.LocMod.ofSplit q).π.comp (incA (I.rec7 l Z))) _ = (((GlobalTheory.LocMod.ofSplit q).π.comp (incA (I.rec7 l Z))) _)⁻¹`. Conclude with `map_inv₀ _ _`.
-
-Establish `hne : (GlobalTheory.LocMod.ofSplit q).pr (π : (I.rec7 l Z).host.E) ≠ 0` using `by show ((GlobalTheory.LocMod.ofSplit q).π.comp (incA (I.rec7 l Z))) (π : (I.rec7 l Z).host.E) ≠ 0`. Conclude with `(map_ne_zero _).2 hπ0`. Rewrite `hin2` using `[hinv]`. Rewrite `hin1`, `hin2` using `[Valuation.mem_integer_iff]`. Use `⟨k, inferInstance, inferInstance, inferInstance, inferInstance, borel k, @BorelSpace.mk _ _ (borel k) rfl, q, hqe ▸ he, hqv, hU, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[e1]`. Rewrite `hin2` using `[map_inv₀]`. Conclude with `le_antisymm hin1 ((inv_le_one₀ (zero_lt_iff.2 ((map_ne_zero _).2 hne))).1 hin2)`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.XGeoPlace.exists_place : ∀ {B : GlobalTheory.Mem.Base} {X : GlobalTheory.Mem.PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (PP : Pl (I.rec7 l Z).host.E), PP ∈ (pk W).Pg ∨ QAll W PP → ∃ (k : Type) (_ : Field k) (_ : ValuativeRel k) (_ : TopologicalSpace k) (_ : IsNonarchimedeanLocalField k) (_ : MeasurableSpace k) (_ : BorelSpace k) (q : GlobalTheory.FinPl.SplitPt (I.rec7 l Z) k), Formalism.L2.NTheta.IsIdemAt q.e PP ∧ q.v = PP.under (𝓞 (I.rec7 l Z).host.F) ∧ q.UnitAA ∧ valuation k ((GlobalTheory.LocMod.ofSplit q).pr (GlobalTheory.XGeoStd.piE I l Z u)) = 1 := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hW u PP hPP

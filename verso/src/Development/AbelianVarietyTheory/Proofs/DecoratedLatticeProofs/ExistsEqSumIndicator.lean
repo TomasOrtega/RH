@@ -6,9 +6,9 @@ def dc {G : Type} [Group G] (R K : Subgroup G) (t : G) : Set G :=
   {x : G | ∃ r ∈ R, ∃ κ ∈ K, x = r * t * κ}
 
 /- English proof (translation)
-Introduce and unpack `y ⟨a, ha, b, hb, rfl⟩`. Take `⟨r, hr, κ, hκ, hx⟩` from `hs`. Take `⟨r', hr', κ', hκ', hx'⟩` from `ht`. Establish `hrs : r * s * κ = r' * t * κ'` using `hx.symm.trans hx'`. Establish `hs' : s = r⁻¹ * r' * t * κ' * κ⁻¹`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `⟨a * r⁻¹ * r', R.mul_mem (R.mul_mem ha (R.inv_mem hr)) hr', κ' * κ⁻¹ * b, K.mul_mem (K.mul_mem hκ' (K.inv_mem hκ)) hb, ?_⟩` and prove the remaining obligations. Rewrite using `[hs']`. Use `group`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dc_subset {G : Type} [Group G] (R K : Subgroup G) {s t x : G}
     (hs : x ∈ dc R K s) (ht : x ∈ dc R K t) : dc R K s ⊆ dc R K t := by
@@ -26,23 +26,21 @@ theorem dc_subset {G : Type} [Group G] (R K : Subgroup G) {s t x : G}
   group
 
 /- English proof (translation)
-Set `S : G → Finset G` to `fun t => T.filter (fun t' => dc R K t' = dc R K t)`. Set `rep : G → G` to `fun t => if h : (S t).Nonempty then h.choose else t`. Set `c : G → M` to `fun t => if t ∈ T ∧ rep t = t then φ t else 0`. Establish `hdc_eq : ∀ {s t x : G}, x ∈ dc R K s → x ∈ dc R K t → dc R K s = dc R K t` using `fun hs ht => Set.Subset.antisymm (dc_subset R K hs ht) (dc_subset R K ht hs)`. Establish `hinv : ∀ {s x : G}, x ∈ dc R K s → φ x = φ s`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `s x ⟨r, hr, κ, hκ, rfl⟩`. Rewrite using `[hK κ hκ, hR r hr]`. Use `⟨c, fun t => ?_, fun x => ?_⟩` and prove the remaining obligations. Simplify using `only [c] split_ifs`. Conclude with `Or.inr rfl`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Prove the second alternative.
 
-Conclude with `Or.inl rfl`. Distinguish the cases in `hx : ∃ t ∈ T, x ∈ dc R K t`. Take `⟨t0, ht0, hxt0⟩` from `hx`. Establish `hS : (S t0).Nonempty` using `⟨t0, Finset.mem_filter.mpr ⟨ht0, rfl⟩⟩`. Take `⟨ht1T, ht1dc⟩` from `Finset.mem_filter.mp hS.choose_spec`.
+Prove the first alternative. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hrep : ∀ t, dc R K t = dc R K t0 → rep t = hS.choose`. Introduce `t ht`. Establish `hSt : S t = S t0` using `by simp only [S, ht]`. Simplify using `only [rep, hSt, dif_pos hS]`. Establish `hxt1 : x ∈ dc R K hS.choose` using `by rw [ht1dc]; exact hxt0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_eq_single hS.choose]`. Establish `hc1 : c hS.choose = φ hS.choose`. Simplify using `only [c]`. Rewrite using `[if_pos ⟨ht1T, hrep _ ht1dc⟩]`. Rewrite using `[Set.indicator_of_mem hxt1, hc1, hinv hxt1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `t _ hne`. Distinguish the cases in `hxt : x ∈ dc R K t`. Establish `hc0 : c t = 0`. Simplify using `only [c]`. Rewrite using `[if_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨-, h⟩`. Conclude with `hne (h.symm.trans (hrep t (hdc_eq hxt hxt0)))`. Rewrite using `[Set.indicator_of_mem hxt, hc0]`. Rewrite using `[Set.indicator_of_notMem hxt]`. Introduce `h`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `absurd ht1T h`. Use `push_neg at hx`. Establish `hφ : φ x = 0`. Assume the negation of the conclusion as `h`. Take `⟨t, ht, hxt⟩` from `hT x h`.
-
-Conclude with `hx t ht hxt`. Rewrite using `[hφ]`. Use `symm`. Conclude with `Finset.sum_eq_zero fun t ht => Set.indicator_of_notMem (hx t ht) _`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. A detailed English derivation is pending.
 -/
 theorem exists_eq_sum_indicator {G : Type} [Group G] {M : Type} [AddCommMonoid M]
     (R K : Subgroup G) (T : Finset G) (φ : G → M)
@@ -100,7 +98,7 @@ theorem exists_eq_sum_indicator {G : Type} [Group G] {M : Type} [AddCommMonoid M
     exact Finset.sum_eq_zero fun t ht => Set.indicator_of_notMem (hx t ht) _
 
 /- English proof (translation)
-Introduce `d1 G _ M _ R K T φ hR hK hT`. Conclude with `exists_eq_sum_indicator R K T φ hR hK hT`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem main : (let d1 : {G : Type} → [inst : Group G] → Subgroup G → Subgroup G → G → Set G := @(fun {G : Type} [Group G] (R K : Subgroup G) (t : G) ↦ {x : G | ∃ r ∈ R, ∃ κ ∈ K, x = r * t * κ}); ∀ {G : Type} [inst : Group G] {M : Type} [inst_1 : AddCommMonoid M] (R K : Subgroup G) (T : Finset G) (φ : G → M), (∀ r ∈ R, ∀ (x : G), φ (r * x) = φ x) → (∀ κ ∈ K, ∀ (x : G), φ (x * κ) = φ x) → (∀ (x : G), φ x ≠ (0 : M) → ∃ t ∈ T, x ∈ d1 R K t) → ∃ (c : G → M), (∀ (t : G), c t = (0 : M) ∨ c t = φ t) ∧ ∀ (x : G), φ x = ∑ t ∈ T, Set.indicator (d1 R K t) (fun (x : G) ↦ c t) x) := by
   intro d1 G _ M _ R K T φ hR hK hT

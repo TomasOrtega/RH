@@ -10,49 +10,43 @@ namespace GlobalTheory
 open PureTypeVector in
 
 /- English proof (translation)
-Introduce `g Λ w L Hm Ef hg hw hΛ hH hpos hEf hbij z z'`. Substitute `hg` using the available equality. Use `set H := hermForm Hm w w with hHdef`. Establish `hHim : H.im = 0` using `hermForm_self_im hH w`. Establish `hHreal : H = (H.re : ℂ)` using `Complex.ext (by simp) (by simp [hHim])`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsm : ∀ u v : ℂ, hermForm Hm (u • w) (v • w) = u * starRingEnd ℂ v * H` using `fun u v => hermForm_smul_smul Hm u v w w`. Use `set D := (L.ω₁ * starRingEnd ℂ L.ω₂).im with hD`. Establish `hw0 : w 0 ≠ 0`. Introduce `h`. Apply `hw` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[Subsingleton.elim i 0]`. Simplify using `using h`. Establish `hcoord : ∀ x : Λ, ∃ m n : ℤ, (x : Fin 1 → ℂ) = ((m : ℂ) * L.ω₁ + n * L.ω₂) • w`. Introduce `x`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hx : (x : Fin 1 → ℂ) = (x.1 0 / w 0) • w`. Use function extensionality and compare the values at `i`. Rewrite using `[Subsingleton.elim i 0]`. Simplify using `[div_mul_cancel₀ _ hw0]`. Establish `hmem : (x.1 0 / w 0) ∈ L.lattice` using `(hΛ _).2 (by rw [← hx]; exact x.2)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨m, n, hmn⟩` from `PeriodPair.mem_lattice.1 hmem`. Conclude with `⟨m, n, by rw [hmn]; exact hx⟩`. Establish `him : ∀ m n m' n' : ℤ, (((m : ℂ) * L.ω₁ + n * L.ω₂) * starRingEnd ℂ ((m' : ℂ) * L.ω₁ + n' * L.ω₂)).im = ((m * n' - n * m' : ℤ) : ℝ) * D`. Introduce `m n m' n'`. Simplify using `only [hD, map_add, map_mul, map_intCast, Complex.mul_im, Complex.add_im, Complex.add_re, Complex.mul_re, Complex.conj_re, Complex.conj_im, Complex.intCast_re, Complex.intCast_im]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hEfc : ∀ (x y : Λ) (m n m' n' : ℤ), (x : Fin 1 → ℂ) = ((m : ℂ) * L.ω₁ + n * L.ω₂) • w → (y : Fin 1 → ℂ) = ((m' : ℂ) * L.ω₁ + n' * L.ω₂) • w → (Ef x y : ℝ) = ((m * n' - n * m' : ℤ) : ℝ) * (H.re * D)`. Introduce `x y m n m' n' hx hy`. Rewrite using `[hEf, hx, hy, hsm, Complex.mul_im, hHim, him]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `ha : L.ω₁ • w ∈ Λ` using `(hΛ _).1 L.ω₁_mem_lattice`. Establish `hb : L.ω₂ • w ∈ Λ` using `(hΛ _).1 L.ω₂_mem_lattice`. Set `a : Λ` to `⟨L.ω₁ • w, ha⟩`. Set `b : Λ` to `⟨L.ω₂ • w, hb⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `ea : (a : Fin 1 → ℂ) = (((1 : ℤ) : ℂ) * L.ω₁ + ((0 : ℤ) : ℂ) * L.ω₂) • w` using `by show L.ω₁ • w = _`. Simplify using the standard rewrite rules. Establish `eb : (b : Fin 1 → ℂ) = (((0 : ℤ) : ℂ) * L.ω₁ + ((1 : ℤ) : ℂ) * L.ω₂) • w` using `by show L.ω₂ • w = _`. Simplify using the standard rewrite rules. Use `set k := Ef a b with hkdef`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Establish `hk : (k : ℝ) = H.re * D`. Rewrite using `[hEfc a b 1 0 0 1 ea eb]`. Evaluate the numerical expressions. Establish `hdvd : ∀ x y : Λ, k ∣ Ef x y`. Introduce `x y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨m, n, hx⟩` from `hcoord x`. Take `⟨m', n', hy⟩` from `hcoord y`. Use `⟨m * n' - n * m', ?_⟩` and prove the remaining obligations. Establish `h` using `hEfc x y m n m' n' hx hy`. Rewrite `h` using `[← hk, mul_comm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h` after adjusting the coercions. Establish `hba : Ef b a = -k`. Establish `h` using `hEfc b a 0 1 1 0 eb ea`. Rewrite `h` using `[← hk]`. Establish `h' : ((Ef b a : ℤ) : ℝ) = ((-k : ℤ) : ℝ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[h]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `h'` after adjusting the coercions. Establish `hk0 : k ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `hk0`. Establish `hEa : Ef a = Ef 0`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `y`. Rewrite using `[map_zero, LinearMap.zero_apply]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨c, hc⟩` from `hdvd a y`. Rewrite using `[hc, hk0, zero_mul]`. Establish `ha0 : a = 0` using `hbij.1 hEa`. Establish `h0 : L.ω₁ • w = 0` using `congrArg Subtype.val ha0`. Break down `smul_eq_zero.1 h0 with h | h` into its components or cases.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `L.indep.ne_zero 0 (by simpa using h)`. Conclude with `hw h`. Set `f : Λ →ₗ[ℤ] ℤ` to `{ toFun := fun y => Ef y a / k map_add' := fun y y' => by`. Simplify using `only [map_add, LinearMap.add_apply]`. Conclude with `Int.add_ediv_of_dvd_left (hdvd y a)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use the proof step `map_smul' := fun c y => by`. Simplify using `only [map_zsmul, LinearMap.smul_apply, smul_eq_mul, RingHom.id_apply]`. Conclude with `Int.mul_ediv_assoc c (hdvd y a) }`. Take `⟨x, hx⟩` from `hbij.2 f`. Establish `hxb : Ef x b = -1`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hx]`. Use `show Ef b a / k = -1`. Rewrite using `[hba, Int.neg_ediv_of_dvd (dvd_refl k), Int.ediv_self hk0]`. Establish `hunit : k = 1 ∨ k = -1`. Establish `h` using `hdvd x b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `h` using `[hxb]`. Conclude with `Int.isUnit_iff.1 (isUnit_of_dvd_one (dvd_neg.1 h))`. Establish `hHre : H.re * |D| = 1`. Establish `hpos' : 0 < H.re` using `hpos`. Break down `hunit with h | h` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : H.re * D = 1` using `by rw [← hk, h]; norm_num`. Establish `hD0 : 0 < D` using `by nlinarith`. Rewrite using `[abs_of_pos hD0]`. Conclude with `h1`. Establish `h1 : H.re * D = -1` using `by rw [← hk, h]; norm_num`.
-
-Establish `hD0 : D < 0` using `by nlinarith`. Rewrite using `[abs_of_neg hD0]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hDabs : |D| ≠ 0`. Introduce `h0`.
-
-Rewrite `hHre` using `[h0, mul_zero]`. Conclude with `zero_ne_one hHre`. Establish `hr : H.re = 1 / |D|`. Rewrite using `[eq_div_iff hDabs]`. Conclude with `hHre`.
-
-Rewrite using `[hsm, hHreal, hr, Complex.ofReal_div, Complex.ofReal_one]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hermForm_principal_dim_one :
   ∀ (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)) (w : Fin g → ℂ) (L : PeriodPair) (Hm : Matrix (Fin g) (Fin g) ℂ) (Ef : LinearMap.BilinForm ℤ Λ), g = 1 → w ≠ 0 → (∀ z : ℂ, z ∈ L.lattice ↔ z • w ∈ Λ) → Hm.IsHermitian → 0 < (hermForm Hm w w).re → (∀ a b : Λ, (Ef a b : ℝ) = (hermForm Hm a b).im) → Function.Bijective Ef → ∀ z z' : ℂ, hermForm Hm (z • w) (z' • w) = z * starRingEnd ℂ z' / (|(L.ω₁ * starRingEnd ℂ L.ω₂).im| : ℝ) := by

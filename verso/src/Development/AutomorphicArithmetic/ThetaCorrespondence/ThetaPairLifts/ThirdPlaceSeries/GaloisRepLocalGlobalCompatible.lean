@@ -24,35 +24,31 @@ namespace GlobalTheory.LocCompTy
 open GlobalTheory.HeightCounting GlobalTheory.RowTie GlobalTheory.SplitRead GlobalTheory.NPin GlobalTheory.PendOf
 set_option maxHeartbeats 2000000 in
 /- English proof (translation)
-Establish `hjr` using `D.nd.j_range i`. Set `j0 : Fin D.R.m` to `⟨D.nd.j i - 1, by omega⟩`. Establish `hj0 : j0.1 + 1 = D.nd.j i` using `by simp only [j0]; omega`. Establish `hsp : IsSplitPl D.host w` using `hw ▸ GlobalTheory.FixedPlaceSplit.isSplitPl_plGw D k v`. Take `⟨s, hs⟩` from `GlobalTheory.TypeBlockPf.splitAt D _ hsp`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Substitute `hs` using the available equality. Establish `htame : GlobalTheory.SplitWeil.IsTame ((P.tp.tup (D.nd.mu i) j0).loc s.w)` using `GlobalTheory.MuTameQS.isTame_loc (GlobalTheory.MuTameQS.tameAt_mul ((P.cf.isMu0 j0).tame _) (P.tp.xi_tame _ _))`. Take `⟨χ, hχ⟩` from `GlobalTheory.T.exists_tameInflationCharacter_of_padic_iso _ _ e he _ htame`. Use `⟨_, χ, hχ, _root_.GlobalTheory.T.local_langlands_split_qp_alt_alt hPr hL D P i j0 hj0 k s.w e rcw hrc, fun Q => ?_⟩` and prove the remaining obligations. Take `⟨σ, hσ, -⟩` from `GlobalTheory.T.splitPlaceLocalComponent_exists_unique_class D.host.E D.R.nV (P.H.av.rep i Q) s`.
+Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hσ' : IsLocS (n` using `D.R.nV) (P.H.av.S i Q) s σ := hσ`. Use `⟨Rep.of (σ.ρ.comp (Matrix.GeneralLinearGroup.map e.toRingHom)), GlobalTheory.T.isIrreducibleSmooth_pullback_padic_ringIso _ _ e he _ σ, ?_, ?_⟩` and prove the remaining obligations. Apply `(P.T.e s.w).injective` to reduce the goal to its premises. Rewrite using `[hrc _ σ _ ⟨CategoryTheory.Iso.refl _⟩, D.nbc.embAV_loc, P.H.emb]`. Conclude with `P.au _ _ _ _ s _ hσ'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, T, hc, hci, -, -, -⟩` from `hσ`. Use `set ξ := (P.tp.tup (D.nd.mu i) j0).loc s.w with hξ`. Establish `hT : ∀ F, F ∈ D.naut.typeV i Q ↔ (P.M.loc i).real F ∈ NG.isoTyp (P.M.loc i).wt.ρ (P.H.av.S i Q)` using `fun F => by`. Rewrite using `[P.H.av.typeV]`. Conclude with `Submodule.mem_comap`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `J` to `{φ : (GAf D.host.E D.R.nV → (P.M.loc i).wt.W) →ₗ[ℂ] σ.V // ∀ x, TrivOutside {s.v} x → ∀ f' ∈ NG.isoTyp (P.M.loc i).wt.ρ (P.H.av.S i Q), φ (NG.rt D.host.E D.R.nV x f') = σ.ρ (Matrix.GeneralLinearGroup.map c.toRingHom (s.loc D.R.nV x)) (φ f')}`. Set `ι : D.naut.typeV i Q →ₗ[ℂ] (J → σ.V)` to `LinearMap.pi fun φ => φ.1.comp ((P.M.loc i).real.comp (D.naut.typeV i Q).subtype)`. Establish `hpar : ∀ (φ : J) (F : D.naut.typeV i Q), IsParVec (σ.ρ.comp (Matrix.GeneralLinearGroup.map e.toRingHom)) D.R.r D.R.t χ (φ.1 ((P.M.loc i).real F))`. Introduce `φ F`. Use `GlobalTheory.T.isParahoricTypeVector_of_blockTypeVector_padic_iso _ _ e he ξ χ hχ D.R.r D.R.t σ.V σ.ρ _ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `GlobalTheory.BlockType.isBlockVec_of (r := D.R.r) (t := D.R.t) ξ σ.ρ _ fun h hh => ?_` and prove the remaining obligations. Take `⟨x, hx, hxe⟩` from `GlobalTheory.SplitLift.exists_trivOutside_loc_eq D.R.nV s (Matrix.GeneralLinearGroup.map c.symm.toRingHom h)`. Establish `hmap : Matrix.GeneralLinearGroup.map c.toRingHom (s.loc D.R.nV x) = h`. Rewrite using `[hxe]`. Conclude with `Units.ext (Matrix.ext fun a b => c.apply_symm_apply _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hF` using `(hT F).1 F.2`. Establish `hh2 : Matrix.GeneralLinearGroup.map c.toRingHom (s.loc D.R.nV x) ∈ GlobalTheory.BlockType.blockGrp (s.w.adicCompletion D.host.E) D.R.r D.R.t` using `by rw [hmap]; exact hh`. Establish `h3` using `φ.2 x hx _ hF`. Rewrite `h3` using `[_root_.GlobalTheory.LocCompTy.blockEig_alt hL D P i Q k v j0 hj0 s hw c hc hci F x hx hh2, map_smul]`. Rewrite using `[← hmap]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `h3.symm`. Establish `hinj : Function.Injective ι`. Rewrite using `[← LinearMap.ker_eq_bot, Submodule.eq_bot_iff]`. Introduce `F hF`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (P.M.loc i).real F ≠ 0` using `fun h0 => hne (Subtype.ext ((P.M.loc i).real_inj (h0.trans (map_zero _).symm)))`. Take `⟨φ, hφ, hφe⟩` from `GlobalTheory.T.isotypic_local_component_fixed D.host.E D.R.nV (P.M.loc i).wt (P.H.av.S i Q) (P.H.av.irr i Q) s σ hσ' c hc hci _ ((hT F).1 F.2) h1`. Conclude with `hφ (congrFun (LinearMap.mem_ker.1 hF) ⟨φ, hφe⟩)`. Use `⟨J, ι, hinj, fun F φ => hpar φ F, fun a ha F => ?_⟩` and prove the remaining obligations. Establish `hzc : ∀ b, a * b = b * a` using `fun b => (Subalgebra.mem_center_iff.1 ha b).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcz` using `GlobalTheory.SeriesSupportTest.atPlace_central D k v a hzc`. Take `⟨L, hLift, hCL⟩` from `hCen i`. Establish `e0 : (P.M.loc i).real (D.ntypes.onMt (D.nd.mu i) (D.nd.j i) (Formalism.MainNotions.ArithmeticCylinders.atPlace D k v a) F) = actSum D L (Formalism.MainNotions.ArithmeticCylinders.atPlace D k v a) ((P.M.loc i).real F)`. Rewrite using `[NTypes.onMt, dif_pos hcz]`. Conclude with `hCL ⟨_, hcz⟩ F`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `g : GL (Fin D.R.r) (ZMod (D.host.g k)) → G0g D.nd` to `fun h => Pi.mulSingle (M := fun kv : (Σ k : Fin 2, D.nd.PlG k) => GL (Fin D.R.r) (ZMod (D.host.g kv.1))) ⟨k, v⟩ h`. Establish `hsum : actSum D L (Formalism.MainNotions.ArithmeticCylinders.atPlace D k v a) ((P.M.loc i).real F) = ∑ h, a.coeff h • NG.rt D.host.E D.R.nV (L (g h)) ((P.M.loc i).real F)`. Unfold `actSum Formalism.MainNotions.ArithmeticCylinders.atPlace`. Rewrite using `[MonoidAlgebra.coeff_ofCoeff, Finsupp.sum_mapDomain_index (h := fun g c => c • NG.rt D.host.E D.R.nV (L g) ((P.M.loc i).real F)) (fun _ => zero_smul _ _) (fun _ _ _ => add_smul _ _ _)]`. Conclude with `Finsupp.sum_fintype _ _ (fun _ => zero_smul _ _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hg : ∀ h, ∃ x : GAf D.host.E D.R.nV, TrivOutside {s.v} x ∧ IsLiftN h (Matrix.GeneralLinearGroup.map c.toRingHom (s.loc D.R.nV x)) ∧ NG.rt D.host.E D.R.nV (L (g h)) ((P.M.loc i).real F) = NG.rt D.host.E D.R.nV x ((P.M.loc i).real F)` using `fun h => _root_.GlobalTheory.T.lift_through_completion_iso_alt hL D P i Q k v s hw c hc hci L hLift F F.2 h (g h) (by simp [g]) (fun kv hkv => by simp [g, Pi.mulSingle_eq_of_ne hkv])`. Use `choose xs hxs using hg`. Establish `hF` using `(hT F).1 F.2`. Establish `e1 : (P.M.loc i).real (D.ntypes.onMt (D.nd.mu i) (D.nd.j i) (Formalism.MainNotions.ArithmeticCylinders.atPlace D k v a) F) = ∑ h, a.coeff h • NG.rt D.host.E D.R.nV (xs h) ((P.M.loc i).real F)`. Rewrite using `[e0, hsum]; exact Finset.sum_congr rfl fun h _ => by rw [(hxs h).2.2]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hmem : D.ntypes.onMt (D.nd.mu i) (D.nd.j i) (Formalism.MainNotions.ArithmeticCylinders.atPlace D k v a) F ∈ D.naut.typeV i Q`. Rewrite using `[hT, e1]`. Conclude with `Submodule.sum_mem _ fun h _ => Submodule.smul_mem _ _ (rt_mem_isoTyp _ _ _ hF)`. Use `⟨hmem, fun φ => ?_⟩` and prove the remaining obligations. Establish `hu` using `(hpar φ F).1`.
-
-Express the relevant statement in the definitionally equal form `φ.1 ((P.M.loc i).real (D.ntypes.onMt (D.nd.mu i) (D.nd.j i) (Formalism.MainNotions.ArithmeticCylinders.atPlace D k v a) F)) = actTop (σ.ρ.comp (Matrix.GeneralLinearGroup.map e.toRingHom)) D.R.r D.R.t a (φ.1 ((P.M.loc i).real F))`. Rewrite using `[e1, map_sum, actTop, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, φ.2 _ (hxs h).1 _ hF, LinearMap.smul_apply, MonoidHom.comp_apply]`. Use `congr 1`.
-
-Conclude with `GlobalTheory.T.blockLift_action_on_principalCongruenceFixedVectors _ _ e he D.R.r D.R.t σ.V σ.ρ _ hu h _ (hxs h).2.1`.
+A detailed English derivation is pending.
 -/
 theorem localGlobal_compatible_at_place_alt (hPr : _root_.GlobalTheory.NRows.ThetaLocalInputsAlt) (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D)
     (hCen : GlobalTheory.HeightCounting.Up.CenLoc D P.M) (i : D.nd.Loc) (k : Fin 2) (v : D.nd.PlG k) (w : PlE D.host)
@@ -156,7 +152,7 @@ theorem localGlobal_compatible_at_place_alt (hPr : _root_.GlobalTheory.NRows.The
   congr 1
   exact GlobalTheory.T.blockLift_action_on_principalCongruenceFixedVectors _ _ e he D.R.r D.R.t σ.V σ.ρ _ hu h _ (hxs h).2.1
 /- English proof (translation)
-Introduce `hPr hL D P I rc hRc hCM hCen`. Conclude with `⟨hCM, fun i k v => _root_.GlobalTheory.LocCompTy.localGlobal_compatible_at_place_alt hPr hL D P hCen i k v _ rfl (I.i k v) (I.cont k v) (rc k v) fun n σ π h => hRc k v n σ π h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem locComp_of_isRc_classMapD_cenLoc : _root_.GlobalTheory.NRows.ThetaLocalInputsAlt → ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D) (I : Ident D) (rc : GlobalTheory.SerSys.Corr D), _root_.GlobalTheory.TypeRec.IsSeriesCorrespondence hL P.T I rc → (∀ k v, _root_.GlobalTheory.SerSys.IsClassMapD D.naut.lpDim (rc k v)) → GlobalTheory.HeightCounting.Up.CenLoc D P.M → _root_.GlobalTheory.SerSys.LocalCompatibility D rc := by
   intro hPr hL D P I rc hRc hCM hCen
@@ -169,7 +165,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.TypeRec.factG
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.LocCompTy.locComp_of_isRc_classMapD_cenLoc | exact _root_.GlobalTheory.LocCompTy.locComp_of_isRc_classMapD_cenLoc | (intros; apply _root_.GlobalTheory.LocCompTy.locComp_of_isRc_classMapD_cenLoc <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.locComp_of_isRc_of_classMap_of_cenLoc : _root_.GlobalTheory.NRows.ThetaLocalInputsAlt → ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D) (I : Ident D) (rc : GlobalTheory.SerSys.Corr D), _root_.GlobalTheory.TypeRec.IsSeriesCorrespondence hL P.T I rc → (∀ k v, _root_.GlobalTheory.SerSys.IsClassMapD D.naut.lpDim (rc k v)) → GlobalTheory.HeightCounting.Up.CenLoc D P.M → _root_.GlobalTheory.SerSys.LocalCompatibility D rc := by
   first | exact @_root_.GlobalTheory.LocCompTy.locComp_of_isRc_classMapD_cenLoc | exact _root_.GlobalTheory.LocCompTy.locComp_of_isRc_classMapD_cenLoc | (intros; apply _root_.GlobalTheory.LocCompTy.locComp_of_isRc_classMapD_cenLoc <;> assumption)

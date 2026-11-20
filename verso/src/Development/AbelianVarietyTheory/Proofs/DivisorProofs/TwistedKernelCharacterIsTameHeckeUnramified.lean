@@ -24,13 +24,11 @@ open NumberField IsDedekindDomain Formalism.L2.Host
 variable {L : Type} [Field L] [NumberField L]
 
 /- English proof (translation)
-Establish `hpow : ∀ x, χ.1 x ^ n = 1` using `fun x => by`. Establish `h1 : (χ ^ n).1 x = 1` using `by rw [show χ ^ n = 1 from h]; rfl`. Simplify using `using h1`. Use `show χ.1 (infDiag k) = 1`. Rewrite using `[infDiag, MonoidHom.finsetProd_apply, map_prod]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_eq_one fun w _ => ?_` and prove the remaining obligations. Set `e` to `InfinitePlace.Completion.ringEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq (e (atInf w k : w.Completion)) hn`. Establish `hz0 : e.symm z ≠ 0`. Introduce `h0`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : z = 0` using `by simpa using congrArg e h0`. Rewrite `hz` using `[h1, zero_pow hn.ne']`. Conclude with `(atInf w k).ne_zero (e.injective (by rw [← hz, map_zero]))`. Establish `hk : atInf w k = Units.mk0 _ hz0 ^ n` using `Units.ext (e.injective (by`. Rewrite using `[← hz, Units.val_pow_eq_pow_val, map_pow, Units.val_mk0, RingEquiv.apply_symm_apply]))`.
-
-Rewrite using `[MonoidHom.comp_apply, hk, map_pow, map_pow, hpow]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inf_triv [IsTotallyComplex L] (χ : HChar L) {n : ℕ} (hn : 0 < n) (h : χ.OrderDvd n) (k : Lˣ) : χ.inf k = 1 := by
   have hpow : ∀ x, χ.1 x ^ n = 1 := fun x => by
@@ -51,9 +49,9 @@ theorem inf_triv [IsTotallyComplex L] (χ : HChar L) {n : ℕ} (hn : 0 < n) (h :
   rw [MonoidHom.comp_apply, hk, map_pow, map_pow, hpow]
 
 /- English proof (translation)
-Introduce `k`. Rewrite using `[HChar.inf_mul, HChar.inf_mul, HChar.inf_inv, hb, mul_one, Units.val_mul, Units.val_inv_eq_inv_val, ha k, hc k, ← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h0 : φ i (k : L) ≠ 0` using `(map_ne_zero _).2 k.ne_zero`. Establish `h1 : φ i (k : L) / ((‖φ i (k : L)‖ : ℝ) : ℂ) ≠ 0` using `div_ne_zero h0 (Complex.ofReal_ne_zero.2 (norm_ne_zero_iff.2 h0))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[zpow_sub₀ h1, div_eq_mul_inv (_ ^ _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hasInf_mul_inv {I : Type} [Fintype I] {φ : I → L →+* ℂ} {n m : I → ℤ} {α β γ : HChar L}
     (ha : α.HasInf φ n) (hb : ∀ k, β.inf k = 1) (hc : γ.HasInf φ m) : (α * β * γ⁻¹).HasInf φ (fun i => n i - m i) := by
@@ -77,17 +75,15 @@ open GlobalTheory.OnCmp GlobalTheory.BigOn GlobalTheory.RealIndexBound
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor (Datum Level Moduli Coeff)
 
 /- English proof (translation)
-Establish `: IsTotallyComplex D.host.E` using `D.sp.cm.cmUnram.1`. Take `⟨p, hp, hpl, hδ⟩ : ∃ p : ℕ, p.Prime ∧ p ∈ D.host.levelPrimes ∧ Formalism.L2.Host.IsDelta (H` from `D.host) p (C.delAt l) := by`. Unfold `Formalism.L2.Host.CharFrame.delAt`. Use `split_ifs`. Conclude with `⟨_, D.host.pde'_prime, D.host.pde_level.2, C.isDel'⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨_, D.host.pde_prime, D.host.pde_level.1, C.isDel⟩`. Establish `key : ∀ Q : HeightOneSpectrum (𝓞 D.host.E), ∀ a b : ℕ, a ∣ b → (a : 𝓞 D.host.E) ∈ Q.asIdeal → (b : 𝓞 D.host.E) ∈ Q.asIdeal`. Introduce and unpack `Q a b ⟨u, rfl⟩ h`. Rewrite using `[Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ h`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `lev : ∀ a ∈ D.host.levelPrimes, a ∣ badN D` using `fun a ha => Dvd.dvd.mul_left (Finset.dvd_prod_of_mem (fun p => p) ha) _`. Take `⟨n, -, hn⟩` from `(C.isMu0 i).inf`. Take `⟨o, ho, hod⟩` from `hδ.fin`. Use `⟨D.host.g 0 * D.host.g 1 * p, fun τ => n τ - 1, mul_ne_zero (mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero) hp.ne_zero, fun Q hQ => ?_, fun Q hQ x hx => ?_, fun Q hQ x => ?_, fun Q x hx hx' => ?_, hasInf_mul_inv hn (inf_triv _ ho hod) C.isEta.inf⟩` and prove the remaining obligations. Rewrite `hQ` using `[Nat.cast_mul, Nat.cast_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Q.isPrime.mem_or_mem hQ with h | h` into its components or cases. Break down `Q.isPrime.mem_or_mem h with h | h` into its components or cases. Conclude with `key Q _ _ (lev _ (D.host.g_level 0)) h`. Conclude with `key Q _ _ (lev _ (D.host.g_level 1)) h`. Conclude with `key Q _ _ (lev _ hpl) h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `a1 : (C.mu0 i).UnrAt Q` using `(C.isMu0 i).unr Q fun j hj => hQ (key Q _ _ (by`. Use `Dvd.dvd.mul_right ?_ p` and prove the remaining obligations. Rewrite using `[← Fin.prod_univ_two D.host.g]`. Conclude with `Finset.dvd_prod_of_mem D.host.g (Finset.mem_univ j)) hj)`. Establish `a2 : (C.delAt l).UnrAt Q` using `hδ.unr Q fun hj => hQ (key Q _ _ (Dvd.intro_left _ rfl) hj)`.
-
-Rewrite using `[Formalism.L2.Host.HChar.loc_mul, Formalism.L2.Host.HChar.loc_mul, Formalism.L2.Host.HChar.loc_inv, a1 x hx, a2 x hx, C.isEta.unr Q x hx, inv_one, one_mul, one_mul]`. Rewrite using `[Formalism.L2.Host.HChar.resFin_mul, Formalism.L2.Host.HChar.resFin_mul, Formalism.L2.Host.HChar.resFin_inv, (C.isMu0 i).triv.1, hδ.triv.1, C.isEta.res.1, Formalism.L2.Host.etaFin, GlobalTheory.ClassScalarValue.above_eq, Finset.card_pair hQ.symm, if_neg (by norm_num), inv_one, on …`. Rewrite using `[Formalism.L2.Host.HChar.loc_mul, Formalism.L2.Host.HChar.loc_mul, Formalism.L2.Host.HChar.loc_inv, (C.isMu0 i).tame Q x hx hx', hδ.tame Q x hx hx', C.isEta.unr Q x hx, inv_one, one_mul, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_char (D : D7) (C : Formalism.L2.Host.CharFrame D) (i : Fin D.R.m) (l : ℕ) :
     ∃ (b : ℕ) (n : D.R.Psi → ℤ), b ≠ 0 ∧
@@ -139,7 +135,7 @@ theorem frame_char (D : D7) (C : Formalism.L2.Host.CharFrame D) (i : Fin D.R.m) 
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ fw O hT hC i _ v _ _ _ _ _ _ _ _ ℓ _ _ χ ξR ω φ hK Λ h N _ _ _ _ _ e Ps yd _ _ hb`. Take `⟨b, n, h0, h1, h2, h3, h4, h5⟩` from `frame_char D R.C i (Formalism.EigenvalueLevelCeiling.plc v)`. Use `⟨_, b, _, _, _, n, h0, fun Q hQ hm => hb Q hQ ?_, GlobalTheory.ClassScalarValue.chrEq_mul_inv (hC.lev.mu0 i) hK.chr hC.lev.eta, h2, h3, h4, h5⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ (h1 Q hm)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twisted_kernel_char : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : Full D) [Algebra T.J.Q.c.F D.what₂.LL] (R : RealDat D A T.J.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec) (fw : FWTie T.J R κ v₀) (O : ∀ i, OMDat T.J.toCore R i Unit (fun _ => A.μ0)) (hT : LawsFull T), GlobalTheory.Hk3.Core R F → ∀ (i : Fin D.R.m), OMPins T.J R κ v₀ O i → ∀ (v : HeightOneSpectrum (𝓞 D.what₂.LL)), v ∈ R.twPl → R.tup_mu_on → QGuard R → GlobalTheory.FinalJoin2.FieldOK0 D (ownAt D v) → Formalism.L2.Host.ValLL0 D R.C → (∀ x, (((R.C.delAt (Formalism.EigenvalueLevelCeiling.plc v)).1 x : ℂˣ) : ℂ) ∈ D.what₂.embLL.range) → T.J.Q.l.Mb = ∏ PP ∈ R.Pg, PP.asIdeal → RunPin (T := T) R i (κ i).n v (ownAt D v) → ∀ (ℓ : G → (LaMod (T.Q.Dw ((i : ℕ) + 1)) T.Q.l ≃ₗ[𝓞 D.host.E] LaMod (T.Q.Dw ((i : ℕ) + 1)) T.Q.l)), LevelPin (T := T) R i ℓ → ActionPin (T := T) (R := R) hT.p fw i ℓ → ∀ χ ξR ω φ, KerDat R i (R.C.delAt (Formalism.EigenvalueLevelCeiling.plc v)) χ ξR (placesOver R (R.mu v) (ownAt D v)) ω φ → ∀ (Λ : GenLat D.host.E (Vc D i).rank) (h : GA D (Vc D i)) (N : ℕ), Λ.Unimod → Λ.TrivAt (badN D) → Λ.TrivAt (T.dδ ((i : ℕ) + 1) (Vc D i).rank).l₂.M → Λ.LevOK N (T.dδ ((i : ℕ) + 1) (Vc D i).rank).l₂.M → (∀ w, w ∈ Λ.La ↔ (fun b => star (w b)) ∈ Bridge.hLat (Vc D i) (fin (Vc D i) h)) → ∀ (e : AE D) (Ps : Finset (Pl D.host.E)) (yd : (AE D)ˣ), h ∈ GfC (Vc D i) → IsIdemSum e Ps → (∀ PP ∈ Ps, ((badN D * (T.dδ ((i : ℕ) + 1) (Vc D i).rank).l₂.M : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal) → ∃ (ψ : Formalism.L2.Host.HChar D.host.E) (b : ℕ) (I : Type) (_ : Fintype I) (φs : I → D.host.E →+* ℂ) (n : I → ℤ), b ≠ 0 ∧ (∀ Q ∈ Ps, (b : 𝓞 D.host.E) ∉ Q.asIdeal) ∧ ChrEq (Lift.chrTh (Lift.tup R.mu0 χ) R.eta ((i : ℕ) + 1)).2 ψ ∧ (∀ Q : HeightOneSpectrum (𝓞 D.host.E), (b : 𝓞 D.host.E) ∉ Q.asIdeal → ψ.UnrAt Q) ∧ (∀ Q : HeightOneSpectrum (𝓞 D.host.E), GlobalTheory.IdemSupport.cP Q ≠ Q → ∀ k : D.host.Fˣ, ψ.resFin (Q.under (𝓞 D.host.F)) k = 1) ∧ (∀ Q, ψ.TameAt Q) ∧ ψ.HasInf φs n := by
   intro D G _ _ Pl0 T0 A T _ R F κ v₀ fw O hT hC i _ v _ _ _ _ _ _ _ _ ℓ _ _ χ ξR ω φ hK Λ h N _ _ _ _ _ e Ps yd _ _ hb

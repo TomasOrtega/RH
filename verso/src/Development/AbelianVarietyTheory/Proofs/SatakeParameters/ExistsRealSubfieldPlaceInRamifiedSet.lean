@@ -6,13 +6,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.GeoUnder
 
 /- English proof (translation)
-Introduce `D χ w hg hχ`. Establish `hne : w.asIdeal.comap (algebraMap (𝓞 (maximalRealSubfield D.host.E)) (𝓞 D.host.E)) ≠ ⊥`. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot w.ne_bot`. Establish `hint : IsIntegral ℤ x` using `Algebra.IsIntegral.isIntegral x`. Conclude with `Ideal.comap_ne_bot_of_integral_mem hx0 hx (hint.tower_top)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `v : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E))` to `{ asIdeal := w.asIdeal.comap (algebraMap (𝓞 (maximalRealSubfield D.host.E)) (𝓞 D.host.E)) isPrime := Ideal.comap_isPrime _ _ ne_bot := hne }`. Use `⟨v, rfl, ?_, w, rfl, hχ⟩` and prove the remaining obligations. Introduce and unpack `⟨w', hw', k, hk⟩`. Apply `hg k` to reduce the goal to its premises. Establish `h1 : ((D.host.g k : ℕ) : 𝓞 (maximalRealSubfield D.host.E)) ∈ v.asIdeal`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hw']`. Use `show algebraMap _ _ _ ∈ w'.asIdeal`. Rewrite using `[map_natCast]`. Conclude with `hk`. Use `show ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ w.asIdeal`.
-
-Establish `h2` using `h1`. Express the relevant statement in the definitionally equal form `algebraMap _ _ _ ∈ w.asIdeal at h2`. Rewrite `h2` using `[map_natCast]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_under_in_qPl : ∀ (D : D7) (χ : HChar D.host.E) (w : PlE D.host), (∀ k, w ∉ placesOver D.host.E (D.host.g k)) → ¬ χ.UnrAt w → ∃ v, NG.OverPl w v ∧ v ∈ qPl D χ := by
   intro D χ w hg hχ

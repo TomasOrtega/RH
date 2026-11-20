@@ -13,7 +13,7 @@ noncomputable section
 namespace ResolutionImageSup
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simpa using (analyticOnNhd_const : AnalyticOnNhd ℂ (fun _ : E => a) V)`. Consider the case `add p q hp hq => exact fun w hw => by simpa using (hp w hw).fun_add (hq w hw)`. Consider the case `mul_X p i hp => exact fun w hw => by simpa using (hp w hw).fun_mul (hg i w hw)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem analyticOnNhd_eval {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {ι : Type*} {V : Set E}
     {g : E → ι → ℂ} (hg : ∀ i, AnalyticOnNhd ℂ (fun w => g w i) V) (f : MvPolynomial ι ℂ) :
@@ -24,7 +24,7 @@ theorem analyticOnNhd_eval {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E
   | mul_X p i hp => exact fun w hw => by simpa using (hp w hw).fun_mul (hg i w hw)
 
 /- English proof (translation)
-Establish `h : Real.exp (-(n : ℝ) * (2 * Real.log r)) = ((r ^ n) ^ 2)⁻¹`. Rewrite using `[show -(n : ℝ) * (2 * Real.log r) = -Real.log ((r ^ n) ^ 2) by`. Rewrite using `[Real.log_pow, Real.log_pow]; push_cast; ring, Real.exp_neg, Real.exp_log (by positivity)]`. Rewrite using `[h, div_pow, div_eq_mul_inv]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem sq_div_pow_eq {a r : ℝ} (hr : 0 < r) (n : ℕ) :
     (a / r ^ n) ^ 2 = a ^ 2 * Real.exp (-(n : ℝ) * (2 * Real.log r)) := by
@@ -36,7 +36,7 @@ theorem sq_div_pow_eq {a r : ℝ} (hr : 0 < r) (n : ℕ) :
 variable {D : ℕ} {Ω : Type} [Field Ω] [CharZero Ω] {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Introduce `h`. Take `⟨i, hi⟩` from `(d.R.mem x y hy).1 ()`. Conclude with `hi (by rw [h]; rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem lift_ne_zero (d : HSMDatum D Ω κ) {x y : d.R.X} (hy : y ∈ d.R.U x) : d.R.lift x y ≠ 0 := by
   intro h
@@ -44,7 +44,7 @@ theorem lift_ne_zero (d : HSMDatum D Ω κ) {x y : d.R.X} (hy : y ∈ d.R.U x) :
   exact hi (by rw [h]; rfl)
 
 /- English proof (translation)
-Take `⟨c, hc, hcy⟩` from `d.R.compat y x y ⟨d.R.mem_U y, hy⟩`. Establish `h : resPt d y = c () • d.R.lift x y`. Rewrite using `[resPt, hcy]`. Both sides reduce to the same expression. Rewrite using `[h, ResolutionSupBound.ptNorm_smul d.m hf (hc ())]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem ptNorm_resPt_eq (d : HSMDatum D Ω κ) {n : ℕ} {f : MvPolynomial (Ix κ) ℂ} (hf : f.IsHomogeneous n)
     {x y : d.R.X} (hy : y ∈ d.R.U x) :
@@ -56,13 +56,13 @@ theorem ptNorm_resPt_eq (d : HSMDatum D Ω κ) {n : ℕ} {f : MvPolynomial (Ix �
   rw [h, ResolutionSupBound.ptNorm_smul d.m hf (hc ())]
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `y₀`. Take `⟨j, hj⟩` from `d.R.A.cover y₀`. Use `set e := d.R.A.chart j with he`. Establish `hL : ContinuousAt (d.R.lift y₀) y₀`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[continuousAt_pi]`. Introduce `p`. Establish `ha : AnalyticAt ℂ ((fun y => d.R.lift y₀ y p) ∘ e.symm) (e y₀)` using `d.R.holo y₀ p j (e y₀) ⟨e.map_source hj, by rw [mem_preimage, e.left_inv hj]; exact d.R.mem_U y₀⟩`. Use `(ha.continuousAt.comp (e.continuousAt hj)).congr ?_` and prove the remaining obligations. Use `filter_upwards [e.open_source.mem_nhds hj] with y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Function.comp_apply, e.left_inv hy]`. Establish `hne` using `lift_ne_zero d (d.R.mem_U y₀)`. Establish `hρ : ContinuousAt d.m.ρ (d.R.lift y₀ y₀)` using `d.smooth.continuousOn.continuousAt (isOpen_ne.mem_nhds hne)`. Establish `hcont : ContinuousAt (fun y => ptNorm d.m (RingHom.id ℂ) n f (d.R.lift y₀ y)) y₀`. Unfold `ptNorm`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [MvPolynomial.map_id]`. Conclude with `(((MvPolynomial.continuous_eval f).continuousAt.comp hL).norm).div ((hρ.comp hL).pow n) (pow_pos (d.m.pos _ hne) n).ne'`. Use `hcont.congr ?_` and prove the remaining obligations. Use `filter_upwards [(d.R.isOpen_U y₀).mem_nhds (d.R.mem_U y₀)] with y hy`. Conclude with `(ptNorm_resPt_eq d hf hy).symm`.
+A detailed English derivation is pending.
 -/
 theorem continuous_ptNorm_resPt (d : HSMDatum D Ω κ) {n : ℕ} {f : MvPolynomial (Ix κ) ℂ}
     (hf : f.IsHomogeneous n) : Continuous fun y => ptNorm d.m (RingHom.id ℂ) n f (resPt d y) := by
@@ -91,11 +91,11 @@ theorem continuous_ptNorm_resPt (d : HSMDatum D Ω κ) {n : ℕ} {f : MvPolynomi
   exact (ptNorm_resPt_eq d hf hy).symm
 
 /- English proof (translation)
-Establish `hT : MeasurableSet φ.target` using `φ.open_target.measurableSet`. Establish `hs : AEMeasurable φ.symm (volume.restrict φ.target)` using `φ.continuousOn_symm.aemeasurable hT`. Establish `hνm : AEMeasurable (fun z => ENNReal.ofReal (ν z)) (volume.restrict φ.target)` using `ENNReal.measurable_ofReal.comp_aemeasurable (hν.aemeasurable hT)`. Establish `hs' : AEMeasurable φ.symm ((volume.restrict φ.target).withDensity fun z => ENNReal.ofReal (ν z))` using `hs.mono_ac (withDensity_absolutelyContinuous _ _)`. Establish `hmap : Measure.map φ.symm ((volume.restrict φ.target).withDensity fun z => ENNReal.ofReal (ν z)) = μ.restrict φ.source`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `S hS`. Establish `hset : φ.symm ⁻¹' S ∩ φ.target = φ.target ∩ φ.symm ⁻¹' (S ∩ φ.source)`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨h2, h1, φ.map_target h2⟩`. Introduce and unpack `⟨h2, h1, -⟩`. Conclude with `⟨h1, h2⟩`. Rewrite using `[Measure.map_apply_of_aemeasurable hs' hS, withDensity_apply' _ _, Measure.restrict_restrict' hT, Measure.restrict_apply hS, hμ _ (hS.inter φ.open_source.measurableSet) inter_subset_right, hset]`. Combine the equalities or inequalities in the displayed calculation.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem lintegral_chart_le {X : Type*} [TopologicalSpace X] [MeasurableSpace X] [BorelSpace X] {e : ℕ}
     (φ : OpenPartialHomeomorph X (Fin e → ℂ)) (μ : Measure X) {ν : (Fin e → ℂ) → ℝ}
@@ -133,23 +133,21 @@ theorem lintegral_chart_le {X : Type*} [TopologicalSpace X] [MeasurableSpace X] 
     _ ≤ ∫⁻ y, g y ∂μ := setLIntegral_le_lintegral _ _
 
 /- English proof (translation)
-Establish `: IsProbabilityMeasure d.dV` using `d.vol.1`. Take `⟨j, hj⟩` from `d.R.A.cover x₀`. Use `set e := d.R.A.chart j with he`. Take `⟨ν, hνs, hνpos, hνV⟩` from `d.vol.2 j`. Establish `hVo : IsOpen (e.target ∩ e.symm ⁻¹' d.R.U x₀)` using `e.isOpen_inter_preimage_symm (d.R.isOpen_U x₀)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx₀V : e x₀ ∈ e.target ∩ e.symm ⁻¹' d.R.U x₀` using `⟨e.map_source hj, by rw [mem_preimage, e.left_inv hj]; exact d.R.mem_U x₀⟩`. Take `⟨δ, hδ, hδV⟩` from `Metric.isOpen_iff.1 hVo _ hx₀V`. Establish `hKV : Metric.closedBall (e x₀) (δ / 2) ⊆ e.target ∩ e.symm ⁻¹' d.R.U x₀` using `(Metric.closedBall_subset_ball (half_lt_self hδ)).trans hδV`. Establish `hLa : ∀ p, AnalyticOnNhd ℂ (fun w => d.R.lift x₀ (e.symm w) p) (e.target ∩ e.symm ⁻¹' d.R.U x₀)` using `fun p => d.R.holo x₀ p j`. Establish `hLne : ∀ w ∈ e.target ∩ e.symm ⁻¹' d.R.U x₀, d.R.lift x₀ (e.symm w) ≠ 0` using `fun w hw => lift_ne_zero d hw.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψ : ContDiffOn ℝ 2 (fun w => 2 * Real.log (d.m.ρ (d.R.lift x₀ (e.symm w)))) (e.target ∩ e.symm ⁻¹' d.R.U x₀)`. Establish `hL2 : ContDiffOn ℝ 2 (fun w => d.R.lift x₀ (e.symm w)) (e.target ∩ e.symm ⁻¹' d.R.U x₀)` using `contDiffOn_pi.2 fun p => ((hLa p).contDiffOn_of_completeSpace).restrict_scalars ℝ`. Establish `hρ : ContDiffOn ℝ 2 (fun w => d.m.ρ (d.R.lift x₀ (e.symm w))) (e.target ∩ e.symm ⁻¹' d.R.U x₀)` using `(d.smooth.of_le (WithTop.coe_le_coe.2 (le_top : (2 : ℕ∞) ≤ ⊤))).comp hL2 fun w hw => hLne w hw`. Conclude with `contDiffOn_const.mul (hρ.log fun w hw => (d.m.pos _ (hLne w hw)).ne')`. Take `⟨C₀, hC₀⟩` from `hC D (e.target ∩ e.symm ⁻¹' d.R.U x₀) (Metric.closedBall (e x₀) (δ / 2)) _ ν hVo (isCompact_closedBall _ _) hKV hψ (hνs.continuousOn.mono inter_subset_left) fun z hz => hνpos z hz.1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨e.source ∩ e ⁻¹' Metric.ball (e x₀) (δ / 2), e.isOpen_inter_preimage Metric.isOpen_ball, ⟨hj, Metric.mem_ball_self (half_pos hδ)⟩, max C₀ 0, le_max_right _ _, fun n hn f hf y hy => ?_⟩` and prove the remaining obligations. Establish `hgc` using `(continuous_ptNorm_resPt d hf).pow 2`. Establish `hgm : Measurable fun y => ENNReal.ofReal (ptNorm d.m (RingHom.id ℂ) n f (resPt d y) ^ 2)` using `ENNReal.measurable_ofReal.comp hgc.measurable`. Establish `hgi : Integrable (fun y => ptNorm d.m (RingHom.id ℂ) n f (resPt d y) ^ 2) d.dV` using `hgc.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`. Establish `hI0 : 0 ≤ ∫ y, ptNorm d.m (RingHom.id ℂ) n f (resPt d y) ^ 2 ∂d.dV` using `integral_nonneg fun y => sq_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hres : resolutionVolumeL2Complex d n f ^ 2 = ∫ y, ptNorm d.m (RingHom.id ℂ) n f (resPt d y) ^ 2 ∂d.dV`. Rewrite using `[resolutionVolumeL2Complex, Real.sq_sqrt hI0]`. Establish `hid : ∀ w ∈ e.target ∩ e.symm ⁻¹' d.R.U x₀, ‖eval (d.R.lift x₀ (e.symm w)) f‖ ^ 2 * Real.exp (-(n : ℝ) * (2 * Real.log (d.m.ρ (d.R.lift x₀ (e.symm w))))) = ptNorm d.m (RingHom.id ℂ) n f (resPt d (e.symm w)) ^ 2`. Introduce `w hw`. Rewrite using `[ptNorm_resPt_eq d hf hw.2]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [ptNorm, MvPolynomial.map_id]`. Conclude with `(sq_div_pow_eq (d.m.pos _ (hLne w hw)) n).symm`. Establish `key` using `hC₀ n hn _ (analyticOnNhd_eval hLa f) (e y) (Metric.ball_subset_closedBall hy.2)`. Establish `hyV : e y ∈ e.target ∩ e.symm ⁻¹' d.R.U x₀` using `hKV (Metric.ball_subset_closedBall hy.2)`. Rewrite `key` using `[hid _ hyV, e.left_inv hy.1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hint : ∫⁻ z in e.target ∩ e.symm ⁻¹' d.R.U x₀, ENNReal.ofReal (‖eval (d.R.lift x₀ (e.symm z)) f‖ ^ 2 * Real.exp (-(n : ℝ) * (2 * Real.log (d.m.ρ (d.R.lift x₀ (e.symm z))))) * ν z) ≤ ENNReal.ofReal (resolutionVolumeL2Complex d n f ^ 2)`. Rewrite using `[hres, ofReal_integral_eq_lintegral_ofReal hgi (Eventually.of_forall fun y => sq_nonneg _)]`. Combine the equalities or inequalities in the displayed calculation. Use `setLIntegral_congr_fun hVo.measurableSet fun z hz => ?_` and prove the remaining obligations. Rewrite using `[hid z hz, mul_comm, ENNReal.ofReal_mul (hνpos z hz.1).le]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `_ ≤ ∫⁻ z in e.target, ENNReal.ofReal (ν z) * ENNReal.ofReal (ptNorm d.m (RingHom.id ℂ) n f (resPt d (e.symm z)) ^ 2) := lintegral_mono_set inter_subset_left`. Use `_ ≤ _ := lintegral_chart_le e d.dV hνs.continuousOn hνV hgm`. Establish `hn0 : (0 : ℝ) ≤ (n : ℝ) ^ D` using `by positivity`. Establish `h2 : ENNReal.ofReal (ptNorm d.m (RingHom.id ℂ) n f (resPt d y) ^ 2) ≤ ENNReal.ofReal (max C₀ 0 * (n : ℝ) ^ D * resolutionVolumeL2Complex d n f ^ 2)`. Rewrite using `[ENNReal.ofReal_mul (by positivity)]`.
-
-Conclude with `key.trans (mul_le_mul' (ENNReal.ofReal_le_ofReal (mul_le_mul_of_nonneg_right (le_max_left _ _) hn0)) hint)`. Conclude with `(ENNReal.ofReal_le_ofReal_iff (by positivity)).1 h2`.
+A detailed English derivation is pending.
 -/
 theorem local_bound (hC : ChartSupBound.Statement) (d : HSMDatum D Ω κ) (x₀ : d.R.X) :
     ∃ N : Set d.R.X, IsOpen N ∧ x₀ ∈ N ∧ ∃ C : ℝ, 0 ≤ C ∧ ∀ n : ℕ, 1 ≤ n →
@@ -226,13 +224,13 @@ end ResolutionImageSup
 open ResolutionImageSup in
 
 /- English proof (translation)
-Introduce `D Ω _ _ κ _ d`. Use `choose N hNo hxN C hC0 hCb using fun x => local_bound hC d x`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover N hNo fun x _ => mem_iUnion.2 ⟨x, hxN x⟩`. Use `⟨Real.sqrt (∑ x ∈ t, C x), fun n hn f hf y => ?_⟩` and prove the remaining obligations. Take `⟨x, hxt, hyx⟩` from `mem_iUnion₂.1 (ht (mem_univ y))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hS : C x ≤ ∑ x ∈ t, C x` using `Finset.single_le_sum (fun i _ => hC0 i) hxt`. Establish `hS0 : 0 ≤ ∑ x ∈ t, C x` using `Finset.sum_nonneg fun i _ => hC0 i`. Establish `hr0 : 0 ≤ resolutionVolumeL2Complex d n f` using `Real.sqrt_nonneg _`. Establish `hn0 : (0 : ℝ) ≤ (n : ℝ) ^ D` using `by positivity`. Establish `h2 : ptNorm d.m (RingHom.id ℂ) n f (resPt d y) ^ 2 ≤ (∑ x ∈ t, C x) * (n : ℝ) ^ D * resolutionVolumeL2Complex d n f ^ 2` using `(hCb x n hn f hf y hyx).trans (by gcongr)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : 0 ≤ ptNorm d.m (RingHom.id ℂ) n f (resPt d y)` using `div_nonneg (norm_nonneg _) (pow_nonneg (d.m.pos _ (lift_ne_zero d (d.R.mem_U y))).le n)`. Establish `hpow : Real.sqrt ((n : ℝ) ^ D) = (n : ℝ) ^ ((D : ℝ) / 2)`. Rewrite using `[Real.sqrt_eq_rpow, ← Real.rpow_natCast, ← Real.rpow_mul (Nat.cast_nonneg n)]`. Put the polynomial expressions in normal form. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.sqrt_mul (mul_nonneg hS0 hn0), Real.sqrt_mul hS0, Real.sqrt_sq hr0, hpow]`.
+A detailed English derivation is pending.
 -/
 theorem ResolutionImageSup.proof (hC : ChartSupBound.Statement) : ResolutionImageSup.Statement := by
   intro D Ω _ _ κ _ d

@@ -89,7 +89,7 @@ def k4 (large₂ : SizeData₂ D) (CL : ℝ) : KAdm := ⟨1041 * zBase large₂,
 end Abstract
 
 /- English proof (translation)
-Take `⟨a1, a2, a3, a4, a5, a6, a7, a8, G, Gc, PH, Prw, Pet, Pd, b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, b12, b13, b14, b15, b16, b17, b18, -⟩` from `h`. Conclude with `theorem_zero_of_refined_inputs large₂ X K H Ch Ah Cq Aq C2 A2 CR CT j h1 h2 S ka wL wF T nP nW h0 nus a1 a2 a3 a4 a5 a6 a7 a8 G Gc PH Prw Pet Pd b1 b2 b3 b4 b5 b6 b7 b8 b9 b10 b11 b12 b13 b14 b15 b16 b17 b18`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem concl_of_inputs4 {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} (large₂ : SizeData₂ D) (X : Prov D B P) (K : KAdm) (H : KHyp)
     (Ch Ah Cq Aq C2 A2 CR CT : ℝ) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (S : Scal B) (ka wL wF : WeightFamilies.Wt D j)

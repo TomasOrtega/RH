@@ -9,7 +9,7 @@ open MvPolynomial
 variable {K : Type*} [Field K] {S₁ S₂ : Type*}
 
 /- English proof (translation)
-Establish `h` using `AlgHom.congr_fun (sumAlgEquiv_comp_rename_inl K S₁ S₂) a`. Simplify `h` using `[MvPolynomial.algebraMap_eq]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sumAlgEquiv_rename_inl (a : MvPolynomial S₁ K) :
     sumAlgEquiv K S₁ S₂ (rename Sum.inl a) = map (C : K →+* MvPolynomial S₂ K) a := by
@@ -17,7 +17,7 @@ theorem sumAlgEquiv_rename_inl (a : MvPolynomial S₁ K) :
   simpa [MvPolynomial.algebraMap_eq] using h
 
 /- English proof (translation)
-Establish `h` using `AlgHom.congr_fun (sumAlgEquiv_comp_rename_inr K S₁ S₂) b`. Simplify `h` using `[MvPolynomial.algebraMap_eq]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sumAlgEquiv_rename_inr_eq_C' (b : MvPolynomial S₂ K) :
     sumAlgEquiv K S₁ S₂ (rename Sum.inr b) = C b := by
@@ -28,7 +28,7 @@ def mvPolynomialCoeffInFirstVariables (m : S₁ →₀ ℕ) : MvPolynomial (S₁
   (lcoeff (MvPolynomial S₂ K) m).restrictScalars K ∘ₗ (sumAlgEquiv K S₁ S₂).toLinearMap
 
 /- English proof (translation)
-Simplify using `only [mvPolynomialCoeffInFirstVariables, LinearMap.comp_apply, AlgEquiv.toLinearMap_apply, LinearMap.restrictScalars_apply, lcoeff_apply, map_mul, sumAlgEquiv_rename_inl, sumAlgEquiv_rename_inr_eq_C']`. Rewrite using `[mul_comm, coeff_C_mul, coeff_map, smul_eq_C_mul, mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem leftCoeff_rename_mul (m : S₁ →₀ ℕ) (a : MvPolynomial S₁ K) (b : MvPolynomial S₂ K) :
     mvPolynomialCoeffInFirstVariables m (rename Sum.inl a * rename Sum.inr b) = coeff m a • b := by
@@ -37,9 +37,9 @@ theorem leftCoeff_rename_mul (m : S₁ →₀ ℕ) (a : MvPolynomial S₁ K) (b 
   rw [mul_comm, coeff_C_mul, coeff_map, smul_eq_C_mul, mul_comm]
 
 /- English proof (translation)
-Establish `h` using `(hw.tmul_of_isDomain hv).comp Prod.swap Prod.swap_injective`. Set `e : TensorProduct K (MvPolynomial S₂ K) (MvPolynomial S₁ K) ≃ₗ[K] MvPolynomial (S₁ ⊕ S₂) K` to `((algebraTensorAlgEquiv K (MvPolynomial S₂ K) (σ := S₁)).restrictScalars K).toLinearEquiv.trans (sumAlgEquiv K S₁ S₂).symm.toLinearEquiv`. Establish `he : ∀ p : κ₁ × κ₂, e (TensorProduct.tmul K (w p.2) (v p.1)) = rename Sum.inl (v p.1) * rename Sum.inr (w p.2)`. Introduce `p`. Apply `(sumAlgEquiv K S₁ S₂).injective` to reduce the goal to its premises.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[e, algebraTensorAlgEquiv_tmul, sumAlgEquiv_rename_inl, sumAlgEquiv_rename_inr_eq_C', smul_eq_C_mul, MvPolynomial.algebraMap_eq, mul_comm]`. Establish `h2` using `h.map' e.toLinearMap e.ker`. Simplify `h2` using `only [Function.comp_def, Prod.fst_swap, Prod.snd_swap, LinearEquiv.coe_coe, he]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem linearIndependent_rename_mul {κ₁ κ₂ : Type*} (v : κ₁ → MvPolynomial S₁ K) (w : κ₂ → MvPolynomial S₂ K)
     (hv : LinearIndependent K v) (hw : LinearIndependent K w) :
@@ -61,9 +61,9 @@ def sumComplementToProduct {ι σ : Type} (i : ι) : σ ⊕ ({j // j ≠ i} × �
   Sum.elim (fun x => (i, x)) (fun p => (p.1.1, p.2))
 
 /- English proof (translation)
-Introduce `x y h`. Apply the tactic sequence `rcases x with x | ⟨⟨j, hj⟩, x⟩ <;> rcases y with y | ⟨⟨j', hj'⟩, y⟩ <;>`. Simplify using `only [sumComplementToProduct, Sum.elim_inl, Sum.elim_inr, Prod.mk.injEq] at h`. Apply the tactic sequence `all_goals first`. Consider the case `exact absurd h.1.symm hj'`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Consider the case `exact absurd h.1 hj`. Consider the case `simp_all`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem splitIndex_injective {ι σ : Type} (i : ι) : Function.Injective (sumComplementToProduct (σ := σ) i) := by
   intro x y h
@@ -75,17 +75,17 @@ theorem splitIndex_injective {ι σ : Type} (i : ι) : Function.Injective (sumCo
     | simp_all
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `ι _ _ hι σ κ b hb`. Use `haveI : IsEmpty ι := Fintype.card_eq_zero_iff.1 hι`. Use `haveI : Unique (∀ τ, κ τ) := Pi.uniqueOfIsEmpty κ`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[linearIndependent_unique_iff]`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `ι _ _ hι σ κ b hb`. Take `⟨τ₀⟩ : Nonempty ι` from `Fintype.card_pos_iff.1 (by omega)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcard : Fintype.card {τ // τ ≠ τ₀} = n`. Rewrite using `[Fintype.card_subtype_compl, Fintype.card_subtype_eq, hι]`. Use linear arithmetic over natural numbers and integers. Establish `hW` using `ih {τ // τ ≠ τ₀} hcard (fun τ => κ τ.1) (fun τ => b τ.1) (fun τ => hb τ.1)`. Establish `hP` using `linearIndependent_rename_mul (b τ₀) _ (hb τ₀) hW`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR` using `hP.map' (rename (sumComplementToProduct (σ := σ) τ₀)).toLinearMap (LinearMap.ker_eq_bot.2 (rename_injective _ (splitIndex_injective τ₀)))`. Establish `h2` using `hR.comp (Equiv.piSplitAt τ₀ κ) (Equiv.piSplitAt τ₀ κ).injective`. Establish `key : ∀ g : (∀ τ, κ τ), ∏ τ, rename (Prod.mk τ) (b τ (g τ)) = rename (sumComplementToProduct (σ` using `σ) τ₀) (rename Sum.inl (b τ₀ (g τ₀)) * rename Sum.inr (∏ τ : {τ // τ ≠ τ₀}, rename (Prod.mk τ) (b τ.1 (g τ.1)))) := by`. Introduce `g`. Simplify using `only [map_mul, map_prod, rename_rename]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Fintype.prod_eq_mul_prod_subtype_ne _ τ₀]`. Both sides reduce to the same expression. Establish `hfun : (fun g : (∀ τ, κ τ) => ∏ τ, rename (Prod.mk τ) (b τ (g τ))) = ((rename (sumComplementToProduct (σ` using `σ) τ₀)).toLinearMap ∘ (fun p : κ τ₀ × (∀ τ : {τ // τ ≠ τ₀}, κ τ.1) => rename Sum.inl (b τ₀ p.1) * rename Sum.inr (∏ τ : {τ // τ ≠ τ₀}, rename (Prod.mk τ) (b τ.1 (p.2 τ))))) ∘ (Equiv.piSplitAt τ₀ κ) := by`. Use function extensionality and compare the values at `g`. Rewrite using `[key g]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[hfun]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem linearIndependent_prod_rename_of_card (n : ℕ) : ∀ (ι : Type) [Fintype ι] [DecidableEq ι], Fintype.card ι = n →
     ∀ {σ : Type} (κ : ι → Type) (b : ∀ τ, κ τ → MvPolynomial σ K), (∀ τ, LinearIndependent K (b τ)) →
@@ -125,7 +125,7 @@ theorem linearIndependent_prod_rename_of_card (n : ℕ) : ∀ (ι : Type) [Finty
     exact h2
 
 /- English proof (translation)
-Conclude with `linearIndependent_prod_rename_of_card _ ι rfl κ b hb`.
+A detailed English derivation is pending.
 -/
 theorem linearIndependent_prod_rename_of_forall {ι σ : Type} [Fintype ι] [DecidableEq ι] (κ : ι → Type) (b : ∀ τ, κ τ → MvPolynomial σ K)
     (hb : ∀ τ, LinearIndependent K (b τ)) :
@@ -135,11 +135,11 @@ theorem linearIndependent_prod_rename_of_forall {ι σ : Type} [Fintype ι] [Dec
 section Len
 
 /- English proof (translation)
-Establish `h : (B.comap A.subtype).map (Submodule.equivMapOfInjective f hf A : A →ₗ[O] A.map f) = (B.map f).comap (A.map f).subtype`. Use extensionality with `⟨y, hy⟩`. Simplify using `only [Submodule.mem_map, Submodule.mem_comap, Submodule.subtype_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨x, hxA⟩, hxB, hx⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨x, hxB, ?_⟩` and prove the remaining obligations. Establish `hx'` using `congrArg Subtype.val hx`. Conclude with `hx'`. Introduce and unpack `⟨x, hxB, rfl⟩`. Take `⟨x', hx'A, hx'⟩` from `Submodule.mem_map.1 hy`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hxx : x' = x` using `hf hx'`. Substitute `hxx` using the available equality. Conclude with `⟨⟨x', hx'A⟩, hxB, Subtype.ext rfl⟩`. Conclude with `(Submodule.Quotient.equiv _ _ (Submodule.equivMapOfInjective f hf A) h).length_eq.symm`.
+Substitute using the available equality. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem length_quot_map_of_injective {O M M' : Type*} [CommRing O] [AddCommGroup M] [Module O M] [AddCommGroup M'] [Module O M']
     (f : M →ₗ[O] M') (hf : Function.Injective f) (A B : Submodule O M) :
@@ -161,17 +161,15 @@ theorem length_quot_map_of_injective {O M M' : Type*} [CommRing O] [AddCommGroup
   exact (Submodule.Quotient.equiv _ _ (Submodule.equivMapOfInjective f hf A) h).length_eq.symm
 
 /- English proof (translation)
-Use `set P := Submodule.pi Set.univ fun _ : G => A with hP`. Use `set B' := B.comap A.subtype with hB'`. Set `pr : G → P →ₗ[O] A` to `fun g => LinearMap.codRestrict A ((LinearMap.proj g).comp P.subtype) (fun x => x.2 g (Set.mem_univ g))`. Set `φ : P →ₗ[O] (G → A ⧸ B')` to `LinearMap.pi fun g => B'.mkQ.comp (pr g)`. Establish `hsurj : Function.Surjective φ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y`. Use `choose x hx using fun g => Submodule.Quotient.mk_surjective B' (y g)`. Use `⟨⟨fun g => (x g : M), fun g _ => (x g).2⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Simplify using `only [φ, pr, LinearMap.pi_apply, LinearMap.comp_apply, Submodule.mkQ_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← hx g]`. Both sides reduce to the same expression. Establish `hker : LinearMap.ker φ = (Submodule.pi Set.univ fun _ : G => B).comap P.subtype`. Use extensionality with `x`. Simplify using `only [LinearMap.mem_ker, Submodule.mem_comap, Submodule.subtype_apply, Submodule.mem_pi, Set.mem_univ, true_implies]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h g`. Establish `hg` using `congrFun h g`. Simplify using `only [φ, pr, LinearMap.pi_apply, LinearMap.comp_apply, Submodule.mkQ_apply, Pi.zero_apply, Submodule.Quotient.mk_eq_zero, hB', Submodule.mem_comap] at hg`. Conclude with `hg`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `h`. Use function extensionality and compare the values at `g`. Simplify using `only [φ, pr, LinearMap.pi_apply, LinearMap.comp_apply, Submodule.mkQ_apply, Pi.zero_apply, Submodule.Quotient.mk_eq_zero, hB', Submodule.mem_comap]`. Conclude with `h g`. Establish `e` using `(Submodule.quotEquivOfEq _ _ hker.symm).trans (LinearMap.quotKerEquivOfSurjective φ hsurj)`.
-
-Rewrite using `[e.length_eq, Module.length_pi, ENat.card_eq_coe_fintype_card, nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_quot_pi_const {O M : Type*} [CommRing O] [AddCommGroup M] [Module O M] (G : Type*) [Fintype G] [DecidableEq G]
     (A B : Submodule O M) :
@@ -216,7 +214,7 @@ section Psi
 variable {K : Type*} [Field K]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Use extensionality with `m`. Establish `h'` using `congrArg (mvPolynomialCoeffInFirstVariables (K := K) (S₁ := S₁) (S₂ := S₂) m) h`. Simplify using `only [map_sum, leftCoeff_rename_mul, map_zero] at h'`. Simplify using `using (Fintype.linearIndependent_iff.1 hw) (fun j => coeff m (a j)) h' j`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_zero_of_sum_rename_mul {S₁ S₂ κ : Type*} [Fintype κ] (w : κ → MvPolynomial S₂ K) (hw : LinearIndependent K w)
     (a : κ → MvPolynomial S₁ K) (h : ∑ j, rename Sum.inl (a j) * rename Sum.inr (w j) = 0) : a = 0 := by
@@ -234,9 +232,9 @@ def mvPolynomialProductExtension {ι σ : Type} [Fintype ι] [DecidableEq ι] (�
   map_smul' c h := by simp only [Pi.smul_apply, map_smul, smul_mul_assoc, Finset.smul_sum, RingHom.id_apply]
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `h hh`. Establish `hW : LinearIndependent K (fun g : (∀ τ : {τ // τ ≠ τ₀}, κ τ.1) => ∏ τ : {τ // τ ≠ τ₀}, rename (Prod.mk τ) (b τ.1 (g τ)))` using `linearIndependent_prod_rename_of_forall (fun τ : {τ // τ ≠ τ₀} => κ τ.1) (fun τ => b τ.1) (fun τ => hb τ.1 τ.2)`. Establish `key : mvPolynomialProductExtension τ₀ κ b h = rename (sumComplementToProduct (σ` using `σ) τ₀) (∑ g, rename Sum.inl (h g) * rename Sum.inr (∏ τ : {τ // τ ≠ τ₀}, rename (Prod.mk τ) (b τ.1 (g τ)))) := by`. Simplify using `only [mvPolynomialProductExtension, LinearMap.coe_mk, AddHom.coe_mk, map_sum, map_mul, map_prod, rename_rename]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Rewrite `hh` using `[key]`. Establish `hh' : ∑ g, rename Sum.inl (h g) * rename Sum.inr (∏ τ : {τ // τ ≠ τ₀}, rename (Prod.mk τ) (b τ.1 (g τ))) = 0` using `rename_injective _ (splitIndex_injective τ₀) (by rw [hh, map_zero])`. Conclude with `eq_zero_of_sum_rename_mul _ hW h hh'`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem factorMap_injective {ι σ : Type} [Fintype ι] [DecidableEq ι] (τ₀ : ι) (κ : ι → Type) [∀ τ, Fintype (κ τ)]
     (b : ∀ τ, κ τ → MvPolynomial σ K) (hb : ∀ τ, τ ≠ τ₀ → LinearIndependent K (b τ)) :
@@ -257,7 +255,7 @@ theorem factorMap_injective {ι σ : Type} [Fintype ι] [DecidableEq ι] (τ₀ 
   exact eq_zero_of_sum_rename_mul _ hW h hh'
 
 /- English proof (translation)
-Rewrite using `[length_quot_map_of_injective _ (show Function.Injective ((mvPolynomialProductExtension τ₀ κ b).restrictScalars O) from factorMap_injective τ₀ κ b hb), length_quot_pi_const, Fintype.card_pi]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem length_quot_map_positionMap {ι σ : Type} [Fintype ι] [DecidableEq ι] (τ₀ : ι) (κ : ι → Type) [∀ τ, Fintype (κ τ)]
     [∀ τ, DecidableEq (κ τ)] (b : ∀ τ, κ τ → MvPolynomial σ K) (hb : ∀ τ, τ ≠ τ₀ → LinearIndependent K (b τ))

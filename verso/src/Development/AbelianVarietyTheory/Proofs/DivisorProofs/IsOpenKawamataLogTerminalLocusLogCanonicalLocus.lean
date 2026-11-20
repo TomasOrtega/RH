@@ -13,11 +13,9 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.CechPic
 namespace GlobalTheory.Discrepancy
 
 /- English proof (translation)
-Introduce `hP k _ _ X _ _ _ p n hp hdim Δ m G hm hG`. Take `⟨η, hη⟩` from `hG.exists_isLogMult hm`. Establish `hZ : (⊥ : Closeds X) ≠ ⊤`. Introduce `h`. Take `⟨x⟩` from `(inferInstance : Nonempty X)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `: x ∈ ((⊤ : Closeds X) : Set X)` using `trivial`. Rewrite `this` using `[← h]`. Conclude with `this`. Take `⟨Y, hY, s, hs, K, B, hres, -⟩` from `GlobalTheory.T.exists_log_resolution hP k X p n hp hdim η m G hη.ne_zero ⊥ hZ`. Use `haveI := hres.smooth`.
-
-Use `haveI : Smooth (s ≫ p) := hres.smooth.smooth`. Use `haveI : IsLocallyNoetherian Y := LocallyOfFiniteType.isLocallyNoetherian (s ≫ p)`. Conclude with `GlobalTheory.T.log_resolution_multiplier_open k X p n hp hdim Δ η m G Y s K B hη hres`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isOpen_kltLocus_lcLocus : GlobalTheory.Published.Principalisation → ∀ (k : Type) [Field k] [CharZero k] (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X] (p : X ⟶ Sp k) (n : ℕ), IsProjOver p → topologicalKrullDim X = n → ∀ (Δ : X → ℚ) (m : ℕ) (G : CartierDiv X), 0 < m → IsLogCanonicalMultiple p n Δ m G → IsOpen {x : X | KltAt p n Δ x} ∧ IsOpen {x : X | LcAt p n Δ x} := by
   intro hP k _ _ X _ _ _ p n hp hdim Δ m G hm hG

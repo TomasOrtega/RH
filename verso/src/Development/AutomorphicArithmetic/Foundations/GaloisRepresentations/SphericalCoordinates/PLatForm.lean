@@ -6,7 +6,7 @@ open scoped Matrix TensorProduct Classical
 open UpperTheory.Gal.W2
 
 /- English proof (translation)
-Establish `ha' : (a : ℚ) ≠ 0` using `by exact_mod_cast ha`. Establish `h' : (a : ℚ) • x = (a : ℚ) • y`. Rewrite using `[Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]`. Conclude with `h`. Conclude with `(smul_right_injective V ha') h'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem nsmul_canc {V : Type} [AddCommGroup V] [Module ℚ V] {a : ℕ} (ha : a ≠ 0) {x y : V}
     (h : a • x = a • y) : x = y := by
@@ -16,15 +16,15 @@ private theorem nsmul_canc {V : Type} [AddCommGroup V] [Module ℚ V] {a : ℕ} 
   exact (smul_right_injective V ha') h'
 
 /- English proof (translation)
-Use `choose m u hm hu using hs`. Set `g : V → V'` to `fun v => ((m v : ℚ))⁻¹ • f (u v)`. Establish `hg : ∀ v, m v • g v = f (u v)`. Introduce `v`. Establish `h0 : (m v : ℚ) ≠ 0` using `by exact_mod_cast hm v`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Nat.cast_smul_eq_nsmul ℚ, smul_smul, mul_inv_cancel₀ h0, one_smul]`. Establish `key : ∀ (a : ℕ) (x : Λ) (v : V), a ≠ 0 → a • v = j x → a • g v = f x`. Introduce `a x v ha hx`. Establish `e : m v • x = a • u v`. Apply `hj` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_nsmul, map_nsmul, ← hx, ← hu v, smul_comm]`. Apply `nsmul_canc (hm v)` to reduce the goal to its premises. Rewrite using `[smul_comm, hg, ← map_nsmul, ← map_nsmul, e]`. Establish `hadd : ∀ v₁ v₂, g (v₁ + v₂) = g v₁ + g v₂`. Introduce `v₁ v₂`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h12 : m v₁ * m v₂ ≠ 0` using `mul_ne_zero (hm _) (hm _)`. Apply `nsmul_canc h12` to reduce the goal to its premises. Rewrite using `[key (m v₁ * m v₂) (m v₂ • u v₁ + m v₁ • u v₂) (v₁ + v₂) h12 ?_]`. Rewrite using `[map_add, map_nsmul, map_nsmul, smul_add, ← hg v₁, ← hg v₂, smul_smul, smul_smul, mul_comm (m v₂), mul_comm (m v₁) (m v₂)]`. Rewrite using `[map_add, map_nsmul, map_nsmul, ← hu v₁, ← hu v₂, smul_add, smul_smul, smul_smul, mul_comm (m v₂)]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(AddMonoidHom.mk' g hadd).toRatLinearMap, fun x => ?_⟩` and prove the remaining obligations. Use `show g (j x) = f x`. Establish `h1 : (1 : ℕ) • g (j x) = f x` using `key 1 x (j x) one_ne_zero (one_nsmul _)`. Simplify using `using h1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem ext_lin {Λ V V' : Type} [AddCommGroup Λ] [AddCommGroup V] [AddCommGroup V'] [Module ℚ V]
     [Module ℚ V'] (j : Λ →+ V) (hj : Function.Injective j)
@@ -57,49 +57,43 @@ private theorem ext_lin {Λ V V' : Type} [AddCommGroup Λ] [AddCommGroup V] [Add
   simpa using h1
 
 /- English proof (translation)
-Introduce `p _ D G L β β' D' D'' j j'' hP hP'' w m hm hw`. Take `⟨hj, hjO, hjs, s₀, hs₀, hjF⟩` from `hP`. Take `⟨hj2, hjO2, hjs2, s₂, hs₂, hjF2⟩` from `hP''`. Take `⟨A, hA⟩` from `ext_lin j'' hj2 hjs2 (j.comp w.toAddMonoidHom)`. Use `replace hA : ∀ u, A (j'' u) = j (w u) := hA`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := D.finLa`. Establish `hm0 : (m : ℚ) ≠ 0` using `by exact_mod_cast hm.ne'`. Establish `hAinj : Function.Injective A`. Use `(injective_iff_map_eq_zero A).2 fun v hv => ?_` and prove the remaining obligations. Take `⟨a, u, ha, hu⟩` from `hjs2 v`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : j (w u) = 0` using `by rw [← hA, ← hu, map_nsmul, hv, smul_zero]`. Establish `h2 : w u = 0` using `hj (by rw [h1, map_zero])`. Establish `h3 : u = 0`. Use `D''.nondeg u fun u' => ?_` and prove the remaining obligations. Use `hw u u'` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[h2]`. Simplify using `only [map_zero, LinearMap.zero_apply] at this`. Break down `mul_eq_zero.1 this.symm with h | h` into its components or cases. Conclude with `absurd h hm.ne'`. Conclude with `h`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Apply `nsmul_canc ha` to reduce the goal to its premises. Rewrite using `[hu, h3, map_zero, smul_zero]`. Set `Ae` to `LinearEquiv.ofInjectiveEndo A hAinj`. Set `B : Module.End ℚ (VQ D)` to `(Ae.symm : VQ D →ₗ[ℚ] VQ D)`. Establish `hAB : A * B = 1` using `LinearEquiv.ofInjectiveEndo_right_inv A hAinj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hBA : B * A = 1` using `LinearEquiv.ofInjectiveEndo_left_inv A hAinj`. Establish `hcomm : ∀ b, A * actQ D b = actQ D b * A`. Introduce `b`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Take `⟨a, u, ha, hu⟩` from `hjs2 v`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `nsmul_canc ha` to reduce the goal to its premises. Use `show a • A (actQ D b v) = a • actQ D b (A v)`. Combine the equalities or inequalities in the displayed calculation. Establish `hBcomm : ∀ b, B * actQ D b = actQ D b * B`. Introduce `b`.
+Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Take `⟨x, hx⟩` from `(L.rep_range A).2 hcomm`. Take `⟨x', hx'⟩` from `(L.rep_range B).2 hBcomm`. Establish `hxx' : x * x' = 1` using `L.rep_inj (by rw [map_mul, hx, hx', hAB, map_one])`. Establish `hx'x : x' * x = 1` using `L.rep_inj (by rw [map_mul, hx, hx', hBA, map_one])`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `y : G.Cˣ` to `⟨x, x', hxx', hx'x⟩`. Establish `hform : ∀ v v', s₀ * D.EF.baseChange ℚ (L.rep ((β⁻¹ : G.Cˣ) : G.C) (A v)) (A v') = (m : ℚ) * s₂ * D.EF.baseChange ℚ (L.rep ((β'⁻¹ : G.Cˣ) : G.C) v) v'`. Introduce `v v'`. Take `⟨a, u, ha, hu⟩` from `hjs2 v`. Take `⟨b, u', hb, hu'⟩` from `hjs2 v'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `e1` using `hjF (w u) (w u')`. Establish `e2` using `hjF2 u u'`. Establish `e3 : ((D'.EF (w u) (w u') : ℤ) : ℚ) = (m : ℚ) * (D''.EF u u' : ℤ)`. Rewrite using `[hw u u']`. Use `push_cast`.
+Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Unfold `formB at e1 e2`. Rewrite `e1` using `[← hA, ← hA, ← hu, ← hu', map_nsmul, map_nsmul, map_nsmul]`. Rewrite `e2` using `[← hu, ← hu', map_nsmul]`. Simplify using `only [map_nsmul, LinearMap.smul_apply, nsmul_eq_mul] at e1 e2`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hab : (a : ℚ) * b ≠ 0` using `mul_ne_zero (by exact_mod_cast ha) (by exact_mod_cast hb)`. Apply `mul_left_cancel₀ hab` to reduce the goal to its premises. Take the linear combination `-e1 + e3 + (m : ℚ) * e2`. Establish `hnd : ∀ a : VQ D, (∀ v, D.EF.baseChange ℚ a v = 0) → a = 0`. Introduce `a ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨c, u, hc, hu⟩` from `hjs (L.rep (β : G.C) a)`. Establish `hinv : ∀ z : VQ D, L.rep ((β⁻¹ : G.Cˣ) : G.C) (L.rep (β : G.C) z) = z`. Introduce `z`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Units.inv_mul, map_one, Module.End.one_apply]`. Establish `hu0 : u = 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `D'.nondeg u fun u' => ?_` and prove the remaining obligations. Establish `e` using `hjF u u'`. Unfold `formB at e`. Rewrite `e` using `[← hu, map_nsmul, hinv]`. Simplify using `only [map_nsmul, LinearMap.smul_apply, ha, smul_zero, mul_zero] at e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `e` after adjusting the coercions. Establish `h0 : c • L.rep (β : G.C) a = c • (0 : VQ D)` using `by rw [hu, hu0, map_zero, smul_zero]`. Use `nsmul_canc hc h0` as an intermediate fact. Rewrite using `[← hinv a, this, map_zero]`. Use `set r : ℚ := (m : ℚ) * s₂ / s₀ with hr`.
+Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hr0 : 0 < r`. Establish `: (0 : ℚ) < m` using `by exact_mod_cast hm`. Check the signs of the components of the expression. Establish `hs₀' : s₀ ≠ 0` using `hs₀.ne'`. Establish `hshsh : sh G (sh G x) = x` using `G.star_star x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkey : sh G x * ((β⁻¹ : G.Cˣ) : G.C) * x = algebraMap ℚ G.C r * ((β'⁻¹ : G.Cˣ) : G.C)`. Apply `L.rep_inj` to reduce the goal to its premises. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`. Use `hnd _ fun v' => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `e` using `hform v v'`. Establish `e2` using `L.adj (sh G x) (L.rep ((β⁻¹ : G.Cˣ) : G.C) (A v)) v'`. Rewrite `e2` using `[hshsh, hx]`. Simplify using `only [map_mul, Module.End.mul_apply, hx, AlgHom.commutes, Module.algebraMap_end_apply, map_sub, LinearMap.sub_apply, map_smul, LinearMap.smul_apply, smul_eq_mul]`. Rewrite using `[e2, hr]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Clear the denominators using the available nonvanishing facts. Take the linear combination `e`. Use `⟨y, Units.mk0 r hr0.ne', hr0, ?_, fun u => ?_⟩` and prove the remaining obligations. Use `show x * (β' : G.C) * sh G x = algebraMap ℚ G.C r * (β : G.C)`. Establish `h1 : x * (β' : G.C) * sh G x * (((β⁻¹ : G.Cˣ) : G.C) * x) = r • x`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hkey, ← Algebra.smul_def, mul_smul_comm, _root_.mul_assoc]`. Use `_ = r • x := by rw [Units.mul_inv, _root_.mul_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hxx', _root_.mul_one, Units.inv_mul, _root_.mul_one]`.
-
-Use `_ = x * (β' : G.C) * sh G x * (((β⁻¹ : G.Cˣ) : G.C) * x) * (x' * (β : G.C)) := by`. Simplify using `only [_root_.mul_assoc]`. Use `_ = r • (x * x' * (β : G.C)) := by rw [h1, smul_mul_assoc, _root_.mul_assoc]`. Use `_ = algebraMap ℚ G.C r * (β : G.C) := by rw [hxx', _root_.one_mul, Algebra.smul_def]`. Use `show j (w u) = L.rep x (j'' u)`.
-
-Rewrite using `[hx, hA]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.latForm_of :
     UpperTheory.Gal.W2.LatForm := by

@@ -9,13 +9,13 @@ open Matrix NumberField in
 open scoped TensorProduct Classical in
 
 /- English proof (translation)
-Establish `hT : {c : K | IsIntegral ℤ ((D : K) * c) ∧ ∀ φ : K →+* ℂ, ‖φ c‖ ≤ B}.Finite`. Establish `h` using `NumberField.Embeddings.finite_of_norm_le K ℂ ((D : ℝ) * B)`. Use `(h.image fun x => x / (D : K)).subset ?_` and prove the remaining obligations. Introduce `c hc`. Use `⟨(D : K) * c, ⟨hc.1, fun φ => ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_le_mul_of_nonneg_left (hc.2 φ) (Nat.cast_nonneg (α := ℝ) D)` as an intermediate fact. Simplify `this` using `[norm_mul]`. Establish `hD' : (D : K) ≠ 0` using `Nat.cast_ne_zero.mpr hD.ne'`. Clear the denominators using the available nonvanishing facts. Establish `hF : (Set.pi Set.univ fun _ : Fin (d + 1) => {c : K | IsIntegral ℤ ((D : K) * c) ∧ ∀ φ : K →+* ℂ, ‖φ c‖ ≤ B}).Finite` using `Set.Finite.pi fun _ => hT`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Use `Set.Finite.of_finite_image (f := fun P : Polynomial K => fun i : Fin (d + 1) => P.coeff i) (hF.subset ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨P, hP, rfl⟩ i -`. Conclude with `⟨(hP.2.2 i).1, (hP.2.2 i).2⟩`. Introduce `P hP Q hQ hPQ`. Use extensionality with `n`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Distinguish the cases in `hn : n ≤ d`. Conclude with `congrFun hPQ ⟨n, Nat.lt_succ_of_le hn⟩`. Use `push_neg at hn`. Rewrite using `[Polynomial.coeff_eq_zero_of_natDegree_lt (hP.2.1.trans_lt hn), Polynomial.coeff_eq_zero_of_natDegree_lt (hQ.2.1.trans_lt hn)]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.finite_monic_coeff_bdd_mul_isIntegral (K : Type) [Field K] [NumberField K]
     (d D : ℕ) (B : ℝ) (hD : 0 < D) :

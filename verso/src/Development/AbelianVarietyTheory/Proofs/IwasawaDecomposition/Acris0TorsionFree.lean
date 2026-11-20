@@ -12,14 +12,14 @@ namespace GlobalTheory.PrincipalCompletion
 variable {R : Type} [CommRing R] (a : R)
 
 /- English proof (translation)
-The claim follows from `Submodule.fg_span_singleton a`.
+A detailed English derivation is pending.
 -/
 theorem fg : (Ideal.span {a}).FG := Submodule.fg_span_singleton a
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.mem_ker, ← AdicCompletion.pow_smul_top_eq_ker_eval (fg a), Ideal.span_singleton_pow, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, -, rfl⟩`. Conclude with `⟨b, by rw [Algebra.smul_def, map_pow]⟩`. Introduce and unpack `⟨b, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨b, trivial, by rw [Algebra.smul_def, map_pow]⟩`.
+Supply the required witnesses or components.
 -/
 theorem eval_eq_zero_iff (n : ℕ) (x : AdicCompletion (Ideal.span {a}) R) :
     AdicCompletion.eval (Ideal.span {a}) R n x = 0 ↔
@@ -34,7 +34,7 @@ theorem eval_eq_zero_iff (n : ℕ) (x : AdicCompletion (Ideal.span {a}) R) :
     exact ⟨b, trivial, by rw [Algebra.smul_def, map_pow]⟩
 
 /- English proof (translation)
-Establish `h` using `AdicCompletion.isAdicComplete (M := R) (fg a)`. Rewrite `h` using `[← IsAdicComplete.map_algebraMap_iff (S := AdicCompletion (Ideal.span {a}) R), Ideal.map_span, Set.image_singleton]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem complete :
     IsAdicComplete (Ideal.span {algebraMap R (AdicCompletion (Ideal.span {a}) R) a})
@@ -45,9 +45,9 @@ theorem complete :
   exact h
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `Submodule.Quotient.mk_surjective _ (AdicCompletion.eval (Ideal.span {a}) R r x)`. Establish `: AdicCompletion.eval (Ideal.span {a}) R r (x - algebraMap R _ s) = 0`. Rewrite using `[map_sub, ← hs, sub_eq_zero]`. Both sides reduce to the same expression. Take `⟨z, hz⟩` from `(eval_eq_zero_iff a r _).1 this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨s, z, by rw [← hz]; ring⟩`.
+Supply the required witnesses or components.
 -/
 theorem dense (x : AdicCompletion (Ideal.span {a}) R) (r : ℕ) :
     ∃ (s : R) (z : AdicCompletion (Ideal.span {a}) R),
@@ -60,7 +60,7 @@ theorem dense (x : AdicCompletion (Ideal.span {a}) R) (r : ℕ) :
   exact ⟨s, z, by rw [← hz]; ring⟩
 
 /- English proof (translation)
-Rewrite using `[← eval_eq_zero_iff]`. Establish `: AdicCompletion.eval (Ideal.span {a}) R r (algebraMap R _ s) = Submodule.Quotient.mk s` using `rfl`. Rewrite using `[this, Submodule.Quotient.mk_eq_zero, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem dvd_iff (s : R) (r : ℕ) :
     (algebraMap R (AdicCompletion (Ideal.span {a}) R) a) ^ r ∣ algebraMap R _ s ↔ a ^ r ∣ s := by
@@ -70,9 +70,9 @@ theorem dvd_iff (s : R) (r : ℕ) :
     Ideal.mem_span_singleton]
 
 /- English proof (translation)
-Use `AdicCompletion.ext fun n => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `AdicCompletion.eval (Ideal.span {a}) R n x = 0`. Rewrite using `[eval_eq_zero_iff]`. Take `⟨s, z, rfl⟩` from `dense a x n`. Use `dvd_add ?_ (dvd_mul_right _ _)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[dvd_iff]`. Establish `h1 : (algebraMap R (AdicCompletion (Ideal.span {a}) R) a) ^ (n + 1) ∣ algebraMap R _ (a * s)` using `⟨-z, by rw [map_mul]; linear_combination hx⟩`. Take `⟨t, ht⟩` from `(dvd_iff a _ _).1 h1`. Conclude with `⟨t, sub_eq_zero.1 (ha _ (by linear_combination ht))⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem torsionFree (ha : ∀ s : R, a * s = 0 → s = 0) (x : AdicCompletion (Ideal.span {a}) R)
     (hx : algebraMap R (AdicCompletion (Ideal.span {a}) R) a * x = 0) : x = 0 := by
@@ -88,7 +88,7 @@ theorem torsionFree (ha : ∀ s : R, a * s = 0 → s = 0) (x : AdicCompletion (I
   exact ⟨t, sub_eq_zero.1 (ha _ (by linear_combination ht))⟩
 
 /- English proof (translation)
-Rewrite using `[← map_natCast (algebraMap R (AdicCompletion (Ideal.span {(p : R)}) R)) p]`. Conclude with `⟨complete _, torsionFree _ hp, dense _, dvd_iff _⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem basic (p : ℕ) (R : Type) [CommRing R] (hp : ∀ s : R, (p : R) * s = 0 → s = 0) :
     IsAdicComplete (Ideal.span {(p : AdicCompletion (Ideal.span {(p : R)}) R)}) (AdicCompletion (Ideal.span {(p : R)}) R) ∧
@@ -100,11 +100,11 @@ theorem basic (p : ℕ) (R : Type) [CommRing R] (hp : ∀ s : R, (p : R) * s = 0
   exact ⟨complete _, torsionFree _ hp, dense _, dvd_iff _⟩
 
 /- English proof (translation)
-Establish `hpe : e (p : A) = algebraMap R (AdicCompletion (Ideal.span {(p : R)}) R) (p : R)`. Rewrite using `[map_natCast, map_natCast]`. Use `⟨?_, fun x hx => ?_, fun x r => ?_, fun s r => ?_⟩` and prove the remaining obligations. Establish `h` using `complete (p : R)`. Rewrite using `[← IsAdicComplete.congr_ringEquiv _ e, Ideal.map_span, Set.image_singleton, hpe]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Apply `torsionFree _ hp` to reduce the goal to its premises. Rewrite using `[← hpe, ← map_mul, hx, map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨s, z, hz⟩` from `dense (p : R) (e x) r`. Use `⟨s, e.symm z, e.injective ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_mul, map_pow, he, hpe, RingEquiv.apply_symm_apply]`. Conclude with `hz`. Rewrite using `[← dvd_iff (p : R) s r, ← hpe, ← he, ← map_pow, map_dvd_iff]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem basic_of_equiv_pt (p : ℕ) (R A : Type) [CommRing R] [CommRing A] [Algebra R A]
     (hp : ∀ s : R, (p : R) * s = 0 → s = 0)
@@ -135,9 +135,9 @@ end GlobalTheory.PrincipalCompletion
 namespace GlobalTheory.MemLoc
 
 /- English proof (translation)
-Establish `hu : IsUnit (l : Per.AinfP l)`. Use `IsLocalization.Away.algebraMap_isUnit (S := Per.AinfP l) (l : Per.Ainf l)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `h : (l : Per.AinfP l) * (s : Per.AinfP l) = 0`. Simplify using `using congrArg Subtype.val hs`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `Subtype.ext ((hu.mul_right_eq_zero).1 h)`.
+A detailed English derivation is pending.
 -/
 theorem acris0_torsionFree (l : ℕ) [Fact l.Prime] (s : Per.Acris0 l)
     (hs : (l : Per.Acris0 l) * s = 0) : s = 0 := by
@@ -149,7 +149,7 @@ theorem acris0_torsionFree (l : ℕ) [Fact l.Prime] (s : Per.Acris0 l)
   exact Subtype.ext ((hu.mul_right_eq_zero).1 h)
 
 /- English proof (translation)
-Introduce `l _` and use `by obtain ⟨e, he⟩ := GlobalTheory.AdicMaps.exists_acris_completion l exact GlobalTheory.PrincipalCompletion.basic_of_equiv_pt l (Per.Acris0 l) (Per.Acris l) (acris0_torsionFree l) e he`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem acris_basic : ∀ (l : ℕ) [Fact l.Prime], IsAdicComplete (Ideal.span {(l : Per.Acris l)}) (Per.Acris l) ∧ (∀ x : Per.Acris l, (l : Per.Acris l) * x = 0 → x = 0) ∧ (∀ (x : Per.Acris l) (r : ℕ), ∃ (s : Per.Acris0 l) (z : Per.Acris l), x = algebraMap (Per.Acris0 l) (Per.Acris l) s + (l : Per.Acris l) ^ r * z) ∧ ∀ (s : Per.Acris0 l) (r : ℕ), (l : Per.Acris l) ^ r ∣ algebraMap (Per.Acris0 l) (Per.Acris l) s ↔ (l : Per.Acris0 l) ^ r ∣ s :=
   fun l _ => by

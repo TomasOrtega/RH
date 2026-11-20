@@ -15,9 +15,9 @@ section Triv
 variable {O : Type*} [CommRing O] {G : Type*} [Group G] {M : Type*} [AddCommGroup M] [Module O M]
 
 /- English proof (translation)
-Rewrite using `[Module.length_eq_zero_iff]`. Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Establish `hz : ∀ z : ↥(LinearMap.range Ψ ⊓ LinearMap.ker ((coB1 ρM).comap (coZ1s ρM).subtype).mkQ), z = 0`. Introduce and unpack `⟨z, hz⟩`. Take `⟨-, hz2⟩` from `Submodule.mem_inf.mp hz`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite `hz2` using `[LinearMap.mem_ker, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.subtype_apply]`. Establish `h0` using `hB _ hz2`. Conclude with `Subtype.ext (Subtype.ext h0)`. Rewrite using `[hz a, hz b]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma length_mid_zero {H : Type*} [AddCommGroup H] [Module O H] (ρM : Representation O G M)
     (hB : ∀ x ∈ coB1 ρM, x = 0) (Ψ : H →ₗ[O] coZ1s ρM) :
@@ -38,19 +38,17 @@ lemma length_mid_zero {H : Type*} [AddCommGroup H] [Module O H] (ρM : Represent
 end Triv
 
 /- English proof (translation)
-Set `A : ∀ w, Submodule O (H1z (resRep ρM (D w)))` to `fun w => if hw : w ∈ what₂ then Classical.choose (hrows w hw) else F w`. Establish `hA : ∀ w (hw : w ∈ what₂), A w = Classical.choose (hrows w hw)` using `fun w hw => dif_pos hw`. Establish `hA' : ∀ w, w ∉ what₂ → A w = F w` using `fun w hw => dif_neg hw`. Establish `hFA : ∀ w, F w ≤ A w`. Introduce `w`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hw : w ∈ what₂`. Rewrite using `[hA w hw]`. Conclude with `(Classical.choose_spec (hrows w hw)).1`. Rewrite using `[hA' w hw]`. Set `S : Submodule O (H1z ρM)` to `Q ⊓ ⨅ w ∈ what₂ ∪ cols, (A w).comap (resH1 ρM (D w))`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hS : LinearMap.range ((Submodule.mkQ ((coB1 ρM).comap (coZ1s ρM).subtype)) ∘ₗ Ψ) ≤ S`. Introduce and unpack `_ ⟨h, rfl⟩`. Use `(IdempotentNormalFormsRhoFacts.mem_sel (what₂ ∪ cols) (fun w => resH1 ρM (D w)) A Q _).mpr ⟨hQ h, fun w hw => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hwr : w ∈ what₂`. Rewrite using `[hA w hwr]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Classical.choose_spec (hrows w hwr)).2.2 h`. Rewrite using `[hA' w hwr]`. Conclude with `hcols w ((Finset.mem_union.mp hw).resolve_left hwr) h`. Establish `hchain` using `lenChain O H (coZ1s ρM) (H1z ρM) Ψ _ S hS`. Rewrite `hchain` using `[length_mid_zero ρM hB Ψ, add_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSel : Module.length O S ≤ s + ∑ w ∈ what₂, lenRow w`. Establish `h2` using `selRelax O (H1z ρM) ι (what₂ ∪ cols) (fun w => H1z (resRep ρM (D w))) (fun w => resH1 ρM (D w)) F A Q hFA`. Establish `hterm : ∀ w ∈ what₂ ∪ cols, Module.length O (A w ⧸ (F w).comap (A w).subtype) ≤ if w ∈ what₂ then lenRow w else 0`. Introduce `w _`. Distinguish the cases in `hwr : w ∈ what₂`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[if_pos hwr, hA w hwr]`. Conclude with `(Classical.choose_spec (hrows w hwr)).2.1`. Rewrite using `[if_neg hwr, hA' w hwr, Submodule.comap_subtype_self, Module.length_eq_zero]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_ite_mem, Finset.union_inter_cancel_left]`.
-
-Conclude with `hchain.trans (add_le_add le_rfl hSel)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma blockTrivAbs {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {G : Type*} [Group G] {M : Type*} [AddCommGroup M] [Module O M]
@@ -107,7 +105,7 @@ lemma blockTrivAbs {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRin
   exact hchain.trans (add_le_add le_rfl hSel)
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 lemma final_arith (k X c vδ s R1 R2 : ℕ∞) (hk : k ≤ X + c * vδ) :
     k + (s + (R1 + R2)) ≤ s + X + R1 + 4 * (c + 1) * vδ + R2 := by

@@ -11,7 +11,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.ConsGeo
 
 /- English proof (translation)
-Substitute `hy` using the available equality. Conclude with `⟨_, Scheme.Spec_stalkClosedPointTo_fromSpecStalk (R := .of F) f⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 private theorem exists_spMap_of_eq {F : Type} [Field F] {X : Scheme.{0}} (f : Sp F ⟶ X) (y : X)
     (hy : f (closedPoint F) = y) :
@@ -20,7 +20,7 @@ private theorem exists_spMap_of_eq {F : Type} [Field F] {X : Scheme.{0}} (f : Sp
   exact ⟨_, Scheme.Spec_stalkClosedPointTo_fromSpecStalk (R := .of F) f⟩
 
 /- English proof (translation)
-Take `rfl : x = closedPoint X.functionField` from `Subsingleton.elim _ _`. Conclude with `Scheme.fromSpecStalk_closedPoint`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem gpt_apply (X : Scheme.{0}) [IsIntegral X] (x : Sp X.functionField) :
     gpt X x = genericPoint X := by
@@ -28,7 +28,7 @@ private theorem gpt_apply (X : Scheme.{0}) [IsIntegral X] (x : Sp X.functionFiel
   exact Scheme.fromSpecStalk_closedPoint
 
 /- English proof (translation)
-Use `IsGenericPoint.eq ?_ (genericPoint_spec _)` and prove the remaining obligations. Rewrite using `[isGenericPoint_def, ← f.denseRange.closure_range]`. Use `congr 1`. Use extensionality with `y`. Conclude with `⟨fun hy => ⟨x, hy.symm⟩, fun ⟨x', hy⟩ => by rw [← hy, Subsingleton.elim x' x]; rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Supply the required witnesses or components.
 -/
 private theorem apply_eq_genericPoint {F : Type} [Field F] {X : Scheme.{0}} [IsIntegral X]
     (f : Sp F ⟶ X) [IsDominant f] (x : Sp F) : f x = genericPoint X := by
@@ -39,15 +39,13 @@ private theorem apply_eq_genericPoint {F : Type} [Field F] {X : Scheme.{0}} [IsI
   exact ⟨fun hy => ⟨x, hy.symm⟩, fun ⟨x', hy⟩ => by rw [← hy, Subsingleton.elim x' x]; rfl⟩
 
 /- English proof (translation)
-Take `⟨φ, hφ⟩` from `exists_spMap_of_eq t _ (apply_eq_genericPoint t _)`. Establish `hp : p (genericPoint W) = genericPoint X`. Take `⟨x⟩ : Nonempty (Sp X.functionField)` from `inferInstance`. Rewrite using `[← apply_eq_genericPoint t x, ← Scheme.Hom.comp_apply, h, gpt_apply]`. Take `⟨ψ, hψ⟩` from `exists_spMap_of_eq (gpt W ≫ p) (genericPoint X) ((Scheme.Hom.comp_apply _ _ _).trans ((congrArg p (gpt_apply W _)).trans hp))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `e : Spec.map (ψ ≫ φ) = Spec.map (𝟙 _)`. Rewrite using `[← cancel_mono (X.fromSpecStalk (genericPoint X)), Spec.map_comp, Category.assoc]`. Use `erw [hψ]`. Rewrite using `[Spec.map_id, Category.id_comp, ← Category.assoc]`. Use `erw [hφ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h`. Establish `e' : ψ ≫ φ = 𝟙 _` using `Spec.map_injective e`. Establish `e₁ : ∀ a, φ.hom (ψ.hom a) = a` using `fun a => congrArg (fun u => u.hom a) e'`. Establish `hinj : Function.Injective (show W.functionField →+* X.functionField from φ.hom)` using `RingHom.injective _`. Establish `e₂ : ∀ a, ψ.hom (φ.hom a) = a` using `fun a => hinj (e₁ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Set `ε : X.functionField ≃+* W.functionField` to `RingEquiv.ofRingHom ψ.hom φ.hom (RingHom.ext e₂) (RingHom.ext e₁)`. Use `⟨ε, ?_⟩` and prove the remaining obligations. Establish `e₃ : φ ≫ ψ = 𝟙 _` using `CommRingCat.hom_ext (RingHom.ext e₂)`. Rewrite using `[← hφ]`. Express the relevant statement in the definitionally equal form `_ = Spec.map ψ ≫ Spec.map φ ≫ _`.
-
-Rewrite using `[← Spec.map_comp_assoc, e₃, Spec.map_id]`. Conclude with `(Category.id_comp _).symm`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_equiv {X W : Scheme.{0}} [IsIntegral X] [IsIntegral W]
     (t : Sp X.functionField ⟶ W) [IsDominant t] (p : W ⟶ X) (h : t ≫ p = gpt X) :
@@ -79,15 +77,13 @@ private theorem exists_equiv {X W : Scheme.{0}} [IsIntegral X] [IsIntegral W]
   exact (Category.id_comp _).symm
 
 /- English proof (translation)
-Introduce `k _ _ X₁ X₂ _ _ s₁ s₂ θ h₁ h₂ w`. Establish `: IsProper s₁` using `((isProjOver_iff_isProper_and_exists_isAmpleLB s₁).mp h₁).1`. Establish `hP : IsProjOver (pullback.fst s₁ s₂ ≫ s₁)` using `ProjSpace.isProjOver_pullback h₁ h₂`. Establish `: IsProper (pullback.fst s₁ s₂ ≫ s₁)` using `((isProjOver_iff_isProper_and_exists_isAmpleLB _).mp hP).1`. Take `⟨h, e₁, e₂⟩ : ∃ h : Sp X₁.functionField ⟶ pullback s₁ s₂, h ≫ pullback.fst s₁ s₂ = gpt X₁ ∧ h ≫ pullback.snd s₁ s₂ = spMap θ ≫ gpt X₂` from `⟨pullback.lift (gpt X₁) (spMap θ ≫ gpt X₂) (by rw [Category.assoc, w]), pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: IsFinite h.fromNormalization`. Use `isFinite_fromNormalization_of_genericPoints (o := .of k) h (pullback.fst s₁ s₂ ≫ s₁) (fun x _ => charZero_of_injective_ringHom ((Scheme.ΓSpecIso (.of k)).inv ≫ (gpt X₁ ≫ s₁).appTop ≫ (Sp X₁.functionField).Γevaluation x).hom.injective) fun x _ => ?_` and prove the remaining obligations. Establish `h1 : ((h ≫ pullback.fst s₁ s₂).stalkMap x).hom.EssFiniteType`. Rewrite using `[e₁]`. Conclude with `(RingHom.FiniteType.of_surjective _ (Scheme.Hom.stalkMap_surjective _ _)).essFiniteType`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Scheme.Hom.stalkMap_comp]`. Conclude with `RingHom.EssFiniteType.residueFieldMap (.of_comp _ h1)`. Take `⟨ε, hε⟩` from `exists_equiv h.toNormalization (h.fromNormalization ≫ pullback.fst s₁ s₂) (by simp [e₁])`. Use `⟨h.normalization, inferInstance, h.fromNormalization ≫ pullback.fst s₁ s₂, h.fromNormalization ≫ pullback.snd s₁ s₂, ε, inferInstance, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isProjOver_comp_of_isFinite _ hP`. Rewrite using `[Category.assoc, Category.assoc, pullback.condition]`. Rewrite using `[hε]`. Simplify using `[e₁]`. Rewrite using `[hε]`.
-
-Simplify using `[e₂]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_normal_proj_common_model :
     ∀ (k : Type) [Field k] [CharZero k] (X₁ X₂ : Scheme.{0}) [IsIntegral X₁] [IsIntegral X₂] (s₁ : X₁ ⟶ Sp k) (s₂ : X₂ ⟶ Sp k) (θ : X₂.functionField →+* X₁.functionField), IsProjOver s₁ → IsProjOver s₂ → spMap θ ≫ gpt X₂ ≫ s₂ = gpt X₁ ≫ s₁ → ∃ (W : Scheme.{0}) (_ : IsIntegral W) (p₁ : W ⟶ X₁) (p₂ : W ⟶ X₂) (ε : X₁.functionField ≃+* W.functionField), GlobalTheory.IsNormalScheme W ∧ IsProjOver (p₁ ≫ s₁) ∧ p₂ ≫ s₂ = p₁ ≫ s₁ ∧ gpt W ≫ p₁ = spMap ε.toRingHom ≫ gpt X₁ ∧ gpt W ≫ p₂ = spMap ε.toRingHom ≫ spMap θ ≫ gpt X₂ := by

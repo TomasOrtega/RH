@@ -10,9 +10,9 @@ noncomputable section
 namespace GlobalTheory.BSP
 
 /- English proof (translation)
-Rewrite using `[← LocalizedModule.zero_mk (1 : Submonoid.powers t), LocalizedModule.mk_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨_, r, rfl⟩, h⟩`. Conclude with `⟨r, by simpa [Submonoid.smul_def] using h⟩`. Introduce and unpack `⟨r, h⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨t ^ r, r, rfl⟩, by simpa [Submonoid.smul_def] using h⟩`.
+Supply the required witnesses or components.
 -/
 theorem mk_one_eq_zero_iff_pow_smul {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] (t : A) (x : M) :
     LocalizedModule.mk x (1 : Submonoid.powers t) = 0 ↔ ∃ r : ℕ, t ^ r • x = 0 := by
@@ -24,7 +24,7 @@ theorem mk_one_eq_zero_iff_pow_smul {A M : Type} [CommRing A] [AddCommGroup M] [
     exact ⟨⟨t ^ r, r, rfl⟩, by simpa [Submonoid.smul_def] using h⟩
 
 /- English proof (translation)
-Proceed by induction on `z using LocalizedModule.induction_on with`. Consider the case `_ n s`. Take `⟨_, k, rfl⟩` from `s`. Conclude with `⟨n, k, rfl⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_eq_mk_pow {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] (t : A)
     (z : LocalizedModule (Submonoid.powers t) M) :
@@ -35,7 +35,7 @@ theorem exists_eq_mk_pow {A M : Type} [CommRing A] [AddCommGroup M] [Module A M]
     exact ⟨n, k, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[h, LocalizedModule.smul'_mk, LocalizedModule.mk_eq]`. Conclude with `⟨1, by simp [Submonoid.smul_def]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mk_one_eq_pow_smul_of_isFrac {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] (t : A)
     (z : LocalizedModule (Submonoid.powers t) M) (m : M) (k : ℕ) (h : IsFrac t z m k) :
@@ -44,9 +44,9 @@ theorem mk_one_eq_pow_smul_of_isFrac {A M : Type} [CommRing A] [AddCommGroup M] 
   exact ⟨1, by simp [Submonoid.smul_def]⟩
 
 /- English proof (translation)
-Rewrite using `[← mk_one_eq_zero_iff_pow_smul]`. Establish `h1` using `mk_one_eq_pow_smul_of_isFrac t Z m k hm`. Establish `hlin : ∀ x : M, LocalizedModule.mk x (1 : Submonoid.powers t) = LocalizedModule.mkLinearMap (Submonoid.powers t) M x` using `fun _ => rfl`. Rewrite using `[hlin, map_sub, map_smul, map_smul, map_sum]`. Simplify using `only [map_smul, ← hlin, hw, h1, hZ, Finset.smul_sum, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[sub_eq_zero]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← LocalizedModule.smul'_mk, hw, smul_smul, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_pow_smul_eq_zero_of_sum {A M ι : Type} [CommRing A] [AddCommGroup M] [Module A M] [Fintype ι]
     (t c : A) (m : M) (k : ℕ) (v : ι → A) (w : ι → M) (z : ι → LocalizedModule (Submonoid.powers t) M)
@@ -66,9 +66,9 @@ theorem exists_pow_smul_eq_zero_of_sum {A M ι : Type} [CommRing A] [AddCommGrou
   ring
 
 /- English proof (translation)
-Take `⟨n, s, hn⟩` from `exists_eq_mk_pow (d' : P'.A) (M.Φ P' d' (M.tr f x))`. Take `⟨r, hr⟩` from `M.Φ_nat f d d' x mx k n s h hn`. Rewrite `hr` using `[mul_pow, mul_smul]`. Establish `hr'` using `(hreg.pow r).right_eq_zero_of_smul hr`. Rewrite `hr'` using `[smul_sub, sub_eq_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hn, LocalizedModule.smul'_mk, LocalizedModule.mk_eq]`. Use `⟨⟨(d' : P'.A) ^ r, r, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify `hr'` using `[Submonoid.smul_def]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mk_tr_eq_smul_Φ_tr {l : ℕ} {R : Type} [CommRing R] (M : FCrys l R) {P P' : Obj l R} (f : Hom P P')
     (d : ↥P.I) (d' : ↥P'.I) (x mx : M.M P) (k : ℕ) (hreg : IsSMulRegular (M.M P') (f.f d))
@@ -84,11 +84,11 @@ theorem mk_tr_eq_smul_Φ_tr {l : ℕ} {R : Type} [CommRing R] (M : FCrys l R) {P
   simpa [Submonoid.smul_def] using hr'
 
 /- English proof (translation)
-Establish `hreg : IsSMulRegular (M.M Q) (BK.hf g bk.E)` using `by haveI := M.proj Q`. Conclude with `Module.Flat.isSMulRegular_of_nonZeroDivisors (GlobalTheory.T.breuilKisinHom_eisenstein_span_and_nonZeroDivisor l K bk Q g).2`. Establish `key : ∀ j : Fin d, LocalizedModule.mk (M.tr g (∑ i, bk.toP (A i j) • e i)) (1 : Submonoid.powers (t : Q.A)) = BK.hf g bk.E ^ a • M.Φ Q t (M.tr g (e j))` using `fun j => mk_tr_eq_smul_Φ_tr M g ⟨bk.toP bk.E, Ideal.mem_span_singleton_self _⟩ t (e j) _ a hreg (hA j)`. Establish `hsum : ∑ i, (A.map (BK.hf g)).mulVec (fun j => Q.D.φ (y j)) i • M.tr g (e i) = ∑ j, Q.D.φ (y j) • M.tr g (∑ i, bk.toP (A i j) • e i)`. Simplify using `only [map_sum, LinearMap.map_smulₛₗ, Matrix.mulVec, dotProduct, Matrix.map_apply, Finset.sum_smul, Finset.smul_sum, smul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Both sides reduce to the same expression. Establish `hΦ : M.Φ Q t (∑ j, y j • M.tr g (e j)) = ∑ j, Q.D.φ (y j) • M.Φ Q t (M.tr g (e j))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sum, LinearMap.map_smulₛₗ, RingHom.comp_apply, algebraMap_smul]`. Rewrite using `[hsum]`. Conclude with `exists_pow_smul_eq_zero_of_sum (t : Q.A) (BK.hf g bk.E ^ a) m k (fun j => Q.D.φ (y j)) (fun j => M.tr g (∑ i, bk.toP (A i j) • e i)) (fun j => M.Φ Q t (M.tr g (e j))) _ hm hΦ key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frob_tr_basis (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d : ℕ) (M : FCrys l ↥(OL K))
     (e : Module.Basis (Fin d) bk.prism.A (M.M bk.prism)) (a : ℕ) (A : Matrix (Fin d) (Fin d) bk.S)

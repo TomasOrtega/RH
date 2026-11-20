@@ -13,9 +13,9 @@ open NumberField MvPowerSeries IsLocalRing ReciprocityTheory.PGsh ReciprocityThe
   GlobalTheory.FactorDepth GlobalTheory.IndefiniteRowSideFullHecke.TypedPartSplitPrimes
 
 /- English proof (translation)
-Rewrite using `[← geom_sum₂_mul x y n, map_mul]`. Establish `hs : v (∑ i ∈ Finset.range n, x ^ i * y ^ (n - 1 - i)) ≤ 1`. Apply `Valuation.map_sum_le` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[map_mul, map_pow, map_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_one₀ (pow_le_one₀ zero_le hx) zero_le (pow_le_one₀ zero_le hy)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem v_pow_sub_pow_lt_one {C : Type} [Field C] (v : Valuation C NNReal) {x y : C} (hx : v x ≤ 1) (hy : v y ≤ 1)
     (hxy : v (x - y) < 1) (n : ℕ) : v (x ^ n - y ^ n) < 1 := by
@@ -31,9 +31,9 @@ theorem v_pow_sub_pow_lt_one {C : Type} [Field C] (v : Valuation C NNReal) {x y 
     _ < 1 := hxy
 
 /- English proof (translation)
-Establish `htop : P ⊔ Q = ⊤` using `Ideal.IsMaximal.coprime_of_ne hP hQ h`. Establish `h1 : (1 : R) ∈ P ⊔ Q` using `by rw [htop]; exact Submodule.mem_top`. Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.1 h1`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Establish `hb' : a - 1 = -b` using `by rw [← hab]; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hb']`. Conclude with `Q.neg_mem hb`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma exists_mem_sub_one_mem_of_maximal_ne {R : Type} [CommRing R] {P Q : Ideal R} (hP : P.IsMaximal)
     (hQ : Q.IsMaximal) (h : P ≠ Q) : ∃ a ∈ P, a - 1 ∈ Q := by
@@ -46,13 +46,11 @@ private lemma exists_mem_sub_one_mem_of_maximal_ne {R : Type} [CommRing R] {P Q 
   exact Q.neg_mem hb
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite ι`. Establish `hc : ∀ i, ∃ a : R, (P i ≠ P t → a ∈ P i) ∧ a - 1 ∈ P t`. Introduce `i`. Distinguish the cases in `hi : P i = P t`. Conclude with `⟨1, fun h => absurd hi h, by simp⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, ha1⟩` from `exists_mem_sub_one_mem_of_maximal_ne (hP i) (hP t) hi`. Conclude with `⟨a, fun _ => ha, ha1⟩`. Use `choose a ha using hc`. Use `⟨∏ i, a i, ?_, ?_⟩` and prove the remaining obligations. Use `Ideal.Quotient.eq.1 ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_prod, map_one]`. Conclude with `Finset.prod_eq_one fun i _ => by`. Rewrite using `[← map_one (Ideal.Quotient.mk (P t))]`. Conclude with `Ideal.Quotient.eq.2 (ha i).2`. Introduce `i hi`.
-
-Rewrite using `[← Finset.mul_prod_erase Finset.univ a (Finset.mem_univ i)]`. Conclude with `Ideal.mul_mem_right _ _ ((ha i).1 hi)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sub_one_mem_and_mem {R ι : Type} [CommRing R] [Finite ι] (P : ι → Ideal R) (hP : ∀ i, (P i).IsMaximal)
     (t : ι) : ∃ e : R, e - 1 ∈ P t ∧ ∀ i, P i ≠ P t → e ∈ P i := by
@@ -76,9 +74,9 @@ theorem exists_sub_one_mem_and_mem {R ι : Type} [CommRing R] [Finite ι] (P : �
     exact Ideal.mul_mem_right _ _ ((ha i).1 hi)
 
 /- English proof (translation)
-Proceed by induction on `M with`. Consider the case `zero => simp`. Consider the case `succ M ih`. Rewrite using `[Nat.mul_succ, pow_add, pow_mul, ih]`. Establish `hph : p ^ h = p ^ h - 1 + 1` using `(Nat.sub_add_cancel (Nat.one_le_pow _ _ hp)).symm`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hph, pow_succ, hz, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma pow_pow_mul_eq_self_of_pow_sub_one_eq_one {C : Type} [Field C] {z : C} {h : ℕ} (p : ℕ) (hp : 0 < p)
     (hz : z ^ (p ^ h - 1) = 1) (M : ℕ) : z ^ p ^ (h * M) = z := by
@@ -90,29 +88,25 @@ private lemma pow_pow_mul_eq_self_of_pow_sub_one_eq_one {C : Type} [Field C] {z 
     rw [hph, pow_succ, hz, one_mul]
 
 /- English proof (translation)
-Introduce `E _ _ _ H l c p _ T io X τ h hh lab hlab z hz ha₀ r`. Take `⟨a₀, ha₀⟩` from `ha₀`. Establish `hp : p.Prime` using `Fact.out`. Use `haveI : NeZero h := ⟨hh.ne'⟩`. Take `⟨e, he1, he⟩` from `exists_sub_one_mem_and_mem (fun σ : E →+* ℂ => primeBelow io X σ) (fun σ => (primeBelow_isMaximal_card E H l c p T io X σ).1) τ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hv1 : ∀ σ a, X.v (embX io X σ a) ≤ 1` using `fun σ a => v_embX_le_one io X σ a`. Establish `hvz : X.v z ≤ 1`. Establish `hn : p ^ h - 1 ≠ 0`. Establish `: 2 ≤ p ^ h` using `le_trans hp.two_le (Nat.le_self_pow hh.ne' p)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `h1 : X.v z ^ (p ^ h - 1) ≤ 1` using `by rw [← map_pow, hz, map_one]`. Conclude with `(pow_le_one_iff_of_nonneg zero_le hn).1 h1`. Establish `hvzs : ∀ n : ℕ, X.v (z ^ n) ≤ 1` using `fun n => by rw [map_pow]; exact pow_le_one₀ zero_le hvz`. Establish `he1' : X.v (embX io X τ e - 1) < 1`. Establish `: X.v (embX io X τ (e - 1)) < 1` using `he1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[map_sub, map_one]`. Then use the resulting hypothesis. Establish `hτb : X.v (embX io X τ (e * a₀) - z) < 1`. Establish `hsplit : embX io X τ (e * a₀) - z = (embX io X τ e - 1) * embX io X τ a₀ + (embX io X τ a₀ - z)` using `by rw [map_mul]; ring`. Rewrite using `[hsplit]`. Use `Valuation.map_add_lt _ ?_ ha₀` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_left zero_le he1' (hv1 τ a₀)`. Establish `hlabb : ∀ s : ZMod h, X.v (embX io X (lab s) (e * a₀) - z ^ p ^ s.val) < 1`. Introduce `s`. Establish `hsplit : embX io X (lab s) (e * a₀) - z ^ p ^ s.val = (embX io X (lab s) (e * a₀) - embX io X τ (e * a₀) ^ p ^ s.val) + (embX io X τ (e * a₀) ^ p ^ s.val - z ^ p ^ s.val)` using `by ring`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hsplit]`. Conclude with `Valuation.map_add_lt _ (hlab s (e * a₀)) (v_pow_sub_pow_lt_one X.v (hv1 τ _) hvz hτb _)`. Establish `hoth : ∀ σ, primeBelow io X σ ≠ primeBelow io X τ → X.v (embX io X σ (e * a₀)) < 1`. Introduce `σ hσ`. Establish `hmem : X.v (embX io X σ e) < 1` using `he σ hσ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_mul]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_left zero_le hmem (hv1 σ a₀)`. Establish `hs : ∀ s : ZMod h, ∃ N₀ : ℕ, ∀ N, N₀ ≤ N → (r : WithTop ℝ) ≤ vX_vp X (embX io X (lab s) (e * a₀) ^ p ^ N - (z ^ p ^ s.val) ^ p ^ N)`. Introduce `s`. Conclude with `GlobalTheory.T.exists_valuation_pow_primePow_sub_ge X.C (vX_vp X) p hp (vX_vp_p X) _ _ ((isIntV_iff X _).2 (hv1 _ _)) ((isIntV_iff X _).2 (hvzs _)) ((vX_vp_pos_iff X _).2 (hlabb s)) r`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hσ : ∀ σ : E →+* ℂ, ∃ N₀ : ℕ, ∀ N, N₀ ≤ N → primeBelow io X σ ≠ primeBelow io X τ → (r : WithTop ℝ) ≤ vX_vp X (embX io X σ (e * a₀) ^ p ^ N)`. Introduce `σ`. Distinguish the cases in `hne : primeBelow io X σ = primeBelow io X τ`. Conclude with `⟨0, fun _ _ h' => absurd hne h'⟩`. Establish `hlt : X.v (embX io X σ (e * a₀) - 0) < 1` using `by rw [sub_zero]; exact hoth σ hne`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨N₀, hN₀⟩` from `GlobalTheory.T.exists_valuation_pow_primePow_sub_ge X.C (vX_vp X) p hp (vX_vp_p X) _ 0 ((isIntV_iff X _).2 (hv1 _ _)) ((isIntV_iff X _).2 (by simp)) ((vX_vp_pos_iff X _).2 hlt) r`. Use `⟨N₀, fun N hN _ => ?_⟩` and prove the remaining obligations. Use `hN₀ N hN` as an intermediate fact. Rewrite `this` using `[zero_pow (pow_ne_zero _ hp.ne_zero), sub_zero]`. Then use the resulting hypothesis. Use `choose Ns hNs using hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `choose Nσ hNσ using hσ`. Use `set M := (∑ s, Ns s) + ∑ σ, Nσ σ with hM`. Establish `hMN : M ≤ h * M` using `Nat.le_mul_of_pos_left M hh`. Use `⟨(e * a₀) ^ p ^ (h * M), fun s => ?_, fun σ hne => ?_⟩` and prove the remaining obligations. Establish `hzN : (z ^ p ^ s.val) ^ p ^ (h * M) = z ^ p ^ s.val`.
-
-Rewrite using `[← pow_mul, mul_comm, pow_mul, pow_pow_mul_eq_self_of_pow_sub_one_eq_one p hp.pos hz M]`. Establish `hle : Ns s ≤ h * M` using `le_trans (le_trans (Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ s)) (Nat.le_add_right _ _)) hMN`. Use `hNs s (h * M) hle` as an intermediate fact. Rewrite `this` using `[hzN, ← map_pow]`. Then use the resulting hypothesis. Establish `hle : Nσ σ ≤ h * M` using `le_trans (le_trans (Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ σ)) (Nat.le_add_left _ _)) hMN`.
-
-Use `hNσ σ (h * M) hle hne` as an intermediate fact. Rewrite `this` using `[← map_pow]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_approx_root_twists : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (l : Level H) (c : Coeff l) (p : ℕ) [Fact p.Prime] (T : CDVR) (io : c.F →+* T.Fr) (X : ValExt T p), ∀ (τ : E →+* ℂ) (h : ℕ), 0 < h → ∀ (lab : ZMod h → (E →+* ℂ)), (∀ s a, X.v (embX io X (lab s) a - embX io X τ a ^ p ^ s.val) < 1) → ∀ z : X.C, z ^ (p ^ h - 1) = 1 → (∃ a₀ : 𝓞 E, X.v (embX io X τ a₀ - z) < 1) → ∀ r : ℝ, ∃ a : 𝓞 E, (∀ s, (r : WithTop ℝ) ≤ vX_vp X (embX io X (lab s) a - z ^ p ^ s.val)) ∧ ∀ σ, primeBelow io X σ ≠ primeBelow io X τ → (r : WithTop ℝ) ≤ vX_vp X (embX io X σ a) := by
   intro E _ _ _ H l c p _ T io X τ h hh lab hlab z hz ha₀ r

@@ -17,7 +17,7 @@ def US (p : ∀ v, G →* Gv v) (K : ∀ v, Subgroup (Gv v)) (S : Finset V) : Su
   inv_mem' {a} ha v hv := by rw [map_inv]; exact inv_mem (ha v hv)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_US {p : ∀ v, G →* Gv v} {K : ∀ v, Subgroup (Gv v)} {S : Finset V} {g : G} :
     g ∈ US p K S ↔ ∀ v ∉ S, p v g ∈ K v := Iff.rfl

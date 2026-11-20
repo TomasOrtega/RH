@@ -15,9 +15,9 @@ namespace GlobalTheory.SectionZero
 variable {D : ℕ} {Y : Type} [TopologicalSpace Y]
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `A.cover y₀`. Establish `hz : A.chart j y₀ ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' U` using `⟨(A.chart j).map_source hj, by simpa [(A.chart j).left_inv hj] using hy₀⟩`. Establish `h1 : ContinuousAt (f ∘ (A.chart j).symm) (A.chart j y₀)` using `(hf j _ hz).continuousAt`. Establish `h2 : ContinuousAt ((f ∘ (A.chart j).symm) ∘ A.chart j) y₀` using `h1.comp ((A.chart j).continuousAt hj)`. Use `h2.congr ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [(A.chart j).open_source.mem_nhds hj] with y hy`. Simplify using `[(A.chart j).left_inv hy]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuousAt_of_holoOn (A : FinHolAtlas D Y) {U : Set Y} {f : Y → ℂ}
     (hf : A.HoloOn U f) {y₀ : Y} (hy₀ : y₀ ∈ U) : ContinuousAt f y₀ := by
@@ -33,9 +33,7 @@ theorem continuousAt_of_holoOn (A : FinHolAtlas D Y) {U : Set Y} {f : Y → ℂ}
   simp [(A.chart j).left_inv hy]
 
 /- English proof (translation)
-Establish `h` using `hs.2 y₀ y y ⟨hy, L.mem_U y⟩`. Apply the tactic sequence `constructor <;> intro hne h0`. Rewrite `h` using `[h0, norm_zero, zero_mul]`. Conclude with `hne (norm_eq_zero.mp ((mul_eq_zero.mp h.symm).resolve_right (Real.exp_pos _).ne'))`. Rewrite `h` using `[h0, norm_zero, zero_mul]`.
-
-Conclude with `hne (norm_eq_zero.mp ((mul_eq_zero.mp h).resolve_right (Real.exp_pos _).ne'))`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ne_zero_iff (A : FinHolAtlas D Y) {L : LocPot Y} {s : Y → Y → ℂ} (hs : IsSection A L s)
     {y₀ y : Y} (hy : y ∈ L.U y₀) : s y y ≠ 0 ↔ s y₀ y ≠ 0 := by
@@ -47,7 +45,7 @@ theorem ne_zero_iff (A : FinHolAtlas D Y) {L : LocPot Y} {s : Y → Y → ℂ} (
     exact hne (norm_eq_zero.mp ((mul_eq_zero.mp h).resolve_right (Real.exp_pos _).ne'))
 
 /- English proof (translation)
-Establish `h` using `dense_pi (α := fun _ : Fin D => ℂ) (s := fun _ => ({0}ᶜ : Set ℂ)) Set.univ (fun _ _ => dense_compl_singleton 0)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `z`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem dense_coord_ne_zero : Dense {z : Fin D → ℂ | ∀ i, z i ≠ 0} := by
   have h := dense_pi (α := fun _ : Fin D => ℂ) (s := fun _ => ({0}ᶜ : Set ℂ)) Set.univ
@@ -57,15 +55,13 @@ theorem dense_coord_ne_zero : Dense {z : Fin D → ℂ | ∀ i, z i ≠ 0} := by
   simp
 
 /- English proof (translation)
-Introduce `D Y _ A L s m W hB`. Establish `hs : IsSection A L s` using `hB.2.1`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `y₀ hy₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hy₀' : s y₀ y₀ ≠ 0` using `hy₀`. Establish `hc` using `continuousAt_of_holoOn A (hs.1 y₀) (L.mem_U y₀)`. Use `filter_upwards [(L.isOpen_U y₀).mem_nhds (L.mem_U y₀), hc.eventually_ne hy₀'] with y hyU hy`. Conclude with `(ne_zero_iff A hs hyU).mpr hy`. Rewrite using `[dense_iff_inter_open]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `O hO ⟨y₁, hy₁⟩`. Take `⟨ψ, -, hψ₁, hψU, σ, -, -, u, -, hu, hprod⟩` from `hB.2.2.1 y₁`. Establish `hOpen : IsOpen (ψ.target ∩ ψ.symm ⁻¹' (O ∩ ψ.source))` using `ψ.isOpen_inter_preimage_symm (hO.inter ψ.open_source)`. Establish `hmem : ψ y₁ ∈ ψ.target ∩ ψ.symm ⁻¹' (O ∩ ψ.source)` using `⟨ψ.map_source hψ₁, by simpa [ψ.left_inv hψ₁] using And.intro hy₁ hψ₁⟩`. Take `⟨z, ⟨hzt, hzO, hzs⟩, hz⟩` from `dense_coord_ne_zero.inter_open_nonempty _ hOpen ⟨_, hmem⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨ψ.symm z, hzO, ?_⟩` and prove the remaining obligations. Use `show s (ψ.symm z) (ψ.symm z) ≠ 0`. Rewrite using `[ne_zero_iff A hs (hψU hzs), hprod _ hzs]`. Use `mul_ne_zero (hu _ hzs) (Finset.prod_ne_zero_iff.mpr fun k _ => ?_)` and prove the remaining obligations. Break down `σ k with _ | i` into its components or cases.
-
-Conclude with `one_ne_zero`. Simplify `pow_ne_zero 1 (hz i)` using `[ψ.right_inv hzt]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isOpen_and_dense_opn : ∀ (D : ℕ) (Y : Type) [TopologicalSpace Y]
     (A : ReciprocityTheory.AnForm.M.FinHolAtlas D Y) (L : ReciprocityTheory.AnForm.M.LocPot Y) (s : Y → Y → ℂ)

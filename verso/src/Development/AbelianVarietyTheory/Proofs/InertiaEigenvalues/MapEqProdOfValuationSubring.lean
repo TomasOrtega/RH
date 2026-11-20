@@ -8,15 +8,15 @@ namespace GlobalTheory.TypeLeaf
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.MainNotions.ArithmeticCylinders Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial NumberField IsDedekindDomain
 
 /- English proof (translation)
-Set `j' : O →+* B` to `{ toFun := fun y => ⟨j y, (h y).1⟩ map_one' := Subtype.ext (map_one j) map_mul' := fun a b => Subtype.ext (map_mul j a b) map_zero' := Subtype.ext (map_zero j) map_add' := fun a b => Subtype.ext (map_add j a b) }`. Set `t' : A → B` to `fun x => ⟨t x, (ht x).1⟩`. Establish `hψ : ψ = φ.comp j'`. Use extensionality with `y`. Conclude with `((h y).2).symm`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hj : B.subtype.comp j' = j`. Use extensionality with `y`. Both sides reduce to the same expression. Establish `hB : p.map j' = (s.map fun x => X - C (t' x)).prod`. Apply `Polynomial.map_injective B.subtype Subtype.val_injective` to reduce the goal to its premises.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.map_map, hj, hp, Polynomial.map_multiset_prod, Multiset.map_map]`. Use `congr 1`. Apply `Multiset.map_congr rfl` to reduce the goal to its premises. Introduce `x _`. Simplify using `only [Function.comp_apply, Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[hψ, ← Polynomial.map_map, hB, Polynomial.map_multiset_prod, Multiset.map_map]`. Use `congr 1`. Apply `Multiset.map_congr rfl` to reduce the goal to its premises. Introduce `x _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp_apply, Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C]`. Rewrite using `[(ht x).2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_eq_prod_of_valuationSubring {O A K F : Type} [CommRing O] [Field K] [CommRing F]
     (B : ValuationSubring K) (j : O →+* K) (φ : B →+* F) (ψ : O →+* F)

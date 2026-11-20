@@ -22,9 +22,9 @@ namespace GlobalTheory.SpreadSec
 variable {X X' : Scheme.{0}}
 
 /- English proof (translation)
-Set `a : ∀ j : (M.pull π).ι, Γ(X', (M.pull π).U j)` to `fun j => rs X' (LB.wchart_le M (fun _ : PUnit => π) j PUnit.unit) ((π.app _).hom (s.f (j PUnit.unit)))`. Establish `ha : ∀ (j : (M.pull π).ι) (z : X'), π z ∈ M.U (j PUnit.unit) → gs (𝟙 X') z _ (a j) = gs π z _ (s.f (j PUnit.unit))` using `fun j z hz => by`. Establish `hm : (𝟙 X' : X' ⟶ X') z ∈ (M.pull π).U j` using `Set.mem_iInter.2 fun _ => hz`. Use `(gs_res (𝟙 X') z _ hm _).trans ?_` and prove the remaining obligations. Rewrite using `[gs_pull (𝟙 X') π z _ hz, Category.id_comp]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨a, fun i j => fn_ext fun z hz => ?_⟩, ha⟩` and prove the remaining obligations. Establish `hi : π z ∈ M.U (i PUnit.unit)` using `Set.mem_iInter.1 hz.1 PUnit.unit`. Establish `hj : π z ∈ M.U (j PUnit.unit)` using `Set.mem_iInter.1 hz.2 PUnit.unit`. Use `((gs_res (𝟙 X') z _ hz _).trans (ha i z hi)).trans (Eq.trans ?_ ((gs_mul (𝟙 X') z _ hz _ _).trans (congrArg₂ (· * ·) ((gs_unit (𝟙 X') z _ hz _).trans (congrArg Units.val (gm_linComb M _ _ (𝟙 X') z i j hz.1 hz.2))) ((gs_res (𝟙 X') z _ hz _).trans (ha j z hj)))).symm)` and prove the remaining obligations. Rewrite using `[FlatSec.gs_sec_trans s π z hi hj, Fintype.prod_unique, zpow_one, Category.id_comp]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_pull {M : LB X} (s : LB.Sec M) (π : X' ⟶ X) :
     ∃ t : LB.Sec (M.pull π), ∀ (j : (M.pull π).ι) (z : X'), π z ∈ M.U (j PUnit.unit) →
@@ -46,9 +46,9 @@ theorem exists_pull {M : LB X} (s : LB.Sec M) (π : X' ⟶ X) :
   rw [FlatSec.gs_sec_trans s π z hi hj, Fintype.prod_unique, zpow_one, Category.id_comp]
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `exists_pull s π`. Use `fn_ext fun z hz => ?_` and prove the remaining obligations. Establish `hz' : π z ∈ M.U k` using `hz`. Rewrite using `[gs_pull (𝟙 X') π z _ hz', Category.id_comp, ← ht (fun _ => k) z hz', LBGerm.gs_zero (𝟙 X') z _ hz]`. Use `(congrArg (gs (𝟙 X') z _) (h t fun _ => k)).trans ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `LBGerm.gs_zero (𝟙 X') z _ (Set.mem_iInter.2 fun _ => hz')`.
+A detailed English derivation is pending.
 -/
 theorem app_eq_zero {M : LB X} {π : X' ⟶ X} (h : ∀ (t : LB.Sec (M.pull π)) j, t.f j = 0) (s : LB.Sec M) (k : M.ι) :
     (π.app _).hom (s.f k) = 0 := by
@@ -61,17 +61,17 @@ theorem app_eq_zero {M : LB X} {π : X' ⟶ X} (h : ∀ (t : LB.Sec (M.pull π))
   exact LBGerm.gs_zero (𝟙 X') z _ (Set.mem_iInter.2 fun _ => hz')
 
 /- English proof (translation)
-Introduce `V _ _ _ G _ _ _ _ _ N hN ⟨s, j, hj⟩`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Establish `h0 : ∀ σ : LB.Sec N, ∃ τ : LB.Sec N, DVR.SecIsMul G.hom (ϖ ^ (0 + 1)) σ τ` using `fun σ => (ThickDiv.main V ϖ hϖ G N σ 0).1 (app_eq_zero hcon σ)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∀ (n : ℕ) (σ : LB.Sec N), ∃ τ : LB.Sec N, DVR.SecIsMul G.hom (ϖ ^ (n + 1)) σ τ`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => exact h0`. Consider the case `succ n ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `σ`. Take `⟨τ, hτ⟩` from `ih σ`. Take `⟨ρ, hρ⟩` from `h0 τ`. Use `⟨ρ, fun k => ?_⟩` and prove the remaining obligations. Establish `e₁ : σ.f k = AbLaw.cst G.hom _ (ϖ ^ (n + 1)) * τ.f k` using `hτ k`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₂ : τ.f k = AbLaw.cst G.hom _ (ϖ ^ (0 + 1)) * ρ.f k` using `hρ k`. Express the relevant statement in the definitionally equal form `σ.f k = AbLaw.cst G.hom _ (ϖ ^ (n + 1 + 1)) * ρ.f k`. Rewrite using `[e₁, e₂, ← _root_.mul_assoc, ← map_mul, ← pow_add]`. Establish `h2 : ∀ (σ : LB.Sec N) k, σ.f k = 0` using `fun σ => (sec_eq_zero_and_hom_eq_of_thickenings V (IsLocalRing.maximalIdeal V) (IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top).ge G).1 N hN σ fun n => (ThickDiv.main V ϖ hϖ G N σ n).2 (h1 n σ)`. Establish `: CompactSpace G.left` using `QuasiCompact.compactSpace_of_compactSpace G.hom`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: QuasiSeparatedSpace G.left` using `quasiSeparatedSpace_of_quasiSeparated G.hom`. Take `⟨n, c, u, hu⟩` from `FlatSec.exists_comb_of_flat V (FractionRing V) (algebraMap V _) (RingHom.flat_algebraMap_iff.2 inferInstance) G.left G.hom _ _ _ (IsPullback.of_hasPullback G.hom (jK V)) N hN s`. Use `hj (fn_ext fun z hz => ?_)` and prove the remaining obligations. Establish `hz' : pullback.fst G.hom (jK V) z ∈ N.U (j PUnit.unit)` using `Set.mem_iInter.1 hz PUnit.unit`. Rewrite using `[LBGerm.gs_zero _ z _ hz]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hu z (j PUnit.unit) hz').trans (Finset.sum_eq_zero fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[h2, LBGerm.gs_zero _ z _ hz', mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero_closed_fibre : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (G : Over (Spec (CommRingCat.of V))) [GrpObj G] [Smooth G.hom] [IsSeparated G.hom] [QuasiCompact G.hom] [GeometricallyConnected G.hom] (N : LB G.left), N.IsLB → (∃ s : LB.Sec (N.pull (pullback.fst G.hom (jK V))), (∃ j, s.f j ≠ 0)) → ∃ s : LB.Sec (N.pull (fstG (IsLocalRing.maximalIdeal V) 0 G).left), (∃ j, s.f j ≠ 0) := by
   intro V _ _ _ G _ _ _ _ _ N hN ⟨s, j, hj⟩

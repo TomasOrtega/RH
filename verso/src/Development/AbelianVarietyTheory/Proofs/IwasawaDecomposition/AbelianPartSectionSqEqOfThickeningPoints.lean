@@ -25,14 +25,14 @@ namespace GlobalTheory.SqDescend
 variable {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K]
 
 /- English proof (translation)
-Introduce `_ hy` and use `Set.mem_iInter.2 fun k => Set.mem_iInter.1 (Set.mem_iInter.1 hy k) 0`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem wchart_sq_le (φ : K → (Y ⟶ X)) (p : K → Fin 1 → L.ι) :
     LB.wchart (SqLB.sq L) φ p ≤ LB.wchart L φ (fun k => p k 0) :=
   fun _ hy => Set.mem_iInter.2 fun k => Set.mem_iInter.1 (Set.mem_iInter.1 hy k) 0
 
 /- English proof (translation)
-Take `⟨a, rfl⟩ : ∃ a, j = fun _ => a` from `⟨j 0, funext fun i => by rw [Subsingleton.elim i 0]⟩`. Take `⟨b, rfl⟩ : ∃ b, j' = fun _ => b` from `⟨j' 0, funext fun i => by rw [Subsingleton.elim i 0]⟩`. Conclude with `SqLB.gm_sq_g f y (Set.mem_iInter.1 hj 0) (Set.mem_iInter.1 hj' 0)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem gm_sq_g' (f : Y ⟶ X) (y : Y) (j j' : Fin 1 → L.ι) (hj : f y ∈ (SqLB.sq L).U j)
     (hj' : f y ∈ (SqLB.sq L).U j') :
@@ -43,21 +43,21 @@ theorem gm_sq_g' (f : Y ⟶ X) (y : Y) (j j' : Fin 1 → L.ι) (hj : f y ∈ (Sq
   exact SqLB.gm_sq_g f y (Set.mem_iInter.1 hj 0) (Set.mem_iInter.1 hj' 0)
 
 /- English proof (translation)
-Simplify using `only [gs_eq f y U h, map_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gs_sub (f : Y ⟶ X) (y : Y) (U : X.Opens) (h : f y ∈ U) (a b : Γ(X, U)) :
     gs f y U (a - b) = gs f y U a - gs f y U b := by simp only [gs_eq f y U h, map_sub]
 
 /- English proof (translation)
-Apply the tactic sequence `unfold gs; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gs_zero (f : Y ⟶ X) (y : Y) (U : X.Opens) : gs f y U 0 = 0 := by
   unfold gs; split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `only [trF]`. Rewrite using `[← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[gm_sq_g' (𝟙 Y ≫ φ k) y (p k) (p' k) (Set.mem_iInter.1 hy.1 k) (Set.mem_iInter.1 hy.2 k), ← zpow_mul, ← zpow_natCast, ← zpow_mul]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem trF_sq (φ : K → (Y ⟶ X)) (ε : K → ℤ) (y : Y) (p p' : K → Fin 1 → L.ι)
     (hy : y ∈ LB.wchart (SqLB.sq L) φ p ⊓ LB.wchart (SqLB.sq L) φ p') :
@@ -92,13 +92,13 @@ def sqSec {φ : K → (Y ⟶ X)} {ε : K → ℤ} (s : LB.Sec (LB.LinComb L φ �
     ring
 
 /- English proof (translation)
-Introduce `ψ` and use `Set.mem_iInter.2 fun _ => hJ ψ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem good_sq {J : (Z ⟶ X) → L.ι} {z : Z} (hJ : Good L z J) : Good (SqLB.sq L) z (fun q _ => J q) :=
   fun ψ => Set.mem_iInter.2 fun _ => hJ ψ
 
 /- English proof (translation)
-Establish `h0` using `hJ.mem φ r`. Establish `hm : r z ∈ LB.wchart (SqLB.sq L) φ (fun k _ => J (r ≫ φ k))` using `Set.mem_iInter.2 fun k => Set.mem_iInter.2 fun _ => Set.mem_iInter.1 h0 k`. Conclude with `(gs_mul r z _ hm _ _).trans ((congrArg₂ (· * ·) (gs_res r z _ hm _) (gs_res r z _ hm _)).trans (pow_two _).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sval_sqSec {φ : K → (Y ⟶ X)} {ε : K → ℤ} (s : LB.Sec (LB.LinComb L φ ε)) (r : Z ⟶ Y) (z : Z)
     {J : (Z ⟶ X) → L.ι} (hJ : Good L z J) :
@@ -114,7 +114,7 @@ def secSub {M : LB Y} (a b : LB.Sec M) : LB.Sec M where
   compat := fun i j => by rw [map_sub, map_sub, a.compat, b.compat, mul_sub]
 
 /- English proof (translation)
-The claim follows from `gs_sub r z _ (hJ.mem φ r) _ _`.
+A detailed English derivation is pending.
 -/
 theorem sval_secSub {M : LB X} {φ : K → (Y ⟶ X)} {ε : K → ℤ} (a b : LB.Sec (LB.LinComb M φ ε)) (r : Z ⟶ Y)
     (z : Z) {J : (Z ⟶ X) → M.ι} (hJ : Good M z J) :
@@ -126,23 +126,21 @@ end GlobalTheory.SqDescend
 open GlobalTheory.SqDescend in
 
 /- English proof (translation)
-Introduce `R _ _ _ hCN G _ _ hSA D D' A A' U U' Φ w hw hpG α α' hφ s s' hE Z ρ z J J' hJ hJ'`. Establish `hL` using `D.toPre.P.isLB`. Establish `hL'` using `D'.toPre.P.isLB`. Establish `hM : (SqLB.sq D.toPre.P.L).IsLB` using `DVR.linComb_isLB _ hL _ _`. Establish `hM' : (SqLB.sq D'.toPre.P.L).IsLB` using `DVR.linComb_isLB _ hL' _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, ha, -⟩` from `SecPull.existsUnique_secPull _ _ _ _ _ _ Φ.hom.left hM hM' w hw (Fin 4) (D'.toPre.famφB α') (D.toPre.famφB α) (DegPre.famε 2) Φ.hom.left hφ (sqSec s)`. Establish `hT : ∀ (Z : Scheme.{0}) (r : Z ⟶ D'.toPre.P.A.left) (z : Z) (J : (Z ⟶ D.toPre.P.A.left) → D.toPre.P.L.ι) (J' : (Z ⟶ D'.toPre.P.A.left) → D'.toPre.P.L.ι), Good D.toPre.P.L z J → Good D'.toPre.P.L z J' → sval s (r ≫ Φ.hom.left) z J ^ 2 = (∏ κ, ExpTrans.om w z (fun q _ => J q) (fun …`. Introduce `Z r z J J' hJ hJ'`. Rewrite using `[← sval_sqSec s _ z hJ]`. Conclude with `ExpTrans.sec_val w _ _ _ Φ.hom.left hφ (sqSec s) a r z (ha Z r z) (good_sq hJ) (good_sq hJ')`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hvan : ∀ (e : ℕ) (q : Fin 4 → Fin 1 → D'.toPre.P.L.ι), ((U'.gt e).pG.left.app _).hom ((secSub a (sqSec s')).f q) = 0`. Introduce `e q`. Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Use `choose J₁ hJ₁ using fun ψ : (thickObj R (maximalIdeal R) e G).left ⟶ D.toPre.P.A.left => exists_chart hL (ψ y)`. Use `choose J₂ hJ₂ using fun ψ : (thickObj R (maximalIdeal R) e G).left ⟶ D'.toPre.P.A.left => exists_chart hL' (ψ y)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `g₁ : Good D.toPre.P.L y J₁` using `hJ₁`. Establish `g₂ : Good D'.toPre.P.L y J₂` using `hJ₂`. Establish `e1` using `hE e _ (𝟙 _) y J₁ J₂ g₁ g₂`. Establish `e2` using `hT _ (U'.gt e).pG.left y J₁ J₂ g₁ g₂`. Simplify using `only [Category.id_comp] at e1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e2` using `[hpG e, e1, ← sval_sqSec s' _ y g₂]`. Establish `e3` using `(Units.mul_right_inj _).1 e2`. Establish `hΔ : sval (secSub a (sqSec s')) (U'.gt e).pG.left y (fun q _ => J₂ q) = 0`. Rewrite using `[sval_secSub a (sqSec s') _ y (good_sq g₂), e3, sub_self]`. Use `(gs_pull (𝟙 _) (U'.gt e).pG.left y _ hy _).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Category.id_comp, gs_zero]`. Use `(sec_trans (secSub a (sqSec s')) (U'.gt e).pG.left y (j := q) hy ((good_sq g₂).mem _ _)).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ * sval (secSub a (sqSec s')) (U'.gt e).pG.left y (fun q _ => J₂ q) = 0`. Rewrite using `[hΔ, mul_zero]`. Take `⟨hN, -, -, -⟩` from `TorRef.admissibleBase_of_completeNormalLocalCharZero hCN`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hI : maximalIdeal R ≤ Ideal.jacobson ⊥`. Rewrite using `[IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top]`. Use `D'.toPre.P.isAb.smooth` as an intermediate fact. Use `D'.toPre.P.isAb.geomConnected` as an intermediate fact. Establish `h0` using `(sec_eq_zero_and_hom_eq_of_thickenings R (maximalIdeal R) hI D'.toPre.P.A).1 _ (DVR.linComb_isLB _ hM' _ _) (secSub a (sqSec s')) fun e q => (ExtDiv.pG_app_eq_zero_iff (U'.gt e) _ _).1 (hvan e q)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : sval a ρ z (fun q _ => J' q) = sval (sqSec s') ρ z (fun q _ => J' q)`. Establish `h1 : sval (secSub a (sqSec s')) ρ z (fun q _ => J' q) = 0` using `by show gs _ _ _ _ = 0`. Conclude with `(congrArg (gs ρ z _) (h0 _)).trans (gs_zero _ _ _)`. Establish `h2` using `sval_secSub a (sqSec s') ρ z (good_sq hJ')`. Rewrite `h2` using `[h1]`.
-
-Conclude with `sub_eq_zero.1 h2.symm`. Rewrite using `[hT Z ρ z J J' hJ hJ', key, sval_sqSec s' ρ z hJ']`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.sq_corr_of_thickenings : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], IsCN R → ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (D D' : DegData R (maximalIdeal R)) (A A' : PolAV (Sp (FractionRing R))) (U : Unif (maximalIdeal R) D A G) (U' : Unif (maximalIdeal R) D' A' G), ∀ (Φ : D'.toPre.P.A ≅ D.toPre.P.A) (w : LB.Iso (LB.LinComb D'.toPre.P.L (K := Fin 1) (fun _ => 𝟙 D'.toPre.P.A.left) (fun _ => 2)) ((LB.LinComb D.toPre.P.L (K := Fin 1) (fun _ => 𝟙 D.toPre.P.A.left) (fun _ => 2)).pull Φ.hom.left)), w.IsGen → (∀ e : ℕ, (U'.gt e).pG.left ≫ Φ.hom.left = (U.gt e).pG.left) → ∀ (α : D.toPre.X) (α' : D'.toPre.X), (∀ κ, D'.toPre.famφB α' κ ≫ Φ.hom.left = Φ.hom.left ≫ D.toPre.famφB α κ) → ∀ (s : D.toPre.SecB 2 α) (s' : D'.toPre.SecB 2 α'), (∀ (e : ℕ) (Z : Scheme.{0}) (r : Z ⟶ (thickObj R (maximalIdeal R) e G).left) (z : Z) (J : (Z ⟶ D.toPre.P.A.left) → D.toPre.P.L.ι) (J' : (Z ⟶ D'.toPre.P.A.left) → D'.toPre.P.L.ι), Good D.toPre.P.L z J → Good D'.toPre.P.L z J' → sval s (r ≫ (U.gt e).pG.left) z J ^ 2 = (∏ κ, ExpTrans.om w z (fun q _ => J q) (fun q _ => J' q) (r ≫ (U'.gt e).pG.left ≫ D'.toPre.famφB α' κ) ^ DegPre.famε 2 κ).val * sval s' (r ≫ (U'.gt e).pG.left) z J' ^ 2) → ∀ (Z : Scheme.{0}) (ρ : Z ⟶ D'.toPre.P.A.left) (z : Z) (J : (Z ⟶ D.toPre.P.A.left) → D.toPre.P.L.ι) (J' : (Z ⟶ D'.toPre.P.A.left) → D'.toPre.P.L.ι), Good D.toPre.P.L z J → Good D'.toPre.P.L z J' → sval s (ρ ≫ Φ.hom.left) z J ^ 2 = (∏ κ, ExpTrans.om w z (fun q _ => J q) (fun q _ => J' q) (ρ ≫ D'.toPre.famφB α' κ) ^ DegPre.famε 2 κ).val * sval s' ρ z J' ^ 2 := by
   intro R _ _ _ hCN G _ _ hSA D D' A A' U U' Φ w hw hpG α α' hφ s s' hE Z ρ z J J' hJ hJ'

@@ -12,7 +12,7 @@ set_option autoImplicit false
 namespace GlobalTheory.MixHt
 
 /- English proof (translation)
-Proceed by induction on `c using ENat.recTopCoe with`. Consider the case `top => simp at h`. Consider the case `coe n => exact ⟨n, rfl, by exact_mod_cast h⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem enat_add_natCast_eq_natCast_exists {c : ℕ∞} {a b : ℕ} (h : c + (a : ℕ∞) = (b : ℕ∞)) : ∃ n : ℕ, c = n ∧ n + a = b := by
   induction c using ENat.recTopCoe with
@@ -20,23 +20,23 @@ theorem enat_add_natCast_eq_natCast_exists {c : ℕ∞} {a b : ℕ} (h : c + (a 
   | coe n => exact ⟨n, rfl, by exact_mod_cast h⟩
 
 /- English proof (translation)
-Introduce `k _ Y _ q hq e hY`. Establish `hB` using `GlobalTheory.T.hasPointClosureDim_basic_projArithAmbient k Y q hq`. Establish `hC` using `GlobalTheory.T.coheight_add_pointClosureDim_eq_dim k Y q hq (e + 1) hY`. Establish `h1 : ∀ z : Y, Order.coheight z = 1 ↔ HasDim z e`. Introduce `z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨m, hm⟩` from `hB.1`. Take `⟨d, -, hd⟩` from `hm z`. Take `⟨n, hn, hnd⟩` from `enat_add_natCast_eq_natCast_exists (hC z d hd)`. Prove the components needed by the constructor for the conclusion. Introduce `hz`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hn` using `[hz]`. Establish `: n = 1` using `by exact_mod_cast hn.symm`. Substitute `this` using the available equality. Establish `: d = e` using `by omega`. Conclude with `this ▸ hd`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hz`. Use `hB.2.1 z d e hd hz` as an intermediate fact. Substitute `this` using the available equality. Rewrite using `[hn]`. Establish `: n = 1` using `by omega`.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[this]`. Use `⟨h1, fun z w hz => ?_⟩` and prove the remaining obligations. Establish `hze : HasDim z e` using `(h1 z).1 hz`. Establish `hgen : HasDim (genericPoint (clo z)) e`. Rewrite using `[← hB.2.2.2.2.1 (clo z) (cloι z) (genericPoint (clo z)) e, cloι_genericPoint]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hze`. Establish `hdim : topologicalKrullDim (clo z) = e` using `(hB.2.2.2.2.2 (clo z) e).1 hgen`. Use `⟨hdim, ?_⟩` and prove the remaining obligations. Establish `hq' : IsAmb (cloι z ≫ q)` using `hq.sub (cloι z)`. Establish `hB'` using `GlobalTheory.T.hasPointClosureDim_basic_projArithAmbient k (clo z) (cloι z ≫ q) hq'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `hB'.1`. Take `⟨d, -, hd⟩` from `hm w`. Establish `hd' : HasDim (cloι z w) d` using `(hB.2.2.2.2.1 (clo z) (cloι z) w d).2 hd`. Take `⟨n, hn, hnd⟩` from `enat_add_natCast_eq_natCast_exists (GlobalTheory.T.coheight_add_pointClosureDim_eq_dim k (clo z) (cloι z ≫ q) hq' e hdim w d hd)`. Take `⟨n', hn', hnd'⟩` from `enat_add_natCast_eq_natCast_exists (hC (cloι z w) d hd')`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: n' = n + 1` using `by omega`. Rewrite using `[hn, hn', this]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `: n = 1` using `by exact_mod_cast h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[this]`. Introduce `h`. Establish `: n + 1 = 2` using `by exact_mod_cast h`. Establish `: n = 1` using `by omega`. Simplify using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dimOne : ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) [IsIntegral Y] (q : Y ⟶ Sp k), IsAmb q → ∀ e : ℕ,
     topologicalKrullDim Y = (e + 1 : ℕ) → (∀ z : Y, Order.coheight z = 1 ↔ HasDim z e) ∧

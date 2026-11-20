@@ -93,7 +93,7 @@ def eHomEquivHH (hinj : Function.Injective (evAt I μf fund σs R Re w₀))
   (LinearEquiv.ofInjective _ hinj).trans (LinearEquiv.ofEq _ _ hran)
 
 /- English proof (translation)
-The claim follows from `((eHomEquivHH hinj hran).finrank_eq).symm`.
+A detailed English derivation is pending.
 -/
 theorem finrank_HH_eq_Dcount (hinj : Function.Injective (evAt I μf fund σs R Re w₀))
     (hran : LinearMap.range (evAt I μf fund σs R Re w₀) = HH I μf fund Re T) :
@@ -101,7 +101,7 @@ theorem finrank_HH_eq_Dcount (hinj : Function.Injective (evAt I μf fund σs R R
   ((eHomEquivHH hinj hran).finrank_eq).symm
 
 /- English proof (translation)
-The claim follows from `((eHomEquivHH hinj hran).rank_eq).symm`.
+A detailed English derivation is pending.
 -/
 theorem rank_HH_eq (hinj : Function.Injective (evAt I μf fund σs R Re w₀))
     (hran : LinearMap.range (evAt I μf fund σs R Re w₀) = HH I μf fund Re T) :
@@ -109,7 +109,7 @@ theorem rank_HH_eq (hinj : Function.Injective (evAt I μf fund σs R Re w₀))
   ((eHomEquivHH hinj hran).rank_eq).symm
 
 /- English proof (translation)
-The claim follows from `LinearEquiv.finiteDimensional (eHomEquivHH hinj hran).symm`.
+A detailed English derivation is pending.
 -/
 theorem finiteDimensional_eHom (hinj : Function.Injective (evAt I μf fund σs R Re w₀))
     (hran : LinearMap.range (evAt I μf fund σs R Re w₀) = HH I μf fund Re T)
@@ -118,7 +118,7 @@ theorem finiteDimensional_eHom (hinj : Function.Injective (evAt I μf fund σs R
   LinearEquiv.finiteDimensional (eHomEquivHH hinj hran).symm
 
 /- English proof (translation)
-Rewrite using `[← finrank_HH_eq_Dcount hinj hran, Nat.pos_iff_ne_zero, Ne, Submodule.finrank_eq_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Dcount_pos_iff (hinj : Function.Injective (evAt I μf fund σs R Re w₀))
     (hran : LinearMap.range (evAt I μf fund σs R Re w₀) = HH I μf fund Re T)
@@ -127,7 +127,7 @@ theorem Dcount_pos_iff (hinj : Function.Injective (evAt I μf fund σs R Re w₀
   rw [← finrank_HH_eq_Dcount hinj hran, Nat.pos_iff_ne_zero, Ne, Submodule.finrank_eq_zero]
 
 /- English proof (translation)
-The claim follows from `LinearEquiv.finiteDimensional (eHomEquivHH hinj hran)`.
+A detailed English derivation is pending.
 -/
 theorem finiteDimensional_HH_of_eHom (hinj : Function.Injective (evAt I μf fund σs R Re w₀))
     (hran : LinearMap.range (evAt I μf fund σs R Re w₀) = HH I μf fund Re T)
@@ -146,7 +146,7 @@ abbrev HHB (B : RowsAut) (T : B.I.L2 B.μf B.fund →L[ℂ] B.I.L2 B.μf B.fund)
   HH B.I B.μf B.fund B.Re T
 
 /- English proof (translation)
-Take `⟨hinj, hran⟩` from `hB B.I B.μf B.fund B.fund_spec B.R B.R_spec B.e B.Re B.Re_spec B.H B.σ dv B.w hU hIrr hF hw hint T hT B.Hs B.σs B.tens B.tens_spec`. Conclude with `⟨(finrank_HH_eq_Dcount hinj hran).symm, ⟨eHomEquivHH hinj hran⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem RowsAut.D_eq_finrank_HH (hB : RowsBij) (B : RowsAut) (dv : InfinitePlace B.I.F → ℝ)
     (hU : ∀ v, IsURepOn (UJset (B.I.ε v)) (B.σ v)) (hIrr : ∀ v, IsIrredOn (UJset (B.I.ε v)) (B.σ v))

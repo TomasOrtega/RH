@@ -6,19 +6,17 @@ open Matrix GlobalTheory.KZ
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `N l d _ hNl hdN`. Take `⟨d', hd'N, hd'l⟩` from `Nat.chineseRemainder hNl d 1`. Establish `h1 : Nat.Coprime d' N`. Unfold `Nat.Coprime`. Rewrite using `[Nat.ModEq.gcd_eq hd'N]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hdN`. Establish `h2 : Nat.Coprime d' l`. Unfold `Nat.Coprime`. Rewrite using `[Nat.ModEq.gcd_eq hd'l]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h3 : Nat.Coprime d' (N * l)` using `Nat.Coprime.mul_right h1 h2`. Establish `hg : Int.gcd (d' : ℤ) ((N * l : ℕ) : ℤ) = 1` using `by rw [Int.gcd_natCast_natCast]; exact h3`. Establish `hb` using `Int.gcd_eq_gcd_ab (d' : ℤ) ((N * l : ℕ) : ℤ)`. Rewrite `hb` using `[hg]`. Use `set a := Int.gcdA (d' : ℤ) ((N * l : ℕ) : ℤ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `set b := Int.gcdB (d' : ℤ) ((N * l : ℕ) : ℤ)`. Set `M : Matrix (Fin 2) (Fin 2) ℤ` to `!![a, -b; ((N * l : ℕ) : ℤ), (d' : ℤ)]`. Establish `hdet : M.det = 1`. Simplify using `only [M, Matrix.det_fin_two_of]`. Move the coercions through the operations in `at hb ⊢`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Set `γ : SL(2, ℤ)` to `⟨M, hdet⟩`. Establish `hγ : (γ : Matrix (Fin 2) (Fin 2) ℤ) = M` using `rfl`. Use `⟨γ, Subgroup.mem_inf.2 ⟨CongruenceSubgroup.Gamma0_mem.2 ?_, CongruenceSubgroup.Gamma0_mem.2 ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hγ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[M]`. Rewrite using `[hγ]`. Simplify using `[M]`. Simplify using `only [en, hγ, M]`. Simplify using `only [Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_one, Matrix.head_cons, Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.cons_val_zero]`.
-
-Use `push_cast`. Conclude with `(ZMod.natCast_eq_natCast_iff _ _ _).2 hd'N`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem diam_exists : ∀ (N l d : ℕ), 0 < N → Nat.Coprime N l → Nat.Coprime d N → ∃ γ : SL(2, ℤ), IsDiam N l d γ := by
   intro N l d _ hNl hdN

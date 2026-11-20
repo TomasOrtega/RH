@@ -10,17 +10,17 @@ open GlobalTheory.PD GlobalTheory.WH
 namespace UpperTheory.Gal.productCup_of_system
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Establish `hl : wd w (Pi.single T v) t = ∑ i ∈ t, GlobalTheory.cubeSign t i • w i ((Pi.single T v : Finset σ → E) (t.erase i))`. Simplify using `[wd, LinearMap.pi_apply, LinearMap.sum_apply]`. Establish `L : ∑ i ∈ t, GlobalTheory.cubeSign t i • w i ((Pi.single T v : Finset σ → E) (t.erase i)) = ∑ i, if i ∈ t ∧ t.erase i = T then GlobalTheory.cubeSign t i • w i v else 0`. Rewrite using `[← Finset.sum_subset (Finset.subset_univ t) (fun i _ hi => by simp [hi])]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Distinguish the cases in `h : t.erase i = T`. Simplify using `[hi, h]`. Simplify using `[hi, h, Pi.single_eq_of_ne h]`. Establish `Rr : (∑ i ∈ Tᶜ, (Pi.single (insert i T) (GlobalTheory.cubeSign (insert i T) i • w i v) : Finset σ → E)) t = ∑ i, if i ∉ T ∧ t = insert i T then GlobalTheory.cubeSign t i • w i v else 0`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_apply, ← Finset.sum_subset (Finset.subset_univ Tᶜ) (fun i _ hi => by simp at hi; simp [hi])]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hi' : i ∉ T` using `by simpa using hi`. Distinguish the cases in `h : t = insert i T`. Substitute `h` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[hi']`. Simplify using `[hi', h, Pi.single_eq_of_ne h]`. Rewrite using `[hl, L, Rr]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `: (i ∈ t ∧ t.erase i = T) ↔ (i ∉ T ∧ t = insert i T)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, rfl⟩`. Conclude with `⟨Finset.notMem_erase _ _, (Finset.insert_erase h1).symm⟩`. Introduce and unpack `⟨h1, rfl⟩`. Conclude with `⟨Finset.mem_insert_self _ _, Finset.erase_insert h1⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Simplify using `only [this]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem wd_single {σ E : Type} [LinearOrder σ] [Fintype σ] [AddCommGroup E] [Module ℂ E]
     (w : σ → Module.End ℂ E) (T : Finset σ) (v : E) :
@@ -58,13 +58,13 @@ private theorem wd_single {σ E : Type} [LinearOrder σ] [Fintype σ] [AddCommGr
   simp only [this]
 
 /- English proof (translation)
-Unfold `sm at hx`. Rewrite `hx` using `[iSup_range]`. Use `Submodule.iSup_induction _ (motive := fun x => ∃ g : Fin d → E, (∀ j, g j ∈ M) ∧ x = ∑ j, act (f j) (g j)) hx ?_ ?_ ?_` and prove the remaining obligations. Introduce `j x hx`. Take `⟨m, hm, rfl⟩` from `hx`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨Pi.single j m, fun i => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `using hm`. Simplify using `[Pi.single_eq_of_ne h]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_eq_single j]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Pi.single_eq_of_ne hb]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `⟨0, fun _ => M.zero_mem, by simp⟩`. Introduce and unpack `x y ⟨g, hg, rfl⟩ ⟨g', hg', rfl⟩`. Conclude with `⟨g + g', fun j => M.add_mem (hg j) (hg' j), by`. Simplify using `[Finset.sum_add_distrib]⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 -/
 private theorem sm_dec {S E : Type} [CommRing S] [Algebra ℂ S] [AddCommGroup E] [Module ℂ E]
     (act : S →ₐ[ℂ] Module.End ℂ E) (M : Submodule ℂ E) {d : ℕ} (f : Fin d → S) {x : E}
@@ -91,9 +91,9 @@ private theorem sm_dec {S E : Type} [CommRing S] [Algebra ℂ S] [AddCommGroup E
       simp [Finset.sum_add_distrib]⟩
 
 /- English proof (translation)
-Simplify using `only [acx, Submodule.mem_pi]`. Introduce `s _`. Distinguish the cases in `h : s = T`. Substitute `h` using the available equality. Simplify using `[hT, hv]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_eq_of_ne h]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem single_mem {σ E : Type} [LinearOrder σ] [AddCommGroup E] [Module ℂ E]
     (M : Submodule ℂ E) (w : σ → Module.End ℂ E) {T : Finset σ} {v : E} {d : ℕ}
@@ -106,39 +106,37 @@ private theorem single_mem {σ E : Type} [LinearOrder σ] [AddCommGroup E] [Modu
   · simp [Pi.single_eq_of_ne h]
 
 /- English proof (translation)
-Introduce `gl2 subq S E _ _ _ _ act κ _ _ R M r d e hst hr hke m hm hsm`. Take `⟨Q, hQ⟩ : ∃ Q, Q = img e` from `⟨_, rfl⟩`. Establish `hcard : Q.card = d` using `by simp [hQ, img]`. Establish `hQmem : ∀ j, e j ∈ Q` using `fun j => by simp [hQ, img]`. Establish `qex : QEx (fun _ => M) (fun l => act (r l)) Q d` using `hQ ▸ subq S E act κ M r d e hke`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `wok : WOk (fun _ : Finset κ => M) (fun l => act (r l))` using `⟨fun i j => by show act (r i) * act (r j) = act (r j) * act (r i)`. Rewrite using `[← map_mul, ← map_mul, mul_comm], fun s i _ x hx => hst _ (hr i) _ hx⟩`. Use `choose g hgM hg using fun l => sm_dec act M (fun j => r (e j)) (hsm l)`. Establish `hTcard : ∀ l, l ∉ Q → ∀ j, ((insert l Q).erase (e j)).card = d` using `fun l hl j => by`. Rewrite using `[Finset.card_erase_of_mem (Finset.mem_insert_of_mem (hQmem j)), Finset.card_insert_of_notMem hl, hcard]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hTQ : ∀ l, l ∉ Q → ∀ j, ((insert l Q).erase (e j)) ∩ Q = Q.erase (e j)` using `fun l hl j => by`. Use extensionality with `i`. Simplify using `only [Finset.mem_inter, Finset.mem_erase, Finset.mem_insert]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨⟨h1, _⟩, h3⟩`. Conclude with `⟨h1, h3⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨⟨h1, Or.inr h2⟩, h2⟩`. Establish `hterm : ∀ l, l ∉ Q → ∀ j (v : E), wd (wOn Q fun l => act (r l)) (Pi.single ((insert l Q).erase (e j)) v) = Pi.single (insert l Q) (GlobalTheory.cubeSign (insert l Q) (e j) • act (r (e j)) v)`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l hl j v`. Establish `hmem : e j ∈ insert l Q` using `Finset.mem_insert_of_mem (hQmem j)`. Rewrite using `[wd_single, Finset.sum_eq_single (e j)]`. Rewrite using `[Finset.insert_erase hmem]`. Simplify using `[wOn, hQmem j]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i hi hne`. Establish `hiQ : i ∉ Q`. Introduce `h`. Apply `(Finset.mem_compl.1 hi)` to reduce the goal to its premises. Conclude with `Finset.mem_erase.2 ⟨hne, Finset.mem_insert_of_mem h⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[wOn, hiQ]`. Introduce `h`. Conclude with `absurd (Finset.mem_compl.2 (Finset.notMem_erase _ _)) h`. Establish `hsum : ∀ (t : Finset κ) (f : Fin d → E), (Pi.single t (∑ j, f j) : Finset κ → E) = ∑ j, Pi.single t (f j)` using `fun t f => map_sum (AddMonoidHom.single (fun _ : Finset κ => E) t) f Finset.univ`. Establish `hy : ∃ y ∈ (acx (fun _ => M) (fun l => act (r l))).C d, Lev Q (· = (d : ℤ) - 1) y ∧ wd (wOn Q fun l => act (r l)) y = wd (wOn Qᶜ fun l => act (r l)) (Pi.single Q m)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨∑ l ∈ Qᶜ, ∑ j, Pi.single ((insert l Q).erase (e j)) ((GlobalTheory.cubeSign (insert l Q) l * GlobalTheory.cubeSign (insert l Q) (e j)) • g l j), ?_, ?_, ?_⟩` and prove the remaining obligations. Use `Submodule.sum_mem _ fun l hl => Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Establish `hl' : l ∉ Q` using `by simpa using hl`. Conclude with `single_mem M _ (hTcard l hl' j) (Submodule.smul_of_tower_mem _ _ (hgM l j))`. Introduce `s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_apply]`. Use `Finset.sum_eq_zero fun l hl => ?_` and prove the remaining obligations. Establish `hl' : l ∉ Q` using `by simpa using hl`. Rewrite using `[Finset.sum_apply]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `: s ≠ (insert l Q).erase (e j)`. Introduce and unpack `rfl`. Apply `hs` to reduce the goal to its premises. Rewrite using `[hTQ l hl' j, Finset.card_erase_of_mem (hQmem j), hcard]`. Establish `: 1 ≤ d`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hcard]`. Conclude with `Finset.card_pos.2 ⟨_, hQmem j⟩`. Use linear arithmetic over natural numbers and integers. Conclude with `Pi.single_eq_of_ne this _`. Rewrite using `[wd_single, map_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun l hl => ?_` and prove the remaining obligations. Establish `hl' : l ∉ Q` using `by simpa using hl`. Establish `hlc : l ∈ Qᶜ` using `hl`. Rewrite using `[map_sum]`. Simplify using `only [hterm l hl']`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hsum]`. Use `congr 1`. Establish `hw : wOn Qᶜ (fun l => act (r l)) l m = ∑ j, act (r (e j)) (g l j)`. Simplify `hg l` using `[wOn, hl']`. Rewrite using `[hw, Finset.smul_sum]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, smul_smul, mul_comm, mul_assoc, GlobalTheory.cubeSign_mul_self, mul_one]`. Take `⟨c, hc, hlev⟩` from `gl2 κ E (fun _ => M) (fun l => act (r l)) Q d d wok qex (Pi.single Q m) (single_mem M _ hcard hm) (by`. Introduce `s hs`. Establish `: s ≠ Q`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce and unpack `rfl`. Simplify using `[hcard] at hs`. Conclude with `Pi.single_eq_of_ne this _)`. Use the proof step `(by`. Rewrite using `[wd_single]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `Finset.sum_eq_zero fun i hi => ?_` and prove the remaining obligations. Establish `: i ∉ Q` using `by simpa using hi`. Simplify using `[wOn, this])`. Use `hy`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations.
-
-Establish `h` using `hlev Q (by simp [hcard])`. Rewrite `h` using `[hQ]`. Establish `h' : c (img e) - (Pi.single (img e) m : Finset κ → E) (img e) = 0` using `h`. Simplify `h'` using `[sub_eq_zero]`.
+A detailed English derivation is pending.
 -/
 theorem koszulTwoExact_of_gl2 : FiltrationCocycleLiftCriterion → SubQEx → KoszulCocycleExistsWithPrescribedComponent := by
   intro gl2 subq S E _ _ _ _ act κ _ _ R M r d e hst hr hke m hm hsm

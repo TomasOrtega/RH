@@ -18,7 +18,7 @@ section
 set_option autoImplicit false
 namespace GlobalTheory.BigOn
 /- English proof (translation)
-Introduce `hCoh hHecke hCheb hGal hBC hBS hAbove hLL` and use `_root_.GlobalTheory.T.expSt_of_num_sumExp_model GlobalTheory.T.weylLattice_exact_exponent_block_cut _root_.GlobalTheory.ExpTie.numSt_alt _root_.GlobalTheory.T.sum_expansion' (_root_.GlobalTheory.T.model_statement_of_crystalline_chebotarev_frame_gal hBS hCheb _root_.GlobalTheory.T …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem exponent_bound_of_unitaryThetaStandardTheorems_alt :
     GlobalTheory.Published.ClozelCohomological →
@@ -39,7 +39,7 @@ end
 section
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.BigOn.exponent_bound_of_unitaryThetaStandardTheorems_alt | exact _root_.GlobalTheory.BigOn.exponent_bound_of_unitaryThetaStandardTheorems_alt | (intros; apply _root_.GlobalTheory.BigOn.exponent_bound_of_unitaryThetaStandardTheorems_alt <;> assum …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.expSt_of_base_change_and_crystalline_lattices : GlobalTheory.Published.ClozelCohomological → GlobalTheory.Published.HeckeLAdicCharacter → GlobalTheory.Published.ChebotarevDegreeOne → _root_.UpperTheory.GalS.CuspUAlt → _root_.GlobalTheory.Published.BaseChangeDefiniteUnitaryGroup → GlobalTheory.Published.BhattScholzeCrystallineLattices → GlobalTheory.Published.HeckeLAdicCharacterAbove → _root_.UpperTheory.Zero.LLC.RecTExists → _root_.GlobalTheory.BigOn.ExponentStatement := by
   first | exact @_root_.GlobalTheory.BigOn.exponent_bound_of_unitaryThetaStandardTheorems_alt | exact _root_.GlobalTheory.BigOn.exponent_bound_of_unitaryThetaStandardTheorems_alt | (intros; apply _root_.GlobalTheory.BigOn.exponent_bound_of_unitaryThetaStandardTheorems_alt <;> assumption)

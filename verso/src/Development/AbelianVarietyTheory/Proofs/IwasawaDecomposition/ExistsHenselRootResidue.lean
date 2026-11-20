@@ -4,7 +4,7 @@ open IsLocalRing Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[eval_map, eval_map, hom_eval₂]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem residue_eval_map_comm {A B C : Type} [CommRing A] [CommRing B] [CommRing C]
     (q : A[X]) (f : A →+* B) (h : B →+* C) (x : B) :
@@ -12,15 +12,13 @@ theorem residue_eval_map_comm {A B C : Type} [CommRing A] [CommRing B] [CommRing
   rw [eval_map, eval_map, hom_eval₂]
 
 /- English proof (translation)
-Introduce `A R V _ _ _ _ _ _ _ φ α σ hσ θ q hq h0 hu`. Take `⟨η₀, hη₀⟩` from `residue_surjective (σ (residue R θ))`. Establish `hcomp : (residue V).comp α = σ.comp ((residue R).comp φ)`. Use extensionality with `a`. Simplify using `[hσ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `key : ∀ p : A[X], residue V ((p.map α).eval η₀) = σ (residue R ((p.map φ).eval θ))`. Introduce `p`. Rewrite using `[residue_eval_map_comm, hcomp, hη₀, residue_eval_map_comm p φ (residue R), residue_eval_map_comm _ _ σ]`. Establish `hm : (q.map α).Monic` using `hq.map α`. Establish `h1 : (q.map α).eval η₀ ∈ maximalIdeal V`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← residue_eq_zero_iff, key, h0, map_zero, map_zero]`. Establish `h2 : IsUnit (Ideal.Quotient.mk (maximalIdeal V) ((q.map α).derivative.eval η₀))`. Establish `: (Ideal.Quotient.mk (maximalIdeal V) ((q.map α).derivative.eval η₀)) = σ (residue R ((q.derivative.map φ).eval θ))`. Rewrite using `[derivative_map]`. Conclude with `key _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `(hu.map (residue R)).map σ`. Take `⟨η, hη, hηm⟩` from `HenselianRing.is_henselian (I := maximalIdeal V) _ hm η₀ h1 h2`. Use `⟨η, hη, ?_⟩` and prove the remaining obligations. Rewrite using `[← hη₀, ← sub_eq_zero, ← map_sub, residue_eq_zero_iff]`.
-
-Conclude with `hηm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_root_lift_of_residue_map :
     ∀ {A R V : Type} [CommRing A] [IsLocalRing A] [CommRing R] [IsLocalRing R] [CommRing V]

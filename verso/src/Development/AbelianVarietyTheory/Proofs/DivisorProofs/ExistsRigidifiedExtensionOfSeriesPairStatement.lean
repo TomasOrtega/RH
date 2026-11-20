@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FrobKerIdealLeAugId
 open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv GlobalTheory.PDivGroup GlobalTheory.Katz
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Katz.exists_rigMap` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsRigidifiedExtensionOfSeriesPair.lean&line=12#L12)
 -/

@@ -14,9 +14,9 @@ open scoped Classical
 variable {g : ℕ} [Fact g.Prime]
 
 /- English proof (translation)
-Use `Supp.ext_entN fun i j hi hj => ?_` and prove the remaining obligations. Rewrite using `[ParInd.blk_val, entN, dif_pos ⟨hi, hj⟩, ParInd.dg]`. Simplify using `only`. Apply the tactic sequence `by_cases h1 : i < a <;> by_cases h2 : j < a`. Rewrite using `[(Supp.entN_par _ _ _ i j).1 h1 h2, if_pos ⟨h1, h2⟩]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(Supp.entN_par _ _ _ i j).2.2.2 rfl h1 (by omega), if_neg (by omega), if_neg (by omega)]`. Rewrite using `[(Supp.entN_par _ _ _ i j).2.1 (by omega) h2, if_neg (by omega), if_neg (by omega)]`. Take `⟨i, rfl⟩` from `Nat.exists_eq_add_of_le (not_lt.1 h1)`. Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_le (not_lt.1 h2)`. Rewrite using `[(Supp.entN_par _ _ _ i j).2.2.1, if_neg (by omega), if_pos (by omega)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/

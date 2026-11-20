@@ -11,13 +11,13 @@ namespace GenericFreeness
 variable {R : Type*} [CommRing R] {M : Type*} [AddCommGroup M] [Module R M]
 
 /- English proof (translation)
-Set `f` to `TensorProduct.mk R (Localization.Away a) M 1`. Use `⟨Module.Basis.mk (v := f ∘ fun x : s => (x : M)) (LinearIndependent.of_isLocalizedModule (Localization.Away a) (.powers a) f h.linearIndepOn) ?_, fun x => Module.Basis.mk_apply _ _ x⟩` and prove the remaining obligations. Introduce `y _`. Proceed by induction on `y with`. Consider the case `zero => exact Submodule.zero_mem _`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `add y z hy hz => exact Submodule.add_mem _ (hy trivial) (hz trivial)`. Consider the case `tmul c m`. Take `⟨n, hn⟩` from `h.2.2 m trivial`. Rewrite `hn` using `[bot_sup_eq]`. Establish `h1` using `Submodule.mem_map_of_mem (f := f) hn`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[Submodule.map_span]`. Establish `h2` using `Submodule.span_subset_span R (Localization.Away a) _ h1`. Take `⟨u, hu⟩` from `((IsLocalization.Away.algebraMap_isUnit (S := Localization.Away a) a).pow n).exists_left_inv`. Establish `e : c ⊗ₜ[R] m = (c * u) • f (a ^ n • m)`. Simplify using `only [f, TensorProduct.mk_apply, ← smul_tmul, smul_tmul', smul_eq_mul, Algebra.smul_def, map_pow, mul_one, mul_assoc, hu]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, Set.range_comp, Subtype.range_coe]`. Conclude with `Submodule.smul_mem _ _ h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsBasisAway.exists_basis_apply_eq {a : R} {s : Set M}
     (h : IsBasisAway a (⊥ : Submodule R M) ⊤ s) :
@@ -46,7 +46,7 @@ theorem IsBasisAway.exists_basis_apply_eq {a : R} {s : Set M}
     exact Submodule.smul_mem _ _ h2
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `h.exists_basis_apply_eq`. Use `letI : Algebra (Localization.Away a) K := (IsLocalization.Away.lift a ha).toAlgebra`. Use `haveI : IsScalarTower R (Localization.Away a) K := .of_algebraMap_eq fun r => (IsLocalization.Away.lift_eq a ha r).symm`. Use `((b.baseChange K).map (AlgebraTensorModule.cancelBaseChange R _ K K M)).ne_zero ⟨x, hx⟩` as an intermediate fact. Simplify `this` using `[hb]`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem IsBasisAway.one_tmul_ne_zero {a : R} {s : Set M}
     (h : IsBasisAway a (⊥ : Submodule R M) ⊤ s) (K : Type*) [CommRing K] [Nontrivial K]
@@ -70,17 +70,15 @@ variable {R : Type*} [CommRing R] [IsDomain R] [IsNoetherianRing R]
   {A : Type*} [CommRing A] [Algebra R A] (φ : A₀ →ₐ[R] A)
 
 /- English proof (translation)
-Use `haveI : IsNoetherianRing A₀ := Algebra.FiniteType.isNoetherianRing R A₀`. Set `J : Ideal A₀` to `RingHom.ker φ`. Take `⟨a, ha0, ha⟩` from `exists_hasBasisAway_of_finiteType (R := R) (A := A₀) J`. Take `⟨b, hb0, hb⟩` from `exists_hasBasisAway_quotient R A₀ A₀ J (IsNoetherian.noetherian J)`. Establish `ha1` using `HasBasisAway.map (a := a) (J.subtype.restrictScalars R) ⊥ (by`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Submodule.comap (J.subtype.restrictScalars R) ⊥ = ⊥` using `LinearMap.ker_eq_bot.2 Subtype.val_injective`. Rewrite using `[this])` and apply the resulting hypothesis. Establish `e : (⊥ : Submodule R A₀) ⊔ LinearMap.range (J.subtype.restrictScalars R) = J.restrictScalars R`. Rewrite using `[bot_sup_eq]`. Use extensionality with `x`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Supply the required witnesses or components.
 
-Conclude with `⟨by rintro ⟨y, rfl⟩; exact y.2, fun hx => ⟨⟨x, hx⟩, rfl⟩⟩`. Rewrite `ha1` using `[e]`. Take `⟨s, hs⟩` from `ha1.of_dvd (dvd_mul_right a b)`. Take `⟨t, ht⟩` from `hb.of_dvd (dvd_mul_left b a)`. Establish `hst` using `hs.union bot_le le_top ht`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hab` using `mul_ne_zero ha0 hb0`. Take `⟨x, hxD, hxa⟩` from `hD.exists_mem_open (PrimeSpectrum.basicOpen (a * b)).isOpen ⟨⟨⊥, Ideal.isPrime_bot⟩, by simpa using hab⟩`. Establish `hu : IsUnit (algebraMap R x.asIdeal.ResidueField (a * b))`. Rewrite using `[isUnit_iff_ne_zero, Ne, Ideal.algebraMap_residueField_eq_zero]`. Conclude with `hxa`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `rfl : s = ∅` from `Set.eq_empty_of_forall_notMem fun y hy => by`. Use `hst.one_tmul_ne_zero _ hu (Or.inl hy) (h x hxD ?_)` and prove the remaining obligations. Establish `: φ y = 0` using `hs.1 hy`. Rewrite using `[Algebra.TensorProduct.map_tmul, this, tmul_zero, map_zero]`. Use `⟨a * b, hab, fun y hy => ?_⟩` and prove the remaining obligations.
-
-Simplify using `using hs.2.2 y hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_pow_smul_ker_eq_zero_of_dense {D : Set (PrimeSpectrum R)} (hD : Dense D)
     (h : ∀ x ∈ D, Function.Injective (Algebra.TensorProduct.map
@@ -117,11 +115,11 @@ theorem exists_pow_smul_ker_eq_zero_of_dense {D : Set (PrimeSpectrum R)} (hD : D
   simpa using hs.2.2 y hy
 
 /- English proof (translation)
-Take `⟨a, ha0, ha⟩` from `exists_pow_smul_ker_eq_zero_of_dense φ hD h`. Use `⟨a, ha0, fun R' _ _ _ hu => (injective_iff_map_eq_zero _).2 fun z hz => ?_⟩` and prove the remaining obligations. Establish `hex` using `Module.Flat.lTensor_exact R' (LinearMap.exact_subtype_ker_map φ.toLinearMap)`. Take `⟨w, rfl⟩` from `(hex z).1 hz`. Use `clear hz`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Proceed by induction on `w with`. Consider the case `zero => simp`. Consider the case `add y z hy hz => rw [map_add, hy, hz, add_zero]`. Consider the case `tmul c y`. Take `⟨n, hn⟩` from `ha y y.2`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu⟩` from `(hu.pow n).exists_left_inv`. Establish `e : c = a ^ n • (c * u)`. Rewrite using `[Algebra.smul_def, map_pow, mul_comm, mul_assoc, hu, mul_one]`. Rewrite using `[LinearMap.lTensor_tmul, e, smul_tmul, Submodule.subtype_apply, hn, tmul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_baseChange_injective_of_dense.{w} {D : Set (PrimeSpectrum R)} (hD : Dense D)
     (h : ∀ x ∈ D, Function.Injective (Algebra.TensorProduct.map

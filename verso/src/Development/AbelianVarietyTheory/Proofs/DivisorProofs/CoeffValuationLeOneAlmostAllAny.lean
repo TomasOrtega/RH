@@ -53,33 +53,33 @@ namespace GlobalTheory.CoeffDenomZ
 open GlobalTheory.LamT GlobalTheory.CoeffDenom in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c _ z f La hz e k p`. Take `⟨T, iK, hT, hiK⟩` from `GlobalTheory.T.exists_completeDVR_completion_integral_iff z.K p`. Take `⟨M⟩` from `(GlobalTheory.T.exists_cmPoint_localModel_over_dvr E H Dw l Xo c z T iK).1 fun a => (hiK _).2 (p.valuation_le_one a)`. Set `io : c.F →+* T.Fr` to `iK.comp (algebraMap c.F z.K)`. Use `letI := io.toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Set `φ : z.K →ₐ[c.F] T.Fr` to `{ iK with commutes' := fun _ => rfl }`. Take `⟨yT, hyT⟩` from `GlobalTheory.Frames.FramedBaseChange.exists_frMap GlobalTheory.lawsFieldsSeparately.2.1 E H Dw l Xo c _ _ φ z.y`. Establish `hyx : yT.x = spMap iK ≫ z.x` using `by rw [hyT.1, hz.2.2.2.1]`. Take `⟨g, hg, hgL⟩` from `(GlobalTheory.T.exists_integralEigenbasis_of_frame_at_localModel E H Dw l Xo c T io M.G.t M.t'.t _ M.m1 M.m2 yT hyx).1`. Take `⟨s, hsS⟩` from `GlobalTheory.T.exists_unit_integral_generator_principal_local_model E H Dw l Xo c T io M.G M.t'.t _ M.m1 M.m2 yT hyx`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y', hy', -⟩` from `GlobalTheory.Frames.existsUnique_frChg E H Dw l Xo c T.Fr yT g s hg`. Establish `hL` using `hgL _ _ hy'`. Establish `hS` using `hsS _ _ hy'`. Use `choose c0 hc0 using fun (b : E →+* ℂ) (j : Fin (Dw.mult b)) => LocClause.exists_isLocGen p (z.ℓ (z.e ⟨b, j⟩)).I`. Set `cl : ∀ b : E →+* ℂ, Fin (Dw.mult b) → T.Fr` to `fun b j => iK (c0 b j)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcl : ∀ b j i, cl b j * (g b)⁻¹ j i ∈ Set.range (algebraMap T.V T.Fr)` using `fun b j i => GlobalTheory.T.lieLetter_integral_in_integral_eigenbasis E H Dw l Xo c z f La hz p T iK M hiK φ yT y' g s rfl hyT hy' hg hL b j i _ (hc0 b j)`. Establish `hloc` using `GlobalTheory.FrameCoeffLocZ.coeff_mul_prod_zpow_mem_det E H Dw l Xo c z f La hz e k p T iK hT hiK M φ yT y' g s rfl hyT hy' s.ne_zero hg hL hS cl hcl`. Set `D : ℤ` to `∑ b, ((Dw.mult b : ℤ) * (k b : ℤ) + ∑ i : Fin (Dw.mult b), e (some ⟨b, i⟩))`. Set `S : Finset (Formalism.L2.LamCM.FrVar Dw.mult →₀ ℕ)` to `(Finsupp.finite_of_degree_le (σ := Formalism.L2.LamCM.FrVar Dw.mult) D.toNat).toFinset`. Set `τ : T.Fr` to `∏ b, (g b).det ^ k b`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `yμ : (Formalism.L2.LamCM.FrVar Dw.mult →₀ ℕ) → T.Fr` to `fun μ => τ * (∏ v : Formalism.L2.LamCM.FrVar Dw.mult, cl v.1 v.2.2 ^ μ v)⁻¹ * ((s : T.Fr) ^ e none)⁻¹`. Take `⟨d, hd⟩` from `IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors T.V) (S.image yμ)`. Take `⟨ϖ, hϖp, hϖ0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot p.ne_bot`. Establish `hϖv : p.valuation z.K (ϖ : z.K) < 1` using `(p.valuation_lt_one_iff_mem ϖ).2 hϖp`. Take `⟨π, hπ⟩` from `(hiK (ϖ : z.K)).2 (p.valuation_le_one ϖ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hϖK : (ϖ : z.K) ≠ 0` using `fun h => hϖ0 (RingOfIntegers.coe_eq_zero_iff.1 h)`. Establish `hπ0 : π ≠ 0`. Introduce and unpack `rfl`. Rewrite `hπ` using `[map_zero, eq_comm, map_eq_zero]`. Conclude with `hϖK hπ`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hπu : ¬ IsUnit π`. Introduce and unpack `⟨u, rfl⟩`. Establish `h1 : iK ((ϖ : z.K)⁻¹) ∈ Set.range (algebraMap T.V T.Fr)`. Use `⟨((u⁻¹ : T.Vˣ) : T.V), ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv₀, ← hπ]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `map_units_inv (algebraMap T.V T.Fr) u`. Establish `h2` using `(hiK _).1 h1`. Rewrite `h2` using `[map_inv₀]`. Establish `h0 : p.valuation z.K (ϖ : z.K) ≠ 0` using `(Valuation.ne_zero_iff _).2 hϖK`. Establish `h4 : (1 : _) ≤ p.valuation z.K (ϖ : z.K)`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `absurd hϖv (not_lt.2 h4)`. Take `⟨N, t, hNt⟩` from `dvd_pow_of_ne_zero_of_not_isUnit (nonZeroDivisors.ne_zero d.2) hπ0 hπu`. Use `⟨ϖ ^ N, pow_ne_zero _ hϖ0, ?_⟩` and prove the remaining obligations. Introduce `F hF hv G hG μ`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hμ : MvPolynomial.coeff μ G = 0`. Simplify using `[hμ]`. Establish `hG1` using `hG`. Establish `hdeg` using `GlobalTheory.FrameHomZ.frPoly_secZ_degree_eq_any E H Dw l Xo c z.K z.y e k F hF G hG1 μ hμ`. Establish `hμS : μ ∈ S`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [S, Set.Finite.mem_toFinset, Set.mem_setOf_eq]`. Use linear arithmetic over natural numbers and integers. Take `⟨w, hw⟩` from `hloc F hF hv G hG1 μ`. Take `⟨r, hr⟩` from `hd (yμ μ) (Finset.mem_image_of_mem yμ hμS)`. Apply `(hiK _).1` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : (∏ v : Formalism.L2.LamCM.FrVar Dw.mult, cl v.1 v.2.2 ^ μ v) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun v _ => pow_ne_zero _ ((map_ne_zero iK).2 (hc0 v.1 v.2.2).1)`. Establish `hc : iK (MvPolynomial.coeff μ G) = yμ μ * algebraMap T.V T.Fr w`. Establish `hsn : ((s : T.Fr) ^ e none) ≠ 0` using `zpow_ne_zero _ s.ne_zero`. Establish `e0 : yμ μ * algebraMap T.V T.Fr w = (τ * algebraMap T.V T.Fr w) * ((∏ v : Formalism.L2.LamCM.FrVar Dw.mult, cl v.1 v.2.2 ^ μ v)⁻¹ * ((s : T.Fr) ^ e none)⁻¹)`. Simplify using `only [yμ]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e0, ← hw]`. Clear the denominators using the available nonvanishing facts. Rewrite `hr` using `[Algebra.smul_def]`. Establish `e1 : (((ϖ ^ N : 𝓞 z.K)) : z.K) = (ϖ : z.K) ^ N` using `by simp`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨t * r * w, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul iK, e1, map_pow, ← hπ, ← map_pow, hNt, hc]`. Simplify using `only [map_mul]`. Rewrite using `[hr]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_clear_coeff_at_prime_any : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H)
     (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)] (z : CMPt Xo c) (f : ℕ) (La : ℝ), z.Good f La →
@@ -175,29 +175,29 @@ end GlobalTheory.CoeffDenomZ
 namespace GlobalTheory.CoeffIntZ
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c _ z f La hz e k`. Take `⟨S₁, hS₁⟩` from `GlobalTheory.T.cmPoint_eigenbasis_change_det_integral_almost_all_primes E H Dw l Xo c z f La hz`. Establish `hfin : (⋃ j, {p : IsDedekindDomain.HeightOneSpectrum (𝓞 z.K) | FractionalIdeal.count z.K p (z.ℓ j).I ≠ 0}).Finite` using `Set.finite_iUnion fun j => Filter.eventually_cofinite.1 (FractionalIdeal.finite_factors (z.ℓ j).I)`. Establish `hfinT` using `Filter.eventually_cofinite.1 (FractionalIdeal.finite_factors z.Tl.I)`. Use `⟨S₁ ∪ hfin.toFinset ∪ hfinT.toFinset, fun p hp F hF hv G hG μ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Finset.mem_union, not_or, Set.Finite.mem_toFinset, Set.mem_iUnion, Set.mem_setOf_eq, not_exists, not_not] at hp`. Take `⟨⟨hp1, hp2⟩, hp3⟩` from `hp`. Establish `hgen : ∀ j, Formalism.L2.LamCM.IsLocGen p (1 : z.K) (z.ℓ j).I` using `fun j => ⟨one_ne_zero, by rw [FractionalIdeal.spanSingleton_one, FractionalIdeal.count_one, hp2 j]⟩`. Take `⟨T, iK, hT, hiK⟩` from `GlobalTheory.T.exists_completeDVR_completion_integral_iff z.K p`. Take `⟨M⟩` from `(GlobalTheory.T.exists_cmPoint_localModel_over_dvr E H Dw l Xo c z T iK).1 fun a => (hiK _).2 (p.valuation_le_one a)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `io : c.F →+* T.Fr` to `iK.comp (algebraMap c.F z.K)`. Use `letI := io.toAlgebra`. Set `φ : z.K →ₐ[c.F] T.Fr` to `{ iK with commutes' := fun _ => rfl }`. Take `⟨yT, hyT⟩` from `GlobalTheory.Frames.FramedBaseChange.exists_frMap GlobalTheory.lawsFieldsSeparately.2.1 E H Dw l Xo c _ _ φ z.y`. Establish `hyx : yT.x = spMap iK ≫ z.x` using `by rw [hyT.1, hz.2.2.2.1]`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨g, hg, hgL⟩` from `(GlobalTheory.T.exists_integralEigenbasis_of_frame_at_localModel E H Dw l Xo c T io M.G.t M.t'.t _ M.m1 M.m2 yT hyx).1`. Take `⟨s, hsS⟩` from `GlobalTheory.T.exists_unit_integral_generator_principal_local_model E H Dw l Xo c T io M.G M.t'.t _ M.m1 M.m2 yT hyx`. Take `⟨y', hy', -⟩` from `GlobalTheory.Frames.existsUnique_frChg E H Dw l Xo c T.Fr yT g s hg`. Establish `hL` using `hgL _ _ hy'`. Establish `hS` using `hsS _ _ hy'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv : ∀ b j i, (g b)⁻¹ j i ∈ Set.range (algebraMap T.V T.Fr)` using `fun b j i => by`. Use `GlobalTheory.T.lieLetter_integral_in_integral_eigenbasis E H Dw l Xo c z f La hz p T iK M hiK φ yT y' g s rfl hyT hy' hg hL b j i 1 (hgen _)` as an intermediate fact. Rewrite `this` using `[map_one, _root_.one_mul]`. Then use the resulting hypothesis. Establish `hR : ∀ x : T.Fr, x ∈ Set.range (algebraMap T.V T.Fr) ↔ x ∈ (algebraMap T.V T.Fr).range` using `fun x => (RingHom.mem_range).symm`. Establish `hdetinv : ∀ b, ((g b).det)⁻¹ ∈ (algebraMap T.V T.Fr).range` using `fun b => by choose N hN using hinv b`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (g b)⁻¹ = (Matrix.of N).map (algebraMap T.V T.Fr)`. Use extensionality with `j i`. Conclude with `(hN j i).symm`. Establish `e2 : ((g b).det)⁻¹ = ((g b)⁻¹).det`. Rewrite using `[Matrix.det_nonsing_inv, Ring.inverse_eq_inv']`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2, e1]`. Conclude with `⟨(Matrix.of N).det, by rw [RingHom.map_det]; rfl⟩`. Establish `hall` using `(hR _).1 (hS₁ p hp1 T iK hT hiK M φ yT y' g s rfl hyT hy' hg hL)`. Establish `hdet : ∀ b, (g b).det ∈ (algebraMap T.V T.Fr).range` using `fun b => by`. Establish `hne : (∏ b' ∈ Finset.univ.erase b, (g b').det) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun b' _ => (hg b').ne_zero`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : (g b).det = (∏ b', (g b').det) * ∏ b' ∈ Finset.univ.erase b, ((g b').det)⁻¹`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ b), Finset.prod_inv_distrib, _root_.mul_assoc, mul_inv_cancel₀ hne, _root_.mul_one]`. Rewrite using `[e3]`. Conclude with `Subring.mul_mem _ hall (Subring.prod_mem _ fun b' _ => hdetinv b')`. Establish `hτ : (∏ b, (g b).det ^ k b) ∈ (algebraMap T.V T.Fr).range` using `Subring.prod_mem _ fun b _ => Subring.pow_mem _ (hdet b) _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨w, hw⟩` from `GlobalTheory.FrameCoeffLocZ.coeff_mul_prod_zpow_mem_det E H Dw l Xo c z f La hz e k p T iK hT hiK M φ yT y' g s rfl hyT hy' s.ne_zero hg hL hS (fun _ _ => 1) (fun b j i => by rw [_root_.one_mul]; exact hinv b j i) F hF hv G hG μ`. Simplify using `only [one_pow, Finset.prod_const_one, _root_.mul_one] at hw`. Establish `hgenT : Formalism.L2.LamCM.IsLocGen p (1 : z.K) z.Tl.I`. Use `⟨one_ne_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[FractionalIdeal.spanSingleton_one, FractionalIdeal.count_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Simplify using `using hp3.symm`. Take `⟨u, hu⟩` from `GlobalTheory.T.integralGenerator_associated_localGenerator_CM_line E H Dw l Xo c z f La hz p T iK M hiK φ yT y' g s rfl hyT hy' hS 1 hgenT`. Rewrite `hu` using `[map_one, _root_.one_mul]`. Establish `hsn : ((s : T.Fr) ^ e none) ≠ 0` using `zpow_ne_zero _ s.ne_zero`. Establish `hsinv : ((s : T.Fr) ^ e none)⁻¹ ∈ (algebraMap T.V T.Fr).range`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨((u ^ (-e none) : T.Vˣ) : T.V), ?_⟩` and prove the remaining obligations. Establish `h1 : algebraMap T.V T.Fr ((u ^ (-e none) : T.Vˣ) : T.V) = ((Units.map (algebraMap T.V T.Fr : T.V →* T.Fr) (u ^ (-e none)) : T.Frˣ) : T.Fr)` using `rfl`. Rewrite using `[h1, map_zpow, Units.val_zpow_eq_zpow_val, hu, zpow_neg]`. Both sides reduce to the same expression. Establish `hc : iK (MvPolynomial.coeff μ G) = (∏ b, (g b).det ^ k b) * algebraMap T.V T.Fr w * ((s : T.Fr) ^ e none)⁻¹` using `(eq_mul_inv_iff_mul_eq₀ hsn).2 hw`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(hiK _).1 ((hR _).2 ?_)` and prove the remaining obligations. Rewrite using `[hc]`. Conclude with `Subring.mul_mem _ (Subring.mul_mem _ hτ (RingHom.mem_range_self _ _)) hsinv`.
+A detailed English derivation is pending.
 -/
 theorem coeff_valuation_le_one_almost_all_any : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H)
     (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)] (z : CMPt Xo c) (f : ℕ) (La : ℝ), z.Good f La →

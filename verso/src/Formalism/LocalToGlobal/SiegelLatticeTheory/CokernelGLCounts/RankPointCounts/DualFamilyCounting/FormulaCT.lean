@@ -22,13 +22,11 @@ def FormulaCT : Prop :=
 
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
 /- English proof (translation)
-Introduce `D T u u' Lsp hLT _ hT`. Establish `hη : AtD.EtaLocAt D` using `fun p => Formalism.L2.SG.Pf.AlTieLG.etaLoc_of_tied hLT p`. Establish `hDA` using `AtD.densAllAt_of D hF hη`. Establish `hFE` using `Formalism.L2.SG.Pf.formulaExplicitAt_of D hDA`. Establish `hR` using `T.Y.rowsOK u`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Λ0, hΛ0⟩` from `lattice_exists_holds D T u`. Establish `hne : (T.Y.what₂ u).Nonempty`. Take `⟨Λ', ⟨hΛ', -⟩, -⟩` from `hR.2 Λ0 hΛ0`. Conclude with `⟨Λ', hΛ'⟩`. Use `⟨cExpl_pos' D u (T.X.Fu u) (T.Y.what₂ u) hR hne, fun ϖ hϖ Z => ⟨orbitFiniteR_of counting_iso_inverse D T.Y.δ T.Y.M T.Y.agree Lsp u u' hT (T.X.Fu u) (T.Y.what₂ u) hR Z, fun hP => ⟨?_, ?_⟩⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨F', hz, hZ⟩` from `rational_pair_holds D u u' hT (T.X.Fu u) (T.Y.what₂ u) hR Z hP`. Take `⟨h1, h2⟩` from `hDA T.Y.δ T.Y.M T.Y.agree Lsp u u' hT (T.X.Fu u) (T.Y.what₂ u) hR ϖ hϖ Z F' hz hZ hP`. Distinguish the cases in `hI : Formalism.HermitianLatticesTheory.IsIntegralLat (VS D).hT (MMof D (T.X.Fu u) F')`. Conclude with `(h1 hI).2`. Take `⟨p, hp⟩` from `h2 hI`.
-
-Conclude with `(hasProd_zero_of_exists_eq_zero ⟨p, hp⟩).multipliable`. Conclude with `hFE T.Y.δ T.Y.M T.Y.agree Lsp u u' hT (T.X.Fu u) (T.Y.what₂ u) hR ϖ hϖ Z hP`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem formulaCT_of (hF : DualityBasisChange.FrameBasisL) : FormulaCT := by
   intro D T u u' Lsp hLT _ hT

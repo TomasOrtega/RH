@@ -22,11 +22,11 @@ def matM (G : GLoc v) (j a : ℕ) (ha : j + a = G.s + 1) :
     rw [← Matrix.mul_assoc (G.FY j a ha).β, (G.FY j a ha).βγ, Matrix.one_mul]
 
 /- English proof (translation)
-Unfold `GLoc.Mat`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `_ = (G.FY j a ha).γ * (mt (c.V j) g).map G.q.pr * (G.FY j a ha).β`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[h]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[(G.FY j a ha).γβ, Matrix.mul_one, ← Matrix.mul_assoc, (G.FY j a ha).γβ, Matrix.one_mul]`. Introduce and unpack `rfl`. Express the relevant statement in the definitionally equal form `_ = _ * ((G.FY j a ha).γ * (mt (c.V j) g).map G.q.pr * (G.FY j a ha).β) * _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[(G.FY j a ha).βγ, Matrix.mul_one, ← Matrix.mul_assoc, (G.FY j a ha).βγ, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem mat_iff (G : GLoc v) (j a : ℕ) (ha : j + a = G.s + 1) (g : GA D (c.V j)) (x) :
     G.Mat j a ha g x ↔ x = (matM G j a ha).toHomUnits g := by
@@ -44,9 +44,9 @@ theorem mat_iff (G : GLoc v) (j a : ℕ) (ha : j + a = G.s + 1) (g : GA D (c.V j
     rw [(G.FY j a ha).βγ, Matrix.mul_one, ← Matrix.mul_assoc, (G.FY j a ha).βγ, Matrix.one_mul]
 
 /- English proof (translation)
-Take `⟨b, hb, x, hx, rfl⟩` from `h`. Take `⟨b', hb', x', hx', rfl⟩` from `h'`. Take `rfl : b = b'` from `funext fun i => by have := hb i; have := hb' i; omega`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `: x i = x' i` using `Subtype.ext (((mat_iff _ _ _ _ _ _).1 (hx i)).trans ((mat_iff _ _ _ _ _ _).1 (hx' i)).symm)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem glam_unique {n : ℕ} (G : Fin n → GLoc v) (j : ℕ) (g : GA D (c.V j)) {a a' : ℂ} (h : GLam G j g a) (h' : GLam G j g a') :
     a = a' := by
@@ -58,7 +58,7 @@ theorem glam_unique {n : ℕ} (G : Fin n → GLoc v) (j : ℕ) (g : GA D (c.V j)
   rw [this]
 
 /- English proof (translation)
-Establish `hb : ∀ i, j + ((G i).s + 1 - j) = (G i).s + 1` using `fun i => by have := (G i).hs; omega`. Use `⟨_, ?_, fun i => (G i).s + 1 - j, hb, fun i => ⟨_, ((P.lev j hj g).1 hg).2 i _ (hb i) _ ((mat_iff _ _ _ _ _ _).2 rfl)⟩, fun i => (mat_iff _ _ _ _ _ _).2 rfl, rfl⟩` and prove the remaining obligations. Conclude with `Finset.prod_ne_zero_iff.2 fun i _ => Units.ne_zero _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem glam_exists {n : ℕ} {G : Fin n → GLoc v} (P : GPin G) (j : ℕ) (hj : j < D.R.m) (g : GA D (c.V j)) (hg : g ∈ v.JG j) :
     ∃ a, a ≠ 0 ∧ GLam G j g a := by
@@ -68,9 +68,9 @@ theorem glam_exists {n : ℕ} {G : Fin n → GLoc v} (P : GPin G) (j : ℕ) (hj 
   exact Finset.prod_ne_zero_iff.2 fun i _ => Units.ne_zero _
 
 /- English proof (translation)
-Take `⟨b, hb, x, hx, rfl⟩` from `h`. Take `⟨b', hb', x', hx', rfl⟩` from `h'`. Take `rfl : b = b'` from `funext fun i => by have := hb i; have := hb' i; omega`. Use `⟨b, hb, fun i => x i * x' i, fun i => (mat_iff _ _ _ _ _ _).2 ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ← (mat_iff _ _ _ _ _ _).1 (hx i), ← (mat_iff _ _ _ _ _ _).1 (hx' i)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[← Finset.prod_mul_distrib]`. Simplify using the standard rewrite rules.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem glam_mul {n : ℕ} (G : Fin n → GLoc v) (j : ℕ) {g g' : GA D (c.V j)} {a a' : ℂ} (h : GLam G j g a) (h' : GLam G j g' a') :
     GLam G j (g * g') (a * a') := by
@@ -82,9 +82,9 @@ theorem glam_mul {n : ℕ} (G : Fin n → GLoc v) (j : ℕ) {g g' : GA D (c.V j)
   · rw [← Finset.prod_mul_distrib]; simp
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil`. Use `⟨Finsupp.single 0 1, fun f => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `w`. Simplify using `[comb, Finsupp.support_single_ne_zero, heisO, symplOH, symplO, hO]`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Consider the case `cons i l ih`. Take `⟨d, hd⟩` from `ih`. Take `⟨d', -, h'⟩` from `(GlobalTheory.HeisComb.main D ψ S T).1 (e i) d`. Conclude with `⟨d', fun f => by rw [h', hd]; rfl⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_foldr (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) {ι : Type} (e : ι → WO S T →₀ ℂ) (l : List ι) :
     ∃ d : WO S T →₀ ℂ, ∀ f, comb ψ S T d f = l.foldr (fun i f' => comb ψ S T (e i) f') f := by
@@ -105,11 +105,9 @@ def reG (v : VCom c) (gP : Finset (GlobalTheory.FinPl.Pl D)) (JG : ∀ j, Subgro
 def move (G : GLoc v) (gP JG eG eGT dG) : GLoc (reG v gP JG eG eGT dG) := { G with }
 
 /- English proof (translation)
-Use `choose eG heG using fun j => exists_foldr c.ψ (c.V j) (c.V (j + 1)) (fun i => (G i).eg j) (List.finRange n)`. Use `choose dG hdG using fun j => exists_foldr c.ψ (c.X j) (c.X (j + 1)) (fun i => (G i).cg j) (List.finRange n)`. Establish `hT : ∀ j (_ : j + 2 * 0 + 2 = D.R.m) i, ∃ e : WO (c.V (j + 1)) c.T →₀ ℂ, HEq e (G i).egT` using `fun j h i => by`. Take `rfl : j = (G i).s` from `by have := (G i).hs; omega`. Conclude with `⟨_, HEq.rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose e he using hT`. Use `choose eGT heGT using fun j h => exists_foldr c.ψ (c.V (j + 1)) c.T (e j h) (List.finRange n)`. Set `gP : Finset (GlobalTheory.FinPl.Pl D)` to `Finset.univ.image fun i => (G i).q.v`. Use `⟨gP, fun j => GlobalTheory.FinPl.grpAt (c.V j) (· ∈ gP) ⊓ ⨅ i, ⨅ a, ⨅ ha : j + a = (G i).s + 1, (((G i).S.T (Fin D.R.t)).lev j a ha).J.comap (matM (G i) j a ha).toHomUnits, eG, eGT, dG, inj, fun p => ?_, fun j _ g => ?_, fun j _ f _ => heG j f, fun j h => ⟨e j h, he j h, fun f _ …` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `p ∈ gP ↔ ∃ i, p = (G i).q.v`.
-
-Simplify using `[gP, eq_comm]`. Express the relevant statement in the definitionally equal form `g ∈ _ ⊓ _ ↔ g ∈ GlobalTheory.FinPl.grpAt (c.V j) (· ∈ gP) ∧ ∀ i a ha x, (G i).Mat j a ha g x → x ∈ (((G i).S.T (Fin D.R.t)).lev j a ha).J`. Simplify using `only [Subgroup.mem_inf, Subgroup.mem_iInf, Subgroup.mem_comap, mat_iff, forall_eq]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_pin {n : ℕ} (G : Fin n → GLoc v) (inj : Function.Injective fun i => (G i).q.v) :
     ∃ gP JG eG eGT dG, GPin fun i => move (G i) gP JG eG eGT dG := by
@@ -134,39 +132,35 @@ section Rel
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use `set p := ofSplit q with hp`. Establish `hC : ∀ (V W : HSp D) (Y Y' : Type) [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] (F' : GlobalTheory.LocMod.Frame k V.rank Y') (F : GlobalTheory.LocMod.Frame k W.rank Y) (Ξ : Matrix Y Y' k → ℂ), ∃ e, p.IsCombAt c.ψ F' F e Ξ`. Introduce `V W Y Y' _ _ _ _ F' F Ξ`. Distinguish the cases in `h : Ξ ∈ SB (Matrix Y Y' k)`. Conclude with `hComb V W Y Y' F' F ⟨Ξ, h⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨0, by simp, fun _ _ _ Φ _ e => absurd (e ▸ Φ.2) h⟩`. Establish `hx : p.xi ≠ 0` using `Witness.xi_ne p`. Establish `hc0 : a₀ ≠ 0` using `by rintro rfl; simp at hc`. Set `sc : ℕ → k` to `fun j => a₀ * p.xi ^ (j / 2) / p.xi ^ (s / 2)`. Establish `sc0 : ∀ j, sc j ≠ 0` using `fun j => div_ne_zero (mul_ne_zero hc0 (pow_ne_zero _ hx)) (pow_ne_zero _ hx)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hodd` using `S.odd`. Set `Q : ∀ j a, j + a = s + 1 → GlobalTheory.LocMod.Frame k (c.V j).rank (XIx (Fin D.R.k) (Fin D.R.t) j ⊕ Fin a) → Prop` to `fun j => match j with`. Consider the case `0 => fun _ _ _ => True`. Consider the case `j + 1 => fun a ha F => ∀ ρ h, p.IsJacFrame (c.J j ρ h) (sc j) (p.hz (c.B j ρ h)) (FX (j + 1) (by omega)) F`. Establish `hFY : ∀ j a (ha : j + a = s + 1), ∃ F : GlobalTheory.LocMod.Frame k (c.V j).rank (XIx (Fin D.R.k) (Fin D.R.t) j ⊕ Fin a), (∀ ρ h, p.IsBesFrame (c.B j ρ h) (sc j) (FX j (by omega)) F) ∧ Q j a ha F`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `j a ha`. Distinguish the cases in `hj : j % 2 = 0`. Take `⟨ρ, rfl⟩ : ∃ ρ, a = 2 * ρ + 1` from `⟨a / 2, by omega⟩`. Establish `h : j + 2 * ρ + 2 = D.R.m` using `by omega`. Take `⟨F, hF⟩` from `Witness.exists_bes p (c.B j ρ h) (sc0 j) (FX j (by omega))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨F, fun ρ' h' => ?_, ?_⟩` and prove the remaining obligations. Take `rfl : ρ' = ρ` from `by omega`. Conclude with `hF`. Consider the cases of `j with`. Consider the case `zero => trivial`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Consider the case `succ j => intro ρ' h'`. Use linear arithmetic over natural numbers and integers. Take `⟨j, rfl⟩ : ∃ i, j = i + 1` from `⟨j - 1, by omega⟩`. Take `⟨ρ, rfl⟩ : ∃ ρ, a = 2 * ρ` from `⟨a / 2, by omega⟩`. Establish `h : j + 2 * ρ + 2 = D.R.m` using `by omega`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨F, hF⟩` from `Witness.exists_jac p (c.J j ρ h) (sc0 j) (Witness.hz_ne p (c.B j ρ h)) (FX (j + 1) (by omega))`. Use `⟨F, fun ρ' h' => by omega, fun ρ' h' => ?_⟩` and prove the remaining obligations. Take `rfl : ρ' = ρ` from `by omega`. Conclude with `hF`. Use `choose FY hB hJ using hFY`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨NT, hNT, latT⟩` from `hLat c.T _ FT`. Establish `hN : ∀ j, ∃ L : GlobalTheory.FinPl.Lat (c.V j), (j < D.R.m → IsSelfDualC (c.V j) L) ∧ ∀ a ha, IntIn q (c.V j) (FY j a ha) L`. Introduce `j`. Distinguish the cases in `hj : j ≤ s + 1`. Take `⟨a, ha⟩ : ∃ a, j + a = s + 1` from `⟨s + 1 - j, by omega⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨L, h1, h2⟩` from `hLat (c.V j) _ (FY j a ha)`. Use `⟨L, fun _ => h1, fun a' ha' => ?_⟩` and prove the remaining obligations. Take `rfl : a' = a` from `by omega`. Conclude with `h2`. Conclude with `⟨⊥, fun h => by omega, fun a ha => by omega⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose N sdN latY using hN`. Establish `heg : ∀ j, ∃ e : WO (c.V j) (c.V (j + 1)) →₀ ℂ, ∀ a (H : j + a = s), p.IsCombAt c.ψ (FY j (a + 1) (by omega)) (FY (j + 1) a (by omega)) e ((S.T (Fin D.R.t)).Phi j a H)`. Introduce `j`. Distinguish the cases in `hj : j ≤ s`. Take `⟨a, ha⟩ : ∃ a, j + a = s` from `⟨s - j, by omega⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨e, he⟩` from `hC _ _ _ _ (FY j (a + 1) (by omega)) (FY (j + 1) a (by omega)) ((S.T (Fin D.R.t)).Phi j a ha)`. Use `⟨e, fun a' ha' => ?_⟩` and prove the remaining obligations. Take `rfl : a' = a` from `by omega`. Conclude with `he`. Conclude with `⟨0, fun a ha => by omega⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `choose eg eg_is using heg`. Take `⟨egT, egT_is⟩` from `hC _ _ _ _ (FY (s + 1) 0 rfl) FT (S.T (Fin D.R.t)).PhiTop`. Apply the tactic sequence `have hcg : ∀ j, ∃ e : WO (c.X j) (c.X (j + 1)) →₀ ℂ, (∀ a (H : j + 1 + a = s), p.IsCombAt c.ψ (FX j (by omega)) (FX (j + 1) (by omega)) e ((S.T (Fin D.R.t)).entry S.ψ ν j a H 1 1)) ∧ (∀ h : j = s, p.IsCombAt c.ψ (FX s (by omega)) (FX (s + 1) le_rfl) (h ▸ e) fun x₀ => (S.T (Fin D. …`. Introduce `j`. Distinguish the cases in `h1 : j + 1 ≤ s`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Consider separately whether the proposition holds or fails.
 
-Take `⟨a, ha⟩ : ∃ a, j + 1 + a = s` from `⟨s - (j + 1), by omega⟩`. Apply the tactic sequence `obtain ⟨e, he⟩ := hC _ _ _ _ (FX j (by omega)) (FX (j + 1) (by omega)) ((S.T (Fin D.R.t)).entry S.ψ ν j a ha 1 1)`. Use `⟨e, fun a' ha' => ?_, fun h => by omega, fun h => by omega⟩` and prove the remaining obligations. Take `rfl : a' = a` from `by omega`. Conclude with `he`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h2 : j = s`. Substitute `h2` using the available equality. Take `⟨e, he⟩` from `hC _ _ _ _ (FX j (by omega)) (FX (j + 1) le_rfl) fun x₀ => (S.T (Fin D.R.t)).Psi 1 x₀ (S.y0 (Fin D.R.t))`. Conclude with `⟨e, fun a ha => by omega, fun _ => he, fun h => by omega⟩`. Distinguish the cases in `h3 : j = s + 1`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Substitute `h3` using the available equality. Take `⟨e, he⟩` from `hC _ _ _ _ (FX (s + 1) le_rfl) FM ((S.T (Fin D.R.t)).xiTop (box _ (1 : kˣ)) S.ψ ν (-1) (Submodule.Quotient.mk (S.y0 (Fin D.R.t))))`. Conclude with `⟨e, fun a ha => by omega, fun h => by omega, fun _ => he⟩`. Conclude with `⟨0, fun a ha => by omega, fun h => absurd h h2, fun h => absurd h h3⟩`. Use `choose cg cg1 cg2 cg3 using hcg`.
-
-Use `⟨N, NT, sdN, hNT, ⟨⟨k, ν, unitVol, q, unit, s, hs, S, char, FX, FT, FM, FY, sc, fun j => ?_, fun j => ?_, hz_unit, fun j ρ h a ha => hB j a ha ρ h, fun j ρ h a ha => hJ (j + 1) a ha ρ h, z₀, last, fun h => ?_, latX, latM, latY, latT, eg, eg_is, egT, egT_is, cg, cg1, cg2 s rfl, cg …` and prove the remaining obligations. Simplify using `[sc, hc, hxi]`. Simplify using `only [sc]`. Rewrite using `[show (j + 1 + 1) / 2 = j / 2 + 1 by omega, pow_succ, ← hp]`. Expand and normalize the polynomial expressions, which then agree.
-
-Establish `: sc s = a₀` using `by simp only [sc]; field_simp`. Rewrite using `[this]`. Conclude with `tau h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_gLoc (v : VCom c) [MeasurableSpace k] [BorelSpace k] (ν : Measure k) (unitVol : IsUnitVol ν) (q : GlobalTheory.FinPl.SplitPt D k)
     (unit : q.UnitAA) (s : ℕ) (hs : s + 1 + 1 = D.R.m) (S : SymData k s D.R.k) (char : (ofSplit q).IsChar c.ψ S.ψ)
@@ -284,11 +278,9 @@ section Mu
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `key : ∀ M : Matrix a a k, IntM M → valuation k M.det ≤ 1` using `fun M hM => by`. Establish `: M.det ∈ 𝒪[k]`. Rewrite using `[Matrix.det_apply']`. Conclude with `sum_mem fun σ _ => mul_mem (intCast_mem _ _) (prod_mem fun i _ => hM _ _)`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `key _ (mem_KO.1 hg).1`. Establish `h2` using `key _ (mem_KO.1 hg).2`. Establish `h3 : valuation k g.val.det * valuation k (g⁻¹).val.det = 1`. Rewrite using `[← map_mul, ← Matrix.det_mul, Units.mul_inv, Matrix.det_one, map_one]`. Use `le_antisymm h1 ?_` and prove the remaining obligations.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem val_det {a : Type} [Fintype a] [DecidableEq a] {g : GL a k} (hg : g ∈ KO k a) :
     valuation k ((Matrix.GeneralLinearGroup.det g : kˣ) : k) = 1 := by
@@ -307,11 +299,11 @@ theorem val_det {a : Type} [Fintype a] [DecidableEq a] {g : GL a k} (hg : g ∈ 
     _ = _ := mul_one _
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => rfl`. Consider the case `succ j ih`. Rewrite using `[TypeDatum.iter_succ, TypeDatum.iter_succ, ih]`. Generalize the expression as in `P.iter t μ' h' j = Q`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Establish `: Q.stepLam t (μ (j + 1)) (h _) = Q.stepLam t (μ' (j + 1)) (h' _)`. Use `MonoidHom.ext fun g => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ * (μ (j + 1) _)⁻¹ * μ (j + 1) _ = _ * (μ' (j + 1) _)⁻¹ * μ' (j + 1) _`. Rewrite using `[e _ _ (val_det (Q.le_KO (Q.corner g).2)), e _ _ (val_det g.2.1)]`. Unfold `TypeDatum.step`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Simplify using `only [this]`.
+Simplify using the standard rewrite rules.
 -/
 theorem iter_congr {r t : Type} [Fintype r] [DecidableEq r] [Fintype t] [DecidableEq t] (P : TypeDatum k r) {μ μ' : ℕ → kˣ →* ℂˣ}
     (h : ∀ j, IsTame (μ j)) (h' : ∀ j, IsTame (μ' j)) (e : ∀ j (x : kˣ), valuation k (x : k) = 1 → μ j x = μ' j x) (j : ℕ) :
@@ -329,13 +321,13 @@ theorem iter_congr {r t : Type} [Fintype r] [DecidableEq r] [Fintype t] [Decidab
     simp only [this]
 
 /- English proof (translation)
-Establish `hΦ : ∀ j, S.P.iterPhi t μ h j = S.P.iterPhi t S.μ S.tame j` using `fun j => by`. Unfold `TypeDatum.iterPhi`. Rewrite using `[iter_congr S.P h S.tame e j]`. Generalize the expression as in `S.P.iter t S.μ S.tame j = Q`. Establish `: Q.rho (μ (j + 1)) = Q.rho (S.μ (j + 1))` using `MonoidHom.ext fun g => by`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Rewrite using `[TypeDatum.rho_apply, TypeDatum.rho_apply, e _ _ (val_det (Q.le_KO g.2))]`. Unfold `TypeDatum.Phi`. Rewrite using `[this]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j a ha`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Express the relevant statement in the definitionally equal form `(S.P.iter t μ h j).toLevel.map _ = (S.P.iter t S.μ S.tame j).toLevel.map _`. Rewrite using `[iter_congr S.P h S.tame e j]`. Both sides reduce to the same expression. Use function extensionality and compare the values at `j a ha`. Express the relevant statement in the definitionally equal form `LatFrame.transport _ _ (S.P.iterPhi t μ h j) = LatFrame.transport _ _ (S.P.iterPhi t S.μ S.tame j)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hΦ]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `LatFrame.transport _ _ (S.P.iterPhi t μ h _) = LatFrame.transport _ _ (S.P.iterPhi t S.μ S.tame _)`. Rewrite using `[hΦ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem withMu_same {s κ : ℕ} (S : SymData k s κ) (t : Type) [Fintype t] [DecidableEq t] (μ : ℕ → kˣ →* ℂˣ) (h : ∀ j, IsTame (μ j))
     (e : ∀ j (x : kˣ), valuation k (x : k) = 1 → μ j x = S.μ j x) :
@@ -366,7 +358,7 @@ attribute [local instance] _root_.Formalism.BasicNotions.Host.cmStar in
 variable {D : _root_.Formalism.BasicNotions.D7} {c : _root_.GlobalTheory.SeeSaw.Comm D} {v : _root_.GlobalTheory.SeeSaw.VCom c} in
 
 /- English proof (translation)
-Establish `hreg : (G.S.T (Fin D.R.t)).Regular`. Unfold `_root_.GlobalTheory.SymChain.SymData.T _root_.GlobalTheory.StepData.typeChain`. Conclude with `_root_.GlobalTheory.StepData.Chain.ofType_regular _ _ _ _ _`. Take `⟨hstep, htop, -⟩` from `hreg`. Conclude with `⟨hstep, htop⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SeeSaw.GModel.phi_sb (G : _root_.GlobalTheory.SeeSaw.GLoc v) :
     (∀ j a H, (G.S.T (Fin D.R.t)).Phi j a H ∈
@@ -379,7 +371,7 @@ theorem _root_.GlobalTheory.SeeSaw.GModel.phi_sb (G : _root_.GlobalTheory.SeeSaw
   exact ⟨hstep, htop⟩
 
 /- English proof (translation)
-Use `haveI := (c.x (j + 1)).vol.haar`. Rewrite using `[Ne, Measure.map_eq_zero_iff (c.jac j 0 h).d.continuous_embed.measurable.aemeasurable]`. Conclude with `NeZero.ne _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem volLast_ne (j : ℕ) (h : j + 2 * 0 + 2 = D.R.m) : Measure.map (c.jac j 0 h).d.emb0 (c.x (j + 1)).vol.μ ≠ 0 := by
   haveI := (c.x (j + 1)).vol.haar
@@ -403,9 +395,9 @@ def inv0 {S S₀ : HSp D} (d : HypDec S S₀ 0) : HypDec S₀ S 0 where
   rank_add := by have := d.rank_add; omega
 
 /- English proof (translation)
-Establish `h1 : d.j0 * (inv0 d).j0 = 1` using `show d.j0 * d.p0 = 1 by simpa [Matrix.mul_empty] using d.sum_eq_one`. Establish `h2 : (inv0 d).j0 * d.j0 = 1` using `(Matrix.mul_eq_one_comm_of_card_eq _ _ _ (by have := d.rank_add; simp; omega)).1 h1`. Establish `key : ∀ {A B : HSp D} (a : HypDec A B 0) (b : HypDec B A 0), a.j0 * b.j0 = 1 → ∀ g, a.emb0 (b.emb0 g) = g`. Introduce `A B a b h g`. Establish `e : mt A (a.emb0 (b.emb0 g)) = mt A g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_one (mt A (a.emb0 _)), ← h, ← Matrix.mul_assoc, a.wittDecomp_anisotropicEmbedding_inclAnisotropic, Matrix.mul_assoc, b.wittDecomp_anisotropicEmbedding_inclAnisotropic, ← Matrix.mul_assoc, h, Matrix.one_mul]`. Conclude with `Subtype.ext (Units.ext e)`. Set `φ : GA D S₀ ≃ₜ* GA D S` to `{ toFun := d.emb0, invFun := (inv0 d).emb0, left_inv := key _ _ h2, right_inv := key _ _ h1, map_mul' := map_mul _ continuous_toFun := d.continuous_embed, continuous_invFun := (inv0 d).continuous_embed }`. Conclude with `φ.isHaarMeasure_map μ`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem haar_map {S S₀ : HSp D} (d : HypDec S S₀ 0) (μ : Measure (GA D S₀)) [μ.IsHaarMeasure] : (μ.map d.emb0).IsHaarMeasure := by
   have h1 : d.j0 * (inv0 d).j0 = 1 := show d.j0 * d.p0 = 1 by simpa [Matrix.mul_empty] using d.sum_eq_one

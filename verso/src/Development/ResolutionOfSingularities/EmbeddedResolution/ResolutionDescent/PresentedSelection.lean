@@ -37,11 +37,11 @@ structure PresentedSelection where
     ClosedEmbeddingIntoAffineSpace ((sel k Y p).baseChange K hker hsnc)
 
 /- English proof (translation)
-Introduce `k _ _ Y p _ _ _ _ K _ _ _ _ _`. Establish `hlft : AlgebraicGeometry.LocallyOfFiniteType (baseChangeToSpec p K)` using `locallyOfFiniteType_baseChangeToSpec p K`. Establish `hqcb : AlgebraicGeometry.QuasiCompact (baseChangeToSpec p K)` using `quasiCompact_baseChangeToSpec p K`. Establish `hsncK : InStrictNormalCrossingPosition (baseChangeToSpec (C.sel k Y p).ambientStruct K) ([] : List (baseChange (C.sel k Y p).ambientStruct K).IdealSheafData)` using `hsnc K (baseChange (C.sel k Y p).ambientStruct K) (baseChangeToSpec (C.sel k Y p).ambientStruct K) (EmbeddingDatum.smooth_baseChangeToSpec_ambientToSpec (C.sel k Y p) K)`. Establish `hsq : IsPullback (baseChangeProjection p K) ((C.sel k Y p).baseChangeEmb K) (C.sel k Y p).emb (baseChangeProjection (C.sel k Y p).ambientStruct K)` using `(EmbeddingDatum.isPullback_baseChangeEmb (C.sel k Y p) K).flip`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hflat : AlgebraicGeometry.Flat (baseChangeProjection (C.sel k Y p).ambientStruct K)` using `inferInstance`. Establish `hqc1 : AlgebraicGeometry.QuasiCompact (C.sel k Y p).emb` using `inferInstance`. Establish `hqc2 : AlgebraicGeometry.QuasiCompact ((C.sel k Y p).baseChangeEmb K)` using `quasiCompact_of_isPullback hsq`. Establish `hkerK : NonzeroOnComponents (Scheme.Hom.ker ((C.sel k Y p).baseChangeEmb K))`. Rewrite using `[ker_eq_comap_ker_of_isPullback_of_flat hsq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `NonzeroOnComponents.comap_of_flat (C.sel k Y p).nonzeroOnComponents_ker _`. Conclude with `IsStrictPullbackBlowupSeq.of_isomorphic_pullback (hfield k Y p (C.sel k Y p) K hkerK hsncK) (hinv K (baseChange p K) (baseChangeToSpec p K) ((C.sel k Y p).baseChange K hkerK hsncK) (C.sel K (baseChange p K) (baseChangeToSpec p K)) (C.basePres k Y p K hkerK hsncK) (C.pres K (baseC …`.
+A detailed English derivation is pending.
 -/
 theorem isCompatibleWithFieldBaseChange_toAffineResolutionRule (R : EmbeddedResolutionRule.{u})
     (C : PresentedSelection.{u}) (hinv : R.IsIndependentOfPresentedEmbedding)

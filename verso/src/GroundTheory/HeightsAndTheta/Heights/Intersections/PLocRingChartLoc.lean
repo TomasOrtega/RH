@@ -11,33 +11,29 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo
 noncomputable section
 
 /- English proof (translation)
-Introduce `K _ ι _ P W hP hW hPW hrel`. Set `L` to `FractionRing (MRing ι ⧸ P)`. Set `q : MRing ι →+* L` to `(algebraMap (MRing ι ⧸ P) L).comp (Ideal.Quotient.mk P)`. Establish `hq : ∀ f, f ∉ W → q f ≠ 0` using `fun f hf h => hf (hPW (by`. Rewrite using `[RingHom.comp_apply, IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem] at h))` and apply the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hnz : ∀ v, v ∉ W → Ideal.Quotient.mk P v ∈ nonZeroDivisors (MRing ι ⧸ P)` using `fun v hv => mem_nonZeroDivisors_of_ne_zero fun h => hv (hPW (Ideal.Quotient.eq_zero_iff_mem.mp h))`. Establish `hfrac : ∀ u v a, IsMultiHomog u a → IsMultiHomog v a → v ∉ W → q u / q v ∈ locRing P W`. Introduce `u v a hu hv hvW`. Use `Subring.subset_closure ⟨u, v, a, hnz v hvW, hvW, hu, hv, ?_⟩` and prove the remaining obligations. Rewrite using `[IsFractionRing.mk'_eq_div]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `choose c hc using hrel`. Set `g : (Σ k, ι k) → L` to `fun p => q (X p) / q (X ⟨p.1, c p.1⟩)`. Set `B : Subring L` to `Subring.closure (Set.range g)`. Establish `hTB : Subring.closure ((Finset.univ.image g : Finset L) : Set L) = B`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.coe_image, Finset.coe_univ, Set.image_univ]`. Establish `hBS : B ≤ locRing P W` using `Subring.closure_le.mpr (by`. Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `hfrac _ _ _ (AvoidRing.isMultiHomog_X p.1 p.2) (AvoidRing.isMultiHomog_X p.1 (c p.1)) (hc p.1))`. Set `θ : MRing ι →+* L` to `eval₂Hom (Int.castRingHom L) g`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hθB : ∀ f, θ f ∈ B`. Introduce `f`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C r => rw [eval₂Hom_C, eq_intCast]`. Conclude with `intCast_mem _ r`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `add f₁ f₂ h₁ h₂ => rw [map_add]`. Conclude with `add_mem h₁ h₂`. Consider the case `mul_X f p hf => rw [map_mul, eval₂Hom_X']`. Conclude with `mul_mem hf (Subring.subset_closure ⟨p, rfl⟩)`. Establish `hkey : ∀ u a, IsMultiHomog u a → q u = θ u * q (∏ k, X ⟨k, c k⟩ ^ a k)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `u a hu`. Use `conv_lhs => rw [u.as_sum]`. Use `conv_rhs => rw [u.as_sum]`. Rewrite using `[map_sum, map_sum, Finset.sum_mul, map_prod]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hT : ∏ k, q (X ⟨k, c k⟩ ^ a k) = ∏ p : Σ k, ι k, q (X ⟨p.1, c p.1⟩) ^ m p`. Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `show q (X ⟨k, c k⟩ ^ a k) = ∏ y, q (X ⟨k, c k⟩) ^ m ⟨k, y⟩`. Rewrite using `[map_pow, Finset.prod_pow_eq_pow_sum, hu m hm k]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hθm : θ (monomial m (coeff m u)) = ((coeff m u : ℤ) : L) * ∏ p, g p ^ m p`. Rewrite using `[show θ _ = eval₂ (Int.castRingHom L) g _ from rfl, eval₂_monomial, eq_intCast, Finsupp.prod_fintype _ _ (fun _ => pow_zero _)]`. Establish `hqm : q (monomial m (coeff m u)) = ((coeff m u : ℤ) : L) * ∏ p, q (X p) ^ m p`. Rewrite using `[monomial_eq, map_mul, map_finsuppProd, Finsupp.prod_fintype _ _ (fun _ => by simp)]`. Simplify using `only [map_pow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `eq_intCast (q.comp C) _`. Rewrite using `[hT, hθm, hqm, mul_assoc, ← Finset.prod_mul_distrib]`. Use `congr 1`. Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← mul_pow]`. Use `congr 1`. Conclude with `(div_mul_cancel₀ _ (hq _ (hc p.1))).symm`. Use `⟨Finset.univ.image g, hTB ▸ hBS, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[hTB]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨u, v, a, hu, hv, hvW, hzv⟩` from `LocRingFrac.proof K ι P W hP hW hPW z hz`. Establish `hTW` using `AvoidRing.coordProd_not_mem hW c hc a`. Establish `hu'` using `hkey u a hu`. Establish `hv'` using `hkey v a hv`. Establish `hinv` using `hfrac _ v a (AvoidRing.isMultiHomog_coordProd c a) hv hvW`.
-
-Establish `hθv : θ v ≠ 0` using `fun h => hq v hvW (by rw [hv', h, zero_mul])`. Use `⟨θ u, hθB u, θ v, hθB v, hθv, ?_, ?_⟩` and prove the remaining obligations. Establish `he : (θ v)⁻¹ = q (∏ k, X ⟨k, c k⟩ ^ a k) / q v`. Rewrite using `[eq_div_iff (hq v hvW), hv', ← mul_assoc, inv_mul_cancel₀ hθv, one_mul]`. Rewrite using `[he]`.
-
-Conclude with `hinv`. Apply `mul_right_cancel₀ (hq _ hTW)` to reduce the goal to its premises. Rewrite using `[mul_assoc, ← hv', ← hu']`. Conclude with `hzv`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LocRingChartLoc.proof : LocRingChartLoc.Statement := by
   classical

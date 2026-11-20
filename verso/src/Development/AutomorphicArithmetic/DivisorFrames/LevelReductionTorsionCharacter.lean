@@ -27,7 +27,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {O : Type} [CommRing O] (x0 : R →+* O) (hu : IsUnit (x0 P'.f))
 
 /- English proof (translation)
-Use `haveI : Module.Finite (Localization.Away P'.f) P'.B := P'.fin.finite`. Use `haveI : Module.Finite (OL P' x0 hu) (Bt P' x0 hu) := Module.Finite.base_change _ _ _`. Use `haveI : Module.Finite O (OL P' x0 hu) := inferInstanceAs (Module.Finite O O)`. Conclude with `Module.Finite.trans (OL P' x0 hu) (Bt P' x0 hu)`.
+A detailed English derivation is pending.
 -/
 private theorem finite_Bt : Module.Finite O (Bt P' x0 hu) := by
   haveI : Module.Finite (Localization.Away P'.f) P'.B := P'.fin.finite
@@ -36,9 +36,9 @@ private theorem finite_Bt : Module.Finite O (Bt P' x0 hu) := by
   exact Module.Finite.trans (OL P' x0 hu) (Bt P' x0 hu)
 
 /- English proof (translation)
-Use `haveI := finite_Bt P' x0 hu`. Set `u₀ : Over.mk (spMap (algebraMap O (Bt P' x0 hu)) ≫ spMap x0 ≫ ξ) ⟶ t.G` to `GlobalTheory.HTMap.mkPt _ (sq P' x0 hu)`. Establish `hu₀ : u₀ ^ q = 1` using `GlobalTheory.HTMap.tors_of (g := spMap (inB P' x0 hu)) (w := P'.u) rfl P'.fin.tors`. Take `⟨ch, hch⟩` from `GlobalTheory.GmPoints.unitOf_bijective (O := O).2 (χ.χ _ u₀)`. Use `⟨ch, fun D _ _ _ α w hw => Units.ext ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.GmPoints.unitOf_ptMap, hch]`. Conclude with `(χ.nat _ D α u₀ w hu₀ (hw.trans (GlobalTheory.HTMap.spc_assoc _ _ _).symm)).symm`.
+A detailed English derivation is pending.
 -/
 private theorem ex_ch (χ : TorsChar t (spMap x0 ≫ ξ) q) :
     ∃ ch : Hs P' x0 hu ⟶ Gm (Sp O), ∀ (D : Type) [CommRing D] [Algebra O D] [Module.Finite O D]
@@ -55,13 +55,13 @@ private theorem ex_ch (χ : TorsChar t (spMap x0 ≫ ξ) q) :
   exact (χ.nat _ D α u₀ w hu₀ (hw.trans (GlobalTheory.HTMap.spc_assoc _ _ _).symm)).symm
 
 /- English proof (translation)
-Use `haveI := finite_Bt P' x0 hu`. Take `⟨c, hc₁, hc₂⟩` from `exists_mul_factor S x y`. Set `a : Bt P' x0 hu →ₐ[O] Bt P' x0 hu ⊗[O] Bt P' x0 hu` to `Algebra.TensorProduct.includeLeft`. Set `b : Bt P' x0 hu →ₐ[O] Bt P' x0 hu ⊗[O] Bt P' x0 hu` to `Algebra.TensorProduct.includeRight`. Take `⟨z₀, hz₀⟩` from `exists_mul_affine P' x0 hu hg a b`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hz : z = c ≫ z₀`. Rewrite using `[← cancel_mono (aH P' x0 hu hg.1), h, Category.assoc, hz₀, MonObj.comp_mul, ← Category.assoc, hc₁, ← Category.assoc, hc₂]`. Take `⟨α, rfl⟩` from `eq_ptMap' z₀`. Establish `ha` using `at_alg P' x0 hu a`. Establish `hb` using `at_alg P' x0 hu b`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `w₁ : Over.mk (spMap (algebraMap O (Bt P' x0 hu ⊗[O] Bt P' x0 hu)) ≫ spMap x0 ≫ ξ) ⟶ t.G` to `GlobalTheory.HTMap.mkPt _ (ha.over.trans (GlobalTheory.HTMap.spc_assoc _ _ _).symm)`. Set `w₂ : Over.mk (spMap (algebraMap O (Bt P' x0 hu ⊗[O] Bt P' x0 hu)) ≫ spMap x0 ≫ ξ) ⟶ t.G` to `GlobalTheory.HTMap.mkPt _ (hb.over.trans (GlobalTheory.HTMap.spc_assoc _ _ _).symm)`. Establish `h12 : (w₁ * w₂).left = spMap (α.toRingHom.comp (inB P' x0 hu)) ≫ P'.u.left`. Rewrite using `[← aH_left_π_ptMap P' x0 hu hg.1 α, hz₀]`. Conclude with `hg.2 (specO O _) _ _ w₁ w₂ (aH_left_π_ptMap P' x0 hu hg.1 a).symm (aH_left_π_ptMap P' x0 hu hg.1 b).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `k : ptMap α ≫ ch = (ptMap a ≫ ch) * (ptMap b ≫ ch)`. Apply `GlobalTheory.GmPoints.unitOf_bijective.1` to reduce the goal to its premises. Rewrite using `[GlobalTheory.GmPoints.unitOf_mul, hch _ α _ h12, hch _ a w₁ rfl, hch _ b w₂ rfl]`. Conclude with `χ.mul _ w₁ w₂ (GlobalTheory.HTMap.FP.At.tors (w := w₁) ha) (GlobalTheory.HTMap.FP.At.tors (w := w₂) hb)`. Rewrite using `[hz, Category.assoc, k, MonObj.comp_mul, ← Category.assoc, hc₁, ← Category.assoc, hc₂]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ch_mul (χ : TorsChar t (spMap x0 ≫ ξ) q) {ch : Hs P' x0 hu ⟶ Gm (Sp O)}
     (hch : ∀ (D : Type) [CommRing D] [Algebra O D] [Module.Finite O D]
@@ -102,35 +102,35 @@ end SlopeTestRemainingChoices
 open GlobalTheory.FinPartAt in
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Substitute `hy` using the available equality. Establish `htors` using `GlobalTheory.T.hodge_tate_map_pow_eq_one E H X t R ξ (p ^ n) P' 𝓞_ℂ_[p] x0 hu P.G π hg`. Establish `hι` using `jH_ι P' x0 hu hg.1 htors`. Establish `hopen` using `GlobalTheory.T.hodge_tate_map_open_immersion E H X t R ξ p n P' x0 hu P π hg htors`. Establish `hm : Mono (aH P' x0 hu hg.1)` using `⟨fun a b hab => by`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : a ≫ jH P' x0 hu hg.1 htors = b ≫ jH P' x0 hu hg.1 htors` using `GlobalTheory.KernelNoTorsion.torsion_hom_ext (by rw [Category.assoc, Category.assoc, hι, hab])`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Rewrite using `[← cancel_mono (jH P' x0 hu hg.1 htors).left, ← Over.comp_left, ← Over.comp_left, h1]⟩`. Establish `hOFF : GlobalTheory.IndefiniteRowSideFullHecke.HodgeTateKernel.IsOpenFiniteFlatSubgroup P.G (p ^ n) (jH P' x0 hu hg.1 htors)`. Use `⟨hopen, GlobalTheory.T.hodge_tate_scheme_finite E H X t R ξ (p ^ n) P' _ x0 hu, GlobalTheory.T.hodge_tate_scheme_flat E H X t R ξ (p ^ n) P' _ x0 hu, fun S => ?_, fun S x y => ?_, fun S x => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨z, hz⟩` from `exists_unit P' x0 hu hg S`. Conclude with `⟨z, by rw [hι, hz]⟩`. Take `⟨z, hz⟩` from `GlobalTheory.T.hodge_tate_difference_section E H X t R ξ (p ^ n) P' _ x0 hu P.G π hg S x y`. Conclude with `⟨z, by rw [hι, hz]⟩`. Establish `key : ∀ m : ℕ, ∃ z : S ⟶ Hs P' x0 hu, z ≫ aH P' x0 hu hg.1 = (x ≫ aH P' x0 hu hg.1) ^ m`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Take `⟨z, hz⟩` from `exists_unit P' x0 hu hg S`. Conclude with `⟨z, by rw [hz, pow_zero]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `succ m ih`. Take `⟨z, hz⟩` from `ih`. Take `⟨z', hz'⟩` from `GlobalTheory.T.hodge_tate_difference_section E H X t R ξ (p ^ n) P' _ x0 hu P.G π hg S z x`. Conclude with `⟨z', by rw [hz', hz, pow_succ]⟩`. Establish `hpos : 0 < p ^ n` using `pow_pos (Fact.out : p.Prime).pos n`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨z, hz⟩` from `key (p ^ n - 1)`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[hι, hz]`. Use `symm`. Use `inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← pow_succ', Nat.sub_add_cancel hpos, ← MonObj.comp_pow, htors, MonObj.comp_one]`. Take `⟨ch, hch⟩` from `ex_ch P' x0 hu χ`. Establish `hChar : GlobalTheory.IndefiniteRowSideFullHecke.HodgeTateKernel.IsCharacter P.G (p ^ n) (jH P' x0 hu hg.1 htors) ch` using `fun S x y z h => ch_mul P' x0 hu χ hch hg hm S x y z (by rwa [hι] at h)`. Establish `hExt : ∀ (w : specO 𝓞_ℂ_[p] 𝓞_ℂ_[p] ⟶ Hs P' x0 hu) (z : GlobalTheory.ChTor.Pts P.A.A), z.left ≫ P.gen = spMap (algebraMap 𝓞_ℂ_[p] ℂ_[p]) ≫ (w ≫ jH P' x0 hu hg.1 htors ≫ torsion.ι P.G (p ^ n)).left → algebraMap 𝓞_ℂ_[p] ℂ_[p] (unitOf (w ≫ ch) : 𝓞_ℂ_[p]) = (weil P.A (p ^ n) (tt.lev …`. Introduce `w z hz`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hz` using `[hι]`. Take `⟨α, rfl⟩` from `eq_ptMap' w`. Establish `ha` using `at_alg P' x0 hu α`. Set `w₁ : Over.mk (spMap (algebraMap 𝓞_ℂ_[p] 𝓞_ℂ_[p]) ≫ spMap x0 ≫ ξ) ⟶ t.G` to `GlobalTheory.HTMap.mkPt _ (ha.over.trans (GlobalTheory.HTMap.spc_assoc _ _ _).symm)`. Rewrite using `[hch _ α w₁ rfl]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Use `hW w₁ z (GlobalTheory.HTMap.FP.At.tors (w := w₁) ha) ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, hz, Category.assoc, aH_left_π_ptMap]`. Both sides reduce to the same expression. Establish `hR : (p : 𝓞_ℂ_[p] ⧸ Ideal.span {(p : 𝓞_ℂ_[p]) ^ n}) ^ n = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk _), ← map_pow, Ideal.Quotient.eq_zero_iff_mem]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mem_span_singleton_self _`. Take `⟨xG, hC, hxG⟩` from `hI`. Establish `hv0 : IsTanAtG t (spMap ((Ideal.Quotient.mk (Ideal.span {(p : 𝓞_ℂ_[p]) ^ n})).comp x0) ≫ ξ) (spMap (dualMap (Ideal.Quotient.mk (Ideal.span {(p : 𝓞_ℂ_[p]) ^ n}))) ≫ e k)`. Rewrite using `[← GlobalTheory.HTMap.spc_assoc]`. Conclude with `GlobalTheory.FactorDepth.isTanAtG_map t _ (he k)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : ((p ^ n : ℕ) : 𝓞_ℂ_[p] ⧸ Ideal.span {(p : 𝓞_ℂ_[p]) ^ n}) = 0` using `GlobalTheory.HTMap.cast_quot _ p n`. Establish `hu' : IsUnit ((RingHom.id (DualNumber (𝓞_ℂ_[p] ⧸ Ideal.span {(p : 𝓞_ℂ_[p]) ^ n}))) (((algebraMap (𝓞_ℂ_[p] ⧸ Ideal.span {(p : 𝓞_ℂ_[p]) ^ n}) (DualNumber (𝓞_ℂ_[p] ⧸ Ideal.span {(p : 𝓞_ℂ_[p]) ^ n}))).comp ((Ideal.Quotient.mk (Ideal.span {(p : 𝓞_ℂ_[p]) ^ n})).comp x0)) P'.f))` using `hu.map ((RingHom.id _).comp ((algebraMap _ (DualNumber (𝓞_ℂ_[p] ⧸ Ideal.span {(p : 𝓞_ℂ_[p]) ^ n}))).comp (Ideal.Quotient.mk (Ideal.span {(p : 𝓞_ℂ_[p]) ^ n}))))`. Take `⟨β, hβ⟩` from `GlobalTheory.HTMap.tan_at P' hv0 hq (RingHom.id _) hu'`. Establish `e1 : (RingHom.id (DualNumber (𝓞_ℂ_[p] ⧸ Ideal.span {(p : 𝓞_ℂ_[p]) ^ n}))).comp ((algebraMap (𝓞_ℂ_[p] ⧸ Ideal.span {(p : 𝓞_ℂ_[p]) ^ n}) (DualNumber (𝓞_ℂ_[p] ⧸ Ideal.span {(p : 𝓞_ℂ_[p]) ^ n}))).comp ((Ideal.Quotient.mk (Ideal.span {(p : 𝓞_ℂ_[p]) ^ n})).comp x0)) = (algebraMap 𝓞_ℂ_[ …` using `by rw [RingHom.id_comp, ← RingHom.comp_assoc]; exact congrArg (fun f => RingHom.comp f x0) (alg_dual_mk _)`. Rewrite `hβ` using `[e1, show spMap (RingHom.id (DualNumber (𝓞_ℂ_[p] ⧸ Ideal.span {(p : 𝓞_ℂ_[p]) ^ n}))) = 𝟙 _ from Spec.map_id _, Category.id_comp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `w₁ : Over.mk (spMap (algebraMap 𝓞_ℂ_[p] (DualNumber (𝓞_ℂ_[p] ⧸ Ideal.span {(p : 𝓞_ℂ_[p]) ^ n}))) ≫ spMap x0 ≫ ξ) ⟶ t.G` to `GlobalTheory.HTMap.mkPt _ (hβ.over.trans (GlobalTheory.HTMap.spc_assoc _ _ _).symm)`. Establish `h2` using `hD _ _ (GlobalTheory.HTMap.comb_single he k) w₁ rfl`. Establish `hβ' : (liftB P' x0 hu β hβ.1).toRingHom.comp (inB P' x0 hu) = β` using `RingHom.ext fun z => liftB_inB P' x0 hu β hβ.1 z`. Establish `h5` using `hch _ (liftB P' x0 hu β hβ.1) w₁ (by rw [hβ', hβ.2]; rfl)`. Establish `hcmp` using `cmp_of_corr P n hC (GlobalTheory.IndefiniteRowSideFullHecke.HodgeTateKernel.isNilpotent_dual hR)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hw : ptOf P' x0 hu β hβ.1 ≫ jH P' x0 hu hg.1 htors ≫ torsion.ι P.G (p ^ n) = P.cmp _ (GlobalTheory.IndefiniteRowSideFullHecke.HodgeTateKernel.isNilpotent_dual hR) (ptMap (dualBC (Algebra.ofId 𝓞_ℂ_[p] (𝓞_ℂ_[p] ⧸ Ideal.span {(p : 𝓞_ℂ_[p]) ^ n}))) ≫ x.1)`. Rewrite using `[hι, hcmp]`. Use `Over.OverMorphism.ext (hg.1.hom_ext ?_ ?_)` and prove the remaining obligations. Rewrite using `[ptOf_aH_π, hβ.2, Over.comp_left, Category.assoc, hxG, ptMap_dualBC_left]`. Rewrite using `[Over.w, Over.w]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `hLR n (Hs P' x0 hu) (jH P' x0 hu hg.1 htors) hOFF tt ch hChar hExt (𝓞_ℂ_[p] ⧸ Ideal.span {(p : 𝓞_ℂ_[p]) ^ n}) hR x (ptOf P' x0 hu β hβ.1) hw`. Rewrite `h1` using `[ptOf, h5]`. Establish `h3` using `congrArg TrivSqZeroExt.snd h1`. Establish `h6 : ∑ i, h i * (Pi.single k 1 : Fin g → 𝓞_ℂ_[p]) i = h k` using `by simp [Pi.single_apply]`. Rewrite `h3` using `[h2, h6, TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_inr, zero_add, Ideal.Quotient.algebraMap_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4 : (GlobalTheory.IndefiniteRowSideFullHecke.HodgeTateKernel.alLeft P tt).1 x = -((P.al₀ tt).1 x)` using `rfl`. Rewrite `h3` using `[h4, Ideal.Quotient.eq, sub_neg_eq_add]`. Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 private theorem generalized_bernoulli_change_level {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {X : Scheme.{0}} {t : SAB H X} {p : ℕ} [Fact p.Prime] {n : ℕ} [StarRing (𝓞 E)] {R : Type} [CommRing R]
@@ -240,9 +240,9 @@ private theorem generalized_bernoulli_change_level {E : Type} [Field E] [NumberF
   exact h3
 
 /- English proof (translation)
-Introduce `E _ _ _ H X t _ _ p _ n _ P yb π hg hLR tt χ hW g e h he hD k x hI`. Establish `hq : p ^ n ≠ 0` using `pow_ne_zero n (Fact.out : p.Prime).ne_zero`. Use `haveI : IsAlgClosed (FractionRing 𝓞_ℂ_[p]) := IsAlgClosed.of_ringEquiv ℂ_[p] _ (FractionRing.algEquiv 𝓞_ℂ_[p] ℂ_[p]).symm.toRingEquiv`. Use `haveI : CharZero 𝓞_ℂ_[p] := (algebraMap 𝓞_ℂ_[p] ℂ_[p]).charZero`. Take `⟨P', hP'⟩` from `GlobalTheory.HTMap.ex_full hq (splitTors_of_isAlgClosed E H X t _ yb _ hq) (IsLocalRing.maximalIdeal 𝓞_ℂ_[p]) inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hu : IsUnit (RingHom.id 𝓞_ℂ_[p] P'.f)`. Assume the negation of the conclusion as `hn`. Conclude with `hP'.1 ((IsLocalRing.mem_maximalIdeal _).2 hn)`. Use `generalized_bernoulli_change_level P' (RingHom.id _) hu P yb ?_ π hg hLR tt χ hW e h he hD k x hI` and prove the remaining obligations. Rewrite using `[show spMap (RingHom.id 𝓞_ℂ_[p]) = 𝟙 _ from Spec.map_id _, Category.id_comp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.level_reduction_torsion_character :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) (t : SAB H X) [IsLocallyNoetherian X], X.IsSeparated → ∀ (p : ℕ) [Fact p.Prime] (n : ℕ) [StarRing (𝓞 E)] (P : PtP E p) (yb : Sp 𝓞_ℂ_[p] ⟶ X) (π : P.G.left ⟶ t.G.left), IsGrpPullback P.G t.G yb π → GlobalTheory.IndefiniteRowSideFullHecke.HodgeTateKernel.LevelReduction P → ∀ (tt : P.T) (χ : TorsChar t yb (p ^ n)), (∀ (w : Over.mk (spMap (algebraMap 𝓞_ℂ_[p] 𝓞_ℂ_[p]) ≫ yb) ⟶ t.G) (z : GlobalTheory.ChTor.Pts P.A.A), w ^ (p ^ n) = 1 → z.left ≫ P.gen ≫ π = spMap (algebraMap 𝓞_ℂ_[p] ℂ_[p]) ≫ w.left → algebraMap 𝓞_ℂ_[p] ℂ_[p] (χ.χ 𝓞_ℂ_[p] w : 𝓞_ℂ_[p]ˣ) = (weil P.A (p ^ n) (tt.lev n) z : ℂ_[p])) → ∀ (g : ℕ) (e : Fin g → (Sp (DualNumber 𝓞_ℂ_[p]) ⟶ t.G.left)) (h : Fin g → 𝓞_ℂ_[p]), (∀ i, IsTanAtG t yb (e i)) → DlogIs t p n χ e h → ∀ (k : Fin g) (x : LieG P.Gt), ITie P π x (e k) → h k + (P.al₀ tt).1 x ∈ Ideal.span {(p : 𝓞_ℂ_[p]) ^ n} := by

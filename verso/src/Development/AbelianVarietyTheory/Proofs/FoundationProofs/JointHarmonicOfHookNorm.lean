@@ -27,9 +27,9 @@ section Fock
 open Formalism.E
 
 /- English proof (translation)
-Establish `key : ∀ (F : MvPolynomial σ ℂ) (s : Finset (σ →₀ ℕ)), F.support ⊆ s → fock F Q = ∑ m ∈ s, F.coeff m * star (Q.coeff m) * (Formalism.A.mfact m : ℂ)`. Introduce `F s hs`. Use `Finset.sum_subset hs fun m _ hm => ?_` and prove the remaining obligations. Rewrite using `[notMem_support_iff.mp hm, zero_mul, zero_mul]`. Rewrite using `[key _ _ support_add, key P _ Finset.subset_union_left, key P' _ Finset.subset_union_right, ← Finset.sum_add_distrib]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_add]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fock_add_left {σ : Type} (P P' Q : MvPolynomial σ ℂ) :
     fock (P + P') Q = fock P Q + fock P' Q := by
@@ -45,7 +45,7 @@ theorem fock_add_left {σ : Type} (P P' Q : MvPolynomial σ ℂ) :
   rw [coeff_add]; ring
 
 /- English proof (translation)
-Unfold `fock`. Rewrite using `[support_monomial]`. Use `split_ifs with hc`. Simplify using `[hc]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fock_monomial_left {σ : Type} (α : σ →₀ ℕ) (c : ℂ) (Q : MvPolynomial σ ℂ) :
     fock (monomial α c) Q = c * star (Q.coeff α) * (Formalism.A.mfact α : ℂ) := by
@@ -59,9 +59,9 @@ theorem fock_monomial_left {σ : Type} (α : σ →₀ ℕ) (c : ℂ) (Q : MvPol
 variable {σ₁ σ₂ τ : Type} {f : σ₁ → τ} {g : σ₂ → τ}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use extensionality with `x`. Use `DFunLike.congr_fun h (f x)` as an intermediate fact. Establish `hx : f x ∉ Set.range g` using `fun ⟨y, hy⟩ => hfg x y hy.symm`. Simplify `this` using `[Finsupp.mapDomain_apply hf, Finsupp.mapDomain_notin_range _ _ hx]`.
+Prove the components needed by the constructor for the conclusion. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use extensionality with `y`. Use `DFunLike.congr_fun h (g y)` as an intermediate fact. Establish `hy : g y ∉ Set.range f` using `fun ⟨x, hx⟩ => hfg x y hx`. Simplify `this` using `[Finsupp.mapDomain_apply hg, Finsupp.mapDomain_notin_range _ _ hy]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mapDomain_add_inj (hf : Function.Injective f) (hg : Function.Injective g)
     (hfg : ∀ x y, f x ≠ g y) {α α' : σ₁ →₀ ℕ} {β β' : σ₂ →₀ ℕ}
@@ -77,11 +77,11 @@ theorem mapDomain_add_inj (hf : Function.Injective f) (hg : Function.Injective g
     simpa [Finsupp.mapDomain_apply hg, Finsupp.mapDomain_notin_range _ _ hy] using this
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on' with`. Consider the case `add P P' h h' => simp only [map_add, add_mul, coeff_add, h, h']`. Consider the case `monomial α' x`. Proceed by induction on `Q using MvPolynomial.induction_on' with`. Consider the case `add Q Q' h h' => simp only [map_add, mul_add, coeff_add, h, h']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `monomial β' y`. Rewrite using `[rename_monomial, rename_monomial, monomial_mul, coeff_monomial, coeff_monomial, coeff_monomial]`. Distinguish the cases in `h : α'.mapDomain f + β'.mapDomain g = α.mapDomain f + β.mapDomain g`. Take `⟨rfl, rfl⟩` from `mapDomain_add_inj hf hg hfg h`. Simplify using the standard rewrite rules.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg h] split_ifs with h1 h2`. Conclude with `absurd (by rw [h1, h2]) h`. Apply the tactic sequence `all_goals simp`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_rename_mul (hf : Function.Injective f) (hg : Function.Injective g)
     (hfg : ∀ x y, f x ≠ g y) (α : σ₁ →₀ ℕ) (β : σ₂ →₀ ℕ) (P : MvPolynomial σ₁ ℂ)
@@ -105,9 +105,9 @@ theorem coeff_rename_mul (hf : Function.Injective f) (hg : Function.Injective g)
         all_goals simp
 
 /- English proof (translation)
-Unfold `Formalism.A.mfact`. Rewrite using `[Finsupp.prod_add_index_of_disjoint, Finsupp.prod_mapDomain_index_inj hf, Finsupp.prod_mapDomain_index_inj hg]`. Rewrite using `[Finsupp.mapDomain_support_of_injective hf, Finsupp.mapDomain_support_of_injective hg, Finset.disjoint_left]`. Introduce `t h1 h2`. Take `⟨x, -, rfl⟩` from `Finset.mem_image.mp h1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y, -, hy⟩` from `Finset.mem_image.mp h2`. Conclude with `hfg x y hy.symm`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mfact_mapDomain_add (hf : Function.Injective f) (hg : Function.Injective g)
     (hfg : ∀ x y, f x ≠ g y) (α : σ₁ →₀ ℕ) (β : σ₂ →₀ ℕ) :
@@ -124,9 +124,9 @@ theorem mfact_mapDomain_add (hf : Function.Injective f) (hg : Function.Injective
   exact hfg x y hy.symm
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on' with`. Consider the case `add P₁ P₂ h h' => simp only [map_add, add_mul, fock_add_left, h, h']`. Consider the case `monomial α x`. Proceed by induction on `Q using MvPolynomial.induction_on' with`. Consider the case `add Q₁ Q₂ h h' => simp only [map_add, mul_add, fock_add_left, h, h']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `monomial β y`. Rewrite using `[rename_monomial, rename_monomial, monomial_mul, fock_monomial_left, fock_monomial_left, fock_monomial_left, coeff_rename_mul hf hg hfg, mfact_mapDomain_add hf hg hfg, star_mul']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fock_rename_mul (hf : Function.Injective f) (hg : Function.Injective g)
     (hfg : ∀ x y, f x ≠ g y) (P P' : MvPolynomial σ₁ ℂ) (Q Q' : MvPolynomial σ₂ ℂ) :

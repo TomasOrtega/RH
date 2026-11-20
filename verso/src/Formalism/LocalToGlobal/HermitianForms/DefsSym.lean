@@ -22,21 +22,21 @@ def InJSym (k rS t : ℕ) (zl : Bool) (M : Matrix (Fin n) (Fin n) κ) : Prop :=
     M x y = (if x = y then 1 else 0) ∧ M y x = (if x = y then 1 else 0))
 
 /- English proof (translation)
-Unfold `posSym rSym at *`. Apply the tactic sequence `split_ifs <;> omega`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem posSym_lt {k rS x : ℕ} (hx : x < rSym k rS) : posSym k rS x < rSym k rS := by
   unfold posSym rSym at *
   split_ifs <;> omega
 
 /- English proof (translation)
-Unfold `lvSym`. Rewrite using `[if_pos hx]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem lvSym_of_lt {k rS t x : ℕ} (hx : x < rSym k rS) : lvSym k rS t x = posSym k rS x := by
   unfold lvSym
   rw [if_pos hx]
 
 /- English proof (translation)
-Unfold `lvSym`. Rewrite using `[if_neg hx]`. Conclude with `Nat.le_add_right _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lvSym_of_ge {k rS t x : ℕ} (hx : ¬ x < rSym k rS) : rSym k rS ≤ lvSym k rS t x := by
   unfold lvSym
@@ -44,16 +44,16 @@ theorem lvSym_of_ge {k rS t x : ℕ} (hx : ¬ x < rSym k rS) : rSym k rS ≤ lvS
   exact Nat.le_add_right _ _
 
 /- English proof (translation)
-Unfold `posSym rSym at *`. Apply the tactic sequence `split_ifs at h <;> omega`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem posSym_inj {k rS x z : ℕ} (hx : x < rSym k rS) (hz : z < rSym k rS) (h : posSym k rS z = posSym k rS x) : z = x := by
   unfold posSym rSym at *
   split_ifs at h <;> omega
 
 /- English proof (translation)
-Rewrite `h` using `[lvSym_of_lt hx]`. Distinguish the cases in `hz : z < rSym k rS`. Rewrite `h` using `[lvSym_of_lt hz]`. Conclude with `posSym_inj hx hz h`. Establish `h1` using `lvSym_of_ge (t := t) hz`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `posSym_lt hx`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem lvSym_eq {k rS t x z : ℕ} (hx : x < rSym k rS) (h : lvSym k rS t z = lvSym k rS t x) : z = x := by
   rw [lvSym_of_lt hx] at h
@@ -65,9 +65,9 @@ theorem lvSym_eq {k rS t x z : ℕ} (hx : x < rSym k rS) (h : lvSym k rS t z = l
     omega
 
 /- English proof (translation)
-Establish `hxr : x < rSym k rS` using `by unfold rSym; omega`. Establish `hmr : k + rS < rSym k rS` using `by unfold rSym; omega`. Rewrite `h1` using `[lvSym_of_lt hxr]`. Rewrite `h2` using `[lvSym_of_lt hmr]`. Distinguish the cases in `hz : z < rSym k rS`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite `h1`, `h2` using `[lvSym_of_lt hz]`. Unfold `posSym rSym at *`. Apply the tactic sequence `split_ifs at h1 h2 <;> omega`. Establish `h4` using `lvSym_of_ge (t := t) hz`. Establish `h5` using `posSym_lt hmr`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -86,25 +86,23 @@ theorem lvSym_mid {k rS t x z : ℕ} (hx : x < k) (h1 : ¬ lvSym k rS t z < lvSy
     omega
 
 /- English proof (translation)
-Take `⟨hM1, hM2, hM3, hM4⟩` from `hM`. Take `⟨hN1, hN2, hN3, hN4⟩` from `hN`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x y hxy`. Rewrite using `[Matrix.mul_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun z _ => ?_` and prove the remaining obligations. Distinguish the cases in `hz : lvSym k rS t z < lvSym k rS t x`. Rewrite using `[hM1 x z hz, zero_mul]`. Rewrite using `[hN1 z y (by omega), mul_zero]`. Introduce `x hx`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single x]`. Rewrite using `[hM2 x hx, hN2 x hx, one_mul]`. Introduce `z _ hzx`. Distinguish the cases in `hz : lvSym k rS t z < lvSym k rS t x`. Rewrite using `[hM1 x z hz, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hz' : lvSym k rS t x < lvSym k rS t z`. Rewrite using `[hN1 z x hz', mul_zero]`. Conclude with `absurd (Fin.ext (lvSym_eq (t := t) hx (by omega))) hzx`. Introduce `h`. Conclude with `absurd (Finset.mem_univ x) h`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x y hx hy`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun z _ => ?_` and prove the remaining obligations. Distinguish the cases in `hz : lvSym k rS t z < lvSym k rS t x`. Rewrite using `[hM1 x z hz, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hz' : lvSym k rS t y < lvSym k rS t z`. Rewrite using `[hN1 z y hz', mul_zero]`. Distinguish the cases in `hzk : (z : ℕ) < k`. Rewrite using `[hN3 z y hzk hy, mul_zero]`. Establish `hzy : z = y` using `Fin.ext (by rw [hy]; exact lvSym_mid hx hz (by rwa [← hy]) hzk)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `hzy` using the available equality. Rewrite using `[hM3 x z hx hy, zero_mul]`. Introduce `hzl x y hy`. Establish `h4M` using `hM4 hzl`. Establish `h4N` using `hN4 hzl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single y]`. Rewrite using `[(h4N y y hy).1, if_pos rfl, mul_one, (h4M x y hy).1]`. Introduce `z _ hzy`. Rewrite using `[(h4N z y hy).1, if_neg hzy, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ y) h`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single y]`. Rewrite using `[(h4M y y hy).2, if_pos rfl, one_mul, (h4N x y hy).2]`. Introduce `z _ hzy`.
-
-Rewrite using `[(h4M z y hy).2, if_neg hzy, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ y) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem InJSym_mul {k rS t : ℕ} {zl : Bool} {M N : Matrix (Fin n) (Fin n) κ} (hM : InJSym k rS t zl M)
     (hN : InJSym k rS t zl N) : InJSym k rS t zl (M * N) := by
@@ -158,13 +156,13 @@ theorem InJSym_mul {k rS t : ℕ} {zl : Bool} {M N : Matrix (Fin n) (Fin n) κ} 
         exact absurd (Finset.mem_univ y) h
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x y h`. Establish `hxy : x ≠ y`. Introduce and unpack `rfl`. Conclude with `lt_irrefl _ h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Matrix.one_apply_ne hxy`. Introduce `x _`. Conclude with `Matrix.one_apply_eq x`. Introduce `x y hx hy`. Use `Matrix.one_apply_ne ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Introduce `h`. Rewrite `hx` using `[h]`. Use linear arithmetic over natural numbers and integers. Introduce `_ x y _`. Use `⟨Matrix.one_apply, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Rewrite using `[Matrix.one_apply]`. Break down `eq_or_ne x y with h | h` into its components or cases. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg (Ne.symm h), if_neg h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem InJSym_one (k rS t : ℕ) (zl : Bool) : InJSym k rS t zl (1 : Matrix (Fin n) (Fin n) κ) := by
   refine ⟨?_, ?_, ?_, ?_⟩
@@ -218,7 +216,7 @@ def eBf (N k c : ℕ) (hk : k ≤ N) : Fin N ⊕ Fin c → Fin (N + c) :=
     (fun i => ⟨k + i, by have := i.isLt; omega⟩)
 
 /- English proof (translation)
-Introduce `a b h`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;>`. Apply the tactic sequence `simp only [eBf, Sum.elim_inl, Sum.elim_inr, Fin.mk.injEq, insB, Sum.inl.injEq, Sum.inr.injEq, reduceCtorEq, Fin.ext_iff] at h ⊢ <;>`. Apply the tactic sequence `have ha := a.isLt <;> have hb := b.isLt <;> (try split_ifs at h) <;> omega`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eBf_inj (N k c : ℕ) (hk : k ≤ N) : Function.Injective (eBf N k c hk) := by
   intro a b h

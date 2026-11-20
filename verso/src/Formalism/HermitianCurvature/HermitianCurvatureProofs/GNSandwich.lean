@@ -15,11 +15,11 @@ open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.ThreeDimData
 variable {k r : ℕ}
 
 /- English proof (translation)
-Establish `hzi` using `Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.uh_inv hz`. Establish `hiso` using `(Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.sigma_facts hds).2 z hz`. Establish `hM : z⁻¹ * Y * z' ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)` using `Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul hzi.1 hY) hz'`. Establish `h1 : σ Y (σ z' w) = σ z (σ (z⁻¹ * Y * z') w)`. Establish `e1 : σ (Y * z') = (σ Y).comp (σ z')` using `Formalism.FourierDecayAlt.P.TranslationBesselVanishing.sigma_mul hds hY hz'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : σ (z * (z⁻¹ * Y * z')) = (σ z).comp (σ (z⁻¹ * Y * z'))` using `Formalism.FourierDecayAlt.P.TranslationBesselVanishing.sigma_mul hds hz hM`. Establish `e3 : z * (z⁻¹ * Y * z') = Y * z'`. Rewrite using `[← mul_assoc, ← mul_assoc, hzi.2.1, one_mul]`. Rewrite `e2` using `[e3]`. Establish `h2` using `congrArg (fun T => T w) (e1.symm.trans e2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using h2`. Rewrite using `[h1]`. Conclude with `(⟨(σ z).toLinearMap, hiso⟩ : H →ₗᵢ[ℂ] H).inner_map_map w _`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coef_eq {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ}
     {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {σ : Mx k r → (H →L[ℂ] H)}
@@ -44,15 +44,15 @@ theorem coef_eq {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) �
   exact (⟨(σ z).toLinearMap, hiso⟩ : H →ₗᵢ[ℂ] H).inner_map_map w _
 
 /- English proof (translation)
-Establish `hN` using `hNI k r`. Establish `hxi` using `Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.uh_inv hx`. Establish `hyi` using `Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.uh_inv hy`. Establish `hM : x⁻¹ * A * y ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)` using `Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul hxi.1 hA) hy`. Establish `hm1` using `(hN.2 _ hM).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha1` using `(hN.2 _ hA).2`. Establish `hx1` using `(hN.2 _ hx).2`. Establish `hy1` using `(hN.2 _ hy).2`. Establish `hyinv` using `(hN.2 _ hy).1`. Establish `hAeq : x * (x⁻¹ * A * y) * y⁻¹ = A`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show x * (x⁻¹ * A * y) * y⁻¹ = (x * x⁻¹) * A * (y * y⁻¹) by simp only [mul_assoc], hxi.2.1, hyi.2.1, one_mul, mul_one]`. Establish `hle : B.gN A ≤ (B.gN x * B.gN y) * B.gN (x⁻¹ * A * y)`. Combine the equalities or inequalities in the displayed calculation. Establish `hp : 0 < B.gN x * B.gN y` using `mul_pos (by linarith) (by linarith)`. Establish `hmb : 0 < B.gN (x⁻¹ * A * y) ^ b` using `Real.rpow_pos_of_pos (by linarith) b`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hab : 0 < B.gN A ^ b` using `Real.rpow_pos_of_pos (by linarith) b`. Establish `key : B.gN A ^ b ≤ (B.gN x * B.gN y) ^ b * B.gN (x⁻¹ * A * y) ^ b`. Rewrite using `[← Real.mul_rpow hp.le (by linarith)]`. Conclude with `Real.rpow_le_rpow (by linarith) hle hb`. Rewrite using `[Real.rpow_neg (show (0:ℝ) ≤ B.gN (x⁻¹ * A * y) by linarith), Real.rpow_neg (show (0:ℝ) ≤ B.gN A by linarith)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `(mul_inv_cancel_right₀ hab.ne' _).symm`. Use `_ ≤ (B.gN (x⁻¹ * A * y) ^ b)⁻¹ * ((B.gN x * B.gN y) ^ b * B.gN (x⁻¹ * A * y) ^ b) * (B.gN A ^ b)⁻¹ := mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left key (inv_nonneg.2 hmb.le)) (inv_nonneg.2 hab.le)`. Use `_ = (B.gN x * B.gN y) ^ b * (B.gN A ^ b)⁻¹ := by`. Rewrite using `[mul_comm ((B.gN x * B.gN y) ^ b) (B.gN (x⁻¹ * A * y) ^ b), inv_mul_cancel_left₀ hmb.ne']`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gN_sandwich (hNI : NormInv) {x A y : Mx k r} (hx : x ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r))
     (hA : A ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)) (hy : y ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)) {b : ℝ}

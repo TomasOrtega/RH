@@ -6,11 +6,11 @@ open LateralTheory.E.LeafCoordsPf LateralTheory.E.LeafCoordsPointPf
 open scoped TensorProduct
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff, ← span_one_tmul (M := M) P, Submodule.span_le]`. Introduce and unpack `_ ⟨m, rfl⟩`. Establish `hm : m ∈ Submodule.span B S` using `hS ▸ trivial`. Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span ⟨x, hx, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => dsimp only at hx hy ⊢`. Rewrite using `[TensorProduct.tmul_add]`. Conclude with `add_mem hx hy`. Consider the case `smul b x _ hx => dsimp only at hx ⊢`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify by unfolding definitions.
 
-Rewrite using `[TensorProduct.tmul_smul, ← algebraMap_smul P.ResidueField b]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_one_tmul_of {B M : Type} [CommRing B] [AddCommGroup M] [Module B M] (P : Ideal B) [P.IsPrime]
     (S : Set M) (hS : Submodule.span B S = ⊤) :
@@ -39,28 +39,26 @@ def LeafResDimQe : Prop := ∀ (d e : ℕ) (A B : Type) [CommRing A] [CommRing B
     Module.finrank P.ResidueField (P.ResidueField ⊗[B] Ω[(B ⧸ I)⁄A]) = e
 
 /- English proof (translation)
-Introduce `d e A B _ _ _ I hB hBI P _ hIP`. Conclude with `(h d e A B I hB hBI P hIP).ge`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem LeafResDimQ_of (h : LeafResDimQe) : LeafResDimQ := by
   intro d e A B _ _ _ I hB hBI P _ hIP
   exact (h d e A B I hB hBI P hIP).ge
 
 /- English proof (translation)
-Introduce `d e A B _ _ _ I hB hBI P _ hIP t ht`. Use `set K := P.ResidueField`. Use `hB.isStandardSmooth` as an intermediate fact. Establish `: Module.Finite B Ω[B⁄A]` using `inferInstance`. Establish `hsurj` using `nu_surjective (A := A) I P`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: FiniteDimensional K (K ⊗[B] Ω[(B ⧸ I)⁄A])` using `Module.Finite.of_surjective _ hsurj`. Establish `hD : ∀ x : I, (1 : K) ⊗ₜ[B] KaehlerDifferential.D A B (x : B) ∈ Submodule.span K (Set.range fun j => (1 : K) ⊗ₜ[B] KaehlerDifferential.D A B (t j : B))`. Introduce `x`. Establish `h1 : (1 : K) ⊗ₜ[B] x ∈ Submodule.span K (Set.range fun j => (1 : K) ⊗ₜ[B] t j)` using `ht ▸ trivial`. Use `Submodule.mem_map_of_mem (f := delta (A := A) I P hIP) h1` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Submodule.map_span, ← Set.range_comp]`. Establish `e1 : ∀ z : I, delta (A` using `A) I P hIP ((1 : K) ⊗ₜ[B] z) = (1 : K) ⊗ₜ[B] KaehlerDifferential.D A B (z : B) := fun z => by rw [delta_tmul, one_smul]`. Simplify using `only [Function.comp_def, e1] at this`. Conclude with `this`. Establish `hker : LinearMap.ker (nu (A` using `A) I P) ≤ Submodule.span K (Set.range fun j => (1 : K) ⊗ₜ[B] KaehlerDifferential.D A B (t j : B)) := (hK d e A B I hB hBI P hIP).trans (Submodule.span_le.mpr (by rintro _ ⟨x, rfl⟩; exact hD x))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hV : Submodule.span K ((fun m => (1 : K) ⊗ₜ[B] m) '' Set.range (KaehlerDifferential.D A B)) = ⊤` using `span_one_tmul_of P _ (KaehlerDifferential.span_range_derivation A B)`. Set `g : B → K ⊗[B] Ω[(B ⧸ I)⁄A]` to `fun b => nu (A := A) I P ((1 : K) ⊗ₜ[B] KaehlerDifferential.D A B b)`. Establish `hg : Submodule.span K (Set.range g) = ⊤`. Use `congrArg (Submodule.map (nu (A := A) I P)) hV` as an intermediate fact. Rewrite `this` using `[Submodule.map_span, Submodule.map_top, LinearMap.range_eq_top.mpr hsurj, ← Set.image_comp, ← Set.range_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `this`. Take `⟨y, hy⟩` from `pick e g 0 hg (hQ d e A B I hB hBI P hIP).le`. Use `⟨y, eq_top_iff.mpr fun ω _ => ?_⟩` and prove the remaining obligations. Use `set S := Submodule.span K (Set.range fun i => (1 : K) ⊗ₜ[B] dyt (A := A) y (fun j => (t j : B)) i)`. Establish `hY : Submodule.span K (Set.range fun i => (1 : K) ⊗ₜ[B] KaehlerDifferential.D A B (y i)) ≤ S` using `Submodule.span_le.mpr (by rintro _ ⟨i, rfl⟩; exact Submodule.subset_span ⟨Sum.inl i, rfl⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hT : Submodule.span K (Set.range fun j => (1 : K) ⊗ₜ[B] KaehlerDifferential.D A B (t j : B)) ≤ S` using `Submodule.span_le.mpr (by rintro _ ⟨j, rfl⟩; exact Submodule.subset_span ⟨Sum.inr j, rfl⟩)`. Establish `hω : nu (A` using `A) I P ω ∈ Submodule.map (nu (A := A) I P) (Submodule.span K (Set.range fun i => (1 : K) ⊗ₜ[B] KaehlerDifferential.D A B (y i))) := by`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Establish `: Set.range (g ∘ y) = Set.range (⇑(nu (A` using `A) I P) ∘ fun i => (1 : K) ⊗ₜ[B] KaehlerDifferential.D A B (y i)) := rfl`. Rewrite using `[← this, hy]`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Discharge the goal by the elementary cases of `trivial`. Take `⟨w, hw, hwν⟩` from `hω`. Establish `hk : ω - w ∈ LinearMap.ker (nu (A` using `A) I P) := by simp [hwν]`. Establish `: ω = w + (ω - w)` using `by abel`. Rewrite using `[this]`.
-
-Conclude with `add_mem (hY hw) (hT (hker hk))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LeafResY_of (hK : LeafResKer) (hQ : LeafResDimQe) : LeafResY := by
   intro d e A B _ _ _ I hB hBI P _ hIP t ht
@@ -112,7 +110,7 @@ theorem LeafResY_of (hK : LeafResKer) (hQ : LeafResDimQe) : LeafResY := by
   exact add_mem (hY hw) (hT (hker hk))
 
 /- English proof (translation)
-The claim follows from `LeafCoordsPointRes_of'' (LeafResSpanD_of (LeafResDimQ_of hQ)) (LeafResY_of hK hQ)`.
+A detailed English derivation is pending.
 -/
 theorem LeafCoordsPointRes_of_leaves (hQ : LeafResDimQe) (hK : LeafResKer) : LeafCoordsPointRes :=
   LeafCoordsPointRes_of'' (LeafResSpanD_of (LeafResDimQ_of hQ)) (LeafResY_of hK hQ)

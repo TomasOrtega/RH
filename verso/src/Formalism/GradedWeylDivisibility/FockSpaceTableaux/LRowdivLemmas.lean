@@ -7,7 +7,7 @@ noncomputable section
 namespace Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-Simplify using `only [rowDiv, map_add, Polynomial.coeff_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rowDiv_add (R : Type*) [CommRing R] {r n : ℕ} (a b : Fin r) (k : ℕ)
     (f g : MvPolynomial (Fin r × Fin n) R) :
@@ -15,7 +15,7 @@ theorem rowDiv_add (R : Type*) [CommRing R] {r n : ℕ} (a b : Fin r) (k : ℕ)
   simp only [rowDiv, map_add, Polynomial.coeff_add]
 
 /- English proof (translation)
-Simplify using `only [rowDiv, map_smul, Polynomial.coeff_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rowDiv_smul (R : Type*) [CommRing R] {r n : ℕ} (a b : Fin r) (k : ℕ) (c : R)
     (f : MvPolynomial (Fin r × Fin n) R) :

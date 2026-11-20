@@ -12,25 +12,23 @@ namespace GlobalTheory.CompanionTheory.SaGen.NormOneSplit
 open Polynomial in
 
 /- English proof (translation)
-Use `set P1 : K[X] := C a - C p * X with hP1`. Use `set P2 : K[X] := C a * X - C q with hP2`. Use `set P3 : K[X] := C (2 * a) * X - C p * X ^ 2 - C q with hP3`. Establish `h1 : P1 ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `congrArg (fun f => Polynomial.coeff f 0) h` as an intermediate fact. Simplify using `[hP1] at this`. Conclude with `ha this`. Establish `h2 : P2 ≠ 0`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg (fun f => Polynomial.coeff f 1) h` as an intermediate fact. Simplify using `[hP2, Polynomial.coeff_X, Polynomial.coeff_C] at this`. Conclude with `ha this`. Establish `h3 : P3 ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `congrArg (fun f => Polynomial.coeff f 1) h` as an intermediate fact. Simplify using `[hP3, Polynomial.coeff_X, Polynomial.coeff_C, Polynomial.coeff_X_pow] at this`. Conclude with `ha this`. Establish `hP : (X * P1 * P2 * P3 : K[X]) ≠ 0` using `mul_ne_zero (mul_ne_zero (mul_ne_zero X_ne_zero h1) h2) h3`. Establish `hex : ∃ m : K, (X * P1 * P2 * P3 : K[X]).eval m ≠ 0`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hP (Polynomial.eq_zero_of_infinite_isRoot _ (Set.infinite_univ.mono fun m _ => hcon m))`. Take `⟨m, hm⟩` from `hex`. Simplify using `only [eval_mul, eval_X] at hm`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hm0 : m ≠ 0` using `fun h => hm (by simp [h])`. Establish `e1 : a - m * p ≠ 0`. Introduce `h`. Apply `hm` to reduce the goal to its premises. Establish `: eval m P1 = 0` using `by simp [hP1]; linear_combination h`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[this]`. Establish `e2 : a * m - q ≠ 0`. Introduce `h`. Apply `hm` to reduce the goal to its premises. Establish `: eval m P2 = 0` using `by simp [hP2]; linear_combination h`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[this]`. Establish `e3 : 2 * a * m - p * m ^ 2 - q ≠ 0`. Introduce `h`. Apply `hm` to reduce the goal to its premises. Establish `: eval m P3 = 0` using `by simp [hP3]; linear_combination h`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[this]`. Use `⟨m, hm0, e1, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Apply `e2` to reduce the goal to its premises. Establish `: a * m - q = m * (a - m⁻¹ * q)` using `by field_simp`.
-
-Rewrite using `[this, h, mul_zero]`. Introduce `h`. Apply `e3` to reduce the goal to its premises. Establish `: 2 * a * m - p * m ^ 2 - q = m * (2 * a - m * p - m⁻¹ * q)` using `by field_simp`. Rewrite using `[this, h, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_good {K : Type} [Field K] [CharZero K] (a p q : K) (ha : a ≠ 0) :
     ∃ m : K, m ≠ 0 ∧ a - m * p ≠ 0 ∧ a - m⁻¹ * q ≠ 0 ∧ 2 * a - m * p - m⁻¹ * q ≠ 0 := by
@@ -92,31 +90,31 @@ section Ring
 variable {K R : Type} [Field K] [CharZero K] [CommRing R] [Nontrivial R] [Algebra K R]
 
 /- English proof (translation)
-Use `set f := c e with hf`. Establish `hff : f * f = f` using `by rw [hf, ← map_mul, he]`. Establish `hcf : c f = e`. Establish `h` using `congrArg c hs`. Rewrite `h` using `[map_add, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: c f = 1 - f` using `by rw [← h]; ring`. Rewrite using `[this, ← hs]`. Expand and normalize the polynomial expressions, which then agree. Establish `he0 : e ≠ 0`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hf0 : f = 0` using `by rw [hf, h, map_zero]`. Rewrite `hs` using `[h, hf0, add_zero]`. Conclude with `zero_ne_one hs`. Establish `hinj : ∀ x : K, algebraMap K R x * e = 0 → x = 0`. Introduce `x hx`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Assume the negation of the conclusion as `hne`. Apply `he0` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `hunit : ∀ x y : K, x ≠ 0 → y ≠ 0 → IsUnit (algebraMap K R x * e + algebraMap K R y * f)`. Introduce `x y hx hy`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `IsUnit.of_mul_eq_one (algebraMap K R x⁻¹ * e + algebraMap K R y⁻¹ * f) ?_` and prove the remaining obligations. Establish `h1 : algebraMap K R x * algebraMap K R x⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel₀ hx, map_one]`. Establish `h2 : algebraMap K R y * algebraMap K R y⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel₀ hy, map_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Introduce `α p hα hcα`. Take `⟨a, b, hab⟩` from `hsp α`. Take `⟨p₁, p₂, hp⟩` from `hsp p`. Establish `hba : a = b`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `hcα`. Rewrite `h` using `[hab, map_add, map_mul, map_mul, hK, hK, hcf, ← hf]`. Establish `h'` using `congrArg (fun t => t * e) h`. Establish `: algebraMap K R (a - b) * e = 0`. Rewrite using `[map_sub]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Substitute using the available equality.
 
-Take the linear combination `(-1 : R) * h' + (algebraMap K R b - algebraMap K R a) * he + (algebraMap K R a - algebraMap K R b) * hz`. Conclude with `sub_eq_zero.1 (hinj _ this)`. Substitute `hba` using the available equality. Establish `ha : a ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h0 : α * e = 0`. Rewrite using `[hab, map_zero, zero_mul, zero_mul, add_zero, zero_mul]`. Conclude with `he0 (hα.mul_right_eq_zero.1 h0)`. Take `⟨m, hm, c1, c2, c3⟩` from `exists_good a p₁ p₂ ha`. Establish `hmm : algebraMap K R m * algebraMap K R m⁻¹ = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[← map_mul, mul_inv_cancel₀ hm, map_one]`. Establish `hμp : (algebraMap K R m * e + algebraMap K R m⁻¹ * f) * p = algebraMap K R (m * p₁) * e + algebraMap K R (m⁻¹ * p₂) * f`. Rewrite using `[hp, map_mul, map_mul]`. Take the linear combination `(algebraMap K R m * algebraMap K R p₁) * he + (algebraMap K R m⁻¹ * algebraMap K R p₂) * hff + (algebraMap K R m * algebraMap K R p₂ + algebraMap K R m⁻¹ * algebraMap K R p₁) * hz`. Use `⟨algebraMap K R m * e + algebraMap K R m⁻¹ * f, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_add, map_mul, hK, hcf]`. Rewrite using `[← hf]`. Take the linear combination `(algebraMap K R m * algebraMap K R m⁻¹) * he + (algebraMap K R m * algebraMap K R m⁻¹) * hff + (algebraMap K R m ^ 2 + algebraMap K R m⁻¹ ^ 2) * hz + (e + f) * hmm + hs`. Rewrite using `[hμp, hab]`. Use `hunit (a - m * p₁) (a - m⁻¹ * p₂) c1 c2` as an intermediate fact.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hμp, hab]`. Simplify using `only [map_add, map_mul, hK, hcf]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `hunit (2 * a - m * p₁ - m⁻¹ * p₂) (2 * a - m * p₁ - m⁻¹ * p₂) c3 c3` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_sub, map_mul, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem normOneGen_of_idem (c : R →+* R) (hK : ∀ a : K, c (algebraMap K R a) = algebraMap K R a)
     (e : R) (he : e * e = e) (hs : e + c e = 1) (hz : e * c e = 0)
@@ -202,23 +200,21 @@ end GlobalTheory.CompanionTheory.SaGen.NormOneSplit
 open GlobalTheory.CompanionTheory.SaGen.NormOneSplit in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm K _ _ e he hs hz`. Use `haveI : CharZero K := charZero_of_injective_algebraMap (algebraMap F K).injective`. Establish `hrank : Module.finrank K (K ⊗[F] E) = 2`. Rewrite using `[Module.finrank_baseChange]`. Conclude with `hcm.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : Nontrivial (K ⊗[F] E) := Module.nontrivial_of_finrank_pos (R := K) (by omega)`. Establish `hK : ∀ a : K, sigR K σ (algebraMap K (K ⊗[F] E) a) = algebraMap K (K ⊗[F] E) a`. Introduce `a`. Simplify using `[sigR, Algebra.TensorProduct.algebraMap_apply]`. Use `normOneGen_of_idem (K := K) (sigR K σ) hK e he hs hz ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set f := sigR K σ e with hf`. Establish `he0 : e ≠ 0`. Introduce `h`. Establish `hf0 : f = 0` using `by rw [hf, h, map_zero]`. Rewrite `hs` using `[h, hf0, add_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `zero_ne_one hs`. Establish `hf0 : f ≠ 0`. Introduce `h`. Establish `h1 : e = 1` using `by rw [h, add_zero] at hs; exact hs`. Establish `: f = 1` using `by rw [hf, h1, map_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[this]`. Conclude with `one_ne_zero h`. Establish `hff : f * f = f` using `by rw [hf, ← map_mul, he]`. Establish `hli : LinearIndependent K ![e, f]`. Rewrite using `[LinearIndependent.pair_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Introduce `s t hst`. Rewrite `hst` using `[Algebra.smul_def, Algebra.smul_def]`. Establish `h1 : algebraMap K (K ⊗[F] E) s * e = 0`. Take the linear combination `e * hst - algebraMap K (K ⊗[F] E) s * he - algebraMap K (K ⊗[F] E) t * hz`. Establish `h2 : algebraMap K (K ⊗[F] E) t * f = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Take the linear combination `f * hst - algebraMap K (K ⊗[F] E) s * hz - algebraMap K (K ⊗[F] E) t * hff`. Establish `key : ∀ (x : K) (y : K ⊗[F] E), y ≠ 0 → algebraMap K (K ⊗[F] E) x * y = 0 → x = 0`. Introduce `x y hy hxy`. Assume the negation of the conclusion as `hx`. Apply `hy` to reduce the goal to its premises.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `⟨key s e he0 h1, key t f hf0 h2⟩`. Establish `htop` using `hli.span_eq_top_of_card_eq_finrank (by simp [hrank])`. Introduce `r`. Establish `hr : r ∈ Submodule.span K (Set.range ![e, f])` using `by rw [htop]; trivial`.
-
-Rewrite `hr` using `[Matrix.range_cons_cons_empty, Submodule.mem_span_pair]`. Take `⟨a, b, hab⟩` from `hr`. Conclude with `⟨a, b, by rw [← hab, Algebra.smul_def, Algebra.smul_def]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.SaGen.normOneGen_of_split : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (K : Type) [Field K] [Algebra F K] (e : K ⊗[F] E), e * e = e → e + sigR K σ e = 1 → e * sigR K σ e = 0 → NormOneGen (sigR K σ) := by
   intro F E _ _ _ _ _ σ hcm K _ _ e he hs hz

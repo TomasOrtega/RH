@@ -14,7 +14,7 @@ namespace GlobalTheory.ThickEndo
 variable {S S' : Scheme.{0}}
 
 /- English proof (translation)
-Rewrite using `[Adjunction.homEquiv_unit, Adjunction.homEquiv_unit, Adjunction.homEquiv_unit, Hom.mul_def, Hom.mul_def, Functor.obj.μ_def, ← comp_lift_assoc, ← Category.assoc (lift _ _), Functor.Monoidal.lift_μ, CategoryTheory.Functor.map_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem homEquiv_mul' (φ : S' ⟶ S) (X : Over S') (A : Over S) [GrpObj A]
     (a b : (Over.map φ).obj X ⟶ A) :
@@ -25,7 +25,7 @@ theorem homEquiv_mul' (φ : S' ⟶ S) (X : Over S') (A : Over S) [GrpObj A]
     Functor.Monoidal.lift_μ, CategoryTheory.Functor.map_comp]
 
 /- English proof (translation)
-Apply `((Over.mapPullbackAdj φ).homEquiv X A).injective` to reduce the goal to its premises. Rewrite using `[homEquiv_mul', Equiv.apply_symm_apply, Equiv.apply_symm_apply, Equiv.apply_symm_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem homEquiv_symm_mul' (φ : S' ⟶ S) (X : Over S') (A : Over S) [GrpObj A]
     (a b : X ⟶ (Over.pullback φ).obj A) :
@@ -35,7 +35,7 @@ theorem homEquiv_symm_mul' (φ : S' ⟶ S) (X : Over S') (A : Over S) [GrpObj A]
   rw [homEquiv_mul', Equiv.apply_symm_apply, Equiv.apply_symm_apply, Equiv.apply_symm_apply]
 
 /- English proof (translation)
-Rewrite using `[Over.mapPullbackAdj, Adjunction.mkOfHomEquiv_homEquiv]`. Conclude with `pullback.lift_fst _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homEquiv_left' (t : S' ⟶ S) {Y : Over S'} {A : Over S} (k : (Over.map t).obj Y ⟶ A) :
     ((Over.mapPullbackAdj t).homEquiv Y A k).left ≫ pullback.fst A.hom t = k.left := by
@@ -43,7 +43,7 @@ theorem homEquiv_left' (t : S' ⟶ S) {Y : Over S'} {A : Over S} (k : (Over.map 
   exact pullback.lift_fst _ _ _
 
 /- English proof (translation)
-Use `homEquiv_left' t (((Over.mapPullbackAdj t).homEquiv Y A).symm q)` as an intermediate fact. Rewrite `this` using `[Equiv.apply_symm_apply]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homEquiv_symm_left' (t : S' ⟶ S) {Y : Over S'} {A : Over S} (q : Y ⟶ (Over.pullback t).obj A) :
     (((Over.mapPullbackAdj t).homEquiv Y A).symm q).left = q.left ≫ pullback.fst A.hom t := by
@@ -58,9 +58,9 @@ namespace GlobalTheory.ThickEndo
 variable {R : Type} [CommRing R] (I : Ideal R) {B : Type} [CommRing B] [IsLocalRing B]
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `h`. Introduce `a ha`. Establish `h1 : a ∈ ((thick R I 0) y).asIdeal` using `by show Ideal.Quotient.mk (I ^ (0 + 1)) a ∈ y.asIdeal`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.2 (by simpa using ha)]`. Conclude with `zero_mem _`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hy]`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem le_comap_of_mem_range {φ : CommRingCat.of R ⟶ CommRingCat.of B}
     (h : Spec.map φ (closedPoint B) ∈ Set.range (thick R I 0)) :
@@ -82,7 +82,7 @@ def lev (φ : CommRingCat.of R ⟶ CommRingCat.of B) (hI : I ≤ (maximalIdeal B
 variable {I}
 
 /- English proof (translation)
-Rewrite using `[lev, ← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem lev_thick (φ : CommRingCat.of R ⟶ CommRingCat.of B) (hI : I ≤ (maximalIdeal B).comap φ.hom) (e : ℕ) :
     lev I φ hI e ≫ thick R I e = thick B (maximalIdeal B) e ≫ Spec.map φ := by
@@ -90,7 +90,7 @@ theorem lev_thick (φ : CommRingCat.of R ⟶ CommRingCat.of B) (hI : I ≤ (maxi
   congr 1
 
 /- English proof (translation)
-Rewrite using `[lev, lev, ← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Use `ext1`. Conclude with `Ideal.Quotient.ringHom_ext rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem adicLevelMap_lev (φ : CommRingCat.of R ⟶ CommRingCat.of B) (hI : I ≤ (maximalIdeal B).comap φ.hom)
     (e : ℕ) : adicLevelMap (maximalIdeal B) (Nat.le_succ (e + 1)) ≫ lev I φ hI (e + 1) =
@@ -118,14 +118,14 @@ def red (e : ℕ) (x : Over.mk (Spec.map φ) ⟶ G) : lvl hI e ⟶ thickObj R I 
   (Over.mapPullbackAdj (thick R I e)).homEquiv (lvl hI e) G (incl hI e ≫ x)
 
 /- English proof (translation)
-The claim follows from `homEquiv_left' _ _`.
+A detailed English derivation is pending.
 -/
 theorem red_fst (e : ℕ) (x : Over.mk (Spec.map φ) ⟶ G) :
     (red hI e x).left ≫ pullback.fst G.hom (thick R I e) = thick B (maximalIdeal B) e ≫ x.left :=
   homEquiv_left' _ _
 
 /- English proof (translation)
-The claim follows from `Over.w (red hI e x)`.
+A detailed English derivation is pending.
 -/
 theorem red_snd (e : ℕ) (x : Over.mk (Spec.map φ) ⟶ G) :
     (red hI e x).left ≫ pullback.snd G.hom (thick R I e) = lev I φ hI e :=
@@ -133,7 +133,7 @@ theorem red_snd (e : ℕ) (x : Over.mk (Spec.map φ) ⟶ G) :
 
 omit [GrpObj G] in
 /- English proof (translation)
-The claim follows from `(pullback.lift_fst _ _ _).trans (Category.comp_id _)`.
+A detailed English derivation is pending.
 -/
 theorem thickMap_fst (e : ℕ) :
     thickMap R I e G ≫ pullback.fst G.hom (thick R I (e + 1)) = pullback.fst G.hom (thick R I e) :=
@@ -141,7 +141,7 @@ theorem thickMap_fst (e : ℕ) :
 
 omit [GrpObj G] in
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem thickMap_snd (e : ℕ) :
     thickMap R I e G ≫ pullback.snd G.hom (thick R I (e + 1)) =
@@ -149,7 +149,7 @@ theorem thickMap_snd (e : ℕ) :
   pullback.lift_snd _ _ _
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, red_fst, Category.assoc, thickMap_fst, red_fst]`. Conclude with `adicLevelMap_ι_assoc (maximalIdeal B) (Nat.le_succ (e + 1)) x.left`. Rewrite using `[Category.assoc, red_snd, Category.assoc, thickMap_snd, ← Category.assoc, red_snd, adicLevelMap_lev]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_succ (e : ℕ) (x : Over.mk (Spec.map φ) ⟶ G) :
     adicLevelMap (maximalIdeal B) (Nat.le_succ (e + 1)) ≫ (red hI (e + 1) x).left =
@@ -167,7 +167,7 @@ def fam (x : Over.mk (Spec.map φ) ⟶ G) (e : ℕ) : Sp (B ⧸ maximalIdeal B ^
 variable {b}
 
 /- English proof (translation)
-Introduce `e` and use `by simp only [fam, Over.comp_left, Category.assoc] rw [← Category.assoc (adicLevelMap _ _), red_succ, Category.assoc, ← Category.assoc (thickMap R I e G), hb, Category.assoc, thickMap_fst]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fam_adic (hb : ∀ e, thickMap R I e G ≫ (b (e + 1)).left = (b e).left ≫ thickMap R I e G)
     (x : Over.mk (Spec.map φ) ⟶ G) : IsAdicFamily (maximalIdeal B) (fam hI b x) := fun e => by
@@ -177,7 +177,7 @@ theorem fam_adic (hb : ∀ e, thickMap R I e G ≫ (b (e + 1)).left = (b e).left
 
 variable (b) in
 /- English proof (translation)
-Establish `hw : (b e).left ≫ pullback.snd G.hom (thick R I e) = pullback.snd G.hom (thick R I e)` using `Over.w (b e)`. Simplify using `only [fam, Over.comp_left, Category.assoc]`. Rewrite using `[pullback.condition, ← Category.assoc ((b e).left), hw, ← Category.assoc, red_snd, lev_thick]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem fam_over (x : Over.mk (Spec.map φ) ⟶ G) (e : ℕ) :
     fam hI b x e ≫ G.hom = adicLevelι (maximalIdeal B) (e + 1) ≫ Spec.map φ := by
@@ -188,7 +188,7 @@ theorem fam_over (x : Over.mk (Spec.map φ) ⟶ G) (e : ℕ) :
 variable [IsAdicComplete (maximalIdeal B) B]
 
 /- English proof (translation)
-The claim follows from `(existsUnique_over_of_isAdicFamily (Spec.map φ) G.hom (fam_adic hI hb x) (fam_over hI b x)).exists`.
+A detailed English derivation is pending.
 -/
 theorem exists_lim (hb : ∀ e, thickMap R I e G ≫ (b (e + 1)).left = (b e).left ≫ thickMap R I e G)
     (x : Over.mk (Spec.map φ) ⟶ G) : ∃ g : Sp B ⟶ G.left, g ≫ G.hom = Spec.map φ ∧
@@ -200,7 +200,7 @@ def lim (hb : ∀ e, thickMap R I e G ≫ (b (e + 1)).left = (b e).left ≫ thic
   Over.homMk (exists_lim hI hb x).choose (exists_lim hI hb x).choose_spec.1
 
 /- English proof (translation)
-The claim follows from `(exists_lim hI hb x).choose_spec.2 e`.
+A detailed English derivation is pending.
 -/
 theorem lim_level (hb : ∀ e, thickMap R I e G ≫ (b (e + 1)).left = (b e).left ≫ thickMap R I e G)
     (x : Over.mk (Spec.map φ) ⟶ G) (e : ℕ) :
@@ -208,7 +208,7 @@ theorem lim_level (hb : ∀ e, thickMap R I e G ≫ (b (e + 1)).left = (b e).lef
   (exists_lim hI hb x).choose_spec.2 e
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[homEquiv_symm_left', Over.comp_left]`. Conclude with `lim_level hI hb x e`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem incl_lim (hb : ∀ e, thickMap R I e G ≫ (b (e + 1)).left = (b e).left ≫ thickMap R I e G)
     (x : Over.mk (Spec.map φ) ⟶ G) (e : ℕ) :
@@ -218,9 +218,9 @@ theorem incl_lim (hb : ∀ e, thickMap R I e G ≫ (b (e + 1)).left = (b e).left
   exact lim_level hI hb x e
 
 /- English proof (translation)
-Establish `he : ∀ e, incl hI e ≫ lim hI hb (x * y) = incl hI e ≫ (lim hI hb x * lim hI hb y)`. Introduce `e`. Use `hmon e` as an intermediate fact. Rewrite using `[comp_mul, incl_lim, incl_lim, incl_lim, red, comp_mul, homEquiv_mul', mul_comp, homEquiv_symm_mul']`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `Over.OverMorphism.ext (hom_ext_of_isHausdorff (maximalIdeal B) fun e => congrArg (·.left) (he e))`.
+A detailed English derivation is pending.
 -/
 theorem lim_mul (hmon : ∀ e, IsMonHom (b e))
     (hb : ∀ e, thickMap R I e G ≫ (b (e + 1)).left = (b e).left ≫ thickMap R I e G)
@@ -239,9 +239,9 @@ end GlobalTheory.ThickEndo
 open GlobalTheory.ThickEndo in
 
 /- English proof (translation)
-Introduce `R _ I G _ b hmon hb B _ _ _ s hs`. Take `⟨φ, rfl⟩` from `Spec.map_surjective s`. Establish `hI` using `le_comap_of_mem_range I hs`. Use `⟨lim hI hb, fun x y => lim_mul hI hmon hb x y, fun x e => ⟨(red hI e x).left, red_fst hI e x, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[lim_level hI hb x e]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [fam, Over.comp_left, Category.assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem GlobalTheory.exists_mul_map_points_of_thickEndo : ∀ (R : Type) [CommRing R] (I : Ideal R) (G : Over (Sp R)) [GrpObj G] (b : ∀ e : ℕ, thickObj R I e G ⟶ thickObj R I e G), (∀ e, IsMonHom (b e)) → (∀ e, thickMap R I e G ≫ (b (e + 1)).left = (b e).left ≫ thickMap R I e G) → ∀ (B : Type) [CommRing B] [IsLocalRing B] [IsAdicComplete (maximalIdeal B) B] (s : Sp B ⟶ Sp R), s (closedPoint B) ∈ Set.range (thick R I 0) → ∃ Φ : (Over.mk s ⟶ G) → (Over.mk s ⟶ G), (∀ x y, Φ (x * y) = Φ x * Φ y) ∧ ∀ (x : Over.mk s ⟶ G) (e : ℕ), ∃ r : Sp (B ⧸ maximalIdeal B ^ (e + 1)) ⟶ (thickObj R I e G).left, r ≫ pullback.fst G.hom (thick R I e) = thick B (maximalIdeal B) e ≫ x.left ∧ r ≫ (b e).left ≫ pullback.fst G.hom (thick R I e) = thick B (maximalIdeal B) e ≫ (Φ x).left := by
   intro R _ I G _ b hmon hb B _ _ _ s hs

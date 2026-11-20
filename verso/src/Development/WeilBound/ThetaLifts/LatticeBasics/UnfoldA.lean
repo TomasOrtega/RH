@@ -7,7 +7,7 @@ namespace GlobalTheory.ThK.Dbl.An
 open MeasureTheory Filter Topology
 
 /- English proof (translation)
-Rewrite using `[hD.integral_eq_tsum'' f hf]`. Use `integral_tsum (fun γ => ((hf.comp_mul_left (γ : G)).aestronglyMeasurable).restrict) ?_` and prove the remaining obligations. Use `hD.lintegral_eq_tsum'' fun x => ‖f x‖ₑ` as an intermediate fact. Conclude with `(this ▸ hf.2.ne :)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unfold {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
     {μ : Measure G} [μ.IsMulLeftInvariant] {Γ : Subgroup G} [Countable Γ] {D : Set G} (hD : IsFundamentalDomain Γ D μ)
@@ -18,13 +18,11 @@ theorem unfold {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] 
   exact (this ▸ hf.2.ne :)
 
 /- English proof (translation)
-Introduce `s₀ h₀`. Take `⟨r, hr, hU'⟩` from `Metric.nhds_basis_closedBall.mem_iff.1 (hU.mem_nhds h₀)`. Take `⟨C, hC⟩` from `hb _ hU' (isCompact_closedBall s₀ r)`. Establish `sub : ∀ s ∈ Metric.ball s₀ (r / 2), Metric.closedBall s (r / 2) ⊆ Metric.closedBall s₀ r` using `fun s hs => Metric.closedBall_subset_closedBall' (by have := Metric.mem_ball.1 hs; linarith)`. Establish `da : ∀ x, ∀ s ∈ U, HasDerivAt (k · x) (deriv (k · x) s) s` using `fun x s hs => ((hd x).differentiableAt (hU.mem_nhds hs)).hasDerivAt`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m' : AEStronglyMeasurable (fun x => deriv (k · x) s₀) μ` using `by classical`. Use `aestronglyMeasurable_of_tendsto_ae (𝓝[≠] s₀) (f := fun s x => if s ∈ U then slope (k · x) s₀ s else 0) (fun s => ?_) (.of_forall fun x => (hasDerivAt_iff_tendsto_slope.1 (da x s₀ h₀)).congr' ?_)` and prove the remaining obligations. Distinguish the cases in `hs : s ∈ U`. Simplify using `only [if_pos hs, slope_def_module]`. Conclude with `((hm s hs).sub (hm s₀ h₀)).const_smul (s - s₀)⁻¹`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [if_neg hs]`. Conclude with `aestronglyMeasurable_const`. Use `filter_upwards [mem_nhdsWithin_of_mem_nhds (hU.mem_nhds h₀)] with s hs using (if_pos hs).symm`. Use `(hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := μ) (bound := fun _ => C / (r / 2)) (F := k) (F' := fun s x => deriv (k · x) s) (Metric.ball_mem_nhds s₀ (half_pos hr)) (mem_of_superset (hU.mem_nhds h₀) hm) ?_ m' (.of_forall fun x s hs => ?_) (integrable_const _) (.of_foral …` and prove the remaining obligations. Conclude with `.of_bound (hm s₀ h₀) C (.of_forall (hC s₀ (Metric.mem_closedBall_self hr.le)))`.
-
-Conclude with `Complex.norm_deriv_le_of_forall_mem_sphere_norm_le (half_pos hr) (((hd x).mono ((sub s hs).trans hU')).diffContOnCl_ball subset_rfl) fun z hz => hC z (sub s hs (Metric.sphere_subset_closedBall hz)) x`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem diffOn_integral {X : Type} [MeasurableSpace X] {μ : Measure X} [IsFiniteMeasure μ] {U : Set ℂ} (hU : IsOpen U)
     {k : ℂ → X → ℂ} (hm : ∀ s ∈ U, AEStronglyMeasurable (k s) μ) (hd : ∀ x, DifferentiableOn ℂ (k · x) U)

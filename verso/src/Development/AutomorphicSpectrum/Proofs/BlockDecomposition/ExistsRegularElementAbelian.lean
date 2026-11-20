@@ -4,17 +4,15 @@ open Matrix Topology Filter
 namespace GlobalTheory.CompanionTheory.IwaGen
 
 /- English proof (translation)
-Introduce `n 𝔞 U`. Set `L : Fin n × Fin n → (↥𝔞 →ₗ[ℝ] ℂ)` to `fun p => { toFun := fun A => (Uᴴ * (A : Matrix (Fin n) (Fin n) ℂ) * U) p.1 p.1 - (Uᴴ * (A : Matrix (Fin n) (Fin n) ℂ) * U) p.2 p.2 map_add' := by`. Introduce `A B`. Simplify using `only [Submodule.coe_add, Matrix.mul_add, Matrix.add_mul, Matrix.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use the proof step `map_smul' := by`. Introduce `c A`. Simplify using `only [Submodule.coe_smul, Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_apply, RingHom.id_apply, smul_sub] }`. Establish `hL : ∀ (p : Fin n × Fin n) (A : ↥𝔞), L p A = (Uᴴ * (A : Matrix (Fin n) (Fin n) ℂ) * U) p.1 p.1 - (Uᴴ * (A : Matrix (Fin n) (Fin n) ℂ) * U) p.2 p.2` using `fun _ _ => rfl`. Set `s : Finset (Submodule ℝ ↥𝔞)` to `(Finset.univ.image fun p => LinearMap.ker (L p)).erase ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hs : (⊤ : Submodule ℝ ↥𝔞) ∉ s` using `Finset.notMem_erase _ _`. Take `⟨H, hH⟩` from `(Set.ne_univ_iff_exists_notMem _).1 (Subspace.biUnion_ne_univ_of_top_notMem hs)`. Use `⟨H, H.2, fun i j hij A hA => ?_⟩` and prove the remaining obligations. Establish `hker : H ∈ LinearMap.ker (L (i, j))`. Rewrite using `[LinearMap.mem_ker, hL]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `sub_eq_zero.2 hij`. Establish `htop : LinearMap.ker (L (i, j)) = ⊤`. Assume the negation of the conclusion as `hne`. Apply `hH` to reduce the goal to its premises. Use `Set.mem_biUnion (x := LinearMap.ker (L (i, j))) ?_ hker` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.mem_coe.2 (Finset.mem_erase.2 ⟨hne, Finset.mem_image.2 ⟨(i, j), Finset.mem_univ _, rfl⟩⟩)`. Establish `hA' : (⟨A, hA⟩ : ↥𝔞) ∈ LinearMap.ker (L (i, j))`. Rewrite using `[htop]`. Conclude with `Submodule.mem_top`. Rewrite `hA'` using `[LinearMap.mem_ker, hL]`.
-
-Conclude with `sub_eq_zero.1 hA'`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_regular_point : ∀ {n : ℕ} (𝔞 : Submodule ℝ (Matrix (Fin n) (Fin n) ℂ))
     (U : Matrix (Fin n) (Fin n) ℂ), ∃ H ∈ 𝔞, ∀ i j, (Uᴴ * H * U) i i = (Uᴴ * H * U) j j →

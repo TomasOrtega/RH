@@ -18,7 +18,7 @@ def sumA {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
     (a : (E →+* ℂ) × ℕ → ℕ) (b : E →+* ℂ) : ℕ := ∑ i : Fin (Dw.mult b), a (b, i)
 
 /- English proof (translation)
-The claim follows from `Finset.single_le_sum (f := fun i : Fin (Dw.mult b) => a (b, i)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ (⟨i, hi⟩ : Fin (Dw.mult b)))`.
+A detailed English derivation is pending.
 -/
 theorem le_sumA {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (Dw : Datum H)
     (a : (E →+* ℂ) × ℕ → ℕ) (b : E →+* ℂ) (i : ℕ) (hi : i < Dw.mult b) : a (b, i) ≤ sumA Dw a b :=
@@ -26,21 +26,19 @@ theorem le_sumA {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Reciproc
     (Finset.mem_univ (⟨i, hi⟩ : Fin (Dw.mult b)))
 
 /- English proof (translation)
-Establish `hsurj : Function.Surjective (relab (E` using `E) c σ) := Finite.injective_iff_surjective.1 (GlobalTheory.AllWt.relab_injective σ)`. Take `⟨hp0, hΨ⟩` from `hU.2.1 k`. Establish `hrr` using `hU.1`. Take `⟨ρ, hρ⟩` from `hsurj τ.1`. Establish `hρΨ : ρ (H.rt : E) = H.rt0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hn`. Establish `h3 : relab c σ (conjEmb ρ) (H.rt : E) = H.rt0`. Establish `hσ0 : σ ⟨H.rt0, c.le (baseKA l).ρ.2⟩ = H.rt0` using `hσ`. Conclude with `(congrArg σ (Subtype.ext (GlobalTheory.AllWt.conj_mem hn))).trans hσ0`. Rewrite `h3` using `[GlobalTheory.AllWt.relab_conj, hρ]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.AllWt.conj_not_mem ⟨τ.1, (hΨ _).1 τ.2⟩ h3`. Establish `e1 : Function.invFun (relab c σ) τ.1 = ρ`. Rewrite using `[← hρ]`. Conclude with `Function.leftInverse_invFun (GlobalTheory.AllWt.relab_injective σ) ρ`. Establish `e2 : Function.invFun (relab c σ) (conjEmb τ.1) = conjEmb ρ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hρ, ← GlobalTheory.AllWt.relab_conj]`. Conclude with `Function.leftInverse_invFun (GlobalTheory.AllWt.relab_injective σ) _`. Establish `m1 : Dw.mult ρ = Dw.p` using `by rw [Datum.mult, if_pos hρΨ]`. Establish `m2 : Dw.mult (conjEmb ρ) = Dw.q` using `by rw [Datum.mult, if_neg (GlobalTheory.AllWt.conj_not_mem ⟨ρ, hρΨ⟩)]`. Rewrite using `[e1, e2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hn : ((n / 2 : ℕ) : ℝ) + ((n / 2 : ℕ) : ℝ) ≤ n`. Establish `: n / 2 + n / 2 ≤ n` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `key : ∀ i : Fin r, -((sumA Dw a (conjEmb ρ) : ℤ) + ((n / 2 : ℕ) : ℤ)) ≤ laU U a n k τ i ∧ laU U a n k τ i ≤ (sumA Dw a ρ : ℤ) + ((n / 2 : ℕ) : ℤ)`. Introduce `i`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hi'` using `i.isLt`. Unfold `laU`. Rewrite using `[e1, e2]`. Use `split_ifs with hi`. Use `le_sumA Dw a ρ ((i : ℕ) - (U.X k).p0) (by rw [m1]; omega)` as an intermediate fact.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Apply the tactic sequence `constructor <;> omega`. Use `le_sumA Dw a (conjEmb ρ) ((U.X k).p0 - 1 - (i : ℕ)) (by rw [m2]; omega)` as an intermediate fact. Apply the tactic sequence `constructor <;> omega`. Use `(GlobalTheory.WtSizes.spread_le hr _ ((sumA Dw a ρ : ℝ) + ((n / 2 : ℕ) : ℝ)) ((sumA Dw a (conjEmb ρ) : ℝ) + ((n / 2 : ℕ) : ℝ)) (fun i => ?_) (fun i => ?_)).trans (by linarith)` and prove the remaining obligations. Establish `h1` using `(Int.cast_le (R := ℝ)).2 (key i).2`.
-
-Rewrite `h1` using `[Int.cast_add, Int.cast_natCast, Int.cast_natCast]`. Then use the resulting hypothesis. Conclude with `(key i).1` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem spread_le_sumA {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ}
@@ -88,13 +86,13 @@ theorem spread_le_sumA {E : Type} [Field E] [NumberField E] [IsCMField E] {H : R
   · exact_mod_cast (key i).1
 
 /- English proof (translation)
-Introduce `D j H Dw l Xo c U dict hL σ hσ a n k`. Establish `hU` using `hL.unf σ hσ`. Establish `hr : 0 < D.R.r`. Use `D.R.m_add_three_le_k` as an intermediate fact. Unfold `Ranks.r`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use linear arithmetic over natural numbers and integers. Establish `hsurj : Function.Surjective (relab (E` using `D.host.E) c σ) := Finite.injective_iff_surjective.1 (GlobalTheory.AllWt.relab_injective σ)`. Establish `hgb : Function.Bijective (Function.invFun (relab c σ))` using `Finite.injective_iff_bijective.1 (Function.LeftInverse.injective (Function.rightInverse_invFun hsurj))`. Use `(Finset.sum_le_sum fun τ _ => spread_le_sumA (U σ) hσ hU hr a n k τ).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, QuadraticCoefficientForms.card_Psi (X := (U σ).X k), nsmul_eq_mul]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ∑ τ : ((U σ).X k).Ψ, ((sumA Dw a (Function.invFun (relab c σ) τ.1) : ℝ) + sumA Dw a (Function.invFun (relab c σ) (conjEmb τ.1))) ≤ absA Dw a`. Use `GlobalTheory.WtSizes.sum_cm_le ((U σ).X k) (fun b => sumA Dw a (Function.invFun (relab c σ) b))` as an intermediate fact. Rewrite `this` using `[hgb.sum_comp (fun b => sumA Dw a b)]`. Use `show _ ≤ ((∑ b, sumA Dw a b : ℕ) : ℝ)`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (fdeg D.host.E : ℝ) * n ≤ ((fdeg D.host.E * D.R.r * n : ℕ) : ℝ)`. Establish `: fdeg D.host.E * n ≤ fdeg D.host.E * D.R.r * n` using `Nat.mul_le_mul_right n (Nat.le_mul_of_pos_right _ hr)`. Conclude with `this` after adjusting the coercions. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sum_spread_laU_le : ∀ (D : D7) (j : ℕ) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ D.R.r) (dict : ∀ σ : c.F →+* ℂ, GA D (D.sp.W j) → Σ k, Frame ((U σ).X k).Ψ D.R.r), Laws D j Xo c U dict → ∀ σ, GoodEmb c σ → ∀ (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) (k : (U σ).Comp), (∑ τ, ((U σ).X k).spread (laU (U σ) a n k) τ) ≤ ((absA Dw a : ℕ) : ℝ) + ((fdeg D.host.E * D.R.r * n : ℕ) : ℝ) := by
   intro D j H Dw l Xo c U dict hL σ hσ a n k

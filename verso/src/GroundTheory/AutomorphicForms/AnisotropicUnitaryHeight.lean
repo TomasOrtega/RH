@@ -33,11 +33,11 @@ theorem baseMap_eq_tensorMap (f : R →ₐ[K] R') :
 variable {R}
 
 /- English proof (translation)
-Rewrite using `[baseMap_eq_tensorMap]`. Unfold `hermValue`. Express the relevant statement in the definitionally equal form `(tensorMap E f : R ⊗[K] E →+* R' ⊗[K] E) (_ ⬝ᵥ _) = _`. Rewrite using `[RingHom.map_dotProduct]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i`. Simplify using `[tensorMap_conjBase]`. Use function extensionality and compare the values at `i`. Rewrite using `[Function.comp_apply, RingHom.map_mulVec]`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `a c`. Simplify using `[baseMatrix]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem hermValue_baseMap (f : R →ₐ[K] R') (x : ι → R ⊗[K] E) :
     baseMap f (hermValue K H R x) = hermValue K H R' (fun i => baseMap f (x i)) := by
@@ -59,7 +59,7 @@ variable (R)
 def hermCoords (y : Fin 𝒩 → R) : κ → R := coords b R (hermValue K H R (ofResVec b R y))
 
 /- English proof (translation)
-Rewrite using `[hermCoords, ofResVec_smul, hermValue_smul, map_smul, sq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hermCoords_smul (t : R) (y : Fin 𝒩 → R) :
     hermCoords H b R (t • y) = t ^ 2 • hermCoords H b R y := by
@@ -69,7 +69,7 @@ theorem hermCoords_smul (t : R) (y : Fin 𝒩 → R) :
 variable {R}
 
 /- English proof (translation)
-Apply `resVec_injective b R'` to reduce the goal to its premises. Rewrite using `[resVec_ofResVec, resVec_baseMap, resVec_ofResVec]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem ofResVec_comp (f : R →ₐ[K] R') (y : Fin 𝒩 → R) :
     ofResVec b R' (f ∘ y) = fun i => baseMap f (ofResVec b R y i) := by
@@ -77,7 +77,7 @@ theorem ofResVec_comp (f : R →ₐ[K] R') (y : Fin 𝒩 → R) :
   rw [resVec_ofResVec, resVec_baseMap, resVec_ofResVec]
 
 /- English proof (translation)
-Rewrite using `[hermCoords, ofResVec_comp, ← hermValue_baseMap, coords_baseMap]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hermCoords_comp (f : R →ₐ[K] R') (y : Fin 𝒩 → R) :
     hermCoords H b R' (f ∘ y) = f ∘ hermCoords H b R y := by
@@ -88,9 +88,9 @@ def hermPoly (k : κ) : MvPolynomial (Fin 𝒩) K :=
   hermCoords H b (MvPolynomial (Fin 𝒩) K) MvPolynomial.X k
 
 /- English proof (translation)
-Establish `h` using `congrFun (hermCoords_comp H b (MvPolynomial.aeval y) MvPolynomial.X) k`. Establish `hy : (MvPolynomial.aeval y : MvPolynomial (Fin 𝒩) K →ₐ[K] R) ∘ MvPolynomial.X = y`. Use function extensionality and compare the values at `p`. Simplify using the standard rewrite rules. Rewrite `h` using `[hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h.symm`.
+A detailed English derivation is pending.
 -/
 theorem aeval_hermPoly (y : Fin 𝒩 → R) (k : κ) :
     MvPolynomial.aeval y (hermPoly H b k) = hermCoords H b R y k := by
@@ -113,7 +113,7 @@ def inside₂ (S : Type*) [CommRing S] : GL ι S →* GL ι S where
     simp [_root_.mul_inv_rev, transpose_mul]
 
 /- English proof (translation)
-Rewrite using `[trHom_val]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem trHom_invTr (g : GL ι (R ⊗[K] E)) :
     (trHom b R (inside₂ (R ⊗[K] E) g) : Matrix (Fin 𝒩) (Fin 𝒩) R) = resHom b R ↑g := by
@@ -130,7 +130,7 @@ theorem diagGL_val (f : R →ₐ[K] R') (g : GL ι (R ⊗[K] E)) :
     (diagGL f g : Matrix ι ι (R' ⊗[K] E)) = (g : Matrix ι ι (R ⊗[K] E)).map (baseMap f) := rfl
 
 /- English proof (translation)
-Use extensionality with `: 1`. Simplify using `only [diagGL_val]`. Use `show ((↑(diagGL f g)⁻¹ : Matrix ι ι (R' ⊗[K] E)))ᵀ = ((↑g⁻¹ : Matrix ι ι (R ⊗[K] E))ᵀ).map _`. Rewrite using `[← map_inv, diagGL_val, transpose_map]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invTr_diagGL (f : R →ₐ[K] R') (g : GL ι (R ⊗[K] E)) :
     inside₂ (R' ⊗[K] E) (diagGL f g) = diagGL f (inside₂ (R ⊗[K] E) g) := by
@@ -148,9 +148,9 @@ variable [NumberField K] {d : ℕ} (b : Basis (Fin d) K E)
 local notation "𝒩'" => Fintype.card (ι × Fin d)
 
 /- English proof (translation)
-Establish `hx : Reduction.ratVec x = resVec b 𝔸[K] (fun i => baseMap (Algebra.ofId K 𝔸[K]) (ofResVec b K x i))`. Rewrite using `[resVec_baseMap, resVec_ofResVec]`. Both sides reduce to the same expression. Rewrite using `[hx, resVec_vecMul_trHom, hermCoords, ofResVec_resVec]`. Establish `h` using `hermValue_mulVec (K := K) (H := H) (u⁻¹) (fun i => baseMap (Algebra.ofId K 𝔸[K]) (ofResVec b K x i))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[show unitaryMat (u⁻¹) = (↑(u : GL ι (𝔸[K] ⊗[K] E))⁻¹ : Matrix ι ι (𝔸[K] ⊗[K] E)) from rfl]`. Rewrite using `[h, ← hermValue_baseMap, coords_baseMap]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hermCoords_vecMul_trHom (x : Fin 𝒩' → K) (u : unitaryPoints K E H 𝔸[K]) :
     hermCoords H b 𝔸[K] (Reduction.ratVec x ᵥ* (trHom b 𝔸[K] (u : GL ι (𝔸[K] ⊗[K] E)) :
@@ -168,15 +168,15 @@ theorem hermCoords_vecMul_trHom (x : Fin 𝒩' → K) (u : unitaryPoints K E H �
   rfl
 
 /- English proof (translation)
-Take `⟨C, hC, hCb⟩` from `exists_adelicNorm_aeval_le (K := K) (d := 2) two_pos (hermPoly H b) (fun v t y k => by`. Rewrite using `[aeval_hermPoly, aeval_hermPoly, hermCoords_smul]`. Use the proof step `rfl)`. Use the proof step `(fun w t y k => by`. Rewrite using `[aeval_hermPoly, aeval_hermPoly, hermCoords_smul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use the proof step `rfl)`. Establish `hG : ∀ g ∈ Set.range fun u : unitaryPoints K E H 𝔸[K] => trHom b 𝔸[K] (u : GL ι (𝔸[K] ⊗[K] E)), ∀ x : Fin 𝒩' → K, x ≠ 0 → ∃ s : GroundTheory.Global.IdeleGroup K, 1 ≤ (GroundTheory.Global.IdeleGroup.ideleModule K s : ℝ) ∧ ∃ z : Fin d → K, z ≠ 0 ∧ (fun y k => MvPolynomial.aeval y ( …`. Introduce and unpack `_ ⟨u, rfl⟩ x hx`. Use `⟨1, by simp, hermCoords H b K x, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hx` to reduce the goal to its premises. Establish `h1 : hermValue K H K (ofResVec b K x) = 0`. Apply `(coords b K).injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `h0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `h2` using `haniso _ h1`. Rewrite using `[← resVec_ofResVec b K x, h2]`. Use function extensionality and compare the values at `p`. Simplify using `[resVec, coordsVec]`. Use function extensionality and compare the values at `k`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Simplify using `only [aeval_hermPoly, Units.val_one, one_smul]`. Rewrite using `[hermCoords_vecMul_trHom]`. Take `⟨ε, hε, h⟩` from `exists_pos_le_height_of_bound (Set.range fun u : unitaryPoints K E H 𝔸[K] => trHom b 𝔸[K] (u : GL ι (𝔸[K] ⊗[K] E))) (fun y k => MvPolynomial.aeval y (hermPoly H b k)) hC two_pos hCb hG`. Conclude with `⟨ε, hε, fun u x hx => h _ ⟨u, rfl⟩ x hx⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_pos_le_height_trHom
     (haniso : ∀ ξ : ι → K ⊗[K] E, hermValue K H K ξ = 0 → ξ = 0) :
@@ -216,19 +216,19 @@ theorem exists_pos_le_height_trHom
   exact ⟨ε, hε, fun u x hx => h _ ⟨u, rfl⟩ x hx⟩
 
 /- English proof (translation)
-Take `⟨ε, hε, hh⟩` from `exists_pos_le_height_trHom H b haniso`. Set `G : Subgroup (AdelicGLn.AdelicGL K 𝒩')` to `((trHom b 𝔸[K]).comp (unitaryPoints K E H 𝔸[K]).subtype).range`. Establish `hG1 : G ≤ Reduction.normOneGL K 𝒩'`. Introduce and unpack `_ ⟨u, rfl⟩`. Rewrite using `[Reduction.mem_normOneGL]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Use `set a := AdelicGLn.det K 𝒩' ((trHom b 𝔸[K]).comp (unitaryPoints K E H 𝔸[K]).subtype u)`. Establish `ha : a * a = 1`. Use `ext`. Simplify `det_trHom_mul_self b 𝔸[K] H hH u` using `[a]`. Establish `h2 : (GroundTheory.Global.IdeleGroup.ideleModule K a : ℝ) * (GroundTheory.Global.IdeleGroup.ideleModule K a : ℝ) = 1`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `congrArg (GroundTheory.Global.IdeleGroup.ideleModule K) ha`. Rewrite `h3` using `[map_mul, map_one]`. Simplify using `using congrArg Subtype.val h3`. Establish `hpos` using `(GroundTheory.Global.IdeleGroup.ideleModule K a).2`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hGL : G ≤ adelicCentralizer (resScalar (ι` using `ι) b) := by`. Introduce and unpack `_ ⟨u, rfl⟩ j`. Establish `e` using `resScalar_map (ι := ι) b (Algebra.ofId K 𝔸[K]) j`. Express the relevant statement in the definitionally equal form `_ * (resScalar (ι := ι) b j).map (Algebra.ofId K 𝔸[K]) = (resScalar (ι := ι) b j).map (Algebra.ofId K 𝔸[K]) * _`. Rewrite using `[e]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [MonoidHom.comp_apply, Subgroup.coe_subtype]`. Rewrite using `[trHom_val]`. Conclude with `resHom_commute_scalar b 𝔸[K] _ _`. Take `⟨C, hC, hred⟩` from `exists_isCompact_centralizer_reduction (resScalar (ι := ι) b) G hG1 hGL hε (by rintro _ ⟨u, rfl⟩ x hx; exact hh u x hx)`. Use `⟨C, hC, fun u => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, hγ, hγC⟩` from `hred _ ⟨u, rfl⟩`. Take `⟨M, hM⟩` from `exists_resHom_eq_of_commute b γ hγ`. Use `⟨inside₂ (K ⊗[K] E) M, ?_⟩` and prove the remaining obligations. Establish `e : trHom b 𝔸[K] (diagGL (Algebra.ofId K 𝔸[K]) (inside₂ (K ⊗[K] E) M)) = AdelicGLn.diagonal K 𝒩' γ`. Use extensionality with `: 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← invTr_diagGL, trHom_invTr, diagGL_val, resHom_baseMap, hM]`. Both sides reduce to the same expression. Rewrite using `[map_mul, map_inv, e]`. Conclude with `hγC`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isCompact_trHom (hH : IsUnit H.det)
     (haniso : ∀ ξ : ι → K ⊗[K] E, hermValue K H K ξ = 0 → ξ = 0) :

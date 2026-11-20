@@ -11,17 +11,17 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.Vert GlobalTheory.MixedLocalCha
 namespace GlobalTheory.BplusDescent
 
 /- English proof (translation)
-Take `⟨n, π, hπ⟩` from `Module.Finite.exists_fin' R L`. Take `⟨s, hs⟩` from `Module.projective_lifting_property π LinearMap.id hπ`. Set `e : Fin h → L` to `fun i => ⟨c • Pi.single i 1, hL _⟩`. Use `⟨n, fun k => (π (Pi.single k 1) : L), fun k i => f (s (e i) k) / f c, fun k => (π (Pi.single k 1)).2, fun i i' => ?_, fun v hv k => ⟨s ⟨v, hv⟩ k, ?_⟩⟩` and prove the remaining obligations. Establish `h1 : π (s (e i')) = e i'` using `LinearMap.congr_fun hs (e i')`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : π (s (e i')) = ∑ k, s (e i') k • π (Pi.single k 1)` using `by conv_lhs => rw [pi_eq_sum_univ' (s (e i'))]`. Simplify using `only [map_sum, map_smul]`. Establish `h3 : ∑ k, (π (Pi.single k 1) : Fin h → R) i * s (e i') k = c * (if i = i' then 1 else 0)`. Use `congrArg (fun x : L => (x : Fin h → R) i) (h2.symm.trans h1)` as an intermediate fact. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, e, Pi.single_apply] at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`. Establish `h4` using `congrArg f h3`. Simplify using `only [map_sum, map_mul, apply_ite f, map_one, map_zero] at h4`. Simplify using `only [← mul_div_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_div, h4, mul_div_cancel_left₀ _ hc]`. Establish `h1 : c • (⟨v, hv⟩ : L) = ∑ i, v i • e i`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `j`. Simplify using `[e, Pi.single_apply, mul_comm]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : c * s ⟨v, hv⟩ k = ∑ i, s (e i) k * v i`. Use `congrArg (fun x : L => s x k) h1` as an intermediate fact. Simplify using `only [map_smul, map_sum, Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at this`. Rewrite using `[this]`. Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h4` using `congrArg f h2`. Simplify using `only [map_sum, map_mul] at h4`. Simplify using `only [div_mul_eq_mul_div]`. Rewrite using `[← Finset.sum_div, ← h4, mul_div_cancel_left₀ _ hc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_split_of_finite_projective {R K : Type*} [CommRing R] [Field K] (f : R →+* K) (h : ℕ)
     (L : Submodule R (Fin h → R)) (c : R) (hc : f c ≠ 0) [Module.Finite R L] [Module.Projective R L]
@@ -63,7 +63,7 @@ theorem exists_split_of_finite_projective {R K : Type*} [CommRing R] [Field K] (
     rw [← Finset.sum_div, ← h4, mul_div_cancel_left₀ _ hc]
 
 /- English proof (translation)
-Introduce `X _ U h L c hc hf hp hL`. Conclude with `exists_split_of_finite_projective (SubringClass.subtype _ : U.Bp →+* Kbar X) h L c hc hL`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_splits : ∀ (X : Scheme.{0}) [IsIntegral X] (U : AffOp X) (h : ℕ) (L : Submodule U.Bp (Fin h → U.Bp)) (c : U.Bp), (c : Kbar X) ≠ 0 → Module.Finite U.Bp L → Module.Projective U.Bp L → (∀ x : Fin h → U.Bp, c • x ∈ L) → ∃ (n : ℕ) (g : Fin n → Fin h → U.Bp) (S : Fin n → Fin h → Kbar X), Splits U L g S := by
   intro X _ U h L c hc hf hp hL

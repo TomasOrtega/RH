@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.LevelChainSha
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.L2.Col Formalism.L2.DIV GlobalTheory.Mem.Col2 GlobalTheory.LvT GlobalTheory.LvT.Built
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.LvT.Built.ValLat.exists_coord` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FGlobalInterpolation%2FExistsCoordinatesValueLatticesEqWeylLattices.lean&line=422#L422)
 -/

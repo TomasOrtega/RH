@@ -34,13 +34,11 @@ open scoped TensorProduct
 variable {D : D7}
 
 /- English proof (translation)
-Use `choose! x hx hxP using hP`. Establish `hz : algebraMap (𝓞 D.host.F) (𝓞 D.host.E) (∏ v ∈ S, x v) ∈ 𝔪.radical`. Rewrite using `[Ideal.radical_eq_sInf]`. Use `Submodule.mem_sInf.2 fun J ⟨hJ, hJp⟩ => ?_` and prove the remaining obligations. Establish `hJ0 : J ≠ ⊥` using `fun h => h𝔪 (le_bot_iff.1 (h ▸ hJ))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `Q : HeightOneSpectrum (𝓞 D.host.E)` to `⟨J, hJp, hJ0⟩`. Establish `hv` using `hS Q hJ`. Establish `hxv : algebraMap (𝓞 D.host.F) (𝓞 D.host.E) (x (Q.under (𝓞 D.host.F))) ∈ J` using `hx _ hv`. Rewrite using `[map_prod, ← Finset.prod_erase_mul _ _ hv]`. Conclude with `Ideal.mul_mem_left J _ hxv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨K, hK⟩` from `hz`. Use `⟨(∏ v ∈ S, x v) ^ K, by rwa [map_pow], fun h => ?_⟩` and prove the remaining obligations. Rewrite `h` using `[map_pow]`. Establish `h1` using `P.isPrime.mem_of_pow_mem K h`. Rewrite `h1` using `[map_prod]`.
-
-Take `⟨v, hv, h2⟩` from `(P.isPrime.prod_mem_iff).1 h1`. Conclude with `hxP v hv _ rfl h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_F_mem {S : Finset (HeightOneSpectrum (𝓞 D.host.F))} {𝔪 : Ideal (𝓞 D.host.E)} (h𝔪 : 𝔪 ≠ ⊥)
     (hS : ∀ P : HeightOneSpectrum (𝓞 D.host.E), 𝔪 ≤ P.asIdeal → P.under (𝓞 D.host.F) ∈ S)
@@ -67,11 +65,11 @@ theorem exists_F_mem {S : Finset (HeightOneSpectrum (𝓞 D.host.F))} {𝔪 : Id
   exact hxP v hv _ rfl h2
 
 /- English proof (translation)
-Unfold `Formalism.L2.Herm.hatL Formalism.UG.latS at hz ⊢`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨l, hl, rfl⟩` from `hx`. Use `Submodule.subset_span ⟨a • l, Submodule.smul_mem_smul ha hl, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `i`. Simplify using `[Subring.smul_def, oToS_coe]`. Simplify using `[Formalism.UG.inclE, Algebra.TensorProduct.tmul_mul_tmul, Algebra.smul_def]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul b x _ hx => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ b hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem oToS_smul_mem_hatL {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     (Λ : Submodule (𝓞 E) (Fin n → E)) {𝔪 : Ideal (𝓞 E)} {a : 𝓞 E} (ha : a ∈ 𝔪)
@@ -101,9 +99,9 @@ section General
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Establish `e1 : u • B = u • 1`. Rewrite using `[← sub_eq_zero, ← smul_sub, ← hB, smul_smul, mul_sub, mul_one, hu, sub_self, zero_smul]`. Establish `e2 : u • K = u • A`. Break down `hK with rfl | rfl` into its components or cases. Rewrite using `[← Matrix.mul_smul, e1, Matrix.mul_smul, Matrix.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.smul_mul, e1, Matrix.smul_mul, Matrix.one_mul]`. Rewrite using `[smul_sub, e2, ← smul_sub, hA]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_sub_one {R : Type} [CommRing R] (u : R) (hu : u * u = u) (A B K : Matrix (Fin n) (Fin n) R)
     (hA : u • (A - 1) = A - 1) (hB : (1 - u) • (B - 1) = B - 1) (hK : K = A * B ∨ K = B * A) : A - 1 = u • (K - 1) := by
@@ -116,9 +114,9 @@ theorem comp_sub_one {R : Type} [CommRing R] (u : R) (hu : u * u = u) (A B K : M
   rw [smul_sub, e2, ← smul_sub, hA]
 
 /- English proof (translation)
-Introduce `y hy`. Establish `e1 : A *ᵥ y - y = (A - 1) *ᵥ y` using `by rw [sub_mulVec, one_mulVec]`. Establish `e2 : K *ᵥ y - y = (K - 1) *ᵥ y` using `by rw [sub_mulVec, one_mulVec]`. Establish `e' : A *ᵥ y - y = (u * oToS F E a) • (K *ᵥ y - y)`. Rewrite using `[e1, e2, e, Matrix.smul_mulVec, Subring.smul_def]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e', mul_smul]`. Conclude with `Submodule.smul_mem _ u (oToS_smul_mem_hatL Λ ha (Submodule.sub_mem _ (hK y hy) hy))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cong_of_eq (Λ : Submodule (𝓞 E) (Fin n → E)) {𝔪 : Ideal (𝓞 E)} {a : 𝓞 E} (ha : a ∈ 𝔪)
     (u : Formalism.L2.Herm.intAf F E) (A K : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))
@@ -134,14 +132,14 @@ theorem cong_of_eq (Λ : Submodule (𝓞 E) (Fin n → E)) {𝔪 : Ideal (𝓞 E
   exact Submodule.smul_mem _ u (oToS_smul_mem_hatL Λ ha (Submodule.sub_mem _ (hK y hy) hy))
 
 /- English proof (translation)
-The claim follows from `Submodule.span_mono (Set.image_mono Submodule.smul_le_right)`.
+A detailed English derivation is pending.
 -/
 theorem hatL_smul_le (Λ : Submodule (𝓞 E) (Fin n → E)) (𝔪 : Ideal (𝓞 E)) :
     Formalism.L2.Herm.hatL (F := F) (𝔪 • Λ) ≤ Formalism.L2.Herm.hatL (F := F) Λ :=
   Submodule.span_mono (Set.image_mono Submodule.smul_le_right)
 
 /- English proof (translation)
-Use `⟨hU, fun y => ⟨fun hy => ?_, fun hy => ?_⟩, h1⟩` and prove the remaining obligations. Use `Submodule.add_mem _ (hatL_smul_le Λ 𝔪 (h1 y hy)) hy` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Use `Submodule.add_mem _ (hatL_smul_le Λ 𝔪 (h2 _ hy)) hy` as an intermediate fact. Rewrite `this` using `[mulVec_mulVec, Units.inv_mul, one_mulVec, sub_add_cancel]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_congLev_of [StarRing E] (hc : CMData F E) (J : Matrix (Fin n) (Fin n) E) (Λ : Submodule (𝓞 E) (Fin n → E))
     (𝔪 : Ideal (𝓞 E)) (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (hU : x ∈ UA hc J)
@@ -155,7 +153,7 @@ theorem mem_congLev_of [StarRing E] (hc : CMData F E) (J : Matrix (Fin n) (Fin n
     rwa [mulVec_mulVec, Units.inv_mul, one_mulVec, sub_add_cancel] at this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun y hy => (hx.2.1 y).1 hy, fun y hy => ((Subgroup.inv_mem _ hx).2.1 y).1 hy⟩`.
+Supply the required witnesses or components.
 -/
 theorem stab_of_mem_congLev [StarRing E] {hc : CMData F E} {J : Matrix (Fin n) (Fin n) E} {Λ : Submodule (𝓞 E) (Fin n → E)}
     {𝔪 : Ideal (𝓞 E)} {x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} (hx : x ∈ congLev hc J Λ 𝔪) :
@@ -168,7 +166,7 @@ end General
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨X, hX𝔪, hXP⟩` from `exists_F_mem h𝔪 hS hP`. Take `⟨u, hu⟩` from `GlobalTheory.LevSplit.idem_div_int hi _ _ ((D.sp.cm.fixed _).2 ⟨(X : D.host.F), rfl⟩).symm hXP hXP`. Conclude with `⟨_, hX𝔪, u, hu⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_idem_eq {S : Finset (HeightOneSpectrum (𝓞 D.host.F))} {𝔪 : Ideal (𝓞 D.host.E)} (h𝔪 : 𝔪 ≠ ⊥)
     (hS : ∀ P : HeightOneSpectrum (𝓞 D.host.E), 𝔪 ≤ P.asIdeal → P.under (𝓞 D.host.F) ∈ S)

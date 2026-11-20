@@ -7,21 +7,21 @@ open scoped TensorProduct Classical ComplexOrder
 namespace GlobalTheory.PositiveDefiniteFormIdentities
 
 /- English proof (translation)
-Rewrite using `[star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem form_pull {n : ℕ} (h Z : Matrix (Fin n) (Fin n) ℂ) (v v' : Fin n → ℂ) :
     star (Z *ᵥ v) ⬝ᵥ h *ᵥ (Z *ᵥ v') = star v ⬝ᵥ (Zᴴ * h * Z) *ᵥ v' := by
   rw [star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec]
 
 /- English proof (translation)
-Rewrite using `[star_dotProduct, star_mulVec, hQ.eq, ← dotProduct_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem form_swap {n : ℕ} {Q : Matrix (Fin n) (Fin n) ℂ} (hQ : Q.IsHermitian) (x y : Fin n → ℂ) :
     star y ⬝ᵥ Q *ᵥ x = star (star x ⬝ᵥ Q *ᵥ y) := by
   rw [star_dotProduct, star_mulVec, hQ.eq, ← dotProduct_mulVec]
 
 /- English proof (translation)
-Establish `hzw : star w ⬝ᵥ Q *ᵥ z = 0` using `by rw [form_swap hQ, hwz, star_zero]`. Simplify using `only [star_add, star_smul, mulVec_add, mulVec_smul, add_dotProduct, dotProduct_add, smul_dotProduct, dotProduct_smul, hwz, hzw, smul_eq_mul, Complex.normSq_eq_conj_mul_self, RCLike.star_def]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem form_expand {n : ℕ} {Q : Matrix (Fin n) (Fin n) ℂ} (hQ : Q.IsHermitian) (w z : Fin n → ℂ) (a : ℂ)
     (hwz : star z ⬝ᵥ Q *ᵥ w = 0) :
@@ -33,7 +33,7 @@ theorem form_expand {n : ℕ} {Q : Matrix (Fin n) (Fin n) ℂ} (hQ : Q.IsHermiti
   ring
 
 /- English proof (translation)
-Establish `h` using `form_swap hQ x x`. Conclude with `Complex.conj_eq_iff_re.mp h.symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem form_self_ofReal {n : ℕ} {Q : Matrix (Fin n) (Fin n) ℂ} (hQ : Q.IsHermitian) (x : Fin n → ℂ) :
     ((star x ⬝ᵥ Q *ᵥ x).re : ℂ) = star x ⬝ᵥ Q *ᵥ x := by
@@ -47,41 +47,39 @@ namespace GlobalTheory
 open GlobalTheory.PositiveDefiniteFormIdentities in
 
 /- English proof (translation)
-Introduce `n h Q M hh Z s hdet hsig hQZ hs hsim z c hz hMz`. Use `set Zm : Matrix (Fin n) (Fin n) ℂ := (Z : Matrix (Fin n) (Fin n) ℂ) with hZm`. Establish `hQ : Q.IsHermitian`. Rewrite using `[hQZ]`. Simplify using `[IsHermitian, conjTranspose_mul, hh.eq, Matrix.mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set q0 : ℝ := (star z ⬝ᵥ Q *ᵥ z).re with hq0`. Establish `hq : star z ⬝ᵥ Q *ᵥ z = (q0 : ℂ)` using `(form_self_ofReal hQ z).symm`. Establish `hq0ne : (q0 : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr hz.ne'`. Use `set u : Fin n → ℂ := Q *ᵥ z with hu`. Use `set H : Matrix (Fin n) (Fin n) ℂ := ((2 / q0 : ℝ) : ℂ) • vecMulVec u (star u) - Q with hH`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsu : ∀ x : Fin n → ℂ, star u ⬝ᵥ x = star z ⬝ᵥ Q *ᵥ x`. Introduce `x`. Rewrite using `[hu, star_mulVec, ← dotProduct_mulVec, hQ.eq]`. Establish `hus : ∀ x : Fin n → ℂ, star x ⬝ᵥ u = star (star z ⬝ᵥ Q *ᵥ x)`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu, ← form_swap hQ]`. Establish `hval : ∀ x : Fin n → ℂ, star x ⬝ᵥ H *ᵥ x = ((2 / q0 * Complex.normSq (star z ⬝ᵥ Q *ᵥ x) - (star x ⬝ᵥ Q *ᵥ x).re : ℝ) : ℂ)`. Introduce `x`. Rewrite using `[hH, sub_mulVec, Matrix.smul_mulVec, vecMulVec_mulVec, op_smul_eq_smul, dotProduct_sub, dotProduct_smul, dotProduct_smul, hsu, hus, smul_eq_mul, smul_eq_mul]`. Establish `e` using `form_self_ofReal hQ x`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `push_cast`. Rewrite using `[e, Complex.normSq_eq_conj_mul_self, Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree. Establish `hHh : H.IsHermitian`. Rewrite using `[hH]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `IsHermitian.sub ?_ hQ` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `[vecMulVec_apply, mul_comm]`. Establish `hpos : H.PosDef`. Use `PosDef.of_dotProduct_mulVec_pos hHh fun x hx => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hval x]`. Use `Complex.zero_lt_real.mpr ?_` and prove the remaining obligations. Use `set p := star z ⬝ᵥ Q *ᵥ x with hp`. Use `set a : ℂ := p / (q0 : ℂ) with ha`. Establish `hpa : p = a * q0` using `by rw [ha]; field_simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set w := x - a • z with hw`. Establish `hxw : x = w + a • z` using `by rw [hw]; abel`. Establish `hwz : star z ⬝ᵥ Q *ᵥ w = 0`. Rewrite using `[hw, mulVec_sub, mulVec_smul, dotProduct_sub, dotProduct_smul, smul_eq_mul, hq, ← hp, hpa, sub_self]`. Establish `hexp : star x ⬝ᵥ Q *ᵥ x = star w ⬝ᵥ Q *ᵥ w + (Complex.normSq a : ℂ) * q0` using `by conv_lhs => rw [hxw]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[form_expand hQ w z a hwz, hq]`. Establish `hre : (star x ⬝ᵥ Q *ᵥ x).re = (star w ⬝ᵥ Q *ᵥ w).re + Complex.normSq a * q0`. Rewrite using `[hexp, Complex.add_re, ← Complex.ofReal_mul, Complex.ofReal_re]`. Establish `hnp : Complex.normSq p = Complex.normSq a * q0 ^ 2`. Rewrite using `[hpa, Complex.normSq_mul, Complex.normSq_ofReal]`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h2 : 2 / q0 * (Complex.normSq a * q0 ^ 2) = 2 * Complex.normSq a * q0`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hre, hnp, h2]`. Distinguish the cases in `hw0 : w = 0`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `ha0 : a ≠ 0`. Introduce `ha0`. Apply `hx` to reduce the goal to its premises. Rewrite using `[hxw, hw0, ha0, zero_smul, add_zero]`. Establish `e : (star w ⬝ᵥ Q *ᵥ w).re = 0` using `by simp [hw0]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[e]`. Use polynomial arithmetic with `[Complex.normSq_pos.mpr ha0]`. Establish `hZw : Zm *ᵥ w ≠ 0`. Introduce `h0`. Apply `hw0` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv : ((Z⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) * Zm = 1` using `Units.inv_mul Z`. Combine the equalities or inequalities in the displayed calculation. Establish `hneg` using `re_form_neg_of_orth_of_sigPosH_eq_one h hh hdet hsig (Zm *ᵥ z) (Zm *ᵥ w) (by rw [form_pull, ← hQZ]; exact hz) (by rw [form_pull, ← hQZ]; exact hwz) hZw`. Rewrite `hneg` using `[form_pull, ← hQZ]`. Use polynomial arithmetic with `[Complex.normSq_nonneg a]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hs0 : (s : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr hs.ne'`. Establish `hc : star c * c = (s : ℂ)`. Establish `e1` using `congrArg (fun A => star z ⬝ᵥ A *ᵥ z) hsim`. Rewrite `e1` using `[← form_pull Q M z z, hMz]`. Simplify using `only [star_smul, mulVec_smul, smul_mulVec, smul_dotProduct, dotProduct_smul, smul_eq_mul] at e1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `e1` using `[← hu, hq]`. Establish `e3 : (star c * c - s) * (q0 : ℂ) = 0` using `by linear_combination e1`. Conclude with `sub_eq_zero.mp ((mul_eq_zero.mp e3).resolve_right hq0ne)`. Establish `hMu : Mᴴ *ᵥ u = star c • u`. Establish `e2` using `congrArg (fun A => A *ᵥ z) hsim`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e2` using `[← mulVec_mulVec, ← mulVec_mulVec, hMz, mulVec_smul, mulVec_smul, smul_mulVec, ← hu]`. Apply `smul_right_injective _ hs0` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(s : ℂ) • (Mᴴ *ᵥ u) = (s : ℂ) • (star c • u)`. Combine the equalities or inequalities in the displayed calculation. Establish `hstar : star u ᵥ* M = c • star u`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : star (Mᴴ *ᵥ u) = star u ᵥ* M` using `by rw [star_mulVec, conjTranspose_conjTranspose]`. Rewrite using `[← e, hMu, star_smul, star_star]`. Establish `hM1 : Mᴴ * vecMulVec u (star u) * M = (s : ℂ) • vecMulVec u (star u)`. Rewrite using `[mul_vecMulVec, vecMulVec_mul, hMu, hstar, ← hc]`. Use extensionality with `i j`.
-
-Simplify using `[vecMulVec_apply]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨H, hpos, ?_⟩` and prove the remaining obligations. Rewrite using `[hH, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_smul, Matrix.smul_mul, hM1, hsim, smul_sub, smul_comm ((2 / q0 : ℝ) : ℂ) (s : ℂ)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem similitude_preserves_posDef : ∀ (n : ℕ) (h Q M : Matrix (Fin n) (Fin n) ℂ) (hh : h.IsHermitian) (Z : GL (Fin n) ℂ) (s : ℝ), h.det ≠ 0 → sigPosH hh = 1 → Q = (Z : Matrix (Fin n) (Fin n) ℂ)ᴴ * h * (Z : Matrix (Fin n) (Fin n) ℂ) → 0 < s → Mᴴ * Q * M = (s : ℂ) • Q → ∀ (z : Fin n → ℂ) (c : ℂ), 0 < (star z ⬝ᵥ Q *ᵥ z).re → M *ᵥ z = c • z → ∃ H : Matrix (Fin n) (Fin n) ℂ, H.PosDef ∧ Mᴴ * H * M = (s : ℂ) • H := by
   intro n h Q M hh Z s hdet hsig hQZ hs hsim z c hz hMz

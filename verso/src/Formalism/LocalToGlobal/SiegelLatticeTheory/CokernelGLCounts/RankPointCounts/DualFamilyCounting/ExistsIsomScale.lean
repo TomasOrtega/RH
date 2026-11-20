@@ -12,31 +12,27 @@ variable {K V : Type*} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
 variable {S : Subring K} {π : K} {h : V →ₗ⋆[K] V →ₗ[K] K}
 
 /- English proof (translation)
-Establish `hsym : ∀ u v, star (h u v) = h v u` using `fun u v => by`. Rewrite using `[← starRingEnd_apply]`. Conclude with `hs.eq u v`. Take `⟨z, hz⟩ : ∃ z, z = x - y` from `⟨_, rfl⟩`. Take `⟨b, hbd⟩ : ∃ b, b = h x x - h y x` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb0 : b ≠ 0` using `hbd ▸ hb`. Establish `hsb0 : star b ≠ 0` using `star_ne_zero.2 hb0`. Establish `hzx : h z x = b`. Rewrite using `[hz, hbd, map_sub, LinearMap.sub_apply]`. Establish `hzv : ∀ v, h z v = h x v - h y v` using `fun v => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz, map_sub, LinearMap.sub_apply]`. Establish `hzz : h z z = b + star b`. Establish `h1 : star b = h x x - h x y`. Rewrite using `[hbd, star_sub, hsym, hsym]`. Rewrite using `[h1, hbd, hzv, hz, map_sub, map_sub, hxy]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Set `τl : V →ₗ[K] V` to `LinearMap.id - (b⁻¹ • h z).smulRight z`. Set `σl : V →ₗ[K] V` to `LinearMap.id - ((star b)⁻¹ • h z).smulRight z`. Establish `hτ : ∀ v, τl v = v - (b⁻¹ * h z v) • z` using `fun v => rfl`. Establish `hσ : ∀ v, σl v = v - ((star b)⁻¹ * h z v) • z` using `fun v => rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ c d : K, c + d = c * d * h z z → ∀ v : V, (v - (c * h z v) • z) - (d * h z (v - (c * h z v) • z)) • z = v`. Introduce `c d hcd v`. Rewrite using `[map_sub, map_smul, smul_eq_mul, sub_sub, ← add_smul]`. Establish `h0 : c * h z v + d * (h z v - c * h z v * h z z) = 0`. Take the linear combination `(h z v) * hcd`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0, zero_smul, sub_zero]`. Establish `hcd : (star b)⁻¹ + b⁻¹ = (star b)⁻¹ * b⁻¹ * h z z`. Rewrite using `[hzz]`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h₁ : τl.comp σl = LinearMap.id`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Use `show τl (σl v) = v`. Rewrite using `[hτ, hσ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `key _ _ hcd v`. Establish `h₂ : σl.comp τl = LinearMap.id`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Use `show σl (τl v) = v`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hσ, hτ]`. Conclude with `key _ _ (by rw [add_comm, mul_comm b⁻¹]; exact hcd) v`. Use `⟨LinearEquiv.ofLinear τl σl h₁ h₂, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show ∀ u v, h (τl u) (τl v) = h u v`. Introduce `u v`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hτ, hτ]`. Establish `hu : h u z = star (h z u)` using `(hsym z u).symm`. Simplify using `only [map_sub, map_smulₛₗ, map_smul, LinearMap.sub_apply, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, star_mul, star_inv₀, RingHom.id_apply, hu, hzz]`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try ring`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show τl x = y`. Rewrite using `[hτ, hzx, inv_mul_cancel₀ hb0, one_smul, hz, sub_sub_cancel]`. Introduce `v hxv hyv show τl v = v`. Rewrite using `[hτ, hzv, hxv, hyv, sub_zero, mul_zero, zero_smul, sub_zero]`. Introduce `W hxW hyW v`.
-
-Establish `hzW : z ∈ W` using `hz ▸ W.sub_mem hxW hyW`. Use `show v ∈ W ↔ τl v ∈ W`. Rewrite using `[hτ]`. Prove the components needed by the constructor for the conclusion. Introduce `hv`.
-
-Conclude with `W.sub_mem hv (W.smul_mem _ hzW)`. Introduce `hv`. Use `W.add_mem hv (W.smul_mem (b⁻¹ * h z v) hzW)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_isom_move' (hs : h.IsSymm) {x y : V} (hxy : h x x = h y y)
     (hb : h x x - h y x ≠ 0) :
@@ -111,13 +107,13 @@ theorem exists_isom_move' (hs : h.IsSymm) {x y : V} (hxy : h x x = h y y)
       rwa [sub_add_cancel] at this
 
 /- English proof (translation)
-Take `⟨ψ, hψ, hψz, hψv⟩` from `exists_isom_scale hs hz hb`. Use `⟨ψ, hψ, hψz, hψv, ?_⟩` and prove the remaining obligations. Introduce `W hzW v`. Establish `hdec : h z (v - (h z v * (h z z)⁻¹) • z) = 0`. Rewrite using `[map_sub, map_smul, smul_eq_mul, inv_mul_cancel_right₀ hz, sub_self]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hψv' : ψ v = (h z v * (h z z)⁻¹) • (b • z) + (v - (h z v * (h z z)⁻¹) • z)`. Establish `e : v = (h z v * (h z z)⁻¹) • z + (v - (h z v * (h z z)⁻¹) • z)` using `by abel`. Use `conv_lhs => rw [e]`. Rewrite using `[map_add, map_smul, hψz, hψv _ hdec]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hv`. Rewrite using `[hψv']`. Conclude with `W.add_mem (W.smul_mem _ (W.smul_mem _ hzW)) (W.sub_mem hv (W.smul_mem _ hzW))`. Introduce `hv`. Rewrite `hv` using `[hψv']`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `W.sub_mem hv (W.smul_mem (h z v * (h z z)⁻¹) (W.smul_mem b hzW))`. Rewrite `h1` using `[add_sub_cancel_left]`. Establish `h2` using `W.add_mem h1 (W.smul_mem (h z v * (h z z)⁻¹) hzW)`. Rewrite `h2` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_isom_scale' (hs : h.IsSymm) {z : V} (hz : h z z ≠ 0) {b : K} (hb : star b * b = 1) :
     ∃ ψ ∈ Formalism.HermitianLatticesTheory.isom h, ψ z = b • z ∧ (∀ v, h z v = 0 → ψ v = v) ∧
@@ -143,15 +139,13 @@ theorem exists_isom_scale' (hs : h.IsSymm) {z : V} (hz : h z z ≠ 0) {b : K} (h
     rwa [sub_add_cancel] at h2
 
 /- English proof (translation)
-Distinguish the cases in `hb : h x x - h y x = 0`. Establish `hxy' : h x x = h (-y) (-y)`. Simplify using `only [map_neg, LinearMap.neg_apply, neg_neg]`. Conclude with `hxy`. Establish `hyx : h y x = h x x` using `by linear_combination -hb`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb' : h x x - h (-y) x ≠ 0`. Simplify using `only [map_neg, LinearMap.neg_apply, sub_neg_eq_add]`. Rewrite using `[hyx, ← two_mul]`. Conclude with `mul_ne_zero h2 hx0`. Take `⟨τ, hτ, hτx, hτv, hτW⟩` from `exists_isom_move' hs hxy' hb'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hy0 : h y y ≠ 0` using `hxy ▸ hx0`. Take `⟨ψ, hψ, hψy, hψv, hψW⟩` from `exists_isom_scale' hs hy0 (b := -1) (by rw [star_neg, star_one]; norm_num)`. Use `⟨ψ * τ, mul_mem hψ hτ, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show ψ (τ x) = y`. Rewrite using `[hτx, map_neg, hψy, neg_one_smul, neg_neg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `v hxv hyv show ψ (τ v) = v`. Establish `hyv' : h (-y) v = 0`. Simplify using `only [map_neg, LinearMap.neg_apply, hyv, neg_zero]`. Rewrite using `[hτv v hxv hyv', hψv v hyv]`. Introduce `W hxW hyW v show v ∈ W ↔ ψ (τ v) ∈ W`.
-
-Rewrite using `[hτW W hxW (W.neg_mem hyW) v]`. Conclude with `hψW W hyW (τ v)`. Conclude with `exists_isom_move' hs hxy hb`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isom_map_of_eq_norm (hs : h.IsSymm) (h2 : (2 : K) ≠ 0) {x y : V} (hxy : h x x = h y y)
     (hx0 : h x x ≠ 0) :
@@ -185,13 +179,11 @@ theorem exists_isom_map_of_eq_norm (hs : h.IsSymm) (h2 : (2 : K) ≠ 0) {x y : V
   · exact exists_isom_move' hs hxy hb
 
 /- English proof (translation)
-Establish `hφ' : ∀ a c, h (φ a) (φ c) = h a c` using `hφ`. Establish `hφx : φ x ∈ W₂` using `(hW x).1 hx`. Establish `hn : h (φ x) (φ x) = h X X` using `by rw [hφ' x x]; exact hxX`. Establish `hn0 : h (φ x) (φ x) ≠ 0` using `by rw [hφ' x x]; exact hx0`. Take `⟨τ, hτ, hτx, hτv, hτW⟩` from `exists_isom_map_of_eq_norm hs h2 hn hn0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hτ' : ∀ a c, h (τ a) (τ c) = h a c` using `hτ`. Use `⟨τ * φ, mul_mem hτ hφ, hτx, ?_, ?_⟩` and prove the remaining obligations. Introduce `v show v ∈ cutW h W₁ x ↔ τ (φ v) ∈ cutW h W₂ X`. Rewrite using `[mem_cutW, mem_cutW, ← hτW W₂ hφx hX (φ v), ← hW v, ← hτx, hτ' (φ x) (φ v), hφ' x v]`. Introduce `v hv show τ (φ v) = φ v`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hτv` to reduce the goal to its premises. Rewrite using `[hφ' x v]`. Conclude with `hv x hx`. Take `⟨x', rfl⟩` from `φ.surjective X`. Rewrite using `[hφ' x' v]`.
-
-Conclude with `hv x' ((hW x').2 hX)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_prep' (hs : h.IsSymm) (h2 : (2 : K) ≠ 0) {W₁ W₂ : Submodule K V}
     {φ : V ≃ₗ[K] V} (hφ : φ ∈ Formalism.HermitianLatticesTheory.isom h) (hW : ∀ v, v ∈ W₁ ↔ φ v ∈ W₂) {x X : V}
@@ -218,41 +210,37 @@ theorem exists_prep' (hs : h.IsSymm) (h2 : (2 : K) ≠ 0) {W₁ W₂ : Submodule
       exact hv x' ((hW x').2 hX)
 
 /- English proof (translation)
-Establish `hsym : ∀ u v, star (h u v) = h v u` using `fun u v => by`. Rewrite using `[← starRingEnd_apply]`. Conclude with `hs.eq u v`. Proceed by induction on `n with`. Consider the case `zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `W₁ W₂ M N φ hr hnd hM hN hφ hW`. Establish `hW0 : W₁ = ⊥` using `Submodule.finrank_eq_zero.1 (Nat.le_zero.1 hr)`. Use `⟨φ, hφ, fun v _ => rfl, fun v => ⟨fun hv => ?_, fun hv => ?_⟩⟩` and prove the remaining obligations. Establish `h0 : v = 0`. Use `hM.le v hv` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[hW0, Submodule.mem_bot]`. Then use the resulting hypothesis. Rewrite using `[h0, map_zero]`. Conclude with `N.zero_mem`. Establish `h0 : v = 0`. Use `(hW v).2 (hN.le _ hv)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[hW0, Submodule.mem_bot]`. Then use the resulting hypothesis. Rewrite using `[h0]`. Conclude with `M.zero_mem`. Consider the case `succ n ih`. Introduce `W₁ W₂ M N φ hr hnd hM hN hφ hW`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Distinguish the cases in `hW0 : W₁ = ⊥`. Use `⟨φ, hφ, fun v _ => rfl, fun v => ⟨fun hv => ?_, fun hv => ?_⟩⟩` and prove the remaining obligations. Establish `h0 : v = 0`. Use `hM.le v hv` as an intermediate fact. Rewrite `this` using `[hW0, Submodule.mem_bot]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h0, map_zero]`. Conclude with `N.zero_mem`. Establish `h0 : v = 0`. Use `(hW v).2 (hN.le _ hv)` as an intermediate fact. Rewrite `this` using `[hW0, Submodule.mem_bot]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h0]`. Conclude with `M.zero_mem`. Establish `hφ' : ∀ a c, h (φ a) (φ c) = h a c` using `hφ`. Take `⟨ξ, hξ, hξ0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hW0`. Take `⟨x, hxM, hxu⟩` from `IsSD.exists_unit_norm' hS hπ hs hnd hM hξ hξ0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : x ∈ W₁` using `hM.le x hxM`. Establish `hφx : φ x ∈ W₂` using `(hW x).1 hx`. Take `⟨X, hXN, hXx⟩` from `IsSD.exists_norm' hS hπ hs hN hφx hxu (hφ' x x)`. Establish `hx0 : h x x ≠ 0` using `hxu.1`. Establish `hXu : IsUnitIn S (h X X)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hXx]`. Conclude with `hxu`. Take `⟨φ₁, hφ₁, hφ₁x, hφ₁W, hφ₁v⟩` from `exists_prep' hs h2 hφ hW hx (hN.le X hXN) hXx.symm hx0`. Establish `hr' : finrank K (cutW h W₁ x) ≤ n`. Establish `hlt : finrank K (cutW h W₁ x) < finrank K W₁`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Apply `Submodule.finrank_lt_finrank_of_lt` to reduce the goal to its premises. Rewrite using `[lt_iff_le_and_ne]`. Use `⟨fun v hv => (mem_cutW.1 hv).1, fun heq => ?_⟩` and prove the remaining obligations. Establish `hxc : x ∈ cutW h W₁ x`. Rewrite using `[heq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hx`. Conclude with `hx0 (mem_cutW.1 hxc).2`. Use linear arithmetic over natural numbers and integers. Take `⟨g, hg, hgv, hgM⟩` from `ih (cutW h W₁ x) (cutW h W₂ X) (cutM h M x) (cutM h N X) φ₁ hr' (nondegOn_cut hnd hx hx0) (hM.cut hxM hxu) (hN.cut hXN hXu) hφ₁ hφ₁W`. Establish `hg' : ∀ a c, h (g a) (g c) = h a c` using `hg`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `horth : ∀ w ∈ cutW h W₁ x, h w x = 0` using `fun w hw => by`. Rewrite using `[← hsym x w, (mem_cutW.1 hw).2, star_zero]`. Establish `hgx : g x = X`. Rewrite using `[hgv x horth, hφ₁x]`. Establish `hdec : ∀ v : V, v = (v - (h x v * (h x x)⁻¹) • x) + (h x v * (h x x)⁻¹) • x` using `fun v => by abel`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Establish `hgdec : ∀ v, g v = g (v - (h x v * (h x x)⁻¹) • x) + (h x v * (h x x)⁻¹) • X` using `fun v => by conv_lhs => rw [hdec v]`. Rewrite using `[map_add, map_smul, hgx]`. Use `⟨g, hg, fun v hv => ?_, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[hgv v (fun w hw => hv w (mem_cutW.1 hw).1), hφ₁v v hv]`. Establish `hxvX : h X (g v) = h x v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hgx, hg']`. Establish `hxxinv : (h x x)⁻¹ ∈ S` using `hxu.2.2`. Prove the components needed by the constructor for the conclusion. Introduce `hv`. Establish `ha : h x v * (h x x)⁻¹ ∈ S` using `S.mul_mem (hM.int x hxM v hv) hxxinv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp` using `proj_mem hM.toIsLatIn hxM hxu hv`. Establish `hgp` using `(hgM _).1 hp`. Rewrite using `[hgdec v]`. Conclude with `N.add_mem (AddSubgroup.mem_inf.1 hgp).1 (hN.smul_mem _ ha X hXN)`. Introduce `hv`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hiS : h x v ∈ S`. Rewrite using `[← hxvX]`. Conclude with `hN.int X hXN (g v) hv`. Establish `ha : h x v * (h x x)⁻¹ ∈ S` using `S.mul_mem hiS hxxinv`. Establish `hq` using `proj_mem hN.toIsLatIn hXN hXu hv`.
-
-Rewrite `hq` using `[hxvX, hXx]`. Establish `hq' : g (v - (h x v * (h x x)⁻¹) • x) ∈ cutM h N X`. Rewrite using `[map_sub, map_smul, hgx]`. Conclude with `hq`. Establish `hp` using `(hgM _).2 hq'`.
-
-Rewrite using `[hdec v]`. Conclude with `M.add_mem (AddSubgroup.mem_inf.1 hp).1 (hM.smul_mem _ ha x hxM)`.
+A detailed English derivation is pending.
 -/
 theorem sd_main' [FiniteDimensional K V] (hS : IsHermSemilocal S) (hπ : IsUnif S π)
     (hs : h.IsSymm) (h2 : (2 : K) ≠ 0) (n : ℕ) :

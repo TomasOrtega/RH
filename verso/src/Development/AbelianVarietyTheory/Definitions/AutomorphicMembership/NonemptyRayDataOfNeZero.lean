@@ -16,7 +16,7 @@ def primeTo (K : Type) [Field K] [NumberField K] (M : ℕ) : Submonoid (Ideal (�
   one_mem' := ⟨isCoprime_one_left, one_ne_zero⟩
 
 /- English proof (translation)
-Establish `e : a * b - 1 = (a - 1) * b + (b - 1)` using `by ring`. Rewrite using `[e]`. Conclude with `A.add_mem (A.mul_mem_right b ha) hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_mul_mem {R : Type} [CommRing R] {A : Ideal R} {a b : R} (ha : a - 1 ∈ A) (hb : b - 1 ∈ A) : a * b - 1 ∈ A := by
   have e : a * b - 1 = (a - 1) * b + (b - 1) := by ring
@@ -38,11 +38,11 @@ def rayCon (K : Type) [Field K] [NumberField K] (M : ℕ) : Con (primeTo K M) wh
           Submonoid.coe_mul, Submonoid.coe_mul, mul_mul_mul_comm, h, h', mul_mul_mul_comm]⟩
 
 /- English proof (translation)
-Take `⟨i, hi, j, hj, hij⟩` from `Ideal.isCoprime_iff_exists.mp h`. Take `⟨β, rfl⟩` from `Ideal.mem_span_singleton'.mp hi`. Distinguish the cases in `hβ : β = 0`. Substitute `hβ` using the available equality. Use `⟨1, one_ne_zero, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hj1 : j = 1` using `by simpa using hij`. Rewrite using `[Ideal.eq_top_of_isUnit_mem _ hj (by rw [hj1]; exact isUnit_one)]`. Conclude with `Submodule.mem_top`. Use `⟨β, hβ, ?_⟩` and prove the remaining obligations. Establish `e : β * α - 1 = -j` using `by rw [← hij]; ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `neg_mem hj`.
+A detailed English derivation is pending.
 -/
 theorem exists_beta {M : ℕ} {α : 𝓞 K} (h : IsCoprime (Ideal.span {α}) (Ideal.span {(M : 𝓞 K)})) :
     ∃ β : 𝓞 K, β ≠ 0 ∧ β * α - 1 ∈ Ideal.span {(M : 𝓞 K)} := by
@@ -63,9 +63,9 @@ def icl {M : ℕ} (I : primeTo K M) : ClassGroup (𝓞 K) :=
   ClassGroup.mk0 ⟨I.1, mem_nonZeroDivisors_of_ne_zero I.2.2⟩
 
 /- English proof (translation)
-Establish `hle : primeTo K M ≤ nonZeroDivisors (Ideal (𝓞 K))` using `fun J hJ => mem_nonZeroDivisors_of_ne_zero hJ.2`. Set `φ : primeTo K M →* ClassGroup (𝓞 K)` to `ClassGroup.mk0.comp (Submonoid.inclusion hle)`. Establish `hφ : ∀ J, φ J = icl J` using `fun J => rfl`. Use `⟨I ^ (Fintype.card (ClassGroup (𝓞 K)) - 1), fun J hJ => ?_⟩` and prove the remaining obligations. Establish `h1 : φ (J * I ^ (Fintype.card (ClassGroup (𝓞 K)) - 1)) = 1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_pow, hφ J, hJ, ← hφ I, ← pow_succ', Nat.sub_add_cancel Fintype.card_pos, pow_card_eq_one]`. Rewrite `h1` using `[hφ, icl, ClassGroup.mk0_eq_one_iff]`. Take `⟨⟨α, hα⟩⟩` from `h1`. Conclude with `⟨α, hα⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_compl {M : ℕ} (I : primeTo K M) : ∃ L : primeTo K M, ∀ J : primeTo K M, icl J = icl I →
     ∃ α : 𝓞 K, J.1 * L.1 = Ideal.span {α} := by
@@ -81,21 +81,19 @@ theorem exists_compl {M : ℕ} (I : primeTo K M) : ∃ L : primeTo K M, ∀ J : 
   exact ⟨α, hα⟩
 
 /- English proof (translation)
-Establish `hMne : Ideal.span {(M : 𝓞 K)} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hM` after adjusting the coercions. Establish `: Finite (𝓞 K ⧸ Ideal.span {(M : 𝓞 K)})` using `(Ideal.absNorm_ne_zero_iff _).mp (by rwa [Ne, Ideal.absNorm_eq_zero_iff])`. Establish `hL : ∀ c : ClassGroup (𝓞 K), ∃ L : primeTo K M, ∀ J : primeTo K M, icl J = c → ∃ α : 𝓞 K, J.1 * L.1 = Ideal.span {α}`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c`. Distinguish the cases in `hc : ∃ I : primeTo K M, icl I = c`. Take `⟨I, rfl⟩` from `hc`. Conclude with `exists_compl I`. Conclude with `⟨1, fun J hJ => (hc ⟨J, hJ⟩).elim⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose L hL using hL`. Establish `hα : ∀ J : primeTo K M, ∃ α : 𝓞 K, J.1 * (L (icl J)).1 = Ideal.span {α}` using `fun J => hL _ J rfl`. Use `choose α hα using hα`. Establish `hne : ∀ J : primeTo K M, α J ≠ 0`. Introduce `J h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hb : Ideal.span {α J} ≠ ⊥`. Rewrite using `[← hα J]`. Conclude with `mul_ne_zero J.2.2 (L (icl J)).2.2`. Conclude with `hb (Ideal.span_singleton_eq_bot.mpr h0)`. Set `f : primeTo K M → ClassGroup (𝓞 K) × (𝓞 K ⧸ Ideal.span {(M : 𝓞 K)})` to `fun J => (icl J, Ideal.Quotient.mk _ (α J))`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ J₁ J₂ : primeTo K M, f J₁ = f J₂ → rayCon K M J₁ J₂`. Introduce `J₁ J₂ h`. Simplify using `only [f, Prod.mk.injEq] at h`. Take `⟨hc, hm⟩` from `h`. Establish `h₁` using `hα J₁`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h₂` using `hα J₂`. Rewrite `h₁` using `[hc]`. Establish `hcop : IsCoprime (Ideal.span {α J₁}) (Ideal.span {(M : 𝓞 K)})`. Rewrite using `[← h₁]`. Conclude with `J₁.2.1.mul_left (L (icl J₂)).2.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨β, hβ, hβα⟩` from `exists_beta hcop`. Use `⟨β * α J₂, β * α J₁, mul_ne_zero hβ (hne J₂), mul_ne_zero hβ (hne J₁), ?_, hβα, ?_⟩` and prove the remaining obligations. Establish `e : β * α J₂ - 1 = (β * α J₁ - 1) - β * (α J₁ - α J₂)` using `by ring`. Rewrite using `[e]`. Conclude with `sub_mem hβα (Ideal.mul_mem_left _ _ (Ideal.Quotient.eq.mp hm))`.
-
-Apply `mul_right_cancel₀ (b := (L (icl J₂)).1) (L (icl J₂)).2.2` to reduce the goal to its premises. Rewrite using `[mul_assoc, h₁, mul_assoc, h₂, Ideal.span_singleton_mul_span_singleton, Ideal.span_singleton_mul_span_singleton, show β * α J₂ * α J₁ = β * α J₁ * α J₂ by ring]`. Use `Finite.of_injective (fun q : (rayCon K M).Quotient => f (Quotient.out q)) fun q₁ q₂ h => ?_` and prove the remaining obligations. Rewrite using `[← Quotient.out_eq q₁, ← Quotient.out_eq q₂]`. Conclude with `Quotient.sound (key _ _ h)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_quot {M : ℕ} (hM : M ≠ 0) : Finite (rayCon K M).Quotient := by
   classical
@@ -147,15 +145,13 @@ theorem finite_quot {M : ℕ} (hM : M ≠ 0) : Finite (rayCon K M).Quotient := b
   exact Quotient.sound (key _ _ h)
 
 /- English proof (translation)
-Take `⟨I, rfl⟩` from `(rayCon K M).mk'_surjective q`. Take `⟨L, hL⟩` from `exists_compl I`. Take `⟨α, hα⟩` from `hL I rfl`. Establish `hcop : IsCoprime (Ideal.span {α}) (Ideal.span {(M : 𝓞 K)})`. Rewrite using `[← hα]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `I.2.1.mul_left L.2.1`. Take `⟨β, hβ, hβα⟩` from `exists_beta hcop`. Establish `hβcop : IsCoprime (Ideal.span {β}) (Ideal.span {(M : 𝓞 K)})`. Rewrite using `[Ideal.isCoprime_iff_exists]`. Use `⟨β * α, Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self β), 1 - β * α, ?_, by ring⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hn` using `neg_mem hβα`. Rewrite `hn` using `[neg_sub]`. Then use the resulting hypothesis. Establish `hα0 : α ≠ 0`. Introduce and unpack `rfl`. Conclude with `mul_ne_zero I.2.2 L.2.2 (by rw [hα]; exact Ideal.span_singleton_eq_bot.mpr rfl)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `L' : primeTo K M` to `L * ⟨Ideal.span {β}, hβcop, by rwa [Ne, Ideal.span_singleton_eq_bot]⟩`. Use `isUnit_iff_exists_inv.mpr ⟨(rayCon K M).mk' L', ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul, ← map_one (rayCon K M).mk']`. Use `(Con.eq _).mpr ⟨1, β * α, one_ne_zero, mul_ne_zero hβ hα0, by simp, hβα, ?_⟩` and prove the remaining obligations. Simplify using `only [L', Submonoid.coe_mul, Submonoid.coe_one]`.
-
-Rewrite using `[Ideal.span_singleton_one, Ideal.top_mul, mul_one, ← mul_assoc, hα, Ideal.span_singleton_mul_span_singleton, mul_comm α β]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_inv {M : ℕ} (q : (rayCon K M).Quotient) : IsUnit q := by
   obtain ⟨I, rfl⟩ := (rayCon K M).mk'_surjective q
@@ -182,9 +178,9 @@ theorem exists_inv {M : ℕ} (q : (rayCon K M).Quotient) : IsUnit q := by
     Ideal.span_singleton_mul_span_singleton, mul_comm α β]
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Establish `htop : Ideal.span {(M : 𝓞 K)} = ⊤`. Rewrite `h` using `[Ideal.isCoprime_iff_add, Ideal.add_eq_sup, bot_sup_eq, Ideal.one_eq_top]`. Conclude with `h`. Establish `h1` using `congrArg Ideal.absNorm htop`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Ideal.absNorm_span_singleton, Ideal.absNorm_top, ← map_natCast (algebraMap ℤ (𝓞 K)) M, Algebra.norm_algebraMap, Int.natAbs_pow, Int.natAbs_natCast]`. Break down `Nat.pow_eq_one.mp h1 with h2 | h2` into its components or cases. Use linear arithmetic over natural numbers and integers. Conclude with `(Module.finrank_pos (R := ℤ) (M := 𝓞 K)).ne' h2`.
+Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem ne_bot_of_cop {M : ℕ} (hM : 2 ≤ M) {I : Ideal (𝓞 K)} (h : IsCoprime I (Ideal.span {(M : 𝓞 K)})) : I ≠ ⊥ := by
   rintro rfl
@@ -204,13 +200,13 @@ def rcl (M : ℕ) (I : Ideal (𝓞 K)) : (rayCon K M).Quotient :=
   if h : I ∈ primeTo K M then (rayCon K M).mk' ⟨I, h⟩ else 1
 
 /- English proof (translation)
-Rewrite using `[rcl, dif_pos h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rcl_of {M : ℕ} {I : Ideal (𝓞 K)} (h : I ∈ primeTo K M) : rcl M I = (rayCon K M).mk' ⟨I, h⟩ := by
   rw [rcl, dif_pos h]
 
 /- English proof (translation)
-Rewrite using `[rcl_of (mul_mem h1 h2), rcl_of h1, rcl_of h2, ← map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rcl_mul {M : ℕ} {I J : Ideal (𝓞 K)} (h1 : I ∈ primeTo K M) (h2 : J ∈ primeTo K M) :
     rcl M (I * J) = rcl M I * rcl M J := by
@@ -265,7 +261,7 @@ def rayData (K : Type) [Field K] [NumberField K] (M : ℕ) (hM : M ≠ 0) : RayD
     exact Con.eq _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rayData K M hM⟩`.
+Supply the required witnesses or components.
 -/
 theorem nonempty_rayData_of_ne_zero (K : Type) [Field K] [NumberField K] (M : ℕ) (hM : M ≠ 0) : Nonempty (RayData K M) := ⟨rayData K M hM⟩
 
@@ -281,13 +277,13 @@ def coef (χ : D.G →* ℂˣ) (n : ℕ) : ℂ := ∑ c : D.G, (χ c : ℂ) * D.
 def Pr (_D : RayData K M) : Type := {v : HeightOneSpectrum (𝓞 K) // IsCoprime v.asIdeal (Ideal.span {(M : 𝓞 K)})}
 
 /- English proof (translation)
-The claim follows from `D.cls_mul I J hI hJ (RayCl.ne_bot_of_cop hM hI) (RayCl.ne_bot_of_cop hM hJ)`.
+A detailed English derivation is pending.
 -/
 theorem cls_mul_of_two_le (hM : 2 ≤ M) {I J : Ideal (𝓞 K)} (hI : IsCoprime I (Ideal.span {(M : 𝓞 K)}))
     (hJ : IsCoprime J (Ideal.span {(M : 𝓞 K)})) : D.cls (I * J) = D.cls I * D.cls J := D.cls_mul I J hI hJ (RayCl.ne_bot_of_cop hM hI) (RayCl.ne_bot_of_cop hM hJ)
 
 /- English proof (translation)
-Establish `h` using `D.cls_mul 1 1 isCoprime_one_left isCoprime_one_left one_ne_zero one_ne_zero`. Rewrite `h` using `[one_mul]`. Conclude with `mul_left_cancel (a := D.cls 1) (by rw [mul_one]; exact h.symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cls_one : D.cls 1 = 1 := by
   have h := D.cls_mul 1 1 isCoprime_one_left isCoprime_one_left one_ne_zero one_ne_zero
@@ -295,14 +291,14 @@ theorem cls_one : D.cls 1 = 1 := by
   exact mul_left_cancel (a := D.cls 1) (by rw [mul_one]; exact h.symm)
 
 /- English proof (translation)
-Rewrite using `[← Ideal.one_eq_top]`. Conclude with `D.cls_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cls_top : D.cls ⊤ = 1 := by
   rw [← Ideal.one_eq_top]
   exact D.cls_one
 
 /- English proof (translation)
-Rewrite using `[← D.cls_one, D.cls_eq I 1 hI isCoprime_one_left hI' one_ne_zero]`. Simplify using `only [mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cls_eq_one_iff {I : Ideal (𝓞 K)} (hI : IsCoprime I (Ideal.span {(M : 𝓞 K)})) (hI' : I ≠ ⊥) :
     D.cls I = 1 ↔ ∃ a b : 𝓞 K, a ≠ 0 ∧ b ≠ 0 ∧ a - 1 ∈ Ideal.span {(M : 𝓞 K)} ∧ b - 1 ∈ Ideal.span {(M : 𝓞 K)} ∧
@@ -311,9 +307,9 @@ theorem cls_eq_one_iff {I : Ideal (𝓞 K)} (hI : IsCoprime I (Ideal.span {(M : 
   simp only [mul_one]
 
 /- English proof (translation)
-Establish `hcop : IsCoprime (Ideal.span {a}) (Ideal.span {(M : 𝓞 K)})`. Rewrite using `[Ideal.isCoprime_iff_exists]`. Use `⟨a, Ideal.mem_span_singleton_self a, 1 - a, ?_, by ring⟩` and prove the remaining obligations. Establish `hn` using `neg_mem h`. Rewrite `hn` using `[neg_sub]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `(D.cls_eq_one_iff hcop (by rwa [Ne, Ideal.span_singleton_eq_bot])).mpr ⟨1, a, one_ne_zero, ha, by simp, h, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_one, Ideal.top_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem cls_span {a : 𝓞 K} (ha : a ≠ 0) (h : a - 1 ∈ Ideal.span {(M : 𝓞 K)}) : D.cls (Ideal.span {a}) = 1 := by
   have hcop : IsCoprime (Ideal.span {a}) (Ideal.span {(M : 𝓞 K)}) := by
@@ -331,7 +327,7 @@ def clsHom : RayCl.primeTo K M →* D.G where
   map_mul' I J := D.cls_mul I.1 J.1 I.2.1 J.2.1 I.2.2 J.2.2
 
 /- English proof (translation)
-Introduce `c`. Take `⟨I, hI, hI', rfl⟩` from `D.cls_surj c`. Conclude with `⟨⟨I, hI, hI'⟩, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem clsHom_surjective : Function.Surjective D.clsHom := by
   intro c
@@ -339,7 +335,7 @@ theorem clsHom_surjective : Function.Surjective D.clsHom := by
   exact ⟨⟨I, hI, hI'⟩, rfl⟩
 
 /- English proof (translation)
-Use extensionality with `I J`. Rewrite using `[Con.ker_rel]`. Conclude with `D.cls_eq I.1 J.1 I.2.1 J.2.1 I.2.2 J.2.2`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_clsHom : Con.ker D.clsHom = RayCl.rayCon K M := by
   ext I J
@@ -355,7 +351,7 @@ def equivRayGroup : RayGroup K M ≃* D.G :=
      Con.lift_surjective_of_surjective _ D.clsHom_surjective⟩
 
 /- English proof (translation)
-Rewrite using `[RayCl.rcl_of (show I ∈ RayCl.primeTo K M from ⟨hI, hI'⟩)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem equivRayGroup_rcl {I : Ideal (𝓞 K)} (hI : IsCoprime I (Ideal.span {(M : 𝓞 K)})) (hI' : I ≠ ⊥) :
     D.equivRayGroup (RayCl.rcl M I) = D.cls I := by
@@ -363,7 +359,7 @@ theorem equivRayGroup_rcl {I : Ideal (𝓞 K)} (hI : IsCoprime I (Ideal.span {(M
   rfl
 
 /- English proof (translation)
-Establish `hs : {I : Ideal (𝓞 K) | IsCoprime I (Ideal.span {(M : 𝓞 K)}) ∧ Ideal.absNorm I = n ∧ D.cls I = c}.Finite` using `(Ideal.finite_setOfPred_absNorm_eq n).subset fun I hI => hI.2.1`. Conclude with `hs.to_subtype`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_cnt (c : D.G) (n : ℕ) :
     Finite {I : Ideal (𝓞 K) // IsCoprime I (Ideal.span {(M : 𝓞 K)}) ∧ Ideal.absNorm I = n ∧ D.cls I = c} := by
@@ -373,7 +369,7 @@ theorem finite_cnt (c : D.G) (n : ℕ) :
   exact hs.to_subtype
 
 /- English proof (translation)
-Rewrite using `[cnt]`. Use `congr 1`. Conclude with `Nat.card_congr (Equiv.subtypeEquivRight fun I => ⟨fun h => ⟨h.1, fun h0 => hn (by rw [← h.2.1, h0, Ideal.absNorm_bot]), h.2.1, h.2.2⟩, fun h => ⟨h.1, h.2.2.1, h.2.2.2⟩⟩)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem cnt_of_ne_zero (c : D.G) {n : ℕ} (hn : n ≠ 0) : D.cnt c n =
     (Nat.card {I : Ideal (𝓞 K) // IsCoprime I (Ideal.span {(M : 𝓞 K)}) ∧ I ≠ ⊥ ∧ Ideal.absNorm I = n ∧ D.cls I = c} : ℕ) := by
@@ -384,7 +380,7 @@ theorem cnt_of_ne_zero (c : D.G) {n : ℕ} (hn : n ≠ 0) : D.cnt c n =
       fun h => ⟨h.1, h.2.2.1, h.2.2.2⟩⟩)
 
 /- English proof (translation)
-Establish `: IsEmpty {I : Ideal (𝓞 K) // IsCoprime I (Ideal.span {(M : 𝓞 K)}) ∧ Ideal.absNorm I = 0 ∧ D.cls I = c}` using `⟨fun I => RayCl.ne_bot_of_cop hM I.2.1 (Ideal.absNorm_eq_zero_iff.mp I.2.2.1)⟩`. Rewrite using `[cnt, Nat.card_of_isEmpty, Nat.cast_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem cnt_zero (hM : 2 ≤ M) (c : D.G) : D.cnt c 0 = 0 := by
   have : IsEmpty {I : Ideal (𝓞 K) // IsCoprime I (Ideal.span {(M : 𝓞 K)}) ∧ Ideal.absNorm I = 0 ∧
@@ -395,9 +391,9 @@ theorem cnt_zero (hM : 2 ≤ M) (c : D.G) : D.cnt c 0 = 0 := by
 open Classical in
 
 /- English proof (translation)
-Establish `key : ∀ I : {I : Ideal (𝓞 K) // IsCoprime I (Ideal.span {(M : 𝓞 K)}) ∧ Ideal.absNorm I = 1 ∧ D.cls I = c}, I.1 = ⊤` using `fun I => Ideal.absNorm_eq_one_iff.mp I.2.2.1`. Rewrite using `[cnt]`. Use `split_ifs with hc`. Substitute `hc` using the available equality. Establish `h1 : Nat.card {I : Ideal (𝓞 K) // IsCoprime I (Ideal.span {(M : 𝓞 K)}) ∧ Ideal.absNorm I = 1 ∧ D.cls I = 1} = 1` using `Nat.card_eq_one_iff_unique.mpr ⟨⟨fun a b => Subtype.ext ((key a).trans (key b).symm)⟩, ⟨⟨⊤, by rw [← Ideal.one_eq_top]; exact isCoprime_one_left, Ideal.absNorm_top, D.cls_top⟩⟩⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, Nat.cast_one]`. Establish `: IsEmpty {I : Ideal (𝓞 K) // IsCoprime I (Ideal.span {(M : 𝓞 K)}) ∧ Ideal.absNorm I = 1 ∧ D.cls I = c}` using `⟨fun I => hc (by rw [← I.2.2.2, key I, D.cls_top])⟩`. Rewrite using `[Nat.card_of_isEmpty, Nat.cast_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cnt_one (c : D.G) : D.cnt c 1 = if c = 1 then 1 else 0 := by
   have key : ∀ I : {I : Ideal (𝓞 K) // IsCoprime I (Ideal.span {(M : 𝓞 K)}) ∧
@@ -417,9 +413,9 @@ theorem cnt_one (c : D.G) : D.cnt c 1 = if c = 1 then 1 else 0 := by
     rw [Nat.card_of_isEmpty, Nat.cast_zero]
 
 /- English proof (translation)
-Rewrite using `[coef, Finset.sum_eq_single (1 : D.G)]`. Rewrite using `[D.cnt_one, if_pos rfl, map_one, Units.val_one, mul_one]`. Introduce `b _ hb`. Rewrite using `[D.cnt_one, if_neg hb, mul_zero]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ _) h`.
+A detailed English derivation is pending.
 -/
 theorem coef_one (χ : D.G →* ℂˣ) : D.coef χ 1 = 1 := by
   rw [coef, Finset.sum_eq_single (1 : D.G)]
@@ -430,17 +426,15 @@ theorem coef_one (χ : D.G →* ℂˣ) : D.coef χ 1 = 1 := by
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Establish `htop : Ideal.span {((1 : ℕ) : 𝓞 K)} = ⊤`. Rewrite using `[Nat.cast_one, Ideal.span_singleton_one]`. Establish `hcop : ∀ I : Ideal (𝓞 K), IsCoprime I (Ideal.span {((1 : ℕ) : 𝓞 K)})` using `fun I => by`. Rewrite using `[htop, ← Ideal.one_eq_top]`. Conclude with `isCoprime_one_right`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmod : ∀ x : 𝓞 K, x ∈ Ideal.span {((1 : ℕ) : 𝓞 K)}` using `fun x => by`. Rewrite using `[htop]`. Conclude with `Submodule.mem_top`. Establish `heq : ∀ (I J : Ideal (𝓞 K)) (hI : I ≠ ⊥) (hJ : J ≠ ⊥), D.cls I = D.cls J ↔ ClassGroup.mk0 ⟨I, mem_nonZeroDivisors_of_ne_zero hI⟩ = ClassGroup.mk0 ⟨J, mem_nonZeroDivisors_of_ne_zero hJ⟩`. Introduce `I J hI hJ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[D.cls_eq I J (hcop I) (hcop J) hI hJ, ClassGroup.mk0_eq_mk0_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, b, ha, hb, -, -, h⟩`. Conclude with `⟨a, b, ha, hb, h⟩`. Introduce and unpack `⟨a, b, ha, hb, h⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Conclude with `⟨a, b, ha, hb, hmod _, hmod _, h⟩`. Use `choose r hr using D.cls_surj`. Set `f : D.G → ClassGroup (𝓞 K)` to `fun c => ClassGroup.mk0 ⟨r c, mem_nonZeroDivisors_of_ne_zero (hr c).2.1⟩`. Establish `hf : Function.Bijective f`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c c' h`. Rewrite using `[← (hr c).2.2, ← (hr c').2.2]`. Conclude with `(heq _ _ (hr c).2.1 (hr c').2.1).mpr h`. Introduce `x`. Take `⟨⟨J, hJ⟩, rfl⟩` from `ClassGroup.mk0_surjective x`.
-
-Establish `hJ' : J ≠ ⊥` using `nonZeroDivisors.ne_zero hJ`. Conclude with `⟨D.cls J, (heq _ _ (hr _).2.1 hJ').mp (hr _).2.2⟩`. Rewrite using `[NumberField.classNumber]`. Conclude with `Fintype.card_of_bijective hf`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_eq_classNumber (D : RayData K 1) : Fintype.card D.G = classNumber K := by
   classical
@@ -478,15 +472,13 @@ theorem card_eq_classNumber (D : RayData K 1) : Fintype.card D.G = classNumber K
   exact Fintype.card_of_bijective hf
 
 /- English proof (translation)
-Establish `hcop : IsCoprime (Ideal.span {(2 : 𝓞 ℚ)}) (Ideal.span {((5 : ℕ) : 𝓞 ℚ)})`. Rewrite using `[Ideal.isCoprime_iff_exists]`. Use `⟨2 * (-2), Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self 2), ((5 : ℕ) : 𝓞 ℚ) * 1, Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _), ?_⟩` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h2 : Ideal.span {(2 : 𝓞 ℚ)} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `two_ne_zero`. Introduce `h`. Take `⟨a, b, -, -, ha1, hb1, hab⟩` from `(D.cls_eq_one_iff hcop h2).mp h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hab` using `[Ideal.span_singleton_mul_span_singleton, Ideal.span_singleton_eq_span_singleton]`. Establish `hab'` using `hab.map Rat.ringOfIntegersEquiv`. Rewrite `hab'` using `[map_mul, map_ofNat]`. Establish `ha5 : (5 : ℤ) ∣ Rat.ringOfIntegersEquiv a - 1`. Establish `hd` using `map_dvd Rat.ringOfIntegersEquiv (Ideal.mem_span_singleton.mp ha1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hd` using `[map_natCast, map_sub, map_one]`. Conclude with `hd` after adjusting the coercions. Establish `hb5 : (5 : ℤ) ∣ Rat.ringOfIntegersEquiv b - 1`. Establish `hd` using `map_dvd Rat.ringOfIntegersEquiv (Ideal.mem_span_singleton.mp hb1)`. Rewrite `hd` using `[map_natCast, map_sub, map_one]`.
-
-Conclude with `hd` after adjusting the coercions. Apply the tactic sequence `rcases Int.associated_iff.mp hab' with h' | h' <;> omega`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem cls_two_ne_one (D : RayData ℚ 5) : D.cls (Ideal.span {2}) ≠ 1 := by
   have hcop : IsCoprime (Ideal.span {(2 : 𝓞 ℚ)}) (Ideal.span {((5 : ℕ) : 𝓞 ℚ)}) := by
@@ -516,18 +508,18 @@ theorem cls_two_ne_one (D : RayData ℚ 5) : D.cls (Ideal.span {2}) ≠ 1 := by
 end RayData
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, _, RayData.cls_two_ne_one _⟩`.
+Supply the required witnesses or components.
 -/
 example : Nontrivial (rayData ℚ 5 (by norm_num)).G := ⟨_, _, RayData.cls_two_ne_one _⟩
 
 /- English proof (translation)
-The claim follows from `RayData.card_eq_classNumber _`.
+A detailed English derivation is pending.
 -/
 example (K : Type) [Field K] [NumberField K] : Fintype.card (rayData K 1 one_ne_zero).G = classNumber K :=
   RayData.card_eq_classNumber _
 
 /- English proof (translation)
-The claim follows from `RayData.cls_span _ (by norm_num) (Ideal.mem_span_singleton.2 ⟨1, by push_cast; norm_num⟩)`.
+A detailed English derivation is pending.
 -/
 example : (rayData ℚ 5 (by norm_num)).cls (Ideal.span {6}) = 1 :=
   RayData.cls_span _ (by norm_num) (Ideal.mem_span_singleton.2 ⟨1, by push_cast; norm_num⟩)

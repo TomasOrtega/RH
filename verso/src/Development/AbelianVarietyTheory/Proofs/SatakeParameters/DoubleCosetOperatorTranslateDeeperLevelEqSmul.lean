@@ -9,39 +9,35 @@ namespace GlobalTheory.HeckeAverage
 open Classical in
 
 /- English proof (translation)
-Set `φ : G ⧸ J' → G ⧸ J` to `fun c => ((c.out * h : G) : G ⧸ J)`. Establish `hφ : ∀ x : G, φ (x : G ⧸ J') = ((x * h : G) : G ⧸ J)`. Introduce `x`. Establish `h1 : ((x : G ⧸ J').out)⁻¹ * x ∈ J'` using `QuotientGroup.eq.1 (QuotientGroup.out_eq' _)`. Use `QuotientGroup.eq.2 ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hconj _ h1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `group`. Establish `hφs : ∀ (u : G) (c : G ⧸ J'), φ (u • c) = u • φ c`. Introduce `u c`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `c using QuotientGroup.induction_on with`. Consider the case `H x`. Rewrite using `[MulAction.Quotient.smul_mk, hφ, hφ, MulAction.Quotient.smul_mk]`. Simplify using `[mul_assoc]`. Set `S : Finset (G ⧸ J')` to `hfin.toFinset`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hS : ∀ c, c ∈ S ↔ ∃ x ∈ (J : Set G), (x : G ⧸ J') = c` using `fun c => hfin.mem_toFinset`. Establish `hSs : ∀ u ∈ J, ∀ c ∈ S, u • c ∈ S`. Introduce `u hu c hc`. Take `⟨x, hx, rfl⟩` from `(hS c).1 hc`. Conclude with `(hS _).2 ⟨u * x, J.mul_mem hu hx, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hT : ∀ d, d ∈ S.image φ ↔ ∃ x ∈ {x | ∃ u ∈ J, ∃ u' ∈ J, x = u * h * u'}, (x : G ⧸ J) = d`. Introduce `d`. Rewrite using `[Finset.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨x, hx, rfl⟩` from `(hS c).1 hc`. Conclude with `⟨x * h, ⟨x, hx, 1, J.one_mem, by simp⟩, (hφ x).symm⟩`. Introduce and unpack `⟨_, ⟨u, hu, u', hu', rfl⟩, rfl⟩`. Use `⟨(u : G ⧸ J'), (hS _).2 ⟨u, hu, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hφ]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `QuotientGroup.eq.2 (by simpa [mul_assoc] using hu')`. Establish `hcard : ∀ d ∈ S.image φ, (S.filter (fun c => φ c = d)).card = (S.filter (fun c => φ c = (h : G ⧸ J))).card`. Introduce `d hd`. Take `⟨c, hc, rfl⟩` from `Finset.mem_image.1 hd`. Take `⟨u, hu, rfl⟩` from `(hS c).1 hc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : φ (u : G ⧸ J') = u • (h : G ⧸ J)` using `by rw [hφ]; rfl`. Use `symm`. Use `Finset.card_nbij' (fun c => u • c) (fun c => u⁻¹ • c) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `c hc`. Simplify using `only [Finset.coe_filter, Set.mem_setOf_eq] at hc ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `⟨hSs u hu c hc.1, by rw [hφs, hc.2, e]⟩`. Introduce `c hc`. Simplify using `only [Finset.coe_filter, Set.mem_setOf_eq] at hc ⊢`. Conclude with `⟨hSs u⁻¹ (J.inv_mem hu) c hc.1, by rw [hφs, hc.2, e, inv_smul_smul]⟩`. Introduce `c _`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `c _`. Simplify using the standard rewrite rules. Use `⟨(S.filter (fun c => φ c = (h : G ⧸ J))).card, ?_, ?_⟩` and prove the remaining obligations. Use `Finset.card_pos.2 ⟨((1 : G) : G ⧸ J'), Finset.mem_filter.2 ⟨(hS _).2 ⟨1, J.one_mem, rfl⟩, ?_⟩⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Rewrite using `[hφ, one_mul]`. Introduce `W _ f hf g`. Set `F : G ⧸ J → W` to `fun d => f (g * d.out)`. Establish `hF : ∀ y : G, F (y : G ⧸ J) = f (g * y)`. Introduce `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ((y : G ⧸ J).out)⁻¹ * y ∈ J` using `QuotientGroup.eq.1 (QuotientGroup.out_eq' _)`. Use `hf _ h1 (g * (y : G ⧸ J).out)` as an intermediate fact. Use `show f (g * (y : G ⧸ J).out) = _`. Rewrite using `[← this]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `group`. Rewrite using `[finsum_eq_sum_of_support_subset (s := S), finsum_eq_sum_of_support_subset (s := S.image φ)]`. Establish `e1 : (∑ c ∈ S, if hc : ∃ x ∈ (J : Set G), (x : G ⧸ J') = c then f (g * hc.choose * h) else 0) = ∑ c ∈ S, F (φ c)`. Use `Finset.sum_congr rfl fun c hc => ?_` and prove the remaining obligations. Establish `hc'` using `(hS c).1 hc`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[dif_pos hc']`. Use `conv_rhs => rw [← hc'.choose_spec.2, hφ, hF]`. Rewrite using `[mul_assoc]`. Establish `e2 : (∑ d ∈ S.image φ, if hd : ∃ x ∈ {x | ∃ u ∈ J, ∃ u' ∈ J, x = u * h * u'}, (x : G ⧸ J) = d then f (g * hd.choose) else 0) = ∑ d ∈ S.image φ, F d`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hd'` using `(hT d).1 hd`. Rewrite using `[dif_pos hd']`. Use `conv_rhs => rw [← hd'.choose_spec.2, hF]`. Rewrite using `[e1, e2, Finset.sum_comp F φ, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations.
-
-Rewrite using `[← hcard d hd]`. Introduce `d hd`. Assume the negation of the conclusion as `hn`. Conclude with `hd (dif_neg fun h' => hn (Finset.mem_coe.2 ((hT d).2 h')))`. Introduce `c hc`.
-
-Assume the negation of the conclusion as `hn`. Conclude with `hc (dif_neg fun h' => hn (Finset.mem_coe.2 ((hS c).2 h')))`.
+Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem finsum_translate_eq {G : Type} [Group G] (J J' : Subgroup G) (h : G)
     (hconj : ∀ κ ∈ J', h⁻¹ * κ * h ∈ J)
@@ -137,9 +133,9 @@ theorem finsum_translate_eq {G : Type} [Group G] (J J' : Subgroup G) (h : G)
     exact hc (dif_neg fun h' => hn (Finset.mem_coe.2 ((hS c).2 h')))
 
 /- English proof (translation)
-Introduce `L _ _ _ n J J' h _ hconj hfin`. Take `⟨m, hm, H⟩` from `finsum_translate_eq J J' h hconj hfin`. Use `⟨m, hm, fun W _ _ f hf => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Use `H W f (fun κ hκ g => congrFun (hf κ hκ) g) g` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[Pi.smul_apply, Nat.cast_smul_eq_nsmul]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heckeD_rt_eq_smul : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (J J' : Subgroup (GAf L n)) (h : GAf L n), J' ≤ J → (∀ κ ∈ J', h⁻¹ * κ * h ∈ J) → {c : GAf L n ⧸ J' | ∃ x ∈ (J : Set (GAf L n)), (x : GAf L n ⧸ J') = c}.Finite → ∃ m : ℕ, 0 < m ∧ ∀ (W : Type) [AddCommGroup W] [Module ℂ W] (f : GAf L n → W), (∀ κ ∈ J, NG.rt L n κ f = f) → NG.heckeD J' (J : Set (GAf L n)) (NG.rt L n h f) = (m : ℂ) • NG.heckeD J {x | ∃ u ∈ J, ∃ u' ∈ J, x = u * h * u'} f := by
   intro L _ _ _ n J J' h _ hconj hfin

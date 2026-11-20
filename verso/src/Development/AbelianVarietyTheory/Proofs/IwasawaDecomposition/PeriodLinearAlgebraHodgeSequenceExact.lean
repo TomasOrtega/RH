@@ -16,9 +16,9 @@ open scoped Matrix CategoryTheory.Obj Topology
 namespace GlobalTheory.ShFam.HodgeSeq
 
 /- English proof (translation)
-Establish `hu : IsUnit (Γᵀ).det` using `by rw [Matrix.det_transpose]; exact hΓ.isUnit`. Establish `h1 : Matrix.fromCols ((Γᵀ)⁻¹ * C'ᵀ) ((Γᵀ)⁻¹ * Mᵀ) * Matrix.fromRows M' C = 1`. Rewrite using `[Matrix.fromCols_mul_fromRows, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_add]`. Establish `: C'ᵀ * M' + Mᵀ * C = Γᵀ`. Rewrite using `[h, Matrix.transpose_add, Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_transpose, add_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, Matrix.nonsing_inv_mul _ hu]`. Establish `h2` using `mul_eq_one_comm.1 h1`. Rewrite `h2` using `[Matrix.fromRows_mul_fromCols, ← Matrix.fromBlocks_one, Matrix.fromBlocks_inj]`. Conclude with `⟨h2.2.2.1, ⟨_, h2.1⟩, _, h2.2.2.2⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exact_of_decomp {m n : Type} [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n]
     (Γ : Matrix (m ⊕ n) (m ⊕ n) ℂ) (C M : Matrix n (m ⊕ n) ℂ) (C' M' : Matrix m (m ⊕ n) ℂ) (hΓ : Γ.det ≠ 0)
@@ -41,7 +41,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 omit [IsCMField E] in
 
 /- English proof (translation)
-The claim follows from `IsFractionRing.ringHom_ext (A := 𝓞 E) h`.
+A detailed English derivation is pending.
 -/
 theorem emb_ext {φ ψ : E →+* ℂ} (h : ∀ a : 𝓞 E, φ (a : E) = ψ (a : E)) : φ = ψ :=
   IsFractionRing.ringHom_ext (A := 𝓞 E) h
@@ -49,7 +49,7 @@ theorem emb_ext {φ ψ : E →+* ℂ} (h : ∀ a : 𝓞 E, φ (a : E) = ψ (a : 
 omit [IsCMField E] in
 
 /- English proof (translation)
-Establish `hl` using `(linearIndependent_monoidHom (𝓞 E) ℂ).comp (fun φ : E →+* ℂ => ((r φ).comp (algebraMap (𝓞 E) E)).toMonoidHom) (fun φ ψ e => hr (emb_ext fun a => DFunLike.congr_fun e a))`. Use `Fintype.linearIndependent_iff.1 hl f ?_ φ` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Simplify `h a` using `[Finset.sum_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem indep {r : (E →+* ℂ) → (E →+* ℂ)} (hr : Function.Injective r) (f : (E →+* ℂ) → ℂ)
     (h : ∀ a : 𝓞 E, ∑ φ, f φ * r φ (a : E) = 0) (φ : E →+* ℂ) : f φ = 0 := by
@@ -63,7 +63,7 @@ theorem indep {r : (E →+* ℂ) → (E →+* ℂ)} (hr : Function.Injective r) 
 omit [IsCMField E] in
 
 /- English proof (translation)
-Establish `h` using `trace_eq_sum_embeddings ℂ (K := ℚ) (L := E) (x := a)`. Rewrite `h` using `[eq_ratCast]`. Rewrite using `[h, (Finite.injective_iff_bijective.1 hr).sum_comp (fun φ => φ a)]`. Conclude with `((RingHom.equivRatAlgHom (R := E) (S := ℂ)).sum_comp (fun φ => φ a)).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_eq {r : (E →+* ℂ) → (E →+* ℂ)} (hr : Function.Injective r) (a : E) :
     ((Algebra.trace ℚ E a : ℚ) : ℂ) = ∑ φ, r φ a := by
@@ -73,7 +73,7 @@ theorem trace_eq {r : (E →+* ℂ) → (E →+* ℂ)} (hr : Function.Injective 
   exact ((RingHom.equivRatAlgHom (R := E) (S := ℂ)).sum_comp (fun φ => φ a)).symm
 
 /- English proof (translation)
-Rewrite using `[H.bar_eq, IsCMField.complexEmbedding_complexConj, Complex.conj_conj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_bar (φ : E →+* ℂ) (a : 𝓞 E) : starRingEnd ℂ (φ ((H.bar a : 𝓞 E) : E)) = φ (a : E) := by
   rw [H.bar_eq, IsCMField.complexEmbedding_complexConj, Complex.conj_conj]
@@ -100,7 +100,7 @@ def imForm (B : L → L → ℂ) (s t : L → ℂ) : (L → ℂ) →ₗ[ℝ] (L 
       exact Finset.sum_congr rfl fun z _ => Finset.sum_congr rfl fun w _ => by ring)
 
 /- English proof (translation)
-Rewrite using `[form, Finset.sum_eq_single z (fun z' _ h => by simp [h]) (by simp), Finset.sum_eq_single w (fun w' _ h => by simp [h]) (by simp)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem form_single (B : L → L → ℂ) (z w : L) (a b : ℂ) :
     form B (Pi.single z a) (Pi.single w b) = a * B z w * starRingEnd ℂ b := by
@@ -109,11 +109,11 @@ theorem form_single (B : L → L → ℂ) (z w : L) (a b : ℂ) :
   simp
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h0`. Use `hzw (emb_ext fun a => ?_)` and prove the remaining obligations. Establish `e : imForm B (fun z => t z (a : E)) 1 = imForm B 1 (fun z => t z ((H.bar a : 𝓞 E) : E))`. Use `LinearMap.ext_on_range hs fun x => LinearMap.ext_on_range hs fun y => ?_` and prove the remaining obligations. Establish `e1 : (fun z => t z (a : E)) * Q x = Q (a • x)` using `funext fun z => (hQ a x z).symm`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e2 : (fun z => t z ((H.bar a : 𝓞 E) : E)) * Q y = Q (H.bar a • y)` using `funext fun z => (hQ _ y z).symm`. Simplify using `only [imForm, LinearMap.mk₂_apply, e1, e2, _root_.one_mul, hB, Di.adj]`. Establish `e' : ∀ s : ℂ, (s * (t z (a : E) * B z w)).im = (s * (t w (a : E) * B z w)).im` using `fun s => by`. Use `LinearMap.congr_fun₂ e (Pi.single z s) (Pi.single w 1)` as an intermediate fact. Simplify using `only [imForm, LinearMap.mk₂_apply, _root_.one_mul, ← Pi.single_mul_right, form_single, _root_.mul_one, map_one, conj_bar] at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `convert this using 2 <;> ring`. Use `mul_right_cancel₀ h0 (Complex.ext ?_ ?_)` and prove the remaining obligations. Simplify `e' Complex.I` using `only [Complex.I_mul_im]`. Simplify `e' 1` using `only [_root_.one_mul]`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem block (Di : Datum H) (t : L → (E →+* ℂ)) (Q : Di.La →+ (L → ℂ)) (B : L → L → ℂ)
     (hQ : ∀ (a : 𝓞 E) v z, Q (a • v) z = t z (a : E) * Q v z) (hs : Submodule.span ℝ (Set.range Q) = ⊤)
@@ -143,15 +143,15 @@ def part (B : (Σ φ, Fin (m φ)) → (Σ φ, Fin (m φ)) → ℂ) (u v : (Σ φ
   ∑ i, ∑ j, u ⟨φ, i⟩ * B ⟨φ, i⟩ ⟨φ, j⟩ * starRingEnd ℂ (v ⟨φ, j⟩)
 
 /- English proof (translation)
-Establish `hinv : Function.Involutive (conjEmb (E` using `E)) := fun φ => RingHom.ext fun a => by simp [conjEmb]`. Rewrite using `[← sub_eq_zero]`. Use `indep hr (fun τ => r τ h * (2 * Complex.I) - (part B (Q x) (Q y) τ - starRingEnd ℂ (part B (Q x) (Q y) (conjEmb τ)))) (fun a => ?_) τ` and prove the remaining obligations. Establish `e1 : form B (Q (a • x)) (Q y) = ∑ φ, part B (Q x) (Q y) φ * r φ (a : E)`. Rewrite using `[form, Fintype.sum_sigma]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun φ _ => ?_` and prove the remaining obligations. Rewrite using `[part, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_sigma, Finset.sum_eq_single φ (fun ψ _ hψ => Finset.sum_eq_zero fun j _ => by`. Rewrite using `[block Di (fun z => r z.1) Q B hQ hs hB (fun e => hψ (hr e).symm), mul_zero, zero_mul]) (by simp),`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [hQ]; ring`. Establish `e2 : starRingEnd ℂ (form B (Q (a • x)) (Q y)) = ∑ φ, starRingEnd ℂ (part B (Q x) (Q y) (conjEmb φ)) * r φ (a : E)`. Rewrite using `[e1, map_sum, ← hinv.bijective.sum_comp]`. Use `Finset.sum_congr rfl fun φ _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_mul, hc]`. Simplify using `[conjEmb]`. Establish `e3 : (((form B (Q (a • x)) (Q y)).im : ℝ) : ℂ) = ∑ φ, r φ h * r φ (a : E)`. Rewrite using `[hB, Complex.ofReal_intCast, ← Rat.cast_intCast, hh, trace_eq hr]`. Conclude with `Finset.sum_congr rfl fun φ _ => by rw [map_mul, mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e4` using `Complex.sub_conj (form B (Q (a • x)) (Q y))`. Rewrite `e4` using `[e2, Complex.ofReal_mul, e3, e1]`. Simplify using `only [sub_mul, Finset.sum_sub_distrib]`. Rewrite using `[e4, Finset.mul_sum, Finset.sum_mul, sub_eq_zero]`. Conclude with `Finset.sum_congr rfl fun φ _ => by push_cast; ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem emb_eq (hr : Function.Injective r) (hc : ∀ φ, r (conjEmb φ) = conjEmb (r φ)) (Di : Datum H)
     (Q : Di.La →+ ((Σ φ, Fin (m φ)) → ℂ)) (B : (Σ φ, Fin (m φ)) → (Σ φ, Fin (m φ)) → ℂ)
@@ -193,13 +193,13 @@ end Sigma
 variable {Dw : Datum H} {l : Level H}
 
 /- English proof (translation)
-Establish `hr : Function.Injective (Formalism.L2.PjFree.relab (E` using `E) c σ) := fun φ ψ h => GlobalTheory.DerivEig.eq_of_relab_eq c σ fun a => by rw [h]`. Establish `hc : ∀ φ, Formalism.L2.PjFree.relab c σ (conjEmb φ) = conjEmb (Formalism.L2.PjFree.relab (E` using `E) c σ φ) := fun φ => by`. Use extensionality with `a`. Establish `h1 : embF c (conjEmb φ) a = embF c φ (IsCMField.complexConj E a)` using `Subtype.ext (IsCMField.complexEmbedding_complexConj E φ a).symm`. Use `show σ (embF c (conjEmb φ) a) = starRingEnd ℂ (Formalism.L2.PjFree.relab c σ φ a)`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Conclude with `IsCMField.complexEmbedding_complexConj E (Formalism.L2.PjFree.relab c σ φ) a`. Establish `hI : (2 * Complex.I) ≠ 0` using `by simp`. Use `⟨hQ, exact_of_decomp _ _ (Matrix.of fun i k => (2 * Complex.I)⁻¹ * ∑ j, B ⟨τ, i⟩ ⟨τ, j⟩ * starRingEnd ℂ (Q (x k) ⟨τ, j⟩)) _ (Matrix.of fun j k => -(2 * Complex.I)⁻¹ * ∑ i, starRingEnd ℂ (Q (x k) ⟨conjEmb τ, i⟩ * B ⟨conjEmb τ, i⟩ ⟨conjEmb τ, j⟩)) ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `(map_ne_zero _).2 hx.2.2.2`. Use extensionality with `k k'`. Use `emb_eq hr hc Di Q B hQ hs hB (fun a => hx.2.2.1 a k k') τ` as an intermediate fact. Rewrite using `[Matrix.map_apply, (eq_mul_inv_iff_mul_eq₀ hI).2 this, sub_mul, sub_eq_add_neg, Matrix.add_apply]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [part, Matrix.mul_apply, Matrix.transpose_apply, Matrix.of_apply, perMat, Finset.sum_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`. Simplify using `only [part, Matrix.mul_apply, Matrix.transpose_apply, Matrix.of_apply, perMat, Finset.sum_mul, Finset.mul_sum, map_sum, map_mul, Complex.conj_conj, ← Finset.sum_neg_distrib]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+A detailed English derivation is pending.
 -/
 theorem goodPer_of_form (c : Coeff l) (σ : c.F →+* ℂ) (τ : E →+* ℂ) (Di : Datum H) (Q : Di.La →+ (Letter Dw → ℂ))
     (B : Letter Dw → Letter Dw → ℂ)
@@ -234,15 +234,15 @@ theorem goodPer_of_form (c : Coeff l) (σ : c.F →+* ℂ) (τ : E →+* ℂ) (D
       exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Take `⟨hlin, -, -, hspan, Hm, -, -, hEF⟩` from `hP`. Set `T : (Letter Dw → ℂ) →ₗ[ℂ] (Fin g → ℂ)` to `Fintype.linearCombination ℂ W`. Establish `hT : Function.Injective T` using `hW.fintypeLinearCombination_injective`. Establish `hTQ : ∀ v, T (Q v) = P v` using `fun v => (hPQ v).symm`. Use `goodPer_of_form c σ τ Di Q (fun z w => hermForm Hm (W z) (W w)) (fun a v => ?_) ?_ (fun x y => ?_) hx` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrFun (hT (a₂ := fun z => Formalism.L2.PjFree.relab c σ z.1 (a : E) * Q v z) ?_)` and prove the remaining obligations. Rewrite using `[hTQ]`. Use function extensionality and compare the values at `j`. Rewrite using `[hlin, hPQ]`. Simplify using `only [T, Fintype.linearCombination_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : W z j = 0`. Simplify using `[h0]`. Rewrite using `[hsupp z j h0, _root_.mul_assoc]`. Use `Submodule.map_injective_of_injective (f := T.restrictScalars ℝ) hT ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : (Submodule.span ℝ (Set.range Q)).map (T.restrictScalars ℝ) = ⊤`. Rewrite using `[Submodule.map_span, ← Set.range_comp, ← hspan]`. Conclude with `congrArg (fun f => Submodule.span ℝ (Set.range f)) (funext hTQ)`. Rewrite using `[h1]`. Conclude with `(top_unique (h1 ▸ Submodule.map_mono le_top)).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← hEF, hPQ, hPQ]`. Use `congr 1`. Simplify using `only [form, hermForm, star_sum, star_smul, Matrix.mulVec_sum, Matrix.mulVec_smul, sum_dotProduct, dotProduct_sum, smul_dotProduct, dotProduct_smul, smul_eq_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by rw [starRingEnd_apply]; ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goodPer_of_basis (c : Coeff l) (σ : c.F →+* ℂ) (τ : E →+* ℂ) (Di : Datum H) {g : ℕ} (e : Fin g ≃ Letter Dw)
     (Q : Di.La →+ (Letter Dw → ℂ)) (P : Di.La →+ (Fin g → ℂ)) (W : Letter Dw → Fin g → ℂ)
@@ -277,17 +277,17 @@ theorem goodPer_of_basis (c : Coeff l) (σ : c.F →+* ℂ) (τ : E →+* ℂ) (
     exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by rw [starRingEnd_apply]; ring
 
 /- English proof (translation)
-Use `choose v h1 h2 h3 using hW`. Establish `hx : y ≫ Z.jQ ≫ pullback.fst _ _ = a.1.1 ≫ genι Z` using `by rw [← Category.assoc, hj]`. Establish `heig` using `GlobalTheory.isEigAt_iff_of_isDerivAt0 E H Dw l Xo c σ g e Fu i P hP`. Establish `htan` using `GlobalTheory.isDerivAt0_ex_isTanAt E H Dw l Xo _ g _ Fu i P hP`. Establish `hcomb` using `GlobalTheory.DerLin.isCombAt_iff_isDerivAt0 E H Dw l Xo _ g _ Fu i P hP`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsupp : ∀ z j, W z j ≠ 0 → (e j).1 = z.1` using `fun z => (heig (W z) _ z.1 (h3 z)).1 fun b => (OpenReg.eig_iff Z.m0.toSABMap (h1 z) b _).2 ((OpenReg.eig_iff Z.m (h1 z) b _).1 (h2 z ▸ a.2.eig z.1 z.2 b))`. Use `⟨Fintype.linearIndependent_iff.2 fun f hf z => ?_, hsupp⟩` and prove the remaining obligations. Take `⟨τ, k⟩` from `z`. Establish `h0 : ∑ k, f ⟨τ, k⟩ • W ⟨τ, k⟩ = 0`. Use function extensionality and compare the values at `j`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hτ : (e j).1 = τ`. Use `congrFun hf j` as an intermediate fact. Rewrite using `[Finset.sum_apply, Fintype.sum_sigma, Finset.sum_eq_single τ (fun ψ _ hψ => Finset.sum_eq_zero fun k _ => by`. Establish `: W ⟨ψ, k⟩ j = 0` using `by_contra fun h => hψ ((hsupp _ j h).symm.trans hτ)`. Simplify using `[this]) (by simp)] at this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_apply]`. Conclude with `this`. Rewrite using `[Finset.sum_apply]`. Conclude with `Finset.sum_eq_zero fun k _ => by`. Establish `: W ⟨τ, k⟩ j = 0` using `by_contra fun h => hτ (hsupp _ j h)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `[this]`. Take `⟨u, hu, -⟩` from `htan.2.1 0`. Establish `hut` using `htan.1 0 u hu`. Take `⟨u', hu1, rfl⟩` from `OpenReg.exists_lift Z.m0.toSABMap (spMap (algebraMap ℂ (DualNumber ℂ)) ≫ y) u (by rw [hut.1, ← hy, Category.assoc])`. Establish `hb` using `a.2.basis τ (u' ≫ Z.m.φ) ((OpenReg.tan_iff Z.m hx hu1).2 ((OpenReg.tan_iff Z.m0.toSABMap hy hu1).1 hut)) fun b => (OpenReg.eig_iff Z.m hu1 b _).2 ((OpenReg.eig_iff Z.m0.toSABMap hu1 b _).1 ((heig 0 _ τ hu).2 (fun j h => (h rfl).elim) b))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : a.2.v τ = fun k => v ⟨τ, k⟩ ≫ Z.m.φ` using `funext fun k => (h2 ⟨τ, k⟩).symm`. Rewrite `hb` using `[e1]`. Establish `key : ∀ cf : Fin (Dw.mult τ) → ℂ, ∑ k, cf k • W ⟨τ, k⟩ = 0 → IsCombAtG Z.t (a.1.1 ≫ genι Z) (fun k => v ⟨τ, k⟩ ≫ Z.m.φ) cf (u' ≫ Z.m.φ)` using `fun cf hcf => (OpenReg.comb_iff Z.m hx (fun k => h1 ⟨τ, k⟩) cf hu1).2 ((OpenReg.comb_iff Z.m0.toSABMap hy (fun k => h1 ⟨τ, k⟩) cf hu1).1 ((hcomb _ _ (fun k => W ⟨τ, k⟩) (fun k => h3 ⟨τ, k⟩) cf _).2 (hcf ▸ hu)))`. Conclude with `congrFun (hb.unique (key (fun k => f ⟨τ, k⟩) h0) (key 0 (by simp))) k`.
+A detailed English derivation is pending.
 -/
 theorem dirs_indep {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β}
     {σ : c.F →+* ℂ} {g : ℕ} {e : Fin g ≃ Letter Dw} (Fu : Fam Xo c σ e) (a : CxFr Z σ) (i : Fin Fu.n)
@@ -340,7 +340,7 @@ theorem dirs_indep {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β 
 end GlobalTheory.ShFam.HodgeSeq
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z σ g e Fu τ a i Q x hm ⟨P, W, y, hP, hy, hj, hW, hPQ⟩ hx`. Establish `h` using `GlobalTheory.ShFam.HodgeSeq.dirs_indep Fu a i hP hy hj hW`. Conclude with `GlobalTheory.ShFam.HodgeSeq.goodPer_of_basis c σ τ _ e Q P W hP h.1 h.2 hPQ hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ShFam.Hor.goodPer_of_per : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (σ : c.F →+* ℂ) (g : ℕ) (e : Fin g ≃ Letter Dw) (Fu : Fam Xo c σ e) (τ : E →+* ℂ) (a : CxFr Z σ) (i : Fin Fu.n) (Q : (Fu.Di i).La →+ (Letter Dw → ℂ)) (x : Idx Dw τ → (Fu.Di i).La) (hm : Matrix (Idx Dw τ) (Idx Dw τ) E), Per Fu a i Q → IsPerBasis (Fu.Di i) x hm → GoodPer c σ τ x hm Q := by
   intro E _ _ _ H Dw l Xo c O _ β Z σ g e Fu τ a i Q x hm ⟨P, W, y, hP, hy, hj, hW, hPQ⟩ hx

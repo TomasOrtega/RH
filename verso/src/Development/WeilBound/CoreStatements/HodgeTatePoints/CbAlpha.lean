@@ -14,7 +14,7 @@ variable {R : Type} [CommRing R] {d : ℕ}
 def Lz (j : Fin d) (f : PS R 2 d) : PS R 1 d := ev (n := 1) ![pt R d 0, 0] (pderiv R ((1 : Fin 2), j) f)
 
 /- English proof (translation)
-Rewrite using `[← cc_pderiv, Lz, d2 (by zz) (by zz)]`. Simplify using `[dpt, ccev (show ZZ (![pt R d 0, 0] : Fin 2 → Pt R 1 d) by zz), cc_pderiv, coeff_pderiv, bil]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coeff_Lz (f : PS R 2 d) (i j : Fin d) :
     coeff (Finsupp.single ((0 : Fin 1), i) 1) (Lz j f) = bil f 1 1 i j := by
@@ -22,7 +22,7 @@ theorem coeff_Lz (f : PS R 2 d) (i j : Fin d) :
   simp [dpt, ccev (show ZZ (![pt R d 0, 0] : Fin 2 → Pt R 1 d) by zz), cc_pderiv, coeff_pderiv, bil]
 
 /- English proof (translation)
-Establish `hb : ZZ (n` using `1) ![pt R d 0, (0 : Pt R 1 d)] := ZZ_cons (Z_pt 0) (ZZ_cons Z_zero ZZ_nil)`. Simplify using `only [Lz, dmul, eva hb, evm hb]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem Lz_mul (j : Fin d) (f g : PS R 2 d) : Lz j (f * g) =
     Lz j f * ev (n := 1) ![pt R d 0, 0] g + ev (n := 1) ![pt R d 0, 0] f * Lz j g := by
@@ -30,9 +30,9 @@ theorem Lz_mul (j : Fin d) (f g : PS R 2 d) : Lz j (f * g) =
   simp only [Lz, dmul, eva hb, evm hb]
 
 /- English proof (translation)
-Establish `hb : ZZ (n` using `1) ![pt R d 0, (0 : Pt R 1 d)] := ZZ_cons (Z_pt 0) (ZZ_cons Z_zero ZZ_nil)`. Establish `hφ' : ZZ ![φ]` using `ZZ_cons hφ ZZ_nil`. Establish `h01 : ((0 : Fin 2) = 1) ↔ False` using `by decide`. Simplify using `only [Lz]`. Rewrite using `[d2 (Z_comp1 hφ (Z_pt 0)) (Z_pt 1)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [dcomp_ne (show (0 : Fin 2) ≠ 1 by decide), dpt, mul_zero, Finset.sum_const_zero, zero_add, Prod.mk.injEq, true_and, mul_ite, mul_one, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[ev2 hb (Z_comp1 hφ (Z_pt 0)) (Z_pt 1), ev2 hφ' (Z_pt 0) Z_zero, ep_comp1 φ hb (Z_pt 0), ep_pt hb, ep_pt hb, ep_pt hφ', ep_zero hφ']`. Simplify using `[germCompOne_identityPoint_left]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Lz_fst {φ : Pt R 1 d} (hφ : Z φ) (j : Fin d) (f : PS R 2 d) :
     Lz j (ev (n := 2) ![comp1 φ (pt R d 0), pt R d 1] f) = ev ![φ] (Lz j f) := by
@@ -48,9 +48,9 @@ theorem Lz_fst {φ : Pt R 1 d} (hφ : Z φ) (j : Fin d) (f : PS R 2 d) :
   simp [germCompOne_identityPoint_left]
 
 /- English proof (translation)
-Establish `hb : ZZ (n` using `1) ![pt R d 0, (0 : Pt R 1 d)] := ZZ_cons (Z_pt 0) (ZZ_cons Z_zero ZZ_nil)`. Establish `h01 : ((0 : Fin 2) = 1) ↔ False` using `by decide`. Simplify using `only [Lz]`. Rewrite using `[d2 (Z_pt 0) (Z_comp1 hψ (Z_pt 1))]`. Simplify using `only [dpt, dcomp_eq, Prod.mk.injEq, h01, false_and, if_false, mul_zero, Finset.sum_const_zero, zero_add, evsum hb, evm hb]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[ev2 hb (Z_pt 0) (Z_comp1 hψ (Z_pt 1)), ev1 hb (Z_pt 1), ep_comp1 ψ hb (Z_pt 1)]`. Simplify using `only [ep_pt hb, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, germComp1_zero_of_noConstantCoeff hψ, ev_at_zero, cc_pderiv, lin]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Lz_snd {ψ : Pt R 1 d} (hψ : Z ψ) (j : Fin d) (f : PS R 2 d) :
     Lz j (ev (n := 2) ![pt R d 0, comp1 ψ (pt R d 1)] f) = ∑ c, Lz c f * C (lin ψ 1 c j) := by
@@ -68,11 +68,11 @@ theorem Lz_snd {ψ : Pt R 1 d} (hψ : Z ψ) (j : Fin d) (f : PS R 2 d) :
 variable (p : ℕ) [hp : Fact p.Prime] [CharP R p]
 
 /- English proof (translation)
-Establish `hψ : Z (fun i => MvPowerSeries.map (frobenius R p) (φ i))`. Introduce `i`. Simplify using `[hφ i]`. Establish `hφ' : ZZ ![φ]` using `ZZ_cons hφ ZZ_nil`. Establish `hq : ZZ (n` using `1) ![ptPow R d p 0] := ZZ_cons (Z_ptPow p 0) ZZ_nil`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ev1 hφ' (Z_ptPow p 0), ev1 hq hψ, ep_ptPow p hφ']`. Use `congr 1`. Use function extensionality and compare the values at `k i`. Simplify using `only [ep, Matrix.cons_val_fin_one]`. Rewrite using `[frob_subst R p d 1 (φ i)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `k'`. Rewrite using `[Fin.fin_one_eq_zero k']`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ev_ev_pow {φ : Pt R 1 d} (hφ : Z φ) (f : PS R 1 d) :
     ev ![φ] (ev (n := 1) ![ptPow R d p 0] f) =
@@ -95,9 +95,9 @@ theorem ev_ev_pow {φ : Pt R 1 d} (hφ : Z φ) (f : PS R 1 d) :
 end
 
 /- English proof (translation)
-Establish `hψ : Z (fun i => MvPowerSeries.map (frobenius R p) (φ i))`. Introduce `i`. Simplify using `[hφ i]`. Rewrite using `[ev_ev_pow p hφ, coeff_ev_pow_one, coeff_lin_ev hψ]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[lin, coeff_map, frobenius_def]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem coeff_single_prime_ev_of_Z {R : Type} [CommRing R] {d : ℕ} (p : ℕ) [Fact p.Prime] [CharP R p]
     {φ : Pt R 1 d} (hφ : Z φ) (F : PS R 1 d) (i : Fin d) :
@@ -111,11 +111,9 @@ private theorem coeff_single_prime_ev_of_Z {R : Type} [CommRing R] {d : ℕ} (p 
   simp [lin, coeff_map, frobenius_def]
 
 /- English proof (translation)
-Establish `key : ∀ c, ∃ g : PS R 1 d, B.A.act (p : O) c = ev ![ptPow R d p 0] g` using `fun c => (series_in_p R p d).1 _ (fun j => d_act_p p B.A c j)`. Use `choose h hh using key`. Establish `hq : ZZ (n` using `1) ![ptPow R d p 0] := ZZ_cons (Z_ptPow p 0) ZZ_nil`. Use `⟨h, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `c`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ccev hq (h c), ← hh c]`. Conclude with `B.A.const _ c`. Use function extensionality and compare the values at `c`. Conclude with `hh c`. Introduce `c i show coeff _ (h c) = coeff _ (B.A.act (p : O) c)`.
-
-Rewrite using `[hh c, coeff_ev_pow_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_act_prime_eq_comp1_ptPow {R : Type} [CommRing R] {d : ℕ} (p : ℕ) [Fact p.Prime] [CharP R p]
     {O : Type} [CommRing O] [StarRing O] (B : FB R d O) :
@@ -136,7 +134,7 @@ private theorem exists_act_prime_eq_comp1_ptPow {R : Type} [CommRing R] {d : ℕ
     rw [hh c, coeff_ev_pow_one]
 
 /- English proof (translation)
-Establish `hq : ZZ (n` using `1) ![ptPow R d p 0] := ZZ_cons (Z_ptPow p 0) ZZ_nil`. Rewrite using `[ev1 hq hh, ep_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem ev_comp1_ptPow_eq_ev {R : Type} [CommRing R] {d : ℕ} (p : ℕ) [Fact p.Prime]
     (h : Pt R 1 d) (hh : Z h) (F : PS R 1 d) :
@@ -145,9 +143,9 @@ private theorem ev_comp1_ptPow_eq_ev {R : Type} [CommRing R] {d : ℕ} (p : ℕ)
   rw [ev1 hq hh, ep_one]
 
 /- English proof (translation)
-Establish `hb : ZZ (n` using `1) ![pt R d 0, (0 : Pt R 1 d)] := ZZ_cons (Z_pt 0) (ZZ_cons Z_zero ZZ_nil)`. Establish `hq : ZZ (n` using `1) ![ptPow R d p 0] := ZZ_cons (Z_ptPow p 0) ZZ_nil`. Establish `hp0 : ∀ c, pderiv R ((1 : Fin 2), j) (ptPow R d p (0 : Fin 2) c) = 0` using `fun c => d_pow_p p _ (X ((0 : Fin 2), c))`. Simplify using `only [Lz]`. Rewrite using `[d2 (Z_ptPow p 0) (Z_pt 1)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hp0, dpt, mul_zero, Finset.sum_const_zero, zero_add, Prod.mk.injEq, true_and, mul_ite, mul_one, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[ev2 hb (Z_ptPow p 0) (Z_pt 1), ev2 hq (Z_pt 0) Z_zero, ep_ptPow p hb, ep_pt hb, ep_pt hq, ep_zero hq]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 private theorem Lz_ev_ptPow_pt {R : Type} [CommRing R] {d : ℕ} (p : ℕ) [Fact p.Prime] [CharP R p]
     (g : PS R 2 d) (j : Fin d) :
@@ -165,7 +163,7 @@ private theorem Lz_ev_ptPow_pt {R : Type} [CommRing R] {d : ℕ} (p : ℕ) [Fact
   congr 1
 
 /- English proof (translation)
-Establish `hxy : ZZ ![x, y]` using `ZZ_cons hx (ZZ_cons hy ZZ_nil)`. Establish `e` using `congrArg (ev ![x, y]) B.cocycleLeft_zero_thd`. Rewrite `e` using `[ev3 hxy (Z_pt 0) (Z_pt 1) Z_zero, ep_pt hxy, ep_pt hxy, ep_zero hxy]`. Simplify `e` using `[ev_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem ev_ph1_zero_eq_one {R : Type} [CommRing R] {d n : ℕ} {O : Type} [CommRing O] [StarRing O]
     (B : FB R d O) {x y : Pt R n d} (hx : Z x) (hy : Z y) : ev ![x, y, 0] B.ph1 = 1 := by
@@ -175,7 +173,7 @@ private theorem ev_ph1_zero_eq_one {R : Type} [CommRing R] {d n : ℕ} {O : Type
   simpa [ev_one] using e
 
 /- English proof (translation)
-Rewrite using `[first_power_eq_prod_at B hx Z_zero]`. Conclude with `Finset.prod_eq_one fun j _ => ev_ph1_zero_eq_one B (Z_comp1 (Z_act B.A _) hx) hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ev_pow1_zero_eq_one {R : Type} [CommRing R] {d n : ℕ} {O : Type} [CommRing O] [StarRing O]
     (B : FB R d O) {x : Pt R n d} (hx : Z x) (k : ℕ) : ev ![x, 0] (pow1 B k) = 1 := by
@@ -183,7 +181,7 @@ private theorem ev_pow1_zero_eq_one {R : Type} [CommRing R] {d n : ℕ} {O : Typ
   exact Finset.prod_eq_one fun j _ => ev_ph1_zero_eq_one B (Z_comp1 (Z_act B.A _) hx) hx
 
 /- English proof (translation)
-Establish `hx' : ZZ ![x]` using `ZZ_cons hx ZZ_nil`. Establish `e` using `congrArg (ev ![x]) (B.adjoint_zero_snd a)`. Rewrite `e` using `[ev2 hx' (Z_pt 0) Z_zero, ep_pt hx', ep_zero hx']`. Simplify `e` using `[ev_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem ev_zero_ad_eq_one {R : Type} [CommRing R] {d n : ℕ} {O : Type} [CommRing O] [StarRing O]
     (B : FB R d O) {x : Pt R n d} (hx : Z x) (a : O) : ev ![x, 0] (B.ad a) = 1 := by
@@ -193,13 +191,13 @@ private theorem ev_zero_ad_eq_one {R : Type} [CommRing R] {d n : ℕ} {O : Type}
   simpa [ev_one] using e
 
 /- English proof (translation)
-Establish `hb : ZZ (n` using `1) ![pt R d 0, (0 : Pt R 1 d)] := ZZ_cons (Z_pt 0) (ZZ_cons Z_zero ZZ_nil)`. Establish `e` using `congrArg (Lz j) (first_power_adjoint R d O B a p)`. Rewrite `e` using `[Lz_mul, Lz_mul, Lz_fst (Z_act B.A a), Lz_fst (Z_act B.A (p : O)), Lz_snd (Z_act B.A (star a))]`. Establish `e1 : ev (n` using `1) ![pt R d 0, 0] (ev ![comp1 (B.A.act (p : O)) (pt R d 0), pt R d 1] (B.ad a)) = 1 := by`. Rewrite using `[ev2 hb (Z_comp1 (Z_act _ _) (Z_pt 0)) (Z_pt 1), ep_comp1 _ hb (Z_pt 0), ep_pt hb, ep_pt hb]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, germCompOne_identityPoint_left]`. Conclude with `ev_zero_ad_eq_one B (Z_act _ _) a`. Establish `e2 : ev (n` using `1) ![pt R d 0, 0] (ev ![comp1 (B.A.act a) (pt R d 0), pt R d 1] (pow1 B p)) = 1 := by`. Rewrite using `[ev2 hb (Z_comp1 (Z_act _ _) (Z_pt 0)) (Z_pt 1), ep_comp1 _ hb (Z_pt 0), ep_pt hb, ep_pt hb]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, germCompOne_identityPoint_left]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `ev_pow1_zero_eq_one B (Z_act _ _) p`. Establish `e3 : Lz j (B.ad a ^ p) = 0`. Simplify using `only [Lz, d_pow_p, evz hb]`. Establish `e4 : ev (n` using `1) ![pt R d 0, 0] (B.ad a ^ p) = 1 := by`. Rewrite using `[evpow hb, B.adjoint_zero_snd, one_pow]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `e` using `[e1, e2, e3, e4]`. Simplify using `using e`.
+A detailed English derivation is pending.
 -/
 private theorem ev_act_Lz_pow1_add_ev_act_prime_Lz_ad {R : Type} [CommRing R] {d : ℕ} (p : ℕ) [Fact p.Prime] [CharP R p]
     {O : Type} [CommRing O] [StarRing O] (B : FB R d O) (a : O) (j : Fin d) :
@@ -227,9 +225,9 @@ private theorem ev_act_Lz_pow1_add_ev_act_prime_Lz_ad {R : Type} [CommRing R] {d
   simpa using e
 
 /- English proof (translation)
-Take `⟨g, -, hg, hgb⟩` from `first_power_char_p R p d O B`. Take `⟨h, hh, hχ, hhw⟩` from `exists_act_prime_eq_comp1_ptPow p B`. Establish `hLP : ∀ c, Lz c (pow1 B p) = ev (n` using `1) ![ptPow R d p 0] (Lz c g) := fun c => by`. Rewrite using `[hg, Lz_ev_ptPow_pt]`. Establish `e` using `congrArg (coeff (Finsupp.single ((0 : Fin 1), i) p)) (ev_act_Lz_pow1_add_ev_act_prime_Lz_ad p B a j)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [hLP] at e`. Rewrite `e` using `[map_add, coeff_single_prime_ev_of_Z p (Z_act B.A a), hχ, ev_comp1_ptPow_eq_ev p h hh, coeff_ev_pow_one, coeff_lin_ev hh, map_sum]`. Simplify using `only [coeff_mul_C, coeff_ev_pow_one, coeff_Lz, hgb, hhw] at e`. Conclude with `e`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem sum_am_mul_rho_pow_add_bil_ad_mul_hw {R : Type} [CommRing R] {d : ℕ} (p : ℕ) [Fact p.Prime] [CharP R p]
     {O : Type} [CommRing O] [StarRing O] (B : FB R d O) (a : O) (i j : Fin d) :
@@ -247,17 +245,17 @@ private theorem sum_am_mul_rho_pow_add_bil_ad_mul_hw {R : Type} [CommRing R] {d 
   exact e
 
 /- English proof (translation)
-Introduce `R _ p _ _ d O _ _ B a u`. Take `⟨h, hh, hχ, hhw⟩` from `exists_act_prime_eq_comp1_ptPow p B`. Establish `m1 : hw B p * (rho B a).map (· ^ p) = rho B a * hw B p`. Use extensionality with `i k`. Establish `e` using `congrArg (fun F : Pt R 1 d => lin F p i k) (act_comm B.A a (p : O) (Z_pt (R := R) (d := d) (n := 1) 0))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [germCompOne_identityPoint_left] at e`. Rewrite `e` using `[hχ]`. Establish `L : lin (comp1 (B.A.act a) (comp1 h (ptPow R d p 0))) p i k = ∑ c, rho B a i c * hw B p c k` using `by show coeff (Finsupp.single ((0 : Fin 1), k) p) (ev ![comp1 h (ptPow R d p 0)] (B.A.act a i)) = _`. Rewrite using `[ev_comp1_ptPow_eq_ev p h hh, coeff_ev_pow_one, coeff_lin_ev hh]`. Simplify using `only [hhw]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `Rr : lin (comp1 (comp1 h (ptPow R d p 0)) (B.A.act a)) p i k = ∑ c, hw B p i c * rho B a c k ^ p` using `by show coeff (Finsupp.single ((0 : Fin 1), k) p) (ev ![B.A.act a] (ev (n := 1) ![ptPow R d p 0] (h i))) = _`. Rewrite using `[coeff_single_prime_ev_of_Z p (Z_act B.A a)]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← hhw]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite `e` using `[L, Rr]`. Simplify using `only [Matrix.mul_apply, Matrix.map_apply]`. Conclude with `e.symm`. Establish `m2 : (am B p).transpose * (rho B a).map (· ^ p) = (rho B (star a)).transpose * (am B p).transpose - (bil (B.ad a) 1 1).transpose * hw B p`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i k`. Establish `e` using `sum_am_mul_rho_pow_add_bil_ad_mul_hw p B a k i`. Simplify using `only [Matrix.sub_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply]`. Rewrite using `[eq_sub_iff_add_eq, e]`. Conclude with `Finset.sum_congr rfl fun _ _ => mul_comm _ _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `[alpha, rhoH, Matrix.mulVec_mulVec, m1]`. Simplify using `[alpha, rhoH, Matrix.mulVec_mulVec, m2, Matrix.sub_mulVec]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem alpha_act : ∀ (R : Type) [CommRing R] (p : ℕ) [Fact p.Prime] [CharP R p] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (B : FB R d O) (a : O) (u : Fin d → R), alpha B p (((rho B a).map (· ^ p)).mulVec u) = rhoH B a (alpha B p u) := by
   intro R _ p _ _ d O _ _ B a u

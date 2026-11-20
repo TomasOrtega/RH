@@ -41,14 +41,14 @@ Both sides reduce to the same expression.
     (ptsPush A g x).ofConv = g.comp x.ofConv := rfl
 
 /- English proof (translation)
-Rewrite using `[AlgHom.convMul_apply, hu.comul_eq_tmul_self]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem convMul_apply_groupLike (x y : WithConv (A →ₐ[R] B)) {u : A} (hu : IsGroupLikeElem R u) :
     (x * y) u = x u * y u := by
   rw [AlgHom.convMul_apply, hu.comul_eq_tmul_self]; simp
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [hu.counit_eq_one]`. Consider the case `succ n ih => rw [pow_succ, convMul_apply_groupLike _ _ hu, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem convPow_apply_groupLike (x : WithConv (A →ₐ[R] B)) {u : A} (hu : IsGroupLikeElem R u)
     (n : ℕ) : (x ^ n) u = x u ^ n := by
@@ -72,7 +72,7 @@ Both sides reduce to the same expression.
     (toPts f).ofConv = (f.ofConv : C →ₐ[R] A) := rfl
 
 /- English proof (translation)
-Introduce `_ _ h` and use `ofConv_injective (BialgHom.coe_toAlgHom_injective (congrArg ofConv h))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem toPts_injective [IsCocomm R C] :
     Function.Injective (toPts : WithConv (C →ₐc[R] A) → _) := fun _ _ h =>
@@ -107,7 +107,7 @@ variable (R A) in
 def mulBy [IsCocomm R A] (n : ℕ) : A →ₐc[R] A := (toConv (BialgHom.id R A) ^ n).ofConv
 
 /- English proof (translation)
-Establish `h` using `map_pow ((ptsPush A x).comp toPts) (toConv (BialgHom.id R A)) n`. Conclude with `congrArg ofConv h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem comp_mulBy_pts [IsCocomm R A] {E : Type*} [CommRing E] [Algebra R E] (x : A →ₐ[R] E)
     (n : ℕ) : x.comp (mulBy R A n : A →ₐ[R] A) = (toConv x ^ n).ofConv := by
@@ -115,28 +115,28 @@ theorem comp_mulBy_pts [IsCocomm R A] {E : Type*} [CommRing E] [Algebra R E] (x 
   exact congrArg ofConv h
 
 /- English proof (translation)
-The claim follows from `congrArg ofConv (map_pow (postcomp C f) (toConv (BialgHom.id R C)) n)`.
+A detailed English derivation is pending.
 -/
 theorem comp_mulBy [IsCocomm R C] (f : C →ₐc[R] A) (n : ℕ) :
     f.comp (mulBy R C n) = (toConv f ^ n).ofConv :=
   congrArg ofConv (map_pow (postcomp C f) (toConv (BialgHom.id R C)) n)
 
 /- English proof (translation)
-The claim follows from `congrArg ofConv (map_pow (precomp A f) (toConv (BialgHom.id R A)) n)`.
+A detailed English derivation is pending.
 -/
 theorem mulBy_comp [IsCocomm R C] [IsCocomm R A] (f : C →ₐc[R] A) (n : ℕ) :
     (mulBy R A n).comp f = (toConv f ^ n).ofConv :=
   congrArg ofConv (map_pow (precomp A f) (toConv (BialgHom.id R A)) n)
 
 /- English proof (translation)
-The claim follows from `DFunLike.congr_fun ((comp_mulBy f n).trans (mulBy_comp f n).symm) c`.
+A detailed English derivation is pending.
 -/
 theorem map_mulBy [IsCocomm R C] [IsCocomm R A] (f : C →ₐc[R] A) (n : ℕ) (c : C) :
     f (mulBy R C n c) = mulBy R A n (f c) :=
   DFunLike.congr_fun ((comp_mulBy f n).trans (mulBy_comp f n).symm) c
 
 /- English proof (translation)
-Establish `h` using `comp_mulBy (mulBy R A m) n`. Rewrite `h` using `[mulBy, toConv_ofConv, ← pow_mul]`. Conclude with `DFunLike.congr_fun h a`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulBy_mulBy [IsCocomm R A] (m n : ℕ) (a : A) :
     mulBy R A m (mulBy R A n a) = mulBy R A (m * n) a := by
@@ -145,7 +145,7 @@ theorem mulBy_mulBy [IsCocomm R A] (m n : ℕ) (a : A) :
   exact DFunLike.congr_fun h a
 
 /- English proof (translation)
-Establish `h` using `DFunLike.congr_fun (comp_mulBy_pts (AlgHom.id R A) n) u`. Conclude with `h.trans (convPow_apply_groupLike (toConv (AlgHom.id R A)) hu n)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mulBy_groupLike [IsCocomm R A] (n : ℕ) {u : A} (hu : IsGroupLikeElem R u) :
     mulBy R A n u = u ^ n := by
@@ -163,9 +163,9 @@ variable (R A) in
 abbrev torsionIdeal [IsCocomm R A] (n : ℕ) : Ideal A := kerIdeal (mulBy R A n)
 
 /- English proof (translation)
-Rewrite using `[Ideal.map_le_iff_le_comap]`. Prove the components needed by the constructor for the conclusion. Introduce `h c`. Use `h (x := c - algebraMap R C (counit c)) (by simp [RingHom.mem_ker])` as an intermediate fact. Rewrite `this` using `[Ideal.mem_comap, RingHom.mem_ker, map_sub, map_sub, AlgHom.commutes, AlgHom.commutes, sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Introduce `h c hc`. Establish `hc' : counit (R` using `R) c = 0 := hc`. Simplify using `[RingHom.mem_ker, h, hc']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kerIdeal_le_ker_iff (f : C →ₐc[R] A) {E : Type*} [CommRing E] [Algebra R E]
     (x : A →ₐ[R] E) :
@@ -182,9 +182,9 @@ theorem kerIdeal_le_ker_iff (f : C →ₐc[R] A) {E : Type*} [CommRing E] [Algeb
     simp [RingHom.mem_ker, h, hc']
 
 /- English proof (translation)
-Rewrite using `[kerIdeal_le_ker_iff]`. Establish `h` using `comp_mulBy_pts x n`. Prove the components needed by the constructor for the conclusion. Introduce `h'`. Use `ofConv_injective (h.symm.trans (AlgHom.ext h'))` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h' c`. Rewrite `h` using `[h']`. Conclude with `DFunLike.congr_fun h c`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torsionIdeal_le_ker_iff [IsCocomm R A] (n : ℕ) {E : Type*} [CommRing E] [Algebra R E]
     (x : A →ₐ[R] E) : torsionIdeal R A n ≤ RingHom.ker x ↔ toConv x ^ n = 1 := by
@@ -198,7 +198,7 @@ theorem torsionIdeal_le_ker_iff [IsCocomm R A] (n : ℕ) {E : Type*} [CommRing E
     exact DFunLike.congr_fun h c
 
 /- English proof (translation)
-Use `le_antisymm ((kerIdeal_le_ker_iff f _).2 fun c => by simp) fun a ha => ?_` and prove the remaining obligations. Take `⟨c, rfl⟩` from `hf a`. Use `Ideal.mem_map_of_mem _ ?_` and prove the remaining obligations. Simplify `ha` using `[RingHom.mem_ker]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem kerIdeal_of_surjective {f : C →ₐc[R] A} (hf : Function.Surjective f) :
     kerIdeal f = augIdeal R A := by
@@ -208,21 +208,21 @@ theorem kerIdeal_of_surjective {f : C →ₐc[R] A} (hf : Function.Surjective f)
   simpa [RingHom.mem_ker] using ha
 
 /- English proof (translation)
-The claim follows from `(Ideal.map_mapₐ (f : C →ₐ[R] A) (g : A →ₐ[R] B)).symm`.
+A detailed English derivation is pending.
 -/
 theorem kerIdeal_comp (g : A →ₐc[R] B) (f : C →ₐc[R] A) :
     kerIdeal (g.comp f) = Ideal.map (g : A →ₐ[R] B) (kerIdeal f) :=
   (Ideal.map_mapₐ (f : C →ₐ[R] A) (g : A →ₐ[R] B)).symm
 
 /- English proof (translation)
-Rewrite using `[kerIdeal_comp, kerIdeal_of_surjective hf]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem kerIdeal_comp_of_surjective (g : A →ₐc[R] B) {f : C →ₐc[R] A}
     (hf : Function.Surjective f) : kerIdeal (g.comp f) = kerIdeal g := by
   rw [kerIdeal_comp, kerIdeal_of_surjective hf]
 
 /- English proof (translation)
-Rewrite using `[← kerIdeal_comp, comp_mulBy, ← mulBy_comp, kerIdeal_comp_of_surjective _ hf]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_torsionIdeal [IsCocomm R C] [IsCocomm R A] {f : C →ₐc[R] A}
     (hf : Function.Surjective f) (n : ℕ) :
@@ -230,7 +230,7 @@ theorem map_torsionIdeal [IsCocomm R C] [IsCocomm R A] {f : C →ₐc[R] A}
   rw [← kerIdeal_comp, comp_mulBy, ← mulBy_comp, kerIdeal_comp_of_surjective _ hf]
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `h`. Establish `h1` using `(torsionIdeal_le_ker_iff m (Ideal.Quotient.mkₐ R (torsionIdeal R A m))).1 fun a ha => Ideal.Quotient.eq_zero_iff_mem.2 ha`. Establish `h2` using `(torsionIdeal_le_ker_iff (m * k) (Ideal.Quotient.mkₐ R (torsionIdeal R A m))).2 (by rw [pow_mul, h1, one_pow])`. Conclude with `fun a ha => Ideal.Quotient.eq_zero_iff_mem.1 (h2 ha)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem torsionIdeal_le_of_dvd [IsCocomm R A] {m n : ℕ} (h : m ∣ n) :
     torsionIdeal R A n ≤ torsionIdeal R A m := by
@@ -266,7 +266,7 @@ def liftSurj (i : A →ₐc[R] B) (hi : Function.Surjective i) (f : A →ₐc[R]
       rfl)
 
 /- English proof (translation)
-The claim follows from `AlgHom.liftOfSurjective_apply (i : A →ₐ[R] B) hi (f : A →ₐ[R] C) h a`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem liftSurj_apply (i : A →ₐc[R] B) (hi : Function.Surjective i) (f : A →ₐc[R] C)
     (h : RingHom.ker i ≤ RingHom.ker f) (a : A) : liftSurj i hi f h (i a) = f a :=
@@ -284,26 +284,26 @@ def cotMap (f : C →ₐc[R] A) : Cot R C →ₗ[R] Cot R A :=
   AugCot.map (f : C →ₐ[R] A) (BialgHomClass.counitAlgHom_comp f)
 
 /- English proof (translation)
-The claim follows from `AugCot.map_d _ _ c`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem cotMap_d (f : C →ₐc[R] A) (c : C) : cotMap f (dUnit R c) = dUnit R (f c) :=
   AugCot.map_d _ _ c
 
 /- English proof (translation)
-The claim follows from `AugCot.hom_ext fun c => by simp`.
+A detailed English derivation is pending.
 -/
 theorem cotMap_comp (g : A →ₐc[R] B) (f : C →ₐc[R] A) :
     cotMap (g.comp f) = cotMap g ∘ₗ cotMap f :=
   AugCot.hom_ext fun c => by simp
 
 /- English proof (translation)
-The claim follows from `AugCot.hom_ext fun c => by simp`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem cotMap_id : cotMap (BialgHom.id R A) = LinearMap.id :=
   AugCot.hom_ext fun c => by simp
 
 /- English proof (translation)
-The claim follows from `AugCot.hom_ext fun c => by rw [cotMap_d] exact AugCot.d_algebraMap _ _`.
+A detailed English derivation is pending.
 -/
 theorem cotMap_one [IsCocomm R C] : cotMap (1 : WithConv (C →ₐc[R] A)).ofConv = 0 :=
   AugCot.hom_ext fun c => by
@@ -311,7 +311,7 @@ theorem cotMap_one [IsCocomm R C] : cotMap (1 : WithConv (C →ₐc[R] A)).ofCon
     exact AugCot.d_algebraMap _ _
 
 /- English proof (translation)
-The claim follows from `AugCot.hom_ext fun c => by have r := Coalgebra.Repr.arbitrary R c have h : (f * g).ofConv c = ∑ i ∈ r.index, f.ofConv (r.left i) * g.ofConv (r.right i) := r.convMul_apply (toConv f.ofConv.toLinearMap) (toConv g.ofConv.toLinearMap) have h1 := congrArg (fun x => dUnit R (g.ofConv x …`.
+A detailed English derivation is pending.
 -/
 theorem cotMap_mul [IsCocomm R C] (f g : WithConv (C →ₐc[R] A)) :
     cotMap (f * g).ofConv = cotMap f.ofConv + cotMap g.ofConv :=
@@ -332,7 +332,7 @@ theorem cotMap_mul [IsCocomm R C] (f g : WithConv (C →ₐc[R] A)) :
     simp
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, cotMap_one, zero_smul]`. Consider the case `succ n ih => rw [pow_succ, cotMap_mul, ih, succ_nsmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem cotMap_pow [IsCocomm R C] (f : WithConv (C →ₐc[R] A)) (n : ℕ) :
     cotMap (f ^ n).ofConv = n • cotMap f.ofConv := by
@@ -341,7 +341,7 @@ theorem cotMap_pow [IsCocomm R C] (f : WithConv (C →ₐc[R] A)) (n : ℕ) :
   | succ n ih => rw [pow_succ, cotMap_mul, ih, succ_nsmul]
 
 /- English proof (translation)
-Rewrite using `[dUnit, AugCot.d_mul]`. Simplify using `[hu.counit_eq_one, hv.counit_eq_one, add_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dUnit_mul_groupLike {u v : A} (hu : IsGroupLikeElem R u) (hv : IsGroupLikeElem R v) :
     dUnit R (u * v) = dUnit R u + dUnit R v := by
@@ -383,7 +383,7 @@ Both sides reduce to the same expression.
     (dualMonoidHom R A C f).ofConv = CartierDual.map f.ofConv := rfl
 
 /- English proof (translation)
-The claim follows from `congrArg ofConv (map_pow (dualMonoidHom R A A) (toConv (BialgHom.id R A)) n)`.
+A detailed English derivation is pending.
 -/
 theorem dual_mulBy (n : ℕ) : CartierDual.map (mulBy R A n) = mulBy R (CartierDual R A) n :=
   congrArg ofConv (map_pow (dualMonoidHom R A A) (toConv (BialgHom.id R A)) n)
@@ -399,19 +399,19 @@ variable (R : Type*) [CommRing R] (m : ℕ)
 def muT : AddMonoidAlgebra R (ZMod m) := AddMonoidAlgebra.single 1 1
 
 /- English proof (translation)
-The claim follows from `AddMonoidAlgebra.isGroupLikeElem_single_one _`.
+A detailed English derivation is pending.
 -/
 theorem isGroupLikeElem_muT : IsGroupLikeElem R (muT R m) :=
   AddMonoidAlgebra.isGroupLikeElem_single_one _
 
 /- English proof (translation)
-Simplify using `[muT, AddMonoidAlgebra.single_pow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem muT_pow (k : ℕ) : muT R m ^ k = AddMonoidAlgebra.single (k : ZMod m) 1 := by
   simp [muT, AddMonoidAlgebra.single_pow]
 
 /- English proof (translation)
-Rewrite using `[muT_pow, ZMod.natCast_self]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem muT_pow_self : muT R m ^ m = 1 := by
   rw [muT_pow, ZMod.natCast_self]; rfl
@@ -419,7 +419,7 @@ theorem muT_pow_self : muT R m ^ m = 1 := by
 variable {R m} [NeZero m] {B : Type*} [CommRing B] [Algebra R B]
 
 /- English proof (translation)
-The claim follows from `AddMonoidAlgebra.algHom_ext (fun k => by rw [← ZMod.natCast_zmod_val k, ← muT_pow R m, map_pow, map_pow, h]) (Subsingleton.elim _ _)`.
+A detailed English derivation is pending.
 -/
 theorem mu_algHom_ext {x y : AddMonoidAlgebra R (ZMod m) →ₐ[R] B}
     (h : x (muT R m) = y (muT R m)) : x = y :=
@@ -436,14 +436,14 @@ def muPoint (u : B) (hu : u ^ m = 1) : AddMonoidAlgebra R (ZMod m) →ₐ[R] B :
         rw [toAdd_mul, ZMod.val_add, ← pow_eq_pow_mod _ hu, pow_add] }
 
 /- English proof (translation)
-Simplify using `[muPoint]`.
+Simplify using the standard rewrite rules.
 -/
 theorem muPoint_single (u : B) (hu : u ^ m = 1) (k : ZMod m) :
     muPoint R u hu (AddMonoidAlgebra.single k 1) = u ^ k.val := by
   simp [muPoint]
 
 /- English proof (translation)
-Establish `h : (1 : ZMod m).val = 1 % m` using `by rw [← ZMod.val_natCast, Nat.cast_one]`. Rewrite using `[muT, muPoint_single, h, ← pow_eq_pow_mod _ hu, pow_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem muPoint_muT (u : B) (hu : u ^ m = 1) : muPoint R u hu (muT R m) = u := by
   have h : (1 : ZMod m).val = 1 % m := by rw [← ZMod.val_natCast, Nat.cast_one]
@@ -457,14 +457,14 @@ def muChar {A : Type*} [CommRing A] [Bialgebra R A] (u : A) (hg : IsGroupLikeEle
       simp [hg.comul_eq_tmul_self, (isGroupLikeElem_muT R m).comul_eq_tmul_self]))
 
 /- English proof (translation)
-The claim follows from `muPoint_muT u hu`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem muChar_muT {A : Type*} [CommRing A] [Bialgebra R A] (u : A)
     (hg : IsGroupLikeElem R u) (hu : u ^ m = 1) : muChar u hg hu (muT R m) = u :=
   muPoint_muT u hu
 
 /- English proof (translation)
-The claim follows from `BialgHom.coe_toAlgHom_injective (mu_algHom_ext h)`.
+A detailed English derivation is pending.
 -/
 theorem mu_bialgHom_ext {A : Type*} [CommRing A] [Bialgebra R A]
     {x y : AddMonoidAlgebra R (ZMod m) →ₐc[R] A} (h : x (muT R m) = y (muT R m)) : x = y :=
@@ -479,44 +479,44 @@ variable {p : ℕ} [Fact p.Prime] {M : Type*} [Monoid M]
 def digit (n : ℕ) (a : ℤ_[p]) : ℕ := (PadicInt.toZModPow n a).val
 
 /- English proof (translation)
-The claim follows from `ZMod.natCast_zmod_val _`.
+A detailed English derivation is pending.
 -/
 theorem cast_digit (n : ℕ) (a : ℤ_[p]) :
     (digit n a : ZMod (p ^ n)) = PadicInt.toZModPow n a := ZMod.natCast_zmod_val _
 
 /- English proof (translation)
-Rewrite using `[← Ideal.mem_span_singleton, ← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, map_natCast, cast_digit, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_dvd_sub_digit (n : ℕ) (a : ℤ_[p]) : (p : ℤ_[p]) ^ n ∣ a - digit n a := by
   rw [← Ideal.mem_span_singleton, ← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub,
     map_natCast, cast_digit, sub_self]
 
 /- English proof (translation)
-Rewrite using `[digit, ← h, ZMod.val_natCast, ← pow_eq_pow_mod _ hx]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_digit_eq {n : ℕ} {x : M} (hx : x ^ p ^ n = 1) {a : ℤ_[p]} {k : ℕ}
     (h : (k : ZMod (p ^ n)) = PadicInt.toZModPow n a) : x ^ digit n a = x ^ k := by
   rw [digit, ← h, ZMod.val_natCast, ← pow_eq_pow_mod _ hx]
 
 /- English proof (translation)
-The claim follows from `pow_digit_eq hx (map_natCast _ k).symm`.
+A detailed English derivation is pending.
 -/
 theorem pow_digit_natCast {n : ℕ} {x : M} (hx : x ^ p ^ n = 1) (k : ℕ) :
     x ^ digit n (k : ℤ_[p]) = x ^ k := pow_digit_eq hx (map_natCast _ k).symm
 
 /- English proof (translation)
-The claim follows from `(pow_digit_eq hx (k := 1) (by simp)).trans (pow_one x)`.
+A detailed English derivation is pending.
 -/
 theorem pow_digit_one {n : ℕ} {x : M} (hx : x ^ p ^ n = 1) : x ^ digit n (1 : ℤ_[p]) = x :=
   (pow_digit_eq hx (k := 1) (by simp)).trans (pow_one x)
 
 /- English proof (translation)
-Simplify using `[digit]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem digit_zero (n : ℕ) : digit n (0 : ℤ_[p]) = 0 := by simp [digit]
 
 /- English proof (translation)
-Rewrite using `[← pow_add]`. Conclude with `pow_digit_eq hx (by rw [Nat.cast_add, cast_digit, cast_digit, map_add])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_digit_add {n : ℕ} {x : M} (hx : x ^ p ^ n = 1) (a b : ℤ_[p]) :
     x ^ digit n (a + b) = x ^ digit n a * x ^ digit n b := by
@@ -524,7 +524,7 @@ theorem pow_digit_add {n : ℕ} {x : M} (hx : x ^ p ^ n = 1) (a b : ℤ_[p]) :
   exact pow_digit_eq hx (by rw [Nat.cast_add, cast_digit, cast_digit, map_add])
 
 /- English proof (translation)
-Rewrite using `[← pow_mul]`. Conclude with `pow_digit_eq hx (by rw [Nat.cast_mul, cast_digit, cast_digit, map_mul, mul_comm])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_digit_mul {n : ℕ} {x : M} (hx : x ^ p ^ n = 1) (a b : ℤ_[p]) :
     x ^ digit n (a * b) = (x ^ digit n b) ^ digit n a := by
@@ -532,7 +532,7 @@ theorem pow_digit_mul {n : ℕ} {x : M} (hx : x ^ p ^ n = 1) (a b : ℤ_[p]) :
   exact pow_digit_eq hx (by rw [Nat.cast_mul, cast_digit, cast_digit, map_mul, mul_comm])
 
 /- English proof (translation)
-Use `(pow_digit_eq hx ?_).symm` and prove the remaining obligations. Rewrite using `[digit, ZMod.natCast_val]`. Conclude with `PadicInt.cast_toZModPow n (n + 1) n.le_succ a`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_digit_succ {n : ℕ} {x : M} (hx : x ^ p ^ n = 1) (a : ℤ_[p]) :
     x ^ digit (n + 1) a = x ^ digit n a := by

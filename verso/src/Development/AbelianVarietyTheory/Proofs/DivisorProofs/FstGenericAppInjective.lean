@@ -15,9 +15,9 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Establish `: IsDominant (jK R)`. Use `⟨?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `DenseRange (PrimeSpectrum.comap (algebraMap R (FractionRing R)))`. Rewrite using `[PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical, (RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective R (FractionRing R))]`. Conclude with `bot_le`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `IsSchemeTheoreticallyDominant.of_isDominant (jK R)` as an intermediate fact. Establish `: IsSchemeTheoreticallyDominant (pullback.fst p (jK R))` using `IsSchemeTheoreticallyDominant.of_isPullback (IsPullback.of_hasPullback p (jK R)).flip`. Conclude with `(pullback.fst p (jK R)).app_injective W`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fst_generic_app_injective {R : Type} [CommRing R] [IsDomain R] {X : Scheme.{0}} (p : X ⟶ Sp R) [Flat p]
     (W : X.Opens) : Function.Injective ((pullback.fst p (jK R)).app W).hom := by
@@ -33,9 +33,9 @@ theorem fst_generic_app_injective {R : Type} [CommRing R] [IsDomain R] {X : Sche
   exact (pullback.fst p (jK R)).app_injective W
 
 /- English proof (translation)
-Introduce `i i'`. Apply `hf` to reduce the goal to its premises. Establish `key : ∀ {U V : Y.Opens} (e : U ≤ V) (a : Γ(Y, V)), (f.app U).hom ((Y.presheaf.map (homOfLE e).op).hom a) = (Z.presheaf.map (homOfLE (show f ⁻¹ᵁ U ≤ f ⁻¹ᵁ V from fun _ hx => e hx)).op).hom ((f.app V).hom a)`. Introduce `U V e a`. Conclude with `congrArg (fun φ => φ.hom a) (f.naturality (homOfLE e).op)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_mul, key, key, key, key]`. Conclude with `h i i'`.
+A detailed English derivation is pending.
 -/
 theorem SecRatioEq.of_comp {X Y Z : Scheme.{0}} (L : LB X) {k k' : ℕ} (f : Z ⟶ Y)
     (hf : ∀ W : Y.Opens, Function.Injective (f.app W).hom) (u v : Y ⟶ X) (s₁ s₂ : H0 L k) (t₁ t₂ : H0 L k')
@@ -51,9 +51,9 @@ theorem SecRatioEq.of_comp {X Y Z : Scheme.{0}} (L : LB X) {k k' : ℕ} (f : Z �
   exact h i i'
 
 /- English proof (translation)
-Introduce `R _ _ _ _ D A G _ _ _ U k k' s₁ s₂ t₁ t₂ φ h g hg`. Substitute `hg` using the available equality. Use `U.smooth` as an intermediate fact. Use `SecRatioEq.of_comp _ (pullback.fst G.hom (jK R)) (fst_generic_app_injective G.hom) _ _ _ _ _ _ ?_` and prove the remaining obligations. Establish `e : ((Over.pullback (jK R)).map g).left ≫ pullback.fst G.hom (jK R) = pullback.fst G.hom (jK R) ≫ g.left` using `pullback.lift_fst _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Category.comp_id, ← e]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secRatioEq_of_generic : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ U : Unif (maximalIdeal R) D A G, ∀ (k k' : ℕ) (s₁ s₂ : H0 U.LG.L k) (t₁ t₂ : H0 U.LG.L k') (φ : (Over.pullback (jK R)).obj G ⟶ (Over.pullback (jK R)).obj G), SecRatioEq U.LG.L (φ.left ≫ pullback.fst G.hom (jK R)) (pullback.fst G.hom (jK R)) s₁ s₂ t₁ t₂ → ∀ g : G ⟶ G, (Over.pullback (jK R)).map g = φ → SecRatioEq U.LG.L g.left (𝟙 G.left) s₁ s₂ t₁ t₂ := by
   intro R _ _ _ _ D A G _ _ _ U k k' s₁ s₂ t₁ t₂ φ h g hg

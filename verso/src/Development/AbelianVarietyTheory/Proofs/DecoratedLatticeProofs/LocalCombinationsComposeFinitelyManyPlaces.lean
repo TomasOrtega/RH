@@ -15,14 +15,14 @@ noncomputable section
 namespace GlobalTheory.LocComp
 
 /- English proof (translation)
-Introduce `x hx i j` and use `GlobalTheory.LocMod.PinInhab.mem_idAt_of_supp l.q hP (l.o_at x hx i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem combAt_o {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {M : GlobalTheory.FinPl.Lat S} {M' : GlobalTheory.FinPl.Lat T}
     (l : GlobalTheory.SeeSaw.LocPl ψ S T M M') {P : GlobalTheory.FinPl.Pl D → Prop} (hP : P l.q.v) : GlobalTheory.FinPl.CombAt P l.o :=
   fun x hx i j => GlobalTheory.LocMod.PinInhab.mem_idAt_of_supp l.q hP (l.o_at x hx i j)
 
 /- English proof (translation)
-Establish `h4` using `(GlobalTheory.DisjComb.main D ψ hψ S T P (fun _ => False) (fun _ _ h => h)).2.2.2.1`. Establish `hm : ∀ {c : WO S T →₀ ℂ}, GlobalTheory.FinPl.CombAt P c → GlobalTheory.FinPl.CombAt (fun p => P p ∨ False) c` using `fun hc x hx i j => by simpa only [or_false] using hc x hx i j`. Take `⟨e'', h1, h2⟩` from `h4 e e' (hm he) (hm he')`. Conclude with `⟨e'', fun x hx i j => by simpa only [or_false] using h1 x hx i j, h2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem combAt_comp {D : D7} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {S T : HSp D}
     {P : GlobalTheory.FinPl.Pl D → Prop} {e e' : WO S T →₀ ℂ} (he : GlobalTheory.FinPl.CombAt P e) (he' : GlobalTheory.FinPl.CombAt P e') :
@@ -34,11 +34,11 @@ theorem combAt_comp {D : D7} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D
   exact ⟨e'', fun x hx i j => by simpa only [or_false] using h1 x hx i j, h2⟩
 
 /- English proof (translation)
-Introduce `D ψ hψ S T M M' _ _ n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `L _ P _`. Use `⟨Finsupp.single 0 1, GlobalTheory.FinPl.OffTest.combAt_single_zero P 1, fun F => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[GlobalTheory.FinPl.OffTest.comb_single_zero]`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `L hinj P hP`. Take `⟨o₁, h₁, h₁'⟩` from `ih (fun i => L i.succ) (fun a b h => Fin.succ_injective _ (hinj h)) P (fun i => hP i.succ)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨o', h', h''⟩` from `combAt_comp hψ (combAt_o (L 0) (hP 0)) h₁`. Use `⟨o', h', fun F => ?_⟩` and prove the remaining obligations. Rewrite using `[h'', h₁', List.finRange_succ, List.foldr_cons, List.foldr_map]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem main : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (M : GlobalTheory.FinPl.Lat S) (M' : GlobalTheory.FinPl.Lat T), IsSelfDualC S M → IsSelfDualC T M' → ∀ (n : ℕ) (L : Fin n → GlobalTheory.SeeSaw.LocPl ψ S T M M'), (Function.Injective fun i => (L i).q.v) → ∀ P : GlobalTheory.FinPl.Pl D → Prop, (∀ i, P (L i).q.v) → ∃ o' : WO S T →₀ ℂ, GlobalTheory.FinPl.CombAt P o' ∧ ∀ F, comb ψ S T o' F = (List.finRange n).foldr (fun i g => comb ψ S T (L i).o g) F := by
   intro D ψ hψ S T M M' _ _ n

@@ -13,7 +13,7 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNo
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ}
 
 /- English proof (translation)
-Simplify `S.herm.eq x y` using `[starRingEnd_apply]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hsym (x y : S.V) : star (S.hT x y) = S.hT y x := by
   simpa [starRingEnd_apply] using S.herm.eq x y
@@ -25,14 +25,14 @@ def nilF (e a : Fin r → S.V) (s : Matrix (Fin r) (Fin r) E) : S.V →ₗ[E] S.
   ∑ c, ((S.hT (e c)).smulRight (a c) + (-(S.hT (a c)) + ∑ d, s c d • S.hT (e d)).smulRight (e c))
 
 /- English proof (translation)
-Simplify using `[nilF, kap, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nilF_apply (e a : Fin r → S.V) (s : Matrix (Fin r) (Fin r) E) (v : S.V) :
     nilF e a s v = ∑ c, (S.hT (e c) v • a c + kap e a s v c • e c) := by
   simp [nilF, kap, LinearMap.sum_apply]
 
 /- English proof (translation)
-Rewrite using `[nilF_apply, PI.TermsAtPtFiniteW.heisFun]`. Simplify using `only [kap, add_smul, neg_smul, Finset.sum_smul, Finset.sum_add_distrib, Finset.sum_neg_distrib]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem heis_eq (e a : Fin r → S.V) (s : Matrix (Fin r) (Fin r) E) (v : S.V) :
     PI.TermsAtPtFiniteW.heisFun e a s v = v + nilF e a s v := by
@@ -48,27 +48,27 @@ include hiso hea
 
 omit hiso in
 /- English proof (translation)
-Rewrite using `[← hsym, hea, star_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hae (c d : Fin r) : S.hT (a c) (e d) = 0 := by
   rw [← hsym, hea, star_zero]
 
 /- English proof (translation)
-Rewrite using `[nilF_apply]`. Simplify using `[kap, hiso, hae e a hea]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem nil_e (c : Fin r) : nilF e a s (e c) = 0 := by
   rw [nilF_apply]
   simp [kap, hiso, hae e a hea]
 
 /- English proof (translation)
-Rewrite using `[nilF_apply]`. Simplify using `[hea]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem nil_a (c : Fin r) : nilF e a s (a c) = ∑ d, kap e a s (a c) d • e d := by
   rw [nilF_apply]
   simp [hea]
 
 /- English proof (translation)
-Rewrite using `[nilF_apply e a s v]`. Simplify using `only [map_sum, map_add, map_smul, nil_e e a s hiso hea, nil_a e a s hiso hea, smul_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem nil_nil (v : S.V) :
     nilF e a s (nilF e a s v) = ∑ c, S.hT (e c) v • ∑ d, kap e a s (a c) d • e d := by
@@ -76,7 +76,7 @@ theorem nil_nil (v : S.V) :
   simp only [map_sum, map_add, map_smul, nil_e e a s hiso hea, nil_a e a s hiso hea, smul_zero, add_zero]
 
 /- English proof (translation)
-Rewrite using `[nil_nil e a s hiso hea v]`. Simplify using `[map_sum, map_smul, nil_e e a s hiso hea]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem nil3 (v : S.V) : nilF e a s (nilF e a s (nilF e a s v)) = 0 := by
   rw [nil_nil e a s hiso hea v]
@@ -85,13 +85,13 @@ theorem nil3 (v : S.V) : nilF e a s (nilF e a s (nilF e a s v)) = 0 := by
 end Nil
 
 /- English proof (translation)
-Establish `e1 : ∑ c, (∑ d, star (s c d) * p d) * q c = ∑ c, ∑ d, p c * q d * star (s d c)`. Repeatedly rewrite using `[Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => by ring`. Establish `e2 : ∑ c, (∑ d, s c d * q d) * p c = ∑ c, ∑ d, p c * q d * s c d`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => by ring`. Establish `e3 : ∑ c, ∑ d, p c * q d * star (s d c) + ∑ c, ∑ d, p c * q d * s c d + ∑ c, ∑ d, p c * q d * G c d = 0`. Rewrite using `[← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_eq_zero fun d _ => ?_` and prove the remaining obligations. Use `h c d` as an intermediate fact. Take the linear combination `(p c * q d) * this`. Establish `e4 : ∑ c, (p c * Q c + -P c * q c) + ∑ c, (q c * P c + -Q c * p c) = 0`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_eq_zero fun c _ => by ring`. Simplify using `only [add_mul, Finset.sum_add_distrib] at e4 ⊢`. Rewrite using `[e1, e2]`. Take the linear combination `e3 + e4`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem alg (p q P Q : Fin r → E) (s G : Matrix (Fin r) (Fin r) E)
     (h : ∀ c d, s c d + star (s d c) = -G c d) :
@@ -127,15 +127,13 @@ variable (e a : Fin r → S.V) (s : Matrix (Fin r) (Fin r) E)
 include hiso hea hs
 
 /- English proof (translation)
-Establish `E1 : S.hT (nilF e a s x) y = ∑ c, (star (S.hT (e c) x) * S.hT (a c) y + (-star (S.hT (a c) x) + ∑ d, star (s c d) * star (S.hT (e d) x)) * S.hT (e c) y)`. Rewrite using `[nilF_apply]`. Simplify using `only [map_sum, map_add, map_smulₛₗ, LinearMap.sum_apply, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `only [kap, star_add, star_neg, star_sum, star_mul']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `all_goals ring`. Establish `E2 : S.hT x (nilF e a s y) = ∑ c, (S.hT (e c) y * star (S.hT (a c) x) + (-S.hT (a c) y + ∑ d, s c d * S.hT (e d) y) * star (S.hT (e c) x))`. Rewrite using `[nilF_apply]`. Simplify using `only [map_sum, map_add, map_smul, smul_eq_mul]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsym, hsym]`. Simplify using `only [kap]`. Apply the tactic sequence `all_goals ring`. Establish `E3 : S.hT (nilF e a s x) (nilF e a s y) = ∑ c, ∑ d, star (S.hT (e c) x) * S.hT (e d) y * S.hT (a c) (a d)`. Rewrite using `[nilF_apply e a s x, nilF_apply e a s y]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_sum, map_add, map_smulₛₗ, map_smul, LinearMap.sum_apply, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, hiso, hea, hae e a hea, mul_zero, add_zero, zero_add, Finset.sum_const_zero, Finset.mul_sum, RingHom.id_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[E1, E2, E3]`.
-
-Conclude with `alg (fun c => star (S.hT (e c) x)) (fun c => S.hT (e c) y) (fun c => star (S.hT (a c) x)) (fun c => S.hT (a c) y) s (fun c d => S.hT (a c) (a d)) hs`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_nil (x y : S.V) :
     S.hT (nilF e a s x) y + S.hT x (nilF e a s y) + S.hT (nilF e a s x) (nilF e a s y) = 0 := by
@@ -169,7 +167,7 @@ theorem form_nil (x y : S.V) :
     (fun c => S.hT (a c) y) s (fun c d => S.hT (a c) (a d)) hs
 
 /- English proof (translation)
-Establish `h` using `form_nil e a s hiso hea hs x y`. Simplify using `only [map_add, LinearMap.add_apply]`. Take the linear combination `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem isom_nil (x y : S.V) :
     S.hT (x + nilF e a s x) (y + nilF e a s y) = S.hT x y := by
@@ -180,7 +178,7 @@ theorem isom_nil (x y : S.V) :
 end Form
 
 /- English proof (translation)
-Conclude with `Finset.sum_induction f (fun z => ∃ o : 𝓞 E, (o : E) = z) (fun _ _ ⟨o1, h1⟩ ⟨o2, h2⟩ => ⟨o1 + o2, by`. Rewrite using `[← h1, ← h2]`. Apply the tactic sequence `first | norm_cast | simp | exact map_add (algebraMap (𝓞 E) E) o1 o2⟩)`. Apply the tactic sequence `⟨0, by first | simp | norm_cast⟩ h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isO_sum {ι : Type} (t : Finset ι) (f : ι → E) (h : ∀ i ∈ t, ∃ o : 𝓞 E, (o : E) = f i) :
     ∃ o : 𝓞 E, (o : E) = ∑ i ∈ t, f i := by
@@ -191,7 +189,7 @@ theorem isO_sum {ι : Type} (t : Finset ι) (f : ι → E) (h : ∀ i ∈ t, ∃
     ⟨0, by first | simp | norm_cast⟩ h
 
 /- English proof (translation)
-Take `⟨o, rfl⟩` from `hk`. Establish `h` using `Λ.smul_mem o hx`. Use `first`. Consider the case `(rw [← algebraMap_smul E o x] at h; exact h)`. Consider the case `simpa using h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem smul_memO (Λ : Submodule (𝓞 E) S.V) {k : E} (hk : ∃ o : 𝓞 E, (o : E) = k) {x : S.V} (hx : x ∈ Λ) :
     k • x ∈ Λ := by
@@ -202,11 +200,11 @@ theorem smul_memO (Λ : Submodule (𝓞 E) S.V) {k : E} (hk : ∃ o : 𝓞 E, (o
     | simpa using h
 
 /- English proof (translation)
-Rewrite using `[nilF_apply]`. Use `Submodule.sum_mem _ fun c _ => Λ.add_mem (smul_memO Λ (hint _ (he c) _ hv) (ha c)) (smul_memO Λ ?_ (he c))` and prove the remaining obligations. Take `⟨o1, h1⟩` from `hint _ (ha c) _ hv`. Take `⟨o2, h2⟩` from `isO_sum Finset.univ (fun d => s c d * S.hT (e d) v) (fun d _ => by`. Take `⟨x1, hx1⟩` from `hsO c d`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x2, hx2⟩` from `hint _ (he d) _ hv`. Conclude with `⟨x1 * x2, by`. Rewrite using `[← hx1, ← hx2]`. Apply the tactic sequence `first | norm_cast | simp | exact map_mul (algebraMap (𝓞 E) E) x1 x2⟩)`. Use `beta_reduce at h2`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨-o1 + o2, ?_⟩` and prove the remaining obligations. Rewrite using `[kap, ← h1, ← h2]`. Apply the tactic sequence `first | norm_cast | simp`.
+A detailed English derivation is pending.
 -/
 theorem nil_mem (Λ : Submodule (𝓞 E) S.V) (e a : Fin r → S.V) (s : Matrix (Fin r) (Fin r) E)
     (hint : ∀ x ∈ Λ, ∀ y ∈ Λ, ∃ o : 𝓞 E, (o : E) = S.hT x y)
@@ -234,27 +232,23 @@ namespace PI.TermsAtPtFiniteW
 open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.Lat Formalism.L2.SG.TermDef HeisW
 
 /- English proof (translation)
-Introduce `E _ _ _ S r T Λ F a s hint he ha hea hsO hs`. Establish `hiso : ∀ c d, S.hT (F.fl.e c) (F.fl.e d) = 0` using `F.fl.e_iso`. Establish `h3` using `nil3 F.fl.e a s hiso hea`. Establish `hfg : (LinearMap.id + nilF F.fl.e a s) ∘ₗ (LinearMap.id - nilF F.fl.e a s + nilF F.fl.e a s ∘ₗ nilF F.fl.e a s) = LinearMap.id`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [LinearMap.comp_apply, LinearMap.add_apply, LinearMap.sub_apply, LinearMap.id_apply, map_add, map_sub, h3]`. Normalize the expressions using the abelian group laws. Establish `hgf : (LinearMap.id - nilF F.fl.e a s + nilF F.fl.e a s ∘ₗ nilF F.fl.e a s) ∘ₗ (LinearMap.id + nilF F.fl.e a s) = LinearMap.id`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearMap.add_apply, LinearMap.sub_apply, LinearMap.id_apply, map_add, map_sub, h3]`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Use `⟨LinearEquiv.ofLinear _ _ hfg hgf, ?_, fun v => ?_⟩` and prove the remaining obligations. Use `swap`. Simplify using `[LinearEquiv.ofLinear_apply, heis_eq]`. Simplify using `only [NLam, Set.mem_setOf_eq, IsAutLam]`.
+Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `x y`. Simplify using `only [LinearEquiv.ofLinear_apply, LinearMap.add_apply, LinearMap.id_apply]`. Conclude with `isom_nil F.fl.e a s hiso hea hs x y`. Unfold `Formalism.HermitianLatticesTheory.gmap`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.map_le_iff_le_comap]`. Introduce `v hv`. Simplify using `only [Submodule.mem_comap, LinearMap.coe_restrictScalars, LinearEquiv.coe_coe, LinearEquiv.ofLinear_apply, LinearMap.add_apply, LinearMap.id_apply]`. Conclude with `Λ.add_mem hv (nil_mem Λ F.fl.e a s hint he ha hsO hv)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `v hv`. Rewrite using `[Submodule.mem_map]`. Use `⟨v - nilF F.fl.e a s v + nilF F.fl.e a s (nilF F.fl.e a s v), ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `nil_mem Λ F.fl.e a s hint he ha hsO hv`. Conclude with `Λ.add_mem (Λ.sub_mem hv h1) (nil_mem Λ F.fl.e a s hint he ha hsO h1)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.coe_restrictScalars, LinearEquiv.coe_coe, LinearEquiv.ofLinear_apply, LinearMap.add_apply, LinearMap.id_apply, map_add, map_sub, h3]`. Normalize the expressions using the abelian group laws. Introduce `j x hx`. Establish `hN : nilF F.fl.e a s x = 0`. Establish `hle : F.fl.Xa (j + 1) ≤ LinearMap.ker (nilF F.fl.e a s)` using `by show Submodule.span E (F.fl.e '' {i | i.1 < j + 1}) ≤ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, -, rfl⟩`. Conclude with `LinearMap.mem_ker.2 (nil_e F.fl.e a s hiso hea i)`. Conclude with `LinearMap.mem_ker.1 (hle hx)`. Simplify using `[LinearEquiv.ofLinear_apply, hN]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `x hx`. Establish `hx' : ∀ c, S.hT (F.fl.e c) x = 0`. Introduce `c`. Establish `hmem : F.fl.e c ∈ Xsp F` using `by show F.fl.e c ∈ Submodule.span E (Set.range F.fl.e)`. Conclude with `Submodule.subset_span ⟨c, rfl⟩`.
-
-Simplify using `only [orth, Submodule.mem_iInf, LinearMap.mem_ker] at hx`. Conclude with `hx _ hmem`. Simplify using `only [LinearEquiv.ofLinear_apply, LinearMap.add_apply, LinearMap.id_apply, add_sub_cancel_left]`. Rewrite using `[nilF_apply]`. Use `Submodule.sum_mem _ fun c _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[hx' c, zero_smul, zero_add]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Use `show F.fl.e c ∈ Submodule.span E (Set.range F.fl.e)`. Conclude with `Submodule.subset_span ⟨c, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem heisOp_holds : HeisOp := by
   intro E _ _ _ S r T Λ F a s hint he ha hea hsO hs

@@ -16,7 +16,7 @@ noncomputable section
 namespace GlobalTheory.ThK.WeilCont
 
 /- English proof (translation)
-Introduce `x hx`. Use `tendsto_of_seq_tendsto fun u hu => ?_` and prove the remaining obligations. Establish `hw : ∀ T : SchwartzMap V ℂ →L[ℂ] ℂ, Tendsto (fun j => T ((φ ∘ u) j)) atTop (𝓝 (T (φ x)))` using `fun T => (h T x hx).tendsto.comp hu`. Conclude with `GlobalTheory.T.weak_bounded_schwartz_tendsto _ _ hw (GlobalTheory.T.weakly_convergent_schwartz_bounded _ _ hw)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuousOn_of_weak {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     {X : Type} [TopologicalSpace X] [FirstCountableTopology X] {φ : X → SchwartzMap V ℂ} {s : Set X}
@@ -33,13 +33,13 @@ def archPt (y : κ → mixedEmbedding.mixedSpace F) : κ → AF F :=
   fun i => GlobalTheory.HeisSchA.mk ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (y i)) 0
 
 /- English proof (translation)
-Introduce `u hu` and use `funext fun i => GlobalTheory.HeisSchA.at_mk _ u hu`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_archPt (y : κ → mixedEmbedding.mixedSpace F) : At (evI F) (archPt y) :=
   fun u hu => funext fun i => GlobalTheory.HeisSchA.at_mk _ u hu
 
 /- English proof (translation)
-The claim follows from `funext fun i => (InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply _`.
+A detailed English derivation is pending.
 -/
 theorem evI_archPt (y : κ → mixedEmbedding.mixedSpace F) : (fun i => evI F (archPt y i)) = y :=
   funext fun i => (InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply _
@@ -50,19 +50,19 @@ def coeLin : SInf F κ →ₗ[ℂ] ((κ → mixedEmbedding.mixedSpace F) → ℂ
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-The claim follows from `LinearMap.ker_eq_bot.2 fun _ _ h => DFunLike.coe_injective h`.
+A detailed English derivation is pending.
 -/
 theorem ker_coeLin : LinearMap.ker (coeLin (F := F) (κ := κ)) = ⊥ :=
   LinearMap.ker_eq_bot.2 fun _ _ h => DFunLike.coe_injective h
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective _ (ker_coeLin (F := F) (κ := κ))`. Establish `hgf : ∀ f : SInf F κ, g ⇑f = f` using `fun f => LinearMap.congr_fun hg f`. Set `l : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ` to `(T : SInf F κ →ₗ[ℂ] ℂ) ∘ₗ g ∘ₗ LinearMap.funLeft ℂ ℂ (archPt (F := F))`. Establish `key : ∀ (f : SInf F κ) (c : ℂ) (Φ : (κ → AF F) → ℂ), (∀ y, Φ (archPt y) = c * f y) → l Φ = c * T f`. Introduce `f c Φ hΦ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : LinearMap.funLeft ℂ ℂ (archPt (F` using `F)) Φ = ⇑(c • f) := funext fun y => by`. Rewrite using `[LinearMap.funLeft_apply, hΦ, SchwartzMap.smul_apply, smul_eq_mul]`. Simplify using `only [l, LinearMap.comp_apply, e, hgf, ContinuousLinearMap.coe_coe, map_smul, smul_eq_mul]`. Use `⟨l, fun φ hφ => ⟨φ 0 • T, fun f => ?_⟩, fun f r hr => ?_⟩` and prove the remaining obligations. Rewrite using `[key f (φ 0) _ fun y => ?_]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Simplify using `only [pureA]`. Rewrite using `[mul_comm]`. Use `congr 1`. Conclude with `congrArg f (evI_archPt y)`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `key f (r 0) _ fun y => ?_` and prove the remaining obligations. Establish `hrz : r (archPt y) = r 0` using `by simpa using hr 0 _ (at_archPt y)`. Simplify using `only [tens]`. Rewrite using `[evI_archPt, hrz, mul_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_adm (T : SInf F κ →L[ℂ] ℂ) : ∃ l : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ, l ∈ (adeleClass F).adm κ ∧
     ∀ (f : SInf F κ) (r : (κ → AF F) → ℂ), (∀ x z, At (evI F) z → r (x + z) = r x) →
@@ -94,9 +94,9 @@ namespace GlobalTheory.ThK.WeilCont
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Take `⟨r, h0, hr⟩` from `exists_rest_inf F (Fin a' × Fin (a + a'))`. Take `⟨l, hl, hlT⟩` from `exists_adm T`. Establish `hc : Continuous fun g : UA σ G.V'.J => l (om' (g, 1) (tens (evI F) (⇑f) r))` using `(hT.weil'.2.2 l hl _ (hr f).2).comp (continuous_id.prodMk continuous_const)`. Use `(hc.continuousOn.const_smul (r 0)⁻¹).congr fun g hg => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `T (locOpInf (om' (g, 1)) f) = (r 0)⁻¹ • l (om' (g, 1) (tens (evI F) (⇑f) r))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[acts_locOpInf (hacts g hg f) r (hr f), hlT (locOpInf (om' (g, 1)) f) r (hr f).1, smul_eq_mul, ← mul_assoc, inv_mul_cancel₀ h0, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem weak_cont (B : Base F E) {a a' : ℕ} (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W)
     (hT : IsTriple B G X om om')
@@ -113,7 +113,7 @@ theorem weak_cont (B : Base F E) {a a' : ℕ} (G : Geo σ a a') (X : Chars F E) 
   rw [acts_locOpInf (hacts g hg f) r (hr f), hlT (locOpInf (om' (g, 1)) f) r (hr f).1, smul_eq_mul, ← mul_assoc, inv_mul_cancel₀ h0, one_mul]
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ B a a' G X om om' hT f`. Use `haveI : SecondCountableTopology (UA σ G.V'.J) := (GlobalTheory.AdelicUnitaryTop.lcsc_UA F E σ a' G.V'.J).2.1`. Use `haveI : FirstCountableTopology (UA σ G.V'.J) := TopologicalSpace.SecondCountableTopology.to_firstCountableTopology _`. Conclude with `continuousOn_of_weak fun T => weak_cont B G X om om' hT (GlobalTheory.T.weil_action_maps_schwartz hP F E σ a' (a + a') G.V' G.W G.M' B.ψ X.α (X.α / X.β) om' hT.base.cm hT.base.std hT.weil') f T`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem weilcont : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

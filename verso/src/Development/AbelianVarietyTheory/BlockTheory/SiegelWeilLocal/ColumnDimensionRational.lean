@@ -84,14 +84,14 @@ def Sp (P : Matrix (Fin n) (Fin (r + 1)) E) : Set (HA R σ J) :=
     (HA.mat R σ J g : Matrix (Fin n) (Fin n) (R ⊗[F] E))}
 
 /- English proof (translation)
-Simplify using `[sigR, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sig_incl (x : E) : sigR R σ (inclR R x) = inclR R (σ x) := by simp [sigR, inclR]
 
 /- English proof (translation)
-Establish `h : Formalism.UG.cT (σ : E →+* E) (γ.1 : Matrix (Fin n) (Fin n) E) * J * γ.1 = J` using `γ.2`. Use `show Formalism.UG.cT (sigR R σ) ((γ.1 : Matrix (Fin n) (Fin n) E).map (inclR R)) * J.map (inclR R) * (γ.1 : Matrix (Fin n) (Fin n) E).map (inclR R) = J.map (inclR R)`. Establish `h2 : Formalism.UG.cT (sigR R σ) ((γ.1 : Matrix (Fin n) (Fin n) E).map (inclR R)) = (Formalism.UG.cT (σ : E →+* E) (γ.1 : Matrix (Fin n) (Fin n) E)).map (inclR (F` using `F) R) := by`. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, sig_incl]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, ← Matrix.map_mul, ← Matrix.map_mul, h]`.
+A detailed English derivation is pending.
 -/
 theorem bc_mem (γ : ↥(Formalism.UG.UJ (σ : E →+* E) J)) : Formalism.UG.bc (inclR R) γ.1 ∈ HR R σ J := by
   have h : Formalism.UG.cT (σ : E →+* E) (γ.1 : Matrix (Fin n) (Fin n) E) * J * γ.1 = J := γ.2
@@ -111,9 +111,7 @@ abbrev HF (P : Matrix (Fin n) (Fin (r + 1)) E) (f : Matrix (Fin n) (Fin r) E) :=
   fixG (σ : E →+* E) J P f
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `γ.2`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show (γ.1.1 : Matrix (Fin n) (Fin n) E).map (inclR (F := F) R) * P.map (inclR R) = P.map (inclR R)`. Rewrite using `[← Matrix.map_mul, h1]`. Use `show (γ.1.1 : Matrix (Fin n) (Fin n) E).map (inclR (F := F) R) * f.map (inclR R) = f.map (inclR R)`.
-
-Rewrite using `[← Matrix.map_mul, h2]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratG_mem_Hp (P : Matrix (Fin n) (Fin (r + 1)) E) (f : Matrix (Fin n) (Fin r) E)
     (γ : ↥(HF σ J P f)) : ratG R σ J γ.1 ∈ Hp R σ J P f := by
@@ -134,14 +132,14 @@ def act (g : HA R σ J) (x : Fin n → R ⊗[F] E) : Fin n → R ⊗[F] E :=
   (HA.mat R σ J g : Matrix (Fin n) (Fin n) (R ⊗[F] E)).mulVec x
 
 /- English proof (translation)
-Use `show ((1 : GL (Fin n) (R ⊗[F] E)) : Matrix (Fin n) (Fin n) _).mulVec x = x`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem act_one (x : Fin n → R ⊗[F] E) : act R σ J 1 x = x := by
   show ((1 : GL (Fin n) (R ⊗[F] E)) : Matrix (Fin n) (Fin n) _).mulVec x = x
   simp
 
 /- English proof (translation)
-Use `show ((HA.mat R σ J g * HA.mat R σ J h : GL (Fin n) (R ⊗[F] E)) : Matrix (Fin n) (Fin n) _).mulVec x = _`. Rewrite using `[Units.val_mul, ← Matrix.mulVec_mulVec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem act_mul (g h : HA R σ J) (x : Fin n → R ⊗[F] E) :
     act R σ J (g * h) x = act R σ J g (act R σ J h x) := by
@@ -149,7 +147,7 @@ theorem act_mul (g h : HA R σ J) (x : Fin n → R ⊗[F] E) :
   rw [Units.val_mul, ← Matrix.mulVec_mulVec]; rfl
 
 /- English proof (translation)
-The claim follows from `Matrix.mulVec_sub _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem act_sub (g : HA R σ J) (x y : Fin n → R ⊗[F] E) :
     act R σ J g (x - y) = act R σ J g x - act R σ J g y := Matrix.mulVec_sub _ _ _
@@ -326,7 +324,7 @@ def ColumnDim : Prop :=
         d * muS σ J P f μNf μHf (Sp (Af F) σ J P ∩ K2 σ J P f Λ g₁ g₂ w ε)
 
 /- English proof (translation)
-Establish `h1 : Nat.card (GL (Fin 0) (ZMod g)) = 1` using `Nat.card_unique`. Establish `h2 : Nat.card ↥(Formalism.L2.Col.HU (ZMod g) 0) = 1` using `Nat.card_unique`. Simplify using `[ga, h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 example (g : ℕ) : ga 0 g = 1 := by
   have h1 : Nat.card (GL (Fin 0) (ZMod g)) = 1 := Nat.card_unique

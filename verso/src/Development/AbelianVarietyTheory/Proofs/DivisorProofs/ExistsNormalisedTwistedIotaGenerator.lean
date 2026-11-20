@@ -16,15 +16,15 @@ noncomputable section
 namespace GlobalTheory.TwFam
 
 /- English proof (translation)
-Establish `hG` using `GlobalTheory.globalFns_holds`. Take `⟨u, hu, u₀⟩` from `exists_ros hG D.P.isAb D.P.isLB a a' hr`. Establish `cf : ∀ T, DVR.cP D T δ = DVR.cP D T α ≫ a'` using `fun T => by`. Rewrite using `[DVR.cP, hc, ← Category.assoc]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨v, hv, vv⟩` from `exists_gen D.P.isLB (φ' := Sum.elim (D.Oφ (𝟙 _) δ) (D.Oφ a α)) (ε' := Sum.elim Oε Oinvε) (fun U _ h => by`. Use `(DVR.prod_neg _ _ (prod_ros a a' (𝟙 D.P.A) (DVR.cP D _ α) h)).trans (Eq.symm ?_)` and prove the remaining obligations. Use `(DVR.prod_sum₂ (K := Fin 4) (K' := Fin 4) (U := U) _ (GlobalTheory.UT.OLinEnd.prod_Oφ D (𝟙 _) δ h) (GlobalTheory.UT.OLinEnd.prod_Oφ_inv D a α h)).trans ?_` and prove the remaining obligations. Rewrite using `[cf, Category.id_comp, _root_.mul_comm (DVR.cP D _ α) a, _root_.mul_comm (DVR.cP D _ α ≫ a') (𝟙 _)]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [ofMul_mul, ofMul_inv]`. Use the proof step `abel)`. Use the proof step `(LB.invGen D.P.L _ _ (LB.pullGen D.P.L _ _ u (lift (𝟙 D.P.A) (DVR.cP D D.P.A α)).left))`. Use the proof step `(DVR.invGen_isGen _ _ _ _ (DVR.pullGen_isGen _ _ _ _ hu _))`. Use `⟨v, hv, fun Z r z J hJ => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `T : Over (Spec (CommRingCat.of R))` to `Over.mk r`. Establish `C : IsCub (cubV D.cub (T` using `T) z J) := isCub_cubV D.cub hJ`. Establish `e` using `(ros_add D.cub hG D.P.isAb a a' u hu u₀ (T := T) hJ 1 1 (DVR.cP D _ α)).1`. Rewrite `e` using `[_root_.mul_one, MonObj.one_comp, C.face, C.face, _root_.mul_one, _root_.one_mul]`. Establish `e' : val₂ u (T` using `T) z J 1 (DVR.cP D _ α) = 1 := mul_eq_left.1 e.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `o : (1 : T ⟶ D.P.A).left = r ≫ eSec D.P.A` using `rfl`. Establish `k : (r ≫ eSec D.P.A) ≫ (lift (𝟙 D.P.A) (DVR.cP D D.P.A α)).left = (lift (1 : T ⟶ D.P.A) (DVR.cP D T α)).left`. Rewrite using `[← o, ← Over.comp_left, comp_lift, DVR.comp_cP, Category.comp_id]`. Rewrite using `[vv Z _ z J hJ, val_inv, val_pull hJ, k]`. Conclude with `inv_eq_one.2 e'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_iota_of_rosati {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (a a' : D.P.A ⟶ D.P.A)
     [IsMonHom a] [IsMonHom a'] (hr : RosatiAdj D.P.A D.P.L a a') (α δ : D.X) (hc : D.c δ = D.c α ≫ a') :
@@ -58,7 +58,7 @@ theorem exists_iota_of_rosati {R : Type} [CommRing R] [IsDomain R] (D : DegPre R
   exact inv_eq_one.2 e'
 
 /- English proof (translation)
-Introduce `R _ _ _ _ D a a' h h' hE α`. Take `⟨h₁, h₂, hr, -, hc, -⟩` from `hE`. Conclude with `exists_iota_of_rosati D.toPre a a' hr α (h' α) (hc α)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_iota : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) → ∀ (D : DegData R (maximalIdeal R)), ∀ (a a' : D.toPre.P.A ⟶ D.toPre.P.A) (h h' : D.toPre.X →+ D.toPre.X), EndData D.toPre a a' h h' → ∀ α : D.toPre.X, ∃ u : LB.Gen (IotaLB D.toPre a α (h' α)), IsIota u := by
   intro R _ _ _ _ D a a' h h' hE α

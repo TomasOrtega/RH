@@ -12,7 +12,7 @@ open scoped WithZero TensorProduct
 namespace GlobalTheory.CNorm
 
 /- English proof (translation)
-Establish `hne : i ^ q * cT ≠ 0` using `mul_ne_zero (pow_ne_zero _ hi) hcT`. Apply `mul_right_cancel₀ hne` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 -/
 theorem herbPhi_arith (q h0 h1 a t bI bT cI cT i c : ℕ) (hi : i ≠ 0) (hcT : cT ≠ 0)
     (e1 : a * bT * cT = bI * cI * t) (e2 : cI * c ^ q = i ^ q * cT)
@@ -26,7 +26,7 @@ theorem herbPhi_arith (q h0 h1 a t bI bT cI cT i c : ℕ) (hi : i ≠ 0) (hcT : 
     _ = _ := by rw [e2]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [nrm_apply]`. Consider the case `succ n ih`. Rewrite `ih`, the goal using `[nrm_apply]`. Rewrite using `[Finset.prod_range_succ, ih, dif_apply, iterate_map_div, Function.iterate_succ_apply, mul_comm, div_mul_div_cancel]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem herbPhi_nrm_dif {A : Type} [CommGroup A] (σ : A →* A) (n : ℕ) (a : A) :
     nrm σ n (dif σ a) = σ^[n] a / a := by
@@ -38,25 +38,25 @@ theorem herbPhi_nrm_dif {A : Type} [CommGroup A] (σ : A →* A) (n : ℕ) (a : 
       mul_comm, div_mul_div_cancel]
 
 /- English proof (translation)
-Set `τ : C →* C` to `(σ.comp C.subtype).codRestrict C (fun x => hst x x.2)`. Establish `hτ : ∀ x : C, (τ x : A) = σ x` using `fun x => rfl`. Establish `hit : ∀ (k : ℕ) (x : C), ((τ^[k] x : C) : A) = σ^[k] x`. Introduce `k`. Proceed by induction on `k with`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => intro x`. Both sides reduce to the same expression. Consider the case `succ k ih => intro x`. Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply', hτ, ih]`. Set `lam : Monoid.End C` to `dif τ`.
+Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hnτ : ∀ a, nrm τ p a = 1`. Introduce `a`. Apply `Subtype.ext` to reduce the goal to its premises. Use `hn a a.2` as an intermediate fact. Rewrite `this`, the goal using `[nrm_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[SubmonoidClass.coe_finset_prod]`. Simplify using `only [hit]`. Conclude with `this`. Take `⟨h1, h2⟩` from `GlobalTheory.T.pow_prime_range_eq_iterated_difference p C τ lam hp (fun _ => rfl) hnτ`. Take `⟨k, hk⟩ : ∃ k, p - 1 = k + 1` from `⟨p - 2, by have := hp.two_le; omega⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `h1`, `h2`, the goal using `[hk]`. Establish `eI : pIdx p C = (MonoidHom.range (lam ^ (k + 1) : Monoid.End C)).index`. Rewrite using `[← h1, pIdx, Subgroup.relIndex]`. Use `congr 1`. Use extensionality with `x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [pows, Subgroup.mem_subgroupOf, Subgroup.mem_map, powMonoidHom_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, e⟩`. Conclude with `⟨⟨y, hy⟩, trivial, Subtype.ext e⟩`. Introduce and unpack `⟨y, -, e⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨y, y.2, congrArg Subtype.val e⟩`. Establish `eT : pTor p C = Nat.card (MonoidHom.ker (lam ^ (k + 1) : Monoid.End C))`. Rewrite using `[pTor]`. Use `Nat.card_congr ⟨fun x => ⟨⟨x.1, x.2.1⟩, (h2 _).1 (Subtype.ext x.2.2)⟩, fun y => ⟨y.1.1, y.1.2, congrArg Subtype.val ((h2 _).2 y.2)⟩, fun _ => rfl, fun _ => rfl⟩` and prove the remaining obligations. Establish `ei : (C.map (dif σ)).relIndex C = (MonoidHom.range lam).index`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.relIndex]`. Use `congr 1`. Use extensionality with `x`. Simplify using `only [Subgroup.mem_subgroupOf, Subgroup.mem_map, MonoidHom.mem_range]`. Prove the components needed by the constructor for the conclusion.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨y, hy, e⟩`. Conclude with `⟨⟨y, hy⟩, Subtype.ext e⟩`. Introduce and unpack `⟨y, e⟩`. Conclude with `⟨y, y.2, congrArg Subtype.val e⟩`. Establish `ec : Nat.card ↥(C ⊓ fix σ) = Nat.card (MonoidHom.ker lam)`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Nat.card_congr ⟨fun x => ⟨⟨x.1, x.2.1⟩, Subtype.ext (div_eq_one.2 x.2.2)⟩, fun y => ⟨y.1.1, y.1.2, div_eq_one.1 (congrArg Subtype.val y.2)⟩, fun _ => rfl, fun _ => rfl⟩` and prove the remaining obligations. Rewrite `hI`, the goal using `[eI]`. Rewrite `hT`, the goal using `[eT]`. Rewrite using `[ei, ec]`. Conclude with `GlobalTheory.T.index_range_ker_iterate_endomorphism C lam k hI hT`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem herbPhi_stable (p : ℕ) (A : Type) [CommGroup A] (σ : A →* A) (hp : p.Prime)
     (C : Subgroup A) (hst : ∀ x ∈ C, σ x ∈ C) (hn : ∀ x ∈ C, nrm σ p x = 1)
@@ -116,17 +116,17 @@ theorem herbPhi_stable (p : ℕ) (A : Type) [CommGroup A] (σ : A →* A) (hp : 
   exact GlobalTheory.T.index_range_ker_iterate_endomorphism C lam k hI hT
 
 /- English proof (translation)
-Introduce `p A _ σ hp hσ ha ht`. Establish `hker : (dif σ).ker = fix σ`. Use extensionality with `x`. Rewrite using `[MonoidHom.mem_ker, dif_apply, div_eq_one, mem_fix]`. Establish `hcT : pTor p (dif σ).range ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `pTor at ht ⊢`. Establish `hfin : Finite {x : A // x ∈ (⊤ : Subgroup A) ∧ x ^ p = 1}` using `Nat.finite_of_card_ne_zero ht`. Establish `: Finite {x : A // x ∈ (dif σ).range ∧ x ^ p = 1}` using `Finite.of_injective (β := {x : A // x ∈ (⊤ : Subgroup A) ∧ x ^ p = 1}) (fun x => ⟨x.1, trivial, x.2.2⟩) (fun x y h => Subtype.ext (by simpa using h))`. Establish `: Nonempty {x : A // x ∈ (dif σ).range ∧ x ^ p = 1}` using `⟨⟨1, one_mem _, one_pow _⟩⟩`. Conclude with `Nat.card_pos.ne'`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hbI, hbT, hcI⟩` from `GlobalTheory.T.powIndex_torsion_finite_ker_range p A A (dif σ) ha ht hcT`. Take `⟨-, -, e1⟩` from `GlobalTheory.T.powIndex_torsion_ker_range_mul p A A (dif σ) hbI hbT hcI hcT`. Rewrite `hbI`, `hbT`, `e1` using `[hker]`. Take `⟨hi, hc, e2⟩` from `herbPhi_stable p A σ hp (dif σ).range (by rintro _ ⟨y, rfl⟩; exact ⟨σ y, by rw [dif_apply, dif_apply, _root_.map_div]⟩) (by rintro _ ⟨y, rfl⟩; rw [herbPhi_nrm_dif, hσ, div_self']) hcI hcT`. Establish `e3` using `GlobalTheory.T.norm_difference_index_identity p A σ hσ`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : pows p (fix σ) ≤ (nrm σ p).range`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Use `⟨y, ?_⟩` and prove the remaining obligations. Establish `hy' : σ y = y` using `hy`. Rewrite using `[nrm_apply, Finset.prod_congr rfl (fun i _ => Function.iterate_fixed hy' i)]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `h0 : (nrm σ p).range.relIndex (fix σ) ≠ 0` using `ne_zero_of_dvd_ne_zero hbI (Subgroup.relIndex_dvd_of_le_left _ hle)`. Establish `h1 : (dif σ).range.relIndex (nrm σ p).ker ≠ 0`. Introduce `h`. Rewrite `e3` using `[h, mul_zero, zero_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_ne_zero (mul_ne_zero h0 hi) hbT e3`. Use `⟨h0, h1, hbI, hbT, ?_⟩` and prove the remaining obligations. Use `herbPhi_arith (p - 1) _ _ _ _ _ _ _ _ _ _ hi hcT e1 e2 e3` as an intermediate fact. Rewrite `this` using `[Nat.sub_add_cancel hp.one_le]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem herbrand_prime_order : ∀ (p : ℕ) (A : Type) [CommGroup A] (σ : A →* A), p.Prime → (∀ a, σ^[p] a = a) → pIdx p (⊤ : Subgroup A) ≠ 0 → pTor p (⊤ : Subgroup A) ≠ 0 → (nrm σ p).range.relIndex (fix σ) ≠ 0 ∧ (dif σ).range.relIndex (nrm σ p).ker ≠ 0 ∧ pIdx p (fix σ) ≠ 0 ∧ pTor p (fix σ) ≠ 0 ∧ (nrm σ p).range.relIndex (fix σ) ^ (p - 1) * pIdx p (⊤ : Subgroup A) * pTor p (fix σ) ^ p = (dif σ).range.relIndex (nrm σ p).ker ^ (p - 1) * pTor p (⊤ : Subgroup A) * pIdx p (fix σ) ^ p := by
   intro p A _ σ hp hσ ha ht

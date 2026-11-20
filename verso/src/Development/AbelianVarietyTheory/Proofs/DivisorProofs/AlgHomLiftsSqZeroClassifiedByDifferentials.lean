@@ -16,7 +16,7 @@ variable {R R₀ B B₀ B' : Type} [CommRing R] [CommRing R₀] [CommRing B] [Al
   [CommRing B₀] [Algebra R₀ B₀] [CommRing B'] [Algebra R B']
 
 /- English proof (translation)
-Use `Ideal.mem_map_of_mem (φ : B →+* B') hb` as an intermediate fact. Rewrite `this` using `[Ideal.map_map, AlgHom.comp_algebraMap]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem algHom_mem {I : Ideal R} (φ : B →ₐ[R] B') {b : B} (hb : b ∈ I.map (algebraMap R B)) :
     φ b ∈ I.map (algebraMap R B') := by
@@ -24,7 +24,7 @@ theorem algHom_mem {I : Ideal R} (φ : B →ₐ[R] B') {b : B} (hb : b ∈ I.map
   rwa [Ideal.map_map, AlgHom.comp_algebraMap] at this
 
 /- English proof (translation)
-Use `Ideal.mul_mem_mul hx hy` as an intermediate fact. Rewrite `this` using `[← pow_two, map_sq hI, Ideal.zero_eq_bot, Ideal.mem_bot]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_eq_zero_of_mem {I : Ideal R} (hI : I ^ 2 = 0) {x y : B'} (hx : x ∈ I.map (algebraMap R B'))
     (hy : y ∈ I.map (algebraMap R B')) : x * y = 0 := by
@@ -41,13 +41,13 @@ structure Setup (I : Ideal R) (π : R →+* R₀) (p : B →+* B₀) (α : B →
 variable {I : Ideal R} {π : R →+* R₀} {p : B →+* B₀} {α : B →ₐ[R] B'}
 
 /- English proof (translation)
-The claim follows from `(h.ker _).1 (by rw [map_sub, e, sub_self])`.
+A detailed English derivation is pending.
 -/
 theorem Setup.sub_mem (h : Setup I π p α) {b c : B} (e : p b = p c) : b - c ∈ I.map (algebraMap R B) :=
   (h.ker _).1 (by rw [map_sub, e, sub_self])
 
 /- English proof (translation)
-Use `mul_eq_zero_of_mem h.sq (algHom_mem α (h.sub_mem e)) hx` as an intermediate fact. Rewrite `this` using `[map_sub, sub_mul, sub_eq_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem Setup.mul_wd (h : Setup I π p α) {b c : B} (e : p b = p c) {x : B'}
     (hx : x ∈ I.map (algebraMap R B')) : α b * x = α c * x := by
@@ -62,7 +62,7 @@ instance (h : Setup I π p α) : AddCommGroup (J h) :=
 def J.val {h : Setup I π p α} (x : J h) : B' := Subtype.val (x : ↥(I.map (algebraMap R B')))
 
 /- English proof (translation)
-The claim follows from `Subtype.property (x : ↥(I.map (algebraMap R B')))`.
+A detailed English derivation is pending.
 -/
 theorem J.mem {h : Setup I π p α} (x : J h) : x.val ∈ I.map (algebraMap R B') :=
   Subtype.property (x : ↥(I.map (algebraMap R B')))
@@ -75,7 +75,7 @@ Both sides reduce to the same expression.
 @[simp] theorem J.val_mk (h : Setup I π p α) (x : B') (hx) : (J.mk h x hx).val = x := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext e`.
+A detailed English derivation is pending.
 -/
 theorem J.ext {h : Setup I π p α} {x y : J h} (e : x.val = y.val) : x = y := Subtype.ext e
 
@@ -91,7 +91,7 @@ Both sides reduce to the same expression.
 def Setup.sec (h : Setup I π p α) : B₀ → B := Function.surjInv h.surj
 
 /- English proof (translation)
-The claim follows from `Function.surjInv_eq h.surj x`.
+A detailed English derivation is pending.
 -/
 theorem Setup.p_sec (h : Setup I π p α) (x : B₀) : p (h.sec x) = x := Function.surjInv_eq h.surj x
 
@@ -99,7 +99,7 @@ instance (h : Setup I π p α) : SMul B₀ (J h) :=
   ⟨fun x y ↦ J.mk h (α (h.sec x) * y.val) (Ideal.mul_mem_left _ _ y.mem)⟩
 
 /- English proof (translation)
-The claim follows from `h.mul_wd (by rw [h.p_sec, e]) y.mem`.
+A detailed English derivation is pending.
 -/
 theorem smul_val (h : Setup I π p α) {b : B} {x : B₀} (e : p b = x) (y : J h) :
     (x • y).val = α b * y.val :=
@@ -126,11 +126,11 @@ instance (h : Setup I π p α) : IsScalarTower R₀ B₀ (J h) :=
     rw [Algebra.smul_def, mul_smul]⟩
 
 /- English proof (translation)
-Establish `hx' : x ∈ Submodule.span B (⇑(algebraMap R B) '' (I : Set R))` using `hx`. Use `Submodule.span_induction (p := fun z _ ↦ α z = β z) ?_ ?_ ?_ ?_ hx'` and prove the remaining obligations. Introduce and unpack `z ⟨r, -, rfl⟩`. Rewrite using `[AlgHom.commutes, AlgHom.commutes]`. Rewrite using `[map_zero, map_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `y z _ _ hy hz`. Rewrite using `[map_add, map_add, hy, hz]`. Introduce `c z hzI hz`. Establish `hzI' : z ∈ I.map (algebraMap R B)` using `hzI`. Rewrite using `[smul_eq_mul, map_mul, map_mul, hz]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `mul_eq_zero_of_mem h.sq (hβ c) (algHom_mem β hzI')` as an intermediate fact. Rewrite `this` using `[sub_mul, sub_eq_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem eq_on_ideal (h : Setup I π p α) (β : B →ₐ[R] B') (hβ : ∀ b, α b - β b ∈ I.map (algebraMap R B'))
     {x : B} (hx : x ∈ I.map (algebraMap R B)) : α x = β x := by
@@ -146,7 +146,7 @@ theorem eq_on_ideal (h : Setup I π p α) (β : B →ₐ[R] B') (hβ : ∀ b, α
     rwa [sub_mul, sub_eq_zero] at this
 
 /- English proof (translation)
-Use `eq_on_ideal h β hβ (h.sub_mem e)` as an intermediate fact. Rewrite `this` using `[map_sub, map_sub]`. Take the linear combination `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem diff_wd (h : Setup I π p α) (β : B →ₐ[R] B') (hβ : ∀ b, α b - β b ∈ I.map (algebraMap R B'))
     {b c : B} (e : p b = p c) : α b - β b = α c - β c := by
@@ -158,7 +158,7 @@ def dfun (h : Setup I π p α) (β : B →ₐ[R] B') (hβ : ∀ b, α b - β b �
   J.mk h (α (h.sec x) - β (h.sec x)) (hβ _)
 
 /- English proof (translation)
-The claim follows from `diff_wd h β hβ (by rw [h.p_sec, e])`.
+A detailed English derivation is pending.
 -/
 theorem dfun_val (h : Setup I π p α) (β : B →ₐ[R] B') (hβ : ∀ b, α b - β b ∈ I.map (algebraMap R B'))
     {b : B} {x : B₀} (e : p b = x) : (dfun h β hβ x).val = α b - β b :=
@@ -204,7 +204,7 @@ def der (h : Setup I π p α) (hπ : Function.Surjective π) (β : B →ₐ[R] B
       linear_combination -this)
 
 /- English proof (translation)
-The claim follows from `dfun_val h β hβ rfl`.
+A detailed English derivation is pending.
 -/
 theorem der_val (h : Setup I π p α) (hπ : Function.Surjective π) (β : B →ₐ[R] B')
     (hβ : ∀ b, α b - β b ∈ I.map (algebraMap R B')) (b : B) : (der h hπ β hβ (p b)).val = α b - β b :=
@@ -217,9 +217,9 @@ def theta (h : Setup I π p α) (hπ : Function.Surjective π) (β : B →ₐ[R]
   map_add' x y := by rw [map_add]; rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((der h hπ β hβ).liftKaehlerDifferential (p b • w)).val = _`. Rewrite using `[LinearMap.map_smul, smul_val h rfl]`. Both sides reduce to the same expression. Use `der b := by`. Express the relevant statement in the definitionally equal form `((der h hπ β hβ).liftKaehlerDifferential (D R₀ B₀ (p b))).val = _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Derivation.liftKaehlerDifferential_comp_D, der_val]`. Use `mem w := J.mem _`.
+A detailed English derivation is pending.
 -/
 theorem isTheta_theta (h : Setup I π p α) (hπ : Function.Surjective π) (β : B →ₐ[R] B')
     (hβ : ∀ b, α b - β b ∈ I.map (algebraMap R B')) : IsTheta I p α β (theta h hπ β hβ) where
@@ -232,11 +232,11 @@ theorem isTheta_theta (h : Setup I π p α) (hπ : Function.Surjective π) (β :
   mem w := J.mem _
 
 /- English proof (translation)
-Use extensionality with `w`. Establish `hw : w ∈ Submodule.span B₀ (Set.range (D R₀ B₀))`. Rewrite using `[span_range_derivation]`. Discharge the goal by the elementary cases of `trivial`. Use `Submodule.span_induction (p := fun z _ ↦ θ₁ z = θ₂ z) ?_ ?_ ?_ ?_ hw` and prove the remaining obligations.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `z ⟨y, rfl⟩`. Take `⟨b, rfl⟩` from `h.surj y`. Rewrite using `[h₁.der, h₂.der]`. Rewrite using `[map_zero, map_zero]`. Introduce `y z _ _ hy hz`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_add, map_add, hy, hz]`. Introduce `c z _ hz`. Take `⟨b, rfl⟩` from `h.surj c`. Rewrite using `[h₁.smul, h₂.smul, hz]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem theta_unique (h : Setup I π p α) {β : B →ₐ[R] B'} {θ₁ θ₂ : Ω[B₀⁄R₀] →+ B'}
     (h₁ : IsTheta I p α β θ₁) (h₂ : IsTheta I p α β θ₂) : θ₁ = θ₂ := by
@@ -269,7 +269,7 @@ def betaOf (h : Setup I π p α) (θ : Ω[B₀⁄R₀] →+ B') (hs : ∀ b w, �
     rw [AlgHom.commutes, h.semi.map_algebraMap, Derivation.map_algebraMap, map_zero, sub_zero]
 
 /- English proof (translation)
-The claim follows from `hs der b := by change _ = α b - (α b - θ (D R₀ B₀ (p b))) ring mem := hm`.
+A detailed English derivation is pending.
 -/
 theorem isTheta_betaOf (h : Setup I π p α) (θ : Ω[B₀⁄R₀] →+ B') (hs : ∀ b w, θ (p b • w) = α b * θ w)
     (hm : ∀ w, θ w ∈ I.map (algebraMap R B')) : IsTheta I p α (betaOf h θ hs hm) θ where
@@ -284,7 +284,7 @@ end GlobalTheory.LiftSys.SqZeroDiff
 namespace GlobalTheory.LiftSys
 
 /- English proof (translation)
-Introduce `R R₀ B B₀ B' _ _ _ _ _ _ _ _ I hI π hπ p hp hs hk α`. Establish `h : SqZeroDiff.Setup I π p α` using `⟨hI, hp, hs, hk⟩`. Use `⟨fun β hβ ↦ ⟨SqZeroDiff.theta h hπ β hβ, SqZeroDiff.isTheta_theta h hπ β hβ, fun θ hθ ↦ SqZeroDiff.theta_unique h hθ (SqZeroDiff.isTheta_theta h hπ β hβ)⟩, fun θ hθs hθm ↦ ⟨SqZeroDiff.betaOf h θ hθs hθm, SqZeroDiff.isTheta_betaOf h θ hθs hθm⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem theta_classify : ∀ (R R₀ B B₀ B' : Type) [CommRing R] [CommRing R₀] [CommRing B] [Algebra R B]
     [CommRing B₀] [Algebra R₀ B₀] [CommRing B'] [Algebra R B'] (I : Ideal R), I ^ 2 = 0 →

@@ -12,7 +12,7 @@ open scoped TensorProduct Matrix
 namespace GlobalTheory.LatAway
 
 /- English proof (translation)
-Use `RingHom.ext fun r => RingOfIntegers.ext ?_` and prove the remaining obligations. Establish `h : ((algebraMap (𝓞 F) (𝓞 E) r : 𝓞 E) : E) = algebraMap F E (r : F)` using `rfl`. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[show ((RingOfIntegers.mapRingHom (σ : E →+* E) (algebraMap (𝓞 F) (𝓞 E) r) : 𝓞 E) : E) = σ ((algebraMap (𝓞 F) (𝓞 E) r : 𝓞 E) : E) from rfl, h]`. Conclude with `σ.commutes _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mapRingHom_comp_algebraMap {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) :
     (RingOfIntegers.mapRingHom (σ : E →+* E)).comp (algebraMap (𝓞 F) (𝓞 E)) = algebraMap (𝓞 F) (𝓞 E) := by
@@ -24,23 +24,21 @@ theorem mapRingHom_comp_algebraMap {F E : Type} [Field F] [NumberField F] [Field
   exact σ.commutes _
 
 /- English proof (translation)
-Set `ψ : 𝓞 X.E ≃+* 𝓞 D.host.E` to `RingOfIntegers.mapRingEquiv s.iE`. Set `f : Sp X.E n →ₛₗ[(ψ : 𝓞 X.E →+* 𝓞 D.host.E)] (Fin n → D.host.E)` to `{ toFun := fun x l => s.iE (x l) map_add' := fun x y => by funext l; simp map_smul' := fun r x => by`. Use function extensionality and compare the values at `l`. Simplify using `only [Pi.smul_apply, Algebra.smul_def, map_mul]`. Use `rfl }`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `hlat : ∀ M : Submodule (𝓞 X.E) (Sp X.E n), s.lat M = M.map f`. Introduce `M`. Unfold `Seam.lat`. Rewrite using `[show ((fun (x : Sp X.E n) (i : Fin n) => s.iE (x i)) '' (M : Set (Sp X.E n))) = f '' M from rfl, ← Submodule.map_coe]`. Conclude with `Submodule.span_eq _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective f`. Introduce `x y hxy`. Use function extensionality and compare the values at `l`. Conclude with `s.iE.injective (congrFun hxy l)`. Establish `hloc : ∀ M : Submodule (𝓞 X.E) (Sp X.E n), Formalism.HermitianLatticesTheory.localization₂ (seamP s P).asIdeal (M.map f) = (Formalism.HermitianLatticesTheory.localization₂ P.asIdeal M).map f`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Introduce `M`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, hr, z, hz, hzx⟩`. Establish `hfy : f (fun l => s.iE.symm (x l)) = x`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `l`. Use `show s.iE (s.iE.symm (x l)) = x l`. Simplify using the standard rewrite rules. Use `⟨fun l => s.iE.symm (x l), ⟨ψ.symm r, ?_, ?_⟩, hfy⟩` and prove the remaining obligations. Introduce `hm`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Apply `hr` to reduce the goal to its premises. Use `(mem_seamP s P (ψ.symm r)).2 hm` as an intermediate fact. Simplify `this` using `[ψ]`. Establish `: ψ.symm r • (fun l => s.iE.symm (x l)) = z`. Apply `hinj` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[f.map_smulₛₗ, hfy, hzx]`. Use `show ψ (ψ.symm r) • x = r • x`. Rewrite using `[RingEquiv.apply_symm_apply]`. Rewrite using `[this]`. Conclude with `hz`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce and unpack `⟨y, ⟨r, hr, hy⟩, rfl⟩`. Use `⟨ψ r, ?_, r • y, hy, ?_⟩` and prove the remaining obligations. Introduce `hm`. Conclude with `hr ((mem_seamP s P r).1 hm)`. Rewrite using `[f.map_smulₛₗ]`.
-
-Both sides reduce to the same expression. Rewrite `h` using `[hlat, hlat, hloc, hloc]`. Conclude with `Submodule.map_injective_of_injective hinj h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem seam_locP_inj {D : D7} {X : Fields} (s : Seam D X) {n : ℕ} (P : HeightOneSpectrum (𝓞 X.E))
     (N N' : Submodule (𝓞 X.E) (Sp X.E n))
@@ -95,11 +93,11 @@ theorem seam_locP_inj {D : D7} {X : Fields} (s : Seam D X) {n : ℕ} (P : Height
   exact Submodule.map_injective_of_injective hinj h
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, z, hz, hzx⟩`. Use `⟨e.symm x, ⟨s, hs, ?_⟩, by simp⟩` and prove the remaining obligations. Establish `: s • e.symm x = z`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_smul, e.apply_symm_apply]`. Conclude with `hzx.symm`. Rewrite using `[this]`. Conclude with `hz`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨y, ⟨s, hs, hy⟩, rfl⟩`. Conclude with `⟨s, hs, s • y, hy, by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem locP_map_equiv {R W W' : Type*} [CommRing R] [AddCommGroup W] [Module R W] [AddCommGroup W'] [Module R W']
     (e : W ≃ₗ[R] W') (q : Ideal R) [q.IsPrime] (Λ : Submodule R W) :
@@ -118,7 +116,7 @@ theorem locP_map_equiv {R W W' : Type*} [CommRing R] [AddCommGroup W] [Module R 
     exact ⟨s, hs, s • y, hy, by simp⟩
 
 /- English proof (translation)
-Use `show Formalism.HermitianLatticesTheory.localization₂ q (Λ.map (((toLE g).restrictScalars (𝓞 E) : (Fin N → E) ≃ₗ[𝓞 E] (Fin N → E)) : (Fin N → E) →ₗ[𝓞 E] (Fin N → E))) = Formalism.HermitianLatticesTheory.localization₂ q (Λ'.map (((toLE g).restrictScalars (𝓞 E) : (Fin N → E) ≃ₗ[𝓞 E] …`. Rewrite using `[locP_map_equiv, locP_map_equiv, h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locP_mvL {E : Type} [Field E] {N : ℕ} (g : GL (Fin N) E) (q : Ideal (𝓞 E)) [q.IsPrime]
     (Λ Λ' : Submodule (𝓞 E) (Fin N → E)) (h : Formalism.HermitianLatticesTheory.localization₂ q Λ = Formalism.HermitianLatticesTheory.localization₂ q Λ') :
@@ -128,11 +126,11 @@ theorem locP_mvL {E : Type} [Field E] {N : ℕ} (g : GL (Fin N) E) (q : Ideal (�
   rw [locP_map_equiv, locP_map_equiv, h]
 
 /- English proof (translation)
-Establish `h1 : (mvL co⁻¹ (latCo sp J co a y Lb)).FG` using `h.map _`. Use `haveI := isNoetherian_of_fg_of_noetherian _ h1`. Use `Submodule.FG.of_le_of_isNoetherian (T := mvL co⁻¹ (latCo sp J co a y Lb)) ?_` and prove the remaining obligations. Unfold `latCo`. Rewrite using `[← mvL_mul, inv_mul_cancel]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : mvL (1 : GL (Fin N) E) (compan (sp` using `sp) J a (latAd y Lb)) = compan (sp := sp) J a (latAd y Lb) := by`. Unfold `mvL`. Use `Submodule.map_id _` and compare the differences between its conclusion and the goal. Use `LinearMap.ext fun z => ?_` and prove the remaining obligations. Use `show toLE 1 z = z`.
+Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[toLE_apply, Units.val_one, Matrix.one_mulVec]`. Rewrite using `[h2]`. Conclude with `le_sup_left`.
+A detailed English derivation is pending.
 -/
 theorem latAd_fg_of_latCo {R : Ranks} {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
     (sp : Spaces R F E) {N : ℕ} (J : Matrix (Fin N) (Fin N) E) (co : GL (Fin N) E) (a : 𝓞 E)
@@ -153,9 +151,9 @@ theorem latAd_fg_of_latCo {R : Ranks} {F E : Type} [Field F] [NumberField F] [Fi
   exact le_sup_left
 
 /- English proof (translation)
-Set `f : Sp X.E n →ₛₗ[(RingOfIntegers.mapRingEquiv s.iE : 𝓞 X.E →+* 𝓞 D.host.E)] (Fin n → D.host.E)` to `{ toFun := fun x l => s.iE (x l) map_add' := fun x y => by funext l; simp map_smul' := fun r x => by`. Use function extensionality and compare the values at `l`. Simplify using `only [Pi.smul_apply, Algebra.smul_def, map_mul]`. Use `rfl }`. Establish `e : s.lat N = N.map f`.
+Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Unfold `Seam.lat`. Rewrite using `[show ((fun (x : Sp X.E n) (i : Fin n) => s.iE (x i)) '' (N : Set (Sp X.E n))) = f '' N from rfl, ← Submodule.map_coe]`. Conclude with `Submodule.span_eq _`. Rewrite using `[e]`. Conclude with `h.map f`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem seam_lat_fg {D : D7} {X : Fields} (s : Seam D X) {n : ℕ} (N : Submodule (𝓞 X.E) (Sp X.E n)) (h : N.FG) :
     (s.lat N).FG := by
@@ -174,7 +172,7 @@ theorem seam_lat_fg {D : D7} {X : Fields} (s : Seam D X) {n : ℕ} (N : Submodul
   exact h.map f
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.primeLocalization_companionLattice_eq_of_localizations sp J a q Λ Λ' hΛ hΛ' h h'`.
+A detailed English derivation is pending.
 -/
 theorem locP_companion {R : Ranks} {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
     (sp : Spaces R F E) {N : ℕ} (J : Matrix (Fin N) (Fin N) E) (a : 𝓞 E) (q : Ideal (𝓞 E)) [q.IsPrime]
@@ -186,13 +184,13 @@ theorem locP_companion {R : Ranks} {F E : Type} [Field F] [NumberField F] [Field
   GlobalTheory.T.primeLocalization_companionLattice_eq_of_localizations sp J a q Λ Λ' hΛ hΛ' h h'
 
 /- English proof (translation)
-Unfold `latAd`. Prove the components needed by the constructor for the conclusion. Introduce `hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem z hz => exact hz`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero`. Rewrite using `[show (fun a : Fin N => Formalism.UG.inclE (F := F) (FiniteAdeleRing (𝓞 F) F) ((0 : Fin N → E) a)) = 0 from`. Use function extensionality and compare the values at `fun a => map_zero _, Matrix.mulVec_zero]`. Conclude with `zero_mem _`. Consider the case `add z z' _ _ hz hz'`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (fun a : Fin N => Formalism.UG.inclE (F := F) (FiniteAdeleRing (𝓞 F) F) ((z + z') a)) = (fun a => Formalism.UG.inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (z a)) + (fun a => Formalism.UG.inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (z' a)) from`. Use function extensionality and compare the values at `fun a => map_add _ _ _, Matrix.mulVec_add]`. Conclude with `add_mem hz hz'`. Consider the case `smul c z _ hz`. Establish `hc : Formalism.UG.inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F) ((c : 𝓞 E) : E) ∈ Formalism.L2.Herm.intAf F E := Subring.subset_closure (Or.inl ⟨⟨_, c, rfl⟩, rfl⟩)`.
+Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[show (fun a : Fin N => Formalism.UG.inclE (F := F) (FiniteAdeleRing (𝓞 F) F) ((c • z) a)) = Formalism.UG.inclE (F := F) (FiniteAdeleRing (𝓞 F) F) ((c : 𝓞 E) : E) • (fun a => Formalism.UG.inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (z a)) from`. Use function extensionality and compare the values at `fun a => by simp only [Pi.smul_apply, smul_eq_mul, Algebra.smul_def, map_mul], Matrix.mulVec_smul]`. Conclude with `(Formalism.L2.Herm.hatL (F := F) Lb).smul_mem (⟨_, hc⟩ : Formalism.L2.Herm.intAf F E) hz`. Introduce `hw`. Conclude with `Submodule.subset_span hw`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_latAd_iff {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {N : ℕ}
     (y : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (Lb : Submodule (𝓞 E) (Fin N → E)) (w : Fin N → E) :
@@ -223,7 +221,7 @@ theorem mem_latAd_iff {F E : Type} [Field F] [NumberField F] [Field E] [NumberFi
     exact Submodule.subset_span hw
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.adelicMatrix_one_at_place_scaled_preserves_completedLattice Lb hfg hsp v k hk`.
+A detailed English derivation is pending.
 -/
 theorem exists_awayScale {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {N : ℕ}
     (Lb : Submodule (𝓞 E) (Fin N → E)) (hfg : Lb.FG) (hsp : Submodule.span E (Lb : Set (Fin N → E)) = ⊤)
@@ -234,13 +232,13 @@ theorem exists_awayScale {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
   GlobalTheory.T.adelicMatrix_one_at_place_scaled_preserves_completedLattice Lb hfg hsp v k hk
 
 /- English proof (translation)
-Take `⟨t, ht, hk⟩` from `exists_awayScale Lb hfg hsp v (x₁⁻¹ * x) (by rw [map_mul, map_inv, h, inv_mul_cancel])`. Introduce and unpack `w ⟨s, hs, hw⟩`. Use `⟨algebraMap (𝓞 F) (𝓞 E) t * s, ?_, ?_⟩` and prove the remaining obligations. Introduce `hm`. Break down `(inferInstance : q.IsPrime).mem_or_mem hm with h1 | h1` into its components or cases.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `ht (by rw [← hq]; exact h1)`. Conclude with `hs h1`. Rewrite `hw`, the goal using `[mem_latAd_iff]`. Establish `e1` using `hk _ hw`. Use `e1 using 1` and compare the differences between its conclusion and the goal.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hxx : ∀ z : Fin N → E ⊗[F] FiniteAdeleRing (𝓞 F) F, (x : Matrix (Fin N) (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) *ᵥ ((x⁻¹ : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) : Matrix (Fin N) (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) *ᵥ z = z`. Introduce `z`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Rewrite using `[Units.val_mul, ← Matrix.mulVec_mulVec, hxx, ← Matrix.mulVec_smul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `a`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_smul]`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul, map_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locP_latAd_le {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {N : ℕ}
     (Lb : Submodule (𝓞 E) (Fin N → E)) (hfg : Lb.FG) (hsp : Submodule.span E (Lb : Set (Fin N → E)) = ⊤)
@@ -283,13 +281,11 @@ def placeUnder {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] 
     exact Ideal.comap_ne_bot_of_integral_mem hx0 hx (Algebra.IsIntegral.isIntegral x)
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Y cX ex t u μ St A dtU a _ _ i hi β x x₁ p p₁ hp hp₁ P hx`. Use `set Q := seamP t.seam P.1 with hQ`. Establish `hxv` using `hx (placeUnder Q) rfl`. Use `set Lb := ((St i hi).K β).lev.Lb with hLb`. Establish `hfin : Lb.FG` using `(Module.Finite.iff_fg).1 ((St i hi).K β).lev.Lb_fin`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsp` using `((St i hi).K β).lev.Lb_span`. Establish `hfg : (latAd x.1 Lb).FG` using `latAd_fg_of_latCo _ _ _ _ _ _ (hp.lat ▸ seam_lat_fg t.seam _ p.deco.2.lat.fg)`. Establish `hfg₁ : (latAd x₁.1 Lb).FG` using `latAd_fg_of_latCo _ _ _ _ _ _ (hp₁.lat ▸ seam_lat_fg t.seam _ p₁.deco.2.lat.fg)`. Establish `key : ∀ (q : Ideal (𝓞 D.host.E)) [q.IsPrime], q.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) = (placeUnder Q).asIdeal → Formalism.HermitianLatticesTheory.localization₂ q (latAd x₁.1 Lb) = Formalism.HermitianLatticesTheory.localization₂ q (latAd x.1 Lb)`. Introduce `q _ hq`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_antisymm (locP_latAd_le Lb hfin hsp x₁.1 x.1 _ q hq hxv.symm) (locP_latAd_le Lb hfin hsp x.1 x₁.1 _ q hq hxv)`. Establish `hσ : (Q.asIdeal.comap (RingOfIntegers.mapRingHom (D.sp.cm.sig : D.host.E →+* D.host.E))).comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) = (placeUnder Q).asIdeal`. Rewrite using `[Ideal.comap_comap, mapRingHom_comp_algebraMap]`. Both sides reduce to the same expression. Establish `e` using `locP_mvL (A.crd i hi) Q.asIdeal _ _ (locP_companion D.sp (gramN D i hi) a Q.asIdeal _ _ hfg₁ hfg (key _ rfl) (key _ hσ))`.
-
-Apply `seam_locP_inj t.seam P.1` to reduce the goal to its premises. Rewrite using `[hp.lat, hp₁.lat]`. Conclude with `e`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem decoAt_eq : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G.LatInst D} {Kc : G.Consts} {Y : DivX D} {cX : ExtraC}
     {ex : Extra D L hT Gi Gl Kc Y cX} {t : KerEntTied ex} {u : D.what₂.Word} {μ : D.what₂.Tup} {St : ChainCharts D u μ}

@@ -27,9 +27,9 @@ namespace GlobalTheory.VacCoefAtPlace
 open GlobalTheory.ArchRec GlobalTheory.IndefiniteRowSideFullHecke.BarMatrix GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons i l ih`. Simplify using `only [List.foldr_cons]`. Rewrite using `[ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hl i a _ _ (GlobalTheory.FockIndep.foldr_mem hA hf l) (GlobalTheory.FockIndep.foldr_mem hA hf' l)`.
+A detailed English derivation is pending.
 -/
 theorem foldr_lin {ι X : Type} {A : ι → (X → ℂ) → (X → ℂ)} {P : (X → ℂ) → Prop}
     (hA : ∀ i f, P f → P (A i f))
@@ -45,9 +45,9 @@ theorem foldr_lin {ι X : Type} {A : ι → (X → ℂ) → (X → ℂ)} {P : (X
     exact hl i a _ _ (GlobalTheory.FockIndep.foldr_mem hA hf l) (GlobalTheory.FockIndep.foldr_mem hA hf' l)
 
 /- English proof (translation)
-Proceed by induction on `Q using MvPolynomial.induction_on' with`. Consider the case `monomial k c`. Rewrite using `[GlobalTheory.FockIndep.pure_monomial, GlobalTheory.FockIndep.pure_monomial, GlobalTheory.FockIndep.pure_monomial]`. Unfold `opPow`. Rewrite using `[foldr_lin hA hl a hf hf', smul_add, smul_comm c a]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add p q hp hq`. Rewrite using `[map_add, map_add, map_add, hp, hq, smul_add]`. Normalize the expressions using the abelian group laws.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem pure_lin {ι X : Type} {A : ι → (X → ℂ) → (X → ℂ)} {P : (X → ℂ) → Prop}
     (hA : ∀ i f, P f → P (A i f))
@@ -64,9 +64,9 @@ theorem pure_lin {ι X : Type} {A : ι → (X → ℂ) → (X → ℂ)} {P : (X 
     abel
 
 /- English proof (translation)
-Establish `hs : ∀ a : ℂ, E (a • x + y) (a • x + y) = a * (conj a * E x x + E x y) + (conj a * E y x + E y y)`. Introduce `a`. Rewrite using `[h1 a x y _ hx hy (hv a x y hx hy), h2 a x y x hx hy hx, h2 a x y y hx hy hy]`. Establish `e1` using `hs 1`. Establish `e2` using `hs Complex.I`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e1`, `e2` using `[h0 _ (hv _ x y hx hy), h0 x hx, h0 y hy]`. Simplify using `only [map_one, Complex.conj_I] at e1 e2`. Take the linear combination `(-1 / 2 : ℂ) * e1 + (Complex.I / 2) * e2 + ((E x y - E y x) / 2) * Complex.I_sq`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem polar {Y : Type} [AddCommGroup Y] [Module ℂ Y] {vac : Y → Prop}
     (hv : ∀ (a : ℂ) x y, vac x → vac y → vac (a • x + y)) (E : Y → Y → ℂ)
@@ -83,7 +83,7 @@ theorem polar {Y : Type} [AddCommGroup Y] [Module ℂ Y] {vac : Y → Prop}
   linear_combination (-1 / 2 : ℂ) * e1 + (Complex.I / 2) * e2 + ((E x y - E y x) / 2) * Complex.I_sq
 
 /- English proof (translation)
-Use `⟨Fintype.card {a : Fin n // ε a = true}, Fintype.card {a : Fin n // ¬ ε a = true}, (Equiv.sumCongr (Fintype.equivFin _).symm (Fintype.equivFin _).symm).trans (Equiv.sumCompl _), ?_⟩` and prove the remaining obligations. Introduce `a`. Break down `a with a | a` into its components or cases. Simplify using `using ((Fintype.equivFin {a : Fin n // ε a = true}).symm a).2`. Simplify using `using ((Fintype.equivFin {a : Fin n // ¬ ε a = true}).symm a).2`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_signCompat {n : ℕ} (ε : Fin n → Bool) : ∃ (p q : ℕ) (e : Ix p q ≃ Fin n), SignCompat ε e := by
   classical
@@ -95,34 +95,30 @@ theorem exists_signCompat {n : ℕ} (ε : Fin n → Bool) : ∃ (p q : ℕ) (e :
   · simpa using ((Fintype.equivFin {a : Fin n // ¬ ε a = true}).symm a).2
 
 /- English proof (translation)
-Simplify using `[fockIp, MvPolynomial.support_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fockIp_one {ι : Type} : fockIp (1 : MvPolynomial ι ℂ) 1 = 1 := by
   classical
   simp [fockIp, MvPolynomial.support_one]
 
 /- English proof (translation)
-Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).1 hfr`. Establish `e1 : fr * fr⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hd`. Establish `e2 : fr⁻¹ * fr = 1` using `Matrix.nonsing_inv_mul _ hd`. Establish `hg' : gᴴ * G * g = G` using `hg`. Use `set h : Mn n := fr * g * fr⁻¹ with hh`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ : hᴴ * Formalism.REAL.Jm ε * h = Formalism.REAL.Jm ε`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hh, Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = (fr⁻¹)ᴴ * (frᴴ * Formalism.REAL.Jm ε * fr) * fr⁻¹ := by rw [hG, hg']`. Use `_ = (fr * fr⁻¹)ᴴ * Formalism.REAL.Jm ε * (fr * fr⁻¹) := by`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [e1]; simp`. Establish `hJ0 : Matrix.reindex e.symm e.symm (Formalism.REAL.Jm ε) = Formalism.UG.Jpq p q`. Rewrite using `[← reindex_form hs]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set Y : Mat p q := Matrix.reindex e.symm e.symm h with hY`. Establish `hYJ : Yᴴ * Formalism.UG.Jpq p q * Y = Formalism.UG.Jpq p q`. Rewrite using `[← hJ0, hY]`. Simplify using `only [Matrix.reindex_apply, Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv, hJ]`. Establish `hJc : (Formalism.UG.Jpq p q).map (starRingEnd ℂ) = Formalism.UG.Jpq p q`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use extensionality with `a b`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> simp [Formalism.UG.Jpq, Matrix.one_apply] <;> split_ifs <;> simp`. Use `set Z : Mat p q := Y.map (starRingEnd ℂ) with hZ`. Establish `hZJ : Zᴴ * Formalism.UG.Jpq p q * Z = Formalism.UG.Jpq p q`. Use `congrArg (fun A : Mat p q => A.map (starRingEnd ℂ)) hYJ` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Matrix.map_mul, hJc] at this`. Rewrite using `[hZ]`. Use `this using 3` and compare the differences between its conclusion and the goal. Use extensionality with `a b`. Simplify using `[Matrix.conjTranspose_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hJJ : Formalism.UG.Jpq p q * Formalism.UG.Jpq p q = 1`. Simplify using `[Formalism.UG.Jpq, Matrix.fromBlocks_multiply]`. Establish `hZu : IsUnit Z.det`. Use `Matrix.isUnit_det_of_left_inverse (B := Formalism.UG.Jpq p q * Zᴴ * Formalism.UG.Jpq p q) ?_` and prove the remaining obligations. Rewrite using `[show Formalism.UG.Jpq p q * Zᴴ * Formalism.UG.Jpq p q * Z = Formalism.UG.Jpq p q * (Zᴴ * Formalism.UG.Jpq p q * Z) by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_assoc], hZJ, hJJ]`. Set `gZ : GL (Ix p q) ℂ` to `Matrix.GeneralLinearGroup.mk'' Z hZu`. Establish `hmem : gZ ∈ Formalism.UG.Upq p q` using `by show Formalism.UG.cT (starRingEnd ℂ) Z * Formalism.UG.Jpq p q * Z = Formalism.UG.Jpq p q`. Rewrite using `[show Formalism.UG.cT (starRingEnd ℂ) Z = Zᴴ by ext a b; simp [Formalism.UG.cT, Matrix.conjTranspose_apply]]`. Conclude with `hZJ`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, hw⟩` from `IsAlgClosed.exists_pow_nat_eq ((gZ : Mat p q).det) two_pos`. Establish `h0 : w ≠ 0`. Introduce and unpack `rfl`. Conclude with `gZ.det_ne_zero (by rw [← hw]; simp)`. Take `⟨x, hx, -⟩` from `T.bij gZ hmem (Units.mk0 w h0) hw`.
-
-Use `⟨x, ?_⟩` and prove the remaining obligations. Establish `hc : ((T.cov x : GL (Ix p q) ℂ) : Mat p q) = Z` using `by rw [hx.1]; rfl`. Rewrite using `[hc, phiFr, phi, if_pos rfl]`. Establish `hb : barMat e Z = h`. Use extensionality with `a b`.
-
-Simplify using `[barMat, hZ, hY]`. Rewrite using `[hb, hh, ← Matrix.mul_assoc, ← Matrix.mul_assoc, e2, Matrix.one_mul, Matrix.mul_assoc, e2, Matrix.mul_one]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cov {p q n : ℕ} (T : GrpData p q) {fr G : Mn n} {ε : Fin n → Bool} {e : Ix p q ≃ Fin n}
     (hfr : IsUnit fr) (hG : frᴴ * Formalism.REAL.Jm ε * fr = G) (hs : SignCompat ε e) {g : Mn n}
@@ -187,7 +183,7 @@ open GlobalTheory.ArchRec GlobalTheory.IndefiniteRowSideFullHecke.BarMatrix Glob
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {V W : HSp D}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.FockIndep.pure_mem (fun _ _ => GlobalTheory.OrientedHeis.theta_add) (fun a _ => GlobalTheory.OrientedHeis.theta_smul a) (fun _ _ h => GlobalTheory.FockIndep.aPlus_theta hψ hθ _ _ _ h) hf P`.
+A detailed English derivation is pending.
 -/
 theorem ptAt_theta (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (τ : D.what₂.Tau) (sS : Mn V.rank) (sT : Mn W.rank)
     (BS : Mn V.rank) (BT : Mn W.rank) {f : WO V W → ℂ} (hf : IsThetaFunO ψ V W f) (P : LPol W.rank V.rank) :
@@ -196,7 +192,7 @@ theorem ptAt_theta (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (τ : D.what�
     (fun _ _ h => GlobalTheory.FockIndep.aPlus_theta hψ hθ _ _ _ h) hf P
 
 /- English proof (translation)
-The claim follows from `pure_lin (P := IsThetaFunO ψ V W) (fun _ _ h => GlobalTheory.FockIndep.aPlus_theta hψ hθ _ _ _ h) (fun _ b _ _ h h' => by rw [GlobalTheory.FockIndep.aPlus_add hψ hθ _ _ _ (GlobalTheory.OrientedHeis.theta_smul b h) h', GlobalTheory.FockIndep.aPlus_smul hψ hθ _ _ _ b h]) a hf hf' P`.
+A detailed English derivation is pending.
 -/
 theorem ptAt_lin (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (τ : D.what₂.Tau) (sS : Mn V.rank) (sT : Mn W.rank)
     (BS : Mn V.rank) (BT : Mn W.rank) (a : ℂ) {f f' : WO V W → ℂ} (hf : IsThetaFunO ψ V W f)
@@ -209,7 +205,7 @@ theorem ptAt_lin (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (τ : D.what₂
         GlobalTheory.FockIndep.aPlus_smul hψ hθ _ _ _ b h]) a hf hf' P
 
 /- English proof (translation)
-Introduce `z` and use `by rw [GlobalTheory.FockIndep.annih_add hψ hθ _ _ _ (GlobalTheory.OrientedHeis.theta_smul a hf) hf', GlobalTheory.FockIndep.annih_smul hψ hθ _ _ _ a hf, vf z, vf' z, smul_zero, add_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem vac_lin (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (τ : D.what₂.Tau)
     (J : Matrix (Fin W.rank) (Fin V.rank) ℂ → Matrix (Fin W.rank) (Fin V.rank) ℂ) (a : ℂ) {f f' : WO V W → ℂ}
@@ -219,27 +215,27 @@ theorem vac_lin (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (τ : D.what₂.
     GlobalTheory.FockIndep.annih_smul hψ hθ _ _ _ a hf, vf z, vf' z, smul_zero, add_zero]
 
 /- English proof (translation)
-Establish `hψ` using `hω.std`. Take `⟨hμ, h𝓕, -⟩` from `hX`. Establish `fS` using `isFrameOf_model M τ`. Establish `fT` using `isFrameOf_model M' τ`. Take `⟨p, q, e, he⟩` from `exists_signCompat (M.ε τ)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨r, s, e', he'⟩` from `exists_signCompat (M'.ε τ)`. Distinguish the cases in `hn : 1 ≤ p + q`. Take `⟨aS, haS⟩` from `GlobalTheory.SplitCharExp.exists_hasInfExp D θ χS _ τ hθ hω.hecS hω.resS`. Take `⟨aT, haT⟩` from `GlobalTheory.SplitCharExp.exists_hasInfExp D θ χT _ τ hθ hω.hecT hω.resT`. Take `⟨mT, hmT, -⟩` from `id haT`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `obtain ⟨κ, k1, -, k3⟩ := GlobalTheory.ArchRec.SignedRename.exists_isPolyIso_graded_isometry p q r s _ _ (M.ε τ) (M'.ε τ) e e' he he'`. Take `⟨T₀⟩` from `GlobalTheory.DetSqrtCover.nonempty_grpData (p * r + q * s) (p * s + q * r)`. Take `⟨T₁⟩` from `GlobalTheory.DetSqrtCover.nonempty_grpData p q`. Take `⟨T₂⟩` from `GlobalTheory.DetSqrtCover.nonempty_grpData r s`. Take `⟨F⟩` from `GlobalTheory.nonempty_fockData_pair p q r s T₀ T₁ T₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g₁, hg₁⟩` from `exists_cov T₁ (M.fr_unit τ) (M.fr_gram τ) he hg`. Use `⟨((T₁.sq g₁ : ℂˣ) : ℂ) ^ mT * ⟪F.ι (κ Q), F.π (g₁, 1) (F.ι (κ P))⟫_ℂ, fun f hf hv h0 => ?_⟩` and prove the remaining obligations. Take `⟨c1, c2⟩` from `GlobalTheory.OnePlaceFock.fock_at_one_place D ψ θ V W τ hψ hθ _ _ _ _ _ _ fS fT f hf hv`. Take `⟨cinj, c3⟩` from `c2 h0`. Take `⟨N, n1, n2⟩` from `c3 m X hμ h𝓕`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hL` using `GlobalTheory.ArchRec.LieAtPlace.lieAt_of_vacAt D ψ θ V W χS χT ω τ hθ hω aS aT haS haT _ _ _ _ _ _ fS fT f hf hv`. Set `pt : LPol W.rank V.rank →ₗ[ℂ] (WO V W → ℂ)` to `pureTensorL (fun k : Fin W.rank × Fin V.rank => aPlus (heisO ψ V W) θ τ (cplxO (cart M τ) (cart M' τ)) (unitMap (M.fr τ)⁻¹ (M'.fr τ)⁻¹ k.1 k.2)) f`. Take `⟨s1, -⟩` from `GlobalTheory.ArchRec.SideAt.side_at D ψ θ V W ω τ hθ _ _ _ _ _ _ fS fT aS aT pt cinj hL p q r s e e' he he' κ k1`. Take `⟨Θ, t1, -⟩` from `GlobalTheory.ThetaL2InnerProduct.exists_l2_unitary_theta_of_fundamentalDomain D ψ θ V W χS χT ω τ hθ hω (M.fr τ) (M.ε τ) (M'.fr τ) (M'.ε τ) aS aT pt c1 hL m X hμ h𝓕`. Establish `hF : Fischer pt (GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ipTh m X) κ N` using `⟨n1, fun P Q => by rw [k3]; exact n2 P Q⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hC` using `GlobalTheory.ArchRec.FockCoef.coef_of_side p q r s V.rank T₀ T₁ T₂ F _ _ (gramAt D V τ) (M.fr τ) (M.ε τ) true e (GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.actSrc θ ω τ) pt (GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ipTh m X) Θ κ aT mT N hn (M.fr_un …`. Establish `hN : GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ipTh m X f f = N`. Use `n2 1 1` as an intermediate fact. Rewrite `this` using `[LinearEquiv.refl_apply, fockIp_one, mul_one]`. Simplify `this` using `only [GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ptAt, GlobalTheory.FockIndep.pure_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2` using `hC.2.2 g₁ P Q`. Rewrite `h2` using `[hg₁]`. Rewrite using `[hN, ← mul_assoc]`. Conclude with `h2`. Establish `hV : V.rank = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Fintype.card_congr e` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Establish `g1 : g = 1`. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `i.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `⟨fockIp P Q, fun f hf hv h0 => ?_⟩` and prove the remaining obligations. Take `⟨-, c2⟩` from `GlobalTheory.OnePlaceFock.fock_at_one_place D ψ θ V W τ hψ hθ _ _ _ _ _ _ fS fT f hf hv`. Take `⟨-, c3⟩` from `c2 h0`.
+Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨N, -, n2⟩` from `c3 m X hμ h𝓕`. Establish `hN : GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ipTh m X f f = N`. Use `n2 1 1` as an intermediate fact. Rewrite `this` using `[LinearEquiv.refl_apply, fockIp_one, mul_one]`. Simplify `this` using `only [GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ptAt, GlobalTheory.FockIndep.pure_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[g1, GlobalTheory.PointAtPlaceHom.atTau_one hθ, Prod.mk_one_one, map_one, Module.End.one_apply, hN]`. Conclude with `n2 P Q`.
+A detailed English derivation is pending.
 -/
 theorem coef_vac {S S' : D.what₂.Tau → SPar} (M : DSModel V S) (M' : DSModel W S') {χS χT : (AE D)ˣ →* Circle}
     {ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)} (hθ : IsInfFam θ) (hω : IsWeilDatumO ψ V W χS χT ω)
@@ -316,21 +312,21 @@ namespace GlobalTheory.VacCoefAtPlace
 open GlobalTheory.ArchRec GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting
 
 /- English proof (translation)
-Introduce `D V W S S' M M' θ ψ χS χT ω hθ hω m X hX τ f F F' hall g hg P Q pt`. Establish `hψ` using `hω.std`. Take `⟨K, hK⟩` from `coef_vac M M' hθ hω hX τ hg P Q`. Take `⟨hμ, h𝓕, -⟩` from `hX`. Set `vac : (WO V W → ℂ) → Prop` to `fun x => IsThetaFunO ψ V W x ∧ IsFockVacAt (heisO ψ V W) θ τ (cplxO (cart M τ) (cart M' τ)) x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `th : ∀ x y, vac x → vac y → IsThetaFunO ψ V W (ω (atTau θ V τ g, 1) (pt x P)) ∧ IsThetaFunO ψ V W (pt y Q)` using `fun x y hx hy => ⟨hω.om_pres _ _ (ptAt_theta hψ hθ _ _ _ _ _ hx.1 P), ptAt_theta hψ hθ _ _ _ _ _ hy.1 Q⟩`. Establish `hv : ∀ (a : ℂ) x y, vac x → vac y → vac (a • x + y)` using `fun a x y hx hy => ⟨GlobalTheory.OrientedHeis.theta_add (GlobalTheory.OrientedHeis.theta_smul a hx.1) hy.1, vac_lin hψ hθ τ _ a hx.1 hy.1 hx.2 hy.2⟩`. Set `E : (WO V W → ℂ) → (WO V W → ℂ) → ℂ` to `fun x y => GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ipTh m X (ω (atTau θ V τ g, 1) (pt x P)) (pt y Q) - K * GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ipTh m X x y`. Establish `h1 : ∀ (a : ℂ) x y z, vac x → vac y → vac z → E (a • x + y) z = a * E x z + E y z`. Introduce `a x y z hx hy hz`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [E, pt]`. Rewrite using `[ptAt_lin hψ hθ _ _ _ _ _ a hx.1 hy.1, map_add, map_smul]`. Simplify using `only [GlobalTheory.ThetaL2InnerProduct.ipTh_eq]`. Rewrite using `[GlobalTheory.Size.ipO_add_left hψ hμ h𝓕 (GlobalTheory.OrientedHeis.theta_smul a (th x z hx hz).1) (th y z hy hz).1 (th x z hx hz).2, GlobalTheory.Size.ipO_smul_left, GlobalTheory.Size.ipO_add_left hψ hμ h𝓕 (GlobalTheory.OrientedHeis.theta_smul a hx.1) hy.1 hz.1, GlobalTheory.Siz …`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h2 : ∀ (a : ℂ) x y z, vac x → vac y → vac z → E z (a • x + y) = conj a * E z x + E z y`. Introduce `a x y z hx hy hz`. Simplify using `only [E, pt]`. Rewrite using `[ptAt_lin hψ hθ _ _ _ _ _ a hx.1 hy.1]`. Simplify using `only [GlobalTheory.ThetaL2InnerProduct.ipTh_eq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[GlobalTheory.Size.ipO_add_right hψ hμ h𝓕 (th z x hz hx).1 (GlobalTheory.OrientedHeis.theta_smul a (th z x hz hx).2) (th z y hz hy).2, GlobalTheory.Size.ipO_smul_right, GlobalTheory.Size.ipO_add_right hψ hμ h𝓕 hz.1 (GlobalTheory.OrientedHeis.theta_smul a hx.1) hy.1, GlobalTheory. …`. Expand and normalize the polynomial expressions, which then agree. Establish `h0 : ∀ x, vac x → E x x = 0`. Introduce `x hx`. Distinguish the cases in `hx0 : x = 0`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `z0 : ∀ R, pt 0 R = 0` using `fun R => by`. Establish `h` using `ptAt_lin hψ hθ τ (cart M τ) (cart M' τ) (onb M τ) (onb M' τ) (-1) (GlobalTheory.ThetaL2InnerProduct.thetaSpace ψ V W).zero_mem (GlobalTheory.ThetaL2InnerProduct.thetaSpace ψ V W).zero_mem R`. Rewrite `h` using `[smul_zero, add_zero, neg_one_smul, neg_add_cancel]`. Conclude with `h`. Simplify using `only [E, hx0, z0, map_zero, GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ipTh]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `only [E]`. Rewrite using `[hK x hx.1 hx.2 hx0]`. Expand and normalize the polynomial expressions, which then agree. Establish `key : ∀ x y, vac x → vac y → GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ipTh m X (ω (atTau θ V τ g, 1) (pt x P)) (pt y Q) = K * GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ipTh m X x y` using `fun x y hx hy => sub_eq_zero.1 (polar hv E h1 h2 h0 hx hy)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : vac f` using `hall f (by simp)`. Establish `hF : vac F` using `hall F (by simp)`. Establish `hF' : vac F'` using `hall F' (by simp)`. Rewrite using `[key F F' hF hF', key f f hf hf]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem coef_at_place : ∀ (D : D7) (V W : HSp D) (S S' : D.what₂.Tau → SPar) (M : DSModel V S) (M' : DSModel W S') (θ : InfFam D) (ψ : AddChar (AF D.host.F) ℂ) (χS χT : (AE D)ˣ →* Circle) (ω : (GA D V × GA D W →* Module.End ℂ (WO V W → ℂ))), IsInfFam θ → IsWeilDatumO ψ V W χS χT ω → ∀ (m : Measure (WO V W)) (X : Set (WO V W)), IsCovolOne (ratL W V) m X → ∀ (τ : D.what₂.Tau) (f F F' : WO V W → ℂ), (∀ x ∈ [f, F, F'], IsThetaFunO ψ V W x ∧ IsFockVacAt (heisO ψ V W) θ τ (cplxO (cart M τ) (cart M' τ)) x) → ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), ∀ P Q : LPol W.rank V.rank, let pt := GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ptAt ψ θ V W τ (cart M τ) (cart M' τ) (onb M τ) (onb M' τ); GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ipTh m X (ω (atTau θ V τ g, 1) (pt F P)) (pt F' Q) * GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ipTh m X f f = GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ipTh m X (ω (atTau θ V τ g, 1) (pt f P)) (pt f Q) * GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ipTh m X F F' := by
   intro D V W S S' M M' θ ψ χS χT ω hθ hω m X hX τ f F F' hall g hg P Q pt

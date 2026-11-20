@@ -13,19 +13,17 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Introduce `k r E _ _ F hF hc`. Use `haveI : ProperSpace (B.Mat k r) := FiniteDimensional.proper ℝ _`. Take `⟨R, hR⟩` from `hc.isCompact.isBounded.subset_ball (0 : B.Mat k r)`. Use `choose U f' hUo hmem hsm hag using hF`. Set `V : B.GV k r → Set (B.Mat k r)` to `fun i => U i.1 i.2 ∩ Metric.ball 0 R`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hVo : ∀ i, IsOpen (V i)` using `fun i => (hUo i.1 i.2).inter Metric.isOpen_ball`. Establish `hs : IsClosed (tsupport F ∩ B.GV k r)` using `(isClosed_tsupport F).inter B5.GV_closed`. Establish `hcov : tsupport F ∩ B.GV k r ⊆ ⋃ i, V i`. Introduce `x hx`. Conclude with `Set.mem_iUnion.2 ⟨⟨x, hx.2⟩, hmem x hx.2, hR hx.1⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨ρ, hρ⟩` from `@SmoothPartitionOfUnity.exists_isSubordinate _ (B.Mat k r) _ _ (B.Mat k r) _ (modelWithCornersSelf ℝ (B.Mat k r)) (B.Mat k r) _ (chartedSpaceSelf _) _ _ _ _ _ hs V hVo hcov`. Use `⟨fun x => ∑ᶠ i, ρ i x • f' i.1 i.2 x, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[contDiff_iff_contDiffAt]`. Introduce `x`. Use `ρ.contDiffAt_finsum fun i hi => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hx : x ∈ U i.1 i.2` using `(hρ i hi).1`. Conclude with `(hsm i.1 i.2).contDiffAt ((hUo i.1 i.2).mem_nhds hx)`. Use `HasCompactSupport.intro (isCompact_closedBall (0 : B.Mat k r) R) fun x hx => ?_` and prove the remaining obligations. Establish `h0 : ∀ i, ρ i x = 0` using `fun i => by`. Assume the negation of the conclusion as `h`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Conclude with `hx (Metric.ball_subset_closedBall (hρ i (subset_tsupport _ h)).2)`. Simplify using `[h0]`. Introduce `g hg`. Establish `key : ∀ i, ρ i g • f' i.1 i.2 g = ρ i g • F g` using `fun i => by`. Distinguish the cases in `h : ρ i g = 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `[h]`. Rewrite using `[← hag i.1 i.2 g (hρ i (subset_tsupport _ h)).1 hg]`. Simplify using `only [key]`. Rewrite using `[← finsum_smul]`. Distinguish the cases in `hF0 : g ∈ tsupport F`.
-
-Rewrite using `[ρ.sum_eq_one ⟨hF0, hg⟩, one_smul]`. Rewrite using `[image_eq_zero_of_notMem_tsupport hF0, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ckExt_proof : CkExt := by
   intro k r E _ _ F hF hc

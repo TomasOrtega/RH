@@ -238,7 +238,7 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [Normed
   {π' : Mx k r → (Wq →L[ℂ] Wq)}
 
 /- English proof (translation)
-Take `⟨K₁, hK₁, hD₁, h0₁⟩` from `h₁`. Take `⟨K₂, hK₂, hD₂, h0₂⟩` from `h₂`. Use `⟨K₁ ∪ K₂, hK₁.union hK₂, Set.union_subset hD₁ hD₂, fun x hx => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_union, not_or] at hx`. Simplify using `[h0₁ x hx.1, h0₂ x hx.2]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem rTest_add {Ψ₁ Ψ₂ : RadSp k r z z' π π'} (h₁ : RTest Ψ₁) (h₂ : RTest Ψ₂) : RTest (Ψ₁ + Ψ₂) := by
   obtain ⟨K₁, hK₁, hD₁, h0₁⟩ := h₁
@@ -248,7 +248,7 @@ theorem rTest_add {Ψ₁ Ψ₂ : RadSp k r z z' π π'} (h₁ : RTest Ψ₁) (h�
   simp [h0₁ x hx.1, h0₂ x hx.2]
 
 /- English proof (translation)
-Take `⟨K, hK, hD, h0⟩` from `h`. Conclude with `⟨K, hK, hD, fun x hx => by simp [h0 x hx]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rTest_smul (w : ℂ) {Ψ : RadSp k r z z' π π'} (h : RTest Ψ) : RTest (w • Ψ) := by
   obtain ⟨K, hK, hD, h0⟩ := h
@@ -265,9 +265,9 @@ def IpLinAt (μ : Measure (Mt k r)) (z z' : Fin (2 * r + k + 1) → ℂ) (π : M
 variable {μ : Measure (Mt k r)}
 
 /- English proof (translation)
-Take `⟨ha1, ha2, ha3, ha4⟩` from `ha`. Take `⟨hb1, hb2, hb3, hb4⟩` from `hb`. Use `⟨fun Ψ hΨ => ?_, fun Ψ hΨ => ?_, fun Φ Ψ hΨ => ?_, fun Φ Ψ hΨ => ?_⟩` and prove the remaining obligations. Rewrite using `[rds_fst_mul, Module.End.mul_apply]`. Conclude with `ha1 _ (hb1 _ hΨ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rds_snd_mul, Module.End.mul_apply]`. Conclude with `hb2 _ (ha2 _ hΨ)`. Rewrite using `[rds_fst_mul, Module.End.mul_apply, ha3 _ _ hΨ, hb3 _ _ (ha2 _ hΨ), rds_snd_mul, Module.End.mul_apply]`. Rewrite using `[rds_snd_mul, Module.End.mul_apply, hb4 _ _ hΨ, ha4 _ _ (hb1 _ hΨ), rds_fst_mul, Module.End.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rAdj_mul {a b : Pr (RadSp k r z z' π π')} (ha : RAdj μ a) (hb : RAdj μ b) : RAdj μ (a * b) := by
   obtain ⟨ha1, ha2, ha3, ha4⟩ := ha
@@ -279,9 +279,9 @@ theorem rAdj_mul {a b : Pr (RadSp k r z z' π π')} (ha : RAdj μ a) (hb : RAdj 
   · rw [rds_snd_mul, Module.End.mul_apply, hb4 _ _ hΨ, ha4 _ _ (hb1 _ hΨ), rds_fst_mul, Module.End.mul_apply]
 
 /- English proof (translation)
-Take `⟨ha1, ha2, ha3, ha4⟩` from `ha`. Take `⟨hb1, hb2, hb3, hb4⟩` from `hb`. Use `⟨fun Ψ hΨ => ?_, fun Ψ hΨ => ?_, fun Φ Ψ hΨ => ?_, fun Φ Ψ hΨ => ?_⟩` and prove the remaining obligations. Rewrite using `[rds_fst_add, LinearMap.add_apply]`. Conclude with `rTest_add (ha1 _ hΨ) (hb1 _ hΨ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rds_snd_add, LinearMap.add_apply]`. Conclude with `rTest_add (ha2 _ hΨ) (hb2 _ hΨ)`. Rewrite using `[rds_fst_add, LinearMap.add_apply, hL.1 _ _ _ hΨ, ha3 _ _ hΨ, hb3 _ _ hΨ, rds_snd_add, LinearMap.add_apply, hL.2.1 _ _ _ (ha2 _ hΨ) (hb2 _ hΨ)]`. Rewrite using `[rds_snd_add, LinearMap.add_apply, hL.1 _ _ _ hΨ, ha4 _ _ hΨ, hb4 _ _ hΨ, rds_fst_add, LinearMap.add_apply, hL.2.1 _ _ _ (ha1 _ hΨ) (hb1 _ hΨ)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rAdj_add (hL : IpLinAt μ z z' π π') {a b : Pr (RadSp k r z z' π π')} (ha : RAdj μ a) (hb : RAdj μ b) :
     RAdj μ (a + b) := by
@@ -296,9 +296,9 @@ theorem rAdj_add (hL : IpLinAt μ z z' π π') {a b : Pr (RadSp k r z z' π π')
       hL.2.1 _ _ _ (ha1 _ hΨ) (hb1 _ hΨ)]
 
 /- English proof (translation)
-Use `⟨fun Ψ hΨ => ?_, fun Ψ hΨ => ?_, fun Φ Ψ hΨ => ?_, fun Φ Ψ hΨ => ?_⟩` and prove the remaining obligations. Rewrite using `[rds_fst_alg, Module.algebraMap_end_apply]`. Conclude with `rTest_smul _ hΨ`. Rewrite using `[rds_snd_alg, Module.algebraMap_end_apply]`. Conclude with `rTest_smul _ hΨ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rds_fst_alg, rds_snd_alg, Module.algebraMap_end_apply, Module.algebraMap_end_apply, (hL.2.2 _ _ _).1, (hL.2.2 _ _ _).2]`. Rewrite using `[rds_fst_alg, rds_snd_alg, Module.algebraMap_end_apply, Module.algebraMap_end_apply, (hL.2.2 _ _ _).1, (hL.2.2 _ _ _).2, Complex.conj_conj]`.
+A detailed English derivation is pending.
 -/
 theorem rAdj_alg (hL : IpLinAt μ z z' π π') (w : ℂ) : RAdj μ (algebraMap ℂ (Pr (RadSp k r z z' π π')) w) := by
   refine ⟨fun Ψ hΨ => ?_, fun Ψ hΨ => ?_, fun Φ Ψ hΨ => ?_, fun Φ Ψ hΨ => ?_⟩
@@ -318,11 +318,11 @@ def rAdjSub (hL : IpLinAt μ z z' π π') : Subalgebra ℂ (Pr (RadSp k r z z' �
   zero_mem' := by have h := rAdj_alg hL 0; rwa [map_zero] at h
 
 /- English proof (translation)
-Take `⟨-, -, hx3, hx4⟩` from `hx`. Establish `e1 : ∀ Φ, x.1 (xi.1 Φ) = Φ` using `fun Φ => by`. Use `congrArg (fun p : Pr (RadSp k r z z' π π') => p.1 Φ) h1` as an intermediate fact. Simplify `this` using `[rds_fst_mul]`. Establish `e2 : ∀ Φ, x.2.unop (xi.2.unop Φ) = Φ` using `fun Φ => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `congrArg (fun p : Pr (RadSp k r z z' π π') => p.2.unop Φ) h2` as an intermediate fact. Simplify `this` using `[rds_snd_mul]`. Use `⟨fun Ψ hΨ => (ht Ψ hΨ).1, fun Ψ hΨ => (ht Ψ hΨ).2, fun Φ Ψ hΨ => ?_, fun Φ Ψ hΨ => ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← e2 Ψ]`. Rewrite using `[← hx3 _ _ (ht Ψ hΨ).2, e1]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [← e1 Ψ]`. Rewrite using `[← hx4 _ _ (ht Ψ hΨ).1, e2]`.
+A detailed English derivation is pending.
 -/
 theorem rAdj_inv {x xi : Pr (RadSp k r z z' π π')} (hx : RAdj μ x) (h1 : x * xi = 1) (h2 : xi * x = 1)
     (ht : ∀ Ψ, RTest Ψ → RTest (xi.1 Ψ) ∧ RTest (xi.2.unop Ψ)) : RAdj μ xi := by
@@ -346,16 +346,16 @@ section Mem
 variable {A : Type} [Ring A] [Algebra ℂ A] (S : Subalgebra ℂ A)
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.mul_apply]; exact S.sum_mem fun l _ => S.mul_mem (hM i l) (hN l j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rds_mat_mul_mem {M N : Matrix (Fin 2) (Fin 2) A} (hM : ∀ i j, M i j ∈ S) (hN : ∀ i j, N i j ∈ S) :
     ∀ i j, (M * N) i j ∈ S := fun i j => by
   rw [Matrix.mul_apply]; exact S.sum_mem fun l _ => S.mul_mem (hM i l) (hN l j)
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => intro i j`. Rewrite using `[List.prod_nil, Matrix.one_apply]`. Use `split_ifs`. Use `exacts [S.one_mem, S.zero_mem]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `cons M l ih`. Rewrite using `[List.prod_cons]`. Conclude with `rds_mat_mul_mem S (h M List.mem_cons_self) (ih fun N hN => h N (List.mem_cons_of_mem _ hN))`.
+A detailed English derivation is pending.
 -/
 theorem rds_mat_prod_mem (l : List (Matrix (Fin 2) (Fin 2) A)) (h : ∀ M ∈ l, ∀ i j, M i j ∈ S) :
     ∀ i j, l.prod i j ∈ S := by
@@ -366,7 +366,7 @@ theorem rds_mat_prod_mem (l : List (Matrix (Fin 2) (Fin 2) A)) (h : ∀ M ∈ l,
     exact rds_mat_mul_mem S (h M List.mem_cons_self) (ih fun N hN => h N (List.mem_cons_of_mem _ hN))
 
 /- English proof (translation)
-Apply the tactic sequence `intro i j; fin_cases i <;> fin_cases j <;> assumption`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem matrix_fin_two_entries_mem {M : Matrix (Fin 2) (Fin 2) A} (h00 : M 0 0 ∈ S) (h01 : M 0 1 ∈ S) (h10 : M 1 0 ∈ S)
     (h11 : M 1 1 ∈ S) : ∀ i j, M i j ∈ S := by
@@ -375,7 +375,7 @@ theorem matrix_fin_two_entries_mem {M : Matrix (Fin 2) (Fin 2) A} (h00 : M 0 0 �
 variable {r : ℕ} (L : R.LevelData A r)
 
 /- English proof (translation)
-Use `rds_mat_prod_mem S _ fun M hM => ?_` and prove the remaining obligations. Take `⟨l, rfl⟩` from `List.mem_ofFn.1 (List.mem_reverse.1 hM)`. Conclude with `matrix_fin_two_entries_mem S (S.add_mem (S.algebraMap_mem Y) (hp l)) (S.neg_mem (hc l)) (hci l) S.zero_mem`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rds_Tprod_mem (hp : ∀ l, L.p l ∈ S) (hc : ∀ l, L.c l ∈ S) (hci : ∀ l, L.ci l ∈ S) (Y : ℂ) :
     ∀ i j, L.Tprod Y i j ∈ S := by
@@ -384,7 +384,7 @@ theorem rds_Tprod_mem (hp : ∀ l, L.p l ∈ S) (hc : ∀ l, L.c l ∈ S) (hci :
   exact matrix_fin_two_entries_mem S (S.add_mem (S.algebraMap_mem Y) (hp l)) (S.neg_mem (hc l)) (hci l) S.zero_mem
 
 /- English proof (translation)
-Use `rds_mat_prod_mem S _ fun M hM => ?_` and prove the remaining obligations. Take `⟨l, rfl⟩` from `List.mem_ofFn.1 (List.mem_reverse.1 hM)`. Conclude with `matrix_fin_two_entries_mem S (S.sub_mem (S.algebraMap_mem Y) (hp l)) (S.neg_mem (hc l)) (hci l) S.zero_mem`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rds_Tvprod_mem (hp : ∀ l, L.pb l ∈ S) (hc : ∀ l, L.cb l ∈ S) (hci : ∀ l, L.cbi l ∈ S) (Y : ℂ) :
     ∀ i j, L.Tvprod Y i j ∈ S := by
@@ -393,7 +393,7 @@ theorem rds_Tvprod_mem (hp : ∀ l, L.pb l ∈ S) (hc : ∀ l, L.cb l ∈ S) (hc
   exact matrix_fin_two_entries_mem S (S.sub_mem (S.algebraMap_mem Y) (hp l)) (S.neg_mem (hc l)) (hci l) S.zero_mem
 
 /- English proof (translation)
-The claim follows from `list_prod_mem fun x hx => by obtain ⟨l, rfl⟩ := List.mem_ofFn.1 hx; exact h l`.
+A detailed English derivation is pending.
 -/
 theorem rds_ofFn_prod_mem (f : Fin r → A) (h : ∀ l, f l ∈ S) : (List.ofFn f).prod ∈ S :=
   list_prod_mem fun x hx => by obtain ⟨l, rfl⟩ := List.mem_ofFn.1 hx; exact h l
@@ -401,19 +401,17 @@ theorem rds_ofFn_prod_mem (f : Fin r → A) (h : ∀ l, f l ∈ S) : (List.ofFn 
 end Mem
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' hr Y hYs hY hY1`. Establish `hL : IpLinAt μ z z' π π'` using `hLin P.k P.r z z' Wp Wq π π' μ hD.2.1`. Set `S` to `rAdjSub hL`. Establish `hc` using `hC Wp Wq P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' hr`. Establish `hp : ∀ l, L.p l ∈ S` using `fun l => (hc l).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpb : ∀ l, L.pb l ∈ S` using `fun l => (hc l).2.1`. Establish `hcc : ∀ l, L.c l ∈ S` using `fun l => (hc l).2.2.1`. Establish `hci : ∀ l, L.ci l ∈ S` using `fun l => (hc l).2.2.2.1`. Establish `hcb : ∀ l, L.cb l ∈ S` using `fun l => (hc l).2.2.2.2.1`. Establish `hcbi : ∀ l, L.cbi l ∈ S` using `fun l => (hc l).2.2.2.2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG : L.GGi ∈ S` using `hF Wp Wq P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' hr`. Establish `hq : ∀ Y a b, st.QQ Y a b ∈ S` using `hQ Wp Wq P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' hr`. Establish `hLS : Fr.IsLevelStart L st` using `hD.2.2.2.2.2.2.2`. Establish `hx : ∀ Y, st.x Y ∈ S` using `fun Y => by`. Establish `e : st.x Y = L.GGi * st.QQ Y 1 1` using `by rw [hLS.tau Y, ← mul_assoc, L.GGi_GG, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `S.mul_mem hG (hq Y 1 1)`. Establish `hxi : ∀ Y, star Y = Y → Y ∈ st.inv → st.xi Y ∈ S` using `fun Y hs hi => rAdj_inv (hx Y) (hLS.x_xi Y hi).1 (hLS.x_xi Y hi).2 (hX Wp Wq P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' hr Y hs hi)`. Establish `hT` using `rds_Tprod_mem S L hp hcc hci`. Establish `hTv` using `rds_Tvprod_mem S L hpb hcb hcbi`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDr : L.Dr ∈ S` using `rds_ofFn_prod_mem S _ hcc`. Establish `hDrb : L.Drb ∈ S` using `rds_ofFn_prod_mem S _ hcb`. Establish `hGi : GiR L ∈ S` using `S.mul_mem (S.mul_mem (rds_ofFn_prod_mem S _ hci) (rds_ofFn_prod_mem S _ hcbi)) hG`. Establish `hR : ∀ Y, RhR L st Y ∈ S` using `fun Y => S.mul_mem hDrb (S.add_mem (S.mul_mem (hq Y 1 0) (hT Y 0 0)) (S.mul_mem (hq Y 1 1) (hT Y 1 0)))`. Establish `hRv : ∀ Y, RhvR L st Y ∈ S` using `fun Y => S.mul_mem hDr (S.add_mem (S.mul_mem (hq Y 0 1) (hTv Y 0 0)) (S.mul_mem (hq Y 1 1) (hTv Y 1 0)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hYs1 : star (Y + 1) = Y + 1` using `by rw [star_add, hYs, star_one]`. Introduce `j`. Use `fin_cases j`. Conclude with `S.mul_mem hDrb (hTv (Y + 1) 0 0)`. Conclude with `S.mul_mem (S.mul_mem hGi (hxi Y hYs hY)) (hR Y)`.
-
-Conclude with `S.mul_mem (S.mul_mem hGi (hxi (Y + 1) hYs1 hY1)) (hRv (Y + 1))`. Conclude with `S.mul_mem hDr (hT Y 0 0)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem rAdj_thR (hLin : RDSIpLin) (hC : RDSCoordAdj) (hF : RDSFnAdj) (hQ : RDSQQAdj) (hX : RDSXiTest) :
     ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
@@ -462,11 +460,11 @@ theorem rAdj_thR (hLin : RDSIpLin) (hC : RDSCoordAdj) (hF : RDSFnAdj) (hQ : RDSQ
   · exact S.mul_mem hDr (hT Y 0 0)
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' hr Θ a hO ha hA`. Substitute `hz hz' hπ hπ'` using the available equality. Introduce `J hJ Φ hΦ x hx`. Establish `hJ' : B.opAdj Θ J ∈ Q.FFl P.k P.r D.z D.z' D.π D.π' 0 (JF.Om P.k P.r D.z D.z')` using `(hFF P.k P.r Wp Wq D Θ hO.1 hO.2.1 J hJ).2`. Take `⟨Φ', hΦ'⟩` from `hRes Wp Wq P D.z D.z' D.π D.π' X μ L st l0 hD (B.opAdj Θ J) hJ'`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `heq` using `hFd Wp Wq P D.z D.z' D.π D.π' X μ L st l0 D hD hl1 hl2 rfl rfl rfl rfl hr Φ' (a.2.unop Φ) (fun Ψ hΨ => by`. Take `⟨K, hK, hKΨ⟩` from `hS Wp Wq P D.z D.z' D.π D.π' X μ L st l0 D hD hl1 hl2 rfl rfl rfl rfl hr Ψ hΨ`. Establish `h4 : ∀ y ∈ DomR P.k P.r D.z D.z', ((a.1 Ψ : RadSp P.k P.r D.z D.z' D.π D.π') : Fn P.k P.r (Wq →L[ℂ] Wp)) y.1 y.2 = resG P.k P.r (Fin.last P.r) (B.opApply Θ K) y.1 y.2` using `fun y hy => (hA K hK Ψ hKΨ y hy).symm`. Rewrite using `[hP Wp Wq P D.z D.z' D.π D.π' X μ L st l0 D hD hl1 hl2 rfl rfl rfl rfl hr Θ hO J K hJ hK Φ' Ψ Φ (a.1 Ψ) hΦ' hKΨ hΦ h4 hΨ, ha.2.2.2 Φ Ψ hΨ])`. Rewrite using `[← hΦ' x hx]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `heq x hx`.
+A detailed English derivation is pending.
 -/
 theorem rds_adj_of_apply (hFd : RDSFund) (hS : RDSSection) (hP : RDSPair) (hRes : RDResRad) (hFF : RDOpFF) :
     ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
@@ -496,13 +494,11 @@ theorem rds_adj_of_apply (hFd : RDSFund) (hS : RDSSection) (hP : RDSPair) (hRes 
   exact heq x hx
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' hr`. Take `⟨Y, hYs, hYm, hYi, hY1⟩` from `hY Wp Wq P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' hr`. Take `⟨Θ0, o0, a0⟩` from `h0 Wp Wq P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' hr Y hYs hYm hYi hY1`. Take `⟨Θ1, o1, a1⟩` from `h1 Wp Wq P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' hr Y hYs hYm hYi hY1`. Take `⟨Θ2, o2, a2⟩` from `h2 Wp Wq P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' hr Y hYs hYm hYi hY1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Θ3, o3, a3⟩` from `h3 Wp Wq P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' hr Y hYs hYm hYi hY1`. Establish `hO : ∀ j, OpProp1 D (![Θ0, Θ1, Θ2, Θ3] j)`. Introduce `j`. Use `fin_cases j`. Use `exacts [o0, o1, o2, o3]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hAp : ∀ j, RadApply1 (thR L st Y j) (![Θ0, Θ1, Θ2, Θ3] j)`. Introduce `j`. Use `fin_cases j`. Use `exacts [a0, a1, a2, a3]`. Establish `hAd` using `rAdj_thR hLin hC hF hQ hX Wp Wq P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' hr Y hYs hYi hY1`.
-
-Use `⟨Y, ![Θ0, Θ1, Θ2, Θ3], hYs, hYi, hY1, hO, ?_⟩` and prove the remaining obligations. Introduce `j J hJ Φ hΦ x hx`. Conclude with `⟨hAp j J hJ Φ hΦ x hx, rds_adj_of_apply hFd hS hP hRes hFF Wp Wq P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' hr _ _ (hO j) (hAd j) (hAp j) J hJ Φ hΦ x hx⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rDIdentSpec_of_cut (hY : RDSYReal) (h0 : RDSOpAv) (h1 : RDSOpR) (h2 : RDSOpRv) (h3 : RDSOpA)
     (hLin : RDSIpLin) (hC : RDSCoordAdj) (hF : RDSFnAdj) (hQ : RDSQQAdj) (hX : RDSXiTest) (hFd : RDSFund)

@@ -14,7 +14,7 @@ namespace GlobalTheory.DbarSmooth
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g : ℕ}
 
 /- English proof (translation)
-Establish `hf : ContDiffOn ℝ ∞ (fun Q => fderiv ℝ s Q) U` using `hs.fderiv_of_isOpen hU (by simp)`. Unfold `d01`. Conclude with `((hf.clm_apply contDiffOn_const).add ((hf.clm_apply contDiffOn_const).const_smul Complex.I)).const_smul _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem contDiffOn_d01 {m : ℕ} {U : Set (Pt E g)} (hU : IsOpen U) {s : Pt E g → Ext m}
     (hs : ContDiffOn ℝ ∞ s U) (v : Pt E g) : ContDiffOn ℝ ∞ (fun Q => d01 s Q v) U := by
@@ -24,7 +24,7 @@ theorem contDiffOn_d01 {m : ℕ} {U : Set (Pt E g)} (hU : IsOpen U) {s : Pt E g 
     ((hf.clm_apply contDiffOn_const).const_smul Complex.I)).const_smul _
 
 /- English proof (translation)
-Establish `hf : ContDiffOn ℝ ∞ (fun Q => fderiv ℝ s Q) U` using `hs.fderiv_of_isOpen hU (by simp)`. Unfold `d10`. Conclude with `((hf.clm_apply contDiffOn_const).sub ((hf.clm_apply contDiffOn_const).const_smul Complex.I)).const_smul _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem contDiffOn_d10 {m : ℕ} {U : Set (Pt E g)} (hU : IsOpen U) {s : Pt E g → Ext m}
     (hs : ContDiffOn ℝ ∞ s U) (v : Pt E g) : ContDiffOn ℝ ∞ (fun Q => d10 s Q v) U := by
@@ -34,7 +34,7 @@ theorem contDiffOn_d10 {m : ℕ} {U : Set (Pt E g)} (hU : IsOpen U) {s : Pt E g 
     ((hf.clm_apply contDiffOn_const).const_smul Complex.I)).const_smul _
 
 /- English proof (translation)
-Establish `hd : ContDiffOn ℝ ∞ (fun Q => fderiv ℝ f Q) U` using `hf.fderiv_of_isOpen hU (by simp)`. Unfold `d10`. Conclude with `((hd.clm_apply contDiffOn_const).sub ((hd.clm_apply contDiffOn_const).const_smul Complex.I)).const_smul _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem contDiffOn_d10_scalar {U : Set (Pt E g)} (hU : IsOpen U) {f : Pt E g → ℂ}
     (hf : ContDiffOn ℝ ∞ f U) (v : Pt E g) : ContDiffOn ℝ ∞ (fun Q => d10 f Q v) U := by
@@ -44,9 +44,9 @@ theorem contDiffOn_d10_scalar {U : Set (Pt E g)} (hU : IsOpen U) {f : Pt E g →
     ((hd.clm_apply contDiffOn_const).const_smul Complex.I)).const_smul _
 
 /- English proof (translation)
-Rewrite using `[contDiffOn_pi]`. Introduce `S`. Distinguish the cases in `hS : i ∈ S`. Simplify using `only [wedge, hS, if_true]`. Conclude with `contDiffOn_const.mul (contDiffOn_pi.1 hF _)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [wedge, hS, if_false]`. Conclude with `contDiffOn_const`.
+A detailed English derivation is pending.
 -/
 theorem contDiffOn_wedge {X : Type} [NormedAddCommGroup X] [NormedSpace ℝ X] {m : ℕ} (i : Fin m)
     {U : Set X} {F : X → Ext m} (hF : ContDiffOn ℝ ∞ F U) :
@@ -60,9 +60,9 @@ theorem contDiffOn_wedge {X : Type} [NormedAddCommGroup X] [NormedSpace ℝ X] {
     exact contDiffOn_const
 
 /- English proof (translation)
-Rewrite using `[contDiffOn_pi]`. Introduce `S`. Distinguish the cases in `hS : i ∈ S`. Simplify using `only [contr, hS, if_true]`. Conclude with `contDiffOn_const`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [contr, hS, if_false]`. Conclude with `contDiffOn_const.mul (contDiffOn_pi.1 hF _)`.
+A detailed English derivation is pending.
 -/
 theorem contDiffOn_contr {X : Type} [NormedAddCommGroup X] [NormedSpace ℝ X] {m : ℕ} (i : Fin m)
     {U : Set X} {F : X → Ext m} (hF : ContDiffOn ℝ ∞ F U) :
@@ -76,9 +76,9 @@ theorem contDiffOn_contr {X : Type} [NormedAddCommGroup X] [NormedSpace ℝ X] {
     exact contDiffOn_const.mul (contDiffOn_pi.1 hF _)
 
 /- English proof (translation)
-Introduce `E _ _ _ g n B τ h s hτ hh hpos hs`. Establish `hU : IsOpen (cov B g)` using `hτ.1.prod isOpen_univ`. Establish `hlog : ContDiffOn ℝ ∞ (fun Q => (Real.log (h Q) : ℂ)) (cov B g)` using `Complex.ofRealCLM.contDiff.comp_contDiffOn (hh.log fun Q hQ => (hpos Q hQ).ne')`. Establish `him : ∀ a c, ContDiffOn ℝ ∞ (fun Q : Pt E g => (2 * imPart τ Q.1 a c : ℂ)) (cov B g)` using `fun a c => contDiffOn_const.mul (Complex.ofRealCLM.contDiff.comp_contDiffOn (Complex.imCLM.contDiff.comp_contDiffOn (GlobalTheory.ThetaMetSmooth.entry_smooth hτ a c)))`. Use `ContDiffOn.add ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `dbarV`. Conclude with `ContDiffOn.sum fun a _ => contDiffOn_wedge _ (contDiffOn_d01 hU hs _)`. Unfold `dbarAdj pointDifference`. Use `ContDiffOn.neg (ContDiffOn.sum fun a _ => ContDiffOn.sum fun c _ => ?_)` and prove the remaining obligations. Conclude with `(him a c).smul (contDiffOn_contr _ ((contDiffOn_d10 hU hs _).add ((contDiffOn_d10_scalar hU hlog _).smul hs)))`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem dbar_add_adj_smooth : ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E]
     {g n : ℕ} (B : Set E) (τ : E → Matrix (Fin g) (Fin g) ℂ) (h : Pt E g → ℝ)

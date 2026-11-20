@@ -14,9 +14,9 @@ noncomputable def qR {r : ℕ} (G : Matrix (Fin r) (Fin r) ℝ) (y : Fin r → �
   ∑ i, ∑ j, y i * G i j * y j
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Matrix.posSemidef_iff_eq_transpose_mul_self.1 hG.posSemidef`. Consider the case `exact (Matrix.posSemidef_iff_eq_conjTranspose_mul_self).1 hG.posSemidef`. Consider the case `exact hG.posSemidef.exists_eq_conjTranspose_mul_self`. Consider the case `(refine ⟨hG.posSemidef.sqrt, ?_⟩`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hG.posSemidef.posSemidef_sqrt.isHermitian.eq, hG.posSemidef.sqrt_mul_self])`. Consider the case `(refine ⟨CFC.sqrt G, ?_⟩`. Establish `h0 : 0 ≤ G` using `hG.posSemidef.nonneg`. Establish `hs : (CFC.sqrt G)ᴴ = CFC.sqrt G` using `(CFC.sqrt_nonneg G).isSelfAdjoint.star_eq`. Rewrite using `[hs, CFC.sqrt_mul_sqrt_self G h0])`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma exists_factor_C {r : ℕ} {G : Matrix (Fin r) (Fin r) ℂ} (hG : G.PosDef) :
     ∃ B : Matrix (Fin r) (Fin r) ℂ, G = Bᴴ * B := by
@@ -32,11 +32,11 @@ private lemma exists_factor_C {r : ℕ} {G : Matrix (Fin r) (Fin r) ℂ} (hG : G
      rw [hs, CFC.sqrt_mul_sqrt_self G h0])
 
 /- English proof (translation)
-Establish `hC : ∃ B : Matrix (Fin r) (Fin r) ℝ, G = Bᴴ * B` using `by first`. Consider the case `exact Matrix.posSemidef_iff_eq_transpose_mul_self.1 hG.posSemidef`. Consider the case `exact (Matrix.posSemidef_iff_eq_conjTranspose_mul_self).1 hG.posSemidef`. Consider the case `exact hG.posSemidef.exists_eq_conjTranspose_mul_self`. Consider the case `(refine ⟨hG.posSemidef.sqrt, ?_⟩`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[hG.posSemidef.posSemidef_sqrt.isHermitian.eq, hG.posSemidef.sqrt_mul_self])`. Consider the case `(refine ⟨CFC.sqrt G, ?_⟩`. Establish `h0 : 0 ≤ G` using `hG.posSemidef.nonneg`. Establish `hs : (CFC.sqrt G)ᴴ = CFC.sqrt G` using `(CFC.sqrt_nonneg G).isSelfAdjoint.star_eq`. Rewrite using `[hs, CFC.sqrt_mul_sqrt_self G h0])`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨B, hB⟩` from `hC`. Conclude with `⟨B, by rw [hB, Matrix.conjTranspose_eq_transpose_of_trivial]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private lemma exists_factor_R {r : ℕ} {G : Matrix (Fin r) (Fin r) ℝ} (hG : G.PosDef) :
     ∃ B : Matrix (Fin r) (Fin r) ℝ, G = Bᵀ * B := by
@@ -55,9 +55,9 @@ private lemma exists_factor_R {r : ℕ} {G : Matrix (Fin r) (Fin r) ℝ} (hG : G
   exact ⟨B, by rw [hB, Matrix.conjTranspose_eq_transpose_of_trivial]⟩
 
 /- English proof (translation)
-Establish `h1 : (∑ i, ∑ j, starRingEnd ℂ (y i) * (Bᴴ * B) i j * y j) = dotProduct (star y) ((Bᴴ * B) *ᵥ y)`. Simplify using `only [dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc, Pi.star_apply, RCLike.star_def]`. Unfold `qC`. Rewrite using `[h1, ← mulVec_mulVec, dotProduct_mulVec, ← star_mulVec]`. Simplify using `only [dotProduct, Pi.star_apply, RCLike.star_def, Complex.re_sum, Complex.mul_re, Complex.conj_re, Complex.conj_im, Complex.sq_norm, Complex.normSq_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl (fun k _ => by ring)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 private lemma qC_eq {r : ℕ} (B : Matrix (Fin r) (Fin r) ℂ) (y : Fin r → ℂ) :
     qC (Bᴴ * B) y = ∑ k, ‖(B *ᵥ y) k‖ ^ 2 := by
@@ -71,7 +71,7 @@ private lemma qC_eq {r : ℕ} (B : Matrix (Fin r) (Fin r) ℂ) (y : Fin r → �
   refine Finset.sum_congr rfl (fun k _ => by ring)
 
 /- English proof (translation)
-Establish `h1 : qR (Bᵀ * B) y = dotProduct y ((Bᵀ * B) *ᵥ y)`. Simplify using `only [qR, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`. Rewrite using `[h1, ← mulVec_mulVec, dotProduct_mulVec, vecMul_transpose]`. Simplify using `only [dotProduct, Real.norm_eq_abs, sq_abs, sq, abs_mul_abs_self]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma qR_eq {r : ℕ} (B : Matrix (Fin r) (Fin r) ℝ) (y : Fin r → ℝ) :
     qR (Bᵀ * B) y = ∑ k, ‖(B *ᵥ y) k‖ ^ 2 := by
@@ -81,7 +81,7 @@ private lemma qR_eq {r : ℕ} (B : Matrix (Fin r) (Fin r) ℝ) (y : Fin r → �
   simp only [dotProduct, Real.norm_eq_abs, sq_abs, sq, abs_mul_abs_self]
 
 /- English proof (translation)
-Use extensionality with `y`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage, qC_eq, LinearMap.restrictScalars_apply, Matrix.toLin'_apply, sqBall]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private lemma setC_eq {r : ℕ} (B : Matrix (Fin r) (Fin r) ℂ) (R : ℝ) :
     {y | qC (Bᴴ * B) y ≤ R ^ 2} = ((Matrix.toLin' B).restrictScalars ℝ) ⁻¹' sqBall r ℂ R := by
@@ -90,7 +90,7 @@ private lemma setC_eq {r : ℕ} (B : Matrix (Fin r) (Fin r) ℂ) (R : ℝ) :
     Matrix.toLin'_apply, sqBall]
 
 /- English proof (translation)
-Use extensionality with `y`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage, qR_eq, Matrix.toLin'_apply, sqBall]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private lemma setR_eq {r : ℕ} (B : Matrix (Fin r) (Fin r) ℝ) (R : ℝ) :
     {y | qR (Bᵀ * B) y ≤ R ^ 2} = (Matrix.toLin' B) ⁻¹' sqBall r ℝ R := by
@@ -99,7 +99,7 @@ private lemma setR_eq {r : ℕ} (B : Matrix (Fin r) (Fin r) ℝ) (R : ℝ) :
   skip
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_mul, Matrix.det_conjTranspose, Complex.normSq_eq_conj_mul_self]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private lemma detC_eq {r : ℕ} (B : Matrix (Fin r) (Fin r) ℂ) :
     (Bᴴ * B).det = (Complex.normSq B.det : ℂ) := by
@@ -107,9 +107,9 @@ private lemma detC_eq {r : ℕ} (B : Matrix (Fin r) (Fin r) ℂ) :
   rfl
 
 /- English proof (translation)
-Establish `hS : IsCompact (sqBall r ℂ R)` using `Metric.isCompact_of_isClosed_isBounded (sqBall_isClosed r R) (sqBall_isBounded r R)`. Establish `hc' : Continuous ((Matrix.toLin' B⁻¹).restrictScalars ℝ)` using `LinearMap.continuous_of_finiteDimensional _`. Use `(hS.image hc').isBounded.subset ?_` and prove the remaining obligations. Introduce `y hy`. Use `⟨(Matrix.toLin' B).restrictScalars ℝ y, hy, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `show Matrix.mulVec B⁻¹ (Matrix.mulVec B y) = y`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 hdet), Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isBounded_preimage_sqBall_complex_of_det_ne_zero {r : ℕ} (B : Matrix (Fin r) (Fin r) ℂ) (hdet : B.det ≠ 0) (R : ℝ) :
     Bornology.IsBounded (((Matrix.toLin' B).restrictScalars ℝ) ⁻¹' sqBall r ℂ R) := by
@@ -125,14 +125,14 @@ private theorem isBounded_preimage_sqBall_complex_of_det_ne_zero {r : ℕ} (B : 
     Matrix.one_mulVec]
 
 /- English proof (translation)
-The claim follows from `Convex.linear_preimage (sqBall_convex (E := ℂ) r R) ((Matrix.toLin' B).restrictScalars ℝ)`.
+A detailed English derivation is pending.
 -/
 private theorem convex_preimage_sqBall_complex {r : ℕ} (B : Matrix (Fin r) (Fin r) ℂ) (R : ℝ) :
     Convex ℝ (((Matrix.toLin' B).restrictScalars ℝ) ⁻¹' sqBall r ℂ R) :=
   Convex.linear_preimage (sqBall_convex (E := ℂ) r R) ((Matrix.toLin' B).restrictScalars ℝ)
 
 /- English proof (translation)
-Introduce `y hy`. Rewrite using `[Set.mem_preimage, map_neg]`. Conclude with `sqBall_neg (E := ℂ) r R _ hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem neg_mem_preimage_sqBall_complex {r : ℕ} (B : Matrix (Fin r) (Fin r) ℂ) (R : ℝ) :
     ∀ y ∈ ((Matrix.toLin' B).restrictScalars ℝ) ⁻¹' sqBall r ℂ R,
@@ -142,7 +142,7 @@ private theorem neg_mem_preimage_sqBall_complex {r : ℕ} (B : Matrix (Fin r) (F
   exact sqBall_neg (E := ℂ) r R _ hy
 
 /- English proof (translation)
-Establish `hc : Continuous ((Matrix.toLin' B).restrictScalars ℝ)` using `LinearMap.continuous_of_finiteDimensional _`. Conclude with `((sqBall_isClosed r R).preimage hc).measurableSet`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem measurableSet_preimage_sqBall_complex {r : ℕ} (B : Matrix (Fin r) (Fin r) ℂ) (R : ℝ) :
     MeasurableSet (((Matrix.toLin' B).restrictScalars ℝ) ⁻¹' sqBall r ℂ R) := by
@@ -151,9 +151,9 @@ private theorem measurableSet_preimage_sqBall_complex {r : ℕ} (B : Matrix (Fin
   exact ((sqBall_isClosed r R).preimage hc).measurableSet
 
 /- English proof (translation)
-Substitute `hB` using the available equality. Establish `hdet : B.det ≠ 0`. Introduce `h0`. Establish `h1` using `hG.det_pos`. Rewrite `h1` using `[detC_eq, h0]`.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at h1`. Rewrite using `[setC_eq]`. Conclude with `⟨convex_preimage_sqBall_complex B R, neg_mem_preimage_sqBall_complex B R, isBounded_preimage_sqBall_complex_of_det_ne_zero B hdet R, measurableSet_preimage_sqBall_complex B R⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private lemma hermitianEllipsoid_props_of_eq {r : ℕ} {G : Matrix (Fin r) (Fin r) ℂ} (hG : G.PosDef) (B : Matrix (Fin r) (Fin r) ℂ)
     (hB : G = Bᴴ * B) (R : ℝ) :
@@ -169,7 +169,7 @@ private lemma hermitianEllipsoid_props_of_eq {r : ℕ} {G : Matrix (Fin r) (Fin 
   exact ⟨convex_preimage_sqBall_complex B R, neg_mem_preimage_sqBall_complex B R, isBounded_preimage_sqBall_complex_of_det_ne_zero B hdet R, measurableSet_preimage_sqBall_complex B R⟩
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `exists_factor_C hG`. Conclude with `hermitianEllipsoid_props_of_eq hG B hB R`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ellipsoidC_props {r : ℕ} {G : Matrix (Fin r) (Fin r) ℂ} (hG : G.PosDef) (R : ℝ) :
     Convex ℝ {y | qC G y ≤ R ^ 2} ∧ (∀ y ∈ {y | qC G y ≤ R ^ 2}, -y ∈ {y | qC G y ≤ R ^ 2}) ∧
@@ -178,19 +178,19 @@ theorem ellipsoidC_props {r : ℕ} {G : Matrix (Fin r) (Fin r) ℂ} (hG : G.PosD
   exact hermitianEllipsoid_props_of_eq hG B hB R
 
 /- English proof (translation)
-Take `⟨B, rfl⟩` from `exists_factor_C hG`. Establish `hdet : B.det ≠ 0`. Introduce `h0`. Establish `h1` using `hG.det_pos`. Rewrite `h1` using `[detC_eq, h0]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at h1`. Establish `hN : 0 < Complex.normSq B.det` using `Complex.normSq_pos.2 hdet`. Establish `hT : LinearMap.det ((Matrix.toLin' B).restrictScalars ℝ) = Complex.normSq B.det`. Rewrite using `[LinearMap.det_restrictScalars, LinearMap.det_toLin']`. Use `first`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `exact Algebra.norm_complex_apply _`. Consider the case `simp [Algebra.norm_complex_apply]`. Establish `hfin : volume (sqBall r ℂ R) ≠ ⊤` using `(sqBall_isBounded (E := ℂ) r R).measure_lt_top.ne`. Establish `hρ : 0 ≤ R / Real.sqrt r` using `div_nonneg hR.le (Real.sqrt_nonneg _)`. Establish `hdisc : (volume (Metric.closedBall (0 : ℂ) (R / Real.sqrt r))).toReal = Real.pi * (R / Real.sqrt r) ^ 2` using `by first`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `(simp only [Complex.volume_closedBall, ENNReal.toReal_mul, ENNReal.toReal_pow, ENNReal.toReal_ofReal hρ, ENNReal.coe_toReal, NNReal.coe_real_pi] <;> ring_nf <;> done)`. Consider the case `(simp [Complex.volume_closedBall, ENNReal.toReal_ofReal hρ] <;> ring_nf <;> done)`. Consider the case `(simp [Complex.volume_closedBall, ENNReal.toReal_ofReal hρ, mul_comm] <;> done)`. Establish `hbox : (2 * R ^ 2 / r) ^ r ≤ (volume (sqBall r ℂ R)).toReal`. Establish `hmono` using `MeasureTheory.measure_mono (μ := volume) (box_subset_sqBall (E := ℂ) r (R := R))`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hmono` using `[MeasureTheory.volume_pi_pi, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Establish `h2` using `ENNReal.toReal_mono hfin hmono`. Rewrite `h2` using `[ENNReal.toReal_pow, hdisc]`. Use `le_trans ?_ h2` and prove the remaining obligations. Establish `hq : (R / Real.sqrt r) ^ 2 = R ^ 2 / r`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_pow, Real.sq_sqrt (Nat.cast_nonneg r)]`. Rewrite using `[hq]`. Establish `hR2 : 0 ≤ R ^ 2 / (r : ℝ)` using `div_nonneg (sq_nonneg R) (Nat.cast_nonneg r)`. Establish `hle : 2 * R ^ 2 / (r : ℝ) ≤ Real.pi * (R ^ 2 / r)`. Rewrite using `[mul_div_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_right (by linarith [Real.pi_gt_three]) hR2`. Conclude with `pow_le_pow_left₀ (by rw [mul_div_assoc]; exact mul_nonneg zero_le_two hR2) hle r`. Rewrite using `[setC_eq, MeasureTheory.Measure.addHaar_preimage_linearMap _ (by rw [hT]; exact hN.ne'), hT, detC_eq, Complex.ofReal_re, ENNReal.toReal_mul, ENNReal.toReal_ofReal (abs_nonneg _), abs_inv, abs_of_pos hN, div_eq_inv_mul]`. Conclude with `mul_le_mul_of_nonneg_left hbox (inv_nonneg.2 hN.le)`.
+A detailed English derivation is pending.
 -/
 theorem le_volume_ellipsoidC {r : ℕ} {G : Matrix (Fin r) (Fin r) ℂ} (hG : G.PosDef) {R : ℝ}
     (hR : 0 < R) :
@@ -236,9 +236,9 @@ theorem le_volume_ellipsoidC {r : ℕ} {G : Matrix (Fin r) (Fin r) ℂ} (hG : G.
   exact mul_le_mul_of_nonneg_left hbox (inv_nonneg.2 hN.le)
 
 /- English proof (translation)
-Establish `hS : IsCompact (sqBall r ℝ R)` using `Metric.isCompact_of_isClosed_isBounded (sqBall_isClosed r R) (sqBall_isBounded r R)`. Establish `hc' : Continuous (Matrix.toLin' B⁻¹)` using `LinearMap.continuous_of_finiteDimensional _`. Use `(hS.image hc').isBounded.subset ?_` and prove the remaining obligations. Introduce `y hy`. Use `⟨Matrix.toLin' B y, hy, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `show Matrix.mulVec B⁻¹ (Matrix.mulVec B y) = y`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 hdet), Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isBounded_preimage_sqBall_real_of_det_ne_zero {r : ℕ} (B : Matrix (Fin r) (Fin r) ℝ) (hdet : B.det ≠ 0) (R : ℝ) :
     Bornology.IsBounded ((Matrix.toLin' B) ⁻¹' sqBall r ℝ R) := by
@@ -253,14 +253,14 @@ private theorem isBounded_preimage_sqBall_real_of_det_ne_zero {r : ℕ} (B : Mat
     Matrix.one_mulVec]
 
 /- English proof (translation)
-The claim follows from `Convex.linear_preimage (sqBall_convex (E := ℝ) r R) (Matrix.toLin' B)`.
+A detailed English derivation is pending.
 -/
 private theorem convex_preimage_sqBall_real {r : ℕ} (B : Matrix (Fin r) (Fin r) ℝ) (R : ℝ) :
     Convex ℝ ((Matrix.toLin' B) ⁻¹' sqBall r ℝ R) :=
   Convex.linear_preimage (sqBall_convex (E := ℝ) r R) (Matrix.toLin' B)
 
 /- English proof (translation)
-Introduce `y hy`. Rewrite using `[Set.mem_preimage, map_neg]`. Conclude with `sqBall_neg (E := ℝ) r R _ hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem neg_mem_preimage_sqBall_real {r : ℕ} (B : Matrix (Fin r) (Fin r) ℝ) (R : ℝ) :
     ∀ y ∈ (Matrix.toLin' B) ⁻¹' sqBall r ℝ R, -y ∈ (Matrix.toLin' B) ⁻¹' sqBall r ℝ R := by
@@ -269,7 +269,7 @@ private theorem neg_mem_preimage_sqBall_real {r : ℕ} (B : Matrix (Fin r) (Fin 
   exact sqBall_neg (E := ℝ) r R _ hy
 
 /- English proof (translation)
-Establish `hc : Continuous (Matrix.toLin' B)` using `LinearMap.continuous_of_finiteDimensional _`. Conclude with `((sqBall_isClosed r R).preimage hc).measurableSet`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem measurableSet_preimage_sqBall_real {r : ℕ} (B : Matrix (Fin r) (Fin r) ℝ) (R : ℝ) :
     MeasurableSet ((Matrix.toLin' B) ⁻¹' sqBall r ℝ R) := by
@@ -277,9 +277,9 @@ private theorem measurableSet_preimage_sqBall_real {r : ℕ} (B : Matrix (Fin r)
   exact ((sqBall_isClosed r R).preimage hc).measurableSet
 
 /- English proof (translation)
-Substitute `hB` using the available equality. Establish `hdet : B.det ≠ 0`. Introduce `h0`. Establish `h1` using `hG.det_pos`. Rewrite `h1` using `[Matrix.det_mul, Matrix.det_transpose, h0, mul_zero]`.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `lt_irrefl _ h1`. Rewrite using `[setR_eq]`. Conclude with `⟨convex_preimage_sqBall_real B R, neg_mem_preimage_sqBall_real B R, isBounded_preimage_sqBall_real_of_det_ne_zero B hdet R, measurableSet_preimage_sqBall_real B R⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private lemma realEllipsoid_props_of_eq {r : ℕ} {G : Matrix (Fin r) (Fin r) ℝ} (hG : G.PosDef) (B : Matrix (Fin r) (Fin r) ℝ)
     (hB : G = Bᵀ * B) (R : ℝ) :
@@ -295,7 +295,7 @@ private lemma realEllipsoid_props_of_eq {r : ℕ} {G : Matrix (Fin r) (Fin r) �
   exact ⟨convex_preimage_sqBall_real B R, neg_mem_preimage_sqBall_real B R, isBounded_preimage_sqBall_real_of_det_ne_zero B hdet R, measurableSet_preimage_sqBall_real B R⟩
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `exists_factor_R hG`. Conclude with `realEllipsoid_props_of_eq hG B hB R`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ellipsoidR_props {r : ℕ} {G : Matrix (Fin r) (Fin r) ℝ} (hG : G.PosDef) (R : ℝ) :
     Convex ℝ {y | qR G y ≤ R ^ 2} ∧ (∀ y ∈ {y | qR G y ≤ R ^ 2}, -y ∈ {y | qR G y ≤ R ^ 2}) ∧
@@ -304,13 +304,13 @@ theorem ellipsoidR_props {r : ℕ} {G : Matrix (Fin r) (Fin r) ℝ} (hG : G.PosD
   exact realEllipsoid_props_of_eq hG B hB R
 
 /- English proof (translation)
-Take `⟨B, rfl⟩` from `exists_factor_R hG`. Establish `hdet : B.det ≠ 0`. Introduce `h0`. Establish `h1` using `hG.det_pos`. Rewrite `h1` using `[Matrix.det_mul, Matrix.det_transpose, h0, mul_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `lt_irrefl _ h1`. Establish `hsq : Real.sqrt (Bᵀ * B).det = |B.det|`. Rewrite using `[Matrix.det_mul, Matrix.det_transpose, ← sq, Real.sqrt_sq_eq_abs]`. Establish `habs : 0 < |B.det|` using `abs_pos.2 hdet`. Establish `hfin : volume (sqBall r ℝ R) ≠ ⊤` using `(sqBall_isBounded (E := ℝ) r R).measure_lt_top.ne`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbox : (2 * R / Real.sqrt r) ^ r ≤ (volume (sqBall r ℝ R)).toReal`. Establish `hmono` using `MeasureTheory.measure_mono (μ := volume) (box_subset_sqBall (E := ℝ) r (R := R))`. Rewrite `hmono` using `[MeasureTheory.volume_pi_pi, Finset.prod_const, Finset.card_univ, Fintype.card_fin, Real.volume_closedBall]`. Establish `h2` using `ENNReal.toReal_mono hfin hmono`. Rewrite `h2` using `[ENNReal.toReal_pow, ENNReal.toReal_ofReal (mul_nonneg zero_le_two (div_nonneg hR.le (Real.sqrt_nonneg _)))]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_div_assoc]`. Conclude with `h2`. Rewrite using `[setR_eq, MeasureTheory.Measure.addHaar_preimage_linearMap _ (by rw [LinearMap.det_toLin']; exact hdet), LinearMap.det_toLin', hsq, ENNReal.toReal_mul, ENNReal.toReal_ofReal (abs_nonneg _), abs_inv, div_eq_inv_mul]`. Conclude with `mul_le_mul_of_nonneg_left hbox (inv_nonneg.2 habs.le)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_volume_ellipsoidR {r : ℕ} {G : Matrix (Fin r) (Fin r) ℝ} (hG : G.PosDef) {R : ℝ}
     (hR : 0 < R) :

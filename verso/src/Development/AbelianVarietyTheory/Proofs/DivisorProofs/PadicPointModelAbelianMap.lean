@@ -16,7 +16,7 @@ open GlobalTheory.FlatModel
 namespace GlobalTheory.FlatModel
 
 /- English proof (translation)
-Rewrite using `[spMap, spMap, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `x`. Simplify using `[epsMul]`. Simplify using `[epsMul, TrivSqZeroExt.map]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem spMap_epsMul_algebraMap {R : Type} [CommRing R] (s : R) :
     spMap (epsMul s) ≫ spMap (algebraMap R (DualNumber R)) = spMap (algebraMap R (DualNumber R)) := by
@@ -27,19 +27,17 @@ theorem spMap_epsMul_algebraMap {R : Type} [CommRing R] (s : R) :
   · simp [epsMul, TrivSqZeroExt.map]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l l' Xo Xo' c c' W Y r ν p _ _ yy y hy w hw h1 σ he`. Establish `hx : yy ≫ r ≫ pullback.fst _ _ = y.x`. Establish `h0 : GlobalTheory.AllWt.ptF y ≫ pullback.fst _ _ = y.x` using `pullback.lift_fst _ _ _`. Rewrite `h0` using `[hy, Category.assoc]`. Conclude with `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hsq : ν.φ ≫ Xo.univ.t.G.hom = Y.oF.t.G.hom ≫ r ≫ pullback.fst _ _` using `ν.cart.1.w`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hsq, ← Category.assoc, hw, Category.assoc, hx]`. Set `T : Over (Xo'.XF c')` to `Over.mk yy`. Establish `hu : ((1 : T ⟶ Y.oF.t.G).left ≫ ν.φ) ≫ Xo.univ.t.G.hom = T.hom ≫ (r ≫ pullback.fst _ _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, hsq, ← Category.assoc, Over.w]`. Set `x₀ : Over.mk (T.hom ≫ (r ≫ pullback.fst _ _)) ⟶ Xo.univ.t.G` to `Over.homMk ((1 : T ⟶ Y.oF.t.G).left ≫ ν.φ) hu`. Establish `hm` using `ν.cart.2 T 1 1 x₀ x₀ rfl rfl`. Establish `hxx : x₀ * x₀ = x₀ * 1`. Rewrite using `[_root_.mul_one]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `ext1`. Rewrite using `[hm, _root_.mul_one]`. Both sides reduce to the same expression. Establish `h11 : x₀ = 1` using `mul_left_cancel hxx`. Establish `key : ∀ (m m' : Sp ℂ_[p] ⟶ Xo.X), m = m' → (1 : Over.mk m ⟶ Xo.univ.t.G).left = (1 : Over.mk m' ⟶ Xo.univ.t.G).left`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression.
 
-Introduce and unpack `_ _ rfl`. Both sides reduce to the same expression. Rewrite using `[← Category.assoc, h1]`. Establish `: x₀.left = (1 : Over.mk (T.hom ≫ (r ≫ pullback.fst _ _)) ⟶ Xo.univ.t.G).left` using `by rw [h11]`. Conclude with `this.trans (key _ _ hx)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `a`. Establish `hA : w ≫ (Y.oF.t.act.act a).left = spMap (epsMul (algebraMap c.F ℂ_[p] (embK c σ a))) ≫ w`. Apply `Y.m.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Y.m.act a, ← Category.assoc, he a, Category.assoc]`. Rewrite using `[Category.assoc, Over.w, hw, Category.assoc, hw, ← Category.assoc, spMap_epsMul_algebraMap]`.
-
-Rewrite using `[Category.assoc, ← ν.act a, ← Category.assoc, hA, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tanEig_of_model : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H)
     (l l' : Level H) (Xo : Moduli Dw l) (Xo' : Moduli Dw l') (c : Coeff l) (c' : Coeff l') (W : ValuationSubring ℂ)

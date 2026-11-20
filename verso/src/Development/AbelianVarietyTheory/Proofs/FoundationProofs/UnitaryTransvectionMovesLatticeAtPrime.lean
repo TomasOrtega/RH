@@ -12,7 +12,7 @@ def tv (D : D7) {n : ℕ} (μ : D.host.E) (w : Fin n → D.host.E) : Matrix (Fin
   1 + μ • Matrix.vecMulVec w (fun i => D.host.conj (w i))
 
 /- English proof (translation)
-Rewrite using `[tv, Matrix.add_mulVec, Matrix.one_mulVec, Matrix.smul_mulVec]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.vecMulVec_apply, Pi.smul_apply, smul_eq_mul, hE, Finset.mul_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tv_mulVec (D : D7) {n : ℕ} (μ : D.host.E) (w v : Fin n → D.host.E) :
     (tv D μ w).mulVec v = v + (μ * hE D v w) • w := by
@@ -24,9 +24,9 @@ theorem tv_mulVec (D : D7) {n : ℕ} (μ : D.host.E) (w v : Fin n → D.host.E) 
   exact Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [cT, tv, Matrix.transpose_apply, Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, Matrix.vecMulVec_apply, smul_eq_mul, map_add, map_mul, conj_conj, Matrix.one_apply]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `only [if_true, map_one]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg h, if_neg (Ne.symm h), map_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cT_tv (D : D7) {n : ℕ} (μ : D.host.E) (w : Fin n → D.host.E) :
     cT D (tv D μ w) = tv D (D.host.conj μ) w := by
@@ -38,9 +38,9 @@ theorem cT_tv (D : D7) {n : ℕ} (μ : D.host.E) (w : Fin n → D.host.E) :
   · rw [if_neg h, if_neg (Ne.symm h), map_zero]; ring
 
 /- English proof (translation)
-Rewrite using `[cT_tv]`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, ← Matrix.mulVec_mulVec, tv_mulVec, tv_mulVec, Matrix.one_mulVec, hE_add_left, hE_smul_left, add_assoc, ← add_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `: D.host.conj μ * hE D v w + μ * (hE D v w + D.host.conj μ * hE D v w * hE D w w) = 0`. Take the linear combination `hE D v w * h`. Rewrite using `[this, zero_smul, add_zero]`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 -/
 theorem tv_unitary (D : D7) {n : ℕ} (μ : D.host.E) (w : Fin n → D.host.E)
     (h : μ + D.host.conj μ + μ * D.host.conj μ * hE D w w = 0) : tv D μ w * cT D (tv D μ w) = 1 := by
@@ -55,7 +55,7 @@ theorem tv_unitary (D : D7) {n : ℕ} (μ : D.host.E) (w : Fin n → D.host.E)
   rw [this, zero_smul, add_zero]
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `hc`. Rewrite using `[algebraMap_smul]`. Conclude with `N.smul_mem a hv`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_int {D : D7} {n : ℕ} (N : Lat D n) {c : D.host.E} (hc : IntE D c) {v : Fin n → D.host.E}
     (hv : v ∈ N) : c • v ∈ N := by
@@ -64,14 +64,14 @@ theorem smul_mem_int {D : D7} {n : ℕ} (N : Lat D n) {c : D.host.E} (hc : IntE 
   exact N.smul_mem a hv
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨m, map_natCast _ m⟩`.
+Supply the required witnesses or components.
 -/
 theorem intE_nat (D : D7) (m : ℕ) : IntE D (m : D.host.E) := ⟨m, map_natCast _ m⟩
 
 /- English proof (translation)
-Introduce `v hv`. Take `⟨y, hy, t, ht, rfl⟩` from `Submodule.mem_sup.1 hv`. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 ht`. Rewrite using `[Matrix.mulVec_add, smul_add]`. Use `N.add_mem (hM y hy) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← algebraMap_smul D.host.E a z, Matrix.mulVec_smul, smul_comm]`. Conclude with `smul_mem_int N ⟨a, rfl⟩ hz`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen {D : D7} {n : ℕ} (s : Matrix (Fin n) (Fin n) D.host.E) (c : D.host.E) (M N : Lat D n)
     (z : Fin n → D.host.E) (hM : ∀ y ∈ M, c • s.mulVec y ∈ N) (hz : c • s.mulVec z ∈ N) :
@@ -85,7 +85,7 @@ theorem gen {D : D7} {n : ℕ} (s : Matrix (Fin n) (Fin n) D.host.E) (c : D.host
   exact smul_mem_int N ⟨a, rfl⟩ hz
 
 /- English proof (translation)
-Rewrite using `[tv_mulVec, smul_add, smul_smul]`. Use `N.add_mem (smul_mem_int N (intE_nat D _) hy) ?_` and prove the remaining obligations. Establish `: ((m * m : ℕ) : D.host.E) * (μ * hE D y w) = ((m : D.host.E) * hE D y w) * ((m : D.host.E) * μ)` using `by push_cast; ring`. Rewrite using `[this, mul_smul]`. Conclude with `smul_mem_int N (mul_mem (intE_nat D m) hi) (hMN hw)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step {D : D7} {n : ℕ} (M N : Lat D n) (hMN : M ≤ N) (w y : Fin n → D.host.E) (μ : D.host.E) (m : ℕ)
     (hw : ((m : D.host.E) * μ) • w ∈ M) (hy : y ∈ N) (hi : IntE D (hE D y w)) :
@@ -98,23 +98,21 @@ theorem step {D : D7} {n : ℕ} (M N : Lat D n) (hMN : M ≤ N) (w y : Fin n →
   exact smul_mem_int N (mul_mem (intE_nat D m) hi) (hMN hw)
 
 /- English proof (translation)
-Introduce `D n q P hP M b x lam m hbx hM hww hl hmq ⟨p, hp, hpl⟩ ⟨p', hp', hpl'⟩`. Establish `hPw : ∀ a ∈ P, (a : D.host.E) • (b + x) ∈ M`. Introduce `a ha`. Establish `: a • (b + x) ∈ M`. Rewrite using `[smul_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `M.add_mem (hbx a ha).1 (hbx a ha).2`. Rewrite `this` using `[← algebraMap_smul D.host.E a (b + x)]`. Conclude with `this`. Establish `hcl : (m : D.host.E) * D.host.conj lam = ((sgO D p : 𝓞 D.host.E) : D.host.E)`. Rewrite using `[sgO_coe, ← hpl, map_mul, map_natCast]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ((m : D.host.E) * lam) • (b + x) ∈ M` using `by rw [hpl]; exact hPw p hp`. Establish `h2 : ((m : D.host.E) * D.host.conj lam) • (b + x) ∈ M` using `by rw [hcl]; exact hPw _ (hP p hp)`. Establish `h3 : ((m : D.host.E) * (1 + lam * hE D b (b + x))) • (b + x) ∈ M` using `by rw [hpl']; exact hPw p' hp'`. Establish `hmem : ∀ z : Fin n → D.host.E, z ∈ M ⊔ Submodule.span (𝓞 D.host.E) {z}` using `fun z => Submodule.mem_sup_right (Submodule.mem_span_singleton_self z)`. Establish `hco : Nat.Coprime (m * m) q` using `Nat.Coprime.mul_left hmq hmq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨tv D lam (b + x), tv_unitary D lam _ hl, ⟨m * m, hco, ?_, ?_⟩, ⟨m * m, hco, ?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `gen _ _ _ _ _ (fun y hy => step M _ le_sup_left _ y _ m h1 (Submodule.mem_sup_left hy) (hM y hy)) (step M _ le_sup_left _ _ _ m h1 (hmem _) hww)`. Rewrite using `[cT_tv]`. Conclude with `gen _ _ _ _ _ (fun y hy => step M _ le_sup_left _ y _ m h2 (Submodule.mem_sup_left hy) (hM y hy)) (step M _ le_sup_left _ _ _ m h2 (hmem _) hww)`. Use `gen _ _ _ _ _ (fun y hy => step M _ le_sup_left _ y _ m h1 (Submodule.mem_sup_left hy) (hM y hy)) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[tv_mulVec]`. Establish `: ((m * m : ℕ) : D.host.E) • (b + (lam * hE D b (b + x)) • (b + x)) = (m : D.host.E) • (((m : D.host.E) * (1 + lam * hE D b (b + x))) • (b + x)) - ((m * m : ℕ) : D.host.E) • x`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, Pi.add_apply, Pi.sub_apply, smul_eq_mul]`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `Submodule.sub_mem _ (smul_mem_int _ (intE_nat D m) (Submodule.mem_sup_left h3)) (smul_mem_int _ (intE_nat D _) (hmem x))`. Rewrite using `[cT_tv]`. Use `gen _ _ _ _ _ (fun y hy => step M _ le_sup_left _ y _ m h2 (Submodule.mem_sup_left hy) (hM y hy)) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[tv_mulVec]`. Establish `hx : hE D x (b + x) = hE D (b + x) (b + x) - hE D b (b + x)`. Rewrite using `[hE_add_left]`. Expand and normalize the polynomial expressions, which then agree. Establish `: ((m * m : ℕ) : D.host.E) • (x + (D.host.conj lam * hE D x (b + x)) • (b + x)) = ((m : D.host.E) + ((m : D.host.E) * D.host.conj lam) * hE D (b + x) (b + x)) • (((m : D.host.E) * (1 + lam * hE D b (b + x))) • (b + x)) - ((m * m : ℕ) : D.host.E) • b`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, Pi.add_apply, Pi.sub_apply, smul_eq_mul]`. Rewrite using `[hx]`. Use `push_cast`. Take the linear combination `(-((m : D.host.E) * m * hE D b (b + x) * (b i + x i))) * hl`.
-
-Rewrite using `[this]`. Use `Submodule.sub_mem _ (smul_mem_int _ ?_ (Submodule.mem_sup_left h3)) (smul_mem_int _ (intE_nat D _) (hmem b))` and prove the remaining obligations. Rewrite using `[hcl]`. Conclude with `add_mem (intE_nat D m) (mul_mem ⟨sgO D p, rfl⟩ hww)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transvection : ∀ (D : D7) (n q : ℕ) (P : Ideal (𝓞 D.host.E)), (∀ a ∈ P, sgO D a ∈ P) → ∀ (M : Lat D n) (b x : Fin n → D.host.E) (lam : D.host.E) (m : ℕ), (∀ p ∈ P, p • b ∈ M ∧ p • x ∈ M) → (∀ y ∈ M, IntE D (hE D y (b + x))) → IntE D (hE D (b + x) (b + x)) → lam + D.host.conj lam + lam * D.host.conj lam * hE D (b + x) (b + x) = 0 → Nat.Coprime m q → (∃ p ∈ P, (m : D.host.E) * lam = (p : D.host.E)) → (∃ p ∈ P, (m : D.host.E) * (1 + lam * hE D b (b + x)) = (p : D.host.E)) → ∃ s : Matrix (Fin n) (Fin n) D.host.E, s * cT D s = 1 ∧ SAt D q s (M ⊔ Submodule.span (𝓞 D.host.E) {b + x}) (M ⊔ Submodule.span (𝓞 D.host.E) {b + x}) ∧ SAt D q s (M ⊔ Submodule.span (𝓞 D.host.E) {b}) (M ⊔ Submodule.span (𝓞 D.host.E) {x}) := by
   intro D n q P hP M b x lam m hbx hM hww hl hmq ⟨p, hp, hpl⟩ ⟨p', hp', hpl'⟩

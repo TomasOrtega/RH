@@ -5,9 +5,9 @@ import Formalism.LocalToGlobal.UnitaryNorms.CharTransport
 open NumberField IsDedekindDomain GroundTheory.Automorphic GroundTheory.Automorphic.Reduction Formalism.L2.Host
 
 /- English proof (translation)
-Establish `hn : ∀ x, ‖e x‖₊ = ‖x‖₊` using `fun x => NNReal.eq (he x)`. Establish `h1 : ∀ i j, ((Matrix.GeneralLinearGroup.map e g : GL (Fin n) B) : Matrix (Fin n) (Fin n) B) i j = e ((g : Matrix (Fin n) (Fin n) A) i j)` using `fun _ _ => rfl`. Establish `h2 : ∀ i j, (((Matrix.GeneralLinearGroup.map e g)⁻¹ : GL (Fin n) B) : Matrix (Fin n) (Fin n) B) i j = e (((g⁻¹ : GL (Fin n) A) : Matrix (Fin n) (Fin n) A) i j)` using `fun i j => by`. Rewrite using `[← map_inv]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only [AutomorphicForm.locHeight, h1, h2, hn]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem locHeight_map {A B : Type*} [NormedField A] [NormedField B] {n : ℕ} (e : A →+* B)
     (he : ∀ x, ‖e x‖ = ‖x‖) (g : GL (Fin n) A) :
@@ -22,7 +22,7 @@ private theorem locHeight_map {A B : Type*} [NormedField A] [NormedField B] {n :
   simp only [AutomorphicForm.locHeight, h1, h2, hn]
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 private theorem infAt_adMap {K : Type} [Field K] [NumberField K] {n : ℕ} (σ : K ≃+* K) (u : InfinitePlace K)
     (g : AdelicGLn.AdelicGL K n) :
@@ -32,7 +32,7 @@ private theorem infAt_adMap {K : Type} [Field K] [NumberField K] {n : ℕ} (σ :
   rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 private theorem finAt_adMap {K : Type} [Field K] [NumberField K] {n : ℕ} (σ : K ≃+* K)
     (v : HeightOneSpectrum (𝓞 K)) (g : AdelicGLn.AdelicGL K n) :
@@ -42,9 +42,9 @@ private theorem finAt_adMap {K : Type} [Field K] [NumberField K] {n : ℕ} (σ :
   rfl
 
 /- English proof (translation)
-Establish `h1 : DenseRange (fun x : WithAbs u.1 => (x : UniformSpace.Completion (WithAbs u.1)))` using `UniformSpace.Completion.denseRange_coe`. Establish `h2 : DenseRange (InfinitePlace.Completion.ofCompletion : _ → u.Completion)` using `(InfinitePlace.Completion.equiv u).symm.surjective.denseRange`. Establish `h3` using `h2.comp h1 (InfinitePlace.Completion.continuous_ofCompletion u)`. Use `h3.mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨x.ofAbs, rfl⟩`.
+Supply the required witnesses or components.
 -/
 private theorem infDense {K : Type} [Field K] (u : InfinitePlace K) :
     DenseRange (algebraMap K u.Completion) := by
@@ -58,14 +58,14 @@ private theorem infDense {K : Type} [Field K] (u : InfinitePlace K) :
   exact ⟨x.ofAbs, rfl⟩
 
 /- English proof (translation)
-The claim follows from `InfinitePlace.Completion.norm_coe u (WithAbs.toAbs u.1 x)`.
+A detailed English derivation is pending.
 -/
 private theorem norm_algebraMap_inf {K : Type} [Field K] (u : InfinitePlace K) (x : K) :
     ‖algebraMap K u.Completion x‖ = u x :=
   InfinitePlace.Completion.norm_coe u (WithAbs.toAbs u.1 x)
 
 /- English proof (translation)
-Establish `h` using `(infDense (u.comap σ.toRingHom)).equalizer (continuous_norm.comp (CT.continuous_infEquiv σ u)) continuous_norm (funext fun x => ?_)`. Conclude with `congrFun h y`. Simplify using `only [Function.comp_apply]`. Rewrite using `[CT.infEquiv_algebraMap, norm_algebraMap_inf, norm_algebraMap_inf]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem norm_infEquiv {K : Type} [Field K] [NumberField K] (σ : K ≃+* K) (u : InfinitePlace K)
     (y : (u.comap σ.toRingHom).Completion) : ‖CT.infEquiv σ u y‖ = ‖y‖ := by
@@ -77,7 +77,7 @@ private theorem norm_infEquiv {K : Type} [Field K] [NumberField K] (σ : K ≃+*
   rfl
 
 /- English proof (translation)
-Establish `h : (u.comap σ.toRingHom).IsReal ↔ u.IsReal` using `InfinitePlace.isReal_comap_iff σ`. Simplify using `only [InfinitePlace.mult]`. Distinguish the cases in `hu : u.IsReal`. Rewrite using `[if_pos hu, if_pos (h.2 hu)]`. Rewrite using `[if_neg hu, if_neg fun h' => hu (h.1 h')]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem mult_comap_equiv {K : Type} [Field K] [NumberField K] (σ : K ≃+* K) (u : InfinitePlace K) :
     (u.comap σ.toRingHom).mult = u.mult := by
@@ -88,7 +88,7 @@ private theorem mult_comap_equiv {K : Type} [Field K] [NumberField K] (σ : K �
   · rw [if_neg hu, if_neg fun h' => hu (h.1 h')]
 
 /- English proof (translation)
-Use `Function.bijective_iff_has_inverse.2 ⟨fun u => u.comap σ.symm.toRingHom, fun u => ?_, fun u => ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Simplify using `[InfinitePlace.comap_apply]`. Use extensionality with `x`. Simplify using `[InfinitePlace.comap_apply]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem bijective_comap {K : Type} [Field K] [NumberField K] (σ : K ≃+* K) :
     Function.Bijective fun u : InfinitePlace K => u.comap σ.toRingHom := by
@@ -99,18 +99,18 @@ private theorem bijective_comap {K : Type} [Field K] [NumberField K] (σ : K ≃
     simp [InfinitePlace.comap_apply]
 
 /- English proof (translation)
-The claim follows from `Function.bijective_iff_has_inverse.2 ⟨CT.plMap σ, CT.plMap_plMap_symm σ, CT.plMap_symm_plMap σ⟩`.
+A detailed English derivation is pending.
 -/
 private theorem bijective_plMap {K : Type} [Field K] [NumberField K] (σ : K ≃+* K) :
     Function.Bijective (CT.plMap σ.symm) :=
   Function.bijective_iff_has_inverse.2 ⟨CT.plMap σ, CT.plMap_plMap_symm σ, CT.plMap_symm_plMap σ⟩
 
 /- English proof (translation)
-Introduce `K _ _ n σ g`. Unfold `AutomorphicForm.height`. Use `congr 1`. Rewrite using `[← (bijective_comap σ).prod_comp fun w => AutomorphicForm.locHeight (infAt w g) ^ w.mult]`. Use `Finset.prod_congr rfl fun u _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[infAt_adMap, locHeight_map _ (norm_infEquiv σ u), mult_comap_equiv]`. Use `finprod_eq_of_bijective _ (bijective_plMap σ) fun v => ?_` and prove the remaining obligations. Rewrite using `[finAt_adMap, locHeight_map]`. Introduce `y`. Establish `h` using `CT.norm_compEquiv σ.symm v ((CT.compEquiv σ.symm v).symm y)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[RingEquiv.apply_symm_apply]`. Conclude with `h.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.K.adHeight :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (σ : K ≃+* K) (g : AdelicGLn.AdelicGL K n),

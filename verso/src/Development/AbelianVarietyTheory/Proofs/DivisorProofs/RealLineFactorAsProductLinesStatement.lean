@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CompFinEqZeroOfAt
 open NumberField MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.AdelicU GlobalTheory.SiegelSet GlobalTheory.UAut GlobalTheory.ThK.SquareIntegrability
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.ThK.LineDec.line_eq_prod_realLines` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRealLineFactorAsProductLines.lean&line=41#L41)
 -/

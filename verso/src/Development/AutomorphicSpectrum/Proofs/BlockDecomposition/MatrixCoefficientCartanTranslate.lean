@@ -8,7 +8,7 @@ open Filter Topology MeasureTheory GlobalTheory.PRep GlobalTheory.SplitWeil Glob
 namespace GlobalTheory.CompanionTheory.CongruenceCoef
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `hp`. Take `⟨b, hb, rfl⟩` from `hx`. Use `⟨a * b * a⁻¹, ?_, by simp only [map_mul, map_inv]⟩` and prove the remaining obligations. Conclude with `(MonoidHom.normal_ker _).conj_mem b hb a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem conj_mem_Km (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (N m : ℕ) {p x : GL (Fin N) k}
@@ -19,9 +19,9 @@ theorem conj_mem_Km (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
   exact (MonoidHom.normal_ker _).conj_mem b hb a
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hv h hh`. Use `hv ⟨h, hh⟩` as an intermediate fact. Simplify using `using this`. Introduce `hv h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using hv h h.2`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_fixed_iff {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ G V) (H : Subgroup G) (v : V) :
@@ -34,15 +34,15 @@ theorem mem_fixed_iff {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     simpa using hv h h.2
 
 /- English proof (translation)
-Introduce `k _ _ _ _ N V _ _ π m v hv l hl p1 p2 hp1 hp2`. Establish `hv'` using `(mem_fixed_iff π _ v).1 hv`. Establish `h1 : ∀ y ∈ Zls.Km k N m, π y (π p2 v) = π p2 v`. Introduce `y hy`. Establish `hc : p2⁻¹ * y * p2⁻¹⁻¹ ∈ Zls.Km k N m` using `conj_mem_Km k N m (inv_mem hp2) hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : y * p2 = p2 * (p2⁻¹ * y * p2⁻¹⁻¹)` using `by group`. Establish `h` using `hv' _ hc`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : ∀ x ∈ Zls.Km k N m, (l ∘ₗ π p1) ∘ₗ π x = l ∘ₗ π p1`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc : p1 * x * p1⁻¹ ∈ Zls.Km k N m` using `conj_mem_Km k N m hp1 hx`. Establish `e : p1 * x = (p1 * x * p1⁻¹) * p1` using `by group`. Establish `h` using `hl _ hc`. Use extensionality with `w`. Establish `hw` using `LinearMap.congr_fun h (π p1 w)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.comp_apply] at hw ⊢`. Combine the equalities or inequalities in the displayed calculation. Use `⟨(mem_fixed_iff π _ _).2 h1, h2, ?_⟩` and prove the remaining obligations. Introduce `D x hx y hy`. Establish `h3` using `LinearMap.congr_fun (h2 x hx) (π D (π p2 v))`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.comp_apply] at h3`. Establish `e : π (p1 * x * D * y * p2) v = π p1 (π x (π D (π y (π p2 v))))`. Simplify using `only [map_mul, Module.End.mul_apply]`. Rewrite using `[e, h1 y hy, h3]`. Simplify using `only [LinearMap.comp_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coef_const_translated_double_coset :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (N : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V), ∀ (m : ℕ) (v : V), v ∈ fixed π (Zls.Km k N m) → ∀ l : Module.Dual ℂ V, (∀ x ∈ Zls.Km k N m, l ∘ₗ π x = l) → ∀ (p1 p2 : GL (Fin N) k), p1 ∈ KO k (Fin N) → p2 ∈ KO k (Fin N) → (π p2 v ∈ fixed π (Zls.Km k N m)) ∧ (∀ x ∈ Zls.Km k N m, (l ∘ₗ π p1) ∘ₗ π x = l ∘ₗ π p1) ∧ ∀ (D : GL (Fin N) k), ∀ x ∈ Zls.Km k N m, ∀ y ∈ Zls.Km k N m, l (π (p1 * x * D * y * p2) v) = (l ∘ₗ π p1) (π D (π p2 v)) := by

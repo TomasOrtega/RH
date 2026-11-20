@@ -20,19 +20,17 @@ open GlobalTheory.ArcIntegral
 namespace GlobalTheory.ArcIntegralMixed
 
 /- English proof (translation)
-Take `⟨hp, hdvr⟩` from `GlobalTheory.T.isDiscreteValuationRing_localization_powerSeries_uniformiser A ϖ hϖ`. Take `⟨R, _, _, _, _, _⟩ : ∃ (R : Type) (_ : CommRing R) (_ : IsDomain R) (_ : IsDiscreteValuationRing R) (_ : Algebra (PowerSeries A) R), IsLocalization.AtPrime R (Ideal.span {(PowerSeries.C ϖ : PowerSeries A)})` from `⟨_, _, _, hdvr, _, inferInstance⟩`. Set `K` to `FractionRing R`. Establish `hρ : Function.Injective (algebraMap (PowerSeries A) R)` using `IsLocalization.injective R (Ideal.primeCompl_le_nonZeroDivisors (Ideal.span {(PowerSeries.C ϖ : PowerSeries A)}))`. Set `f : PowerSeries A →+* K` to `(algebraMap R K).comp (algebraMap (PowerSeries A) R)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hf : Function.Injective f` using `(IsFractionRing.injective R K).comp hρ`. Establish `hC : Function.Injective (f.comp (PowerSeries.C (R` using `A))) := hf.comp PowerSeries.C_injective`. Use `haveI : CharZero K := (RingHom.charZero_iff hC).1 inferInstance`. Establish `h0 : (PowerSeries.C ϖ * PowerSeries.X : PowerSeries A) ≠ 0` using `mul_ne_zero (fun h => hϖ.ne_zero (PowerSeries.C_injective (h.trans (map_zero _).symm))) PowerSeries.X_ne_zero`. Establish `hu : IsUnit (f (PowerSeries.C ϖ * PowerSeries.X))` using `isUnit_iff_ne_zero.2 ((map_ne_zero_iff _ hf).2 h0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ψ, hψ⟩` from `exists_away_lift (S := S) _ f hu`. Establish `hψi : Function.Injective ψ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨⟨a, m⟩, ha⟩` from `IsLocalization.surj (Submonoid.powers (PowerSeries.C ϖ * PowerSeries.X : PowerSeries A)) x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ha0 : a = 0` using `hf (by`. Use `congrArg ψ ha` as an intermediate fact. Rewrite `this` using `[map_mul, hx, zero_mul, hψ]`. Rewrite using `[← this, map_zero])`. Rewrite `ha` using `[ha0, map_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(IsLocalization.map_units S m).mul_left_eq_zero.1 ha`. Establish `hX : (PowerSeries.X : PowerSeries A) ∈ (Ideal.span {(PowerSeries.C ϖ : PowerSeries A)}).primeCompl`. Introduce `hm`. Take `⟨q, hq⟩` from `Ideal.mem_span_singleton.1 hm`. Use `congrArg (PowerSeries.coeff 1) hq` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[PowerSeries.coeff_one_X, PowerSeries.coeff_C_mul]`. Conclude with `hϖ.not_isUnit (IsUnit.of_mul_eq_one _ this.symm)`. Take `⟨r, hr⟩` from `hv R K (algebraMap _ R) ψ (RingHom.ext hψ) (IsLocalization.map_units R ⟨_, hX⟩)`. Take `⟨⟨s, t⟩, hst⟩` from `IsLocalization.surj (Ideal.span {(PowerSeries.C ϖ : PowerSeries A)}).primeCompl r`. Use `⟨s, t, fun hd => t.2 (Ideal.mem_span_singleton.2 hd), hψi ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[map_mul, hψ, hψ, ← hr]`. Conclude with `(map_mul (algebraMap R K) _ _).symm.trans (congrArg (algebraMap R K) hst)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_denominator {A : Type} [CommRing A] [IsDomain A] [IsDiscreteValuationRing A] [CharZero A] (ϖ : A)
     (hϖ : Irreducible ϖ) (S : Type) [CommRing S] [Algebra (PowerSeries A) S]
@@ -82,73 +80,65 @@ theorem exists_denominator {A : Type} [CommRing A] [IsDomain A] [IsDiscreteValua
   exact (map_mul (algebraMap R K) _ _).symm.trans (congrArg (algebraMap R K) hst)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(Spec.preimage f).hom, (Spec.map_preimage f).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_spMap {A B : Type} [CommRing A] [CommRing B] (f : Sp B ⟶ Sp A) : ∃ g : A →+* B, f = spMap g :=
   ⟨(Spec.preimage f).hom, (Spec.map_preimage f).symm⟩
 
 /- English proof (translation)
-The claim follows from `congrArg CommRingCat.Hom.hom (Spec.map_injective h)`.
+A detailed English derivation is pending.
 -/
 theorem spMap_injective {A B : Type} [CommRing A] [CommRing B] {f g : A →+* B} (h : spMap f = spMap g) : f = g :=
   congrArg CommRingCat.Hom.hom (Spec.map_injective h)
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c V Y h3 h4 hS hj U₀ W₀ f₀ hUW harc hgood R K _ _ _ _ _ _ _ z y hcount hU hy h`. Distinguish the cases in `hab : Set.range z ⊆ abLocus Y.t.G`. Conclude with `hgood R K z y hU hy hab h`. Establish `hzW : ∀ {A : Type} [CommRing A] (w : Sp A ⟶ Y.X), Set.range w ⊆ Set.range Y.j → ⊤ ≤ w ⁻¹ᵁ U₀ → ⊤ ≤ w ⁻¹ᵁ W₀` using `fun w hr hu x hx => hUW _ (hu hx) (hr ⟨x, rfl⟩)`. Take `⟨io, hio⟩` from `exists_spMap (y ≫ pullback.snd _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b₀, hover⟩` from `exists_spMap (z ≫ Y.s)`. Establish `hcomp : (algebraMap R K).comp b₀ = io.comp V.subtype` using `spMap_injective (by`. Rewrite using `[← sp_comp, ← sp_comp, ← hover, ← hio, ← Category.assoc, ← hy, Model.j, ← Y.jQ_over]`. Simplify using `only [Category.assoc, pullback.condition])`. Establish `hgen : Set.range (spMap (algebraMap R K) ≫ z) ⊆ Set.range Y.j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hy]`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨y x, (Scheme.Hom.comp_apply _ _ _).symm⟩`. Establish `hch : CharZero R` using `(RingHom.charZero_iff (IsFractionRing.injective R K)).2 inferInstance`. Take `⟨T, i, hi, hil, hcard⟩` from `GlobalTheory.CountableCompletion.exists_cdvr_mk_le_continuum R hcount`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hiF : Function.Injective ((algebraMap T.V T.Fr).comp i)` using `(IsFractionRing.injective T.V T.Fr).comp hi`. Take `⟨iK, hiK⟩` from `exists_frac_lift (K := K) _ hiF`. Set `y' : Sp T.V ⟶ Y.X` to `spMap i ≫ z`. Set `b : V →+* T.V` to `i.comp b₀`. Set `io' : c.F →+* T.Fr` to `iK.comp io`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hbio : (algebraMap T.V T.Fr).comp b = io'.comp V.subtype`. Simplify using `only [b, io']`. Rewrite using `[← RingHom.comp_assoc, ← hiK, RingHom.comp_assoc, hcomp, RingHom.comp_assoc]`. Establish `hy' : y' ≫ Y.s = spMap b`. Simplify using `only [y', Category.assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hover, sp_comp]`. Set `zT : Sp T.Fr ⟶ Xo.XF c` to `spMap iK ≫ y`. Establish `hzT : zT ≫ Y.j = spMap (algebraMap T.V T.Fr) ≫ y'`. Simplify using `only [y', zT]`. Rewrite using `[Category.assoc, hy, ← Category.assoc, sp_comp, hiK, ← sp_comp, Category.assoc]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hzT' : zT ≫ pullback.snd _ _ = spMap io'`. Simplify using `only [zT, io']`. Rewrite using `[Category.assoc, hio, sp_comp]`. Use `clear_value zT`. Establish `hbad : ¬ Set.range y' ⊆ abLocus Y.t.G` using `fun hy => hab (by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Break down `point_cases R K x with ⟨p, rfl⟩ | rfl` into its components or cases. Conclude with `range_j_subset Y (hgen ⟨p, by rw [Scheme.Hom.comp_apply]⟩)`. Establish `e : spMap i (IsLocalRing.closedPoint T.V) = IsLocalRing.closedPoint R` using `spMap_closedPoint i`. Use `hy ⟨IsLocalRing.closedPoint T.V, rfl⟩` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(spMap i ≫ z) (IsLocalRing.closedPoint T.V) ∈ _ at this`. Use `erw [Scheme.Hom.comp_apply, e] at this`. Conclude with `this)`. Take `⟨T', g, ϖ, a, hg, hgf, hϖ, hA⟩` from `GlobalTheory.T.exists_arcData_of_badReduction_finiteExtension E H Dw l Xo c V Y h3 hS T io' b y' zT hbio hy' hzT' hzT hbad`. Establish `hcpl : IsAdicComplete (Ideal.span {ϖ}) T'.V` using `hϖ.maximalIdeal_eq ▸ T'.cpl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨χ₀, hχ, hsp⟩` from `h4 T'.V (g.comp b) ϖ a (Or.inr ⟨inferInstance, hϖ, hcpl⟩)`. Take `⟨hover₀, hab₀, hopen, hW⟩` from `(hχ χ₀).1 rfl`. Take `⟨W⟩` from `(Y.hasArcData_iff a _ _ _ χ₀).1 hW`. Take `⟨-, -, evu, hevC, hevX, -⟩` from `GlobalTheory.UniformiserEval.dvr_admissibleBase_and_powerSeries_evalUniformiser T'.V ϖ hϖ T'.cpl`. Establish `hgF : Function.Injective ((algebraMap T'.V T'.Fr).comp g)` using `(IsFractionRing.injective T'.V T'.Fr).comp hg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨gF, hgF'⟩` from `exists_frac_lift (K := T.Fr) _ hgF`. Establish `hχy : spMap evu ≫ χ₀ = spMap g ≫ y'` using `hsp hϖ (spMap g ≫ y') evu (by rw [Category.assoc, hy', sp_comp]) (by`. Introduce and unpack `_ ⟨x, rfl⟩`. Establish `e : Out.jK T'.V ≫ spMap g ≫ y' = spMap gF ≫ zT ≫ Y.j`. Rewrite using `[hzT, ← Category.assoc, ← Category.assoc, sp_comp, ← hgF', ← sp_comp]`.
+Both sides reduce to the same expression. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Conclude with `⟨zT (spMap gF x), by rw [e, Scheme.Hom.comp_apply, Scheme.Hom.comp_apply]⟩) hA hevC hevX`. Establish `hχz : spMap evu ≫ χ₀ = spMap g ≫ spMap i ≫ z` using `hχy`. Use `haveI hgl : IsLocalHom g := RingHom.IsIntegral.isLocalHom hgf.to_isIntegral hg`. Establish `hχU : ⊤ ≤ χ₀ ⁻¹ᵁ U₀`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hc : χ₀ (IsLocalRing.closedPoint (PowerSeries T'.V)) ∈ U₀`. Rewrite using `[← spMap_closedPoint_of_surjective evu (fun x => ⟨PowerSeries.C x, hevC x⟩)]`. Express the relevant statement in the definitionally equal form `(spMap evu ≫ χ₀) (IsLocalRing.closedPoint T'.V) ∈ U₀`. Rewrite using `[hχz]`. Conclude with `hU (Set.mem_univ ((spMap g ≫ spMap i) (IsLocalRing.closedPoint T'.V)))`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `((IsLocalRing.closed_point_mem_iff (U := χ₀ ⁻¹ᵁ U₀)).1 hc).ge`. Set `S` to `Localization.Away (PowerSeries.C ϖ * PowerSeries.X : PowerSeries T'.V)`. Set `ι : PowerSeries T'.V →+* S` to `algebraMap _ _`. Establish `huX : IsUnit (ι (PowerSeries.C ϖ * PowerSeries.X))` using `IsLocalization.Away.algebraMap_isUnit _`. Establish `hSj : Set.range (spMap ι ≫ χ₀) ⊆ Set.range Y.j`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `hopen (spMap ι x) fun hx => x.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ (show ι (PowerSeries.C ϖ * PowerSeries.X) ∈ x.asIdeal from hx) huX)`. Establish `hSW : ⊤ ≤ (spMap ι ≫ χ₀) ⁻¹ᵁ W₀` using `hzW _ hSj (le_preimage_comp _ hχU)`. Establish `hcard' : Cardinal.mk T'.Fr ≤ Cardinal.continuum`. Rewrite using `[show Cardinal.mk T'.Fr = Cardinal.mk T'.V from IsFractionRing.cardinalMk T'.V T'.Fr]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Conclude with `mk_le_continuum_of_finite g hgf hcard`. Take `⟨κ, hκ⟩` from `@GlobalTheory.ComplexEmbedding.exists_embedding_of_mk_le_continuum c.F T'.Fr _ _ _ (gF.comp io').toAlgebra hcard' c.F.val.toRingHom`. Set `κ₀ : T'.V →+* ℂ` to `κ.comp (algebraMap T'.V T'.Fr)`. Establish `hκ₀ : Function.Injective κ₀` using `κ.injective.comp (IsFractionRing.injective T'.V T'.Fr)`. Establish `hb' : c.F.val.toRingHom.comp V.subtype = κ₀.comp (g.comp b)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hκ]`. Express the relevant statement in the definitionally equal form `κ.comp (gF.comp (io'.comp V.subtype)) = κ.comp (((algebraMap T'.V T'.Fr).comp g).comp b)`. Rewrite using `[← hbio, ← hgF']`. Both sides reduce to the same expression. Take `⟨h1, h2, -, hL4, hL5⟩` from `GlobalTheory.firstFiveLaws`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨⟨a₁, p, hp⟩, hbc⟩` from `GlobalTheory.ArcQBC.baseChanges h1 h2 hL4.unifBaseChange hL5 E H Dw l Xo c _ _ Y T'.V ℂ (g.comp b) a κ₀ hκ₀ _ hb'`. Take `⟨hW₁, -⟩` from `hbc a₁ p hp`. Take `⟨W₁, -⟩` from `hW₁ χ₀ W`. Establish `hϖ0 : κ₀ ϖ ≠ 0` using `fun h0 => hϖ.ne_zero (hκ₀ (h0.trans (map_zero _).symm))`. Establish `hXu : IsUnit ((HahnSeries.ofPowerSeries ℤ ℂ).comp (PowerSeries.map κ₀) (PowerSeries.C ϖ * PowerSeries.X))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul]`. Use `IsUnit.mul ?_ (isUnit_map_X κ₀)` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, PowerSeries.map_C]`. Conclude with `((IsUnit.mk0 _ hϖ0).map _).map _`. Take `⟨ιC, hιC'⟩` from `exists_away_lift (S := S) _ _ hXu`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hιC : ∀ s, ιC (ι s) = HahnSeries.ofPowerSeries ℤ ℂ (PowerSeries.map κ₀ s)` using `fun s => (hιC' s).trans (RingHom.comp_apply _ _ _)`. Establish `hpt : spMap (HahnSeries.ofPowerSeries ℤ ℂ) ≫ spMap (PowerSeries.map κ₀) ≫ χ₀ = spMap ιC ≫ spMap ι ≫ χ₀`. Rewrite using `[← Category.assoc, ← Category.assoc (spMap ιC), sp_comp, sp_comp, show ιC.comp ι = (HahnSeries.ofPowerSeries ℤ ℂ).comp (PowerSeries.map κ₀) from RingHom.ext hιC]`. Establish `hLh : ⊤ ≤ (spMap (HahnSeries.ofPowerSeries ℤ ℂ) ≫ spMap (PowerSeries.map κ₀) ≫ χ₀) ⁻¹ᵁ W₀`. Rewrite using `[hpt]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `le_preimage_comp _ hSW`. Establish `hres` using `harc a₁ (spMap (PowerSeries.map κ₀) ≫ χ₀) ((Y.hasArcData_iff _ _ _ _ _).2 ⟨W₁⟩) (by`. Rewrite using `[Category.assoc, hover₀, sp_comp, sp_comp, sp_comp, hb']`. Conclude with `congrArg spMap (RingHom.ext fun x => PowerSeries.map_C κ₀ _)) (fun x hx => by`. Use `hopen (spMap (PowerSeries.map κ₀) x) fun hm => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `hm' : PowerSeries.map κ₀ (PowerSeries.C ϖ * PowerSeries.X) ∈ x.asIdeal` using `hm`. Rewrite `hm'` using `[map_mul, PowerSeries.map_C, PowerSeries.map_X]`. Conclude with `hx ((Ideal.unit_mul_mem_iff_mem _ ((IsUnit.mk0 _ hϖ0).map _)).1 hm'))`. Use the proof step `(le_preimage_comp _ hχU) hLh`. Rewrite `hres` using `[ev_factor ιC (spMap ι ≫ χ₀) _ hpt W₀ hSW hLh f₀]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hden` using `exists_denominator ϖ hϖ S (ev (spMap ι ≫ χ₀) W₀ hSW f₀) (by`. Introduce `R' K' _ _ _ _ _ _ _ ρ ψ hψ hρ`. Establish `e : spMap (algebraMap R' K') ≫ spMap ρ ≫ χ₀ = spMap ψ ≫ spMap ι ≫ χ₀`. Rewrite using `[← Category.assoc, ← Category.assoc (spMap ψ), sp_comp, sp_comp, ← hψ]`. Establish `hW' : ⊤ ≤ (spMap (algebraMap R' K') ≫ spMap ρ ≫ χ₀) ⁻¹ᵁ W₀`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `le_preimage_comp _ hSW`. Rewrite using `[← ev_factor ψ (spMap ι ≫ χ₀) _ e W₀ hSW hW' f₀]`. Use `hgood R' K' (spMap ρ ≫ χ₀) (spMap ψ ≫ IsOpenImmersion.lift Y.j (spMap ι ≫ χ₀) hSj) (le_preimage_comp _ hχU) (by rw [Category.assoc, IsOpenImmersion.lift_fac, e]) ?_ hW'` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`.
-
-Conclude with `(hab₀ (spMap ρ x)).2 fun hx => x.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ (show ρ PowerSeries.X ∈ x.asIdeal from hx) hρ))`. Take `⟨s, hs⟩` from `GlobalTheory.T.exists_powerSeries_of_no_pole_away_uniformizer_X T'.V ϖ hϖ κ₀ hκ₀ S ιC hιC _ hres hden`. Establish `hϖu : IsUnit ((algebraMap T'.V T'.Fr).comp evu (PowerSeries.C ϖ * PowerSeries.X))`. Rewrite using `[RingHom.comp_apply, map_mul evu, hevC, hevX]`. Conclude with `isUnit_iff_ne_zero.2 ((map_ne_zero_iff _ (IsFractionRing.injective T'.V T'.Fr)).2 (mul_ne_zero hϖ.ne_zero hϖ.ne_zero))`.
-
-Take `⟨φS, hφS⟩` from `exists_away_lift (S := S) _ _ hϖu`. Establish `hgi : Function.Injective ((algebraMap T'.V T'.Fr).comp (g.comp i))` using `(IsFractionRing.injective T'.V T'.Fr).comp (hg.comp hi)`. Take `⟨la, hla⟩` from `exists_frac_lift (K := K) _ hgi`. Establish `hpt2 : spMap la ≫ spMap (algebraMap R K) ≫ z = spMap φS ≫ spMap ι ≫ χ₀`. Establish `e1 : spMap la ≫ spMap (algebraMap R K) ≫ z = spMap ((algebraMap T'.V T'.Fr).comp (g.comp i)) ≫ z`.
-
-Rewrite using `[← Category.assoc, sp_comp, hla]`. Establish `e2 : spMap φS ≫ spMap ι ≫ χ₀ = spMap ((algebraMap T'.V T'.Fr).comp (g.comp i)) ≫ z`. Rewrite using `[← Category.assoc, sp_comp, show φS.comp ι = (algebraMap T'.V T'.Fr).comp evu from RingHom.ext hφS, ← sp_comp, Category.assoc, hχz, ← Category.assoc, ← Category.assoc, sp_comp, sp_comp]`. Rewrite using `[e1, e2]`. Establish `hval : la (ev (spMap (algebraMap R K) ≫ z) W₀ h f₀) = algebraMap T'.V T'.Fr (evu s)`.
-
-Rewrite using `[← ev_factor la (spMap (algebraMap R K) ≫ z) _ rfl W₀ h (le_preimage_comp _ h), GlobalTheory.FlagMod.ev_congr hpt2 W₀ _ (le_preimage_comp _ hSW), ev_factor φS _ _ rfl W₀ hSW, hs, hφS]`. Both sides reduce to the same expression. Use `haveI : IsLocalHom (g.comp i) := inferInstance`. Conclude with `mem_range_of_map (g.comp i) la (fun r => RingHom.congr_fun hla r) _ ⟨evu s, hval.symm⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem integral_of_arcs_of_good : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (V : ValuationSubring c.F) (Y : Model Xo c V.subtype), Y.N3 → Y.N4 → Y.SplitFibres → IsOpenImmersion Y.j → ∀ (U₀ W₀ : Y.X.Opens) (f₀ : Γ(Y.X, W₀)), (∀ x ∈ U₀, x ∈ Set.range Y.j → x ∈ W₀) → (∀ (a : ArcIn D l V.subtype ℂ (c.F.val.toRingHom.comp V.subtype)) (χ : Sp (PowerSeries ℂ) ⟶ Y.X), Y.HasArcData a (Ideal.span {PowerSeries.X}) (PowerSeries.C (R := ℂ)) PowerSeries.X χ → χ ≫ Y.s = spMap (PowerSeries.C (R := ℂ)) ≫ spMap (c.F.val.toRingHom.comp V.subtype) → (∀ x : Sp (PowerSeries ℂ), PowerSeries.X ∉ x.asIdeal → χ x ∈ Set.range Y.j) → ⊤ ≤ χ ⁻¹ᵁ U₀ → ∀ h : ⊤ ≤ (spMap (HahnSeries.ofPowerSeries ℤ ℂ) ≫ χ) ⁻¹ᵁ W₀, ev (spMap (HahnSeries.ofPowerSeries ℤ ℂ) ≫ χ) W₀ h f₀ ∈ (HahnSeries.ofPowerSeries ℤ ℂ).range) → (∀ (R K : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [Field K] [CharZero K] [Algebra R K] [IsFractionRing R K] (z : Sp R ⟶ Y.X) (y : Sp K ⟶ Xo.XF c), ⊤ ≤ z ⁻¹ᵁ U₀ → y ≫ Y.j = spMap (algebraMap R K) ≫ z → Set.range z ⊆ abLocus Y.t.G → ∀ h : ⊤ ≤ (spMap (algebraMap R K) ≫ z) ⁻¹ᵁ W₀, ev (spMap (algebraMap R K) ≫ z) W₀ h f₀ ∈ (algebraMap R K).range) → ∀ (R K : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [Field K] [CharZero K] [Algebra R K] [IsFractionRing R K] (z : Sp R ⟶ Y.X) (y : Sp K ⟶ Xo.XF c), Countable R → ⊤ ≤ z ⁻¹ᵁ U₀ → y ≫ Y.j = spMap (algebraMap R K) ≫ z → ∀ h : ⊤ ≤ (spMap (algebraMap R K) ≫ z) ⁻¹ᵁ W₀, ev (spMap (algebraMap R K) ≫ z) W₀ h f₀ ∈ (algebraMap R K).range := by
   intro E _ _ _ H Dw l Xo c V Y h3 h4 hS hj U₀ W₀ f₀ hUW harc hgood R K _ _ _ _ _ _ _ z y hcount hU hy h

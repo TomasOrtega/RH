@@ -11,7 +11,7 @@ def coordMap {L E : Type} [Field L] [Field E] (f : L →+* E) (a : ℕ) :
   map_smul' c v := by funext i; simp [smul_eq_mul]
 
 /- English proof (translation)
-Introduce `v w h`. Use function extensionality and compare the values at `i`. Conclude with `f.injective (congrFun h i)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem coordMap_injective {L E : Type} [Field L] [Field E] (f : L →+* E) (a : ℕ) :
     Function.Injective (coordMap f a) := by
@@ -20,21 +20,19 @@ theorem coordMap_injective {L E : Type} [Field L] [Field E] (f : L →+* E) (a :
   exact f.injective (congrFun h i)
 
 /- English proof (translation)
-Use `set F := coordMap f a with hF`. Set `Us : Fin n → Submodule L (Fin a → L)` to `fun m => (Vs m).comap F`. Establish `hUs : ∀ m, (Us m : Set (Fin a → L)) = {v : Fin a → L | f ∘ v ∈ Vs m}` using `fun m => rfl`. Take `⟨hindV, htopV⟩` from `(DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top Vs).1 hint`. Use `⟨Us, ?_, fun m => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[iSupIndep_def]`. Introduce `i`. Rewrite using `[Submodule.disjoint_def]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hv1 hv2`. Establish `hle : (⨆ (j : Fin n) (_ : j ≠ i), Us j) ≤ (⨆ (j : Fin n) (_ : j ≠ i), Vs j).comap F` using `iSup₂_le fun j hj => Submodule.comap_mono (le_iSup₂ (f := fun j (_ : j ≠ i) => Vs j) j hj)`. Establish `h1 : F v ∈ Vs i` using `hv1`. Establish `h2 : F v ∈ ⨆ (j : Fin n) (_ : j ≠ i), Vs j` using `hle hv2`. Establish `h3` using `(Submodule.disjoint_def.1 ((iSupIndep_def.1 hindV) i)) _ h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `coordMap_injective f a (by rw [h3, map_zero])`. Rewrite using `[eq_top_iff]`. Introduce `v _`. Establish `hle : (⨆ m, Vs m) ≤ Submodule.span E ((fun v => f ∘ v) '' ((⨆ m, Us m : Submodule L (Fin a → L)) : Set (Fin a → L)))`. Use `iSup_le fun m => (hspan m).trans (Submodule.span_mono (Set.image_mono ?_))` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hUs m]`. Conclude with `le_iSup Us m`. Establish `hv : f ∘ v ∈ ⨆ m, Vs m` using `by rw [htopV]; exact Submodule.mem_top`. Use `mem_span_of_map_mem_span f _ v (hle hv)` as an intermediate fact. Rewrite `this` using `[Submodule.span_eq]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g v hv`. Establish `hv' : f ∘ v ∈ Vs m` using `hv`. Use `show f ∘ ((τ g : GL (Fin a) L) : Matrix (Fin a) (Fin a) L).mulVec v ∈ Vs m`. Establish `hm : f ∘ ((τ g : GL (Fin a) L) : Matrix (Fin a) (Fin a) L).mulVec v = ((mapRep f τ g : GL (Fin a) E) : Matrix (Fin a) (Fin a) E).mulVec (f ∘ v)`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `RingHom.map_mulVec f _ v i`. Rewrite using `[hm]`. Conclude with `hinv m g _ hv'`. Use `le_antisymm ?_ ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`.
-
-Introduce and unpack `_ ⟨v, hv, rfl⟩`. Conclude with `hv`. Rewrite using `[hUs m]`. Conclude with `hspan m`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem descend_decomp {Γ L E : Type} [Group Γ] [Field L] [Field E] (f : L →+* E) {a n : ℕ}
     (τ : Γ →* GL (Fin a) L) (Vs : Fin n → Submodule E (Fin a → E)) (hint : DirectSum.IsInternal Vs)

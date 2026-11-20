@@ -8,13 +8,13 @@ open Formalism.BasicNotions Formalism.BasicNotions.DV Formalism.MainNotions Form
 namespace GlobalTheory.MeanTop
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `GlobalTheory.T.dividedWeight_nodes_far_and_spread ι N W hW hD τ`. Establish `hN : 0 < N` using `lt_of_le_of_lt (Nat.zero_le _) hW.p_lt`. Use `haveI : Nonempty (Fin N) := ⟨⟨0, hN⟩⟩`. Take `⟨a, ha⟩` from `exists_eq_ciSup_of_finite (f := reWt W.u' τ)`. Take `⟨b, hb⟩` from `exists_eq_ciInf_of_finite (f := reWt W.u' τ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsp : (⨆ i, reWt W.u' τ i) - ⨅ i, reWt W.u' τ i ≤ 3 / 2 * W.w τ / W.T`. Rewrite using `[← ha, ← hb]`. Conclude with `h2 a b`. Establish `h0 : 0 ≤ 3 / 2 * W.w τ / W.T` using `by simpa using h2 a a`. Establish `hkN : W.kc < N` using `hW.kc_lt.trans hW.p_lt`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set s : Finset (Fin N) := Finset.Ici (⟨W.kc, hkN⟩ : Fin N) with hs`. Establish `hcard : s.card = N - W.kc` using `by simp [hs]`. Establish `hsum : (s.card : ℝ) * (W.w τ / (4 * W.T)) ≤ ∑ i ∈ s, |(W.u' τ i : ℝ)|`. Use `Finset.card_nsmul_le_sum s (fun i => |(W.u' τ i : ℝ)|) (W.w τ / (4 * W.T)) (fun i hi => (h1 i (by simpa [hs, Fin.le_def] using hi)).2)` as an intermediate fact. Simplify `this` using `[nsmul_eq_mul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : ∑ i ∈ s, |(W.u' τ i : ℝ)| ≤ ∑ i, |(W.u' τ i : ℝ)|` using `Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _) (fun _ _ _ => abs_nonneg _)`. Establish `hjc : (j : ℝ) ≤ s.card` using `by rw [hcard]; exact_mod_cast hj`. Establish `he : 3 / 2 * W.w τ / W.T = 6 * (W.w τ / (4 * W.T))` using `by ring`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem spread_le_at {ι : Type} [Fintype ι] {N : ℕ} (W : Wts ι N) (hW : W.Hyp) (hD : W.IsDiv) (τ : ι)
     (j : ℕ) (hj : j ≤ N - W.kc) :

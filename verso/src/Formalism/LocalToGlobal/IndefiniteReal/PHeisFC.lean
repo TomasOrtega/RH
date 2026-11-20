@@ -29,7 +29,7 @@ def cE (F E : Type) [Field F] [NumberField F] [Field E] [Algebra F E] [FiniteDim
     continuous_invFun := IsModuleTopology.continuous_of_linearMap (bA F E).equivFun.symm.toLinearMap }
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(bA F E).equivFun ((1 : AF F) ⊗ₜ[F] e) k = _`. Rewrite using `[Module.Basis.equivFun_apply, Algebra.TensorProduct.basis_repr_tmul, one_smul, Finsupp.mapRange_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem cE_tmul (e : E) (k : Fin (Module.finrank F E)) :
     cE F E ((1 : AF F) ⊗ₜ[F] e) k = algebraMap F (AF F) ((Module.finBasis F E).repr e k) := by
@@ -54,20 +54,20 @@ def Phi (V W : HSp D) (x : WA V W) : Fin V.rank → Fin W.rank → Fin (nE D) �
   fun i j => cE D.host.F D.host.E (x i j)
 
 /- English proof (translation)
-Simplify using `only [Phi, Matrix.add_apply, map_add, Pi.add_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Phi_add (V W : HSp D) (x y : WA V W) (i j k) : Phi V W (x + y) i j k = Phi V W x i j k + Phi V W y i j k := by
   simp only [Phi, Matrix.add_apply, map_add, Pi.add_apply]
 
 /- English proof (translation)
-Conclude with `cE_tmul (e i j) k`.
+A detailed English derivation is pending.
 -/
 theorem Phi_rat (V W : HSp D) (e : Matrix (Fin V.rank) (Fin W.rank) D.host.E) (i j k) :
     Phi V W (e.map (incA D)) i j k = algebraMap D.host.F (AF D.host.F) ((Module.finBasis D.host.F D.host.E).repr (e i j) k) := by
   exact cE_tmul (e i j) k
 
 /- English proof (translation)
-Unfold `Phi`. Conclude with `(continuous_apply k).comp ((cE D.host.F D.host.E).continuous.comp ((continuous_apply j).comp (continuous_apply i)))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cont_Phi (V W : HSp D) (i j k) : Continuous fun x : WA V W => Phi V W x i j k := by
   unfold Phi
@@ -77,15 +77,15 @@ theorem cont_Phi (V W : HSp D) (i j k) : Continuous fun x : WA V W => Phi V W x 
 def FD (V W : HSp D) : Set (WA V W) := {x | ∀ i j k, Phi V W x i j k ∈ F0 D.host.F}
 
 /- English proof (translation)
-Use `choose q hq using fun i j k => PHeisFC.ad_exU (F := D.host.F) (Phi V W x i j k)`. Set `b` to `Module.finBasis D.host.F D.host.E`. Set `e : Matrix (Fin V.rank) (Fin W.rank) D.host.E` to `fun i j => b.equivFun.symm (q i j)`. Establish `hrep : ∀ i j k, b.repr (e i j) k = q i j k`. Introduce `i j k`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← b.equivFun_apply, LinearEquiv.apply_symm_apply]`. Establish `hshift : ∀ (e' : Matrix (Fin V.rank) (Fin W.rank) D.host.E) i j k, Phi V W (e'.map (incA D) + x) i j k = algebraMap D.host.F (AF D.host.F) (b.repr (e' i j) k) + Phi V W x i j k`. Introduce `e' i j k`. Rewrite using `[Phi_add, Phi_rat]`. Use `⟨⟨e.map (incA D), ⟨e, rfl⟩⟩, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j k show Phi V W (e.map (incA D) + x) i j k ∈ F0 D.host.F`. Rewrite using `[hshift, hrep]`. Conclude with `(hq i j k).1`. Introduce and unpack `⟨g, e', rfl⟩ hg`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `show e'.map (incA D) = e.map (incA D)`. Establish `he : e' = e`. Use extensionality with `i j`. Use `b.ext_elem fun k => ?_` and prove the remaining obligations. Rewrite using `[hrep]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `hg i j k`. Express the relevant statement in the definitionally equal form `Phi V W (e'.map (incA D) + x) i j k ∈ F0 D.host.F at h1`. Rewrite `h1` using `[hshift]`. Conclude with `(hq i j k).2 _ h1`. Rewrite using `[he]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exU (V W : HSp D) (x : WA V W) : ∃! g : ratL V W, g +ᵥ x ∈ FD V W := by
   classical
@@ -123,11 +123,9 @@ instance borelWA (V W : HSp D) : BorelSpace (WA V W) := ⟨rfl⟩
 
 open scoped Classical in
 /- English proof (translation)
-Establish `heM : Continuous (eM D.host.F)`. Rewrite using `[show (⇑(eM D.host.F)) = _ from funext (NumberField.InfiniteAdeleRing.ringEquiv_mixedSpace_apply D.host.F)]`. Use `Continuous.prodMk (continuous_pi fun v => ?_) (continuous_pi fun v => ?_)` and prove the remaining obligations. Conclude with `(NumberField.InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal _).continuous.comp (continuous_apply _)`. Conclude with `(NumberField.InfinitePlace.Completion.isometry_extensionEmbedding _).continuous.comp (continuous_apply _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hset : FD V W = ⋂ i, ⋂ j, ⋂ k, ((fun x => eM D.host.F (Phi V W x i j k).1) ⁻¹' ZSpan.fundamentalDomain (mixedEmbedding.latticeBasis D.host.F) ∩ (fun x => (Phi V W x i j k).2) ⁻¹' Ohat D.host.F)`. Use extensionality with `x`. Simplify using `[FD, F0, Pinf, Set.mem_iInter, Set.mem_preimage, Set.mem_inter_iff]`. Rewrite using `[hset]`. Use `MeasurableSet.iInter fun i => MeasurableSet.iInter fun j => MeasurableSet.iInter fun k => ?_` and prove the remaining obligations.
-
-Use `MeasurableSet.inter ?_ ?_` and prove the remaining obligations. Conclude with `(heM.comp (continuous_fst.comp (cont_Phi V W i j k))).measurable (measurableSet_Pinf D.host.F)`. Conclude with `((isOpen_Ohat D.host.F).preimage (continuous_snd.comp (cont_Phi V W i j k))).measurableSet`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem meas_FD (V W : HSp D) : MeasurableSet (FD V W) := by
   classical
@@ -150,11 +148,9 @@ theorem meas_FD (V W : HSp D) : MeasurableSet (FD V W) := by
   · exact ((isOpen_Ohat D.host.F).preimage (continuous_snd.comp (cont_Phi V W i j k))).measurableSet
 
 /- English proof (translation)
-Take `⟨K0, hK0, hF0⟩` from `fundamental_set_subset_compact (F := D.host.F)`. Set `g : (Fin V.rank → Fin W.rank → Fin (nE D) → AF D.host.F) → WA V W` to `fun φ i j => (cE D.host.F D.host.E).symm (φ i j)`. Establish `hg : Continuous g` using `continuous_pi fun i => continuous_pi fun j => (cE D.host.F D.host.E).symm.continuous.comp ((continuous_apply j).comp (continuous_apply i))`. Use `⟨g '' Set.univ.pi (fun _ => Set.univ.pi fun _ => Set.univ.pi fun _ => K0), ?_, ?_⟩` and prove the remaining obligations. Conclude with `(isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => hK0).image hg`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Use `⟨fun i j => cE D.host.F D.host.E (x i j), ?_, ?_⟩` and prove the remaining obligations. Introduce `i _ j _ k _`. Conclude with `hF0 (hx i j k)`. Use function extensionality and compare the values at `i j`.
-
-Conclude with `(cE D.host.F D.host.E).symm_apply_apply (x i j)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem FD_sub_compact (V W : HSp D) : ∃ K : Set (WA V W), IsCompact K ∧ FD V W ⊆ K := by
   obtain ⟨K0, hK0, hF0⟩ := fundamental_set_subset_compact (F := D.host.F)
@@ -185,9 +181,7 @@ instance measAddWA (V W : HSp D) : MeasurableAdd (WA V W) :=
   ⟨fun _ => (continuous_const.add continuous_id).measurable, fun _ => (continuous_id.add continuous_const).measurable⟩
 
 /- English proof (translation)
-Use `haveI : Countable D.host.E := (Module.finBasis ℚ D.host.E).equivFun.injective.countable`. Use `haveI : Countable (Matrix (Fin V.rank) (Fin W.rank) D.host.E) := inferInstanceAs (Countable (Fin V.rank → Fin W.rank → D.host.E))`. Establish `h : (ratL V W : Set (WA V W)).Countable`. Unfold `ratL`. Rewrite using `[AddMonoidHom.coe_range]`.
-
-Conclude with `Set.countable_range _`. Conclude with `h.to_subtype`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem countable_ratL (V W : HSp D) : Countable (ratL V W) := by
   haveI : Countable D.host.E := (Module.finBasis ℚ D.host.E).equivFun.injective.countable
@@ -200,9 +194,7 @@ theorem countable_ratL (V W : HSp D) : Countable (ratL V W) := by
   exact h.to_subtype
 
 /- English proof (translation)
-Use `haveI := countable_ratL V W`. Take `⟨K, hK, hFK⟩` from `FD_sub_compact V W`. Establish `hfd : ∀ μ : Measure (WA V W), IsAddFundamentalDomain (ratL V W) (FD V W) μ` using `fun μ => IsAddFundamentalDomain.mk' (meas_FD V W).nullMeasurableSet (exU V W)`. Use `⟨⟨Measure.addHaar, FD V W, inferInstance, hfd _⟩, fun μ 𝓕 hμ h𝓕 => ?_⟩` and prove the remaining obligations. Rewrite using `[h𝓕.measure_eq (hfd μ)]`.
-
-Conclude with `(measure_mono hFK).trans_lt hK.measure_lt_top`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finCovol {D : D7} (V W : HSp D) : Formalism.IndefR.Heis.FinCovol V W := by
   haveI := countable_ratL V W

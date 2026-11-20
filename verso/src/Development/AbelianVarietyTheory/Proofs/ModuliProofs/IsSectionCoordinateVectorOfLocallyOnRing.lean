@@ -14,7 +14,7 @@ noncomputable section
 namespace GlobalTheory.ZM
 
 /- English proof (translation)
-Establish `e : Y.presheaf.germ W (f z) (h hz) ≫ f.stalkMap z = f.appLE W W' h ≫ Z.presheaf.germ W' z hz` using `by erw [Scheme.Hom.germ_stalkMap]`. Rewrite using `[Scheme.Hom.appLE, Category.assoc, TopCat.Presheaf.germ_res]`. Conclude with `congrArg (fun g => g.hom s) e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stalkMap_germ_appLE {Y Z : Scheme.{0}} (f : Z ⟶ Y) (W : Y.Opens) (W' : Z.Opens) (h : W' ≤ f ⁻¹ᵁ W)
     (z : Z) (hz : z ∈ W') (s : Γ(Y, W)) :
@@ -26,9 +26,9 @@ theorem stalkMap_germ_appLE {Y Z : Scheme.{0}} (f : Z ⟶ Y) (W : Y.Opens) (W' :
   exact congrArg (fun g => g.hom s) e
 
 /- English proof (translation)
-Apply `TopCat.Presheaf.section_ext Y.sheaf W s t` to reduce the goal to its premises. Introduce `p hp`. Take `⟨Z, f, _, z, W', h, hz, rfl, e⟩` from `H p hp`. Apply `(ConcreteCategory.injective_of_mono_of_preservesPullback (f.stalkMap z))` to reduce the goal to its premises. Establish `e1` using `stalkMap_germ_appLE f W W' h z hz s`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `e2` using `stalkMap_germ_appLE f W W' h z hz t`. Rewrite `e1` using `[e]`. Conclude with `e1.trans e2.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sec_eq_of_openImm {Y : Scheme.{0}} (W : Y.Opens) (s t : Γ(Y, W))
     (H : ∀ p ∈ W, ∃ (Z : Scheme.{0}) (f : Z ⟶ Y) (_ : IsOpenImmersion f) (z : Z) (W' : Z.Opens)
@@ -43,9 +43,9 @@ theorem sec_eq_of_openImm {Y : Scheme.{0}} (W : Y.Opens) (s t : Γ(Y, W))
   exact e1.trans e2.symm
 
 /- English proof (translation)
-Apply `Y.toRingedSpace.isUnit_of_isUnit_germ W s` to reduce the goal to its premises. Introduce `p hp`. Take `⟨Z, f, z, W', h, hz, rfl, u⟩` from `H p hp`. Apply `isUnit_of_map_unit (f.stalkMap z).hom` to reduce the goal to its premises. Rewrite using `[stalkMap_germ_appLE f W W' h z hz]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `u.map _`.
+A detailed English derivation is pending.
 -/
 theorem sec_isUnit_of_pull {Y : Scheme.{0}} (W : Y.Opens) (s : Γ(Y, W))
     (H : ∀ p ∈ W, ∃ (Z : Scheme.{0}) (f : Z ⟶ Y) (z : Z) (W' : Z.Opens)
@@ -61,7 +61,7 @@ def spConst (R : Type) [CommRing R] (W : (Sp R).Opens) : R →+* Γ(Sp R, W) :=
   (resG (Sp R) (le_top : W ≤ ⊤)).comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom
 
 /- English proof (translation)
-Establish `key : (Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ (Sp R).presheaf.map (homOfLE (le_top : W ≤ ⊤)).op ≫ (spMap φ).appLE W W' h = CommRingCat.ofHom φ ≫ (Scheme.ΓSpecIso (CommRingCat.of R')).inv ≫ (Sp R').presheaf.map (homOfLE (le_top : W' ≤ ⊤)).op`. Rewrite using `[Scheme.Hom.map_appLE, ← Category.assoc, Scheme.ΓSpecIso_inv_naturality, Category.assoc]`. Both sides reduce to the same expression. Conclude with `congrArg (fun g => g.hom r) key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem appLE_spConst {R R' : Type} [CommRing R] [CommRing R'] (φ : R →+* R') (W : (Sp R).Opens)
     (W' : (Sp R').Opens) (h : W' ≤ spMap φ ⁻¹ᵁ W) (r : R) :
@@ -75,7 +75,7 @@ theorem appLE_spConst {R R' : Type} [CommRing R] [CommRing R'] (φ : R →+* R')
   exact congrArg (fun g => g.hom r) key
 
 /- English proof (translation)
-Unfold `LB.pull LB.LinComb LB.wchart`. Simplify using `only [TopologicalSpace.Opens.mem_mk, Set.mem_iInter, Set.mem_preimage]`. Conclude with `⟨fun h => h _, fun h _ => h⟩`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 private theorem mem_pull_U_iff' {X T : Scheme.{0}} (M : LB X) (y : T ⟶ X) (j : PUnit → M.ι) (p : T) :
     p ∈ (M.pull y).U j ↔ y p ∈ M.U (j PUnit.unit) := by
@@ -84,7 +84,7 @@ private theorem mem_pull_U_iff' {X T : Scheme.{0}} (M : LB X) (y : T ⟶ X) (j :
   exact ⟨fun h => h _, fun h _ => h⟩
 
 /- English proof (translation)
-Rewrite using `[← RingHom.comp_apply, ← CommRingCat.hom_comp, Scheme.Hom.appLE_comp_appLE]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem appLE_appLE_lemma_2 {X Y Z : Scheme.{0}} (f : Z ⟶ Y) (g : Y ⟶ X) (U : X.Opens) (V : Y.Opens)
     (V' : Z.Opens) (hV : V ≤ g ⁻¹ᵁ U) (hV' : V' ≤ f ⁻¹ᵁ V) (h3 : V' ≤ (f ≫ g) ⁻¹ᵁ U) (s : Γ(X, U)) :
@@ -92,7 +92,7 @@ private theorem appLE_appLE_lemma_2 {X Y Z : Scheme.{0}} (f : Z ⟶ Y) (g : Y �
   rw [← RingHom.comp_apply, ← CommRingCat.hom_comp, Scheme.Hom.appLE_comp_appLE]
 
 /- English proof (translation)
-Simplify using `only [resG]`. Rewrite using `[← RingHom.comp_apply, ← CommRingCat.hom_comp, Scheme.Hom.map_appLE, ← RingHom.comp_apply, ← CommRingCat.hom_comp, Scheme.Hom.appLE_map]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem appLE_resG_eq_resG_appLE {Y Z : Scheme.{0}} (f : Z ⟶ Y) {V1 V2 : Y.Opens} {W1 W2 : Z.Opens}
     (hV : V1 ≤ V2) (hW : W1 ≤ W2) (h1 : W1 ≤ f ⁻¹ᵁ V1) (h2 : W2 ≤ f ⁻¹ᵁ V2) (s : Γ(Y, V2)) :
@@ -102,7 +102,7 @@ private theorem appLE_resG_eq_resG_appLE {Y Z : Scheme.{0}} (f : Z ⟶ Y) {V1 V2
     ← CommRingCat.hom_comp, Scheme.Hom.appLE_map]
 
 /- English proof (translation)
-Unfold `LB.pull LB.LinComb`. Simplify using `[pullU, res, Scheme.Hom.appLE]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private theorem pull_g_coe_eq_appLE_g {X T : Scheme.{0}} (M : LB X) (y : T ⟶ X) (j j' : PUnit → M.ι)
     (h : (M.pull y).U j ⊓ (M.pull y).U j' ≤ y ⁻¹ᵁ (M.U (j PUnit.unit) ⊓ M.U (j' PUnit.unit))) :
@@ -113,25 +113,23 @@ private theorem pull_g_coe_eq_appLE_g {X T : Scheme.{0}} (M : LB X) (y : T ⟶ X
   rfl
 
 /- English proof (translation)
-Establish `h1 : (1 : R) ∈ Ideal.span (Set.range v)` using `by rw [hv]; exact Submodule.mem_top`. Take `⟨c, hc⟩` from `Finsupp.mem_ideal_span_range_iff_exists_finsupp.1 h1`. Establish `W1 : ∀ j : PUnit → M.ι, (M.pull x).U j ≤ x ⁻¹ᵁ M.U (j PUnit.unit)` using `fun j p hp => (mem_pull_U_iff' M x j p).1 hp`. Establish `W2 : ∀ {R' : Type} [CommRing R'] (φ : R →+* R') (j : PUnit → M.ι), (M.pull (spMap φ ≫ x)).U j ≤ spMap φ ⁻¹ᵁ (M.pull x).U j` using `fun φ j z hz => (mem_pull_U_iff' M x j _).2 ((mem_pull_U_iff' M _ j z).1 hz)`. Set `t : ∀ j : PUnit → M.ι, Γ(Sp R, (M.pull x).U j)` to `fun j => c.sum (fun i a => spConst R _ a * (x.appLE _ _ (W1 j)).hom ((th i).f (j PUnit.unit)))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `pt : ∀ {R' : Type} [CommRing R'] (φ : R →+* R') (τ' : (M.pull (spMap φ ≫ x)).Gen), (∀ i j h, ((spMap φ ≫ x).appLE (M.U (j PUnit.unit)) ((M.pull (spMap φ ≫ x)).U j) h).hom ((th i).f (j PUnit.unit)) = spConst R' _ (φ (v i)) * (τ'.s j).val) → ∀ j, ((spMap φ).appLE _ _ (W2 φ j)).hom …`. Introduce `R' _ φ τ' hco j`. Establish `e1 : ∀ i, ((spMap φ).appLE _ _ (W2 φ j)).hom (spConst R _ (c i) * (x.appLE _ _ (W1 j)).hom ((th i).f (j PUnit.unit))) = spConst R' _ (φ (c i) * φ (v i)) * (τ'.s j).val`. Introduce `i`. Rewrite using `[map_mul, appLE_spConst, appLE_appLE_lemma_2 (spMap φ) x _ _ _ (W1 j) (W2 φ j) (fun p hp => (mem_pull_U_iff' M _ j p).1 hp), map_mul, _root_.mul_assoc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (spConst R' _ (φ (c i)) * ·) (hco i j (fun p hp => (mem_pull_U_iff' M _ j p).1 hp))`. Establish `e2 : ∑ i ∈ c.support, φ (c i) * φ (v i) = 1`. Use `congrArg φ hc` as an intermediate fact. Rewrite `this` using `[map_one, Finsupp.sum, map_sum]`. Simplify `this` using `[map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Use `show ((spMap φ).appLE _ _ (W2 φ j)).hom (∑ i ∈ c.support, _) = _`. Rewrite using `[map_sum, Finset.sum_congr rfl (fun i _ => e1 i), ← Finset.sum_mul, ← map_sum, e2, map_one, _root_.one_mul]`. Establish `hu : ∀ j, IsUnit (t j)`. Introduce `j`. Apply `sec_isUnit_of_pull` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `p hp`. Take `⟨R', _, φ, _, ⟨z, rfl⟩, τ', _, hco⟩` from `H p`. Use `⟨Sp R', spMap φ, z, (M.pull (spMap φ ≫ x)).U j, W2 φ j, ?_, rfl, ?_⟩` and prove the remaining obligations. Conclude with `(mem_pull_U_iff' M _ j z).2 ((mem_pull_U_iff' M x j _).1 hp)`. Rewrite using `[pt φ τ' hco j]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(τ'.s j).isUnit`. Unfold `SecCoord`. Use `⟨⟨fun j => (hu j).unit⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j`. Apply `Units.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `show resG _ inf_le_left (t i) = ((M.pull x).g i j).val * resG _ inf_le_right (t j)`. Apply `sec_eq_of_openImm` to reduce the goal to its premises. Introduce `p hp`. Take `⟨R', _, φ, hoi, ⟨z, rfl⟩, τ', hg, hco⟩` from `H p`. Establish `Wi : (M.pull (spMap φ ≫ x)).U i ⊓ (M.pull (spMap φ ≫ x)).U j ≤ spMap φ ⁻¹ᵁ ((M.pull x).U i ⊓ (M.pull x).U j)` using `fun z hz => ⟨W2 φ i hz.1, W2 φ j hz.2⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Sp R', spMap φ, hoi, z, _, Wi, ?_, rfl, ?_⟩` and prove the remaining obligations. Conclude with `⟨(mem_pull_U_iff' M _ i z).2 ((mem_pull_U_iff' M x i _).1 hp.1), (mem_pull_U_iff' M _ j z).2 ((mem_pull_U_iff' M x j _).1 hp.2)⟩`. Rewrite using `[map_mul, appLE_resG_eq_resG_appLE (spMap φ) inf_le_left inf_le_left Wi (W2 φ i), appLE_resG_eq_resG_appLE (spMap φ) inf_le_right inf_le_right Wi (W2 φ j), pt φ τ' hco i, pt φ τ' hco j]`. Establish `h3 : (M.pull (spMap φ ≫ x)).U i ⊓ (M.pull (spMap φ ≫ x)).U j ≤ (spMap φ ≫ x) ⁻¹ᵁ (M.U (i PUnit.unit) ⊓ M.U (j PUnit.unit))` using `fun q hq => ⟨(mem_pull_U_iff' M _ i q).1 hq.1, (mem_pull_U_iff' M _ j q).1 hq.2⟩`. Rewrite using `[pull_g_coe_eq_appLE_g M x i j (fun q hq => ⟨W1 i hq.1, W1 j hq.2⟩)]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `erw [appLE_appLE_lemma_2 (spMap φ) x _ _ _ _ Wi h3, ← pull_g_coe_eq_appLE_g M (spMap φ ≫ x) i j h3]`. Conclude with `congrArg Units.val (hg i j)`. Introduce `i j h show _ = spConst R _ (v i) * t j`. Apply `sec_eq_of_openImm` to reduce the goal to its premises. Introduce `p hp`.
-
-Take `⟨R', _, φ, hoi, ⟨z, rfl⟩, τ', _, hco⟩` from `H p`. Use `⟨Sp R', spMap φ, hoi, z, _, W2 φ j, ?_, rfl, ?_⟩` and prove the remaining obligations. Conclude with `(mem_pull_U_iff' M _ j z).2 ((mem_pull_U_iff' M x j _).1 hp)`. Rewrite using `[map_mul, appLE_spConst, pt φ τ' hco j, appLE_appLE_lemma_2 (spMap φ) x _ _ _ h (W2 φ j) (fun p hp => (mem_pull_U_iff' M _ j p).1 hp)]`. Conclude with `hco i j (fun p hp => (mem_pull_U_iff' M _ j p).1 hp)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secCoord_of_locally (X : Scheme.{0}) (M : LB X) (I : Type) (th : I → M.Sec) (R : Type) [CommRing R]
     (x : Sp R ⟶ X) (v : I → R) (_hM : M.IsLB) (hv : Ideal.span (Set.range v) = ⊤)

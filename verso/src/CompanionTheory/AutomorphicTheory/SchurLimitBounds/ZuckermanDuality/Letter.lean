@@ -11,20 +11,20 @@ open scoped InnerProductSpace
 variable {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {P : B.Mat k r}
 
 /- English proof (translation)
-The claim follows from `Matrix.inv_eq_left_inv (Matrix.mem_unitaryGroup_iff'.1 hP.2)`.
+A detailed English derivation is pending.
 -/
 theorem inv_eq_ct (hP : IsCayleyU k r ε P) : P⁻¹ = Pᴴ :=
   Matrix.inv_eq_left_inv (Matrix.mem_unitaryGroup_iff'.1 hP.2)
 
 /- English proof (translation)
-Rewrite using `[inv_eq_ct hP]`. Conclude with `Unitary.star_mem hP.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_unitary (hP : IsCayleyU k r ε P) : P⁻¹ ∈ Matrix.unitaryGroup (Fin (2 * r + k + 1)) ℂ := by
   rw [inv_eq_ct hP]
   exact Unitary.star_mem hP.2
 
 /- English proof (translation)
-Use `⟨back_mem hP.1 ?_, Submonoid.mul_mem _ (Submonoid.mul_mem _ (inv_unitary hP) hg.1) hP.2⟩` and prove the remaining obligations. Use `show gᴴ * Jm ε * g = Jm ε`. Establish `h1 : gᴴ * g = 1` using `Matrix.mem_unitaryGroup_iff'.1 hg.1`. Rewrite using `[Matrix.mul_assoc, ← hg.2, ← Matrix.mul_assoc, h1, Matrix.one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem back_K (hP : IsCayleyU k r ε P) {g : B.Mat k r} (hg : g ∈ Kset ε) :
     P⁻¹ * g * P ∈ UH (Hpk k r) ∩ (Matrix.unitaryGroup (Fin (2 * r + k + 1)) ℂ : Set _) := by
@@ -34,9 +34,9 @@ theorem back_K (hP : IsCayleyU k r ε P) {g : B.Mat k r} (hg : g ∈ Kset ε) :
   rw [Matrix.mul_assoc, ← hg.2, ← Matrix.mul_assoc, h1, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `hu : P * x * P⁻¹ ∈ Matrix.unitaryGroup (Fin (2 * r + k + 1)) ℂ` using `Submonoid.mul_mem _ (Submonoid.mul_mem _ hP.2 hx.2) (inv_unitary hP)`. Use `⟨hu, ?_⟩` and prove the remaining obligations. Establish `h1 : (P * x * P⁻¹)ᴴ * Jm ε * (P * x * P⁻¹) = Jm ε` using `forth_mem hP.1 hx.1`. Establish `h2 : (P * x * P⁻¹) * (P * x * P⁻¹)ᴴ = 1` using `Matrix.mem_unitaryGroup_iff.1 hu`. Generalize the expression as in `P * x * P⁻¹ = g at h1 h2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem forth_K (hP : IsCayleyU k r ε P) {x : B.Mat k r}
     (hx : x ∈ UH (Hpk k r) ∩ (Matrix.unitaryGroup (Fin (2 * r + k + 1)) ℂ : Set _)) : P * x * P⁻¹ ∈ Kset ε := by
@@ -51,9 +51,9 @@ theorem forth_K (hP : IsCayleyU k r ε P) {x : B.Mat k r}
     _ = Jm ε * g := by rw [h2, Matrix.one_mul]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨S, hS, hv, hst⟩`. Conclude with `⟨S, hS, hv, fun g hg y hy => hst _ (back_K hP hg) y hy⟩`. Introduce and unpack `⟨S, hS, hv, hst⟩`. Use `⟨S, hS, hv, fun x hx y hy => ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `hst _ (forth_K hP hx) y hy` as an intermediate fact. Simplify `this` using `only [back_forth hP.1]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem kfin_iff {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (hP : IsCayleyU k r ε P)
     (σ : B.Mat k r → (H →L[ℂ] H)) (v : H) :
@@ -67,7 +67,7 @@ theorem kfin_iff {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (hP
     simpa only [back_forth hP.1] using this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⊥, inferInstance, Submodule.zero_mem _, fun g _ x hx => by rw [Submodule.mem_bot] at hx ⊢; rw [hx, map_zero]⟩`.
+Supply the required witnesses or components.
 -/
 theorem kfin_zero {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (σ : B.Mat k r → (H →L[ℂ] H)) :
     IsKFinHpk (k := k) (r := r) σ 0 :=
@@ -75,9 +75,9 @@ theorem kfin_zero {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (�
     rw [Submodule.mem_bot] at hx ⊢; rw [hx, map_zero]⟩
 
 /- English proof (translation)
-Establish `e : (fun g => (fun x => τ (P * x * P⁻¹)) (P⁻¹ * g * P)) = τ` using `funext fun g => by`. Simplify using `only [forth_back hP.1]`. Use `⟨H, _, _, inferInstance, fun x => τ (P * x * P⁻¹), v, w, hμ, ⟨P, hP, by rw [e]; exact hτ⟩, ?_, ?_, fun _ _ => rfl⟩` and prove the remaining obligations. Rewrite using `[kfin_iff hP, e]`. Conclude with `hv`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[kfin_iff hP, e]`. Conclude with `hw`.
+A detailed English derivation is pending.
 -/
 theorem isCoef_of_J (hP : IsCayleyU k r ε P) {μ : Fin (2 * r + k + 1) → ℝ} {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] [CompleteSpace H] {τ : B.Mat k r → (H →L[ℂ] H)} (hμ : IsHCParam μ) (hτ : IsDS ε μ τ)
@@ -91,12 +91,12 @@ theorem isCoef_of_J (hP : IsCayleyU k r ε P) {μ : Fin (2 * r + k + 1) → ℝ}
   · rw [kfin_iff hP, e]; exact hw
 
 /- English proof (translation)
-Introduce `s` and use `by simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_box_self {n : ℕ} (μ : Fin n → ℝ) : μ ∈ Box μ 1 := fun s => by simp
 
 /- English proof (translation)
-Introduce `t` and use `by by_cases h : t = s · subst h; simp · simp [h]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_box_add {n : ℕ} (μ : Fin n → ℝ) (s : Fin n) : μ + Pi.single s 1 ∈ Box μ 1 := fun t => by
   by_cases h : t = s
@@ -104,7 +104,7 @@ theorem mem_box_add {n : ℕ} (μ : Fin n → ℝ) (s : Fin n) : μ + Pi.single 
   · simp [h]
 
 /- English proof (translation)
-Introduce `t` and use `by by_cases h : t = s · subst h; simp · simp [h]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_box_sub {n : ℕ} (μ : Fin n → ℝ) (s : Fin n) : μ - Pi.single s 1 ∈ Box μ 1 := fun t => by
   by_cases h : t = s
@@ -112,7 +112,7 @@ theorem mem_box_sub {n : ℕ} (μ : Fin n → ℝ) (s : Fin n) : μ - Pi.single 
   · simp [h]
 
 /- English proof (translation)
-Take `⟨H, i1, i2, i3, σ, v, w, hμ, hσ, -, hw, -⟩` from `hφ`. Establish `h0 : ψ - ψ' ∈ SpanBox k r ε μ 1` using `Submodule.subset_span ⟨μ, mem_box_self μ, H, i1, i2, i3, σ, 0, w, hμ, hσ, kfin_zero σ, hw, fun g hg => by simp [h g hg]⟩`. Simplify using `using Submodule.add_mem _ h0 hψ'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_spanBox_of_eq {μ : Fin (2 * r + k + 1) → ℝ} {φ ψ ψ' : B.Mat k r → ℂ} (hφ : IsCoef k r ε μ φ)
     (hψ' : ψ' ∈ SpanBox k r ε μ 1) (h : ∀ g ∈ B.GV k r, ψ g = ψ' g) : ψ ∈ SpanBox k r ε μ 1 := by
@@ -122,7 +122,7 @@ theorem mem_spanBox_of_eq {μ : Fin (2 * r + k + 1) → ℝ} {φ ψ ψ' : B.Mat 
   simpa using Submodule.add_mem _ h0 hψ'
 
 /- English proof (translation)
-Rewrite using `[Matrix.star_mulVec, Matrix.mulVec_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, ← inv_eq_ct hP]`. Use `congr 2`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Chain the equalities or inequalities of the calculation.
 -/
 theorem dot_transport (hP : IsCayleyU k r ε P) (a : B.Mat k r) (x y : Fin (2 * r + k + 1) → ℂ) :
     star (P *ᵥ y) ⬝ᵥ ((P * a * P⁻¹) *ᵥ (P *ᵥ x)) = star y ⬝ᵥ (a *ᵥ x) := by
@@ -132,15 +132,15 @@ theorem dot_transport (hP : IsCayleyU k r ε P) (a : B.Mat k r) (x y : Fin (2 * 
     _ = a := by rw [inv_mul_P hP.1, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Introduce `t hZ hZd k r ε μ h q φ hq hφ hg hlt`. Break down `hq with rfl | ⟨x, y, hq⟩` into its components or cases. Rewrite using `[one_mul]`. Conclude with `Submodule.subset_span ⟨μ, mem_box_self μ, hφ⟩`. Establish `hφ'` using `hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨H, i1, i2, i3, σ, v, w, hμ, ⟨P, hP, hτ⟩, hv, hw, hφG⟩` from `hφ'`. Rewrite `hv`, `hw` using `[kfin_iff hP]`. Break down `hq with hq | hq` into its components or cases. Take `⟨X⟩` from `hZ _ ε μ H _ hμ hτ h hg hlt`. Take `⟨ι, _, sI, vI, wI, hI, hsum⟩` from `X.toSum v w (P *ᵥ x) (P *ᵥ y) hv hw`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `mem_spanBox_of_eq hφ (ψ' := ∑ i, fun g => ⟪wI i, X.σs (sI i) (P * g * P⁻¹) (vI i)⟫_ℂ) (Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨_, mem_box_add μ (sI i), isCoef_of_J hP (X.ds _ (hI i).1).1 (X.ds _ (hI i).1).2 (hI i).2.1 (hI i).2.2⟩) fun g hgG => ?_` and prove the remaining obligations. Use `hsum _ (forth_mem hP.1 hgG)` as an intermediate fact. Simplify using `only [back_forth hP.1, dot_transport hP] at this`. Rewrite using `[Pi.mul_apply, hq g hgG, hφG g hgG, mul_comm, this, Finset.sum_apply]`. Take `⟨X⟩` from `hZd _ ε μ H _ hμ hτ h hg hlt`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ι, _, sI, vI, wI, hI, hsum⟩` from `X.toSum v w (P *ᵥ x) (P *ᵥ y) hv hw`. Use `mem_spanBox_of_eq hφ (ψ' := ∑ i, fun g => ⟪wI i, X.σs (sI i) (P * g * P⁻¹) (vI i)⟫_ℂ) (Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨_, mem_box_sub μ (sI i), isCoef_of_J hP (X.ds _ (hI i).1).1 (X.ds _ (hI i).1).2 (hI i).2.1 (hI i).2.2⟩) fun g hgG => ?_` and prove the remaining obligations. Use `hsum _ (forth_mem hP.1 hgG)` as an intermediate fact. Establish `hi : (P * g * P⁻¹)⁻¹ = P * g⁻¹ * P⁻¹`. Rewrite using `[Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 hP.1.1), Matrix.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [back_forth hP.1, hi, dot_transport hP] at this`. Rewrite using `[Pi.mul_apply, hq g hgG, hφG g hgG, mul_comm, this, Finset.sum_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem letter_recursion : LetterStep := by
   intro t hZ hZd k r ε μ h q φ hq hφ hg hlt
@@ -172,19 +172,17 @@ theorem letter_recursion : LetterStep := by
     rw [Pi.mul_apply, hq g hgG, hφG g hgG, mul_comm, this, Finset.sum_apply]
 
 /- English proof (translation)
-Proceed by induction on `d generalizing q with`. Consider the case `zero`. Rewrite `hq` using `[pow_zero, Submodule.mem_one]`. Take `⟨c, rfl⟩` from `hq`. Rewrite using `[← Algebra.smul_def]`.
+Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ c (Submodule.subset_span ⟨lam, fun s => by simp, hφ⟩)`. Consider the case `succ d ih`. Move the coercions through the operations in `at hlt ⊢`. Establish `step : Letters k r * SpanBox k r ε lam (d : ℝ) ≤ SpanBox k r ε lam ((d : ℝ) + 1)`. Unfold `Letters`.
+Treat this case separately. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SpanBox, Submodule.span_mul_span, Submodule.span_le]`. Introduce and unpack `_ ⟨a, ha, b, ⟨μ, hμ, hb⟩, rfl⟩`. Establish `hgμ : PI.ZuckTensor.GapAtLeast ε μ (h - 2 * d)`. Introduce `i j hij`. Establish `h1` using `hg i j hij`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `abs_le.1 (hμ i)`. Establish `h3` using `abs_le.1 (hμ j)`. Apply the tactic sequence `rcases abs_cases (lam i - lam j) with h4 | h4 <;> rcases abs_cases (μ i - μ j) with h5 | h5 <;> linarith`. Use `letter_recursion t hZ hZd k r ε μ _ a b ha hb hgμ (by linarith)` as an intermediate fact. Use `Submodule.span_mono ?_ this` and prove the remaining obligations.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `ψ ⟨ν, hν, hψ⟩`. Use `⟨ν, fun s => ?_, hψ⟩` and prove the remaining obligations. Establish `h2` using `abs_le.1 (hμ s)`. Establish `h3` using `abs_le.1 (hν s)`. Rewrite using `[abs_le]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `constructor <;> linarith`. Rewrite `hq` using `[pow_succ']`. Use `Submodule.mul_induction_on hq (fun a ha b hb => ?_) (fun a b ha hb => ?_)` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Conclude with `step (Submodule.mul_mem_mul ha (ih b hb (by linarith)))`.
-
-Rewrite using `[add_mul]`. Conclude with `Submodule.add_mem _ ha hb`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_spanBox_of_gap (t : ∀ n : ℕ, (Fin n → Bool) → ℝ) (hZ : ZuckT t) (hZd : ZuckDualT t) (k r : ℕ)
     (ε : Fin (2 * r + k + 1) → Bool) (lam : Fin (2 * r + k + 1) → ℝ) (h : ℝ) (d : ℕ) (q φ : B.Mat k r → ℂ)
@@ -224,17 +222,17 @@ theorem mul_mem_spanBox_of_gap (t : ∀ n : ℕ, (Fin n → Bool) → ℝ) (hZ :
       exact Submodule.add_mem _ ha hb
 
 /- English proof (translation)
-Introduce `hE k r ε ε' μ μ' H H' _ _ _ _ _ _ σ σ' hμ hμ' hσ hσ' hne ⟨U, hU⟩`. Establish `hR` using `isURepOn_of_ds hσ`. Establish `hσ₀` using `hσ`. Take `⟨P, hP, -, -, -, -, -, ⟨S, hS, hst, -, ⟨v, hvS, hv0, -⟩, -⟩, -⟩` from `hσ₀`. Establish `hv : IsKFinHpk (k` using `k) (r := r) σ v := (kfin_iff hP σ v).2 ⟨S, hS, hvS, hst⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hv' : IsKFinHpk (k` using `k) (r := r) σ' (U v) := by`. Take `⟨S₁, hS₁, hv₁, hst₁⟩` from `hv`. Use `⟨S₁.map (U.toLinearEquiv : H →ₗ[ℂ] H'), inferInstance, ⟨v, hv₁, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `g hg _ ⟨x, hx, rfl⟩`. Conclude with `⟨σ g x, hst₁ g hg x hx, hU g hg.1 x⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Set `φ : B.Mat k r → ℂ` to `fun g => ⟪v, σ g v⟫_ℂ`. Establish `h1 : IsCoef k r ε μ φ` using `⟨H, _, _, inferInstance, σ, v, v, hμ, hσ, hv, hv, fun _ _ => rfl⟩`. Establish `h2 : IsCoef k r ε' μ' φ` using `⟨H', _, _, inferInstance, σ', U v, U v, hμ', hσ', hv', hv', fun g hg => by`. Rewrite using `[← hU g hg, U.inner_map_map]⟩`. Establish `hone : (1 : B.Mat k r) ∈ B.GV k r` using `by show (1 : B.Mat k r)ᴴ * _ * 1 = _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hφ1 : φ 1 • (1 : ℂ →L[ℂ] ℂ) ≠ 0`. Use `smul_ne_zero ?_ one_ne_zero` and prove the remaining obligations. Simplify using `[φ, hR.1.1, hv0]`. Establish `key : ∀ Y : ℂ, ∏ s, (Y + (μ s : ℂ)) = ∏ s, (Y + (μ' s : ℂ))` using `fun Y => smul_left_injective ℂ hφ1 ((hE k r ε μ φ ℂ ℂ 1 h1 Y 1 hone).symm.trans (hE k r ε' μ' φ ℂ ℂ 1 h2 Y 1 hone))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `sub : ∀ {a b : Fin (2 * r + k + 1) → ℝ}, (∀ Y : ℂ, ∏ s, (Y + (a s : ℂ)) = ∏ s, (Y + (b s : ℂ))) → Set.range a ⊆ Set.range b`. Introduce and unpack `a b hab _ ⟨s, rfl⟩`. Establish `h0 : ∏ t, (-(a s : ℂ) + (b t : ℂ)) = 0`. Rewrite using `[← hab]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ s) (by ring)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨t, -, ht⟩` from `Finset.prod_eq_zero_iff.1 h0`. Use `⟨t, ?_⟩` and prove the remaining obligations. Establish `: (b t : ℂ) = a s` using `by linear_combination ht`. Conclude with `this` after adjusting the coercions. Conclude with `hne ((hμ.1.range_inj hμ'.1).1 (Set.Subset.antisymm (sub key) (sub fun Y => (key Y).symm)))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem capelli_inequivalence : Inequiv := by
   intro hE k r ε ε' μ μ' H H' _ _ _ _ _ _ σ σ' hμ hμ' hσ hσ' hne ⟨U, hU⟩

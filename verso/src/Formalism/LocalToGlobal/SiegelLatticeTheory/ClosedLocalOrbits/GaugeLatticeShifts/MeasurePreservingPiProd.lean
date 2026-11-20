@@ -30,11 +30,11 @@ def piProdEquiv : ((i : ι) → α i × β i) ≃ᵐ ((i : ι) → α i) × ((i 
     ((measurable_pi_apply i).comp measurable_fst).prodMk ((measurable_pi_apply i).comp measurable_snd)
 
 /- English proof (translation)
-Establish `hf` using `(piProdEquiv (α := α) (β := β)).measurable`. Use `⟨hf, ?_⟩` and prove the remaining obligations. Use `(Measure.prod_eq_generateFrom generateFrom_pi generateFrom_pi isPiSystem_pi isPiSystem_pi (Measure.FiniteSpanningSetsIn.pi fun i => (μ i).toFiniteSpanningSetsIn) (Measure.FiniteSpanningSetsIn.pi fun i => (ν i).toFiniteSpanningSetsIn) ?_).symm` and prove the remaining obligations. Introduce and unpack `_ ⟨A, hA, rfl⟩ _ ⟨B, hB, rfl⟩`. Establish `hA' : ∀ i, MeasurableSet (A i)` using `fun i => hA i (Set.mem_univ i)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hB' : ∀ i, MeasurableSet (B i)` using `fun i => hB i (Set.mem_univ i)`. Establish `hpre : (piProdEquiv (α` using `α) (β := β)) ⁻¹' (Set.univ.pi A ×ˢ Set.univ.pi B) = Set.univ.pi fun i => A i ×ˢ B i := by`. Use extensionality with `x`. Simplify using `[piProdEquiv, Set.mem_univ_pi, forall_and]`. Rewrite using `[Measure.map_apply hf ((MeasurableSet.univ_pi hA').prod (MeasurableSet.univ_pi hB')), hpre, Measure.pi_pi, Measure.pi_pi, Measure.pi_pi, ← Finset.prod_mul_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_congr rfl fun i _ => Measure.prod_prod _ _`.
+A detailed English derivation is pending.
 -/
 theorem measurePreserving_piProd (μ : ∀ i, Measure (α i)) (ν : ∀ i, Measure (β i)) [∀ i, SigmaFinite (μ i)]
     [∀ i, SigmaFinite (ν i)] :
@@ -64,7 +64,7 @@ section Loc
 variable {n r : ℕ}
 
 /- English proof (translation)
-Unfold `Formalism.L2.SG.RealObj.Dl`. Use `split_ifs with hl`. Conclude with `(Continuous.matrix_diagonal continuous_id).matrix_submatrix _ _ |>.matrix_det`. Conclude with `continuous_const`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem continuous_Dl_diagonal (l : ℕ) :
     Continuous (fun c : Fin (r + 1) → ℂ => Formalism.L2.SG.RealObj.Dl (Matrix.diagonal c) l) := by
@@ -74,14 +74,14 @@ private theorem continuous_Dl_diagonal (l : ℕ) :
   · exact continuous_const
 
 /- English proof (translation)
-Unfold `Formalism.L2.SG.RealObj.Gv`. Conclude with `((continuous_Dl_diagonal _).norm.pow 2).sub (continuous_const.mul ((continuous_Dl_diagonal _).norm.pow 2))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem gv_cont (T T' : ℝ) : Continuous (fun c : Fin (r + 1) → ℂ => Gv T T' (Matrix.diagonal c)) := by
   unfold Formalism.L2.SG.RealObj.Gv
   exact ((continuous_Dl_diagonal _).norm.pow 2).sub (continuous_const.mul ((continuous_Dl_diagonal _).norm.pow 2))
 
 /- English proof (translation)
-Unfold `wtLoc Formalism.L2.SG.RealObj.JacV`. Use `((gv_cont T T').pow _).mul (continuous_finset_prod _ fun l _ => ?_)` and prove the remaining obligations. Unfold `Formalism.L2.SG.RealObj.modC`. Conclude with `(((continuous_Dl_diagonal l).norm).pow 2).pow 2`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem wtLoc_cont (k : ℕ) (T T' : ℝ) : Continuous (fun c : Fin (r + 1) → ℂ => wtLoc k T T' c) := by
   unfold wtLoc Formalism.L2.SG.RealObj.JacV
@@ -90,7 +90,7 @@ theorem wtLoc_cont (k : ℕ) (T T' : ℝ) : Continuous (fun c : Fin (r + 1) → 
   exact (((continuous_Dl_diagonal l).norm).pow 2).pow 2
 
 /- English proof (translation)
-Unfold `wtLoc Formalism.L2.SG.RealObj.JacV`. Conclude with `mul_nonneg (pow_nonneg hc.2.le _) (Finset.prod_nonneg fun _ _ => sq_nonneg _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem wtLoc_nonneg (k : ℕ) (T T' : ℝ) {c : Fin (r + 1) → ℂ} (hc : c ∈ GoodLoc (r := r) T T') :
     0 ≤ wtLoc k T T' c := by
@@ -98,9 +98,7 @@ theorem wtLoc_nonneg (k : ℕ) (T T' : ℝ) {c : Fin (r + 1) → ℂ} (hc : c �
   exact mul_nonneg (pow_nonneg hc.2.le _) (Finset.prod_nonneg fun _ _ => sq_nonneg _)
 
 /- English proof (translation)
-Establish `h1 : IsOpen {c : Fin (r + 1) → ℂ | ∀ l, c l ≠ 0}`. Simplify using `only [Set.setOf_forall]`. Conclude with `isOpen_iInter_of_finite fun l => isOpen_ne_fun (continuous_apply l) continuous_const`. Establish `h2 : IsOpen {c : Fin (r + 1) → ℂ | 0 < Gv T T' (Matrix.diagonal c)}` using `isOpen_lt continuous_const (gv_cont T T')`. Rewrite using `[GoodLoc, Set.setOf_and]`.
-
-Conclude with `(h1.inter h2).measurableSet`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurableSet_goodLoc (T T' : ℝ) : MeasurableSet (GoodLoc (r := r) T T') := by
   have h1 : IsOpen {c : Fin (r + 1) → ℂ | ∀ l, c l ≠ 0} := by
@@ -125,7 +123,7 @@ def phiLoc (h : (Fin (r + 1) → ℂ) → Formalism.REAL.UJ ε) (x : (Fin (r + 1
   x.2.1 * h x.1 * x.2.2⁻¹
 
 /- English proof (translation)
-Unfold `phiLoc`. Conclude with `((measurable_fst.comp measurable_snd).mul (hh.comp measurable_fst)).mul (measurable_snd.comp measurable_snd).inv`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem phiLoc_meas {h : (Fin (r + 1) → ℂ) → Formalism.REAL.UJ ε} (hh : Measurable h) : Measurable (phiLoc ε h) := by
   unfold phiLoc
@@ -133,13 +131,13 @@ theorem phiLoc_meas {h : (Fin (r + 1) → ℂ) → Formalism.REAL.UJ ε} (hh : M
     (measurable_snd.comp measurable_snd).inv
 
 /- English proof (translation)
-Establish `hp` using `phiLoc_meas ε hh`. Use `Measure.ext fun s hs => ?_` and prove the remaining obligations. Establish `hφ : Measurable (s.indicator (1 : Formalism.REAL.UJ ε → ℝ≥0∞))` using `measurable_const.indicator hs`. Establish `hm : Measurable fun p => s.indicator (1 : Formalism.REAL.UJ ε → ℝ≥0∞) (phiLoc ε h p)` using `hφ.comp hp`. Establish `hw : Measurable fun c : Fin (r + 1) → ℂ => ENNReal.ofReal (C * wtLoc k T T' c)` using `ENNReal.measurable_ofReal.comp (measurable_const.mul (wtLoc_cont k T T').measurable)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg` using `hm.lintegral_prod_right' (ν := μS.prod μS')`. Rewrite using `[← lintegral_indicator_one hs, hD _ hφ, Measure.map_apply hp hs, ← lintegral_indicator_one (hp hs)]`. Establish `hind : ((phiLoc ε h) ⁻¹' s).indicator (1 : (Fin (r + 1) → ℂ) × (Formalism.REAL.UJ ε × Formalism.REAL.UJ ε) → ℝ≥0∞) = fun p => s.indicator (1 : Formalism.REAL.UJ ε → ℝ≥0∞) (phiLoc ε h p)`. Use function extensionality and compare the values at `p`. Apply the tactic sequence `by_cases hx : phiLoc ε h p ∈ s <;> simp [hx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[hind, lintegral_prod _ hm.aemeasurable, nuLoc, lintegral_withDensity_eq_lintegral_mul _ hw hg]`. Use `lintegral_congr fun c => ?_` and prove the remaining obligations. Use `congr 1`. Establish `hc : Measurable fun y : Formalism.REAL.UJ ε × Formalism.REAL.UJ ε => s.indicator (1 : Formalism.REAL.UJ ε → ℝ≥0∞) (phiLoc ε h (c, y))` using `hm.comp measurable_prodMk_left`. Use `beta_reduce`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lintegral_prod _ hc.aemeasurable]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem muG_eq_map (k : ℕ) (T T' : ℝ) (μS μS' : Measure (Formalism.REAL.UJ ε)) [SFinite μS] [SFinite μS']
     (h : (Fin (r + 1) → ℂ) → Formalism.REAL.UJ ε) (hh : Measurable h) (C : ℝ)

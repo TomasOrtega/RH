@@ -9,7 +9,7 @@ namespace GlobalTheory.CompanionTheory.DichMod
 variable {S : Type} [CommRing S]
 
 /- English proof (translation)
-Establish `h` using `Ideal.mem_jacobson_bot.mp hJ (-w)`. Establish `e : ϖ * -w + 1 = 1 - w * ϖ` using `by ring`. Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isUnit_one_sub_mul {ϖ : S} (hJ : ϖ ∈ (⊥ : Ideal S).jacobson) (w : S) :
     IsUnit (1 - w * ϖ) := by
@@ -18,11 +18,9 @@ theorem isUnit_one_sub_mul {ϖ : S} (hJ : ϖ ∈ (⊥ : Ideal S).jacobson) (w : 
   rwa [e] at h
 
 /- English proof (translation)
-Break down `hc f ϖ with h | h` into its components or cases. Use `left`. Take `⟨c, d, e⟩` from `Ideal.mem_span_pair.mp h`. Conclude with `⟨c + d * ϖ, by rw [← e]; ring⟩`. Use `right`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, w, e⟩` from `Ideal.mem_span_pair.mp h`. Establish `hu` using `isUnit_one_sub_mul hJ w`. Establish `key : (1 - w * ϖ) * ϖ = c * f`. Establish `: c * f = ϖ - w * ϖ ^ 2` using `by linear_combination e`. Rewrite using `[this]`.
-
-Expand and normalize the polynomial expressions, which then agree. Conclude with `hu.dvd_mul_left.mp (key ▸ dvd_mul_left f c)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem dvd_or_dvd {ϖ : S} (hJ : ϖ ∈ (⊥ : Ideal S).jacobson)
     (hc : ∀ f g : S, f ∈ Ideal.span {g, ϖ ^ 2} ∨ g ∈ Ideal.span {f, ϖ ^ 2}) (f : S) :
@@ -40,9 +38,9 @@ theorem dvd_or_dvd {ϖ : S} (hJ : ϖ ∈ (⊥ : Ideal S).jacobson)
     exact hu.dvd_mul_left.mp (key ▸ dvd_mul_left f c)
 
 /- English proof (translation)
-Break down `hc f g with h | h` into its components or cases. Use `left`. Take `⟨c, d, e⟩` from `Ideal.mem_span_pair.mp h`. Rewrite using `[← e]`. Conclude with `dvd_add (dvd_mul_left g c) ((hg.trans (dvd_pow_self ϖ two_ne_zero)).mul_left d)`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `right`. Take `⟨c, d, e⟩` from `Ideal.mem_span_pair.mp h`. Rewrite using `[← e]`. Conclude with `dvd_add (dvd_mul_left f c) ((hf.trans (dvd_pow_self ϖ two_ne_zero)).mul_left d)`.
+A detailed English derivation is pending.
 -/
 theorem comparable {ϖ : S}
     (hc : ∀ f g : S, f ∈ Ideal.span {g, ϖ ^ 2} ∨ g ∈ Ideal.span {f, ϖ ^ 2}) {f g : S}
@@ -58,9 +56,9 @@ theorem comparable {ϖ : S}
     exact dvd_add (dvd_mul_left f c) ((hf.trans (dvd_pow_self ϖ two_ne_zero)).mul_left d)
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `h`. Establish `hu` using `isUnit_one_sub_mul hJ (a * t)`. Establish `key : (1 - a * t * ϖ) * ϖ ^ N = b * g`. Establish `: b * g = ϖ ^ N - a * f` using `by linear_combination e`. Rewrite using `[this, ht]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hg : g ∣ ϖ ^ N` using `hu.dvd_mul_left.mp (key ▸ dvd_mul_left g b)`. Conclude with `hg.trans ⟨ϖ * t, by rw [ht]; ring⟩`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dvd_of_high {ϖ : S} (hJ : ϖ ∈ (⊥ : Ideal S).jacobson) {f g a b : S} {N : ℕ}
     (e : a * f + b * g = ϖ ^ N) (h : ϖ ^ (N + 1) ∣ f) : g ∣ f := by
@@ -73,9 +71,7 @@ theorem dvd_of_high {ϖ : S} (hJ : ϖ ∈ (⊥ : Ideal S).jacobson) {f g a b : S
   exact hg.trans ⟨ϖ * t, by rw [ht]; ring⟩
 
 /- English proof (translation)
-Establish `h1 : f ∣ ϖ ^ (i + 1)`. Rewrite using `[hf, pow_succ]`. Conclude with `mul_dvd_mul_left _ hf'`. Establish `h2 : ϖ ^ (i + 1) ∣ g`. Rewrite using `[hg]`.
-
-Conclude with `(pow_dvd_pow ϖ hij).mul_right g'`. Conclude with `h1.trans h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_of_lt {ϖ f g f' g' : S} {i j : ℕ} (hf : f = ϖ ^ i * f') (hg : g = ϖ ^ j * g')
     (hf' : f' ∣ ϖ) (hij : i < j) : f ∣ g := by
@@ -88,13 +84,13 @@ theorem dvd_of_lt {ϖ f g f' g' : S} {i j : ℕ} (hf : f = ϖ ^ i * f') (hg : g 
   exact h1.trans h2
 
 /- English proof (translation)
-Introduce `S _ ϖ hJ hc f g hN`. Take `⟨N, hN⟩` from `hN`. Take `⟨a, b, e⟩` from `Ideal.mem_span_pair.mp hN`. Establish `hd` using `dvd_or_dvd hJ hc`. Break down `GlobalTheory.CompanionTheory.NormalForm.normal_form_of_dichotomy ϖ hd f (N + 1) with hf | ⟨i, f', hf, hf'⟩` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Or.inl (dvd_of_high hJ e hf)`. Break down `GlobalTheory.CompanionTheory.NormalForm.normal_form_of_dichotomy ϖ hd g (N + 1) with hg | ⟨j, g', hg, hg'⟩` into its components or cases. Conclude with `Or.inr (dvd_of_high hJ (by rw [add_comm]; exact e) hg)`. Break down `lt_trichotomy i j with hij | hij | hij` into its components or cases. Conclude with `Or.inr (dvd_of_lt hf hg hf' hij)`.
+Prove the first alternative. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative.
 
-Substitute `hij` using the available equality. Rewrite using `[hf, hg]`. Break down `comparable hc hf' hg' with h | h` into its components or cases. Conclude with `Or.inl (mul_dvd_mul_left _ h)`. Conclude with `Or.inr (mul_dvd_mul_left _ h)`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 
-Conclude with `Or.inl (dvd_of_lt hg hf hg' hij)`.
+Prove the first alternative.
 -/
 theorem dich_of_mod : ∀ {S : Type} [CommRing S] (ϖ : S), ϖ ∈ (⊥ : Ideal S).jacobson →
     (∀ f g : S, f ∈ Ideal.span {g, ϖ ^ 2} ∨ g ∈ Ideal.span {f, ϖ ^ 2}) → Dich ϖ := by

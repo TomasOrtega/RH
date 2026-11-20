@@ -16,7 +16,7 @@ namespace PtsPencil
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Establish `h2 : fderiv ℝ (fderiv ℝ f) y = fderiv ℝ (fderiv ℝ f') y` using `(h.fderiv (𝕜 := ℝ)).fderiv_eq`. Use extensionality with `i j`. Simplify using `only [cxHessian, h2]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cxHessian_congr {D : ℕ} {f f' : (Fin D → ℂ) → ℝ} {y : Fin D → ℂ} (h : f =ᶠ[𝓝 y] f') :
     cxHessian f y = cxHessian f' y := by
@@ -25,11 +25,11 @@ theorem cxHessian_congr {D : ℕ} {f f' : (Fin D → ℂ) → ℝ} {y : Fin D �
   simp only [cxHessian, h2]
 
 /- English proof (translation)
-Establish `h1 : fderiv ℝ ψ =ᶠ[𝓝 y] fun y' => a • fderiv ℝ f y' + b • fderiv ℝ g y'` using `by filter_upwards [hψ.fderiv (𝕜 := ℝ), hf, hg] with y' h1 h2 h3`. Rewrite using `[h1]`. Conclude with `(((h2.differentiableAt (by norm_num)).hasFDerivAt.const_mul a).add ((h3.differentiableAt (by norm_num)).hasFDerivAt.const_mul b)).fderiv`. Establish `df : DifferentiableAt ℝ (fderiv ℝ f) y` using `(hf.self_of_nhds.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`. Establish `dg : DifferentiableAt ℝ (fderiv ℝ g) y` using `(hg.self_of_nhds.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH : fderiv ℝ (fderiv ℝ ψ) y = a • fderiv ℝ (fderiv ℝ f) y + b • fderiv ℝ (fderiv ℝ g) y`. Rewrite using `[h1.fderiv_eq]`. Conclude with `((df.hasFDerivAt.const_smul a).add (dg.hasFDerivAt.const_smul b)).fderiv`. Use extensionality with `i j`. Simplify using `only [cxHessian, hH, Matrix.add_apply, Matrix.smul_apply, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem cxHessian_lin {D : ℕ} {f g ψ : (Fin D → ℂ) → ℝ} {y : Fin D → ℂ} (a b : ℝ)
     (hf : ∀ᶠ y' in 𝓝 y, ContDiffAt ℝ 2 f y') (hg : ∀ᶠ y' in 𝓝 y, ContDiffAt ℝ 2 g y')
@@ -58,7 +58,7 @@ def IsC2AlongSheets {e : ℕ} (Q : Ideal (MRing ι)) (Ψ : (((k : K) → ι k) �
   ∀ y w γ, IsSheet Q Ψ y w γ → ∀ᶠ y' in 𝓝 y, ContDiffAt ℝ 2 (fun y'' => f (γ y'')) y'
 
 /- English proof (translation)
-Introduce `y w γ hs`. Establish `han : ∀ᶠ y' in 𝓝 y, AnalyticAt ℂ γ y'` using `(sheet_analyticAt osgood hs).eventually_analyticAt`. Establish `hmc : ∀ᶠ y' in 𝓝 y, γ y' ∈ mcPts Q` using `hs.2.mono fun _ h => h.2.1`. Conclude with `(han.and hmc).mono fun y' h => pot_contDiffAt hL h.1 h.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isC2AlongSheets_log_metric {e : ℕ} (Q : Ideal (MRing ι))
     (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)) {L : HermLine ι} (hL : IsSmoothHerm L) :
@@ -69,7 +69,7 @@ theorem isC2AlongSheets_log_metric {e : ℕ} (Q : Ideal (MRing ι))
   exact (han.and hmc).mono fun y' h => pot_contDiffAt hL h.1 h.2.1
 
 /- English proof (translation)
-Introduce `y w γ hs`. Use `filter_upwards [hf y w γ hs, hg y w γ hs] with y' h1 h2`. Conclude with `(contDiffAt_const.mul h1).add (contDiffAt_const.mul h2)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem IsC2AlongSheets.lin {e : ℕ} {Q : Ideal (MRing ι)}
     {Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)} {f g : ((Σ k, ι k) → ℂ) → ℝ}
@@ -80,9 +80,9 @@ theorem IsC2AlongSheets.lin {e : ℕ} {Q : Ideal (MRing ι)}
   exact (contDiffAt_const.mul h1).add (contDiffAt_const.mul h2)
 
 /- English proof (translation)
-Distinguish the cases in `hγ : ∃ γ, IsSheet Q Ψ y w γ`. Simplify using `only [sheetDensity, dif_pos hγ]`. Establish `hmc : ∀ᶠ y' in 𝓝 y, hγ.choose y' ∈ mcPts Q` using `hγ.choose_spec.2.mono fun _ h => h.2.1`. Establish `hH : (fun k => cxHessian (fun y' => φ k (hγ.choose y')) y) = fun k => cxHessian (fun y' => φ' k (hγ.choose y')) y`. Use function extensionality and compare the values at `fun k => cxHessian_congr (hmc.mono fun y' hy' => h k _ hy')`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [maDensity, hH]`. Simplify using `only [sheetDensity, dif_neg hγ]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sheetDensity_congr {e : ℕ} (Q : Ideal (MRing ι))
     (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)) {φ φ' : Fin e → ((Σ k, ι k) → ℂ) → ℝ}
@@ -99,7 +99,7 @@ theorem sheetDensity_congr {e : ℕ} (Q : Ideal (MRing ι))
   · simp only [sheetDensity, dif_neg hγ]
 
 /- English proof (translation)
-Establish `hA : ∀ Ψ, ptsIntegralAt Q Ψ φ g = ptsIntegralAt Q Ψ φ' g` using `fun Ψ => by`. Simplify using `only [ptsIntegralAt, sheetDensity_congr Q Ψ h g]`. Simplify using `only [ptsIntegral, hA]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem ptsIntegral_congr {e : ℕ} (Q : Ideal (MRing ι)) {φ φ' : Fin e → ((Σ k, ι k) → ℂ) → ℝ}
     (h : ∀ j, ∀ z ∈ mcPts Q, φ j z = φ' j z) (g : ((Σ k, ι k) → ℂ) → ℝ) :
@@ -112,7 +112,7 @@ def mixW {e : ℕ} (α β : ((Σ k, ι k) → ℂ) → ℝ) (i : ℕ) : Fin e �
   fun k => if (k : ℕ) < i then β else α
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `[mixW]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mixW_zero {e : ℕ} (α β : ((Σ k, ι k) → ℂ) → ℝ) : mixW (e := e) α β 0 = fun _ => α := by
   funext k
@@ -125,13 +125,13 @@ theorem mixedDisc_eq_mdisc {D : ℕ} (A : Fin D → Matrix (Fin D) (Fin D) ℂ) 
     mixedDisc A = ReciprocityTheory.AnForm.mdisc A := rfl
 
 /- English proof (translation)
-Distinguish the cases in `hγ : ∃ γ, IsSheet Q Ψ y w γ`. Simplify using `only [sheetDensity, dif_pos hγ]`. Establish `hs : IsSheet Q Ψ y w hγ.choose` using `hγ.choose_spec`. Establish `hmc : ∀ᶠ y' in 𝓝 y, hγ.choose y' ∈ mcPts Q` using `hs.2.mono fun _ h => h.2.1`. Establish `hHφ : (fun k => cxHessian (fun y' => φ k (hγ.choose y')) y) = fun _ => (a : ℂ) • cxHessian (fun y' => α (hγ.choose y')) y + (b : ℂ) • cxHessian (fun y' => β (hγ.choose y')) y`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun k => cxHessian_lin a b (hα y w _ hs) (hβ y w _ hs) (hmc.mono fun y' hy' => hφ k _ hy')`. Establish `hHmix : ∀ i, (fun k : Fin e => cxHessian (fun y' => mixW α β i k (hγ.choose y')) y) = fun k : Fin e => if (k : ℕ) < i then cxHessian (fun y' => β (hγ.choose y')) y else cxHessian (fun y' => α (hγ.choose y')) y`. Introduce `i`. Use function extensionality and compare the values at `k`. Unfold `mixW`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Apply the tactic sequence `split_ifs <;> rfl`. Simplify using `only [maDensity, hHφ, hHmix, mixedDisc_eq_mdisc, ReciprocityTheory.AnForm.A.mdisc_const]`. Rewrite using `[add_comm, ReciprocityTheory.AnForm.A.det_smul_add_smul_eq_sum_mdisc, Complex.re_sum, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hc : (e.choose i : ℂ) * (b : ℂ) ^ i * (a : ℂ) ^ (e - i) = (((e.choose i : ℝ) * b ^ i * a ^ (e - i) : ℝ) : ℂ)` using `by push_cast; ring`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hc, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [sheetDensity, dif_neg hγ, mul_zero, Finset.sum_const_zero]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 -/
 theorem sheetDensity_pencil {e : ℕ} (Q : Ideal (MRing ι))
     (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)) {α β : ((Σ k, ι k) → ℂ) → ℝ}
@@ -167,7 +167,7 @@ theorem sheetDensity_pencil {e : ℕ} (Q : Ideal (MRing ι))
   · simp only [sheetDensity, dif_neg hγ, mul_zero, Finset.sum_const_zero]
 
 /- English proof (translation)
-Establish `hfin` using `fibreFinite K ι Q e Ψ hQ hΨ y`. Simplify using `only [finsum_mem_eq_finite_toFinset_sum _ hfin, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun w _ => sheetDensity_pencil Q Ψ hα hβ a b hφ g y w`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibreSum_pencil {e : ℕ} {Q : Ideal (MRing ι)} (hQ : IsArithVar Q (e + 1))
     {Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)} (hΨ : IsGoodProj Q Ψ)
@@ -182,9 +182,9 @@ theorem fibreSum_pencil {e : ℕ} {Q : Ideal (MRing ι)} (hQ : IsArithVar Q (e +
   exact Finset.sum_congr rfl fun w _ => sheetDensity_pencil Q Ψ hα hβ a b hφ g y w
 
 /- English proof (translation)
-Simplify using `only [ptsIntegral]`. Use `split_ifs with hΨ`. Simplify using `only [ptsIntegralAt]`. Establish `hfun : (fun y => ∑ᶠ w ∈ fibre Q hΨ.choose y, sheetDensity Q hΨ.choose φ g y w) = fun y => ∑ i ∈ Finset.range (e + 1), (e.choose i : ℝ) * b ^ i * a ^ (e - i) * ∑ᶠ w ∈ fibre Q hΨ.choose y, sheetDensity Q hΨ.choose (mixW α β i) g y w`. Use function extensionality and compare the values at `fun y => fibreSum_pencil hQ hΨ.choose_spec (hα _) (hβ _) a b hφ g y`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfun, integral_finsetSum _ fun i hi => (hint _ hΨ.choose_spec i hi).const_mul _]`. Conclude with `Finset.sum_congr rfl fun i _ => integral_const_mul _ _`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ptsIntegral_pencil {e : ℕ} {Q : Ideal (MRing ι)} (hQ : IsArithVar Q (e + 1))
     {α β : ((Σ k, ι k) → ℂ) → ℝ} (hα : ∀ Ψ, IsC2AlongSheets (e := e) Q Ψ α)
@@ -208,15 +208,15 @@ theorem ptsIntegral_pencil {e : ℕ} {Q : Ideal (MRing ι)} (hQ : IsArithVar Q (
 open Matrix in
 
 /- English proof (translation)
-Set `x : Fin N → ℝ` to `fun j => 1 / (((j : ℕ) + 1 : ℕ) : ℝ)`. Establish `hinj : Function.Injective x`. Introduce `j k hjk`. Simplify using `only [x, one_div, _root_.inv_inj, Nat.cast_inj] at hjk`. Conclude with `Fin.ext (by omega)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hdet : IsUnit (Matrix.vandermonde x).det`. Rewrite using `[isUnit_iff_ne_zero, Matrix.det_vandermonde_ne_zero_iff]`. Conclude with `hinj`. Set `F : Y → Fin N → ℝ` to `fun y j => ∑ i ∈ Finset.range N, x j ^ i * M i y`. Establish `hval : ∀ y, F y = Matrix.vandermonde x *ᵥ fun i : Fin N => M i y`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `y`. Use function extensionality and compare the values at `j`. Simplify using `only [F, Matrix.mulVec, dotProduct, Matrix.vandermonde_apply]`. Conclude with `(Fin.sum_univ_eq_sum_range (fun i => x j ^ i * M i y) N).symm`. Establish `hinv : ∀ y, (fun i : Fin N => M i y) = (Matrix.vandermonde x)⁻¹ *ᵥ F y`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Rewrite using `[hval, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hdet, Matrix.one_mulVec]`. Introduce `i hi`. Establish `hM : M i = fun y => ∑ j : Fin N, (Matrix.vandermonde x)⁻¹ ⟨i, hi⟩ j * F y j`. Use function extensionality and compare the values at `y`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Use `congrFun (hinv y) ⟨i, hi⟩` as an intermediate fact. Simplify `this` using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[hM]`. Conclude with `integrable_finset_sum _ fun j _ => (h j).const_mul _`.
+A detailed English derivation is pending.
 -/
 theorem integrable_of_nodes {Y : Type*} [MeasurableSpace Y] {μ : Measure Y} {N : ℕ} (M : ℕ → Y → ℝ)
     (h : ∀ j : Fin N, Integrable (fun y => ∑ i ∈ Finset.range N,

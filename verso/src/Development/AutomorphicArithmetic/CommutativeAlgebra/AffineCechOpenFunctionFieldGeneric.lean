@@ -9,7 +9,7 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.RiemannFormHermi
 open CategoryTheory AlgebraicGeometry KaehlerDifferential GlobalTheory GlobalTheory.PD GlobalTheory.CechDR GlobalTheory.HodgeCoh ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 /- English proof (translation)
-Establish `h1` using `HasRingHomProperty.appLE @Smooth p (SmoothOfRelativeDimension.smooth d p) ⟨⊤, isAffineOpen_top (Sp ℂ)⟩ ⟨V, hV⟩ (by simp)`. Establish `h2 : RingHom.Smooth (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom` using `RingHom.Smooth.of_bijective (ConcreteCategory.bijective_of_isIso _)`. Conclude with `RingHom.Smooth.comp h2 h1`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem smooth_sections_of_affine_open (d : ℕ) (Z : Scheme.{0}) [IsIntegral Z] (p : Z ⟶ Sp ℂ)
     [SmoothOfRelativeDimension d p] (V : Z.Opens) (hV : IsAffineOpen V) :
@@ -21,19 +21,17 @@ private theorem smooth_sections_of_affine_open (d : ℕ) (Z : Scheme.{0}) [IsInt
   exact RingHom.Smooth.comp h2 h1
 
 /- English proof (translation)
-Introduce `d Z _ p _ inst ι U B hinst hU a s hs hV hη`. Use `letI := algΓ p`. Substitute `hinst` using the available equality. Use `letI : Algebra ℂ Z.functionField := ffAlg p`. Use `set V := cechOpen ⊤ U s with hVdef`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Substitute using the available equality. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI : Algebra (Sec p V) Z.functionField := (germSec p hη).toAlgebra`. Use `haveI : IsScalarTower ℂ (Sec p V) Z.functionField := IsScalarTower.of_algebraMap_eq (fun r => ((semiHom_germSec p hη).map_algebraMap r).symm)`. Use `haveI : Nonempty V := ⟨⟨_, hη⟩⟩`. Use `haveI : IsFractionRing (Sec p V) Z.functionField := functionField_isFractionRing_of_isAffineOpen Z V hV`. Use `haveI := smooth_sections_of_affine_open d Z p V hV`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hring : ∀ y, y ∈ B s ↔ ∃ f : Sec p V, algebraMap (Sec p V) Z.functionField f = y`. Introduce `y`. Rewrite using `[hU.ring s hs y]`. Establish `hVeq : s.inf U = V`. Rewrite using `[hVdef]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Simplify using `[cechOpen, Finset.inf_eq_iInf]`. Establish `gen : ∀ (W W' : Z.Opens) (_ : W = W') (h1 : genericPoint Z ∈ W) (h2 : genericPoint Z ∈ W'), ((∃ f, (Z.presheaf.germ W _ h1).hom f = y) ↔ ∃ f, (Z.presheaf.germ W' _ h2).hom f = y)`. Introduce and unpack `W W' rfl h1 h2`. Both sides reduce to the same expression. Conclude with `gen _ _ hVeq _ hη`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨hinj, hom⟩` from `mOm_injective_and_omB ℂ Z.functionField (Sec p V) (B s) hring a`. Establish `hform : ∀ x, formGermI p a hV hη rfl x = ↑((semiHom_algebraMap ℂ (Sec p V) Z.functionField).mOm a ((toOmEquiv p a hV).symm ((sectionsOn.toΓ (Omega p a) V) x)))` using `fun x => rfl`. Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Rewrite `hxy` using `[hform, hform]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `h3` using `hinj (Subtype.ext hxy)`. Conclude with `(sectionsOn.toΓ _ _).injective ((toOmEquiv p a hV).symm.injective h3)`. Use extensionality with `y`. Rewrite using `[LinearMap.mem_range, hom y]`. Prove the components needed by the constructor for the conclusion.
-
-Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨_, (hform x).symm⟩`. Introduce and unpack `⟨z, rfl⟩`. Use `⟨(sectionsOn.toΓ (Omega p a) V).symm (toOmEquiv p a hV z), ?_⟩` and prove the remaining obligations. Rewrite using `[hform, AddEquiv.apply_symm_apply, LinearEquiv.symm_apply_apply]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.affineCechOpen_functionField_generic :
     ∀ (d : ℕ) (Z : Scheme.{0}) [IsIntegral Z] (p : Z ⟶ Sp ℂ) [SmoothOfRelativeDimension d p] [inst : Algebra ℂ Z.functionField] (ι : Type) (U : ι → Z.Opens) (B : Finset ι → Subalgebra ℂ Z.functionField) (hinst : inst = ffAlg p) (hU : IsAffCover p U B) (a : ℕ) (s : Finset ι) (hs : s.Nonempty) (hV : IsAffineOpen (cechOpen ⊤ U s)) (hη : genericPoint Z ∈ cechOpen ⊤ U s), letI := algΓ p; Function.Injective (formGermI p a hV hη hinst) ∧ LinearMap.range (formGermI p a hV hη hinst) = omB ℂ Z.functionField (B s) a := by

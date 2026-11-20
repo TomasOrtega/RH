@@ -12,14 +12,14 @@ open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ Formalism.L
 variable {K C : Type} [Field K] [Field C] (φ : K →+* C) {d : ℕ}
 
 /- English proof (translation)
-The claim follows from `cc_ev_eq _ (by intro j i; fin_cases j; simp [ha]) f`.
+A detailed English derivation is pending.
 -/
 theorem constantCoeff_eval_single {n : ℕ} (a : Pt K n d) (ha : ∀ i, constantCoeff (a i) = 0) (f : PS K 1 d) :
     constantCoeff (ev ![a] f) = constantCoeff f :=
   cc_ev_eq _ (by intro j i; fin_cases j; simp [ha]) f
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `[coeff_pderiv, coeff_map]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_pderiv {σ : Type} (x : σ) (f : MvPowerSeries σ K) :
     MvPowerSeries.map φ (pderiv K x f) = pderiv C x (MvPowerSeries.map φ f) := by
@@ -27,7 +27,7 @@ theorem map_pderiv {σ : Type} (x : σ) (f : MvPowerSeries σ K) :
   simp [coeff_pderiv, coeff_map]
 
 /- English proof (translation)
-Unfold `DofN`. Simplify using `only [map_sum, map_mul, MvPowerSeries.map_C, map_ev2 φ (pt K d b) 0 (fun i => cc_pt b i) zc_zero, mpt_pt, mpt_zero, map_pderiv]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem map_DofN (F : Fin d → PS K 2 d) {n : ℕ} (b : Fin n) (u : Fin d → K) (f : PS K n d) :
     MvPowerSeries.map φ (DofN F b u f) =
@@ -37,7 +37,7 @@ theorem map_DofN (F : Fin d → PS K 2 d) {n : ℕ} (b : Fin n) (u : Fin d → K
     map_ev2 φ (pt K d b) 0 (fun i => cc_pt b i) zc_zero, mpt_pt, mpt_zero, map_pderiv]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => rfl`. Consider the case `succ m ih => rw [Function.iterate_succ_apply', Function.iterate_succ_apply', map_DofN, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem map_iter_DofN (F : Fin d → PS K 2 d) {n : ℕ} (b : Fin n) (u : Fin d → K) (m : ℕ) (f : PS K n d) :
     MvPowerSeries.map φ ((DofN F b u)^[m] f) =
@@ -47,7 +47,7 @@ theorem map_iter_DofN (F : Fin d → PS K 2 d) {n : ℕ} (b : Fin n) (u : Fin d 
   | succ m ih => rw [Function.iterate_succ_apply', Function.iterate_succ_apply', map_DofN, ih]
 
 /- English proof (translation)
-Unfold `DmonN`. Proceed by induction on `(Finset.univ : Finset ι).toList with`. Consider the case `nil => rfl`. Consider the case `cons l L ih => rw [List.foldr_cons, List.foldr_cons, map_iter_DofN, ih]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem map_DmonN (F : Fin d → PS K 2 d) {n : ℕ} {ι : Type} [Fintype ι] (cp : ι → Fin n)
     (u : ι → Fin d → K) (m : ι →₀ ℕ) (f : PS K n d) :
@@ -59,7 +59,7 @@ theorem map_DmonN (F : Fin d → PS K 2 d) {n : ℕ} {ι : Type} [Fintype ι] (c
   | cons l L ih => rw [List.foldr_cons, List.foldr_cons, map_iter_DofN, ih]
 
 /- English proof (translation)
-Unfold `DpolyN`. Rewrite using `[map_sum, MvPolynomial.support_map_of_injective P φ.injective]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, MvPowerSeries.map_C, MvPolynomial.coeff_map, map_DmonN]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_DpolyN (F : Fin d → PS K 2 d) {n : ℕ} {ι : Type} [Fintype ι] (cp : ι → Fin n)
     (u : ι → Fin d → K) (P : MvPolynomial ι K) (f : PS K n d) :
@@ -72,7 +72,7 @@ theorem map_DpolyN (F : Fin d → PS K 2 d) {n : ℕ} {ι : Type} [Fintype ι] (
   rw [map_mul, MvPowerSeries.map_C, MvPolynomial.coeff_map, map_DmonN]
 
 /- English proof (translation)
-Unfold `FB.expS`. Rewrite using `[PowerSeries.map_subst (PowerSeries.HasSubst.of_constantCoeff_zero hf), PowerSeries.map_exp]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_expS' [Algebra ℚ K] [Algebra ℚ C] {n : ℕ} (f : PS K n d) (hf : constantCoeff f = 0) :
     MvPowerSeries.map φ (FB.expS K f) = FB.expS C (MvPowerSeries.map φ f) := by
@@ -80,15 +80,15 @@ theorem map_expS' [Algebra ℚ K] [Algebra ℚ C] {n : ℕ} (f : PS K n d) (hf :
   rw [PowerSeries.map_subst (PowerSeries.HasSubst.of_constantCoeff_zero hf), PowerSeries.map_exp]
 
 /- English proof (translation)
-Unfold `nabValN`. Rewrite using `[← constantCoeff_map]`. Use `congr 1`. Establish `e1 : B.FK K = B.G.F` using `rfl`. Establish `e2 : B'.FK C = fun j => MvPowerSeries.map φ (B.G.F j)` using `funext hF`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eA : mpt φ (B.A.act w0) = B'.actK C w0`. Use function extensionality and compare the values at `j`. Conclude with `(hA w0 j).symm`. Establish `eK : B.actK K w0 = B.A.act w0` using `rfl`. Establish `p0 : ∀ i, constantCoeff (pt K d (0 : Fin 1) i) = 0` using `cc_pt (R := K) (d := d) 0`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `q0 : ∀ i, constantCoeff (comp1 (B.A.act w0) (pt K d (0 : Fin 1)) i) = 0` using `cc_comp1 (B.A.act w0) (B.A.const w0) (pt K d (0 : Fin 1)) p0`. Establish `hL : MvPowerSeries.map φ (B.hL K h w0) = B'.hL C (MvPowerSeries.map φ h) w0`. Unfold `FB.hL`. Rewrite using `[eK, map_ev2 φ (pt K d 0) (comp1 (B.A.act w0) (pt K d 0)) p0 q0, mpt_pt, mpt_comp1 φ (B.A.act w0) (pt K d 0) p0, mpt_pt, eA]`. Establish `hcL : constantCoeff (B.hL K h w0) = 0`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `FB.hL`. Rewrite using `[eK, constantCoeff_eval_pair (pt K d 0) (comp1 (B.A.act w0) (pt K d 0)) p0 q0, hh]`. Establish `hcb : ∀ b : Fin n, constantCoeff (ev (n` using `n) ![pt K d b] (B.hL K h w0)) = 0 := fun b => by`. Rewrite using `[constantCoeff_eval_single (pt K d b) (cc_pt (R := K) (d := d) b), hcL]`. Establish `hcs : constantCoeff ((m : K) • ∑ b : Fin n, ev (n` using `n) ![pt K d b] (B.hL K h w0)) = 0 := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.cast_smul_eq_nsmul, map_nsmul, map_sum, Finset.sum_eq_zero fun b _ => hcb b, smul_zero]`. Establish `hsum : ∑ b : Fin n, MvPowerSeries.map φ (ev (n` using `n) ![pt K d b] (B.hL K h w0)) = ∑ b : Fin n, ev (n := n) ![pt C d b] (B'.hL C (MvPowerSeries.map φ h) w0) := Finset.sum_congr rfl fun b _ => by`. Rewrite using `[map_ev1 φ (pt K d b) (cc_pt (R := K) (d := d) b), mpt_pt, hL]`. Rewrite using `[e1, e2, map_DpolyN, map_mul, map_expS' φ _ hcs, Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul, map_nsmul, map_sum, hsum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_nabValN [Algebra ℚ K] [Algebra ℚ C] {O : Type} [CommRing O] [StarRing O]
     (B : FB K d O) (B' : FB C d O) (hF : ∀ j, B'.G.F j = MvPowerSeries.map φ (B.G.F j))
@@ -137,9 +137,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 variable (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)]
 
 /- English proof (translation)
-Introduce `T io y C3 C _ _ V ι k Y hY a n f P`. Establish `hga : (a3B C3).IsCanonGauge T.Fr (a3h C3)`. Set `` to `io.toAlgebra`. Conclude with `C3.ch.gauge`. Establish `hcc : constantCoeff (a3h C3) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `congrArg constantCoeff hga.ax0`. Rewrite `e` using `[constantCoeff_eval_pair _ _ zc_zero (by simp), map_zero]`. Then use the resulting hypothesis. Unfold `FBChart.nab chartDerivativeCoefficient`. Rewrite using `[hY.h, hY.w0, hY.k]`. Conclude with `map_nabValN ι (a3B C3) Y.B hY.F hY.act (a3h C3) hcc H.w0 k f _ _ P`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nabMapSt_holds : NabMapSt Xo c := by
   intro T io y C3 C _ _ V ι k Y hY a n f P

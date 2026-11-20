@@ -16,9 +16,7 @@ def conductor : ℕ :=
   sInf {n : ℕ | unitFiltrationUnits K n ≤ (normUnits K L).range}
 
 /- English proof (translation)
-Establish `hne : {n : ℕ | unitFiltrationUnits K n ≤ (normUnits K L).range}.Nonempty` using `exists_unitFiltrationUnits_le (isOpen_range_normUnits_and_finiteIndex L).1`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `(unitFiltrationUnits_antitone h).trans (Nat.sInf_mem hne)`. Introduce `h`.
-
-Conclude with `Nat.sInf_le h`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem conductor_le_iff [IsSepClosure K Ω] (n : ℕ) :
     conductor L ≤ n ↔ unitFiltrationUnits K n ≤ (normUnits K L).range := by
@@ -41,7 +39,7 @@ section Conductor
 variable (L : IntermediateField K Ω) [FiniteDimensional K L] [IsAbelianGalois K L]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hv`. Simplify using `only [not_exists] at hv`. Establish `hlt : v < ⌈v⌉` using `lt_of_le_of_ne (Int.le_ceil v) (hv ⌈v⌉)`. Apply `h _ hlt` to reduce the goal to its premises. Rewrite using `[upperRamificationGroup_eq_ceil L v, upperRamificationGroup_eq_ceil L (⌈v⌉ : ℝ), Int.ceil_intCast]`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_int_eq_of_forall_upperRamificationGroup_ne {v : ℝ}
     (h : ∀ w, v < w → upperRamificationGroup K L w ≠ upperRamificationGroup K L v) :
@@ -53,7 +51,7 @@ theorem exists_int_eq_of_forall_upperRamificationGroup_ne {v : ℝ}
   rw [upperRamificationGroup_eq_ceil L v, upperRamificationGroup_eq_ceil L (⌈v⌉ : ℝ), Int.ceil_intCast]
 
 /- English proof (translation)
-Rewrite using `[← map_unitFiltrationUnits_restrictAb_localArtinMap L n, Subgroup.map_eq_bot_iff, ker_restrictAb_localArtinMap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unitFiltrationUnits_le_range_normUnits_iff (n : ℕ) :
     unitFiltrationUnits K n ≤ (normUnits K L).range ↔ upperRamificationGroup K L n = ⊥ := by
@@ -61,20 +59,20 @@ theorem unitFiltrationUnits_le_range_normUnits_iff (n : ℕ) :
     ker_restrictAb_localArtinMap]
 
 /- English proof (translation)
-Rewrite using `[conductor_le_iff, unitFiltrationUnits_le_range_normUnits_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem upperRamificationGroup_natCast_eq_bot_iff (n : ℕ) :
     upperRamificationGroup K L n = ⊥ ↔ conductor L ≤ n := by
   rw [conductor_le_iff, unitFiltrationUnits_le_range_normUnits_iff]
 
 /- English proof (translation)
-Break down `le_or_gt v (-1) with hv | hv` into its components or cases. Establish `htop : upperRamificationGroup K L v = ⊤`. Rewrite using `[upperRamificationGroup_of_nonpos (by linarith), lowerRamificationGroupReal_eq_top hv]`. Establish `hG : (⊤ : Subgroup (L ≃ₐ[K] L)) ≠ ⊥`. Establish `h1 : Module.finrank K L ≠ 1` using `fun h => hL (IntermediateField.finrank_eq_one_iff.1 h)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : 1 < Nat.card (L ≃ₐ[K] L)`. Rewrite using `[IsGalois.card_aut_eq_finrank]`. Use `Module.finrank_pos (R := K) (M := L)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `: Nontrivial (L ≃ₐ[K] L)` using `Finite.one_lt_card_iff_nontrivial.1 h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Conclude with `top_ne_bot`. Rewrite using `[htop]`. Simplify using `only [hG, false_iff, not_lt]`. Use `(conductor L).cast_nonneg (α := ℝ)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hc : 0 ≤ ⌈v⌉` using `Int.le_ceil_iff.2 (by push_cast; linarith)`. Take `⟨k, hk⟩` from `Int.eq_ofNat_of_zero_le hc`. Rewrite using `[upperRamificationGroup_eq_ceil L v, hk, Int.cast_natCast, upperRamificationGroup_natCast_eq_bot_iff, ← Nat.cast_le (α := ℤ), ← hk, Int.le_ceil_iff]`. Use `push_cast`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem upperRamificationGroup_eq_bot_iff (hL : L ≠ ⊥) (v : ℝ) :
     upperRamificationGroup K L v = ⊥ ↔ (conductor L : ℝ) - 1 < v := by
@@ -101,9 +99,7 @@ theorem upperRamificationGroup_eq_bot_iff (hL : L ≠ ⊥) (v : ℝ) :
     rfl
 
 /- English proof (translation)
-Use `⟨?_, fun v hv => ?_⟩` and prove the remaining obligations. Use `show upperRamificationGroup K L _ ≠ ⊥`. Rewrite using `[Ne, upperRamificationGroup_eq_bot_iff L hL]`. Conclude with `lt_irrefl _`. Establish `hv' : ¬ ((conductor L : ℝ) - 1 < v)` using `fun h => hv ((upperRamificationGroup_eq_bot_iff L hL v).2 h)`.
-
-Conclude with `not_lt.1 hv'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isGreatest_conductor_sub_one (hL : L ≠ ⊥) :
     IsGreatest {v : ℝ | upperRamificationGroup K L v ≠ ⊥} ((conductor L : ℝ) - 1) := by
@@ -126,7 +122,7 @@ def upperRamificationGroupAb (v : ℝ) :
     (upperRamificationGroup K L v).comap (restrictAb L (le_maximalAbelianExtension L))
 
 /- English proof (translation)
-Simplify using `only [upperRamificationGroupAb, Subgroup.mem_iInf, Subgroup.mem_comap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_upperRamificationGroupAb {v : ℝ}
     {g : maximalAbelianExtension K Ω ≃ₐ[K] maximalAbelianExtension K Ω} :
@@ -136,31 +132,29 @@ theorem mem_upperRamificationGroupAb {v : ℝ}
   simp only [upperRamificationGroupAb, Subgroup.mem_iInf, Subgroup.mem_comap]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Rewrite using `[mem_upperRamificationGroupAb]`. Introduce `L _ _`. Rewrite using `[← map_unitFiltrationUnits_restrictAb_localArtinMap L n]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨x, hx, rfl⟩`. Introduce `g hg`. Rewrite `hg` using `[mem_upperRamificationGroupAb]`. Set `ι` to `{L : IntermediateField K Ω // FiniteDimensional K L ∧ IsAbelianGalois K L}`. Establish `hle : ∀ L : ι, L.1 ≤ maximalAbelianExtension K Ω` using `fun L => by`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `L.2.1` as an intermediate fact. Use `L.2.2` as an intermediate fact. Conclude with `le_maximalAbelianExtension L.1`. Set `t : ι → Set Kˣ` to `fun L => {x | x ∈ unitFiltrationUnits K n ∧ ∀ (y : Ω) (hy : y ∈ L.1), localArtinMap K Ω x ⟨y, hle L hy⟩ = g ⟨y, hle L hy⟩}`. Establish `ht : ∀ L : ι, t L = (unitFiltrationUnits K n : Set Kˣ) ∩ (fun x => haveI` using `L.2.1; haveI := L.2.2 restrictAb L.1 (le_maximalAbelianExtension L.1) (localArtinMap K Ω x)) ⁻¹' {haveI := L.2.1; haveI := L.2.2; restrictAb L.1 (le_maximalAbelianExtension L.1) g} := by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `L`. Use `L.2.1` as an intermediate fact. Use `L.2.2` as an intermediate fact. Use extensionality with `x`. Simplify using `only [t, Set.mem_ofPred_eq, Set.mem_inter_iff, Set.mem_preimage, Set.mem_singleton_iff, SetLike.mem_coe]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `and_congr_right fun _ => ⟨fun h => ?_, fun h y hy => ?_⟩` and prove the remaining obligations. Use `AlgEquiv.ext fun y => Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[restrictAb_apply, restrictAb_apply]`. Conclude with `congrArg Subtype.val (h y.1 y.2)`. Use `congrArg (fun σ : L.1 ≃ₐ[K] L.1 => ((σ ⟨y, hy⟩ : L.1) : Ω)) h` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [restrictAb_apply] at this`. Conclude with `Subtype.ext this`. Establish `hι : Nonempty ι` using `⟨⟨⊥, inferInstance, isAbelianGalois_of_le_maximalAbelianExtension ⊥ bot_le⟩⟩`. Establish `hcl : ∀ L : ι, IsClosed ((fun x => haveI` using `L.2.1; haveI := L.2.2 restrictAb L.1 (le_maximalAbelianExtension L.1) (localArtinMap K Ω x)) ⁻¹' {haveI := L.2.1; haveI := L.2.2; restrictAb L.1 (le_maximalAbelianExtension L.1) g}) := by`. Introduce `L`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `L.2.1` as an intermediate fact. Use `L.2.2` as an intermediate fact. Establish `: T2Space (L.1 ≃ₐ[K] L.1)` using `krullTopology_t2`. Conclude with `isClosed_singleton.preimage ((continuous_restrictAb L.1 _).comp continuous_localArtinMap)`. Establish `hdir : Directed (· ⊇ ·) t`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `L₁ L₂`. Use `L₁.2.1` as an intermediate fact. Use `L₁.2.2` as an intermediate fact. Use `L₂.2.1` as an intermediate fact. Use `L₂.2.2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 
-Establish `hab : IsAbelianGalois K (L₁.1 ⊔ L₂.1 : IntermediateField K Ω)` using `isAbelianGalois_of_le_maximalAbelianExtension _ (sup_le (hle L₁) (hle L₂))`. Use `⟨⟨L₁.1 ⊔ L₂.1, inferInstance, hab⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `fun x hx => ⟨hx.1, fun y hy => hx.2 y (le_sup_left (b := L₂.1) hy)⟩`. Conclude with `fun x hx => ⟨hx.1, fun y hy => hx.2 y (le_sup_right (a := L₁.1) hy)⟩`. Establish `hnon : ∀ L, (t L).Nonempty`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `L`. Use `L.2.1` as an intermediate fact. Use `L.2.2` as an intermediate fact. Establish `hgL` using `hg L.1`. Rewrite `hgL` using `[← map_unitFiltrationUnits_restrictAb_localArtinMap L.1 n]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨x, hxn, hxg⟩` from `hgL`. Use `⟨x, ?_⟩` and prove the remaining obligations. Rewrite using `[ht L]`. Conclude with `⟨hxn, hxg⟩`. Take `⟨x, hx⟩` from `IsCompact.nonempty_iInter_of_directed_nonempty_isCompact_isClosed t hdir hnon (fun L => by rw [ht L]; exact (isCompact_unitFiltrationUnits n).inter_right (hcl L)) (fun L => by rw [ht L]; exact (isCompact_unitFiltrationUnits n).isClosed.inter (hcl L))`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hx` using `[Set.mem_iInter]`. Take `⟨L₀⟩` from `hι`. Use `⟨x, (hx L₀).1, ?_⟩` and prove the remaining obligations. Use `AlgEquiv.ext fun y => Subtype.ext ?_` and prove the remaining obligations. Take `⟨L, hfin, hab, hyL⟩` from `exists_finite_abelian_mem y.2`.
-
-Conclude with `congrArg Subtype.val ((hx ⟨L, hfin, hab⟩).2 y hyL)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem map_unitFiltrationUnits_localArtinMap (n : ℕ) :
     (unitFiltrationUnits K n).map (localArtinMap K Ω) = upperRamificationGroupAb K Ω n := by

@@ -4,21 +4,17 @@ open MeasureTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `G X _ hX ν hν 𝓖 H hH hfin hslice`. Use `set μ := ν.restrict 𝓖 with hμ`. Establish `hprod : (ν.prod ν).restrict (𝓖 ×ˢ 𝓖) = μ.prod μ` using `(Measure.prod_restrict 𝓖 𝓖).symm`. Establish `hHm : ∀ x, AEStronglyMeasurable (H x) (μ.prod μ)` using `fun x => by`. Rewrite using `[← hprod]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hH x).restrict`. Establish `hFm : AEMeasurable (fun p => ∑' x, ‖H x p‖ₑ) (μ.prod μ)` using `AEMeasurable.ennreal_tsum fun x => (hHm x).enorm`. Establish `hFint : ∫⁻ p, ∑' x, ‖H x p‖ₑ ∂(μ.prod μ) ≠ ⊤`. Rewrite using `[lintegral_prod _ hFm]`. Conclude with `hfin`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum : ∑' x, ∫⁻ p, ‖H x p‖ₑ ∂(μ.prod μ) = ∫⁻ p, ∑' x, ‖H x p‖ₑ ∂(μ.prod μ)` using `(lintegral_tsum fun x => (hHm x).enorm).symm`. Establish `hInt : ∀ x, Integrable (H x) (μ.prod μ)` using `fun x => ⟨hHm x, by`. Establish `: ∫⁻ p, ‖H x p‖ₑ ∂(μ.prod μ) ≤ ∫⁻ p, ∑' x, ‖H x p‖ₑ ∂(μ.prod μ)` using `lintegral_mono fun p => ENNReal.le_tsum (f := fun x => ‖H x p‖ₑ) x`. Conclude with `lt_of_le_of_lt this (lt_top_iff_ne_top.2 hFint)⟩`. Establish `hswap : ∀ x, ∫⁻ g₂, ∫⁻ g₁, ‖H x (g₁, g₂)‖ₑ ∂μ ∂μ = ∫⁻ p, ‖H x p‖ₑ ∂(μ.prod μ)` using `fun x => (lintegral_prod_symm _ (hHm x).enorm).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLm : ∀ x, AEMeasurable (fun g₂ => ∫⁻ g₁, ‖H x (g₁, g₂)‖ₑ ∂μ) μ` using `fun x => ((hHm x).enorm.prod_swap).lintegral_prod_right'`. Establish `hG2 : ∀ᵐ g₂ ∂μ, ∑' x, ∫⁻ g₁, ‖H x (g₁, g₂)‖ₑ ∂μ ≠ ⊤`. Establish `hm : AEMeasurable (fun g₂ => ∑' x, ∫⁻ g₁, ‖H x (g₁, g₂)‖ₑ ∂μ) μ` using `AEMeasurable.ennreal_tsum hLm`. Establish `hi : ∫⁻ g₂, ∑' x, ∫⁻ g₁, ‖H x (g₁, g₂)‖ₑ ∂μ ∂μ ≠ ⊤`. Rewrite using `[lintegral_tsum hLm, tsum_congr hswap, hsum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hFint`. Use `filter_upwards [ae_lt_top' hm hi] with g₂ h using h.ne`. Establish `hKm : ∀ x, AEStronglyMeasurable (fun g₂ => ∫ g₁, H x (g₁, g₂) ∂μ) μ` using `fun x => (hHm x).prod_swap.integral_prod_right'`. Establish `hKfin : ∑' x, ∫⁻ g₂, ‖∫ g₁, H x (g₁, g₂) ∂μ‖ₑ ∂μ ≠ ⊤`. Use `ne_top_of_le_ne_top hFint ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← hsum]`. Use `ENNReal.tsum_le_tsum fun x => ?_` and prove the remaining obligations. Rewrite using `[← hswap x]`. Conclude with `lintegral_mono fun g₂ => enorm_integral_le_lintegral_enorm _`. Establish `key` using `integral_tsum hKm hKfin`.
-
-Establish `h0 : ∫ g₂, ∑' x, ∫ g₁, H x (g₁, g₂) ∂μ ∂μ = 0`. Apply `integral_eq_zero_of_ae` to reduce the goal to its premises. Use `filter_upwards [hG2] with g₂ h using hslice g₂ h`. Combine the equalities or inequalities in the displayed calculation. Use `tsum_congr fun x => ?_` and prove the remaining obligations.
-
-Rewrite using `[hprod]`. Conclude with `integral_prod_symm _ (hInt x)`. Use `_ = 0 := by rw [← key, h0]`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tsum_setIntegral_prod_eq_zero_of_inner :
     ∀ {G X : Type} [MeasurableSpace G], Countable X → ∀ (ν : Measure G), SFinite ν → ∀ (𝓖 : Set G) (H : X → G × G → ℂ), (∀ x, AEStronglyMeasurable (H x) (ν.prod ν)) → ∫⁻ g₁ in 𝓖, ∫⁻ g₂ in 𝓖, ∑' x, ‖H x (g₁, g₂)‖ₑ ∂ν ∂ν ≠ ⊤ → (∀ g₂, ∑' x, ∫⁻ g₁ in 𝓖, ‖H x (g₁, g₂)‖ₑ ∂ν ≠ ⊤ → ∑' x, ∫ g₁ in 𝓖, H x (g₁, g₂) ∂ν = 0) → ∑' x, ∫ p in 𝓖 ×ˢ 𝓖, H x p ∂(ν.prod ν) = 0 := by

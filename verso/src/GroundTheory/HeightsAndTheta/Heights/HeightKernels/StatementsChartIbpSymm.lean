@@ -21,7 +21,7 @@ def ChartIbpSymm.Statement : Prop :=
           fun i => hermChartPot (T i)) y
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Matrix.posDef_diagonal_iff.mpr fun j => by fin_cases j <;> norm_num, Matrix.PosDef.one, Matrix.posDef_diagonal_iff.mpr fun j => by fin_cases j <;> norm_num, fun _ => Matrix.posDef_diagonal_iff.mpr fun j => by fin_cases j <;> norm_num⟩`.
+Supply the required witnesses or components.
 -/
 example : (Matrix.diagonal ![(4 : ℂ), 1, 1] : Matrix (Fin (1 + 1 + 1)) (Fin (1 + 1 + 1)) ℂ).PosDef ∧
     (1 : Matrix (Fin (1 + 1 + 1)) (Fin (1 + 1 + 1)) ℂ).PosDef ∧

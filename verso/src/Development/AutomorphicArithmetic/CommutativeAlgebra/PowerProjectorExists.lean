@@ -9,11 +9,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open UpperTheory.Gal.Int.Geo
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Take `⟨h0, -⟩` from `UpperTheory.iteratedFiberPower_zero_isIso_and_succ_isPullback A`. Simplify using `only [zero_mul]`. Use `infer_instance`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `succ m ih`. Take `⟨-, hs⟩` from `UpperTheory.iteratedFiberPower_zero_isIso_and_succ_isPullback A`. Take `⟨u, v, hpb, hcomp⟩` from `hs m`. Establish `hu : SmoothOfRelativeDimension g u` using `(smoothOfRelativeDimension_isStableUnderBaseChange (n := g)).of_isPullback hpb.flip hg`. Rewrite using `[← hcomp, Nat.succ_mul, Nat.add_comm]`.
-
-Use `infer_instance`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem relDim_pow {S : Scheme.{0}} (A : Over S) (g : ℕ) (hg : SmoothOfRelativeDimension g A.hom) (k : ℕ) :
     SmoothOfRelativeDimension (k * g) (GlobalTheory.KS.pow A k).hom := by
@@ -31,9 +29,9 @@ private theorem relDim_pow {S : Scheme.{0}} (A : Over S) (g : ℕ) (hg : SmoothO
     infer_instance
 
 /- English proof (translation)
-Introduce `q _ D R _ _ b N _ _ X s o k`. Use `letI := o.grp`. Use `haveI := o.comm`. Establish `hT` using `GlobalTheory.T.harrisTaylor_relDim_and_diagonal_isLineBundle q D R b N X s o`. Use `⟨fun hs => GlobalTheory.KS.isProjOver_pow R X s hs o.A o.ab _ hT.2 o.ample k, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `d hd`. Use `haveI := relDim_pow o.A D.g hT.1 k`. Conclude with `⟨k * D.g + d, inferInstance⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.power_projector_exists :
     PowProj := by

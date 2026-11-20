@@ -9,31 +9,25 @@ namespace GlobalTheory.AtMember
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `B f T w Z t k`. Establish `hpi : (Formalism.L2.Herm.toErrXS t.full.1).piG = w.px.piG`. Establish `h5 : (t.full.1.cols.levelZeroCompatibility (w.D Z).u₀).piG = (t.C.herm.levelZeroCompatibility (w.D Z).u₀).piG` using `congrArg (fun X : Formalism.L2.Herm.ColsHermS (w.D Z) => (X.levelZeroCompatibility (w.D Z).u₀).piG) t.full.2`. Conclude with `h5.trans ((t.C.piG (w.D Z).u₀).symm.trans (t.std (w.D Z).u₀).gl.piG)`. Use `show barE (w.D Z) ((Formalism.L2.Herm.toErrXS t.full.1).piG k) ∈ Ideal.map (algebraMap (𝓞 (w.D Z).host.K) (𝓞 (w.D Z).host.E)) ((Fr.at (w.st Z) f).P.pb k).asIdeal`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hpi]`. Establish `hP : (Fr.at (w.st Z) f).P = w.I.C.P` using `by rw [w.C_eq]; rfl`. Rewrite using `[hP]`. Establish `hdiv` using `w.ok.pibar k`. Use `set π : 𝓞 (w.D Z).host.E := w.px.piG k with hπdef`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `set b : 𝓞 (w.D Z).host.E := barE (w.D Z) π with hbdef`. Establish `hbc : ((b : 𝓞 (w.D Z).host.E) : (w.D Z).host.E) = (w.D Z).host.conj (π : (w.D Z).host.E)` using `barE_eq_conj _ _`. Establish `hprod : π * b = (((w.D Z).host.g k : ℕ) : 𝓞 (w.D Z).host.E)`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Use `show ((π : (w.D Z).host.E) * (b : (w.D Z).host.E)) = algebraMap (𝓞 (w.D Z).host.E) (w.D Z).host.E (((w.D Z).host.g k : ℕ) : 𝓞 (w.D Z).host.E)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_natCast, hbc]`. Conclude with `w.px.piG_norm k`. Establish `hg0 : (((w.D Z).host.g k : ℕ) : 𝓞 (w.D Z).host.E) ≠ 0`. Introduce `h`. Establish `h'` using `congrArg (algebraMap (𝓞 (w.D Z).host.E) (w.D Z).host.E) h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h'` using `[map_natCast, map_zero, Nat.cast_eq_zero]`. Conclude with `((w.D Z).host.g_prime k).ne_zero h'`. Establish `hπ0 : π ≠ 0` using `fun h => hg0 (by rw [← hprod, h, zero_mul])`. Establish `hb0 : b ≠ 0` using `fun h => hg0 (by rw [← hprod, h, mul_zero])`. Establish `hbK : ((b : 𝓞 (w.D Z).host.E) : (w.D Z).host.E) ∈ (w.D Z).host.K`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hπE : ((π : 𝓞 (w.D Z).host.E) : (w.D Z).host.E) ≠ 0` using `fun h => hπ0 (RingOfIntegers.ext (h.trans (map_zero (algebraMap (𝓞 (w.D Z).host.E) (w.D Z).host.E)).symm))`. Establish `e : ((b : 𝓞 (w.D Z).host.E) : (w.D Z).host.E) = ((w.D Z).host.g k : (w.D Z).host.E) / ((π : 𝓞 (w.D Z).host.E) : (w.D Z).host.E)`. Rewrite using `[eq_div_iff hπE, mul_comm, hbc]`. Conclude with `w.px.piG_norm k`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `div_mem (natCast_mem _ _) (w.px.piG_K k)`. Use `set y : 𝓞 (w.D Z).host.K := toOK b hbK with hydef`. Establish `hy : algebraMap (𝓞 (w.D Z).host.K) (𝓞 (w.D Z).host.E) y = b` using `algebraMap_toOK b hbK`. Rewrite using `[← hy]`. Apply `Ideal.mem_map_of_mem` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `iI : Algebra.IsIntegral (𝓞 (w.D Z).host.K) (𝓞 (w.D Z).host.E)` using `⟨fun x => (Algebra.IsIntegral.isIntegral (R := ℤ) x).tower_top⟩`. Establish `hPk : ((w.I.C.P.pb k).asIdeal : Ideal (𝓞 (w.D Z).host.K)).IsPrime` using `(w.I.C.P.pb k).isPrime`. Take `⟨Q, -, hQp, hQ⟩` from `@Ideal.exists_ideal_over_prime_of_isIntegral (𝓞 (w.D Z).host.K) _ (𝓞 (w.D Z).host.E) _ (algebraMap (𝓞 (w.D Z).host.K) (𝓞 (w.D Z).host.E)).toAlgebra iI ((w.I.C.P.pb k).asIdeal : Ideal (𝓞 (w.D Z).host.K)) hPk ⊥ (by`. Introduce `x hx`. Rewrite `hx` using `[Ideal.mem_comap, Ideal.mem_bot]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `: x = 0` using `FaithfulSMul.algebraMap_injective (𝓞 (w.D Z).host.K) (𝓞 (w.D Z).host.E) (hx.trans (map_zero _).symm)`. Rewrite using `[this]`. Conclude with `Ideal.zero_mem _)`. Establish `hgQ : π * b ∈ Q`. Rewrite using `[hprod, ← map_natCast (algebraMap (𝓞 (w.D Z).host.K) (𝓞 (w.D Z).host.E)), ← Ideal.mem_comap, hQ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `w.I.C.P.pb_over k`. Break down `hQp.mem_or_mem hgQ with hπQ | hbQ` into its components or cases. Establish `hQ'p : (Q.comap (barE (w.D Z) : 𝓞 (w.D Z).host.E →+* 𝓞 (w.D Z).host.E)).IsPrime` using `Ideal.comap_isPrime _ _`. Establish `hbQ' : b ∈ Q.comap (barE (w.D Z) : 𝓞 (w.D Z).host.E →+* 𝓞 (w.D Z).host.E)`. Rewrite using `[Ideal.mem_comap]`.
-
-Use `show barE (w.D Z) (barE (w.D Z) π) ∈ Q`. Rewrite using `[barE_barE]`. Conclude with `hπQ`. Set `Q' : HeightOneSpectrum (𝓞 (w.D Z).host.E)` to `⟨Q.comap (barE (w.D Z) : 𝓞 (w.D Z).host.E →+* 𝓞 (w.D Z).host.E), hQ'p, fun h => hb0 (by rw [h] at hbQ'; exact (Ideal.mem_bot).1 hbQ')⟩`. Establish `hmem : Q' ∈ (B.primes w.px).vG k` using `(Formalism.L2.Col.mem_divs hb0 Q').2 hbQ'`.
-
-Establish `hd` using `(hdiv Q').1 hmem`. Establish `hu : y ∈ (HeightOneSpectrum.under (𝓞 (w.D Z).host.K) Q').asIdeal` using `by show algebraMap (𝓞 (w.D Z).host.K) (𝓞 (w.D Z).host.E) y ∈ Q'.asIdeal`. Rewrite using `[hy]`. Conclude with `hbQ'`. Establish `hd' : HeightOneSpectrum.under (𝓞 (w.D Z).host.K) Q' = w.I.C.P.pb k` using `hd`.
-
-Rewrite `hu` using `[hd']`. Conclude with `hu`. Rewrite using `[← hQ]`. Establish `h' : algebraMap (𝓞 (w.D Z).host.K) (𝓞 (w.D Z).host.E) y ∈ Q` using `hy.symm ▸ hbQ`. Conclude with `h'`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem conj_gen_mem_frame : ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : Bl.ColW B f T) (Z : w.Lt) (t : Bl.ColT w Z), HalfAt (Formalism.L2.Herm.toErrXS t.full.1) (Fr.at (w.st Z) f) := by
   intro B f T w Z t k

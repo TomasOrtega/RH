@@ -34,9 +34,9 @@ end Point
 end GlobalTheory.ShareOn.Comparison₂
 namespace GlobalTheory.ShareOn
 /- English proof (translation)
-Introduce `h`. Unfold `_root_.GlobalTheory.ShareOn.SharedWeightStatement _root_.GlobalTheory.BigOn.ForallTwoRuns _root_.GlobalTheory.BigOn.AtPtsAlt at h`. Unfold `_root_.GlobalTheory.BigOn.ShareStatement _root_.GlobalTheory.BigOn.ForallRecordObjects`. Use `Closed.imp h fun Fm CH _ H => ⟨0, fun c _ _ => ?_⟩` and prove the remaining obligations. Take `⟨x0, hx0⟩` from `H`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨x0, fun x hx hle i p hp hm r O hR => Comparison₂.leafShareI_of_shareW p hR (hx0 x hx hle i p hp hm r hR.1.ok hR.2)⟩`.
+Supply the required witnesses or components.
 -/
 theorem shareSt_of_shareWSt_alt : _root_.GlobalTheory.ShareOn.SharedWeightStatement → _root_.GlobalTheory.BigOn.ShareStatement := by
   intro h

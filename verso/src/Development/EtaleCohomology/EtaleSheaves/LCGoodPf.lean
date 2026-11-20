@@ -5,15 +5,13 @@ open LateralTheory.E.t_E1Cut
 namespace LateralTheory.E.LCGoodPf
 
 /- English proof (translation)
-Take `⟨I, rfl⟩` from `(PrimeSpectrum.isClosed_iff_zeroLocus_ideal Z).1 hZ`. Distinguish the cases in `hI : I = ⊤`. Substitute `hI` using the available equality. Simplify using the standard rewrite rules. Take `⟨M, hM, hIM⟩` from `Ideal.exists_le_maximal I hI`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-It suffices to derive a contradiction. Establish `hJM : J ≤ M` using `le_trans hJ (sInf_le ⟨bot_le, hM⟩)`. Establish `hp : (⟨M, hM.isPrime⟩ : PrimeSpectrum C) ∈ Set.range (PrimeSpectrum.comap (Ideal.Quotient.mk J))`. Establish `hker : RingHom.ker (Ideal.Quotient.mk J) ≤ M` using `by rw [Ideal.mk_ker]; exact hJM`. Use `hM.isPrime` as an intermediate fact.
+It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpr : (M.map (Ideal.Quotient.mk J)).IsPrime` using `Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective hker`. Use `⟨⟨M.map (Ideal.Quotient.mk J), hpr⟩, ?_⟩` and prove the remaining obligations. Use `ext1`. Use `show Ideal.comap _ (Ideal.map _ M) = M`. Rewrite using `[Ideal.comap_map_of_surjective _ Ideal.Quotient.mk_surjective]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `sup_eq_left.2 ?_` and prove the remaining obligations. Rewrite using `[← RingHom.ker_eq_comap_bot]`. Conclude with `hker`. Take `⟨z, hz⟩` from `hp`. Apply `h z` to reduce the goal to its premises.
-
-Rewrite using `[hz]`. Conclude with `hIM`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem closed_empty {C : Type} [CommRing C] {J : Ideal C} (hJ : J ≤ Ideal.jacobson ⊥)
     (Z : Set (PrimeSpectrum C)) (hZ : IsClosed Z)
@@ -47,7 +45,7 @@ theorem lcMap_apply {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) {Y : 
     lcMap f φ z = φ (PrimeSpectrum.comap f z) := rfl
 
 /- English proof (translation)
-Establish `: IsLocallyConstant (fun x => (a x = b x : Prop))` using `IsLocallyConstant.comp₂ a.isLocallyConstant b.isLocallyConstant (fun u v => (u = v : Prop))`. Establish `h2` using `this.isClosed_fiber False`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem isClosed_ne {X Y : Type} [TopologicalSpace X] (a b : LocallyConstant X Y) :
     IsClosed {x | a x ≠ b x} := by
@@ -58,29 +56,27 @@ theorem isClosed_ne {X Y : Type} [TopologicalSpace X] (a b : LocallyConstant X Y
   ext x; simp
 
 /- English proof (translation)
-Introduce `C _ J hG Y`. Take `⟨hJ, hlift⟩` from `hG`. Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Establish `hZ` using `closed_empty hJ _ (isClosed_ne a b) (fun z hz => hz (by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg (fun φ => φ z) hab` as an intermediate fact. Simplify `this))` using `[lcMap_apply]`. Use extensionality with `x`. Assume the negation of the conclusion as `hx`. Establish `: x ∈ ({x | a x ≠ b x} : Set _)` using `hx`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `this` using `[hZ]`. Conclude with `this`. Introduce `ψ`. Establish `hU : ∀ y : Y, ∃ U : Set (PrimeSpectrum C), IsClopen U ∧ PrimeSpectrum.comap (Ideal.Quotient.mk J) ⁻¹' U = ψ ⁻¹' {y}`. Introduce `y`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he, hF⟩` from `PrimeSpectrum.isClopen_iff.1 (ψ.isLocallyConstant.isClopen_fiber y)`. Take `⟨x, hx, hxe⟩` from `hlift e he`. Use `⟨PrimeSpectrum.basicOpen x, PrimeSpectrum.isClopen_iff.2 ⟨x, hx, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hF' : ψ ⁻¹' {y} = (PrimeSpectrum.basicOpen e : Set (PrimeSpectrum (C ⧸ J)))` using `hF`. Rewrite using `[hF', ← hxe]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `p`. Simplify using the standard rewrite rules. Use `choose U hUc hUp using hU`. Establish `hmem : ∀ z y, PrimeSpectrum.comap (Ideal.Quotient.mk J) z ∈ U y ↔ ψ z = y`. Introduce `z y`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg (fun s => z ∈ s) (hUp y)` as an intermediate fact. Simplify using `using this`. Establish `hcover : ∀ x, ∃ y, x ∈ U y`. Establish `hE` using `closed_empty hJ (⋃ y, U y)ᶜ (isOpen_iUnion (fun y => (hUc y).isOpen)).isClosed_compl (fun z hz => hz (Set.mem_iUnion.2 ⟨ψ z, (hmem z _).2 rfl⟩))`. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hx`. Use `push Not at hx`. Establish `: x ∈ (⋃ y, U y)ᶜ` using `by simpa using hx`. Rewrite `this` using `[hE]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `huniq : ∀ x y y', x ∈ U y → x ∈ U y' → y = y'`. Introduce `x y y' h1 h2`. Assume the negation of the conclusion as `hne`. Use `closed_empty hJ (U y ∩ U y') ((hUc y).isClosed.inter (hUc y').isClosed) (fun z hz => hne (((hmem z y).1 hz.1).symm.trans ((hmem z y').1 hz.2)))` as an intermediate fact. Establish `hx : x ∈ U y ∩ U y'` using `⟨h1, h2⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hx` using `[this]`. Conclude with `hx`. Set `g : PrimeSpectrum C → Y` to `fun x => Classical.choose (hcover x)`. Establish `hg : ∀ x y, g x = y ↔ x ∈ U y`. Introduce `x y`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `Classical.choose_spec (hcover x)`. Introduce `h`. Conclude with `huniq x _ _ (Classical.choose_spec (hcover x)) h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Establish `hgl : IsLocallyConstant g`. Rewrite using `[IsLocallyConstant.iff_isOpen_fiber]`. Introduce `y`. Establish `: g ⁻¹' {y} = U y` using `by ext x; simp [hg]`. Rewrite using `[this]`.
-
-Conclude with `(hUc y).isOpen`. Use `⟨⟨g, hgl⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `z`. Rewrite using `[lcMap_apply]`. Conclude with `(hg _ _).2 ((hmem z _).2 rfl)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LCGood_of : LCGood := by
   intro C _ J hG Y

@@ -7,7 +7,7 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights.Swarm
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.DoubleCech.proof GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.Staircase.proof GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.CellDSq.proof`.
+A detailed English derivation is pending.
 -/
 theorem DoubleCech.proof : GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.DoubleCech.Statement :=
   GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization.DoubleCech.proof

@@ -11,9 +11,9 @@ noncomputable section
 namespace GlobalTheory.PtExt
 variable {D : D7}
 /- English proof (translation)
-Take `⟨Sp, -, -⟩` from `hB`. Establish `hw : L.X.nd.w i = w` using `((L.X.nd.locs_mem j w i).1 hi).2`. Establish `hl : L.X.nd.l i = D.what₂.places.resChar w` using `by rw [← hw]; exact (L.X.nd.w_l i).symm`. Establish `hQ : L.X.nd.Q i = C.Q w` using `(Sp.Q_eq j w i hi).trans (Sp.Qc_eq j w)`. Establish `hS : v ∈ L.X.nd.S i ↔ v ∈ placesS D (L.X.nd.l i)` using `L.X.nd.S_def i v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `SplitOut GenAt`. Rewrite using `[hS, ← hl, ← hQ]`. The claim follows by propositional logic.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. The claim follows by propositional logic.
 -/
 theorem splitOut_iff_genAt_alt {cf : CharFrame D} {jE : D.host.E →+* Qb} {A : _root_.GlobalTheory.HeightCounting.CharFrameHostEmbedding D cf jE} {M : MtFam D} {C : NChoice D}
     {tup : D.what₂.Tup → Fin D.R.m → HChar D.host.E} {big : D.what₂.places.Pl → Finset ℂ} {L : LocAll (lay0 D)}
@@ -29,7 +29,7 @@ theorem splitOut_iff_genAt_alt {cf : CharFrame D} {jE : D.host.E →+* Qb} {A : 
   rw [hS, ← hl, ← hQ]
   tauto
 /- English proof (translation)
-Unfold `sys`. Rewrite using `[if_pos ((_root_.GlobalTheory.PtExt.splitOut_iff_genAt_alt hB hi v k).2 h)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem sys_eq_iota_of_gen_at {cf : CharFrame D} {jE : D.host.E →+* Qb} {A : _root_.GlobalTheory.HeightCounting.CharFrameHostEmbedding D cf jE} {M : MtFam D} {C : NChoice D}
     {tup : D.what₂.Tup → Fin D.R.m → HChar D.host.E} {big : D.what₂.places.Pl → Finset ℂ} {L : LocAll (lay0 D)}
@@ -40,7 +40,7 @@ theorem sys_eq_iota_of_gen_at {cf : CharFrame D} {jE : D.host.E →+* Qb} {A : _
   unfold sys
   rw [if_pos ((_root_.GlobalTheory.PtExt.splitOut_iff_genAt_alt hB hi v k).2 h)]
 /- English proof (translation)
-Unfold `sys`. Rewrite using `[if_neg (fun h' => h ((_root_.GlobalTheory.PtExt.splitOut_iff_genAt_alt hB hi v k).1 h'))]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem sys_eq_zero_of_not_gen_at {cf : CharFrame D} {jE : D.host.E →+* Qb} {A : _root_.GlobalTheory.HeightCounting.CharFrameHostEmbedding D cf jE} {M : MtFam D} {C : NChoice D}
     {tup : D.what₂.Tup → Fin D.R.m → HChar D.host.E} {big : D.what₂.places.Pl → Finset ℂ} {L : LocAll (lay0 D)}
@@ -50,11 +50,11 @@ theorem sys_eq_zero_of_not_gen_at {cf : CharFrame D} {jE : D.host.E →+* Qb} {A
   unfold sys
   rw [if_neg (fun h' => h ((_root_.GlobalTheory.PtExt.splitOut_iff_genAt_alt hB hi v k).1 h'))]
 /- English proof (translation)
-Use `⟨fun v k h => _root_.GlobalTheory.PtExt.sys_eq_zero_of_not_gen_at hB hi x h, ?_⟩` and prove the remaining obligations. Establish `hB'` using `hB`. Take `⟨Sp, ⟨Au⟩, -⟩` from `hB'`. Take `⟨hj, hw⟩` from `(L.X.nd.locs_mem j w i).1 hi`. Substitute `hj hw` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Take `⟨P, hP⟩` from `L.Y.naut.pt_surj i x`. Establish `key : ∃ y : D.what₂.Mt (L.X.nd.mu i) (L.X.nd.j i), y ≠ 0 ∧ ∀ (v : PlE D.host) (k : ℕ) (s : SplitPlace D.host.E) (ϖ : s.v.adicCompletion (maximalRealSubfield D.host.E)), GenAt D (D.what₂.places.resChar (L.X.nd.w i)) (C.Q (L.X.nd.w i)) v k → IsConjPl D.host v s.w → IsUnif D.host.E …`. Take `⟨y, hy, hy0⟩` from `(Submodule.ne_bot_iff _).1 (L.Y.naut.typeV_ne i P)`. Use `⟨y, hy0, fun v k s ϖ hg hc hu => ?_⟩` and prove the remaining obligations. Take `⟨hso, k1, k2⟩` from `(_root_.GlobalTheory.PtExt.splitOut_iff_genAt_alt hB hi v k).2 hg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[_root_.GlobalTheory.PtExt.sys_eq_iota_of_gen_at hB hi x hg]`. Conclude with `(Au.ptV i P x).1 hP v k s ϖ hso hc hu k1 k2 y hy`. Rewrite `key` using `[L.X.nd.mu_w i]`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sys_mem_eig_set_of_built {cf : CharFrame D} {jE : D.host.E →+* Qb} {A : _root_.GlobalTheory.HeightCounting.CharFrameHostEmbedding D cf jE} {M : MtFam D} {C : NChoice D}
     {tup : D.what₂.Tup → Fin D.R.m → HChar D.host.E} {big : D.what₂.places.Pl → Finset ℂ} {L : LocAll (lay0 D)}

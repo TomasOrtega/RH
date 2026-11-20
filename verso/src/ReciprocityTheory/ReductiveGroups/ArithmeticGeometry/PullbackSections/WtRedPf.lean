@@ -16,17 +16,15 @@ def WtRed : Prop :=
     (t : Ix Dw → Sˣ) (y y' : FrPt Xo c S), FrBor t y y' → evR Xo c f y' = wchar (ex Dw a n) t * evR Xo c f y
 
 /- English proof (translation)
-Introduce `a n f hf S _ _ _ t y y' hb`. Establish `hN` using `evNat_of Xo c hWD hA`. Rewrite using `[← sub_eq_zero]`. Use `set d := evR Xo c f y' - wchar (ex Dw a n) t * evR Xo c f y with hd`. Establish `hP : ∀ P : Ideal S, P.IsPrime → d ∈ P`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `P hPp`. Use `hPp` as an intermediate fact. Set `ρ : S →+* FractionRing (S ⧸ P)` to `(algebraMap (S ⧸ P) (FractionRing (S ⧸ P))).comp (Ideal.Quotient.mk P)`. Set `_ : Algebra c.F (FractionRing (S ⧸ P))` to `(ρ.comp (algebraMap c.F S)).toAlgebra`. Set `φ : S →ₐ[c.F] FractionRing (S ⧸ P)` to `{ ρ with commutes' := fun _ => rfl }`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `hB S y (FractionRing (S ⧸ P)) φ`. Take `⟨z', hz'⟩` from `hB S y' (FractionRing (S ⧸ P)) φ`. Establish `hbz` using `frBorBC (Xo := Xo) (c := c) S (FractionRing (S ⧸ P)) φ t y y' z z' hb hz hz'`. Establish `e1` using `hN f hf.1 S (FractionRing (S ⧸ P)) φ y z hz`. Establish `e2` using `hN f hf.1 S (FractionRing (S ⧸ P)) φ y' z' hz'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3` using `hW a n f hf (FractionRing (S ⧸ P)) _ z z' (hA _ z) (hA _ z') hbz`. Establish `hw : φ (wchar (ex Dw a n) t) = wchar (ex Dw a n) (fun i => Units.map (φ : S →* FractionRing (S ⧸ P)) (t i))`. Simplify using `only [wchar, map_prod, map_pow, Units.coe_map, MonoidHom.coe_coe]`. Establish `h0 : φ d = 0`. Rewrite using `[hd, map_sub, map_mul, ← e1, ← e2, e3, hw, sub_self]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : algebraMap (S ⧸ P) (FractionRing (S ⧸ P)) (Ideal.Quotient.mk P d) = 0` using `h0`. Establish `h2 : Ideal.Quotient.mk P d = 0` using `(IsFractionRing.injective (S ⧸ P) (FractionRing (S ⧸ P))) (by rw [h1, map_zero])`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mp h2`. Establish `hnil : d ∈ nilradical S`. Rewrite using `[nilradical_eq_sInf]`.
-
-Conclude with `Submodule.mem_sInf.mpr fun Q hQ => hP Q hQ`. Conclude with `IsReduced.eq_zero d (mem_nilradical.mp hnil)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wtRed_of (hWD : EvalWD (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z))
     (hA : AllTest Xo c) (hW : WtField Xo c) (hB : FrBCFieldSt Xo c) : WtRed Xo c := by

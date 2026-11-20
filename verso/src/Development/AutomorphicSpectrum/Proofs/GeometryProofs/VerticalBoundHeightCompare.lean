@@ -10,9 +10,9 @@ namespace GlobalTheory.CompanionTheory.Ar.Ht.UnitHt
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Take `⟨dg, dh, g, f, hg, hf, hd, hy, hfz, hgz⟩` from `h`. Establish `hfy : aeval y f ≠ 0` using `fun h0 => hfz (hz.2 f ((GroundTheory.Heights₂.Heights.Targets.BoundedSectionTransfer.mem_mCoordIdeal_iff y hf).2 h0))`. Use `⟨dh, dg, f, g, hf, hg, fun k => ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `hd k` as an intermediate fact. Simplify using `only [Pi.neg_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[hy, inv_mul_cancel_left₀ hu]`. Rewrite using `[hgz]`. Conclude with `mul_ne_zero hv hfz`. Rewrite using `[hgz, inv_mul_cancel_left₀ hv]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasVal_inv_section {y : (Σ k, ι k) → Ω} {a : K → ℤ} {u : Ω} (hu : u ≠ 0) {𝕜 : Type} [Field 𝕜]
     {z : (Σ k, ι k) → 𝕜} (hz : z ∈ ptsOver 𝕜 (mCoordIdeal y)) {val : 𝕜} (hv : val ≠ 0)
@@ -32,9 +32,9 @@ theorem hasVal_inv_section {y : (Σ k, ι k) → Ω} {a : K → ℤ} {u : Ω} (h
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Establish `e : ∀ v : FinitePlace L, ∑ k, (((-a) k : ℤ) : ℝ) * Real.log (⨆ i, v (w ⟨k, i⟩)) = (-1 : ℝ) • ∑ k, (a k : ℝ) * Real.log (⨆ i, v (w ⟨k, i⟩))` using `fun v => by`. Rewrite using `[smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.neg_apply]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [ptHt, e]`. Rewrite using `[← smul_finsum, Finset.sum_neg_distrib, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ptHt_neg (a : K → ℤ) (φ : ((Σ k, ι k) → ℂ) → ℝ) (L : Type) [Field L] [NumberField L]
     (w : (Σ k, ι k) → L) :
@@ -55,13 +55,13 @@ end GlobalTheory.CompanionTheory.Ar.Ht.UnitHt
 open GlobalTheory.CompanionTheory.Ar.Ht.UnitHt in
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ y d hAr hB a u c hV φ L _ _ w hw val hv hval`. Take `⟨hu, q, m, hq, hm, hlog, h1, h2⟩` from `hV`. Establish `hq' : (0 : ℝ) < q` using `by exact_mod_cast hq`. Establish `hc : Real.log m / q ≤ c`. Rewrite using `[div_le_iff₀ hq']`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `b₁` using `SecLow.height_ge_of_section K ι Ω y d hAr hB a u q m hq hm h1 φ L w hw val hv hval`. Establish `b₂` using `SecLow.height_ge_of_section K ι Ω y d hAr hB (-a) u⁻¹ q m hq hm h2 (fun z => -φ z) L w hw val⁻¹ (inv_ne_zero hv) (hasVal_inv_section hu hw hv hval)`. Rewrite `b₂` using `[ptHt_neg]`. Establish `e : ∑ σ : L →+* ℂ, (-φ (fun p => σ (w p)) - Real.log ‖σ val⁻¹‖) = -∑ σ : L →+* ℂ, (φ (fun p => σ (w p)) - Real.log ‖σ val‖)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[map_inv₀, norm_inv, Real.log_inv]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `b₂` using `[e, mul_neg]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem GlobalTheory.CompanionTheory.Ar.Ht.abs_ptHt_sub_le_of_vertBound : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] (y : (Σ k, ι k) → Ω) (d : ℕ), IsArithVar (mCoordIdeal y) d → Birational y → ∀ (a : K → ℤ) (u : Ω) (c : ℝ), VertBound y a u c → ∀ (φ : ((Σ k, ι k) → ℂ) → ℝ) (L : Type) [Field L] [NumberField L], ∀ w ∈ ptsOver L (mCoordIdeal y), ∀ val : L, val ≠ 0 → HasVal y a u w val → |ptHt (fun k => (a k : ℝ)) φ L w - (Module.finrank ℚ L : ℝ)⁻¹ * ∑ σ : L →+* ℂ, (φ (fun p => σ (w p)) - Real.log ‖σ val‖)| ≤ c := by
   intro K _ ι _ Ω _ y d hAr hB a u c hV φ L _ _ w hw val hv hval

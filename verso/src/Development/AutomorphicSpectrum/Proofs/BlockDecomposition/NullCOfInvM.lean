@@ -13,7 +13,7 @@ open PositivityTheory.Rg.Rsw.Cell
 variable {G : Type} [Group G]
 
 /- English proof (translation)
-Use `⟨(Quotient.out ((g⁻¹ : G) : G ⧸ P))⁻¹ * g⁻¹, ?_, ?_⟩` and prove the remaining obligations. Conclude with `QuotientGroup.eq.mp (QuotientGroup.out_eq' ((g⁻¹ : G) : G ⧸ P))`. Simplify using `[rp]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rp_mk_inv (P : Subgroup G) (g : G) : ∃ p ∈ P, rp (P := P) (((g⁻¹ : G)) : G ⧸ P) = p * g := by
   refine ⟨(Quotient.out ((g⁻¹ : G) : G ⧸ P))⁻¹ * g⁻¹, ?_, ?_⟩
@@ -21,7 +21,7 @@ theorem rp_mk_inv (P : Subgroup G) (g : G) : ∃ p ∈ P, rp (P := P) (((g⁻¹ 
   · simp [rp]
 
 /- English proof (translation)
-Use `⟨(Quotient.out (x⁻¹ • q))⁻¹ * (x⁻¹ * Quotient.out q), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← QuotientGroup.eq, QuotientGroup.out_eq', ← smul_eq_mul, ← MulAction.Quotient.smul_coe, QuotientGroup.out_eq']`. Simplify using `[rp, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rp_smul (P : Subgroup G) (x : G) (q : G ⧸ P) : ∃ p ∈ P, rp (x⁻¹ • q) = p * (rp q * x) := by
   refine ⟨(Quotient.out (x⁻¹ • q))⁻¹ * (x⁻¹ * Quotient.out q), ?_, ?_⟩
@@ -32,11 +32,11 @@ theorem rp_smul (P : Subgroup G) (x : G) (q : G ⧸ P) : ∃ p ∈ P, rp (x⁻¹
 variable [TopologicalSpace G]
 
 /- English proof (translation)
-Establish `hset : {q : G ⧸ P | rp q ∈ Ω} = ((↑) : G → G ⧸ P) '' {g | g⁻¹ ∈ Ω}`. Use extensionality with `q`. Prove the components needed by the constructor for the conclusion. Introduce `hq`. Use `⟨(rp q)⁻¹, by simpa using hq, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [rp, inv_inv]`. Conclude with `QuotientGroup.out_eq' q`. Introduce and unpack `⟨g, hg, rfl⟩`. Take `⟨p, hp, hrp⟩` from `rp_mk_inv P g⁻¹`. Simplify using `only [inv_inv] at hrp`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show rp (g : G ⧸ P) ∈ Ω`. Rewrite using `[hrp]`. Conclude with `hP p hp _ hg`. Rewrite using `[hset]`. Conclude with `QuotientGroup.isOpenMap_coe _ (hΩ.preimage continuous_inv)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_rp [IsTopologicalGroup G] (P : Subgroup G) {Ω : Set G} (hΩ : IsOpen Ω)
     (hP : ∀ p ∈ P, ∀ x ∈ Ω, p * x ∈ Ω) : IsOpen {q : G ⧸ P | rp q ∈ Ω} := by
@@ -57,11 +57,11 @@ theorem isOpen_rp [IsTopologicalGroup G] (P : Subgroup G) {Ω : Set G} (hΩ : Is
   exact QuotientGroup.isOpenMap_coe _ (hΩ.preimage continuous_inv)
 
 /- English proof (translation)
-Take `⟨C, hC, hcov⟩` from `hS.cocpt`. Establish `hcont : Continuous (fun z : G × G => h (z.1 * z.2) / h z.1)` using `(hS.cont.comp continuous_mul).div (hS.cont.comp continuous_fst) (fun z => (hS.pos _).ne')`. Take `⟨B, hB⟩` from `(hC.prod hV).exists_bound_of_continuousOn hcont.continuousOn`. Use `⟨B, fun g x hx => ?_⟩` and prove the remaining obligations. Take `⟨q, hq, c, hc, rfl⟩` from `hcov g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hlaw` using `hS.law q hq c (c * x)`. Establish `heq : h (q * c * x) / h (q * c) = h (c * x) / h c`. Rewrite using `[div_eq_div_iff (hS.pos _).ne' (hS.pos _).ne', mul_assoc]`. Take the linear combination `(-1 : ℝ) * hlaw`. Rewrite using `[heq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Establish `hb` using `hB (c, x) ⟨hc, hx⟩`. Simplify using `only [Real.norm_eq_abs] at hb`. Conclude with `le_trans (le_abs_self _) hb`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ratio_bound {P : Subgroup G} {h : G → ℝ} {mu : (G → ℂ) → ℂ} [IsTopologicalGroup G]
     (hS : Setup P h mu) {V : Set G} (hV : IsCompact V) :
@@ -82,41 +82,37 @@ theorem ratio_bound {P : Subgroup G} {h : G → ℝ} {mu : (G → ℂ) → ℂ} 
   exact le_trans (le_abs_self _) hb
 
 /- English proof (translation)
-Take `⟨U, d, hUo, hgU, hUP, hfew⟩` from `hF (rp q0)`. Establish `hφ : Continuous (fun z : G × G => rp q0 * z.1 * z.2⁻¹)` using `(continuous_const.mul continuous_fst).mul continuous_snd.inv`. Establish `hmem : (fun z : G × G => rp q0 * z.1 * z.2⁻¹) ⁻¹' U ∈ 𝓝 ((1 : G), (1 : G))` using `hφ.continuousAt.preimage_mem_nhds (hUo.mem_nhds (by simpa using hgU))`. Take `⟨N0, hN0, N1, hN1, hsub⟩` from `mem_nhds_prod_iff.mp hmem`. Take `⟨V, hV1, hVN1, hVc⟩` from `local_compact_nhds hN1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨B, hB⟩` from `ratio_bound hS hVc`. Establish `hNo : IsOpen (interior N0)` using `isOpen_interior`. Establish `h1N : (1 : G) ∈ interior N0` using `mem_interior_iff_mem_nhds.mpr hN0`. Set `U' : Set G` to `{y | ∃ p ∈ P, ∃ n ∈ interior N0, y = p * (rp q0 * n)}`. Establish `hU'o : IsOpen U'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce and unpack `y ⟨p, hp, n, hn, rfl⟩`. Use `⟨(fun z => (p * rp q0)⁻¹ * z) ⁻¹' interior N0, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz`. Conclude with `⟨p, hp, (p * rp q0)⁻¹ * z, hz, by group⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `hNo.preimage (continuous_const.mul continuous_id)`. Use `show (p * rp q0)⁻¹ * (p * (rp q0 * n)) ∈ interior N0`. Simplify `hn` using `[mul_assoc]`. Establish `hU'P : ∀ p ∈ P, ∀ x ∈ U', p * x ∈ U'`. Introduce and unpack `p hp x ⟨p', hp', n, hn, rfl⟩`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨p * p', P.mul_mem hp hp', n, hn, (mul_assoc _ _ _).symm⟩`. Establish `hgU' : rp q0 ∈ U'` using `⟨1, P.one_mem, 1, h1N, by simp⟩`. Establish `hshift : ∀ y ∈ U', ∀ γ ∈ V, y * γ⁻¹ ∈ U`. Introduce and unpack `y ⟨p, hp, n, hn, rfl⟩ γ hγ`. Establish `h1` using `hsub (Set.mk_mem_prod (interior_subset hn) (hVN1 hγ))`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_preimage] at h1`. Establish `h2` using `hUP p hp _ h1`. Simplify `h2` using `[mul_assoc]`. Use `⟨{q | rp q ∈ U'}, isOpen_rp P hU'o hU'P, hgU', ?_⟩` and prove the remaining obligations. Establish `hopenU : IsOpen {q : G ⧸ P | rp q ∈ U}` using `isOpen_rp P hUo hUP`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hopenΩ0 : IsOpen {q : G ⧸ P | rp q ∈ Ω}` using `isOpen_rp P hΩ hP`. Establish `hopenR : ∀ (S : Set G), IsOpen S → (∀ p ∈ P, ∀ x ∈ S, p * x ∈ S) → ∀ γ : G, IsOpen {q : G ⧸ P | rp q * γ ∈ S}` using `fun S hSo hSP γ => isOpen_rp P (hSo.preimage (continuous_mul_const γ)) (fun p hp x hx => by show p * x * γ ∈ S`. Rewrite using `[mul_assoc]`. Conclude with `hSP p hp _ hx)`. Set `A : G → Set (G ⧸ P)` to `fun γ => {q | rp q ∈ U} ∩ {q | rp q * γ ∈ Ω}ᶜ`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `E' : G → Set (G ⧸ P)` to `fun γ => {q | rp q ∈ Ω}ᶜ ∩ {q | rp q * γ⁻¹ ∈ U}`. Establish `hAm : ∀ γ, MeasurableSet (A γ)` using `fun γ => hopenU.measurableSet.inter (hopenR Ω hΩ hP γ).measurableSet.compl`. Establish `hE'm : ∀ γ, MeasurableSet (E' γ)` using `fun γ => hopenΩ0.measurableSet.compl.inter (hopenR U hUo hUP γ⁻¹).measurableSet`. Establish `hEsub : ∀ γ ∈ V, {q | rp q ∉ Ω} ∩ {q | rp q ∈ U'} ⊆ E' γ`. Introduce and unpack `γ hγ q ⟨hq1, hq2⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨hq1, hshift _ hq2 γ hγ⟩`. Establish `htrans : ∀ γ q, γ⁻¹ • q ∈ E' γ → q ∈ A γ`. Introduce and unpack `γ q ⟨h1, h2⟩`. Take `⟨p, hp, hrp⟩` from `rp_smul P γ q`. Simplify using `only [Set.mem_compl_iff, Set.mem_ofPred_eq] at h1 h2`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h1`, `h2` using `[hrp]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h3` using `hUP p⁻¹ (P.inv_mem hp) _ h2 show rp q ∈ U`. Simplify `h3` using `[mul_assoc]`. Use `show ¬ (rp q * γ ∈ Ω)`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Introduce `h4`. Conclude with `h1 (hP p hp _ h4)`. Establish `hfin : ENNReal.ofReal B * ((d : ℝ≥0∞) * ν univ) ≠ ⊤` using `ENNReal.mul_ne_top ENNReal.ofReal_ne_top (ENNReal.mul_ne_top (ENNReal.natCast_ne_top d) (measure_ne_top ν univ))`. Assume the negation of the conclusion as `hne`. Take `⟨M, hM⟩` from `ENNReal.exists_nat_mul_gt hne hfin`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Take `⟨γ, hγ, hcnt⟩` from `hfew V hV1 M`. Establish `hstep : ∀ j, ν ({q | rp q ∉ Ω} ∩ {q | rp q ∈ U'}) ≤ ENNReal.ofReal B * ν (A (γ j))`. Introduce `j`. Establish `hI` using `hInv (γ j) (hγ j).2 ((E' (γ j)).indicator 1) (measurable_one.indicator (hE'm _))`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply `lintegral_mono` to reduce the goal to its premises. Introduce `q`. Apply `mul_le_mul'` to reduce the goal to its premises. Apply the tactic sequence `simp only [Set.indicator_apply, Pi.one_apply] split_ifs with h1 h2 <;> first | exact le_rfl | exact zero_le | exact absurd (htrans _ _ h1) h2`. Conclude with `ENNReal.ofReal_le_ofReal (hB _ _ (hγ j).1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_ = ν (A (γ j)) * ENNReal.ofReal B := by`. Rewrite using `[lintegral_mul_const _ (measurable_one.indicator (hAm _)), lintegral_indicator_one (hAm _)]`. Use `_ = ENNReal.ofReal B * ν (A (γ j)) := mul_comm _ _`. Establish `hpt : ∀ q, ∑ j, (A (γ j)).indicator 1 q ≤ (d : ℝ≥0∞)`. Introduce `q`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Distinguish the cases in `hq : rp q ∈ U`. Establish `hc` using `hcnt (rp q) hq`. Establish `e : (↑(Finset.univ.filter (fun j => rp q * γ j ∉ Ω)) : Set (Fin M)) = {j | rp q * γ j ∉ Ω}`. Use extensionality with `j`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite `hc` using `[← e, Set.ncard_coe_finset]`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `j _`. Simplify using `only [Set.indicator_apply, Pi.one_apply]`.
-
-Apply the tactic sequence `split_ifs with h1 h2 <;> first | exact le_rfl | exact zero_le | exact absurd h2 h1.2`. Use `_ = ((Finset.univ.filter (fun j => rp q * γ j ∉ Ω)).card : ℝ≥0∞) := by`. Rewrite using `[Finset.sum_boole]`. Use `_ ≤ d := by exact_mod_cast hc`. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `hsumA : ∑ j, ν (A (γ j)) ≤ (d : ℝ≥0∞) * ν univ`. Combine the equalities or inequalities in the displayed calculation. Establish `hMle : (M : ℝ≥0∞) * ν ({q | rp q ∉ Ω} ∩ {q | rp q ∈ U'}) ≤ ENNReal.ofReal B * ((d : ℝ≥0∞) * ν univ)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `absurd hM (not_lt.mpr hMle)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem local_null [IsTopologicalGroup G] [LocallyCompactSpace G] {P : Subgroup G}
     [MeasurableSpace (G ⧸ P)] [BorelSpace (G ⧸ P)] {h : G → ℝ} {mu : (G → ℂ) → ℂ}
@@ -248,9 +244,9 @@ theorem local_null [IsTopologicalGroup G] [LocallyCompactSpace G] {P : Subgroup 
   exact absurd hM (not_lt.mpr hMle)
 
 /- English proof (translation)
-Introduce `hInvM`. Unfold `NullC ForSet`. Introduce `G _ _ _ _ _ _ P _ _ h mu hS ν hRepr Ω hΩ hP hF`. Establish `: IsFiniteMeasure ν` using `hRepr.1`. Establish `hInv : ∀ x : G, Inv P h mu x → ∀ F : G ⧸ P → ℝ≥0∞, Measurable F → ∫⁻ q, F (x⁻¹ • q) * ENNReal.ofReal (h (rp q * x) / h (rp q)) ∂ν = ∫⁻ q, F q ∂ν` using `fun x hx => (hInvM G P h mu hS ν hRepr x hx).2`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `measure_null_of_locally_null` to reduce the goal to its premises. Introduce `q0 _`. Take `⟨W, hWo, hq0W, hWnull⟩` from `local_null hS hInv hΩ hP hF q0`. Conclude with `⟨{q | rp q ∉ Ω} ∩ W, inter_mem_nhdsWithin _ (hWo.mem_nhds hq0W), hWnull⟩`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nullC_of_invM : InvM → NullC := by
   intro hInvM

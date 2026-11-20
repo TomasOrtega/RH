@@ -27,9 +27,9 @@ Both sides reduce to the same expression.
 theorem padicIntegers_to_integers_coe (z : ℤ_[l]) : ((padicIntegers_to_integers (K := K) z : OK l K) : K) = algebraMap ℚ_[l] K z := rfl
 
 /- English proof (translation)
-Set `_` to `ZMod.algebra r.k l`. Establish `hs` using `PadicInt.toZMod_spec z`. Rewrite `hs` using `[PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton']`. Take `⟨w, hw⟩` from `hs`. Establish `e : z = (((PadicInt.toZMod z).val : ℕ) : ℤ_[l]) + w * l`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hw, ZMod.cast_eq_val]`. Expand and normalize the polynomial expressions, which then agree. Use `conv_lhs => rw [e]`. Simplify using `only [map_add, map_mul, map_natCast, CharP.cast_eq_zero r.k l, mul_zero, add_zero]`. Rewrite using `[← map_natCast (algebraMap (ZMod l) r.k), ZMod.natCast_zmod_val]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem residue_padicIntegers_to_integers (r : Res l K) (z : ℤ_[l]) :
     r.ρ (padicIntegers_to_integers z) = (letI := ZMod.algebra r.k l; algebraMap (ZMod l) r.k (PadicInt.toZMod z)) := by
@@ -44,23 +44,23 @@ theorem residue_padicIntegers_to_integers (r : Res l K) (z : ℤ_[l]) :
   rw [← map_natCast (algebraMap (ZMod l) r.k), ZMod.natCast_zmod_val]
 
 /- English proof (translation)
-Set `_` to `ZMod.algebra r.k l`. Set `y : s → OK l K` to `fun i => (r.surj i).choose`. Establish `hy : ∀ i, r.ρ (y i) = i` using `fun i => (r.surj i).choose_spec`. Establish `hli : LinearIndependent ℚ_[l] (fun i : s => ((y i : OK l K) : K))`. Rewrite using `[linearIndependent_iff']`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `t g hg i0 hi0`. Assume the negation of the conclusion as `hne`. Take `⟨j, hj, hmax⟩` from `t.exists_max_image (fun i => ‖g i‖) ⟨i0, hi0⟩`. Establish `hgj : g j ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hne` to reduce the goal to its premises. Use `hmax i0 hi0` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`. Conclude with `norm_le_zero_iff.1 this`. Establish `hle : ∀ i ∈ t, ‖g i / g j‖ ≤ 1` using `fun i hi => by`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_div]`. Conclude with `div_le_one_of_le₀ (hmax i hi) (norm_nonneg _)`. Set `hZ : s → ℤ_[l]` to `fun i => if hi : i ∈ t then ⟨g i / g j, hle i hi⟩ else 0`. Establish `hZv : ∀ i ∈ t, ((hZ i : ℤ_[l]) : ℚ_[l]) = g i / g j` using `fun i hi => by simp [hZ, hi]`. Establish `hsumK : ∑ i ∈ t, ((padicIntegers_to_integers (K` using `K) (hZ i) * y i : OK l K) : K) = 0 := by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : ∀ i ∈ t, ((padicIntegers_to_integers (K` using `K) (hZ i) * y i : OK l K) : K) = (g j)⁻¹ • (g i • ((y i : OK l K) : K)) := by`. Introduce `i hi`. Rewrite using `[Subring.coe_mul, padicIntegers_to_integers_coe, hZv i hi, smul_smul, Algebra.smul_def, div_eq_inv_mul]`. Rewrite using `[Finset.sum_congr rfl e, ← Finset.smul_sum, hg, smul_zero]`. Establish `hsum : ∑ i ∈ t, padicIntegers_to_integers (K` using `K) (hZ i) * y i = 0 := by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[AddSubmonoidClass.coe_finsetSum, hsumK]`. Both sides reduce to the same expression. Establish `hk : ∑ i ∈ t, PadicInt.toZMod (hZ i) • (i : r.k) = 0`. Use `congrArg r.ρ hsum` as an intermediate fact.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[map_sum, map_zero]`. Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hy, residue_padicIntegers_to_integers, Algebra.smul_def]`. Establish `h0` using `(linearIndependent_iff'.1 hs) t _ hk j hj`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : hZ j = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hZv j hj, div_self hgj]`. Both sides reduce to the same expression. Rewrite `h0` using `[h1, map_one]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `one_ne_zero h0`. Use `hli.fintype_card_le_finrank` as an intermediate fact. Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem residue_field_card_le_finrank (r : Res l K) [FiniteDimensional ℚ_[l] K] (s : Finset r.k)
     (hs : letI := ZMod.algebra r.k l; LinearIndependent (ZMod l) (fun i : s => (i : r.k))) :
@@ -111,9 +111,9 @@ theorem residue_field_card_le_finrank (r : Res l K) [FiniteDimensional ℚ_[l] K
   simpa using this
 
 /- English proof (translation)
-Set `_` to `ZMod.algebra r.k l`. Use `haveI : NeZero l := ⟨(Fact.out : l.Prime).ne_zero⟩`. Establish `hr : Module.rank (ZMod l) r.k ≤ Module.finrank ℚ_[l] K` using `rank_le fun s hs => residue_field_card_le_finrank r s hs`. Use `haveI : Module.Finite (ZMod l) r.k := Module.rank_lt_aleph0_iff.1 (hr.trans_lt Cardinal.natCast_lt_aleph0)`. Use `haveI : Finite r.k := Module.finite_of_finite (ZMod l)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `letI := Fintype.ofFinite r.k`. Take `⟨n, -, hn⟩` from `FiniteField.card r.k l`. Use `⟨n, n.pos, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[← hn]`. Conclude with `FiniteField.pow_card z`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_frob (r : Res l K) [FiniteDimensional ℚ_[l] K] : ∃ f : ℕ, 0 < f ∧ ∀ z : r.k, z ^ l ^ f = z := by
   let _ := ZMod.algebra r.k l
@@ -128,11 +128,11 @@ theorem res_frob (r : Res l K) [FiniteDimensional ℚ_[l] K] : ∃ f : ℕ, 0 < 
   exact FiniteField.pow_card z
 
 /- English proof (translation)
-Establish `h1 : ‖((y : K) : PadicAlgCl l)‖ ≤ 1` using `mem_normInteger.1 y.2`. Use `lt_of_le_of_ne h1 fun he => ?_` and prove the remaining obligations. Establish `hz : ((y : K) : PadicAlgCl l) ≠ 0`. Introduce `h0`. Rewrite `he` using `[h0, norm_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one he`. Establish `hyK : (y : K) ≠ 0` using `fun h => hz (by rw [h]; rfl)`. Establish `hw : ((y : K)⁻¹ : K) ∈ OK l K` using `by show ‖(((y : K)⁻¹ : K) : PadicAlgCl l)‖ ≤ 1`. Rewrite using `[IntermediateField.coe_inv, norm_inv, he, inv_one]`. Establish `hmul : (y * ⟨_, hw⟩ : OK l K) = 1` using `Subtype.ext (mul_inv_cancel₀ hyK)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg r.ρ hmul` as an intermediate fact. Rewrite `this` using `[map_mul, hy, zero_mul, map_one]`. Conclude with `zero_ne_one this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_lt_one_of_residue_zero_alt (r : Res l K) (y : OK l K) (hy : r.ρ y = 0) : ‖((y : K) : PadicAlgCl l)‖ < 1 := by
   have h1 : ‖((y : K) : PadicAlgCl l)‖ ≤ 1 := mem_normInteger.1 y.2
@@ -149,21 +149,17 @@ theorem norm_lt_one_of_residue_zero_alt (r : Res l K) (y : OK l K) (hy : r.ρ y 
   exact zero_ne_one this
 
 /- English proof (translation)
-Use `set z : PadicAlgCl l := (x : PadicAlgCl l) with hzdef`. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Distinguish the cases in `hz : z = 0`. Rewrite using `[hz, norm_zero]; exact Real.rpow_nonneg (by positivity) _`. Establish `hint : IsIntegral ℚ_[l] z` using `Algebra.IsIntegral.isIntegral z`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmin : minpoly ℚ_[l] z = minpoly ℚ_[l] x` using `minpoly.algebraMap_eq (algebraMap K (PadicAlgCl l)).injective x`. Establish `hdle : (minpoly ℚ_[l] z).natDegree ≤ Module.finrank ℚ_[l] K` using `hmin ▸ minpoly.natDegree_le x`. Establish `hdpos : 0 < (minpoly ℚ_[l] z).natDegree` using `minpoly.natDegree_pos hint`. Establish `ha0 : (minpoly ℚ_[l] z).coeff 0 ≠ 0` using `minpoly.coeff_zero_ne_zero hint hz`. Establish `hnorm : ‖z‖ = ‖(minpoly ℚ_[l] z).coeff 0‖ ^ (1 / ((minpoly ℚ_[l] z).natDegree : ℝ))` using `spectralNorm.spectralNorm_eq_norm_coeff_zero_rpow ℚ_[l] (PadicAlgCl l) z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set d := (minpoly ℚ_[l] z).natDegree`. Use `set a := ‖(minpoly ℚ_[l] z).coeff 0‖`. Establish `hd : (0 : ℝ) < d` using `by exact_mod_cast hdpos`. Establish `ha0' : 0 ≤ a` using `norm_nonneg _`. Establish `ha1 : a < 1`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `: 1 ≤ a ^ (1 / (d : ℝ))` using `Real.one_le_rpow h (by positivity)`. Rewrite `this` using `[← hnorm]`. Conclude with `absurd hx (not_lt.2 this)`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hal : a ≤ (l : ℝ) ^ (-(1 : ℝ))`. Establish `hv` using `Padic.norm_eq_zpow_neg_valuation ha0`. Express the relevant statement in the definitionally equal form `a = _ at hv`. Rewrite `ha1`, the goal using `[hv]`. Establish `hlt : -((minpoly ℚ_[l] z).coeff 0).valuation < 0`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `absurd ha1 (not_lt.2 (one_le_zpow₀ hl1.le h))`. Rewrite using `[Real.rpow_neg_one, ← zpow_neg_one]`. Conclude with `zpow_le_zpow_right₀ hl1.le (by omega)`.
-
-Rewrite using `[hnorm]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.rpow_mul (by positivity)]; ring_nf`. Use `_ ≤ (l : ℝ) ^ (-(1 : ℝ) / Module.finrank ℚ_[l] K) := by`. Apply `Real.rpow_le_rpow_of_exponent_le hl1.le` to reduce the goal to its premises.
-
-Establish `hD : (d : ℝ) ≤ Module.finrank ℚ_[l] K` using `by exact_mod_cast hdle`. Rewrite using `[neg_div, neg_div, neg_le_neg_iff]`. Conclude with `one_div_le_one_div_of_le hd hD`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_le_ramification_bound [FiniteDimensional ℚ_[l] K] (x : K) (hx : ‖(x : PadicAlgCl l)‖ < 1) :
     ‖(x : PadicAlgCl l)‖ ≤ (l : ℝ) ^ (-(1 : ℝ) / Module.finrank ℚ_[l] K) := by
@@ -209,9 +205,9 @@ theorem norm_le_ramification_bound [FiniteDimensional ℚ_[l] K] (x : K) (hx : �
         exact one_div_le_one_div_of_le hd hD
 
 /- English proof (translation)
-Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Establish `hD : (0 : ℝ) < Module.finrank ℚ_[l] K` using `by exact_mod_cast Module.finrank_pos`. Use `⟨(l : ℝ) ^ (-(1 : ℝ) / Module.finrank ℚ_[l] K), Real.rpow_lt_one_of_one_lt_of_neg hl1 (by` and prove the remaining obligations. Rewrite using `[neg_div]; exact neg_neg_of_pos (by positivity)), fun y hy => ?_⟩`. Establish `e : ‖((okToOC l K y : OC l) : ℂ_[l])‖ = ‖((y : K) : PadicAlgCl l)‖` using `norm_clToC _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `norm_le_ramification_bound (y : K) (norm_lt_one_of_residue_zero_alt r y hy)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem disc (r : Res l K) [FiniteDimensional ℚ_[l] K] :
     ∃ c : ℝ, c < 1 ∧ ∀ y : OK l K, r.ρ y = 0 → ‖((okToOC l K y : OC l) : ℂ_[l])‖ ≤ c := by
@@ -224,16 +220,16 @@ theorem disc (r : Res l K) [FiniteDimensional ℚ_[l] K] :
   exact norm_le_ramification_bound (y : K) (norm_lt_one_of_residue_zero_alt r y hy)
 
 /- English proof (translation)
-The claim follows from `mem_normInteger.1 x.2`.
+A detailed English derivation is pending.
 -/
 theorem norm_le_one_integer (x : OC l) : ‖((x : OC l) : ℂ_[l])‖ ≤ 1 := mem_normInteger.1 x.2
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `exists_add_pow_prime_eq (Fact.out : l.Prime) y (x - y)`. Rewrite `ht` using `[add_sub_cancel]`. Establish `e : x ^ l - y ^ l = (x - y) ^ l + (l : OC l) * y * (x - y) * t`. Take the linear combination `ht`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le_max ?_ ?_)` and prove the remaining obligations. Rewrite using `[show (((x - y) ^ l : OC l) : ℂ_[l]) = ((x - y : OC l) : ℂ_[l]) ^ l from rfl, norm_pow]`. Establish `h1 : (((l : OC l) * y * (x - y) * t : OC l) : ℂ_[l]) = (l : ℂ_[l]) * ((y : OC l) : ℂ_[l]) * ((x - y : OC l) : ℂ_[l]) * ((t : OC l) : ℂ_[l])` using `by push_cast; rfl`. Rewrite using `[h1, norm_mul, norm_mul, norm_mul]`. Use `norm_le_one_integer y` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `norm_le_one_integer (x - y)` as an intermediate fact. Use `norm_le_one_integer t` as an intermediate fact. Establish `h0 : 0 ≤ ‖(l : ℂ_[l])‖` using `norm_nonneg _`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_pow_sub_pow_le_bis (x y : OC l) :
     ‖((x ^ l - y ^ l : OC l) : ℂ_[l])‖ ≤ max (‖((x - y : OC l) : ℂ_[l])‖ ^ l) ‖(l : ℂ_[l])‖ := by
@@ -257,15 +253,13 @@ theorem norm_pow_sub_pow_le_bis (x y : OC l) :
       _ = ‖(l : ℂ_[l])‖ := by ring
 
 /- English proof (translation)
-Establish `hc : 0 ≤ c` using `(norm_nonneg _).trans h`. Establish `hl0 : 0 ≤ ‖(l : ℂ_[l])‖` using `norm_nonneg _`. Establish `hl1 : ‖(l : ℂ_[l])‖ ≤ 1`. Use `norm_le_one_integer (l : OC l)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `lpos : 1 ≤ l` using `(Fact.out : l.Prime).one_lt.le`. Proceed by induction on `m with`. Consider the case `zero => simpa using le_max_of_le_right h`. Consider the case `succ m ih`. Establish `e1 : a ^ l ^ (m + 1) = (a ^ l ^ m) ^ l` using `by rw [pow_succ, pow_mul]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `e2 : b ^ l ^ (m + 1) = (b ^ l ^ m) ^ l` using `by rw [pow_succ, pow_mul]`. Rewrite using `[e1, e2]`. Use `(norm_pow_sub_pow_le_bis _ _).trans (max_le ?_ (le_max_left _ _))` and prove the remaining obligations. Establish `hd0 : 0 ≤ ‖((a ^ l ^ m - b ^ l ^ m : OC l) : ℂ_[l])‖` using `norm_nonneg _`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Break down `le_total ‖(l : ℂ_[l])‖ (c ^ l ^ m) with hh | hh` into its components or cases. Rewrite using `[max_eq_right hh, max_eq_right (pow_le_pow_left₀ hl0 hh l)]`. Rewrite using `[max_eq_left hh, max_eq_left (pow_le_pow_left₀ (pow_nonneg hc _) hh l)]`. Use `_ ≤ max ‖(l : ℂ_[l])‖ (c ^ l ^ (m + 1)) := by`. Rewrite using `[← pow_mul, ← pow_succ]`.
-
-Conclude with `max_le_max (pow_le_of_le_one hl0 hl1 (by omega)) le_rfl`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_close (a b : OC l) (c : ℝ) (h : ‖((a - b : OC l) : ℂ_[l])‖ ≤ c) (m : ℕ) :
     ‖((a ^ l ^ m - b ^ l ^ m : OC l) : ℂ_[l])‖ ≤ max ‖(l : ℂ_[l])‖ (c ^ l ^ m) := by
@@ -293,9 +287,9 @@ theorem pow_close (a b : OC l) (c : ℝ) (h : ‖((a - b : OC l) : ℂ_[l])‖ �
           exact max_le_max (pow_le_of_le_one hl0 hl1 (by omega)) le_rfl
 
 /- English proof (translation)
-Establish `h1 : Wc.res l r.k n (r.ρ x) = Ideal.Quotient.mk _ (Ideal.Quotient.mk _ (WittVector.teichmuller l (r.ρ x)))`. Rewrite using `[← Wc.res_coeff]`. Simplify using the standard rewrite rules. Establish `h2 : r.w (WittVector.teichmuller l (r.ρ x)) = algebraMap (Ainf l) (Acris l) (WittVector.teichmuller l (r.s (r.ρ x)))`. Simplify using `[Res.w, WittVector.map_teichmuller]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h3 : PreTilt.untilt (r.s (r.ρ x)) = theta0 l (WittVector.teichmuller l (r.s (r.ρ x)))` using `(WittVector.fontaineTheta_teichmuller _).symm`. Rewrite using `[h3, PAlg.oC_theta0, B.uJ_th, ← PAlg.cris_algebraMap, ← h2]`. Simplify using `only [Mid.κm, RingHom.comp_apply, h1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem struct (r : Res l K) (n : ℕ) (x : OK l K) :
     Mid.κm r n x = B.uJ true (PAlg.base l) n ((PAlg.base l).oC (PreTilt.untilt (r.s (r.ρ x)))) := by
@@ -311,13 +305,11 @@ theorem struct (r : Res l K) (n : ℕ) (x : OK l K) :
   rfl
 
 /- English proof (translation)
-Establish `hl : (l : ℂ_[l]) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`. Establish `hl' : 0 < ‖(l : ℂ_[l])‖` using `norm_pos_iff.2 hl`. Use `set d : ℂ_[l] := ((a - b : OC l) : ℂ_[l]) / (l : ℂ_[l]) with hd`. Establish `hdm : d ∈ normInteger ℂ_[l]`. Rewrite using `[mem_normInteger, hd, norm_div]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(div_le_one hl').2 h`. Establish `e : a = b + (l : OC l) * ⟨d, hdm⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Subring.coe_add, Subring.coe_mul, Subring.coe_natCast, hd]`. Rewrite using `[mul_div_cancel₀ _ hl]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `z : (l : (B.bs l true n).R ⧸ (B.bs l true n).I) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk (B.bs l true n).I), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_sup_left (Ideal.mem_span_singleton_self _)`. Rewrite using `[e, map_add, map_add, map_mul, map_mul, map_natCast, map_natCast]`.
-
-Express the relevant statement in the definitionally equal form `_ + (l : (B.bs l true n).R ⧸ (B.bs l true n).I) * _ = _`. Rewrite using `[z, zero_mul, add_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cong (n : ℕ) (a b : OC l) (h : ‖((a - b : OC l) : ℂ_[l])‖ ≤ ‖(l : ℂ_[l])‖) :
     B.uJ true (PAlg.base l) n ((PAlg.base l).oC a) = B.uJ true (PAlg.base l) n ((PAlg.base l).oC b) := by
@@ -340,21 +332,19 @@ theorem cong (n : ℕ) (a b : OC l) (h : ‖((a - b : OC l) : ℂ_[l])‖ ≤ �
   rw [z, zero_mul, add_zero]
 
 /- English proof (translation)
-Take `⟨f, hf, hfz⟩` from `res_frob r`. Take `⟨c, hc1, hc⟩` from `disc r`. Establish `hl1 : ‖(l : ℂ_[l])‖ < 1`. Establish `: ‖(l : ℂ_[l])‖ = ‖(l : ℚ_[l])‖`. Rewrite using `[← map_natCast (algebraMap ℚ_[l] ℂ_[l])]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `norm_algebraMap' ℂ_[l] _`. Rewrite using `[this]`. Conclude with `Padic.norm_p_lt_one`. Use `⟨max c ‖(l : ℂ_[l])‖, max_lt hc1 hl1, fun x => ?_⟩` and prove the remaining obligations. Use `set t : OC l := PreTilt.untilt (r.s (r.ρ x))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `set u : OC l := okToOC l K x - t`. Establish `ht : t ^ l ^ f = t`. Simplify using `only [t]`. Rewrite using `[← map_pow, ← map_pow, hfz]`. Establish `hker : r.ρ (x ^ l ^ f - x) = 0` using `by rw [map_sub, map_pow, hfz, sub_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq` using `hc _ hker`. Assume the negation of the conclusion as `hu`. Use `push Not at hu`. Establish `hu1 : ‖(u : ℂ_[l])‖ < 1`. Use `r.hs x` as an intermediate fact.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [u]`. Move the coercions through the operations in `at this ⊢`. Rewrite `this` using `[norm_sub_rev]`. Then use the resulting hypothesis. Establish `hlu : ‖(l : ℂ_[l])‖ < ‖(u : ℂ_[l])‖` using `(le_max_right _ _).trans_lt hu`. Establish `hcu : c < ‖(u : ℂ_[l])‖` using `(le_max_left _ _).trans_lt hu`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu0 : 0 < ‖(u : ℂ_[l])‖` using `(norm_nonneg _).trans_lt hlu`. Establish `hp` using `pow_close (okToOC l K x) t ‖(u : ℂ_[l])‖ le_rfl f`. Rewrite `hp` using `[ht]`. Establish `hlf : 2 ≤ l ^ f` using `((Fact.out : l.Prime).two_le).trans (Nat.le_self_pow hf.ne' l)`. Establish `hpow : ‖(u : ℂ_[l])‖ ^ l ^ f < ‖(u : ℂ_[l])‖` using `pow_lt_self_of_lt_one₀ hu0 hu1 (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hlt : ‖((okToOC l K x ^ l ^ f - t : OC l) : ℂ_[l])‖ < ‖(u : ℂ_[l])‖` using `hp.trans_lt (max_lt hlu hpow)`. Establish `e : ((okToOC l K (x ^ l ^ f - x) : OC l) : ℂ_[l]) = ((okToOC l K x ^ l ^ f - t : OC l) : ℂ_[l]) - (u : ℂ_[l])`. Simplify using `only [u, map_sub, map_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite `hq` using `[e]`. Establish `h3` using `IsUltrametricDist.norm_add_le_max ((okToOC l K x ^ l ^ f - t : OC l) : ℂ_[l]) (-(((okToOC l K x ^ l ^ f - t : OC l) : ℂ_[l]) - (u : ℂ_[l])))`. Rewrite `h3` using `[← sub_eq_add_neg, sub_sub_cancel, norm_neg]`. Conclude with `lt_irrefl _ (h3.trans_lt (max_lt hlt (hq.trans_lt hcu)))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_teichmuller_close (r : Res l K) [FiniteDimensional ℚ_[l] K] :
     ∃ c : ℝ, c < 1 ∧ ∀ x : OK l K, ‖((okToOC l K x - PreTilt.untilt (r.s (r.ρ x)) : OC l) : ℂ_[l])‖ ≤ c := by
@@ -395,13 +385,13 @@ theorem exists_teichmuller_close (r : Res l K) [FiniteDimensional ℚ_[l] K] :
   exact lt_irrefl _ (h3.trans_lt (max_lt hlt (hq.trans_lt hcu)))
 
 /- English proof (translation)
-Take `⟨f, hf, hfz⟩` from `res_frob r`. Take `⟨c, hc1, hc⟩` from `exists_teichmuller_close r`. Establish `hc0 : 0 ≤ c` using `(norm_nonneg _).trans (hc 0)`. Establish `hl : (l : ℂ_[l]) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`. Take `⟨j, hj⟩` from `exists_pow_lt_of_lt_one (norm_pos_iff.2 hl) hc1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hN : ∀ (M : ℕ) (z : r.k), z ^ l ^ (f * M) = z`. Introduce `M z`. Proceed by induction on `M with`. Consider the case `zero => simp`. Consider the case `succ M ih => rw [Nat.mul_succ, pow_add, pow_mul, ih, hfz]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `hjN : j ≤ l ^ (f * j)` using `(Nat.lt_pow_self (Fact.out : l.Prime).one_lt).le.trans (Nat.pow_le_pow_right (Fact.out : l.Prime).pos (Nat.le_mul_of_pos_left j hf))`. Use `⟨f * j, fun x => ?_⟩` and prove the remaining obligations. Establish `ht : PreTilt.untilt (r.s (r.ρ x)) ^ l ^ (f * j) = PreTilt.untilt (r.s (r.ρ x))`. Rewrite using `[← map_pow, ← map_pow, hN]`. Establish `hp` using `pow_close (okToOC l K x) (PreTilt.untilt (r.s (r.ρ x))) c (hc x) (f * j)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hp` using `[ht]`. Use `hp.trans (max_le le_rfl ?_)` and prove the remaining obligations. Conclude with `(pow_le_pow_of_le_one hc0 hc1.le hjN).trans hj.le`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem close (r : Res l K) [FiniteDimensional ℚ_[l] K] :
     ∃ N : ℕ, ∀ x : OK l K, ‖((okToOC l K x ^ l ^ N - PreTilt.untilt (r.s (r.ρ x)) : OC l) : ℂ_[l])‖ ≤ ‖(l : ℂ_[l])‖ := by
@@ -426,7 +416,7 @@ theorem close (r : Res l K) [FiniteDimensional ℚ_[l] K] :
   exact (pow_le_pow_of_le_one hc0 hc1.le hjN).trans hj.le
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `close r`. Use `⟨N, fun n x => ?_⟩` and prove the remaining obligations. Rewrite using `[Mid.phiQ_pow, struct, ← cong n _ _ (hN x)]`. Rewrite using `[map_pow, map_pow]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem teich (r : Res l K) [FiniteDimensional ℚ_[l] K] : ∃ N : ℕ, Mid.TeichmullerCongruence r N := by
   obtain ⟨N, hN⟩ := close r

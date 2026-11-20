@@ -7,9 +7,9 @@ attribute [local instance 100] LieRing.ofAssociativeRing
 namespace UpperTheory.V.QuantumDetLeviBlocks
 
 /- English proof (translation)
-Unfold `Formalism.REAL.qdet Formalism.REAL.qminor`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_intCast, map_list_prod, List.map_ofFn]`. Use `congr 3`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `k`. Simplify using `only [Function.comp, Formalism.REAL.Tm]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem map_qdet {A B : Type} [Ring A] [Algebra ℂ A] [Ring B] [Algebra ℂ B] {n : ℕ}
     (φ : A →ₐ[ℂ] B) (E : Fin n → Fin n → A) (u : ℂ) :
@@ -33,7 +33,7 @@ private def pw (ι V : Type) [AddCommGroup V] [Module ℂ V] :
   commutes' _ := rfl
 
 /- English proof (translation)
-Use `⟨P * Polynomial.C (P.leadingCoeff)⁻¹, Polynomial.monic_mul_leadingCoeff_inv hP, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm, map_mul, Polynomial.aeval_C, Module.End.mul_apply, Module.algebraMap_end_apply]`. Conclude with `N.smul_mem _ (h x hx)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem algMod_of_ne_zero {M : Type} [AddCommGroup M] [Module ℂ M] (S N : Submodule ℂ M)
     (T : Module.End ℂ M) (P : Polynomial ℂ) (hP : P ≠ 0)
@@ -46,19 +46,17 @@ end UpperTheory.V.QuantumDetLeviBlocks
 
 open UpperTheory.V.QuantumDetLeviBlocks in
 /- English proof (translation)
-Introduce `M _ _ r s U hU W Z S hs hW hZ hc u`. Set `φ` to `pw S M`. Set `X : Fin (r + s) → Fin (r + s) → Module.End ℂ (S → M)` to `fun p q => φ (U p q)`. Establish `hX : Formalism.REAL.GlRel X`. Introduce `a b c d`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg φ (hU a b c d)` as an intermediate fact. Apply the tactic sequence `split_ifs at this ⊢ <;> simpa [X] using this`. Set `W' : Submodule ℂ (S → M)` to `Submodule.pi Set.univ fun _ => W`. Set `N' : Submodule ℂ (S → M)` to `⊥ ⊔ Submodule.span ℂ {y | ∃ (p : Fin r) (q : Fin s), ∃ x ∈ W', y = X (Fin.castAdd s p) (Fin.natAdd r q) x}`. Establish `hle : N' ≤ Submodule.pi Set.univ fun _ => Z`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `sup_le bot_le (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨p, q, x, hx, rfl⟩ i hi`. Conclude with `hZ p q _ (hx i hi)`. Take `⟨-, h1, h2⟩` from `UpperTheory.algebraicModSubmodule_qdet_block_of_glRel (S → M) r s X hX W' ⊥ N' (fun p q x hx i hi => hW p q _ (hx i hi)) (fun p q x hx => by rw [(Submodule.mem_bot ℂ).1 hx, map_zero]; exact Submodule.zero_mem _)`. Use `rfl (fun i => i.1) (fun i _ => hs i.2) (fun u => by`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Take `⟨P, hP, h⟩` from `hc u`. Use `⟨P, hP.ne_zero, (Submodule.mem_bot ℂ).2 ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Rewrite using `[← map_qdet φ U u, Polynomial.aeval_algHom_apply]`. Conclude with `(Submodule.mem_bot ℂ).1 (h i.1 i.2))`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Extract witnesses or component facts from the available result.
 
-Prove the components needed by the constructor for the conclusion. Take `⟨P, hP, h⟩` from `h1 u`. Use `algMod_of_ne_zero _ _ _ P hP fun v hv => ?_` and prove the remaining obligations. Establish `h3` using `hle h ⟨v, hv⟩ trivial`. Simplify using `only [X] at h3`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h3` using `[← map_qdet φ (fun p q : Fin r => U (Fin.castAdd s p) (Fin.castAdd s q)) u, Polynomial.aeval_algHom_apply]`. Conclude with `h3`. Take `⟨P, hP, h⟩` from `h2 u`. Use `algMod_of_ne_zero _ _ _ P hP fun v hv => ?_` and prove the remaining obligations. Establish `h3` using `hle h ⟨v, hv⟩ trivial`.
-
-Simplify using `only [X] at h3`. Rewrite `h3` using `[← map_qdet φ (fun p q : Fin s => U (Fin.natAdd r p) (Fin.natAdd r q)) u, Polynomial.aeval_algHom_apply]`. Conclude with `h3`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.algMod_quantumDet_leviBlocks_of_parabolic :
     ∀ (M : Type) [AddCommGroup M] [Module ℂ M] (r s : ℕ) (X : Fin (r + s) → Fin (r + s) → Module.End ℂ M), Formalism.REAL.GlRel X → ∀ W Z S : Submodule ℂ M, S ≤ W → (∀ p q, ∀ x ∈ W, X p q x ∈ W) → (∀ (p : Fin r) (q : Fin s), ∀ x ∈ W, X (Fin.castAdd s p) (Fin.natAdd r q) x ∈ Z) → (∀ u, AlgMod S ⊥ (Formalism.REAL.qdet X u)) → ∀ u, AlgMod S Z (Formalism.REAL.qdet (fun p q : Fin r => X (Fin.castAdd s p) (Fin.castAdd s q)) u) ∧ AlgMod S Z (Formalism.REAL.qdet (fun p q : Fin s => X (Fin.natAdd r p) (Fin.natAdd r q)) u) := by

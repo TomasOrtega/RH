@@ -17,19 +17,19 @@ section FD
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Establish `hconj : ∀ z : E, τ.1 (cc z) = starRingEnd ℂ (τ.1 z)` using `fun z => NumberField.IsCMField.complexEmbedding_complexConj E τ.1 z`. Establish `hcc : ∀ (b q : Fin r), cc ((Pi.single b (1 : E) : Fin r → E) q) = (Pi.single b (1 : E) : Fin r → E) q`. Introduce `b q`. Distinguish the cases in `h : q = b`. Substitute `h` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[cc]`. Simplify using `[cc, Pi.single_eq_of_ne h]`. Establish `hU : ∀ a b : Fin r, ∑ p, ∑ q, (γ : Matrix (Fin r) (Fin r) E) p a * X.Gm p q * cc ((γ : Matrix (Fin r) (Fin r) E) q b) = X.Gm a b`. Introduce `a b`. Establish `h` using `(X.Γ_stab γ hγ).1 (Pi.single a 1) (Pi.single b 1)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [herm, hcc] at h`. Simplify `h` using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Establish `hUm : Matrix.transpose (γ : Matrix (Fin r) (Fin r) E) * X.Gm * (γ : Matrix (Fin r) (Fin r) E).map cc = X.Gm`. Use extensionality with `a b`. Rewrite using `[← hU a b]`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Conclude with `Finset.sum_comm`. Establish `hg : ∀ M : Matrix (Fin r) (Fin r) ℂ, gram τ.1 X.Gm M = Matrix.transpose M * X.Gm.map τ.1 * M.map (starRingEnd ℂ)`. Introduce `M`. Use extensionality with `a b`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [gram, Matrix.of_apply, hermC, col, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Conclude with `Finset.sum_comm`. Establish `hmat : mat (lact γ x) τ = (γ : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ` using `rfl`. Establish `hc : ((γ : Matrix (Fin r) (Fin r) E).map τ.1).map (starRingEnd ℂ) = ((γ : Matrix (Fin r) (Fin r) E).map cc).map τ.1`. Use extensionality with `a b`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Matrix.map_apply, hconj]`. Establish `e : X.Gm.map τ.1 = (Matrix.transpose (γ : Matrix (Fin r) (Fin r) E)).map τ.1 * X.Gm.map τ.1 * ((γ : Matrix (Fin r) (Fin r) E).map cc).map τ.1` using `by conv_lhs => rw [← hUm]`. Rewrite using `[Matrix.map_mul, Matrix.map_mul]`. Establish `key : gram τ.1 X.Gm (mat (lact γ x) τ) = gram τ.1 X.Gm (mat x τ)`. Rewrite using `[hg, hg, hmat, Matrix.transpose_mul, Matrix.map_mul, hc, ← Matrix.transpose_map]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Use `conv_rhs => rw [e]`. Simplify using `only [Matrix.mul_assoc]`. Unfold `dmin`. Rewrite using `[key]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dmin_lact (X : Data E r) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) (x : Frame X.Ψ r) (τ : X.Ψ)
     (i : Fin (r + 1)) : dmin X.Gm (lact γ x) τ i = dmin X.Gm x τ i := by
@@ -77,9 +77,9 @@ theorem dmin_lact (X : Data E r) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) (x : Fr
   rw [key]
 
 /- English proof (translation)
-Introduce `h0`. Establish `h1 : 0 < psgn X.p0 i * (dmin X.Gm x τ i).re` using `by first`. Consider the case `exact (hx τ).2 i`. Consider the case `(simp only [Data.dom, GG, Set.mem_setOf_eq] at hx`. Conclude with `(hx τ).2 i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h0]`. Simplify using `at h1`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dmin_ne_of_dom (X : Data E r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (i : Fin (r + 1)) :
     dmin X.Gm x τ i ≠ 0 := by
@@ -93,11 +93,11 @@ theorem dmin_ne_of_dom (X : Data E r) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ 
   simp at h1
 
 /- English proof (translation)
-Establish `hd : ∀ (τ : X.Ψ) (i : Fin (r + 1)), Continuous fun x : Frame X.Ψ r => dmin X.Gm x τ i`. Introduce `τ i`. Simplify using `only [dmin, lminor, gram, hermC, col, mat, Matrix.det_apply, Matrix.submatrix_apply, Matrix.of_apply, starRingEnd_apply, Units.smul_def, zsmul_eq_mul]`. Apply the tactic sequence `first | fun_prop | continuity`. Establish `hterm : ∀ (τ : X.Ψ) (i : Fin r), ContinuousOn (fun x => ‖dmin X.Gm x τ i.succ / dmin X.Gm x τ i.castSucc‖ ^ (-(la τ i : ℝ) / 2)) X.dom`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ i`. Use `ContinuousOn.rpow_const ?_ ?_` and prove the remaining obligations. Conclude with `(((hd τ i.succ).continuousOn).div (hd τ i.castSucc).continuousOn fun x hx => dmin_ne_of_dom X hx τ _).norm`. Introduce `x hx`. Conclude with `Or.inl (norm_ne_zero_iff.2 (div_ne_zero (dmin_ne_of_dom X hx τ _) (dmin_ne_of_dom X hx τ _)))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Prove the first alternative. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `Data.pnorm`. Use `ContinuousOn.mul hP.norm ?_` and prove the remaining obligations. Use `first`. Consider the case `exact continuousOn_finset_prod _ fun τ _ => continuousOn_finset_prod _ fun i _ => hterm τ i`. Consider the case `fun_prop`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem continuousOn_pnorm (X : Data E r) (la : Wt X.Ψ r) {P : Frame X.Ψ r → ℂ} (hP : ContinuousOn P X.dom) :
     ContinuousOn (X.pnorm la P) X.dom := by

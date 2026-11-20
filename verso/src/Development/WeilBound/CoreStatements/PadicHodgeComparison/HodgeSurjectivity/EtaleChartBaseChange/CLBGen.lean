@@ -11,14 +11,14 @@ open CategoryTheory Limits AlgebraicGeometry
 namespace CrystallineSemistableComparison.Onto.CLB
 
 /- English proof (translation)
-The claim follows from `RingHom.Etale.stableUnderComposition f g hf hg`.
+A detailed English derivation is pending.
 -/
 theorem etale_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C)
     (hf : f.Etale) (hg : g.Etale) : (g.comp f).Etale :=
   RingHom.Etale.stableUnderComposition f g hf hg
 
 /- English proof (translation)
-Establish `heq : (MvPolynomial.eval₂Hom s (y ∘ e) : MvPolynomial τ K →+* B) = (MvPolynomial.eval₂Hom s y).comp (MvPolynomial.rename (R` using `K) e).toRingHom := RingHom.ext fun p => (MvPolynomial.eval₂Hom_rename s e y p).symm`. Rewrite using `[heq]`. Conclude with `etale_comp _ _ (RingHom.Etale.of_bijective (MvPolynomial.renameEquiv K e).bijective) h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem etale_reindex {K B σ τ : Type} [CommRing K] [CommRing B] (s : K →+* B) (y : σ → B) (e : τ ≃ σ)
     (h : (MvPolynomial.eval₂Hom s y : MvPolynomial σ K →+* B).Etale) :
@@ -30,13 +30,11 @@ theorem etale_reindex {K B σ τ : Type} [CommRing K] [CommRing B] (s : K →+* 
   exact etale_comp _ _ (RingHom.Etale.of_bijective (MvPolynomial.renameEquiv K e).bijective) h
 
 /- English proof (translation)
-Introduce `a ω hω`. Use `letI : Algebra (MvPolynomial σ K) B := (MvPolynomial.eval₂Hom (algebraMap K B) y).toAlgebra`. Use `haveI : Algebra.Etale (MvPolynomial σ K) B := h.toAlgebra`. Use `haveI : IsScalarTower K (MvPolynomial σ K) B := IsScalarTower.of_algebraMap_eq fun r => by`. Express the relevant statement in the definitionally equal form `_ = MvPolynomial.eval₂Hom (algebraMap K B) y (MvPolynomial.C r)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Use `haveI : Module.Free (MvPolynomial σ K) Ω[MvPolynomial σ K⁄K] := Module.Free.of_basis (KaehlerDifferential.mvPolynomialBasis K σ)`. Use `haveI : Module.Free B Ω[B⁄K] := Module.Free.of_equiv (KaehlerDifferential.tensorKaehlerEquivOfFormallyEtale K (MvPolynomial σ K) B)`. Establish `hX : IsSMulRegular (MvPolynomial σ K) (MvPolynomial.X j : MvPolynomial σ K)` using `(MvPolynomial.isRegular_X (R := K) (n := j)).left`. Establish `hB : IsSMulRegular B (algebraMap (MvPolynomial σ K) B (MvPolynomial.X j))` using `IsSMulRegular.of_flat hX`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hy : algebraMap (MvPolynomial σ K) B (MvPolynomial.X j) = y j`. Express the relevant statement in the definitionally equal form `MvPolynomial.eval₂Hom (algebraMap K B) y (MvPolynomial.X j) = y j`. Simplify using the standard rewrite rules. Rewrite `hB` using `[hy]`. Establish `hmem : y j ∈ nonZeroDivisors B`.
-
-Rewrite using `[mem_nonZeroDivisors_iff_right]`. Introduce `z hz`. Conclude with `hB (by simpa [smul_eq_mul, mul_comm] using hz)`. Conclude with `Module.Flat.isSMulRegular_of_nonZeroDivisors hmem (show y j • ω = y j • (0 : Om K B a) by rw [hω, smul_zero])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem coord_nzd {K B σ : Type} [Field K] [CommRing B] [Algebra K B] (y : σ → B)
     (h : (MvPolynomial.eval₂Hom (algebraMap K B) y : MvPolynomial σ K →+* B).Etale) (j : σ) :
@@ -65,35 +63,35 @@ theorem coord_nzd {K B σ : Type} [Field K] [CommRing B] [Algebra K B] (y : σ �
   exact Module.Flat.isSMulRegular_of_nonZeroDivisors hmem (show y j • ω = y j • (0 : Om K B a) by rw [hω, smul_zero])
 
 /- English proof (translation)
-Set `f : MvPolynomial σ K →+* B` to `MvPolynomial.eval₂Hom s y`. Set `g : MvPolynomial σ K →+* MvPolynomial {j // j ≠ j0} K` to `MvPolynomial.eval₂Hom MvPolynomial.C (fun j => if hj : j = j0 then 0 else MvPolynomial.X ⟨j, hj⟩)`. Set `e : MvPolynomial {j // j ≠ j0} K →+* C` to `MvPolynomial.eval₂Hom (ψ.comp s) (fun j => ψ (y j))`. Establish `hy0 : ψ (y j0) = 0`. Rewrite using `[← RingHom.mem_ker, hk]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.subset_span rfl`. Establish `heg : e.comp g = ψ.comp f`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[e, g, f]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Distinguish the cases in `hj : j = j0`. Substitute `hj` using the available equality. Simplify using `[e, g, f, hy0]`. Simplify using `[e, g, f, hj]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hg : Function.Surjective g`. Establish `hid : g.comp (MvPolynomial.rename (R` using `K) (Subtype.val : {j // j ≠ j0} → σ)).toRingHom = RingHom.id _ := by`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[g]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Simplify using `[g, j.2]`. Introduce `p`. Conclude with `⟨MvPolynomial.rename Subtype.val p, RingHom.congr_fun hid p⟩`. Use `letI : Algebra (MvPolynomial σ K) B := f.toAlgebra`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI : Algebra (MvPolynomial σ K) (MvPolynomial {j // j ≠ j0} K) := g.toAlgebra`. Use `letI : Algebra (MvPolynomial σ K) C := (ψ.comp f).toAlgebra`. Use `haveI : Algebra.Etale (MvPolynomial σ K) B := h.toAlgebra`. Use `haveI := Algebra.Etale.baseChange (MvPolynomial σ K) B (MvPolynomial {j // j ≠ j0} K)`. Set `eA : MvPolynomial {j // j ≠ j0} K →ₐ[MvPolynomial σ K] C` to `{ e with commutes' := fun p => RingHom.congr_fun heg p }`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ψA : B →ₐ[MvPolynomial σ K] C` to `{ ψ with commutes' := fun p => rfl }`. Set `Φ` to `Algebra.TensorProduct.lift eA ψA (fun _ _ => Commute.all _ _)`. Establish `key : ∀ t : TensorProduct (MvPolynomial σ K) (MvPolynomial {j // j ≠ j0} K) B, ∃ b : B, t = 1 ⊗ₜ b`. Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `tmul q b`. Take `⟨p, rfl⟩` from `hg q`. Use `⟨f p * b, ?_⟩` and prove the remaining obligations. Establish `h1 : (g p : MvPolynomial {j // j ≠ j0} K) = p • (1 : MvPolynomial {j // j ≠ j0} K)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.smul_def, mul_one]`. Both sides reduce to the same expression. Rewrite using `[h1, TensorProduct.smul_tmul, Algebra.smul_def]`. Both sides reduce to the same expression. Consider the case `add a b ha hb`.
+Both sides reduce to the same expression. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨x, rfl⟩` from `ha`. Take `⟨z, rfl⟩` from `hb`. Conclude with `⟨x + z, by rw [TensorProduct.tmul_add]⟩`. Establish `hΦ : Function.Bijective Φ`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `t ht`. Take `⟨b, rfl⟩` from `key t`. Establish `hb : ψ b = 0` using `by simpa [Φ, eA, ψA] using ht`. Rewrite `hb` using `[← RingHom.mem_ker, hk, Ideal.mem_span_singleton']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, rfl⟩` from `hb`. Establish `h2 : c * y j0 = (MvPolynomial.X j0 : MvPolynomial σ K) • c`. Rewrite using `[Algebra.smul_def, mul_comm]`. Express the relevant statement in the definitionally equal form `_ = MvPolynomial.eval₂Hom s y (MvPolynomial.X j0) * c`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h3 : (MvPolynomial.X j0 : MvPolynomial σ K) • (1 : MvPolynomial {j // j ≠ j0} K) = 0`. Rewrite using `[Algebra.smul_def, mul_one]`. Express the relevant statement in the definitionally equal form `g (MvPolynomial.X j0) = 0`. Simplify using `[g]`. Rewrite using `[h2, ← TensorProduct.smul_tmul, h3, TensorProduct.zero_tmul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `c`. Take `⟨b, rfl⟩` from `hψ c`. Conclude with `⟨1 ⊗ₜ b, by simp [Φ, eA, ψA]⟩`. Establish `hcomp : e = (Φ : TensorProduct (MvPolynomial σ K) (MvPolynomial {j // j ≠ j0} K) B →+* C).comp (algebraMap (MvPolynomial {j // j ≠ j0} K) (TensorProduct (MvPolynomial σ K) (MvPolynomial {j // j ≠ j0} K) B))`. Use extensionality with `q`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `[Φ, eA, ψA, e, Algebra.TensorProduct.algebraMap_apply]`. Simplify using `[Φ, eA, ψA, e, Algebra.TensorProduct.algebraMap_apply]`. Express the relevant statement in the definitionally equal form `e.Etale`. Rewrite using `[hcomp]`. Conclude with `etale_comp _ _ (RingHom.etale_algebraMap.2 inferInstance) (RingHom.Etale.of_bijective hΦ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quot_etale {K B C σ : Type} [CommRing K] [CommRing B] [CommRing C] (s : K →+* B) (y : σ → B) (j0 : σ)
     (h : (MvPolynomial.eval₂Hom s y : MvPolynomial σ K →+* B).Etale) (ψ : B →+* C) (hψ : Function.Surjective ψ)

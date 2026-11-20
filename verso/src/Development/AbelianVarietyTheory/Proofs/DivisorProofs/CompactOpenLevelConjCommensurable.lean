@@ -7,7 +7,7 @@ open scoped TensorProduct Classical
 namespace GlobalTheory.LKMid
 
 /- English proof (translation)
-Introduce `p _ G L g`. Take `⟨hc', ho'⟩` from `GlobalTheory.RelIndexCompact.conj_map_isCompact_isOpen L.K.toSubgroup g L.compact L.K.isOpen`. Conclude with `⟨GlobalTheory.RelIndexCompact.relIndex_ne_zero_of_compact_open L.compact ho', GlobalTheory.RelIndexCompact.relIndex_ne_zero_of_compact_open hc' L.K.isOpen⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem level_conj_commensurable : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (L : G.Level) (g : G.GAf),
     Subgroup.Commensurable (L.K.toSubgroup.map (MulAut.conj g).toMonoidHom) L.K.toSubgroup := by

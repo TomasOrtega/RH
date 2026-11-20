@@ -20,9 +20,9 @@ def IsSF (S : Set G) (Ω : Set G) : Prop :=
   MeasurableSet Ω ∧ (∀ x, ∃ s ∈ S, s * x ∈ Ω) ∧ ∀ x ∈ Ω, ∀ s ∈ S, s * x ∈ Ω → s = 1
 
 /- English proof (translation)
-Use `IsFundamentalDomain.mk' hΩ.1.nullMeasurableSet fun x => ?_` and prove the remaining obligations. Take `⟨s, hs, hsx⟩` from `hΩ.2.1 x`. Use `⟨⟨s, hs⟩, hsx, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨t, ht⟩ htx`. Establish `htx' : t * x ∈ Ω` using `htx`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `key : (t * s⁻¹) * (s * x) ∈ Ω` using `by rw [show (t * s⁻¹) * (s * x) = t * x by group]; exact htx'`. Establish `h1` using `hΩ.2.2 (s * x) hsx (t * s⁻¹) (Γ.mul_mem ht (Γ.inv_mem hs)) key`. Conclude with `Subtype.ext (mul_inv_eq_one.mp h1)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isFD_of_SF (Γ : Subgroup G) [Countable Γ] {Ω : Set G} (hΩ : IsSF (Γ : Set G) Ω) (μ : Measure G) :
     IsFundamentalDomain Γ Ω μ := by
@@ -36,7 +36,7 @@ theorem isFD_of_SF (Γ : Subgroup G) [Countable Γ] {Ω : Set G} (hΩ : IsSF (Γ
   exact Subtype.ext (mul_inv_eq_one.mp h1)
 
 /- English proof (translation)
-Conclude with `(isFD_of_SF Γ hΩ μ).setIntegral_eq (isFD_of_SF Γ hΩ' μ) (fun g x => hf g g.2 x)`.
+A detailed English derivation is pending.
 -/
 theorem setIntegral_fd_eq (Γ : Subgroup G) [Countable Γ] (μ : Measure G) [μ.IsMulLeftInvariant]
     {Ω Ω' : Set G} (hΩ : IsSF (Γ : Set G) Ω) (hΩ' : IsSF (Γ : Set G) Ω') (f : G → V)
@@ -44,18 +44,18 @@ theorem setIntegral_fd_eq (Γ : Subgroup G) [Countable Γ] (μ : Measure G) [μ.
   exact (isFD_of_SF Γ hΩ μ).setIntegral_eq (isFD_of_SF Γ hΩ' μ) (fun g x => hf g g.2 x)
 
 /- English proof (translation)
-Conclude with `(measurePreserving_mul_left μ z).setIntegral_image_emb (measurableEmbedding_mulLeft z) f Ω`.
+A detailed English derivation is pending.
 -/
 theorem setIntegral_image_mul (μ : Measure G) [μ.IsMulLeftInvariant] (z : G) (Ω : Set G) (f : G → V) :
     ∫ x in (fun x => z * x) '' Ω, f x ∂μ = ∫ x in Ω, f (z * x) ∂μ := by
   exact (measurePreserving_mul_left μ z).setIntegral_image_emb (measurableEmbedding_mulLeft z) f Ω
 
 /- English proof (translation)
-Take `⟨hm, hcov, hstr⟩` from `hΩ`. Use `⟨(measurableEmbedding_mulLeft z).measurableSet_image.2 hm, ?_, ?_⟩` and prove the remaining obligations. Introduce `x`. Take `⟨s, hs, hsx⟩` from `hcov (z⁻¹ * x)`. Use `⟨z * s * z⁻¹, (hS _).2 (by rw [show z⁻¹ * (z * s * z⁻¹) * z = s by group]; exact hs), s * (z⁻¹ * x), hsx, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show z * (s * (z⁻¹ * x)) = z * s * z⁻¹ * x`. Use `group`. Introduce and unpack `x ⟨y, hy, rfl⟩ s hs ⟨y', hy', hyy⟩`. Establish `hyy' : z * y' = s * (z * y)` using `hyy`. Establish `h1 : z⁻¹ * s * z ∈ S` using `(hS s).1 hs`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `e : (z⁻¹ * s * z) * y = y'`. Combine the equalities or inequalities in the displayed calculation. Establish `h3` using `hstr y hy _ h1 (by rw [e]; exact hy')`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem isSF_image_mul {S S' : Set G} (z : G) (hS : ∀ s, s ∈ S' ↔ z⁻¹ * s * z ∈ S) {Ω : Set G}
     (hΩ : IsSF S Ω) : IsSF S' ((fun x => z * x) '' Ω) := by
@@ -86,11 +86,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
 
 /- English proof (translation)
-Take `⟨M, hM, h1, h2, h3⟩` from `hx`. Take `⟨N, hN, g1, g2, g3⟩` from `hy`. Use `⟨M * N, Subgroup.mul_mem _ hM hN, fun v => ?_, ?_, fun z => ?_⟩` and prove the remaining obligations. Establish `hdet : IsUnit (X.B.I.P v).det` using `(Matrix.isUnit_iff_isUnit_det _).mp (X.B.I.P_unit v)`. Establish `e : uMat ((x * y).1 v) = uMat (x.1 v) * uMat (y.1 v)` using `rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, h1, g1, Units.val_mul, Matrix.map_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_nonsing_inv_cancel_left _ _ hdet]`. Establish `e : X.B.I.fmat (x * y).2 = X.B.I.fmat x.2 * X.B.I.fmat y.2` using `rfl`. Rewrite using `[e, h2, g2, Units.val_mul, Matrix.map_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (m * n) z = m (n z)` using `rfl`. Rewrite using `[e, h3, g3, Units.val_mul, Matrix.mulVec_mulVec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ratLink_mul {x y : X.B.I.GA} {m n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hx : RatLink X x m)
     (hy : RatLink X y n) : RatLink X (x * y) (m * n) := by
@@ -108,13 +108,13 @@ theorem ratLink_mul {x y : X.B.I.GA} {m n : (VS D).V ≃ₗ[D.host.E] (VS D).V} 
     rw [e, h3, g3, Units.val_mul, Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Take `⟨M, hM, h1, h2, h3⟩` from `hx`. Use `⟨M⁻¹, Subgroup.inv_mem _ hM, fun v => ?_, ?_, fun z => ?_⟩` and prove the remaining obligations. Establish `hdet : IsUnit (X.B.I.P v).det` using `(Matrix.isUnit_iff_isUnit_det _).mp (X.B.I.P_unit v)`. Establish `e : uMat (x⁻¹.1 v) = (uMat (x.1 v))⁻¹` using `Matrix.coe_units_inv _`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[h1]`. Simplify using `only [Matrix.mul_assoc]`. Establish `hMM : ((M⁻¹ : GL (Fin X.B.I.n) X.B.I.E) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E).map (X.B.I.φ v) * (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E).map (X.B.I.φ v) = 1`. Rewrite using `[← Matrix.map_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_nonsing_inv_cancel_left _ _ hdet, ← Matrix.mul_assoc _ _ (X.B.I.P v), hMM, Matrix.one_mul, Matrix.nonsing_inv_mul _ hdet]`. Establish `e : X.B.I.fmat x⁻¹.2 = (X.B.I.fmat x.2)⁻¹` using `Matrix.coe_units_inv _`. Rewrite using `[e]`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[h2, ← Matrix.map_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `e : m (m⁻¹ z) = z` using `m.apply_symm_apply z`. Establish `h` using `h3 (m⁻¹ z)`. Rewrite `h` using `[e]`. Rewrite using `[h, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ratLink_inv {x : X.B.I.GA} {m : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hx : RatLink X x m) :
     RatLink X x⁻¹ m⁻¹ := by
@@ -160,19 +160,17 @@ def ROsub (Λ Λ' : Submodule (𝓞 D.host.E) (VS D).V) (γ : (VS D).V ≃ₗ[D.
     exact Formalism.L2.SG.Pf.nlamPf_inv hn'
 
 /- English proof (translation)
-Conclude with `(Module.finBasis ℚ K).equivFun.injective.countable`.
+A detailed English derivation is pending.
 -/
 theorem countable_nf (K : Type*) [Field K] [NumberField K] : Countable K := by
   exact (Module.finBasis ℚ K).equivFun.injective.countable
 
 /- English proof (translation)
-Use `haveI : Countable X.B.I.E := countable_nf X.B.I.E`. Use `haveI : Countable (Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) := inferInstanceAs (Countable (Fin _ → Fin _ → _))`. Establish `hsub : ROset X F0 F0' Λ Λ' γ ⊆ ⋃ M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E, {s : X.B.I.Ginf | ∀ v, uMat (s v) = (X.B.I.P v)⁻¹ * M.map (X.B.I.φ v) * X.B.I.P v}`. Introduce `y hy`. Take `⟨x, n, hx, hyx, -, -⟩` from `hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨M, -, h1, -, -⟩` from `hx`. Rewrite using `[Set.mem_iUnion]`. Use `⟨(M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E), ?_⟩` and prove the remaining obligations. Rewrite using `[Set.mem_setOf_eq, hyx]`. Conclude with `h1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `Set.Countable.mono hsub (Set.countable_iUnion fun M => Set.Subsingleton.countable ?_)` and prove the remaining obligations. Introduce `s hs s' hs'`. Use function extensionality and compare the values at `v`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
-
-Use `show uMat (s v) = uMat (s' v)`. Rewrite using `[hs v, hs' v]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ROset_countable (Λ Λ' : Submodule (𝓞 D.host.E) (VS D).V) (γ : (VS D).V ≃ₗ[D.host.E] (VS D).V) :
     (ROset X F0 F0' Λ Λ' γ).Countable := by
@@ -196,7 +194,7 @@ theorem ROset_countable (Λ Λ' : Submodule (𝓞 D.host.E) (VS D).V) (γ : (VS 
   rw [hs v, hs' v]
 
 /- English proof (translation)
-Conclude with `(ROset_countable X F0 F0' Λ Λ' γ).to_subtype`.
+A detailed English derivation is pending.
 -/
 theorem ROsub_countable (Λ Λ' : Submodule (𝓞 D.host.E) (VS D).V) (γ : (VS D).V ≃ₗ[D.host.E] (VS D).V) :
     Countable (ROsub X F0 F0' Λ Λ' γ) := by
@@ -211,9 +209,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open Formalism.L2.SG.Full Formalism.L2.SG.HidaSetting
 
 /- English proof (translation)
-Rewrite using `[Complex.norm_exp]`. Establish `hS : (∑ a ∈ s, (w a + star (w a))).im = 0`. Rewrite using `[Complex.im_sum]`. Conclude with `Finset.sum_eq_zero fun a _ => by simp [Complex.star_def]`. Establish `hT : ((∑ a ∈ s, (w a + star (w a))) / (gg : ℂ)).im = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.div_natCast_im, hS, zero_div]`. Simplify using `[Complex.mul_re, hT]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem norm_exp_sum_conj_lemma {ι : Type*} (s : Finset ι) (w : ι → ℂ) (gg : ℕ) :
     ‖Complex.exp (2 * Real.pi * Complex.I * ((∑ a ∈ s, (w a + star (w a))) / (gg : ℂ)))‖ = 1 := by
@@ -226,7 +224,7 @@ private theorem norm_exp_sum_conj_lemma {ι : Type*} (s : Finset ι) (w : ι →
   simp [Complex.mul_re, hT]
 
 /- English proof (translation)
-Rewrite using `[psiR]`. Conclude with `norm_exp_sum_conj_lemma _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiR_norm1 {n r : ℕ} (ε : Fin n → Bool) (gg : ℕ) (e f : Fin r → Fin n → ℂ) (z : Fin n → ℂ)
     (g : Matrix (Fin n) (Fin n) ℂ) : ‖psiR ε gg e f z g‖ = 1 := by
@@ -234,7 +232,7 @@ theorem psiR_norm1 {n r : ℕ} (ε : Fin n → Bool) (gg : ℕ) (e f : Fin r →
   exact norm_exp_sum_conj_lemma _ _ _
 
 /- English proof (translation)
-Simplify using `only [HidaSetting.psiInfU, psiInf]`. Rewrite using `[norm_prod]`. Conclude with `Finset.prod_eq_one fun v _ => psiR_norm1 _ _ _ _ _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiInfU_norm {D : D7} (X : HidaSetting D) (u : D.what₂.Word) (s : X.B.I.Ginf) : ‖X.psiInfU u s‖ = 1 := by
   simp only [HidaSetting.psiInfU, psiInf]
@@ -242,9 +240,9 @@ theorem psiInfU_norm {D : D7} (X : HidaSetting D) (u : D.what₂.Word) (s : X.B.
   exact Finset.prod_eq_one fun v _ => psiR_norm1 _ _ _ _ _ _
 
 /- English proof (translation)
-Establish `h : starRingEnd ℂ a * a = 1`. Rewrite using `[mul_comm, Complex.mul_conj, Complex.normSq_eq_norm_sq, ha]`. Simplify using the standard rewrite rules. Use extensionality with `x`. Simplify using `only [rk1, ContinuousLinearMap.smulRight_apply, innerSL_apply_apply, inner_smul_left, smul_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Take the linear combination `(inner ℂ w x) * h`.
+Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem rankOneInnerOperator_smul_smul_eq_mul_conj_smul {V V' : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     [NormedAddCommGroup V'] [InnerProductSpace ℂ V'] (a : ℂ) (ha : ‖a‖ = 1) (v : V) (w : V') :
@@ -267,7 +265,7 @@ def ChiTrivialC : Prop :=
       ∀ s ∈ ROset X (X.Fu u) (X.Fu u') Λ Λ' p.1.2, X.psiInfU u s = X.psiInfU u' (p.1.1.1⁻¹ * s * p.1.1.1)
 
 /- English proof (translation)
-Establish `h1 : X.Wu u (s * x) = X.psiInfU u s • X.piU u s (X.Wu u x)` using `(X.Wu_spec u).1 s (fun v => (hs v).1) x`. Establish `h2 : X.piU u s = 1` using `(X.piU_rep u).2.2.2.1 s hs`. Rewrite using `[h1, h2, ContinuousLinearMap.one_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem wu_N {D : D7} (X : HidaSetting D) (u : D.what₂.Word) {s : X.B.I.Ginf} (hs : s ∈ X.NinfU u) (x : X.B.I.Ginf) :
     X.Wu u (s * x) = X.psiInfU u s • X.Wu u x := by
@@ -276,11 +274,11 @@ theorem wu_N {D : D7} (X : HidaSetting D) (u : D.what₂.Word) {s : X.B.I.Ginf} 
   rw [h1, h2, ContinuousLinearMap.one_apply]
 
 /- English proof (translation)
-Introduce `s hs x`. Establish `hψ` using `hC D X Y u u' Λ Λ' hΛ hΛ' p s hs`. Take `⟨x0, n, hx0, rfl, hn, hn'⟩` from `hs`. Establish `hs1 : x0.1 ∈ X.NinfU u` using `hN D X u Λ x0 n hx0 hn`. Establish `hlink : RatLink X (p.1.1⁻¹ * x0 * p.1.1) (p.1.2⁻¹ * n * p.1.2)` using `ratLink_mul X (ratLink_mul X (ratLink_inv X p.2.1) hx0) p.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs2 : (p.1.1⁻¹ * x0 * p.1.1).1 ∈ X.NinfU u'` using `hN D X u' Λ' _ _ hlink hn'`. Establish `e : (p.1.1⁻¹ * x0 * p.1.1).1 = p.1.1.1⁻¹ * x0.1 * p.1.1.1` using `rfl`. Rewrite `hs2` using `[e]`. Establish `h1` using `wu_N X u hs1 x`. Establish `h2` using `wu_N X u' hs2 (p.1.1.1⁻¹ * x)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show p.1.1.1⁻¹ * (x0.1 * x) = (p.1.1.1⁻¹ * x0.1 * p.1.1.1) * (p.1.1.1⁻¹ * x) by group, h1, h2, ← hψ]`. Conclude with `rankOneInnerOperator_smul_smul_eq_mul_conj_smul _ (psiInfU_norm X u x0.1) _ _`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrand_inv (hN : NLamNinf) (hC : ChiTrivialC) {D : D7} {X : HidaSetting D} (Y : Full X)
     {u u' : D.what₂.Word} {Λ Λ' : Submodule (𝓞 D.host.E) (VS D).V} (hΛ : Λ ∈ Y.what₂ u) (hΛ' : Λ' ∈ Y.what₂ u')
@@ -302,9 +300,9 @@ theorem integrand_inv (hN : NLamNinf) (hC : ChiTrivialC) {D : D7} {X : HidaSetti
   exact rankOneInnerOperator_smul_smul_eq_mul_conj_smul _ (psiInfU_norm X u x0.1) _ _
 
 /- English proof (translation)
-Introduce `D X Y u u' hF _ t Ω hΩ`. Use `haveI := FiniteDimensional.complete ℂ (X.Vpi u)`. Establish `hex : ∃ Ω, Formalism.L2.SG.HidaSetting.IsSFund X.B.I (ROinf t) Ω` using `hF t`. Establish `hΩ' : Formalism.L2.SG.HidaSetting.IsSFund X.B.I (ROinf t) (FundOf t)`. Unfold `FundOf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos hex]`. Conclude with `hex.choose_spec`. Use `haveI := ROsub_countable X (X.Fu u) (X.Fu u') t.lam t.lam' t.lin`. Simplify using `only [OOt, OO]`. Conclude with `setIntegral_fd_eq (ROsub X (X.Fu u) (X.Fu u') t.lam t.lam' t.lin) _ hΩ hΩ' _ (fun s hs x => integrand_inv hN hC Y t.mem t.mem' t.rep s hs x)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ooFundIndepC_of (hN : NLamNinf) (hC : ChiTrivialC) : OOFundIndepC := by
   intro D X Y u u' hF _ t Ω hΩ
@@ -330,7 +328,7 @@ open Formalism.L2.SG.Full Formalism.L2.SG.HidaSetting
 variable {D : D7} (X : HidaSetting D)
 
 /- English proof (translation)
-Use `⟨X.bas.equivFun.symm (fun i => X.ιE (w i)), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `only [HidaSetting.crd, crdOf]`. Rewrite using `[← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply, RingEquiv.symm_apply_apply]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem crd_surj (w : Fin X.B.I.n → X.B.I.E) : ∃ y, X.crd y = w := by
   refine ⟨X.bas.equivFun.symm (fun i => X.ιE (w i)), ?_⟩
@@ -339,13 +337,11 @@ theorem crd_surj (w : Fin X.B.I.n → X.B.I.E) : ∃ y, X.crd y = w := by
   rw [← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply, RingEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Take `⟨M, -, h1, h2, h3⟩` from `hx`. Take `⟨M', -, g1, g2, g3⟩` from `hy`. Establish `hMM : (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) = M'`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Use `LinearMap.ext fun w => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨z, rfl⟩` from `crd_surj X w`. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, ← h3, ← g3]`. Use `Prod.ext (funext fun v => ?_) ?_` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show uMat (x.1 v) = uMat (y.1 v)`. Rewrite using `[h1, g1, hMM]`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use `show X.B.I.fmat x.2 = X.B.I.fmat y.2`.
-
-Rewrite using `[h2, g2, hMM]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratLink_unique {x y : X.B.I.GA} {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hx : RatLink X x n)
     (hy : RatLink X y n) : x = y := by
@@ -370,11 +366,11 @@ variable {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.h
   {F0' : FlagG (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, m, hx, rfl, hm, hm'⟩`. Use `⟨xn * x * xn⁻¹, n * m * n⁻¹, ratLink_mul X (ratLink_mul X hxn hx) (ratLink_inv X hxn), ?_, Formalism.L2.SG.Pf.nlamPf_mul (Formalism.L2.SG.Pf.nlamPf_mul hn hm) (Formalism.L2.SG.Pf.nlamPf_inv hn), ?_⟩` and prove the remaining obligations. Rewrite using `[Prod.fst_mul, Prod.fst_mul, Prod.fst_inv]`. Establish `e : (n * γ * n')⁻¹ * (n * m * n⁻¹) * (n * γ * n') = n'⁻¹ * (γ⁻¹ * m * γ) * n'` using `by group`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `Formalism.L2.SG.Pf.nlamPf_mul (Formalism.L2.SG.Pf.nlamPf_mul (Formalism.L2.SG.Pf.nlamPf_inv hn') hm') hn'`. Introduce and unpack `⟨x, m, hx, hxe, hm, hm'⟩`. Use `⟨xn⁻¹ * x * xn, n⁻¹ * m * n, ratLink_mul X (ratLink_mul X (ratLink_inv X hxn) hx) hxn, ?_, Formalism.L2.SG.Pf.nlamPf_mul (Formalism.L2.SG.Pf.nlamPf_mul (Formalism.L2.SG.Pf.nlamPf_inv hn) hm) hn, ?_⟩` and prove the remaining obligations. Rewrite using `[Prod.fst_mul, Prod.fst_mul, Prod.fst_inv, ← hxe] group`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : γ⁻¹ * (n⁻¹ * m * n) * γ = n' * ((n * γ * n')⁻¹ * m * (n * γ * n')) * n'⁻¹` using `by group`. Rewrite using `[e]`. Conclude with `Formalism.L2.SG.Pf.nlamPf_mul (Formalism.L2.SG.Pf.nlamPf_mul hn' hm') (Formalism.L2.SG.Pf.nlamPf_inv hn')`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem roset_conj {Λ Λ' : Submodule (𝓞 D.host.E) (VS D).V} {γ n n' : (VS D).V ≃ₗ[D.host.E] (VS D).V}
     (hn : n ∈ NLam Λ (lf D F0)) (hn' : n' ∈ NLam Λ' (lf D F0')) {xn : X.B.I.GA} (hxn : RatLink X xn n)
@@ -398,7 +394,7 @@ theorem roset_conj {Λ Λ' : Submodule (𝓞 D.host.E) (VS D).V} {γ n n' : (VS 
       exact Formalism.L2.SG.Pf.nlamPf_mul (Formalism.L2.SG.Pf.nlamPf_mul hn' hm') (Formalism.L2.SG.Pf.nlamPf_inv hn')
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [rk1, ContinuousLinearMap.smulRight_apply, innerSL_apply_apply, inner_smul_left, ContinuousLinearMap.smul_apply, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rankOneInnerOperator_smul_smul {V V' : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     [NormedAddCommGroup V'] [InnerProductSpace ℂ V'] (a b : ℂ) (v : V) (w : V') :
@@ -409,7 +405,7 @@ theorem rankOneInnerOperator_smul_smul {V V' : Type*} [NormedAddCommGroup V] [In
   ring
 
 /- English proof (translation)
-Establish `h : b * starRingEnd ℂ b = 1`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, hb]`. Simplify using the standard rewrite rules. Rewrite using `[map_inv₀]`. Conclude with `inv_eq_of_mul_eq_one_left h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_inv_of_norm {b : ℂ} (hb : ‖b‖ = 1) : starRingEnd ℂ b⁻¹ = b := by
   have h : b * starRingEnd ℂ b = 1 := by
@@ -447,17 +443,15 @@ def NilradicalConjLevel : Prop :=
           chiN X k * X.psiFinU u x.2
 
 /- English proof (translation)
-Use `haveI := FiniteDimensional.complete ℂ (X.Vpi u)`. Use `haveI := ROsub_countable X (X.Fu u) (X.Fu u') Λ Λ' p.1.2`. Establish `hxN : xn.1 ∈ X.NinfU u` using `hN D X u Λ xn n hxn hn`. Establish `hxN' : xn'.1 ∈ X.NinfU u'` using `hN D X u' Λ' xn' n' hxn' hn'`. Establish `hpsi : starRingEnd ℂ (X.psiInfU u' xn'.1) * X.psiInfU u' xn'.1 = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_comm, Complex.mul_conj, Complex.normSq_eq_norm_sq, psiInfU_norm]`. Simplify using the standard rewrite rules. Establish `hW' : ∀ z, X.Wu u' (xn'.1⁻¹ * z) = starRingEnd ℂ (X.psiInfU u' xn'.1) • X.Wu u' z`. Introduce `z`. Establish `h` using `wu_N X u' hxN' (xn'.1⁻¹ * z)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[mul_inv_cancel_left]`. Rewrite using `[h, smul_smul, hpsi, one_smul]`. Establish `hS : ∀ s, s ∈ ROset X (X.Fu u) (X.Fu u') Λ Λ' p.1.2 ↔ xn.1⁻¹⁻¹ * s * xn.1⁻¹ ∈ ROset X (X.Fu u) (X.Fu u') Λ Λ' (n * p.1.2 * n')`. Introduce `s`. Rewrite using `[inv_inv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `roset_conj X hn hn' hxn s`. Establish `hΩ'' : IsSF (ROset X (X.Fu u) (X.Fu u') Λ Λ' p.1.2) ((fun x => xn.1⁻¹ * x) '' Ωq)` using `isSF_image_mul xn.1⁻¹ hS hΩq`. Establish `himg : (fun x => xn.1 * x) '' ((fun x => xn.1⁻¹ * x) '' Ωq) = Ωq`. Rewrite using `[Set.image_image]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ∀ y, (xn * p.1.1 * xn').1⁻¹ * (xn.1 * y) = xn'.1⁻¹ * (p.1.1.1⁻¹ * y)` using `fun y => by show (xn.1 * p.1.1.1 * xn'.1)⁻¹ * (xn.1 * y) = _ group`. Simplify using `only [OO]`. Rewrite using `[← himg, setIntegral_image_mul _ xn.1]`. Simplify using `only [e, wu_N X u hxN, hW', rankOneInnerOperator_smul_smul, starRingEnd_self_apply, integral_smul]`. Use `congr 1`.
-
-Conclude with `setIntegral_fd_eq (ROsub X (X.Fu u) (X.Fu u') Λ Λ' p.1.2) _ hΩ'' hΩp _ (fun s hs x => integrand_inv hN hC Y hΛ hΛ' p s hs x)`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem oo_rel (hN : NLamNinf) (hC : ChiTrivialC) {D : D7} {X : HidaSetting D} (Y : Full X) {u u' : D.what₂.Word}
     {Λ Λ' : Submodule (𝓞 D.host.E) (VS D).V} (hΛ : Λ ∈ Y.what₂ u) (hΛ' : Λ' ∈ Y.what₂ u')
@@ -504,23 +498,21 @@ theorem oo_rel (hN : NLamNinf) (hC : ChiTrivialC) {D : D7} {X : HidaSetting D} (
     (fun s hs x => integrand_inv hN hC Y hΛ hΛ' p s hs x)
 
 /- English proof (translation)
-Introduce `D X Y u u' _ ρ ρ' p q hpq Ωp Ωq hΩp hΩq _`. Take `⟨n, hn, n', hn', hq⟩` from `hpq`. Establish `hnI : n ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT`. Take `⟨⟨h, -⟩, -⟩` from `hn`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hnI' : n' ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT`. Take `⟨⟨h, -⟩, -⟩` from `hn'`. Conclude with `h`. Take `⟨xn, hxn⟩` from `hR D X n hnI`. Take `⟨xn', hxn'⟩` from `hR D X n' hnI'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqpt : q.1.1 = xn * p.1.1 * xn'`. Establish `h1 : RatLink X (xn * p.1.1 * xn') q.1.2`. Rewrite using `[hq]`. Conclude with `ratLink_mul X (ratLink_mul X hxn p.2.1) hxn'`. Conclude with `ratLink_unique X q.2.1 h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hΩq` using `[hq]`. Establish `hOO` using `oo_rel hN hC Y ((Y.cs u).lam_mem ρ) ((Y.cs u').lam_mem ρ') p hn hn' hxn hxn' hΩp hΩq`. Rewrite `hOO` using `[← hqpt]`. Take `⟨-, hKmul, hKinv, hchi, -⟩` from `Y.hK`. Take `⟨hk1, hc1, hN1⟩` from `hK D X Y u ρ xn n hn hxn`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hk2, hc2, hN2⟩` from `hK D X Y u' ρ' xn' n' hn' hxn'`. Establish `hPx` using `hP D X u xn (ratLink_mem X hxn) (hN D X u _ xn n hxn hn) (hNf D X u _ xn n hxn hn)`. Establish `hPx'` using `hP D X u' xn' (ratLink_mem X hxn') (hN D X u' _ xn' n' hxn' hn') (hNf D X u' _ xn' n' hxn' hn')`. Establish `hkq : kOf X u u' ((Y.cs u).h ρ : X.B.I.Gf) ((Y.cs u').h ρ' : X.B.I.Gf) q.1.1 = ((((Y.cs u).h ρ : X.B.I.Gf) * X.xu u)⁻¹ * xn.2 * (((Y.cs u).h ρ : X.B.I.Gf) * X.xu u)) * kOf X u u' ((Y.cs u).h ρ : X.B.I.Gf) ((Y.cs u').h ρ' : X.B.I.Gf) p.1.1 * ((((Y.cs u').h ρ' : X.B.I.Gf) * X.xu u' …`. Rewrite using `[hqpt]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Simplify using `only [kOf, Prod.snd_mul]`. Use `group`. Rewrite using `[hkq, hOO]`. Generalize the expression as in `((((Y.cs u).h ρ : X.B.I.Gf) * X.xu u)⁻¹ * xn.2 * (((Y.cs u).h ρ : X.B.I.Gf) * X.xu u)) = κ1 at hk1 hc1 hN1 ⊢`. Generalize the expression as in `((((Y.cs u').h ρ' : X.B.I.Gf) * X.xu u')⁻¹ * xn'.2 * (((Y.cs u').h ρ' : X.B.I.Gf) * X.xu u')) = κ2 at hk2 hc2 hN2 ⊢`.
+Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `kOf X u u' ((Y.cs u).h ρ : X.B.I.Gf) ((Y.cs u').h ρ' : X.B.I.Gf) p.1.1 = k`. Use `⟨⟨fun hk => hKmul _ (hKmul _ hk1 _ hk) _ hk2, fun hk => ?_⟩, fun hk => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `e : k = κ1⁻¹ * (κ1 * k * κ2) * κ2⁻¹` using `by group`. Rewrite using `[e]`. Conclude with `hKmul _ (hKmul _ (hKinv _ hk1) _ hk) _ (hKinv _ hk2)`.
+Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[hchi _ (hKmul _ hk1 _ hk) _ hk2, hchi _ hk1 _ hk, hc1, hc2, smul_smul]`. Use `congr 1`. Take the linear combination `(-(X.chi2 k) * (X.psiInfU u' xn'.1 * X.psiFinU u' xn'.2)) * hPx - (X.chi2 k) * hPx'`. Rewrite using `[mul_assoc κ1 k κ2, (hN1 _ (hKmul _ hk _ hk2)).1, (hN2 _ hk).2, smul_smul]`. Use `congr 1`.
-
-Take the linear combination `(-(chiN X k) * (X.psiInfU u' xn'.1 * X.psiFinU u' xn'.2)) * hPx - (chiN X k) * hPx'`.
+A detailed English derivation is pending.
 -/
 theorem ampWellDefC_of (hR : RatPt) (hN : NLamNinf) (hNf : NLamNfin) (hC : ChiTrivialC) (hK : NilradicalConjLevel)
     (hP : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word), Formalism.L2.SG.PoincareInHH.Cut.PsiProd X u) :
@@ -595,7 +587,7 @@ def PsiInfChar : Prop :=
       X.psiInfU u (s * t) = X.psiInfU u s * X.psiInfU u t) ∧ ∀ s ∈ X.NinfU u, s⁻¹ ∈ X.NinfU u
 
 /- English proof (translation)
-Simplify using `only [psiR, rootCoord, hJ]`. Use `fun_prop`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem psiR_cont_lemma {n r : ℕ} (ε : Fin n → Bool) (gg : ℕ) (e f : Fin r → Fin n → ℂ) (z : Fin n → ℂ) :
     Continuous fun g : Matrix (Fin n) (Fin n) ℂ => psiR ε gg e f z g := by
@@ -603,7 +595,7 @@ private theorem psiR_cont_lemma {n r : ℕ} (ε : Fin n → Bool) (gg : ℕ) (e 
   fun_prop
 
 /- English proof (translation)
-Establish `h : X.psiInfU u = fun s => psiInf X.B.I X.B.g X.eR X.fR (X.zR u) s` using `rfl`. Rewrite using `[h]`. Simplify using `only [psiInf]`. Use `continuous_finset_prod _ fun v _ => ?_` and prove the remaining obligations. Conclude with `(psiR_cont_lemma _ _ _ _ _).comp (Units.continuous_val.comp (continuous_subtype_val.comp (continuous_apply v)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem psiInfU_cont {D : D7} (X : HidaSetting D) (u : D.what₂.Word) : Continuous (X.psiInfU u) := by
   have h : X.psiInfU u = fun s => psiInf X.B.I X.B.g X.eR X.fR (X.zR u) s := rfl
@@ -653,25 +645,21 @@ def NonRelCharC : Prop :=
     ∃ r ∈ Rset t, X.psiInfU u r ≠ X.psiInfU u' (t.pt.1⁻¹ * r * t.pt.1)
 
 /- English proof (translation)
-Use `haveI := FiniteDimensional.complete ℂ (X.Vpi u)`. Use `haveI := hU X.B.I`. Distinguish the cases in `hex : ∃ Ω, Formalism.L2.SG.HidaSetting.IsSFund X.B.I (ROinf t) Ω`. Use `swap`. Simplify using `only [OOt, OO, FundOf, dif_neg hex, Measure.restrict_empty, integral_zero_measure]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hΩ : IsSF (ROsub X (X.Fu u) (X.Fu u') t.lam t.lam' t.lin : Set X.B.I.Ginf) (FundOf t)`. Unfold `FundOf`. Rewrite using `[dif_pos hex]`. Conclude with `hex.choose_spec`. Establish `hΓR : ROsub X (X.Fu u) (X.Fu u') t.lam t.lam' t.lin ≤ Rsub hG t`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `s hs`. Establish `hs' : s ∈ ROset X (X.Fu u) (X.Fu u') t.lam t.lam' t.rep.1.2` using `hs`. Take `⟨x0, n, hx0, rfl, hn, hn'⟩` from `hs'`. Establish `hp : RatLink X t.rep.1.1 t.rep.1.2` using `t.rep.2.1`. Establish `hlink : RatLink X (t.rep.1.1⁻¹ * x0 * t.rep.1.1) (t.rep.1.2⁻¹ * n * t.rep.1.2)` using `ratLink_mul X (ratLink_mul X (ratLink_inv X hp) hx0) hp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Establish `h2'` using `hN D X u' t.lam' _ _ hlink hn'`. Establish `e : (t.rep.1.1⁻¹ * x0 * t.rep.1.1).1 = t.pt.1⁻¹ * x0.1 * t.pt.1` using `rfl`. Rewrite `h2'` using `[e]`. Use `show x0.1 ∈ X.NinfU u ∧ t.pt.1⁻¹ * x0.1 * t.pt.1 ∈ X.NinfU u'`. Conclude with `⟨hN D X u t.lam x0 n hx0 hn, h2'⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hpsi : ∀ w : D.what₂.Word, ∀ y : X.B.I.Ginf, starRingEnd ℂ (X.psiInfU w y) * X.psiInfU w y = 1`. Introduce `w y`. Rewrite using `[mul_comm, Complex.mul_conj, Complex.normSq_eq_norm_sq, psiInfU_norm]`. Simplify using the standard rewrite rules. Simplify using `only [OOt, OO]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hA X.B.I.Ginf (Formalism.L2.SG.ProjRows.muInf X.B.I) (Rsub hG t) (ROsub X (X.Fu u) (X.Fu u') t.lam t.lam' t.lin) (X.Vpi u' →L[ℂ] X.Vpi u) (fun r => X.psiInfU u r * starRingEnd ℂ (X.psiInfU u' (t.pt.1⁻¹ * r * t.pt.1))) (fun x => rk1 (X.Wu u x) (X.Wu u' (t.pt.1⁻¹ * x))) (FundOf t) …` and prove the remaining obligations. Conclude with `((psiInfU_cont X u).mul (Complex.continuous_conj.comp ((psiInfU_cont X u').comp ((continuous_const.mul continuous_id).mul continuous_const)))).continuousOn`. Introduce `r hr r' hr'`. Take `⟨hr1, hr2⟩` from `hr`. Take `⟨hr1', hr2'⟩` from `hr'`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : t.pt.1⁻¹ * (r * r') * t.pt.1 = (t.pt.1⁻¹ * r * t.pt.1) * (t.pt.1⁻¹ * r' * t.pt.1)` using `by group`. Use `beta_reduce`. Rewrite using `[((hG D X u).2.1 r hr1 r' hr1').2, e, ((hG D X u').2.1 _ hr2 _ hr2').2, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Introduce `s hs`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hψ` using `hC D X Y u u' t.lam t.lam' t.mem t.mem' t.rep s hs`. Establish `ept : t.pt = t.rep.1.1` using `rfl`. Use `beta_reduce`. Rewrite using `[ept, hψ, mul_comm]`. Conclude with `hpsi u' _`.
-
-Take `⟨r, hr, hne⟩` from `h4 D X Y u u' t ht`. Use `⟨r, hr, fun h => hne ?_⟩` and prove the remaining obligations. Establish `hn` using `hpsi u' (t.pt.1⁻¹ * r * t.pt.1)`. Take the linear combination `(X.psiInfU u' (t.pt.1⁻¹ * r * t.pt.1)) * h - (X.psiInfU u r) * hn`. Introduce `r hr x`.
-
-Take `⟨hr1, hr2⟩` from `hr`. Use `beta_reduce`. Rewrite using `[wu_N X u hr1 x, show t.pt.1⁻¹ * (r * x) = (t.pt.1⁻¹ * r * t.pt.1) * (t.pt.1⁻¹ * x) by group, wu_N X u' hr2, rankOneInnerOperator_smul_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ooVanish_of (hA : AvgCore) (hU : GinfUnimod) (hN : NLamNinf) (hC : ChiTrivialC) (hG : PsiInfChar)
     (h1 : RClosedC) (h2 : RODiscreteC) (h3 : RCocompactC) (h4 : NonRelCharC)
@@ -733,9 +721,9 @@ theorem ooVanish_of (hA : AvgCore) (hU : GinfUnimod) (hN : NLamNinf) (hC : ChiTr
       wu_N X u' hr2, rankOneInnerOperator_smul_smul]
 
 /- English proof (translation)
-Introduce `D X Y u u' _ _ t ht`. Establish `h0 : OOt t = 0` using `ooVanish_of hA hU hN hC hG h1 h2 h3 h4 Y t ht`. Establish `hb : ∀ ρ ρ', blk (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') t ρ ρ' = 0`. Introduce `ρ ρ'`. Unfold `blk`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Apply the tactic sequence `split_ifs <;> simp [h0]`. Use extensionality with `φ ρ`. Simplify using `[aTerm, aTermL, hb]`.
+Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem lemmaVC_of (hA : AvgCore) (hU : GinfUnimod) (hN : NLamNinf) (hC : ChiTrivialC) (hG : PsiInfChar)
     (h1 : RClosedC) (h2 : RODiscreteC) (h3 : RCocompactC) (h4 : NonRelCharC) : LemmaVC := by
@@ -763,21 +751,19 @@ def ColPass : Prop :=
         kOf X u u' ((Y.cs u).h ρ : X.B.I.Gf) ((Y.cs u').h ρ' : X.B.I.Gf) p.1.1 ∈ X.K2
 
 /- English proof (translation)
-Introduce `D X Y u u' Λ Λ' hΛ hΛ' p s hs`. Take `⟨x, n, hx, rfl, hn, hn'⟩` from `hs`. Establish `hp : RatLink X p.1.1 p.1.2` using `p.2.1`. Establish `hyl : RatLink X (p.1.1⁻¹ * x * p.1.1) (p.1.2⁻¹ * n * p.1.2)` using `ratLink_mul X (ratLink_mul X (ratLink_inv X hp) hx) hp`. Establish `hxN : x.1 ∈ X.NinfU u` using `hN D X u Λ x n hx hn`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxF : x.2 ∈ X.NfinU u` using `hNf D X u Λ x n hx hn`. Establish `hyN : (p.1.1⁻¹ * x * p.1.1).1 ∈ X.NinfU u'` using `hN D X u' Λ' _ _ hyl hn'`. Establish `hyF : (p.1.1⁻¹ * x * p.1.1).2 ∈ X.NfinU u'` using `hNf D X u' Λ' _ _ hyl hn'`. Establish `hPx` using `hP D X u x (ratLink_mem X hx) hxN hxF`. Establish `hPy` using `hP D X u' _ (ratLink_mem X hyl) hyN hyF`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ρ, ρ', hρ, hρ', hk⟩` from `hCol D X Y u u' Λ Λ' hΛ hΛ' p`. Rewrite `hn` using `[← hρ]`. Take `⟨-, -, hkx⟩` from `hK D X Y u ρ x n hn hx`. Take `⟨-, -, hky⟩` from `hK D X Y u' ρ' _ _ (by rw [hρ']; exact hn') hyl`. Establish `hpsiE : ∀ a, X.psiEf a ≠ 0`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `a h`. Establish `h1 : X.psiEf (a + -a) = X.psiEf a * X.psiEf (-a)` using `X.psiEf_add _ _`. Rewrite `h1` using `[add_neg_cancel, X.psiEf_int 0 (zero_mem _), h, zero_mul]`. Conclude with `one_ne_zero h1`. Establish `hcomm : (((Y.cs u).h ρ : X.B.I.Gf) * X.xu u)⁻¹ * x.2 * (((Y.cs u).h ρ : X.B.I.Gf) * X.xu u) * kOf X u u' ((Y.cs u).h ρ : X.B.I.Gf) ((Y.cs u').h ρ' : X.B.I.Gf) p.1.1 = kOf X u u' ((Y.cs u).h ρ : X.B.I.Gf) ((Y.cs u').h ρ' : X.B.I.Gf) p.1.1 * ((((Y.cs u').h ρ' : X.B.I.Gf) * X.xu u') …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [kOf, Prod.snd_mul, Prod.snd_inv]`. Use `group`. Establish `hF1` using `(hkx _ hk).1`. Establish `hF2` using `(hky _ hk).2`. Rewrite `hF1` using `[hcomm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : chiN X (kOf X u u' ((Y.cs u).h ρ : X.B.I.Gf) ((Y.cs u').h ρ' : X.B.I.Gf) p.1.1) ≠ 0` using `hpsiE _`. Establish `hψf : X.psiFinU u x.2 = X.psiFinU u' (p.1.1⁻¹ * x * p.1.1).2`. Establish `h3` using `hF1.symm.trans hF2`. Rewrite `h3` using `[mul_comm (chiN X _)]`. Conclude with `mul_right_cancel₀ hne h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (p.1.1⁻¹ * x * p.1.1).1 = p.1.1.1⁻¹ * x.1 * p.1.1.1` using `rfl`. Rewrite using `[← e]`. Establish `hF0 : X.psiFinU u x.2 ≠ 0` using `fun h => by`. Rewrite `hPx` using `[h, mul_zero]`. Conclude with `zero_ne_one hPx`.
-
-Rewrite `hPx`, `hF0` using `[hψf]`. Conclude with `mul_right_cancel₀ hF0 (hPx.trans hPy.symm)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chiTrivialC_of (hN : NLamNinf) (hNf : NLamNfin) (hK : NilradicalConjLevel) (hCol : ColPass)
     (hP : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word), Formalism.L2.SG.PoincareInHH.Cut.PsiProd X u) :

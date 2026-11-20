@@ -13,7 +13,7 @@ import Development.WeilBound.RepresentationTheoryGL.LimitMultiplicityWeights.Reg
 namespace MainStatements.WeightKernel.Dec
 
 /- English proof (translation)
-The claim follows from `decay (core derMem (derVan smOf derMem) level (sumSm smOf) variation nearCusp base) bridge`.
+A detailed English derivation is pending.
 -/
 theorem decay_holds : Decay :=
   decay (core derMem (derVan smOf derMem) level (sumSm smOf) variation nearCusp base) bridge

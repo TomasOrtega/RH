@@ -5,7 +5,7 @@ open UpperTheory.V.Lit.Geo.Cs
 open scoped ContDiff
 
 /- English proof (translation)
-Establish `hc : Continuous fun x => ∑ i ∈ Finset.range (k + 1), ‖iteratedFDeriv ℝ i f x‖` using `continuous_finsetSum _ fun i _ => (hf.continuous_iteratedFDeriv (by exact_mod_cast le_top)).norm`. Take `⟨C, hC⟩` from `(isCompact_closedBall (0 : X) c).bddAbove_image hc.continuousOn`. Use `⟨C, fun x hx i hi => ?_⟩` and prove the remaining obligations. Use `le_trans ?_ (hC ⟨x, mem_closedBall_zero_iff.2 hx, rfl⟩)` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun i => ‖iteratedFDeriv ℝ i f x‖) (fun _ _ => norm_nonneg _) (Finset.mem_range.2 (Nat.lt_succ_of_le hi))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem sz_ball {X Y : Type} [NormedAddCommGroup X] [NormedSpace ℝ X] [FiniteDimensional ℝ X]
     [NormedAddCommGroup Y] [NormedSpace ℝ Y] (f : X → Y) (hf : ContDiff ℝ ∞ f) (k : ℕ) (c : ℝ) :
@@ -19,7 +19,7 @@ private theorem sz_ball {X Y : Type} [NormedAddCommGroup X] [NormedSpace ℝ X] 
     (Finset.mem_range.2 (Nat.lt_succ_of_le hi))
 
 /- English proof (translation)
-Set `b` to `Module.finBasis ℝ V`. Set `E : (V [⋀^Fin q]→L[ℝ] F) →ₗ[ℝ] ((Fin q → Fin (Module.finrank ℝ V)) → F)` to `{ toFun := fun a k => a fun i => b (k i) map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Use `FiniteDimensional.of_injective E fun a a' h => ?_` and prove the remaining obligations. Apply `ContinuousAlternatingMap.toAlternatingMap_injective` to reduce the goal to its premises. Conclude with `Module.Basis.ext_alternating b fun k _ => congrFun h k`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 private theorem alt_fin (V F : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [NormedAddCommGroup F] [NormedSpace ℝ F]
     [FiniteDimensional ℝ V] [FiniteDimensional ℝ F] (q : ℕ) : FiniteDimensional ℝ (V [⋀^Fin q]→L[ℝ] F) := by
@@ -33,9 +33,9 @@ private theorem alt_fin (V F : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] 
   exact Module.Basis.ext_alternating b fun k _ => congrFun h k
 
 /- English proof (translation)
-Introduce `V F _ _ _ _ _ _ q k c`. Establish `h : ContDiff ℝ ∞ (fun L : V →L[ℝ] V => (ContinuousAlternatingMap.compContinuousLinearMapCLM L : (V [⋀^Fin q]→L[ℝ] F) →L[ℝ] (V [⋀^Fin q]→L[ℝ] F)))` using `by haveI := alt_fin V F q`. Rewrite using `[contDiff_clm_apply_iff]`. Introduce `w`. Rewrite using `[contDiff_iff_contDiffAt]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `L`. Use `UpperTheory.V.Lit.Dr.altSmooth _ V F q _ L fun v => ?_` and prove the remaining obligations. Conclude with `UpperTheory.V.Lit.Dr.applySmooth (V →L[ℝ] V) V F q (fun _ => w) (fun i L => L (v i)) L contDiffAt_const fun i => (contDiffAt_id.clm_apply contDiffAt_const)`. Conclude with `⟨h, sz_ball _ h k c⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Lit.Geo.Cs.altSz :
     AltSz := by

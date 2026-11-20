@@ -11,11 +11,9 @@ open scoped Classical
 namespace GlobalTheory.GLm
 
 /- English proof (translation)
-Unfold `zOf`. Use `Finset.sum_induction _ (fun a : MonoidAlgebra ℂ G => a.coeff y ∈ K) ?_ ?_ ?_` and prove the remaining obligations. Introduce `a b ha hb`. Use `K.add_mem ha hb` as an intermediate fact. Simplify using `using this`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using the standard rewrite rules. Introduce `x _`. Establish `h1 : χ 1 / (Fintype.card G : ℂ) * χ x⁻¹ ∈ K` using `K.mul_mem (K.div_mem (h 1) (natCast_mem K _)) (h _)`. Rewrite using `[MonoidAlgebra.coeff_single, Finsupp.single_apply]`. Use `split_ifs`.
-
-Conclude with `h1`. Conclude with `K.zero_mem`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zOf_coeff_mem {G : Type} [Group G] [Fintype G] (K : IntermediateField ℚ ℂ) (χ : G → ℂ)
     (h : ∀ x, χ x ∈ K) (y : G) : (zOf χ).coeff y ∈ K := by
@@ -34,11 +32,11 @@ theorem zOf_coeff_mem {G : Type} [Group G] [Fintype G] (K : IntermediateField �
     · exact K.zero_mem
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5⟩` from `GlobalTheory.T.harishChandraSeriesCentralIdempotent_laws g L hg hG r`. Use `⟨h1, h2, h3, ?_, h5, ?_⟩` and prove the remaining obligations. Introduce `f`. Use `⟨fun h0 hf => GlobalTheory.T.harishChandraSeriesCentralIdempotent_ne_zero g L hG r f hf.1 hf.2.1 hf.2.2 h0, h4 f⟩` and prove the remaining obligations. Introduce `f x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `eSerC`. Use `finsum_mem_induction (fun a : MonoidAlgebra ℂ (Gn g r) => a.coeff x ∈ IntermediateField.adjoin ℚ {Complex.exp (2 * Real.pi * Complex.I / (N : ℕ))}) ?_ ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `a b ha hb`. Use `add_mem ha hb` as an intermediate fact.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `using this`. Introduce `χ hχ`. Take `⟨⟨V, _, hV⟩, _⟩` from `hχ`. Conclude with `zOf_coeff_mem _ χ (GlobalTheory.T.isCharacterOfFDRep_mem_cyclotomic_adjoin (Gn g r) χ N hN hd ⟨V, hV⟩) x`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isSer_eSerC (g : ℕ) [Fact g.Prime] (L : LabelDatum g) (hg : 5 ≤ g) (hG : Green) (r N : ℕ) (hN : 0 < N)
     (hd : Nat.card (GL (Fin r) (ZMod g)) ∣ N) : GlobalTheory.MemN.IsSer r g N (eSerC L r) := by

@@ -8,7 +8,7 @@ namespace GlobalTheory.CompanionTheory.Ar.Top.LinPow
 variable {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ}
 
 /- English proof (translation)
-Unfold `degFl`. Repeatedly rewrite using `[coeff_C_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun σ _ => by ring`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degFl_C_mul (c : ℝ) (F : RP Ψ N) : degFl (C c * F) = c * degFl F := by
   unfold degFl
@@ -16,14 +16,14 @@ theorem degFl_C_mul (c : ℝ) (F : RP Ψ N) : degFl (C c * F) = c * degFl F := b
   exact Finset.sum_congr rfl fun σ _ => by ring
 
 /- English proof (translation)
-Simplify using `[linRoot, pderiv_X, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pderiv_linRoot (u : Wt Ψ N) (τ : Ψ) (i : Fin N) :
     pderiv (τ, i) (linRoot u) = -C (u τ i) := by
   simp [linRoot, pderiv_X, Pi.single_apply]
 
 /- English proof (translation)
-Rewrite using `[Derivation.leibniz_pow, pderiv_linRoot]`. Simplify using `only [Nat.add_sub_cancel, nsmul_eq_mul, smul_eq_mul]`. Simplify using `only [map_neg, map_mul, map_add, map_natCast, map_one]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pderiv_linRoot_pow (u : Wt Ψ N) (τ : Ψ) (i : Fin N) (D : ℕ) :
     pderiv (τ, i) (linRoot u ^ (D + 1)) =
@@ -35,7 +35,7 @@ theorem pderiv_linRoot_pow (u : Wt Ψ N) (τ : Ψ) (i : Fin N) (D : ℕ) :
   ring
 
 /- English proof (translation)
-Unfold `degFl`. Repeatedly rewrite using `[coeff_sum, Finset.mul_sum]`. Conclude with `Finset.sum_comm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma degFl_sum' {ι : Type*} (s : Finset ι) (f : ι → RP Ψ N) :
     degFl (∑ i ∈ s, f i) = ∑ i ∈ s, degFl (f i) := by
@@ -44,7 +44,7 @@ private lemma degFl_sum' {ι : Type*} (s : Finset ι) (f : ι → RP Ψ N) :
   exact Finset.sum_comm
 
 /- English proof (translation)
-Rewrite using `[degFl_sum']`. Repeatedly rewrite using `[pderiv_linRoot_pow, degFl_C_mul]`. Simplify using `only [flagDeg]`. Rewrite using `[Finset.mul_sum, ← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degFl_sum_pderiv (u : Wt Ψ N) (τ : Ψ) (s : Finset (Fin N)) :
     degFl (∑ i ∈ s, pderiv (τ, i) (linRoot u ^ (dimFl Ψ N + 1))) =
@@ -58,7 +58,7 @@ theorem degFl_sum_pderiv (u : Wt Ψ N) (τ : Ψ) (s : Finset (Fin N)) :
 end GlobalTheory.CompanionTheory.Ar.Top.LinPow
 
 /- English proof (translation)
-Introduce `Ψ _ _ N j τ u`. Conclude with `⟨GlobalTheory.CompanionTheory.Ar.Top.LinPow.degFl_sum_pderiv u τ _, GlobalTheory.CompanionTheory.Ar.Top.LinPow.degFl_sum_pderiv u τ Finset.univ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.CompanionTheory.Ar.Top.Sh_Tot_linRoot_pow :
     ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (j : ℕ) (τ : Ψ) (u : Wt Ψ N), Sh j τ (linRoot u ^ (dimFl Ψ N + 1)) = -(((dimFl Ψ N : ℝ) + 1) * flagDeg u * ∑ i ∈ Finset.univ.filter (fun i : Fin N => (i : ℕ) < j), u τ i) ∧ Tot τ (linRoot u ^ (dimFl Ψ N + 1)) = -(((dimFl Ψ N : ℝ) + 1) * flagDeg u * ∑ i, u τ i) := by

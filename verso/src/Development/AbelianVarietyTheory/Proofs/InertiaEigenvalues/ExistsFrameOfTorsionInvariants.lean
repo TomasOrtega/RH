@@ -7,25 +7,23 @@ open scoped LaurentSeries PowerSeries TensorProduct
 namespace GlobalTheory.RedFun
 
 /- English proof (translation)
-Set `: Module F M` to `Module.compHom M κ`. Establish `hs : ∀ (c : F) (y : M), c • y = κ c • y` using `fun _ _ => rfl`. Set `V' : Submodule F M` to `{ V with smul_mem' := fun c y hy => hV c y hy }`. Establish `h1` using `GlobalTheory.stable_le_span_invariants_of_semilinear_family F M D σ t V' hσ (fun d c y _ => hsl d c y) hst hav hid`. Take `⟨b, hb, hsp, hli⟩` from `exists_linearIndependent F {y | y ∈ V' ∧ ∀ d, t d y = y}`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hle : V' ≤ Submodule.span F (Set.range u)`. Introduce `y hy`. Take `⟨c, rfl⟩` from `hu y hy`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ (c j) (Submodule.subset_span ⟨j, rfl⟩)`. Establish `hbu : Set.range ((↑) : b → M) ≤ Submodule.span F (Set.range u)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `hle (hb x.2).1`. Establish `: Finite b`. Establish `: Module.Finite F (Submodule.span F (Set.range u))` using `Module.Finite.span_of_finite F (Set.finite_range u)`. Establish `h0 : LinearIndependent F fun x : b => (⟨x.1, hbu ⟨x, rfl⟩⟩ : Submodule.span F (Set.range u))` using `LinearIndependent.of_comp (Submodule.subtype _) hli`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h0.finite`. Establish `: Fintype b` using `Fintype.ofFinite b`. Establish `hc` using `(linearIndependent_le_span_aux' _ hli (Set.range u) hbu).trans (Fintype.card_range_le u)`. Rewrite `hc` using `[Fintype.card_fin]`. Set `e` to `(Fintype.equivFin b).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hli' : LinearIndependent F (fun j => (e j : M))` using `hli.comp e e.injective`. Establish `hind : ∀ c : Fin (Fintype.card b) → F, ∑ j, κ (c j) • (e j : M) = 0 → c = 0` using `fun c hc =>`. Use function extensionality and compare the values at `(Fintype.linearIndependent_iff.1 hli' c hc)`. Establish `hgen : ∀ y ∈ V, ∃ c : Fin (Fintype.card b) → F, y = ∑ j, κ (c j) • (e j : M)`. Introduce `y hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h2 : y ∈ Submodule.span F (Set.range fun j => (e j : M))`. Establish `h3 : (Set.range fun j => (e j : M)) = b`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(e j).2`. Introduce `hx; exact ⟨e.symm ⟨x, hx⟩, by simp⟩`. Rewrite using `[h3, hsp]`. Conclude with `h1 hy`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun F).1 h2`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨c, hc.symm⟩`. Use `⟨_, hc, fun j => e j, fun j => (hb (e j).2).1, fun j => (hb (e j).2).2, hind, hgen, ?_⟩` and prove the remaining obligations. Introduce `y hy hinv`. Take `⟨c, rfl⟩` from `hgen y hy`. Establish `h4 : ∀ j d, σ d (c j) = c j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `j d`. Establish `h5` using `hinv d`. Rewrite `h5` using `[map_sum]`. Simplify using `only [hsl, fun j => (hb (e j).2).2 d] at h5`. Establish `h6` using `hind (fun j => σ d (c j) - c j) (by`.
-
-Simplify using `only [map_sub, sub_smul, Finset.sum_sub_distrib, h5, sub_self])`. Conclude with `sub_eq_zero.1 (congrFun h6 j)`. Use `choose c₀ hc₀ using fun j => hfix (c j) (h4 j)`. Conclude with `⟨c₀, by simp only [hc₀]⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_invariant_basis {F₀ F R M D : Type} [Field F₀] [Field F] [CommRing R] [AddCommGroup M] [Module R M]
     [Fintype D] (κ : F →+* R) (ι : F₀ →+* F) (σ : D → (F →+* F)) (t : D → (M →+ M)) (V : AddSubgroup M)
@@ -91,43 +89,41 @@ theorem exists_invariant_basis {F₀ F R M D : Type} [Field F₀] [Field F] [Com
   exact ⟨c₀, by simp only [hc₀]⟩
 
 /- English proof (translation)
-Introduce `G _ _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD LL O _ _ _ _ _ v n W RA RW _ _ _ _ inclR φR gR πA E k _ _ Rk _ _ _ _ ρ lam κ a ι σ hR hD T A q hq i hu`. Take `⟨u, hu⟩` from `hu`. Use `set ε := eps E ρ i with hε`. Establish `hεε : ε * ε = ε` using `eps_idem E ρ i`. Use `choose g hg using fun δ : {δ // δ ∈ W.DelF} => W.resΓ_onto δ.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `f : W.DD T →+ Rk ⊗[k] (Fin A.m → k)` to `(DistribSMul.toAddMonoidHom _ ε).comp (J E ρ T q)`. Establish `hf : ∀ x, f x = ε • J E ρ T q x` using `fun _ => rfl`. Set `t : {δ // δ ∈ W.DelF} → (Rk ⊗[k] (Fin A.m → k) →+ Rk ⊗[k] (Fin A.m → k))` to `fun δ => (Act a A (g δ)).toAddMonoidHom`. Establish `ht : ∀ δ x, t δ (f x) = f (W.γD T δ.1 x)`. Introduce `δ x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Act a A (g δ) (ε • J E ρ T q x) = _`. Rewrite using `[Act_smul, hD.a_eps, ← J_act E ρ hD.a_ρ T A q hq, hg, hf]`. Establish `hsum : ∀ x, ∑ δ, t δ (f x) = f (∑ δ ∈ W.DelF, W.γD T δ x)`. Introduce `x`. Simplify using `only [ht]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_sum, Finset.sum_coe_sort W.DelF (fun δ => f (W.γD T δ x))]`. Establish `hinv : ∀ x ∈ DΔ W T, ∀ δ, t δ (f x) = f x`. Introduce `x hx δ`. Rewrite using `[ht, hx δ.1 δ.2]`. Establish `hV : ∀ c, ∀ y ∈ f.range, κ c • y ∈ f.range`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `c _ ⟨x, rfl⟩`. Take `⟨e, he⟩` from `hR.κ_of i c`. Use `⟨e • x, ?_⟩` and prove the remaining obligations. Rewrite using `[hf, hf, J_smul, smul_smul, smul_smul, ← he, mul_comm]`. Establish `hsl : ∀ d c y, t d (κ c • y) = κ (σ d c) • t d y`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `d c y`. Express the relevant statement in the definitionally equal form `Act a A (g d) (κ c • y) = κ (σ d c) • Act a A (g d) y`. Rewrite using `[Act_smul, hD.a_κ _ d (hg d)]`. Take `⟨s, hs, w, hwV, hwi, hind, hgen, hgen₀⟩` from `exists_invariant_basis κ ι σ t f.range hV (fun j => f (u j)) (by rintro _ ⟨x, rfl⟩; exact hu x) hD.σ_inj hsl (by rintro d _ ⟨x, rfl⟩; exact ⟨_, (ht d x).symm⟩) (by rintro d _ ⟨x, rfl⟩; rw [hsum]; exact hinv _ (sum_mem_DΔ T x) d) ⟨⟨1, (W.DelF_def 1).2 ⟨1, one_pos, one_pow 1⟩⟩, by …`. Establish `hspan : ∀ y : Fin A.m → k, ε ⊗ₜ[k] y ∈ Submodule.span Rk (Set.range w)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `y`. Take `⟨x, rfl⟩` from `hq.1 y`. Establish `key : ∀ z ∈ Submodule.span Rk (Set.range (J E ρ T q)), ε • z ∈ Submodule.span Rk (Set.range w)`. Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `mem z hz`. Take `⟨x, rfl⟩` from `hz`. Take `⟨c, hc⟩` from `hgen _ ⟨x, rfl⟩`. Rewrite using `[← hf, hc]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => rw [smul_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz => rw [smul_add]`. Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul r y _ hy => rw [smul_comm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Conclude with `Submodule.smul_mem _ _ hy`. Use `key _ (J_span E ρ T q x)` as an intermediate fact. Rewrite `this` using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Then use the resulting hypothesis. Establish `hm : A.m ≤ s` using `card_le_of_span (eps_idem E ρ i) (hR.eps_ne i) w (Pi.basisFun k (Fin A.m)) (Pi.basisFun k (Fin A.m)).linearIndependent (fun j => hspan _)`. Take `rfl : s = A.m` from `le_antisymm hs hm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Set `β : Vc k A.m →+ Rk ⊗[k] (Fin A.m → k)` to `{ toFun := fun c => ∑ j, κ (ι (c j)) • w j map_zero' := by simp map_add' := fun c c' => by simp [add_smul, Finset.sum_add_distrib] }`. Establish `hβ : ∀ c, β c = ∑ j, κ (ι (c j)) • w j` using `fun _ => rfl`. Establish `hβV : ∀ c, β c ∈ f.range` using `fun c => by`. Rewrite using `[hβ]`. Conclude with `AddSubgroup.sum_mem _ fun j _ => hV _ _ (hwV j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `⟨β, ⟨?_, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `c hc`. Use `hind (fun j => ι (c j)) hc` as an intermediate fact. Use function extensionality and compare the values at `j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(map_eq_zero ι).1 (congrFun this j)`. Introduce `c x`. Simplify using `[hβ, Finset.smul_sum, smul_smul]`. Introduce `c`. Take `⟨x, hx⟩` from `hβV c`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hx, hf, smul_smul, hεε]`. Introduce `y`. Use `Submodule.span_mono ?_ (hspan y)` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Use `⟨Pi.single j 1, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hβ, Finset.sum_eq_single j]`. Simplify using the standard rewrite rules. Introduce `j' _ hj`. Simplify using `[hj]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩`. Take `⟨x, hx⟩` from `hβV c`. Establish `hi : ∀ δ, t δ (β c) = β c`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `δ`. Rewrite using `[hβ, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hsl, hwi, (hD.σ_fix _).2 ⟨_, rfl⟩]`. Take `⟨r, hr⟩` from `hR.res_surj ((W.DelF.card : k)⁻¹)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `⟨⟨r • ∑ δ ∈ W.DelF, W.γD T δ x, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `δ hδ`. Rewrite using `[map_smul, sum_mem_DΔ T x δ hδ]`. Express the relevant statement in the definitionally equal form `_ = ε • J E ρ T q (r • _)`. Rewrite using `[J_smulO, smul_comm, ← hf, ← hsum, hx, hr, algebraMap_smul]`.
-
-Simplify using `only [hi, Finset.sum_const, Finset.card_univ, Fintype.card_coe]`. Rewrite using `[← Nat.cast_smul_eq_nsmul k, smul_smul, inv_mul_cancel₀ hD.card_ne, one_smul]`. Introduce and unpack `⟨x, rfl⟩`. Take `⟨c, hc⟩` from `hgen₀ _ ⟨x.1, rfl⟩ (hinv x.1 x.2)`. Conclude with `⟨c, hc.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_frame_of_invariants : ∀ {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K] [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K] {B BdR : Type} [CommRing B] [CommRing BdR] [Algebra Qp B] [Algebra K₀ B] [IsScalarTower Qp K₀ B] [Algebra Qp BdR] [Algebra K₀ BdR] [Algebra K BdR] [IsScalarTower Qp K BdR] [IsScalarTower K₀ K BdR] [IsScalarTower Qp K₀ BdR] {PD : PeriodData G Qp K₀ K B BdR} {LL O : Type} [Field LL] [Algebra Qp LL] [CommRing O] [Algebra O LL] [TopologicalSpace LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ} (W : LocWach PD LL O v n) {RA RW : Type} [CommRing RA] [CommRing RW] [Algebra O RA] [Algebra O RW] {inclR : RA →ₐ[O] RW} {φR : RW →ₐ[O] RW} {gR : G → (RW →ₐ[O] RW)} {πA : RA} (E : EtTie W RA RW inclR φR gR πA) {k : Type} [Field k] [Algebra O k] {Rk : Type} [CommRing Rk] [Algebra k Rk] [Algebra O Rk] [IsScalarTower O k Rk] (ρ : RW →ₐ[O] Rk) (lam : O) (κ : k⸨X⸩ →+* Rk) (a : G → (Rk →ₐ[k] Rk)) (ι : k⸨X⸩ →+* k⸨X⸩) (σ : {δ // δ ∈ W.DelF} → (k⸨X⸩ →+* k⸨X⸩)), IsRed E ρ (k := k) lam κ → IsDel E ρ κ a ι σ → ∀ (T : LocLat G Qp LL O) (A : Ob k G) (q : ↥T.L.T →ₗ[O] (Fin A.m → k)), Onto T A q → ∀ i, (∃ u : Fin A.m → W.DD T, ∀ x, ∃ c : Fin A.m → k⸨X⸩, eps E ρ i • J E ρ T q x = ∑ j, κ (c j) • eps E ρ i • J E ρ T q (u j)) → ∃ β : Vc k A.m →+ Rk ⊗[k] (Fin A.m → k), IsFrame (κ.comp ι) (eps E ρ i) β ∧ ∀ y, (∃ x, β x = y) ↔ ∃ x : ↥(DΔ W T), y = eps E ρ i • J E ρ T q x := by
   intro G _ _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD LL O _ _ _ _ _ v n W RA RW _ _ _ _ inclR φR gR πA

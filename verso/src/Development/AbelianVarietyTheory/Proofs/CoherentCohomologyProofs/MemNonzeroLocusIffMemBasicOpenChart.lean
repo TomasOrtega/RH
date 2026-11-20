@@ -10,9 +10,9 @@ open GlobalTheory GlobalTheory.AbLaw
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `⟨fun hx => ?_, fun hx => TopologicalSpace.Opens.mem_iSup.2 ⟨k, hx⟩⟩` and prove the remaining obligations. Take `⟨l, hl⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`. Establish `e` using `congrArg Y.basicOpen (s.compat k l)`. Rewrite `e` using `[Scheme.basicOpen_mul, Y.basicOpen_of_isUnit (H.g k l).isUnit]`. Use `erw [Scheme.basicOpen_res, Scheme.basicOpen_res] at e`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hx' : x ∈ H.U k ⊓ H.U l` using `⟨hk, Y.basicOpen_le _ hl⟩`. Conclude with `(e.ge ⟨hx', hx', hl⟩).2`.
+A detailed English derivation is pending.
 -/
 theorem mem_nonzeroLocus_iff_mem_basicOpen_chart {Y : Scheme.{0}} {H : LB Y} (s : LB.Sec H) (k : H.ι)
     {x : Y} (hk : x ∈ H.U k) : x ∈ nonzeroLocus s ↔ x ∈ Y.basicOpen (s.f k) := by
@@ -25,7 +25,7 @@ theorem mem_nonzeroLocus_iff_mem_basicOpen_chart {Y : Scheme.{0}} {H : LB Y} (s 
   exact (e.ge ⟨hx', hx', hl⟩).2
 
 /- English proof (translation)
-Proceed by induction on `I using Finset.induction_on with`. Consider the case `empty => simpa using hx`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Scheme.basicOpen_mul, Finset.forall_mem_insert, ← ih]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_basicOpen_finset_prod_iff {Y : Scheme.{0}} {U : Y.Opens} {ι : Type} (f : ι → Γ(Y, U))
     (I : Finset ι) {x : Y} (hx : x ∈ U) :
@@ -38,7 +38,7 @@ theorem mem_basicOpen_finset_prod_iff {Y : Scheme.{0}} {U : Y.Opens} {ι : Type}
     rfl
 
 /- English proof (translation)
-Proceed by induction on `I using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.iInf_insert, Finset.forall_mem_insert, ← ih]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_finset_biInf_opens_iff {Y : Scheme.{0}} {ι : Type} (D : ι → Y.Opens) (I : Finset ι)
     {x : Y} : x ∈ (⨅ i ∈ I, D i) ↔ ∀ i ∈ I, x ∈ D i := by
@@ -50,9 +50,9 @@ theorem mem_finset_biInf_opens_iff {Y : Scheme.{0}} {ι : Type} (D : ι → Y.Op
     rfl
 
 /- English proof (translation)
-Introduce `Y H ι s I hH`. Set `σ : LB.Sec (pw H (I.card : ℤ))` to `{ f := fun l : H.ι => ∏ i ∈ I, (s i).f l compat := fun k l : H.ι => by`. Express the relevant statement in the definitionally equal form `(Y.presheaf.map (homOfLE (inf_le_left : H.U k ⊓ H.U l ≤ H.U k)).op).hom (∏ i ∈ I, (s i).f k) = ((H.g k l ^ (I.card : ℤ) : Γ(Y, H.U k ⊓ H.U l)ˣ) : Γ(Y, H.U k ⊓ H.U l)) * (Y.presheaf.map (homOfLE (inf_le_right : H.U k ⊓ H.U l ≤ H.U l)).op).hom (∏ i ∈ I, (s i).f l)`. Rewrite using `[map_prod, map_prod, zpow_natCast, Units.val_pow_eq_pow_val, ← Finset.prod_const, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun i _ => (s i).compat k l }`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨σ, fun _ => rfl, TopologicalSpace.Opens.ext (Set.ext fun x => ?_)⟩` and prove the remaining obligations. Take `⟨l, hl⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hH.cover.ge (show x ∈ (⊤ : Y.Opens) from trivial))`. Use `(mem_nonzeroLocus_iff_mem_basicOpen_chart σ l hl).trans (((mem_basicOpen_finset_prod_iff (fun i => (s i).f l) I hl).trans ?_).trans (mem_finset_biInf_opens_iff (fun i => nonzeroLocus (s i)) I).symm)` and prove the remaining obligations. Conclude with `forall₂_congr fun i _ => (mem_nonzeroLocus_iff_mem_basicOpen_chart (s i) l hl).symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_prod_sec_nonzeroLocus : ∀ (Y : Scheme.{0}) (H : LB Y) (ι : Type) (s : ι → LB.Sec H) (I : Finset ι), H.IsLB → ∃ σ : LB.Sec (pw H (I.card : ℤ)), (∀ l : H.ι, σ.f l = ∏ i ∈ I, (s i).f l) ∧ nonzeroLocus σ = ⨅ i ∈ I, nonzeroLocus (s i) := by
   intro Y H ι s I hH

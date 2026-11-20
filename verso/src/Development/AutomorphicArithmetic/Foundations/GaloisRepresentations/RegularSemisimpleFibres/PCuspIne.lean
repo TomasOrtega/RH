@@ -12,21 +12,21 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Introduce `hT hC hN hB`. Introduce `E Ω _ _ _ _ _ A v h g _ i hi Θ hΘ e y c hy hdz hreg htr rc hrc f hf hdiv t ϖ hϖ z hz`. Take `⟨a, ha, hL⟩` from `hrc`. Establish `hty` using `(UpperTheory.Zero.LLC.typeIff E Ω A v h rc).mp hL.type y`. Establish `hn : 0 < y.fst` using `Nat.pos_of_dvd_of_pos hdiv hf`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨D⟩` from `UpperTheory.Zero.LLC.extEx E Ω A v h g i hi y.fst hn`. Take `⟨⟨R, hR⟩, hsys⟩` from `UpperTheory.Zero.LLC.resEx E Ω A v h g i hi y.fst hn D`. Establish `hrank` using `(hsys R hR).rank`. Take `⟨ι, hι⟩` from `hT E Ω A v h g y.fst hn D R hR`. Take `⟨_, hcard, ⟨r⟩⟩` from `hB E v g i hi`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : Finite 𝓀[HeightOneSpectrum.adicCompletion E v] := Nat.finite_of_card_ne_zero (by rw [hcard]; exact (Fact.out : g.Prime).ne_zero)`. Take `⟨θ, hθ, hreg', hnames⟩` from `hN g y.fst hn 𝓀[HeightOneSpectrum.adicCompletion E v] D.K (IsLocalRing.ResidueField A) hrank r e ι Θ hΘ c hreg`. Establish `hcls : GlobalTheory.LocLanglands.cls y.snd.rep = y`. Unfold `GlobalTheory.LocLanglands.cls`. Conclude with `IrrGL.of_rep y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy' : (GlobalTheory.LocLanglands.cls y.snd.rep).IsCusp` using `by rw [hcls]; exact hy`. Establish `hdz' : UpperTheory.Zero.LLC.DZ (GlobalTheory.LocLanglands.cls y.snd.rep)` using `by rw [hcls]; exact hdz`. Take `⟨τ, hcusp, hinfl⟩` from `(UpperTheory.Zero.LLC.typeEx E Ω A v h g i hi y.fst hn y.snd.rep).1 hy' hdz'`. Establish `hchar` using `hC E v g i hi r y τ hcusp hinfl`. Establish `hnm` using `hnames τ (fun γ => (hchar γ).trans (htr γ))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨_, hin⟩` from `hty g i hi y.fst hn D R hR θ hreg' τ hcusp hnm y.snd.rep hcls hinfl`. Rewrite using `[hin t]`. Use `set N := (g ^ f - 1) / (g ^ y.fst - 1) with hN'`. Establish `hdvd : g ^ y.fst - 1 ∣ g ^ f - 1`. Take `⟨m, hm⟩` from `hdiv`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[hm, pow_mul]`. Simplify `Nat.sub_dvd_pow_sub_pow (g ^ y.fst) 1 m` using `only [one_pow]`. Establish `hϖ' : (ϖ ^ N) ^ (g ^ y.fst - 1) = (g : Ω)`. Rewrite using `[← pow_mul, hN', Nat.div_mul_cancel hdvd, hϖ]`. Establish `hz' : ((z ^ N : A) : Ω) = (t : G E Ω) (ϖ ^ N) / ϖ ^ N`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Rewrite using `[map_pow, ← div_pow, ← hz]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hιR : ι ((R t : D.Kˣ) : D.K) = (IsLocalRing.residue A z) ^ N`. Rewrite using `[hι t (ϖ ^ N) hϖ' (z ^ N) hz', map_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Use `congr 2`. Rewrite using `[map_pow, Units.val_pow_eq_pow_val, hθ, hιR, map_pow, ← pow_mul, ← pow_mul]`. Put the polynomial expressions in normal form.
+Put the polynomial expressions in normal form. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.cuspIne :
     TameRead → TypeChar → NameOf → BaseQ → CuspIne := by

@@ -16,15 +16,15 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Form
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Use `set s : ℝ := Real.sqrt (Tz k r z) with hs`. Establish `hss : (s : ℂ) * (s : ℂ) = ((Tz k r z : ℝ) : ℂ)`. Rewrite using `[← Complex.ofReal_mul, hs, Real.mul_self_sqrt hT.le]`. Use `set a : Fin (2 * r + k + 1) → ℂ := (s : ℂ) • bvec (wI k r (Fin.last k)) with ha`. Establish `haW : inWb k r a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i hi`. Rewrite using `[ha, Pi.smul_apply, inWb_bvec_wI _ i hi, smul_zero]`. Establish `haa : herm (Hpk k r) a a = ((-(Tz k r z) : ℝ) : ℂ)`. Rewrite using `[ha, herm_smul_left', herm_smul_right', herm_wI, if_pos rfl, if_pos rfl]`. Establish `: star (s : ℂ) = s` using `Complex.conj_ofReal s`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[this]`. Use `push_cast`. Take the linear combination `-hss`. Establish `hzz : herm (Hpk k r) z z = ((-(Tz k r z) : ℝ) : ℂ)`. Rewrite using `[TwoByOneBlock.herm_self_eq]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Use `push_cast`. Both sides reduce to the same expression. Take `⟨g, hgU, hga, hfix⟩` from `TwoByOneBlock.trans (Hpk k r) hpk_herm a z (-(Tz k r z)) (by linarith [hT]) haa hzz`. Establish `horth : ∀ (w : Fin (2 * r + k + 1) → ℂ), inWb k r w → ∀ c : Fin r, herm (Hpk k r) (bvec (eI k r c)) w = 0 ∧ herm (Hpk k r) (bvec (esI k r c)) w = 0`. Introduce `w hw c`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hw` using `[inWb_iff]`. Rewrite using `[herm_bvec_left, hpk_e, dot_bvec, herm_bvec_left, hpk_es, dot_bvec, Pi.star_apply, Pi.star_apply, (hw c).1, (hw c).2]`. Simplify using the standard rewrite rules. Conclude with `⟨g, hgU, fun c => ⟨hfix _ (horth a haW c).1 (horth z hz c).1, hfix _ (horth a haW c).2 (horth z hz c).2⟩, hga⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem frameG_exists {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hT : 0 < Tz k r z) :
     ∃ g : Mx k r, g ∈ UH (Hpk k r) ∧
@@ -66,7 +66,7 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 namespace GTRIntPf
 
 /- English proof (translation)
-Establish `hg` using `hOK.gap i (Finset.mem_Icc.2 ⟨h1, h2⟩)`. Unfold `M.Par.lo M.Par.hi at hg`. Establish `e1` using `le_max_left (P.u (i + 1)) (P.u' (i + 1))`. Establish `e2` using `min_le_left (P.u i) (P.u' i)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem u_step (P : M.Par) (hOK : P.OK) (i : ℕ) (h1 : 1 ≤ i) (h2 : i ≤ P.k - 1) : P.u (i + 1) + 1 ≤ P.u i := by
   have hg := hOK.gap i (Finset.mem_Icc.2 ⟨h1, h2⟩)
@@ -76,9 +76,9 @@ theorem u_step (P : M.Par) (hOK : P.OK) (i : ℕ) (h1 : 1 ≤ i) (h2 : i ≤ P.k
   linarith
 
 /- English proof (translation)
-Introduce `d`. Proceed by induction on `d with`. Consider the case `zero => intro _`. Simplify using the standard rewrite rules. Consider the case `succ d ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `hd`. Establish `h1` using `ih (by omega)`. Establish `h2` using `u_step P hOK (a + d) (by omega) (by omega)`. Rewrite using `[show a + (d + 1) = a + d + 1 by omega]`. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -96,15 +96,15 @@ theorem u_mono (P : M.Par) (hOK : P.OK) (a : ℕ) (ha : 1 ≤ a) :
     linarith
 
 /- English proof (translation)
-The claim follows from `hOK.int_u i (Finset.mem_Icc.2 ⟨hi, hik⟩)`.
+A detailed English derivation is pending.
 -/
 theorem u_int (P : M.Par) (hOK : P.OK) (i : ℕ) (hi : 1 ≤ i) (hik : i ≤ P.k) : ∃ n : ℤ, P.u i - P.u 1 = n :=
   hOK.int_u i (Finset.mem_Icc.2 ⟨hi, hik⟩)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨0, by simp⟩`. Consider the case `insert a s ha ih`. Take `⟨n, hn⟩` from `ih (fun i hi => h i (Finset.mem_insert_of_mem hi))`. Take `⟨m, hm⟩` from `h a (Finset.mem_insert_self a s)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨m + n, by rw [Finset.sum_insert ha, hm, hn]; push_cast; ring⟩`.
+Supply the required witnesses or components.
 -/
 theorem sum_int {ι : Type*} (s : Finset ι) (f : ι → ℝ) (h : ∀ i ∈ s, ∃ n : ℤ, f i = n) :
     ∃ n : ℤ, ∑ i ∈ s, f i = n := by
@@ -117,15 +117,15 @@ theorem sum_int {ι : Type*} (s : Finset ι) (f : ι → ℝ) (h : ∀ i ∈ s, 
     exact ⟨m + n, by rw [Finset.sum_insert ha, hm, hn]; push_cast; ring⟩
 
 /- English proof (translation)
-Introduce `a b hab`. Establish `hab' : (a : ℕ) < b` using `hab`. Take `⟨na, hna⟩` from `u_int P hOK ((a : ℕ) + 1) (by omega) (by have := a.isLt; omega)`. Take `⟨nb, hnb⟩` from `u_int P hOK ((b : ℕ) + 1) (by omega) (by have := b.isLt; omega)`. Establish `hm` using `u_mono P hOK ((a : ℕ) + 1) (by omega) ((b : ℕ) - a) (by have := b.isLt; omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hm` using `[show (a : ℕ) + 1 + ((b : ℕ) - a) = (b : ℕ) + 1 by omega]`. Establish `hba : (1 : ℝ) ≤ (((b : ℕ) - (a : ℕ) : ℕ) : ℝ)`. Establish `: 1 ≤ (b : ℕ) - (a : ℕ)` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `hdiff : P.u ((a : ℕ) + 1) - P.u ((b : ℕ) + 1) = ((na - nb : ℤ) : ℝ)` using `by push_cast; linarith`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hge : (1 : ℤ) ≤ na - nb`. Establish `: (1 : ℝ) ≤ ((na - nb : ℤ) : ℝ)` using `by linarith`. Conclude with `this` after adjusting the coercions. Use `⟨(na - nb - 1).toNat, ?_⟩` and prove the remaining obligations. Establish `hN : (((na - nb - 1).toNat : ℕ) : ℤ) = na - nb - 1` using `Int.toNat_of_nonneg (by omega)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNR : (((na - nb - 1).toNat : ℕ) : ℝ) = ((na - nb : ℤ) : ℝ) - 1`. Use `congrArg (fun x : ℤ => (x : ℝ)) hN` as an intermediate fact. Move the coercions through the operations in `at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hNC : (((na - nb - 1).toNat : ℕ) : ℂ) = (((((na - nb - 1).toNat : ℕ) : ℝ)) : ℂ)` using `by push_cast; rfl`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hNC, hNR, ← hdiff]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sdec (P : M.Par) (hOK : P.OK) :
     SDec (fun j : Fin P.k => ((P.u ((j : ℕ) + 1) : ℝ) : ℂ) - (P.k : ℂ) / 2 + 1 / 2) := by
@@ -155,43 +155,37 @@ theorem sdec (P : M.Par) (hOK : P.OK) :
   ring
 
 /- English proof (translation)
-Take `⟨hnt, hrep, hcont, -, -, hcap⟩` from `hty`. Establish `hR : IsRepW P.k P.r z π` using `⟨hrep, hcont⟩`. Take `⟨g, hgU, hgfix, hgz⟩` from `Qx8.frameG_exists hz hT`. Use `set Bs := QrCap.fr P.k P.r g with hBs`. Establish `hB : IsFrameOf P.k P.r [z] Bs` using `QrCap.fr_frame hgU hgfix _ hgz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set E := EB π Bs with hE`. Establish `hFG` using `frame_general_linear Wp P.k P.r P.k z π Bs hR hB`. Establish `hgl : GlRel E` using `hFG.1`. Use `set m : Fin P.k → ℂ := fun j => ((P.u ((j : ℕ) + 1) : ℝ) : ℂ) - (P.k : ℂ) / 2 + 1 / 2 with hm`. Establish `hq : ∀ (w : ℂ) (v : Wp), qdet E w v = cpol m w • v`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Introduce `w v`. Rewrite using `[← hFG.2 w v, hcap Bs hB w v, ProductIntervalFrames.prod_Icc_one]`. Use `congr 1`. Unfold `cpol`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `j _`. Simplify using `only [hm]`. Expand and normalize the polynomial expressions, which then agree. Establish `htop : CapSp E m = ⊤`. Rewrite using `[eq_top_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `v _`. Conclude with `mem_CapSp.2 (hq · v)`. Establish `hne : CapSp E m ≠ ⊥`. Rewrite using `[htop]`. Conclude with `top_ne_bot`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hstabT : Stab E (⊤ : Submodule ℂ Wp)` using `fun _ _ _ _ => Submodule.mem_top`. Take `⟨ν, v, -, hv0, hHW, -⟩` from `exists_singular_maximal_vector Wp P.k E hgl ⊤ hstabT top_ne_bot`. Establish `hsd` using `sdec P hOK`. Establish `hν` using `(capelli_singular Wp P.k E m hgl hne).2 hsd ν v (by rw [htop]; exact Submodule.mem_top) hv0 hHW`. Use `set c0 : Fin P.k := ⟨0, by omega⟩ with hc0`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hν0 : ν c0 = m c0` using `by rw [hν c0]; simp [hc0]`. Use `set θ : Fin P.k → ℝ := fun c => if c = c0 then 2 * Real.pi else 0 with hθ`. Establish `hDg : QrCap.Dg θ = QrCap.Dg (0 : Fin P.k → ℝ)`. Unfold `QrCap.Dg`. Use `congr 1`.
+Move the embeddings inside the algebraic operations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `c`. Simplify using `only [hθ, Pi.zero_apply]`. Use `split_ifs`. Use `push_cast`. Rewrite using `[show (2 * (Real.pi : ℂ)) * Complex.I = 2 * Real.pi * Complex.I by ring, Complex.exp_two_pi_mul_I]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish `hblk : PI.UpqRep.blockW P.k P.r (QrCap.Dg θ) = 1`. Rewrite using `[hDg, ← QrCap.diag_exp_blockW]`. Establish `: QrCap.dθ P.k P.r (0 : Fin P.k → ℝ) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Unfold `QrCap.dθ`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[this, NormedSpace.exp_zero]`. Conclude with `Matrix.diagonal_one`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hu : IsUnit g` using `(Matrix.isUnit_iff_isUnit_det _).2 (WeylGroupFacts.isUnit_of_uh hgU)`. Establish `hπ1 : π (NormedSpace.exp (∑ c, ((θ c : ℂ) * Complex.I) • unitB (Hpk P.k P.r) Bs c c)) = 1`. Rewrite using `[QrCap.torus hgU θ, hblk, mul_one, Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 hu)]`. Conclude with `hrep.1`. Establish `hop` using `QrCap.op_torus hR hB θ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hop` using `[hπ1]`. Use `set A : Wp →L[ℂ] Wp := ∑ c, ((θ c : ℂ) * Complex.I) • ecOp π (unitB (Hpk P.k P.r) Bs c c) with hA`. Establish `hAv : A v = ((2 * Real.pi : ℂ) * Complex.I * ν c0) • v`. Rewrite using `[hA, ContinuousLinearMap.sum_apply, Finset.sum_eq_single c0]`. Rewrite using `[ContinuousLinearMap.smul_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h1 : ecOp π (unitB (Hpk P.k P.r) Bs c0 c0) v = ν c0 • v` using `hHW.1 c0`. Rewrite using `[h1, smul_smul]`. Simplify using `[hθ]`. Introduce `b _ hb`. Simplify using `[hθ, hb]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ c0) h`. Establish `hexp` using `QrCap.exp_eig A _ v hAv`. Rewrite `hexp` using `[← hop]`. Establish `h1 : Complex.exp ((2 * Real.pi : ℂ) * Complex.I * ν c0) = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Assume the negation of the conclusion as `hne1`. Establish `: (1 - Complex.exp ((2 * Real.pi : ℂ) * Complex.I * ν c0)) • v = 0`. Rewrite using `[sub_smul, one_smul]`. Use `hexp` as an intermediate fact. Simplify using `only [ContinuousLinearMap.one_apply] at this`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← this, sub_self]`. Break down `smul_eq_zero.1 this with h | h` into its components or cases. Conclude with `hne1 (sub_eq_zero.1 h).symm`. Conclude with `hv0 h`. Take `⟨n, hn⟩` from `Complex.exp_eq_one_iff.1 h1`.
-
-Establish `hνn : ν c0 = n`. Establish `hpi : (2 * Real.pi : ℂ) * Complex.I ≠ 0`. Simplify using `[Real.pi_ne_zero, Complex.I_ne_zero]`. Apply `mul_left_cancel₀ hpi` to reduce the goal to its premises. Rewrite using `[hn]`.
-
-Expand and normalize the polynomial expressions, which then agree. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `hre` using `congrArg Complex.re (hν0.symm.trans hνn)`. Simplify using `only [hm, hc0] at hre`. Simplify using `at hre`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem first_weight_half_integral {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
     (P : M.Par) (z : Fin (2 * P.r + P.k + 1) → ℂ) (π : Q.Mx P.k P.r → (Wp →L[ℂ] Wp))
@@ -292,25 +286,25 @@ end GTRIntPf
 
 open GTRIntPf in
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P z z' π π' hpl hk ρ`. Take `⟨hOK, hz, hz', hTz, hTz', hty, hty'⟩` from `hpl`. Establish `hT : 0 < Tz P.k P.r z` using `by rw [hTz]; exact hOK.T_pos`. Take `⟨N0, hN0⟩` from `first_weight_half_integral P z π hOK hk hz hT hty`. Establish `hU : ∃ n : ℤ, ∑ i ∈ Finset.Icc 1 P.k, ((P.u i - P.u 1) + (P.u' i - P.u 1)) = n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `sum_int` to reduce the goal to its premises. Introduce `i hi`. Take `⟨a, ha⟩` from `hOK.int_u i hi`. Take `⟨b, hb⟩` from `hOK.int_u' i hi`. Conclude with `⟨a + b, by rw [ha, hb]; push_cast; ring⟩`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hRh : ∃ n : ℤ, ∑ i ∈ Finset.Icc 1 (P.k - 1), (M.rho P ρ i - P.u 1 - 1 / 2) = n`. Apply `sum_int` to reduce the goal to its premises. Introduce `i hi`. Take `⟨hi1, hi2⟩` from `Finset.mem_Icc.1 hi`. Unfold `M.rho`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos ⟨hi1, hi2⟩]`. Unfold `M.Par.lo`. Take `⟨a, ha⟩` from `hOK.int_u (i + 1) (Finset.mem_Icc.2 ⟨by omega, by omega⟩)`. Take `⟨b, hb⟩` from `hOK.int_u' (i + 1) (Finset.mem_Icc.2 ⟨by omega, by omega⟩)`. Break down `max_choice (P.u (i + 1)) (P.u' (i + 1)) with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨a + ((ρ ⟨i - 1, by omega⟩ : Fin _) : ℕ), by rw [h]; push_cast; linarith⟩`. Conclude with `⟨b + ((ρ ⟨i - 1, by omega⟩ : Fin _) : ℕ), by rw [h]; push_cast; linarith⟩`. Take `⟨nU, hnU⟩` from `hU`. Take `⟨nR, hnR⟩` from `hRh`. Establish `hcU : ∑ i ∈ Finset.Icc 1 P.k, ((P.u i - P.u 1) + (P.u' i - P.u 1)) = uSum P - 2 * P.k * P.u 1`.
+Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `uSum`. Rewrite using `[Finset.sum_congr rfl (fun i _ => show (P.u i - P.u 1) + (P.u' i - P.u 1) = (P.u i + P.u' i) - 2 * P.u 1 by ring), Finset.sum_sub_distrib, Finset.sum_const, Nat.card_Icc, nsmul_eq_mul]`. Rewrite using `[show P.k + 1 - 1 = P.k by omega]`. Expand and normalize the polynomial expressions, which then agree. Establish `hcR : ∑ i ∈ Finset.Icc 1 (P.k - 1), (M.rho P ρ i - P.u 1 - 1 / 2) = rhoSum P ρ - ((P.k : ℝ) - 1) * (P.u 1 + 1 / 2)`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Unfold `rhoSum`. Rewrite using `[Finset.sum_congr rfl (fun i _ => show M.rho P ρ i - P.u 1 - 1 / 2 = M.rho P ρ i - (P.u 1 + 1 / 2) by ring), Finset.sum_sub_distrib, Finset.sum_const, Nat.card_Icc, nsmul_eq_mul]`. Rewrite using `[show P.k - 1 + 1 - 1 = P.k - 1 by omega, Nat.cast_sub (by omega)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t : ℕ, (P.k : ℝ) * ((P.k : ℝ) - 1) = 2 * t := by`. Take `⟨t, ht⟩` from `Nat.even_mul_pred_self P.k`. Use `⟨t, ?_⟩` and prove the remaining obligations. Establish `: ((P.k * (P.k - 1) : ℕ) : ℝ) = ((t + t : ℕ) : ℝ)` using `by rw [ht]`. Move the coercions through the operations in `[Nat.cast_sub (show 1 ≤ P.k by omega)] at this`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨nU - nR + (P.k + 1) * N0 + t, ?_⟩` and prove the remaining obligations. Establish `e1 : uSum P = nU + 2 * P.k * P.u 1` using `by linarith`. Establish `e2 : rhoSum P ρ = nR + ((P.k : ℝ) - 1) * (P.u 1 + 1 / 2)` using `by linarith`. Rewrite using `[e1, e2, hN0]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Take the linear combination `ht / 2`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem radial_gauge_integrality_holds : GTRInt := by
   intro Wp Wq _ _ _ _ _ _ P z z' π π' hpl hk ρ

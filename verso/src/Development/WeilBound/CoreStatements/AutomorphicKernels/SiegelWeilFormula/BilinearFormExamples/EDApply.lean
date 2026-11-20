@@ -18,7 +18,7 @@ def Pm (σ : E →ₐ[F] E) (J : Matrix (Fin m) (Fin m) E) (bs : Module.Basis (F
   ((Gm (n := n) σ J bs).map (algebraMap F (AF F)))ᵀ
 
 /- English proof (translation)
-Rewrite using `[Pm, Matrix.det_transpose, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(Ne.isUnit (Gm_det σ hσ J hJ bs)).map _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Pm_unit [FiniteDimensional F E] (σ : E →ₐ[F] E) (hσ : ∀ a, σ (σ a) = a) (J : Matrix (Fin m) (Fin m) E)
     (hJ : J.det ≠ 0) (bs : Module.Basis (Fin 2) F E) : IsUnit (Pm (n := n) σ J bs).det := by
@@ -43,9 +43,9 @@ theorem eD_apply (σ : E →ₐ[F] E) (J : Matrix (Fin m) (Fin m) E) (bs : Modul
     eD σ J bs b hP w = ((bM bs).equivFun (eQ b w).2, Pm σ J bs *ᵥ (bM bs).equivFun (eQ b w).1) := rfl
 
 /- English proof (translation)
-Rewrite using `[eD_apply, eQ_frame]`. Use `Prod.ext (funext fun k => ?_) (funext fun k => ?_)` and prove the remaining obligations. Conclude with `bM_repr bs X k`. Use `show (Pm σ J bs *ᵥ (bM bs).equivFun Z) k = Bf σ J Z (Ek bs k)`. Rewrite using `[Bf_eq_sum_left σ J bs Z (Ek bs k)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.mulVec, dotProduct, Module.Basis.equivFun_apply, bM_repr, Pm, Matrix.transpose_apply, Matrix.map_apply]`. Use `Finset.sum_congr rfl fun k' _ => ?_` and prove the remaining obligations. Rewrite using `[Bf_Ek_Ek, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eD_frame [FiniteDimensional F E] (σ : E →ₐ[F] E) (J : Matrix (Fin m) (Fin m) E) (bs : Module.Basis (Fin 2) F E)
     (b : GL (Fin n ⊕ Fin n) E) (hP : IsUnit (Pm (n := n) σ J bs).det) (Z X : Mx F E m n) :
@@ -61,9 +61,9 @@ theorem eD_frame [FiniteDimensional F E] (σ : E →ₐ[F] E) (J : Matrix (Fin m
     rw [Bf_Ek_Ek, mul_comm]
 
 /- English proof (translation)
-Take `⟨⟨Z, X⟩, rfl⟩` from `(eQ (m := m) b).symm.surjective w`. Take `⟨⟨Z', X'⟩, rfl⟩` from `(eQ (m := m) b).symm.surjective w'`. Rewrite using `[eQ_symm_apply, eQ_symm_apply, symp_frame σ J YJ b ε hb, eD_frame, eD_frame]`. Simplify using `only [dotProduct]`. Rewrite using `[← Bf_eq_sum_right σ J bs Z' X, ← Bf_eq_sum_right σ J bs Z X', hsym X Z']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ((ε : ℤ) : AF F) * (u : AF F) = -1` using `by rw [← Int.cast_mul, hεu]; norm_num`. Take the linear combination `(-(Bf σ J Z' X)) * h1`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem eD_form [FiniteDimensional F E] (σ : E →ₐ[F] E) (J : Matrix (Fin m) (Fin m) E) (bs : Module.Basis (Fin 2) F E)
     (YJ : Matrix (Fin n) (Fin n) E) (b : GL (Fin n ⊕ Fin n) E) (ε : ℤˣ) (hb : b.1ᵀ * dbl YJ * b.1.map σ = jeps n ε)
@@ -80,15 +80,15 @@ theorem eD_form [FiniteDimensional F E] (σ : E →ₐ[F] E) (J : Matrix (Fin m)
   linear_combination (-(Bf σ J Z' X)) * h1
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B bs m n A Y b ε r s hB hm hn hsg hb hε`. Use `haveI : FiniteDimensional F E := Module.Finite.of_basis bs`. Establish `hσ : ∀ a, σ (σ a) = a`. Take `⟨-, -, -, h⟩` from `hB.cm`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `τ : E →+* ℂ` to `Classical.arbitrary _`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h, h, star_star]`. Choose the witnesses or unpack the hypotheses as in `⟨u, hsym, hεu, hJ⟩ : ∃ u : ℤ, (∀ i j, σ (A.J j i) = (u : E) * A.J i j) ∧ (ε : ℤ) * u = -1 ∧ A.J.det ≠ 0 := by`. Break down `hsg with ⟨hA, hY⟩ | ⟨hA, hY⟩` into its components or cases.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨1, fun i j => by simp [hA.herm], ?_, GlobalTheory.ThetaRatPair.det_ne_of_sig B A.J hA.sig⟩` and prove the remaining obligations. Rewrite using `[eps_eq hσ Y.J (-1) (fun i j => by simp [hY]) b ε hε hn]`. Evaluate the numerical expressions. Use `⟨-1, fun i j => by simp [hA.skew], ?_, GlobalTheory.ThetaRatPair.det_ne_of_sig' B A.J hA.sig⟩` and prove the remaining obligations. Rewrite using `[eps_eq hσ Y.J 1 (fun i j => by simp [hY]) b ε hε hn]`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions. Establish `hP` using `Pm_unit (n := n) σ hσ A.J hJ bs`. Set `dd : Darboux (symp (R` to `AF F) (cA σ) (-1) (incM F A.J) (dbl (incM F Y.J))) (Fin m × Fin n × Fin 2) := ⟨eD σ A.J bs b hP, eD_form σ A.J bs Y.J b ε hε u (fun X Z => Bf_symm hσ A.J u hsym X Z) hεu hP⟩`. Establish `hd : IsAdapted bs A Y b dd` using `fun Z X => eD_frame σ A.J bs b hP Z X`. Use `⟨dd, hd, fun x => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `e_rat bs A Y b dd hd x`. Conclude with `⟨_, c, hc⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sDarb : SDarb := by
   intro F E _ _ _ _ _ σ B bs m n A Y b ε r s hB hm hn hsg hb hε

@@ -11,13 +11,13 @@ open scoped Matrix
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Use `haveI : Nonempty α := ⟨a⟩`. Set `g : β → α` to `fun b => if b = f a then a else Function.invFunOn f S b`. Establish `hg : ∀ b ∈ f '' S, g b ∈ S ∧ f (g b) = b`. Introduce `b hb`. Distinguish the cases in `h : b = f a`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `only [g, if_pos h]`. Conclude with `⟨ha, h.symm⟩`. Simplify using `only [g, if_neg h]`. Conclude with `⟨Function.invFunOn_mem hb, Function.invFunOn_eq hb⟩`. Use `⟨g '' (f '' S), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨b, hb, rfl⟩`. Conclude with `(hg b hb).1`. Conclude with `⟨f a, ⟨a, ha, rfl⟩, by simp [g]⟩`. Introduce and unpack `_ ⟨b, hb, rfl⟩ _ ⟨c, hc, rfl⟩ h`. Rewrite `h` using `[(hg b hb).2, (hg c hc).2]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h]`. Introduce `w hw`. Conclude with `⟨g (f w), ⟨f w, ⟨w, hw, rfl⟩, rfl⟩, (hg _ ⟨w, hw, rfl⟩).2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem selectThrough {α β : Type} (f : α → β) (S : Set α) (a : α) (ha : a ∈ S) :
     ∃ P ⊆ S, a ∈ P ∧ Set.InjOn f P ∧ ∀ w ∈ S, ∃ w' ∈ P, f w' = f w := by
@@ -42,7 +42,7 @@ private theorem selectThrough {α β : Type} (f : α → β) (S : Set α) (a : �
     exact ⟨g (f w), ⟨f w, ⟨w, hw, rfl⟩, rfl⟩, (hg _ ⟨w, hw, rfl⟩).2⟩
 
 /- English proof (translation)
-Introduce `L _ _ _ X w₀ hw₀`. Conclude with `selectThrough _ X w₀ hw₀`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.W.selectW :
     UpperTheory.V.Z.Sym.W.SelectW := by

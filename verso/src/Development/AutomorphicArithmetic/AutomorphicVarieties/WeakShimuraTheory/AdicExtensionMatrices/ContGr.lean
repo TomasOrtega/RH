@@ -5,13 +5,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing Polynomial UpperTheory.V.Alg UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `x hx`. Rewrite `hx` using `[pow_zero, Submodule.one_eq_range]`. Take `⟨a, rfl⟩` from `hx`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨algebraMap Λ K a, by simp, e.commutes a⟩`. Consider the case `succ n ih`. Introduce `x hx`. Rewrite `hx` using `[pow_succ]`. Use `Submodule.mul_induction_on hx ?_ ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a ha b hb`. Take `⟨u, hu, rfl⟩` from `ih a ha`. Take `⟨v, hv, rfl⟩` from `hQ b hb`. Conclude with `⟨u * v, by rw [pow_succ]; exact Ideal.mul_mem_mul hu hv, map_mul e u v⟩`. Introduce and unpack `a b ⟨u, hu, rfl⟩ ⟨v, hv, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨u + v, add_mem hu hv, map_add e u v⟩`.
+Supply the required witnesses or components.
 -/
 private theorem UpperTheory.V.Ws.sxContGr_pow {Λ K R : Type} [CommRing Λ] [CommRing K] [CommRing R] [Algebra Λ K] [Algebra Λ R]
     (e : K →ₐ[Λ] R) (J : Ideal K) (Q : Submodule Λ R) (hQ : ∀ x ∈ Q, ∃ y ∈ J, e y = x) (n : ℕ) :
@@ -34,9 +34,9 @@ private theorem UpperTheory.V.Ws.sxContGr_pow {Λ K R : Type} [CommRing Λ] [Com
       exact ⟨u + v, add_mem hu hv, map_add e u v⟩
 
 /- English proof (translation)
-Introduce `x hx`. Use `Submodule.mul_induction_on hx ?_ ?_` and prove the remaining obligations. Introduce `a ha b hb`. Take `⟨u, hu, rfl⟩` from `hQ a ha`. Take `⟨v, rfl⟩` from `hP b hb`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨u * v, J.mul_mem_right v hu, map_mul e u v⟩`. Introduce and unpack `a b ⟨u, hu, rfl⟩ ⟨v, hv, rfl⟩`. Conclude with `⟨u + v, add_mem hu hv, map_add e u v⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 private theorem UpperTheory.V.Ws.sxContGr_mul {Λ K R : Type} [CommRing Λ] [CommRing K] [CommRing R] [Algebra Λ K] [Algebra Λ R]
     (e : K →ₐ[Λ] R) (J : Ideal K) (Q P : Submodule Λ R) (hQ : ∀ x ∈ Q, ∃ y ∈ J, e y = x)
@@ -51,13 +51,13 @@ private theorem UpperTheory.V.Ws.sxContGr_mul {Λ K R : Type} [CommRing Λ] [Com
     exact ⟨u + v, add_mem hu hv, map_add e u v⟩
 
 /- English proof (translation)
-Introduce `N`. Take `⟨M, hM⟩` from `h N`. Establish `key : ∀ x ∈ Q ^ N * P * P', ∃ y ∈ J ^ N, e y = x`. Introduce `x hx`. Use `Submodule.mul_induction_on hx ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a ha b hb`. Take `⟨u, hu, rfl⟩` from `UpperTheory.V.Ws.sxContGr_mul e (J ^ N) (Q ^ N) P (UpperTheory.V.Ws.sxContGr_pow e J Q hQ N) hP a ha`. Take `⟨v, rfl⟩` from `hP' b hb`. Conclude with `⟨u * v, (J ^ N).mul_mem_right v hu, map_mul e u v⟩`. Introduce and unpack `a b ⟨u, hu, rfl⟩ ⟨v, hv, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨u + v, add_mem hu hv, map_add e u v⟩`. Establish `hcM : IsLocallyConstant fun g => (Ideal.Quotient.mk (I ^ M)) (e (φ g))` using `hc M`. Use `(IsLocallyConstant.iff_exists_open _).2 fun g0 => ?_` and prove the remaining obligations. Use `⟨{g | (Ideal.Quotient.mk (I ^ M)) (e (φ g)) = (Ideal.Quotient.mk (I ^ M)) (e (φ g0))}, hcM.isOpen_fiber _, rfl, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hd : e (φ g) - e (φ g0) ∈ I ^ M` using `Ideal.Quotient.eq.1 hg`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hd' : e (φ g) - e (φ g0) ∈ P' ⊓ (I ^ M).restrictScalars Λ` using `Submodule.mem_inf.2 ⟨sub_mem (hφ g) (hφ g0), (Submodule.restrictScalars_mem _ _ _).2 hd⟩`. Take `⟨y, hy, hye⟩` from `key _ (hM hd')`. Rewrite `hye` using `[← map_sub]`. Establish `: y = φ g - φ g0` using `he hye`. Conclude with `Ideal.Quotient.eq.2 (this ▸ hy)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Ws.sxContGr_cont {Λ K R Γ : Type} [CommRing Λ] [CommRing K] [CommRing R] [Algebra Λ K] [Algebra Λ R]
     [TopologicalSpace Γ] (e : K →ₐ[Λ] R) (he : Function.Injective e) (I : Ideal R) (J : Ideal K) (Q P P' : Submodule Λ R)
@@ -89,19 +89,19 @@ private theorem UpperTheory.V.Ws.sxContGr_cont {Λ K R Γ : Type} [CommRing Λ] 
   exact Ideal.Quotient.eq.2 (this ▸ hy)
 
 /- English proof (translation)
-Introduce `Λ _ _ _ _ X _ _ _ _ R _ _ _ W hz _ Γ _`. Take `⟨hmax, -⟩` from `wPres_maximalIdeal_gr_zero_eq_sup_span_monomials Λ X R W hz`. Establish `hfilt` using `part_filt Λ X R W hz`. Apply the tactic sequence `have hb : ∀ b : W.gr 0, algebraMap (W.gr 0) W.A b = (b : W.A) := fun b => by first | rfl | simp`. Apply the tactic sequence `have ha : ∀ a : Λ, ((algebraMap Λ (W.gr 0) a : W.A) : R) = algebraMap Λ R a := fun a => by first | rfl | simp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun j φ hφ hc => ?_, fun φ hc => ?_⟩` and prove the remaining obligations. Use `UpperTheory.V.Ws.sxContGr_cont W.A.val Subtype.val_injective (maximalIdeal R) ((maximalIdeal (W.gr 0)).map (algebraMap (W.gr 0) W.A)) (W.part 0 ⊓ (maximalIdeal R).restrictScalars Λ) (W.part 0) (W.part j) ?_ ?_ ?_ (fun n => hfilt j n) φ (fun g => hφ g) hc` and prove the remaining obligations. Introduce `x hx`. Take `⟨hx0, hxm⟩` from `Submodule.mem_inf.1 hx`. Use `⟨algebraMap (W.gr 0) W.A ⟨⟨x, W.part_le_A hx0⟩, hx0⟩, Ideal.mem_map_of_mem _ ((hmax _).2 ((Submodule.restrictScalars_mem _ _ _).1 hxm)), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hb]`. Both sides reduce to the same expression. Conclude with `fun x hx => ⟨⟨x, W.part_le_A hx⟩, rfl⟩`. Conclude with `fun x hx => ⟨⟨x, W.part_le_A hx⟩, rfl⟩`. Set `e : W.gr 0 →ₐ[Λ] R` to `AlgHom.mk ((W.A.val : W.A →+* R).comp (algebraMap (W.gr 0) W.A)) (fun a => by show W.A.val (algebraMap (W.gr 0) W.A (algebraMap Λ (W.gr 0) a)) = _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Rewrite using `[hb]`. Conclude with `ha a)`. Establish `he : ∀ b : W.gr 0, e b = ((b : W.A) : R)` using `fun b => by show W.A.val (algebraMap (W.gr 0) W.A b) = _`. Rewrite using `[hb]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective e`. Introduce `b c hbc`. Rewrite `hbc` using `[he, he]`. Conclude with `Subtype.ext (Subtype.ext hbc)`. Establish `hc' : AdicCont (maximalIdeal R) fun g => e (φ g)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfun : (fun g => e (φ g)) = fun g => ((φ g : W.A) : R)` using `funext fun g => he _`. Rewrite using `[hfun]`. Conclude with `hc`. Use `UpperTheory.V.Ws.sxContGr_cont e hinj (maximalIdeal R) (maximalIdeal (W.gr 0)) (W.part 0 ⊓ (maximalIdeal R).restrictScalars Λ) (W.part 0) (W.part 0) ?_ ?_ ?_ (fun n => hfilt 0 n) φ (fun g => by rw [he]; exact (φ g).2) hc'` and prove the remaining obligations. Introduce `x hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 
-Take `⟨hx0, hxm⟩` from `Submodule.mem_inf.1 hx`. Conclude with `⟨⟨⟨x, W.part_le_A hx0⟩, hx0⟩, (hmax _).2 ((Submodule.restrictScalars_mem _ _ _).1 hxm), he _⟩`. Conclude with `fun x hx => ⟨⟨⟨x, W.part_le_A hx⟩, hx⟩, he _⟩`. Conclude with `fun x hx => ⟨⟨⟨x, W.part_le_A hx⟩, hx⟩, he _⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.sxContGr :
     ∀ {Λ : Type} [CommRing Λ] [IsLocalRing Λ] [IsNoetherianRing Λ] [IsAdicComplete (maximalIdeal Λ) Λ] {X : Type} [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] [DecidableEq X] {R : Type} [CommRing R] [Algebra Λ R] [IsCO Λ R] (W : WPres Λ X R), (∀ s, W.z s ∈ maximalIdeal R) → ∀ [IsCO Λ (W.gr 0)] {Γ : Type} [TopologicalSpace Γ], (∀ (j : X) (φ : Γ → W.A), (∀ g, φ g ∈ W.gr j) → AdicCont (maximalIdeal R) (fun g => (φ g : R)) → AdicCont ((maximalIdeal (W.gr 0)).map (algebraMap (W.gr 0) W.A)) φ) ∧ ∀ φ : Γ → W.gr 0, AdicCont (maximalIdeal R) (fun g => ((φ g : W.A) : R)) → AdicCont (maximalIdeal (W.gr 0)) φ := by

@@ -5,11 +5,11 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights.Vertical
 
 /- English proof (translation)
-Introduce `R B _ _ _ _ _ _ b hb 𝔫`. Establish `: IsNoetherianRing B` using `IsNoetherianRing.of_finite R B`. Establish `hB : ringKrullDim B ≤ ringKrullDim R` using `Order.krullDim_le_of_strictMono (fun p : PrimeSpectrum B ↦ (⟨Ideal.comap (algebraMap R B) p.asIdeal, inferInstance⟩ : PrimeSpectrum R)) (fun p q hpq ↦ Ideal.IsIntegral.comap_lt_comap (R := R) (A := B) hpq)`. Establish `hS : ringKrullDim (Localization.AtPrime 𝔫.asIdeal) ≤ 1`. Rewrite using `[IsLocalization.AtPrime.ringKrullDim_eq_height 𝔫.asIdeal (Localization.AtPrime 𝔫.asIdeal)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Ideal.height_le_ringKrullDim_of_isPrime.trans (hB.trans ?_)` and prove the remaining obligations. Rewrite using `[IsDiscreteValuationRing.ringKrullDim_eq_one R]`. Establish `: Ring.KrullDimLE 1 (Localization.AtPrime 𝔫.asIdeal)` using `Ring.krullDimLE_iff.mpr (by exact_mod_cast hS)`. Establish `hbB : b ∈ nonZeroDivisors B`. Use `mem_nonZeroDivisors_iff.mpr ⟨fun x hx ↦ ?_, fun x hx ↦ hb (by simpa [mul_comm, mul_zero] using hx)⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hb (by simpa [mul_comm, mul_zero] using hx)`. Establish `hbS : algebraMap B (Localization.AtPrime 𝔫.asIdeal) b ∈ nonZeroDivisors (Localization.AtPrime 𝔫.asIdeal)` using `IsLocalization.map_nonZeroDivisors_le 𝔫.asIdeal.primeCompl _ ⟨b, hbB, rfl⟩`. Conclude with `Ring.ord_ne_top hbS`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem FiniteOrd.proof : FiniteOrd.Statement := by
   intro R B _ _ _ _ _ _ b hb 𝔫

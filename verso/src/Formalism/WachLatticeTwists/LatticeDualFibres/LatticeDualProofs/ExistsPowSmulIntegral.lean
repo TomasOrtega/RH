@@ -13,9 +13,9 @@ section SlopeTestRemainingChoices
 variable {O : Type u} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := O) k`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Take `⟨n, w, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hb0 hϖ`. Use `⟨n, a * ((w⁻¹ : Oˣ) : O), ?_⟩` and prove the remaining obligations. Establish `hne : algebraMap O (FractionRing O) ((w : O) * ϖ ^ n) ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `using (map_ne_zero_iff _ (IsFractionRing.injective O (FractionRing O))).mpr hb0`. Rewrite using `[Algebra.smul_def, ← mul_div_assoc, div_eq_iff hne, ← map_mul, ← map_mul]`. Use `congr 1`. Establish `: ((w⁻¹ : Oˣ) : O) * (w : O) = 1` using `by simp`. Combine the equalities or inequalities in the displayed calculation.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem exists_pow_smul_integral {ϖ : O} (hϖ : Irreducible ϖ) (k : FractionRing O) :
     ∃ (n : ℕ) (a : O), (ϖ ^ n) • k = algebraMap O (FractionRing O) a := by
@@ -32,15 +32,13 @@ theorem exists_pow_smul_integral {ϖ : O} (hϖ : Irreducible ϖ) (k : FractionRi
     _ = a * ((w⁻¹ : Oˣ) : O) * ((w : O) * ϖ ^ n) := by ring
 
 /- English proof (translation)
-Establish `hx : x ∈ Submodule.span (FractionRing O) (T : Set V)` using `by rw [hT]; trivial`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨0, by simpa using hx⟩`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ ihx ihy`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨n, hn⟩` from `ihx`. Take `⟨m, hm⟩` from `ihy`. Use `⟨n + m, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `T.add_mem ?_ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pow_add, mul_comm, mul_smul]`. Conclude with `T.smul_mem _ hn`. Rewrite using `[pow_add, mul_smul]`. Conclude with `T.smul_mem _ hm`. Consider the case `smul k x _ ih`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `ih`. Take `⟨m, a, ha⟩` from `exists_pow_smul_integral hϖ k`. Use `⟨m + n, ?_⟩` and prove the remaining obligations. Establish `: (ϖ ^ (m + n)) • k • x = a • (ϖ ^ n) • x`. Rewrite using `[pow_add, mul_comm, mul_smul, ← smul_assoc (ϖ ^ m) k x, ha, algebraMap_smul, smul_comm]`.
-
-Rewrite using `[this]`. Conclude with `T.smul_mem _ hn`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_smul_mem {V : Type u} [AddCommGroup V] [Module O V] [Module (FractionRing O) V]
     [IsScalarTower O (FractionRing O) V] {T : Submodule O V}
@@ -70,27 +68,25 @@ theorem exists_pow_smul_mem {V : Type u} [AddCommGroup V] [Module O V] [Module (
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `O V _ _ _ _ _ _ _ T hT`. Establish `hfin : Module.Finite O T` using `Module.Finite.iff_fg.mpr hT.1`. Establish `htfV : Module.IsTorsionFree O V` using `Module.IsTorsionFree.trans (R := FractionRing O)`. Establish `htf : Module.IsTorsionFree O T` using `inferInstance`. Establish `hfree : Module.Free O T` using `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `b` to `Module.finBasis O T`. Set `v : Fin (Module.finrank O T) → V` to `fun i => (b i : V)`. Establish `hliO : LinearIndependent O v` using `b.linearIndependent.map' T.subtype (Submodule.ker_subtype T)`. Establish `hli : LinearIndependent (FractionRing O) v` using `(LinearIndependent.iff_fractionRing O (FractionRing O)).mp hliO`. Establish `hTv : ∀ t : T, (t : V) = ∑ i, b.repr t i • v i`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `t`. Establish `h` using `congrArg T.subtype (b.sum_repr t)`. Rewrite `h` using `[map_sum]`. Simplify `h.symm` using `[v]`. Establish `hsp : ⊤ ≤ Submodule.span (FractionRing O) (Set.range v)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[← hT.2, Submodule.span_le]`. Introduce `t ht`. Establish `h : t = ∑ i, b.repr ⟨t, ht⟩ i • v i` using `hTv ⟨t, ht⟩`. Rewrite using `[h]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← algebraMap_smul (FractionRing O)]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Set `B : Module.Basis (Fin (Module.finrank O T)) (FractionRing O) V` to `Module.Basis.mk hli hsp`. Establish `hB : ∀ i, B i = v i` using `fun i => Module.Basis.mk_apply hli hsp i`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Module.finrank_eq_card_basis B, Fintype.card_fin]`. Set `f : V →ₗ[O] (Fin (Module.finrank O T) → KO O)` to `LinearMap.pi fun i => (toKO O) ∘ₗ ((B.coord i).restrictScalars O)`. Establish `hker : LinearMap.ker f = T`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hx' : ∀ i, B.repr x i ∈ (1 : Submodule O (FractionRing O))`. Introduce `i`. Use `congrFun (LinearMap.mem_ker.mp hx) i` as an intermediate fact. Conclude with `(Submodule.Quotient.mk_eq_zero _).mp this`. Rewrite using `[← B.sum_repr x]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `Submodule.mem_one.mp (hx' i)`. Rewrite using `[← ha, algebraMap_smul, hB]`. Conclude with `T.smul_mem _ (b i).2`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.mem_ker]`. Use function extensionality and compare the values at `i`. Establish `hrep : B.repr x i = algebraMap O (FractionRing O) (b.repr ⟨x, hx⟩ i)`. Establish `h1 : x = ∑ j, algebraMap O (FractionRing O) (b.repr ⟨x, hx⟩ j) • B j`. Establish `h : x = ∑ i, b.repr ⟨x, hx⟩ i • v i` using `hTv ⟨x, hx⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `h` using `[hB]`. Establish `h2` using `DFunLike.congr_fun (congrArg B.repr h1) i`. Rewrite `h2` using `[B.repr_sum_self]`. Conclude with `h2`. Express the relevant statement in the definitionally equal form `toKO O (B.repr x i) = 0`.
-
-Rewrite using `[hrep]`. Conclude with `(Submodule.Quotient.mk_eq_zero _).mpr (Submodule.mem_one.mpr ⟨_, rfl⟩)`. Use `⟨T.liftQ f hker.ge, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.ker_eq_bot, Submodule.ker_liftQ, hker, Submodule.mkQ_map_self]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotEmbeds : StatQuotEmbeds.{u} := by
   intro O V _ _ _ _ _ _ _ T hT

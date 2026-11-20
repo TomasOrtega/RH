@@ -11,11 +11,9 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc GlobalTheory.Me
 open scoped Formalism.Per
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `Polynomial.binomExpansion (f.map o) (o x) (y - o x)`. Rewrite `hk` using `[add_sub_cancel, h2, Polynomial.derivative_map, Polynomial.eval_map_apply, Polynomial.eval_map_apply, h0, map_zero, zero_add]`. Establish `hθ : θ (y - o x) = 0` using `by rw [map_sub, hy, sub_self]`. Establish `hun : IsUnit (o (f.derivative.eval x) + k * (y - o x))`. Apply `hu` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_add, map_mul, hθ, mul_zero, add_zero]`. Conclude with `(map_ne_zero (θ.comp o)).2 h1`. Establish `: (o (f.derivative.eval x) + k * (y - o x)) * (y - o x) = 0`. Rewrite using `[hk]`. Expand and normalize the polynomial expressions, which then agree.
-
-Conclude with `sub_eq_zero.1 ((hun.mul_right_eq_zero).1 this)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem root_eq {K R C : Type} [Field K] [CommRing R] [Field C] (θ : R →+* C)
     (hu : ∀ y : R, θ y ≠ 0 → IsUnit y) (o : K →+* R) (x : K) (y : R) (f : Polynomial K)
@@ -36,9 +34,9 @@ theorem root_eq {K R C : Type} [Field K] [CommRing R] [Field C] (θ : R →+* C)
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Use `sub_eq_zero.1 (IsHausdorff.haus (I := Ideal.span {((l : ℕ) : R)}) inferInstance _ fun n => ?_)` and prove the remaining obligations. Take `⟨w, hw⟩` from `Ideal.mem_span_singleton.1 (PadicInt.appr_spec n z)`. Establish `hz : z = (PadicInt.appr z n : ℤ_[l]) + (l : ℤ_[l]) ^ n * w` using `by rw [← hw]; ring`. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Use `⟨f w - g w, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `congrArg f hz`. Establish `h2` using `congrArg g hz`. Rewrite `h1`, `h2` using `[map_add, map_mul, map_pow, map_natCast, map_natCast]`. Rewrite using `[h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem padicInt_hom_ext_pt {R : Type} [CommRing R] [IsHausdorff (Ideal.span {((l : ℕ) : R)}) R]
     (f g : ℤ_[l] →+* R) (z : ℤ_[l]) : f z = g z := by
@@ -54,7 +52,7 @@ theorem padicInt_hom_ext_pt {R : Type} [CommRing R] [IsHausdorff (Ideal.span {((
   ring
 
 /- English proof (translation)
-Use `haveI : IsAdicComplete (Ideal.span {((l : ℕ) : Per.Ainf l)}) (Per.Ainf l) := WittVector.isAdicCompleteIdealSpanP`. Conclude with `padicInt_hom_ext_pt ((Per.σA g).comp (Per.zA l)) (Per.zA l) z`.
+A detailed English derivation is pending.
 -/
 theorem sigA_zA (g : Per.Gq l) (z : ℤ_[l]) : Per.σA g (Per.zA l z) = Per.zA l z := by
   haveI : IsAdicComplete (Ideal.span {((l : ℕ) : Per.Ainf l)}) (Per.Ainf l) :=
@@ -62,14 +60,14 @@ theorem sigA_zA (g : Per.Gq l) (z : ℤ_[l]) : Per.σA g (Per.zA l z) = Per.zA l
   exact padicInt_hom_ext_pt ((Per.σA g).comp (Per.zA l)) (Per.zA l) z
 
 /- English proof (translation)
-Simplify using `only [aDp, RingHom.comp_apply]`. Rewrite using `[GlobalTheory.RingIface.sigDp_alg, GlobalTheory.RingBasics.awayMap_algebraMap₂]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sigDp_aDp (g : Per.Gq l) (a : Per.Ainf l) : Per.σDp g (aDp l a) = aDp l (Per.σA g a) := by
   simp only [aDp, RingHom.comp_apply]
   rw [GlobalTheory.RingIface.sigDp_alg, GlobalTheory.RingBasics.awayMap_algebraMap₂]
 
 /- English proof (translation)
-The claim follows from `root_eq (Per.θD l) (GlobalTheory.T.thetaBdRPlus_surjective_ker_units_equivariant l).2.2.1 o x y f (by rw [hy, ho.th]) h0 h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem sec_root (o : Om l →+* Per.BdRp l) (ho : IsSec o) (x : Om l) (y : Per.BdRp l)
     (f : Polynomial (Om l)) (hy : Per.θD l y = (x : ℂ_[l])) (h0 : f.eval x = 0)
@@ -77,9 +75,9 @@ theorem sec_root (o : Om l →+* Per.BdRp l) (ho : IsSec o) (x : Om l) (y : Per.
   root_eq (Per.θD l) (GlobalTheory.T.thetaBdRPlus_surjective_ker_units_equivariant l).2.2.1 o x y f (by rw [hy, ho.th]) h0 h1 h2
 
 /- English proof (translation)
-Establish `hq : o'.comp (algebraMap ℚ_[l] (Om l)) = o.comp (algebraMap ℚ_[l] (Om l))`. Use `IsLocalization.ringHom_ext (nonZeroDivisors ℤ_[l]) (RingHom.ext fun z => ?_)` and prove the remaining obligations. Conclude with `(ho'.z z).trans (ho.z z).symm`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Establish `hs : IsSeparable ℚ_[l] x` using `Algebra.IsSeparable.isSeparable ℚ_[l] x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `sec_root o ho x (o' x) ((minpoly ℚ_[l] x).map (algebraMap ℚ_[l] (Om l))) (ho'.th x) ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[Polynomial.eval_map_algebraMap, minpoly.aeval]`. Rewrite using `[Polynomial.derivative_map, Polynomial.eval_map_algebraMap]`. Conclude with `Polynomial.Separable.aeval_derivative_ne_zero hs (minpoly.aeval _ _)`. Rewrite using `[Polynomial.map_map, ← hq, ← Polynomial.map_map, Polynomial.eval_map_apply, Polynomial.eval_map_algebraMap, minpoly.aeval, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sec_uniq (o : Om l →+* Per.BdRp l) (ho : IsSec o) (o' : Om l →+* Per.BdRp l) (ho' : IsSec o') :
     o' = o := by
@@ -96,11 +94,11 @@ theorem sec_uniq (o : Om l →+* Per.BdRp l) (ho : IsSec o) (o' : Om l →+* Per
       Polynomial.eval_map_algebraMap, minpoly.aeval, map_zero]
 
 /- English proof (translation)
-Establish `h : IsSec (((Per.σDp g).comp o).comp (g.symm : Om l →+* Om l))`. Prove the components needed by the constructor for the conclusion. Introduce `x`. Express the relevant statement in the definitionally equal form `Per.θD l (Per.σDp g (o (g.symm x))) = _`. Rewrite using `[(GlobalTheory.T.thetaBdRPlus_surjective_ker_units_equivariant l).2.2.2.2, ho.th, GlobalTheory.RingBasics.σC_coe, AlgEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Introduce `z`. Express the relevant statement in the definitionally equal form `Per.σDp g (o (g.symm (algebraMap ℚ_[l] (Om l) (z : ℚ_[l])))) = _`. Rewrite using `[AlgEquiv.commutes, ho.z, sigDp_aDp, sigA_zA]`. Use `RingHom.congr_fun (sec_uniq o ho _ h) (g x)` as an intermediate fact. Rewrite using `[← this]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ = Per.σDp g (o (g.symm (g x)))`. Rewrite using `[AlgEquiv.symm_apply_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem sec_equiv (o : Om l →+* Per.BdRp l) (ho : IsSec o) (g : Per.Gq l) (x : Om l) :
     Per.σDp g (o x) = o (g x) := by
@@ -118,7 +116,7 @@ theorem sec_equiv (o : Om l →+* Per.BdRp l) (ho : IsSec o) (g : Per.Gq l) (x :
   rw [AlgEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Introduce `_ _ o ho` and use `⟨sec_root o ho, sec_uniq o ho, sec_equiv o ho⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem main : ∀ (l : ℕ) [Fact l.Prime], ∀ o : Om l →+* Per.BdRp l, IsSec o → (∀ (x : Om l) (y : Per.BdRp l) (f : Polynomial (Om l)), Per.θD l y = (x : ℂ_[l]) → f.eval x = 0 → f.derivative.eval x ≠ 0 → (f.map o).eval y = 0 → y = o x) ∧ (∀ o' : Om l →+* Per.BdRp l, IsSec o' → o' = o) ∧ ∀ (g : Per.Gq l) (x : Om l), Per.σDp g (o x) = o (g x) :=
   fun _ _ o ho => ⟨sec_root o ho, sec_uniq o ho, sec_equiv o ho⟩

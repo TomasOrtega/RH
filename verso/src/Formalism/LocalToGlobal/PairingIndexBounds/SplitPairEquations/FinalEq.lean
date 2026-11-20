@@ -4,7 +4,7 @@ import Formalism.LocalToGlobal.GlobalTheory.GL3.PStdOK
 namespace Formalism.L2.PairingIndexBounds.Eq.SqG
 
 /- English proof (translation)
-The claim follows from `eqP_outright B hcc hδ (Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.SO.stdOK B hcc hδ) χ hχ`.
+A detailed English derivation is pending.
 -/
 theorem eulerProduct_eq_of_curve_ideal {D : Formalism.BasicNotions.D7} {cc : Ideal (NumberField.RingOfIntegers D.host.K)} {δ : ℂ}
     (B : Formalism.L2.Ker.Base D cc δ) (hcc : Formalism.MainNotions.TaylorLogMetric.IsCurveIdeal D cc) (hδ : Formalism.MainNotions.TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ)

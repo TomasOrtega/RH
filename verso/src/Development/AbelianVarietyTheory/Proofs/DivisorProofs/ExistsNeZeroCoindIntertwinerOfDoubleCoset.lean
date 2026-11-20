@@ -6,27 +6,25 @@ open Formalism.L2.DIV GlobalTheory.FinGL GlobalTheory.Parabolic GlobalTheory.Ind
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `G _ _ P P' V V' _ _ _ _ σ σ' x T hT h`. Use `haveI : Fintype P' := Fintype.ofFinite _`. Set `L : Representation.coindV P.subtype σ →ₗ[ℂ] Representation.coindV P'.subtype σ'` to `{ toFun := fun f => ⟨fun y => ∑ p' : P', σ' p' (T (f.1 (x⁻¹ * (p' : G)⁻¹ * y))), by`. Introduce `q y`. Use `beta_reduce`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sum, ← Equiv.sum_comp (Equiv.mulLeft q) (fun p' : P' => σ' p' (T (f.1 (x⁻¹ * (p' : G)⁻¹ * (P'.subtype q * y)))))]`. Use `Finset.sum_congr rfl fun p' _ => ?_` and prove the remaining obligations. Simplify using `[mul_assoc]⟩`. Use the proof step `map_add' := fun f g => by`. Use extensionality with `y`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[Finset.sum_add_distrib]`. Use the proof step `map_smul' := fun c f => by`. Use extensionality with `y`. Simplify using `[Finset.smul_sum] }`. Establish `hL : ∀ f y, (L f).1 y = ∑ p' : P', σ' p' (T (f.1 (x⁻¹ * (p' : G)⁻¹ * y)))` using `fun _ _ => rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨L, fun g => ?_⟩, fun h0 => ?_⟩` and prove the remaining obligations. Use extensionality with `f y`. Express the relevant statement in the definitionally equal form `(L (Representation.coind P.subtype σ g f)).1 y = (L f).1 (y * g)`. Rewrite using `[hL, hL]`. Use `Finset.sum_congr rfl fun p' _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Express the relevant statement in the definitionally equal form `σ' p' (T (f.1 (x⁻¹ * (p' : G)⁻¹ * y * g))) = _`. Rewrite using `[mul_assoc _ y g]`. Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v, T v ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hT (LinearMap.ext hc)`. Set `δ : Representation.coindV P.subtype σ` to `⟨fun y => if hy : y ∈ P then σ ⟨y, hy⟩ v else 0, by`. Introduce `q y`. Distinguish the cases in `hy : y ∈ P`. Establish `hqy : P.subtype q * y ∈ P` using `P.mul_mem q.2 hy`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [dif_pos hy, dif_pos hqy]`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Both sides reduce to the same expression. Establish `hqy : P.subtype q * y ∉ P` using `fun hh => hy ((P.mul_mem_cancel_left q.2).1 hh)`. Simplify using `only [dif_neg hy, dif_neg hqy, map_zero]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hL0 : L = 0` using `congrArg Representation.IntertwiningMap.toLinearMap h0`. Establish `h1 : (L δ).1 x = 0` using `by rw [hL0]; rfl`. Establish `h2 : ∀ p' : P', σ' p' (T (δ.1 (x⁻¹ * (p' : G)⁻¹ * x))) = if x⁻¹ * (p' : G)⁻¹ * x ∈ P then T v else 0`. Introduce `p'`. Distinguish the cases in `hp : x⁻¹ * (p' : G)⁻¹ * x ∈ P`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hδ : δ.1 (x⁻¹ * (p' : G)⁻¹ * x) = σ ⟨_, hp⟩ v` using `dif_pos hp`. Use `LinearMap.congr_fun (h ⟨_, hp⟩ p'⁻¹ (by simp [mul_assoc])) v` as an intermediate fact. Simplify using `only [LinearMap.comp_apply] at this`. Rewrite using `[hδ, if_pos hp, ← this, ← Module.End.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hδ : δ.1 (x⁻¹ * (p' : G)⁻¹ * x) = 0` using `dif_neg hp`. Rewrite using `[hδ, if_neg hp]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[hL, Finset.sum_congr rfl fun p' _ => h2 p', ← Finset.sum_filter, Finset.sum_const, ← Nat.cast_smul_eq_nsmul ℂ, smul_eq_zero]`. Break down `h1 with h1 | h1` into its components or cases.
-
-Establish `: (1 : P') ∈ Finset.univ.filter fun p' : P' => x⁻¹ * (p' : G)⁻¹ * x ∈ P`. Simplify using `[P.one_mem]`. Conclude with `(Finset.card_pos.2 ⟨_, this⟩).ne' (Nat.cast_eq_zero.1 h1)`. Conclude with `hv h1`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero_intertwiningMap_coind_of_doubleCoset :
     ∀ (G : Type) [Group G] [Finite G] (P P' : Subgroup G) (V V' : Type) [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V'] (σ : Representation ℂ P V) (σ' : Representation ℂ P' V') (x : G) (T : V →ₗ[ℂ] V'), T ≠ 0 → (∀ (p : P) (p' : P'), (p' : G) * x = x * (p : G) → σ' p' ∘ₗ T = T ∘ₗ σ p) → ∃ Φ : Representation.IntertwiningMap (Representation.coind P.subtype σ) (Representation.coind P'.subtype σ'), Φ ≠ 0 := by

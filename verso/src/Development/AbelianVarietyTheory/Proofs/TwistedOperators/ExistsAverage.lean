@@ -13,23 +13,21 @@ variable {G V : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Add
   {π : Representation ℂ G V} {J : Subgroup G}
 
 /- English proof (translation)
-Establish `hK : IsOpen {g : G | π g u = u}` using `hπ u`. Take `⟨F, hF⟩` from `hJ.elim_finite_subcover (fun j : J => (fun g : G => (j : G)⁻¹ * g) ⁻¹' {g : G | π g u = u}) (fun j => hK.preimage (continuous_const.mul continuous_id)) (by`. Introduce `g hg`. Conclude with `Set.mem_iUnion.2 ⟨⟨g, hg⟩, by simp⟩)`. Establish `hfin : ((fun g : G => π g u) '' (J : Set G)).Finite`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(F.finite_toSet.image (fun j : J => π (j : G) u)).subset` to reduce the goal to its premises. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Take `⟨j, hjF, hj⟩` from `Set.mem_iUnion₂.1 (hF hg)`. Use `⟨j, hjF, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq] at hj`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Use `show π j u = π g u`. Combine the equalities or inequalities in the displayed calculation. Use `set O := hfin.toFinset with hO`. Establish `hmem : ∀ v, v ∈ O ↔ ∃ g ∈ J, π g u = v`. Introduce `v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[O]`. Establish `huO : u ∈ O` using `(hmem u).2 ⟨1, J.one_mem, by simp⟩`. Establish `hcard : (O.card : ℂ) ≠ 0`. Conclude with `(Finset.card_pos.2 ⟨u, huO⟩).ne'` after adjusting the coercions. Use `⟨(O.card : ℂ)⁻¹ • ∑ v ∈ O, v, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [_root_.GlobalTheory.PRep.fixed, _root_.GlobalTheory.PRep.eig]`. Simplify using the standard rewrite rules. Introduce `a ha`. Use `congr 1`. Apply `Finset.sum_nbij' (fun v => π a v) (fun v => π a⁻¹ v)` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `v hv`. Take `⟨g, hg, rfl⟩` from `(hmem v).1 hv`. Conclude with `(hmem _).2 ⟨a * g, J.mul_mem ha hg, by rw [map_mul, Module.End.mul_apply]⟩`. Introduce `v hv`. Take `⟨g, hg, rfl⟩` from `(hmem v).1 hv`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hmem _).2 ⟨a⁻¹ * g, J.mul_mem (J.inv_mem ha) hg, by rw [map_mul, Module.End.mul_apply]⟩`. Introduce `v _`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Introduce `v _`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `v _`. Both sides reduce to the same expression. Introduce `f hf`. Rewrite using `[map_smul, map_sum, smul_eq_mul]`. Rewrite using `[Finset.sum_congr rfl (g := fun _ => f u) ?_]`.
-
-Rewrite using `[Finset.sum_const, nsmul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Introduce `v hv`. Take `⟨g, hg, rfl⟩` from `(hmem v).1 hv`. Conclude with `hf g hg`.
+Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.WordGrowth.exists_average
     {G V : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup V]

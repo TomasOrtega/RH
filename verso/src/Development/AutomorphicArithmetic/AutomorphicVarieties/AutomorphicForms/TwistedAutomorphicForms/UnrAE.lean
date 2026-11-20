@@ -4,15 +4,13 @@ import Mathlib.RingTheory.DedekindDomain.Different
 open NumberField IsDedekindDomain
 
 /- English proof (translation)
-Unfold `UpperTheory.V.Af.Tw.UnrAE`. Introduce `F L _ _ _ _ _`. Use `letI := FractionRing.liftAlgebra (𝓞 F) (FractionRing (𝓞 L))`. Use `haveI : Algebra.IsSeparable (FractionRing (𝓞 F)) (FractionRing (𝓞 L)) := inferInstance`. Establish `hD0 : differentIdeal (𝓞 F) (𝓞 L) ≠ ⊥` using `differentIdeal_ne_bot (A := 𝓞 F) (B := 𝓞 L)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin` using `Ideal.finite_factors (R := 𝓞 L) (I := differentIdeal (𝓞 F) (𝓞 L)) hD0`. Rewrite using `[Filter.eventually_cofinite]`. Use `(hfin.image (HeightOneSpectrum.under (𝓞 F))).subset ?_` and prove the remaining obligations. Introduce `v hv`. Simplify using `only [Set.mem_setOf_eq] at hv`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Unfold `UpperTheory.V.Af.Tw.Unr at hv`. Use `push_neg at hv`. Take `⟨w, rfl, he⟩` from `hv`. Use `⟨w, ?_, rfl⟩` and prove the remaining obligations. Establish `hle : Ideal.map (algebraMap (𝓞 F) (𝓞 L)) (HeightOneSpectrum.under (𝓞 F) w).asIdeal ≤ w.asIdeal` using `Ideal.map_comap_le`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h2 : Ideal.map (algebraMap (𝓞 F) (𝓞 L)) (HeightOneSpectrum.under (𝓞 F) w).asIdeal ≤ w.asIdeal ^ 2`. Assume the negation of the conclusion as `h`. Conclude with `he (Ideal.ramificationIdx'_spec (by rwa [pow_one]) h)`. Use `haveI := (HeightOneSpectrum.under (𝓞 F) w).isMaximal`. Establish `hdvd` using `pow_sub_one_dvd_differentIdeal (A := 𝓞 F) (P := w.asIdeal) (e := 2) (hp := (HeightOneSpectrum.under (𝓞 F) w).ne_bot) (hP := Ideal.dvd_iff_le.mpr h2)`.
-
-Simplify using `using hdvd`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Tw.unrAE :
     UpperTheory.V.Af.Tw.UnrAE := by

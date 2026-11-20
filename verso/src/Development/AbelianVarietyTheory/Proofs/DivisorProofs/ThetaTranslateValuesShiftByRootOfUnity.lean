@@ -18,7 +18,7 @@ open Classical
 namespace GlobalTheory.UPoinc.USum
 
 /- English proof (translation)
-Set `P₀` to `GlobalTheory.StrictPull.polPull ρ.P (spMap S.R.val.toRingHom)`. Use `⟨P₀, pullback.fst ρ.P.A.hom (spMap S.R.val.toRingHom), pullback.fst ρ.P.A.hom (spMap S.R.val.toRingHom), isGrpPullback_pullback _ _, isGrpPullback_pullback _ _, GlobalTheory.PolBaseChange.lbIso_refl P₀.isLB, GlobalTheory.PolBaseChange.lbIso_refl P₀.isLB, fun b => ?_⟩` and prove the remaining obligations. Use `⟨pullback.lift (spMap S.R.val.toRingHom ≫ (ρ.pt b).left) (𝟙 _) ?_, pullback.lift_fst _ _ _, pullback.lift_fst _ _ _⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, Over.w]`. Simplify using the standard rewrite rules.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem uSame_self {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : ThetaSys o Ω} (ρ : S.Real) :
     USame ρ ρ (fun b => b) (RingHom.id Ω) := by
@@ -31,15 +31,15 @@ theorem uSame_self {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : The
   rw [Category.assoc, Over.w]; simp
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ _ S ρ H m hm h h' e hH`. Take `⟨P₀, a, a', x, hx, hadd⟩` from `exists_isGenLab (uSame_self ρ)`. Take `⟨x₀, hx₀⟩` from `S.th_ne`. Take `⟨ξ₁, ⟨k₁, hk₁, hξ₁⟩, hc₁⟩` from `GlobalTheory.T.twistedThetaValue_eq_root_mul_thetaOperatorValue ρ ρ (fun b => b) (RingHom.id Ω) P₀ a a' x hx m hm (m • h) x₀ h rfl`. Take `⟨ξ₂, ⟨k₂, hk₂, hξ₂⟩, hc₂⟩` from `GlobalTheory.T.twistedThetaValue_eq_root_mul_thetaOperatorValue ρ ρ (fun b => b) (RingHom.id Ω) P₀ a a' x hx m hm (m • h) x₀ h' e.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hξ₂0 : ξ₂ ≠ 0`. Introduce and unpack `rfl`. Rewrite `hξ₂` using `[zero_pow hk₂.ne']`. Conclude with `zero_ne_one hξ₂`. Use `⟨ξ₁ * ξ₂⁻¹, ⟨k₁ * k₂, Nat.mul_pos hk₁ hk₂, ?_⟩, fun t ht => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_pow, inv_pow, pow_mul, hξ₁, one_pow, mul_comm k₁, pow_mul, hξ₂, one_pow, inv_one, mul_one]`. Take `⟨v, hv⟩` from `TV.ex hx hadd hm t (h := h) (κ := m • h) rfl`. Establish `hv'` using `hv.transl hx hadd hm (k := h' - h) (by rw [smul_sub, e, sub_self]) (ht _ hH)`. Rewrite `hv'` using `[add_sub_cancel]`. Establish `E₁` using `hc₁ t v hv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `E₂` using `hc₂ t v hv'`. Simplify using `only [RingHom.id_apply] at E₁ E₂`. Establish `E` using `E₂.symm.trans E₁`. Establish `hinv : ξ₂ * ξ₂⁻¹ = 1` using `mul_inv_cancel₀ hξ₂0`. Rewrite using `[← sub_eq_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(mul_eq_zero.1 ?_).resolve_left (mul_ne_zero hξ₂0 hx₀)` and prove the remaining obligations. Take the linear combination `E - ξ₁ * S.th x₀ * (∑ j, algebraMap o Ω (S.ρ t j ρ.i₀) * S.ev h j) * hinv`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sum_ev_shift : ∀ {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] {S : ThetaSys o Ω}
     (ρ : S.Real) (H : AddSubgroup S.Gam) (m : ℕ), S.N = m ^ 2 → ∀ h h' : S.Gam, m • h = m • h' → h' - h ∈ H →

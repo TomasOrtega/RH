@@ -2,11 +2,11 @@ import Mathlib
 
 open TensorProduct in
 /- English proof (translation)
-Rewrite using `[← AdicCompletion.of_surjective_iff]`. Introduce `y`. Take `⟨z, rfl⟩` from `AdicCompletion.ofTensorProduct_surjective_of_finite I M y`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul r x`. Take `⟨c, rfl⟩` from `AdicCompletion.of_surjective I R r`. Use `⟨c • x, ?_⟩` and prove the remaining obligations. Rewrite using `[AdicCompletion.ofTensorProduct_tmul, map_smul]`. Conclude with `(algebraMap_smul (AdicCompletion I R) c (AdicCompletion.of I M x)).symm`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add x y hx hy`. Take `⟨a, ha⟩` from `hx`. Take `⟨b, hb⟩` from `hy`. Conclude with `⟨a + b, by rw [map_add, map_add, ha, hb]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem precomplete_of_finite {R : Type} [CommRing R] (I : Ideal R) [IsPrecomplete I R]
     (M : Type) [AddCommGroup M] [Module R M] [Module.Finite R M] : IsPrecomplete I M := by
@@ -27,13 +27,13 @@ private theorem precomplete_of_finite {R : Type} [CommRing R] (I : Ideal R) [IsP
 
 open Polynomial in
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective f`. Establish `hm : (X ^ 2 - X : T[X]).Monic` using `by nontriviality T`. Apply `monic_X_pow_sub` to reduce the goal to its premises. Simplify using the standard rewrite rules. Establish `hf' : Ideal.Quotient.mk I a * Ideal.Quotient.mk I a = Ideal.Quotient.mk I a` using `hf`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨e, he, hea⟩` from `HenselianRing.is_henselian (I := I) (X ^ 2 - X : T[X]) hm a (by`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Simplify using `only [eval_sub, eval_pow, eval_X, map_sub, pow_two, map_mul, eval_mul]`. Rewrite using `[hf', sub_self])`. Use the proof step `(by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h : eval a (derivative (X ^ 2 - X : T[X])) = 2 * a - 1`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h, map_sub, map_mul, map_one, map_ofNat]`. Use `IsUnit.of_mul_eq_one (2 * Ideal.Quotient.mk I a - 1) ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `4 * hf')`. Use `⟨e, ?_, Ideal.Quotient.eq.mpr hea⟩` and prove the remaining obligations. Establish `: e ^ 2 - e = 0` using `by simpa using he`. Use `show e * e = e`. Take the linear combination `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem lift_idem {T : Type} [CommRing T] (I : Ideal T) [HenselianRing T I]
     (f : T ⧸ I) (hf : IsIdempotentElem f) :
@@ -62,13 +62,13 @@ private theorem lift_idem {T : Type} [CommRing T] (I : Ideal T) [HenselianRing T
   linear_combination this
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `IsArtinian.monotone_stabilizes (R := A) (M := A) ⟨fun n => OrderDual.toDual (J ^ n), fun _ _ h => Ideal.pow_le_pow_right h⟩`. Establish `h1 : J ^ n = J ^ (n + 1)` using `hn (n + 1) (by omega)`. Establish `h2 : J ^ n = J ^ (n + n)` using `hn (n + n) (by omega)`. Establish `hid : IsIdempotentElem (J ^ n)` using `by show J ^ n * J ^ n = J ^ n`. Rewrite using `[← pow_add, ← h2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨f, hf, hJ⟩` from `(Ideal.isIdempotentElem_iff_of_fg _ (IsNoetherian.noetherian _)).mp hid`. Use `⟨1 - f, n, hf.one_sub, ?_, ?_⟩` and prove the remaining obligations. Establish `: f ∈ J ^ (n + 1)`. Rewrite using `[← h1, hJ]`. Conclude with `Submodule.mem_span_singleton_self f`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using Ideal.pow_le_self (by omega) this`. Introduce `x hx`. Establish `: x ^ n ∈ J ^ n` using `Ideal.pow_mem_pow hx n`. Rewrite `this` using `[hJ]`. Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.mp this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hf' : f * f = f` using `hf`. Rewrite using `[← hc, smul_eq_mul]`. Take the linear combination `(-c) * hf'`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem artin_idem {A : Type} [CommRing A] [IsArtinianRing A] (J : Ideal A) :
     ∃ (e : A) (n : ℕ), IsIdempotentElem e ∧ 1 - e ∈ J ∧ ∀ x ∈ J, x ^ n * e = 0 := by
@@ -94,15 +94,15 @@ private theorem artin_idem {A : Type} [CommRing A] [IsArtinianRing A] (J : Ideal
     linear_combination (-c) * hf'
 
 /- English proof (translation)
-Establish `hs : s ∈ Algebra.adjoin Λ (Set.range t)` using `h ▸ Algebra.mem_top`. Proceed by induction on `hs using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Conclude with `⟨a i, hJ i⟩`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `algebraMap r => exact ⟨r, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨c, hc⟩` from `hx`. Take `⟨d, hd⟩` from `hy`. Use `⟨c + d, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `J.add_mem hc hd` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_add]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul x y _ _ hx hy`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Take `⟨c, hc⟩` from `hx`. Take `⟨d, hd⟩` from `hy`. Use `⟨c * d, ?_⟩` and prove the remaining obligations. Use `J.add_mem (J.mul_mem_right y hc) (J.mul_mem_left (algebraMap Λ T c) hd)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem exists_scalar {Λ T : Type} [CommRing Λ] [CommRing T] [Algebra Λ T]
     {ι : Type} (t : ι → T) (a : ι → Λ) (h : Algebra.adjoin Λ (Set.range t) = ⊤) (J : Ideal T)
@@ -130,11 +130,11 @@ private theorem exists_scalar {Λ T : Type} [CommRing Λ] [CommRing T] [Algebra 
     rw [map_mul]; ring
 
 /- English proof (translation)
-Rewrite using `[Ideal.isMaximal_iff]`. Use `⟨fun h => hne ((Ideal.eq_top_iff_one J).mpr h), fun K x hJK hxJ hxK => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `hs x`. Distinguish the cases in `hu : IsUnit c`. Establish `h1 : algebraMap Λ T c ∈ K`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `K.sub_mem hxK (hJK hc)` as an intermediate fact. Simplify using `using this`. Conclude with `(Ideal.eq_top_iff_one K).mp (K.eq_top_of_isUnit_mem h1 (hu.map _))`. It suffices to derive a contradiction. Establish `h1 : algebraMap Λ T c ∈ J` using `hm (Ideal.mem_map_of_mem _ hu)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `J.add_mem hc h1` as an intermediate fact. Conclude with `hxJ (by simpa using this)`.
+A detailed English derivation is pending.
 -/
 private theorem maximal_of_scalar {Λ T : Type} [CommRing Λ] [IsLocalRing Λ] [CommRing T]
     [Algebra Λ T] (J : Ideal T) (hne : J ≠ ⊤)
@@ -154,15 +154,11 @@ private theorem maximal_of_scalar {Λ T : Type} [CommRing Λ] [IsLocalRing Λ] [
     exact hxJ (by simpa using this)
 
 /- English proof (translation)
-Introduce `Λ T _ _ _ _ _ _ _ ι t a h`. Use `set I : Ideal T := Ideal.map (algebraMap Λ T) (IsLocalRing.maximalIdeal Λ) with hI`. Use `set J : Ideal T := I ⊔ Ideal.span (Set.range fun i : ι ↦ t i - algebraMap Λ T (a i)) with hJ`. Establish `hmem : ∀ i, t i - algebraMap Λ T (a i) ∈ J` using `fun i => Ideal.mem_sup_right (Ideal.subset_span ⟨i, rfl⟩)`. Establish `hs` using `exists_scalar t a h J hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Distinguish the cases in `htop : J = ⊤`. Conclude with `⟨0, IsIdempotentElem.zero, fun i => ⟨0, by simp⟩, by simp [htop], hs, fun h0 => absurd rfl h0⟩`. Establish `hmax : J.IsMaximal` using `maximal_of_scalar J htop le_sup_left hs`. Use `haveI : IsPrecomplete (IsLocalRing.maximalIdeal Λ) T := precomplete_of_finite _ T`. Use `haveI : IsAdicComplete (IsLocalRing.maximalIdeal Λ) T := {}`.
+Establish an intermediate fact. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : IsAdicComplete I T := (IsAdicComplete.map_algebraMap_iff _ _).mpr this`. Use `haveI : IsArtinianRing (T ⧸ I) := by`. Use `letI : Field (Λ ⧸ IsLocalRing.maximalIdeal Λ) := Ideal.Quotient.field _`. Use `haveI : Module.Finite (Λ ⧸ IsLocalRing.maximalIdeal Λ) (T ⧸ I) := Module.Finite.of_restrictScalars_finite Λ _ _`. Conclude with `IsArtinianRing.of_finite (Λ ⧸ IsLocalRing.maximalIdeal Λ) (T ⧸ I)`.
-
-Take `⟨f, n, hf, hfJ, hfn⟩` from `artin_idem (J.map (Ideal.Quotient.mk I))`. Take `⟨e, he, rfl⟩` from `lift_idem I f hf`. Use `⟨e, he, fun i => ⟨n, ?_⟩, ?_, hs, fun _ => hmax⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_mul, map_pow]`. Conclude with `hfn _ (Ideal.mem_map_of_mem _ (hmem i))`.
-
-Establish `h1 : Ideal.Quotient.mk I (1 - e) ∈ J.map (Ideal.Quotient.mk I)`. Rewrite using `[map_sub, map_one]` and apply the resulting hypothesis. Establish `h2` using `Ideal.mem_quotient_iff_mem (I := I) (J := J) le_sup_left (x := 1 - e)`. Conclude with `h2.mp h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qe2.locAbs :
     ∀ (Λ T : Type) [inst : CommRing Λ] [inst_1 : IsLocalRing Λ] [IsNoetherianRing Λ]

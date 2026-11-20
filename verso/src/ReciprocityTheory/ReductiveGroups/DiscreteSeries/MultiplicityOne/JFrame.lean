@@ -10,19 +10,19 @@ namespace ReciprocityTheory.ChartRestriction.DS.Mult1
 open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.B2
 
 /- English proof (translation)
-Introduce `k r z _hk hz hT`. Use `set T := Tz k r z with hTdef`. Use `set s : ℝ := (Real.sqrt T)⁻¹ with hs`. Establish `hTeq : T = ‖z (wI k r (Fin.last k))‖ ^ 2 - ∑ l : Fin k, ‖z (wI k r l.castSucc)‖ ^ 2`. Establish `h` using `frame_herm k r z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [frameMat_star_mul_self] at h`. Rewrite using `[hTdef, Tz, h, ← Complex.ofReal_sum, ← Complex.ofReal_sub, Complex.ofReal_re]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsT : s ^ 2 * T = 1`. Rewrite using `[hs, inv_pow, Real.sq_sqrt hT.le, inv_mul_cancel₀ hT.ne']`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs0 : 0 ≤ s` using `by rw [hs]; positivity`. Use `⟨frameMat k (fun j => (s : ℂ) * z (wI k r j)), ?_⟩` and prove the remaining obligations. Unfold `IsZFrame`. Prove the components needed by the constructor for the conclusion. Apply `frameMat_unitary` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [frameMat_star_mul_self]`. Establish `key : ∑ l : Fin k, ‖(s : ℂ) * z (wI k r l.castSucc)‖ ^ 2 = ‖(s : ℂ) * z (wI k r (Fin.last k))‖ ^ 2 - 1`. Simplify using `only [norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hs0, mul_pow, ← Finset.mul_sum]`. Take the linear combination `(-1 : ℝ) * hsT + s ^ 2 * hTeq`. Rewrite using `[← Complex.ofReal_sum, key, Complex.ofReal_sub, Complex.ofReal_one]`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hlast : (wI k r (Fin.last k)).val = r + k` using `by simp [frame_wI_val]`. Use function extensionality and compare the values at `i`. Simplify using `only [bvec, Matrix.mulVec, dotProduct, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, Pi.smul_apply, smul_eq_mul]`. Unfold `embWb`. Distinguish the cases in `hi : r ≤ i.val ∧ i.val ≤ r + k`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos ⟨hi, by omega, by omega⟩]`. Rewrite using `[show ∀ p, (⟨(wI k r (Fin.last k)).val - r, p⟩ : Fin (k + 1)) = Fin.last k from fun p => Fin.ext (by simp only [Fin.val_last]; omega)]`. Rewrite using `[frameMat_col]`. Rewrite using `[show ∀ p, wI k r (⟨i.val - r, p⟩ : Fin (k + 1)) = i from fun p => Fin.ext (by rw [frame_wI_val]; show r + (i.val - r) = i.val; omega)]`. Rewrite using `[dif_neg (fun h => hi h.1)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hne : ¬ (i = wI k r (Fin.last k) ∧ ¬ (r ≤ i.val ∧ i.val ≤ r + k))`. Introduce and unpack `⟨rfl, h⟩`. Conclude with `h ⟨by omega, by omega⟩`. Rewrite using `[if_neg hne, hz i (by omega), mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stFrame : StFrame := by
   intro k r z _hk hz hT

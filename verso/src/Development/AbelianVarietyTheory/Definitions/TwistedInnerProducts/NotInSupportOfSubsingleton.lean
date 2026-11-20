@@ -44,17 +44,17 @@ def evalOne (e : (Σ a, m a) ≃ n) {π : Representation ℂ (GL n k) V} {ρ : R
     simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `f f' h`. Use extensionality with `v x`. Establish `h1 : ∀ f : π.IntertwiningMap (parInd e ρ), (f v).1.1 x = evalOne e f (Submodule.Quotient.mk (π x v))` using `fun f => by show _ = (f (π x v)).1.1 1`. Rewrite using `[f.isIntertwining, parInd_apply, one_mul]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(h1 f).trans (h ▸ (h1 f').symm)`. Introduce `φ`. Use `⟨⟨{ toFun := fun v => ⟨⟨fun x => φ (Submodule.Quotient.mk (π x v)), fun p x => ?_⟩, ?_⟩ map_add' := fun v w => ?_ map_smul' := fun c v => ?_ }, fun g => ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨u, hu, hp⟩` from `exists_levi_mul_unip k e p show φ (Submodule.Quotient.mk (π (p * x) v)) = (deltaHalf k m (leviProj k e p) : ℂ) • ρ (leviProj k e p) (φ (Submodule.Quotient.mk (π x v)))`. Establish `hq : (Submodule.Quotient.mk (π u (π x v)) : Jacquet π (unipRad k e)) = Submodule.Quotient.mk (π x v)` using `(Submodule.Quotient.eq _).2 (Submodule.subset_span ⟨⟨u, hu⟩, π x v, by simp⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← φ.isIntertwining, ← hq, jac_mk, map_smul, smul_smul]`. Use `conv_lhs => rw [hp]`. Simplify using the standard rewrite rules. Use `mem_smoothPart_of_nhds (Filter.mem_of_superset ((hπ v).mem_nhds (by simp)) fun g hg => ?_)` and prove the remaining obligations. Establish `hg' : π g v = v` using `hg`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Use `show φ (Submodule.Quotient.mk (π (x * g) v)) = φ (Submodule.Quotient.mk (π x v))`. Simplify using `[hg']`. Use extensionality with `x`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use extensionality with `x`. Simplify using the standard rewrite rules. Use extensionality with `v x show φ (Submodule.Quotient.mk (π x (π g v))) = φ (Submodule.Quotient.mk (π (x * g) v))`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Apply `Representation.IntertwiningMap.ext` to reduce the goal to its premises. Use `Submodule.linearMap_qext _ (LinearMap.ext fun v => ?_)` and prove the remaining obligations. Use `show φ (Submodule.Quotient.mk (π 1 v)) = φ (Submodule.Quotient.mk v)`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem evalOne_bijective (e : (Σ a, m a) ≃ n) {π : Representation ℂ (GL n k) V} (hπ : IsSmooth π)
     (ρ : Representation ℂ (Levi k m) W) :
@@ -97,7 +97,7 @@ theorem evalOne_bijective (e : (Σ a, m a) ≃ n) {π : Representation ℂ (GL n
       simp
 
 /- English proof (translation)
-Take `⟨S, f, hf⟩` from `h`. Take `⟨v, rfl⟩` from `hf w`. Rewrite using `[← f.isIntertwining, ← map_smul]`. Use `congr 1`. Conclude with `Subtype.ext (hc v)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem scalar_of_isSubquotient {G : Type} [Group G] {σ : Representation ℂ G W} {ρ : Representation ℂ G V}
     (h : IsSubquotient σ ρ) {g : G} {c : ℂ} (hc : ∀ v, ρ g v = c • v) (w : W) : σ g w = c • w := by
@@ -108,7 +108,7 @@ theorem scalar_of_isSubquotient {G : Type} [Group G] {σ : Representation ℂ G 
   exact Subtype.ext (hc v)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hW`. Rewrite `hW` using `[not_nontrivial_iff_subsingleton]`. Establish `: (⊥ : Subrepresentation σ) = ⊤` using `Subrepresentation.toSubmodule_injective (Subsingleton.elim _ _)`. Conclude with `bot_ne_top this`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nontrivial_of_isIrreducible {G : Type} [Group G] {σ : Representation ℂ G W}
     (h : σ.IsIrreducible) : Nontrivial W := by
@@ -119,7 +119,7 @@ theorem nontrivial_of_isIrreducible {G : Type} [Group G] {σ : Representation �
   exact bot_ne_top this
 
 /- English proof (translation)
-Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[jac_mk]`. Use `show _ • Submodule.Quotient.mk (ofChar _ _ v) = _`. Rewrite using `[ofChar_apply, ← smul_eq_mul, Submodule.Quotient.mk_smul, smul_smul]`. Simplify using `[detLevi, mul_comm]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jac_detRep (e : (Σ a, m a) ≃ n) (χ : kˣ →* ℂˣ) (g : Levi k m)
     (x : Jacquet (detRep n χ) (unipRad k e)) : jac e (detRep n χ) g x = (detLevi e χ g : ℂ) • x := by
@@ -130,17 +130,17 @@ theorem jac_detRep (e : (Σ a, m a) ≃ n) (χ : kˣ →* ℂˣ) (g : Levi k m)
   simp [detLevi, mul_comm]
 
 /- English proof (translation)
-Use `⟨?_, fun ⟨i, h⟩ => h ▸ inSupport_detRep χ i⟩` and prove the remaining obligations. Introduce and unpack `⟨s, d, e, a, ha, Y, _, _, σ, hσ, hsub, hact⟩`. Establish `hN : ∑ b, d b = N` using `by simpa using Fintype.card_congr e`. Establish `hsplit : ∑ b, d b = (∑ b with b < a, d b) + d a + ∑ b with a < b, d b`. Rewrite using `[Finset.sum_filter, Finset.sum_filter, ← Finset.sum_ite_eq_of_mem Finset.univ a d (Finset.mem_univ a), ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Break down `lt_trichotomy b a with h | h | h` into its components or cases. Simplify using `[h, h.ne', h.not_gt]`. Simplify using `[h]`. Simplify using `[h, h.ne, h.not_gt]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `⟨⟨∑ b with b < a, d b, by omega⟩, MonoidHom.ext fun x => ?_⟩` and prove the remaining obligations. Use `nontrivial_of_isIrreducible hσ` as an intermediate fact. Take `⟨y, hy⟩` from `exists_ne (0 : Y)`. Set `g : GL (Fin (d a)) k` to `GeneralLinearGroup.scalar _ x`. Establish `hg : GeneralLinearGroup.det g = x` using `by ext; simp [g, GeneralLinearGroup.scalar, ha]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1` using `scalar_of_isSubquotient hsub (jac_detRep e χ (Pi.mulSingle a g)) y`. Rewrite `h1` using `[hact, hg, detLevi_apply, Finset.prod_eq_single a, Pi.mulSingle_eq_same, hg]`. Establish `h2` using `Units.ext (smul_left_injective ℂ hy h1)`. Rewrite using `[h2]`. Use `congr 3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h3 : (N : ℂ) = ((∑ b with b < a, d b : ℕ) : ℂ) + 1 + ((∑ b with a < b, d b : ℕ) : ℂ)`. Rewrite using `[← hN, hsplit, ha]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [modExp, Fintype.card_fin, h3]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `j _ hj`. Rewrite using `[Pi.mulSingle_eq_of_ne hj, map_one, map_one]`. Simplify using the standard rewrite rules.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inSupport_detRep_iff {N : ℕ} (χ ψ : kˣ →* ℂˣ) :
     InSupport (detRep (Fin N) χ) ψ ↔
@@ -177,20 +177,20 @@ theorem inSupport_detRep_iff {N : ℕ} (χ ψ : kˣ →* ℂˣ) :
   · simp
 
 /- English proof (translation)
-Simplify using `[inSupport_detRep_iff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inSupport_one_iff (χ ψ : kˣ →* ℂˣ) : InSupport (detRep (Fin 1) χ) ψ ↔ ψ = χ := by
   simp [inSupport_detRep_iff]
 
 /- English proof (translation)
-Introduce and unpack `⟨s, d, e, a, ha, -⟩`. Conclude with `(e ⟨a, ⟨0, by omega⟩⟩).elim0`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem not_inSupport_zero (π : Representation ℂ (GL (Fin 0) k) V) (ψ : kˣ →* ℂˣ) : ¬ InSupport π ψ := by
   rintro ⟨s, d, e, a, ha, -⟩
   exact (e ⟨a, ⟨0, by omega⟩⟩).elim0
 
 /- English proof (translation)
-Introduce and unpack `⟨s, d, e, a, ha, Y, _, _, σ, hσ, ⟨S, f, hf⟩, -⟩`. Use `nontrivial_of_isIrreducible hσ` as an intermediate fact. Establish `: Subsingleton (Jacquet π (unipRad k e))` using `(Submodule.Quotient.mk_surjective _).subsingleton`. Conclude with `not_subsingleton Y hf.subsingleton`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem not_inSupport_of_subsingleton [Subsingleton V] (π : Representation ℂ (GL n k) V)
     (ψ : kˣ →* ℂˣ) : ¬ InSupport π ψ := by
@@ -200,13 +200,13 @@ theorem not_inSupport_of_subsingleton [Subsingleton V] (π : Representation ℂ 
   exact not_subsingleton Y hf.subsingleton
 
 /- English proof (translation)
-Use `le_antisymm (iSup₂_le fun r ⟨S, T, _, _, hr⟩ => ?_) bot_le` and prove the remaining obligations. Break down `r with _ | r` into its components or cases. Simplify using the standard rewrite rules. It suffices to derive a contradiction. Take `⟨φ⟩` from `hr 0`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. It suffices to derive a contradiction. Extract witnesses or component facts from the available result.
 
-Use `h (MonoidHom.ext fun g => Units.ext ?_)` and prove the remaining obligations. Take `⟨x, hx⟩` from `φ.surjective 1`. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `h1` using `LinearMap.congr_fun (φ.isIntertwining' g) (Submodule.Quotient.mk v)`. Establish `h2 : subQuot (S 0) (T 0) g (Submodule.Quotient.mk v) = (ψ g : ℂ) • Submodule.Quotient.mk v`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Submodule.Quotient.mk_smul]`. Conclude with `congrArg Submodule.Quotient.mk (Subtype.ext (ofChar_apply ψ g _))`. Simplify using `only [LinearMap.comp_apply, h2, map_smul] at h1`. Establish `hx' : φ.toLinearMap (Submodule.Quotient.mk v) = 1` using `hx`. Rewrite `h1` using `[hx']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h1.symm`.
+A detailed English derivation is pending.
 -/
 theorem jhMult_ofChar_ne {G : Type} [Group G] {χ ψ : G →* ℂˣ} (h : χ ≠ ψ) :
     jhMult (ofChar χ) (ofChar ψ) = 0 := by
@@ -228,7 +228,7 @@ theorem jhMult_ofChar_ne {G : Type} [Group G] {χ ψ : G →* ℂˣ} (h : χ ≠
     simpa using h1.symm
 
 /- English proof (translation)
-Rewrite using `[modulus_torus, ← (nabs_properties k).2.2.2.2.1 ϖ x h hx]`. Simplify using `[Fin.prod_univ_two, Finset.prod_filter]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem modulus_two (ϖ : 𝒪[k]) (x : kˣ) (h : Irreducible ϖ) (hx : (x : k) = ϖ) :
     modulus k (fun _ : Fin 2 => Unit) (leviTorus k (Fin 2) ![x, 1]) = (resCard k : ℝ)⁻¹ := by
@@ -238,7 +238,7 @@ theorem modulus_two (ϖ : 𝒪[k]) (x : kˣ) (h : Irreducible ϖ) (hx : (x : k) 
 open NumberField IsDedekindDomain in
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LocalData.isLocalField v IsSpherical (detRep (Fin 2) (1 : (v.adicCompletion F)ˣ →* ℂˣ)) ∧ ¬ IsCuspidal (detRep (Fin 2) (1 : (v.adicCompletion F)ˣ →* ℂˣ)) := by letI := GlobalTheory.LocalData.complRel v haveI := GlobalTheory.LocalData.isLocalField v exact ⟨isSpherical …`.
+A detailed English derivation is pending.
 -/
 theorem completion (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) :
     letI := GlobalTheory.LocalData.complRel v
@@ -250,17 +250,15 @@ theorem completion (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (
   exact ⟨isSpherical_detRep fun _ _ => rfl, not_isCuspidal_detRep_two _⟩
 
 /- English proof (translation)
-Introduce and unpack `⟨s, d, e, a, ha, Y, _, _, σ, hσ, ⟨S, f, hf⟩, -⟩`. Use `nontrivial_of_isIrreducible hσ` as an intermediate fact. Establish `key : ∀ i j : n, blk e i < blk e j → unipRad k e ≠ ⊥` using `fun i j hij hb => by`. Establish `hne : i ≠ j` using `fun h => hij.ne (h ▸ rfl)`. Set `u : GL n k` to `GeneralLinearGroup.mkOfDetNeZero (transvection i j 1) (by rw [det_transvection_of_ne i j hne]; exact one_ne_zero)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hu : u ∈ unipRad k e`. Use `mem_unipRad.2 ⟨mem_parab.2 fun x y hxy => ?_, fun b x y => ?_⟩` and prove the remaining obligations. Use `show (transvection i j (1 : k)) x y = 0`. Establish `h1 : x ≠ y` using `fun h => hxy.ne (h ▸ rfl)`. Establish `h2 : ¬ (i = x ∧ j = y)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `hij.not_gt hxy`. Simplify using `[transvection, h1, single_apply, h2]`. Use `show (transvection i j (1 : k)) _ _ = _`. Establish `h2 : ¬ (i = e ⟨b, x⟩ ∧ j = e ⟨b, y⟩)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨rfl, rfl⟩`. Simplify using `at hij`. Simplify using `[transvection, single_apply, h2, Matrix.one_apply]`. Rewrite `hu` using `[hb, Subgroup.mem_bot]`. Establish `: (transvection i j (1 : k)) i j = (1 : Matrix n n k) i j` using `congrArg (fun g : GL n k => (g : Matrix n n k) i j) hu`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `[transvection] at this`. Establish `hne : unipRad k e ≠ ⊥`. Take `⟨j, hj⟩` from `exists_ne (e ⟨a, ⟨0, by omega⟩⟩)`. Take `⟨⟨b, j⟩, rfl⟩` from `e.surjective j`. Break down `lt_trichotomy a b with hab | rfl | hab` into its components or cases.
-
-Conclude with `key (e ⟨a, ⟨0, by omega⟩⟩) (e ⟨b, j⟩) (by simpa using hab)`. Conclude with `absurd (by congr; ext; have := j.2; simp; omega) hj`. Conclude with `key (e ⟨b, j⟩) (e ⟨a, ⟨0, by omega⟩⟩) (by simpa using hab)`. Use `h.2 s d e hne` as an intermediate fact. Conclude with `not_subsingleton Y hf.subsingleton`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem not_inSupport_of_isCuspidal [Nontrivial n] {π : Representation ℂ (GL n k) V} (h : IsCuspidal π)
     (ψ : kˣ →* ℂˣ) : ¬ InSupport π ψ := by
@@ -296,13 +294,13 @@ theorem not_inSupport_of_isCuspidal [Nontrivial n] {π : Representation ℂ (GL 
   exact not_subsingleton Y hf.subsingleton
 
 /- English proof (translation)
-Set `e : (Σ _ : Fin N, Fin 1) ≃ Fin N` to `Equiv.sigmaUnique _ _`. Use `⟨isIrreducible_ofChar _, fun i => ⟨one_pos, isIrreducible_ofChar _, isCuspidal_detRep_one (hχ.mul (isSmoothChar_of_isUnram (isUnram_absPow k _)))⟩, e, ?_⟩` and prove the remaining obligations. Set `f : (ofChar (detLevi e χ)).IntertwiningMap (piTensor fun i : Fin N => detRep (Fin 1) (χ * absPow k (((i : ℕ) : ℂ) - ((N : ℂ) - 1) / 2)))` to `⟨LinearMap.toSpanSingleton ℂ _ (PiTensorProduct.tprod ℂ fun _ => 1), fun g => by`. Use `ext`. Simplify using `only [LinearMap.comp_apply, LinearMap.toSpanSingleton_apply, one_smul, piTensor_tprod, ofChar_apply, mul_one, detRep]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[detLevi_apply, Units.coe_prod, ← MultilinearMap.map_smul_univ]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[modExp_fin _ (fun _ => by simp), smul_eq_mul, mul_one, detChar_apply]`. Use `congr 4`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Use the proof step `ring⟩`. Establish `hf : Function.Injective f`. Use `LinearMap.ker_eq_bot.1 (LinearMap.ker_toSpanSingleton ℂ fun h => ?_)` and prove the remaining obligations. Use `congrArg (PiTensorProduct.lift (MultilinearMap.mkPiAlgebra ℂ (Fin N) ℂ)) h` as an intermediate fact.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `at this`. Use `(isSubquotient_detRep_parInd e hχ).trans (.of_injective (parIndMap e f) fun φ ψ h => ?_)` and prove the remaining obligations. Use extensionality with `x`. Conclude with `hf (congrFun (congrArg (fun t => t.1.1) h) x)`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem isCuspSupport_detRep {N : ℕ} {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) :
     IsCuspSupport (detRep (Fin N) χ) (fun _ : Fin N => 1)
@@ -332,13 +330,13 @@ theorem isCuspSupport_detRep {N : ℕ} {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar
   exact hf (congrFun (congrArg (fun t => t.1.1) h) x)
 
 /- English proof (translation)
-Establish `key : ∀ {a : Fin 1 → ℂˣ}, HasSatake π a → ∀ v, π (diagT k (Fin 1) fun _ => ϖ) v = (a 0 : ℂ) • v`. Introduce `a ha`. Use `scalar_of_isSubquotient ha.2.2 fun f => ?_` and prove the remaining obligations. Use extensionality with `x`. Establish `h1` using `parInd_law (points (Fin 1)) _ f ⟨_, leviEmb_mem_parab k _ (leviTorus k _ fun _ => ϖ)⟩ x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite `h1` using `[leviProj_leviEmb]`. Establish `hc : x * (diagT k (Fin 1) fun _ => ϖ) = (diagT k (Fin 1) fun _ => ϖ) * x`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, mul_comm, Subsingleton.elim i 0, Subsingleton.elim j 0]`. Use `show f.1.1 (x * (diagT k (Fin 1) fun _ => ϖ)) = (a 0 : ℂ) • f.1.1 x`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`. Use `h1.trans ?_` and prove the remaining obligations. Establish `hm : modExp (fun _ : Fin 1 => Unit) 0 = 0` using `by rw [modExp_fin _ (fun _ => by simp)]; simp`. Simplify using `[deltaHalf_apply, hm, unrChar_uniformizer k _ hϖ]`. Use `nontrivial_of_isIrreducible ha.1` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `exists_ne (0 : V)`. Use function extensionality and compare the values at `i`. Rewrite using `[Subsingleton.elim i 0]`. Conclude with `Units.ext (smul_left_injective ℂ hy ((key ha y).symm.trans (key hb y)))`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSatake_one_unique {π : Representation ℂ (GL (Fin 1) k) V} {a b : Fin 1 → ℂˣ}
     (ha : HasSatake π a) (hb : HasSatake π b) {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) :

@@ -10,9 +10,9 @@ namespace UpperTheory.N.Num
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h1` using `D.R.two_le_m`. Establish `h2` using `D.R.m_le_f`. Establish `h3` using `D.R.f_le_k`. Establish `h4` using `D.R.rank_add_five_le`. Establish `e1 : D.R.f = 2 * D.R.ord` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : D.R.r = D.R.k + D.R.m - 1` using `rfl`. Establish `e3 : D.R.nV = D.R.r + D.R.t` using `rfl`. Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;> norm_cast <;> omega`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ranks (D : D7) : (1 : ℝ) ≤ D.R.m ∧ (D.R.m : ℝ) ≤ D.R.f ∧ (D.R.f : ℝ) ≤ D.R.k ∧ (D.R.k : ℝ) ≤ D.R.r ∧
     (D.R.r : ℝ) ≤ D.R.t ∧ (D.R.t : ℝ) ≤ D.R.nV ∧ (D.R.nV : ℝ) ≤ 2 * D.R.t := by
@@ -26,22 +26,22 @@ theorem ranks (D : D7) : (1 : ℝ) ≤ D.R.m ∧ (D.R.m : ℝ) ≤ D.R.f ∧ (D.
   refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;> norm_cast <;> omega
 
 /- English proof (translation)
-Unfold `Scale.L`. Conclude with `Real.one_le_rpow L.sc.one_lt_alt.le L.sc.eps_pos.le`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem one_le_L (L : SizeData₂ D) : 1 ≤ L.sc.L := by
   unfold Scale.L; exact Real.one_le_rpow L.sc.one_lt_alt.le L.sc.eps_pos.le
 
 /- English proof (translation)
-The claim follows from `Real.one_le_exp (by linarith [one_le_L L])`.
+A detailed English derivation is pending.
 -/
 theorem one_le_b (L : SizeData₂ D) : 1 ≤ L.sc.b := Real.one_le_exp (by linarith [one_le_L L])
 
 /- English proof (translation)
-Establish `hc` using `P.condE_le`. Establish `hb` using `one_le_b L`. Take `⟨r1, r2, r3, r4, r5, -, -⟩` from `ranks D`. Establish `ht : (1 : ℝ) ≤ (D.R.t : ℝ) ^ 150` using `one_le_pow₀ (by linarith)`. Establish `h1 : L.sc.b ^ ((1 : ℝ) / 2) ≤ L.sc.b` using `by conv_rhs => rw [← Real.rpow_one L.sc.b]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Real.rpow_le_rpow_of_exponent_le hb (by norm_num)`. Establish `e : (LevelStarExponents.condE D : ℝ) = D.host.condN` using `rfl`. Rewrite `hc` using `[e]`. Establish `h2 : (D.host.condN : ℝ) ≤ (D.host.condN : ℝ) ^ 36` using `by exact_mod_cast Nat.le_self_pow (by norm_num) _`. Establish `h3 : (D.host.condN : ℝ) ^ 36 ≤ (D.host.condN : ℝ) ^ 36 * (D.R.t : ℝ) ^ 150` using `le_mul_of_one_le_right (by positivity) ht`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem condN_le (L : SizeData₂ D) (P : ParameterChoice' D L) : (D.host.condN : ℝ) ≤ L.sc.b := by
   have hc := P.condE_le
@@ -59,19 +59,19 @@ theorem condN_le (L : SizeData₂ D) (P : ParameterChoice' D L) : (D.host.condN 
   linarith
 
 /- English proof (translation)
-Establish `hb` using `one_le_b L`. Establish `hL` using `one_le_L L`. Take `⟨r1, r2, r3, r4, r5, -, -⟩` from `ranks D`. Establish `hη : L.etaSz ≤ L.sc.b`. Use `P.eta_le.trans (div_le_self (by linarith) ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : (1 : ℝ) ≤ (D.R.t : ℝ) ^ 3` using `one_le_pow₀ (by linarith)`. Establish `h2 : (1 : ℝ) ≤ (D.R.k : ℝ) ^ 3` using `one_le_pow₀ (by linarith)`. Conclude with `one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le h1 (by linarith)) h2`. Use `⟨?_, hη, P.t_le_eta.trans hη⟩` and prove the remaining obligations. Establish `hS` using `L.Sc_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : (1 : ℝ) ≤ D.R.n` using `by exact_mod_cast D.R.ord_pos`. Establish `hden : (D.R.m : ℝ) ≤ (D.R.n : ℝ) * (D.R.t : ℝ) ^ 2 * ((D.R.N D.R.m : ℝ) + D.R.t) * L.sc.L ^ 2 + (D.R.k : ℝ) * (D.R.n : ℝ) ^ 2 * (L.Sc + D.R.t + L.sc.L)`. Establish `h1 : (0 : ℝ) ≤ (D.R.n : ℝ) * (D.R.t : ℝ) ^ 2 * ((D.R.N D.R.m : ℝ) + D.R.t) * L.sc.L ^ 2` using `by positivity`. Establish `h2 : (1 : ℝ) ≤ (D.R.n : ℝ) ^ 2 * (L.Sc + D.R.t + L.sc.L)` using `one_le_mul_of_one_le_of_one_le (one_le_pow₀ hn) (by linarith)`. Establish `h3 : (D.R.k : ℝ) ≤ (D.R.k : ℝ) * ((D.R.n : ℝ) ^ 2 * (L.Sc + D.R.t + L.sc.L))` using `le_mul_of_one_le_right (by linarith) h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[← mul_assoc]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hle : LevelStarExponents.lStar L ≤ L.sc.b`. Unfold `LevelStarExponents.lStar`. Rewrite using `[div_le_iff₀ (by linarith)]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hpos : 0 < LevelStarExponents.lStar L`. Unfold `LevelStarExponents.lStar`. Conclude with `div_pos (by nlinarith) (by linarith)`. Establish `h1` using `P.lstar1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb' : 0 < L.sc.b'`. Establish `hx : 0 < L.sc.x` using `by linarith [L.sc.one_lt_alt]`. Unfold `Scale.b' Scale.a Scale.X' Scale.b`. Check the signs of the components of the expression. Establish `h2 : 0 ≤ L.sc.b / LevelStarExponents.lStar L` using `by positivity`.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h3` using `L.etaSz_pos`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem sizes_le_b (L : SizeData₂ D) (P : ParameterChoice' D L) :
     L.Sc ≤ L.sc.b ∧ L.etaSz ≤ L.sc.b ∧ (D.R.t : ℝ) ≤ L.sc.b := by
@@ -112,7 +112,7 @@ theorem sizes_le_b (L : SizeData₂ D) (P : ParameterChoice' D L) :
   linarith
 
 /- English proof (translation)
-Establish `h` using `Nat.mem_primeFactors.1 hs`. Establish `e : H.host.condN = H.host.QS * (H.host.q * H.host.d)` using `mul_assoc _ _ _`. Rewrite using `[e, Nat.factorization_eq_of_coprime_left H.host.QS_coprime (Nat.mem_primeFactorsList'.2 h)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem factorization_condN (H : D7) {l : ℕ} (hs : l ∈ H.host.small) :
     H.host.condN.factorization l = H.host.QS.factorization l := by
@@ -121,7 +121,7 @@ theorem factorization_condN (H : D7) {l : ℕ} (hs : l ∈ H.host.small) :
   rw [e, Nat.factorization_eq_of_coprime_left H.host.QS_coprime (Nat.mem_primeFactorsList'.2 h)]
 
 /- English proof (translation)
-Rewrite using `[D.nd.restNLevelExponent_of_odd i h2, factorization_condN D hs]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem s0_eq (i : D.nd.Loc) (hs : D.nd.l i ∈ D.host.small) (h2 : D.nd.l i ≠ 2) :
     D.nd.s0 i = max 1 (D.host.condN.factorization (D.nd.l i)) := by

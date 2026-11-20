@@ -22,9 +22,9 @@ def chartProjMatrix {m d : ℕ} (σ : Fin m ≃ ((k : K) → ι k))
   fun r a => Ψ (fun i' => if σ a = i' then 1 else 0) r.succ
 
 /- English proof (translation)
-Establish `hv : (fun i' => x (σ.symm i')) = ∑ a, x a • fun i' => if σ a = i' then (1 : ℂ) else 0`. Rewrite using `[pi_eq_sum_univ (fun i' => x (σ.symm i'))]`. Conclude with `(Equiv.sum_comp σ _).symm.trans (by simp)`. Rewrite using `[hv, map_sum, Finset.sum_apply]`. Simplify using `only [map_smul, Pi.smul_apply, smul_eq_mul, Matrix.mulVec, dotProduct, chartProjMatrix]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chartProjMatrix_mulVec {m d : ℕ} (σ : Fin m ≃ ((k : K) → ι k))
     (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (d + 1) → ℂ)) (x : Fin m → ℂ) (r : Fin d) :
@@ -48,7 +48,7 @@ def chartLiftDom {m : ℕ} (σ : Fin m ≃ ((k : K) → ι k)) (i : (k : K) → 
   {x | ∀ k, ∃ j, chartLift σ i x ⟨k, j⟩ ≠ 0}
 
 /- English proof (translation)
-The claim follows from `ReciprocityTheory.ChartRestriction.G.Geo.isOpen_blockNonzero.preimage (contDiff_chartLift σ i (n := 0)).continuous`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_chartLiftDom {m : ℕ} (σ : Fin m ≃ ((k : K) → ι k)) (i : (k : K) → ι k) :
     IsOpen (chartLiftDom σ i) :=
@@ -56,7 +56,7 @@ theorem isOpen_chartLiftDom {m : ℕ} (σ : Fin m ≃ ((k : K) → ι k)) (i : (
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 /- English proof (translation)
-The claim follows from `chartLift_blockNonzero σ i hx`.
+A detailed English derivation is pending.
 -/
 theorem mem_chartLiftDom_of_coord {m : ℕ} {σ : Fin m ≃ ((k : K) → ι k)} {i : (k : K) → ι k}
     {x : Fin m → ℂ} (hx : x (σ.symm i) = 1) : x ∈ chartLiftDom σ i :=
@@ -74,7 +74,7 @@ def chartPot {m e : ℕ} (σ : Fin m ≃ ((k : K) → ι k)) (i : (k : K) → ι
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 /- English proof (translation)
-Simplify using `only [chartWeight]`. Rewrite using `[Set.piecewise_eq_of_mem _ _ _ hx]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem chartWeight_of_mem {m : ℕ} {σ : Fin m ≃ ((k : K) → ι k)} {i : (k : K) → ι k}
     (g : ((Σ k, ι k) → ℂ) → ℝ) {x : Fin m → ℂ} (hx : x ∈ chartLiftDom σ i) :
@@ -87,7 +87,7 @@ theorem chartWeight_of_mem {m : ℕ} {σ : Fin m ≃ ((k : K) → ι k)} {i : (k
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-The claim follows from `chartWeight_of_mem g (mem_chartLiftDom_of_coord hx)`.
+A detailed English derivation is pending.
 -/
 theorem chartWeight_of_coord {m : ℕ} {σ : Fin m ≃ ((k : K) → ι k)} {i : (k : K) → ι k}
     (g : ((Σ k, ι k) → ℂ) → ℝ) {x : Fin m → ℂ} (hx : x (σ.symm i) = 1) :
@@ -95,7 +95,7 @@ theorem chartWeight_of_coord {m : ℕ} {σ : Fin m ≃ ((k : K) → ι k)} {i : 
   chartWeight_of_mem g (mem_chartLiftDom_of_coord hx)
 
 /- English proof (translation)
-Establish `hc : ContinuousOn (g ∘ chartLift σ i) (chartLiftDom σ i)` using `hg.1.continuousOn.comp (contDiff_chartLift σ i (n := 0)).continuous.continuousOn fun _ hx => hx`. Unfold `chartWeight`. Conclude with `hc.measurable_piecewise (continuousOn_const (c := (0 : ℝ))) (isOpen_chartLiftDom σ i).measurableSet`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem measurable_chartWeight {m : ℕ} (σ : Fin m ≃ ((k : K) → ι k)) (i : (k : K) → ι k)
     {g : ((Σ k, ι k) → ℂ) → ℝ} (hg : IsDegZeroSmooth g) : Measurable (chartWeight σ i g) := by
@@ -106,7 +106,7 @@ theorem measurable_chartWeight {m : ℕ} (σ : Fin m ≃ ((k : K) → ι k)) (i 
   exact hc.measurable_piecewise (continuousOn_const (c := (0 : ℝ))) (isOpen_chartLiftDom σ i).measurableSet
 
 /- English proof (translation)
-Use `⟨chartLiftDom σ i, isOpen_chartLiftDom σ i, fun x hx => mem_chartLiftDom_of_coord (hT x hx), ?_⟩` and prove the remaining obligations. Establish `hh : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun x => (L j).h (chartLift σ i x)) (chartLiftDom σ i)` using `(hL j).comp (contDiff_chartLift σ i).contDiffOn fun _ hx => hx`. Conclude with `hh.log fun x hx => ((L j).pos _ hx).ne'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smoothNear_chartPot {m e : ℕ} (σ : Fin m ≃ ((k : K) → ι k)) (i : (k : K) → ι k)
     {L : Fin e → HermLine ι} (hL : ∀ j, IsSmoothHerm (L j)) {T : Set (Fin m → ℂ)}

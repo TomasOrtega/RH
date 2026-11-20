@@ -14,7 +14,7 @@ variable {F : Type u} [Field F] [DecidableEq F] [IsAlgClosed F] (W : Weierstrass
 local notation "ι" => algebraMap F W.toAffine.FunctionField
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero, divisorOf_one, zero_smul]`. Consider the case `succ k ih => rw [pow_succ, divisorOf_mul W (pow_ne_zero k hf) hf, ih, succ_nsmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem divisorOf_pow {f : W.toAffine.FunctionField} (hf : f ≠ 0) (k : ℕ) :
     divisorOf W (f ^ k) = k • divisorOf W f := by
@@ -23,7 +23,7 @@ theorem divisorOf_pow {f : W.toAffine.FunctionField} (hf : f ≠ 0) (k : ℕ) :
   | succ k ih => rw [pow_succ, divisorOf_mul W (pow_ne_zero k hf) hf, ih, succ_nsmul]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.prod_empty, Finset.sum_empty, divisorOf_one]`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, divisorOf_mul W (hφ a (Finset.mem_insert_self a s)) (Finset.prod_ne_zero_iff.mpr fun i hi => hφ i (Finset.mem_insert_of_mem hi)), ih fun i hi => hφ i (Finset.mem_insert_of_mem hi)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem divisorOf_prod {ι' : Type*} (s : Finset ι') (φ : ι' → W.toAffine.FunctionField)
     (hφ : ∀ i ∈ s, φ i ≠ 0) : divisorOf W (∏ i ∈ s, φ i) = ∑ i ∈ s, divisorOf W (φ i) := by
@@ -38,7 +38,7 @@ theorem divisorOf_prod {ι' : Type*} (s : Finset ι') (φ : ι' → W.toAffine.F
 
 omit [DecidableEq F] [IsAlgClosed F] in
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem mulPullback_congr {m n : ℤ} (h : m = n) (hm : m ≠ 0) (hn : n ≠ 0) :
     mulPullback W m hm = mulPullback W n hn := by
@@ -57,9 +57,9 @@ noncomputable def weilPairing (n : ℕ) (S T : W.toAffine.Point) : F :=
 variable {W}
 
 /- English proof (translation)
-Take `⟨hf, hg, -, hn0, hpull⟩` from `h`. Establish `hn : n ≠ 0` using `by exact_mod_cast hn0`. Establish `hS' : (n : ℤ) • S = 0` using `by rw [natCast_zsmul]; exact hS`. Establish `hpow : (translate W S g / g) ^ n = ι 1`. Rewrite using `[div_pow, ← map_pow, ← hpull, translate_mulPullback_of_zsmul_eq_zero W hn0 hS', hpull, div_self (pow_ne_zero n hg), map_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨d, hd⟩` from `exists_algebraMap_eq_of_pow_eq W hn hpow`. Use `⟨d, ?_, ?_⟩` and prove the remaining obligations. Apply `(algebraMap F W.toAffine.FunctionField).injective` to reduce the goal to its premises. Rewrite using `[map_pow, hd, hpow, map_one]`. Rewrite using `[hd, div_mul_cancel₀ _ hg]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsWeilData.exists_translate_eq {n : ℕ} {T : W.toAffine.Point} {f g : W.toAffine.FunctionField}
     (h : IsWeilData W n T f g) {S : W.toAffine.Point} (hS : n • S = 0) :
@@ -77,9 +77,9 @@ theorem IsWeilData.exists_translate_eq {n : ℕ} {T : W.toAffine.Point} {f g : W
   · rw [hd, div_mul_cancel₀ _ hg]
 
 /- English proof (translation)
-Take `⟨hf, hg, hdiv, hn0, hpull⟩` from `h`. Take `⟨hf', hg', hdiv', hn0', hpull'⟩` from `h'`. Establish `hn : n ≠ 0` using `by exact_mod_cast hn0`. Take `⟨c, -, hc⟩` from `exists_algebraMap_mul_eq_of_divisorOf_eq W hf hf' (hdiv.trans hdiv'.symm)`. Establish `hpow : (g' / g) ^ n = ι c`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[div_pow, ← hpull', ← hc, map_mul, mulPullback_algebraMap, hpull, mul_div_cancel_right₀ _ (pow_ne_zero n hg)]`. Take `⟨d, hd⟩` from `exists_algebraMap_eq_of_pow_eq W hn hpow`. Conclude with `⟨d, by rw [hd, div_mul_cancel₀ _ hg]⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsWeilData.exists_eq_mul {n : ℕ} {T : W.toAffine.Point} {f g f' g' : W.toAffine.FunctionField}
     (h : IsWeilData W n T f g) (h' : IsWeilData W n T f' g') : ∃ d : F, g' = ι d * g := by
@@ -94,9 +94,9 @@ theorem IsWeilData.exists_eq_mul {n : ℕ} {T : W.toAffine.Point} {f g f' g' : W
   exact ⟨d, by rw [hd, div_mul_cancel₀ _ hg]⟩
 
 /- English proof (translation)
-Take `⟨ζ, -, hζ⟩` from `h.exists_translate_eq hS`. Establish `hex : ∃ ζ : F, ∃ f g, IsWeilData W n T f g ∧ translate W S g = ι ζ * g` using `⟨ζ, f, g, h, hζ⟩`. Rewrite using `[weilPairing, dif_pos hex]`. Take `⟨f₀, g₀, h₀, hζ₀⟩` from `hex.choose_spec`. Take `⟨d, rfl⟩` from `h₀.exists_eq_mul h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_mul, translate_algebraMap, hζ₀]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem translate_eq_weilPairing_mul {n : ℕ} {S T : W.toAffine.Point}
     {f g : W.toAffine.FunctionField} (hS : n • S = 0) (h : IsWeilData W n T f g) :
@@ -111,7 +111,7 @@ theorem translate_eq_weilPairing_mul {n : ℕ} {S T : W.toAffine.Point}
   ring
 
 /- English proof (translation)
-Use `(translate_eq_weilPairing_mul hS h).symm.trans hζ` as an intermediate fact. Conclude with `(algebraMap F W.toAffine.FunctionField).injective (mul_right_cancel₀ h.2.1 this)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem weilPairing_eq_of_translate_eq {n : ℕ} {S T : W.toAffine.Point}
     {f g : W.toAffine.FunctionField} (hS : n • S = 0) (h : IsWeilData W n T f g) {ζ : F}
@@ -122,27 +122,25 @@ theorem weilPairing_eq_of_translate_eq {n : ℕ} {S T : W.toAffine.Point}
 variable (W)
 
 /- English proof (translation)
-Establish `hn' : n ≠ 0` using `by rintro rfl; simp at hn`. Establish `hn0 : (n : ℤ) ≠ 0` using `by exact_mod_cast hn'`. Establish `hnF : ((n : ℤ) : F) ≠ 0` using `by exact_mod_cast hn`. Establish `hT' : (n : ℤ) • T = 0` using `by rw [natCast_zsmul]; exact hT`. Take `⟨f, hf, hdivf⟩` from `(exists_divisorOf_eq_iff W ((n : ℤ) • (Finsupp.single T 1 - Finsupp.single 0 1))).mpr ⟨by simp, by simp [hT]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨T', hT''⟩` from `exists_zsmul_eq W hn0 T`. Use `set K : Finset W.toAffine.Point := (finite_setOf_zsmul_eq W hnF 0).toFinset with hK`. Establish `hmemK : ∀ R, R ∈ K ↔ (n : ℤ) • R = 0` using `fun R => by simp [hK]`. Establish `hcardK : K.card = n ^ 2`. Establish `h` using `card_zsmul_eq_zero W hnF`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[Int.natAbs_natCast]`. Rewrite using `[← h, ← Nat.card_eq_finsetCard]`. Conclude with `Nat.card_congr (Equiv.subtypeEquivRight fun R => hmemK R)`. Use `set D : CurveDivisor W := ∑ R ∈ K, (Finsupp.single (T' + R) 1 - Finsupp.single R 1) with hD`. Establish `hDpull : D = mulPullbackDivisor W hnF (Finsupp.single T 1 - Finsupp.single 0 1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use extensionality with `P`. Rewrite using `[mulPullbackDivisor_apply, hD, Finsupp.finsetSum_apply]`. Simplify using `only [Finsupp.sub_apply, Finsupp.single_apply, Finset.sum_sub_distrib]`. Establish `h1 : ∑ R ∈ K, (if T' + R = P then (1 : ℤ) else 0) = if (n : ℤ) • P = T then 1 else 0`. Establish `e : ∀ R, (T' + R = P) ↔ (R = P - T')` using `fun R => by`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Normalize the expressions using the abelian group laws.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Normalize the expressions using the abelian group laws. Introduce and unpack `rfl`. Normalize the expressions using the abelian group laws.
+Assume the hypotheses and unpack their components. Normalize the expressions using the abelian group laws. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Repeatedly rewrite using `[e]`. Rewrite using `[Finset.sum_ite_eq' K (P - T') (fun _ => (1 : ℤ))]`. Simplify using `only [hmemK, zsmul_sub, hT'', sub_eq_zero]`. Establish `h2 : ∑ R ∈ K, (if R = P then (1 : ℤ) else 0) = if (n : ℤ) • P = 0 then 1 else 0`. Rewrite using `[Finset.sum_ite_eq' K P (fun _ => (1 : ℤ))]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hmemK]`. Rewrite using `[h1, h2]`. Simplify using `only [eq_comm]`. Establish `hdegD : divisorDegree W D = 0`. Rewrite using `[hD, map_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hsumD : divisorSum W D = 0`. Rewrite using `[hD, map_sum]`. Simplify using `only [map_sub, divisorSum_single, one_smul, add_sub_cancel_right, Finset.sum_const, hcardK]`. Establish `hT3 : n • T' = T` using `by rw [← natCast_zsmul]; exact hT''`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[pow_two, mul_nsmul, hT3, hT]`. Take `⟨g₀, hg₀, hdivg₀⟩` from `(exists_divisorOf_eq_iff W D).mpr ⟨hdegD, hsumD⟩`. Establish `hdiv : divisorOf W (g₀ ^ n) = divisorOf W (mulPullback W n hn0 f)`. Rewrite using `[divisorOf_pow W hg₀, divisorOf_mulPullback W hnF hn0 hf, hdivf, map_zsmul, ← hDpull, hdivg₀, natCast_zsmul]`. Take `⟨c, hc0, hc⟩` from `exists_algebraMap_mul_eq_of_divisorOf_eq W (pow_ne_zero n hg₀) (mulPullback_ne_zero W hn0 hf) hdiv`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨d, hd⟩` from `IsAlgClosed.exists_pow_nat_eq c (Nat.pos_of_ne_zero hn')`. Establish `hd0 : d ≠ 0`. Introduce and unpack `rfl`. Rewrite `hd` using `[zero_pow hn']`. Conclude with `hc0 hd.symm`.
-
-Use `⟨f, ι d * g₀, hf, mul_ne_zero ((map_ne_zero_iff _ (algebraMap F W.toAffine.FunctionField).injective).mpr hd0) hg₀, hdivf, hn0, ?_⟩` and prove the remaining obligations. Rewrite using `[← hc, mul_pow, ← map_pow, hd]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isWeilData {n : ℕ} (hn : (n : F) ≠ 0) {T : W.toAffine.Point} (hT : n • T = 0) :
     ∃ f g, IsWeilData W n T f g := by
@@ -209,7 +207,7 @@ theorem exists_isWeilData {n : ℕ} (hn : (n : F) ≠ 0) {T : W.toAffine.Point} 
 variable {W}
 
 /- English proof (translation)
-Take `⟨f, g, h⟩` from `exists_isWeilData W hn hT`. Take `⟨ζ, hζn, hζ⟩` from `h.exists_translate_eq hS`. Rewrite using `[weilPairing_eq_of_translate_eq hS h hζ, hζn]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem weilPairing_pow_eq_one {n : ℕ} (hn : (n : F) ≠ 0) {S T : W.toAffine.Point}
     (hS : n • S = 0) (hT : n • T = 0) : weilPairing W n S T ^ n = 1 := by
@@ -218,7 +216,7 @@ theorem weilPairing_pow_eq_one {n : ℕ} (hn : (n : F) ≠ 0) {S T : W.toAffine.
   rw [weilPairing_eq_of_translate_eq hS h hζ, hζn]
 
 /- English proof (translation)
-Introduce `h0`. Establish `h` using `weilPairing_pow_eq_one hn hS hT`. Establish `hn' : n ≠ 0` using `by rintro rfl; simp at hn`. Rewrite `h` using `[h0, zero_pow hn']`. Conclude with `zero_ne_one h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weilPairing_ne_zero {n : ℕ} (hn : (n : F) ≠ 0) {S T : W.toAffine.Point}
     (hS : n • S = 0) (hT : n • T = 0) : weilPairing W n S T ≠ 0 := by
@@ -229,7 +227,7 @@ theorem weilPairing_ne_zero {n : ℕ} (hn : (n : F) ≠ 0) {S T : W.toAffine.Poi
   exact zero_ne_one h
 
 /- English proof (translation)
-Take `⟨f, g, h⟩` from `exists_isWeilData W hn hT`. Apply `weilPairing_eq_of_translate_eq (by rw [nsmul_add, hS₁, hS₂, add_zero]) h` to reduce the goal to its premises. Rewrite using `[← translate_translate, translate_eq_weilPairing_mul hS₂ h, map_mul, translate_algebraMap, translate_eq_weilPairing_mul hS₁ h, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem weilPairing_add_left {n : ℕ} (hn : (n : F) ≠ 0) {S₁ S₂ T : W.toAffine.Point}
     (hS₁ : n • S₁ = 0) (hS₂ : n • S₂ = 0) (hT : n • T = 0) :
@@ -241,11 +239,11 @@ theorem weilPairing_add_left {n : ℕ} (hn : (n : F) ≠ 0) {S₁ S₂ T : W.toA
   ring
 
 /- English proof (translation)
-Take `⟨f₁, g₁, h₁⟩` from `exists_isWeilData W hn hT₁`. Take `⟨f₂, g₂, h₂⟩` from `exists_isWeilData W hn hT₂`. Take `⟨hf₁, hg₁, hdiv₁, hn0, hpull₁⟩` from `h₁`. Take `⟨hf₂, hg₂, hdiv₂, hn0', hpull₂⟩` from `h₂`. Establish `hS' : (n : ℤ) • S = 0` using `by rw [natCast_zsmul]; exact hS`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, hk, hdivk⟩` from `(exists_divisorOf_eq_iff W (Finsupp.single (T₁ + T₂) 1 - Finsupp.single T₁ 1 - Finsupp.single T₂ 1 + Finsupp.single 0 1)).mpr ⟨by simp, by simp⟩`. Establish `hdata : IsWeilData W n (T₁ + T₂) (f₁ * f₂ * k ^ n) (g₁ * g₂ * mulPullback W n hn0 k)`. Use `⟨mul_ne_zero (mul_ne_zero hf₁ hf₂) (pow_ne_zero n hk), mul_ne_zero (mul_ne_zero hg₁ hg₂) (mulPullback_ne_zero W hn0 hk), ?_, hn0, ?_⟩` and prove the remaining obligations. Rewrite using `[divisorOf_mul W (mul_ne_zero hf₁ hf₂) (pow_ne_zero n hk), divisorOf_mul W hf₁ hf₂, divisorOf_pow W hk, hdiv₁, hdiv₂, hdivk, ← natCast_zsmul]`. Simplify using `only [smul_sub, smul_add]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[map_mul, map_mul, map_pow, hpull₁, hpull₂, mul_pow, mul_pow]`. Apply `weilPairing_eq_of_translate_eq hS hdata` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, translate_eq_weilPairing_mul hS ⟨hf₁, hg₁, hdiv₁, hn0, hpull₁⟩, translate_eq_weilPairing_mul hS ⟨hf₂, hg₂, hdiv₂, hn0', hpull₂⟩, translate_mulPullback_of_zsmul_eq_zero W hn0 hS', map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem weilPairing_add_right {n : ℕ} (hn : (n : F) ≠ 0) {S T₁ T₂ : W.toAffine.Point}
     (hS : n • S = 0) (hT₁ : n • T₁ = 0) (hT₂ : n • T₂ = 0) :
@@ -276,9 +274,9 @@ theorem weilPairing_add_right {n : ℕ} (hn : (n : F) ≠ 0) {S T₁ T₂ : W.to
 omit [IsAlgClosed F] [W.IsElliptic] in
 
 /- English proof (translation)
-Establish `h1` using `Finset.sum_range_succ' (fun i : ℕ => φ (Q + (i : ℤ) • T)) n`. Establish `h2` using `Finset.sum_range_succ (fun i : ℕ => φ (Q + (i : ℤ) • T)) n`. Rewrite `h2` using `[natCast_zsmul, hT, add_zero]`. Simplify using `only [Nat.cast_zero, zero_smul, add_zero] at h1`. Establish `h3 : ∀ i : ℕ, Q + ((i + 1 : ℕ) : ℤ) • T = Q + T + (i : ℤ) • T` using `fun i => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `push_cast`. Rewrite using `[add_zsmul, one_zsmul]`. Normalize the expressions using the abelian group laws. Simplify using `only [h3] at h1`. Conclude with `add_right_cancel (h1.symm.trans h2)`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_range_add_zsmul_shift {M : Type*} [AddCommGroup M] (φ : W.toAffine.Point → M) {n : ℕ}
     {T : W.toAffine.Point} (hT : n • T = 0) (Q : W.toAffine.Point) :
@@ -295,29 +293,27 @@ theorem sum_range_add_zsmul_shift {M : Type*} [AddCommGroup M] (φ : W.toAffine.
   exact add_right_cancel (h1.symm.trans h2)
 
 /- English proof (translation)
-Take `⟨f, g, h⟩` from `exists_isWeilData W hn hT`. Take `⟨hf, hg, hdiv, hn0, hpull⟩` from `h`. Establish `hn' : n ≠ 0` using `by exact_mod_cast hn0`. Establish `hT' : (n : ℤ) • T = 0` using `by rw [natCast_zsmul]; exact hT`. Take `⟨T'', hT''⟩` from `exists_zsmul_eq W hn0 T`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set H := ∏ i ∈ Finset.range n, translate W ((i : ℤ) • T) f with hH`. Establish `hH0 : ∀ i ∈ Finset.range n, translate W ((i : ℤ) • T) f ≠ 0` using `fun i _ => translate_ne_zero W _ hf`. Use `set χ : W.toAffine.Point → ℤ := fun Q => if (0 : W.toAffine.Point) = Q then 1 else 0 with hχ`. Establish `hdivH : divisorOf W H = 0`. Use extensionality with `P`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hH, divisorOf_prod W _ _ hH0, Finsupp.finsetSum_apply, Finsupp.zero_apply]`. Establish `key : ∀ i : ℕ, divisorOf W (translate W ((i : ℤ) • T) f) P = n * (χ (P - T + (i : ℤ) • T) - χ (P - T + T + (i : ℤ) • T))`. Introduce `i`. Establish `c1 : (T = P + (i : ℤ) • T) ↔ ((0 : W.toAffine.Point) = P - T + (i : ℤ) • T)`. Rewrite using `[show P - T + (i : ℤ) • T = P + (i : ℤ) • T - T by abel, eq_comm (a := (0 : W.toAffine.Point)), sub_eq_zero, eq_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[divisorOf_translate_apply W _ hf, hdiv, Finsupp.smul_apply, Finsupp.sub_apply, Finsupp.single_apply, Finsupp.single_apply, smul_eq_mul, sub_add_cancel, hχ]`. Simplify using `only [c1]`. Simplify using `only [key]`. Rewrite using `[← Finset.mul_sum, Finset.sum_sub_distrib, sum_range_add_zsmul_shift χ hT (P - T), sub_self, mul_zero]`. Establish `hHne : H ≠ 0` using `Finset.prod_ne_zero_iff.mpr hH0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `exists_algebraMap_eq_of_divisorOf_eq_zero W hHne hdivH`. Use `set ψ : ℕ → W.toAffine.FunctionField := fun i => translate W ((i : ℤ) • T'') g with hψ`. Use `set G := ∏ i ∈ Finset.range n, ψ i with hG`. Establish `hstep : ∀ i : ℕ, (ψ i) ^ n = mulPullback W n hn0 (translate W ((i : ℤ) • T) f)`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hψ]`. Simplify using `only`. Rewrite using `[← map_pow, ← hpull]`. Use `DFunLike.congr_fun (translate_comp_mulPullback W hn0 ((i : ℤ) • T'')) f` as an intermediate fact. Simplify using `only [AlgHom.comp_apply] at this`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[this, smul_comm, hT'']`. Establish `hGn : G ^ n = ι c`. Rewrite using `[hG, ← Finset.prod_pow, Finset.prod_congr rfl fun i _ => hstep i, ← map_prod, ← hH, ← hc, mulPullback_algebraMap]`. Take `⟨d, hd⟩` from `exists_algebraMap_eq_of_pow_eq W hn' hGn`. Establish `hshift : translate W T'' G = ∏ i ∈ Finset.range n, ψ (i + 1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Rewrite using `[hG, map_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hψ]`. Simplify using `only`. Rewrite using `[translate_translate]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congr 1`. Use `push_cast`. Rewrite using `[add_zsmul, one_zsmul, add_comm]`. Establish `hfix : translate W T'' G = G` using `by rw [← hd, translate_algebraMap]`. Establish `h1` using `Finset.prod_range_succ' ψ n`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `Finset.prod_range_succ ψ n`. Rewrite `h1` using `[← hshift, hfix]`. Rewrite `h2` using `[← hG]`. Establish `hGne : G ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun i _ => translate_ne_zero W _ hg`. Establish `hψn : ψ n = ψ 0` using `mul_left_cancel₀ hGne (h2.symm.trans h1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Establish `hgT : translate W T g = ι 1 * g`. Establish `: ψ n = translate W T g` using `by rw [hψ]; dsimp only; rw [hT'']`. Rewrite using `[← this, hψn, hψ]`. Simplify using `only`. Rewrite using `[Nat.cast_zero, zero_smul, translate_zero, map_one, one_mul, AlgHom.id_apply]`.
-
-Conclude with `weilPairing_eq_of_translate_eq hT ⟨hf, hg, hdiv, hn0, hpull⟩ hgT`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weilPairing_self {n : ℕ} (hn : (n : F) ≠ 0) {T : W.toAffine.Point} (hT : n • T = 0) :
     weilPairing W n T T = 1 := by
@@ -388,7 +384,7 @@ theorem weilPairing_self {n : ℕ} (hn : (n : F) ≠ 0) {T : W.toAffine.Point} (
   exact weilPairing_eq_of_translate_eq hT ⟨hf, hg, hdiv, hn0, hpull⟩ hgT
 
 /- English proof (translation)
-Establish `hST : n • (S + T) = 0` using `by rw [nsmul_add, hS, hT, add_zero]`. Establish `h` using `weilPairing_self hn hST`. Rewrite `h` using `[weilPairing_add_left hn hS hT hST, weilPairing_add_right hn hS hS hT, weilPairing_add_right hn hT hS hT, weilPairing_self hn hS, weilPairing_self hn hT]`. Rewrite using `[← h]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem weilPairing_mul_weilPairing_swap {n : ℕ} (hn : (n : F) ≠ 0) {S T : W.toAffine.Point}
     (hS : n • S = 0) (hT : n • T = 0) : weilPairing W n S T * weilPairing W n T S = 1 := by
@@ -400,13 +396,13 @@ theorem weilPairing_mul_weilPairing_swap {n : ℕ} (hn : (n : F) ≠ 0) {S T : W
   ring
 
 /- English proof (translation)
-Establish `hm : (m : F) ≠ 0` using `fun h => hmn (by rw [Nat.cast_mul, h, zero_mul])`. Establish `hn : (n : F) ≠ 0` using `fun h => hmn (by rw [Nat.cast_mul, h, mul_zero])`. Establish `hm0 : (m : ℤ) ≠ 0`. Establish `: m ≠ 0` using `by rintro rfl; simp at hm`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨f, g, h⟩` from `exists_isWeilData W hn hT`. Take `⟨hf, hg, hdiv, hn0, hpull⟩` from `h`. Establish `hmn0 : ((m * n : ℕ) : ℤ) ≠ 0` using `by push_cast; exact mul_ne_zero hm0 hn0`. Establish `hmS : n • (m • S) = 0` using `by rw [smul_smul, mul_comm]; exact hS`. Establish `hdata : IsWeilData W (m * n) T (f ^ m) (mulPullback W m hm0 g)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨pow_ne_zero m hf, mulPullback_ne_zero W hm0 hg, ?_, hmn0, ?_⟩` and prove the remaining obligations. Rewrite using `[divisorOf_pow W hf, hdiv, ← natCast_zsmul, smul_smul]`. Use `push_cast`. Put the polynomial expressions in normal form. Rewrite using `[mulPullback_congr W (by push_cast; ring) hmn0 (mul_ne_zero hm0 hn0), mulPullback_mul W hm0 hn0, AlgHom.comp_apply, map_pow, hpull, ← map_pow, ← pow_mul, mul_comm n m]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `weilPairing_eq_of_translate_eq hS hdata` to reduce the goal to its premises. Use `DFunLike.congr_fun (translate_comp_mulPullback W hm0 S) g` as an intermediate fact. Simplify using `only [AlgHom.comp_apply] at this`. Rewrite using `[this, natCast_zsmul, translate_eq_weilPairing_mul hmS ⟨hf, hg, hdiv, hn0, hpull⟩, map_mul, mulPullback_algebraMap]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weilPairing_mul {m n : ℕ} (hmn : ((m * n : ℕ) : F) ≠ 0) {S T : W.toAffine.Point}
     (hS : (m * n) • S = 0) (hT : n • T = 0) :
@@ -434,15 +430,15 @@ theorem weilPairing_mul {m n : ℕ} (hmn : ((m * n : ℕ) : F) ≠ 0) {S T : W.t
     mulPullback_algebraMap]
 
 /- English proof (translation)
-Take `⟨f, g, hd⟩` from `exists_isWeilData W hn hT`. Take `⟨hf, hg, hdiv, hn0, hpull⟩` from `hd`. Establish `hnF : ((n : ℤ) : F) ≠ 0` using `by exact_mod_cast hn`. Establish `hinv : ∀ S : W.toAffine.Point, (n : ℤ) • S = 0 → translate W S g = g`. Introduce `S hS`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hS` using `[natCast_zsmul]`. Rewrite using `[translate_eq_weilPairing_mul hS ⟨hf, hg, hdiv, hn0, hpull⟩, h S hS, map_one, one_mul]`. Take `⟨k, hk⟩` from `exists_mulPullback_eq_of_forall_translate_eq W hnF hn0 hinv`. Establish `hk0 : k ≠ 0`. Introduce and unpack `rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `hk` using `[map_zero]`. Conclude with `hg hk.symm`. Establish `hkf : k ^ n = f`. Apply `mulPullback_injective W hn0` to reduce the goal to its premises. Rewrite using `[map_pow, hk, hpull]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdk : (n : ℤ) • divisorOf W k = (n : ℤ) • (Finsupp.single T 1 - Finsupp.single 0 1)`. Rewrite using `[natCast_zsmul, ← divisorOf_pow W hk0, hkf, hdiv, natCast_zsmul]`. Establish `hdk'` using `smul_right_injective (CurveDivisor W) hn0 hdk`. Establish `hsum` using `divisorSum_divisorOf W hk0`. Rewrite `hsum` using `[hdk']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hsum`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_weilPairing_eq_one {n : ℕ} (hn : (n : F) ≠ 0) {T : W.toAffine.Point}
     (hT : n • T = 0) (h : ∀ S : W.toAffine.Point, n • S = 0 → weilPairing W n S T = 1) : T = 0 := by
@@ -469,7 +465,7 @@ theorem eq_zero_of_forall_weilPairing_eq_one {n : ℕ} (hn : (n : F) ≠ 0) {T :
   simpa using hsum
 
 /- English proof (translation)
-Use `eq_zero_of_forall_weilPairing_eq_one hn hS fun T hT => ?_` and prove the remaining obligations. Use `weilPairing_mul_weilPairing_swap hn hS hT` as an intermediate fact. Rewrite `this` using `[h T hT, one_mul]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem eq_zero_of_forall_weilPairing_eq_one' {n : ℕ} (hn : (n : F) ≠ 0) {S : W.toAffine.Point}
     (hS : n • S = 0) (h : ∀ T : W.toAffine.Point, n • T = 0 → weilPairing W n S T = 1) : S = 0 := by
@@ -493,7 +489,7 @@ theorem coe_weilPairingRoot {n : ℕ} (hn : (n : F) ≠ 0) (S T : torsionBy W.to
   rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `weilPairing W n ((S₁ + S₂ : torsionBy W.toAffine.Point n) : W.toAffine.Point) T = weilPairing W n S₁ T * weilPairing W n S₂ T`. Rewrite using `[AddSubgroup.coe_add]`. Conclude with `weilPairing_add_left hn (torsionBy.nsmul_iff.mp S₁.2) (torsionBy.nsmul_iff.mp S₂.2) (torsionBy.nsmul_iff.mp T.2)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weilPairingRoot_add_left {n : ℕ} (hn : (n : F) ≠ 0) (S₁ S₂ T : torsionBy W.toAffine.Point n) :
     weilPairingRoot hn (S₁ + S₂) T = weilPairingRoot hn S₁ T * weilPairingRoot hn S₂ T := by
@@ -506,7 +502,7 @@ theorem weilPairingRoot_add_left {n : ℕ} (hn : (n : F) ≠ 0) (S₁ S₂ T : t
     (torsionBy.nsmul_iff.mp T.2)
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `weilPairing W n S ((T₁ + T₂ : torsionBy W.toAffine.Point n) : W.toAffine.Point) = weilPairing W n S T₁ * weilPairing W n S T₂`. Rewrite using `[AddSubgroup.coe_add]`. Conclude with `weilPairing_add_right hn (torsionBy.nsmul_iff.mp S.2) (torsionBy.nsmul_iff.mp T₁.2) (torsionBy.nsmul_iff.mp T₂.2)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weilPairingRoot_add_right {n : ℕ} (hn : (n : F) ≠ 0) (S T₁ T₂ : torsionBy W.toAffine.Point n) :
     weilPairingRoot hn S (T₁ + T₂) = weilPairingRoot hn S T₁ * weilPairingRoot hn S T₂ := by

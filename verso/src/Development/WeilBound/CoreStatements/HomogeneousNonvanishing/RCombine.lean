@@ -19,14 +19,14 @@ open HolomorphicMinorCharts
 variable {e e' : ℕ} {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun x => holo_comp_map h (hs.1 (π x)), fun x x' y hy => hs.2 (π x) (π x') (π y) hy⟩`.
+Supply the required witnesses or components.
 -/
 theorem section_pull {A : FinHolAtlas e X} {B : FinHolAtlas e' Y} {π : Y → X} (h : HoloMap B A π) {L : LocPot X}
     {s : X → X → ℂ} (hs : IsSection A L s) : IsSection B (L.pullback π h.1) fun x y => s (π x) (π y) :=
   ⟨fun x => holo_comp_map h (hs.1 (π x)), fun x x' y hy => hs.2 (π x) (π x') (π y) hy⟩
 
 /- English proof (translation)
-Rewrite using `[add_φ, norm_mul, neg_add, Real.exp_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem nrm_mul (L L' : LocPot X) (s s' : X → X → ℂ) (x y : X) :
     ‖s x y * s' x y‖ * Real.exp (-(L + L').φ x y) =
@@ -35,7 +35,7 @@ theorem nrm_mul (L L' : LocPot X) (s s' : X → X → ℂ) (x y : X) :
   ring
 
 /- English proof (translation)
-Use `⟨fun x j w hw => (hs.1 x j w ⟨hw.1, hw.2.1⟩).mul (hs'.1 x j w ⟨hw.1, hw.2.2⟩), fun x x' y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[nrm_mul, nrm_mul, hs.2 x x' y ⟨hy.1.1, hy.2.1⟩, hs'.2 x x' y ⟨hy.1.2, hy.2.2⟩]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem section_mul {A : FinHolAtlas e X} {L L' : LocPot X} {s s' : X → X → ℂ} (hs : IsSection A L s)
     (hs' : IsSection A L' s') : IsSection A (L + L') fun x y => s x y * s' x y := by
@@ -43,9 +43,9 @@ theorem section_mul {A : FinHolAtlas e X} {L L' : LocPot X} {s s' : X → X → 
   rw [nrm_mul, nrm_mul, hs.2 x x' y ⟨hy.1.1, hy.2.1⟩, hs'.2 x x' y ⟨hy.1.2, hy.2.2⟩]
 
 /- English proof (translation)
-Establish `h1` using `h y`. Establish `h2` using `h' y`. Unfold `logNormSec at *`. Rewrite `*` using `[Real.log_nonpos_iff (by positivity)]`. Rewrite using `[nrm_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_one₀ h1 (by positivity) h2`.
+A detailed English derivation is pending.
 -/
 theorem log_mul_le {L L' : LocPot X} {s s' : X → X → ℂ} (h : ∀ y, logNormSec L s y ≤ 0)
     (h' : ∀ y, logNormSec L' s' y ≤ 0) (y : X) : logNormSec (L + L') (fun x y => s x y * s' x y) y ≤ 0 := by
@@ -57,7 +57,7 @@ theorem log_mul_le {L L' : LocPot X} {s s' : X → X → ℂ} (h : ∀ y, logNor
   exact mul_le_one₀ h1 (by positivity) h2
 
 /- English proof (translation)
-Establish `h1 : s y y * s' y y ≠ 0` using `hy`. Unfold `logNormSec`. Rewrite using `[nrm_mul, Real.log_mul (mul_ne_zero (norm_ne_zero_iff.mpr (left_ne_zero_of_mul h1)) (Real.exp_pos _).ne') (mul_ne_zero (norm_ne_zero_iff.mpr (right_ne_zero_of_mul h1)) (Real.exp_pos _).ne')]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem log_mul_eq {L L' : LocPot X} {s s' : X → X → ℂ} {y : X} (hy : y ∉ bdry fun x y => s x y * s' x y) :
     logNormSec (L + L') (fun x y => s x y * s' x y) y = logNormSec L s y + logNormSec L' s' y := by
@@ -67,13 +67,13 @@ theorem log_mul_eq {L L' : LocPot X} {s s' : X → X → ℂ} {y : X} (hy : y �
     (mul_ne_zero (norm_ne_zero_iff.mpr (right_ne_zero_of_mul h1)) (Real.exp_pos _).ne')]
 
 /- English proof (translation)
-Establish `hc : Continuous fun y => ‖s y y‖ * Real.exp (-L.φ y y)`. Use `continuous_iff_continuousAt.mpr fun x => ?_` and prove the remaining obligations. Use `ContinuousAt.congr (((holo_continuousAt (hs.1 x) (L.mem_U x)).norm).mul (CSnc.smooth_continuousAt (L.isOpen_U x) (hL.1 x) (L.mem_U x)).neg.rexp) ?_` and prove the remaining obligations. Use `filter_upwards [(L.isOpen_U x).mem_nhds (L.mem_U x)] with y hy`. Conclude with `hs.2 x y y ⟨hy, L.mem_U y⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨M, hM⟩` from `(isCompact_range hc).bddAbove`. Establish `hsm : A.Smooth fun _ => M` using `fun j => contDiffOn_const`. Establish `key : ∀ x y, ‖s x y‖ * Real.exp (-(L + LocPot.ofFun fun _ => M).φ x y) = ‖s x y‖ * Real.exp (-L.φ x y) * Real.exp (-M)` using `fun x y => by`. Rewrite using `[add_φ, neg_add, Real.exp_add, mul_assoc]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨L + LocPot.ofFun fun _ => M, isPotentialAdd A _ _ hL (isPotential_ofFun A _ hsm), ⟨fun x => holo_mono (hs.1 x) fun y hy => hy.1, fun x x' y hy => ?_⟩, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[key, key, hs.2 x x' y ⟨hy.1.1, hy.2.1⟩]`. Unfold `logNormSec`. Rewrite using `[Real.log_nonpos_iff (by positivity), key, Real.exp_neg M, ← div_eq_mul_inv, div_le_one (Real.exp_pos _)]`. Establish `h1 : ‖s y y‖ * Real.exp (-L.φ y y) ≤ M` using `hM ⟨y, rfl⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `Real.add_one_le_exp M` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem exists_scale [CompactSpace X] {A : FinHolAtlas e X} {L : LocPot X} {s : X → X → ℂ} (hL : IsPotential A L)
     (hs : IsSection A L s) : ∃ L' : LocPot X, IsPotential A L' ∧ IsSection A L' s ∧ ∀ y, logNormSec L' s y ≤ 0 := by
@@ -99,9 +99,9 @@ theorem exists_scale [CompactSpace X] {A : FinHolAtlas e X} {L : LocPot X} {s : 
     linarith
 
 /- English proof (translation)
-Use `⟨HermLine.ofMetrics (fun k => fsMetric (ι k)) b, ?_, rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ContDiffOn ℝ _ (fun z => ∏ k, (fsMetric (ι k)).ρ (GP.blk (ι := ι) k z) ^ b k) _`. Use `contDiffOn_prod fun k _ z hz => ContDiffAt.contDiffWithinAt ?_` and prove the remaining obligations. Establish `h1 : ContDiffAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun z => (fsMetric (ι k)).ρ (GP.blk (ι` using `ι) k z)) z := ContDiffAt.comp (g := (fsMetric (ι k)).ρ) z (GP.contDiffAt_fs (GP.blk_ne hz k)) ((GP.blk (ι := ι) k).contDiff.restrict_scalars ℝ).contDiffAt`. Establish `h2` using `((fsMetric (ι k)).pos _ (GP.blk_ne hz k)).ne'`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `b k with n | n` into its components or cases. Simplify using `using h1.pow n`. Simplify using `only [zpow_negSucc]`. Conclude with `(h1.pow (n + 1)).inv (pow_ne_zero _ h2)`.
+Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_line {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] (b : K → ℤ) :
     ∃ L : HermLine ι, IsSmoothHerm L ∧ L.a = b := by
@@ -118,7 +118,7 @@ theorem exists_line {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι
     exact (h1.pow (n + 1)).inv (pow_ne_zero _ h2)
 
 /- English proof (translation)
-Take `⟨C', t', h1, h2, h3⟩` from `hPull S.A B π h S.Θ S.L Θ S.s S.m S.W m W S.potΘ S.posΘ hΘ hΘ' S.potL S.sec S.snc S.norm_le hsnc (S.th a) (S.ph a) (S.phT a) S.C₅ S.C S.t₀ (S.sing a) (S.reg a) (S.c2 a)`. Establish `hn : ∀ y, logNormSec (S.L.pullback π h.1) (fun x y => S.s (π x) (π y)) y ≤ 0` using `fun y => S.norm_le (π y)`. Take `⟨m1, m2, -⟩` from `GlobalTheory.T.singular_weight_monotone_regularization D Y B Θ _ _ n m W (isPotentialPullback S.A B π h _ S.potL) (section_pull h S.sec) hsnc hn hΘ hΘ'`. Use `⟨C', t', h2.1, fun C₅ C t₀ a1 a2 a3 a4 a5 a6 => ?_⟩` and prove the remaining obligations. Conclude with `r_enlarge D Y B Θ _ L _ s _ _ _ C₅ C t₀ a1 ((abs_nonneg _).trans a3) a6 hn hb hr (m1 _ _ _ _ a2 h1) (m2 _ _ _ _ _ _ _ a3 a4 a5 a6 h2 h1.1) h3`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem one (hPull : PullbackStatement) {D : ℕ} [CompactSpace Y] [T2Space Y] {B : FinHolAtlas D Y} {Θ : LocPot Y}
     (hΘ : IsPotential B Θ) (hΘ' : IsPosPot B Θ) {σ : Type} (S : AnSys D σ) {π : Y → S.X} (h : HoloMap B S.A π)
@@ -143,27 +143,23 @@ end RC
 
 open RC HolomorphicMinorCharts in
 /- English proof (translation)
-Introduce `hPull K _ ι _ P J D R Amp β b σ _ S₁ S₂ π₁ π₂ h₁ h₂ hΘ hΘ' hβ hβP hβJ hb₁ hb₂`. Take `⟨n₀, m₀, W₀, hsnc₀⟩` from `R.snc β b hβP hβ hβJ`. Establish `hsnc : ∀ (L : LocPot R.X) (s : R.X → R.X → ℂ), IsPotential R.A L → IsSection R.A L s → (∀ x ∈ bdry s, evC (R.lift x x) β = 0) → ∃ (n : ℕ) (m : Fin n → ℕ) (W : Fin n → Set R.X), IsSNC R.A L s m W` using `fun L s hL hs hb => r_snc D R.X R.A _ _ n₀ m₀ W₀ L s hsnc₀ hL hs hb fun x x' y hy => eval_ne_so hβ (R.compat x x' y hy)`. Take `⟨Lb, hLb, hLa⟩` from `exists_line (ι := ι) fun k => (b k : ℤ)`. Take `⟨L₃, p₃, s₃, l₃⟩` from `exists_scale (isPotential_potOf R hLb) (isSection_lift R (A := Lb) (s := β) ⟨b, fun k => congrFun hLa k, hβ, hβP⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `p₁` using `isPotentialPullback S₁.A R.A π₁ h₁ _ S₁.potL`. Establish `p₂` using `isPotentialPullback S₂.A R.A π₂ h₂ _ S₂.potL`. Establish `s₁` using `section_pull h₁ S₁.sec`. Establish `s₂` using `section_pull h₂ S₂.sec`. Establish `l₁ : ∀ y, logNormSec (S₁.L.pullback π₁ h₁.1) (fun x y => S₁.s (π₁ x) (π₁ y)) y ≤ 0` using `fun y => S₁.norm_le (π₁ y)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `l₂ : ∀ y, logNormSec (S₂.L.pullback π₂ h₂.1) (fun x y => S₂.s (π₂ x) (π₂ y)) y ≤ 0` using `fun y => S₂.norm_le (π₂ y)`. Take `⟨n₁, m₁, W₁, c₁⟩` from `hsnc _ _ p₁ s₁ hb₁`. Take `⟨n₂, m₂, W₂, c₂⟩` from `hsnc _ _ p₂ s₂ hb₂`. Establish `p` using `isPotentialAdd R.A _ _ (isPotentialAdd R.A _ _ p₁ p₂) p₃`. Establish `sec` using `section_mul (section_mul s₁ s₂) s₃`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set L := S₁.L.pullback π₁ h₁.1 + S₂.L.pullback π₂ h₂.1 + L₃ with hL`. Use `set s : R.X → R.X → ℂ := fun x y => S₁.s (π₁ x) (π₁ y) * S₂.s (π₂ x) (π₂ y) * eval (R.lift x y) (map (Int.castRingHom ℂ) β) with hs`. Establish `hbd : ∀ x, x ∈ bdry s ↔ evC (R.lift x x) β = 0` using `fun x => by`. Use `⟨fun h => ?_, fun h => mul_eq_zero_of_right _ h⟩` and prove the remaining obligations. Break down `mul_eq_zero.mp h with h | h` into its components or cases.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Break down `mul_eq_zero.mp h with h | h` into its components or cases. Conclude with `hb₁ x h`. Conclude with `hb₂ x h`. Conclude with `h`. Take `⟨n, m, W, c⟩` from `hsnc L s p sec fun x => (hbd x).mp`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlog : ∀ y, y ∉ bdry s → logNormSec L s y = logNormSec (S₁.L.pullback π₁ h₁.1) (fun x y => S₁.s (π₁ x) (π₁ y)) y + logNormSec (S₂.L.pullback π₂ h₂.1) (fun x y => S₂.s (π₂ x) (π₂ y)) y + logNormSec L₃ (fun x y => eval (R.lift x y) (map (Int.castRingHom ℂ) β)) y` using `fun y hy => by`. Establish `h0 : S₁.s (π₁ y) (π₁ y) * S₂.s (π₂ y) (π₂ y) * eval (R.lift y y) (map (Int.castRingHom ℂ) β) ≠ 0` using `hy`. Rewrite using `[← log_mul_eq (s := fun x y => S₁.s (π₁ x) (π₁ y)) (s' := fun x y => S₂.s (π₂ x) (π₂ y)) (left_ne_zero_of_mul h0)]`. Conclude with `log_mul_eq (s := fun x y => S₁.s (π₁ x) (π₁ y) * S₂.s (π₂ x) (π₂ y)) (s' := fun x y => eval (R.lift x y) (map (Int.castRingHom ℂ) β)) hy`. Use `choose C₁ t₁ ht₁ H₁ using one hPull hΘ hΘ' S₁ h₁ c₁ (L := L) (s := s) (fun x hx => (hbd x).mpr (hb₁ x hx)) fun y hy => by`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hlog y hy` as an intermediate fact. Use `l₂ y` as an intermediate fact. Use `l₃ y` as an intermediate fact. Unfold `rW`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose C₂ t₂ ht₂ H₂ using one hPull hΘ hΘ' S₂ h₂ c₂ (L := L) (s := s) (fun x hx => (hbd x).mpr (hb₂ x hx)) fun y hy => by`. Use `hlog y hy` as an intermediate fact. Use `l₁ y` as an intermediate fact. Use `l₃ y` as an intermediate fact. Unfold `rW`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Choose the witnesses or unpack the hypotheses as in `⟨δ, hδ, hδe, hδ₁, hδ₂⟩ : ∃ δ : ℝ, 0 < δ ∧ δ ≤ Real.exp (-1) ∧ (∀ a, δ ≤ t₁ a) ∧ ∀ a, δ ≤ t₂ a := by`. Establish `e0 : ∀ t : ℝ, 0 < t → ∀ᶠ δ in 𝓝[>] (0 : ℝ), δ ≤ t` using `fun t ht => by filter_upwards [Ioc_mem_nhdsGT ht] with δ h using h.2`. Conclude with `((eventually_mem_nhdsWithin (a := (0 : ℝ)) (s := Set.Ioi 0)).and ((e0 _ (Real.exp_pos _)).and ((eventually_all.mpr fun a => e0 _ (ht₁ a)).and (eventually_all.mpr fun a => e0 _ (ht₂ a))))).exists`. Establish `hpos : σ → 0 < min (min S₁.t₀ S₂.t₀) δ` using `fun a => lt_min (lt_min (S₁.reg a).1 (S₂.reg a).1) hδ`.
-
-Establish `n1 : 0 ≤ ∑ a, |C₁ a|` using `Finset.sum_nonneg fun _ _ => abs_nonneg _`. Establish `n2 : 0 ≤ ∑ a, |C₂ a|` using `Finset.sum_nonneg fun _ _ => abs_nonneg _`. Use `⟨L, s, n, m, W, max (max S₁.C₅ S₂.C₅) 0, ∑ a, |C₁ a| + ∑ a, |C₂ a|, min (min S₁.t₀ S₂.t₀) δ, p, sec, c, log_mul_le (log_mul_le l₁ l₂) l₃, hbd, (min_le_left _ _).trans (min_le_left _ _), (min_le_left _ _).trans (min_le_right _ _), fun a => H₁ a _ _ _ (le_max_right _ _) ((le_max_le …` and prove the remaining obligations. Use `Finset.single_le_sum (f := fun a => |C₁ a|) (fun _ _ => abs_nonneg _) (Finset.mem_univ a)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Use `Finset.single_le_sum (f := fun a => |C₂ a|) (fun _ _ => abs_nonneg _) (Finset.mem_univ a)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem r_combine : PullbackStatement → ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (P J : Ideal (MRing ι)) (D : ℕ) (R : AnLogRes P J D) (Amp : HermLine ι) (β : MRing ι) (b : K → ℕ) (σ : Type) [Fintype σ] (S₁ S₂ : AnSys D σ) (π₁ : R.X → S₁.X) (π₂ : R.X → S₂.X) (h₁ : HoloMap R.A S₁.A π₁) (h₂ : HoloMap R.A S₂.A π₂), IsPotential R.A (potOf R Amp) → IsPosPot R.A (potOf R Amp) → IsMultiHomog β b → β ∉ P → (∀ z ∈ mcPts P, evC z β = 0 → z ∈ mcPts J) → (∀ x, π₁ x ∈ bdry S₁.s → evC (R.lift x x) β = 0) → (∀ x, π₂ x ∈ bdry S₂.s → evC (R.lift x x) β = 0) → ∃ (L : LocPot R.X) (s : R.X → R.X → ℂ) (nb : ℕ) (m : Fin nb → ℕ) (W : Fin nb → Set R.X) (C₅ C t₀ : ℝ), IsPotential R.A L ∧ IsSection R.A L s ∧ IsSNC R.A L s m W ∧ (∀ y, logNormSec L s y ≤ 0) ∧ (∀ x, x ∈ bdry s ↔ evC (R.lift x x) β = 0) ∧ t₀ ≤ S₁.t₀ ∧ t₀ ≤ S₂.t₀ ∧ (∀ a, IsSingWeight R.A L s ((S₁.th a).pullback π₁ h₁.1) (S₁.ph a ∘ π₁) C₅ ∧ IsRegFamily R.A (potOf R Amp) L s ((S₁.th a).pullback π₁ h₁.1) (S₁.ph a ∘ π₁) (fun t => S₁.phT a t ∘ π₁) C t₀ ∧ IsRegFamilyC2 R.A s (S₁.ph a ∘ π₁) (fun t => S₁.phT a t ∘ π₁)) ∧ ∀ a, IsSingWeight R.A L s ((S₂.th a).pullback π₂ h₂.1) (S₂.ph a ∘ π₂) C₅ ∧ IsRegFamily R.A (potOf R Amp) L s ((S₂.th a).pullback π₂ h₂.1) (S₂.ph a ∘ π₂) (fun t => S₂.phT a t ∘ π₂) C t₀ ∧ IsRegFamilyC2 R.A s (S₂.ph a ∘ π₂) (fun t => S₂.phT a t ∘ π₂) := by
   intro hPull K _ ι _ P J D R Amp β b σ _ S₁ S₂ π₁ π₂ h₁ h₂ hΘ hΘ' hβ hβP hβJ hb₁ hb₂

@@ -14,7 +14,7 @@ open Classical
 namespace Cx1
 
 /- English proof (translation)
-Simplify using `only [TB.PSDOn] at h ⊢`. Conclude with `h.submatrix (fun x : Y => (⟨φ x, hZ x x.2⟩ : Z))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem psd_pullback {α β : Type} (Y : Finset α) (φ : α → β) (k : β → β → ℂ) (Z : Finset β)
     (hZ : ∀ x ∈ Y, φ x ∈ Z) (h : TB.PSDOn Z k) : TB.PSDOn Y (fun x y => k (φ x) (φ y)) := by
@@ -22,7 +22,7 @@ theorem psd_pullback {α β : Type} (Y : Finset α) (φ : α → β) (k : β →
   exact h.submatrix (fun x : Y => (⟨φ x, hZ x x.2⟩ : Z))
 
 /- English proof (translation)
-Simplify using `only [TB.PSDOn]`. Conclude with `Matrix.PosSemidef.zero`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem psd_zero {α : Type} (Y : Finset α) : TB.PSDOn Y (fun _ _ => (0 : ℂ)) := by
   simp only [TB.PSDOn]
@@ -31,17 +31,17 @@ theorem psd_zero {α : Type} (Y : Finset α) : TB.PSDOn Y (fun _ _ => (0 : ℂ))
 end Cx1
 
 /- English proof (translation)
-Introduce `E _ _ _ Wp Wq _ _ _ _ S hP _ Kr hK0 Th e ε hε i w Y`. Use `show TB.PSDOn Y (S.gram ε i w.1)`. Establish `prodPSD : ∀ (s : Finset (Fin S.f)) (k : Fin S.f → TB.Pt E → TB.Pt E → ℂ), (∀ v, TB.PSDOn Y (k v)) → TB.PSDOn Y (fun p q => ∏ v ∈ s, k v p q)`. Introduce `s k hk`. Proceed by induction on `s using Finset.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `empty`. Simplify using `only [Finset.prod_empty, TB.PSDOn]`. Set `A : Matrix Unit Y ℂ` to `Matrix.of fun _ _ => 1`. Establish `h2` using `Matrix.posSemidef_conjTranspose_mul_self A`. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Use extensionality with `x y`. Simplify using `[A, Matrix.mul_apply]`. Consider the case `@insert a s ha ih`. Simplify using `only [TB.PSDOn] at ih ⊢`. Establish `h1 : (Matrix.of fun x y : Y => ∏ v ∈ insert a s, k v x y) = (Matrix.of fun x y : Y => k a x y).hadamard (Matrix.of fun x y : Y => ∏ v ∈ s, k v x y)`.
+Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x y`. Simplify using `[Finset.prod_insert ha, Matrix.hadamard]`. Rewrite using `[h1]`. Conclude with `(hk a).hadamard ih`. Distinguish the cases in `hi : i ≤ S.G.r + 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hg : S.gram ε i w.1 = fun p q => ∏ v, S.gramLoc v ε i (w.1 v) (loc (S.σ v) p) (loc (S.σ v) q)`. Use function extensionality and compare the values at `p q`. Simplify using `[Formalism.FourierDecayAlt.C.HidaSetting.gram, hi]`. Rewrite using `[hg]`. Conclude with `prodPSD Finset.univ _ fun v => Cx1.psd_pullback Y (loc (S.σ v)) _ _ (fun x hx => Finset.mem_image_of_mem _ hx) (hP v ε hε i hi w _)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hg : S.gram ε i w.1 = fun _ _ => 0`. Use function extensionality and compare the values at `p q`. Simplify using `[Formalism.FourierDecayAlt.C.HidaSetting.gram, hi]`. Rewrite using `[hg]`. Conclude with `Cx1.psd_zero Y`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_positive_semidefinite : C.GramPSDOfParts := by
   intro E _ _ _ Wp Wq _ _ _ _ S hP _ Kr hK0 Th e ε hε i w Y
@@ -81,17 +81,15 @@ theorem gram_positive_semidefinite : C.GramPSDOfParts := by
     exact Cx1.psd_zero Y
 
 /- English proof (translation)
-Introduce `E _ _ _ Wp Wq _ _ _ _ S hG Kr hK0 Th e w`. Use `show 0 < Word.size S.P w.1`. Unfold `Word.size`. Apply `Finset.prod_pos` to reduce the goal to its premises. Introduce `v _`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `List.prod_pos` to reduce the goal to its premises. Introduce `x hx`. Rewrite `hx` using `[List.mem_map]`. Take `⟨a, ha, rfl⟩` from `hx`. Apply `abs_pos.mpr` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hj, rfl⟩` from `List.mem_iff_getElem.mp ha`. Establish `hadm` using `w.2.1.1 v j hj`. Distinguish the cases in `hb : ((w.1 v)[j]'hj).1 = true`. Rewrite `hadm` using `[if_pos hb]`. Establish `hy : (∃ a, ((w.1 v)[j]'hj).2 ∈ S.grid v a) ∨ ((w.1 v)[j]'hj).2 ∈ S.grid1 v`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Finset.mem_union.mp hadm with h | h` into its components or cases. Conclude with `Or.inl ⟨_, h⟩`. Conclude with `Or.inr h`. Conclude with `((hG v).2.2.2.2.2 _ hy).2.2.1`. Rewrite `hadm` using `[if_neg hb]`.
+Prove the first alternative. Prove the second alternative. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hy : (∃ a, ((w.1 v)[j]'hj).2 - 1 ∈ S.grid v a) ∨ ((w.1 v)[j]'hj).2 - 1 ∈ S.grid1 v`. Break down `Finset.mem_union.mp hadm with h | h` into its components or cases. Conclude with `Or.inl ⟨_, h⟩`. Conclude with `Or.inr h`. Use `((hG v).2.2.2.2.2 _ hy).2.2.2` as an intermediate fact.
-
-Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem words_pos_of_parts : C.WordsPosOfParts := by
   intro E _ _ _ Wp Wq _ _ _ _ S hG Kr hK0 Th e w
@@ -122,7 +120,7 @@ theorem words_pos_of_parts : C.WordsPosOfParts := by
     rwa [sub_add_cancel] at this
 
 /- English proof (translation)
-Introduce `E _ _ _ Wp Wq _ _ _ _ S hG hI hP Kr hK0 Th e ε hε i hi1 hi2 w hw hcnt`. Take `⟨θ, hθ, hb⟩` from `hP ε hε i hi1 hi2 w hw hcnt`. Conclude with `⟨θ, hθ, fun Y hY κ hκ => ⟨(hI ε hε i hi1 hi2 w Y hY κ hκ).2, fun l hl hl0 => ⟨S.bigPlaces i l, hb Y hY κ hκ l hl hl0⟩⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem wave_estimate_of_integral : C.EstWaveOfParts := by
   intro E _ _ _ Wp Wq _ _ _ _ S hG hI hP Kr hK0 Th e ε hε i hi1 hi2 w hw hcnt
@@ -131,27 +129,25 @@ theorem wave_estimate_of_integral : C.EstWaveOfParts := by
     fun l hl hl0 => ⟨S.bigPlaces i l, hb Y hY κ hκ l hl hl0⟩⟩⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ Wp Wq _ _ _ _ S h Kr hK0 Th e`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lift_estimate_of_base : C.EstLiftOfParts := by
   intro E _ _ _ Wp Wq _ _ _ _ S h Kr hK0 Th e
   exact h
 
 /- English proof (translation)
-Introduce `E _ _ _ Wp Wq _ _ _ _ S C₄ h Kr hK0 Th e`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem block_estimate_of_base : C.EstBlockOfParts := by
   intro E _ _ _ Wp Wq _ _ _ _ S C₄ h Kr hK0 Th e
   exact h
 
 /- English proof (translation)
-Introduce `E _ _ _ Wp Wq _ _ _ _ S jv hG hE Kr hK0 Th e w _`. Establish `hgram : ∀ ε, (S.mkData Kr hK0 Th e).gram ε 0 w [] [] = ∏ v, (S.pd v).RR ε 0 (w.1 v) [] []`. Introduce `ε`. Use `show S.gram ε 0 w.1 [] [] = _`. Simplify using `[HidaSetting.gram, HidaSetting.gramLoc, loc, nLoc, nAux]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hsize : (S.mkData Kr hK0 Th e).wt w = ∏ v, S.sizeAt v (w.1 v)` using `rfl`. Establish `hpos : 0 < ∏ v, S.sizeAt v (w.1 v)`. Rewrite using `[← hsize]`. Conclude with `words_pos_of_parts E Wp Wq S hG Kr hK0 Th e w`. Establish `hlim : Tendsto (fun ε => ∏ v, (S.pd v).RR ε 0 (w.1 v) [] []) (𝓝[>] 0) (𝓝 (∏ v, ((S.sizeAt v (w.1 v) * jv v : ℝ) : ℂ)))` using `tendsto_finsetProd _ (fun v _ => hE w v)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hre` using `((Complex.continuous_re.tendsto _).comp hlim).div_const (∏ v, S.sizeAt v (w.1 v))`. Establish `key : (∏ v, ((S.sizeAt v (w.1 v) * jv v : ℝ) : ℂ)).re / (∏ v, S.sizeAt v (w.1 v)) = ∏ v, jv v`. Rewrite using `[← Complex.ofReal_prod, Complex.ofReal_re, Finset.prod_mul_distrib, mul_div_cancel_left₀ _ hpos.ne']`. Rewrite `hre` using `[key]`. Repeatedly rewrite using `[hgram, hsize]`.
-
-Conclude with `hre`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem level_zero_estimate_product : C.EstEOfParts := by
   intro E _ _ _ Wp Wq _ _ _ _ S jv hG hE Kr hK0 Th e w _
@@ -176,7 +172,7 @@ theorem level_zero_estimate_product : C.EstEOfParts := by
   exact hre
 
 /- English proof (translation)
-Introduce `E _ _ _ Wp Wq _ _ _ _ S H _ _ Vt hPG Kr hK0 Th e Y hY`. Use `filter_upwards [hPG Y hY] with ε hε p hp q hq _`. Conclude with `hε p hp q hq`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cutoff_of_parts : C.CutoffOfParts := by
   intro E _ _ _ Wp Wq _ _ _ _ S H _ _ Vt hPG Kr hK0 Th e Y hY

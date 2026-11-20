@@ -9,7 +9,7 @@ noncomputable section
 namespace GlobalTheory.ResConj
 
 /- English proof (translation)
-Proceed by induction on `A using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a A ih`. Rewrite using `[Multiset.cons_product, Multiset.map_add, Multiset.prod_add, ih, Multiset.map_map]`. Simplify using `only [Function.comp_def, Multiset.prod_map_mul, Multiset.map_const', Multiset.prod_replicate, Multiset.map_cons, Multiset.prod_cons, Multiset.card_cons, mul_pow, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -25,13 +25,13 @@ theorem prod_product_mul (A B : Multiset ℂ) (f g : ℂ → ℂ) :
     ring
 
 /- English proof (translation)
-Establish `h` using `prod_product_mul A B id id`. Simplify using `only [Multiset.map_id, id, Multiset.map_id'] at h`. Rewrite using `[← h, map_multiset_prod, Multiset.map_map, ← Multiset.prod_map_mul]`. Establish `hc : ∀ ij ∈ A ×ˢ B, ((starRingEnd ℂ) ∘ fun ij : ℂ × ℂ => ij.1 - ij.2) ij * (ij.1 * ij.2) = (-1) * (ij.1 - ij.2)`. Introduce `ij hij`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hij` using `[Multiset.mem_product]`. Establish `h1` using `hA _ hij.1`. Establish `h2` using `hB _ hij.2`. Establish `n1 : ij.1 ≠ 0` using `by intro h0; rw [h0, norm_zero] at h1; exact zero_ne_one h1`. Establish `n2 : ij.2 ≠ 0` using `by intro h0; rw [h0, norm_zero] at h2; exact zero_ne_one h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c1 : (starRingEnd ℂ) ij.1 = ij.1⁻¹`. Rewrite using `[Complex.inv_def, Complex.normSq_eq_norm_sq, h1]`. Simplify using the standard rewrite rules. Establish `c2 : (starRingEnd ℂ) ij.2 = ij.2⁻¹`. Rewrite using `[Complex.inv_def, Complex.normSq_eq_norm_sq, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Simplify using `only [Function.comp_apply, map_sub, c1, c2]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Multiset.map_congr rfl hc, Multiset.prod_map_mul, Multiset.map_const', Multiset.prod_replicate, Multiset.card_product]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_prod_sub (A B : Multiset ℂ) (hA : ∀ x ∈ A, ‖x‖ = 1) (hB : ∀ y ∈ B, ‖y‖ = 1) :
     (starRingEnd ℂ) (((A ×ˢ B).map fun ij => ij.1 - ij.2).prod) *
@@ -59,13 +59,13 @@ theorem conj_prod_sub (A B : Multiset ℂ) (hA : ∀ x ∈ A, ‖x‖ = 1) (hB :
     Multiset.card_product]
 
 /- English proof (translation)
-Introduce `E _ _ _ a b P₁ P₂ h₁ h₂`. Take `⟨m₁, d₁, -, r₁⟩` from `h₁`. Take `⟨m₂, d₂, -, r₂⟩` from `h₂`. Set `τ : E →+* ℂ` to `Classical.choice (inferInstance : Nonempty (E →+* ℂ))`. Apply `τ.injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `sA : (P₁.map τ).Splits` using `IsAlgClosed.splits _`. Establish `sB : (P₂.map τ).Splits` using `IsAlgClosed.splits _`. Establish `cA : Multiset.card (P₁.map τ).roots = a` using `by rw [← sA.natDegree_eq_card_roots, natDegree_map, d₁]`. Establish `cB : Multiset.card (P₂.map τ).roots = b` using `by rw [← sB.natDegree_eq_card_roots, natDegree_map, d₂]`. Establish `hres : τ (resultant P₁ P₂) = (((P₁.map τ).roots ×ˢ (P₂.map τ).roots).map fun ij => ij.1 - ij.2).prod`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← resultant_eq_prod_roots_sub _ _ (m₁.map τ) (m₂.map τ) sA sB, ← resultant_map_map P₁ P₂ P₁.natDegree P₂.natDegree τ, natDegree_map, natDegree_map]`. Establish `e₁ : τ ((-1) ^ a * P₁.coeff 0) = (P₁.map τ).roots.prod`. Rewrite using `[map_mul, map_pow, map_neg, map_one, ← coeff_map, sA.coeff_zero_eq_prod_roots_of_monic (m₁.map τ), natDegree_map, d₁, ← mul_assoc, ← pow_add, ← two_mul, pow_mul, neg_one_sq, one_pow, one_mul]`. Establish `e₂ : τ ((-1) ^ b * P₂.coeff 0) = (P₂.map τ).roots.prod`. Rewrite using `[map_mul, map_pow, map_neg, map_one, ← coeff_map, sB.coeff_zero_eq_prod_roots_of_monic (m₂.map τ), natDegree_map, d₂, ← mul_assoc, ← pow_add, ← two_mul, pow_mul, neg_one_sq, one_pow, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key` using `conj_prod_sub _ _ (r₁ τ) (r₂ τ)`. Rewrite `key` using `[cA, cB]`. Rewrite using `[map_mul, map_mul, map_mul, map_pow, map_pow, e₁, e₂, IsCMField.complexEmbedding_complexConj, hres, key, map_pow, map_neg, map_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_resultant : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a b : ℕ) (P₁ P₂ : E[X]),
     P₁ ∈ Ell E a → P₂ ∈ Ell E b → IsCMField.complexConj E (resultant P₁ P₂) *

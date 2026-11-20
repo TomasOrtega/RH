@@ -6,9 +6,9 @@ open IsLocalRing
 namespace GlobalTheory.AdicNoeth
 
 /- English proof (translation)
-Introduce `R _ _ I`. Establish `fg : I.FG` using `I.fg_of_isNoetherianRing`. Establish `hc` using `AdicCompletion.isAdicComplete_self I fg`. Establish `e : (AdicCompletion I R ⧸ I.map (algebraMap R (AdicCompletion I R))) ≃+* R ⧸ I`. Rewrite using `[← AdicCompletion.ker_evalOneₐ_eq_map I fg]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `RingHom.quotientKerEquivOfSurjective (AdicCompletion.evalOneₐ_surjective I)`. Conclude with `isNoetherianRing_of_isAdicComplete _ _ (fg.map _) hc (isNoetherianRing_of_ringEquiv _ e.symm)`.
+A detailed English derivation is pending.
 -/
 theorem isNoetherianRing_adicCompletion : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (I : Ideal R),
     IsNoetherianRing (AdicCompletion I R) := by

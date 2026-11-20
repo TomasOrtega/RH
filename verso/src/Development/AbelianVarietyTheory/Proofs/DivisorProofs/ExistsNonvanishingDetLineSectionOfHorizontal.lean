@@ -21,7 +21,7 @@ namespace GlobalTheory.DetLine.FromHorizontal
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
 
 /- English proof (translation)
-Substitute `h hx` using the available equality. Take `rfl : v = u` from `funext fun i => hu i i rfl`. Take `rfl : v' = u'` from `funext fun i => hu' i i rfl`. Conclude with `⟨M, rfl, hM⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_renumber {S : Scheme.{0}} {t : SAB H S} {R : Type} [CommRing R] {m n : ℕ} (h : m = n)
     {x x' : Sp R ⟶ S} (hx : x = x') {v v' : Fin n → (Sp (DualNumber R) ⟶ t.G.left)}
@@ -35,7 +35,7 @@ theorem exists_renumber {S : Scheme.{0}} {t : SAB H S} {R : Type} [CommRing R] {
   exact ⟨M, rfl, hM⟩
 
 /- English proof (translation)
-The claim follows from `have ⟨u', h₁, h₂⟩ := h ⟨u', h₁, congrArg CommaMorphism.left h₂.symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem comb_left {S : Scheme.{0}} {t : SAB H S} {R : Type} [CommRing R] {x : Sp R ⟶ S} {n : ℕ} {a : Fin n → R}
     {u : Fin n → (Sp (DualNumber R) ⟶ t.G.left)} {z : epsAt x ⟶ t.G} (h : FramedFlatCoordinates.IsCombination x a u z) :
@@ -56,13 +56,11 @@ def Agree {R : Type} [CommRing R] (f : Fr Y V τ R)
     ∀ (i : Fin D.q) (k : Fin (D.mult (conjEmb τ))), (i : ℕ) = k → (f.2.2.1 i).left = u (conjEmb τ) k
 
 /- English proof (translation)
-Take `⟨j, h⟩` from `b.2.2.2`. Take `⟨v, w, h', a, a'⟩` from `exists_pull g h hx`. Use `⟨v, w, ⟨_, h'⟩, ?_, fun u u' hu hu' => ⟨fun i k e => ?_, fun i k e => ?_⟩⟩` and prove the remaining obligations. Establish `h1 : IsChg Y.t (genι Y) g b.1 b.2.1 b.2.2.1 x' v w 1 1`. Use `⟨hx, fun i => ?_, fun i => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [← a]`. Conclude with `DetExtendZero.comb_one (fun k => (h'.2.2.1.1 k).1) i`. Simplify using `only [← a']`. Conclude with `DetExtendZero.comb_one (fun k => (h'.2.2.2.1 k).1) i`. Use `(factor_spec g b ⟨x', v, w, _, h'⟩ hx).2 1 1 h1` as an intermediate fact.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[Matrix.det_one, Matrix.det_one, _root_.mul_one]`. Conclude with `this.symm`. Rewrite using `[hu', ← hu.1 i k e]`. Conclude with `a i`. Rewrite using `[hu', ← hu.2 i k e]`.
-
-Conclude with `a' i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pullFr {R R' : Type} [CommRing R] [CommRing R'] (g : R →+* R') (b : Fr Y V τ R)
     {x' : Sp R' ⟶ gen Y} (hx : x' = spMap g ≫ b.1) :
@@ -83,11 +81,11 @@ theorem exists_pullFr {R R' : Type} [CommRing R] [CommRing R'] (g : R →+* R') 
   · rw [hu', ← hu.2 i k e]; exact a' i
 
 /- English proof (translation)
-Establish `hx : f'.1 = spMap (RingHom.id ℂ) ≫ f.1` using `by rw [DetExtendZero.spMap_id, Category.id_comp, hf, hf', ha]`. Take `⟨j, k⟩` from `f.2.2.2`. Take `⟨j', k'⟩` from `f'.2.2.2`. Take `⟨-, M, N, hc⟩` from `exists_chg _ k k' hx`. Establish `h1` using `(factor_spec _ f f' hx).2 M N hc`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `(chg_isUnit k k' hc).1`. Take `⟨-, hM, hN⟩` from `hc`. Simplify using `only [DetExtendZero.dual_id, Category.id_comp] at hM hN`. Take `⟨M', eM, hM'⟩` from `exists_renumber (GlobalTheory.Harm.mult_of_mem D hτ) (congrArg (· ≫ genι Y) hf') hm.1 hm'.1 fun i => comb_left (hM i)`. Take `⟨N', eN, hN'⟩` from `exists_renumber (GlobalTheory.Harm.mult_conjEmb_of_mem D hτ) (congrArg (· ≫ genι Y) hf') hm.2 hm'.2 fun i => comb_left (hN i)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `hh.2.1 a a' M' N' hi ⟨ha, hM'⟩ ⟨ha, hN'⟩` as an intermediate fact. Rewrite `this` using `[eM, eN, h1]`. Conclude with `h2.mul_right_cancel (by rw [this]; ring)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hor_factor (hτ : τ (H.rt : E) = H.rt0) {h : CxFr Y e → ℂ} (hh : HorFn τ h) {a a' : CxFr Y e} (hi : Inner a.1)
     (ha : a.1 = a'.1) {f f' : Fr Y V τ ℂ} (hf : f.1 = a.1.1) (hf' : f'.1 = a'.1.1) (hm : Agree f a.2.v)
@@ -109,39 +107,33 @@ theorem hor_factor (hτ : τ (H.rt : E) = H.rt0) {h : CxFr Y e → ℂ} (hh : Ho
   exact h2.mul_right_cancel (by rw [this]; ring)
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O _ β Y τ e h B io V hio hV hs hτ hh`. Take `⟨W, hW, φ, fr, a, hy, hφ, ha, hv, hf⟩` from `GlobalTheory.ShFam.HolFrames.exists_affine_holFrames E H D l Xo c O β Y e B io hio hs`. Set `sp (y : B.X) : Sp Γ(B.X, W y) ⟶ B.X` to `(hW y).fromSpec`. Establish `hr {T : Scheme.{0}} (x : T ⟶ B.X) : Set.range (x ≫ io) ⊆ V`. Introduce and unpack `_ ⟨z, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← hV, Scheme.Hom.comp_apply]`. Conclude with `⟨_, rfl⟩`. Use `choose bv bw hb hm using fun y => (EigParts.eigFrame_match E H D l Xo c O β Y τ hτ V _ (φ y) (sp y ≫ io) (hφ y) (hr _) (fr y)).1`. Set `b (y : B.X) : Fr Y V τ Γ(B.X, W y)` to `⟨sp y ≫ io, bv y, bw y, _, hb y⟩`. Set `gm {U : B.X.Opens} {z : B.X} (hz : z ∈ U) : Γ(B.X, U) →+* B.X.presheaf.stalk z` to `(B.X.presheaf.germ U z hz).hom`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hloc {y z : B.X} (hz : z ∈ W y) : locPt B.X z ≫ io = spMap (gm hz) ≫ (b y).1`. Rewrite using `[← Category.assoc]`. Conclude with `congrArg (· ≫ io) ((hW y).fromSpecStalk_eq_fromSpecStalk hz).symm`. Use `choose ev ew he _ using fun z => exists_pullFr (gm (hy z)) (b z) (hloc (hy z))`. Set `fz (z : B.X) : Fr Y V τ (B.X.presheaf.stalk z)` to `⟨locPt B.X z ≫ io, ev z, ew z, he z⟩`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hgen (z : B.X) : genPt B.X ≫ io = spMap (algebraMap _ B.X.functionField) ≫ (fz z).1`. Rewrite using `[genPt_eq z, Category.assoc]`. Take `⟨v₀, w₀, ⟨j₀, h₀⟩, -⟩` from `exists_pullFr _ (fz (genericPoint B.X)) (hgen _)`. Set `a₀ : Fr Y V τ B.X.functionField` to `⟨genPt B.X ≫ io, v₀, w₀, j₀, h₀⟩`. Use `choose ε hε using fun z => (factor_spec _ (fz z) a₀ (hgen z)).1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu {y z : B.X} (hz : z ∈ W y) : IsUnit (factor (gm hz) (b y) (fz z))` using `(factor_spec _ _ _ (hloc hz)).1`. Establish `hk (y : B.X) : a₀.1 = spMap (fnOf (W y) (gen_mem (hy y))) ≫ (b y).1` using `hloc (gen_mem (hy y))`. Use `choose δ hδ using fun y => (factor_spec _ (b y) a₀ (hk y)).1`. Establish `hδε {y z : B.X} (hz : z ∈ W y) : (δ y : B.X.functionField) = ε z * algebraMap _ B.X.functionField (factor (gm hz) (b y) (fz z))`. Rewrite using `[hδ, hε, ← factor_comp _ _ _ _ _ (hloc hz) (hgen z)]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `congr 1`. Conclude with `(RingHom.ext fun r => algebraMap_germ hz r).symm`. Establish `hg {y z : B.X} (hz : z ∈ W y) : germOf z (ε z)⁻¹ = germOf z (δ y)⁻¹`. Rewrite using `[germOf_eq_iff, Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val, inv_div_inv, ← inv_div, hδε hz, mul_div_cancel_left₀ _ (ε z).ne_zero]`. Conclude with `UnitAt.inv ⟨_, hu hz, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Set `Dv : B.Dv` to `show cartierGroup B.X from ⟨fun z => germOf z (ε z)⁻¹, fun y => ⟨W y, hy y, (δ y)⁻¹, fun z hz => hg hz⟩⟩`. Establish `hD (y : B.X) (z : B.X) (hz : z ∈ W y) : Dv.IsEqn z (δ y)⁻¹` using `hg hz`. Take `⟨hne, hd⟩` from `GlobalTheory.T.complexPoints_nonempty_dense_variety c.F B e`. Establish `hA` using `hd (io ⁻¹ᵁ (genBd Y).compl) (by`. Take `⟨_, ⟨z, rfl⟩, hz⟩` from `Y.jQ_dense.inter_open_nonempty _ io.isOpenEmbedding.isOpen_range ⟨_, genericPoint B.X, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `⟨z, fun hb => hb hz⟩)`. Set `R` to `AnRead.all B.str e B.dim`. Use `choose u hu₁ he₁ using fun y => exists_extension R io hA (isOpen_ptsIn (W y)) (fun z _ => ha y z) (hf y) hh.2.2.1 hh.2.2.2`. Use `choose u' hu' he' using fun y => exists_extension R io hA (isOpen_ptsIn (W y)) (fun z _ => ha y z) (hf y) (h := fun a => (h a)⁻¹) (fun V _ _ _ B a hB ha hi => (hh.2.2.1 V B a hB ha hi).inv fun b hb => hh.1 _ (hi b hb)) (logGrowth_inv hh.2.2.2)`. Establish `h0 (y) (z) (hz : z ∈ ptsIn _ _ (io ⁻¹ᵁ (genBd Y).compl)) : h (a y z) ≠ 0` using `hh.1 _ ((inner_iff (ha y z)).2 hz)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `htr (y y') (U : B.X.Opens) (r : Γ(B.X, U)) (hr : ∀ hU, fnOf U hU r = (δ y' : B.X.functionField) / (δ y : B.X.functionField)) (p : CxPts B.str e) (h₁ : p ∈ ptsIn _ _ (W y)) (h₂ : p ∈ ptsIn _ _ (W y')) (h₃ : p ∈ ptsIn _ _ U) (hz : p ∈ ptsIn _ _ (io ⁻¹ᵁ (genBd Y).compl)) : h (a y p) …`. Set `z : B.X` to `p.1 (IsLocalRing.closedPoint ℂ)`. Set `χ : B.X.presheaf.stalk z →+* ℂ` to `(Scheme.stalkClosedPointTo (R := .of ℂ) p.1).hom`. Establish `hχ {U : B.X.Opens} (h : p ∈ ptsIn _ _ U) : χ.comp (gm (mem_ptsIn.1 h)) = evHom h` using `(congrArg CommRingCat.Hom.hom (HolFrames.valR_eq_germ p.1 U h)).symm`. Establish `hp : p.1 ≫ io = spMap χ ≫ (fz z).1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← Category.assoc]`. Conclude with `congrArg (· ≫ io) (Scheme.Spec_stalkClosedPointTo_fromSpecStalk (R := CommRingCat.of ℂ) p.1).symm`. Establish `hq {y : B.X} (h : p ∈ ptsIn _ _ (W y)) : p.1 ≫ io = spMap (evHom h) ≫ (b y).1`. Rewrite using `[← hχ, DetExtendZero.spMap_comp, Category.assoc, ← hloc, hp]`. Take `⟨v, w, k, e₁, m⟩` from `exists_pullFr _ (b y) (hq h₁)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨v', w', k', e₂, m'⟩` from `exists_pullFr _ (b y') (hq h₂)`. Rewrite using `[hor_factor hτ hh ((inner_iff (ha y' p)).2 hz) (Subtype.ext ((ha y' p).trans (ha y p).symm)) (f := ⟨_, v', w', k'⟩) (f' := ⟨_, v, w, k⟩) (ha y' p).symm (ha y p).symm (m' _ _ (hm y') (hv y' p h₂)) (m _ _ (hm y) (hv y p h₁))]`. Use `congr 1`. Establish `e₃` using `factor_comp (evHom h₂) (RingHom.id ℂ) (b y') ⟨_, v', w', k'⟩ ⟨_, v, w, k⟩ (hq h₂) (by rw [DetExtendZero.spMap_id, Category.id_comp])`. Rewrite `e₃` using `[e₂, map_one, _root_.mul_one, RingHom.id_comp, ← hχ, factor_comp _ χ _ (fz z) ⟨_, v, w, k⟩ (hloc (mem_ptsIn.1 h₂)) hp]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e₁` using `[← hχ, factor_comp _ χ _ (fz z) ⟨_, v, w, k⟩ (hloc (mem_ptsIn.1 h₁)) hp]`. Establish `e₄ : factor (gm (mem_ptsIn.1 h₂)) (b y') (fz z) = factor (gm (mem_ptsIn.1 h₁)) (b y) (fz z) * gm (mem_ptsIn.1 h₃) r`. Use `IsFractionRing.injective (B.X.presheaf.stalk z) B.X.functionField (mul_left_cancel₀ (ε z).ne_zero ?_)` and prove the remaining obligations. Rewrite using `[map_mul, ← _root_.mul_assoc, ← hδε, ← hδε]`. Use `erw [algebraMap_germ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hr, mul_div_cancel₀ _ (δ y).ne_zero]`. Rewrite using `[← e₃, e₄, map_mul, ← _root_.mul_assoc, e₁, _root_.one_mul, ev_eq h₃, ← hχ]`. Both sides reduce to the same expression. Take `⟨s, hs⟩` from `exists_generates B Dv (GlobalTheory.T.H0_ne_bot_of_holSec_ne_bot c.F B _ R _ (holSec_ne_bot hA _ W (fun y => (δ y)⁻¹) hy hD u hu₁ (fun y z hz => by rw [he₁ y hz]; exact h0 y z hz.2) fun y y' r hr' z hz => by`. Establish `hz'` using `mem_ptsIn_inf.1 hz.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he₁ y ⟨hz'.1, hz.2⟩, he₁ y' ⟨hz'.2, hz.2⟩]`. Conclude with `htr y y' _ r (fun hU => by`. Rewrite using `[hr', Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val, inv_div_inv]) z hz'.1 hz'.2 hz.1 hz.2))`. Use the proof step `(GlobalTheory.T.H0_ne_bot_of_holSec_ne_bot c.F B _ R _ (holSec_ne_bot hA _ W δ hy (fun y y' hy => inv_inv (δ y) ▸ (hD y y' hy).neg) u' hu' (fun y z hz => by rw [he' y hz]; exact inv_ne_zero (h0 y z hz.2)) fun y y' r hr' z hz => by`. Establish `hz'` using `mem_ptsIn_inf.1 hz.1`.
-
-Rewrite using `[he' y ⟨hz'.1, hz.2⟩, he' y' ⟨hz'.2, hz.2⟩]`. Rewrite using `[eq_mul_inv_iff_mul_eq₀ (h0 y' z hz.2), htr y' y _ r hr' z hz'.2 hz'.1 hz.1 hz.2, _root_.mul_comm, mul_inv_cancel_right₀ (h0 y z hz.2)]))`. Take `⟨σ, h1, h2, -⟩` from `exists_section E H l c _ _ Y.t (genι Y) (genStr Y) τ D.p D.q B.X io V hio hV (hV ▸ frameCover_gen E H D l Xo c O β Y io.opensRange τ hτ) j₀ v₀ w₀ s h₀ fun z => by`. Take `⟨j, hj⟩` from `he z`. Take `⟨-, M, N, hc⟩` from `exists_chg _ hj h₀ (hgen z)`.
-
-Take `⟨_, ⟨t, rfl⟩, ht⟩` from `(show Dv.IsEqn z (ε z)⁻¹ from rfl).generatesAt_iff.1 (hs z)`. Use `⟨j, ev z, ew z, M, N, t, hj, hc, ?_⟩` and prove the remaining obligations. Rewrite using `[(factor_spec _ (fz z) a₀ (hgen z)).2 M N hc, ← hε, ht, Units.val_inv_eq_inv_val]`. Use `(ε z).ne_zero` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
-
-Conclude with `⟨σ, h1, h2⟩`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_section_of_horFn : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (τ : E →+* ℂ) (e : c.F →+* ℂ) (h : CxFr Y e → ℂ) (B : GlobalTheory.ProjVar.Var c.F) (io : B.X ⟶ gen Y) (V : Set (gen Y)), IsOpenImmersion io → Set.range io = V → io ≫ genStr Y = B.str → τ (H.rt : E) = H.rt0 → HorFn τ h → ∃ σb : RuleY Y, SecY Y V τ σb ∧ NzY Y V τ σb := by
   intro E _ _ _ H D l Xo c O _ β Y τ e h B io V hio hV hs hτ hh

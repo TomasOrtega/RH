@@ -15,7 +15,7 @@ attribute [local instance] Matrix.linftyOpNormedAddCommGroup Matrix.linftyOpNorm
   Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional ℝ (Mat n) := inferInstanceAs (FiniteDimensional ℝ (Matrix (Fin n) (Fin n) ℂ))`. Use `haveI : CompleteSpace (Mat n) := FiniteDimensional.complete ℝ (Mat n)`. Establish `h : HasDerivAt (fun s : ℝ => (NormedSpace.exp (s • X) : Mat n)) (NormedSpace.exp (t • X) * X : Mat n) t` using `hasDerivAt_exp_smul_const X t`. Set `L : Mat n →L[ℝ] ℂ` to `LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℂ i j)`. Conclude with `L.hasFDerivAt.comp_hasDerivAt t h`.
+Establish an intermediate fact. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_exp_entry {n : ℕ} (X : Mat n) (t : ℝ) (i j : Fin n) :
     HasDerivAt (fun s : ℝ => (NormedSpace.exp (s • X) : Mat n) i j)
@@ -32,7 +32,7 @@ end Entries
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Use `hasDerivAt_pi.2 fun i => hasDerivAt_pi.2 fun j => ?_` and prove the remaining obligations. Apply the tactic sequence `exact hasDerivAt_exp_entry X t i j`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_exp {n : ℕ} (X : Mat n) (t : ℝ) :
     HasDerivAt (fun s : ℝ => (expC X s).val) ((expC X t).val * X) t := by
@@ -40,7 +40,7 @@ theorem hasDerivAt_exp {n : ℕ} (X : Mat n) (t : ℝ) :
   exact hasDerivAt_exp_entry X t i j
 
 /- English proof (translation)
-Introduce `n X`. Use `⟨?_, hasDerivAt_exp X⟩` and prove the remaining obligations. Use `(GlobalTheory.CompanionTheory.SobGL.HaarDom.isOpenEmbedding_valG (n := n)).isInducing.continuous_iff.2 ?_` and prove the remaining obligations. Conclude with `continuous_iff_continuousAt.2 fun t => (hasDerivAt_exp X t).continuousAt`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem expC_continuous_hasDerivAt :
     ∀ (n : ℕ) (X : Mat n), Continuous (expC X) ∧

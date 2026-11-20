@@ -27,13 +27,13 @@ noncomputable section
 namespace GlobalTheory.ArcNormal
 
 /- English proof (translation)
-The claim follows from `(Spec.map_comp _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem sp_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : B →+* C) (g : A →+* B) :
     spMap f ≫ spMap g = spMap (f.comp g) := (Spec.map_comp _ _).symm
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[← ValuationSubring.valuation_le_one_iff]`. Rewrite `h` using `[map_pow]`. Conclude with `(pow_le_one_iff hn).1 h`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_pow_mem' {F : Type} [Field F] (V : ValuationSubring F) {x : F} {n : ℕ} (hn : n ≠ 0) (h : x ^ n ∈ V) :
     x ∈ V := by
@@ -42,9 +42,7 @@ theorem mem_of_pow_mem' {F : Type} [Field F] (V : ValuationSubring F) {x : F} {n
   exact (pow_le_one_iff hn).1 h
 
 /- English proof (translation)
-Set `inc` to `(IntermediateField.inclusion c.le).toRingHom`. Use `⟨⟨inc (baseKA l).ρ, mem_of_pow_mem' V two_ne_zero ?_⟩, ⟨inc (baseKA l).ζ, mem_of_pow_mem' V l.A_pos.ne' ?_⟩, rfl, rfl⟩` and prove the remaining obligations. Rewrite using `[← map_pow, (baseKA l).ρ_sq, map_neg, map_natCast]`. Conclude with `neg_mem (natCast_mem V _)`. Rewrite using `[← map_pow, (baseKA l).ζ_prim.pow_eq_one, map_one]`.
-
-Conclude with `one_mem V`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_values' {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {l : Level H} (c : Coeff l) (V : ValuationSubring c.F) :
@@ -58,15 +56,15 @@ theorem exists_values' {E : Type} [Field E] [NumberField E] [IsCMField E] {H : R
     exact one_mem V
 
 /- English proof (translation)
-Establish `hn : 0 < n` using `lt_of_lt_of_le (inv_pos.2 hC₂) hn₁`. Establish `hD : 0 < D` using `lt_of_lt_of_le (inv_pos.2 hC₃) hD₁`. Establish `hKi : 0 < K⁻¹` using `inv_pos.2 hK`. Establish `h1 : 1 ≤ C₂ * n`. Use `mul_le_mul_of_nonneg_left hn₁ hC₂.le` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[mul_inv_cancel₀ hC₂.ne']`. Then use the resulting hypothesis. Establish `h2 : 1 ≤ C₃ * D`. Use `mul_le_mul_of_nonneg_left hD₁ hC₃.le` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel₀ hC₃.ne']`. Then use the resulting hypothesis. Establish `hKK : 1 ≤ K * (K + K⁻¹)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[mul_add, mul_inv_cancel₀ hK.ne']`. Use the polynomial consequences of the given equalities and inequalities. Prove the components needed by the constructor for the conclusion. Rewrite using `[inv_le_comm₀ (by positivity) (by positivity), inv_div, div_le_iff₀ (by positivity)]`. Establish `: n ^ 2 ≤ C₂ ^ 2` using `pow_le_pow_left₀ hn.le hn₂ 2`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_le_iff₀ (by positivity)]`. Establish `: 1 ≤ (C₂ * n) ^ 2` using `one_le_pow₀ h1`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `_ = (K + K⁻¹) * C₃ * C₂ ^ 2 * n ^ 2 := by ring`.
+A detailed English derivation is pending.
 -/
 theorem ratio_bounds {K D n C₂ C₃ : ℝ} (hK : 0 < K) (hC₂ : 0 < C₂) (hC₃ : 0 < C₃) (hD₁ : C₃⁻¹ ≤ D) (hD₂ : D ≤ C₃)
     (hn₁ : C₂⁻¹ ≤ n) (hn₂ : n ≤ C₂) :
@@ -103,21 +101,19 @@ open scoped Matrix
 namespace GlobalTheory.ArcNormal
 
 /- English proof (translation)
-Substitute `hg` using the available equality. Use `choose Wv hW using fun i => ((GlobalTheory.LamT.existsUnique_isDiff_and_linear x u).1 _ (x.basis.1 i)).exists`. Use `⟨Wv, hW, ?_⟩` and prove the remaining obligations. Set `φ : (Fin x.P.g → ℂ) ≃L[ℂ] (Fin x.P.g → ℂ)` to `(Matrix.toLinearEquiv' h (Matrix.invertibleOfIsUnitDet _ hu)).symm.toContinuousLinearEquiv`. Establish `hφ : ∀ z, h *ᵥ φ z = z` using `fun z => (Matrix.toLinearEquiv' h (Matrix.invertibleOfIsUnitDet _ hu)).apply_symm_apply z`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφ' : ∀ z, φ (h *ᵥ z) = z` using `fun z => (Matrix.toLinearEquiv' h (Matrix.invertibleOfIsUnitDet _ hu)).symm_apply_apply z`. Establish `hπ : (2 * Real.pi * Complex.I : ℂ) ≠ 0` using `Complex.two_pi_I_ne_zero`. Use `clear_value φ`. Set `Mx : Matrix (Fin x.P.g) (Fin x.P.g) ℂ` to `(2 * Real.pi * Complex.I : ℂ) • Matrix.of fun i => h *ᵥ Wv i`. Use `⟨τ, Mx, c₁, c₂, hc, ⟨KeyNormalForm.change u φ (fun _ => 0) (differentiable_const _), hsymm, hpos, fun z => ?_, KeyNormalForm.isRig_change u φ _ _ rfl hR, KeyNormalForm.isFn_change u φ _ _ hF fun z => by simp only [hφ, Complex.exp_zero, mul_one], fun i => KeyNormalForm.isDiff_chan …` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[KeyNormalForm.mem_change, hΛ]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv⟩`. Take `⟨m, rfl⟩` from `bas.surjective v`. Use `⟨fun i => m (Sum.inl i), fun i => m (Sum.inr i), ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← hφ z, ← hv]`. Conclude with `GlobalTheory.KeyFourth.mulVec_period _ bas _ _ hn m`. Introduce and unpack `⟨m, n, rfl⟩`. Use `⟨bas (Sum.elim m n), ?_⟩` and prove the remaining obligations. Rewrite using `[← hφ' (P _), GlobalTheory.KeyFourth.mulVec_period _ bas _ _ hn]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Both sides reduce to the same expression. Establish `e₁ : (2 * Real.pi * Complex.I : ℂ)⁻¹ • Mx i = h *ᵥ Wv i`. Use function extensionality and compare the values at `j`. Simplify using `only [Mx, Pi.smul_apply, Matrix.smul_apply, smul_eq_mul, Matrix.of_apply]`. Rewrite using `[inv_mul_cancel_left₀ hπ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[e₁, hφ']`. Conclude with `hW i`. Establish `e₂ : Mx = (2 * Real.pi * Complex.I : ℂ) • ((Matrix.of fun i j => Wv i j) * hᵀ)`. Use extensionality with `i j`. Simplify using `[Mx, Matrix.mulVec, Matrix.mul_apply, dotProduct, mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e₂, Matrix.det_smul, Matrix.det_mul, Matrix.det_transpose, Fintype.card_fin, norm_mul, norm_mul, norm_pow]`. Establish `: ‖(2 * Real.pi * Complex.I : ℂ)‖ = 2 * Real.pi`. Rewrite using `[norm_mul, Complex.norm_I, mul_one, Complex.norm_mul, Complex.norm_ofNat, Complex.norm_real, Real.norm_eq_abs, abs_of_pos Real.pi_pos]`. Rewrite using `[this]`. Simplify using `only [Fin.cast_eq_self]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_normalAt_of_unif {g : ℕ} (x : KeyIn ℂ) (hg : x.P.g = g) (u : HolUnif x.P.A x.P.L g) {La : Type}
     [AddCommGroup La] (P : La →+ (Fin g → ℂ)) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] La)
@@ -182,29 +178,27 @@ namespace GlobalTheory.ArcNormal
 open scoped Matrix
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c V Y hpq hP a χ hχ hover hgen M hM`. Set `_ : Algebra (FractionRing ℂ) ℂ` to `FractionRing.liftAlgebra ℂ ℂ`. Establish `: IsScalarTower ℂ (FractionRing ℂ) ℂ` using `FractionRing.isScalarTower_liftAlgebra ℂ ℂ`. Take `⟨h1, h2⟩` from `GlobalTheory.abelianSchemeLaws_all`. Take `⟨W⟩` from `(Y.hasArcData_iff _ _ _ _ χ).1 hχ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hU, -⟩` from `GlobalTheory.UnifFamily.exists_unf_family E H Dw l Xo c hpq`. Establish `hσ : Formalism.L2.PjFree.GoodEmb c c.F.val.toRingHom` using `(Formalism.L2.PjFree.goodEmb_iff c.F.val.toRingHom).mpr rfl`. Take `⟨Uw⟩` from `GlobalTheory.ArcQ.nonempty_unfWit_of_isUnf E H Dw l Xo c _ _ (U _) (hU _ hσ).1`. Establish `hty` using `(GlobalTheory.Relab.relab_good E H l c _ hσ).2.2.2 Dw Uw.g Uw.e`. Take `⟨Ha⟩` from `GlobalTheory.arcClause_closed E H Dw l Xo c _ _ Y _ a χ W Uw.g _ Uw.F hσ hty (exists_values' c V) hover hgen`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, th, hth⟩` from `GlobalTheory.ThetaOverField.nonzero_generates h1 h2 ℂ a.D₀ (⟨fun _ => 0, fun _ _ => by simp⟩ : a.D₀.P.L.Sec)`. Take `⟨Θ⟩` from `GlobalTheory.ArcTheta.nonempty_thetaDat h1 h2 E H Dw l Xo c _ _ _ Y a χ W _ _ Uw.F Ha hty th hth`. Establish `hlift : ∀ w : ℂ, Ha.T < w.im → ∃ yF : Sp ℂ ⟶ Xo.XF c, yF ≫ pullback.fst _ _ = Uw.F.u Ha.i (Ha.Pw w) ∧ yF ≫ pullback.snd _ _ = spMap c.F.val.toRingHom`. Introduce `w hw`. Use `⟨pullback.lift (Uw.F.u Ha.i (Ha.Pw w)) (spMap c.F.val.toRingHom) ?_, pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Uw.F.over_σ _ _ (Ha.period w hw)]`. Conclude with `(sp_comp' _ _).symm`. Set `y : ℂ → (Sp ℂ ⟶ Y.X)` to `fun w => if h : ∃ yF : Sp ℂ ⟶ Xo.XF c, yF ≫ pullback.fst _ _ = Uw.F.u Ha.i (Ha.Pw w) ∧ yF ≫ pullback.snd _ _ = spMap c.F.val.toRingHom then h.choose ≫ Y.j else spMap (PowerSeries.constantCoeff (R := ℂ)) ≫ χ`. Establish `hy : ∀ w : ℂ, Ha.T < w.im → ∃ yF : Sp ℂ ⟶ Xo.XF c, yF ≫ pullback.fst _ _ = Uw.F.u Ha.i (Ha.Pw w) ∧ yF ≫ pullback.snd _ _ = spMap c.F.val.toRingHom ∧ y w = yF ≫ Y.j`. Introduce `w hw`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `hlift w hw`. Conclude with `⟨h.choose, h.choose_spec.1, h.choose_spec.2, dif_pos h⟩`. Use `⟨y, fun U f hUf => ?_, ?_⟩` and prove the remaining obligations. Take `⟨T', hT'⟩` from `Ha.point U f hUf`. Use `⟨max T' Ha.T, fun w hw => ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨yF, k₁, k₂, e⟩` from `hy w ((le_max_right _ _).trans_lt hw)`. Rewrite using `[e]`. Conclude with `hT' w ((le_max_left _ _).trans_lt hw) yF k₁ k₂`. Take `⟨T₁, hF⟩` from `hFib E H Dw l Xo c _ V Y a χ W _ _ Uw.F Ha th Θ M hσ hty hP hover hgen hM`. Take `⟨T₂, C₂, hC₂, hT⟩` from `hTheta E H Dw l Xo c _ V Y a χ W _ _ Uw.F Ha th Θ M hσ hty hP hover hgen hM`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨T₃, C₃, hC₃, hL⟩` from `hLie E H Dw l Xo c _ V Y a χ W _ _ Uw.F Ha th Θ M hσ hty hP hover hgen hM`. Establish `hh : IsUnit Θ.h.det`. Use `Matrix.isUnit_det_of_right_inverse (B := Matrix.of fun i k => Ha.Pw 0 (Θ.bas (Pi.single (.inl k) 1)) i) ?_` and prove the remaining obligations. Use extensionality with `i k`. Establish `e` using `congrFun (Θ.per 0 k).1 i`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `e` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, Matrix.one_apply, Pi.single_apply, eq_comm]`. Use `set K : ℝ := (2 * Real.pi) ^ Uw.g * ‖Θ.h.det‖ with hKdef`. Establish `hK : 0 < K` using `mul_pos (pow_pos Real.two_pi_pos _) (norm_pos_iff.2 hh.ne_zero)`. Use `⟨max Ha.T (max T₁ (max T₂ T₃)), (K + K⁻¹) * C₃ * C₂ ^ 2, by positivity, fun w hw hz x hx => ?_⟩` and prove the remaining obligations. Establish `hw₀ : Ha.T < w.im` using `(le_max_left _ _).trans_lt hw`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw₁ : T₁ < w.im` using `((le_max_left _ _).trans (le_max_right _ _)).trans_lt hw`. Establish `hw₂ : T₂ < w.im` using `(((le_max_left _ _).trans (le_max_right _ _)).trans (le_max_right _ _)).trans_lt hw`. Establish `hw₃ : T₃ < w.im` using `(((le_max_right _ _).trans (le_max_right _ _)).trans (le_max_right _ _)).trans_lt hw`. Take `⟨yF, k₁, k₂, e⟩` from `hy w hw₀`. Establish `hx' : ∃ hz' : ⊤ ≤ (yF ≫ Y.j) ⁻¹ᵁ M.U, KeyAt M (yF ≫ Y.j) hz' x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← e]`. Conclude with `⟨hz, hx⟩`. Take `⟨hz', φ, hφ⟩` from `hx'`. Take `⟨hg, u, c₀, hR, hA, hΛ, hFn⟩` from `hF w hw₁ yF k₁ k₂ hz' x φ hφ`. Take `⟨hc₁, hc₂⟩` from `hT w hw₂ yF k₁ k₂ hz' x φ hφ u c₀ hR hA hFn`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Wv, hW, τ', Mx, a', b', hab, hN, hdet⟩` from `exists_normalAt_of_unif x hg u (Ha.Pw w) Θ.bas Θ.h (Θ.τ w) Θ.c₁ Θ.c₂ c₀ hh (Θ.pos w hw₀).1 (Θ.pos w hw₀).2 ⟨Θ.half₁, Θ.half₂⟩ (Θ.per w) hΛ hR hFn`. Take `⟨hd₁, hd₂⟩` from `hL w hw₃ yF k₁ k₂ hz' x φ hφ hg u Wv hA hW`. Establish `hc₀ : c₀ ≠ 0`. Introduce `h0`. Rewrite `hc₁` using `[h0, norm_zero]`.
-
-Conclude with `absurd hc₁ (not_le.2 (inv_pos.2 hC₂))`. Use `⟨τ', Mx, a', b', c₀, hab, hc₀, hN, ?_⟩` and prove the remaining obligations. Rewrite using `[hdet, ← hKdef]`. Conclude with `ratio_bounds hK hC₂ hC₃ hd₁ hd₂ hc₁ hc₂`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main_of_lemmas (hFib : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H
     : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo
@@ -343,7 +337,7 @@ end GlobalTheory.ArcNormal
 namespace GlobalTheory.ArcNormal
 
 /- English proof (translation)
-The claim follows from `main_of_lemmas GlobalTheory.T.exists_arc_fibre_uniformisation_theta_multiple GlobalTheory.T.thetaCoefficient_bounded_along_holomorphicArc GlobalTheory.T.lieBasis_expCoords_det_bounded_along_arc`.
+A detailed English derivation is pending.
 -/
 theorem arc_normal_form : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (V : ValuationSubring c.F) (Y : Model Xo c V.subtype), 1 ≤ Dw.p + Dw.q → PushInvertible Y.t.G Y.t.PP.L → ∀ (a : ArcIn Dw l V.subtype ℂ (c.F.val.toRingHom.comp V.subtype)) (χ : Sp (PowerSeries ℂ) ⟶ Y.X), Y.HasArcData a (Ideal.span {PowerSeries.X}) (PowerSeries.C (R := ℂ)) PowerSeries.X χ → χ ≫ Y.s = spMap (PowerSeries.C (R := ℂ)) ≫ spMap (c.F.val.toRingHom.comp V.subtype) → (∀ x : Sp (PowerSeries ℂ), PowerSeries.X ∉ x.asIdeal → χ x ∈ Set.range Y.j) → ∀ M : GChart Y, ⊤ ≤ χ ⁻¹ᵁ M.U → ∃ y : ℂ → (Sp ℂ ⟶ Y.X), (∀ (U : Y.X.Opens) (f : Γ(Y.X, U)), ⊤ ≤ χ ⁻¹ᵁ U → ∃ T : ℝ, ∀ w : ℂ, T < w.im → ⊤ ≤ y w ⁻¹ᵁ U ∧ SumsAt (valR χ U f) w (valAt' (y w) U f)) ∧ ∃ T C : ℝ, 0 < C ∧ ∀ w : ℂ, T < w.im → ∀ (hz : ⊤ ≤ y w ⁻¹ᵁ M.U) (x : KeyIn ℂ), KeyAt M (y w) hz x → ∃ (τ Mx : Matrix (Fin x.P.g) (Fin x.P.g) ℂ) (a' b' : Fin x.P.g → ℂ) (c₀ : ℂ), GlobalTheory.KeyPow.charHalf _ a' b' ∧ c₀ ≠ 0 ∧ GlobalTheory.KeyPow.NormalAt x τ Mx a' b' c₀ ∧ C⁻¹ ≤ ‖Mx.det‖ / ‖c₀‖ ^ 2 ∧ ‖Mx.det‖ / ‖c₀‖ ^ 2 ≤ C :=
   main_of_lemmas GlobalTheory.T.exists_arc_fibre_uniformisation_theta_multiple GlobalTheory.T.thetaCoefficient_bounded_along_holomorphicArc GlobalTheory.T.lieBasis_expCoords_det_bounded_along_arc

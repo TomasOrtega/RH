@@ -20,7 +20,7 @@ section Eig
 variable {n : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Establish `e : fderiv ℝ (c • F) = c • fderiv ℝ F` using `fderiv_const_smul_field c`. Simplify using `only [Rd, e, Pi.smul_apply]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem rd_smul (c : ℂ) (X : Mat n) (F : Mat n → ℂ) : Rd X (c • F) = c • Rd X F := by
   funext g
@@ -29,16 +29,16 @@ theorem rd_smul (c : ℂ) (X : Mat n) (F : Mat n → ℂ) : Rd X (c • F) = c �
   rfl
 
 /- English proof (translation)
-Simplify using `only [Eu, rd_smul]`. Use `module`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eu_smul (c : ℂ) (s : Bool) (i j : Fin n) (F : Mat n → ℂ) : Eu s i j (c • F) = c • Eu s i j F := by
   simp only [Eu, rd_smul]
   module
 
 /- English proof (translation)
-Proceed by induction on `m generalizing i j with`. Consider the case `zero`. Simplify using `only [Epow]`. Apply the tactic sequence `split_ifs <;> simp`. Consider the case `succ m ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Simplify using `only [Epow, ih, eu_smul, Finset.smul_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem epow_smul (c : ℂ) (s : Bool) (m : ℕ) (i j : Fin n) (F : Mat n → ℂ) :
     Epow s m i j (c • F) = c • Epow s m i j F := by
@@ -50,13 +50,13 @@ theorem epow_smul (c : ℂ) (s : Bool) (m : ℕ) (i j : Fin n) (F : Mat n → �
     simp only [Epow, ih, eu_smul, Finset.smul_sum]
 
 /- English proof (translation)
-Simplify using `only [gel, epow_smul, Finset.smul_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gel_smul' (c : ℂ) (s : Bool) (m : ℕ) (F : Mat n → ℂ) : gel s m (c • F) = c • gel s m F := by
   simp only [gel, epow_smul, Finset.smul_sum]
 
 /- English proof (translation)
-Introduce `s m g hg`. Rewrite using `[gel_smul', Pi.smul_apply, h s m g hg, Pi.smul_apply]`. Conclude with `smul_comm _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isEig_smul {χ : Inf n} {F : Mat n → ℂ} (h : IsEig χ F) (c : ℂ) : IsEig χ (c • F) := by
   intro s m g hg
@@ -70,7 +70,7 @@ section Tc
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [along, chart, Pi.smul_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem along_smul' (w : InfinitePlace E) (g : GA E a) (c : ℂ) (φ : GA E a → ℂ) :
     along w g (c • φ) = c • along w g φ := by
@@ -79,9 +79,9 @@ theorem along_smul' (w : InfinitePlace E) (g : GA E a) (c : ℂ) (φ : GA E a �
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `: FiniteDimensional ℂ (Submodule.span ℂ {φ})` using `FiniteDimensional.span_of_finite ℂ (Set.finite_singleton φ)`. Use `Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℂ {φ}) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Take `⟨s, hs⟩` from `GlobalTheory.T.center_acts_by_scalar_on_eigenforms E a c z hz`. Use `show z φ ∈ _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs φ hc]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self φ)`.
+A detailed English derivation is pending.
 -/
 theorem zfin_of (φ : Sm E a) (c : (E →+* ℂ) → ℂ → ℂ) (hc : ∀ τ u, cap τ u φ = c τ u • φ) :
     FiniteDimensional ℂ (Submodule.span ℂ ((fun z : Module.End ℂ (Sm E a) => z φ) '' (Zalg E a : Set _))) := by
@@ -94,9 +94,9 @@ theorem zfin_of (φ : Sm E a) (c : (E →+* ℂ) → ℂ → ℂ) (hc : ∀ τ u
   exact Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self φ)
 
 /- English proof (translation)
-Set `Λ : Module.Dual ℂ W →ₗ[ℂ] (GA E a → ℂ)` to `{ toFun := fun l z => l ⟨_, hW z⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `hle : (Submodule.span ℂ (Set.range fun k => cptRep E a k φ)).map (Sm E a).subtype ≤ LinearMap.range Λ`. Rewrite using `[Submodule.map_span]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨k, rfl⟩, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨(LinearMap.proj k).comp W.subtype, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `z`. Both sides reduce to the same expression. Use `Submodule.finiteDimensional_of_le hle` as an intermediate fact. Conclude with `LinearEquiv.finiteDimensional (Submodule.equivMapOfInjective (Sm E a).subtype Subtype.val_injective _).symm`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem kfin_of (φ : Sm E a) (W : Submodule ℂ (Kinf E a → ℂ)) [FiniteDimensional ℂ W]
     (hW : ∀ z, (fun k : Kinf E a => φ.1 (z * infGL E a (Unitary.toUnits k))) ∈ W) :
@@ -117,9 +117,9 @@ theorem kfin_of (φ : Sm E a) (W : Submodule ℂ (Kinf E a → ℂ)) [FiniteDime
     (Submodule.equivMapOfInjective (Sm E a).subtype Subtype.val_injective _).symm
 
 /- English proof (translation)
-Establish `hu : ∀ u ∈ K, finRep E a u φ = φ` using `fun u hu => Subtype.ext (funext fun z => h u hu z)`. Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce `k hk`. Establish `hk' : finRep E a k φ = φ` using `hk`. Use `⟨(fun u => k * u) '' (K : Set (GL (Fin a) (Af E))), ?_, isOpenMap_mul_left k _ hK, ⟨1, K.one_mem, mul_one k⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨u, hu', rfl⟩`. Express the relevant statement in the definitionally equal form `finRep E a (k * u) φ = φ`. Rewrite using `[map_mul, Module.End.mul_apply, hu u hu', hk']`.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem level_of (φ : Sm E a) (K : Subgroup (GL (Fin a) (Af E))) (hK : IsOpen (K : Set (GL (Fin a) (Af E))))
     (h : ∀ u ∈ K, ∀ z, φ.1 (z * finGL E a u) = φ.1 z) : IsOpen {k | finRep E a k φ = φ} := by
@@ -144,22 +144,22 @@ Both sides reduce to the same expression.
 theorem logSizeM_eq (A : Matrix (Fin a) (Fin a) (Ad E)) : logSizeM A = infP A + finP A := rfl
 
 /- English proof (translation)
-Rewrite using `[logSizeM_eq]`. Conclude with `add_nonneg (Finset.sum_nonneg fun _ _ => Real.posLog_nonneg) (finsum_nonneg fun _ => Real.posLog_nonneg)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem logSizeM_nonneg (A : Matrix (Fin a) (Fin a) (Ad E)) : 0 ≤ logSizeM A := by
   rw [logSizeM_eq]
   exact add_nonneg (Finset.sum_nonneg fun _ _ => Real.posLog_nonneg) (finsum_nonneg fun _ => Real.posLog_nonneg)
 
 /- English proof (translation)
-The claim follows from `add_nonneg (logSizeM_nonneg _) (logSizeM_nonneg _)`.
+A detailed English derivation is pending.
 -/
 theorem logSize_nonneg (x : GA E a) : 0 ≤ logSize x :=
   add_nonneg (logSizeM_nonneg _) (logSizeM_nonneg _)
 
 /- English proof (translation)
-Establish `key : ∀ v, Real.posLog (⨆ p : Fin a × Fin a, ‖cV v (A p.1 p.2)‖ ^ 2) ≤ 2 * Real.log B`. Introduce `v`. Establish `h0 : 0 ≤ ⨆ p : Fin a × Fin a, ‖cV v (A p.1 p.2)‖ ^ 2` using `Real.iSup_nonneg fun p => sq_nonneg _`. Establish `hle : (⨆ p : Fin a × Fin a, ‖cV v (A p.1 p.2)‖ ^ 2) ≤ B ^ 2` using `Real.iSup_le (fun p => pow_le_pow_left₀ (norm_nonneg _) (h v p.1 p.2) 2) (sq_nonneg _)`. Establish `hB2 : 1 ≤ |B ^ 2|`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[abs_of_nonneg (sq_nonneg B)]`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 -/
 theorem infinitePart_le (A : Matrix (Fin a) (Fin a) (Ad E)) (B : ℝ) (hB : 1 ≤ B) (h : ∀ v i j, ‖cV v (A i j)‖ ≤ B) :
     infP A ≤ Fintype.card (InfinitePlace E) * (2 * Real.log B) := by
@@ -178,7 +178,7 @@ theorem infinitePart_le (A : Matrix (Fin a) (Fin a) (Ad E)) (B : ℝ) (hB : 1 �
     _ = _ := by rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, map_sum]`. Simplify using `only [map_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cV_mul (v : InfinitePlace E) (A B : Matrix (Fin a) (Fin a) (Ad E)) (i j : Fin a) :
     cV v ((A * B) i j) = ∑ k, cV v (A i k) * cV v (B k j) := by
@@ -186,7 +186,7 @@ theorem cV_mul (v : InfinitePlace E) (A B : Matrix (Fin a) (Fin a) (Ad E)) (i j 
   simp only [map_mul]
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun h : GL (Fin a) (Cinf E) => h.val k j v) (pInf_infGL (E := E) y)`. Conclude with `e`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cV_infGL (v : InfinitePlace E) (y : GL (Fin a) (Cinf E)) (k j : Fin a) :
     cV v ((infGL E a y).val k j) = y.val k j v := by
@@ -194,7 +194,7 @@ theorem cV_infGL (v : InfinitePlace E) (y : GL (Fin a) (Cinf E)) (k j : Fin a) :
   exact e
 
 /- English proof (translation)
-Establish `e : GeneralLinearGroup.map (pFin E) (g * infGL E a y) = GeneralLinearGroup.map (pFin E) g`. Rewrite using `[map_mul, pFin_infGL, mul_one]`. Conclude with `congrArg (fun h : GL (Fin a) (Af E) => h.val i j) e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pFin_mul_infGL (g : GA E a) (y : GL (Fin a) (Cinf E)) (i j : Fin a) :
     pFin E ((g * infGL E a y).val i j) = pFin E (g.val i j) := by
@@ -203,7 +203,7 @@ theorem pFin_mul_infGL (g : GA E a) (y : GL (Fin a) (Cinf E)) (i j : Fin a) :
   exact congrArg (fun h : GL (Fin a) (Af E) => h.val i j) e
 
 /- English proof (translation)
-Establish `e : GeneralLinearGroup.map (pFin E) (g * infGL E a y)⁻¹ = GeneralLinearGroup.map (pFin E) g⁻¹`. Rewrite using `[map_inv, map_mul, pFin_infGL, mul_one, ← map_inv]`. Conclude with `congrArg (fun h : GL (Fin a) (Af E) => h.val i j) e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pFin_inv_mul_infGL (g : GA E a) (y : GL (Fin a) (Cinf E)) (i j : Fin a) :
     pFin E (((g * infGL E a y)⁻¹).val i j) = pFin E ((g⁻¹).val i j) := by
@@ -212,9 +212,9 @@ theorem pFin_inv_mul_infGL (g : GA E a) (y : GL (Fin a) (Cinf E)) (i j : Fin a) 
   exact congrArg (fun h : GL (Fin a) (Af E) => h.val i j) e
 
 /- English proof (translation)
-Unfold `finP`. Use `finsum_congr fun w => ?_` and prove the remaining obligations. Use `congr 2`. Use function extensionality and compare the values at `p`. Simplify using `only [cW, RingHom.comp_apply]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[pFin_mul_infGL]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finP_mul_infGL (g : GA E a) (y : GL (Fin a) (Cinf E)) :
     finP (g * infGL E a y).val = finP g.val := by
@@ -226,9 +226,9 @@ theorem finP_mul_infGL (g : GA E a) (y : GL (Fin a) (Cinf E)) :
   rw [pFin_mul_infGL]
 
 /- English proof (translation)
-Unfold `finP`. Use `finsum_congr fun w => ?_` and prove the remaining obligations. Use `congr 2`. Use function extensionality and compare the values at `p`. Simplify using `only [cW, RingHom.comp_apply]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[pFin_inv_mul_infGL]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finP_inv_mul_infGL (g : GA E a) (y : GL (Fin a) (Cinf E)) :
     finP ((g * infGL E a y)⁻¹).val = finP (g⁻¹).val := by
@@ -240,21 +240,19 @@ theorem finP_inv_mul_infGL (g : GA E a) (y : GL (Fin a) (Cinf E)) :
   rw [pFin_inv_mul_infGL]
 
 /- English proof (translation)
-Set `M : InfinitePlace E → Fin a → Fin a → ℝ` to `fun v i k => ‖cV v (g.val i k)‖ + ‖cV v ((g⁻¹).val i k)‖`. Establish `hM0 : ∀ v i k, 0 ≤ M v i k` using `fun v i k => add_nonneg (norm_nonneg _) (norm_nonneg _)`. Set `T : ℝ` to `∑ v, ∑ i, ∑ k, M v i k`. Establish `hT0 : 0 ≤ T` using `Finset.sum_nonneg fun v _ => Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun k _ => hM0 v i k`. Establish `hrow0 : ∀ v, ∑ i, ∑ k, M v i k ≤ T` using `fun v => Finset.single_le_sum (f := fun v => ∑ i, ∑ k, M v i k) (fun v _ => Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun k _ => hM0 v i k) (Finset.mem_univ v)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrow : ∀ v i, ∑ k, M v i k ≤ T` using `fun v i => (Finset.single_le_sum (f := fun i => ∑ k, M v i k) (fun i _ => Finset.sum_nonneg fun k _ => hM0 v i k) (Finset.mem_univ i)).trans (hrow0 v)`. Establish `hcol : ∀ v j, ∑ k, M v k j ≤ T` using `fun v j => (Finset.sum_le_sum fun k _ => Finset.single_le_sum (f := fun j => M v k j) (fun j _ => hM0 v k j) (Finset.mem_univ j)).trans (hrow0 v)`. Use `⟨finP g.val + finP (g⁻¹).val + 4 * Fintype.card (InfinitePlace E) * Real.log (1 + T), fun y => ?_⟩` and prove the remaining obligations. Establish `h1 : 1 ≤ height y` using `one_le_height y`. Establish `hB : 1 ≤ (1 + T) * height y` using `one_le_mul_of_one_le_of_one_le (by linarith) h1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlogB : Real.log ((1 + T) * height y) = Real.log (1 + T) + Real.log (height y)` using `Real.log_mul (by linarith) (by linarith)`. Establish `e1 : ∀ v i j, ‖cV v ((g * infGL E a y).val i j)‖ ≤ (1 + T) * height y`. Introduce `v i j`. Rewrite using `[Units.val_mul, cV_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `Finset.sum_le_sum fun k _ => mul_le_mul (le_add_of_nonneg_right (norm_nonneg _)) ?_ (norm_nonneg _) (hM0 v i k)` and prove the remaining obligations. Rewrite using `[cV_infGL]`. Conclude with `(GlobalTheory.CompanionTheory.GrowthEntries.norm_entry_le_toL _ k j v).trans (GlobalTheory.CompanionTheory.GrowthEntries.norm_toL_le_height y)`. Use `_ = (∑ k, M v i k) * height y := (Finset.sum_mul _ _ _).symm`. Use `_ ≤ (1 + T) * height y := mul_le_mul_of_nonneg_right (by linarith [hrow v i]) (by linarith)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinv : (g * infGL E a y)⁻¹ = infGL E a y⁻¹ * g⁻¹` using `by rw [_root_.mul_inv_rev, map_inv]`. Establish `e2 : ∀ v i j, ‖cV v (((g * infGL E a y)⁻¹).val i j)‖ ≤ (1 + T) * height y`. Introduce `v i j`. Rewrite using `[hinv, Units.val_mul, cV_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_le_sum fun k _ => mul_le_mul ?_ (le_add_of_nonneg_left (norm_nonneg _)) (norm_nonneg _) (by linarith)` and prove the remaining obligations. Rewrite using `[cV_infGL]`. Conclude with `(GlobalTheory.CompanionTheory.GrowthEntries.norm_entry_le_toL _ i k v).trans (GlobalTheory.CompanionTheory.GrowthEntries.norm_toL_inv_le_height y)`. Use `_ = height y * ∑ k, M v k j := (Finset.mul_sum _ _ _).symm`. Use `_ ≤ (1 + T) * height y := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_comm]`. Conclude with `mul_le_mul_of_nonneg_right (by linarith [hcol v j]) (by linarith)`. Establish `i1` using `infinitePart_le _ _ hB e1`. Establish `i2` using `infinitePart_le _ _ hB e2`. Establish `f1` using `finP_mul_infGL g y`.
-
-Establish `f2` using `finP_inv_mul_infGL g y`. Establish `hs : logSize (g * infGL E a y) = infP (g * infGL E a y).val + finP (g * infGL E a y).val + (infP ((g * infGL E a y)⁻¹).val + finP ((g * infGL E a y)⁻¹).val)` using `rfl`. Rewrite using `[hs, f1, f2]`. Rewrite `i1`, `i2` using `[hlogB]`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem logSize_mul_infGL (g : GA E a) : ∃ D : ℝ, ∀ y : GL (Fin a) (Cinf E),
     logSize (g * infGL E a y) ≤ D + 4 * Fintype.card (InfinitePlace E) * Real.log (height y) := by
@@ -319,13 +317,13 @@ theorem logSize_mul_infGL (g : GA E a) : ∃ D : ℝ, ∀ y : GL (Fin a) (Cinf E
   nlinarith
 
 /- English proof (translation)
-Take `⟨D, hD⟩` from `logSize_mul_infGL z`. Use `set P : ℝ := 4 * Fintype.card (InfinitePlace E)`. Use `⟨max C 0 * Real.exp (max N 0 * (D + L)), ⌈max N 0 * P⌉₊, fun y => ?_⟩` and prove the remaining obligations. Establish `h1 : 1 ≤ height y` using `one_le_height y`. Establish `hs0 : 0 ≤ logSize (z * infGL E a y) + L` using `add_nonneg (logSize_nonneg _) hL`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : logSize (z * infGL E a y) + L ≤ D + L + P * Real.log (height y)` using `by linarith [hD y]`. Establish `he : Real.exp (max N 0 * (D + L + P * Real.log (height y))) = Real.exp (max N 0 * (D + L)) * height y ^ (max N 0 * P)`. Rewrite using `[Real.rpow_def_of_pos (by linarith), ← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hr : height y ^ (max N 0 * P) ≤ height y ^ ⌈max N 0 * P⌉₊`. Rewrite using `[← Real.rpow_natCast]`. Conclude with `Real.rpow_le_rpow_of_exponent_le h1 (Nat.le_ceil _)`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul (le_max_left _ _) ?_ (Real.exp_pos _).le (le_max_right _ _)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Use `Real.exp_le_exp.2 ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `_ = max C 0 * (Real.exp (max N 0 * (D + L)) * height y ^ (max N 0 * P)) := by rw [he]`. Use `_ ≤ max C 0 * (Real.exp (max N 0 * (D + L)) * height y ^ ⌈max N 0 * P⌉₊) := by gcongr`. Use `_ = _ := by ring`.
+A detailed English derivation is pending.
 -/
 theorem growth_of_bound (F : GA E a → ℂ) (C N L : ℝ) (hL : 0 ≤ L)
     (hF : ∀ x, ‖F x‖ ≤ C * Real.exp (N * (logSize x + L))) (z : GA E a) :
@@ -363,22 +361,22 @@ section Cm
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ}
 
 /- English proof (translation)
-Unfold `mOf`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem card_mOf (χ : InfinitePlace E → Inf a) (τ : E →+* ℂ) : Multiset.card (mOf χ τ) = a := by
   unfold mOf
   simp
 
 /- English proof (translation)
-Establish `key` using `(hB E a (Submodule.span ℂ {φ}) (InfinitePlace.mk τ) (χ (InfinitePlace.mk τ))).1 (by`. Introduce `ψ hψ g`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hψ`. Establish `e : ((c • φ : Sm E a) : GA E a → ℂ) = c • (φ : GA E a → ℂ)` using `rfl`. Rewrite using `[e, along_smul']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isEig_smul (hφ _ g) c)`. Distinguish the cases in `h : τ = (InfinitePlace.mk τ).embedding`. Establish `e : mOf χ τ = Multiset.map (χ (InfinitePlace.mk τ) true) Finset.univ.val`. Establish `hd : decide (τ = (InfinitePlace.mk τ).embedding) = true` using `decide_eq_true h`. Unfold `mOf`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hd]`. Rewrite using `[e]`. Establish `k1` using `key.1`. Rewrite `k1` using `[← h]`. Then use the resulting hypothesis. Establish `h2 : (InfinitePlace.mk τ).embedding = ComplexEmbedding.conjugate τ` using `(InfinitePlace.embedding_mk_eq τ).resolve_left fun e' => h e'.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ComplexEmbedding.conjugate (InfinitePlace.mk τ).embedding = τ`. Rewrite using `[h2]`. Conclude with `star_star τ`. Establish `e : mOf χ τ = Multiset.map (χ (InfinitePlace.mk τ) false) Finset.univ.val`. Establish `hd : decide (τ = (InfinitePlace.mk τ).embedding) = false` using `decide_eq_false h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `mOf`. Rewrite using `[hd]`. Rewrite using `[e]`. Establish `k2` using `key.2`. Rewrite `k2` using `[h3]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem hasInf_single (hB : BridgeSt) (χ : InfinitePlace E → Inf a) (φ : Sm E a)
     (hφ : ∀ v g, IsEig (χ v) (along v g φ.1)) (τ : E →+* ℂ) :
@@ -412,9 +410,9 @@ theorem hasInf_single (hB : BridgeSt) (χ : InfinitePlace E → Inf a) (φ : Sm 
     rwa [h3] at k2
 
 /- English proof (translation)
-Use `⟨hm, fun u ψ hψ => ?_⟩` and prove the remaining obligations. Proceed by induction on `hψ using Submodule.span_induction with`. Consider the case `mem x hx => exact (h x hx).2 u x (Submodule.mem_span_singleton_self x)`. Consider the case `zero => rw [map_zero, smul_zero]`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy, smul_add]`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c x _ hx => rw [map_smul, hx, smul_comm]`.
+Treat this case separately.
 -/
 theorem hasInf_span (S : Set (Sm E a)) (τ : E →+* ℂ) (m : Multiset ℂ) (hm : Multiset.card m = a)
     (h : ∀ φ ∈ S, HasInfCharGL (Submodule.span ℂ {φ}) τ m) : HasInfCharGL (Submodule.span ℂ S) τ m := by
@@ -426,7 +424,7 @@ theorem hasInf_span (S : Set (Sm E a)) (τ : E →+* ℂ) (m : Multiset ℂ) (hm
   | smul c x _ hx => rw [map_smul, hx, smul_comm]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hl, level_of φ K hK hk, kfin_of φ W hw, zfin_of φ _ fun τ u => (hasInf_single hB χ φ he τ).2 u φ (Submodule.mem_span_singleton_self φ), hg⟩`.
+Supply the required witnesses or components.
 -/
 theorem isAutForm_of (hB : BridgeSt) (φ : Sm E a) (K : Subgroup (GL (Fin a) (Af E)))
     (hK : IsOpen (K : Set (GL (Fin a) (Af E)))) (W : Submodule ℂ (Kinf E a → ℂ)) [FiniteDimensional ℂ W]
@@ -439,11 +437,11 @@ theorem isAutForm_of (hB : BridgeSt) (φ : Sm E a) (K : Subgroup (GL (Fin a) (Af
     zfin_of φ _ fun τ u => (hasInf_single hB χ φ he τ).2 u φ (Submodule.mem_span_singleton_self φ), hg⟩
 
 /- English proof (translation)
-Set `ev : (Kinf E a × Kinf E b → ℂ) →ₗ[ℂ] (Kinf E a → ℂ)` to `LinearMap.funLeft ℂ ℂ (fun k : Kinf E a => (k, (1 : Kinf E b)))`. Establish `hle : (Submodule.span ℂ {f : Kinf E a × Kinf E b → ℂ | ∃ w₁ ∈ W₁, ∃ w₂ ∈ W₂, f = fun k => w₁ k.1 * w₂ k.2}).map ev ≤ W₁`. Rewrite using `[Submodule.map_span_le]`. Introduce and unpack `_ ⟨w₁, hw₁, w₂, -, rfl⟩`. Establish `e : ev (fun k => w₁ k.1 * w₂ k.2) = w₂ 1 • w₁`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `k`. Simplify using `[ev, LinearMap.funLeft_apply, mul_comm]`. Rewrite using `[e]`. Conclude with `W₁.smul_mem _ hw₁`. Use `hle (Submodule.mem_map_of_mem (f := ev) (hF.2 (z, m₂)))` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Simplify using `[ev, LinearMap.funLeft_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem typeW₁ {K₁ : Subgroup (GL (Fin a) (Af E))} {K₂ : Subgroup (GL (Fin b) (Af E))}
     {W₁ : Submodule ℂ (Kinf E a → ℂ)} {W₂ : Submodule ℂ (Kinf E b → ℂ)} {F : H E a b → ℂ}
@@ -466,11 +464,11 @@ theorem typeW₁ {K₁ : Subgroup (GL (Fin a) (Af E))} {K₂ : Subgroup (GL (Fin
   simp [ev, LinearMap.funLeft_apply]
 
 /- English proof (translation)
-Set `ev : (Kinf E a × Kinf E b → ℂ) →ₗ[ℂ] (Kinf E b → ℂ)` to `LinearMap.funLeft ℂ ℂ (fun k : Kinf E b => ((1 : Kinf E a), k))`. Establish `hle : (Submodule.span ℂ {f : Kinf E a × Kinf E b → ℂ | ∃ w₁ ∈ W₁, ∃ w₂ ∈ W₂, f = fun k => w₁ k.1 * w₂ k.2}).map ev ≤ W₂`. Rewrite using `[Submodule.map_span_le]`. Introduce and unpack `_ ⟨w₁, -, w₂, hw₂, rfl⟩`. Establish `e : ev (fun k => w₁ k.1 * w₂ k.2) = w₁ 1 • w₂`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `k`. Simplify using `[ev, LinearMap.funLeft_apply]`. Rewrite using `[e]`. Conclude with `W₂.smul_mem _ hw₂`. Use `hle (Submodule.mem_map_of_mem (f := ev) (hF.2 (m₁, z)))` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Simplify using `[ev, LinearMap.funLeft_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem typeW₂ {K₁ : Subgroup (GL (Fin a) (Af E))} {K₂ : Subgroup (GL (Fin b) (Af E))}
     {W₁ : Submodule ℂ (Kinf E a → ℂ)} {W₂ : Submodule ℂ (Kinf E b → ℂ)} {F : H E a b → ℂ}
@@ -493,13 +491,13 @@ theorem typeW₂ {K₁ : Subgroup (GL (Fin a) (Af E))} {K₂ : Subgroup (GL (Fin
   simp [ev, LinearMap.funLeft_apply]
 
 /- English proof (translation)
-Use `isAutForm_of hB φ K₁ hK₁ W₁ χa ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `γ g`. Rewrite using `[hφ]`. Use `hL i ⟨(ratGL E a γ, ratGL E b 1), ⟨(γ, 1), rfl⟩⟩ (g, m₂)` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `u hu z`. Rewrite using `[hφ]`. Use `(hT i).1 u hu 1 (Subgroup.one_mem _) (z, m₂)` as an intermediate fact. Simplify using `using this`. Introduce `z`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hφ]`. Conclude with `typeW₁ (hT i) z m₂`. Introduce `v g`. Rewrite using `[hφ]`. Conclude with `hE.1 i v g m₂`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `z`. Use `growth_of_bound φ.1 C N (logSize m₂) (logSize_nonneg m₂) (fun x => ?_) z` and prove the remaining obligations. Rewrite using `[hφ]`. Conclude with `hG i (x, m₂)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem slice₁_aut (hB : BridgeSt) {ι : Type} {f : ι → H E a b → ℂ}
     {K₁ : Subgroup (GL (Fin a) (Af E))} {K₂ : Subgroup (GL (Fin b) (Af E))}
@@ -529,13 +527,13 @@ theorem slice₁_aut (hB : BridgeSt) {ι : Type} {f : ι → H E a b → ℂ}
     exact hG i (x, m₂)
 
 /- English proof (translation)
-Use `isAutForm_of hB φ K₂ hK₂ W₂ χb ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `γ g`. Rewrite using `[hφ]`. Use `hL i ⟨(ratGL E a 1, ratGL E b γ), ⟨(1, γ), rfl⟩⟩ (m₁, g)` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `u hu z`. Rewrite using `[hφ]`. Use `(hT i).1 1 (Subgroup.one_mem _) u hu (m₁, z)` as an intermediate fact. Simplify using `using this`. Introduce `z`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hφ]`. Conclude with `typeW₂ (hT i) m₁ z`. Introduce `v g`. Rewrite using `[hφ]`. Conclude with `hE.2 i v g m₁`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `z`. Use `growth_of_bound φ.1 C N (logSize m₁) (logSize_nonneg m₁) (fun x => ?_) z` and prove the remaining obligations. Rewrite using `[hφ, add_comm (logSize x)]`. Conclude with `hG i (m₁, x)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem slice₂_aut (hB : BridgeSt) {ι : Type} {f : ι → H E a b → ℂ}
     {K₁ : Subgroup (GL (Fin a) (Af E))} {K₂ : Subgroup (GL (Fin b) (Af E))}
@@ -567,11 +565,9 @@ theorem slice₂_aut (hB : BridgeSt) {ι : Type} {f : ι → H E a b → ℂ}
 end Cm
 
 /- English proof (translation)
-Introduce `E _ _ _ a b ι f K₁ K₂ W₁ W₂ χa χb C N hK₁ hK₂ hW₁ hW₂ hL hT hG hE`. Use `⟨?_, ?_, fun τ => ?_, fun τ => ?_⟩` and prove the remaining obligations. Introduce and unpack `φ ⟨i, m₂, hφ⟩`. Conclude with `slice₁_aut hB hK₁ hW₁ hL hT hG hE φ i m₂ hφ`. Introduce and unpack `φ ⟨i, m₁, hφ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `slice₂_aut hB hK₂ hW₂ hL hT hG hE φ i m₁ hφ`. Use `hasInf_span _ τ _ (card_mOf χa τ) fun φ hφ => ?_` and prove the remaining obligations. Take `⟨i, m₂, hφ⟩` from `hφ`. Conclude with `hasInf_single hB χa φ (fun v g => by rw [hφ]; exact hE.1 i v g m₂) τ`. Use `hasInf_span _ τ _ (card_mOf χb τ) fun φ hφ => ?_` and prove the remaining obligations.
-
-Take `⟨i, m₁, hφ⟩` from `hφ`. Conclude with `hasInf_single hB χb φ (fun v g => by rw [hφ]; exact hE.2 i v g m₁) τ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem autOf (hB : BridgeSt) : AutOf := by
   intro E _ _ _ a b ι f K₁ K₂ W₁ W₂ χa χb C N hK₁ hK₂ hW₁ hW₂ hL hT hG hE

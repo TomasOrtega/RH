@@ -4,57 +4,55 @@ open scoped InnerProductSpace
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `I3 : Complex.I ^ 3 = -Complex.I` using `by rw [pow_succ, Complex.I_sq]; ring`. Establish `hJl : ∀ u v, inner ℝ (J u) v = -inner ℝ u (J v)`. Introduce `u v`. Establish `h` using `J.inner_map_map (J u) v`. Rewrite `h` using `[hJJ, inner_neg_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hJself : ∀ z, inner ℝ z (J z) = 0`. Introduce `z`. Establish `h` using `hJl z z`. Establish `h'` using `real_inner_comm z (J z)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hDneg : ∀ w, D (-w) = -D w`. Introduce `w`. Establish `h` using `hsmul (-1) w`. Simplify using `using h`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `key : ∀ F : V → A, (∀ u v, F (u + v) = F u + F v) → (∀ (r : ℝ) v, F (r • v) = (r : ℂ) • F v) → ∀ w, F w = ∑ j, ((inner ℝ (e j) w : ℝ) : ℂ) • F (e j)`. Introduce `F hFa hFs w`. Establish `h` using `map_sum (AddMonoidHom.mk' F hFa) (fun j => inner ℝ (e j) w • e j) Finset.univ`. Simplify using `only [AddMonoidHom.mk'_apply, e.sum_repr'] at h`. Rewrite using `[h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun j _ => hFs _ _`. Establish `hca : ∀ u v, c (u + v) = c u + c v`. Introduce `u v`. Rewrite using `[hc, hc, hc, map_add, hadd, hadd, smul_add]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Establish `hcs : ∀ (r : ℝ) v, c (r • v) = (r : ℂ) • c v`. Introduce `r v`. Rewrite using `[hc, hc, map_smul, hsmul, hsmul, smul_sub, smul_comm Complex.I (r : ℂ)]`. Establish `haa' : ∀ u v, a (u + v) = a u + a v`. Introduce `u v`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha, ha, ha, map_add, hadd, hadd, smul_add]`. Normalize the expressions using the abelian group laws. Establish `has : ∀ (r : ℝ) v, a (r • v) = (r : ℂ) • a v`. Introduce `r v`. Rewrite using `[ha, ha, map_smul, hsmul, hsmul, smul_comm Complex.I (r : ℂ), ← smul_add, smul_neg]`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcJ : ∀ w, c (J w) = Complex.I • c w`. Introduce `w`. Rewrite using `[hc, hc, hJJ, hDneg]`. Simplify using `only [smul_sub, smul_neg, smul_smul, Complex.I_mul_I, neg_one_smul]`. Normalize the expressions using the abelian group laws.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Establish `haJ : ∀ w, a (J w) = -(Complex.I • a w)`. Introduce `w`. Rewrite using `[ha, ha, hJJ, hDneg]`. Simplify using `only [smul_add, smul_neg, smul_smul, Complex.I_mul_I, neg_one_smul, neg_neg]`. Normalize the expressions using the abelian group laws.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Establish `hsw : ∀ u v, D u * D v = D v * D u + (2 * Real.pi * Complex.I * (inner ℝ u (J v) : ℝ) : ℂ) • 1`. Introduce `u v`. Rewrite using `[← hcomm u v]`. Normalize the expressions using the abelian group laws. Establish `hac : ∀ z w, a z * c w - c w * a z = (4 * (Real.pi : ℂ) * ((inner ℝ z w : ℝ) : ℂ) - 4 * Real.pi * Complex.I * ((inner ℝ z (J w) : ℝ) : ℂ)) • (1 : A)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z w`. Rewrite using `[ha, hc]`. Simplify using `only [mul_sub, sub_mul, mul_add, add_mul, neg_mul, mul_neg, smul_mul_assoc, mul_smul_comm]`. Rewrite using `[hsw z w, hsw z (J w), hsw (J z) w, hsw (J z) (J w)]`. Simplify using `only [hJJ, map_neg, inner_neg_right, inner_neg_left, hJl, neg_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `match_scalars <;> (ring_nf; try simp only [Complex.I_sq, I3]; try ring_nf)`. Establish `hcc : ∀ z w, c z * c w = c w * c z`. Introduce `z w`. Rewrite using `[← sub_eq_zero, hc, hc]`. Simplify using `only [mul_sub, sub_mul, mul_add, add_mul, neg_mul, mul_neg, smul_mul_assoc, mul_smul_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsw z w, hsw z (J w), hsw (J z) w, hsw (J z) (J w)]`. Simplify using `only [hJJ, map_neg, inner_neg_right, inner_neg_left, hJl, neg_neg]`. Apply the tactic sequence `match_scalars <;> (ring_nf; try simp only [Complex.I_sq, I3]; try ring_nf)`. Establish `haa : ∀ z w, a z * a w = a w * a z`. Introduce `z w`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← sub_eq_zero, ha, ha]`. Simplify using `only [mul_sub, sub_mul, mul_add, add_mul, neg_mul, mul_neg, smul_mul_assoc, mul_smul_comm]`. Rewrite using `[hsw z w, hsw z (J w), hsw (J z) w, hsw (J z) (J w)]`. Simplify using `only [hJJ, map_neg, inner_neg_right, inner_neg_left, hJl, neg_neg]`. Apply the tactic sequence `match_scalars <;> (ring_nf; try simp only [Complex.I_sq, I3]; try ring_nf)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hcsum` using `key c hca hcs`. Establish `hasum` using `key a haa' has`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `z`. Rewrite using `[hac, hJself, real_inner_self_eq_norm_sq]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `z`. Establish `hterm : ∀ j, c (e j) * a (e j) * c z - c z * (c (e j) * a (e j)) = (4 * (Real.pi : ℂ)) • (((inner ℝ (e j) z : ℝ) : ℂ) • c (e j)) - (4 * Real.pi * Complex.I) • (((inner ℝ (e j) (J z) : ℝ) : ℂ) • c (e j))`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Rewrite using `[mul_assoc, ← mul_assoc (c z), hcc z (e j), mul_assoc, ← mul_sub, hac (e j) z, mul_smul_comm, mul_one]`. Use `module`. Establish `hsum : N * c z - c z * N = ((8 * Real.pi : ℝ) : ℂ) • c z`. Rewrite using `[hN, Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hterm, Finset.sum_sub_distrib, ← Finset.smul_sum]`. Rewrite using `[← hcsum z, ← hcsum (J z), hcJ, smul_smul, ← sub_smul]`. Use `congr 1`. Use `push_cast`. Put the polynomial expressions in normal form.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Complex.I_sq]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mul_add, mul_smul_comm, mul_one, ← sub_eq_iff_eq_add', hsum]`. Introduce `z`. Establish `hterm : ∀ j, c (e j) * a (e j) * a z - a z * (c (e j) * a (e j)) = -((4 * (Real.pi : ℂ)) • (((inner ℝ (e j) z : ℝ) : ℂ) • a (e j)) + (4 * Real.pi * Complex.I) • (((inner ℝ (e j) (J z) : ℝ) : ℂ) • a (e j)))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `j`. Establish `h1` using `hac z (e j)`. Establish `h2 : inner ℝ z (J (e j)) = -inner ℝ (e j) (J z)`. Rewrite using `[real_inner_comm (J (e j)) z, hJl]`. Rewrite `h1` using `[real_inner_comm (e j) z, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : c (e j) * a (e j) * a z - a z * (c (e j) * a (e j)) = -((a z * c (e j) - c (e j) * a z) * a (e j))`. Rewrite using `[mul_assoc, haa (e j) z]`. Use `noncomm_ring`. Rewrite using `[h3, h1, smul_mul_assoc, one_mul]`. Simplify using `only [Complex.ofReal_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `module`. Establish `hsum : N * a z - a z * N = -(((8 * Real.pi : ℝ) : ℂ) • a z)`. Rewrite using `[hN, Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Simplify using `only [hterm, Finset.sum_neg_distrib, Finset.sum_add_distrib, ← Finset.smul_sum]`. Rewrite using `[← hasum z, ← hasum (J z), haJ, smul_neg, smul_smul, ← sub_eq_add_neg, ← sub_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Simplify using the standard rewrite rules.
 
-Use `congr 2`. Use `push_cast`. Put the polynomial expressions in normal form. Simplify using `only [Complex.I_sq]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[mul_sub, mul_smul_comm, mul_one, sub_eq_iff_eq_add.mp hsum]`. Normalize the expressions using the abelian group laws. Introduce `z`. Establish `hDz : D z = (1 / 2 : ℂ) • (c z - a z)`. Rewrite using `[hc, ha]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Prove the second alternative.
 
-Use `module`. Rewrite using `[hDz, hcsum z, hasum z]`. Apply the tactic sequence `refine Submodule.smul_mem _ _ (Submodule.sub_mem _ ?_ ?_) <;>`. Use `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ?_)` and prove the remaining obligations. Conclude with `Or.inr ⟨j, rfl⟩`.
-
-Conclude with `Or.inl ⟨j, rfl⟩`.
+Prove the first alternative. A detailed English derivation is pending.
 -/
 theorem weyl_number_operator_commutation
     (V A κ : Type) [NormedAddCommGroup V] [InnerProductSpace ℝ V] [Ring A] [Algebra ℂ A]

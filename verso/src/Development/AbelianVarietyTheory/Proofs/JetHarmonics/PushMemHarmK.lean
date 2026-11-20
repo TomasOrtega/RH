@@ -13,7 +13,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 variable (c : Coeff l) {n : ℕ}
 
 /- English proof (translation)
-Simplify using `[push, letB]`.
+Simplify using the standard rewrite rules.
 -/
 theorem push_X (γ : Matrix (Fin n) (Fin n) E) (σ : E →+* ℂ) (i : Fin (Dw.mult σ)) (j : Fin n) :
     push c γ (X (⟨σ, i, j⟩ : LtN Dw n)) =
@@ -22,21 +22,21 @@ theorem push_X (γ : Matrix (Fin n) (Fin n) E) (σ : E →+* ℂ) (i : Fin (Dw.m
 
 open Classical in
 /- English proof (translation)
-Take `⟨σ, i, j⟩` from `ℓ`. Rewrite using `[push_X, map_sum]`. Simplify using `only [pderiv_C_mul, pderiv_X]`. Distinguish the cases in `hσ : σ = τ`. Substitute `hσ` using the available equality.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hi : i = a`. Substitute `hi` using the available equality. Rewrite using `[Finset.sum_eq_single b, Finset.sum_eq_single j]`. Simplify using `[smul_eq_C_mul]`. Introduce `k _ hk`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Pi.single_eq_of_ne]`. Simplify using the standard rewrite rules. Simplify using `using hk.symm`. Simplify using the standard rewrite rules. Introduce `k _ hk`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Pi.single_eq_of_ne]`. Simplify using the standard rewrite rules. Simplify using `using hk`. Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_eq_zero, Finset.sum_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `k _`. Rewrite using `[Pi.single_eq_of_ne]`. Simplify using the standard rewrite rules. Simplify using `[hi]`. Introduce `k _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Pi.single_eq_of_ne]`. Simplify using the standard rewrite rules. Simplify using `[hi]`. Rewrite using `[Finset.sum_eq_zero, Finset.sum_eq_zero]`. Introduce `k _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Pi.single_eq_of_ne]`. Simplify using the standard rewrite rules. Conclude with `fun h => hσ (congrArg Sigma.fst h)`. Introduce `k _`. Rewrite using `[Pi.single_eq_of_ne]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Conclude with `fun h => hσ (congrArg Sigma.fst h)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pderiv_push_X (γ : Matrix (Fin n) (Fin n) E) (τ : E →+* ℂ) (a : Fin (Dw.mult τ)) (b : Fin n)
     (ℓ : LtN Dw n) :
@@ -81,9 +81,9 @@ theorem pderiv_push_X (γ : Matrix (Fin n) (Fin n) E) (τ : E →+* ℂ) (a : Fi
       · exact fun h => hσ (congrArg Sigma.fst h)
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C x => simp [push]`. Consider the case `add p q hp hq => simp [hp, hq, Finset.sum_add_distrib]`. Consider the case `mul_X p ℓ hp`. Rewrite using `[map_mul, Derivation.leibniz, hp, pderiv_push_X]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Derivation.leibniz, smul_eq_mul, map_add, map_mul, smul_add, Finset.sum_add_distrib, Finset.mul_sum, mul_smul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pderiv_push (γ : Matrix (Fin n) (Fin n) E) (τ : E →+* ℂ) (a : Fin (Dw.mult τ)) (b : Fin n)
     (P : MvPolynomial (LtN Dw n) c.F) :
@@ -98,7 +98,7 @@ theorem pderiv_push (γ : Matrix (Fin n) (Fin n) E) (τ : E →+* ℂ) (a : Fin 
       Finset.mul_sum, mul_smul_comm]
 
 /- English proof (translation)
-Simplify using `[lap, Matrix.one_apply, LinearMap.sum_apply, ite_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lap_one_apply {T : Type} {r : T → ℕ} {k : Type} [Field k] (τ τ' : T) (a : Fin (r τ))
     (a' : Fin (r τ')) (P : MvPolynomial (Letter T r n) k) :
@@ -107,11 +107,11 @@ theorem lap_one_apply {T : Type} {r : T → ℕ} {k : Type} [Field k] (τ τ' : 
   simp [lap, Matrix.one_apply, LinearMap.sum_apply, ite_smul]
 
 /- English proof (translation)
-Establish `hc : ∀ x : E, embF c (ComplexEmbedding.conjugate τ) x = embF c τ (IsCMField.complexConj E x)` using `fun x => Subtype.ext (IsCMField.complexEmbedding_complexConj E τ x).symm`. Establish `hu : ∀ j' j : Fin n, ∑ b, embF c (ComplexEmbedding.conjugate τ) (γ b j') * embF c τ (γ b j) = if j' = j then 1 else 0`. Introduce `j' j`. Establish `h` using `congrArg (embF c τ) (congrFun (congrFun hγ j') j)`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, map_sum, map_mul, Matrix.one_apply, apply_ite (embF c τ), map_one, map_zero] at h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify `h` using `only [hc]`. Rewrite using `[lap_one_apply, lap_one_apply, map_sum]`. Simplify using `only [pderiv_push, map_sum, Derivation.map_smul, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j' _ => ?_` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.sum_smul, hu, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lap_push (γ : Matrix (Fin n) (Fin n) E) (hγ : IsUnitary γ) (τ : E →+* ℂ) (a : Fin (Dw.mult τ))
     (a' : Fin (Dw.mult (ComplexEmbedding.conjugate τ))) (P : MvPolynomial (LtN Dw n) c.F) :
@@ -135,7 +135,7 @@ theorem lap_push (γ : Matrix (Fin n) (Fin n) E) (hγ : IsUnitary γ) (τ : E �
     if_true]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l c n γ P hγ hP`. Simplify using `only [harmK, Submodule.mem_iInf, LinearMap.mem_ker] at hP ⊢`. Introduce `τ hτ a a'`. Rewrite using `[lap_push c γ hγ, hP τ hτ a a', map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem push_mem_harmK : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H)
     (l : Level H) (c : Coeff l) (n : ℕ) (γ : Matrix (Fin n) (Fin n) E) (P : MvPolynomial (LtN Dw n) c.F),

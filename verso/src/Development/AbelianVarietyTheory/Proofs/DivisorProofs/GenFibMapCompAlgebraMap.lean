@@ -11,7 +11,7 @@ variable {A A' A'' X X' X'' : Type} [CommRing A] [CommRing A'] [CommRing A''] [C
   [CommRing X'] [CommRing X''] [Algebra A X] [Algebra A' X'] [Algebra A'' X'']
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨a, ha, rfl⟩`. Use `⟨φ a, hφ a ha, ?_⟩` and prove the remaining obligations. Simplify using `only [IsScalarTower.algebraMap_apply A X (Localization.AtPrime P), IsScalarTower.algebraMap_apply A' X' (Localization.AtPrime P'), Localization.localRingHom_to_map, hc]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem submonoid_le (φ : A →+* A') (χ : X →+* X')
     (hc : ∀ a, χ (algebraMap A X a) = algebraMap A' X' (φ a))
@@ -36,7 +36,7 @@ def genFibMap (φ : A →+* A') (χ : X →+* X')
     (submonoid_le φ χ hc hφ P P' hP)
 
 /- English proof (translation)
-The claim follows from `IsLocalization.map_comp _`.
+A detailed English derivation is pending.
 -/
 theorem genFibMap_comp_algebraMap (φ : A →+* A') (χ : X →+* X')
     (hc : ∀ a, χ (algebraMap A X a) = algebraMap A' X' (φ a))
@@ -49,7 +49,7 @@ theorem genFibMap_comp_algebraMap (φ : A →+* A') (χ : X →+* X')
   IsLocalization.map_comp _
 
 /- English proof (translation)
-Rewrite using `[genFibMap, IsLocalization.map_eq, Localization.localRingHom_to_map]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem genFibMap_apply (φ : A →+* A') (χ : X →+* X')
     (hc : ∀ a, χ (algebraMap A X a) = algebraMap A' X' (φ a))
@@ -63,7 +63,7 @@ theorem genFibMap_apply (φ : A →+* A') (χ : X →+* X')
   rw [genFibMap, IsLocalization.map_eq, Localization.localRingHom_to_map]
 
 /- English proof (translation)
-Apply `IsLocalization.ringHom_ext (Algebra.algebraMapSubmonoid (Localization.AtPrime P) (nonZeroDivisors A))` to reduce the goal to its premises. Apply `IsLocalization.ringHom_ext P.primeCompl` to reduce the goal to its premises. Conclude with `RingHom.ext h`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem ext {C : Type} [CommRing C] (P : Ideal X) [P.IsPrime]
     {u v : GlobalTheory.LocAcyc.GenFib A (Localization.AtPrime P) →+* C}
@@ -74,7 +74,7 @@ theorem ext {C : Type} [CommRing C] (P : Ideal X) [P.IsPrime]
   exact RingHom.ext h
 
 /- English proof (translation)
-Use `ext P (fun y => ?_)` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, genFibMap_apply, hχ]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem genFibMap_comp (φ₁ : A →+* A') (χ₁ : X →+* X')
     (hc₁ : ∀ a, χ₁ (algebraMap A X a) = algebraMap A' X' (φ₁ a))
@@ -94,7 +94,7 @@ theorem genFibMap_comp (φ₁ : A →+* A') (χ₁ : X →+* X')
   simp only [RingHom.comp_apply, genFibMap_apply, hχ]
 
 /- English proof (translation)
-Use `ext P (fun y => ?_)` and prove the remaining obligations. Simplify using `only [RingHom.id_apply, genFibMap_apply, hχ]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem genFibMap_id (φ : A →+* A) (χ : X →+* X)
     (hc : ∀ a, χ (algebraMap A X a) = algebraMap A X (φ a))

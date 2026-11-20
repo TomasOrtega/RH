@@ -21,15 +21,15 @@ def cupflip_wd_cobdry : Prop :=
     μ.IsAW hk α.1 β.1 γ.1 → (α ∈ coboundaries _ _ n ∨ β ∈ coboundaries _ _ m) → γ ∈ coboundaries _ _ k
 
 /- English proof (translation)
-Introduce `R _ I J K μ E n m k hk`. Take `⟨hex, huniq, haddl, haddr⟩` from `ha R μ E hk`. Set `aw : Cocycle ((chains R).obj E) I n → Cocycle ((chains R).obj E) J m → Cocycle ((chains R).obj E) K k` to `fun α β => Classical.choose (hex α β)`. Establish `haw : ∀ α β, μ.IsAW hk α.1 β.1 (aw α β).1` using `fun α β => Classical.choose_spec (hex α β)`. Establish `heq : ∀ α β γ, μ.IsAW hk α.1 β.1 γ.1 → aw α β = γ` using `fun α β γ h => Subtype.ext (huniq _ _ _ _ (haw α β) h)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `addl : ∀ α α' β, aw (α + α') β = aw α β + aw α' β` using `fun α α' β => heq _ _ _ (haddl _ _ _ _ _ (haw α β) (haw α' β))`. Establish `addr : ∀ α β β', aw α (β + β') = aw α β + aw α β'` using `fun α β β' => heq _ _ _ (haddr _ _ _ _ _ (haw α β) (haw α β'))`. Set `g : Cocycle ((chains R).obj E) I n → CohomologyClass ((chains R).obj E) J m →+ CohomologyClass ((chains R).obj E) K k` to `fun α => CohomologyClass.descAddMonoidHom (AddMonoidHom.mk' (fun β => CohomologyClass.mk (aw α β)) (fun β β' => by simp only [addr, CohomologyClass.mk_add])) (fun β hβ => by`. Rewrite using `[AddMonoidHom.mem_ker, AddMonoidHom.mk'_apply, CohomologyClass.mk_eq_zero_iff]`. Conclude with `hb R μ E hk α β _ (haw α β) (Or.inr hβ))`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `gmk : ∀ α β, g α (CohomologyClass.mk β) = CohomologyClass.mk (aw α β)` using `fun _ _ => rfl`. Establish `gadd : ∀ α α', g (α + α') = g α + g α'`. Introduce `α α'`. Use `AddMonoidHom.ext fun b => ?_` and prove the remaining obligations. Take `⟨β, rfl⟩` from `CohomologyClass.mk_surjective b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AddMonoidHom.add_apply, gmk, gmk, gmk, addl, CohomologyClass.mk_add]`. Set `c : CohomologyClass ((chains R).obj E) I n →+ CohomologyClass ((chains R).obj E) J m →+ CohomologyClass ((chains R).obj E) K k` to `CohomologyClass.descAddMonoidHom (AddMonoidHom.mk' g gadd) (fun α hα => by`. Rewrite using `[AddMonoidHom.mem_ker, AddMonoidHom.mk'_apply]`. Use `AddMonoidHom.ext fun b => ?_` and prove the remaining obligations. Take `⟨β, rfl⟩` from `CohomologyClass.mk_surjective b`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gmk, AddMonoidHom.zero_apply, CohomologyClass.mk_eq_zero_iff]`. Conclude with `hb R μ E hk α β _ (haw α β) (Or.inl hα))`. Use `⟨c, fun α β γ h => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `g α (CohomologyClass.mk β) = _`. Rewrite using `[gmk, heq α β γ h]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cupflip_wd_of (ha : cupflip_wd_aw) (hb : cupflip_wd_cobdry) : cupflip_wd := by
   intro R _ I J K μ E n m k hk

@@ -40,7 +40,7 @@ variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D 
   [∀ k, SMulCommClass Dd.R' (D.nd.O i) (blockRestrictedRepresentationType (RepresentationBoundsCohomology.blk D.R) Dd.ρk k)]
 
 /- English proof (translation)
-Rewrite using `[(D.nbr i w hw).eO_alg z, ← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply ℤ_[D.nd.l i] ℚ_[D.nd.l i] (Br.LLw (D.nbr i w hw))]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem algZ_LL {w : HeightOneSpectrum (𝓞 D.host.E)} (hw : w ∈ placesOver D.host.E (D.nd.l i)) (z : ℤ_[D.nd.l i]) :
     algebraMap (Br.Ow (D.nbr i w hw)) (Br.LLw (D.nbr i w hw)) ((D.nbr i w hw).eO (algebraMap ℤ_[D.nd.l i] (D.nd.O i) z)) =
@@ -50,7 +50,7 @@ theorem algZ_LL {w : HeightOneSpectrum (𝓞 D.host.E)} (hw : w ∈ placesOver D
   rfl
 
 /- English proof (translation)
-Establish `hc` using `hcyc w hw ((eW i dc hw).symm h)`. Rewrite `hc` using `[MulEquiv.apply_symm_apply]`. Rewrite using `[epsL, algZ_LL, Units.val_inv_eq_inv_val, hc]`. Use `congr 1`. Conclude with `eq_inv_of_mul_eq_one_left (by rw [← PadicInt.coe_mul, Units.inv_mul, PadicInt.coe_one])`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem epsL_eq (hcyc : CycW i dc) {w : HeightOneSpectrum (𝓞 D.host.E)} (hw : w ∈ placesOver D.host.E (D.nd.l i))
     (h : Br.G D.nbr i w hw) :
@@ -90,9 +90,9 @@ variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D 
   [∀ k, SMulCommClass Dd.R' (D.nd.O i) (blockRestrictedRepresentationType (RepresentationBoundsCohomology.blk D.R) Dd.ρk k)]
 
 /- English proof (translation)
-Introduce `ψ _`. Set `_` to `Formalism.MainNotions.N.K.Topo.fracTopology (D.nd.O i)`. Set `_` to `Formalism.MainNotions.N.K.Topo.rTopology (D.nd.O i) Dd.R'`. Use `Formalism.MainNotions.N.K.Topo.fracTop_addGroup_O i` as an intermediate fact. Use `Formalism.MainNotions.N.K.Topo.fracTop_smul_O i` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Formalism.MainNotions.N.K.Topo.rTop_addGroup_RD i r π g0 eB e₁ s Dd hD` as an intermediate fact. Use `Formalism.MainNotions.N.K.Topo.rTop_constSMul_RD i Dd` as an intermediate fact. Use `Formalism.MainNotions.N.K.Topo.rTop_mul_RD i r π g0 eB e₁ s Dd hD` as an intermediate fact. Establish `h` using `Formalism.RepresentationBoundsCohomology.FIN.lc_of_torsion (D.nd.l i) Dd.r Dd.χ Dd.E (Formalism.MainNotions.N.K.Topo.padicCoeff_O i) (Formalism.MainNotions.N.K.Topo.fgTop_RD i r π g0 eB e₁ s Dd hD) (Formalism.MainNotions.N.K.Topo.uElt_cont i r π g0 eB e₁ s Dd hD hc) (fun m => For …`. Conclude with `h.comp_continuous continuous_subtype_val`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem yLoc_of
     (hD : RingDef (D.nd.O i) (D.nd.T i) (RepresentationBoundsCohomology.repX D.nd r) π (chiU D.nd i 1) (epsU D.nd i) g0 eB e₁ s Dd)

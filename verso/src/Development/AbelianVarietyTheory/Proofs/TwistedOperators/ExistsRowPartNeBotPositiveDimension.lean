@@ -26,7 +26,7 @@ namespace GlobalTheory.RowsPartNe
 open GlobalTheory.Mem.RowSides in
 
 /- English proof (translation)
-Introduce `f g hfg`. Use `semi_injective_of_basis (A.MtildeCSD t).basis (R.B.R t).pres.extL (classPres_extMem_extBij_isom _ _ _ _ _ _ _ _ _ _ (R.B.R t).pres).2.1.1 ?_` and prove the remaining obligations. Conclude with `(hM.jX t f).symm.trans ((congrArg (R.HX t).e hfg).trans (hM.jX t g))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem jX_injective_of_models {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} (hM : R.IsModels) (t : T) :
@@ -37,21 +37,19 @@ theorem jX_injective_of_models {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T 
   exact (hM.jX t f).symm.trans ((congrArg (R.HX t).e hfg).trans (hM.jX t g))
 
 /- English proof (translation)
-Introduce `hH hP D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s hOk hC hEx hIn hGE hPos`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hcar` using `GlobalTheory.Hk3.carries_of_rows_top hP hH R F (GlobalTheory.Chain.LiftConv.liftInteg_of_cuspRapidDecay hP D) hOk hC hEx hIn hGE hPos`. Establish `hc0 : ∀ c, R.EEc c = ⊥`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c`. Assume the negation of the conclusion as `h`. Take `⟨p, hp⟩` from `hcar c h`. Establish `hle : R.EEc c ≤ R.EEp3 p`. Unfold `RealDat3.EEp3`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `le_iSup₂_of_le (f := fun c (_ : R.Carries p c) => R.EEc c) c hp le_rfl`. Rewrite `hle` using `[hne p, le_bot_iff]`. Conclude with `h hle`. Take `⟨hCore, hSF, hEq, -⟩` from `GlobalTheory.CoreOfWeak.core_of_weak R F hC hEx`. Take `⟨h, -, -, htop, -⟩` from `GlobalTheory.Hk3.OpsRows.exists_opsE R.toRealDat F.lv2 hCore (GlobalTheory.Hk3.schurAll_of_cuspRapidDecay hP R.toRealDat) R.SF hSF`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hbot : (⊤ : Submodule ℂ R.HE.H) = ⊥`. Rewrite using `[← htop]`. Simplify using `only [← hEq, hc0, iSup_bot]`. Establish `hzero : ∀ x : R.HE.H, x = 0` using `fun x => by`. Establish `hx : x ∈ (⊤ : Submodule ℂ R.HE.H)` using `Submodule.mem_top`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hx` using `[hbot]`. Conclude with `(Submodule.mem_bot ℂ).1 hx`. Establish `hM` using `(RealDat3.characterisation_of_weak hC hEx).models`. Establish `hL : R.toRealDat.LPos F.lv2` using `fun b => by`. Consider the cases of `b`.
+Split into cases according to the possible forms of the given data. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hPos false`. Conclude with `hPos true`. Use `(GlobalTheory.QPosCompare.lPos_iff_ne_bot R.toRealDat F.lv2).1 hL false ?_` and prove the remaining obligations. Establish `hZ : (R.toRealDat.toCx F.lv2).Z A3.A.μ0 = ⊥`. Rewrite using `[eq_bot_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Take `⟨y, hy⟩` from `hx`. Establish `hy0 : y = 0` using `hzero (Tw.out (s := twAt D.what₂.embLL A3.A.v0) y)`. Rewrite `hy` using `[hy0, map_zero]`. Establish `h1 : R.jX A3.A.μ0 x = 0` using `hy.symm`.
-
-Rewrite using `[Submodule.mem_bot]`. Conclude with `jX_injective_of_models hM A3.A.μ0 (h1.trans (map_zero _).symm)`. Rewrite using `[hZ]`. Conclude with `BlockDat.good_part_coordinates_bot _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rowPart_ne_bot_positiveDimension : GlobalTheory.Hk3.HoweUnram → GlobalTheory.Published.CuspRapidDecay → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) {s : ℕ}, A3.fam3.Ok3 s → R.WeakCharacterisation F → R.toRealDat.ExAt → ((∀ t (k : A3.okI t × List ℕ), A3.heckeRI t k = 0 ∨ ∃ y, Formalism.L2.Col.InertTypeOk (A3.A.fam.R t).n y ∧ A3.heckeRI t k = A3.heckeRI t (k.1, y)) ∧ ∀ j t (k : A3.okI t × List ℕ), A3.heckeLI j t k = 0 ∨ ∃ y, Formalism.L2.Col.InertTypeOk (A3.A.fam.L j t).n y ∧ A3.heckeLI j t k = A3.heckeLI j t (k.1, y)) → R.PGEquiv F → (∀ b, (lv (F.fc (R.toCx3 F).zs) b).Pos) → ∃ p, R.EEp3 p ≠ ⊥ := by
   intro hH hP D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s hOk hC hEx hIn hGE hPos

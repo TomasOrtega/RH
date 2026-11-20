@@ -5,15 +5,13 @@ open scoped ComplexOrder
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set α := C₀ / c₀ with hα`. Establish `hα0 : 0 ≤ α` using `div_nonneg hC hc.le`. Use `set p := w - α * u with hp`. Establish `e : (1 + C₀ ^ 2 / c₀) * u ^ 2 - 2 * C₀ * u * w + c₀ * w ^ 2 = u ^ 2 + c₀ * p ^ 2`. Rewrite using `[hp, hα]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hw : w = p + α * u` using `by rw [hp]; ring`. Establish `h1 : u ^ 2 + w ^ 2 ≤ (1 + α) ^ 2 * (u ^ 2 + p ^ 2)`. Rewrite using `[hw]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[mul_nonneg hα0 (sq_nonneg (p - u)), mul_nonneg hα0 (sq_nonneg u), mul_nonneg (mul_nonneg hα0 hα0) (sq_nonneg u), mul_nonneg hα0 (sq_nonneg p), mul_nonneg (mul_nonneg hα0 hα0) (sq_nonneg p)]`. Use `set M := max 1 (1 / c₀) with hM`. Establish `hM1 : 1 ≤ M` using `le_max_left _ _`. Establish `hMc : 1 ≤ M * c₀`. Establish `: 1 / c₀ ≤ M` using `le_max_right _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite `this` using `[div_le_iff₀ hc]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : u ^ 2 + p ^ 2 ≤ M * (u ^ 2 + c₀ * p ^ 2)`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hM1 (sq_nonneg u), mul_le_mul_of_nonneg_right hMc (sq_nonneg p)]`. Rewrite using `[e]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem schur_scalar_bound (u w C₀ c₀ : ℝ) (hC : 0 ≤ C₀) (hc : 0 < c₀) :
     u ^ 2 + w ^ 2 ≤ (1 + C₀ / c₀) ^ 2 * max 1 (1 / c₀) *
@@ -44,38 +42,36 @@ theorem schur_scalar_bound (u w C₀ c₀ : ℝ) (hC : 0 ≤ C₀) (hc : 0 < c�
     _ = _ := by ring
 
 /- English proof (translation)
-Use `Finset.sum_mul_sq_le_sq_mul_sq Finset.univ x v` as an intermediate fact. Simplify `this` using `[dotProduct, sq]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem dot_sq_le (n : ℕ) (x v : Fin n → ℝ) : (x ⬝ᵥ v) ^ 2 ≤ (x ⬝ᵥ x) * (v ⬝ᵥ v) := by
   have := Finset.sum_mul_sq_le_sq_mul_sq Finset.univ x v
   simpa [dotProduct, sq] using this
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun i _ => mul_self_nonneg (x i)`.
+A detailed English derivation is pending.
 -/
 theorem dot_self_nonneg' (n : ℕ) (x : Fin n → ℝ) : 0 ≤ x ⬝ᵥ x :=
   Finset.sum_nonneg fun i _ => mul_self_nonneg (x i)
 
 /- English proof (translation)
-Introduce `k l a bt b d C₀ c₀ b₀ hC hc hb _ _ _ ha hbb hd hbt z`. Use `set x : Fin k → ℝ := z ∘ Sum.inl with hx`. Use `set y : Fin l → ℝ := z ∘ Sum.inr with hy`. Use `set L := (1 + C₀ + C₀ ^ 2 / c₀) / b₀ with hL`. Establish `hsum : ∀ (f g : Fin k ⊕ Fin l → ℝ), f ⬝ᵥ g = (f ∘ Sum.inl) ⬝ᵥ (g ∘ Sum.inl) + (f ∘ Sum.inr) ⬝ᵥ (g ∘ Sum.inr)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `f g`. Simplify using `[dotProduct, Fintype.sum_sum_type]`. Establish `htr : y ⬝ᵥ b.transpose.mulVec x = x ⬝ᵥ b.mulVec y`. Rewrite using `[dotProduct_mulVec, vecMul_transpose, dotProduct_comm]`. Establish `hexp : z ⬝ᵥ (Matrix.fromBlocks (a + L • bt) b b.transpose d).mulVec z = x ⬝ᵥ a.mulVec x + L * (x ⬝ᵥ bt.mulVec x) + 2 * (x ⬝ᵥ b.mulVec y) + y ⬝ᵥ d.mulVec y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsum, fromBlocks_mulVec]`. Simplify using `only [Sum.elim_comp_inl, Sum.elim_comp_inr]`. Rewrite using `[← hx, ← hy, add_mulVec, smul_mulVec, dotProduct_add, dotProduct_add, dotProduct_add, dotProduct_smul, htr, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hzz : z ⬝ᵥ z = x ⬝ᵥ x + y ⬝ᵥ y` using `hsum z z`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hexp, hzz]`. Use `set U := x ⬝ᵥ x`. Use `set W := y ⬝ᵥ y`. Establish `hU : 0 ≤ U` using `dot_self_nonneg' k x`. Establish `hW : 0 ≤ W` using `dot_self_nonneg' l y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set u := Real.sqrt U`. Use `set w := Real.sqrt W`. Establish `hu : u ^ 2 = U` using `Real.sq_sqrt hU`. Establish `hw : w ^ 2 = W` using `Real.sq_sqrt hW`. Establish `hu0 : 0 ≤ u` using `Real.sqrt_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hw0 : 0 ≤ w` using `Real.sqrt_nonneg _`. Establish `hQ : |x ⬝ᵥ b.mulVec y| ≤ C₀ * u * w`. Establish `h1` using `dot_sq_le k x (b.mulVec y)`. Establish `h2` using `hbb y`. Establish `h3 : (x ⬝ᵥ b.mulVec y) ^ 2 ≤ (C₀ * u * w) ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `abs_le_of_sq_le_sq' h3 (by positivity) |>.2 |> fun h => abs_le.mpr ⟨(abs_le_of_sq_le_sq' h3 (by positivity)).1, h⟩`. Establish `hT : -(C₀ * U) ≤ x ⬝ᵥ a.mulVec x`. Use `ha x` as an intermediate fact. Conclude with `(abs_le.mp this).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : (1 + C₀ + C₀ ^ 2 / c₀) * U ≤ L * (x ⬝ᵥ bt.mulVec x)`. Establish `h` using `hbt x`. Establish `hL0 : 0 ≤ L` using `by rw [hL]; positivity`. Combine the equalities or inequalities in the displayed calculation. Establish `hD` using `hd y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hQ'` using `(abs_le.mp hQ).1`. Establish `key` using `schur_scalar_bound u w C₀ c₀ hC hc`. Establish `hK : 0 < (1 + C₀ / c₀) ^ 2 * max 1 (1 / c₀)`. Establish `: 0 < 1 + C₀ / c₀` using `by have := div_nonneg hC hc.le; linarith`. Conclude with `mul_pos (pow_pos this 2) (lt_of_lt_of_le one_pos (le_max_left _ _))`.
-
-Rewrite using `[inv_mul_le_iff₀ hK]`. Establish `hS : (1 + C₀ ^ 2 / c₀) * u ^ 2 - 2 * C₀ * u * w + c₀ * w ^ 2 ≤ x ⬝ᵥ a.mulVec x + L * (x ⬝ᵥ bt.mulVec x) + 2 * (x ⬝ᵥ b.mulVec y) + y ⬝ᵥ d.mulVec y`. Rewrite using `[hu, hw]`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem schur_block_lower_bound : ∀ (k l : ℕ) (a bt : Matrix (Fin k) (Fin k) ℝ) (b : Matrix (Fin k) (Fin l) ℝ) (d : Matrix (Fin l) (Fin l) ℝ) (C₀ c₀ b₀ : ℝ), 0 ≤ C₀ → 0 < c₀ → 0 < b₀ → a.IsSymm → d.IsSymm → bt.IsSymm → (∀ x, |x ⬝ᵥ a.mulVec x| ≤ C₀ * (x ⬝ᵥ x)) → (∀ y, (b.mulVec y) ⬝ᵥ (b.mulVec y) ≤ C₀ ^ 2 * (y ⬝ᵥ y)) → (∀ y, c₀ * (y ⬝ᵥ y) ≤ y ⬝ᵥ d.mulVec y) → (∀ x, b₀ * (x ⬝ᵥ x) ≤ x ⬝ᵥ bt.mulVec x) → ∀ z : Fin k ⊕ Fin l → ℝ, ((1 + C₀ / c₀) ^ 2 * max 1 (1 / c₀))⁻¹ * (z ⬝ᵥ z) ≤ z ⬝ᵥ (Matrix.fromBlocks (a + ((1 + C₀ + C₀ ^ 2 / c₀) / b₀) • bt) b b.transpose d).mulVec z := by
   intro k l a bt b d C₀ c₀ b₀ hC hc hb _ _ _ ha hbb hd hbt z

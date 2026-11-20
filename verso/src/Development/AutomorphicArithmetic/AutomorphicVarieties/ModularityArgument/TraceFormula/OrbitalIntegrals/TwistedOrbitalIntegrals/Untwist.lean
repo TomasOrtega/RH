@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open MeasureTheory Topology PositivityTheory.Rg.Tf.Loc UpperTheory.V.Z.Tf.Orb
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `⟨μ, hμ, fun _ => Iff.rfl, fun _ => rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 private theorem aux {G : Type} [Group G] [TopologicalSpace G] [MeasurableSpace G] (μG : Measure G) (H H' : Subgroup G) (e : H' = H)
     (μ : Measure H) (hμ : μ.IsHaarMeasure) : ∃ μ' : Measure H', μ'.IsHaarMeasure ∧
@@ -12,13 +12,13 @@ private theorem aux {G : Type} [Group G] [TopologicalSpace G] [MeasurableSpace G
   exact ⟨μ, hμ, fun _ => Iff.rfl, fun _ => rfl⟩
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n _ _ μk γ`. Establish `h1 : ∀ g : GL (Fin n) k, sigmaGL (1 : k ≃ₐ[k] k) g = g` using `fun g => by rw [sigmaGL_one]; rfl`. Use `⟨fun τ => ?_, h1, fun h => ?_, fun μ hμ => ?_⟩` and prove the remaining obligations. Establish `: τ = 1` using `AlgEquiv.ext fun x => τ.commutes x`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_mem _`. Establish `: normGL (1 : k ≃ₐ[k] k) γ = γ`. Rewrite using `[normGL, Module.finrank_self]`. Simplify using `[twNorm]`. Rewrite using `[IsTwRegSemisimple, this]` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `e : twCent (sigmaGL (1 : k ≃ₐ[k] k)) γ = Subgroup.centralizer {γ}`. Use extensionality with `x`. Rewrite using `[mem_twCent, h1, Subgroup.mem_centralizer_singleton_iff, mul_assoc, inv_mul_eq_iff_eq_mul, eq_comm]`. Take `⟨μ', a, b, c⟩` from `aux μk _ _ e μ hμ`. Use `⟨μ', a, b, fun f => ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[twOrbIntegralC, orbIntegralC, c]`. Simplify using `only [twConj, h1]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.Orb.untwist :
     UpperTheory.V.Z.Tf.Orb.Untwist := by

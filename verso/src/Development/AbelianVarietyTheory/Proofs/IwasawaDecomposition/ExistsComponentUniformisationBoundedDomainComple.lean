@@ -12,24 +12,22 @@ namespace GlobalTheory.LieBase.UnifExists
 open Formalism.MJ ReciprocityTheory.ChartRestriction.G.AR.Up
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t a b`. Conclude with `congrFun h (t, a, b)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem flat_inj {ι : Type} {p q : ℕ} {z z' : ι → Matrix (Fin p) (Fin q) ℂ} (h : flat z = flat z') : z = z' := by
   funext t a b
   exact congrFun h (t, a, b)
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Y T F _ e σ U hσ hU Φ k X j f f₀ Eb A₀ hj hL`. Take `⟨hoi, hfj, -⟩` from `hL`. Use `haveI := hoi`. Establish `hp : (U.X k).p0 = Dw.p + Dw.q - Dw.p` using `first_index_eq_of_unfolded U hU rfl k`. Establish `hle : Dw.p ≤ Dw.p + Dw.q` using `Nat.le_add_right Dw.p Dw.q`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrange : ∀ x : (U.X k).dom, Set.range (cxPt T.Z (U.un k x)).1 ⊆ Set.range j`. Introduce and unpack `x _ ⟨s, rfl⟩`. Take `⟨y, hy⟩` from `Φ.label k x s`. Use `⟨f y, ?_⟩` and prove the remaining obligations. Use `show (f ≫ j) y = _`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[hfj]`. Conclude with `hy`. Set `lf : (U.X k).dom → CxPts X.str (σ.comp e.toRingHom)` to `fun x => ⟨IsOpenImmersion.lift j (cxPt T.Z (U.un k x)).1 (hrange x), by`. Rewrite using `[← hj, ← Category.assoc, IsOpenImmersion.lift_fac, ← Category.assoc, (cxPt T.Z (U.un k x)).2, ← Spec.map_comp]`. Use the proof step `rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hlf : ∀ x, cxOf e σ hj (lf x) = cxPt T.Z (U.un k x)` using `fun x => Subtype.ext (IsOpenImmersion.lift_fac _ _ _)`. Establish `hwell : ∀ x x' : (U.X k).dom, domPt (U.X k) hle (Equiv.refl (U.X k).Ψ) x.1 = domPt (U.X k) hle (Equiv.refl (U.X k).Ψ) x'.1 → cxPt T.Z (U.un k x) = cxPt T.Z (U.un k x')`. Introduce `x x' h`. Establish `h5 : ∀ τ, moeb (frameCo (U.X k) hle x.1 τ) 0 = moeb (frameCo (U.X k) hle x'.1 τ) 0` using `fun τ => congrFun h τ`. Conclude with `cxPt_congr (PointWell.pt_eq_of_block hU hσ k x x' (fun τ => PointWell.block_of_moeb_eq _ hle hp x.2 x'.2 τ (h5 τ)) (fun τ => PointWell.block_of_moeb_eq _ hle hp x'.2 x.2 τ (h5 τ).symm))`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Set `x0 : (U.X k).dom` to `⟨x0F (U.X k), IW.orth_mem_dom (U.X k) _ (isOrth_x0F (U.X k))⟩`. Use `⟨fun v => if h : ∃ x : (U.X k).dom, flat (domPt (U.X k) (Nat.le_add_right Dw.p Dw.q) (Equiv.refl (U.X k).Ψ) x.1) = v then lf h.choose else lf x0, fun x => ?_⟩` and prove the remaining obligations. Establish `h : ∃ x' : (U.X k).dom, flat (domPt (U.X k) (Nat.le_add_right Dw.p Dw.q) (Equiv.refl (U.X k).Ψ) x'.1) = flat (domPt (U.X k) (Nat.le_add_right Dw.p Dw.q) (Equiv.refl (U.X k).Ψ) x.1)` using `⟨x, rfl⟩`. Simplify using `only [dif_pos h]`. Rewrite using `[hlf]`.
-
-Conclude with `hwell _ _ (flat_inj h.choose_spec)`.
+A detailed English derivation is pending.
 -/
 theorem exists_unif : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (T : TorModel Y) (F : Type) [Field F] (e : F ≃+* c.F) (σ : c.F →+* ℂ) (U : Formalism.L2.PjFree.Unf Xo c σ (Dw.p + Dw.q)), Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf U → ∀ (Φ : FlagTor T.Z e U) (k : U.Comp), ∀ (X : Var F) (j : X.X ⟶ gen T.Z) (f : (Φ.C k).Y.X ⟶ X.X) (f₀ : EigFrame T.Z (constF e X) (genericPt X ≫ j ≫ genι T.Z)) (Eb : Fr (ratOf X) Dw.mult 0) (A₀ : Mat Dw.mult X.Fn) (hj : j ≫ genStr T.Z ≫ spMap e.toRingHom = X.str), IsLieBase e (Φ.C k) X j f f₀ Eb A₀ → ∃ ψ : ((U.X k).Ψ × Fin Dw.p × Fin (Dw.p + Dw.q - Dw.p) → ℂ) → CxPts X.str (σ.comp e.toRingHom), (∀ x : (U.X k).dom, cxOf e σ hj (ψ (flat (domPt (U.X k) (Nat.le_add_right Dw.p Dw.q) (Equiv.refl (U.X k).Ψ) x.1))) = cxPt T.Z (U.un k x)) := by
   intro E _ _ _ H Dw l Xo c O _ β Y T F _ e σ U hσ hU Φ k X j f f₀ Eb A₀ hj hL

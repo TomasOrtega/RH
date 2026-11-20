@@ -17,7 +17,7 @@ noncomputable section
 namespace GlobalTheory.SliceSumTarget
 
 /- English proof (translation)
-Establish `h1` using `max_zero_sub_max_neg_zero_eq_self z.re`. Establish `h2` using `max_zero_sub_max_neg_zero_eq_self z.im`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
 Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -32,7 +32,7 @@ theorem decomp_re_im (z : ℂ) : ((max z.re 0 : ℝ) : ℂ) + -1 * ((max (-z.re)
     linarith
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.T.isThetaFun_superposition_target_orthSummand D ψ hψ T A B S o F hF Unit (Measure.dirac ()) (fun _ => y) (fun _ => 1) measurable_const (integrable_const _)`. Simplify `h` using `only [integral_dirac, one_mul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isThetaFunO_sliceT {D : D7} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {T A B S : HSp D}
     (o : OrthDec T A B) {F : WO S T → ℂ} (hF : IsThetaFunO ψ S T F) (y : WO S B) :
@@ -42,45 +42,39 @@ theorem isThetaFunO_sliceT {D : D7} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsSt
   simpa only [integral_dirac, one_mul] using h
 
 /- English proof (translation)
-Introduce `D ψ T A B S o χ χ' om hW F hF Ω _ μ k a hk ha p`. Establish `hψ` using `hW.std`. Establish `h1` using `GlobalTheory.T.weil_operator_target_summand_preserves_theta_functions D ψ T A B S o F hF χ χ' om hW p`. Use `⟨h1, fun u₀ => ?_⟩` and prove the remaining obligations. Take `⟨-, -, iB3, -⟩` from `lattice_Mx D B.rank S.rank`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `haveI : BorelSpace (WO S B) := ⟨rfl⟩`. Use `set Fs : WO S B → WO S A → ℂ := fun y u => F ((o.resT S).symm (u, y)) with hFs`. Use `set G : WO S T → ℂ := fun x => om p (fun u => F ((o.resT S).symm (u, (o.resT S x).2))) (o.resT S x).1 with hG`. Establish `hGs : ∀ y u, om p (Fs y) u = G ((o.resT S).symm (u, y))`. Introduce `y u`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hG, hFs, AddEquiv.apply_symm_apply]`. Establish `cFs : Continuous fun q : WO S B × WO S A => Fs q.1 q.2` using `hF.cont.comp ((o.continuous_resT_symm S).comp (continuous_snd.prodMk continuous_fst))`. Establish `cGs : Continuous fun q : WO S B × WO S A => om p (Fs q.1) q.2`. Simplify using `only [hGs]`. Conclude with `h1.cont.comp ((o.continuous_resT_symm S).comp (continuous_snd.prodMk continuous_fst))`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨CF, hCF⟩` from `GlobalTheory.IsoMean.isThetaFunO_bounded S T ψ hψ F hF`. Take `⟨CG, hCG⟩` from `GlobalTheory.IsoMean.isThetaFunO_bounded S T ψ hψ G h1`. Establish `bFs : ∀ y u, ‖Fs y u‖ ≤ CF` using `fun y u => hCF _`. Establish `bGs : ∀ y u, ‖om p (Fs y) u‖ ≤ CG` using `fun y u => by rw [hGs]; exact hCG _`. Establish `mF : ∀ u, AEStronglyMeasurable (fun w => Fs (k w) u) μ` using `fun u => ((cFs.comp (continuous_id.prodMk continuous_const)).measurable.comp hk).aestronglyMeasurable`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `mG : AEStronglyMeasurable (fun w => om p (Fs (k w)) u₀) μ` using `((cGs.comp (continuous_id.prodMk continuous_const)).measurable.comp hk).aestronglyMeasurable`. Set `P : (Ω → ℂ) → Prop` to `fun c => Integrable c μ ∧ om p (fun u => ∫ w, c w * Fs (k w) u ∂μ) u₀ = ∫ w, c w * om p (Fs (k w)) u₀ ∂μ`. Establish `intF : ∀ c, Integrable c μ → ∀ u, Integrable (fun w => c w * Fs (k w) u) μ` using `fun c hc u => by`. Use `hc.bdd_mul (mF u) (c := CF) (Filter.Eventually.of_forall fun w => bFs _ _)` as an intermediate fact. Simplify `this` using `only [mul_comm]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `intG : ∀ c, Integrable c μ → Integrable (fun w => c w * om p (Fs (k w)) u₀) μ` using `fun c hc => by`. Use `hc.bdd_mul mG (c := CG) (Filter.Eventually.of_forall fun w => bGs _ _)` as an intermediate fact. Simplify `this` using `only [mul_comm]`. Establish `Padd : ∀ c₁ c₂, P c₁ → P c₂ → P (c₁ + c₂)`. Introduce `c₁ c₂ h₁ h₂`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `⟨h₁.1.add h₂.1, ?_⟩` and prove the remaining obligations. Establish `e1 : (fun u => ∫ w, (c₁ + c₂) w * Fs (k w) u ∂μ) = (fun u => ∫ w, c₁ w * Fs (k w) u ∂μ) + (fun u => ∫ w, c₂ w * Fs (k w) u ∂μ)`. Use function extensionality and compare the values at `u`. Simplify using `only [Pi.add_apply, add_mul]`. Conclude with `integral_add (intF _ h₁.1 u) (intF _ h₂.1 u)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e1, map_add, Pi.add_apply, h₁.2, h₂.2]`. Simplify using `only [Pi.add_apply, add_mul]`. Conclude with `(integral_add (intG _ h₁.1) (intG _ h₂.1)).symm`. Establish `Psmul : ∀ (z : ℂ) c, P c → P (fun w => z * c w)`. Introduce `z c h`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨h.1.const_mul z, ?_⟩` and prove the remaining obligations. Establish `e1 : (fun u => ∫ w, (z * c w) * Fs (k w) u ∂μ) = z • (fun u => ∫ w, c w * Fs (k w) u ∂μ)`. Use function extensionality and compare the values at `u`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_assoc]`. Conclude with `integral_const_mul z _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[e1, map_smul, Pi.smul_apply, smul_eq_mul, h.2]`. Simplify using `only [mul_assoc]`. Conclude with `(integral_const_mul z _).symm`. Establish `Ppos : ∀ b : Ω → ℝ, Measurable b → (∀ w, 0 ≤ b w) → Integrable b μ → P (fun w => (b w : ℂ))`. Introduce `b hbm hb0 hbi`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨hbi.ofReal, ?_⟩` and prove the remaining obligations. Set `ν : Measure (WO S B)` to `(μ.withDensity fun w => ((Real.toNNReal (b w) : NNReal) : ENNReal)).map k`. Use `haveI : IsFiniteMeasure (μ.withDensity fun w => ((Real.toNNReal (b w) : NNReal) : ENNReal)) := isFiniteMeasure_withDensity_ofReal hbi.2`. Establish `tr : ∀ φ : WO S B → ℂ, Continuous φ → ∫ y, φ y ∂ν = ∫ w, (b w : ℂ) * φ (k w) ∂μ`. Introduce `φ hφ`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[integral_map hk.aemeasurable hφ.aestronglyMeasurable, integral_withDensity_eq_integral_smul (hbm.real_toNNReal) _]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Simplify using `only [NNReal.smul_def, Real.coe_toNNReal _ (hb0 w), Complex.real_smul]`. Establish `hth : IsThetaFunO ψ S A fun u => ∫ y, Fs y u ∂ν`. Establish `e : (fun u => ∫ y, Fs y u ∂ν) = fun u => ∫ w, (b w : ℂ) * F ((o.resT S).symm (u, k w)) ∂μ`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `u`. Conclude with `tr (fun y => Fs y u) (cFs.comp (continuous_id.prodMk continuous_const))`. Rewrite using `[e]`. Conclude with `GlobalTheory.T.isThetaFun_superposition_target_orthSummand D ψ hψ T A B S o F hF Ω μ k _ hk hbi.ofReal`. Establish `hc` using `GlobalTheory.T.weilOperator_integral_comm_of_bounded_finiteMeasure D ψ S A χ χ' om hW (WO S B) ν Fs p (isThetaFunO_sliceT hψ o hF) cFs ⟨CF, bFs⟩ cGs ⟨CG, bGs⟩ hth u₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (fun u => ∫ y, Fs y u ∂ν) = fun u => ∫ w, (b w : ℂ) * Fs (k w) u ∂μ`. Use function extensionality and compare the values at `u`. Conclude with `tr (fun y => Fs y u) (cFs.comp (continuous_id.prodMk continuous_const))`. Rewrite `hc` using `[e]`. Rewrite using `[hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `tr (fun y => om p (Fs y) u₀) (cGs.comp (continuous_id.prodMk continuous_const))`. Use `set a' := ha.1.mk a with ha'`. Establish `hae : a =ᵐ[μ] a'` using `ha.1.ae_eq_mk`. Establish `ha'm : Measurable a'` using `ha.1.stronglyMeasurable_mk.measurable`. Establish `ha'i : Integrable a' μ` using `ha.congr hae`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately.
 
-Establish `hre` using `ha'i.re`. Establish `him` using `ha'i.im`. Establish `mre : Measurable fun w => (a' w).re` using `Complex.measurable_re.comp ha'm`. Establish `mim : Measurable fun w => (a' w).im` using `Complex.measurable_im.comp ha'm`. Establish `P1` using `Ppos _ (mre.max measurable_const) (fun w => le_max_right _ _) hre.pos_part`.
+Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `P2` using `Psmul (-1) _ (Ppos _ (mre.neg.max measurable_const) (fun w => le_max_right _ _) hre.neg_part)`. Establish `P3` using `Psmul Complex.I _ (Ppos _ (mim.max measurable_const) (fun w => le_max_right _ _) him.pos_part)`. Establish `P4` using `Psmul (-Complex.I) _ (Ppos _ (mim.neg.max measurable_const) (fun w => le_max_right _ _) him.neg_part)`. Establish `Pa'` using `Padd _ _ (Padd _ _ (Padd _ _ P1 P2) P3) P4`. Establish `Pa'' : P a'`.
-
-Use `Pa' using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `w`. Simplify using `only [Pi.add_apply, Pi.neg_apply]`. Use `first`. Consider the case `exact (decomp_re_im (a' w)).symm`.
-
-Consider the case `exact decomp_re_im (a' w)`. Establish `e1 : (fun u => ∫ w, a w * Fs (k w) u ∂μ) = fun u => ∫ w, a' w * Fs (k w) u ∂μ`. Use function extensionality and compare the values at `u; exact integral_congr_ae (hae.mono fun w hw => by simp only [hw])`. Establish `e2 : ∫ w, a w * om p (Fs (k w)) u₀ ∂μ = ∫ w, a' w * om p (Fs (k w)) u₀ ∂μ` using `integral_congr_ae (hae.mono fun w hw => by simp only [hw])`. Use `Pa''.2` as an intermediate fact.
-
-Simplify using `only [hFs] at this e1 e2 ⊢`. Rewrite using `[e1, e2]`. Conclude with `this`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weil_comm_sliceSum_target : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (T A B S : HSp D) (o : OrthDec T A B) (χ χ' : ((AE D)ˣ →* Circle)) (om : Om S A), IsWeilDatumO ψ S A χ χ' om → ∀ (F : WO S T → ℂ), IsThetaFunO ψ S T F → ∀ (Ω : Type) [MeasurableSpace Ω] (μ : Measure Ω) (k : Ω → WO S B) (a : Ω → ℂ), Measurable k → Integrable a μ → ∀ p, IsThetaFunO ψ S T (fun x => om p (fun u => F ((o.resT S).symm (u, (o.resT S x).2))) (o.resT S x).1) ∧ ∀ u₀, om p (fun u => ∫ w, a w * F ((o.resT S).symm (u, k w)) ∂μ) u₀ = ∫ w, a w * om p (fun u => F ((o.resT S).symm (u, k w))) u₀ ∂μ := by
   intro D ψ T A B S o χ χ' om hW F hF Ω _ μ k a hk ha p

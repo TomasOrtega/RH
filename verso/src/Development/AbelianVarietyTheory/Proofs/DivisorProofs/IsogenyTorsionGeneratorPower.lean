@@ -26,11 +26,11 @@ section SlopeTestRemainingChoices
 open GlobalTheory GlobalTheory.CM GlobalTheory.KerPow GlobalTheory.CM.PairingIso
 
 /- English proof (translation)
-Establish `hL` using `P.isLB`. Establish `hc : (cubeLB P.A ![fst T P.A ≫ z, snd T P.A] P.L).IsLB` using `LB.isLB_linComb hL _ _`. Establish `g₂ : GlobalTheory.KerPow.HasGen P.L (fun I : ULift.{0} (Finset (Fin 2)) => (psum P.A ![fst T P.A ≫ z, snd T P.A] I.down).left) (fun I => (-1) ^ (2 - I.down.card))` using `(cls_eq_zero_iff hc).1 ((cls_cube_two hL _ _ hc).trans h)`. Establish `g₃ : LocGen P.L (fst T P.A).left (fun I : ULift.{0} (Finset (Fin 2)) => (psum P.A ![fst T P.A ≫ z, snd T P.A] I.down).left) (fun I => (-1) ^ (2 - I.down.card))` using `fun _ => ⟨⊤, trivial, g₂.pull _ fun _ => rfl⟩`. Establish `b₁` using `locGen_base hL (fst T P.A).left z.left (b := (fst T P.A ≫ z).left) rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b₀` using `locGen_base hL (fst T P.A).left (1 : T ⟶ P.A).left (b := (1 : T ⊗ P.A ⟶ P.A).left) (congrArg (fun q : T ⊗ P.A ⟶ P.A => q.left) (MonObj.comp_one (fst T P.A) : fst T P.A ≫ (1 : T ⟶ P.A) = 1).symm)`. Establish `b` using `b₀.comb hL b₁ (φ'' := ![(1 : T ⊗ P.A ⟶ P.A).left, (fst T P.A ≫ z).left]) (ε'' := ![1, -1]) fun U _ k => by simp [Fin.prod_univ_two]`. Use `eq_one_of_locGen P.ktriv z (g₃.comb hL b fun U _ k => ?_)` and prove the remaining obligations. Rewrite using `[PrimNorm.prod_square_id, Fin.prod_univ_two, Fin.prod_univ_two]`. Use `show k ((fst T P.A ≫ z) * snd T P.A).left * (k (fst T P.A ≫ z).left)⁻¹ * (k (snd T P.A).left)⁻¹ * k (1 : T ⊗ P.A ⟶ P.A).left * (k (1 : T ⊗ P.A ⟶ P.A).left ^ (1 : ℤ) * k (fst T P.A ≫ z).left ^ (-1 : ℤ))⁻¹ = k ((fst T P.A ≫ z) * snd T P.A).left ^ (1 : ℤ) * k (snd T P.A).left ^ (-1 …`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow]`. Use `module`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_one_of_lam_eq_zero {S : Scheme.{0}} (P : Out.PolAV S) [IsCommMonObj P.A] {T : Over S}
     (z : T ⟶ P.A) (h : lam (cls P.L P.isLB) (fst T P.A ≫ z) (snd T P.A) = 0) : z = 1 := by
@@ -67,19 +67,17 @@ namespace GlobalTheory.KillSquare
 open GlobalTheory.CechPic
 
 /- English proof (translation)
-Introduce `A _ hA M hM P ψ ρ N hψ hρ h1 h2 hiso T x hx`. Use `haveI : IsCommMonObj A := hA.comm`. Use `haveI := P.isAb`. Establish `hL` using `P.isLB`. Establish `hΘ` using `GlobalTheory.exists_gen_theta_of_isAbelianScheme ℂ P.A P.isAb P.L hL`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set ℓ := cls P.L hL`. Use `set m := cls M hM`. Establish `hlamA : (abelian₂ A M).IsLB` using `LB.isLB_linComb hM _ _`. Establish `hpair : lam m (fst A A) (snd A A) = lam ℓ (fst A A ≫ ψ) (snd A A ≫ ψ)`. Establish `hlamP : (abelian₂ P.A P.L).IsLB` using `LB.isLB_linComb hL _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `(cls_eq_iff hlamA (pull_isLB hlamP _)).2 hiso`. Conclude with `(cls_cube_two hM (fst A A) (snd A A) hlamA).symm.trans (e.trans (Elliptic.cls_pull_lam hL _ _ _))`. Establish `hx0 : lam m (fst A T) (snd A T ≫ x) = 0`. Rewrite using `[← Elliptic.cls_pull_lam hM _ _ (pull_isLB hlamA _)]`. Conclude with `(cls_eq_zero_iff _).2 hx`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e1` using `congrArg (pull (lift (fst A T) (snd A T ≫ x)).left) hpair`. Simplify using `only [pull_lam, lift_fst, lift_snd, lift_fst_assoc, lift_snd_assoc] at e1`. Rewrite `hx0` using `[e1]`. Establish `e2` using `congrArg (pull (lift (fst P.A T ≫ ρ) (snd P.A T)).left) hx0`. Simplify using `only [pull_lam, map_zero, lift_fst_assoc, lift_snd_assoc, Category.assoc] at e2`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e3 : fst P.A T ≫ ρ ≫ ψ = fst P.A T ^ N`. Rewrite using `[h2, MonObj.comp_pow, Category.comp_id]`. Rewrite `e2` using `[e3, lam_pow_left hL hΘ, ← lam_pow_right hL hΘ, ← MonObj.comp_pow]`. Establish `hz : (x ≫ ψ) ^ N = 1`. Use `GlobalTheory.KillSquare.eq_one_of_lam_eq_zero P _ ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e4` using `congrArg (pull (lift (snd T P.A) (fst T P.A)).left) e2`. Simplify using `only [pull_lam, map_zero, lift_fst_assoc, lift_snd_assoc, lift_fst, lift_snd] at e4`. Rewrite `e4` using `[lam_comm]`. Simplify `e4` using `only [Category.assoc]`. Rewrite using `[pow_mul]`.
-
-Establish `e5 : x ^ N = (x ≫ ψ) ≫ ρ`. Rewrite using `[Category.assoc, h1, MonObj.comp_pow, Category.comp_id]`. Rewrite using `[e5, ← MonObj.pow_comp, hz, MonObj.one_comp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_sq_eq_one_of_lam_trivial : ∀ (A : Over (Sp ℂ)) [GrpObj A], IsAbelianScheme A → ∀ (M : LB A.left), M.IsLB →
     ∀ (P : Out.PolAV (Sp ℂ)) (ψ : A ⟶ P.A) (ρ : P.A ⟶ A) (N : ℕ), IsMonHom ψ → IsMonHom ρ →

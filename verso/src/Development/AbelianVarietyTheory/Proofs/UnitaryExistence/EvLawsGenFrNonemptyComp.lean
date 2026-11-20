@@ -20,7 +20,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsDedekindDomain in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨irreducibleComponent x, irreducibleComponent_mem_irreducibleComponents x⟩⟩`.
+Supply the required witnesses or components.
 -/
 private theorem nonempty_irreducibleComponents_of_point {X : Type*} [TopologicalSpace X] (x : X) :
     Nonempty (irreducibleComponents X) :=
@@ -29,11 +29,9 @@ private theorem nonempty_irreducibleComponents_of_point {X : Type*} [Topological
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsDedekindDomain in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c`. Establish `hsec : _root_.ReciprocityTheory.ChartRestriction.G.Out.SecBaseChangeSt` using `_root_.GlobalTheory.allSixLaws.1.secBaseChange`. Establish `htw : _root_.ReciprocityTheory.ChartRestriction.G.Out.SecTwistSt` using `_root_.GlobalTheory.allSixLaws.2.1.secTwist`. Take `⟨-, -, hwd, hwt, hdiag, -, -⟩` from `_root_.GlobalTheory.Frames.algebraic_laws hsec E H Dw l Xo c`. Use `⟨⟨hwd, _root_.GlobalTheory.Frames.allTest_of_secBaseChange hsec E H Dw l Xo c, hwt, ?_⟩, hdiag, _root_.Formalism.L2.Pj.genFrEx_of htw, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `S T _ _ _ _ φ y`. Conclude with `_root_.GlobalTheory.Frames.FramedBaseChange.exists_frMap hsec E H Dw l Xo c S T φ y`. Introduce `hpq`. Take `⟨x⟩` from `(_root_.GlobalTheory.PeriodExists.typeFn_period_exist E H Dw).2.2 _root_.GlobalTheory.closing_of_abelianSchemeLaws hpq l Xo c`. Unfold `_root_.Formalism.L2.Pj.Comp`.
-
-Conclude with `nonempty_irreducibleComponents_of_point x`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Reg.evLaws_genFr_nonempty_comp : ∀ (E : Type) [Field E] [NumberField E]
     [IsCMField E] (H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H) (l : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l)

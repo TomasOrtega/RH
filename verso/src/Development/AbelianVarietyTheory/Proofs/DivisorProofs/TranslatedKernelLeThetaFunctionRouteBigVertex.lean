@@ -19,7 +19,7 @@ open GlobalTheory.WeilM
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU, map_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem conjU_mul {D : D7} (V : HSp D) {J : Matrix (Fin V.rank) (Fin V.rank) D.host.E} (c : D.host.E)
     (h : J = c • V.gram) (g k : GA D V) :
@@ -28,7 +28,7 @@ theorem conjU_mul {D : D7} (V : HSp D) {J : Matrix (Fin V.rank) (Fin V.rank) D.h
   simp [GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU, map_mul]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [thetaSum]`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, thetaSum_add F (hf a (Finset.mem_insert_self a s)) (Submodule.sum_mem _ fun k hk => hf k (Finset.mem_insert_of_mem hk)), ih fun k hk => hf k (Finset.mem_insert_of_mem hk)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem thetaSum_finset_sum {F : Type} [Field F] [NumberField F] {κ ι : Type} [Fintype κ] (s : Finset ι)
     (f : ι → (κ → AdeleRing (𝓞 F) F) → ℂ) (hf : ∀ k ∈ s, f k ∈ schA F κ) :
@@ -42,15 +42,15 @@ theorem thetaSum_finset_sum {F : Type} [Field F] [NumberField F] {κ ι : Type} 
       ih fun k hk => hf k (Finset.mem_insert_of_mem hk)]
 
 /- English proof (translation)
-Introduce `D T L sc G μ₀ hL W B ρ t i j M hM Θ Θ' hΘ g₁ e Bs Γ X om om' h hTr hv`. Take `⟨ΦB, hB, z, hz, hS⟩` from `GlobalTheory.T.exists_routeDatum_translationCombination_goodPlace hL W B ρ t i j M hM Θ Θ' hΘ g₁ e Bs Γ X om om' h hTr hv`. Take `⟨ξ, hξ, hk⟩` from `GlobalTheory.T.small_route_kernel_eq_unit_norm_mul_theta hL W B ρ t i j M hM Θ Θ' hΘ g₁ e Bs Γ X om om' h hTr hv ΦB hB`. Use `⟨z, _, GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU _ (-1) h.JW₁, 1, hz, hS, fun g u => le_of_eq ?_⟩` and prove the remaining obligations. Establish `hW` using `GlobalTheory.WeilM.IsUWeilPair.isUSplitting hTr.weil'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hpres : ∀ p φ, φ ∈ schA D.host.F _ → om' p φ ∈ schA D.host.F _` using `fun p φ hφ => hW.pres p φ hφ`. Establish `hB0` using `hB.1`. Use `set a := GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU _ (-1) h.JW₁`. Use `set hh := GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blkU _ _ e h.JWW (g, g₁)`. Establish `ha : ∀ x y, a (x * y) = a x * a y` using `conjU_mul _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : translates z (kerSmall W Θ' g g₁) u = ξ (g, g₁) * z.sum fun k c => c * thetaSum D.host.F (om' (a u, hh) (om' (a k, 1) ΦB))`. Rewrite using `[translates, Finsupp.mul_sum]`. Use `Finsupp.sum_congr fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hk, ha, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.theta, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.theta om' (z.sum fun k c => c • om' (a k, 1) ΦB) (a u) hh = z.sum fun k c => c * thetaSum D.host.F (om' (a u, hh) (om' (a k, 1) ΦB))`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.theta, map_finsuppSum, Finsupp.sum, thetaSum_finset_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, thetaSum_smul]`. Introduce `k _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem _ _ (hpres _ _ (hpres _ _ hB0))`. Rewrite using `[e1, e2, norm_mul, hξ, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem translates_kerSmall_le_theta : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) (B : Frames G)
     (ρ : RealMatch W) (t : T) (i j : Fin D.R.m) (M : Vol G) (hM : M.Is t) (Θ : TotT G (routeBig t i j))

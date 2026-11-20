@@ -17,19 +17,19 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 include hρ hKc hKo
 
 /- English proof (translation)
-Establish `: CompactSpace K` using `isCompact_iff_compactSpace.mp hKc`. Establish `hHo : IsOpen ((L.subgroupOf K : Subgroup K) : Set K)` using `hLo.preimage continuous_subtype_val`. Establish `: Finite (K ⧸ L.subgroupOf K)` using `Subgroup.quotient_finite_of_isOpen _ hHo`. Set `_ : Fintype (K ⧸ L.subgroupOf K)` to `Fintype.ofFinite _`. Establish `hNpos : 0 < Fintype.card (K ⧸ L.subgroupOf K)` using `Fintype.card_pos_iff.mpr ⟨QuotientGroup.mk (1 : K)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `eQ` to `Fintype.equivFin (K ⧸ L.subgroupOf K)`. Use `⟨Fintype.card (K ⧸ L.subgroupOf K), fun i => ((Quotient.out (eQ.symm i) : K) : G), hNpos, fun i => (Quotient.out (eQ.symm i)).2, ?_⟩` and prove the remaining obligations. Introduce `v hv`. Take `⟨s, hs⟩ : ∃ s : V, s = ∑ q : K ⧸ L.subgroupOf K, ρ ((Quotient.out q : K) : G) v` from `⟨_, rfl⟩`. Establish `hreidx : ∑ i, ρ ((Quotient.out (eQ.symm i) : K) : G) v = s`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hs]`. Conclude with `Fintype.sum_equiv eQ.symm _ _ (fun _ => rfl)`. Establish `hsK : s ∈ fixedVectors ρ K`. Introduce `k hk`. Establish `key : ∀ q : K ⧸ L.subgroupOf K, ρ k (ρ ((Quotient.out q : K) : G) v) = ρ ((Quotient.out ((⟨k, hk⟩ : K) • q) : K) : G) v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Establish `h1 : (((⟨k, hk⟩ : K) * Quotient.out q : K) : G) = k * ((Quotient.out q : K) : G)` using `rfl`. Rewrite using `[← h1]`. Apply `act_eq_of_mk_eq ρ hv` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[QuotientGroup.out_eq', ← smul_eq_mul, MulAction.Quotient.mk_smul_out]`. Rewrite using `[hs, map_sum, Finset.sum_congr rfl (fun q _ => key q)]`. Conclude with `Fintype.sum_equiv (MulAction.toPerm (⟨k, hk⟩ : K)) _ _ (fun _ => rfl)`. Establish `hsub : s - ((Fintype.card (K ⧸ L.subgroupOf K) : ℕ) : ℂ) • v ∈ coinvariantsKer ρ K`. Establish `h1 : s - ((Fintype.card (K ⧸ L.subgroupOf K) : ℕ) : ℂ) • v = ∑ q : K ⧸ L.subgroupOf K, (ρ ((Quotient.out q : K) : G) v - v)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, Nat.cast_smul_eq_nsmul, hs]`. Rewrite using `[h1]`. Conclude with `Submodule.sum_mem _ fun q _ => sub_mem_coinvariantsKer (Quotient.out q).2 v`. Establish `h1 : (fixedProj ρ hρ hKc hKo s : V) = s` using `fixedProj_apply_of_mem hρ hKc hKo hsK`. Establish `h2` using `fixedProj_apply_of_mem_coinvariantsKer hρ hKc hKo hsub`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[map_sub, map_smul, sub_eq_zero]`. Establish `h3 : ((Fintype.card (K ⧸ L.subgroupOf K) : ℕ) : ℂ) • (fixedProj ρ hρ hKc hKo v : V) = s`. Rewrite using `[← h1, h2, Submodule.coe_smul]`. Rewrite using `[hreidx, ← h3, smul_smul, inv_mul_cancel₀ (by exact_mod_cast hNpos.ne'), one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixedProj_eq_avg {L : Subgroup G} (hLK : L ≤ K) (hLo : IsOpen (L : Set G)) :
     ∃ (N : ℕ) (r : Fin N → G), 0 < N ∧ (∀ i, r i ∈ K) ∧
@@ -76,7 +76,7 @@ theorem fixedProj_eq_avg {L : Subgroup G} (hLK : L ≤ K) (hLo : IsOpen (L : Set
   rw [hreidx, ← h3, smul_smul, inv_mul_cancel₀ (by exact_mod_cast hNpos.ne'), one_smul]
 
 /- English proof (translation)
-Establish `hLo : IsOpen ((K ⊓ stabilizerOf ρ v : Subgroup G) : Set G)`. Rewrite using `[Subgroup.coe_inf]`. Conclude with `hKo.inter (hρ v)`. Take `⟨N, r, hN, hr, h⟩` from `fixedProj_eq_avg hρ hKc hKo (L := K ⊓ stabilizerOf ρ v) inf_le_left hLo`. Rewrite using `[h v (fun l hl => hl.2), map_smul, map_sum, Finset.sum_congr rfl (fun i _ => hf (r i) (hr i)), Finset.sum_const, Finset.card_univ, Fintype.card_fin, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ (by exact_mod_cast hN.ne'), one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_fixedProj_of_invariant {U : Type*} [AddCommGroup U] [Module ℂ U] (f : V →ₗ[ℂ] U)
     (v : V) (hf : ∀ k ∈ K, f (ρ k v) = f v) : f (fixedProj ρ hρ hKc hKo v : V) = f v := by
@@ -99,7 +99,7 @@ theorem hop_apply (g : G) (w : fixedVectors ρ K) :
     hop ρ hρ hKc hKo g w = fixedProj ρ hρ hKc hKo (ρ g w) := rfl
 
 /- English proof (translation)
-Use `LinearMap.ext fun w => Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[hop_apply, fixedProj_apply_act hρ hKc hKo hκ, Module.End.one_apply, fixedProj_apply_of_mem hρ hKc hKo w.2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem hop_of_mem {κ : G} (hκ : κ ∈ K) : hop ρ hρ hKc hKo κ = 1 := by
   refine LinearMap.ext fun w => Subtype.ext ?_
@@ -107,14 +107,14 @@ theorem hop_of_mem {κ : G} (hκ : κ ∈ K) : hop ρ hρ hKc hKo κ = 1 := by
     fixedProj_apply_of_mem hρ hKc hKo w.2]
 
 /- English proof (translation)
-The claim follows from `hop_of_mem hρ hKc hKo K.one_mem`.
+A detailed English derivation is pending.
 -/
 theorem hop_one : hop ρ hρ hKc hKo 1 = 1 := hop_of_mem hρ hKc hKo K.one_mem
 
 /- English proof (translation)
-Use `LinearMap.ext fun w => ?_` and prove the remaining obligations. Use `show fixedProj ρ hρ hKc hKo (ρ g (fixedProj ρ hρ hKc hKo (ρ h w) : V)) = fixedProj ρ hρ hKc hKo (ρ (g * h) w)`. Establish `key` using `map_fixedProj_of_invariant hρ hKc hKo ((fixedProj ρ hρ hKc hKo) ∘ₗ ρ g) (ρ h w) (fun κ hκ => by`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul, H w w.2 κ hκ, map_mul, Module.End.mul_apply])`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.comp_apply] at key`. Rewrite using `[key, map_mul, Module.End.mul_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hop_mul {g h : G}
     (H : ∀ w ∈ fixedVectors ρ K, ∀ κ ∈ K,
@@ -132,15 +132,13 @@ theorem hop_mul {g h : G}
   rw [key, map_mul, Module.End.mul_apply]
 
 /- English proof (translation)
-Set `L : Subgroup G` to `K ⊓ K.comap (MulAut.conj h⁻¹).toMonoidHom`. Establish `hLo : IsOpen (L : Set G)`. Establish `hc : Continuous fun x : G => h⁻¹ * x * h⁻¹⁻¹` using `(continuous_const.mul continuous_id).mul continuous_const`. Conclude with `hKo.inter (hKo.preimage hc)`. Take `⟨N, r, hN, -, hav⟩` from `fixedProj_eq_avg hρ hKc hKo (L := L) inf_le_left hLo`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfix : ∀ w : fixedVectors ρ K, ρ h (w : V) ∈ fixedVectors ρ L`. Introduce `w l hl`. Establish `hl2 : h⁻¹ * l * h ∈ K`. Use `hl.2` as an intermediate fact. Simplify `this` using `[Subgroup.mem_comap, MulAut.conj_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]`. Use `congr 2`. Use `group`. Use `_ = ρ h w := by rw [w.2 _ hl2]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `heq : hop ρ hρ hKc hKo g * hop ρ hρ hKc hKo h = (N : ℂ)⁻¹ • ∑ i, hop ρ hρ hKc hKo (g * r i * h)`. Use `LinearMap.ext fun w => ?_` and prove the remaining obligations. Use `show fixedProj ρ hρ hKc hKo (ρ g (fixedProj ρ hρ hKc hKo (ρ h w) : V)) = _`. Rewrite using `[hav _ (hfix w), map_smul, map_smul, map_sum, map_sum, LinearMap.smul_apply, LinearMap.sum_apply]`. Use `congr 1`.
-
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `show _ = fixedProj ρ hρ hKc hKo (ρ (g * r i * h) w)`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply]`. Rewrite using `[heq]`. Conclude with `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨_, rfl⟩)`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hop_mul_mem_span (g h : G) :
     hop ρ hρ hKc hKo g * hop ρ hρ hKc hKo h ∈
@@ -173,13 +171,11 @@ theorem hop_mul_mem_span (g h : G) :
   exact Submodule.smul_mem _ _ (Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨_, rfl⟩)
 
 /- English proof (translation)
-Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem x hx`. Proceed by induction on `hb using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨g, rfl⟩` from `hx`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨h, rfl⟩` from `hy`. Conclude with `hop_mul_mem_span hρ hKc hKo g h`. Consider the case `zero => rw [mul_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz => rw [mul_add]`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul c y _ hy => rw [mul_smul_comm]`. Conclude with `Submodule.smul_mem _ c hy`. Consider the case `zero => rw [zero_mul]`. Conclude with `Submodule.zero_mem _`.
-
-Consider the case `add x z _ _ hx hz => rw [add_mul]`. Conclude with `Submodule.add_mem _ hx hz`. Consider the case `smul c x _ hx => rw [smul_mul_assoc]`. Conclude with `Submodule.smul_mem _ c hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem span_hop_mul_mem {a b : Module.End ℂ (fixedVectors ρ K)}
     (ha : a ∈ Submodule.span ℂ (Set.range (hop ρ hρ hKc hKo)))
@@ -200,17 +196,15 @@ theorem span_hop_mul_mem {a b : Module.End ℂ (fixedVectors ρ K)}
   | smul c x _ hx => rw [smul_mul_assoc]; exact Submodule.smul_mem _ c hx
 
 /- English proof (translation)
-Establish `hone : (1 : Module.End ℂ (fixedVectors ρ K)) ∈ Submodule.span ℂ (Set.range (hop ρ hρ hKc hKo))`. Rewrite using `[← hop_one hρ hKc hKo]`. Conclude with `Submodule.subset_span ⟨1, rfl⟩`. Set `A : Subalgebra ℂ (Module.End ℂ (fixedVectors ρ K))` to `Submodule.toSubalgebra _ hone (fun a b ha hb => span_hop_mul_mem hρ hKc hKo ha hb)`. Establish `hirr : ∀ U : Submodule ℂ (fixedVectors ρ K), (∀ a : A, ∀ w ∈ U, A.val a w ∈ U) → U = ⊥ ∨ U = ⊤`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `U hU`. Distinguish the cases in `hU0 : U = ⊥`. Conclude with `Or.inl hU0`. Use `right`. Take `⟨u, huU, hu0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hU0`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hT : ∀ g, hop ρ hρ hKc hKo g u ∈ U` using `fun g => hU ⟨hop ρ hρ hKc hKo g, Submodule.subset_span ⟨g, rfl⟩⟩ u huU`. Rewrite using `[eq_top_iff]`. Introduce `w _`. Establish `hu0' : (u : V) ≠ 0` using `fun h => hu0 (Subtype.ext h)`. Establish `hw` using `HeckeAlgebra.mem_span_orbit (ρ := ρ) hu0' (w : V)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hww : w = fixedProj ρ hρ hKc hKo (w : V)` using `Subtype.ext (fixedProj_apply_of_mem hρ hKc hKo w.2).symm`. Rewrite using `[hww]`. Establish `hle : Submodule.map (fixedProj ρ hρ hKc hKo) (Submodule.span ℂ (Set.range fun g => ρ g (u : V))) ≤ U`. Rewrite using `[Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨g, rfl⟩, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hT g`. Conclude with `hle ⟨_, hw, rfl⟩`. Establish `hsurj` using `ReciprocityTheory.GC.burnside_surj_of_irred (k := ℂ) A.val hirr`. Rewrite using `[eq_top_iff]`. Introduce `x _`.
-
-Take `⟨a, ha⟩` from `hsurj x`. Rewrite using `[← ha]`. Conclude with `a.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_hop_eq_top [ρ.IsIrreducible] [FiniteDimensional ℂ (fixedVectors ρ K)]
     [Nontrivial (fixedVectors ρ K)] :

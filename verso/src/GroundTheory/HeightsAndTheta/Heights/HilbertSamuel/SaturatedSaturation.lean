@@ -16,7 +16,7 @@ section Had
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Rewrite using `[bundleDegree, HermitianBundle.normDegree_eq_deg_sub, ChainSum.deg_sub_top]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bundleDegree_eq_deg (E : HermitianBundle.{0} K) : bundleDegree E = E.deg := by
   rw [bundleDegree, HermitianBundle.normDegree_eq_deg_sub, ChainSum.deg_sub_top]
@@ -39,14 +39,14 @@ def saturation {M : Type*} [AddCommGroup M] [Module (𝓞 K) M] (F : Submodule (
     exact F.smul_mem c hx
 
 /- English proof (translation)
-The claim follows from `fun x hx ↦ ⟨1, one_ne_zero, by rwa [one_smul]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem le_saturation {M : Type*} [AddCommGroup M] [Module (𝓞 K) M] (F : Submodule (𝓞 K) M) :
     F ≤ saturation F :=
   fun x hx ↦ ⟨1, one_ne_zero, by rwa [one_smul]⟩
 
 /- English proof (translation)
-Introduce and unpack `a x ha ⟨b, hb, hx⟩`. Conclude with `⟨b * a, mul_ne_zero hb ha, by rwa [mul_smul]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem saturated_saturation (E : HermitianBundle.{0} K) (F : Submodule (𝓞 K) E.carrier) :
     E.Saturated (saturation F) := by
@@ -54,11 +54,9 @@ theorem saturated_saturation (E : HermitianBundle.{0} K) (F : Submodule (𝓞 K)
   exact ⟨b * a, mul_ne_zero hb ha, by rwa [mul_smul]⟩
 
 /- English proof (translation)
-Use `set P := saturation F`. Use `set F' := F.comap P.subtype`. Establish `h0 : Module.finrank (𝓞 K) (P ⧸ F') = 0`. Rewrite using `[Module.finrank_eq_zero_iff]`. Introduce `x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨x, a, ha, hx⟩, rfl⟩` from `F'.mkQ_surjective x`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `hx`. Establish `h1` using `F'.finrank_quotient_add_finrank`.
-
-Rewrite `h1` using `[h0, zero_add]`. Rewrite using `[← h1]`. Conclude with `(Submodule.comapSubtypeEquivOfLe (le_saturation F)).finrank_eq`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_saturation (E : HermitianBundle.{0} K) (F : Submodule (𝓞 K) E.carrier) :
     Module.finrank (𝓞 K) (saturation F) = Module.finrank (𝓞 K) F := by
@@ -77,9 +75,9 @@ theorem finrank_saturation (E : HermitianBundle.{0} K) (F : Submodule (𝓞 K) E
   exact (Submodule.comapSubtypeEquivOfLe (le_saturation F)).finrank_eq
 
 /- English proof (translation)
-Establish `h : ‖FibreSpace.equiv (E.metric.comap f hf) σ x‖ ^ 2 = fibreNorm E σ (f.lTensor (ComplexAt σ) x) ^ 2`. Rewrite using `[fibreNorm, @norm_sq_eq_re_inner ℂ, @norm_sq_eq_re_inner ℂ, FibreSpace.inner_equiv, FibreSpace.inner_equiv, HermitianMetric.comap_inner]`. Both sides reduce to the same expression. Establish `h1` using `norm_nonneg (FibreSpace.equiv (E.metric.comap f hf) σ x)`. Establish `h2 : 0 ≤ fibreNorm E σ (f.lTensor (ComplexAt σ) x)` using `norm_nonneg _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[sq_nonneg (‖FibreSpace.equiv (E.metric.comap f hf) σ x‖ - fibreNorm E σ (f.lTensor (ComplexAt σ) x)), sq_nonneg (‖FibreSpace.equiv (E.metric.comap f hf) σ x‖ + fibreNorm E σ (f.lTensor (ComplexAt σ) x))]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem norm_comap (E' E : HermitianBundle.{0} K) (f : E'.carrier →ₗ[𝓞 K] E.carrier)
     (hf : Function.Injective f) (σ : K →+* ℂ) (x : Fibre σ E'.carrier) :
@@ -96,7 +94,7 @@ theorem norm_comap (E' E : HermitianBundle.{0} K) (f : E'.carrier →ₗ[𝓞 K]
     fibreNorm E σ (f.lTensor (ComplexAt σ) x))]
 
 /- English proof (translation)
-Establish `h : ∀ j, ∑ σ : K →+* ℂ, Real.log (E.normAt σ (F.vec (s j))) ≤ ∑ σ : K →+* ℂ, Real.log (lam σ)` using `fun j ↦ Finset.sum_le_sum fun σ _ ↦ by`. Establish `hpos : 0 < E.normAt σ (F.vec (s j))` using `norm_pos_iff.mpr ((linearIndependent_fibreVec E.metric σ F.linearIndependent).ne_zero (s j))`. Conclude with `Real.log_le_log hpos (F.norm_le σ (s j))`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sum_log_le (E : HermitianBundle.{0} K) (lam : (K →+* ℂ) → ℝ) (F : ShortFamily E lam)
     {k : ℕ} (s : Fin k → Fin (bundleRank E)) :
@@ -113,27 +111,23 @@ theorem sum_log_le (E : HermitianBundle.{0} K) (lam : (K →+* ℂ) → ℝ) (F 
 end Had
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `K _ _ E' E A lam α F set f := α.toLinearMap`. Establish `hf` using `α.injective`. Use `set R := LinearMap.range f`. Use `set P := saturation R`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP` using `saturated_saturation E R`. Establish `hRP` using `le_saturation R`. Use `set n : ℝ := (Module.finrank ℚ K : ℝ) with hn_def`. Establish `hn : 0 < n` using `Nat.cast_pos.mpr Module.finrank_pos`. Establish `h1` using `NormComparison.full.{0, 0} K E' (E.metric.comap f hf) A fun σ x ↦ by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_comap]`. Conclude with `α.norm_le σ x`. Establish `h2 : (⟨E'.carrier, E.metric.comap f hf⟩ : HermitianBundle.{0} K).deg = (E.sub R).deg` using `ChainSum.deg_eq_of_linearEquiv _ _ (LinearEquiv.ofInjective f hf) fun σ m s ↦ by`. Rewrite using `[gramDet_comap E.metric f hf σ s]`. Conclude with `(gramDet_comap E.metric R.subtype R.injective_subtype σ (fun i ↦ LinearEquiv.ofInjective f hf (s i))).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hrk : Module.finrank (𝓞 K) (R.comap P.subtype) = Module.finrank (𝓞 K) (E.sub P).carrier`. Rewrite using `[(Submodule.comapSubtypeEquivOfLe hRP).finrank_eq]`. Conclude with `(finrank_saturation E R).symm`. Establish `h3` using `(Sublattice.full.{0, 0} K (E.sub P) (R.comap P.subtype) hrk).2`. Rewrite `h3` using `[ChainSum.deg_sub_comap E hRP]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `ExactSequence.full.{0, 0} K E P hP`. Establish `hspan : Module.finrank (𝓞 K) (Submodule.span (𝓞 K) (Set.range F.vec)) = Module.finrank (𝓞 K) E.carrier`. Rewrite using `[finrank_span_eq_card F.linearIndependent, Fintype.card_fin]`. Take `⟨s, -, h5⟩` from `HadamardMeanQuotient.full.{0, 0, 0} K E P hP F.vec hspan`. Establish `h6` using `sum_log_le E lam F s`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hq : ((Module.finrank (𝓞 K) (E.carrier ⧸ P) : ℕ) : ℝ) = (bundleRank E : ℝ) - bundleRank E'`. Establish `e1` using `P.finrank_quotient_add_finrank`. Establish `e2 : Module.finrank (𝓞 K) P = bundleRank E'`. Rewrite using `[finrank_saturation E R]`. Conclude with `LinearMap.finrank_range_of_inj hf`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `e1` using `[e2]`. Rewrite using `[eq_sub_iff_add_eq]`. Conclude with `e1` after adjusting the coercions. Rewrite `h6` using `[hq]`. Rewrite using `[bundleDegree_eq_deg, bundleDegree_eq_deg, meanLog, meanLog]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h7 : -(((bundleRank E : ℝ) - bundleRank E') * ∑ σ : K →+* ℂ, Real.log (lam σ)) / n ≤ -(∑ j, ∑ σ : K →+* ℂ, Real.log (E.normAt σ (F.vec (s j)))) / n`. Apply `div_le_div_of_nonneg_right _ hn.le` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e3 : (bundleRank E' : ℝ) * ((∑ σ : K →+* ℂ, Real.log (A σ)) / n) = Module.finrank (𝓞 K) E'.carrier * (∑ σ : K →+* ℂ, Real.log (A σ)) / n` using `by ring`. Establish `e4 : ((bundleRank E : ℝ) - bundleRank E') * ((∑ σ : K →+* ℂ, Real.log (lam σ)) / n) = -(-(((bundleRank E : ℝ) - bundleRank E') * ∑ σ : K →+* ℂ, Real.log (lam σ)) / n)` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e3, e4]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `K _ _ E lam F set n : ℝ := (Module.finrank ℚ K : ℝ) with hn_def`. Establish `hn : 0 < n` using `Nat.cast_pos.mpr Module.finrank_pos`. Establish `h1` using `HadamardMean.full.{0, 0, 0} K E F.vec F.linearIndependent (Fintype.card_fin _)`.
-
-Establish `h2` using `sum_log_le E lam F id`. Rewrite using `[bundleDegree_eq_deg, meanLog]`. Establish `h3 : -((bundleRank E : ℝ) * ∑ σ : K →+* ℂ, Real.log (lam σ)) / n ≤ -(∑ j, ∑ σ : K →+* ℂ, Real.log (E.normAt σ (F.vec (id j)))) / n`. Apply `div_le_div_of_nonneg_right _ hn.le` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish `e : -((bundleRank E : ℝ) * ((∑ σ : K →+* ℂ, Real.log (lam σ)) / n)) = -((bundleRank E : ℝ) * ∑ σ : K →+* ℂ, Real.log (lam σ)) / n` using `by ring`. Rewrite using `[e]`. Conclude with `h3.trans h1`.
+Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Had.proof : Had.Statement := by
   refine ⟨?_, ?_⟩

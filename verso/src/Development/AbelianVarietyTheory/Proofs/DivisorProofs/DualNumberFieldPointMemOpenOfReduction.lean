@@ -9,15 +9,13 @@ open GlobalTheory.MBLow.TanGauge
 namespace GlobalTheory.MBLow.TanGauge
 
 /- English proof (translation)
-Introduce `C _ X y U h q _`. Establish `key : ∃ p : (Sp C : Scheme.{0}), (redE C) p = q`. Establish `hsub : Subsingleton (PrimeSpectrum (DualNumber C))`. Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Establish `aux : ∀ a : PrimeSpectrum (DualNumber C), ∀ x, x ∈ a.asIdeal ↔ x.fst = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `a x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Assume the negation of the conclusion as `hne`. Conclude with `a.2.ne_top (Ideal.eq_top_of_isUnit_mem _ hx (TrivSqZeroExt.isUnit_iff_isUnit_fst.2 (isUnit_iff_ne_zero.2 hne)))`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx`. Use `a.2.mem_of_pow_mem 2 ?_` and prove the remaining obligations. Establish `: x ^ 2 = 0`. Apply the tactic sequence `ext <;> simp [sq, hx]`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Conclude with `zero_mem _`. Use extensionality with `x`. Rewrite using `[aux, aux]`. Conclude with `⟨(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum C), hsub.elim _ _⟩`. Take `⟨p, rfl⟩` from `key`.
-
-Conclude with `h (x := p) trivial`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem top_le_of_redE : ∀ (C : Type) [Field C] {X : Scheme.{0}} (y : Sp (DualNumber C) ⟶ X) (U : X.Opens),
     ⊤ ≤ (redE C ≫ y) ⁻¹ᵁ U → ⊤ ≤ y ⁻¹ᵁ U := by

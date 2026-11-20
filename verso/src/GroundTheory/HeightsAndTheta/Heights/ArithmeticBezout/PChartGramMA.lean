@@ -16,31 +16,29 @@ open Filter Topology
 open ReciprocityTheory.ChartRestriction.G.Geo (maDensity cxHessian)
 
 /- English proof (translation)
-Introduce `e n v y hv h0`. Take `⟨t, ht, hto, hyt⟩` from `eventually_nhds_iff.1 hv`. Establish `han : AnalyticOnNhd ℂ v t`. Establish `hd : DifferentiableOn ℂ v t` using `fun y' hy' => (ht y' hy').differentiableWithinAt`. Conclude with `AnalyticOnNhd.pi fun j => ReciprocityTheory.AnForm.Osgood.osgood e t _ hto (differentiableOn_pi.mp hd j)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set L := (PiLp.continuousLinearEquiv 2 ℂ (fun _ : Fin n => ℂ)).symm with hL`. Use `set u : (Fin e → ℂ) → EuclideanSpace ℂ (Fin n) := fun y' => L (v y') with hu_def`. Establish `hu : ∀ᶠ y' in 𝓝 y, AnalyticAt ℂ u y'` using `by filter_upwards [hto.mem_nhds hyt] with y' hy'`. Conclude with `(L : (Fin n → ℂ) →L[ℂ] EuclideanSpace ℂ (Fin n)).analyticAt _ |>.comp (han y' hy')`. Establish `hu0 : u y ≠ 0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `h0` using `[hu_def, hL, PiLp.coe_symm_continuousLinearEquiv]`. Establish `hDu : ∀ b, fderiv ℂ u y b = L (fderiv ℂ v y b)` using `fun b => by`. Establish `hc` using `(L : (Fin n → ℂ) →L[ℂ] EuclideanSpace ℂ (Fin n)).hasFDerivAt.comp y (hv.self_of_nhds).hasFDerivAt`. Establish `hc' : HasFDerivAt u _ y` using `hc`. Rewrite using `[hc'.fderiv]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hφ : (fun (_ : Fin e) (y' : Fin e → ℂ) => Real.log ‖WithLp.toLp 2 (v y')‖) = fun _ y' => 2⁻¹ * Real.log (⟪u y', u y'⟫_ℂ).re`. Use function extensionality and compare the values at `_ y'`. Establish `h` using `inner_self_eq_norm_sq (𝕜 := ℂ) (u y')`. Establish `h' : (⟪u y', u y'⟫_ℂ).re = ‖u y'‖ ^ 2` using `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[h', Real.log_pow]`. Simplify using `[hu_def, hL]`. Use `set w : Fin (e + 1) → EuclideanSpace ℂ (Fin n) := Fin.cons (u y) fun j => fderiv ℂ u y (Pi.single j 1) with hw`. Use `set G : Matrix (Fin (e + 1)) (Fin (e + 1)) ℂ := Matrix.of fun a b => ⟪w a, w b⟫_ℂ with hG_def`. Establish `hmat : G = Matrix.of fun a b => ∑ i, star ((Fin.cons (v y) fun j => fderiv ℂ v y (Pi.single j 1) : Fin (e + 1) → Fin n → ℂ) a i) * (Fin.cons (v y) fun j => fderiv ℂ v y (Pi.single j 1) : Fin (e + 1) → Fin n → ℂ) b i`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `a b`. Apply the tactic sequence `refine Fin.cases ?_ (fun a => ?_) a <;> refine Fin.cases ?_ (fun b => ?_) b <;>`. Apply the tactic sequence `simp only [hG_def, hw, Matrix.of_apply, Fin.cons_zero, Fin.cons_succ, hDu] <;>`. Apply the tactic sequence `simp only [PiLp.inner_apply, RCLike.inner_apply'] <;>`. Simplify using `[hu_def, hL]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hgram : gramVol v y = G.det.re`. Rewrite using `[hmat]`. Both sides reduce to the same expression. Establish `hG00 : G 0 0 ≠ 0`. Simplify `hu0` using `[hG_def, hw]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Establish `hcx : cxHessian (fun y' => 2⁻¹ * Real.log (⟪u y', u y'⟫_ℂ).re) y = (2 * G 0 0)⁻¹ • Matrix.transpose (Matrix.of fun i j : Fin e => G i.succ j.succ - G i.succ 0 * G 0 j.succ / G 0 0)`. Use extensionality with `i j`. Rewrite using `[ChartGram.cxHessian_half_log hu hu0]`. Simplify using `only [hG_def, hw, Matrix.smul_apply, Matrix.transpose_apply, Matrix.of_apply, Fin.cons_zero, Fin.cons_succ, smul_eq_mul]`. Establish `: ⟪u y, u y⟫_ℂ ≠ 0` using `by simpa [hG_def, hw] using hG00`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Clear the denominators using the available nonvanishing facts. Establish `hS` using `ChartGram.det_eq_corner_mul_schur G hG00`. Establish `hN : G 0 0 = ((‖u y‖ ^ 2 : ℝ) : ℂ)`. Simplify using `[hG_def, hw]`. Establish `hNpos : 0 < ‖u y‖` using `norm_pos_iff.2 hu0`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `maDensity`. Rewrite using `[hφ, ChartGram.mixedDisc_const, hcx, Matrix.det_smul, Matrix.det_transpose, Fintype.card_fin, hgram, hS]`. Generalize the expression as in `(Matrix.of fun i j : Fin e => G i.succ j.succ - G i.succ 0 * G 0 j.succ / G 0 0).det = Z`. Rewrite using `[hN]`. Establish `hnorm : ‖WithLp.toLp 2 (v y)‖ = ‖u y‖` using `rfl`.
+Replace the chosen expression with an arbitrary variable. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hnorm]`. Generalize the expression as in `‖u y‖ = r at hNpos ⊢`. Rewrite using `[show ((2 : ℂ) * ((r ^ 2 : ℝ) : ℂ))⁻¹ ^ e = (((2 * r ^ 2)⁻¹ ^ e : ℝ) : ℂ) by push_cast; ring, Complex.re_ofReal_mul, Complex.re_ofReal_mul, pow_mul]`. Establish `hpi : Real.pi ^ e * Real.pi⁻¹ ^ e = 1`. Rewrite using `[← mul_pow, mul_inv_cancel₀ Real.pi_ne_zero, one_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Clear the denominators using the available nonvanishing facts.
 
-Establish `hr : r ^ (e * 2) * r⁻¹ ^ (e * 2) = 1`. Rewrite using `[← mul_pow, mul_inv_cancel₀ hNpos.ne', one_pow]`. Establish `h2 : (1 / 2 : ℝ) ^ e * 2 ^ e = 1`. Rewrite using `[← mul_pow]`. Evaluate the numerical expressions.
-
-Clear the denominators using the available nonvanishing facts. Take the linear combination `(r ^ 2 * Z.re * r ^ (e * 2) * r⁻¹ ^ (e * 2) * (1 / 2) ^ e * 2 ^ e) * hpi + (r ^ 2 * Z.re * (1 / 2) ^ e * 2 ^ e) * hr + (r ^ 2 * Z.re) * h2`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem ChartGramMA.proof : ChartGramMA.Statement := by
   intro e n v y hv h0

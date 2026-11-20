@@ -5,19 +5,19 @@ open Polynomial
 namespace GlobalTheory.CompanionTheory.KillDeg
 
 /- English proof (translation)
-Set `P : ℕ → Prop` to `fun n => ∃ U : Submodule ℂ V, U ≤ W ∧ U ≠ ⊥ ∧ (∀ i, ∀ w ∈ U, f i w ∈ U) ∧ Module.finrank ℂ U = n`. Establish `hP : ∃ n, P n` using `⟨_, W, le_rfl, hW, hinv, rfl⟩`. Take `⟨U, hUW, hU, hUinv, hUn⟩` from `Nat.find_spec hP`. Establish `hmin : ∀ U' : Submodule ℂ V, U' ≤ U → U' ≠ ⊥ → (∀ i, ∀ w ∈ U', f i w ∈ U') → U' = U`. Introduce `U' hle hne hinv'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : Nat.find hP ≤ Module.finrank ℂ U'` using `Nat.find_min' hP ⟨U', hle.trans hUW, hne, hinv', rfl⟩`. Conclude with `Submodule.eq_of_le_of_finrank_le hle (by omega)`. Take `⟨v, hvU, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hU`. Use `⟨v, hUW hvU, hv0, fun i => ?_⟩` and prove the remaining obligations. Use `haveI : Nontrivial U := Submodule.nontrivial_iff_ne_bot.2 hU`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `r : Module.End ℂ U` to `(f i).restrict (hUinv i)`. Take `⟨μ, hμ⟩` from `Module.End.exists_eigenvalue r`. Take `⟨x, hx⟩` from `hμ.exists_hasEigenvector`. Establish `hxe : f i (x : V) = μ • (x : V)`. Use `congrArg Subtype.val hx.apply_eq_smul` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `[r]`. Establish `hx0 : (x : V) ≠ 0`. Introduce `h`. Conclude with `hx.2 (Subtype.ext h)`. Set `U' : Submodule ℂ V` to `U ⊓ Module.End.eigenspace (f i) μ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hU' : U' = U`. Use `hmin U' inf_le_left ?_ ?_` and prove the remaining obligations. Introduce `hb`. Establish `hxm : (x : V) ∈ U'` using `⟨x.2, Module.End.mem_eigenspace_iff.2 hxe⟩`. Rewrite `hxm` using `[hb]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hx0 (by simpa using hxm)`. Introduce `j w hw`. Use `⟨hUinv j w hw.1, Module.End.mem_eigenspace_iff.2 ?_⟩` and prove the remaining obligations. Establish `hwe : f i w = μ • w` using `Module.End.mem_eigenspace_iff.1 hw.2`. Establish `hcomm : f i (f j w) = f j (f i w)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg (fun e : Module.End ℂ V => e w) (hc i j).eq` as an intermediate fact. Simplify using `using this`. Rewrite using `[hcomm, hwe, map_smul]`. Establish `hvm : v ∈ U'` using `by rw [hU']; exact hvU`. Conclude with `⟨μ, Module.End.mem_eigenspace_iff.1 hvm.2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_common_eigvector {V : Type*} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     {ι : Type*} (f : ι → Module.End ℂ V) (hc : ∀ i j, Commute (f i) (f j))
@@ -63,31 +63,29 @@ theorem exists_common_eigvector {V : Type*} [AddCommGroup V] [Module ℂ V] [Fin
   exact ⟨μ, Module.End.mem_eigenspace_iff.1 hvm.2⟩
 
 /- English proof (translation)
-Set `I : ℝ → ℂ` to `fun x => ∫ s in (0 : ℝ)..x, χ s`. Establish `hI : ∀ x, HasDerivAt I (χ x) x` using `fun x => (hc.integral_hasStrictDerivAt 0 x).hasDerivAt`. Choose the witnesses or unpack the hypotheses as in `⟨δ, hδ⟩ : ∃ δ, I δ ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hz : I = fun _ => 0` using `funext hcon`. Establish `h1` using `hI 0`. Rewrite `h1` using `[hz]`. Establish `h2` using `h1.unique (hasDerivAt_const (0 : ℝ) (0 : ℂ))`. Rewrite `h2` using `[h0]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `one_ne_zero h2`. Establish `hint : ∀ a b : ℝ, IntervalIntegrable χ MeasureTheory.volume a b` using `fun a b => hc.intervalIntegrable a b`. Establish `hid : ∀ t, χ t * I δ = I (t + δ) - I t`. Introduce `t`. Establish `h1 : ∫ s in (0 : ℝ)..δ, χ (t + s) = χ t * I δ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hm, I]`. Conclude with `intervalIntegral.integral_const_mul _ _`. Establish `h2 : ∫ s in (0 : ℝ)..δ, χ (t + s) = ∫ s in (t + 0)..(t + δ), χ s` using `intervalIntegral.integral_comp_add_left (a := 0) (b := δ) χ t`. Establish `h3 : I t + ∫ s in t..(t + δ), χ s = I (t + δ)` using `intervalIntegral.integral_add_adjacent_intervals (hint _ _) (hint _ _)`. Rewrite using `[← h1, h2, add_zero, ← h3]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Set `c : ℂ` to `(χ δ - 1) / I δ`. Establish `hd : ∀ t, HasDerivAt χ (c * χ t) t`. Introduce `t`. Establish `h1 : HasDerivAt (fun u => I (u + δ)) (χ (t + δ)) t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using (hI (t + δ)).comp_add_const t δ`. Establish `h2 : HasDerivAt (fun u => (I (u + δ) - I u) / I δ) ((χ (t + δ) - χ t) / I δ) t` using `(h1.sub (hI t)).div_const _`. Establish `h3 : (fun u => (I (u + δ) - I u) / I δ) = χ`. Use function extensionality and compare the values at `u`. Rewrite using `[← hid u]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Rewrite `h2` using `[h3]`. Establish `h4 : (χ (t + δ) - χ t) / I δ = c * χ t`. Simplify using `only [c, hm]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Rewrite `h2` using `[h4]`. Then use the resulting hypothesis. Use `⟨c, fun t => ?_⟩` and prove the remaining obligations. Set `y : ℝ → ℂ` to `fun u => χ u * Complex.exp (-(c * u))`. Establish `hy : ∀ u, HasDerivAt y 0 u`. Introduce `u`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : HasDerivAt (fun u : ℝ => -(c * (u : ℂ))) (-c) u`. Establish `h0' : HasDerivAt (fun y : ℝ => (y : ℂ)) 1 u` using `Complex.ofRealCLM.hasDerivAt`. Establish `h` using `h0'.const_mul (-c)`. Rewrite `h` using `[mul_one]`. Establish `he : (fun y : ℝ => -(c * (y : ℂ))) = fun y : ℝ => -c * (y : ℂ)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `y`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[he]`. Conclude with `h`. Establish `h2` using `(hd u).mul h1.cexp`.
+Establish an intermediate fact. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : c * χ u * Complex.exp (-(c * u)) + χ u * (Complex.exp (-(c * u)) * -c) = 0`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[h3]`. Conclude with `h2`. Establish `hy0 : y t = y 0` using `is_const_of_deriv_eq_zero (fun u => (hy u).differentiableAt) (fun u => (hy u).deriv) t 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hy1 : y 0 = 1` using `by simp [y, h0]`. Establish `h5 : χ t * Complex.exp (-(c * t)) = 1`. Establish `: y t = 1` using `hy0.trans hy1`. Conclude with `this`. Rewrite `h5` using `[Complex.exp_neg]`.
-
-Establish `hne` using `Complex.exp_ne_zero (c * t)`. Clear denominators, using `at h5` for the nonvanishing conditions. Conclude with `h5`.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem char_eq_cexp (χ : ℝ → ℂ) (hc : Continuous χ) (h0 : χ 0 = 1)
     (hm : ∀ s t, χ (s + t) = χ s * χ t) : ∃ c : ℂ, ∀ t : ℝ, χ t = Complex.exp (c * t) := by
@@ -162,63 +160,59 @@ theorem char_eq_cexp (χ : ℝ → ℂ) (hc : Continuous χ) (h0 : χ 0 = 1)
   exact h5
 
 /- English proof (translation)
-Establish `ha0 : a 0 = 1`. Establish `h` using `ha 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `(mul_eq_left.1 h.symm)`. Set `τ : ℝ → G → ℂ` to `fun t g => F₀ (a t * g)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `T : Submodule ℂ (G → ℂ)` to `Submodule.span ℂ (Set.range τ)`. Set `Λ : Module.Dual ℂ S →ₗ[ℂ] (G → ℂ)` to `{ toFun := fun l g => l ⟨fun t => F₀ (a t * g), hS g⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `hTle : T ≤ LinearMap.range Λ`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨t, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Set `ev : Module.Dual ℂ S` to `(LinearMap.proj t : (ℝ → ℂ) →ₗ[ℂ] ℂ).comp S.subtype`. Conclude with `⟨ev, rfl⟩`. Use `haveI hTfin : FiniteDimensional ℂ T := Submodule.finiteDimensional_of_le hTle`. Establish `hrank : Module.finrank ℂ T ≤ Module.finrank ℂ S` using `(Submodule.finrank_mono hTle).trans ((LinearMap.finrank_range_le Λ).trans_eq (Subspace.dual_finrank_eq))`. Set `L : ℝ → (G → ℂ) →ₗ[ℂ] (G → ℂ)` to `fun t => LinearMap.funLeft ℂ ℂ (fun g => a t * g)`.
+Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLap : ∀ t (F : G → ℂ) g, L t F g = F (a t * g)` using `fun _ _ _ => rfl`. Establish `hLT : ∀ t, ∀ F ∈ T, L t F ∈ T`. Introduce `t F hF`. Establish `hmap : T.map (L t) ≤ T`. Rewrite using `[Submodule.map_span_le]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨s, rfl⟩`. Use `Submodule.subset_span ⟨s + t, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Simplify using `only [hLap, τ, ha, mul_assoc]`. Conclude with `hmap ⟨F, hF, rfl⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `R : ℝ → Module.End ℂ T` to `fun t => (L t).restrict (hLT t)`. Establish `hRap : ∀ t (F : T) g, (R t F : G → ℂ) g = (F : G → ℂ) (a t * g)` using `fun _ _ _ => rfl`. Establish `hcomm : ∀ s t, Commute (R s) (R t)`. Introduce `s t`. Use `LinearMap.ext fun F => Subtype.ext (funext fun g => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(R s (R t F) : G → ℂ) g = (R t (R s F) : G → ℂ) g`. Rewrite using `[hRap, hRap, hRap, hRap, ← mul_assoc, ← mul_assoc, ← ha, ← ha, add_comm]`. Establish `hpow : ∀ (j : ℕ) (F : T) g, (((R 1) ^ j) F : G → ℂ) g = (F : G → ℂ) (a j * g)`. Introduce `j`. Proceed by induction on `j with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Consider the case `zero`. Introduce `F g`. Simplify using `[ha0]`. Consider the case `succ j ih`. Introduce `F g`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ']`. Express the relevant statement in the definitionally equal form `(R 1 (((R 1) ^ j) F) : G → ℂ) g = _`. Rewrite using `[hRap, ih, ← mul_assoc, ← ha]`. Use `push_cast`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : IsIntegral ℂ (R 1)` using `Algebra.IsIntegral.isIntegral _`. Establish `hdeg : (minpoly ℂ (R 1)).natDegree ≤ Module.finrank ℂ T`. Establish `h1` using `Polynomial.natDegree_le_of_dvd (LinearMap.minpoly_dvd_charpoly (R 1)) (LinearMap.charpoly_monic (R 1)).ne_zero`. Rewrite `h1` using `[LinearMap.charpoly_natDegree]`. Then use the resulting hypothesis. Use `⟨minpoly ℂ (R 1), minpoly.monic hint, hdeg.trans hrank, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `g`. Establish `hz : Polynomial.aeval (R 1) (minpoly ℂ (R 1)) = 0` using `minpoly.aeval ℂ (R 1)`. Rewrite `hz` using `[Polynomial.aeval_eq_sum_range]`. Set `f₀ : T` to `⟨τ 0, Submodule.subset_span ⟨0, rfl⟩⟩`. Establish `h1` using `congrArg (fun e : Module.End ℂ T => ((e f₀ : T) : G → ℂ) g) hz`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.zero_apply, Submodule.coe_sum, Submodule.coe_smul, Submodule.coe_zero, Finset.sum_apply, Pi.smul_apply, Pi.zero_apply, smul_eq_mul] at h1`. Rewrite using `[← h1]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hpow]`. Simplify using `[f₀, τ, ha0]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `z hz`. Establish `hev : (R 1).HasEigenvalue z` using `Module.End.hasEigenvalue_of_isRoot hz`. Take `⟨x, hx⟩` from `hev.exists_hasEigenvector`. Establish `hWne : Module.End.eigenspace (R 1) z ≠ ⊥`. Introduce `hb`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hxm : x ∈ Module.End.eigenspace (R 1) z` using `Module.End.mem_eigenspace_iff.2 hx.apply_eq_smul`. Rewrite `hxm` using `[hb]`. Conclude with `hx.2 (by simpa using hxm)`. Take `⟨v, hvW, hv0, hv⟩` from `exists_common_eigvector R hcomm _ hWne (by`. Introduce `t w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Module.End.mem_eigenspace_iff.2 ?_` and prove the remaining obligations. Establish `hwe : R 1 w = z • w` using `Module.End.mem_eigenspace_iff.1 hw`. Establish `hc1 : R 1 (R t w) = R t (R 1 w)`. Use `congrArg (fun e : Module.End ℂ T => e w) (hcomm 1 t).eq` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[hc1, hwe, map_smul])`. Establish `hv1 : R 1 v = z • v` using `Module.End.mem_eigenspace_iff.1 hvW`. Choose the witnesses or unpack the hypotheses as in `⟨g₀, hg₀⟩ : ∃ g₀, (v : G → ℂ) g₀ ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hv0 (Subtype.ext (funext hcon))`. Set `χ : ℝ → ℂ` to `fun t => (v : G → ℂ) (a t * g₀) / (v : G → ℂ) g₀`. Establish `hχ : ∀ t g, (v : G → ℂ) (a t * g) = χ t * (v : G → ℂ) g`. Introduce `t g`. Take `⟨μ, hμ⟩` from `hv t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `he : ∀ g, (v : G → ℂ) (a t * g) = μ * (v : G → ℂ) g`. Introduce `g`. Use `congrArg (fun w : T => (w : G → ℂ) g) hμ` as an intermediate fact. Simplify `this` using `[hRap]`. Establish `hμχ : χ t = μ`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [χ]`. Rewrite using `[he g₀]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hμχ, he g]`. Establish `hspan : ∀ F ∈ T, ∀ g, Continuous fun t => F (a t * g)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `F hF`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem F hF`. Take `⟨s, rfl⟩` from `hF`. Introduce `g`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Establish `he : (fun t => τ s (a t * g)) = fun t => F₀ (a t * (a s * g))`. Use function extensionality and compare the values at `t`. Simplify using `only [τ]`. Rewrite using `[← mul_assoc, ← mul_assoc, ← ha, ← ha, add_comm]`. Rewrite using `[he]`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hcont _`. Consider the case `zero`. Introduce `g`. Conclude with `continuous_const`. Consider the case `add F₁ F₂ _ _ h₁ h₂`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Conclude with `(h₁ g).add (h₂ g)`. Consider the case `smul r F _ h`. Introduce `g`. Conclude with `(h g).const_smul r`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hχc : Continuous χ` using `(hspan _ v.2 g₀).div_const _`. Establish `hχ0 : χ 0 = 1`. Simplify using `only [χ, ha0, one_mul]`. Conclude with `div_self hg₀`. Establish `hχm : ∀ s t, χ (s + t) = χ s * χ t`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `s t`. Establish `h1 : (v : G → ℂ) (a (s + t) * g₀) = χ s * (χ t * (v : G → ℂ) g₀)`. Rewrite using `[ha, mul_assoc, hχ s, hχ t]`. Establish `h2` using `hχ (s + t) g₀`. Rewrite `h1` using `[h2]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : χ (s + t) * (v : G → ℂ) g₀ = (χ s * χ t) * (v : G → ℂ) g₀`. Rewrite using `[h1]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `mul_right_cancel₀ hg₀ h3`. Take `⟨c, hc⟩` from `char_eq_cexp χ hχc hχ0 hχm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨c, ?_, (v : G → ℂ), v.2, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : (v : G → ℂ) (a 1 * g₀) = z * (v : G → ℂ) g₀`. Use `congrArg (fun w : T => (w : G → ℂ) g₀) hv1` as an intermediate fact. Simplify `this` using `[hRap]`. Establish `h2` using `hχ 1 g₀`.
-
-Rewrite `h2` using `[h1]`. Establish `h3 : z = χ 1` using `mul_right_cancel₀ hg₀ h2`. Rewrite using `[h3, hc 1]`. Simplify using the standard rewrite rules. Introduce `h`.
-
-Conclude with `hv0 (Subtype.ext h)`. Introduce `t g`. Rewrite using `[hχ t g, hc t]`.
+A detailed English derivation is pending.
 -/
 theorem killPoly_natDegree_le (G : Type) [Group G] (a : ℝ → G) (F₀ : G → ℂ)
     (S : Submodule ℂ (ℝ → ℂ)) (ha : ∀ s t, a (s + t) = a s * a t)

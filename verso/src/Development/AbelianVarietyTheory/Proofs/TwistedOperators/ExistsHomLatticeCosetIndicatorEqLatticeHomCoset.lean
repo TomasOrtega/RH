@@ -23,14 +23,14 @@ open GlobalTheory.FunObj.Comparison₂ GlobalTheory.StdFrames
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `(HeightOneSpectrum.inf_pow_eq_prod _ _ _ fun _ _ _ _ hne h => hne h).symm`.
+A detailed English derivation is pending.
 -/
 theorem prod_eq_inf (P : Finset (Pl D.host.E)) (d : Pl D.host.E → ℕ) :
     (∏ w ∈ P, w.asIdeal ^ d w) = P.inf fun w => w.asIdeal ^ d w :=
   (HeightOneSpectrum.inf_pow_eq_prod _ _ _ fun _ _ _ _ hne h => hne h).symm
 
 /- English proof (translation)
-Rewrite using `[← Ideal.zero_eq_bot]`. Conclude with `Finset.prod_ne_zero_iff.2 fun w _ => pow_ne_zero _ (by rw [Ideal.zero_eq_bot]; exact w.ne_bot)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_ne_bot (P : Finset (Pl D.host.E)) (d : Pl D.host.E → ℕ) :
     (∏ w ∈ P, w.asIdeal ^ d w) ≠ ⊥ := by
@@ -38,9 +38,9 @@ theorem prod_ne_bot (P : Finset (Pl D.host.E)) (d : Pl D.host.E → ℕ) :
   exact Finset.prod_ne_zero_iff.2 fun w _ => pow_ne_zero _ (by rw [Ideal.zero_eq_bot]; exact w.ne_bot)
 
 /- English proof (translation)
-Take `⟨-, e1, e2⟩` from `cpt_idemSum he`. Use `(mem_OA_iff _).2 fun w => ?_` and prove the remaining obligations. Distinguish the cases in `hw : w ∈ P`. Rewrite using `[e1 w hw]`. Conclude with `one_mem _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2 w hw]`. Conclude with `zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem idem_mem_OA {e : AE D} {P : Finset (Pl D.host.E)} (he : IsIdemSum e P) : toEAf D e ∈ OA D := by
   obtain ⟨-, e1, e2⟩ := cpt_idemSum he
@@ -50,7 +50,7 @@ theorem idem_mem_OA {e : AE D} {P : Finset (Pl D.host.E)} (he : IsIdemSum e P) :
   · rw [e2 w hw]; exact zero_mem _
 
 /- English proof (translation)
-Take `⟨-, e1, -⟩` from `cpt_idemSum he`. Use `mem_idS_of_v_le (w := fun w => w) (prod_ne_bot P d) (prod_eq_inf P d) fun w hw => ?_` and prove the remaining obligations. Use `show Valued.v (cpt (D := D) w (1 - toEAf D e)) ≤ _`. Rewrite using `[RingHom.map_sub, RingHom.map_one, e1 w hw, sub_self, Valuation.map_zero]`. Conclude with `zero_le'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_sub_idem_mem {e : AE D} {P : Finset (Pl D.host.E)} (he : IsIdemSum e P) (d : Pl D.host.E → ℕ) :
     (1 - ⟨toEAf D e, idem_mem_OA he⟩ : OA D) ∈ idS D.host.F (∏ w ∈ P, w.asIdeal ^ d w) := by
@@ -69,7 +69,7 @@ open GlobalTheory.FunObj.Comparison₂ GlobalTheory.StdFrames
 variable {D : D7} {S T : GlobalTheory.Grid.Node D} {e : AE D} {x : WO S.V T.V}
 
 /- English proof (translation)
-The claim follows from `Matrix.ext fun i j => by simp only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul] rw [← RingHom.map_mul, hx i j]`.
+A detailed English derivation is pending.
 -/
 theorem half_map (hx : IsHalf e x) : x.map (toEAf D) = toEAf D e • x.map (toEAf D) :=
   Matrix.ext fun i j => by
@@ -77,7 +77,7 @@ theorem half_map (hx : IsHalf e x) : x.map (toEAf D) = toEAf D e • x.map (toEA
     rw [← RingHom.map_mul, hx i j]
 
 /- English proof (translation)
-Establish `h1 : fr T.β S.β (x.map (toEAf D)) i j = fr T.β S.β (toEAf D e • x.map (toEAf D)) i j`. Rewrite using `[← half_map hx]`. Rewrite `h1` using `[fr_smul, Matrix.smul_apply, smul_eq_mul]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fr_half (hx : IsHalf e x) (i : Fin T.V.rank) (j : Fin S.V.rank) :
     fr T.β S.β (x.map (toEAf D)) i j = toEAf D e * fr T.β S.β (x.map (toEAf D)) i j := by
@@ -89,7 +89,7 @@ theorem fr_half (hx : IsHalf e x) (i : Fin T.V.rank) (j : Fin S.V.rank) :
 variable {S T : GlobalTheory.Grid.Node D}
 
 /- English proof (translation)
-Unfold `frMapO fr`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 -/
 theorem frMapO_eq_fr (x : WO S.V T.V) : frMapO S.V T.V S.β T.β x = fr T.β S.β (x.map (toEAf D)) := by
   unfold frMapO fr
@@ -100,7 +100,7 @@ end GlobalTheory.CosToCoset
 namespace GlobalTheory.CosToCoset
 
 /- English proof (translation)
-Substitute `hs ht ha he` using the available equality. Take the linear combination `-hx`.
+Substitute using the available equality. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem alg_one {R : Type} [CommRing R] {s t A A' X Y E eS : R} (hs : s = E * (X - Y)) (ht : t = Y - A') (ha : A = A')
     (he : eS = E) (hx : X = E * X) : s + eS * t - (1 - eS) * A + A = X := by
@@ -108,7 +108,7 @@ theorem alg_one {R : Type} [CommRing R] {s t A A' X Y E eS : R} (hs : s = E * (X
   linear_combination -hx
 
 /- English proof (translation)
-Rewrite using `[← h]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem alg_two {R : Type} [CommRing R] {s t A X eS : R} (h : s + eS * t - (1 - eS) * A + A = X) :
     X - A = s + eS * t - (1 - eS) * A := by
@@ -123,14 +123,14 @@ open GlobalTheory.FunObj.Comparison₂ GlobalTheory.StdFrames
 variable {D : D7} {S T : GlobalTheory.Grid.Node D} {e : AE D} {x : WO S.V T.V}
 
 /- English proof (translation)
-Rewrite using `[mul_sub, hx]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem half_sub (hx : IsHalf e x) (y : Matrix (Fin T.V.rank) (Fin S.V.rank) D.host.E) (i : Fin T.V.rank)
     (j : Fin S.V.rank) : (x - e • y.map (incA D)) i j = e * (x i j - incA D (y i j)) := by
   rw [mul_sub, hx]; rfl
 
 /- English proof (translation)
-Establish `h : (x - e • y.map (incA D)).map (toEAf D) = toEAf D e • (x.map (toEAf D) - y.map (eToEAf D))` using `Matrix.ext fun i j => by rw [Matrix.map_apply, half_sub hx, RingHom.map_mul, RingHom.map_sub]; rfl`. Rewrite using `[h, fr_smul, fr_sub]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fr_half_sub (hx : IsHalf e x) (y : Matrix (Fin T.V.rank) (Fin S.V.rank) D.host.E) (i : Fin T.V.rank)
     (j : Fin S.V.rank) : fr T.β S.β ((x - e • y.map (incA D)).map (toEAf D)) i j =
@@ -140,9 +140,9 @@ theorem fr_half_sub (hx : IsHalf e x) (y : Matrix (Fin T.V.rank) (Fin S.V.rank) 
   rw [h, fr_smul, fr_sub]; rfl
 
 /- English proof (translation)
-Take `⟨e0, -, -⟩` from `cpt_idemSum he`. Use `(mem_hatMx_iff hS hT _ _).2 ⟨fun i j => by rw [half_sub hx, RingHom.map_mul, e0, zero_mul], fun i j => ?_⟩` and prove the remaining obligations. Take `⟨hX, h'⟩` from `h i j`. Use `⟨⟨toEAf D e, idem_mem_OA he⟩ * (⟨_, hX⟩ - a i j), Ideal.mul_mem_left _ _ h', ?_⟩` and prove the remaining obligations. Use `Eq.trans ?_ (fr_half_sub hx x₀.1 i j).symm` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg (toEAf D e * ·) (congrArg₂ (· - ·) rfl (ha i j))`.
+A detailed English derivation is pending.
 -/
 theorem sub_mem_hatMx {P : Finset (Pl D.host.E)} {I : Ideal (𝓞 D.host.E)} (hS : IsFrame S.β S.Λ) (hT : IsFrame T.β T.Λ)
     (he : IsIdemSum e P) (x₀ : homLat S.Λ T.Λ) (a : Fin T.V.rank → Fin S.V.rank → OA D)
@@ -168,13 +168,13 @@ variable {D : D7} {S T : GlobalTheory.Grid.Node D} {e : AE D} {x : WO S.V T.V}
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨s, hs, hs'⟩` from `((mem_hatMx_iff hS hT _ _).1 hz).2 i j`. Take `⟨t, ht, ht'⟩` from `fr_mem_idS hS hT hyx i j`. Establish `hs''` using `hs'.trans (fr_half_sub hx y.1 i j)`. Establish `hyA : t.1 = fr T.β S.β (y.1.map (eToEAf D)) i j - fr T.β S.β (x₀.1.map (eToEAf D)) i j`. Rewrite using `[ht', Matrix.map_sub _ (RingHom.map_sub _), fr_sub, Matrix.sub_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz0 : s.1 + eS.1 * t.1 - (1 - eS.1) * (a i j).1 + (a i j).1 = fr T.β S.β (x.map (toEAf D)) i j` using `alg_one hs'' hyA (ha i j) heS (fr_half hx i j)`. Establish `hX : frMapO S.V T.V S.β T.β x i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`. Establish `hz1 : ((s + eS * t - (1 - eS) * a i j + a i j : OA D) : EAf D) = fr T.β S.β (x.map (toEAf D)) i j`. Simplify using `only [AddSubgroupClass.coe_sub, AddMemClass.coe_add, MulMemClass.coe_mul, OneMemClass.coe_one]`. Conclude with `hz0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[frMapO_eq_fr, ← hz1]`. Conclude with `(s + eS * t - (1 - eS) * a i j + a i j).2`. Use `⟨hX, ?_⟩` and prove the remaining obligations. Establish `: (⟨_, hX⟩ : OA D) - a i j = s + eS * t - (1 - eS) * a i j`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [AddSubgroupClass.coe_sub, AddMemClass.coe_add, MulMemClass.coe_mul, OneMemClass.coe_one]`. Rewrite using `[frMapO_eq_fr]`. Conclude with `alg_two hz0`. Rewrite using `[this]`. Conclude with `sub_mem (add_mem hs (Ideal.mul_mem_left _ _ ht)) (Ideal.mul_mem_right _ _ he1)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frMapO_sub_mem {I : Ideal (𝓞 D.host.E)} (hS : IsFrame S.β S.Λ) (hT : IsFrame T.β T.Λ) (eS : OA D)
     (heS : eS.1 = toEAf D e) (he1 : 1 - eS ∈ idS D.host.F I)
@@ -217,13 +217,13 @@ variable {D : D7} {S T : GlobalTheory.Grid.Node D} {e : AE D}
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Establish `key : IsHalf e x → (InCosetOf S T I c x ↔ ∃ y : homLat S.Λ T.Λ, Cos.mk I y = κ ∧ x - e • (y.1 : Matrix (Fin T.V.rank) (Fin S.V.rank) D.host.E).map (incA D) ∈ hatMx (I • homLat S.Λ T.Λ))`. Introduce `hx`. Establish `hq : ∀ i j (hX : frMapO S.V T.V S.β T.β x i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E), Ideal.Quotient.mk (idS D.host.F I) ⟨_, hX⟩ = cmpS D.host.F I (c i j) ↔ (⟨_, hX⟩ : OA D) - a i j ∈ idS D.host.F I` using `fun i j hX => by rw [hc i j, Ideal.Quotient.eq]`. Prove the components needed by the constructor for the conclusion.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Conclude with `⟨x₀, hx₀, sub_mem_hatMx hS hT he x₀ a ha hx fun i j => ⟨(h i j).1, (hq i j _).1 (h i j).2⟩⟩`. Introduce and unpack `⟨y, hy, hz⟩ i j`. Take `⟨hX, h'⟩` from `frMapO_sub_mem hS hT _ rfl he1 x₀ a ha hx y (sub_mem_of_mk_eq (hy.trans hx₀.symm)) hz i j`. Conclude with `⟨hX, (hq i j hX).2 h'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hiff : (IsHalf e x ∧ InCosetOf S T I c x) ↔ x ∈ cosSet e κ` using `⟨fun ⟨h1, h2⟩ => ⟨h1, (key h1).1 h2⟩, fun ⟨h1, h2⟩ => ⟨h1, (key h1).2 h2⟩⟩`. Unfold `GlobalTheory.Grid.cosetInd GlobalTheory.ChiGrid.cosInd`. Distinguish the cases in `h : x ∈ cosSet e κ`. Rewrite using `[if_pos (hiff.2 h), Set.indicator_of_mem h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[if_neg (fun h' => h (hiff.1 h')), Set.indicator_of_notMem h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cosetInd_eq_of {P : Finset (Pl D.host.E)} {I : Ideal (𝓞 D.host.E)} (hS : IsFrame S.β S.Λ)
     (hT : IsFrame T.β T.Λ) (he : IsIdemSum e P) (he1 : (1 - ⟨toEAf D e, idem_mem_OA he⟩ : OA D) ∈ idS D.host.F I)
@@ -252,9 +252,9 @@ theorem cosetInd_eq_of {P : Finset (Pl D.host.E)} {I : Ideal (𝓞 D.host.E)} (h
   · rw [if_neg (fun h' => h (hiff.1 h')), Set.indicator_of_notMem h]
 
 /- English proof (translation)
-Introduce `D S T e P d hS hT he κ`. Take `⟨x₀, hx₀⟩ : ∃ x₀ : homLat S.Λ T.Λ, Cos.mk (∏ w ∈ P, w.asIdeal ^ d w) x₀ = κ` from `Submodule.Quotient.mk_surjective _ κ`. Establish `hA : ∀ i j, ∃ s : OA D, s.1 = fr T.β S.β (x₀.1.map (eToEAf D)) i j` using `fun i j => by`. Take `⟨s, -, hs⟩` from `fr_mem_idS hS hT (𝔪 := ⊤) (y := x₀.1) (by rw [Submodule.top_smul]; exact x₀.2) i j`. Conclude with `⟨s, hs⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose a ha using hA`. Use `choose c hc using fun i j => cmpS_surj (F := D.host.F) _ (prod_ne_bot P d) (Ideal.Quotient.mk (idS D.host.F (∏ w ∈ P, w.asIdeal ^ d w)) (a i j))`. Conclude with `⟨fun i j => c i j, cosetInd_eq_of hS hT he (one_sub_idem_mem he d) κ x₀ hx₀ a ha _ fun i j => hc i j⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cosInd_eq_cosetInd : ∀ {D : D7} (S T : GlobalTheory.Grid.Node D) (e : AE D) (P : Finset (Formalism.L2.DIV.Pl D.host.E)) (d : Formalism.L2.DIV.Pl D.host.E → ℕ), Formalism.L2.DIV.IsFrame S.β S.Λ → Formalism.L2.DIV.IsFrame T.β T.Λ → IsIdemSum e P → ∀ κ : GlobalTheory.ChiGrid.Cos S.Λ T.Λ (∏ w ∈ P, w.asIdeal ^ d w), ∃ c : GlobalTheory.Grid.Coset S T (∏ w ∈ P, w.asIdeal ^ d w), GlobalTheory.Grid.cosetInd S T e (∏ w ∈ P, w.asIdeal ^ d w) c = GlobalTheory.ChiGrid.cosInd e κ := by
   intro D S T e P d hS hT he κ

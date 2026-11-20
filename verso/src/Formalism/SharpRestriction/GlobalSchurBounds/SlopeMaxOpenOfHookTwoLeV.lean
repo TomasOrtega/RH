@@ -41,9 +41,9 @@ def SlopeMaxC (D : D7) : Prop :=
       Real.log (cNu ((D.fm u).lam 0 τ).natW) - (lamCol D u τ (D.R.k - 1) : ℝ) * Real.log (Tu D u))
 
 /- English proof (translation)
-Establish `hle : lam.w ⟨N - 1, by omega⟩ ≤ lam.w i` using `lam.anti (Fin.le_def.mpr (by simp; omega))`. Establish `h1 : ((lam.w i - lam.w ⟨N - 1, by omega⟩).toNat : ℤ) = lam.w i - lam.w ⟨N - 1, by omega⟩` using `Int.toNat_of_nonneg (by omega)`. Unfold `DomWeight.natW DomWeight.detShift`. Rewrite using `[dif_pos hN]`. Establish `h2 : (((lam.w i - lam.w ⟨N - 1, by omega⟩).toNat : ℕ) : ℝ) = (((lam.w i - lam.w ⟨N - 1, by omega⟩).toNat : ℤ) : ℝ)` using `by norm_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h2, h1]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem natWeight_cast_eq_sub_last {N : ℕ} (lam : DomWeight N) (hN : 0 < N) (i : Fin N) :
     ((lam.natW i : ℕ) : ℝ) = (lam.w i : ℝ) - (lam.w ⟨N - 1, by omega⟩ : ℝ) := by
@@ -59,30 +59,30 @@ theorem natWeight_cast_eq_sub_last {N : ℕ} (lam : DomWeight N) (hN : 0 < N) (i
   ring
 
 /- English proof (translation)
-Introduce `i j h`. Conclude with `Int.toNat_le_toNat (sub_le_sub_right (lam.anti h) _)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem antitone_natWeight {N : ℕ} (lam : DomWeight N) : Antitone lam.natW := by
   intro i j h
   exact Int.toNat_le_toNat (sub_le_sub_right (lam.anti h) _)
 
 /- English proof (translation)
-Use `D.R.m_add_three_le_k` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem columnCount_pos (D : D7) : 0 < D.R.k := by
   have := D.R.m_add_three_le_k
   omega
 
 /- English proof (translation)
-Simplify using `only [Formalism.BasicNotions.Ranks.N, zero_mul, add_zero]`. Conclude with `columnCount_pos D`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rank_zero_pos (D : D7) : 0 < D.R.N 0 := by
   simp only [Formalism.BasicNotions.Ranks.N, zero_mul, add_zero]
   exact columnCount_pos D
 
 /- English proof (translation)
-Establish `h` using `b_lam_eq D u 0 (Nat.zero_le _) τ i`. Establish `hi : i.1 < D.R.k` using `lt_of_lt_of_eq i.2 (Ranks.N_zero _)`. Unfold `lamLiftN at h`. Rewrite `h` using `[if_pos hi]`. Establish `h'` using `congrArg (fun q : ℚ => (q : ℝ)) h`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Rat.cast_intCast] at h'`. Conclude with `h'`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem weight_eq_lamCol (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) (i : Fin (D.R.N 0)) :
     ((((D.fm u).lam 0 τ).w i : ℤ) : ℝ) = ((lamCol D u τ i : ℚ) : ℝ) := by
@@ -95,7 +95,7 @@ theorem weight_eq_lamCol (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) (i :
   exact h'
 
 /- English proof (translation)
-Establish `hN` using `rank_zero_pos D`. Rewrite using `[natWeight_cast_eq_sub_last _ hN l, weight_eq_lamCol, weight_eq_lamCol]`. Simplify using `[Formalism.BasicNotions.Ranks.N]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem natWeight_eq_lamCol_sub (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) (l : Fin (D.R.N 0)) :
     (((((D.fm u).lam 0 τ).natW l : ℕ)) : ℝ) = (lamCol D u τ l : ℝ) - (lamCol D u τ (D.R.k - 1) : ℝ) := by
@@ -104,7 +104,7 @@ theorem natWeight_eq_lamCol_sub (D : D7) (u : D.what₂.Word) (τ : D.what₂.Ta
   simp [Formalism.BasicNotions.Ranks.N]
 
 /- English proof (translation)
-Simplify using `only [natWeight_eq_lamCol_sub]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => (lamCol D u τ i : ℝ) - (lamCol D u τ (D.R.k - 1) : ℝ)) (D.R.N 0)]`. Establish `hN : D.R.N 0 = D.R.k` using `by simp [Formalism.BasicNotions.Ranks.N]`. Rewrite using `[hN, colAbsP]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_natWeight_eq_colAbsShifted (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) :
     (∑ l : Fin (D.R.N 0), (((((D.fm u).lam 0 τ).natW l : ℕ)) : ℝ)) = colAbsP D u τ := by
@@ -114,7 +114,7 @@ theorem sum_natWeight_eq_colAbsShifted (D : D7) (u : D.what₂.Word) (τ : D.wha
   rw [hN, colAbsP]
 
 /- English proof (translation)
-Rewrite using `[natWeight_eq_lamCol_sub]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem natWeight_zero_eq_firstSpread (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) :
     (((((D.fm u).lam 0 τ).natW ⟨0, rank_zero_pos D⟩ : ℕ)) : ℝ) = firstColumnSpread D u τ := by
@@ -122,27 +122,27 @@ theorem natWeight_zero_eq_firstSpread (D : D7) (u : D.what₂.Word) (τ : D.what
   rfl
 
 /- English proof (translation)
-Rewrite using `[← sum_natWeight_eq_colAbsShifted]`. Check the signs of the components of the expression.
+Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 -/
 theorem colAbsShifted_nonneg (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) : 0 ≤ colAbsP D u τ := by
   rw [← sum_natWeight_eq_colAbsShifted]
   positivity
 
 /- English proof (translation)
-Rewrite using `[← natWeight_zero_eq_firstSpread]`. Check the signs of the components of the expression.
+Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 -/
 theorem firstColumnSpread_nonneg (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) : 0 ≤ firstColumnSpread D u τ := by
   rw [← natWeight_zero_eq_firstSpread]
   positivity
 
 /- English proof (translation)
-Establish `hN` using `rank_zero_pos D`. Establish `hanti` using `antitone_natWeight ((D.fm u).lam 0 τ)`. Take `⟨h1, h2⟩` from `hH (D.R.N 0) hN _ hanti`. Rewrite `h2` using `[natWeight_zero_eq_firstSpread]`. Establish `hNk : (D.R.N 0 : ℝ) = D.R.k` using `by simp [Formalism.BasicNotions.Ranks.N]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[hNk]`. Establish `hpos : 0 < cNu ((D.fm u).lam 0 τ).natW` using `by linarith`. Establish `hb : 1 ≤ firstColumnSpread D u τ + D.R.k`. Establish `h3` using `firstColumnSpread_nonneg D u τ`. Establish `h4 : (1 : ℝ) ≤ D.R.k` using `by exact_mod_cast columnCount_pos D`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlog0 : 0 ≤ Real.log (firstColumnSpread D u τ + D.R.k)` using `Real.log_nonneg hb`. Establish `hN' : D.R.N 0 = D.R.k` using `by simp [Formalism.BasicNotions.Ranks.N]`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_right _ hlog0` to reduce the goal to its premises.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hN']`. Establish `h5 : D.R.k * (D.R.k - 1) / 2 ≤ D.R.k ^ 2`. Combine the equalities or inequalities in the displayed calculation. Conclude with `h5` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem log_hookConst_le_sq_mul_log (hH : HookBound) (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau) :
     Real.log (cNu ((D.fm u).lam 0 τ).natW) ≤ (D.R.k : ℝ) ^ 2 * Real.log (firstColumnSpread D u τ + D.R.k) := by
@@ -172,13 +172,13 @@ theorem log_hookConst_le_sq_mul_log (hH : HookBound) (D : D7) (u : D.what₂.Wor
         exact_mod_cast h5
 
 /- English proof (translation)
-Introduce `u hu`. Take `⟨μs, hμ, heq⟩` from `hC u hu`. Unfold `SlopeLow`. Rewrite using `[heq]`. Establish `hτ : ∀ τ, -(colAbsP D u τ * Real.log D.R.k + (D.R.k : ℝ) ^ 2 * Real.log (firstColumnSpread D u τ + D.R.k)) ≤ μs τ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `τ`. Establish `h1` using `hS (D.R.N 0) _ (μs τ) (antitone_natWeight _) (hμ τ)`. Rewrite `h1` using `[sum_natWeight_eq_colAbsShifted]`. Establish `hNk : (D.R.N 0 : ℝ) = D.R.k` using `by simp [Formalism.BasicNotions.Ranks.N]`. Rewrite `h1` using `[hNk]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `log_hookConst_le_sq_mul_log hH D u τ`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsum : -∑ τ, (colAbsP D u τ * Real.log D.R.k + (D.R.k : ℝ) ^ 2 * Real.log (firstColumnSpread D u τ + D.R.k)) ≤ ∑ τ, μs τ`. Rewrite using `[← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_le_sum (fun τ _ => hτ τ)`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem slopeLowerOpen_of_std_hook (hS : StdSlopeLow) (hH : HookBound) (D : D7) (hC : ColSlopeEq D) : SlopeLowerOpenPart D := by
   intro u hu
@@ -201,13 +201,13 @@ theorem slopeLowerOpen_of_std_hook (hS : StdSlopeLow) (hH : HookBound) (D : D7) 
   linarith
 
 /- English proof (translation)
-Introduce `u hu`. Use `(hR u hu).trans (Finset.sum_le_sum (fun τ _ => ?_))` and prove the remaining obligations. Establish `hk : (0 : ℝ) < D.R.k` using `by exact_mod_cast columnCount_pos D`. Establish `hv0 : (0 : ℝ) < D.host.v` using `by linarith`. Establish `hlog : Real.log (4 * (D.R.k : ℝ) ^ 4 * D.host.v ^ 2) ≤ 4 * Real.log (D.R.k * D.host.v)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show (4 : ℝ) * Real.log (D.R.k * D.host.v) = Real.log (((D.R.k : ℝ) * D.host.v) ^ 4) by`. Rewrite using `[Real.log_pow]`. Use the proof step `norm_num]`. Apply `Real.log_le_log (by positivity)` to reduce the goal to its premises. Establish `h4 : (4 : ℝ) ≤ D.host.v ^ 2` using `by nlinarith`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h1` using `mul_le_mul_of_nonneg_left hlog (colAbsShifted_nonneg D u τ)`. Establish `h2` using `log_hookConst_le_sq_mul_log hH D u τ`. Establish `hT : 0 ≤ Real.log (Tu D u)` using `Real.log_natCast_nonneg _`. Establish `h3 : -(lamCol D u τ (D.R.k - 1) : ℝ) * Real.log (Tu D u) ≤ |(lamCol D u τ (D.R.k - 1) : ℝ)| * Real.log (Tu D u)` using `mul_le_mul_of_nonneg_right (neg_le_abs _) hT`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem slopeMaxOpen_of_hook_two_le_v (hH : HookBound) (D : D7) (hv : 2 ≤ D.host.v) (hR : SlopeMaxC D) : SlopeMaxOpenPart D 4 := by
   intro u hu
@@ -230,13 +230,13 @@ theorem slopeMaxOpen_of_hook_two_le_v (hH : HookBound) (D : D7) (hv : 2 ≤ D.ho
   nlinarith
 
 /- English proof (translation)
-Unfold `Host.v`. Establish `h` using `(factRd D.R D.host).2.2`. Establish `h0 : 0 ≤ D.host.rdE` using `le_trans (by positivity) (factRd D.R D.host).1`. Establish `he : 2 ≤ D.R.e` using `D.host.two_le_e`. Establish `hn : 4 ≤ D.R.n`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : 2 ^ D.R.e ≤ D.R.ord` using `Nat.le_of_dvd D.R.ord_pos D.R.two_pow_dvd_ord`. Establish `h2 : 2 ^ 2 ≤ 2 ^ D.R.e` using `Nat.pow_le_pow_right (by norm_num) he`. Use `show 4 ≤ D.R.ord`. Use linear arithmetic over natural numbers and integers. Establish `hf : (8 : ℝ) ≤ D.R.f`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 8 ≤ D.R.f` using `by show 8 ≤ 2 * D.R.n`. Use linear arithmetic over natural numbers and integers. Conclude with `this` after adjusting the coercions. Establish `h4 : (4 : ℝ) ≤ D.host.rdE`. Assume the negation of the conclusion as `hlt`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `push Not at hlt`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem two_le_half_rootDiscr (D : D7) : 2 ≤ D.host.v := by
   unfold Host.v
@@ -260,12 +260,12 @@ theorem two_le_half_rootDiscr (D : D7) : 2 ≤ D.host.v := by
   linarith
 
 /- English proof (translation)
-The claim follows from `slopeMaxOpen_of_hook_two_le_v hH D (two_le_half_rootDiscr D) hR`.
+A detailed English derivation is pending.
 -/
 theorem slopeMaxOpen_of_hook (hH : HookBound) (D : D7) (hR : SlopeMaxC D) : SlopeMaxOpenPart D 4 := slopeMaxOpen_of_hook_two_le_v hH D (two_le_half_rootDiscr D) hR
 
 /- English proof (translation)
-Take `⟨x0, hx0⟩` from `h`. Conclude with `⟨x0, fun x hx hx1 i => slopeLowerOpen_of_std_hook hS hH _ (hx0 x hx hx1 i)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem familySlopeLowerOpen_of_std (hS : StdSlopeLow) (hH : HookBound) {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps)
     (h : fam0 Fm ColSlopeEq) : FamilySlopeLowerOpenPart Fm := by
@@ -273,7 +273,7 @@ theorem familySlopeLowerOpen_of_std (hS : StdSlopeLow) (hH : HookBound) {eps : �
   exact ⟨x0, fun x hx hx1 i => slopeLowerOpen_of_std_hook hS hH _ (hx0 x hx hx1 i)⟩
 
 /- English proof (translation)
-Take `⟨x0, hx0⟩` from `h`. Conclude with `⟨x0, fun x hx hx1 i => slopeMaxOpen_of_hook_two_le_v hH _ (hx0 x hx hx1 i).1 (hx0 x hx hx1 i).2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem familySlopeMaxOpen_of_hook_v (hH : HookBound) {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps)
     (h : fam0 Fm fun D => 2 ≤ D.host.v ∧ SlopeMaxC D) : FamilySlopeMaxOpenPart Fm 4 := by
@@ -281,7 +281,7 @@ theorem familySlopeMaxOpen_of_hook_v (hH : HookBound) {eps : ℝ} (Fm : Formalis
   exact ⟨x0, fun x hx hx1 i => slopeMaxOpen_of_hook_two_le_v hH _ (hx0 x hx hx1 i).1 (hx0 x hx hx1 i).2⟩
 
 /- English proof (translation)
-Take `⟨x0, hx0⟩` from `h`. Conclude with `⟨x0, fun x hx hx1 i => slopeMaxOpen_of_hook hH _ (hx0 x hx hx1 i)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem familySlopeMaxOpen_of_hook (hH : HookBound) {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (h : fam0 Fm SlopeMaxC) : FamilySlopeMaxOpenPart Fm 4 := by
   obtain ⟨x0, hx0⟩ := h
@@ -307,17 +307,17 @@ def SlopeMaxGiven (D : D7) : Prop :=
         Real.log (cNu ((D.fm u).lam 0 τ).natW) - (lamCol D u τ (D.R.k - 1) : ℝ) * Real.log (Tu D u))
 
 /- English proof (translation)
-Introduce `u hu` and use `hG u hu (fun c => hS u c (hu.latT c))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem slopeMaxC_of (D : D7) (hS : ShortDual D) (hG : SlopeMaxGiven D) : SlopeMaxC D := fun u hu => hG u hu (fun c => hS u c (hu.latT c))
 
 /- English proof (translation)
-The claim follows from `slopeMaxOpen_of_hook hH D (slopeMaxC_of D hS hG)`.
+A detailed English derivation is pending.
 -/
 theorem slope_max_open_four_of_hookBound (hH : HookBound) (D : D7) (hS : ShortDual D) (hG : SlopeMaxGiven D) : SlopeMaxOpenPart D 4 := slopeMaxOpen_of_hook hH D (slopeMaxC_of D hS hG)
 
 /- English proof (translation)
-Take `⟨x0, hx0⟩` from `h`. Conclude with `⟨x0, fun x hx hx1 i => slope_max_open_four_of_hookBound hH _ (hx0 x hx hx1 i).1 (hx0 x hx hx1 i).2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem family_slope_max_open_four_of_hookBound (hH : HookBound) {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps)
     (h : fam0 Fm fun D => ShortDual D ∧ SlopeMaxGiven D) : FamilySlopeMaxOpenPart Fm 4 := by

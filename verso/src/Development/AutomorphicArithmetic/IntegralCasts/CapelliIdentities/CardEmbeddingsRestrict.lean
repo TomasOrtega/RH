@@ -1,11 +1,11 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `K L _ _ _ _ _ τ`. Use `letI : Algebra K ℂ := τ.toAlgebra`. Use `haveI : Module.Finite K L := Module.Finite.of_restrictScalars_finite ℚ K L`. Rewrite using `[← AlgHom.card K L ℂ, ← Finset.card_univ]`. Use `symm`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.card_bij (fun (f : L →ₐ[K] ℂ) _ => (f : L →+* ℂ)) ?_ ?_ ?_` and prove the remaining obligations. Introduce `f _`. Rewrite using `[Finset.mem_filter]`. Conclude with `⟨Finset.mem_univ _, RingHom.ext fun x => f.commutes x⟩`. Introduce `f _ g _ h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `AlgHom.ext fun x => RingHom.congr_fun h x`. Introduce `σ hσ`. Rewrite `hσ` using `[Finset.mem_filter]`. Conclude with `⟨{ σ with commutes' := fun x => RingHom.congr_fun hσ.2 x }, Finset.mem_univ _, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.CardEmbeddingsRestrict.card_embeddings_restrict.{u_1, u_2} :
     ∀ {K : Type u_1} {L : Type u_2} [inst : Field K] [NumberField K] [inst_2 : Field L] [inst_3 : NumberField L]

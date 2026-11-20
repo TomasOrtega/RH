@@ -6,7 +6,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.UnitaryConj
 
 /- English proof (translation)
-Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (h⁻¹).val, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul, cT_units]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_h_form {K : Type} [Field K] (σ : K →+* K) {n : ℕ} (h : GL (Fin n) K) :
     (h.val * cT σ h.val)⁻¹ = cT σ (h⁻¹).val * (h⁻¹).val := by
@@ -15,17 +15,17 @@ theorem inv_h_form {K : Type} [Field K] (σ : K →+* K) {n : ℕ} (h : GL (Fin 
     Matrix.one_mul, cT_units]
 
 /- English proof (translation)
-Introduce `K _ σ n γ h`. Rewrite using `[inv_h_form]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, hconj⟩`. Establish `hg' : cT σ g.val * 1 * g.val = 1` using `hg`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite `hg'` using `[Matrix.mul_one]`. Use `⟨(g * h⁻¹).val, ?_, ?_⟩` and prove the remaining obligations. Establish `e : g * h⁻¹ * γ = γ * (g * h⁻¹)`. Combine the equalities or inequalities in the displayed calculation. Simplify `congrArg Units.val e` using `only [Units.val_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Units.val_mul, cT_mul, Matrix.mul_assoc, ← Matrix.mul_assoc (cT σ g.val), hg', Matrix.one_mul]`. Introduce and unpack `⟨c, hc, hcc⟩`. Establish `hdet : c.det ≠ 0`. Introduce `h0`. Use `congrArg Matrix.det hcc` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.det_mul, h0, mul_zero]`. Establish `hne : (cT σ (h⁻¹).val * (h⁻¹).val).det ≠ 0` using `det_ne σ h`. Conclude with `hne this.symm`. Set `cu : GL (Fin n) K` to `((Matrix.isUnit_iff_isUnit_det c).mpr (isUnit_iff_ne_zero.mpr hdet)).unit`. Establish `hcu : cu.val = c` using `rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcom : cu⁻¹ * γ * cu = γ`. Establish `e : cu * γ = γ * cu` using `Units.ext (by simpa only [Units.val_mul, hcu] using hc)`. Combine the equalities or inequalities in the displayed calculation. Use `⟨cu * h, ?_, ?_⟩` and prove the remaining obligations. Use `show cT σ (cu * h).val * 1 * (cu * h).val = 1`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.mul_one, Units.val_mul, cT_mul, hcu, Matrix.mul_assoc, ← Matrix.mul_assoc (cT σ c), hcc]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.mul_one, ← cT_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, cT_one]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem main : ∀ (K : Type) [Field K] (σ : K →+* K) (n : ℕ) (γ h : GL (Fin n) K), (∃ g ∈ UJ σ (1 : Matrix (Fin n) (Fin n) K), h⁻¹ * γ * h = g⁻¹ * γ * g) ↔ ∃ c : Matrix (Fin n) (Fin n) K, c * γ.val = γ.val * c ∧ cT σ c * c = (h.val * cT σ h.val)⁻¹ := by
   intro K _ σ n γ h

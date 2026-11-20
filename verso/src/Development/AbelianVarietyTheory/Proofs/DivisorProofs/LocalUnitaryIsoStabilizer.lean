@@ -25,39 +25,39 @@ section Support
 variable {v : Pl F} {m k : Type} [Fintype m] [Fintype k]
 
 /- English proof (translation)
-Introduce `u hu` and use `by rw [smul_sub, hA u hu, hB u hu, sub_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_sub {A B : Matrix m k (AE F E)} (hA : At (evFin F v) A) (hB : At (evFin F v) B) :
     At (evFin F v) (A - B) := fun u hu => by rw [smul_sub, hA u hu, hB u hu, sub_zero]
 
 /- English proof (translation)
-Introduce `u hu` and use `by rw [smul_add, hA u hu, hB u hu, add_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_add {A B : Matrix m k (AE F E)} (hA : At (evFin F v) A) (hB : At (evFin F v) B) :
     At (evFin F v) (A + B) := fun u hu => by rw [smul_add, hA u hu, hB u hu, add_zero]
 
 /- English proof (translation)
-Introduce `u hu` and use `by rw [← Matrix.mul_smul, hA u hu, Matrix.mul_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_mul_left {l : Type} [Fintype l] (C : Matrix l m (AE F E)) {A : Matrix m k (AE F E)}
     (hA : At (evFin F v) A) : At (evFin F v) (C * A) := fun u hu => by
   rw [← Matrix.mul_smul, hA u hu, Matrix.mul_zero]
 
 /- English proof (translation)
-Introduce `u hu` and use `by rw [← Matrix.smul_mul, hA u hu, Matrix.zero_mul]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_mul_right {l : Type} [Fintype l] {A : Matrix m k (AE F E)} (hA : At (evFin F v) A)
     (C : Matrix k l (AE F E)) : At (evFin F v) (A * C) := fun u hu => by
   rw [← Matrix.smul_mul, hA u hu, Matrix.zero_mul]
 
 /- English proof (translation)
-Introduce `u hu` and use `by rw [← Matrix.transpose_smul, hA u hu, Matrix.transpose_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_transpose {A : Matrix m k (AE F E)} (hA : At (evFin F v) A) : At (evFin F v) Aᵀ := fun u hu => by
   rw [← Matrix.transpose_smul, hA u hu, Matrix.transpose_zero]
 
 /- English proof (translation)
-Introduce `u hu` and use `by have : u • A.map (cA σ) = (u • A).map (cA σ) := by ext i j; simp [Matrix.smul_apply, map_smul] rw [this, hA u hu]; ext i j; simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_map_cA (σ : E →ₐ[F] E) {A : Matrix m k (AE F E)} (hA : At (evFin F v) A) :
     At (evFin F v) (A.map (cA σ)) := fun u hu => by
@@ -68,9 +68,9 @@ theorem at_map_cA (σ : E →ₐ[F] E) {A : Matrix m k (AE F E)} (hA : At (evFin
 end Support
 
 /- English proof (translation)
-Establish `hz : At (evFin F v) (A - B)`. Establish `e : A - B = (A - 1) - (B - 1)` using `by abel`. Rewrite using `[e]`. Conclude with `at_sub hA hB`. Establish `h0 : (A - B).map (compFin F E v) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.map_sub _ (fun x y => map_sub _ x y), h, sub_self]`. Conclude with `sub_eq_zero.1 (mat_eq_zero_of_at v _ hz h0)`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_compFin {n : ℕ} {v : Pl F} {A B : Matrix (Fin n) (Fin n) (AE F E)}
     (hA : At (evFin F v) (A - 1)) (hB : At (evFin F v) (B - 1))
@@ -87,7 +87,7 @@ section Fwd
 variable (σ : E →ₐ[F] E) {n : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [sigR, hσ]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sigR_sigR (hσ : ∀ x, σ (σ x) = x) (R : Type) [CommRing R] [Algebra F R] (x : R ⊗[F] E) :
     sigR R σ (sigR R σ x) = x := by
@@ -97,7 +97,7 @@ theorem sigR_sigR (hσ : ∀ x, σ (σ x) = x) (R : Type) [CommRing R] [Algebra 
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
 /- English proof (translation)
-Use `show Algebra.TensorProduct.map (AlgHom.id F R) σ ((1 : R) ⊗ₜ[F] e) = (1 : R) ⊗ₜ[F] σ e`. Rewrite using `[Algebra.TensorProduct.map_tmul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sigR_inclR (R : Type) [CommRing R] [Algebra F R] (e : E) : sigR R σ (inclR (F := F) R e) = inclR (F := F) R (σ e) := by
   show Algebra.TensorProduct.map (AlgHom.id F R) σ ((1 : R) ⊗ₜ[F] e) = (1 : R) ⊗ₜ[F] σ e
@@ -105,34 +105,34 @@ theorem sigR_inclR (R : Type) [CommRing R] [Algebra F R] (e : E) : sigR R σ (in
   rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[JR, Matrix.smul_apply, map_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem JR_smul (R : Type) [CommRing R] [Algebra F R] (δ : E) (X : Matrix (Fin n) (Fin n) E) :
     JR (F := F) R (δ • X) = inclR (F := F) R δ • JR (F := F) R X := by
   ext i j; simp [JR, Matrix.smul_apply, map_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[JR, sigR_inclR]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem JR_map_sigR (R : Type) [CommRing R] [Algebra F R] (X : Matrix (Fin n) (Fin n) E) :
     (JR (F := F) R X).map (sigR R σ) = JR (F := F) R (X.map σ) := by
   ext i j; simp [JR, sigR_inclR]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[incM, JR, compFin_inclR]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem compFin_incM (v : Pl F) (X : Matrix (Fin n) (Fin n) E) :
     (incM F X).map (compFin F E v) = JR (Fv F v) X := by
   ext i j; simp [incM, JR, compFin_inclR]
 
 /- English proof (translation)
-Use `set M := (mat g).map (compFin F E v) with hM`. Establish `hm : (mat g)ᵀ * incM F J * (mat g).map (cA σ) = incM F J` using `g.2`. Establish `h1` using `congrArg (RingHom.mapMatrix (compFin F E v)) hm`. Simplify using `only [map_mul, RingHom.mapMatrix_apply] at h1`. Establish `e1 : ((mat g).map (cA σ)).map (compFin F E v) = M.map (sigR (Fv F v) σ)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Simplify using `[hM, compFin_cA]`. Rewrite `h1` using `[e1, compFin_incM, Matrix.transpose_map]`. Establish `h2` using `congrArg (RingHom.mapMatrix (sigR (Fv F v) σ)) h1`. Simplify using `only [map_mul, RingHom.mapMatrix_apply] at h2`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e2 : (M.map (sigR (Fv F v) σ)).map (sigR (Fv F v) σ) = M`. Use extensionality with `i j`. Simplify using `[sigR_sigR σ hσ]`. Rewrite `h2` using `[e2, JR_map_sigR, Matrix.transpose_map]`. Rewrite using `[JR_smul, Matrix.mul_smul, Matrix.smul_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`.
+A detailed English derivation is pending.
 -/
 theorem unitary_compFin (hσ : ∀ x, σ (σ x) = x) (J : Matrix (Fin n) (Fin n) E) (δ : E) (v : Pl F) (g : UA σ J) :
     Formalism.UG.cT (sigR (Fv F v) σ) ((mat g).map (compFin F E v)) * JR (Fv F v) (δ • J.map σ) * (mat g).map (compFin F E v) =
@@ -162,33 +162,33 @@ def up (H : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) : Matrix (Fin n) (Fin n) (
   1 + (H - 1).map (lift v)
 
 /- English proof (translation)
-Rewrite using `[up, add_sub_cancel_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem up_sub_one (H : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) : up v H - 1 = (H - 1).map (lift v) := by
   rw [up, add_sub_cancel_left]
 
 /- English proof (translation)
-Rewrite using `[up_sub_one]`. Conclude with `at_map_lift v _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem at_up (H : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) : At (evFin F v) (up v H - 1) := by
   rw [up_sub_one]; exact at_map_lift v _
 
 /- English proof (translation)
-Establish `e : (up v H).map (compFin F E v) = (compFin F E v).mapMatrix (up v H)` using `rfl`. Rewrite using `[e, up, map_add, map_one, RingHom.mapMatrix_apply, map_lift_compFin, add_sub_cancel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem compFin_up (H : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) : (up v H).map (compFin F E v) = H := by
   have e : (up v H).map (compFin F E v) = (compFin F E v).mapMatrix (up v H) := rfl
   rw [e, up, map_add, map_one, RingHom.mapMatrix_apply, map_lift_compFin, add_sub_cancel]
 
 /- English proof (translation)
-The claim follows from `eq_of_compFin (at_up v _) hA (compFin_up v _)`.
+A detailed English derivation is pending.
 -/
 theorem up_compFin {A : Matrix (Fin n) (Fin n) (AE F E)} (hA : At (evFin F v) (A - 1)) :
     up v (A.map (compFin F E v)) = A :=
   eq_of_compFin (at_up v _) hA (compFin_up v _)
 
 /- English proof (translation)
-Establish `e : A * B - 1 = (A - 1) * B + (B - 1)`. Rewrite using `[sub_mul, one_mul, sub_add_sub_cancel]`. Rewrite using `[e]`. Conclude with `at_add (at_mul_right hA B) hB`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem at_mul_sub_one {A B : Matrix (Fin n) (Fin n) (AE F E)} (hA : At (evFin F v) (A - 1))
     (hB : At (evFin F v) (B - 1)) : At (evFin F v) (A * B - 1) := by
@@ -197,14 +197,14 @@ theorem at_mul_sub_one {A B : Matrix (Fin n) (Fin n) (AE F E)} (hA : At (evFin F
   rw [e]; exact at_add (at_mul_right hA B) hB
 
 /- English proof (translation)
-Use `eq_of_compFin (at_up v _) (at_mul_sub_one v (at_up v H) (at_up v K)) ?_` and prove the remaining obligations. Rewrite using `[compFin_up, Matrix.map_mul, compFin_up, compFin_up]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem up_mul (H K : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) : up v (H * K) = up v H * up v K := by
   refine eq_of_compFin (at_up v _) (at_mul_sub_one v (at_up v H) (at_up v K)) ?_
   rw [compFin_up, Matrix.map_mul, compFin_up, compFin_up]
 
 /- English proof (translation)
-Rewrite using `[up, sub_self]`. Establish `: (0 : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)).map (lift v) = 0` using `by ext i j; simp`. Rewrite using `[this, add_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem up_one : up v (1 : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) = 1 := by
   rw [up, sub_self]
@@ -218,11 +218,11 @@ section Bwd
 variable (σ : E →ₐ[F] E) {n : ℕ}
 
 /- English proof (translation)
-Establish `h2` using `congrArg (RingHom.mapMatrix (sigR (Fv F v) σ)) hH`. Simplify using `only [map_mul, RingHom.mapMatrix_apply] at h2`. Establish `e1 : (Formalism.UG.cT (sigR (Fv F v) σ) H).map (sigR (Fv F v) σ) = Hᵀ`. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, sigR_sigR σ hσ]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `e2 : (δ • J.map σ).map σ = σ δ • J`. Use extensionality with `i j`. Simplify using `[Matrix.smul_apply, hσ]`. Rewrite `h2` using `[e1, JR_map_sigR, e2, JR_smul, Matrix.mul_smul, Matrix.smul_mul]`. Establish `hu : IsUnit (inclR (F` using `F) (Fv F v) (σ δ)) := (isUnit_iff_ne_zero.2 ((map_ne_zero σ).2 hδ)).map _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨u, hu⟩` from `hu`. Establish `h3` using `congrArg (fun X => (↑u⁻¹ : Fv F v ⊗[F] E) • X) h2`. Simplify using `only [← hu, smul_smul, Units.inv_mul, one_smul] at h3`. Conclude with `h3`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unitary_of_loc (hσ : ∀ x, σ (σ x) = x) (J : Matrix (Fin n) (Fin n) E) {δ : E} (hδ : δ ≠ 0) (v : Pl F)
     (H : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E))
@@ -243,13 +243,13 @@ theorem unitary_of_loc (hσ : ∀ x, σ (σ x) = x) (J : Matrix (Fin n) (Fin n) 
   exact h3
 
 /- English proof (translation)
-Use `set X := up v H - 1 with hX`. Establish `hXa : At (evFin F v) X` using `at_up v H`. Establish `hU : up v H = 1 + X` using `by rw [hX, add_sub_cancel]`. Establish `hcA : (1 + X).map (cA σ) = 1 + X.map (cA σ)`. Establish `e : (1 + X).map (cA σ) = (cA σ : AE F E →+* AE F E).mapMatrix (1 + X)` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, map_add, map_one]`. Both sides reduce to the same expression. Establish `hD : At (evFin F v) ((up v H)ᵀ * incM F J * (up v H).map (cA σ) - incM F J)`. Establish `e : (up v H)ᵀ * incM F J * (up v H).map (cA σ) - incM F J = Xᵀ * incM F J * (1 + X.map (cA σ)) + incM F J * X.map (cA σ)`. Rewrite using `[hU, hcA, Matrix.transpose_add, Matrix.transpose_one]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `noncomm_ring`. Rewrite using `[e]`. Conclude with `at_add (at_mul_right (at_mul_right (at_transpose hXa) _) _) (at_mul_left _ (at_map_cA σ hXa))`. Establish `h0 : ((up v H)ᵀ * incM F J * (up v H).map (cA σ) - incM F J).map (compFin F E v) = 0`. Establish `e : ((up v H).map (cA σ)).map (compFin F E v) = ((up v H).map (compFin F E v)).map (sigR (Fv F v) σ)`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Simplify using `[compFin_cA]`. Rewrite using `[Matrix.map_sub _ (fun x y => map_sub _ x y), Matrix.map_mul, Matrix.map_mul, e, compFin_incM, Matrix.transpose_map, compFin_up, hH, sub_self]`. Conclude with `sub_eq_zero.1 (mat_eq_zero_of_at v _ hD h0)`.
+A detailed English derivation is pending.
 -/
 theorem unitary_up (J : Matrix (Fin n) (Fin n) E) (v : Pl F) (H : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E))
     (hH : Hᵀ * JR (Fv F v) J * H.map (sigR (Fv F v) σ) = JR (Fv F v) J) :
@@ -283,15 +283,15 @@ open GlobalTheory.KBridge
 variable {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `evalV_singleFin_ne h a`.
+A detailed English derivation is pending.
 -/
 theorem evFin_liftV_ne {v u : Pl F} (h : u ≠ v) (a : Fv F v) : evFin F u (GlobalTheory.LatVac.liftV v a) = 0 :=
   evalV_singleFin_ne h a
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, infT_tmul]`. Establish `: (GlobalTheory.LatVac.liftV v 1 * a).1 = 0` using `zero_mul _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, TensorProduct.zero_tmul]`. Consider the case `add x y hx hy => rw [smul_add, map_add, hx, hy, add_zero]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem infT_liftV_smul (v : Pl F) (x : AE F E) : infT F E (GlobalTheory.LatVac.liftV v 1 • x) = 0 := by
   induction x using TensorProduct.induction_on with
@@ -303,16 +303,16 @@ theorem infT_liftV_smul (v : Pl F) (x : AE F E) : infT F E (GlobalTheory.LatVac.
   | add x y hx hy => rw [smul_add, map_add, hx, hy, add_zero]
 
 /- English proof (translation)
-Rewrite using `[compFin_smul, evFin_liftV_ne h, zero_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem compFin_liftV_smul {v u : Pl F} (h : u ≠ v) (x : AE F E) :
     compFin F E u (GlobalTheory.LatVac.liftV v 1 • x) = 0 := by
   rw [compFin_smul, evFin_liftV_ne h, zero_smul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `show Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F u) (AlgHom.id F E) (finT F E (z i)) = compFin F E u (z i)`. Generalize the expression as in `z i = x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul a e => rfl`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem vecLoc_finT (u : Pl F) (z : Fin n → AE F E) :
     vecLoc u (fun i => finT F E (z i)) = fun i => compFin F E u (z i) := by
@@ -325,7 +325,7 @@ theorem vecLoc_finT (u : Pl F) (z : Fin n → AE F E) :
   | add x y hx hy => rw [map_add, map_add, hx, hy, map_add]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.KBridge.mem_latHat_iff, GlobalTheory.AdelicU.mem_latHat_iff hL]`. Simplify using `only [vecLoc_finT]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_latHat_iff_comp {W : Spc F E n} (hL : W.L.FG) (z : Fin n → AE F E) :
     z ∈ latHat W ↔ (∀ i, infT F E (z i) = 0) ∧ ∀ u, (fun i => compFin F E u (z i)) ∈ latLoc F W.L u := by
@@ -333,7 +333,7 @@ theorem mem_latHat_iff_comp {W : Spc F E n} (hL : W.L.FG) (z : Fin n → AE F E)
   simp only [vecLoc_finT]
 
 /- English proof (translation)
-Use `⟨fun i => ?_, fun u hu => funext fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← hy]`. Conclude with `infT_liftV_smul v (y i)`. Rewrite using `[← hy]`. Conclude with `compFin_liftV_smul hu (y i)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_of_idem {v : Pl F} {y : Fin n → AE F E} (hy : GlobalTheory.LatVac.liftV v 1 • y = y) :
     (∀ i, infT F E (y i) = 0) ∧ ∀ u, u ≠ v → (fun i => compFin F E u (y i)) = 0 := by
@@ -342,11 +342,11 @@ theorem comp_of_idem {v : Pl F} {y : Fin n → AE F E} (hy : GlobalTheory.LatVac
   · rw [← hy]; exact compFin_liftV_smul hu (y i)
 
 /- English proof (translation)
-Use `set y := (A - 1) *ᵥ z with hy`. Establish `hAz : A *ᵥ z = z + y` using `by rw [hy, Matrix.sub_mulVec, Matrix.one_mulVec, add_sub_cancel]`. Establish `hat : At (evFin F v) y` using `fun u hu => by rw [hy, ← Matrix.smul_mulVec, hA u hu, Matrix.zero_mulVec]`. Establish `hidem : GlobalTheory.LatVac.liftV v 1 • y = y` using `GlobalTheory.InertLagUniq.liftV_one_smul v y hat`. Take `⟨h1, h2⟩` from `comp_of_idem hidem`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun i => ?_, fun u hu => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hAz, Pi.add_apply, map_add, h1 i, add_zero]`. Use function extensionality and compare the values at `i`. Use `congrFun (h2 u hu) i` as an intermediate fact. Simplify using `only [Pi.zero_apply] at this`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hAz, Pi.add_apply, map_add, this, add_zero]`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec (compFin F E v) A z i`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem comp_mulVec {v : Pl F} {A : Matrix (Fin n) (Fin n) (AE F E)} (hA : At (evFin F v) (A - 1))
     (z : Fin n → AE F E) :
@@ -370,7 +370,7 @@ theorem comp_mulVec {v : Pl F} {A : Matrix (Fin n) (Fin n) (AE F E)} (hA : At (e
 def liftVec (v : Pl F) (y : Fin n → Fv F v ⊗[F] E) : Fin n → AE F E := fun i => lift v (y i)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [liftVec, Pi.smul_apply]`. Rewrite using `[liftV_one_smul_eq, compFin_lift]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem liftVec_idem (v : Pl F) (y : Fin n → Fv F v ⊗[F] E) :
     GlobalTheory.LatVac.liftV v 1 • liftVec v y = liftVec v y := by
@@ -379,17 +379,17 @@ theorem liftVec_idem (v : Pl F) (y : Fin n → Fv F v ⊗[F] E) :
   rw [liftV_one_smul_eq, compFin_lift]
 
 /- English proof (translation)
-The claim follows from `funext fun i => compFin_lift v (y i)`.
+A detailed English derivation is pending.
 -/
 theorem compFin_liftVec (v : Pl F) (y : Fin n → Fv F v ⊗[F] E) :
     (fun i => compFin F E v (liftVec v y i)) = y := funext fun i => compFin_lift v (y i)
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `comp_of_idem (liftVec_idem v y)`. Rewrite using `[mem_latHat_iff_comp hL]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h⟩`. Use `h v` as an intermediate fact.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite `this` using `[compFin_liftVec]`. Then use the resulting hypothesis. Introduce `hy`. Use `⟨h1, fun u => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hu : u = v`. Substitute `hu` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[compFin_liftVec]`. Conclude with `hy`. Rewrite using `[h2 u hu]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftVec_mem_iff {W : Spc F E n} (hL : W.L.FG) (v : Pl F) (y : Fin n → Fv F v ⊗[F] E) :
     liftVec v y ∈ latHat W ↔ y ∈ latLoc F W.L v := by
@@ -404,13 +404,13 @@ theorem liftVec_mem_iff {W : Spc F E n} (hL : W.L.FG) (v : Pl F) (y : Fin n → 
     · rw [h2 u hu]; exact zero_mem _
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `comp_mulVec hA z`. Rewrite using `[mem_latHat_iff_comp hL]`. Simplify using `only [h1]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hi, h⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨hi, fun u hu => ?_, ?_⟩` and prove the remaining obligations. Use `h u` as an intermediate fact. Rewrite `this` using `[h2 u hu]`. Then use the resulting hypothesis. Use `h v` as an intermediate fact. Rewrite `this` using `[h3]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce and unpack `⟨hi, hu, hv⟩`. Use `⟨hi, fun u => ?_⟩` and prove the remaining obligations. Distinguish the cases in `e : u = v`. Substitute `e` using the available equality. Rewrite using `[h3]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hv`. Rewrite using `[h2 u e]`. Conclude with `hu u e`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulVec_mem_iff {W : Spc F E n} (hL : W.L.FG) {v : Pl F} {A : Matrix (Fin n) (Fin n) (AE F E)}
     (hA : At (evFin F v) (A - 1)) (z : Fin n → AE F E) :
@@ -454,17 +454,15 @@ def locEquiv {δ : E} (hδ : δ ≠ 0) : GlobalTheory.SphLine.locU σ W v ≃* G
     congrArg (fun x : GL (Fin d) (Fv F v ⊗[F] E) => x.1 r s) (map_mul (Formalism.UG.bc (compFin F E v)) g.1.1 h.1.1)
 
 /- English proof (translation)
-Establish `hg : At (evFin F v) (mat g.1 - 1)` using `g.2`. Establish `hgi : At (evFin F v) (mat g.1⁻¹ - 1)` using `(g⁻¹).2`. Establish `hiH : (mat g.1⁻¹).map (compFin F E v) * (mat g.1).map (compFin F E v) = 1`. Rewrite using `[← Matrix.map_mul, GlobalTheory.SphLine.mat_inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hHi : (mat g.1).map (compFin F E v) * (mat g.1⁻¹).map (compFin F E v) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.map_mul, ← GlobalTheory.SphLine.mat_mul, mul_inv_cancel, GlobalTheory.SphLine.mat_one, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[GlobalTheory.SphLine.mem_locK, mem_stabLoc]`. Express the relevant statement in the definitionally equal form `(g.1 ∈ UAt σ W (evFin F v) ∧ ∀ z ∈ latHat W, mat g.1 *ᵥ z ∈ latHat W ∧ mat g.1⁻¹ *ᵥ z ∈ latHat W) ↔ ∀ y, y ∈ latLoc F W.L v ↔ (mat g.1).map (compFin F E v) *ᵥ y ∈ latLoc F W.L v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, hK⟩ y`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hy`. Use `(hK _ ((liftVec_mem_iff hL v y).2 hy)).1` as an intermediate fact. Rewrite `this` using `[mulVec_mem_iff hL hg, compFin_liftVec]`. Conclude with `this.2.2`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hy`. Use `(hK _ ((liftVec_mem_iff hL v _).2 hy)).2` as an intermediate fact. Rewrite `this` using `[mulVec_mem_iff hL hgi, compFin_liftVec, Matrix.mulVec_mulVec, hiH, Matrix.one_mulVec]`. Conclude with `this.2.2`. Introduce `hS`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨g.2, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨hi, hu⟩` from `(mem_latHat_iff_comp hL z).1 hz`. Use `⟨(mulVec_mem_iff hL hg z).2 ⟨hi, fun u _ => hu u, (hS _).1 (hu v)⟩, (mulVec_mem_iff hL hgi z).2 ⟨hi, fun u _ => hu u, ?_⟩⟩` and prove the remaining obligations. Use `(hS _).2 ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, hHi, Matrix.one_mulVec]`.
-
-Conclude with `hu v`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locEquiv_mem_iff {δ : E} (hδ : δ ≠ 0) (hL : W.L.FG) (g : GlobalTheory.SphLine.locU σ W v) :
     g.1 ∈ GlobalTheory.SphLine.locK σ W v ↔ locEquiv σ hσ W v hδ g ∈ stabLoc σ (δ • W.J.map σ) W.L v := by
@@ -501,7 +499,7 @@ theorem locEquiv_mem_iff {δ : E} (hδ : δ ≠ 0) (hL : W.L.FG) (g : GlobalTheo
 end Main
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ d W v δ hδ hL`. Conclude with `⟨locEquiv σ hσ W v hδ, locEquiv_mem_iff σ hσ W v hδ hL⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_locEquiv : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     (∀ x, σ (σ x) = x) → ∀ (d : ℕ) (W : Spc F E d) (v : Pl F) (δ : E), δ ≠ 0 → W.L.FG →

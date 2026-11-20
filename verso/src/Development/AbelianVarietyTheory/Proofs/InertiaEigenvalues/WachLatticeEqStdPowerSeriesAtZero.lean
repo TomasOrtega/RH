@@ -20,9 +20,9 @@ section Series
 variable {L M ι : Type} [Field L] [AddCommGroup M] [Module L M]
 
 /- English proof (translation)
-Unfold `conv`. Rewrite using `[finsum_eq_sum _ (Model.conv_finite e hm k)]`. Use `S.sum_mem fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : PowerSeries.coeff j e = 0`. Rewrite using `[hj, zero_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `S.zero_mem`. Conclude with `S.smul_mem _ (hS j hj)`.
+A detailed English derivation is pending.
 -/
 theorem conv_mem (e : PowerSeries L) {u : ℤ → M} {m : ℤ} (hm : ∀ k < m, u k = 0) (k : ℤ)
     (S : Submodule L M) (hS : ∀ j : ℕ, PowerSeries.coeff j e ≠ 0 → u (k - j) ∈ S) :
@@ -35,7 +35,7 @@ theorem conv_mem (e : PowerSeries L) {u : ℤ → M} {m : ℤ} (hm : ∀ k < m, 
   · exact S.smul_mem _ (hS j hj)
 
 /- English proof (translation)
-Unfold `conv`. Rewrite using `[finsum_eq_single _ n]`. Simplify using the standard rewrite rules. Introduce `j hj`. Simplify using `[PowerSeries.coeff_X_pow, hj]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem conv_X_pow (u : ℤ → M) (n : ℕ) (k : ℤ) :
     conv ((PowerSeries.X : PowerSeries L) ^ n) u k = u (k - n) := by
@@ -46,33 +46,31 @@ theorem conv_X_pow (u : ℤ → M) (n : ℕ) (k : ℤ) :
     simp [PowerSeries.coeff_X_pow, hj]
 
 /- English proof (translation)
-Establish `up : ∀ (S : Submodule L M) (a : ℤ) (n : ℕ), (∀ y, ∀ j < a, ex y j ∈ S) → (∀ j, a ≤ j → j < a + n → j ≠ 0) → ∀ y, ∀ j < a + n, ex y j ∈ S`. Introduce `S a n h0`. Proceed by induction on `n with`. Consider the case `zero => intro _ y j hj; exact h0 y j (by omega)`. Consider the case `succ n ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `hne y j hj`. Establish `ih'` using `ih fun j h1 h2 => hne j h1 (by omega)`. Distinguish the cases in `hlt : j < a + n`. Conclude with `ih' y j hlt`. Take `rfl : j = a + n` from `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hlow S _ (hne _ (by omega) (by omega)) ih' y`. Establish `hneg : ∀ y, ∀ j < (0 : ℤ), ex y j = 0`. Introduce `y j hj`. Distinguish the cases in `hj' : j < m₀`. Conclude with `hs y j hj'`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(Submodule.mem_bot L).1 (up ⊥ m₀ (-m₀).toNat (fun y j hj => by simp [hs y j hj]) (fun j h1 h2 => by omega) y j (by omega))`. Set `S : Submodule L M` to `Submodule.span L (Set.range fun x => ex x 0)`. Establish `hS : ∀ y j, ex y j ∈ S`. Introduce `y j`. Use `up S 1 j.toNat (fun y j hj => ?_) (fun j h1 h2 => by omega) y j (by omega)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `h0 : j = 0`. Substitute `h0` using the available equality. Conclude with `Submodule.subset_span ⟨y, rfl⟩`. Rewrite using `[hneg y j (by omega)]; exact S.zero_mem`. Establish `hDS : D ≤ S`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Introduce `d hd`. Take `⟨m, hm⟩` from `hF`. Establish `h1` using `hm (Pi.single (m : ℤ) d) (fun k => by`. Distinguish the cases in `hk : k = m`. Substitute `hk` using the available equality.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using hd`. Simplify using `[Pi.single_eq_of_ne hk]) (fun k hk => Pi.single_eq_of_ne hk.ne _)`. Simplify using `using (Model.latSpan_coeff ex S hS (fun x => ⟨m₀, hs x⟩) _ h1).1 m`. Establish `hsingle : ∀ (n : ℕ), ∀ d ∈ S, (Pi.single (n : ℤ) d : ℤ → M) ∈ latSpan (LL` using `L) ex := by`. Introduce `n d hd`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Proceed by induction on `hd using Submodule.span_induction with`. Consider the case `mem d hd`. Take `⟨x, rfl⟩` from `hd`. Establish `h1 : conv ((PowerSeries.X : PowerSeries L) ^ n) (ex x) ∈ latSpan (LL` using `L) ex := Submodule.subset_span ⟨_, x, rfl⟩`. Establish `h2` using `((hG _).1 h1).2 n`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h2` using `[conv_X_pow, sub_self]`. Then use the resulting hypothesis. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [Pi.single_add]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul c a _ ha => rw [Pi.single_smul]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Conclude with `Submodule.smul_mem _ c ha`. Introduce `f`. Prove the components needed by the constructor for the conclusion. Introduce `hf`. Use `⟨(Model.latSpan_coeff ex D hD (fun x => ⟨m₀, hs x⟩) f hf).1, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f hf`. Take `⟨e, x, rfl⟩` from `hf`. Introduce `k hk`. Apply `finsum_eq_zero_of_forall_eq_zero` to reduce the goal to its premises.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Introduce `j`. Rewrite using `[hneg x _ (by omega), smul_zero]`. Consider the case `zero => exact fun _ _ => rfl`. Consider the case `add f g _ _ hf hg => intro k hk`. Simplify using `[hf k hk, hg k hk]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `smul c f _ hf => intro k hk`. Simplify using `[hf k hk]`. Introduce and unpack `⟨h1, h2⟩`. Use `(hG f).2 ⟨⟨0, h2⟩, fun k => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hk : k < 0`.
-
-Rewrite using `[h2 k hk]`. Simplify using the standard rewrite rules. Take `⟨n, rfl⟩ : ∃ n : ℕ, k = n` from `⟨k.toNat, by omega⟩`. Conclude with `hsingle n _ (hDS (h1 _))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem std_of_lower (ex : ι → ℤ → M) (D : Submodule L M) (hD : ∀ x k, ex x k ∈ D) (m₀ : ℤ)
     (hs : ∀ x, ∀ k < m₀, ex x k = 0)
@@ -145,13 +143,13 @@ theorem std_of_lower (ex : ι → ℤ → M) (D : Submodule L M) (hD : ∀ x k, 
       exact hsingle n _ (hDS (h1 _))
 
 /- English proof (translation)
-Take `⟨s, hsp⟩` from `Module.Finite.fg_top (R := A) (M := N)`. Use `choose m hm using hs`. Take `⟨b, hb⟩` from `(s.finite_toSet.image m).bddBelow`. Use `⟨b, fun x => ?_⟩` and prove the remaining obligations. Establish `hx : x ∈ Submodule.span A (s : Set N)` using `hsp ▸ Submodule.mem_top`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Proceed by induction.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact fun k hk => hm x k (lt_of_lt_of_le hk (hb ⟨x, hx, rfl⟩))`. Consider the case `zero => intro k _`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy => intro k hk`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `[hx k hk, hy k hk]`. Consider the case `smul a x _ hx`. Introduce `k hk`. Rewrite using `[hsm]`. Apply `finsum_eq_zero_of_forall_eq_zero` to reduce the goal to its premises.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Rewrite using `[hx _ (by omega), smul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uniform_supp {A N : Type} [CommRing A] [AddCommGroup N] [Module A N] [Module.Finite A N]
     (ex : N →+ ℤ → M) (lev : A → PowerSeries L) (hs : ∀ x, ∃ m : ℤ, ∀ k < m, ex x k = 0)
@@ -180,9 +178,9 @@ variable {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P} {H : LocHW
   {K : FinExt l} {s : ℕ} {LL : FinExt l}
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `W.resΓ_onto W.gam`. Establish `h1` using `W.gam_gen`. Rewrite `h1`, the goal using `[← hg, W.χΓ_res]`. Rewrite `h1` using `[← map_one (algebraMap ℚ_[l] ↥LL.1), ← map_sub]`. Establish `h2` using `GlobalTheory.Cyc.DictKs.norm_eq_of_v P LL _ _ h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `GlobalTheory.Cyc.LiftExp.norm_zpow_sub_one l W.s ⟨W.s_pos, fun h => W.s_two ((P.PD_p K).trans h)⟩ _ h2 k hk`. Introduce `h`. Rewrite `h` using `[← map_zpow₀, map_eq_one_iff _ (algebraMap ℚ_[l] ↥LL.1).injective]`. Rewrite `h3` using `[h, sub_self, norm_zero]`. Conclude with `(zpow_pos (Nat.cast_pos.mpr (Fact.out : l.Prime).pos) _).ne h3`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_gam_zpow_ne_one
     (W : LocWach (P.PD K) ↥LL.1 ↥(OL LL) (P.v LL) (Module.finrank ℚ_[l] ↥(K0 K))) (k : ℤ) (hk : k ≠ 0) :
@@ -202,15 +200,15 @@ theorem chi_gam_zpow_ne_one
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hmem` using `(H.W K s LL h).N_Γ T (H.W K s LL h).gam x x.2`. Take `⟨y, hy, hxy⟩` from `(H.W K s LL h).N_π T (H.W K s LL h).gam x x.2`. Establish `h1` using `(C.C K s LL h).tie.levB_Γ T hT (H.W K s LL h).gam i 1 1 0 0 (by simp) (by`. Rewrite using `[Nat.cast_zero, Nat.cast_zero, sub_zero, P.v_O]`. Conclude with `Subtype.property _) (pow_zero _).symm x hmem k`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (⟨_, hmem⟩ : ↥((H.W K s LL h).N T)) = x + (letπ : AA K LL) • ⟨y, hy⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `_ = (x : (H.W K s LL h).DD T) + (letπ : AA K LL) • y`. Rewrite using `[← hxy]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h2, map_add]`. Establish `h3 : ex C h T i 1 x k + ex C h T i 1 ((letπ : AA K LL) • ⟨y, hy⟩) k = (algebraMap ↥(OL LL) ↥LL.1 ((H.W K s LL h).χΓ (H.W K s LL h).gam : ↥(OL LL))) ^ k • ex C h T i 1 x k` using `h1`. Establish `h4 : ex C h T i 1 ((letπ : AA K LL) • ⟨y, hy⟩) k ∈ S`. Rewrite using `[Model.ex_smul]`. Take `⟨m, hm⟩` from `(C.C K s LL h).tie.levB_supp T i 1 ⟨y, hy⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `conv_mem _ hm k S fun j hj => hS _ _ ?_` and prove the remaining obligations. Establish `h0` using `(Model.mem_van _ _ _ _ _).1 (Model.pi_van_one (H.W K s LL h) i).1 0 (by omega)`. Establish `: j ≠ 0` using `by rintro rfl; exact hj h0`. Use linear arithmetic over natural numbers and integers. Establish `h5` using `sub_ne_zero.2 (chi_gam_zpow_ne_one (H.W K s LL h) k hk)`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← S.smul_mem_iff h5, sub_smul, one_smul, ← h3, add_sub_cancel_left]`. Conclude with `h4`.
+A detailed English derivation is pending.
 -/
 theorem lower (C : LocCmpT l P AI H F) (h : Good K s LL) (T : Lt K LL) (hT : IsCrys (P.PD K) T.ρ)
     (i : Let K) (S : Submodule ↥LL.1 (T.V ⊗[ℚ_[l]] P.R.B)) (k : ℤ) (hk : k ≠ 0)
@@ -244,13 +242,13 @@ theorem lower (C : LocCmpT l P AI H F) (h : Good K s LL) (T : Lt K LL) (hT : IsC
 end Concrete
 
 /- English proof (translation)
-Introduce `D HW F Cm l _ K s LL h W E C T hT i`. Establish `down : ∀ (n : ℕ) (i : Let K) (ζ : ↥LL.1), IsPrimitiveRoot ζ (l ^ n) → Full (Di (HW l) h T (i + n)) (Lat C h T (i + n) ζ) → Full (Di (HW l) h T i) (Lat C h T i 1)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `i ζ hζ hF`. Take `rfl : ζ = 1` from `by simpa using hζ`. Simplify using `using hF`. Consider the case `succ n ih`. Introduce `i ζ hζ hF`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `GlobalTheory.T.wachExpansionLattice_full_descends D HW F Cm l K s LL h T hT _ ζ ⟨_, hζ⟩ hF`. Establish `e : i + ((n + 1 : ℕ) : Let K) - 1 = i + n` using `by push_cast; ring`. Rewrite `h1` using `[e]`. Conclude with `ih i (ζ ^ l) (hζ.pow (pow_pos (Fact.out : l.Prime).pos _) (pow_succ' l n)) h1`. Take `⟨ζ, -, -, hζ⟩` from `GlobalTheory.exists_isPt_primitiveRoot (HW l) h i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hF` using `down s i ζ hζ (GlobalTheory.T.wach_expansions_span_full_lattice D HW F Cm l K s LL h T hT _ ζ hζ)`. Establish `hG` using `GlobalTheory.T.wachExpansionLattice_graded_of_level_le D HW F Cm l K s LL h T hT i 1 (one_pow _) hF`. Use `haveI : Module.Finite (AA K LL) ↥(W.N T) := Module.Finite.iff_fg.2 (W.N_fg T)`. Take `⟨m₀, hm₀⟩` from `uniform_supp ((C.C K s LL h).tie.levB T i 1) (W.lev i 1) ((C.C K s LL h).tie.levB_supp T i 1) (Model.ex_smul C h T i 1)`. Conclude with `std_of_lower (ex C h T i 1) _ (fun x k => (C.C K s LL h).tie.levB_mem T i 1 x k) m₀ hm₀ (lower C h T hT i) hF hG`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem lat_one_std : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), let W := (HW l).W K s LL h; let E := ((F l).E K s LL h).tie; let C := Cm l; ∀ T : Lt K LL, IsCrys ((D.loc l).PD K) T.ρ → ∀ i : Let K, Std (Di (HW l) h T i) (Lat C h T i 1) := by
   intro D HW F Cm l _ K s LL h W E C T hT i

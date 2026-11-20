@@ -19,41 +19,37 @@ open NumberField Formalism.MainNotions.ShortIntervalPrimes GlobalTheory.RayZeta 
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.Shintani
 
 /- English proof (translation)
-Introduce `F _ _ _ 𝔣 h𝔣`. Take `⟨M, hM⟩` from `GlobalTheory.T.exists_congruence_unit_balancing_embeddings F 𝔣 h𝔣`. Take `⟨κ, _, b, hbpos, hbcov⟩` from `GlobalTheory.T.exists_totally_positive_basis_positive_coords F M`. Take `⟨R, hR0, hR⟩` from `GlobalTheory.T.totally_positive_basis_ratio_bound F b hbpos`. Choose the witnesses or unpack the hypotheses as in `⟨σ₁⟩ : Nonempty (F →+* ℝ) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `w : InfinitePlace F` using `Classical.choice inferInstance`. Conclude with `⟨w.embedding_of_isReal (IsTotallyReal.isReal w)⟩`. Set `G` to `↥(congSubgroup 𝔣)`. Set `φ : G →* F` to `((algebraMap (𝓞 F) F : 𝓞 F →+* F) : 𝓞 F →* F).comp ((Units.coeHom (𝓞 F)).comp (congSubgroup 𝔣).subtype)`. Establish `hφ : ∀ g : G, φ g = (((g : (𝓞 F)ˣ) : 𝓞 F) : F)` using `fun g => rfl`.
+Establish an intermediate fact. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hgpos : ∀ g : G, TotPos F (φ g)` using `fun g => g.2.2`. Set `f : G →* ℝ` to `(σ₁ : F →* ℝ).comp φ`. Establish `hf : ∀ g : G, f g = σ₁ (φ g)` using `fun g => rfl`. Establish `hfpos : ∀ g, 0 < f g` using `fun g => hgpos g σ₁`. Establish `hφinj : Function.Injective φ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g g' h`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Conclude with `RingOfIntegers.coe_injective h`. Establish `hfinj : Function.Injective f` using `fun g g' h => hφinj (σ₁.injective h)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `D : Set F` to `{x | ∀ i, 0 < b.repr x i}`. Establish `hDpos : ∀ x ∈ D, TotPos F x`. Introduce `x hx σ`. Establish `hk : Nonempty κ` using `b.index_nonempty`. Rewrite using `[← b.sum_repr x, map_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_pos (fun i _ => ?_) Finset.univ_nonempty` and prove the remaining obligations. Rewrite using `[Rat.smul_def, map_mul, map_ratCast]`. Conclude with `mul_pos (by exact_mod_cast hx i) (hbpos i σ)`. Establish `hfin : {g : G | ∃ x ∈ D, φ g * x ∈ D}.Finite`. Establish `hfin0` using `GlobalTheory.T.finite_units_bounded_embedding_ratio F (R * R)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `Set.Finite.of_finite_image (f := fun g : G => (g : (𝓞 F)ˣ)) (hfin0.subset ?_) (Subtype.val_injective.injOn)` and prove the remaining obligations. Introduce and unpack `_ ⟨g, ⟨x, hx, hgx⟩, rfl⟩`. Use `⟨hgpos g, fun σ τ => ?_⟩` and prove the remaining obligations. Establish `h1` using `hR _ hgx σ τ`. Establish `h2` using `hR x hx τ σ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxσ` using `hDpos x hx σ`. Establish `hgτ` using `hgpos g τ`. Rewrite `h1` using `[map_mul, map_mul]`. Establish `h3 : σ (φ g) * σ x ≤ (R * R * τ (φ g)) * σ x`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `le_of_mul_le_mul_right h3 hxσ`. Set `E : Set F` to `{y ∈ D | ∀ g' : G, f g' < 1 → φ g' * y ∉ D}`. Set `T` to `{g : G | ∃ x ∈ D, φ g * x ∈ D}`. Set `Λ : Set (F →ₗ[ℚ] ℚ)` to `(fun p : G × κ => (b.coord p.2).comp (LinearMap.mulLeft ℚ (φ p.1))) '' (T ×ˢ Set.univ)`. Establish `hΛ : Λ.Finite` using `(hfin.prod Set.finite_univ).image _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hsign : ∀ (p q : ℚ), SignType.sign p = SignType.sign q → 0 < p → 0 < q`. Introduce `p q h hp`. Rewrite `h` using `[sign_pos hp]`. Conclude with `sign_eq_one_iff.mp h.symm`. Establish `htile : Tile ((posCone F : ConvexCone ℚ F) : Set F) (fun _ => True) E`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.T.cone_tiling_by_sign_regions (posCone F) b hbpos Λ hΛ E (fun x hx => hx.1) ?_` and prove the remaining obligations. Introduce `x y hx hy hs hxE`. Use `⟨hy, fun g' hg' hyD => ?_⟩` and prove the remaining obligations. Use `hxE.2 g' hg' ?_` and prove the remaining obligations. Establish `hgT : g' ∈ T` using `⟨y, hy, hyD⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `i`. Use `hs _ ⟨(g', i), ⟨hgT, trivial⟩, rfl⟩` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, Module.Basis.coord_apply, LinearMap.mulLeft_apply] at this`. Conclude with `hsign _ _ this.symm (hyD i)`. Establish `h0 : (0 : F) ∉ E`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h`. Use `hDpos 0 h.1 σ₁` as an intermediate fact. Simplify using `at this`. Take `⟨ι, hι, r, v, hr, hli, hvP, hsub, hun⟩` from `GlobalTheory.T.shintani_cone_decomposition _ _ E htile h0`. Use `⟨ι, hι, r, v, hr, hli, hvP, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Take `⟨u, hu, hub⟩` from `hM x hx`. Establish `hxD : ∃ g : G, φ g * x ∈ D`. Use `⟨⟨u, hu⟩, hbcov _ ?_ hub⟩` and prove the remaining obligations. Introduce `σ`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[map_mul]`. Conclude with `mul_pos (hu.2 σ) (hx σ)`. Take `⟨g, hg, hguniq⟩` from `GlobalTheory.T.unique_reduced_orbit_representative φ f hfpos hfinj D hfin x hxD`. Take `⟨c, hc, hcuniq⟩` from `hun _ hg`. Use `⟨(⟨g.1, g.2⟩, c), hc, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨⟨u', hu'⟩, c'⟩ hp`. Establish `hp' : φ ⟨u', hu'⟩ * x ∈ openCone (v c')` using `hp`. Establish `hg' : (⟨u', hu'⟩ : G) = g` using `hguniq _ (hsub c' hp')`. Establish `hc' : c' = c`. Apply `hcuniq` to reduce the goal to its premises.
-
-Rewrite using `[← hg']`. Conclude with `hp'`. Substitute `hc'` using the available equality. Use `congrArg Subtype.val hg'` as an intermediate fact. Simplify using `only at this`.
-
-Simplify using `[this]`.
+Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_coneDomain : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔣 : Ideal (𝓞 F)), 𝔣 ≠ ⊥ →
     ∃ (ι : Type) (_ : Fintype ι) (r : ι → ℕ) (v : ∀ c, Fin (r c) → F), IsConeDomain 𝔣 r v := by

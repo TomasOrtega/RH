@@ -13,14 +13,14 @@ namespace AddBlockData
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {n : ι → ℕ} {P : ArithVariety n} (D : AddBlockData P)
 
 /- English proof (translation)
-The claim follows from `Finset.prod_ne_zero_iff.mpr fun k _ ↦ zpow_ne_zero _ fun h ↦ hc k ((P.mkF_eq_zero_iff _).mp h)`.
+A detailed English derivation is pending.
 -/
 theorem chartPow_ne_zero {c : (k : ι) → Fin (n k + 1)} (hc : P.IsLive c) (a : ι → ℤ) :
     P.chartPow c a ≠ 0 :=
   Finset.prod_ne_zero_iff.mpr fun k _ ↦ zpow_ne_zero _ fun h ↦ hc k ((P.mkF_eq_zero_iff _).mp h)
 
 /- English proof (translation)
-Establish `hp` using `chartPow_ne_zero hc D.deg`. Simplify using `only [xi]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem elt_div_elt {c : (k : ι) → Fin (n k + 1)} (hc : P.IsLive c) (i j : Fin (D.size + 1)) :
     D.elt i / D.elt j = D.xi c i * (D.xi c j)⁻¹ := by
@@ -31,17 +31,15 @@ theorem elt_div_elt {c : (k : ι) → Fin (n k + 1)} (hc : P.IsLive c) (i j : Fi
 end AddBlockData
 
 /- English proof (translation)
-Introduce `ι _ _ n P D c hc j hj`. Establish `hp` using `AddBlockData.chartPow_ne_zero hc D.deg`. Use `set S := Subring.closure (insert (D.xi c j)⁻¹ (P.chartRing c : Set P.FunField))`. Establish `hA : (P.chartRing c : Set P.FunField) ⊆ S` using `fun x hx ↦ Subring.subset_closure (Set.mem_insert_of_mem _ hx)`. Establish `hinv : (D.xi c j)⁻¹ ∈ S` using `Subring.subset_closure (Set.mem_insert _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[AddBlockData.extChartRing, Subring.closure_le]`. Introduce and unpack `x (⟨v, rfl⟩ | ⟨i, rfl⟩)`. Conclude with `hA (Subring.subset_closure ⟨v, rfl⟩)`. Use `show D.elt i / D.elt j ∈ S`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[D.elt_div_elt hc i j]`. Conclude with `S.mul_mem (hA (D.chart_mem c hc i)) hinv`. Establish `hA' : P.chartRing c ≤ D.extChartRing c j`. Rewrite using `[ArithVariety.chartRing]`. Conclude with `Subring.closure_mono Set.subset_union_left`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subring.closure_le]`. Introduce and unpack `x (rfl | hx)`. Take `⟨u, hu, hsum⟩` from `D.generating c hc`. Establish `h : (D.xi c j)⁻¹ = ∑ i, u i * (D.elt i / D.elt j)`. Rewrite using `[← one_mul (D.xi c j)⁻¹, ← hsum, Finset.sum_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[D.elt_div_elt hc i j, mul_assoc]`. Both sides reduce to the same expression. Rewrite using `[h]`. Use `Subring.sum_mem _ fun i _ ↦ Subring.mul_mem _ (hA' (hu i)) ?_` and prove the remaining obligations.
-
-Conclude with `Subring.subset_closure (Or.inr ⟨i, rfl⟩)`. Conclude with `hA' hx`.
+A detailed English derivation is pending.
 -/
 theorem ChartRingDescription.proof : ChartRingDescription.Statement := by
   intro ι _ _ n P D c hc j hj

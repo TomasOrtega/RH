@@ -4,28 +4,28 @@ open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af
 open scoped TensorProduct
 
 /- English proof (translation)
-Rewrite using `[← h]`. Use `noncomm_ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem comm_sq {A : Type} [Ring A] (x y z : A) (h : x * y - y * x = z) :
     x * (y * y) - y * y * x = z * y + y * z := by
   rw [← h]; noncomm_ring
 
 /- English proof (translation)
-Introduce `E _ _ _ a n e he A _ _ _ _ L hL X`. Take `⟨h1, h2⟩` from `frameBr E a n e he A`. Set `l : Matrix (Fin a) (Fin a) (Cinf E) →ₗ[ℝ] A` to `{ toFun := fun Y => L (toL Y) map_add' := fun Y Z => L.map_add (toL Y) (toL Z) map_smul' := fun c Y => L.map_smul c (toL Y) }`. Establish `hl : ∀ Y Z, l Y * l Z - l Z * l Y = l (Y * Z - Z * Y)` using `hL`. Set `J : Matrix (Fin a) (Fin a) (Cinf E) →ₗ[ℝ] Matrix (Fin a) (Fin a) (Cinf E)` to `{ toFun := fun Y => Complex.I • Y map_add' := fun Y Z => smul_add _ _ _ map_smul' := fun c Y => smul_comm _ _ _ }`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `s : Herm E a →ₗ[ℝ] A` to `l ∘ₗ (Herm E a).subtype`. Set `t : Herm E a →ₗ[ℝ] A` to `l ∘ₗ J ∘ₗ (Herm E a).subtype`. Establish `key : ∀ Y, l Y * cas L e - cas L e * l Y = ∑ j, (l (Y * (e j).1 - (e j).1 * Y) * l (e j).1 + l (e j).1 * l (Y * (e j).1 - (e j).1 * Y)) - ∑ j, (l (Y * (Complex.I • (e j).1) - (Complex.I • (e j).1) * Y) * l (Complex.I • (e j).1) + l (Complex.I • (e j).1) * l (Y * (Complex.I • (e j …` using `fun Y => by`. Establish `hc : cas L e = ∑ j, (l (e j).1 * l (e j).1 - l (Complex.I • (e j).1) * l (Complex.I • (e j).1))` using `rfl`. Rewrite using `[hc, Finset.mul_sum, Finset.sum_mul, ← Finset.sum_sub_distrib, ← Finset.sum_sub_distrib]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← comm_sq _ _ _ (hl Y _), ← comm_sq _ _ _ (hl Y _)]`. Use `noncomm_ring`. Establish `hskew : ∀ Z, star Z = -Z → l Z * cas L e - cas L e * l Z = 0` using `fun Z hZ => by`. Establish `a1 : ∑ j, l (Z * (e j).1 - (e j).1 * Z) * l (e j).1 + ∑ j, l (e j).1 * l (Z * (e j).1 - (e j).1 * Z) = 0` using `h1 ((LinearMap.mul ℝ A).compl₁₂ s s) Z hZ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2 : ∑ j, l (Complex.I • (Z * (e j).1 - (e j).1 * Z)) * l (Complex.I • (e j).1) + ∑ j, l (Complex.I • (e j).1) * l (Complex.I • (Z * (e j).1 - (e j).1 * Z)) = 0` using `h1 ((LinearMap.mul ℝ A).compl₁₂ t t) Z hZ`. Rewrite using `[key]`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, ← smul_sub, Finset.sum_add_distrib]`. Rewrite using `[a1, a2, sub_zero]`. Establish `hherm : ∀ Y : Herm E a, l Y.1 * cas L e - cas L e * l Y.1 = 0` using `fun Y => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : ∀ j, star (Complex.I • (e j).1) = -(Complex.I • (e j).1)` using `fun j => by`. Establish `h : star (e j).1 = (e j).1` using `(e j).2`. Rewrite using `[star_smul, h, Complex.star_def, Complex.conj_I, neg_smul]`. Establish `a1 : ∑ j, (l (Y.1 * (e j).1 - (e j).1 * Y.1) * l (e j).1 + l (e j).1 * l (Y.1 * (e j).1 - (e j).1 * Y.1)) = -∑ j, (l (Complex.I • (e j).1) * l ((Complex.I • (e j).1) * Y.1 - Y.1 * (Complex.I • (e j).1)) + l ((Complex.I • (e j).1) * Y.1 - Y.1 * (Complex.I • (e j).1)) * l (Complex. …` using `h2 ((LinearMap.mul ℝ A).compl₁₂ l s + (LinearMap.mul ℝ A).flip.compl₁₂ l s) Y hs`. Rewrite using `[key, a1, ← Finset.sum_neg_distrib, ← Finset.sum_sub_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← neg_sub (Y.1 * (Complex.I • (e j).1)), map_neg]`. Use `noncomm_ring`. Set `Y : Matrix (Fin a) (Fin a) (Cinf E)` to `Matrix.of X`. Establish `hY : Y = (hp (toL Y)).1 + (1 / 2 : ℝ) • (Y - star Y)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hp_val]`. Use `module`. Establish `hZ : star ((1 / 2 : ℝ) • (Y - star Y)) = -((1 / 2 : ℝ) • (Y - star Y))`. Rewrite using `[star_smul, star_trivial, star_sub, star_star, ← smul_neg, neg_sub]`. Establish `hX : L X = l (hp (toL Y)).1 + l ((1 / 2 : ℝ) • (Y - star Y))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_add, ← hY]`. Both sides reduce to the same expression. Rewrite using `[hX]`. Conclude with `Commute.add_right (Commute.symm (sub_eq_zero.1 (hherm _))) (Commute.symm (sub_eq_zero.1 (hskew _ hZ)))`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Lit.Bor.casComm :
     UpperTheory.V.Lit.Bor.CasComm := by

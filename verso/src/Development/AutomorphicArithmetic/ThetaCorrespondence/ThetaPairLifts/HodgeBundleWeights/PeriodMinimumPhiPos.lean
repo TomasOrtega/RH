@@ -15,17 +15,17 @@ set_option autoImplicit false
 noncomputable section
 namespace GlobalTheory.PeriodMinPos
 /- English proof (translation)
-Introduce `_ E _ _ _ H Dw l Xo c T io y φ hφ G t' m1 m2 hG`. Take `⟨G₀, t₀, m1₀, m2₀, P, ϖ, Q, β, hϖ, hQ, h0, hβ, rfl⟩` from `hφ`. Take `⟨m⟩` from `GlobalTheory.SlopeRec.nonempty_sabMap_of_models m1 m2 m1₀ m2₀`. Establish `hG₀ : (IsLocalRing.closedPoint T.V : Sp T.V) ∉ abLocus G₀.G` using `fun h => hG ((abLocus_pullback abLocusOne G.semi m.cart.1 _).2 h)`. Establish `hnt : ¬ Subsingleton P.D.toPre.X` using `fun h => hG₀ ((GlobalTheory.TorRef.closed_mem_abLocus_iff T P).2 h)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hnt` using `[not_subsingleton_iff_nontrivial]`. Take `⟨a, ha⟩` from `exists_ne (0 : P.D.toPre.X)`. Establish `hQa : 1 ≤ Q a` using `ReciprocityTheory.ChartRestriction.G.DVR.QForm.Q_pos hϖ P.D hQ ha`. Establish `hint : ∀ a c, ∃ z : ℤ, (β : P.D.toPre.X →ₗ[ℤ] P.D.toPre.X →ₗ[ℤ] ℝ) a c = z`. Introduce `a c`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨Q (a + c) - Q a - Q c, ?_⟩` and prove the remaining obligations. Establish `h1` using `hβ (a + c)`. Establish `hs` using `β.2.1 c a`. Simplify using `only [map_add, LinearMap.add_apply] at h1`. Rewrite `h1` using `[hβ a, hβ c]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpos : ∀ a, 0 ≤ (β : P.D.toPre.X →ₗ[ℤ] P.D.toPre.X →ₗ[ℤ] ℝ) a a` using `fun a => by`. Rewrite using `[hβ]; exact mul_nonneg zero_le_two (by exact_mod_cast h0 a)`. Establish `hne : β ≠ 0` using `fun e => by`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hβ a`. Rewrite `h1` using `[e]`. Establish `: (1 : ℝ) ≤ Q a` using `by exact_mod_cast hQa`. Simplify using `at h1`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `haveI : Module.Finite (𝓞 E) P.D.toPre.X := .of_restrictScalars_finite ℤ _ _`. Use `haveI : Module.Projective (𝓞 E) P.D.toPre.X := GlobalTheory.Forms.projective_of_int (𝓞 E) P.D.toPre.X`. Establish `h1` using `GlobalTheory.LeastExponentProbe.one_le_phiC (fun _ => rfl) β hint hpos hne`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem period_minimum_phi_pos : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} (T : Formalism.L2.Pj.CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (φ : ℝ), GlobalTheory.SlopeRec.HasPhi y φ → ∀ (G : SAB H (Sp T.V)) (t' : SAB H (Sp T.Fr)) (_ : letI := io.toAlgebra; SABMap t' Xo.univ.t y.1.x) (_ : SABMap t' G (spMap (algebraMap T.V T.Fr))), (IsLocalRing.closedPoint T.V : Sp T.V) ∉ abLocus G.G → 0 < φ := by
   intro _ E _ _ _ H Dw l Xo c T io y φ hφ G t' m1 m2 hG
@@ -73,7 +73,7 @@ open GlobalTheory.FlagTan (dimFlag)
 open GlobalTheory.HSApp
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.PeriodMinPos.period_minimum_phi_pos | exact _root_.GlobalTheory.PeriodMinPos.period_minimum_phi_pos | (intros; apply _root_.GlobalTheory.PeriodMinPos.period_minimum_phi_pos <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.minimal_period_pos : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} (T : Formalism.L2.Pj.CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (φ : ℝ), GlobalTheory.SlopeRec.HasPhi y φ → ∀ (G : SAB H (Sp T.V)) (t' : SAB H (Sp T.Fr)) (_ : letI := io.toAlgebra; SABMap t' Xo.univ.t y.1.x) (_ : SABMap t' G (spMap (algebraMap T.V T.Fr))), (IsLocalRing.closedPoint T.V : Sp T.V) ∉ abLocus G.G → 0 < φ := by
   first | exact @_root_.GlobalTheory.PeriodMinPos.period_minimum_phi_pos | exact _root_.GlobalTheory.PeriodMinPos.period_minimum_phi_pos | (intros; apply _root_.GlobalTheory.PeriodMinPos.period_minimum_phi_pos <;> assumption)

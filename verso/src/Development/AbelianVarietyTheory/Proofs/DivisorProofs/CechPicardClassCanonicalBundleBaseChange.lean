@@ -12,7 +12,7 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R R' _ _ φ X X' f f' π d _ _ K K' H`. Rewrite using `[← cls_pull K.isLB π (K.baseChange H).isLB]`. Conclude with `(cls_eq_iff _ _).2 (CanonLB.lbIso K' (K.baseChange H))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cls_canonLB_baseChange : ∀ (R R' : Type) [CommRing R] [CommRing R'] (φ : R →+* R') (X X' : Scheme.{0}) (f : X ⟶ Sp R) (f' : X' ⟶ Sp R') (π : X' ⟶ X) (d : ℕ) [SmoothOfRelativeDimension d f] [SmoothOfRelativeDimension d f'] (K : CanonLB f d) (K' : CanonLB f' d), IsPullback π f' f (spMap φ) → cls K'.bundle K'.isLB = CechPic.pull π (cls K.bundle K.isLB) := by
   intro R R' _ _ φ X X' f f' π d _ _ K K' H

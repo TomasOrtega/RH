@@ -8,7 +8,7 @@ open CategoryTheory Limits AlgebraicGeometry
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.exists_finite_flat_spec_of_quasiFinite_of_henselian` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsFiniteFlatQuasiSection.lean&line=9#L9)
 -/

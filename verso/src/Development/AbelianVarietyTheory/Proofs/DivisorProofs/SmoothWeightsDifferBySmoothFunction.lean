@@ -14,11 +14,11 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points Gl
 namespace GlobalTheory.Mix
 
 /- English proof (translation)
-Introduce `k _ X p σ B φ ψ hφ hψ`. Establish `key : ∀ i y, y ∈ ptsIn p σ (B.U i) → ψ.φ i y - φ.φ i y = ψ.φ (pick φ.isLB y) y - φ.φ (pick φ.isLB y) y`. Introduce `i y hi`. Rewrite using `[ψ.trans _ i y (mem_pick φ.isLB y) hi, φ.trans _ i y (mem_pick φ.isLB y) hi]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `⟨fun y => ψ.φ (pick φ.isLB y) y - φ.φ (pick φ.isLB y) y, fun y => ?_, fun i y hi => ?_⟩` and prove the remaining obligations. Establish `hy` using `mem_pick φ.isLB y`. Establish `hs : CInfAt (fun z => ψ.φ (pick φ.isLB y) z + -φ.φ (pick φ.isLB y) z) y` using `(hψ _ y hy).add (hφ _ y hy).neg`. Use `hs.congr ?_` and prove the remaining obligations. Use `filter_upwards [(isOpen_ptsIn _).mem_nhds hy] with z hz`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← key _ z hz, sub_eq_add_neg]`. Use `key i y hi` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem weight_sub_cInf : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ) (B : LB X) (φ ψ : Weight p σ B), φ.IsCInf → ψ.IsCInf → ∃ u : CxPts p σ → ℝ, (∀ y, CInfAt u y) ∧ ∀ i, ∀ y ∈ ptsIn p σ (B.U i), ψ.φ i y = φ.φ i y + u y := by
   intro k _ X p σ B φ ψ hφ hψ

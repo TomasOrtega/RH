@@ -4,7 +4,7 @@ namespace YhaHelp
 open MeasureTheory Set Real
 
 /- English proof (translation)
-Rewrite using `[integrable_indicator_iff measurableSet_Ici]`. Conclude with `(exp_neg_integrableOn_Ioi (-1) hc).mono_set (fun x hx => by`. Simplify using `only [mem_Ici, mem_Ioi] at *`. Use the proof step `linarith)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma F_int {c : ℝ} (hc : 0 < c) :
     Integrable ((Ici (0:ℝ)).indicator (fun x : ℝ => exp (-c * x))) := by
@@ -15,11 +15,11 @@ private lemma F_int {c : ℝ} (hc : 0 < c) :
 end YhaHelp
 
 /- English proof (translation)
-Introduce `c hc`. Establish `hF` using `YhaHelp.F_int hc`. Establish `hG` using `hF.comp_neg`. Use `(hF.add hG).mono' (by fun_prop) (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs, abs_of_pos (Real.exp_pos _)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.add_apply, Set.indicator, Set.mem_Ici, Left.nonneg_neg_iff]`. Break down `le_or_gt 0 x with h | h` into its components or cases. Rewrite using `[abs_of_nonneg h, if_pos h] split_ifs`. Combine the linear relations using `[Real.exp_pos (-c * -x)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Rewrite using `[abs_of_neg h, if_neg (not_le.mpr h), if_pos h.le]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.Reformulated.B.Yha4.main :
     ∀ {c : ℝ}, (0 : ℝ) < c → MeasureTheory.Integrable (fun (x : ℝ) ↦ Real.exp (-c * |x|)) MeasureTheory.MeasureSpace.volume := by

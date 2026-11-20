@@ -16,9 +16,9 @@ namespace GlobalTheory.StalkDerField
 variable {X : Scheme.{0}} {W : X.Opens} {d : Fld X} {x : X}
 
 /- English proof (translation)
-Take `⟨V, hV, iU, iV, e⟩` from `TopCat.Presheaf.germ_eq X.presheaf x hO hO' f f' h`. Establish `h1 : (X.presheaf.germ O x hO).hom (d O f) = (X.presheaf.germ V x hV).hom (d V (resG X (leOfHom iU) f))`. Rewrite using `[hd.2.2 O V (leOfHom iU) hOW f]`. Conclude with `(TopCat.Presheaf.germ_res_apply X.presheaf iU x hV _).symm`. Establish `h2 : (X.presheaf.germ O' x hO').hom (d O' f') = (X.presheaf.germ V x hV).hom (d V (resG X (leOfHom iV) f'))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hd.2.2 O' V (leOfHom iV) hO'W f']`. Conclude with `(TopCat.Presheaf.germ_res_apply X.presheaf iV x hV _).symm`. Establish `e' : resG X (leOfHom iU) f = resG X (leOfHom iV) f'` using `e`. Rewrite using `[h1, h2, e']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem germ_field_congr (hd : IsField W d) {O O' : X.Opens} (hO : x ∈ O) (hO' : x ∈ O')
     (hOW : O ≤ W) (hO'W : O' ≤ W) (f : Γ(X, O)) (f' : Γ(X, O'))
@@ -37,7 +37,7 @@ theorem germ_field_congr (hd : IsField W d) {O O' : X.Opens} (hO : x ∈ O) (hO'
   rw [h1, h2, e']
 
 /- English proof (translation)
-Take `⟨U, m, s, hs⟩` from `TopCat.Presheaf.exists_germ_eq X.presheaf t`. Use `⟨U ⊓ W, ⟨m, hxW⟩, inf_le_right, resG X (inf_le_left : U ⊓ W ≤ U) s, ?_⟩` and prove the remaining obligations. Rewrite using `[← hs]`. Conclude with `TopCat.Presheaf.germ_res_apply X.presheaf (homOfLE inf_le_left) x ⟨m, hxW⟩ s`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rep (hxW : x ∈ W) (t : X.presheaf.stalk x) :
     ∃ (O : X.Opens) (hO : x ∈ O) (_ : O ≤ W) (f : Γ(X, O)), (X.presheaf.germ O x hO).hom f = t := by
@@ -47,9 +47,9 @@ theorem exists_rep (hxW : x ∈ W) (t : X.presheaf.stalk x) :
   exact TopCat.Presheaf.germ_res_apply X.presheaf (homOfLE inf_le_left) x ⟨m, hxW⟩ s
 
 /- English proof (translation)
-Take `⟨O₁, h₁, hW₁, f₁, e₁⟩` from `exists_rep hxW t`. Take `⟨O₂, h₂, hW₂, f₂, e₂⟩` from `exists_rep hxW t'`. Use `⟨O₁ ⊓ O₂, ⟨h₁, h₂⟩, inf_le_left.trans hW₁, resG X (inf_le_left : O₁ ⊓ O₂ ≤ O₁) f₁, resG X (inf_le_right : O₁ ⊓ O₂ ≤ O₂) f₂, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← e₁]`. Conclude with `TopCat.Presheaf.germ_res_apply X.presheaf (homOfLE inf_le_left) x ⟨h₁, h₂⟩ f₁`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e₂]`. Conclude with `TopCat.Presheaf.germ_res_apply X.presheaf (homOfLE inf_le_right) x ⟨h₁, h₂⟩ f₂`.
+A detailed English derivation is pending.
 -/
 theorem exists_rep₂ (hxW : x ∈ W) (t t' : X.presheaf.stalk x) :
     ∃ (O : X.Opens) (hO : x ∈ O) (_ : O ≤ W) (f f' : Γ(X, O)),
@@ -66,7 +66,7 @@ def germMap (hxW : x ∈ W) (t : X.presheaf.stalk x) : X.presheaf.stalk x :=
     (d _ (exists_rep hxW t).choose_spec.choose_spec.choose_spec.choose)
 
 /- English proof (translation)
-Establish `hs` using `(exists_rep hxW ((X.presheaf.germ O x hO).hom f)).choose_spec.choose_spec`. Conclude with `germ_field_congr hd _ hO hs.choose hOW _ f hs.choose_spec.choose_spec`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem germMap_germ (hd : IsField W d) (hxW : x ∈ W) {O : X.Opens} (hO : x ∈ O) (hOW : O ≤ W)
     (f : Γ(X, O)) :
@@ -79,9 +79,9 @@ end GlobalTheory.StalkDerField
 open GlobalTheory.StalkDerField in
 
 /- English proof (translation)
-Introduce `X W d hd x hxW`. Set `g : X.presheaf.stalk x →+ X.presheaf.stalk x` to `AddMonoidHom.mk' (germMap (d := d) hxW) (by`. Introduce `t t'`. Take `⟨O, hO, hOW, f, f', rfl, rfl⟩` from `exists_rep₂ hxW t t'`. Rewrite using `[← map_add, germMap_germ hd hxW hO hOW, germMap_germ hd hxW hO hOW, germMap_germ hd hxW hO hOW, hd.1 O hOW f f', map_add])`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Derivation.mk' g.toIntLinearMap ?_, fun O hO hOW f => germMap_germ hd hxW hO hOW f⟩` and prove the remaining obligations. Introduce `t t'`. Take `⟨O, hO, hOW, f, f', rfl, rfl⟩` from `exists_rep₂ hxW t t'`. Use `show germMap hxW _ = _ • germMap hxW _ + _ • germMap hxW _`. Rewrite using `[← map_mul, germMap_germ hd hxW hO hOW, germMap_germ hd hxW hO hOW, germMap_germ hd hxW hO hOW, hd.2.1 O hOW f f', smul_eq_mul, smul_eq_mul, map_add, map_mul, map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.StalkDerField.exists_stalk_derivation : ∀ (X : Scheme.{0}) (W : X.Opens) (d : Fld X), IsField W d → ∀ (x : X), x ∈ W → ∃ δ : Derivation ℤ (X.presheaf.stalk x) (X.presheaf.stalk x), ∀ (O : X.Opens) (hO : x ∈ O), O ≤ W → ∀ f, δ ((X.presheaf.germ O x hO).hom f) = (X.presheaf.germ O x hO).hom (d O f) := by
   intro X W d hd x hxW

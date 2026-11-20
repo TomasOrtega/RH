@@ -24,7 +24,7 @@ section Pts
 variable {S : Type} [CommRing S] (d : ℕ)
 
 /- English proof (translation)
-Apply `GermD.jet_hom_ext` to reduce the goal to its premises. Introduce `p`. Simplify using `only [AlgHom.comp_apply, jetSubstP, jetCopy, GermD.jetMap_mk, MvPolynomial.aeval_X]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem subst_copy (m : ℕ) {n : ℕ} (φ : Fin 2 → Fin d → MvPolynomial (Fin n × Fin d) S) (i : Fin 2) :
     (jetSubstP m (fun p : Fin 2 × Fin d => φ p.1 p.2)).comp (jetCopy d m i) =
@@ -34,7 +34,7 @@ theorem subst_copy (m : ℕ) {n : ℕ} (φ : Fin 2 → Fin d → MvPolynomial (F
   simp only [AlgHom.comp_apply, jetSubstP, jetCopy, GermD.jetMap_mk, MvPolynomial.aeval_X]
 
 /- English proof (translation)
-Apply `GermD.jet_hom_ext` to reduce the goal to its premises. Introduce `p`. Simplify using `[jetSubstP, jetCopy, GermD.jetMap_mk]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem substX (m : ℕ) {n : ℕ} (k : Fin n) :
     jetSubstP m (fun p : Fin 1 × Fin d => (MvPolynomial.X (k, p.2) : MvPolynomial (Fin n × Fin d) S)) =
@@ -47,7 +47,7 @@ def jetRen (m : ℕ) {n n' : ℕ} (r : Fin n → Fin n') : Jet S (Fin n × Fin d
   jetMap (fun q : Fin n × Fin d => MvPolynomial.X (r q.1, q.2)) fun _ => X_mem_orig _
 
 /- English proof (translation)
-Apply `GermD.jet_hom_ext` to reduce the goal to its premises. Introduce and unpack `⟨i, j⟩`. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Simplify using `only [jetRen, jetCopy, GermD.jetMap_mk, MvPolynomial.aeval_X]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem ren_one (m : ℕ) {n' : ℕ} (r : Fin 1 → Fin n') : jetRen (S := S) d m r = jetCopy d m (r 0) := by
   apply GermD.jet_hom_ext
@@ -56,7 +56,7 @@ theorem ren_one (m : ℕ) {n' : ℕ} (r : Fin 1 → Fin n') : jetRen (S := S) d 
   simp only [jetRen, jetCopy, GermD.jetMap_mk, MvPolynomial.aeval_X]
 
 /- English proof (translation)
-Establish `hr : (MvPolynomial.aeval fun q : Fin n × Fin d => (MvPolynomial.X (r q.1, q.2) : MvPolynomial (Fin n' × Fin d) S)) = MvPolynomial.rename fun p : Fin n × Fin d => (r p.1, p.2)` using `MvPolynomial.algHom_ext fun q => by simp`. Apply `GermD.jet_hom_ext` to reduce the goal to its premises. Introduce `p`. Simplify using `only [jetSubstP, jetRen, AlgHom.comp_apply, GermD.jetMap_mk, MvPolynomial.aeval_X, map_sub, MvPolynomial.aeval_C, MvPolynomial.algebraMap_eq, psIn, MvPolynomial.constantCoeff_rename, hr, MvPolynomial.rename_C]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem subst_psIn (m : ℕ) {n n' : ℕ} (r : Fin n → Fin n') (g : Fin d → MvPowerSeries (Fin n × Fin d) S) :
     jetSubstP m (fun p : Fin 1 × Fin d => psIn d m r (g p.2)) =
@@ -76,7 +76,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X0 : S
 variable {S : Type} [CommRing S] {x0 : Sp S ⟶ X0} {d : ℕ} {x : ∀ m, jOG x0 d m 1 ⟶ t.G}
 
 /- English proof (translation)
-Rewrite using `[jptG, ← Category.assoc, GermD.homAt_comp, subst_copy]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pt_sub (m : ℕ) {n : ℕ} (φ : Fin 2 → Fin d → MvPolynomial (Fin n × Fin d) S) (i : Fin 2) :
     Formalism.L2.Pj.homAt x0 (jetSubstP m (fun p : Fin 2 × Fin d => φ p.1 p.2)) ≫ jptG t x0 d x m i =
@@ -84,7 +84,7 @@ theorem pt_sub (m : ℕ) {n : ℕ} (φ : Fin 2 → Fin d → MvPolynomial (Fin n
   rw [jptG, ← Category.assoc, GermD.homAt_comp, subst_copy]
 
 /- English proof (translation)
-Rewrite using `[substX]`. Apply the tactic sequence `try rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pt_X (m : ℕ) {n : ℕ} (k : Fin n) :
     Formalism.L2.Pj.homAt x0 (jetSubstP m (fun p : Fin 1 × Fin d => (MvPolynomial.X (k, p.2) : MvPolynomial (Fin n × Fin d) S))) ≫ x m =
@@ -93,7 +93,7 @@ theorem pt_X (m : ℕ) {n : ℕ} (k : Fin n) :
   try rfl
 
 /- English proof (translation)
-Simplify using `only [cφG, ← Over.comp_left]`. Use `congrArg Over.Hom.left ((psum_hom (preHom _) _ I.down).trans ?_)` and prove the remaining obligations. Use `congrArg (fun f => psum t.G f I.down) (funext fun i => ?_)` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> rfl`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pe_pt (m : ℕ) {n : ℕ} (σ : Jet S (Fin 2 × Fin d) m →ₐ[S] Jet S (Fin n × Fin d) m) (I : ULift.{0} (Finset (Fin 2))) :
     (Formalism.L2.Pj.homAt x0 σ).left ≫ cφG t ![jptG t x0 d x m (0 : Fin 2), jptG t x0 d x m (1 : Fin 2)] I =
@@ -104,9 +104,7 @@ theorem pe_pt (m : ℕ) {n : ℕ} (σ : Jet S (Fin 2 × Fin d) m →ₐ[S] Jet S
   fin_cases i <;> rfl
 
 /- English proof (translation)
-Simplify using `only [cφG, ← Over.comp_left]`. Use `congrArg Over.Hom.left ((psum_hom (preHom _) _ I.down).trans ?_)` and prove the remaining obligations. Use `congrArg (fun f => psum t.G f I.down) (funext fun i => ?_)` and prove the remaining obligations. Use `fin_cases i`. Use `show lift a b ≫ fst t.G t.G = a`.
-
-Conclude with `lift_fst _ _`. Use `show lift a b ≫ (snd t.G t.G ≫ t.act.act c) = b ≫ t.act.act c`. Conclude with `lift_snd_assoc _ _ _`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem wl_pt {T : Over X0} (a b : T ⟶ t.G) (c : 𝓞 E) (I : ULift.{0} (Finset (Fin 2))) :
     (lift a b).left ≫ cφG t ![fst t.G t.G, snd t.G t.G ≫ t.act.act c] I =
@@ -121,9 +119,7 @@ theorem wl_pt {T : Over X0} (a b : T ⟶ t.G) (c : 𝓞 E) (I : ULift.{0} (Finse
     exact lift_snd_assoc _ _ _
 
 /- English proof (translation)
-Simplify using `only [cφG, ← Over.comp_left]`. Use `congrArg Over.Hom.left ((psum_hom (preHom _) _ I.down).trans ?_)` and prove the remaining obligations. Use `congrArg (fun f => psum t.G f I.down) (funext fun i => ?_)` and prove the remaining obligations. Use `fin_cases i`. Use `show lift a b ≫ (fst t.G t.G ≫ t.act.act c) = a ≫ t.act.act c`.
-
-Conclude with `lift_fst_assoc _ _ _`. Use `show lift a b ≫ snd t.G t.G = b`. Conclude with `lift_snd _ _`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem wl_pt' {T : Over X0} (a b : T ⟶ t.G) (c : 𝓞 E) (I : ULift.{0} (Finset (Fin 2))) :
     (lift a b).left ≫ cφG t ![fst t.G t.G ≫ t.act.act c, snd t.G t.G] I =
@@ -145,9 +141,9 @@ variable {X X' Y P P' : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X} {K K�
   [Fintype W]
 
 /- English proof (translation)
-Use `corr_of_val hL fun y J hJ => ?_` and prove the remaining obligations. Take `⟨J', hJ'⟩` from `FrameSym.good_exists hL' y`. Establish `h'` using `val_corr hJ' h (𝟙 Y)`. Rewrite `h'` using `[val_mul hJ', FrameSym.val_scale _ _ _ _ hJ', val_pull hJ', val_pull hJ', val_pull hJ']`. Rewrite using `[val_mul hJ, FrameSym.val_scale _ _ _ _ hJ, val_pull hJ, val_pull hJ, val_pull hJ, ← val_corr hJ hc, ← val_corr hJ hc, FrameSym.val_tie w φ' ε a c hm _ y hJ hJ', FrameSym.val_tie w φ' ε a c hm _ y hJ hJ']`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Category.id_comp] at h' ⊢`. Establish `p` using `hs _ (fun q => gw w q y (J (q ≫ F)) (J' q))`. Rewrite `p` using `[Fintype.prod_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr] at p`. Rewrite using `[hv y J J' hJ hJ', _root_.mul_mul_mul_comm, p, h', _root_.mul_left_comm]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem corr_up (hL : L.IsLB) (hL' : L'.IsLB) (w : LB.Iso L' (L.pull F)) (φ' : K → (Y ⟶ X')) (ε : K → ℤ)
     (a : LB.Gen (LB.LinComb L' φ' ε)) (c : LB.Gen (LB.LinComb L (fun k => φ' k ≫ F) ε))
@@ -194,7 +190,7 @@ def sqMap : Over.mk ((t'.G ⊗ t'.G).hom ≫ f) ⟶ t.G ⊗ t.G :=
   lift (pushPt mp.cart.1.w (fst t'.G t'.G)) (pushPt mp.cart.1.w (snd t'.G t'.G))
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (by show (x.left ≫ _) ≫ _ = (x.left ≫ _) ≫ _ rw [Category.assoc, mp.act, Category.assoc])`.
+A detailed English derivation is pending.
 -/
 theorem push_act {T : Over B'} (x : T ⟶ t'.G) (a : 𝓞 E) :
     pushPt mp.cart.1.w (x ≫ t'.act.act a) = pushPt mp.cart.1.w x ≫ t.act.act a :=
@@ -203,9 +199,9 @@ theorem push_act {T : Over B'} (x : T ⟶ t'.G) (a : 𝓞 E) :
     rw [Category.assoc, mp.act, Category.assoc])
 
 /- English proof (translation)
-Break down `k with I | I` into its components or cases. Use `psum_push mp.cart _ _ (sqMap mp) (fun i => ?_) I.down fin_cases i` and prove the remaining obligations. Simplify using `[sqMap]`. Conclude with `(push_act mp _ _).trans (by simp [sqMap])`. Use `psum_push mp.cart _ _ (sqMap mp) (fun i => ?_) I.down fin_cases i` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `(push_act mp _ _).trans (by simp [sqMap])`. Simplify using `[sqMap]`.
+A detailed English derivation is pending.
 -/
 theorem adφ_comm (a : 𝓞 E) (k) : adφ t' a k ≫ mp.φ = (sqMap mp).left ≫ adφ t a k := by
   rcases k with I | I
@@ -219,9 +215,9 @@ theorem adφ_comm (a : 𝓞 E) (k) : adφ t' a k ≫ mp.φ = (sqMap mp).left ≫
     · simp [sqMap]
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Use `show (_ ≫ (sqMap mp).left) ≫ (fst t.G t.G).left = (_ ≫ _) ≫ (fst t.G t.G).left`. Rewrite using `[Category.assoc, Category.assoc, ← Over.comp_left, ← Over.comp_left, lift_fst, sqMap, lift_fst, ← hp]`. Use `show (lift p' q').left ≫ (fst t'.G t'.G).left ≫ mp.φ = _`. Rewrite using `[← Category.assoc, ← Over.comp_left, lift_fst]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show (_ ≫ (sqMap mp).left) ≫ (snd t.G t.G).left = (_ ≫ _) ≫ (snd t.G t.G).left`. Rewrite using `[Category.assoc, Category.assoc, ← Over.comp_left, ← Over.comp_left, lift_snd, sqMap, lift_snd, ← hq]`. Use `show (lift p' q').left ≫ (snd t'.G t'.G).left ≫ mp.φ = _`. Rewrite using `[← Category.assoc, ← Over.comp_left, lift_snd]`.
+A detailed English derivation is pending.
 -/
 theorem lift_sqMap {T' : Over B'} {T : Over B} (g : T'.left ⟶ T.left) (p' q' : T' ⟶ t'.G) (p q : T ⟶ t.G)
     (hp : p'.left ≫ mp.φ = g ≫ p.left) (hq : q'.left ≫ mp.φ = g ≫ q.left) :
@@ -237,7 +233,7 @@ theorem lift_sqMap {T' : Over B'} {T : Over B} (g : T'.left ⟶ T.left) (p' q' :
     rw [← Category.assoc, ← Over.comp_left, lift_snd]
 
 /- English proof (translation)
-Rewrite using `[Fintype.prod_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, wl_pt, wl_pt', zpow_neg, Finset.prod_inv_distrib, GermB.eta_one]`. Rewrite using `[GermB.cube_one_left t (fun p => h p.left), GermB.cube_one_right t (fun p => h p.left), inv_one, _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_adjointnessBundle_zeroSection_eq_one (a : 𝓞 E) {U : Type} [CommGroup U] (h : ((𝟙_ (Over B)).left ⟶ t.G.left) → U) :
     ∏ k, h ((GermB.zz t).left ≫ adφ t a k) ^ adε k = 1 := by
@@ -247,13 +243,11 @@ theorem prod_adjointnessBundle_zeroSection_eq_one (a : 𝓞 E) {U : Type} [CommG
   rw [GermB.cube_one_left t (fun p => h p.left), GermB.cube_one_right t (fun p => h p.left), inv_one, _root_.mul_one]
 
 /- English proof (translation)
-Take `⟨c, hc, R⟩` from `exists_up ((isGen_iff w).1 hw) t.PP.isLB t'.PP.isLB v' hv'`. Establish `R' : ∀ (Z : Scheme.{0}) (r : Z ⟶ (t'.G ⊗ t'.G).left) (z : Z) J J', Good t.PP.L z J → Good t'.PP.L z J' → val c r z J = (∏ k, gw w (r ≫ adφ t' a k) z (J ((r ≫ adφ t' a k) ≫ mp.φ)) (J' (r ≫ adφ t' a k)) ^ adε k) * val v' r z J'` using `fun Z r z J J' hJ hJ' => by`. Use `(R Z r z _ _ (hJ.mem _ r) (hJ'.mem _ r)).trans (congrArg₂ (· * ·) (Finset.prod_congr rfl fun I _ => ?_) rfl)` and prove the remaining obligations. Rewrite using `[Category.assoc]`. Establish `sj : Function.Surjective ((snd t'.G t'.G).left ≫ t'.G.hom).appTop.hom` using `surj_comp (surj_snd hG hA _) (hG _ _ hA).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `he : (GermB.zz t').left ≫ (snd t'.G t'.G).left ≫ t'.G.hom = 𝟙 _`. Rewrite using `[Over.w]`. Conclude with `Over.w (GermB.zz t')`. Establish `key` using `gen_unique' t.PP.isLB (φ := fun k => (sqMap mp).left ≫ adφ t a k) (ε := adε) (fun V _ k => Finset.prod_congr rfl fun I _ => congrArg (fun q => k q ^ adε I) (adφ_comm mp a I)) _ (GermB.zz t').left he sj (ReciprocityTheory.ChartRestriction.G.DVR.pullGen_isGen _ _ _ _ hv (sqMap mp). …`. Take `⟨I', hI'⟩` from `FrameSym.good_exists t'.PP.isLB y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ ((R' _ _ y I I' hI hI').trans (congrArg₂ (· * ·) (prod_adjointnessBundle_zeroSection_eq_one a (fun q => gw w q y (I (q ≫ mp.φ)) (I' q))) (h' y I' hI'))).symm` and prove the remaining obligations. Rewrite using `[_root_.mul_one]`. Use `(val_pull hI _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[lift_sqMap mp mp.cm.e _ _ _ _ mp.cm.e_comm mp.cm.e_comm]`. Conclude with `h _ _ y I hI) _ r z J hJ`.
-
-Conclude with `(val_pull hJ _ _ _).symm.trans (key.trans (R' _ _ z J J' hJ hJ'))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_ad (hG : GlobalFnsSt) (hA : IsAbelianScheme t'.G) (w : LB.Iso t'.PP.L (t.PP.L.pull mp.φ)) (hw : w.IsGen)
     (a : 𝓞 E) (v' : LB.Gen (LB.LinComb t'.PP.L (adφ t' a) adε)) (hv' : v'.IsGen)
@@ -289,9 +283,9 @@ theorem val_ad (hG : GlobalFnsSt) (hA : IsAbelianScheme t'.G) (w : LB.Iso t'.PP.
 end Adj
 
 /- English proof (translation)
-Establish `hc : MvPolynomial.constantCoeff (psTrunc 0 f) = 1`. Rewrite using `[MvPolynomial.constantCoeff_eq, GermFun.coeff_psTrunc _ _ _ (by simp), MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hf]`. Unfold `psJet`. Rewrite using `[← map_one (Ideal.Quotient.mk (orig S κ ^ (0 + 1)))]`. Use `Ideal.Quotient.eq.2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `sub_const_mem_orig (psTrunc 0 f)` as an intermediate fact. Rewrite `this` using `[hc, map_one]`. Rewrite using `[zero_add, pow_one]` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem psJet_zero_of {S κ : Type} [CommRing S] [Fintype κ] [DecidableEq κ] (f : MvPowerSeries κ S)
     (hf : MvPowerSeries.constantCoeff f = 1) : psJet 0 f = 1 := by
@@ -306,9 +300,9 @@ theorem psJet_zero_of {S κ : Type} [CommRing S] [Fintype κ] [DecidableEq κ] (
   rwa [zero_add, pow_one]
 
 /- English proof (translation)
-Apply `GermD.jet_hom_ext` to reduce the goal to its premises. Introduce `p`. Establish `h0 : ∀ q : MvPolynomial κ' S, MvPolynomial.aeval (fun _ => (0 : S)) q = MvPolynomial.constantCoeff q`. Introduce `q`. Apply the tactic sequence `induction q using MvPolynomial.induction_on <;> simp_all`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[GermB.jetAug_X, AlgHom.comp_apply, jetSubstP, GermD.jetMap_mk, MvPolynomial.aeval_X]`. Use `show MvPolynomial.aeval (fun _ => (0 : S)) _ = 0`. Rewrite using `[h0]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem aug_subst {S κ κ' : Type} [CommRing S] (m : ℕ) (φ : κ → MvPolynomial κ' S) :
     (jetAug : Jet S κ' m →ₐ[S] S).comp (jetSubstP m φ) = jetAug := by
@@ -322,7 +316,7 @@ theorem aug_subst {S κ κ' : Type} [CommRing S] (m : ℕ) (φ : κ → MvPolyno
   rw [h0]; simp
 
 /- English proof (translation)
-Rewrite using `[subst_psIn, ← GermD.homAt_comp, Category.assoc, ← hact m a, ← Category.assoc, ren_one]`. Apply the tactic sequence `try rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pt_act' {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X0 : Scheme.{0}} {t : SAB H X0}
     {S : Type} [CommRing S] {x0 : Sp S ⟶ X0} {d : ℕ} {x : ∀ m, jOG x0 d m 1 ⟶ t.G}
@@ -337,21 +331,19 @@ theorem pt_act' {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} 
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `hLaws E _ _ _ H X0 t S _ x0 t' mp w hw d x x' hx hA h0 e e' _ _ ht act ad a hact _ had ⟨v', hv', hr⟩`. Take `⟨v, hv, hv0⟩` from `GermB.exists_wL t a`. Establish `hz : ∀ y J', Good t'.PP.L y J' → val v' (GermB.zz t').left y J' = 1`. Introduce `y J' hJ'`. Take `⟨u, hu, hc⟩` from `hr 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `rfl : u = 1` from `Units.ext (hu.trans (psJet_zero_of _ had))`. Set `ρ : overAt (𝟙 (Sp S)) S ⟶ jOG (𝟙 (Sp S)) d 0 2` to `Formalism.L2.Pj.homAt (𝟙 (Sp S)) (jetAug : Jet S (Fin 2 × Fin d) 0 →ₐ[S] S)`. Establish `hρ : ∀ φ : Fin 2 × Fin d → MvPolynomial (Fin 2 × Fin d) S, ρ.left ≫ (Formalism.L2.Pj.homAt (𝟙 (Sp S)) (jetSubstP 0 φ)).left = ρ.left` using `fun φ => by`. Rewrite using `[← Over.comp_left, GermD.homAt_comp, aug_subst]`. Establish `hj : ∀ i : Fin 2, ρ ≫ jptG t' (𝟙 (Sp S)) d x' 0 i = 1` using `fun i => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[jptG, ← Category.assoc, GermD.homAt_comp, GermB.aug_copy, h0]`. Establish `hl : ρ.left ≫ (lift (jptG t' (𝟙 (Sp S)) d x' 0 (0 : Fin 2)) (jptG t' (𝟙 (Sp S)) d x' 0 (1 : Fin 2))).left = (GermB.zz t').left`. Rewrite using `[← Over.comp_left, comp_lift, hj, hj]`. Use `(congrArg Over.Hom.left (comp_lift (toUnit (overAt (𝟙 (Sp S)) S)) η[t'.G] η[t'.G]).symm).trans ?_` and prove the remaining obligations. Use `show (toUnit (overAt (𝟙 (Sp S)) S)).left ≫ (GermB.zz t').left = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: (toUnit (overAt (𝟙 (Sp S)) S)).left = 𝟙 (Sp S)` using `by show spMap (algebraMap S S) ≫ 𝟙 _ = _`. Simplify using `[spMap]`. Rewrite using `[this]`. Conclude with `Category.id_comp _`. Establish `hJ'' : Good (Z` using `Sp S) t'.PP.L y J' := hJ'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `(val_mul hJ'' _ _ _).symm.trans ((val_corr hJ'' hc ρ.left).trans (GermB.val_scale t' _ _ _ _ _ y J' hJ''))`. Establish `e2` using `(congrArg₂ (· * ·) (val_pull hJ'' _ _ _) (val_pull hJ'' _ _ _)).symm.trans (e1.trans (congrArg₂ (· * ·) rfl (val_pull hJ'' _ _ _)))`. Rewrite `e2` using `[hρ, hρ, hl, unitΓ, map_one, map_one]`. Conclude with `mul_right_cancel e2`. Use `⟨v, hv, fun m => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u, hu, hc⟩` from `hr m`. Take `⟨c₁, hc₁, hm⟩` from `ht m`. Establish `hjx : ∀ i : Fin 2, (jptG t' (𝟙 (Sp S)) d x' m i).left ≫ mp.φ = 𝟙 _ ≫ (jptG t x0 d x m i).left` using `fun i => by`. Rewrite using `[Category.id_comp]`. Use `show (_ ≫ (x' m).left) ≫ _ = _ ≫ (x m).left`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, hx]`. Both sides reduce to the same expression. Establish `hl` using `(lift_sqMap mp (T' := jOG (𝟙 (Sp S)) d m 2) (T := jOG x0 d m 2) (𝟙 _) _ _ _ _ (hjx 0) (hjx 1)).trans (Category.id_comp _)`. Establish `hF : FormEq (Sum.elim (fun k => (lift (jptG t' (𝟙 (Sp S)) d x' m (0 : Fin 2)) (jptG t' (𝟙 (Sp S)) d x' m (1 : Fin 2))).left ≫ adφ t' a k) (fun k => (Formalism.L2.Pj.homAt (𝟙 (Sp S)) (jetSubstP m fun p : Fin 2 × Fin d => (![fun j => psIn d m ![0] (act a j), fun j => X ((1 : Fin 2) …`. Introduce `U _ h`.
-
-Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, wl_pt, wl_pt', pe_pt, pt_sub, Matrix.cons_val_zero, Matrix.cons_val_one, pt_X, pt_act' hact, zpow_neg, Finset.prod_inv_distrib]`. Simplify using `only [inv_mul_cancel_right]`. Use `⟨u, hu, corr_up t.PP.isLB t'.PP.isLB w _ (cε 2) (e' m) c₁ hm (cφG t ![jptG t x0 d x m (0 : Fin 2), jptG t x0 d x m (1 : Fin 2)]) (cε 2) (e m) hc₁ (adφ t' a) (adφ t a) adε v' v _ _ (fun y J J' hJ hJ' => ?_) _ _ hF (unitΓ u) hc⟩` and prove the remaining obligations. Conclude with `(congrArg (fun r => val v r y J) hl).symm.trans (val_ad mp hLaws.globalFns hA w hw.1 a v' hv' hz v hv hv0 _ y J J' hJ hJ')`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem frame_adj_up : Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X0 : Scheme.{0}) (t : SAB H X0) (S : Type) [CommRing S] (x0 : Sp S ⟶ X0) (t' : SAB H (Sp S)) (mp : SABMap t' t x0) (w : LB.Iso t'.PP.L (t.PP.L.pull mp.φ)), RigIso mp w → ∀ (d : ℕ) (x : ∀ m, jOG x0 d m 1 ⟶ t.G) (x' : ∀ m, jOG (𝟙 (Sp S)) d m 1 ⟶ t'.G), (∀ m, (x' m).left ≫ mp.φ = (x m).left) → IsAbelianScheme t'.G → (homAt (𝟙 (Sp S)) (jetAug : Jet S (Fin 1 × Fin d) 0 →ₐ[S] S) ≫ x' 0 = 1) → ∀ (e : ∀ m, FrTyG t x0 d x m) (e' : ∀ m, FrTyG t' (𝟙 (Sp S)) d x' m), (∀ m, (e m).IsGen) → (∀ m, (e' m).IsGen) → (∀ m, ∃ c₁ : LB.Gen (LB.LinComb t.PP.L (fun J => cφG t' ![jptG t' (𝟙 (Sp S)) d x' m (0 : Fin 2), jptG t' (𝟙 (Sp S)) d x' m (1 : Fin 2)] J ≫ mp.φ) (cε 2)), LB.Gen.Corr t.PP.L _ _ _ _ c₁ (e m) ∧ LB.Gen.Maps (LB.linCombIso w (cφG t' ![jptG t' (𝟙 (Sp S)) d x' m (0 : Fin 2), jptG t' (𝟙 (Sp S)) d x' m (1 : Fin 2)]) (cε 2)) (e' m) (flatGen t.PP.L mp.φ _ _ c₁)) → ∀ (act : 𝓞 E → Fin d → PS S 1 d) (ad : 𝓞 E → PS S 2 d) (a : 𝓞 E), (∀ m (b : 𝓞 E), x' m ≫ t'.act.act b = homAt (𝟙 (Sp S)) (jetSubstP m fun p : Fin 1 × Fin d => psTrunc m (act b p.2)) ≫ x' m) → (∀ b j, MvPowerSeries.constantCoeff (act b j) = 0) → MvPowerSeries.constantCoeff (ad a) = 1 → (∃ wL : LB.Gen (LB.LinComb t'.PP.L (Sum.elim (cφG t' ![fst t'.G t'.G, snd t'.G t'.G ≫ t'.act.act (H.bar a)]) (cφG t' ![fst t'.G t'.G ≫ t'.act.act a, snd t'.G t'.G])) (Sum.elim (cε 2) fun I => -cε 2 I)), wL.IsGen ∧ ∀ m, ∃ u : (Jet S (Fin 2 × Fin d) m)ˣ, (u : Jet S (Fin 2 × Fin d) m) = psJet m (ad a) ∧ LB.Gen.Corr t'.PP.L _ _ _ _ (LB.mulGen t'.PP.L _ _ _ _ (LB.pullGen t'.PP.L _ _ wL (lift (jptG t' (𝟙 (Sp S)) d x' m (0 : Fin 2)) (jptG t' (𝟙 (Sp S)) d x' m (1 : Fin 2))).left) (peG t' (𝟙 (Sp S)) d x' e' m ![fun j => psIn d m ![0] (act a j), fun j => X ((1 : Fin 2), j)])) (scaleGenG t' _ _ (unitΓ u) (peG t' (𝟙 (Sp S)) d x' e' m ![fun j => X ((0 : Fin 2), j), fun j => psIn d m ![1] (act (H.bar a) j)]))) → (∃ wL : LB.Gen (LB.LinComb t.PP.L (Sum.elim (cφG t ![fst t.G t.G, snd t.G t.G ≫ t.act.act (H.bar a)]) (cφG t ![fst t.G t.G ≫ t.act.act a, snd t.G t.G])) (Sum.elim (cε 2) fun I => -cε 2 I)), wL.IsGen ∧ ∀ m, ∃ u : (Jet S (Fin 2 × Fin d) m)ˣ, (u : Jet S (Fin 2 × Fin d) m) = psJet m (ad a) ∧ LB.Gen.Corr t.PP.L _ _ _ _ (LB.mulGen t.PP.L _ _ _ _ (LB.pullGen t.PP.L _ _ wL (lift (jptG t x0 d x m (0 : Fin 2)) (jptG t x0 d x m (1 : Fin 2))).left) (peG t x0 d x e m ![fun j => psIn d m ![0] (act a j), fun j => X ((1 : Fin 2), j)])) (scaleGenG t _ _ (unitΓ u) (peG t x0 d x e m ![fun j => X ((0 : Fin 2), j), fun j => psIn d m ![1] (act (H.bar a) j)]))) := by
   intro hLaws E _ _ _ H X0 t S _ x0 t' mp w hw d x x' hx hA h0 e e' _ _ ht act ad a hact _ had ⟨v', hv', hr⟩

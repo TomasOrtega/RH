@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.KS.EpsBundle
 
 /- English proof (translation)
-Conclude with `congrArg (fun f => CommRingCat.Hom.hom f ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a)) (Scheme.Hom.appLE_map p (U := ⊤) (V := U) (fun _ _ => trivial) (homOfLE h).op)`.
+A detailed English derivation is pending.
 -/
 theorem res_constFn' {R : Type} [CommRing R] {X : Scheme.{0}} (p : X ⟶ Sp R) {U V : X.Opens}
     (h : V ≤ U) (a : R) : resG X h (constFn p U a) = constFn p V a := by
@@ -21,7 +21,7 @@ theorem res_constFn' {R : Type} [CommRing R] {X : Scheme.{0}} (p : X ⟶ Sp R) {
     (Scheme.Hom.appLE_map p (U := ⊤) (V := U) (fun _ _ => trivial) (homOfLE h).op)
 
 /- English proof (translation)
-Unfold `resG`. Rewrite using `[← CommRingCat.comp_apply, ← CommRingCat.comp_apply, Scheme.Hom.appLE_map, Scheme.Hom.map_appLE]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem res_appLE {Y Y' : Scheme.{0}} (ρ : Y' ⟶ Y) {O O' : Y.Opens} {W W' : Y'.Opens}
     (hW : W' ≤ W) (hO : O' ≤ O) (h : W ≤ ρ ⁻¹ᵁ O) (h' : W' ≤ ρ ⁻¹ᵁ O') (a : Γ(Y, O)) :
@@ -30,7 +30,7 @@ theorem res_appLE {Y Y' : Scheme.{0}} (ρ : Y' ⟶ Y) {O O' : Y.Opens} {W W' : Y
   rw [← CommRingCat.comp_apply, ← CommRingCat.comp_apply, Scheme.Hom.appLE_map, Scheme.Hom.map_appLE]
 
 /- English proof (translation)
-Unfold `constFn`. Rewrite using `[← map_mul, ← map_mul, DualNumber.eps_mul_eps, map_zero, map_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem eps_sq {X : Scheme.{0}} (p : X ⟶ Sp (DualNumber ℂ)) (U : X.Opens) :
     constFn p U DualNumber.eps * constFn p U DualNumber.eps = 0 := by
@@ -38,7 +38,7 @@ theorem eps_sq {X : Scheme.{0}} (p : X ⟶ Sp (DualNumber ℂ)) (U : X.Opens) :
   rw [← map_mul, ← map_mul, DualNumber.eps_mul_eps, map_zero, map_zero]
 
 /- English proof (translation)
-Substitute `hW` using the available equality. Rewrite using `[Scheme.Hom.appLE_eq_app]`. Conclude with `H F`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem decomp {Y Y' : Scheme.{0}} (π : Y' ⟶ Sp (DualNumber ℂ)) (ρ : Y' ⟶ Y) (O : Y.Opens)
     (H : ∀ F : Γ(Y', ρ ⁻¹ᵁ O), ∃! ab : Γ(Y, O) × Γ(Y, O),
@@ -51,7 +51,7 @@ theorem decomp {Y Y' : Scheme.{0}} (π : Y' ⟶ Sp (DualNumber ℂ)) (ρ : Y' �
   exact H F
 
 /- English proof (translation)
-Use `(H (φ a + e * φ b)).unique (y₁ := (a, b)) (y₂ := (a', b')) rfl h` as an intermediate fact. Conclude with `Prod.mk.inj this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem uniq {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (e : B)
     (H : ∀ F : B, ∃! ab : A × A, F = φ ab.1 + e * φ ab.2) {a b a' b' : A}
@@ -60,9 +60,9 @@ theorem uniq {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (e : B)
   exact Prod.mk.inj this
 
 /- English proof (translation)
-Take `⟨⟨b, c⟩, h, -⟩` from `H u`. Take `⟨⟨b', c'⟩, h', -⟩` from `H (u⁻¹ : Bˣ)`. Use `⟨b, b', c, ?_, h⟩` and prove the remaining obligations. Establish `h1 : (u : B) * (u⁻¹ : Bˣ) = 1` using `u.mul_inv`. Rewrite `h1` using `[h', h]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(uniq φ e H (a := b * b') (b := b * c' + c * b') (a' := 1) (b' := 0) ?_).1` and prove the remaining obligations. Simplify using `only [map_mul, map_add, map_one, map_zero] at h1 ⊢`. Take the linear combination `h1 - (φ c * φ c') * he`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem unit_form {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (e : B) (he : e * e = 0)
     (H : ∀ F : B, ∃! ab : A × A, F = φ ab.1 + e * φ ab.2) (u : Bˣ) :
@@ -77,9 +77,9 @@ theorem unit_form {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (e : B
   linear_combination h1 - (φ c * φ c') * he
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `uniq φ e H (a := b) (b := c) (a' := d) (b' := c' + k * d) (by`. Simplify using `only [map_mul, map_add]`. Take the linear combination `h + (φ k * φ c') * he)`. Substitute `h1` using the available equality. Establish `h3 : b' = d'` using `by linear_combination d' * hb - b' * hd + (0 : A)`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `h3` using the available equality. Take the linear combination `(-b') * h2 - k * hb`.
+Substitute using the available equality. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem overlap {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (e : B) (he : e * e = 0)
     (H : ∀ F : B, ∃! ab : A × A, F = φ ab.1 + e * φ ab.2) {b b' c d d' c' k : A}
@@ -94,15 +94,15 @@ theorem overlap {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (e : B) 
   linear_combination (-b') * h2 - k * hb
 
 /- English proof (translation)
-Introduce `Y Y' q π ρ j hp hj hq Q k _ hg`. Take `⟨hO, -, hD⟩` from `GlobalTheory.T.const_thickening_complex_functions_structure Y Y' q π ρ j hp hj hq`. Establish `le : ∀ W : Y'.Opens, W ≤ ρ ⁻¹ᵁ (j ⁻¹ᵁ W)` using `fun W => (hO W).ge`. Establish `H : ∀ (W : Y'.Opens) (F : Γ(Y', W)), ∃! ab : Γ(Y, j ⁻¹ᵁ W) × Γ(Y, j ⁻¹ᵁ W), F = (ρ.appLE _ W (le W)).hom ab.1 + constFn π _ DualNumber.eps * (ρ.appLE _ W (le W)).hom ab.2` using `fun W F => decomp π ρ _ (hD _) W (hO W) (le W) F`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨t, ht⟩ choose b b' c hb hs using fun i => unit_form (ρ.appLE _ (Q.U i) (le _)).hom _ (eps_sq π _) (H (Q.U i)) (t.s i)`. Use `⟨fun i => c i * b' i, fun i i' => ?_⟩` and prove the remaining obligations. Establish `l₁ : j ⁻¹ᵁ (Q.U i ⊓ Q.U i') ≤ j ⁻¹ᵁ Q.U i` using `fun _ hy => hy.1`. Establish `l₂ : j ⁻¹ᵁ (Q.U i ⊓ Q.U i') ≤ j ⁻¹ᵁ Q.U i'` using `fun _ hy => hy.2`. Establish `E : resG Y' inf_le_left (t.s i : Γ(Y', Q.U i)) = (Q.g i i').val * resG Y' inf_le_right (t.s i' : Γ(Y', Q.U i'))` using `congrArg Units.val (ht i i')`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `E` using `[hg i i' (le _), hs, hs, map_add, map_add, map_mul, map_mul, res_constFn', res_constFn', res_appLE ρ _ l₁ _ (le _), res_appLE ρ _ l₁ _ (le _), res_appLE ρ _ l₂ _ (le _), res_appLE ρ _ l₂ _ (le _)]`. Rewrite using `[map_mul, map_mul]`. Conclude with `overlap _ _ (eps_sq π _) (H _) (by rw [← map_mul, hb, map_one]) (by rw [← map_mul, hb, map_one]) E`. Introduce and unpack `⟨a, ha⟩`. Use `⟨⟨fun i => ⟨1 + constFn π _ DualNumber.eps * (ρ.appLE _ (Q.U i) (le _)).hom (a i), 1 - constFn π _ DualNumber.eps * (ρ.appLE _ (Q.U i) (le _)).hom (a i), ?_, ?_⟩⟩, fun i i' => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-((ρ.appLE _ (Q.U i) (le _)).hom (a i)) ^ 2) * eps_sq π (Q.U i)`. Take the linear combination `(-((ρ.appLE _ (Q.U i) (le _)).hom (a i)) ^ 2) * eps_sq π (Q.U i)`. Establish `l₁ : j ⁻¹ᵁ (Q.U i ⊓ Q.U i') ≤ j ⁻¹ᵁ Q.U i` using `fun _ hy => hy.1`. Establish `l₂ : j ⁻¹ᵁ (Q.U i ⊓ Q.U i') ≤ j ⁻¹ᵁ Q.U i'` using `fun _ hy => hy.2`. Apply `Units.ext` to reduce the goal to its premises.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `resG Y' inf_le_left (1 + constFn π _ DualNumber.eps * (ρ.appLE _ (Q.U i) (le _)).hom (a i)) = (Q.g i i').val * resG Y' inf_le_right (1 + constFn π _ DualNumber.eps * (ρ.appLE _ (Q.U i') (le _)).hom (a i'))`. Rewrite using `[hg i i' (le _), map_add, map_add, map_mul, map_mul, map_one, map_one, res_constFn', res_constFn', res_appLE ρ _ l₁ _ (le _), res_appLE ρ _ l₂ _ (le _), ha i i', map_sub]`. Take the linear combination `(-((ρ.appLE _ _ (le _)).hom (resG Y l₁ (a i)) - (ρ.appLE _ _ (le _)).hom (resG Y l₂ (a i'))) * (ρ.appLE _ _ (le _)).hom (resG Y l₂ (a i'))) * eps_sq π (Q.U i ⊓ Q.U i')`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem trivial_iff_coboundary : ∀ (Y Y' : Scheme.{0}) (q : Y ⟶ Sp ℂ) (π : Y' ⟶ Sp (DualNumber ℂ)) (ρ : Y' ⟶ Y) (j : Y ⟶ Y'), IsPullback ρ π q (spMap (algebraMap ℂ (DualNumber ℂ))) → j ≫ ρ = 𝟙 Y → j ≫ π = q ≫ (spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom) → ∀ (Q : LB Y') (k : ∀ i i', Γ(Y, j ⁻¹ᵁ (Q.U i ⊓ Q.U i'))), Q.IsLB → (∀ i i' (h : Q.U i ⊓ Q.U i' ≤ ρ ⁻¹ᵁ (j ⁻¹ᵁ (Q.U i ⊓ Q.U i'))), (Q.g i i').val = 1 + constFn π _ DualNumber.eps * (ρ.appLE _ _ h).hom (k i i')) → ((∃ t : Q.Gen, t.IsGen) ↔ ∃ a : ∀ i, Γ(Y, j ⁻¹ᵁ Q.U i), ∀ i i', k i i' = resG Y (show j ⁻¹ᵁ (Q.U i ⊓ Q.U i') ≤ j ⁻¹ᵁ Q.U i from fun _ hy => hy.1) (a i) - resG Y (show j ⁻¹ᵁ (Q.U i ⊓ Q.U i') ≤ j ⁻¹ᵁ Q.U i' from fun _ hy => hy.2) (a i')) := by
   intro Y Y' q π ρ j hp hj hq Q k _ hg

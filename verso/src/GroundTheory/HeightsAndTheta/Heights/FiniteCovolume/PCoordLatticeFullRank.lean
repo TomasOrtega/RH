@@ -11,23 +11,19 @@ variable {E : Type*} [Field E] [NumberField E]
 variable {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι]
 
 /- English proof (translation)
-Introduce `La hL`. Use `set f : W →ₗ[E] ι → E := (v.equivFun : W →ₗ[E] ι → E) with hf`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `hL.fg`. Use `⟨s.image f.toAddMonoidHom, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.coe_image, ← AddMonoidHom.map_closure, hs]`. Use `set S : Set (ι → E) := ((La.map f.toAddMonoidHom : AddSubgroup (ι → E)) : Set (ι → E)) with hS`. Use `set T : Submodule ℚ (ι → E) := Submodule.span ℚ S with hT`. Establish `key : ∀ (a : E), ∀ s ∈ S, a • s ∈ T`. Introduce `a s hs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd, hint⟩` from `exists_integral_multiples ℤ ℚ ({a} : Finset E)`. Establish `hda : IsIntegral ℤ (d • a)` using `hint a (Finset.mem_singleton_self a)`. Take `⟨x, hx, rfl⟩` from `(AddSubgroup.mem_map).mp hs`. Set `b : 𝓞 E` to `⟨d • a, hda⟩`. Establish `hbx : ((b : E) • x) ∈ La` using `hL.smul_mem b x hx`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfb : f ((b : E) • x) ∈ S` using `(AddSubgroup.mem_map).mpr ⟨_, hbx, rfl⟩`. Establish `hd' : ((d : ℚ)) ≠ 0` using `by exact_mod_cast hd`. Establish `heq : a • f.toAddMonoidHom x = ((d : ℚ)⁻¹) • f ((b : E) • x)`. Rewrite using `[map_smul]`. Use `show a • f x = ((d : ℚ)⁻¹) • ((d • a) • f x)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[zsmul_eq_mul, mul_smul, Int.cast_smul_eq_zsmul E, ← Int.cast_smul_eq_zsmul ℚ, smul_smul, inv_mul_cancel₀ hd', one_smul]`. Rewrite using `[heq]`. Conclude with `T.smul_mem _ (Submodule.subset_span hfb)`. Establish `stable : ∀ (a : E), ∀ y ∈ T, a • y ∈ T`. Introduce `a y hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem s hs => exact key a s hs`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [smul_add]`. Conclude with `T.add_mem hy hz`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul q y _ hy`. Rewrite using `[smul_comm]`. Conclude with `T.smul_mem q hy`. Set `T' : Submodule E (ι → E)` to `{ carrier := T add_mem' := fun hy hz => T.add_mem hy hz zero_mem' := T.zero_mem smul_mem' := fun a y hy => stable a y hy }`. Establish `hspan : Submodule.span E S = ⊤`.
-
-Establish `hSim : S = f '' (La : Set W)`. Rewrite using `[hS, AddSubgroup.coe_map]`. Both sides reduce to the same expression. Rewrite using `[hSim, Submodule.span_image, hL.span_eq_top, Submodule.map_top, LinearMap.range_eq_top]`. Conclude with `v.equivFun.surjective`.
-
-Establish `hle : Submodule.span E S ≤ T'` using `Submodule.span_le.mpr fun s hs => Submodule.subset_span hs`. Rewrite `hle` using `[hspan]`. Conclude with `eq_top_iff.mpr fun y _ => hle (Submodule.mem_top)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CoordLatticeFullRank.proof (v : Basis ι E W) : CoordLatticeFullRank.Statement v := by
   intro La hL

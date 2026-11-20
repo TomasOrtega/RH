@@ -10,11 +10,9 @@ attribute [local instance] GlobalTheory.Fam.GeoAll.fld GlobalTheory.Fam.GeoAll.v
 namespace GlobalTheory.Fam.QJPlaces
 
 /- English proof (translation)
-Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a _ _ t J hJ`. Establish `hund : ∀ i, (J.G i).q.v = (J.pl i).under (𝓞 (I.rec7 l Z).host.F)`. Introduce `i`. Take `⟨ε, hε, he⟩` from `(J.G i).q.above`. Conclude with `(GlobalTheory.IdemUnder.under_eq_of_isIdemAt _ _ _ _ ε (J.G i).idem hε he).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun i j hij => ?_, hund⟩` and prove the remaining obligations. Establish `h1 : (J.pl i).under (𝓞 (I.rec7 l Z).host.F) = (J.pl j).under (𝓞 (I.rec7 l Z).host.F)`. Use `hij` as an intermediate fact. Simplify using `only at this`. Rewrite `this` using `[hund i, hund j]`.
-
-Conclude with `this`. Conclude with `hJ.inj (hW.pk.sel _ _ ⟨t, J.mem i⟩ ⟨t, J.mem j⟩ h1)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem places_under : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → ∀ t (J : QJ a t), J.Reads →
     Function.Injective (fun i => (J.G i).q.v) ∧ ∀ i, (J.G i).q.v = (J.pl i).under (𝓞 (I.rec7 l Z).host.F) := by

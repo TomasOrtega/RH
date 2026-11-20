@@ -14,9 +14,7 @@ section Reindex
 variable {K : Type} [Field K] {n ι : Type} [Fintype n] [DecidableEq n] [Fintype ι] [DecidableEq ι] {m : ℕ}
 
 /- English proof (translation)
-Establish `h : Submodule.span 𝕜 T ≤ (Submodule.span 𝕜 (f '' T)).comap (f : A →ₗ[𝕜] B)`. Rewrite using `[Submodule.span_le]`. Introduce `t ht`. Use `show f t ∈ Submodule.span 𝕜 (f '' T)`. Conclude with `Submodule.subset_span ⟨t, ht, rfl⟩`.
-
-Conclude with `h hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem linearEquiv_mem_span_image_of_mem_span {𝕜 A B : Type} [Field 𝕜] [AddCommGroup A] [Module 𝕜 A]
     [AddCommGroup B] [Module 𝕜 B] (f : A ≃ₗ[𝕜] B) (T : Set A) (x : A)
@@ -29,15 +27,13 @@ private theorem linearEquiv_mem_span_image_of_mem_span {𝕜 A B : Type} [Field 
   exact h hx
 
 /- English proof (translation)
-Establish `hmv : ∀ w : n → K, Matrix.reindex e e M *ᵥ (w ∘ e.symm) = (M *ᵥ w) ∘ e.symm`. Introduce `w`. Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.reindex_apply, Matrix.submatrix_apply, Function.comp_apply]`. Conclude with `Fintype.sum_equiv e.symm _ _ (fun _ => rfl)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `L : (n → K) ≃ₗ[K] (ι → K)` to `LinearEquiv.funCongrLeft K K e.symm`. Establish `hL : ∀ w : n → K, L w = w ∘ e.symm` using `fun _ => rfl`. Unfold `FlagC`. Apply `forall_congr'` to reduce the goal to its premises. Introduce `b`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `show Matrix.reindex e e M *ᵥ (v b ∘ e.symm) - v b ∘ e.symm ∈ Submodule.span K ((fun c => v c ∘ e.symm) '' {a | a < b}) ↔ M *ᵥ v b - v b ∈ Submodule.span K (v '' {a | a < b})`. Establish `himg : (fun c => v c ∘ e.symm) '' {a | a < b} = L '' (v '' {a | a < b})`. Rewrite using `[Set.image_image]`. Apply the tactic sequence `try rfl`. Establish `hw : Matrix.reindex e e M *ᵥ (v b ∘ e.symm) - v b ∘ e.symm = L (M *ᵥ v b - v b)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[hmv, map_sub, hL, hL]`. Rewrite using `[himg, hw]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h2` using `linearEquiv_mem_span_image_of_mem_span L.symm _ _ h`.
-
-Use `first`. Consider the case `rwa [LinearEquiv.symm_apply_apply, LinearEquiv.symm_image_image] at h2`. Consider the case `simpa [Set.image_image] using h2`. Conclude with `linearEquiv_mem_span_image_of_mem_span L _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem flagC_reindex (e : n ≃ ι) (M : Matrix n n K) (v : Fin m → n → K) :
     FlagC (Matrix.reindex e e M) (fun b => v b ∘ e.symm) ↔ FlagC M v := by
@@ -85,11 +81,11 @@ def cmp2 (g : HA R σ J) : Matrix (Fin n) (Fin n) R :=
 def jm1 : Matrix (Fin n) (Fin n) R := (JR R J).map (fun t => (θ t).1)
 
 /- English proof (translation)
-Establish `hg : Formalism.UG.cT (sigR R σ) ((HA.mat R σ J g : GL (Fin n) (R ⊗[F] E)) : Matrix (Fin n) (Fin n) (R ⊗[F] E)) * JR R J * ((HA.mat R σ J g : GL (Fin n) (R ⊗[F] E)) : Matrix (Fin n) (Fin n) (R ⊗[F] E)) = JR R J` using `g.2`. Set `f1 : R ⊗[F] E →+* R` to `(RingHom.fst R R).comp θ.toRingEquiv.toRingHom`. Establish `h1` using `congrArg (fun M => Matrix.map M f1) hg`. Simplify using `only [Matrix.map_mul] at h1`. Establish `e1 : (Formalism.UG.cT (sigR R σ) ((HA.mat R σ J g : GL (Fin n) (R ⊗[F] E)) : Matrix (Fin n) (Fin n) (R ⊗[F] E))).map f1 = (cmp2 σ J θ g)ᵀ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `only [Formalism.UG.cT, Matrix.map_apply, Matrix.transpose_apply]`. Use `show (θ (sigR R σ (((HA.mat R σ J g : GL (Fin n) (R ⊗[F] E)) : Matrix (Fin n) (Fin n) (R ⊗[F] E)) j i))).1 = (θ (((HA.mat R σ J g : GL (Fin n) (R ⊗[F] E)) : Matrix (Fin n) (Fin n) (R ⊗[F] E)) j i)).2`. Rewrite using `[hθ]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[e1]`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem cmp_unit (hθ : ∀ t, θ (sigR R σ t) = (θ t).swap) (g : HA R σ J) :
     (cmp2 σ J θ g)ᵀ * jm1 J θ * cmp1 σ J θ g = jm1 J θ := by
@@ -107,19 +103,17 @@ theorem cmp_unit (hθ : ∀ t, θ (sigR R σ t) = (θ t).swap) (g : HA R σ J) :
   exact h1
 
 /- English proof (translation)
-Establish `h1 : ∀ (c : R ⊗[F] E) (v : Fin n → R ⊗[F] E), pr1 θ (c • v) = (θ c).1 • pr1 θ v`. Introduce `c v`. Use function extensionality and compare the values at `i`. Use `show (θ (c * v i)).1 = (θ c).1 * (θ (v i)).1`. Rewrite using `[map_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `h2 : ∀ (c : R ⊗[F] E) (v : Fin n → R ⊗[F] E), pr2 θ (c • v) = (θ c).2 • pr2 θ v`. Introduce `c v`. Use function extensionality and compare the values at `i`. Use `show (θ (c * v i)).2 = (θ c).2 * (θ (v i)).2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[map_mul]`. Both sides reduce to the same expression. Establish `hinj : ∀ x y : Fin n → R ⊗[F] E, pr1 θ x = pr1 θ y → pr2 θ x = pr2 θ y → x = y`. Introduce `x y hx hy`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `θ.injective` to reduce the goal to its premises. Conclude with `Prod.ext (congrFun hx i) (congrFun hy i)`. Simplify using `only [Set.image_eq_range, Submodule.mem_span_range_iff_exists_fun]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨⟨fun i => (θ (c i)).1, ?_⟩, ⟨fun i => (θ (c i)).2, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[map_sum]`. Simplify using `only [h1]`. Rewrite using `[map_sum]`. Simplify using `only [h2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `⟨⟨a, ha⟩, ⟨b, hb⟩⟩`. Use `⟨fun i => θ.symm (a i, b i), ?_⟩` and prove the remaining obligations. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_sum]`. Simplify using `only [h1, AlgEquiv.apply_symm_apply]`.
-
-Conclude with `ha`. Rewrite using `[map_sum]`. Simplify using `only [h2, AlgEquiv.apply_symm_apply]`. Conclude with `hb`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem mem_span_image_iff_pr1_pr2_mem_span {ι : Type} [Fintype ι] (s : Set ι) (u : ι → Fin n → R ⊗[F] E)
     (w : Fin n → R ⊗[F] E) :
@@ -163,7 +157,7 @@ private theorem mem_span_image_iff_pr1_pr2_mem_span {ι : Type} [Fintype ι] (s 
       exact hb
 
 /- English proof (translation)
-Establish `hp : ∀ (w : Fin n → R ⊗[F] E) (k : Fin n), pr1 θ w k = (θ (w k)).1` using `fun _ _ => rfl`. Use function extensionality and compare the values at `i`. Simplify using `only [hp, lin, Matrix.mulVecLin_apply, Matrix.mulVec, dotProduct, cmp1, Matrix.map_apply, map_sum, Prod.fst_sum, map_mul, Prod.fst_mul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem pr1_lin_eq_cmp1_mulVec (g : HA R σ J) (v : Fin n → R ⊗[F] E) :
     pr1 θ (lin R σ J g v) = cmp1 σ J θ g *ᵥ pr1 θ v := by
@@ -173,7 +167,7 @@ private theorem pr1_lin_eq_cmp1_mulVec (g : HA R σ J) (v : Fin n → R ⊗[F] E
     map_sum, Prod.fst_sum, map_mul, Prod.fst_mul]
 
 /- English proof (translation)
-Establish `hp : ∀ (w : Fin n → R ⊗[F] E) (k : Fin n), pr2 θ w k = (θ (w k)).2` using `fun _ _ => rfl`. Use function extensionality and compare the values at `i`. Simplify using `only [hp, lin, Matrix.mulVecLin_apply, Matrix.mulVec, dotProduct, cmp2, Matrix.map_apply, map_sum, Prod.snd_sum, map_mul, Prod.snd_mul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem pr2_lin_eq_cmp2_mulVec (g : HA R σ J) (v : Fin n → R ⊗[F] E) :
     pr2 θ (lin R σ J g v) = cmp2 σ J θ g *ᵥ pr2 θ v := by
@@ -183,9 +177,9 @@ private theorem pr2_lin_eq_cmp2_mulVec (g : HA R σ J) (v : Fin n → R ⊗[F] E
     map_sum, Prod.snd_sum, map_mul, Prod.snd_mul]
 
 /- English proof (translation)
-Establish `hm : g ∈ Ssub R σ J P ↔ UniC R σ J (F0 P) g` using `Iff.rfl`. Rewrite using `[hm]`. Unfold `UniC FlagC`. Rewrite using `[← forall_and]`. Apply `forall_congr'` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `b`. Use `show lin R σ J g (ratV (F := F) R (F0 P b)) - ratV (F := F) R (F0 P b) ∈ spanR (F := F) R (F0 P) {a | a < b} ↔ (cmp1 σ J θ g *ᵥ pr1 θ (ratV (F := F) R (F0 P b)) - pr1 θ (ratV (F := F) R (F0 P b)) ∈ Submodule.span R ((fun c => pr1 θ (ratV (F := F) R (F0 P c))) '' {a | a < b})) ∧ ( …`. Unfold `spanR`. Rewrite using `[mem_span_image_iff_pr1_pr2_mem_span, map_sub, map_sub, pr1_lin_eq_cmp1_mulVec, pr2_lin_eq_cmp2_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_Ssub_iff_flagC {r : ℕ} (P : Frame E n r) (g : HA R σ J) :
     g ∈ Ssub R σ J P ↔ FlagC (cmp1 σ J θ g) (fun b => pr1 θ (ratV (F := F) R (F0 P b))) ∧

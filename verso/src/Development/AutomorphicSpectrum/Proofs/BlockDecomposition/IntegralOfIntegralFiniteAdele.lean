@@ -8,9 +8,9 @@ open scoped NumberField.AdeleRing Classical
 namespace GlobalTheory.CompanionTheory.Adelic
 
 /- English proof (translation)
-Establish `hv : ∀ v : HeightOneSpectrum (𝓞 K), v.valuation K x ≤ 1`. Introduce `v`. Establish `h : Valued.v ((algebraMap K (FiniteAdeleRing (𝓞 K) K) x) v) ≤ 1` using `mem_integralFiniteAdeles.1 hx v`. Establish `h2 : Valued.v ((algebraMap K (FiniteAdeleRing (𝓞 K) K) x) v) = v.valuation K x` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v x`. Rewrite `h` using `[h2]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨a, ha⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one (R := 𝓞 K) K x hv`. Conclude with `⟨a, ha⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_integer_of_mem_integralFiniteAdeles (K : Type) [Field K] [NumberField K] (x : K)
     (hx : algebraMap K (FiniteAdeleRing (𝓞 K) K) x ∈ integralFiniteAdeles (𝓞 K) K) :

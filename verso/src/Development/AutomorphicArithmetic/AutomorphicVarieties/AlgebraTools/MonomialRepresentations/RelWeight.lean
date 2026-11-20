@@ -3,41 +3,37 @@ import Mathlib
 open Polynomial Matrix
 
 /- English proof (translation)
-Introduce `A _ ι _ a ha`. Take `⟨P, hP⟩ : ∃ P : (ι → ℤ) → A, ∀ m, P m = ∏ i, a i ^ m i` from `⟨_, fun _ => rfl⟩`. Establish `hPadd : ∀ m n, P (m + n) = P m * P n`. Introduce `m n`. Rewrite using `[hP, hP, hP, ← Finset.prod_mul_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.add_apply, _root_.zpow_add]`. Establish `hPsmul : ∀ (c : ℤ) m, P (c • m) = P m ^ c`. Introduce `c m`. Rewrite using `[hP, hP, ← Finset.prod_zpow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, mul_comm, _root_.zpow_mul]`. Establish `hPsub : ∀ m n, P (m - n) = P m / P n`. Introduce `m n`. Rewrite using `[eq_div_iff_mul_eq', ← hPadd, sub_add_cancel]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hPe : ∀ i, P (Pi.single i 1) = a i`. Introduce `i`. Rewrite using `[hP]`. Rewrite using `[Finset.prod_eq_single i]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `j _ hj`. Simplify using `[Pi.single_eq_of_ne hj]`. Simplify using the standard rewrite rules. Set `L : Submodule ℤ (ι → ℤ)` to `{ carrier := {m | ∃ k : ℤ, k ≠ 0 ∧ P (k • m) = 1} add_mem' := by`. Introduce and unpack `m n ⟨k, hk, hm⟩ ⟨l, hl, hn⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Use `⟨k * l, mul_ne_zero hk hl, ?_⟩` and prove the remaining obligations. Establish `e1 : P ((k * l) • m) = 1` using `by rw [mul_comm, mul_smul, hPsmul, hm, _root_.one_zpow]`. Establish `e2 : P ((k * l) • n) = 1` using `by rw [mul_smul, hPsmul, hn, _root_.one_zpow]`. Rewrite using `[smul_add, hPadd, e1, e2, one_mul]`. Use the proof step `zero_mem' := ⟨1, one_ne_zero, by simp [hP]⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use the proof step `smul_mem' := by`. Introduce and unpack `c m ⟨k, hk, hm⟩`. Conclude with `⟨k, hk, by rw [smul_comm, hPsmul, hm, _root_.one_zpow]⟩ }`. Use `haveI : Module.IsTorsionFree ℤ ((ι → ℤ) ⧸ L) := Module.IsTorsionFree.of_smul_eq_zero fun r x hx => by`. Take `⟨m, rfl⟩` from `Submodule.Quotient.mk_surjective L x`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Rewrite `hx` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Take `⟨k, hk, h⟩` from `hx`. Distinguish the cases in `hr : r = 0`. Conclude with `Or.inl hr`. Use `right`.
+Prove the first alternative. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨k * r, mul_ne_zero hk hr, by rw [mul_smul]; exact h⟩`. Set `q : ι → (ι → ℤ) ⧸ L` to `fun i => L.mkQ (Pi.single i 1)`. Establish `hq : ∀ i j, i ≠ j → q i - q j ≠ 0`. Introduce `i j hij h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[← map_sub, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Take `⟨k, hk, hk1⟩` from `h`. Apply `ha i j hij` to reduce the goal to its premises. Rewrite using `[isOfFinOrder_iff_zpow_eq_one]`. Use `⟨k, hk, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression.
 
-Rewrite `hk1` using `[hPsmul, hPsub, hPe, hPe]`. Conclude with `hk1`. Establish `hex : ∃ f : Module.Dual ℤ ((ι → ℤ) ⧸ L), ∀ i j, i ≠ j → f (q i) ≠ f (q j)`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Set `s : Finset (ι × ι)` to `Finset.univ.filter fun x => x.1 ≠ x.2`. Set `p : ι × ι → Submodule ℤ (Module.Dual ℤ ((ι → ℤ) ⧸ L))` to `fun x => LinearMap.ker (Module.Dual.eval ℤ _ (q x.1 - q x.2))`. Establish `hc : ⋃ x ∈ s, (p x : Set (Module.Dual ℤ ((ι → ℤ) ⧸ L))) = Set.univ`. Apply `Set.eq_univ_of_forall` to reduce the goal to its premises. Introduce `f`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨i, j, hij, h⟩` from `hno f`. Simplify using `only [Set.mem_iUnion]`. Use `⟨(i, j), by simp [s, hij], ?_⟩` and prove the remaining obligations. Simplify using `[p, h]`. Take `⟨⟨i, j⟩, hx, hfi⟩` from `Submodule.exists_finiteIndex_of_cover hc`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hij : i ≠ j` using `by simpa [s] using hx`. Apply `hq i j hij` to reduce the goal to its premises. Rewrite using `[← Module.forall_dual_apply_eq_zero_iff ℤ]`. Introduce `f`. Establish `h1` using `AddSubgroup.nsmul_index_mem (p (i, j)).toAddSubgroup f`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h2 : ((p (i, j)).toAddSubgroup.index • f) (q i - q j) = 0` using `h1`. Rewrite `h2` using `[LinearMap.smul_apply, smul_eq_zero]`. Conclude with `h2.resolve_left hfi.index_ne_zero`. Take `⟨f, hf⟩` from `hex`. Use `⟨fun i => f (q i), fun i j h => ?_, fun m hm => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Assume the negation of the conclusion as `hij`. Conclude with `hf i j hij h`. Establish `hm0 : L.mkQ m = 0`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨1, one_ne_zero, by rw [one_smul, hP]; exact hm⟩`.
-
-Establish `hsum : m = ∑ i, m i • (Pi.single i 1 : ι → ℤ)`. Use extensionality with `l`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Establish `h3 : ∑ i, m i • q i = 0`. Rewrite using `[← hm0]`.
-
-Use `conv_rhs => rw [hsum]`. Simplify using `only [q, map_sum, LinearMap.map_smul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.relWeight :
     ∀ (A : Type) [CommGroup A] (ι : Type) [Fintype ι] (a : ι → A), (∀ i j, i ≠ j → ¬ IsOfFinOrder (a i / a j)) →

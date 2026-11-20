@@ -12,23 +12,21 @@ namespace GlobalTheory.TieFinOrd
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Y cX ex t u μ St A dtU a H T i hi y hint`. Use `letI := D.host.cmStar`. Establish `hzU : Matrix.GeneralLinearGroup.det y.1 ∈ U1 (sigD D)` using `det_in_unitary_one D.host.F D.host.E (sigD D) 1 1 (by simp) y.1 y.2`. Use `set z := Matrix.GeneralLinearGroup.det y.1 with hz`. Establish `hconj : conjId (sigD D) z = z⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : z * conjId (sigD D) z = 1` using `hzU`. Conclude with `eq_inv_of_mul_eq_one_right h1`. Establish `hh90 : h90 (sigD D) z = Matrix.GeneralLinearGroup.det (y * y).1` using `by show z / conjId (sigD D) z = _`. Rewrite using `[hconj, div_inv_eq_mul]`. Use `show _ = Matrix.GeneralLinearGroup.det (y.1 * y.1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[map_mul]`. Use `set x : (AfE t.X.F t.X.E)ˣ := Units.map A.iA.symm.toRingHom.toMonoidHom z with hxdef`. Establish `hxx : Units.map A.iA.toRingHom.toMonoidHom x = z`. Use `ext`. Simplify using `[x]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hq : A.q x = dtU (y * y)` using `H.q_dt x (y * y) (by rw [hxx, hh90])`. Establish `hcoe : ∀ w : AfE t.X.F t.X.E, A.iA w ∈ RInt D.host.F D.host.E ↔ w ∈ RInt t.X.F t.X.E` using `H.iA_int`. Establish `hxint : x ∈ intU t.X.F t.X.E`. Use `⟨(hcoe _).1 ?_, (hcoe _).1 ?_⟩` and prove the remaining obligations. Simplify `hint.1` using `[x]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify `hint.2` using `[x]`. Establish `hiso : IsAdIso (GlobalTheory.Mem.Col2.afIso t.X.F t.X.E)` using `⟨GlobalTheory.Mem.Col2.afIso_tmul_one _ _, GlobalTheory.Mem.Col2.mem_rInt_iff _ _⟩`. Establish `hmu : ∃ n : ℕ, 0 < n ∧ D.muTil (i + 1) (A.q x) ^ n = 1`. Rewrite using `[H.muTil _ hiso ⟨i, hi⟩ (GlobalTheory.Mem.ReadEx.toIdl t.X.F t.X.E x) x (fun w => rfl) (GlobalTheory.Mem.ReadEx.toIdl_snd x).symm]`. Conclude with `GlobalTheory.HeckeFin.finite_order _ _ _ (fun w => rfl) ((GlobalTheory.Mem.ReadEx.mem_intU_iff x).1 hxint)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨n, hn, hmun⟩` from `hmu`. Establish `hsq : (t.O u μ).mt (i + 1) (dtU y) ^ 2 = (t.O u μ).mt (i + 1) (A.q x)`. Rewrite using `[hq, map_mul, map_mul, sq]`. Distinguish the cases in `hμ : μ = D.what₂.mu0`. Use `⟨2 * n, by omega, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite using `[pow_mul, hsq, (H.ref hμ).2]`. Conclude with `hmun`. Take `⟨ξ, hξ, hmt⟩` from `H.tw μ hμ rfl`. Establish `htor` using `(t.tup μ).2`. Simplify using `only [tupGrp, finChar, Subgroup.mem_inf] at htor`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k, hk, hkk⟩` from `(isOfFinOrder_iff_pow_eq_one).1 htor.1.1.1.2`. Use `⟨2 * (n * k), by positivity, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_mul, hsq, hmt u, twMt, if_pos ⟨by omega, by omega⟩, MonoidHom.mul_apply, mul_pow, pow_mul, hmun, one_pow, one_mul, hξ x, ← map_pow, mul_comm, pow_mul]`. Establish `: ((t.tup μ : Chr t.X.F t.X.E t.X.K) x) ^ k = 1`. Rewrite using `[← MonoidHom.pow_apply, hkk, MonoidHom.one_apply]`.
-
-Rewrite using `[this, one_pow, map_one]`.
+A detailed English derivation is pending.
 -/
 theorem mt_finite_order : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a => ∀ i < D.R.m, ∀ y : (letI := D.host.cmStar; Formalism.L2.Herm.unitaryOneFiniteAdeles D.sp.cm), Matrix.GeneralLinearGroup.det y.1 ∈ intU D.host.F D.host.E → ∃ n : ℕ, 0 < n ∧ (t.O u μ).mt (i + 1) (dtU y) ^ n = 1) := by
   intro D L hT Gi Gl Kc Y cX ex t u μ St A dtU a H T i hi y hint

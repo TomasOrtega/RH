@@ -11,9 +11,9 @@ open Module
 variable {V k : Type} [CommRing V] [IsDomain V] [IsPrincipalIdealRing V] [Field k] [Algebra V k] [FaithfulSMul V k]
 
 /- English proof (translation)
-Take `⟨N, ⟨F, rfl⟩, hmin⟩` from `(wellFounded_lt (α := Submodule k M)).has_min {N | ∃ F : Finset O, N = ⨅ a ∈ F, K a} ⟨⊤, ∅, by simp⟩`. Use `⟨F, fun b => ?_⟩` and prove the remaining obligations. Establish `hle : (⨅ a ∈ insert b F, K a) ≤ ⨅ a ∈ F, K a`. Rewrite using `[Finset.iInf_insert]`. Conclude with `inf_le_right`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `heq : (⨅ a ∈ insert b F, K a) = ⨅ a ∈ F, K a`. Assume the negation of the conclusion as `hne`. Conclude with `hmin _ ⟨insert b F, rfl⟩ (lt_of_le_of_ne hle hne)`. Rewrite using `[← heq, Finset.iInf_insert]`. Conclude with `inf_le_left`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finset_iInf_le {M : Type} [AddCommGroup M] [Module k M] [FiniteDimensional k M] {O : Type}
     (K : O → Submodule k M) : ∃ F : Finset O, ∀ b, (⨅ a ∈ F, K a) ≤ K b := by
@@ -31,7 +31,7 @@ theorem exists_finset_iInf_le {M : Type} [AddCommGroup M] [Module k M] [FiniteDi
   exact inf_le_left
 
 /- English proof (translation)
-Establish `hk : LinearIndependent k (fun i => algebraMap V k ∘ v i)` using `linearIndependent_algebraMap_comp_iff.mpr hv`. Establish `hw : LinearIndependent k (fun i => (⟨algebraMap V k ∘ v i, hW i⟩ : W))` using `LinearIndependent.of_comp W.subtype hk`. Conclude with `hw.fintype_card_le_finrank`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem card_le_finrank_of_li {ι' ι : Type} [Fintype ι'] [Fintype ι] (v : ι → ι' → V) (hv : LinearIndependent V v)
     (W : Submodule k (ι' → k)) (hW : ∀ i, (algebraMap V k ∘ v i) ∈ W) : Fintype.card ι ≤ finrank k W := by
@@ -42,7 +42,7 @@ theorem card_le_finrank_of_li {ι' ι : Type} [Fintype ι'] [Fintype ι] (v : ι
   exact hw.fintype_card_le_finrank
 
 /- English proof (translation)
-Set `b` to `Module.finBasis V N`. Conclude with `⟨fun i => b i, b.linearIndependent.map' N.subtype (Submodule.ker_subtype N), fun i => (b i).2⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem exists_li_of_submodule {ι' : Type} [Fintype ι'] [DecidableEq ι'] (N : Submodule V (ι' → V)) :
     ∃ v : Fin (finrank V N) → ι' → V, LinearIndependent V v ∧ ∀ i, v i ∈ N := by
@@ -50,7 +50,7 @@ theorem exists_li_of_submodule {ι' : Type} [Fintype ι'] [DecidableEq ι'] (N :
   exact ⟨fun i => b i, b.linearIndependent.map' N.subtype (Submodule.ker_subtype N), fun i => (b i).2⟩
 
 /- English proof (translation)
-Use extensionality with `i`. Use `congrFun (hL a c) i` as an intermediate fact. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, Function.comp_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, map_sub, map_mul] at this ⊢`. Rewrite using `[this]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sub_algebraMap_smul_id_apply_algebraMap_comp {n : ℕ} {O : Type} (L : O → (Fin n → V) →ₗ[V] (Fin n → V))
     (Lk : O → (Fin n → k) →ₗ[k] (Fin n → k)) (hL : ∀ a c, Lk a (algebraMap V k ∘ c) = algebraMap V k ∘ L a c)
@@ -64,7 +64,7 @@ private theorem sub_algebraMap_smul_id_apply_algebraMap_comp {n : ℕ} {O : Type
   rw [this]
 
 /- English proof (translation)
-Take `⟨v, hv, hvN⟩` from `exists_li_of_submodule (LinearMap.range B)`. Use `card_le_finrank_of_li (k := k) v hv (LinearMap.range Bk) (fun i => by` as an intermediate fact. Take `⟨c, hc⟩` from `hvN i`. Conclude with `⟨algebraMap V k ∘ c, by rw [h, hc]⟩)`. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem finrank_range_le_finrank_range_of_reduction {m : ℕ} {ι' : Type} [Fintype ι'] [DecidableEq ι']
     (B : (Fin m → V) →ₗ[V] (ι' → V)) (Bk : (Fin m → k) →ₗ[k] (ι' → k))
@@ -77,33 +77,31 @@ private theorem finrank_range_le_finrank_range_of_reduction {m : ℕ} {ι' : Typ
   simpa using this
 
 /- English proof (translation)
-Establish `hle : finrank V (⨅ a, LinearMap.ker (L a - χ a • LinearMap.id) : Submodule V (Fin n → V)) ≤ finrank k (⨅ a, LinearMap.ker (Lk a - algebraMap V k (χ a) • (LinearMap.id : (Fin n → k) →ₗ[k] (Fin n → k))) : Submodule k (Fin n → k))`. Take `⟨v, hv, hvN⟩` from `exists_li_of_submodule (⨅ a, LinearMap.ker (L a - χ a • LinearMap.id) : Submodule V (Fin n → V))`. Use `card_le_finrank_of_li (k := k) v hv (⨅ a, LinearMap.ker (Lk a - algebraMap V k (χ a) • (LinearMap.id : (Fin n → k) →ₗ[k] (Fin n → k)))) (fun i => by` as an intermediate fact. Establish `hi` using `hvN i`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker] at hi ⊢`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `a`. Rewrite using `[sub_algebraMap_smul_id_apply_algebraMap_comp L Lk hL χ a, hi a]`. Use extensionality with `j`. Use the proof step `simp)`. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨F, hF⟩` from `exists_finset_iInf_le (k := k) (fun a => LinearMap.ker (Lk a - algebraMap V k (χ a) • (LinearMap.id : (Fin n → k) →ₗ[k] (Fin n → k))))`. Set `B : (Fin n → V) →ₗ[V] (F × Fin n → V)` to `LinearMap.pi fun p => (LinearMap.proj p.2).comp (L p.1 - χ p.1 • LinearMap.id)`. Set `Bk : (Fin n → k) →ₗ[k] (F × Fin n → k)` to `LinearMap.pi fun p => (LinearMap.proj p.2).comp (Lk p.1 - algebraMap V k (χ p.1) • LinearMap.id)`. Establish `hB : ∀ c, Bk (algebraMap V k ∘ c) = algebraMap V k ∘ B c`. Introduce `c`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `p`. Use `congrFun (sub_algebraMap_smul_id_apply_algebraMap_comp L Lk hL χ p.1 c) p.2` as an intermediate fact. Simplify `this` using `[B, Bk]`. Establish `hmemk : ∀ c : Fin n → k, Bk c = 0 ↔ ∀ a ∈ F, (Lk a - algebraMap V k (χ a) • (LinearMap.id : (Fin n → k) →ₗ[k] (Fin n → k))) c = 0`. Introduce `c`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h a ha`. Use extensionality with `j`. Conclude with `congrFun h (⟨a, ha⟩, j)`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use extensionality with `p`. Conclude with `congrFun (h p.1 p.1.2) p.2`. Establish `hkerk : LinearMap.ker Bk = (⨅ a, LinearMap.ker (Lk a - algebraMap V k (χ a) • (LinearMap.id : (Fin n → k) →ₗ[k] (Fin n → k))) : Submodule k (Fin n → k))`. Use extensionality with `c`. Rewrite using `[LinearMap.mem_ker, hmemk]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h b`. Establish `hc : c ∈ ⨅ a ∈ F, LinearMap.ker (Lk a - algebraMap V k (χ a) • (LinearMap.id : (Fin n → k) →ₗ[k] (Fin n → k)))`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `h`. Conclude with `hF b hc`. Introduce `h a _`. Conclude with `h a`. Establish `hker : LinearMap.ker B = (⨅ a, LinearMap.ker (L a - χ a • LinearMap.id) : Submodule V (Fin n → V))`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `c`. Simplify using `only [LinearMap.mem_ker, Submodule.mem_iInf]`. Prove the components needed by the constructor for the conclusion. Introduce `h b`. Establish `h1 : Bk (algebraMap V k ∘ c) = 0`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hB, h]`. Use extensionality with `p`. Simplify using the standard rewrite rules. Establish `h2` using `(LinearMap.mem_ker.2 h1 : _ ∈ LinearMap.ker Bk)`. Rewrite `h2` using `[hkerk]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker] at h2`. Establish `h3` using `h2 b`. Rewrite `h3` using `[sub_algebraMap_smul_id_apply_algebraMap_comp L Lk hL χ b]`. Use extensionality with `j`. Use `congrFun h3 j` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Function.comp_apply, Pi.zero_apply] at this`. Conclude with `(FaithfulSMul.algebraMap_injective V k) (by rw [this, Pi.zero_apply, map_zero])`. Introduce `h`. Use extensionality with `p`. Simplify using `[B, h p.1]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hrn : finrank V (LinearMap.range B) + finrank V (LinearMap.ker B) = n`. Establish `h` using `LinearMap.rank_range_add_rank_ker B`. Rewrite `h` using `[← Module.finrank_eq_rank, ← Module.finrank_eq_rank, rank_fin_fun]`. Conclude with `h` after adjusting the coercions. Establish `hrnk` using `LinearMap.finrank_range_add_finrank_ker Bk`.
-
-Establish `hr` using `finrank_range_le_finrank_range_of_reduction B Bk hB`. Rewrite `hrn` using `[hker]`. Rewrite `hrnk` using `[hkerk, Module.finrank_fin_fun]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem finrank_eig_bc {n : ℕ} {O : Type} (L : O → (Fin n → V) →ₗ[V] (Fin n → V))
     (Lk : O → (Fin n → k) →ₗ[k] (Fin n → k)) (hL : ∀ a c, Lk a (algebraMap V k ∘ c) = algebraMap V k ∘ L a c)

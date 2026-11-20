@@ -5,7 +5,7 @@ import Mathlib
     fun (q : ℕ) ↦ LaurentPolynomial (Localization.Away (↑q : ℤ))
 
 /- English proof (translation)
-Introduce `S _ q hq`. Rewrite using `[map_natCast]` and apply the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem UpperTheory.Reformulated.B.LaurentCharacterLambda.aux3 :
     ∀ {S : Type} [inst : CommRing S] (q : ℕ), IsUnit (↑q : S) → IsUnit ((Int.castRingHom S : ℤ → S) (↑q : ℤ)) := by
@@ -18,7 +18,7 @@ noncomputable def UpperTheory.Reformulated.B.LaurentCharacterLambda.lam :
       IsLocalization.Away.lift (↑q : ℤ) (UpperTheory.Reformulated.B.LaurentCharacterLambda.aux3 q hq)
 
 /- English proof (translation)
-Introduce `S _`. Rewrite using `[← LaurentPolynomial.T_add, add_neg_cancel, LaurentPolynomial.T_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Reformulated.B.LaurentCharacterLambda.aux5 :
     ∀ (S : Type) [inst : CommRing S], LaurentPolynomial.T (1 : ℤ) * LaurentPolynomial.T (-1 : ℤ) = (1 : LaurentPolynomial S) := by
@@ -26,7 +26,7 @@ theorem UpperTheory.Reformulated.B.LaurentCharacterLambda.aux5 :
   rw [← LaurentPolynomial.T_add, add_neg_cancel, LaurentPolynomial.T_zero]
 
 /- English proof (translation)
-Introduce `S _`. Rewrite using `[← LaurentPolynomial.T_add, neg_add_cancel, LaurentPolynomial.T_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Reformulated.B.LaurentCharacterLambda.aux6 :
     ∀ (S : Type) [inst : CommRing S], LaurentPolynomial.T (-1 : ℤ) * LaurentPolynomial.T (1 : ℤ) = (1 : LaurentPolynomial S) := by
@@ -45,7 +45,7 @@ noncomputable def UpperTheory.Reformulated.B.LaurentCharacterLambda.iot :
       LaurentPolynomial.eval₂ (LaurentPolynomial.C.comp (UpperTheory.Reformulated.B.LaurentCharacterLambda.lam q hq)) (UpperTheory.Reformulated.B.LaurentCharacterLambda.tU S)
 
 /- English proof (translation)
-Introduce `q`. Conclude with `UpperTheory.Reformulated.B.LaurentCharacterLambda.aux5 _`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.LaurentCharacterLambda.aux9 :
     ∀ (q : ℕ), LaurentPolynomial.T (1 : ℤ) * LaurentPolynomial.T (-1 : ℤ) = (1 : UpperTheory.Reformulated.B.LaurentCharacterLambda.LqR q) := by
@@ -53,7 +53,7 @@ theorem UpperTheory.Reformulated.B.LaurentCharacterLambda.aux9 :
   exact UpperTheory.Reformulated.B.LaurentCharacterLambda.aux5 _
 
 /- English proof (translation)
-Introduce `q`. Conclude with `UpperTheory.Reformulated.B.LaurentCharacterLambda.aux6 _`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.LaurentCharacterLambda.laurent_T_neg_one_mul_T_one :
     ∀ (q : ℕ), LaurentPolynomial.T (-1 : ℤ) * LaurentPolynomial.T (1 : ℤ) = (1 : UpperTheory.Reformulated.B.LaurentCharacterLambda.LqR q) := by
@@ -76,7 +76,7 @@ noncomputable def UpperTheory.Reformulated.B.LaurentCharacterLambda.chi :
         ((Units.map (↑φ : UpperTheory.Reformulated.B.LaurentCharacterLambda.LqR q →* R) : (UpperTheory.Reformulated.B.LaurentCharacterLambda.LqR q)ˣ → Rˣ) (UpperTheory.Reformulated.B.LaurentCharacterLambda.tR q))
 
 /- English proof (translation)
-Apply `IsLocalization.ringHom_ext (Submonoid.powers (Polynomial.X : Polynomial S))` to reduce the goal to its premises. Apply `Polynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify `hC a` using `[LaurentPolynomial.algebraMap_eq_toLaurent]`. Simplify `hT` using `[LaurentPolynomial.algebraMap_eq_toLaurent]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem UpperTheory.Reformulated.B.LaurentCharacterLambda.laurent_hom_ext {S R : Type} [CommRing S] [CommRing R]
     (f g : LaurentPolynomial S →+* R)
@@ -89,9 +89,9 @@ private theorem UpperTheory.Reformulated.B.LaurentCharacterLambda.laurent_hom_ex
   · simpa [LaurentPolynomial.algebraMap_eq_toLaurent] using hT
 
 /- English proof (translation)
-Introduce `S _ q hq R _ φ ψ χ h1 h2`. Apply `UpperTheory.Reformulated.B.LaurentCharacterLambda.laurent_hom_ext` to reduce the goal to its premises. Introduce `a`. Rewrite using `[UpperTheory.Reformulated.B.LaurentCharacterLambda.chi, LaurentPolynomial.eval₂_C, ← h2, RingHom.comp_apply]`. Rewrite using `[UpperTheory.Reformulated.B.LaurentCharacterLambda.chi, LaurentPolynomial.eval₂_T, zpow_one, Units.coe_map, ← h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ = χ (UpperTheory.Reformulated.B.LaurentCharacterLambda.iot q hq (LaurentPolynomial.T 1))`. Rewrite using `[UpperTheory.Reformulated.B.LaurentCharacterLambda.iot, LaurentPolynomial.eval₂_T, zpow_one]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem UpperTheory.Reformulated.B.LaurentCharacterLambda.chi_uniq :
     ∀ {S : Type} [inst : CommRing S] (q : ℕ) (hq : IsUnit (↑q : S)) {R : Type} [inst_1 : CommRing R]

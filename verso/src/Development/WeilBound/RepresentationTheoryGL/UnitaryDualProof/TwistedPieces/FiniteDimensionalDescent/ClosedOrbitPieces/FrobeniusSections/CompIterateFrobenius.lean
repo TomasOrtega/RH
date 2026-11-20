@@ -7,13 +7,13 @@ namespace PositivityTheory.RgUd.TP.Desc.Piece.PSect
 open Module Polynomial IntermediateField
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `h x`. Establish `hxp : x ^ p ∈ L` using `ha ▸ L.algebraMap_mem a`. Use `set b : L := ⟨x ^ p, hxp⟩ with hb`. Establish `hirr : Irreducible (X ^ p - C b)`. Apply `X_pow_sub_C_irreducible_of_prime hp.out` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Apply `hx` to reduce the goal to its premises. Establish `h1 : (y : E) ^ p = x ^ p`. Use `congrArg (fun z : L => (z : E)) hy` as an intermediate fact. Simplify `this` using `[hb]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h2 : (y : E) = x` using `frobenius_inj E p (by simpa [frobenius_def] using h1)`. Conclude with `h2 ▸ y.2`. Establish `haev : aeval x (X ^ p - C b) = 0`. Simplify using `[hb]`. Establish `hmon : (X ^ p - C b).Monic` using `monic_X_pow_sub_C _ hp.out.ne_zero`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmin : X ^ p - C b = minpoly L x` using `minpoly.eq_of_irreducible_of_monic hirr haev hmon`. Establish `hint : IsIntegral L x` using `⟨X ^ p - C b, hmon, by simpa [aeval_def] using haev⟩`. Rewrite using `[adjoin.finrank hint, ← hmin, natDegree_X_pow_sub_C]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fl_step {F E : Type*} [Field F] [Field E] [Algebra F E] (p : ℕ) [hp : Fact p.Prime]
     [CharP E p] (h : ∀ x : E, x ^ p ∈ Set.range (algebraMap F E))
@@ -39,19 +39,17 @@ theorem fl_step {F E : Type*} [Field F] [Field E] [Algebra F E] (p : ℕ) [hp : 
   rw [adjoin.finrank hint, ← hmin, natDegree_X_pow_sub_C]
 
 /- English proof (translation)
-Introduce `N`. Proceed by induction on `N using Nat.strong_induction_on with`. Consider the case `_ N ih`. Introduce `L hL`. Distinguish the cases in `hT : L = ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Substitute `hT` using the available equality. Conclude with `⟨0, by simp [relfinrank_self], Fin.elim0, top_sup_eq _⟩`. Take `⟨x, -, hx⟩` from `SetLike.exists_of_lt (lt_top_iff_ne_top.2 hT)`. Use `set L' : IntermediateField F E := (adjoin L ({x} : Set E)).restrictScalars F with hL'`. Establish `hsup : L' = L ⊔ adjoin F ({x} : Set E)` using `by rw [hL', restrictScalars_adjoin_eq_sup]`.
+Substitute using the available equality. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : L ≤ L'` using `hsup ▸ le_sup_left`. Establish `hdeg : L.relfinrank L' = p`. Rewrite using `[relfinrank_eq_finrank_of_le hle]`. Establish `: extendScalars hle = adjoin L ({x} : Set E)` using `restrictScalars_injective F (by rw [extendScalars_restrictScalars])`. Rewrite using `[this, fl_step p h L hx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmul` using `relfinrank_mul_relfinrank hle (le_top : L' ≤ ⊤)`. Establish `hpos : 0 < L.relfinrank ⊤`. Rewrite using `[relfinrank_top_right]`. Conclude with `Module.finrank_pos`. Establish `hlt : L'.relfinrank ⊤ < N`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hL, ← hmul, hdeg]`. Establish `h2` using `hp.out.two_le`. Establish `: 0 < L'.relfinrank ⊤`. Break down `Nat.eq_zero_or_pos (L'.relfinrank ⊤) with h0 | h0` into its components or cases. Rewrite `hpos` using `[← hmul, h0, mul_zero]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result.
 
-Conclude with `absurd hpos (lt_irrefl 0)`. Conclude with `h0`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨m, hm, β, hβ⟩` from `ih _ hlt L' rfl`. Use `⟨m + 1, ?_, Fin.cons x β, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hmul, hdeg, hm, pow_succ']`. Rewrite using `[Fin.range_cons, Set.insert_eq, adjoin_union, ← sup_assoc, ← hsup, hβ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fl_greedy {F E : Type*} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E]
     (p : ℕ) [hp : Fact p.Prime] [CharP E p] (h : ∀ x : E, x ^ p ∈ Set.range (algebraMap F E)) :
@@ -90,7 +88,7 @@ theorem fl_greedy {F E : Type*} [Field F] [Field E] [Algebra F E] [FiniteDimensi
   · rw [Fin.range_cons, Set.insert_eq, adjoin_union, ← sup_assoc, ← hsup, hβ]
 
 /- English proof (translation)
-Take `⟨n, hn, α, hα⟩` from `fl_greedy p h _ ⊥ rfl`. Use `⟨n, ?_, α, ?_⟩` and prove the remaining obligations. Rewrite using `[← hn, relfinrank_bot_left, finrank_top']`. Rewrite `hα` using `[bot_sup_eq]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem fl_main {F E : Type*} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E]
     (p : ℕ) [Fact p.Prime] [CharP E p] (h : ∀ x : E, x ^ p ∈ Set.range (algebraMap F E)) :
@@ -108,19 +106,19 @@ section Frob
 variable {E : Type*} [Field E] (p : ℕ) [hp : Fact p.Prime] [CharP E p]
 
 /- English proof (translation)
-Simplify using `[Pj, RingHom.mem_fieldRange, iterateFrobenius_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_Pj {j : ℕ} {y : E} : y ∈ Pj E p j ↔ ∃ x : E, x ^ p ^ j = y := by
   simp [Pj, RingHom.mem_fieldRange, iterateFrobenius_def]
 
 /- English proof (translation)
-The claim follows from `eq_top_iff.2 fun y _ => (mem_Pj p).2 ⟨y, by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem Pj_zero : Pj E p 0 = ⊤ :=
   eq_top_iff.2 fun y _ => (mem_Pj p).2 ⟨y, by simp⟩
 
 /- English proof (translation)
-Introduce `y hy`. Take `⟨x, rfl⟩` from `(mem_Pj p).1 hy`. Conclude with `(mem_Pj p).2 ⟨x ^ p, by rw [← pow_mul, pow_succ']⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Pj_succ_le (j : ℕ) : Pj E p (j + 1) ≤ Pj E p j := by
   intro y hy
@@ -128,7 +126,7 @@ theorem Pj_succ_le (j : ℕ) : Pj E p (j + 1) ≤ Pj E p j := by
   exact (mem_Pj p).2 ⟨x ^ p, by rw [← pow_mul, pow_succ']⟩
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [RingHom.comp_apply, iterateFrobenius_def, ← pow_mul, ← pow_add, add_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem comp_iterateFrobenius (j : ℕ) :
     (iterateFrobenius E p j).comp (iterateFrobenius E p 1) = iterateFrobenius E p (j + 1) := by
@@ -136,26 +134,26 @@ theorem comp_iterateFrobenius (j : ℕ) :
   simp only [RingHom.comp_apply, iterateFrobenius_def, ← pow_mul, ← pow_add, add_comm]
 
 /- English proof (translation)
-Rewrite using `[Pj, RingHom.map_fieldRange, comp_iterateFrobenius, Pj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_Pj_one (j : ℕ) : (Pj E p 1).map (iterateFrobenius E p j) = Pj E p (j + 1) := by
   rw [Pj, RingHom.map_fieldRange, comp_iterateFrobenius, Pj]
 
 /- English proof (translation)
-The claim follows from `(RingHom.fieldRange_eq_map _).symm`.
+A detailed English derivation is pending.
 -/
 theorem map_top_Pj (j : ℕ) : (⊤ : Subfield E).map (iterateFrobenius E p j) = Pj E p j :=
   (RingHom.fieldRange_eq_map _).symm
 
 /- English proof (translation)
-Rewrite using `[← map_Pj_one p j, ← map_top_Pj p j, Subfield.relfinrank_map_map]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem relfinrank_Pj_succ (j : ℕ) :
     (Pj E p (j + 1)).relfinrank (Pj E p j) = (Pj E p 1).relfinrank ⊤ := by
   rw [← map_Pj_one p j, ← map_top_Pj p j, Subfield.relfinrank_map_map]
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => rw [pow_zero, Subfield.relfinrank_eq_one_iff, Pj_zero]`. Consider the case `succ j ih`. Rewrite using `[← Subfield.relfinrank_mul_relfinrank (Pj_succ_le p j) le_top, relfinrank_Pj_succ, ih, pow_succ']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem relfinrank_Pj (j : ℕ) :
     (Pj E p j).relfinrank ⊤ = ((Pj E p 1).relfinrank ⊤) ^ j := by
@@ -166,13 +164,13 @@ theorem relfinrank_Pj (j : ℕ) :
       pow_succ']
 
 /- English proof (translation)
-Establish `key : ∀ i, Pj E p i ≤ Subfield.closure ((Pj E p (i + 1) : Set E) ∪ S)`. Introduce `i`. Rewrite using `[← map_top_Pj p i, ← hS, Subfield.map_le_iff_le_comap, Subfield.closure_le]`. Introduce and unpack `y (hy | hy)`. Express the relevant statement in the definitionally equal form `y ∈ Pj E p 1 at hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨x, rfl⟩` from `(mem_Pj p).1 hy`. Rewrite using `[SetLike.mem_coe, Subfield.mem_comap]`. Apply `Subfield.subset_closure` to reduce the goal to its premises. Use `left`. Conclude with `(mem_Pj p).2 ⟨x, by rw [iterateFrobenius_def, ← pow_mul, ← pow_add, add_comm]⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Rewrite using `[SetLike.mem_coe, Subfield.mem_comap, iterateFrobenius_def]`. Conclude with `pow_mem (Subfield.subset_closure (Set.mem_union_right _ hy) : y ∈ Subfield.closure ((Pj E p (i + 1) : Set E) ∪ S)) _`. Proceed by induction on `j with`. Consider the case `zero`. Rewrite using `[Pj_zero]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `eq_top_iff.2 fun y _ => Subfield.subset_closure (Or.inl (Subfield.mem_top y))`. Consider the case `succ j ih`. Use `eq_top_iff.2 (ih ▸ Subfield.closure_le.2 (Set.union_subset (key j) ?_))` and prove the remaining obligations. Conclude with `fun y hy => Subfield.subset_closure (Or.inr hy)`.
+A detailed English derivation is pending.
 -/
 theorem closure_Pj_eq_top {S : Set E} (hS : Subfield.closure ((Pj E p 1 : Set E) ∪ S) = ⊤)
     (j : ℕ) : Subfield.closure ((Pj E p j : Set E) ∪ S) = ⊤ := by
@@ -198,13 +196,13 @@ theorem closure_Pj_eq_top {S : Set E} (hS : Subfield.closure ((Pj E p 1 : Set E)
     exact fun y hy => Subfield.subset_closure (Or.inr hy)
 
 /- English proof (translation)
-Establish `h1 : (Pj E p 1).relfinrank ⊤ ≠ 0`. Introduce `h0`. Apply `hfin` to reduce the goal to its premises. Rewrite using `[relfinrank_Pj, h0, zero_pow hc.ne']`. Use `haveI : FiniteDimensional (Pj E p 1) E := Module.finite_of_finrank_pos (by rw [← Subfield.relfinrank_top_right]; exact Nat.pos_of_ne_zero h1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn, α, hα⟩` from `fl_main (F := Pj E p 1) (E := E) p (fun x => ⟨⟨x ^ p, (mem_Pj p).2 ⟨x, by rw [pow_one]⟩⟩, rfl⟩)`. Use `⟨n, ?_, α, closure_Pj_eq_top p ?_ c⟩` and prove the remaining obligations. Rewrite using `[relfinrank_Pj, Subfield.relfinrank_top_right, hn, ← pow_mul, ← pow_mul, mul_comm]`. Use `congrArg IntermediateField.toSubfield hα` as an intermediate fact. Rewrite `this` using `[adjoin_toSubfield, top_toSubfield]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hr : Set.range (algebraMap (Pj E p 1) E) = (Pj E p 1 : Set E)`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩`. Conclude with `z.2`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `hy`. Conclude with `⟨⟨y, hy⟩, rfl⟩`. Rewrite `this` using `[hr]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem fl_frob (c : ℕ) (hc : 0 < c) (hfin : (Pj E p c).relfinrank ⊤ ≠ 0) :
     ∃ n, (Pj E p c).relfinrank ⊤ = (p ^ c) ^ n ∧

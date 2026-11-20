@@ -46,14 +46,14 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {p : �
   [CharP (ResidueField O) p] {B : Vert.Model O} {Λ : Type} [CommRing Λ]
 
 /- English proof (translation)
-Apply `Action.Hom.ext` to reduce the goal to its premises. Conclude with `(smulHom_comp u.hom a).symm`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem comp_smulA {M M' : AM B Λ} (u : M ⟶ M') (a : Γ(B.X, ⊤)) : u ≫ smulA M' a = smulA M a ≫ u := by
   apply Action.Hom.ext
   exact (smulHom_comp u.hom a).symm
 
 /- English proof (translation)
-Take `⟨T, hT, ⟨i₁⟩, ⟨i₂⟩, ⟨i₃⟩⟩` from `h`. Conclude with `⟨T, hT, ⟨i₁ ≪≫ e₁⟩, ⟨i₂ ≪≫ e₂⟩, ⟨i₃ ≪≫ e₃⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsExtA.of_iso {F₁ F₂ F₃ G₁ G₂ G₃ : AM B Λ} (h : IsExtA F₁ F₂ F₃) (e₁ : F₁ ≅ G₁) (e₂ : F₂ ≅ G₂)
     (e₃ : F₃ ≅ G₃) : IsExtA G₁ G₂ G₃ := by
@@ -61,7 +61,7 @@ theorem IsExtA.of_iso {F₁ F₂ F₃ G₁ G₂ G₃ : AM B Λ} (h : IsExtA F₁
   exact ⟨T, hT, ⟨i₁ ≪≫ e₁⟩, ⟨i₂ ≪≫ e₂⟩, ⟨i₃ ≪≫ e₃⟩⟩
 
 /- English proof (translation)
-Establish `hw : lw.ψ ≫ (e.hom ≫ Q.wl ≫ e'.inv) = smulA _ Q.π`. Rewrite using `[reassoc_of% he, reassoc_of% Q.lw_wl, reassoc_of% (comp_smulA e'.hom Q.π), Iso.hom_inv_id, Category.comp_id]`. Establish `ec : cokernel (e.hom ≫ Q.wl ≫ e'.inv) ≅ cokernel Q.wl` using `cokernelEpiComp e.hom (Q.wl ≫ e'.inv) ≪≫ cokernelCompIsIso Q.wl e'.inv`. Establish `eo : oo.mod ≅ Q.oo.mod` using `cokernel.mapIso oo.ψ Q.oo.ψ f' f hf`. Use `⟨{ Q with lw := lw wl := e.hom ≫ Q.wl ≫ e'.inv lw_wl := hw oo := oo c3 := Q.c3.of_iso ec.symm (Iso.refl _) eo.symm l_last := fun n hn => (Q.l_last n hn).map fun i => i ≪≫ cokernel.mapIso (smulA Q.lw.E' (p : Γ(B.X, ⊤))) (smulA lw.E' (p : Γ(B.X, ⊤))) e'.symm e'.symm (comp_smulA _ _ …` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem EqChain.exists_transport {o : ℕ} (Q : EqChain p B Λ o) (lw oo : EPres B Λ) (e : lw.E ≅ Q.lw.E)
     (e' : lw.E' ≅ Q.lw.E') (he : lw.ψ ≫ e.hom = e'.hom ≫ Q.lw.ψ) (f : oo.E ≅ Q.oo.E) (f' : oo.E' ≅ Q.oo.E')
@@ -84,11 +84,9 @@ theorem EqChain.exists_transport {o : ℕ} (Q : EqChain p B Λ o) (lw oo : EPres
 end Transport
 
 /- English proof (translation)
-Introduce `D O hO p _ W hW jc hj z`. Use `haveI := isDiscreteValuationRing_V z.Z.i.c (Fact.out : p.Prime) hW`. Use `haveI := charP_residueField_of_mem_nonunits z.Z.i.c (Fact.out : p.Prime) hW`. Introduce `c o B₁ f₁ hB₁ hf₁`. Take `⟨B, g, Q, hB, hg, hQl, hQo⟩` from `hC D O hO p W hW jc hj z c o B₁ f₁ hB₁ hf₁`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hgf : (g.comp f₁).relDim = 0`. Unfold `Vert.Model.Hom.relDim at *`. Use linear arithmetic over natural numbers and integers. Use `⟨B, g, hB, hg, fun lw oo hlo => ?_⟩` and prove the remaining obligations. Take `⟨e, e', he⟩` from `hU D O hO p W hW jc hj z c B (g.comp f₁) hB hgf _ _ false lw Q.lw hlo.2.1 hQl`.
-
-Take `⟨f, f', hf⟩` from `hU D O hO p W hW jc hj z c B (g.comp f₁) hB hgf _ _ true oo Q.oo hlo.2.2 hQo`. Conclude with `Q.exists_transport lw oo e e' he f f' hf`.
+Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem latHalfSt_of (hU : LatUniqueSt) (hC : ChainCoverSt) : LatHalfSt := by
   intro D O hO p _ W hW jc hj z

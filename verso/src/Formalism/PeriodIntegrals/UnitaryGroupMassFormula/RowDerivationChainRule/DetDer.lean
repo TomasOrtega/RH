@@ -12,9 +12,9 @@ section General
 variable {R S : Type*} [CommRing R] [CommRing S] [Algebra R S]
 
 /- English proof (translation)
-Use `Finset.induction_on s (by simp) ?_` and prove the remaining obligations. Introduce `a s ha ih`. Establish `hne : ∀ i ∈ s, i ≠ a` using `fun i hi h => ha (h ▸ hi)`. Establish `h0 : Function.update f a (D (f a)) a = D (f a)` using `by simp`. Establish `h1 : ∏ j ∈ s, Function.update f a (D (f a)) j = ∏ j ∈ s, f j` using `Finset.prod_congr rfl fun j hj => Function.update_of_ne (hne j hj) _ _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ∀ i ∈ s, ∏ j ∈ insert a s, Function.update f i (D (f i)) j = f a * ∏ j ∈ s, Function.update f i (D (f i)) j` using `fun i hi => by`. Rewrite using `[Finset.prod_insert ha, Function.update_of_ne (hne i hi).symm]`. Rewrite using `[Finset.prod_insert ha, Derivation.leibniz, ih, Finset.sum_insert ha, Finset.prod_insert ha, h0, h1, Finset.sum_congr rfl h2, ← Finset.mul_sum, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem derivation_finset_prod {ι : Type*} [DecidableEq ι] (D : Derivation R S S) (f : ι → S) (s : Finset ι) :
     D (∏ j ∈ s, f j) = ∑ i ∈ s, ∏ j ∈ s, Function.update f i (D (f i)) j := by
@@ -32,11 +32,11 @@ theorem derivation_finset_prod {ι : Type*} [DecidableEq ι] (D : Derivation R S
   ring
 
 /- English proof (translation)
-Establish `key : ∀ B : Matrix n n S, B.det = ∑ σ : Equiv.Perm n, ((Equiv.Perm.sign σ : ℤ) : S) * ∏ i, B i (σ i)` using `fun B => by rw [← Matrix.det_transpose, Matrix.det_apply']; rfl`. Establish `hc : ∀ k : ℤ, D (k : S) = 0` using `fun k => by`. Rewrite using `[← map_intCast (algebraMap R S) k, Derivation.map_algebraMap]`. Establish `hrow : ∀ (i : n) (σ : Equiv.Perm n), ∏ j, (A.updateRow i fun j => D (A i j)) j (σ j) = ∏ j, Function.update (fun j => A j (σ j)) i (D (A i (σ i))) j` using `fun i σ => Finset.prod_congr rfl fun j _ => by`. Distinguish the cases in `h : j = i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.updateRow_ne h, Function.update_of_ne h]`. Rewrite using `[key, map_sum]`. Repeatedly rewrite using `[key, hrow, Derivation.leibniz, hc, smul_zero, add_zero, derivation_finset_prod, smul_eq_mul, Finset.mul_sum]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Conclude with `Finset.sum_comm`.
+A detailed English derivation is pending.
 -/
 theorem derivation_det {n : Type*} [Fintype n] [DecidableEq n] (D : Derivation R S S) (A : Matrix n n S) :
     D A.det = ∑ i, (A.updateRow i fun j => D (A i j)).det := by
@@ -56,7 +56,7 @@ theorem derivation_det {n : Type*} [Fintype n] [DecidableEq n] (D : Derivation R
   exact Finset.sum_comm
 
 /- English proof (translation)
-Use `Finset.induction_on s (by simp) ?_` and prove the remaining obligations. Introduce `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, Derivation.add_apply, ih]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem derivation_sum_apply {ι : Type*} {A M : Type*} [CommSemiring A] [AddCommMonoid M] [Module A M]
     [Algebra R A] [Module R M] (s : Finset ι) (D : ι → Derivation R A M) (x : A) :
@@ -73,7 +73,7 @@ def REder (K : Type) [CommRing K] (k : ℕ) (a b : Fin k) :
   ∑ t : Fin k, (X (a, t) : MvPolynomial (Fin k × Fin k) K) • pderiv (b, t)
 
 /- English proof (translation)
-Unfold `PI.RL.RE REder`. Rewrite using `[derivation_sum_apply]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem RE_eq_REder (K : Type) [CommRing K] (k : ℕ) (a b : Fin k) (f : MvPolynomial (Fin k × Fin k) K) :
     PI.RL.RE K k a b f = REder K k a b f := by
@@ -82,9 +82,9 @@ theorem RE_eq_REder (K : Type) [CommRing K] (k : ℕ) (a b : Fin k) (f : MvPolyn
   rfl
 
 /- English proof (translation)
-Unfold `REder`. Rewrite using `[derivation_sum_apply]`. Simplify using `only [Derivation.smul_apply, pderiv_X, smul_eq_mul]`. Distinguish the cases in `h : i = b`. Substitute `h` using the available equality.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[Pi.single_apply, mul_ite]`. Simplify using `[Pi.single_apply, h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem REder_X (K : Type) [CommRing K] (k : ℕ) (a b : Fin k) (i j : Fin k) :
     REder K k a b (X (i, j)) = if i = b then X (a, j) else 0 := by

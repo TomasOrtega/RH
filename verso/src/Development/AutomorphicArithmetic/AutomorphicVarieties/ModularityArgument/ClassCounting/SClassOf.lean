@@ -19,7 +19,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open NumberField IsDedekindDomain UpperTheory.V UpperTheory.V.KL UpperTheory.V.ZK UpperTheory.V.ZK.Cl
 
 /- English proof (translation)
-The claim follows from `cJoin cChain cFree cTriv cAct cSplit cSupp cLatLoc cMu cInt cVal cGtNe cGtEq cBetaDiv cBetaVal cRep cUnit`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.ZK.sClassOf :
     UpperTheory.V.ZK.SClassOf :=

@@ -14,9 +14,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 section SlopeTestRemainingChoices
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `hr : NumberField.ComplexEmbedding.IsReal φ` using `NumberField.ComplexEmbedding.isReal_iff.mpr (RingHom.ext fun x => by`. Rewrite using `[NumberField.ComplexEmbedding.conjugate_coe_eq]`. Conclude with `Complex.conj_eq_iff_im.mpr (h x))`.
-
-Conclude with `NumberField.InfinitePlace.not_isReal_iff_isComplex.mpr (IsTotallyComplex.isComplex (NumberField.InfinitePlace.mk φ)) (NumberField.InfinitePlace.isReal_mk_iff.mpr hr)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem emb_nonreal {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (φ : E →+* ℂ) : ∃ a : E, (φ a).im ≠ 0 := by
   by_contra h
@@ -30,11 +28,11 @@ theorem emb_nonreal {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (�
     (NumberField.InfinitePlace.isReal_mk_iff.mpr hr)
 
 /- English proof (translation)
-Take `⟨Z, -⟩` from `standard_basis_z ι n lam`. Rewrite `hF` using `[← Z.span_F K]`. Rewrite using `[← Z.span_F ℂ]`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem p hp`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Take `⟨i, rfl⟩` from `hp`. Rewrite using `[MvPolynomial.map_map, show s.comp (Int.castRingHom K) = Int.castRingHom ℂ from RingHom.ext_int _ _]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add p q _ _ hp hq => rw [map_add]`. Conclude with `add_mem hp hq`. Consider the case `smul a p _ hp`. Rewrite using `[MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, ← MvPolynomial.smul_eq_C_mul]`. Conclude with `Submodule.smul_mem _ _ hp`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mem_VV {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n) {K : Type} [Field K] [CharZero K] (s : K →+* ℂ)
     {F : Pol K ι n} (hF : F ∈ VV K lam) : MvPolynomial.map s F ∈ VV ℂ lam := by
@@ -53,9 +51,9 @@ theorem map_mem_VV {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n)
     exact Submodule.smul_mem _ _ hp
 
 /- English proof (translation)
-Unfold `fockN`. Break down `eq_or_ne d 0 with rfl | hd` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[MvPolynomial.support_smul_eq hd, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[MvPolynomial.coeff_smul, smul_eq_mul, norm_mul, mul_pow, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fockN_smul {σ : Type} (d : ℂ) (f : MvPolynomial σ ℂ) : fockN (d • f) = ‖d‖ ^ 2 * fockN f := by
   unfold fockN
@@ -66,7 +64,7 @@ theorem fockN_smul {σ : Type} (d : ℂ) (f : MvPolynomial σ ℂ) : fockN (d �
     rw [MvPolynomial.coeff_smul, smul_eq_mul, norm_mul, mul_pow, mul_assoc]
 
 /- English proof (translation)
-Conclude with `nfL_self lam p`.
+A detailed English derivation is pending.
 -/
 theorem nfAll_self_eq {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n) (p : MvPolynomial (ι × Fin n × Fin n) ℂ) :
     nfAll lam p p = ((fockN p / extremalFockNormProduct lam : ℝ) : ℂ) := by
@@ -79,19 +77,19 @@ section Nrm
 variable {D : D7} {u : D.what₂.Word} (CV : ColVal D u)
 
 /- English proof (translation)
-Use `(columnHypotheses D u).tcE` as an intermediate fact. Establish `hcm : ∀ (φ : D.host.E →+* ℂ) (a : D.host.E), φ (star a) = starRingEnd ℂ (φ a)` using `D.sp.cm.cmUnram.2.1`. Use `set φ : D.host.E →+* ℂ := v.embedding.comp (CV.rho τ) with hφ`. Take `⟨s1, s2, s3, s4⟩` from `isSesq_maj (CV.Q c τ).b (CV.Q c τ).X v`. Use `beta_reduce at s1 s2 s3 s4`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `sesq_ext (F := fun y z => majAt (CV.Q c τ).b (CV.Q c τ).X v (CV.bc c τ y) (CV.bc c τ z)) (G := fun y z => φ ((D.sp.X 0).hT y z)) (σ := φ) (emb_nonreal φ) ⟨?_, ?_, ?_, ?_⟩ ⟨?_, ?_, ?_, ?_⟩ ?_ y z` and prove the remaining obligations. Introduce `x x' y show majAt _ _ v (CV.bc c τ (x + x')) _ = _`. Rewrite using `[map_add, s1]`. Introduce `x y y' show majAt _ _ v _ (CV.bc c τ (y + y')) = _`. Rewrite using `[map_add, s2]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a x y show majAt _ _ v (CV.bc c τ (a • x)) _ = _`. Rewrite using `[CV.bc_smul, s3]`. Both sides reduce to the same expression. Introduce `a x y show majAt _ _ v _ (CV.bc c τ (a • y)) = _`. Rewrite using `[CV.bc_smul, s4]`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Introduce `x x' y show φ ((D.sp.X 0).hT (x + x') y) = φ ((D.sp.X 0).hT x y) + φ ((D.sp.X 0).hT x' y)`. Rewrite using `[map_add, LinearMap.add_apply, map_add]`. Introduce `x y y' show φ ((D.sp.X 0).hT x (y + y')) = φ ((D.sp.X 0).hT x y) + φ ((D.sp.X 0).hT x y')`. Rewrite using `[map_add, map_add]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a x y show φ ((D.sp.X 0).hT (a • x) y) = starRingEnd ℂ (φ a) * φ ((D.sp.X 0).hT x y)`. Rewrite using `[LinearMap.map_smulₛₗ₂, smul_eq_mul, map_mul, starRingEnd_apply, hcm]`. Introduce `a x y show φ ((D.sp.X 0).hT x (a • y)) = φ a * φ ((D.sp.X 0).hT x y)`. Rewrite using `[map_smul, smul_eq_mul, map_mul]`. Introduce `x show majAt _ _ v (CV.bc c τ x) (CV.bc c τ x) = φ ((D.sp.X 0).hT x x)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hre` using `CV.bc_norm c τ v x`. Establish `hreal : (φ ((D.sp.X 0).hT x x)).im = 0`. Establish `e : starRingEnd D.host.E ((D.sp.X 0).hT x x) = (D.sp.X 0).hT x x` using `(D.sp.X 0).herm.eq x x`. Establish `e2 : starRingEnd ℂ (φ ((D.sp.X 0).hT x x)) = φ ((D.sp.X 0).hT x x)`. Rewrite using `[← hcm, ← starRingEnd_apply, e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Complex.conj_eq_iff_im.1 e2`. Apply `Complex.ext` to reduce the goal to its premises. Conclude with `hre`. Rewrite using `[majAt_self, Complex.ofReal_im]`. Conclude with `hreal.symm`.
+A detailed English derivation is pending.
 -/
 theorem maj_bc (c : (D.mem u).C.cls 0) (τ : D.what₂.Tau) (v : InfinitePlace D.what₂.LL) (y z : (D.sp.X 0).V) :
     majAt (CV.Q c τ).b (CV.Q c τ).X v (CV.bc c τ y) (CV.bc c τ z) = v.embedding (CV.rho τ ((D.sp.X 0).hT y z)) := by
@@ -142,11 +140,11 @@ theorem maj_bc (c : (D.mem u).C.cls 0) (τ : D.what₂.Tau) (v : InfinitePlace D
       exact hreal.symm
 
 /- English proof (translation)
-Take `⟨s1, s2, s3, s4⟩` from `isSesq_maj (CV.Q c τ).b (CV.Q c τ).X v`. Use `beta_reduce at s1 s2 s3 s4`. Establish `hq : q ∈ Submodule.span D.what₂.LL (Set.range fun i => CV.bc c τ ((D.sp.X 0).frame i))` using `span_bc_frame CV c τ Submodule.mem_top`. Proceed by induction on `hq using Submodule.span_induction with`. Consider the case `mem q hq`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨i, rfl⟩` from `hq`. Rewrite using `[bcFun_bc, maj_bc]`. Consider the case `zero`. Rewrite using `[map_zero, map_zero]`. Use `s2 (CV.bc c τ y) 0 0` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[add_zero]`. Take the linear combination `this`. Consider the case `add q q' _ _ h1 h2 => rw [map_add, map_add, s2, h1, h2]`. Consider the case `smul a q _ h1 => rw [map_smul, smul_eq_mul, map_mul, s4, h1]`.
+Take a linear combination of the given relations to obtain the conclusion. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem riesz_bc (c : (D.mem u).C.cls 0) (τ : D.what₂.Tau) (v : InfinitePlace D.what₂.LL) (y : (D.sp.X 0).V)
     (q : (CV.Q c τ).V) : v.embedding (bcFun CV c τ y q) = majAt (CV.Q c τ).b (CV.Q c τ).X v (CV.bc c τ y) q := by
@@ -167,9 +165,9 @@ theorem riesz_bc (c : (D.mem u).C.cls 0) (τ : D.what₂.Tau) (v : InfinitePlace
   | smul a q _ h1 => rw [map_smul, smul_eq_mul, map_mul, s4, h1]
 
 /- English proof (translation)
-Use extensionality with `a j`. Simplify using `only [Matrix.map_apply, gM, Matrix.of_apply]`. Rewrite using `[riesz_bc, Matrix.mul_apply]`. Unfold `majAt`. Use `Fintype.sum_equiv (CV.eQ c τ) _ _ fun i => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.of_apply, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply]`. Use `congr 1`. Simplify using `[fcoord, vecAt, Matrix.mulVec, dotProduct, Basis.repr_self, Finsupp.single_apply]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem gM_map (c : (D.mem u).C.cls 0) (y : Fin (D.R.N 0) → (D.sp.X 0).V) (τ : D.what₂.Tau) (v : InfinitePlace D.what₂.LL) :
     (gM CV c y τ).map v.embedding =
@@ -193,11 +191,11 @@ theorem invFr_coe (v : InfinitePlace D.what₂.LL) (c : (D.mem u).C.cls 0) (τ :
       Matrix.reindex (CV.eQ c τ) (CV.eQ c τ) ((CV.Q c τ).X v)⁻¹ := rfl
 
 /- English proof (translation)
-Establish `hdet : IsUnit (Matrix.reindex (CV.eQ c τ) (CV.eQ c τ) ((CV.Q c τ).X v)⁻¹).det`. Rewrite using `[← invFr_coe]`. Conclude with `Matrix.isUnits_det_units _`. Rewrite using `[gM_map, Matrix.coe_units_inv, invFr_coe, Matrix.mul_nonsing_inv_cancel_right _ _ hdet]`. Unfold `hsN`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← CV.bc_norm c τ v (y a), majAt_self, Complex.ofReal_re]`. Unfold `normAt cnorm`. Rewrite using `[Real.sq_sqrt (Finset.sum_nonneg fun _ _ => by positivity)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Fintype.sum_equiv (CV.eQ c τ).symm _ _ fun k => ?_` and prove the remaining obligations. Simplify using `only [Matrix.transpose_apply, Matrix.of_apply, norm_star]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hsN_gM (c : (D.mem u).C.cls 0) (y : Fin (D.R.N 0) → (D.sp.X 0).V) (τ : D.what₂.Tau) (v : InfinitePlace D.what₂.LL) :
     hsN (((gM CV c y τ).map v.embedding *
@@ -217,7 +215,7 @@ theorem hsN_gM (c : (D.mem u).C.cls 0) (y : Fin (D.R.N 0) → (D.sp.X 0).V) (τ 
   simp only [Matrix.transpose_apply, Matrix.of_apply, norm_star]
 
 /- English proof (translation)
-Unfold `tcAt`. Use `polyAction_mem_VV _ _ (map_mem_VV _ v.embedding ?_)` and prove the remaining obligations. Rewrite using `[← coE_coe CV (hTV0 D u) x c]`. Conclude with `(coE CV (hTV0 D u) x c).2`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tcAt_mem_VV (v : InfinitePlace D.what₂.LL) (c : (D.mem u).C.cls 0) (x : ((D.fm u).lat 0).V) :
     tcAt CV v c x ∈ VV ℂ ((D.fm u).lam 0) := by
@@ -227,31 +225,27 @@ theorem tcAt_mem_VV (v : InfinitePlace D.what₂.LL) (c : (D.mem u).C.cls 0) (x 
   exact (coE CV (hTV0 D u) x c).2
 
 /- English proof (translation)
-Use `set lam := (D.fm u).lam 0 with hlam`. Use `set g := gG CV c y hli with hg`. Use `set F : Pol D.what₂.LL D.what₂.Tau (D.R.N 0) := ((coE CV (hTV0 D u) x c : VV D.what₂.LL lam) : Pol D.what₂.LL D.what₂.Tau (D.R.N 0)) with hF`. Use `set P := tcAt CV v c x with hP`. Use `set d : ℂ := detTwK lam (invFr CV v c)⁻¹ with hd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `set U : D.what₂.Tau → Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) ℂ := fun τ => ((((g τ : GL (Fin (D.R.N 0)) D.what₂.LL) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.what₂.LL).map v.embedding) * (((invFr CV v c τ)⁻¹ : GL (Fin (D.R.N 0)) ℂ) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) ℂ))ᵀ w …`. Use `set G := MvPolynomial.map v.embedding (trAct g F) with hGdef`. Use `set Gp := ∏ τ, (∑ a, (v.embedding (CV.rho τ ((D.sp.X 0).hT (y a) (y a)))).re) ^ dW (lam τ) with hGp`. Establish `h1 : normAt (Pi.basisFun D.what₂.LL (MonI lam)) (fun _ => (monD lam)⁻¹) v (cfMap lam g (coE CV (hTV0 D u) x c)) ^ 2 ≤ fockN G / extremalFockNormProduct lam`. Rewrite using `[monH_norm]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `e1 : ∑ m, monW lam m * ‖v.embedding (cfMap lam g (coE CV (hTV0 D u) x c) m)‖ ^ 2 = (∑ m : MonI lam, ‖coeff m.1 G‖ ^ 2 * (mfact m.1 : ℝ)) / extremalFockNormProduct lam`. Rewrite using `[Finset.sum_div]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[hGdef, coeff_map, cfMap_apply, monW]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : ∑ m : MonI lam, ‖coeff m.1 G‖ ^ 2 * (mfact m.1 : ℝ) ≤ fockN G`. Use `fockN_sum_le G ((Finset.univ : Finset (MonI lam)).map ⟨fun m : MonI lam => m.1, fun a b h => Subtype.ext h⟩)` as an intermediate fact. Rewrite `this` using `[Finset.sum_map]`. Then use the resulting hypothesis. Rewrite using `[e1]`. Conclude with `div_le_div_of_nonneg_right e2 (extR_pos lam).le`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hVt : ∀ τ, (((invFr CV v c τ : GL (Fin (D.R.N 0)) ℂ) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) ℂ))ᵀ * U τ = (((g τ : GL (Fin (D.R.N 0)) D.what₂.LL) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.what₂.LL)ᵀ).map v.embedding`. Introduce `τ`. Simplify using `only [hU]`. Rewrite using `[← Matrix.transpose_mul, Matrix.coe_units_inv, Matrix.nonsing_inv_mul_cancel_right _ _ (Matrix.isUnits_det_units _), Matrix.transpose_map]`. Establish `eP : P = detTwK lam (invFr CV v c) • Formalism.GradedWeylDivisibility.blockAct ℂ (fun τ => ((invFr CV v c τ : GL (Fin (D.R.N 0)) ℂ) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) ℂ)ᵀ) (MvPolynomial.map v.embedding F)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [hP, tcAt, actP, LinearMap.smul_apply, AlgHom.toLinearMap_apply, trAct]`. Both sides reduce to the same expression. Establish `ecomp : Formalism.GradedWeylDivisibility.blockAct ℂ U (Formalism.GradedWeylDivisibility.blockAct ℂ (fun τ => ((invFr CV v c τ : GL (Fin (D.R.N 0)) ℂ) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) ℂ)ᵀ) (MvPolynomial.map v.embedding F)) = G`. Rewrite using `[← AlgHom.comp_apply, blockAct_comp]`. Simplify using `only [hVt]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hGdef]`. Unfold `trAct`. Rewrite using `[map_blockAct]`. Establish `hd1 : d * detTwK lam (invFr CV v c) = 1` using `by rw [hd, ← detTwK_mul, inv_mul_cancel, detTwK_one]`. Establish `h2 : G = d • Formalism.GradedWeylDivisibility.blockAct ℂ U P`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[eP, map_smul, ecomp, smul_smul, hd1, one_smul]`. Establish `hPV : P ∈ VV ℂ lam` using `tcAt_mem_VV CV v c x`. Establish `h3 : fockN (Formalism.GradedWeylDivisibility.blockAct ℂ U P) ≤ (∏ τ, hsN (U τ) ^ dW (lam τ)) * fockN P`. Use `fockSubNorm D.what₂.Tau (D.R.N 0) U (fun τ => dW (lam τ)) P fun m hm τ => ?_` and prove the remaining obligations. Establish `hm'` using `coefficient_space_support ℂ lam hPV m hm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun s _ => hm' τ s`. Establish `h4 : ∀ τ, hsN (U τ) = ∑ a, (v.embedding (CV.rho τ ((D.sp.X 0).hT (y a) (y a)))).re` using `fun τ => hsN_gM CV c y τ v`. Establish `h5 : fockN P / extremalFockNormProduct lam ≤ normAt ((D.fm u).lat 0).b ((D.fm u).lat 0).X v x ^ 2`. Establish `e` using `majorant_lattice_eq_sum CV v x x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e` using `[majAt_self]`. Establish `e2 : normAt ((D.fm u).lat 0).b ((D.fm u).lat 0).X v x ^ 2 = ∑ c', fockN (tcAt CV v c' x) / extremalFockNormProduct lam`. Use `congrArg Complex.re e` as an intermediate fact. Rewrite `this` using `[Complex.ofReal_re, Complex.re_sum]`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `Finset.sum_congr rfl fun c' _ => ?_` and prove the remaining obligations. Rewrite using `[nfAll_self_eq, Complex.ofReal_re]`. Rewrite using `[e2]`. Conclude with `Finset.single_le_sum (f := fun c' => fockN (tcAt CV v c' x) / extremalFockNormProduct lam) (fun c' _ => div_nonneg (fockN_nonneg _) (extR_pos _).le) (Finset.mem_univ c)`. Establish `hGn : fockN G ≤ ‖d‖ ^ 2 * (Gp * fockN P)`.
-
-Rewrite using `[h2, fockN_smul]`. Use `mul_le_mul_of_nonneg_left ?_ (sq_nonneg _)` and prove the remaining obligations. Use `h3` as an intermediate fact. Simplify using `only [h4] at this`. Conclude with `this`.
-
-Establish `hprod : 0 ≤ Gp` using `Finset.prod_nonneg fun τ _ => pow_nonneg (by rw [← h4 τ]; exact hsN_nonneg _) _`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem class_norm (c : (D.mem u).C.cls 0) (y : Fin (D.R.N 0) → (D.sp.X 0).V) (hli : LinearIndependent D.host.E y)
     (v : InfinitePlace D.what₂.LL) (x : ((D.fm u).lat 0).V) :

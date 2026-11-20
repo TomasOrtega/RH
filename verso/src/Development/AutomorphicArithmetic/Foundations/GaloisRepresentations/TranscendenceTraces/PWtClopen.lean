@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Trans
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
 /- English proof (translation)
-Establish `h : ∀ c, Continuous (f c)` using `fun c => (IsLocallyConstant.iff_continuous _).1 (hf c)`. Conclude with `(IsLocallyConstant.iff_continuous _).2 (continuous_finset_sum _ fun c _ => continuous_const.mul (h c))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isLocallyConstant_weighted_sum {X : Type*} [TopologicalSpace X] (T : Finset ℤ) (f : ℤ → X → ℤ)
     (hf : ∀ c, IsLocallyConstant (f c)) : IsLocallyConstant (fun y => ∑ c ∈ T, c * f c y) := by
@@ -13,19 +13,19 @@ private theorem isLocallyConstant_weighted_sum {X : Type*} [TopologicalSpace X] 
     (continuous_finset_sum _ fun c _ => continuous_const.mul (h c))
 
 /- English proof (translation)
-Introduce `hcrit hfin Z S p _ w hcl`. Apply `hcrit p w` to reduce the goal to its premises. Introduce `A φ hφ u`. Establish `hφc : Continuous φ` using `(IsLocallyConstant.iff_continuous φ).1 hφ`. Use `haveI := A.finite`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨U0, hU0, hu, -⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.1 A.U.isBasis_affineOpens) (show u ∈ (⊤ : A.U.Opens) from trivial)`. Establish `hK : IsCompact (A.r ⁻¹' (U0 : Set A.U))` using `QuasiCompact.isCompact_preimage _ U0.isOpen (IsAffineOpen.isCompact hU0)`. Set `T : Finset ℤ` to `((hK.image hφc).finite_of_discrete).toFinset`. Use `choose ψ hψ hψs using fun c : ℤ => hcl A (φ ⁻¹' {c}) (hφ.isClopen_fiber c)`. Set `Ψ : A.U → ℤ` to `fun y => ∑ c ∈ T, c * ψ c y`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hΨ : IsLocallyConstant Ψ` using `isLocallyConstant_weighted_sum T ψ hψ`. Use `⟨(U0 : Set A.U) ∩ {y | Ψ y = Ψ u}, Ψ u, U0.isOpen.inter (hΨ.isOpen_fiber _), ⟨hu, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `Ω _ _ x ⟨hx0, hxΨ⟩`. Rewrite using `[← show Ψ (pt x) = Ψ u from hxΨ]`. Establish `hF` using `hfin A.r Ω x`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ c, ψ c (pt x) = ∑ z ∈ hF.toFinset, if φ (pt z) = c then w Ω (z ≫ A.v) else 0`. Introduce `c`. Rewrite using `[hψs c Ω x, finsum_mem_eq_finite_toFinset_sum _ (hF.inter_of_left _), ← Finset.sum_filter]`. Use `congr 1`. Use extensionality with `z`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `only [Ψ, key, Finset.mul_sum]`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hF, Finset.sum_comm]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `z hz`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzf : z ≫ A.r = x` using `(Set.Finite.mem_toFinset hF).1 hz`. Establish `hmem : φ (pt z) ∈ T`. Rewrite using `[Set.Finite.mem_toFinset]`. Use `⟨pt z, ?_, rfl⟩` and prove the remaining obligations. Use `show A.r (pt z) ∈ (U0 : Set A.U)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← pt_comp, hzf]`. Conclude with `hx0`. Repeatedly rewrite using `[mul_ite, mul_zero]`. Rewrite using `[Finset.sum_ite_eq, if_pos hmem, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TranscendenceTraces.wtClopen_of :
     WtCrit → FibFin → WtClopen := by

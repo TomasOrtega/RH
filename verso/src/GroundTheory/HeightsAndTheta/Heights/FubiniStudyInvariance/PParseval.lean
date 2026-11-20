@@ -14,23 +14,23 @@ namespace FSInv
 open CP
 
 /- English proof (translation)
-Introduce `N n P hP`. Establish `hdeg : ∀ a ∈ P.support, a.degree = n` using `fun a ha => (IsHomogeneous.degree_eq_sum_deg_support ((mem_homogeneousSubmodule _ _).mp hP) ha).symm`. Establish `hmem : ∀ a ∈ P.support, monomial a (1 : ℂ) ∈ H0 N n` using `fun a ha => (mem_homogeneousSubmodule _ _).mpr (isHomogeneous_monomial _ (hdeg a ha))`. Establish `hsum : ∀ s ⊆ P.support, (∑ b ∈ s, P.coeff b • monomial b (1 : ℂ)) ∈ H0 N n` using `fun s hs => Submodule.sum_mem _ fun b hb => Submodule.smul_mem _ _ (hmem b (hs hb))`. Establish `hright : ∀ R ∈ H0 N n, ∀ s ⊆ P.support, l2Inner (N` using `N) n R (∑ b ∈ s, P.coeff b • monomial b (1 : ℂ)) = ∑ b ∈ s, P.coeff b * l2Inner n R (monomial b 1) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `R hR s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro _`. Simplify using `[l2Inner, fsPair]`. Consider the case `insert b s hb ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `hs`. Establish `hs' : s ⊆ P.support` using `(Finset.subset_insert _ _).trans hs`. Rewrite using `[Finset.sum_insert hb, Finset.sum_insert hb, add_comm, (hS N n _ _ R (hsum s hs') (hmem b (hs (Finset.mem_insert_self _ _))) hR _).2.1, ih hs', add_comm]`. Establish `hleft : ∀ R ∈ H0 N n, ∀ s ⊆ P.support, l2Inner (N` using `N) n (∑ b ∈ s, P.coeff b • monomial b (1 : ℂ)) R = ∑ b ∈ s, conj (P.coeff b) * l2Inner n (monomial b 1) R := by`. Introduce `R hR s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro _`. Simplify using `[l2Inner, fsPair]`. Consider the case `insert b s hb ih`. Introduce `hs`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs' : s ⊆ P.support` using `(Finset.subset_insert _ _).trans hs`. Rewrite using `[Finset.sum_insert hb, Finset.sum_insert hb, add_comm, (hS N n _ _ R (hsum s hs') (hmem b (hs (Finset.mem_insert_self _ _))) hR _).1, ih hs', add_comm]`. Establish `hPs : P = ∑ a ∈ P.support, P.coeff a • monomial a (1 : ℂ)` using `by conv_lhs => rw [P.as_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[smul_monomial, smul_eq_mul, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hdiag : ∀ a ∈ P.support, l2Inner (N` using `N) n (monomial a (1 : ℂ)) (monomial a 1) = (((∏ i, ((a i).factorial : ℝ)) * N.factorial / (n + N).factorial : ℝ) : ℂ) := by`. Introduce `a ha`. Rewrite using `[hI, ← fubiniStudy_l2Norm_sq_eq, ← hdeg a ha, fubiniStudy_l2Norm_monomial_sq]`. Establish `key : l2Inner (N` using `N) n P P = ∑ a ∈ P.support, conj (P.coeff a) * P.coeff a * (((∏ i, ((a i).factorial : ℝ)) * N.factorial / (n + N).factorial : ℝ) : ℂ) := by conv_lhs => rw [hPs]`. Rewrite using `[hleft _ (hsum _ subset_rfl) _ subset_rfl]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Rewrite using `[hright _ (hmem a ha) _ subset_rfl, Finset.mul_sum, Finset.sum_eq_single a, hdiag a ha, mul_assoc]`. Introduce `b hb hba`. Establish `h0 : l2Inner (N` using `N) n (monomial a (1 : ℂ)) (monomial b 1) = 0 := by`. Rewrite using `[← hdeg a ha]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hO N a b (Ne.symm hba) (by rw [hdeg a ha, hdeg b hb])`. Rewrite using `[h0, mul_zero, mul_zero]`. Introduce `ha'`. Conclude with `absurd ha ha'`. Rewrite using `[fubiniStudy_l2Norm_sq_eq]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[← hI N n P, key]`. Use `push_cast`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.conj_mul']`.
+Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Parseval.proof (hO : Orth.Statement) (hS : Sesq.Statement) (hI : InnerSelf.Statement) :
     Parseval.Statement := by

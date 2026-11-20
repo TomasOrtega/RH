@@ -11,7 +11,7 @@ namespace GlobalTheory.CompanionTheory.InertSmith
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
 /- English proof (translation)
-Use `⟨Formalism.UG.ordL y, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.Hk3.Smith.v_eq_ord hy, map_zpow₀, hϖ]`. Express the relevant statement in the definitionally equal form `_ = ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) ^ Formalism.UG.ordL y`. Rewrite using `[← WithZero.coe_zpow, ← ofAdd_zsmul]`. Use `congr 2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
 Simplify using the standard rewrite rules.
 -/
@@ -25,7 +25,7 @@ theorem exists_zpow_val {ϖ y : L} (hϖ : Valued.v ϖ = WithZero.exp (-1 : ℤ))
   simp
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[GlobalTheory.Hk3.Smith.mem_intL, Matrix.diagonal_apply]`. Use `split_ifs with h`. Conclude with `(hs i).le`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isInt_diagonal {n : ℕ} {s : Fin n → L} (hs : ∀ i, Valued.v (s i) = 1) : IsInt (Matrix.diagonal s) := by
   intro i j
@@ -35,31 +35,27 @@ theorem isInt_diagonal {n : ℕ} {s : Fin n → L} (hs : ∀ i, Valued.v (s i) =
   · simp
 
 /- English proof (translation)
-Introduce `L _ _ ϖ n hϖ g hg`. Take `⟨P, Q, ⟨hPi, P', hP'i, hPP'⟩, ⟨hQi, Q', hQ'i, hQQ'⟩, hD⟩` from `GlobalTheory.Hk3.Smith.exists_diag n n g`. Establish `hP'P : P' * P = 1` using `mul_eq_one_comm.mp hPP'`. Establish `hdetP : P.det ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `congrArg Matrix.det hPP'`. Rewrite `h1` using `[Matrix.det_mul, h0, zero_mul, Matrix.det_one]`. Conclude with `zero_ne_one h1`. Establish `hdetQ : Q.det ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `congrArg Matrix.det hQQ'`. Rewrite `h1` using `[Matrix.det_mul, h0, zero_mul, Matrix.det_one]`. Conclude with `zero_ne_one h1`. Establish `hDdiag : P * g * Q = Matrix.diagonal (fun i => (P * g * Q) i i)`. Use extensionality with `i j`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[Matrix.diagonal_apply_eq]`. Rewrite using `[Matrix.diagonal_apply_ne _ hij]`. Conclude with `hD i j (fun h => hij (Fin.ext h))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : ∀ i, (P * g * Q) i i ≠ 0`. Establish `hdet : (P * g * Q).det ≠ 0`. Rewrite using `[Matrix.det_mul, Matrix.det_mul]`. Conclude with `mul_ne_zero (mul_ne_zero hdetP hg) hdetQ`. Rewrite `hdet` using `[hDdiag, Matrix.det_diagonal]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `fun i => Finset.prod_ne_zero_iff.mp hdet i (Finset.mem_univ i)`. Establish `hvϖ : Valued.v ϖ ≠ 0`. Rewrite using `[hϖ]`. Conclude with `WithZero.coe_ne_zero`. Establish `hϖ0 : ϖ ≠ 0` using `fun h => hvϖ (by rw [h, map_zero])`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `choose d hd using fun i => exists_zpow_val hϖ (hne i)`. Establish `hpow0 : ∀ i, ϖ ^ d i ≠ 0` using `fun i => zpow_ne_zero _ hϖ0`. Take `⟨u, hu⟩ : ∃ u : Fin n → L, ∀ i, u i = (P * g * Q) i i / ϖ ^ d i` from `⟨_, fun i => rfl⟩`. Establish `hvu : ∀ i, Valued.v (u i) = 1`. Introduce `i`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hu i, map_div₀, hd i, div_self]`. Conclude with `fun h => hpow0 i (by`. Assume the negation of the conclusion as `h'`. Conclude with `h' ((Valuation.zero_iff _).mp h))`. Establish `hvu' : ∀ i, Valued.v ((u i)⁻¹) = 1` using `fun i => by rw [map_inv₀, hvu i, inv_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hu0 : ∀ i, u i ≠ 0` using `fun i h => by`. Establish `h1` using `hvu i`. Rewrite `h1` using `[h, map_zero]`. Conclude with `zero_ne_one h1`. Establish `hDfac : P * g * Q = Matrix.diagonal (fun i => ϖ ^ d i) * Matrix.diagonal u`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Matrix.diagonal_mul_diagonal]`. Use `conv_lhs => rw [hDdiag]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[hu i]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Establish `hinv : (fun i => u i * (u i)⁻¹) = fun _ => (1 : L)` using `funext fun i => mul_inv_cancel₀ (hu0 i)`. Use `⟨d, P', P, Matrix.diagonal u * Q', Q * Matrix.diagonal (fun i => (u i)⁻¹), hP'i, hPi, GlobalTheory.Hk3.Smith.mul_int (isInt_diagonal hvu) hQ'i, GlobalTheory.Hk3.Smith.mul_int hQi (isInt_diagonal hvu'), hPP', ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
-
-Use `_ = 1 := by`. Rewrite using `[mul_eq_one_comm.mp hQQ', Matrix.mul_one, Matrix.diagonal_mul_diagonal, hinv, Matrix.diagonal_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hP'P, Matrix.one_mul, Matrix.mul_assoc, hQQ', Matrix.mul_one]`. Use `_ = _ := by`.
-
-Rewrite using `[hDfac]`. Simplify using `only [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smith : Smith := by
   intro L _ _ ϖ n hϖ g hg

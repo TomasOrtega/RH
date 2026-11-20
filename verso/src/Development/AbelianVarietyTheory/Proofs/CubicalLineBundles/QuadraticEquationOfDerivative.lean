@@ -15,9 +15,9 @@ namespace GlobalTheory.LieMultiple
 variable {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[Nat.cast_zero, pow_zero]`. Conclude with `(lieMultiple_calculus R G G v v v 0 0).2.2.2.2.2 hv`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.cast_succ, pow_succ]`. Conclude with `(lieMultiple_calculus R G G v _ v n 1).2.1 hv ih (lieMultiple_calculus R G G v v v 0 0).2.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem isLieComb_natCast_pow {v : epsR R ⟶ G} (hv : IsTangent v) (n : ℕ) :
     IsLieComb ![(n : R)] ![v] (v ^ n) := by
@@ -31,9 +31,9 @@ theorem isLieComb_natCast_pow {v : epsR R ⟶ G} (hv : IsTangent v) (n : ℕ) :
       (lieMultiple_calculus R G G v v v 0 0).2.2.2.2.1
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[pow_zero]`. Conclude with `inferInstanceAs (IsMonHom (toUnit G ≫ η[G]))`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ]`. Conclude with `inferInstanceAs (IsMonHom (lift ((𝟙 G) ^ n) (𝟙 G) ≫ μ[G]))`.
+A detailed English derivation is pending.
 -/
 theorem isMonHom_id_pow [IsCommMonObj G] (n : ℕ) : IsMonHom ((𝟙 G) ^ n) := by
   induction n with
@@ -45,11 +45,11 @@ theorem isMonHom_id_pow [IsCommMonObj G] (n : ℕ) : IsMonHom ((𝟙 G) ^ n) := 
     exact inferInstanceAs (IsMonHom (lift ((𝟙 G) ^ n) (𝟙 G) ≫ μ[G]))
 
 /- English proof (translation)
-Introduce `hT hB k _ s P v W w n hv hb hW hw heq`. Establish `hc` using `P.isAb.comm`. Establish `h1` using `isMonHom_id_pow (G := P.A) n`. Establish `h2 : IsMonHom ((W ≫ W) * (𝟙 P.A) ^ n)` using `inferInstanceAs (IsMonHom (lift (W ≫ W) ((𝟙 P.A) ^ n) ≫ μ[P.A]))`. Use `GlobalTheory.T.curve_hom_ext_of_derivative_lieBasis hT hB k s P P v _ _ hb h2 hW ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3 : IsLieComb ![w] ![v ≫ W] ((v ≫ W) ≫ W)` using `(lieMultiple_calculus k P.A P.A v _ v w w).2.2.2.1 W hw`. Establish `h4 : IsLieComb ![w * w] ![v] ((v ≫ W) ≫ W)` using `(lieMultiple_calculus k P.A P.A v _ _ w w).2.2.1 hw h3`. Establish `h5 : IsLieComb ![w * w + n] ![v] (((v ≫ W) ≫ W) * v ^ n)` using `(lieMultiple_calculus k P.A P.A v _ _ (w * w) n).2.1 hv h4 (isLieComb_natCast_pow hv n)`. Rewrite `h5` using `[heq, isLieComb_one_iff_comp]`. Rewrite `hw` using `[isLieComb_one_iff_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[MonObj.comp_mul, MonObj.comp_pow, Category.comp_id, ← Category.assoc, h5, ← hw]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem quadratic_equation_of_derivative : ThetaUnifAV → Out.PolBaseChangeSt → ∀ (k : Type) [Field k] (s : k →+* ℂ) (P : Out.PolAV (Sp k)) (v : epsR k ⟶ P.A) (W : P.A ⟶ P.A) (w : k) (n : ℕ), IsTangent v → (∀ (R' : Type) [CommRing R'] (f' : k →+* R') (P' : Out.PolAV (Sp R')) (φ' : P'.A.left ⟶ P.A.left) (v' : epsR R' ⟶ P'.A), IsPolFibre f' P P' φ' → IsVecOver f' φ' v v' → IsLieBasis ![v']) → IsMonHom W → IsLieComb ![w] ![v] (v ≫ W) → w * w + n = w → (W ≫ W) * (𝟙 P.A) ^ n = W := by
   intro hT hB k _ s P v W w n hv hb hW hw heq

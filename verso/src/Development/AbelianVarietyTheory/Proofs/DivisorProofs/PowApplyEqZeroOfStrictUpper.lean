@@ -3,13 +3,13 @@ import Mathlib
 namespace GlobalTheory.StrictUpperNilpotent
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `i j h`. Establish `hne : i ≠ j`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Simplify using `at h`. Rewrite using `[pow_zero, Matrix.one_apply_ne hne]`. Consider the case `succ k ih`. Introduce `i j h`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pow_succ, Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : (l : ℕ) < (i : ℕ) + k`. Rewrite using `[ih i l hl, zero_mul]`. Establish `hjl : j ≤ l`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Fin.le_def]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hy l j hjl, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_apply_eq_zero_of_strictUpper {L : Type} [inst : Field L] {n : ℕ}
     {y : Matrix (Fin n) (Fin n) L} (hy : ∀ (i j : Fin n), j ≤ i → y i j = (0 : L)) :

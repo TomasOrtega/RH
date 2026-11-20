@@ -6,37 +6,33 @@ noncomputable section
 namespace GlobalTheory.StableLatCount
 
 /- English proof (translation)
-Introduce `O _ _ _ E _ _ _ A₁ A₂ _ _ _ _ _ _ _ _ _ _ g₁ g₂ M₁ M₂ hM₂ hg₁ hg₂`. Set `F : (A₂ →ₗ[E] A₁) →ₗ[O] (M₂ →ₗ[O] A₁ ⧸ M₁)` to `{ toFun := fun ψ => M₁.mkQ ∘ₗ (ψ.restrictScalars O) ∘ₗ M₂.subtype map_add' := fun ψ χ => by ext x; simp map_smul' := fun c ψ => by ext x; simp }`. Establish `hF : ∀ ψ (x : M₂), F ψ x = Submodule.Quotient.mk (ψ (x : A₂))` using `fun _ _ => rfl`. Establish `hsurj : Function.Surjective F`. Introduce `φ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : Module.Finite O M₂ := Module.Finite.iff_fg.2 hM₂.1`. Use `haveI : Module.IsTorsionFree O A₂ := Module.IsTorsionFree.of_smul_eq_zero fun r m h => by`. Distinguish the cases in `hr : r = 0`. Conclude with `Or.inl hr`. Use `right`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[← algebraMap_smul E r m]`. Establish `hr' : algebraMap O E r ≠ 0`. Introduce `h0`. Conclude with `hr ((IsFractionRing.injective O E) (by rw [h0, map_zero]))`. Conclude with `(smul_eq_zero.1 h).resolve_left hr'`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Module.Free O M₂ := Module.free_of_finite_type_torsion_free'`. Set `b` to `Module.Free.chooseBasis O M₂`. Set `bs : Module.Free.ChooseBasisIndex O M₂ → A₂` to `fun i => (b i : A₂)`. Establish `hli : LinearIndependent O bs` using `b.linearIndependent.map' M₂.subtype (Submodule.ker_subtype M₂)`. Establish `hliE : LinearIndependent E bs` using `(LinearIndependent.iff_fractionRing O E).1 hli`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hspan : ⊤ ≤ Submodule.span E (Set.range bs)`. Rewrite using `[← hM₂.2, Submodule.span_le]`. Introduce `x hx`. Establish `h1 : (⟨x, hx⟩ : M₂) ∈ Submodule.span O (Set.range b)`. Rewrite using `[b.span_eq]`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.mem_top`. Establish `h2` using `Submodule.mem_map_of_mem (f := M₂.subtype) h1`. Rewrite `h2` using `[Submodule.map_span, ← Set.range_comp]`. Conclude with `Submodule.span_le_restrictScalars O E _ h2`. Set `bE` to `Module.Basis.mk hliE hspan`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `lift : Module.Free.ChooseBasisIndex O M₂ → A₁` to `fun i => Classical.choose (Submodule.Quotient.mk_surjective M₁ (φ (b i)))`. Establish `hlift : ∀ i, Submodule.Quotient.mk (p` using `M₁) (lift i) = φ (b i) := fun i => Classical.choose_spec (Submodule.Quotient.mk_surjective M₁ (φ (b i)))`. Use `⟨bE.constr E lift, b.ext fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[hF, ← hlift i]`. Use `congr 1`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: ((b i : M₂) : A₂) = bE i` using `by simp [bE, bs]`. Rewrite using `[this, Module.Basis.constr_basis]`. Establish `hker : LinearMap.ker F = homLat E M₁ M₂`. Use extensionality with `ψ`. Rewrite using `[LinearMap.mem_ker]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h x hx`. Use `congrArg (fun f => f ⟨x, hx⟩) h` as an intermediate fact. Simplify using `only [hF, LinearMap.zero_apply, Submodule.Quotient.mk_eq_zero] at this`. Conclude with `this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Use extensionality with `x`. Rewrite using `[hF, LinearMap.zero_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `h x x.2`. Set `e : ((A₂ →ₗ[E] A₁) ⧸ homLat E M₁ M₂) ≃ (M₂ →ₗ[O] A₁ ⧸ M₁)` to `((Submodule.quotEquivOfEq _ _ hker.symm).trans (F.quotKerEquivOfSurjective hsurj)).toEquiv`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `he : ∀ ψ, e (Submodule.Quotient.mk ψ) = F ψ` using `fun ψ => rfl`. Use `(Nat.card_congr (e.subtypeEquiv fun z => ?_)).symm` and prove the remaining obligations. Proceed by induction on `z using Submodule.Quotient.induction_on with`. Consider the case `H ψ₀ => ?_`. Rewrite using `[he]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h x y hxy a ha`. Establish `hA : ∀ x ∈ M₂, g₁ * ψ₀ x - ψ₀ (g₂ * x) ∈ M₁` using `fun x hx => by`. Use `h ψ₀ rfl x hx` as an intermediate fact. Rewrite `this` using `[adE_apply]`. Then use the resulting hypothesis.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `ha`, the goal using `[hF]`. Rewrite `ha`, the goal using `[Submodule.Quotient.eq]`. Use `M₁.add_mem (M₁.neg_mem (hA x x.2)) (hg₁ _ ha)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hxy]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `h ψ hψ x hx`. Rewrite `hψ` using `[Submodule.Quotient.eq]`. Establish `hd : ∀ x ∈ M₂, ψ x - ψ₀ x ∈ M₁` using `fun x hx => by`. Use `hψ x hx` as an intermediate fact.
-
-Rewrite `this` using `[LinearMap.sub_apply]`. Then use the resulting hypothesis. Establish `hc` using `h ⟨x, hx⟩ ⟨g₂ * x, hg₂ x hx⟩ rfl (ψ₀ x) (hF ψ₀ ⟨x, hx⟩)`. Rewrite `hc` using `[hF, Submodule.Quotient.eq]`. Rewrite using `[adE_apply]`. Use `M₁.sub_mem (M₁.sub_mem (hg₁ _ (hd x hx)) (hd _ (hg₂ x hx))) hc` as an intermediate fact.
-
-Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only`. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem card_commMaps_eq_card_homQuot : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (E : Type) [Field E] [Algebra O E] [IsFractionRing O E] (A₁ A₂ : Type) [CommRing A₁] [CommRing A₂] [Algebra E A₁] [Algebra E A₂] [Algebra O A₁] [Algebra O A₂] [IsScalarTower O E A₁] [IsScalarTower O E A₂] [Module.Finite E A₁] [Module.Finite E A₂] (g₁ : A₁) (g₂ : A₂) (M₁ : Submodule O A₁) (M₂ : Submodule O A₂), IsLat O E M₂ → (∀ y ∈ M₁, g₁ * y ∈ M₁) → (∀ y ∈ M₂, g₂ * y ∈ M₂) → Nat.card {φ : M₂ →ₗ[O] A₁ ⧸ M₁ // ∀ x y : M₂, (y : A₂) = g₂ * x → ∀ a : A₁, φ x = Submodule.Quotient.mk a → φ y = Submodule.Quotient.mk (g₁ * a)} = Nat.card {z : (A₂ →ₗ[E] A₁) ⧸ homLat E M₁ M₂ // ∀ ψ : A₂ →ₗ[E] A₁, Submodule.Quotient.mk ψ = z → adE E g₁ g₂ ψ ∈ homLat E M₁ M₂} := by
   intro O _ _ _ E _ _ _ A₁ A₂ _ _ _ _ _ _ _ _ _ _ g₁ g₂ M₁ M₂ hM₂ hg₁ hg₂

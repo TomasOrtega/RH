@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SecPullA
 open CategoryTheory AlgebraicGeometry Opposite ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.CechDR GlobalTheory.CechDR.AffLoc
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CechDR.AffLoc.fv_eq_sub_of_glued` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCochainValueOnThickeningHomEqSubOfGlued.lean&line=51#L51)
 -/

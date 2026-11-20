@@ -15,7 +15,7 @@ namespace SplitTorusHom
 variable {S : Scheme.{0}}
 
 /- English proof (translation)
-Rewrite using `[Over.comp_left, Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem appTop_comp {A B C : Over S} (a : A ⟶ B) (b : B ⟶ C) (r : Γ(C.left, ⊤)) :
     (a ≫ b).left.appTop.hom r = a.left.appTop.hom (b.left.appTop.hom r) := by
@@ -23,7 +23,7 @@ theorem appTop_comp {A B C : Over S} (a : A ⟶ B) (b : B ⟶ C) (r : Γ(C.left,
   rfl
 
 /- English proof (translation)
-Rewrite using `[Over.id_left, Scheme.Hom.id_appTop]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem appTop_id {A : Over S} (r : Γ(A.left, ⊤)) : (𝟙 A : A ⟶ A).left.appTop.hom r = r := by
   rw [Over.id_left, Scheme.Hom.id_appTop]
@@ -32,7 +32,7 @@ theorem appTop_id {A : Over S} (r : Γ(A.left, ⊤)) : (𝟙 A : A ⟶ A).left.a
 variable {X X' : Type} [AddCommGroup X] [AddCommGroup X']
 
 /- English proof (translation)
-Rewrite using `[← splitTorusPointsEquiv_val, ← splitTorusPointsEquiv_val, ← splitTorusPointsEquiv_val, map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem appTop_mul_charUnit {Z : Over S} (a b : Z ⟶ splitTorus S X) (χ : X) :
     (a * b).left.appTop.hom (charUnit S X χ).val =
@@ -42,7 +42,7 @@ theorem appTop_mul_charUnit {Z : Over S} (a b : Z ⟶ splitTorus S X) (χ : X) :
   rfl
 
 /- English proof (translation)
-Establish `h (z : X)` using `(splitTorusPointsEquiv_val S X _ (𝟙 _) z).trans (appTop_id _)`. Rewrite using `[← h, ← h, ← h, ofAdd_add, map_mul, Units.val_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem charUnit_add (x y : X) :
     (charUnit S X (x + y)).val = (charUnit S X x).val * (charUnit S X y).val := by
@@ -50,9 +50,9 @@ theorem charUnit_add (x y : X) :
   rw [← h, ← h, ← h, ofAdd_add, map_mul, Units.val_mul]
 
 /- English proof (translation)
-Use `haveI : ConnectedSpace (𝟙_ (Over S)).left := ‹ConnectedSpace S›`. Take `⟨x, hx, hu⟩` from `existsUnique_character_of_mul S X' (𝟙_ (Over S)) (splitTorusPointsEquiv S X _ (fst (splitTorus S X') (𝟙_ (Over S)) ≫ f) (Multiplicative.ofAdd χ)) (fun Z t t' y => by`. Rewrite using `[splitTorusPointsEquiv_val, ← appTop_comp, ← appTop_comp, ← appTop_comp, lift_fst_assoc, lift_fst_assoc, lift_fst_assoc, MonObj.mul_comp, appTop_mul_charUnit])`. Use `⟨x, ?_, fun x' hx' => hu x' ?_⟩` and prove the remaining obligations. Use `congrArg (lift (𝟙 (splitTorus S X')) (toUnit _)).left.appTop.hom hx` as an intermediate fact.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[splitTorusPointsEquiv_val, ← appTop_comp, ← appTop_comp, lift_fst_assoc, lift_fst, Category.id_comp, appTop_id]`. Then use the resulting hypothesis. Use `beta_reduce at hx' ⊢`. Rewrite using `[splitTorusPointsEquiv_val, appTop_comp, hx']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem existsUnique_pullback_charUnit [ConnectedSpace S]
     (f : splitTorus S X' ⟶ splitTorus S X) [IsMonHom f] (χ : X) :
@@ -71,7 +71,7 @@ theorem existsUnique_pullback_charUnit [ConnectedSpace S]
     rw [splitTorusPointsEquiv_val, appTop_comp, hx']
 
 /- English proof (translation)
-The claim follows from `(existsUnique_pullback_charUnit (𝟙 (splitTorus S X)) x).unique (appTop_id _) ((appTop_id _).trans h)`.
+A detailed English derivation is pending.
 -/
 theorem charUnit_injective [ConnectedSpace S] {x y : X}
     (h : (charUnit S X x).val = (charUnit S X y).val) : x = y :=
@@ -79,7 +79,7 @@ theorem charUnit_injective [ConnectedSpace S] {x y : X}
     ((appTop_id _).trans h)
 
 /- English proof (translation)
-Use `choose c hc using fun χ => (existsUnique_pullback_charUnit f χ).exists`. Use `⟨AddMonoidHom.mk' c fun a b => charUnit_injective (S := S) ?_, hc⟩` and prove the remaining obligations. Rewrite using `[← hc, charUnit_add, charUnit_add, map_mul, hc, hc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_addMonoidHom [ConnectedSpace S]
     (f : splitTorus S X' ⟶ splitTorus S X) [IsMonHom f] :
@@ -93,9 +93,9 @@ end SplitTorusHom
 open SplitTorusHom in
 
 /- English proof (translation)
-Introduce `S _ X X' _ _ θ hθ`. Take `⟨φ, hφ⟩` from `exists_addMonoidHom θ.hom`. Take `⟨ψ, hψ⟩` from `exists_addMonoidHom θ.inv`. Establish `h1 (x : X') : φ (ψ x) = x` using `charUnit_injective (S := S) (by`. Rewrite using `[← hφ, ← hψ, ← appTop_comp, Iso.hom_inv_id, appTop_id])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 (x : X) : ψ (φ x) = x` using `charUnit_injective (S := S) (by`. Rewrite using `[← hψ, ← hφ, ← appTop_comp, Iso.inv_hom_id, appTop_id])`. Use `⟨{ ψ with invFun := φ, left_inv := h1, right_inv := h2 }, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hφ]`. Conclude with `congrArg (fun z => (charUnit S X' z).val) (h1 x)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_addEquiv_of_splitTorus_iso :
     ∀ (S : Scheme.{0}) [ConnectedSpace S] (X X' : Type) [AddCommGroup X] [AddCommGroup X']

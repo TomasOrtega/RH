@@ -17,27 +17,25 @@ def Cpl (l : ℕ) (G : Type*) [AddCommGroup G] : Prop :=
       ∃ L : G, ∀ n : ℕ, ∃ y : G, L - s n = l ^ n • y
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ => Subsingleton.elim _ _, fun _ _ => ⟨0, fun _ => ⟨0, Subsingleton.elim _ _⟩⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem Cpl.of_subsingleton (l : ℕ) (G : Type*) [AddCommGroup G] [Subsingleton G] : Cpl l G :=
   ⟨fun _ _ => Subsingleton.elim _ _, fun _ _ => ⟨0, fun _ => ⟨0, Subsingleton.elim _ _⟩⟩⟩
 
 /- English proof (translation)
-Use `⟨fun x h => ?_, fun s h => ?_⟩` and prove the remaining obligations. Establish `hπx : π x = 0` using `hQ.1 _ fun n => by`. Take `⟨y, hy⟩` from `h n`. Conclude with `⟨π y, by rw [hy, map_nsmul]⟩`. Take `⟨x', rfl⟩` from `(hex x).1 hπx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `: x' = 0` using `hN.1 x' fun n => by`. Take `⟨y, hy⟩` from `h n`. Establish `h0 : π y = 0` using `htf n _ (by rw [← map_nsmul, ← hy]; exact hπx)`. Take `⟨y', rfl⟩` from `(hex y).1 h0`. Conclude with `⟨y', hj (by rw [hy, map_nsmul])⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[this, map_zero]`. Use `choose y hy using h`. Take `⟨q, hq⟩` from `hQ.2 (fun n => π (s n)) (fun n => ⟨π (y n), by`. Rewrite using `[← map_sub, ← map_nsmul, hy]⟩)`. Use `choose z hz using hq`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨p, rfl⟩` from `hπ q`. Use `choose w hw using fun n => hπ (z n)`. Establish `ht : ∀ n, π (s n + l ^ n • w n - p) = 0` using `fun n => by`. Rewrite using `[map_sub, map_add, map_nsmul, hw, ← hz n]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `choose t ht' using fun n => (hex _).1 (ht n)`. Establish `step : ∀ n, ∃ v : N, t (n + 1) - t n = l ^ n • v` using `fun n => by`. Establish `e : j (t (n + 1) - t n) = l ^ n • (y n + l • w (n + 1) - w n)`. Rewrite using `[map_sub, ht', ht', smul_sub, smul_add, ← hy, pow_succ, mul_smul]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `h0 : π (y n + l • w (n + 1) - w n) = 0` using `htf n _ (by`. Rewrite using `[← map_nsmul, ← e]`. Conclude with `(hex _).2 ⟨_, rfl⟩)`. Take `⟨v, hv⟩` from `(hex _).1 h0`. Conclude with `⟨v, hj (by rw [e, map_nsmul, hv])⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨T, hT⟩` from `hN.2 t step`. Use `choose u hu using hT`. Use `⟨j T + p, fun n => ⟨j (u n) + w n, ?_⟩⟩` and prove the remaining obligations. Use `congrArg j (hu n)` as an intermediate fact. Rewrite `this` using `[map_sub, ht', map_nsmul]`.
-
-Rewrite using `[smul_add, ← this]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem Cpl.ext {l : ℕ} {N P Q : Type*} [AddCommGroup N] [AddCommGroup P] [AddCommGroup Q]
     (j : N →+ P) (π : P →+ Q) (hj : Function.Injective j) (hπ : Function.Surjective π)
@@ -78,15 +76,13 @@ theorem Cpl.ext {l : ℕ} {N P Q : Type*} [AddCommGroup N] [AddCommGroup P] [Add
     rw [smul_add, ← this]; abel
 
 /- English proof (translation)
-Use `choose c hc using h1`. Establish `hadd : ∀ x y, mk (c (x + y)) = mk (c x) + mk (c y)` using `fun x y => by`. Rewrite using `[← sub_eq_zero, ← map_add, ← map_sub, ← h2, map_sub, map_add]`. Use `K.sub_mem (K.add_mem (hc x) (hc y)) (hc (x + y))` as an intermediate fact. Establish `e : g (c (x + y)) - (g (c x) + g (c y)) = x - g (c x) + (y - g (c y)) - (x + y - g (c (x + y)))` using `by abel`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[e]` and apply the resulting hypothesis. Use `⟨AddMonoidHom.mk' (fun x => mk (c x)) hadd, fun q => ?_, fun x => ?_⟩` and prove the remaining obligations. Take `⟨w, rfl⟩` from `hmk q`. Use `⟨g w, ?_⟩` and prove the remaining obligations. Use `show mk (c (g w)) = mk w`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← sub_eq_zero, ← map_sub, ← h2, map_sub]`. Use `K.neg_mem (hc (g w))` as an intermediate fact. Rewrite `this` using `[neg_sub]`. Then use the resulting hypothesis. Use `show mk (c x) = 0 ↔ x ∈ K`. Rewrite using `[← h2]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `K.add_mem (hc x) h` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Introduce `h`.
-
-Use `K.sub_mem h (hc x)` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_pi {P V Q : Type*} [AddCommGroup P] [AddCommGroup V] [AddCommGroup Q] (K : AddSubgroup P)
     (g : V →+ P) (mk : V →+ Q) (hmk : Function.Surjective mk) (h1 : ∀ x, ∃ w, x - g w ∈ K)
@@ -116,9 +112,9 @@ theorem exists_pi {P V Q : Type*} [AddCommGroup P] [AddCommGroup V] [AddCommGrou
       rwa [sub_sub_cancel] at this
 
 /- English proof (translation)
-Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha⟩`. Conclude with `⟨a, by rw [← ha, nsmul_eq_mul, Nat.cast_pow, mul_comm]⟩`. Introduce and unpack `⟨a, ha⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨a, by rw [ha, nsmul_eq_mul, Nat.cast_pow, mul_comm]⟩`.
+Supply the required witnesses or components.
 -/
 theorem smodEq_iff {R : Type*} [CommRing R] (l n : ℕ) (x y : R) :
     x ≡ y [SMOD (Ideal.span {(l : R)} ^ n • (⊤ : Submodule R R))] ↔ ∃ z : R, x - y = l ^ n • z := by
@@ -130,11 +126,11 @@ theorem smodEq_iff {R : Type*} [CommRing R] (l n : ℕ) (x y : R) :
     exact ⟨a, by rw [ha, nsmul_eq_mul, Nat.cast_pow, mul_comm]⟩
 
 /- English proof (translation)
-Use `⟨fun x hx => ?_, fun s hs => ?_⟩` and prove the remaining obligations. Use `h.toIsHausdorff.haus' x fun n => ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `hx n`. Conclude with `(smodEq_iff l n x 0).2 ⟨y, by rw [sub_zero, hy]⟩`. Establish `hc : ∀ {a b : ℕ}, a ≤ b → s a ≡ s b [SMOD (Ideal.span {(l : R)} ^ a • (⊤ : Submodule R R))]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b hab`. Proceed by induction on `b, hab using Nat.le_induction with`. Consider the case `base => exact SModEq.refl _`. Consider the case `succ b hab ih`. Use `ih.trans ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `hs b`. Establish `h1 : s (b + 1) ≡ s b [SMOD (Ideal.span {(l : R)} ^ b • (⊤ : Submodule R R))]` using `(smodEq_iff l b _ _).2 ⟨y, hy⟩`. Conclude with `(h1.mono (Submodule.smul_mono_left (Ideal.pow_le_pow_right hab))).symm`. Take `⟨L, hL⟩` from `h.toIsPrecomplete.prec' s hc`. Conclude with `⟨L, fun n => (smodEq_iff l n _ _).1 (hL n).symm⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cpl_of_adic {R : Type*} [CommRing R] (l : ℕ) (h : IsAdicComplete (Ideal.span {(l : R)}) R) : Cpl l R := by
   refine ⟨fun x hx => ?_, fun s hs => ?_⟩
@@ -155,9 +151,9 @@ theorem cpl_of_adic {R : Type*} [CommRing R] (l : ℕ) (h : IsAdicComplete (Idea
     exact ⟨L, fun n => (smodEq_iff l n _ _).1 (hL n).symm⟩
 
 /- English proof (translation)
-Use `{ haus' := fun x hx => ?_, prec' := fun s hs => ?_ }` and prove the remaining obligations. Conclude with `h.1 x fun n => by`. Take `⟨y, hy⟩` from `(smodEq_iff l n x 0).1 (hx n)`. Conclude with `⟨y, by rwa [sub_zero] at hy⟩`. Take `⟨L, hL⟩` from `h.2 s fun n => (smodEq_iff l n _ _).1 (hs n.le_succ).symm`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨L, fun n => ((smodEq_iff l n _ _).2 (hL n)).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem adic_of_cpl {R : Type*} [CommRing R] (l : ℕ) (h : Cpl l R) : IsAdicComplete (Ideal.span {(l : R)}) R := by
   refine { haus' := fun x hx => ?_, prec' := fun s hs => ?_ }
@@ -177,7 +173,7 @@ def F (i : ℕ) : AddSubgroup (A f ξ l M) :=
   (Ideal.span {f ξ ^ i}).toAddSubgroup.comap (ι f ξ l M).toAddMonoidHom
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_F {i : ℕ} {x : A f ξ l M} : x ∈ F f ξ l M i ↔ ι f ξ l M x ∈ Ideal.span {f ξ ^ i} := Iff.rfl
 
@@ -187,13 +183,13 @@ def S (i : ℕ) : AddSubgroup B :=
 def co (l M i : ℕ) : ℚ := ((i.factorial : ℚ))⁻¹ * (((l : ℚ) ^ M)⁻¹) ^ i
 
 /- English proof (translation)
-Simplify using `only [dpE, η, co, smul_pow, smul_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dpE_eq (i : ℕ) : dpE f ξ l M i = co l M i • f ξ ^ i := by
   simp only [dpE, η, co, smul_pow, smul_smul]
 
 /- English proof (translation)
-Establish `: (l : ℚ) ≠ 0` using `by exact_mod_cast hl`. Establish `h2 : (i.factorial : ℚ) ≠ 0` using `by exact_mod_cast i.factorial_ne_zero`. Unfold `co`. Check the signs of the components of the expression.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem co_ne {l : ℕ} (hl : l ≠ 0) (M i : ℕ) : co l M i ≠ 0 := by
   have : (l : ℚ) ≠ 0 := by exact_mod_cast hl
@@ -202,9 +198,9 @@ theorem co_ne {l : ℕ} (hl : l ≠ 0) (M i : ℕ) : co l M i ≠ 0 := by
   positivity
 
 /- English proof (translation)
-Establish `h1 : (l : ℚ) ≠ 0` using `by exact_mod_cast hl`. Establish `h2 : (i.factorial : ℚ) ≠ 0` using `by exact_mod_cast i.factorial_ne_zero`. Establish `h3 : ((i : ℚ) + 1) ≠ 0` using `by positivity`. Establish `hL : (l : ℚ) ^ M ≠ 0` using `pow_ne_zero _ h1`. Simplify using `only [co, Nat.factorial_succ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Generalize the expression as in `(l : ℚ) ^ M = L at hL`. Clear the denominators using the available nonvanishing facts. Rewrite using `[pow_succ, mul_comm, mul_assoc, one_div, inv_mul_cancel₀ hL, mul_one]`.
+Move the embeddings inside the algebraic operations. Replace the chosen expression with an arbitrary variable. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem co_succ {l : ℕ} (hl : l ≠ 0) (M i : ℕ) :
     (((l ^ M * (i + 1) : ℕ) : ℚ)) * co l M (i + 1) = co l M i := by
@@ -219,20 +215,20 @@ theorem co_succ {l : ℕ} (hl : l ≠ 0) (M i : ℕ) :
   rw [pow_succ, mul_comm, mul_assoc, one_div, inv_mul_cancel₀ hL, mul_one]
 
 /- English proof (translation)
-Rewrite using `[dpE_eq, Algebra.smul_def]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dpE_mem (j : ℕ) : dpE f ξ l M j ∈ Ideal.span {f ξ ^ j} := by
   rw [dpE_eq, Algebra.smul_def]
   exact Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)
 
 /- English proof (translation)
-The claim follows from `Ideal.span_singleton_le_span_singleton.2 (pow_dvd_pow _ h)`.
+A detailed English derivation is pending.
 -/
 theorem span_mono {i j : ℕ} (h : i ≤ j) : (Ideal.span {f ξ ^ j} : Ideal B) ≤ Ideal.span {f ξ ^ i} :=
   Ideal.span_singleton_le_span_singleton.2 (pow_dvd_pow _ h)
 
 /- English proof (translation)
-Establish `: S f ξ l M i ≤ (Ideal.span {f ξ ^ i}).toAddSubgroup`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, j, hj, rfl⟩`. Conclude with `Ideal.mul_mem_left _ _ (span_mono f ξ hj (dpE_mem f ξ l M j))`. Conclude with `this hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem S_le_span (i : ℕ) {x : B} (hx : x ∈ S f ξ l M i) : x ∈ Ideal.span {f ξ ^ i} := by
   have : S f ξ l M i ≤ (Ideal.span {f ξ ^ i}).toAddSubgroup := by
@@ -242,22 +238,22 @@ theorem S_le_span (i : ℕ) {x : B} (hx : x ∈ S f ξ l M i) : x ∈ Ideal.span
   exact this hx
 
 /- English proof (translation)
-Take `⟨n, c, rfl⟩` from `(GlobalTheory.CompanionTheory.LatSpan.mem_sub_iff f ξ l M x).1 hx`. Conclude with `AddSubgroup.sum_mem _ fun i _ => AddSubgroup.subset_closure ⟨c i, i, Nat.zero_le _, rfl⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sub_le_S {x : B} (hx : x ∈ sub f ξ l M) : x ∈ S f ξ l M 0 := by
   obtain ⟨n, c, rfl⟩ := (GlobalTheory.CompanionTheory.LatSpan.mem_sub_iff f ξ l M x).1 hx
   exact AddSubgroup.sum_mem _ fun i _ => AddSubgroup.subset_closure ⟨c i, i, Nat.zero_le _, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨w, j, hj, rfl⟩` from `hx`. Break down `hj.eq_or_lt with rfl | hj` into its components or cases. Conclude with `⟨w, by rw [sub_self]; exact AddSubgroup.zero_mem _⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨0, by`. Rewrite using `[map_zero, zero_mul, sub_zero]`. Conclude with `AddSubgroup.subset_closure ⟨w, j, hj, rfl⟩⟩`. Consider the case `zero => exact ⟨0, by rw [map_zero, zero_mul, sub_zero]; exact AddSubgroup.zero_mem _⟩`. Consider the case `add x y _ _ hx hy`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `hx`. Take `⟨b, hb⟩` from `hy`. Use `⟨a + b, ?_⟩` and prove the remaining obligations. Use `AddSubgroup.add_mem _ ha hb` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `neg x _ hx`. Take `⟨a, ha⟩` from `hx`. Use `⟨-a, ?_⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `AddSubgroup.neg_mem _ ha` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_neg]`. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem head (i : ℕ) {y : B} (hy : y ∈ S f ξ l M i) :
     ∃ w : W, y - f w * dpE f ξ l M i ∈ S f ξ l M (i + 1) := by
@@ -287,14 +283,14 @@ theorem head (i : ℕ) {y : B} (hy : y ∈ S f ξ l M i) :
 variable {f ξ l}
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Conclude with `h.l0 Nat.cast_zero`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem l_ne {m : ℕ} (h : Hyp f ξ l m) : l ≠ 0 := by
   rintro rfl
   exact h.l0 Nat.cast_zero
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.1 hw`. Establish `hc` using `co_ne (l_ne h) M i`. Use `h.gr i hi w ((co l M i)⁻¹ • b) ?_` and prove the remaining obligations. Rewrite `hb` using `[dpE_eq, mul_smul_comm, mul_comm b]`. Rewrite using `[mul_smul_comm, hb, smul_smul, inv_mul_cancel₀ hc, one_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem dvd_of_mem {m : ℕ} (h : Hyp f ξ l m) {i : ℕ} (hi : i < m) {w : W}
     (hw : f w * dpE f ξ l M i ∈ Ideal.span {f ξ ^ (i + 1)}) : ξ ∣ w := by
@@ -305,7 +301,7 @@ theorem dvd_of_mem {m : ℕ} (h : Hyp f ξ l m) {i : ℕ} (hi : i < m) {w : W}
   rw [mul_smul_comm, hb, smul_smul, inv_mul_cancel₀ hc, one_smul]
 
 /- English proof (translation)
-Rewrite using `[dpE_eq, dpE_eq, mul_smul_comm, ← pow_succ', ← co_succ (l_ne h) M i, mul_smul, Nat.cast_smul_eq_nsmul ℚ, nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem xi_mul {m : ℕ} (h : Hyp f ξ l m) (i : ℕ) :
     f ξ * dpE f ξ l M i = ((l ^ M * (i + 1) : ℕ) : B) * dpE f ξ l M (i + 1) := by
@@ -313,9 +309,9 @@ theorem xi_mul {m : ℕ} (h : Hyp f ξ l m) (i : ℕ) :
     Nat.cast_smul_eq_nsmul ℚ, nsmul_eq_mul]
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `head f ξ l M i hx`. Establish `h1 : f w * dpE f ξ l M i ∈ Ideal.span {f ξ ^ (i + 1)}`. Use `Ideal.sub_mem _ hx' (S_le_span f ξ l M (i + 1) hw)` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Take `⟨d, rfl⟩` from `dvd_of_mem M h hi h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Establish `h2 : f (ξ * d) * dpE f ξ l M i ∈ S f ξ l M (i + 1)`. Use `AddSubgroup.subset_closure ⟨d * ((l ^ M * (i + 1) : ℕ) : W), i + 1, le_rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, map_natCast, mul_comm (f ξ), mul_assoc, xi_mul M h, mul_assoc]`. Use `AddSubgroup.add_mem _ hw h2` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem S_push {m : ℕ} (h : Hyp f ξ l m) {i : ℕ} (hi : i < m) {x : B} (hx : x ∈ S f ξ l M i)
     (hx' : x ∈ Ideal.span {f ξ ^ (i + 1)}) : x ∈ S f ξ l M (i + 1) := by
@@ -331,7 +327,7 @@ theorem S_push {m : ℕ} (h : Hyp f ξ l m) {i : ℕ} (hi : i < m) {x : B} (hx :
   rwa [sub_add_cancel] at this
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => exact sub_le_S f ξ l M hx`. Consider the case `succ i ih`. Conclude with `S_push M h hi (ih (by omega) (span_mono f ξ i.le_succ hx')) hx'`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mem_S {m : ℕ} (h : Hyp f ξ l m) {i : ℕ} (hi : i ≤ m) {x : B} (hx : x ∈ sub f ξ l M)
     (hx' : x ∈ Ideal.span {f ξ ^ i}) : x ∈ S f ξ l M i := by
@@ -345,13 +341,13 @@ variable (f ξ l)
 def gA (i : ℕ) (w : W) : A f ξ l M := ofW f ξ l M w * dpA f ξ l M i
 
 /- English proof (translation)
-Rewrite using `[gA, map_mul, ι_ofW, ι_dpA]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ι_gA (i : ℕ) (w : W) : ι f ξ l M (gA f ξ l M i w) = f w * dpE f ξ l M i := by
   rw [gA, map_mul, ι_ofW, ι_dpA]
 
 /- English proof (translation)
-Rewrite using `[mem_F, ι_gA]`. Conclude with `Ideal.mul_mem_left _ _ (dpE_mem f ξ l M i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gA_mem (i : ℕ) (w : W) : gA f ξ l M i w ∈ F f ξ l M i := by
   rw [mem_F, ι_gA]
@@ -366,9 +362,7 @@ def gF (i : ℕ) : W →+ F f ξ l M i :=
 variable {f ξ l}
 
 /- English proof (translation)
-Rewrite using `[mem_F, ι_gA]`. Prove the components needed by the constructor for the conclusion. Conclude with `dvd_of_mem M h hi`. Introduce and unpack `⟨d, rfl⟩`. Rewrite using `[map_mul, mul_comm (f ξ), mul_assoc, xi_mul M h]`.
-
-Conclude with `Ideal.mul_mem_left _ _ (Ideal.mul_mem_left _ _ (dpE_mem f ξ l M (i + 1)))`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gA_succ {m : ℕ} (h : Hyp f ξ l m) {i : ℕ} (hi : i < m) (w : W) :
     gA f ξ l M i w ∈ F f ξ l M (i + 1) ↔ ξ ∣ w := by
@@ -380,7 +374,7 @@ theorem gA_succ {m : ℕ} (h : Hyp f ξ l m) {i : ℕ} (hi : i < m) (w : W) :
     exact Ideal.mul_mem_left _ _ (Ideal.mul_mem_left _ _ (dpE_mem f ξ l M (i + 1)))
 
 /- English proof (translation)
-Establish `h1` using `mem_S M h hi.le x.2 hx`. Take `⟨w, hw⟩` from `head f ξ l M i h1`. Use `⟨w, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_F, map_sub, ι_gA]`. Conclude with `S_le_span f ξ l M (i + 1) hw`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sub_mem {m : ℕ} (h : Hyp f ξ l m) {i : ℕ} (hi : i < m) {x : A f ξ l M}
     (hx : x ∈ F f ξ l M i) : ∃ w, x - gA f ξ l M i w ∈ F f ξ l M (i + 1) := by
@@ -391,19 +385,17 @@ theorem exists_sub_mem {m : ℕ} (h : Hyp f ξ l m) {i : ℕ} (hi : i < m) {x : 
   exact S_le_span f ξ l M (i + 1) hw
 
 /- English proof (translation)
-Introduce `_ hx` and use `span_mono f ξ i.le_succ hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem F_le {i : ℕ} : F f ξ l M (i + 1) ≤ F f ξ l M i :=
   fun _ hx => span_mono f ξ i.le_succ hx
 
 /- English proof (translation)
-Use `haveI := h.dom`. Take `⟨π, hs, hk⟩` from `exists_pi ((F f ξ l M (i + 1)).addSubgroupOf (F f ξ l M i)) (gF f ξ l M i) (Ideal.Quotient.mk (Ideal.span {ξ})).toAddMonoidHom Ideal.Quotient.mk_surjective (fun x => by`. Take `⟨w, hw⟩` from `exists_sub_mem M h hi x.2`. Conclude with `⟨w, AddSubgroup.mem_addSubgroupOf.2 hw⟩)`. Use the proof step `(fun w => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[AddSubgroup.mem_addSubgroupOf]`. Use `(gA_succ M h hi w).trans ?_` and prove the remaining obligations. Use `show _ ↔ Ideal.Quotient.mk _ w = 0`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton])`. Use `Cpl.ext (AddSubgroup.inclusion (F_le M)) π (AddSubgroup.inclusion_injective _) hs (fun x => ?_) (fun n q hq => ?_) hN (cpl_of_adic l h.cpl)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hk, AddSubgroup.mem_addSubgroupOf]`. Conclude with `⟨fun hx => ⟨⟨x, hx⟩, rfl⟩, by rintro ⟨y, rfl⟩; exact y.2⟩`. Rewrite `hq` using `[nsmul_eq_mul]`. Conclude with `(mul_eq_zero.1 hq).resolve_left (by`. Rewrite using `[Nat.cast_pow]`.
-
-Conclude with `pow_ne_zero _ h.l0)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cpl_step {m : ℕ} (h : Hyp f ξ l m) {i : ℕ} (hi : i < m) (hN : Cpl l (F f ξ l M (i + 1))) :
     Cpl l (F f ξ l M i) := by
@@ -428,11 +420,11 @@ theorem cpl_step {m : ℕ} (h : Hyp f ξ l m) {i : ℕ} (hi : i < m) (hN : Cpl l
       exact pow_ne_zero _ h.l0)
 
 /- English proof (translation)
-Proceed by induction on `d generalizing i with`. Consider the case `zero`. Establish `hm : i = m` using `by omega`. Substitute `hm` using the available equality. Use `haveI : Subsingleton (F f ξ l M i) := ⟨fun a b => by`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `key : ∀ c : F f ξ l M i, c = 0` using `fun c => by`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `ι_injective f ξ l M` to reduce the goal to its premises. Use `c.2` as an intermediate fact. Rewrite `this` using `[mem_F, h.nil, Ideal.span_singleton_eq_bot.2 rfl]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Rewrite using `[key a, key b]⟩`. Conclude with `Cpl.of_subsingleton l _`. Consider the case `succ d ih`. Conclude with `cpl_step M h (by omega) (ih (i + 1) (by omega))`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cpl_F {m : ℕ} (h : Hyp f ξ l m) (d i : ℕ) (hd : i + d = m) : Cpl l (F f ξ l M i) := by
   induction d generalizing i with
@@ -452,14 +444,14 @@ theorem cpl_F {m : ℕ} (h : Hyp f ξ l m) (d i : ℕ) (hd : i + d = m) : Cpl l 
     exact cpl_step M h (by omega) (ih (i + 1) (by omega))
 
 /- English proof (translation)
-Rewrite using `[mem_F, pow_zero, Ideal.span_singleton_one]`. Discharge the goal by the elementary cases of `trivial`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 -/
 theorem F_zero (x : A f ξ l M) : x ∈ F f ξ l M 0 := by
   rw [mem_F, pow_zero, Ideal.span_singleton_one]
   trivial
 
 /- English proof (translation)
-Use `adic_of_cpl l ?_` and prove the remaining obligations. Use `Cpl.ext (Q := PUnit.{1}) (F f ξ l M 0).subtype 0 Subtype.val_injective (fun _ => ⟨0, rfl⟩) (fun x => ⟨fun _ => ⟨⟨x, F_zero M x⟩, rfl⟩, fun _ => rfl⟩) (fun _ _ _ => rfl) (cpl_F M h m 0 (by omega)) (Cpl.of_subsingleton l _)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem isAdicComplete_A {m : ℕ} (h : Hyp f ξ l m) :
     IsAdicComplete (Ideal.span {(l : A f ξ l M)}) (A f ξ l M) := by

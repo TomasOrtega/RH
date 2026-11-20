@@ -11,25 +11,23 @@ open GlobalTheory.KZ GlobalTheory.K4 UpperTheory.V.Z.Kato.Sym UpperTheory.V.Z.Ka
 attribute [local instance] algMdl
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X l n M hl hM hd u v hu hv huF hvF e he η hη s hs w hw f hf`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Establish `hm : 0 < l ^ n` using `pow_pos hl.pos n`. Use `haveI : NeZero (l ^ n) := ⟨hm.ne'⟩`. Take `⟨-, -, -, -, -, -, hlift, -⟩` from `admB Ω ε X`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨σ, hσ⟩` from `hlift (X.gal s)`. Take `⟨c1, c2, c3, c4, c5⟩` from `cjB Ω ε X M e he`. Take `⟨-, -, -, -, -, -, hcyc⟩` from `lgB Ω ε X (l ^ n) hm`. Establish `hfix : FixF X M σ` using `fun g hg => by`. Rewrite using `[hσ g, ((mem_mdl_iff X _ _ _).1 hg).2 s hs]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : cyc (l ^ n) s = 1`. Establish `hζ` using `isPrimitiveRoot_eOm ε hm.ne'`. Establish `h1` using `(hcyc s s).2.2 _ hζ.pow_eq_one`. Rewrite `h1` using `[(mem_fixMu_iff s).1 hs _ ((hζ.pow_eq_one_iff_dvd M).2 hd)]`. Establish `h2` using `hζ.pow_inj (ZMod.val_lt (cyc (l ^ n) s)) (ZMod.val_lt (1 : ZMod (l ^ n))) (by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h1, ZMod.val_one_eq_one_mod, ← pow_eq_pow_mod 1 hζ.pow_eq_one, pow_one])`. Conclude with `ZMod.val_injective _ h2`. Establish `hL : IsTopLift X M s (cj X M e σ)` using `fun g => ⟨⟨X.gal s g, gal_mem_topL X hM.ne' hs g.2⟩, rfl, e.injective (by rw [c1 σ hfix, he, he, hσ])⟩`. Establish `h0` using `isTopLift_topLift X hM.ne' hs`. Establish `hg` using `IsTopLift.inv_mul_mem_geo h0 hL`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨hw0, θ, hθ, hk⟩` from `hw`. Establish `hθ0 : θ ≠ 0`. Introduce and unpack `rfl`. Rewrite `hθ` using `[zero_pow hm.ne']`. Conclude with `hw0 ((algebraMap (topL X M) (topBar X M)).injective (by rw [← hθ, map_zero]))`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `⟨σ, hσ, e θ, by rw [← map_pow, hθ, he, hf], fun h hh => ?_⟩` and prove the remaining obligations. Take `⟨hhF, hgeo⟩` from `c3 h fun g _ => hh g`. Establish `k1 : ka X (l ^ n) (e θ) h = GlobalTheory.NeedB.kum (K` using `topF X M) (N := l ^ n) (topZeta X M l n) θ (cj X M e h) := by`. Unfold `ka`. Rewrite using `[← c1 h hhF]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `c5 l n hl.ne_zero h hhF _ _ hθ0 _ (TopW.apply_eq_kum (isPrimitiveRoot_topZeta X M hl.ne_zero n) hw0 hθ hgeo)`. Establish `hconj : (topLift X M s)⁻¹ * cj X M e h * (topLift X M s)⁻¹⁻¹ ∈ geo (topF X M) (topL X M) (topBar X M)`. Rewrite `hgeo`, the goal using `[TopW.mem_geo]`. Introduce `z`. Take `⟨z', -, hz⟩` from `h0 z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[inv_inv, AlgEquiv.mul_apply, AlgEquiv.mul_apply, hz, hgeo, ← hz, ← AlgEquiv.mul_apply, inv_mul_cancel, AlgEquiv.one_apply]`. Establish `k2 : GlobalTheory.KEdge.edge (topChar X M l n u) (topChar X M l n v) η (cj X M e σ)⁻¹ (cj X M e h) = GlobalTheory.KEdge.edge (topChar X M l n u) (topChar X M l n v) η (topLift X M s)⁻¹ (cj X M e h)`. Establish `e1 : (cj X M e σ)⁻¹ = ((topLift X M s)⁻¹ * cj X M e σ)⁻¹ * (topLift X M s)⁻¹` using `by group`. Rewrite using `[e1, TopW.edge_mul_conj, (edgeGeo _ _ _ _ _ η hη.1).1 _ (inv_mem hg) _ hconj, zero_add]`. Establish `hi` using `(c2 σ σ hfix hfix).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : cj X M e (σ⁻¹ * h * σ) = (cj X M e σ)⁻¹ * cj X M e h * cj X M e σ`. Rewrite using `[(c2 _ σ (c2 _ h hi.1 hhF).1 hfix).2.2.1, (c2 _ h hi.1 hhF).2.2.1, hi.2.2]`. Establish `a` using `(chB Ω ε X l n M hl hM hd u hu.1 huF e he).2`. Establish `b` using `(chB Ω ε X l n M hl hM hd v hv.1 hvF e he).2`. Rewrite using `[k1, hk _ hgeo, ← k2, TopW.edge_inv, hc, ← e2, ← a h hhF, ← a σ hfix, ← b h hhF, ← b σ hfix]`.
-
-Simplify using `only [dif, Pt.mv, topPt, one_pow, one_mul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Kato.Sym.PT.ptGal :
     UpperTheory.V.Z.Kato.Sym.PT.PtGal := by

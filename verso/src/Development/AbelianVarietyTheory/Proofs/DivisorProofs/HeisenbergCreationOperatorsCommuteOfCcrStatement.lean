@@ -8,7 +8,7 @@ open scoped TensorProduct Matrix Classical GlobalTheory.IndefiniteRowSideFullHec
 open NumberField Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.BasicNotions.TH GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.FockAlg GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.RealLift
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CCRFock.fockM_comm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHeisenbergCreationOperatorsCommuteOfCcr.lean&line=32#L32)
 -/

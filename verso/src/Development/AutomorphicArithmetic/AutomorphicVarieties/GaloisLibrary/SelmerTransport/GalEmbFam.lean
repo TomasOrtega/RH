@@ -3,13 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base
 
 /- English proof (translation)
-Introduce `k E Ω _ _ _ _ _ _ _ _ _ _ _ l _`. Establish `hD : ∀ A : ValuationSubring Ω, (Dec (F` using `k) A).comap (galEmb k E Ω) = Dec (F := E) A := fun A => by`. Use extensionality with `σ`. Rewrite using `[Subgroup.mem_comap, mem_Dec, mem_Dec]`. Conclude with `Iff.rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 
-Establish `hI : ∀ A : ValuationSubring Ω, (Ine (F` using `k) A).comap (galEmb k E Ω) = Ine (F := E) A := fun A => by`. Use extensionality with `σ`. Rewrite using `[Subgroup.mem_comap]`. Conclude with `and_congr (SetLike.ext_iff.1 (hD A) σ) Iff.rfl`. Use `⟨fun A => ⟨hD A, hI A⟩, ?_, ?_, fun e => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `D`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨D', ⟨A, hl, rfl⟩ | ⟨A, rfl⟩, rfl⟩`. Conclude with `Or.inl ⟨A, hl, hD A⟩`. Conclude with `Or.inr ⟨A, hI A⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Prove the first alternative. Prove the second alternative. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `(⟨A, hl, rfl⟩ | ⟨A, rfl⟩)`. Conclude with `⟨_, Or.inl ⟨A, hl, rfl⟩, hD A⟩`. Conclude with `⟨_, Or.inr ⟨A, rfl⟩, hI A⟩`. Conclude with `MonoidHom.ext fun _ => rfl`. Conclude with `MonoidHom.ext fun _ => rfl`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Base.galEmbFam :
     ∀ (k E Ω : Type) [Field k] [NumberField k] [Field E] [NumberField E] [Field Ω] [Algebra k E] [Algebra k Ω] [Algebra E Ω]

@@ -23,23 +23,23 @@ def DepthZeroInertiaBig : Prop :=
     (rc (cls σ)).inePol t = GlobalTheory.SerSys.TameGen.liftPoly L.teich P
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ _ g _ A w h rc hrc i hi κ L t ht hT n _` and use `H E Ω g A w h rc hrc i hi κ L t ht hT n`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem depthZeroInertiaBig_of (H : GlobalTheory.Published.DepthZeroInertia) : DepthZeroInertiaBig :=
   fun E Ω _ _ _ _ _ _ g _ A w h rc hrc i hi κ L t ht hT n _ => H E Ω g A w h rc hrc i hi κ L t ht hT n
 
 /- English proof (translation)
-Establish `hg : D.host.g k % (D.host.QS * D.host.q * D.host.d) = 1` using `D.ntypes.g_cond k`. Establish `hq` using `D.host.qd_big`. Establish `ht : 0 < D.R.t` using `D.R.t_odd.pos`. Establish `hr : 1 ≤ D.R.r` using `by unfold Formalism.BasicNotions.Ranks.r; have := D.R.two_le_m; omega`. Establish `h2 : 2 ≤ D.host.g k` using `(D.host.g_prime k).two_le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ0 : 0 < D.host.QS`. Break down `Nat.eq_zero_or_pos D.host.QS with h | h` into its components or cases. Rewrite `hg` using `[h]`. Simplify using `at hg`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `h`. Establish `h16 : 16 ≤ D.host.QS` using `Nat.le_of_dvd hQ0 ((pow_dvd_pow 2 (m := 4) (by have := D.host.two_le_e; omega)).trans D.host.tower_dvd)`. Establish `hdvd : D.host.QS * D.host.q * D.host.d ∣ D.host.g k - 1`. Use `Nat.mod_add_div (D.host.g k) (D.host.QS * D.host.q * D.host.d)` as an intermediate fact. Rewrite `this` using `[hg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨D.host.g k / (D.host.QS * D.host.q * D.host.d), Nat.sub_eq_of_eq_add' this.symm⟩`. Establish `hle` using `Nat.le_of_dvd (by omega) hdvd`. Establish `hn' : n ≤ 4 * D.R.t * D.R.r + 1`. Unfold `Formalism.BasicNotions.Ranks.nV at hn`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hq1 : n ≤ D.host.q` using `by omega`. Establish `hd1 : n ≤ D.host.d` using `by omega`. Establish `h5 : n * n ≤ D.host.q * D.host.d` using `Nat.mul_le_mul hq1 hd1`. Establish `h6 : 16 * (D.host.q * D.host.d) ≤ D.host.QS * D.host.q * D.host.d`. Rewrite using `[mul_assoc D.host.QS]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.mul_le_mul_right _ h16`. Rewrite using `[sq]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem big_of_le_nV (D : Formalism.BasicNotions.D7) (k : Fin 2) {n : ℕ} (hn : n ≤ D.R.nV) : 16 * n ^ 2 < D.host.g k := by
   have hg : D.host.g k % (D.host.QS * D.host.q * D.host.d) = 1 := D.ntypes.g_cond k

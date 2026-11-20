@@ -5,27 +5,25 @@ namespace ReciprocityTheory.AnForm
 open Function
 
 /- English proof (translation)
-Use `set col : Fin (e + c) → (Fin c → ℂ) := fun j => A (Pi.single j 1)`. Establish `hexp : ∀ v : Fin (e + c) → ℂ, A v = ∑ j, v j • col j`. Introduce `v`. Establish `: v = ∑ j, v j • (Pi.single j 1 : Fin (e + c) → ℂ)`. Use extensionality with `k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `conv_lhs => rw [this]`. Simplify using `[col, map_sum, map_smul]`. Establish `hspan : Submodule.span ℂ (Set.range col) = ⊤`. Rewrite using `[eq_top_iff]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `y -`. Take `⟨v, rfl⟩` from `hA y`. Rewrite using `[hexp]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Take `⟨κ, a, ha, hsp, hli⟩` from `exists_linearIndependent' ℂ col`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Finite κ` using `Finite.of_injective a ha`. Establish `: Fintype κ` using `Fintype.ofFinite κ`. Establish `hsp' : Submodule.span ℂ (Set.range (col ∘ a)) = ⊤` using `hsp.trans hspan`. Set `b : Module.Basis κ ℂ (Fin c → ℂ)` to `Module.Basis.mk hli (by rw [hsp'])`. Establish `hκ : Fintype.card κ = c`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[← Module.finrank_eq_card_basis b, Module.finrank_fin_fun]`. Set `q : Fin (e + c) → Prop` to `fun j => j ∈ Set.range a`. Set `eT : Fin c ≃ {j // q j}` to `(Fintype.equivFinOfCardEq hκ).symm.trans (Equiv.ofInjective a ha)`. Establish `hcard : Fintype.card {j // ¬ q j} = e`. Rewrite using `[Fintype.card_subtype_compl, Fintype.card_fin, ← Fintype.card_congr eT, Fintype.card_fin]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use linear arithmetic over natural numbers and integers. Set `eC : Fin e ≃ {j // ¬ q j}` to `(Fintype.equivFinOfCardEq hcard).symm`. Set `σ : Equiv.Perm (Fin (e + c))` to `finSumFinEquiv.symm.trans ((Equiv.sumCongr eC eT).trans ((Equiv.sumComm _ _).trans (Equiv.sumCompl q)))`. Use `⟨σ, fun v hv hAv => ?_⟩` and prove the remaining obligations. Establish `hσ : ∀ i, σ (Fin.castAdd c i) = (eC i).1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `i`. Simplify using `[σ]`. Establish `hoff : ∀ j, ¬ q j → v j = 0`. Introduce `j hj`. Use `hv (eC.symm ⟨j, hj⟩)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[hσ, Equiv.apply_symm_apply]`. Then use the resulting hypothesis. Establish `hsum : ∑ k, v (a k) • (col ∘ a) k = 0`. Rewrite using `[← hAv, hexp]`. Use `show ∑ k, v (a k) • col (a k) = _`. Rewrite using `[← Finset.sum_image (s := Finset.univ) (g := a) (f := fun j => v j • col j) (fun x _ y _ h => ha h)]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Apply `Finset.sum_subset (Finset.subset_univ _)` to reduce the goal to its premises. Introduce `j _ hj`. Establish `: ¬ q j`. Introduce and unpack `⟨k, rfl⟩`. Conclude with `hj (Finset.mem_image_of_mem _ (Finset.mem_univ k))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Simplify using `[hoff j this]`. Establish `hzero` using `(Fintype.linearIndependent_iff.mp hli) (fun k => v (a k)) hsum`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : q j`. Take `⟨k, rfl⟩` from `hj`.
-
-Simplify using `using hzero k`. Simplify using `using hoff j hj`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_perm_coord_complement {e c : ℕ} (A : (Fin (e + c) → ℂ) →ₗ[ℂ] (Fin c → ℂ))
     (hA : Surjective A) :
@@ -86,31 +84,25 @@ theorem exists_perm_coord_complement {e c : ℕ} (A : (Fin (e + c) → ℂ) →�
   · simpa using hoff j hj
 
 /- English proof (translation)
-Use `set A := fderiv ℂ f p with hAdef`. Take `⟨σ, hσ⟩` from `exists_perm_coord_complement (A : (Fin (e + c) → ℂ) →ₗ[ℂ] (Fin c → ℂ)) hsurj`. Set `Pr : (Fin (e + c) → ℂ) →L[ℂ] (Fin e → ℂ)` to `ContinuousLinearMap.pi fun i => ContinuousLinearMap.proj (σ (Fin.castAdd c i))`. Establish `hPr : ∀ x, Pr x = fun i => x (σ (Fin.castAdd c i))` using `fun x => rfl`. Set `Lm : (Fin (e + c) → ℂ) →L[ℂ] (Fin e → ℂ) × (Fin c → ℂ)` to `Pr.prod A`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hinj : Injective Lm`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `v hv`. Establish `h1 : Pr v = 0` using `congrArg Prod.fst hv`. Establish `h2 : A v = 0` using `congrArg Prod.snd hv`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hσ v (fun i => by simpa [hPr] using congrFun h1 i) h2`. Establish `hsurjL : Surjective Lm`. Establish `hdim : Module.finrank ℂ (Fin (e + c) → ℂ) = Module.finrank ℂ ((Fin e → ℂ) × (Fin c → ℂ))`. Simplify using `[Module.finrank_prod]`. Conclude with `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim (f := (Lm : (Fin (e + c) → ℂ) →ₗ[ℂ] (Fin e → ℂ) × (Fin c → ℂ)))).mp hinj`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `Le` to `ContinuousLinearEquiv.ofBijective Lm (LinearMap.ker_eq_bot.mpr hinj) (LinearMap.range_eq_top.mpr hsurjL)`. Establish `hLe : (Le : (Fin (e + c) → ℂ) →L[ℂ] (Fin e → ℂ) × (Fin c → ℂ)) = Lm` using `ContinuousLinearEquiv.coe_ofBijective _ _ _`. Set `φ : (Fin (e + c) → ℂ) → (Fin e → ℂ) × (Fin c → ℂ)` to `fun x => (Pr x, f x)`. Establish `hφ : HasStrictFDerivAt φ (Le : (Fin (e + c) → ℂ) →L[ℂ] (Fin e → ℂ) × (Fin c → ℂ)) p`. Rewrite using `[hLe]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Pr.hasStrictFDerivAt.prodMk hf.hasStrictFDerivAt`. Set `Φ` to `hφ.toOpenPartialHomeomorph φ`. Establish `hΦ : ∀ x, Φ x = (Pr x, f x)` using `fun x => rfl`. Establish `hpS : p ∈ Φ.source` using `hφ.mem_toOpenPartialHomeomorph_source`. Establish `hφan : AnalyticAt ℂ Φ p` using `(Pr.analyticAt p).prod hf`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsymm : AnalyticAt ℂ Φ.symm (Φ p)` using `Φ.analyticAt_symm' (i := Le) hpS hφan hφ.hasFDerivAt.fderiv`. Take `⟨s, hs, hsan⟩` from `hsymm.exists_mem_nhds_analyticOnNhd`. Take `⟨T0, hT0s, hT0o, hT0p⟩` from `mem_nhds_iff.mp hs`. Use `⟨σ, Φ.source ∩ Φ ⁻¹' T0, {w | (w, (0 : Fin c → ℂ)) ∈ Φ.target ∩ T0}, fun w => Φ.symm (w, 0), ?_, ⟨hpS, hT0p⟩, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Φ.continuousOn.isOpen_inter_preimage Φ.open_source hT0o`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(Φ.open_target.inter hT0o).preimage (continuous_id.prodMk continuous_const)`. Introduce `w hw`. Establish `h1 : AnalyticAt ℂ (fun w : Fin e → ℂ => (w, (0 : Fin c → ℂ))) w` using `analyticAt_id.prod analyticAt_const`. Conclude with `AnalyticAt.comp (f := fun w : Fin e → ℂ => (w, (0 : Fin c → ℂ))) (hsan _ (hT0s hw.2)) h1`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw`. Establish `hr` using `Φ.right_inv hw.1`. Use `⟨⟨Φ.map_target hw.1, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show Φ (Φ.symm (w, 0)) ∈ T0`. Rewrite using `[hr]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `hw.2`. Use `congrArg Prod.snd hr` as an intermediate fact. Rewrite `this` using `[hΦ]`. Then use the resulting hypothesis. Introduce `w hw w' hw' h`. Establish `h2 : Φ (Φ.symm (w, 0)) = Φ (Φ.symm (w', 0))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only at h`. Rewrite using `[h]`. Rewrite `h2` using `[Φ.right_inv hw.1, Φ.right_inv hw'.1]`. Conclude with `congrArg Prod.fst h2`. Introduce and unpack `x ⟨⟨hxS, hxT⟩, hx0⟩`.
-
-Establish `hx : Φ x = (Pr x, 0)` using `by rw [hΦ, hx0]`. Use `⟨Pr x, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hx]`. Conclude with `Φ.map_source hxS`. Rewrite using `[← hx]`.
-
-Conclude with `hxT`. Use `show Φ.symm (Pr x, 0) = x`. Rewrite using `[← hx]`. Conclude with `Φ.left_inv hxS`. Introduce `w hw`.
-
-Use `congrArg Prod.fst (Φ.right_inv hw.1)` as an intermediate fact. Rewrite `this` using `[hΦ]`. Simplify `this` using `[hPr]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_analytic_graph_chart {e c : ℕ} (f : (Fin (e + c) → ℂ) → (Fin c → ℂ))
     (p : Fin (e + c) → ℂ) (hp : f p = 0) (hf : AnalyticAt ℂ f p)
@@ -188,15 +180,15 @@ theorem exists_analytic_graph_chart {e c : ℕ} (f : (Fin (e + c) → ℂ) → (
     simpa [hPr] using this
 
 /- English proof (translation)
-Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C a`. Simplify using `only [MvPolynomial.eval_C, MvPolynomial.pderiv_C, map_zero, zero_smul, Finset.sum_const_zero]`. Conclude with `hasFDerivAt_const a x`. Consider the case `add p q hp hq`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, add_smul, Finset.sum_add_distrib]`. Conclude with `hp.add hq`. Consider the case `mul_X p i hp`. Establish `hXi : HasFDerivAt (fun y : Fin n → ℂ => y i) (ContinuousLinearMap.proj (R` using `ℂ) (φ := fun _ : Fin n => ℂ) i) x := hasFDerivAt_apply i x`. Establish `h2` using `hp.mul hXi`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hfun : (fun y : Fin n → ℂ => MvPolynomial.eval y (p * MvPolynomial.X i)) = (fun y => MvPolynomial.eval y p) * (fun y => y i)`. Use function extensionality and compare the values at `y`. Simplify using the standard rewrite rules. Establish `hder : (∑ j, MvPolynomial.eval x (MvPolynomial.pderiv j (p * MvPolynomial.X i)) • ContinuousLinearMap.proj (R` using `ℂ) (φ := fun _ : Fin n => ℂ) j) = MvPolynomial.eval x p • ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin n => ℂ) i + x i • ∑ j, MvPolynomial.eval x (MvPolynomial.pderiv j p) • ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin n => ℂ) j := by`. Use `ContinuousLinearMap.ext fun v => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [ContinuousLinearMap.coe_sum', Finset.sum_apply, ContinuousLinearMap.coe_smul', Pi.smul_apply, ContinuousLinearMap.proj_apply, ContinuousLinearMap.add_apply, smul_eq_mul, Derivation.leibniz, MvPolynomial.pderiv_X, map_add, MvPolynomial.smul_eval, MvPolynomial.eval_X, Pi.sing …`. Simplify using `only [add_mul, Finset.sum_add_distrib, mul_ite, mul_one, mul_zero, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true, Finset.mul_sum]`. Simplify using `only [MvPolynomial.eval_mul, MvPolynomial.eval_X]`. Establish `hs : ∑ j, MvPolynomial.eval x (if i = j then p else 0) * v j = MvPolynomial.eval x p * v i`. Simplify using `[apply_ite, ite_mul, Finset.sum_ite_eq]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hs]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl (fun j _ => by ring)`. Rewrite using `[hfun, hder]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_mvPolynomial_eval {n : ℕ} (Q : MvPolynomial (Fin n) ℂ) (x : Fin n → ℂ) :
     HasFDerivAt (fun y => MvPolynomial.eval y Q)
@@ -239,13 +231,13 @@ theorem hasFDerivAt_mvPolynomial_eval {n : ℕ} (Q : MvPolynomial (Fin n) ℂ) (
     exact h2
 
 /- English proof (translation)
-Set `F : (Fin (e + c) → ℂ) → (Fin c → ℂ)` to `fun x i => MvPolynomial.eval x (P i)`. Establish `hF0 : F p = 0` using `funext hp`. Establish `hFan : AnalyticAt ℂ F p`. Rewrite using `[analyticAt_pi_iff]`. Introduce `i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `AnalyticOnNhd.eval_continuousLinearMap (ContinuousLinearMap.id ℂ (Fin (e + c) → ℂ)) (P i) p (Set.mem_univ _)`. Simplify using `using h`. Establish `hFd : HasFDerivAt F (ContinuousLinearMap.pi fun i => ∑ j, MvPolynomial.eval p (MvPolynomial.pderiv j (P i)) • ContinuousLinearMap.proj (R` using `ℂ) (φ := fun _ : Fin (e + c) => ℂ) j) p := hasFDerivAt_pi.2 fun i => hasFDerivAt_mvPolynomial_eval (P i) p`. Establish `hsurj : Function.Surjective (fderiv ℂ F p)`. Rewrite using `[hFd.fderiv]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hjac using 1` and compare the differences between its conclusion and the goal. Use extensionality with `v i`. Simplify using the standard rewrite rules. Take `⟨σ, U, V, g, hU, hpU, hV, hg, hbij, hproj⟩` from `exists_analytic_graph_chart F p hF0 hFan hsurj`. Use `⟨σ, U, V, g, hU, hpU, hV, hg, ?_, hproj⟩` and prove the remaining obligations.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hset : {x | x ∈ U ∧ F x = 0} = {x | x ∈ U ∧ ∀ i, MvPolynomial.eval x (P i) = 0}`. Use extensionality with `x`. Simplify using `[F, funext_iff]`. Rewrite `hbij` using `[hset]`. Then use the resulting hypothesis.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_analytic_graph_chart_mvPolynomial {e c : ℕ}
     (P : Fin c → MvPolynomial (Fin (e + c)) ℂ) (p : Fin (e + c) → ℂ)

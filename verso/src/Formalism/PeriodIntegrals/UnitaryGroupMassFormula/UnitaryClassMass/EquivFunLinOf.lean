@@ -11,9 +11,9 @@ section Rat
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Unfold `ratMat`. Use `first`. Consider the case `exact Classical.choose_spec (p := fun m => m ∈ UJ (σ : E →+* E) J ∧ bc (inclR (AF F)) m = (γ.1 : HR (AF F) σ J).1) _`. Consider the case `(generalize_proofs h1 h2 h3 h4 h5 h6 first`. Consider the case `exact Classical.choose_spec h4`.
+Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact Classical.choose_spec h5`. Consider the case `exact Classical.choose_spec h6`. Consider the case `exact Classical.choose_spec h1)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ratMat_spec (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (γ : GamG σ J) :
     ratMat σ J γ ∈ UJ (σ : E →+* E) J ∧
@@ -34,16 +34,16 @@ def ratU (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (γ : Gam
   ⟨ratMat σ J γ, (ratMat_spec σ J γ).1⟩
 
 /- English proof (translation)
-Conclude with `Subtype.ext (ratMat_spec σ J γ).2`.
+A detailed English derivation is pending.
 -/
 theorem emb_ratU (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (γ : GamG σ J) :
     PI.UnitaryGroupMassFormula.UJClassFin.emb σ J (ratU σ J γ) = (γ : HA (AF F) σ J) := by
   exact Subtype.ext (ratMat_spec σ J γ).2
 
 /- English proof (translation)
-Establish `hk : ∀ y, y ∈ latHat F E L ↔ (finMat σ J ((k : HA (AF F) σ J)⁻¹)).mulVec y ∈ latHat F E L` using `(k⁻¹).2`. Use extensionality with `x`. Simplify using `only [UJClassFin.abelian₂, Set.mem_setOf_eq, mul_inv_rev]`. Unfold `finMat at hk ⊢`. Unfold `HA.mat at hk ⊢`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Simplify using `only [Subgroup.coe_mul, Units.val_mul, ← AlgHom.mapMatrix_apply, map_mul] at hk ⊢`. Establish `e : ∀ a c : HA (AF F) σ J, (a * c).1 = a.1 * c.1` using `fun a c => rfl`. Rewrite using `[e, Units.val_mul, map_mul]`. Simplify using `only [AlgHom.mapMatrix_apply, ← Matrix.mulVec_mulVec] at hk ⊢`. Conclude with `(hk _).symm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Lam_mul_sfin (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (L : Set (Fin M → E))
     (g : HA (AF F) σ J) (k : SFin σ J L) :
@@ -67,9 +67,9 @@ section Coord
 variable {E V : Type} [Field E] [AddCommGroup V] [Module E V]
 
 /- English proof (translation)
-Unfold `linOf`. Use `first`. Consider the case `simp only [LinearEquiv.ofLinear_apply, Matrix.toLin_apply, Basis.equivFun_apply, Basis.repr_sum_self]`. Consider the case `simp [Matrix.toLin_apply, Basis.repr_sum_self]`. Consider the case `(simp [Matrix.toLin_apply]`.
+Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. Treat this case separately. By extensionality, compare the relevant components.
 
-Use extensionality with `j`. Simplify using `[Finset.sum_apply, Finsupp.single_apply])`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem equivFun_linOf {M : ℕ} (b : Module.Basis (Fin M) E V) (u : GL (Fin M) E) (v : V) :
     b.equivFun (linOf b u v) = (u : Matrix (Fin M) (Fin M) E).mulVec (b.equivFun v) := by
@@ -83,7 +83,7 @@ theorem equivFun_linOf {M : ℕ} (b : Module.Basis (Fin M) E V) (u : GL (Fin M) 
      simp [Finset.sum_apply, Finsupp.single_apply])
 
 /- English proof (translation)
-Unfold `linOf`. Use `first`. Consider the case `simp [Matrix.toLin_self]`. Consider the case `rw [LinearEquiv.ofLinear_apply, Matrix.toLin_self]`.
+Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem linOf_basis {M : ℕ} (b : Module.Basis (Fin M) E V) (u : GL (Fin M) E) (i : Fin M) :
     linOf b u (b i) = ∑ k, (u : Matrix (Fin M) (Fin M) E) k i • b k := by
@@ -95,13 +95,11 @@ theorem linOf_basis {M : ℕ} (b : Module.Basis (Fin M) E V) (u : GL (Fin M) E) 
 end Coord
 
 /- English proof (translation)
-Unfold `IsomStep`. Introduce `F E _ _ _ _ _ _ σ V _ _ _ _ _ h M b L0 hσ hθ hτ hsymm hnd hlat hsig γ`. Unfold `iotaG isom`. Use `set u := ratMat σ (gramOf h b) γ with hu`. Establish `hU : Formalism.UG.cT (σ : E →+* E) (u : Matrix (Fin M) (Fin M) E) * gramOf h b * (u : Matrix (Fin M) (Fin M) E) = gramOf h b` using `(ratMat_spec σ (gramOf h b) γ).1`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG : ∀ k l, gramOf h b k l = h (b k) (b l)` using `fun k l => rfl`. Establish `key : (h.comp (linOf b u : V →ₗ[E] V)).compl₂ (linOf b u : V →ₗ[E] V) = h`. Use `LinearMap.ext_basis b b fun i j => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.compl₂_apply, LinearMap.comp_apply, LinearEquiv.coe_coe, linOf_basis]`. Rewrite using `[show h (b i) (b j) = gramOf h b i j from (hG i j).symm, ← hU]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_apply, Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply, hG, AlgHom.coe_toRingHom, RingHom.coe_coe, hσ, Finset.sum_mul, Finset.mul_sum, map_sum, map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, RingHom.id_apply]`. Use `first`. Consider the case `exact Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => by ring`. Consider the case `(rw [Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => by ring)`.
-
-Use `show ∀ x y, h (linOf b u x) (linOf b u y) = h x y`. Introduce `x y`. Use `conv_rhs => rw [← key]`. Both sides reduce to the same expression.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isomStep : IsomStep := by
   unfold IsomStep
@@ -129,13 +127,13 @@ theorem isomStep : IsomStep := by
   rfl
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ σ V _ _ _ _ _ h M b L0 _ _ _ _ _ _ _ g γ k`. Use extensionality with `v`. Express the relevant statement in the definitionally equal form `b.equivFun v ∈ PI.UnitaryGroupMassFormula.UJClassFin.abelian₂ σ (gramOf h b) (crdOf b L0) ((γ : HA (AF F) σ (gramOf h b)) * g * (k : HA (AF F) σ (gramOf h b))) ↔ v ∈ (iotaG σ (gramOf h b) b γ : V → V) '' latSet σ (gramOf h b) b L0 g`. Rewrite using `[Lam_mul_sfin, ← emb_ratU, PI.UnitaryGroupMassFormula.UJClassFin.Lam_emb_mul]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨x, hx, hxv⟩`. Use `⟨b.equivFun.symm x, ?_, ?_⟩` and prove the remaining obligations. Use `show b.equivFun (b.equivFun.symm x) ∈ PI.UnitaryGroupMassFormula.UJClassFin.abelian₂ σ (gramOf h b) (crdOf b L0) g`. Rewrite using `[LinearEquiv.apply_symm_apply]` and apply the resulting hypothesis. Apply `b.equivFun.injective` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `b.equivFun (linOf b _ _) = _`. Rewrite using `[equivFun_linOf, LinearEquiv.apply_symm_apply]`. Conclude with `hxv`. Introduce and unpack `⟨w, hw, rfl⟩`. Use `⟨b.equivFun w, hw, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ = b.equivFun (linOf b _ _)`. Rewrite using `[equivFun_linOf]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem equivStep : EquivStep := by
   intro F E _ _ _ _ _ _ σ V _ _ _ _ _ h M b L0 _ _ _ _ _ _ _ g γ k

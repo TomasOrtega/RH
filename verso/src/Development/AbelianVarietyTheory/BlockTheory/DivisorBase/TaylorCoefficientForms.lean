@@ -122,7 +122,7 @@ def JetFrame : Prop :=
                 polyJet (letterUnit D b₀ b₁) Rc Θ = liftBlock c Rc lam
 
 /- English proof (translation)
-Establish `: lineForm ξ D D = ((2 * ‖ξ‖ * ‖D‖ ^ 2 : ℝ) : ℂ)`. Simplify using `[lineForm, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Rewrite using `[period, this, Complex.ofReal_re]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 example (ξ D : ℂ) : period ξ D = 1 / (π * (2 * ‖ξ‖ * ‖D‖ ^ 2)) := by
   have : lineForm ξ D D = ((2 * ‖ξ‖ * ‖D‖ ^ 2 : ℝ) : ℂ) := by
@@ -130,7 +130,7 @@ example (ξ D : ℂ) : period ξ D = 1 / (π * (2 * ‖ξ‖ * ‖D‖ ^ 2)) := 
   rw [period, this, Complex.ofReal_re]
 
 /- English proof (translation)
-Unfold `monoDeriv`. Proceed by induction on `(univ : Finset κ).toList with`. Consider the case `nil => rfl`. Consider the case `cons a l ih => simpa using ih`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 example {E κ : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [Fintype κ] (v : κ → E) (F : E → ℂ) :
     monoDeriv v 0 F = F := by

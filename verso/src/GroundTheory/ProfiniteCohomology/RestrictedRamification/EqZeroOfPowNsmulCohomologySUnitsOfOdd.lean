@@ -17,11 +17,9 @@ section TwoTorsion
 variable {K : FiniteSubfield}
 
 /- English proof (translation)
-Take `⟨ι⟩` from `nonempty_localEmbeddings K`. Apply `(bijective_realLocalization ι hr).1` to reduce the goal to its premises. Rewrite using `[map_nsmul, map_zero]`. Use function extensionality and compare the values at `v`. Rewrite using `[Pi.smul_apply]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Break down `Nat.even_or_odd r with he | ho` into its components or cases. Establish `hc` using `natCard_localGaloisCohomology_of_isReal_of_even v.1 v.2 (by omega) he`. Rewrite using `[← hc]`. Conclude with `card_nsmul_eq_zero'`. Use `subsingleton_localGaloisCohomology_of_isReal_of_odd v.1 v.2 ho` as an intermediate fact.
-
-Conclude with `Subsingleton.elim _ _`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem two_nsmul_cohomology_unitsLimitRep {r : ℕ} (hr : 4 ≤ r) (y : cohomology (unitsLimitRep K) r) :
     2 • y = 0 := by
@@ -38,7 +36,7 @@ theorem two_nsmul_cohomology_unitsLimitRep {r : ℕ} (hr : 4 ≤ r) (y : cohomol
     exact Subsingleton.elim _ _
 
 /- English proof (translation)
-The claim follows from `eq_zero_of_coprime_nsmul_eq_zero ((Nat.coprime_primes Nat.prime_two hℓ).2 h2.symm) (two_nsmul_cohomology_unitsLimitRep hr y) hk`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_pow_nsmul_cohomology_unitsLimitRep_of_odd {ℓ : ℕ} (hℓ : ℓ.Prime) (h2 : ℓ ≠ 2) {r : ℕ}
     (hr : 4 ≤ r) (y : cohomology (unitsLimitRep K) r) {k : ℕ} (hk : ℓ ^ k • y = 0) : y = 0 :=
@@ -53,7 +51,7 @@ variable (K : FiniteSubfield) (S : Set (HeightOneSpectrum (𝓞 K.1))) {ℓ : �
 include hℓ hS in
 
 /- English proof (translation)
-The claim follows from `eq_zero_of_pow_nsmul_cohomology_divFunRep (gsDecomp K S ιs) (continuous_gsDecomp K S ιs) hℓ (by omega) (fun v y hy => hy.elim fun j hj => eq_zero_of_pow_nsmul_cohomology_range_gsDecomp K S ιs v hℓ hS hp y j hj) x k hx`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_pow_nsmul_cohomology_gsDiv_QZ (ιs : LocalEmbeddings K) {p : ℕ} (hp : 2 ≤ p)
     (x : cohomology (gsDiv K S ιs QZ) p) (k : ℕ) (hx : ℓ ^ k • x = 0) : x = 0 :=
@@ -64,7 +62,7 @@ theorem eq_zero_of_pow_nsmul_cohomology_gsDiv_QZ (ιs : LocalEmbeddings K) {p : 
 include hℓ hS in
 
 /- English proof (translation)
-The claim follows from `isIsoModCoprime_sUnitsToUnits K S (nonempty_localEmbeddings K).some hℓ hS (fun _ hp x k hx => eq_zero_of_pow_nsmul_cohomology_gsDiv_QZ K S hℓ hS _ hp x k hx) hr`.
+A detailed English derivation is pending.
 -/
 theorem isIsoModCoprime_sUnitsToUnits_of_four_le {r : ℕ} (hr : 4 ≤ r) :
     IsIsoModCoprime ℓ (cohomologyMap (sUnitsToUnits S (maxUnramifiedOutside K.1 ℚ̄ S)) r).hom.toAddMonoidHom :=
@@ -74,7 +72,7 @@ theorem isIsoModCoprime_sUnitsToUnits_of_four_le {r : ℕ} (hr : 4 ≤ r) :
 include hℓ hS in
 
 /- English proof (translation)
-The claim follows from `(isIsoModCoprime_gsUnitsInfl K S hℓ hS (by omega)).comp (isIsoModCoprime_sUnitsToUnits_of_four_le K S hℓ hS hr)`.
+A detailed English derivation is pending.
 -/
 theorem isIsoModCoprime_sUnitsInfl {r : ℕ} (hr : 4 ≤ r) : IsIsoModCoprime ℓ (sUnitsInfl K S r) :=
   (isIsoModCoprime_gsUnitsInfl K S hℓ hS (by omega)).comp (isIsoModCoprime_sUnitsToUnits_of_four_le K S hℓ hS hr)
@@ -114,7 +112,7 @@ section Odd
 include hℓ hS in
 
 /- English proof (translation)
-The claim follows from `eq_zero_of_gsUnitsInfl_eq_zero K S hℓ hS (by omega) x (eq_zero_of_pow_nsmul_cohomology_unitsLimitRep_of_odd hℓ h2 hr _ (k := k) ((map_nsmul _ _ _).symm.trans ((congrArg _ hk).trans (map_zero _)))) hk`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_pow_nsmul_cohomology_gsUnits_of_odd (h2 : ℓ ≠ 2) {r : ℕ} (hr : 4 ≤ r)
     (x : cohomology (galUnits K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) r) {k : ℕ} (hk : ℓ ^ k • x = 0) : x = 0 :=
@@ -125,7 +123,7 @@ theorem eq_zero_of_pow_nsmul_cohomology_gsUnits_of_odd (h2 : ℓ ≠ 2) {r : ℕ
 include hℓ hS in
 
 /- English proof (translation)
-The claim follows from `(isIsoModCoprime_sUnitsInfl K S hℓ hS hr).eq_zero_of_pow_nsmul (eq_zero_of_pow_nsmul_cohomology_unitsLimitRep_of_odd hℓ h2 hr _ (k := k) ((map_nsmul _ _ _).symm.trans ((congrArg _ hk).trans (map_zero _)))) hk`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_pow_nsmul_cohomology_sUnits_of_odd (h2 : ℓ ≠ 2) {r : ℕ} (hr : 4 ≤ r)
     (x : cohomology (galSUnitsMax K.1 ℚ̄ S) r) {k : ℕ} (hk : ℓ ^ k • x = 0) : x = 0 :=
@@ -140,16 +138,16 @@ section Real
 variable (ι : LocalEmbeddings K)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, by rw [pow_one]; exact two_nsmul_cohomology_unitsLimitRep hr y⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_primaryComponent_two_unitsLimitRep {r : ℕ} (hr : 4 ≤ r) (y : cohomology (unitsLimitRep K) r) :
     y ∈ AddCommGroup.primaryComponent (cohomology (unitsLimitRep K) r) 2 :=
   ⟨1, by rw [pow_one]; exact two_nsmul_cohomology_unitsLimitRep hr y⟩
 
 /- English proof (translation)
-Establish `hb` using `hf.bijective_primaryComponentMap Nat.prime_two hX`. Establish `hR` using `bijective_realLocalization ι hr`. Use `⟨fun a b hab => hb.1 (Subtype.ext (hR.1 hab)), fun t => ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `hR.2 t`. Take `⟨a, ha⟩` from `hb.2 ⟨y, mem_primaryComponent_two_unitsLimitRep (K := K) hr y⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, congrArg (realLocalization ι (r := r) (by omega)) (congrArg Subtype.val ha)⟩`.
+Supply the required witnesses or components.
 -/
 theorem bijective_realLocalization_comp_primaryComponent {X : Type*} [AddCommGroup X] {r : ℕ} (hr : 4 ≤ r)
     (f : X →+ cohomology (unitsLimitRep K) r) (hf : IsIsoModCoprime 2 f) (hX : IsAddTorsion X) :

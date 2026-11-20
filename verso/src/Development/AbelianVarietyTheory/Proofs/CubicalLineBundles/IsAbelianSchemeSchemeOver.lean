@@ -10,7 +10,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.WeierstrassCurve GlobalTheory.AddLaw
 
 /- English proof (translation)
-Introduce `R _ W hΔ _ hc`. Establish `hs` using `smoothOfRelativeDimension_toSpec_of_isUnit W hΔ`. Conclude with `⟨hc, SmoothOfRelativeDimension.smooth 1 (toSpec W), isProper_toSpec W, geometricallyConnected_toSpec W⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.WeierstrassCurve.isAbelianScheme_schemeOver :
     ∀ (R : Type) [CommRing R] (W : WeierstrassCurve R), IsUnit W.Δ →

@@ -13,7 +13,7 @@ open GlobalTheory.DblVacSiegel
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(finAdEquiv F E (finTens F E (locIdele F P y : AE F E))) P = _`. Rewrite using `[finTens_locIdele, GlobalTheory.CMVal.single_apply]`. Conclude with `Function.update_self _ _ _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piE_locIdele_self (P : HeightOneSpectrum (𝓞 E)) (y : (P.adicCompletion E)ˣ) :
     piE F P (locIdele F P y : AE F E) = y := by
@@ -23,7 +23,7 @@ theorem piE_locIdele_self (P : HeightOneSpectrum (𝓞 E)) (y : (P.adicCompletio
   exact Function.update_self _ _ _
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(finAdEquiv F E (finTens F E (locIdele F P y : AE F E))) Q = _`. Rewrite using `[finTens_locIdele, GlobalTheory.CMVal.single_apply]`. Conclude with `Function.update_of_ne h _ _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piE_locIdele_ne {P Q : HeightOneSpectrum (𝓞 E)} (h : Q ≠ P) (y : (P.adicCompletion E)ˣ) :
     piE F Q (locIdele F P y : AE F E) = 1 := by
@@ -33,7 +33,7 @@ theorem piE_locIdele_ne {P Q : HeightOneSpectrum (𝓞 E)} (h : Q ≠ P) (y : (P
   exact Function.update_of_ne h _ _
 
 /- English proof (translation)
-Use `Units.ext (tens_ext (h1.trans (map_one _).symm) ((finAdEquiv F E).injective ?_))` and prove the remaining obligations. Use `FiniteAdeleRing.ext _ fun P => ?_` and prove the remaining obligations. Rewrite using `[Units.val_one, map_one, map_one]`. Conclude with `h2 P`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_one_of_comp {x : (AE F E)ˣ} (h1 : infTens F E x = 1) (h2 : ∀ P, piE F P (x : AE F E) = 1) : x = 1 := by
   refine Units.ext (tens_ext (h1.trans (map_one _).symm) ((finAdEquiv F E).injective ?_))
@@ -42,17 +42,15 @@ theorem eq_one_of_comp {x : (AE F E)ˣ} (h1 : infTens F E x = 1) (h2 : ∀ P, pi
   exact h2 P
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on generalizing x with`. Consider the case `empty`. Rewrite using `[eq_one_of_comp h1 fun P => hoff P (Finset.notMem_empty P), map_one]`. Consider the case `insert P S hPS ih`. Set `y : (P.adicCompletion E)ˣ` to `Units.map (piE F P).toMonoidHom x`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Introduce a local definition for the expression.
 
-Establish `hy : Formalism.L2.Host.IsUnitAt P y` using `hu P (Finset.mem_insert_self P S)`. Establish `hl : χ (locIdele F P y) = 1` using `Circle.ext (congrArg Units.val (hχ P (Finset.mem_insert_self P S) y hy))`. Use `set x' := x * (locIdele F P y)⁻¹ with hx'`. Establish `ex : (x' : AE F E) * (locIdele F P y : AE F E) = x`. Rewrite using `[hx', Units.val_mul, mul_assoc, Units.inv_mul, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcomp : ∀ {R : Type} [CommRing R] (φ : AE F E →+* R), φ (locIdele F P y : AE F E) = 1 → φ (x' : AE F E) = φ x` using `fun φ h => by rw [← ex, map_mul, h, mul_one]`. Establish `hx : x = x' * locIdele F P y` using `by rw [hx', inv_mul_cancel_right]`. Rewrite using `[hx, map_mul, hl, mul_one]`. Use `ih (fun Q hQ => hχ Q (Finset.mem_insert_of_mem hQ)) x' ?_ (fun Q hQ => ?_) (fun Q hQ => ?_)` and prove the remaining obligations. Rewrite using `[hcomp _ (infTens_locIdele P y), h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hQP : Q = P`. Substitute `hQP` using the available equality. Establish `e` using `congrArg (piE F Q) ex`. Rewrite `e` using `[map_mul, piE_locIdele_self]`. Establish `h0 : (piE F Q (x : AE F E)) ≠ 0` using `(Units.map (piE F Q).toMonoidHom x).ne_zero`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_right_cancel₀ h0 (e.trans (one_mul _).symm)`. Rewrite using `[hcomp _ (piE_locIdele_ne hQP y)]`. Conclude with `hoff Q (by simp [hQP, hQ])`. Establish `hQP : Q ≠ P` using `fun h => hPS (h ▸ hQ)`. Rewrite using `[hcomp _ (piE_locIdele_ne hQP y)]`.
-
-Conclude with `hu Q (Finset.mem_insert_of_mem hQ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chr_eq_one_of_supp (χ : Chr F E) (S : Finset (HeightOneSpectrum (𝓞 E))) (hχ : ∀ P ∈ S, UnrAt χ P)
     (x : (AE F E)ˣ) (h1 : infTens F E x = 1) (hoff : ∀ P ∉ S, piE F P (x : AE F E) = 1)
@@ -87,9 +85,9 @@ theorem chr_eq_one_of_supp (χ : Chr F E) (S : Finset (HeightOneSpectrum (𝓞 E
       exact hu Q (Finset.mem_insert_of_mem hQ)
 
 /- English proof (translation)
-Establish `h0 : Ideal.map (algebraMap (𝓞 F) (𝓞 E)) v.asIdeal ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.map_eq_bot_iff_of_injective (FaithfulSMul.algebraMap_injective _ _)]`. Conclude with `v.ne_bot`. Use `(Ideal.finite_factors h0).subset fun P hP => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq] at hP ⊢`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.dvd_iff_le, Ideal.map_le_iff_le_comap, ← hP]`. Conclude with `le_rfl`.
+A detailed English derivation is pending.
 -/
 theorem finite_under_eq (v : Pl F) : {P : HeightOneSpectrum (𝓞 E) | P.under (𝓞 F) = v}.Finite := by
   have h0 : Ideal.map (algebraMap (𝓞 F) (𝓞 E)) v.asIdeal ≠ 0 := by
@@ -101,15 +99,15 @@ theorem finite_under_eq (v : Pl F) : {P : HeightOneSpectrum (𝓞 E) | P.under (
   exact le_rfl
 
 /- English proof (translation)
-Use `set δ := Matrix.GeneralLinearGroup.det t with hδ`. Establish `hN` using `h1 (1 - GlobalTheory.LatVac.liftV v 1) (by rw [map_sub, map_one, GlobalTheory.LatVac.evFin_liftV, sub_self])`. Establish `hφ : ∀ {R : Type} [CommRing R] (φ : AE F E →+* R), φ (algebraMap (AF F) (AE F E) (GlobalTheory.LatVac.liftV v 1)) = 0 → φ (δ : AE F E) = 1`. Introduce `R _ φ hφ`. Establish `: φ.mapMatrix (t : Matrix (Fin d) (Fin d) (AE F E)) = φ.mapMatrix 1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Establish `h2` using `congrArg φ (congrFun (congrFun hN i) j)`. Rewrite `h2` using `[Matrix.smul_apply, Algebra.smul_def, map_mul, map_sub, map_sub, map_one, map_one, hφ, sub_zero, one_mul, Matrix.sub_apply, map_sub, Matrix.zero_apply, map_zero, sub_eq_zero]`. Conclude with `h2`. Rewrite using `[hδ, Matrix.GeneralLinearGroup.val_det_apply, RingHom.map_det, this, map_one, Matrix.det_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `chr_eq_one_of_supp χ (finite_under_eq (E := E) v).toFinset (fun P hP => hχ P ((finite_under_eq v).mem_toFinset.1 hP)) δ (hφ _ (TensorProduct.zero_tmul _ _)) (fun P hP => ?_) (fun P hP => ?_)` and prove the remaining obligations. Establish `hPv : P.under (𝓞 F) ≠ v` using `fun h => hP ((finite_under_eq v).mem_toFinset.2 h)`. Use `hφ _ ?_` and prove the remaining obligations. Rewrite using `[piE_algebraMap rfl]`. Conclude with `(congrArg _ (evalV_singleFin_ne hPv 1)).trans (map_zero _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hu : P.under (𝓞 F) = v` using `(finite_under_eq v).mem_toFinset.1 hP`. Set `y : (P.adicCompletion E)ˣ` to `Units.map (piE F P).toMonoidHom δ`. Establish `a1 : Valued.v (y : P.adicCompletion E) ≤ 1` using `val_det_le_one W hL hu _ fun z hz => (ht z hz).1`. Establish `a2 : Valued.v ((y⁻¹ : (P.adicCompletion E)ˣ) : P.adicCompletion E) ≤ 1`. Use `val_det_le_one W hL hu _ fun z hz => (ht z hz).2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[← Matrix.GeneralLinearGroup.val_det_apply, map_inv]`. Conclude with `this`. Establish `h0 : 0 < Valued.v (y : P.adicCompletion E)` using `zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 y.ne_zero)`. Rewrite `a2` using `[Units.val_inv_eq_inv_val, map_inv₀, inv_le_one₀ h0]`. Conclude with `le_antisymm a1 a2`.
+A detailed English derivation is pending.
 -/
 theorem chr_det_eq_one_any {d : ℕ} (W : Spc F E d) (hL : W.L.IsLattice E) {v : Pl F} {χ : Chr F E}
     (hχ : ∀ P : HeightOneSpectrum (𝓞 E), P.under (𝓞 F) = v → UnrAt χ P) (t : GL (Fin d) (AE F E))
@@ -149,21 +147,21 @@ theorem chr_det_eq_one_any {d : ℕ} (W : Spc F E d) (hL : W.L.IsLattice E) {v :
     exact le_antisymm a1 a2
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v hv dd omd hdd hW r hr h0 p hp hpd μ hμ`. Take `⟨t, ht₀⟩` from `hpd`. Establish `ht : GlobalTheory.DblVac.matD p * (diagCols (Fin (a + a')) : Matrix (Fin (a + a') ⊕ Fin (a + a')) (Fin (a + a')) (AE F E)) = (diagCols (Fin (a + a')) : Matrix (Fin (a + a') ⊕ Fin (a + a')) (Fin (a + a')) (AE F E)) * (t : Matrix (Fin (a + a')) (Fin (a + a')) (AE F E))` using `ht₀`. Establish `hF` using `hT.base.cm.1`. Use `set Ψ := tens (evFin F v) (G.M.vac v) r with hΨ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS` using `GlobalTheory.SchwartzBox.boxFun_mem_schA F _ _ Ψ hr.2 _ (GlobalTheory.SchAConj.star_mem_schA F _ Ψ hr.2)`. Establish `hl` using `lDiag_box_ne_zero hF hr.2 h0`. Establish `hS0 : (boxFun Ψ fun x => star (Ψ x)) ≠ 0` using `fun h => hl (by rw [h, map_zero])`. Establish `hn` using `norm_eq_one_of_eigen hF hW.2.1.unit hS hS0 hμ`. Establish `hrule` using `hW.2.2 _ DiagForm.lDiag_adm (fun z φ hφ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : z * (diagCols (Fin (a + a')) : Matrix _ _ (AE F E))ᵀ = Matrix.fromCols z z`. Rewrite using `[diagCols, Matrix.transpose_fromRows, Matrix.mul_fromCols, Matrix.transpose_one, Matrix.mul_one]`. Rewrite using `[e, Darboux.rho, hdd]`. Conclude with `DiagForm.lDiag_schr B.ψ _ _ hφ) p t ht _ hS`. Establish `hvec : ∀ (g : GlobalTheory.DblVac.UD σ G.W) (s : Matrix (Fin (a + a')) (Fin (a + a')) (AE F E)), GlobalTheory.DblVac.matD g * (diagCols (Fin (a + a')) : Matrix (Fin (a + a') ⊕ Fin (a + a')) (Fin (a + a')) (AE F E)) = (diagCols (Fin (a + a')) : Matrix (Fin (a + a') ⊕ Fin (a + a')) …` using `fun g s hs z => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ∀ z : Fin (a + a') → AE F E, (diagCols (Fin (a + a')) : Matrix (Fin (a + a') ⊕ Fin (a + a')) (Fin (a + a')) (AE F E)) *ᵥ z = Sum.elim z z` using `fun z => by`. Rewrite using `[diagCols, Matrix.fromRows_mulVec, Matrix.one_mulVec]`. Rewrite using `[← e, Matrix.mulVec_mulVec, hs, ← Matrix.mulVec_mulVec, e]`. Both sides reduce to the same expression. Establish `ht' : GlobalTheory.DblVac.matD p⁻¹ * (diagCols (Fin (a + a')) : Matrix (Fin (a + a') ⊕ Fin (a + a')) (Fin (a + a')) (AE F E)) = (diagCols (Fin (a + a')) : Matrix (Fin (a + a') ⊕ Fin (a + a')) (Fin (a + a')) (AE F E)) * ((t⁻¹ : GL (Fin (a + a')) (AE F E)) : Matrix (Fin (a + a')) ( …`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `e1 : GlobalTheory.DblVac.matD p⁻¹ * GlobalTheory.DblVac.matD p = 1` using `p.1.inv_mul`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, t.mul_inv, Matrix.mul_one]`. Use `_ = _ := by rw [← ht, ← Matrix.mul_assoc, e1, Matrix.one_mul]`. Establish `hβ : X.β (Matrix.GeneralLinearGroup.det t) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `chr_det_eq_one_any (v := v) G.W hT.geo.hW.lat (fun P hP => hT.chars.unrβ P fun h => hv (hP ▸ (h : P.under (𝓞 F) ∈ (X.T : Set (Pl F))))) t (fun u hu => ?_) fun z hz => ?_` and prove the remaining obligations. Establish `e1 : (GlobalTheory.DblVac.matD p - 1) * (diagCols (Fin (a + a')) : Matrix (Fin (a + a') ⊕ Fin (a + a')) (Fin (a + a')) (AE F E)) = (diagCols (Fin (a + a')) : Matrix (Fin (a + a') ⊕ Fin (a + a')) (Fin (a + a')) (AE F E)) * ((t : Matrix (Fin (a + a')) (Fin (a + a')) (AE F E)) - 1)`. Rewrite using `[Matrix.sub_mul, Matrix.mul_sub, ht, Matrix.one_mul, Matrix.mul_one]`. Establish `e2 : (diagCols (Fin (a + a')) : Matrix (Fin (a + a') ⊕ Fin (a + a')) (Fin (a + a')) (AE F E)) * (u • ((t : Matrix (Fin (a + a')) (Fin (a + a')) (AE F E)) - 1)) = 0`. Rewrite using `[Matrix.mul_smul, ← e1, ← Matrix.smul_mul, hp.1 u hu, Matrix.zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite `e2` using `[diagCols, Matrix.fromRows_mul, Matrix.one_mul]`. Use extensionality with `i j`. Conclude with `congrFun (congrFun e2 (Sum.inl i)) j`. Establish `hz'` using `hp.2 (Sum.elim z z) ⟨hz, hz⟩`. Conclude with `⟨hvec p _ ht z ▸ hz'.1.1, hvec p⁻¹ _ ht' z ▸ hz'.2.1⟩`.
+Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hrule` using `[hμ, map_smul, smul_eq_mul, hβ, Circle.coe_one, one_mul]`. Establish `hμ'` using `mul_right_cancel₀ hl hrule`. Rewrite `hn` using `[hμ', Complex.norm_real, Real.norm_of_nonneg (Real.rpow_nonneg (NNReal.coe_nonneg _) _)]`. Rewrite using `[hμ', hn, Complex.ofReal_one]`.
+A detailed English derivation is pending.
 -/
 theorem eigen_eq_one_of_diag_any : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
@@ -224,7 +222,7 @@ theorem eigen_eq_one_of_diag_any : ∀ (F E : Type) [Field F] [NumberField F] [F
   rw [hμ', hn, Complex.ofReal_one]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v _ hv _ dd omd hdd hW r hr h0 p hp hpd μ hμ`. Conclude with `eigen_eq_one_of_diag_any F E σ B a a' G X om om' hT v hv dd omd hdd hW r hr h0 p hp hpd μ hμ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem eigen_eq_one_of_diag_split : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

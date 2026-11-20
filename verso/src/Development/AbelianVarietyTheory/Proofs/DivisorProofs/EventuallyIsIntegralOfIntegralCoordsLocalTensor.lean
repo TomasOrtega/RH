@@ -12,7 +12,7 @@ namespace GlobalTheory.FinClsLoc
 open IsDedekindDomain
 
 /- English proof (translation)
-Establish `h` using `(algebraMap ℚ (FiniteAdeleRing ℤ ℚ) q).2`. Use `filter_upwards [h] with v hv`. Conclude with `hv`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eventually_rat_mem_adicCompletionIntegers (q : ℚ) :
     ∀ᶠ v : HeightOneSpectrum ℤ in Filter.cofinite,
@@ -22,19 +22,17 @@ theorem eventually_rat_mem_adicCompletionIntegers (q : ℚ) :
   exact hv
 
 /- English proof (translation)
-Introduce `p _ G`. Use `set b := Module.finBasis ℚ G.C with hb`. Establish `hev : ∀ᶠ w : AwayP p in Filter.cofinite, ∀ k j l, algebraMap ℚ (w.1.adicCompletion ℚ) (b.repr (b k * b j) l) ∈ w.1.adicCompletionIntegers ℚ`. Rewrite using `[Filter.eventually_all]`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Filter.eventually_all]`. Introduce `j`. Rewrite using `[Filter.eventually_all]`. Introduce `l`. Conclude with `Subtype.val_injective.tendsto_cofinite.eventually (eventually_rat_mem_adicCompletionIntegers _)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `filter_upwards [hev] with w hw`. Introduce `x hx`. Use `set B := Algebra.TensorProduct.basis (w.1.adicCompletion ℚ) b with hB`. Establish `hent : ∀ i j, Algebra.leftMulMatrix B x i j ∈ w.1.adicCompletionIntegers ℚ`. Introduce `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Algebra.leftMulMatrix_eq_repr_mul]`. Rewrite using `[← B.sum_repr x]`. Rewrite using `[Finset.sum_mul, map_sum, Finsupp.finsetSum_apply]`. Use `sum_mem fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, map_smul, Finsupp.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e : B k * B j = (1 : w.1.adicCompletion ℚ) ⊗ₜ[ℚ] (b k * b j)`. Simplify using `[hB, Algebra.TensorProduct.basis_apply]`. Rewrite using `[e, Algebra.TensorProduct.basis_repr_tmul]`. Simplify using `only [one_smul, Finsupp.mapRange_apply]`. Conclude with `mul_mem (hx k) (hw k j i)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `⟨(Algebra.leftMulMatrix B x).charpoly, Matrix.charpoly_monic _, ?_, ?_⟩` and prove the remaining obligations. Introduce `n`. Set `M : Matrix (Fin (Module.finrank ℚ G.C)) (Fin (Module.finrank ℚ G.C)) (w.1.adicCompletionIntegers ℚ)` to `fun i j => ⟨_, hent i j⟩`. Establish `hM : Algebra.leftMulMatrix B x = M.map (algebraMap (w.1.adicCompletionIntegers ℚ) (w.1.adicCompletion ℚ))`. Use extensionality with `i j`.
-
-Both sides reduce to the same expression. Rewrite using `[hM, Matrix.charpoly_map, Polynomial.coeff_map]`. Conclude with `(M.charpoly.coeff n).2`. Apply `Algebra.leftMulMatrix_injective B` to reduce the goal to its premises. Rewrite using `[← Polynomial.aeval_algHom_apply, Matrix.aeval_self_charpoly, map_zero]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intC_isIntegral : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p), ∀ᶠ w : AwayP p in Filter.cofinite,
     ∀ x : w.1.adicCompletion ℚ ⊗[ℚ] G.C, IntC G w x → (∃ f : Polynomial (w.1.adicCompletion ℚ), f.Monic ∧

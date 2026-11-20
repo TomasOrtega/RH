@@ -26,7 +26,7 @@ noncomputable section
 namespace GlobalTheory.SecDiv
 
 /- English proof (translation)
-Unfold `ReciprocityTheory.ChartRestriction.G.Out.resTop`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem resTop_map {Y : Scheme.{0}} {V W : Y.Opens} (h : W ≤ V) (c : Γ(Y, ⊤)) :
     (Y.presheaf.map (homOfLE h).op).hom (ReciprocityTheory.ChartRestriction.G.Out.resTop V c) = ReciprocityTheory.ChartRestriction.G.Out.resTop W c := by
@@ -35,7 +35,7 @@ theorem resTop_map {Y : Scheme.{0}} {V W : Y.Opens} (h : W ≤ V) (c : Γ(Y, ⊤
   rfl
 
 /- English proof (translation)
-Unfold `ReciprocityTheory.ChartRestriction.G.DVR.SecIsMul`. Use `⟨⟨fun j => ReciprocityTheory.ChartRestriction.G.Out.resTop (L.U j) (scal p a) * τ.f j, fun i j => ?_⟩, fun j => rfl⟩` and prove the remaining obligations. Simplify using `only [map_mul, resTop_map]`. Rewrite using `[τ.2 i j]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_secIsMul {R : Type} [CommRing R] {Y : Scheme.{0}} (p : Y ⟶ Spec (CommRingCat.of R)) {L : LB Y}
     (a : R) (τ : LB.Sec L) : ∃ σ : LB.Sec L, ReciprocityTheory.ChartRestriction.G.DVR.SecIsMul p a σ τ := by
@@ -46,23 +46,19 @@ theorem exists_secIsMul {R : Type} [CommRing R] {Y : Scheme.{0}} (p : Y ⟶ Spec
   ring
 
 /- English proof (translation)
-Introduce `R _ _ _ hB D A G _ _ U σ f g q hq hσ hfg`. Establish `hB' : AdmBase R (maximalIdeal R) ∧ CharZero R` using `hB`. Establish `h1 : IsNoetherianRing R ∧ IsDomain R ∧ IsIntegrallyClosed R ∧ IsAdicComplete (maximalIdeal R) R` using `hB'.1`. Take `⟨hN, -, hIC, hC⟩` from `h1`. Use `haveI := hN`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := hIC`. Establish `hs` using `U.semi`. Use `haveI := hs.smooth`. Use `haveI := hs.geomConnected`. Use `haveI : IsIso (λ_ G).hom.left := inferInstanceAs (IsIso ((Over.forget _).mapIso (λ_ G)).hom)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSm : Smooth (𝟙_ (Over (Sp R)) ⊗ G).hom`. Rewrite using `[← Over.w (λ_ G).hom]`. Use `infer_instance`. Establish `hGC : GeometricallyConnected (𝟙_ (Over (Sp R)) ⊗ G).hom`. Establish `hsq : IsPullback (λ_ G).hom.left (𝟙_ (Over (Sp R)) ⊗ G).hom G.hom (𝟙 _)` using `IsPullback.of_horiz_isIso ⟨by rw [Over.w, Category.comp_id]⟩`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Conclude with `MorphismProperty.of_isPullback (P := @GeometricallyConnected) hsq inferInstance`. Establish `he : (η[G].left ≫ (λ_ G).inv.left) ≫ (𝟙_ (Over (Sp R)) ⊗ G).hom = 𝟙 _`. Simplify using `only [Category.assoc, Over.w]`. Both sides reduce to the same expression. Establish `hLB : (LB.LinComb U.P.L.L (K` using `Fin 1) (fun _ : Fin 1 => (snd (𝟙_ (Over (Sp R))) G).left) (fun _ => ((1 : ℕ) : ℤ))).IsLB := by first`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Consider the case `exact ReciprocityTheory.ChartRestriction.G.DVR.linComb_isLB _ U.P.L.isLB _ _`. Consider the case `exact ReciprocityTheory.ChartRestriction.G.DVR.linComb_isLB _ _ _`. Establish `hloc` using `GlobalTheory.T.germ_dvd_of_sectionExpansion_dvd_closedFibre R hB D A G U σ f g q hσ hfg`. Establish `hall` using `GlobalTheory.T.lineBundle_section_dvd_everywhere_smooth_connected_fibres R _ (𝟙_ (Over (Sp R)) ⊗ G).hom hSm hGC _ he _ hLB σ q hq hloc`. Establish `hflat : Flat (𝟙_ (Over (Sp R)) ⊗ G).hom` using `inferInstance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨τ, hτ⟩` from `GlobalTheory.T.exists_baseMul_section_of_germ_dvd_flat_domain R _ (𝟙_ (Over (Sp R)) ⊗ G).hom hflat _ σ q hq hall`. Establish `hEga : GlobalTheory.LN.AlgSt ∧ GlobalTheory.LN.MorAlgSt ∧ GlobalTheory.LN.SecAlgSt ∧ GlobalTheory.LN.PicardZeroDegenerationCondition` using `GlobalTheory.LN.ega_holds`. Take `⟨h, hh⟩` from `GlobalTheory.CompleteBaseExpansion.exists_expT hEga.2.2.1 hC U 1 τ`. Use `choose f' hf' using fun α => exists_secIsMul (𝟙_ (Over (Sp R)) ⊗ D.P.A).hom q (h α)`. Establish `hσf' : U.ExpT (𝟙_ _) 1 σ f'` using `GlobalTheory.T.sectionExpansion_scale_base_element R (maximalIdeal R) D A G U 1 q σ τ f' h hτ hf' hh`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hjac : maximalIdeal R ≤ Ideal.jacobson ⊥` using `(IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top).ge`. Establish `hff' : f' = f` using `GlobalTheory.CompleteBaseExpansion.expT_unique hjac U 1 σ f' f hσf' hσ`. Establish `hflatD : Flat (𝟙_ (Over (Sp R)) ⊗ D.P.A).hom` using `by haveI : IsIso (λ_ D.P.A).hom.left := inferInstanceAs (IsIso ((Over.forget _).mapIso (λ_ D.P.A)).hom) haveI : Smooth D.P.A.hom := D.P.isAb.smooth`. Rewrite using `[← Over.w (λ_ D.P.A).hom]`. Use `infer_instance`.
-
-Establish `hhg : h = g`. Use function extensionality and compare the values at `α`. Establish `hfa` using `hf' α`. Rewrite `hfa` using `[hff']`. Conclude with `GlobalTheory.T.lineBundleSection_baseMul_cancel_flat_domain R _ _ hflatD _ q hq (f α) (h α) (g α) hfa (hfg α)`.
-
-Use `⟨τ, ?_⟩` and prove the remaining obligations. Rewrite using `[← hhg]`. Conclude with `hh`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_expT_of_dvd : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegPre R) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (U : GlobalTheory.UU.PreU (maximalIdeal R) D A G) (σ : U.SecGT (𝟙_ _) 1) (f g : ∀ α, GlobalTheory.UU.SecBT D (𝟙_ _) 1 α) (q : R), q ≠ 0 → U.ExpT (𝟙_ _) 1 σ f → (∀ α, ReciprocityTheory.ChartRestriction.G.DVR.SecIsMul (𝟙_ _ ⊗ D.P.A).hom q (f α) (g α)) → ∃ τ : U.SecGT (𝟙_ _) 1, U.ExpT (𝟙_ _) 1 τ g := by
   intro R _ _ _ hB D A G _ _ U σ f g q hq hσ hfg

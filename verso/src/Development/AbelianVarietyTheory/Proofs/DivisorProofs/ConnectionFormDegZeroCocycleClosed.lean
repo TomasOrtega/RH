@@ -15,9 +15,9 @@ namespace GlobalTheory.AnPer.ClosedSq
 variable {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [AddCommGroup Λ] {F : Fam I g Λ} (K : Charts F)
 
 /- English proof (translation)
-Take `⟨χ, hd, h0, h1, hχ⟩` from `exists_jet_factor K f₁ f₂ n (d₁.trans d₂.symm) hn hnn hf`. Establish `e0` using `hh _ _ _ (jet0 k) χ rfl (hd.trans d₁)`. Establish `e1` using `hh _ _ _ (jet1 k) χ rfl (hd.trans d₁)`. Rewrite `e0` using `[h0]`. Rewrite `e1` using `[h1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hχ θ, hθ, h₁, h₂, e0, e1]`. Conclude with `(add_sub_add_right_eq_sub _ _ _).trans (map_sub χ.φ _ _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diff (h : C1 K.Oc) (hh : ∀ (T T' T'' : K.Obj) (φ : T ⟶ T') (ψ : T' ⟶ T''), φ.deg = 0 → ψ.deg = 0 →
       h T T'' (φ ≫ ψ) = ψ.φ (h T T' φ) + h T' T'' ψ) (k : K.K)
@@ -36,16 +36,14 @@ theorem diff (h : C1 K.Oc) (hh : ∀ (T T' T'' : K.Obj) (φ : T ⟶ T') (ψ : T'
   exact (add_sub_add_right_eq_sub _ _ _).trans (map_sub χ.φ _ _).symm
 
 /- English proof (translation)
-Simplify using `[Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_single {O : Type} [CommRing O] (v : Fin g → O) (a : Fin g) (e : O) :
     ∑ c, v c * (Pi.single a e : Fin g → O) c = v a * e := by
   simp [Pi.single_apply]
 
 /- English proof (translation)
-Use `diff K h hh k θ hθ f₁ f₂ (Pi.single a e) d₁ d₂ (fun c ↦ by rw [Pi.single_apply]; split_ifs; exacts [he, T.J.zero_mem]) (fun c d ↦ by` as an intermediate fact. Rewrite using `[Pi.single_apply, Pi.single_apply]`. Use `split_ifs`. Use `exacts [hee, mul_zero _, zero_mul _, mul_zero _])`. Use the proof step `(fun x ↦ (hf x).trans (congrArg (f₁.φ x + ·) (sum_single (fun c ↦ f₁.φ (dw c x : Hol (K.W k))) a e).symm)) u₁ u₂ h₁ h₂`.
-
-Rewrite using `[this, h0, sum_single (fun c ↦ f₁.φ (θ.snd c : Hol (K.W k)))]`. Conclude with `(congrArg (· + _) (map_zero f₁.φ)).trans (zero_add _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diff1 (h : C1 K.Oc) (hh : ∀ (T T' T'' : K.Obj) (φ : T ⟶ T') (ψ : T' ⟶ T''), φ.deg = 0 → ψ.deg = 0 →
       h T T'' (φ ≫ ψ) = ψ.φ (h T T' φ) + h T' T'' ψ) (k : K.K)
@@ -66,7 +64,7 @@ theorem diff1 (h : C1 K.Oc) (hh : ∀ (T T' T'' : K.Obj) (φ : T ⟶ T') (ψ : T
   exact (congrArg (· + _) (map_zero f₁.φ)).trans (zero_add _)
 
 /- English proof (translation)
-Substitute `h5 h6` using the available equality. Take the linear combination `-h1 - h2 + h3 + h4`.
+Substitute using the available equality. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem units_mul_relation_rearrange_commRing {C : Type} [CommRing C] (u₀ u₁ u₂ u₃ A B A' B' A₂ B₁ e₁ e₂ : C) (h1 : u₀ - u₁ = A * e₁)
     (h2 : u₁ - u₃ = B₁ * e₂) (h3 : u₀ - u₂ = B * e₂) (h4 : u₂ - u₃ = A₂ * e₁) (h5 : B₁ = B + B' * e₁)
@@ -75,9 +73,9 @@ theorem units_mul_relation_rearrange_commRing {C : Type} [CommRing C] (u₀ u₁
   linear_combination -h1 - h2 + h3 + h4
 
 /- English proof (translation)
-Introduce `I _ g Λ _ F K h hh k θ hθ`. Establish `h0 : θ.fst = 0`. Use `diff K h hh k θ hθ (𝟙 (K.triv k)) (𝟙 (K.triv k)) (fun _ ↦ 0) rfl rfl (fun _ ↦ (K.triv k).J.zero_mem) (fun _ _ ↦ mul_zero _) (fun x ↦ by simp only [mul_zero, Finset.sum_const_zero, add_zero]) _ _ rfl rfl` as an intermediate fact. Simplify using `only [mul_zero, Finset.sum_const_zero, add_zero, sub_self] at this`. Conclude with `this.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨h0, fun a b ↦ ?_⟩` and prove the remaining obligations. Take `⟨T, φ₀, φ₁, φ₂, φ₃, e₁, e₂, d₀, d₁, d₂, d₃, m₁, m₂, s₁, s₂, p₁, p₂, p₃, p₄, inj⟩` from `exists_second_order_nbhd I g Λ F K k a b`. Use `sub_eq_zero.1 (inj _ ?_)` and prove the remaining obligations. Use `units_mul_relation_rearrange_commRing _ _ _ _ _ _ _ _ _ _ e₁ e₂ (diff1 K h hh k θ hθ h0 φ₀ φ₁ a e₁ d₀ d₁ m₁ s₁ p₁ _ _ rfl rfl) (diff1 K h hh k θ hθ h0 φ₁ φ₃ b e₂ d₁ d₃ m₂ s₂ p₃ _ _ rfl rfl) (diff1 K h hh k θ hθ h0 φ₀ φ₂ b e₂ d₀ d₂ m₂ s₂ p₂ _ _ rfl rfl) (diff1 K h hh k θ hθ h0 φ₂ …` as an intermediate fact. Conclude with `(congrArg (· * e₁ * e₂) (map_sub φ₀.φ _ _)).trans this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem connForm_closed : ∀ {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [AddCommGroup Λ] {F : Fam I g Λ} (K : Charts F) (h : C1 K.Oc), (∀ (T T' T'' : K.Obj) (φ : T ⟶ T') (ψ : T' ⟶ T''), φ.deg = 0 → ψ.deg = 0 → h T T'' (φ ≫ ψ) = ψ.φ (h T T' φ) + h T' T'' ψ) → ∀ (k : K.K) (θ : TrivSqZeroExt (Hol (K.W k)) (Fin g → Hol (K.W k))), θ = h _ _ (jet0 k) - h _ _ (jet1 k) → θ.fst = 0 ∧ ∀ a b, dw a (θ.snd b) = dw b (θ.snd a) := by
   intro I _ g Λ _ F K h hh k θ hθ

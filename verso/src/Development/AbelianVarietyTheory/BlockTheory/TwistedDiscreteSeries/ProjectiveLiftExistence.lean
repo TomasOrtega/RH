@@ -44,21 +44,21 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.w
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem chain_Th_iff (R : RealDat D A Ks) : R.chain_Th ↔ ∀ t, Represents R t (R.Th t) := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun x => hE.1 ((h x).trans (h' x).symm)`.
+A detailed English derivation is pending.
 -/
 theorem Represents.unique {R : RealDat D A Ks} (hE : R.models_HE) {t : T} {y y' : (R.HX t).H →ₗ[ℂ] R.HE.H}
     (h : Represents R t y) (h' : Represents R t y') : y = y' :=
   LinearMap.ext fun x => hE.1 ((h x).trans (h' x).symm)
 
 /- English proof (translation)
-Take `⟨hi, rfl, -⟩` from `hM`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩ x`. Conclude with `⟨y x, hy x⟩`. Introduce `h`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨(LinearEquiv.ofInjective M.e hi).symm.toLinearMap ∘ₗ f.codRestrict _ h, fun x => congrArg Subtype.val ((LinearEquiv.ofInjective M.e hi).apply_symm_apply ⟨f x, h x⟩)⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_lift_iff {X N : Type} [AddCommGroup X] [Module ℂ X] [AddCommGroup N] [Module ℂ N] {M : HMod X} {V : Submodule ℂ X}
     {ip : X → X → ℂ} (hM : M.Is V ip) (f : N →ₗ[ℂ] X) : (∃ y : N →ₗ[ℂ] M.H, ∀ x, M.e (y x) = f x) ↔ ∀ x, f x ∈ V := by
@@ -71,7 +71,7 @@ theorem exists_lift_iff {X N : Type} [AddCommGroup X] [Module ℂ X] [AddCommGro
       congrArg Subtype.val ((LinearEquiv.ofInjective M.e hi).apply_symm_apply ⟨f x, h x⟩)⟩
 
 /- English proof (translation)
-Use `Iff.trans ?_ (exists_lift_iff hE (projLift R t))` and prove the remaining obligations. Simplify using `only [Represents, projLift_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem exists_represents_iff {R : RealDat D A Ks} (hE : R.models_HE) (t : T) :
     (∃ y : (R.HX t).H →ₗ[ℂ] R.HE.H, Represents R t y) ↔ ∀ x, projLift R t x ∈ R.EEat R.triv := by

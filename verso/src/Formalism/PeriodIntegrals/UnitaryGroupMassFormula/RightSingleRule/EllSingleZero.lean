@@ -11,7 +11,7 @@ namespace Formalism.FourierDecayAlt.Q.QRR
 variable {k r : ℕ}
 
 /- English proof (translation)
-Distinguish the cases in `h : i = a`. Substitute `h` using the available equality. Simplify using `[Matrix.mulVec, dotProduct, Matrix.single_apply]`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.single_apply, h, Ne.symm h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma mulVec_single' (a b : Fin (2 * r + k + 1)) (c : ℂ) (z : Fin (2 * r + k + 1) → ℂ)
     (i : Fin (2 * r + k + 1)) : (Matrix.single a b c *ᵥ z) i = if i = a then c * z b else 0 := by
@@ -21,11 +21,11 @@ lemma mulVec_single' (a b : Fin (2 * r + k + 1)) (c : ℂ) (z : Fin (2 * r + k +
   · simp [Matrix.mulVec, dotProduct, Matrix.single_apply, h, Ne.symm h]
 
 /- English proof (translation)
-Unfold `ell`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `a' _`. Use `split_ifs with h`. Rewrite using `[Matrix.single_apply, if_neg]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨-, hb'⟩`. Establish `h'` using `congrArg Fin.val hb'`. Simplify using `only [eI] at h'`. Use linear arithmetic over natural numbers and integers. Rewrite using `[mulVec_single', hzb]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 lemma ell_single_zero (z : Fin (2 * r + k + 1) → ℂ) (a b : Fin (2 * r + k + 1)) (c : ℂ)
     (hb : r ≤ b.val) (hzb : z b = 0) : ell k r z (Matrix.single a b c) = 0 := by
@@ -42,13 +42,13 @@ lemma ell_single_zero (z : Fin (2 * r + k + 1) → ℂ) (a b : Fin (2 * r + k + 
     simp
 
 /- English proof (translation)
-Unfold `ell`. Rewrite using `[Finset.sum_eq_single l]`. Distinguish the cases in `h : l.val + 1 < r`. Rewrite using `[dif_pos h, dif_pos h, Matrix.single_apply]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[dif_neg h, dif_neg h, mulVec_single']`. Simplify using the standard rewrite rules. Introduce `a' _ ha'`. Establish `hne : eI k r l ≠ eI k r a'` using `fun h => ha' (Fin.ext (by`. Establish `h'` using `congrArg Fin.val h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [eI] at h'`. Use the proof step `omega))`. Distinguish the cases in `h : a'.val + 1 < r`. Rewrite using `[dif_pos h, Matrix.single_apply, if_neg]`. Introduce and unpack `⟨h1, -⟩`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hne h1`. Rewrite using `[dif_neg h, mulVec_single', if_neg (Ne.symm hne)]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ l) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma ell_single_row (z : Fin (2 * r + k + 1) → ℂ) (l : Fin r) (b : Fin (2 * r + k + 1)) (c : ℂ) :
     ell k r z (Matrix.single (eI k r l) b c) =
@@ -80,7 +80,7 @@ private lemma tau_val_lemma (i : Fin (2 * r + k + 1)) :
     (WeylGroupFacts.tau k r i).val = if i.val < r ∨ r + k < i.val then 2 * r + k - i.val else i.val := rfl
 
 /- English proof (translation)
-Establish `hi` using `i.isLt`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [tau_val_lemma]`. Apply the tactic sequence `split_ifs <;> omega`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma tau_tau_lemma (i : Fin (2 * r + k + 1)) : WeylGroupFacts.tau k r (WeylGroupFacts.tau k r i) = i := by
   have hi := i.isLt
@@ -89,7 +89,7 @@ private lemma tau_tau_lemma (i : Fin (2 * r + k + 1)) : WeylGroupFacts.tau k r (
   split_ifs <;> omega
 
 /- English proof (translation)
-Establish `hi` using `i.isLt`. Unfold `WeylGroupFacts.sgn`. Simplify using `only [tau_val_lemma]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma sgn_tau_lemma (i : Fin (2 * r + k + 1)) : WeylGroupFacts.sgn k r (WeylGroupFacts.tau k r i) = WeylGroupFacts.sgn k r i := by
   have hi := i.isLt
@@ -98,7 +98,7 @@ private lemma sgn_tau_lemma (i : Fin (2 * r + k + 1)) : WeylGroupFacts.sgn k r (
   split_ifs <;> first | rfl | omega
 
 /- English proof (translation)
-Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Unfold `Hpk WeylGroupFacts.sgn`. Simplify using `only [Fin.ext_iff, tau_val_lemma]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega | norm_num`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma hpk_eq_lemma (i j : Fin (2 * r + k + 1)) :
     Hpk k r i j = if j = WeylGroupFacts.tau k r i then WeylGroupFacts.sgn k r i else 0 := by
@@ -109,9 +109,9 @@ private lemma hpk_eq_lemma (i j : Fin (2 * r + k + 1)) :
   split_ifs <;> first | rfl | omega | norm_num
 
 /- English proof (translation)
-Rewrite using `[hpk_eq_lemma]`. Distinguish the cases in `h : x = WeylGroupFacts.tau k r y`. Substitute `h` using the available equality. Simplify using `[tau_tau_lemma, sgn_tau_lemma]`. Rewrite using `[if_neg h, if_neg]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `h'`. Apply `h` to reduce the goal to its premises. Rewrite using `[h', tau_tau_lemma]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 private lemma hpk_col_lemma (x y : Fin (2 * r + k + 1)) :
     Hpk k r x y = if x = WeylGroupFacts.tau k r y then WeylGroupFacts.sgn k r y else 0 := by
@@ -125,16 +125,16 @@ private lemma hpk_col_lemma (x y : Fin (2 * r + k + 1)) :
     rw [h', tau_tau_lemma]
 
 /- English proof (translation)
-Unfold `WeylGroupFacts.sgn`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma sgn_sq_lemma (i : Fin (2 * r + k + 1)) : WeylGroupFacts.sgn k r i * WeylGroupFacts.sgn k r i = 1 := by
   unfold WeylGroupFacts.sgn
   split_ifs <;> norm_num
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify using `only [hpk_eq_lemma, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true, tau_tau_lemma, sgn_tau_lemma]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[sgn_sq_lemma]`. Simplify using `[h, Ne.symm h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private lemma hpk_sq_lemma : Hpk k r * Hpk k r = 1 := by
   ext i j
@@ -146,12 +146,12 @@ private lemma hpk_sq_lemma : Hpk k r * Hpk k r = 1 := by
   · simp [h, Ne.symm h]
 
 /- English proof (translation)
-The claim follows from `Matrix.inv_eq_left_inv hpk_sq_lemma`.
+A detailed English derivation is pending.
 -/
 private lemma hpk_inv_lemma : (Hpk k r)⁻¹ = Hpk k r := Matrix.inv_eq_left_inv hpk_sq_lemma
 
 /- English proof (translation)
-Use extensionality with `x y`. Rewrite using `[Matrix.conjTranspose_apply, Matrix.single_apply, Matrix.single_apply]`. Distinguish the cases in `h : a = y ∧ b = x`. Rewrite using `[if_pos h, if_pos ⟨h.2, h.1⟩]`. Rewrite using `[if_neg h, if_neg (fun h' => h ⟨h'.2, h'.1⟩), star_zero]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private lemma single_ct_lemma (a b : Fin (2 * r + k + 1)) (c : ℂ) :
     (Matrix.single a b c)ᴴ = Matrix.single b a (star c) := by
@@ -162,7 +162,7 @@ private lemma single_ct_lemma (a b : Fin (2 * r + k + 1)) (c : ℂ) :
   · rw [if_neg h, if_neg (fun h' => h ⟨h'.2, h'.1⟩), star_zero]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, Matrix.single_apply, ite_and, mul_ite, mul_zero, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma conj_single_lemma (A B : Mx k r) (a b : Fin (2 * r + k + 1)) (c : ℂ)
     (p q : Fin (2 * r + k + 1)) : (A * Matrix.single a b c * B) p q = A p a * c * B b q := by
@@ -170,11 +170,11 @@ private lemma conj_single_lemma (A B : Mx k r) (a b : Fin (2 * r + k + 1)) (c : 
     Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Unfold `dag`. Rewrite using `[hpk_inv_lemma, single_ct_lemma]`. Use extensionality with `p q`. Rewrite using `[conj_single_lemma, hpk_eq_lemma, hpk_eq_lemma, Matrix.single_apply]`. Distinguish the cases in `hp : p = WeylGroupFacts.tau k r b`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hp` using the available equality. Distinguish the cases in `hq : q = WeylGroupFacts.tau k r a`. Substitute `hq` using the available equality. Simplify using `[tau_tau_lemma, sgn_tau_lemma]`. Simplify using `[hq, Ne.symm hq]`.
+Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hb : b ≠ WeylGroupFacts.tau k r p` using `fun h => hp (by rw [h, tau_tau_lemma])`. Simplify using `[hb, Ne.symm hp]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 lemma dag_single (a b : Fin (2 * r + k + 1)) (c : ℂ) :
     dag k r (Matrix.single a b c) = Matrix.single (WeylGroupFacts.tau k r b) (WeylGroupFacts.tau k r a)
@@ -193,9 +193,7 @@ lemma dag_single (a b : Fin (2 * r + k + 1)) (c : ℂ) :
     simp [hb, Ne.symm hp]
 
 /- English proof (translation)
-Introduce `i j hij`. Rewrite `hij` using `[Matrix.single_apply]`. Use `split_ifs at hij with h'`. Take `⟨rfl, rfl⟩` from `h'`. Conclude with `h`.
-
-Conclude with `absurd rfl hij`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 lemma pat_single (l : Fin r) (a b : Fin (2 * r + k + 1)) (c : ℂ)
     (h : (a.val = l.val ∧ l.val < b.val ∧ b.val ≤ 2 * r + k - l.val) ∨
@@ -209,7 +207,7 @@ lemma pat_single (l : Fin r) (a b : Fin (2 * r + k + 1)) (c : ℂ)
   · exact absurd rfl hij
 
 /- English proof (translation)
-Establish `hj : j.val < 2 * (r - (l.val + 1)) + k + 1` using `j.isLt`. Establish `hl` using `l.isLt`. Use `⟨rfl, ?_⟩` and prove the remaining obligations. Use `show j.val + (l.val + 1) < 2 * r + k - l.val`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 lemma posL_val (l : Fin r) (j : Fin (mdim k r l.succ)) :
     (posL k r l.succ j).val = j.val + (l.val + 1) ∧ j.val + (l.val + 1) < 2 * r + k - l.val := by
@@ -220,9 +218,7 @@ lemma posL_val (l : Fin r) (j : Fin (mdim k r l.succ)) :
   omega
 
 /- English proof (translation)
-Establish `hl` using `l.isLt`. Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[tau_val_lemma]`. Use `split_ifs with h`. Both sides reduce to the same expression.
-
-Conclude with `absurd (Or.inl hl) h`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma tau_eI (l : Fin r) : WeylGroupFacts.tau k r (eI k r l) = esI k r l := by
   have hl := l.isLt
@@ -233,11 +229,9 @@ lemma tau_eI (l : Fin r) : WeylGroupFacts.tau k r (eI k r l) = esI k r l := by
   · exact absurd (Or.inl hl) h
 
 /- English proof (translation)
-Establish `hl` using `l.isLt`. Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[tau_val_lemma]`. Use `split_ifs with h`. Use `show 2 * r + k - (2 * r + k - l.val) = l.val`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. It suffices to derive a contradiction.
 
-Use linear arithmetic over natural numbers and integers. It suffices to derive a contradiction. Apply `h` to reduce the goal to its premises. Use `right`. Use `show r + k < 2 * r + k - l.val`.
-
-Use linear arithmetic over natural numbers and integers.
+Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 lemma tau_esI (l : Fin r) : WeylGroupFacts.tau k r (esI k r l) = eI k r l := by
   have hl := l.isLt
@@ -253,7 +247,7 @@ lemma tau_esI (l : Fin r) : WeylGroupFacts.tau k r (esI k r l) = eI k r l := by
     omega
 
 /- English proof (translation)
-Establish `hl` using `l.isLt`. Unfold `WeylGroupFacts.sgn`. Rewrite using `[if_neg]`. Simplify using `only [esI]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 lemma sgn_esI (l : Fin r) : WeylGroupFacts.sgn k r (esI k r l) = 1 := by
   have hl := l.isLt
@@ -263,7 +257,7 @@ lemma sgn_esI (l : Fin r) : WeylGroupFacts.sgn k r (esI k r l) = 1 := by
   omega
 
 /- English proof (translation)
-Establish `hl` using `l.isLt`. Unfold `WeylGroupFacts.sgn`. Rewrite using `[if_neg]`. Simplify using `only [eI]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 lemma sgn_eI (l : Fin r) : WeylGroupFacts.sgn k r (eI k r l) = 1 := by
   have hl := l.isLt
@@ -273,21 +267,21 @@ lemma sgn_eI (l : Fin r) : WeylGroupFacts.sgn k r (eI k r l) = 1 := by
   omega
 
 /- English proof (translation)
-Unfold `WeylGroupFacts.sgn`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma star_sgn (i : Fin (2 * r + k + 1)) : star (WeylGroupFacts.sgn k r i) = WeylGroupFacts.sgn k r i := by
   unfold WeylGroupFacts.sgn
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hl` using `l.isLt`. Conclude with `hz _ (Or.inr (show r + k < 2 * r + k - l.val by omega))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma esI_zero (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (l : Fin r) : z (esI k r l) = 0 := by
   have hl := l.isLt
   exact hz _ (Or.inr (show r + k < 2 * r + k - l.val by omega))
 
 /- English proof (translation)
-Establish `hl` using `l.isLt`. Use `show r ≤ 2 * r + k - l.val`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 lemma esI_ge (l : Fin r) : r ≤ (esI k r l).val := by
   have hl := l.isLt
@@ -295,7 +289,7 @@ lemma esI_ge (l : Fin r) : r ≤ (esI k r l).val := by
   omega
 
 /- English proof (translation)
-Unfold `herm`. Simplify using `only [dotProduct, Matrix.mulVec, bvec, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true, hpk_col_lemma, Pi.star_apply]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 lemma herm_bvec_left (x : Fin (2 * r + k + 1) → ℂ) (v : Fin (2 * r + k + 1)) :
     herm (Hpk k r) (bvec v) x = star (x (WeylGroupFacts.tau k r v)) * WeylGroupFacts.sgn k r v := by
@@ -304,9 +298,9 @@ lemma herm_bvec_left (x : Fin (2 * r + k + 1) → ℂ) (v : Fin (2 * r + k + 1))
     hpk_col_lemma, Pi.star_apply]
 
 /- English proof (translation)
-Rewrite using `[dag_single, tau_eI, ell_single_zero z _ _ _ (esI_ge l) (esI_zero z hz l), star_zero, add_zero, ell_single_row]`. Unfold `xv fvec`. Distinguish the cases in `h : l.val + 1 < r`. Rewrite using `[dif_pos h, dif_pos (show l.succ.val < r from h)]`. Simplify using `only [bvec, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Rewrite using `[dif_neg h, dif_neg (show ¬ l.succ.val < r from h), one_mul]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 lemma val_ev (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (l : Fin r) (j : Fin (mdim k r l.succ)) :
     ell k r z (Matrix.single (eI k r l) (posL k r l.succ j) 1) +
@@ -321,13 +315,11 @@ lemma val_ev (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (l : Fin r) (j 
   · rw [dif_neg h, dif_neg (show ¬ l.succ.val < r from h), one_mul]
 
 /- English proof (translation)
-Establish `hc : WeylGroupFacts.sgn k r (eI k r l) * star (1 : ℂ) * WeylGroupFacts.sgn k r (WeylGroupFacts.tau k r (posL k r l.succ j)) = WeylGroupFacts.sgn k r (posL k r l.succ j)`. Rewrite using `[sgn_eI, star_one, one_mul, one_mul, sgn_tau_lemma]`. Rewrite using `[ell_single_zero z _ _ _ (esI_ge l) (esI_zero z hz l), zero_add, dag_single, tau_esI, hc, ell_single_row]`. Unfold `xbv`. Rewrite using `[herm_bvec_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `fvec`. Distinguish the cases in `h : l.val + 1 < r`. Rewrite using `[dif_pos h, dif_pos (show l.succ.val < r from h)]`. Simplify using `only [bvec, Pi.single_apply]`. Use `split_ifs with h1 h2 h3`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Apply the tactic sequence `all_goals first`. Consider the case `exact absurd h1 h2`. Consider the case `exact absurd h3 h1`. Consider the case `(rw [star_one, one_mul, star_sgn])`. Consider the case `simp`.
-
-Rewrite using `[dif_neg h, dif_neg (show ¬ l.succ.val < r from h), star_mul', star_sgn, mul_comm]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma val_ve (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (l : Fin r) (j : Fin (mdim k r l.succ)) :
     ell k r z (Matrix.single (posL k r l.succ j) (esI k r l) 1) +
@@ -352,7 +344,7 @@ lemma val_ve (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (l : Fin r) (j 
   · rw [dif_neg h, dif_neg (show ¬ l.succ.val < r from h), star_mul', star_sgn, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[ell_single_zero z _ _ _ (esI_ge l) (esI_zero z hz l), zero_add, dag_single, tau_eI, ell_single_zero z _ _ _ (esI_ge l) (esI_zero z hz l), star_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma val_ees (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (l : Fin r) :
     ell k r z (Matrix.single (eI k r l) (esI k r l) 1) +
@@ -361,7 +353,7 @@ lemma val_ees (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (l : Fin r) :
     ell_single_zero z _ _ _ (esI_ge l) (esI_zero z hz l), star_zero]
 
 /- English proof (translation)
-Establish `h` using `posL_val (k := k) l j`. Apply `pat_single` to reduce the goal to its premises. Use `left`. Conclude with `⟨rfl, by omega, by omega⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma pat_ev (l : Fin r) (j : Fin (mdim k r l.succ)) :
     Pat k r l (Matrix.single (eI k r l) (posL k r l.succ j) 1) := by
@@ -371,7 +363,7 @@ lemma pat_ev (l : Fin r) (j : Fin (mdim k r l.succ)) :
   exact ⟨rfl, by omega, by omega⟩
 
 /- English proof (translation)
-Establish `h` using `posL_val (k := k) l j`. Establish `hl` using `l.isLt`. Apply `pat_single` to reduce the goal to its premises. Use `right`. Conclude with `⟨rfl, by omega, by omega⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma pat_ve (l : Fin r) (j : Fin (mdim k r l.succ)) :
     Pat k r l (Matrix.single (posL k r l.succ j) (esI k r l) 1) := by
@@ -382,7 +374,7 @@ lemma pat_ve (l : Fin r) (j : Fin (mdim k r l.succ)) :
   exact ⟨rfl, by omega, by omega⟩
 
 /- English proof (translation)
-Establish `hl` using `l.isLt`. Apply `pat_single` to reduce the goal to its premises. Use `left`. Conclude with `⟨rfl, show l.val < 2 * r + k - l.val by omega, le_refl _⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma pat_ees (l : Fin r) : Pat k r l (Matrix.single (eI k r l) (esI k r l) 1) := by
   have hl := l.isLt
@@ -391,9 +383,9 @@ lemma pat_ees (l : Fin r) : Pat k r l (Matrix.single (eI k r l) (esI k r l) 1) :
   exact ⟨rfl, show l.val < 2 * r + k - l.val by omega, le_refl _⟩
 
 /- English proof (translation)
-Introduce `E _ _ k r z' l D f hz _ _ hR g hg`. Use `⟨fun j => ?_, fun j => ?_, ?_⟩` and prove the remaining obligations. Use `show RdV _ f g + Complex.I • RdV _ f g = _`. Rewrite using `[lam z' hz l D f hR g hg _ (pat_ev l j), val_ev z' hz l j]`. Use `show RdV _ f g + Complex.I • RdV _ f g = _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lam z' hz l D f hR g hg _ (pat_ve l j), val_ve z' hz l j]`. Use `show RdV _ f g + Complex.I • RdV _ f g = _`. Rewrite using `[lam z' hz l D f hR g hg _ (pat_ees l), val_ees z' hz l, zero_smul]`.
+A detailed English derivation is pending.
 -/
 theorem ruleRight_main : RuleRight := by
   intro E _ _ k r z' l D f hz _ _ hR g hg

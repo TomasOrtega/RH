@@ -17,15 +17,15 @@ variable {ϖ : 𝒪[F]} {k : Type} [Field k] {r : M.L.O →+* k} {n : ℕ} {b : 
   {Λ : Submodule M.L.O V}
 
 /- English proof (translation)
-Take `⟨-, hind, hsat⟩` from `hP`. Establish `hϖ0 : ((ϖ : 𝒪[F]) : F) ≠ 0` using `fun h => hϖ.ne_zero (Subtype.ext h)`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg a0`. Use `choose h hh using fun a => hR.surj (g a)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hsum_mem : ∑ a, ((h a : M.L.O) : E) • v a ∈ Λ` using `Submodule.sum_mem _ fun a _ => Λ.smul_mem (h a) (hv a)`. Establish `hred : red hR (∑ a, ((h a : M.L.O) : E) • v a) = 0`. Rewrite using `[red_lincomb hR h v hv]`. Simplify using `only [hh]`. Conclude with `hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w, hw, hweq⟩` from `(red_zero_iff hR hsum_mem).mp hred`. Establish `hwspan : w ∈ Submodule.span E (Set.range v)`. Establish `e : w = algebraMap F E ((ϖ : F))⁻¹ • ∑ a, ((h a : M.L.O) : E) • v a`. Rewrite using `[hweq, smul_smul, ← map_mul, inv_mul_cancel₀ hϖ0, map_one, one_smul]`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩))`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun M.L.O).mp (hsat w hw hwspan)`. Establish `hzero : ∑ a, (((h a : M.L.O) : E) - algebraMap F E (ϖ : F) * (c a : E)) • v a = 0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib, mul_smul]`. Rewrite using `[← Finset.smul_sum, sub_eq_zero, hweq, ← hc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Subring.smul_def]`. Establish `ha0` using `Fintype.linearIndependent_iff.mp hind _ hzero a0`. Rewrite using `[← hh a0]`. Conclude with `(hR.ker (h a0)).mpr ⟨c a0, (c a0).2, sub_eq_zero.mp ha0⟩`.
+A detailed English derivation is pending.
 -/
 theorem prim_of (hR : RedData ϖ k r n b Λ) (H : Loc.HermSp M V) (hϖ : Irreducible ϖ)
     {ι : Type} [Fintype ι] (v : ι → V) (hv : ∀ a, v a ∈ Λ) (hP : H.Prim Λ v) :
@@ -60,23 +60,21 @@ theorem prim_of (hR : RedData ϖ k r n b Λ) (H : Loc.HermSp M V) (hϖ : Irreduc
   exact (hR.ker (h a0)).mpr ⟨c a0, (c a0).2, sub_eq_zero.mp ha0⟩
 
 /- English proof (translation)
-Establish `hϖ0 : ((ϖ : 𝒪[F]) : F) ≠ 0` using `fun h => hϖ.ne_zero (Subtype.ext h)`. Establish `hOalg : ∀ c : 𝒪[F], algebraMap F E (c : F) ∈ M.L.O`. Introduce `c`. Rewrite using `[M.L.O_def]`. Conclude with `(isIntegral_algebraMap (R := 𝒪[F]) (A := F) (x := c)).map (IsScalarTower.toAlgHom 𝒪[F] F E)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg a0`. Assume the negation of the conclusion as `hne`. Use `choose c hc0 hcO using fun a => o2 (g a)`. Establish `hDne : (∏ a, c a) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun a _ => hc0 a`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD0 : (((∏ a, c a : 𝒪[F])) : F) ≠ 0` using `fun h => hDne (Subtype.ext h)`. Establish `hDg : ∀ a, algebraMap F E ((∏ b, c b : 𝒪[F]) : F) * g a ∈ M.L.O`. Introduce `a`. Establish `e : ((∏ b, c b : 𝒪[F]) : F) = (c a : F) * ((∏ b ∈ Finset.univ.erase a, c b : 𝒪[F]) : F)`. Rewrite using `[← Finset.mul_prod_erase Finset.univ c (Finset.mem_univ a)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e, map_mul, mul_comm (algebraMap F E (c a : F)), mul_assoc]`. Conclude with `M.L.O.mul_mem (hOalg _) (hcO a)`. Set `h : ι → M.L.O` to `fun a => ⟨algebraMap F E ((∏ b, c b : 𝒪[F]) : F) * g a, hDg a⟩`. Establish `hsum : ∑ a, ((h a : M.L.O) : E) • v a = 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [h, mul_smul, ← Finset.smul_sum, hg, smul_zero]`. Establish `hh0 : ((h a0 : M.L.O) : E) ≠ 0`. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Establish `h1` using `congrArg (algebraMap F E (((∏ b, c b : 𝒪[F]) : F))⁻¹ * ·) h0`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [h, mul_zero, ← mul_assoc, ← map_mul, inv_mul_cancel₀ hD0, map_one, one_mul] at h1`. Conclude with `h1`. Take `⟨j, z, hz, hzeq, a1, ha1⟩` from `minpow hR hϖ o3 (fun a => ((h a : M.L.O) : E)) (fun a => (h a).2) a0 hh0`. Establish `hsumz : ∑ a, z a • v a = 0`. Establish `e1 : ∑ a, ((h a : M.L.O) : E) • v a = (algebraMap F E (ϖ : F)) ^ j • ∑ a, z a • v a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[hzeq a, mul_smul]`. Rewrite `hsum` using `[e1]`. Establish `h2` using `congrArg (fun x => (algebraMap F E ((ϖ : F))⁻¹) ^ j • x) hsum`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [smul_smul, ← mul_pow, ← map_mul, inv_mul_cancel₀ hϖ0, map_one, one_pow, one_smul, smul_zero] at h2`. Conclude with `h2`. Establish `hred : ∑ a, r ⟨z a, hz a⟩ • red hR (v a) = 0`. Rewrite using `[← red_lincomb hR (fun a => (⟨z a, hz a⟩ : M.L.O)) v hv]`. Simplify using `only [hsumz, red_zero]`.
-
-Conclude with `ha1 (Fintype.linearIndependent_iff.mp hX _ hred a1)`.
+A detailed English derivation is pending.
 -/
 theorem indep_of (hR : RedData ϖ k r n b Λ) (hϖ : Irreducible ϖ)
     (o2 : ∀ x : E, ∃ c : 𝒪[F], c ≠ 0 ∧ algebraMap F E c * x ∈ M.L.O)
@@ -130,37 +128,33 @@ theorem indep_of (hR : RedData ϖ k r n b Λ) (hϖ : Irreducible ϖ)
   exact ha1 (Fintype.linearIndependent_iff.mp hX _ hred a1)
 
 /- English proof (translation)
-Establish `hϖ0 : ((ϖ : 𝒪[F]) : F) ≠ 0` using `fun h => hϖ.ne_zero (Subtype.ext h)`. Establish `hOalg : ∀ c : 𝒪[F], algebraMap F E (c : F) ∈ M.L.O`. Introduce `c`. Rewrite using `[M.L.O_def]`. Conclude with `(isIntegral_algebraMap (R := 𝒪[F]) (A := F) (x := c)).map (IsScalarTower.toAlgHom 𝒪[F] F E)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hϖO : algebraMap F E (ϖ : F) ∈ M.L.O` using `hOalg ϖ`. Establish `hϖu : IsUnit (algebraMap F E (ϖ : F))` using `(isUnit_iff_ne_zero.mpr hϖ0).map (algebraMap F E)`. Introduce `x hx hxs`. Take `⟨g, hg⟩` from `(Submodule.mem_span_range_iff_exists_fun E).mp hxs`. Use `choose c hc0 hcO using fun a => o2 (g a)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDne : (∏ a, c a) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun a _ => hc0 a`. Establish `hD0 : (((∏ a, c a : 𝒪[F])) : F) ≠ 0` using `fun h => hDne (Subtype.ext h)`. Establish `hDg : ∀ a, algebraMap F E ((∏ b, c b : 𝒪[F]) : F) * g a ∈ M.L.O`. Introduce `a`. Establish `e : ((∏ b, c b : 𝒪[F]) : F) = (c a : F) * ((∏ b ∈ Finset.univ.erase a, c b : 𝒪[F]) : F)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← Finset.mul_prod_erase Finset.univ c (Finset.mem_univ a)]`. Both sides reduce to the same expression. Rewrite using `[e, map_mul, mul_comm (algebraMap F E (c a : F)), mul_assoc]`. Conclude with `M.L.O.mul_mem (hOalg _) (hcO a)`. Establish `hdO : algebraMap F E ((∏ b, c b : 𝒪[F]) : F) ∈ M.L.O` using `hOalg _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hdu : IsUnit (algebraMap F E ((∏ b, c b : 𝒪[F]) : F))` using `(isUnit_iff_ne_zero.mpr hD0).map (algebraMap F E)`. Set `h : ι → M.L.O` to `fun a => ⟨algebraMap F E ((∏ b, c b : 𝒪[F]) : F) * g a, hDg a⟩`. Establish `hdx : algebraMap F E ((∏ b, c b : 𝒪[F]) : F) • x = ∑ a, ((h a : M.L.O) : E) • v a`. Rewrite using `[← hg, Finset.smul_sum]`. Simplify using `only [h, mul_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hall : ∀ a, ((h a : M.L.O) : E) = 0`. Establish `h0 : algebraMap F E ((∏ b, c b : 𝒪[F]) : F) • x = 0`. Rewrite using `[hdx]`. Simplify using `[hall]`. Establish `hx0 : x = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h0` using `[← smul_zero (algebraMap F E ((∏ b, c b : 𝒪[F]) : F))]`. Conclude with `hdu.smul_left_cancel.mp h0`. Rewrite using `[hx0]`. Conclude with `zero_mem _`. Use `push_neg at hall`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a0, ha0⟩` from `hall`. Take `⟨j, z, hz, hzeq, a1, ha1⟩` from `minpow hR hϖ o3 (fun a => ((h a : M.L.O) : E)) (fun a => (h a).2) a0 ha0`. Use `haveI : Nontrivial E := by`. Assume the negation of the conclusion as `hnt`. Rewrite `hnt` using `[not_nontrivial_iff_subsingleton]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h10 : (1 : M.L.O) = 0` using `Subtype.ext (Subsingleton.elim _ _)`. Establish `h11` using `congrArg r h10`. Simplify using `at h11`. Take `⟨m, u, huO, ⟨w, hwO, huw⟩, hdeq⟩` from `o3 _ hdO hdu.ne_zero`. Establish `key : (algebraMap F E (ϖ : F)) ^ m • (u • x) = (algebraMap F E (ϖ : F)) ^ j • ∑ a, z a • v a`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[smul_smul, ← hdeq, hdx, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[hzeq a, mul_smul]`. Distinguish the cases in `hjm : m ≤ j`. Rewrite `key` using `[show j = m + (j - m) by omega, pow_add, mul_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e1` using `(hϖu.pow m).smul_left_cancel.mp key`. Establish `hx' : x = ∑ a, (w * (algebraMap F E (ϖ : F)) ^ (j - m) * z a) • v a`. Establish `e2 : x = w • (u • x)` using `by rw [smul_smul, mul_comm w u, huw, one_smul]`. Rewrite using `[e2, e1, Finset.smul_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[smul_smul, smul_smul, mul_assoc]`. Rewrite using `[hx']`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Establish `hmem : w * (algebraMap F E (ϖ : F)) ^ (j - m) * z a ∈ M.L.O` using `M.L.O.mul_mem (M.L.O.mul_mem hwO (M.L.O.pow_mem hϖO _)) (hz a)`. Establish `h3` using `Submodule.smul_mem (Submodule.span M.L.O (Set.range v)) (⟨_, hmem⟩ : M.L.O) (Submodule.subset_span ⟨a, rfl⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[Subring.smul_def]`. Then use the resulting hypothesis. Use `push_neg at hjm`. Rewrite `key` using `[show m = j + ((m - j - 1) + 1) by omega, pow_add, mul_smul]`. Establish `e1` using `(hϖu.pow j).smul_left_cancel.mp key`. Establish `hzs : ∑ a, z a • v a = algebraMap F E (ϖ : F) • ((algebraMap F E (ϖ : F)) ^ (m - j - 1) • (u • x))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[← e1, pow_succ, mul_smul, smul_comm]`. Establish `hmemΛ : ∑ a, z a • v a ∈ Λ` using `Submodule.sum_mem _ fun a _ => Λ.smul_mem (⟨z a, hz a⟩ : M.L.O) (hv a)`. Establish `hred0 : red hR (∑ a, z a • v a) = 0`. Rewrite using `[red_zero_iff hR hmemΛ]`. Use `⟨(algebraMap F E (ϖ : F)) ^ (m - j - 1) • (u • x), ?_, hzs⟩` and prove the remaining obligations.
-
-Establish `hc : (algebraMap F E (ϖ : F)) ^ (m - j - 1) * u ∈ M.L.O` using `M.L.O.mul_mem (M.L.O.pow_mem hϖO _) huO`. Establish `h4` using `Λ.smul_mem (⟨_, hc⟩ : M.L.O) hx`. Rewrite `h4` using `[Subring.smul_def, mul_smul]`. Then use the resulting hypothesis. Establish `hred : ∑ a, r ⟨z a, hz a⟩ • red hR (v a) = 0`. Rewrite using `[← red_lincomb hR (fun a => (⟨z a, hz a⟩ : M.L.O)) v hv]`.
-
-Conclude with `hred0`. Conclude with `absurd (Fintype.linearIndependent_iff.mp hX _ hred a1) ha1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sat_of (hR : RedData ϖ k r n b Λ) (hϖ : Irreducible ϖ)
     (o2 : ∀ x : E, ∃ c : 𝒪[F], c ≠ 0 ∧ algebraMap F E c * x ∈ M.L.O)
@@ -257,7 +251,7 @@ theorem sat_of (hR : RedData ϖ k r n b Λ) (hϖ : Irreducible ϖ)
     exact absurd (Fintype.linearIndependent_iff.mp hX _ hred a1) ha1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨prim_of hR H hϖ v hv, fun hX => ⟨hv, indep_of hR hϖ o2 o3 v hv hX, sat_of hR hϖ o2 o3 v hv hX⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem prim_iff (hR : RedData ϖ k r n b Λ) (H : Loc.HermSp M V) (hϖ : Irreducible ϖ)
     (o2 : ∀ x : E, ∃ c : 𝒪[F], c ≠ 0 ∧ algebraMap F E c * x ∈ M.L.O)

@@ -10,9 +10,9 @@ namespace ReciprocityTheory.ChartRestriction.G.ArakelovGeometry
 open MvPolynomial Module ReciprocityTheory.AnForm.R
 
 /- English proof (translation)
-Unfold `grad`. Establish `h` using `pderiv_rename (R := ℂ) e.injective (e.symm j) (map (Int.castRingHom ℂ) f)`. Rewrite `h` using `[Equiv.apply_symm_apply]`. Establish `hc : (fun j => z₀ (e.symm j)) ∘ e = z₀`. Use function extensionality and compare the values at `i`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using the standard rewrite rules. Rewrite using `[map_rename, h, eval_rename, hc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem gbap_grad_rename {J : Type} [Fintype J] {n : ℕ} (e : J ≃ Fin n) (z₀ : J → ℂ)
     (f : MvPolynomial J ℤ) (j : Fin n) :
@@ -27,27 +27,25 @@ theorem gbap_grad_rename {J : Type} [Fintype J] {n : ℕ} (e : J ≃ Fin n) (z�
   rw [map_rename, h, eval_rename, hc]
 
 /- English proof (translation)
-Set `g : MvPolynomial J ℤ → (J → ℂ)` to `fun f i => eval z₀ (pderiv i (map (Int.castRingHom ℂ) f))`. Take `⟨s, hsS, hspan, hsli⟩` from `exists_linearIndependent ℂ (g '' (P : Set (MvPolynomial J ℤ)))`. Establish `hfin : Finite s` using `hsli.finite`. Use `haveI : Fintype s := Fintype.ofFinite s`. Set `ℓ : (J → ℂ) → (J → ℂ) →ₗ[ℂ] ℂ` to `fun w => { toFun := fun v => ∑ i, v i * w i map_add' := fun a b => by simp [add_mul, Finset.sum_add_distrib] map_smul' := fun r a => by simp [Finset.mul_sum, mul_assoc] }`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `A : Matrix s J ℂ` to `Matrix.of fun v i => (v : J → ℂ) i`. Establish `hAli : LinearIndependent ℂ A.row` using `hsli`. Establish `hker : ∀ w, w ∈ LinearMap.ker A.mulVecLin ↔ w ∈ T`. Introduce `w`. Rewrite using `[LinearMap.mem_ker, hT]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [ReciprocityTheory.ChartRestriction.G.Geo.IsConeTangent]`. Prove the components needed by the constructor for the conclusion. Introduce `hw f hf`. Establish `hle : Submodule.span ℂ (s : Set (J → ℂ)) ≤ LinearMap.ker (ℓ w)`. Rewrite using `[Submodule.span_le]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hv`. Use `congrFun hw ⟨v, hv⟩` as an intermediate fact. Simplify `this` using `[Matrix.mulVecLin_apply, Matrix.mulVec, dotProduct, A, ℓ]`. Establish `hg : g f ∈ Submodule.span ℂ (s : Set (J → ℂ))`. Rewrite using `[hspan]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.subset_span ⟨f, hf, rfl⟩`. Use `hle hg` as an intermediate fact. Simplify `this` using `[ℓ, g]`. Introduce `hw`. Use function extensionality and compare the values at `v`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨f, hf, hfv⟩` from `hsS v.2`. Use `hw f hf` as an intermediate fact. Simplify using `only [Matrix.mulVecLin_apply, Matrix.mulVec, dotProduct, A, Matrix.of_apply, Pi.zero_apply]`. Rewrite using `[← hfv]`. Simplify `this` using `[g]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hkerT : LinearMap.ker A.mulVecLin = T`. Use extensionality with `w`. Conclude with `hker w`. Establish `hrn` using `LinearMap.finrank_range_add_finrank_ker A.mulVecLin`. Establish `hrange : Module.finrank ℂ (LinearMap.range A.mulVecLin) = Fintype.card s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: A.rank = Fintype.card s`. Rewrite using `[Matrix.rank_eq_finrank_span_row, finrank_span_eq_card hAli]`. Conclude with `this`. Rewrite `hrn` using `[hrange, hkerT, hTd, Module.finrank_fintype_fun_eq_card, Fintype.card_congr e, Fintype.card_fin]`. Establish `hcard : Fintype.card s = c` using `by omega`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Set `σ : Fin c ≃ s` to `(Fintype.equivFinOfCardEq hcard).symm`. Establish `hmem : ∀ i, ∃ f ∈ P, g f = (σ i : J → ℂ)` using `fun i => by`. Take `⟨f, hf, hfv⟩` from `hsS (σ i).2`. Conclude with `⟨f, hf, hfv⟩`. Use `choose f hfP hfg using hmem`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨f, hfP, ?_⟩` and prove the remaining obligations. Establish `hfam : (fun i => grad (fun j => z₀ (e.symm j)) (map (Int.castRingHom ℂ) (rename e (f i)))) = (LinearEquiv.funCongrLeft ℂ ℂ e.symm).toLinearMap ∘ (fun i => (σ i : J → ℂ))`. Use function extensionality and compare the values at `i j`. Rewrite using `[gbap_grad_rename]`. Use `show g (f i) (e.symm j) = (σ i : J → ℂ) (e.symm j)`.
-
-Rewrite using `[hfg i]`. Rewrite using `[hfam]`. Conclude with `(hsli.comp σ σ.injective).map' _ (LinearEquiv.ker _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gbap_indep_grads {J : Type} [Fintype J] {D c : ℕ} (e : J ≃ Fin (D + 1 + c))
     (P : Ideal (MvPolynomial J ℤ)) (z₀ : J → ℂ) (T : Submodule ℂ (J → ℂ))
@@ -117,13 +115,13 @@ theorem gbap_indep_grads {J : Type} [Fintype J] {D c : ℕ} (e : J ≃ Fin (D + 
   exact (hsli.comp σ σ.injective).map' _ (LinearEquiv.ker _)
 
 /- English proof (translation)
-Proceed by induction on `x using WithBot.recBotCoe with`. Consider the case `bot`. It suffices to derive a contradiction. Rewrite `h` using `[WithBot.bot_add]`. Conclude with `WithBot.bot_ne_coe h`.
+Proceed by induction. Treat this case separately. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately.
 
-Consider the case `coe y`. Establish `h' : y + (a : ℕ∞) = ((d + a : ℕ) : ℕ∞)` using `by exact_mod_cast h`. Establish `hy : y = (d : ℕ∞)`. Proceed by induction on `y using ENat.recTopCoe with`. Consider the case `top`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. It suffices to derive a contradiction.
 
-It suffices to derive a contradiction. Rewrite `h'` using `[top_add]`. Conclude with `ENat.coe_ne_top _ h'.symm`. Consider the case `coe y`. Normalize the coercions in `at h' ⊢`.
+Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Put the expressions in a common number system so they can be compared. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[hy]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gbap_withBot_eq {x : WithBot ℕ∞} {d a : ℕ}
     (h : x + (a : WithBot ℕ∞) = ((d + a : ℕ) : WithBot ℕ∞)) : x = (d : WithBot ℕ∞) := by
@@ -147,9 +145,9 @@ theorem gbap_withBot_eq {x : WithBot ℕ∞} {d a : ℕ}
     rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h g hg`. Conclude with `h _ (Ideal.mem_map_of_mem φ hg)`. Introduce `h g hg`. Establish `hle : I.map φ ≤ RingHom.ker (eval w)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker]`. Conclude with `h x hx`. Conclude with `hle hg`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gbap_van_map {R : Type*} [CommRing R] {n : ℕ} (φ : R →+* MvPolynomial (Fin n) ℂ)
     (I : Ideal R) (w : Fin n → ℂ) :
@@ -166,7 +164,7 @@ theorem gbap_van_map {R : Type*} [CommRing R] {n : ℕ} (φ : R →+* MvPolynomi
     exact hle hg
 
 /- English proof (translation)
-Rewrite using `[map_map]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem gbap_map_map_int {σ : Type*} (g : MvPolynomial σ ℤ) :
     map (algebraMap ℚ ℂ) (map (Int.castRingHom ℚ) g) = map (Int.castRingHom ℂ) g := by
@@ -174,11 +172,11 @@ theorem gbap_map_map_int {σ : Type*} (g : MvPolynomial σ ℤ) :
   congr 1
 
 /- English proof (translation)
-Set `M : Matrix (Fin c) (Fin n) ℂ` to `Matrix.of fun i j => eval p (pderiv j (F i))`. Establish `hli' : LinearIndependent ℂ M.row` using `hli`. Establish `hrank : M.rank = c`. Rewrite using `[Matrix.rank_eq_finrank_span_row, finrank_span_eq_card hli', Fintype.card_fin]`. Establish `htop : LinearMap.range M.mulVecLin = ⊤`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises. Rewrite using `[Module.finrank_fin_fun]`. Conclude with `hrank`. Introduce `y`. Take `⟨v, hv⟩` from `LinearMap.range_eq_top.1 htop y`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨v, by rw [← hv]; rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem gbap_surj_of_li {n c : ℕ} (F : Fin c → MvPolynomial (Fin n) ℂ) (p : Fin n → ℂ)
     (hli : LinearIndependent ℂ (fun i => grad p (F i))) :
@@ -196,43 +194,35 @@ theorem gbap_surj_of_li {n c : ℕ} (F : Fin c → MvPolynomial (Fin n) ℂ) (p 
   exact ⟨v, by rw [← hv]; rfl⟩
 
 /- English proof (translation)
-Use `set fe : MvPolynomial J ℤ ≃+* MvPolynomial (Fin (D + 1 + c)) ℤ := (renameEquiv ℤ e).toRingEquiv with hfe`. Establish `hfe_apply : ∀ g, (fe : MvPolynomial J ℤ →+* MvPolynomial (Fin (D + 1 + c)) ℤ) g = rename e g` using `fun g => rfl`. Establish `hfe_symm : ∀ g, fe.symm g = rename e.symm g` using `fun g => rfl`. Use `set P' : Ideal (MvPolynomial (Fin (D + 1 + c)) ℤ) := P.map (fe : MvPolynomial J ℤ →+* MvPolynomial (Fin (D + 1 + c)) ℤ) with hP'`. Establish `hP'mem : ∀ g, g ∈ P' ↔ rename e.symm g ∈ P`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `g`. Rewrite using `[hP', Ideal.map_comap_of_equiv, Ideal.mem_comap]`. Both sides reduce to the same expression. Use `haveI : P'.IsPrime := by`. Rewrite using `[hP', Ideal.map_comap_of_equiv]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `infer_instance`. Establish `hP'hor : ∀ m : ℤ, (C m : MvPolynomial (Fin (D + 1 + c)) ℤ) ∈ P' → m = 0`. Introduce `m hm`. Rewrite `hm` using `[hP'mem, rename_C]`. Conclude with `hhor m hm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hdim' : ringKrullDim (MvPolynomial (Fin (D + 1 + c)) ℤ ⧸ P') = ((D + 1 + 1 : ℕ) : WithBot ℕ∞)`. Rewrite using `[← hdim]`. Conclude with `(ringKrullDim_eq_of_ringEquiv (Ideal.quotientEquiv P P' fe rfl)).symm`. Take `⟨hQp, -, hQd⟩` from `extQ_spec P' hP'hor`. Use `haveI := hQp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hQdim : ringKrullDim (MvPolynomial (Fin (D + 1 + c)) ℚ ⧸ extQ P') = ((D + 1 : ℕ) : WithBot ℕ∞)`. Rewrite `hQd` using `[hdim']`. Conclude with `gbap_withBot_eq (a := 1) (by exact_mod_cast hQd)`. Use `set K := extC (extQ P') with hK`. Establish `hKvan : ∀ w : Fin (D + 1 + c) → ℂ, (∀ g ∈ K, eval w g = 0) ↔ ∀ g ∈ P, eval (fun j => w (e j)) (map (Int.castRingHom ℂ) g) = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `w`. Rewrite using `[hK, extC, gbap_van_map, extQ]`. Prove the components needed by the constructor for the conclusion. Introduce `H g hg`. Use `H _ (Ideal.mem_map_of_mem _ (Ideal.mem_map_of_mem (fe : MvPolynomial J ℤ →+* MvPolynomial (Fin (D + 1 + c)) ℤ) hg))` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[hfe_apply, gbap_map_map_int, map_rename, eval_rename]`. Conclude with `this`. Introduce `H g hg`. Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem x hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨y, hy, rfl⟩` from `hx`. Establish `hy'` using `(hP'mem y).1 hy`. Use `H _ hy'` as an intermediate fact. Rewrite using `[gbap_map_map_int]`. Establish `hyy : y = rename e (rename e.symm y)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rename_rename, Equiv.self_comp_symm, rename_id_apply]`. Rewrite using `[hyy, map_rename, eval_rename]`. Conclude with `this`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, map_add, hx, hy, add_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Consider the case `smul a x _ hx => rw [smul_eq_mul, map_mul, map_mul, hx, mul_zero]`. Use `set p' : Fin (D + 1 + c) → ℂ := fun j => z₀ (e.symm j) with hp'`. Establish `hp'e : (fun j => p' (e j)) = z₀`. Use function extensionality and compare the values at `j`. Simplify using `[hp']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hp'K : ∀ g ∈ K, eval p' g = 0`. Rewrite using `[hKvan, hp'e]`. Conclude with `hz₀`. Establish `hKle : K ≤ ptIdeal p'` using `fun g hg => RingHom.mem_ker.2 (hp'K g hg)`. Take `⟨𝔮, h𝔮min, h𝔮le⟩` from `Ideal.exists_minimalPrimes_le hKle`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : 𝔮.IsPrime := h𝔮min.1.1`. Establish `hd𝔮` using `ringKrullDim_of_mem_minimalPrimes_extC (extQ P') 𝔮 h𝔮min`. Establish `hht` using `ReciprocityTheory.CA.height_add_ringKrullDim_quotient_mvPolynomial_field ℂ (D + 1 + c) 𝔮`. Rewrite `hht` using `[hd𝔮, hQdim]`. Establish `hht' : (𝔮.height : WithBot ℕ∞) = (c : WithBot ℕ∞)` using `gbap_withBot_eq (a := D + 1) (by rw [hht]; congr 1; omega)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hhtc : 𝔮.height ≤ c`. Establish `: 𝔮.height = (c : ℕ∞)` using `by exact_mod_cast hht'`. Rewrite using `[this]`. Use `set F0 : Fin c → MvPolynomial (Fin (D + 1 + c)) ℂ := fun i => map (Int.castRingHom ℂ) (rename e (f i)) with hF0`. Establish `hF0K : ∀ i, F0 i ∈ K`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce `i`. Establish `h1 : rename e (f i) ∈ P'` using `Ideal.mem_map_of_mem (fe : MvPolynomial J ℤ →+* MvPolynomial (Fin (D + 1 + c)) ℤ) (hfP i)`. Use `Ideal.mem_map_of_mem (map (algebraMap ℚ ℂ)) (Ideal.mem_map_of_mem (map (Int.castRingHom ℚ)) h1)` as an intermediate fact. Rewrite `this` using `[gbap_map_map_int]`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hreg` using `isRegularLocalRing_of_jacobian K p' hp'K F0 hF0K hli ⟨𝔮, h𝔮min, h𝔮le, hhtc⟩`. Use `haveI := hreg.1`. Establish `hcc : D + 1 + c - (D + 1) = c` using `by omega`. Take `⟨-, F', hF'K, hF'li, h, hh, hspan⟩` from `exists_jacobian_cut K p' (D + 1) (by rw [hreg.2]; congr 2; omega)`. Use `⟨fun i => F' (Fin.cast hcc.symm i), h, ?_, hh, ?_⟩` and prove the remaining obligations.
-
-Conclude with `hF'li.comp _ (Fin.cast_injective _)`. Introduce `w hw`. Rewrite using `[← hKvan]`. Prove the components needed by the constructor for the conclusion. Introduce `H g hg`.
-
-Establish `hsp : Ideal.span (Set.range F') ≤ RingHom.ker (eval w)`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Use `H (Fin.cast hcc j)` as an intermediate fact. Simplify using `only [Fin.cast_cast, Fin.cast_eq_self] at this`.
-
-Conclude with `RingHom.mem_ker.2 this`. Use `RingHom.mem_ker.1 (hsp (hspan g hg))` as an intermediate fact. Rewrite `this` using `[map_mul]`. Conclude with `(mul_eq_zero.1 this).resolve_left hw`. Introduce `H i`.
-
-Conclude with `H _ (hF'K _)`.
+A detailed English derivation is pending.
 -/
 theorem gbap_cut {J : Type} [Fintype J] {D c : ℕ} (e : J ≃ Fin (D + 1 + c))
     (P : Ideal (MvPolynomial J ℤ)) [P.IsPrime]

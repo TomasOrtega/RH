@@ -19,9 +19,9 @@ set_option autoImplicit false
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k _ X Z _ g _ L hL G m i`. Use `letI := algebraΓAlong k g`. Establish `hf : ∀ r : k, g.appTop (algebraMap k Γ(X, ⊤) r) = algebraMap k Γ(Z, ⊤) r` using `fun _ => rfl`. Establish `hP : hdim k ((Scheme.Modules.pushforward g).obj (twist G ((lbPow L m).pull g))) i = hdim k (twist G ((lbPow L m).pull g)) i`. Rewrite using `[hdim_def, hdim_def]`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(LinearEquiv.ofBijective _ (cohPushMap_bijective_of_isClosedImmersion k g hf (twist G ((lbPow L m).pull g)) ⊤ i)).finrank_eq`. Take `⟨e⟩` from `nonempty_iso_of_lbIso (F := G) (isLB_lbPow (pull_isLB hL g) m) (pull_isLB (isLB_lbPow hL m) g) (lbIso_lbPow_pull hL g m)`. Rewrite using `[← hdim_congr k i (projIso (lbPow L m) g G), hP, hdim_congr k i e.symm]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hdim_twist_pushforward_lbPow_of_isClosedImmersion : ∀ (k : Type) [Field k] (X Z : Scheme.{0}) [Algebra k Γ(X, ⊤)] (g : Z ⟶ X) [IsClosedImmersion g] (L : LB X), L.IsLB → ∀ (G : Z.Modules) (m i : ℕ), letI := algebraΓAlong k g; hdim k (twist ((Scheme.Modules.pushforward g).obj G) (lbPow L m)) i = hdim k (twist G (lbPow (L.pull g) m)) i := by
   intro k _ X Z _ g _ L hL G m i

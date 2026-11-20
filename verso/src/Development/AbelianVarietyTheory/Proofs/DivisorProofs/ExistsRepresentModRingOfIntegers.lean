@@ -4,9 +4,9 @@ open NumberField
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hc : c ∈ Submodule.span ℤ (Set.range b)` using `by rw [b.span_eq]; trivial`. Proceed by induction on `hc using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨k, rfl⟩ := hx`. Conclude with `h k`. Consider the case `zero => simp`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `dvd_add hx hy`. Consider the case `smul a x _ hx => rw [map_zsmul, smul_eq_mul]`. Conclude with `Dvd.dvd.mul_left hx a`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem dvd_functional_of_basis {M ι : Type*} [AddCommGroup M] (b : Module.Basis ι ℤ M)
     (N : ℕ) (g : M →+ ℤ) (h : ∀ k, (N : ℤ) ∣ g (b k)) (c : M) : (N : ℤ) ∣ g c := by
@@ -18,21 +18,19 @@ theorem dvd_functional_of_basis {M ι : Type*} [AddCommGroup M] (b : Module.Basi
   | smul a x _ hx => rw [map_zsmul, smul_eq_mul]; exact Dvd.dvd.mul_left hx a
 
 /- English proof (translation)
-Use `haveI : NeZero N := ⟨hN.ne'⟩`. Set `M : Matrix ι ι (ZMod N)` to `fun k l => ((T (b k * b l) : ℤ) : ZMod N)`. Establish `key : ∀ (w : ι → ℤ) (k : ι), ((T (b k * ∑ l, w l • b l) : ℤ) : ZMod N) = M.mulVec (fun l => (w l : ZMod N)) k`. Introduce `w k`. Simplify using `only [Finset.mul_sum, map_sum, mul_smul_comm, map_zsmul, smul_eq_mul, Matrix.mulVec, dotProduct, M]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Conclude with `Finset.sum_congr rfl fun l _ => mul_comm _ _`. Establish `lift : ∀ v : ι → ZMod N, ∃ w : ι → ℤ, (fun l => (w l : ZMod N)) = v` using `fun v => ⟨fun l => (ZMod.intCast_surjective (v l)).choose,`. Use function extensionality and compare the values at `fun l => (ZMod.intCast_surjective (v l)).choose_spec⟩`. Establish `hinj : Function.Injective M.mulVecLin`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `v hv`. Take `⟨w, rfl⟩` from `lift v`. Establish `h1 : ∀ d : R, (N : ℤ) ∣ T ((∑ l, w l • b l) * d)`. Introduce `d`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `dvd_functional_of_basis b N (T.comp (AddMonoidHom.mulLeft (∑ l, w l • b l))) (fun k => ?_) d` and prove the remaining obligations. Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Use `key w k` as an intermediate fact. Rewrite `this` using `[mul_comm]`. Express the relevant statement in the definitionally equal form `((T ((∑ l, w l • b l) * b k) : ℤ) : ZMod N) = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[this]`. Conclude with `congrFun hv k`. Take `⟨y, hy⟩` from `hT _ h1`. Use function extensionality and compare the values at `l`. Establish `h2 : w l = N * b.repr y l`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg (fun z => b.repr z l) hy` as an intermediate fact. Simplify using `only [map_sum, map_zsmul, map_nsmul, Module.Basis.repr_self] at this`. Simplify `this` using `[Finsupp.single_apply]`. Simplify using `[h2]`. Establish `hsurj : Function.Surjective M.mulVecLin` using `Finite.surjective_of_injective hinj`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨v, hv⟩` from `hsurj (fun k => ((f (b k) : ℤ) : ZMod N))`. Take `⟨w, rfl⟩` from `lift v`. Use `⟨∑ l, w l • b l, fun c => ?_⟩` and prove the remaining obligations. Use `dvd_functional_of_basis b N (f - T.comp (AddMonoidHom.mulRight (∑ l, w l • b l))) (fun k => ?_) c` and prove the remaining obligations. Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`.
-
-Express the relevant statement in the definitionally equal form `((f (b k) - T (b k * ∑ l, w l • b l) : ℤ) : ZMod N) = 0`. Rewrite using `[Int.cast_sub, key, sub_eq_zero]`. Conclude with `(congrFun hv k).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_represent_mod_of_basis {R ι : Type*} [CommRing R] [Fintype ι]
     (b : Module.Basis ι ℤ R) (N : ℕ) (hN : 0 < N) (T : R →+ ℤ)
@@ -84,7 +82,7 @@ theorem exists_represent_mod_of_basis {R ι : Type*} [CommRing R] [Fintype ι]
   exact (congrFun hv k).symm
 
 /- English proof (translation)
-The claim follows from `exists_represent_mod_of_basis (RingOfIntegers.basis E) N hN T hT f`.
+A detailed English derivation is pending.
 -/
 theorem exists_represent_mod_ringOfIntegers {E : Type} [Field E] [NumberField E] (N : ℕ)
     (hN : 0 < N) (T : 𝓞 E →+ ℤ)

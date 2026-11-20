@@ -10,7 +10,7 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.CompanionTheory.Ar.TorusUnif
 
 /- English proof (translation)
-The claim follows from `@PositivityTheory.Xgn.torus_uniformization_continuous`.
+A detailed English derivation is pending.
 -/
 theorem gramAt_continuous_anTop : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)]
     (y : (Σ k, J k) → Ω) (ξ : Sp Ω ⟶ X), (∀ q : X, genPt ξ ⤳ q) →

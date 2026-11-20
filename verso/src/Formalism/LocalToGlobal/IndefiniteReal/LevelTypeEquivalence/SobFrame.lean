@@ -27,9 +27,9 @@ def cEi (D : D7) : (Ainf D.host.F ⊗[D.host.F] D.host.E) ≃ₗ[Ainf D.host.F] 
   (Algebra.TensorProduct.basis (Ainf D.host.F) (Module.finBasis D.host.F D.host.E)).equivFun
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => funext a; simp <;> rfl`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]; funext a; simp <;> rfl`. Consider the case `tmul a e`. Use function extensionality and compare the values at `i`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[finPart, cEf, cED, PHeisFC.cE, PHeisFC.bA, Algebra.TensorProduct.basis_repr_tmul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem cEf_finPart (x : AE D) : cEf D (finPart D x) = fun a => (cED D x a).2 := by
   induction x using TensorProduct.induction_on with
@@ -41,9 +41,9 @@ theorem cEf_finPart (x : AE D) : cEf D (finPart D x) = fun a => (cED D x a).2 :=
     rfl
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => funext a; simp <;> rfl`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]; funext a; simp <;> rfl`. Consider the case `tmul a e`. Use function extensionality and compare the values at `i`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[infPart, cEi, cED, PHeisFC.cE, PHeisFC.bA, Algebra.TensorProduct.basis_repr_tmul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem cEi_infPart (x : AE D) : cEi D (infPart D x) = fun a => (cED D x a).1 := by
   induction x using TensorProduct.induction_on with
@@ -55,9 +55,9 @@ theorem cEi_infPart (x : AE D) : cEi D (infPart D x) = fun a => (cED D x a).1 :=
     rfl
 
 /- English proof (translation)
-Rewrite using `[← (cEf D).map_eq_zero_iff (x := finPart D x), cEf_finPart]`. Prove the components needed by the constructor for the conclusion. Introduce `h a`. Conclude with `congrFun h a`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `a`. Conclude with `h a`.
+A detailed English derivation is pending.
 -/
 theorem finPart_eq_zero_iff (x : AE D) : finPart D x = 0 ↔ ∀ a, (cED D x a).2 = 0 := by
   rw [← (cEf D).map_eq_zero_iff (x := finPart D x), cEf_finPart]
@@ -69,9 +69,9 @@ theorem finPart_eq_zero_iff (x : AE D) : finPart D x = 0 ↔ ∀ a, (cED D x a).
     exact h a
 
 /- English proof (translation)
-Rewrite using `[← (cEi D).map_eq_zero_iff (x := infPart D x), cEi_infPart]`. Prove the components needed by the constructor for the conclusion. Introduce `h a`. Conclude with `congrFun h a`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `a`. Conclude with `h a`.
+A detailed English derivation is pending.
 -/
 theorem infPart_eq_zero_iff (x : AE D) : infPart D x = 0 ↔ ∀ a, (cED D x a).1 = 0 := by
   rw [← (cEi D).map_eq_zero_iff (x := infPart D x), cEi_infPart]
@@ -83,9 +83,9 @@ theorem infPart_eq_zero_iff (x : AE D) : infPart D x = 0 ↔ ∀ a, (cED D x a).
     exact h a
 
 /- English proof (translation)
-Rewrite using `[finPart_eq_zero_iff, ← (cED D).injective.eq_iff, map_smul]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use function extensionality and compare the values at `a`. Use `show eInf D * cED D x a = cED D x a`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Prod.ext (show 1 * (cED D x a).1 = (cED D x a).1 from one_mul _) (show 0 * (cED D x a).2 = (cED D x a).2 by rw [h a, zero_mul])`. Introduce `h a`. Establish `h2 : 0 * (cED D x a).2 = (cED D x a).2` using `congrArg Prod.snd (congrFun h a)`. Rewrite `h2` using `[zero_mul]`. Conclude with `h2.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finPart_eq_zero_iff_smul (x : AE D) : finPart D x = 0 ↔ eInf D • x = x := by
   rw [finPart_eq_zero_iff, ← (cED D).injective.eq_iff, map_smul]
@@ -101,9 +101,9 @@ theorem finPart_eq_zero_iff_smul (x : AE D) : finPart D x = 0 ↔ eInf D • x =
     exact h2.symm
 
 /- English proof (translation)
-Rewrite using `[infPart_eq_zero_iff, ← (cED D).injective.eq_iff, map_smul]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use function extensionality and compare the values at `a`. Use `show eFin D * cED D x a = cED D x a`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Prod.ext (show 0 * (cED D x a).1 = (cED D x a).1 by rw [h a, zero_mul]) (show 1 * (cED D x a).2 = (cED D x a).2 from one_mul _)`. Introduce `h a`. Establish `h2 : 0 * (cED D x a).1 = (cED D x a).1` using `congrArg Prod.fst (congrFun h a)`. Rewrite `h2` using `[zero_mul]`. Conclude with `h2.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infPart_eq_zero_iff_smul (x : AE D) : infPart D x = 0 ↔ eFin D • x = x := by
   rw [infPart_eq_zero_iff, ← (cED D).injective.eq_iff, map_smul]

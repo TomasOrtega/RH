@@ -6,17 +6,15 @@ open IsLocalRing Matrix Filter UpperTheory.V UpperTheory.V.Alg UpperTheory.V.W U
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `l _ L G0 G h n O _ _ _ _ _ r B _ _ _ u J D b q N A a`. Use `haveI hOO : IsCO O O := { complete := IsCoef.complete isLocalHom := ⟨fun x hx => by simpa using hx⟩ res_surj := fun x => ⟨x, by simp⟩ }`. Use `haveI hL : IsCO O (abelian₂ O Empty D) := co_mvps O O (Empty ⊕ Fin D)`. Establish `hmax : ∀ s : Empty ⊕ Fin D, b.lam (MvPowerSeries.X s) ∈ maximalIdeal B`. Introduce `s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← res_eq_zero_iff O B, res_map, res_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Establish `h0` using `hu.map MvPowerSeries.constantCoeff`. Simplify using `at h0`. Take `⟨F, _, huniq⟩` from `co_ev O O B (Empty ⊕ Fin D) (Algebra.ofId O B) (fun s => b.lam (MvPowerSeries.X s)) hmax`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `F1 : abelian₂ O Empty D →ₐ[O] B` to `A.β.comp (IsScalarTower.toAlgHom O (abelian₂ O Empty D) A.R)`. Establish `e1 : F1 = F`. Apply `huniq` to reduce the goal to its premises. Use `⟨fun x => ?_, fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[MvPowerSeries.c_eq_algebraMap]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `F1.commutes x`. Break down `s with e | k` into its components or cases. Conclude with `e.elim`. Use `show A.β (algebraMap (abelian₂ O Empty D) A.R (MvPowerSeries.X (Sum.inr k))) = _`. Rewrite using `[A.segmentWeightExponent k, b.segmentWeightExponent k, map_sub, map_mul, map_one, AlgHom.commutes]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `congr 2`. Establish `hp` using `congrArg (fun χ => ((χ (b.wt.γ k) : Bˣ) : B)) (A.β_pair.2 (b.wt.v k) (b.wt.i k))`. Simplify `hp` using `[pushCh]`. Establish `e2 : b.lam = F`. Apply `huniq` to reduce the goal to its premises.
-
-Use `⟨fun x => ?_, fun s => rfl⟩` and prove the remaining obligations. Rewrite using `[MvPowerSeries.c_eq_algebraMap]`. Conclude with `b.lam.commutes x`. Use `congrArg (fun φ : abelian₂ O Empty D →ₐ[O] B => φ a) (e1.trans e2.symm)` as an intermediate fact. Simplify `this` using `[F1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Th.Sp.betaLam :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G0 G : Glob l L) (h : G.Hom G0) (n : ℕ) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (r : Resid G0.frame O n) (B : Type) [CommRing B] [Algebra O B] [IsCO O B] (u : Pair r B) (J : Ideal B) (D : ℕ) (b : TWBase u J Empty D) (q N : ℕ) (A : OpMod b h q N), ∀ a : abelian₂ O Empty D, A.β (algebraMap (abelian₂ O Empty D) A.R a) = b.lam a := by

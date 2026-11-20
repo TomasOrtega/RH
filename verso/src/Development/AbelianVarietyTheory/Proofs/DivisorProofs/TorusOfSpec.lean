@@ -16,7 +16,7 @@ def IsModelMap (w : Pl E) {K : GlobalTheory.UnitLemma.UQ} (e : K.E ≃+* w.adicC
     ∀ y z, stdH w (ψ y) (ψ z) = e (B.herm x y z)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isModel_iff (w : Pl E) {K : GlobalTheory.UnitLemma.UQ} (e : K.E ≃+* w.adicCompletion E) (B : GlobalTheory.UnitLemma.InvAlg K)
     (u x : B.A) {n : ℕ} (γ : GLw n w) : IsModel w e B u x γ ↔ ∃ ψ, IsModelMap w e B u x γ ψ := Iff.rfl
@@ -41,9 +41,9 @@ def torusOf (w : Pl E) {K : GlobalTheory.UnitLemma.UQ} (B : GlobalTheory.UnitLem
   if h : ∃ a : B.Aˣ, ∀ y, ψ ((a : B.A) * y) = g.val *ᵥ ψ y then h.choose else 1
 
 /- English proof (translation)
-Establish `h : ∃ a : B.Aˣ, ∀ y, ψ ((a : B.A) * y) = g.val *ᵥ ψ y` using `⟨a, ha⟩`. Unfold `torusOf`. Rewrite using `[dif_pos h]`. Apply `Units.ext` to reduce the goal to its premises. Establish `h1` using `h.choose_spec 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h2` using `ha 1`. Rewrite `h1`, `h2` using `[mul_one]`. Conclude with `ψ.injective (h1.trans h2.symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torusOf_spec (w : Pl E) {K : GlobalTheory.UnitLemma.UQ} (B : GlobalTheory.UnitLemma.InvAlg K) {n : ℕ}
     (ψ : B.A ≃+ (Fin n → w.adicCompletion E)) (g : GLw n w) (a : B.Aˣ)

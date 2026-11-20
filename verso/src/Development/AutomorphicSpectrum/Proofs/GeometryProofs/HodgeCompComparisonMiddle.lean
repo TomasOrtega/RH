@@ -17,9 +17,9 @@ namespace GlobalTheory.CompanionTheory.Ar.FlagRead
 open GlobalTheory.CompanionTheory.Ar.FlagPull
 
 /- English proof (translation)
-Use `letI := i.toAlgebra`. Use `haveI := hfin`. Set `e : Ω₁ ≃+* i.fieldRange` to `RingEquiv.ofBijective i.rangeRestrictField ⟨fun x y h => i.injective (congrArg Subtype.val h), fun x => by`. Take `⟨a, ha⟩` from `x.2`. Conclude with `⟨a, Subtype.ext ha⟩⟩`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `he : (algebraMap i.fieldRange Ω).comp (e : Ω₁ →+* i.fieldRange) = ((RingEquiv.refl Ω : Ω ≃+* Ω) : Ω →+* Ω).comp (algebraMap Ω₁ Ω)`. Use extensionality with `x`. Both sides reduce to the same expression. Conclude with `⟨Module.Finite.of_equiv_equiv e (RingEquiv.refl Ω) he, (Algebra.finrank_eq_of_equiv_equiv e (RingEquiv.refl Ω) he).symm⟩`.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem fieldRange_finite {Ω₁ Ω : Type} [Field Ω₁] [Field Ω] (i : Ω₁ →+* Ω)
     (hfin : letI := i.toAlgebra; FiniteDimensional Ω₁ Ω) :
@@ -39,9 +39,7 @@ theorem fieldRange_finite {Ω₁ Ω : Type} [Field Ω₁] [Field Ω] (i : Ω₁ 
     (Algebra.finrank_eq_of_equiv_equiv e (RingEquiv.refl Ω) he).symm⟩
 
 /- English proof (translation)
-Substitute `hs` using the available equality. Use `haveI : FiniteDimensional Ω (Submodule.span Ω (Set.range b')) := FiniteDimensional.span_of_finite Ω (Set.finite_range _)`. Use `Submodule.eq_of_le_of_finrank_eq (Submodule.span_le.2 ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `hle k`.
-
-Rewrite using `[finrank_span_eq_card hb, finrank_span_eq_card hb']`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_eq_of_indep {Ω V : Type} [Field Ω] [AddCommGroup V] [Module Ω V] {r : ℕ} {b b' : Fin r → V}
     {W : Submodule Ω V} (hb : LinearIndependent Ω b) (hle : ∀ k, b k ∈ W) (hb' : LinearIndependent Ω b')
@@ -55,27 +53,25 @@ theorem span_eq_of_indep {Ω V : Type} [Field Ω] [AddCommGroup V] [Module Ω V]
   · rw [finrank_span_eq_card hb, finrank_span_eq_card hb']
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Y S₀ S Ω₁ Ω _ _ K₁ _ J₁ _ y₁ K _ J _ y A Fl B i h jA hfin hd hf hcst hj hpt hρ`. Take `⟨hfd, hfr⟩` from `fieldRange_finite i hfin`. Use `haveI := hfd`. Establish `hgen : genPt A.ξ₀ = genPt B.ξ₀`. Establish `h1` using `RegAtDom.map_genPt hd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `RegAtDom.map_genPt A.fn_over`. Establish `h3` using `RegAtDom.map_genPt B.fn_over`. Rewrite using `[← h2, ← h3, ← h1, hf]`. Both sides reduce to the same expression. Take `⟨ψ, hψ⟩` from `exists_iso A.gen₀ B.gen₀ hgen`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfn : B.fn.comp ψ.toRingHom = i.comp A.fn` using `by haveI := mono_of_isCptGen A.gen₀`. Establish `e1 : spMap B.fn ≫ B.ξ₀ = B.ξ ≫ B.f` using `B.fn_over.symm`. Establish `e2 : spMap A.fn ≫ A.ξ₀ = A.ξ ≫ A.f` using `A.fn_over.symm`. Establish `e3 : B.ξ ≫ h = spMap i ≫ A.ξ` using `hd`. Establish `e4 : spMap (B.fn.comp ψ.toRingHom) = spMap (i.comp A.fn)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(cancel_mono A.ξ₀).1 ?_` and prove the remaining obligations. Rewrite using `[FlagPull.spMap_comp, FlagPull.spMap_comp, Category.assoc, Category.assoc, hψ, e1, e2, hf, ← Category.assoc, e3, Category.assoc]`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective e4)`. Use `letI mod' : Module B.Ω₀ Fl.Li₀ := Module.compHom _ ψ.symm.toRingHom`. Establish `hs : ∀ (a : A.Ω₀) (e : Fl.Li₀), ψ a • e = a • e` using `fun a e => by show ψ.symm (ψ a) • e = a • e`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ψ.symm_apply_apply]`. Establish `hemb : ∀ s, B.emb s = i.comp (A.emb s)` using `fun s => by`. Simplify using `only [HodgeCpt.emb]`. Rewrite using `[hcst]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hVgen : ∀ s w, jA w ∈ B.Vgen s ↔ w ∈ A.Vgen s` using `fun s w => by show jA w ∈ eigSp B.ρ (B.emb s) ↔ w ∈ eigSp A.ρ (A.emb s)`. Rewrite using `[hemb]`. Conclude with `mem_eigSp_iff hj _ _ _ hρ w`. Set `V₀' : CMType H ⊕ CMType H → Submodule B.Ω₀ Fl.Li₀` to `fun s => { carrier := (Fl.V₀ s : Set Fl.Li₀) add_mem' := fun ha hb => (Fl.V₀ s).add_mem ha hb zero_mem' := (Fl.V₀ s).zero_mem smul_mem' := fun c x hx => (Fl.V₀ s).smul_mem (ψ.symm c) hx }`. Establish `hsq : spMap (dualMap i) ≫ spMap (dualMap A.fn) = spMap (dualMap B.fn) ≫ spMap (dualMap ψ.toRingHom)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← FlagPull.spMap_comp, ← FlagPull.spMap_comp, ← dualMap_comp, ← dualMap_comp, hfn]`. Establish `hspan : ∀ s, Submodule.span Ω (Set.range fun a => jA (Fl.b s a)) = B.Vgen s`. Introduce `s`. Use `letI := A.fn.toAlgebra`. Take `⟨cc, u, hcV, -, -, hb, -, -, hfl, -⟩` from `Fl.generic`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmemc : ∀ k, Fl.j (cc s k) ∈ A.Vgen s` using `fun k => (Fl.V₀_mem s _).1 (by`. Rewrite using `[← (hcV s).2]`. Conclude with `Submodule.subset_span ⟨k, rfl⟩)`. Establish `hbk : ∀ a, Fl.b s a ∈ A.Vgen s`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `h1 : Fl.b s a ∈ flagStep Ω₁ (Fl.b s) (labelRk D s)` using `Submodule.subset_span ⟨a, a.2, rfl⟩`. Rewrite `h1` using `[hfl s]`. Use `(Submodule.span_le (p := A.Vgen s).2 ?_) h1` and prove the remaining obligations. Introduce and unpack `_ ⟨k, -, rfl⟩`. Conclude with `Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ _ (hmemc l)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨U, hU, b', hb', hfr'⟩` from `B.vb s ⟨genPt B.ξ, specializes_rfl⟩ (Set.mem_univ _)`. Conclude with `span_eq_of_indep (hj.2 _ _ (hb s)) (fun k => (hVgen s _).2 (hbk k)) (hfr' _ (Set.mem_univ _) hU).1 hb'`. Use `⟨Fl.Li₀, Fl.acg, mod', transport ψ hψ hs Fl.M₀, jA.comp Fl.j, V₀', hspan, fun e => ?_, fun s e => (Fl.V₀_mem s e).trans (hVgen s _).symm, ?_⟩` and prove the remaining obligations. Use `show (B.M.pt (jA (Fl.j e))).left ≫ B.m.φ = spMap (dualMap B.fn) ≫ spMap (dualMap ψ.toRingHom) ≫ (Fl.M₀.pt e).left`. Rewrite using `[hpt, Fl.j_pt, ← Category.assoc, hsq, Category.assoc]`.
-
-Use `genericFlag_pull A.fn B.fn ψ i hfn hs Fl.j jA hj Fl.V₀ V₀' (fun _ _ => Iff.rfl) Fl.b Fl.deg Fl.generic` as an intermediate fact. Rewrite `this` using `[hfr]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem generic_read : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Tor.Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S₀ S : Finset ℕ) (Ω₁ Ω : Type) [Field Ω₁] [Field Ω] (K₁ : Type) [Fintype K₁] (J₁ : K₁ → Type) [∀ k, Fintype (J₁ k)] (y₁ : (Σ k, J₁ k) → Ω₁) (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (A : HodgeCpt Y S₀ y₁) (Fl : A.Flag) (B : HodgeCpt Y S y) (i : Ω₁ →+* Ω) (h : B.X ⟶ A.X) (jA : A.Li →+ B.Li), (letI := i.toAlgebra; FiniteDimensional Ω₁ Ω) → GlobalTheory.CompanionTheory.Ar.Dominates B.ξ A.ξ h i → B.f = h ≫ A.f → B.cst = i.comp A.cst → IsExtOver i jA → (∀ e, (B.M.pt (jA e)).left ≫ B.m.φ = spMap (dualMap i) ≫ (A.M.pt e).left ≫ A.m.φ) → (∀ a e, jA (A.ρ a e) = B.ρ a (jA e)) → ∃ (Li₀ : Type) (_ : AddCommGroup Li₀) (_ : Module B.Ω₀ Li₀) (M₀ : LieModel Y.t.G B.ξ₀ Li₀) (j : Li₀ →+ B.Li) (V₀ : CMType H ⊕ CMType H → Submodule B.Ω₀ Li₀), (∀ s, Submodule.span Ω (Set.range fun a => jA (Fl.b s a)) = B.Vgen s) ∧ (∀ e, (B.M.pt (j e)).left ≫ B.m.φ = spMap (dualMap B.fn) ≫ (M₀.pt e).left) ∧ (∀ s e, e ∈ V₀ s ↔ j e ∈ B.Vgen s) ∧ (letI := B.fn.toAlgebra; IsGenericFlag (Ω' := Ω) j V₀ (fun s a => jA (Fl.b s a)) ((letI := i.toAlgebra; Module.finrank Ω₁ Ω) * Fl.deg)) := by
   intro E _ _ _ H D l Xo c Y S₀ S Ω₁ Ω _ _ K₁ _ J₁ _ y₁ K _ J _ y A Fl B i h jA hfin hd hf hcst hj hpt hρ

@@ -47,7 +47,7 @@ attribute [local instance] MvPolynomial.weightedGradedAlgebra
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Introduce `d hd`. Use function extensionality and compare the values at `k`. Rewrite using `[weight_blkW]`. Conclude with `hs d (mem_support_iff.2 hd) k`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isWeightedHomogeneous_of_isMultiHomog [DecidableEq K] {s : MRingOver ℂ ι} {a : K → ℕ}
     (hs : ReciprocityTheory.ChartRestriction.G.Geo.IsMultiHomog s a) : IsWeightedHomogeneous (blkW ι) s a := by
@@ -57,7 +57,7 @@ theorem isWeightedHomogeneous_of_isMultiHomog [DecidableEq K] {s : MRingOver ℂ
   exact hs d (mem_support_iff.2 hd) k
 
 /- English proof (translation)
-Take `⟨S, hS, rfl⟩` from `hQ`. Use `Ideal.homogeneous_span _ _ ?_` and prove the remaining obligations. Introduce `f hf`. Take `⟨a, ha⟩` from `hS f hf`. Conclude with `⟨a, (mem_weightedHomogeneousSubmodule _ _ _ _).mpr (isWeightedHomogeneous_of_isMultiHomog ha)⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cone_homog [DecidableEq K] {Q : Ideal (MRingOver ℂ ι)} (hQ : ReciprocityTheory.AnForm.R.IsMultiHomogIdeal Q) :
     Q.IsHomogeneous (weightedHomogeneousSubmodule ℂ (blkW ι)) := by
@@ -68,21 +68,21 @@ theorem cone_homog [DecidableEq K] {Q : Ideal (MRingOver ℂ ι)} (hQ : Reciproc
   exact ⟨a, (mem_weightedHomogeneousSubmodule _ _ _ _).mpr (isWeightedHomogeneous_of_isMultiHomog ha)⟩
 
 /- English proof (translation)
-Use `set I := Q ⊔ Ideal.span (Set.range (psiPoly Ψ)) with hI`. Establish `hrad : segMono ι i ∈ I.radical`. Rewrite using `[← vanishingIdeal_zeroLocus_eq_radical (K := ℂ), mem_vanishingIdeal_iff]`. Introduce `x hx`. Establish `hae : ∀ p : MvPolynomial (Σ k, ι k) ℂ, aeval x p = eval x p` using `fun _ => rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hae]`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[eval_segMono, ReciprocityTheory.ChartRestriction.G.Geo.segre, ← ne_eq, Finset.prod_ne_zero_iff]`. Establish `hxm : x ∈ conePts Q` using `⟨fun k => ⟨i k, h k (Finset.mem_univ _)⟩, fun f hf => by`. Use `hx _ (Ideal.mem_sup_left hf : f ∈ I)` as an intermediate fact.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[hae] at this⟩` and apply the resulting hypothesis. Use `hΨ x hxm (funext fun j => ?_)` and prove the remaining obligations. Use `hx _ (Ideal.mem_sup_right (Ideal.subset_span ⟨j, rfl⟩) : psiPoly Ψ j ∈ I)` as an intermediate fact. Rewrite `this` using `[hae, eval_psiPoly]`. Then use the resulting hypothesis. Take `⟨r0, hr0⟩` from `hrad`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmem : segMono ι i ^ (r0 + 1) ∈ I`. Rewrite using `[pow_succ]`. Conclude with `Ideal.mul_mem_right _ _ hr0`. Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.mp hmem`. Take `⟨c, rfl⟩` from `Ideal.mem_span_range_iff_exists_fun.mp hb`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `D : K → ℕ` to `fun _ => r0`. Set `comp` to `weightedHomogeneousComponent (R := ℂ) (blkW ι) (D + fun _ => 1)`. Establish `hpow : IsWeightedHomogeneous (blkW ι) (segMono ι i ^ (r0 + 1)) (D + fun _ => 1)`. Use `(segMono_homog (ι := ι) i).pow (r0 + 1)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `k`. Simplify using `[D]`. Establish `hcomp` using `congrArg comp hab`. Rewrite `hcomp` using `[map_add, map_sum, weightedHomogeneousComponent_eq_self hpow]`. Simplify using `only [comp, comp_mul_homog (psiPoly_homog Ψ _)] at hcomp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcd : ∀ j, ∃ G : MvPolynomial ((k : K) → ι k) ℂ, G.totalDegree ≤ r0 ∧ ∀ z : (Σ k, ι k) → ℂ, eval z (weightedHomogeneousComponent (blkW ι) D (c j)) = eval (segre z) G` using `fun j => diag_of_homog r0 (weightedHomogeneousComponent_isWeightedHomogeneous _ _)`. Use `choose G hG hGz using hcd`. Use `⟨r0 + 1, Nat.succ_pos _, G, fun j => by simpa using hG j, fun z hz => ?_⟩` and prove the remaining obligations. Establish `h0` using `congrArg (eval z) hcomp`. Rewrite `h0` using `[map_add, hz.2 _ (weightedHomogeneousComponent_mem_of_mem _ _ (cone_homog hP) ha _), zero_add, map_sum, map_pow, eval_segMono]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h0]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hGz, eval_psiPoly, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem cone_segre_rel {e : ℕ} {Q : Ideal (MRingOver ℂ ι)} (hP : ReciprocityTheory.AnForm.R.IsMultiHomogIdeal Q)
     (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)) (hΨ : CxInt.IsSetGoodProj (conePts Q) Ψ)
@@ -134,19 +134,19 @@ theorem cone_segre_rel {e : ℕ} {Q : Ideal (MRingOver ℂ ι)} (hP : Reciprocit
   rw [map_mul, hGz, eval_psiPoly, mul_comm]
 
 /- English proof (translation)
-Take `⟨r, hr, G, hG, hrel⟩` from `cone_segre_rel hP Ψ hΨ (σ a)`. Use `set A := chartProjMatrix σ Ψ with hA`. Set `Gx : Fin (e + 1) → MvPolynomial (Fin m) ℂ` to `fun j => rename σ.symm (G j)`. Establish `hGx : ∀ j, (Gx j).totalDegree ≤ r - 1` using `fun j => (totalDegree_rename_le _ _).trans (hG j)`. Set `f : MvPolynomial (Fin m) ℂ` to `X a ^ r - (Gx 0 + ∑ j : Fin e, Gx j.succ * linPoly A j)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hfJ : f ∈ J`. Use `hJ ?_` and prove the remaining obligations. Rewrite using `[setChartIdeal, MvPolynomial.mem_vanishingIdeal_iff]`. Introduce and unpack `_ ⟨z, hz, hz1, rfl⟩`. Establish `hw : ((fun a => segre z (σ a)) ∘ σ.symm) = segre z`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i'`. Simplify using the standard rewrite rules. Establish `h` using `hrel z hz`. Rewrite `h` using `[Fin.sum_univ_succ, hz1, one_mul]`. Express the relevant statement in the definitionally equal form `eval (fun a => segre z (σ a)) f = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Simplify using `only [f, Gx, map_sub, map_add, map_pow, map_sum, map_mul, eval_X, eval_rename, hw, eval_linPoly, hA, chartProjMatrix_mulVec]`. Rewrite using `[h]`. Simplify using `[Equiv.apply_symm_apply, mul_comm]`. Establish `hdeg : f.totalDegree ≤ r`. Use `(totalDegree_sub _ _).trans (max_le (by rw [totalDegree_X_pow]) ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(totalDegree_add _ _).trans (max_le ((hGx 0).trans (Nat.sub_le _ _)) ?_)` and prove the remaining obligations. Use `(totalDegree_finsetSum _ _).trans (Finset.sup_le fun j _ => ?_)` and prove the remaining obligations. Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Establish `h1` using `hGx j.succ`. Establish `h2` using `(isHomogeneous_linPoly A j).totalDegree_le`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `h1 : 1 ≤ r` using `hr`. Establish `hX : homogeneousComponent r (X a ^ r : MvPolynomial (Fin m) ℂ) = X a ^ r`. Rewrite using `[homogeneousComponent_of_mem ((mem_homogeneousSubmodule r _).2 (isHomogeneous_X_pow a r)), if_pos rfl]`. Establish `h0 : homogeneousComponent r (Gx 0) = 0` using `homogeneousComponent_eq_zero (n := r) (φ := Gx 0) (by have := hGx 0; omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomp : homogeneousComponent r f = X a ^ r - ∑ j : Fin e, homogeneousComponent (r - 1) (Gx j.succ) * linPoly A j`. Simplify using `only [f, map_sub, map_add, map_sum, hX, h0, zero_add, homogeneousComponent_mul_of_isHomogeneous_right _ _ (isHomogeneous_linPoly A _), h1, if_true]`. Establish `hmem : homogeneousComponent r f + ∑ j : Fin e, homogeneousComponent (r - 1) (Gx j.succ) * linPoly A j ∈ leadIdeal J ⊔ linIdeal A` using `add_mem (Ideal.mem_sup_left (homogeneousComponent_mem_leadIdeal hfJ hdeg)) (Ideal.mem_sup_right (Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨j, rfl⟩)))`. Rewrite `hmem` using `[hcomp, sub_add_cancel]`. Conclude with `⟨r, hmem⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cone_pow_mem {Q : Ideal (MRingOver ℂ ι)} {e m : ℕ} {σ : Fin m ≃ ((k : K) → ι k)}
     {Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)}
@@ -199,11 +199,11 @@ theorem cone_pow_mem {Q : Ideal (MRingOver ℂ ι)} {e m : ℕ} {σ : Fin m ≃ 
   exact ⟨r, hmem⟩
 
 /- English proof (translation)
-Take `⟨hK, ⟨hQp, hQh, -⟩, hdimQ⟩` from `hQ`. Establish `hR : ReciprocityTheory.AnForm.R.IsMultiHomogIdeal Q` using `hQh`. Use `⟨chart_zeroSet hR σ Ψ, fun J hJ => ?_⟩` and prove the remaining obligations. Establish `hdim` using `chart_dim hQp hR hdimQ σ Ψ hJ`. Establish `hfin : (projHom J (chartProjMatrix σ Ψ)).toRingHom.Finite`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrad : originIdeal m ≤ (leadIdeal J ⊔ linIdeal (chartProjMatrix σ Ψ)).radical`. Use `Ideal.span_le.2 (Set.range_subset_iff.2 fun a => ?_)` and prove the remaining obligations. Take `⟨r, hr⟩` from `cone_pow_mem hR hΨ hJ.1.2 a`. Conclude with `⟨r, hr⟩`. Take `⟨N, hN⟩` from `Ideal.exists_pow_le_of_le_radical_of_fg_radical hrad (IsNoetherian.noetherian _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `ConeAvoidsFinite.proof m e N J _ hN`. Conclude with `⟨hdim, ⟨FiniteProjHomInjective.proof m e J _ hJ.1.1 hdim hfin, hfin⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cxChartModel {Q : Ideal (MRingOver ℂ ι)} {e : ℕ} (hQ : CxInt.IsCxVar Q e) {m : ℕ}
     (σ : Fin m ≃ ((k : K) → ι k)) (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ))

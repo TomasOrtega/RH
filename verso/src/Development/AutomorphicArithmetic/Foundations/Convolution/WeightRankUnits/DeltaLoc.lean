@@ -11,7 +11,7 @@ open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Establish `h : algebraMap E (u.adicCompletion E) (k : E) ≠ 0` using `(_root_.map_ne_zero _).2 k.ne_zero`. Unfold `UpperTheory.ConvolutionTheory.G2.muAt`. Rewrite using `[dif_pos h, show Units.mk0 _ h = atFin u k from Units.ext rfl]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem muAt_unit {E : Type} [Field E] [NumberField E] [IsCMField E] (μ : HChar E) (u : Pl E) (k : Eˣ) :
     UpperTheory.ConvolutionTheory.G2.muAt μ u (k : E) = ((μ.locK u k : ℂˣ) : ℂ) := by
@@ -21,9 +21,9 @@ private theorem muAt_unit {E : Type} [Field E] [NumberField E] [IsCMField E] (μ
   rfl
 
 /- English proof (translation)
-Take `⟨hm, hn⟩` from `GlobalTheory.T.absHalf_mul_and_absHalf_neg_one E w`. Establish `h1 : absHalf w (1 : w.adicCompletion E) = 1`. Use `hm (-1) (-1) (neg_ne_zero.2 one_ne_zero) (neg_ne_zero.2 one_ne_zero)` as an intermediate fact. Rewrite `this` using `[neg_mul_neg, one_mul, hn, one_mul]`. Then use the resulting hypothesis. Apply the tactic sequence `rcases neg_one_pow_eq_or (w.adicCompletion E) n with h | h <;> rw [h]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `h1`. Conclude with `hn`.
+A detailed English derivation is pending.
 -/
 private theorem absHalf_sign {E : Type} [Field E] [NumberField E] [IsCMField E] (w : Pl E) (n : ℕ) :
     absHalf w ((-1 : w.adicCompletion E) ^ n) = 1 := by
@@ -36,37 +36,35 @@ private theorem absHalf_sign {E : Type} [Field E] [NumberField E] [IsCMField E] 
   · exact hn
 
 /- English proof (translation)
-Introduce `E _ _ _ _ μ e hμ a b P₁ P₂ h₁ h₂ hc w`. Establish `hR : resultant P₁ P₂ ≠ 0` using `Polynomial.resultant_ne_zero P₁ P₂ hc`. Establish `hdeg₁ : (atPl w P₁).natDegree = a`. Rewrite using `[atPl, Polynomial.natDegree_map]`. Conclude with `h₁.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdeg₂ : (atPl w P₂).natDegree = b`. Rewrite using `[atPl, Polynomial.natDegree_map]`. Conclude with `h₂.2.1`. Establish `hres : resultant (atPl w P₁) (atPl w P₂) = algebraMap E (w.adicCompletion E) (resultant P₁ P₂)`. Rewrite using `[atPl, atPl, Polynomial.natDegree_map, Polynomial.natDegree_map]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Polynomial.resultant_map_map P₁ P₂ _ _ _`. Establish `hres' : resultant (atPl w P₁) (atPl w P₂) a b = algebraMap E (w.adicCompletion E) (resultant P₁ P₂)`. Rewrite using `[← hres, hdeg₁, hdeg₂]`. Establish `hconj` using `GlobalTheory.T.conj_resultant_of_ell_polys E a b P₁ P₂ h₁ h₂`. Use `set R := resultant P₁ P₂ with hRdef`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `set D : E := ((-1) ^ a * P₁.coeff 0) ^ b * ((-1) ^ b * P₂.coeff 0) ^ a with hD`. Establish `hDw : ((-1) ^ a * (atPl w P₁).coeff 0) ^ b * ((-1) ^ b * (atPl w P₂).coeff 0) ^ a = algebraMap E (w.adicCompletion E) D`. Simplify using `[atPl, Polynomial.coeff_map, hD]`. Set `k : Eˣ` to `Units.mk0 R hR`. Establish `hk : (k : E) = R` using `rfl`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmu : ∀ u : Pl E, UpperTheory.ConvolutionTheory.G2.muAt μ u R = ((μ.locK u k : ℂˣ) : ℂ)` using `fun u => muAt_unit μ u k`. Distinguish the cases in `hsp : IsSplitAt w`. Establish `hsp'` using `hsp`. Take `⟨u, hu, huw⟩` from `hsp'`. Establish `hfib : {x : Pl E | x.under (𝓞 (maximalRealSubfield E)) = w.under (𝓞 (maximalRealSubfield E))} = {w, u}`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Use `⟨fun hx => GlobalTheory.T.eq_or_eq_of_under_maximalRealSubfield_eq_CMField E w u x hu huw hx, ?_⟩` and prove the remaining obligations. Introduce and unpack `(rfl | rfl)`. Both sides reduce to the same expression. Conclude with `huw`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfib, finprod_mem_pair (Ne.symm hu), hmu w, hmu u, GlobalTheory.T.absHalf_conjugatePlace_eq E w u hu huw R]`. Set `kc : Eˣ` to `Units.map (MonoidHomClass.toMonoidHom (IsCMField.complexConj E)) k`. Establish `hkc : (kc : E) = IsCMField.complexConj E R` using `rfl`. Establish `hloc : μ.locK u k * μ.locK w kc = 1` using `GlobalTheory.T.unitaryHeckeCharCM_splitPlace_mul_conjPlace_eq_one E μ e hμ w u hu huw k`. Establish `hs2 : ((-1 : E) ^ (a * b)) * (-1) ^ (a * b) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← mul_pow, neg_mul_neg, one_mul, one_pow]`. Establish `hsD : (-1) ^ (a * b) * D * (kc : E) = R`. Rewrite using `[hkc]`. Take the linear combination `(-1 : E) ^ (a * b) * hconj + R * hs2`. Establish `hD0 : D ≠ 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce and unpack `h0`. Rewrite `hsD` using `[h0, mul_zero, zero_mul]`. Conclude with `hR hsD.symm`. Establish `hwd : ((-1) ^ (a * b) * algebraMap E (w.adicCompletion E) D) ≠ 0` using `mul_ne_zero (pow_ne_zero _ (neg_ne_zero.2 one_ne_zero)) ((_root_.map_ne_zero _).2 hD0)`. Establish `hunit : Units.mk0 _ hwd = atFin w (k * kc⁻¹)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply `Units.ext` to reduce the goal to its premises. Establish `: (-1) ^ (a * b) * D = (k : E) * ((kc : E))⁻¹`. Rewrite using `[hk, ← hsD, mul_inv_cancel_right₀ kc.ne_zero]`. Simplify using `only [Units.val_mk0, atFin]`. Rewrite using `[show (-1 : w.adicCompletion E) ^ (a * b) * algebraMap E (w.adicCompletion E) D = algebraMap E (w.adicCompletion E) ((-1) ^ (a * b) * D) by simp, this]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hfirst : ((μ.loc w (Units.mk0 _ hwd) : ℂˣ) : ℂ) = ((μ.locK w k : ℂˣ) : ℂ) * ((μ.locK u k : ℂˣ) : ℂ)`. Rewrite using `[hunit]`. Express the relevant statement in the definitionally equal form `((μ.locK w (k * kc⁻¹) : ℂˣ) : ℂ) = _`. Rewrite using `[map_mul, map_inv, eq_inv_of_mul_eq_one_right hloc, inv_inv, Units.val_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hquot : R ^ 2 / D = (-1) ^ (a * b) * (R * IsCMField.complexConj E R)`. Rewrite using `[div_eq_iff hD0]`. Rewrite `hsD` using `[hkc]`. Take the linear combination `(-(-1 : E) ^ (a * b) * R) * hconj - R ^ 2 * hs2`. Take `⟨hm, -⟩` from `GlobalTheory.T.absHalf_mul_and_absHalf_neg_one E w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hA : ∀ x : E, x ≠ 0 → algebraMap E (w.adicCompletion E) x ≠ 0` using `fun x hx => (_root_.map_ne_zero _).2 hx`. Establish `hcR : IsCMField.complexConj E R ≠ 0` using `(_root_.map_ne_zero _).2 hR`. Establish `hsecond : absHalf w (algebraMap E (w.adicCompletion E) R ^ 2 / algebraMap E (w.adicCompletion E) D) = absHalf w (algebraMap E (w.adicCompletion E) R) * absHalf w (algebraMap E (w.adicCompletion E) (IsCMField.complexConj E R))`. Rewrite using `[← map_pow, ← map_div₀, hquot, map_mul, map_mul, map_pow, map_neg, map_one, hm _ _ (pow_ne_zero _ (neg_ne_zero.2 one_ne_zero)) (mul_ne_zero (hA R hR) (hA _ hcR)), hm _ _ (hA R hR) (hA _ hcR), absHalf_sign, one_mul]`. Unfold `delta`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Simplify using `only [hdeg₁, hdeg₂, hDw, hres']`. Rewrite using `[if_pos hsp, dif_pos hwd, hfirst, hsecond]`. Expand and normalize the polynomial expressions, which then agree. Establish `hfib : {x : Pl E | x.under (𝓞 (maximalRealSubfield E)) = w.under (𝓞 (maximalRealSubfield E))} = {w}`. Use extensionality with `x`.
+Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Use `⟨fun hx => ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hxw`. Conclude with `hsp ⟨x, hxw, hx⟩`. Introduce and unpack `rfl`. Both sides reduce to the same expression.
-
-Rewrite using `[hfib, finprod_mem_singleton, hmu w, GlobalTheory.T.unitaryHeckeCharCM_locK_nonsplit_eq_neg_one_pow E μ e hμ w hsp k]`. Unfold `delta`. Simplify using `only [hres]`. Rewrite using `[if_neg hsp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.G2.deltaLoc :
     UpperTheory.ConvolutionTheory.G2.DeltaLoc := by

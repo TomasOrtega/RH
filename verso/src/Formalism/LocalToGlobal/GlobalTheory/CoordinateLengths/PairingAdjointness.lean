@@ -13,19 +13,19 @@ def intSubm (w : D.what₂.places.Pl) {N : ℕ} (lam : D.what₂.Tau → DomWeig
   Submodule.span (bwA_Ow D w) (Formalism.L2.Forms.IntSpan D w lam : Set _)
 
 /- English proof (translation)
-Unfold `intSubm Formalism.L2.Forms.IntSpan tenSpan Formalism.L2.Forms.ten bwA_Ow`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce `p hp`. Rewrite `hp` using `[SetLike.mem_coe]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Proceed by induction on `hp using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨r, f, hr, hf, rfl⟩` from `hx`. Establish `hfe : ∀ τ, rename (Prod.mk τ) (map (Int.castRingHom ℂ) (f τ)) = ∑ k, (b τ).repr ⟨f τ, hf τ⟩ k • rename (Prod.mk τ) (map (Int.castRingHom ℂ) ((b τ k : delSq ℤ N (lam τ)) : MvPolynomial (Fin N × Fin N) ℤ))`. Introduce `τ`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2` using `congrArg Subtype.val ((b τ).sum_repr ⟨f τ, hf τ⟩)`. Rewrite `h2` using `[Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul] at h2`. Use `conv_lhs => rw [← h2]`. Rewrite using `[map_sum, map_sum]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_zsmul]`. Simplify using `only [hfe]`. Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ]`. Use `Submodule.smul_mem _ (⟨_, Subring.mem_map.2 ⟨r, hr, rfl⟩⟩ : ↥(Subring.map D.what₂.embLL (intW D.what₂.places w))) ?_` and prove the remaining obligations. Use `Submodule.sum_mem _ fun g _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [zsmul_eq_mul, Finset.prod_mul_distrib, ← Int.cast_prod]`. Rewrite using `[← zsmul_eq_mul]`. Apply `zsmul_mem` to reduce the goal to its premises. Apply `Submodule.subset_span` to reduce the goal to its premises. Conclude with `⟨g, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => exact Submodule.add_mem _ hx hy`. Consider the case `neg x _ hx => exact Submodule.neg_mem _ hx`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨g, rfl⟩`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Submodule.subset_span` to reduce the goal to its premises. Apply `AddSubgroup.subset_closure` to reduce the goal to its premises. Use `⟨1, fun τ => ((b τ (g τ) : delSq ℤ N (lam τ)) : MvPolynomial (Fin N × Fin N) ℤ), Subring.one_mem _, fun τ => (b τ (g τ)).2, ?_⟩` and prove the remaining obligations. Rewrite using `[map_one, one_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intSubm_eq (w : D.what₂.places.Pl) {N : ℕ} (lam : D.what₂.Tau → DomWeight N) (κ : D.what₂.Tau → Type)
     [∀ τ, Fintype (κ τ)] (b : ∀ τ, Module.Basis (κ τ) ℤ (delSq ℤ N (lam τ))) :
@@ -71,13 +71,13 @@ theorem intSubm_eq (w : D.what₂.places.Pl) {N : ℕ} (lam : D.what₂.Tau → 
     rw [map_one, one_smul]
 
 /- English proof (translation)
-Unfold `bwA_span`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨p, hp, rfl⟩`. Establish `h2` using `congrArg Subtype.val (b.sum_repr ⟨p, hp⟩)`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite `h2` using `[Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul] at h2`. Rewrite using `[← h2, map_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `zsmul_mem` to reduce the goal to its premises. Apply `Submodule.subset_span` to reduce the goal to its premises. Conclude with `⟨i, rfl⟩`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `Submodule.subset_span (Set.mem_image_of_mem _ (b k).2)`.
+A detailed English derivation is pending.
 -/
 theorem bwA_span_basis (O : Subring ℂ) {N : ℕ} (ν : Fin N → ℕ) {κ : Type} [Fintype κ]
     (b : Module.Basis κ ℤ (Formalism.GradedWeylDivisibility.weyl ℤ N N le_rfl ν)) :
@@ -103,15 +103,15 @@ theorem bwA_span_basis (O : Subring ℂ) {N : ℕ} (ν : Fin N → ℕ) {κ : Ty
 variable (u : D.what₂.Word)
 
 /- English proof (translation)
-Use `choose κ hκ b0 _ _ _ _ using fun τ => weyl_homogeneous_basis (r := D.R.N 0) (n := D.R.N 0) le_rfl ((D.fm u).lam 0 τ).natW (dominant_natWeight_antitone ((D.fm u).lam 0 τ))`. Set `_` to `hκ`. Set `b : ∀ τ, Module.Basis (κ τ) ℤ (delSq ℤ (D.R.N 0) ((D.fm u).lam 0 τ))` to `b0`. Take `⟨n, hn, hrel⟩` from `length_factor_local_basis D u A w hw v Lv c hLc0 B B' hB hB' hunit _ rfl`. Establish `hli : ∀ τ, τ ≠ (D.fm u).tauOf w v → LinearIndependent ℂ (fun k => MvPolynomial.map (Int.castRingHom ℂ) ((b τ k : delSq ℤ (D.R.N 0) ((D.fm u).lam 0 τ)) : MvPolynomial (Fin (D.R.N 0) × Fin (D.R.N 0)) ℤ))` using `fun τ _ => weyl_basis_lin_indep_field le_rfl ((D.fm u).lam 0 τ).natW (dominant_natWeight_antitone ((D.fm u).lam 0 τ)) ℂ (b0 τ)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ho : ∀ τ, τ ≠ (D.fm u).tauOf w v → bwA_N D ((D.fm u).tauOf w v) B B' τ = 1`. Introduce `τ h`. Unfold `bwA_N`. Rewrite using `[if_neg h]`. Establish `hcard : ∀ τ, Module.finrank ℤ (delSq ℤ (D.R.N 0) ((D.fm u).lam 0 τ)) = Fintype.card (κ τ)` using `fun τ => Module.finrank_eq_card_basis (b τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(∏ τ : {τ // τ ≠ (D.fm u).tauOf w v}, Fintype.card (κ τ.1)) * n, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[intSubm_eq D w ((D.fm u).lam 0) κ b]`. Use `(cls_len ((D.fm u).tauOf w v) κ _ (bwA_Ow D w) hli _ (bwA_span_basis (bwA_Ow D w) ((D.fm u).lam 0 ((D.fm u).tauOf w v)).natW (b0 ((D.fm u).tauOf w v))) (bwA_N D ((D.fm u).tauOf w v) B B') ho _ _).trans ?_` and prove the remaining obligations. Rewrite using `[hn]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hprod : (∏ τ, Module.finrank ℤ (delSq ℤ (D.R.N 0) ((D.fm u).lam 0 τ))) = Module.finrank ℤ (delSq ℤ (D.R.N 0) ((D.fm u).lam 0 ((D.fm u).tauOf w v))) * ∏ τ : {τ // τ ≠ (D.fm u).tauOf w v}, Fintype.card (κ τ.1)`. Simplify using `only [hcard]`. Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ ((D.fm u).tauOf w v))]`. Use `congr 1`. Conclude with `Finset.prod_subtype (Finset.univ.erase ((D.fm u).tauOf w v)) (p := fun τ => τ ≠ (D.fm u).tauOf w v) (fun x => by simp) (fun τ => Fintype.card (κ τ))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hprod]`. Use `push_cast`. Take the linear combination `(∏ τ : {τ // τ ≠ (D.fm u).tauOf w v}, (Fintype.card (κ τ.1) : ℚ)) * hrel`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cls_len_D (A : AtTTied u) (w : D.what₂.places.Pl) (hw : OverT D u w)
     (v : (D.mem u).A.vT) (Lv : LvTied u A 0 (Nat.zero_le _)) (c : (D.mem u).C.cls 0)

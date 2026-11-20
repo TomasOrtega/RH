@@ -20,7 +20,7 @@ def Seam.matU {n : ℕ} (γ : UF X.E n) : Matrix (Fin n) (Fin n) D.host.E :=
   ((ufGL X.E n γ : GL (Fin n) X.E) : Matrix (Fin n) (Fin n) X.E).map s.iE
 
 /- English proof (translation)
-Establish `h` using `toGLm_mulVec γ.1 x`. Rewrite using `[← h]`. Use function extensionality and compare the values at `i`. Simplify using `only [Seam.vec, Matrix.mulVec, dotProduct, map_sum, map_mul, Seam.matU]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem Seam.vec_gmap {n : ℕ} (γ : UF X.E n) (x : Sp X.E n) : s.vec (γ.1 x) = (s.matU γ).mulVec (s.vec x) := by
   have h := toGLm_mulVec γ.1 x
@@ -30,9 +30,9 @@ theorem Seam.vec_gmap {n : ℕ} (γ : UF X.E n) (x : Sp X.E n) : s.vec (γ.1 x) 
   rfl
 
 /- English proof (translation)
-Use extensionality with `y`. Rewrite using `[s.mem_lat]`. Simplify using `only [SDLat.smulLat, Submodule.mem_map, LinearMap.coe_restrictScalars, Matrix.toLin'_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Take `⟨x0, hx0, rfl⟩` from `hx`. Conclude with `⟨s.vec x0, (s.mem_lat N _).2 ⟨x0, hx0, rfl⟩, (s.vec_gmap γ x0).symm⟩`. Introduce and unpack `⟨w, hw, rfl⟩`. Take `⟨x0, hx0, rfl⟩` from `(s.mem_lat N w).1 hw`. Conclude with `⟨γ.1 x0, ⟨x0, hx0, rfl⟩, s.vec_gmap γ x0⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Seam.lat_gmap {n : ℕ} (γ : UF X.E n) (N : Submodule (𝓞 X.E) (Sp X.E n)) :
     s.lat (gmap γ.1 N) = SDLat.smulLat (s.matU γ) (s.lat N) := by
@@ -48,9 +48,9 @@ theorem Seam.lat_gmap {n : ℕ} (γ : UF X.E n) (N : Submodule (𝓞 X.E) (Sp X.
     exact ⟨γ.1 x0, ⟨x0, hx0, rfl⟩, s.vec_gmap γ x0⟩
 
 /- English proof (translation)
-Set `_` to `D.host.cmStar`. Establish `h : Formalism.UG.cT (starRingEnd X.E) ((ufGL X.E n γ : GL (Fin n) X.E) : Matrix (Fin n) (Fin n) X.E) * 1 * ((ufGL X.E n γ : GL (Fin n) X.E) : Matrix (Fin n) (Fin n) X.E) = 1` using `toGLm_mem_UJ γ`. Rewrite `h` using `[Matrix.mul_one]`. Establish `key : star (s.matU γ) = (Formalism.UG.cT (starRingEnd X.E) ((ufGL X.E n γ : GL (Fin n) X.E) : Matrix (Fin n) (Fin n) X.E)).map s.iE`. Use extensionality with `i j`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[Matrix.star_apply, Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.CU.star_conj]`. Simplify using `only [Seam.matU, Formalism.UG.cT, Matrix.map_apply, Matrix.transpose_apply, starRingEnd_apply]`. Rewrite using `[hok.2]`. Rewrite using `[Matrix.mem_unitaryGroup_iff', key, Seam.matU, ← Matrix.map_mul, h]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Seam.matU_mem (hok : s.Ok) {n : ℕ} (γ : UF X.E n) :
     (letI := D.host.cmStar; s.matU γ ∈ Matrix.unitaryGroup (Fin n) D.host.E) := by
@@ -67,14 +67,14 @@ theorem Seam.matU_mem (hok : s.Ok) {n : ℕ} (γ : UF X.E n) :
   exact Matrix.map_one _ (map_zero _) (map_one _)
 
 /- English proof (translation)
-Rewrite using `[← TE.det_ufGL]`. Conclude with `(RingHom.map_det s.iE.toRingHom _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Seam.det_matU {n : ℕ} (γ : UF X.E n) : (s.matU γ).det = s.iE ((LinearEquiv.det γ.1 : X.Eˣ) : X.E) := by
   rw [← TE.det_ufGL]
   exact (RingHom.map_det s.iE.toRingHom _).symm
 
 /- English proof (translation)
-The claim follows from `Fintype.prod_equiv s.iT _ _ fun τ => hok.1 τ z`.
+A detailed English derivation is pending.
 -/
 theorem Seam.prod_emb (hok : s.Ok) (z : X.E) : ∏ τ : X.Tau, X.embC s.σ₀ τ z = ∏ τ : D.what₂.Tau, TaylorLogMetric.embT D τ (s.iE z) :=
   Fintype.prod_equiv s.iT _ _ fun τ => hok.1 τ z
@@ -86,13 +86,11 @@ section Chi
 variable {D : D7} {X : Fields} (s : Seam D X) {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ)
 
 /- English proof (translation)
-Take `⟨-, -, -, hχ, -, hok, -⟩` from `hN`. Set `_` to `D.host.cmStar`. Introduce `γ γ' N N' hN hN'`. Use `show Base.chiFac χ a b (s.lat (gmap γ.1 N)) (s.lat (gmap γ'.1 N')) = _ * _ * Base.chiFac χ a b (s.lat N) (s.lat N')`. Rewrite using `[s.lat_gmap, s.lat_gmap]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `Formalism.L2.PairingIndexBounds.Eq.character_factor_unitary_action χ hχ (Formalism.L2.PairingIndexBounds.Eq.detSmul D) (Formalism.L2.PairingIndexBounds.Eq.norm_one_unit_ideal D) ha hb (s.lat N) (s.lat N') ⟨s.matU γ, s.matU_mem hok γ⟩ ⟨s.matU γ', s.matU_mem hok γ'⟩ (s.sd_lat hok h …`. Simplify using `only at h`. Rewrite using `[h]`. Establish `u1` using `Matrix.det_of_mem_unitary (s.matU_mem hok γ)`. Establish `p1 : ∏ τ : D.what₂.Tau, TaylorLogMetric.embT D τ (star (s.matU γ).det) = (∏ τ : X.Tau, X.embC s.σ₀ τ ((LinearEquiv.det γ.1 : X.Eˣ) : X.E))⁻¹`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[s.prod_emb hok, ← Finset.prod_inv_distrib, ← s.det_matU]`. Conclude with `Finset.prod_congr rfl fun τ _ => Formalism.L2.PairingIndexBounds.Eq.emb_star_unit τ _ (Unitary.mul_star_self_of_mem u1)`. Establish `p2 : ∏ τ : D.what₂.Tau, TaylorLogMetric.embT D τ (s.matU γ').det = ∏ τ : X.Tau, X.embC s.σ₀ τ ((LinearEquiv.det γ'.1 : X.Eˣ) : X.E)`. Rewrite using `[s.prod_emb hok, ← s.det_matU]`. Use `show Base.chiFac χ a b (s.lat N) (s.lat N') * ((∏ τ : D.what₂.Tau, TaylorLogMetric.embT D τ (star (s.matU γ).det)) ^ (b / 2) * (∏ τ : D.what₂.Tau, TaylorLogMetric.embT D τ (s.matU γ').det) ^ (a / 2)) = _`.
-
-Rewrite using `[p1, p2, inv_pow, zpow_neg, zpow_natCast, zpow_natCast, mul_comm]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem chiLaw_ambOf {σ₀ : X.K →+* ℂ} (hN : NatOk s cc δ χ cD σ₀) {a b : ℕ} (ha : Even a) (hb : Even b) :
     (ambOf s B χ cD : Amb X).ChiLaw a b := by

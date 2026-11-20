@@ -13,17 +13,15 @@ open Cardinal Topology
 namespace GlobalTheory.GenFrame
 
 /- English proof (translation)
-Establish `: CompleteSpace E` using `FiniteDimensional.complete ℂ E`. Use `set W : J → Set E := fun j => (U ∩ f j ⁻¹' {0}ᶜ) ∪ (closure U)ᶜ with hW`. Establish `hWo : ∀ j, IsOpen (W j)` using `fun j => ((hf j).continuousOn.isOpen_inter_preimage hU isOpen_compl_singleton).union isClosed_closure.isOpen_compl`. Establish `hWd : ∀ j, Dense (W j)`. Introduce `j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dense_iff_inter_open]`. Introduce `O hO hOne`. Assume the negation of the conclusion as `hemp`. Rewrite `hemp` using `[Set.not_nonempty_iff_eq_empty]`. Establish `hnot : ∀ y ∈ O, y ∉ W j` using `fun y hy hyW => by`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: y ∈ O ∩ W j` using `⟨hy, hyW⟩`. Rewrite `this` using `[hemp]`. Conclude with `this`. Take `⟨y, hy⟩` from `hOne`. Establish `hyc : y ∈ closure U`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `h`. Conclude with `hnot y hy (Or.inr h)`. Take `⟨z, hzO, hzU⟩` from `mem_closure_iff.mp hyc O hO hy`. Establish `hz` using `GlobalTheory.SCV.eqOn_of_eqOn_open (g := fun _ => (0 : ℂ)) hU hc (hf j) (differentiableOn_const 0) (hO.inter hU) ⟨z, hzO, hzU⟩ Set.inter_subset_right (fun w hw => by`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hnot w hw.1 (Or.inl ⟨hw.2, h⟩))`. Take `⟨x, hx, hx0⟩` from `hne j`. Conclude with `hx0 (hz hx)`. Establish `hD` using `dense_iInter_of_isOpen hWo hWd`. Use `(hD.open_subset_closure_inter hU).trans (closure_mono ?_)` and prove the remaining obligations.
-
-Introduce and unpack `x ⟨hxU, hx⟩`. Use `⟨hxU, fun j => ?_⟩` and prove the remaining obligations. Break down `Set.mem_iInter.mp hx j with h | h` into its components or cases. Conclude with `h.2`. Conclude with `absurd (subset_closure hxU) h`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem subset_closure_forall_ne_zero {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [FiniteDimensional ℂ E] {U : Set E} (hU : IsOpen U) (hc : IsPreconnected U)

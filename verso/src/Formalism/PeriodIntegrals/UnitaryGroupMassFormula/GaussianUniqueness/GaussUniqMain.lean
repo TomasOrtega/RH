@@ -11,22 +11,22 @@ namespace PI.SwBig.GU
 variable {k r : ℕ}
 
 /- English proof (translation)
-Use `show ∑ j, g x j * (PI.SwBig.bvec i : Fin (2 * r + k + 1) → ℂ) j = g x i`. Simplify using `[PI.SwBig.bvec, Pi.single_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mulVec_bvec (g : Mat k r) (i x : Fin (2 * r + k + 1)) : (g *ᵥ bvec i) x = g x i := by
   show ∑ j, g x j * (PI.SwBig.bvec i : Fin (2 * r + k + 1) → ℂ) j = g x i
   simp [PI.SwBig.bvec, Pi.single_apply]
 
 /- English proof (translation)
-Establish `key : ∀ i, m *ᵥ PI.SwBig.bvec i = PI.SwBig.bvec i → m x i = (1 : PI.SwBig.Mat k r) x i`. Introduce `i hi`. Establish `h` using `congrFun hi x`. Rewrite `h` using `[mulVec_bvec]`. Rewrite using `[h, Matrix.one_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[PI.SwBig.bvec, Pi.single_apply]`. Take `⟨_, hfix⟩` from `hm`. Distinguish the cases in `h1 : y.val < r`. Establish `e : PI.SwBig.eI k r ⟨y.val, h1⟩ = y` using `Fin.ext rfl`. Establish `h` using `key _ (hfix ⟨y.val, h1⟩).1`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[e]`. Then use the resulting hypothesis. Establish `h2 : r + k < y.val`. Assume the negation of the conclusion as `h2`. Apply `hy` to reduce the goal to its premises. Unfold `lv`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions.
 
-Rewrite using `[if_neg h1, if_pos (show y.val ≤ r + k by omega)]`. Establish `hyl` using `y.isLt`. Establish `hlt : 2 * r + k - y.val < r` using `by omega`. Establish `e : PI.SwBig.esI k r ⟨2 * r + k - y.val, hlt⟩ = y` using `Fin.ext (by show 2 * r + k - (2 * r + k - y.val) = y.val; omega)`. Establish `h` using `key _ (hfix ⟨2 * r + k - y.val, hlt⟩).2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem UWb_col {m : Mat k r} (hm : m ∈ UWb k r) (x y : Fin (2 * r + k + 1)) (hy : lv k r y ≠ r) :
     m x y = (1 : Mat k r) x y := by
@@ -54,14 +54,14 @@ theorem UWb_col {m : Mat k r} (hm : m ∈ UWb k r) (x y : Fin (2 * r + k + 1)) (
     rwa [e] at h
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Conclude with `h (Matrix.one_apply_ne hne)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 private theorem eq_of_one_apply_ne_zero {x y : Fin (2 * r + k + 1)} (h : (1 : PI.SwBig.Mat k r) x y ≠ 0) : x = y := by
   by_contra hne
   exact h (Matrix.one_apply_ne hne)
 
 /- English proof (translation)
-Rewrite using `[lv_sg]`. Use `lv_le x` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem lv_sg_ne_of_lv_ne {x : Fin (2 * r + k + 1)} (hx : lv k r x ≠ r) :
     lv k r (sg k r x) ≠ r := by
@@ -70,7 +70,7 @@ private theorem lv_sg_ne_of_lv_ne {x : Fin (2 * r + k + 1)} (hx : lv k r x ≠ r
   omega
 
 /- English proof (translation)
-Rewrite using `[(inv_of_UH hg).1, Hpk_eq, mul_M_apply, M_mul_apply]`. Simplify using `only [sg_sg, sn_sg, Matrix.conjTranspose_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem inv_apply_sg_sg_of_mem_UH {g : PI.SwBig.Mat k r} (hg : g ∈ PI.SwBig.UH (PI.SwBig.Hpk k r))
     (x y : Fin (2 * r + k + 1)) :
@@ -79,7 +79,7 @@ private theorem inv_apply_sg_sg_of_mem_UH {g : PI.SwBig.Mat k r} (hg : g ∈ PI.
   simp only [sg_sg, sn_sg, Matrix.conjTranspose_apply]
 
 /- English proof (translation)
-Establish `hl : m⁻¹ * m = 1` using `(inv_of_UH hm.1).2.1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl (fun j _ => by rw [UWb_col hm j y hy])`. Use `_ = (1 : PI.SwBig.Mat k r) x y := by rw [hl]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem inv_apply_eq_one_apply_of_mem_UWb_of_lv_right_ne {m : PI.SwBig.Mat k r} (hm : m ∈ PI.SwBig.UWb k r)
     (x y : Fin (2 * r + k + 1)) (hy : lv k r y ≠ r) : m⁻¹ x y = (1 : PI.SwBig.Mat k r) x y := by
@@ -91,15 +91,13 @@ private theorem inv_apply_eq_one_apply_of_mem_UWb_of_lv_right_ne {m : PI.SwBig.M
     _ = (1 : PI.SwBig.Mat k r) x y := by rw [hl]
 
 /- English proof (translation)
-Establish `h` using `inv_apply_sg_sg_of_mem_UH hm.1 x y`. Rewrite `h` using `[inv_apply_eq_one_apply_of_mem_UWb_of_lv_right_ne hm _ _ (lv_sg_ne_of_lv_ne hx)]`. Distinguish the cases in `hxy : x = y`. Substitute `hxy` using the available equality. Rewrite `h` using `[Matrix.one_apply_eq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : star (m x x) = 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[sn_mul_self, one_mul]`. Use `_ = sn k r x * star (m x x) * sn k r x := by ring`. Use `_ = 1 := h.symm`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `congrArg star h2`. Rewrite `h3` using `[star_star, star_one]`. Rewrite using `[h3, Matrix.one_apply_eq]`. Establish `hw : sg k r y ≠ sg k r x` using `fun e => hxy (sg_inj e).symm`. Rewrite `h` using `[Matrix.one_apply_ne hw]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[Matrix.one_apply_ne hxy]`. Break down `mul_eq_zero.1 h.symm with h' | h'` into its components or cases. Break down `mul_eq_zero.1 h' with h'' | h''` into its components or cases. Conclude with `absurd h'' (sn_ne_zero y)`. Conclude with `star_eq_zero.1 h''`.
-
-Conclude with `absurd h' (sn_ne_zero x)`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem apply_eq_one_apply_of_mem_UWb_of_lv_left_ne {m : PI.SwBig.Mat k r} (hm : m ∈ PI.SwBig.UWb k r)
     (x y : Fin (2 * r + k + 1)) (hx : lv k r x ≠ r) : m x y = (1 : PI.SwBig.Mat k r) x y := by
@@ -126,9 +124,9 @@ private theorem apply_eq_one_apply_of_mem_UWb_of_lv_left_ne {m : PI.SwBig.Mat k 
     · exact absurd h' (sn_ne_zero x)
 
 /- English proof (translation)
-Introduce `x y hxy`. Use `show lv k r x = lv k r y`. Distinguish the cases in `hx : lv k r x = r`. Distinguish the cases in `hy : lv k r y = r`. Rewrite using `[hx, hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hxy` using `[UWb_col hm x y hy]`. Rewrite using `[eq_of_one_apply_ne_zero hxy]`. Rewrite `hxy` using `[apply_eq_one_apply_of_mem_UWb_of_lv_left_ne hm x y hx]`. Rewrite using `[eq_of_one_apply_ne_zero hxy]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UWb_supp {m : Mat k r} (hm : m ∈ UWb k r) : Supp m (fun a b => a = b) := by
   intro x y hxy
@@ -142,7 +140,7 @@ theorem UWb_supp {m : Mat k r} (hm : m ∈ UWb k r) : Supp m (fun a b => a = b) 
     rw [eq_of_one_apply_ne_zero hxy]
 
 /- English proof (translation)
-Unfold `lv`. Apply the tactic sequence `split_ifs <;> omega`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem lv_cases (x : Fin (2 * r + k + 1)) :
     (x.val < r ∧ lv k r x = x.val) ∨ (r ≤ x.val ∧ x.val ≤ r + k ∧ lv k r x = r) ∨
@@ -151,13 +149,13 @@ private theorem lv_cases (x : Fin (2 * r + k + 1)) :
   split_ifs <;> omega
 
 /- English proof (translation)
-Introduce `x y hxy`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hj : lv k r j ≤ lv k r x`. Rewrite using `[hA x j hj]`.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hxj : x = j`. Substitute `hxj` using the available equality. Rewrite using `[hB x y hxy]`. Rewrite using `[Matrix.one_apply_ne hxj, zero_mul, zero_mul]`. Establish `hjy : lv k r y ≤ lv k r j` using `by omega`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hB j y hjy]`. Establish `hne : j ≠ y`. Introduce and unpack `rfl`. Conclude with `hj hxy`. Establish `hne' : x ≠ j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Conclude with `hj le_rfl`. Rewrite using `[Matrix.one_apply_ne hne, Matrix.one_apply_ne hne', mul_zero, mul_zero]`. Use `_ = ((1 : PI.SwBig.Mat k r) * 1) x y := Matrix.mul_apply.symm`. Use `_ = (1 : PI.SwBig.Mat k r) x y := by rw [Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mul_apply_eq_one_apply_of_lv_le {A B : PI.SwBig.Mat k r}
     (hA : ∀ x y, lv k r y ≤ lv k r x → A x y = (1 : PI.SwBig.Mat k r) x y)
@@ -186,11 +184,11 @@ private theorem mul_apply_eq_one_apply_of_lv_le {A B : PI.SwBig.Mat k r}
     _ = (1 : PI.SwBig.Mat k r) x y := by rw [Matrix.mul_one]
 
 /- English proof (translation)
-Introduce `X Y hXY`. Establish `h` using `inv_apply_sg_sg_of_mem_UH hg (sg k r Y) (sg k r X)`. Rewrite `h` using `[sg_sg, sg_sg]`. Establish `hlX` using `lv_le (k := k) (r := r) X`. Establish `hlY` using `lv_le (k := k) (r := r) Y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h, hU (sg k r Y) (sg k r X) (by rw [lv_sg, lv_sg]; omega)]`. Distinguish the cases in `hxy : X = Y`. Substitute `hxy` using the available equality. Rewrite using `[Matrix.one_apply_eq, Matrix.one_apply_eq, star_one, mul_one, sn_mul_self]`. Establish `hw : sg k r Y ≠ sg k r X` using `fun e => hxy (sg_inj e).symm`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.one_apply_ne hw, Matrix.one_apply_ne hxy, star_zero, mul_zero, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem inv_apply_eq_one_apply_of_mem_UH_of_lv_le {g : PI.SwBig.Mat k r} (hg : g ∈ PI.SwBig.UH (PI.SwBig.Hpk k r))
     (hU : ∀ x y, lv k r y ≤ lv k r x → g x y = (1 : PI.SwBig.Mat k r) x y) :
@@ -208,13 +206,13 @@ private theorem inv_apply_eq_one_apply_of_mem_UH_of_lv_le {g : PI.SwBig.Mat k r}
     rw [Matrix.one_apply_ne hw, Matrix.one_apply_ne hxy, star_zero, mul_zero, zero_mul]
 
 /- English proof (translation)
-It suffices to establish `H : ∀ n, ∀ x y, lv k r y = n → n ≤ L → n ≤ lv k r x → g⁻¹ x y = (1 : PI.SwBig.Mat k r) x y by`. Introduce `x y h1 h2`. Conclude with `H _ x y rfl h1 h2`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `_ n ih`. Introduce `x y hyn hnL hnx`. Establish `e : (g⁻¹ * g) x y = (1 : PI.SwBig.Mat k r) x y` using `by rw [hgi]`. Rewrite `e` using `[Matrix.mul_apply, Finset.sum_eq_single y]`. Rewrite `e` using `[hg y y (by omega) le_rfl, Matrix.one_apply_eq, mul_one]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j _ hjy`. Distinguish the cases in `hj : lv k r y ≤ lv k r j`. Rewrite using `[hg j y (by omega) hj, Matrix.one_apply_ne hjy, mul_zero]`. Establish `hlt : lv k r j < n` using `by omega`. Establish `hxj : x ≠ j`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Use linear arithmetic over natural numbers and integers. Rewrite using `[ih (lv k r j) hlt x j rfl (by omega) (by omega), Matrix.one_apply_ne hxj, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ y) h`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem inv_apply_eq_one_apply_of_lv_le_bound {g : PI.SwBig.Mat k r} (hgi : g⁻¹ * g = 1) (L : ℕ)
     (hg : ∀ x y, lv k r y ≤ L → lv k r y ≤ lv k r x → g x y = (1 : PI.SwBig.Mat k r) x y) :
@@ -242,21 +240,19 @@ private theorem inv_apply_eq_one_apply_of_lv_le_bound {g : PI.SwBig.Mat k r} (hg
       exact absurd (Finset.mem_univ y) h
 
 /- English proof (translation)
-Take `⟨hU, h1, h2⟩` from `hg`. Establish `low : ∀ x y, lv k r y ≤ r → lv k r y ≤ lv k r x → g x y = (1 : PI.SwBig.Mat k r) x y`. Introduce `x y hy hxy`. Break down `lv_cases y with ⟨hy1, hly⟩ | ⟨hy1, hy2, hly⟩ | ⟨hy1, hly⟩` into its components or cases. Establish `e : PI.SwBig.eI k r ⟨y.val, hy1⟩ = y` using `Fin.ext rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hx : y.val ≤ x.val`. Apply the tactic sequence `rcases lv_cases x with h | h | h <;> omega`. Establish `h3` using `h1 ⟨y.val, hy1⟩ x hx`. Rewrite `h3` using `[e]`. Rewrite using `[h3, Matrix.one_apply]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hx : r ≤ x.val`. Apply the tactic sequence `rcases lv_cases x with h | h | h <;> omega`. Rewrite using `[h2 x y hy1 hy2 hx, Matrix.one_apply]`. Use linear arithmetic over natural numbers and integers. Introduce `x y hxy`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hy : lv k r y ≤ r`. Conclude with `low x y hy hxy`. Establish `hinv` using `inv_apply_eq_one_apply_of_lv_le_bound (inv_of_UH hU).2.1 r low`. Establish `h` using `inv_apply_sg_sg_of_mem_UH hU x y`. Establish `hlx` using `lv_le (k := k) (r := r) x`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hinv (sg k r y) (sg k r x) (by rw [lv_sg]; omega) (by rw [lv_sg, lv_sg]; omega)]`. Distinguish the cases in `hxe : x = y`. Substitute `hxe` using the available equality. Rewrite `h` using `[Matrix.one_apply_eq]`. Establish `h4 : star (g x x) = 1`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[sn_mul_self, one_mul]`. Use `_ = sn k r x * star (g x x) * sn k r x := by ring`. Use `_ = 1 := h.symm`. Establish `h5` using `congrArg star h4`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h5` using `[star_star, star_one]`. Rewrite using `[h5, Matrix.one_apply_eq]`. Establish `hw : sg k r y ≠ sg k r x` using `fun e => hxe (sg_inj e).symm`. Rewrite `h` using `[Matrix.one_apply_ne hw]`. Rewrite using `[Matrix.one_apply_ne hxe]`.
-
-Break down `mul_eq_zero.1 h.symm with h' | h'` into its components or cases. Break down `mul_eq_zero.1 h' with h'' | h''` into its components or cases. Conclude with `absurd h'' (sn_ne_zero y)`. Conclude with `star_eq_zero.1 h''`. Conclude with `absurd h' (sn_ne_zero x)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem apply_eq_one_apply_of_mem_Nset_of_lv_le {g : PI.SwBig.Mat k r} (hg : g ∈ PI.SwBig.Nset k r) :
     ∀ x y, lv k r y ≤ lv k r x → g x y = (1 : PI.SwBig.Mat k r) x y := by
@@ -302,9 +298,9 @@ private theorem apply_eq_one_apply_of_mem_Nset_of_lv_le {g : PI.SwBig.Mat k r} (
       · exact absurd h' (sn_ne_zero x)
 
 /- English proof (translation)
-Use `⟨fun y => if h : y.val < r then c ⟨y.val, h⟩ else if h2 : y.val ≤ r + k then 1 else (star (c ⟨2 * r + k - y.val, by omega⟩))⁻¹, ?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [PI.SwBig.bigCell, M, sg, PI.SwBig.esI, Fin.ext_iff, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`. Introduce `a`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[PI.SwBig.eI]`. Introduce `hc z dsimp only split_ifs`. Conclude with `hc _`. Conclude with `one_ne_zero`. Conclude with `inv_ne_zero (star_ne_zero.2 (hc _))`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. A detailed English derivation is pending.
 -/
 private theorem exists_bigCell_eq_M (c : Fin r → ℂ) :
     ∃ f : Fin (2 * r + k + 1) → ℂ, PI.SwBig.bigCell k r c 1 = M k r f ∧
@@ -324,21 +320,19 @@ private theorem exists_bigCell_eq_M (c : Fin r → ℂ) :
     · exact inv_ne_zero (star_ne_zero.2 (hc _))
 
 /- English proof (translation)
-Establish `hl : ∀ x y, 2 * r ≤ lv k r x + lv k r y → (n * W₁) x y = W₁ x y`. Introduce `x y hxy`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hj : W₁ j y = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hj, mul_zero, mul_zero]`. Use `h₁ j y hj` as an intermediate fact. Rewrite using `[hn x j (by omega)]`. Use `_ = ((1 : PI.SwBig.Mat k r) * W₁) x y := Matrix.mul_apply.symm`. Use `_ = W₁ x y := by rw [Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hr : ∀ x y, lv k r x + lv k r y ≤ 2 * r → (W₂ * u) x y = W₂ x y`. Introduce `x y hxy`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hj : W₂ x j = 0`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hj, zero_mul, zero_mul]`. Use `h₂ x j hj` as an intermediate fact. Rewrite using `[hu j y (by omega)]`. Use `_ = (W₂ * (1 : PI.SwBig.Mat k r)) x y := Matrix.mul_apply.symm`. Use `_ = W₂ x y := by rw [Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `heq : W₁ = W₂`. Use extensionality with `x y`. Distinguish the cases in `hs : lv k r x + lv k r y = 2 * r`. Establish `e` using `hl x y hs.ge`. Rewrite `e` using `[h, hr x y hs.le]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `e.symm`. Establish `e1 : W₁ x y = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hs (h₁ x y hne)`. Establish `e2 : W₂ x y = 0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hne`. Conclude with `hs (h₂ x y hne)`. Rewrite using `[e1, e2]`. Use `⟨heq, ?_⟩` and prove the remaining obligations. Use extensionality with `x y`.
-
-Distinguish the cases in `hs : 2 * r ≤ lv k r x + lv k r y`. Conclude with `hl x y hs`. Rewrite using `[h, hr x y (by omega), heq]`.
+A detailed English derivation is pending.
 -/
 private theorem W_eq_and_mul_W_eq_of_mul_eq_mul_of_lv_sum {n u W₁ W₂ : PI.SwBig.Mat k r}
     (hn : ∀ x y, lv k r y ≤ lv k r x → n x y = (1 : PI.SwBig.Mat k r) x y)
@@ -388,9 +382,9 @@ private theorem W_eq_and_mul_W_eq_of_mul_eq_mul_of_lv_sum {n u W₁ W₂ : PI.Sw
   · rw [h, hr x y (by omega), heq]
 
 /- English proof (translation)
-Introduce `x y hxy`. Rewrite `hxy` using `[M_mul_apply]`. Establish `h2 : m (sg k r x) y ≠ 0` using `fun h0 => hxy (by rw [h0, mul_zero])`. Establish `e : lv k r (sg k r x) = lv k r y` using `UWb_supp hm (sg k r x) y h2`. Rewrite `e` using `[lv_sg]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `lv_le (k := k) (r := r) x` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem lv_add_lv_eq_of_M_mul_apply_ne_zero {m : PI.SwBig.Mat k r} (hm : m ∈ PI.SwBig.UWb k r)
     (f : Fin (2 * r + k + 1) → ℂ) :
@@ -404,7 +398,7 @@ private theorem lv_add_lv_eq_of_M_mul_apply_ne_zero {m : PI.SwBig.Mat k r} (hm :
   omega
 
 /- English proof (translation)
-Use extensionality with `x y`. Establish `e` using `congrFun (congrFun h (sg k r x)) y`. Rewrite `e` using `[M_mul_apply, M_mul_apply, sg_sg]`. Conclude with `mul_left_cancel₀ (hf x) e`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eq_of_M_mul_eq_M_mul_of_ne_zero {f : Fin (2 * r + k + 1) → ℂ} (hf : ∀ z, f z ≠ 0)
     {A A' : PI.SwBig.Mat k r} (h : M k r f * A = M k r f * A') : A = A' := by
@@ -414,11 +408,11 @@ private theorem eq_of_M_mul_eq_M_mul_of_ne_zero {f : Fin (2 * r + k + 1) → ℂ
   exact mul_left_cancel₀ (hf x) e
 
 /- English proof (translation)
-Establish `h' : n * M k r f = M k r f`. Use `congrArg (· * m⁻¹) h` as an intermediate fact. Simplify using `only [Matrix.mul_assoc, hm, Matrix.mul_one] at this`. Conclude with `this`. Use extensionality with `x y`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `e` using `congrFun (congrFun h' x) (sg k r y)`. Rewrite `e` using `[mul_M_apply, sg_sg]`. Establish `e2 : M k r f x (sg k r y) = (1 : PI.SwBig.Mat k r) x y * f (sg k r y)`. Simplify using `only [M, sg_sg, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[e2]`. Conclude with `mul_right_cancel₀ (hf _) e`.
+A detailed English derivation is pending.
 -/
 private theorem eq_one_of_mul_M_mul_eq {f : Fin (2 * r + k + 1) → ℂ} (hf : ∀ z, f z ≠ 0)
     {n m : PI.SwBig.Mat k r} (hm : m * m⁻¹ = 1) (h : n * (M k r f * m) = M k r f * m) : n = 1 := by
@@ -436,25 +430,23 @@ private theorem eq_one_of_mul_M_mul_eq {f : Fin (2 * r + k + 1) → ℂ} (hf : �
   exact mul_right_cancel₀ (hf _) e
 
 /- English proof (translation)
-Introduce `k r n₁ n₂ m₁ m₂ u₁ u₂ c₁ c₂ hn₁ hn₂ hm₁ hm₂ hu₁ hu₂ hc h`. Take `⟨_, hn₂l, hn₂r⟩` from `inv_of_UH hn₂.1`. Take `⟨_, hu₁l, hu₁r⟩` from `inv_of_UH hu₁.1`. Take `⟨_, hu₂l, hu₂r⟩` from `inv_of_UH hu₂.1`. Take `⟨_, hm₁l, hm₁r⟩` from `inv_of_UH hm₁.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨f₁, hB₁, hf₁, hf₁nz⟩` from `exists_bigCell_eq_M (k := k) c₁`. Take `⟨f₂, hB₂, hf₂, -⟩` from `exists_bigCell_eq_M (k := k) c₂`. Rewrite `h` using `[hB₁, hB₂]`. Establish `key : (n₂⁻¹ * n₁) * (M k r f₁ * m₁) = (M k r f₂ * m₂) * (u₂⁻¹ * u₁)`. Use `congrArg (fun X => n₂⁻¹ * X * u₁) h` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_assoc] at this ⊢`. Rewrite `this` using `[hu₁l, Matrix.mul_one, ← Matrix.mul_assoc n₂⁻¹ n₂, hn₂l, Matrix.one_mul]`. Conclude with `this`. Take `⟨heq, hnW⟩` from `W_eq_and_mul_W_eq_of_mul_eq_mul_of_lv_sum (mul_apply_eq_one_apply_of_lv_le (inv_apply_eq_one_apply_of_mem_UH_of_lv_le hn₂.1 (apply_eq_one_apply_of_mem_Nset_of_lv_le hn₂)) (apply_eq_one_apply_of_mem_Nset_of_lv_le hn₁)) (mul_apply_eq_one_apply_of_lv_le (inv_apply_eq_one_apply_of_me …`. Establish `hc12 : c₁ = c₂`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `a`. Establish `e` using `congrFun (congrFun heq (PI.SwBig.esI k r a)) (PI.SwBig.eI k r a)`. Establish `ha` using `a.isLt`. Establish `hs : sg k r (PI.SwBig.esI k r a) = PI.SwBig.eI k r a`. Apply `Fin.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `show (if r ≤ 2 * r + k - a.val ∧ 2 * r + k - a.val ≤ r + k then 2 * r + k - a.val else 2 * r + k - (2 * r + k - a.val)) = a.val`. Apply the tactic sequence `split <;> omega`. Establish `hl : lv k r (PI.SwBig.eI k r a) ≠ r`. Establish `e4 : lv k r (PI.SwBig.eI k r a) = a.val`. Unfold `lv`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[if_pos (show (PI.SwBig.eI k r a).val < r from a.isLt)]`. Both sides reduce to the same expression. Use linear arithmetic over natural numbers and integers. Rewrite `e` using `[M_mul_apply, M_mul_apply, hs, UWb_col hm₁ _ _ hl, UWb_col hm₂ _ _ hl, hf₁, hf₂, Matrix.one_apply_eq, mul_one, mul_one]`. Conclude with `e`.
+Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hfnz : ∀ z, f₁ z ≠ 0` using `hf₁nz (by rw [hc12]; exact hc)`. Establish `hMM : M k r f₂ = M k r f₁` using `by rw [← hB₁, ← hB₂, hc12]`. Rewrite `heq`, `key` using `[hMM]`. Establish `hm : m₁ = m₂` using `eq_of_M_mul_eq_M_mul_of_ne_zero hfnz heq`. Rewrite `key` using `[← hm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : n₂⁻¹ * n₁ = 1` using `eq_one_of_mul_M_mul_eq hfnz hm₁r hnW`. Establish `hu : u₂⁻¹ * u₁ = 1`. Establish `e : M k r f₁ * m₁ * (u₂⁻¹ * u₁) = M k r f₁ * m₁ * 1`. Rewrite using `[Matrix.mul_one, ← key, hnW]`. Simplify using `only [Matrix.mul_assoc] at e`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e2` using `eq_of_M_mul_eq_M_mul_of_ne_zero hfnz e`. Establish `e3` using `congrArg (m₁⁻¹ * ·) e2`. Simplify using `only [← Matrix.mul_assoc, hm₁l, Matrix.one_mul] at e3`. Conclude with `e3`. Use `⟨?_, hc12, hm, ?_⟩` and prove the remaining obligations.
-
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem gaussUniq_main : GaussUniq := by
   intro k r n₁ n₂ m₁ m₂ u₁ u₂ c₁ c₂ hn₁ hn₂ hm₁ hm₂ hu₁ hu₂ hc h

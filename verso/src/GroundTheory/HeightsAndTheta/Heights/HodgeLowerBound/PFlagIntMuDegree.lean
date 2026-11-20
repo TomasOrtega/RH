@@ -14,13 +14,13 @@ variable (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ)
 omit [DecidableEq Ψ] in
 
 /- English proof (translation)
-The claim follows from `IsHomogeneous.sum _ _ _ fun p _ => isHomogeneous_X ℚ p`.
+A detailed English derivation is pending.
 -/
 theorem muPoly_isHomogeneous (j : ℕ) : (muPoly Ψ N j).IsHomogeneous 1 :=
   IsHomogeneous.sum _ _ _ fun p _ => isHomogeneous_X ℚ p
 
 /- English proof (translation)
-The claim follows from `IsHomogeneous.sum _ _ _ fun w _ => (homogeneousSubmodule (Ψ × Fin N) ℚ m).smul_mem (weylSign Ψ N w) hP.rename_isHomogeneous`.
+A detailed English derivation is pending.
 -/
 theorem antisym_isHomogeneous {P : RootPoly Ψ N} {m : ℕ} (hP : P.IsHomogeneous m) :
     (antisym Ψ N P).IsHomogeneous m :=
@@ -30,7 +30,7 @@ theorem antisym_isHomogeneous {P : RootPoly Ψ N} {m : ℕ} (hP : P.IsHomogeneou
 omit [DecidableEq Ψ] in
 
 /- English proof (translation)
-Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => if i < j then N - j else 0) N, ← Finset.sum_filter, show (Finset.range N).filter (· < j) = Finset.range j by`. Use extensionality with `i`. Simplify using `only [Finset.mem_filter, Finset.mem_range]`. Use the proof step `omega,`. Use the proof step `Finset.sum_const, Finset.card_range, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_fin_ite (j : ℕ) (hj : j ≤ N) :
     (∑ i : Fin N, if (i : ℕ) < j then N - j else 0) = j * (N - j) := by
@@ -42,9 +42,9 @@ theorem sum_fin_ite (j : ℕ) (hj : j ≤ N) :
 omit [DecidableEq Ψ] in
 
 /- English proof (translation)
-Simplify using `only [Finsupp.degree_eq_sum, rhoMono, rhoBlock, Finsupp.coe_equivFunOnFinite_symm, dimN]`. Establish `hpt : ∀ p : Ψ × Fin N, N - 1 - (p.2 : ℕ) = (if (p.2 : ℕ) < j then N - j else 0) + (if (p.2 : ℕ) < j then j - 1 - (p.2 : ℕ) else N - 1 - (p.2 : ℕ))`. Introduce `p`. Use `p.2.isLt` as an intermediate fact. Apply the tactic sequence `split_ifs <;> omega`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[Finset.sum_congr rfl fun p _ => hpt p, Finset.sum_add_distrib]`. Use `congr 1`. Rewrite using `[Fintype.sum_prod_type]`. Simplify using `only [sum_fin_ite N j hj, Finset.sum_const, Finset.card_univ, smul_eq_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rhoMono_degree (j : ℕ) (hj : j ≤ N) :
     (rhoMono Ψ N).degree = dimN Ψ N j + (rhoBlock Ψ N j).degree := by
@@ -61,9 +61,9 @@ theorem rhoMono_degree (j : ℕ) (hj : j ≤ N) :
   simp only [sum_fin_ite N j hj, Finset.sum_const, Finset.card_univ, smul_eq_mul, mul_assoc]
 
 /- English proof (translation)
-Introduce `Ψ _ _ N j hj b hb`. Establish `hP : (muPoly Ψ N j ^ dimN Ψ N j * monomial b (1 : ℚ)).IsHomogeneous (dimN Ψ N j + b.degree)`. Establish `h` using `((muPoly_isHomogeneous Ψ N j).pow (dimN Ψ N j)).mul (isHomogeneous_monomial (1 : ℚ) (rfl : b.degree = b.degree))`. Rewrite `h` using `[one_mul]`. Then use the resulting hypothesis. Unfold `flagInt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions.
 
-Use `(antisym_isHomogeneous Ψ N hP).coeff_eq_zero ?_` and prove the remaining obligations. Rewrite using `[rhoMono_degree Ψ N j hj]`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem proof : FlagIntMuDegree.Statement := by
   intro Ψ _ _ N j hj b hb

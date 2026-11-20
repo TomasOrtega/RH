@@ -7,7 +7,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.FockCompare GlobalTheory.VacUnique
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.RealSymplForm.form_alt_inv_def` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FAdelicLatticeProofs%2FRealSymplecticFormAlternatingInvariantDefinite.lean&line=115#L115)
 -/

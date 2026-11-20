@@ -25,7 +25,7 @@ def rightMulEquiv {m r : ℕ} (a : Matrix (Fin r) (Fin r) D.host.E) (ha : a.det 
     simp [Matrix.mul_assoc, Matrix.nonsing_inv_mul a hu]
 
 /- English proof (translation)
-Unfold `GlobalTheory.SiegelFormula.invPt`. Rewrite using `[Matrix.map_mul, Matrix.mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem invPt_mul (V : HSp D) {r : ℕ} (h : GA D V) (ξ : Matrix (Fin V.rank) (Fin r) D.host.E)
     (a : Matrix (Fin r) (Fin r) D.host.E) :
@@ -35,7 +35,7 @@ theorem invPt_mul (V : HSp D) {r : ℕ} (h : GA D V) (ξ : Matrix (Fin V.rank) (
   rw [Matrix.map_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Unfold `GlobalTheory.SiegelFormula.absTheta`. Rewrite using `[← (rightMulEquiv (m := V.rank) a ha).tsum_eq (fun ξ => ‖φ (GlobalTheory.SiegelFormula.invPt V h ξ)‖ₑ)]`. Use `tsum_congr fun ξ => ?_` and prove the remaining obligations. Use `show ‖φ _‖ₑ = ‖φ (GlobalTheory.SiegelFormula.invPt V h (ξ * a))‖ₑ`. Rewrite using `[invPt_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absTheta_pull (V : HSp D) {r : ℕ} (φ : Mx D V.rank r → ℂ)
     (a : Matrix (Fin r) (Fin r) D.host.E) (ha : a.det ≠ 0) (h : GA D V) :
@@ -48,7 +48,7 @@ theorem absTheta_pull (V : HSp D) {r : ℕ} (φ : Mx D V.rank r → ℂ)
   rw [invPt_mul]
 
 /- English proof (translation)
-Unfold `GlobalTheory.SiegelFormula.absThetaInt`. Establish `: GlobalTheory.SiegelFormula.absTheta V (pull a φ) = GlobalTheory.SiegelFormula.absTheta V φ`. Use function extensionality and compare the values at `(absTheta_pull V φ a ha)`. Rewrite using `[this]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem absThetaInt_pull (V : HSp D) (ν : Measure (GA D V)) {r : ℕ} (φ : Mx D V.rank r → ℂ)
     (a : Matrix (Fin r) (Fin r) D.host.E) (ha : a.det ≠ 0) :
@@ -59,7 +59,7 @@ theorem absThetaInt_pull (V : HSp D) (ν : Measure (GA D V)) {r : ℕ} (φ : Mx 
   rw [this]
 
 /- English proof (translation)
-Introduce `D r V ψ θ μ lam ν φ a ha ⟨h1, h2, h3, h4, h5, h6, h7, h8⟩`. Establish `hli : LinearIndependent D.host.E a` using `Matrix.linearIndependent_rows_of_isUnit ((Matrix.isUnit_iff_isUnit_det a).mpr (isUnit_iff_ne_zero.mpr ha))`. Use `⟨h1, h2, h3, h4, h5, h6, GlobalTheory.T.pullback_schwartz_linear_independent D θ h3 _ _ _ a hli φ h7, ?_⟩` and prove the remaining obligations. Rewrite using `[absThetaInt_pull V ν φ a ha]`. Conclude with `h8`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hyp_pull : ∀ (D : D7) (r : ℕ) (V : HSp D) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D)
     (μ : Measure (Mx D V.rank r)) (lam : Measure (hermA D r)) (ν : Measure (GA D V))

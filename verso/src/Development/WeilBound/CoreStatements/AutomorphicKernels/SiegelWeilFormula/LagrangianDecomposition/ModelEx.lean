@@ -6,7 +6,7 @@ noncomputable section
 namespace PositivityTheory.SiegelWeilFormula.Ald
 
 /- English proof (translation)
-The claim follows from `model_existence_of_siegel (siegelSmall_of_slice sliceFacts)`.
+A detailed English derivation is pending.
 -/
 theorem modelEx : ModelEx := model_existence_of_siegel (siegelSmall_of_slice sliceFacts)
 

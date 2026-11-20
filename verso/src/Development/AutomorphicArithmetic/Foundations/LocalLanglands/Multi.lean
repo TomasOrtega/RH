@@ -9,36 +9,36 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsContract
 namespace UpperTheory.Zero.LLC.Pr
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.Exh.langlandsExhaustionGL_holds`.
+A detailed English derivation is pending.
 -/
 theorem exh : GlobalTheory.Published.LanglandsExhaustionGL := PositivityTheory.Exh.langlandsExhaustionGL_holds
 /- English proof (translation)
-The claim follows from `PositivityTheory.Exh.langlandsMultisegments_holds`.
+A detailed English derivation is pending.
 -/
 theorem multi : GlobalTheory.Published.LanglandsMultisegments := PositivityTheory.Exh.langlandsMultisegments_holds
 /- English proof (translation)
-The claim follows from `PositivityTheory.Exh.standardCosocleGL_holds`.
+A detailed English derivation is pending.
 -/
 theorem cos : GlobalTheory.Published.StandardCosocleGL := PositivityTheory.Exh.standardCosocleGL_holds
 /- English proof (translation)
-The claim follows from `PositivityTheory.Prw.bernsteinZelevinskyFiniteness_holds`.
+A detailed English derivation is pending.
 -/
 theorem bz : GlobalTheory.Published.BernsteinZelevinskyFiniteness := PositivityTheory.Prw.bernsteinZelevinskyFiniteness_holds
 /- English proof (translation)
-The claim follows from `PositivityTheory.Prw.zelevinskyPolynomialRing_of bz PositivityTheory.RgGu.segmentRepresentation PositivityTheory.Groth.grothendieckRingPolynomial_holds`.
+A detailed English derivation is pending.
 -/
 theorem zel : GlobalTheory.Published.ZelevinskyPolynomialRing :=
   PositivityTheory.Prw.zelevinskyPolynomialRing_of bz PositivityTheory.RgGu.segmentRepresentation PositivityTheory.Groth.grothendieckRingPolynomial_holds
 /- English proof (translation)
-The claim follows from `PositivityTheory.Pf1.LocalLanglands.LDual.langlandsDataDualGL_of_cosocle cos`.
+A detailed English derivation is pending.
 -/
 theorem dual : GlobalTheory.Published.LanglandsDataDualGL := PositivityTheory.Pf1.LocalLanglands.LDual.langlandsDataDualGL_of_cosocle cos
 /- English proof (translation)
-The claim follows from `PositivityTheory.Tls2.BZGL.irreducibleAdmissibleGL_top`.
+A detailed English derivation is pending.
 -/
 theorem adm : GlobalTheory.Published.IrreducibleAdmissibleGL := PositivityTheory.Tls2.BZGL.irreducibleAdmissibleGL_top
 /- English proof (translation)
-The claim follows from `GlobalTheory.SmGL.depthZeroSupport`.
+A detailed English derivation is pending.
 -/
 theorem dzs : GlobalTheory.Published.DepthZeroSupport := GlobalTheory.SmGL.depthZeroSupport
 

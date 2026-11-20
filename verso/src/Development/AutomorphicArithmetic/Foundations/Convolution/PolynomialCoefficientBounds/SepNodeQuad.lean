@@ -8,7 +8,7 @@ private noncomputable def UpperTheory.ConvolutionTheory.FX.sepNode (y : ℝ) (b 
   if b then y + Real.sqrt (y ^ 2 - 1) else y - Real.sqrt (y ^ 2 - 1)
 
 /- English proof (translation)
-Establish `hs : Real.sqrt (y ^ 2 - 1) ^ 2 = y ^ 2 - 1` using `Real.sq_sqrt (by nlinarith)`. Apply the tactic sequence `cases b <;> simp only [UpperTheory.ConvolutionTheory.FX.sepNode, if_true, Bool.false_eq_true, if_false] <;>`. Take the linear combination `hs`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem UpperTheory.ConvolutionTheory.FX.sepNode_quad (y : ℝ) (hy : 1 < y) (b : Bool) :
     UpperTheory.ConvolutionTheory.FX.sepNode y b ^ 2 + 1 = 2 * y * UpperTheory.ConvolutionTheory.FX.sepNode y b := by
@@ -17,13 +17,13 @@ private theorem UpperTheory.ConvolutionTheory.FX.sepNode_quad (y : ℝ) (hy : 1 
     linear_combination hs
 
 /- English proof (translation)
-Establish `q` using `UpperTheory.ConvolutionTheory.FX.sepNode_quad y hy b`. Establish `q'` using `UpperTheory.ConvolutionTheory.FX.sepNode_quad y' hy' b'`. Rewrite `q'` using `[← h]`. Establish `ht : UpperTheory.ConvolutionTheory.FX.sepNode y b ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `q` using `[h0]`. Evaluate the numerical expressions using `at q`. Establish `hyy : y = y'`. Apply `mul_right_cancel₀ ht` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Substitute `hyy` using the available equality. Use `⟨rfl, ?_⟩` and prove the remaining obligations. Establish `hs : 0 < Real.sqrt (y ^ 2 - 1)` using `Real.sqrt_pos.mpr (by nlinarith)`. Apply the tactic sequence `cases b <;> cases b' <;>`. Apply the tactic sequence `simp only [UpperTheory.ConvolutionTheory.FX.sepNode, if_true, Bool.false_eq_true, if_false] at h <;>`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `first | rfl | (exfalso; linarith)`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.ConvolutionTheory.FX.sepNode_inj (y y' : ℝ) (hy : 1 < y) (hy' : 1 < y') (b b' : Bool)
     (h : UpperTheory.ConvolutionTheory.FX.sepNode y b = UpperTheory.ConvolutionTheory.FX.sepNode y' b') : y = y' ∧ b = b' := by
@@ -45,21 +45,21 @@ private theorem UpperTheory.ConvolutionTheory.FX.sepNode_inj (y y' : ℝ) (hy : 
     first | rfl | (exfalso; linarith)
 
 /- English proof (translation)
-Introduce `η hη I _ a ζ ha _ hinj`. Establish `hy : ∀ i, 1 < 2 * a i / η - 1` using `fun i => by`. Establish `: 2 < 2 * a i / η`. Rewrite using `[lt_div_iff₀ hη]`. Combine the linear relations using `[ha i]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨s₀, K, hK⟩` from `UpperTheory.ConvolutionTheory.FX.two_node (I × Bool) (fun p => ((UpperTheory.ConvolutionTheory.FX.sepNode (2 * a p.1 / η - 1) p.2 : ℝ) : ℂ)) (fun p => ζ p.1) (by`. Introduce and unpack `⟨i, b⟩ ⟨i', b'⟩ h`. Simplify using `only [Prod.mk.injEq, Complex.ofReal_inj] at h`. Take `⟨h1, h2⟩` from `UpperTheory.ConvolutionTheory.FX.sepNode_inj _ _ (hy i) (hy i') _ _ h.1`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `h3 : a i = a i'`. Clear denominators, using `at h1` for the nonvanishing conditions. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4 : i = i'` using `hinj (Prod.ext h3 h.2)`. Rewrite using `[h4, h2])`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨s₀, 2 * K, fun m j c ε hε i => ?_⟩` and prove the remaining obligations. Establish `key` using `hK (fun p => c p.1 * ((UpperTheory.ConvolutionTheory.FX.sepNode (2 * a p.1 / η - 1) p.2 : ℝ) : ℂ) ^ m * ζ p.1 ^ j / 2) ε (by`. Introduce `s hs s' hs'`. Use `le_of_eq_of_le ?_ (hε s hs s' hs')` and prove the remaining obligations. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[((UpperTheory.ConvolutionTheory.FX.cheb_facts (m + s) _).2 (hy i).le).1, Fintype.sum_bool]`. Simplify using `only [UpperTheory.ConvolutionTheory.FX.sepNode, if_true, Bool.false_eq_true, if_false]`. Generalize the expression as in `Real.sqrt ((2 * a i / η - 1) ^ 2 - 1) = r`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `2 * a i / η - 1 = y`. Use `push_cast`. Use the proof step `ring) (i, true)`. Simplify using `only [UpperTheory.ConvolutionTheory.FX.sepNode, if_true] at key`. Establish `hyi` using `hy i`.
+Replace the chosen expression with an arbitrary variable. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr` using `Real.sqrt_nonneg ((2 * a i / η - 1) ^ 2 - 1)`. Generalize the expression as in `Real.sqrt ((2 * a i / η - 1) ^ 2 - 1) = r at key hr`. Generalize the expression as in `2 * a i / η - 1 = y at key hyi`. Rewrite `key` using `[norm_div, norm_mul, norm_mul, norm_pow, norm_pow, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (by linarith : 0 ≤ y + r), Complex.norm_two]`. Establish `h5 : ‖c i‖ * y ^ m * ‖ζ i‖ ^ j ≤ ‖c i‖ * (y + r) ^ m * ‖ζ i‖ ^ j`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: y ≤ y + r` using `by linarith`. Establish `: 0 ≤ y` using `by linarith`. Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.FX.separate0 :
     ∀ (η : ℝ), 0 < η → ∀ (I : Type) [Fintype I] (a : I → ℝ) (ζ : I → ℂ), (∀ i, η < a i) → (∀ i, ζ i ≠ 0) →

@@ -29,9 +29,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.IsobaricOfPublished
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.MultisetOfProduct.multiset_eq_of_prod_add_eq`. Consider the case `exact _root_.GlobalTheory.MultisetOfProduct.multiset_eq_of_prod_add_eq`. Consider the case `(apply _root_.GlobalTheory.MultisetOfProduct.multiset_eq_of_prod_add_eq <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.MultisetOfProduct.multiset_eq_of_prod_add_eq <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.MultisetOfProduct.multiset_eq_of_prod_add_eq <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.MultisetOfProduct.multiset_eq_of_prod_add_eq ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem multiset_eq_of_prod_map_add {m m' : Multiset ℂ}
     (h : ∀ u : ℂ, (m.map (u + ·)).prod = (m'.map (u + ·)).prod) : m = m' := by

@@ -12,17 +12,17 @@ variable {g : ℕ} [Fact g.Prime]
 def Dv (g : ℕ) [Fact g.Prime] (a : ℤ) (x : ℚ_[g]) : Prop := ∃ u : ℤ_[g], x = (g : ℚ_[g]) ^ a * (u : ℚ_[g])
 
 /- English proof (translation)
-The claim follows from `Nat.cast_ne_zero.2 (Fact.out : g.Prime).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem g_ne : (g : ℚ_[g]) ≠ 0 := Nat.cast_ne_zero.2 (Fact.out : g.Prime).ne_zero
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem Dv.zero (a : ℤ) : Dv g a 0 := ⟨0, by simp⟩
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `hx`. Take `⟨w, rfl⟩` from `hy`. Conclude with `⟨u + w, by simp [mul_add]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Dv.add {a : ℤ} {x y : ℚ_[g]} (hx : Dv g a x) (hy : Dv g a y) : Dv g a (x + y) := by
   obtain ⟨u, rfl⟩ := hx
@@ -30,7 +30,7 @@ theorem Dv.add {a : ℤ} {x y : ℚ_[g]} (hx : Dv g a x) (hy : Dv g a y) : Dv g 
   exact ⟨u + w, by simp [mul_add]⟩
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `hx`. Take `⟨w, rfl⟩` from `hy`. Conclude with `⟨u * w, by rw [zpow_add₀ g_ne]; push_cast; ring⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Dv.mul {a b : ℤ} {x y : ℚ_[g]} (hx : Dv g a x) (hy : Dv g b y) : Dv g (a + b) (x * y) := by
   obtain ⟨u, rfl⟩ := hx
@@ -38,12 +38,12 @@ theorem Dv.mul {a b : ℤ} {x y : ℚ_[g]} (hx : Dv g a x) (hy : Dv g b y) : Dv 
   exact ⟨u * w, by rw [zpow_add₀ g_ne]; push_cast; ring⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem Dv.pow (a : ℤ) : Dv g a ((g : ℚ_[g]) ^ a) := ⟨1, by simp⟩
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `hx`. Take `⟨k, rfl⟩` from `Int.le.dest h`. Conclude with `⟨(g : ℤ_[g]) ^ k * u, by rw [zpow_add₀ g_ne]; push_cast; rw [zpow_natCast]; ring⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Dv.mono {a b : ℤ} {x : ℚ_[g]} (h : a ≤ b) (hx : Dv g b x) : Dv g a x := by
   obtain ⟨u, rfl⟩ := hx
@@ -53,14 +53,14 @@ theorem Dv.mono {a b : ℤ} {x : ℚ_[g]} (h : a ≤ b) (hx : Dv g b x) : Dv g a
 def eSt (n : ℕ) (l : ℕ) : ℕ := if l < n then 0 else l - n + 1
 
 /- English proof (translation)
-Use function extensionality and compare the values at `l`. Simplify using `[Loc.eN, Pi.single_apply, Fin.ext_iff]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem eN_eq {k : Type} [CommRing k] {N : ℕ} (s : Fin N) : Loc.eN k N s.1 = Pi.single s 1 := by
   funext l
   simp [Loc.eN, Pi.single_apply, Fin.ext_iff]
 
 /- English proof (translation)
-Simplify using `[Loc.atN]`.
+Simplify using the standard rewrite rules.
 -/
 theorem atN_eq {k : Type} [CommRing k] {N : ℕ} (v : Fin N → k) (l : Fin N) : Loc.atN v l.1 = v l := by
   simp [Loc.atN]
@@ -70,7 +70,7 @@ section Affine
 variable {k : Type} [CommRing k] {n' c' n c : ℕ}
 
 /- English proof (translation)
-Simplify using `[Loc.xx1, Matrix.toLin'_apply, LinearMap.toMatrix'_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem linearMap_unfolding_apply_single (xj : (Fin n' → k) →ₗ[k] (Fin n → k)) (t : Loc.FC n' c' n c → k)
     (s : Fin (n' + c')) (l : Fin (n + c)) :
@@ -86,7 +86,7 @@ def frM (τ : Loc.FC n' c' n c → k) : (Fin (n' + c') → k) →ₗ[k] (Fin (n 
     if hf : Loc.IsFree n' n c l.1 s.1 then τ ⟨(l, s), hf⟩ else 0)
 
 /- English proof (translation)
-Use `LinearMap.pi_ext' fun s => LinearMap.ext_ring ?_` and prove the remaining obligations. Use function extensionality and compare the values at `l`. Simplify using `using h s l`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hom_ext {a b : ℕ} {x y : (Fin a → k) →ₗ[k] (Fin b → k)}
     (h : ∀ s l, x (Pi.single s 1) l = y (Pi.single s 1) l) : x = y := by
@@ -95,7 +95,7 @@ theorem hom_ext {a b : ℕ} {x y : (Fin a → k) →ₗ[k] (Fin b → k)}
   simpa using h s l
 
 /- English proof (translation)
-Unfold `Loc.chArg`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Unfold `Loc.atN`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem chArg_add (x y : (Fin (n' + c') → k) →ₗ[k] (Fin (n + c) → k)) :
     Loc.chArg (x + y) = Loc.chArg x + Loc.chArg y := by
@@ -106,7 +106,7 @@ theorem chArg_add (x y : (Fin (n' + c') → k) →ₗ[k] (Fin (n + c) → k)) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `Loc.chArg`. Rewrite using `[Finset.sum_range]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← eN_eq]`. Conclude with `atN_eq _ ⟨n + i.1, by omega⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chArg_eq (x : (Fin (n' + (c + 1)) → k) →ₗ[k] (Fin (n + c) → k)) :
     Loc.chArg x = ∑ i : Fin c,

@@ -24,25 +24,25 @@ Both sides reduce to the same expression.
 lemma cj_apply (x : A) : cj g gi h h' x = gi * x * g := rfl
 
 /- English proof (translation)
-Rewrite using `[cj_apply, mul_assoc, hx, ← mul_assoc, h', one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma cj_fix {x : A} (hx : x * g = g * x) : cj g gi h h' x = x := by
   rw [cj_apply, mul_assoc, hx, ← mul_assoc, h', one_mul]
 
 /- English proof (translation)
-The claim follows from `cj_fix g gi h h' (Algebra.commutes z g)`.
+A detailed English derivation is pending.
 -/
 lemma cj_alg (z : ℂ) : cj g gi h h' (algebraMap ℂ A z) = algebraMap ℂ A z :=
   cj_fix g gi h h' (Algebra.commutes z g)
 
 /- English proof (translation)
-Rewrite using `[cj_apply, cj_apply, mul_assoc, hx, mul_add, ← mul_assoc, h', one_mul, ← mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma cj_of_eq {x a : A} (hx : x * g = g * x + a * g) : cj g gi h h' x = x + cj g gi h h' a := by
   rw [cj_apply, cj_apply, mul_assoc, hx, mul_add, ← mul_assoc, h', one_mul, ← mul_assoc]
 
 /- English proof (translation)
-Use `congrArg (g * ·) hy` as an intermediate fact. Simplify using `only [cj_apply, ← mul_assoc, h, one_mul] at this`. Conclude with `this.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma comm_of_cj {y : A} (hy : cj g gi h h' y = y) : g * y = y * g := by
   have := congrArg (g * ·) hy
@@ -52,7 +52,7 @@ lemma comm_of_cj {y : A} (hy : cj g gi h h' y = y) : g * y = y * g := by
 end cjlemmas
 
 /- English proof (translation)
-The claim follows from `(Commute.list_prod_right _ _ (by intro y hy obtain ⟨i, rfl⟩ := List.mem_ofFn.1 hy exact hx i)).eq`.
+A detailed English derivation is pending.
 -/
 lemma comm_prod {n : ℕ} (f : Fin n → A) (x : A) (hx : ∀ i, x * f i = f i * x) :
     x * (List.ofFn f).prod = (List.ofFn f).prod * x :=
@@ -62,7 +62,7 @@ lemma comm_prod {n : ℕ} (f : Fin n → A) (x : A) (hx : ∀ i, x * f i = f i *
     exact hx i)).eq
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[List.ofFn_succ, List.prod_cons, Fin.sum_univ_succ, ← mul_assoc, hx 0, add_mul, mul_assoc, ih (fun i => f i.succ) (fun i => a i.succ) (fun i => hx i.succ)]`. Simplify using `only [mul_add, add_smul, mul_smul_comm, smul_mul_assoc, mul_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -78,9 +78,9 @@ lemma shift_prod {n : ℕ} (f : Fin n → A) (x : A) (a : Fin n → ℂ)
     abel
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[List.ofFn_succ, List.ofFn_succ, List.prod_cons, List.prod_cons]`. Establish `hcomm` using `(comm_prod (fun i => f i.succ) (g 0) (fun i => hc 0 i.succ)).symm`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc, ← mul_assoc _ (g 0), hcomm, ← mul_assoc, ← mul_assoc, hfg 0, one_mul, ih (fun i => f i.succ) (fun i => g i.succ) (fun i => hfg i.succ) (fun i j => hc i.succ j.succ)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma prod_mul_prod_eq_one {n : ℕ} (f g : Fin n → A) (hfg : ∀ i, f i * g i = 1)
     (hc : ∀ i j, g i * f j = f j * g i) : (List.ofFn f).prod * (List.ofFn g).prod = 1 := by
@@ -93,7 +93,7 @@ lemma prod_mul_prod_eq_one {n : ℕ} (f g : Fin n → A) (hfg : ∀ i, f i * g i
       ih (fun i => f i.succ) (fun i => g i.succ) (fun i => hfg i.succ) (fun i j => hc i.succ j.succ)]
 
 /- English proof (translation)
-Rewrite using `[map_list_prod, List.map_ofFn]`. Establish `: (⇑φ ∘ f) = f` using `funext hf`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma map_ofFn_prod {n : ℕ} (φ : A →+* A) (f : Fin n → A) (hf : ∀ i, φ (f i) = f i) :
     φ (List.ofFn f).prod = (List.ofFn f).prod := by
@@ -105,55 +105,55 @@ section fnsmem
 variable (L : LevelData A r)
 
 /- English proof (translation)
-The claim follows from `L.fns_comm x hx y hy`.
+A detailed English derivation is pending.
 -/
 lemma fc {x y : A} (hx : x ∈ L.fns) (hy : y ∈ L.fns) : x * y = y * x := L.fns_comm x hx y hy
 
 /- English proof (translation)
-Simplify using `[LevelData.fns]`.
+Simplify using the standard rewrite rules.
 -/
 lemma m_c (l) : L.c l ∈ L.fns := by simp [LevelData.fns]
 /- English proof (translation)
-Simplify using `[LevelData.fns]`.
+Simplify using the standard rewrite rules.
 -/
 lemma m_ci (l) : L.ci l ∈ L.fns := by simp [LevelData.fns]
 /- English proof (translation)
-Simplify using `[LevelData.fns]`.
+Simplify using the standard rewrite rules.
 -/
 lemma m_cb (l) : L.cb l ∈ L.fns := by simp [LevelData.fns]
 /- English proof (translation)
-Simplify using `[LevelData.fns]`.
+Simplify using the standard rewrite rules.
 -/
 lemma m_cbi (l) : L.cbi l ∈ L.fns := by simp [LevelData.fns]
 /- English proof (translation)
-Simplify using `[LevelData.fns]`.
+Simplify using the standard rewrite rules.
 -/
 lemma m_ζ : L.ζ ∈ L.fns := by simp [LevelData.fns]
 /- English proof (translation)
-Simplify using `[LevelData.fns]`.
+Simplify using the standard rewrite rules.
 -/
 lemma m_ζi : L.ζi ∈ L.fns := by simp [LevelData.fns]
 /- English proof (translation)
-Simplify using `[LevelData.fns]`.
+Simplify using the standard rewrite rules.
 -/
 lemma m_ζb : L.ζb ∈ L.fns := by simp [LevelData.fns]
 /- English proof (translation)
-Simplify using `[LevelData.fns]`.
+Simplify using the standard rewrite rules.
 -/
 lemma m_ζbi : L.ζbi ∈ L.fns := by simp [LevelData.fns]
 /- English proof (translation)
-Simplify using `[LevelData.fns]`.
+Simplify using the standard rewrite rules.
 -/
 lemma m_GG : L.GG ∈ L.fns := by simp [LevelData.fns]
 /- English proof (translation)
-Simplify using `[LevelData.fns]`.
+Simplify using the standard rewrite rules.
 -/
 lemma m_GGi : L.GGi ∈ L.fns := by simp [LevelData.fns]
 
 end fnsmem
 
 /- English proof (translation)
-Unfold `LevelData.Tprod`. Rewrite using `[← RingHom.mapMatrix_apply, map_list_prod, List.map_reverse, List.map_ofFn]`. Conclude with `congrArg (fun f => ((List.ofFn f).reverse).prod) (funext h)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma tprod_map (L : LevelData A r) (φ : A →+* A) (Y Y' : ℂ)
     (h : ∀ l, (L.Tl Y l).map φ = L.Tl Y' l) : (L.Tprod Y).map φ = L.Tprod Y' := by
@@ -162,7 +162,7 @@ lemma tprod_map (L : LevelData A r) (φ : A →+* A) (Y Y' : ℂ)
   exact congrArg (fun f => ((List.ofFn f).reverse).prod) (funext h)
 
 /- English proof (translation)
-Unfold `LevelData.Tvprod`. Rewrite using `[← RingHom.mapMatrix_apply, map_list_prod, List.map_reverse, List.map_ofFn]`. Conclude with `congrArg (fun f => ((List.ofFn f).reverse).prod) (funext h)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma tvprod_map (L : LevelData A r) (φ : A →+* A) (Y Y' : ℂ)
     (h : ∀ l, (L.Tvl Y l).map φ = L.Tvl Y' l) : (L.Tvprod Y).map φ = L.Tvprod Y' := by
@@ -171,17 +171,17 @@ lemma tvprod_map (L : LevelData A r) (φ : A →+* A) (Y Y' : ℂ)
   exact congrArg (fun f => ((List.ofFn f).reverse).prod) (funext h)
 
 /- English proof (translation)
-Establish `hT : (L.Tprod Y).map φ = L.Tprod (Y + t)`. Apply `tprod_map` to reduce the goal to its premises. Introduce `l`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [LevelData.Tl, hp, hc, hci, hal, map_add]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Normalize the expressions using the abelian group laws. Establish `hAr : φ (L.Ar Y) = L.Ar (Y + t)`. Unfold `LevelData.Ar`. Rewrite using `[← hT]`. Both sides reduce to the same expression.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hBr : φ (L.Br Y) = L.Br (Y + t)`. Unfold `LevelData.Br`. Rewrite using `[← hT]`. Both sides reduce to the same expression. Establish `hDr : φ L.Dr = L.Dr` using `map_ofFn_prod φ L.c hc`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hDrb : φ L.Drb = L.Drb` using `map_ofFn_prod φ L.cb hcb`. Establish `hl0 : φ (L.l0 Y) = L.l0 (Y + t) + e`. Establish `h2 : algebraMap ℂ A (Y + t + 1 / 2) = algebraMap ℂ A (Y + 1 / 2) + algebraMap ℂ A t`. Rewrite using `[← map_add]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [LevelData.l0, map_sub, map_neg, map_mul, hal, hnab, hzb, hGGi, h2, add_mul]`. Normalize the expressions using the abelian group laws. Prove the components needed by the constructor for the conclusion. Unfold `LevelData.Ahat`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Prove the components needed by the constructor for the conclusion. Replace the relevant objects with their definitions.
 
-Rewrite using `[map_mul, hDr, hAr]`. Unfold `LevelData.R0`. Rewrite using `[map_mul, map_mul, map_add, map_mul, hDrb, hGG, hl0, hAr, hBr]`. Simplify using `only [add_mul, mul_add, mul_assoc]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 lemma keyA (L : LevelData A r) (φ : A →+* A) (t : ℂ) (e : A)
     (hal : ∀ z, φ (algebraMap ℂ A z) = algebraMap ℂ A z)
@@ -217,17 +217,17 @@ lemma keyA (L : LevelData A r) (φ : A →+* A) (t : ℂ) (e : A)
     abel
 
 /- English proof (translation)
-Establish `hT : (L.Tvprod Y).map φ = L.Tvprod (Y - t)`. Apply `tvprod_map` to reduce the goal to its premises. Introduce `l`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [LevelData.Tvl, hpb, hcb, hcbi, hal, map_sub]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Normalize the expressions using the abelian group laws. Establish `hAr : φ (L.Avr Y) = L.Avr (Y - t)`. Unfold `LevelData.Avr`. Rewrite using `[← hT]`. Both sides reduce to the same expression.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hBr : φ (L.Bvr Y) = L.Bvr (Y - t)`. Unfold `LevelData.Bvr`. Rewrite using `[← hT]`. Both sides reduce to the same expression. Establish `hDr : φ L.Dr = L.Dr` using `map_ofFn_prod φ L.c hc`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hDrb : φ L.Drb = L.Drb` using `map_ofFn_prod φ L.cb hcb`. Establish `hm0 : φ (L.m0 Y) = L.m0 (Y - t) + e`. Establish `h2 : algebraMap ℂ A (Y - t - 1 / 2) = algebraMap ℂ A (Y - 1 / 2) - algebraMap ℂ A t`. Rewrite using `[← map_sub]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [LevelData.m0, map_sub, map_neg, map_mul, hal, hnabs, hz, hGGi, h2, sub_mul]`. Normalize the expressions using the abelian group laws. Prove the components needed by the constructor for the conclusion. Unfold `LevelData.Ahatv`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Prove the components needed by the constructor for the conclusion. Replace the relevant objects with their definitions.
 
-Rewrite using `[map_mul, hDrb, hAr]`. Unfold `LevelData.R0v`. Rewrite using `[map_mul, map_mul, map_add, map_mul, hDr, hGG, hm0, hAr, hBr]`. Simplify using `only [add_mul, mul_add, mul_assoc]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 lemma keyV (L : LevelData A r) (φ : A →+* A) (t : ℂ) (e : A)
     (hal : ∀ z, φ (algebraMap ℂ A z) = algebraMap ℂ A z)
@@ -263,7 +263,7 @@ lemma keyV (L : LevelData A r) (φ : A →+* A) (t : ℂ) (e : A)
     abel
 
 /- English proof (translation)
-Establish `hf : ∀ y ∈ L.fns, cj x xi h h' y = y` using `fun y hy => cj_fix x xi h h' (hfn y hy)`. Take `⟨a1, a2⟩` from `keyA L (cj x xi h h') 0 0 (cj_alg x xi h h') (fun m => by rw [map_zero, add_zero]; exact cj_fix x xi h h' (hp m)) (fun l => hf _ (m_c L l)) (fun l => hf _ (m_ci L l)) (fun l => hf _ (m_cb L l)) (hf _ (m_GG L)) (hf _ (m_ζb L)) (hf _ (m_GGi L)) (by rw [map_zero, zero_mul, add_zero, …`. Rewrite `a1`, `a2` using `[add_zero]`. Rewrite `a2` using `[mul_zero, zero_mul, add_zero]`. Conclude with `⟨comm_of_cj x xi h h' a1, comm_of_cj x xi h h' a2⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 lemma commA (L : LevelData A r) (x xi : A) (h : x * xi = 1) (h' : xi * x = 1)
     (hp : ∀ m, L.p m * x = x * L.p m) (hfn : ∀ y ∈ L.fns, y * x = x * y)
@@ -280,7 +280,7 @@ lemma commA (L : LevelData A r) (x xi : A) (h : x * xi = 1) (h' : xi * x = 1)
   exact ⟨comm_of_cj x xi h h' a1, comm_of_cj x xi h h' a2⟩
 
 /- English proof (translation)
-Establish `hf : ∀ y ∈ L.fns, cj x xi h h' y = y` using `fun y hy => cj_fix x xi h h' (hfn y hy)`. Take `⟨a1, a2⟩` from `keyV L (cj x xi h h') 0 0 (cj_alg x xi h h') (fun m => by rw [map_zero, add_zero]; exact cj_fix x xi h h' (hp m)) (fun l => hf _ (m_cb L l)) (fun l => hf _ (m_cbi L l)) (fun l => hf _ (m_c L l)) (hf _ (m_GG L)) (hf _ (m_ζ L)) (hf _ (m_GGi L)) (by rw [map_zero, zero_mul, sub_zero, …`. Rewrite `a1`, `a2` using `[sub_zero]`. Rewrite `a2` using `[mul_zero, zero_mul, add_zero]`. Conclude with `⟨comm_of_cj x xi h h' a1, comm_of_cj x xi h h' a2⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 lemma commV (L : LevelData A r) (x xi : A) (h : x * xi = 1) (h' : xi * x = 1)
     (hp : ∀ m, L.pb m * x = x * L.pb m) (hfn : ∀ y ∈ L.fns, y * x = x * y)
@@ -297,50 +297,50 @@ lemma commV (L : LevelData A r) (x xi : A) (h : x * xi = 1) (h' : xi * x = 1)
   exact ⟨comm_of_cj x xi h h' a1, comm_of_cj x xi h h' a2⟩
 
 /- English proof (translation)
-The claim follows from `prod_mul_prod_eq_one L.c L.ci L.c_ci (fun i j => fc L (m_ci L i) (m_c L j))`.
+A detailed English derivation is pending.
 -/
 lemma Dr_Dri (L : LevelData A r) : L.Dr * L.Dri = 1 :=
   prod_mul_prod_eq_one L.c L.ci L.c_ci (fun i j => fc L (m_ci L i) (m_c L j))
 /- English proof (translation)
-The claim follows from `prod_mul_prod_eq_one L.ci L.c L.ci_c (fun i j => fc L (m_c L i) (m_ci L j))`.
+A detailed English derivation is pending.
 -/
 lemma Dri_Dr (L : LevelData A r) : L.Dri * L.Dr = 1 :=
   prod_mul_prod_eq_one L.ci L.c L.ci_c (fun i j => fc L (m_c L i) (m_ci L j))
 /- English proof (translation)
-The claim follows from `prod_mul_prod_eq_one L.cb L.cbi L.cb_cbi (fun i j => fc L (m_cbi L i) (m_cb L j))`.
+A detailed English derivation is pending.
 -/
 lemma Drb_Drbi (L : LevelData A r) : L.Drb * L.Drbi = 1 :=
   prod_mul_prod_eq_one L.cb L.cbi L.cb_cbi (fun i j => fc L (m_cbi L i) (m_cb L j))
 /- English proof (translation)
-The claim follows from `prod_mul_prod_eq_one L.cbi L.cb L.cbi_cb (fun i j => fc L (m_cb L i) (m_cbi L j))`.
+A detailed English derivation is pending.
 -/
 lemma Drbi_Drb (L : LevelData A r) : L.Drbi * L.Drb = 1 :=
   prod_mul_prod_eq_one L.cbi L.cb L.cbi_cb (fun i j => fc L (m_cb L i) (m_cbi L j))
 
 /- English proof (translation)
-The claim follows from `comm_prod L.c x hx`.
+A detailed English derivation is pending.
 -/
 lemma comm_Dr (L : LevelData A r) {x : A} (hx : ∀ l, x * L.c l = L.c l * x) :
     x * L.Dr = L.Dr * x := comm_prod L.c x hx
 /- English proof (translation)
-The claim follows from `comm_prod L.cb x hx`.
+A detailed English derivation is pending.
 -/
 lemma comm_Drb (L : LevelData A r) {x : A} (hx : ∀ l, x * L.cb l = L.cb l * x) :
     x * L.Drb = L.Drb * x := comm_prod L.cb x hx
 
 /- English proof (translation)
-The claim follows from `comm_Dr L (fun l => fc L hx (m_c L l))`.
+A detailed English derivation is pending.
 -/
 lemma fns_Dr (L : LevelData A r) {x : A} (hx : x ∈ L.fns) : x * L.Dr = L.Dr * x :=
   comm_Dr L (fun l => fc L hx (m_c L l))
 /- English proof (translation)
-The claim follows from `comm_Drb L (fun l => fc L hx (m_cb L l))`.
+A detailed English derivation is pending.
 -/
 lemma fns_Drb (L : LevelData A r) {x : A} (hx : x ∈ L.fns) : x * L.Drb = L.Drb * x :=
   comm_Drb L (fun l => fc L hx (m_cb L l))
 
 /- English proof (translation)
-Use `shift_prod L.c (L.p l) (fun i => if l = i then (1 : ℂ) else 0) (fun i => by` as an intermediate fact. Apply the tactic sequence `rw [L.p_c]; split_ifs <;> simp)`. Simplify `this` using `[LevelData.Dr]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma p_Dr (L : LevelData A r) (l : Fin r) : L.p l * L.Dr = L.Dr * L.p l + 1 * L.Dr := by
   have := shift_prod L.c (L.p l) (fun i => if l = i then (1 : ℂ) else 0) (fun i => by
@@ -348,7 +348,7 @@ lemma p_Dr (L : LevelData A r) (l : Fin r) : L.p l * L.Dr = L.Dr * L.p l + 1 * L
   simpa [LevelData.Dr] using this
 
 /- English proof (translation)
-Use `shift_prod L.cb (L.pb l) (fun i => if l = i then (1 : ℂ) else 0) (fun i => by` as an intermediate fact. Apply the tactic sequence `rw [L.pb_cb]; split_ifs <;> simp)`. Simplify `this` using `[LevelData.Drb]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma pb_Drb (L : LevelData A r) (l : Fin r) : L.pb l * L.Drb = L.Drb * L.pb l + 1 * L.Drb := by
   have := shift_prod L.cb (L.pb l) (fun i => if l = i then (1 : ℂ) else 0) (fun i => by
@@ -362,13 +362,13 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.FourierDecayAlt.R Formalism.FourierDecayAlt.R.LevelData Formalism.FourierDecayAlt.P.RuleGD
 
 /- English proof (translation)
-Introduce `A _ _ r L s Gs Gsi h1 h2 hf hp hpb hnab hnabs Y`. Establish `hfx : ∀ x ∈ L.fns, cj Gs Gsi h1 h2 x = x` using `fun x hx => cj_fix Gs Gsi h1 h2 (hf x hx)`. Establish `hpφ : ∀ l, cj Gs Gsi h1 h2 (L.p l) = L.p l + algebraMap ℂ A s`. Introduce `l`. Rewrite using `[cj_of_eq Gs Gsi h1 h2 (hp l), cj_alg]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hpbφ : ∀ l, cj Gs Gsi h1 h2 (L.pb l) = L.pb l + algebraMap ℂ A s`. Introduce `l`. Rewrite using `[cj_of_eq Gs Gsi h1 h2 (hpb l), cj_alg]`. Establish `hnabφ : cj Gs Gsi h1 h2 L.nab = L.nab + algebraMap ℂ A s * (L.ζb * L.GGi) - 0`. Rewrite using `[sub_zero, cj_of_eq Gs Gsi h1 h2 (a := algebraMap ℂ A s * (L.ζb * L.GGi)) (by rw [hnab]; simp only [mul_assoc]), map_mul, map_mul, cj_alg, hfx _ (m_ζb L), hfx _ (m_GGi L)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hnabsφ : cj Gs Gsi h1 h2 L.nabs = L.nabs - algebraMap ℂ A s * (L.ζ * L.GGi) - 0`. Rewrite using `[sub_zero, cj_of_eq Gs Gsi h1 h2 (a := -(algebraMap ℂ A s * (L.ζ * L.GGi))) (by rw [hnabs, sub_eq_add_neg, neg_mul]; simp only [mul_assoc]), map_neg, map_mul, map_mul, cj_alg, hfx _ (m_ζ L), hfx _ (m_GGi L), sub_eq_add_neg]`. Take `⟨a1, a2⟩` from `keyA L (cj Gs Gsi h1 h2) s 0 (cj_alg Gs Gsi h1 h2) hpφ (fun l => hfx _ (m_c L l)) (fun l => hfx _ (m_ci L l)) (fun l => hfx _ (m_cb L l)) (hfx _ (m_GG L)) (hfx _ (m_ζb L)) (hfx _ (m_GGi L)) hnabφ Y`. Take `⟨b1, b2⟩` from `keyV L (cj Gs Gsi h1 h2) s 0 (cj_alg Gs Gsi h1 h2) hpbφ (fun l => hfx _ (m_cb L l)) (fun l => hfx _ (m_cbi L l)) (fun l => hfx _ (m_c L l)) (hfx _ (m_GG L)) (hfx _ (m_ζ L)) (hfx _ (m_GGi L)) hnabsφ Y`. Rewrite `a2`, `b2` using `[mul_zero, zero_mul, add_zero]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨a1, a2, b1, b2⟩`.
+Supply the required witnesses or components.
 -/
 theorem gaugeConjugation : Formalism.FourierDecayAlt.R.RuleG := by
   intro A _ _ r L s Gs Gsi h1 h2 hf hp hpb hnab hnabs Y
@@ -395,35 +395,31 @@ theorem gaugeConjugation : Formalism.FourierDecayAlt.R.RuleG := by
   exact ⟨a1, a2, b1, b2⟩
 
 /- English proof (translation)
-Introduce `A _ _ r L Y`. Use `set ψ1 := cj L.Dr L.Dri (Dr_Dri L) (Dri_Dr L)`. Use `set ψ2 := cj L.ζ L.ζi L.ζ_ζi L.ζi_ζ`. Establish `hφ : ∀ x, (ψ2.comp ψ1) x = L.Di * x * L.D`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [ψ1, ψ2, RingHom.comp_apply, cj_apply, LevelData.Di, LevelData.D, mul_assoc]`. Establish `f1 : ∀ x ∈ L.fns, ψ1 x = x` using `fun x hx => cj_fix _ _ _ _ (fns_Dr L hx)`. Establish `f2 : ∀ x ∈ L.fns, ψ2 x = x` using `fun x hx => cj_fix _ _ _ _ (fc L hx (m_ζ L))`. Establish `f12 : ∀ x ∈ L.fns, (ψ2.comp ψ1) x = x` using `fun x hx => by`. Rewrite using `[RingHom.comp_apply, f1 x hx, f2 x hx]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hal : ∀ z, (ψ2.comp ψ1) (algebraMap ℂ A z) = algebraMap ℂ A z` using `fun z => by`. Rewrite using `[RingHom.comp_apply, cj_alg, cj_alg]`. Establish `hp : ∀ l, (ψ2.comp ψ1) (L.p l) = L.p l + algebraMap ℂ A 1` using `fun l => by`. Rewrite using `[RingHom.comp_apply, cj_of_eq _ _ _ _ (p_Dr L l), map_one, map_add, map_one, cj_fix _ _ _ _ (L.p_ζ l), map_one]`. Establish `hnab : (ψ2.comp ψ1) L.nab = L.nab + algebraMap ℂ A 1 * (L.ζb * L.GGi) - (L.ζb * L.GGi - L.ζi)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : ψ1 L.nab = L.nab` using `cj_fix _ _ _ _ (comm_Dr L L.nab_c)`. Establish `e2 : ψ2 L.nab = L.nab + L.ζi`. Rewrite using `[cj_of_eq _ _ _ _ (a := L.ζi) (by rw [L.nab_ζ, L.ζi_ζ]), f2 _ (m_ζi L)]`. Rewrite using `[RingHom.comp_apply, e1, e2, map_one, one_mul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a1, a2⟩` from `keyA L (ψ2.comp ψ1) 1 (L.ζb * L.GGi - L.ζi) hal hp (fun l => f12 _ (m_c L l)) (fun l => f12 _ (m_ci L l)) (fun l => f12 _ (m_cb L l)) (f12 _ (m_GG L)) (f12 _ (m_ζb L)) (f12 _ (m_GGi L)) hnab Y`. Rewrite `a1`, `a2` using `[hφ]`. Use `set χ1 := cj L.Drb L.Drbi (Drb_Drbi L) (Drbi_Drb L)`. Use `set χ2 := cj L.ζb L.ζbi L.ζb_ζbi L.ζbi_ζb`. Establish `hχ : ∀ x, (χ2.comp χ1) x = L.Dbi * x * L.Db`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x`. Simplify using `only [χ1, χ2, RingHom.comp_apply, cj_apply, LevelData.Dbi, LevelData.Db, mul_assoc]`. Establish `g1 : ∀ x ∈ L.fns, χ1 x = x` using `fun x hx => cj_fix _ _ _ _ (fns_Drb L hx)`. Establish `g2 : ∀ x ∈ L.fns, χ2 x = x` using `fun x hx => cj_fix _ _ _ _ (fc L hx (m_ζb L))`. Establish `g12 : ∀ x ∈ L.fns, (χ2.comp χ1) x = x` using `fun x hx => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[RingHom.comp_apply, g1 x hx, g2 x hx]`. Establish `hal' : ∀ z, (χ2.comp χ1) (algebraMap ℂ A z) = algebraMap ℂ A z` using `fun z => by`. Rewrite using `[RingHom.comp_apply, cj_alg, cj_alg]`. Establish `hpb : ∀ l, (χ2.comp χ1) (L.pb l) = L.pb l + algebraMap ℂ A 1` using `fun l => by`. Rewrite using `[RingHom.comp_apply, cj_of_eq _ _ _ _ (pb_Drb L l), map_one, map_add, map_one, cj_fix _ _ _ _ (L.pb_ζb l), map_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hnabs : (χ2.comp χ1) L.nabs = L.nabs - algebraMap ℂ A 1 * (L.ζ * L.GGi) - (L.ζbi - L.ζ * L.GGi)`. Establish `e1 : χ1 L.nabs = L.nabs` using `cj_fix _ _ _ _ (comm_Drb L L.nabs_cb)`. Establish `e2 : χ2 L.nabs = L.nabs + -L.ζbi`. Rewrite using `[cj_of_eq _ _ _ _ (a := -L.ζbi) (by rw [L.nabs_ζb, neg_mul, L.ζbi_ζb, sub_eq_add_neg]), map_neg, g2 _ (m_ζbi L)]`. Rewrite using `[RingHom.comp_apply, e1, e2, map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Take `⟨b1, b2⟩` from `keyV L (χ2.comp χ1) 1 (L.ζbi - L.ζ * L.GGi) hal' hpb (fun l => g12 _ (m_cb L l)) (fun l => g12 _ (m_cbi L l)) (fun l => g12 _ (m_c L l)) (g12 _ (m_GG L)) (g12 _ (m_ζ L)) (g12 _ (m_GGi L)) hnabs Y`. Rewrite `b1`, `b2` using `[hχ]`. Establish `s1 : L.GG * (L.ζb * L.GGi - L.ζi) = algebraMap ℂ A L.TT * L.ζi`. Rewrite using `[mul_sub, ← mul_assoc, fc L (m_GG L) (m_ζb L), mul_assoc, L.GG_GGi, mul_one, L.GG_def, sub_mul, mul_assoc, fc L (m_ζb L) (m_ζi L), ← mul_assoc, L.ζ_ζi, one_mul, sub_sub_cancel]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `s2 : L.GG * (L.ζbi - L.ζ * L.GGi) = -(algebraMap ℂ A L.TT * L.ζbi)`. Rewrite using `[mul_sub, ← mul_assoc, fc L (m_GG L) (m_ζ L), mul_assoc, L.GG_GGi, mul_one, L.GG_def, sub_mul, mul_assoc, L.ζb_ζbi, mul_one, sub_sub_cancel_left]`. Establish `t1 : L.Drb * L.GG * (L.ζb * L.GGi - L.ζi) * L.Ar (Y + 1) = algebraMap ℂ A L.TT * (L.Drb * L.Di * L.Ahat (Y + 1))`. Rewrite using `[mul_assoc L.Drb, s1, LevelData.Di, LevelData.Ahat]`. Establish `h3 : L.Drb * (L.ζi * L.Dri) * (L.Dr * L.Ar (Y + 1)) = L.Drb * (L.ζi * L.Ar (Y + 1))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc L.Dri, Dri_Dr, one_mul]`. Rewrite using `[h3, Algebra.left_comm]`. Simplify using `only [mul_assoc]`. Establish `t2 : L.Dr * L.GG * (L.ζbi - L.ζ * L.GGi) * L.Avr (Y - 1) = -(algebraMap ℂ A L.TT * (L.Dr * L.Dbi * L.Ahatv (Y - 1)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc L.Dr, s2, LevelData.Dbi, LevelData.Ahatv]`. Establish `h3 : L.Dr * (L.ζbi * L.Drbi) * (L.Drb * L.Avr (Y - 1)) = L.Dr * (L.ζbi * L.Avr (Y - 1))`. Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc L.Drbi, Drbi_Drb, one_mul]`. Rewrite using `[h3, mul_neg, neg_mul, Algebra.left_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Simplify using `only [mul_assoc]`. Use `⟨a1, a2.trans (by rw [t1]), b1, b2.trans (by rw [t2]; exact (sub_eq_add_neg _ _).symm), ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `x ((⟨l, rfl⟩ | ⟨l, rfl⟩) | rfl | rfl)`. Conclude with `commA L _ _ (L.cb_cbi l) (L.cbi_cb l) (fun m => L.p_cb m l) (fun y hy => fc L hy (m_cb L l)) (L.nab_cb l) Y`. Conclude with `commA L _ _ (L.cbi_cb l) (L.cb_cbi l) (fun m => L.p_cbi m l) (fun y hy => fc L hy (m_cbi L l)) (L.nab_cbi l) Y`.
-
-Conclude with `commA L _ _ L.ζb_ζbi L.ζbi_ζb (fun m => L.p_ζb m) (fun y hy => fc L hy (m_ζb L)) L.nab_ζb Y`. Conclude with `commA L _ _ L.ζbi_ζb L.ζb_ζbi (fun m => L.p_ζbi m) (fun y hy => fc L hy (m_ζbi L)) L.nab_ζbi Y`. Introduce and unpack `x ((⟨l, rfl⟩ | ⟨l, rfl⟩) | rfl | rfl)`. Conclude with `commV L _ _ (L.c_ci l) (L.ci_c l) (fun m => L.pb_c m l) (fun y hy => fc L hy (m_c L l)) (L.nabs_c l) Y`. Conclude with `commV L _ _ (L.ci_c l) (L.c_ci l) (fun m => L.pb_ci m l) (fun y hy => fc L hy (m_ci L l)) (L.nabs_ci l) Y`.
-
-Conclude with `commV L _ _ L.ζ_ζi L.ζi_ζ (fun m => L.pb_ζ m) (fun y hy => fc L hy (m_ζ L)) L.nabs_ζ Y`. Conclude with `commV L _ _ L.ζi_ζ L.ζ_ζi (fun m => L.pb_ζi m) (fun y hy => fc L hy (m_ζi L)) L.nabs_ζi Y`.
+A detailed English derivation is pending.
 -/
 theorem shiftConjugation : Formalism.FourierDecayAlt.R.RuleD := by
   intro A _ _ r L Y

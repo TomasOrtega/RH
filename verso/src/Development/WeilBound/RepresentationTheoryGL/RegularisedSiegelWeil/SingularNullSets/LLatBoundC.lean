@@ -27,7 +27,7 @@ Both sides reduce to the same expression.
 theorem mtL_one (V : HSp D) : mt V 1 = 1 := rfl
 
 /- English proof (translation)
-Establish `h0 : finHom V a = 1` using `ha`. Establish `h1 : (finHom V a).1 = 1` using `by rw [h0]; rfl`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finPart_mtL {V : HSp D} {a : GA D V} (ha : a ∈ GinfC V) : (mt V a).map (finPart D) = 1 := by
   have h0 : finHom V a = 1 := ha
@@ -35,7 +35,7 @@ theorem finPart_mtL {V : HSp D} {a : GA D V} (ha : a ∈ GinfC V) : (mt V a).map
   exact h1
 
 /- English proof (translation)
-Use `choose N hN hNz using fun i => GlobalTheory.CompanionTheory.Ipf.Bdd.den_one (D := D) (z i)`. Use `⟨∏ i, N i, Finset.prod_pos fun i _ => hN i, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ i), mul_comm, mul_smul]`. Conclude with `AddSubgroup.nsmul_mem _ (hNz i) _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem den_finL {ι : Type} [Fintype ι] (z : ι → Af D.host.F ⊗[D.host.F] D.host.E) :
     ∃ N : ℕ, 0 < N ∧ ∀ i, N • z i ∈ intAE D := by
@@ -46,9 +46,9 @@ theorem den_finL {ι : Type} [Fintype ι] (z : ι → Af D.host.F ⊗[D.host.F] 
   exact AddSubgroup.nsmul_mem _ (hNz i) _
 
 /- English proof (translation)
-Establish `h0 : infHom V k = 1` using `hk`. Establish `h : (mt V k).map (infPart D) = 1`. Establish `h1 : (infHom V k).1 = 1` using `by rw [h0]; rfl`. Conclude with `h1`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hij` using `congrFun (congrFun h i) j`. Simplify using `only [Matrix.map_apply] at hij`. Simplify using `only [compAt, Matrix.map_apply, hij, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem compAt_mt_GfC (θ : InfFam D) (V : HSp D) {k : GA D V} (hk : k ∈ GfC V) (τ : D.what₂.Tau) :
     compAt θ τ (mt V k) = 1 := by
@@ -65,41 +65,33 @@ theorem compAt_mt_GfC (θ : InfFam D) (V : HSp D) {k : GA D V} (hk : k ∈ GfC V
 set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 /- English proof (translation)
-Take `⟨Mg, hMg⟩` from `hg.1.continuous.bounded_above_of_compact_support hg.2`. Take `⟨N, hN, hNK⟩` from `GlobalTheory.CompanionTheory.Ipf.Bdd.exists_den_matrix (D := D) (a := V.rank) (b := n) (K := tsupport g) hg.2`. Take `⟨M, hM, hMy⟩` from `den_finL (D := D) (fun p : Fin V.rank × Fin V.rank => finPart D (mt V y⁻¹ p.1 p.2))`. Take `⟨C₀, hC₀⟩` from `fullRank_col D V.rank n (N * M) (Nat.mul_pos hN hM) f`. Use `⟨ENNReal.ofReal C₀ * ENNReal.ofReal Mg, ENNReal.mul_lt_top ENNReal.ofReal_lt_top ENNReal.ofReal_lt_top, fun a ha k hk hki => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `set B : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ := fun τ => compAt θ τ (mt V (a * y)) with hBdef`. Establish `hB : ∀ τ, ‖(B τ).det‖ = 1` using `fun τ => GlobalTheory.CompanionTheory.Ipf.Bdd.norm_det_compAt hθ τ V (a * y)`. Establish `hmt : mt V (k * a * y) = mt V k * mt V (a * y)`. Rewrite using `[mul_assoc, mtL_mul]`. Establish `hinf : ∀ x : Matrix (Fin V.rank) (Fin n) D.host.E, (fun τ i j => compAt θ τ (mm (mt V (k * a * y)) (rat x)) i j) = fun τ => B τ * x.map (tauE D τ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Use function extensionality and compare the values at `τ i j`. Establish `e1` using `GlobalTheory.CompanionTheory.Ipf.Bdd.compAt_mulM θ τ (mt V (k * a * y)) (rat x)`. Establish `e2` using `GlobalTheory.CompanionTheory.Ipf.Bdd.compAt_mulM θ τ (mt V k) (mt V (a * y))`. Establish `e0 : compAt θ τ (rat x) = x.map (tauE D τ)` using `GlobalTheory.CompanionTheory.Ipf.Bdd.compAt_rat hθ τ x`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e1` using `[e0]`. Rewrite `e2` using `[compAt_mt_GfC θ V hk τ, Matrix.one_mul]`. Establish `e4 : compAt θ τ (mt V (k * a * y)) = B τ`. Rewrite using `[hmt]`. Conclude with `e2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : compAt θ τ (mm (mt V (k * a * y)) (rat x)) = B τ * x.map (tauE D τ)`. Rewrite using `[← e4]`. Conclude with `e1`. Rewrite using `[e3]`. Use `set Yf : Matrix (Fin V.rank) (Fin V.rank) (Af D.host.F ⊗[D.host.F] D.host.E) := (mt V y).map (finPart D) with hYf`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set Yi : Matrix (Fin V.rank) (Fin V.rank) (Af D.host.F ⊗[D.host.F] D.host.E) := (mt V y⁻¹).map (finPart D) with hYi`. Use `set Kf : Matrix (Fin V.rank) (Fin V.rank) (Af D.host.F ⊗[D.host.F] D.host.E) := (mt V k).map (finPart D) with hKf`. Use `set Ki : Matrix (Fin V.rank) (Fin V.rank) (Af D.host.F ⊗[D.host.F] D.host.E) := (mt V k⁻¹).map (finPart D) with hKi`. Establish `hYY : Yi * Yf = 1`. Rewrite using `[hYi, hYf, ← Matrix.map_mul, ← mtL_mul, inv_mul_cancel, mtL_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hKK : Ki * Kf = 1`. Rewrite using `[hKi, hKf, ← Matrix.map_mul, ← mtL_mul, inv_mul_cancel, mtL_one]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hfin : ∀ x : Matrix (Fin V.rank) (Fin n) D.host.E, (mm (mt V (k * a * y)) (rat x)).map (finPart D) = Kf * Yf * x.map (fun c => finPart D (incA D c))`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x`. Establish `: (mt V (a * y)).map (finPart D) = Yf`. Rewrite using `[mtL_mul, Matrix.map_mul, finPart_mtL ha, Matrix.one_mul]`. Use `show (mt V (k * a * y) * rat x).map (finPart D) = _`. Rewrite using `[Matrix.map_mul, hmt, Matrix.map_mul, this]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hden : ∀ x : Matrix (Fin V.rank) (Fin n) D.host.E, g (fun i j => finPart D ((mm (mt V (k * a * y)) (rat x)) i j)) ≠ 0 → ∀ i j, ((N * M : ℕ) : D.host.E) * x i j ∈ GlobalTheory.CompanionTheory.Ipf.Bdd.intR D`. Introduce `x hx i j`. Use `set Z : Matrix (Fin V.rank) (Fin n) (Af D.host.F ⊗[D.host.F] D.host.E) := (mm (mt V (k * a * y)) (rat x)).map (finPart D) with hZ`. Establish `hZK : Z ∈ tsupport g` using `subset_tsupport _ hx`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hxZ : x.map (fun c => finPart D (incA D c)) = Yi * (Ki * Z)`. Rewrite using `[hZ, hfin x, ← Matrix.mul_assoc Ki, ← Matrix.mul_assoc Ki, hKK, Matrix.one_mul, ← Matrix.mul_assoc, hYY, Matrix.one_mul]`. Use `GlobalTheory.CompanionTheory.Ipf.Bdd.mem_intR_of_finPart ?_` and prove the remaining obligations. Establish `e : finPart D (incA D (((N * M : ℕ) : D.host.E) * x i j)) = ∑ l, ∑ m, (M • Yi i l) * (Ki l m * (N • Z m j))`. Establish `hij : finPart D (incA D (x i j)) = (Yi * (Ki * Z)) i j`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hxZ]`. Both sides reduce to the same expression. Rewrite using `[map_mul, map_mul, hij, Matrix.mul_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.mul_sum, Finset.mul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Simplify using `only [map_natCast, nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `sum_mem fun l _ => sum_mem fun m _ => ?_` and prove the remaining obligations. Conclude with `GlobalTheory.CompanionTheory.Ipf.Bdd.mul_mem_int (hMy (i, l)) (GlobalTheory.CompanionTheory.Ipf.Bdd.mul_mem_int (hki l m) (hNK Z hZK m j))`. Use `set S₁ : Set (Matrix (Fin V.rank) (Fin n) D.host.E) := {x | x.rank = V.rank} with hS₁`. Use `set S₂ : Set (Matrix (Fin V.rank) (Fin n) D.host.E) := {x | x.rank = V.rank ∧ ∀ i j, ((N * M : ℕ) : D.host.E) * x i j ∈ GlobalTheory.CompanionTheory.Ipf.Bdd.intR D} with hS₂`. Use `set F : Matrix (Fin V.rank) (Fin n) D.host.E → ℝ≥0∞ := fun x => ‖f (fun τ i j => compAt θ τ (mm (mt V (k * a * y)) (rat x)) i j) * g (fun i j => finPart D ((mm (mt V (k * a * y)) (rat x)) i j))‖ₑ with hF`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `set G : Matrix (Fin V.rank) (Fin n) D.host.E → ℝ≥0∞ := fun x => ‖f (fun τ => B τ * x.map (tauE D τ))‖ₑ * ENNReal.ofReal Mg with hG`. Establish `e1 : ∑' x : {x : Matrix (Fin V.rank) (Fin n) D.host.E // x.rank = V.rank}, F x.1 = ∑' x, S₁.indicator F x` using `tsum_subtype S₁ F`. Establish `e2 : ∑' x : S₂, G x.1 = ∑' x, S₂.indicator G x` using `tsum_subtype S₂ G`. Establish `hle : ∀ x, S₁.indicator F x ≤ S₂.indicator G x`. Introduce `x`.
-
-Distinguish the cases in `h1 : x ∈ S₁`. Rewrite using `[Set.indicator_of_mem h1]`. Distinguish the cases in `h0 : g (fun i j => finPart D ((mm (mt V (k * a * y)) (rat x)) i j)) = 0`. Establish `: F x = 0` using `by simp only [hF, h0, mul_zero, enorm_zero]`. Rewrite using `[this]`.
-
-Conclude with `zero_le`. Establish `h2 : x ∈ S₂` using `⟨h1, hden x h0⟩`. Rewrite using `[Set.indicator_of_mem h2]`. Simplify using `only [hF, hG]`. Rewrite using `[hinf x, enorm_mul]`.
-
-Use `gcongr`. Rewrite using `[← ofReal_norm]`. Conclude with `ENNReal.ofReal_le_ofReal (hMg _)`. Rewrite using `[Set.indicator_of_notMem h1]`. Conclude with `zero_le`.
-
-Use `show ∑' x : {x : Matrix (Fin V.rank) (Fin n) D.host.E // x.rank = V.rank}, F x.1 ≤ _`. Rewrite using `[e1]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hC₀ B hB`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem gen_bound_col {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) (n : ℕ) (y : GA D V)
     (f : SchwartzMap (D.what₂.Tau → Fin V.rank → Fin n → ℂ) ℂ)

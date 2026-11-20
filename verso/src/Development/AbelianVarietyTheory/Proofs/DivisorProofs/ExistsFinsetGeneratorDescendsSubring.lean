@@ -23,7 +23,7 @@ open GlobalTheory.SiegelDescent ReciprocityTheory.ChartRestriction.G.Pdiv.Pullba
 namespace GlobalTheory
 
 /- English proof (translation)
-The claim follows from `Ex.ValInh.lbIso_of_g_one (fun i j => by simp only [LB.pull, LB.LinComb, LB.triv, map_one, one_zpow, Finset.prod_const_one] simp only [Finset.univ_unique, Finset.prod_singleton, zpow_one] exact (res _).map_one) (fun i j => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_triv_pull_triv {X Y : Scheme.{0}} (f : Y ⟶ X) : LBIso ((LB.triv X).pull f) (LB.triv Y) :=
   Ex.ValInh.lbIso_of_g_one (fun i j => by
@@ -32,11 +32,11 @@ theorem lbIso_triv_pull_triv {X Y : Scheme.{0}} (f : Y ⟶ X) : LBIso ((LB.triv 
     exact (res _).map_one) (fun i j => rfl)
 
 /- English proof (translation)
-Introduce `R _ S A _ _ B _ _ φ φ₂ P P₀ a a₀ hB hφ sq hP hP₀ hw e ht`. Use `haveI := hB.proper`. Establish `hN : (P₀.pull a₀.left).IsLB` using `pull_isLB hP₀ _`. Establish `hT : ∀ X : Scheme.{0}, (LB.triv X).IsLB` using `fun X => LB.isLB_triv X`. Establish `H₀ : LBIso (LB.triv A.left) ((P₀.pull a₀.left).pull φ)` using `LBIso.trans (hT _) (pull_isLB hP _) (pull_isLB hN _) ((CechPic.iso_triv_iff _).2 ht) (lbIso_square hP hP₀ hw e)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `H : LBIso ((LB.triv B.left).pull φ) ((P₀.pull a₀.left).pull φ)` using `LBIso.trans (pull_isLB (hT _) _) (hT _) (pull_isLB hN _) (lbIso_triv_pull_triv φ) H₀`. Take `⟨F, hF⟩` from `lbIso_descends_to_subring_containing_finset R S A.left B.left A.hom B.hom φ (LB.triv B.left) (P₀.pull a₀.left) hφ.1 (hT _) hN H`. Use `⟨F, fun R₁ h hs a₁ e₁ => ?_⟩` and prove the remaining obligations. Establish `H₁` using `hF R₁ h hs _ _ (pφ (spMap (Subring.inclusion h)) B) (isGrpPullback (spMap (Subring.inclusion h)) B).1`. Establish `H₂ : LBIso ((P₀.pull (pφ₂ (spMap (Subring.inclusion h)) B)).pull a₁.left) ((P₀.pull a₀.left).pull (pφ (spMap (Subring.inclusion h)) B))` using `lbIso_square (pull_isLB hP₀ _) hP₀ (PolBaseChange.lbIso_refl (pull_isLB hP₀ _)) e₁`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(CechPic.iso_triv_iff _).1 ?_` and prove the remaining obligations. Conclude with `LBIso.trans (hT _) (pull_isLB (hT _) _) (pull_isLB (pull_isLB hP₀ _) _) (lbIso_triv_pull_triv _).symm (LBIso.trans (pull_isLB (hT _) _) (pull_isLB hN _) (pull_isLB (pull_isLB hP₀ _) _) H₁ H₂.symm)`.
+A detailed English derivation is pending.
 -/
 theorem exists_finset_gen_descends : ∀ (R : Type) [CommRing R] (S : Subring R) (A : Over (Sp R)) [GrpObj A] [IsCommMonObj A] (B : Over (Sp S)) [GrpObj B] [IsCommMonObj B] (φ : A.left ⟶ B.left) (φ₂ : (G2 A).left ⟶ (G2 B).left) (P : LB (G2 A).left) (P₀ : LB (G2 B).left) (a : A ⟶ G2 A) (a₀ : B ⟶ G2 B), IsAbelianScheme B → IsGrpPullback A B (spMap S.subtype) φ → IsSquare φ φ₂ → P.IsLB → P₀.IsLB → LBIso P (P₀.pull φ₂) → a.left ≫ φ₂ = φ ≫ a₀.left → (∃ t : (P.pull a.left).Gen, t.IsGen) → ∃ F : Finset R, ∀ (R₁ : Subring R) (h : S ≤ R₁), (F : Set R) ⊆ R₁ → ∀ a₁ : (Over.pullback (spMap (Subring.inclusion h))).obj B ⟶ G2 ((Over.pullback (spMap (Subring.inclusion h))).obj B), a₁.left ≫ pφ₂ (spMap (Subring.inclusion h)) B = pφ (spMap (Subring.inclusion h)) B ≫ a₀.left → ∃ t : ((P₀.pull (pφ₂ (spMap (Subring.inclusion h)) B)).pull a₁.left).Gen, t.IsGen := by
   intro R _ S A _ _ B _ _ φ φ₂ P P₀ a a₀ hB hφ sq hP hP₀ hw e ht

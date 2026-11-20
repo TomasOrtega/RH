@@ -15,31 +15,29 @@ namespace GlobalTheory.FrameEquiv
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c σ r U hσ hU hr W k bas idx hb hper hty x hx1 Pm' hPm'`. Use `letI : Algebra c.F ℂ := σ.toAlgebra`. Take `⟨-, -, -, -, -, hspan, hEF⟩` from `GlobalTheory.Dict.uw_lattice E H Dw l Xo c σ r U hσ hU hr W k`. Take `⟨-, -, -, -, hsm, -, huniq, -⟩` from `GlobalTheory.Dict.hx_laws E r (U.X k) W.g bas idx 0 hb (by simp) x.1 x.2`. Take `⟨Pm, hPm, hP, hu, hder, hrest⟩` from `W.pt k x`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : Pm' = Pm` from `AddMonoidHom.ext fun a => funext fun j => (hPm' a j).trans (hPm a j).symm`. Take `⟨Hm, χl, fr, θ, Fd, hH, hpos, hIm, h1, h2, h3, h4, h5, h6, h7, h8⟩` from `hrest hx1`. Establish `hcan : GlobalTheory.IndefiniteRowSideFullHecke.ColumnDataLaws.IsCanTheta W.F (W.ik k) Pm' (U.un k x) Hm θ` using `⟨hH, hpos, hIm, χl, fr, h1, h2, h3, h4, h5, h6⟩`. Use `⟨⟨Hm, θ, hcan⟩, fun Hm' θ' hcan' => ?_⟩` and prove the remaining obligations. Take `⟨rfl, rfl⟩ : Hm = Hm' ∧ θ = θ'` from `GlobalTheory.TwistFactorCompare.isCanTheta_unique (F := W.F) (k := W.ik k) (Pm := Pm') (y := U.un k x) ⟨hP, hu, hcan⟩ ⟨hP, hu, hcan'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨ex, hl, e1, e2, e3, e4, e5⟩` from `exists_ex_transport W.F (W.ik k) Pm' hP (unC U k x).x hu`. Establish `hpv : ∀ a, Pm' a = pv (U.X k) idx x.1 (W.emb k a)` using `fun a => by`. Use function extensionality and compare the values at `j`. Rewrite using `[hPm, hper]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hsurj : ∀ v ∈ (U.X k).Λ, ∃ a, W.emb k a = v` using `fun v hv => ⟨(W.φ k).symm ⟨v, hv⟩, by simp [UW.emb]⟩`. Establish `hmem : ∀ a, W.emb k a ∈ (U.X k).Λ` using `fun a => (W.φ k a).2`. Establish `hrange : ∀ z, z ∈ Pm'.range ↔ ∃ v ∈ (U.X k).Λ, z = pv (U.X k) idx x.1 v` using `fun z => by`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨_, hmem a, hpv a⟩`. Introduce and unpack `⟨v, hv, rfl⟩`. Take `⟨a, rfl⟩` from `hsurj v hv`. Conclude with `⟨a, hpv a⟩`. Establish `hspan' : Submodule.span E ((U.X k).Λ : Set (Fin r → E)) = ⊤`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[eq_top_iff, ← hspan]`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `hmem a`. Establish `hhx : ∀ z w, hermForm Hm z w = hx (U.X k) bas idx x.1 z w`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(huniq _ hspan').2 Hm hH ?_` and prove the remaining obligations. Introduce `u hu v hv`. Take `⟨a, rfl⟩` from `hsurj u hu`. Take `⟨b, rfl⟩` from `hsurj v hv`. Rewrite using `[← hpv, ← hpv, hIm, ← hEF]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hl' : (fun z => (ex z).left) = fun z => (W.F.ex (W.ik k) Pm' z).left` using `funext hl`. Use `⟨{ ex := ex ex_add := e1 ex_onto := e2 ex_ker := fun z => (e3 z).trans (hrange z) ex_lin := fun a z => by simp only [hty]; exact e4 a z hol := ?_ der := fun ℓ => by rw [hl']; exact hder ℓ.1 ℓ.2 fr := fr fr_hol := fun j => by simp only [hl]; exact h1 j fr_ne := fun j z => by rw [h …` and prove the remaining obligations. Rewrite using `[hl']`. Introduce `V f`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `ReciprocityTheory.ChartRestriction.G.TB.ValAt.famHol W.F (W.ik k) Pm' hP V f` as an intermediate fact. Simplify `this` using `only [Set.mem_univ, true_and]`. Introduce `v hv`. Take `⟨a, rfl⟩` from `hsurj v hv`. Rewrite using `[← hpv]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨j, -⟩` from `TopologicalSpace.Opens.mem_iSup.1 (Xo.univ.t.PP.isLB.cover.ge (Set.mem_univ ((ex 0).left (IsLocalRing.closedPoint ℂ))))`. Conclude with `(h5 a j 0).1`. Introduce `v hv j z`. Take `⟨a, rfl⟩` from `hsurj v hv`. Rewrite using `[hl, ← hpv, ← hhx, ← hhx]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(h5 a j z).2`. Introduce `a ha show levPt Xo (unC U k x).x a = ex _`. Rewrite using `[e5 a ha, hsm, hpv]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[UW.mark]`. Introduce `j z pt show _ = (ex z).left → _ → ⊤ ≤ (ex z).left ⁻¹ᵁ _ → _ = θ z * fr j z ^ (1 : ℤ)`. Rewrite using `[hl, zpow_one]`. Conclude with `h6 j z pt`. Simplify using `only [← hhx]`.
-
-Conclude with `h8`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem canTheta_anFib : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Geo.Tor.Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Formalism.L2.PjFree.Unf Xo c σ r), GoodEmb c σ → Formalism.L2.PjFree.IsUnf U → 1 ≤ r → ∀ (Wt : UW U) (k : U.Comp) (bas : (Fin Wt.g ⊕ Fin Wt.g → ℤ) ≃ₗ[ℤ] (U.X k).Λ) (idx : Fin Wt.g ≃ (U.X k).Ψ × Fin r), IsSympl (U.X k) bas → (∀ x v j, pv (U.X k) idx x v j = perFr (U.X k) x v (relab c σ (Wt.e j).1) (Wt.e j).2) → (∀ j, rowType (U.X k) (idx j) = relab c σ (Wt.e j).1) → ∀ x : (U.X k).dom, IsUnitFr (U.X k) x.1 → ∀ Pm : (Wt.F.Di (Wt.ik k)).La →+ (Fin Wt.g → ℂ), (∀ a j, Pm a j = perFr (U.X k) x.1 (Wt.φ k a : Fin r → E) (relab c σ (Wt.e j).1) (Wt.e j).2) → (∃ Hm θ, GlobalTheory.IndefiniteRowSideFullHecke.ColumnDataLaws.IsCanTheta Wt.F (Wt.ik k) Pm (U.un k x) Hm θ) ∧ ∀ Hm θ, GlobalTheory.IndefiniteRowSideFullHecke.ColumnDataLaws.IsCanTheta Wt.F (Wt.ik k) Pm (U.un k x) Hm θ → letI : Algebra c.F ℂ := σ.toAlgebra; ∃ A : AnFib (U.X k) bas idx Wt.e x.1 (U.X k).Λ (unC U k x), A.Marked (Wt.mark k) ∧ A.Reads 1 (unC U k x).s θ ∧ MeanOne (U.X k) bas idx x.1 (U.X k).Λ θ ∧ ∀ z w, hermForm Hm z w = hx (U.X k) bas idx x.1 z w := by
   intro E _ _ _ H Dw l Xo c σ r U hσ hU hr W k bas idx hb hper hty x hx1 Pm' hPm'

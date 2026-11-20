@@ -24,17 +24,17 @@ theorem rightDefect_apply (ρ : G → E →ₗ[ℂ] E) (t : G) (u : G → E) (x 
     rightDefect ρ t u x = u (x * t) - ρ t (u x) := rfl
 
 /- English proof (translation)
-Simplify using `only [extn, Submodule.mem_mk, AddSubmonoid.mem_mk, AddSubsemigroup.mem_mk, Set.mem_ofPred_eq] at hu`. Take `⟨ha, hb⟩` from `hu`. Establish `hρc : ∀ g h v, ρ h (ρ g v) = ρ (g * h) v` using `fun g h v => (hρ g h v).symm`. Establish `ha' : ∀ γ ∈ Γ, ∀ x, u (γ * x) = u x + ρ x (u γ - u 1)`. Introduce `γ hγ x`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← ha γ hγ x]`. Normalize the expressions using the abelian group laws. Establish `hs2 : ∀ x, u (x * t ^ 3) = ρ (t ^ 3) (u x)`. Introduce `x`. Rewrite using `[← hst, pow_two, ← mul_assoc, hb, hb, hρc]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `p2 : t * t = t ^ 2` using `(pow_two t).symm`. Establish `p3 : t ^ 2 * t = t ^ 3` using `(pow_succ t 2).symm`. Establish `p3' : t * t ^ 2 = t ^ 3` using `(pow_succ' t 2).symm`. Simplify using `only [relThree, Submodule.mem_mk, AddSubmonoid.mem_mk, AddSubsemigroup.mem_mk, Set.mem_ofPred_eq, rightDefect_apply]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (∀ h ∈ Γ, ∀ g : G, rightDefect ρ t u (h * g) = rightDefect ρ t u g) ∧ ∀ g : G, rightDefect ρ t u (g * t ^ 3) = ρ (t ^ 3) (rightDefect ρ t u g)`. Simplify using `only [rightDefect_apply]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `h hh g`. Rewrite using `[mul_assoc, ha' h hh (g * t), ha' h hh g, map_add, hρc]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Introduce `g`. Establish `e : g * t ^ 3 * t = g * t * t ^ 3`. Rewrite using `[mul_assoc, mul_assoc, (Commute.self_pow t 3).eq]`. Rewrite using `[e, hs2, hs2, map_sub, hρc, hρc, (Commute.self_pow t 3).eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Establish `e1 : x * t * t = x * t ^ 2` using `by rw [mul_assoc, p2]`. Establish `e2 : x * t ^ 2 * t = x * t ^ 3` using `by rw [mul_assoc, p3]`. Rewrite using `[e1, e2, hs2, map_sub, map_sub, hρc, hρc, p3', p2]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem rightDefect_mem_relThree (Γ : Subgroup G) (ρ : G → E →ₗ[ℂ] E) (s t : G)
     (hρ : ∀ g h v, ρ (g * h) v = ρ h (ρ g v)) (hst : s ^ 2 = t ^ 3) (u : G → E)
@@ -72,21 +72,19 @@ theorem rightDefect_mem_relThree (Γ : Subgroup G) (ρ : G → E →ₗ[ℂ] E) 
     abel
 
 /- English proof (translation)
-Simplify using `only [extn, Submodule.mem_mk, AddSubmonoid.mem_mk, AddSubsemigroup.mem_mk, Set.mem_ofPred_eq] at hu`. Take `⟨-, hb⟩` from `hu`. Establish `hρc : ∀ g h v, ρ h (ρ g v) = ρ (g * h) v` using `fun g h v => (hρ g h v).symm`. Establish `hw : ∀ x, u (x * t) = ρ t (u x)`. Introduce `x`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx` using `congrFun hΦ x`. Rewrite `hx` using `[rightDefect_apply, Pi.zero_apply, sub_eq_zero]`. Conclude with `hx`. Set `H : Subgroup G` to `{ carrier := {g | ∀ x, u (x * g) = ρ g (u x)} mul_mem' := by`. Introduce `a b ha hb'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_ofPred_eq] at ha hb' ⊢`. Introduce `x`. Rewrite using `[← mul_assoc, hb', ha, hρc]`. Use the proof step `one_mem' := by`. Simplify using `only [Set.mem_ofPred_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Rewrite using `[mul_one, h1]`. Use the proof step `inv_mem' := by`. Introduce `a ha`. Simplify using `only [Set.mem_ofPred_eq] at ha ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `x`. Establish `hx` using `ha (x * a⁻¹)`. Rewrite `hx` using `[inv_mul_cancel_right]`. Rewrite using `[hx, hρc, mul_inv_cancel, h1] }`. Establish `hle : Subgroup.closure ({s, t} : Set G) ≤ H`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[Subgroup.closure_le]`. Introduce `g hg`. Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff] at hg`. Break down `hg with rfl | rfl` into its components or cases. Conclude with `hb`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hw`. Rewrite `hle` using `[hgen]`. Use function extensionality and compare the values at `g`. Establish `hg : g ∈ H` using `hle (Subgroup.mem_top g)`. Establish `h1g` using `(show ∀ x, u (x * g) = ρ g (u x) from hg) 1`.
-
-Rewrite `h1g` using `[one_mul, hu1, map_zero]`. Conclude with `h1g`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_rightDefect_eq_zero (Γ : Subgroup G) (ρ : G → E →ₗ[ℂ] E) (s t : G)
     (hρ : ∀ g h v, ρ (g * h) v = ρ h (ρ g v)) (h1 : ∀ v, ρ 1 v = v)
@@ -133,11 +131,11 @@ theorem eq_zero_of_rightDefect_eq_zero (Γ : Subgroup G) (ρ : G → E →ₗ[�
   exact h1g
 
 /- English proof (translation)
-Use `hE` as an intermediate fact. Use `hR` as an intermediate fact. Establish `hmem : ∀ u : extn Γ ρ s, ((rightDefect ρ t).comp (extn Γ ρ s).subtype) u ∈ relThree Γ ρ t` using `fun u => rightDefect_mem_relThree Γ ρ s t hρ hst u.1 u.2`. Set `Φ : extn Γ ρ s →ₗ[ℂ] relThree Γ ρ t × E` to `LinearMap.prod (LinearMap.codRestrict (relThree Γ ρ t) ((rightDefect ρ t).comp (extn Γ ρ s).subtype) hmem) ((LinearMap.proj (R := ℂ) (φ := fun _ : G => E) (1 : G)).comp (extn Γ ρ s).subtype)`. Establish `hinj : Function.Injective Φ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `(injective_iff_map_eq_zero Φ).2 ?_` and prove the remaining obligations. Introduce `u hu`. Establish `h1'` using `congrArg (fun p : relThree Γ ρ t × E => (p.1 : G → E)) hu`. Establish `h2'` using `congrArg Prod.snd hu`. Conclude with `Subtype.ext (eq_zero_of_rightDefect_eq_zero Γ ρ s t hρ h1 hgen u.1 u.2 h1' h2')`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : FiniteDimensional ℂ (extn Γ ρ s)` using `FiniteDimensional.of_injective Φ hinj`. Use `⟨hfin, ?_⟩` and prove the remaining obligations. Establish `hle` using `LinearMap.finrank_le_finrank_of_injective hinj`. Rewrite `hle` using `[Module.finrank_prod]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem finrank_extn_le {G : Type} [Group G] {E : Type} [AddCommGroup E] [Module ℂ E]
     (Γ : Subgroup G) (ρ : G → E →ₗ[ℂ] E) (s t : G)

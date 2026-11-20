@@ -17,43 +17,35 @@ open ValuativeRel
 namespace GlobalTheory.PrimFrameExist
 
 /- English proof (translation)
-Introduce `k _ _ _ _ a C _ _ d X hX`. Use `set Λ : Submodule 𝒪[k] (C → k) := diagLat d with hΛdef`. Use `set V : Submodule k (C → k) := Submodule.span k (Set.range X.row) with hVdef`. Use `set M : Submodule 𝒪[k] (C → k) := V.restrictScalars 𝒪[k] ⊓ Λ with hMdef`. Establish `hΛfg : Λ.FG` using `(isLattice_diagLat d).fg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : IsNoetherian 𝒪[k] Λ := isNoetherian_of_fg_of_noetherian Λ hΛfg`. Use `haveI : IsNoetherian 𝒪[k] M := isNoetherian_of_le inf_le_right`. Use `haveI : Module.IsTorsionFree 𝒪[k] k := inferInstance`. Use `haveI : Module.IsTorsionFree 𝒪[k] (C → k) := Module.IsTorsionFree.trans_faithfulSMul 𝒪[k] k (C → k)`. Use `haveI : Module.IsTorsionFree 𝒪[k] M := inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `haveI : Module.Free 𝒪[k] M := Module.free_of_finite_type_torsion_free'`. Set `ι` to `Module.Free.ChooseBasisIndex 𝒪[k] M`. Set `b : Module.Basis ι 𝒪[k] M` to `Module.Free.chooseBasis 𝒪[k] M`. Set `v : ι → (C → k)` to `fun i => (b i : C → k)`. Establish `hvV : ∀ i, v i ∈ V` using `fun i => (b i).2.1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hvΛ : ∀ i, v i ∈ Λ` using `fun i => (b i).2.2`. Establish `hrepr : ∀ y (hy : y ∈ M), y = ∑ i, ((b.repr ⟨y, hy⟩ i : 𝒪[k]) : k) • v i`. Introduce `y hy`. Establish `h` using `congrArg Subtype.val (b.sum_repr ⟨y, hy⟩)`. Rewrite `h` using `[Submodule.coe_sum]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `h.symm.trans (Finset.sum_congr rfl fun i _ => rfl)`. Establish `hli : LinearIndependent k v`. Rewrite using `[← LinearIndependent.iff_fractionRing (R := 𝒪[k]) (K := k)]`. Conclude with `b.linearIndependent.map' M.subtype M.ker_subtype`. Establish `hclear : ∀ x : C → k, ∃ r : 𝒪[k], r ≠ 0 ∧ (r : k) • x ∈ Λ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `x`. Take `⟨r, hr⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors 𝒪[k]) (fun j => x j / (d j : k))`. Use `⟨r, nonZeroDivisors.coe_ne_zero r, ?_⟩` and prove the remaining obligations. Rewrite using `[hΛdef, mem_diagLat]`. Introduce `j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨s, hs⟩` from `hr j`. Rewrite `hs` using `[Algebra.smul_def]`. Establish `h1 : valuation k (algebraMap 𝒪[k] k r * (x j / d j)) ≤ 1`. Rewrite using `[← hs]`. Conclude with `(Valuation.mem_integer_iff _ _).1 s.2`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : ((r : 𝒪[k]) : k) • x = fun l => (algebraMap 𝒪[k] k r * (x l / d l)) * d l`. Use function extensionality and compare the values at `l`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[mul_assoc, div_mul_cancel₀ _ (d l).ne_zero]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, map_mul]`. Conclude with `mul_le_of_le_one_left' h1`. Establish `hli' : X.rank = Fintype.card (Fin a) ↔ LinearIndependent k X.row`. Rewrite using `[rank_eq_finrank_span_row, linearIndependent_iff_card_eq_finrank_span, eq_comm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hXli : LinearIndependent k X.row` using `hli'.1 (by simpa using hX)`. Establish `hVle : V ≤ Submodule.span k (Set.range v)`. Introduce `x hx`. Take `⟨r, hr0, hr⟩` from `hclear x`. Establish `hrx : ((r : 𝒪[k]) : k) • x ∈ M` using `⟨V.smul_mem _ hx, hr⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `e` using `hrepr _ hrx`. Establish `hr0' : ((r : 𝒪[k]) : k) ≠ 0` using `fun h => hr0 (Subtype.ext h)`. Establish `hx' : x = ((r : 𝒪[k]) : k)⁻¹ • (((r : 𝒪[k]) : k) • x)` using `(inv_smul_smul₀ hr0' x).symm`. Rewrite using `[hx', e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hspan : Submodule.span k (Set.range v) = V` using `le_antisymm (Submodule.span_le.2 (by rintro _ ⟨i, rfl⟩; exact hvV i)) hVle`. Establish `hcard : Fintype.card ι = a`. Rewrite using `[← finrank_span_eq_card hli, hspan, hVdef, finrank_span_eq_card hXli, Fintype.card_fin]`. Set `e : Fin a ≃ ι` to `(Fintype.equivFinOfCardEq hcard).symm`. Set `Y : Matrix (Fin a) C k` to `Matrix.of fun i => v (e i)`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hYV : ∀ i, Y.row i ∈ V` using `fun i => hvV (e i)`. Use `choose g hg using fun i => (Submodule.mem_span_range_iff_exists_fun k).1 (hYV i)`. Establish `hYg : (Matrix.of g) * X = Y`. Use extensionality with `i l`. Establish `h` using `congrFun (hg i) l`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[Finset.sum_apply]`. Rewrite using `[Matrix.mul_apply]`. Conclude with `(Finset.sum_congr rfl fun j _ => rfl).trans h`. Establish `hYli : LinearIndependent k Y.row` using `hli.comp e e.injective`. Establish `hgli : LinearIndependent k (Matrix.of g).row`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `LinearIndependent.of_comp (Matrix.vecMulLinear X) ?_` and prove the remaining obligations. Use `hYli using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Rewrite using `[← hYg]`. Apply the tactic sequence `try rfl`.
-
-Establish `hu : IsUnit (Matrix.of g)` using `Matrix.linearIndependent_rows_iff_isUnit.1 hgli`. Use `⟨hu.unit, ?_⟩` and prove the remaining obligations. Rewrite using `[IsUnit.unit_spec, hYg, isPrimFrame_iff]`. Use `⟨fun i => hvΛ (e i), fun c hc i => ?_⟩` and prove the remaining obligations. Establish `hcV : c ᵥ* Y ∈ V`.
-
-Rewrite using `[vecMul_eq_sum]`. Conclude with `V.sum_mem fun i _ => V.smul_mem _ (hYV i)`. Establish `hcM : c ᵥ* Y ∈ M` using `⟨hcV, hc⟩`. Establish `e1` using `hrepr _ hcM`. Establish `e2 : c ᵥ* Y = ∑ t, c (e.symm t) • v t`.
-
-Rewrite using `[vecMul_eq_sum, ← e.sum_comp]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [e.symm_apply_apply]; rfl`. Establish `h` using `Fintype.linearIndependent_iffₛ.1 hli (fun t => c (e.symm t)) (fun t => ((b.repr ⟨_, hcM⟩ t : 𝒪[k]) : k)) (by rw [← e2, ← e1]) (e i)`. Simplify using `only [Equiv.symm_apply_apply] at h`. Rewrite using `[h]`.
-
-Conclude with `(b.repr _ _).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_gl_mul_isPrimFrame : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (a : ℕ) (C : Type) [Fintype C] [DecidableEq C] (d : C → kˣ) (X : Matrix (Fin a) C k), X.rank = a →

@@ -9,13 +9,13 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.HeightCounting
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `L _ _ _ n a S hS s f hf hf0 hfix σ hσ`. Take `⟨c, T, hc, hci, -⟩` from `id hσ`. Establish `hiso : f ∈ NG.isoTyp a.ρ S` using `(le_sSup (s := {S' | NG.IsIrrRep a.ρ S' ∧ NG.IsoRep S S'}) ⟨hS, LinearEquiv.refl ℂ S, fun _ _ _ e => e⟩ : S ≤ NG.isoTyp a.ρ S) hf`. Establish `hint : ∀ g ∈ KOne (s.v.adicCompletion (maximalRealSubfield L)) (Fin n), g ∈ Formalism.UG.GLint (Fin n) (s.v.adicCompletionIntegers (maximalRealSubfield L)).toSubring` using `fun g hg => by`. Rewrite using `[(GlobalTheory.AdelicU.GLint_eq_KO_and_princ_eq_KOne s.v n).1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.StepData.KOne_le_KO hg`. Take `⟨u, hu0, hu⟩` from `GlobalTheory.LocVec.main L n a S hS s σ hσ c hc hci (KOne (s.v.adicCompletion (maximalRealSubfield L)) (Fin n)) 1 hint (by rw [MonoidHom.ker_one, Subgroup.coe_top]; exact isOpen_univ) f hiso hf0 (fun κ hκ h => by`. Rewrite using `[hfix κ ((GlobalTheory.HeckeScalarSph.loc_mem_GLint_iff s hκ).1 (hint _ h)) hκ ((GlobalTheory.FixedAtSplit.mem_KOne_iff' _).1 h)]`. Use the proof step `simp)`. Rewrite using `[Submodule.ne_bot_iff]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨u, GlobalTheory.Parabolic.mem_fixed.2 fun h hh => ?_, hu0⟩` and prove the remaining obligations. Establish `e : Matrix.GeneralLinearGroup.map c.toRingHom (Matrix.GeneralLinearGroup.map c.symm.toRingHom h) = h`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `hg` using `GlobalTheory.FixedAtSplit.mem_KOne_of_map c hc _ (e.symm ▸ hh)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `hu _ hg`. Rewrite `h3` using `[e]`. Simplify using `using h3`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.One.M.B.fixOne :
     UpperTheory.One.M.B.FixOne := by

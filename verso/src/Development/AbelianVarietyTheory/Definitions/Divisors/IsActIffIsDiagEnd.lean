@@ -31,13 +31,13 @@ def IsAct (X₁ : Setup F W i) (act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.
   IsDiagEnd F W X₁.ρ.P X₁.u act
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isAct_iff_isDiagEnd {X₁ : Setup F W i} {act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)} :
     IsAct X₁ act ↔ IsDiagEnd F W X₁.ρ.P X₁.u act := Iff.rfl
 
 /- English proof (translation)
-Unfold `IsAct IsDiagEnd`. Simplify using `only [List.ofFn_eq_map]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem isAct_iff {X₁ : Setup F W i} {act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)} : IsAct X₁ act ↔
     ∃ c : SiegPre g n (zetaAway n) (X₁.u ≫ F.s), SiegPB c F.univ X₁.u ∧ ∃ pr : Fin 8 → (X₁.ρ.P.A ⟶ c.A), (∀ a, IsMonHom (pr a)) ∧
@@ -48,11 +48,11 @@ theorem isAct_iff {X₁ : Setup F W i} {act : Matrix (Fin 8) (Fin 8) ℤ → (X�
   simp only [List.ofFn_eq_map]
 
 /- English proof (translation)
-Take `⟨c, -, pr, hpr, huniq, -, hε⟩` from `h`. Establish `key : ∀ (T' : Over (Sp X₁.S.R)) (x : T' ⟶ X₁.ρ.P.A) (a : Fin 8), (x ≫ act E) ≫ pr a = ((List.finRange 8).map fun b => (x ≫ pr b) ^ E a b).prod`. Introduce `T' x a`. Rewrite using `[Category.assoc, hε]`. Express the relevant statement in the definitionally equal form `diagPrecomp (M := c.A) x _ = _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_list_prod, List.map_map]`. Use `congr 1`. Conclude with `List.map_congr_left fun b _ => map_zpow (diagPrecomp (M := c.A) x) (pr b) (E a b)`. Use `isMonHom_of_mul _ fun T' x z => (huniq T' fun a => (x ≫ act E * z ≫ act E) ≫ pr a).unique (fun a => ?_) fun _ => rfl` and prove the remaining obligations. Establish `hm : ∀ (b : Fin 8) (x z : T' ⟶ X₁.ρ.P.A), (x * z) ≫ pr b = (x ≫ pr b) * (z ≫ pr b)` using `fun b x z => map_mul (IsMonHom.monoidHom (pr b) T') x z`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, hm, key, key, ← List.prod_map_mul]`. Use `congr 1`. Use `List.map_congr_left fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hm, mul_zpow]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsAct.isMonHom {X₁ : Setup F W i} {act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)} (h : IsAct X₁ act)
     (E : Matrix (Fin 8) (Fin 8) ℤ) : IsMonHom (act E) := by
@@ -74,7 +74,7 @@ theorem IsAct.isMonHom {X₁ : Setup F W i} {act : Matrix (Fin 8) (Fin 8) ℤ �
   rw [hm, mul_zpow]
 
 /- English proof (translation)
-The claim follows from `let ⟨ε, h, _⟩ := exists_diagEnd_isMonHom g n F W _ X₁.ρ.P X₁.u X₁.sharp ⟨⟨ε, h⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_isAct (X₁ : Setup F W i) : Nonempty {act // IsAct X₁ act} :=
   let ⟨ε, h, _⟩ := exists_diagEnd_isMonHom g n F W _ X₁.ρ.P X₁.u X₁.sharp
@@ -161,7 +161,7 @@ variable {X₁ : Setup F W i} {z₁ : X₁.M.Z} {act : Matrix (Fin 8) (Fin 8) �
 include 𝔪 in
 
 /- English proof (translation)
-The claim follows from `let ⟨_, h⟩ := 𝔪.psi mu right_ne_zero_of_mul (PsiCoordLocal.ne_zero_of_coord h)`.
+A detailed English derivation is pending.
 -/
 theorem UMem.mono_ne_zero (mu : Fin 8 → X) : mono W t δ mu ≠ 0 :=
   let ⟨_, h⟩ := 𝔪.psi mu
@@ -170,9 +170,7 @@ theorem UMem.mono_ne_zero (mu : Fin 8 → X) : mono W t δ mu ≠ 0 :=
 include 𝔪 in
 
 /- English proof (translation)
-Use `haveI := 𝔪.cn.2.2.2`. Take `⟨u, hu⟩` from `𝔪.psi mu`. Take `⟨r, hr, -, hm, -⟩` from `(PsiCoordLocal.main V 𝔪.D 𝔪.cn.2.1 (𝔪.e₈ mu)).1`. Take `⟨v, hv⟩` from `PsiCoordLocal.exists_unit_of_coord hr hu`. Establish `: (u : V) * mono W t δ mu ∈ maximalIdeal V` using `hv ▸ Ideal.mul_mem_left _ _ (hm (𝔪.e₈.map_ne_zero_iff.2 h))`.
-
-Conclude with `(Ideal.unit_mul_mem_iff_mem _ u.isUnit).1 this`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UMem.mono_mem {mu : Fin 8 → X} (h : mu ≠ 0) : mono W t δ mu ∈ maximalIdeal V := by
   haveI := 𝔪.cn.2.2.2
@@ -185,7 +183,7 @@ theorem UMem.mono_mem {mu : Fin 8 → X} (h : mu ≠ 0) : mono W t δ mu ∈ max
 end
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun 𝔪 => (maximalIdeal.isMaximal V).ne_top ((Ideal.eq_top_iff_one _).2 (by simpa [mono] using 𝔪.mono_mem (mu := 1) one_ne_zero))⟩`.
+Supply the required witnesses or components.
 -/
 example {X₁ : Setup F W i} {z₁ : X₁.M.Z} {act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)}
     {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V] {ev : X₁.M.Z.presheaf.stalk z₁ →+* V} :
@@ -194,11 +192,11 @@ example {X₁ : Setup F W i} {z₁ : X₁.M.Z} {act : Matrix (Fin 8) (Fin 8) ℤ
     simpa [mono] using 𝔪.mono_mem (mu := 1) one_ne_zero))⟩
 
 /- English proof (translation)
-Establish `hN` using `hV.1`. Establish `hC` using `hV.2.2.1`. Take `⟨D, rfl, hX⟩` from `SelfUnif.exists_degData firstFiveLaws.1.cube (maximalIdeal V) P`. Set `A` to `StrictPull.polPull D.toPre.P (jK V)`. Establish `r : LBIso A.L (D.toPre.P.L.pull (pullback.fst D.toPre.P.A.hom (jK V)))` using `PolBaseChange.lbIso_refl A.isLB`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hm : IsMonHom (Iso.refl A.A).hom` using `inferInstanceAs (IsMonHom (𝟙 A.A))`. Establish `hw : LBIso (A.L.pull (Iso.refl A.A).hom.left) (D.toPre.P.L.pull (pullback.fst D.toPre.P.A.hom (jK V)))`. Use `lbIso_pull_comp r (𝟙 A.A.left)` as an intermediate fact. Conclude with `Eq.mp (congrArg (fun f => LBIso _ (D.toPre.P.L.pull f)) (Category.id_comp _)) this`. Set `U : Unif (maximalIdeal V) D A D.toPre.P.A` to `⟨SelfUnif.selfPre D A (Iso.refl _) hm hw, fun k _ => SelfUnif.expBij D A (Iso.refl _) hm hw firstFiveLaws.1.globalFns (IsAdicComplete.le_jacobson_bot _) k⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨D, A, U, _, hX, isGrpPullback_pullback _ _, r, fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨E, -, hE⟩` from `exists_degenerationEndomorphism_of_admissibleBase V _ ⟨hN, inferInstance, hV.2.1, hC⟩ D A _ (isSemiAbelian_of_isAbelianScheme _ D.toPre.P.isAb) U a ((Over.pullback (jK V)).map a) ha (inferInstanceAs (IsMonHom ((Over.pullback (jK V)).map a))) ((Category.comp_id _).trans (Category. …`. Conclude with `⟨E, hE ▸ pullback.lift_fst _ _ _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_unif_good {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V] (hV : IsCN V) (P : PolAV (Sp V)) :
     letI := P.isAb.comm
@@ -223,15 +221,13 @@ theorem exists_unif_good {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V] (h
   exact ⟨E, hE ▸ pullback.lift_fst _ _ _⟩
 
 /- English proof (translation)
-Establish `sp : ∀ w, X₁.M.Z.fromSpecStalk z₁ w ⤳ z₁` using `fun w => by`. Establish `: X₁.M.Z.fromSpecStalk z₁ w ∈ Set.range (X₁.M.Z.fromSpecStalk z₁)` using `⟨w, rfl⟩`. Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Then use the resulting hypothesis. Set `yV : X₁.S.R →+* V` to `(RatModel.valLoc (spMap ev ≫ X₁.M.Z.fromSpecStalk z₁) z₁ (sp _)).comp (Subalgebra.inclusion hz).toRingHom`. Set `P` to `StrictPull.polPull X₁.ρ.P (spMap yV)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `letI := P.isAb.comm`. Take `⟨D, A, U, ψ, hX, hψ, hL, hE⟩` from `exists_unif_good hV P`. Establish `r : LBIso P.L (X₁.ρ.P.L.pull (pullback.fst X₁.ρ.P.A.hom (spMap yV)))` using `PolBaseChange.lbIso_refl P.isLB`. Take `⟨wl, hwl⟩` from `LBIso.trans A.isLB (pull_isLB P.isLB _) (pull_isLB X₁.ρ.P.isLB _) hL (lbIso_pull_comp r ψ)`. Use `haveI := hV.2.2.2`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨r₀, hr₀, -, -, hu⟩` from `(PsiCoordLocal.main V D hV.2.1 0).1`. Use `⟨{ cn := hV loc := hev reg := fun a ha => RatModel.O_le_of_specializes (sp _) (hz ha) yK := (algebraMap V (FractionRing V)).comp yV yK_eq := fun a => (RatModel.val_spMap_comp (M := X₁.M) (algebraMap V (FractionRing V)) _ (sp _) ⟨a.1, hz a.2⟩).symm D := D e₈ := ⟨⟨fun _ => 0, fun _ …` and prove the remaining obligations. Use `hact.isMonHom a` as an intermediate fact. Take `⟨E, h⟩` from `hE ((Over.pullback (spMap yV)).map (act a)) (inferInstanceAs (IsMonHom ((Over.pullback (spMap yV)).map (act a))))`. Use `⟨E, ?_, fun _ => Subsingleton.elim _ _⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) h).trans ((Category.assoc _ _ _).trans ((congrArg (ψ ≫ ·) (pullback.lift_fst _ _ _)).trans (Category.assoc _ _ _).symm)))`. Establish `: mono W t δ mu = 1`. Rewrite using `[Subsingleton.elim mu 0]`. Simplify using `[mono, qW]`. Rewrite using `[this, _root_.mul_one]`.
-
-Conclude with `hr₀`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UMem.nonempty_of_regular {X₁ : Setup F W i} {z₁ : X₁.M.Z} {act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)}
     (hact : IsAct X₁ act) (hz : X₁.S.R ≤ X₁.M.O z₁) {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V] (hV : IsCN V)
@@ -282,7 +278,7 @@ theorem UMem.nonempty_of_regular {X₁ : Setup F W i} {z₁ : X₁.M.Z} {act : M
     exact hr₀
 
 /- English proof (translation)
-Take `⟨act, h⟩` from `nonempty_isAct X₁`. Use `⟨act, h, _, (Scheme.stalkClosedPointTo (R := CommRingCat.of X₁.Ω₁) X₁.M.pt).hom, UMem.nonempty_of_regular h ?_ ⟨inferInstance, inferInstance, ?_, X₁.ar.char⟩ _ inferInstance _ _ _⟩` and prove the remaining obligations. Conclude with `le_top.trans ((congrArg X₁.M.O (X₁.M.pt_apply _)).trans X₁.M.O_genericPoint).ge`. Rewrite using `[IsLocalRing.maximalIdeal_eq_bot] infer_instance`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_uMem (X₁ : Setup F W i) : ∃ act, IsAct X₁ act ∧ ∃ (z₁ : X₁.M.Z) (ev : X₁.M.Z.presheaf.stalk z₁ →+* X₁.Ω₁),
     Nonempty (UMem X₁ z₁ act X₁.Ω₁ ev PUnit (m := 0) Fin.elim0 Fin.elim0) := by

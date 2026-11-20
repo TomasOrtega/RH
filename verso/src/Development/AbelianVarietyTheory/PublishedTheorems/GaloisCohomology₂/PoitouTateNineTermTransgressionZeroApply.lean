@@ -62,7 +62,7 @@ variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAl
   (μ : GS Ω (S : Set (HeightOneSpectrum (𝓞 F))) →* (ZMod (l ^ r))ˣ)
 
 /- English proof (translation)
-Establish `key : μ (toGS Ω _ (g : G F Ω)) = cycMod F Ω l r g`. Rewrite using `[← hμ]`. Both sides reduce to the same expression. Use `show charRep μ (toGS Ω _ (g : G F Ω)) m = charRep ((cycMod F Ω l r).comp (Dec (F := F) (Av v)).subtype) g m`. Rewrite using `[charRep_apply, charRep_apply, MonoidHom.comp_apply, Subgroup.coe_subtype, key]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locFam_apply_eq (hμ : μ.comp (toGS Ω _) = cycMod F Ω l r) (v : S)
     (g : Dec (F := F) (Av v)) (m : ZMod (l ^ r)) :
@@ -79,7 +79,7 @@ def toMuLoc (hμ : μ.comp (toGS Ω _) = cycMod F Ω l r) (v : S) :
   mapH2 _ _ LinearMap.id continuous_id (locFam_apply_eq S Av μ hμ v)
 
 /- English proof (translation)
-Establish `hback : ∀ (g : Dec (F` using `F) (Av v)) (m : ZMod (l ^ r)), (LinearMap.id : ZMod (l ^ r) →ₗ[ZMod (l ^ r)] ZMod (l ^ r)) (muLoc F l r (Av v) g m) = ((charRep μ).comp (locFam S Av v)) g ((LinearMap.id : ZMod (l ^ r) →ₗ[ZMod (l ^ r)] ZMod (l ^ r)) m) := fun g m => (locFam_apply_eq S Av μ hμ v g m).symm`. Use `Function.bijective_iff_has_inverse.mpr ⟨mapH2 _ _ LinearMap.id continuous_id hback, fun c => ?_, fun c => ?_⟩` and prove the remaining obligations. Conclude with `Submodule.Quotient.induction_on _ c fun z => rfl`. Conclude with `Submodule.Quotient.induction_on _ c fun z => rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem toMuLoc_bijective (hμ : μ.comp (toGS Ω _) = cycMod F Ω l r) (v : S) :
     Function.Bijective (toMuLoc S Av μ hμ v) := by
@@ -99,7 +99,7 @@ def invAt (hμ : μ.comp (toGS Ω _) = cycMod F Ω l r) (inv : InvFam F Ω l r) 
   (inv (Av v)).comp (toMuLoc S Av μ hμ v)
 
 /- English proof (translation)
-Rewrite using `[invAt, LinearMap.coe_comp]`. Conclude with `(h.1 (Av v) v.1 hv).1.comp (toMuLoc_bijective S Av μ hμ v)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invAt_bijective (hμ : μ.comp (toGS Ω _) = cycMod F Ω l r) {ζ : Ω} {inv : InvFam F Ω l r}
     (h : IsLocalInvariants ζ inv) (v : S) (hv : IsPlaceOver (Av v) v.1) :
@@ -137,7 +137,7 @@ def tr2 : (∀ v : S, H2 (ρ.comp (locFam S Av v))) →ₗ[ZMod (l ^ r)]
     (resH0 (twDual μ ρ) (locFam S Av v)))
 
 /- English proof (translation)
-Simplify using `only [tr0, LinearMap.sum_apply, LinearMap.compl₁₂_apply, LinearMap.compr₂_apply, LinearMap.proj_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem poitouTateNineTerm_transgressionZero_apply (x : ∀ v : S, H0 (ρ.comp (locFam S Av v))) (y : H2 (twDual μ ρ)) :
     tr0 S Av μ j ρ x y = ∑ v : S, j v (cupH0H2TwistedDual μ ρ (locFam S Av v) (x v)
@@ -146,7 +146,7 @@ theorem poitouTateNineTerm_transgressionZero_apply (x : ∀ v : S, H0 (ρ.comp (
     LinearMap.proj_apply]
 
 /- English proof (translation)
-Simplify using `only [tr1, LinearMap.sum_apply, LinearMap.compl₁₂_apply, LinearMap.compr₂_apply, LinearMap.flip_apply, LinearMap.proj_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem poitouTateNineTerm_transgressionOne_apply (hρ : ContAction ρ) (x : ∀ v : S, H1 (ρ.comp (locFam S Av v)))
     (y : H1 (twDual μ ρ)) :
@@ -157,7 +157,7 @@ theorem poitouTateNineTerm_transgressionOne_apply (hρ : ContAction ρ) (x : ∀
     LinearMap.flip_apply, LinearMap.proj_apply]
 
 /- English proof (translation)
-Simplify using `only [tr2, LinearMap.sum_apply, LinearMap.compl₁₂_apply, LinearMap.compr₂_apply, LinearMap.proj_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem poitouTateNineTerm_transgressionTwo_apply (x : ∀ v : S, H2 (ρ.comp (locFam S Av v))) (y : H0 (twDual μ ρ)) :
     tr2 S Av μ j ρ x y = ∑ v : S, j v (cup20 μ ρ (locFam S Av v) (x v)
@@ -195,7 +195,7 @@ def ShaDual : Prop :=
 variable {S Av μ j ρ}
 
 /- English proof (translation)
-Take `⟨δ₁, δ₂, -, -, -, -, h5, -, -, -, -⟩` from `h`. Rewrite using `[LinearMap.mem_range, ← Set.mem_range, ← h5 x, LinearMap.ext_iff]`. Simplify using `only [LinearMap.zero_apply, poitouTateNineTerm_transgressionOne_apply]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem NineTermExact.mem_range_localization_H1_iff {hρ : ContAction ρ} (h : NineTermExact S Av μ j ρ hρ)
     (x : ∀ v : S, H1 (ρ.comp (locFam S Av v))) :
@@ -207,7 +207,7 @@ theorem NineTermExact.mem_range_localization_H1_iff {hρ : ContAction ρ} (h : N
   simp only [LinearMap.zero_apply, poitouTateNineTerm_transgressionOne_apply]
 
 /- English proof (translation)
-Take `⟨δ₁, δ₂, -, -, -, -, -, -, -, h8, -⟩` from `h`. Rewrite using `[LinearMap.mem_range, ← Set.mem_range, ← h8 x, LinearMap.ext_iff]`. Simplify using `only [LinearMap.zero_apply, poitouTateNineTerm_transgressionTwo_apply]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem NineTermExact.mem_range_localization_H2_iff {hρ : ContAction ρ} (h : NineTermExact S Av μ j ρ hρ)
     (x : ∀ v : S, H2 (ρ.comp (locFam S Av v))) :
@@ -225,9 +225,9 @@ def idInv (μ : GS Ω (S : Set (HeightOneSpectrum (𝓞 F))) →* (ZMod (l ^ r))
     rw [← mul_assoc, Units.mul_inv, one_mul]⟩
 
 /- English proof (translation)
-Take `⟨δ₁, δ₂, -, -, -, -, -, -, -, h8, -⟩` from `h`. Establish `key : ∀ (v : S) (c : H2 ((charRep μ).comp (locFam S Av v))), cup20 μ (charRep μ) (locFam S Av v) c (resH0 (twDual μ (charRep μ)) (locFam S Av v) (idInv μ)) = c`. Introduce `v c`. Use `Submodule.Quotient.induction_on _ c fun z => ?_` and prove the remaining obligations. Simplify using `only [cup20, cupProductH2H0, Submodule.liftQ_apply, LinearMap.compr₂_apply, Submodule.mkQ_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Establish `hz : tr2 S Av μ j (charRep μ) (loc2 S Av (charRep μ) x) = 0` using `(h8 _).2 ⟨x, rfl⟩`. Establish `hz'` using `LinearMap.congr_fun hz (idInv μ)`. Simplify using `only [poitouTateNineTerm_transgressionTwo_apply, loc2, LinearMap.pi_apply, key, LinearMap.zero_apply] at hz'`. Conclude with `hz'`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem NineTermExact.sum_eq_zero {hρ : ContAction (charRep μ)}
     (h : NineTermExact S Av μ j (charRep μ) hρ) (x : H2 (charRep μ)) :
@@ -249,9 +249,9 @@ theorem NineTermExact.sum_eq_zero {hρ : ContAction (charRep μ)}
   exact hz'
 
 /- English proof (translation)
-Establish `hl0 : (0 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).pos`. Use `continuous_of_continuousAt_zero (PadicInt.toZModPow r : ℤ_[l] →+* ZMod (l ^ r)) ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_zero, nhds_discrete (ZMod (l ^ r)), Filter.tendsto_pure, Metric.eventually_nhds_iff]`. Use `⟨(l : ℝ) ^ (-(r : ℤ)), zpow_pos hl0 _, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite `hy` using `[dist_zero_right]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hmem` using `(PadicInt.norm_le_pow_iff_mem_span_pow y r).1 hy.le`. Rewrite `hmem` using `[← PadicInt.ker_toZModPow]`. Conclude with `(RingHom.mem_ker).1 hmem`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_toZModPow : Continuous (PadicInt.toZModPow r : ℤ_[l] → ZMod (l ^ r)) := by
   have hl0 : (0 : ℝ) < l := by exact_mod_cast (Fact.out : l.Prime).pos
@@ -265,18 +265,16 @@ theorem continuous_toZModPow : Continuous (PadicInt.toZModPow r : ℤ_[l] → ZM
 
 omit [IsAlgClosure F Ω] in
 /- English proof (translation)
-Rewrite using `[cycMod, MonoidHom.coe_comp]`. Conclude with `(Continuous.units_map _ continuous_toZModPow).comp (continuous_cycZ F Ω l)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_cycMod [Algebra.IsAlgebraic F Ω] : Continuous (cycMod F Ω l r) := by
   rw [cycMod, MonoidHom.coe_comp]
   exact (Continuous.units_map _ continuous_toZModPow).comp (continuous_cycZ F Ω l)
 
 /- English proof (translation)
-Establish `: Algebra.IsAlgebraic F Ω` using `IsAlgClosure.isAlgebraic`. Establish `hc : Continuous μ`. Rewrite using `[(QuotientGroup.isQuotientMap_mk _).continuous_iff]`. Establish `hpull : (μ ∘ (QuotientGroup.mk : G F Ω → GS Ω (S : Set (HeightOneSpectrum (𝓞 F))))) = cycMod F Ω l r`. Rewrite using `[← hμ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[hpull]`. Conclude with `continuous_cycMod`. Use `show Continuous fun p : GS Ω (S : Set (HeightOneSpectrum (𝓞 F))) × ZMod (l ^ r) => charRep μ p.1 p.2`. Simplify using `only [charRep_apply]`.
-
-Conclude with `(Units.continuous_val.comp (hc.comp continuous_fst)).mul continuous_snd`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contAction_charRep (hμ : μ.comp (toGS Ω _) = cycMod F Ω l r) :
     ContAction (charRep μ) := by
@@ -296,15 +294,13 @@ theorem contAction_charRep (hμ : μ.comp (toGS Ω _) = cycMod F Ω l r) :
   exact (Units.continuous_val.comp (hc.comp continuous_fst)).mul continuous_snd
 
 /- English proof (translation)
-Establish `: Algebra.IsAlgebraic F Ω` using `IsAlgClosure.isAlgebraic`. Establish `hker : NS Ω (S : Set (HeightOneSpectrum (𝓞 F))) ≤ (cycMod F Ω l r).ker`. Use `Subgroup.topologicalClosure_minimal _ (Subgroup.normalClosure_le_normal ?_) ?_` and prove the remaining obligations. Introduce `σ hσ`. Simplify using `only [Set.mem_iUnion] at hσ`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Take `⟨v, hv, A, hA, hσA⟩` from `hσ`. Establish `hl : ((l : ℕ) : 𝓞 F) ∉ v.asIdeal` using `fun h => hv (hS v h)`. Establish `h1 : cyc F Ω l σ = 1` using `cyc_eq_one_of_mem_Ine hl hA (mem_Ine.2 hσA)`. Rewrite `h1` using `[cyc_eq_map_cycZ]`. Establish `h3` using `congrArg Units.val h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[Units.coe_map, Units.val_one]`. Establish `hinj : Function.Injective ((algebraMap ℚ_[l] (PadicAlgCl l)).comp PadicInt.Coe.ringHom)` using `(algebraMap ℚ_[l] (PadicAlgCl l)).injective.comp fun a b h => PadicInt.ext h`. Establish `h2 : cycZ F Ω l σ = 1`. Use `Units.ext (hinj ?_)` and prove the remaining obligations. Rewrite using `[Units.val_one, map_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h3`. Rewrite using `[SetLike.mem_coe, MonoidHom.mem_ker, cycMod, MonoidHom.comp_apply, h2, map_one]`. Rewrite using `[MonoidHom.coe_ker]`. Conclude with `isClosed_singleton.preimage continuous_cycMod`. Use `⟨QuotientGroup.lift _ (cycMod F Ω l r) hker, MonoidHom.ext fun σ => ?_⟩` and prove the remaining obligations.
-
-Conclude with `QuotientGroup.lift_mk _ hker σ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_lift_cycMod (hS : ContainsAbove S l) :
     ∃ μ : GS Ω (S : Set (HeightOneSpectrum (𝓞 F))) →* (ZMod (l ^ r))ˣ,
@@ -358,9 +354,9 @@ def PoitouTateTotallyComplex : Prop :=
 open PoitouTate in
 
 /- English proof (translation)
-Establish `: NeZero (l ^ r)` using `⟨pow_ne_zero r (Fact.out : l.Prime).ne_zero⟩`. Take `⟨inv, hinv, hall⟩` from `h F Ω l r hr ζ hζ`. Use `⟨inv, hinv, fun S hS Av hAv μ hμ => ⟨fun x => ?_, fun M _ _ _ _ _ ρ hρ => ?_⟩⟩` and prove the remaining obligations. Establish `hρμ` using `contAction_charRep hμ`. Conclude with `(hall S hS Av hAv μ hμ (ZMod (l ^ r)) (charRep μ) hρμ).1.sum_eq_zero x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hN, hSha⟩` from `hall S hS Av hAv μ hμ M ρ hρ`. Conclude with `⟨fun x => hN.mem_range_localization_H1_iff x, fun x => hN.mem_range_localization_H2_iff x, hSha.1.1, hSha.1.2.1, hSha.1.2.2.2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem PoitouTateTotallyComplex.annihilators (h : PoitouTateTotallyComplex)
     (F Ω : Type) [Field F] [NumberField F] [IsTotallyComplex F] [Field Ω] [Algebra F Ω]

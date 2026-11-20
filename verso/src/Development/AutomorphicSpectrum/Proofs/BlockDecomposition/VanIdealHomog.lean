@@ -32,9 +32,9 @@ def vanIdeal {Y : Scheme.{0}} (φ : Y ⟶ PSpace R N) : Ideal (MvPolynomial (Fin
 attribute [local instance] MvPolynomial.gradedAlgebra in
 
 /- English proof (translation)
-Introduce `d f hf`. Establish `hI : (vanIdeal φ).IsHomogeneous (homogeneousSubmodule (Fin (N + 1)) R)`. Apply `Ideal.homogeneous_span` to reduce the goal to its premises. Introduce and unpack `x ⟨n, hx, -⟩`. Conclude with `⟨n, (mem_homogeneousSubmodule n x).mpr hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `homogeneousComponent_mem_of_mem hI hf d`.
+A detailed English derivation is pending.
 -/
 theorem vanIdeal_homog {Y : Scheme.{0}} (φ : Y ⟶ PSpace R N) : HomogIdeal (vanIdeal φ) := by
   intro d f hf

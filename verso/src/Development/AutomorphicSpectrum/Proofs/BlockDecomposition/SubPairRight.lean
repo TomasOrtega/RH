@@ -76,7 +76,7 @@ abbrev toR (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) (
   (Y e).hom ≫ thick R I e
 
 /- English proof (translation)
-Rewrite using `[CommRingCat.ofHom_id, Spec.map_id, Category.comp_id, toR, toR, ← Category.assoc, (hβ e).w, Category.assoc, thickTrans_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toR_w (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))))
     (β : ∀ e, (Y e).left ⟶ (Y (e + 1)).left)
@@ -101,9 +101,9 @@ def mulT (e : ℕ) (t : ℤ) (S : Finset ι) (σ : SecOn (pw (N e) d) (D e S)) :
   mulRight (toR I Y e) (by ring) σ
 
 /- English proof (translation)
-Use `SecOnR.ext_iff.mpr fun i => ?_` and prove the remaining obligations. Unfold `mulT`. Use `first`. Consider the case `(erw [coord_mulRight, coord_mulRight, coord_mulRight, coord_mulRight]; exact mul_right_comm _ _ _)`. Consider the case `(simp only [coord_mulRight]; exact mul_right_comm _ _ _)`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(simp only [coord_mulRight]; ring)`.
+A detailed English derivation is pending.
 -/
 theorem mulT_comm (e : ℕ) (t : ℤ) (S : Finset ι) (σ τ : SecOn (pw (N e) d) (D e S))
     (x : Tm I Y N D d e t S) :
@@ -145,19 +145,19 @@ section Sub
 variable {ι : Type} [DecidableEq ι]
 
 /- English proof (translation)
-The claim follows from `Finset.singleton_subset_iff.2 (Finset.mem_insert_self _ _)`.
+A detailed English derivation is pending.
 -/
 theorem sub_pair_left (i j : ι) : ({i} : Finset ι) ⊆ {i, j} :=
   Finset.singleton_subset_iff.2 (Finset.mem_insert_self _ _)
 
 /- English proof (translation)
-The claim follows from `Finset.singleton_subset_iff.2 (Finset.mem_insert_of_mem (Finset.mem_singleton_self _))`.
+A detailed English derivation is pending.
 -/
 theorem sub_pair_right (i j : ι) : ({j} : Finset ι) ⊆ {i, j} :=
   Finset.singleton_subset_iff.2 (Finset.mem_insert_of_mem (Finset.mem_singleton_self _))
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hx ⊢`. The claim follows by propositional logic.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. The claim follows by propositional logic.
 -/
 theorem sub_triple_ij (i j k : ι) : ({i, j} : Finset ι) ⊆ {i, j, k} := by
   intro x hx
@@ -165,7 +165,7 @@ theorem sub_triple_ij (i j k : ι) : ({i, j} : Finset ι) ⊆ {i, j, k} := by
   tauto
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hx ⊢`. The claim follows by propositional logic.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. The claim follows by propositional logic.
 -/
 theorem sub_triple_jk (i j k : ι) : ({j, k} : Finset ι) ⊆ {i, j, k} := by
   intro x hx
@@ -173,7 +173,7 @@ theorem sub_triple_jk (i j k : ι) : ({j, k} : Finset ι) ⊆ {i, j, k} := by
   tauto
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hx ⊢`. The claim follows by propositional logic.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. The claim follows by propositional logic.
 -/
 theorem sub_triple_ik (i j k : ι) : ({i, k} : Finset ι) ⊆ {i, j, k} := by
   intro x hx

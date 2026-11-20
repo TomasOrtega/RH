@@ -24,7 +24,7 @@ def inv (ψ : PChar) : PChar :=
     exact (DirichletCharacter.conductor_inv ψ.χ).trans h⟩
 
 /- English proof (translation)
-Consider the cases of `ψ`. Simplify using `only [inv]`. Use `congr 1`. Conclude with `_root_.inv_inv _`.
+Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem inv_inv (ψ : PChar) : ψ.inv.inv = ψ := by
   cases ψ
@@ -102,7 +102,7 @@ namespace HostRaw
 variable {φ : Frame} (H : HostRaw φ)
 
 /- English proof (translation)
-The claim follows from `Nat.mul_pos (Nat.mul_pos H.QS_pos H.hyp.1.pos) H.hyp.2.1.pos`.
+A detailed English derivation is pending.
 -/
 theorem condN_pos : 0 < H.condN :=
   Nat.mul_pos (Nat.mul_pos H.QS_pos H.hyp.1.pos) H.hyp.2.1.pos

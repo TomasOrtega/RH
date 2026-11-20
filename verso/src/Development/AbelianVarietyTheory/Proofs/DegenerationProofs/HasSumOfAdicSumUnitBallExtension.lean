@@ -8,9 +8,9 @@ open GlobalTheory GlobalTheory.Ex
 namespace GlobalTheory.Ex.AdicNormSum
 
 /- English proof (translation)
-Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => exact hc y hy`. Consider the case `zero => simpa using hc0`. Consider the case `add y z _ _ a b => rw [map_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le a b)`. Consider the case `smul a y _ b`. Rewrite using `[hφ, norm_mul]`. Conclude with `(mul_le_mul (h1 a) b (norm_nonneg _) zero_le_one).trans_eq (one_mul c)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_le_of_mem_span {R : Type} [CommRing R] {C : Type} [NormedField C] [IsUltrametricDist C]
     {E : Type} [AddCommGroup E] [Module R E] (φ : R → C) (f : E →+ C)
@@ -26,21 +26,19 @@ theorem norm_le_of_mem_span {R : Type} [CommRing R] {C : Type} [NormedField C] [
     exact (mul_le_mul (h1 a) b (norm_nonneg _) zero_le_one).trans_eq (one_mul c)
 
 /- English proof (translation)
-Take `⟨N, ⟨t, rfl⟩, -, -, h⟩` from `h`. Take `⟨u, hu⟩` from `hI`. Choose the witnesses or unpack the hypotheses as in `⟨ρ, hρ0, hρ1, hρ⟩ : ∃ ρ : ℝ, 0 ≤ ρ ∧ ρ < 1 ∧ ∀ a ∈ I, ‖φ a‖ ≤ ρ := by`. Establish `hs : (u.sup fun a => ‖φ a‖₊) < 1`. Rewrite using `[Finset.sup_lt_iff (by simp)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `a ha`. Conclude with `h2 a (hu ▸ Ideal.subset_span ha)` after adjusting the coercions. Use `⟨(u.sup fun a => ‖φ a‖₊ : NNReal), NNReal.coe_nonneg _, by exact_mod_cast hs, ?_⟩` and prove the remaining obligations. Rewrite using `[← hu]`. Use `norm_le_of_mem_span φ φ.toAddMonoidHom (fun a y => map_mul φ a y) h1 _ _ (NNReal.coe_nonneg _) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha`. Conclude with `Finset.le_sup (f := fun a => ‖φ a‖₊) ha` after adjusting the coercions. Choose the witnesses or unpack the hypotheses as in `⟨M, hM0, hM⟩ : ∃ M : ℝ, 0 ≤ M ∧ ∀ y ∈ Submodule.span R (t : Set C), ‖y‖ ≤ M := by`. Use `⟨(t.sup fun a => ‖a‖₊ : NNReal), NNReal.coe_nonneg _, ?_⟩` and prove the remaining obligations. Use `norm_le_of_mem_span φ (AddMonoidHom.id C) hφ h1 _ _ (NNReal.coe_nonneg _) ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a ha`. Conclude with `Finset.le_sup (f := fun a : C => ‖a‖₊) ha` after adjusting the coercions. Establish `hP : ∀ n : ℕ, ∀ y ∈ I ^ n • Submodule.span R (t : Set C), ‖y‖ ≤ ρ ^ n * M`. Introduce `n`. Proceed by induction on `n with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `zero => intro y hy`. Rewrite `hy` using `[pow_zero, Ideal.one_eq_top, Submodule.top_smul]`. Simplify using `using hM y hy`. Consider the case `succ n ih`. Introduce `y hy`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hy` using `[pow_succ', Submodule.mul_smul]`. Use `Submodule.smul_induction_on hy (fun a ha z hz => ?_) (fun y z a b => (IsUltrametricDist.norm_add_le_max _ _).trans (max_le a b))` and prove the remaining obligations. Rewrite using `[hφ, norm_mul, pow_succ', mul_assoc]`. Conclude with `mul_le_mul (hρ a ha) (ih z hz) (norm_nonneg _) hρ0`. Establish `hlim : Filter.Tendsto (fun n : ℕ => ρ ^ n * M) Filter.atTop (nhds 0)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using (tendsto_pow_atTop_nhds_zero_of_lt_one hρ0 hρ1).mul_const M`. Establish `key : Filter.Tendsto (fun T : Finset Ix => ∑ i ∈ T, x i) Filter.atTop (nhds s)`. Rewrite using `[Metric.tendsto_atTop]`. Introduce `ε hε`. Take `⟨n, hn⟩` from `(hlim.eventually (gt_mem_nhds hε)).exists`.
-
-Take `⟨S, hS⟩` from `h n`. Use `⟨S, fun T hT => ?_⟩` and prove the remaining obligations. Rewrite using `[dist_comm, dist_eq_norm]`. Conclude with `(hP n _ (hS T hT)).trans_lt hn`. Conclude with `key`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSum_of_sumI {R : Type} [CommRing R] (I : Ideal R) (hI : I.FG) {C : Type} [NormedField C] [IsUltrametricDist C]
     [Module R C] (φ : R →+* C) (hφ : ∀ (a : R) (y : C), a • y = φ a * y) (h1 : ∀ a, ‖φ a‖ ≤ 1)
@@ -88,13 +86,13 @@ theorem hasSum_of_sumI {R : Type} [CommRing R] (I : Ideal R) (hI : I.FG) {C : Ty
 
 open Filter Topology in
 /- English proof (translation)
-Take `⟨G, rfl⟩` from `hN`. Establish `hbound : ∀ y ∈ Submodule.span R (G : Set C), ‖y‖ ≤ (G.sup fun g => ‖g‖₊ : NNReal)`. Introduce `y hy`. Use `Submodule.span_induction ?_ ?_ ?_ ?_ hy` and prove the remaining obligations. Introduce `g hg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `NNReal.coe_le_coe.mpr (Finset.le_sup (f := fun g => ‖g‖₊) hg)`. Simplify using the standard rewrite rules. Introduce `a b _ _ ha hb`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ha hb)`. Introduce `a b _ hb`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hsmul, norm_mul]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) (hφ a)).trans hb`. Use `⟨(G.sup fun g => ‖g‖₊ : NNReal), NNReal.coe_nonneg _, ?_⟩` and prove the remaining obligations. Introduce `J t ht hJ y hy`. Use `Submodule.smul_induction_on hy ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r hr z hz`. Rewrite using `[hsmul, norm_mul]`. Conclude with `mul_le_mul (hJ r hr) (hbound z hz) (norm_nonneg _) ht`. Introduce `a b ha hb`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ha hb)`.
+A detailed English derivation is pending.
 -/
 private lemma exists_norm_le_mul_of_mem_ideal_smul_fg {R C : Type} [CommRing R] [NormedField C]
     [IsUltrametricDist C] {_ : Module R C} (φ : R →+* C) (hφ : ∀ r, ‖φ r‖ ≤ 1)
@@ -124,13 +122,11 @@ private lemma exists_norm_le_mul_of_mem_ideal_smul_fg {R C : Type} [CommRing R] 
 
 open Filter Topology in
 /- English proof (translation)
-Take `⟨G, rfl⟩` from `hfg`. Use `⟨(G.sup fun g => ‖φ g‖₊ : NNReal), NNReal.coe_nonneg _, ?_, ?_⟩` and prove the remaining obligations. Establish `h : G.sup (fun g => ‖φ g‖₊) < 1`. Rewrite using `[Finset.sup_lt_iff (by simp)]`. Introduce `g hg`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hg'` using `hI g (Ideal.subset_span hg)`. Conclude with `hg'` after adjusting the coercions. Conclude with `h` after adjusting the coercions. Introduce `r hr`. Use `Submodule.span_induction ?_ ?_ ?_ ?_ hr` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `g hg`. Conclude with `NNReal.coe_le_coe.mpr (Finset.le_sup (f := fun g => ‖φ g‖₊) hg)`. Simplify using the standard rewrite rules. Introduce `a b _ _ ha hb`. Rewrite using `[map_add]`.
-
-Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ha hb)`. Introduce `a b _ hb`. Rewrite using `[smul_eq_mul, map_mul, norm_mul]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) (hφ a)).trans hb`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma exists_uniform_norm_bound_lt_one_of_fg {R C : Type} [CommRing R] [NormedField C]
     [IsUltrametricDist C] (φ : R →+* C) (hφ : ∀ r, ‖φ r‖ ≤ 1) {I : Ideal R} (hfg : I.FG)
@@ -157,9 +153,9 @@ private lemma exists_uniform_norm_bound_lt_one_of_fg {R C : Type} [CommRing R] [
 
 open Filter Topology in
 /- English proof (translation)
-Use `show Tendsto (fun T : Finset Ix => ∑ i ∈ T, x i) atTop (𝓝 s)`. Use `Metric.tendsto_nhds.2 fun ε hε => ?_` and prove the remaining obligations. Establish `hlim : Tendsto (fun n : ℕ => c ^ n * M) atTop (𝓝 (0 * M))` using `(tendsto_pow_atTop_nhds_zero_of_lt_one hc0 hc1).mul_const M`. Rewrite `hlim` using `[zero_mul]`. Take `⟨n, hn⟩` from `(hlim.eventually (gt_mem_nhds hε)).exists`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨S, hS⟩` from `h n`. Use `Filter.eventually_atTop.2 ⟨S, fun T hT => ?_⟩` and prove the remaining obligations. Rewrite using `[dist_eq_norm, norm_sub_rev]`. Conclude with `(hS T hT).trans_lt hn`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma hasSum_of_norm_sub_le_geometric {Ix E : Type} [NormedAddCommGroup E]
     {x : Ix → E} {s : E} {c M : ℝ} (hc0 : 0 ≤ c) (hc1 : c < 1)
@@ -178,11 +174,11 @@ private lemma hasSum_of_norm_sub_le_geometric {Ix E : Type} [NormedAddCommGroup 
 
 open Filter Topology in
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro r _`. Simplify using `using hφ r`. Consider the case `succ n ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `r hr`. Rewrite `hr` using `[pow_succ]`. Use `Submodule.mul_induction_on hr ?_ ?_` and prove the remaining obligations. Introduce `a ha b hb`. Rewrite using `[map_mul, norm_mul, pow_succ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul (ih a ha) (hI b hb) (norm_nonneg _) (pow_nonneg hc0 n)`. Introduce `a b ha hb`. Rewrite using `[map_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ha hb)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma norm_le_pow_of_mem_ideal_pow {R C : Type} [CommRing R] [NormedField C]
     [IsUltrametricDist C] (φ : R →+* C) (hφ : ∀ r, ‖φ r‖ ≤ 1) {I : Ideal R} {c : ℝ}
@@ -204,11 +200,11 @@ private lemma norm_le_pow_of_mem_ideal_pow {R C : Type} [CommRing R] [NormedFiel
 open Filter Topology in
 
 /- English proof (translation)
-Introduce `R _ _ _ I C _ _ _ hC Ix x s hs`. Take `⟨hle, hlt⟩` from `hC`. Use `letI : Module R C := Module.compHom C (algebraMap R (FractionRing R))`. Establish `hs' : _root_.GlobalTheory.UT.SumI I x s` using `hs`. Unfold `_root_.GlobalTheory.UT.SumI at hs'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Take `⟨N, hNfg, -, -, hconv⟩` from `hs'`. Set `φ : R →+* C` to `(algebraMap (FractionRing R) C).comp (algebraMap R (FractionRing R))`. Establish `hφ : ∀ r, ‖φ r‖ ≤ 1` using `hle`. Take `⟨M, -, hM⟩` from `exists_norm_le_mul_of_mem_ideal_smul_fg (N := N) φ hφ (fun r y => Algebra.smul_def (algebraMap R (FractionRing R) r) y) hNfg`. Take `⟨c, hc0, hc1, hcI⟩` from `exists_uniform_norm_bound_lt_one_of_fg φ hφ (IsNoetherian.noetherian I) hlt`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hasSum_of_norm_sub_le_geometric hc0 hc1 fun n => (hconv n).imp fun S hS T hT => hM (I ^ n) (c ^ n) (pow_nonneg hc0 n) (norm_le_pow_of_mem_ideal_pow φ hφ hc0 hcI n) _ (hS T hT)`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Ex.AdicNormSum.main : ∀ (R : Type) [CommRing R] [IsDomain R]
     [IsNoetherianRing R] (I : Ideal R) (C : Type) [NormedField C] [IsUltrametricDist C]

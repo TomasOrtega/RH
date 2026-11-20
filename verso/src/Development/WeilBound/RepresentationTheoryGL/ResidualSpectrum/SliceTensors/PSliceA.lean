@@ -15,7 +15,7 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 set_option linter.unusedSectionVars false
 
 /- English proof (translation)
-Unfold `posIdele`. Use `Finset.prod_eq_one fun w _ => ?_` and prove the remaining obligations. Establish `: (⟨(1 : ℝ) ^ w.mult, pow_pos one_pos _⟩ : {r : ℝ // 0 < r}) = 1` using `Subtype.ext (one_pow _)`. Rewrite using `[this, map_one]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem A_posIdele_one : posIdele (K := E) 1 one_pos = 1 := by
   unfold posIdele
@@ -24,7 +24,7 @@ theorem A_posIdele_one : posIdele (K := E) 1 one_pos = 1 := by
   rw [this, map_one]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[diagonal_mul, mul_diagonal]`. Distinguish the cases in `hm : M i j = 0`. Simplify using `[hm]`. Rewrite using `[h i j hm, mul_comm]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem A_diag_comm {n : ℕ} {R : Type*} [CommRing R] (d : Fin n → R) (M : Matrix (Fin n) (Fin n) R)
     (h : ∀ i j, M i j ≠ 0 → d i = d j) : diagonal d * M = M * diagonal d := by
@@ -35,9 +35,9 @@ theorem A_diag_comm {n : ℕ} {R : Type*} [CommRing R] (d : Fin n → R) (M : Ma
   · rw [h i j hm, mul_comm]
 
 /- English proof (translation)
-Unfold `An.tor`. Rewrite using `[← map_mul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.mul_apply, posIdele_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `[Real.exp_add]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem A_tor_mul {n : ℕ} (x y : Fin n → ℝ) : An.tor E x * An.tor E y = An.tor E (x + y) := by
   unfold An.tor
@@ -49,9 +49,9 @@ theorem A_tor_mul {n : ℕ} (x y : Fin n → ℝ) : An.tor E x * An.tor E y = An
   simp [Real.exp_add]
 
 /- English proof (translation)
-Unfold `An.tor`. Establish `e : (fun i : Fin n => posIdele (K` using `E) (Real.exp ((0 : Fin n → ℝ) i)) (Real.exp_pos _)) = 1 := by`. Use function extensionality and compare the values at `i`. Establish `h1 : posIdele (K` using `E) (Real.exp ((0 : Fin n → ℝ) i)) (Real.exp_pos _) = posIdele (K := E) 1 one_pos := by`. Use `congr 1`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using the standard rewrite rules. Rewrite using `[h1, A_posIdele_one]`. Both sides reduce to the same expression. Rewrite using `[e, map_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem A_tor_zero {n : ℕ} : An.tor E (0 : Fin n → ℝ) = 1 := by
   unfold An.tor
@@ -64,7 +64,7 @@ theorem A_tor_zero {n : ℕ} : An.tor E (0 : Fin n → ℝ) = 1 := by
   rw [e, map_one]
 
 /- English proof (translation)
-The claim follows from `JDict.aT_eq N r t`.
+A detailed English derivation is pending.
 -/
 theorem A_aT_tor (N r : ℕ) (t : ℝ) : aT E N r t = An.tor E fun i : Fin N => if (i : ℕ) < r then t else 0 :=
   JDict.aT_eq N r t
@@ -77,9 +77,9 @@ theorem A_coe_tor {n : ℕ} (x : Fin n → ℝ) :
       diagonal fun i => ((posIdele (K := E) (Real.exp (x i)) (Real.exp_pos _) : (Ad E)ˣ) : Ad E) := rfl
 
 /- English proof (translation)
-Rewrite using `[A_aT_tor]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul, A_coe_tor]`. Use `A_diag_comm _ _ fun i j hij => ?_` and prove the remaining obligations. Establish `e : (if (i : ℕ) < r then t else 0) = (if (j : ℕ) < r then t else 0)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Distinguish the cases in `hi : (i : ℕ) < r`. Rewrite using `[if_pos hi, if_pos ((h i j hij).1 hi)]`. Rewrite using `[if_neg hi, if_neg (fun hj => hi ((h i j hij).2 hj))]`. Conclude with `congrArg (fun x : ℝ => ((posIdele (K := E) (Real.exp x) (Real.exp_pos _) : (Ad E)ˣ) : Ad E)) e`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem A_aT_comm {N r : ℕ} (t : ℝ) (g : GA E N)
     (h : ∀ i j, (g : Matrix (Fin N) (Fin N) (Ad E)) i j ≠ 0 → ((i : ℕ) < r ↔ (j : ℕ) < r)) :
@@ -95,7 +95,7 @@ theorem A_aT_comm {N r : ℕ} (t : ℝ) (g : GA E N)
   exact congrArg (fun x : ℝ => ((posIdele (K := E) (Real.exp x) (Real.exp_pos _) : (Ad E)ˣ) : Ad E)) e
 
 /- English proof (translation)
-Rewrite using `[A_aT_tor, A_aT_tor, A_aT_tor, A_tor_mul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem aT_add (N r : ℕ) (s t : ℝ) : aT E N r (s + t) = aT E N r s * aT E N r t := by
   rw [A_aT_tor, A_aT_tor, A_aT_tor, A_tor_mul]
@@ -105,7 +105,7 @@ theorem aT_add (N r : ℕ) (s t : ℝ) : aT E N r (s + t) = aT E N r s * aT E N 
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[A_aT_tor, ← A_tor_zero (E := E) (n := N)]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem aT_zero (N r : ℕ) : aT E N r 0 = 1 := by
   rw [A_aT_tor, ← A_tor_zero (E := E) (n := N)]
@@ -114,13 +114,13 @@ theorem aT_zero (N r : ℕ) : aT E N r 0 = 1 := by
   simp
 
 /- English proof (translation)
-Rewrite using `[A_aT_tor, A_aT_tor, A_tor_mul, A_tor_mul, add_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem aT_comm (N r r' : ℕ) (s t : ℝ) : aT E N r s * aT E N r' t = aT E N r' t * aT E N r s := by
   rw [A_aT_tor, A_aT_tor, A_tor_mul, A_tor_mul, add_comm]
 
 /- English proof (translation)
-Rewrite using `[A_aT_tor, ← JDict.tor_const]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[if_pos i.2]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem splitCentre_eq_aT (N : ℕ) (t : ℝ) : splitCentre E N t = aT E N N t := by
   rw [A_aT_tor, ← JDict.tor_const]
@@ -129,20 +129,20 @@ theorem splitCentre_eq_aT (N : ℕ) (t : ℝ) : splitCentre E N t = aT E N N t :
   rw [if_pos i.2]
 
 /- English proof (translation)
-Simplify using `[GlobalTheory.SmGL.stdSum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem A_stdSum_inl {r s : ℕ} (a : Fin r) : ((GlobalTheory.SmGL.stdSum (rfl : r + s = r + s) (Sum.inl a) : Fin (r + s)) : ℕ) = a := by
   simp [GlobalTheory.SmGL.stdSum]
 
 /- English proof (translation)
-Simplify using `[GlobalTheory.SmGL.stdSum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem A_stdSum_inr {r s : ℕ} (b : Fin s) :
     ((GlobalTheory.SmGL.stdSum (rfl : r + s = r + s) (Sum.inr b) : Fin (r + s)) : ℕ) = r + b := by
   simp [GlobalTheory.SmGL.stdSum]
 
 /- English proof (translation)
-Rewrite using `[CapStable.val_lev, CapStable.blockM, reindex_apply, submatrix_apply, Equiv.symm_apply_apply, Equiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem A_lev_apply {R : Type} [CommRing R] {r s : ℕ} (m : GL (Fin r) R × GL (Fin s) R) (p q : Fin r ⊕ Fin s) :
     (lev R r s m : Matrix (Fin (r + s)) (Fin (r + s)) R) (GlobalTheory.SmGL.stdSum rfl p) (GlobalTheory.SmGL.stdSum rfl q) =
@@ -151,17 +151,17 @@ theorem A_lev_apply {R : Type} [CommRing R] {r s : ℕ} (m : GL (Fin r) R × GL 
     Equiv.symm_apply_apply]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Take `⟨p, rfl⟩` from `(GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).surjective i`. Take `⟨q, rfl⟩` from `(GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).surjective j`. Rewrite using `[A_lev_apply]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hinj` using `(GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).injective`. Apply the tactic sequence `rcases p with a | b <;> rcases q with c | d`. Simplify using `only [fromBlocks_apply₁₁, A_coe_tor, diagonal_apply, hinj.eq_iff, Sum.inl.injEq]`. Distinguish the cases in `h1 : a = c`. Substitute `h1` using the available equality.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `ha : ((GlobalTheory.SmGL.stdSum (rfl : r + s = r + s) (Sum.inl a) : Fin (r + s)) : ℕ) < r`. Rewrite using `[A_stdSum_inl]`. Conclude with `a.2`. Rewrite using `[if_pos rfl, if_pos rfl, dif_pos ha]`. Use `congr 3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h1, if_neg h1]`. Simplify using `[A_coe_tor, hinj.eq_iff]`. Simplify using `[A_coe_tor, hinj.eq_iff]`. Simplify using `only [fromBlocks_apply₂₂, A_coe_tor, diagonal_apply, hinj.eq_iff, Sum.inr.injEq]`. Distinguish the cases in `h1 : b = d`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h1` using the available equality. Establish `hb : ¬ ((GlobalTheory.SmGL.stdSum (rfl : r + s = r + s) (Sum.inr b) : Fin (r + s)) : ℕ) < r`. Rewrite using `[A_stdSum_inr]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_pos rfl, if_pos rfl, dif_neg hb]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 3`. Use `congrArg y (Fin.ext ?_)` and prove the remaining obligations. Simplify using `only [A_stdSum_inr]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg h1, if_neg h1]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem A_lev_tor {r s : ℕ} (x : Fin r → ℝ) (y : Fin s → ℝ) :
     lev (Ad E) r s (An.tor E x, An.tor E y) =
@@ -196,9 +196,9 @@ theorem A_lev_tor {r s : ℕ} (x : Fin r → ℝ) (y : Fin s → ℝ) :
     · rw [if_neg h1, if_neg h1]
 
 /- English proof (translation)
-Use `A_aT_comm t _ fun i j hij => ?_` and prove the remaining obligations. Take `⟨p, rfl⟩` from `(GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).surjective i`. Take `⟨q, rfl⟩` from `(GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).surjective j`. Rewrite `hij` using `[A_lev_apply]`. Apply the tactic sequence `rcases p with a | b <;> rcases q with c | d`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[A_stdSum_inl, A_stdSum_inl]`. Conclude with `iff_of_true a.2 c.2`. Conclude with `absurd (by simp) hij`. Conclude with `absurd (by simp) hij`. Rewrite using `[A_stdSum_inr, A_stdSum_inr]; exact iff_of_false (by omega) (by omega)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aT_comm_lev (r s : ℕ) (t : ℝ) (m : GA E r × GA E s) :
     aT E (r + s) r t * lev (Ad E) r s m = lev (Ad E) r s m * aT E (r + s) r t := by
@@ -213,7 +213,7 @@ theorem aT_comm_lev (r s : ℕ) (t : ℝ) (m : GA E r × GA E s) :
   · rw [A_stdSum_inr, A_stdSum_inr]; exact iff_of_false (by omega) (by omega)
 
 /- English proof (translation)
-Rewrite using `[A_aT_tor, A_aT_tor, ← A_tor_zero (E := E) (n := s), A_lev_tor]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `split_ifs <;> simp_all; omega`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lev_aT_left (r s r₁ : ℕ) (h : r₁ ≤ r) (t : ℝ) :
     lev (Ad E) r s (aT E r r₁ t, 1) = aT E (r + s) r₁ t := by
@@ -223,7 +223,7 @@ theorem lev_aT_left (r s r₁ : ℕ) (h : r₁ ≤ r) (t : ℝ) :
   split_ifs <;> simp_all; omega
 
 /- English proof (translation)
-Rewrite using `[A_aT_tor, A_aT_tor, A_aT_tor, ← A_tor_zero (E := E) (n := r), A_lev_tor, A_tor_mul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply, Pi.zero_apply]`. Apply the tactic sequence `split_ifs <;> simp_all <;> omega`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lev_aT_right (r s r₂ : ℕ) (h : r₂ ≤ s) (t : ℝ) :
     lev (Ad E) r s (1, aT E s r₂ t) = aT E (r + s) (r + r₂) t * aT E (r + s) r (-t) := by
@@ -234,9 +234,9 @@ theorem lev_aT_right (r s r₂ : ℕ) (h : r₂ ≤ s) (t : ℝ) :
   split_ifs <;> simp_all <;> omega
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, coe_unipGL, coe_diagUnits, unipMatrix, add_mul, mul_add, one_mul, mul_one]`. Use `congr 1`. Use extensionality with `i j`. Rewrite using `[mul_diagonal, diagonal_mul, blockEntry_apply, blockEntry_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Rewrite using `[← mul_assoc, ← mul_assoc, Units.mul_inv, one_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem A_unipGL_mul_diag {n r : ℕ} {R : Type*} [CommRing R] (d : Fin n → Rˣ) (X : UPos n r → R) :
     unipGL X * diagUnits n d = diagUnits n d * unipGL (fun p => ((d p.1.1)⁻¹ : Rˣ) * X p * d p.1.2) := by
@@ -250,7 +250,7 @@ theorem A_unipGL_mul_diag {n r : ℕ} {R : Type*} [CommRing R] (d : Fin n → R�
   · simp
 
 /- English proof (translation)
-Establish `h` using `A_unipGL_mul_diag (fun i : Fin N => posIdele (K := E) (Real.exp (if (i : ℕ) < r then t else 0)) (Real.exp_pos _)) (r := r) x`. Rewrite `h` using `[GlobalTheory.CompanionTheory.CuspBridge.unipGL_eq_unip, GlobalTheory.CompanionTheory.CuspBridge.unipGL_eq_unip]`. Conclude with `⟨_, by rw [A_aT_tor]; exact h⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem unip_mul_aT (N r : ℕ) (t : ℝ) (x : BlockIx N r → Ad E) :
     ∃ x' : BlockIx N r → Ad E, unip x * aT E N r t = aT E N r t * unip x' := by
@@ -260,9 +260,9 @@ theorem unip_mul_aT (N r : ℕ) (t : ℝ) (x : BlockIx N r → Ad E) :
   exact ⟨_, by rw [A_aT_tor]; exact h⟩
 
 /- English proof (translation)
-Use `A_aT_comm t _ fun i j hij => ?_` and prove the remaining obligations. Distinguish the cases in `hij' : i = j`. Rewrite using `[hij']`. Rewrite `hij` using `[coe_parGL, parMatrix, Matrix.add_apply, Matrix.one_apply_ne hij', zero_add, parEntry_apply]`. Use `split_ifs at hij with h`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hij`, `with`, `ht` using `[joinPos] at hij split_ifs`. Conclude with `absurd rfl hij`. Conclude with `hS _ ht`. Conclude with `absurd rfl hij`.
+A detailed English derivation is pending.
 -/
 theorem aT_comm_parGL {S : Finset ℕ} (N r r' : ℕ) (t : ℝ)
     (hS : ∀ q : PPos N S, ¬ IsTop r' q → ((q.1.1 : ℕ) < r ↔ (q.1.2 : ℕ) < r))
@@ -280,7 +280,7 @@ theorem aT_comm_parGL {S : Finset ℕ} (N r r' : ℕ) (t : ℝ)
   · exact absurd rfl hij
 
 /- English proof (translation)
-Take `⟨s', hs', h1, h2⟩` from `q.2`. Establish `hq' : ¬ ((q.1.1 : ℕ) < r ∧ r ≤ (q.1.2 : ℕ))` using `hq`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hs'`. Apply the tactic sequence `rcases hs' with rfl | rfl <;> omega`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem parabolic_position_left_bounds {r s r₁ : ℕ} (h : r₁ < r) (q : PPos (r + s) {r₁, r}) (hq : ¬ IsTop r q) :
     (q.1.1 : ℕ) < r₁ ∧ r₁ ≤ (q.1.2 : ℕ) ∧ (q.1.2 : ℕ) < r := by
@@ -298,25 +298,25 @@ def eL (r s r₁ : ℕ) (h : r₁ < r) : UPos r r₁ ≃ {q : PPos (r + s) {r₁
   right_inv _ := rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Take `⟨p, rfl⟩` from `(GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).surjective i`. Take `⟨q, rfl⟩` from `(GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).surjective j`. Establish `hinj` using `(GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).injective`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[A_lev_apply, coe_parGL, parMatrix, Matrix.add_apply, Matrix.one_apply, parEntry_apply]`. Simplify using `only [hinj.eq_iff]`. Apply the tactic sequence `rcases p with a | b <;> rcases q with c | d`. Rewrite using `[fromBlocks_apply₁₁, coe_unipGL, unipMatrix, Matrix.add_apply, Matrix.one_apply, blockEntry_apply]`. Simplify using `only [Sum.inl.injEq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Distinguish the cases in `hb : (a : ℕ) < r₁ ∧ r₁ ≤ (c : ℕ)`. Establish `h' : ∃ s' ∈ ({r₁, r} : Finset ℕ), ((GlobalTheory.SmGL.stdSum (rfl : r + s = r + s) (Sum.inl a) : Fin (r + s)) : ℕ) < s' ∧ s' ≤ ((GlobalTheory.SmGL.stdSum (rfl : r + s = r + s) (Sum.inl c) : Fin (r + s)) : ℕ)` using `⟨r₁, by simp, by rw [A_stdSum_inl]; exact hb.1, by rw [A_stdSum_inl]; exact hb.2⟩`. Rewrite using `[dif_pos hb, dif_pos h', joinPos, dif_neg]`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `ht`. Use `ht.2` as an intermediate fact. Express the relevant statement in the definitionally equal form `r ≤ ((GlobalTheory.SmGL.stdSum (rfl : r + s = r + s) (Sum.inl c) : Fin (r + s)) : ℕ) at this`. Rewrite `this` using `[A_stdSum_inl]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[dif_neg hb, dif_neg]`. Introduce and unpack `⟨s', hs', h1, h2⟩`. Rewrite `h1`, `h2` using `[A_stdSum_inl]`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hs'`. Break down `hs' with rfl | rfl` into its components or cases.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hb ⟨h1, h2⟩`. Use linear arithmetic over natural numbers and integers. Rewrite using `[fromBlocks_apply₁₂]`. Simplify using `only [reduceCtorEq, if_false, Matrix.zero_apply, zero_add]`. Use `split_ifs with h'`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[joinPos, dif_pos]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `((GlobalTheory.SmGL.stdSum (rfl : r + s = r + s) (Sum.inl a) : Fin (r + s)) : ℕ) < r ∧ r ≤ ((GlobalTheory.SmGL.stdSum (rfl : r + s = r + s) (Sum.inr d) : Fin (r + s)) : ℕ)`. Rewrite using `[A_stdSum_inl, A_stdSum_inr]`. Use linear arithmetic over natural numbers and integers.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[fromBlocks_apply₂₁]`. Simplify using `only [reduceCtorEq, if_false, Matrix.zero_apply, zero_add]`. Rewrite using `[dif_neg]`. Introduce and unpack `⟨s', hs', h1, h2⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `*` using `[A_stdSum_inr, A_stdSum_inl]`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hs'`. Use linear arithmetic over natural numbers and integers. Rewrite using `[fromBlocks_apply₂₂]`. Simplify using `only [Sum.inr.injEq]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[dif_neg, add_zero, Units.val_one, Matrix.one_apply]`. Introduce and unpack `⟨s', hs', h1, h2⟩`. Simplify using `only [A_stdSum_inr] at h1 h2`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hs'`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem lev_unipGL_left (r s r₁ : ℕ) (h : r₁ < r) (A : UPos r r₁ → Ad E) :
     lev (Ad E) r s (unipGL A, 1) = parGL (joinPos (r := r) 0 fun q => A ((eL r s r₁ h).symm q)) := by
@@ -375,7 +375,7 @@ theorem lev_unipGL_left (r s r₁ : ℕ) (h : r₁ < r) (A : UPos r r₁ → Ad 
     omega
 
 /- English proof (translation)
-Take `⟨s', hs', h1, h2⟩` from `q.2`. Establish `hq' : ¬ ((q.1.1 : ℕ) < r ∧ r ≤ (q.1.2 : ℕ))` using `hq`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hs'`. Apply the tactic sequence `rcases hs' with rfl | rfl <;> omega`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem parabolic_position_right_bounds {r s r₂ : ℕ} (q : PPos (r + s) {r, r + r₂}) (hq : ¬ IsTop r q) :
     r ≤ (q.1.1 : ℕ) ∧ (q.1.1 : ℕ) < r + r₂ ∧ r + r₂ ≤ (q.1.2 : ℕ) := by
@@ -395,27 +395,25 @@ def eR (r s r₂ : ℕ) (h : 0 < r₂) : UPos s r₂ ≃ {q : PPos (r + s) {r, r
     exact Subtype.ext (Subtype.ext (Prod.ext (Fin.ext (by simp; omega)) (Fin.ext (by simp; omega))))
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Take `⟨p, rfl⟩` from `(GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).surjective i`. Take `⟨q, rfl⟩` from `(GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).surjective j`. Establish `hinj` using `(GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).injective`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[A_lev_apply, coe_parGL, parMatrix, Matrix.add_apply, Matrix.one_apply, parEntry_apply]`. Simplify using `only [hinj.eq_iff]`. Apply the tactic sequence `rcases p with a | b <;> rcases q with c | d`. Rewrite using `[fromBlocks_apply₁₁]`. Simplify using `only [Sum.inl.injEq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[dif_neg, add_zero, Units.val_one, Matrix.one_apply]`. Introduce and unpack `⟨s', hs', h1, h2⟩`. Simplify using `only [A_stdSum_inl] at h1 h2`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hs'`. Use `c.2` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[fromBlocks_apply₁₂]`. Simplify using `only [reduceCtorEq, if_false, Matrix.zero_apply, zero_add]`. Use `split_ifs with h'`. Rewrite using `[joinPos, dif_pos]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `((GlobalTheory.SmGL.stdSum (rfl : r + s = r + s) (Sum.inl a) : Fin (r + s)) : ℕ) < r ∧ r ≤ ((GlobalTheory.SmGL.stdSum (rfl : r + s = r + s) (Sum.inr d) : Fin (r + s)) : ℕ)`. Rewrite using `[A_stdSum_inl, A_stdSum_inr]`. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[fromBlocks_apply₂₁]`. Simplify using `only [reduceCtorEq, if_false, Matrix.zero_apply, zero_add]`. Rewrite using `[dif_neg]`. Introduce and unpack `⟨s', hs', h1, h2⟩`. Simplify using `only [A_stdSum_inr, A_stdSum_inl] at h1 h2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `c.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[fromBlocks_apply₂₂, coe_unipGL, unipMatrix, Matrix.add_apply, Matrix.one_apply, blockEntry_apply]`. Simplify using `only [Sum.inr.injEq]`. Use `congr 1`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hb : (b : ℕ) < r₂ ∧ r₂ ≤ (d : ℕ)`. Establish `h' : ∃ s' ∈ ({r, r + r₂} : Finset ℕ), ((GlobalTheory.SmGL.stdSum (rfl : r + s = r + s) (Sum.inr b) : Fin (r + s)) : ℕ) < s' ∧ s' ≤ ((GlobalTheory.SmGL.stdSum (rfl : r + s = r + s) (Sum.inr d) : Fin (r + s)) : ℕ)` using `⟨r + r₂, by simp, by rw [A_stdSum_inr]; omega, by rw [A_stdSum_inr]; omega⟩`. Rewrite using `[dif_pos hb, dif_pos h', joinPos, dif_neg]`. Apply the tactic sequence `refine congrArg A (Subtype.ext (Prod.ext (Fin.ext ?_) (Fin.ext ?_))) <;> simp [eR, A_stdSum_inr]`. Introduce `ht`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `ht.1` as an intermediate fact. Express the relevant statement in the definitionally equal form `((GlobalTheory.SmGL.stdSum (rfl : r + s = r + s) (Sum.inr b) : Fin (r + s)) : ℕ) < r at this`. Rewrite `this` using `[A_stdSum_inr]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[dif_neg hb, dif_neg]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨s', hs', h1, h2⟩`. Simplify using `only [A_stdSum_inr] at h1 h2`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hs'`. Break down `hs' with rfl | rfl` into its components or cases. Use linear arithmetic over natural numbers and integers.
-
-Conclude with `hb ⟨by omega, by omega⟩`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem lev_unipGL_right (r s r₂ : ℕ) (h : 0 < r₂) (A : UPos s r₂ → Ad E) :
     lev (Ad E) r s (1, unipGL A) = parGL (joinPos (r := r) 0 fun q => A ((eR r s r₂ h).symm q)) := by

@@ -15,7 +15,7 @@ def ZetaSysUr : Prop :=
       ∃ (c : Coef l) (y : G ℚ Ω → Fin 2 → Qbar l) (S' : Finset Pl), Sys W c y S' ∧ NzAt W A y
 
 /- English proof (translation)
-Introduce `l _ Ω _ _ _ ι e S A W g hN hS` and use `es_of_sys (h l Ω ι e S A W g hN hS)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem zetaUr_of_sys (h : ZetaSysUr) : ZetaUr := fun l _ Ω _ _ _ ι e S A W g hN hS => es_of_sys (h l Ω ι e S A W g hN hS)
 
@@ -36,7 +36,7 @@ def LocU (Pin : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] {l : ℕ} [Fact l.Pr
         Sys W c y S' → IwSys c A ν Z → SpLink A e χ Z y → Pin e A W c ν χ Z → NzAt W A y
 
 /- English proof (translation)
-Introduce `l _ Ω _ _ _ ι e S A W g hN hS`. Take `⟨c, y, S', ν, χ, Z, h1, h2, h3, h4⟩` from `hG l Ω ι e S A W g hN hS`. Conclude with `⟨c, y, S', h1, hL l Ω ι e S A W g hN hS c y S' ν χ Z h1 h2 h3 h4⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem zetaSysU_of_halves (Pin : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] {l : ℕ} [Fact l.Prime], ℕ → (ValuationSubring Ω) →
     R2 Ω l → Coef l → (G ℚ Ω →* (Qbar l)ˣ) → (∀ r : ℕ, (ZMod (l ^ r))ˣ → Qbar l) → (∀ r : ℕ, G ℚ Ω → (ZMod (l ^ r))ˣ → Qbar l) → Prop)
@@ -46,7 +46,7 @@ theorem zetaSysU_of_halves (Pin : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] {l
   exact ⟨c, y, S', h1, hL l Ω ι e S A W g hN hS c y S' ν χ Z h1 h2 h3 h4⟩
 
 /- English proof (translation)
-The claim follows from `zetaUr_of_sys (zetaSysU_of_halves Pin hG hL)`.
+A detailed English derivation is pending.
 -/
 theorem zetaUr_of_halves (Pin : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] {l : ℕ} [Fact l.Prime], ℕ → (ValuationSubring Ω) →
     R2 Ω l → Coef l → (G ℚ Ω →* (Qbar l)ˣ) → (∀ r : ℕ, (ZMod (l ^ r))ˣ → Qbar l) → (∀ r : ℕ, G ℚ Ω → (ZMod (l ^ r))ˣ → Qbar l) → Prop)

@@ -16,25 +16,25 @@ namespace GlobalTheory.NablaType
 variable {n : ℕ}
 
 /- English proof (translation)
-Set `D : ℕ → ℕ` to `fun k => (∑ a : Fin n with a.val < k, ν a) - ∑ a : Fin n with a.val < k, μ a`. Establish `hD : ∀ k, (D k : ℝ) = ∑ a : Fin n, if a.val < k then ((ν a : ℝ) - μ a) else 0`. Introduce `k`. Simplify using `only [D]`. Rewrite using `[Nat.cast_sub (h k), ← Finset.sum_filter, Finset.sum_sub_distrib]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression. Establish `hstep : ∀ i : Fin n, (D (i.val + 1) : ℝ) - D i.val = (ν i : ℝ) - μ i`. Introduce `i`. Rewrite using `[hD, hD, ← Finset.sum_sub_distrib, Finset.sum_eq_single i]`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `b _ hb`. Establish `: b.val ≠ i.val` using `fun e => hb (Fin.ext e)`. Distinguish the cases in `h1 : b.val < i.val`. Rewrite using `[if_pos h1, if_pos (by omega), sub_self]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h1, if_neg (by omega), sub_self]`. Simplify using the standard rewrite rules. Establish `h0 : D 0 = 0` using `by simp [D]`. Establish `hn : D n = 0` using `by simp [D, he]`. Use `⟨fun a b => if b.val = a.val + 1 then D b.val else 0, fun a b hab => ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: b.val = a.val + 1` using `by by_contra h'; exact hab (if_neg h')`. Conclude with `⟨Fin.lt_def.2 (by omega), rfl⟩`. Use function extensionality and compare the values at `i`. Establish `e1 : ∑ b : Fin n, ((if b.val = i.val + 1 then D b.val else 0 : ℕ) : ℝ) = D (i.val + 1)`. Distinguish the cases in `hi : i.val + 1 < n`.
+Establish an intermediate fact. Supply the required witnesses or components. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Finset.sum_eq_single ⟨i.val + 1, hi⟩]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Rewrite using `[if_neg (fun e => hb (Fin.ext e)), Nat.cast_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_eq_zero, show i.val + 1 = n by omega, hn, Nat.cast_zero]`. Introduce `b _`. Rewrite using `[if_neg (by omega), Nat.cast_zero]`. Establish `e2 : ∑ a : Fin n, ((if i.val = a.val + 1 then D i.val else 0 : ℕ) : ℝ) = D i.val`. Distinguish the cases in `hi : 0 < i.val`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Finset.sum_eq_single ⟨i.val - 1, by omega⟩]`. Rewrite using `[if_pos (by simp only; omega)]`. Introduce `b _ hb`. Rewrite using `[if_neg (fun e => hb (Fin.ext (by simp only; omega))), Nat.cast_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_eq_zero, show i.val = 0 by omega, h0, Nat.cast_zero]`. Introduce `b _`. Rewrite using `[if_neg (by omega), Nat.cast_zero]`. Rewrite using `[Pi.sub_apply, ← hstep, ← e1, ← e2]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, Formalism.REAL.root, Pi.sub_apply, smul_eq_mul, mul_sub, Finset.sum_sub_distrib, Pi.single_apply, mul_ite, mul_one, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Simplify using `only [Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem cdom_of_partial_sums (μ ν : Fin n → ℕ)
     (h : ∀ k : ℕ, (∑ a : Fin n with a.val < k, μ a) ≤ ∑ a : Fin n with a.val < k, ν a)
@@ -92,11 +92,11 @@ theorem cdom_of_partial_sums (μ ν : Fin n → ℕ)
     · simp only [Finset.sum_ite_eq, Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Unfold `nabla at hf`. Rewrite `hf` using `[Formalism.GradedWeylDivisibility.standardMonomialSpanDomain ℂ n n la]`. Assume the negation of the conclusion as `hc`. Apply `hm` to reduce the goal to its premises. Use `clear hm`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Proceed by induction.
 
-Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨K, sz, hsz, I, rfl, rfl⟩` from `hx`. Assume the negation of the conclusion as `h0`. Take `⟨h1, h2⟩` from `Formalism.GradedWeylDivisibility.bidetDominance ℂ n n K sz hsz I m (mem_support_iff.2 h0)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Conclude with `hc (cdom_of_partial_sums _ _ h1 h2)`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [coeff_add, hx, hy, add_zero]`. Consider the case `smul c x _ hx => rw [coeff_smul, hx, smul_zero]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cdom_of_coeff_ne_zero {la : Fin n → ℕ} {f : Pol n ℂ} (hf : f ∈ nabla la ℂ) (m : Fin n × Fin n →₀ ℕ)
     (hm : coeff m f ≠ 0) : CDom (allPos n) (fun a => (rowDeg m a : ℝ)) (fun a => (la a : ℝ)) := by
@@ -123,13 +123,13 @@ def incl (lam : DomWeight n) : Space lam.natW →ₗ[ℂ] Pol n ℂ :=
   (nabla lam.natW ℂ).subtype ∘ₗ (toSpace lam.natW).symm.toLinearMap
 
 /- English proof (translation)
-The claim follows from `(nabla lam.natW ℂ).injective_subtype.comp (toSpace lam.natW).symm.injective`.
+A detailed English derivation is pending.
 -/
 theorem incl_injective (lam : DomWeight n) : Function.Injective (incl lam) :=
   (nabla lam.natW ℂ).injective_subtype.comp (toSpace lam.natW).symm.injective
 
 /- English proof (translation)
-The claim follows from `((toSpace lam.natW).symm x).2`.
+A detailed English derivation is pending.
 -/
 theorem incl_mem (lam : DomWeight n) (x : Space lam.natW) : incl lam x ∈ nabla lam.natW ℂ :=
   ((toSpace lam.natW).symm x).2
@@ -147,17 +147,17 @@ theorem act_unitary (lam : DomWeight n) (u : UN n) (x : Space lam.natW) :
     act lam u.1 x = (u.1.det ^ lam.detShift) • rhoSpace lam.natW u x := rfl
 
 /- English proof (translation)
-The claim follows from `(Matrix.UnitaryGroup.det_isUnit ⟨g, hg⟩).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem det_ne_zero {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Matrix.unitaryGroup (Fin n) ℂ) : g.det ≠ 0 :=
   (Matrix.UnitaryGroup.det_isUnit ⟨g, hg⟩).ne_zero
 
 /- English proof (translation)
-Rewrite using `[ujset_eq]`. Use `⟨⟨?_, fun a _ b _ => ?_⟩, fun g hg v => ?_, fun v => ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Apply `incl_injective` to reduce the goal to its premises. Rewrite using `[incl_act, Matrix.transpose_one, Formalism.GradedWeylDivisibility.ldlat_rowAct_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use extensionality with `x`. Apply `incl_injective` to reduce the goal to its premises. Rewrite using `[ContinuousLinearMap.comp_apply, incl_act, incl_act, incl_act, Matrix.transpose_mul, ← Formalism.GradedWeylDivisibility.rowActMul ℂ n n, Matrix.det_mul, mul_zpow, map_smul, smul_smul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h1 : ‖g.det‖ = 1` using `CStarRing.norm_of_mem_unitary (Matrix.det_of_mem_unitary hg)`. Rewrite using `[act_unitary lam ⟨g, hg⟩, norm_smul, norm_zpow, h1, one_zpow, one_mul, norm_rhoSpace]`. Rewrite using `[continuousOn_iff_continuous_restrict]`. Establish `h1 : Continuous fun u : UN n => u.1.det ^ lam.detShift` using `(continuous_subtype_val.matrix_det).zpow₀ _ fun u => Or.inl (det_ne_zero u.2)`. Conclude with `h1.smul (continuous_rhoSpace v)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isURepOn_act (lam : DomWeight n) : IsURepOn (UJset (allPos n)) (act lam) := by
   rw [ujset_eq]
@@ -179,9 +179,9 @@ theorem isURepOn_act (lam : DomWeight n) : IsURepOn (UJset (allPos n)) (act lam)
     exact h1.smul (continuous_rhoSpace v)
 
 /- English proof (translation)
-Rewrite using `[incl_act, torus, Matrix.diagonal_transpose, coeff_smul, Formalism.GradedWeylDivisibility.ldrow_coeff_rowAct_diag, Matrix.det_diagonal, smul_eq_mul, mul_left_comm, mul_comm]`. Use `congr 1`. Simplify using `only [← Complex.exp_nat_mul]`. Rewrite using `[chr, ← Complex.exp_sum, ← Complex.exp_sum, ← Complex.exp_int_mul, ← Complex.exp_add]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Rewrite using `[Finset.mul_sum, Finset.sum_mul, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun a _ => by ring`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_torus (lam : DomWeight n) (θ : Fin n → ℝ) (x : Space lam.natW) (m : Fin n × Fin n →₀ ℕ) :
     coeff m (incl lam (act lam (torus θ) x)) =
@@ -197,31 +197,29 @@ theorem coeff_torus (lam : DomWeight n) (θ : Fin n → ℝ) (x : Space lam.natW
   exact Finset.sum_congr rfl fun a _ => by ring
 
 /- English proof (translation)
-Conclude with `(factNatW n lam).2.1 a` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem natW_add (lam : DomWeight n) (a : Fin n) : (lam.natW a : ℝ) + lam.detShift = lam.w a := by
   exact_mod_cast (factNatW n lam).2.1 a
 
 /- English proof (translation)
-Establish `ha` using `(factNatW n lam).1`. Use `⟨inferInstance, fun _ _ _ _ => trivial, fun S _ hS => ?_, ?_, fun μ v _ hv hw => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h0 : S = ⊥`. Conclude with `Or.inl h0`. Use `right`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the first alternative. Establish an intermediate fact.
 
-Establish `hU : ∀ u ∈ Matrix.unitaryGroup (Fin n) ℂ, ∀ f ∈ S.map (incl lam), rowAct ℂ u f ∈ S.map (incl lam)`. Introduce and unpack `u hu _ ⟨f, hf, rfl⟩`. Establish `hu'` using `transpose_mem_unitaryGroup hu`. Establish `h1 : incl lam (act lam uᵀ f) ∈ S.map (incl lam)` using `⟨_, hS _ (by rw [kset_eq]; exact hu') f hf, rfl⟩`. Rewrite `h1` using `[incl_act, Matrix.transpose_transpose]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Submodule.smul_mem_iff _ (zpow_ne_zero _ (det_ne_zero hu'))).1 h1`. Establish `hcl` using `GlobalTheory.Branching.rowDivClosed_of_rowAct_stable _ (GlobalTheory.Branching.rowAct_mem_of_unitary_stable _ hU)`. Establish `hne : S.map (incl lam) ≠ ⊥` using `fun e => h0 (Submodule.map_injective_of_injective (incl_injective lam) (e.trans (Submodule.map_bot _).symm))`. Establish `hle` using `GlobalTheory.Branching.dualWeyl_le_of_rowDivClosed le_rfl lam.natW ha _ (by rintro _ ⟨f, -, rfl⟩; exact incl_mem lam f) hcl hne`. Use `eq_top_iff.2 fun f _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Take `⟨g, hg, e⟩` from `hle (incl_mem lam f)`. Rewrite using `[← incl_injective lam e]` and apply the resulting hypothesis. Use `⟨toSpace _ ⟨_, extremal_mem ha⟩, trivial, fun h => ?_, fun θ _ => ?_⟩` and prove the remaining obligations. Conclude with `extremal_ne_zero (congrArg (incl lam) h)`. Apply `incl_injective` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `m`. Establish `h1` using `coeff_torus lam θ (toSpace _ ⟨_, extremal_mem ha⟩) m`. Use `h1.trans ?_` and prove the remaining obligations. Rewrite using `[map_smul, coeff_smul, smul_eq_mul]`. Distinguish the cases in `hm : coeff m (incl lam (toSpace _ ⟨_, extremal_mem ha⟩)) = 0`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hm, mul_zero, mul_zero]`. Establish `h2` using `Formalism.GradedWeylDivisibility.hwRowWeight ℂ n n le_rfl lam.natW ha hm`. Establish `h3 : (fun a => (rowDeg m a : ℝ) + lam.detShift) = fun a => (lam.w a : ℝ)`. Use function extensionality and compare the values at `a`. Rewrite using `[← natW_add, ← Formalism.GradedWeylDivisibility.ldrow_weight_rowW, h2]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `[Formalism.GradedWeylDivisibility.rowNu]`. Rewrite using `[h3]`. Both sides reduce to the same expression. Establish `h0 : incl lam v ≠ 0` using `fun e => hv (incl_injective lam (e.trans (map_zero _).symm))`. Take `⟨m, hm⟩` from `ne_zero_iff.1 h0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : μ = fun a => (rowDeg m a : ℝ) + lam.detShift`. Use `chr_inj fun θ => ?_` and prove the remaining obligations. Establish `h2` using `coeff_torus lam θ v m`. Establish `h3 : act lam (torus θ) v = chr μ θ • v` using `hw θ (by rw [kset_eq]; exact torus_mem θ)`. Rewrite `h2` using `[h3, map_smul, coeff_smul, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_right_cancel₀ hm h2`. Establish `h4` using `cdom_add (cdom_of_coeff_ne_zero (incl_mem lam v) m hm) (cdom_refl (allPos n) fun _ => (lam.detShift : ℝ))`. Rewrite using `[h1]`. Establish `h5 : (fun a => (lam.w a : ℝ)) = (fun a => (lam.natW a : ℝ)) + fun _ => (lam.detShift : ℝ)`. Use function extensionality and compare the values at `fun a => (natW_add lam a).symm`.
-
-Rewrite using `[h5]`. Conclude with `h4`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isKTypeOf_act (lam : DomWeight n) : IsKTypeOf (allPos n) (act lam) (fun a => (lam.w a : ℝ)) ⊤ := by
   have ha := (factNatW n lam).1
@@ -276,11 +274,11 @@ theorem isKTypeOf_act (lam : DomWeight n) : IsKTypeOf (allPos n) (act lam) (fun 
     exact h4
 
 /- English proof (translation)
-Introduce `n lam`. Establish `hK` using `isKTypeOf_act lam`. Use `⟨Space lam.natW, inferInstance, inferInstance, act lam, incl lam, ⟨?_, inferInstance, isURepOn_act lam, ?_⟩, incl_injective lam, incl_mem lam, fun g _ x => ?_⟩` and prove the remaining obligations. Take `⟨v, -, hv, -⟩` from `hK.2.2.2.1`. Conclude with `⟨v, 0, hv⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `hK using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `a`. Unfold `allPos`. Rewrite using `[GlobalTheory.DefiniteCheck.lowK_const]`. Simplify using `[rhoVec]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[incl_act]`. Simplify using `[sqAct, detPow]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_isHCTypeU_nablaSq : ∀ (n : ℕ) (lam : Formalism.BasicNotions.DomWeight n), ∃ (H : Type) (_ : NormedAddCommGroup H) (_ : InnerProductSpace ℂ H) (π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (e : H →ₗ[ℂ] MvPolynomial (Fin n × Fin n) ℂ), Formalism.MainNotions.S.IsHCTypeU n (fun i => (lam.w i : ℝ) + ((Formalism.BasicNotions.rhoVec n i : ℚ) : ℝ)) π ∧ Function.Injective e ∧ (∀ x, e x ∈ Formalism.BasicNotions.nablaSq ℂ n lam) ∧ ∀ g : GL (Fin n) ℂ, (g : Matrix (Fin n) (Fin n) ℂ) ∈ Matrix.unitaryGroup (Fin n) ℂ → ∀ x, e (π (g : Matrix (Fin n) (Fin n) ℂ) x) = Formalism.BasicNotions.sqAct ℂ n lam g (e x) := by
   intro n lam

@@ -127,7 +127,7 @@ def regWeight (la : Ψ × Fin D.N → ℤ) (t : ℝ) (w : Cone (FlagBundleBlocks
 
 omit [DecidableEq Ψ] in
 /- English proof (translation)
-Introduce `c w hc` and use `by simp only [regWeight, D.regFl_inv _ _ _ c w hc]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem regWeight_inv (la : Ψ × Fin D.N → ℤ) (t : ℝ) : IsTorusInv (D.regWeight la t) := fun c w hc => by
   simp only [regWeight, D.regFl_inv _ _ _ c w hc]
@@ -145,7 +145,7 @@ def PB (II : IntersectionSystem) (B : ℕ) (la : Ψ × Fin D.N → ℤ) : ℝ :=
 
 omit [DecidableEq Ψ] in
 /- English proof (translation)
-The claim follows from `D.j_lt_N.le`.
+A detailed English derivation is pending.
 -/
 theorem j_le_N : D.j ≤ D.N := D.j_lt_N.le
 

@@ -22,30 +22,28 @@ section Diagonal
 variable {γ δ : Fin n → ℕ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨diagPow_mem_levi μ, levi_le_blockUpper (diagPow_mem_levi (β := δ) μ)⟩`.
+Supply the required witnesses or components.
 -/
 theorem diagPow_mem_levi_inf_blockUpper (μ : Fin n → ℤ) :
     Cartan.diagPow F n μ ∈ levi F n γ ⊓ blockUpper F n δ :=
   ⟨diagPow_mem_levi μ, levi_le_blockUpper (diagPow_mem_levi (β := δ) μ)⟩
 
 /- English proof (translation)
-Set `H : Subgroup (GL (Fin n) F)` to `levi F n γ ⊓ blockUpper F n δ`. Establish `hhδ : (h : GL (Fin n) F) ∈ blockUpper F n δ` using `h.2.2`. Use `set ℓ : levi F n δ := leviProj F n δ ⟨h, hhδ⟩`. Set `ρ : Fin n → ℕ ×ₗ ℕ` to `fun i => toLex (γ i, δ i)`. Establish `hℓρ : (ℓ : GL (Fin n) F) ∈ levi F n ρ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_levi]`. Introduce `i j hij`. Use `show ((leviProj F n δ ⟨h, hhδ⟩ : levi F n δ) : GL (Fin n) F) i j = 0`. Rewrite using `[leviProj_apply]`. Use `split_ifs with hδ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hγ : γ i ≠ γ j` using `fun hγ => hij (by simp [ρ, hγ, hδ])`. Conclude with `(mem_levi.1 h.2.1) i j hγ`. Both sides reduce to the same expression. Establish `hρH : ∀ {g : GL (Fin n) F}, g ∈ levi F n ρ → g ∈ H`. Introduce `g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `⟨mem_levi.2 fun i j hij => (mem_levi.1 hg) i j fun e => hij ?_, levi_le_blockUpper (mem_levi.2 fun i j hij => (mem_levi.1 hg) i j fun e => hij ?_)⟩` and prove the remaining obligations. Use `congrArg (fun x : ℕ ×ₗ ℕ => (ofLex x).1) e` as an intermediate fact. Simplify `this` using `[ρ]`. Use `congrArg (fun x : ℕ ×ₗ ℕ => (ofLex x).2) e` as an intermediate fact. Simplify `this` using `[ρ]`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨μ, k₁, hk₁, k₂, hk₂, hℓ⟩` from `exists_eq_mul_diagPow_mul_levi hℓρ`. Use `⟨μ, fun {M} _ ψ hψ => ?_⟩` and prove the remaining obligations. Use `set u := (ℓ : GL (Fin n) F)⁻¹ * h`. Establish `hℓH : (ℓ : GL (Fin n) F) ∈ H` using `hρH hℓρ`. Establish `huH : u ∈ H` using `H.mul_mem (H.inv_mem hℓH) h.2`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `huN : u ∈ unipotentRadical F n δ`. Rewrite using `[show u = ((leviIncl ℓ)⁻¹ * ⟨h, hhδ⟩ : blockUpper F n δ) from rfl]`. Conclude with `leviProj_inv_mul_mem _`. Take `⟨e, he⟩` from `exists_unipotentCompactG_of_isCompact (γ := δ) (isCompact_singleton (x := u)) (by simpa using huN)`. Use `set t := rankTorus F n δ e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `htH : t ∈ H` using `⟨diagGL_mem_levi _, rankTorus_mem_blockUpper e⟩`. Establish `hk : t * u * t⁻¹ ∈ integralGL F n` using `(mem_unipotentCompactG.1 (he rfl)).2`. Establish `hψu : ψ ⟨u, huH⟩ = 1`. Establish `hkH : t * u * t⁻¹ ∈ H` using `H.mul_mem (H.mul_mem htH huH) (H.inv_mem htH)`. Establish `h1` using `hψ ⟨t * u * t⁻¹, hkH⟩ hk`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `: (⟨u, huH⟩ : H) = ⟨t, htH⟩⁻¹ * ⟨t * u * t⁻¹, hkH⟩ * ⟨t, htH⟩` using `Subtype.ext (by simp only [Subgroup.coe_mul, Subgroup.coe_inv]; group)`. Rewrite using `[this, map_mul, map_mul, h1, mul_one, ← map_mul, inv_mul_cancel, map_one]`. Establish `hh : h = ⟨k₁, hρH hk₁.1⟩ * ⟨Cartan.diagPow F n μ, diagPow_mem_levi_inf_blockUpper μ⟩ * ⟨k₂, hρH hk₂.1⟩ * ⟨u, huH⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Subgroup.coe_mul]`.
-
-Rewrite using `[← hℓ]`. Simplify using `[u]`. Rewrite using `[hh, map_mul, map_mul, map_mul, hψu, hψ ⟨k₁, hρH hk₁.1⟩ hk₁.2, hψ ⟨k₂, hρH hk₂.1⟩ hk₂.2, one_mul, mul_one, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_diagPow_eq (h : ↥(levi F n γ ⊓ blockUpper F n δ)) :
     ∃ μ : Fin n → ℤ, ∀ {M : Type*} [CommMonoid M] (ψ : ↥(levi F n γ ⊓ blockUpper F n δ) →* M),
@@ -110,7 +108,7 @@ section PermConjUnipotent
 variable {γ : Fin n → ℕ}
 
 /- English proof (translation)
-Rewrite using `[← map_inv, Units.val_mul, Units.val_mul, mul_permGL_apply, permGL_mul_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem permGL_conj_apply (w : Equiv.Perm (Fin n)) (g : GL (Fin n) F) (r c : Fin n) :
     ((permGL F w * g * (permGL F w)⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) r c =
@@ -118,9 +116,9 @@ theorem permGL_conj_apply (w : Equiv.Perm (Fin n)) (g : GL (Fin n) F) (r c : Fin
   rw [← map_inv, Units.val_mul, Units.val_mul, mul_permGL_apply, permGL_mul_apply]
 
 /- English proof (translation)
-Establish `hγ : (γ ∘ ⇑w⁻¹) ∘ ⇑w = γ`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[mem_unipotentRadical, mem_unipotentRadical, conj_permGL_mem_blockUpper_iff, hγ]`. Use `and_congr_right fun _ => ⟨fun h i j hij => ?_, fun h r c hrc => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `h (w i) (w j) (by simpa using hij)` as an intermediate fact. Rewrite `this` using `[permGL_conj_apply]`. Simplify `this` using `[Matrix.one_apply]`. Rewrite using `[permGL_conj_apply, h _ _ hrc]`. Simplify using `[Matrix.one_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conj_permGL_mem_unipotentRadical_iff (w : Equiv.Perm (Fin n)) {g : GL (Fin n) F} :
     permGL F w * g * (permGL F w)⁻¹ ∈ unipotentRadical F n (γ ∘ ⇑w⁻¹) ↔
@@ -144,11 +142,9 @@ variable {β γ : Fin n → ℕ} {w : Equiv.Perm (Fin n)} {W : Type*} [AddCommGr
   (σ : Representation ℂ (levi F n β) W)
 
 /- English proof (translation)
-Establish `hx : permGL F w * (a : GL (Fin n) F) * (permGL F w)⁻¹ ∈ unipotentRadical F n (γ ∘ ⇑w⁻¹)` using `(conj_permGL_mem_unipotentRadical_iff w).2 a.2.1`. Take `⟨hxP, hx1⟩` from `mem_unipotentRadical.1 hx`. Use `mem_unipotentRadical.2 ⟨fun i j hij => ?_, fun i j hij => ?_⟩` and prove the remaining obligations. Use `show ((leviProj F n β _ : levi F n β) : GL (Fin n) F) i j = 0`. Rewrite using `[leviProj_apply]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `split_ifs`. Conclude with `hxP hij`. Both sides reduce to the same expression. Rewrite using `[leviProj_apply] split_ifs with hβ`. Conclude with `hx1 i j hij`.
-
-Establish `hne : i ≠ j` using `fun e => hβ (e ▸ rfl)`. Rewrite using `[Matrix.one_apply_ne hne]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leviProj_permConj_mem_unipotentRadical (a : cellUnipotent F β γ w) :
     ((leviProj F n β (permConj F β w (Subgroup.inclusion cellUnipotent_le_blockUpper a)) :
@@ -169,9 +165,7 @@ theorem leviProj_permConj_mem_unipotentRadical (a : cellUnipotent F β γ w) :
       rw [Matrix.one_apply_ne hne]
 
 /- English proof (translation)
-Rewrite using `[cellRepA, MonoidHom.coe_comp, Function.comp_apply, cellRep_apply, inflateTwist_apply]`. Use `set p := permConj F β w (Subgroup.inclusion cellUnipotent_le_blockUpper a)`. Establish `h1 : sqrtModular F n β p = 1`. Rewrite using `[← sqrtModular_leviProj p]`. Conclude with `sqrtModular_leviIncl_of_mem _ (leviProj_permConj_mem_unipotentRadical a)`.
-
-Rewrite using `[h1, one_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cellRepA_apply_eq (a : cellUnipotent F β γ w) (v : W) :
     cellRepA β γ w σ a v =
@@ -189,13 +183,11 @@ abbrev innerJacquetSpace : Type _ :=
   Representation.Coinvariants (σ.comp (leviUnipotent F n β (γ ∘ ⇑w⁻¹)).subtype)
 
 /- English proof (translation)
-Establish `hxN : ((x : levi F n β) : GL (Fin n) F) ∈ unipotentRadical F n (γ ∘ ⇑w⁻¹)` using `Subgroup.mem_subgroupOf.1 x.2`. Use `set a := (permGL F w)⁻¹ * ((x : levi F n β) : GL (Fin n) F) * permGL F w`. Establish `hconj : permGL F w * a * (permGL F w)⁻¹ = ((x : levi F n β) : GL (Fin n) F)`. Simplify using `only [a]`. Use `group`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `haN : a ∈ unipotentRadical F n γ`. Rewrite using `[← conj_permGL_mem_unipotentRadical_iff w, hconj]`. Conclude with `hxN`. Establish `haP : a ∈ blockUpper F n (β ∘ w)`. Rewrite using `[← conj_permGL_mem_blockUpper_iff w, hconj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `levi_le_blockUpper (x : levi F n β).2`. Use `⟨⟨a, haN, haP⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Establish `: ((permConj F β w (Subgroup.inclusion cellUnipotent_le_blockUpper ⟨a, haN, haP⟩) : blockUpper F n β) : GL (Fin n) F) = ((x : levi F n β) : GL (Fin n) F)` using `hconj`. Establish `hp : permConj F β w (Subgroup.inclusion cellUnipotent_le_blockUpper ⟨a, haN, haP⟩) = ⟨((x : levi F n β) : GL (Fin n) F), levi_le_blockUpper (x : levi F n β).2⟩` using `Subtype.ext this`.
-
-Rewrite using `[hp, leviProj_of_mem_levi (x : levi F n β).2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cellUnipotent_of_leviUnipotent (x : leviUnipotent F n β (γ ∘ ⇑w⁻¹)) :
     ∃ a : cellUnipotent F β γ w,
@@ -270,7 +262,7 @@ def leviInfIncl (δ : Fin n → ℕ) : (levi F n β ⊓ blockUpper F n δ : Subg
   map_mul' _ _ := rfl
 
 /- English proof (translation)
-Use `Subgroup.mem_subgroupOf.2 ?_` and prove the remaining obligations. Use `show (x : GL (Fin n) F) * (((u : levi F n β)) : GL (Fin n) F) * (x : GL (Fin n) F)⁻¹ ∈ _`. Conclude with `conj_mem_unipotentRadical x.2.2 (Subgroup.mem_subgroupOf.1 u.2)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem leviInfIncl_conj_mem {δ : Fin n → ℕ} (x : (levi F n β ⊓ blockUpper F n δ : Subgroup (GL (Fin n) F)))
     (u : leviUnipotent F n β δ) :
@@ -316,9 +308,7 @@ variable {β γ : Fin n → ℕ} {w : Equiv.Perm (Fin n)} {W : Type*} [AddCommGr
   (σ : Representation ℂ (levi F n β) W)
 
 /- English proof (translation)
-Use `⟨(leviProj F n β _).2, fun i j hij => ?_⟩` and prove the remaining obligations. Use `show ((leviProj F n β _ : levi F n β) : GL (Fin n) F) i j = 0`. Rewrite using `[leviProj_apply]`. Use `split_ifs`. Use `show ((permGL F w * (b : GL (Fin n) F) * (permGL F w)⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j = 0`.
-
-Rewrite using `[permGL_conj_apply]`. Conclude with `(mem_levi.1 b.2.1) _ _ fun e => (ne_of_lt hij) (by simpa using e.symm)`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem leviProj_permConj_mem (b : cellLeviParabolic F β γ w) :
     ((leviProj F n β (permConj F β w (Subgroup.inclusion cellLeviParabolic_le_blockUpper b)) :
@@ -342,7 +332,7 @@ def cellInnerHom : cellLeviParabolic F β γ w →*
   map_mul' b b' := Subtype.ext (by simp)
 
 /- English proof (translation)
-Take `⟨v, rfl⟩` from `Representation.Coinvariants.mk_surjective _ x`. Rewrite using `[cellCoinvRep_mk, cellCoinvEquiv_mk, cellCoinvEquiv_mk, levJacquetAction_mk, ← map_smul]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cellCoinvEquiv_cellCoinvRep (b : cellLeviParabolic F β γ w)
     (x : Representation.Coinvariants (cellRepA β γ w σ)) :
@@ -385,7 +375,7 @@ theorem coe_indCongr_apply (e : V₁ ≃ₗ[ℂ] V₂) (he : ∀ h v, e (ρ₁ h
   rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (funext fun x => by rw [coe_indCongr_apply, coe_indRep_apply, coe_indRep_apply, coe_indCongr_apply])`.
+A detailed English derivation is pending.
 -/
 theorem indCongr_indRep (e : V₁ ≃ₗ[ℂ] V₂) (he : ∀ h v, e (ρ₁ h v) = ρ₂ h (e v)) (g : G)
     (φ : indSpace H ρ₁) :
@@ -434,7 +424,7 @@ theorem coe_indTwist_apply (χ : G →* ℂ) (hχ : ∀ g, χ g ≠ 0)
       χ g • (φ : G → V) g := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (funext fun x => by rw [coe_indTwist_apply, coe_indRep_apply, coe_indTwist_apply, twist_apply, Submodule.coe_smul, Pi.smul_apply, coe_indRep_apply, smul_smul, map_mul])`.
+A detailed English derivation is pending.
 -/
 theorem indTwist_twist (χ : G →* ℂ) (hχ : ∀ g, χ g ≠ 0)
     (hχo : ∃ U : Subgroup G, IsOpen (U : Set G) ∧ ∀ u ∈ U, χ u = 1) (g : G) (φ : indSpace H ρ) :

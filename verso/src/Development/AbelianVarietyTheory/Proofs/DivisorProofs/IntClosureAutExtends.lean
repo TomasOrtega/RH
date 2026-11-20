@@ -18,13 +18,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.UPoinc
 
 /- English proof (translation)
-Introduce `o₁ Ω₁ _ _ _ Ω₂ _ _ _ M₁ z₁ σ`. Use `letI : Algebra (M₁.Z.presheaf.stalk z₁) Ω₂ := ((algebraMap Ω₁ Ω₂).comp (M₁.stalkHom z₁)).toAlgebra`. Use `letI : Algebra (M₁.Z.presheaf.stalk z₁) Ω₁ := (M₁.stalkHom z₁).toAlgebra`. Use `haveI : IsDomain (M₁.Z.presheaf.stalk z₁) := (M₁.stalkHom_injective z₁).isDomain _`. Use `haveI : FaithfulSMul (M₁.Z.presheaf.stalk z₁) Ω₁ := (faithfulSMul_iff_algebraMap_injective _ _).2 (M₁.stalkHom_injective z₁)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsFractionRing (M₁.Z.presheaf.stalk z₁) Ω₁ := by`. Use `IsFractionRing.of_field _ _ fun x => ?_` and prove the remaining obligations. Take `⟨a, b, -, hx⟩` from `IsFractionRing.div_surjective (A := M₁.O z₁) x`. Use `⟨(M₁.stalkEquiv z₁).symm a, (M₁.stalkEquiv z₁).symm b, ?_⟩` and prove the remaining obligations. Establish `h : ∀ c : M₁.O z₁, algebraMap (M₁.Z.presheaf.stalk z₁) Ω₁ ((M₁.stalkEquiv z₁).symm c) = c` using `fun c => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `M₁.stalkHom z₁ _ = _`. Rewrite using `[← RatModel.coe_stalkEquiv, RingEquiv.apply_symm_apply]`. Rewrite using `[h, h, ← hx]`. Both sides reduce to the same expression. Use `haveI : IsScalarTower (M₁.Z.presheaf.stalk z₁) Ω₁ Ω₂ := IsScalarTower.of_algebraMap_eq fun _ => rfl`.
-
-Use `haveI : Algebra.IsAlgebraic Ω₁ Ω₂ := inferInstance`. Use `⟨(galRestrict (M₁.Z.presheaf.stalk z₁) Ω₁ Ω₂ (integralClosure (M₁.Z.presheaf.stalk z₁) Ω₂)).symm σ, fun b => ?_⟩` and prove the remaining obligations. Use `algebraMap_galRestrict_apply (M₁.Z.presheaf.stalk z₁) ((galRestrict (M₁.Z.presheaf.stalk z₁) Ω₁ Ω₂ (integralClosure (M₁.Z.presheaf.stalk z₁) Ω₂)).symm σ) b` as an intermediate fact. Rewrite `this` using `[MulEquiv.apply_symm_apply]`. Conclude with `this.symm`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intClosure_aut_extends : ∀ (o₁ Ω₁ : Type) [CommRing o₁] [Field Ω₁] [Algebra o₁ Ω₁] (Ω₂ : Type) [Field Ω₂] [Algebra Ω₁ Ω₂] [FiniteDimensional Ω₁ Ω₂] (M₁ : RatModel o₁ Ω₁) (z₁ : M₁.Z), letI : Algebra (M₁.Z.presheaf.stalk z₁) Ω₂ := ((algebraMap Ω₁ Ω₂).comp (M₁.stalkHom z₁)).toAlgebra; ∀ σ : (integralClosure (M₁.Z.presheaf.stalk z₁) Ω₂) ≃ₐ[M₁.Z.presheaf.stalk z₁] (integralClosure (M₁.Z.presheaf.stalk z₁) Ω₂), ∃ σ' : Ω₂ ≃ₐ[Ω₁] Ω₂, ∀ b : integralClosure (M₁.Z.presheaf.stalk z₁) Ω₂, σ' (b : Ω₂) = ((σ b : integralClosure (M₁.Z.presheaf.stalk z₁) Ω₂) : Ω₂) := by
   intro o₁ Ω₁ _ _ _ Ω₂ _ _ _ M₁ z₁ σ

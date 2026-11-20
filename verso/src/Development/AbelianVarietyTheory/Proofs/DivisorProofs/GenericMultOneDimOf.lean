@@ -32,9 +32,9 @@ theorem twistInv_apply (τ : Representation K P V) (c : P →* Kˣ) (h : P) :
     twistInv τ c h = (((c h)⁻¹ : Kˣ) : K) • τ h := rfl
 
 /- English proof (translation)
-Establish `hc : (Nat.card P : K) ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`. Use `letI : Invertible (Nat.card P : K) := invertibleOfNonzero hc`. Use `letI : Invertible (Fintype.card P : K) := invertibleOfNonzero (by rw [← Nat.card_eq_fintype_card]; exact hc)`. Establish `h` using `Representation.card_inv_mul_sum_char_eq_finrank (twistInv τ c)`. Rewrite using `[← h, mul_inv_cancel_left₀ hc]`.
+Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Representation.character, twistInv_apply, map_smul, smul_eq_mul, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_trace_mul_inv [Fintype P] [CharZero K] [FiniteDimensional K V] (τ : Representation K P V) (c : P →* Kˣ) :
     ∑ h : P, LinearMap.trace K V (τ h) * (((c h)⁻¹ : Kˣ) : K) =
@@ -50,11 +50,11 @@ theorem sum_trace_mul_inv [Fintype P] [CharZero K] [FiniteDimensional K V] (τ :
 end Twist
 
 /- English proof (translation)
-Establish `h` using `sum_trace_mul_inv (τ.comp (unip F r).subtype) (addCharHom ψ (supHom F r))`. Establish `e : (twistInv (τ.comp (unip F r).subtype) (addCharHom ψ (supHom F r))).invariants = eig τ (unip F r : Set (GL (Fin r) F)) fun g => ψ (edgeSum supEdge g)`. Use extensionality with `v`. Simplify using `only [Representation.mem_invariants, eig, Submodule.mem_iInf, LinearMap.mem_ker, twistInv_apply, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`. Establish `key : ∀ g : unip F r, ((((addCharHom ψ (supHom F r) g)⁻¹ : ℂˣ) : ℂ) • (τ.comp (unip F r).subtype g) v = v ↔ τ g v = ψ (edgeSum supEdge (g : GL (Fin r) F)) • v)`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `g`. Establish `hv : ψ (edgeSum supEdge (g : GL (Fin r) F)) = ((addCharHom ψ (supHom F r) g : ℂˣ) : ℂ)` using `rfl`. Rewrite using `[hv, Units.val_inv_eq_inv_val, inv_smul_eq_iff₀ (Units.ne_zero _)]`. Both sides reduce to the same expression. Conclude with `⟨fun H g hg => (key ⟨g, hg⟩).1 (H ⟨g, hg⟩), fun H g => (key g).2 (H g.1 g.2)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Supply the required witnesses or components.
 
-Rewrite `h` using `[e]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_unip_eq {F : Type} [Field F] {r : ℕ} [Fintype (unip F r)] {V : Type} [AddCommGroup V] [Module ℂ V]
     [FiniteDimensional ℂ V] (ψ : AddChar F ℂ) (τ : Representation ℂ (GL (Fin r) F) V) :
@@ -86,19 +86,17 @@ def piEquiv {ι : Type} {G : ι → Type} [∀ i, Group (G i)] (H : ∀ i, Subgr
 attribute [local instance] resField finite_res
 
 /- English proof (translation)
-Introduce `E _ _ Pg r K _ _ s ψ hψ χ hχ`. Take `⟨b, V, i1, i2, i3, σ, hσ, hs⟩` from `hχ`. Use `letI : Fintype (P0 Pg r ψ).H := Fintype.ofFinite _`. Use `letI : ∀ PP : ↥Pg, Fintype (unip (kP PP.1) r) := fun PP => Fintype.ofFinite _`. Apply `s.injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure. Reduce the claim to the hypotheses of an applicable result.
 
-Set `ψ' : ∀ PP : ↥Pg, AddChar (kP PP.1) ℂ` to `fun PP => s.toMonoidHom.compAddChar (ψ PP.1)`. Establish `hψ' : ∀ PP : ↥Pg, ψ' PP ≠ 1`. Introduce `PP h`. Use `hψ PP.1 PP.2 ?_` and prove the remaining obligations. Use extensionality with `x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Apply `s.injective` to reduce the goal to its premises. Use `DFunLike.congr_fun h x` as an intermediate fact. Simplify `this` using `[ψ']`. Set `e : (P0 Pg r ψ).H ≃ ∀ PP : ↥Pg, unip (kP PP.1) r` to `piEquiv fun PP : ↥Pg => unip (kP PP.1) r`. Set `f : ∀ PP : ↥Pg, unip (kP PP.1) r → ℂ` to `fun PP h => LinearMap.trace ℂ _ (parInd (F := kP PP.1) (b PP) (σ PP) h) * (((addCharHom (ψ' PP) (supHom (kP PP.1) r) h)⁻¹ : ℂˣ) : ℂ)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hf : ∀ PP : ↥Pg, ∑ h, f PP h = (Nat.card (unip (kP PP.1) r) : ℂ)`. Introduce `PP`. Use `letI : Fintype (kP PP.1) := Fintype.ofFinite _`. Use `haveI := finite_parInd (b PP) (σ PP)`. Establish `h1` using `sum_unip_eq (ψ' PP) (parInd (F := kP PP.1) (b PP) (σ PP))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hL (kP PP.1) (ψ' PP) (hψ' PP) r (V PP) (b PP) (σ PP) (hσ PP), Nat.cast_one, mul_one]`. Conclude with `h1`. Establish `hterm : ∀ h : (P0 Pg r ψ).H, s (χ (h : G0 Pg r) * ((((P0 Pg r ψ).chi h)⁻¹ : Kˣ) : K)) = ∏ PP, f PP (e h PP)`. Introduce `h`. Establish `hchi : (P0 Pg r ψ).chi h = ∏ PP : ↥Pg, addCharHom (ψ PP.1) (supHom (kP PP.1) r) (e h PP)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `MonoidHom.finset_prod_apply (fun PP : ↥Pg => (addCharHom (ψ PP.1) (supHom (kP PP.1) r)).comp (LevelP.prj (fun PP : ↥Pg => unip (kP PP.1) r) PP)) Finset.univ h`. Rewrite using `[map_mul, hs, hchi, Units.val_inv_eq_inv_val, map_inv₀, Units.coe_prod, map_prod, ← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun PP _ => ?_` and prove the remaining obligations. Simplify using `only [f, Units.val_inv_eq_inv_val]`. Both sides reduce to the same expression.
-
-Rewrite using `[map_sum, Finset.sum_congr rfl fun h _ => hterm h, map_natCast, Nat.card_congr e, Nat.card_pi, Nat.cast_prod, ← Finset.prod_congr rfl fun PP _ => hf PP, Fintype.prod_sum]`. Conclude with `Fintype.sum_equiv e _ _ fun _ => rfl`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genericMultOne (hL : OneGenericVector) : GenericMultOne := by
   classical

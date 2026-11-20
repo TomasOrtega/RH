@@ -16,7 +16,7 @@ open GlobalTheory GlobalTheory.CechPic
 namespace GlobalTheory.HtTensCurve
 
 /- English proof (translation)
-Establish `HD` using `diffVanish_chiPic_of_isProjOver (f := strHom κ Z) (algebraMap_eq_strHom κ Z) (structureModule Z) hp (d := 1) (by rw [QCoh.suppDim_structureModule, hd]; rfl)`. Establish `e` using `HD.interNum_update_tens (ι := Fin 1) (L := fun _ => A) (by simp) (fun _ => hA) 0 hA hB`. Establish `hu (N : LB Z) : Function.update (fun _ : Fin 1 => A) 0 N = fun _ => N`. Use function extensionality and compare the values at `fun j => by fin_cases j; simp`. Simplify `e` using `only [topSelf_def, hu]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem topSelf_one_tens {κ : Type} [Field κ] {Z : Scheme.{0}} [Algebra κ Γ(Z, ⊤)]
     (hp : IsProjOver (strHom κ Z)) (hd : topologicalKrullDim Z = 1) {A B : LB Z} (hA : A.IsLB)
@@ -29,7 +29,7 @@ theorem topSelf_one_tens {κ : Type} [Field κ] {Z : Scheme.{0}} [Algebra κ Γ(
   simpa only [topSelf_def, hu] using e
 
 /- English proof (translation)
-Establish `hA'` using `LB.isLB_pull hA i`. Establish `hB'` using `LB.isLB_pull hB i`. Rewrite using `[← topSelf_one_tens hp hd hA' hB', topSelf_def, topSelf_def]`. Use `interNum_congr_cls κ _ (fun _ => LB.isLB_pull (isLB_tens hA hB) i) (fun _ => isLB_tens hA' hB') fun _ => ?_` and prove the remaining obligations. Rewrite using `[cls_pull (isLB_tens hA hB) i, cls_tens hA hB, cls_tens hA' hB', cls_pull hA i, cls_pull hB i, map_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem topSelf_one_pull_tens {κ : Type} [Field κ] {X Z : Scheme.{0}} [Algebra κ Γ(Z, ⊤)]
     (hp : IsProjOver (strHom κ Z)) (hd : topologicalKrullDim Z = 1) (i : Z ⟶ X) {A B : LB X}
@@ -48,13 +48,11 @@ end GlobalTheory.HtTensCurve
 namespace GlobalTheory.HtTensCurve
 
 /- English proof (translation)
-Introduce `k _ X _ p D hX L M h h' h'' H H' H'' Z i _ _ hd`. Use `hX.isNoetherian_sub i` as an intermediate fact. Break down `hX.vertical_or_horizontal i with ⟨ℓ, _, ⟨_⟩⟩ | ⟨hc, -⟩` into its components or cases. Establish `: Module.Finite ℤ k` using `hX.finite`. Establish `: IsProper p` using `(isProper_and_exists_isAmpleLB_of_isProjOver hX.isProjOver).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hproj : IsProjOver (strHom (ZMod ℓ) Z)`. Establish `: IsFinite (spMap (Int.castRingHom k))`. Rewrite using `[spMap, IsFinite.SpecMap_iff]`. Conclude with `(RingHom.finite_algebraMap (A := ℤ) (B := k)).2 inferInstance`. Establish `e : strHom (ZMod ℓ) Z ≫ spMap (Int.castRingHom (ZMod ℓ)) = i ≫ p ≫ spMap (Int.castRingHom k)` using `specZIsTerminal.hom_ext _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsProper (strHom (ZMod ℓ) Z ≫ spMap (Int.castRingHom (ZMod ℓ)))`. Rewrite using `[e]`. Use `infer_instance`. Establish `: IsProper (strHom (ZMod ℓ) Z)` using `IsProper.of_comp _ (spMap (Int.castRingHom (ZMod ℓ)))`. Conclude with `ProperCurve.isProjOver_of_isProper _ hd`.
-
-Rewrite using `[H''.vertical Z i (ZMod ℓ) 1 hd, H.vertical Z i (ZMod ℓ) 1 hd, H'.vertical Z i (ZMod ℓ) 1 hd, ← add_mul]`. Use `congr 1`. Conclude with `topSelf_one_pull_tens hproj hd i L.isLB M.isLB` after adjusting the coercions. Conclude with `PtHtComb.height_tens hX H H' H'' (HtSelfInter.isAlgPt_genericPoint i hc hd)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem height_tens_curve : ∀ {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k}
     {D : ℕ}, GlobalTheory.IsArithVar p D → ∀ (L M : GlobalTheory.HermLB p) (h h' h'' : X → ℝ), L.IsArithHeight h →

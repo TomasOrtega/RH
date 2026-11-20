@@ -23,19 +23,19 @@ section General
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.SmGL.IwahoriOnto.isOpen_iwahori k (Fin n)`.
+A detailed English derivation is pending.
 -/
 theorem iw_isOpen (n : ℕ) : IsOpen (iwahori k (Fin n) : Set (GL (Fin n) k)) :=
   GlobalTheory.SmGL.IwahoriOnto.isOpen_iwahori k (Fin n)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.SmGL.IwahoriOnto.isCompact_iwahori k (Fin n)`.
+A detailed English derivation is pending.
 -/
 theorem iw_isCompact (n : ℕ) : IsCompact (iwahori k (Fin n) : Set (GL (Fin n) k)) :=
   GlobalTheory.SmGL.IwahoriOnto.isCompact_iwahori k (Fin n)
 
 /- English proof (translation)
-Take `⟨g', -, rfl⟩` from `Subgroup.mem_map.1 hg`. Conclude with `(g'.val i j).2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem iw_entry_le {n : ℕ} {g : GL (Fin n) k} (hg : g ∈ iwahori k (Fin n)) (i j : Fin n) :
     valuation k ((g : Matrix (Fin n) (Fin n) k) i j) ≤ 1 := by
@@ -43,13 +43,13 @@ theorem iw_entry_le {n : ℕ} {g : GL (Fin n) k} (hg : g ∈ iwahori k (Fin n)) 
   exact (g'.val i j).2
 
 /- English proof (translation)
-Set `M : Matrix (Fin n) (Fin n) (valuation k).integer` to `fun i j => ⟨(g : Matrix (Fin n) (Fin n) k) i j, h1 i j⟩`. Set `N : Matrix (Fin n) (Fin n) (valuation k).integer` to `fun i j => ⟨((g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) i j, h2 i j⟩`. Establish `hinj : Function.Injective ((algebraMap (valuation k).integer k).mapMatrix : Matrix (Fin n) (Fin n) _ → _)` using `Matrix.map_injective Subtype.val_injective`. Establish `hM : (algebraMap (valuation k).integer k).mapMatrix M = (g : Matrix (Fin n) (Fin n) k)`. Use extensionality with `i j`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Both sides reduce to the same expression. Establish `hN : (algebraMap (valuation k).integer k).mapMatrix N = ((g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)`. Use extensionality with `i j`. Both sides reduce to the same expression. Establish `hMN : M * N = 1` using `hinj (by rw [map_mul, map_one, hM, hN]; exact g.mul_inv)`.
+Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hNM : N * M = 1` using `hinj (by rw [map_mul, map_one, hM, hN]; exact g.inv_mul)`. Use `Subgroup.mem_map.2 ⟨⟨M, N, hMN, hNM⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show Matrix.BlockTriangular _ _`. Introduce `i j hij`. Simplify using `[GlobalTheory.SmGL.blk, GlobalTheory.SmGL.points] at hij ⊢`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Conclude with `Valuation.Integer.not_isUnit_iff_valuation_lt_one.2 (h3 i j hij)`. Use extensionality with `i j`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem iw_of_entries {n : ℕ} (g : GL (Fin n) k) (h1 : ∀ i j, valuation k ((g : Matrix (Fin n) (Fin n) k) i j) ≤ 1)
     (h2 : ∀ i j, valuation k (((g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) i j) ≤ 1)
@@ -74,13 +74,13 @@ theorem iw_of_entries {n : ℕ} (g : GL (Fin n) k) (h1 : ∀ i j, valuation k ((
     rfl
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨u, hu, d, hd, c, hc, he⟩` from `GlobalTheory.IwahoriTraceProof.iwahori_factorisation (Subgroup.inv_mem _ hx)`. Establish `hx' : x = c⁻¹ * (diagT k (Fin n) d)⁻¹ * u⁻¹`. Rewrite using `[← inv_inv x, he]`. Use `group`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `huI : u ∈ iwahori k (Fin n)` using `(GlobalTheory.IwahoriTraceProof.mem_unipO_iff hu.1).2 hu`. Establish `hcI : c ∈ iwahori k (Fin n)` using `GlobalTheory.SmGL.KOne_le_iwahori k (Fin n) hc.2`. Establish `hDI : diagT k (Fin n) d ∈ iwahori k (Fin n)` using `GlobalTheory.SmGL.diagT_mem_iwahori hd`. Establish `hc'` using `GlobalTheory.IwahoriTraceProof.mem_unipBLower.1 hc.1`. Establish `hu'` using `(GlobalTheory.SmGL.mem_unipB k).1 hu.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDt : diagT k (Fin n) d ∈ Tor k n`. Apply `mem_tor_of_offDiag` to reduce the goal to its premises. Introduce `i j hij`. Rewrite using `[GlobalTheory.SmGL.val_diagT, Matrix.diagonal_apply_ne _ hij]`. Establish `hcN : c⁻¹ ∈ Nlo k n` using `Subgroup.inv_mem _ (mem_Nlo_of c hc'.1 hc'.2)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `huN : u⁻¹ ∈ Nup k n` using `Subgroup.inv_mem _ (mem_Nup_of u hu'.1 hu'.2)`. Establish `hDT : (diagT k (Fin n) d)⁻¹ ∈ Tor k n` using `Subgroup.inv_mem _ hDt`. Conclude with `⟨c⁻¹, Subgroup.mem_inf.2 ⟨Subgroup.inv_mem _ hcI, hcN⟩, (diagT k (Fin n) d)⁻¹, Subgroup.mem_inf.2 ⟨Subgroup.inv_mem _ hDI, hDT⟩, u⁻¹, Subgroup.mem_inf.2 ⟨Subgroup.inv_mem _ huI, huN⟩, hx'⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem iw_hasIwahoriFact (n : ℕ) : HasIwahoriFact k n (iwahori k (Fin n)) (ones n) (sum_ones n) := by
   intro x hx
@@ -104,7 +104,7 @@ theorem iw_hasIwahoriFact (n : ℕ) : HasIwahoriFact k n (iwahori k (Fin n)) (on
     Subgroup.mem_inf.2 ⟨Subgroup.inv_mem _ hDI, hDT⟩, u⁻¹, Subgroup.mem_inf.2 ⟨Subgroup.inv_mem _ huI, huN⟩, hx'⟩
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[diagT, leviEmb, leviTorus, points, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.diagonal_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem diagT_coe_eq_diagonal (n : ℕ) (d : Fin n → kˣ) :
     ((diagT k (Fin n) d : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) = Matrix.diagonal (fun i => (d i : k)) := by
@@ -112,13 +112,13 @@ private theorem diagT_coe_eq_diagonal (n : ℕ) (d : Fin n → kˣ) :
   simp [diagT, leviEmb, leviTorus, points, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.diagonal_apply]
 
 /- English proof (translation)
-The claim follows from `mem_tor_of_offDiag _ fun i j hij => by rw [val_diagT, diagonal_apply_ne _ hij]`.
+A detailed English derivation is pending.
 -/
 theorem diagT_mem_Tor (n : ℕ) (d : Fin n → kˣ) : diagT k (Fin n) d ∈ Tor k n :=
   mem_tor_of_offDiag _ fun i j hij => by rw [val_diagT, diagonal_apply_ne _ hij]
 
 /- English proof (translation)
-Introduce `i j hij`. Rewrite using `[diagT_coe_eq_diagonal, Matrix.diagonal_apply_eq, Matrix.diagonal_apply_eq]`. Conclude with `h i j hij`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diagT_incrV (n : ℕ) (d : Fin n → kˣ)
     (h : ∀ i j : Fin n, i < j → valuation k (d i : k) < valuation k (d j : k)) :
@@ -128,9 +128,9 @@ theorem diagT_incrV (n : ℕ) (d : Fin n → kˣ)
   exact h i j hij
 
 /- English proof (translation)
-Take `⟨h0, h1⟩` from `nup_entries hN`. Take `⟨e0, e1, e2⟩` from `up_entries ht h0 h1 1`. Simplify using `only [pow_one] at e0 e1 e2`. Break down `lt_trichotomy i j with h | rfl | h` into its components or cases. Rewrite using `[e2]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mul_le_of_le_one_left' (ratio_lt_one (hinc i j h)).le).trans (iw_entry_le hm i j)`. Rewrite using `[e1, map_one]`. Rewrite using `[e0 i j h, map_zero]`. Conclude with `zero_le'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem up_conj_int {n : ℕ} {t m : GL (Fin n) k} {d : Fin n → k}
     (ht : (t : Matrix (Fin n) (Fin n) k) = Matrix.diagonal d)
@@ -148,11 +148,11 @@ theorem up_conj_int {n : ℕ} {t m : GL (Fin n) k} {d : Fin n → k}
     exact zero_le'
 
 /- English proof (translation)
-Take `⟨hup, hdiag⟩` from `nlo_entries hN`. Take `⟨-, -, e2⟩` from `lo_entries ht hup hdiag 1`. Simplify using `only [pow_one] at e2`. Rewrite using `[e2]`. Break down `lt_trichotomy i j with hij | rfl | hij` into its components or cases.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hup i j hij, map_zero, mul_zero]`. Establish `hne : valuation k (d i) ≠ 0`. Rewrite using `[ne_eq, map_eq_zero]`. Conclude with `GlobalTheory.CompanionTheory.LbElem.JPredDom.diag_ne_zero ht i`. Rewrite using `[div_self hne, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `(ratio_lt_one (hinc j i hij)).le`. Use `_ = _ := one_mul _`.
+A detailed English derivation is pending.
 -/
 theorem lo_conj_int {n : ℕ} {t m : GL (Fin n) k} {d : Fin n → k}
     (ht : (t : Matrix (Fin n) (Fin n) k) = Matrix.diagonal d)
@@ -177,9 +177,9 @@ theorem lo_conj_int {n : ℕ} {t m : GL (Fin n) k} {d : Fin n → k}
       _ = _ := one_mul _
 
 /- English proof (translation)
-Take `⟨h0, h1⟩` from `nup_entries hm.2`. Take `⟨e0, e1, -⟩` from `up_entries ht h0 h1 1`. Simplify using `only [pow_one] at e0 e1`. Establish `hinv : (t * m * t⁻¹)⁻¹ = t * m⁻¹ * t⁻¹` using `by group`. Use `⟨iw_of_entries _ (up_conj_int ht hinc hm.1 hm.2) (fun i j => ?_) fun i j hij => ?_, mem_Nup_of _ e0 e1⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hinv]`. Conclude with `up_conj_int ht hinc (inv_mem hm.1) (inv_mem hm.2) i j`. Rewrite using `[e0 i j hij, map_zero]`. Conclude with `zero_lt_one`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iw_up_mem {n : ℕ} {t : GL (Fin n) k} {d : Fin n → k}
     (ht : (t : Matrix (Fin n) (Fin n) k) = Matrix.diagonal d)
@@ -198,9 +198,9 @@ theorem iw_up_mem {n : ℕ} {t : GL (Fin n) k} {d : Fin n → k}
     exact zero_lt_one
 
 /- English proof (translation)
-Take `⟨h0, h1⟩` from `nlo_entries hm.2`. Take `⟨e0, e1, -⟩` from `lo_entries ht h0 h1 1`. Simplify using `only [pow_one] at e0 e1`. Establish `hinv : (t⁻¹ * m * t)⁻¹ = t⁻¹ * m⁻¹ * t` using `by group`. Use `⟨iw_of_entries _ (fun i j => (lo_conj_int ht hinc hm.1 hm.2 i j).trans (iw_entry_le hm.1 i j)) (fun i j => ?_) fun i j hij => ?_, mem_Nlo_of _ e0 e1⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hinv]`. Conclude with `(lo_conj_int ht hinc (inv_mem hm.1) (inv_mem hm.2) i j).trans (iw_entry_le (inv_mem hm.1) i j)`. Conclude with `(lo_conj_int ht hinc hm.1 hm.2 i j).trans_lt ((mem_iwahori.1 hm.1).2 i j hij)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iw_lo_mem {n : ℕ} {t : GL (Fin n) k} {d : Fin n → k}
     (ht : (t : Matrix (Fin n) (Fin n) k) = Matrix.diagonal d)
@@ -218,11 +218,9 @@ theorem iw_lo_mem {n : ℕ} {t : GL (Fin n) k} {d : Fin n → k}
   · exact (lo_conj_int ht hinc hm.1 hm.2 i j).trans_lt ((mem_iwahori.1 hm.1).2 i j hij)
 
 /- English proof (translation)
-Take `⟨γ, hγ, hsub⟩` from `exists_value_subset hU h1`. Take `⟨r, hr⟩` from `exists_contract (GlobalTheory.CompanionTheory.LbElem.JPredDom.diag_ne_zero ht) hinc hγ`. Use `⟨r, fun m hm => hsub _ ?_⟩` and prove the remaining obligations. Take `⟨h0, h1'⟩` from `nup_entries hm.2`. Take `⟨e0, e1, e2⟩` from `up_entries ht h0 h1' r`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `sub_one_le e1 fun i j hij => ?_` and prove the remaining obligations. Break down `lt_or_gt_of_ne hij with h | h` into its components or cases. Rewrite using `[e2]`. Conclude with `(mul_le_of_le_one_right' (iw_entry_le hm.1 i j)).trans (hr i j h).le`. Rewrite using `[e0 i j h, map_zero]`.
-
-Conclude with `zero_le'`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iw_up_contract {n : ℕ} {t : GL (Fin n) k} {d : Fin n → k}
     (ht : (t : Matrix (Fin n) (Fin n) k) = Matrix.diagonal d)
@@ -242,11 +240,9 @@ theorem iw_up_contract {n : ℕ} {t : GL (Fin n) k} {d : Fin n → k}
     exact zero_le'
 
 /- English proof (translation)
-Take `⟨γ, hγ, hsub⟩` from `exists_value_subset hU h1`. Take `⟨r, hr⟩` from `exists_contract (GlobalTheory.CompanionTheory.LbElem.JPredDom.diag_ne_zero ht) hinc hγ`. Use `⟨r, fun m hm => hsub _ ?_⟩` and prove the remaining obligations. Take `⟨h0, h1'⟩` from `nlo_entries hm.2`. Take `⟨e0, e1, e2⟩` from `lo_entries ht h0 h1' r`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `sub_one_le e1 fun i j hij => ?_` and prove the remaining obligations. Break down `lt_or_gt_of_ne hij with h | h` into its components or cases. Rewrite using `[e0 i j h, map_zero]`. Conclude with `zero_le'`. Rewrite using `[e2]`.
-
-Conclude with `(mul_le_of_le_one_right' (iw_entry_le hm.1 i j)).trans (hr j i h).le`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iw_lo_contract {n : ℕ} {t : GL (Fin n) k} {d : Fin n → k}
     (ht : (t : Matrix (Fin n) (Fin n) k) = Matrix.diagonal d)
@@ -266,9 +262,9 @@ theorem iw_lo_contract {n : ℕ} {t : GL (Fin n) k} {d : Fin n → k}
     exact (mul_le_of_le_one_right' (iw_entry_le hm.1 i j)).trans (hr j i h).le
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `hx`. Establish `ht` using `torEmb_diag s`. Establish `dom : IsDominant k n (iwahori k (Fin n)) (ones n) (sum_ones n) s`. Use `⟨fun m hm => iw_up_mem ht hinc hm, fun m hm => iw_lo_mem ht hinc hm, fun y hy => ?_⟩` and prove the remaining obligations. Establish `e1 : s * y * s⁻¹ = y` using `by rw [levi_comm s y, mul_inv_cancel_right]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e2 : s⁻¹ * y * s = y` using `by rw [levi_comm s⁻¹ y, inv_mul_cancel_right]`. Rewrite using `[e1, e2]`. Conclude with `⟨hy, hy⟩`. Conclude with `⟨⟨s, rfl, dom⟩, s, rfl, ⟨dom, fun U hU h1 => iw_up_contract ht hinc hU h1⟩, fun U hU h1 => iw_lo_contract ht hinc hU h1⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem iw_domT_strDomT (n : ℕ) (x : GL (Fin n) k) (hx : x ∈ Tor k n) (hinc : IncrV k n x) :
     DomT k n (iwahori k (Fin n)) x ∧ StrDomT k n (iwahori k (Fin n)) x := by
@@ -284,29 +280,29 @@ theorem iw_domT_strDomT (n : ℕ) (x : GL (Fin n) k) (hx : x ∈ Tor k n) (hinc 
     fun U hU h1 => iw_lo_contract ht hinc hU h1⟩
 
 /- English proof (translation)
-Use extensionality with `g`. Simplify using `[Subgroup.mem_map]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_one_aut {G : Type} [Group G] (H : Subgroup G) : H.map (1 : MulAut G).toMonoidHom = H := by
   ext g
   simp [Subgroup.mem_map]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨iw_isOpen n, iw_isCompact n, iw_hasIwahoriFact n, continuous_id, one_pos, one_pow 1, map_one_aut _, map_one_aut _, map_one_aut _, map_one_aut _⟩`.
+Supply the required witnesses or components.
 -/
 theorem iwahori_trivial_aut_admissible (n : ℕ) : admitted k n (iwahori k (Fin n)) 1 1 :=
   ⟨iw_isOpen n, iw_isCompact n, iw_hasIwahoriFact n, continuous_id, one_pos, one_pow 1, map_one_aut _,
     map_one_aut _, map_one_aut _, map_one_aut _⟩
 
 /- English proof (translation)
-Simplify using `[tnorm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tnorm_one_one {G : Type} [Group G] (x : G) : tnorm (1 : MulAut G) 1 x = x := by
   simp [tnorm]
 
 /- English proof (translation)
-Take `⟨hd, hs⟩` from `iw_domT_strDomT n t ht hinc`. Use `⟨ht, fun i hi => ?_, ?_⟩` and prove the remaining obligations. Take `rfl : i = 0` from `by omega`. Simplify using `using hd`. Rewrite using `[tnorm_one_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hs`.
+A detailed English derivation is pending.
 -/
 theorem iw_goodT_one (n : ℕ) (t : GL (Fin n) k) (ht : t ∈ Tor k n) (hinc : IncrV k n t) :
     GoodT k n (iwahori k (Fin n)) 1 1 t := by
@@ -318,11 +314,11 @@ theorem iw_goodT_one (n : ℕ) (t : GL (Fin n) k) (ht : t ∈ Tor k n) (hinc : I
     exact hs
 
 /- English proof (translation)
-Use `⟨fun i j hij => tor_offDiag hκ.2 hij, fun i => ?_⟩` and prove the remaining obligations. Establish `hmul : (κ : Matrix (Fin n) (Fin n) k) i i * ((κ⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) i i = 1`. Establish `h1 : ((κ * κ⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) i i = 1` using `by simp`. Rewrite `h1` using `[Units.val_mul, Matrix.mul_apply, Finset.sum_eq_single i]`. Conclude with `h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b _ hb`. Rewrite using `[tor_offDiag hκ.2 (Ne.symm hb), zero_mul]`. Introduce `hi`. Conclude with `absurd (Finset.mem_univ i) hi`. Establish `ha` using `iw_entry_le hκ.1 i i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb` using `iw_entry_le (inv_mem hκ.1) i i`. Establish `hm` using `congrArg (valuation k) hmul`. Rewrite `hm` using `[map_mul, map_one]`. Use `le_antisymm ha ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem iw_tor_entries (n : ℕ) (κ : GL (Fin n) k) (hκ : κ ∈ iwahori k (Fin n) ⊓ Tor k n) :
     (∀ i j : Fin n, i ≠ j → (κ : Matrix (Fin n) (Fin n) k) i j = 0) ∧
@@ -356,7 +352,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-The claim follows from `diagT_mem_Tor n _`.
+A detailed English derivation is pending.
 -/
 theorem tdiag_mem_Tor (w : Pl E) (ϖ : (w.adicCompletion E)ˣ) (n : ℕ) (y : Fin n → ℤ) :
     tdiag ϖ y ∈ Tor (w.adicCompletion E) n :=
@@ -365,9 +361,9 @@ theorem tdiag_mem_Tor (w : Pl E) (ϖ : (w.adicCompletion E)ˣ) (n : ℕ) (y : Fi
 omit [IsCMField E] in
 
 /- English proof (translation)
-Establish `h0 : Valued.v (ϖ : w.adicCompletion E) ≠ 0` using `by simp`. Unfold `ordL at hϖ`. Rewrite `hϖ` using `[dif_neg h0]`. Establish `hu : WithZero.unzero h0 = Multiplicative.ofAdd (-1 : ℤ)`. Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [toAdd_ofAdd]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← WithZero.coe_unzero h0, hu]`. Conclude with `WithZero.coe_lt_coe.2 (Multiplicative.ofAdd_lt.2 (by norm_num))`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unif_val_lt_one (w : Pl E) (ϖ : (w.adicCompletion E)ˣ) (hϖ : ordL (ϖ : w.adicCompletion E) = 1) :
     Valued.v (ϖ : w.adicCompletion E) < 1 := by
@@ -382,9 +378,9 @@ theorem unif_val_lt_one (w : Pl E) (ϖ : (w.adicCompletion E)ˣ) (hϖ : ordL (ϖ
   exact WithZero.coe_lt_coe.2 (Multiplicative.ofAdd_lt.2 (by norm_num))
 
 /- English proof (translation)
-Use `haveI := Valuation.Compatible.ofValuation (Valued.v : Valuation (w.adicCompletion E) _)`. Establish `hlt : valuation (w.adicCompletion E) (ϖ : w.adicCompletion E) < 1` using `(ValuativeRel.isEquiv (Valued.v : Valuation (w.adicCompletion E) _) (valuation _)).lt_one_iff_lt_one.1 (unif_val_lt_one w ϖ hϖ)`. Establish `hpos : 0 < valuation (w.adicCompletion E) (ϖ : w.adicCompletion E)`. Rewrite using `[zero_lt_iff, ne_eq, map_eq_zero]`. Conclude with `ϖ.ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `diagT_incrV n _ (fun i j hij => ?_)` and prove the remaining obligations. Simplify using `only [Units.val_zpow_eq_zpow_val, map_zpow₀]`. Conclude with `zpow_lt_zpow_right_of_lt_one₀ hpos hlt (hy hij)`.
+A detailed English derivation is pending.
 -/
 theorem tdiag_incrV (w : Pl E) (ϖ : (w.adicCompletion E)ˣ) (hϖ : ordL (ϖ : w.adicCompletion E) = 1) (n : ℕ)
     (y : Fin n → ℤ) (hy : StrictAnti y) : IncrV (w.adicCompletion E) n (tdiag ϖ y) := by
@@ -400,7 +396,7 @@ theorem tdiag_incrV (w : Pl E) (ϖ : (w.adicCompletion E)ˣ) (hϖ : ordL (ϖ : w
   exact zpow_lt_zpow_right_of_lt_one₀ hpos hlt (hy hij)
 
 /- English proof (translation)
-Take `⟨hoff, hdiag⟩` from `iw_tor_entries n κ hκ`. Use `⟨hoff, fun i => ?_⟩` and prove the remaining obligations. Use `haveI := Valuation.Compatible.ofValuation (Valued.v : Valuation (w.adicCompletion E) _)`. Conclude with `(ValuativeRel.isEquiv (Valued.v : Valuation (w.adicCompletion E) _) (valuation _)).eq_one_iff_eq_one.2 (hdiag i)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem iw_tor_TO (w : Pl E) (n : ℕ) (κ : GLw n w) (hκ : κ ∈ iwGL n w ⊓ Tor (w.adicCompletion E) n) :
     κ ∈ TO n w := by
@@ -411,13 +407,13 @@ theorem iw_tor_TO (w : Pl E) (n : ℕ) (κ : GLw n w) (hκ : κ ∈ iwGL n w ⊓
     (valuation _)).eq_one_iff_eq_one.2 (hdiag i)
 
 /- English proof (translation)
-The claim follows from `iwahori_trivial_aut_admissible n`.
+A detailed English derivation is pending.
 -/
 theorem iwahori_GL_trivial_admissible (w : Pl E) (n : ℕ) : admitted (w.adicCompletion E) n (iwGL n w) 1 1 :=
   iwahori_trivial_aut_admissible n
 
 /- English proof (translation)
-The claim follows from `iw_goodT_one n _ (tdiag_mem_Tor w ϖ n y) (tdiag_incrV w ϖ hϖ.1 n y hy)`.
+A detailed English derivation is pending.
 -/
 theorem goodT_id (w : Pl E) (ϖ : (w.adicCompletion E)ˣ) (hϖ : IsUnifAt ϖ) (n : ℕ) (y : Fin n → ℤ)
     (hy : StrictAnti y) : GoodT (w.adicCompletion E) n (iwGL n w) 1 1 (tdiag ϖ y) :=

@@ -16,7 +16,7 @@ section Comb
 variable {S : Scheme.{0}} {R : Type} [CommRing R]
 
 /- English proof (translation)
-Apply `RingHom.ext` to reduce the goal to its premises. Introduce `x`. Apply the tactic sequence `apply TrivSqZeroExt.ext <;> simp [GlobalTheory.CompanionTheory.Ar.epsMul, TrivSqZeroExt.algebraMap_eq_inl]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem epsMul_zero_eq : GlobalTheory.CompanionTheory.Ar.epsMul (0 : R) =
     (algebraMap R (DualNumber R)).comp (TrivSqZeroExt.fstHom R R R).toRingHom := by
@@ -25,7 +25,7 @@ theorem epsMul_zero_eq : GlobalTheory.CompanionTheory.Ar.epsMul (0 : R) =
   apply TrivSqZeroExt.ext <;> simp [GlobalTheory.CompanionTheory.Ar.epsMul, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Apply `RingHom.ext` to reduce the goal to its premises. Introduce `x`. Apply the tactic sequence `apply TrivSqZeroExt.ext <;> simp [GlobalTheory.CompanionTheory.Ar.epsMul]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem epsMul_one_eq : GlobalTheory.CompanionTheory.Ar.epsMul (1 : R) = RingHom.id (DualNumber R) := by
   apply RingHom.ext
@@ -33,19 +33,17 @@ theorem epsMul_one_eq : GlobalTheory.CompanionTheory.Ar.epsMul (1 : R) = RingHom
   apply TrivSqZeroExt.ext <;> simp [GlobalTheory.CompanionTheory.Ar.epsMul]
 
 /- English proof (translation)
-Conclude with `MonObj.comp_one f`.
+A detailed English derivation is pending.
 -/
 theorem comp_one_over {Y Z M : Over S} [GrpObj M] (f : Y ⟶ Z) : f ≫ (1 : Z ⟶ M) = 1 := by
   exact MonObj.comp_one f
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro u j`. Conclude with `j.elim0`. Consider the case `succ n ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u j hu`. Rewrite using `[List.ofFn_succ, List.prod_cons]`. Distinguish the cases in `hj : j = 0`. Substitute `hj` using the available equality. Establish `h1 : (List.ofFn fun i : Fin n => u i.succ).prod = 1` using `List.prod_eq_one fun x hx => by`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [List.mem_ofFn] at hx`. Take `⟨i, rfl⟩` from `hx`. Conclude with `hu _ (Fin.succ_ne_zero i)`. Rewrite using `[h1, _root_.mul_one]`. Take `⟨j', rfl⟩` from `Fin.exists_succ_eq.2 hj`.
-
-Rewrite using `[hu 0 (Fin.succ_ne_zero j').symm, _root_.one_mul]`. Conclude with `ih (fun i => u i.succ) j' fun i hi => hu _ fun h => hi (Fin.succ_injective _ h)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_ofFn_single {M : Type*} [Monoid M] : ∀ {n : ℕ} (u : Fin n → M) (j : Fin n),
     (∀ i, i ≠ j → u i = 1) → (List.ofFn u).prod = u j := by
@@ -67,9 +65,9 @@ theorem prod_ofFn_single {M : Type*} [Monoid M] : ∀ {n : ℕ} (u : Fin n → M
       exact ih (fun i => u i.succ) j' fun i hi => hu _ fun h => hi (Fin.succ_injective _ h)
 
 /- English proof (translation)
-Use `⟨fun i => if i = j then w i else 1, fun i => ?_, ?_⟩` and prove the remaining obligations. Use `show Over.Hom.left (if i = j then w i else 1) = _`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[epsMul_one_eq, spMap]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hij, Pi.single_eq_of_ne hij, epsMul_zero_eq]`. Establish `h1` using `comp_one_over (M := G) (Over.homMk (Spec.map (CommRingCat.ofHom (algebraMap R (DualNumber R)))) rfl : GlobalTheory.CompanionTheory.Ar.epsAt x ⟶ Over.mk x)`. Rewrite using `[← h1, Over.comp_left, ← hw i]`. Simplify using `[spMap]`. Rewrite using `[prod_ofFn_single _ j fun i hi => if_neg hi, if_pos rfl]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isComb_single {G : Over S} [GrpObj G] {x : Sp R ⟶ S} {n : ℕ} (w : Fin n → (epsAt x ⟶ G))
     (hw : ∀ i, GlobalTheory.CompanionTheory.Ar.IsTanAt G x (w i)) (j : Fin n) : GlobalTheory.CompanionTheory.Ar.Fl.IsComb (Pi.single j 1) w (w j) := by
@@ -93,17 +91,17 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {Xo : Moduli D l} {c : Coeff l}
 
 /- English proof (translation)
-Establish `hv` using `h.2.2.1`. Establish `hw` using `h.2.2.2`. Establish `hv'` using `h'.2.2.1`. Establish `hw'` using `h'.2.2.2`. Establish `hvw' : IsFramed U τ β y v w'` using `⟨h.1, h.2.1, hv, hw'⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `A : Matrix (Fin D.p) (Fin D.p) F` to `fun a => (hv.2 (v' a) (hv'.1 a)).exists.choose`. Establish `hA : ∀ a, IsComb (A a) v (v' a)` using `fun a => (hv.2 (v' a) (hv'.1 a)).exists.choose_spec`. Set `B : Matrix (Fin D.q) (Fin D.q) F` to `fun b => (hw.2 (w' b) (hw'.1 b)).exists.choose`. Establish `hB : ∀ b, IsComb (B b) w (w' b)` using `fun b => (hw.2 (w' b) (hw'.1 b)).exists.choose_spec`. Establish `hIv : ∀ a, IsComb ((1 : Matrix (Fin D.p) (Fin D.p) F) a) v (v a)` using `fun a => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (1 : Matrix (Fin D.p) (Fin D.p) F) a = Pi.single a 1`. Use function extensionality and compare the values at `fun b => Matrix.one_eq_pi_single`. Rewrite using `[h1]`. Conclude with `isComb_single v (fun i => (hv.1 i).1) a`. Establish `hIw : ∀ b, IsComb ((1 : Matrix (Fin D.q) (Fin D.q) F) b) w' (w' b)` using `fun b => by`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (1 : Matrix (Fin D.q) (Fin D.q) F) b = Pi.single b 1`. Use function extensionality and compare the values at `fun b' => Matrix.one_eq_pi_single`. Rewrite using `[h1]`. Conclude with `isComb_single w' (fun i => (hw'.1 i).1) b`. Establish `e1` using `hφ.chg F β y v w v w' 1 B h hvw' hIv hB`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1₀` using `hφ₀.chg F β y v w v w' 1 B h hvw' hIv hB`. Establish `e2` using `hφ.chg F β y v w' v' w' A 1 hvw' h' hA hIw`. Establish `e2₀` using `hφ₀.chg F β y v w' v' w' A 1 hvw' h' hA hIw`. Rewrite `e1`, `e1₀`, `e2`, `e2₀` using `[Matrix.det_one, _root_.mul_one]`. Establish `hBne : B.det ≠ 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h0`. Rewrite `e1` using `[h0, mul_zero]`. Conclude with `hφ.ne F β y v w' hvw' e1`. Apply `mul_right_cancel₀ hBne` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem eq_mul_of_frames {U : Set (Xo.XF c)} {τ : E →+* ℂ} {φ φ₀ : FrameFn Xo c} (hφ : IsLineFn U τ φ)
     (hφ₀ : IsLineFn U τ φ₀) {F : Type} [Field F] {β : c.F →+* F} {y : Sp F ⟶ Xo.XF c} {v v' : Vecs y D.p}
@@ -144,9 +142,9 @@ theorem eq_mul_of_frames {U : Set (Xo.XF c)} {τ : E →+* ℂ} {φ φ₀ : Fram
     _ = b * φ₀ F y v w * B.det := by rw [e2₀, e1₀, _root_.mul_assoc]
 
 /- English proof (translation)
-Take `⟨v', w', hfr, hv', hw'⟩` from `hb ℂ j`. Establish `hfr' : IsFramed U τ (algebraMap c.F ℂ) (spMap j ≫ y₀) v' w'`. Rewrite using `[← hj]`. Conclude with `hfr`. Establish `e` using `ha _ v' w' hfr'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[hφ.nat k ℂ j β₀ y₀ v₀ w₀ _ v' w' h₀ rfl hv' hw', hφ₀.nat k ℂ j β₀ y₀ v₀ w₀ _ v' w' h₀ rfl hv' hw']`. Conclude with `e`.
+A detailed English derivation is pending.
 -/
 theorem ratio_at {U : Set (Xo.XF c)} {τ : E →+* ℂ} {φ φ₀ : FrameFn Xo c} (hφ : IsLineFn U τ φ)
     (hφ₀ : IsLineFn U τ φ₀) {a : ℂ}
@@ -168,27 +166,25 @@ theorem ratio_at {U : Set (Xo.XF c)} {τ : E →+* ℂ} {φ φ₀ : FrameFn Xo c
   exact e
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c U τ φ φ₀ g ty FU i hty hφ hφ₀ hper`. Take `⟨a, ha⟩` from `GlobalTheory.T.flat_gen_frame_independent E H D l Xo c U τ φ φ₀ g ty FU i hty hφ hφ₀ hper`. Establish `hL` using `hφ.line`. Establish `hL₀` using `hφ₀.line`. Distinguish the cases in `hex : ∃ (y : Sp ℂ ⟶ Xo.XF c) (v : Vecs y D.p) (w : Vecs y D.q), IsFramed U τ (algebraMap c.F ℂ) y v w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Take `⟨y1, v1, w1, h1⟩` from `hex`. Take `⟨k, _, β₀, y₀, v₀, w₀, f, j, h₀, -, hj, -, hb⟩` from `GlobalTheory.T.framed_point_descends E H D l Xo c U τ ℂ (algebraMap c.F ℂ) y1 v1 w1 h1`. Establish `hr` using `ratio_at hL hL₀ ha h₀ hb j hj`. Establish `hne₀ : j (φ₀ k y₀ v₀ w₀) ≠ 0` using `(map_ne_zero j).2 (hL₀.ne k β₀ y₀ v₀ w₀ h₀)`. Establish `hfix : ∀ σ' : ℂ ≃+* ℂ, (∀ x ∈ c.F, σ' x = x) → σ' a = a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `σ' hσ'`. Establish `hj' : (σ'.toRingHom.comp j).comp β₀ = algebraMap c.F ℂ`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Establish `hx` using `RingHom.congr_fun hj x`. Simplify using `only [RingHom.comp_apply] at hx ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hx]`. Conclude with `hσ' _ x.2`. Establish `hr'` using `ratio_at hL hL₀ ha h₀ hb _ hj'`. Simplify using `only [RingHom.comp_apply] at hr'`. Rewrite `hr'` using `[hr, map_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_right_cancel₀ ((map_ne_zero _).2 hne₀) hr'`. Establish `haF : a ∈ c.F` using `GlobalTheory.T.fixed_by_automorphisms_mem_field c.F a c.fin hfix`. Use `⟨⟨a, haF⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Establish `ha0 : a = 0` using `congrArg Subtype.val h0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hL.ne k β₀ y₀ v₀ w₀ h₀` to reduce the goal to its premises. Apply `j.injective` to reduce the goal to its premises. Rewrite using `[hr, map_zero, ha0, zero_mul]`. Introduce `F _ β y v w hfr`. Take `⟨k', _, β₀', y₀', v₀', w₀', f', j', h₀', hfβ', hj'', hy', hb'⟩` from `GlobalTheory.T.framed_point_descends E H D l Xo c U τ F β y v w hfr`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Substitute using the available equality. Substitute using the available equality.
 
-Substitute `hy'` using the available equality. Substitute `hfβ'` using the available equality. Establish `hr2` using `ratio_at hL hL₀ ha h₀' hb' j' hj''`. Establish `hk : φ k' y₀' v₀' w₀' = β₀' ⟨a, haF⟩ * φ₀ k' y₀' v₀' w₀'`. Apply `j'.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[map_mul, hr2]`. Use `congr 1`. Establish `hx` using `RingHom.congr_fun hj'' ⟨a, haF⟩`. Simplify using `only [RingHom.comp_apply] at hx`. Rewrite using `[hx]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Take `⟨v', w', hfr', hv', hw'⟩` from `hb' F f'`. Establish `n1` using `hL.nat k' F f' β₀' y₀' v₀' w₀' _ v' w' h₀' rfl hv' hw'`. Establish `n2` using `hL₀.nat k' F f' β₀' y₀' v₀' w₀' _ v' w' h₀' rfl hv' hw'`. Use `eq_mul_of_frames hL hL₀ hfr hfr' (b := f' (β₀' ⟨a, haF⟩)) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[n1, n2, hk, map_mul]`. Use `⟨1, one_ne_zero, fun F _ β y v w hfr => ?_⟩` and prove the remaining obligations. It suffices to derive a contradiction. Take `⟨k, _, β₀, y₀, v₀, w₀, f, j, h₀, -, hj, -, hb⟩` from `GlobalTheory.T.framed_point_descends E H D l Xo c U τ F β y v w hfr`. Take `⟨v', w', hfr', -, -⟩` from `hb ℂ j`.
-
-Rewrite `hfr'` using `[hj]`. Conclude with `hex ⟨_, v', w', hfr'⟩`.
+It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flatGen_unique : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (U : Set (Xo.XF c)) (τ : E →+* ℂ) (φ φ₀ : FrameFn Xo c) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (FU : FamilyUnif Xo (algebraMap (KA l) ℂ) ty) (i : Fin FU.n), IsTypeFn H D.p D.q ty → IsFlatGen U τ φ FU i → IsFlatGen U τ φ₀ FU i → (∀ y : Sp ℂ ⟶ Xo.XF c, y ≫ pullback.snd _ _ = spMap (algebraMap c.F ℂ) → Set.range y ⊆ U → ∃ P, IsPeriod (FU.Di i) ty P ∧ under y = FU.u i P) → ∃ a : c.F, a ≠ 0 ∧ ∀ (F : Type) [Field F] (β : c.F →+* F) y v w, IsFramed U τ β y v w → φ F y v w = β a * φ₀ F y v w := by
   intro E _ _ _ H D l Xo c U τ φ φ₀ g ty FU i hty hφ hφ₀ hper

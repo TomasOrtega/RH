@@ -15,25 +15,23 @@ open Filter
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use `set ω := Module.Free.chooseBasis ℤ (𝓞 E) with hω`. Establish `hI : ∀ (v : HeightOneSpectrum (𝓞 F)) (z : Fv F v ⊗[F] E), z ∈ intLoc F E v ↔ z ∈ AddSubgroup.closure {z : Fv F v ⊗[F] E | ∃ a ∈ v.adicCompletionIntegers F, ∃ x : 𝓞 E, z = a ⊗ₜ[F] (x : E)}` using `fun _ _ => Iff.rfl`. Establish `h1 : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in cofinite, ∀ j k, algebraMap F (Fv F v) (b.repr ((ω j : 𝓞 E) : E) k) ∈ v.adicCompletionIntegers F`. Simplify using `only [Filter.eventually_all]`. Introduce `j k`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `eventually_algebraMap_mem_integers _`. Establish `h2 : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in cofinite, ∀ k, (1 : Fv F v) ⊗ₜ[F] b k ∈ intLoc F E v`. Rewrite using `[Filter.eventually_all]`. Introduce `k`. Conclude with `eventually_one_tmul_mem_intLoc _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `filter_upwards [h1, h2] with v h1 h2 y`. Establish `key : ∀ (x : 𝓞 E) (k : Fin d), algebraMap F (Fv F v) (b.repr (x : E) k) ∈ v.adicCompletionIntegers F`. Introduce `x k`. Establish `hx : (x : E) = ∑ j, (ω.repr x j) • ((ω j : 𝓞 E) : E)`. Use `congrArg (algebraMap (𝓞 E) E) (ω.sum_repr x)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[map_sum]`. Simplify using `only [map_zsmul] at this`. Conclude with `this.symm`. Rewrite using `[hx, map_sum, Finsupp.coe_finset_sum, Finset.sum_apply, map_sum]`. Use `sum_mem fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction.
 
-Rewrite using `[map_zsmul, Finsupp.smul_apply, map_zsmul]`. Conclude with `zsmul_mem (h1 j k) _`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Rewrite `hy` using `[hI]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, x, rfl⟩` from `hz`. Introduce `k`. Rewrite using `[Algebra.TensorProduct.basis_repr_tmul, Finsupp.smul_apply, Finsupp.mapRange_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `mul_mem ha (key x k)`. Consider the case `zero => intro k`. Simplify using the standard rewrite rules. Consider the case `add z w _ _ hz hw`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_add, Finsupp.add_apply]`. Conclude with `add_mem (hz k) (hw k)`. Consider the case `neg z _ hz`. Introduce `k`. Rewrite using `[map_neg, Finsupp.neg_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `neg_mem (hz k)`. Introduce `hy`. Rewrite using `[← (Algebra.TensorProduct.basis (Fv F v) b).sum_repr y]`. Use `sum_mem fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.basis_apply, Algebra.smul_def]`.
-
-Use `mul_mem ?_ (h2 k)` and prove the remaining obligations. Rewrite using `[hI]`. Use `AddSubgroup.subset_closure ⟨_, hy k, 1, ?_⟩` and prove the remaining obligations. Simplify using `[Algebra.TensorProduct.algebraMap_apply]`.
+A detailed English derivation is pending.
 -/
 theorem eventually_mem_intLoc_iff_repr {d : ℕ} (b : Module.Basis (Fin d) F E) :
     ∀ᶠ v : HeightOneSpectrum (𝓞 F) in cofinite, ∀ y : Fv F v ⊗[F] E, y ∈ intLoc F E v ↔
@@ -95,27 +93,25 @@ theorem eventually_mem_intLoc_iff_repr {d : ℕ} (b : Module.Basis (Fin d) F E) 
     simp [Algebra.TensorProduct.algebraMap_apply]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n d b L hL`. Use `haveI := isLattice_stdLattice (E := E) (n := n)`. Use `filter_upwards [eventually_latLoc_eq F L (stdLattice E n), eventually_mem_intLoc_iff_repr b] with v hv h1`. Establish `hI : ∀ z : Fv F v ⊗[F] E, z ∈ intLoc F E v ↔ z ∈ AddSubgroup.closure {z : Fv F v ⊗[F] E | ∃ a ∈ v.adicCompletionIntegers F, ∃ x : 𝓞 E, z = a ⊗ₜ[F] (x : E)}` using `fun _ => Iff.rfl`. Establish `hS : ∀ y : Fin n → Fv F v ⊗[F] E, y ∈ latLoc F (stdLattice E n) v ↔ y ∈ AddSubgroup.closure {y : Fin n → Fv F v ⊗[F] E | ∃ a ∈ v.adicCompletionIntegers F, ∃ x ∈ stdLattice E n, y = fun i => a ⊗ₜ[F] x i}` using `fun _ => Iff.rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hstd : ∀ x : Fin n → E, x ∈ stdLattice E n ↔ ∀ i, ∃ z : 𝓞 E, (z : E) = x i`. Introduce `x`. Unfold `stdLattice Formalism.UG.stdLat`. Simplify using `only [Submodule.mem_pi, Set.mem_univ, true_implies, LinearMap.mem_range, Algebra.linearMap_apply]`. Establish `hloc : ∀ y, y ∈ latLoc F (stdLattice E n) v ↔ ∀ i, y i ∈ intLoc F E v`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy i`. Rewrite `hy` using `[hS]`. Proceed by induction on `hy using AddSubgroup.closure_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `mem z hz`. Take `⟨a, ha, x, hx, rfl⟩` from `hz`. Take `⟨w, hw⟩` from `(hstd x).1 hx i`. Rewrite using `[hI]`. Conclude with `AddSubgroup.subset_closure ⟨a, ha, w, by rw [hw]⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => exact zero_mem _`. Consider the case `add z w _ _ hz hw => exact add_mem hz hw`. Consider the case `neg z _ hz => exact neg_mem hz`. Introduce `hy`. Rewrite using `[← Finset.univ_sum_single y, hS]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Establish `hyi` using `hy i`. Rewrite `hyi` using `[hI]`. Use `revert hyi`. Generalize the expression as in `y i = z0`.
+Replace the chosen expression with an arbitrary variable. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Introduce `hyi`. Proceed by induction on `hyi using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, x, rfl⟩` from `hz`. Use `AddSubgroup.subset_closure ⟨a, ha, Pi.single i (x : E), (hstd _).2 fun j => ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Conclude with `⟨x, by simp⟩`. Conclude with `⟨0, by simp [h]⟩`. Use function extensionality and compare the values at `j`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`. Consider the case `zero => simp`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add z w _ _ hz hw`. Rewrite using `[Pi.single_add]`. Conclude with `add_mem hz hw`. Consider the case `neg z _ hz`. Rewrite using `[Pi.single_neg]`.
-
-Conclude with `neg_mem hz`. Use extensionality with `X`. Unfold `latV`. Simplify using `only [Set.mem_setOf_eq, hv, hloc, h1, Fin.forall_fin_one]`.
+By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eventually_latLoc_eq_latV :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n d : ℕ)

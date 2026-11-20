@@ -14,7 +14,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ChartDerBd
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[MvPowerSeries.X_dvd_iff]`. Introduce `n hn`. Establish `h1` using `h (n + Finsupp.single t 1) (by simp [Finsupp.single_apply, hst, hn])`. Rewrite `h1` using `[MvPowerSeries.X, MvPowerSeries.coeff_monomial_mul]`. Simplify using `using h1`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem X_dvd_of_X_mul {σ K : Type} [Field K] {s t : σ} (hst : t ≠ s) {g : MvPowerSeries σ K}
     (h : MvPowerSeries.X s ∣ MvPowerSeries.X t * g) : MvPowerSeries.X s ∣ g := by
@@ -26,7 +26,7 @@ theorem X_dvd_of_X_mul {σ K : Type} [Field K] {s t : σ} (hst : t ≠ s) {g : M
   simpa using h1
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simpa using h`. Consider the case `insert a S ha ih`. Rewrite `h` using `[Finset.prod_insert ha, _root_.mul_assoc]`. Conclude with `ih (fun j hj => hS j (Finset.mem_insert_of_mem hj)) (X_dvd_of_X_mul (hS a (Finset.mem_insert_self a S)) h)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem X_dvd_of_prod_mul {σ K : Type} [Field K] {Idx : Type} (f : Idx → σ) {s : σ}
     (S : Finset Idx) (hS : ∀ j ∈ S, f j ≠ s) {g : MvPowerSeries σ K}
@@ -40,17 +40,15 @@ theorem X_dvd_of_prod_mul {σ K : Type} [Field K] {Idx : Type} (f : Idx → σ) 
       (X_dvd_of_X_mul (hS a (Finset.mem_insert_self a S)) h)
 
 /- English proof (translation)
-Introduce `A _ k _ m d ψ δ D' I hI hD hJ i`. Establish `hpres : ∀ x ∈ I.map ψ, D' x ∈ I.map ψ`. Introduce `x hx`. Rewrite `hx` using `[Ideal.map]`. Proceed by induction on `hx using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction.
 
-Consider the case `mem y hy`. Take `⟨a, ha, rfl⟩` from `hy`. Rewrite using `[hD]`. Conclude with `Ideal.mem_map_of_mem ψ (hI a ha)`. Consider the case `zero => simp`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Ideal.add_mem _ hx hy`. Consider the case `smul r x hxm hx`. Rewrite using `[smul_eq_mul, Derivation.leibniz, smul_eq_mul, smul_eq_mul]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ r hx) (Ideal.mul_mem_right _ _ (Ideal.span_le.2 (fun y hy => Ideal.subset_span hy) hxm))`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set t := bdParam k m d with ht`. Establish `hP : t i * ∏ j ∈ Finset.univ.erase i, t j = ∏ j, t j` using `Finset.mul_prod_erase _ _ (Finset.mem_univ i)`. Establish `hmem : D' (∏ j, t j) ∈ Ideal.span {∏ j, t j}`. Rewrite using `[← hJ]`. Apply `hpres` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hJ]`. Conclude with `Ideal.subset_span rfl`. Rewrite `hmem`, the goal using `[Ideal.mem_span_singleton]`. Rewrite `hmem` using `[← hP, Derivation.leibniz, smul_eq_mul, smul_eq_mul]`. Establish `h1 : t i ∣ t i * D' (∏ j ∈ Finset.univ.erase i, t j) + (∏ j ∈ Finset.univ.erase i, t j) * D' (t i)` using `(dvd_mul_right (t i) _).trans hmem`.
-
-Establish `h2 : t i ∣ (∏ j ∈ Finset.univ.erase i, t j) * D' (t i)` using `(dvd_add_right (dvd_mul_right _ _)).1 h1`. Conclude with `X_dvd_of_prod_mul (fun j : Fin m => (Sum.inl j : Fin m ⊕ Fin d)) (Finset.univ.erase i) (fun j hj h => (Finset.ne_of_mem_erase hj) (Sum.inl_injective h)) h2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem deriv_bdParam_mem_span : ∀ (A : Type) [CommRing A] (k : Type) [Field k] (m d : ℕ) (ψ : A →+* ChartRing k m d) (δ : Derivation ℤ A A) (D' : Derivation ℤ (ChartRing k m d) (ChartRing k m d)) (I : Ideal A), (∀ a ∈ I, δ a ∈ I) → (∀ a, D' (ψ a) = ψ (δ a)) → I.map ψ = Ideal.span {∏ i, bdParam k m d i} → ∀ i, D' (bdParam k m d i) ∈ Ideal.span {bdParam k m d i} := by
   classical

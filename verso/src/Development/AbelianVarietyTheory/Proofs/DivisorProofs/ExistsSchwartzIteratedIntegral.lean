@@ -9,7 +9,7 @@ namespace GlobalTheory.ConeSch
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
 
 /- English proof (translation)
-The claim follows from `(continuousMultilinearCurryLeftEquiv ℝ (fun _ : Fin (n + 1) => V) ℂ).toLinearIsometry.integral_comp_comm F`.
+A detailed English derivation is pending.
 -/
 theorem integral_curryLeft {α : Type} [MeasurableSpace α] (ν : Measure α) {n : ℕ}
     (F : α → ContinuousMultilinearMap ℝ (fun _ : Fin (n + 1) => V) ℂ) :
@@ -17,7 +17,7 @@ theorem integral_curryLeft {α : Type} [MeasurableSpace α] (ν : Measure α) {n
   (continuousMultilinearCurryLeftEquiv ℝ (fun _ : Fin (n + 1) => V) ℂ).toLinearIsometry.integral_comp_comm F
 
 /- English proof (translation)
-Establish `h` using `hasFDerivAt_integral_of_dominated_of_fderiv_le (μ := ν) (F := fun w a => F a w) (F' := fun w a => (F' a w).curryLeft) (x₀ := v) (bound := c) (s := Set.univ) Filter.univ_mem (Filter.Eventually.of_forall fun w => hFm w) (hFi v) ((continuousMultilinearCurryLeftEquiv ℝ (fun _ : Fin ( …`. Rewrite `h` using `[integral_curryLeft]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_integral_curry {α : Type} [MeasurableSpace α] (ν : Measure α) {n : ℕ}
     (F : α → V → ContinuousMultilinearMap ℝ (fun _ : Fin n => V) ℂ)

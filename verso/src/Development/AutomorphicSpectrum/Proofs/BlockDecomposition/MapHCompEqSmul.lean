@@ -13,7 +13,7 @@ namespace GlobalTheory.CompanionTheory.LsRho
 variable {W : Type} [CommRing W]
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ u`. Conclude with `congrArg Submodule.Quotient.mk (Subtype.ext (h z.1))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mapH_eq_self {K : Cx.{1} W} (φ : Cx.Hom K K (RingHom.id W)) (n : ℕ)
     (h : ∀ x, φ.f n x = x) (u : K.H n) : φ.mapH n u = u := by
@@ -21,7 +21,7 @@ theorem mapH_eq_self {K : Cx.{1} W} (φ : Cx.Hom K K (RingHom.id W)) (n : ℕ)
   exact congrArg Submodule.Quotient.mk (Subtype.ext (h z.1))
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ u`. Conclude with `congrArg Submodule.Quotient.mk (Subtype.ext (h z.1))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mapH_of_comp {K L P : Cx.{1} W} (φ : Cx.Hom K L (RingHom.id W)) (ψ : Cx.Hom L P (RingHom.id W))
     (χ : Cx.Hom K P (RingHom.id W)) (n : ℕ) (h : ∀ x, χ.f n x = ψ.f n (φ.f n x)) (u : K.H n) :
@@ -30,7 +30,7 @@ theorem mapH_of_comp {K L P : Cx.{1} W} (φ : Cx.Hom K L (RingHom.id W)) (ψ : C
   exact congrArg Submodule.Quotient.mk (Subtype.ext (h z.1))
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ u`. Conclude with `congrArg Submodule.Quotient.mk (Subtype.ext (h z.1))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mapH_comp_eq_smul {K L : Cx.{1} W} (φ : Cx.Hom K L (RingHom.id W)) (ψ : Cx.Hom L K (RingHom.id W))
     (s : W) (n : ℕ) (h : ∀ x, ψ.f n (φ.f n x) = s • x) (u : K.H n) :
@@ -39,11 +39,11 @@ theorem mapH_comp_eq_smul {K L : Cx.{1} W} (φ : Cx.Hom K L (RingHom.id W)) (ψ 
   exact congrArg Submodule.Quotient.mk (Subtype.ext (h z.1))
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((l : W) ^ n) • (x : (quo l K n).H j) = 0`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `hz : ((l : W) ^ n) • z = 0`. Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((l : W) ^ n) • z.1 = 0`.
+Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨w, hw⟩` from `Submodule.Quotient.mk_surjective _ z.1`. Rewrite using `[← hw]`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (((l : W) ^ n) • w) = 0`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 ⟨w, rfl⟩`. Rewrite using `[← Submodule.Quotient.mk_smul, hz]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem kill (l : ℕ) (K : Cx.{1} W) (j n : ℕ) (x : (qsys l K j).M n) : ((l : W) ^ n) • x = 0 := by
   change ((l : W) ^ n) • (x : (quo l K n).H j) = 0

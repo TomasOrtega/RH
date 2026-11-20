@@ -3,29 +3,27 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open QuadraticAlgebra UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc
 
 /- English proof (translation)
-Introduce `T Y _ _ C P F hP hFP hF hCF hPF hU`. Set `q : Y → MulAction.orbitRel.Quotient T Y` to `fun y => Quotient.mk _ y`. Establish `hq : ∀ a b : Y, q a = q b ↔ a ∈ MulAction.orbit T b`. Introduce `a b`. Rewrite using `[← MulAction.orbitRel_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Quotient.eq`. Establish `hstab : ∀ (t : T) (y : Y), MulAction.stabilizer T (t • y) = MulAction.stabilizer T y`. Introduce `t y`. Use extensionality with `g`. Simplify using `only [MulAction.mem_stabilizer_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_smul, mul_comm, ← smul_smul]`. Conclude with `(MulAction.injective t).eq_iff`. Establish `hstab' : ∀ a b : Y, a ∈ MulAction.orbit T b → MulAction.stabilizer T a = MulAction.stabilizer T b`. Introduce and unpack `a b ⟨s, rfl⟩`. Conclude with `hstab s b`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hrel : ∀ z : Y, (MulAction.stabilizer T z).relIndex C = (MulAction.orbit C z).ncard`. Introduce `z`. Rewrite using `[← MulAction.index_stabilizer, Subgroup.relIndex]`. Use `congr 1`. Establish `hfib : ∀ z ∈ F, {y | y ∈ F ∧ q y = q z} = MulAction.orbit C z`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce `z hz`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hy, hyq⟩`. Take `⟨s, rfl⟩` from `(hq _ _).1 hyq`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `⟨c, hc, hcs⟩` from `hU s z hz hy`. Conclude with `⟨⟨c, hc⟩, hcs⟩`. Introduce and unpack `⟨c, rfl⟩`. Use `⟨hCF c c.2 z hz, ?_⟩` and prove the remaining obligations. Conclude with `(hq _ _).2 ⟨(c : T), rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hsupp : (Function.support fun o : MulAction.orbitRel.Quotient T Y => ((MulAction.stabilizer T (Quotient.out o)).relIndex C : ℂ) * P.indicator (fun _ => (1 : ℂ)) (Quotient.out o)) ⊆ ↑(hF.toFinset.image q)`. Introduce `o ho`. Establish `hmem : Quotient.out o ∈ P`. Assume the negation of the conclusion as `h`. Conclude with `ho (by simp [Set.indicator_of_notMem h])`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions.
 
-Take `⟨t, ht⟩` from `hPF _ hmem`. Simplify using `only [Finset.coe_image, Set.Finite.coe_toFinset, Set.mem_image]`. Use `⟨t • Quotient.out o, ht, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `q (t • Quotient.out o) = o`. Use `conv_rhs => rw [← Quotient.out_eq o]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `(hq _ _).2 ⟨t, rfl⟩`. Unfold `wcount`. Rewrite using `[finsum_eq_sum_of_support_subset _ hsupp]`. Rewrite using `[Finset.sum_congr rfl (g := fun o => (({y ∈ hF.toFinset | q y = o}).card : ℂ))]`. Rewrite using `[← Nat.cast_sum, ← Finset.card_eq_sum_card_image, Set.ncard_eq_toFinset_card _ hF]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `o ho`. Take `⟨z, hz, rfl⟩` from `Finset.mem_image.1 ho`. Rewrite `hz` using `[Set.Finite.mem_toFinset]`. Establish `hzo : Quotient.out (q z) ∈ MulAction.orbit T z` using `(hq _ _).1 (Quotient.out_eq _)`. Establish `hP' : Quotient.out (q z) ∈ P`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Take `⟨s, hs⟩` from `hzo`. Rewrite using `[← hs]`. Conclude with `hP s z (hFP hz)`. Rewrite using `[Set.indicator_of_mem hP', mul_one, hstab' _ _ hzo, hrel z, ← hfib z hz]`. Use `congr 1`.
-
-Rewrite using `[← Set.ncard_coe_finset]`. Use `congr 1`. Use extensionality with `y`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Loc.wCard :
     ∀ (T Y : Type) [CommGroup T] [MulAction T Y] (C : Subgroup T) (P F : Set Y), (∀ (t : T) y, y ∈ P → t • y ∈ P) → F ⊆ P → F.Finite →

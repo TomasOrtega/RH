@@ -15,7 +15,7 @@ open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalS
 open scoped TensorProduct InnerProductSpace ComplexConjugate Pointwise
 
 /- English proof (translation)
-Introduce `K _ _ n`. Use `⟨fun ν _ => ⟨isMulRightInvariant_archGroup ν, isInvInvariant_archGroup ν⟩, fun m _ => ?_⟩` and prove the remaining obligations. Use `haveI hr : m.IsMulRightInvariant := Whittaker.isMulRightInvariant_finite K n m`. Conclude with `⟨hr, ⟨inv_eq_self_of_isMulRightInvariant m⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Tf.unimod :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ), (∀ (ν : Measure (archGroup K n)) [ν.IsHaarMeasure], ν.IsMulRightInvariant ∧ ν.IsInvInvariant) ∧

@@ -11,15 +11,15 @@ open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial
 
 open scoped Matrix Kronecker in
 /- English proof (translation)
-Set `σ` to `Fintype.equivFin ι`. Establish `hd : (Matrix.reindex σ σ M).det = u` using `by rw [Matrix.det_reindex_self, hu]`. Set `g : GL (Fin (Fintype.card ι)) 𝔸[K]` to `Matrix.GeneralLinearGroup.mk'' (Matrix.reindex σ σ M) (hd ▸ u.isUnit)`. Establish `hg : (g : Matrix _ _ 𝔸[K]) = Matrix.reindex σ σ M` using `rfl`. Establish `hdet : Matrix.GeneralLinearGroup.det g = u` using `Units.ext (by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, hg, hd])`. Establish `h` using `GJGlobal.Modulus.map_vecMul_adeleMeasurePi g`. Rewrite `h` using `[hdet]`. Set `E` to `MeasurableEquiv.piCongrLeft (fun _ : Fin (Fintype.card ι) => 𝔸[K]) σ`. Establish `hE : MeasurePreserving E (Measure.pi fun _ : ι => GroundTheory.Global.adeleMeasure K) (GJMatrix.adeleMeasurePi K)` using `measurePreserving_piCongrLeft (fun _ : Fin (Fintype.card ι) => GroundTheory.Global.adeleMeasure K) σ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hfun : (fun x : ι → 𝔸[K] => x ᵥ* M) = E.symm ∘ (fun x => x ᵥ* (g : Matrix _ _ 𝔸[K])) ∘ E`. Use function extensionality and compare the values at `x`. Establish `hx : E x = x ∘ σ.symm`. Use function extensionality and compare the values at `i`. Take `⟨j, rfl⟩` from `σ.surjective i`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Simplify using `[E, MeasurableEquiv.piCongrLeft_apply_apply]`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `_ = (E x ᵥ* (g : Matrix _ _ 𝔸[K])) (σ i)`. Rewrite using `[hx, hg, Matrix.reindex_apply, Matrix.submatrix_vecMul_equiv]`. Simplify using `[Function.comp_assoc]`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hm` using `GJGlobal.Modulus.measurable_vecMul' g`. Rewrite using `[hfun, ← Measure.map_map E.symm.measurable (hm.comp E.measurable), ← Measure.map_map hm E.measurable, hE.map_eq, h, Measure.map_smul, hE.symm.map_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem adMeas_pi {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι] [DecidableEq ι]
     (M : Matrix ι ι 𝔸[K]) (u : (𝔸[K])ˣ) (hu : (u : 𝔸[K]) = M.det) :
@@ -61,9 +61,9 @@ private def adMeas_tau : Fin 2 × Fin 2 ≃ UPos (2 + 2) 2 where
   right_inv := by decide
 
 /- English proof (translation)
-Use extensionality with `i j`. Take `⟨i, rfl⟩` from `finSumFinEquiv.surjective i`. Take `⟨j, rfl⟩` from `finSumFinEquiv.surjective j`. Rewrite using `[Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, Equiv.symm_apply_apply]`. Rewrite using `[unipMatrix, Matrix.add_apply, blockEntry_apply, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`. Apply the tactic sequence `simp only [finSumFinEquiv_apply_left, finSumFinEquiv_apply_right] <;>`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [adMeas_tau, Fin.ext_iff]`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem adMeas_unip {R : Type} [CommRing R] (X : UPos (2 + 2) 2 → R) :
     unipMatrix X = Matrix.reindex finSumFinEquiv finSumFinEquiv
@@ -83,7 +83,7 @@ private noncomputable def adMeas_M {R : Type} [CommRing R] (a b : GL (Fin 2) R) 
   Matrix.reindex adMeas_tau adMeas_tau (((a⁻¹ : GL (Fin 2) R) : Matrix (Fin 2) (Fin 2) R)ᵀ ⊗ₖ (b : Matrix (Fin 2) (Fin 2) R))
 
 /- English proof (translation)
-Simplify using `only [adMeas_M, Matrix.reindex_apply, Matrix.submatrix_mul_equiv]`. Rewrite using `[← Matrix.mul_kronecker_mul, ← Matrix.transpose_mul, ← Units.val_mul, ← Units.val_mul]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem adMeas_M_mul {R : Type} [CommRing R] (a b : GL (Fin 2) R) :
     adMeas_M a b * adMeas_M a⁻¹ b⁻¹ = 1 := by
@@ -93,9 +93,9 @@ private theorem adMeas_M_mul {R : Type} [CommRing R] (a b : GL (Fin 2) R) :
 
 open scoped Matrix in
 /- English proof (translation)
-Establish `h : (Matrix.of fun i j => (X ᵥ* adMeas_M a b) (adMeas_tau (i, j))) = ((a⁻¹ : GL (Fin 2) R) : Matrix (Fin 2) (Fin 2) R) * (Matrix.of fun i j => X (adMeas_tau (i, j))) * (b : Matrix (Fin 2) (Fin 2) R)`. Use extensionality with `i j`. Rewrite using `[adMeas_M, Matrix.reindex_apply, Matrix.of_apply, Matrix.submatrix_vecMul_equiv]`. Simplify using `only [Function.comp_apply, Equiv.symm_apply_apply, Equiv.symm_symm, Matrix.vecMul, dotProduct, Fintype.sum_prod_type, Matrix.kroneckerMap_apply, Matrix.transpose_apply, Matrix.mul_apply, Matrix.of_apply, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.val_mul, coe_unipGL, coe_unipGL, adMeas_unip, adMeas_unip, h]`. Simplify using `only [blk, Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply, ← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem adMeas_conj {R : Type} [CommRing R] (a b : GL (Fin 2) R) (X : UPos (2 + 2) 2 → R) :
     unipGL X * blk a b = blk a b * unipGL (X ᵥ* adMeas_M a b) := by
@@ -116,15 +116,15 @@ private theorem adMeas_conj {R : Type} [CommRing R] (a b : GL (Fin 2) R) (X : UP
 
 open scoped Matrix in
 /- English proof (translation)
-Introduce `K _ _ m₁ m₂ t`. Use `set a : AdelicGLn.AdelicGL K 2 := (m₁ : AdelicGLn.AdelicGL K 2) * zt K t with ha`. Use `set b : AdelicGLn.AdelicGL K 2 := (m₂ : AdelicGLn.AdelicGL K 2) * zt K (-t) with hb`. Establish `h2 : adMeas_M a⁻¹ b⁻¹ * adMeas_M a b = 1`. Simplify using `using adMeas_M_mul a⁻¹ b⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨{ toFun := fun X => X ᵥ* adMeas_M a b invFun := fun X => X ᵥ* adMeas_M a⁻¹ b⁻¹ left_inv := fun X => by simp only [Matrix.vecMul_vecMul, adMeas_M_mul, Matrix.vecMul_one] right_inv := fun X => by simp only [Matrix.vecMul_vecMul, h2, Matrix.vecMul_one] map_add' := fun X Y => Matrix …` and prove the remaining obligations. Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_mul, (blkLaws (K := K)).1 m₁ m₂ t]`. Conclude with `adMeas_conj a b X`. Establish `hm : ∀ (m : G1 K 2) (s : ℝ), (detModule K 2 ((m : AdelicGLn.AdelicGL K 2) * zt K s) : ℝ) = Real.exp s`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `m s`. Rewrite using `[map_mul, mem_normOneGL_iff_detModule.1 m.2, one_mul, zt, detModule_centralSection two_pos]`. Establish `h` using `adMeas_pi (adMeas_M a b) (Matrix.GeneralLinearGroup.det a⁻¹ ^ 2 * Matrix.GeneralLinearGroup.det b ^ 2) (by`. Rewrite using `[adMeas_M, Matrix.det_reindex_self, Matrix.det_kronecker, Matrix.det_transpose]`. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val, Matrix.GeneralLinearGroup.val_det_apply, Fintype.card_fin])`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hv : ((GroundTheory.Global.IdeleGroup.ideleModule K (Matrix.GeneralLinearGroup.det a⁻¹ ^ 2 * Matrix.GeneralLinearGroup.det b ^ 2) : ℝ))⁻¹ = Real.exp (4 * t)`. Establish `e1 : GroundTheory.Global.IdeleGroup.ideleModule K (Matrix.GeneralLinearGroup.det a⁻¹ ^ 2 * Matrix.GeneralLinearGroup.det b ^ 2) = (detModule K 2 a)⁻¹ ^ 2 * detModule K 2 b ^ 2`. Rewrite using `[map_mul, map_pow, map_pow, ← map_inv (detModule K 2)]`. Both sides reduce to the same expression. Rewrite using `[e1, Positive.val_mul, Positive.val_pow, Positive.val_pow, Positive.coe_inv, hm, hm, ← Real.exp_neg, ← Real.exp_nat_mul, ← Real.exp_add, ← Real.exp_neg]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[hv]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.adMeas :
     ∀ {K : Type} [Field K] [NumberField K] (m₁ m₂ : G1 K 2) (t : ℝ), ∃ e : (UPos (2 + 2) 2 → 𝔸[K]) ≃ₜ+ (UPos (2 + 2) 2 → 𝔸[K]), (∀ X, nn X * lv m₁ m₂ t = lv m₁ m₂ t * nn (e X)) ∧

@@ -20,7 +20,7 @@ open Pb
 namespace CoB
 
 /- English proof (translation)
-Establish `: Subsingleton (CH.Cn F j)` using `⟨fun _ _ => funext fun _ => (h _).elim _ _⟩`. Conclude with `Submodule.Quotient.mk_surjective _ |>.subsingleton`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sub_H {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] (F : C ⥤ ModuleCat.{0} R)
     (h : ∀ T, Subsingleton (F.obj T)) (j : ℕ) : Subsingleton (CH.H F j) := by
@@ -28,9 +28,9 @@ theorem sub_H {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] (F : C ⥤ M
   exact Submodule.Quotient.mk_surjective _ |>.subsingleton
 
 /- English proof (translation)
-Use `sub_H _ (fun T => ⟨fun x y => ?_⟩) j` and prove the remaining obligations. Take `⟨x, hx, rfl⟩` from `sq_surj _ _ x`. Take `⟨y, hy, rfl⟩` from `sq_surj _ _ y`. Use `(sq_eq _ _ _ _).2 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ∈ T.obj.pdPow ρ'.toNat`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Int.toNat_eq_zero.2 h, T.obj.pdPow_zero]`. Discharge the goal by the elementary cases of `trivial`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 -/
 theorem hq_zero {b : Base} {L : b.Fun} (Q : ObjectProperty (Thick L)) (ρ ρ' : ℤ) (h : ρ' ≤ 0) (j : ℕ) : Subsingleton (HQ Q ρ ρ' j) := by
   refine sub_H _ (fun T => ⟨fun x y => ?_⟩) j
@@ -44,9 +44,9 @@ variable {K B : Type} [Field K] [CommRing B] [Algebra K B] {I : Ideal B} (γ : D
   (q : X ⟶ Spec (CommRingCat.of K))
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Use `(congrArg Submodule.Quotient.mk (Subtype.ext (funext fun s => ?_))).trans (Submodule.Quotient.mk_zero _)` and prove the remaining obligations. Take `⟨x, hx, e⟩` from `sq_surj _ _ (z.1 (s ⋙ (kS γ q Q).G))`. Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(kS γ q Q).qC (t ^ (r - a)) (b := thFil _ ((a : ℤ) + 1)) (b' := sFil Q ((r : ℤ) + 1)) (fun T _ hx => fil_mul_le (b := nlBase B I γ 0) ht (r := a + 1) (r' := r + 1) (by omega) T.obj hx) _ (show sqM _ _ _ from z.1 (s ⋙ (kS γ q Q).G)).1 = 0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← e]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (fil_mul_le (b := nlBase B I γ 0) ht (r := a) (r' := r + 1) (by omega) _ hx)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mu_zero (Q : ObjectProperty (Thick (nlFun γ 0 X q (κA K I)))) {t : B} (ht : t ∈ I) {a r : ℕ} (h : r < a) (j : ℕ)
     (y : Hdg q a j) : muG γ q Q ht a r j y = 0 := by
@@ -61,7 +61,7 @@ theorem mu_zero (Q : ObjectProperty (Thick (nlFun γ 0 X q (κA K I)))) {t : B} 
   exact Ideal.Quotient.eq_zero_iff_mem.2 (fil_mul_le (b := nlBase B I γ 0) ht (r := a) (r' := r + 1) (by omega) _ hx)
 
 /- English proof (translation)
-Establish `h1` using `dividedPowerFiltration_mul δ _ _ (dividedPowerFiltration_map hi _ hc) hx`. Rewrite `h1` using `[show r - a + 1 + a = r + 1 by omega]`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_sub, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem diff_mem {B T : Type} [CommRing B] [CommRing T] {I : Ideal B} {γ : DividedPowers I} {J : Ideal T} (δ : DividedPowers J)
     (i : B →+* T) (hi : IsDPMorphism γ δ i) {a r : ℕ} (har : a ≤ r) {c b t : B} (hc : c - b * t ^ (r - a) ∈ pdP γ (r - a + 1))
@@ -72,9 +72,9 @@ theorem diff_mem {B T : Type} [CommRing B] [CommRing T] {I : Ideal B} {γ : Divi
   rw [map_sub, map_mul]; ring
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Use `(congrArg Submodule.Quotient.mk (Subtype.ext (funext fun σ => ?_))).trans (Submodule.Quotient.mk_smul _ _ _)` and prove the remaining obligations. Take `⟨x, hx, e⟩` from `sq_surj _ _ (z.1 (σ ⋙ (kS γ q (TS γ q 1 s {⊤})).G))`. Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(smO γ q 1 s {⊤}).qC c hb _ (show sqM _ _ _ from z.1 (σ ⋙ (kS γ q (TS γ q 1 s {⊤})).G)).1 = b • (kS γ q (TS γ q 1 s {⊤})).qC (t ^ (r - a)) (b := thFil _ ((a : ℤ) + 1)) (b' := sFil _ ((r : ℤ) + 1)) (fun T _ hx => fil_mul_le (b := nlBase B I γ 0) ht (r := a + 1) (r' := r + 1) (by o …`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← e]`. Conclude with `Ideal.Quotient.eq.2 (diff_mem (σ.obj (Fin.last j)).obj.δ (σ.obj (Fin.last j)).obj.i (σ.obj (Fin.last j)).obj.compat har hc x hx)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sqC_res (s : ℕ) {t : B} (ht : t ∈ I) {a r : ℕ} (har : a ≤ r) (j : ℕ) (c b : B) (hc : c - b * t ^ (r - a) ∈ pdP γ (r - a + 1))
     (ha : (smO γ q 1 s {⊤}).LeC c (sFil _ (a : ℤ)) (sFil _ (r : ℤ)))
@@ -92,7 +92,7 @@ theorem sqC_res (s : ℕ) {t : B} (ht : t ∈ I) {a r : ℕ} (har : a ≤ r) (j 
   exact Ideal.Quotient.eq.2 (diff_mem (σ.obj (Fin.last j)).obj.δ (σ.obj (Fin.last j)).obj.i (σ.obj (Fin.last j)).obj.compat har hc x hx)
 
 /- English proof (translation)
-Substitute `h h'` using the available equality. Conclude with `⟨LinearEquiv.ofBijective _ (hdg_res q s {⊤} (by simp) a has j), fun c b hc ha hb y => sqC_res γ q s ht har j c b hc ha hb y⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem e_ex (s : ℕ) {t : B} (ht : t ∈ I) {a r : ℕ} (har : a ≤ r) (has : a < s) (j : ℕ) (ρ ρ' : ℤ) (h : ρ = a) (h' : ρ' = (a : ℤ) + 1) :
     ∃ e : Hdg q a j ≃ₗ[K] HQ (TO q 1 s {⊤}) ρ ρ' j, ∀ (c b : B), c - b * t ^ (r - a) ∈ pdP γ (r - a + 1) →
@@ -104,35 +104,33 @@ theorem e_ex (s : ℕ) {t : B} (ht : t ∈ I) {a r : ℕ} (har : a ≤ r) (has :
 variable {E : Type} [CommRing E] (θ : B →+* E)
 
 /- English proof (translation)
-Establish `hm : pdP γ m = ⊥` using `by rw [hp, hnil]; simp`. Take `⟨S⟩` from `split_field (K := K) γ m hm`. Establish `hB : TFBase γ 1 m` using `⟨hm, fun r x hx => by simpa using hx, fun n hn => ⟨0, algebraMap K B (n : K)⁻¹, by`. Rewrite using `[pow_zero, ← map_natCast (algebraMap K B), ← map_mul, mul_inv_cancel₀ (Nat.cast_ne_zero.2 hn), map_one]⟩⟩`. Establish `ha` using `fun (i : Fin m) n => leC_shift γ q 1 m {⊤} i (S.ν i n) (S.mem i n) (r : ℤ)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb` using `fun (i : Fin m) n => leC_shift γ q 1 m {⊤} i (S.ν i n) (S.mem i n) ((r : ℤ) + 1)`. Establish `hT` using `bcOn_false γ 1 m m (tfBase_field K (by omega)) hB S q {⊤} (Or.inr ⟨not_false, ⟨U⟩, by simp⟩) (r : ℤ) ((r : ℤ) + 1) (by omega) (by omega) ha hb j`. Set `R : ∀ i : Fin m, S.N i → B → Prop` to `fun i n b => S.ν i n - b * t ^ (i : ℕ) ∈ pdP γ (i + 1)`. Establish `h1 : ∀ i n, ∃ b, R i n b` using `fun i n => by`. Use `S.mem i n` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hp]`. Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.1 this`. Conclude with `⟨b, by simp only [R]; rw [hb, sub_self]; exact zero_mem _⟩`. Establish `h2 : ∀ i b, ∃ n, R i n b` using `fun i b => by`. Take `⟨n, hn⟩` from `S.surj i (b * t ^ (i : ℕ)) (by rw [hp]; exact Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _))`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨n, by simpa using neg_mem hn⟩`. Establish `hu : ∀ i n b b', R i n b → R i n b' → θ b = θ b'` using `fun i n b b' hb hb' => by`. Use `sub_mem hb' hb` as an intermediate fact. Rewrite `this` using `[hp, show S.ν i n - b' * t ^ (i : ℕ) - (S.ν i n - b * t ^ (i : ℕ)) = (b - b') * t ^ (i : ℕ) by ring]`. Establish `h0` using `hgr i i.2 _ this`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h0` using `[← hker, RingHom.mem_ker, map_sub]`. Conclude with `sub_eq_zero.1 h0`. Use `choose β hβ using h1`. Set `lam : ∀ i, S.N i →+ E` to `fun i => AddMonoidHom.mk' (fun n => θ (β i n)) fun n n' => by`. Rewrite using `[← map_add]`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hu i _ _ _ (hβ i _) ?_` and prove the remaining obligations. Use `add_mem (hβ i n) (hβ i n')` as an intermediate fact. Simplify using `only [R, map_add]`. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ∀ i n b, R i n b → lam i n = θ b` using `fun i n b hb => hu i n _ _ (hβ i n) hb`. Establish `hl : ∀ i (k : K) n, lam i (k • n) = θ (algebraMap K B k) * lam i n` using `fun i k n => by`. Rewrite using `[h3 i (k • n) (algebraMap K B k * β i n), map_mul]`. Both sides reduce to the same expression. Use `Ideal.mul_mem_left _ (algebraMap K B k) (hβ i n)` as an intermediate fact.
+Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Simplify using `only [R, map_smul, Algebra.smul_def]`. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `hE` using `fun (a : ℕ) (h : a ≤ r) => e_ex γ q m ht h (by omega) j ((r : ℤ) - ((r - a : ℕ) : ℤ)) ((r : ℤ) + 1 - ((r - a : ℕ) : ℤ)) (by omega) (by omega)`. Use `choose e he using hE`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨ind, co, c1, c2, c3⟩` from `CoA.co_abs θ hr S.N (fun i => HQ (TO q 1 m {⊤}) ((r : ℤ) - i) ((r : ℤ) + 1 - i) j) (fun a => Hdg q a j) (fun a y => muG γ q (TS γ q 1 m {⊤}) ht a r j y) _ hT R lam hl (fun i n => ⟨_, hβ i n⟩) h2 h3 (fun i hi => hq_zero _ _ _ (by omega) j) e (fun a h n b y hn => he a h _ b hn _ _ …`. Use `⟨eq_top_iff.2 fun w _ => ?_, co, ?_, ?_, ?_, ?_, c3⟩` and prove the remaining obligations. Conclude with `ind (fun w => w ∈ Submodule.span B {w : HG (TS γ q 1 m {⊤}) r j | ∃ a ≤ r, ∃ y, w = muG γ q (TS γ q 1 m {⊤}) ht a r j y}) (zero_mem _) (fun _ _ => add_mem) (fun a h b y => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, h, y, rfl⟩)) w`. Introduce `b w a φ`. Use `ind (fun w => co (b • w) a φ = θ b * co w a φ) (by simp) (fun x y hx hy => ?_) (fun a' h b' y => ?_) w` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [smul_add, map_add, Pi.add_apply, AddMonoidHom.add_apply, hx, hy, mul_add]`. Use `beta_reduce`. Rewrite using `[smul_smul]`. Distinguish the cases in `h0 : a = a'`. Substitute `h0` using the available equality.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[c1 a h, c1 a h, map_mul, mul_assoc]`. Rewrite using `[c2 a' h a h0, c2 a' h a h0]`. Simplify using the standard rewrite rules. Introduce `w a k φ`. Use `ind (fun w => co w a (k • φ) = θ (algebraMap K B k) * co w a φ) (by simp) (fun x y hx hy => ?_) (fun a' h b' y => ?_) w` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [map_add, Pi.add_apply, AddMonoidHom.add_apply, hx, hy, mul_add]`. Use `beta_reduce`. Distinguish the cases in `h0 : a = a'`. Substitute `h0` using the available equality. Rewrite using `[c1 a h, c1 a h, LinearMap.smul_apply, smul_eq_mul, map_mul, map_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[c2 a' h a h0]`. Simplify using the standard rewrite rules. Introduce `a h y φ`. Use `c1 a h 1 y φ` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[one_smul, map_one, one_mul]`. Then use the resulting hypothesis. Introduce `a a' h y`. Distinguish the cases in `h' : a' ≤ r`. Use `c2 a' h' a h 1 y` as an intermediate fact. Rewrite `this` using `[one_smul]`. Then use the resulting hypothesis.
-
-Rewrite using `[mu_zero γ q _ ht (not_le.1 h'), map_zero]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem main [CharZero K] (U : Cov q) {t : B} (ht : t ∈ I) (m : ℕ) (hker : RingHom.ker θ = I) (hp : ∀ r, pdP γ r = Ideal.span {t ^ r})
     (hnil : t ^ m = 0) (hgr : ∀ i < m, ∀ x : B, x * t ^ i ∈ Ideal.span {t ^ (i + 1)} → x ∈ I) (r j : ℕ) (hr : r < m) :
@@ -212,7 +210,7 @@ end CoB
 variable (l : ℕ) [Fact l.Prime] (K : IntermediateField ℚ_[l] (PadicAlgCl l))
 
 /- English proof (translation)
-Introduce `Y m L M hM r j hr`. Use `haveI := AdicGeo.proper_p hM.1`. Use `haveI := hM.2`. Take `⟨U⟩` from `(cov_ex M.q).1 inferInstance`. Conclude with `CoB.main L.γB M.q L.θ U L.tB_mem m L.ker_θ L.pdB L.nil L.gr r j hr`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem coEx : CoEx l K := by
   intro Y m L M hM r j hr

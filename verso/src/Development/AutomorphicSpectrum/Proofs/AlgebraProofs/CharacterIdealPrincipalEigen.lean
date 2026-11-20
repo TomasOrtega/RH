@@ -9,7 +9,7 @@ open scoped Matrix
 namespace GlobalTheory.CompanionTheory.Ar.GR
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [Finset.sum_apply, Pi.smul_apply]`. Simplify using `only [Matrix.mulVec, dotProduct, Algebra.smul_def, mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem sum_smul_cols_eq_mul_vec {C R X : Type} [Field C] [CommRing R] [Algebra R C]
     [Fintype X] (B : Matrix X X C) (c : X → R) :
@@ -19,11 +19,11 @@ private theorem sum_smul_cols_eq_mul_vec {C R X : Type} [Field C] [CommRing R] [
   simp only [Matrix.mulVec, dotProduct, Algebra.smul_def, mul_comm]
 
 /- English proof (translation)
-Establish `hinv : B⁻¹ * B = 1` using `Matrix.nonsing_inv_mul B hB`. Establish `hinv' : B * B⁻¹ = 1` using `Matrix.mul_nonsing_inv B hB`. Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩ j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨c j, ?_⟩` and prove the remaining obligations. Rewrite using `[sum_smul_cols_eq_mul_vec, Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec]`. Introduce `h choose c hc using h`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `e : (fun j => algebraMap R C (c j)) = B⁻¹ *ᵥ u` using `funext hc`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[sum_smul_cols_eq_mul_vec, e, Matrix.mulVec_mulVec, hinv', Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_span_cols_iff {C R X : Type} [Field C] [CommRing R] [Algebra R C] [Fintype X]
     [DecidableEq X] (B : Matrix X X C) (hB : IsUnit B.det) (u : X → C) :
@@ -43,21 +43,21 @@ theorem mem_span_cols_iff {C R X : Type} [Field C] [CommRing R] [Algebra R C] [F
     rw [sum_smul_cols_eq_mul_vec, e, Matrix.mulVec_mulVec, hinv', Matrix.one_mulVec]
 
 /- English proof (translation)
-Distinguish the cases in `hall : ∀ j, v (w j) ≤ 1`. Establish `h10 : (1 : R) ≠ 0`. Introduce `h`. Establish `h'` using `congrArg (algebraMap R C) h`. Simplify using `at h'`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨1, h10, fun d => ?_⟩` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `_`. Simplify using `[Ideal.span_singleton_one]`. Introduce `_ j`.
+Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hv.exists_of_le_one` to reduce the goal to its premises. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `push Not at hall`. Take `⟨j1, hj1⟩` from `hall`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨j0, -, hj0⟩` from `Finset.exists_max_image Finset.univ (fun j => v (w j)) Finset.univ_nonempty`. Establish `hgt : 1 < v (w j0)` using `lt_of_lt_of_le hj1 (hj0 j1 (Finset.mem_univ _))`. Establish `hw0 : w j0 ≠ 0`. Introduce `h`. Simplify using `[h] at hgt`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hinvle : v (w j0)⁻¹ ≤ 1`. Rewrite using `[map_inv₀]`. Conclude with `inv_le_one_of_one_le₀ hgt.le`. Take `⟨c, hc⟩` from `hv.exists_of_le_one hinvle`. Establish `hc0 : c ≠ 0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `rfl`. Rewrite `hc` using `[map_zero]`. Conclude with `inv_ne_zero hw0 hc.symm`. Use `⟨c, hc0, fun d => ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.mem_span_singleton, hv.dvd_iff_le, hc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨r, hr⟩` from `h j0`. Establish `e : algebraMap R C d = (algebraMap R C d * w j0) * (w j0)⁻¹` using `(mul_inv_cancel_right₀ hw0 _).symm`. Rewrite using `[e, map_mul, ← hr]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_of_le_one_left zero_le (hv.map_le_one r)`. Introduce `h j`. Apply `hv.exists_of_le_one` to reduce the goal to its premises. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_denominator {C R X : Type} [Field C] [CommRing R] [Algebra R C]
     (v : Valuation C NNReal) (hv : v.Integers R) [Fintype X] [Nonempty X] (w : X → C) :
@@ -111,7 +111,7 @@ theorem exists_denominator {C R X : Type} [Field C] [CommRing R] [Algebra R C]
         _ = 1 := by rw [← map_mul, inv_mul_cancel₀ hw0, map_one]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `only [Pi.smul_apply, Algebra.smul_def, map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem smul_algebra_map_char_eq {C R F : Type} [Field C] [CommRing R] [Algebra R C] [Field F]
     (χ : MulChar F R) (c : R) :
@@ -120,17 +120,17 @@ private theorem smul_algebra_map_char_eq {C R F : Type} [Field C] [CommRing R] [
   simp only [Pi.smul_apply, Algebra.smul_def, map_mul]
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v R _ _ hv _ F _ _ _ _ f _ AA _ χ`. Take `⟨B, hB, hM⟩` from `AA.lat`. Establish `key : ∀ d : R, d ∈ xIdeal AA.carrier χ ↔ (d • fun a => algebraMap R C (χ a)) ∈ AA.carrier` using `fun d => by`. Simplify using `only [xIdeal, Submodule.mem_comap, LinearMap.toSpanSingleton_apply]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, hc0, hc⟩` from `exists_denominator v hv (B⁻¹ *ᵥ fun a => algebraMap R C (χ a))`. Use `⟨c, hc0, ?_⟩` and prove the remaining obligations. Use extensionality with `d`. Rewrite using `[key, hM, mem_span_cols_iff B hB, ← hc d]`. Use `forall_congr' fun j => exists_congr fun r => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.mulVec_smul, Pi.smul_apply, Algebra.smul_def]`. Introduce `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hgM, hg⟩`. Establish `hint : ∀ x, ∃ r : R, algebraMap R C r = g x` using `AA.le_int hgM`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Take `⟨r, hr⟩` from `hint 1`. Establish `hgf : g = fun a => algebraMap R C (r * χ a)`. Use function extensionality and compare the values at `a`. Establish `h` using `hg a 1`. Rewrite `h` using `[smul_eq_mul, mul_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h, ← hr, map_mul]`. Conclude with `mul_comm _ _`. Use `⟨r, ?_, hgf⟩` and prove the remaining obligations. Rewrite using `[key, smul_algebra_map_char_eq, ← hgf]`. Conclude with `hgM`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `⟨c, hc, rfl⟩`. Rewrite `hc` using `[key, smul_algebra_map_char_eq]`. Use `⟨hc, fun a x => ?_⟩` and prove the remaining obligations. Simplify using `only [smul_eq_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem eig_rank_one : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C], v.Integers R → v (p : C) < 1 → ∀ (F : Type) [Field F] [Fintype F] [DecidableEq F] [CharP F p] (f : ℕ), Fintype.card F = p ^ f → ∀ (AA : HopfOrder (C := C) R F), FStable F AA.carrier → ∀ χ : MulChar F R, (∃ c : R, c ≠ 0 ∧ xIdeal AA.carrier χ = Ideal.span {c}) ∧ ∀ g, g ∈ eig AA.carrier χ ↔ ∃ c ∈ xIdeal AA.carrier χ, g = fun a => algebraMap R C (c * χ a) := by
   intro p _ C _ _ _ v R _ _ hv _ F _ _ _ _ f _ AA _ χ

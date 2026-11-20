@@ -36,7 +36,7 @@ section SlopeTestRemainingChoices
 variable (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact map_smul (W.map F) a x`. Consider the case `exact LinearMap.map_smul_of_tower (W.map F) a x`. Consider the case `(rw [← algebraMap_smul W.EE a x, map_smul, algebraMap_smul])`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem map_letA_smul_comm {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) (a : LetA O n)
     (x : W.DD T₁) : W.map F (a • x) = a • W.map F x := by
@@ -46,14 +46,14 @@ theorem map_letA_smul_comm {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T�
   | (rw [← algebraMap_smul W.EE a x, map_smul, algebraMap_smul])
 
 /- English proof (translation)
-Conclude with `W.map_γ F W.gam x`.
+A detailed English derivation is pending.
 -/
 theorem map_gamma_comm {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) (x : W.DD T₁) :
     W.map F (W.γ T₁ x) = W.γ T₂ (W.map F x) := by
   exact W.map_γ F W.gam x
 
 /- English proof (translation)
-Use `first`. Consider the case `(rw [algebraMap_smul, algebraMap_smul])`. Consider the case `simp [algebraMap_smul]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem smul_eq_algebraMap_letA_smul (T : LocLat G Qp LL O) (c : O) (y : W.DD T) :
     c • y = (algebraMap (LetA O n) W.EE (algebraMap O (LetA O n) c)) • y := by
@@ -62,16 +62,16 @@ theorem smul_eq_algebraMap_letA_smul (T : LocLat G Qp LL O) (c : O) (y : W.DD T)
   | simp [algebraMap_smul]
 
 /- English proof (translation)
-Apply the tactic sequence `rw [← algebraMap_smul W.EE a x, W.γD_smul, W.γE_ext, algebraMap_smul] <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gammaD_smul_letA (T : LocLat G Qp LL O) (g : W.Gam) (a : LetA O n) (x : W.DD T) :
     W.γD T g (a • x) = W.γA g a • W.γD T g x := by
   rw [← algebraMap_smul W.EE a x, W.γD_smul, W.γE_ext, algebraMap_smul] <;> rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Establish `e : (letγ g₀ (letE i : LetA O n)) j = g₀ ((letE i : LetA O n) j)` using `rfl`. Rewrite using `[e]`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[letE]`. Simplify using `[letE, Pi.single_apply, h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem letGamma_idempotent (g₀ : PowerSeries O →ₐ[O] PowerSeries O) (i : ZMod n) :
     letγ g₀ (letE i : LetA O n) = letE i := by
@@ -83,7 +83,7 @@ theorem letGamma_idempotent (g₀ : PowerSeries O →ₐ[O] PowerSeries O) (i : 
   · simp [letE, Pi.single_apply, h]
 
 /- English proof (translation)
-Use `first`. Consider the case `(unfold letE; rw [← Pi.single_mul, mul_one])`. Consider the case `(funext j; by_cases h : j = i <;> simp [letE, h])`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem idempotent_mul_self' (i : ZMod n) : (letE i : LetA O n) * letE i = letE i := by
   first
@@ -91,7 +91,7 @@ theorem idempotent_mul_self' (i : ZMod n) : (letE i : LetA O n) * letE i = letE 
   | (funext j; by_cases h : j = i <;> simp [letE, h])
 
 /- English proof (translation)
-Rewrite using `[gammaD_smul_letA W T g (letE i) x]`. Conclude with `congrArg (· • W.γD T g x) (letGamma_idempotent (W.γ₀ g) i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gammaD_idempotent_smul' (T : LocLat G Qp LL O) (g : W.Gam) (i : ZMod n) (x : W.DD T) :
     W.γD T g ((letE i : LetA O n) • x) = (letE i : LetA O n) • W.γD T g x := by
@@ -99,7 +99,7 @@ theorem gammaD_idempotent_smul' (T : LocLat G Qp LL O) (g : W.Gam) (i : ZMod n) 
   exact congrArg (· • W.γD T g x) (letGamma_idempotent (W.γ₀ g) i)
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.LiftingTheory.qp`. Rewrite using `[map_add, (hπΔ : ∀ δ ∈ W.DelF, W.γA δ W.π₀ = W.π₀) δ hδ, map_natCast]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem gammaA_q_of_mem_delta (hπΔ : W.π₀ ∈ W.AΔ) (δ : W.Gam) (hδ : δ ∈ W.DelF) :
     W.γA δ (Formalism.MainNotions.LiftingTheory.qp W) = Formalism.MainNotions.LiftingTheory.qp W := by
@@ -107,11 +107,11 @@ theorem gammaA_q_of_mem_delta (hπΔ : W.π₀ ∈ W.AΔ) (δ : W.Gam) (hδ : δ
   rw [map_add, (hπΔ : ∀ δ ∈ W.DelF, W.γA δ W.π₀ = W.π₀) δ hδ, map_natCast]
 
 /- English proof (translation)
-Take `⟨hb, hs, hp⟩` from `hA`. Establish `hf : Module.finrank K₀ K = 1`. Rewrite using `[← (LinearEquiv.ofBijective (Algebra.linearMap K₀ K) hb).finrank_eq, Module.finrank_self]`. Take `⟨hcard, -, h3⟩` from `h9 T hT hs hp`. Take `⟨hr, hm⟩` from `h3 hf`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hΔ, -, ⟨w, hw⟩, -⟩` from `hr`. Take `⟨-, hm2⟩` from `hm`. Use `⟨?_, hΔ, hm2, ?_⟩` and prove the remaining obligations. Rewrite using `[hw, map_mul, map_pow]`. Conclude with `(w.isUnit.map _).mul (W.EE_π.pow _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcard, hf, Nat.div_one]`.
+A detailed English derivation is pending.
 -/
 theorem uniformizer_unit_and_delta_card (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W) (hA : Formalism.MainNotions.LiftingTheory.CaseA W) {T : LocLat G Qp LL O}
     (hT : IsCrys PD T.ρ) :
@@ -130,9 +130,9 @@ theorem uniformizer_unit_and_delta_card (h9 : Formalism.MainNotions.DeltaInvaria
   · rw [hcard, hf, Nat.div_one]
 
 /- English proof (translation)
-Use `haveI := W.EE_complete`. Establish `hj : ((PD.p : ℕ) : W.EE) ∈ (⊥ : Ideal W.EE).jacobson` using `IsAdicComplete.le_jacobson_bot (I := Ideal.span {((PD.p : ℕ) : W.EE)}) (Ideal.subset_span (Set.mem_singleton _))`. Take `⟨u, hu⟩` from `hπ`. Establish `h1` using `(Ideal.mem_jacobson_bot.mp hj) (↑u⁻¹)`. Unfold `Formalism.MainNotions.LiftingTheory.qp`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, map_natCast, ← hu]`. Establish `e : (u : W.EE) + ((PD.p : ℕ) : W.EE) = u * (((PD.p : ℕ) : W.EE) * ↑u⁻¹ + 1)`. Rewrite using `[mul_add, mul_one, mul_left_comm, Units.mul_inv, mul_one, add_comm]`. Rewrite using `[e]`. Conclude with `u.isUnit.mul h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_q_of_uniformizer_unit (hπ : IsUnit (algebraMap (LetA O n) W.EE W.π₀)) :
     IsUnit (algebraMap (LetA O n) W.EE (Formalism.MainNotions.LiftingTheory.qp W)) := by
@@ -150,9 +150,9 @@ theorem isUnit_q_of_uniformizer_unit (hπ : IsUnit (algebraMap (LetA O n) W.EE W
   exact u.isUnit.mul h1
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `hπ`. Use `⟨{ toFun := fun z => ((u⁻¹ : W.EEˣ) : W.EE) • (W.γ T z - z), map_add' := ?_, map_smul' := ?_ }, ?_⟩` and prove the remaining obligations. Introduce `a b`. Simplify using `only [map_add, smul_sub, smul_add]`. Normalize the expressions using the abelian group laws.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Introduce `c z`. Simplify using `only [RingHom.id_apply]`. Rewrite using `[map_smul, ← smul_sub, smul_eq_algebraMap_letA_smul W T c (W.γ T z - z), smul_eq_algebraMap_letA_smul W T c, smul_smul, smul_smul, mul_comm]`. Introduce `z show W.π₀ • (((u⁻¹ : W.EEˣ) : W.EE) • (W.γ T z - z)) = _`. Rewrite using `[← algebraMap_smul W.EE W.π₀, smul_smul, ← hu, Units.mul_inv, one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_derivation_gamma_sub (T : LocLat G Qp LL O) (hπ : IsUnit (algebraMap (LetA O n) W.EE W.π₀)) :
     ∃ dop : W.DD T →ₗ[O] W.DD T, ∀ z, W.π₀ • dop z = W.γ T z - z := by
@@ -171,9 +171,9 @@ theorem exists_derivation_gamma_sub (T : LocLat G Qp LL O) (hπ : IsUnit (algebr
     rw [← algebraMap_smul W.EE W.π₀, smul_smul, ← hu, Units.mul_inv, one_smul]
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `hπ`. Establish `hinj : ∀ a b : W.DD T₂, W.π₀ • a = W.π₀ • b → a = b`. Introduce `a b h`. Rewrite `h` using `[← algebraMap_smul W.EE W.π₀ a, ← algebraMap_smul W.EE W.π₀ b, ← hu]`. Establish `h'` using `congrArg (fun t => ((u⁻¹ : W.EEˣ) : W.EE) • t) h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify `h'` using `[smul_smul]`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[← map_letA_smul_comm W F W.π₀ (dop₁ y), hd₁, hd₂, map_sub, map_gamma_comm W F y]`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_comm_derivation {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L)
     (hπ : IsUnit (algebraMap (LetA O n) W.EE W.π₀))
@@ -193,7 +193,7 @@ def invariantLetter (T : LocLat G Qp LL O) (i : ZMod n) : Submodule O (W.DD T) :
   W.NΔ T ⊓ (W.Nl T i).restrictScalars O
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Iff.rfl`. Consider the case `simp [invariantLetter, Formalism.MainNotions.LiftingTheory.InNΔi]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mem_invariantLetter_iff {T : LocLat G Qp LL O} {i : ZMod n} {x : W.DD T} :
     x ∈ invariantLetter W T i ↔ Formalism.MainNotions.LiftingTheory.InNΔi W T i x := by
@@ -202,7 +202,7 @@ theorem mem_invariantLetter_iff {T : LocLat G Qp LL O} {i : ZMod n} {x : W.DD T}
   | simp [invariantLetter, Formalism.MainNotions.LiftingTheory.InNΔi]
 
 /- English proof (translation)
-Take `⟨y, hy, rfl⟩` from `Submodule.mem_map.mp h`. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply, smul_smul, idempotent_mul_self']`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem idempotent_smul_of_mem_letter {T : LocLat G Qp LL O} {i : ZMod n} {x : W.DD T} (h : x ∈ W.Nl T i) :
     (letE i : LetA O n) • x = x := by
@@ -210,22 +210,20 @@ theorem idempotent_smul_of_mem_letter {T : LocLat G Qp LL O} {i : ZMod n} {x : W
   simp only [LinearMap.smul_apply, LinearMap.id_apply, smul_smul, idempotent_mul_self']
 
 /- English proof (translation)
-Conclude with `Submodule.mem_map.mpr ⟨x, hN, by rw [LinearMap.smul_apply, LinearMap.id_apply]; exact h⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_letter_of_idempotent_smul {T : LocLat G Qp LL O} {i : ZMod n} {x : W.DD T} (hN : x ∈ W.N T)
     (h : (letE i : LetA O n) • x = x) : x ∈ W.Nl T i := by
   exact Submodule.mem_map.mpr ⟨x, hN, by rw [LinearMap.smul_apply, LinearMap.id_apply]; exact h⟩
 
 /- English proof (translation)
-Introduce `y hy`. Take `⟨u, hu⟩` from `hπ`. Establish `hinj : ∀ a b : W.DD T, W.π₀ • a = W.π₀ • b → a = b`. Introduce `a b h`. Rewrite `h` using `[← algebraMap_smul W.EE W.π₀ a, ← algebraMap_smul W.EE W.π₀ b, ← hu]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h'` using `congrArg (fun t => ((u⁻¹ : W.EEˣ) : W.EE) • t) h`. Simplify `h'` using `[smul_smul]`. Establish `hy' : y ∈ W.NΔ T ∧ y ∈ W.Nl T i` using `(mem_invariantLetter_iff W).mp hy`. Take `⟨hyΔ, hyl⟩` from `hy'`. Take `⟨x', hx'Δ, hx'⟩` from `hmod y hyΔ`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hdx : dop y = x'` using `hinj _ _ (by rw [hd, hx'])`. Establish `hdΔ : dop y ∈ W.NΔ T` using `by rw [hdx]; exact hx'Δ`. Establish `hey : (letE i : LetA O n) • y = y` using `idempotent_smul_of_mem_letter W hyl`. Establish `hγy : W.γ T y = (letE i : LetA O n) • W.γ T y` using `by conv_lhs => rw [← hey]`. Conclude with `gammaD_idempotent_smul' W T W.gam i y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdN : dop y ∈ W.N T` using `(show dop y ∈ W.N T ∧ ∀ δ ∈ W.DelF, W.γD T δ (dop y) = dop y from hdΔ).1`. Establish `hdl : dop y ∈ W.Nl T i`. Use `mem_letter_of_idempotent_smul W hdN ?_` and prove the remaining obligations. Apply `hinj` to reduce the goal to its premises. Rewrite using `[smul_comm, hd, smul_sub, ← hγy, hey]`.
-
-Conclude with `(mem_invariantLetter_iff W).mpr (show Formalism.MainNotions.LiftingTheory.InNΔi W T i (dop y) from ⟨hdΔ, hdl⟩)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem derivation_preserves_invariants {T : LocLat G Qp LL O} (i : ZMod n)
     (hπ : IsUnit (algebraMap (LetA O n) W.EE W.π₀))
@@ -257,23 +255,21 @@ theorem derivation_preserves_invariants {T : LocLat G Qp LL O} (i : ZMod n)
   exact (mem_invariantLetter_iff W).mpr (show Formalism.MainNotions.LiftingTheory.InNΔi W T i (dop y) from ⟨hdΔ, hdl⟩)
 
 /- English proof (translation)
-Take `⟨uc, huc⟩` from `hΔ`. Establish `hNγ : ∀ g : W.Gam, ∀ z ∈ W.N T₁, W.γD T₁ g z ∈ W.N T₁` using `fun g z hz => W.N_Γ T₁ g z hz`. Establish `hmγ : ∀ (g : W.Gam) (z : W.DD T₁), W.map F (W.γD T₁ g z) = W.γD T₂ g (W.map F z)` using `fun g z => W.map_γ F g z`. Establish `hclos : ∀ a ∈ W.DelF, ∀ b ∈ W.DelF, a * b ∈ W.DelF`. Introduce `a ha b hb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨k, hk, hak⟩` from `(W.DelF_def a).mp ha`. Take `⟨m, hm, hbm⟩` from `(W.DelF_def b).mp hb`. Use `(W.DelF_def _).mpr ⟨k * m, Nat.mul_pos hk hm, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_pow, pow_mul, hak, one_pow, Nat.mul_comm k m, pow_mul, hbm, one_pow, one_mul]`. Establish `hinv : ∀ a ∈ W.DelF, a⁻¹ ∈ W.DelF`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `a ha`. Take `⟨k, hk, hak⟩` from `(W.DelF_def a).mp ha`. Conclude with `(W.DelF_def _).mpr ⟨k, hk, by rw [inv_pow, hak, inv_one]⟩`. Use `set r : LetA O n := algebraMap O (LetA O n) ((uc⁻¹ : Oˣ) : O) with hr`. Use `set s : W.DD T₁ := ∑ δ ∈ W.DelF, W.γD T₁ δ y₀ with hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hy₀N : y₀ ∈ W.N T₁`. Take `⟨z, hz, rfl⟩` from `Submodule.mem_map.mp hy₀`. Rewrite using `[LinearMap.smul_apply, LinearMap.id_apply]`. Conclude with `(W.N T₁).smul_mem _ hz`. Establish `hey₀ : (letE i : LetA O n) • y₀ = y₀` using `idempotent_smul_of_mem_letter W hy₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsN : s ∈ W.N T₁` using `(W.N T₁).sum_mem (fun δ _ => hNγ δ y₀ hy₀N)`. Establish `hyN : r • s ∈ W.N T₁` using `(W.N T₁).smul_mem r hsN`. Establish `hsΔ : ∀ δ' ∈ W.DelF, W.γD T₁ δ' s = s`. Introduce `δ' hδ'`. Rewrite using `[hs, map_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_nbij' (δ' * ·) (δ'⁻¹ * ·) (fun a ha => hclos _ hδ' _ ha) (fun a ha => hclos _ (hinv _ hδ') _ ha) (fun a _ => by simp) (fun a _ => by simp) ?_` and prove the remaining obligations. Introduce `a _`. Conclude with `(W.γD_mul T₁ δ' a y₀).symm`. Establish `hyΔ : ∀ δ' ∈ W.DelF, W.γD T₁ δ' (r • s) = r • s`. Introduce `δ' hδ'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[gammaD_smul_letA W T₁ δ' r s, hsΔ δ' hδ', hr, AlgHom.commutes]`. Establish `hyl : r • s ∈ W.Nl T₁ i`. Use `mem_letter_of_idempotent_smul W hyN ?_` and prove the remaining obligations. Rewrite using `[smul_comm, hs, Finset.smul_sum]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_congr rfl (fun δ _ => ?_)` and prove the remaining obligations. Rewrite using `[← gammaD_idempotent_smul' W T₁ δ i y₀, hey₀]`. Use `⟨r • s, (mem_invariantLetter_iff W).mpr (show Formalism.MainNotions.LiftingTheory.InNΔi W T₁ i (r • s) from ⟨⟨hyN, hyΔ⟩, hyl⟩), ?_⟩` and prove the remaining obligations. Establish `hterm : ∀ δ ∈ W.DelF, W.map F (W.γD T₁ δ y₀) = t`. Introduce `δ hδ`.
-
-Rewrite using `[hmγ, hF, ht δ hδ]`. Rewrite using `[map_letA_smul_comm W F r s, hs, map_sum, Finset.sum_congr rfl hterm, Finset.sum_const, ← Nat.cast_smul_eq_nsmul (LetA O n), smul_smul, hr, ← map_natCast (algebraMap O (LetA O n)), ← map_mul, ← huc, Units.inv_mul, map_one, one_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_invariant_preimage_average (hΔ : IsUnit ((W.DelF.card : ℕ) : O)) {T₁ T₂ : LocLat G Qp LL O}
     (F : LatHom T₁.L T₂.L) (i : ZMod n) {y₀ : W.DD T₁} (hy₀ : y₀ ∈ W.Nl T₁ i) {t : W.DD T₂}

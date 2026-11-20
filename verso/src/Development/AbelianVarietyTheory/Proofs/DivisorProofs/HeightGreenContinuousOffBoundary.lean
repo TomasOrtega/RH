@@ -18,11 +18,11 @@ open GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.Toroidal
 open scoped ContDiff
 
 /- English proof (translation)
-Introduce `D O x c σ τ i ch y hy hyb`. Establish `hS : IsOpen (offBd O.Φ c σ)`. Use `isOpen_not_liesIn (p := (O.var c).str) (σ := σ) ⟨(O.Φ.C c).π ⁻¹' (genBd O.s.T.Z : Set _), (genBd O.s.T.Z).isClosed.preimage (O.Φ.C c).π.continuous⟩` as an intermediate fact. Conclude with `this`. Establish `hl : ∀ n, ((O.var c).an σ).SmoothOn (offBd O.Φ c σ) (lnRatio (metsOf x O.Φ c none σ n) (refMet x O.Φ c σ n))` using `fun n => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `GlobalTheory.metsOf_smooth D _ _ _ _ _ _ x O.Φ c σ n`. Use `GlobalTheory.HodgeChgSmooth.smoothOn_lnRatio h.2.2 ⟨fun _ _ => h.2.1.1 (Set.mem_univ _), fun g => ?_⟩` and prove the remaining obligations. Conclude with `(h.2.1.2 g).mono (Set.inter_subset_inter_left _ (Set.subset_univ _))`. Use `⟨ch.e.target ∩ ch.e.symm ⁻¹' offBd O.Φ c σ, (GlobalTheory.ChartGlue.isOpen_over ch.e hS).mem_nhds (GlobalTheory.ChartGlue.mem_over ch.e hy hyb), ?_⟩` and prove the remaining obligations. Establish `hc : ContDiffOn ℝ ∞ (GlobalTheory.HeightParts.psi O x c σ τ i ∘ ch.e.symm) (ch.e.target ∩ ch.e.symm ⁻¹' offBd O.Φ c σ)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(contDiffOn_const (c := (2 : ℝ))).mul (ContDiffOn.sum (s := Finset.univ) fun r _ => (contDiffOn_const (c := fund τ i r.1 r.2)).mul ((hl (rootExp _ r)).chart hS ch))` as an intermediate fact. Use `this.congr fun v _ => ?_` and prove the remaining obligations. Simplify using `[GlobalTheory.HeightParts.psi, phW, refMet]`. Conclude with `hc.continuousOn`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuousOn_psi_chart : ∀ (D : D7) (O : Setup D) (x : ToroidalCompactificationData O.s) (c : O.s.Comp) (σ : D.what₂.LL →+* ℂ) (τ : D.what₂.Tau) (i : Fin O.N)
     (ch : GlobalTheory.AlgChart (O.var c).str σ (O.var c).dim) (y : GlobalTheory.TrueGeo.Pts (O.var c) σ), y ∈ ch.e.source → y ∈ offBd O.Φ c σ →

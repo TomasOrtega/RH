@@ -17,7 +17,7 @@ open UpperTheory.BaseChangeIdentities.FrameWordIdentity
 attribute [local instance] borelG borelF borelA GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Simplify using `only [PT.val, PT.mul, valA, Pi.mul_apply, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem val_mul {E : Type} [Field E] [NumberField E] [IsCMField E] {B : Block E} (s t : PT B)
     (χa : InfinitePlace E → Inf B.a) (χb : InfinitePlace E → Inf B.b) :
@@ -26,9 +26,9 @@ private theorem val_mul {E : Type} [Field E] [NumberField E] [IsCMField E] {B : 
   ring
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => simp [BGen.wd]`. Consider the case `cons g w ih`. Break down `g with c | s` into its components or cases. Establish `e : BGen.wd (Sum.inl c :: w) t₀ = BGen.wd w t₀` using `rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite using `[e, ih]`. Simplify using the standard rewrite rules. Establish `e : BGen.wd (Sum.inr s :: w) t₀ = s.mul (BGen.wd w t₀)` using `rfl`. Rewrite using `[e, val_mul, ih]`. Simplify using `[mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem val_wd {E : Type} [Field E] [NumberField E] [IsCMField E] {B : Block E} (w : List (BGen B)) (t₀ : PT B)
     (χa : InfinitePlace E → Inf B.a) (χb : InfinitePlace E → Inf B.b) :
@@ -43,9 +43,9 @@ private theorem val_wd {E : Type} [Field E] [NumberField E] [IsCMField E] {B : B
       rw [e, val_mul, ih]; simp [mul_assoc]
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => simp [BGen.sc]`. Consider the case `cons g w ih`. Establish `hs : BGen.sc (g :: w) = Sum.elim id (fun _ => 1) g * BGen.sc w` using `by simp [BGen.sc]`. Rewrite using `[hs, List.map_cons, List.map_cons, List.prod_cons, List.prod_cons, ← ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rcases g with c | s <;> simp <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem sc_val {E : Type} [Field E] [NumberField E] [IsCMField E] {B : Block E} (w : List (BGen B))
     (χa : InfinitePlace E → Inf B.a) (χb : InfinitePlace E → Inf B.b) :
@@ -59,17 +59,15 @@ private theorem sc_val {E : Type} [Field E] [NumberField E] [IsCMField E] {B : B
     rcases g with c | s <;> simp <;> ring
 
 /- English proof (translation)
-Introduce `_ _ hL hR E _ _ _ n π S T F₀ F hS i ws`. Take `⟨hg, hβ, h1, h2⟩` from `hL hR E n π S T F₀ F hS i`. Use `set χa := (F₀.A i).χa`. Use `set χb := (F₀.A i).χb`. Use `set f : BGen (F.B i) → ℂ := Sum.elim id fun s : PT (F.B i) => s.val χa χb with hf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hv : (tw F i ws).val χa χb = ((ws.map (bw F i)).flatten.map (Sum.elim (fun _ => (1 : ℂ)) fun s : PT (F.B i) => s.val χa χb)).prod`. Establish `e : tw F i ws = (F.t₁ i).mul (BGen.wd (ws.map (bw F i)).flatten (F.t₂ i))` using `rfl`. Rewrite using `[e, val_mul, val_wd, h1, h2]`. Simplify using the standard rewrite rules. Rewrite using `[hv, sc_val]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hw : ∀ w : List (F.Γ × Bool), ((bw F i w).map f).prod = ((w.map (ul F)).map (Sum.elim id fun _ => (1 : ℂ))).prod`. Introduce `w`. Establish `hb : f (Sum.inr (F.β i)) = 1` using `hβ`. Simplify using `only [bw, List.map_append, List.map_replicate, List.prod_append, hb, List.prod_replicate, one_pow, one_mul, List.map_map]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `p _`. Conclude with `hg p`. Simplify using `only [U.UGen.sc]`. Use `clear hv`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `ws with`. Consider the case `nil => simp`. Consider the case `cons w ws ih`. Simplify using `only [List.map_cons, List.flatten_cons, List.map_append, List.prod_append]`. Rewrite using `[ih]`.
-
-Use `congr 1`. Conclude with `hw w`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem _root_.UpperTheory.BaseChangeIdentities.FrameWordIdentity.archsc_pf :
     BlockWordOperators → TwOk → ArchLet → ArchSc := by

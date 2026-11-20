@@ -16,7 +16,7 @@ variable {K L : Type*} [Field K] [NumberField K] [Field L] [NumberField L] [Alge
   [IsGalois K L] (χ : Gal(L/K) →* ℂˣ)
 
 /- English proof (translation)
-Use `isOfFinOrder_iff_pow_eq_one.2 ⟨Nat.card (charField χ ≃ₐ[K] charField χ), Nat.card_pos, ContinuousMonoidHom.ext fun c ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[ContinuousMonoidHom.pow_apply]`. Express the relevant statement in the definitionally equal form `toCircleHom (charBar χ) (reciprocityMap K (charField χ) c) ^ _ = 1`. Rewrite using `[← map_pow, pow_card_eq_one', map_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem isOfFinOrder_heckeCharacterOfChar : IsOfFinOrder (heckeCharacterOfChar χ) := by
   refine isOfFinOrder_iff_pow_eq_one.2
@@ -34,23 +34,21 @@ universe u
 variable {K : Type u} [Field K] [NumberField K]
 
 /- English proof (translation)
-Take `⟨n, hn, hpow⟩` from `isOfFinOrder_iff_pow_eq_one.1 hψ`. Establish `hval : ∀ c, ψ c ^ n = 1` using `fun c ↦ by`. Rewrite using `[← ContinuousMonoidHom.pow_apply, hpow]`. Both sides reduce to the same expression. Use `set f : IdeleClassGroup K →* Circle := ψ.toMonoidHom with hf`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hS : {z : Circle | z ^ n = 1}.Finite`. Use `Set.Finite.of_finite_image ?_ Circle.coe_injective.injOn` and prove the remaining obligations. Use `(Polynomial.nthRoots n (1 : ℂ)).toFinset.finite_toSet.subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Establish `hz' : z ^ n = 1` using `hz`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mem_coe, Multiset.mem_toFinset, Polynomial.mem_nthRoots hn, ← Circle.coe_pow, hz', Circle.coe_one]`. Establish `hopen : IsOpen (f.ker : Set (IdeleClassGroup K))`. Establish `hU : IsOpen (({z : Circle | z ^ n = 1} \ {1})ᶜ)` using `(hS.sdiff).isClosed.isOpen_compl`. Establish `hker : (f.ker : Set (IdeleClassGroup K)) = ψ ⁻¹' ({z : Circle | z ^ n = 1} \ {1})ᶜ`. Use extensionality with `c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [SetLike.mem_coe, MonoidHom.mem_ker, Set.mem_preimage, Set.mem_compl_iff, Set.mem_sdiff, Set.mem_ofPred_eq, Set.mem_singleton_iff, not_and, not_not]`. Conclude with `⟨fun h _ ↦ h, fun h ↦ h (hval c)⟩`. Rewrite using `[hker]`. Conclude with `hU.preimage ψ.continuous`. Establish `: Finite f.range` using `(hS.subset (by rintro _ ⟨c, rfl⟩; exact hval c)).to_subtype`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨L, _, _, _, hab, hL⟩` from `exists_isAbelianGalois_range_ideleClassNorm_eq_of_finiteIndex f.ker hopen`. Set `χ : Gal(L/K) →* ℂˣ` to `Circle.toUnits.comp ((QuotientGroup.lift _ f hL.le).comp (reciprocityMapEquiv K L).symm.toMonoidHom)`. Establish `hχ : ∀ c, χ (reciprocityMap K L c) = Circle.toUnits (ψ c)`. Introduce `c`. Take `⟨x, rfl⟩` from `IdeleClassGroup.mk_surjective K c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [χ, MonoidHom.comp_apply, reciprocityMap_mk, MulEquiv.coe_toMonoidHom, ← reciprocityMapEquiv_mk, MulEquiv.symm_apply_apply, QuotientGroup.lift_mk]`. Both sides reduce to the same expression. Establish `hinj : Function.Injective χ`. Rewrite using `[injective_iff_map_eq_one]`. Introduce `σ hσ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨c, rfl⟩` from `reciprocityMap_surjective (K := K) (L := L) σ`. Rewrite `hσ` using `[hχ, ← map_one Circle.toUnits]`. Establish `hc : c ∈ f.ker` using `unitSphereToUnits_injective hσ`. Rewrite `hc` using `[← hL, ← ker_reciprocityMap]`. Conclude with `hc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨L, inferInstance, inferInstance, inferInstance, hab, χ, hinj, ContinuousMonoidHom.ext fun c ↦ Circle.ext ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `IdeleClassGroup.mk_surjective K c`. Rewrite using `[heckeCharacterOfChar_apply, reciprocityMap_mk, ← restrictNormal_ideleSymbol (charField χ) L x]`. Express the relevant statement in the definitionally equal form `((charBar χ (AlgEquiv.restrictNormalHom (charField χ) (ideleSymbol K L x)) : ℂˣ) : ℂ) = _`. Rewrite using `[charBar_restrictNormalHom, ← reciprocityMap_mk, hχ]`.
-
-Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_heckeCharacterOfChar_eq (ψ : HeckeCharacter K) (hψ : IsOfFinOrder ψ) :
     ∃ (L : Type u) (_ : Field L) (_ : NumberField L) (_ : Algebra K L) (_ : IsAbelianGalois K L)

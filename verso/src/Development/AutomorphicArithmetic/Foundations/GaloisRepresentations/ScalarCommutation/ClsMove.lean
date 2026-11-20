@@ -17,17 +17,15 @@ section Ring
 variable {S A : Type*} [Ring S] [CommRing A] [Algebra A S]
 
 /- English proof (translation)
-Establish `h1 : (σ x).unop * (σ ((x⁻¹ : Sˣ) : S)).unop = 1`. Rewrite using `[← MulOpposite.unop_mul, ← map_mul, Units.inv_mul, map_one, MulOpposite.unop_one]`. Establish `h0 : b = (t : A) • (((x⁻¹ : Sˣ) : S) * (σ ((x⁻¹ : Sˣ) : S)).unop)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Units.inv_mul, h1, one_mul, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ((x⁻¹ : Sˣ) : S) * ((x : S) * b * (σ x).unop) * (σ ((x⁻¹ : Sˣ) : S)).unop := by`. Simplify using `only [mul_assoc]`. Use `_ = _ := by`. Rewrite using `[hx, Algebra.algebraMap_eq_smul_one, mul_smul_comm, mul_one, smul_mul_assoc]`. Establish `h2 : ((x⁻¹ : Sˣ) : S) * (σ ((x⁻¹ : Sˣ) : S)).unop = ((t⁻¹ : Aˣ) : A) • b` using `by conv_rhs => rw [h0]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[smul_smul, Units.inv_mul, one_smul]`. Establish `h3 : (Y : S) * b * (σ Y).unop = ((T⁻¹ : Aˣ) : A) • b'`. Rewrite using `[hb, ← Algebra.smul_def, smul_smul, Units.inv_mul, one_smul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Units.val_mul, map_mul, MulOpposite.unop_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = ((t⁻¹ : Aˣ) : A) • (x' * ((Y : S) * b * (σ Y).unop) * (σ x').unop) := by`. Rewrite using `[h2]`. Simplify using `only [mul_smul_comm, smul_mul_assoc]`. Use `_ = ((t⁻¹ : Aˣ) : A) • ((T⁻¹ : Aˣ) : A) • ((x' : S) * b' * (σ x').unop) := by`. Rewrite using `[h3]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_smul_comm, smul_mul_assoc]`. Use `_ = _ := by`. Rewrite using `[hx', Algebra.smul_def, Algebra.smul_def, ← map_mul, ← map_mul]`. Use `congr 1`. Simplify using `only [Units.val_mul]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem sim_triv (σ : S →+* Sᵐᵒᵖ) (b b' : S) (x x' Y : Sˣ) (t t' T : Aˣ)
     (hx : (x : S) * b * (σ x).unop = algebraMap A S t)
@@ -63,13 +61,11 @@ private theorem sim_triv (σ : S →+* Sᵐᵒᵖ) (b b' : S) (x x' Y : Sˣ) (t 
         ring
 
 /- English proof (translation)
-Establish `h1 : (σ y).unop * (σ ((y⁻¹ : Sˣ) : S)).unop = 1`. Rewrite using `[← MulOpposite.unop_mul, ← map_mul, Units.inv_mul, map_one, MulOpposite.unop_one]`. Establish `h3 : (y : S) * b * (σ y).unop = ((T⁻¹ : Aˣ) : A) • b'`. Rewrite using `[hb, ← Algebra.smul_def, smul_smul, Units.inv_mul, one_smul]`. Rewrite `hz`, the goal using `[← Algebra.smul_def]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Units.val_mul, map_mul, MulOpposite.unop_mul, mul_assoc]`. Use `_ = ((T⁻¹ : Aˣ) : A) • (((y⁻¹ : Sˣ) : S) * ((z : S) * b' * (σ z).unop) * (σ ((y⁻¹ : Sˣ) : S)).unop) := by`. Rewrite using `[h3]`. Simplify using `only [mul_smul_comm, smul_mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `_ = r • (((y⁻¹ : Sˣ) : S) * (((T⁻¹ : Aˣ) : A) • b') * (σ ((y⁻¹ : Sˣ) : S)).unop) := by`. Rewrite using `[hz]`. Simplify using `only [mul_smul_comm, smul_mul_assoc]`. Rewrite using `[smul_comm]`. Use `_ = r • ((((y⁻¹ : Sˣ) : S) * y) * b * ((σ y).unop * (σ ((y⁻¹ : Sˣ) : S)).unop)) := by`.
-
-Rewrite using `[← h3]`. Simplify using `only [mul_assoc]`. Use `_ = r • b := by rw [Units.inv_mul, h1, one_mul, mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem sim_conj (σ : S →+* Sᵐᵒᵖ) (b b' : S) (z y : Sˣ) (T : Aˣ) (r : A)
     (hb : b' = algebraMap A S T * ((y : S) * b * (σ y).unop))
@@ -96,11 +92,9 @@ private theorem sim_conj (σ : S →+* Sᵐᵒᵖ) (b b' : S) (z y : Sˣ) (T : A
 end Ring
 
 /- English proof (translation)
-Use `⟨fun γ' g => ?_, fun k hk g => ?_⟩` and prove the remaining obligations. Take `⟨γ, e1, e2⟩` from `hc γ'`. Establish `e3 : d⁻¹ * (ι' γ' * g) = ι γ * (d⁻¹ * g)` using `by rw [e2]; group`. Establish `e4 : Φ (ι γ * (d⁻¹ * g)) = ξ (γ : A) (Φ (d⁻¹ * g))` using `hΦ.1 γ (d⁻¹ * g)`. Use `show ξ y (Φ (d⁻¹ * (ι' γ' * g))) = ξ (γ' : A) (ξ y (Φ (d⁻¹ * g)))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e3, e4, e1, ← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul]`. Use `congr 2`. Use `group`. Use `show ξ y (Φ (d⁻¹ * (g * k))) = ξ y (Φ (d⁻¹ * g))`. Rewrite using `[← mul_assoc]`.
-
-Conclude with `congrArg _ (hΦ.2 k hk _)`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_forms_move {A H V : Type} [Group A] [Group H] [AddCommGroup V] [Module ℂ V]
     (ξ : Representation ℂ A V) (Γ Γ' : Subgroup A) (ι : Γ →* H) (ι' : Γ' →* H) (K : Subgroup H) (y : A) (d : H)
@@ -122,9 +116,9 @@ private theorem mem_forms_move {A H V : Type} [Group A] [Group H] [AddCommGroup 
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Set `L : V ≃+ V` to `{ toFun := ξ y invFun := ξ y⁻¹ left_inv := fun v => by rw [← Module.End.mul_apply, ← map_mul]; simp right_inv := fun v => by rw [← Module.End.mul_apply, ← map_mul]; simp map_add' := map_add _ }`. Use `show ∑ᶠ h : G.GAf ⧸ K, f h.out • ξ y (Φ (d⁻¹ * (g * (h.out, 1)))) = L (∑ᶠ h : G.GAf ⧸ K, f h.out • Φ (d⁻¹ * g * (h.out, 1)))`. Rewrite using `[AddEquiv.map_finsum]`. Use `finsum_congr fun h => ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = ξ y (_ • _)`. Rewrite using `[map_smul, mul_assoc]`.
+A detailed English derivation is pending.
 -/
 private theorem op_move {G : HTGroup p} {A V : Type} [Group A] [AddCommGroup V] [Module ℂ V]
     (ξ : Representation ℂ A V) (K : Subgroup G.GAf) (f : G.GAf → ℂ) (Φ : G.GAf × Gr G 1 → V) (y : A)
@@ -145,19 +139,17 @@ private theorem op_move {G : HTGroup p} {A V : Type} [Group A] [AddCommGroup V] 
   rw [map_smul, mul_assoc]
 
 /- English proof (translation)
-Set `Y : (AfP p ⊗[ℚ] G.C)ˣ` to `Units.map (inC G (AfP p)).toMonoidHom y`. Set `T : (AfP p)ˣ` to `Units.map (algebraMap ℚ (AfP p)).toMonoidHom (Units.mk0 s hs.ne')`. Establish `e1 : inC G (AfP p) (sh G y) = (starT G.star (AfP p) (Y : AfP p ⊗[ℚ] G.C)).unop` using `(starT_tmul G.star (AfP p) 1 _).symm`. Establish `e2 : inC G (AfP p) (algebraMap ℚ G.C s) = algebraMap (AfP p) (AfP p ⊗[ℚ] G.C) (T : AfP p)` using `by show _ = algebraMap (AfP p) (AfP p ⊗[ℚ] G.C) (algebraMap ℚ (AfP p) s)`. Rewrite using `[← IsScalarTower.algebraMap_apply]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Algebra.TensorProduct.includeRight : G.C →ₐ[ℚ] AfP p ⊗[ℚ] G.C).commutes _`. Establish `hb : inC G (AfP p) B'.β = algebraMap (AfP p) (AfP p ⊗[ℚ] G.C) (T : AfP p) * ((Y : AfP p ⊗[ℚ] G.C) * inC G (AfP p) B.β * (starT G.star (AfP p) (Y : AfP p ⊗[ℚ] G.C)).unop)`. Rewrite using `[hβ, map_mul, map_mul, map_mul, e1, e2]`. Both sides reduce to the same expression. Establish `hc` using `sim_triv (starT G.star (AfP p)) _ _ x x' Y t t' T hx hx' hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `c : G.GAf` to `⟨(x' * Y * x⁻¹, t' * T⁻¹ * t⁻¹), hc⟩`. Use `⟨(c, inclG G 1 (locC G (y, 1))), fun γ' => ?_⟩` and prove the remaining obligations. Establish `hz : ((γ'.1.1 : G.Cˣ) : G.C) * B'.β * (G.star ((γ'.1.1 : G.Cˣ) : G.C)).unop = algebraMap ℚ G.C (γ'.1.2 : ℚ) * B'.β` using `γ'.2.1`. Establish `hmem : ((y⁻¹ * γ'.1.1 * y, γ'.1.2) : G.Cˣ × ℚˣ) ∈ grp G B.β` using `⟨sim_conj G.star (B.β : G.C) (B'.β : G.C) γ'.1.1 y (Units.mk0 s hs.ne') (γ'.1.2 : ℚ) hβ hz, γ'.2.2⟩`. Establish `hconj : (γ' : G.Cˣ × ℚˣ) = ((y, 1) : G.Cˣ × ℚˣ) * (y⁻¹ * γ'.1.1 * y, γ'.1.2) * ((y, 1) : G.Cˣ × ℚˣ)⁻¹`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `[mul_assoc]`. Simplify using the standard rewrite rules. Use `⟨⟨_, hmem⟩, hconj, ?_⟩` and prove the remaining obligations. Use `Prod.ext (Subtype.ext (Prod.ext ?_ ?_)) ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show x' * Units.map (inC G (AfP p)).toMonoidHom γ'.1.1 * x'⁻¹ = (x' * Y * x⁻¹) * (x * Units.map (inC G (AfP p)).toMonoidHom (y⁻¹ * γ'.1.1 * y) * x⁻¹) * (x' * Y * x⁻¹)⁻¹`. Establish `e3 : Units.map (inC G (AfP p)).toMonoidHom (y⁻¹ * γ'.1.1 * y) = Y⁻¹ * Units.map (inC G (AfP p)).toMonoidHom γ'.1.1 * Y`. Rewrite using `[map_mul, map_mul, map_inv]`. Rewrite using `[e3]`. Use `group`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e3 : ∀ a b : (AfP p)ˣ, b = a * b * a⁻¹` using `fun a b => by`. Rewrite using `[mul_comm a b, mul_inv_cancel_right]`. Conclude with `e3 (t' * T⁻¹ * t⁻¹) (Units.map (algebraMap ℚ (AfP p)).toMonoidHom γ'.1.2)`. Establish `e3` using `congrArg ((inclG G 1).comp (locC G)) hconj`. Rewrite `e3` using `[map_mul, map_mul, map_inv]`.
-
-Conclude with `e3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem conj_emb (G : HTGroup p) (B B' : DForm G) (y : G.Cˣ) (s : ℚ) (hs : 0 < s)
     (hβ : (B'.β : G.C) = algebraMap ℚ G.C s * (y * B.β * sh G y))
@@ -209,11 +201,11 @@ private theorem conj_emb (G : HTGroup p) (B B' : DForm G) (y : G.Cˣ) (s : ℚ) 
     exact e3
 
 /- English proof (translation)
-Introduce `p _ G V _ _ ξ K J ψ θ e ⟨B, x, t, hx, Φ, hΦ, h0, he, hψ⟩`. Establish `hrel : DForm.Rel B (Quot.out (Quot.mk _ B : DFCls G))` using `(GlobalTheory.LKDef.Regroup.dform_rel_equivalence.eqvGen_iff).1 (Quot.eqvGen_exact (Quot.out_eq (Quot.mk DForm.Rel B)).symm)`. Take `⟨y, s, hs, hβ⟩` from `hrel`. Take `⟨d, hd⟩` from `conj_emb G B _ y s hs hβ x t hx _ _ (Quot.out (Quot.mk _ B : DFCls G)).trivAf.choose_spec.choose_spec`. Use `⟨Quot.mk _ B, fun g => ξ (y, 1) (Φ (d⁻¹ * g)), mem_forms_move ξ _ _ _ _ _ _ d hd hΦ, fun h => h0 ?_, ?_, fun j => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `g`. Use `congrFun h (d * g)` as an intermediate fact. Simplify using `only [inv_mul_cancel_left, Pi.zero_apply] at this`. Establish `h2` using `congrArg (ξ ((y, 1) : G.Cˣ × ℚˣ)⁻¹) this`. Rewrite `h2` using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, map_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2`. Rewrite using `[op_move, he]`. Rewrite using `[op_move, hψ j]`. Use function extensionality and compare the values at `g`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem clsMove : ClsMove := by
   intro p _ G V _ _ ξ K J ψ θ e ⟨B, x, t, hx, Φ, hΦ, h0, he, hψ⟩

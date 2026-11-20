@@ -18,9 +18,9 @@ attribute [local instance] borelG borelF borelH
 namespace FinConv
 
 /- English proof (translation)
-Use extensionality with `s`. Express the relevant statement in the definitionally equal form `(∀ x, u (k * (x * s)) = u (k * x)) ↔ ∀ x, u (x * s) = u x`. Prove the components needed by the constructor for the conclusion. Introduce `h x`. Simplify `h (k⁻¹ * x)` using `[mul_assoc]`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h x`. Simplify `h (k * x)` using `[mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem rStab_left {H : Type} [Group H] (u : H → ℂ) (k : H) : rStab (fun z => u (k * z)) = rStab u := by
   ext s
@@ -30,11 +30,11 @@ theorem rStab_left {H : Type} [Group H] (u : H → ℂ) (k : H) : rStab (fun z =
   · intro h x; simpa [mul_assoc] using h (k * x)
 
 /- English proof (translation)
-Unfold `hint`. Rewrite using `[rStab_left]`. Use `congr 1`. Rewrite using `[← finsum_comp_equiv (MulAction.toPerm k : Equiv.Perm (H ⧸ (rStab u ⊓ K))) (f := fun q => u q.out)]`. Use `finsum_congr fun q => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H g`. Take `⟨h₁, e₁⟩` from `QuotientGroup.mk_out_eq_mul (rStab u ⊓ K) g`. Take `⟨h₂, e₂⟩` from `QuotientGroup.mk_out_eq_mul (rStab u ⊓ K) (k * g)`. Establish `hk : (MulAction.toPerm k : Equiv.Perm (H ⧸ (rStab u ⊓ K))) (QuotientGroup.mk g) = QuotientGroup.mk (k * g)` using `rfl`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [hk, e₁, e₂]`. Rewrite using `[← mul_assoc, (Subgroup.mem_inf.1 h₁.2).1, (Subgroup.mem_inf.1 h₂.2).1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hint_left {H : Type} [Group H] (K : Subgroup H) (u : H → ℂ) (k : H) :
     hint K (fun z => u (k * z)) = hint K u := by
@@ -52,13 +52,13 @@ theorem hint_left {H : Type} [Group H] (K : Subgroup H) (u : H → ℂ) (k : H) 
     rw [← mul_assoc, (Subgroup.mem_inf.1 h₁.2).1, (Subgroup.mem_inf.1 h₂.2).1]
 
 /- English proof (translation)
-Simplify using `[hint]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hint_zero {H : Type} [Group H] (K : Subgroup H) : hint K (fun _ : H => (0 : ℂ)) = 0 := by
   simp [hint]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `h (by rw [show u = fun _ => 0 from funext hc, hint_zero])`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_of_hint_ne {H : Type} [Group H] (K : Subgroup H) (u : H → ℂ) (h : hint K u ≠ 0) : ∃ z, u z ≠ 0 := by
   by_contra hc
@@ -66,13 +66,13 @@ theorem exists_of_hint_ne {H : Type} [Group H] (K : Subgroup H) (u : H → ℂ) 
   exact h (by rw [show u = fun _ => 0 from funext hc, hint_zero])
 
 /- English proof (translation)
-Establish `hR : rStab ((K : Set H).indicator 1) ⊓ K = K`. Use `inf_eq_right.2 fun k hk x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ K`. Rewrite using `[Set.indicator_of_mem (K.mul_mem hx hk), Set.indicator_of_mem hx]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Set.indicator_of_notMem (fun h => hx (by simpa using K.mul_mem h (K.inv_mem hk))), Set.indicator_of_notMem hx]`. Unfold `hint`. Rewrite using `[hR, Subgroup.relIndex_self]`. Simplify using `only [Nat.cast_one, inv_one, one_mul]`. Rewrite using `[finsum_eq_single _ (QuotientGroup.mk 1 : H ⧸ K)]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h, e⟩` from `QuotientGroup.mk_out_eq_mul K (1 : H)`. Rewrite using `[e, Set.indicator_of_mem (by simpa using h.2)]; rfl`. Introduce `q hq`. Use `Set.indicator_of_notMem (fun hm => hq ?_) _` and prove the remaining obligations. Rewrite using `[← QuotientGroup.out_eq' q]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `QuotientGroup.eq.2 (by simpa using K.inv_mem hm)`.
+A detailed English derivation is pending.
 -/
 theorem hint_ind {H : Type} [Group H] (K : Subgroup H) : hint K ((K : Set H).indicator 1) = 1 := by
   have hR : rStab ((K : Set H).indicator 1) ⊓ K = K := by
@@ -94,13 +94,11 @@ theorem hint_ind {H : Type} [Group H] (K : Subgroup H) : hint K ((K : Set H).ind
 def cv {H : Type} [Group H] (K : Subgroup H) (u₁ u₂ : H → ℂ) (m : H) : ℂ := hint K fun z => u₁ z * u₂ (z⁻¹ * m)
 
 /- English proof (translation)
-Use `⟨?_, fun k hk m => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsCompact (closure (Function.support (cv K u₁ u₂)))`. Use `IsCompact.closure_of_subset (h₁.1.mul h₂.1) fun m hm => ?_` and prove the remaining obligations. Take `⟨z, hz⟩` from `exists_of_hint_ne K (fun z => u₁ z * u₂ (z⁻¹ * m)) hm`. Conclude with `Set.mem_mul.2 ⟨z, subset_tsupport _ (left_ne_zero_of_mul hz), z⁻¹ * m, subset_tsupport _ (right_ne_zero_of_mul hz), mul_inv_cancel_left z m⟩`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Unfold `cv`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `z`. Simplify using `[mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Use `_ = hint K (fun z => u₁ (k * z) * u₂ (z⁻¹ * m)) := hint_left K (fun z => u₁ (k * z) * u₂ (z⁻¹ * m)) k⁻¹`. Use `_ = _ := by congr 1; funext z; rw [(h₁.2 k (Subgroup.mem_inf.1 hk).1 z).1]`. Unfold `cv`. Use `congr 1`. Use function extensionality and compare the values at `z`.
-
-Rewrite using `[← mul_assoc, (h₂.2 k (Subgroup.mem_inf.1 hk).2 _).2]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cv_hecke {H : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] (K L₁ L₂ : Subgroup H) (u₁ u₂ : H → ℂ)
     (h₁ : IsHecke L₁ u₁) (h₂ : IsHecke L₂ u₂) : IsHecke (L₁ ⊓ L₂) (cv K u₁ u₂) := by
@@ -119,13 +117,13 @@ theorem cv_hecke {H : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H
   · unfold cv; congr 1; funext z; rw [← mul_assoc, (h₂.2 k (Subgroup.mem_inf.1 hk).2 _).2]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `m`. Unfold `cv`. Distinguish the cases in `hm : m ∈ K`. Rewrite using `[Set.indicator_of_mem hm, Pi.one_apply]`. Establish `e : (fun z => (K : Set H).indicator 1 z * (K : Set H).indicator (1 : H → ℂ) (z⁻¹ * m)) = (K : Set H).indicator 1`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `z`. Distinguish the cases in `hz : z ∈ K`. Rewrite using `[Set.indicator_of_mem hz, Set.indicator_of_mem (K.mul_mem (K.inv_mem hz) hm)]`. Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_notMem hz]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[e, hint_ind]`. Rewrite using `[Set.indicator_of_notMem hm]`. Establish `e : (fun z => (K : Set H).indicator 1 z * (K : Set H).indicator (1 : H → ℂ) (z⁻¹ * m)) = fun _ => 0`. Use function extensionality and compare the values at `z`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hz : z ∈ K`. Rewrite using `[Set.indicator_of_notMem (fun h : z⁻¹ * m ∈ K => hm (by simpa using K.mul_mem hz h))]; simp`. Rewrite using `[Set.indicator_of_notMem hz]`. Simplify using the standard rewrite rules. Rewrite using `[e, hint_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem cv_ind {H : Type} [Group H] (K : Subgroup H) :
     cv K ((K : Set H).indicator 1) ((K : Set H).indicator 1) = (K : Set H).indicator 1 := by
@@ -149,7 +147,7 @@ theorem cv_ind {H : Type} [Group H] (K : Subgroup H) :
     rw [e, hint_zero]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, fun k hk => h.2 k (hl hk)⟩`.
+Supply the required witnesses or components.
 -/
 theorem hecke_mono {H : Type} [Group H] [TopologicalSpace H] {L L' : Subgroup H} {f : H → ℂ} (h : IsHecke L f) (hl : L' ≤ L) : IsHecke L' f :=
   ⟨h.1, fun k hk => h.2 k (hl hk)⟩
@@ -157,7 +155,7 @@ theorem hecke_mono {H : Type} [Group H] [TopologicalSpace H] {L L' : Subgroup H}
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h₁.1.inter h₂.1, le_trans inf_le_left h₁.2.1, fun k hk => Subgroup.mem_inf.2 ⟨h₁.2.2 k (Subgroup.mem_inf.1 hk).1, h₂.2.2 k (Subgroup.mem_inf.1 hk).2⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem level_inf {H : Type} [Group H] [TopologicalSpace H] (θ : H →* H) (K K₁ K₂ : Subgroup H)
     (h₁ : IsLevel θ K K₁) (h₂ : IsLevel θ K K₂) : IsLevel θ K (K₁ ⊓ K₂) :=
@@ -165,7 +163,7 @@ theorem level_inf {H : Type} [Group H] [TopologicalSpace H] (θ : H →* H) (K K
     Subgroup.mem_inf.2 ⟨h₁.2.2 k (Subgroup.mem_inf.1 hk).1, h₂.2.2 k (Subgroup.mem_inf.1 hk).2⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun w => level_inf _ _ _ _ (h₁.1 w) (h₂.1 w), by filter_upwards [h₁.2, h₂.2] with w e₁ e₂ rw [e₁, e₂, inf_idem]⟩`.
+Supply the required witnesses or components.
 -/
 theorem levelFam_inf {H : Pl E → Type} [∀ w, Group (H w)] [∀ w, TopologicalSpace (H w)] (θ : ∀ w, H w →* H w)
     (K K₁ K₂ : ∀ w : Pl E, Subgroup (H w)) (h₁ : IsLevelFam θ K K₁) (h₂ : IsLevelFam θ K K₂) :
@@ -175,9 +173,7 @@ theorem levelFam_inf {H : Pl E → Type} [∀ w, Group (H w)] [∀ w, Topologica
     rw [e₁, e₂, inf_idem]⟩
 
 /- English proof (translation)
-Take `⟨K₁, K₂, hK₁, hK₂, hT⟩` from `h`. Take `⟨K₁', K₂', hK₁', hK₂', hT'⟩` from `h'`. Use `⟨fun w => K₁ w ⊓ K₁' w, fun w => K₂ w ⊓ K₂' w, levelFam_inf _ _ _ _ hK₁ hK₁', levelFam_inf _ _ _ _ hK₂ hK₂', fun w => ?_, ?_⟩` and prove the remaining obligations. Conclude with `hecke_mono (cv_hecke (K2 a b w) _ _ _ _ (hT.1 w) (hT'.1 w)) (le_inf (Subgroup.prod_mono inf_le_left inf_le_left) (Subgroup.prod_mono inf_le_right inf_le_right))`. Use `filter_upwards [hT.2, hT'.2] with w e e' show cv (K2 a b w) (φ w) (φ' w) = _`.
-
-Rewrite using `[e, e', cv_ind]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTestFunction_mulConvolution {φ φ' : ∀ w : Pl E, GLw a w × GLw b w → ℂ} (h : IsTestP φ) (h' : IsTestP φ') :
     IsTestP (fun w => mconv (φ w) (φ' w)) := by
@@ -192,9 +188,7 @@ theorem isTestFunction_mulConvolution {φ φ' : ∀ w : Pl E, GLw a w × GLw b w
     rw [e, e', cv_ind]
 
 /- English proof (translation)
-Take `⟨K₁, K₂, hK₁, hK₂, hT⟩` from `h`. Use `⟨fun w => (K₁ w).prod (K₂ w), fun w => ⟨?_, Subgroup.prod_mono (hK₁.1 w).2.1 (hK₂.1 w).2.1, hT.1 w⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.coe_prod]`. Conclude with `(hK₁.1 w).1.prod (hK₂.1 w).1`. Use `filter_upwards [hK₁.2, hK₂.2, hT.2] with w e₁ e₂ e₃`.
-
-Conclude with `⟨by rw [e₁, e₂], e₃⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem placeTest {φ : ∀ w : Pl E, GLw a w × GLw b w → ℂ} (h : IsTestP φ) :
     ∃ L : ∀ w : Pl E, Subgroup (GLw a w × GLw b w),
@@ -216,9 +210,9 @@ def slL {S : Set (Pl E)} (L₁ L₂ : ∀ w : Pl E, Subgroup (GLw a w × GLw b w
   | .inr w => L₂ w.1
 
 /- English proof (translation)
-Rewrite `hQ`, the goal using `[Filter.eventually_cofinite]`. Use `(((hQ.preimage Subtype.val_injective.injOn).image (Sum.inl : {w // w ∈ S} → Slot S)).union ((hQ.preimage Subtype.val_injective.injOn).image (Sum.inr : {w // w ∈ S ∧ IsSplitAt w} → Slot S))).subset ?_` and prove the remaining obligations. Introduce `i hi`. Consider the cases of `i with`. Consider the case `inl w => exact Or.inl ⟨w, fun hq => hi (h _ hq), rfl⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `inr w => exact Or.inr ⟨w, fun hq => hi (h _ hq), rfl⟩`.
+Treat this case separately.
 -/
 theorem ev_position {S : Set (Pl E)} (Q : Pl E → Prop) (hQ : ∀ᶠ w in cofinite, Q w) {P : Slot S → Prop}
     (h : ∀ i, Q i.pl → P i) : ∀ᶠ i in cofinite, P i := by
@@ -232,9 +226,9 @@ theorem ev_position {S : Set (Pl E)} (Q : Pl E → Prop) (hQ : ∀ᶠ w in cofin
   | inr w => exact Or.inr ⟨w, fun hq => hi (h _ hq), rfl⟩
 
 /- English proof (translation)
-Take `⟨L₁, hL₁, e₁⟩` from `placeTest h₁`. Take `⟨L₂, hL₂, e₂⟩` from `placeTest h₂`. Use `⟨slL L₁ L₂, fun i => ?_, ev_position _ (e₁.and e₂) fun i hi => ?_⟩` and prove the remaining obligations. Consider the cases of `i with`. Consider the case `inl w => exact hL₁ w.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `inr w => exact hL₂ w.1`. Consider the cases of `i with`. Consider the case `inl w => exact hi.1`. Consider the case `inr w => exact hi.2`.
+Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem positionTest {S : Set (Pl E)} {φ₁ φ₂ : ∀ w : Pl E, GLw a w × GLw b w → ℂ} (h₁ : IsTestP φ₁) (h₂ : IsTestP φ₂) :
     ∃ L : ∀ i : Slot S, Subgroup (GLw a i.pl × GLw b i.pl),
@@ -251,7 +245,7 @@ theorem positionTest {S : Set (Pl E)} {φ₁ φ₂ : ∀ w : Pl E, GLw a w × GL
     | inr w => exact hi.2
 
 /- English proof (translation)
-Use `conv_lhs => rw [← finprod_mem_univ, ← Set.range_inl_union_range_inr]`. Rewrite using `[finprod_mem_union' Set.isCompl_range_inl_range_inr.disjoint (hfin.subset Set.inter_subset_right) (hfin.subset Set.inter_subset_right), finprod_mem_range Sum.inl_injective, finprod_mem_range Sum.inr_injective]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finprod_sum_elim {α β : Type} (g : α ⊕ β → ℂ) (hfin : (Function.mulSupport g).Finite) :
     ∏ᶠ i, g i = (∏ᶠ x, g (Sum.inl x)) * ∏ᶠ y, g (Sum.inr y) := by
@@ -260,13 +254,13 @@ theorem finprod_sum_elim {α β : Type} (g : α ⊕ β → ℂ) (hfin : (Functio
     (hfin.subset Set.inter_subset_right), finprod_mem_range Sum.inl_injective, finprod_mem_range Sum.inr_injective]
 
 /- English proof (translation)
-Establish `hA : (S ∩ Function.mulSupport A).Finite`. Use `((hfin.preimage Sum.inl_injective.injOn).image Subtype.val).subset ?_` and prove the remaining obligations. Introduce and unpack `w ⟨hw, hA⟩`. Conclude with `⟨⟨w, hw⟩, hA, rfl⟩`. Establish `hB : (S ∩ Function.mulSupport fun w => if IsSplitAt w then B w else 1).Finite`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `((hfin.preimage Sum.inr_injective.injOn).image Subtype.val).subset ?_` and prove the remaining obligations. Introduce and unpack `w ⟨hw, hB⟩`. Rewrite `hB` using `[Function.mem_mulSupport]`. Distinguish the cases in `hs : IsSplitAt w`. Rewrite `hB` using `[if_pos hs]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨⟨w, hw, hs⟩, hB, rfl⟩`. Rewrite `hB` using `[if_neg hs]`. Conclude with `absurd rfl hB`. Rewrite using `[finprod_mem_mul_distrib' hA hB, finprod_sum_elim _ hfin]`. Establish `e₂ : ∏ᶠ w ∈ S, (if IsSplitAt w then B w else 1) = ∏ᶠ w ∈ {w | w ∈ S ∧ IsSplitAt w}, B w`.
+Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `finprod_congr fun w => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases hS : w ∈ S <;> by_cases hs : IsSplitAt w <;> simp [hS, hs]`. Rewrite using `[e₂, ← finprod_set_coe_eq_finprod_mem S, ← finprod_set_coe_eq_finprod_mem]`. Both sides reduce to the same expression.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem reindex (S : Set (Pl E)) (A B : Pl E → ℂ)
     (hfin : (Function.mulSupport (Sum.elim (fun w : {w // w ∈ S} => A w.1)
@@ -294,7 +288,7 @@ theorem reindex (S : Set (Pl E)) (A B : Pl E → ℂ)
   rfl
 
 /- English proof (translation)
-The claim follows from `Filter.eventually_cofinite.1 ((hind.and (hev y)).mono fun i hi => by show sf φ₁ φ₂ i (Slot.cp a b i y) = 1 rw [hi.1, Set.indicator_of_mem hi.2]; rfl)`.
+A detailed English derivation is pending.
 -/
 theorem fin_one {S : Set (Pl E)} (hev : ∀ x : Gf E a b, ∀ᶠ i : Slot S in cofinite, i.cp a b x ∈ K2 a b i.pl)
     {φ₁ φ₂ : ∀ w : Pl E, GLw a w × GLw b w → ℂ}
@@ -305,9 +299,9 @@ theorem fin_one {S : Set (Pl E)} (hev : ∀ x : Gf E a b, ∀ᶠ i : Slot S in c
     rw [hi.1, Set.indicator_of_mem hi.2]; rfl)
 
 /- English proof (translation)
-Establish `key : (fun i : Slot S => sf φ₁ φ₂ i (i.cp a b y)) = Sum.elim (fun w : {w // w ∈ S} => φ₁ w.1 (atW w.1 y)) (fun w : {w // w ∈ S ∧ IsSplitAt w} => φ₂ w.1 (atW w.1 (thP E a b y)))`. Apply the tactic sequence `funext i; cases i <;> rfl`. Establish `hf` using `fin_one hev hind y`. Rewrite `hf` using `[key]`. Unfold `finFn`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[reindex S (fun w => φ₁ w (atW w y)) (fun w => φ₂ w (atW w (thP E a b y))) hf, ← key]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finFn_eq {S : Set (Pl E)} (hev : ∀ x : Gf E a b, ∀ᶠ i : Slot S in cofinite, i.cp a b x ∈ K2 a b i.pl)
     {φ₁ φ₂ : ∀ w : Pl E, GLw a w × GLw b w → ℂ}
@@ -329,30 +323,30 @@ def levelSub {S : Set (Pl E)} (hmul : ∀ (i : Slot S) (x y : Gf E a b), i.cp a 
   ⨅ i, (L i).comap (pc hmul i)
 
 /- English proof (translation)
-The claim follows from `Subgroup.mem_iInf`.
+A detailed English derivation is pending.
 -/
 theorem mem_levelSub {S : Set (Pl E)} (hmul : ∀ (i : Slot S) (x y : Gf E a b), i.cp a b (x * y) = i.cp a b x * i.cp a b y)
     (L : ∀ i : Slot S, Subgroup (GLw a i.pl × GLw b i.pl)) (x : Gf E a b) :
     x ∈ levelSub hmul L ↔ ∀ i, i.cp a b x ∈ L i := Subgroup.mem_iInf
 
 /- English proof (translation)
-Rewrite using `[Subgroup.coe_prod]`. Conclude with `(GlobalTheory.T.finite_kernel_compact_open E a).1.prod (GlobalTheory.T.finite_kernel_compact_open E b).1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_maximal_pair : IsOpen (((Kf E a).prod (Kf E b) : Subgroup (Gf E a b)) : Set (Gf E a b)) := by
   rw [Subgroup.coe_prod]; exact (GlobalTheory.T.finite_kernel_compact_open E a).1.prod (GlobalTheory.T.finite_kernel_compact_open E b).1
 
 /- English proof (translation)
-Rewrite using `[Subgroup.coe_prod]`. Conclude with `(GlobalTheory.T.finite_kernel_compact_open E a).2.prod (GlobalTheory.T.finite_kernel_compact_open E b).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_maximal_pair : IsCompact (((Kf E a).prod (Kf E b) : Subgroup (Gf E a b)) : Set (Gf E a b)) := by
   rw [Subgroup.coe_prod]; exact (GlobalTheory.T.finite_kernel_compact_open E a).2.prod (GlobalTheory.T.finite_kernel_compact_open E b).2
 
 /- English proof (translation)
-Establish `hT` using `Filter.eventually_cofinite.1 hLe`. Establish `e : (levelSub hmul L : Set (Gf E a b)) = (((Kf E a).prod (Kf E b) : Subgroup (Gf E a b)) : Set (Gf E a b)) ∩ ⋂ i ∈ {i | ¬ L i = K2 a b i.pl}, (i.cp a b) ⁻¹' (L i : Set (GLw a i.pl × GLw b i.pl))`. Use extensionality with `x`. Simplify using `only [SetLike.mem_coe, mem_levelSub, Set.mem_inter_iff, Set.mem_iInter, Set.mem_preimage, hK, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Conclude with `⟨fun i => (hL i).2 (h i), fun i _ => h i⟩`. Introduce and unpack `⟨h₁, h₂⟩ i`. Distinguish the cases in `hi : L i = K2 a b i.pl`. Rewrite using `[hi]`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h₁ i`. Conclude with `h₂ i hi`. Rewrite using `[e]`. Conclude with `isOpen_maximal_pair.inter (hT.isOpen_biInter fun i _ => (hL i).1.preimage (hcont i))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_levelSub {S : Set (Pl E)}
     (hmul : ∀ (i : Slot S) (x y : Gf E a b), i.cp a b (x * y) = i.cp a b x * i.cp a b y)
@@ -381,7 +375,7 @@ def cset {S : Set (Pl E)} (φ₁ φ₂ : ∀ w : Pl E, GLw a w × GLw b w → �
   else tsupport (sf φ₁ φ₂ i)
 
 /- English proof (translation)
-Use `haveI := B.hν`. Unfold `Block.vol`. Establish `hpos` using `(isOpen_maximal_pair (E := E) (a := B.a) (b := B.b)).measure_pos B.ν ⟨1, Subgroup.one_mem _⟩`. Establish `hfin` using `(isCompact_maximal_pair (E := E) (a := B.a) (b := B.b)).measure_lt_top (μ := B.ν)`. Conclude with `Complex.ofReal_ne_zero.2 (ENNReal.toReal_pos hpos.ne' hfin.ne).ne'`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem vol_ne (B : Block E) : B.vol ≠ 0 := by
   haveI := B.hν
@@ -391,15 +385,13 @@ theorem vol_ne (B : Block E) : B.vol ≠ 0 := by
   exact Complex.ofReal_ne_zero.2 (ENNReal.toReal_pos hpos.ne' hfin.ne).ne'
 
 /- English proof (translation)
-Take `⟨L, hL, hLe⟩` from `positionTest (S := S) h₁ h₂`. Establish `hind` using `hLe.mono fun i hi => hi.2`. Establish `hC : ∀ i : Slot S, IsCompact (cset φ₁ φ₂ i)` using `fun i => by`. Unfold `cset`. Distinguish the cases in `h : sf φ₁ φ₂ i = (K2 a b i.pl : Set (GLw a i.pl × GLw b i.pl)).indicator 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos h]`. Conclude with `(GlobalTheory.BCT.StTw2Add.isOpen_isCompact_KK a b i.pl).2`. Rewrite using `[if_neg h]`. Conclude with `(hL i).2.2.1`. Establish `hCe : ∀ᶠ i in cofinite, cset φ₁ φ₂ i = K2 a b i.pl` using `hLe.mono fun i hi => if_pos hi.2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `IsCompact (closure (Function.support (finFn S φ₁ φ₂)))`. Use `IsCompact.closure_of_subset (hcpt _ hC hCe) fun x hx i => ?_` and prove the remaining obligations. Rewrite `hx` using `[Function.mem_support, finFn_eq hev hind]`. Establish `hne : sf φ₁ φ₂ i (i.cp a b x) ≠ 0` using `fun h0 => hx (finprod_eq_zero _ i h0 (fin_one hev hind x))`. Unfold `cset`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : sf φ₁ φ₂ i = (K2 a b i.pl : Set (GLw a i.pl × GLw b i.pl)).indicator 1`. Rewrite using `[if_pos h]`. Assume the negation of the conclusion as `hn`. Rewrite `hne` using `[h, Set.indicator_of_notMem hn]`. Conclude with `hne rfl`.
-
-Rewrite using `[if_neg h]`. Conclude with `subset_tsupport _ hne`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finFn_hcs {S : Set (Pl E)} (hev : ∀ x : Gf E a b, ∀ᶠ i : Slot S in cofinite, i.cp a b x ∈ K2 a b i.pl)
     (hcpt : ∀ C : ∀ i : Slot S, Set (GLw a i.pl × GLw b i.pl), (∀ i, IsCompact (C i)) →
@@ -427,7 +419,7 @@ theorem finFn_hcs {S : Set (Pl E)} (hev : ∀ x : Gf E a b, ∀ᶠ i : Slot S in
   · rw [if_neg h]; exact subset_tsupport _ hne
 
 /- English proof (translation)
-Introduce `u hu h`. Establish `hu'` using `(mem_levelSub hmul L u).1 hu`. Simplify using `only [finFn_eq hev hind, hmul]`. Conclude with `⟨finprod_congr fun i => ((hH i).2 _ (hu' i) _).1, finprod_congr fun i => ((hH i).2 _ (hu' i) _).2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem finFn_inv {S : Set (Pl E)}
     (hmul : ∀ (i : Slot S) (x y : Gf E a b), i.cp a b (x * y) = i.cp a b x * i.cp a b y)
@@ -442,21 +434,19 @@ theorem finFn_inv {S : Set (Pl E)}
   exact ⟨finprod_congr fun i => ((hH i).2 _ (hu' i) _).1, finprod_congr fun i => ((hH i).2 _ (hu' i) _).2⟩
 
 /- English proof (translation)
-Use `haveI := B.hν`. Use `haveI : BorelSpace (Hf E B.a B.b) := ⟨rfl⟩`. Take `⟨L, hL, hLe⟩` from `positionTest (S := S) h₁ h₂`. Take `⟨L', hL', hLe'⟩` from `positionTest (S := S) h₁' h₂'`. Take `⟨L'', _, hLe''⟩` from `positionTest (S := S) (isTestFunction_mulConvolution h₁ h₁') (isTestFunction_mulConvolution h₂ h₂')`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hind` using `hLe.mono fun i hi => hi.2`. Establish `hind'` using `hLe'.mono fun i hi => hi.2`. Establish `hind''` using `hLe''.mono fun i hi => hi.2`. Establish `hU : IsOpen ((levelSub hmul L ⊓ levelSub hmul L' : Subgroup (Gf E B.a B.b)) : Set (Gf E B.a B.b))` using `(isOpen_levelSub hmul hcont hK L (fun i => ⟨(hL i).1, (hL i).2.1⟩) (hLe.mono fun i hi => hi.1)).inter (isOpen_levelSub hmul hcont hK L' (fun i => ⟨(hL' i).1, (hL' i).2.1⟩) (hLe'.mono fun i hi => hi.1))`. Establish `hF` using `finFn_inv hmul hev L (fun i => (hL i).2.2) hind`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hF'` using `finFn_inv hmul hev L' (fun i => (hL' i).2.2) hind'`. Rewrite using `[h1 (Hf E B.a B.b) B.ν ((Kf E B.a).prod (Kf E B.b)) (levelSub hmul L ⊓ levelSub hmul L') (fun h => finFn S φ₁ φ₂ h * finFn S φ₁' φ₂' (h⁻¹ * g)) isOpen_maximal_pair isCompact_maximal_pair hU ((finFn_hcs hev hcpt h₁ h₂).mul_right) (fun u hu x => by`. Rewrite using `[(hF u (Subgroup.mem_inf.1 hu).1 x).2, _root_.mul_inv_rev, mul_assoc, (hF' u⁻¹ (inv_mem (Subgroup.mem_inf.1 hu).2) _).1]) B.hν']`. Use `congrArg₂ (· * ·) rfl ?_` and prove the remaining obligations. Establish `hp` using `h2 (Slot S) (Hf E B.a B.b) (fun i => GLw B.a i.pl × GLw B.b i.pl) (pc hmul) ((Kf E B.a).prod (Kf E B.b)) (fun i => K2 B.a B.b i.pl) (fun i => L i ⊓ L' i) (fun i m => sf φ₁ φ₂ i m * sf φ₁' φ₂' i (m⁻¹ * i.cp B.a B.b g)) hinj hsurj hev hK (fun i => ⟨(GlobalTheory.BCT.StTw2Add.isOpen …`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[((hL i).2.2.2 u (Subgroup.mem_inf.1 hu).1 x).2, _root_.mul_inv_rev, mul_assoc, ((hL' i).2.2.2 u⁻¹ (inv_mem (Subgroup.mem_inf.1 hu).2) _).1]⟩) (by`. Use `filter_upwards [hind, hind', hev g] with i e e' hg`. Use function extensionality and compare the values at `m`. Use `show sf φ₁ φ₂ i m * sf φ₁' φ₂' i (m⁻¹ * i.cp B.a B.b g) = _`. Rewrite using `[e, e']`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hm : m ∈ K2 B.a B.b i.pl`. Rewrite using `[Set.indicator_of_mem hm, Set.indicator_of_mem (mul_mem (inv_mem hm) hg)]`. Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_notMem hm]`. Use the proof step `simp)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e1 : (fun h => finFn S φ₁ φ₂ h * finFn S φ₁' φ₂' (h⁻¹ * g)) = fun x => ∏ᶠ i : Slot S, sf φ₁ φ₂ i (pc hmul i x) * sf φ₁' φ₂' i ((pc hmul i x)⁻¹ * i.cp B.a B.b g)`. Use function extensionality and compare the values at `x`. Rewrite using `[finFn_eq hev hind, finFn_eq hev hind', ← finprod_mul_distrib (fin_one hev hind x) (fin_one hev hind' _)]`. Use `finprod_congr fun i => ?_` and prove the remaining obligations. Establish `hc : i.cp B.a B.b (x⁻¹ * g) = (i.cp B.a B.b x)⁻¹ * i.cp B.a B.b g`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[show i.cp B.a B.b (x⁻¹ * g) = pc hmul i (x⁻¹ * g) from rfl, map_mul, map_inv]`. Both sides reduce to the same expression. Rewrite using `[hc]`. Both sides reduce to the same expression. Establish `e2 : finFn S (fun w => mconv (φ₁ w) (φ₁' w)) (fun w => mconv (φ₂ w) (φ₂' w)) g = ∏ᶠ i : Slot S, hint (K2 B.a B.b i.pl) (fun m => sf φ₁ φ₂ i m * sf φ₁' φ₂' i (m⁻¹ * i.cp B.a B.b g))`.
-
-Rewrite using `[finFn_eq hev hind'']`. Apply the tactic sequence `exact finprod_congr fun i => by cases i <;> rfl`. Rewrite using `[e1, hp, e2]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conv_eq (h1 : IntHint) (h2 : HintProd) (B : Block E) {S : Set (Pl E)}
     (hmul : ∀ (i : Slot S) (x y : Gf E B.a B.b), i.cp B.a B.b (x * y) = i.cp B.a B.b x * i.cp B.a B.b y)
@@ -526,7 +516,7 @@ theorem conv_eq (h1 : IntHint) (h2 : HintProd) (B : Block E) {S : Set (Pl E)}
 end FinConv
 
 /- English proof (translation)
-Introduce `E _ _ _ B S hS`. Take `⟨hmul, hcont, hinj, hsurj, hev, hK, hcpt⟩` from `h3 E B.a B.b S hS`. Use `⟨FinConv.vol_ne B, fun φ₁ φ₂ h₁ h₂ => ⟨FinConv.finFn_hcs hev hcpt h₁ h₂, ?_, fun φ₁' φ₂' h₁' h₂' => ⟨FinConv.isTestFunction_mulConvolution h₁ h₁', FinConv.isTestFunction_mulConvolution h₂ h₂', fun g => FinConv.conv_eq h1 h2 B hmul hcont hinj hsurj hev hK hcpt h₁ h₂ h₁' h₂' g⟩⟩⟩` and prove the remaining obligations. Take `⟨L, hL, hLe⟩` from `FinConv.positionTest (S := S) h₁ h₂`. Conclude with `⟨FinConv.levelSub hmul L, FinConv.isOpen_levelSub hmul hcont hK L (fun i => ⟨(hL i).1, (hL i).2.1⟩) (hLe.mono fun i hi => hi.1), FinConv.finFn_inv hmul hev L (fun i => (hL i).2.2) (hLe.mono fun i hi => hi.2)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem finConv (h1 : IntHint) (h2 : HintProd) (h3 : Slots) : FinConv := by
   intro E _ _ _ B S hS

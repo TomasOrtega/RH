@@ -10,7 +10,7 @@ section Compare
 variable (A K : Type) [CommRing A] [Field K] [Algebra A K]
 
 /- English proof (translation)
-Use extensionality with `x`. Conclude with `Algebra.mem_bot`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem HeightOneIntersection.coe_bot :
     ((Subalgebra.toSubmodule (⊥ : Subalgebra A K) : Submodule A K) : Set K) =
@@ -19,13 +19,13 @@ theorem HeightOneIntersection.coe_bot :
   exact Algebra.mem_bot
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [SetLike.mem_coe, Submodule.mem_iInf, Set.mem_iInter]`. Establish `key : ∀ (p : Ideal A) [p.IsPrime], x ∈ GroundTheory.Heights₂.Heights.Model.localizedIn p (Subalgebra.toSubmodule (⊥ : Subalgebra A K)) ↔ x ∈ locIn A K p`. Introduce `p _`. Express the relevant statement in the definitionally equal form `(∃ s : A, s ∉ p ∧ s • x ∈ (⊥ : Subalgebra A K)) ↔ ∃ a s : A, s ∉ p ∧ algebraMap A K s * x = algebraMap A K a`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hsx⟩`. Take `⟨a, ha⟩` from `Algebra.mem_bot.mp hsx`. Conclude with `⟨a, s, hs, by rw [ha, Algebra.smul_def]⟩`. Introduce and unpack `⟨a, s, hs, h⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨s, hs, Algebra.mem_bot.mpr ⟨a, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, h]`. Prove the components needed by the constructor for the conclusion. Introduce `h p hp h1`. Conclude with `(key p).mp (h ⟨p, hp⟩ h1)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h p h1`. Conclude with `(key p.asIdeal).mpr (h p.asIdeal p.isPrime h1)`.
+A detailed English derivation is pending.
 -/
 theorem HeightOneIntersection.coe_iInf :
     ((⨅ (p : PrimeSpectrum A) (_ : p.asIdeal.height = 1),
@@ -54,7 +54,7 @@ theorem HeightOneIntersection.coe_iInf :
     exact (key p.asIdeal).mpr (h p.asIdeal p.isPrime h1)
 
 /- English proof (translation)
-Rewrite using `[← HeightOneIntersection.coe_bot, ← HeightOneIntersection.coe_iInf]`. Conclude with `SetLike.coe_set_eq.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HeightOneIntersection.equiv_at :
     (Subalgebra.toSubmodule (⊥ : Subalgebra A K) =
@@ -69,7 +69,7 @@ theorem HeightOneIntersection.equiv_at :
 end Compare
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h A K _ _ _ _ _ _ _`. Conclude with `(HeightOneIntersection.equiv_at A K).mp (h A K)`. Introduce `h A _ _ _ _ K _ _ _`. Conclude with `(HeightOneIntersection.equiv_at A K).mpr (h A K)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem HeightOneIntersection.equiv :
     GroundTheory.Heights₂.Heights.Model.HeightOneIntersection.Statement ↔

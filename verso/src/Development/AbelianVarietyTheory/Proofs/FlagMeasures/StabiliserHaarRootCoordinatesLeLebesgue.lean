@@ -15,19 +15,17 @@ open MeasureTheory
 namespace GlobalTheory.LoopVol
 
 /- English proof (translation)
-Introduce `D X u u' w γw sf μw _hH hmap hc A hA`. Set `ι : GlobalTheory.LoopV.roots (ptMat w) ≃ Formalism.L2.SG.RealObj.FreeE w` to `Equiv.subtypeEquivRight (fun p => GlobalTheory.T.mem_roots_point_matrix_iff_same_block D.host.E (D.R.rS + 1) w p.1 p.2)`. Set `d : GlobalTheory.LoopV.roots (ptMat w) → ℕ` to `fun q => q.1.2.1 - q.1.1.1`. Set `S : (NumberField.InfinitePlace X.B.I.F → Formalism.L2.SG.RealObj.FreeE w → ℂ) → (D.what₂.Tau → GlobalTheory.LoopV.roots (ptMat w) → ℂ)` to `fun x τ q => (((D.host.rdE : ℝ) : ℂ) ^ d q)⁻¹ * x (X.pl.symm τ) (ι q)`. Establish `hS : Continuous S`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `continuous_pi fun τ => continuous_pi fun q => continuous_const.mul ?_` and prove the remaining obligations. Conclude with `(continuous_apply _).comp (continuous_apply _)`. Establish `hΦ : Continuous (fun y : X.B.I.Ginf => sf * y * sf⁻¹)` using `(continuous_const.mul continuous_id).mul continuous_const`. Establish `hst` using `Formalism.L2.SG.Pf.LoopBPin.stCoord_cont (X := X) u' w γw`. Establish `hrat` using `ratCoord_cont X u' w γw sf`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpre : (fun y : X.B.I.Ginf => sf * y * sf⁻¹) ⁻¹' (ratCoord X u' w γw sf ⁻¹' A) = Formalism.L2.SG.RealObj.stCoord X u' w γw ⁻¹' (S ⁻¹' A)`. Use extensionality with `y`. Simplify using `only [Set.mem_preimage]`. Establish `: ratCoord X u' w γw sf (sf * y * sf⁻¹) = S (Formalism.L2.SG.RealObj.stCoord X u' w γw y)`. Use function extensionality and compare the values at `τ q`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ratCoord_conj_eq_stCoord D X u' w γw sf y τ q (ι q) rfl`. Rewrite using `[this]`. Establish `hB : MeasurableSet (S ⁻¹' A)` using `hS.measurable hA`. Rewrite using `[Measure.map_apply hΦ.measurable (hrat.measurable hA), hpre, ← Measure.map_apply hst.measurable hB, hmap]`. Establish `hrd : 1 ≤ D.host.rdE` using `GlobalTheory.RealPlaces.one_le_rdE (D := D)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key` using `GlobalTheory.T.measure_preimage_reindex_scale_complex_le D.what₂.Tau (NumberField.InfinitePlace X.B.I.F) (GlobalTheory.LoopV.roots (ptMat w)) (Formalism.L2.SG.RealObj.FreeE w) X.pl.symm ι D.host.rdE (D.host.ka / (X.B.g : ℝ) / Real.pi) d hrd hc A hA`. Use `le_trans key ?_` and prove the remaining obligations. Use `gcongr`. Rewrite using `[D.what₂.card_Tau]`. Establish `hsum : ∑ q : GlobalTheory.LoopV.roots (ptMat w), d q ≤ (D.R.rS + 1) ^ 3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Use `q.1.2.2` as an intermediate fact. Simplify using `only [d]`. Use linear arithmetic over natural numbers and integers. Use `_ = Fintype.card (GlobalTheory.LoopV.roots (ptMat w)) * (D.R.rS + 1) := by simp`.
-
-Use `_ ≤ (D.R.rS + 1) ^ 2 * (D.R.rS + 1) := by gcongr`. Combine the equalities or inequalities in the displayed calculation. Use `_ = (D.R.rS + 1) ^ 3 := by ring`. Conclude with `hsum`.
+Use linear arithmetic over natural numbers and integers. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem pinned_ratCoord_le : ∀ (D : D7) (X : HidaSetting D) (u u' : D.what₂.Word) (w : Point D.host.E (D.R.rS + 1)) (γw sf : X.B.I.Ginf) (μw : MeasureTheory.Measure X.B.I.Ginf), IsHaarOnSet X.B.I (Formalism.L2.SG.RealObj.StInf X u u' γw) μw → μw.map (Formalism.L2.SG.RealObj.stCoord X u' w γw) = Formalism.L2.SG.RealObj.muStab X w → D.host.ka / (X.B.g : ℝ) / Real.pi ≤ 1 → ∀ A : Set (D.what₂.Tau → GlobalTheory.LoopV.roots (ptMat w) → ℂ), MeasurableSet A → (μw.map (fun y => sf * y * sf⁻¹)) (GlobalTheory.LoopVol.ratCoord X u' w γw sf ⁻¹' A) ≤ MeasureTheory.volume A * ENNReal.ofReal (D.host.rdE ^ (2 * D.R.f * (D.R.rS + 1) ^ 3)) := by
   intro D X u u' w γw sf μw _hH hmap hc A hA

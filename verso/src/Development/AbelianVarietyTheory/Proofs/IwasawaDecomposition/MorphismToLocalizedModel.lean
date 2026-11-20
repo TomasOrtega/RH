@@ -13,37 +13,33 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.TorRef
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Z R _ a b ω C _ hb ha F hF hj`. Use `haveI := c.fin`. Use `haveI : NumberField c.F := ⟨⟩`. Use `haveI : IsOpenImmersion (spMap b) := by`. Use `letI := b.toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `IsOpenImmersion.of_isLocalization (R := 𝓞 c.F) (S := R) a`. Establish `hω : spMap ω ≫ spMap b = spMap (algebraMap (𝓞 c.F) c.F)`. Rewrite using `[← hb]`. Conclude with `(Spec.map_comp (CommRingCat.ofHom b) (CommRingCat.ofHom ω)).symm`. Establish `hjs : Z.j ≫ Z.s = (pullback.snd Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom) ≫ spMap ω) ≫ spMap b`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(Z.jQ ≫ pullback.fst _ _) ≫ Z.s = _`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, Z.jQ_over, Category.assoc, hω]`. Set `jX : Xo.XF c ⟶ pullback Z.s (spMap b)` to `pullback.lift Z.j _ hjs`. Establish `hjX : jX ≫ pullback.fst _ _ = Z.j` using `pullback.lift_fst _ _ _`. Establish `hjF : jX ≫ F = C.j` using `hj _ hjX`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, -, -, h₁, h₂, h₃, h₄⟩` from `GlobalTheory.genericPart_dense_proOpen (𝓞 c.F) c.F Z.X (Xo.XF c) Z.s Z.jQ Z.flat Z.proj Z.jQ_open Z.jQ_dense`. Establish `sq : IsPullback (𝟙 _) jX Z.j (pullback.fst Z.s (spMap b))` using `IsPullback.of_horiz_isIso_mono ⟨by rw [hjX, Category.id_comp]⟩`. Establish `hpre : IsPreimmersion jX` using `MorphismProperty.of_isPullback sq h₁`. Establish `hfl : Flat jX` using `MorphismProperty.of_isPullback sq h₂`. Establish `hqc : QuasiCompact jX` using `MorphismProperty.of_isPullback sq h₄`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Establish `hdom : IsDominant jX`. Prove the components needed by the constructor for the conclusion. Establish `e : Set.range jX = pullback.fst Z.s (spMap b) ⁻¹' Set.range Z.j`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨x, by rw [← hjX, Scheme.Hom.comp_apply]⟩`. Introduce and unpack `⟨x, hx⟩`. Conclude with `⟨x, (pullback.fst Z.s (spMap b)).isOpenEmbedding.injective (by rw [← hx, ← hjX, Scheme.Hom.comp_apply])⟩`. Use `haveI : IsDominant Z.j := h₃`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Rewrite using `[DenseRange, e]`. Conclude with `(Z.j).denseRange.preimage (pullback.fst Z.s (spMap b)).isOpenEmbedding.isOpenMap`. Establish `hX : Geo.Tor.IsNormalScheme (pullback Z.s (spMap b)) ∧ ∃ z : pullback Z.s (spMap b) ⟶ Sp ℤ, LocallyOfFiniteType z ∧ Flat z`. Use `⟨fun y => ?_, pullback.fst _ _ ≫ Z.s ≫ spMap (algebraMap ℤ (𝓞 c.F)), ?_, ?_⟩` and prove the remaining obligations. Take `⟨_, _⟩` from `Z.normal (pullback.fst Z.s (spMap b) y)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `(asIso ((pullback.fst Z.s (spMap b)).stalkMap y)).commRingCatIsoToRingEquiv`. Conclude with `⟨e.symm.toMulEquiv.isDomain _, IsIntegrallyClosed.of_equiv e⟩`. Establish `hprop : IsProper Z.s`. Take `⟨N, i, hi, e⟩` from `Z.proj`. Use `ReciprocityTheory.ChartRestriction.G.Geo.Tor.isProper_str (𝓞 c.F) N` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← e]`. Use `infer_instance`. Establish `: LocallyOfFiniteType (spMap (algebraMap ℤ (𝓞 c.F)))`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)]`. Conclude with `RingHom.finiteType_algebraMap.mpr inferInstance`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `infer_instance`. Use `Z.flat` as an intermediate fact. Establish `: Flat (spMap (algebraMap ℤ (𝓞 c.F)))`. Rewrite using `[Flat.SpecMap_iff]`. Conclude with `RingHom.flat_algebraMap_iff.mpr inferInstance`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `infer_instance`. Take `⟨_, _, _, _, _, m₁, -⟩` from `sabPull Out.CubePf.cubePull (pullback.fst Z.s (spMap b)) Z.t`. Take `⟨_, _, _, _, _, n, -⟩` from `sabPull Out.CubePf.cubePull F C.t`. Take `⟨a₁, ha₁⟩` from `LevelCover.sab_cancel m₁ Z.m jX hjX`. Take `⟨ν', hν'⟩` from `LevelCover.sab_cancel C.m0.toSABMap Z.m0.toSABMap (𝟙 _) (Category.id_comp _)`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨μ, hμ⟩` from `LevelCover.sab_comp ν' C.m (e := jX ≫ F) (by rw [Category.id_comp, hjF]; rfl)`. Take `⟨a₂, ha₂⟩` from `LevelCover.sab_cancel n μ jX rfl`. Take `⟨β, hβ⟩` from `GlobalTheory.exists_sabMap_id_of_common_generic GlobalTheory.homExtension_semiAbelian_dvr E H _ _ jX hX hpre hfl hdom hqc Z.oF.t _ _ a₁ a₂ Z.oF.proper`. Take `⟨m₂, hm₂⟩` from `LevelCover.sab_comp β n (Category.id_comp F)`. Use `⟨F, _, m₁, m₂, hF, hj, fun T g g₁ g₂ q₁ q₂ q₃ => ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `w₀ : ν'.φ ≫ C.oF.t.G.hom = Z.oF.t.G.hom` using `ν'.cart.1.w.trans (Category.comp_id _)`. Establish `s₂ : g₂ = g₁ ≫ ν'.φ`. Apply `C.m0.toSABMap.cart.1.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `g₂ ≫ C.m0.toSABMap.φ = (g₁ ≫ ν'.φ) ≫ C.m0.toSABMap.φ`. Rewrite using `[Category.assoc, hν', q₂]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, w₀, q₃]`. Establish `s₁ : g = g₁ ≫ a₁.φ`. Apply `m₁.cart.1.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `g ≫ m₁.φ = (g₁ ≫ a₁.φ) ≫ m₁.φ`. Rewrite using `[Category.assoc, ha₁, q₁]`.
-
-Rewrite using `[← cancel_mono (pullback.fst Z.s (spMap b))]`. Establish `w₃` using `m₁.cart.1.w`. Simplify using `only [Category.assoc]`. Rewrite using `[← w₃, reassoc_of% q₁, reassoc_of% ha₁]`. Rewrite using `[hm₂, s₁, s₂]`.
-
-Simplify using `only [Category.assoc]`. Rewrite using `[reassoc_of% hβ, ha₂, hμ]`.
+A detailed English derivation is pending.
 -/
 theorem dominates_of_map_on_part : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H)
     (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Z : Model Xo c (algebraMap (𝓞 c.F) c.F)) (R : Type) [CommRing R]

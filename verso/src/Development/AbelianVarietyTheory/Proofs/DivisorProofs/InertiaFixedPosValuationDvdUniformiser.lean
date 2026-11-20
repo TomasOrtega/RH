@@ -16,9 +16,9 @@ open IsDedekindDomain
 namespace GlobalTheory.InertiaUnram
 
 /- English proof (translation)
-Rewrite using `[← ValuationSubring.mem_nonunits_iff, ValuationSubring.mem_nonunits_iff_or, Valuation.mem_valuationSubring_iff]`. Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[map_inv₀, not_le]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `(h | h)`. Conclude with `absurd h hx`. Conclude with `(one_lt_inv₀ (zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 hx))).1 h`. Introduce `h`. Conclude with `Or.inr ((one_lt_inv₀ (zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 hx))).2 h)`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem valuationSubring_valuation_lt_one_iff {L : Type} [Field L] {Γ : Type} [LinearOrderedCommGroupWithZero Γ]
     (v : Valuation L Γ) (x : L) : v.valuationSubring.valuation x < 1 ↔ v x < 1 := by
@@ -35,9 +35,9 @@ theorem valuationSubring_valuation_lt_one_iff {L : Type} [Field L] {Γ : Type} [
       exact Or.inr ((one_lt_inv₀ (zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 hx))).2 h)
 
 /- English proof (translation)
-Establish `hS' : ∀ s : S, algebraMap S L s ∈ (P.valuation L).valuationSubring` using `fun s => (Valuation.mem_valuationSubring_iff _ _).2 (P.valuation_le_one s)`. Establish `key : ∀ s : S, W.valuation (algebraMap S L s) < 1 ↔ (P.valuation L).valuationSubring.valuation (algebraMap S L s) < 1`. Introduce `s`. Rewrite using `[valuationSubring_valuation_lt_one_iff, ← GlobalTheory.ProlongConj.mem_primeBelow S hS, ← hP]`. Conclude with `(P.valuation_lt_one_iff_mem s).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hW : W = (P.valuation L).valuationSubring` using `le_antisymm (GlobalTheory.ProlongConj.le_of_valuation_lt_one_iff S hS hS' key) (GlobalTheory.ProlongConj.le_of_valuation_lt_one_iff S hS' hS fun s => (key s).symm)`. Rewrite using `[hW, Valuation.mem_valuationSubring_iff]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_iff_valuation_le_one (L S : Type) [Field L] [CommRing S] [IsDomain S] [IsDedekindDomain S]
     [Algebra S L] [IsFractionRing S L] (W : ValuationSubring L) (hS : ∀ s : S, algebraMap S L s ∈ W)
@@ -56,27 +56,25 @@ theorem mem_iff_valuation_le_one (L S : Type) [Field L] [CommRing S] [IsDomain S
   rw [hW, Valuation.mem_valuationSubring_iff]
 
 /- English proof (translation)
-Use `set v := P.valuation L with hv`. Establish `hWeq : W = v.valuationSubring`. Use extensionality with `x`. Rewrite using `[hW, Valuation.mem_valuationSubring_iff]`. Establish `hS : ∀ s : S, algebraMap S L s ∈ W` using `fun s => (hW _).2 (P.valuation_le_one s)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `aux : ∀ τ ∈ P.asIdeal.inertia (L ≃ₐ[K] L), ∀ x, v x ≤ 1 → v (τ x) ≤ 1 ∧ v (τ x - x) < 1`. Introduce `τ hτ x hx`. Establish `hτ'` using `AddSubgroup.mem_inertia.mp hτ`. Take `⟨s, t, hs1, e⟩` from `GlobalTheory.ProlongConj.exists_den S W hS ((hW x).2 hx)`. Establish `hsP : s ∉ P.asIdeal`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hm`. Establish `h1 : W.valuation (algebraMap S L s) < 1`. Rewrite using `[hWeq, valuationSubring_valuation_lt_one_iff]`. Conclude with `(P.valuation_lt_one_iff_mem s).2 hm`. Rewrite `h1` using `[hs1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `lt_irrefl _ h1`. Establish `va : v (algebraMap S L s) = 1` using `le_antisymm (P.valuation_le_one s) (not_lt.1 fun h => hsP ((P.valuation_lt_one_iff_mem s).1 h))`. Establish `hdiff : ∀ u : S, v (τ (algebraMap S L u) - algebraMap S L u) < 1`. Introduce `u`. Rewrite using `[← hact, ← map_sub]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(P.valuation_lt_one_iff_mem _).2 (hτ' u)`. Establish `va' : v (τ (algebraMap S L s)) = 1`. Establish `h` using `Valuation.map_add_eq_of_lt_right v (x := τ (algebraMap S L s) - algebraMap S L s) (y := algebraMap S L s) (by rw [va]; exact hdiff s)`. Rewrite `h` using `[sub_add_cancel, va]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Establish `hs0 : algebraMap S L s ≠ 0` using `fun h => by rw [h, map_zero] at va; exact zero_ne_one va`. Establish `hs0' : τ (algebraMap S L s) ≠ 0` using `fun h => by rw [h, map_zero] at va'; exact zero_ne_one va'`. Establish `hx' : x = algebraMap S L t / algebraMap S L s` using `by rw [← e]; field_simp`. Establish `hτx : τ x = τ (algebraMap S L t) / τ (algebraMap S L s)` using `by rw [hx', map_div₀]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hτx, map_div₀, va', div_one, ← hact]`. Conclude with `P.valuation_le_one _`. Establish `: τ x - x = ((τ (algebraMap S L t) - algebraMap S L t) * algebraMap S L s - algebraMap S L t * (τ (algebraMap S L s) - algebraMap S L s)) / (τ (algebraMap S L s) * algebraMap S L s)`. Rewrite using `[hτx, hx']`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, map_div₀, map_mul v (τ _), va, va', _root_.mul_one, div_one]`. Use `Valuation.map_sub_lt v ?_ ?_` and prove the remaining obligations. Rewrite using `[map_mul, va, _root_.mul_one]`. Conclude with `hdiff t`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mem_inertia_iff]`. Use `⟨?_, fun x hx => ?_⟩` and prove the remaining obligations. Use extensionality with `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, AlgEquiv.smul_def, hW, hW]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h2` using `(aux σ hσ _ h).1`. Rewrite `h2` using `[← AlgEquiv.mul_apply, mul_inv_cancel, AlgEquiv.one_apply]`. Then use the resulting hypothesis.
-
-Introduce `h`. Conclude with `(aux σ⁻¹ (inv_mem hσ) x h).1`. Rewrite using `[hWeq, valuationSubring_valuation_lt_one_iff]`. Conclude with `(aux σ hσ x ((hW x).1 hx)).2`.
+A detailed English derivation is pending.
 -/
 theorem mem_inertia_of_mem_inertia (K L S : Type) [Field K] [Field L] [Algebra K L] [CommRing S] [IsDomain S]
     [IsDedekindDomain S] [Algebra S L] [IsFractionRing S L] [MulSemiringAction (L ≃ₐ[K] L) S]
@@ -143,7 +141,7 @@ theorem mem_inertia_of_mem_inertia (K L S : Type) [Field K] [Field L] [Algebra K
     exact (aux σ hσ x ((hW x).1 hx)).2
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.T.valuation_uniformizer_integralClosure_eq_exp_neg_ramificationIdx R K L P π hπ, ← GlobalTheory.T.card_inertia_eq_ramificationIdx_of_perfect_residue R K L P]`. Conclude with `GlobalTheory.T.valuation_le_exp_neg_card_inertia_of_inertia_fixed R K L P y hy hlt`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_le_of_fixed (R K L : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     [PerfectField (ResidueField R)] [Field K] [Algebra R K] [IsFractionRing R K] [Field L] [Algebra K L]
@@ -156,29 +154,23 @@ theorem valuation_le_of_fixed (R K L : Type) [CommRing R] [IsDomain R] [IsDiscre
   exact GlobalTheory.T.valuation_le_exp_neg_card_inertia_of_inertia_fixed R K L P y hy hlt
 
 /- English proof (translation)
-Introduce `R K L _ _ _ _ _ _ _ _ _ _ _ W hW π hπ y hy hyW`. Use `letI : Algebra R L := ((algebraMap K L).comp (algebraMap R K)).toAlgebra`. Use `haveI : IsScalarTower R K L := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Use `haveI hc : SMulCommClass (L ≃ₐ[K] L) R L := ⟨fun g r x => by`. Rewrite using `[← IsScalarTower.algebraMap_smul K r x, ← IsScalarTower.algebraMap_smul K r (g • x)]`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `map_smul g _ _⟩`. Use `haveI : IsDedekindDomain (integralClosure R L) := integralClosure.isDedekindDomain R K L`. Use `haveI : IsFractionRing (integralClosure R L) L := integralClosure.isFractionRing_of_finite_extension K L`. Establish `hR : ∀ r : R, algebraMap R L r ∈ W`. Introduce `r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: algebraMap R K r ∈ W.toSubring.comap (algebraMap K L)` using `by rw [hW]; exact ⟨r, rfl⟩`. Conclude with `this`. Establish `hS : ∀ s : integralClosure R L, algebraMap (integralClosure R L) L s ∈ W` using `fun s => GlobalTheory.ProlongConj.mem_of_isIntegral W hR s.2`. Use `set c : L := algebraMap K L (algebraMap R K π) with hc_def`. Establish `hc0 : c ≠ 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc_def, map_ne_zero_iff _ (algebraMap K L).injective, map_ne_zero_iff _ (IsFractionRing.injective R K)]`. Conclude with `hπ.ne_zero`. Establish `hcW : W.valuation c < 1`. Rewrite using `[← ValuationSubring.mem_nonunits_iff, ValuationSubring.mem_nonunits_iff_or]`. Use `right`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `hinv`. Establish `h1 : (algebraMap R K π)⁻¹ ∈ W.toSubring.comap (algebraMap K L)`. Express the relevant statement in the definitionally equal form `algebraMap K L _ ∈ W`. Rewrite using `[map_inv₀]`. Conclude with `hinv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hW]`. Take `⟨s, hs⟩` from `h1`. Apply `hπ.not_isUnit` to reduce the goal to its premises. Use `IsUnit.of_mul_eq_one s (IsFractionRing.injective R K ?_)` and prove the remaining obligations. Rewrite using `[map_mul, hs, map_one, mul_inv_cancel₀]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(map_ne_zero_iff _ (algebraMap K L).injective).1 (by rw [← hc_def]; exact hc0)`. Use `set P0 := GlobalTheory.ProlongConj.primeBelow (integralClosure R L) W hS`. Establish `hP0 : P0 ≠ ⊥`. Introduce `h`. Establish `hm : algebraMap R (integralClosure R L) π ∈ P0`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[GlobalTheory.ProlongConj.mem_primeBelow, ← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply R K L]`. Conclude with `hcW`. Rewrite `hm` using `[h, Ideal.mem_bot]`. Apply `hc0` to reduce the goal to its premises. Rewrite using `[hc_def, ← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply R (integralClosure R L) L, hm, map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `P : HeightOneSpectrum (integralClosure R L)` to `⟨P0, inferInstance, hP0⟩`. Establish `hWv` using `mem_iff_valuation_le_one L (integralClosure R L) W hS P rfl`. Establish `hI : ∀ σ ∈ P.asIdeal.inertia (L ≃ₐ[K] L), σ ∈ inertia K W` using `mem_inertia_of_mem_inertia K L (integralClosure R L) (fun _ _ => rfl) P W hWv`. Establish `hlt : P.valuation L y < 1`. Break down `(ValuationSubring.mem_nonunits_iff_or W).1 hyW with h | h` into its components or cases.
-
-Rewrite using `[h, map_zero]`. Conclude with `zero_lt_one`. Assume the negation of the conclusion as `hge push_neg at hge`. Apply `h` to reduce the goal to its premises. Rewrite using `[hWv, map_inv₀]`.
-
-Establish `h1 : P.valuation L y ≤ 1` using `(hWv y).1 ((W.valuation_le_one_iff y).1 (le_of_lt (W.mem_nonunits_iff.1 hyW)))`. Rewrite using `[le_antisymm h1 hge, inv_one]`. Establish `key` using `valuation_le_of_fixed R K L P π hπ y (fun σ hσ => hy σ (hI σ hσ)) hlt`. Rewrite using `[hWv, map_div₀]`. Establish `hv0 : P.valuation L c ≠ 0` using `(Valuation.ne_zero_iff _).2 hc0`.
-
-Rewrite using `[div_le_one₀ (zero_lt_iff.2 hv0)]`. Conclude with `key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem div_uniformiser_mem : ∀ (R K L : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     [PerfectField (ResidueField R)] [Field K] [Algebra R K] [IsFractionRing R K] [Field L] [Algebra K L]

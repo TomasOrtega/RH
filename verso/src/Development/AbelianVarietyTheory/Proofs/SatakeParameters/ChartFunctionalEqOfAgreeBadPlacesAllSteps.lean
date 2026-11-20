@@ -13,13 +13,11 @@ section Loc
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} {ST SG : Finset (HeightOneSpectrum (𝓞 E))}
 
 /- English proof (translation)
-Introduce `y hy`. Establish `hy₁ : y ∈ d₁.at P.1` using `hat ▸ hy`. Take `⟨s, hs, hsy⟩` from `(mem_locP P.1 d.N y).1 hy`. Take `⟨s₁, hs₁, hsy₁⟩` from `(mem_locP P.1 d₁.N y).1 hy₁`. Establish `hw : (s * s₁) • y ∈ d.N`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[mul_comm, mul_smul]`. Conclude with `d.N.smul_mem s₁ hsy`. Establish `hw₁ : (s * s₁) • y ∈ d₁.N`. Rewrite using `[mul_smul]`. Conclude with `d₁.N.smul_mem s hsy₁`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `h _ hw hw₁`. Rewrite `e` using `[hd₁.f_smul P _ y hy₁, hd.f_smul P _ y hy]`. Establish `hne : Ideal.Quotient.mk P.1.asIdeal (s * s₁) ≠ 0`. Rewrite using `[Ne, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `fun hm => (P.1.isPrime.mem_or_mem hm).elim hs hs₁`.
-
-Use `letI := Ideal.Quotient.field P.1.asIdeal`. Conclude with `mul_left_cancel₀ hne e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem f_eq_on_at {d d₁ : Deco E n ST SG} (hd : d.Ok) (hd₁ : d₁.Ok) (P : ST) (hat : d₁.at P.1 = d.at P.1)
     (h : ∀ w ∈ d.N, w ∈ d₁.N → d₁.f P w = d.f P w) : ∀ y ∈ d.at P.1, d₁.f P y = d.f P y := by
@@ -44,9 +42,9 @@ section Pull
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {N : ℕ}
 
 /- English proof (translation)
-Establish `h' : bc (prV (E` using `E) v) g₁⁻¹ = bc (prV (E := E) v) g⁻¹ := by rw [map_inv, map_inv, h]`. Use function extensionality and compare the values at `l`. Unfold `pullV`. Rewrite using `[RingHom.map_mulVec, RingHom.map_mulVec]`. Establish `h2 : ((g₁⁻¹ : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) : Matrix (Fin N) (Fin N) _).map (prV (E` using `E) v) = ((g⁻¹ : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) : Matrix (Fin N) (Fin N) _).map (prV (E := E) v) := congrArg Units.val h'`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prV_pullV_congr (v : HeightOneSpectrum (𝓞 F)) {g g₁ : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)}
     (h : bc (prV (E := E) v) g₁ = bc (prV (E := E) v) g) (u : Fin N → E) :
@@ -66,7 +64,7 @@ section Z
 variable {R : Ranks} {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] {N : ℕ}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.companionLatticeVector_local_mem_dualBaseCompletion sp J crd a x hx hJ Lb hfin hspan hint v u hu`.
+A detailed English derivation is pending.
 -/
 theorem exists_latS_pullV (sp : Spaces R F E) (J : Matrix (Fin N) (Fin N) E) (crd : GL (Fin N) E) (a : 𝓞 E)
     (x : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (hx : x ∈ UPts sp.cm.sig J (FiniteAdeleRing (𝓞 F) F)) (hJ : IsUnit J.det)
@@ -83,15 +81,13 @@ end GlobalTheory.TwV.FnlAwayCpl
 namespace GlobalTheory.TwV.FnlAwayCpl
 
 /- English proof (translation)
-Establish `hpi : t.Pr.piT (t.word u) ∈ P.1.asIdeal`. Establish `h` using `P.2`. Unfold `Primes.vT divs at h`. Use `split_ifs at h with hf`. Simplify using `using h`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify using `at h`. Establish `hT : (((D.mem u).A.T : ℕ) : 𝓞 t.X.E) ∈ P.1.asIdeal`. Rewrite using `[← t.T_rec u, ← t.pr_ok.piT_norm]`. Conclude with `Ideal.mul_mem_right _ _ hpi`. Establish `hTQ : (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) ∈ (seamP t.seam P.1).asIdeal`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `(mem_seamP t.seam P.1 _).2 hT` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `hT0 : (((D.mem u).A.T : ℕ) : 𝓞 D.host.F) ≠ 0`. Rewrite using `[← t.T_rec u]`. Conclude with `(t.pr_ok.T_prime (t.word u)).ne_zero` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hTv : (((D.mem u).A.T : ℕ) : 𝓞 D.host.F) ∈ (seamP t.seam P.1).asIdeal.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E))`. Rewrite using `[Ideal.mem_comap, map_natCast]`. Conclude with `hTQ`. Use `⟨⟨(seamP t.seam P.1).asIdeal.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)), Ideal.comap_isPrime _ _, fun h0 => hT0 (by rw [h0] at hTv; exact (Submodule.mem_bot _).1 hTv)⟩, rfl, fun j hj => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hTie.T_eq j hj]`.
-
-Conclude with `hTv`. Establish `hSS : P.1 ∈ (t.rd u μ).SS`. Rewrite using `[((isChainTop_iff _ _ _ _ _ _ _ _ _).1 hTie.isChainTop).1]`. Conclude with `Finset.mem_union_left _ P.2`. Conclude with `⟨_, (mem_ssRec t u μ P.1).2 hSS, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_place {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G.LatInst D} {Kc : G.Consts} {Y : DivX D} {cX : ExtraC}
     {ex : Extra D L hT Gi Gl Kc Y cX} {t : KerEntTied ex} {u : D.what₂.Word} {μ : D.what₂.Tup} {St : ChainCharts D u μ}
@@ -135,11 +131,11 @@ set_option maxHeartbeats 2000000 in
 open FnlAwayCpl in
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Y cX ex t u μ St A dtU a _hPins hTie j hj β x x₁ p p₁ hp hp₁ hag P hat`. Take `⟨v, hov, hTv, hvU⟩` from `exists_place hTie P`. Establish `hfnl` using `hp.fnl P v (hTv j hj) hov`. Establish `hfnl₁` using `hp₁.fnl P v (hTv j hj) hov`. Use `f_eq_on_at p.deco.2 p₁.deco.2 P hat fun w hw hw₁ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu : (fun l => t.seam.iE (w l)) ∈ latCo D.sp (gramN D j hj) (A.crd j hj) a x.1 ((St j hj).K β).lev.Lb`. Rewrite using `[← hp.lat]`. Conclude with `Submodule.subset_span ⟨w, hw, rfl⟩`. Take `⟨z, hz⟩` from `exists_latS_pullV D.sp (gramN D j hj) (A.crd j hj) a x.1 x.2 (Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.bwB_gramN_det D j hj) ((St j hj).K β).lev.Lb ((St j hj).K β).lev.Lb_fin ((St j hj).K β).lev.Lb_span ((St j hj).K β).lev.Lb_int v _ hu`. Establish `hg : bc (prV (E` using `D.host.E) v) (ratA D.host.F (A.crd j hj) * x₁.1) = bc (prV (E := D.host.E) v) (ratA D.host.F (A.crd j hj) * x.1) := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_mul, hag v hvU]`. Rewrite using `[hfnl₁ w hw₁ z (hz.trans (prV_pullV_congr v hg _).symm), hfnl w hw z hz]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fnl_eq_of_away_cpl : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a => ∀ j (hj : j ≤ D.R.m) β x x₁ p p₁,
     IsPtAd A a j hj β x p → IsPtAd A a j hj β x₁ p₁ →

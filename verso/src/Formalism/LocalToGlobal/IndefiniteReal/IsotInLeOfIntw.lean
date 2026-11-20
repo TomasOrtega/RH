@@ -14,9 +14,9 @@ section Indep
 variable {A : Type} [AddCommGroup A] [Module ℂ A]
 
 /- English proof (translation)
-Establish `h1` using `hp.herm (y + z) x`. Establish `h2` using `hp.herm y x`. Establish `h3` using `hp.herm z x`. Establish `h4` using `hp.add y z x`. Simplify using `only [Submodule.coe_add] at h1 h4`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h1, ← h2, ← h3, h4, map_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hp_add_right {C : Submodule ℂ A} {ip : A → A → ℂ} (hp : PeterssonHilbertSpace.IsHermPos C ip) (x y z : C) :
     ip x ((y : A) + z) = ip x y + ip x z := by
@@ -28,7 +28,7 @@ theorem hp_add_right {C : Submodule ℂ A} {ip : A → A → ℂ} (hp : Petersso
   rw [← h1, ← h2, ← h3, h4, map_add]
 
 /- English proof (translation)
-Establish `h` using `hp_add_right hp x 0 0`. Simplify using `only [ZeroMemClass.coe_zero, add_zero] at h`. Take the linear combination `-h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem hp_zero_right {C : Submodule ℂ A} {ip : A → A → ℂ} (hp : PeterssonHilbertSpace.IsHermPos C ip) (x : C) : ip x (0 : A) = 0 := by
   have h := hp_add_right hp x 0 0
@@ -36,9 +36,9 @@ theorem hp_zero_right {C : Submodule ℂ A} {ip : A → A → ℂ} (hp : Peterss
   linear_combination -h
 
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using `only [Finset.sum_empty]`. Conclude with `hp_zero_right hp x`. Introduce `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, ← ih]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `hp_add_right hp x (w a) (∑ i ∈ s, w i)`. Rewrite `h` using `[Submodule.coe_sum]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hp_sum_right {C : Submodule ℂ A} {ip : A → A → ℂ} (hp : PeterssonHilbertSpace.IsHermPos C ip) (x : C) {ι : Type}
     (s : Finset ι) (w : ι → C) : ip x (∑ i ∈ s, (w i : A)) = ∑ i ∈ s, ip x (w i) := by
@@ -53,15 +53,13 @@ theorem hp_sum_right {C : Submodule ℂ A} {ip : A → A → ℂ} (hp : Petersso
     exact h
 
 /- English proof (translation)
-Rewrite using `[iSupIndep_def]`. Introduce `i`. Rewrite using `[Submodule.disjoint_def]`. Introduce `x hx hxS`. Establish `hs : ∀ (s : ℂ) (y : C), ip (x : A) ((s • y : C) : A) = s * ip (x : A) (y : A)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `s y`. Rewrite using `[← hp.herm (s • y) x, Submodule.coe_smul, hp.smul s y x, map_mul, Complex.conj_conj, hp.herm y x]`. Set `ℓ : C →ₗ[ℂ] ℂ` to `{ toFun := fun y => ip (x : A) (y : A) map_add' := fun y z => by`. Simplify using `only [Submodule.coe_add]`. Conclude with `hp_add_right hp x y z`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use the proof step `map_smul' := fun s y => by`. Simplify using `only [RingHom.id_apply, smul_eq_mul]`. Conclude with `hs s y }`. Establish `hle : (⨆ (j : ι) (_ : j ≠ i), W j) ≤ LinearMap.ker ℓ`. Use `iSup₂_le fun j hj y hy => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[LinearMap.mem_ker]`. Conclude with `horth i j (Ne.symm hj) x hx y hy`. Establish `h0 : ip (x : A) (x : A) = 0` using `hle hxS`. Assume the negation of the conclusion as `hne`. Use `hp.pos x hne` as an intermediate fact.
-
-Rewrite `this` using `[h0, Complex.zero_re]`. Conclude with `lt_irrefl _ this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iSupIndep_of_orth {C : Submodule ℂ A} {ip : A → A → ℂ} (hp : PeterssonHilbertSpace.IsHermPos C ip) {ι : Type}
     (W : ι → Submodule ℂ C) (horth : ∀ i j, i ≠ j → ∀ x ∈ W i, ∀ y ∈ W j, ip x y = 0) : iSupIndep W := by
@@ -101,9 +99,9 @@ local instance instCMHostF (D : Formalism.BasicNotions.D7) : IsCMField D.host.E 
 variable {D : Formalism.BasicNotions.D7} {n : ℕ}
 
 /- English proof (translation)
-Unfold `isotIn`. Use `iSup₂_le fun Φ hΦ => ?_` and prove the remaining obligations. Establish `hr : LinearMap.range (Φ.comp T) = LinearMap.range Φ`. Rewrite using `[LinearMap.range_comp, hsurj, Submodule.map_top]`. Rewrite using `[← hr]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `le_iSup₂ (f := fun (Ψ : π'.S →ₗ[ℂ] A) (_ : IsEqvA ρ π' Ψ ∧ LinearMap.range Ψ ≤ C) => LinearMap.range Ψ) (Φ.comp T) ⟨?_, hr ▸ hΦ.2⟩` and prove the remaining obligations. Introduce `h f`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[hT h f]`. Conclude with `hΦ.1 h (T f)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isotIn_le_of_intw {A : Type} [AddCommGroup A] [Module ℂ A] (ρ : Formalism.AUTREP.GAf D.host.E n →* Module.End ℂ A)
     (C : Submodule ℂ A) {π π' : Formalism.L2.NG.FinTyp D.host.E n} (T : π'.S →ₗ[ℂ] π.S) (hT : Intw π' π T)
@@ -121,11 +119,11 @@ theorem isotIn_le_of_intw {A : Type} [AddCommGroup A] [Module ℂ A] (ρ : Forma
   exact hΦ.1 h (T f)
 
 /- English proof (translation)
-Unfold `Formalism.L2.NG.FinTyp.Iso Formalism.L2.NG.IsoRep at h`. Take `⟨T, hT⟩` from `h`. Apply `le_antisymm` to reduce the goal to its premises. Use `isotIn_le_of_intw ρ C (T.symm : π'.S →ₗ[ℂ] π.S) ?_ (LinearMap.range_eq_top.2 T.symm.surjective)` and prove the remaining obligations. Introduce `h f`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : T ⟨_, π.stable h _ (T.symm f).2⟩ = ⟨_, π'.stable h _ f.2⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hT h (T.symm f) ⟨_, π.stable h _ (T.symm f).2⟩ rfl, LinearEquiv.apply_symm_apply]`. Conclude with `T.symm_apply_eq.2 key.symm`. Use `isotIn_le_of_intw ρ C (T : π.S →ₗ[ℂ] π'.S) ?_ (LinearMap.range_eq_top.2 T.surjective)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h f`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `hT h f ⟨_, π.stable h _ f.2⟩ rfl`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem isotIn_iso {A : Type} [AddCommGroup A] [Module ℂ A] (ρ : Formalism.AUTREP.GAf D.host.E n →* Module.End ℂ A)
     (C : Submodule ℂ A) {π π' : Formalism.L2.NG.FinTyp D.host.E n} (h : π.Iso π') : isotIn ρ C π = isotIn ρ C π' := by
@@ -147,7 +145,7 @@ variable {Y W : Formalism.BasicNotions.TH.HSp D} {SpY SpW : D.what₂.Tau → SP
 variable (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ))
 
 /- English proof (translation)
-Unfold `isotL`. Rewrite using `[isotIn_iso (actM P M) (Minf θ P M) h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem isotL_iso (P : RowPsi W n) (M : Mult.DSModel W SpW) (J : Set (GA D W)) (χ : GA D W → ℂ)
     (e : (GA D W → ℂ) →ₗ[ℂ] (GA D W → ℂ)) {π π' : Formalism.L2.NG.FinTyp D.host.E n} (h : π.Iso π') :
@@ -166,19 +164,17 @@ def IsotF (PY : RowPsi Y n) (MY : Mult.DSModel Y SpY) (JY : Bool → Set (GA D Y
 open Classical in
 
 /- English proof (translation)
-Unfold `IsotF`. Rewrite using `[DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top]`. Establish `hle : ∀ π, isotL θ PW MW JW χW eW π ≤ Mult.goodPart θ MW JW χW eW` using `fun π => by`. Unfold `isotL`. Conclude with `inf_le_left`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Use `iSupIndep_of_orth hp _ ?_` and prove the remaining obligations. Introduce `σ σ' hne x hx y hy`. Use `hD.2 (rowRepR θ σ) (rowRepR θ σ') ?_ x hx y hy` and prove the remaining obligations. Introduce `hiso`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hne` to reduce the goal to its premises. Conclude with `Quotient.out_equiv_out.1 hiso`. Establish `hmap : ∀ σ : FTR θ PY MY JY χY eY, ((isotL θ PW MW JW χW eW (rowRepR θ σ)).comap (Mult.goodPart θ MW JW χW eW).subtype).map (Mult.goodPart θ MW JW χW eW).subtype = isotL θ PW MW JW χW eW (rowRepR θ σ)` using `fun σ => by`. Rewrite using `[Submodule.map_comap_subtype]`. Conclude with `inf_eq_right.2 (hle _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hGle : Mult.goodPart θ MW JW χW eW ≤ (⨆ σ : FTR θ PY MY JY χY eY, (isotL θ PW MW JW χW eW (rowRepR θ σ)).comap (Mult.goodPart θ MW JW χW eW).subtype).map (Mult.goodPart θ MW JW χW eW).subtype`. Rewrite using `[Submodule.map_iSup]`. Simplify using `only [hmap]`. Rewrite using `[hD.1]`. Use `iSup_le fun π => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `h0 : isotL θ PW MW JW χW eW π = ⊥`. Rewrite using `[h0]`. Conclude with `bot_le`. Take `⟨σ, hσ⟩` from `hocc π h0`. Rewrite using `[← isotL_iso θ PW MW JW χW eW hσ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `le_iSup (fun σ => isotL θ PW MW JW χW eW (rowRepR θ σ)) σ`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Take `⟨y, hy, hxy⟩` from `hGle x.2`. Establish `h2 : (y : Mult.MMap MW) = x` using `hxy`.
-
-Establish `h3 : y = x` using `Subtype.ext h2`. Rewrite using `[← h3]`. Conclude with `hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isotF_of (PY : RowPsi Y n) (MY : Mult.DSModel Y SpY) (JY : Bool → Set (GA D Y)) (χY : Bool → GA D Y → ℂ)
     (eY : Bool → (GA D Y → ℂ) →ₗ[ℂ] (GA D Y → ℂ)) (PW : RowPsi W n) (MW : Mult.DSModel W SpW) (JW : Set (GA D W))

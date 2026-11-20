@@ -11,13 +11,13 @@ namespace subgroupData
 def qv (c : Fin 3 → ℂ) (t : ℝ) : ℂ := c 0 + c 1 * t + c 2 * t ^ 2
 
 /- English proof (translation)
-Unfold `qv`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma qv_cont (c : Fin 3 → ℂ) : Continuous (qv c) := by
   unfold qv; fun_prop
 
 /- English proof (translation)
-Rewrite using `[norm_div, norm_mul, Complex.norm_real, Complex.norm_real, Real.norm_eq_abs, Real.norm_eq_abs]`. Establish `hW : 0 ≤ W` using `(abs_nonneg _).trans hw`. Rewrite using `[div_le_div_iff₀ (by linarith) hD]`. Establish `hla : 0 ≤ la` using `(norm_nonneg _).trans hz`. Conclude with `mul_le_mul (mul_le_mul hz hw (abs_nonneg _) hla) hd hD.le (by positivity)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma term_bd {z : ℂ} {w d la W D : ℝ} (hz : ‖z‖ ≤ la) (hw : |w| ≤ W) (hD : 0 < D) (hd : D ≤ |d|) :
     ‖z * (w : ℂ) / (d : ℂ)‖ ≤ la * W / D := by
@@ -28,39 +28,37 @@ lemma term_bd {z : ℂ} {w d la W D : ℝ} (hz : ‖z‖ ≤ la) (hw : |w| ≤ W
   exact mul_le_mul (mul_le_mul hz hw (abs_nonneg _) hla) hd hD.le (by positivity)
 
 /- English proof (translation)
-Establish `hla : 0 ≤ la` using `(norm_nonneg _).trans p1`. Establish `d1 : g ^ 2 ≤ |(t1 - t2) * (t1 - t3)|`. Rewrite using `[abs_of_nonneg (by nlinarith)]; nlinarith`. Establish `d2 : g ^ 2 ≤ |(t2 - t1) * (t2 - t3)|`. Rewrite using `[abs_of_nonpos (by nlinarith)]; nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `d3 : g ^ 2 ≤ |(t3 - t1) * (t3 - t2)|`. Rewrite using `[abs_of_nonneg (by nlinarith)]; nlinarith`. Establish `hg2 : 0 < g ^ 2` using `by positivity`. Establish `n1 : ((t1 - t2) * (t1 - t3) : ℂ) ≠ 0`. Establish `: (t1 - t2) * (t1 - t3) ≠ 0` using `by intro h; rw [h, abs_zero] at d1; linarith`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `n2 : ((t2 - t1) * (t2 - t3) : ℂ) ≠ 0`. Establish `: (t2 - t1) * (t2 - t3) ≠ 0` using `by intro h; rw [h, abs_zero] at d2; linarith`. Conclude with `this` after adjusting the coercions. Establish `n3 : ((t3 - t1) * (t3 - t2) : ℂ) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (t3 - t1) * (t3 - t2) ≠ 0` using `by intro h; rw [h, abs_zero] at d3; linarith`. Conclude with `this` after adjusting the coercions. Establish `a12 : (t1 : ℂ) - t2 ≠ 0`. Rewrite using `[sub_ne_zero]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `Complex.ofReal_injective h` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `a13 : (t1 : ℂ) - t3 ≠ 0`. Rewrite using `[sub_ne_zero]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `Complex.ofReal_injective h` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `a23 : (t2 : ℂ) - t3 ≠ 0`. Rewrite using `[sub_ne_zero]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `Complex.ofReal_injective h` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `a21 : (t2 : ℂ) - t1 ≠ 0`. Rewrite using `[sub_ne_zero]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `Complex.ofReal_injective h` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `a31 : (t3 : ℂ) - t1 ≠ 0`. Rewrite using `[sub_ne_zero]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `Complex.ofReal_injective h` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `a32 : (t3 : ℂ) - t2 ≠ 0`. Rewrite using `[sub_ne_zero]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `Complex.ofReal_injective h` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `key : ∀ (w1 w2 w3 : ℝ), |w1| ≤ 4 → |w2| ≤ 4 → |w3| ≤ 4 → ‖qv c t1 * (w1 : ℂ) / (((t1 - t2) * (t1 - t3) : ℝ) : ℂ) + qv c t2 * (w2 : ℂ) / (((t2 - t1) * (t2 - t3) : ℝ) : ℂ) + qv c t3 * (w3 : ℂ) / (((t3 - t1) * (t3 - t2) : ℝ) : ℂ)‖ ≤ 12 * la / g ^ 2`. Introduce `w1 w2 w3 hw1 hw2 hw3`. Use `(norm_add₃_le).trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `term_bd p1 hw1 hg2 d1` as an intermediate fact. Use `term_bd p2 hw2 hg2 d2` as an intermediate fact. Use `term_bd p3 hw3 hg2 d3` as an intermediate fact. Establish `e : 12 * la / g ^ 2 = la * 4 / g ^ 2 + la * 4 / g ^ 2 + la * 4 / g ^ 2` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[pi_norm_le_iff_of_nonneg (by positivity)]`. Introduce `i`. Use `fin_cases i`. Use `key (t2 * t3) (t1 * t3) (t1 * t2) (by rw [abs_of_nonneg (by nlinarith)]; nlinarith) (by rw [abs_of_nonneg (by nlinarith)]; nlinarith) (by rw [abs_of_nonneg (by nlinarith)]; nlinarith)` as an intermediate fact. Establish `e : c 0 = qv c t1 * ((t2 * t3 : ℝ) : ℂ) / (((t1 - t2) * (t1 - t3) : ℝ) : ℂ) + qv c t2 * ((t1 * t3 : ℝ) : ℂ) / (((t2 - t1) * (t2 - t3) : ℝ) : ℂ) + qv c t3 * ((t1 * t2 : ℝ) : ℂ) / (((t3 - t1) * (t3 - t2) : ℝ) : ℂ)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [qv]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `show ‖c 0‖ ≤ _`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[e]`. Conclude with `this`. Apply the tactic sequence `have := key (-(t2 + t3)) (-(t1 + t3)) (-(t1 + t2)) (by rw [abs_le]; constructor <;> nlinarith) (by rw [abs_le]; constructor <;> nlinarith) (by rw [abs_le]; constructor <;> nlinarith)`. Establish `e : c 1 = qv c t1 * ((-(t2 + t3) : ℝ) : ℂ) / (((t1 - t2) * (t1 - t3) : ℝ) : ℂ) + qv c t2 * ((-(t1 + t3) : ℝ) : ℂ) / (((t2 - t1) * (t2 - t3) : ℝ) : ℂ) + qv c t3 * ((-(t1 + t2) : ℝ) : ℂ) / (((t3 - t1) * (t3 - t2) : ℝ) : ℂ)`. Simplify using `only [qv]`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `show ‖c 1‖ ≤ _`. Rewrite using `[e]`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Use `key 1 1 1 (by norm_num) (by norm_num) (by norm_num)` as an intermediate fact. Establish `e : c 2 = qv c t1 * ((1 : ℝ) : ℂ) / (((t1 - t2) * (t1 - t3) : ℝ) : ℂ) + qv c t2 * ((1 : ℝ) : ℂ) / (((t2 - t1) * (t2 - t3) : ℝ) : ℂ) + qv c t3 * ((1 : ℝ) : ℂ) / (((t3 - t1) * (t3 - t2) : ℝ) : ℂ)`. Simplify using `only [qv]`. Use `push_cast`.
-
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `show ‖c 2‖ ≤ _`. Rewrite using `[e]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 lemma lagrange (c : Fin 3 → ℂ) {t1 t2 t3 g la : ℝ} (hg : 0 < g) (h1 : 1 ≤ t1) (h3 : t3 ≤ 2)
     (h12 : g ≤ t2 - t1) (h23 : g ≤ t3 - t2)
@@ -133,27 +131,23 @@ lemma lagrange (c : Fin 3 → ℂ) {t1 t2 t3 g la : ℝ} (hg : 0 < g) (h1 : 1 �
     rw [e]; exact this
 
 /- English proof (translation)
-The claim follows from `isClosed_Icc.inter (isClosed_le (continuous_norm.comp (qv_cont c)) continuous_const)`.
+A detailed English derivation is pending.
 -/
 lemma E_closed (c : Fin 3 → ℂ) (la : ℝ) : IsClosed {t | t ∈ Icc (1:ℝ) 2 ∧ ‖qv c t‖ ≤ la} :=
   isClosed_Icc.inter (isClosed_le (continuous_norm.comp (qv_cont c)) continuous_const)
 
 /- English proof (translation)
-Use `set E := {t | t ∈ Icc (1:ℝ) 2 ∧ ‖qv c t‖ ≤ la} with hE`. Establish `hcl : IsClosed E` using `E_closed c la`. Establish `hbdd : BddBelow E` using `⟨1, fun t ht => ht.1.1⟩`. Break down `E.eq_empty_or_nonempty with h0 | hne` into its components or cases. Rewrite using `[h0, measure_empty]`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `bot_le`. Use `set t1 := sInf E with ht1d`. Establish `ht1 : t1 ∈ E` using `hcl.csInf_mem hne hbdd`. Establish `hge1 : ∀ t ∈ E, t1 ≤ t` using `fun t ht => csInf_le hbdd ht`. Use `set E2 := E ∩ Ici (t1 + g) with hE2`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Break down `E2.eq_empty_or_nonempty with h2 | hne2` into its components or cases. Establish `hsub : E ⊆ Icc t1 (t1 + g)`. Introduce `t ht`. Use `⟨hge1 t ht, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `: t ∈ E2` using `⟨ht, le_of_lt (not_le.mp hc)⟩`. Rewrite `this` using `[h2]`. Conclude with `this`. Combine the equalities or inequalities in the displayed calculation. Establish `hcl2 : IsClosed E2` using `hcl.inter isClosed_Ici`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbdd2 : BddBelow E2` using `⟨1, fun t ht => ht.1.1.1⟩`. Use `set t2 := sInf E2 with ht2d`. Establish `ht2 : t2 ∈ E2` using `hcl2.csInf_mem hne2 hbdd2`. Establish `hge2 : ∀ t ∈ E2, t2 ≤ t` using `fun t ht => csInf_le hbdd2 ht`. Establish `h12 : t1 + g ≤ t2` using `Set.mem_Ici.mp ht2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the first alternative. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsub : E ⊆ Icc t1 (t1 + g) ∪ Icc t2 (t2 + g)`. Introduce `t ht`. Distinguish the cases in `h : t < t1 + g`. Conclude with `Or.inl ⟨hge1 t ht, h.le⟩`. Establish `htE2 : t ∈ E2` using `⟨ht, not_lt.mp h⟩`.
-
-Use `Or.inr ⟨hge2 t htE2, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Conclude with `hno t1 t2 t ht1.1.1 ht.1.2 (by linarith) (by linarith [not_le.mp hc]) ht1.2 ht2.1.2 ht.2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.volume_Icc, Real.volume_Icc, ← ENNReal.ofReal_add (by linarith) (by linarith)]`.
-
-Put the polynomial expressions in normal form.
+Assume the negation of the conclusion and derive a contradiction. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. A detailed English derivation is pending.
 -/
 lemma sublevel (c : Fin 3 → ℂ) {la g : ℝ} (hg : 0 < g)
     (hno : ∀ t1 t2 t3 : ℝ, 1 ≤ t1 → t3 ≤ 2 → g ≤ t2 - t1 → g ≤ t3 - t2 → ‖qv c t1‖ ≤ la →
@@ -202,35 +196,29 @@ end subgroupData
 
 open subgroupData in
 /- English proof (translation)
-Introduce `δ hδ0 hδ1`. Use `⟨22, ?_⟩` and prove the remaining obligations. Introduce `c`. Use `set M := ‖c‖ with hMd`. Establish `hM0 : 0 ≤ M` using `norm_nonneg _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : ∀ t : ℝ, (1 + ‖c 0 + c 1 * t + c 2 * t ^ 2‖) ^ (-δ) ≤ 1` using `fun t => Real.rpow_le_one_of_one_le_of_nonpos (by linarith [norm_nonneg (c 0 + c 1 * t + c 2 * t ^ 2)]) (by linarith)`. Distinguish the cases in `hM : M ≤ 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← ENNReal.ofReal_one]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises.
+Consider separately whether the proposition holds or fails. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `: (2:ℝ) ^ (-1:ℝ) ≤ (1 + M) ^ (-δ / 2)`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : (2:ℝ) ^ (-1:ℝ) = 1 / 2` using `by rw [Real.rpow_neg_one]; norm_num`. Combine the linear equalities and inequalities to obtain the conclusion. Use `push Not at hM`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set s := M ^ ((1:ℝ) / 4) with hs`. Establish `hs0 : 0 < s` using `by positivity`. Establish `hs4 : s ^ 4 = M`. Rewrite using `[hs, ← Real.rpow_natCast, ← Real.rpow_mul hM0]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hs1 : 1 < s`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `: s ^ 4 ≤ 1` using `pow_le_one₀ hs0.le h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set E := {t | t ∈ Icc (1:ℝ) 2 ∧ ‖qv c t‖ ≤ s ^ 2} with hE`. Establish `hvol : volume E ≤ ENNReal.ofReal (2 * (5 / s))`. Apply `sublevel c (by positivity)` to reduce the goal to its premises. Introduce `t1 t2 t3 h1 h3 h12 h23 p1 p2 p3`. Establish `hl` using `lagrange c (by positivity) h1 h3 h12 h23 p1 p2 p3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : 12 * s ^ 2 / (5 / s) ^ 2 = 12 * s ^ 4 / 25` using `by field_simp; ring`. Rewrite `hl` using `[e, hs4]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hEm : MeasurableSet E` using `(E_closed c _).measurableSet`. Use `set K := (1 + s ^ 2) ^ (-δ) with hK`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `pw : ∀ t ∈ Icc (1:ℝ) 2, ENNReal.ofReal ((1 + ‖c 0 + c 1 * t + c 2 * t ^ 2‖) ^ (-δ)) ≤ E.indicator 1 t + ENNReal.ofReal K`. Introduce `t ht`. Distinguish the cases in `hp : ‖qv c t‖ ≤ s ^ 2`. Establish `htE : t ∈ E` using `⟨ht, hp⟩`. Rewrite using `[indicator_of_mem htE]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `le_trans (ENNReal.ofReal_le_one.mpr (hint t)) le_self_add`. Use `le_trans ?_ le_add_self` and prove the remaining obligations. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Conclude with `Real.rpow_le_rpow_of_nonpos (by positivity) (by`. Establish `: s ^ 2 < ‖qv c t‖` using `not_le.mp hp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [qv] at this; linarith) (by linarith)`. Establish `hfin : 2 * (5 / s) + K ≤ 22 * (1 + M) ^ (-δ / 2)`. Establish `hA : K ≤ (1 + M) ^ (-δ / 2)`. Establish `e : K = ((1 + s ^ 2) ^ 2) ^ (-δ / 2)`. Rewrite using `[hK, ← Real.rpow_natCast (1 + s ^ 2) 2, ← Real.rpow_mul (by positivity)]; congr 1; push_cast; ring`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[e]`. Conclude with `Real.rpow_le_rpow_of_nonpos (by linarith) (by rw [← hs4]; nlinarith) (by linarith)`. Establish `hB : 1 / (2 * s) ≤ (1 + M) ^ (-δ / 2)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[one_div]; exact inv_anti₀ (by positivity) (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation.
 
-Use `_ = ((1 + s) ^ 4) ^ (-(1:ℝ) / 4) := by`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul (by positivity), ← Real.rpow_neg_one]; norm_num`. Use `_ ≤ (1 + M) ^ (-(1:ℝ) / 4) := by`. Apply `Real.rpow_le_rpow_of_nonpos (by linarith) _ (by norm_num)` to reduce the goal to its premises. Rewrite using `[← hs4]`.
-
-Use polynomial arithmetic with `[pow_pos hs0 3]`. Use `_ ≤ (1 + M) ^ (-δ / 2) := Real.rpow_le_rpow_of_exponent_le (by linarith) (by linarith)`. Establish `e2 : 2 * (5 / s) = 20 * (1 / (2 * s))` using `by field_simp; ring`. Establish `hX : 0 ≤ (1 + M) ^ (-δ / 2)` using `by positivity`. Rewrite using `[e2]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[setLIntegral_const, Real.volume_Icc]`. Evaluate the numerical expressions.
-
-Use `_ ≤ ENNReal.ofReal (2 * (5 / s)) + ENNReal.ofReal K := by gcongr`. Use `_ = ENNReal.ofReal (2 * (5 / s) + K) := (ENNReal.ofReal_add (by positivity) (by positivity)).symm`. Use `_ ≤ ENNReal.ofReal (22 * (1 + M) ^ (-δ / 2)) := ENNReal.ofReal_le_ofReal hfin`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem quadraticSublevelDecay' : SUB := by
   intro δ hδ0 hδ1

@@ -16,11 +16,11 @@ noncomputable section
 namespace GlobalTheory.Poinc
 
 /- English proof (translation)
-Take `⟨L₁, -⟩` from `abelianSchemeLaws_all`. Establish `hG` using `L₁.globalFns`. Set `c` to `GlobalTheory.LowChart.siegPull F.univ u (u ≫ F.s) rfl`. Establish `hpb : SiegPB c F.univ u` using `GlobalTheory.LowChart.siegPB_siegPull F.univ u _ rfl`. Establish `hc : c.Principal` using `GlobalTheory.LowChart.principal_siegPull F.univ u _ rfl F.princ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨d, hd⟩` from `GlobalTheory.AbelianDim.exists_relDim_of_connected c.A c.ab`. Take `⟨G, _, pr, hA, hdim, hpr, hu⟩` from `GlobalTheory.EighthPower.exists_power c.A c.ab hd 8`. Establish `hb` using `GlobalTheory.EighthPower.isSymBilin hG c hc.1`. Establish `hL : (GlobalTheory.MatrixBundle.matLB c.P pr W).IsLB` using `LB.isLB_linComb c.isLB _ _`. Use `⟨{ A := G, isAb := hA, g := 8 * d, smoothDim := hdim, L := GlobalTheory.MatrixBundle.matLB c.P pr W, isLB := hL rigid := GlobalTheory.MatrixBundle.rigidified_matLB c.isLB hb hpr, sym := GlobalTheory.MatrixBundle.sym_matLB c.isLB hb hpr ample := _root_.GlobalTheory.PosDefAmple.rel …` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `PolBaseChange.lbIso_refl hL`.
+A detailed English derivation is pending.
 -/
 theorem exists_sharpOver_connected {g n : ℕ} {o : Type} [CommRing o] {ζ : o} (F : SFam g n ζ) (W : Matrix (Fin 8) (Fin 8) ℤ) (hW : IsE8 W) {S : Scheme.{0}} [ConnectedSpace S] (u : S ⟶ F.X) : ∃ P : PolAV S, SharpOver F W P u := by
   obtain ⟨L₁, -⟩ := abelianSchemeLaws_all
@@ -39,7 +39,7 @@ theorem exists_sharpOver_connected {g n : ℕ} {o : Type} [CommRing o] {ζ : o} 
   exact PolBaseChange.lbIso_refl hL
 
 /- English proof (translation)
-Introduce `g n F W hW R _ _ u`. Use `haveI : ConnectedSpace (Sp R) := by`. Express the relevant statement in the definitionally equal form `ConnectedSpace (PrimeSpectrum R)`. Use `infer_instance`. Conclude with `exists_sharpOver_connected F W hW u`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem exists_sharpOver_domain : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ), IsE8 W → ∀ (R : Type) [CommRing R] [IsDomain R] (u : Sp R ⟶ F.X), ∃ P : PolAV (Sp R), SharpOver F W P u := by
   intro g n F W hW R _ _ u

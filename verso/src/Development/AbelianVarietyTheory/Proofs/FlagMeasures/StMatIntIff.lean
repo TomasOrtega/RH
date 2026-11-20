@@ -18,33 +18,31 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.HL.StIntLat
 
 /- English proof (translation)
-Introduce `D X Y u u' hSt hk w F00 F'0 FP hZ hG hAB G c y`. Establish `hT : ((Tu D u' : ℕ) : D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 (Formalism.MainNotions.BridgeLemma.tie_Tu_pos D u').ne'`. Establish `hli : LinearIndependent D.host.E G.f'`. Establish `h0 : LinearIndependent D.host.E (frame F'0)` using `Formalism.L2.SG.Pf.StabilizerIndexVolumes.frame_indep F'0.fl hT`. Establish `h1` using `h0.map' (c.e : (VS D).V →ₗ[D.host.E] G.V) c.e.ker`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : G.f' = (c.e : (VS D).V →ₗ[D.host.E] G.V) ∘ frame F'0`. Use function extensionality and compare the values at `a`. Conclude with `c.f'_eq a`. Rewrite using `[e]`. Conclude with `h1`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hStCo` using `GlobalTheory.T.rationalCommonStabiliser_unitriangular_coords D X Y u u' hSt hk w F00 F'0 FP hZ hG hAB G c`. Establish `hK` using `GlobalTheory.T.integralStabiliser_iff_rational_coords D X Y u u' hSt hk w F00 F'0 FP hZ hG hAB G c`. Establish `hexp : ∀ a b : Fin (D.R.rS + 1), a < b → (-(((b.val - a.val : ℕ)) : ℤ)) = -((b : ℤ) - (a : ℤ))`. Introduce `a b hab`. Establish `: a.val ≤ b.val` using `le_of_lt hab`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[Nat.cast_sub this]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩ p`. Establish `hxSt : x ∈ G.St`. Introduce `q`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨g', hg', he⟩` from `hx q`. Conclude with `⟨g', hg'.1.1, he⟩`. Take `⟨B, -, hB, -⟩` from `hStCo.1 x hxSt`. Establish `hspec` using `GlobalTheory.HL.TraceConjugationCover.stMat_spec G x ⟨B, hB⟩`. Establish `hmem` using `(hK x hxSt _ hspec).1 hx p.1.1 p.1.2 p.2.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨GlobalTheory.HL.TraceConjugationCover.stMat G x p.1.1 p.1.2, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hexp _ _ p.2.1]`. Conclude with `hmem`. Use function extensionality and compare the values at `v`. Simplify using `[Formalism.L2.SG.NGCut.SplitEmbedding.embS]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `h choose lam hlam hlamE using h`. Set `B : Formalism.L2.SG.PairVal.MatR D` to `fun a b => if a = b then 1 else if hab : a < b ∧ Formalism.L2.SG.RealObj.blkOf w.1 a.1 = Formalism.L2.SG.RealObj.blkOf w.1 b.1 then lam ⟨(a, b), hab⟩ else 0`. Establish `hBU : IsUpUni B`. Introduce `i j`. Use `⟨fun hji => ?_, fun hij => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1 : i ≠ j` using `fun h => (lt_irrefl j) (h ▸ hji)`. Establish `h2 : ¬ (i < j ∧ Formalism.L2.SG.RealObj.blkOf w.1 i.1 = Formalism.L2.SG.RealObj.blkOf w.1 j.1)` using `fun h => (lt_asymm hji) h.1`. Simplify using `only [B, if_neg h1, dif_neg h2]`. Simplify using `only [B, if_pos hij]`. Establish `hBblk : ∀ a b : Fin (D.R.rS + 1), Formalism.L2.SG.RealObj.blkOf w.1 a.1 ≠ Formalism.L2.SG.RealObj.blkOf w.1 b.1 → B a b = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a b hne`. Establish `h1 : a ≠ b` using `fun h => hne (h ▸ rfl)`. Establish `h2 : ¬ (a < b ∧ Formalism.L2.SG.RealObj.blkOf w.1 a.1 = Formalism.L2.SG.RealObj.blkOf w.1 b.1)` using `fun h => hne h.2`. Simplify using `only [B, if_neg h1, dif_neg h2]`. Take `⟨x, ⟨hxSt, hxB⟩, -⟩` from `hStCo.2 B hBU hBblk`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hxK : x ∈ G.K0`. Use `(hK x hxSt B hxB).2 fun a b hab => ?_` and prove the remaining obligations. Establish `h1 : a ≠ b` using `ne_of_lt hab`. Distinguish the cases in `h2 : a < b ∧ Formalism.L2.SG.RealObj.blkOf w.1 a.1 = Formalism.L2.SG.RealObj.blkOf w.1 b.1`. Simplify using `only [B, if_neg h1, dif_pos h2]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `hlam ⟨(a, b), h2⟩` as an intermediate fact. Rewrite `this` using `[hexp _ _ hab]`. Conclude with `this`. Simplify using `only [B, if_neg h1, dif_neg h2]`. Conclude with `FractionalIdeal.mem_coe.1 (Submodule.zero_mem _)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hspec` using `GlobalTheory.HL.TraceConjugationCover.stMat_spec G x ⟨B, hxB⟩`. Establish `hM : GlobalTheory.HL.TraceConjugationCover.stMat G x = B`. Use function extensionality and compare the values at `a b`. Establish `e2 : ∑ d, (GlobalTheory.HL.TraceConjugationCover.stMat G x d b - B d b) • G.f' d = 0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib, ← hspec b, ← hxB b, sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_eq_zero.1 (Fintype.linearIndependent_iff.1 hli _ e2 a)`. Use `⟨x, hxK, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `v p`. Establish `e1` using `congrFun (hlamE p) v`. Simplify using `only [Formalism.L2.SG.NGCut.SplitEmbedding.embS, AddMonoidHom.coe_mk, ZeroHom.coe_mk, one_mul] at e1`.
-
-Rewrite using `[hM, ← e1]`. Establish `h1 : p.1.1 ≠ p.1.2` using `ne_of_lt p.2.1`. Simplify using `only [B, if_neg h1, dif_pos p.2]`. Apply the tactic sequence `all_goals first | rfl | (congr 1)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem stMat_int_iff : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), Formalism.MainNotions.S.Cnt.Stand D u u' → 4 * D.R.rS + 7 ≤ D.R.k → ∀ (w : Point D.host.E (D.R.rS + 1)) (F00 : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F'0 : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (FP : ∀ p : PlF D, LocNG.FPair (locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p) D.R.rS), ZhatOM (ZhatL F00 F'0) = ptMat w → Gval F00 F'0 ≠ 0 → (∀ p, AtBase (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p F00 F'0 (Tu D u) (Tu D u') (FP p) ∧ (FP p).RelG (LocNG.theta (Y.M p))) → ∀ (G : GFrames (placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)) D.R.rS D.R.k) (c : GCoord (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) F00 F'0 FP G), ∀ y : InfinitePlace X.B.I.F → Formalism.L2.SG.RealObj.FreeE w → ℂ, (∃ x ∈ G.K0, y = fun v p => Formalism.L2.SG.Pf.VolPinAsm.phiV X v (GlobalTheory.HL.TraceConjugationCover.stMat G x p.1.1 p.1.2)) ↔ ∀ p : Formalism.L2.SG.RealObj.FreeE w, (fun v => y v p) ∈ ((((ddS D ^ (-(((p.1.2.val - p.1.1.val : ℕ)) : ℤ)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) : Submodule (𝓞 D.host.E) D.host.E).toAddSubgroup).map (Formalism.L2.SG.NGCut.SplitEmbedding.embS (Formalism.L2.SG.Pf.VolPinAsm.phiV X) 1)) := by
   intro D X Y u u' hSt hk w F00 F'0 FP hZ hG hAB G c y

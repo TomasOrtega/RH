@@ -21,7 +21,7 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.w
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
 /- English proof (translation)
-Unfold `RealDat.ptP pureTensorO pureTensorL`. Establish `: (1 : MvPolynomial (FVar D (Wc D i).rank (Vc D i).rank) ℂ) = MvPolynomial.basisMonomials _ ℂ 0`. Simplify using the standard rewrite rules. Rewrite using `[this, Module.Basis.constr_basis]`. Simplify using `[opPow]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pureTensor_one (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) : R.ptP i t 1 = R.vP i t := by
   unfold RealDat.ptP pureTensorO pureTensorL
@@ -31,7 +31,7 @@ theorem pureTensor_one (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) : R.ptP i t 
   simp [opPow]
 
 /- English proof (translation)
-Establish `: Formalism.L2.Theta.mt V 1 = 1` using `rfl`. Introduce `a b`. Simplify using `[this]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem trivAt_one (V : HSp D) (f : AE D) : TrivAt V f 1 := by
   have : Formalism.L2.Theta.mt V 1 = 1 := rfl
@@ -39,17 +39,17 @@ theorem trivAt_one (V : HSp D) (f : AE D) : TrivAt V f 1 := by
   simp [this]
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hL hF i t μ 𝓕 hμ v f hf γ hγ hγt k hk`. Establish `hmul : ∀ g : GA D (Wc D i), R.ωP i t (1, g * k) (R.vP i t) = R.ωP i t (1, g) (R.ωP i t (1, k) (R.vP i t))`. Introduce `g`. Establish `e : ((1 : GA D (Vc D i)), g * k) = (1, g) * (1, k)` using `by simp`. Rewrite using `[e, map_mul, Module.End.mul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hone : R.ωP i t (1, 1) = 1` using `map_one _`. Unfold `coef`. Distinguish the cases in `hbad : ∃ P, (P ∈ R.Pg ∨ P ∈ R.Q t) ∧ ∃ e, IsPrimeIdem P e f`. Take `⟨P, hP, e, he⟩` from `hbad`. Distinguish the cases in `hkl : k ∈ levW R i`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Establish `hfix : R.ωP i t (1, k) (R.vP i t) = R.vP i t`. Use `GlobalTheory.T.coeffSpaceLevel_fixes_fockVectors D G Pl0 T A Ks R F hL hF i t k hkl 1` as an intermediate fact. Rewrite `this` using `[pureTensor_one]`. Then use the resulting hypothesis. Rewrite using `[hmul γ, hfix]`. Distinguish the cases in `hN : thetaIP μ 𝓕 (R.vP i t) (R.vP i t) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `[hN]`. Rewrite using `[div_self hN, mul_one]`. Establish `h0` using `GlobalTheory.T.coefficient_vanishes_off_level_group_at_bad_prime D G Pl0 T A Ks R F hL hF i t μ 𝓕 hμ P hP e f he γ hγ hγt k hk hkl`. Establish `h1` using `GlobalTheory.T.coefficient_vanishes_off_level_group_at_bad_prime D G Pl0 T A Ks R F hL hF i t μ 𝓕 hμ P hP e f he 1 (one_mem _) (trivAt_one _ f) k hk hkl`. Rewrite `h1` using `[one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h0, h1]`. Simplify using the standard rewrite rules. Establish `hgood : ∀ P, P ∈ R.Pg ∨ P ∈ R.Q t → ∀ e f', IsPrimeIdem P e f' → f' ≠ f` using `fun P hP e f' he hff => hbad ⟨P, hP, e, hff ▸ he⟩`. Take `⟨c, hc⟩` from `GlobalTheory.T.matrixCoeff_finitePlace_offLevel_const_mul D G Pl0 T A Ks R F hL hF i t μ 𝓕 hμ v f hf hgood k hk`. Establish `h1` using `hc 1 (one_mem _) (trivAt_one _ f)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h1` using `[one_mul, hone, Module.End.one_apply]`. Rewrite using `[hc γ hγ hγt, h1]`. Distinguish the cases in `hN : thetaIP μ 𝓕 (R.vP i t) (R.vP i t) = 0`. Simplify using `[hN]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem finMult : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m)
     (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A),

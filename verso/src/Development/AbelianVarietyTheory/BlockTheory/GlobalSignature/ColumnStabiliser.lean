@@ -21,7 +21,7 @@ def colStab (D : D7) (Lv : LevelData D) (u : D.what₂.Word) :
         (bc (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)))
 
 /- English proof (translation)
-Introduce `y γ`. Simplify using `[colStab, Subgroup.mem_inf, Subgroup.mem_comap]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem mem_colStab (D : D7) (Lv : LevelData D) (u : D.what₂.Word) :
     letI := D.host.cmStar
@@ -45,18 +45,18 @@ def ColStabTrivial : Prop :=
   ∀ (D : D7) (Lv : LevelData D) (u : D.what₂.Word), ColStabTrivialAt D Lv u
 
 /- English proof (translation)
-Unfold `GBig`. Conclude with `exists_congr fun i => by omega`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 example (D : D7) : GBig D ↔ ∃ i : Fin 2, 2 * D.R.f * D.R.k + 1 < D.host.g i := by
   unfold GBig
   exact exists_congr fun i => by omega
 
 /- English proof (translation)
-Set `_` to `D.host.cmStar`. Establish `hb` using `h D Lv u hg hs ((Lv u).y c)`. Establish `hr` using `((Lv u).stabI_range c ((Lv u).stabI c γ).1 ((Lv u).stabI c γ).2).1 ⟨γ, rfl⟩`. Establish `hm : ((Lv u).stabI c γ).1 ∈ colStab D Lv u ((Lv u).y c)`. Rewrite using `[mem_colStab]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨((Lv u).stabI c γ).2, ?_⟩` and prove the remaining obligations. Take `⟨x, hx, hx'⟩` from `hr`. Rewrite using `[← hx']`. Simplify `hx` using `[mul_assoc]`. Rewrite `hm` using `[hb, Subgroup.mem_bot]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `(Lv u).stabI_inj c` to reduce the goal to its premises. Rewrite using `[map_one]`. Conclude with `Subtype.ext hm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 example (h : ColStabTrivial) (D : D7) (Lv : LevelData D) (u : D.what₂.Word) (hg : GBig D)
     (hs : ∀ i : Fin 2, SplitsF D (D.host.g i)) (c : (D.mem u).C.cls 0)
@@ -76,9 +76,9 @@ example (h : ColStabTrivial) (D : D7) (Lv : LevelData D) (u : D.what₂.Word) (h
   exact Subtype.ext hm
 
 /- English proof (translation)
-Introduce `y`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, hγ, rfl⟩`. Take `⟨h1, h2⟩` from `(mem_colStab D Lv u y γ).1 hγ`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨⟨γ, h1, rfl⟩, ⟨_, h2, by simp [mul_assoc]⟩⟩`. Introduce and unpack `⟨⟨γ, h1, rfl⟩, z, hz, hz'⟩`. Use `⟨γ, (mem_colStab D Lv u y γ).2 ⟨h1, ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[← hz']`. Simplify `hz` using `[mul_assoc]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem map_colStab (D : D7) (Lv : LevelData D) (u : D.what₂.Word) :
     letI := D.host.cmStar

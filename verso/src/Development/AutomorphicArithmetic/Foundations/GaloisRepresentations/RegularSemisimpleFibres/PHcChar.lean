@@ -8,7 +8,7 @@ open scoped Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `F _ _ a b n hn A B hA hB`. Conclude with `GlobalTheory.T.harishChandraInductionGL_isCharacter F a b n hn A B hA hB`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.hcChar :
     HcChar := by

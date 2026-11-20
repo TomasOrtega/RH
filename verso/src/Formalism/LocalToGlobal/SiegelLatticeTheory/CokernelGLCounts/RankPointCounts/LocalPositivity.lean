@@ -18,7 +18,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} (X : HidaSetting D) (u u' : D.what₂.Word) (ψ : AddChar (AF X.B.I.F) ℂ)
 
 /- English proof (translation)
-Break down `div_pos_iff.1 h with h' | h'` into its components or cases. Conclude with `h'`. Conclude with `absurd ha (not_le.2 h'.1)`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem pos_of_div {a b : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) (h : 0 < a / b) : 0 < a ∧ 0 < b := by
   rcases div_pos_iff.1 h with h' | h'
@@ -26,9 +26,9 @@ theorem pos_of_div {a b : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) (h : 0 < a / b) : 0
   · exact absurd ha (not_le.2 h'.1)
 
 /- English proof (translation)
-Establish `hU : 0 ≤ localVolumeUnit X ψ v` using `ENNReal.toReal_nonneg`. Establish `hZ : 0 ≤ ZZX X u u' ψ v` using `ENNReal.toReal_nonneg`. Distinguish the cases in `hv : TypAt X v`. Establish `e` using `volTypV_holds X u u' ψ hψ hs hTT v hv`. Conclude with `pos_of_div hU hZ (by rw [e]; exact pow_pos (by exact_mod_cast hg v hv) _)`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `volOrdV_holds X u u' ψ hψ hs v hv`. Conclude with `pos_of_div hU hZ (by rw [e]; exact Real.rpow_pos_of_pos (absV_pos v (dV_ne_zero v)) _)`.
+A detailed English derivation is pending.
 -/
 theorem localVolumeUnit_pos_and_ZZX_pos (hψ : IsCharAF X.B.I.F ψ) (hs : IsStdChar ψ)
     (hTT : (D.mem u).A.T ≡ (D.mem u').A.T [MOD (Lat.gS D) ^ 2]) (hg : ∀ v, TypAt X v → 0 < gAt X v) (v : PlX X) :
@@ -42,11 +42,11 @@ theorem localVolumeUnit_pos_and_ZZX_pos (hψ : IsCharAF X.B.I.F ψ) (hs : IsStdC
     exact pos_of_div hU hZ (by rw [e]; exact Real.rpow_pos_of_pos (absV_pos v (dV_ne_zero v)) _)
 
 /- English proof (translation)
-Establish `hN : SdNormDV X ψ` using `sdNormDV_of X ψ (annX_of X ψ Formalism.L2.SG.Pf.conductor_inverse_different) hψ hs`. Establish `hfin : Module.finrank X.B.I.F X.B.I.E = 2` using `X.B.I.cm.deg2`. Take `⟨hH, -, hO⟩` from `hN v hv Unit`. Use `hH` as an intermediate fact. Establish `hset : (fun c : Unit → Fv X.B.I.F v ⊗[X.B.I.F] X.B.I.E => c ()) ⁻¹' PPOrd (E` using `X.B.I.E) v D.R.rS l = Set.univ.pi fun _ : Unit => {c | sc (E := X.B.I.E) v (alp v D.R.rS l ^ 2) * c ∈ OEv (E := X.B.I.E) v} := by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `z`. Simplify using `[PPOrd, Set.mem_pi]`. Conclude with `⟨fun h i => h, fun h => h ()⟩`. Unfold `PPX volC`. Rewrite using `[if_neg hv, hset, SdW.boxScaleL_holds v Unit hfin (sdE (E := X.B.I.E) ψ v Unit) (fun _ : Unit => alp v D.R.rS l ^ 2) (fun _ => pow_ne_zero _ (alp_ne_zero v D.R.rS l)), hO]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `mul_pos (pow_pos (absV_pos v (dV_ne_zero v)) _) (Finset.prod_pos fun q _ => ?_)` and prove the remaining obligations. Conclude with `inv_pos.2 (pow_pos (absV_pos v (pow_ne_zero _ (alp_ne_zero v D.R.rS l))) 2)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pp_pos_ord (hψ : IsCharAF X.B.I.F ψ) (hs : IsStdChar ψ) {v : PlX X} (hv : ¬ TypAt X v)
     (l : Fin (D.R.rS + 1)) : 0 < PPX X u u' ψ l v := by
@@ -66,9 +66,9 @@ theorem pp_pos_ord (hψ : IsCharAF X.B.I.F ψ) (hs : IsStdChar ψ) {v : PlX X} (
   exact inv_pos.2 (pow_pos (absV_pos v (pow_ne_zero _ (alp_ne_zero v D.R.rS l))) 2)
 
 /- English proof (translation)
-Unfold `jacX jacS`. Use `Finset.prod_pos fun l _ => ?_` and prove the remaining obligations. Establish `hx : (∏ i ∈ Finset.univ.filter (fun i : Fin (D.R.rS + 1) => (i : ℕ) ≤ (l : ℕ)), alp v D.R.rS i ^ 2) * (if TypAt X v then ((gAt X v : Fv X.B.I.F v)⁻¹) ^ ((l : ℕ) + 1) else 1) ≠ 0`. Use `mul_ne_zero (Finset.prod_ne_zero_iff.2 fun i _ => pow_ne_zero _ (alp_ne_zero v D.R.rS i)) ?_` and prove the remaining obligations. Use `split_ifs with ht`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `pow_ne_zero _ (inv_ne_zero ?_)` and prove the remaining obligations. Conclude with `(hg v ht).ne'` after adjusting the coercions. Conclude with `one_ne_zero`. Conclude with `pow_pos (pow_pos (absV_pos v hx) 2) 2`.
+A detailed English derivation is pending.
 -/
 theorem jac_pos (hg : ∀ v, TypAt X v → 0 < gAt X v) (v : PlX X) : 0 < jacX X v := by
   unfold jacX jacS

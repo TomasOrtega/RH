@@ -17,35 +17,33 @@ variable {n : ℕ}
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Establish `hm : ∀ a b : KG ε, toMK (a * b) = toMK a * toMK b`. Introduce `a b`. Simplify using `[toMK, toM]`. Establish `hi : ∀ a : KG ε, toMK a⁻¹ * toMK a = 1`. Introduce `a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[toMK, toM]`. Establish `hop : ∀ a b : KG ε, T.op (a * b) = T.op a * T.op b`. Introduce `a b`. Simplify using `[KType.op]`. Establish `hop1 : ∀ a : KG ε, T.op a⁻¹ * T.op a = 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `a`. Simplify using `only [KType.op, map_inv]`. Rewrite using `[← Submonoid.coe_mul, inv_mul_cancel, Submonoid.coe_one]`. Establish `hγ0 : γ 0 = 1`. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h00` using `congrFun (congrFun (hγ 0) i) j`. Simplify `h00` using `[toMK, toM]`. Establish `hk2 : toMK k ∈ Matrix.unitaryGroup (Fin n) ℂ ∧ toMK k * Jm ε = Jm ε * toMK k`. Simplify `k.2` using `[KG, Kset, toM, toMK]`. Establish `hst : star (toMK k) * toMK k = 1` using `Matrix.mem_unitaryGroup_iff'.1 hk2.1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hst' : toMK k * star (toMK k) = 1` using `Matrix.mem_unitaryGroup_iff.1 hk2.1`. Establish `hkinv : toMK k⁻¹ = (toMK k)ᴴ`. Rewrite using `[← Matrix.star_eq_conjTranspose]`. Combine the equalities or inequalities in the displayed calculation. Establish `hinjk : Function.Injective (toMK k).mulVec`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Introduce `v w hvw`. Establish `h2` using `congrArg (star (toMK k)).mulVec hvw`. Simplify `h2` using `[Matrix.mulVec_mulVec, hst]`. Establish `hzP : toMK k⁻¹ * x * toMK k ∈ OmegaSet n`. Apply `posSet_subset_omega` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show (toMK k⁻¹ * x * toMK k).PosDef`. Rewrite using `[hkinv]`. Conclude with `hx.conjTranspose_mul_mul_same hinjk`. Establish `hexp : ∀ A : Matrix (Fin n) (Fin n) ℂ, NormedSpace.exp A * NormedSpace.exp (-A) = 1`. Introduce `A`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.exp_add_of_commute _ _ (Commute.neg_right (Commute.refl A)), add_neg_cancel, NormedSpace.exp_zero]`. Establish `hinvγ : ∀ t : ℝ, toMK (γ t)⁻¹ = NormedSpace.exp (-((t : ℂ) • Y))`. Introduce `t`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hexp, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `_ = (toMK (γ t)⁻¹ * toMK (γ t)) * NormedSpace.exp (-((t : ℂ) • Y)) := by`. Rewrite using `[hγ t, mul_assoc]`. Use `_ = _ := by rw [hi, one_mul]`. Establish `hf : ∀ t : ℝ, toMK (k * γ t)⁻¹ * x * toMK (k * γ t) = NormedSpace.exp (-((t : ℂ) • Y)) * (toMK k⁻¹ * x * toMK k) * NormedSpace.exp ((t : ℂ) • Y)`. Introduce `t`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[_root_.mul_inv_rev, hm, hm, hinvγ, hγ]`. Simplify using `only [mul_assoc]`. Establish `hQe : ∀ t : ℝ, T.op (1 * (γ t)⁻¹) * T.op k⁻¹ = T.op (k * γ t)⁻¹`. Introduce `t`. Rewrite using `[one_mul, _root_.mul_inv_rev, hop]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hfun : (fun t : ℝ => Gint T μ x (k * γ t)) = fun t : ℝ => PhiM μ (NormedSpace.exp (-((t : ℂ) • Y)) * (toMK k⁻¹ * x * toMK k) * NormedSpace.exp ((t : ℂ) • Y)) • (T.op (k * γ t) * projW T * (T.op (1 * (γ t)⁻¹) * T.op k⁻¹))`. Use function extensionality and compare the values at `t`. Simplify using `only [Gint]`. Rewrite using `[hf t, hQe t]`. Establish `hP` using `hasDerivAt_op T k hY γ hγ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hδ : ∀ t : ℝ, toMK ((fun s : ℝ => (γ s)⁻¹) t) = NormedSpace.exp ((t : ℂ) • (-Y))`. Introduce `t`. Rewrite using `[smul_neg]`. Conclude with `hinvγ t`. Establish `hQ` using `(hasDerivAt_op T 1 (inK_neg hY) (fun s : ℝ => (γ s)⁻¹) hδ).mul_const (T.op k⁻¹)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hM` using `(hP.mul_const (projW T)).mul hQ`. Establish `hφ : HasDerivAt (fun t : ℝ => PhiM μ (NormedSpace.exp (-((t : ℂ) • Y)) * (toMK k⁻¹ * x * toMK k) * NormedSpace.exp ((t : ℂ) • Y))) (fderiv ℂ (PhiM μ) (toMK k⁻¹ * x * toMK k) (toMK k⁻¹ * x * toMK k * Y - Y * (toMK k⁻¹ * x * toMK k))) 0`. Establish `hd` using `((phiM_differentiableOn μ).differentiableAt (isOpen_omega.mem_nhds hzP)).hasFDerivAt`. Establish `h0 : toMK k⁻¹ * x * toMK k = NormedSpace.exp (-(((0 : ℝ) : ℂ) • Y)) * (toMK k⁻¹ * x * toMK k) * NormedSpace.exp (((0 : ℝ) : ℂ) • Y)`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hd.restrictScalars ℝ).comp_hasDerivAt_of_eq (0 : ℝ) (dga_path Y _) h0`. Establish `hop1' : T.op 1 = 1` using `by simp [KType.op]`. Rewrite using `[hfun]`. Use `hφ.smul hM using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `all_goals try rfl`.
-
-Simplify using `only [hγ0, mul_one, one_mul, inv_one, hop1', map_neg, Complex.ofReal_zero, zero_smul, neg_zero, NormedSpace.exp_zero]`. Rewrite using `[add_comm]`. Simplify using `only [Pi.mul_apply, hγ0, mul_one, inv_one, hop1', one_mul]`. Use `congrArg₂ (· + ·) (congrArg _ ?_) rfl` and prove the remaining obligations. Use `noncomm_ring`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_Gint {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KType ε Λ) (μ : Fin n → ℤ)
     {x : Matrix (Fin n) (Fin n) ℂ} (hx : x.PosDef) (k : KG ε) {Y : Matrix (Fin n) (Fin n) ℂ} (hY : inK ε Y)

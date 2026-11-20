@@ -13,7 +13,7 @@ section Blocks
 variable {A B : Type} [Monoid B] (f : ℕ → ℕ → A → B)
 
 /- English proof (translation)
-The claim follows from `| [], a, L, h => by simp only [List.nil_append, modBlocks] at h split_ifs at h with hu simp only [Option.map_some, Option.some.injEq] at h exact ⟨[], hu.1.unit, hu.2, by simp, by rw [← h]; rfl⟩ | (t0, s0) :: l, a, L, h => by simp only [List.cons_append, modBlocks] at h split_ifs …`.
+A detailed English derivation is pending.
 -/
 theorem modBlocks_append (t : A) (s : ℕ) : ∀ (l : List (A × ℕ)) (a : ℕ) (L : List (Bˣ × ℕ+)),
     modBlocks f a (l ++ [(t, s)]) = some L →
@@ -40,13 +40,13 @@ section Van
 variable {D : Formalism.BasicNotions.D7}
 
 /- English proof (translation)
-Unfold `modPt at ha`. Establish `hp : (ptApp h t ht s hs).1 = h.1 ++ [(t, s)]` using `rfl`. Rewrite `ha` using `[hp]`. Break down `hm : modBlocks (blkTop δ T T' p) 1 (h.1 ++ [(t, s)]) with _ | l` into its components or cases. Rewrite `ha` using `[hm]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at ha`. Rewrite `ha`, `with`, `hsum` using `[hm] at ha dsimp only at ha split_ifs`. Take `⟨L0, τ, hs', hτ, hL⟩` from `modBlocks_append (blkTop δ T T' p) t s h.1 1 l hm`. Substitute `hL` using the available equality. Establish `e : (h.1.map Prod.snd).sum = m` using `by simpa using h.2.2`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify by unfolding definitions. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Establish `hsz : (L0.map (fun b => (b.2 : ℕ))).sum = m`. Establish `h2` using `hsum`. Simplify using `only [List.map_append, List.sum_append, List.map_cons, List.map_nil, List.sum_cons, List.sum_nil, PNat.mk_coe] at h2`. Use linear arithmetic over natural numbers and integers. Use `⟨⟨L0, hsz⟩, τ, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[hτ, e, add_comm]`. Consider the cases of `ha`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem modPt_ptApp (δ : ∀ p, (D.s.atP p).Fp) (T T' : ℕ) (p : PlF D) {m : ℕ} (h : Point D.host.E m) (t : D.host.E)
     (ht : t ≠ 0) (s : ℕ) (hs : 1 ≤ s) (a : Loc.Pt (D.s.atP p).Ep (m + s))
@@ -75,9 +75,9 @@ theorem modPt_ptApp (δ : ∀ p, (D.s.atP p).Fp) (T T' : ℕ) (p : PlF D) {m : �
       rfl
 
 /- English proof (translation)
-Unfold `twist`. Consider the cases of `(D.s.atP p).split with`. Consider the case `none => rfl`. Consider the case `some sg`. Apply `sg.e.injective` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Reduce the claim to the hypotheses of an applicable result.
 
-Apply the tactic sequence `ext <;> simp [mul_sub]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem twist_sub (p : PlF D) (s : ℕ) (x y : (D.s.atP p).Ep) : twist p s (x - y) = twist p s x - twist p s y := by
   unfold twist
@@ -88,7 +88,7 @@ theorem twist_sub (p : PlF D) (s : ℕ) (x y : (D.s.atP p).Ep) : twist p s (x - 
     ext <;> simp [mul_sub]
 
 /- English proof (translation)
-Unfold `tModInv`. Rewrite using `[map_sub, twist_sub]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem tModInv_sub (δ : ∀ p, (D.s.atP p).Fp) (p : PlF D) (ν s : ℕ) (x y : D.host.E) :
     tModInv δ p ν s (x - y) = tModInv δ p ν s x - tModInv δ p ν s y := by
@@ -97,17 +97,15 @@ theorem tModInv_sub (δ : ∀ p, (D.s.atP p).Fp) (p : PlF D) (ν s : ℕ) (x y :
   ring
 
 /- English proof (translation)
-Unfold `locK at hloc`. Use `split at hloc`. Name the introduced variables `a b ha hb`. Take `⟨a0, τ, hτ, rfl⟩` from `modPt_ptApp δ T T' p h t ht s hs a ha`. Take `⟨b0, τ', hτ', rfl⟩` from `modPt_ptApp δ T T' p h' t' ht' s hs b hb`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hidx : m + 1 + s - 1 = m + s` using `by omega`. Establish `hblk : ∀ y : D.host.E, blkTop δ T T' p (m + 1) s y = tMod δ p (nu D.R.rS (m + 1) (m + s)) s y`. Introduce `y`. Unfold `blkTop blkMod`. Rewrite using `[hidx, if_neg hne, if_neg hne, sub_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hτ`, `hτ'` using `[hblk]`. Establish `hδ` using `(hA p).2.1`. Establish `e1 : ((τ⁻¹ : ((D.s.atP p).Ep)ˣ) : (D.s.atP p).Ep) = tModInv δ p (nu D.R.rS (m + 1) (m + s)) s t⁻¹` using `Units.inv_eq_of_mul_eq_one_right (by rw [hτ]; exact tMod_mul_tModInv δ p hδ _ s t ht)`. Establish `e2 : ((τ'⁻¹ : ((D.s.atP p).Ep)ˣ) : (D.s.atP p).Ep) = tModInv δ p (nu D.R.rS (m + 1) (m + s)) s t'⁻¹` using `Units.inv_eq_of_mul_eq_one_right (by rw [hτ']; exact tMod_mul_tModInv δ p hδ _ s t' ht')`. Assume the negation of the conclusion as `hnot`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hnot` using `[tModInv_sub, ← e1, ← e2]`. Establish `hN` using `(h1 (D.s.atP p).Fp (D.s.atP p).Ep (M p) (hA p).1).1 m ⟨s, hs⟩ τ τ' a0 b0 hnot`. Unfold `Loc.Model.Ns at hN`. Break down `mul_eq_zero.1 hN with h0 | h0` into its components or cases. Establish `hOK` using `(hA p).1`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `top_of_OK (M p) hOK` as an intermediate fact. Establish `hpos : 0 < (M p).modK ((τ : (D.s.atP p).Ep) * τ')`. Use `modK_of_OK (M p) hOK (τ * τ')` as an intermediate fact. Rewrite `this` using `[Units.val_mul]`. Rewrite using `[this, ← Units.val_mul]`.
-
-Conclude with `Formalism.FourierDecayAlt.P.A5x5.modK_pos (R_top (M p) hOK).1 (R_top (M p) hOK).2.1 (τ * τ')`. Conclude with `(pow_ne_zero _ hpos.ne') (by exact_mod_cast h0)`. Conclude with `hloc h0`. Conclude with `absurd rfl hloc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem loc_step (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
     (hA : ∀ p, Agree δ M p) (h1 : adm1 D) (m s : ℕ) (hs : 1 ≤ s) (hne : ¬ (m + s = D.R.rS + 1 ∧ s = 1))
@@ -147,7 +145,7 @@ theorem loc_step (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s
   · exact absurd rfl hloc
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem locK_cast (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (T T' : ℕ)
     (p : PlF D) {n N : ℕ} (e : n = N) (w w' : Point D.host.E n) :
@@ -156,13 +154,13 @@ theorem locK_cast (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.
   rfl
 
 /- English proof (translation)
-Use `⟨?_, fun e1 e2 => absurd ⟨e1, e2⟩ hne⟩` and prove the remaining obligations. Rewrite using `[localCondition_iff δ M hA hd]`. Introduce `p`. Use `loc_step δ M hA h1 m s hs hne T T' h h' t t' ht ht' p ?_` and prove the remaining obligations. Introduce `h0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hK` to reduce the goal to its premises. Unfold `Kglob`. Distinguish the cases in `e : m + s = D.R.rS + 1`. Rewrite using `[dif_pos e]`. Unfold `KtopG`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `split_ifs`. Use `finprod_eq_zero _ p ?_ (hfin.2.2.2 _ _)` and prove the remaining obligations. Unfold `KtopP`. Rewrite using `[locK_cast, h0, mul_zero, zero_mul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg e]`. Conclude with `finprod_eq_zero _ p h0 (hfin.1 _ _ _ hms)`.
+A detailed English derivation is pending.
 -/
 theorem vanish_of (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
     (hA : ∀ p, Agree δ M p) (hd : ∀ p, IsDiffGen δ p) (h1 : adm1 D) (m s : ℕ) (hs : 1 ≤ s)
@@ -195,7 +193,7 @@ section Top
 variable {D : Formalism.BasicNotions.D7}
 
 /- English proof (translation)
-The claim follows from `| [], _, j, hj => absurd hj (by simp) | (t, s) :: rest, h, j, hj => by simp only [List.map_cons, List.sum_cons] at hj ⊢ by_cases hjs : j < s · refine ⟨s - 1 - j, by omega, t, (h (t, s) (by simp)).1, fun j' => ?_⟩ simp only [ptEntry] by_cases hj' : j' = j · subst hj' rw [if_pos ⟨b …`.
+A detailed English derivation is pending.
 -/
 theorem point_entry_single_column {K : Type} [Zero K] : ∀ (bs : List (K × ℕ)), (∀ b ∈ bs, b.1 ≠ 0 ∧ 1 ≤ b.2) →
     ∀ j, j < (bs.map Prod.snd).sum → ∃ i, i < (bs.map Prod.snd).sum ∧ ∃ t : K, t ≠ 0 ∧
@@ -225,9 +223,9 @@ theorem point_entry_single_column {K : Type} [Zero K] : ∀ (bs : List (K × ℕ
       · rw [if_neg (fun hh => h2 hh.2), if_neg (by omega)]
 
 /- English proof (translation)
-Introduce `hdet`. Take `⟨v, hv, hMv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hdet`. Apply `hv` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Take `⟨i, hi, t, ht, hrow⟩` from `point_entry_single_column p.1 p.2.1 j.val (by rw [p.2.2]; exact j.isLt)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Establish `h1 : t * v j = 0`. Establish `h0` using `congrFun hMv ⟨i, by have := p.2.2; omega⟩`. Simplify `h0` using `[Matrix.mulVec, dotProduct, ptMat, hrow, Fin.val_inj]`. Conclude with `(mul_eq_zero.mp h1).resolve_left ht`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem point_matrix_det_ne_zero {K : Type} [Field K] {n : ℕ} (p : Point K n) : (ptMat p).det ≠ 0 := by
   intro hdet
@@ -241,9 +239,9 @@ theorem point_matrix_det_ne_zero {K : Type} [Field K] {n : ℕ} (p : Point K n) 
   exact (mul_eq_zero.mp h1).resolve_left ht
 
 /- English proof (translation)
-Establish `hsub : (schExt A 0 0 d).submatrix Fin.castSucc Fin.castSucc = A`. Use extensionality with `i j`. Simplify using `[schExt]`. Establish `hz : ∀ i : Fin n, schExt A 0 0 d (Fin.castSucc i) (Fin.last n) = 0`. Introduce `i`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[schExt]`. Establish `hl : schExt A 0 0 d (Fin.last n) (Fin.last n) = d` using `by simp [schExt]`. Rewrite using `[Matrix.det_succ_column _ (Fin.last n), Fin.sum_univ_castSucc]`. Simplify using `only [Fin.succAbove_last, hsub, hz, hl, mul_zero, zero_mul, Finset.sum_const_zero, zero_add, Fin.val_last]`. Rewrite using `[← two_mul, pow_mul, neg_one_sq, one_pow, one_mul, mul_comm]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem schExt_det {K : Type} [Field K] {n : ℕ} (A : Matrix (Fin n) (Fin n) K) (d : K) :
     (schExt A 0 0 d).det = A.det * d := by
@@ -257,11 +255,11 @@ theorem schExt_det {K : Type} [Field K] {n : ℕ} (A : Matrix (Fin n) (Fin n) K)
   rw [← two_mul, pow_mul, neg_one_sq, one_pow, one_mul, mul_comm]
 
 /- English proof (translation)
-Introduce `l`. Proceed by induction on `l with`. Consider the case `nil`. Introduce `i j`. Simplify using `only [List.nil_append, ptEntry, List.map_nil, List.sum_nil]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`. Consider the case `cons b l ih`. Take `⟨t0, s0⟩` from `b`. Introduce `i j`. Simplify using `only [List.cons_append, ptEntry, ih, List.map_cons, List.sum_cons]`.
+Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem ptEntry_append_singleton {K : Type} [Zero K] (t : K) : ∀ (l : List (K × ℕ)) (i j : ℕ),
     ptEntry (l ++ [(t, 1)]) i j =
@@ -280,15 +278,15 @@ private theorem ptEntry_append_singleton {K : Type} [Zero K] (t : K) : ∀ (l : 
     split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Establish `hS : (h.1.map Prod.snd).sum = D.R.rS` using `h.2.2`. Establish `hM : ptMat (ptApp h t ht 1 hs) = schExt (ptMat h) 0 0 t`. Use extensionality with `a b`. Apply the tactic sequence `rcases Fin.eq_castSucc_or_eq_last a with ⟨i, rfl⟩ | rfl <;>`. Apply the tactic sequence `rcases Fin.eq_castSucc_or_eq_last b with ⟨j, rfl⟩ | rfl <;>`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[ptMat, schExt, ptApp, ptEntry_append_singleton, hS, Fin.is_lt, ne_of_lt]`. Establish `hdet : (ptMat h).det ≠ 0` using `point_matrix_det_ne_zero h`. Establish `hc : ∀ (hl : D.R.rS ≤ D.R.rS + 1) (i : Fin D.R.rS), Fin.castLE hl i = Fin.castSucc i` using `fun _ _ => Fin.ext rfl`. Establish `hc2 : ∀ (hl : D.R.rS + 1 ≤ D.R.rS + 1) (i : Fin (D.R.rS + 1)), Fin.castLE hl i = i` using `fun _ _ => Fin.ext rfl`. Establish `hD1 : Dmin (ptApp h t ht 1 hs) D.R.rS = (ptMat h).det`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Dmin`. Rewrite using `[dif_pos (Nat.le_succ _), hM]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[schExt, hc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hD2 : Dmin (ptApp h t ht 1 hs) (D.R.rS + 1) = (ptMat h).det * t`. Unfold `Dmin`. Rewrite using `[dif_pos le_rfl, hM, ← schExt_det]`. Use `congr 1`. Unfold `kind zetaOf`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions.
 
-Rewrite using `[hD1, if_neg hdet, hD2, mul_div_cancel_left₀ t hdet]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem kind_snoc (h : Point D.host.E D.R.rS) (t : D.host.E) (ht : t ≠ 0) (hs : 1 ≤ 1) :
     kind (ptApp h t ht 1 hs) = some t := by
@@ -317,9 +315,9 @@ theorem kind_snoc (h : Point D.host.E D.R.rS) (t : D.host.E) (ht : t ≠ 0) (hs 
   rw [hD1, if_neg hdet, hD2, mul_div_cancel_left₀ t hdet]
 
 /- English proof (translation)
-Establish `hm : m = D.R.rS` using `by omega`. Substitute `hm` using the available equality. Unfold `Kglob at hK`. Rewrite `hK` using `[dif_pos hms]`. Unfold `KtopG at hK`.
+Establish an intermediate fact. Substitute using the available equality. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `split_ifs at hK with hk`. Express the relevant statement in the definitionally equal form `kind (ptApp h t ht 1 hs) = kind (ptApp h' t' ht' 1 hs) at hk`. Rewrite `hk` using `[kind_snoc h t ht hs, kind_snoc h' t' ht' hs]`. Conclude with `Option.some.inj hk`. Conclude with `absurd rfl hK`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vanish_one (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
     (m : ℕ) (hs : 1 ≤ 1) (hms : m + 1 = D.R.rS + 1) (T T' : ℕ)
@@ -337,11 +335,11 @@ theorem vanish_one (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D
   · exact absurd rfl hK
 
 /- English proof (translation)
-Distinguish the cases in `hne : m + s = D.R.rS + 1 ∧ s = 1`. Take `⟨hm, rfl⟩` from `hne`. Establish `htt` using `vanish_one δ M m hs hm T T' h h' t t' ht ht' hK`. Substitute `htt` using the available equality. Use `⟨?_, fun _ _ => rfl⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[sub_self]`. Use `show _ ∧ _`. Prove the components needed by the constructor for the conclusion. Apply the tactic sequence `first | exact zero_mem _ | exact Submodule.zero_mem _ | (simp; done)`. Use `first`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(simp; done)`. Consider the case `(rw [map_zero, mul_zero, sub_zero]; first | exact zero_mem _ | exact Submodule.zero_mem _)`. Consider the case `(simp [Formalism.BasicNotions.D7.conjF]; done)`. Conclude with `vanish_of δ M hA hd h1 m s hs hms hne T T' hfin h h' t t' ht ht' hK`.
+A detailed English derivation is pending.
 -/
 theorem vanish_all (δ : ∀ p, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
     (hA : ∀ p, Agree δ M p) (hd : ∀ p, IsDiffGen δ p) (h1 : adm1 D) (m s : ℕ) (hs : 1 ≤ s)

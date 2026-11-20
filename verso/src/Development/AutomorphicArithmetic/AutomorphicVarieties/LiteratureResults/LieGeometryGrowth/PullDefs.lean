@@ -52,7 +52,7 @@ structure IsFlow (W : S → V → V) : Prop where
   homog : ∀ s (t : ℝ), 0 < t → ∀ p ∈ G.Y, W s (t • p) = t • W s p
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => ⟨contDiffOn_const, fun p hp t _ => by simpa [flow] using hp⟩, fun _ _ _ _ => by simp, fun _ _ _ _ _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isFlow_zero : IsFlow G 0 :=
   ⟨fun _ => ⟨contDiffOn_const, fun p hp t _ => by simpa [flow] using hp⟩, fun _ _ _ _ => by simp, fun _ _ _ _ _ => by simp⟩
@@ -66,7 +66,7 @@ def toOm {q : ℕ} (z : S → V → V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)) : G.
   else 0
 
 /- English proof (translation)
-Rewrite using `[toOm, dif_pos h]`. Conclude with `Set.indicator_of_mem hp _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toOm_apply {q : ℕ} {z : S → V → V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)} (h : ∀ s, ContDiffOn ℝ ∞ (z s) G.Y) (s : S) {p : V}
     (hp : p ∈ G.Y) : (toOm G z).1 s p = z s p := by
@@ -97,17 +97,17 @@ structure IsFld (U : Subgroup (GL (Fin a) (Af E))) (Y : GA E a → Herm E a) (C 
     ‖toL h.val‖ ≤ C ∧ ‖toL (h⁻¹).val‖ ≤ C
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.Y_sm, h.Y_left, h.Y_cpt, h.Y_lev, h.root⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsStep.fld {U : Subgroup (GL (Fin a) (Af E))} {f : GA E a → ℝ} {Y : GA E a → Herm E a} {C c f₀ : ℝ}
     (h : IsStep U f Y C c f₀) : IsFld U Y C := ⟨h.Y_sm, h.Y_left, h.Y_cpt, h.Y_lev, h.root⟩
 
 /- English proof (translation)
-Take `⟨φ, h1, h2⟩` from `h.sm i j w`. Use `⟨-φ, fun g => congrArg Neg.neg (h1 g), fun X l => ?_⟩` and prove the remaining obligations. Take `⟨B, hB⟩` from `h2 X l`. Conclude with `⟨B, fun g => by rw [map_neg]; exact (norm_neg _).trans_le (hB g)⟩`. Use `left γ t g := congrArg Neg.neg (h.left γ t g)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `cpt k g := by`. Establish `e` using `congrArg Subtype.val (h.cpt k g)`. Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `k.1 * (-(Y (g * infGL E a (Unitary.toUnits k))).1) * star k.1 = -(Y g).1`. Rewrite using `[mul_neg, neg_mul, ← e]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Use `lev u hu g := congrArg Neg.neg (h.lev u hu g)`. Use `root g t ht := by`. Take `⟨x, h1, h2⟩` from `h.root g (-t) (by rwa [abs_neg])`. Conclude with `⟨x, by rw [h1, neg_smul]; exact congrArg (1 + ·) (smul_neg t (Y g).1).symm, h2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem IsFld.neg {U : Subgroup (GL (Fin a) (Af E))} {Y : GA E a → Herm E a} {C : ℝ} (h : IsFld U Y C) :
     IsFld U (-Y) C where
@@ -133,7 +133,7 @@ def FCorr (U : Subgroup (GL (Fin a) (Af E))) (Y : GA E a → Herm E a) (W : (GL 
     W (x : GL (Fin a) (Af E) ⧸ U) (sand g (hOne E a)) = sand g (hv (Y (infGL E a g * finGL E a x)))
 
 /- English proof (translation)
-Introduce `g x` and use `by simp only [Pi.neg_apply, map_neg, h g x]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem FCorr.neg {U : Subgroup (GL (Fin a) (Af E))} {Y : GA E a → Herm E a}
     {W : (GL (Fin a) (Af E) ⧸ U) → HV E a → HV E a} (h : FCorr U Y W) : FCorr U (-Y) (-W) := fun g x => by
@@ -143,13 +143,13 @@ def Bd {Ξ : AlgRep E a} {q : ℕ} (α : Co Ξ q) (g : GA E a) (M : ℝ) : Prop 
   ∀ X : Fin q → Herm E a, ‖ev (α X) (retractOne g : KernelIndexFullLattice.G1 E a).1‖ ≤ M * ∏ i, ‖hv (X i)‖
 
 /- English proof (translation)
-Introduce `X` and use `(h X).trans (mul_le_mul_of_nonneg_right hM (Finset.prod_nonneg fun _ _ => norm_nonneg _))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Bd.mono {Ξ : AlgRep E a} {q : ℕ} {α : Co Ξ q} {g : GA E a} {M M' : ℝ} (h : Bd α g M) (hM : M ≤ M') : Bd α g M' :=
   fun X => (h X).trans (mul_le_mul_of_nonneg_right hM (Finset.prod_nonneg fun _ _ => norm_nonneg _))
 
 /- English proof (translation)
-Introduce `X` and use `by rw [AlternatingMap.sub_apply, map_sub, Pi.sub_apply, add_mul] exact (norm_sub_le _ _).trans (add_le_add (h X) (h' X))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Bd.sub {Ξ : AlgRep E a} {q : ℕ} {α β : Co Ξ q} {g : GA E a} {M M' : ℝ} (h : Bd α g M) (h' : Bd β g M') :
     Bd (α - β) g (M + M') := fun X => by

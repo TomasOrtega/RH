@@ -9,19 +9,19 @@ open scoped Matrix nonZeroDivisors
 namespace GlobalTheory.CompanionTheory.SiegelND.Integ.Hua.TorCard
 
 /- English proof (translation)
-Set `TB` to `{x : B // ∀ a ∈ I, a • x = 0}`. Set `TA` to `{x : A // ∀ a ∈ I, a • x = 0}`. Set `TC` to `{x : C // ∀ a ∈ I, a • x = 0}`. Set `h : TB → TC` to `fun b => ⟨g b.1, fun a ha => by rw [← map_smul, b.2 a ha, map_zero]⟩`. Set `s : TC → TB` to `fun c => if hc : ∃ b, h b = c then hc.choose else ⟨0, fun a _ => smul_zero a⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hs : ∀ b : TB, h (s (h b)) = h b`. Introduce `b`. Establish `hc : ∃ b', h b' = h b` using `⟨b, rfl⟩`. Simplify using `only [s, dif_pos hc]`. Conclude with `hc.choose_spec`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hk : ∀ b : TB, ∃ a, f a = b.1 - (s (h b)).1`. Introduce `b`. Apply `hfg` to reduce the goal to its premises. Use `congrArg Subtype.val (hs b)` as an intermediate fact. Simplify using `only [h] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, this, sub_self]`. Set `k : TB → A` to `fun b => (hk b).choose`. Establish `hkf : ∀ b, f (k b) = b.1 - (s (h b)).1` using `fun b => (hk b).choose_spec`. Establish `hkt : ∀ b, ∀ a ∈ I, a • k b = 0`. Introduce `b a ha`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hf` to reduce the goal to its premises. Rewrite using `[map_smul, hkf, map_zero, smul_sub, b.2 a ha, (s (h b)).2 a ha, sub_zero]`. Set `Φ : TB → TA × TC` to `fun b => (⟨k b, hkt b⟩, h b)`. Establish `hΦ : Function.Injective Φ`. Introduce `b b' e`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e1 : k b = k b'` using `congrArg (fun z : TA × TC => z.1.1) e`. Establish `e2 : h b = h b'` using `congrArg (fun z : TA × TC => z.2) e`. Establish `e3` using `hkf b`. Rewrite `e3` using `[e1, hkf b', e2]`. Conclude with `Subtype.ext (sub_left_injective e3).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Use `⟨Finite.of_injective Φ hΦ, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem torsion_exact_bound {R A B C : Type*} [CommRing R] [AddCommGroup A] [AddCommGroup B]
     [AddCommGroup C] [Module R A] [Module R B] [Module R C] (I : Ideal R)
@@ -70,17 +70,15 @@ theorem torsion_exact_bound {R A B C : Type*} [CommRing R] [AddCommGroup A] [Add
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Establish `hv : v ∈ Submodule.span K (L : Set (Fin m → K))` using `by rw [hL.2]; trivial`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, by simpa using hx⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨s, hs, hsx⟩` from `hx`. Take `⟨t, ht, hty⟩` from `hy`. Use `⟨s * t, mul_ne_zero hs ht, ?_⟩` and prove the remaining obligations. Establish `e : (s * t) • (x + y) = t • (s • x) + s • (t • y)`. Rewrite using `[smul_add, smul_smul, smul_smul, mul_comm t s]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `L.add_mem (L.smul_mem _ hsx) (L.smul_mem _ hty)`. Consider the case `smul c x _ hx`. Take `⟨t, ht, htx⟩` from `hx`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 K) c`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `hbK : algebraMap (𝓞 K) K b ≠ 0`. Simplify using `using hb0`. Use `⟨b * t, mul_ne_zero hb0 ht, ?_⟩` and prove the remaining obligations. Establish `e : (b * t) • ((algebraMap (𝓞 K) K a / algebraMap (𝓞 K) K b) • x) = a • (t • x)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i`. Express the relevant statement in the definitionally equal form `(b * t) • ((algebraMap (𝓞 K) K a / algebraMap (𝓞 K) K b) * x i) = a • (t • x i)`. Simplify using `only [Algebra.smul_def, map_mul]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`.
-
-Conclude with `L.smul_mem _ htx`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_smul_mem {m : ℕ} {L : Submodule (𝓞 K) (Fin m → K)} (hL : IsLat L)
     (v : Fin m → K) : ∃ t : 𝓞 K, t ≠ 0 ∧ t • v ∈ L := by
@@ -112,49 +110,43 @@ theorem exists_smul_mem {m : ℕ} {L : Submodule (𝓞 K) (Fin m → K)} (hL : I
     exact L.smul_mem _ htx
 
 /- English proof (translation)
-Take `⟨d, hd, hdi⟩` from `FractionalIdeal.isFractional_of_fg (S := (𝓞 K)⁰) hfg`. Establish `hd0 : d ≠ 0` using `nonZeroDivisors.ne_zero hd`. Take `⟨a₀, ha₀, ha₀0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h𝔞`. Take `⟨c₀, hc₀, hc₀0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h0`. Use `set e : 𝓞 K := d * a₀ with he`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `he0 : e ≠ 0` using `mul_ne_zero hd0 ha₀0`. Establish `heK : algebraMap (𝓞 K) K e ≠ 0` using `by simpa using he0`. Set `J : Ideal (𝓞 K)` to `{ carrier := {o | ∀ a ∈ 𝔞, a • (algebraMap (𝓞 K) K o / algebraMap (𝓞 K) K e) ∈ 𝔠} add_mem' := by`. Introduce `x y hx hy a ha`. Use `𝔠.add_mem (hx a ha) (hy a ha)` as an intermediate fact.
+Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, add_div, smul_add]`. Conclude with `this`. Use the proof step `zero_mem' := by`. Introduce `a _`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `smul_mem' := by`. Introduce `c x hx a ha`. Use `𝔠.smul_mem c (hx a ha)` as an intermediate fact. Establish `e1 : a • (algebraMap (𝓞 K) K (c • x) / algebraMap (𝓞 K) K e) = c • a • (algebraMap (𝓞 K) K x / algebraMap (𝓞 K) K e)`. Rewrite using `[smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Algebra.smul_def, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`. Conclude with `this }`. Establish `hJmem : ∀ o, o ∈ J ↔ ∀ a ∈ 𝔞, a • (algebraMap (𝓞 K) K o / algebraMap (𝓞 K) K e) ∈ 𝔠` using `fun _ => Iff.rfl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hJ0 : J ≠ ⊥`. Take `⟨o, ho⟩` from `hdi c₀ hc₀`. Establish `ho' : algebraMap (𝓞 K) K o = algebraMap (𝓞 K) K d * c₀`. Rewrite using `[ho, Algebra.smul_def]`. Establish `hdK : algebraMap (𝓞 K) K d ≠ 0` using `by simpa using hd0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `ho0 : o ≠ 0`. Introduce `h`. Rewrite `ho'` using `[h, map_zero]`. Conclude with `mul_ne_zero hdK hc₀0 ho'.symm`. Introduce `hbot`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : e * o ∈ J`. Introduce `a _`. Establish `e1 : a • (algebraMap (𝓞 K) K (e * o) / algebraMap (𝓞 K) K e) = (a * d) • c₀`. Rewrite using `[map_mul, mul_div_cancel_left₀ _ heK, ho', Algebra.smul_def, Algebra.smul_def, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e1]`. Conclude with `𝔠.smul_mem _ hc₀`. Rewrite `hmem` using `[hbot, Ideal.mem_bot]`. Conclude with `mul_ne_zero he0 ho0 hmem`. Establish `hmulmem : ∀ z ∈ 𝔞 * J, algebraMap (𝓞 K) K z / algebraMap (𝓞 K) K e ∈ 𝔠`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `z hz`. Use `Submodule.mul_induction_on hz ?_ ?_` and prove the remaining obligations. Introduce `a ha j hj`. Use `hj a ha` as an intermediate fact. Rewrite `this` using `[Algebra.smul_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[map_mul, mul_div_assoc]`. Conclude with `this`. Introduce `x y hx hy`. Rewrite using `[map_add, add_div]`. Conclude with `𝔠.add_mem hx hy`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hle : (𝔞 * J) ≤ J` using `Ideal.mul_le_right`. Establish `hleA : (𝔞 * J).toAddSubgroup ≤ J.toAddSubgroup` using `hle`. Establish `hNJ : Ideal.absNorm J ≠ 0`. Simplify `hJ0` using `[Ideal.absNorm_eq_zero_iff]`. Establish `hN𝔞 : Ideal.absNorm 𝔞 ≠ 0`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify `h𝔞` using `[Ideal.absNorm_eq_zero_iff]`. Establish `hidx : (𝔞 * J).toAddSubgroup.relIndex J.toAddSubgroup = Ideal.absNorm 𝔞`. Establish `h1` using `AddSubgroup.relIndex_mul_index hleA`. Establish `h2 : ∀ I : Ideal (𝓞 K), I.toAddSubgroup.index = Ideal.absNorm I`. Introduce `I`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Both sides reduce to the same expression. Rewrite `h1` using `[h2, h2, map_mul]`. Conclude with `Nat.eq_of_mul_eq_mul_right (Nat.pos_of_ne_zero hNJ) h1`. Set `Q` to `↥J.toAddSubgroup ⧸ (𝔞 * J).toAddSubgroup.addSubgroupOf J.toAddSubgroup`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hQfin : Finite Q`. Apply `Nat.finite_of_card_ne_zero` to reduce the goal to its premises. Establish `: Nat.card Q = Ideal.absNorm 𝔞` using `hidx`. Rewrite using `[this]`. Conclude with `hN𝔞`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hQcard : Nat.card Q = Ideal.absNorm 𝔞` using `hidx`. Establish `hrep : ∀ t : {x : K ⧸ 𝔠 // ∀ a ∈ 𝔞, a • x = 0}, ∃ o : ↥J.toAddSubgroup, Submodule.Quotient.mk (algebraMap (𝓞 K) K o.1 / algebraMap (𝓞 K) K e) = t.1`. Introduce and unpack `⟨t, ht⟩`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ t`. Establish `hx : ∀ a ∈ 𝔞, a • x ∈ 𝔠`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Introduce `a ha`. Use `ht a ha` as an intermediate fact. Rewrite `this` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Then use the resulting hypothesis. Take `⟨o, ho⟩` from `hdi _ (hx a₀ ha₀)`. Establish `ho' : algebraMap (𝓞 K) K o / algebraMap (𝓞 K) K e = x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hda : algebraMap (𝓞 K) K d * algebraMap (𝓞 K) K a₀ ≠ 0`. Rewrite using `[← map_mul]`. Conclude with `heK`. Rewrite using `[ho, he, Algebra.smul_def, Algebra.smul_def, map_mul, ← mul_assoc]`. Conclude with `mul_div_cancel_left₀ x hda`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `⟨⟨o, ?_⟩, by simp only [ho']⟩` and prove the remaining obligations. Introduce `a ha`. Rewrite using `[ho']`. Conclude with `hx a ha`. Use `choose r hr using hrep`.
-
-Set `ψ : {x : K ⧸ 𝔠 // ∀ a ∈ 𝔞, a • x = 0} → Q` to `fun t => QuotientAddGroup.mk (r t)`. Establish `hψ : Function.Injective ψ`. Introduce `t t' h`. Establish `h1` using `QuotientAddGroup.eq.mp h`. Rewrite `h1` using `[AddSubgroup.mem_addSubgroupOf]`.
-
-Establish `h2` using `hmulmem _ h1`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hr t, ← hr t']`. Rewrite using `[Submodule.Quotient.eq]`. Establish `h3` using `𝔠.neg_mem h2`.
-
-Use `h3 using 1` and compare the differences between its conclusion and the goal. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Use `⟨Finite.of_injective ψ hψ, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem rank_one (𝔠 : Submodule (𝓞 K) K) (hfg : 𝔠.FG) (h0 : 𝔠 ≠ ⊥)
     (𝔞 : Ideal (𝓞 K)) (h𝔞 : 𝔞 ≠ ⊥) :
@@ -294,7 +286,7 @@ def hd (K : Type) [Field K] [NumberField K] (m : ℕ) : (Fin (m + 1) → K) →�
   LinearMap.proj 0
 
 /- English proof (translation)
-Introduce `x y h`. Use extensionality with `j`. Conclude with `congrFun h j.succ`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem ins_injective (m : ℕ) : Function.Injective (ins K m) := by
   intro x y h
@@ -302,13 +294,11 @@ theorem ins_injective (m : ℕ) : Function.Injective (ins K m) := by
   exact congrFun h j.succ
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `haveI : IsNoetherian (𝓞 K) L := isNoetherian_of_fg_of_noetherian L hL.1`. Establish `h1 : (L.comap (ins K m)).map (ins K m) ≤ L` using `Submodule.map_comap_le _ _`. Conclude with `Submodule.fg_of_fg_map_injective _ (ins_injective m) (isNoetherian_submodule.mp this _ h1)`. Rewrite using `[eq_top_iff]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `v _`. Take `⟨t, ht, htv⟩` from `exists_smul_mem hL (ins K m v)`. Establish `hmem : t • v ∈ L.comap (ins K m)`. Rewrite using `[Submodule.mem_comap, map_smul]`. Conclude with `htv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `htK : algebraMap (𝓞 K) K t ≠ 0` using `by simpa using ht`. Establish `e : v = (algebraMap (𝓞 K) K t)⁻¹ • (t • v)`. Use extensionality with `i`. Express the relevant statement in the definitionally equal form `v i = (algebraMap (𝓞 K) K t)⁻¹ * (t • v i)`. Rewrite using `[Algebra.smul_def]`.
-
-Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hmem)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLat_comap_ins {m : ℕ} {L : Submodule (𝓞 K) (Fin (m + 1) → K)} (hL : IsLat L) :
     IsLat (L.comap (ins K m)) := by
@@ -332,9 +322,9 @@ theorem isLat_comap_ins {m : ℕ} {L : Submodule (𝓞 K) (Fin (m + 1) → K)} (
     exact Submodule.smul_mem _ _ (Submodule.subset_span hmem)
 
 /- English proof (translation)
-Take `⟨t, ht, htv⟩` from `exists_smul_mem hL (Pi.single 0 1)`. Introduce `h`. Establish `h1 : hd K m (t • Pi.single 0 1) ∈ L.map (hd K m)` using `Submodule.mem_map_of_mem htv`. Rewrite `h1` using `[h, Submodule.mem_bot]`. Establish `h2 : algebraMap (𝓞 K) K t = 0`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : hd K m (t • Pi.single 0 1) = t • (1 : K)`. Simplify using `[hd]`. Rewrite `h1` using `[h3, Algebra.smul_def, mul_one]`. Conclude with `h1`. Conclude with `ht (by simpa using h2)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_hd_ne_bot {m : ℕ} {L : Submodule (𝓞 K) (Fin (m + 1) → K)} (hL : IsLat L) :
     L.map (hd K m) ≠ ⊥ := by
@@ -350,23 +340,23 @@ theorem map_hd_ne_bot {m : ℕ} {L : Submodule (𝓞 K) (Fin (m + 1) → K)} (hL
   exact ht (by simpa using h2)
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Introduce `L _`. Establish `hs : Subsingleton {x : (Fin 0 → K) ⧸ L // ∀ a ∈ 𝔞, a • x = 0}`. Use `⟨fun x y => Subtype.ext ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha⟩` from `Submodule.Quotient.mk_surjective _ x.1`. Take `⟨b, hb⟩` from `Submodule.Quotient.mk_surjective _ y.1`. Rewrite using `[← ha, ← hb, Subsingleton.elim a b]`. Use `⟨inferInstance, ?_⟩` and prove the remaining obligations. Simplify using `using Finite.card_le_one_iff_subsingleton.mpr hs`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ m ih`. Introduce `L hL`. Take `⟨fA, cA⟩` from `ih _ (isLat_comap_ins hL)`. Take `⟨fC, cC⟩` from `rank_one (L.map (hd K m)) (hL.1.map _) (map_hd_ne_bot hL) 𝔞 h𝔞`. Set `f` to `(L.comap (ins K m)).mapQ L (ins K m) le_rfl`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `g` to `L.mapQ (L.map (hd K m)) (hd K m) (Submodule.le_comap_map _ _)`. Establish `hf : Function.Injective f`. Use `(injective_iff_map_eq_zero f).2 ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Establish `h1 : Submodule.Quotient.mk (p` using `L) (ins K m a) = 0 := hx`. Rewrite `h1` using `[Submodule.Quotient.mk_eq_zero]`. Then use the resulting hypothesis. Establish `hfg : ∀ b, g b = 0 → ∃ a, f a = b`. Introduce `b hb`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨b, rfl⟩` from `Submodule.Quotient.mk_surjective _ b`. Establish `h1 : Submodule.Quotient.mk (p` using `L.map (hd K m)) (hd K m b) = 0 := hb`. Rewrite `h1` using `[Submodule.Quotient.mk_eq_zero]`. Take `⟨l, hl, hle⟩` from `Submodule.mem_map.mp h1`. Use `⟨Submodule.Quotient.mk (Fin.tail (b - l)), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : ins K m (Fin.tail (b - l)) = b - l`. Use extensionality with `i`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Establish `h3 : l 0 = b 0` using `hle`. Simplify using `[ins, h3]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[ins, Fin.tail]`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (p := L) (ins K m (Fin.tail (b - l))) = _`. Rewrite using `[h2, Submodule.Quotient.eq]`. Use `L.neg_mem hl` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Normalize the expressions using the abelian group laws. Take `⟨fB, cB⟩` from `torsion_exact_bound 𝔞 f g hf hfg`. Use `⟨fB, cB.trans ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ]`. Conclude with `Nat.mul_le_mul cA cC`.
+Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torsion_card_le_by_rank (𝔞 : Ideal (𝓞 K)) (h𝔞 : 𝔞 ≠ ⊥) (m : ℕ) :
     ∀ L : Submodule (𝓞 K) (Fin m → K), IsLat L →
@@ -419,7 +409,7 @@ theorem torsion_card_le_by_rank (𝔞 : Ideal (𝓞 K)) (h𝔞 : 𝔞 ≠ ⊥) (
     exact Nat.mul_le_mul cA cC
 
 /- English proof (translation)
-Introduce `_ _ _ m L hL 𝔞 h𝔞` and use `torsion_card_le_by_rank 𝔞 h𝔞 m L hL`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tor_card : ∀ (K : Type) [Field K] [NumberField K] (m : ℕ)
     (L : Submodule (𝓞 K) (Fin m → K)), IsLat L → ∀ 𝔞 : Ideal (𝓞 K), 𝔞 ≠ ⊥ →

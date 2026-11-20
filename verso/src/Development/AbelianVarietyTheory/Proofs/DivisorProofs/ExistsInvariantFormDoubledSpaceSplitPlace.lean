@@ -19,23 +19,21 @@ section Abstract
 variable {G M : Type} [AddCommGroup G] [AddCommGroup M] [Module ℂ M] {Y : AddSubgroup G} {ρ : G → M →ₗ[ℂ] M}
 
 /- English proof (translation)
-Set `P : Submodule ℂ M` to `Submodule.span ℂ gen`. Set `K : Submodule ℂ M` to `Submodule.span ℂ {m | ∃ u ∈ Y, ∃ g ∈ Θ, m = ρ u g - g}`. Establish `hl0P : ∀ u ∈ Y, ∀ p ∈ P, l0 (ρ u p) = l0 p`. Introduce `u hu p hp`. Proceed by induction on `hp using Submodule.span_induction with`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem f hf => exact hinv u hu f hf`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [map_add, map_add, map_add, ha, hb]`. Consider the case `smul c a _ ha => rw [map_smul, map_smul, map_smul, ha]`. Establish `hPK : ∀ m ∈ P, m ∈ K → l0 m = 0`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Introduce `m hmP hmK`. Take `⟨ι, s, y, hy, ⟨i, hi, -⟩, h⟩` from `GlobalTheory.HalfCoinv.exists_sum_eq_zero hadd h0 hsm hmK`. Establish `h1 : l0 (∑ j ∈ s, ρ (y j) m) = (s.card : ℂ) * l0 m`. Rewrite using `[map_sum, Finset.sum_congr rfl (fun j _ => hl0P (y j) (hy j) m hmP), Finset.sum_const, nsmul_eq_mul]`. Rewrite `h1` using `[h, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc : (s.card : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (Finset.card_ne_zero.2 ⟨i, hi⟩)`. Conclude with `(mul_eq_zero.1 h1.symm).resolve_left hc`. Set `fP : M →ₗ.[ℂ] ℂ` to `⟨P, l0 ∘ₗ P.subtype⟩`. Set `fK : M →ₗ.[ℂ] ℂ` to `⟨K, 0⟩`. Establish `H : ∀ (x : fP.domain) (y : fK.domain), (x : M) = y → fP x = fK y`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y hxy`. Express the relevant statement in the definitionally equal form `l0 (x : M) = 0`. Conclude with `hPK _ x.2 (hxy ▸ y.2)`. Take `⟨L, hL⟩` from `LinearMap.exists_extend (fP.sup fK H).toFun`. Establish `hLv : ∀ z : (fP.sup fK H).domain, L z = (fP.sup fK H) z` using `fun z => LinearMap.congr_fun hL z`.
+Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨L, fun u hu g hg => ?_, fun p hp => ?_⟩` and prove the remaining obligations. Establish `hk : ρ u g - g ∈ K` using `Submodule.subset_span ⟨u, hu, g, hg, rfl⟩`. Establish `hz : ρ u g - g ∈ (fP.sup fK H).domain`. Rewrite using `[LinearPMap.domain_sup]`. Conclude with `Submodule.mem_sup_right hk`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `: L (ρ u g - g) = 0`. Use `(hLv ⟨_, hz⟩).trans ((LinearPMap.sup_apply H (0 : fP.domain) ⟨_, hk⟩ ⟨_, hz⟩ (by simp)).trans ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `l0 0 + 0 = 0`. Simplify using the standard rewrite rules. Rewrite `this` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hp' : p ∈ P` using `Submodule.subset_span hp`. Establish `hz : p ∈ (fP.sup fK H).domain`. Rewrite using `[LinearPMap.domain_sup]`. Conclude with `Submodule.mem_sup_left hp'`. Use `(hLv ⟨_, hz⟩).trans ((LinearPMap.sup_apply H ⟨_, hp'⟩ (0 : fK.domain) ⟨_, hz⟩ (by simp)).trans ?_)` and prove the remaining obligations.
-
-Express the relevant statement in the definitionally equal form `l0 p + 0 = _`. Rewrite using `[add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ext_form (hadd : ∀ x ∈ Y, ∀ x' ∈ Y, ∀ f, ρ x (ρ x' f) = ρ (x + x') f) (h0 : ∀ f, ρ 0 f = f) {Θ : Set M}
     (hsm : ∀ u ∈ Y, ∀ g ∈ Θ, ∃ k : ℕ, 0 < k ∧ ρ (k • u) g = g) (l0 : M →ₗ[ℂ] ℂ) (gen : Set M)
@@ -97,7 +95,7 @@ def conjForm {X : Type} (ℓ : (X → ℂ) →ₗ[ℂ] ℂ) : (X → ℂ) →ₗ
     rw [this, map_smul, smul_eq_mul, map_mul, Complex.conj_conj, RingHom.id_apply, smul_eq_mul]
 
 /- English proof (translation)
-Establish `: (fun y => conj (c * conj (b y))) = conj c • b`. Use function extensionality and compare the values at `y`. Simplify using the standard rewrite rules. Use `show conj (ℓ (fun y => conj (c * conj (b y)))) = _`. Rewrite using `[this, map_smul, smul_eq_mul, map_mul, Complex.conj_conj]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjForm_mul {X : Type} (ℓ : (X → ℂ) →ₗ[ℂ] ℂ) (c : ℂ) (b : X → ℂ) :
     conjForm ℓ (fun y => c * conj (b y)) = c * conj (ℓ b) := by
@@ -113,14 +111,14 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def joinR (x₁ x₂ : WOF F E nS nT) : WOF F E nS (nT + nT) := (Matrix.fromRows x₁ x₂).submatrix finSumFinEquiv.symm id
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[joinR, topR, Matrix.submatrix_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem topR_joinR (x₁ x₂ : WOF F E nS nT) : topR (joinR x₁ x₂) = x₁ := by
   ext i j
   simp [joinR, topR, Matrix.submatrix_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `show Matrix.fromRows x₁ x₂ (finSumFinEquiv.symm (finSumFinEquiv (Sum.inr i))) j = x₂ i j`. Rewrite using `[Equiv.symm_apply_apply]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem botR_joinR (x₁ x₂ : WOF F E nS nT) : botR (joinR x₁ x₂) = x₂ := by
   ext i j
@@ -131,9 +129,9 @@ def dblForm (ℓ : (WOF F E nS nT → ℂ) →ₗ[ℂ] ℂ) : (WOF F E nS (nT + 
   ℓ ∘ₗ LinearMap.pi fun x₁ => conjForm ℓ ∘ₗ LinearMap.funLeft ℂ ℂ (fun y => joinR x₁ (-y))
 
 /- English proof (translation)
-Establish `h : (LinearMap.pi fun x₁ => conjForm ℓ ∘ₗ LinearMap.funLeft ℂ ℂ (fun y => joinR x₁ (-y))) (deltaT a b) = conj (ℓ b) • a`. Use function extensionality and compare the values at `x₁`. Establish `e : (LinearMap.funLeft ℂ ℂ (fun y : WOF F E nS nT => joinR x₁ (-y))) (deltaT a b) = fun y => a x₁ * conj (b y)`. Use function extensionality and compare the values at `y`. Simplify using `[LinearMap.funLeft_apply, deltaT_apply, topR_joinR, botR_joinR]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.pi_apply, LinearMap.comp_apply, e, conjForm_mul, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[dblForm, LinearMap.comp_apply, h, map_smul, smul_eq_mul, mul_comm]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem dblForm_deltaT (ℓ : (WOF F E nS nT → ℂ) →ₗ[ℂ] ℂ) (a b : WOF F E nS nT → ℂ) :
     dblForm ℓ (deltaT a b) = ℓ a * conj (ℓ b) := by
@@ -154,13 +152,11 @@ namespace GlobalTheory.DblSplitForm
 open Formalism.IndefR.DatumF GlobalTheory.DblTargetDelta GlobalTheory.WeilSchrodinger.DblTargetF
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ hξ hσξ e he`. Take `⟨f₀, hf₀, hf₀0⟩ : ∃ f₀ : WOF F E nS nT → ℂ, IsThetaFunOF σ JS JT ξ₀ B.ψ f₀ ∧ f₀ ≠ 0` from `GlobalTheory.T.exists_nonzero_thetaFun_oriented_model_cm F E σ B hB nS nT JS JT hS hT ξ₀ hξ hσξ`. Take `⟨ℓ₁, hℓ₁, f, hf, hℓf⟩` from `GlobalTheory.T.exists_splitPlace_conjHeisenberg_invariantForm F E σ B hB nS nT JS JT hS hT ξ₀ hξ hσξ e he f₀ hf₀ hf₀0`. Establish `hheis` using `GlobalTheory.DblHeis.heisOF_dblG_deltaT F E σ B hB nS nT JS JT hS hT ξ₀ hξ hσξ`. Take `⟨ℓ, h1, h2⟩` from `exists_ext_form (Y := GlobalTheory.SplitInvFormF.conjHalf σ e nS (nT + nT)) (ρ := GlobalTheory.SplitInvFormF.heisL σ JS (dblG JT) ξ₀ B.ψ) (Θ := {g | IsThetaFunOF σ JS (dblG JT) ξ₀ B.ψ g}) (fun x hx x' hx' g => by show heisOF σ JS (dblG JT) ξ₀ B.ψ x (heisOF σ JS (dblG JT) ξ₀ B.ψ x …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[GlobalTheory.SplitInvFormF.heisOF_heisOF, GlobalTheory.SplitInvFormF.symplOHF_half he hx hx', AddChar.map_zero_eq_one, one_smul])`. Use the proof step `(fun g => GlobalTheory.SplitInvFormF.heisOF_zero g)`. Use the proof step `(fun u hu g hg => GlobalTheory.SplitInvFormF.exists_nsmul_fix he hu hg)`. Use the proof step `(dblForm ℓ₁) {p | ∃ a b, IsThetaFunOF σ JS JT ξ₀ B.ψ a ∧ IsThetaFunOF σ JS JT ξ₀ B.ψ b ∧ p = deltaT a b}`. Use the proof step `(fun u hu p hp => by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, b, ha, hb, rfl⟩` from `hp`. Establish `hu' : ∀ i j, cAF σ e * u i j = u i j` using `hu`. Establish `ht : ∀ i j, cAF σ e * topR u i j = topR u i j` using `fun i j => hu' _ _`. Establish `hb' : ∀ i j, cAF σ e * (-botR u) i j = (-botR u) i j` using `fun i j => by show cAF σ e * -(u _ j) = -(u _ j)`. Rewrite using `[mul_neg, hu']`.
-
-Use `show dblForm ℓ₁ (heisOF σ JS (dblG JT) ξ₀ B.ψ u (deltaT a b)) = dblForm ℓ₁ (deltaT a b)`. Rewrite using `[hheis, dblForm_deltaT, dblForm_deltaT, hℓ₁ _ ht a ha, hℓ₁ _ hb' b hb])`. Use `⟨ℓ, fun u hu g hg => h1 u hu g hg, f, f, hf, hf, ?_⟩` and prove the remaining obligations. Rewrite using `[h2 _ ⟨f, f, hf, hf, rfl⟩, dblForm_deltaT]`. Conclude with `mul_ne_zero hℓf ((map_ne_zero _).2 hℓf)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_invForm_dbl : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

@@ -18,15 +18,13 @@ open GlobalTheory.SplitWeil
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Take `⟨hbij, hKO, -, -, hdet, -⟩` from `eD_facts k O hO h2 Δ s hs hs0`. Establish `hxK : eD hs x ∈ KO k (Fin 2)`. Establish `hx' : x ∈ Subgroup.comap (eD hs) (KO k (Fin 2))`. Rewrite using `[hKO]`. Conclude with `hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `hx'`. Set `d : Fin 2 → kˣ` to `![Matrix.GeneralLinearGroup.det (eD hs x), 1]`. Establish `hd : Matrix.GeneralLinearGroup.det (dg d) = Matrix.GeneralLinearGroup.det (eD hs x)`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `[dg, val_diagT, Matrix.det_diagonal, Fin.prod_univ_two, d]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t, ht⟩` from `hbij.2 (eD hs x * (dg d)⁻¹)`. Use `⟨t, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[SU, MonoidHom.mem_ker]`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [MonoidHom.comp_apply, Subgroup.coe_subtype, Matrix.GeneralLinearGroup.val_det_apply, Units.val_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (↑(↑t : GL (Fin 2) (Lsq k Δ)) : Matrix (Fin 2) (Fin 2) (Lsq k Δ)) = Glob.mt t from rfl, (hdet t).1, ht, ← Matrix.GeneralLinearGroup.val_det_apply, map_mul, map_inv, hd, mul_inv_cancel, Units.val_one, map_one]`. Rewrite using `[map_mul, map_inv, ht, mul_inv_rev, inv_inv, inv_mul_cancel_right]`. Apply `Lev.dg_mem` to reduce the goal to its premises. Introduce `i`. Use `fin_cases i`.
-
-Use `show valuation k (↑(Matrix.GeneralLinearGroup.det (eD hs x)) : k) = 1`. Conclude with `GlobalTheory.StepData.valuation_det_of_mem_KO hxK`. Conclude with `one_mem _`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem split_loc (O : Type) [CommRing O] [Algebra O k] (hO : IsInts k O) (h2 : (2 : k) ≠ 0) {Δ s : k}
     (hs : s * s = Δ) (hs0 : s ≠ 0) (x : DX Δ) (hx : x ∈ KD Δ O) :
@@ -59,7 +57,7 @@ private theorem split_loc (O : Type) [CommRing O] [Algebra O k] (hO : IsInts k O
 end
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem eD_congr {K : Type} [Field K] {Δ s s' : K} (h : s * s = Δ) (h' : s' * s' = Δ) (e : s = s') (x : DX Δ) :
     eD h x = eD h' x := by
@@ -67,31 +65,27 @@ private theorem eD_congr {K : Type} [Field K] {Δ s s' : K} (h : s * s = Δ) (h'
   rfl
 
 /- English proof (translation)
-Introduce `F _ _ Δ A hA A₀ hA₀ hE V _ _ ch C hC Y hY hoff φ hφ hφ0`. Take `⟨-, -, hloc, -, hU2⟩` from `datOk F Δ A hA`. Take `⟨-, -, -, -, hU2₀⟩` from `datOk F Δ A₀ hA₀`. Establish `hinv` using `(kOps F Δ A hA V ch C hC).2.1 φ hφ`. Choose the witnesses or unpack the hypotheses as in `⟨g, hg⟩ : ∃ g, φ g ≠ 0 := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hφ0 (funext h)`. Take `⟨γ, s, hs, y, hy, u, hu, rfl⟩` from `hY.2 g`. Establish `hu₀` using `(hU2₀ u).1 hu`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hspl : ∀ v (h : v ∈ A.Sg ∧ v ∉ A₀.Sg), ∃ r ∈ SU ((cv v) Δ), eD (A.hs v h.1) (r⁻¹ * u.1 v) ∈ (Lev.iw (Kv v)).J 2` using `fun v h => split_loc (Ov v) (hloc v h.1).1 (hloc v h.1).2.1 (A.hs v h.1) (hloc v h.1).2.2.1 (u.1 v) (hu₀.2 v h.2)`. Set `tf : (v : Pl F) → ↥(DX ((cv v) Δ))` to `fun v => if h : v ∈ A.Sg ∧ v ∉ A₀.Sg then (hspl v h).choose else 1`. Establish `htf : tf ∈ RP (fun v => ↥(DX ((cv v) Δ))) (fun v => KD ((cv v) Δ) (Ov v))` using `by show ∀ᶠ v in Filter.cofinite, tf v ∈ KD ((cv v) Δ) (Ov v)`. Use `Filter.eventually_cofinite.mpr (A.Sg.finite_toSet.subset ?_)` and prove the remaining obligations. Introduce `v hv`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Assume the negation of the conclusion as `h`. Apply `hv` to reduce the goal to its premises. Establish `hn : ¬ (v ∈ A.Sg ∧ v ∉ A₀.Sg)` using `fun h' => h h'.1`. Simplify using `only [tf, dif_neg hn]`. Conclude with `one_mem _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Set `t : DA Δ` to `⟨tf, htf⟩`. Establish `hcomm : t * y = y * t`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `v`. Use `show tf v * y.1 v = y.1 v * tf v`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : v ∈ A.Sg ∧ v ∉ A₀.Sg`. Rewrite using `[hoff y hy v h.1]`. Simplify using the standard rewrite rules. Simplify using `only [tf, dif_neg h]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `htS : t ∈ SA Δ`. Simplify using `only [SA, Subgroup.mem_iInf, Subgroup.mem_comap]`. Introduce `v`. Use `show tf v ∈ SU ((cv v) Δ)`. Distinguish the cases in `h : v ∈ A.Sg ∧ v ∉ A₀.Sg`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [tf, dif_pos h]`. Conclude with `(hspl v h).choose_spec.1`. Simplify using `only [tf, dif_neg h]`. Conclude with `one_mem _`. Establish `hj : t⁻¹ * u ∈ A.dat.U2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `(hU2 _).2 ⟨fun v hv => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Use `show eD (A.hs v hv) ((tf v)⁻¹ * u.1 v) ∈ (A.V v).J 2`. Distinguish the cases in `h0 : v ∈ A₀.Sg`. Establish `hn : ¬ (v ∈ A.Sg ∧ v ∉ A₀.Sg)` using `fun h => h.2 h0`. Simplify using `only [tf, dif_neg hn, inv_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[eD_congr (A.hs v hv) (A₀.hs v h0) (hE.s v h0), hE.V v h0]`. Conclude with `hu₀.1 v h0`. Establish `hp : v ∈ A.Sg ∧ v ∉ A₀.Sg` using `⟨hv, h0⟩`. Simplify using `only [tf, dif_pos hp]`. Rewrite using `[hE.iw v hv h0]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `(hspl v hp).choose_spec.2`. Use `show (tf v)⁻¹ * u.1 v ∈ KD ((cv v) Δ) (Ov v)`. Establish `hn : ¬ (v ∈ A.Sg ∧ v ∉ A₀.Sg)` using `fun h => hv h.1`. Simplify using `only [tf, dif_neg hn, inv_one, one_mul]`. Conclude with `hu₀.2 v (fun h0 => hv (hE.sub h0))`.
-
-Use `⟨y, hy, ⟨s * t, mul_mem hs htS⟩, ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `hg` to reduce the goal to its premises. Establish `hsy : s * y * u = s * t * y * (t⁻¹ * u)`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[show C.ι γ * s * y * u = C.ι γ * (s * y * u) by group, hφ.1 γ (s * y * u), hsy, hinv _ hj]`. Rewrite using `[show φ (s * t * y) = 0 from h0, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.So.kNon :
     UpperTheory.V.Z.Sym.So.KNon := by

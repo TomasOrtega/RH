@@ -31,7 +31,7 @@ def cokOps (hc : ∀ i j e, T i e ≫ T j (e + 1) = T j e ≫ T i (e + 1)) (i : 
     (hc _ _ e)
 
 /- English proof (translation)
-Simplify using `only [kerOps, kerSeq]`. Apply `equalizer.hom_ext` to reduce the goal to its premises. Simplify using `only [kernel.map, Category.assoc, kernel.lift_ι, kernel.lift_ι_assoc]`. Rewrite using `[hc i.castSucc j.castSucc e]`.
+Simplify by unfolding definitions. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem kerOps_comm (hc : ∀ i j e, T i e ≫ T j (e + 1) = T j e ≫ T i (e + 1)) (i j : Fin k) (e : ℕ) :
     kerOps hc i e ≫ kerOps hc j (e + 1) = kerOps hc j e ≫ kerOps hc i (e + 1) := by
@@ -41,7 +41,7 @@ theorem kerOps_comm (hc : ∀ i j e, T i e ≫ T j (e + 1) = T j e ≫ T i (e + 
   rw [hc i.castSucc j.castSucc e]
 
 /- English proof (translation)
-Simplify using `only [cokOps, cokSeq]`. Apply `coequalizer.hom_ext` to reduce the goal to its premises. Simplify using `only [cokernel.map, Category.assoc, cokernel.π_desc, cokernel.π_desc_assoc]`. Simplify using `only [← Category.assoc, hc i.castSucc j.castSucc (e + 1)]`.
+Simplify by unfolding definitions. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem cokOps_comm (hc : ∀ i j e, T i e ≫ T j (e + 1) = T j e ≫ T i (e + 1)) (i j : Fin k) (e : ℕ) :
     cokOps hc i e ≫ cokOps hc j (e + 1) = cokOps hc j e ≫ cokOps hc i (e + 1) := by

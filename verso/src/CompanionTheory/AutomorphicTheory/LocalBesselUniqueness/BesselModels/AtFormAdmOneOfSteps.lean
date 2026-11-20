@@ -26,7 +26,7 @@ def UniqGap : Prop :=
       ∃ a b : ℂ, (a ≠ 0 ∨ b ≠ 0) ∧ ∀ v ∈ PI.UpqRep.smoothVecs (k := k) (r := r) σ, a • B₁ v + b • B₂ v = 0
 
 /- English proof (translation)
-Introduce `k r ε lam _ H _ _ σ z c u Wp _ _ π _ _ _` and use `h k r ε lam H σ z c u Wp π`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem uniqGap_of_uniq (h : PI.BesselMapUniq.BesselMapUniq) : UniqGap :=
   fun k r ε lam _ H _ _ σ z c u Wp _ _ π _ _ _ => h k r ε lam H σ z c u Wp π
@@ -81,11 +81,11 @@ def AtFormAdmOneOfSteps : Prop :=
 
 open Formalism.QuantumDeterminants in
 /- English proof (translation)
-Take `⟨x, hx, hlx⟩` from `hnz`. Take `⟨α, β, hαβ, hrel⟩` from `hJ k r ε lam h H σ z c u Wp π hok.1 hg hok.2.1 hlam hσ hz hT hc hπ B l hB hl`. Establish `hα : α ≠ 0`. Introduce `h0`. Break down `hαβ with h1 | h1` into its components or cases.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `h1 h0`. Establish `e` using `hrel x hx`. Rewrite `e` using `[h0, zero_smul, zero_add]`. Conclude with `hlx ((smul_eq_zero.1 e).resolve_left h1)`. Use `⟨-(β / α), fun v hv => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `hrel v hv`. Establish `e2 : α • B v = -(β • l v)` using `eq_neg_of_add_eq_zero_left e`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem aIsL (hJ : UniqGap) {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool}
     {lam : Fin (2 * r + k + 1) → ℝ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
@@ -115,35 +115,29 @@ theorem aIsL (hJ : UniqGap) {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool}
     _ = (-(β / α)) • l v := by rw [smul_neg, smul_smul, ← neg_smul, div_eq_inv_mul]
 
 /- English proof (translation)
-Introduce `hIn k r ε lam h H _ _ _ σ w0 Wp _ _ _ _ z c u π μW μN μG νq hS hnz`. Establish `hS'` using `hS`. Take `⟨hlam, hσ, hg, hok, hw0, hz, hT, hc, hπ, -, -, -, -⟩` from `hS'`. Establish `hsm` using `DD_smooth hIn.2.2.1 hlam hσ hw0`. Take `⟨-, -, -, hBC4⟩` from `hBC hIn k r ε lam h H σ w0 Wp z c u π μW μN μG νq hS`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x0, hx0, y0, hy0, hne⟩` from `hnz`. Choose the witnesses or unpack the hypotheses as in `⟨ξ0, hξ0⟩ : ∃ ξ, be z c π σ μW μN x0 y0 ξ ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hne (ContinuousLinearMap.ext hcon)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB0` using `hBB hIn k r ε lam h H σ w0 Wp z c u π μW μN μG νq hS y0 (Or.inl hy0) ξ0`. Use `set B0 : H → Wp := fun x => be z c π σ μW μN x y0 ξ0 with hB0def`. Establish `hB0x : B0 x0 ≠ 0` using `hξ0`. Establish `hpsi : Formalism.QuantumDeterminants.psi k r z c = PI.BesselMapUniq.psiGen k r z (fun _ => c)` using `funext (hPsi k r z c)`. Establish `hcoef : ∀ v ∈ DDsp σ w0, ∀ ξ : Wp, ∃ κ : ℂ, ∀ x ∈ PI.UpqRep.smoothVecs (k` using `k) (r := r) σ, be z c π σ μW μN x v ξ = κ • B0 x := fun v hv ξ => aIsL hU hg hok hlam hσ hz hT (fun _ => hc) hπ (hpsi ▸ hBB hIn k r ε lam h H σ w0 Wp z c u π μW μN μG νq hS v (Or.inl hv) ξ) (hpsi ▸ hB0) ⟨x0, hsm x0 hx0, hB0x⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `choose! cf hcf using hcoef`. Establish `herm : ∀ x ∈ DDsp σ w0, ∀ v ∈ DDsp σ w0, ∀ η ξ : Wp, cf v ξ * ⟪η, B0 x⟫_ℂ = conj (cf x η) * ⟪B0 v, ξ⟫_ℂ`. Introduce `x hx v hv η ξ`. Establish `hadj` using `(hBC4 x hx v (Or.inl hv)).2`. Establish `e` using `ContinuousLinearMap.adjoint_inner_left (be z c π σ μW μN x v) ξ η`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `e` using `[hadj, hcf v hv ξ x (hsm x hx), hcf x hx η v (hsm v hv), inner_smul_left, inner_smul_right]`. Conclude with `e.symm`. Establish `hη : ⟪B0 x0, B0 x0⟫_ℂ ≠ 0` using `inner_self_ne_zero.mpr hB0x`. Use `set κ : ℂ := conj (cf x0 (B0 x0)) / ⟪B0 x0, B0 x0⟫_ℂ with hκdef`. Establish `hcf' : ∀ v ∈ DDsp σ w0, ∀ ξ, cf v ξ = κ * ⟪B0 v, ξ⟫_ℂ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `v hv ξ`. Establish `e` using `herm x0 hx0 v hv (B0 x0) ξ`. Rewrite using `[hκdef, div_mul_eq_mul_div, eq_div_iff hη]`. Take the linear combination `e`. Establish `hform : ∀ x ∈ PI.UpqRep.smoothVecs (k` using `k) (r := r) σ, ∀ v ∈ DDsp σ w0, ∀ ξ, be z c π σ μW μN x v ξ = (κ * ⟪B0 v, ξ⟫_ℂ) • B0 x := fun x hx v hv ξ => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hcf v hv ξ x hx, hcf' v hv ξ]`. Establish `hκ0 : κ ≠ 0`. Introduce `h0`. Apply `hξ0` to reduce the goal to its premises. Use `show be z c π σ μW μN x0 y0 ξ0 = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hform x0 (hsm x0 hx0) y0 hy0 ξ0, h0, zero_mul, zero_smul]`. Establish `hpos` using `(hNI hIn hSch k r ε lam h H σ w0 Wp z c u π μW μN μG νq hS x0 (hsm x0 hx0) x0 (Or.inl hx0) (B0 x0)).2`. Rewrite `hpos` using `[hform x0 (hsm x0 hx0) x0 hx0, inner_smul_right, inner_self_cast]`. Use `set N2 : ℝ := ‖B0 x0‖ ^ 2 with hN2`. Establish `hN2pos : 0 < N2` using `by rw [hN2]; have := norm_pos_iff.mpr hB0x; positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hexp : κ * (N2 : ℂ) * (N2 : ℂ) = κ * ((N2 * N2 : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite `hpos` using `[hexp, Complex.mul_im, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im]`. Simplify using `only [mul_zero, zero_add, sub_zero] at hpos`. Establish `hNN : 0 < N2 * N2` using `mul_pos hN2pos hN2pos`. Establish `him : κ.im = 0`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `mul_eq_zero.mp hpos.1 with h1 | h1` into its components or cases. Conclude with `h1`. Conclude with `absurd h1 hNN.ne'`. Establish `hre0 : 0 ≤ κ.re`. Assume the negation of the conclusion as `hneg`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use `push_neg at hneg`. Establish `: κ.re * (N2 * N2) < 0` using `mul_neg_of_neg_of_pos hneg hNN`. Combine the linear relations using `[hpos.2]`. Establish `hre : 0 < κ.re`. Break down `hre0.lt_or_eq with h1 | h1` into its components or cases.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `h1`. Conclude with `absurd (Complex.ext (by simp [← h1]) (by simp [him])) hκ0`. Use `set s : ℝ := Real.sqrt κ.re with hs`. Establish `hss : (s : ℂ) * (s : ℂ) = κ`. Rewrite using `[← Complex.ofReal_mul, hs, Real.mul_self_sqrt hre.le]`.
-
-Conclude with `Complex.ext (by simp) (by simp [him])`. Establish `hspos : 0 < s` using `Real.sqrt_pos.mpr hre`. Use `⟨fun x => (s : ℂ) • B0 x, bessel_smul hB0 _, ⟨x0, hx0, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `smul_ne_zero (by exact_mod_cast hspos.ne') hB0x`. Introduce `x hx v hv`.
-
-Use extensionality with `ξ`. Simplify using `only [ContinuousLinearMap.smulRight_apply, innerSL_apply_apply]`. Rewrite using `[hform x hx v hv ξ, inner_smul_left, Complex.conj_ofReal, smul_smul]`. Use `congr 1`. Rewrite using `[← hss]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem shape_of (hU : UniqGap) (hPsi : PsiConst) (hSch : SchurH) (hBC : CompanionTheory.D.Upq.BesselFunctionalConstruction.BeConv) (hNI : CompanionTheory.D.Upq.BesselFunctionalConstruction.NormIdSm) (hBB : CompanionTheory.D.Upq.BesselFunctionalConstruction.BeBessel) : Shape := by
   intro hIn k r ε lam h H _ _ _ σ w0 Wp _ _ _ _ z c u π μW μN μG νq hS hnz

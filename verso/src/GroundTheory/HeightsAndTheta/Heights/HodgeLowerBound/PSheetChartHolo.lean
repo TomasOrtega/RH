@@ -18,7 +18,7 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[segre, torusSmul, Finset.prod_mul_distrib]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem segre_torusSmul (c : K → ℂ) (z : (Σ k, ι k) → ℂ) :
     segre (torusSmul c z) = (∏ k, c k) • segre z := by
@@ -26,9 +26,9 @@ theorem segre_torusSmul (c : K → ℂ) (z : (Σ k, ι k) → ℂ) :
   simp [segre, torusSmul, Finset.prod_mul_distrib]
 
 /- English proof (translation)
-Establish `hsub : coordDiv S ⊆ ⋃ i ∈ (S : Set (Fin n)), ((LinearMap.ker (LinearMap.proj i : (Fin n → ℂ) →ₗ[ℝ] ℂ) : Submodule ℝ (Fin n → ℂ)) : Set (Fin n → ℂ))`. Introduce and unpack `z ⟨i, hi, hz⟩`. Conclude with `Set.mem_biUnion hi (by simp [hz])`. Use `measure_mono_null hsub ((measure_biUnion_null_iff S.countable_toSet).2 fun i _ => ?_)` and prove the remaining obligations. Use `Measure.addHaar_submodule _ _ fun htop => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: (Pi.single i (1 : ℂ) : Fin n → ℂ) ∈ LinearMap.ker (LinearMap.proj i : (Fin n → ℂ) →ₗ[ℝ] ℂ)`. Rewrite using `[htop]`. Discharge the goal by the elementary cases of `trivial`. Simplify using `at this`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coordDiv_null {n : ℕ} (S : Finset (Fin n)) : volume (coordDiv S) = 0 := by
   have hsub : coordDiv S ⊆ ⋃ i ∈ (S : Set (Fin n)),
@@ -51,13 +51,13 @@ def patchMap {n : ℕ} (Q : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (n + 1
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Rewrite using `[ψ.left_inv hsrc]`. Take `⟨c, -, hc⟩` from `(M.fibre _ hs.1 z hz).1 (hs.2.trans hzx.symm)`. Establish `hQ' : Q (segre z) = (∏ k, c k) • Q (segre (s x'))`. Rewrite using `[congrArg (fun w => Q (segre w)) hc, segre_torusSmul, map_smul]`. Establish `h0` using `congrFun hQ' 0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h0` using `[hQ]`. Simplify using `only [Fin.cons_zero, Pi.smul_apply, smul_eq_mul] at h0`. Establish `hne : Q (segre (s x')) 0 ≠ 0`. Introduce `h`. Rewrite `h0` using `[h, mul_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `one_ne_zero h0`. Use `⟨hne, funext fun i => ?_⟩` and prove the remaining obligations. Establish `hi` using `congrFun hQ' i.succ`. Rewrite `hi` using `[hQ]`. Simplify using `only [Fin.cons_succ, Pi.smul_apply, smul_eq_mul] at hi`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [patchMap]`. Rewrite using `[ψ.left_inv hsrc, div_eq_iff hne, hi]`. Take the linear combination `(Q (segre (s x')) i.succ) * h0`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem patchMap_eq {P : Ideal (MRing ι)} {n : ℕ} (M : CxModel P n)
     (Q : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (n + 1) → ℂ))
@@ -86,11 +86,11 @@ theorem patchMap_eq {P : Ideal (MRing ι)} {n : ℕ} (M : CxModel P n)
   linear_combination (Q (segre (s x')) i.succ) * h0
 
 /- English proof (translation)
-Establish `hcoord : ∀ p, AnalyticAt ℂ (fun ξ' => s (ψ.symm ξ') p) ξ`. Introduce `p`. Take `⟨i, hi⟩` from `M.atlas.cover (ψ.symm ξ)`. Establish `hg : AnalyticAt ℂ ((fun y => s y p) ∘ (M.atlas.chart i).symm) (M.atlas.chart i (ψ.symm ξ))` using `hsh p i _ ⟨(M.atlas.chart i).map_source hi, by`. Rewrite using `[Set.mem_preimage, (M.atlas.chart i).left_inv hi]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hU⟩`. Establish `hh : AnalyticAt ℂ (M.atlas.chart i ∘ ψ.symm) ξ` using `(hψ i).2 ξ ⟨hξ, hi⟩`. Use `(AnalyticAt.comp (g := (fun y => s y p) ∘ (M.atlas.chart i).symm) (f := M.atlas.chart i ∘ ψ.symm) hg hh).congr ?_` and prove the remaining obligations. Establish `hev : ∀ᶠ ξ' in 𝓝 ξ, ψ.symm ξ' ∈ (M.atlas.chart i).source` using `(ψ.continuousAt_symm hξ).preimage_mem_nhds ((M.atlas.chart i).open_source.mem_nhds hi)`. Use `filter_upwards [hev] with ξ' h'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Function.comp_def, (M.atlas.chart i).left_inv h']`. Establish `hseg : AnalyticAt ℂ (fun ξ' => segre (s (ψ.symm ξ'))) ξ` using `AnalyticAt.pi fun m => Finset.univ.analyticAt_fun_prod fun k _ => hcoord ⟨k, m k⟩`. Establish `hQa : AnalyticAt ℂ (fun ξ' => Q (segre (s (ψ.symm ξ')))) ξ` using `((LinearMap.toContinuousLinearMap Q).analyticAt _).comp hseg`. Establish `hQm : ∀ m, AnalyticAt ℂ (fun ξ' => Q (segre (s (ψ.symm ξ'))) m) ξ` using `fun m => ((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin (n + 1) => ℂ) m).analyticAt _).comp hQa`. Conclude with `AnalyticAt.pi fun i => (hQm i.succ).div (hQm 0) h0`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem patchMap_analyticAt {P : Ideal (MRing ι)} {n : ℕ} (M : CxModel P n)
     (Q : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (n + 1) → ℂ))
@@ -122,33 +122,31 @@ theorem patchMap_analyticAt {P : Ideal (MRing ι)} {n : ℕ} (M : CxModel P n)
   exact AnalyticAt.pi fun i => (hQm i.succ).div (hQm 0) h0
 
 /- English proof (translation)
-Introduce `K _ ι _ P n M R Q`. Establish `hpatch : ∀ x : M.Xc, ∃ (j : Fin R.N) (U : Set M.Xc) (s : M.Xc → (Σ k, ι k) → ℂ), IsOpen U ∧ x ∈ U ∧ x ∈ (R.chart j).source ∧ (∀ y ∈ U, s y ∈ mcPts P ∧ M.proj (s y) = y) ∧ ∀ p, M.atlas.HoloOn U fun y => s y p`. Introduce `x`. Take `⟨j, hj⟩` from `R.cover x`. Take `⟨U, hU, hxU, s, hs, hsh⟩` from `M.sections x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨j, U, s, hU, hxU, R.mid_subset_source j (R.inner_subset_mid j hj), hs, hsh⟩`. Use `choose j U s hU hxU hxj hs hsh using hpatch`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun x => U x ∩ (R.chart (j x)).source) (fun x => (hU x).inter (R.chart (j x)).open_source) (fun x _ => Set.mem_iUnion.2 ⟨x, hxU x, hxj x⟩)`. Set `F : M.Xc → (Fin n → ℂ) → (Fin n → ℂ)` to `fun x => patchMap Q (R.chart (j x)) (s x)`. Set `V : M.Xc → Set (Fin n → ℂ)` to `fun x => {ξ | ξ ∈ (R.chart (j x)).target ∧ (R.chart (j x)).symm ξ ∈ U x ∧ Q (segre (s x ((R.chart (j x)).symm ξ))) 0 ≠ 0}`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hF : ∀ x, ∀ ξ ∈ V x, AnalyticAt ℂ (F x) ξ` using `fun x ξ hξ => patchMap_analyticAt M Q _ (R.compat (j x)) (U x) (s x) (hsh x) hξ.1 hξ.2.1 hξ.2.2`. Set `f' : M.Xc → (Fin n → ℂ) → ((Fin n → ℂ) →L[ℝ] (Fin n → ℂ))` to `fun x ξ => (fderiv ℂ (F x) ξ).restrictScalars ℝ`. Set `Crit : M.Xc → Set (Fin n → ℂ)` to `fun x => {ξ | ξ ∈ V x ∧ (f' x ξ).det = 0}`. Set `B : Set (Fin n → ℂ)` to `⋃ x ∈ (t : Set M.Xc), (F x '' (V x ∩ coordDiv (R.S (j x))) ∪ F x '' Crit x)`. Establish `hB : volume B = 0`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(measure_biUnion_null_iff t.countable_toSet).2 fun x _ => measure_union_null ?_ ?_` and prove the remaining obligations. Use `addHaar_image_eq_zero_of_differentiableOn_of_addHaar_eq_zero volume ?_ (measure_mono_null Set.inter_subset_right (coordDiv_null _))` and prove the remaining obligations. Introduce `ξ hξ`. Conclude with `((hF x ξ hξ.1).differentiableAt.restrictScalars ℝ).differentiableWithinAt`. Use `addHaar_image_eq_zero_of_det_fderivWithin_eq_zero volume (f' := f' x) (fun ξ hξ => ?_) (fun ξ hξ => hξ.2)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `((hF x ξ hξ.1).differentiableAt.hasFDerivAt.restrictScalars ℝ).hasFDerivWithinAt`. Rewrite using `[ae_iff]`. Use `measure_mono_null ?_ hB` and prove the remaining obligations. Introduce `y hy`. Simplify using `only [Set.mem_ofPred_eq] at hy`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hyB`. Apply `hy` to reduce the goal to its premises. Introduce `w γ hγ`. Take `⟨-, hev⟩` from `hγ`. Establish `hev0` using `hev.self_of_nhds`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Choose the witnesses or unpack the hypotheses as in `⟨x, hxt, hxU', hxsrc⟩ : ∃ x ∈ t, M.proj (γ y) ∈ U x ∧ M.proj (γ y) ∈ (R.chart (j x)).source := by`. Establish `h` using `ht (Set.mem_univ (M.proj (γ y)))`. Simplify using `only [Set.mem_iUnion] at h`. Take `⟨x, hx, h⟩` from `h`. Conclude with `⟨x, hx, h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set ψ := R.chart (j x) with hψ`. Use `set ξ0 := ψ (M.proj (γ y)) with hξ0`. Take `⟨hne0, hFy⟩` from `patchMap_eq M Q ψ (s x) hev0.2.1 rfl hxsrc (hs x _ hxU') hev0.2.2`. Establish `hξ0V : ξ0 ∈ V x` using `⟨ψ.map_source hxsrc, by rw [ψ.left_inv hxsrc]; exact hxU', hne0⟩`. Establish `hξ0div : ξ0 ∉ coordDiv (R.S (j x))` using `fun h => hyB (Set.mem_biUnion hxt (Or.inl ⟨ξ0, ⟨hξ0V, h⟩, hFy⟩))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hξ0crit : (f' x ξ0).det ≠ 0` using `fun h => hyB (Set.mem_biUnion hxt (Or.inr ⟨ξ0, ⟨hξ0V, h⟩, hFy⟩))`. Establish `hYo : M.proj (γ y) ∈ R.Yo` using `(R.mem_Yo (j x) _ hxsrc).2 hξ0div`. Use `⟨j x, hxsrc, hYo, ?_⟩` and prove the remaining obligations. Establish `hbij : Function.Bijective (fderiv ℂ (F x) ξ0)`. Establish `hu : IsUnit (LinearMap.det ((f' x ξ0 : (Fin n → ℂ) →L[ℝ] (Fin n → ℂ)) : (Fin n → ℂ) →ₗ[ℝ] (Fin n → ℂ)))` using `isUnit_iff_ne_zero.2 hξ0crit`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `(Module.End.isUnit_iff _).1 ((LinearMap.isUnit_iff_isUnit_det ((f' x ξ0 : (Fin n → ℂ) →L[ℝ] (Fin n → ℂ)) : (Fin n → ℂ) →ₗ[ℝ] (Fin n → ℂ))).2 hu)`. Conclude with `h2`. Set `e : (Fin n → ℂ) ≃L[ℂ] (Fin n → ℂ)` to `ContinuousLinearEquiv.ofBijective (fderiv ℂ (F x) ξ0) (LinearMap.ker_eq_bot.2 hbij.1) (LinearMap.range_eq_top.2 hbij.2)`. Establish `hcd : ContDiffAt ℂ 1 (F x) ξ0` using `(hF x ξ0 hξ0V).contDiffAt`. Establish `hder : HasFDerivAt (F x) (e : (Fin n → ℂ) →L[ℂ] (Fin n → ℂ)) ξ0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[ContinuousLinearEquiv.coe_ofBijective]`. Conclude with `(hF x ξ0 hξ0V).differentiableAt.hasFDerivAt`. Establish `hn1 : (1 : WithTop ℕ∞) ≠ 0` using `one_ne_zero`. Use `set G := hcd.localInverse hder hn1 with hGdef`. Establish `hG : ContDiffAt ℂ 1 G y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hcd.to_localInverse hder hn1` as an intermediate fact. Establish `hFy' : F x ξ0 = y` using `hFy`. Rewrite `this` using `[hFy']`. Then use the resulting hypothesis. Establish `hleft : ∀ᶠ ξ in 𝓝 ξ0, G (F x ξ) = ξ` using `(hcd.hasStrictFDerivAt' hder hn1).eventually_left_inverse`. Establish `hmem : ∀ᶠ y' in 𝓝 y, γ y' ∈ mcPts P` using `hev.mono fun _ h => h.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hpc : Tendsto (fun y' => M.proj (γ y')) (𝓝 y) (𝓝 (M.proj (γ y)))` using `(M.cont _ hev0.2.1).tendsto.comp (tendsto_nhdsWithin_iff.2 ⟨hev0.1.continuousAt, hmem⟩)`. Establish `hsrc_ev : ∀ᶠ y' in 𝓝 y, M.proj (γ y') ∈ U x ∩ ψ.source` using `hpc (((hU x).inter ψ.open_source).mem_nhds ⟨hxU', hxsrc⟩)`. Establish `hφc : Tendsto (fun y' => ψ (M.proj (γ y'))) (𝓝 y) (𝓝 ξ0)` using `(ψ.continuousAt hxsrc).tendsto.comp hpc`. Establish `heq : ∀ᶠ y' in 𝓝 y, ψ (M.proj (γ y')) = G y'` using `by filter_upwards [hsrc_ev, hev, hφc.eventually hleft] with y' h1 h2 h3`. Establish `h4` using `(patchMap_eq M Q ψ (s x) h2.2.1 rfl h1.2 (hs x _ h1.1) h2.2.2).2`.
-
-Rewrite using `[← h3]`. Conclude with `congrArg G h4`. Establish `hGd : ∀ᶠ y' in 𝓝 y, DifferentiableAt ℂ G y'` using `(hG.eventually (by simp)).mono fun _ h => h.differentiableAt one_ne_zero`. Use `filter_upwards [hsrc_ev, heq.eventually_nhds, hGd] with y' h1 h2 h3`. Conclude with `⟨h1.2, h3.congr_of_eventuallyEq h2⟩`.
+A detailed English derivation is pending.
 -/
 theorem proof : SheetChartHolo.Statement := by
   intro K _ ι _ P n M R Q

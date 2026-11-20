@@ -4,31 +4,27 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped Pointwise
 
 /- English proof (translation)
-Introduce `A L _ _ hA`. Take `⟨N, hN, j, ζ, hmN, hζ, h⟩` from `hA`. Use `haveI := hN`. Use `haveI hcN : IsCyclotomicExtension {N} ℚ (CyclotomicField N ℚ) := CyclotomicField.isCyclotomicExtension N ℚ`. Use `haveI hab : IsAbelianGalois ℚ (CyclotomicField N ℚ) := IsCyclotomicExtension.isAbelianGalois {N} ℚ (CyclotomicField N ℚ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hfix : ∀ τ : Gal(CyclotomicField N ℚ/ℚ), τ ∈ j.fieldRange.fixingSubgroup ↔ ∀ y : L, τ (j y) = j y`. Introduce `τ`. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `H y`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `H _ (AlgHom.mem_fieldRange.2 ⟨y, rfl⟩)`. Introduce `H x hx`. Take `⟨y, rfl⟩` from `AlgHom.mem_fieldRange.1 hx`. Conclude with `H y`. Establish `hpow : ∀ τ : Gal(CyclotomicField N ℚ/ℚ), τ ζ = ζ ^ ((hζ.autToPow ℚ τ : ZMod N).val)` using `fun τ => (IsPrimitiveRoot.autToPow_spec ℚ hζ τ).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hker : ∀ v : (ZMod N)ˣ, A.ker ((v : ZMod N).val) ↔ ZMod.unitsMap hmN v ∈ A.H`. Introduce `v`. Establish `hc : ((ZMod.unitsMap hmN v : (ZMod A.m)ˣ) : ZMod A.m) = (((v : ZMod N).val : ℕ) : ZMod A.m)`. Rewrite using `[ZMod.natCast_val]`. Both sides reduce to the same expression.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, hua⟩`. Establish `: u = ZMod.unitsMap hmN v` using `Units.ext (hua.trans hc.symm)`. Rewrite using `[← this]` and apply the resulting hypothesis. Introduce `hv`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨_, hv, hc⟩`. Establish `hinj : Function.Injective (hζ.autToPow ℚ)` using `hζ.autToPow_injective ℚ`. Establish `hcard : Nat.card Gal(CyclotomicField N ℚ/ℚ) = Nat.card (ZMod N)ˣ` using `Nat.card_congr (IsCyclotomicExtension.autEquivPow (CyclotomicField N ℚ) (Polynomial.cyclotomic.irreducible_rat (Nat.pos_of_neZero N))).toEquiv`. Establish `hsurj : Function.Surjective (hζ.autToPow ℚ)` using `((Nat.bijective_iff_injective_and_card _).2 ⟨hinj, hcard⟩).2`. Use `⟨IsAbelianGalois.of_algHom j, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[(AlgEquiv.ofInjectiveField j).toLinearEquiv.finrank_eq]`. Express the relevant statement in the definitionally equal form `Module.finrank ℚ j.fieldRange = _`. Rewrite using `[IntermediateField.finrank_eq_fixingSubgroup_index]`. Establish `hS : j.fieldRange.fixingSubgroup = (A.H.comap (ZMod.unitsMap hmN)).comap (hζ.autToPow ℚ)`. Use extensionality with `τ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hfix, h τ _ (hpow τ)]`. Conclude with `hker _`. Rewrite using `[hS, Subgroup.index_comap_of_surjective _ hsurj, Subgroup.index_comap_of_surjective _ (ZMod.unitsMap_surjective hmN)]`. Both sides reduce to the same expression. Establish `hdvd : N / A.m ∣ N` using `Nat.div_dvd_of_dvd hmN`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hp0 : N / A.m ≠ 0` using `(Nat.div_pos (Nat.le_of_dvd (Nat.pos_of_neZero N) hmN) A.pos).ne'`. Establish `hζm : IsPrimitiveRoot (ζ ^ (N / A.m)) A.m`. Use `hζ.pow_of_dvd hp0 hdvd` as an intermediate fact. Rewrite `this` using `[Nat.div_div_self hmN (NeZero.ne N)]`. Then use the resulting hypothesis. Use `haveI : NeZero A.m := ⟨A.pos.ne'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI hcm : IsCyclotomicExtension {A.m} ℚ (CyclotomicField A.m ℚ) := CyclotomicField.isCyclotomicExtension A.m ℚ`. Use `haveI : IsCyclotomicExtension {A.m} ℚ (IntermediateField.adjoin ℚ {ζ ^ (N / A.m)}) := hζm.intermediateField_adjoin_isCyclotomicExtension ℚ`. Establish `hMC : j.fieldRange ≤ IntermediateField.adjoin ℚ {ζ ^ (N / A.m)}`. Rewrite using `[← IsGalois.fixedField_fixingSubgroup (IntermediateField.adjoin ℚ {ζ ^ (N / A.m)}), IntermediateField.le_iff_le]`. Introduce `τ hτ`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hfix, h τ _ (hpow τ)]`. Rewrite `hτ` using `[IntermediateField.mem_fixingSubgroup_iff]`. Establish `h1 : τ (ζ ^ (N / A.m)) = ζ ^ (N / A.m)` using `hτ _ (IntermediateField.mem_adjoin_simple_self ℚ _)`. Rewrite `h1` using `[map_pow, hpow τ, ← pow_mul, mul_comm, pow_mul]`. Generalize the expression as in `((hζ.autToPow ℚ τ : ZMod N)).val = a at h1 ⊢`.
-
-Establish `hfo : IsOfFinOrder (ζ ^ (N / A.m))` using `isOfFinOrder_iff_pow_eq_one.2 ⟨A.m, A.pos, hζm.pow_eq_one⟩`. Establish `h2 : a ≡ 1 [MOD A.m]`. Rewrite using `[hζm.eq_orderOf]`. Conclude with `hfo.pow_eq_pow_iff_modEq.1 (by rw [pow_one]; exact h1)`. Use `⟨1, one_mem _, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Units.val_one, ← Nat.cast_one, ZMod.natCast_eq_natCast_iff]`. Conclude with `h2.symm`. Conclude with `⟨(IsCyclotomicExtension.algEquiv {A.m} ℚ (IntermediateField.adjoin ℚ {ζ ^ (N / A.m)}) (CyclotomicField A.m ℚ)).toAlgHom.comp ((IntermediateField.inclusion hMC).comp (AlgEquiv.ofInjectiveField j).toAlgHom)⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Two.abProps :
     ∀ (A : AbF) (L : Type) [Field L] [NumberField L], IsAbField A L → IsAbelianGalois ℚ L ∧ Module.finrank ℚ L = A.deg ∧ Nonempty (L →ₐ[ℚ] CyclotomicField A.m ℚ) := by

@@ -22,13 +22,13 @@ variable (K E : Type*) [Field K] [Field E] [Algebra K E] [FiniteDimensional K E]
   [Algebra.IsSeparable K E] [hE : Fact (Module.finrank K E = 2)]
 
 /- English proof (translation)
-Use `normal_iff.2 fun x => ⟨Algebra.IsIntegral.isIntegral x, ?_⟩` and prove the remaining obligations. Establish `hint : IsIntegral K x` using `Algebra.IsIntegral.isIntegral x`. Use `set p := (minpoly K x).map (algebraMap K E) with hp`. Establish `hmonic : p.Monic` using `(minpoly.monic hint).map _`. Establish `hroot : p.IsRoot x` using `by simp [p]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdeg : p.natDegree ≤ 2`. Rewrite using `[hp, Polynomial.natDegree_map]`. Use `minpoly.natDegree_le (A := K) x` as an intermediate fact. Rewrite `this` using `[hE.out]`. Then use the resulting hypothesis. Establish `hq` using `Polynomial.mul_divByMonic_eq_iff_isRoot.2 hroot`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq0 : p /ₘ (X - C x) ≠ 0`. Introduce `h0`. Rewrite `hq` using `[h0, mul_zero]`. Conclude with `hmonic.ne_zero hq.symm`. Rewrite using `[← hq]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Use `(Splits.X_sub_C x).mul ?_` and prove the remaining obligations. Set `: Invertible (p /ₘ (X - C x)).leadingCoeff` to `invertibleOfNonzero (leadingCoeff_ne_zero.2 hq0)`. Use `Splits.of_natDegree_le_one_of_invertible ?_ this` and prove the remaining obligations. Rewrite using `[Polynomial.natDegree_divByMonic _ (monic_X_sub_C x), natDegree_X_sub_C]`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem normal_of_finrank_eq_two : Normal K E := by
   refine normal_iff.2 fun x => ⟨Algebra.IsIntegral.isIntegral x, ?_⟩
@@ -56,13 +56,13 @@ instance isGalois_of_finrank_eq_two : IsGalois K E :=
   ⟨⟩
 
 /- English proof (translation)
-Rewrite using `[IsGalois.card_aut_eq_finrank, hE.out]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_gal_eq_two : Nat.card (E ≃ₐ[K] E) = 2 := by
   rw [IsGalois.card_aut_eq_finrank, hE.out]
 
 /- English proof (translation)
-Take `⟨y, hy, -⟩` from `(Nat.card_eq_two_iff' (1 : E ≃ₐ[K] E)).1 (card_gal_eq_two K E)`. Conclude with `⟨y, hy⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_ne_one_gal : ∃ σ : E ≃ₐ[K] E, σ ≠ 1 := by
   obtain ⟨y, hy, -⟩ := (Nat.card_eq_two_iff' (1 : E ≃ₐ[K] E)).1 (card_gal_eq_two K E)
@@ -71,14 +71,14 @@ theorem exists_ne_one_gal : ∃ σ : E ≃ₐ[K] E, σ ≠ 1 := by
 def conj : E ≃ₐ[K] E := (exists_ne_one_gal K E).choose
 
 /- English proof (translation)
-The claim follows from `(exists_ne_one_gal K E).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem conj_ne_one : conj K E ≠ 1 := (exists_ne_one_gal K E).choose_spec
 
 variable {K E}
 
 /- English proof (translation)
-Take `⟨y, -, hy⟩` from `(Nat.card_eq_two_iff' (1 : E ≃ₐ[K] E)).1 (card_gal_eq_two K E)`. Distinguish the cases in `h : τ = 1`. Conclude with `Or.inl h`. Conclude with `Or.inr ((hy τ h).trans (hy _ (conj_ne_one K E)).symm)`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative.
 -/
 theorem eq_one_or_eq_conj (τ : E ≃ₐ[K] E) : τ = 1 ∨ τ = conj K E := by
   obtain ⟨y, -, hy⟩ := (Nat.card_eq_two_iff' (1 : E ≃ₐ[K] E)).1 (card_gal_eq_two K E)
@@ -87,9 +87,9 @@ theorem eq_one_or_eq_conj (τ : E ≃ₐ[K] E) : τ = 1 ∨ τ = conj K E := by
   · exact Or.inr ((hy τ h).trans (hy _ (conj_ne_one K E)).symm)
 
 /- English proof (translation)
-Break down `eq_one_or_eq_conj (conj K E * conj K E) with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction. Apply `conj_ne_one K E` to reduce the goal to its premises. Use `congrArg (fun τ => (conj K E)⁻¹ * τ) h` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Use the proof step `@[simp]`.
+A detailed English derivation is pending.
 -/
 theorem conj_mul_conj : conj K E * conj K E = 1 := by
   rcases eq_one_or_eq_conj (conj K E * conj K E) with h | h
@@ -101,26 +101,26 @@ theorem conj_mul_conj : conj K E * conj K E = 1 := by
 
 @[simp]
 /- English proof (translation)
-Use `congrArg (fun τ : E ≃ₐ[K] E => τ x) (conj_mul_conj (K := K) (E := E))` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem conj_conj (x : E) : conj K E (conj K E x) = x := by
   have := congrArg (fun τ : E ≃ₐ[K] E => τ x) (conj_mul_conj (K := K) (E := E))
   simpa using this
 
 /- English proof (translation)
-The claim follows from `(conj K E).injective @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem conj_injective : Function.Injective (conj K E) := (conj K E).injective
 
 @[simp]
 /- English proof (translation)
-The claim follows from `(conj K E).commutes a`.
+A detailed English derivation is pending.
 -/
 theorem conj_algebraMap (a : K) : conj K E (algebraMap K E a) = algebraMap K E a :=
   (conj K E).commutes a
 
 /- English proof (translation)
-Use `Fintype.prod_eq_mul 1 (conj K E) (conj_ne_one K E).symm fun τ hτ => ?_` and prove the remaining obligations. Break down `eq_one_or_eq_conj τ with h | h` into its components or cases. Conclude with `absurd h hτ.1`. Conclude with `absurd h hτ.2`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem prod_gal (f : (E ≃ₐ[K] E) → E) : ∏ τ : E ≃ₐ[K] E, f τ = f 1 * f (conj K E) := by
   classical
@@ -130,7 +130,7 @@ theorem prod_gal (f : (E ≃ₐ[K] E) → E) : ∏ τ : E ≃ₐ[K] E, f τ = f 
   · exact absurd h hτ.2
 
 /- English proof (translation)
-Use `Fintype.sum_eq_add 1 (conj K E) (conj_ne_one K E).symm fun τ hτ => ?_` and prove the remaining obligations. Break down `eq_one_or_eq_conj τ with h | h` into its components or cases. Conclude with `absurd h hτ.1`. Conclude with `absurd h hτ.2`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem sum_gal (f : (E ≃ₐ[K] E) → E) : ∑ τ : E ≃ₐ[K] E, f τ = f 1 + f (conj K E) := by
   classical
@@ -140,7 +140,7 @@ theorem sum_gal (f : (E ≃ₐ[K] E) → E) : ∑ τ : E ≃ₐ[K] E, f τ = f 1
   · exact absurd h hτ.2
 
 /- English proof (translation)
-Rewrite using `[algebraMap_norm_eq_prod, prod_gal]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem algebraMap_norm_eq_mul_conj (x : E) :
     algebraMap K E (Algebra.norm K x) = x * conj K E x := by
@@ -148,7 +148,7 @@ theorem algebraMap_norm_eq_mul_conj (x : E) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[trace_eq_sum_automorphisms, sum_gal]`. Both sides reduce to the same expression. Use the proof step `@[simp]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem algebraMap_trace_eq_add_conj (x : E) :
     algebraMap K E (Algebra.trace K E x) = x + conj K E x := by
@@ -157,7 +157,7 @@ theorem algebraMap_trace_eq_add_conj (x : E) :
 
 @[simp]
 /- English proof (translation)
-Apply `(algebraMap K E).injective` to reduce the goal to its premises. Rewrite using `[algebraMap_norm_eq_mul_conj, algebraMap_norm_eq_mul_conj, conj_conj, mul_comm]`. Use the proof step `@[simp]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_conj (x : E) : Algebra.norm K (conj K E x) = Algebra.norm K x := by
   apply (algebraMap K E).injective
@@ -165,14 +165,14 @@ theorem norm_conj (x : E) : Algebra.norm K (conj K E x) = Algebra.norm K x := by
 
 @[simp]
 /- English proof (translation)
-Apply `(algebraMap K E).injective` to reduce the goal to its premises. Rewrite using `[algebraMap_trace_eq_add_conj, algebraMap_trace_eq_add_conj, conj_conj, add_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_conj (x : E) : Algebra.trace K E (conj K E x) = Algebra.trace K E x := by
   apply (algebraMap K E).injective
   rw [algebraMap_trace_eq_add_conj, algebraMap_trace_eq_add_conj, conj_conj, add_comm]
 
 /- English proof (translation)
-Apply `(algebraMap K E).injective` to reduce the goal to its premises. Simplify using `only [map_add, algebraMap_norm_eq_mul_conj, algebraMap_trace_eq_add_conj, map_mul, conj_conj]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_add (x y : E) :
     Algebra.norm K (x + y) =
@@ -183,7 +183,7 @@ theorem norm_add (x y : E) :
   ring
 
 /- English proof (translation)
-Rewrite using `[Algebra.norm_algebraMap, hE.out]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_algebraMap_eq_sq (a : K) : Algebra.norm K (algebraMap K E a) = a ^ 2 := by
   rw [Algebra.norm_algebraMap, hE.out]
@@ -198,7 +198,7 @@ variable {K E : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarc
   [hE : Fact (Module.finrank K E = 2)]
 
 /- English proof (translation)
-Establish `h1` using `ord_norm (K := K) (conj K E x)`. Establish `h2` using `ord_norm (K := K) x`. Rewrite `h1` using `[norm_conj]`. Establish `hf : (residueDegree K E : ℤ) ≠ 0` using `by exact_mod_cast (residueDegree_pos K E).ne'`. Conclude with `mul_left_cancel₀ hf (h1.symm.trans h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ord_conj (x : E) : ord (conj K E x) = ord x := by
   have h1 := ord_norm (K := K) (conj K E x)
@@ -208,7 +208,7 @@ theorem ord_conj (x : E) : ord (conj K E x) = ord x := by
   exact mul_left_cancel₀ hf (h1.symm.trans h2)
 
 /- English proof (translation)
-Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Simplify using `only [map_zero]`. Establish `hx' : conj K E x ≠ 0` using `by simpa using hx`. Rewrite using `[mem_valBall_iff_le_ord hx, mem_valBall_iff_le_ord hx', ord_conj]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_mem_valBall_iff {n : ℤ} {x : E} : conj K E x ∈ valBall E n ↔ x ∈ valBall E n := by
   rcases eq_or_ne x 0 with rfl | hx
@@ -217,7 +217,7 @@ theorem conj_mem_valBall_iff {n : ℤ} {x : E} : conj K E x ∈ valBall E n ↔ 
   rw [mem_valBall_iff_le_ord hx, mem_valBall_iff_le_ord hx', ord_conj]
 
 /- English proof (translation)
-Establish `ht : Tendsto (conj K E) (𝓝 0) (𝓝 0)` using `((hasBasis_nhds_zero_valBall (K := E)).tendsto_iff (hasBasis_nhds_zero_valBall (K := E))).2 fun n _ => ⟨n, trivial, fun x hx => conj_mem_valBall_iff.2 hx⟩`. Use `continuous_of_continuousAt_zero (conj K E).toAlgHom.toRingHom ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_zero]`. Conclude with `ht`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_conj : Continuous (conj K E) := by
   have ht : Tendsto (conj K E) (𝓝 0) (𝓝 0) :=
@@ -247,7 +247,7 @@ Both sides reduce to the same expression.
 theorem coe_conjContinuousAddEquiv : (conjContinuousAddEquiv K E : E → E) = conj K E := rfl
 
 /- English proof (translation)
-Use extensionality with `x`. Conclude with `conj_mem_valBall_iff`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem conj_preimage_valBall (n : ℤ) :
     (conj K E) ⁻¹' (valBall E n : Set E) = (valBall E n : Set E) := by
@@ -255,7 +255,7 @@ theorem conj_preimage_valBall (n : ℤ) :
   exact conj_mem_valBall_iff
 
 /- English proof (translation)
-Establish `hH : (μ.map (conj K E)).IsAddHaarMeasure`. Rewrite using `[← coe_conjContinuousAddEquiv]`. Conclude with `ContinuousAddEquiv.isAddHaarMeasure_map μ _`. Rewrite using `[eq_smul_haarIntegers (μ.map (conj K E)), ← coe_valBall_zero, Measure.map_apply continuous_conj.measurable (measurableSet_valBall 0), conj_preimage_valBall, coe_valBall_zero, ← eq_smul_haarIntegers μ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_conj_eq [MeasurableSpace E] [BorelSpace E] (μ : Measure E) [μ.IsAddHaarMeasure] :
     μ.map (conj K E) = μ := by
@@ -267,13 +267,13 @@ theorem map_conj_eq [MeasurableSpace E] [BorelSpace E] (μ : Measure E) [μ.IsAd
     coe_valBall_zero, ← eq_smul_haarIntegers μ]
 
 /- English proof (translation)
-The claim follows from `card_residueField_eq_pow_residueDegree K E`.
+A detailed English derivation is pending.
 -/
 theorem residueCard_eq_pow : residueCard E = residueCard K ^ residueDegree K E :=
   card_residueField_eq_pow_residueDegree K E
 
 /- English proof (translation)
-Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Simplify using `[modulus_zero]`. Establish `hN : Algebra.norm K x ≠ 0` using `(Algebra.norm_ne_zero_iff).2 hx`. Rewrite using `[modulus_of_ne_zero hN, modulus_of_ne_zero hx, ord_norm (K := K) (L := E), residueCard_eq_pow (K := K) (E := E), Nat.cast_pow, ← zpow_natCast (residueCard K : ℝ≥0), ← zpow_mul]`. Use `congr 1`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -287,13 +287,13 @@ theorem modulus_norm (x : E) : modulus (Algebra.norm K x) = modulus x := by
   ring
 
 /- English proof (translation)
-Rewrite using `[← modulus_norm (K := K), norm_algebraMap_eq_sq, sq, sq, modulus_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem modulus_algebraMap (a : K) : modulus (algebraMap K E a) = modulus a ^ 2 := by
   rw [← modulus_norm (K := K), norm_algebraMap_eq_sq, sq, sq, modulus_mul]
 
 /- English proof (translation)
-Rewrite using `[← modulus_norm (K := K), norm_conj, modulus_norm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem modulus_conj (x : E) : modulus (conj K E x) = modulus x := by
   rw [← modulus_norm (K := K), norm_conj, modulus_norm]
@@ -308,13 +308,13 @@ instance isAbelianGalois_of_finrank_eq_two : IsAbelianGalois K E := ⟨⟩
 variable (K E) in
 
 /- English proof (translation)
-Set `φ : E →ₐ[K] SeparableClosure K` to `IsSepClosed.lift`. Set `L : IntermediateField K (SeparableClosure K)` to `φ.fieldRange`. Set `e : E ≃ₐ[K] L` to `AlgHom.equivFieldRange φ`. Establish `: FiniteDimensional K L` using `e.toLinearEquiv.finiteDimensional`. Establish `: IsAbelianGalois K L` using `IsAbelianGalois.of_algHom e.symm.toAlgHom`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `index_range_normUnits_of_isAbelianGalois (K := K) (Ω := SeparableClosure K) L`. Rewrite `h` using `[← e.toLinearEquiv.finrank_eq, hE.out]`. Establish `hrange : (normUnits K E).range = (normUnits K L).range`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨x, rfl⟩`. Use `⟨Units.map e.toAlgHom.toRingHom.toMonoidHom x, ?_⟩` and prove the remaining obligations. Use `ext`. Simplify using `[Algebra.norm_eq_of_algEquiv]`. Introduce and unpack `⟨x, rfl⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Use `⟨Units.map e.symm.toAlgHom.toRingHom.toMonoidHom x, ?_⟩` and prove the remaining obligations. Use `ext`. Simplify using `[Algebra.norm_eq_of_algEquiv]`. Rewrite using `[hrange, h]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem index_range_normUnits_eq_two : (normUnits K E).range.index = 2 := by
   let φ : E →ₐ[K] SeparableClosure K := IsSepClosed.lift
@@ -341,7 +341,7 @@ instance finiteIndex_range_normUnits : (normUnits K E).range.FiniteIndex :=
   ⟨by rw [index_range_normUnits_eq_two K E]; norm_num⟩
 
 /- English proof (translation)
-The claim follows from `Subgroup.isOpen_of_isClosed_of_finiteIndex _ (isClosed_range_normUnits K E)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_range_normUnits : IsOpen ((normUnits K E).range : Set Kˣ) :=
   Subgroup.isOpen_of_isClosed_of_finiteIndex _ (isClosed_range_normUnits K E)
@@ -358,22 +358,22 @@ def quadChar : Kˣ →* ℂˣ where
       simp [ha, hb, h]
 
 /- English proof (translation)
-Simplify using `[quadChar, ht]`.
+Simplify using the standard rewrite rules.
 -/
 theorem quadChar_apply_of_mem {t : Kˣ} (ht : t ∈ (normUnits K E).range) : quadChar K E t = 1 := by
   simp [quadChar, ht]
 
 /- English proof (translation)
-Simplify using `[quadChar, ht]`.
+Simplify using the standard rewrite rules.
 -/
 theorem quadChar_apply_of_notMem {t : Kˣ} (ht : t ∉ (normUnits K E).range) :
     quadChar K E t = -1 := by
   simp [quadChar, ht]
 
 /- English proof (translation)
-Use `⟨fun h => ?_, quadChar_apply_of_mem⟩` and prove the remaining obligations. Assume the negation of the conclusion as `ht`. Rewrite `h` using `[quadChar_apply_of_notMem ht]`. Use `congrArg (fun u : ℂˣ => (u : ℂ)) h` as an intermediate fact. Evaluate the numerical expressions using `at this`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Evaluate the numerical expressions.
 
-Use the proof step `@[simp]`.
+A detailed English derivation is pending.
 -/
 theorem quadChar_eq_one_iff {t : Kˣ} : quadChar K E t = 1 ↔ t ∈ (normUnits K E).range := by
   refine ⟨fun h => ?_, quadChar_apply_of_mem⟩
@@ -384,13 +384,13 @@ theorem quadChar_eq_one_iff {t : Kˣ} : quadChar K E t = 1 ↔ t ∈ (normUnits 
 
 @[simp]
 /- English proof (translation)
-The claim follows from `quadChar_apply_of_mem ⟨x, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem quadChar_normUnits (x : Eˣ) : quadChar K E (normUnits K E x) = 1 :=
   quadChar_apply_of_mem ⟨x, rfl⟩
 
 /- English proof (translation)
-Distinguish the cases in `ht : t ∈ (normUnits K E).range`. Simplify using `[quadChar_apply_of_mem ht]`. Simplify using `[quadChar_apply_of_notMem ht]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem quadChar_sq (t : Kˣ) : quadChar K E t ^ 2 = 1 := by
   classical
@@ -399,15 +399,15 @@ theorem quadChar_sq (t : Kˣ) : quadChar K E t ^ 2 = 1 := by
   · simp [quadChar_apply_of_notMem ht]
 
 /- English proof (translation)
-Rewrite using `[map_mul, ← sq, quadChar_sq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem quadChar_mul_self (t : Kˣ) : quadChar K E (t * t) = 1 := by
   rw [map_mul, ← sq, quadChar_sq]
 
 /- English proof (translation)
-Introduce `h`. Establish `htop : (normUnits K E).range = ⊤`. Use `eq_top_iff.2 fun t _ => ?_` and prove the remaining obligations. Rewrite using `[← quadChar_eq_one_iff, h, MonoidHom.one_apply]`. Use `index_range_normUnits_eq_two K E` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[htop, Subgroup.index_top]`. Evaluate the numerical expressions using `at this`.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem quadChar_ne_one : quadChar K E ≠ 1 := by
   intro h
@@ -419,7 +419,7 @@ theorem quadChar_ne_one : quadChar K E ≠ 1 := by
   norm_num at this
 
 /- English proof (translation)
-Establish `: (quadChar K E).ker = (normUnits K E).range`. Use extensionality with `t`. Conclude with `quadChar_eq_one_iff`. Rewrite using `[this]`. Conclude with `isOpen_range_normUnits`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_ker_quadChar : IsOpen ((quadChar K E).ker : Set Kˣ) := by
   have : (quadChar K E).ker = (normUnits K E).range := by

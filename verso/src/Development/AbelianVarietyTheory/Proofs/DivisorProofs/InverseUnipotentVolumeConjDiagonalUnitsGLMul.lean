@@ -13,9 +13,9 @@ variable {G : Type*} [Group G]
 def idxRatio (A B : Subgroup G) : ℚ := (B.relIndex A : ℚ) / A.relIndex B
 
 /- English proof (translation)
-Establish `h1` using `Subgroup.relIndex_mul_relIndex D (A ⊓ B) A hD inf_le_left`. Establish `h2` using `Subgroup.relIndex_mul_relIndex D (A ⊓ B) B hD inf_le_right`. Establish `e1 : (A ⊓ B).relIndex A = B.relIndex A` using `by rw [inf_comm]; exact Subgroup.inf_relIndex_right B A`. Establish `e2 : (A ⊓ B).relIndex B = A.relIndex B` using `Subgroup.inf_relIndex_right A B`. Rewrite using `[idxRatio, ← h1, ← h2, e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Rewrite using `[mul_div_mul_left _ _ (by exact_mod_cast h0)]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 theorem idxRatio_eq_of_le {A B D : Subgroup G} (hD : D ≤ A ⊓ B) (h0 : D.relIndex (A ⊓ B) ≠ 0) :
     idxRatio A B = (D.relIndex A : ℚ) / D.relIndex B := by
@@ -28,7 +28,7 @@ theorem idxRatio_eq_of_le {A B D : Subgroup G} (hD : D ≤ A ⊓ B) (h0 : D.relI
   rw [mul_div_mul_left _ _ (by exact_mod_cast h0)]
 
 /- English proof (translation)
-Rewrite using `[idxRatio, idxRatio, Subgroup.relIndex_map_map_of_injective _ _ hf, Subgroup.relIndex_map_map_of_injective _ _ hf]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem idxRatio_map {f : G →* G} (hf : Function.Injective f) (A B : Subgroup G) :
     idxRatio (A.map f) (B.map f) = idxRatio A B := by
@@ -38,7 +38,7 @@ theorem idxRatio_map {f : G →* G} (hf : Function.Injective f) (A B : Subgroup 
 variable [TopologicalSpace G] [IsTopologicalGroup G]
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : O ⊓ H ≤ N ⊓ O` using `fun x hx => Subgroup.mem_inf.2 ⟨hHN (Subgroup.mem_inf.1 hx).2, (Subgroup.mem_inf.1 hx).1⟩`. Establish `h2` using `Subgroup.relIndex_eq_zero_of_le_left h1 h`. Rewrite `h2` using `[Subgroup.inf_relIndex_right]`. Conclude with `relIndex_ne_zero_of_isOpen hO hC hHC h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_inf_ne_zero {N O C H : Subgroup G} (hO : IsOpen (O : Set G)) (hC : IsCompact (C : Set G))
     (hHN : H ≤ N) (hHC : H ≤ C) : (N ⊓ O).relIndex H ≠ 0 := by
@@ -49,15 +49,15 @@ theorem relIndex_inf_ne_zero {N O C H : Subgroup G} (hO : IsOpen (O : Set G)) (h
   exact relIndex_ne_zero_of_isOpen hO hC hHC h2
 
 /- English proof (translation)
-Establish `hO : IsOpen ((U ⊓ V ⊓ W : Subgroup G) : Set G)`. Rewrite using `[Subgroup.coe_inf, Subgroup.coe_inf]`. Conclude with `(hUo.inter hVo).inter hWo`. Establish `l1 : N ⊓ (U ⊓ V ⊓ W) ≤ (N ⊓ U) ⊓ (N ⊓ V)`. Introduce `x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Subgroup.mem_inf] at hx ⊢`. The claim follows by propositional logic. Establish `l2 : N ⊓ (U ⊓ V ⊓ W) ≤ (N ⊓ V) ⊓ (N ⊓ W)`. Introduce `x hx`. Simplify using `only [Subgroup.mem_inf] at hx ⊢`.
+The claim follows by propositional logic. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. The claim follows by propositional logic.
 
-The claim follows by propositional logic. Establish `l3 : N ⊓ (U ⊓ V ⊓ W) ≤ (N ⊓ U) ⊓ (N ⊓ W)`. Introduce `x hx`. Simplify using `only [Subgroup.mem_inf] at hx ⊢`. The claim follows by propositional logic.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. The claim follows by propositional logic. Establish an intermediate fact.
 
-Establish `nV : (N ⊓ (U ⊓ V ⊓ W)).relIndex (N ⊓ V) ≠ 0` using `relIndex_inf_ne_zero hO hVc inf_le_left inf_le_right`. Establish `nW : (N ⊓ (U ⊓ V ⊓ W)).relIndex (N ⊓ W) ≠ 0` using `relIndex_inf_ne_zero hO hWc inf_le_left inf_le_right`. Rewrite using `[idxRatio_eq_of_le l1 (relIndex_inf_ne_zero hO hUc (inf_le_left.trans inf_le_left) (inf_le_left.trans inf_le_right)), idxRatio_eq_of_le l2 (relIndex_inf_ne_zero hO hVc (inf_le_left.trans inf_le_left) (inf_le_left.trans inf_le_right)), idxRatio_eq_of_le l3 (relIndex_inf_ne_zero hO …`. Establish `nV' : ((N ⊓ (U ⊓ V ⊓ W)).relIndex (N ⊓ V) : ℚ) ≠ 0` using `by exact_mod_cast nV`. Establish `nW' : ((N ⊓ (U ⊓ V ⊓ W)).relIndex (N ⊓ W) : ℚ) ≠ 0` using `by exact_mod_cast nW`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem idxRatio_cocycle (N : Subgroup G) {U V W : Subgroup G} (hUo : IsOpen (U : Set G))
     (hUc : IsCompact (U : Set G)) (hVo : IsOpen (V : Set G)) (hVc : IsCompact (V : Set G))
@@ -89,21 +89,21 @@ section Diag
 variable {k : Type} [Field k] {n : Type} [Fintype n] [DecidableEq n] {c : ℕ}
 
 /- English proof (translation)
-The claim follows from `Units.ext (by simp [diagonal_mul_diagonal])`.
+A detailed English derivation is pending.
 -/
 theorem diagGL_mul' (d e : n → kˣ) : diagGL (d * e) = diagGL d * diagGL e :=
   Units.ext (by simp [diagonal_mul_diagonal])
 
 /- English proof (translation)
-The claim follows from `eq_inv_of_mul_eq_one_left (by rw [← diagGL_mul']; exact Units.ext (by simp))`.
+A detailed English derivation is pending.
 -/
 theorem diagGL_inv' (d : n → kˣ) : diagGL d⁻¹ = (diagGL d)⁻¹ :=
   eq_inv_of_mul_eq_one_left (by rw [← diagGL_mul']; exact Units.ext (by simp))
 
 /- English proof (translation)
-Introduce `r s hrs`. Establish `h` using `hx r s hrs`. Establish `hinv : ((diagGL d)⁻¹ : GL (n ⊕ Fin c) k).val = diagonal fun i => (((d i)⁻¹ : kˣ) : k)` using `rfl`. Rewrite using `[MulAut.conj_apply, Units.val_mul, Units.val_mul, hinv, diagGL_val, mul_diagonal, diagonal_mul, h]`. Distinguish the cases in `hrs' : r = s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hrs'` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hrs']`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem conj_diagGL_InN {p : ℕ} (d : n ⊕ Fin c → kˣ) {x : GL (n ⊕ Fin c) k} (hx : InN p x) :
     InN p (MulAut.conj (diagGL d) x) := by
@@ -116,7 +116,7 @@ theorem conj_diagGL_InN {p : ℕ} (d : n ⊕ Fin c → kˣ) {x : GL (n ⊕ Fin c
   · simp [hrs']
 
 /- English proof (translation)
-Rewrite using `[N, MonoidHom.map_closure]`. Conclude with `(Subgroup.closure_le _).2 (by`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `Subgroup.subset_closure (conj_diagGL_InN d hx))`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem map_conj_diagGL_N_le (p : ℕ) (d : n ⊕ Fin c → kˣ) :
     (N k n c p).map (MulAut.conj (diagGL d)).toMonoidHom ≤ N k n c p := by
@@ -126,9 +126,9 @@ theorem map_conj_diagGL_N_le (p : ℕ) (d : n ⊕ Fin c → kˣ) :
     exact Subgroup.subset_closure (conj_diagGL_InN d hx))
 
 /- English proof (translation)
-Establish `hle : ∀ d : n ⊕ Fin c → kˣ, (symN k n c).map (MulAut.conj (diagGL d)).toMonoidHom ≤ symN k n c`. Introduce `d`. Rewrite using `[symN, Subgroup.map_sup]`. Conclude with `sup_le_sup (map_conj_diagGL_N_le _ d) (map_conj_diagGL_N_le _ d)`. Use `le_antisymm (hle d) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `Subgroup.map_mono (f := (MulAut.conj (diagGL d)).toMonoidHom) (hle d⁻¹)`. Establish `e : (MulAut.conj (diagGL d)).toMonoidHom.comp (MulAut.conj (diagGL d⁻¹)).toMonoidHom = MonoidHom.id _` using `by ext1 x`. Simplify using `only [MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, MonoidHom.id_apply, diagGL_inv']`. Use `group`. Rewrite `h` using `[Subgroup.map_map, e, Subgroup.map_id]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem map_conj_diagGL_symN (d : n ⊕ Fin c → kˣ) :
     (symN k n c).map (MulAut.conj (diagGL d)).toMonoidHom = symN k n c := by
@@ -156,7 +156,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {n : Type} [Fintype n] [DecidableEq n] {c : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← Subgroup.inf_relIndex_right A L, h, Subgroup.inf_relIndex_right]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem relIndex_congr_inf {G : Type*} [Group G] {A B L : Subgroup G} (h : A ⊓ L = B ⊓ L) :
     A.relIndex L = B.relIndex L := by
@@ -165,9 +165,9 @@ theorem relIndex_congr_inf {G : Type*} [Group G] {A B L : Subgroup G} (h : A ⊓
 omit [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
 /- English proof (translation)
-Rewrite using `[invVol, idxRatio, relIndex_congr_inf (A := C) (B := symN k n c ⊓ C), relIndex_congr_inf (A := KO k _) (B := symN k n c ⊓ KO k _)]`. Use extensionality with `x`. Simplify using `only [Subgroup.mem_inf]`. The claim follows by propositional logic. Use extensionality with `x`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. The claim follows by propositional logic. By extensionality, compare the relevant components.
 
-Simplify using `only [Subgroup.mem_inf]`. The claim follows by propositional logic.
+Simplify using the standard rewrite rules. The claim follows by propositional logic.
 -/
 theorem invVol_eq_idxRatio (C : Subgroup (GL (n ⊕ Fin c) k)) :
     invVol C = idxRatio (symN k n c ⊓ KO k _) (symN k n c ⊓ C) := by
@@ -177,7 +177,7 @@ theorem invVol_eq_idxRatio (C : Subgroup (GL (n ⊕ Fin c) k)) :
   · ext x; simp only [Subgroup.mem_inf]; tauto
 
 /- English proof (translation)
-Rewrite using `[Subgroup.map_equiv_eq_comap_symm']`. Conclude with `isOpen_KO.preimage ((continuous_const.mul continuous_id).mul continuous_const)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_map_conj_KO (x : GL (n ⊕ Fin c) k) :
     IsOpen (((KO k (n ⊕ Fin c)).map (MulAut.conj x).toMonoidHom : Subgroup _) : Set (GL (n ⊕ Fin c) k)) := by
@@ -185,18 +185,18 @@ theorem isOpen_map_conj_KO (x : GL (n ⊕ Fin c) k) :
   exact isOpen_KO.preimage ((continuous_const.mul continuous_id).mul continuous_const)
 
 /- English proof (translation)
-The claim follows from `isCompact_KO.image ((continuous_const.mul continuous_id).mul continuous_const)`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_map_conj_KO (x : GL (n ⊕ Fin c) k) :
     IsCompact (((KO k (n ⊕ Fin c)).map (MulAut.conj x).toMonoidHom : Subgroup _) : Set (GL (n ⊕ Fin c) k)) :=
   isCompact_KO.image ((continuous_const.mul continuous_id).mul continuous_const)
 
 /- English proof (translation)
-Establish `hmapN : ∀ (d : n ⊕ Fin c → kˣ) (K' : Subgroup (GL (n ⊕ Fin c) k)), (symN k n c ⊓ K').map (MulAut.conj (diagGL d)).toMonoidHom = symN k n c ⊓ K'.map (MulAut.conj (diagGL d)).toMonoidHom`. Introduce `d K'`. Rewrite using `[Subgroup.map_inf _ _ _ (MulAut.conj (diagGL d)).injective, map_conj_diagGL_symN]`. Establish `hcomp : (KO k (n ⊕ Fin c)).map (MulAut.conj (diagGL (d * e))).toMonoidHom = ((KO k (n ⊕ Fin c)).map (MulAut.conj (diagGL e)).toMonoidHom).map (MulAut.conj (diagGL d)).toMonoidHom`. Rewrite using `[Subgroup.map_map]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `ext1 x`. Simplify using `only [MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, diagGL_mul']`. Use `group`. Rewrite using `[invVol_eq_idxRatio, invVol_eq_idxRatio, invVol_eq_idxRatio, hcomp, ← idxRatio_cocycle (symN k n c) isOpen_KO isCompact_KO (isOpen_map_conj_KO (diagGL d)) (isCompact_map_conj_KO (diagGL d)) (hcomp ▸ isOpen_map_conj_KO (diagGL (d * e))) (hcomp ▸ isCompact_map_conj_KO (diagGL (d * …`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[← hmapN d (KO k _), ← hmapN d ((KO k (n ⊕ Fin c)).map (MulAut.conj (diagGL e)).toMonoidHom), idxRatio_map (MulAut.conj (diagGL d)).injective]`.
+A detailed English derivation is pending.
 -/
 theorem invVol_conj_diagGL_mul (d e : n ⊕ Fin c → kˣ) :
     invVol ((KO k (n ⊕ Fin c)).map (MulAut.conj (diagGL (d * e))).toMonoidHom) =

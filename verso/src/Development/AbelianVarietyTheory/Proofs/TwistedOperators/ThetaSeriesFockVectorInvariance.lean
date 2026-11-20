@@ -24,11 +24,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Ker.ThInv
 
 /- English proof (translation)
-Introduce `D S T C om hW Lv h B hB u hu Q`. Establish `hth : C.IsTh (C.fvec B u Q)` using `(GlobalTheory.T.fockPolynomialVector_laws D S T C B hB (fun _ => 1) u hu Q).1`. Use `⟨fun γ hγ g => ?_, fun hk k hkL g => ?_⟩` and prove the remaining obligations. Establish `p : ((h, γ * g) : GA D S × GA D T) = (1, γ) * (h, g)`. Rewrite using `[Prod.mk_mul_mk, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[p, map_mul, Module.End.mul_apply]`. Conclude with `hW.om_aut 1 (one_mem _) γ hγ _ (hW.om_pres _ _ hth)`. Establish `p : ((h, g * k) : GA D S × GA D T) = (h, g) * (1, k)`. Rewrite using `[Prod.mk_mul_mk, mul_one]`. Establish `hmv` using `((GlobalTheory.T.thetaKernel_orthonormalFrame_inDomain_periodLinear D S T C).2 B hB).2.2.2.2.2 k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[p, map_mul, Module.End.mul_apply, GlobalTheory.Ker.Red.om_fvec C om hW 1 (one_mem _) k u hu B hB Q, hmv.2.2.1 hkL.1, hk k hkL]`.
+A detailed English derivation is pending.
 -/
 theorem fvec_val_inv : ∀ (D : D7) (S T : HSp D) (C : Ctx S T) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeak C.ψ S T om → ∀ (Lv : SW.Level C.X) (h : GA D S) (B : C.Bas), C.IsB B → ∀ u : WO S T → ℂ, C.IsTh u → ∀ Q : MvPolynomial (FVar D T.rank S.rank) ℂ, (∀ γ ∈ GQ T, ∀ g, om (h, γ * g) (C.fvec B u Q) 0 = om (h, g) (C.fvec B u Q) 0) ∧ ((∀ k, C.LevK Lv k 1 → om (1, k) u = u) → ∀ k, C.LevK Lv k 1 → ∀ g, om (h, g * k) (C.fvec B u Q) 0 = om (h, g) (C.fvec B u Q) 0) := by
   intro D S T C om hW Lv h B hB u hu Q

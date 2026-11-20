@@ -8,7 +8,7 @@ import Development.AutomorphicArithmetic.CommutativeAlgebra.RelativeCohomologyCo
 import Development.AutomorphicArithmetic.CommutativeAlgebra.RelativeCohomologyColimitOfExactOfNaturality
 
 /- English proof (translation)
-The claim follows from `LateralTheory.E.NeighbourhoodKilling.goal_of UpperTheory.etaleCohomology_class_killed_on_nbhd_pair UpperTheory.Cb.neighbourhood_cohomology_obstruction_exact UpperTheory.relativeCohomology_connecting_naturality (LateralTheory.E.Bridge_yfiPf.Bridge_of_geo_pack (LateralTheory.E.GeoP …`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Cb.etale_cohomology_class_killed_on_neighborhood :
     LateralTheory.E.SecondDegreeKilling.Nbhd.LeafKillNbhd :=

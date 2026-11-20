@@ -40,7 +40,7 @@ def bTop (V : Type) [AddCommGroup V] [Module LL V] : TopologicalSpace (LL' ⊗[L
   moduleTopology LL' (LL' ⊗[LL] V)
 
 /- English proof (translation)
-The claim follows from `@IsModuleTopology.mk LL' _ (LL' ⊗[LL] V) _ _ (bTop (LL := LL) (LL' := LL') V) rfl`.
+A detailed English derivation is pending.
 -/
 theorem bIsMod (V : Type) [AddCommGroup V] [Module LL V] :
     @IsModuleTopology LL' _ (LL' ⊗[LL] V) _ _ (bTop (LL := LL) (LL' := LL') V) :=
@@ -51,13 +51,13 @@ end Top
 section Lin
 
 /- English proof (translation)
-Use `Fintype.linearIndependent_iff.2 fun x hx i => ?_` and prove the remaining obligations. Take `⟨s, hs⟩` from `IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors O) (Finset.univ.image x)`. Establish `ha : ∀ j, ∃ a : O, algebraMap O LL a = (s : O) • x j` using `fun j => hs (x j) (Finset.mem_image_of_mem _ (Finset.mem_univ j))`. Use `choose a ha using ha`. Establish `h0 : ∑ j, a j • b j = 0`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ∑ j, ((s : O) • x j) • b j = (s : O) • ∑ j, x j • b j`. Rewrite using `[Finset.smul_sum]`. Simplify using `only [smul_assoc]`. Rewrite `this` using `[hx, smul_zero]`. Rewrite using `[← this]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← ha j, algebraMap_smul]`. Establish `h1` using `Fintype.linearIndependent_iff.1 hb a h0 i`. Establish `h2` using `ha i`. Rewrite `h2` using `[h1, map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hs0 : (algebraMap O LL (s : O)) ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors s.2`. Rewrite `h2` using `[Algebra.smul_def]`. Conclude with `(mul_eq_zero.1 h2.symm).resolve_left hs0`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linInd_frac {O LL V ι : Type} [CommRing O] [IsDomain O] [Field LL] [Algebra O LL]
     [IsFractionRing O LL] [AddCommGroup V] [Module LL V] [Module O V] [IsScalarTower O LL V]
@@ -93,9 +93,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp LL LL' O O' : Type} [Fiel
   [CommRing O'] [Algebra O' LL']
 
 /- English proof (translation)
-Use `⟨?_⟩` and prove the remaining obligations. Establish `e : (fun p : LL × M => p.1 • p.2) = fun p : LL × M => (algebraMap LL LL' p.1) • p.2`. Use function extensionality and compare the values at `p`. Rewrite using `[algebraMap_smul]`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hc.comp continuous_fst).smul continuous_snd`.
+A detailed English derivation is pending.
 -/
 theorem contSMul_of (hc : Continuous (algebraMap LL LL')) (M : Type) [AddCommGroup M] [Module LL M]
     [Module LL' M] [IsScalarTower LL LL' M] [TopologicalSpace M] [ContinuousSMul LL' M] :
@@ -107,19 +107,19 @@ theorem contSMul_of (hc : Continuous (algebraMap LL LL')) (M : Type) [AddCommGro
   exact (hc.comp continuous_fst).smul continuous_snd
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example (V : Type) [AddCommGroup V] [Module LL V] : Module O' (LL' ⊗[LL] V) := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example (V : Type) [AddCommGroup V] [Module LL V] : IsScalarTower O' LL' (LL' ⊗[LL] V) := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example (V : Type) [AddCommGroup V] [Module LL V] : IsScalarTower Qp LL' (LL' ⊗[LL] V) := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example (V : Type) [AddCommGroup V] [Module LL V] [FiniteDimensional LL V] :
     FiniteDimensional LL' (LL' ⊗[LL] V) := inferInstance
@@ -137,7 +137,7 @@ def bT {V : Type} [AddCommGroup V] [Module LL V] [Module O V] [IsScalarTower O L
   Submodule.span O' (Set.range fun t : T => (1 : LL') ⊗ₜ[LL] (t : V))
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul LL c v, TensorProduct.tmul_smul, algebraMap_smul]`. Conclude with `(algebraMap_smul O' c _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_tmul_smul {V : Type} [AddCommGroup V] [Module LL V] [Module O V] [IsScalarTower O LL V]
     (c : O) (v : V) :
@@ -173,7 +173,7 @@ def basisV {ι : Type} [Fintype ι] (T : Submodule O V) (b : Module.Basis ι O T
       exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩))
 
 /- English proof (translation)
-Simplify using `[basisV]`.
+Simplify using the standard rewrite rules.
 -/
 theorem basisV_apply {ι : Type} [Fintype ι] (T : Submodule O V) (b : Module.Basis ι O T)
     (hspan : Submodule.span LL (T : Set V) = ⊤) (i : ι) : basisV T b hspan i = (b i : V) := by
@@ -193,7 +193,7 @@ def basisV' {ι : Type} [Fintype ι] (T : Submodule O V) (b : Module.Basis ι O 
   (basisV T b hspan).baseChange LL'
 
 /- English proof (translation)
-Simplify using `[basisV', Module.Basis.baseChange_apply, basisV_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem basisV'_apply {ι : Type} [Fintype ι] (T : Submodule O V) (b : Module.Basis ι O T)
     (hspan : Submodule.span LL (T : Set V) = ⊤) (i : ι) :
@@ -201,13 +201,11 @@ theorem basisV'_apply {ι : Type} [Fintype ι] (T : Submodule O V) (b : Module.B
   simp [basisV', Module.Basis.baseChange_apply, basisV_apply]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨t, rfl⟩`. Establish `: t ∈ Submodule.span O (Set.range b)` using `by rw [b.span_eq]; trivial`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun O).1 this`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `ht : (t : V) = ∑ i, c i • (b i : V)`. Use `congrArg Subtype.val hc` as an intermediate fact. Simplify using `using this.symm`. Use `show (1 : LL') ⊗ₜ[LL] (t : V) ∈ _`. Rewrite using `[ht, TensorProduct.tmul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[one_tmul_smul (O' := O')]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`.
-
-Conclude with `Submodule.subset_span ⟨b i, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem bT_eq {ι : Type} [Fintype ι] (T : Submodule O V) (b : Module.Basis ι O T) :
     bT (LL' := LL') (O' := O') T = Submodule.span O' (Set.range fun i => (1 : LL') ⊗ₜ[LL] (b i : V)) := by
@@ -292,7 +290,7 @@ variable {G : Type} [Group G] {Qp LL LL' O O' : Type} [Field Qp] [Field LL] [Fie
 abbrev bf (f : V →ₗ[LL] V₂) : (LL' ⊗[LL] V) →ₗ[LL'] (LL' ⊗[LL] V₂) := f.baseChange LL'
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a v => simp [bf, bρ, hf]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem bf_equiv {ρ : Representation LL G V} {ρ₂ : Representation LL G V₂} (f : V →ₗ[LL] V₂)
     (hf : ∀ g x, f (ρ g x) = ρ₂ g (f x)) (g : G) (x : LL' ⊗[LL] V) :
@@ -303,9 +301,7 @@ theorem bf_equiv {ρ : Representation LL G V} {ρ₂ : Representation LL G V₂}
   | add x y hx hy => rw [map_add, map_add, hx, hy, map_add, map_add]
 
 /- English proof (translation)
-Use `Submodule.span_induction (fun y hy => ?_) (by simp) (fun a b _ _ ha hb => ?_) (fun c a _ ha => ?_) hx` and prove the remaining obligations. Take `⟨t, rfl⟩` from `hy`. Conclude with `Submodule.subset_span ⟨⟨f t, hf t t.2⟩, by simp [bf]⟩`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ ha hb`.
-
-Rewrite using `[← algebraMap_smul LL' c a, map_smul, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ ha`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem baseChange_map_mem_lattice {f : V →ₗ[LL] V₂} {T : Submodule O V} {T₂ : Submodule O V₂} (hf : ∀ x ∈ T, f x ∈ T₂)
     (x : LL' ⊗[LL] V) (hx : x ∈ bT (LL' := LL') (O' := O') T) :
@@ -318,7 +314,7 @@ theorem baseChange_map_mem_lattice {f : V →ₗ[LL] V₂} {T : Submodule O V} {
   · rw [← algebraMap_smul LL' c a, map_smul, algebraMap_smul]; exact Submodule.smul_mem _ _ ha
 
 /- English proof (translation)
-Use `Submodule.span_induction (fun z hz => ?_) ⟨0, Submodule.zero_mem _, by simp⟩ (fun a b _ _ ⟨xa, ha, ea⟩ ⟨xb, hb, eb⟩ => ⟨xa + xb, Submodule.add_mem _ ha hb, by rw [map_add, ea, eb]⟩) (fun c a _ ⟨xa, ha, ea⟩ => ⟨c • xa, Submodule.smul_mem _ _ ha, by` and prove the remaining obligations. Rewrite using `[← algebraMap_smul LL' c xa, map_smul, ea, algebraMap_smul]⟩) hy`. Take `⟨t, rfl⟩` from `hz`. Take `⟨x, hx, e⟩` from `hon t t.2`. Conclude with `⟨(1 : LL') ⊗ₜ[LL] x, Submodule.subset_span ⟨⟨x, hx⟩, rfl⟩, by simp [bf, e]⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem bf_onto {f : V →ₗ[LL] V₂} {T : Submodule O V} {T₂ : Submodule O V₂}
     (hon : ∀ y ∈ T₂, ∃ x ∈ T, f x = y) (y : LL' ⊗[LL] V₂) (hy : y ∈ bT (LL' := LL') (O' := O') T₂) :
@@ -391,7 +387,7 @@ def bHom (hc : Continuous (algebraMap LL LL')) (hO' : Function.Injective (algebr
     T_le := fun x hx => baseChange_map_mem_lattice (O' := O') F.T_le x hx }
 
 /- English proof (translation)
-Introduce `y hy` and use `bf_onto (O' := O') hF y hy`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem bHom_onto (hc : Continuous (algebraMap LL LL')) (hO' : Function.Injective (algebraMap O' LL'))
     {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) (hF : F.Onto) : (bHom (O' := O') hc hO' F).Onto :=

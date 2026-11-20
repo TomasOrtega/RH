@@ -12,9 +12,9 @@ namespace GlobalTheory.QLog.LieAdd
 variable {R : Type} [CommRing R] {d : ℕ}
 
 /- English proof (translation)
-Establish `ha : HasSubst (fun _ : Fin d => (0 : MvPowerSeries (Fin d) R))` using `hasSubst_of_constantCoeff_zero fun _ => map_zero _`. Use extensionality with `e`. Rewrite using `[coeff_subst ha, map_zero]`. Use `finsum_eq_zero_of_forall_eq_zero fun a => ?_` and prove the remaining obligations. Distinguish the cases in `h : a = 0`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Rewrite using `[coeff_zero_eq_constantCoeff_apply, hf, zero_smul]`. Take `⟨s, hs⟩` from `Finsupp.ne_iff.1 h`. Establish `: (a.prod fun _ k => (0 : MvPowerSeries (Fin d) R) ^ k) = 0` using `Finset.prod_eq_zero (i := s) (Finsupp.mem_support_iff.2 (by simpa using hs)) (zero_pow (by simpa using hs))`. Rewrite using `[this, map_zero, smul_zero]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_zero_of_constantCoeff {f : MvPowerSeries (Fin d) R} (hf : constantCoeff f = 0) :
     subst (fun _ : Fin d => (0 : MvPowerSeries (Fin d) R)) f = 0 := by
@@ -33,9 +33,9 @@ theorem subst_zero_of_constantCoeff {f : MvPowerSeries (Fin d) R} (hf : constant
     rw [this, map_zero, smul_zero]
 
 /- English proof (translation)
-Proceed by induction on `n generalizing i with`. Consider the case `zero => simp [nmul]`. Consider the case `succ n ih`. Rewrite using `[nmul, Function.iterate_succ_apply', ← nmul, op, at2]`. Establish `hs : ∀ j, constantCoeff (Sum.elim (nmul μ n) (fun i => (X i : MvPowerSeries (Fin d) R)) j) = 0`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply the tactic sequence `rintro (j | j) <;> simp [ih]`. Conclude with `constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero hs) hs (hμ i)`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem constantCoeff_nmul {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R}
     (hμ : ∀ i, constantCoeff (μ i) = 0) (n : ℕ) (i : Fin d) : constantCoeff (nmul μ n i) = 0 := by
@@ -49,13 +49,13 @@ theorem constantCoeff_nmul {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R}
     exact constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero hs) hs (hμ i)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[Nat.cast_zero, zero_smul]`. Conclude with `subst_zero_of_constantCoeff hf0`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Establish `hs : ∀ j, constantCoeff (Sum.elim (nmul μ n) (fun i => (X i : MvPowerSeries (Fin d) R)) j) = 0`. Apply the tactic sequence `rintro (j | j) <;> simp [constantCoeff_nmul hμ]`. Establish `hb` using `hasSubst_of_constantCoeff_zero hs`. Establish `hm : nmul μ (n + 1) = fun i => subst (Sum.elim (nmul μ n) fun i => X i) (μ i)`. Rewrite using `[nmul, Function.iterate_succ_apply', ← nmul]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hc : subst μ f = inL f + inR f`. Rewrite `hf` using `[cob1, sub_sub, sub_eq_zero]`. Conclude with `hf`. Establish `hl0 : ∀ i, constantCoeff (X (Sum.inl i) : MvPowerSeries (Fin d ⊕ Fin d) R) = 0` using `fun _ => constantCoeff_X _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hr0 : ∀ i, constantCoeff (X (Sum.inr i) : MvPowerSeries (Fin d ⊕ Fin d) R) = 0` using `fun _ => constantCoeff_X _`. Rewrite using `[hm, ← subst_comp_subst_apply (hasSubst_of_constantCoeff_zero hμ) hb, hc, subst_add hb, inL, inR, subst_comp_subst_apply (hasSubst_of_constantCoeff_zero hl0) hb, subst_comp_subst_apply (hasSubst_of_constantCoeff_zero hr0) hb]`. Simplify using `only [subst_X hb, Sum.elim_inl, Sum.elim_inr]`. Rewrite using `[ih, subst_self, id, Nat.cast_succ, add_smul, one_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subst_nmul {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R}
     (hμ : ∀ i, constantCoeff (μ i) = 0) {f : MvPowerSeries (Fin d) R} (hf0 : constantCoeff f = 0)
@@ -85,18 +85,18 @@ theorem subst_nmul {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R}
     rw [ih, subst_self, id, Nat.cast_succ, add_smul, one_smul]
 
 /- English proof (translation)
-Rewrite using `[nmul, Function.iterate_succ_apply', ← nmul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nmul_succ {S : Type} [CommRing S] (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) S) (n : ℕ) :
     nmul μ (n + 1) = op μ (nmul μ n) fun i => X i := by
   rw [nmul, Function.iterate_succ_apply', ← nmul]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => funext i`. Simplify using `[up, nmul]`. Consider the case `succ n ih`. Establish `hs : ∀ j, constantCoeff (Sum.elim (nmul μ n) (fun i => (X i : MvPowerSeries (Fin d) B)) j) = 0`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Apply the tactic sequence `rintro (j | j) <;> simp [constantCoeff_nmul hμ]`. Use function extensionality and compare the values at `i`. Rewrite using `[nmul_succ, nmul_succ, ← ih]`. Simplify using `only [up, op, at2]`. Rewrite using `[map_subst (hasSubst_of_constantCoeff_zero hs)]`.
+Apply the first step, then apply the next step to every resulting obligation. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `rcases j with j | j <;> simp [map_X, up]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem up_nmul {B Q : Type} [CommRing B] [CommRing Q] [Algebra B Q]
     {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) B} (hμ : ∀ i, constantCoeff (μ i) = 0) (n : ℕ) :
@@ -122,9 +122,9 @@ open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory
 namespace GlobalTheory.QLog
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ _ hv G d c f hf0 hf`. Establish `hμ` using `c.isLaw.const`. Establish `hμC : ∀ i, constantCoeff (up C c.μ i) = 0` using `fun i => by`. Rewrite using `[up, constantCoeff_map, hμ, map_zero]`. Use `(c.isLie_iff hv.hom_inj f 0).2 fun n => ⟨0, ?_, fun w φ _ => by simp⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_zero, defect, LieAdd.up_nmul hμ, LieAdd.subst_nmul hμC hf0 hf, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Chart.isLie_zero_of_cob1_eq_zero : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C]
     [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C]

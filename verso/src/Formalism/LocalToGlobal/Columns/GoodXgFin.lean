@@ -19,15 +19,15 @@ def gxIrrSet (k : Type) [Field k] : Set (G → k) :=
 open Classical in
 
 /- English proof (translation)
-Take `⟨n, ρ, hρ, rfl⟩` from `hψ`. Take `⟨n', ρ', hρ', rfl⟩` from `hψ'`. Use `hρ` as an intermediate fact. Use `hρ'` as an intermediate fact. Use `letI : Invertible (Nat.card G : k) := invertibleOfNonzero (by exact_mod_cast Nat.card_pos.ne')`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Rewrite using `[Representation.char_orthonormal ρ ρ']`. Distinguish the cases in `h : ρ.character = ρ'.character`. Rewrite using `[if_pos h]`. Establish `: Nonempty (ρ'.Equiv ρ)`. Assume the negation of the conclusion as `hne`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h1` using `Representation.char_orthonormal ρ ρ`. Rewrite `h1` using `[if_pos ⟨Representation.Equiv.refl ρ⟩]`. Establish `h2` using `Representation.char_orthonormal ρ ρ'`. Rewrite `h2` using `[if_neg hne]`. Rewrite `h2` using `[← h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h2]`. Conclude with `zero_ne_one h1`. Rewrite using `[if_pos this]`. Rewrite using `[if_neg h]`. Establish `: ¬ Nonempty (ρ'.Equiv ρ)` using `fun ⟨φ⟩ => h (Representation.char_iso φ).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg this]`.
+A detailed English derivation is pending.
 -/
 theorem gx_orth {k : Type} [Field k] [IsAlgClosed k] [CharZero k] {ψ ψ' : G → k}
     (hψ : ψ ∈ gxIrrSet (G := G) k) (hψ' : ψ' ∈ gxIrrSet (G := G) k) :
@@ -57,15 +57,15 @@ theorem gx_orth {k : Type} [Field k] [IsAlgClosed k] [CharZero k] {ψ ψ' : G �
     rw [if_neg this]
 
 /- English proof (translation)
-Rewrite using `[linearIndependent_iff']`. Introduce `s c hs ψ0 hψ0`. Establish `key : ∀ g : G, ∑ ψ ∈ s, c ψ * (ψ : G → k) g = 0`. Introduce `g`. Use `congrFun hs g` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `[Finset.sum_apply]`. Establish `h3 : ∑ ψ ∈ s, c ψ * ((Nat.card G : k)⁻¹ * ∑ g : G, (ψ : G → k) g * (ψ0 : G → k) g⁻¹) = 0`. Establish `hre : ∑ ψ ∈ s, c ψ * ((Nat.card G : k)⁻¹ * ∑ g : G, (ψ : G → k) g * (ψ0 : G → k) g⁻¹) = (Nat.card G : k)⁻¹ * ∑ g : G, (∑ ψ ∈ s, c ψ * (ψ : G → k) g) * (ψ0 : G → k) g⁻¹`. Repeatedly rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun ψ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hre]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[key]`. Establish `h4 : ∀ ψ ∈ s, c ψ * ((Nat.card G : k)⁻¹ * ∑ g : G, (ψ : G → k) g * (ψ0 : G → k) g⁻¹) = if ψ = ψ0 then c ψ else 0`. Introduce `ψ _`. Rewrite using `[gx_orth ψ.2 ψ0.2]`. Distinguish the cases in `h : ψ = ψ0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `[h]`. Establish `h' : (ψ : G → k) ≠ ψ0` using `fun e => h (Subtype.ext e)`. Simplify using `[h, h']`. Rewrite `h3` using `[Finset.sum_congr rfl h4, Finset.sum_ite_eq' s ψ0 c]`. Simplify `h3` using `[hψ0]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem gx_linInd {k : Type} [Field k] [IsAlgClosed k] [CharZero k] :
     LinearIndependent k (fun ψ : gxIrrSet (G := G) k => (ψ : G → k)) := by
@@ -99,14 +99,14 @@ theorem gx_linInd {k : Type} [Field k] [IsAlgClosed k] [CharZero k] :
   simpa [hψ0] using h3
 
 /- English proof (translation)
-The claim follows from `Set.finite_coe_iff.1 (gx_linInd (G := G) (k := k)).finite`.
+A detailed English derivation is pending.
 -/
 theorem gxIrrSet_finite {k : Type} [Field k] [IsAlgClosed k] [CharZero k] : (gxIrrSet (G := G) k).Finite := Set.finite_coe_iff.1 (gx_linInd (G := G) (k := k)).finite
 
 /- English proof (translation)
-Use `haveI : CharZero (AlgebraicClosure K) := charZero_of_injective_algebraMap (algebraMap K (AlgebraicClosure K)).injective`. Apply `Set.Finite.of_finite_image (f := fun χ : G → K => fun t => algebraMap K (AlgebraicClosure K) (χ t))` to reduce the goal to its premises. Apply `(gxIrrSet_finite (G := G) (k := AlgebraicClosure K)).subset` to reduce the goal to its premises. Introduce and unpack `_ ⟨χ, ⟨n, ρ, hρ, hχ⟩, rfl⟩`. Conclude with `⟨n, ρ, hρ, funext hχ⟩`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a _ b _ hab`. Use function extensionality and compare the values at `t`. Conclude with `(algebraMap K (AlgebraicClosure K)).injective (congrFun hab t)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem absIrrChar_finite {K : Type} [Field K] [CharZero K] : {χ : G → K | IsAbsIrrChar χ}.Finite := by
   haveI : CharZero (AlgebraicClosure K) :=

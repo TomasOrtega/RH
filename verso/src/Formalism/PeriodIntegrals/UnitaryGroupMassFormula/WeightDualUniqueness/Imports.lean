@@ -6,11 +6,9 @@ open NumberField ReciprocityTheory.Aut Formalism.L2.NG
 namespace PI.UnitaryGroupMassFormula.AlgWtDualUniq
 
 /- English proof (translation)
-Establish `fd : ∀ c : AlgWt L n, FiniteDimensional ℂ c.W`. Introduce `c`. Establish `h` using `c.alg`. Unfold `Formalism.AUTREP.IsAlgWeight at h`. Conclude with `h.1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b b' h1 h2`. Take `⟨B, hB0, hB⟩` from `h1`. Take `⟨C, hC0, hC⟩` from `h2`. Use `haveI := fd a`. Use `haveI := fd b`.
-
-Use `haveI := fd b'`. Use `haveI : a.ρ.IsIrreducible := a.irr`. Use `haveI : b.ρ.IsIrreducible := b.irr`. Use `haveI : b'.ρ.IsIrreducible := b'.irr`. Conclude with `dual_unique B hB hB0 C hC hC0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem main (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) : Formalism.L2.Props.DualUnique L n := by
 

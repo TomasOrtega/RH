@@ -19,13 +19,13 @@ namespace GlobalTheory.HeisTarget
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `symplOH`. Rewrite using `[GlobalTheory.OrientedHeis.symplO_skew, mul_neg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplOH_skew' (S T : HSp D) (x y : WO S T) : symplOH S T y x = -symplOH S T x y := by
   unfold symplOH; rw [GlobalTheory.OrientedHeis.symplO_skew, mul_neg]
 
 /- English proof (translation)
-Unfold `symplOH`. Rewrite using `[← add_mul, ← map_add, add_halves, map_one, one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplO_eq_two (S T : HSp D) (x y : WO S T) : symplO S T x y = symplOH S T x y + symplOH S T x y := by
   unfold symplOH
@@ -34,15 +34,13 @@ theorem symplO_eq_two (S T : HSp D) (x y : WO S T) : symplO S T x y = symplOH S 
 variable {ψ : AddChar (AF D.host.F) ℂ} {S T T₀ : HSp D} {ρ : ℕ} (d : HypDec T T₀ ρ)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w₀`. Establish `key : ∀ ξ' : Mx D ρ S.rank, heisO ψ S T (d.incX S ξ') (heisO ψ S T (d.incAdj S y) (heisO ψ S T (d.inc0 S w₀) (heisO ψ S T (d.incX S ξ) f))) 0 = ψ (symplO S T (d.incAdj S y) (d.incX S ξ)) * heisO ψ S T (d.incX S (ξ' + ξ)) (heisO ψ S T (d.incAdj S y) (heisO ψ S T (d.inc0 S w₀) f)) …`. Introduce `ξ'`. Rewrite using `[HypDec.integrandT_eq, HypDec.integrandT_eq]`. Simplify using `only [heisO]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← mul_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul, map_add (d.incX S)]`. Use `congr 1`. Use `congr 1`. Establish `h1` using `d.symplOH_incX_incX S ξ' ξ`. Establish `h2 : symplOH S T (d.inc0 S w₀) (d.incX S ξ) = 0`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[symplOH_skew', d.wittDecomp_sympl_inclIsotropic_inclAnisotropic S ξ w₀, neg_zero]`. Establish `h3` using `symplOH_skew' S T (d.incAdj S y) (d.incX S ξ)`. Simplify using `only [GlobalTheory.OrientedHeis.symplOH_add_left, GlobalTheory.OrientedHeis.symplOH_add_right, h1, h2, h3, symplO_eq_two]`. Expand and normalize the polynomial expressions, which then agree. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the equality to equality of the corresponding arguments.
 
-Normalize the expressions using the abelian group laws. Use `show ∫ ξ' in 𝓕, _ ∂μ = ψ _ * ∫ ξ' in 𝓕, _ ∂μ`. Repeatedly rewrite using `[key]`. Rewrite using `[integral_const_mul]`. Use `congr 1`.
-
-Conclude with `covolOne_integral_add hμ (fun ξ' => heisO ψ S T (d.incX S ξ') (heisO ψ S T (d.incAdj S y) (heisO ψ S T (d.inc0 S w₀) f)) 0) (d.integrandT_periodic hf y w₀) ξ`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem mixT_heis_incX {μ : Measure (Mx D ρ S.rank)} {𝓕 : Set (Mx D ρ S.rank)}
     (hμ : IsCovolOne (ratMx D ρ S.rank) μ 𝓕) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f)
@@ -78,13 +76,13 @@ theorem mixT_heis_incX {μ : Measure (Mx D ρ S.rank)} {𝓕 : Set (Mx D ρ S.ra
     (d.integrandT_periodic hf y w₀) ξ
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w₀`. Establish `key : ∀ ξ' : Mx D ρ S.rank, heisO ψ S T (d.incX S ξ') (heisO ψ S T (d.incAdj S y) (heisO ψ S T (d.inc0 S w₀) (heisO ψ S T (d.inc0 S v) f))) 0 = ψ (symplOH S T₀ w₀ v) * heisO ψ S T (d.incX S ξ') (heisO ψ S T (d.incAdj S y) (heisO ψ S T (d.inc0 S (w₀ + v)) f)) 0`. Introduce `ξ'`. Rewrite using `[HypDec.integrandT_eq, HypDec.integrandT_eq]`. Simplify using `only [heisO]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← mul_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul, map_add (d.inc0 S)]`. Use `congr 1`. Use `congr 1`. Establish `h1` using `d.wittDecomp_sympl_inclIsotropic_inclAnisotropic S ξ' v`. Establish `h2 : symplOH S T (d.incAdj S y) (d.inc0 S v) = 0`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[HypDec.incAdj_apply]`. Conclude with `d.wittDecomp_sympl_inclDual_inclAnisotropic S _ v`. Establish `h3` using `d.wittDecomp_sympl_inclAnisotropic_inclAnisotropic S w₀ v`. Simplify using `only [GlobalTheory.OrientedHeis.symplOH_add_left, h1, h2, h3]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Normalize the expressions using the abelian group laws. Use `show ∫ ξ' in 𝓕, _ ∂μ = ψ _ * ∫ ξ' in 𝓕, _ ∂μ`. Repeatedly rewrite using `[key]`. Rewrite using `[integral_const_mul]`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mixedModelTarget_heisenberg_anisotropic_part {μ : Measure (Mx D ρ S.rank)} {𝓕 : Set (Mx D ρ S.rank)}
     (f : WO S T → ℂ) (v : WO S T₀) (y : Mx D S.rank ρ) :
@@ -120,11 +118,11 @@ namespace GlobalTheory.HeisTarget
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨μ', 𝓕', hμ', -, -, -, hsw⟩` from `GlobalTheory.T.wittMixedCoords_conj_hermitianAdjoint D ψ hψ S T T₀ ρ d μ 𝓕 hμ`. Establish `hg : IsThetaFunO ψ T S (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.dagger T S) f)` using `((GlobalTheory.T.hermitianAdjoint_symplectic_action_theta_heisenberg D ψ hψ S T).2.2.1 f).2 hf`. Establish `h5` using `(GlobalTheory.T.heisenbergOperator_thetaFunctional_mixedSourceModel D ψ hψ T T₀ S ρ d ⟨μ', 𝓕', hμ'⟩ _ hg).2.2.2.2 0`. Establish `hx : (D.host.xi0 : D.host.E) ≠ 0` using `GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D`. Set `σ : Matrix (Fin S.rank) (Fin ρ) D.host.E ≃ Matrix (Fin S.rank) (Fin ρ) D.host.E` to `{ toFun := fun y => D.host.xi0⁻¹ • y invFun := fun y => D.host.xi0 • y left_inv := fun y => by simp only [smul_smul, mul_inv_cancel₀ hx, one_smul] right_inv := fun y => by simp only [smul_smul, inv_mul_cancel₀ hx, one_smul] }`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite `h5` using `[← σ.hasSum_iff]`. Establish `e : ∀ y : Matrix (Fin S.rank) (Fin ρ) D.host.E, d.mixS S ψ μ' 𝓕' (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.dagger T S) f) (rat (σ y)) 0 = starRingEnd ℂ (d.mixT S ψ μ 𝓕 f (rat y) 0)`. Introduce `y`. Use `show d.mixS S ψ μ' 𝓕' _ (rat (D.host.xi0⁻¹ • y)) 0 = _`. Rewrite using `[rat_smul, hsw f (rat y)]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj, GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.dagger]`. Establish `h0 : GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.dagger T S) f (d.ext0 S 0) = starRingEnd ℂ (f 0)`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj, GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.dagger]`. Simplify using `only [Function.comp_def, e, h0] at h5`. Conclude with `Complex.hasSum_conj'.1 h5`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasSum_mixT {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {S T T₀ : HSp D} {ρ : ℕ}
     (d : HypDec T T₀ ρ) {μ : Measure (Mx D ρ S.rank)} {𝓕 : Set (Mx D ρ S.rank)}
@@ -154,14 +152,14 @@ theorem hasSum_mixT {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1))
   exact Complex.hasSum_conj'.1 h5
 
 /- English proof (translation)
-Introduce `ψ hψ S T T₀ ρ d μ 𝓕 hμ f hf`. Conclude with `⟨fun ξ y => mixT_heis_incX d hμ hf ξ y, fun w₀ y => mixedModelTarget_heisenberg_anisotropic_part d f w₀ y, hasSum_mixT hψ d hμ hf⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem heisenbergTarget (D : D7) : GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.HeisenbergTarget D := by
   intro ψ hψ S T T₀ ρ d μ 𝓕 hμ f hf
   exact ⟨fun ξ y => mixT_heis_incX d hμ hf ξ y, fun w₀ y => mixedModelTarget_heisenberg_anisotropic_part d f w₀ y, hasSum_mixT hψ d hμ hf⟩
 
 /- English proof (translation)
-The claim follows from `heisenbergTarget`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.HeisenbergTarget D := heisenbergTarget
 

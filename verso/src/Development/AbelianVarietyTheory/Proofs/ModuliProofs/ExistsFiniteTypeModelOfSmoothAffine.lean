@@ -7,17 +7,17 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 
 /- English proof (translation)
-Introduce `V _ X p _ _`. Set `B : CommRingCat.{0}` to `Γ(X, ⊤)`. Set `g : CommRingCat.of V ⟶ B` to `(Scheme.Spec.preimage (X.isoSpec.inv ≫ p)).unop`. Establish `hg : Spec.map g = X.isoSpec.inv ≫ p` using `Scheme.Spec.map_preimage _`. Establish `hpg : p = X.isoSpec.hom ≫ Spec.map g` using `by rw [hg, Iso.hom_inv_id_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsg : Smooth (Spec.map g)` using `by rw [hg]; infer_instance`. Establish `hgs : g.hom.Smooth` using `(HasRingHomProperty.Spec_iff (P := @Smooth)).mp hsg`. Set `_ : Algebra V B` to `g.hom.toAlgebra`. Establish `: Algebra.Smooth V B` using `hgs`. Take `⟨A₀, B₀, _, _, hA₀, hsm, ⟨ψe⟩⟩` from `Algebra.Smooth.exists_subalgebra_fg ℤ V B`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `T : CommRingCat.{0}` to `CommRingCat.of (TensorProduct A₀ V B₀)`. Set `inl : CommRingCat.of V ⟶ T` to `CommRingCat.ofHom Algebra.TensorProduct.includeLeftRingHom`. Set `inr : CommRingCat.of B₀ ⟶ T` to `CommRingCat.ofHom (Algebra.TensorProduct.includeRight (R := A₀) (A := V)).toRingHom`. Set `jIso : T ≅ B` to `{ hom := CommRingCat.ofHom ψe.symm.toRingHom inv := CommRingCat.ofHom ψe.toRingHom hom_inv_id := CommRingCat.hom_ext (RingHom.ext fun x => ψe.apply_symm_apply x) inv_hom_id := CommRingCat.hom_ext (RingHom.ext fun x => ψe.symm_apply_apply x) }`. Establish `hj : inl ≫ jIso.hom = g`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use extensionality with `v`. Conclude with `ψe.symm.commutes v`. Establish `hpb` using `(isPullback_SpecMap_of_isPushout _ _ _ _ (CommRingCat.isPushout_tensorProduct A₀ V B₀)).flip`. Set `e : X ≅ Spec T` to `X.isoSpec ≪≫ Scheme.Spec.mapIso jIso.op`. Use `⟨A₀, inferInstance, algebraMap A₀ V, Spec (CommRingCat.of B₀), Spec.map (CommRingCat.ofHom (algebraMap A₀ B₀)), e.hom ≫ Spec.map inr, ?_, ?_, inferInstance, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `(Subalgebra.fg_iff_finiteType A₀).mp hA₀` and compare the differences between its conclusion and the goal. Conclude with `(HasRingHomProperty.Spec_iff (P := @Smooth)).mpr (RingHom.smooth_algebraMap.mpr hsm)`. Use `IsPullback.of_iso hpb e.symm (Iso.refl _) (Iso.refl _) (Iso.refl _) ?_ ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[Iso.refl_hom, Category.comp_id, Iso.symm_hom, Iso.inv_hom_id_assoc]`. Rewrite using `[Iso.refl_hom, Category.comp_id, Iso.symm_hom, Iso.eq_inv_comp, hpg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(X.isoSpec.hom ≫ Spec.map jIso.hom) ≫ Spec.map inl = _`. Rewrite using `[Category.assoc, ← Spec.map_comp, hj]`. Conclude with `(Category.comp_id _).trans (Category.id_comp _).symm`. Conclude with `(Category.comp_id _).trans (Category.id_comp _).symm`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.exists_finiteType_model_of_smooth_affine :
     ∀ (V : Type) [CommRing V] (X : Scheme.{0}) (p : X ⟶ Sp V), IsAffine X → Smooth p → ∃ (R : Type) (_ : CommRing R) (f : R →+* V) (X₀ : Scheme.{0}) (p₀ : X₀ ⟶ Sp R) (φ : X ⟶ X₀), Algebra.FiniteType ℤ R ∧ Smooth p₀ ∧ IsAffine X₀ ∧ IsPullback φ p p₀ (spMap f) := by

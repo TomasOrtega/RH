@@ -7,25 +7,23 @@ namespace GroundTheory.Heights₂.Heights
 open MvPolynomial ComplexSets
 
 /- English proof (translation)
-Introduce `n I q p hp`. Establish `hpP : p.IsPrime` using `hp.1.1`. Set `ext : Ideal (MvPolynomial (Fin n) ℂ) → Ideal (Localization.AtPrime (RingHom.ker (eval q)))` to `fun K ↦ K.map (algebraMap (MvPolynomial (Fin n) ℂ) (Localization.AtPrime (RingHom.ker (eval q))))`. Set `mk` to `Ideal.Quotient.mk (ext I)`. Establish `hmk : Function.Surjective mk` using `Ideal.Quotient.mk_surjective`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcomp : algebraMap (MvPolynomial (Fin n) ℂ) (curveLocalRing I q) = mk.comp (algebraMap (MvPolynomial (Fin n) ℂ) (Localization.AtPrime (RingHom.ker (eval q))))` using `rfl`. Set `P : Ideal (Localization.AtPrime (RingHom.ker (eval q)))` to `p.comap mk`. Establish `hPP : P.IsPrime` using `Ideal.comap_isPrime mk p`. Establish `hIP : ext I ≤ P` using `fun x hx ↦ by`. Express the relevant statement in the definitionally equal form `mk x ∈ p`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.2 hx]`. Conclude with `p.zero_mem`. Establish `hpmap : P.map mk = p` using `Ideal.map_comap_of_surjective mk hmk p`. Set `J : Ideal (MvPolynomial (Fin n) ℂ)` to `P.comap (algebraMap (MvPolynomial (Fin n) ℂ) (Localization.AtPrime (RingHom.ker (eval q))))`. Establish `hJP : J.IsPrime` using `Ideal.comap_isPrime _ P`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJmem : ∀ f, f ∈ J ↔ algebraMap (MvPolynomial (Fin n) ℂ) (curveLocalRing I q) f ∈ p` using `fun f ↦ by`. Rewrite using `[hcomp]`. Both sides reduce to the same expression. Establish `hextJ : ext J = P` using `IsLocalization.map_under (RingHom.ker (eval q)).primeCompl _ P`. Establish `hIJ : I ≤ J` using `fun f hf ↦ hIP (Ideal.mem_map_of_mem _ hf)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJm : J ≤ RingHom.ker (eval q)`. Introduce `f hf`. Assume the negation of the conclusion as `h`. Conclude with `hpP.ne_top (Ideal.eq_top_of_isUnit_mem _ ((hJmem f).1 hf) (isUnit_algebraMap_curveLocalRing I q f fun h' ↦ h (RingHom.mem_ker.2 h')))`. Establish `hJmin : J ∈ I.minimalPrimes`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨hJP, hIJ⟩, fun J' hJ' hJ'J ↦ ?_⟩` and prove the remaining obligations. Take `⟨hJ'P, hIJ'⟩` from `hJ'`. Establish `hdisj : Disjoint ((RingHom.ker (eval q)).primeCompl : Set (MvPolynomial (Fin n) ℂ)) J'` using `Set.disjoint_left.2 fun x hx hx' ↦ hx (hJm (hJ'J hx'))`. Establish `hP'P : (ext J').IsPrime` using `IsLocalization.isPrime_of_isPrime_disjoint (RingHom.ker (eval q)).primeCompl _ J' hJ'P hdisj`. Establish `hIP' : ext I ≤ ext J'` using `Ideal.map_mono hIJ'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hker : RingHom.ker mk ≤ ext J'`. Rewrite using `[Ideal.mk_ker]`. Conclude with `hIP'`. Establish `hp'P : ((ext J').map mk).IsPrime` using `Ideal.map_isPrime_of_surjective hmk hker`. Establish `hp'le : (ext J').map mk ≤ p`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hpmap, ← hextJ]`. Conclude with `Ideal.map_mono (Ideal.map_mono hJ'J)`. Establish `hpp' : p ≤ (ext J').map mk` using `hp.2 ⟨hp'P, bot_le⟩ hp'le`. Introduce `f hf`. Establish `h1 : mk (algebraMap _ (Localization.AtPrime (RingHom.ker (eval q))) f) ∈ (ext J').map mk` using `hpp' ((hJmem f).1 hf)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[← Ideal.mem_comap, Ideal.comap_map_of_surjective mk hmk, ← RingHom.ker_eq_comap_bot, Ideal.mk_ker, sup_eq_left.2 hIP']`. Establish `h2` using `(IsLocalization.under_map_of_isPrime_disjoint (RingHom.ker (eval q)).primeCompl (Localization.AtPrime (RingHom.ker (eval q))) hJ'P hdisj)`. Rewrite using `[← h2]`. Conclude with `h1`. Establish `hle : ext I ≤ ext J` using `Ideal.map_mono hIJ`.
-
-Use `⟨J, hJmin, hJm, (Ideal.Quotient.factor hle : curveLocalRing I q →+* curveLocalRing J q), Ideal.Quotient.factor_surjective hle, ?_, fun f ↦ Ideal.Quotient.factor_mk hle _⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `RingHom.ker (Ideal.Quotient.factor hle) = p`. Rewrite using `[Ideal.Quotient.factor_ker, hextJ]`. Conclude with `hpmap`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CurveMinimalPrimeQuotient.proof : CurveMinimalPrimeQuotient.Statement := by
   intro n I q p hp

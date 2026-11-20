@@ -64,7 +64,7 @@ def DivBy (g : Q.X → (FractionRing V)ˣ) (hD : IsPullDeg iw (mulDeg L.D l.M') 
       hD.e.hom.left ≫ pullback.fst L.D.P.A.hom (specOf iw) ≫ (L.oa.onB.act x).left)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem divFrom_iff : DivFrom L Q oQ iw s ε e ↔ ∃ g hD, DivBy L Q oQ iw s ε e g hD := Iff.rfl
 

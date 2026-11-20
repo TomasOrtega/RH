@@ -9,7 +9,7 @@ open PositivityTheory.RgBcC GlobalTheory.CompanionTheory.SobGL
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SobGL.LeftTr.Rw_left | exact GlobalTheory.CompanionTheory.SobGL.LeftTr.Rw_left | (intros; apply GlobalTheory.CompanionTheory.SobGL.LeftTr.Rw_left <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.left_translate_right_derivative : ∀ (n : ℕ) (V : Type) [NormedAddCommGroup V] [NormedSpace ℂ V] (f : Mat n → V),
     ContDiffOn ℝ ∞ f (GLs n) → ∀ x ∈ GLs n, ContDiffOn ℝ ∞ (fun y => f (x * y)) (GLs n) ∧

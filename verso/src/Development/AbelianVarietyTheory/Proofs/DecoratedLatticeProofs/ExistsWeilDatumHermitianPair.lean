@@ -15,7 +15,7 @@ open GlobalTheory.Unf
 namespace GlobalTheory.WeilDatumExistence
 
 /- English proof (translation)
-Introduce `D S T ψ χS χT hψ hS hT rS rT`. Conclude with `GlobalTheory.WeilExist.exists_isWeilDatumO D ψ hψ S T χS χT (GlobalTheory.WeilParts.exists_isEtaTilde_unramified D) hS hT rS rT`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem weilDatumExists : ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.WeilDatumExistenceCriterion.WeilDatumExists D := by
   intro D S T ψ χS χT hψ hS hT rS rT

@@ -10,11 +10,11 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `C _ v O _ _ Λ _ h N hv ρ τ hind htop hN`. Take `⟨π, hπ, -, hq⟩` from `GlobalTheory.T.eigen_projection_quotient_lattice C O Λ h ρ τ hind htop`. Establish `hsurj : Function.Surjective π` using `fun x => ⟨x, hπ x⟩`. Take `⟨g, hgC, hgO⟩` from `GlobalTheory.T.exists_spanning_image_lattice C O (eig C ρ τ) h π hsurj`. Establish `hq' : quotLattice C ρ τ = (Submodule.span O (Set.range g) : Set (eig C ρ τ))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hq, hgO]`. Take `⟨hrank, s, hs⟩` from `GlobalTheory.T.exteriorPower_top_finrank_one C (eig C ρ τ) h N g hgC hN`. Establish `hspan : detLattice C ρ τ N = Submodule.span O (Set.range (fun s : Fin N → Fin h => exteriorPower.ιMulti C N (g ∘ s)))`. Unfold `detLattice`. Rewrite using `[hq']`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.T.exteriorPower_span_of_lattice C O (eig C ρ τ) h N g`. Use `⟨hrank, ?_⟩` and prove the remaining obligations. Take `⟨w, hw, hwspan⟩` from `GlobalTheory.T.rank_one_lattice_span_singleton C v O (⋀[C]^N (eig C ρ τ)) (Fin N → Fin h) (fun s : Fin N → Fin h => exteriorPower.ιMulti C N (g ∘ s)) hv hrank ⟨s, hs⟩`. Conclude with `⟨w, hw, hspan.trans hwspan⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem detLattice_eq_span_singleton : ∀ (C : Type) [Field C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] (Λ : Type) [CommRing Λ] (h N : ℕ), v.Integers O → ∀ (ρ : Λ → Matrix (Fin h) (Fin h) O) (τ : Λ →+* O), iSupIndep (fun σ : Λ →+* O => eig C ρ σ) → (⨆ σ : Λ →+* O, eig C ρ σ) = ⊤ → Module.finrank C (eig C ρ τ) = N → Module.finrank C (detLine C ρ τ N) = 1 ∧ ∃ w : detLine C ρ τ N, w ≠ 0 ∧ detLattice C ρ τ N = Submodule.span O {w} := by
   intro C _ v O _ _ Λ _ h N hv ρ τ hind htop hN

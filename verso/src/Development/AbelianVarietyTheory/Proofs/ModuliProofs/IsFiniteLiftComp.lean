@@ -16,15 +16,13 @@ open GlobalTheory.Models
 namespace GlobalTheory.Models
 
 /- English proof (translation)
-Substitute `hg` using the available equality. Take `⟨θ, hθ1, hθ2⟩ : ∃ θ : pullback s' g' ⟶ pullback s (g' ≫ g), θ ≫ pullback.fst s (g' ≫ g) = pullback.fst s' g' ≫ p ∧ θ ≫ pullback.snd s (g' ≫ g) = pullback.snd s' g'` from `⟨pullback.lift (pullback.fst s' g' ≫ p) (pullback.snd s' g') (by rw [Category.assoc, w, pullback.condition_assoc]), pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩`. Take `⟨κ, hκ1, hκ2⟩ : ∃ κ : pullback s (g' ≫ g) ⟶ pullback s g, κ ≫ pullback.fst s g = pullback.fst s (g' ≫ g) ∧ κ ≫ pullback.snd s g = pullback.snd s (g' ≫ g) ≫ g'` from `⟨pullback.lift (pullback.fst s (g' ≫ g)) (pullback.snd s (g' ≫ g) ≫ g') (by rw [Category.assoc]; exact pullback.condition), pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩`. Establish `hfac : pullback.lift (p' ≫ p) s'' w'' = pullback.lift p' s'' w' ≫ θ`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Category.assoc, hθ1, pullback.lift_fst, pullback.lift_fst_assoc]`. Simplify using `only [Category.assoc, hθ2, pullback.lift_snd]`. Establish `hright : IsPullback (pullback.snd s (g' ≫ g)) κ g' (pullback.snd s g)`. Use `IsPullback.of_bot ?_ hκ2.symm (IsPullback.of_hasPullback s g).flip` and prove the remaining obligations. Rewrite using `[hκ1]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(IsPullback.of_hasPullback s (g' ≫ g)).flip`. Establish `hsq : IsPullback θ (pullback.fst s' g') κ (pullback.lift p s' w)`. Use `IsPullback.of_right ?_ ?_ hright` and prove the remaining obligations. Rewrite using `[hθ2, pullback.lift_snd]`. Conclude with `(IsPullback.of_hasPullback s' g').flip`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, hκ1, hθ1, pullback.lift_fst]`. Simplify using `only [Category.assoc, hκ2, reassoc_of% hθ2, pullback.lift_snd, pullback.condition]`. Establish `hfin : IsFinite θ` using `MorphismProperty.of_isPullback (P := @IsFinite) hsq.flip h`. Rewrite using `[hfac]`.
-
-Use `infer_instance`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFinite_lift_comp {X X' X'' S S' S'' : Scheme.{0}} {s : X ⟶ S} {s' : X' ⟶ S'} {s'' : X'' ⟶ S''}
     {g : S' ⟶ S} {g' : S'' ⟶ S'} {g'' : S'' ⟶ S} (hg : g'' = g' ≫ g) {p : X' ⟶ X} {p' : X'' ⟶ X'}
@@ -63,9 +61,9 @@ theorem isFinite_lift_comp {X X' X'' S S' S'' : Scheme.{0}} {s : X ⟶ S} {s' : 
   infer_instance
 
 /- English proof (translation)
-Introduce `E _ _ _ H U F O _ _ c t β U' F' O' _ _ c' t' β' U'' F'' O'' _ _ c'' t'' β'' C C' C'' b b' r ν r' ν' ν'' a a' hν`. Take `⟨mu, hmu⟩` from `sabComp pullCubComp E H _ _ _ C.t C'.t C''.t a.π a'.π a.mu a'.mu`. Establish `hsp : spMap (b'.comp b) = spMap b' ≫ spMap b`. Unfold `spMap`. Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hover : (a'.π ≫ a.π) ≫ C.s = C''.s ≫ spMap (b'.comp b)`. Rewrite using `[hsp, Category.assoc, a.π_over, ← Category.assoc, a'.π_over, Category.assoc]`. Use `⟨⟨a'.π ≫ a.π, hover, isFinite_lift_comp hsp a.π_over a'.π_over hover a.fin a'.fin, mu, ?_, ?_⟩, rfl, hmu⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, a'.j_comm, Category.assoc, a.j_comm, Category.assoc]`. Rewrite using `[hmu, hν, ← Category.assoc, a'.φ_comm, Category.assoc, a.φ_comm, Category.assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem above_comp : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (U : Scheme.{0}) (F O : Type) [Field F] [CommRing O] (c : U ⟶ Sp F) (t : SAB H U) (β : O →+* F) (U' : Scheme.{0}) (F' O' : Type) [Field F'] [CommRing O'] (c' : U' ⟶ Sp F') (t' : SAB H U') (β' : O' →+* F') (U'' : Scheme.{0}) (F'' O'' : Type) [Field F''] [CommRing O''] (c'' : U'' ⟶ Sp F'') (t'' : SAB H U'') (β'' : O'' →+* F'') (C : Cpt c t β) (C' : Cpt c' t' β') (C'' : Cpt c'' t'' β'') (b : O →+* O') (b' : O' →+* O'') (r : U' ⟶ U) (ν : SABMap t' t r) (r' : U'' ⟶ U') (ν' : SABMap t'' t' r') (ν'' : SABMap t'' t (r' ≫ r)) (a : C'.Above C b r ν) (a' : C''.Above C' b' r' ν'), ν''.φ = ν'.φ ≫ ν.φ → ∃ a'' : C''.Above C (b'.comp b) (r' ≫ r) ν'', a''.π = a'.π ≫ a.π ∧ a''.mu.φ = a'.mu.φ ≫ a.mu.φ := by
   intro E _ _ _ H U F O _ _ c t β U' F' O' _ _ c' t' β' U'' F'' O'' _ _ c'' t'' β'' C C' C'' b b' r ν r' ν' ν'' a a' hν

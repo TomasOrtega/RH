@@ -5,7 +5,7 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.BZMir.W
 namespace GlobalTheory.CompanionTheory.WhitDict
 
 /- English proof (translation)
-Unfold `GroundTheory.Automorphic.Whittaker.superdiagSum`. Rewrite using `[Finset.sum_filter, Fintype.sum_prod_type]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_filter_superdiag {k : Type} [Field k] {n : ℕ} (M : Matrix (Fin n) (Fin n) k) :
     (∑ p : Fin n × Fin n with (p.2 : ℕ) = p.1 + 1, M p.1 p.2) =
@@ -14,7 +14,7 @@ theorem sum_filter_superdiag {k : Type} [Field k] {n : ℕ} (M : Matrix (Fin n) 
   rw [Finset.sum_filter, Fintype.sum_prod_type]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ ψ n u`. Express the relevant statement in the definitionally equal form `((Circle.toUnits (ψ (∑ p : Fin n × Fin n with (p.2 : ℕ) = p.1 + 1, (u : GL (Fin n) k).val p.1 p.2)) : ℂˣ) : ℂ) = _`. Rewrite using `[sum_filter_superdiag]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem whitChar_eq_psiN : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle) (n : ℕ) (u : unipB k (Fin n)), ((whitChar ψ n u : ℂˣ) : ℂ) = GroundTheory.Automorphic.Whittaker.psiN (Circle.coeHom.compAddChar ψ) (u : GL (Fin n) k) := by
   intro k _ _ _ _ ψ n u

@@ -16,17 +16,17 @@ variable {σ : Type}
 def WSyn (_ : σ → ℕ) : Type := σ →₀ ℕ
 
 /- English proof (translation)
-Use `letI : LinearOrder σ := LinearOrder.lift' (Finite.equivFin σ) (Finite.equivFin σ).injective`. Set `key : (σ →₀ ℕ) → ℕ ×ₗ Lex (σ →₀ ℕ)` to `fun c => toLex (Finsupp.weight w c, toLex c)`. Establish `hinj : Function.Injective key`. Introduce `a b h`. Use `congrArg (fun x => ofLex (ofLex x).2) h` as an intermediate fact.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `[key]`. Establish `hadd : ∀ a b, key (a + b) = key a + key b`. Introduce `a b`. Simplify using `only [key, map_add]`. Both sides reduce to the same expression.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Use `letI : AddCommMonoid (WSyn w) := inferInstanceAs (AddCommMonoid (σ →₀ ℕ))`. Use `letI lo : LinearOrder (WSyn w) := LinearOrder.lift' key hinj`. Establish `hle : ∀ a b : WSyn w, a ≤ b ↔ key a ≤ key b` using `fun _ _ => Iff.rfl`. Establish `hlt : ∀ a b : WSyn w, a < b ↔ key a < key b` using `fun _ _ => Iff.rfl`. Use `⟨{ syn := WSyn w isOrderedAddMonoid_syn := ⟨fun a b h c => ?_, fun a b h c => ?_⟩ toSyn := AddEquiv.refl _ toSyn_monotone := fun a b h => ?_ wellFoundedLT_syn := ⟨?_⟩ }, ?_⟩` and prove the remaining obligations.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hle] at h ⊢ erw [hadd, hadd] gcongr`. Rewrite using `[hle] at h ⊢ erw [hadd, hadd] gcongr`. Express the relevant statement in the definitionally equal form `key a ≤ key b`. Simplify using `only [key, Prod.Lex.toLex_le_toLex]`. Take `⟨c, rfl⟩` from `exists_add_of_le h`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Break down `Nat.eq_zero_or_pos (Finsupp.weight w c) with h0 | h0` into its components or cases. Use `right`. Conclude with `⟨by erw [map_add, h0, add_zero], Finsupp.toLex_monotone h⟩`. Use `left erw [map_add]`. Use linear arithmetic over natural numbers and integers.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `InvImage.wf key wellFounded_lt`. Introduce `c d h`. Express the relevant statement in the definitionally equal form `key c < key d`. Simplify using `only [key, Prod.Lex.toLex_lt_toLex]`. Conclude with `Or.inl h`.
+Simplify using the standard rewrite rules. Prove the first alternative. A detailed English derivation is pending.
 -/
 theorem exists_order [Finite σ] (w : σ → ℕ) :
     ∃ m : MonomialOrder.{0,0} σ, ∀ c d : σ →₀ ℕ, Finsupp.weight w c < Finsupp.weight w d → c ≺[m] d := by
@@ -73,7 +73,7 @@ theorem exists_order [Finite σ] (w : σ → ℕ) :
 variable {K : Type} [Field K] (m : MonomialOrder.{0,0} σ)
 
 /- English proof (translation)
-Introduce `v`. Use `h v` as an intermediate fact. Break down `hd v with h1 | h1` into its components or cases. Simplify using `[h1]`. Simplify `this` using `[h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem le_of_le_add_disj {a s d : σ →₀ ℕ} (h : a ≤ s + d) (hd : ∀ v, a v = 0 ∨ d v = 0) : a ≤ s := by
   intro v
@@ -83,7 +83,7 @@ theorem le_of_le_add_disj {a s d : σ →₀ ℕ} (h : a ≤ s + d) (hd : ∀ v,
   · simpa [h1] using this
 
 /- English proof (translation)
-Take `⟨q, r, h1, -, h3⟩` from `m.div (b := fun i : S => f i) (fun i => isUnit_iff_ne_zero.2 (by simpa using hf i)) g`. Use `⟨r, ?_, fun hr i hi => h3 _ (m.degree_mem_support hr) ⟨i, hi⟩⟩` and prove the remaining obligations. Rewrite using `[h1, add_sub_cancel_right, Finsupp.linearCombination_apply, Finsupp.sum]`. Use `Ideal.sum_mem _ fun i _ => Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨i, i.2, rfl⟩)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem div_ideal {ι : Type} (f : ι → MvPolynomial σ K) (hf : ∀ i, f i ≠ 0) (S : Set ι) (g : MvPolynomial σ K) :
     ∃ s, g - s ∈ Ideal.span (f '' S) ∧ (s ≠ 0 → ∀ i ∈ S, ¬ m.degree (f i) ≤ m.degree s) := by
@@ -94,17 +94,17 @@ theorem div_ideal {ι : Type} (f : ι → MvPolynomial σ K) (hf : ∀ i, f i �
   refine Ideal.sum_mem _ fun i _ => Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨i, i.2, rfl⟩)
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => intro h hh h0`. Simplify using `at hh`. Conclude with `absurd hh h0`. Consider the case `insert k S hk ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h hh h0`. Rewrite `hh` using `[Finset.coe_insert, Set.image_insert_eq, Ideal.mem_span_insert]`. Take `⟨g, z, hz, rfl⟩` from `hh`. Take `⟨s, hs1, hs2⟩` from `div_ideal m f hf S g`. Establish `e : g * f k + z = s * f k + ((g - s) * f k + z)` using `by ring`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz' : (g - s) * f k + z ∈ Ideal.span (f '' S)` using `add_mem (Ideal.mul_mem_right _ _ hs1) hz`. Rewrite `h0`, the goal using `[e]`. Generalize the expression as in `(g - s) * f k + z = y at *`. Distinguish the cases in `hs : s = 0`. Substitute `hs` using the available equality.
+Rewrite the hypotheses and the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `only [zero_mul, zero_add] at h0 ⊢`. Take `⟨i, hi, hi'⟩` from `ih y hz' h0`. Conclude with `⟨i, Finset.mem_insert_of_mem hi, hi'⟩`. Establish `hdeg : m.degree (s * f k) = m.degree s + m.degree (f k)` using `m.degree_mul hs (hf k)`. Distinguish the cases in `hy : y = 0`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hy` using the available equality. Conclude with `⟨k, Finset.mem_insert_self _ _, by rw [add_zero, hdeg]; exact le_add_self⟩`. Take `⟨i, hi, hi'⟩` from `ih y hz' hy`. Break down `lt_trichotomy (m.toSyn (m.degree y)) (m.toSyn (m.degree (s * f k))) with h1 | h1 | h1` into its components or cases. Conclude with `⟨k, Finset.mem_insert_self _ _, by rw [m.degree_add_of_lt h1, hdeg]; exact le_add_self⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. It suffices to derive a contradiction.
 
-It suffices to derive a contradiction. Rewrite `hi'` using `[m.toSyn.injective h1, hdeg]`. Conclude with `hs2 hs i hi (le_of_le_add_disj hi' (hd i k (by rintro rfl; exact hk hi)))`. Conclude with `⟨i, Finset.mem_insert_of_mem hi, by rw [add_comm, m.degree_add_of_lt h1]; exact hi'⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem groebner {ι : Type} (f : ι → MvPolynomial σ K) (hf : ∀ i, f i ≠ 0)
     (hd : ∀ i j, i ≠ j → ∀ v, m.degree (f i) v = 0 ∨ m.degree (f j) v = 0) (S : Finset ι) :
@@ -139,11 +139,11 @@ theorem groebner {ι : Type} (f : ι → MvPolynomial σ K) (hf : ∀ i, f i ≠
     · exact ⟨i, Finset.mem_insert_of_mem hi, by rw [add_comm, m.degree_add_of_lt h1]; exact hi'⟩
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite ι`. Establish `e : Set.range f = f '' ((Finset.univ : Finset ι) : Set ι)` using `by simp`. Rewrite `hg`, the goal using `[e]`. Take `⟨s, hs1, hs2⟩` from `div_ideal m f hf ((Finset.univ : Finset ι) : Set ι) g`. Distinguish the cases in `hs : s = 0`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hs1` using `[hs]`. It suffices to derive a contradiction. Establish `h1 : s * D ∈ Ideal.span (f '' ((Finset.univ : Finset ι) : Set ι))`. Establish `: s * D = D * g - D * (g - s)` using `by ring`. Rewrite using `[this]`.
+It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `sub_mem hg (Ideal.mul_mem_left _ _ hs1)`. Take `⟨i, hi, hi'⟩` from `groebner m f hf hd _ _ h1 (mul_ne_zero hs hD)`. Rewrite `hi'` using `[m.degree_mul hs hD]`. Conclude with `hs2 hs i (by simp) (le_of_le_add_disj hi' (hD' i))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nzd_of_groebner {ι : Type} [Finite ι] (f : ι → MvPolynomial σ K) (hf : ∀ i, f i ≠ 0)
     (hd : ∀ i j, i ≠ j → ∀ v, m.degree (f i) v = 0 ∨ m.degree (f j) v = 0)
@@ -165,17 +165,15 @@ theorem nzd_of_groebner {ι : Type} [Finite ι] (f : ι → MvPolynomial σ K) (
   exact hs2 hs i (by simp) (le_of_le_add_disj hi' (hD' i))
 
 /- English proof (translation)
-Establish `hc : coeff (e k0) (∑ k, monomial (e k) (c k)) = c k0`. Rewrite using `[coeff_sum, Finset.sum_eq_single k0]`. Simplify using the standard rewrite rules. Introduce `k _ hk`. Rewrite using `[coeff_monomial]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h1`. Assume the negation of the conclusion as `h2`. Use `h k hk h2` as an intermediate fact. Rewrite `this` using `[h1]`. Conclude with `lt_irrefl _ this`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Simplify using the standard rewrite rules. Use `⟨fun hz => h0 (by rw [← hc, hz]; simp), ?_⟩` and prove the remaining obligations. Apply `m.toSyn.injective` to reduce the goal to its premises. Apply `le_antisymm` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[m.degree_le_iff]`. Introduce `d hd`. Rewrite `hd` using `[mem_support_iff, coeff_sum]`. Take `⟨k, -, hk⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hd`. Rewrite `hk` using `[coeff_monomial]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Consider separately whether the proposition holds or fails.
 
-Use `split_ifs at hk with h1`. Substitute `h1` using the available equality. Distinguish the cases in `hkk : k = k0`. Rewrite using `[hkk]`. Conclude with `(hm _ _ (h k hkk hk)).le`.
-
-Conclude with `absurd rfl hk`. Apply `m.le_degree` to reduce the goal to its premises. Rewrite using `[mem_support_iff, hc]`. Conclude with `h0`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degree_sum_monomial {κ : Type} [Fintype κ] (w : σ → ℕ)
     (hm : ∀ c d : σ →₀ ℕ, Finsupp.weight w c < Finsupp.weight w d → c ≺[m] d)
@@ -221,14 +219,14 @@ variable {σ : Type} [Fintype σ] {K : Type} [Field K]
 def fac (m : σ →₀ ℕ) : ℕ := ∏ v, (m v).factorial
 
 /- English proof (translation)
-The claim follows from `Finset.prod_pos fun _ _ => Nat.factorial_pos _`.
+A detailed English derivation is pending.
 -/
 theorem fac_pos (m : σ →₀ ℕ) : 0 < fac m := Finset.prod_pos fun _ _ => Nat.factorial_pos _
 
 /- English proof (translation)
-Unfold `fac`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ v), ← Finset.mul_prod_erase _ (fun u => (m u).factorial) (Finset.mem_univ v)]`. Rewrite using `[Finset.prod_congr rfl (g := fun u => (m u).factorial)]`. Simplify using `[Nat.factorial_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `u hu`. Simplify using `[Finsupp.single_eq_of_ne (Finset.ne_of_mem_erase hu)]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem fac_add (m : σ →₀ ℕ) (v : σ) : fac (m + Finsupp.single v 1) = fac m * (m v + 1) := by
   classical
@@ -243,7 +241,7 @@ def fock (σ K : Type) [Fintype σ] [Field K] : LinearMap.BilinForm K (MvPolynom
   (basisMonomials σ K).constr K fun m => (fac m : K) • lcoeff K m
 
 /- English proof (translation)
-Establish `: (monomial m c : MvPolynomial σ K) = c • basisMonomials σ K m`. Simplify using `[smul_monomial]`. Rewrite using `[this, map_smul, fock, Module.Basis.constr_basis]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fock_monomial (m : σ →₀ ℕ) (c : K) (g : MvPolynomial σ K) :
     fock σ K (monomial m c) g = c * (fac m * coeff m g) := by
@@ -253,7 +251,7 @@ theorem fock_monomial (m : σ →₀ ℕ) (c : K) (g : MvPolynomial σ K) :
   simp
 
 /- English proof (translation)
-Use `conv_lhs => rw [f.as_sum]`. Rewrite using `[map_sum, LinearMap.sum_apply]`. Simplify using `only [fock_monomial]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fock_eq (f g : MvPolynomial σ K) :
     fock σ K f g = ∑ m ∈ f.support, coeff m f * (fac m * coeff m g) := by
@@ -262,11 +260,11 @@ theorem fock_eq (f g : MvPolynomial σ K) :
   simp only [fock_monomial]
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on' with`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `monomial m c`. Proceed by induction on `g using MvPolynomial.induction_on' with`. Consider the case `add p q hp hq => simp [hp, hq]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `monomial m' c'`. Simplify using `only [fock_monomial, coeff_monomial]`. Distinguish the cases in `h : m = m'`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Treat this case separately. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `[h, Ne.symm h]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 -/
 theorem fock_symm (f g : MvPolynomial σ K) : fock σ K f g = fock σ K g f := by
   classical
@@ -282,7 +280,7 @@ theorem fock_symm (f g : MvPolynomial σ K) : fock σ K f g = fock σ K g f := b
       · simp [h, Ne.symm h]
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on' with`. Consider the case `add p q hp hq => simp [mul_add, hp, hq]`. Consider the case `monomial m c`. Rewrite using `[mul_comm, X, monomial_mul, fock_monomial, fock_monomial, coeff_pderiv, fac_add]`. Use `push_cast`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -295,9 +293,9 @@ theorem fock_X_mul (v : σ) (f g : MvPolynomial σ K) :
     push_cast; ring
 
 /- English proof (translation)
-Use extensionality with `m`. Use `h m` as an intermediate fact. Rewrite `this` using `[fock_monomial, one_mul, mul_eq_zero]`. Break down `this with h1 | h1` into its components or cases. Conclude with `absurd h1 (Nat.cast_ne_zero.2 (fac_pos m).ne')`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h1`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_fock [CharZero K] (g : MvPolynomial σ K) (h : ∀ m, fock σ K (monomial m 1) g = 0) : g = 0 := by
   ext m
@@ -308,13 +306,13 @@ theorem eq_zero_of_fock [CharZero K] (g : MvPolynomial σ K) (h : ∀ m, fock σ
   · simpa using h1
 
 /- English proof (translation)
-Rewrite `h` using `[fock_eq]`. Establish `e : ∀ m, coeff m g * (fac m * coeff m (map (starRingEnd ℂ) g)) = ((Complex.normSq (coeff m g) * fac m : ℝ) : ℂ)`. Introduce `m`. Rewrite using `[coeff_map]`. Use `push_cast`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[← Complex.mul_conj]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e] at h`. Rewrite `h` using `[← Complex.ofReal_sum, Complex.ofReal_eq_zero, Finset.sum_eq_zero_iff_of_nonneg (fun m _ => mul_nonneg (Complex.normSq_nonneg _) (Nat.cast_nonneg _))]`. Use extensionality with `m`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components.
 
-Distinguish the cases in `hm : m ∈ g.support`. Use `h m hm` as an intermediate fact. Rewrite `this` using `[mul_eq_zero]`. Break down `this with h1 | h1` into its components or cases. Simplify using `using h1`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `absurd h1 (Nat.cast_ne_zero.2 (fac_pos m).ne')`. Simplify using `using hm`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_fock_conj (g : MvPolynomial σ ℂ) (h : fock σ ℂ g (map (starRingEnd ℂ) g) = 0) : g = 0 := by
   rw [fock_eq] at h
@@ -346,9 +344,9 @@ abbrev Deg (w : σ → ρ) (a : ρ → ℕ) (P : MvPolynomial σ K) : Prop :=
   IsWeightedHomogeneous (fun v => (Pi.single (w v) 1 : ρ → ℕ)) P a
 
 /- English proof (translation)
-Proceed by induction on `m using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add f g hf hg`. Rewrite using `[Finsupp.prod_add_index' (by simp) (by simp [pow_add]), hf, hg, map_add, ← Finset.prod_mul_distrib]`. Simplify using `[pow_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `single v e`. Rewrite using `[Finsupp.prod_single_index (by simp), Finsupp.weight_single, Finset.prod_eq_single (w v)]`. Simplify using the standard rewrite rules. Introduce `r _ hr`. Simplify using `[Pi.single_eq_of_ne hr]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -367,7 +365,7 @@ theorem prod_pow_weight {A : Type} [CommRing A] (w : σ → ρ) (t : ρ → A) (
     · simp
 
 /- English proof (translation)
-Rewrite using `[aeval_monomial, aeval_monomial, ← prod_pow_weight]`. Simplify using `only [mul_pow, Finsupp.prod_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem aeval_scale_monomial {A : Type} [CommRing A] [Algebra K A] (w : σ → ρ) (t : ρ → A) (x : σ → A)
     (m : σ →₀ ℕ) (c : K) :
@@ -378,7 +376,7 @@ theorem aeval_scale_monomial {A : Type} [CommRing A] [Algebra K A] (w : σ → �
   ring
 
 /- English proof (translation)
-Use `conv_lhs => rw [P.as_sum]`. Use `conv_rhs => rw [P.as_sum]`. Rewrite using `[map_sum, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Rewrite using `[aeval_scale_monomial, hP (mem_support_iff.1 hm)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_scale {A : Type} [CommRing A] [Algebra K A] {w : σ → ρ} {a : ρ → ℕ} {P : MvPolynomial σ K}
     (hP : Deg w a P) (t : ρ → A) (x : σ → A) :
@@ -390,9 +388,9 @@ theorem aeval_scale {A : Type} [CommRing A] [Algebra K A] {w : σ → ρ} {a : �
   rw [aeval_scale_monomial, hP (mem_support_iff.1 hm)]
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on' with`. Consider the case `add p q hp hq => simp only [map_add, coeff_add, hp, hq, mul_add]`. Consider the case `monomial m' c`. Rewrite using `[aeval_scale_monomial w (fun r => (C (t r) : MvPolynomial σ K)), aeval_X_left_apply]`. Simplify using `only [← C_pow, ← map_prod, coeff_C_mul, coeff_monomial]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `split_ifs with h`. Rewrite using `[h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coeff_scale (w : σ → ρ) (t : ρ → K) (m : σ →₀ ℕ) (P : MvPolynomial σ K) :
     coeff m (aeval (fun v => (C (t (w v)) * X v : MvPolynomial σ K)) P) =
@@ -408,11 +406,11 @@ theorem coeff_scale (w : σ → ρ) (t : ρ → K) (m : σ →₀ ℕ) (P : MvPo
     · simp
 
 /- English proof (translation)
-Introduce `m hm`. Use function extensionality and compare the values at `r`. Apply the tactic sequence `have h1 := congrArg (coeff m) (h (fun s => if s = r then 2 else 1) (fun s => by split_ifs <;> simp))`. Rewrite `h1` using `[coeff_scale w (fun s => if s = r then (2 : K) else 1), coeff_C_mul]`. Establish `h2` using `mul_right_cancel₀ hm h1`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : ∀ u : ρ → ℕ, ∏ s, (if s = r then (2 : K) else 1) ^ u s = 2 ^ u r`. Introduce `u`. Rewrite using `[Finset.prod_eq_single r]`. Simplify using the standard rewrite rules. Introduce `s _ hs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hs]`. Simplify using the standard rewrite rules. Rewrite `h2` using `[h3, h3]`. Establish `h4 : (2 : ℕ) ^ (Finsupp.weight (fun v => (Pi.single (w v) 1 : ρ → ℕ)) m r) = 2 ^ a r` using `by exact_mod_cast h2`. Conclude with `Nat.pow_right_injective le_rfl h4`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem deg_of_scale [CharZero K] {w : σ → ρ} {a : ρ → ℕ} {P : MvPolynomial σ K}
     (h : ∀ t : ρ → K, (∀ r, t r ≠ 0) → aeval (fun v => C (t (w v)) * X v) P = C (∏ r, t r ^ a r) * P) : Deg w a P := by
@@ -433,7 +431,7 @@ theorem deg_of_scale [CharZero K] {w : σ → ρ} {a : ρ → ℕ} {P : MvPolyno
   exact Nat.pow_right_injective le_rfl h4
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Finset.sum_apply]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Simplify using `[Pi.single_apply, eq_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem weight_apply [Fintype σ] (w : σ → ρ) (m : σ →₀ ℕ) (r : ρ) :
     Finsupp.weight (fun v => (Pi.single (w v) 1 : ρ → ℕ)) m r = ∑ v, if w v = r then m v else 0 := by
@@ -442,9 +440,9 @@ theorem weight_apply [Fintype σ] (w : σ → ρ) (m : σ →₀ ℕ) (r : ρ) :
   simp [Pi.single_apply, eq_comm]
 
 /- English proof (translation)
-Use `Submodule.finiteDimensional_of_le (S₂ := restrictTotalDegree σ K (∑ r, a r)) ?_` and prove the remaining obligations. Introduce `P hP`. Rewrite using `[mem_restrictTotalDegree, totalDegree, Finset.sup_le_iff]`. Introduce `m hm`. Establish `h` using `hP (mem_support_iff.1 hm)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← h, Finsupp.sum_fintype _ _ (by simp)]`. Simplify using `only [weight_apply]`. Rewrite using `[Finset.sum_comm]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem finite_deg [Fintype σ] (w : σ → ρ) (a : ρ → ℕ) :
     Module.Finite K (weightedHomogeneousSubmodule K (fun v => (Pi.single (w v) 1 : ρ → ℕ)) a) := by
@@ -472,7 +470,7 @@ def lp {K : Type} [Field K] (i : ι) (P : MvPolynomial σ K) : MvPolynomial σ K
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Unfold `qf lp`. Rewrite using `[Finset.mul_sum, map_sum, LinearMap.sum_apply, map_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← fock_X_mul, ← fock_X_mul]`. Use `congr 2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -484,7 +482,7 @@ theorem fock_qf (i : ι) (f g : MvPolynomial σ K) : fock σ K (f * qf x y K i) 
   congr 2; ring
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `Ideal.mem_span_range_iff_exists_fun.1 hf`. Rewrite using `[map_sum, LinearMap.sum_apply]`. Conclude with `Finset.sum_eq_zero fun i _ => by rw [fock_qf, hh, map_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fock_ideal {f h : MvPolynomial σ K} (hf : f ∈ Ideal.span (Set.range (qf x y K)))
     (hh : ∀ i, lp x y i h = 0) : fock σ K f h = 0 := by
@@ -493,11 +491,11 @@ theorem fock_ideal {f h : MvPolynomial σ K} (hf : f ∈ Ideal.span (Set.range (
   exact Finset.sum_eq_zero fun i _ => by rw [fock_qf, hh, map_zero]
 
 /- English proof (translation)
-Apply `map_injective φ φ.injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Apply `eq_zero_of_fock_conj` to reduce the goal to its premises. Apply `fock_ideal x y` to reduce the goal to its premises. Take `⟨c, rfl⟩` from `Ideal.mem_span_range_iff_exists_fun.1 hf`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_sum]`. Use `Ideal.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Use `Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨i, ?_⟩)` and prove the remaining obligations. Simplify using `[qf]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce `i`. Use `congrArg (fun P => map (starRingEnd ℂ) (map φ P)) (hh i)` as an intermediate fact. Simplify `this` using `[lp, pderiv_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem harm_ideal_zero (φ : K →+* ℂ) {h : MvPolynomial σ K} (hf : h ∈ Ideal.span (Set.range (qf x y K)))
     (hh : ∀ i, lp x y i h = 0) : h = 0 := by
@@ -516,21 +514,19 @@ theorem harm_ideal_zero (φ : K →+* ℂ) {h : MvPolynomial σ K} (hf : h ∈ I
     simpa [lp, pderiv_map] using this
 
 /- English proof (translation)
-Use `haveI : CharZero K := φ.charZero`. Set `V` to `weightedHomogeneousSubmodule K (fun v => (Pi.single (w v) 1 : ρ → ℕ)) a`. Use `haveI : Module.Finite K V := finite_deg w a`. Set `B : LinearMap.BilinForm K V` to `(fock σ K).restrict V`. Establish `hB : B.IsRefl` using `fun u v h => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h' : fock σ K u v = 0` using `h`. Use `show fock σ K v u = 0`. Rewrite using `[fock_symm, h']`. Set `W : Submodule K V` to `((Ideal.span (Set.range (qf x y K))).restrictScalars K).comap V.subtype`. Establish `hH : ∀ h ∈ B.orthogonal W, ∀ i, lp x y i (h : MvPolynomial σ K) = 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h hh i`. Apply `eq_zero_of_fock` to reduce the goal to its premises. Introduce `m`. Rewrite using `[← fock_qf]`. Establish `hd : Deg w (Finsupp.weight (fun v => (Pi.single (w v) 1 : ρ → ℕ)) m + (Pi.single (wx i) 1 + Pi.single (wy i) 1)) (monomial m (1 : K) * qf x y K i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `IsWeightedHomogeneous.mul (isWeightedHomogeneous_monomial _ _ _ rfl) ?_` and prove the remaining obligations. Use `IsWeightedHomogeneous.sum _ _ _ fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← hx i b, ← hy i b]`. Conclude with `(isWeightedHomogeneous_X _ _ _).mul (isWeightedHomogeneous_X _ _ _)`. Distinguish the cases in `ha : Finsupp.weight (fun v => (Pi.single (w v) 1 : ρ → ℕ)) m + (Pi.single (wx i) 1 + Pi.single (wy i) 1) = a`.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hd` using `[ha]`. Establish `hI : monomial m (1 : K) * qf x y K i ∈ Ideal.span (Set.range (qf x y K))` using `Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨i, rfl⟩)`. Conclude with `hh ⟨_, hd⟩ hI`. Rewrite using `[fock_eq]`. Use `Finset.sum_eq_zero fun d hd' => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `hd (mem_support_iff.1 hd')`. Establish `h2 : coeff d (h : MvPolynomial σ K) = 0`. Assume the negation of the conclusion as `h3`. Conclude with `ha (h1.symm.trans (h.2 h3))`. Simplify using `[h2]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : IsCompl W (B.orthogonal W)`. Rewrite using `[LinearMap.BilinForm.isCompl_orthogonal_iff_disjoint hB, Submodule.disjoint_def]`. Introduce `h h1 h2`. Conclude with `Subtype.ext (harm_ideal_zero x y φ h1 (hH h h2))`. Establish `: (⟨P, hP⟩ : V) ∈ W ⊔ B.orthogonal W` using `by rw [hc.sup_eq_top]; trivial`.
-
-Take `⟨u, hu, h, hh, e⟩` from `Submodule.mem_sup.1 this`. Use `⟨h, h.2, hH h hh, ?_⟩` and prove the remaining obligations. Establish `e' : (u : MvPolynomial σ K) + h = P` using `congrArg Subtype.val e`. Rewrite using `[← e', add_sub_cancel_right]`. Conclude with `hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_harm (φ : K →+* ℂ) {ρ : Type} [Fintype ρ] [DecidableEq ρ] (w : σ → ρ) (wx wy : ι → ρ)
     (hx : ∀ i b, w (x i b) = wx i) (hy : ∀ i b, w (y i b) = wy i) {a : ρ → ℕ} {P : MvPolynomial σ K}
@@ -590,11 +586,11 @@ def part (m : S × (Fin n × Fin n) →₀ ℕ) (s : S) : Fin n × Fin n →₀ 
   Finsupp.equivFunOnFinite.symm fun v => m (s, v)
 
 /- English proof (translation)
-Simplify using `only [blockEmb, rename_monomial]`. Rewrite using `[← monomial_sum_one]`. Use `congr 2`. Use extensionality with `⟨s, v⟩`. Simplify using `only [Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.equivFunOnFinite_symm_apply_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_eq_single s]`. Conclude with `Finsupp.mapDomain_apply (fun a b h => (Prod.ext_iff.1 h).2) _ _`. Introduce `t _ ht`. Apply `Finsupp.mapDomain_notin_range` to reduce the goal to its premises. Introduce and unpack `⟨u, hu⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Conclude with `ht (Prod.ext_iff.1 hu).1`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem prod_emb_monomial (e : S → Fin n × Fin n →₀ ℕ) :
     ∏ s, blockEmb K s (monomial (e s) (1 : K)) =
@@ -613,7 +609,7 @@ theorem prod_emb_monomial (e : S → Fin n × Fin n →₀ ℕ) :
   · simp
 
 /- English proof (translation)
-Rewrite using `[prod_emb_monomial]`. Use `congr 2`. Use extensionality with `v`. Simplify using `[part]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem monomial_eq_prod (m : S × (Fin n × Fin n) →₀ ℕ) :
     monomial m (1 : K) = ∏ s, blockEmb K s (monomial (part m s) (1 : K)) := by
@@ -627,7 +623,7 @@ def tens (φ : S → Module.End K (MvPolynomial (Fin n × Fin n) K)) :
   (basisMonomials _ K).constr K fun m => ∏ s, blockEmb K s (φ s (monomial (part m s) 1))
 
 /- English proof (translation)
-Use `(basisMonomials (S × (Fin n × Fin n)) K).constr_basis K (fun m => ∏ s, blockEmb K s (φ s (monomial (part m s) 1))) m` as an intermediate fact. Simplify `this` using `[tens]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem tens_monomial (φ : S → Module.End K (MvPolynomial (Fin n × Fin n) K)) (m : S × (Fin n × Fin n) →₀ ℕ) :
     tens φ (monomial m 1) = ∏ s, blockEmb K s (φ s (monomial (part m s) 1)) := by
@@ -636,9 +632,9 @@ theorem tens_monomial (φ : S → Module.End K (MvPolynomial (Fin n × Fin n) K)
   simpa [tens] using this
 
 /- English proof (translation)
-Establish `: (tens φ).compMultilinearMap ((MultilinearMap.mkPiAlgebra K S _).compLinearMap fun s => (blockEmb K s).toLinearMap) = (MultilinearMap.mkPiAlgebra K S _).compLinearMap fun s => (blockEmb K s).toLinearMap ∘ₗ φ s`. Use `Module.Basis.ext_multilinear (fun _ => basisMonomials _ K) fun e => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.compMultilinearMap_apply, MultilinearMap.compLinearMap_apply, MultilinearMap.mkPiAlgebra_apply, coe_basisMonomials, AlgHom.toLinearMap_apply, LinearMap.comp_apply]`. Rewrite using `[prod_emb_monomial, tens_monomial]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 3`. Use extensionality with `v`. Simplify using `[part]`. Simplify using `using congrArg (fun F => F f) this`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem tens_prod (φ : S → Module.End K (MvPolynomial (Fin n × Fin n) K)) (f : S → MvPolynomial (Fin n × Fin n) K) :
     tens φ (∏ s, blockEmb K s (f s)) = ∏ s, blockEmb K s (φ s (f s)) := by
@@ -656,7 +652,7 @@ theorem tens_prod (φ : S → Module.End K (MvPolynomial (Fin n × Fin n) K)) (f
   simpa using congrArg (fun F => F f) this
 
 /- English proof (translation)
-Use `(basisMonomials _ K).ext fun m => ?_` and prove the remaining obligations. Simplify using `only [coe_basisMonomials]`. Rewrite using `[monomial_eq_prod, h]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem lin_ext {M : Type} [AddCommGroup M] [Module K M] (F G : MvPolynomial (S × (Fin n × Fin n)) K →ₗ[K] M)
     (h : ∀ f : S → MvPolynomial (Fin n × Fin n) K, F (∏ s, blockEmb K s (f s)) = G (∏ s, blockEmb K s (f s))) :
@@ -670,7 +666,7 @@ def pev (t : S) (z : S × (Fin n × Fin n) → K) :
   aeval fun v => if v.1 = t then X v.2 else C (z v)
 
 /- English proof (translation)
-Simplify using `only [pev, blockEmb, aeval_rename, Function.comp_def, if_true]`. Conclude with `aeval_X_left_apply f`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pev_self (t : S) (z : S × (Fin n × Fin n) → K) (f : MvPolynomial (Fin n × Fin n) K) :
     pev t z (blockEmb K t f) = f := by
@@ -678,7 +674,7 @@ theorem pev_self (t : S) (z : S × (Fin n × Fin n) → K) (f : MvPolynomial (Fi
   exact aeval_X_left_apply f
 
 /- English proof (translation)
-Simplify using `only [pev, blockEmb, aeval_rename, Function.comp_def, h, if_false]`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p v hp => simp only [map_mul, hp, aeval_X, eval_X]`.
+Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem pev_ne {s t : S} (h : s ≠ t) (z : S × (Fin n × Fin n) → K) (f : MvPolynomial (Fin n × Fin n) K) :
     pev t z (blockEmb K s f) = C (eval (fun v => z (s, v)) f) := by
@@ -689,7 +685,7 @@ theorem pev_ne {s t : S} (h : s ≠ t) (z : S × (Fin n × Fin n) → K) (f : Mv
   | mul_X p v hp => simp only [map_mul, hp, aeval_X, eval_X]
 
 /- English proof (translation)
-Rewrite using `[map_prod, ← Finset.mul_prod_erase _ _ (Finset.mem_univ t), pev_self, smul_eq_C_mul, map_prod, mul_comm]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun s hs => pev_ne (Finset.ne_of_mem_erase hs) _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem pev_prod (t : S) (z : S × (Fin n × Fin n) → K) (f : S → MvPolynomial (Fin n × Fin n) K) :
     pev t z (∏ s, blockEmb K s (f s)) = (∏ s ∈ Finset.univ.erase t, eval (fun v => z (s, v)) (f s)) • f t := by
@@ -698,11 +694,11 @@ theorem pev_prod (t : S) (z : S × (Fin n × Fin n) → K) (f : S → MvPolynomi
   exact Finset.prod_congr rfl fun s hs => pev_ne (Finset.ne_of_mem_erase hs) _ _
 
 /- English proof (translation)
-Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `z`. Establish `e : (aeval fun v => z (t, v)).comp (pev t z) = aeval z`. Apply `algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨s, v⟩`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Distinguish the cases in `hs : s = t`. Simplify using `[pev, hs]`. Simplify using `[pev, hs]`. Use `congrArg (fun F => F G) e` as an intermediate fact. Simplify using `only [AlgHom.comp_apply, h, map_zero] at this`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify `this.symm` using `[aeval_eq_eval]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_zero_of_pev [Infinite K] (t : S) (G : MvPolynomial (S × (Fin n × Fin n)) K) (h : ∀ z, pev t z G = 0) :
     G = 0 := by
@@ -719,25 +715,23 @@ theorem eq_zero_of_pev [Infinite K] (t : S) (G : MvPolynomial (S × (Fin n × Fi
   simpa [aeval_eq_eval] using this.symm
 
 /- English proof (translation)
-Establish `hπ : ∀ t, ∃ π : Module.End K (MvPolynomial (Fin n × Fin n) K), (∀ f, π f ∈ V t) ∧ ∀ f ∈ V t, π f = f`. Introduce `t`. Take `⟨W, hW⟩` from `(V t).exists_isCompl`. Conclude with `⟨(V t).subtype ∘ₗ (V t).linearProjOfIsCompl W hW, fun f => ((V t).linearProjOfIsCompl W hW f).2, fun f hf => congrArg Subtype.val (Submodule.linearProjOfIsCompl_apply_left hW ⟨f, hf⟩)⟩`. Use `choose π hπ1 hπ2 using hπ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h1 : ∀ t, tens (fun s => if s = t then π s else 1) G = G`. Introduce `t`. Rewrite using `[← sub_eq_zero]`. Apply `eq_zero_of_pev t` to reduce the goal to its premises. Introduce `z`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: (pev t z).toLinearMap ∘ₗ tens (fun s => if s = t then π s else 1) = π t ∘ₗ (pev t z).toLinearMap`. Apply `lin_ext` to reduce the goal to its premises. Introduce `f`. Simplify using `only [LinearMap.comp_apply, AlgHom.toLinearMap_apply, tens_prod, pev_prod, map_smul, if_true]`. Use `congr 1`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Conclude with `Finset.prod_congr rfl fun s hs => by simp [Finset.ne_of_mem_erase hs]`. Establish `e` using `congrArg (fun F => F G) this`. Simplify using `only [LinearMap.comp_apply, AlgHom.toLinearMap_apply] at e`. Rewrite using `[map_sub, e, hπ2 t _ (h t z), sub_self]`. Establish `h2 : ∀ T : Finset S, tens (fun s => if s ∈ T then π s else 1) G = G`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `T`. Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty`. Establish `: tens (fun s => if s ∈ (∅ : Finset S) then π s else 1) = LinearMap.id` using `lin_ext _ _ fun f => by simp [tens_prod]`. Rewrite using `[this]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately.
 
-Both sides reduce to the same expression. Consider the case `insert t T ht ih`. Establish `: tens (fun s => if s ∈ insert t T then π s else 1) = tens (fun s => if s ∈ T then π s else 1) ∘ₗ tens (fun s => if s = t then π s else 1)`. Apply `lin_ext` to reduce the goal to its premises. Introduce `f`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [LinearMap.comp_apply, tens_prod]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Distinguish the cases in `hs : s = t`. Substitute `hs` using the available equality. Simplify using `[ht]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hs]`. Rewrite using `[this, LinearMap.comp_apply, h1, ih]`. Rewrite using `[← h2 Finset.univ]`. Simplify using `only [Finset.mem_univ, if_true]`. Generalize the expression as in `G = F`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `F using MvPolynomial.induction_on' with`. Consider the case `add p q hp hq => rw [map_add]`. Conclude with `add_mem hp hq`. Consider the case `monomial m c`. Establish `: (monomial m c : MvPolynomial _ K) = c • monomial m 1` using `by simp [smul_monomial]`.
-
-Rewrite using `[this, map_smul, tens_monomial]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, fun s => hπ1 s _, rfl⟩)`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_tensor [Infinite K] (V : S → Submodule K (MvPolynomial (Fin n × Fin n) K))
     (G : MvPolynomial (S × (Fin n × Fin n)) K) (h : ∀ t z, pev t z G ∈ V t) : G ∈ tensorLat K K V := by
@@ -798,13 +792,13 @@ open Formalism.GradedWeylDivisibility
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `: ((Polynomial.aeval (R` using `MvPolynomial (Fin n × Fin n) ℚ) (C c : MvPolynomial (Fin n × Fin n) ℚ)).restrictScalars ℚ).comp (rowGen ℚ (n := n) a b) = rowAct ℚ (1 + Matrix.single b a c) := by`. Apply `algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨u, s⟩`. Simplify using `only [rowGen, rowAct, AlgHom.comp_apply, aeval_X, AlgHom.coe_restrictScalars', map_add, Matrix.add_apply, add_mul, Finset.sum_add_distrib]`. Use `congr 1`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Finset.sum_eq_single u]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[Matrix.one_apply_ne (Ne.symm hj)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_eq_single a]`. Distinguish the cases in `h : u = b`. Simplify using `[h]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[h, Matrix.single_apply, Ne.symm h]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Introduce `j _ hj`. Simplify using `[Matrix.single_apply, Ne.symm hj]`. Simplify using the standard rewrite rules. Use `congrArg (fun F => F f) this` as an intermediate fact. Simplify `this` using `[Polynomial.coe_aeval_eq_eval]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem rowGen_eval (a b : Fin n) (c : ℚ) (f : MvPolynomial (Fin n × Fin n) ℚ) :
     (rowGen ℚ a b f).eval (C c) = rowAct ℚ (1 + Matrix.single b a c) f := by
@@ -830,25 +824,23 @@ theorem rowGen_eval (a b : Fin n) (c : ℚ) (f : MvPolynomial (Fin n × Fin n) �
   simpa [Polynomial.coe_aeval_eq_eval] using this
 
 /- English proof (translation)
-Introduce `a b k f hf`. Rewrite using `[← Subspace.forall_mem_dualAnnihilator_apply_eq_zero_iff]`. Introduce `φ hφ`. Set `Q` to `rowGen ℚ a b f`. Set `R : Polynomial ℚ` to `∑ i ∈ Finset.range (Q.natDegree + 1), Polynomial.monomial i (φ (Q.coeff i))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hR : R = 0`. Apply `Polynomial.eq_zero_of_infinite_isRoot` to reduce the goal to its premises. Use `Set.Infinite.mono (s := {-1}ᶜ) ?_ (Set.toFinite _).infinite_compl` and prove the remaining obligations. Introduce `c hc`. Establish `hdet : (1 + Matrix.single b a c : Matrix (Fin n) (Fin n) ℚ).det ≠ 0`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Distinguish the cases in `hab : b = a`. Substitute `hab` using the available equality. Establish `: (1 + Matrix.single b b c : Matrix (Fin n) (Fin n) ℚ) = Matrix.diagonal (fun i => if i = b then 1 + c else 1)`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Substitute `hij` using the available equality. Distinguish the cases in `hi : i = b`. Simplify using `[hi]`. Simplify using `[hi, Matrix.single_apply, Ne.symm hi]`. Simplify using `only [Matrix.add_apply, Matrix.one_apply_ne hij, Matrix.diagonal_apply_ne _ hij, Matrix.single_apply]`.
+Substitute using the available equality. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg (by rintro ⟨rfl, rfl⟩; exact hij rfl)]; simp`. Rewrite using `[this, Matrix.det_diagonal, Finset.prod_ne_zero_iff]`. Introduce `i _`. Use `split_ifs`. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hc` to reduce the goal to its premises. Simplify using `only [Set.mem_singleton_iff]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Use `Matrix.det_transvection_of_ne b a hab c` as an intermediate fact.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Matrix.transvection]`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Establish `h1` using `h (Matrix.GeneralLinearGroup.mkOfDetNeZero _ hdet) f hf`. Establish `h2 : φ (Q.eval (C c)) = 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rowGen_eval]`. Conclude with `(Submodule.mem_dualAnnihilator φ).1 hφ _ h1`. Simplify using `only [Set.mem_setOf_eq, Polynomial.IsRoot.def, R, Polynomial.eval_finset_sum, Polynomial.eval_monomial]`. Rewrite `h2` using `[Polynomial.eval_eq_sum_range, map_sum]`. Rewrite using `[← h2]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← C_pow, mul_comm (Q.coeff i), ← smul_eq_C_mul, map_smul, smul_eq_mul, mul_comm]`. Use `congrArg (fun P => P.coeff k) hR` as an intermediate fact. Simplify using `only [R, Polynomial.finset_sum_coeff, Polynomial.coeff_monomial, Finset.sum_ite_eq', Polynomial.coeff_zero] at this`. Use `split_ifs at this with hk`.
-
-Conclude with `this`. Establish `: Q.coeff k = 0` using `Polynomial.coeff_eq_zero_of_natDegree_lt (by simpa using hk) show φ (Q.coeff k) = 0`. Rewrite using `[this, map_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem closed_of_stable (M : Submodule ℚ (MvPolynomial (Fin n × Fin n) ℚ))
     (h : ∀ g : GL (Fin n) ℚ, ∀ f ∈ M, rowAct ℚ (g : Matrix (Fin n) (Fin n) ℚ) f ∈ M) : RowDivClosed M := by
@@ -900,11 +892,11 @@ theorem closed_of_stable (M : Submodule ℚ (MvPolynomial (Fin n × Fin n) ℚ))
     rw [this, map_zero]
 
 /- English proof (translation)
-Establish `hc` using `closed_of_stable M h`. Establish `e` using `closedEqNabla n n le_rfl ν hν M hle hc (hwInClosed n n le_rfl ν hν M hle hc hne)`. Rewrite using `[standardMonomialSpanDomain, Submodule.span_le]`. Introduce and unpack `_ ⟨k, sz, hsz, I, rfl, rfl⟩`. Use `hN _ (e ▸ bidetMem ℚ n n k sz hsz I)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-It suffices to establish `e2 : map (algebraMap ℚ K) (bideterminant ℚ sz hsz I) = bideterminant K sz hsz I by rw [← e2]; exact this`. Simplify using `only [bideterminant, initMinor, map_prod, RingHom.map_det]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `ext1 p q`.
+Reduce the argument to an intermediate assertion. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem irr {K : Type} [Field K] [Algebra ℚ K] (ν : Fin n → ℕ) (hν : Antitone ν)
     (M : Submodule ℚ (MvPolynomial (Fin n × Fin n) ℚ)) (hle : M ≤ dualWeyl ℚ n n ν) (hne : M ≠ ⊥)
@@ -961,9 +953,9 @@ def yl (i : Ix × Fin p × Fin q) (b : Fin n) : Lt Ix p q n := ((i.1, Sum.inr i.
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Rewrite using `[← AlgHom.comp_apply]`. Use `congr 1`. Apply `algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨⟨t, i | j⟩, b⟩`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `only [AlgHom.comp_apply, aeval_X, val_inr]`. Use `congrFun (congrFun (φ.map_adjugate (g t)) (cy h j)) b` as an intermediate fact. Simplify using `using this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem map_val {A B : Type} [CommRing A] [CommRing B] [Algebra K A] [Algebra K B] (φ : A →ₐ[K] B)
     (g : Ix → Matrix (Fin n) (Fin n) A) (P : MvPolynomial (Lt Ix p q n) K) :
@@ -978,7 +970,7 @@ theorem map_val {A B : Type} [CommRing A] [CommRing B] [Algebra K A] [Algebra K 
     simpa using this
 
 /- English proof (translation)
-Introduce `e`. Use `congrArg Fin.val e` as an intermediate fact. Simplify using `only [cx, cy] at this`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem cx_ne_cy (i : Fin p) (j : Fin q) : cy h j ≠ cx h i := by
   intro e
@@ -990,9 +982,9 @@ abbrev II (Ix : Type) (p q n : ℕ) (K : Type) [Field K] : Ideal (MvPolynomial (
   Ideal.span (Set.range (qf (xl (Ix := Ix) (p := p) (q := q) (n := n)) yl K))
 
 /- English proof (translation)
-Establish `: II Ix p q n K ≤ RingHom.ker (aeval (R` using `K) (val h g)) := by`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨⟨t, i, j⟩, rfl⟩`. Use `congrFun (congrFun (Matrix.adjugate_mul (g t)) (cy h j)) (cx h i)` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Matrix.smul_apply, Matrix.one_apply_ne (cx_ne_cy h i j), smul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[qf, xl, yl, ← this, mul_comm]`. Conclude with `this hP`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem val_ideal {A : Type} [CommRing A] [Algebra K A] (g : Ix → Matrix (Fin n) (Fin n) A)
     {P : MvPolynomial (Lt Ix p q n) K} (hP : P ∈ II Ix p q n K) : aeval (val h g) P = 0 := by
@@ -1014,9 +1006,9 @@ def Inv (P : MvPolynomial (Lt Ix p q n) K) : Prop :=
   (∀ t (i i' : Fin q), i' < i → ∀ c : K, shift (t, Sum.inr i) (t, Sum.inr i') c P = P)
 
 /- English proof (translation)
-Rewrite using `[← AlgHom.comp_apply]`. Use `congr 1`. Apply `algHom_ext` to reduce the goal to its premises. Introduce `ℓ`. Simplify using `only [shift, AlgHom.comp_apply, aeval_X]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem aeval_shift {A : Type} [CommRing A] [Algebra K A] (v : Lt Ix p q n → A) (ρ ρ' : Row Ix p q) (c : K)
     (P : MvPolynomial (Lt Ix p q n) K) :
@@ -1030,9 +1022,9 @@ theorem aeval_shift {A : Type} [CommRing A] [Algebra K A] (v : Lt Ix p q n → A
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `h1` using `Matrix.adjugate_mul (Matrix.transvection l j c)`. Rewrite `h1` using `[Matrix.det_transvection_of_ne _ _ hlj, one_smul]`. Establish `h2 : Matrix.transvection l j c * Matrix.transvection l j (-c) = 1`. Rewrite using `[Matrix.transvection_mul_transvection_same _ _ hlj]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← mul_one (Matrix.transvection l j c).adjugate, ← h2, ← mul_assoc, h1, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem adj_transv {A : Type} [CommRing A] {l j : Fin n} (hlj : l ≠ j) (c : A) :
     (Matrix.transvection l j c).adjugate = Matrix.transvection l j (-c) := by
@@ -1043,29 +1035,29 @@ theorem adj_transv {A : Type} [CommRing A] {l j : Fin n} (hlj : l ≠ j) (c : A)
   rw [← mul_one (Matrix.transvection l j c).adjugate, ← h2, ← mul_assoc, h1, one_mul]
 
 /- English proof (translation)
-Establish `hx : ∀ s (i : Fin p) b, val h (fun s => g s * if s = t then Matrix.transvection l j (algebraMap K A c) else 1) ((s, Sum.inl i), b) = g s b (cx h i) + if s = t ∧ cx h i = j then algebraMap K A c * g s b l else 0`. Introduce `s i b`. Rewrite using `[val_inl]`. Distinguish the cases in `hs : s = t`. Distinguish the cases in `hi : cx h i = j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Simplify using `[hs, hi]`. Simplify using `[hs, hi]`. Simplify using `[hs]`. Establish `hy : ∀ s (i : Fin q) b, val h (fun s => g s * if s = t then Matrix.transvection l j (algebraMap K A c) else 1) ((s, Sum.inr i), b) = (g s).adjugate (cy h i) b + if s = t ∧ cy h i = l then algebraMap K A (-c) * (g s).adjugate j b else 0`. Introduce `s i b`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[val_inr]`. Distinguish the cases in `hs : s = t`. Simplify using `only [hs, if_true, Matrix.adjugate_mul_distrib, adj_transv hlj.ne, true_and]`. Distinguish the cases in `hi : cy h i = l`. Simplify using `[hi]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[hi]`. Simplify using `[hs]`. Establish `hlj' : (l : ℕ) < j` using `hlj`. Distinguish the cases in `h1 : (j : ℕ) < p`. Use `conv_rhs => rw [← hP.1 t ⟨j, h1⟩ ⟨l, by omega⟩ hlj' c]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[aeval_shift]`. Use `congr 2`. Use function extensionality and compare the values at `⟨⟨s, i⟩, b⟩`. Break down `i with i | i` into its components or cases. Rewrite using `[hx]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: cx h i = j ↔ i = ⟨j, h1⟩` using `by simp [cx, Fin.ext_iff]`. Distinguish the cases in `h2 : s = t ∧ i = ⟨j, h1⟩`. Take `⟨rfl, rfl⟩` from `h2`. Simplify using `[cx]`. Rewrite using `[if_neg (by rw [this]; exact h2), if_neg (by simpa using h2)]; simp`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy]`. Establish `: cy h i ≠ l` using `by simp only [cy, ne_eq, Fin.ext_iff]; omega`. Simplify using `[this]`. Distinguish the cases in `h3 : n - 1 - l < q`. Use `conv_rhs => rw [← hP.2 t ⟨n - 1 - l, h3⟩ ⟨n - 1 - j, by omega⟩ (by simp only [Fin.mk_lt_mk]; omega) (-c)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[aeval_shift]`. Use `congr 2`. Use function extensionality and compare the values at `⟨⟨s, i⟩, b⟩`. Break down `i with i | i` into its components or cases. Rewrite using `[hx]`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: cx h i ≠ j` using `by simp only [cx, ne_eq, Fin.ext_iff]; omega`. Simplify using `[this]`. Rewrite using `[hy]`. Establish `: cy h i = l ↔ i = ⟨n - 1 - l, h3⟩` using `by simp only [cy, Fin.ext_iff]; omega`. Distinguish the cases in `h2 : s = t ∧ i = ⟨n - 1 - l, h3⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_pos (by rw [this]; exact h2), if_pos (by simpa using h2)]`. Establish `e : cy h (⟨n - 1 - j, by omega⟩ : Fin q) = j` using `by simp only [cy, Fin.ext_iff]; omega`. Rewrite using `[val_inr, val_inr, e, h2.1]`. Rewrite using `[if_neg (by rw [this]; exact h2), if_neg (by simpa using h2)]; simp`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis.
 
-Use function extensionality and compare the values at `⟨⟨s, i⟩, b⟩`. Break down `i with i | i` into its components or cases. Rewrite using `[hx]`. Establish `: cx h i ≠ j` using `by simp only [cx, ne_eq, Fin.ext_iff]; omega`. Simplify using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hy]`. Establish `: cy h i ≠ l` using `by simp only [cy, ne_eq, Fin.ext_iff]; omega`. Simplify using `[this]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem val_transv {A : Type} [CommRing A] [Algebra K A] (g : Ix → Matrix (Fin n) (Fin n) A) (t : Ix)
     {l j : Fin n} (hlj : l < j) (c : K) {P : MvPolynomial (Lt Ix p q n) K} (hP : Inv P) :
@@ -1139,7 +1131,7 @@ def mu (a : Row Ix p q → ℕ) (t : Ix) (k : Fin n) : ℕ :=
 variable [Fintype Ix]
 
 /- English proof (translation)
-Rewrite using `[Fintype.prod_prod_type, Finset.prod_eq_single t]`. Simplify using the standard rewrite rules. Introduce `s _ hs`. Simplify using `[hs]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem prod_block {A : Type} [CommMonoid A] (t : Ix) (c : Fin p ⊕ Fin q → A) (a : Row Ix p q → ℕ) :
     ∏ r : Row Ix p q, (if r.1 = t then c r.2 else 1) ^ a r =
@@ -1150,15 +1142,15 @@ theorem prod_block {A : Type} [CommMonoid A] (t : Ix) (c : Fin p ⊕ Fin q → A
   · simp
 
 /- English proof (translation)
-Set `c : Fin p ⊕ Fin q → A` to `Sum.elim (fun i => d (cx h i)) fun j => ∏ k ∈ Finset.univ.erase (cy h j), d k`. Establish `e` using `aeval_scale hP (fun r => if r.1 = t then c r.2 else 1) (val h g)`. Rewrite `e` using `[prod_block]`. Use `e using 2` and compare the differences between its conclusion and the goal. Use `congr 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `⟨⟨s, i⟩, b⟩`. Distinguish the cases in `hs : s = t`. Break down `i with i | i` into its components or cases. Simplify using `[hs, c, mul_comm]`. Simplify using `[hs, c, Matrix.adjugate_mul_distrib, Matrix.adjugate_diagonal]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `rcases i with i | i <;> simp [hs]`. Simplify using `only [mu, pow_add, Finset.prod_mul_distrib, ← Finset.prod_pow_eq_pow_sum, c, Sum.elim_inl, Sum.elim_inr]`. Use `congr 1`. Rewrite using `[Finset.prod_comm]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[pow_ite]`. Rewrite using `[Finset.prod_comm]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_pow, ← Finset.filter_ne', Finset.prod_filter]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem val_diag {A : Type} [CommRing A] [Algebra K A] (g : Ix → Matrix (Fin n) (Fin n) A) (t : Ix)
     (d : Fin n → A) {a : Row Ix p q → ℕ} {P : MvPolynomial (Lt Ix p q n) K} (hP : Deg Prod.fst a P) :
@@ -1187,15 +1179,13 @@ theorem val_diag {A : Type} [CommRing A] [Algebra K A] (g : Ix → Matrix (Fin n
       split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[dualWeylPoint, map_val]`. Use `⟨deg_of_scale (w := Prod.snd) fun d _ => ?_, fun l j hlj c => ?_⟩` and prove the remaining obligations. Establish `e` using `val_diag h (fun s => (gen K n s).map (pev t z)) t (fun k => C (d k)) hP`. Simplify using `only [← C_pow, ← map_prod] at e`. Rewrite using `[← e, map_val]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 3`. Use function extensionality and compare the values at `s`. Use `ext1 b k`. Distinguish the cases in `hs : s = t`. Simplify using `[hs, gen, pev, mul_comm]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hs, gen, pev]`. Rewrite using `[map_val]`. Use `Eq.trans ?_ (val_transv h _ t hlj c hI)` and prove the remaining obligations. Use `congr 3`. Use function extensionality and compare the values at `s`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Use `ext1 b k`. Distinguish the cases in `hs : s = t`. Distinguish the cases in `hk : k = j`. Simplify using `[hs, hk, gen, pev, colAdd, hlj.ne]`. Simplify using `[hs, hk, gen, pev, colAdd]`.
-
-Simplify using `[hs, gen, pev]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pev_cof_mem [CharZero K] {a : Row Ix p q → ℕ} {P : MvPolynomial (Lt Ix p q n) K} (hP : Deg Prod.fst a P)
     (hI : Inv P) (t : Ix) (z : Ix × (Fin n × Fin n) → K) :
@@ -1223,7 +1213,7 @@ theorem pev_cof_mem [CharZero K] {a : Row Ix p q → ℕ} {P : MvPolynomial (Lt 
     · simp [hs, gen, pev]
 
 /- English proof (translation)
-The claim follows from `mem_tensor _ _ fun t z => pev_cof_mem h hP hI t z`.
+A detailed English derivation is pending.
 -/
 theorem cof_mem [CharZero K] {a : Row Ix p q → ℕ} {P : MvPolynomial (Lt Ix p q n) K} (hP : Deg Prod.fst a P)
     (hI : Inv P) : aeval (val h (gen K n)) P ∈ tensorLat K K fun t => dualWeyl K n n (mu h a t) :=
@@ -1245,7 +1235,7 @@ def act (g : Ix → GL (Fin n) K) : MvPolynomial (Lt Ix p q n) K →ₐ[K] MvPol
   aeval fun ℓ => ∑ j, C (mat g ℓ.1 ℓ.2 j) * X (ℓ.1, j)
 
 /- English proof (translation)
-Rewrite using `[← AlgHom.comp_apply]`. Use `congr 1`. Apply `algHom_ext` to reduce the goal to its premises. Introduce `ℓ`. Simplify using `[act]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem aeval_act {A : Type} [CommRing A] [Algebra K A] (v : Lt Ix p q n → A) (g : Ix → GL (Fin n) K)
     (P : MvPolynomial (Lt Ix p q n) K) :
@@ -1257,15 +1247,15 @@ theorem aeval_act {A : Type} [CommRing A] [Algebra K A] (v : Lt Ix p q n → A) 
   simp [act]
 
 /- English proof (translation)
-Set `c : Row Ix p q → MvPolynomial (Ix × Fin n × Fin n) K` to `fun r => Sum.elim (fun _ => 1) (fun _ => C ((g r.1 : Matrix (Fin n) (Fin n) K).det)⁻¹) r.2`. Establish `e` using `aeval_scale hP c (val h fun t => (gen K n t).map (trAct g))`. Establish `e2 : ∀ t, (gen K n t).map (trAct g) = ((g t : Matrix (Fin n) (Fin n) K)ᵀ).map C * gen K n t`. Introduce `t`. Use `ext1 b k`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[gen, trAct, blockAct, Matrix.mul_apply]`. Rewrite using `[map_val, aeval_act, smul_eq_C_mul]`. Use `e using 2` and compare the differences between its conclusion and the goal. Use `congr 1`. Use function extensionality and compare the values at `⟨⟨t, i⟩, b⟩`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `i with i | i` into its components or cases. Simplify using `[c, e2, mat, Matrix.mul_apply]`. Simplify using `only [c, mat, Sum.elim_inr, val_inr, e2, Matrix.adjugate_mul_distrib, Matrix.mul_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h1` using `congrFun (congrFun ((C : K →+* MvPolynomial (Ix × Fin n × Fin n) K).map_adjugate ((g t : Matrix (Fin n) (Fin n) K)ᵀ)) j) b`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply] at h1`. Rewrite using `[← h1, ← Matrix.adjugate_transpose, Matrix.transpose_apply, Matrix.coe_units_inv, Matrix.inv_def, Ring.inverse_eq_inv', Matrix.smul_apply, smul_eq_mul, map_mul, algebraMap_eq]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Fintype.prod_prod_type, map_prod]`. Use `Finset.prod_congr rfl fun t _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[c, Finset.prod_pow_eq_pow_sum, -inv_pow]`.
+A detailed English derivation is pending.
 -/
 theorem cof_act (g : Ix → GL (Fin n) K) {a : Row Ix p q → ℕ} {P : MvPolynomial (Lt Ix p q n) K}
     (hP : Deg Prod.fst a P) :
@@ -1297,9 +1287,9 @@ theorem cof_act (g : Ix → GL (Fin n) K) {a : Row Ix p q → ℕ} {P : MvPolyno
     simp [c, Finset.prod_pow_eq_pow_sum, -inv_pow]
 
 /- English proof (translation)
-Use `deg_of_scale fun t _ => ?_` and prove the remaining obligations. Establish `e` using `aeval_scale hP (fun r => (C (t r) : MvPolynomial (Lt Ix p q n) K)) (fun ℓ => ∑ j, C (mat g ℓ.1 ℓ.2 j) * X (ℓ.1, j))`. Rewrite using `[aeval_act, map_prod]`. Simplify using `only [map_pow]`. Rewrite using `[act, ← e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use function extensionality and compare the values at `ℓ`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [algebraMap_eq]; ring`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_deg [CharZero K] (g : Ix → GL (Fin n) K) {a : Row Ix p q → ℕ} {P : MvPolynomial (Lt Ix p q n) K}
     (hP : Deg Prod.fst a P) : Deg Prod.fst a (act g P) := by
@@ -1315,9 +1305,9 @@ theorem act_deg [CharZero K] (g : Ix → GL (Fin n) K) {a : Row Ix p q → ℕ} 
   exact Finset.sum_congr rfl fun j _ => by rw [algebraMap_eq]; ring
 
 /- English proof (translation)
-Rewrite using `[← AlgHom.comp_apply, ← AlgHom.comp_apply]`. Use `congr 1`. Apply `algHom_ext` to reduce the goal to its premises. Introduce `ℓ`. Distinguish the cases in `hl : ℓ.1 = ρ`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [AlgHom.comp_apply, act, shift, aeval_X, hl, if_true, map_sum, map_mul, map_add, algHom_C, algebraMap_eq, ← hm, Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Simplify using `[act, shift, hl]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem shift_act (g : Ix → GL (Fin n) K) {ρ ρ' : Row Ix p q} (hm : mat g ρ = mat g ρ') (c : K)
     (P : MvPolynomial (Lt Ix p q n) K) : shift ρ ρ' c (act g P) = act g (shift ρ ρ' c P) := by
@@ -1332,24 +1322,24 @@ theorem shift_act (g : Ix → GL (Fin n) K) {ρ ρ' : Row Ix p q} (hm : mat g ρ
   · simp [act, shift, hl]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun t i i' hi c => (shift_act g (by rfl) c P).trans (by rw [hP.1 t i i' hi]), fun t i i' hi c => (shift_act g (by rfl) c P).trans (by rw [hP.2 t i i' hi])⟩`.
+Supply the required witnesses or components.
 -/
 theorem act_inv (g : Ix → GL (Fin n) K) {P : MvPolynomial (Lt Ix p q n) K} (hP : Inv P) : Inv (act g P) :=
   ⟨fun t i i' hi c => (shift_act g (by rfl) c P).trans (by rw [hP.1 t i i' hi]),
     fun t i i' hi c => (shift_act g (by rfl) c P).trans (by rw [hP.2 t i i' hi])⟩
 
 /- English proof (translation)
-Establish `hX : ∀ ℓ : Lt Ix p q n, pderiv v (shift ρ ρ' c (X ℓ)) = shift ρ ρ' c (pderiv v (X ℓ)) + if v.1 = ρ' then c • shift ρ ρ' c (pderiv (ρ, v.2) (X ℓ)) else 0`. Introduce and unpack `⟨r, b⟩`. Take `⟨r', b'⟩` from `v`. Simplify using `only [pderiv_X, Pi.single_apply, apply_ite (shift ρ ρ' c), map_one, map_zero]`. Simplify using `only [shift, aeval_X]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h1 : r = ρ`. Substitute `h1` using the available equality. Simplify using `only [if_true, map_add, pderiv_C_mul, pderiv_X, Pi.single_apply, Prod.mk.injEq, true_and]`. Use `congr 1`. Distinguish the cases in `h2 : r' = ρ'`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails.
 
-Substitute `h2` using the available equality. Simplify using `[smul_eq_C_mul]`. Simplify using `[h2, Ne.symm h2]`. Simplify using `[h1, pderiv_X, Pi.single_apply]`. Proceed by induction on `P using MvPolynomial.induction_on with`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Proceed by induction.
 
-Consider the case `C a => simp`. Consider the case `add P Q hP hQ`. Simplify using `only [map_add, hP, hQ]`. Use `split_ifs`. Rewrite using `[smul_add]`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul_X P ℓ hP`. Simplify using `only [map_mul, pderiv_mul, map_add, hP, hX]`. Use `split_ifs`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [smul_eq_C_mul]`. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem pderiv_shift (ρ ρ' : Row Ix p q) (c : K) (v : Lt Ix p q n) (P : MvPolynomial (Lt Ix p q n) K) :
     pderiv v (shift ρ ρ' c P) =
@@ -1382,13 +1372,13 @@ theorem pderiv_shift (ρ ρ' : Row Ix p q) (c : K) (v : Lt Ix p q n) (P : MvPoly
     · ring
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `u u' ⟨s, i, j⟩`. Establish `h1` using `congrArg (shift (t, Sum.inl u) (t, Sum.inl u') c) (hP (s, i, j))`. Establish `h2` using `congrArg (shift (t, Sum.inl u) (t, Sum.inl u') c) (hP (t, u, j))`. Simplify using `only [lp, xl, yl, map_sum, map_zero] at h1 h2 ⊢`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [pderiv_shift, Prod.mk.injEq, reduceCtorEq, and_false, if_false, add_zero, Finset.sum_add_distrib, h1, zero_add]`. Distinguish the cases in `h3 : s = t ∧ (Sum.inl i : Fin p ⊕ Fin q) = Sum.inl u'`. Simplify using `only [h3, and_self, if_true, ← Finset.smul_sum, h2, smul_zero]`. Simplify using `only [h3, if_false, Finset.sum_const_zero]`. Introduce and unpack `u u' ⟨s, i, j⟩`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Establish `h1` using `congrArg (shift (t, Sum.inr u) (t, Sum.inr u') c) (hP (s, i, j))`. Establish `h2` using `congrArg (shift (t, Sum.inr u) (t, Sum.inr u') c) (hP (t, i, u))`. Simplify using `only [lp, xl, yl, map_sum, map_zero] at h1 h2 ⊢`. Distinguish the cases in `h3 : s = t ∧ (Sum.inr j : Fin p ⊕ Fin q) = Sum.inr u'`. Simplify using `only [pderiv_shift, Prod.mk.injEq, h3, and_self, if_true, map_add, Derivation.map_smul, reduceCtorEq, and_false, if_false, add_zero, Finset.sum_add_distrib, ← Finset.smul_sum, h2, smul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify `h1` using `only [h3]`. Simplify using `only [pderiv_shift, Prod.mk.injEq, h3, reduceCtorEq, and_false, if_false, add_zero, h1]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 -/
 theorem harm_shift (t : Ix) (c : K) {P : MvPolynomial (Lt Ix p q n) K} (hP : ∀ i, lp xl yl i P = 0) :
     (∀ u u' : Fin p, ∀ i, lp xl yl i (shift (t, Sum.inl u) (t, Sum.inl u') c P) = 0) ∧
@@ -1414,7 +1404,7 @@ theorem harm_shift (t : Ix) (c : K) {P : MvPolynomial (Lt Ix p q n) K} (hP : ∀
     · simp only [pderiv_shift, Prod.mk.injEq, h3, reduceCtorEq, and_false, if_false, add_zero, h1]
 
 /- English proof (translation)
-Take `⟨d, rfl⟩` from `Ideal.mem_span_range_iff_exists_fun.1 hP`. Rewrite using `[map_sum]`. Conclude with `Ideal.sum_mem _ fun i _ => by rw [map_mul]; exact Ideal.mul_mem_left _ _ (hq i)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ideal_shift_of {ρ ρ' : Row Ix p q} {c : K}
     (hq : ∀ i, shift ρ ρ' c (qf xl yl K i) ∈ II Ix p q n K) {P : MvPolynomial (Lt Ix p q n) K}
@@ -1424,13 +1414,13 @@ theorem ideal_shift_of {ρ ρ' : Row Ix p q} {c : K}
   exact Ideal.sum_mem _ fun i _ => by rw [map_mul]; exact Ideal.mul_mem_left _ _ (hq i)
 
 /- English proof (translation)
-Establish `hm : ∀ i, qf xl yl K i ∈ II Ix p q n K` using `fun i => Ideal.subset_span ⟨i, rfl⟩`. Prove the components needed by the constructor for the conclusion. Use `fun u u' => ideal_shift_of ?_ hP` and prove the remaining obligations. Introduce and unpack `⟨s, i, j⟩`. Distinguish the cases in `h3 : s = t ∧ i = u`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails.
 
-Take `⟨rfl, rfl⟩` from `h3`. Use `add_mem (hm (s, i, j)) (Ideal.mul_mem_left _ (C c) (hm (s, u', j)))` and compare the differences between its conclusion and the goal. Simplify using `[qf, xl, yl, shift, add_mul, Finset.sum_add_distrib, Finset.mul_sum, mul_assoc]`. Use `hm (s, i, j)` and compare the differences between its conclusion and the goal. Simplify using `[qf, xl, yl, shift, h3]`.
+Extract witnesses or component facts from the available result. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
-Use `fun u u' => ideal_shift_of ?_ hP` and prove the remaining obligations. Introduce and unpack `⟨s, i, j⟩`. Distinguish the cases in `h3 : s = t ∧ j = u`. Take `⟨rfl, rfl⟩` from `h3`. Use `add_mem (hm (s, i, j)) (Ideal.mul_mem_left _ (C c) (hm (s, i, u')))` and compare the differences between its conclusion and the goal.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Simplify using `[qf, xl, yl, shift, mul_add, Finset.sum_add_distrib, Finset.mul_sum, mul_left_comm]`. Use `hm (s, i, j)` and compare the differences between its conclusion and the goal. Simplify using `[qf, xl, yl, shift, h3]`.
+Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 -/
 theorem ideal_shift (t : Ix) (c : K) {P : MvPolynomial (Lt Ix p q n) K} (hP : P ∈ II Ix p q n K) :
     (∀ u u' : Fin p, shift (t, Sum.inl u) (t, Sum.inl u') c P ∈ II Ix p q n K) ∧
@@ -1455,13 +1445,11 @@ theorem ideal_shift (t : Ix) (c : K) {P : MvPolynomial (Lt Ix p q n) K} (hP : P 
       simp [qf, xl, yl, shift, h3]
 
 /- English proof (translation)
-Take `⟨Q, h1, h2, h3⟩` from `exists_harm (K := K) (σ := Lt Ix p q n) (ι := Ix × Fin p × Fin q) (κ := Fin n) xl yl φ Prod.fst (fun i => (i.1, Sum.inl i.2.1)) (fun i => (i.1, Sum.inr i.2.2)) (fun _ _ => rfl) (fun _ _ => rfl) hP`. Establish `key : ∀ S : MvPolynomial (Lt Ix p q n) K →ₐ[K] MvPolynomial (Lt Ix p q n) K, S P = P → S (P - Q) ∈ II Ix p q n K → (∀ i, lp xl yl i (S Q) = 0) → S Q = Q`. Introduce `S e1 e2 e3`. Rewrite using `[← sub_eq_zero]`. Use `harm_ideal_zero xl yl φ ?_ fun i => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: S Q - Q = (P - Q) - S (P - Q)` using `by rw [map_sub, e1]; ring`. Rewrite using `[this]`. Conclude with `sub_mem h3 e2`. Use `h2 i` as an intermediate fact. Establish `e4` using `e3 i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [lp, map_sub, Finset.sum_sub_distrib] at this e4 ⊢`. Rewrite using `[this, e4, sub_zero]`. Use `⟨Q, h1, ⟨fun t i i' hi c => ?_, fun t i i' hi c => ?_⟩, h2, ?_⟩` and prove the remaining obligations. Conclude with `key _ (hI.1 t i i' hi c) ((ideal_shift t c h3).1 i i') ((harm_shift t c h2).1 i i')`. Conclude with `key _ (hI.2 t i i' hi c) ((ideal_shift t c h3).2 i i') ((harm_shift t c h2).2 i i')`.
-
-Use `val_ideal h (gen K n) h3` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Conclude with `this.symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_harm_inv (φ : K →+* ℂ) {a : Row Ix p q → ℕ} {P : MvPolynomial (Lt Ix p q n) K}
     (hP : Deg Prod.fst a P) (hI : Inv P) :
@@ -1505,13 +1493,13 @@ def wm (p q n : ℕ) (K : Type) [Field K] (t : Ix) : Matrix (Fin n) (Fin n) (MvP
   Matrix.of fun i k => if (k : ℕ) < p then (if i = k then 1 else 0) else (ym p q n K t * xm p q n K t) i k
 
 /- English proof (translation)
-Simplify using `[xm, cx]`.
+Simplify using the standard rewrite rules.
 -/
 theorem xm_cx (t : Ix) (i : Fin p) (b : Fin n) : xm p q n K t b (cx h i) = X ((t, Sum.inl i), b) := by
   simp [xm, cx]
 
 /- English proof (translation)
-Establish `h1 : n - 1 - (n - 1 - j) = j` using `by have := j.2; omega`. Simplify using `[ym, cy, h1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem ym_cy (t : Ix) (j : Fin q) (b : Fin n) : ym p q n K t (cy h j) b = X ((t, Sum.inr j), b) := by
   have h1 : n - 1 - (n - 1 - j) = j := by have := j.2; omega
@@ -1519,15 +1507,15 @@ theorem ym_cy (t : Ix) (j : Fin q) (b : Fin n) : ym p q n K t (cy h j) b = X ((t
 
 include h in
 /- English proof (translation)
-Set `z : Lt Ix p q n → K` to `fun ℓ => if ℓ.2 = Sum.elim (cx h) (cy h) ℓ.1.2 then 1 else 0`. Establish `h1 : (xm p q n K t).map (eval z) = 1`. Use extensionality with `b k`. Simplify using `only [xm, Matrix.map_apply, Matrix.of_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs with h1 h2 <;> simp_all [z, cx]`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h2 : (ym p q n K t).map (eval z) = 1`. Use extensionality with `k b`. Establish `h3 : n - 1 - (n - 1 - k) = k` using `by have := k.2; omega`. Simplify using `only [ym, Matrix.map_apply, Matrix.of_apply, Matrix.one_apply]`. Distinguish the cases in `hk : n - 1 - k < q`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Establish `e : cy h ⟨n - 1 - k, hk⟩ = k` using `Fin.ext h3`. Simplify using `only [hk, dif_pos, eval_X, z, Sum.elim_inr, e, eq_comm]`. Apply the tactic sequence `simp only [hk, dif_neg, not_false_eq_true] split_ifs <;> simp`. Establish `h3 : (wm p q n K t).map (eval z) = 1`. Establish `h4 : (ym p q n K t * xm p q n K t).map (eval z) = 1` using `by rw [Matrix.map_mul, h1, h2, one_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `i k`. Use `congrFun (congrFun h4 i) k` as an intermediate fact. Simplify using `only [wm, Matrix.map_apply, Matrix.of_apply, Matrix.one_apply] at this ⊢`. Apply the tactic sequence `split_ifs with h1 h2 <;> simp_all`. Introduce `h0`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(eval z).map_det (wm p q n K t)` as an intermediate fact. Rewrite `this` using `[h0, map_zero, RingHom.mapMatrix_apply, h3, Matrix.det_one]`. Conclude with `zero_ne_one this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_wm_ne (t : Ix) : (wm p q n K t).det ≠ 0 := by
   let z : Lt Ix p q n → K := fun ℓ => if ℓ.2 = Sum.elim (cx h) (cy h) ℓ.1.2 then 1 else 0
@@ -1559,21 +1547,21 @@ def th (K : Type) [Field K] : Lt Ix p q n → MvPolynomial (Lt Ix p q n) K := fu
   Sum.elim (fun _ => X ℓ) (fun j => (wm p q n K ℓ.1.1 * (xm p q n K ℓ.1.1).adjugate) (cy h j) ℓ.2) ℓ.1.2
 
 /- English proof (translation)
-Set `A` to `FractionRing (MvPolynomial (Lt Ix p q n) K)`. Set `ι : MvPolynomial (Lt Ix p q n) K →ₐ[K] A` to `IsScalarTower.toAlgHom K _ A`. Establish `hι : Function.Injective ι` using `IsFractionRing.injective (MvPolynomial (Lt Ix p q n) K) A`. Establish `hW : ∀ t, IsUnit ((wm p q n K t).map ι).det`. Introduce `t`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `ι.map_det (wm p q n K t)` as an intermediate fact. Rewrite `this` using `[AlgHom.mapMatrix_apply]`. Rewrite using `[← this, isUnit_iff_ne_zero]`. Conclude with `fun e => det_wm_ne h t (hι (by rw [e, map_zero]))`. Set `g : Ix → Matrix (Fin n) (Fin n) A` to `fun t => (xm p q n K t).map ι * ((wm p q n K t).map ι)⁻¹`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Introduce a local definition for the expression.
 
-Establish `hg : ∀ t, g t * (wm p q n K t).map ι = (xm p q n K t).map ι` using `fun t => Matrix.nonsing_inv_mul_cancel_right _ _ (hW t)`. Establish `h1 : aeval (val h g) P = 0`. Use `map_val h (aeval fun v : Ix × Fin n × Fin n => g v.1 v.2.1 v.2.2) (gen K n) P` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 3`. Use function extensionality and compare the values at `t`. Use extensionality with `b k`. Simplify using `[gen]`. Set `c : Row Ix p q → A` to `fun r => Sum.elim (fun _ => 1) (fun _ => ((wm p q n K r.1).map ι).det) r.2`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `h2` using `aeval_scale hP c (val h g)`. Rewrite `h2` using `[h1, mul_zero]`. Apply `hι` to reduce the goal to its premises. Rewrite using `[map_zero, ← h2, ← AlgHom.comp_apply]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Apply `algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨⟨t, i | j⟩, b⟩`. Use `congrFun (congrFun (hg t) b) (cx h i)` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Matrix.map_apply, xm_cx, Finset.sum_eq_single (cx h i)]`. Simplify using `[th, c, ← this, wm, cx]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `k _ hk`. Establish `hi : ((cx h i : Fin n) : ℕ) < p` using `i.2`. Simplify using `[wm, hk, hi]`. Simplify using the standard rewrite rules. Establish `e : (wm p q n K t * (xm p q n K t).adjugate).map ι = ((wm p q n K t).map ι).det • (g t).adjugate`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e1` using `ι.map_adjugate (xm p q n K t)`. Simplify using `only [AlgHom.mapMatrix_apply] at e1`. Rewrite using `[Matrix.map_mul, e1, ← hg, Matrix.adjugate_mul_distrib, ← mul_assoc, Matrix.mul_adjugate, smul_mul_assoc, one_mul]`. Use `congrFun (congrFun e (cy h j)) b` as an intermediate fact. Simplify `this` using `[th, c]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem th_eq_zero {a : Row Ix p q → ℕ} {P : MvPolynomial (Lt Ix p q n) K} (hP : Deg Prod.fst a P)
     (h0 : aeval (val h (gen K n)) P = 0) : aeval (th h K) P = 0 := by
@@ -1621,13 +1609,13 @@ theorem th_eq_zero {a : Row Ix p q → ℕ} {P : MvPolynomial (Lt Ix p q n) K} (
     simpa [th, c] using this
 
 /- English proof (translation)
-Establish `e : (xm p q n K t).det * X ((t, Sum.inr j), b) = (ym p q n K t * xm p q n K t * (xm p q n K t).adjugate) (cy h j) b`. Rewrite using `[mul_assoc, Matrix.mul_adjugate, mul_smul_comm, mul_one, Matrix.smul_apply, ym_cy, smul_eq_mul]`. Rewrite using `[e]`. Simplify using `only [th, Sum.elim_inr]`. Rewrite using `[Matrix.mul_apply, Matrix.mul_apply, ← Finset.sum_sub_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Ideal.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← sub_mul]`. Use `Ideal.mul_mem_right _ _ ?_` and prove the remaining obligations. Distinguish the cases in `hk : (k : ℕ) < p`. Establish `h1 : k = cx h ⟨k, hk⟩` using `rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h2 : cy h j ≠ k` using `by rw [h1]; exact cx_ne_cy h _ _`. Simplify using `only [wm, Matrix.of_apply, hk, if_true, h2, if_false, sub_zero]`. Use `Ideal.subset_span ⟨(t, ⟨k, hk⟩, j), ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, qf]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ym_cy, mul_comm]`. Use `congr 1`. Conclude with `(xm_cx h t ⟨k, hk⟩ b).symm`. Simplify using `[wm, hk]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem th_mod (t : Ix) (j : Fin q) (b : Fin n) :
     (xm p q n K t).det * X ((t, Sum.inr j), b) - th h K ((t, Sum.inr j), b) ∈ II Ix p q n K := by
@@ -1656,7 +1644,7 @@ def wt (ℓ : Lt Ix p q n) : ℕ :=
   Sum.elim (fun i : Fin p => n ^ 2 + 2 * ℓ.2 * i - ℓ.2 ^ 2) (fun j : Fin q => 2 * ℓ.2 * (j + 1)) ℓ.1.2
 
 /- English proof (translation)
-Establish `: (b : ℕ) ^ 2 ≤ n ^ 2` using `Nat.pow_le_pow_left b.2.le 2`. Simplify using `only [wt, Sum.elim_inl]`. Rewrite using `[Nat.cast_sub (by omega)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem weight_variable_formula (t : Ix) (i : Fin p) (b : Fin n) :
     (wt (((t, Sum.inl i), b) : Lt Ix p q n) : ℤ) = n ^ 2 + 2 * b * i - b ^ 2 := by
@@ -1666,7 +1654,7 @@ theorem weight_variable_formula (t : Ix) (i : Fin p) (b : Fin n) :
   push_cast; ring
 
 /- English proof (translation)
-Simplify using `[wt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wt_y (t : Ix) (j : Fin q) (b : Fin n) :
     (wt (((t, Sum.inr j), b) : Lt Ix p q n) : ℤ) = 2 * b * (j + 1) := by
@@ -1675,13 +1663,13 @@ theorem wt_y (t : Ix) (j : Fin q) (b : Fin n) :
 def lead (i : Ix × Fin p × Fin q) : Fin n := ⟨i.2.1 + i.2.2 + 1, by omega⟩
 
 /- English proof (translation)
-Establish `e : qf xl yl K i = ∑ b : Fin n, monomial (Finsupp.single (xl i b) 1 + Finsupp.single (yl i b) 1) (1 : K)`. Simplify using `[qf, X, monomial_mul]`. Rewrite using `[e]`. Use `degree_sum_monomial m wt hm _ _ (lead h i) one_ne_zero fun b hb _ => ?_` and prove the remaining obligations. Take `⟨t, i, j⟩` from `i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Simplify using `only [map_add, Finsupp.weight_single, one_smul, xl, yl]`. Use `zify`. Simplify using `only [weight_variable_formula, wt_y, lead]`. Establish `: ((b : ℕ) : ℤ) - (i + j + 1) ≠ 0`. Introduce `e`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hb` to reduce the goal to its premises. Simplify using `only [lead, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers. Use `sq_pos_of_ne_zero this` as an intermediate fact. Use `push_cast`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem degree_qf (m : MonomialOrder.{0,0} (Lt Ix p q n))
     (hm : ∀ c d : Lt Ix p q n →₀ ℕ, Finsupp.weight wt c < Finsupp.weight wt d → c ≺[m] d) (i : Ix × Fin p × Fin q) :
@@ -1702,21 +1690,21 @@ theorem degree_qf (m : MonomialOrder.{0,0} (Lt Ix p q n))
   nlinarith
 
 /- English proof (translation)
-Set `e : Equiv.Perm (Fin n) → Lt Ix p q n →₀ ℕ` to `fun σ => ∑ k : Fin n, if hk : (k : ℕ) < p then Finsupp.single ((t, Sum.inl ⟨k, hk⟩), σ k) 1 else 0`. Set `c : Equiv.Perm (Fin n) → K` to `fun σ => (Equiv.Perm.sign σ : ℤ) * ∏ k : Fin n, if (k : ℕ) < p then 1 else if σ k = k then 1 else 0`. Establish `h1 : (xm p q n K t).det = ∑ σ, monomial (e σ) (c σ)`. Rewrite using `[Matrix.det_apply']`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[monomial_sum_index, map_mul, map_prod, mul_assoc, ← Finset.prod_mul_distrib, map_intCast]`. Use `congr 1`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [xm, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> simp [X]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[h1]`. Use `degree_sum_monomial m wt hm e c 1 (by simp [c]) fun σ hσ hc => ?_` and prove the remaining obligations. Establish `h2 : ∀ k : Fin n, ¬ (k : ℕ) < p → σ k = k`. Introduce `k hk`. Use `Finset.prod_ne_zero_iff.1 (right_ne_zero_of_mul hc) k (Finset.mem_univ _)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h3`. Simplify using `[hk, h3] at this`. Simplify using `only [e, map_sum]`. Apply `Finset.sum_lt_sum` to reduce the goal to its premises. Introduce `k _ split_ifs`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Finsupp.weight_single, one_smul] zify`. Simplify using `only [weight_variable_formula, Equiv.Perm.coe_one, id]`. Use polynomial arithmetic with `[sq_nonneg (((σ k : ℕ) : ℤ) - (k : ℕ))]`. Both sides reduce to the same expression. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, σ k ≠ k := by`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `h3`. Use `push Not at h3`. Conclude with `hσ (Equiv.ext h3)`. Establish `hk' : (k : ℕ) < p` using `by by_contra h3; exact hk (h2 k h3)`. Use `⟨k, Finset.mem_univ _, ?_⟩` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hk', dif_pos, Finsupp.weight_single, one_smul]`. Use `zify`. Simplify using `only [weight_variable_formula, Equiv.Perm.coe_one, id]`. Establish `: ((σ k : ℕ) : ℤ) - (k : ℕ) ≠ 0`. Introduce `e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Apply `hk` to reduce the goal to its premises. Simplify using `only [Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers. Use polynomial arithmetic with `[sq_pos_of_ne_zero this]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem degree_det (m : MonomialOrder.{0,0} (Lt Ix p q n))
     (hm : ∀ c d : Lt Ix p q n →₀ ℕ, Finsupp.weight wt c < Finsupp.weight wt d → c ≺[m] d) (t : Ix) :
@@ -1765,17 +1753,17 @@ theorem degree_det (m : MonomialOrder.{0,0} (Lt Ix p q n))
 
 include h in
 /- English proof (translation)
-Take `⟨m, hm⟩` from `exists_order (wt (Ix := Ix) (p := p) (q := q) (n := n))`. Use `nzd_of_groebner m _ (fun i => (degree_qf h m hm i).1) ?_ _ (degree_det m hm t).1 ?_ g hg` and prove the remaining obligations. Introduce and unpack `⟨s, i, j⟩ ⟨s', i', j'⟩ hne v`. Rewrite using `[(degree_qf h m hm _).2, (degree_qf h m hm _).2]`. Assume the negation of the conclusion as `hc`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Apply `hne` to reduce the goal to its premises. Establish `key : ∀ i : Ix × Fin p × Fin q, ¬ (Finsupp.single (xl i (lead h i)) 1 + Finsupp.single (yl i (lead h i)) 1 : Lt Ix p q n →₀ ℕ) v = 0 → v = xl i (lead h i) ∨ v = yl i (lead h i)`. Introduce `i hi`. Assume the negation of the conclusion as `h3`. Rewrite `h3` using `[not_or]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hi (by simp [Finsupp.single_eq_of_ne h3.1, Finsupp.single_eq_of_ne h3.2])`. Rewrite `hc` using `[not_or]`. Apply the tactic sequence `rcases key _ hc.1 with h1 | h1 <;> rcases key _ hc.2 with h2 | h2 <;> rw [h1] at h2 <;>`. Simplify using `only [xl, yl, lead, Prod.mk.injEq, Sum.inl.injEq, Sum.inr.injEq, Fin.ext_iff, reduceCtorEq, and_false, false_and] at h2 ⊢`. Conclude with `⟨h2.1.1, h2.1.2, by omega⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨h2.1.1, by omega, h2.1.2⟩`. Introduce and unpack `⟨s, i, j⟩ v`. Rewrite using `[(degree_qf h m hm _).2, (degree_det m hm _).2]`. Assume the negation of the conclusion as `hc`. Simplify using `only [not_or] at hc`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `hc`. Rewrite `h2` using `[Finsupp.finset_sum_apply]`. Take `⟨k, -, hk⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h2`. Use `split_ifs at hk with hk'`. Rewrite `hk` using `[Finsupp.single_apply_ne_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨rfl, -⟩` from `hk`. Apply `h1` to reduce the goal to its premises. Simplify using `only [Finsupp.add_apply, Finsupp.single_apply, xl, yl, lead, Prod.mk.injEq, Sum.inl.injEq, Fin.ext_iff]`. Rewrite using `[if_neg (by omega), if_neg (by simp), add_zero]`. Simplify using `at hk`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_xm_nzd (t : Ix) (g : MvPolynomial (Lt Ix p q n) K) (hg : (xm p q n K t).det * g ∈ II Ix p q n K) :
     g ∈ II Ix p q n K := by
@@ -1813,15 +1801,15 @@ theorem det_xm_nzd (t : Ix) (g : MvPolynomial (Lt Ix p q n) K) (hg : (xm p q n K
     · simp at hk
 
 /- English proof (translation)
-Use `harm_ideal_zero xl yl φ ?_ hH` and prove the remaining obligations. Set `π` to `Ideal.Quotient.mkₐ K (II Ix p q n K)`. Set `c : Row Ix p q → (MvPolynomial (Lt Ix p q n) K ⧸ II Ix p q n K)` to `fun r => Sum.elim (fun _ => 1) (fun _ => π (xm p q n K r.1).det) r.2`. Establish `h1` using `aeval_scale hP c (fun ℓ => π (X ℓ))`. Establish `h2 : (aeval fun ℓ => π (X ℓ)) = π`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `algHom_ext` to reduce the goal to its premises. Introduce `ℓ`. Simplify using the standard rewrite rules. Establish `h3 : (aeval fun ℓ => c ℓ.1 * π (X ℓ)) = π.comp (aeval (th h K))`. Apply `algHom_ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `⟨⟨t, i | j⟩, b⟩`. Simplify using `[c, th]`. Simplify using `only [aeval_X, AlgHom.comp_apply, c, Sum.elim_inr, ← map_mul]`. Conclude with `(Ideal.Quotient.eq).2 (th_mod h t j b)`. Rewrite `h1` using `[h2, h3, AlgHom.comp_apply, th_eq_zero h hP h0, map_zero]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : ∏ r, c r ^ a r ∈ nonZeroDivisors _`. Use `prod_mem fun r _ => pow_mem ?_ _` and prove the remaining obligations. Take `⟨t, i | j⟩` from `r`. Conclude with `one_mem _`. Rewrite using `[mem_nonZeroDivisors_iff_left]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Take `⟨g, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (det_xm_nzd h t g (Ideal.Quotient.eq_zero_iff_mem.1 hx))`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 (mem_nonZeroDivisors_iff_left.1 h4 _ h1.symm)`.
+A detailed English derivation is pending.
 -/
 theorem cof_inj (φ : K →+* ℂ) {a : Row Ix p q → ℕ} {P : MvPolynomial (Lt Ix p q n) K} (hP : Deg Prod.fst a P)
     (hH : ∀ i, lp xl yl i P = 0) (h0 : aeval (val h (gen K n)) P = 0) : P = 0 := by
@@ -1861,11 +1849,11 @@ def gshift (ρ ρ' : Row Ix p q) : MvPolynomial (Lt Ix p q n) ℚ →ₐ[ℚ] Po
   aeval fun ℓ => if ℓ.1 = ρ then Polynomial.C (X ℓ) + Polynomial.X * Polynomial.C (X (ρ', ℓ.2)) else Polynomial.C (X ℓ)
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp [Polynomial.algebraMap_apply]`. Consider the case `add P Q hP hQ => simp only [map_add, Polynomial.eval₂_add, hP, hQ]`. Consider the case `mul_X P ℓ hP`. Simplify using `only [map_mul, Polynomial.eval₂_mul, hP, map_X]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Simplify using `only [gshift, shift, aeval_X]`. Use `split_ifs`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem eval_gshift [Algebra ℚ K] (ρ ρ' : Row Ix p q) (c : K) (P : MvPolynomial (Lt Ix p q n) ℚ) :
     Polynomial.eval₂ (map (algebraMap ℚ K)) (C c) (gshift ρ ρ' P) = shift ρ ρ' c (map (algebraMap ℚ K) P) := by
@@ -1882,9 +1870,9 @@ theorem eval_gshift [Algebra ℚ K] (ρ ρ' : Row Ix p q) (c : K) (P : MvPolynom
     · simp
 
 /- English proof (translation)
-Establish `e : gshift ρ ρ' P - Polynomial.C P = 0`. Apply `Polynomial.eq_zero_of_infinite_isRoot` to reduce the goal to its premises. Use `Set.infinite_of_injective_forall_mem (f := fun c : ℚ => (C c : MvPolynomial (Lt Ix p q n) ℚ)) (C_injective _ _) fun c => ?_` and prove the remaining obligations. Use `eval_gshift ρ ρ' c P` as an intermediate fact. Simplify using `only [Algebra.algebraMap_self, map_id, hP] at this`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e2 : (map (RingHom.id ℚ) : MvPolynomial (Lt Ix p q n) ℚ →+* _) = RingHom.id _` using `RingHom.ext fun x => map_id x`. Rewrite `this` using `[e2, Polynomial.eval₂_id]`. Simplify using `[this]`. Rewrite using `[← eval_gshift, sub_eq_zero.1 e, Polynomial.eval₂_C]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem shift_map [Algebra ℚ K] {ρ ρ' : Row Ix p q} {P : MvPolynomial (Lt Ix p q n) ℚ}
     (hP : ∀ c : ℚ, shift ρ ρ' c P = P) (c : K) : shift ρ ρ' c (map (algebraMap ℚ K) P) = map (algebraMap ℚ K) P := by
@@ -1916,11 +1904,11 @@ def NN (K : Type) [Field K] (t : Ix) (a : Row Ix p q → ℕ) : Submodule K (MvP
       by rw [map_smul, map_smul, h3]⟩
 
 /- English proof (translation)
-Take `⟨P, h1, h2, h3⟩` from `hf`. Use `⟨map (algebraMap ℚ K) P, fun m hm => h1 fun e => hm (by rw [coeff_map, e, map_zero]), ⟨fun s i j hij c => shift_map (h2.1 s i j hij) c, fun s i j hij c => shift_map (h2.2 s i j hij) c⟩, ?_⟩` and prove the remaining obligations. Establish `e` using `map_val h (mapAlgHom (σ := Ix × Fin n × Fin n) (Algebra.ofId ℚ K)) (gen ℚ n) P`. Rewrite `e` using `[h3]`. Rewrite using `[aeval_map_algebraMap]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (fun t => (gen ℚ n t).map (mapAlgHom (σ` using `Ix × Fin n × Fin n) (Algebra.ofId ℚ K))) = gen K n := by`. Use function extensionality and compare the values at `s`. Use `ext1 b k`. Simplify using `[gen]`. Rewrite `e` using `[e1]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e]`. Simplify using `only [blockEmb, mapAlgHom_apply, map_rename]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem NN_map [Algebra ℚ K] (t : Ix) (a : Row Ix p q → ℕ) {f : MvPolynomial (Fin n × Fin n) ℚ} (hf : f ∈ NN h ℚ t a) :
     map (algebraMap ℚ K) f ∈ NN h K t a := by
@@ -1940,9 +1928,9 @@ theorem NN_map [Algebra ℚ K] (t : Ix) (a : Row Ix p q → ℕ) {f : MvPolynomi
   rfl
 
 /- English proof (translation)
-Introduce and unpack `f ⟨P, h1, h2, h3⟩`. Use `pev_cof_mem h h1 h2 t 0` as an intermediate fact. Rewrite `this` using `[h3, pev_self]`. Use `this using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[mu, res]`.
+Simplify using the standard rewrite rules.
 -/
 theorem NN_le [CharZero K] (t : Ix) (a : Row Ix p q → ℕ) : NN h K t a ≤ dualWeyl K n n (mu h a t) := by
   rintro f ⟨P, h1, h2, h3⟩
@@ -1953,9 +1941,9 @@ theorem NN_le [CharZero K] (t : Ix) (a : Row Ix p q → ℕ) : NN h K t a ≤ du
   simp [mu, res]
 
 /- English proof (translation)
-Take `⟨P, h1, h2, h3⟩` from `hf`. Set `g' : Ix → GL (Fin n) K` to `fun _ => Formalism.BasicNotions.inside₂ K n g⁻¹`. Establish `e` using `cof_act h g' h1`. Rewrite `e` using `[h3, Formalism.L2.DIV.trAct, (blockActTensor K K Ix n n _).1, ← map_smul]`. Establish `hm : _ ∈ NN h K t a` using `⟨_, act_deg g' h1, act_inv g' h2, e⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hm` using `[Submodule.smul_mem_iff]`. Simplify `hm` using `[g', Formalism.BasicNotions.inside₂]`. Use `Finset.prod_ne_zero_iff.2 fun s _ => pow_ne_zero _ (inv_ne_zero ?_)` and prove the remaining obligations. Conclude with `(g' s).det_ne_zero`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem NN_act [CharZero K] (t : Ix) (a : Row Ix p q → ℕ) (g : GL (Fin n) K) (f : MvPolynomial (Fin n × Fin n) K)
     (hf : f ∈ NN h K t a) : rowAct K (g : Matrix (Fin n) (Fin n) K) f ∈ NN h K t a := by
@@ -1970,9 +1958,9 @@ theorem NN_act [CharZero K] (t : Ix) (a : Row Ix p q → ℕ) (g : GL (Fin n) K)
     exact (g' s).det_ne_zero
 
 /- English proof (translation)
-Rewrite using `[← AlgHom.comp_apply, ← AlgHom.comp_apply]`. Use `congr 1`. Apply `algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [AlgHom.comp_apply, rename_X, shift, colAdd, aeval_X, hρ.eq_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem shift_rename_self {m : ℕ} {ρ : Fin m → Row Ix p q} (hρ : Function.Injective ρ) (e : Fin n → Fin n)
     (i i' : Fin m) (c : K) (H : MvPolynomial (Fin n × Fin m) K) :
@@ -1986,7 +1974,7 @@ theorem shift_rename_self {m : ℕ} {ρ : Fin m → Row Ix p q} (hρ : Function.
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[← AlgHom.comp_apply]`. Use `congr 1`. Apply `algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `[shift, hr]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem shift_rename_ne {m : ℕ} {ρ : Fin m → Row Ix p q} (e : Fin n → Fin n) {r : Row Ix p q} (hr : ∀ i, ρ i ≠ r)
     (r' : Row Ix p q) (c : K) (H : MvPolynomial (Fin n × Fin m) K) :
@@ -1999,9 +1987,9 @@ theorem shift_rename_ne {m : ℕ} {ρ : Fin m → Row Ix p q} (e : Fin n → Fin
   simp [shift, hr]
 
 /- English proof (translation)
-Simplify using `only [hw, map_prod, map_pow, lpMinor, AlgHom.map_det]`. Use `Finset.prod_eq_one fun s _ => ?_` and prove the remaining obligations. Use `one_pow _` and compare the differences between its conclusion and the goal. Use `Eq.trans ?_ (Matrix.det_one (n := Fin (s + 1)))` and prove the remaining obligations. Use `congr 1`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `a b`. Simplify using `[hz, Matrix.one_apply, Fin.ext_iff]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem aeval_hw {m : ℕ} (hm : m ≤ n) (ν : Fin m → ℕ) (z : Fin n × Fin m → K)
     (hz : ∀ v, z v = if (v.1 : ℕ) = v.2 then 1 else 0) : aeval z (hw K hm ν) = 1 := by
@@ -2014,33 +2002,33 @@ theorem aeval_hw {m : ℕ} (hm : m ≤ n) (ν : Fin m → ℕ) (z : Fin n × Fin
   simp [hz, Matrix.one_apply, Fin.ext_iff]
 
 /- English proof (translation)
-Establish `hp : p ≤ n` using `by omega`. Establish `hq : q ≤ n` using `by omega`. Take `⟨hA1, hA2⟩` from `(dualWeylPoint _ _ _ _ _).1 (hwMem K n p hp _ ha)`. Take `⟨hB1, hB2⟩` from `(dualWeylPoint _ _ _ _ _).1 (hwMem K n q hq _ hb)`. Establish `hA` using `aeval_hw (K := K) hp fun i => a (t, Sum.inl i)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hB` using `aeval_hw (K := K) hq fun i => a (t, Sum.inr i)`. Generalize the expression as in `hw K hp _ = A at *`. Generalize the expression as in `hw K hq _ = B at *`. Set `G : Matrix (Fin n) (Fin n) (MvPolynomial (Fin n × Fin n) K)` to `Matrix.of fun a s => X (a, s)`. Rewrite using `[Submodule.ne_bot_iff]`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Use `⟨aeval (fun v => X (v.1, cx h v.2)) A * aeval (fun v => G.adjugate (cy h v.2) (Fin.rev v.1)) B, ⟨rename (fun v => (((t, Sum.inl v.2), id v.1) : Lt Ix p q n)) A * rename (fun v => (((t, Sum.inr v.2), Fin.rev v.1) : Lt Ix p q n)) B, ?_, ⟨?_, ?_⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Use `deg_of_scale fun d _ => ?_` and prove the remaining obligations. Establish `e1` using `aeval_scale (w := Prod.snd) hA1 (fun i => (C (d (t, Sum.inl i)) : MvPolynomial (Lt Ix p q n) K)) (fun v => X ((t, Sum.inl v.2), v.1))`. Establish `e2` using `aeval_scale (w := Prod.snd) hB1 (fun i => (C (d (t, Sum.inr i)) : MvPolynomial (Lt Ix p q n) K)) (fun v => X ((t, Sum.inr v.2), Fin.rev v.1))`. Rewrite using `[map_mul, aeval_rename, aeval_rename]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Function.comp_def, id]`. Rewrite using `[e1, e2, rename_eq_aeval, rename_eq_aeval, Fintype.prod_prod_type, Finset.prod_eq_single t]`. Simplify using `only [res, if_true, Fintype.prod_sum_type, map_mul, map_prod, map_pow, Function.comp_def]`. Expand and normalize the polynomial expressions, which then agree. Introduce `s _ hs`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[res, hs]`. Simplify using the standard rewrite rules. Introduce `s i i' hi c`. Rewrite using `[map_mul, shift_rename_ne (ρ := fun j => (t, Sum.inr j)) Fin.rev (by simp)]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Distinguish the cases in `hs : s = t`. Substitute `hs` using the available equality. Rewrite using `[shift_rename_self (ρ := fun j => (s, Sum.inl j)) (fun _ _ => by simp) id, hA2 _ _ hi]`. Rewrite using `[shift_rename_ne (ρ := fun j => (t, Sum.inl j)) id (by simp [Ne.symm hs])]`. Introduce `s i i' hi c`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_mul, shift_rename_ne (ρ := fun j => (t, Sum.inl j)) id (by simp)]`. Use `congr 1`. Distinguish the cases in `hs : s = t`. Substitute `hs` using the available equality. Rewrite using `[shift_rename_self (ρ := fun j => (s, Sum.inr j)) (fun _ _ => by simp) Fin.rev, hB2 _ _ hi]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[shift_rename_ne (ρ := fun j => (t, Sum.inr j)) Fin.rev (by simp [Ne.symm hs])]`. Rewrite using `[map_mul, map_mul, aeval_rename, aeval_rename, ← AlgHom.comp_apply (blockEmb K t), ← AlgHom.comp_apply (blockEmb K t), comp_aeval, comp_aeval]`. Use `congr 3`. Use function extensionality and compare the values at `v`. Simplify using `[gen, blockEmb]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `v`. Use `congrFun (congrFun ((blockEmb K t).map_adjugate G) (cy h v.2)) (Fin.rev v.1)` as an intermediate fact. Simplify using `only [AlgHom.mapMatrix_apply, Matrix.map_apply] at this`. Rewrite using `[this]`. Simplify using `only [Function.comp_def, val_inr]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 2`. Use `ext1 b k`. Simplify using `[gen, G, blockEmb]`. Introduce `e`. Set `ev : MvPolynomial (Fin n × Fin n) K →ₐ[K] K` to `aeval fun v => if v.1 = v.2 then 1 else 0`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `congrArg ev e` as an intermediate fact. Rewrite `this` using `[map_mul, ← AlgHom.comp_apply ev, ← AlgHom.comp_apply ev, comp_aeval, comp_aeval, hA, hB]`. Simplify using `at this`. Introduce `v`. Establish `h1` using `congrFun (congrFun (ev.map_adjugate G) (cy h v.2)) (Fin.rev v.1)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ev.mapMatrix G = 1`. Use extensionality with `b k`. Simplify using `[ev, G, Matrix.one_apply]`. Rewrite `h1` using `[h2, Matrix.adjugate_one, AlgHom.mapMatrix_apply, Matrix.map_apply]`. Rewrite using `[h1, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Simplify using `only [cy, Fin.ext_iff, Fin.val_rev, eq_iff_iff]`. Use `v.1.2` as an intermediate fact. Use `v.2.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Simplify using `[ev, cx, Fin.ext_iff]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem NN_ne [CharZero K] (t : Ix) (a : Row Ix p q → ℕ) (ha : Antitone fun i => a (t, Sum.inl i))
     (hb : Antitone fun i => a (t, Sum.inr i)) : NN h K t a ≠ ⊥ := by
@@ -2117,17 +2105,15 @@ theorem NN_ne [CharZero K] (t : Ix) (a : Row Ix p q → ℕ) (ha : Antitone fun 
       simp [ev, cx, Fin.ext_iff]
 
 /- English proof (translation)
-Use `haveI : CharZero K := φ.charZero`. It suffices to establish `H : ∃ P : MvPolynomial (Lt Ix p q n) K, Deg Prod.fst a P ∧ Inv P ∧ aeval (val h (gen K n)) P = F by`. Take `⟨P, h1, h2, rfl⟩` from `H`. Conclude with `exists_harm_inv h φ h1 h2`. Proceed by induction on `hF using Submodule.span_induction with`.
+Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `mem x hx`. Take `⟨f, hf, rfl⟩` from `hx`. Use `fun t => irr _ (hμ t) (NN h ℚ t a) (NN_le h t a) (NN_ne h t a (ha t) (hb t)) (NN_act h t a) (NN h K t a) (fun f hf => NN_map h t a hf) (hf t)` as an intermediate fact. Use `choose P h1 h2 h3 using this`. Use `⟨∏ t, P t, ?_, ⟨fun s i j hij c => ?_, fun s i j hij c => ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `IsWeightedHomogeneous.prod Finset.univ P (fun t => res t a) fun t _ => h1 t` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `r`. Simplify using `[res]`. Rewrite using `[map_prod]`. Conclude with `Finset.prod_congr rfl fun t _ => (h2 t).1 s i j hij c`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Rewrite using `[map_prod]`. Conclude with `Finset.prod_congr rfl fun t _ => (h2 t).2 s i j hij c`. Rewrite using `[map_prod]`. Conclude with `Finset.prod_congr rfl fun t _ => h3 t`. Consider the case `zero => exact ⟨0, isWeightedHomogeneous_zero _ _ _, ⟨fun _ _ _ _ _ => map_zero _, fun _ _ _ _ _ => map_zero _⟩, by simp⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨P, h1, h2, h3⟩` from `hx`. Take `⟨Q, k1, k2, k3⟩` from `hy`. Conclude with `⟨P + Q, h1.add k1, ⟨fun t i j hij c => by rw [map_add, h2.1 t i j hij, k2.1 t i j hij], fun t i j hij c => by rw [map_add, h2.2 t i j hij, k2.2 t i j hij]⟩, by rw [map_add, h3, k3]⟩`. Consider the case `smul c x _ hx`.
-
-Take `⟨P, h1, h2, h3⟩` from `hx`. Conclude with `⟨c • P, (weightedHomogeneousSubmodule K _ _).smul_mem c h1, ⟨fun t i j hij c => by rw [map_smul, h2.1 t i j hij], fun t i j hij c => by rw [map_smul, h2.2 t i j hij]⟩, by rw [map_smul, h3]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cof_surj (φ : K →+* ℂ) (a : Row Ix p q → ℕ) (ha : ∀ t, Antitone fun i => a (t, Sum.inl i))
     (hb : ∀ t, Antitone fun i => a (t, Sum.inr i)) (hμ : ∀ t, Antitone (mu h a t))
@@ -2169,9 +2155,9 @@ theorem cof_surj (φ : K →+* ℂ) (a : Row Ix p q → ℕ) (ha : ∀ t, Antito
 def dd (K : Type) [Field K] (n : ℕ) : MvPolynomial (Fin n × Fin n) K := (Matrix.of fun a s => X (a, s)).det
 
 /- English proof (translation)
-Use `bidetMem K n n e (fun _ => n) (fun _ => le_rfl) (fun _ => id)` as an intermediate fact. Establish `e1 : shapeDeg (n` using `n) (fun _ : Fin e => n) = fun _ => e := by`. Use function extensionality and compare the values at `t`. Simplify using `[shapeDeg]`. Rewrite `this` using `[e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `this` using `[bideterminant, initMinor, dd]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem dd_pow_mem (e : ℕ) : dd K n ^ e ∈ dualWeyl K n n fun _ => e := by
   have := bidetMem K n n e (fun _ => n) (fun _ => le_rfl) (fun _ => id)
@@ -2182,7 +2168,7 @@ theorem dd_pow_mem (e : ℕ) : dd K n ^ e ∈ dualWeyl K n n fun _ => e := by
   simpa [bideterminant, initMinor, dd] using this
 
 /- English proof (translation)
-Use `(dualWeylMul K n n _ _ _ _).1 (dd_pow_mem e) hf` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Simplify using `[← hμ, add_comm]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem dd_mul_mem {ν μ : Fin n → ℕ} {e : ℕ} (hμ : ∀ k, ν k + e = μ k) {f : MvPolynomial (Fin n × Fin n) K}
     (hf : f ∈ dualWeyl K n n ν) : dd K n ^ e * f ∈ dualWeyl K n n μ := by
@@ -2191,7 +2177,7 @@ theorem dd_mul_mem {ν μ : Fin n → ℕ} {e : ℕ} (hμ : ∀ k, ν k + e = μ
   simp [← hμ, add_comm]
 
 /- English proof (translation)
-Rewrite using `[dd, AlgHom.map_det, RingHom.map_det, ← Matrix.det_mul]`. Use `congr 1`. Use `ext1 a s`. Simplify using `[rowAct, Matrix.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rowAct_dd (g : Matrix (Fin n) (Fin n) K) : rowAct K g (dd K n) = C g.det * dd K n := by
   rw [dd, AlgHom.map_det, RingHom.map_det, ← Matrix.det_mul]
@@ -2200,9 +2186,9 @@ theorem rowAct_dd (g : Matrix (Fin n) (Fin n) K) : rowAct K g (dd K n) = C g.det
   simp [rowAct, Matrix.mul_apply]
 
 /- English proof (translation)
-Introduce `e`. Use `congrArg (eval fun v : Fin n × Fin n => if v.1 = v.2 then (1 : K) else 0) e` as an intermediate fact. Rewrite `this` using `[dd, RingHom.map_det, map_zero]`. Use `one_ne_zero (α := K) (Eq.trans ?_ this)` and prove the remaining obligations. Rewrite using `[← Matrix.det_one (n := Fin n)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `a b`. Simplify using `[Matrix.one_apply]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem dd_ne : dd K n ≠ 0 := by
   intro e
@@ -2215,13 +2201,11 @@ theorem dd_ne : dd K n ≠ 0 := by
   simp [Matrix.one_apply]
 
 /- English proof (translation)
-Establish `hμ' : Antitone μ` using `fun i j hij => by rw [← hμ, ← hμ]; exact Nat.add_le_add_right (hν hij) _`. Use `irr μ hμ' ((dualWeyl ℚ n n ν).map (LinearMap.mulLeft ℚ (dd ℚ n ^ e))) ?_ ?_ ?_ ((dualWeyl K n n ν).map (LinearMap.mulLeft K (dd K n ^ e))) ?_ hf` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Conclude with `dd_mul_mem hμ hf`. Rewrite using `[Submodule.ne_bot_iff]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨_, ⟨_, hwMem ℚ n n le_rfl ν hν, rfl⟩, mul_ne_zero (pow_ne_zero _ dd_ne) (hwNe ℚ n n le_rfl ν)⟩`. Introduce and unpack `g _ ⟨f, hf, rfl⟩`. Use `⟨_, Submodule.smul_mem _ ((g : Matrix (Fin n) (Fin n) ℚ).det ^ e) (dualWeylRowStable ℚ n n ν g f hf), ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.mulLeft_apply, map_mul, map_pow, rowAct_dd, smul_eq_C_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨f, hf, rfl⟩`. Use `⟨_, dualWeylMap ℚ K (algebraMap ℚ K) n n ν f hf, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.mulLeft_apply, map_mul, map_pow, dd, RingHom.map_det]`. Use `congr 3`. Use `ext1 a s`.
-
-Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_dd_mul [CharZero K] {ν μ : Fin n → ℕ} {e : ℕ} (hν : Antitone ν) (hμ : ∀ k, ν k + e = μ k)
     {f : MvPolynomial (Fin n × Fin n) K} (hf : f ∈ dualWeyl K n n μ) : ∃ f' ∈ dualWeyl K n n ν, dd K n ^ e * f' = f := by
@@ -2244,7 +2228,7 @@ theorem exists_dd_mul [CharZero K] {ν μ : Fin n → ℕ} {e : ℕ} (hν : Anti
     simp
 
 /- English proof (translation)
-Rewrite using `[dd, AlgHom.map_det]`. Use `congr 1`. Use `ext1 a s`. Simplify using `[gen, blockEmb]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem emb_dd (t : Ix) : blockEmb K t (dd K n) = (gen K n t).det := by
   rw [dd, AlgHom.map_det]
@@ -2253,17 +2237,15 @@ theorem emb_dd (t : Ix) : blockEmb K t (dd K n) = (gen K n t).det := by
   simp [gen, blockEmb]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hG`. Proceed by induction on `hG using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, hf, rfl⟩` from `hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `choose f' h1 h2 using fun t => exists_dd_mul (hν t) (hμ t) (hf t)`. Use `⟨_, Submodule.subset_span ⟨f', h1, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [← h2, map_mul, map_pow, emb_dd, Finset.prod_mul_distrib]`. Consider the case `zero => exact ⟨0, zero_mem _, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨F, h1, rfl⟩` from `hx`. Take `⟨F', h2, rfl⟩` from `hy`. Conclude with `⟨F + F', add_mem h1 h2, by ring⟩`. Consider the case `smul c x _ hx`. Take `⟨F, h1, rfl⟩` from `hx`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨c • F, Submodule.smul_mem _ _ h1, by simp⟩`. Introduce and unpack `⟨F, hF, rfl⟩`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, hf, rfl⟩` from `hx`.
+Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.subset_span ⟨fun t => dd K n ^ e t * f t, fun t => dd_mul_mem (hμ t) (hf t), ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, map_pow, emb_dd, Finset.prod_mul_distrib]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [mul_add]`. Conclude with `add_mem hx hy`.
-
-Consider the case `smul c x _ hx => rw [mul_smul_comm]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem tensor_iff [CharZero K] {ν μ : Ix → Fin n → ℕ} {e : Ix → ℕ} (hν : ∀ t, Antitone (ν t))
     (hμ : ∀ t k, ν t k + e t = μ t k) (G : MvPolynomial (Ix × Fin n × Fin n) K) :
@@ -2306,13 +2288,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (Dw : D
   {pl : Ix → (E →+* ℂ)} (he : IsEnum H pl)
 
 /- English proof (translation)
-Establish `h1` using `H.sqrt_neg_disc_sq`. Establish `hd : (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`. Establish `hre` using `congrArg Complex.re h1`. Establish `him` using `congrArg Complex.im h1`. Simplify using `only [sq, Complex.mul_re, Complex.mul_im, Complex.neg_re, Complex.neg_im, Complex.natCast_re, Complex.natCast_im, neg_zero] at hre him`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h0 : H.rt0.re = 0`. Assume the negation of the conclusion as `h`. Establish `: H.rt0.im = 0`. Establish `: H.rt0.re * H.rt0.im = 0` using `by linarith`. Conclude with `(mul_eq_zero.1 this).resolve_left h`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hre` using `[this]`. Use polynomial arithmetic with `[mul_self_nonneg H.rt0.re]`. Use `⟨Complex.ext (by simp [h0]) (by simp), fun e => ?_⟩` and prove the remaining obligations. Rewrite `hre` using `[e]`. Simplify using `at hre`.
-
-Conclude with `H.d_prime.ne_zero hre`.
+Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rt0_conj_neg_ne_zero (H : Host E) : starRingEnd ℂ H.rt0 = -H.rt0 ∧ H.rt0 ≠ 0 := by
   have h1 := H.sqrt_neg_disc_sq
@@ -2334,7 +2314,7 @@ theorem rt0_conj_neg_ne_zero (H : Host E) : starRingEnd ℂ H.rt0 = -H.rt0 ∧ H
   exact H.d_prime.ne_zero hre
 
 /- English proof (translation)
-Introduce `h2`. Simplify using `only [InPsi, ComplexEmbedding.conjugate_coe_eq] at hτ h2`. Rewrite `h2` using `[hτ, (rt0_conj_neg_ne_zero H).1]`. Conclude with `(rt0_conj_neg_ne_zero H).2 (by linear_combination (-1 / 2 : ℂ) * h2)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_psi_conj {τ : E →+* ℂ} (hτ : InPsi H τ) : ¬ InPsi H (ComplexEmbedding.conjugate τ) := by
   intro h2
@@ -2343,9 +2323,9 @@ theorem not_psi_conj {τ : E →+* ℂ} (hτ : InPsi H τ) : ¬ InPsi H (Complex
   exact (rt0_conj_neg_ne_zero H).2 (by linear_combination (-1 / 2 : ℂ) * h2)
 
 /- English proof (translation)
-Simplify using `only [InPsi, ComplexEmbedding.conjugate_coe_eq] at hτ ⊢`. Establish `h1 : ((H.rt : 𝓞 E) : E) ^ 2 = -(H.d : E)` using `by simpa using congrArg (algebraMap (𝓞 E) E) H.rt_sq`. Establish `h2 : (τ (H.rt : E)) ^ 2 = H.rt0 ^ 2` using `by rw [← map_pow, h1, H.sqrt_neg_disc_sq]; simp`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 h2 with h3 | h3` into its components or cases. Conclude with `absurd h3 hτ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3, map_neg, (rt0_conj_neg_ne_zero H).1, neg_neg]`.
+A detailed English derivation is pending.
 -/
 theorem psi_conj {τ : E →+* ℂ} (hτ : ¬ InPsi H τ) : InPsi H (ComplexEmbedding.conjugate τ) := by
   simp only [InPsi, ComplexEmbedding.conjugate_coe_eq] at hτ ⊢
@@ -2356,41 +2336,41 @@ theorem psi_conj {τ : E →+* ℂ} (hτ : ¬ InPsi H τ) : InPsi H (ComplexEmbe
   · rw [h3, map_neg, (rt0_conj_neg_ne_zero H).1, neg_neg]
 
 /- English proof (translation)
-The claim follows from `star_star τ`.
+A detailed English derivation is pending.
 -/
 theorem conj_conj (τ : E →+* ℂ) : ComplexEmbedding.conjugate (ComplexEmbedding.conjugate τ) = τ := star_star τ
 
 include he
 
 /- English proof (translation)
-The claim follows from `(he.2 _).2 ⟨t, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem psi_pl (t : Ix) : InPsi H (pl t) := (he.2 _).2 ⟨t, rfl⟩
 
 /- English proof (translation)
-The claim follows from `if_pos (psi_pl he t)`.
+A detailed English derivation is pending.
 -/
 theorem mult_pl (t : Ix) : Dw.mult (pl t) = Dw.p := if_pos (psi_pl he t)
 
 /- English proof (translation)
-The claim follows from `if_neg (not_psi_conj (psi_pl he t))`.
+A detailed English derivation is pending.
 -/
 theorem mult_conj (t : Ix) : Dw.mult (ComplexEmbedding.conjugate (pl t)) = Dw.q := if_neg (not_psi_conj (psi_pl he t))
 
 /- English proof (translation)
-Introduce `e` and use `not_psi_conj (psi_pl he t) (e ▸ psi_pl he s)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pl_ne (s t : Ix) : pl s ≠ ComplexEmbedding.conjugate (pl t) := fun e =>
   not_psi_conj (psi_pl he t) (e ▸ psi_pl he s)
 
 /- English proof (translation)
-The claim follows from `he.1 (by rw [← conj_conj (pl s), e, conj_conj])`.
+A detailed English derivation is pending.
 -/
 theorem conj_pl_inj {s t : Ix} (e : ComplexEmbedding.conjugate (pl s) = ComplexEmbedding.conjugate (pl t)) : s = t :=
   he.1 (by rw [← conj_conj (pl s), e, conj_conj])
 
 /- English proof (translation)
-Distinguish the cases in `h : InPsi H σ`. Conclude with `Or.inl ((he.2 _).1 h)`. Take `⟨t, ht⟩` from `(he.2 _).1 (psi_conj h)`. Conclude with `Or.inr ⟨t, by rw [ht, conj_conj]⟩`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Extract witnesses or component facts from the available result. Prove the second alternative.
 -/
 theorem cover (σ : E →+* ℂ) : (∃ t, pl t = σ) ∨ ∃ t, ComplexEmbedding.conjugate (pl t) = σ := by
   by_cases h : InPsi H σ
@@ -2417,9 +2397,9 @@ theorem fw_inr (t : Ix) (i : Fin Dw.q) (b : Fin n) :
     fw Dw he ((t, Sum.inr i), b) = ⟨ComplexEmbedding.conjugate (pl t), Fin.cast (mult_conj Dw he _).symm i, b⟩ := rfl
 
 /- English proof (translation)
-Introduce and unpack `⟨⟨s, i | i⟩, b⟩ ⟨⟨t, j | j⟩, c⟩ e`. Use `all_goals`. Establish `h1` using `congrArg (fun x : LtN Dw n => x.1) e`. Establish `h2` using `congrArg (fun x : LtN Dw n => (x.2.1 : ℕ)) e`. Establish `h3` using `congrArg (fun x : LtN Dw n => x.2.2) e`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [fw_inl, fw_inr, Fin.val_cast] at h1 h2 h3`. Rewrite using `[he.1 h1, Fin.ext h2, h3]`. Conclude with `absurd h1 (pl_ne he _ _)`. Conclude with `absurd h1.symm (pl_ne he _ _)`. Rewrite using `[conj_pl_inj he h1, Fin.ext h2, h3]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fw_inj : Function.Injective (fw (n := n) Dw he) := by
   rintro ⟨⟨s, i | i⟩, b⟩ ⟨⟨t, j | j⟩, c⟩ e
@@ -2434,7 +2414,7 @@ theorem fw_inj : Function.Injective (fw (n := n) Dw he) := by
   · rw [conj_pl_inj he h1, Fin.ext h2, h3]
 
 /- English proof (translation)
-Break down `cover he σ with ⟨t, rfl⟩ | ⟨t, rfl⟩` into its components or cases. Conclude with `⟨(t, Sum.inl (Fin.cast (mult_pl Dw he _) i)), fun _ => rfl⟩`. Conclude with `⟨(t, Sum.inr (Fin.cast (mult_conj Dw he _) i)), fun _ => rfl⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem row_cover (σ : E →+* ℂ) (i : Fin (Dw.mult σ)) :
     ∃ ρ : Row Ix Dw.p Dw.q, ∀ b : Fin n, fw Dw he (ρ, b) = ⟨σ, i, b⟩ := by
@@ -2443,7 +2423,7 @@ theorem row_cover (σ : E →+* ℂ) (i : Fin (Dw.mult σ)) :
   · exact ⟨(t, Sum.inr (Fin.cast (mult_conj Dw he _) i)), fun _ => rfl⟩
 
 /- English proof (translation)
-Introduce and unpack `⟨σ, i, b⟩`. Take `⟨ρ, hρ⟩` from `row_cover (n := n) Dw he σ i`. Conclude with `⟨_, hρ b⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem fw_surj : Function.Surjective (fw (n := n) Dw he) := by
   rintro ⟨σ, i, b⟩
@@ -2453,13 +2433,13 @@ theorem fw_surj : Function.Surjective (fw (n := n) Dw he) := by
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Rewrite using `[← AlgHom.comp_apply]`. Use `congr 1`. Apply `algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨⟨t, i | i⟩, b⟩`. Establish `h1 : ∃ s, pl s = pl t` using `⟨t, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h2 : h1.choose = t` using `he.1 h1.choose_spec`. Establish `h3 : (i : ℕ) < n` using `by omega`. Simplify using `only [AlgHom.comp_apply, rename_X, cof, aeval_X, fw_inl, Fin.val_cast, h3, dif_pos, h1, h2, val_inl]`. Both sides reduce to the same expression. Establish `h0 : ¬ ∃ s, pl s = ComplexEmbedding.conjugate (pl t)` using `fun ⟨s, hs⟩ => pl_ne he _ _ hs`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h1 : ∃ s, ComplexEmbedding.conjugate (pl s) = ComplexEmbedding.conjugate (pl t)` using `⟨t, rfl⟩`. Establish `h2 : h1.choose = t` using `conj_pl_inj he h1.choose_spec`. Establish `h3 : (i : ℕ) < n` using `by omega`. Simplify using `only [AlgHom.comp_apply, rename_X, cof, aeval_X, fw_inr, Fin.val_cast, h3, dif_pos, h1, h2, val_inr, h0, dif_neg, not_false_eq_true]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [cy, Fin.ext_iff, Fin.val_rev]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem cof_fw (h : Dw.p + Dw.q ≤ n) (P : MvPolynomial (Lt Ix Dw.p Dw.q n) K) :
     cof Dw pl K n (rename (fw Dw he) P) = aeval (val h (gen K n)) P := by
@@ -2483,11 +2463,11 @@ theorem cof_fw (h : Dw.p + Dw.q ≤ n) (P : MvPolynomial (Lt Ix Dw.p Dw.q n) K) 
     omega
 
 /- English proof (translation)
-Rewrite using `[← AlgHom.comp_apply, ← AlgHom.comp_apply]`. Use `congr 1`. Apply `algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨⟨t, i | i⟩, b⟩`. Establish `h1 : ∃ s, pl s = pl t` using `⟨t, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h2 : h1.choose = t` using `he.1 h1.choose_spec`. Simplify using `only [AlgHom.comp_apply, rename_X, letAct, aeval_X, fw_inl, dif_pos, h1, h2, act, map_sum, map_mul, rename_C]`. Both sides reduce to the same expression. Establish `h0 : ¬ ∃ s, pl s = ComplexEmbedding.conjugate (pl t)` using `fun ⟨s, hs⟩ => pl_ne he _ _ hs`. Establish `h1 : ∃ s, ComplexEmbedding.conjugate (pl s) = ComplexEmbedding.conjugate (pl t)` using `⟨t, rfl⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : h1.choose = t` using `conj_pl_inj he h1.choose_spec`. Simplify using `only [AlgHom.comp_apply, rename_X, letAct, aeval_X, fw_inr, dif_pos, h1, h2, act, map_sum, map_mul, rename_C, h0, dif_neg, not_false_eq_true]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem letAct_fw (g : Ix → GL (Fin n) K) (P : MvPolynomial (Lt Ix Dw.p Dw.q n) K) :
     letAct Dw pl K g (rename (fw Dw he) P) = rename (fw Dw he) (act g P) := by
@@ -2507,9 +2487,9 @@ theorem letAct_fw (g : Ix → GL (Fin n) K) (P : MvPolynomial (Lt Ix Dw.p Dw.q n
     rfl
 
 /- English proof (translation)
-Rewrite using `[← AlgHom.comp_apply, ← AlgHom.comp_apply]`. Use `congr 1`. Apply `algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨r, b⟩`. Simplify using `only [AlgHom.comp_apply, rename_X, rowShift, shift, aeval_X, ← h1, (fw_inj Dw he).eq_iff, Prod.mk.injEq, exists_and_left, exists_eq', and_true]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Use `split_ifs with h3`. Substitute `h3` using the available equality. Simplify using `only [map_add, map_mul, rename_X, rename_C, h2]`. Rewrite using `[h1]`. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rowShift_fw {ρ ρ' : Row Ix Dw.p Dw.q} {σ : E →+* ℂ} {i i' : Fin (Dw.mult σ)}
     (h1 : ∀ b : Fin n, fw Dw he (ρ, b) = ⟨σ, i, b⟩) (h2 : ∀ b : Fin n, fw Dw he (ρ', b) = ⟨σ, i', b⟩) (c : K)
@@ -2528,11 +2508,9 @@ theorem rowShift_fw {ρ ρ' : Row Ix Dw.p Dw.q} {σ : E →+* ℂ} {i i' : Fin (
   · simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hP`. Use `⟨fun t i i' hi c => rename_injective _ (fw_inj Dw he) ?_, fun t i i' hi c => rename_injective _ (fw_inj Dw he) ?_⟩` and prove the remaining obligations. Rewrite using `[← rowShift_fw Dw he (fw_inl Dw he t i) (fw_inl Dw he t i')]`. Conclude with `hP _ _ _ hi c`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← rowShift_fw Dw he (fw_inr Dw he t i) (fw_inr Dw he t i')]`. Conclude with `hP _ _ _ hi c`. Introduce `hP σ i i' hi c`. Break down `cover he σ with ⟨t, rfl⟩ | ⟨t, rfl⟩` into its components or cases. Rewrite using `[rowShift_fw Dw he (ρ := (t, Sum.inl (Fin.cast (mult_pl Dw he _) i))) (ρ' := (t, Sum.inl (Fin.cast (mult_pl Dw he _) i'))) (fun _ => rfl) (fun _ => rfl), hP.1 _ _ _ hi]`.
-
-Rewrite using `[rowShift_fw Dw he (ρ := (t, Sum.inr (Fin.cast (mult_conj Dw he _) i))) (ρ' := (t, Sum.inr (Fin.cast (mult_conj Dw he _) i'))) (fun _ => rfl) (fun _ => rfl), hP.2 _ _ _ hi]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_fw (P : MvPolynomial (Lt Ix Dw.p Dw.q n) K) : RowInv Dw.mult n K (rename (fw Dw he) P) ↔ Inv P := by
   constructor
@@ -2555,15 +2533,13 @@ def aa (pl : Ix → (E →+* ℂ)) (a : (E →+* ℂ) × ℕ → ℕ) : Row Ix D
   Sum.elim (fun i : Fin Dw.p => a (pl ρ.1, i)) (fun j : Fin Dw.q => a (ComplexEmbedding.conjugate (pl ρ.1), j)) ρ.2
 
 /- English proof (translation)
-Establish `hw : ∀ (m : Lt Ix Dw.p Dw.q n →₀ ℕ) (ρ : Row Ix Dw.p Dw.q), Finsupp.weight (fun v : Lt Ix Dw.p Dw.q n => (Pi.single v.1 1 : Row Ix Dw.p Dw.q → ℕ)) m ρ = ∑ b, Finsupp.mapDomain (fw Dw he) m (fw Dw he (ρ, b))`. Introduce `m ρ`. Rewrite using `[weight_apply, Fintype.sum_prod_type, Finset.sum_eq_single ρ]`. Simplify using `[Finsupp.mapDomain_apply (fw_inj Dw he)]`. Introduce `r _ hr`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hr]`. Simplify using the standard rewrite rules. Rewrite using `[RowDeg, support_rename_of_injective (fw_inj Dw he)]`. Prove the components needed by the constructor for the conclusion. Introduce `hP m hm`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `⟨t, i⟩`. Use `hP _ (Finset.mem_image_of_mem _ (mem_support_iff.2 hm))` as an intermediate fact. Rewrite using `[hw]`. Break down `i with i | i` into its components or cases. Conclude with `this (pl t) (Fin.cast (mult_pl Dw he _).symm i)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `this (ComplexEmbedding.conjugate (pl t)) (Fin.cast (mult_conj Dw he _).symm i)`. Introduce `hP m hm σ i`. Take `⟨m, hm', rfl⟩` from `Finset.mem_image.1 hm`. Use `congrFun (hP (mem_support_iff.1 hm'))` as an intermediate fact. Simplify using `only [hw] at this`.
-
-Break down `cover he σ with ⟨t, rfl⟩ | ⟨t, rfl⟩` into its components or cases. Conclude with `this (t, Sum.inl (Fin.cast (mult_pl Dw he _) i))`. Conclude with `this (t, Sum.inr (Fin.cast (mult_conj Dw he _) i))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem deg_fw (a : (E →+* ℂ) × ℕ → ℕ) (P : MvPolynomial (Lt Ix Dw.p Dw.q n) K) :
     RowDeg Dw.mult n K (fun τ i => a (τ, i)) (rename (fw Dw he) P) ↔ Deg Prod.fst (aa Dw pl a) P := by
@@ -2593,9 +2569,9 @@ theorem deg_fw (a : (E →+* ℂ) × ℕ → ℕ) (P : MvPolynomial (Lt Ix Dw.p 
     · exact this (t, Sum.inr (Fin.cast (mult_conj Dw he _) i))
 
 /- English proof (translation)
-Simplify using `only [lap, lp, LinearMap.sum_apply, map_sum, LinearMap.smul_apply, LinearMap.comp_apply]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single b]`. Rewrite using `[Matrix.one_apply_eq, one_smul, ← pderiv_rename (fw_inj Dw he), ← pderiv_rename (fw_inj Dw he)]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `c _ hc`. Rewrite using `[Matrix.one_apply_ne (Ne.symm hc), zero_smul]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lap_fw (t : Ix) (i : Fin Dw.p) (j : Fin Dw.q) (P : MvPolynomial (Lt Ix Dw.p Dw.q n) K) :
     lap Dw.mult n K 1 (pl t) (ComplexEmbedding.conjugate (pl t)) (Fin.cast (mult_pl Dw he _).symm i)
@@ -2610,11 +2586,9 @@ theorem lap_fw (t : Ix) (i : Fin Dw.p) (j : Fin Dw.q) (P : MvPolynomial (Lt Ix D
   · simp
 
 /- English proof (translation)
-Simplify using `only [harmK, Submodule.mem_iInf, LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `hP ⟨t, i, j⟩`. Apply `rename_injective _ (fw_inj Dw he)` to reduce the goal to its premises. Rewrite using `[← lap_fw, map_zero]`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hP _ (psi_pl he t) _ _`. Introduce `hP τ hτ i j`. Take `⟨t, rfl⟩` from `(he.2 _).1 hτ`. Use `lap_fw Dw he t (Fin.cast (mult_pl Dw he _) i) (Fin.cast (mult_conj Dw he _) j) P` as an intermediate fact. Rewrite `this` using `[hP, map_zero]`.
-
-Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem harm_fw (P : MvPolynomial (Lt Ix Dw.p Dw.q n) K) :
     rename (fw Dw he) P ∈ harmK Dw.mult n K ComplexEmbedding.conjugate (InPsi H) (fun _ => 1) ↔
@@ -2632,7 +2606,7 @@ theorem harm_fw (P : MvPolynomial (Lt Ix Dw.p Dw.q n) K) :
     exact this
 
 /- English proof (translation)
-Unfold `degC`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => a (ComplexEmbedding.conjugate (pl t), i)), mult_conj Dw he, ← Fin.sum_univ_eq_sum_range (fun i => a (ComplexEmbedding.conjugate (pl t), i))]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem degC_eq (a : (E →+* ℂ) × ℕ → ℕ) (t : Ix) : degC Dw pl a t = ∑ j, aa Dw pl a (t, Sum.inr j) := by
   unfold degC
@@ -2641,19 +2615,17 @@ theorem degC_eq (a : (E →+* ℂ) × ℕ → ℕ) (t : Ix) : degC Dw pl a t = �
   rfl
 
 /- English proof (translation)
-Rewrite using `[hw t k, mult_pl Dw he, mult_conj Dw he, degC_eq Dw he, mu]`. Establish `h1 : (∑ i, if cx h i = k then aa Dw pl a (t, Sum.inl i) else 0) = if (k : ℕ) < Dw.p then a (pl t, k) else 0` using `by split_ifs with hk`. Rewrite using `[Finset.sum_eq_single ⟨k, hk⟩]`. Conclude with `if_pos rfl`. Introduce `i _ hi`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `if_neg fun e => hi (Fin.ext (show (i : ℕ) = k from congrArg Fin.val e))`. Simplify using the standard rewrite rules. Use `Finset.sum_eq_zero fun i _ => if_neg fun e => hk ?_` and prove the remaining obligations. Rewrite using `[← e]`. Conclude with `i.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (∑ j, if k = cy h j then aa Dw pl a (t, Sum.inr j) else 0) = if (Fin.rev k : ℕ) < Dw.q then a (ComplexEmbedding.conjugate (pl t), (Fin.rev k : ℕ)) else 0`. Establish `hk'` using `k.2`. Use `split_ifs with hk`. Rewrite using `[Finset.sum_eq_single ⟨_, hk⟩]`. Conclude with `if_pos (by simp only [cy, Fin.ext_iff, Fin.val_rev]; omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Introduce `i _ hi`. Use `if_neg fun e => hi ?_` and prove the remaining obligations. Use `i.2` as an intermediate fact. Simplify using `only [cy, Fin.ext_iff, Fin.val_rev] at e ⊢`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using the standard rewrite rules. Use `Finset.sum_eq_zero fun i _ => if_neg fun e => hk ?_` and prove the remaining obligations. Use `i.2` as an intermediate fact. Simplify using `only [cy, Fin.ext_iff, Fin.val_rev] at e ⊢`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : (∑ j, if k ≠ cy h j then aa Dw pl a (t, Sum.inr j) else 0) + (∑ j, if k = cy h j then aa Dw pl a (t, Sum.inr j) else 0) = ∑ j, aa Dw pl a (t, Sum.inr j)`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases e : k = cy h j <;> simp [e]`. Rewrite using `[h1, ← h3, h2]`.
-
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem mu_eq (h : Dw.p + Dw.q ≤ n) {a : (E →+* ℂ) × ℕ → ℕ} {s : Ix → ℤ} {lam : Ix → DomWeight n}
     (hw : WtIs Dw pl a s lam) (t : Ix) (k : Fin n) :
@@ -2696,7 +2668,7 @@ theorem mu_eq (h : Dw.p + Dw.q ≤ n) {a : (E →+* ℂ) × ℕ → ℕ} {s : Ix
 
 omit he in
 /- English proof (translation)
-Establish `hk` using `k.2`. Rewrite using `[DomWeight.detShift, dif_pos (by omega)]`. Conclude with `lam.anti (by rw [Fin.le_def]; simp only; omega)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shift_le (lam : DomWeight n) (k : Fin n) : lam.detShift ≤ lam.w k := by
   have hk := k.2
@@ -2704,7 +2676,7 @@ theorem shift_le (lam : DomWeight n) (k : Fin n) : lam.detShift ≤ lam.w k := b
   exact lam.anti (by rw [Fin.le_def]; simp only; omega)
 
 /- English proof (translation)
-Use `mu_eq Dw he h hw t ⟨n - 1, by omega⟩` as an intermediate fact. Rewrite using `[DomWeight.detShift, dif_pos hn]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem exp_nonneg (h : Dw.p + Dw.q ≤ n) {a : (E →+* ℂ) × ℕ → ℕ} {s : Ix → ℤ} {lam : Ix → DomWeight n}
     (hw : WtIs Dw pl a s lam) (hn : 0 < n) (t : Ix) : 0 ≤ (degC Dw pl a t : ℤ) + (lam t).detShift - s t := by
@@ -2713,7 +2685,7 @@ theorem exp_nonneg (h : Dw.p + Dw.q ≤ n) {a : (E →+* ℂ) × ℕ → ℕ} {s
   omega
 
 /- English proof (translation)
-Establish `h1` using `mu_eq Dw he h hw t k`. Establish `h2` using `exp_nonneg Dw he h hw k.pos t`. Establish `h3` using `shift_le (lam t) k`. Simplify using `only [DomWeight.natW]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem natW_add (h : Dw.p + Dw.q ≤ n) {a : (E →+* ℂ) × ℕ → ℕ} {s : Ix → ℤ} {lam : Ix → DomWeight n}
     (hw : WtIs Dw pl a s lam) (t : Ix) (k : Fin n) :
@@ -2726,7 +2698,7 @@ theorem natW_add (h : Dw.p + Dw.q ≤ n) {a : (E →+* ℂ) × ℕ → ℕ} {s :
 
 omit he in
 /- English proof (translation)
-Introduce `i j hij`. Use `lam.anti hij` as an intermediate fact. Simplify using `only [DomWeight.natW]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem natW_anti (lam : DomWeight n) : Antitone lam.natW := by
   intro i j hij
@@ -2735,25 +2707,25 @@ theorem natW_anti (lam : DomWeight n) : Antitone lam.natW := by
   omega
 
 /- English proof (translation)
-Use `haveI : CharZero K := φ.charZero`. Establish `hsurj : Function.Surjective (rename (R` using `K) (fw (n := n) Dw he)) := rename_surjective _ (fw_surj Dw he)`. Establish `hmem : ∀ P : MvPolynomial (Lt Ix Dw.p Dw.q n) K, (rename (fw Dw he) P ∈ HHa Dw.mult n K ComplexEmbedding.conjugate (InPsi H) fun τ i => a (τ, i)) ↔ (∀ i, lp xl yl i P = 0) ∧ Inv P ∧ Deg Prod.fst (aa Dw pl a) P`. Introduce `P`. Rewrite using `[← harm_fw Dw he, ← inv_fw Dw he, ← deg_fw Dw he]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hT` using `tensor_iff (K := K) (fun t => natW_anti (lam t)) (natW_add Dw he h hw)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `P hP`. Take `⟨P, rfl⟩` from `hsurj P`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, h2, h3⟩` from `(hmem P).1 hP`. Rewrite using `[cof_fw Dw he h]`. Conclude with `(hT _).1 (cof_mem h h3 h2)`. Introduce `F hF`. Take `⟨Q, h1, h2, h3, h4⟩` from `cof_surj h φ (aa Dw pl a) (fun t i j hij => ha _ hij) (fun t i j hij => ha _ hij) (fun t i j hij => by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← natW_add Dw he h hw, ← natW_add Dw he h hw]`. Conclude with `Nat.add_le_add_right (natW_anti _ hij) _) ((hT _).2 ⟨F, hF, rfl⟩)`. Use `⟨rename (fw Dw he) Q, ⟨(hmem Q).2 ⟨h3, h2, h1⟩, by rw [cof_fw Dw he h, h4]; rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `P ⟨hP, hP'⟩`. Take `⟨P, rfl⟩` from `hsurj P`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Take `⟨k1, -, k3⟩` from `(hmem P).1 hP`. Rewrite `hP'` using `[cof_fw Dw he h]`. Use `congr 1`. Rewrite using `[← sub_eq_zero]`. Use `cof_inj h φ ((weightedHomogeneousSubmodule K _ _).sub_mem k3 h1) (fun i => ?_) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e1` using `k1 i`. Establish `e2` using `h3 i`. Simplify using `only [lp, map_sub, Finset.sum_sub_distrib] at e1 e2 ⊢`. Rewrite using `[e1, e2, sub_zero]`. Rewrite using `[map_sub, hP', h4]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `sub_self _`. Introduce `g P hP F _ hF`. Take `⟨P, rfl⟩` from `hsurj P`. Take `⟨-, -, h3⟩` from `(hmem P).1 hP`. Rewrite `hF` using `[cof_fw Dw he h]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[letAct_fw, cof_fw Dw he h, cof_act h g h3, hF, map_mul]`. Establish `e1 : trAct g (detFac Dw pl K a s lam) = (∏ t, (g t : Matrix (Fin n) (Fin n) K).det ^ ((degC Dw pl a t : ℤ) + (lam t).detShift - s t).toNat) • detFac Dw pl K a s lam`. Simplify using `only [detFac, ← emb_dd, map_prod, map_pow, trAct, (blockActTensor K K Ix n n _).1, rowAct_dd, map_mul, Matrix.det_transpose, smul_eq_C_mul, mul_pow, Finset.prod_mul_distrib, algHom_C, algebraMap_eq]`. Rewrite using `[e1, actP, LinearMap.smul_apply, AlgHom.toLinearMap_apply, smul_mul_assoc, mul_smul_comm, smul_smul, smul_smul]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[detTwK, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[detPow, Units.val_zpow_eq_zpow_val, Matrix.GeneralLinearGroup.val_det_apply, ← degC_eq Dw he]`. Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Substitute `hn` using the available equality.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using the standard rewrite rules. Establish `h0 : (g t : Matrix (Fin n) (Fin n) K).det ≠ 0` using `(g t).det_ne_zero`. Rewrite using `[inv_pow, ← zpow_natCast, ← zpow_natCast, ← zpow_neg, ← zpow_add₀ h0, ← zpow_add₀ h0, Int.toNat_of_nonneg (exp_nonneg Dw he h hw hn t)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem main_field (φ : K →+* ℂ) (h : Dw.p + Dw.q ≤ n) (a : (E →+* ℂ) × ℕ → ℕ) (s : Ix → ℤ) (lam : Ix → DomWeight n)
     (ha : ∀ τ : E →+* ℂ, Antitone fun i : ℕ => a (τ, i)) (hw : WtIs Dw pl a s lam) :
@@ -2827,7 +2799,7 @@ theorem main_field (φ : K →+* ℂ) (h : Dw.p + Dw.q ≤ n) (a : (E →+* ℂ)
 end Main
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ Dw _ _ _ _ he h _ c a s lam ha hw` and use `main_field Dw he (c.F.val : c.F →+* ℂ) h a s lam ha hw`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ (E : Type) [inst : Field E] [inst_1 : NumberField E] [inst_2 : NumberField.IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H) (n : ℕ) (Ix : Type) [inst_3 : Fintype Ix] (pl : Ix → E →+* ℂ), GlobalTheory.FrameRead.IsEnum H pl → ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum.p Dw + ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum.q Dw ≤ n → ∀ (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l) (a : (E →+* ℂ) × ℕ → ℕ) (s : Ix → ℤ) (lam : Ix → Formalism.BasicNotions.DomWeight n), (∀ (τ : E →+* ℂ), Antitone fun (i : ℕ) ↦ a (τ, i)) → GlobalTheory.FrameRead.WtIs Dw pl a s lam → (∀ P ∈ Formalism.L2.Pj.HHa (ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum.mult Dw) n (↥(ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff.F c)) NumberField.ComplexEmbedding.conjugate (Formalism.L2.Pj.InPsi H) fun (τ : E →+* ℂ) (i : ℕ) ↦ a (τ, i), ∃ F ∈ Formalism.L2.DIV.VV (↥(ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff.F c)) lam, DFunLike.coe (GlobalTheory.FrameRead.cof Dw pl (↥(ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff.F c)) n) P = GlobalTheory.FrameRead.detFac Dw pl (↥(ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff.F c)) a s lam * F) ∧ (∀ F ∈ Formalism.L2.DIV.VV (↥(ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff.F c)) lam, ∃! P : MvPolynomial (Formalism.L2.Pj.Letter (E →+* ℂ) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum.mult Dw) n) ↥(ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff.F c), (P ∈ Formalism.L2.Pj.HHa (ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum.mult Dw) n (↥(ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff.F c)) NumberField.ComplexEmbedding.conjugate (Formalism.L2.Pj.InPsi H) fun (τ : E →+* ℂ) (i : ℕ) ↦ a (τ, i)) ∧ DFunLike.coe (GlobalTheory.FrameRead.cof Dw pl (↥(ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff.F c)) n) P = GlobalTheory.FrameRead.detFac Dw pl (↥(ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff.F c)) a s lam * F) ∧ ∀ (g : Ix → GL (Fin n) ↥(ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff.F c)), ∀ P ∈ Formalism.L2.Pj.HHa (ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum.mult Dw) n (↥(ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff.F c)) NumberField.ComplexEmbedding.conjugate (Formalism.L2.Pj.InPsi H) fun (τ : E →+* ℂ) (i : ℕ) ↦ a (τ, i), ∀ F ∈ Formalism.L2.DIV.VV (↥(ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff.F c)) lam, DFunLike.coe (GlobalTheory.FrameRead.cof Dw pl (↥(ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff.F c)) n) P = GlobalTheory.FrameRead.detFac Dw pl (↥(ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff.F c)) a s lam * F → DFunLike.coe (GlobalTheory.FrameRead.cof Dw pl (↥(ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff.F c)) n) (DFunLike.coe (GlobalTheory.FrameRead.letAct Dw pl (↥(ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff.F c)) g) P) = (∏ t : Ix, Matrix.det (Units.val (g t)) ^ (-s t)) • (GlobalTheory.FrameRead.detFac Dw pl (↥(ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff.F c)) a s lam * DFunLike.coe (Formalism.L2.DIV.actP lam g) F) :=
   fun _ _ _ _ _ Dw _ _ _ _ he h _ c a s lam ha hw =>

@@ -10,9 +10,9 @@ open scoped ContDiff Matrix
 namespace GlobalTheory.GoodTop
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply]`. Establish `h1 : ∀ f : Fin n → r → ℂ, ∏ i, ∑ j, f i j = ∑ s : Fin n → r, ∏ i, f i (s i)` using `fun f => by`. Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ]`. Simplify using `only [h1]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `symm`. Use `Fintype.sum_equiv (Equiv.arrowCongr π.symm (Equiv.refl r)) _ _ fun t => ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Simplify using `only [Finset.prod_mul_distrib, Equiv.arrowCongr_apply, Equiv.symm_symm, Equiv.coe_refl, Function.comp, id]`. Rewrite using `[mul_comm, Equiv.prod_comp π fun i => P (t i) (p i)]`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_prod_perm_mul_comm {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] (A : Fin n → Matrix r r ℂ)
     (P : Matrix r r ℂ) (π : Equiv.Perm (Fin n)) :
@@ -29,13 +29,13 @@ theorem sum_prod_perm_mul_comm {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] 
   rw [mul_comm, Equiv.prod_comp π fun i => P (t i) (p i)]
 
 /- English proof (translation)
-Unfold `mixTop`. Use `congr 1`. Establish `hdet : ∀ M : Fin n → Fin n → ℂ, (Matrix.of M).det = ∑ w : Equiv.Perm (Fin n), ((Equiv.Perm.sign w : ℤ) : ℂ) * ∏ i, M i (w i)` using `fun M => by`. Rewrite using `[← Matrix.det_transpose, Matrix.det_apply']`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hdet, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun π _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [← Finset.mul_sum]`. Use `congr 2`. Rewrite using `[sum_prod_perm_mul_comm (fun i => P⁻¹ * K i (u i) (w i)) P π]`. Simplify using `only [← Matrix.mul_assoc, Matrix.mul_nonsing_inv P hP, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mixTop_conj {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] (K : Fin n → EndValuedForm11Coeffs n r) (P : Matrix r r ℂ)
     (hP : IsUnit P.det) : mixTop (fun i a b => P⁻¹ * K i a b * P) = mixTop K := by

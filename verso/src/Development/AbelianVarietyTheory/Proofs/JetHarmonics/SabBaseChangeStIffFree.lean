@@ -37,7 +37,7 @@ def PinnedConcl (t : SAB H S) (f : S' ⟶ S) (PP' : RigLB ((Over.pullback f).obj
     m.φ = pullback.fst t.G.hom f
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `h`. Conclude with `⟨_, DVR.linCombIso_isGen w hw _ _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem lbIso_cubeLB {G T : Over S} [GrpObj G] [IsCommMonObj G] {n : ℕ} (x : Fin n → (T ⟶ G))
     {L M : LB G.left} (h : LBIso L M) : LBIso (cubeLB G x L) (cubeLB G x M) := by
@@ -45,7 +45,7 @@ theorem lbIso_cubeLB {G T : Over S} [GrpObj G] [IsCommMonObj G] {n : ℕ} (x : F
   exact ⟨_, DVR.linCombIso_isGen w hw _ _⟩
 
 /- English proof (translation)
-The claim follows from `DVR.linComb_isLB _ h _ _`.
+A detailed English derivation is pending.
 -/
 theorem cubeLB_isLB {G T : Over S} [GrpObj G] [IsCommMonObj G] {n : ℕ} (x : Fin n → (T ⟶ G))
     {L : LB G.left} (h : L.IsLB) : (cubeLB G x L).IsLB := DVR.linComb_isLB _ h _ _

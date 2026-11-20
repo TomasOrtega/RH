@@ -16,21 +16,21 @@ noncomputable section
 open GlobalTheory.Mum.PolTens GlobalTheory.TensBal in
 
 /- English proof (translation)
-Introduce `R _ _ _ _ Q D' r W h _ pr hl xe w hpr hc hw hpsi`. Use `letI := PowLim.mod xe (symUnitOf W h)`. Introduce `a`. Establish `hA` using `transpose_mul_eq W h a`. Introduce `u' hu' hn' y y'`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `htr` using `triv_span xe hpr hc (span_sigP W _ _ hA)`. Rewrite `htr` using `[flat_sigP]`. Take `⟨Ξ, hΞ, hΞ0, hΞv⟩` from `htr`. Use `corr_of_val D'.toPre.P.isLB fun z J' hJ' => ?_` and prove the remaining obligations. Take `⟨J, hJ⟩` from `GlobalTheory.BoxFamily.exists_good_at Q.M.isLB z`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `key` using `ros_sig hl hpr w hw _ _ u' hu' hn' Ξ hΞ hΞ0 z J J' hJ hJ' y y'`. Rewrite `key` using `[hΞv z J hJ y y', tv_sigP Q xe W _ _ (fun y => a • y) (fun y => star a • y) (PowLim.xe_smul xe _ a) (PowLim.xe_smul xe _ (star a)) z J y y']`. Establish `prr` using `prod_ros (PowLim.act pr hl (TensO.mat _ a)) (PowLim.act pr hl (TensO.mat _ (star a))) (DVR.cP D'.toPre (TK R) y) (DVR.cP D'.toPre (TK R) y') (isoV w z J J')`. Establish `l₁ : DVR.cP D'.toPre (TK R) y ≫ PowLim.act pr hl (TensO.mat _ a) = DVR.cP D'.toPre (TK R) (a • y)`. Rewrite using `[DVR.cP, DVR.cP, PowLim.c_smul Q D'.toPre pr hl xe hc, Category.assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `l₂ : DVR.cP D'.toPre (TK R) y' ≫ PowLim.act pr hl (TensO.mat _ (star a)) = DVR.cP D'.toPre (TK R) (star a • y')`. Rewrite using `[DVR.cP, DVR.cP, PowLim.c_smul Q D'.toPre pr hl xe hc, Category.assoc]`. Rewrite `prr` using `[l₁, l₂, ← DVR.cPoint_add, ← DVR.cPoint_add]`. Express the relevant statement in the definitionally equal form `∏ k, isoV w z J J' (D'.toPre.pt2 y y' ≫ rosatiφ D'.toPre.P.A (PowLim.act pr hl (TensO.mat _ a)) (PowLim.act pr hl (TensO.mat _ (star a))) k) ^ rosatiε k = _ at prr`. Rewrite `key` using `[prr]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[val_mul hJ', val_pull hJ', Category.id_comp, tau_pol xe w hpsi hJ hJ', tau_pol xe w hpsi hJ hJ']`. Establish `e0 : rosatiε 0 = 1` using `rfl`. Establish `e1 : rosatiε 1 = -1` using `rfl`. Establish `e2 : rosatiε 2 = -1` using `rfl`. Establish `e3 : rosatiε 3 = -1` using `rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e4 : rosatiε 4 = 1` using `rfl`. Establish `e5 : rosatiε 5 = 1` using `rfl`. Establish `v0 : (![a • y + y', a • y, y', y + star a • y', y, star a • y'] : Fin 6 → D'.toPre.X) 0 = a • y + y'` using `rfl`. Establish `v1 : (![a • y + y', a • y, y', y + star a • y', y, star a • y'] : Fin 6 → D'.toPre.X) 1 = a • y` using `rfl`. Establish `v2 : (![a • y + y', a • y, y', y + star a • y', y, star a • y'] : Fin 6 → D'.toPre.X) 2 = y'` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `v3 : (![a • y + y', a • y, y', y + star a • y', y, star a • y'] : Fin 6 → D'.toPre.X) 3 = y + star a • y'` using `rfl`. Establish `v4 : (![a • y + y', a • y, y', y + star a • y', y, star a • y'] : Fin 6 → D'.toPre.X) 4 = y` using `rfl`. Establish `v5 : (![a • y + y', a • y, y', y + star a • y', y, star a • y'] : Fin 6 → D'.toPre.X) 5 = star a • y'` using `rfl`. Rewrite `key` using `[Fin.prod_univ_six]`. Use `erw [v0, v1, v2, v3, v4, v5] at key`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [e0, e1, e2, e3, e4, e5] at key`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `k'` using `congrArg Additive.ofMul key`. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow] at k' ⊢`. Take the linear combination `(norm := abel) k'`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mum.PolTens.tauBal_polTens : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], IsCN R → ∀ (Q : Data R) (D' : DegData R (maximalIdeal R))
     {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (h : IsUnit (W + W.transpose).det), ((W + W.transpose).map (Int.cast : ℤ → ℝ)).PosDef →

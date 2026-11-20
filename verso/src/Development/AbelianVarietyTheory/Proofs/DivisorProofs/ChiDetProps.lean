@@ -13,19 +13,15 @@ open GlobalTheory.Doubling
 namespace GlobalTheory.ChiDetFun
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n W χ hχ`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hdet : Continuous (fun h : UA σ W.J => Matrix.GeneralLinearGroup.det h.1)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[Units.continuous_iff]`. Prove the components needed by the constructor for the conclusion. Use `show Continuous fun h : UA σ W.J => ((h.1 : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E)).det`. Conclude with `(Units.continuous_val.comp continuous_subtype_val).matrix_det`. Use `show Continuous fun h : UA σ W.J => (((h.1 : GL (Fin n) (AE F E))⁻¹ : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E)).det`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(Units.continuous_coe_inv.comp continuous_subtype_val).matrix_det`. Establish `hinv : Continuous fun z : Circle => (((z⁻¹ : Circle)) : ℂ)`. Establish `: (fun z : Circle => (((z⁻¹ : Circle)) : ℂ)) = fun z : Circle => ((z : ℂ))⁻¹`. Use function extensionality and compare the values at `z`. Conclude with `Circle.coe_inv z`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `Continuous.inv₀ continuous_subtype_val (fun z => Circle.coe_ne_zero z)`. Conclude with `hinv.comp (hχ.1.comp hdet)`. Introduce `h`. Conclude with `Circle.norm_coe _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Introduce `γ hγ h`. Unfold `ratU at hγ`. Rewrite `hγ` using `[Subgroup.mem_subgroupOf]`. Take `⟨g, hg⟩` from `hγ`. Establish `h1 : Matrix.GeneralLinearGroup.det (γ * h).1 = Matrix.GeneralLinearGroup.det (γ : GL (Fin n) (AE F E)) * Matrix.GeneralLinearGroup.det h.1`.
-
-Rewrite using `[Subgroup.coe_mul, map_mul]`. Establish `h2 : Matrix.GeneralLinearGroup.det (γ : GL (Fin n) (AE F E)) = Units.map (inclR (AF F) : E →+* AE F E).toMonoidHom (Matrix.GeneralLinearGroup.det g)`. Rewrite using `[← hg]`. Use `ext`. Simplify using `[Matrix.GeneralLinearGroup.map, RingHom.map_det]`.
-
-Rewrite using `[h1, map_mul, h2, hχ.2, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chiDet_props : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (W : Spc F E n)
     (χ : Chr F E), IsHecke F E χ →

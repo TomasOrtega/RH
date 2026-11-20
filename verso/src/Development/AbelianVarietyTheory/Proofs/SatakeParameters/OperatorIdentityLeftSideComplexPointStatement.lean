@@ -5,7 +5,7 @@ open Formalism.BasicNotions NumberField IsDedekindDomain Formalism.MainNotions.G
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.TwV.DelA.leftSide_at_point` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FOperatorIdentityLeftSideComplexPoint.lean&line=62#L62)
 -/

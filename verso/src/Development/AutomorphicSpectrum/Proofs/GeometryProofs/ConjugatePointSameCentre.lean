@@ -8,7 +8,7 @@ open scoped Matrix ComplexOrder
 namespace GlobalTheory.CompanionTheory.Ar.CoordConj
 
 /- English proof (translation)
-Introduce `X Ω _ ξ K _ J _ y z w`. Conclude with `⟨GlobalTheory.CompanionTheory.Ar.HodgeLine.centre_cj z, fun h => GlobalTheory.CompanionTheory.Ar.HodgeLine.coordsAt_conj h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem centre_and_coords_conj : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (z : Spec (CommRingCat.of ℂ) ⟶ X) (w : (Σ k, J k) → ℂ), centre (spMap (starRingEnd ℂ) ≫ z) = centre z ∧ (CoordsAt ξ y z w → CoordsAt ξ y (spMap (starRingEnd ℂ) ≫ z) (conjVec w)) := by
   intro X Ω _ ξ K _ J _ y z w

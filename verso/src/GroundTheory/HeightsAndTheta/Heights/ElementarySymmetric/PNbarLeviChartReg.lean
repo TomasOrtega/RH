@@ -22,14 +22,14 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
   {E : Ψ → Type} [∀ τ, AddCommGroup (E τ)] [∀ τ, Module Ω (E τ)]
 
 /- English proof (translation)
-The claim follows from `hf.comp_of_eq ((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin 1 => ℂ) 0).analyticAt 0) rfl`.
+A detailed English derivation is pending.
 -/
 theorem analyticAt_disc {F : Type*} [NormedAddCommGroup F] [NormedSpace ℂ F] {f : ℂ → F}
     (hf : AnalyticAt ℂ f 0) : AnalyticAt ℂ (fun u : Fin 1 → ℂ => f (u 0)) 0 :=
   hf.comp_of_eq ((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin 1 => ℂ) 0).analyticAt 0) rfl
 
 /- English proof (translation)
-Establish `hL : HasFDerivAt (fun u : Fin 1 → ℂ => u 0) (ContinuousLinearMap.proj (R` using `ℂ) (φ := fun _ : Fin 1 => ℂ) 0) 0 := (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin 1 => ℂ) 0).hasFDerivAt`. Establish `h : HasFDerivAt (fun u : Fin 1 → ℂ => f (u 0)) ((ContinuousLinearMap.smulRight (1 : ℂ →L[ℂ] ℂ) d).comp (ContinuousLinearMap.proj (R` using `ℂ) (φ := fun _ : Fin 1 => ℂ) 0)) 0 := hf.hasFDerivAt.comp (0 : Fin 1 → ℂ) hL`. Rewrite using `[h.fderiv]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fderiv_disc {F : Type*} [NormedAddCommGroup F] [NormedSpace ℂ F] {f : ℂ → F} {d : F}
     (hf : HasDerivAt f d 0) : fderiv ℂ (fun u : Fin 1 → ℂ => f (u 0)) 0 (fun _ => 1) = d := by
@@ -44,7 +44,7 @@ theorem fderiv_disc {F : Type*} [NormedAddCommGroup F] [NormedSpace ℂ F] {f : 
   simp
 
 /- English proof (translation)
-Establish `h` using `levi_add_smul (f := fun _ => (0 : ℝ)) c contDiffAt_const hf w`. Simplify using `only [zero_add] at h`. Rewrite using `[h, Inter.RegularizedCurvature.levi_const, zero_add]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem levi_const_mul {J : Type} [Fintype J] {f : (J → ℂ) → ℝ} {z : J → ℂ} (c : ℝ)
     (hf : ContDiffAt ℝ 2 f z) (w : J → ℂ) : levi (fun y => c * f y) z w = c * levi f z w := by
@@ -53,9 +53,9 @@ theorem levi_const_mul {J : Type} [Fintype J] {f : (J → ℂ) → ℝ} {z : J �
   rw [h, Inter.RegularizedCurvature.levi_const, zero_add]
 
 /- English proof (translation)
-Take `⟨dG, dH, G, H, hG, hH, hdeg, hrel, hHz⟩` from `VertFactorSmooth.exists_forms D hp hz`. Establish `hpos` using `VertFactorPos.proof II Ψ K ι Ω E D p hp z hz`. Rewrite `hpos` using `[VertFactorSmooth.vertFactor_eq D hp hz hG hH hdeg hrel hHz]`. Establish `hHa` using `Inter.RegularizedCurvature.analyticAt_eval_map H z`. Use `⟨fun y => eval y (map (Int.castRingHom ℂ) G) / eval y (map (Int.castRingHom ℂ) H), (Inter.RegularizedCurvature.analyticAt_eval_map G z).div hHa hHz, norm_pos_iff.mp hpos, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [hHa.continuousAt.eventually_ne hHz] with y hy hyP`. Conclude with `VertFactorSmooth.vertFactor_eq D hp hyP hG hH hdeg hrel hy`.
+A detailed English derivation is pending.
 -/
 theorem vertFactor_local (D : ComponentData II Ψ K ι Ω E) {p : ℕ} (hp : p ∈ D.S) {z : (Σ k, ι k) → ℂ}
     (hz : z ∈ mcPts (mCoordIdeal D.y)) :
@@ -73,21 +73,19 @@ theorem vertFactor_local (D : ComponentData II Ψ K ι Ω E) {p : ℕ} (hp : p �
 open MuRegSmooth TopNPoly NbarSmooth in
 
 /- English proof (translation)
-Establish `hVS` using `VertFactorSmooth.proof VertFactorPos.proof`. Use `set P := mCoordIdeal D.y with hPdef`. Use `set a : K → ℤ := (q : ℤ) • muTwDeg H B + (p : ℤ) • D.a' with ha`. Use `set F : ((Σ k, ι k) → ℂ) → ℝ := fun z => (S.ref.h z * Real.exp (S.regWeight t (M.proj z))) ^ q * (∏ p' ∈ D.SB B, D.vertFactor p' z) ^ q * D.A'.h z ^ p with hFdef`. Establish `hSB : ∀ p' ∈ D.SB B, p' ∈ D.S` using `fun p' hp' => (Finset.mem_filter.1 hp').1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hMH : IsMultiHomogIdeal P` using `D.arith.2.1.2.1`. Establish `hpos : ∀ z ∈ mcPts P, 0 < F z`. Introduce `z hz`. Establish `h2 : 0 < ∏ p' ∈ D.SB B, D.vertFactor p' z` using `Finset.prod_pos fun p' hp' => VertFactorPos.proof II Ψ K ι Ω E D p' (hSB p' hp') z hz`. Conclude with `mul_pos (mul_pos (pow_pos (mul_pos (S.ref.pos z hz.1) (Real.exp_pos _)) q) (pow_pos h2 q)) (pow_pos (D.A'.pos z hz.1) p)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hhom : ∀ z ∈ mcPts P, ∀ c : K → ℂ, (∀ k, c k ≠ 0) → F (torusSmul c z) = (∏ k, ‖c k‖ ^ a k) * F z`. Introduce `z hz c hc`. Establish `hcz : torusSmul c z ∈ mcPts P` using `mcPts_smul hMH c hc hz`. Establish `hproj : M.proj (torusSmul c z) = M.proj z` using `((M.fibre z hz _ hcz).2 ⟨c, hc, rfl⟩).symm`. Establish `href : S.ref.h (torusSmul c z) = (∏ k, ‖c k‖ ^ H.aMu k) * S.ref.h z`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `S.ref.smul c z hc` as an intermediate fact. Rewrite `this` using `[S.ref_deg]`. Conclude with `this`. Establish `hA : D.A'.h (torusSmul c z) = (∏ k, ‖c k‖ ^ D.a' k) * D.A'.h z`. Use `D.A'.smul c z hc` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[D.A'_deg]`. Conclude with `this`. Establish `hV : ∀ p' ∈ D.SB B, D.vertFactor p' (torusSmul c z) = (∏ k, ‖c k‖ ^ D.vdeg p' k) * D.vertFactor p' z` using `fun p' hp' => (hVS II Ψ K ι Ω E D p' (hSB p' hp')).1 z hz c hc`. Establish `hk : ∀ k, ‖c k‖ ^ a k = (‖c k‖ ^ (muTwDeg H B) k) ^ q * (‖c k‖ ^ D.a' k) ^ p`. Introduce `k`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx : ‖c k‖ ≠ 0` using `norm_ne_zero_iff.mpr (hc k)`. Establish `hak : a k = (q : ℤ) * (muTwDeg H B) k + (p : ℤ) * D.a' k`. Simplify using `only [ha, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hak, zpow_add₀ hx, zpow_mul', zpow_natCast, zpow_mul', zpow_natCast]`. Establish `hprod : (∏ k, ‖c k‖ ^ a k) = ((∏ k, ‖c k‖ ^ H.aMu k) * ∏ p' ∈ D.SB B, ∏ k, ‖c k‖ ^ D.vdeg p' k) ^ q * (∏ k, ‖c k‖ ^ D.a' k) ^ p`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Finset.prod_congr rfl fun k _ => hk k, Finset.prod_mul_distrib, Finset.prod_pow, Finset.prod_pow, muTwDeg, prod_norm_zpow_add_sum hc]`. Simplify using `only [hFdef]`. Rewrite using `[hproj, href, hA, Finset.prod_congr rfl hV, Finset.prod_mul_distrib, hprod]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsmooth : SmoothAlong (mcPts P) F` using `smoothAlong_mul (smoothAlong_mul (smoothAlong_pow (smoothAlong_mul (smoothAlong_of_contDiffOn S.ref_smooth) (smoothAlong_exp (hP II Ψ K ι Ω E D M _ hsm))) q) (smoothAlong_pow (smoothAlong_prod _ fun p' hp' => (hVS II Ψ K ι Ω E D p' (hSB p' hp')).2) q)) (smoothAlong_pow (smoothAlo …`.
-
-Take `⟨Z, hZa, hZs, hZh⟩` from `hE K ι P a F hMH hpos hhom hsmooth`. Establish `hon : ∀ z ∈ mcPts P, (hermOfFun ι a F).h z = F z` using `fun z hz => hermOfFun_h_of_mem hMH hhom hz (hpos z hz)`. Use `⟨?_, fun z hz => (smoothRep_h _ hz).trans (hon z hz)⟩` and prove the remaining obligations. Use `show IsSmoothHerm (smoothRep P (hermOfFun ι a F))`. Conclude with `smoothRep_smooth_of (Z := Z) hZa hZs fun z hz => (hZh z hz).trans (hon z hz).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem regNbarQ_smooth_eq [DecidableEq Ψ] (hE : HermExtend.Statement) (hP : ProjSmoothAlong.Statement)
     (D : ComponentData II Ψ K ι Ω E) (H : HodgeData D) (M : XModel D) (S : LogLogRegularisationSetting M D.Xo (muLine H))
@@ -155,39 +153,33 @@ end NbarLeviChartReg
 open NbarLeviChartReg in
 
 /- English proof (translation)
-Introduce `II Ψ _ _ K _ ι _ Ω _ _ E _ _ D H M S _ B p q t hsm z hz w hw k hk`. Take `⟨γ, hγ0, hγd, hγa, hγm⟩` from `hDisc II Ψ K ι Ω E D z hz w hw`. Substitute `hγ0` using the available equality. Establish `hsrc : M.proj (γ 0) ∈ (S.R.chart k).source` using `S.R.mid_subset_source k hk`. Establish `hχ` using `hProj II Ψ K ι Ω E D M (S.R.chart k) (S.R.compat k) γ hγa hγm hsrc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨G, hGa, hGe⟩` from `hRef II Ψ K ι Ω E D H M S k γ hγa hγm hsrc`. Use `⟨deriv (fun s => S.R.chart k (M.proj (γ s))) 0, ⟨γ, rfl, hγd, ?_, hχ.differentiableAt.hasDerivAt⟩, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hγa.eventually_analyticAt, hγm] with s hs1 hs2`. Conclude with `⟨hs1.differentiableAt, hs2⟩`. Take `⟨hNs, hNe⟩` from `regNbarQ_smooth_eq hE hP D H M S B p q t hsm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hSB : ∀ p' ∈ D.SB B, p' ∈ D.S` using `fun p' hp' => (Finset.mem_filter.1 hp').1`. Establish `hex : ∀ p' ∈ D.SB B, ∃ T : ((Σ k, ι k) → ℂ) → ℂ, AnalyticAt ℂ T (γ 0) ∧ T (γ 0) ≠ 0 ∧ ∀ᶠ y in 𝓝 (γ 0), y ∈ mcPts (mCoordIdeal D.y) → D.vertFactor p' y = ‖T y‖` using `fun p' hp' => vertFactor_local D (hSB p' hp') hz`. Use `choose! T hTa hT0 hTe using hex`. Establish `hTta : AnalyticAt ℂ (fun y => ∏ p' ∈ D.SB B, T p' y) (γ 0)` using `(D.SB B).analyticAt_fun_prod hTa`. Establish `hTt0 : (∏ p' ∈ D.SB B, T p' (γ 0)) ≠ 0` using `Finset.prod_ne_zero_iff.2 hT0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΓa : AnalyticAt ℂ (fun u : Fin 1 → ℂ => γ (u 0)) 0` using `analyticAt_disc hγa`. Establish `hΓd : fderiv ℂ (fun u : Fin 1 → ℂ => γ (u 0)) 0 (fun _ => 1) = w` using `fderiv_disc hγd`. Establish `hχ1 : AnalyticAt ℂ (fun u : Fin 1 → ℂ => S.R.chart k (M.proj (γ (u 0)))) 0` using `analyticAt_disc hχ`. Establish `hχd : fderiv ℂ (fun u : Fin 1 → ℂ => S.R.chart k (M.proj (γ (u 0)))) 0 (fun _ => 1) = deriv (fun s => S.R.chart k (M.proj (γ s))) 0` using `fderiv_disc hχ.differentiableAt.hasDerivAt`. Establish `hG1 : AnalyticAt ℂ (fun u : Fin 1 → ℂ => G (u 0)) 0` using `analyticAt_disc hGa`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hO : {y : (Σ k, ι k) → ℂ | ∀ k, ∃ i, y ⟨k, i⟩ ≠ 0} ∈ 𝓝 (γ 0)` using `MuRegSmooth.isOpen_blocks.mem_nhds hz.1`. Establish `hlogN : ContDiffAt ℝ 2 (fun y => Real.log ((regNbarQ H M S B p q t).h y)) (γ 0)` using `((hNs.contDiffAt hO).of_le (WithTop.coe_le_coe.2 le_top)).log ((regNbarQ H M S B p q t).pos _ hz.1).ne'`. Establish `hlogA : ContDiffAt ℝ 2 (fun y => Real.log (D.A'.h y)) (γ 0)` using `((D.A'_pos.1.contDiffAt hO).of_le (WithTop.coe_le_coe.2 le_top)).log (D.A'.pos _ hz.1).ne'`. Establish `hx0 : S.R.chart k (M.proj (γ 0)) ∈ (S.R.chart k).target` using `(S.R.chart k).map_source hsrc`. Establish `hcf : ContDiffAt ℝ 2 (S.R.chartFun (S.regWeight t) k) (S.R.chart k (M.proj (γ 0)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : ContDiffAt ℝ 2 (S.R.q k) (S.R.chart k (M.proj (γ 0)))` using `((S.R.q_smooth k).contDiffAt ((S.R.chart k).open_target.mem_nhds hx0)).of_le (WithTop.coe_le_coe.2 le_top)`. Establish `hφ : ContDiffAt ℝ 2 (S.regWeight t ∘ (S.R.chart k).symm) (S.R.chart k (M.proj (γ 0)))` using `((ReciprocityTheory.AnForm.M.PLAux.contDiffOn_compat (S.R.compat k) isOpen_univ hsm).contDiffAt (by simpa using (S.R.chart k).open_target.mem_nhds hx0)).of_le (WithTop.coe_le_coe.2 le_top)`. Conclude with `hq.add hφ`. Establish `hγz : Tendsto γ (𝓝 0) (𝓝 (γ 0))` using `hγa.continuousAt.tendsto`. Establish `hcont : Tendsto (fun s => M.proj (γ s)) (𝓝 0) (𝓝 (M.proj (γ 0)))` using `(M.cont (γ 0) hz).tendsto.comp (tendsto_nhdsWithin_iff.2 ⟨hγz, hγm⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsrcE : ∀ᶠ s in 𝓝 (0 : ℂ), M.proj (γ s) ∈ (S.R.chart k).source` using `hcont ((S.R.chart k).open_source.mem_nhds hsrc)`. Establish `hTE : ∀ᶠ s in 𝓝 (0 : ℂ), ∀ p' ∈ D.SB B, γ s ∈ mcPts (mCoordIdeal D.y) → D.vertFactor p' (γ s) = ‖T p' (γ s)‖` using `hγz.eventually ((Filter.eventually_all_finset _).2 hTe)`. Establish `hE0 : ∀ᶠ s in 𝓝 (0 : ℂ), Real.log ((regNbarQ H M S B p q t).h (γ s)) = (q : ℝ) * (S.R.chartFun (S.regWeight t) k (S.R.chart k (M.proj (γ s))) + (-1) * (G s).re) + (q : ℝ) * Real.log ‖∏ p' ∈ D.SB B, T p' (γ s)‖ + (p : ℝ) * Real.log (D.A'.h (γ s))` using `by filter_upwards [hγm, hGe, hsrcE, hTE] with s hsm' hsG hss hsT`. Establish `hvf : ∏ p' ∈ D.SB B, D.vertFactor p' (γ s) = ‖∏ p' ∈ D.SB B, T p' (γ s)‖`. Rewrite using `[norm_prod]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Finset.prod_congr rfl fun p' hp' => hsT p' hp' hsm'`. Establish `hv0 : 0 < ∏ p' ∈ D.SB B, D.vertFactor p' (γ s)` using `Finset.prod_pos fun p' hp' => VertFactorPos.proof II Ψ K ι Ω E D p' (hSB p' hp') _ hsm'`. Establish `href` using `S.ref.pos _ hsm'.1`. Establish `hA` using `D.A'.pos _ hsm'.1`. Establish `hX : (S.ref.h (γ s) * Real.exp (S.regWeight t (M.proj (γ s)))) ^ q ≠ 0` using `(pow_pos (mul_pos href (Real.exp_pos _)) q).ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hY : (∏ p' ∈ D.SB B, D.vertFactor p' (γ s)) ^ q ≠ 0` using `(pow_pos hv0 q).ne'`. Establish `hZ : D.A'.h (γ s) ^ p ≠ 0` using `(pow_pos hA p).ne'`. Rewrite using `[hNe _ hsm', Real.log_mul (mul_ne_zero hX hY) hZ, Real.log_mul hX hY, Real.log_pow, Real.log_pow, Real.log_pow, Real.log_mul href.ne' (Real.exp_pos _).ne', Real.log_exp, hvf, hsG]`. Simplify using `only [Regular.PotentialCharts.chartFun, (S.R.chart k).left_inv hss]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `set A1 : (Fin 1 → ℂ) → ℝ := fun u => S.R.chartFun (S.regWeight t) k (S.R.chart k (M.proj (γ (u 0)))) with hA1def`. Use `set R1 : (Fin 1 → ℂ) → ℝ := fun u => (G (u 0)).re with hR1def`. Use `set L2 : (Fin 1 → ℂ) → ℝ := fun u => Real.log ‖∏ p' ∈ D.SB B, T p' (γ (u 0))‖ with hL2def`. Use `set L3 : (Fin 1 → ℂ) → ℝ := fun u => Real.log (D.A'.h (γ (u 0))) with hL3def`. Establish `hEv : (fun y => Real.log ((regNbarQ H M S B p q t).h y)) ∘ (fun u : Fin 1 → ℂ => γ (u 0)) =ᶠ[𝓝 0] fun u => (q : ℝ) * (A1 u + (-1) * R1 u) + (q : ℝ) * L2 u + (p : ℝ) * L3 u`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : Tendsto (fun u : Fin 1 → ℂ => u 0) (𝓝 0) (𝓝 0)`. Simplify using `using (continuous_apply (0 : Fin 1)).tendsto (0 : Fin 1 → ℂ)`. Conclude with `ht.eventually hE0`. Establish `hlevL : levi (fun y => Real.log ((regNbarQ H M S B p q t).h y)) (γ 0) w = levi ((fun y => Real.log ((regNbarQ H M S B p q t).h y)) ∘ (fun u : Fin 1 → ℂ => γ (u 0))) 0 (fun _ => 1)`. Establish `h` using `levi_comp (fun _ => (1 : ℂ)) hΓa hlogN`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite `h` using `[hΓd]`. Conclude with `h.symm`. Establish `hA1c : ContDiffAt ℝ 2 A1 0` using `hcf.comp (0 : Fin 1 → ℂ) (hχ1.restrictScalars.contDiffAt (n := 2))`. Establish `hA1l : levi A1 0 (fun _ => 1) = levi (S.R.chartFun (S.regWeight t) k) (S.R.chart k (M.proj (γ 0))) (deriv (fun s => S.R.chart k (M.proj (γ s))) 0)`. Establish `h` using `levi_comp (φ := S.R.chartFun (S.regWeight t) k) (fun _ => (1 : ℂ)) hχ1 hcf`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[hχd]`. Conclude with `h`. Establish `hR1c : ContDiffAt ℝ 2 R1 0`. Establish `h` using `(Complex.reCLM.contDiff (n := 2)).contDiffAt.comp (0 : Fin 1 → ℂ) (hG1.restrictScalars.contDiffAt (n := 2))`. Use `h using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `u`. Simplify using `[hR1def]`. Establish `hR1l : levi R1 0 (fun _ => 1) = 0` using `levi_re_analytic hG1 _`. Establish `hL2` using `Inter.RegularizedCurvature.log_norm_pluriharmonic (T := fun u : Fin 1 → ℂ => ∏ p' ∈ D.SB B, T p' (γ (u 0))) (hTta.comp_of_eq hΓa rfl) hTt0 (fun _ => 1)`. Establish `hL2c : ContDiffAt ℝ 2 L2 0` using `hL2.1`.
-
-Establish `hL2l : levi L2 0 (fun _ => 1) = 0` using `hL2.2`. Establish `hL3c : ContDiffAt ℝ 2 L3 0` using `hlogA.comp (0 : Fin 1 → ℂ) (hΓa.restrictScalars.contDiffAt (n := 2))`. Establish `hL3l : levi L3 0 (fun _ => 1) = levi (fun y => Real.log (D.A'.h y)) (γ 0) w`. Establish `h` using `levi_comp (fun _ => (1 : ℂ)) hΓa hlogA`. Rewrite `h` using `[hΓd]`.
-
-Conclude with `h`. Establish `hf1 : ContDiffAt ℝ 2 (fun u => A1 u + (-1) * R1 u) 0` using `hA1c.add (contDiffAt_const.mul hR1c)`. Establish `hq1 : ContDiffAt ℝ 2 (fun u => (q : ℝ) * (A1 u + (-1) * R1 u)) 0` using `contDiffAt_const.mul hf1`. Establish `hq12 : ContDiffAt ℝ 2 (fun u => (q : ℝ) * (A1 u + (-1) * R1 u) + (q : ℝ) * L2 u) 0` using `hq1.add (contDiffAt_const.mul hL2c)`. Rewrite using `[hlevL, levi_congr hEv, levi_add_smul (p : ℝ) hq12 hL3c, levi_add_smul (q : ℝ) hq1 hL2c, levi_const_mul (q : ℝ) hf1, levi_add_smul (-1) hA1c hR1c, hA1l, hR1l, hL2l, hL3l]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem NbarLeviChartReg.proof (hDisc : ConeTangentDisc.Statement) (hProj : ProjChartHolo.Statement)
     (hRef : RefChartDisc.Statement) (hE : HermExtend.Statement) (hP : ProjSmoothAlong.Statement) :

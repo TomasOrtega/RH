@@ -21,11 +21,9 @@ def RowSide.ofLoc (D : D7) (i : D.nd.Loc) : RowSide D :=
   ⟨D.naut.locW i, D.naut.satW i, D.naut.lab_loc i⟩
 
 /- English proof (translation)
-Establish `hfin : (placesOver E l).Finite`. Establish `h0 : Ideal.span {((l : ℕ) : 𝓞 E)} ≠ 0`. Simplify using `using (Fact.out : l.Prime).ne_zero`. Use `(Ideal.finite_factors h0).subset fun v hv => ?_` and prove the remaining obligations. Conclude with `Ideal.dvd_span_singleton.mpr hv`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hfin.to_subtype` as an intermediate fact. Use `choose j L0 hj hL using fun w : placesOver E l => GlobalTheory.PlaceBridge.exists_locBridge l E Ω w.1 (pl w.1) w.2 (hpl w.1)`. Use `fun w => (L0 w).2` as an intermediate fact. Set `LL : FinExt l` to `⟨⨆ w, (L0 w).1, inferInstance⟩`. Use `choose br hb using fun w => hL w LL (le_iSup (fun w => (L0 w).1) w)`.
-
-Conclude with `⟨LL, fun w hw => br ⟨w, hw⟩, fun w hw x => by rw [(hb _).1]; exact hj ⟨w, hw⟩ x⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_bridges (l : ℕ) [Fact l.Prime] (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     (pl : HeightOneSpectrum (𝓞 E) → ValuationSubring Ω) (hpl : ∀ w, IsPlaceOver (pl w) w) :
@@ -44,11 +42,11 @@ theorem exists_bridges (l : ℕ) [Fact l.Prime] (E Ω : Type) [Field E] [NumberF
   exact ⟨LL, fun w hw => br ⟨w, hw⟩, fun w hw x => by rw [(hb _).1]; exact hj ⟨w, hw⟩ x⟩
 
 /- English proof (translation)
-Use `L.2` as an intermediate fact. Use `(br w hw).LL.2` as an intermediate fact. Set `L' : FinExt l` to `⟨L.1 ⊔ (br w hw).LL.1, inferInstance⟩`. Establish `l₁ : L.1 ≤ L'.1` using `le_sup_left`. Establish `l₂ : (br w hw).LL.1 ≤ L'.1` using `le_sup_right`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h' : IsModel (br w hw) (resDec pl r w) L' (mapRep (IntermediateField.inclusion l₁).toRingHom r')` using `⟨l₂, (h.enlarge l₁).2⟩`. Take `⟨a₁, b₁, c₁, d₁⟩` from `local_of_isModel P hpl hbr h'`. Take `⟨a₂, b₂, c₂, d₂⟩` from `bridge_indep l P E Ω (pl w) O O' (br w hw) B (hbr w hw) hB L' l₂ m (mapRep (IntermediateField.inclusion l₁).toRingHom r')`. Take `⟨a₃, b₃, c₃, d₃⟩` from `local_ext P B l₁ r'`. Establish `key : ∀ (τ : E →+* Om l) (τ' : ↥B.Kw.1 →ₐ[ℚ_[l]] ↥L.1), IsInduced B τ τ' → B.IsdRE P L r' → ∀ a : ℤ, ((jumpsW P pl br r τ).count a : ℤ) = B.multE P L r' τ' a` using `fun τ τ' hτ hd a => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨τ₁, t₁, e⟩` from `d₂ τ ((IntermediateField.inclusion l₁).comp τ') hτ`. Rewrite using `[(d₁ τ τ₁ t₁).2 (b₂.2 (b₃.2 hd)), e, d₃]`. Use `⟨a₁.trans (a₂.trans a₃), b₁.trans (b₂.trans b₃), c₁.trans (c₂.trans c₃), fun τ τ' hτ => ⟨fun hd a => ?_, key τ τ' hτ⟩⟩` and prove the remaining obligations. Rewrite using `[isJumpE_iff P hd, ← key τ τ' hτ hd a, ← Multiset.count_ne_zero]`. Conclude with `Nat.cast_ne_zero.symm`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localPreds_of_isModel {l : ℕ} [Fact l.Prime] (P : LocPrime l) {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {O O' : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] [CommRing O'] [Algebra ℤ_[l] O'] [TopologicalSpace O']
@@ -84,9 +82,9 @@ theorem localPreds_of_isModel {l : ℕ} [Fact l.Prime] (P : LocPrime l) {E Ω : 
   exact Nat.cast_ne_zero.symm
 
 /- English proof (translation)
-Use `⟨fun m ρ => ?_, fun LL' hL m ρ => ?_⟩` and prove the remaining obligations. Establish `h : IsModel B (resDec pl (mapRep φ ρ) w) B.LL (mapRep B.toLL (ρ.comp (Dec (F` using `E) (pl w)).subtype)) := ⟨le_rfl, by ext g i j; exact (hφ _).symm⟩`. Take `⟨a, b, c, d⟩` from `localPreds_of_isModel P hpl hbr hw B hB h`. Conclude with `⟨a, b, c, d⟩`. Establish `h : IsModel B (resDec pl (mapRep (algebraMap ↥LL'.1 (Om l)) ρ) w) LL' (ρ.comp (Dec (F` using `E) (pl w)).subtype) := ⟨hL, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `localPreds_of_isModel P hpl hbr hw B hB h`.
+A detailed English derivation is pending.
 -/
 theorem localPreds_of_bridge {l : ℕ} [Fact l.Prime] (P : LocPrime l) {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {O O' : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] [CommRing O'] [Algebra ℤ_[l] O'] [TopologicalSpace O']
@@ -125,13 +123,11 @@ theorem localPreds_of_bridge {l : ℕ} [Fact l.Prime] (P : LocPrime l) {E Ω : T
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `choose LL br hbr using fun (l : ℕ) (hl : Fact l.Prime) => exists_bridges l D.host.E D.nd.Om D.nd.plOm.1 D.nd.plOm.2`. Set `wd : ∀ (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {a}, (G D.host.E D.nd.Om →* GL (Fin a) (Qbar l)) → ∀ w, D.naut.LP w` to `fun l hl ι a r w => (T.e w).symm (if hw : w ∈ placesOver D.host.E l then wdL (D.loc l) ι D.nd.plOm.1 (br l hl) r D.nd.plOm.2 (hbr l hl) w hw else GlobalTheory.WeilDeligne.wdOf (D.nd.plOm.2 w) hw ι r)`. Establish `h1 : ∀ (l : ℕ) [hl : Fact l.Prime] (ι : Qbar l ≃+* ℂ) {a} (r : G D.host.E D.nd.Om →* GL (Fin a) (Qbar l)) w (hw : w ∈ placesOver D.host.E l), T.e w (wd l ι r w) = wdL (D.loc l) ι D.nd.plOm.1 (br l hl) r D.nd.plOm.2 (hbr l hl) w hw` using `fun l hl ι a r w hw => by simp only [wd, Equiv.apply_symm_apply, dif_pos hw]`. Establish `h2 : ∀ (l : ℕ) [hl : Fact l.Prime] (ι : Qbar l ≃+* ℂ) {a} (r : G D.host.E D.nd.Om →* GL (Fin a) (Qbar l)) w (hw : w ∉ placesOver D.host.E l), T.e w (wd l ι r w) = GlobalTheory.WeilDeligne.wdOf (D.nd.plOm.2 w) hw ι r` using `fun l hl ι a r w hw => by simp only [wd, Equiv.apply_symm_apply, dif_neg hw]`. Establish `hL` using `fun (l : ℕ) [hl : Fact l.Prime] (ι : Qbar l ≃+* ℂ) {a} (r : G D.host.E D.nd.Om →* GL (Fin a) (Qbar l)) w hw => GlobalTheory.PstLaws.wdL_laws hB l (D.loc l) (D.locA l) (D.locT l) ι D.host.E D.nd.Om _ D.nd.plOm.1 (br l hl) D.nd.plOm.2 (hbr l hl) r w hw`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA` using `fun (l : ℕ) [hl : Fact l.Prime] (ι : Qbar l ≃+* ℂ) {a} (r : G D.host.E D.nd.Om →* GL (Fin a) (Qbar l)) w (hw : w ∉ placesOver D.host.E l) => GlobalTheory.WeilDeligne.wdOf_laws (D.nd.plOm.2 w) hw ι r`. Use `⟨{ wdOf := wd wdOf_dim := fun l hl ι a r w => ?_ wdOf_unr := fun l hl ι a r w hw hc => by rw [T.unr, h2 l ι r w hw]; exact ((hA l ι r w hw).2 hc).2.2.1 wdOf_frob := fun l hl ι a r w hw hc hu B σ hp hσ => ?_ wdOf_ine := fun l hl ι a r w hw hc σ hσ => by rw [T.inePol _ _ σ hσ, h2 l …` and prove the remaining obligations. Rewrite using `[← T.dim]`. Distinguish the cases in `hw : w ∈ placesOver D.host.E l`. Rewrite using `[h1 l ι r w hw]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hL l ι r w hw).1`. Rewrite using `[h2 l ι r w hw]`. Conclude with `(hA l ι r w hw).1`. Rewrite using `[T.frobEig _ _ hu, h2 l ι r w hw]`. Rewrite `hu` using `[T.unr, h2 l ι r w hw]`.
-
-Conclude with `((hA l ι r w hw).2 hc).2.2.2.1 hu B σ hp hσ`. Conclude with `(localPreds_of_bridge (D.loc l) D.nd.plOm.2 (hbr l hl) hw Bw hj φ hφ).1 m ρ`. Conclude with `(localPreds_of_bridge (D.loc l) D.nd.plOm.2 (hbr l hl) hw Bw hj φ hφ).2 LL' hL' m ρ`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_wdSide_of_tie (hB : GlobalTheory.Published.DeRhamPotSemistable) (D : D7) (T : GlobalTheory.RowTie.WDTie D.nd D.naut) : Nonempty (WDSide D T) := by
   classical

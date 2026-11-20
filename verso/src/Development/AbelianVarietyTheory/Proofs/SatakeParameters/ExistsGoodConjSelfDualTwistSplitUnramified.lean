@@ -27,7 +27,7 @@ namespace GlobalTheory.GoodCsdTwist
 open GlobalTheory.ContraPair
 
 /- English proof (translation)
-Introduce `x hx` and use `by change χ.loc v x * χ'.loc v x = 1 rw [h x hx, h' x hx, mul_one]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unrAt_mul {K : Type} [Field K] [NumberField K] {χ χ' : HChar K} {v : HeightOneSpectrum (𝓞 K)}
     (h : χ.UnrAt v) (h' : χ'.UnrAt v) : (χ * χ').UnrAt v := fun x hx => by
@@ -35,7 +35,7 @@ theorem unrAt_mul {K : Type} [Field K] [NumberField K] {χ χ' : HChar K} {v : H
   rw [h x hx, h' x hx, mul_one]
 
 /- English proof (translation)
-Introduce `x hx` and use `by change (χ.loc v x)⁻¹ = 1 rw [h x hx, inv_one]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unrAt_inv {K : Type} [Field K] [NumberField K] {χ : HChar K} {v : HeightOneSpectrum (𝓞 K)}
     (h : χ.UnrAt v) : (χ⁻¹).UnrAt v := fun x hx => by
@@ -43,7 +43,7 @@ theorem unrAt_inv {K : Type} [Field K] [NumberField K] {χ : HChar K} {v : Heigh
   rw [h x hx, inv_one]
 
 /- English proof (translation)
-The claim follows from `| 0 => fun _ _ => rfl | k + 1 => by rw [pow_succ]; exact unrAt_mul (unrAt_pow h k) h`.
+A detailed English derivation is pending.
 -/
 theorem unrAt_pow {K : Type} [Field K] [NumberField K] {χ : HChar K} {v : HeightOneSpectrum (𝓞 K)}
     (h : χ.UnrAt v) : ∀ k : ℕ, (χ ^ k).UnrAt v
@@ -51,7 +51,7 @@ theorem unrAt_pow {K : Type} [Field K] [NumberField K] {χ : HChar K} {v : Heigh
   | k + 1 => by rw [pow_succ]; exact unrAt_mul (unrAt_pow h k) h
 
 /- English proof (translation)
-Introduce `k hk` and use `by have e : (χ * χ').inf k = χ.inf k * χ'.inf k := rfl rw [e, Units.val_mul, h k hk, h' k hk, ← Finset.prod_mul_distrib] exact Finset.prod_congr rfl fun φ _ => (zpow_add₀ ((map_ne_zero φ).2 k.ne_zero) _ _).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isAlgPos_mul {F : Type} [Field F] [NumberField F] {χ χ' : HChar F} {n n' : (F →+* ℂ) → ℤ}
     (h : IsAlgPos χ n) (h' : IsAlgPos χ' n') : IsAlgPos (χ * χ') (n + n') := fun k hk => by
@@ -60,7 +60,7 @@ theorem isAlgPos_mul {F : Type} [Field F] [NumberField F] {χ χ' : HChar F} {n 
   exact Finset.prod_congr rfl fun φ _ => (zpow_add₀ ((map_ne_zero φ).2 k.ne_zero) _ _).symm
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun τ => by have e := ((ParLaws.hasInfChar_infChar (CG.mk P) τ).twist κ).infChar_eq rw [CG.twist_mk] at e rw [e, (InfType.expo_of_infType K κ).1 m hκ τ] refine ⟨(h τ).1.map (add_left_injective _), fun z hz => ?_⟩ obtain ⟨y, hy, rfl⟩ := M …`.
+A detailed English derivation is pending.
 -/
 theorem regAlg_twist {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] {n : ℕ} {P : CuspSub K n}
     (h : (CG.mk P).IsRegAlg) {κ : HChar K} {m : (K →+* ℂ) → ℤ} (hκ : κ.IsAlg m) : (CG.mk (P.twist κ)).IsRegAlg := (GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun τ => by
@@ -73,7 +73,7 @@ theorem regAlg_twist {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] {
   exact ⟨k + m τ, by push_cast; ring⟩
 
 /- English proof (translation)
-Break down `Int.even_or_odd z with h | h` into its components or cases. Rewrite using `[h.neg.neg_one_zpow, (Int.natAbs_even.2 h).neg_one_pow]`. Rewrite using `[h.neg.neg_one_zpow, (Int.natAbs_odd.2 h).neg_one_pow]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem neg_one_zpow_natAbs (z : ℤ) : ((-1 : ℂˣ) ^ z.natAbs) = (-1 : ℂˣ) ^ (-z) := by
   rcases Int.even_or_odd z with h | h
@@ -81,21 +81,19 @@ theorem neg_one_zpow_natAbs (z : ℤ) : ((-1 : ℂˣ) ^ z.natAbs) = (-1 : ℂˣ)
   · rw [h.neg.neg_one_zpow, (Int.natAbs_odd.2 h).neg_one_pow]
 
 /- English proof (translation)
-Introduce `_ E _ _ _ l a ha π χ ⟨hreg, hpol, hgood⟩ w₀ hw₀`. Take `⟨n, hn⟩` from `GlobalTheory.RegAlgCharAlg.isAlgPos_of_polarizedPair E a ha π χ hreg hpol`. Take `⟨φ₀⟩ : Nonempty (maximalRealSubfield E →+* ℂ)` from `inferInstance`. Establish `hb : IsAlgPos χ (fun _ => n φ₀)`. Rewrite using `[show (fun _ => n φ₀) = n from funext fun φ => UpperTheory.heckeChar_parallel_weight _ χ n hn φ₀ φ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hn`. Establish `hinv : IsAlgPos χ⁻¹ (fun _ => -n φ₀)` using `fun k hk => by`. Rewrite using `[HChar.inf_inv, Units.val_inv_eq_inv_val, hb k hk, ← Finset.prod_inv_distrib]`. Conclude with `Finset.prod_congr rfl fun φ _ => (zpow_neg _ _).symm`. Establish `ho : (quadChar E ^ (a + (n φ₀).natAbs)).OrderDvd 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `HChar.OrderDvd`. Rewrite using `[← pow_mul, mul_comm, pow_mul]`. Establish `: (quadChar E) ^ 2 = 1`. Use `Subtype.ext (MonoidHom.ext fun x => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Units.map (Int.castRingHom ℂ).toMonoidHom (GlobalTheory.IdeleNormChar.normSign E x)) ^ 2 = 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_pow, Int.units_sq, map_one]`. Rewrite using `[this, one_pow]`. Establish `hpos` using `isAlgPos_mul hinv (isAlgPos_zero_of_orderDvd two_pos ho)`. Rewrite `hpos` using `[add_zero]`. Establish `hsign : ∀ v, (χ⁻¹ * quadChar E ^ (a + (n φ₀).natAbs)).locInf v (-1) = (-1) ^ (-n φ₀)` using `fun v => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[HChar.locInf_mul, locInf_pow, quadChar_locInf]`. Express the relevant statement in the definitionally equal form `(χ.locInf v (-1))⁻¹ * _ = _`. Rewrite using `[hpol.sign v, pow_add, inv_mul_cancel_left, neg_one_zpow_natAbs]`. Establish `halg` using `UpperTheory.heckeChar_algebraic_of_sign _ _ (-n φ₀) hpos hsign`. Establish `hunr : ∀ w : HeightOneSpectrum (𝓞 E), ¬ GlobalTheory.UnitaryBC.IsSplitAt w → Algebra.IsUnramifiedAt (𝓞 (maximalRealSubfield E)) w.asIdeal ∧ (χ⁻¹ * quadChar E ^ (a + (n φ₀).natAbs)).UnrAt (w.under (𝓞 (maximalRealSubfield E)))` using `fun w hw => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨-, hu, hsat⟩` from `hgood.2.2 w hw`. Establish `h1` using `GlobalTheory.T.heckeChar_unrAt_of_spherical_and_twist_spherical E a ha π _ w hsat (GlobalTheory.T.isSpherical_twist_of_contragredient_conjugate E a ha π _ hpol.dual w hw hsat)`. Use `replace h1 := unrAt_inv h1`. Rewrite `h1` using `[inv_inv]`. Conclude with `⟨hu, unrAt_mul (unrAt_inv (GlobalTheory.T.heckeChar_unrAt_under_of_compNorm_unramified E χ w hw hu h1)) (unrAt_pow (GlobalTheory.T.quadraticHeckeChar_unramified_of_isUnramifiedAt E w hu) _)⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨κ, m, hκ, hres, hκ0, hκu⟩` from `GlobalTheory.T.exists_algebraic_hecke_char_split E _ (-n φ₀) halg hunr w₀ hw₀`. Use `⟨κ, m, hκ, hκ0, regAlg_twist hreg hκ, ⟨fun v => ?_, ?_⟩, ⟨hgood.1, hgood.2.1, fun w hw => ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[locInf_pow, quadChar_locInf]`. Rewrite using `[map_pow, compNorm_quadChar, one_pow, dualIsConjBy_one]`. Conclude with `UpperTheory.V.Af.Cq.csdTwist E a π _ κ hpol.dual (by rw [hres, map_mul, map_inv, map_pow, compNorm_quadChar, one_pow, mul_one])`.
-
-Take `⟨h1, h2, B, hB⟩` from `hgood.2.2 w hw`. Use `⟨h1, h2, B.map (· * κ.val w), ?_⟩` and prove the remaining obligations. Rewrite `hB`, the goal using `[CG.hasSat_mk]`. Conclude with `GlobalTheory.SphGal.hasSatGL_twist E a π κ w B (hκu w hw) hB`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_goodCsd_twist : AutomorphicFormsFiniteGL → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (l a : ℕ), 1 ≤ a →
     ∀ (π : CuspSub E a) (χ : HChar (maximalRealSubfield E)), InScope .good l π χ → ∀ w₀ : HeightOneSpectrum (𝓞 E),

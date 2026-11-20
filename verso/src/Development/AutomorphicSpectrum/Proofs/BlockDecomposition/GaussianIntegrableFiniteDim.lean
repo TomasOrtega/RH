@@ -5,7 +5,7 @@ universe u
 namespace GlobalTheory.CompanionTheory.EisTube
 
 /- English proof (translation)
-Introduce `ι _ c hc`. Establish `h1 : MeasureTheory.Integrable (fun x : ℝ => Real.exp (-c * x ^ 2))` using `integrable_exp_neg_mul_sq hc`. Establish `h2` using `MeasureTheory.Integrable.fintype_prod (ι := ι) (f := fun _ x => Real.exp (-c * x ^ 2)) (μ := fun _ => MeasureTheory.volume) (fun _ => h1)`. Use `h2.congr (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [← Real.exp_sum, Finset.mul_sum, Finset.sum_neg_distrib, neg_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem gaussInt : ∀ (ι : Type) [Fintype ι] (c : ℝ), 0 < c →
     MeasureTheory.Integrable (fun y : ι → ℝ => Real.exp (-(c * ∑ i, y i ^ 2))) := by

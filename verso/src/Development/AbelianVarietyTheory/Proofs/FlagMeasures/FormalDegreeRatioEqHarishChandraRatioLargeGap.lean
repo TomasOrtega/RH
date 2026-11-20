@@ -12,19 +12,19 @@ open scoped InnerProductSpace ENNReal
 namespace GlobalTheory.GapDegreeRatio
 
 /- English proof (translation)
-Take `⟨c, hc, hF⟩` from `hH.1.2.2.2.2.2.2 D.R.k D.R.rS (epsSH D.R) (Formalism.MainNotions.S.Inh.obj_cayleyU_rows D)`. Use `set s : NNReal := D.s.cdScale _ (epsSH D.R) with hs`. Establish `hs0 : 0 < s` using `D.s.cdScale_pos _ _`. Establish `hs0' : (0 : ℝ) < s` using `by exact_mod_cast hs0`. Use `⟨c / s, div_pos hc hs0', fun W l A h hA hg hok => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨hl, ⟨Q, hQ, hDS⟩, -, -, -, -, -, -, -, -, P, hP, hd⟩` from `hA`. Establish `hFQ : IsFdeg (Formalism.REAL.muG (epsSH D.R)) (fun g => A.σ (Q⁻¹ * g * Q)) (c * Formalism.QuantumDeterminants.fdegHC l)` using `hF l A.H (fun g => A.σ (Q⁻¹ * g * Q)) ⟨h, hg, hok⟩ hl hDS`. Establish `hFQs : IsFdeg ((s : ℝ≥0∞) • Formalism.REAL.muG (epsSH D.R)) (fun g => A.σ (Q⁻¹ * g * Q)) (c * Formalism.QuantumDeterminants.fdegHC l / s)`. Use `⟨div_pos hFQ.1 hs0', fun v w v' w' => ⟨(hFQ.2 v w v' w').1.smul_measure ENNReal.coe_ne_top, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[integral_smul_measure, (hFQ.2 v w v' w').2, ENNReal.coe_toReal, Complex.real_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd0 : ((c * Formalism.QuantumDeterminants.fdegHC l : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hFQ.1.ne'`. Establish `hcc : ((s : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hs0'.ne'`. Move the coercions through the operations in `at hd0 ⊢`. Clear the denominators using the available nonvanishing facts. Establish `: Nontrivial A.H` using `hDS.2.1`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `exists_ne (0 : A.H)`. Establish `hPd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).1 hP.1`. Establish `hQd : IsUnit Q.det` using `(Matrix.isUnit_iff_isUnit_det Q).1 hQ.1.1`. Establish `hPP : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P hPd`. Establish `hPP' : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul P hPd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQQ : Q * Q⁻¹ = 1` using `Matrix.mul_nonsing_inv Q hQd`. Establish `hQQ' : Q⁻¹ * Q = 1` using `Matrix.nonsing_inv_mul Q hQd`. Set `u : (Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ)ˣ` to `⟨Q * P⁻¹, P * Q⁻¹, by rw [Matrix.mul_assoc, ← Matrix.mul_assoc P⁻¹, hPP', Matrix.one_mul, hQQ], by rw [Matrix.mul_assoc, ← Matrix.mul_assoc Q⁻¹, hQQ', Matrix.one_mul, hPP]⟩`. Set `a : Formalism.REAL.UJ (epsSH D.R)` to `⟨u, GlobalTheory.FormalDegreeDatum.inUJ_of_cayley _ P Q _ hP.1 hP.2 hQ.1.2⟩`. Establish `h1` using `GlobalTheory.FormalDegreeDatum.fdeg_of_conj ((s : ℝ≥0∞) • Formalism.REAL.muG (epsSH D.R)) (fun g => A.σ (P⁻¹ * g * P)) (fun g => A.σ (Q⁻¹ * g * Q)) a (fun g => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : umat (a * g * a⁻¹) = Q * P⁻¹ * umat g * (P * Q⁻¹)` using `rfl`. Establish `e2 : Q⁻¹ * (Q * P⁻¹ * umat g * (P * Q⁻¹)) * Q = (Q⁻¹ * Q) * (P⁻¹ * umat g * P) * (Q⁻¹ * Q)`. Simplify using `only [Matrix.mul_assoc]`. Simplify using `only [e, e2, hQQ', Matrix.one_mul, Matrix.mul_one]) hDS.2.2.1 A.deg hd w hw`. Establish `h2` using `GlobalTheory.FormalDegreeDatum.fdeg_of_conj ((s : ℝ≥0∞) • Formalism.REAL.muG (epsSH D.R)) (fun g => A.σ (Q⁻¹ * g * Q)) (fun g => A.σ (Q⁻¹ * g * Q)) 1 (fun g => by simp) hDS.2.2.1 _ hFQs w hw`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem deg_eq_of_goodS (hH : GlobalTheory.GapIn.Hyp) (D : D7) :
     ∃ c : ℝ, 0 < c ∧ ∀ (W : LocW D.R.k D.R.rS) (l : Fin (2 * D.R.rS + D.R.k + 1) → ℝ) (A : LocS W) (h : ℝ),
@@ -70,7 +70,7 @@ theorem deg_eq_of_goodS (hH : GlobalTheory.GapIn.Hyp) (D : D7) :
   ring
 
 /- English proof (translation)
-Introduce `hH D W l l' A A' h hA hA' hg hg' hok`. Take `⟨c, hc, hk⟩` from `deg_eq_of_goodS hH D`. Rewrite using `[hk W l A h hA hg hok, hk W l' A' h hA' hg' hok]`. Conclude with `mul_div_mul_left _ _ hc.ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deg_ratio : GlobalTheory.GapIn.Hyp → ∀ (D : D7) (W : LocW D.R.k D.R.rS) (l l' : Fin (2 * D.R.rS + D.R.k + 1) → ℝ) (A A' : LocS W) (h : ℝ), GoodS D l A → GoodS D l' A' → GapAtLeast (epsSH D.R) l h → GapAtLeast (epsSH D.R) l' h → Formalism.FourierDecayAlt.ThreeDimData.GapOK D.R.k D.R.rS h → A'.deg / A.deg = Formalism.QuantumDeterminants.fdegHC l' / Formalism.QuantumDeterminants.fdegHC l := by
   intro hH D W l l' A A' h hA hA' hg hg' hok

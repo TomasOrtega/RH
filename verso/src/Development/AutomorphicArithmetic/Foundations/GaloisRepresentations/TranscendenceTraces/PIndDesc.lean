@@ -27,11 +27,11 @@ private def underOf {B C T : Type} [CommRing B] [CommRing C] [CommRing T] [Algeb
 end UpperTheory.Gal.TranscendenceTraces
 
 /- English proof (translation)
-Introduce `A O B C _ _ _ _ _ _ _ _ hO ⟨g⟩`. Take `⟨J, _, _, D, ι, ⟨hc⟩, hD⟩` from `GlobalTheory.T.exists_filtered_colimit_of_etale_of_indEt A O hO`. Set `F` to `Under.pushout (CommRingCat.ofHom (algebraMap A B))`. Establish `hFc` using `isColimitOfPreserves F hc`. Establish `: IsFinitelyPresentable.{0} (Under.mk (CommRingCat.ofHom (algebraMap B C)))` using `CommRingCat.isFinitelyPresentable_under _ _ (show (algebraMap B C).FinitePresentation from (RingHom.finitePresentation_algebraMap (A := B) (B := C)).mpr inferInstance)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨j, q, -⟩` from `IsFinitelyPresentable.exists_hom_of_isColimit hFc (underOf g ≫ (pushIso A B O).inv)`. Set `E : Type` to `(D.obj j).right`. Use `letI : Algebra A E := (D.obj j).hom.hom.toAlgebra`. Use `⟨E, inferInstance, inferInstance, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `RingHom.etale_algebraMap.mp (hD j)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨{ (ι.app j).right.hom with commutes' := fun a => ?_ }⟩` and prove the remaining obligations. Use `congr($(Under.w (ι.app j)).hom a)` as an intermediate fact. Conclude with `this`. Conclude with `⟨algOf (q ≫ (pushIso A B E).hom)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TranscendenceTraces.indDesc_of :
     IndDesc := by

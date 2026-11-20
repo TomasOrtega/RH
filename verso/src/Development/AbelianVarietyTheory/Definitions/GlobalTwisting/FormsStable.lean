@@ -61,17 +61,17 @@ def PP.IsDil (a : F) (p p' : PP Lc n) : Prop := p'.1.L = p.1.L ∧ ∀ x, p'.1.f
 def PP.Inc (p p₁ : PP Lc n) : Prop := ∃ x, p.1.f x = 1 ∧ p.IsUp x p₁
 
 /- English proof (translation)
-Introduce `x` and use `by simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (p : PP Lc n) : p.IsAct 1 p := fun x => by simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, fun x => (one_mul _).symm⟩`.
+Supply the required witnesses or components.
 -/
 example (p : PP Lc n) : PP.IsDil 1 p p := ⟨rfl, fun x => (one_mul _).symm⟩
 
 /- English proof (translation)
-Introduce and unpack `⟨x, h1, h2, h3, -⟩`. Establish `: x ∈ p.ker` using `by rw [h3]; exact h2`. Conclude with `one_ne_zero (h1.symm.trans this.2)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 example (p : PP Lc n) : ¬ p.Inc p := by
   rintro ⟨x, h1, h2, h3, -⟩

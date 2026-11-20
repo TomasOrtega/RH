@@ -28,7 +28,7 @@ def PrimeDivisor.divisorSubgroup (Z : PrimeDivisor X) (D : WeilDivisor X) :
     rwa [Valuation.map_neg]
 
 /- English proof (translation)
-Simplify using `only [PrimeDivisor.divisorSubgroup, AddSubgroup.mem_mk, AddSubmonoid.mem_mk, AddSubsemigroup.mem_mk, Set.mem_ofPred_eq]`.
+Simplify using the standard rewrite rules.
 -/
 lemma PrimeDivisor.mem_divisorSubgroup (Z : PrimeDivisor X) (D : WeilDivisor X)
     (f : X.functionField) : f ∈ Z.divisorSubgroup D ↔ Z.valuation f ≤ WithZero.exp (D Z) := by
@@ -42,7 +42,7 @@ noncomputable def pointSubgroup (D : WeilDivisor X) (x : X) : AddSubgroup X.func
   else ⊤
 
 /- English proof (translation)
-Unfold `pointSubgroup`. Use `split_ifs with h`. Simplify using `only [PrimeDivisor.mem_divisorSubgroup]`. Conclude with `⟨fun hf _ => hf, fun hf => hf h⟩`. Conclude with `⟨fun _ h' => absurd h' h, fun _ => AddSubgroup.mem_top f⟩`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma mem_pointSubgroup_iff (D : WeilDivisor X) (x : X) (f : X.functionField) :
     f ∈ pointSubgroup D x ↔ ∀ h : ringKrullDim (X.presheaf.stalk x) = 1,
@@ -54,7 +54,7 @@ lemma mem_pointSubgroup_iff (D : WeilDivisor X) (x : X) (f : X.functionField) :
   · exact ⟨fun _ h' => absurd h' h, fun _ => AddSubgroup.mem_top f⟩
 
 /- English proof (translation)
-Rewrite using `[mem_pointSubgroup_iff, PrimeDivisor.mem_divisorSubgroup]`. Conclude with `⟨fun hf => hf Z.2, fun hf _ => hf⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 lemma mem_pointSubgroup_primeDivisor (D : WeilDivisor X) (Z : PrimeDivisor X)
     (f : X.functionField) : f ∈ pointSubgroup D Z.point ↔ f ∈ Z.divisorSubgroup D := by
@@ -68,9 +68,9 @@ section Finite
 variable [IsIntegral X] [IsNoetherian X] [IsNormalScheme X]
 
 /- English proof (translation)
-Distinguish the cases in `hf : f = 0`. Simplify using `[hf]`. Use `((PrimeDivisor.finite_ord_ne_zero hf).union D.support.finite_toSet).subset ?_` and prove the remaining obligations. Introduce `Z hZ`. Assume the negation of the conclusion as `hc`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Simplify using `only [Set.mem_union, Set.mem_ofPred_eq, not_or, not_not, Finset.mem_coe, Finsupp.mem_support_iff] at hc`. Apply `hZ` to reduce the goal to its premises. Rewrite using `[PrimeDivisor.mem_divisorSubgroup, PrimeDivisor.valuation_le_exp_iff Z hf, hc.1, hc.2]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma finite_not_mem_divisorSubgroup (D : WeilDivisor X)
     (f : X.functionField) : {Z : PrimeDivisor X | f ∉ Z.divisorSubgroup D}.Finite := by
@@ -118,7 +118,7 @@ def constSections (V : X.Opens) : AddSubgroup (V → X.functionField) where
     exact ⟨W, hyW, fun z hz => by simp only [Pi.neg_apply, h z hz]⟩
 
 /- English proof (translation)
-Take `⟨Wy, hyW, hy⟩` from `t.2 y`. Take `⟨Wz, hzW, hz⟩` from `t.2 z`. Take `⟨w, hw⟩` from `nonempty_preirreducible_inter (Wy ⊓ V).isOpen (Wz ⊓ V).isOpen ⟨y.1, hyW, y.2⟩ ⟨z.1, hzW, z.2⟩`. Rewrite using `[← hy ⟨w, hw.1.2⟩ hw.1.1, hz ⟨w, hw.1.2⟩ hw.2.1]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 lemma constSections_apply_eq {V : X.Opens} (t : constSections V) (y z : V) : t.1 y = t.1 z := by
   obtain ⟨Wy, hyW, hy⟩ := t.2 y
@@ -146,7 +146,7 @@ noncomputable def constPresheaf : (Opens X)ᵒᵖ ⥤ AddCommGrpCat.{u} where
 variable (X) in
 
 /- English proof (translation)
-Rewrite using `[TopCat.Presheaf.isSheaf_iff_isSheaf_comp (forget AddCommGrpCat)]`. Use `TopCat.Presheaf.isSheaf_of_iso ?_ (TopCat.subpresheafToTypes.isSheaf (constPredicate (X := X)))` and prove the remaining obligations. Use `NatIso.ofComponents (fun V => Equiv.toIso { toFun := fun f => ⟨f.1, f.2⟩ invFun := fun f => ⟨f.1, f.2⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl }) ?_` and prove the remaining obligations. Introduce `V W i`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 -/
 theorem constPresheaf_isSheaf : TopCat.Presheaf.IsSheaf (X := X.carrier) (constPresheaf X) := by
   rw [TopCat.Presheaf.isSheaf_iff_isSheaf_comp (forget AddCommGrpCat)]
@@ -236,7 +236,7 @@ noncomputable def quotPresheaf : (Opens X)ᵒᵖ ⥤ AddCommGrpCat.{u} where
   map_comp _ _ := rfl
 
 /- English proof (translation)
-Rewrite using `[TopCat.Presheaf.isSheaf_iff_isSheaf_comp (forget AddCommGrpCat)]`. Use `TopCat.Presheaf.isSheaf_of_iso ?_ (TopCat.subpresheafToTypes.isSheaf (quotPredicate D))` and prove the remaining obligations. Use `NatIso.ofComponents (fun V => Equiv.toIso { toFun := fun f => ⟨f.1, f.2⟩ invFun := fun f => ⟨f.1, f.2⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl }) ?_` and prove the remaining obligations. Introduce `V W i`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 -/
 theorem quotPresheaf_isSheaf : TopCat.Presheaf.IsSheaf (X := X.carrier) (quotPresheaf D) := by
   rw [TopCat.Presheaf.isSheaf_iff_isSheaf_comp (forget AddCommGrpCat)]
@@ -268,9 +268,9 @@ section Resolution
 variable [IsIntegral X] [IsNoetherian X] [IsNormalScheme X] (D : WeilDivisor X)
 
 /- English proof (translation)
-Use `((finite_not_mem_divisorSubgroup D c).image PrimeDivisor.point).subset ?_` and prove the remaining obligations. Introduce `x hx`. Simplify using `only [Set.mem_ofPred_eq, mem_pointSubgroup_iff, not_forall] at hx`. Take `⟨h, hc⟩` from `hx`. Conclude with `⟨PrimeDivisor.ofPoint x h, by`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Simplify `hc, rfl⟩` using `only [Set.mem_ofPred_eq, PrimeDivisor.mem_divisorSubgroup]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma finite_not_mem_pointSubgroup (c : X.functionField) :
     {x : X | c ∉ pointSubgroup D x}.Finite := by
@@ -282,9 +282,9 @@ lemma finite_not_mem_pointSubgroup (c : X.functionField) :
     simpa only [Set.mem_ofPred_eq, PrimeDivisor.mem_divisorSubgroup] using hc, rfl⟩
 
 /- English proof (translation)
-Introduce `y`. Use `⟨⊤, trivial, ?_⟩` and prove the remaining obligations. Establish `hinj : Function.Injective (fun z : V => z.1)` using `Subtype.val_injective`. Use `(((finite_not_mem_pointSubgroup D (t.1 y)).preimage hinj.injOn)).subset ?_` and prove the remaining obligations. Introduce and unpack `z ⟨-, hz⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce `hmem`. Apply `hz` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(QuotientAddGroup.mk (t.1 z) : X.functionField ⧸ pointSubgroup D z.1) = 0`. Rewrite using `[constSections_apply_eq t z y]`. Conclude with `(QuotientAddGroup.eq_zero_iff _).mpr hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma mk_mem_quotSections {V : X.Opens} (t : constSections V) :
     (fun z : V => (QuotientAddGroup.mk (t.1 z) : X.functionField ⧸ pointSubgroup D z.1)) ∈
@@ -340,7 +340,7 @@ instance : Mono (divisorSeq D).f := by
   exact Subtype.ext (congrArg Subtype.val hst :)
 
 /- English proof (translation)
-Substitute `hx` using the available equality. Rewrite using `[mem_pointSubgroup_iff]`. Introduce `h`. Conclude with `absurd rfl (PrimeDivisor.ofPoint (genericPoint X) h).point_ne_genericPoint`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma mem_pointSubgroup_of_eq_genericPoint {x : X} (hx : x = genericPoint X) (c : X.functionField) :
     c ∈ pointSubgroup D x := by
@@ -350,21 +350,19 @@ lemma mem_pointSubgroup_of_eq_genericPoint {x : X} (hx : x = genericPoint X) (c 
   exact absurd rfl (PrimeDivisor.ofPoint (genericPoint X) h).point_ne_genericPoint
 
 /- English proof (translation)
-Rewrite using `[TopCat.Presheaf.isLocallySurjective_iff]`. Introduce `U t x hxU`. Take `⟨W, hxW, hfin⟩` from `t.2 ⟨x, hxU⟩`. Take `⟨c, hc⟩` from `QuotientAddGroup.mk_surjective (t.1 ⟨x, hxU⟩)`. Establish `hcx : ∀ p : U, p.1 = x → (QuotientAddGroup.mk c : X.functionField ⧸ pointSubgroup D p.1) = t.1 p`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `⟨p, hp⟩ rfl`. Conclude with `hc`. Use `set B : Set X := {y | y ≠ x ∧ ((∃ z : U, z.1 = y ∧ z.1 ∈ W ∧ t.1 z ≠ 0) ∨ c ∉ pointSubgroup D y)} with hB`. Establish `hBfin : B.Finite`. Use `((hfin.image Subtype.val).union (finite_not_mem_pointSubgroup D c)).subset ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Prove the first alternative.
 
-Introduce and unpack `y ⟨-, ⟨z, rfl, hzW, hz⟩ | hy⟩`. Conclude with `Or.inl ⟨z, ⟨hzW, hz⟩, rfl⟩`. Conclude with `Or.inr hy`. Establish `hBgen : ∀ y ∈ B, y ≠ genericPoint X`. Introduce and unpack `y ⟨-, ⟨z, rfl, -, hz⟩ | hy⟩ hgen`.
+Prove the second alternative. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Apply `hz` to reduce the goal to its premises. Take `⟨r, hr⟩` from `QuotientAddGroup.mk_surjective (t.1 z)`. Rewrite using `[← hr]`. Conclude with `(QuotientAddGroup.eq_zero_iff r).mpr (mem_pointSubgroup_of_eq_genericPoint D hgen r)`. Conclude with `hy (mem_pointSubgroup_of_eq_genericPoint D hgen c)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hBcl : IsClosed B`. Establish `: B = ⋃ y ∈ B, ({y} : Set X)` using `by simp`. Rewrite using `[this]`. Conclude with `hBfin.isClosed_biUnion fun y hy => isClosed_singleton_of_ne hX (hBgen y hy)`. Set `V : X.Opens` to `U ⊓ W ⊓ ⟨Bᶜ, hBcl.isOpen_compl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hxV : x ∈ V` using `⟨⟨hxU, hxW⟩, fun h => h.1 rfl⟩`. Use `⟨V, fun y hy => hy.1.1, ⟨constSection V c, ?_⟩, hxV⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `z`. Express the relevant statement in the definitionally equal form `(QuotientAddGroup.mk c : X.functionField ⧸ pointSubgroup D z.1) = t.1 ⟨z.1, z.2.1.1⟩`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hzx : z.1 = x`. Conclude with `hcx ⟨z.1, z.2.1.1⟩ hzx`. Establish `hzB : z.1 ∉ B` using `z.2.2`. Simplify using `only [hB, Set.mem_ofPred_eq, not_and, not_or, not_exists, not_not] at hzB`. Take `⟨h1, h2⟩` from `hzB hzx`.
-
-Rewrite using `[(QuotientAddGroup.eq_zero_iff _).mpr h2]`. Conclude with `(h1 ⟨z.1, z.2.1.1⟩ rfl z.2.1.2).symm`.
+A detailed English derivation is pending.
 -/
 theorem constToQuot_isLocallySurjective (hX : topologicalKrullDim X ≤ 1) :
     TopCat.Presheaf.IsLocallySurjective (constToQuot D).hom := by
@@ -409,20 +407,20 @@ theorem constToQuot_isLocallySurjective (hX : topologicalKrullDim X ≤ 1) :
     exact (h1 ⟨z.1, z.2.1.1⟩ rfl z.2.1.2).symm
 
 /- English proof (translation)
-The claim follows from `(TopCat.Sheaf.isLocallySurjective_iff_epi (constToQuot D)).mp (constToQuot_isLocallySurjective D hX)`.
+A detailed English derivation is pending.
 -/
 lemma divisorSeq_epi (hX : topologicalKrullDim X ≤ 1) : Epi (divisorSeq D).g :=
   (TopCat.Sheaf.isLocallySurjective_iff_epi (constToQuot D)).mp
     (constToQuot_isLocallySurjective D hX)
 
 /- English proof (translation)
-Use `(TopCat.Sheaf.exact_iff_stalkFunctor_map_exact (C := AddCommGrpCat.{u}) (X := X.toTopCat) (divisorSeq D)).mpr fun x => ?_` and prove the remaining obligations. Rewrite using `[ShortComplex.ab_exact_iff]`. Introduce `s hs`. Take `⟨U, hxU, t, rfl⟩` from `TopCat.Presheaf.exists_germ_eq (constSheaf X).obj s`. Express the relevant statement in the definitionally equal form `(TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x).map (constToQuot D).hom (TopCat.Presheaf.germ (constSheaf X).obj U x hxU t) = 0 at hs`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `hs` using `[TopCat.Presheaf.stalkFunctor_map_germ_apply]`. Establish `hs'` using `hs.trans (map_zero (ConcreteCategory.hom (TopCat.Presheaf.germ (quotSheaf D).obj U x hxU))).symm`. Take `⟨W, hxW, iU, iV, heq⟩` from `TopCat.Presheaf.germ_eq _ x hxU hxU _ _ hs'`. Establish `hW : ∀ z : W, t.1 ⟨z.1, iU.le z.2⟩ ∈ pointSubgroup D z.1`. Introduce `z`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg (fun a => (show quotSections D W from a).1 z) heq` as an intermediate fact. Express the relevant statement in the definitionally equal form `(QuotientAddGroup.mk (t.1 ⟨z.1, iU.le z.2⟩) : X.functionField ⧸ pointSubgroup D z.1) = 0 at this`. Conclude with `(QuotientAddGroup.eq_zero_iff _).mp this`. Set `s' : divisorSections D W` to `⟨fun z => t.1 ⟨z.1, iU.le z.2⟩, constPredicate.res iU t.1 t.2, fun y hy => (mem_pointSubgroup_iff D y.1 _).mp (hW y) hy⟩`. Set `s'' : ToType ((modulesAb (divisorSheaf D)).obj.obj (op W))` to `s'`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨TopCat.Presheaf.germ (modulesAb (divisorSheaf D)).obj W x hxW s'', ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(TopCat.Presheaf.stalkFunctor AddCommGrpCat.{u} x).map (divisorToConst D).hom (TopCat.Presheaf.germ (modulesAb (divisorSheaf D)).obj W x hxW s'') = _`. Rewrite using `[TopCat.Presheaf.stalkFunctor_map_germ_apply, ← TopCat.Presheaf.germ_res_apply (constSheaf X).obj iU x hxW t]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem divisorSeq_exact : (divisorSeq D).Exact := by
   refine (TopCat.Sheaf.exact_iff_stalkFunctor_map_exact (C := AddCommGrpCat.{u})
@@ -454,7 +452,7 @@ theorem divisorSeq_exact : (divisorSeq D).Exact := by
   rfl
 
 /- English proof (translation)
-Use `divisorSeq_epi D hX` as an intermediate fact. Conclude with `⟨divisorSeq_exact D⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem divisorSeq_shortExact (hX : topologicalKrullDim X ≤ 1) : (divisorSeq D).ShortExact := by
   have := divisorSeq_epi D hX

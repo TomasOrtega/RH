@@ -27,11 +27,11 @@ noncomputable section
 namespace GlobalTheory.PsiPrim
 
 /- English proof (translation)
-Establish `h1` using `h.add ((GlobalTheory.PullGenG.hasGen_one Lr).zsmul (((1 : ℕ) : ℤ) - N))`. Take `⟨X0, hX0⟩` from `h1.gen Lr.isLB (K' := Fin 3) ![𝟙 _, f.left, (1 : G ⟶ G).left] ![(N : ℤ), -((1 : ℕ) : ℤ), ((1 : ℕ) : ℤ) - N] (by`. Simplify using `only [fsum, Fin.sum_univ_two, Fin.sum_univ_three, Matrix.cons_val, lf_single, Finsupp.smul_single_one, _root_.one_mul, Matrix.cons_val_zero, Matrix.cons_val_one])`. Establish `hzp : eSec G ≫ (toUnit G).left = 𝟙 _`. Simplify using `only [eSec, ← Over.comp_left]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[show η[G] ≫ toUnit G = 𝟙 _ from toUnit_unique _ _]`. Both sides reduce to the same expression. Take `⟨β, hβ, n⟩` from `exists_normalized Lr.isLB _ _ X0 hX0 (toUnit G).left (eSec G) hzp (by`. Establish `ha : eSec G ≫ f.left = eSec G`. Simplify using `only [eSec, ← Over.comp_left, IsMonHom.one_hom]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hb : eSec G ≫ (1 : G ⟶ G).left = eSec G` using `by show eSec G ≫ (toUnit G).left ≫ eSec G = _`. Rewrite using `[← Category.assoc, hzp, Category.id_comp]`. Simplify using `only [fsum, Fin.sum_univ_three, Matrix.cons_val, Matrix.cons_val_zero, Matrix.cons_val_one, Category.comp_id, ha, hb, ← Finsupp.single_add]`. Rewrite using `[show (N : ℤ) + -((1 : ℕ) : ℤ) + (((1 : ℕ) : ℤ) - N) = 0 by ring, Finsupp.single_zero])`. Conclude with `⟨β, hβ, corr_one_of (fun j hj => n j hj)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_norm_three {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] (Lr : RigLB G) (f : G ⟶ G) [IsMonHom f]
     (N : ℕ) (h : HasGen Lr.L (fsum (K := Fin 2) ![𝟙 G.left, f.left] ![((1 * N : ℕ) : ℤ), -((1 : ℕ) : ℤ)])) :
@@ -59,9 +59,9 @@ theorem exists_norm_three {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj
   exact ⟨β, hβ, corr_one_of (fun j hj => n j hj)⟩
 
 /- English proof (translation)
-Establish `h2` using `congrArg (a • ·) h`. Simplify using `only [smul_smul, hN, Nat.cast_smul_eq_nsmul] at h2`. Establish `hN0 : (N : ℤ) ≠ 0` using `by exact_mod_cast (by omega : N ≠ 0)`. Establish `h3 : (N : ℤ) • (x - y) = 0`. Rewrite using `[smul_sub, natCast_zsmul, natCast_zsmul, h2, sub_self]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_eq_zero.1 ((smul_eq_zero.1 h3).resolve_left hN0)`.
+A detailed English derivation is pending.
 -/
 theorem star_smul_injective {O : Type} [CommRing O] [StarRing O] {X : Type} [AddCommGroup X] [Module O X]
     [Module.Free ℤ X] (a : O) (N : ℕ) (hN : a * star a = (N : O)) (hN1 : 1 ≤ N) {x y : X}
@@ -74,11 +74,11 @@ theorem star_smul_injective {O : Type} [CommRing O] [StarRing O] {X : Type} [Add
   exact sub_eq_zero.1 ((smul_eq_zero.1 h3).resolve_left hN0)
 
 /- English proof (translation)
-Introduce `hL h1 h2 h3 h4 R _ _ _ I hI D A G _ _ hG U O _ _ _ ιD ιA ιG hlin hadj w₀ hprim a N hN hN1`. Take `⟨E, eG, -, eB, eh, -⟩` from `GlobalTheory.T.exists_uniformizationEndomorphism_of_linear hL R I hI D A G hG U O ιD ιA ιG hlin a`. Take `⟨E', eG', -, -, eh', -⟩` from `GlobalTheory.T.exists_uniformizationEndomorphism_of_linear hL R I hI D A G hG U O ιD ιA ιG hlin (star a)`. Establish `hg` using `GlobalTheory.PullGenG.hasGen_pull U.LG U.cubG ιG w₀ a N hN (hadj a) hprim 1`. Rewrite `hg` using `[← eG]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI := E.homG`. Take `⟨β, hβ, nβ⟩` from `exists_norm_three U.LG E.aG N hg`. Take `⟨κ, hκ, -⟩` from `GlobalTheory.T.descent_powerIso_endomorphism_abelianPart_uniformization hL R I hI D A G hG U E N 1 β hβ nβ`. Establish `key` using `GlobalTheory.T.psi_comp_endomorphism_eq_pow_of_pullback_iso hL h1 h2 h3 h4 R I hI D A G hG U (AlgebraicClosure (FractionRing R)) E E' (by rw [eG, eG']; exact hadj a) (fun x y e => star_smul_injective a N hN hN1 (by rw [← eh, ← eh]; exact e)) N hN1 (fun y => by rw [eh, eh', star_s …`. Rewrite using `[← eB]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨κ, hκ, fun y z J hJ => ?_⟩` and prove the remaining obligations. Use `key y z J hJ` as an intermediate fact. Rewrite `this` using `[eh', star_star]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_norm_form : LL → TwistBCSpanStatement → TWM.VRatioGtStatement → TWStatement → UUStatement → AllU fun {R} _ _ {I} {D} {A} {G} _ _ U => ∀ (O : Type) [CommRing O] [StarRing O] [Module O D.toPre.X] (ιD : D.toPre.OAct O) (ιA : A.OAct O) (ιG : RingAct G O), U.toUnifPre.OLinear O ιD ιA ιG → (∀ a, LBIso (cubeLB G ![fst G G ≫ ιG.act a, snd G G] U.LG.L) (cubeLB G ![fst G G, snd G G ≫ ιG.act (star a)] U.LG.L)) → ∀ (w₀ : O), LBIso U.LG.L (cubeLB G ![𝟙 G, ιG.act w₀] U.LG.L) → ∀ (a : O) (N : ℕ), a * star a = (N : O) → 1 ≤ N →
     ∃ κ : LB.Gen (kapLB D.toPre (ιD.onB.act a) N 1), Normd κ ∧ ∀ y (z : (TK R).left) J, Good D.toPre.P.L z J →
@@ -103,7 +103,7 @@ theorem exists_norm_form : LL → TwistBCSpanStatement → TWM.VRatioGtStatement
   rwa [eh', star_star] at this
 
 /- English proof (translation)
-The claim follows from `Fin.prod_univ_three _`.
+A detailed English derivation is pending.
 -/
 theorem prod_kap {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (f : D.P.A ⟶ D.P.A) (N : ℕ) {U : Type} [CommGroup U]
     (h : (D.P.A.left ⟶ D.P.A.left) → U) :
@@ -113,19 +113,19 @@ theorem prod_kap {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (f : D.P.A 
   Fin.prod_univ_three _
 
 /- English proof (translation)
-Introduce `hL h1 h2 h3 h4 R _ _ _ I hI D A G _ _ hG U O _ _ _ ιD ιA ιG hlin hadj w₀ ν htr hν hν1 _ hprim`. Establish `H` using `exists_norm_form hL h1 h2 h3 h4 R I hI D A G hG U O ιD ιA ιG hlin hadj w₀ hprim`. Take `⟨κ₀, ⟨g₀, n₀⟩, v₀⟩` from `H w₀ ν hν hν1`. Take `⟨κ₁, ⟨g₁, n₁⟩, v₁⟩` from `H (1 + w₀) (ν + 2) (by`. Rewrite using `[star_add, star_one]; push_cast; linear_combination htr + hν) (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `e₁ : ιD.onB.act (1 + w₀) = padd D.toPre.P.A (𝟙 _) (ιD.onB.act w₀)`. Rewrite using `[ιD.onB.map_add, ιD.onB.map_one]`. Take `⟨u, hu, vu⟩` from `exists_gen D.toPre.P.isLB (K' := Fin 4) (φ' := ![(padd D.toPre.P.A (𝟙 _) (ιD.onB.act w₀)).left, 𝟙 D.toPre.P.A.left, (ιD.onB.act w₀).left, (toUnit D.toPre.P.A ≫ η[D.toPre.P.A]).left]) (ε' := ![1, -2, -1, 2]) (fun V _ h => by`. Use `(prod_sum₂ (K := Fin 3) (K' := Fin 3) (U := V) _ (prod_kap D.toPre _ ν h) (prod_neg _ _ (prod_kap D.toPre _ (ν + 2) h))).trans ?_` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_four, e₁]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `o : (toUnit D.toPre.P.A ≫ η[D.toPre.P.A]) = 1` using `rfl`. Rewrite using `[o]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow, Matrix.cons_val, Matrix.cons_val_zero, Matrix.cons_val_one]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use the proof step `module)`. Use the proof step `(LB.mulGen D.toPre.P.L _ _ _ _ κ₀ (LB.invGen D.toPre.P.L _ _ κ₁))`. Use the proof step `(mulGen_isGen _ _ _ _ _ _ _ g₀ (invGen_isGen _ _ _ _ g₁))`. Use `⟨u, hu, corr_of_val D.toPre.P.isLB fun z J hJ => ?_, fun y => corr_of_val D.toPre.P.isLB fun z J hJ => ?_⟩` and prove the remaining obligations. Establish `a₀` using `val_corr hJ n₀ (𝟙 _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `a₁` using `val_corr hJ n₁ (𝟙 _)`. Rewrite `a₀`, `a₁` using `[val_pull hJ]`. Rewrite using `[val_pull hJ, vu _ _ z J hJ, val_mul hJ, val_inv, a₀, a₁, mul_inv_cancel, val_one]`. Establish `t : val (D.toPre.tau y (w₀ • y)) (𝟙 _) z J = val (D.toPre.psi (y + w₀ • y)) (𝟙 _) z J * (val (D.toPre.psi y) (𝟙 _) z J)⁻¹ * (val (D.toPre.psi (w₀ • y)) (𝟙 _) z J)⁻¹ * (val D.toPre.rigK (𝟙 _) z J)⁻¹` using `(val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl (val_inv _ _))) (val_inv _ _))) (val_inv _ _))`. Establish `r : val D.toPre.rigK (𝟙 _) z J = rigV D.toPre (TK R).hom z J` using `(val_pull hJ _ _ _).trans (by rw [Category.id_comp]; rfl)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `b₀` using `v₀ y z J hJ`. Establish `b₁` using `v₁ y z J hJ`. Rewrite `b₁` using `[add_smul, one_smul]`. Rewrite using `[val_mul hJ, val_mul hJ, val_pull hJ, Category.id_comp, vu _ _ z J hJ, val_mul hJ, val_inv, t, r]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `c₀` using `congrArg Additive.ofMul b₀`. Establish `c₁` using `congrArg Additive.ofMul b₁`. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_pow] at c₀ c₁ ⊢`. Take the linear combination `(norm := module) c₁ - c₀`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem traceFormTwistIso_of_primitive_lineBundle : LL → TwistBCSpanStatement → TWM.VRatioGtStatement → TWStatement → UUStatement → AllU fun {R} _ _ {I} {D} {A} {G} _ _ U => ∀ (O : Type) [CommRing O] [StarRing O] [Module O D.toPre.X] (ιD : D.toPre.OAct O) (ιA : A.OAct O) (ιG : RingAct G O), U.toUnifPre.OLinear O ιD ιA ιG → (∀ a, LBIso (cubeLB G ![fst G G ≫ ιG.act a, snd G G] U.LG.L) (cubeLB G ![fst G G, snd G G ≫ ιG.act (star a)] U.LG.L)) → ∀ (w₀ : O) (ν : ℕ), w₀ + star w₀ = 1 → w₀ * star w₀ = (ν : O) → 1 ≤ ν → Even ν → LBIso U.LG.L (cubeLB G ![𝟙 G, ιG.act w₀] U.LG.L) → TraceFormTwistIso D.toPre ιD w₀ := by
   intro hL h1 h2 h3 h4 R _ _ _ I hI D A G _ _ hG U O _ _ _ ιD ιA ιG hlin hadj w₀ ν htr hν hν1 _ hprim

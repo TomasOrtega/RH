@@ -5,13 +5,13 @@ namespace GlobalTheory.NatSmulIntegral
 open NumberField
 
 /- English proof (translation)
-Establish `h : IsAlgebraic ℤ c` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic c)`. Take `⟨z, hz, hi⟩` from `h.exists_integral_multiple`. Use `⟨z.natAbs, Int.natAbs_pos.2 hz, ?_⟩` and prove the remaining obligations. Rewrite `hi` using `[zsmul_eq_mul]`. Break down `Int.natAbs_eq z with h1 | h1` into its components or cases.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Use `⟨⟨(z : E) * c, hi⟩, ?_⟩` and prove the remaining obligations. Establish `: (z : E) = (z.natAbs : E)` using `by conv_lhs => rw [h1]`. Conclude with `Int.cast_natCast _`. Rewrite using `[← this]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨-((z : E) * c), hi.neg⟩, ?_⟩` and prove the remaining obligations. Establish `: (z : E) = -(z.natAbs : E)` using `by conv_lhs => rw [h1]`. Rewrite using `[Int.cast_neg, Int.cast_natCast]`. Establish `h2 : (z.natAbs : E) * c = -((z : E) * c)` using `by rw [this]; ring`. Rewrite using `[h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_nat_mul_integral {E : Type} [Field E] [NumberField E] (c : E) :
     ∃ N : ℕ, 0 < N ∧ ∃ a : 𝓞 E, (a : E) = (N : E) * c := by
@@ -34,17 +34,17 @@ theorem exists_nat_mul_integral {E : Type} [Field E] [NumberField E] (c : E) :
     rw [h2]; rfl
 
 /- English proof (translation)
-Establish `hy : y ∈ Submodule.span E (↑L : Set (Fin n → E))` using `hL ▸ Submodule.mem_top`. Establish `key : ∀ c : E, ∃ N : ℕ, 0 < N ∧ N • (c • y) ∈ L`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Introduce `c`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨N, hN, a, ha⟩` from `exists_nat_mul_integral c`. Use `⟨N, hN, ?_⟩` and prove the remaining obligations. Establish `h1 : N • (c • x) = a • x`. Rewrite using `[← Nat.cast_smul_eq_nsmul E, smul_smul, ← ha]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h1]`. Conclude with `L.smul_mem a hx`. Consider the case `zero => intro c; exact ⟨1, one_pos, by simp⟩`. Consider the case `add x y _ _ ihx ihy`. Introduce `c`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hN, h1⟩` from `ihx c`. Take `⟨M, hM, h2⟩` from `ihy c`. Use `⟨M * N, Nat.mul_pos hM hN, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, smul_add]`. Use `L.add_mem ?_ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_smul]`. Conclude with `nsmul_mem h1 M`. Rewrite using `[mul_comm, mul_smul]`. Conclude with `nsmul_mem h2 N`. Consider the case `smul a x _ ih`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `c`. Rewrite using `[smul_smul]`. Conclude with `ih _`. Simplify using `using key 1`.
+A detailed English derivation is pending.
 -/
 theorem exists_nat_smul_mem {E : Type} [Field E] [NumberField E] {n : ℕ}
     (L : Submodule (𝓞 E) (Fin n → E)) (hL : Submodule.span E (↑L : Set (Fin n → E)) = ⊤)

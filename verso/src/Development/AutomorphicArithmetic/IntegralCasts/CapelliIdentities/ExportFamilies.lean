@@ -5,9 +5,9 @@ import Formalism.LocalRingCardinality.Params
 import Formalism.LocalRingCardinality.DataHost
 
 /- English proof (translation)
-Introduce `D x hx`. Establish `hs` using `D.host.sqd_sq`. Establish `hx' : x ∈ Algebra.adjoin ℚ {D.host.sqd}`. Rewrite using `[← IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic (Algebra.IsAlgebraic.isAlgebraic (R := ℚ) D.host.sqd)]`. Conclude with `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Algebra.adjoin_induction (p := fun x _ => ∃ p q : ℚ, x = (p : D.host.E) + q * D.host.sqd) (fun y hy => ⟨0, 1, by simpa using hy⟩) (fun r => ⟨r, 0, by simp⟩) ?_ ?_ hx'` and prove the remaining obligations. Introduce and unpack `_ _ _ _ ⟨a, b, rfl⟩ ⟨c, e, rfl⟩`. Conclude with `⟨a + c, b + e, by push_cast; ring⟩`. Introduce and unpack `_ _ _ _ ⟨a, b, rfl⟩ ⟨c, e, rfl⟩`. Conclude with `⟨a * c - D.host.d * (b * e), a * e + b * c, by push_cast; linear_combination ((b : D.host.E) * e) * hs⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.ExportFamilies.K_repr :
     ∀ (D : Formalism.L2.Ker.Car),

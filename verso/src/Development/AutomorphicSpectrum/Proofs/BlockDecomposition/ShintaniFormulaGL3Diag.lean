@@ -12,7 +12,7 @@ open scoped NumberField.AdeleRing ValuativeRel
 namespace GlobalTheory.CompanionTheory.SphGL3
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨by simpa using h (show (0 : Fin 3) ≤ 1 by decide), by simpa using h (show (1 : Fin 3) ≤ 2 by decide)⟩`. Apply the tactic sequence `rintro ⟨h1, h2⟩ i j hij fin_cases i <;> fin_cases j <;> simp_all <;> omega`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem antitone_triple_iff (a b : ℤ) : Antitone (![a, b, 0] : Fin 3 → ℤ) ↔ b ≤ a ∧ 0 ≤ b := by
   constructor
@@ -23,17 +23,17 @@ theorem antitone_triple_iff (a b : ℤ) : Antitone (![a, b, 0] : Fin 3 → ℤ) 
     fin_cases i <;> fin_cases j <;> simp_all <;> omega
 
 /- English proof (translation)
-Simplify using `[GroundTheory.Automorphic.Spherical.rhoPair, Fin.sum_univ_three]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rhoPair_triple (a b : ℤ) : GroundTheory.Automorphic.Spherical.rhoPair (![a, b, 0] : Fin 3 → ℤ) = 2 * a := by
   simp [GroundTheory.Automorphic.Spherical.rhoPair, Fin.sum_univ_three]
 
 /- English proof (translation)
-Introduce `F _ _ _ _ ψ₀ hψ₀ z a b`. Take `⟨k, hk, hdg⟩` from `GlobalTheory.CompanionTheory.LocalUnramified.sDg F (unifUnit F ^ a) (unifUnit F ^ b) 1`. Establish `o1 : ord (((unifUnit F ^ a : Fˣ)) : F) = a` using `ord_unifUnit_zpow a`. Establish `o2 : ord (((unifUnit F ^ b : Fˣ)) : F) = b` using `ord_unifUnit_zpow b`. Establish `o3 : ord (((1 : Fˣ)) : F) = 0` using `by simp [ord]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hdg` using `[o1, o2, o3]`. Rewrite using `[hdg, Spherical.sphericalWhittaker_mul_right hψ₀ _ _ hk, Spherical.sphericalWhittaker_torusPow hψ₀]`. Distinguish the cases in `h : b ≤ a ∧ 0 ≤ b`. Establish `hsq2 : Spherical.sqrtQ F ^ 2 = (residueCard F : ℂ)`. Rewrite using `[Spherical.sqrtQ_sq]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[if_pos ((antitone_triple_iff a b).2 h), if_pos h, Spherical.halfModulus_eq, rhoPair_triple, show -(2 * a) = (2 : ℤ) * (-a) by ring, _root_.zpow_mul, zpow_ofNat, hsq2]`. Rewrite using `[if_neg (fun h' => h ((antitone_triple_iff a b).1 h')), if_neg h]`.
+Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem sph_dg_zpow : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (ψ₀ : AddChar F ℂ), (∀ x ∈ 𝒪[F], ψ₀ x = 1) → ∀ (z : Fin 3 → ℂˣ) (a b : ℤ), Spherical.sphericalWhittaker ψ₀ z (dg (unifUnit F ^ a) (unifUnit F ^ b) 1) = if b ≤ a ∧ 0 ≤ b then (residueCard F : ℂ) ^ (-a) * Spherical.evalAt z (Spherical.schur ![a, b, 0]) else 0 := by
   intro F _ _ _ _ ψ₀ hψ₀ z a b

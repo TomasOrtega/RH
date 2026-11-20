@@ -19,17 +19,17 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 variable {D : Datum H} {l : Level H} {Xo : Moduli D l} {σ : KA l →+* ℂ} {g : ℕ} {ty : Fin g → (E →+* ℂ)}
 
 /- English proof (translation)
-Establish `hτσ : (τ : ℂ →+* ℂ).comp σ = σ` using `RingHom.ext fun x => by show τ (σ x) = σ x`. Rewrite using `[hA, hτ]`. Establish `hon : ∀ i P, IsPeriod (F.Di i) ty P → ∃ i' P', IsPeriod (F.Di i') ty P' ∧ F.u i' P' = spMap (τ : ℂ →+* ℂ) ≫ F.u i P` using `fun i P hP => F.onto _ (by rw [Category.assoc, F.over_σ i P hP, ConjPermutes.spMap_comp, hτσ])`. Use `choose P₀ hP₀ using exists_period F hty`. Use `choose π P₁ hP₁ hu₁ using fun i => hon i (P₀ i) (hP₀ i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨π, fun i P hP => ?_⟩` and prove the remaining obligations. Take `⟨i', P', hP', hu'⟩` from `hon i P hP`. Take `⟨c₀⟩ : Nonempty (Coeff l)` from `inferInstance`. Take `⟨c, -, hc⟩` from `GlobalTheory.T.exists_coeffField_idempotents_periodSpaces_anyLevel E H D l Xo σ g ty F hD hσ hty hA c₀`. Take `⟨e, he, hv⟩` from `hc (π i)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `j : c.F →+* ℂ` to `(τ.symm : ℂ →+* ℂ).comp c.F.val.toRingHom`. Establish `hj : (τ : ℂ →+* ℂ).comp j = c.F.val.toRingHom` using `RingHom.ext fun a => τ.apply_symm_apply _`. Establish `hjσ : σ = j.comp (IntermediateField.inclusion c.le).toRingHom` using `RingHom.ext fun x => by`. Rewrite using `[hA]`. Conclude with `(τ.symm_apply_eq.2 (hτ x).symm).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `w : ∀ Q, IsPeriod (F.Di i) ty Q → F.u i Q ≫ Xo.s = spMap j ≫ spMap (IntermediateField.inclusion c.le).toRingHom` using `fun Q hQ => by`. Rewrite using `[F.over_σ i Q hQ, ConjPermutes.spMap_comp, ← hjσ]`. Establish `key : ∀ Q (hQ : IsPeriod (F.Di i) ty Q) k Q', IsPeriod (F.Di k) ty Q' → F.u k Q' = spMap (τ : ℂ →+* ℂ) ≫ F.u i Q → τ (valAt' (X` using `Xo.XF c) (pullback.lift _ _ (w Q hQ)) ⊤ e) = if k = π i then 1 else 0 := by`. Introduce `Q hQ k Q' hQ' h`. Rewrite using `[← hv k Q' hQ' (spMap (τ : ℂ →+* ℂ) ≫ pullback.lift _ _ (w Q hQ)) (by rw [Category.assoc, pullback.lift_fst, h]) (by rw [Category.assoc, pullback.lift_snd, ConjPermutes.spMap_comp, hj]), valAt'_spMap_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hconst` using `GlobalTheory.T.regularFunction_const_of_finite_values_any_level E H D l Xo σ g ty F hD hσ hty c j e {0, 1} (Set.toFinite _) (fun x _ => valAt'_idem x he) i P (P₀ i) hP (hP₀ i) (pullback.lift _ _ (w P hP)) (pullback.lift _ _ (w _ (hP₀ i))) (pullback.lift_fst _ _ _) (pullback.lift_ …`. Establish `h₁` using `key P hP i' P' hP' hu'`. Rewrite `h₁` using `[hconst, key _ (hP₀ i) (π i) (P₁ i) (hP₁ i) (hu₁ i), if_pos rfl]`. Choose the witnesses or unpack the hypotheses as in `rfl : i' = π i := by`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Assume the negation of the conclusion as `hne`. Rewrite `h₁` using `[if_neg hne]`. Conclude with `one_ne_zero h₁`. Conclude with `⟨P', hP', hu'.symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_map (F : FamilyUnif Xo σ ty) (hD : 1 ≤ D.p + D.q) (hσ : σ (baseKA l).ρ = H.rt0)
     (hty : IsTypeFn H D.p D.q ty) (hA : ∀ x : KA l, σ x = (x : ℂ)) (τ : ℂ ≃+* ℂ)
@@ -77,11 +77,11 @@ theorem exists_map (F : FamilyUnif Xo σ ty) (hD : 1 ≤ D.p + D.q) (hσ : σ (b
   exact ⟨P', hP', hu'.symm⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo σ g ty F hD hσ hty hA τ hτ`. Take `⟨π, hπ⟩` from `exists_map F hD hσ hty hA τ hτ`. Take `⟨π', hπ'⟩` from `exists_map F hD hσ hty hA τ.symm (fun x => τ.symm_apply_eq.2 (hτ x).symm)`. Establish `hinv : Function.LeftInverse π' π` using `fun i => by`. Take `⟨P, hP⟩` from `exists_period F hty i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨P', hP', h'⟩` from `hπ i P hP`. Take `⟨P'', hP'', h''⟩` from `hπ' (π i) P' hP'`. Establish `e : (τ.symm : ℂ →+* ℂ).comp (τ : ℂ →+* ℂ) = RingHom.id ℂ` using `RingHom.ext fun a => τ.symm_apply_apply a`. Establish `e' : spMap (RingHom.id ℂ) = 𝟙 _` using `Spec.map_id (CommRingCat.of ℂ)`. Rewrite `h''` using `[← h', ← Category.assoc, ConjPermutes.spMap_comp, e, e', Category.id_comp]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(F.disj _ _ _ _ hP hP'' h'').symm`. Conclude with `⟨Equiv.ofBijective π (Finite.injective_iff_bijective.1 hinv.injective), hπ⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_perm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (σ : KA l →+* ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (F : FamilyUnif Xo σ ty), 1 ≤ D.p + D.q → σ (baseKA l).ρ = H.rt0 → IsTypeFn H D.p D.q ty → (∀ x : KA l, σ x = (x : ℂ)) → ∀ τ : ℂ ≃+* ℂ, (∀ x : KA l, τ (x : ℂ) = x) → ∃ π : Equiv.Perm (Fin F.n), ConjugationPermutesPeriods F τ π := by
   intro E _ _ _ H D l Xo σ g ty F hD hσ hty hA τ hτ

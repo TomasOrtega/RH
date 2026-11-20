@@ -14,9 +14,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Poinc
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ S ρ p _ y₀ u a`. Use `haveI : CharZero u.V := ((algebraMap (FractionRing u.V) (PadicAlgCl p)).comp (algebraMap u.V _)).charZero`. Take `⟨x, hx, hadd, -⟩` from `utest_torsion_points o Ω S ρ p y₀ u`. Take `⟨f, f₁, f₂, -⟩` from `uTors_closed u.V u.complete u.A u.G u.D u.U (PadicAlgCl p) _ (GlobalTheory.RealCompare.one_le_rN S)`. Establish `hx1 : x a ^ (S.r * S.N) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `u.A.isAb.comm` as an intermediate fact. Take `⟨h0, hsm⟩` from `ThetaReal.pt_nsmul x hadd`. Rewrite using `[← hsm, ThetaReal.nsmul_self, h0]`. Take `⟨q, hq⟩` from `f₂ _ hx1`. Conclude with `⟨q, x a, (f₁ _ _).2 hq.symm, hx a⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_qkPt_of_utest : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (a : S.Gam), ∃ (pk : QkPt u.D.toPre (PadicAlgCl p) (S.r * S.N)) (x : TFK (R := u.V) (PadicAlgCl p) ⟶ u.A.A), QkToAkU u.U.toUnifPre (PadicAlgCl p) (S.r * S.N) pk x ∧ x.left ≫ u.φ = spMap y₀ ≫ (ρ.pt a).left := by
   intro o Ω _ _ _ S ρ p _ y₀ u a

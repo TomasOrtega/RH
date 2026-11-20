@@ -5,7 +5,7 @@ open UpperHalfPlane ModularForm CongruenceSubgroup MeasureTheory
 open scoped MatrixGroups ModularForm Manifold
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Hk.dia_modularForm | exact GlobalTheory.Hk.dia_modularForm | (intros; apply GlobalTheory.Hk.dia_modularForm <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.diamondOperatorOfMatrix_modularForm_gamma1InterGamma0 : ∀ (N l : ℕ) (k d : ℤ) (σ : SL(2, ℤ)), 0 < N → GlobalTheory.Hk.IsDia N l d σ → ∀ f : ModularForm (GlobalTheory.Hk.lev N l) k, ∃ g : ModularForm (GlobalTheory.Hk.lev N l) k, ⇑g = GlobalTheory.Hk.dia k σ ⇑f := by
   first | exact @GlobalTheory.Hk.dia_modularForm | exact GlobalTheory.Hk.dia_modularForm | (intros; apply GlobalTheory.Hk.dia_modularForm <;> assumption)

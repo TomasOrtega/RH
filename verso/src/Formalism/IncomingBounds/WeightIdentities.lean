@@ -12,125 +12,125 @@ import Formalism.IncomingBounds.FlowDegreeBounds.ProdRangeEqFactorialMulProdIco
 namespace Formalism.IncomingBounds
 
 /- English proof (translation)
-The claim follows from `constantIdentities`.
+A detailed English derivation is pending.
 -/
 theorem constants : Constants := constantIdentities
 /- English proof (translation)
-The claim follows from `padicValuationGain`.
+A detailed English derivation is pending.
 -/
 theorem valGain : ValGain := padicValuationGain
 /- English proof (translation)
-The claim follows from `maxFlowValueAttained`.
+A detailed English derivation is pending.
 -/
 theorem flowAttained : FlowAttained := maxFlowValueAttained
 /- English proof (translation)
-The claim follows from `strongDuality`.
+A detailed English derivation is pending.
 -/
 theorem lemmaFa : LemmaFa := strongDuality
 /- English proof (translation)
-The claim follows from `lemmaFb_of maxFlowValueAttained strongDuality`.
+A detailed English derivation is pending.
 -/
 theorem lemmaFb : LemmaFb := lemmaFb_of maxFlowValueAttained strongDuality
 /- English proof (translation)
-The claim follows from `lemmaFc_of maxFlowValueAttained strongDuality`.
+A detailed English derivation is pending.
 -/
 theorem lemmaFc : LemmaFc := lemmaFc_of maxFlowValueAttained strongDuality
 /- English proof (translation)
-The claim follows from `lemmaFd_of maxFlowValueAttained strongDuality`.
+A detailed English derivation is pending.
 -/
 theorem lemmaFd : LemmaFd := lemmaFd_of maxFlowValueAttained strongDuality
 /- English proof (translation)
-The claim follows from `deficitOfBoundedRatio`.
+A detailed English derivation is pending.
 -/
 theorem lemmaFe : LemmaFe := deficitOfBoundedRatio
 /- English proof (translation)
-The claim follows from `incomingBound_of maxFlowValueAttained strongDuality`.
+A detailed English derivation is pending.
 -/
 theorem incomingBound : IncomingBound := incomingBound_of maxFlowValueAttained strongDuality
 /- English proof (translation)
-The claim follows from `top_radius_holds`.
+A detailed English derivation is pending.
 -/
 theorem topRadius : TopRadius := top_radius_holds
 /- English proof (translation)
-The claim follows from `corFromThmA_of maxFlowValueAttained strongDuality lemmaFc incomingBound`.
+A detailed English derivation is pending.
 -/
 theorem corFromThmA : CorFromThmA :=
   corFromThmA_of maxFlowValueAttained strongDuality lemmaFc incomingBound
 /- English proof (translation)
-The claim follows from `cayley_hamilton_recursion`.
+A detailed English derivation is pending.
 -/
 theorem chRecursion : CHRecursion := cayley_hamilton_recursion
 /- English proof (translation)
-The claim follows from `cayley_hamilton_value_holds`.
+A detailed English derivation is pending.
 -/
 theorem chValue : CHValue := cayley_hamilton_value_holds
 /- English proof (translation)
-The claim follows from `newton_window_holds`.
+A detailed English derivation is pending.
 -/
 theorem newtonWindow : NewtonWindow := newton_window_holds
 /- English proof (translation)
-The claim follows from `padicValFactorialRatioProd`.
+A detailed English derivation is pending.
 -/
 theorem capVal : CapVal := padicValFactorialRatioProd
 /- English proof (translation)
-The claim follows from `factorialSplit`.
+A detailed English derivation is pending.
 -/
 theorem factSplit : FactSplit := factorialSplit
 /- English proof (translation)
-The claim follows from `weight_identities'`.
+A detailed English derivation is pending.
 -/
 theorem weightIdentities : WeightIdentities := weight_identities'
 /- English proof (translation)
-The claim follows from `contentShift_of maxFlowValueAttained strongDuality lemmaFc incomingBound`.
+A detailed English derivation is pending.
 -/
 theorem contentShift : ContentShift :=
   contentShift_of maxFlowValueAttained strongDuality lemmaFc incomingBound
 /- English proof (translation)
-The claim follows from `highLevelTail`.
+A detailed English derivation is pending.
 -/
 theorem levelTail : LevelTail := highLevelTail
 /- English proof (translation)
-The claim follows from `frobenius_orbit_sum_holds`.
+A detailed English derivation is pending.
 -/
 theorem frobOrbitSum : FrobOrbitSum := frobenius_orbit_sum_holds
 /- English proof (translation)
-The claim follows from `frobenius_orbit_period_holds`.
+A detailed English derivation is pending.
 -/
 theorem frobOrbitPeriod : FrobOrbitPeriod := frobenius_orbit_period_holds
 /- English proof (translation)
-The claim follows from `index_last_reduction_holds`.
+A detailed English derivation is pending.
 -/
 theorem indexLastStep : IndexLastStep := index_last_reduction_holds
 /- English proof (translation)
-The claim follows from `cayleyIdentity`.
+A detailed English derivation is pending.
 -/
 theorem cayleyId : CayleyId := cayleyIdentity
 /- English proof (translation)
-The claim follows from `sqSubOneInvMulDvd`.
+A detailed English derivation is pending.
 -/
 theorem invWeight : InvWeight := sqSubOneInvMulDvd
 /- English proof (translation)
-The claim follows from `primeDvdChooseIff`.
+A detailed English derivation is pending.
 -/
 theorem binomGcd : BinomGcd := primeDvdChooseIff
 /- English proof (translation)
-The claim follows from `padicValFactorialBounds`.
+A detailed English derivation is pending.
 -/
 theorem factValBounds : FactValBounds := padicValFactorialBounds
 /- English proof (translation)
-The claim follows from `unitFactorialProd`.
+A detailed English derivation is pending.
 -/
 theorem uProduct : UProduct := unitFactorialProd
 /- English proof (translation)
-The claim follows from `logCoeffValuation`.
+A detailed English derivation is pending.
 -/
 theorem logCoeffVal : LogCoeffVal := logCoeffValuation
 /- English proof (translation)
-The claim follows from `shiftExponentIdentity`.
+A detailed English derivation is pending.
 -/
 theorem lemmaMExponent : LemmaMExponent := shiftExponentIdentity
 /- English proof (translation)
-The claim follows from `weightNumerics`.
+A detailed English derivation is pending.
 -/
 theorem lemmaMNumerics : LemmaMNumerics := weightNumerics
 

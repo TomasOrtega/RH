@@ -22,9 +22,9 @@ def KerIdem (X : CData) : Prop :=
     X.kerD x = ((∫ y, ‖ker2 X x y‖ ^ 2 ∂X.μ : ℝ) : ℂ)
 
 /- English proof (translation)
-Use `hH` as an intermediate fact. Establish `: SecondCountableTopology X.I.Gf` using `rr_secondCountable X.I X.μf`. Establish `: SigmaFinite (X.I.muA X.μf)` using `rr_muA_sigmaFinite X.I X.μf`. Establish `: Fact ((2 : ℝ≥0∞) ≠ ∞)` using `⟨by norm_num⟩`. Establish `: SecondCountableTopology (Lp ℂ 2 ((X.I.muA X.μf).restrict X.fund))` using `inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem rrk_separable (X : CData) (hH : X.μf.IsHaarMeasure) : SeparableSpace X.L2 := by
   have := hH
@@ -40,7 +40,7 @@ def rrk_kap (X : CData) (x : X.I.GA) : X.L2 :=
   if h : MemLp (fun y => star (ker2 X x y)) 2 ((X.I.muA X.μf).restrict X.fund) then h.toLp _ else 0
 
 /- English proof (translation)
-Establish `h' : MemLp (fun y => star (ker2 X x y)) 2 ((X.I.muA X.μf).restrict X.fund)` using `h.star`. Unfold `rrk_kap`. Rewrite using `[dif_pos h']`. Conclude with `h'.coeFn_toLp`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rrk_kap_coe (X : CData) {x : X.I.GA} (h : MemLp (fun y => ker2 X x y) 2 ((X.I.muA X.μf).restrict X.fund)) :
     ((rrk_kap X x : X.L2) : X.I.GA → ℂ) =ᵐ[(X.I.muA X.μf).restrict X.fund] fun y => star (ker2 X x y) := by
@@ -50,17 +50,15 @@ theorem rrk_kap_coe (X : CData) {x : X.I.GA} (h : MemLp (fun y => ker2 X x y) 2 
   exact h'.coeFn_toLp
 
 /- English proof (translation)
-Introduce `T hT hP N F`. Unfold `KernelL2RowsColumns CData.μ at h1`. Unfold `KerUnfold CData.μ at h2`. Unfold `KerIdem CData.μ at h3`. Unfold `CData.μ`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Use `rrk_separable X hH` as an intermediate fact. Establish `hκ : ∀ f : X.L2, ∀ᵐ x ∂(X.I.muA X.μf).restrict X.fund, ((T f : X.L2) : X.I.GA → ℂ) x = ⟪rrk_kap X x, f⟫_ℂ`. Introduce `f`. Use `filter_upwards [h1, h2 T hT f] with x a1 a2`. Rewrite using `[a2, L2.inner_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [rrk_kap_coe X a1] with y b1`. Rewrite using `[b1, RCLike.inner_apply]`. Simplify using `[mul_comm]`. Establish `hd` using `rrk_diag ((X.I.muA X.μf).restrict X.fund) T hP F (rrk_kap X) hκ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [h1, h3, hd] with x a1 a3 ad`. Use `⟨a3.1, ?_⟩` and prove the remaining obligations. Rewrite using `[a3.2, ← ad]`. Use `congr 1`. Establish `e1 : ((‖rrk_kap X x‖ ^ 2 : ℝ) : ℂ) = ⟪rrk_kap X x, rrk_kap X x⟫_ℂ`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. Establish an intermediate fact.
 
-Rewrite using `[inner_self_eq_norm_sq_to_K]`. Use `norm_cast`. Establish `e2 : ⟪rrk_kap X x, rrk_kap X x⟫_ℂ = ((∫ y, ‖ker2 X x y‖ ^ 2 ∂(X.I.muA X.μf).restrict X.fund : ℝ) : ℂ)`. Rewrite using `[L2.inner_def, ← integral_complex_ofReal]`. Use `integral_congr_ae ?_` and prove the remaining obligations.
-
-Use `filter_upwards [rrk_kap_coe X a1] with y b1`. Rewrite using `[b1, inner_self_eq_norm_sq_to_K, norm_star]`. Use `norm_cast`. Conclude with `(e1.trans e2).symm` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. A detailed English derivation is pending.
 -/
 theorem kernel_diagonal_of_L2_unfold_idempotent (X : CData) (hH : X.μf.IsHaarMeasure) (h1 : KernelL2RowsColumns X) (h2 : KerUnfold X) (h3 : KerIdem X) :
     X.KernelDiag := by

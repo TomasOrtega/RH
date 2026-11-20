@@ -10,15 +10,15 @@ open MeasureTheory Filter Topology Metric ReciprocityTheory.L2DbarEstimates Reci
 open scoped ENNReal ContDiff
 
 /- English proof (translation)
-Introduce `n Y _ _ _ _ _ ι La _ A E U z β hE hβ a w ha hw hw0`. Establish `hUm : MeasurableSet U` using `hE.isOpen.measurableSet`. Establish `hc` using `api_nsq_contOn A hE.isOpen hβ.1`. Establish `hm` using `ContinuousOn.measurable_piecewise hc (continuousOn_const (c := (0 : ℝ)) (s := Uᶜ)) hUm`. Use `set N : Y → ℝ := U.piecewise (A.nsq (A.kap + E) β) (fun _ => 0) with hN`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNU : ∀ y ∈ U, N y = A.nsq (A.kap + E) β y` using `fun y hy => by simp [hN, hy]`. Establish `hΦ : Measurable fun y => ENNReal.ofReal (N y * ‖a y‖ ^ 2 * w y)` using `ENNReal.measurable_ofReal.comp ((hm.mul (ha.norm.pow_const 2)).mul hw)`. Rewrite using `[setLIntegral_congr_fun hUm (g := fun y => ENNReal.ofReal (N y * ‖a y‖ ^ 2 * w y)) (fun y hy => by simp only [hNU y hy]), GlobalTheory.T.lintegral_atlasMeasure_etale_pullback_lebesgue n Y ι La A U z hE _ hΦ]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Establish `hJ : 0 < A.nsq A.kap (jdet A z) x`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hE.det_ne (A.pick (x : Y)) x x.2 (A.mem_pick _)` as an intermediate fact. Unfold `WeightedAtlas.nsq`. Conclude with `mul_pos (pow_pos (norm_pos_iff.mpr this) 2) (Real.exp_pos _)`. Establish `hB : 0 < A.nsq (A.kap + E) β x`. Establish `: β (A.pick (x : Y)) x ≠ 0`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Conclude with `hβ.2 _ x.2`. Unfold `WeightedAtlas.nsq`. Conclude with `mul_pos (pow_pos (norm_pos_iff.mpr this) 2) (Real.exp_pos _)`. Establish `hwx` using `hw0 x x.2`. Rewrite using `[hNU x x.2, ← ENNReal.ofReal_mul (by positivity)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 1`. Unfold `GlobalTheory.OTY.TwEst.wt`. Rewrite using `[neg_add, neg_neg, Real.exp_add, Real.exp_neg, Real.exp_log hB, Real.exp_log hJ]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.OTY.TwEst.lintegral_frame_transfer : ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] (ι La : Type) [AddCommGroup La] (A : WeightedAtlas n Y ι La), ∀ (E : La) (U : Set Y) (z : Y → V n) (β : ι → Y → ℂ), Etale A U z → A.IsFrameOn (A.kap + E) U β → ∀ (a : Y → ℂ) (w : Y → ℝ), Measurable a → Measurable w → (∀ y ∈ U, 0 ≤ w y) → ∫⁻ y in U, ENNReal.ofReal (A.nsq (A.kap + E) β y * ‖a y‖ ^ 2 * w y) ∂A.mu = ∫⁻ x : U, ENNReal.ofReal (‖a x‖ ^ 2 * (w x * Real.exp (-GlobalTheory.OTY.TwEst.wt A E β z x))) ∂vol n (fun y : U => z y) := by
   intro n Y _ _ _ _ _ ι La _ A E U z β hE hβ a w ha hw hw0

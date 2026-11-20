@@ -9,31 +9,27 @@ open AlgebraicGeometry CategoryTheory Limits GlobalTheory.CompanionTheory.Ar Glo
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 /- English proof (translation)
-Take `⟨U, hU, hp, -⟩` from `exists_isAffineOpen_mem_and_subset (X := X) (x := p.1) (U := ⊤) trivial`. Establish `hg : genPt ξ ∈ U` using `p.2.mem_open U.2 hp`. Set `e` to `RegAtRing.stalkEquiv h p`. Set `P' : Ideal (X.presheaf.stalk p.1)` to `P.comap (e : X.presheaf.stalk p.1 →+* regAt ξ p)`. Establish `hP' : P'.IsPrime` using `Ideal.comap_isPrime _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `letI algP := TopCat.Presheaf.algebra_section_stalk X.presheaf (⟨p.1, hp⟩ : U)`. Establish `localization₂` using `hU.isLocalization_stalk ⟨p.1, hp⟩`. Set `𝔮 : Ideal Γ(X, U)` to `P'.comap (algebraMap Γ(X, U) (X.presheaf.stalk p.1))`. Establish `h𝔮 : 𝔮.IsPrime` using `Ideal.comap_isPrime _ _`. Set `y : PrimeSpectrum Γ(X, U)` to `⟨𝔮, h𝔮⟩`.
+Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hyU : hU.fromSpec y ∈ U`. Establish `: hU.fromSpec y ∈ Set.range hU.fromSpec` using `⟨y, rfl⟩`. Rewrite `this` using `[hU.range_fromSpec]`. Then use the resulting hypothesis. Establish `hsp : hU.fromSpec y ⤳ p.1`. Establish `hle : y ≤ hU.primeIdealOf ⟨p.1, hp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `𝔮 ≤ (hU.primeIdealOf ⟨p.1, hp⟩).asIdeal`. Rewrite using `[← IsLocalization.AtPrime.comap_maximalIdeal (X.presheaf.stalk p.1) (hU.primeIdealOf ⟨p.1, hp⟩).asIdeal]`. Conclude with `Ideal.comap_mono (IsLocalRing.le_maximalIdeal hP'.ne_top)`. Use `((PrimeSpectrum.le_iff_specializes _ _).1 hle).map hU.fromSpec.continuous` as an intermediate fact. Rewrite `this` using `[hU.fromSpec_primeIdealOf]`. Then use the resulting hypothesis.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hgy : genPt ξ ⤳ hU.fromSpec y`. Establish `hle : hU.primeIdealOf ⟨genPt ξ, hg⟩ ≤ y`. Express the relevant statement in the definitionally equal form `(hU.primeIdealOf ⟨genPt ξ, hg⟩).asIdeal ≤ 𝔮`. Introduce `r hr`. Use `letI algG := TopCat.Presheaf.algebra_section_stalk X.presheaf (⟨genPt ξ, hg⟩ : U)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `locG` using `hU.isLocalization_stalk ⟨genPt ξ, hg⟩`. Establish `hnu : ¬ IsUnit (algebraMap Γ(X, U) (X.presheaf.stalk (genPt ξ)) r)`. Rewrite `hr` using `[← IsLocalization.AtPrime.comap_maximalIdeal (X.presheaf.stalk (genPt ξ)) (hU.primeIdealOf ⟨genPt ξ, hg⟩).asIdeal]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 hr`. Establish `hz : (Scheme.stalkClosedPointTo ξ).hom (X.presheaf.germ U (genPt ξ) hg r) = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hne`. Take `⟨w, hw⟩` from `h.bij.2 ((Scheme.stalkClosedPointTo ξ).hom (X.presheaf.germ U (genPt ξ) hg r))⁻¹`. Apply `hnu` to reduce the goal to its premises. Use `IsUnit.of_mul_eq_one w (h.bij.1 ?_)` and prove the remaining obligations. Use `erw [map_mul, hw, map_one]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_inv_cancel₀ hne`. Establish `hz' : X.presheaf.germ U p.1 hp r = 0`. Apply `h.inj p` to reduce the goal to its premises. Rewrite using `[RegAtRing.genMap_germ p U hp hg, hz, map_zero]`. Express the relevant statement in the definitionally equal form `algebraMap Γ(X, U) (X.presheaf.stalk p.1) r ∈ P'`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `erw [hz']`. Conclude with `P'.zero_mem`. Use `((PrimeSpectrum.le_iff_specializes _ _).1 hle).map hU.fromSpec.continuous` as an intermediate fact. Rewrite `this` using `[hU.fromSpec_primeIdealOf]`. Then use the resulting hypothesis. Use `letI algY : Algebra Γ(X, U) (X.presheaf.stalk (hU.fromSpec y)) := TopCat.Presheaf.algebra_section_stalk X.presheaf (⟨hU.fromSpec y, hyU⟩ : U)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `locY : IsLocalization.AtPrime (X.presheaf.stalk (hU.fromSpec y)) y.asIdeal` using `hU.isLocalization_stalk' y hyU`. Establish `locY' : IsLocalization.AtPrime (X.presheaf.stalk (hU.fromSpec y)) 𝔮` using `locY`. Use `⟨⟨hU.fromSpec y, hgy⟩, hsp, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : ringKrullDim (X.presheaf.stalk (hU.fromSpec y)) = (𝔮.height : WithBot ℕ∞)` using `IsLocalization.AtPrime.ringKrullDim_eq_height 𝔮 (X.presheaf.stalk (hU.fromSpec y))`. Establish `h2 : 𝔮.height = P'.height` using `IsLocalization.height_comap (hU.primeIdealOf ⟨p.1, hp⟩).asIdeal.primeCompl P'`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h3 : P'.height = P.height` using `RingEquiv.height_comap e P`. Express the relevant statement in the definitionally equal form `ringKrullDim (X.presheaf.stalk (hU.fromSpec y)) = _`. Rewrite using `[h1, h2, h3]`. Introduce and unpack `_ ⟨x, rfl⟩`. Take `⟨⟨r, t⟩, he⟩` from `IsLocalization.surj y.asIdeal.primeCompl (S := X.presheaf.stalk (hU.fromSpec y)) x`.
-
-Establish `he' : x * (X.presheaf.germ U (hU.fromSpec y) hyU).hom t.1 = (X.presheaf.germ U (hU.fromSpec y) hyU).hom r` using `he`. Establish `hgt` using `RegAtMono.genMap_germ_eq ξ p ⟨hU.fromSpec y, hgy⟩ hsp U hp hyU`. Use `⟨e ((X.presheaf.germ U p.1 hp).hom t.1), e ((X.presheaf.germ U p.1 hp).hom r), ?_, ?_⟩` and prove the remaining obligations. Conclude with `t.2`. Express the relevant statement in the definitionally equal form `genMap ξ ⟨hU.fromSpec y, hgy⟩ x * genMap ξ p ((X.presheaf.germ U p.1 hp).hom t.1) = genMap ξ p ((X.presheaf.germ U p.1 hp).hom r)`.
-
-Rewrite using `[← hgt, ← hgt, ← map_mul]`. Conclude with `congrArg _ he'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_point_of_prime {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
     (h : IsCptGen ξ) (p : Cpt ξ) (P : Ideal (regAt ξ p)) (hP : P.IsPrime) :
@@ -116,13 +112,13 @@ theorem exists_point_of_prime {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec
       exact congrArg _ he'
 
 /- English proof (translation)
-Introduce `X Ω _ ξ _ h hn p a ha`. Take `⟨hfr, hno, -⟩` from `RegAtRing.regAt_ring X Ω ξ h p`. Establish `: IsFractionRing (regAt ξ p) Ω` using `hfr`. Establish `: IsNoetherianRing (regAt ξ p)` using `hno inferInstance`. Establish `: IsIntegrallyClosed (regAt ξ p)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[isIntegrallyClosed_iff Ω]`. Introduce `x hx`. Conclude with `⟨⟨x, hn p x hx⟩, rfl⟩`. Take `⟨t, d, hd, rfl⟩` from `IsFractionRing.div_surjective (A := regAt ξ p) a`. Establish `hd0 : d ≠ 0` using `nonZeroDivisors.ne_zero hd`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hd1 : algebraMap (regAt ξ p) Ω d ≠ 0`. Simplify using `using hd0`. Take `⟨b, hb⟩` from `mem_range_of_integral_at_heightOne_over (regAt ξ p) Ω d (algebraMap (regAt ξ p) Ω t / algebraMap (regAt ξ p) Ω d) hd0 ⟨1, t, by field_simp⟩ (fun P hP h1 _ => by`. Take `⟨q, hq, hdim, hiff⟩` from `exists_point_of_prime h p P hP`. Establish `hmem` using `ha q hq (by rw [hdim]; simp [h1])`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨s, u, hs, hsu⟩` from `hiff _ hmem`. Conclude with `⟨u, s, hs, by rw [mul_comm]; exact hsu.symm⟩)`. Rewrite using `[← hb]`. Conclude with `b.2`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_regAt_of_codim_one : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X)
     [IsLocallyNoetherian X], IsCptGen ξ → NormalCpt ξ → ∀ (p : Cpt ξ) (a : Ω),

@@ -10,17 +10,15 @@ open IsDedekindDomain NumberField GlobalTheory.ChiGrid GlobalTheory.FunObj Globa
 namespace GlobalTheory.DepthUnf
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 /- English proof (translation)
-Introduce `_ _`. Take `⟨CF0, h4⟩` from `GlobalTheory.T.flatTensor_depth_conditions_away_from_twist`. Use `⟨CF0, fun CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C0, h4⟩` from `h4 CF hCF`. Use `⟨C0, fun ε C hC => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x₀, h4⟩` from `h4 ε C hC`. Use `⟨x₀, fun D large₂ he hx Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hi hsc hf => ?_⟩` and prove the remaining obligations. Establish `H` using `h4 D large₂ he hx Γ Pl0 T A Ks R F hS ch hi hsc hf`. Establish `hL : R.toLevCh.Is A.μ0` using `hS.core.lev`. Establish `hde` using `GlobalTheory.RowClaim.Test.pde_ne_q hS`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `t Φ β hβ`. Establish `hc : ∀ P ∈ R.toLevCh.Q t, ((Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal` using `GlobalTheory.RowClaim.Test.guard hS t`. Take `⟨K, hK, hval, hdep⟩` from `H t Φ β hβ`. Take `⟨τ, e, he, hexp⟩` from `GridChoice.sumOK_ex hL ch.S.toGridChoice t Φ hde hc β hβ`. Take `⟨τK, hτK⟩` from `GlobalTheory.T.exists_cosetIndicatorExpansion_of_depthPeriodic hL ch.S.toGridChoice t Φ β e τ K hK he hexp (hdep e he)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨τm, hτm⟩` from `hτK.exists_expDepth`. Use `⟨⟨τm, hτm⟩, fun w l hl hlw haw => ?_⟩` and prove the remaining obligations. Establish `hk : 0 < expDepth ch.S.toGridChoice t Φ β` using `hτm.1`. Take `⟨e', he', hexp', hdk⟩` from `GlobalTheory.T.depthPeriodic_of_cosetIndicatorExpansion _ t Φ β _ τm hτm`. Establish `hg` using `GlobalTheory.T.flatProductDepthPeriodic_gcd _ t Φ β e' _ _ hdk (hdep e' he')`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨τg, hτg⟩` from `GlobalTheory.T.exists_cosetIndicatorExpansion_of_depthPeriodic hL _ t Φ β e' τm _ (Nat.gcd_pos_of_pos_left _ hk) he' hexp' hg`. Establish `hle : expDepth ch.S.toGridChoice t Φ β ≤ Nat.gcd (expDepth ch.S.toGridChoice t Φ β) K` using `Nat.sInf_le ⟨τg, hτg⟩`. Establish `heq` using `le_antisymm (Nat.le_of_dvd hk (Nat.gcd_dvd_left _ _)) hle`. Establish `hdvd : expDepth ch.S.toGridChoice t Φ β ∣ K` using `heq ▸ Nat.gcd_dvd_right _ K`. Use `haveI := Fact.mk hl`.
-
-Conclude with `(padicValNat_dvd_iff_le hK.ne').1 ((pow_padicValNat_dvd).trans hdvd) |>.trans (hval w l hl hlw haw)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem depthK_of_hypotheses_alt : _root_.GlobalTheory.FunPr.ThetaLocalInputs → SumOKK → DepthK := by
   intro _ _
@@ -57,7 +55,7 @@ section
 open GlobalTheory.SumSize GlobalTheory.RowClaim
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.DepthUnf.depthK_of_hypotheses_alt | exact _root_.GlobalTheory.DepthUnf.depthK_of_hypotheses_alt | (intros; apply _root_.GlobalTheory.DepthUnf.depthK_of_hypotheses_alt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.depthK_of_sumOKK : _root_.GlobalTheory.FunPr.ThetaLocalInputs → SumOKK → DepthK := by
   first | exact @_root_.GlobalTheory.DepthUnf.depthK_of_hypotheses_alt | exact _root_.GlobalTheory.DepthUnf.depthK_of_hypotheses_alt | (intros; apply _root_.GlobalTheory.DepthUnf.depthK_of_hypotheses_alt <;> assumption)

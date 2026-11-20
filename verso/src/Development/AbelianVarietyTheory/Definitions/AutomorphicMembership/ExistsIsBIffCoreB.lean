@@ -115,12 +115,12 @@ def ForVol (w : ColW B f T) (P : w.Lt → Prop) : Prop :=
 def HasB : WP := fun K _ _ _ w => ForVol w fun Z => Nonempty (CoreB K w Z)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨B, f, T, w, Z, b, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem CoreB.isB {K : Ctx} {w : ColW B f T} {Z : w.Lt} (b : CoreB K w Z) : IsB K (w.D Z) b.obj := ⟨B, f, T, w, Z, b, rfl⟩
 
 /- English proof (translation)
-Take `⟨B, f, T, w, Z, b, e⟩` from `hD`. Consider the cases of `e`. Conclude with `h B f T w Z b`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem IsB.ind {K : Ctx} {R : ∀ D : D7, Obj2 D → Prop}
     (h : ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (Z : w.Lt) (b : CoreB K w Z), R (w.D Z) b.obj)
@@ -130,7 +130,7 @@ theorem IsB.ind {K : Ctx} {R : ∀ D : D7, Obj2 D → Prop}
   exact h B f T w Z b
 
 /- English proof (translation)
-The claim follows from `IsB.ind (R := fun D O' => ∀ O : Obj D, ofObj O = O' → R D O) h hD O rfl`.
+A detailed English derivation is pending.
 -/
 theorem IsB.ind_obj {K : Ctx} {R : ∀ D : D7, Obj D → Prop}
     (h : ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (Z : w.Lt) (b : CoreB K w Z) (O : Obj (w.D Z)),
@@ -139,7 +139,7 @@ theorem IsB.ind_obj {K : Ctx} {R : ∀ D : D7, Obj D → Prop}
   IsB.ind (R := fun D O' => ∀ O : Obj D, ofObj O = O' → R D O) h hD O rfl
 
 /- English proof (translation)
-The claim follows from `IsB.ind (R := fun D O' => ∀ Y : Lay D, layObj Y = O' → R D Y) h hD Y rfl`.
+A detailed English derivation is pending.
 -/
 theorem IsB.ind_lay {K : Ctx} {R : ∀ D : D7, Lay D → Prop}
     (h : ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (Z : w.Lt) (b : CoreB K w Z) (Y : Lay (w.D Z)),
@@ -148,43 +148,43 @@ theorem IsB.ind_lay {K : Ctx} {R : ∀ D : D7, Lay D → Prop}
   IsB.ind (R := fun D O' => ∀ Y : Lay D, layObj Y = O' → R D Y) h hD Y rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨_, _, B, f, T, w, Z, b, _⟩ => ⟨B, f, T, w, Z, ⟨b⟩⟩, fun ⟨_, _, _, _, _, ⟨b⟩⟩ => ⟨_, _, b.isB⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_isB_iff_coreB (K : Ctx) : (∃ (D : D7) (O : Obj2 D), IsB K D O) ↔
     ∃ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (Z : w.Lt), Nonempty (CoreB K w Z) :=
   ⟨fun ⟨_, _, B, f, T, w, Z, b, _⟩ => ⟨B, f, T, w, Z, ⟨b⟩⟩, fun ⟨_, _, _, _, _, ⟨b⟩⟩ => ⟨_, _, b.isB⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨b.pin⟩, b.untw⟩`.
+Supply the required witnesses or components.
 -/
 theorem CoreB.pinU {K : Ctx} {w : ColW B f T} {Z : w.Lt} (b : CoreB K w Z) : PinU K B f T w := ⟨⟨b.pin⟩, b.untw⟩
 
 /- English proof (translation)
-The claim follows from `b.mu.off v (Set.notMem_empty v)`.
+A detailed English derivation is pending.
 -/
 theorem CoreB.muAt_eq {K : Ctx} {w : ColW B f T} {Z : w.Lt} (b : CoreB K w Z) (v : (w.D Z).what₂.places.Pl) :
     (w.D Z).what₂.muAt v = (w.D Z).what₂.mu0 := b.mu.off v (Set.notMem_empty v)
 
 /- English proof (translation)
-Take `⟨sp, hT, hY, hA, hV, hz, h, -⟩` from `b.isOver`. Conclude with `⟨sp, hT, hY, hA, hV, hz, w.st Z, h, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem CoreB.over {K : Ctx} {w : ColW B f T} {Z : w.Lt} (b : CoreB K w Z) : Over (w.D Z) K.P K.Lv := by
   obtain ⟨sp, hT, hY, hA, hV, hz, h, -⟩ := b.isOver
   exact ⟨sp, hT, hY, hA, hV, hz, w.st Z, h, rfl⟩
 
 /- English proof (translation)
-The claim follows from `b.t.full.1.vol`.
+A detailed English derivation is pending.
 -/
 theorem CoreB.volTied {K : Ctx} {w : ColW B f T} {Z : w.Lt} (b : CoreB K w Z) : Formalism.L2.Herm.VolumeCompatible (w.D Z) := b.t.full.1.vol
 
 /- English proof (translation)
-Introduce `vol cd hp ht` and use `let ⟨Z, a, b, p⟩ := h vol cd hp ht; ⟨Z, a, b, hPQ Z p⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ForVol.mono {w : ColW B f T} {P Q : w.Lt → Prop} (h : ForVol w P) (hPQ : ∀ Z, P Z → Q Z) : ForVol w Q :=
   fun vol cd hp ht => let ⟨Z, a, b, p⟩ := h vol cd hp ht; ⟨Z, a, b, hPQ Z p⟩
 
 /- English proof (translation)
-The claim follows from `ForVol.mono h fun _ ⟨b⟩ => ⟨_, b.isB⟩`.
+A detailed English derivation is pending.
 -/
 theorem HasB.forVol_isB {K : Ctx} {w : ColW B f T} (h : HasB K B f T w) : ForVol w fun Z => ∃ O, IsB K (w.D Z) O :=
   ForVol.mono h fun _ ⟨b⟩ => ⟨_, b.isB⟩
@@ -223,16 +223,14 @@ Both sides reduce to the same expression.
 theorem CoreB.layObj_lay (b : CoreB K w Z) (hv : StandardLattice.VolumeEqMass₂ (w.D Z)) : layObj (b.lay hv) = b.obj := rfl
 
 /- English proof (translation)
-The claim follows from `b.isB`.
+A detailed English derivation is pending.
 -/
 theorem CoreB.isB_lay (b : CoreB K w Z) (hv : StandardLattice.VolumeEqMass₂ (w.D Z)) : IsB K (w.D Z) (layObj (b.lay hv)) := b.isB
 
 /- English proof (translation)
-Introduce `μ`. Establish `hμ : w.I.xi μ ∈ T.set f` using `b.mu.range ▸ Set.mem_range_self μ`. Break down `hμ with (h | h | h) | ⟨v, h⟩` into its components or cases. Conclude with `.inl (b.mu.inj (h.trans b.mu.mu0.symm))`. Conclude with `.inr (.inl (b.mu.inj (h.trans b.mu.star.symm)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `.inr (.inr (.inl (b.mu.inj (h.trans b.mu.star'.symm))))`. Unfold `TwDat.xiTw at h`. Rewrite `h` using `[b.mu.supp v (Set.notMem_empty v), mul_one]`. Use `split_ifs at h`. Conclude with `.inr (.inr (.inl (b.mu.inj (h.symm.trans b.mu.star'.symm))))`.
-
-Conclude with `.inr (.inl (b.mu.inj (h.symm.trans b.mu.star.symm)))`.
+A detailed English derivation is pending.
 -/
 theorem CoreB.tupUsed (b : CoreB K w Z) : DQ.TupUsedAt (w.D Z) := by
   intro μ
@@ -248,7 +246,7 @@ theorem CoreB.tupUsed (b : CoreB K w Z) : DQ.TupUsedAt (w.D Z) := by
     · exact .inr (.inl (b.mu.inj (h.symm.trans b.mu.star.symm)))
 
 /- English proof (translation)
-The claim follows from `LayOfCore.ev_imp TamePow.tame_of_pow fun _ hK _ _ _ w Z b => ⟨b.z.s.del, b.z.etaF, fun v hv j h1 h2 => by have a := b.sd.row.untw v hv j h1 h2 have c := b.sd.row.untw ((w.D Z).what₂.places.conj v) (b.muAt_eq _) j h1 h2 unfold Rows.Data.Aj rw [hv, a.1, a.2, c.1] rfl, Set.finite_em …`.
+A detailed English derivation is pending.
 -/
 theorem ev_recOK : Ev fun K => ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (Z : w.Lt), CoreB K w Z →
     RecOK K.s K.C K.cD (w.D Z) :=
@@ -263,9 +261,9 @@ theorem ev_recOK : Ev fun K => ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w 
       hK (w.st Z) b.isOver b.z.n.chiT, b.col.mink, b.col.atT⟩
 
 /- English proof (translation)
-Use `⟨b.gy.led L hs hW hV X hX he hk hf, fun u v hg => ?_, fun u v hg => NP_full (w.D Z) L X b.Gy K.C.GK b.t.cmp b.gy.vram u v hg⟩` and prove the remaining obligations. Establish `hC : K.C.cX.Ce = 1`. Use `K.std.1` as an intermediate fact. Unfold `FC.Fixed at this`. The claim follows by propositional logic.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. The claim follows by propositional logic.
 
-Rewrite using `[((b.z.g Z.W Z.V Z.S Z.N).1 u v hg).2, he, hC, hs]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem CoreB.led (b : CoreB K w Z) (L : SizeData₂ (w.D Z)) (hs : L.sc = K.s) (hW : WtEq L K.a K.b) (hV : Val K.C K.cD K.ch L)
     (X : G.Inst (w.D Z) L) (hX : CanonInst X) (he : G.EpDef X K.C.cX.Ce) (hk : G.KapIDef X K.C.GK)
@@ -287,19 +285,19 @@ theorem CoreB.led (b : CoreB K w Z) (L : SizeData₂ (w.D Z)) (hs : L.sc = K.s) 
 end Layers
 
 /- English proof (translation)
-The claim follows from `IsB.ind (R := fun D _ => ∀ v, D.what₂.muAt v = D.what₂.mu0) (fun _ _ _ _ _ b => b.muAt_eq) h v`.
+A detailed English derivation is pending.
 -/
 example {K : Ctx} {D : D7} {O : Obj2 D} (h : IsB K D O) (v : D.what₂.places.Pl) : D.what₂.muAt v = D.what₂.mu0 :=
   IsB.ind (R := fun D _ => ∀ v, D.what₂.muAt v = D.what₂.mu0) (fun _ _ _ _ _ b => b.muAt_eq) h v
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 example {C : Cols B} (Z : TC.Later B C) (N : ∀ u, Submodule (𝓞 B.LL) (Z.V.div.Nu u).V) (h : B.Word → ℝ) :
     (setDivZ Z N h).G = Z.G ∧ (setDivZ Z N h).V.div.h = h := ⟨rfl, rfl⟩
 
 /- English proof (translation)
-Introduce `h` and use `let ⟨_, _, _, p⟩ := h vol cd hp ht; p`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (w : ColW B f T) (vol : HSpace B.host.E → ℝ) (cd : CDHaar) (hp : ∀ W, 0 < vol W)
     (ht : ∀ Z : w.Lt, Z.G.vol = vol → Z.G.cd = cd → Formalism.L2.Herm.VolumeCompatible (w.D Z)) : ¬ ForVol w fun _ => False :=

@@ -1,7 +1,7 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `t`. Rewrite using `[Complex.exp_eq_one_iff]`. Use `exists_congr fun n => ?_` and prove the remaining obligations. Rewrite using `[mul_comm ((n : ℤ) : ℂ), mul_right_inj' Complex.two_pi_I_ne_zero]`. Conclude with `Iff.rfl` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qj15.ep_eq_one_iff :
     ∀ (t : ℝ),

@@ -8,15 +8,15 @@ namespace GlobalTheory.SchurPolar
 variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar}
 
 /- English proof (translation)
-Introduce `v v'`. Take `⟨ia, ea⟩` from `ha v v'`. Take `⟨ib, eb⟩` from `hb v v'`. Take `⟨is, es⟩` from `hs v v'`. Take `⟨it, et⟩` from `ht v v'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e : (fun g => star (T v g) * T' v' g) = fun g => (1 / 2 : ℂ) * ((star ((T + T') v g) * (T + T') v' g - star (T v g) * T v' g - star (T' v g) * T' v' g) - Complex.I * (star ((T + Complex.I • T') v g) * (T + Complex.I • T') v' g - star (T v g) * T v' g - star (T' v g) * T' v' g))`. Use function extensionality and compare the values at `g`. Use `show _ = (1 / 2 : ℂ) * ((star (T v g + T' v g) * (T v' g + T' v' g) - star (T v g) * T v' g - star (T' v g) * T' v' g) - Complex.I * (star (T v g + Complex.I * T' v g) * (T v' g + Complex.I * T' v' g) - star (T v g) * T v' g - star (T' v g) * T' v' g))`. Establish `hI : star Complex.I = - Complex.I` using `by simp`. Rewrite using `[star_add, star_add, star_mul, hI]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `Complex.I_mul_I`. Take the linear combination `(1 / 2 : ℂ) * (star (T v g) * T' v' g - star (T' v g) * T v' g - Complex.I * star (T' v g) * T' v' g) * h2`. Establish `i1 : Integrable (fun g => star ((T + T') v g) * (T + T') v' g - star (T v g) * T v' g) (μ.restrict 𝓕)` using `is.sub ia`. Establish `i2 : Integrable (fun g => star ((T + T') v g) * (T + T') v' g - star (T v g) * T v' g - star (T' v g) * T' v' g) (μ.restrict 𝓕)` using `i1.sub ib`. Establish `i3 : Integrable (fun g => star ((T + Complex.I • T') v g) * (T + Complex.I • T') v' g - star (T v g) * T v' g) (μ.restrict 𝓕)` using `it.sub ia`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i4 : Integrable (fun g => star ((T + Complex.I • T') v g) * (T + Complex.I • T') v' g - star (T v g) * T v' g - star (T' v g) * T' v' g) (μ.restrict 𝓕)` using `i3.sub ib`. Establish `i5` using `i4.const_mul Complex.I`. Rewrite using `[e]`. Use `⟨(i2.sub i5).const_mul _, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_const_mul, integral_sub i2 i5, integral_const_mul, integral_sub i1 ib, integral_sub i3 ib, integral_sub is ia, integral_sub it ia, ea, eb, es, et]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_of_diag (M : DSModel V S) (μ : Measure (GA D V)) (𝓕 : Set (GA D V)) (T T' : MMap M)
     {a b s t : ℂ} (ha : IsMultIP M μ 𝓕 T T a) (hb : IsMultIP M μ 𝓕 T' T' b)
@@ -57,15 +57,15 @@ theorem exists_of_diag (M : DSModel V S) (μ : Measure (GA D V)) (𝓕 : Set (GA
   ring
 
 /- English proof (translation)
-Introduce `D V S M μ 𝓕 HM U h x y`. Establish `hip` using `h.2.2`. Establish `hd : ∀ z : HM.H, ∃ c, IsMultIP M μ 𝓕 (HM.e z) (HM.e z) c`. Introduce `z`. Distinguish the cases in `hz : z = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `⟨0, fun v v' => ?_⟩` and prove the remaining obligations. Substitute `hz` using the available equality. Simplify using the standard rewrite rules. Assume the negation of the conclusion as `hn`. Use `hip z z` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Unfold `ipM at this`. Rewrite `this` using `[dif_neg hn]`. Conclude with `hz (inner_self_eq_zero.1 this)`. Rewrite using `[hip]`. Apply `ipM_spec` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `hd x`. Take `⟨b, hb⟩` from `hd y`. Take `⟨s, hs⟩` from `hd (x + y)`. Take `⟨t, ht⟩` from `hd (x + Complex.I • y)`. Rewrite `hs`, `ht` using `[map_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ht` using `[map_smul]`. Conclude with `⟨_, exists_of_diag M μ 𝓕 _ _ ha hb hs ht⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isMultiplicityInner_inner : ∀ {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (μ : Measure (GA D V)) (𝓕 : Set (GA D V)) (HM : HMod (MMap M)) (U : Submodule ℂ (MMap M)), HM.Is U (ipM M μ 𝓕) → ∀ x y : HM.H, IsMultIP M μ 𝓕 (HM.e x) (HM.e y) (inner ℂ x y) := by
   intro D V S M μ 𝓕 HM U h x y

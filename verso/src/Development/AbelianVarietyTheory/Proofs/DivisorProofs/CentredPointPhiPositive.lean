@@ -22,25 +22,23 @@ noncomputable section
 namespace GlobalTheory.DegVal
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `hν`. Use `haveI := GlobalTheory.T.charZero_stalk_compactFlagSpaceOverComponent TF Z y`. Use `haveI : IsDomain ((Y₀ TF.X Z).presheaf.stalk y) := by`. Use `@NoZeroDivisors.to_isDomain _ _ inferInstance ⟨fun {a b} hab => ?_⟩` and prove the remaining obligations. Use `congrArg ν hab` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[map_mul, map_zero, mul_eq_zero]`. Conclude with `this.imp (h3 a) (h3 b)`. Take `⟨T, g, ρ, hρ, hinj, hloc, hval⟩` from `GlobalTheory.T.exists_completeDVR_reading_centredValuation _ ν h1 h2 h3`. Establish `hz` using `GlobalTheory.T.traitGenericPoint_mem_compactFlagSpaceOpenPart TF Z y T.Fr ((algebraMap T.V T.Fr).comp g) ((IsFractionRing.injective T.V T.Fr).comp hinj)`. Take `⟨io, hP'⟩` from `GlobalTheory.T.exists_framedPoint_of_compactFlagSpaceOpenPart TF.X T.Fr _ hz`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `letI := io.toAlgebra`. Take `⟨P, hPz⟩` from `hP'`. Set `w : Sp T.V ⟶ TF.Y.X` to `Spec.map (CommRingCat.ofHom g) ≫ (Y₀ TF.X Z).fromSpecStalk y ≫ inc₀ TF.X Z ≫ TF.X.π`. Establish `hw : spMap (algebraMap T.V T.Fr) ≫ w = TF.X.ptY P ≫ TF.X.π`. Rewrite using `[hPz]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [w, spMap, CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc]`. Take `⟨T', i, j, r, y', G, m3, Pu, t', m1, m2, hr, hv, hij, hjloc, hpt⟩` from `GlobalTheory.T.exists_extension_dvr_flag_lift hP TF T io P w hw`. Take `⟨φT, hφT⟩` from `GlobalTheory.SlopeRec.exists_hasPhi y' G t' m1 m2 Pu`. Establish `hcl : ∀ {A B : Type} [CommRing A] [IsLocalRing A] [CommRing B] [IsLocalRing B] (f : A →+* B), (∀ a ∈ IsLocalRing.maximalIdeal A, f a ∈ IsLocalRing.maximalIdeal B) → (Spec.map (CommRingCat.ofHom f)) (IsLocalRing.closedPoint B) = IsLocalRing.closedPoint A`. Introduce `A B _ _ _ _ f hf`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `: IsLocalHom f` using `⟨fun a ha => by`. Assume the negation of the conclusion as `h`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 (hf a ((IsLocalRing.mem_maximalIdeal _).2 h)) ha⟩`. Conclude with `IsLocalRing.comap_closedPoint f`. Establish `hpos : 0 < φT`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `GlobalTheory.T.slope_phi_group_extension_dvr hP T' _ y' φT hφT G t' m1 m2 fun hab => hy ?_` and prove the remaining obligations. Establish `h` using `GlobalTheory.T.mem_modelInterior_of_mem_abelianLocus_pullback TF.Y _ _ G m3 _ hab`. Establish `e1 : (spMap j) (IsLocalRing.closedPoint T'.V) = IsLocalRing.closedPoint T.V` using `hcl j hjloc`. Establish `e2 : (Spec.map (CommRingCat.ofHom g)) (IsLocalRing.closedPoint T.V) = IsLocalRing.closedPoint ((Y₀ TF.X Z).presheaf.stalk y)` using `hcl g hloc`. Express the relevant statement in the definitionally equal form `TF.X.π (inc₀ TF.X Z ((Y₀ TF.X Z).fromSpecStalk y ((Spec.map (CommRingCat.ofHom g)) ((spMap j) (IsLocalRing.closedPoint T'.V))))) ∈ _ at h`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite `h` using `[e1, e2, Scheme.fromSpecStalk_closedPoint]`. Conclude with `h`. Use `⟨(ρ / r) * φT, mul_pos (div_pos hρ (Nat.cast_pos.2 hr)) hpos, T', i.comp io, y', j.comp g, ρ / r, φT, div_pos hρ (Nat.cast_pos.2 hr), hφT, rfl, ?_, ?_⟩` and prove the remaining obligations. Use `letI := (i.comp io).toAlgebra`. Rewrite using `[hpt, hPz, ← Category.assoc]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Rewrite using `[← RingHom.comp_assoc, hij, RingHom.comp_assoc]`. Introduce `a ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[hval a ha]`. Establish `e : algebraMap T'.V T'.Fr (j (g a)) = i (algebraMap T.V T.Fr (g a))` using `(RingHom.congr_fun hij (g a)).symm`. Rewrite using `[RingHom.comp_apply, e, hv]`. Establish `hr' : (r : ℝ) ≠ 0` using `by exact_mod_cast hr.ne'`. Use `push_cast`.
-
-Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem core (hP : Hypotheses2) {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} (TF : TorFlag Xo c) (Z : Comp Xo c)
@@ -107,7 +105,7 @@ end GlobalTheory.DegVal
 namespace GlobalTheory.DegVal
 
 /- English proof (translation)
-Introduce `hP hD _ _`. Use `Formalism.MainNotions.Closed.imp hD fun Fm CH _ h => ?_` and prove the remaining obligations. Take `⟨C, hC, x0, h⟩` from `h`. Conclude with `⟨C, hC, x0, fun x hx hle ι p hp i _ Y _ Z TF y hy ν hν => core hP TF Z y hy ν hν⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_phiAt_pos : Hypotheses2 → DeepGood → Size → FlatDeg → Covers fun Fm x _ ι p i Y PP _ => ∀ (Z : Comp Y.d.Xo₂ Y.d.c₂) (TF : TorFlag Y.d.Xo₂ Y.d.c₂), ∀ y ∈ (U₀ TF.X Z : Set (Y₀ TF.X Z))ᶜ, ∀ ν, Centred y ν → ∃ φ : ℝ, 0 < φ ∧ PhiAt TF.X Z y ν φ := by
   intro hP hD _ _

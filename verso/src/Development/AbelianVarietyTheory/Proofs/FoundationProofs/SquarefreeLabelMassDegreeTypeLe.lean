@@ -8,13 +8,13 @@ namespace GlobalTheory.BadShare
 
 open Polynomial Classical UniqueFactorizationMonoid in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.BadShare.mass`. Establish `hsub : (_root_.GlobalTheory.BadShare.sqSet g N).filter (fun f => _root_.GlobalTheory.BadShare.degType g f = 0) ⊆ {1}`. Introduce `f hf`. Rewrite `hf` using `[Finset.mem_filter, _root_.GlobalTheory.BadShare.mem_sqSet]`. Take `⟨⟨hm, -, -, -⟩, h0⟩` from `hf`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Unfold `_root_.GlobalTheory.BadShare.degType at h0`. Rewrite `h0` using `[Multiset.map_eq_zero]`. Establish `ha` using `prod_normalizedFactors hm.ne_zero`. Rewrite `ha` using `[h0, Multiset.prod_zero]`. Rewrite using `[Finset.mem_singleton]`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `eq_of_monic_of_associated hm monic_one ha.symm`. Establish `hmain : ∑ f ∈ (_root_.GlobalTheory.BadShare.sqSet g N).filter (fun f => _root_.GlobalTheory.BadShare.degType g f = 0), ((_root_.GlobalTheory.BadShare.torusCard g f : ℕ) : ℝ)⁻¹ ≤ 1`. Combine the equalities or inequalities in the displayed calculation. Use `hmain using 2` and compare the differences between its conclusion and the goal. Use extensionality with `f`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 private theorem mass_degType_eq_zero_le_one (g : ℕ) [Fact g.Prime] (N : ℕ) :
     _root_.GlobalTheory.BadShare.mass g N (fun f => _root_.GlobalTheory.BadShare.degType g f = 0) ≤ 1 := by
@@ -42,19 +42,17 @@ private theorem mass_degType_eq_zero_le_one (g : ℕ) [Fact g.Prime] (N : ℕ) :
 
 open Polynomial Classical UniqueFactorizationMonoid in
 /- English proof (translation)
-Use `set S := (_root_.GlobalTheory.BadShare.sqSet g d).filter Irreducible with hS`. Establish `hX : (X : (ZMod g)[X]) ∉ S`. Simplify using `[hS, _root_.GlobalTheory.BadShare.mem_sqSet]`. Establish `hg : 1 < g` using `(Fact.out : g.Prime).one_lt`. Establish `hmem : ∀ P ∈ insert X S, P.Monic ∧ Irreducible P ∧ P ∣ (X ^ g ^ d - X : (ZMod g)[X])`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `P hP`. Break down `Finset.mem_insert.1 hP with rfl | hP` into its components or cases. Use `⟨monic_X, irreducible_X, ?_⟩` and prove the remaining obligations. Conclude with `dvd_sub (dvd_pow_self _ (by positivity)) dvd_rfl`. Rewrite `hP` using `[hS, Finset.mem_filter, _root_.GlobalTheory.BadShare.mem_sqSet]`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨hm, hdeg, -, -⟩, hirr⟩` from `hP`. Use `⟨hm, hirr, ?_⟩` and prove the remaining obligations. Use `(hirr.natDegree_dvd_iff_dvd_X_pow_card_pow_sub_X (n := d)).1 (by rw [hdeg])` as an intermediate fact. Simplify `this` using `[Nat.card_zmod]`. Establish `hdvd : ∏ P ∈ insert X S, P ∣ (X ^ g ^ d - X : (ZMod g)[X])`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Finset.prod_dvd_of_coprime` to reduce the goal to its premises. Introduce `P hP Q hQ hPQ`. Take `⟨hPm, hPi, -⟩` from `hmem P hP`. Take `⟨hQm, hQi, -⟩` from `hmem Q hQ`. Use `show IsCoprime P Q`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `(hPi.coprime_iff_not_dvd).2 fun h => hPQ ?_` and prove the remaining obligations. Conclude with `eq_of_monic_of_associated hPm hQm (hPi.associated_of_dvd hQi h)`. Introduce `P hP`. Conclude with `(hmem P hP).2.2`. Establish `hle` using `natDegree_le_of_dvd hdvd (FiniteField.X_pow_card_pow_sub_X_ne_zero _ hd.ne' hg)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hle` using `[FiniteField.X_pow_card_pow_sub_X_natDegree_eq _ hd.ne' hg, natDegree_prod_of_monic _ _ (fun P hP => (hmem P hP).1), Finset.sum_insert hX, natDegree_X]`. Establish `hsum : ∑ P ∈ S, P.natDegree = d * S.card`. Rewrite using `[Finset.sum_congr rfl (g := fun _ => d), Finset.sum_const, smul_eq_mul, mul_comm]`. Introduce `P hP`. Rewrite `hP` using `[hS, Finset.mem_filter, _root_.GlobalTheory.BadShare.mem_sqSet]`.
-
-Conclude with `hP.1.2.1`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem mul_card_irreducible_add_one_le_pow (g : ℕ) [Fact g.Prime] {d : ℕ} (hd : 0 < d) :
     d * ((_root_.GlobalTheory.BadShare.sqSet g d).filter Irreducible).card + 1 ≤ g ^ d := by
@@ -96,11 +94,11 @@ private theorem mul_card_irreducible_add_one_le_pow (g : ℕ) [Fact g.Prime] {d 
 
 open Polynomial Classical UniqueFactorizationMonoid in
 /- English proof (translation)
-Establish `hg : 1 < g` using `(Fact.out : g.Prime).one_lt`. Establish `h1` using `mul_card_irreducible_add_one_le_pow g hd`. Establish `hpow : 1 < g ^ d` using `Nat.one_lt_pow hd.ne' hg`. Rewrite using `[Finset.sum_congr rfl (g := fun _ => ((g ^ d - 1 : ℕ) : ℝ)⁻¹), Finset.sum_const, nsmul_eq_mul]`. Establish `hq : (0 : ℝ) < ((g ^ d - 1 : ℕ) : ℝ)` using `by exact_mod_cast (by omega : 0 < g ^ d - 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : ((_root_.GlobalTheory.BadShare.sqSet g d).filter Irreducible).card * d ≤ g ^ d - 1`. Rewrite using `[Nat.mul_comm]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← div_eq_mul_inv, div_le_iff₀ hq, inv_mul_eq_div, le_div_iff₀ (by positivity)]`. Conclude with `hc` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `P hP`. Rewrite `hP` using `[Finset.mem_filter, _root_.GlobalTheory.BadShare.mem_sqSet]`. Rewrite using `[_root_.GlobalTheory.BadShare.torusCard_irreducible hP.2, hP.1.2.1]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sum_inv_torusCard_irreducible_le (g : ℕ) [Fact g.Prime] {d : ℕ} (hd : 0 < d) :
     ∑ P ∈ (_root_.GlobalTheory.BadShare.sqSet g d).filter Irreducible,
@@ -121,37 +119,33 @@ private theorem sum_inv_torusCard_irreducible_le (g : ℕ) [Fact g.Prime] {d : �
 
 open Polynomial Classical UniqueFactorizationMonoid in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.BadShare.mass`. Use `set A := (_root_.GlobalTheory.BadShare.sqSet g N).filter (fun f => _root_.GlobalTheory.BadShare.degType g f = d ::ₘ ν) with hA`. Use `set B := (_root_.GlobalTheory.BadShare.sqSet g (N - d)).filter (fun f => _root_.GlobalTheory.BadShare.degType g f = ν) with hB`. Use `set S := (_root_.GlobalTheory.BadShare.sqSet g d).filter Irreducible with hS`. Establish `hbounds` using `_root_.GlobalTheory.BadShare.torusCard_bounds_mul g`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hcount : ∀ f ∈ A, ν.count d + 1 ≤ (S.filter (· ∣ f)).card`. Introduce `f hf`. Rewrite `hf` using `[hA, Finset.mem_filter, _root_.GlobalTheory.BadShare.mem_sqSet]`. Take `⟨⟨hm, -, hsq, hc0⟩, htype⟩` from `hf`. Establish `hnd` using `(squarefree_iff_nodup_normalizedFactors hm.ne_zero).1 hsq`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `hc : ((normalizedFactors f).filter (fun P => d = P.natDegree)).card = ν.count d + 1`. Rewrite using `[← Multiset.count_cons_self d ν, ← htype]`. Unfold `_root_.GlobalTheory.BadShare.degType`. Rewrite using `[Multiset.count_map]`. Rewrite using `[← hc, ← Multiset.toFinset_card_of_nodup (hnd.filter _)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `Finset.card_le_card` to reduce the goal to its premises. Introduce `P hP`. Rewrite `hP` using `[Multiset.mem_toFinset, Multiset.mem_filter]`. Take `⟨hP, hdeg⟩` from `hP`. Establish `hirr` using `irreducible_of_normalized_factor P hP`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdvd` using `dvd_of_mem_normalizedFactors hP`. Establish `hPm : P.Monic`. Rewrite using `[← normalize_normalized_factor P hP]`. Conclude with `monic_normalize hirr.ne_zero`. Rewrite using `[Finset.mem_filter, hS, Finset.mem_filter, _root_.GlobalTheory.BadShare.mem_sqSet]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨⟨hPm, hdeg.symm, hirr.squarefree, fun h0 => hc0 ?_⟩, hirr⟩, hdvd⟩` and prove the remaining obligations. Conclude with `X_dvd_iff.1 ((X_dvd_iff.2 h0).trans hdvd)`. Establish `step1 : ((ν.count d + 1 : ℕ) : ℝ) * ∑ f ∈ A, ((_root_.GlobalTheory.BadShare.torusCard g f : ℕ) : ℝ)⁻¹ ≤ ∑ f ∈ A, ∑ P ∈ S.filter (· ∣ f), ((_root_.GlobalTheory.BadShare.torusCard g f : ℕ) : ℝ)⁻¹`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun f hf => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Finset.sum_const, nsmul_eq_mul]`. Conclude with `mul_le_mul_of_nonneg_right (by exact_mod_cast hcount f hf) (by positivity)`. Establish `step2 : ∑ f ∈ A, ∑ P ∈ S.filter (· ∣ f), ((_root_.GlobalTheory.BadShare.torusCard g f : ℕ) : ℝ)⁻¹ = ∑ P ∈ S, ∑ f ∈ A.filter (P ∣ ·), ((_root_.GlobalTheory.BadShare.torusCard g f : ℕ) : ℝ)⁻¹` using `Finset.sum_comm' (by intro f P; simp only [Finset.mem_filter]; tauto)`. Establish `step3 : ∀ P ∈ S, ∑ f ∈ A.filter (P ∣ ·), ((_root_.GlobalTheory.BadShare.torusCard g f : ℕ) : ℝ)⁻¹ ≤ ((_root_.GlobalTheory.BadShare.torusCard g P : ℕ) : ℝ)⁻¹ * ∑ h ∈ B, ((_root_.GlobalTheory.BadShare.torusCard g h : ℕ) : ℝ)⁻¹`. Introduce `P hP`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hP` using `[hS, Finset.mem_filter, _root_.GlobalTheory.BadShare.mem_sqSet]`. Take `⟨⟨hPm, hPdeg, -, -⟩, hPirr⟩` from `hP`. Establish `hP0 : P ≠ 0` using `hPm.ne_zero`. Establish `hfac : ∀ f ∈ A.filter (P ∣ ·), P * (f /ₘ P) = f`. Introduce `f hf`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hf` using `[Finset.mem_filter]`. Use `modByMonic_add_div f P` as an intermediate fact. Rewrite `this` using `[(modByMonic_eq_zero_iff_dvd hPm).2 hf.2, zero_add]`. Conclude with `this`. Establish `hne : ∀ f ∈ A.filter (P ∣ ·), f /ₘ P ≠ 0`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `f hf h0`. Establish `h` using `hfac f hf`. Rewrite `h` using `[h0, mul_zero]`. Rewrite `hf` using `[Finset.mem_filter, hA, Finset.mem_filter, _root_.GlobalTheory.BadShare.mem_sqSet]`. Conclude with `hf.1.1.1.ne_zero h.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `himg : (A.filter (P ∣ ·)).image (· /ₘ P) ⊆ B`. Introduce `h hh`. Rewrite `hh` using `[Finset.mem_image]`. Take `⟨f, hf, rfl⟩` from `hh`. Use `show f /ₘ P ∈ B`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `hfac'` using `hfac f hf`. Establish `hh0` using `hne f hf`. Rewrite `hf` using `[Finset.mem_filter, hA, Finset.mem_filter, _root_.GlobalTheory.BadShare.mem_sqSet]`. Take `⟨⟨⟨hfm, hfdeg, hfsq, hfc⟩, htype⟩, -⟩` from `hf`. Rewrite `hfm`, `hfdeg`, `hfsq`, `hfc`, `htype` using `[← hfac']`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hB, Finset.mem_filter, _root_.GlobalTheory.BadShare.mem_sqSet]`. Use `⟨⟨hPm.of_mul_monic_left hfm, ?_, hfsq.of_mul_right, fun h0 => hfc ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite `hfdeg` using `[natDegree_mul hP0 hh0, hPdeg]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[mul_coeff_zero, h0, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `htype` using `[(hbounds.2.1 P _ hP0 hh0).1, (hbounds.2.2 P hPirr).1, hPdeg, Multiset.singleton_add]`. Conclude with `(Multiset.cons_inj_right d).1 htype`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun f hf => ?_` and prove the remaining obligations. Use `conv_lhs => rw [← hfac f hf]`.
-
-Rewrite using `[_root_.GlobalTheory.BadShare.torusCard_mul hP0 (hne f hf), Nat.cast_mul, mul_inv]`. Use `_ = ((_root_.GlobalTheory.BadShare.torusCard g P : ℕ) : ℝ)⁻¹ * ∑ h ∈ (A.filter (P ∣ ·)).image (· /ₘ P), ((_root_.GlobalTheory.BadShare.torusCard g h : ℕ) : ℝ)⁻¹ := by`. Rewrite using `[← Finset.mul_sum, Finset.sum_image]`. Introduce `f₁ hf₁ f₂ hf₂ h₁₂`. Combine the equalities or inequalities in the displayed calculation.
-
-Use `_ ≤ ((_root_.GlobalTheory.BadShare.torusCard g P : ℕ) : ℝ)⁻¹ * ∑ h ∈ B, ((_root_.GlobalTheory.BadShare.torusCard g h : ℕ) : ℝ)⁻¹ := mul_le_mul_of_nonneg_left (Finset.sum_le_sum_of_subset_of_nonneg himg (fun _ _ _ => by positivity)) (by positivity)`. Establish `hmain : ((ν.count d + 1 : ℕ) : ℝ) * ∑ f ∈ A, ((_root_.GlobalTheory.BadShare.torusCard g f : ℕ) : ℝ)⁻¹ ≤ (d : ℝ)⁻¹ * ∑ h ∈ B, ((_root_.GlobalTheory.BadShare.torusCard g h : ℕ) : ℝ)⁻¹` using `calc ((ν.count d + 1 : ℕ) : ℝ) * ∑ f ∈ A, ((_root_.GlobalTheory.BadShare.torusCard g f : ℕ) : ℝ)⁻¹ ≤ ∑ f ∈ A, ∑ P ∈ S.filter (· ∣ f), ((_root_.GlobalTheory.BadShare.torusCard g f : ℕ) : ℝ)⁻¹ := step1 _ = ∑ P ∈ S, ∑ f ∈ A.filter (P ∣ ·), ((_root_.GlobalTheory.BadShare.torusCard g …`. Apply the tactic sequence `convert hmain using 3 <;> (ext f; simp [hA, hB])`.
+A detailed English derivation is pending.
 -/
 private theorem count_succ_mul_mass_cons_le (g : ℕ) [Fact g.Prime] (N d : ℕ) (ν : Multiset ℕ)
     (hd : 0 < d) :
@@ -269,11 +263,11 @@ private theorem count_succ_mul_mass_cons_le (g : ℕ) [Fact g.Prime] (N d : ℕ)
 
 open Polynomial Classical UniqueFactorizationMonoid in
 /- English proof (translation)
-Establish `hsub : ν.toFinset ⊆ (d ::ₘ ν).toFinset` using `fun e he => by simp_all`. Rewrite using `[Finset.prod_subset hsub (fun e _ he => by`. Simplify `he)])]` using `[Multiset.count_eq_zero.2 (by simpa`. Establish `hterm : ∀ e ∈ (d ::ₘ ν).toFinset, (e : ℝ) ^ (d ::ₘ ν).count e * ((d ::ₘ ν).count e).factorial = ((e : ℝ) ^ ν.count e * (ν.count e).factorial) * (if e = d then (d : ℝ) * (ν.count d + 1) else 1)`. Introduce `e _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h : e = d`. Substitute `h` using the available equality. Simplify using `only [if_pos rfl, Multiset.count_cons_self, pow_succ, Nat.factorial_succ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `[Multiset.count_cons_of_ne h, h]`. Rewrite using `[Finset.prod_congr rfl hterm, Finset.prod_mul_distrib]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem prod_pow_count_mul_factorial_cons (d : ℕ) (ν : Multiset ℕ) :
     ∏ e ∈ (d ::ₘ ν).toFinset, ((e : ℝ) ^ (d ::ₘ ν).count e * ((d ::ₘ ν).count e).factorial) =
@@ -299,15 +293,13 @@ private theorem prod_pow_count_mul_factorial_cons (d : ℕ) (ν : Multiset ℕ) 
 open Polynomial Classical UniqueFactorizationMonoid in
 
 /- English proof (translation)
-Introduce `g _ N μ`. Proceed by induction on `μ using Multiset.induction_on generalizing N with`. Consider the case `empty => simpa using mass_degType_eq_zero_le_one g N`. Consider the case `cons d ν ih`. Break down `Nat.eq_zero_or_pos d with rfl | hd` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hle : _root_.GlobalTheory.BadShare.mass g N (fun f => _root_.GlobalTheory.BadShare.degType g f = 0 ::ₘ ν) ≤ _root_.GlobalTheory.BadShare.mass g N (fun _ => False)` using `_root_.GlobalTheory.BadShare.mass_mono fun f hf hμ => lt_irrefl 0 (((_root_.GlobalTheory.BadShare.torusCard_bounds_mul g).1 N f hf).2.2.2 0 (hμ ▸ Multiset.mem_cons_self 0 ν))`. Establish `h0 : _root_.GlobalTheory.BadShare.mass g N (fun _ => False) = 0`. Unfold `_root_.GlobalTheory.BadShare.mass`. Simplify using the standard rewrite rules. Use `hle.trans (h0.le.trans (inv_nonneg.2 (Finset.prod_nonneg fun _ _ => by positivity)))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key` using `count_succ_mul_mass_cons_le g N d ν hd`. Establish `hc : (0 : ℝ) < ((ν.count d + 1 : ℕ) : ℝ)` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[le_div_iff₀ hc, mul_comm]`. Conclude with `key`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ ≤ (d : ℝ)⁻¹ * (∏ e ∈ ν.toFinset, ((e : ℝ) ^ ν.count e * (ν.count e).factorial))⁻¹ / ((ν.count d + 1 : ℕ) : ℝ) := by gcongr`. Conclude with `ih (N - d)`. Use `_ = _ := by`. Rewrite using `[prod_pow_count_mul_factorial_cons]`. Use `push_cast`.
-
-Rewrite using `[mul_inv, mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.BadShare.mass_degType_le : ∀ (g : ℕ) [Fact g.Prime], ∀ (N : ℕ) (μ : Multiset ℕ),
     (_root_.GlobalTheory.BadShare.mass g N fun f => _root_.GlobalTheory.BadShare.degType g f = μ) ≤

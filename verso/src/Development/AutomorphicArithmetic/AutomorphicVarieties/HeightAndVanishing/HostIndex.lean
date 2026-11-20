@@ -4,7 +4,7 @@ import Mathlib
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.Top UpperTheory.V.HV
 
 /- English proof (translation)
-Establish `h` using `Subgroup.relIndex_inf_mul_relIndex A B ⊤`. Rewrite `h` using `[inf_top_eq, Subgroup.relIndex_top_right, Subgroup.relIndex_top_right]`. Rewrite using `[← h]`. Conclude with `Nat.mul_dvd_mul_right (Subgroup.relIndex_dvd_index_of_normal _ _) _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem index_inf_dvd_index_mul_index_of_commGroup {G : Type*} [CommGroup G] (A B : Subgroup G) :
     (A ⊓ B).index ∣ A.index * B.index := by
@@ -14,7 +14,7 @@ private theorem index_inf_dvd_index_mul_index_of_commGroup {G : Type*} [CommGrou
   exact Nat.mul_dvd_mul_right (Subgroup.relIndex_dvd_index_of_normal _ _) _
 
 /- English proof (translation)
-Rewrite using `[Subgroup.index_comap]`. Conclude with `Subgroup.relIndex_dvd_index_of_normal _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem index_comap_dvd_index_of_commGroup {G G' : Type*} [CommGroup G] [Group G'] (A : Subgroup G) (f : G' →* G) :
     (A.comap f).index ∣ A.index := by
@@ -22,11 +22,9 @@ private theorem index_comap_dvd_index_of_commGroup {G G' : Type*} [CommGroup G] 
   exact Subgroup.relIndex_dvd_index_of_normal _ _
 
 /- English proof (translation)
-Use `haveI := Fact.mk hp`. Use `set S := (powMonoidHom 2 : (ZMod p)ˣ →* (ZMod p)ˣ).range`. Use `haveI : IsCyclic ((ZMod p)ˣ ⧸ S) := isCyclic_of_surjective (QuotientGroup.mk' S) (QuotientGroup.mk'_surjective S)`. Establish `hcard : Nat.card ((ZMod p)ˣ ⧸ S) ∣ 2`. Rewrite using `[← IsCyclic.exponent_eq_card]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Use `Monoid.exponent_dvd_of_forall_pow_eq_one fun g => ?_` and prove the remaining obligations. Proceed by induction on `g using QuotientGroup.induction_on with`. Consider the case `H x`. Rewrite using `[← QuotientGroup.mk_pow, QuotientGroup.eq_one_iff]`. Conclude with `⟨x, rfl⟩`.
-
-Conclude with `hcard`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem index_range_sq_units_zmod_prime_dvd_two (p : ℕ) (hp : p.Prime) :
     ((powMonoidHom 2 : (ZMod p)ˣ →* (ZMod p)ˣ).range).index ∣ 2 := by
@@ -44,9 +42,9 @@ private theorem index_range_sq_units_zmod_prime_dvd_two (p : ℕ) (hp : p.Prime)
   exact hcard
 
 /- English proof (translation)
-Establish `h4 : 2 ^ 2 ≤ 2 ^ (e + 2)` using `Nat.pow_le_pow_right (by norm_num) (by omega)`. Use `haveI : Fact (1 < 2 ^ (e + 2)) := ⟨by omega⟩`. Establish `h` using `Subgroup.index_mul_card (Subgroup.zpowers (-1 : (ZMod (2 ^ (e + 2)))ˣ))`. Rewrite `h` using `[Nat.card_zpowers, ← orderOf_units, Units.val_neg, Units.val_one, orderOf_neg_one, ZMod.ringChar_zmod_n, Nat.card_eq_fintype_card, ZMod.card_units_eq_totient, Nat.totient_prime_pow_succ Nat.prime_two, if_neg (by omega)]`. Establish `h' : 2 ^ (e + 1) * (2 - 1) = 2 ^ e * 2` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[h']`. Rewrite using `[Nat.eq_of_mul_eq_mul_right (by norm_num) h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem index_zpowers_neg_one_units_zmod_two_pow_dvd (e : ℕ) :
     (Subgroup.zpowers (-1 : (ZMod (2 ^ (e + 2)))ˣ)).index ∣ 2 ^ e := by
@@ -61,9 +59,9 @@ private theorem index_zpowers_neg_one_units_zmod_two_pow_dvd (e : ℕ) :
   rw [Nat.eq_of_mul_eq_mul_right (by norm_num) h]
 
 /- English proof (translation)
-Rewrite using `[Subgroup.index_ker]`. Use `haveI : IsCyclic (MulChar.toUnitHom χ).range := inferInstance`. Rewrite using `[← IsCyclic.exponent_eq_card]`. Use `Monoid.exponent_dvd_of_forall_pow_eq_one fun x => ?_` and prove the remaining obligations. Take `⟨_, u, rfl⟩` from `x`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Establish `ho : orderOf χ ≠ 0` using `(orderOf_pos χ).ne'`. Simplify using `only [SubgroupClass.coe_pow, Units.val_pow_eq_pow_val, MulChar.coe_toUnitHom, OneMemClass.coe_one, Units.val_one]`. Rewrite using `[← MulChar.pow_apply' χ ho, pow_orderOf_eq_one, MulChar.one_apply_coe]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem index_ker_toUnitHom_dvd_orderOf_dirichletCharacter (n : ℕ) [NeZero n] (χ : DirichletCharacter ℂ n) :
     (MulChar.toUnitHom χ).ker.index ∣ orderOf χ := by
@@ -80,7 +78,7 @@ private theorem index_ker_toUnitHom_dvd_orderOf_dirichletCharacter (n : ℕ) [Ne
   rw [← MulChar.pow_apply' χ ho, pow_orderOf_eq_one, MulChar.one_apply_coe]
 
 /- English proof (translation)
-Establish `hpos : 0 < n.totient` using `Nat.totient_pos.mpr (Nat.pos_of_ne_zero (NeZero.ne n))`. Establish `h1 : χ ^ n.totient = 1`. Use extensionality with `u`. Rewrite using `[MulChar.pow_apply' χ hpos.ne', ← map_pow, ← Units.val_pow_eq_pow_val, ZMod.pow_totient, Units.val_one, map_one, MulChar.one_apply_coe]`. Conclude with `(Nat.le_of_dvd hpos (orderOf_dvd_of_pow_eq_one h1)).trans (Nat.totient_le n)`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem orderOf_dirichletCharacter_le_level (n : ℕ) [NeZero n] (χ : DirichletCharacter ℂ n) : orderOf χ ≤ n := by
   have hpos : 0 < n.totient := Nat.totient_pos.mpr (Nat.pos_of_ne_zero (NeZero.ne n))
@@ -91,37 +89,33 @@ private theorem orderOf_dirichletCharacter_le_level (n : ℕ) [NeZero n] (χ : D
   exact (Nat.le_of_dvd hpos (orderOf_dvd_of_pow_eq_one h1)).trans (Nat.totient_le n)
 
 /- English proof (translation)
-Introduce `h`. Take `⟨hq1, hq1m, hd, hdm, hcop⟩` from `h.pair`. Use `haveI := h.chi.ne`. Establish `hq0 : h.q ≠ 0` using `NeZero.ne _`. Establish `hq12 : h.q1 ≠ 2` using `by intro e; omega`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd2 : h.d ≠ 2` using `by intro e; omega`. Establish `hq1d : h.q1 ≠ h.d` using `by intro e; omega`. Establish `cq1 : ¬ h.q1 ∣ h.q` using `fun hdv => hq1.one_lt.ne' (Nat.Coprime.eq_one_of_dvd (Nat.Coprime.coprime_dvd_left (dvd_mul_right _ _) hcop) hdv)`. Establish `cd : ¬ h.d ∣ h.q` using `fun hdv => hd.one_lt.ne' (Nat.Coprime.eq_one_of_dvd (Nat.Coprime.coprime_dvd_left (dvd_mul_left _ _) hcop) hdv)`. Establish `hN : h.N = (2 ^ (h.ex + 2)).lcm h.q * (h.q1 * h.d)` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN0 : h.N ≠ 0`. Rewrite using `[hN]`. Conclude with `Nat.mul_ne_zero (Nat.lcm_ne_zero (by positivity) hq0) (Nat.mul_ne_zero hq1.ne_zero hd.ne_zero)`. Use `haveI : NeZero h.N := ⟨hN0⟩`. Establish `hfac : ∀ p, p.Prime → h.N.factorization p = max ((h.ex + 2) * (if p = 2 then 1 else 0)) (h.q.factorization p) + ((if p = h.q1 then 1 else 0) + (if p = h.d then 1 else 0))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `p hp`. Rewrite using `[hN, Nat.factorization_mul (Nat.lcm_ne_zero (by positivity) hq0) (Nat.mul_ne_zero hq1.ne_zero hd.ne_zero), Nat.factorization_lcm (by positivity) hq0, Nat.factorization_mul hq1.ne_zero hd.ne_zero, Nat.factorization_pow, Nat.prime_two.factorization, hq1.factorization, hd.factorizat …`. Simplify using `[Finsupp.single_apply, eq_comm]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `fq1 : h.q.factorization h.q1 = 0` using `Nat.factorization_eq_zero_of_not_dvd cq1`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `fd : h.q.factorization h.d = 0` using `Nat.factorization_eq_zero_of_not_dvd cd`. Establish `hdiv : h.H.index ∣ 2 ^ (h.ex + 2) * h.o`. Establish `i1` using `index_comap_dvd_index_of_commGroup (Subgroup.zpowers (-1 : (ZMod (2 ^ (h.ex + 2)))ˣ)) (ZMod.unitsMap (Host.two_pow_dvd h))`. Establish `i2` using `index_comap_dvd_index_of_commGroup (MulChar.toUnitHom h.chi.χ).ker (ZMod.unitsMap (Host.q_dvd h))`. Establish `i3` using `index_comap_dvd_index_of_commGroup (powMonoidHom 2 : (ZMod h.q1)ˣ →* (ZMod h.q1)ˣ).range (ZMod.unitsMap (Host.host_q1_dvd_N h))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i4` using `index_comap_dvd_index_of_commGroup (powMonoidHom 2 : (ZMod h.d)ˣ →* (ZMod h.d)ˣ).range (ZMod.unitsMap (Host.d_dvd h))`. Establish `j1` using `i1.trans (index_zpowers_neg_one_units_zmod_two_pow_dvd h.ex)`. Establish `j2` using `i2.trans (index_ker_toUnitHom_dvd_orderOf_dirichletCharacter h.chi.N h.chi.χ)`. Establish `j3` using `i3.trans (index_range_sq_units_zmod_prime_dvd_two h.q1 hq1)`. Establish `j4` using `i4.trans (index_range_sq_units_zmod_prime_dvd_two h.d hd)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `k` using `((((index_inf_dvd_index_mul_index_of_commGroup _ _).trans (Nat.mul_dvd_mul_right ((index_inf_dvd_index_mul_index_of_commGroup _ _).trans (Nat.mul_dvd_mul_right ((index_inf_dvd_index_mul_index_of_commGroup _ _).trans (Nat.mul_dvd_mul j1 j2)) _)) _))).trans (Nat.mul_dvd_mul (Nat.mu …`. Establish `e : 2 ^ h.ex * orderOf h.chi.χ * 2 * 2 = 2 ^ (h.ex + 2) * h.o`. Simplify using `only [Host.o, ordC]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← e]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `k`. Use `⟨hdiv, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hc : h.H.index ∣ h.N.totient`. Use `Subgroup.index_dvd_card h.H` as an intermediate fact. Rewrite `this` using `[Nat.card_eq_fintype_card, ZMod.card_units_eq_totient]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `(Nat.le_of_dvd (Nat.totient_pos.mpr (Nat.pos_of_ne_zero hN0)) hc).trans (Nat.totient_le _)`. Rewrite using `[hN]`. Conclude with `(Nat.pow_dvd_pow 2 (by have := h.two_le; omega : 4 ≤ h.ex + 2)).trans ((Nat.dvd_lcm_left _ _).trans (dvd_mul_right _ _))`. Conclude with `orderOf_pos _`. Conclude with `orderOf_dirichletCharacter_le_level _ _`.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `p hp`. Rewrite using `[hp.dvd_iff_one_le_factorization hN0, hp.dvd_iff_one_le_factorization hq0, hfac p hp]`. Apply the tactic sequence `by_cases e2 : p = 2 <;> by_cases e3 : p = h.q1 <;> by_cases e4 : p = h.d <;>`. Apply the tactic sequence `simp [e2, e3, e4] <;> omega`. Introduce `p hp h2 h3 h4`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hfac p hp]`. Simplify using `[h2, h3, h4]`. Rewrite using `[hfac _ hq1, fq1]`. Simplify using `[hq12, hq1d]`. Rewrite using `[hfac _ hd, fd]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `[hd2, hq1d.symm]`. Introduce `u`. Establish `sq : ∀ (n : ℕ) (w : (ZMod n)ˣ), w ^ (2 ^ (h.ex + 1) * h.o) ∈ (powMonoidHom 2 : (ZMod n)ˣ →* (ZMod n)ˣ).range`. Introduce `n w`. Use `⟨w ^ (2 ^ h.ex * h.o), ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[powMonoidHom_apply, ← pow_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Host.H, Subgroup.mem_inf, Subgroup.mem_comap, map_pow]`. Use `⟨⟨⟨?_, ?_⟩, sq _ _⟩, sq _ _⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `ht : (2 ^ (h.ex + 2)).totient = 2 ^ (h.ex + 1)`. Rewrite using `[Nat.totient_prime_pow_succ Nat.prime_two]`. Simplify using the standard rewrite rules. Rewrite using `[pow_mul, ← ht, ZMod.pow_totient, one_pow]`. Conclude with `Subgroup.one_mem _`.
-
-Rewrite using `[MonoidHom.mem_ker, map_pow]`. Establish `h1 : (MulChar.toUnitHom h.chi.χ) (ZMod.unitsMap (Host.q_dvd h) u) ^ h.o = 1`. Apply `Units.ext` to reduce the goal to its premises. Establish `ho : orderOf h.chi.χ ≠ 0` using `(orderOf_pos _).ne'`. Rewrite using `[Units.val_pow_eq_pow_val, MulChar.coe_toUnitHom, Units.val_one]`.
-
-Simplify using `only [Host.o, ordC]`. Rewrite using `[← MulChar.pow_apply' _ ho, pow_orderOf_eq_one, MulChar.one_apply_coe]`. Rewrite using `[mul_comm, pow_mul, h1, one_pow]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.HV.hostIndex :
     ∀ h : Host, h.H.index ∣ 2 ^ (h.ex + 2) * h.o ∧ h.H.index ≤ h.N ∧ 16 ∣ h.N ∧ 0 < h.o ∧ h.o ≤ h.q ∧

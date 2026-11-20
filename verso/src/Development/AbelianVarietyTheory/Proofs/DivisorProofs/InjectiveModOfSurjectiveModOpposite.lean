@@ -11,16 +11,16 @@ namespace GlobalTheory.LowFilt
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Use `haveI := D.fin`. Conclude with `Module.Finite.trans (𝓞 E) D.La`.
+A detailed English derivation is pending.
 -/
 theorem datum_finite_int (D : Datum H) : Module.Finite ℤ D.La := by
   haveI := D.fin
   exact Module.Finite.trans (𝓞 E) D.La
 
 /- English proof (translation)
-Use `Module.isTorsionFree_iff_smul_eq_zero.2 ?_` and prove the remaining obligations. Introduce `k x hkx`. Assume the negation of the conclusion as `hk`. Use `push_neg at hk`. Establish `hx : x = 0` using `D.unimod.1 (LinearMap.ext fun b => by`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (fun v => D.EF v b) hkx` as an intermediate fact. Simplify using `only [map_zsmul, LinearMap.smul_apply, map_zero, LinearMap.zero_apply, smul_eq_mul, mul_eq_zero] at this`. Simplify using `using this.resolve_left hk.1)`. Conclude with `hk.2 hx`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem datum_isTorsionFree_int (D : Datum H) : Module.IsTorsionFree ℤ D.La := by
   refine Module.isTorsionFree_iff_smul_eq_zero.2 ?_
@@ -34,9 +34,7 @@ theorem datum_isTorsionFree_int (D : Datum H) : Module.IsTorsionFree ℤ D.La :=
   exact hk.2 hx
 
 /- English proof (translation)
-Use `haveI := datum_finite_int D`. Use `haveI := datum_isTorsionFree_int D`. Use `haveI : IsNoetherian ℤ D.La := isNoetherian_of_isNoetherianRing_of_finite ℤ D.La`. Set `f : Z →ₗ[ℤ] D.La` to `Z.subtype.toAddMonoidHom.toIntLinearMap`. Establish `hf : Function.Injective f` using `Subtype.val_injective`.
-
-Use `haveI : Module.Finite ℤ Z := Module.Finite.of_injective f hf`. Use `haveI : Module.IsTorsionFree ℤ Z := hf.moduleIsTorsionFree f (fun r m => f.map_smul r m)`. Conclude with `⟨inferInstance, inferInstance⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sub_free_finite (D : Datum H) (Z : Submodule (𝓞 E) D.La) : Module.Free ℤ Z ∧ Module.Finite ℤ Z := by
   haveI := datum_finite_int D
@@ -49,11 +47,11 @@ theorem sub_free_finite (D : Datum H) (Z : Submodule (𝓞 E) D.La) : Module.Fre
   exact ⟨inferInstance, inferInstance⟩
 
 /- English proof (translation)
-Take `⟨hZf, hZn⟩` from `sub_free_finite D Z`. Set `ψ : Z' →ₗ[ℤ] Module.Dual ℤ Z` to `{ toFun := fun b => (D.EF.flip (b : D.La)).comp Z.subtype.toAddMonoidHom.toIntLinearMap map_add' := fun b b' => by ext a; simp map_smul' := fun k b => by ext a; simp }`. Establish `hψ : Function.Bijective ψ`. Use `⟨fun b b' hbb => ?_, fun φ => ?_⟩` and prove the remaining obligations. Take `⟨c, -, hu⟩` from `h.2.2.1 ((ψ b).toAddMonoidHom)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `e1` using `hu b (fun a => rfl)`. Establish `e2` using `hu b' (fun a => by rw [hbb]; rfl)`. Conclude with `e1.trans e2.symm`. Take `⟨b, hb, -⟩` from `h.2.2.1 φ.toAddMonoidHom`. Conclude with `⟨b, LinearMap.ext fun a => hb a⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(LinearEquiv.ofBijective ψ hψ).finrank_eq]`. Set `bZ` to `Module.Free.chooseBasis ℤ Z`. Rewrite using `[Module.finrank_eq_card_basis bZ.dualBasis, Module.finrank_eq_card_basis bZ]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsOpp.finrank_int_eq {D : Datum H} {Z Z' : Submodule (𝓞 E) D.La} (h : IsOpp D Z Z') :
     Module.finrank ℤ Z' = Module.finrank ℤ Z := by
@@ -76,21 +74,19 @@ theorem IsOpp.finrank_int_eq {D : Datum H} {Z Z' : Submodule (𝓞 E) D.La} (h :
   rw [Module.finrank_eq_card_basis bZ.dualBasis, Module.finrank_eq_card_basis bZ]
 
 /- English proof (translation)
-Take `⟨hZf, hZn⟩` from `sub_free_finite D Z`. Take `⟨hZf', hZn'⟩` from `sub_free_finite D Z'`. Establish `hrank : Module.finrank ℤ Z' = Module.finrank ℤ X`. Rewrite using `[h.finrank_int_eq, GlobalTheory.finrank_int_eq_finrank_ringOfIntegers_mul E Z, GlobalTheory.finrank_int_eq_finrank_ringOfIntegers_mul E X, hr]`. Set `nB : AddSubgroup X` to `(nsmulAddMonoidHom n : X →+ X).range`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `nA : AddSubgroup Z'` to `(nsmulAddMonoidHom n : Z' →+ Z').range`. Set `g : Z' →+ X` to `y.toAddMonoidHom.comp Z'.subtype.toAddMonoidHom`. Set `f : Z' →+ X ⧸ nB` to `(QuotientAddGroup.mk' nB).comp g`. Establish `hf : Function.Surjective f`. Introduce and unpack `⟨x⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨c, hc, e, he⟩` from `hs x`. Use `⟨⟨c, hc⟩, ?_⟩` and prove the remaining obligations. Use `show (QuotientAddGroup.mk (y c) : X ⧸ nB) = QuotientAddGroup.mk x`. Rewrite using `[he, QuotientAddGroup.eq]`. Conclude with `⟨-e, by simp⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hAK : nA ≤ f.ker`. Introduce and unpack `_ ⟨a, rfl⟩`. Rewrite using `[AddMonoidHom.mem_ker]`. Use `show (QuotientAddGroup.mk (y ((n • a : Z') : D.La)) : X ⧸ nB) = 0`. Rewrite using `[QuotientAddGroup.eq_zero_iff]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨y a, by simp⟩`. Establish `hK : f.ker.index = n ^ Module.finrank ℤ X`. Rewrite using `[AddSubgroup.index_ker, AddMonoidHom.range_eq_top.2 hf, AddSubgroup.card_top]`. Conclude with `AddSubgroup.index_range_nsmul X n`. Establish `hA : nA.index = n ^ Module.finrank ℤ X`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hrank]`. Conclude with `AddSubgroup.index_range_nsmul Z' n`. Establish `hpos : 0 < n ^ Module.finrank ℤ X` using `pow_pos hn _`. Establish `hrel : nA.relIndex f.ker = 1`. Use `AddSubgroup.relIndex_mul_index hAK` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[hK, hA]`. Conclude with `(Nat.mul_eq_right hpos.ne').1 this`. Establish `hmem : (⟨b, hb⟩ : Z') ∈ f.ker`. Take `⟨e, he⟩` from `hy`. Rewrite using `[AddMonoidHom.mem_ker]`.
-
-Use `show (QuotientAddGroup.mk (y b) : X ⧸ nB) = 0`. Rewrite using `[QuotientAddGroup.eq_zero_iff, he]`. Conclude with `⟨e, rfl⟩`. Take `⟨c, hc⟩` from `AddSubgroup.relIndex_eq_one.1 hrel hmem`. Conclude with `⟨c, c.2, (congrArg Subtype.val hc).symm.trans rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem IsOpp.mem_nsmul_of_surj_mod {X : Type} [AddCommGroup X] [Module (𝓞 E) X] [Module.Free ℤ X]
     [Module.Finite ℤ X] (D : Datum H) (y : D.La →ₗ[𝓞 E] X) (n : ℕ) (hn : 0 < n) (Z Z' : Submodule (𝓞 E) D.La)
@@ -142,7 +138,7 @@ theorem IsOpp.mem_nsmul_of_surj_mod {X : Type} [AddCommGroup X] [Module (𝓞 E)
 end GlobalTheory.LowFilt
 
 /- English proof (translation)
-Introduce `D _ _ _ _ _ y n hn Z Z' h hr hs b hb hy` and use `IsOpp.mem_nsmul_of_surj_mod D y n hn Z Z' h hr hs b hb hy`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LowFilt.inj_mod_of_surj_mod : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (D : Datum H) {X : Type} [AddCommGroup X] [Module (𝓞 E) X] [Module.Free ℤ X] [Module.Finite ℤ X]
     (y : D.La →ₗ[𝓞 E] X) (n : ℕ), 0 < n → ∀ Z Z' : Submodule (𝓞 E) D.La, IsOpp D Z Z' →

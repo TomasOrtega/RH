@@ -26,7 +26,7 @@ variable {k r : ℕ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H
   {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
 
 /- English proof (translation)
-Take `⟨g, -, hg⟩` from `h`. Conclude with `(KTypeCompare.isHCParam_iff u).2 ((KTypeCompare.isHCTypeU_iff u _).1 hg).param`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isHCParam_of_isHCTypeW {z : Fin (2 * r + k + 1) → ℂ} {u : Fin k → ℝ}
     {π : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (V →L[ℂ] V)}

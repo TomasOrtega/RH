@@ -9,17 +9,15 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Fo
 open scoped Classical
 
 /- English proof (translation)
-Introduce `F _ _ _ δ O N hN m`. Take `⟨hmono, hx, -⟩` from `UpperTheory.ConvolutionTheory.R2.Fo.fkBasic F O`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `w i φ hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hφ' : φ ∈ N` using `hφ`. Rewrite using `[UpperTheory.ConvolutionTheory.R2.Fo.vacAnn F δ O φ (hN hφ') w i]`. Conclude with `Submodule.smul_mem _ _ (hx N 0 w i φ hφ)`. Consider the case `succ m ih`. Introduce `w i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hle : O.Fk N (m + 1) ≤ (O.Fk N (m + 1 + 1)).comap (O.d w i)`. Express the relevant statement in the definitionally equal form `O.Fk N m ⊔ ⨆ w', ⨆ j, (O.Fk N m).map (O.x w' j) ≤ _`. Use `sup_le ?_ (iSup_le fun w' => iSup_le fun j => ?_)` and prove the remaining obligations. Introduce `ψ hψ`. Conclude with `hmono N N le_rfl (m + 1) (m + 1 + 1) (Nat.le_succ _) (ih w i ψ hψ)`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Submodule.map_le_iff_le_comap]`. Introduce `ψ hψ`. Express the relevant statement in the definitionally equal form `O.d w i (O.x w' j ψ) ∈ O.Fk N (m + 1 + 1)`. Establish `hc` using `congrArg (fun T : Module.End ℂ (S4 F) => T ψ) (UpperTheory.ConvolutionTheory.R2.Fo.weyl F O w w' i j).2`. Establish `hc' : O.d w i (O.x w' j ψ) = O.x w' j (O.d w i ψ) + (if w = w' ∧ i = j then (1 : Module.End ℂ (S4 F)) else 0) ψ` using `hc`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hc']`. Use `Submodule.add_mem _ (hx N (m + 1) w' j _ (ih w i ψ hψ)) ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `hmono N N le_rfl m (m + 1 + 1) (by omega) hψ`. Conclude with `Submodule.zero_mem _`.
-
-Conclude with `fun φ hφ => hle hφ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Fo.fkD :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (δ : F) (O : Ops F) (N : Submodule ℂ (S4 F)), N ≤ Vac δ → ∀ m w i, ∀ φ ∈ O.Fk N m, O.d w i φ ∈ O.Fk N (m + 1) := by

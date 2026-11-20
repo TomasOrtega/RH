@@ -11,9 +11,9 @@ section SlopeTestRemainingChoices
 variable {k R : Type} [CommRing k] [CommRing R] [Algebra k R]
 
 /- English proof (translation)
-Apply `h.fix` to reduce the goal to its premises. Rewrite using `[map_sum]`. Establish `h1` using `Finset.sum_range_succ (fun j => (σ ^ j) y) q`. Establish `h2` using `Finset.sum_range_succ' (fun j => (σ ^ j) y) q`. Rewrite `h1` using `[h2, h.pow, pow_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `add_right_cancel h1`. Rewrite using `[← h3]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[pow_succ', AlgEquiv.mul_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private lemma tr_mem {σ : R ≃ₐ[k] R} {q : ℕ} (h : IsGal σ q) (y : R) :
     ∃ t : k, algebraMap k R t = ∑ j ∈ Finset.range q, (σ ^ j) y := by
@@ -28,13 +28,13 @@ private lemma tr_mem {σ : R ≃ₐ[k] R} {q : ℕ} (h : IsGal σ q) (y : R) :
   rw [pow_succ', AlgEquiv.mul_apply]
 
 /- English proof (translation)
-Repeatedly rewrite using `[Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Establish `: ∀ j ∈ Finset.range q, ∑ i, (σ ^ j) (y i * r) * x i = if j = 0 then r else 0`. Introduce `j hj`. Use `hs j (Finset.mem_range.1 hj)` as an intermediate fact.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : ∑ i, (σ ^ j) (y i * r) * x i = (∑ i, x i * (σ ^ j) (y i)) * (σ ^ j) r`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h2, this]`. Use `split_ifs with h0`. Simplify using `[h0]`. Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_congr rfl this, Finset.sum_ite_eq' ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hq]`.
+A detailed English derivation is pending.
 -/
 private lemma expand {σ : R ≃ₐ[k] R} {q s : ℕ} (hq : 0 < q) {x y : Fin s → R}
     (hs : ∀ j < q, ∑ i, x i * (σ ^ j) (y i) = if j = 0 then 1 else 0) (r : R) :
@@ -60,20 +60,20 @@ private def phi (σ : R ≃ₐ[k] R) (q : ℕ) : R ⊗[k] R →ₐ[R] (Fin q →
     (Pi.algHom k _ fun j : Fin q => ((σ ^ (j : ℕ) : R ≃ₐ[k] R) : R →ₐ[k] R)) fun _ _ => Commute.all _ _
 
 /- English proof (translation)
-Simplify using `[phi, Algebra.ofId_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma phi_tmul (σ : R ≃ₐ[k] R) (q : ℕ) (a b : R) (j : Fin q) :
     phi σ q (a ⊗ₜ b) j = a * (σ ^ (j : ℕ)) b := by
   simp [phi, Algebra.ofId_apply]
 
 /- English proof (translation)
-Take `⟨s, x, y, hs⟩` from `h.sep`. Establish `key : ∀ z : R ⊗[k] R, ∑ i, (∑ j : Fin q, (σ ^ (j : ℕ)) (y i) * phi σ q z j) ⊗ₜ[k] x i = z`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `add u v hu hv`. Simplify using `only [map_add, Pi.add_apply, mul_add, Finset.sum_add_distrib, TensorProduct.add_tmul, hu, hv]`. Consider the case `tmul a b => choose t ht using fun i => tr_mem h (y i * b)`. Establish `hb` using `expand h.pos hs b`. Use `conv_rhs => rw [← hb, TensorProduct.tmul_sum]`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← ht, ← Algebra.smul_def, TensorProduct.tmul_smul, TensorProduct.smul_tmul', Algebra.smul_def, ht, Finset.sum_range, Finset.sum_mul]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[phi_tmul, map_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `u v huv`. Rewrite using `[← key u, ← key v, huv]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma phi_inj {σ : R ≃ₐ[k] R} {q : ℕ} (h : IsGal σ q) : Function.Injective (phi σ q) := by
   obtain ⟨s, x, y, hs⟩ := h.sep
@@ -97,13 +97,13 @@ private lemma phi_inj {σ : R ≃ₐ[k] R} {q : ℕ} (h : IsGal σ q) : Function
   rw [← key u, ← key v, huv]
 
 /- English proof (translation)
-Take `⟨s, x, y, hs⟩` from `h.sep`. Establish `key : ∀ m j : Fin q, phi σ q (∑ i, x i ⊗ₜ[k] (σ ^ (q - m)) (y i)) j = if j = m then 1 else 0`. Introduce `m j`. Rewrite using `[map_sum, Finset.sum_apply]`. Repeatedly rewrite using `[phi_tmul, ← AlgEquiv.mul_apply, ← pow_add]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[pow_eq_pow_mod _ h.pow, hs _ (Nat.mod_lt _ h.pos)]`. Establish `hm` using `m.2`. Establish `hj` using `j.2`. Use `if_congr ?_ rfl rfl` and prove the remaining obligations. Rewrite using `[Fin.ext_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Break down `lt_or_ge (j : ℕ) m with hl | hl` into its components or cases. Rewrite using `[Nat.mod_eq_of_lt (by omega)]; omega`. Rewrite using `[Nat.mod_eq_sub_mod (by omega), Nat.mod_eq_of_lt (by omega)]; omega`. Introduce `f`. Use `⟨∑ m : Fin q, f m • ∑ i, x i ⊗ₜ[k] (σ ^ (q - m)) (y i), ?_⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `j`. Rewrite using `[map_sum, Finset.sum_apply]`. Repeatedly rewrite using `[map_smul, Pi.smul_apply, key]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma phi_surj {σ : R ≃ₐ[k] R} {q : ℕ} (h : IsGal σ q) : Function.Surjective (phi σ q) := by
   obtain ⟨s, x, y, hs⟩ := h.sep
@@ -127,9 +127,9 @@ private lemma phi_surj {σ : R ≃ₐ[k] R} {q : ℕ} (h : IsGal σ q) : Functio
   simp
 
 /- English proof (translation)
-Take `⟨s, x, y, hs⟩` from `h.sep`. Use `Module.Finite.of_surjective (Fintype.linearCombination k x) fun b => ?_` and prove the remaining obligations. Use `choose t ht using fun i => tr_mem h (y i * b)`. Use `⟨t, ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.linearCombination_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[Algebra.smul_def, ht]`. Conclude with `expand h.pos hs b`.
+A detailed English derivation is pending.
 -/
 private lemma fin {σ : R ≃ₐ[k] R} {q : ℕ} (h : IsGal σ q) : Module.Finite k R := by
   obtain ⟨s, x, y, hs⟩ := h.sep
@@ -141,9 +141,9 @@ private lemma fin {σ : R ≃ₐ[k] R} {q : ℕ} (h : IsGal σ q) : Module.Finit
   exact expand h.pos hs b
 
 /- English proof (translation)
-Rewrite using `[Algebra.norm_eq_matrix_det (Pi.basisFun R (Fin q)), ← Matrix.det_diagonal]`. Use `congr 1`. Use extensionality with `i j`. Rewrite using `[Algebra.leftMulMatrix_eq_repr_mul]`. Distinguish the cases in `hij : i = j`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `[hij]`. Simplify using `[hij]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private lemma norm_pi {q : ℕ} (f : Fin q → R) : Algebra.norm R f = ∏ j, f j := by
   rw [Algebra.norm_eq_matrix_det (Pi.basisFun R (Fin q)), ← Matrix.det_diagonal]
@@ -159,11 +159,9 @@ end SlopeTestRemainingChoices
 end UpperTheory.ConvolutionTheory.D
 
 /- English proof (translation)
-Introduce `k R _ _ _ _ σ q h r`. Use `haveI := UpperTheory.ConvolutionTheory.D.fin h`. Establish `h1 : algebraMap k R (Algebra.norm k r) = Algebra.norm R ((1 : R) ⊗ₜ[k] r)`. Rewrite using `[Algebra.norm_apply, Algebra.norm_apply, ← LinearMap.det_baseChange]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `b`. Simplify using the standard rewrite rules. Set `e` to `AlgEquiv.ofBijective (UpperTheory.ConvolutionTheory.D.phi σ q) ⟨UpperTheory.ConvolutionTheory.D.phi_inj h, UpperTheory.ConvolutionTheory.D.phi_surj h⟩`. Rewrite using `[h1, ← Algebra.norm_eq_of_algEquiv e, UpperTheory.ConvolutionTheory.D.norm_pi, Finset.prod_range]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations.
-
-Conclude with `(UpperTheory.ConvolutionTheory.D.phi_tmul σ q 1 r j).trans (one_mul _)`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.D.normProd :
     UpperTheory.ConvolutionTheory.D.NormProd := by

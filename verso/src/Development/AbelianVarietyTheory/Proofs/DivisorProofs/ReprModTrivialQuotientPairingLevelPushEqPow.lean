@@ -14,11 +14,11 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Ex
 variable {A U : Type} [CommGroup A] [CommGroup U] {θ : A → A → A → U}
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [cubN]`. Consider the case `succ n ih`. Establish `e : cubN θ ((n + 1) * m) 1 b x = cubN θ (n * m) 1 b x * cubN θ m (b ^ (n * m)) b x`. Rewrite using `[Nat.succ_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [cubN, Finset.prod_range_add]`. Use `congrArg _ (Finset.prod_congr rfl fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[_root_.one_mul, pow_add]`. Establish `s1 : cubN θ (n + 1) 1 (b ^ m) x = cubN θ n 1 (b ^ m) x * θ ((b ^ m) ^ n) (b ^ m) x`. Simplify using `only [cubN, Finset.prod_range_succ, _root_.one_mul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, ih, h.N_split m (b ^ (n * m)) b x, s1, ← pow_mul' b n m, pow_succ (cubN θ m 1 b x) n]`. The two sides agree by associativity and commutativity.
+Rewrite the hypotheses and the conclusion using the stated equalities. The two sides agree by associativity and commutativity.
 -/
 theorem cubN_mul_iter (h : IsCub θ) (n m : ℕ) (b x : A) :
     cubN θ (n * m) 1 b x = cubN θ n 1 (b ^ m) x * cubN θ m 1 b x ^ n := by
@@ -36,13 +36,13 @@ theorem cubN_mul_iter (h : IsCub θ) (n m : ℕ) (b x : A) :
     ac_rfl
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp [cubN, h.face₃]`. Consider the case `succ m ih`. Establish `e` using `h.N_add k 1 b (x ^ m) x`. Rewrite `e` using `[h.face, _root_.mul_one, _root_.one_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `s1 : cubN θ (m + 1) 1 x b = cubN θ m 1 x b * θ (x ^ m) x b`. Simplify using `only [cubN, Finset.prod_range_succ, _root_.one_mul]`. Establish `s2 : cubN θ (m + 1) 1 x (b ^ k) = cubN θ m 1 x (b ^ k) * θ (x ^ m) x (b ^ k)`. Simplify using `only [cubN, Finset.prod_range_succ, _root_.one_mul]`. Establish `t1 : θ b (x ^ m) x = θ (x ^ m) x b` using `by rw [h.s01, h.s12]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `t2 : θ (b ^ k) (x ^ m) x = θ (x ^ m) x (b ^ k)` using `by rw [h.s01, h.s12]`. Rewrite `e` using `[t1, t2]`. Rewrite using `[pow_succ x, s1, s2]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Use `replace e := congrArg Additive.ofMul e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use `replace ih := congrArg Additive.ofMul ih`. Simplify using `only [ofMul_mul, ofMul_pow] at e ih ⊢`. Take the linear combination `(norm := module) e + ih`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cubN_pow_right (h : IsCub θ) (k m : ℕ) (b x : A) :
     cubN θ k 1 b (x ^ m) * cubN θ m 1 x b ^ k = cubN θ k 1 b x ^ m * cubN θ m 1 x (b ^ k) := by
@@ -68,15 +68,13 @@ theorem cubN_pow_right (h : IsCub θ) (k m : ℕ) (b x : A) :
 variable {O : Type} [CommRing O] (N : NumD O)
 
 /- English proof (translation)
-Establish `hd : n ∣ n * m` using `dvd_mul_right n m`. Establish `hM : n * m / n = m` using `Nat.mul_div_cancel_left m hn`. Simplify using `only [NumD.wp, NumD.tk, pushRep_fst N hd, pushRep_snd N hd, hM, NumD.Gt.pow_b]`. Establish `ps1` using `NumD.Gt.pow_s p.1.2 m q.1.1.toAdd`. Establish `ps2` using `NumD.Gt.pow_s q.1.2 m p.1.1.toAdd`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `ps1` using `[← N.QT_pow_b q]`. Rewrite `ps2` using `[← N.QT_pow_b p]`. Establish `i1` using `cubN_mul_iter N.cub n m q.1.2.b p.1.2.b`. Establish `i2` using `cubN_mul_iter N.cub n m p.1.2.b q.1.2.b`. Establish `a` using `cubN_pow_right N.cub n m (p.1.2.b ^ m) q.1.2.b`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b` using `cubN_pow_right N.cub n m (q.1.2.b ^ m) p.1.2.b`. Establish `c` using `cubN_pow_right N.cub m m q.1.2.b p.1.2.b`. Rewrite `a`, `b` using `[← pow_mul']`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Use `replace ps1 := congrArg Additive.ofMul ps1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use `replace ps2 := congrArg Additive.ofMul ps2`. Use `replace i1 := congrArg Additive.ofMul i1`. Use `replace i2 := congrArg Additive.ofMul i2`. Use `replace a := congrArg Additive.ofMul a`. Use `replace b := congrArg Additive.ofMul b`.
-
-Use `replace c := congrArg Additive.ofMul c`. Simplify using `only [ofMul_mul, ofMul_div, ofMul_pow] at ps1 ps2 i1 i2 a b c ⊢`. Take the linear combination `(norm := module) ps1 - ps2 - (m : ℤ) • i1 + (m : ℤ) • i2 + b - a + (n : ℤ) • c`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem wp_pushRep (n m : ℕ) (hn : 0 < n) (p q : N.QT (n * m)) :
     N.wp (pushRep N (n * m) n p) (pushRep N (n * m) n q) = N.wp p q ^ m := by
@@ -107,7 +105,7 @@ theorem wp_pushRep (n m : ℕ) (hn : 0 < n) (p q : N.QT (n * m)) :
 end GlobalTheory.SympQ.PushPow
 
 /- English proof (translation)
-Introduce `R _ _ _ _ D F _ _ _ N ν n m hn hm p q`. Conclude with `GlobalTheory.SympQ.PushPow.wp_pushRep N n m hn p q`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SympQ.wp_pushRep_pow : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], GlobalTheory.Mum.Base R → ∀ (D : DegData R (maximalIdeal R)) (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F] (N : GlobalTheory.Ex.NumD F) (ν : GlobalTheory.Ex.NumOf D.toPre F N) (n m : ℕ), 0 < n → 0 < m → ∀ p q : N.QT (n * m), N.wp (GlobalTheory.SympQ.pushRep N (n * m) n p) (GlobalTheory.SympQ.pushRep N (n * m) n q) = N.wp p q ^ m := by
   intro R _ _ _ _ D F _ _ _ N ν n m hn hm p q

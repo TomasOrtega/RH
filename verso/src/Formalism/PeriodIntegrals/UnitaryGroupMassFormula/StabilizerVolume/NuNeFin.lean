@@ -10,21 +10,15 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.S
 open scoped TensorProduct ENNReal Pointwise
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hE M J hJ ha hc a ha1 ha2 X0 hT hdet μ hμ 𝓕 h𝓕 φ hφ0 hadm`. Use `haveI : MeasurableMul (HA (AF F) σ J) := (hMG F E σ hE M J hJ ha hc a ha1 ha2 X0 hT hdet).1`. Use `haveI : MeasurableInv (HA (AF F) σ J) := (hMG F E σ hE M J hJ ha hc a ha1 ha2 X0 hT hdet).2`. Use `haveI : μ.IsHaarMeasure := hμ`. Use `haveI : μ.IsInvInvariant := (hI F E σ hE M J hJ ha hc a ha1 ha2 X0 hT hdet).1 μ hμ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : Countable (HFinIn (AF F) σ J) := um_countable_HFinIn F E σ M J`. Use `haveI hΓc : Countable (GamA σ J) := um_countable_HFinIn F E σ M J`. Take `⟨lam, μ'', hμ''H, hC, hLK⟩` from `hLam F E σ hE M J hJ ha hc a ha1 ha2 X0 hT hdet μ hμ`. Use `haveI : μ''.IsHaarMeasure := hμ''H`. Use `haveI : μ''.IsInvInvariant := hIS F E σ hE M J hJ ha hc a ha1 ha2 X0 hT hdet μ'' hμ''H`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨𝓕'', h𝓕''⟩` from `hFD F E σ hE M J hJ ha hc a ha1 ha2 X0 hT hdet μ'' hμ''H`. Take `⟨e, he⟩` from `gram_orbit_equiv σ J X0 (hW F E σ hE M J hJ ha hc a ha1 ha2 X0 hT hdet)`. Establish `hmφ : Measurable fun g : HA (AF F) σ J => φ (g • ratTup (F` using `F) (AF F) X0) := by`. Use `hMO F E σ hE M J hJ ha hc a ha1 ha2 X0 hT hdet _ hadm` as an intermediate fact. Establish `h2` using `Complex.measurable_re.comp this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Function.comp_def, Complex.ofReal_re] at h2`. Conclude with `h2`. Establish `hφm : Measurable φ`. Establish `h1` using `TopoMeas.measurable_adm _ hadm`. Establish `h2` using `Complex.measurable_re.comp h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [Function.comp_def, Complex.ofReal_re] at h2`. Conclude with `h2`. Establish `key : ∫⁻ h in 𝓕, ∑' x : orbS (GamA σ J) (ratTup (F` using `F) (AF F) X0), ENNReal.ofReal (φ (h⁻¹ • (x : Fin a → Fin M → AF F ⊗[F] E))) ∂μ = μ'' 𝓕'' * ∫⁻ X, ENNReal.ofReal (φ X) ∂lam := unfold_abs (Γ := GamA σ J) (H := stabT (AF F) σ J X0) μ μ'' (ratTup (F := F) (AF F) X0) (fun k => MulAction.mem_stabilizer_iff) lam (fun X => ENNReal.ofRe …`. Establish `hθS : ∀ h : HA (AF F) σ J, ∑' x : orbS (GamA σ J) (ratTup (F` using `F) (AF F) X0), ENNReal.ofReal (φ (h⁻¹ • (x : Fin a → Fin M → AF F ⊗[F] E))) = ∑' X : {X : Fin a → Fin M → E | gramE σ J X = gramE σ J X0}, ENNReal.ofReal (φ (h⁻¹ • ratTup (F := F) (AF F) (X : Fin a → Fin M → E))) := by`. Introduce `h`.
-
-Rewrite using `[← e.tsum_eq (fun x => ENNReal.ofReal (φ (h⁻¹ • (x : Fin a → Fin M → AF F ⊗[F] E))))]`. Conclude with `tsum_congr fun X => by rw [he X]`. Establish `lamfin : ∫⁻ X, ENNReal.ofReal (φ X) ∂lam < ⊤`. Take `⟨K, hK, C, hb⟩` from `hAC F E σ hE M J hJ ha hc a ha1 ha2 X0 hT hdet φ hφ0 hadm`. Combine the equalities or inequalities in the displayed calculation.
-
-Distinguish the cases in `hX : X ∈ K`. Rewrite using `[indicator_of_mem hX]`. Conclude with `ENNReal.ofReal_le_ofReal (hb X).1`. Rewrite using `[indicator_of_notMem hX]`. Simplify using `[(hb X).2 hX]`.
-
-Use `_ ≤ ENNReal.ofReal C * lam K := lintegral_indicator_const_le K _`. Use `_ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top (hLK K hK)`. Rewrite using `[← lintegral_congr hθS, key]`. Conclude with `ENNReal.mul_lt_top (hFV F E σ hE M J hJ ha hc a ha1 ha2 X0 hT hdet μ'' hμ''H 𝓕'' h𝓕'') lamfin`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaFin_of (hLam : LamEx) (hFV : FinVolStab) (hIS : InvStab) (hAC : AdmCpt)
     (hFD : ExFDStab) (hW : Witt) (hI : InvInv) (hMO : MeasOrb) (hMG : MeasGrp) : ThetaFin := by
@@ -76,7 +70,7 @@ theorem thetaFin_of (hLam : LamEx) (hFV : FinVolStab) (hIS : InvStab) (hAC : Adm
   exact ENNReal.mul_lt_top (hFV F E σ hE M J hJ ha hc a ha1 ha2 X0 hT hdet μ'' hμ''H 𝓕'' h𝓕'') lamfin
 
 /- English proof (translation)
-The claim follows from `nuNeZero_of_fin (thetaFin_of hLam hFV hIS hAC hFD hW hI hMO hMG) hS hW hI hMO hMG hTN`.
+A detailed English derivation is pending.
 -/
 theorem nuNeZero_of_route (hLam : LamEx) (hFV : FinVolStab) (hIS : InvStab) (hAC : AdmCpt)
     (hFD : ExFDStab) (hS : SWeqOm) (hW : Witt) (hI : InvInv) (hMO : MeasOrb) (hMG : MeasGrp)

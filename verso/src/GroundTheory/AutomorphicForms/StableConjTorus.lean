@@ -11,15 +11,13 @@ section CommuteField
 variable {E V : Type*} [Field E] [AddCommGroup V] [Module E V] [FiniteDimensional E V]
 
 /- English proof (translation)
-Use `set n := finrank E V`. Set `b : Basis (Fin n) E V` to `Module.finBasis E V`. Set `K` to `AlgebraicClosure E`. Set `φ : E →+* K` to `algebraMap E K`. Set `Φ : Module.End E V →+* Matrix (Fin n) (Fin n) K` to `φ.mapMatrix.comp (LinearMap.toMatrixAlgEquiv b).toRingEquiv.toRingHom`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Ψ : Matrix (Fin n) (Fin n) K →+* Module.End K (Fin n → K)` to `(Matrix.toLinAlgEquiv' (R := K) (n := Fin n)).toRingEquiv.toRingHom`. Establish `hsep : (Ψ (Φ f)).charpoly.Separable`. Express the relevant statement in the definitionally equal form `(Matrix.toLin' ((LinearMap.toMatrix b b f).map φ)).charpoly.Separable`. Rewrite using `[Matrix.charpoly_toLin', Matrix.charpoly_map, LinearMap.charpoly_toMatrix]`. Conclude with `hf.map`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `commute_of_commute_of_separable hsep ((hg.map Φ).map Ψ) ((hg'.map Φ).map Ψ)`. Establish `hinj : Function.Injective (Ψ.comp Φ)`. Introduce `x y hxy`. Establish `h1 : Φ x = Φ y` using `(Matrix.toLinAlgEquiv' (R := K) (n := Fin n)).injective hxy`. Establish `h2 : LinearMap.toMatrixAlgEquiv b x = LinearMap.toMatrixAlgEquiv b y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Use extensionality with `i j`. Conclude with `φ.injective (congrFun (congrFun h1 i) j)`. Conclude with `(LinearMap.toMatrixAlgEquiv b).injective h2`. Express the relevant statement in the definitionally equal form `g * g' = g' * g`. Apply `hinj` to reduce the goal to its premises.
-
-Rewrite using `[map_mul, map_mul]`. Conclude with `hc.eq`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem commute_of_commute_of_separable_charpoly {f g g' : Module.End E V}
     (hf : f.charpoly.Separable) (hg : Commute f g) (hg' : Commute f g') : Commute g g' := by
@@ -69,7 +67,7 @@ noncomputable def adjoint (A : Module.End E V) : Module.End E V where
       RingHom.id_apply]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `h.toSesq ((Equiv.ofBijective _ h.nonsingular).symm ((h.toSesq y).comp A)) x = _`. Rewrite using `[Equiv.ofBijective_apply_symm_apply (⇑h.toSesq) h.nonsingular]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem toSesq_adjoint_left (A : Module.End E V) (y x : V) :
     h.toSesq (h.adjoint A y) x = h.toSesq y (A x) := by
@@ -78,14 +76,14 @@ theorem toSesq_adjoint_left (A : Module.End E V) (y x : V) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[← h.conj_toSesq, toSesq_adjoint_left, h.conj_toSesq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toSesq_adjoint_right (A : Module.End E V) (x y : V) :
     h.toSesq x (h.adjoint A y) = h.toSesq (A x) y := by
   rw [← h.conj_toSesq, toSesq_adjoint_left, h.conj_toSesq]
 
 /- English proof (translation)
-Use `⟨fun hB y x => hB ▸ h.toSesq_adjoint_left A y x, fun hB => LinearMap.ext fun y => ?_⟩` and prove the remaining obligations. Apply `h.nonsingular.1` to reduce the goal to its premises. Use extensionality with `x`. Rewrite using `[hB, toSesq_adjoint_left]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_adjoint_iff (A B : Module.End E V) :
     B = h.adjoint A ↔ ∀ y x, h.toSesq (B y) x = h.toSesq y (A x) := by
@@ -95,7 +93,7 @@ theorem eq_adjoint_iff (A B : Module.End E V) :
   rw [hB, toSesq_adjoint_left]
 
 /- English proof (translation)
-Use `symm`. Rewrite using `[eq_adjoint_iff]`. Introduce `y x`. Rewrite using `[Module.End.mul_apply, toSesq_adjoint_left, toSesq_adjoint_left, Module.End.mul_apply]`.
+Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem adjoint_mul (A B : Module.End E V) : h.adjoint (A * B) = h.adjoint B * h.adjoint A := by
   symm
@@ -104,7 +102,7 @@ theorem adjoint_mul (A B : Module.End E V) : h.adjoint (A * B) = h.adjoint B * h
   rw [Module.End.mul_apply, toSesq_adjoint_left, toSesq_adjoint_left, Module.End.mul_apply]
 
 /- English proof (translation)
-Use `symm`. Rewrite using `[eq_adjoint_iff]`. Introduce `y x`. Both sides reduce to the same expression.
+Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 -/
 theorem adjoint_one : h.adjoint 1 = 1 := by
   symm
@@ -131,21 +129,21 @@ noncomputable def adjointEquiv (g : V ≃ₗ[E] V) : V ≃ₗ[E] V where
     rfl
 
 /- English proof (translation)
-The claim follows from `h.toSesq_adjoint_left _ y x`.
+A detailed English derivation is pending.
 -/
 theorem toSesq_adjointEquiv_left (g : V ≃ₗ[E] V) (y x : V) :
     h.toSesq (h.adjointEquiv g y) x = h.toSesq y (g x) :=
   h.toSesq_adjoint_left _ y x
 
 /- English proof (translation)
-The claim follows from `h.toSesq_adjoint_right _ x y`.
+A detailed English derivation is pending.
 -/
 theorem toSesq_adjointEquiv_right (g : V ≃ₗ[E] V) (x y : V) :
     h.toSesq x (h.adjointEquiv g y) = h.toSesq (g x) y :=
   h.toSesq_adjoint_right _ x y
 
 /- English proof (translation)
-Use `⟨fun hb y x => hb ▸ h.toSesq_adjointEquiv_left g y x, fun hb => ?_⟩` and prove the remaining obligations. Apply `LinearEquiv.ext fun y => ?_` to reduce the goal to its premises. Apply `h.nonsingular.1` to reduce the goal to its premises. Use extensionality with `x`. Rewrite using `[hb, toSesq_adjointEquiv_left]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_adjointEquiv_iff (g b : V ≃ₗ[E] V) :
     b = h.adjointEquiv g ↔ ∀ y x, h.toSesq (b y) x = h.toSesq y (g x) := by
@@ -156,7 +154,7 @@ theorem eq_adjointEquiv_iff (g b : V ≃ₗ[E] V) :
   rw [hb, toSesq_adjointEquiv_left]
 
 /- English proof (translation)
-Use `symm`. Rewrite using `[eq_adjointEquiv_iff]`. Introduce `y x`. Rewrite using `[LinearEquiv.mul_apply, toSesq_adjointEquiv_left, toSesq_adjointEquiv_left, LinearEquiv.mul_apply]`.
+Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem adjointEquiv_mul (a b : V ≃ₗ[E] V) :
     h.adjointEquiv (a * b) = h.adjointEquiv b * h.adjointEquiv a := by
@@ -167,7 +165,7 @@ theorem adjointEquiv_mul (a b : V ≃ₗ[E] V) :
     LinearEquiv.mul_apply]
 
 /- English proof (translation)
-Use `symm`. Rewrite using `[eq_adjointEquiv_iff]`. Introduce `y x`. Both sides reduce to the same expression.
+Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 -/
 theorem adjointEquiv_one : h.adjointEquiv 1 = 1 := by
   symm
@@ -176,7 +174,7 @@ theorem adjointEquiv_one : h.adjointEquiv 1 = 1 := by
   rfl
 
 /- English proof (translation)
-Use `symm`. Rewrite using `[eq_adjointEquiv_iff]`. Introduce `y x`. Rewrite using `[toSesq_adjointEquiv_right]`.
+Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem adjointEquiv_adjointEquiv (a : V ≃ₗ[E] V) : h.adjointEquiv (h.adjointEquiv a) = a := by
   symm
@@ -185,22 +183,22 @@ theorem adjointEquiv_adjointEquiv (a : V ≃ₗ[E] V) : h.adjointEquiv (h.adjoin
   rw [toSesq_adjointEquiv_right]
 
 /- English proof (translation)
-Rewrite using `[eq_inv_iff_mul_eq_one, ← adjointEquiv_mul, mul_inv_cancel, adjointEquiv_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem adjointEquiv_inv (a : V ≃ₗ[E] V) : h.adjointEquiv a⁻¹ = (h.adjointEquiv a)⁻¹ := by
   rw [eq_inv_iff_mul_eq_one, ← adjointEquiv_mul, mul_inv_cancel, adjointEquiv_one]
 
 /- English proof (translation)
-Rewrite using `[LinearEquiv.mul_apply, toSesq_adjointEquiv_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toSesq_apply_apply (g : V ≃ₗ[E] V) (x y : V) :
     h.toSesq (g x) (g y) = h.toSesq ((h.adjointEquiv g * g) x) y := by
   rw [LinearEquiv.mul_apply, toSesq_adjointEquiv_left]
 
 /- English proof (translation)
-Rewrite using `[mem_unitaryGroup]`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Apply `LinearEquiv.ext fun x => h.nonsingular.1 (LinearMap.ext fun y => ?_)` to reduce the goal to its premises. Rewrite using `[← toSesq_apply_apply, hg]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Introduce `hg x y`. Rewrite using `[toSesq_apply_apply, hg]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_unitaryGroup_iff_adjointEquiv_mul (g : V ≃ₗ[E] V) :
     g ∈ h.unitaryGroup ↔ h.adjointEquiv g * g = 1 := by
@@ -215,16 +213,16 @@ theorem mem_unitaryGroup_iff_adjointEquiv_mul (g : V ≃ₗ[E] V) :
     rfl
 
 /- English proof (translation)
-Rewrite using `[mem_unitaryGroup_iff_adjointEquiv_mul, mul_eq_one_iff_eq_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_unitaryGroup_iff_adjointEquiv (g : V ≃ₗ[E] V) :
     g ∈ h.unitaryGroup ↔ h.adjointEquiv g = g⁻¹ := by
   rw [mem_unitaryGroup_iff_adjointEquiv_mul, mul_eq_one_iff_eq_inv]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hg`. Apply `LinearEquiv.ext fun x => h.nonsingular.1 (LinearMap.ext fun y => ?_)` to reduce the goal to its premises. Rewrite using `[← toSesq_apply_apply, hg]`. Introduce `hg x y`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[toSesq_apply_apply, hg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem forall_toSesq_eq_iff (g c : V ≃ₗ[E] V) :
     (∀ x y, h.toSesq (g x) (g y) = h.toSesq (c x) y) ↔ h.adjointEquiv g * g = c := by
@@ -259,21 +257,21 @@ def torusE (γ : V ≃ₗ[E] V) : Subgroup (V ≃ₗ[E] V) :=
 
 omit [FiniteDimensional E V] in
 /- English proof (translation)
-Simplify using `[torusE, Subgroup.mem_centralizer_iff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_torusE {γ t : V ≃ₗ[E] V} : t ∈ torusE γ ↔ γ * t = t * γ := by
   simp [torusE, Subgroup.mem_centralizer_iff]
 
 omit [FiniteDimensional E V] in
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun x => DFunLike.congr_fun hab x`.
+A detailed English derivation is pending.
 -/
 theorem commute_toLinearMap {a b : V ≃ₗ[E] V} (hab : a * b = b * a) :
     Commute a.toLinearMap b.toLinearMap :=
   LinearMap.ext fun x => DFunLike.congr_fun hab x
 
 /- English proof (translation)
-Establish `hc` using `commute_of_commute_of_separable_charpoly hγ (commute_toLinearMap (mem_torusE.1 ha)) (commute_toLinearMap (mem_torusE.1 hb))`. Conclude with `LinearEquiv.ext fun x => LinearMap.congr_fun hc.eq x`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem torusE_mul_comm {γ a b : V ≃ₗ[E] V} (hγ : IsRegularSemisimple γ) (ha : a ∈ torusE γ)
     (hb : b ∈ torusE γ) : a * b = b * a := by
@@ -295,7 +293,7 @@ def val (t : TorusE γ) : V ≃ₗ[E] V := Subtype.val (p := (· ∈ torusE γ))
 
 omit [FiniteDimensional E V] in
 /- English proof (translation)
-The claim follows from `Subtype.prop (p := (· ∈ torusE γ)) t`.
+A detailed English derivation is pending.
 -/
 theorem val_mem (t : TorusE γ) : t.val ∈ torusE γ := Subtype.prop (p := (· ∈ torusE γ)) t
 
@@ -309,7 +307,7 @@ Both sides reduce to the same expression.
 
 omit [FiniteDimensional E V] in
 /- English proof (translation)
-The claim follows from `Subtype.ext (p := (· ∈ torusE γ)) hab`.
+A detailed English derivation is pending.
 -/
 theorem ext {a b : TorusE γ} (hab : a.val = b.val) : a = b :=
   Subtype.ext (p := (· ∈ torusE γ)) hab

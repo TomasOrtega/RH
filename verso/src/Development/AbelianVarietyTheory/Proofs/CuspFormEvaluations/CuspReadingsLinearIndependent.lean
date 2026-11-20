@@ -9,9 +9,9 @@ open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor F
 namespace GlobalTheory
 
 /- English proof (translation)
-Unfold `ReciprocityTheory.ChartRestriction.G.PullbackSections.AlgInjAtSt`. Introduce `D T h j hj ka σ hσ m f hf`. Establish `hlin` using `hf.map' (T.C j ka).subtype (T.C j ka).ker_subtype`. Establish `hmem : ∀ i, (f i : T.R j) ∈ sec (T.Q.Xo j) T.Q.c (wtA ka) ka.n` using `fun i => Formalism.L2.Pj.cusp_le_sec (T.Q.Xo j) T.Q.c (T.U j) (wtA ka) ka.n (f i).2`. Establish `hU` using `h.unf j hj σ hσ`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : ReciprocityTheory.ChartRestriction.G.Out.SecBaseChangeSt` using `GlobalTheory.lawsFieldsSeparately.2.1`. Establish `key` using `(GlobalTheory.reading_linearIndependent_and_injective hB _ _ _ _ (T.Q.Xo j) T.Q.c σ _ (Formalism.L2.PjFree.Unf.ofPj (T.U j σ)) ((Formalism.L2.PjFree.isUnf_ofPj (T.U j σ)).2 hU) (wtA ka) ka.n).1 m (fun i => (f i : T.R j)) hmem hlin`. Simplify using `only [Formalism.L2.PjFree.rdU_ofPj] at key`. Conclude with `key`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cusp_readings_linearIndependent : ReciprocityTheory.ChartRestriction.G.PullbackSections.AlgInjAtSt := by
   unfold ReciprocityTheory.ChartRestriction.G.PullbackSections.AlgInjAtSt

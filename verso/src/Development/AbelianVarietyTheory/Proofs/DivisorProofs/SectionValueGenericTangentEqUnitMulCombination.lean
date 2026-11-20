@@ -21,9 +21,9 @@ noncomputable section
 namespace GlobalTheory.MBLow.TanVal
 
 /- English proof (translation)
-Establish `key : ∀ P : PrimeSpectrum (DualNumber K), P.asIdeal = Ideal.span {DualNumber.eps}`. Introduce `P`. Establish `hm : (DualNumber.eps : DualNumber K) ∈ P.asIdeal` using `P.isPrime.mem_of_pow_mem 2 (by rw [pow_two, DualNumber.eps_mul_eps]; exact zero_mem _)`. Break down `DualNumber.ideal_trichotomy P.asIdeal with h | h | h` into its components or cases. Rewrite `hm` using `[h, Ideal.mem_bot]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrArg TrivSqZeroExt.snd hm` as an intermediate fact. Simplify using `at this`. Conclude with `h`. Conclude with `absurd h P.isPrime.ne_top`. Conclude with `⟨fun P Q ↦ PrimeSpectrum.ext ((key P).trans (key Q).symm)⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem subsingleton_dual (K : Type) [Field K] : Subsingleton (PrimeSpectrum (DualNumber K)) := by
   have key : ∀ P : PrimeSpectrum (DualNumber K), P.asIdeal = Ideal.span {DualNumber.eps} := by
@@ -39,28 +39,28 @@ theorem subsingleton_dual (K : Type) [Field K] : Subsingleton (PrimeSpectrum (Du
   exact ⟨fun P Q ↦ PrimeSpectrum.ext ((key P).trans (key Q).symm)⟩
 
 /- English proof (translation)
-Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem sp_comp {A B B' : Type} [CommRing A] [CommRing B] [CommRing B'] (a : A →+* B) (b : B' →+* A) :
     spMap a ≫ spMap b = spMap (a.comp b) := by
   simp only [spMap, ← Spec.map_comp]; rfl
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun z => by simp [dualMap]`.
+A detailed English derivation is pending.
 -/
 theorem fst_dualMap {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) :
     (TrivSqZeroExt.fstHom B B B).toRingHom.comp (dualMap f) = f.comp (TrivSqZeroExt.fstHom A A A).toRingHom :=
   RingHom.ext fun z => by simp [dualMap]
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun z => by simp`.
+A detailed English derivation is pending.
 -/
 theorem fst_alg (C : Type) [Field C] :
     (TrivSqZeroExt.fstHom C C C).toRingHom.comp (algebraMap C (DualNumber C)) = RingHom.id C :=
   RingHom.ext fun z => by simp
 
 /- English proof (translation)
-Simplify using `[resTop]`.
+Simplify using the standard rewrite rules.
 -/
 theorem resTop_top {Y : Scheme.{0}} (a : Γ(Y, ⊤)) : resTop ⊤ a = a := by
   simp [resTop]
@@ -74,9 +74,9 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I} {A
   {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G]
 
 /- English proof (translation)
-Use `⟨yA ≫ (lift (fst (TFK (R := R) C) A.A) (snd _ _ ≫ U.gen.inv)).left, ?_⟩` and prove the remaining obligations. Establish `h : lift (fst (TFK (R` using `R) C) A.A) (snd _ _ ≫ U.gen.inv) ≫ U.genF C = 𝟙 _ := by`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Simplify using `[UnifPre.genF]`. Simplify using `[UnifPre.genF]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[Category.assoc, ← Over.comp_left, h, Over.id_left, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_ptG (U : UnifPre I D A G) (C : Type) [Field C] [Algebra (FractionRing R) C]
     (yA : Sp (DualNumber C) ⟶ (TFK (R := R) C ⊗ A.A).left) :
@@ -89,7 +89,7 @@ theorem exists_ptG (U : UnifPre I D A G) (C : Type) [Field C] [Algebra (Fraction
   rw [Category.assoc, ← Over.comp_left, h, Over.id_left, Category.comp_id]
 
 /- English proof (translation)
-Rewrite using `[← Over.comp_left, ← Over.comp_left, UnifPre.genF, lift_snd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem genF_snd (U : UnifPre I D A G) (C : Type) [Field C] [Algebra (FractionRing R) C] :
     (U.genF C).left ≫ (snd (TFK (R := R) C) A.A).left =
@@ -97,7 +97,7 @@ theorem genF_snd (U : UnifPre I D A G) (C : Type) [Field C] [Algebra (FractionRi
   rw [← Over.comp_left, ← Over.comp_left, UnifPre.genF, lift_snd]
 
 /- English proof (translation)
-Rewrite using `[← Over.comp_left, UnifPre.genF, lift_fst]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem genF_fst (U : UnifPre I D A G) (C : Type) [Field C] [Algebra (FractionRing R) C] :
     (U.genF C).left ≫ (fst (TFK (R := R) C) A.A).left =
@@ -105,7 +105,7 @@ theorem genF_fst (U : UnifPre I D A G) (C : Type) [Field C] [Algebra (FractionRi
   rw [← Over.comp_left, UnifPre.genF, lift_fst]
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.ZH.ThetaData.valR_eq_gs x V (h trivial) f).symm`.
+A detailed English derivation is pending.
 -/
 theorem gs_to_valR {B : Type} [CommRing B] [IsLocalRing B] {X : Scheme.{0}} (x : Sp B ⟶ X) (V : X.Opens)
     (h : ⊤ ≤ x ⁻¹ᵁ V) (f : Γ(X, V)) :
@@ -115,55 +115,49 @@ theorem gs_to_valR {B : Type} [CommRing B] [IsLocalRing B] {X : Scheme.{0}} (x :
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `R _ _ I D A G _ _ U C _ _ w₀ ρ hN y yA hy hV k i₀ jG hi hj`. Use `haveI := subsingleton_dual C`. Take `⟨yG, e₁⟩` from `exists_ptG U C yA`. Establish `e₂ : yG ≫ (snd (TFK (R` using `R) C) ((Over.pullback (jK R)).obj G)).left ≫ U.gen.hom.left = yA ≫ (snd (TFK (R := R) C) A.A).left := by`. Rewrite using `[← genF_snd, ← Category.assoc, e₁]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e₃ : yG ≫ (fst (TFK (R` using `R) C) ((Over.pullback (jK R)).obj G)).left = spMap (algebraMap C (DualNumber C)) := by`. Rewrite using `[← genF_fst, ← Category.assoc, e₁, hV.1]`. Establish `e₂' : yG ≫ (snd (TFK (R` using `R) C) ((Over.pullback (jK R)).obj G)).left = yA ≫ (snd (TFK (R := R) C) A.A).left ≫ U.gen.inv.left := by`. Rewrite using `[← reassoc_of% e₂, ← Over.comp_left, Iso.hom_inv_id, Over.id_left, Category.comp_id]`. Establish `e₄ : yG ≫ UnifPre.gFK (G` using `G) C = spMap (dualMap (toF R C)) ≫ y.left := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[UnifPre.gFK, ← Category.assoc, e₂']`. Simplify using `only [Category.assoc]`. Conclude with `hV.2`. Establish `hfR : spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ y.left = eSec G` using `hy`. Establish `hjj : jFK (R` using `R) C ≫ jK R = spMap (toF R C) := sp_comp _ _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hη : eSec ((Over.pullback (jK R)).obj G) ≫ pullback.snd G.hom (jK R) = 𝟙 _` using `Over.w η[(Over.pullback (jK R)).obj G]`. Establish `e₅ : spMap (TrivSqZeroExt.fstHom C C C).toRingHom ≫ yG ≫ (snd (TFK (R` using `R) C) ((Over.pullback (jK R)).obj G)).left = jFK (R := R) C ≫ eSec ((Over.pullback (jK R)).obj G) := by`. Apply `pullback.hom_ext` to reduce the goal to its premises. Establish `l : (spMap (TrivSqZeroExt.fstHom C C C).toRingHom ≫ yG ≫ (snd (TFK (R` using `R) C) ((Over.pullback (jK R)).obj G)).left) ≫ pullback.fst G.hom (jK R) = spMap (TrivSqZeroExt.fstHom C C C).toRingHom ≫ spMap (dualMap (toF R C)) ≫ y.left := by`. Rewrite using `[← e₄]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [UnifPre.gFK, Category.assoc]`. Rewrite using `[l, ← Category.assoc, sp_comp, fst_dualMap, ← sp_comp, Category.assoc, hfR, Category.assoc, GlobalTheory.UT.EvalZero.eK_fst, ← Category.assoc, hjj]`. Establish `l : (snd (TFK (R` using `R) C) ((Over.pullback (jK R)).obj G)).left ≫ pullback.snd G.hom (jK R) = (fst (TFK (R := R) C) ((Over.pullback (jK R)).obj G)).left ≫ jFK (R := R) C := (Over.w (snd (TFK (R := R) C) ((Over.pullback (jK R)).obj G))).trans (Over.w (fst (TFK (R := R) C) ((Over.pullback (jK R)).obj G …`. Simplify using `only [Category.assoc]`. Rewrite using `[l, ← Category.assoc yG, e₃, ← Category.assoc, sp_comp, fst_alg, hη]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[spMap]`. Establish `hx₁ : spMap (TrivSqZeroExt.fstHom C C C).toRingHom ≫ yA ≫ (snd (TFK (R` using `R) C) A.A).left = jFK (R := R) C ≫ eSec A.A := by`. Rewrite using `[← e₂, reassoc_of% e₅, GlobalTheory.UT.EvalZero.eK_gen U]`. Establish `m₁ : ⊤ ≤ (yA ≫ (snd (TFK (R` using `R) C) A.A).left) ⁻¹ᵁ A.L.U i₀ := by`. Introduce `z' _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `rfl : z' = spMap (TrivSqZeroExt.fstHom C C C).toRingHom (IsLocalRing.closedPoint C)` from `Subsingleton.elim (α := PrimeSpectrum (DualNumber C)) _ _`. Establish `h` using `hi (show IsLocalRing.closedPoint C ∈ (⊤ : (Sp C).Opens) from trivial)`. Rewrite `h` using `[← hx₁]`. Conclude with `h`. Establish `m₂ : ⊤ ≤ (spMap (dualMap (toF R C)) ≫ y.left) ⁻¹ᵁ U.LG.L.U jG` using `GlobalTheory.FormalValue.top_le_comp hj _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hG₀ : (jFK (R` using `R) C ≫ jK R) ≫ eSec G = (spMap (toF R C) ≫ spMap (TrivSqZeroExt.fstHom R R R).toRingHom) ≫ y.left := by`. Rewrite using `[hjj, Category.assoc, hfR]`. Establish `m₄ : ⊤ ≤ ((jFK (R` using `R) C ≫ jK R) ≫ eSec G) ⁻¹ᵁ U.LG.L.U jG := by`. Rewrite using `[hG₀]`. Conclude with `GlobalTheory.FormalValue.top_le_comp hj _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `m₅ : ⊤ ≤ (𝟙 (Sp R)) ⁻¹ᵁ ((U.LG.L.pull (eSec G)).U fun _ => jG)`. Introduce `z' _`. Use `mem_pull.2 ?_` and prove the remaining obligations. Establish `h` using `GlobalTheory.FormalValue.top_le_comp hj (spMap (TrivSqZeroExt.fstHom R R R).toRingHom) (show z' ∈ (⊤ : (Sp R).Opens) from trivial)`. Rewrite `h` using `[hfR]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `h`. Take `⟨JA, hJA, cJA⟩` from `exists_good (Z := Sp (DualNumber C)) A.L A.isLB (IsLocalRing.closedPoint (DualNumber C)) (fun _ : Unit => yA ≫ (snd (TFK (R := R) C) A.A).left) (fun _ => i₀) (fun _ _ _ => rfl) (fun _ => m₁ trivial)`. Take `⟨JG, hJG, cJG⟩` from `exists_good (Z := Sp (DualNumber C)) U.LG.L U.LG.isLB (IsLocalRing.closedPoint (DualNumber C)) (fun _ : Unit => spMap (dualMap (toF R C)) ≫ y.left) (fun _ => jG) (fun _ _ _ => rfl) (fun _ => m₂ trivial)`. Take `⟨JA', hJA', cJA'⟩` from `exists_good (Z := Sp C) A.L A.isLB (IsLocalRing.closedPoint C) (fun _ : Unit => jFK (R := R) C ≫ eSec A.A) (fun _ => i₀) (fun _ _ _ => rfl) (fun _ => hi trivial)`. Take `⟨JG', hJG', cJG'⟩` from `exists_good (Z := Sp C) U.LG.L U.LG.isLB (IsLocalRing.closedPoint C) (fun _ : Unit => (jFK (R := R) C ≫ jK R) ≫ eSec G) (fun _ => jG) (fun _ _ _ => rfl) (fun _ => m₄ trivial)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `mp : ⊤ ≤ (yG ≫ (snd (TFK (R` using `R) C) ((Over.pullback (jK R)).obj G)).left) ⁻¹ᵁ ((LB.div (U.LG.L.pull (pullback.fst G.hom (jK R))) (A.L.pull U.gen.hom.left)).U (fun _ => jG, fun _ => i₀)) := by`. Introduce `z' _`. Use `⟨mem_pull.2 ?_, mem_pull.2 ?_⟩` and prove the remaining obligations. Establish `h` using `m₂ (show z' ∈ (⊤ : (Sp (DualNumber C)).Opens) from trivial)`. Rewrite `h` using `[← e₄]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h`. Establish `h` using `m₁ (show z' ∈ (⊤ : (Sp (DualNumber C)).Opens) from trivial)`. Rewrite `h` using `[← e₂]`. Conclude with `h`. Establish `mp₀ : ⊤ ≤ (jFK (R` using `R) C ≫ eSec ((Over.pullback (jK R)).obj G)) ⁻¹ᵁ ((LB.div (U.LG.L.pull (pullback.fst G.hom (jK R))) (A.L.pull U.gen.hom.left)).U (fun _ => jG, fun _ => i₀)) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← e₅]`. Conclude with `GlobalTheory.FormalValue.top_le_comp mp _`. Establish `hv` using `GlobalTheory.FormalValue.isUnit_valR (yG ≫ (snd (TFK (R := R) C) ((Over.pullback (jK R)).obj G)).left) _ mp (w₀.s (fun _ => jG, fun _ => i₀))`. Establish `hvfst : TrivSqZeroExt.fst (valR (yG ≫ (snd (TFK (R` using `R) C) ((Over.pullback (jK R)).obj G)).left) _ (w₀.s (fun _ => jG, fun _ => i₀)).val) = valR (jFK (R := R) C ≫ eSec ((Over.pullback (jK R)).obj G)) _ (w₀.s (fun _ => jG, fun _ => i₀)).val := by`. Use `GlobalTheory.FormalValue.valR_spMap (TrivSqZeroExt.fstHom C C C).toRingHom (yG ≫ (snd (TFK (R := R) C) ((Over.pullback (jK R)).obj G)).left) _ mp (w₀.s (fun _ => jG, fun _ => i₀)).val` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[e₅]`. Conclude with `this.symm`. Establish `mρ : ⊤ ≤ (jFK (R` using `R) C) ⁻¹ᵁ LB.wchart A.L (fun _ : PUnit.{1} => eSec A.A) (fun _ => i₀) := fun _ _ => Set.mem_iInter.2 fun _ => hi trivial`. Establish `mr : ⊤ ≤ (jFK (R` using `R) C ≫ jK R) ⁻¹ᵁ LB.wchart U.LG.L (fun _ : PUnit.{1} => eSec G) (fun _ => jG) := fun _ _ => Set.mem_iInter.2 fun _ => m₄ trivial`. Establish `n₁` using `GlobalTheory.UT.EvalZero.normW_ext U C hN (IsLocalRing.closedPoint C) hJA' hJG'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `replace n₁ : (GlobalTheory.BoxExpansion.pw w₀ (jFK (R := R) C ≫ eSec ((Over.pullback (jK R)).obj G)) (IsLocalRing.closedPoint C) (JA' (jFK (R := R) C ≫ eSec A.A)) (JG' ((jFK (R := R) C ≫ jK R) ≫ eSec G))).val * (gm (jFK (R := R) C) (IsLocalRing.closedPoint C) (LB.wchart A.L (fun …`. Rewrite `n₁` using `[cJA' (), cJG' ()]`. Establish `g₁` using `gs_unit (jFK (R := R) C) (IsLocalRing.closedPoint C) (LB.wchart A.L (fun _ : PUnit.{1} => eSec A.A) (fun _ => i₀)) (mρ (show IsLocalRing.closedPoint C ∈ (⊤ : (Sp C).Opens) from trivial)) (ρ.s fun _ => i₀)`. Establish `g₂` using `gs_unit (jFK (R := R) C ≫ jK R) (IsLocalRing.closedPoint C) (LB.wchart U.LG.L (fun _ : PUnit.{1} => eSec G) (fun _ => jG)) (mr (show IsLocalRing.closedPoint C ∈ (⊤ : (Sp C).Opens) from trivial)) (U.LG.rig.s fun _ => jG)`. Use `replace n₁ := (congrArg (fun q => (GlobalTheory.BoxExpansion.pw w₀ (jFK (R := R) C ≫ eSec ((Over.pullback (jK R)).obj G)) (IsLocalRing.closedPoint C) i₀ jG).val * q) g₁).trans (n₁.trans g₂.symm)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hpw₀ : (GlobalTheory.BoxExpansion.pw w₀ (jFK (R` using `R) C ≫ eSec ((Over.pullback (jK R)).obj G)) (IsLocalRing.closedPoint C) i₀ jG).val = gs (jFK (R := R) C ≫ eSec ((Over.pullback (jK R)).obj G)) (IsLocalRing.closedPoint C) _ (w₀.s (fun _ => jG, fun _ => i₀)).val := (gs_unit (jFK (R := R) C ≫ eSec ((Over.pullback (jK R)).obj G)) (I …`. Rewrite `n₁` using `[hpw₀]`. Establish `n₂` using `congrArg (stalkClosedPointIso (CommRingCat.of C)).hom.hom n₁`. Rewrite `n₂` using `[map_mul, gs_to_valR _ _ mp₀, gs_to_valR _ _ mρ, gs_to_valR _ _ mr, hjj]`. Establish `hr : valR (spMap (toF R C)) (LB.wchart U.LG.L (fun _ : PUnit.{1} => eSec G) (fun _ => jG)) (U.LG.rig.s fun _ => jG).val = toF R C (GlobalTheory.MBLow.TanExp.rigVal U.LG jG)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `GlobalTheory.FormalValue.valR_spMap (toF R C) (𝟙 (Sp R)) _ m₅ (U.LG.rig.s fun _ => jG).val` as an intermediate fact. Rewrite `this` using `[Category.comp_id]`. Conclude with `this`. Rewrite `n₂` using `[hr, ← hvfst]`. Establish `h1 : ((hv.unit ^ k)⁻¹ : (DualNumber C)ˣ).val * (valR (yG ≫ (snd (TFK (R` using `R) C) ((Over.pullback (jK R)).obj G)).left) _ (w₀.s (fun _ => jG, fun _ => i₀)).val) ^ k = 1 := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Units.inv_mul (hv.unit ^ k)` as an intermediate fact. Rewrite `this` using `[Units.val_pow_eq_pow_val, IsUnit.unit_spec]`. Then use the resulting hypothesis. Use `⟨(hv.unit ^ k)⁻¹, ?_, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg TrivSqZeroExt.fst h1`. Simplify using `only [TrivSqZeroExt.fst_mul, TrivSqZeroExt.fst_pow, TrivSqZeroExt.fst_one] at h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← n₂, mul_pow, ← _root_.mul_assoc, h2, _root_.one_mul]`. Both sides reduce to the same expression. Introduce `t σ' hR n c σ hσ`. Establish `cA : JA (yA ≫ (snd (TFK (R` using `R) C) A.A).left) = i₀ := cJA ()`. Establish `cG : JG (spMap (dualMap (toF R C)) ≫ y.left) = jG` using `cJG ()`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a₁` using `GlobalTheory.BoxExpansion.isoRel_val hR yG (IsLocalRing.closedPoint (DualNumber C)) hJA hJG`. Establish `e₄' : yG ≫ (snd (TFK (R` using `R) C) ((Over.pullback (jK R)).obj G)).left ≫ pullback.fst G.hom (jK R) = spMap (dualMap (toF R C)) ≫ y.left := e₄`. Rewrite `a₁` using `[Category.comp_id, e₁, Category.assoc, e₂, cA, Category.assoc, e₄', cG]`. Establish `a₂` using `GlobalTheory.BoxExpansion.secLin_val hσ yG (IsLocalRing.closedPoint (DualNumber C)) hJG`. Establish `st` using `sval_of t yA (IsLocalRing.closedPoint (DualNumber C)) JA (fun _ => i₀) (fun _ => cA)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sσ` using `fun i => sval_of (σ i) (yG ≫ UnifPre.gFK (G := G) C) (IsLocalRing.closedPoint (DualNumber C)) JG (fun _ => jG) (fun _ => by rw [Category.comp_id, e₄]; exact cG)`. Establish `mt : ⊤ ≤ yA ⁻¹ᵁ LB.wchart A.L (fun _ : Fin 1 => (snd (TFK (R` using `R) C) A.A).left) (fun _ => i₀) := fun _ _ => Set.mem_iInter.2 fun _ => m₁ trivial`. Establish `mσ : ⊤ ≤ y.left ⁻¹ᵁ LB.wchart U.LG.L (fun _ : Fin 1 => 𝟙 G.left) (fun _ => jG)` using `fun _ _ => Set.mem_iInter.2 fun _ => hj trivial`. Establish `mσ' : ⊤ ≤ (yG ≫ UnifPre.gFK (G` using `G) C) ⁻¹ᵁ LB.wchart U.LG.L (fun _ : Fin 1 => 𝟙 G.left) (fun _ => jG) := by`. Rewrite using `[e₄]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `GlobalTheory.FormalValue.top_le_comp mσ _`. Establish `hpw : (stalkClosedPointIso (CommRingCat.of (DualNumber C))).hom.hom (GlobalTheory.BoxExpansion.pw w₀ (yG ≫ (snd (TFK (R` using `R) C) ((Over.pullback (jK R)).obj G)).left) (IsLocalRing.closedPoint (DualNumber C)) i₀ jG).val = valR (yG ≫ (snd (TFK (R := R) C) ((Over.pullback (jK R)).obj G)).left) _ (w₀.s (fun _ => jG, fun _ => i₀)).val := by`. Establish `g` using `gs_unit (yG ≫ (snd (TFK (R := R) C) ((Over.pullback (jK R)).obj G)).left) (IsLocalRing.closedPoint (DualNumber C)) _ (mp (show IsLocalRing.closedPoint (DualNumber C) ∈ (⊤ : (Sp (DualNumber C)).Opens) from trivial)) (w₀.s (fun _ => jG, fun _ => i₀))`. Conclude with `(congrArg (stalkClosedPointIso (CommRingCat.of (DualNumber C))).hom.hom g.symm).trans (gs_to_valR _ _ mp _)`. Establish `ht : (stalkClosedPointIso (CommRingCat.of (DualNumber C))).hom.hom (sval t yA (IsLocalRing.closedPoint (DualNumber C)) JA) = valR yA ((LPow A.A A.L (k : ℤ) (TFK (R` using `R) C)).U fun _ => i₀) (t.f fun _ => i₀) := (congrArg _ st).trans (gs_to_valR _ _ mt _)`.
-
-Establish `hσv : ∀ i, (stalkClosedPointIso (CommRingCat.of (DualNumber C))).hom.hom (sval (σ i) (yG ≫ UnifPre.gFK (G` using `G) C) (IsLocalRing.closedPoint (DualNumber C)) JG) = dualMap (toF R C) (valR y.left (LB.wchart U.LG.L (fun _ : Fin 1 => 𝟙 G.left) fun _ => jG) ((σ i).f fun _ => jG)) := fun i => (congrArg _ (sσ i)).trans ((gs_to_valR _ _ mσ' _).trans (by`. Rewrite using `[e₄]`. Conclude with `GlobalTheory.FormalValue.valR_spMap _ _ _ mσ _))`. Establish `hc : ∀ i, (stalkClosedPointIso (CommRingCat.of (DualNumber C))).hom.hom (gs yG (IsLocalRing.closedPoint (DualNumber C)) ⊤ (scal (fst (TFK (R` using `R) C) ((Over.pullback (jK R)).obj G)).left (c i))) = TrivSqZeroExt.inl (c i) := fun i => by`. Establish `mtop : ⊤ ≤ yG ⁻¹ᵁ (⊤ : (UnifPre.GF (G` using `G) C).left.Opens) := fun x _ => show yG x ∈ (⊤ : (UnifPre.GF (G := G) C).left.Opens) from trivial`.
-
-Rewrite using `[gs_to_valR _ _ mtop, ← resTop_top (scal _ (c i)), GlobalTheory.ZH.FormCount.valR_scal (algebraMap C (DualNumber C)) yG _ e₃ ⊤ mtop]`. Both sides reduce to the same expression. Establish `E` using `congrArg (stalkClosedPointIso (CommRingCat.of (DualNumber C))).hom.hom (a₁.symm.trans a₂)`. Rewrite `E` using `[map_mul, map_sum, Units.val_pow_eq_pow_val, map_pow, hpw, ht]`. Simplify using `only [map_mul, hc, hσv] at E`.
-
-Rewrite using `[← E, ← _root_.mul_assoc, h1, _root_.one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem value_tangent : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : DegData R I) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (U : UnifPre I D A G) (C : Type) [Field C] [Algebra (FractionRing R) C] (w₀ : GlobalTheory.UT.W0 U) (ρ : LB.Gen (A.L.pull (eSec A.A))), GlobalTheory.UT.NormW U w₀ ρ → ∀ (y : epsR R ⟶ G) (yA : Sp (DualNumber C) ⟶ (TFK (R := R) C ⊗ A.A).left), IsTangent y → VecAt U C y yA → ∀ (k : ℕ) (i₀ : A.L.ι) (jG : U.LG.L.ι), ⊤ ≤ (jFK (R := R) C ≫ eSec A.A) ⁻¹ᵁ A.L.U i₀ → ⊤ ≤ y.left ⁻¹ᵁ U.LG.L.U jG → ∃ Θ : (DualNumber C)ˣ, (Θ : DualNumber C).fst * toF R C (GlobalTheory.MBLow.TanExp.rigVal U.LG jG) ^ k = valR (jFK (R := R) C) ((A.L.pull (eSec A.A)).U fun _ => i₀) (ρ.s fun _ => i₀).val ^ k ∧ ∀ (t : GlobalTheory.UT.SecA A C k) (σ' : U.SecGF C k), GeneratorPullback.IsoRelM A.L U.LG.L U.gen.hom.left (pullback.fst G.hom (jK R)) w₀ (snd (TFK (R := R) C) ((Over.pullback (jK R)).obj G)).left k (snd (TFK (R := R) C) A.A).left (U.genF C).left t (UnifPre.gFK (G := G) C) (𝟙 _) σ' → ∀ (n : ℕ) (c : Fin n → C) (σ : Fin n → H0 U.LG.L k), GeneratorPullback.SecLin U.LG.L (fun _ : Fin 1 => UnifPre.gFK (G := G) C) (fun _ => (k : ℤ)) σ' (fun _ : Fin 1 => 𝟙 G.left) (fun _ => (k : ℤ)) σ (UnifPre.gFK (G := G) C) (fun i => scal (fst (TFK (R := R) C) ((Over.pullback (jK R)).obj G)).left (c i)) → valR yA ((LPow A.A A.L (k : ℤ) (TFK (R := R) C)).U fun _ => i₀) (t.f fun _ => i₀) = (Θ : DualNumber C) * ∑ i, TrivSqZeroExt.inl (c i) * dualMap (toF R C) (valR y.left (LB.wchart U.LG.L (fun _ : Fin 1 => 𝟙 G.left) fun _ => jG) ((σ i).f fun _ => jG)) := by
   intro R _ _ I D A G _ _ U C _ _ w₀ ρ hN y yA hy hV k i₀ jG hi hj

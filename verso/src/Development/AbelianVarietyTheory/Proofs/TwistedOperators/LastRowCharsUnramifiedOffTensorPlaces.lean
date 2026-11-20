@@ -19,17 +19,15 @@ noncomputable section
 namespace GlobalTheory.LastRowUnram
 
 /- English proof (translation)
-Use `⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F hS ch _ _ => ?_⟩⟩` and prove the remaining obligations. Introduce `t v hv i hi`. Establish `hL : R.toLevCh.Is A.μ0` using `hS.core.lev`. Establish `hS0` using `GlobalTheory.RowVacScalar.notMem_S0_of_no_place_above ch.G t hv`. Establish `hQ : ∀ PP ∈ R.toLevCh.Q t, PP ∈ locPl ch.G t` using `fun PP h => by`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `locPl`. Conclude with `Finset.mem_union_right _ h`. Establish `hmu : GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.CharUnramAt D (R.toLevCh.mu t (i + 1)) v`. Use `GlobalTheory.SeeSaw.LevelTest.charUnramAt_of fun w hw => ?_` and prove the remaining obligations. Use `show GlobalTheory.LFun.UnrAt (R.toLevCh.mu0 (i + 1) * R.toLevCh.xi t) w`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.LFun.UnrAt.mul ?_ ?_` and prove the remaining obligations. Use `(GlobalTheory.LFun.unrAt_iff_of_chrEq (hL.mu0 ⟨i, hi⟩) w).2 ((R.toLevCh.C.isMu0 ⟨i, hi⟩).unr w fun k hk => ?_)` and prove the remaining obligations. Use `hS0 (ch.G.pl.mem_S0_of_sum_eq.2 (Or.inr ((GlobalTheory.ChiGrid.S1_mem_OmF D).2 ?_)))` and prove the remaining obligations. Establish `: ((D.host.g k : ℕ) : 𝓞 D.host.F) ∈ (w.under (𝓞 D.host.F)).asIdeal` using `by show algebraMap _ (𝓞 D.host.E) _ ∈ w.asIdeal`. Rewrite using `[map_natCast]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Prove the first alternative.
 
-Conclude with `hk`. Rewrite `this` using `[hw]`. Use `fin_cases k`. Conclude with `Or.inl this`. Conclude with `Or.inr (Or.inl this)`.
+Prove the second alternative. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use `(GlobalTheory.LFun.unrAt_iff_of_chrEq (hL.xi t) w).2 ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hu`. Break down `(hL.Q_ram t w).1 hu with h | ⟨P', hP', hc⟩` into its components or cases. Conclude with `hv w (hQ w h) hw`. Conclude with `hv P' (hQ P' hP') ((GlobalTheory.LevelPlaces.under_eq_of_isConjPl hc).trans hw)`.
-
-Establish `key` using `GlobalTheory.RowVacScalar.attChr_charUnramAt hmu (GlobalTheory.RowVacScalar.eta_charUnramAt hL v)`. Conclude with `⟨key _, key _⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem chars_unram : Big fun {D} {Γ} _ _ {Pl0 T} {A} {Ks} _ _ _ {R} ch => ∀ (t : T) (v : GlobalTheory.FinPl.Pl D), (∀ w ∈ locPl ch.G t, w.under (𝓞 D.host.F) ≠ v) → ∀ i, i < D.R.m →
     GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.CharUnramAt D (ch.G.chrS (.mu t D.R.m i)) v ∧ GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.CharUnramAt D (ch.G.chrT (.mu t D.R.m i)) v := by

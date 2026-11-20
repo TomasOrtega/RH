@@ -10,11 +10,11 @@ namespace GlobalTheory.HenQ
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Take `⟨g0, rfl⟩` from `hg`. Use `set O := (w.adicCompletionIntegers K).toSubring`. Establish `hd : ∀ h : GL (Fin n) O, ((Formalism.UG.bc O.subtype h).val.det) = ((h.val.det : O) : w.adicCompletion K)`. Introduce `h`. Conclude with `(RingHom.map_det O.subtype h.val).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Valued.v ((g0.val.det : O) : w.adicCompletion K) ≤ 1` using `(g0.val.det).2`. Establish `h2 : Valued.v (((g0⁻¹).val.det : O) : w.adicCompletion K) ≤ 1` using `((g0⁻¹).val.det).2`. Establish `h3 : ((g0.val.det : O) : w.adicCompletion K) * (((g0⁻¹).val.det : O) : w.adicCompletion K) = 1`. Rewrite using `[← Subring.coe_mul, ← Matrix.det_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.det_one]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4` using `congrArg Valued.v h3`. Rewrite `h4` using `[map_mul, map_one]`. Rewrite using `[hd]`. Use `le_antisymm h1 ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem valued_det_of_KGL {w : HeightOneSpectrum (𝓞 K)} {n : ℕ} {g : GL (Fin n) (w.adicCompletion K)}
     (hg : g ∈ GlobalTheory.LFun.KGL w n) : Valued.v g.val.det = 1 := by

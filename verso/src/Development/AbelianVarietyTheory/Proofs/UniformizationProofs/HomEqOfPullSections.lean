@@ -18,11 +18,11 @@ namespace GlobalTheory.MapUniq
 variable {X X' : Scheme.{0}}
 
 /- English proof (translation)
-Use `Scheme.hom_ext_of_forall _ _ fun z => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 (show φ z ∈ ⨆ i, D i by rw [hc]; trivial)`. Take `⟨_, ⟨V, hV, rfl⟩, hzV, hle⟩` from `X'.isBasis_affineOpens.exists_subset_of_mem_open (show z ∈ (φ ⁻¹ᵁ D i : Set X') from hi) (φ ⁻¹ᵁ D i).isOpen`. Establish `e₁ : V ≤ φ ⁻¹ᵁ D i` using `hle`. Establish `e₂ : V ≤ ψ ⁻¹ᵁ D i` using `fun y hy => hm i y (e₁ hy)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : φ.appLE (D i) V e₁ = ψ.appLE (D i) V e₂`. Use `CommRingCat.hom_ext (RingHom.ext fun a => fn_ext fun y hy => ?_)` and prove the remaining obligations. Establish `k : ∀ (χ : X' ⟶ X) (e : V ≤ χ ⁻¹ᵁ D i), gs (𝟙 X') y V ((χ.appLE (D i) V e).hom a) = gs χ y _ a` using `fun χ e => ((gs_res (𝟙 X') y e hy _).trans (gs_pull (𝟙 X') χ y _ (e hy) a)).trans (by rw [Category.id_comp])`. Rewrite using `[k, k]`. Conclude with `h i y (e₁ hy) a`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨V, hzV, ?_⟩` and prove the remaining obligations. Establish `hV' : IsAffineOpen V` using `hV`. Rewrite using `[← cancel_epi hV'.isoSpec.inv, ← Category.assoc, ← Category.assoc, hV'.isoSpec_inv_ι, ← (hD i).SpecMap_appLE_fromSpec φ hV' e₁, ← (hD i).SpecMap_appLE_fromSpec ψ hV' e₂, e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hom_ext_of_gs {I : Type} (D : I → X.Opens) (hD : ∀ i, IsAffineOpen (D i)) (hc : ⨆ i, D i = ⊤)
     (φ ψ : X' ⟶ X) (hm : ∀ i z, φ z ∈ D i → ψ z ∈ D i)
@@ -45,7 +45,7 @@ theorem hom_ext_of_gs {I : Type} (D : I → X.Opens) (hD : ∀ i, IsAffineOpen (
     ← (hD i).SpecMap_appLE_fromSpec φ hV' e₁, ← (hD i).SpecMap_appLE_fromSpec ψ hV' e₂, e]
 
 /- English proof (translation)
-The claim follows from `(gs_res φ z le_top h _).trans (gs_pull φ f z ⊤ trivial _)`.
+A detailed English derivation is pending.
 -/
 theorem gs_cst {R : Type} [CommRing R] (f : X ⟶ Spec (CommRingCat.of R)) (φ : X' ⟶ X) (z : X') (W : X.Opens)
     (h : φ z ∈ W) (c : R) :
@@ -53,15 +53,13 @@ theorem gs_cst {R : Type} [CommRing R] (f : X ⟶ Spec (CommRingCat.of R)) (φ :
   (gs_res φ z le_top h _).trans (gs_pull φ f z ⊤ trivial _)
 
 /- English proof (translation)
-Introduce `R _ X f H n s hH hs X' H' s' φ ψ w w' hH' hf _ _ hφ hψ`. Use `choose r hr hsurj using fun i => (hs.2 i).2`. Establish `mem : ∀ (χ : X' ⟶ X) (u : LB.Iso H' (H.pull χ)), (∀ j z (k : H.ι) (k' : H'.ι), χ z ∈ H.U k → z ∈ H'.U k' → gs χ z _ ((s j).f k) = (Geo.Tor.gw u (𝟙 _) z k k').val * gs (𝟙 _) z _ ((s' j).f k')) → ∀ i z k', z ∈ H'.U k' → (χ z ∈ nonzeroLocus (s i) ↔ IsUnit (gs (𝟙 X') z _ ((s' i).f k' …`. Introduce `χ u hu i z k' hk'`. Take `⟨k, hk⟩` from `exists_chart hH (χ z)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, fun hz j => ?_⟩` and prove the remaining obligations. Rewrite using `[AmpleSpan.mem_nonzeroLocus_iff_gs (s i) χ z hk, hu i z k k' hk hk', Units.isUnit_units_mul]`. Establish `e` using `AmpleSpan.IsRatio.gs (s := s j) (t := s i) (r := r i j) (hr i j) χ z hz hk`. Rewrite `e` using `[hu i z k k' hk hk', hu j z k k' hk hk', mul_left_comm]`. Conclude with `(Units.mul_right_inj _).1 e`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hm : ∀ i z, φ z ∈ nonzeroLocus (s i) → ψ z ∈ nonzeroLocus (s i)` using `fun i z hz => by`. Take `⟨k', hk'⟩` from `exists_chart hH' z`. Conclude with `(mem ψ w' hψ i z k' hk').1.2 ((mem φ w hφ i z k' hk').1.1 hz)`. Use `hom_ext_of_gs (fun i => nonzeroLocus (s i)) (fun i => (hs.2 i).1) hs.1 φ ψ hm fun i z hz a => ?_` and prove the remaining obligations. Take `⟨k', hk'⟩` from `exists_chart hH' z`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hz'` using `hm i z hz`. Establish `hrr : ∀ j, gs φ z _ (r i j) = gs ψ z _ (r i j)` using `fun j => ((mem φ w hφ i z k' hk').1.1 hz).mul_right_cancel (((mem φ w hφ i z k' hk').2 hz j).symm.trans ((mem ψ w' hψ i z k' hk').2 hz' j))`. Take `⟨p, rfl⟩` from `hsurj i a`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C c => rw [MvPolynomial.eval₂Hom_C, gs_cst f φ z _ hz, gs_cst f ψ z _ hz', hf]`.
-
-Consider the case `add p q hp hq => rw [map_add, gs_add φ z _ hz, gs_add ψ z _ hz', hp, hq]`. Consider the case `mul_X p j hp => rw [map_mul, MvPolynomial.eval₂Hom_X', gs_mul φ z _ hz, gs_mul ψ z _ hz', hp, hrr]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem hom_eq_of_pull_sections : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (f : X ⟶ Spec (CommRingCat.of R)) (H : LB X) (n : ℕ) (s : Fin (n + 1) → LB.Sec H), H.IsLB → VeryAmpleBy f H s → ∀ (X' : Scheme.{0}) (H' : LB X') (s' : Fin (n + 1) → LB.Sec H') (φ ψ : X' ⟶ X) (w : LB.Iso H' (H.pull φ)) (w' : LB.Iso H' (H.pull ψ)), H'.IsLB → φ ≫ f = ψ ≫ f → w.IsGen → w'.IsGen → (∀ j, (∀ z (k : (H).ι) (k' : (H').ι), (φ) z ∈ (H).U k → z ∈ (H').U k' → gs (φ) z _ ((s j).f k) = (Geo.Tor.gw (w) (𝟙 _) z k k').val * gs (𝟙 _) z _ ((s' j).f k'))) → (∀ j, (∀ z (k : (H).ι) (k' : (H').ι), (ψ) z ∈ (H).U k → z ∈ (H').U k' → gs (ψ) z _ ((s j).f k) = (Geo.Tor.gw (w') (𝟙 _) z k k').val * gs (𝟙 _) z _ ((s' j).f k'))) → φ = ψ := by
   intro R _ X f H n s hH hs X' H' s' φ ψ w w' hH' hf _ _ hφ hψ

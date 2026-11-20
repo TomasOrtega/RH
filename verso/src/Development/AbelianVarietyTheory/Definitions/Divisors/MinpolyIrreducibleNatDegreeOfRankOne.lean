@@ -25,14 +25,14 @@ def CxCountIrr : Prop :=
       cxTotal G v wt L.K.toSubgroup f K' f' = fullSumIrr G wt L.K.toSubgroup f 1 K' f'
 
 /- English proof (translation)
-Simplify using `[cxTotal, cxSum, cxSumAt, fullSumIrr, Pair.term, Pair.termAt, pointSum]`.
+Simplify using the standard rewrite rules.
 -/
 example (G : HTGroup p) (v wt Kf K' f') :
     cxTotal G v wt Kf (fun _ => 0) K' f' = fullSumIrr G wt Kf (fun _ => 0) 1 K' f' := by
   simp [cxTotal, cxSum, cxSumAt, fullSumIrr, Pair.term, Pair.termAt, pointSum]
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ hf` and use `absurd rfl hf`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (G : HTGroup p) : SeesIrr G (fun _ => 0) := fun _ _ _ _ _ _ hf => absurd rfl hf
 

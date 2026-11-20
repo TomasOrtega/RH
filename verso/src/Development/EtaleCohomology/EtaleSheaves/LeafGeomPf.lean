@@ -34,9 +34,9 @@ def LeafLocal : Prop := ∀ {E : Spc} {a b : ℕ} (V : E ⟶ ofCat (glCat a)) (W
     Second V W (((PB (bsumOf V W)).obj (op (SimplexCategory.mk n))).map k.op x)
 
 /- English proof (translation)
-Introduce `E a b V W`. Take `⟨U₁, f₁, p₁, m₁, e₁, l₁, s₁⟩` from `h1 V W`. Take `⟨U₂, f₂, p₂, m₂, e₂, l₂, s₂⟩` from `h2 V W`. Use `⟨U₁, U₂, f₁, f₂, p₁, p₂, m₁, m₂, ?_, e₁, l₁, e₂, l₂⟩` and prove the remaining obligations. Introduce `n X x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨S, hS, hk⟩` from `hL V W n X x`. Use `⟨S, hS, fun Y k hk' => ?_⟩` and prove the remaining obligations. Break down `hk Y k hk' with h | h` into its components or cases. Conclude with `Or.inl (s₁ n Y _ h)`. Conclude with `Or.inr (s₂ n Y _ h)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 theorem LeafGeom_of (h1 : LeafHalf1) (h2 : LeafHalf2) (hL : LeafLocal) : LateralTheory.E.D2.LeafGeom := by
   intro E a b V W

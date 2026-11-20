@@ -5,17 +5,17 @@ import Development.AutomorphicArithmetic.CyclotomicBounds.RamifiedDiscriminants.
 open Formalism.BasicNotions
 
 /- English proof (translation)
-Introduce `R H`. Establish `hQS : H.QS ≤ R.n ^ 2` using `H.QS_le`. Establish `h2 : 2 * R.ord ≤ H.QS` using `(UpperTheory.Ram.ord_le_totient_QS H.toHostAx).2`. Establish `hf : (R.f : ℝ) = 2 * (R.n : ℝ)`. Simplify using `only [Ranks.f]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hn : (R.n : ℝ) = (R.ord : ℝ)` using `by simp [Ranks.n]`. Establish `hq1 : (1 : ℝ) ≤ H.q`. Use `H.qd_big.1` as an intermediate fact.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(by omega : 1 ≤ H.q)` after adjusting the coercions. Establish `hd1 : (1 : ℝ) ≤ H.d`. Use `H.qd_big.2` as an intermediate fact. Conclude with `(by omega : 1 ≤ H.d)` after adjusting the coercions. Establish `hQSr : (H.QS : ℝ) ≤ (R.n : ℝ) ^ 2` using `by exact_mod_cast hQS`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2r : 2 * (R.n : ℝ) ≤ H.QS`. Rewrite using `[hn]`. Conclude with `h2` after adjusting the coercions. Establish `hn0 : (0 : ℝ) ≤ R.n` using `Nat.cast_nonneg _`. Establish `hqd : (0 : ℝ) ≤ (H.q : ℝ) * H.d` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hqd1 : (1 : ℝ) ≤ (H.q : ℝ) * H.d` using `by nlinarith`. Rewrite using `[hf]`. Use `⟨?_, ?_, h2r⟩` and prove the remaining obligations. Establish `: (H.QS : ℝ) ≤ 4 * (2 * (R.n : ℝ) / 2) ^ 2` using `by nlinarith`. Use `mul_le_mul_of_nonneg_right this hqd` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hsq : 4 * (2 * (R.n : ℝ) / 2) ^ 2 ≤ (H.QS : ℝ) ^ 2` using `by nlinarith`. Establish `hqq : (H.q : ℝ) * H.d ≤ ((H.q : ℝ) * H.d) ^ 2` using `by nlinarith`. Establish `hA : (0 : ℝ) ≤ 4 * (2 * (R.n : ℝ) / 2) ^ 2` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Ram.cond_le_four_n_sq :
     ∀ (R : Ranks) (H : Host R), (H.QS : ℝ) * H.q * H.d ≤ 4 * ((R.f : ℝ) / 2) ^ 2 * H.q * H.d ∧ 4 * ((R.f : ℝ) / 2) ^ 2 * H.q * H.d ≤ ((H.QS : ℝ) * H.q * H.d) ^ 2 ∧ (R.f : ℝ) ≤ H.QS := by

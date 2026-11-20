@@ -8,17 +8,15 @@ namespace Formalism.MainNotions.flipOneThree.Pf
 open Formalism.MainNotions.G Formalism.MainNotions.flipOneThree Formalism.GradedWeylDivisibility MvPolynomial
 
 /- English proof (translation)
-Introduce `O K _ _ _ hinj k ν F hF hco`. Choose the witnesses or unpack the hypotheses as in `⟨G, hG⟩ : F ∈ Set.range (map (algebraMap O K) : MvPolynomial (Fin k × Fin k) O →+* _) := by`. Rewrite using `[MvPolynomial.mem_range_map_iff_coeffs_subset]`. Introduce `c hc`. Take `⟨u, hu, rfl⟩` from `MvPolynomial.mem_coeffs_iff.mp hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hco u`. Substitute `hG` using the available equality. Establish `hcomm : ∀ (l j : Fin k) (p : MvPolynomial (Fin k × Fin k) O), map (algebraMap O K) (colAddGen O l j p) = colAddGen K l j (map (algebraMap O K) p)`. Introduce `l j p`. Proceed by induction on `p using MvPolynomial.induction_on`.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Simplify using the standard rewrite rules.
 
-Use `next a => simp [colAddGen]`. Use `next p q hp hq => simp only [map_add, hp, hq]`. Use `next p x hp =>`. Simplify using `only [map_mul, hp, map_X]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [colAddGen, aeval_X]`. Apply the tactic sequence `split_ifs <;> simp`. Use `Submodule.mem_map.mpr ⟨G, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [dualWeyl, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero, AlgHom.toLinearMap_apply, mem_weightedHomogeneousSubmodule] at hF ⊢`. Take `⟨h1, h2⟩` from `hF`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `d hd`. Conclude with `h1 (by rw [coeff_map]; exact fun h0 => hd ((map_eq_zero_iff _ hinj).mp h0))`. Introduce `l j hlj`. Apply `MvPolynomial.map_injective _ hinj` to reduce the goal to its premises.
-
-Rewrite using `[hcomm, map_rename, h2 l j hlj]`. Use `first`. Consider the case `rfl`. Consider the case `simp [MvPolynomial.mapAlgHom]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem intCapP : IntCapP := by
   intro O K _ _ _ hinj k ν F hF hco
@@ -54,14 +52,14 @@ theorem intCapP : IntCapP := by
       | simp [MvPolynomial.mapAlgHom]
 
 /- English proof (translation)
-Unfold `nuNext`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem qa_nuNext_add {n : ℕ} (ν ν' : Fin n → ℕ) (s : Fin n) : nuNext (ν + ν') s = nuNext ν s + nuNext ν' s := by
   unfold nuNext
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `nuNext`. Use `split_ifs with hs`. Conclude with `h (Fin.le_def.2 (Nat.le_succ _))`. Conclude with `Nat.zero_le _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem qa_nuNext_le {n : ℕ} (ν : Fin n → ℕ) (h : Antitone ν) (s : Fin n) : nuNext ν s ≤ ν s := by
   unfold nuNext
@@ -70,13 +68,13 @@ theorem qa_nuNext_le {n : ℕ} (ν : Fin n → ℕ) (h : Antitone ν) (s : Fin n
   · exact Nat.zero_le _
 
 /- English proof (translation)
-Introduce `A _ k ν ν' hν hν'`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [hw, ← Finset.prod_mul_distrib, ← pow_add]`. Use `Finset.prod_congr rfl (fun s _ => ?_)` and prove the remaining obligations. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[qa_nuNext_add, Pi.add_apply]`. Establish `h1` using `qa_nuNext_le ν hν s`. Establish `h2` using `qa_nuNext_le ν' hν' s`. Use linear arithmetic over natural numbers and integers. Establish `key : ∀ (m : ℕ) (h1 : m ≤ k) (h2 : m ≤ k), eval (idPoint A k k) (lpMinor A m h1 h2) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Introduce `m h1 h2`. Rewrite using `[lpMinor, RingHom.map_det]`. Use `(Matrix.det_one : (1 : Matrix (Fin m) (Fin m) A).det = 1)` and compare the differences between its conclusion and the goal. Use extensionality with `p q`. Simplify using `[idPoint, Matrix.one_apply, Fin.ext_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [hw, map_prod, map_pow, key, one_pow, Finset.prod_const_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hwMulP : HwMulP := by
   intro A _ k ν ν' hν hν'

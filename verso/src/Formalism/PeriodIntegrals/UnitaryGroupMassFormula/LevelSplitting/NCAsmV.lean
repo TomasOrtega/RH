@@ -16,39 +16,31 @@ variable {V : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup
   [LocallyCompactSpace V] [SecondCountableTopology V] [MeasurableSpace V] [BorelSpace V]
 
 /- English proof (translation)
-Use `haveI := hμ`. Use `set U : AddSubgroup V := p.ker with hUdef`. Establish `hWc : IsClosed (W : Set V)`. Establish `e : (W : Set V) = {v | p v = v}` using `Set.ext fun v => hW v`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `isClosed_eq hp continuous_id`. Establish `hUc : IsClosed (U : Set V)`. Establish `e : (U : Set V) = {v | p v = 0}` using `Set.ext fun v => by simp [hUdef, AddMonoidHom.mem_ker]`. Rewrite using `[e]`. Conclude with `isClosed_eq hp continuous_const`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `haveI : LocallyCompactSpace W := hWc.locallyCompactSpace`. Use `haveI : LocallyCompactSpace U := hUc.locallyCompactSpace`. Use `haveI : BorelSpace W := Subtype.borelSpace (W : Set V)`. Use `haveI : BorelSpace U := Subtype.borelSpace (U : Set V)`. Use `haveI : SecondCountableTopology W := TopologicalSpace.Subtype.secondCountableTopology (W : Set V)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : SecondCountableTopology U := TopologicalSpace.Subtype.secondCountableTopology (U : Set V)`. Use `haveI : BorelSpace (W × U) := Prod.borelSpace`. Establish `hpW : ∀ w : W, p w = w` using `fun w => (hW w).1 w.2`. Establish `hfc : Continuous f`. Apply `continuous_induced_rng.2` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e : (Subtype.val ∘ f : W → V) = fun w : W => g (w : V)` using `funext hf`. Rewrite using `[e]`. Conclude with `hg.comp continuous_subtype_val`. Set `Φ : W × U →+ V` to `W.subtype.comp (AddMonoidHom.fst W U) + U.subtype.comp (AddMonoidHom.snd W U)`. Establish `hΦ : ∀ x : W × U, Φ x = (x.1 : V) + (x.2 : V)` using `fun x => rfl`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hΦc : Continuous Φ`. Establish `e : (Φ : W × U → V) = fun x => (x.1 : V) + (x.2 : V)` using `funext hΦ`. Rewrite using `[e]`. Conclude with `(continuous_subtype_val.comp continuous_fst).add (continuous_subtype_val.comp continuous_snd)`. Set `Ψ : V → W × U` to `fun v => (⟨p v, (hW _).2 (hpp v)⟩, ⟨v - p v, by simp [hUdef, AddMonoidHom.mem_ker, map_sub, hpp]⟩)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hΨc : Continuous Ψ` using `(hp.subtype_mk fun v => (hW _).2 (hpp v)).prodMk ((continuous_id.sub hp).subtype_mk fun v => by`. Simplify using `[hUdef, AddMonoidHom.mem_ker, map_sub, hpp])`. Establish `hΦΨ : ∀ v, Φ (Ψ v) = v` using `fun v => by`. Rewrite using `[hΦ]`. Simplify using `[Ψ]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hΨΦ : ∀ x, Ψ (Φ x) = x`. Introduce and unpack `⟨w, u⟩`. Establish `hu : p u = 0` using `u.2`. Establish `hpx : p (Φ (w, u)) = w` using `by rw [hΦ, map_add, hpW, hu, add_zero]`. Apply `Prod.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Apply `Subtype.ext show p (Φ (w, u)) = w` to reduce the goal to its premises. Conclude with `hpx`. Apply `Subtype.ext show Φ (w, u) - p (Φ (w, u)) = u` to reduce the goal to its premises. Rewrite using `[hpx, hΦ]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hΦs : Function.Surjective Φ` using `fun v => ⟨Ψ v, hΦΨ v⟩`. Set `e : (W × U) ≃ₜ V` to `{ toFun := Φ, invFun := Ψ, left_inv := hΨΦ, right_inv := hΦΨ, continuous_toFun := hΦc, continuous_invFun := hΨc }`. Set `ν : Measure U` to `Measure.addHaar`. Use `set P : Measure (W × U) := μ.prod ν with hP`. Use `haveI hPH : P.IsAddHaarMeasure := by rw [hP]; infer_instance`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hHaar : (P.map Φ).IsAddHaarMeasure` using `Measure.isAddHaarMeasure_map P Φ hΦc hΦs e.isClosedEmbedding.tendsto_cocompact`. Establish `hmap` using `hV _ hHaar`. Establish `hgΦ : (g : V → V) ∘ Φ = Φ ∘ Prod.map f id`. Use function extensionality and compare the values at `x`. Take `⟨w, u⟩` from `x`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Function.comp, Prod.map, id, hΦ, map_add, hgU u u.2, hf]`. Establish `hfm : Measurable f` using `hfc.measurable`. Establish `hPm : Measurable (Prod.map f (id : U → U))` using `hfm.prodMap measurable_id`. Rewrite `hmap` using `[Measure.map_map hg.measurable hΦc.measurable, hgΦ, ← Measure.map_map hΦc.measurable hPm]`. Establish `hinv : ∀ Q : Measure (W × U), (Q.map Φ).map Ψ = Q`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Introduce `Q`. Rewrite using `[Measure.map_map hΨc.measurable hΦc.measurable]`. Establish `e2 : Ψ ∘ Φ = id` using `funext hΨΦ`. Rewrite using `[e2, Measure.map_id]`. Establish `hP' : P.map (Prod.map f id) = P`.
-
-Establish `h2` using `congrArg (fun Q => Q.map Ψ) hmap`. Simplify `h2` using `only [hinv]`. Take `⟨K, hKc, hKn⟩` from `exists_compact_mem_nhds (0 : U)`. Establish `hK0 : ν K ≠ 0` using `(Measure.measure_pos_of_mem_nhds ν hKn).ne'`. Establish `hKt : ν K ≠ ⊤` using `hKc.measure_lt_top.ne`.
-
-Use extensionality with `A hA`. Rewrite using `[Measure.map_apply hfm hA]`. Establish `h1 : (P.map (Prod.map f id)) (A ×ˢ K) = P (A ×ˢ K)` using `by rw [hP']`. Rewrite `h1` using `[Measure.map_apply hPm (hA.prod hKc.measurableSet)]`. Establish `hpre : Prod.map f id ⁻¹' (A ×ˢ K) = (f ⁻¹' A) ×ˢ K`.
-
-Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite `h1` using `[hpre, hP, Measure.prod_prod, Measure.prod_prod]`. Establish `h2` using `congrArg (fun t => t / ν K) h1`. Simplify using `only [ENNReal.mul_div_cancel_right hK0 hKt] at h2`.
-
-Conclude with `h2`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_eq_of_split (p : V →+ V) (hp : Continuous p) (hpp : ∀ v, p (p v) = p v)
     (W : AddSubgroup V) (hW : ∀ v, v ∈ W ↔ p v = v)
@@ -157,7 +149,7 @@ variable {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] {r : ℕ
   {D : PI.LevelKSplit.W.SemiG.Dat A n r}
 
 /- English proof (translation)
-Rewrite using `[← Dat.hL_apply, Dat.pXv, LinearMap.sum_apply, map_sum]`. Simplify using `only [LinearMap.smulRight_apply, map_smul, smul_eq_mul, Dat.hL_apply, H.ef, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem h_e_pXv (H : D.Hyp) (b : Fin r) (v : n → A) : D.h (D.e b) (D.pXv v) = D.h (D.e b) v := by
   rw [← Dat.hL_apply, Dat.pXv, LinearMap.sum_apply, map_sum]
@@ -165,9 +157,9 @@ theorem h_e_pXv (H : D.Hyp) (b : Fin r) (v : n → A) : D.h (D.e b) (D.pXv v) = 
     mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Establish `hfe : ∀ a, D.h (D.f b) (D.e a) = if b = a then 1 else 0`. Introduce `a`. Rewrite using `[Dat.h_symm H (D.e a) (D.f b), H.ef]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Rewrite using `[if_neg hab, if_neg (Ne.symm hab), map_zero]`. Rewrite using `[← Dat.hL_apply, Dat.pX, LinearMap.sum_apply, map_sum]`. Simplify using `only [LinearMap.smulRight_apply, map_smul, smul_eq_mul, Dat.hL_apply, hfe, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem h_f_pX (H : D.Hyp) (b : Fin r) (v : n → A) : D.h (D.f b) (D.pX v) = D.h (D.f b) v := by
   have hfe : ∀ a, D.h (D.f b) (D.e a) = if b = a then 1 else 0 := by
@@ -181,7 +173,7 @@ theorem h_f_pX (H : D.Hyp) (b : Fin r) (v : n → A) : D.h (D.f b) (D.pX v) = D.
     mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Rewrite using `[← Dat.hL_apply, Dat.pXv, LinearMap.sum_apply, map_sum]`. Simplify using `only [LinearMap.smulRight_apply, map_smul, smul_eq_mul, Dat.hL_apply, H.ff, mul_zero, Finset.sum_const_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem h_f_pXv (H : D.Hyp) (b : Fin r) (v : n → A) : D.h (D.f b) (D.pXv v) = 0 := by
   rw [← Dat.hL_apply, Dat.pXv, LinearMap.sum_apply, map_sum]
@@ -198,9 +190,9 @@ Both sides reduce to the same expression.
 theorem pL_apply (v : n → A) : pL D v = v - D.pX v - D.pXv v := rfl
 
 /- English proof (translation)
-Establish `h0 : D.h (D.e b) (D.pX v) = 0`. Rewrite using `[← Dat.hL_apply, Dat.pX, LinearMap.sum_apply, map_sum]`. Simplify using `only [LinearMap.smulRight_apply, map_smul, smul_eq_mul, Dat.hL_apply, H.ee, mul_zero, Finset.sum_const_zero]`. Rewrite using `[pL_apply, ← Dat.hL_apply, map_sub, map_sub]`. Simplify using `only [Dat.hL_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h0, h_e_pXv H]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem h_e_pL (H : D.Hyp) (b : Fin r) (v : n → A) : D.h (D.e b) (pL D v) = 0 := by
   have h0 : D.h (D.e b) (D.pX v) = 0 := by
@@ -213,7 +205,7 @@ theorem h_e_pL (H : D.Hyp) (b : Fin r) (v : n → A) : D.h (D.e b) (pL D v) = 0 
   ring
 
 /- English proof (translation)
-Rewrite using `[pL_apply, ← Dat.hL_apply, map_sub, map_sub]`. Simplify using `only [Dat.hL_apply]`. Rewrite using `[h_f_pX H, h_f_pXv H]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem h_f_pL (H : D.Hyp) (b : Fin r) (v : n → A) : D.h (D.f b) (pL D v) = 0 := by
   rw [pL_apply, ← Dat.hL_apply, map_sub, map_sub]
@@ -222,7 +214,7 @@ theorem h_f_pL (H : D.Hyp) (b : Fin r) (v : n → A) : D.h (D.f b) (pL D v) = 0 
   ring
 
 /- English proof (translation)
-Establish `h1 : D.pX v = 0`. Simplify using `only [Dat.pX, LinearMap.sum_apply, LinearMap.smulRight_apply, Dat.hL_apply, hf, zero_smul, Finset.sum_const_zero]`. Establish `h2 : D.pXv v = 0`. Simplify using `only [Dat.pXv, LinearMap.sum_apply, LinearMap.smulRight_apply, Dat.hL_apply, he, zero_smul, Finset.sum_const_zero]`. Rewrite using `[pL_apply, h1, h2, sub_zero, sub_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem pL_of {v : n → A} (he : ∀ a, D.h (D.e a) v = 0) (hf : ∀ a, D.h (D.f a) v = 0) :
     pL D v = v := by
@@ -235,15 +227,15 @@ theorem pL_of {v : n → A} (he : ∀ a, D.h (D.e a) v = 0) (hf : ∀ a, D.h (D.
   rw [pL_apply, h1, h2, sub_zero, sub_zero]
 
 /- English proof (translation)
-The claim follows from `pL_of (fun a => h_e_pL H a v) (fun a => h_f_pL H a v)`.
+A detailed English derivation is pending.
 -/
 theorem pL_pL (H : D.Hyp) (v : n → A) : pL D (pL D v) = pL D v :=
   pL_of (fun a => h_e_pL H a v) (fun a => h_f_pL H a v)
 
 /- English proof (translation)
-Establish `hu' : u = D.pX u + D.pXv u`. Rewrite `hu` using `[pL_apply, sub_sub, sub_eq_zero]`. Conclude with `hu`. Rewrite using `[hu', map_add]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `only [Dat.pX, LinearMap.sum_apply, LinearMap.smulRight_apply, map_sum, map_smul, hSe]`. Simplify using `only [Dat.pXv, LinearMap.sum_apply, LinearMap.smulRight_apply, map_sum, map_smul, hSf]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fix_of_pL_zero {S : (n → A) →ₗ[A] (n → A)} (hSe : ∀ a, S (D.e a) = D.e a)
     (hSf : ∀ a, S (D.f a) = D.f a) {u : n → A} (hu : pL D u = 0) : S u = u := by
@@ -263,11 +255,9 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] {R : Type} [CommRing R] 
   {σ : E →ₐ[F] E} {M : ℕ} {J : Matrix (Fin M) (Fin M) E} {r : ℕ} {P : Frame E M r} {T : F}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨he, hf⟩`. Conclude with `DatL.pL_of (fun a => he a) (fun a => hf a)`. Introduce `h`. Express the relevant statement in the definitionally equal form `(∀ a, _) ∧ (∀ a, _)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun a => ?_, fun a => ?_⟩` and prove the remaining obligations. Establish `h1` using `DatL.h_e_pL H a v`. Rewrite `h1` using `[h]`. Conclude with `h1`. Establish `h1` using `DatL.h_f_pL H a v`.
-
-Rewrite `h1` using `[h]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_Wp_iff (H : (datR R σ J P T).Hyp) (v : Fin M → R ⊗[F] E) :
     v ∈ Wp R σ J P ↔ DatL.pL (datR R σ J P T) v = v := by
@@ -285,11 +275,11 @@ theorem mem_Wp_iff (H : (datR R σ J P T).Hyp) (v : Fin M → R ⊗[F] E) :
       exact h1
 
 /- English proof (translation)
-Take `⟨he, hf⟩` from `hw`. Establish `hfix : ∀ i, lin R σ J h (ratV (F` using `F) R (tupH P i)) = ratV (F := F) R (tupH P i) := fun i => congrFun (MulAction.mem_stabilizer_iff.mp hh) i`. Express the relevant statement in the definitionally equal form `(∀ a, _) ∧ (∀ a, _)`. Use `⟨fun a => ?_, fun a => ?_⟩` and prove the remaining obligations. Establish `h1` using `hfix (Fin.castAdd r (Fin.castSucc a))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [tupH, F0, Fin.append_left, Fin.snoc_castSucc] at h1`. Rewrite using `[← h1, hR_lin]`. Conclude with `he a`. Establish `h1` using `hfix (Fin.natAdd (r + 1) a)`. Simplify using `only [tupH, Fin.append_right] at h1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1, hR_lin]`. Conclude with `hf a`.
+A detailed English derivation is pending.
 -/
 theorem lin_mem_Wp {h : HA R σ J} (hh : h ∈ Hsub R σ J P) {w : Fin M → R ⊗[F] E}
     (hw : w ∈ Wp R σ J P) : lin R σ J h w ∈ Wp R σ J P := by
@@ -318,20 +308,18 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] [FiniteD
   {σ : E →ₐ[F] E} {M : ℕ} {J : Matrix (Fin M) (Fin M) E} {r : ℕ} {P : Frame E M r} {T : F}
 
 /- English proof (translation)
-Use `haveI := PI.LevelKSplit.W.SC.finite_adeles_secondCountable F`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem sc_tens : SecondCountableTopology (Af F ⊗[F] E) := by
   haveI := PI.LevelKSplit.W.SC.finite_adeles_secondCountable F
   infer_instance
 
 /- English proof (translation)
-Use `haveI := sc_tens (F := F) (E := E)`. Establish `H` using `datR_hyp (R := Af F) hσσ hJ hP`. Establish `hfix : ∀ i, lin (Af F) σ J h (ratV (F` using `F) (Af F) (tupH P i)) = ratV (F := F) (Af F) (tupH P i) := fun i => congrFun (MulAction.mem_stabilizer_iff.mp hh) i`. Establish `hSe : ∀ a, lin (Af F) σ J h ((datR (Af F) σ J P T).e a) = (datR (Af F) σ J P T).e a`. Introduce `a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `hfix (Fin.castAdd r (Fin.castSucc a))`. Simplify using `only [tupH, F0, Fin.append_left, Fin.snoc_castSucc] at h1`. Conclude with `h1`. Establish `hSf : ∀ a, lin (Af F) σ J h ((datR (Af F) σ J P T).f a) = (datR (Af F) σ J P T).f a`. Introduce `a`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1` using `hfix (Fin.natAdd (r + 1) a)`. Simplify using `only [tupH, Fin.append_right] at h1`. Conclude with `h1`. Use `map_eq_of_split (DatL.pL (datR (Af F) σ J P T)).toAddMonoidHom ?_ (fun v => DatL.pL_pL H v) (Wp (Af F) σ J P) (fun v => mem_Wp_iff H v) (lin (Af F) σ J h).toAddMonoidHom ?_ (fun u hu => DatL.fix_of_pL_zero hSe hSf hu) (fun ν hν => hV hJ hσσ h ν hν) (linWp hh) (fun w => rfl) μ hμ` and prove the remaining obligations. Conclude with `LinearMap.continuous_on_pi _`.
-
-Conclude with `LinearMap.continuous_on_pi _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem wp_map (hσσ : ∀ x, σ (σ x) = x) (hJ : IsHermND σ J) (hP : P.IsStd σ J T)
     (hV : PI.LevelKSplit.W.CD.ModV F E σ M J) {h : HA (Af F) σ J} (hh : h ∈ Hsub (Af F) σ J P)

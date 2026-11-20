@@ -5,7 +5,7 @@ namespace GlobalTheory.PadicIntegralNormLeOne
 open Polynomial
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (PadicAlgCl l), PadicAlgCl.norm_extends]`. Conclude with `PadicInt.norm_le_one a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_algebraMap_padicInt_le_one {l : ℕ} [Fact (Nat.Prime l)] (a : ℤ_[l]) :
     ‖algebraMap ℤ_[l] (PadicAlgCl l) a‖ ≤ 1 := by
@@ -14,15 +14,13 @@ theorem norm_algebraMap_padicInt_le_one {l : ℕ} [Fact (Nat.Prime l)] (a : ℤ_
   exact PadicInt.norm_le_one a
 
 /- English proof (translation)
-Take `⟨f, hmon, hf⟩` from `hx`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `hsum` using `hf`. Rewrite `hsum` using `[eval₂_eq_sum_range, Finset.sum_range_succ, Polynomial.coeff_natDegree, hmon.leadingCoeff, map_one, one_mul]`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set n := f.natDegree`. Use `set S := ∑ i ∈ Finset.range n, algebraMap ℤ_[l] (PadicAlgCl l) (f.coeff i) * x ^ i`. Establish `hxn : x ^ n = -S` using `by rw [eq_neg_iff_add_eq_zero, add_comm]; exact hsum`. Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Establish `: S = 0` using `by simp [S, hn]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hxn` using `[this, hn, pow_zero, neg_zero]`. Conclude with `one_ne_zero hxn`. Establish `hx1 : (1 : ℝ) ≤ ‖x‖` using `h.le`. Establish `hS : ‖S‖ ≤ ‖x‖ ^ (n - 1)`. Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity)` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Introduce `i hi`. Rewrite `hi` using `[Finset.mem_range]`. Rewrite using `[norm_mul, norm_pow]`. Combine the equalities or inequalities in the displayed calculation. Establish `hlt : ‖x‖ ^ (n - 1) < ‖x‖ ^ n` using `pow_lt_pow_right₀ h (by omega)`.
-
-Establish `: ‖x ^ n‖ = ‖S‖` using `by rw [hxn, norm_neg]`. Rewrite `this` using `[norm_pow]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_isIntegral {l : ℕ} [Fact (Nat.Prime l)] (x : PadicAlgCl l)
     (hx : IsIntegral ℤ_[l] x) : ‖x‖ ≤ (1 : ℝ) := by
@@ -57,7 +55,7 @@ theorem norm_le_one_of_isIntegral {l : ℕ} [Fact (Nat.Prime l)] (x : PadicAlgCl
 end GlobalTheory.PadicIntegralNormLeOne
 
 /- English proof (translation)
-Introduce `x hx` and use `GlobalTheory.PadicIntegralNormLeOne.norm_le_one_of_isIntegral x hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : ∀ {l : ℕ} [inst : Fact (Nat.Prime l)] (x : PadicAlgCl l), IsIntegral ℤ_[l] x → ‖x‖ ≤ (1 : ℝ) :=
   fun x hx => GlobalTheory.PadicIntegralNormLeOne.norm_le_one_of_isIntegral x hx

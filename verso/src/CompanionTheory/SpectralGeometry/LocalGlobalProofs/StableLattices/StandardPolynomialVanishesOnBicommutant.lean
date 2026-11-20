@@ -19,15 +19,13 @@ section Diag
 variable {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Use `haveI : CompleteSpace C := hcl.completeSpace_coe`. Establish `hPg` using `proj_comm (ι := ι) σ hσ C hC`. Set `Q : ι → ι → H →L[ℂ] H` to `fun k l => (PiLp.proj 2 (fun _ : ι => H) k).comp (C.starProjection.comp (incl l))`. Establish `hQ : ∀ k l, Q k l * T = T * Q k l`. Introduce `k l`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hT` to reduce the goal to its premises. Introduce `g`. Use extensionality with `v`. Simplify using `only [Q, ContinuousLinearMap.mul_apply, ContinuousLinearMap.comp_apply, PiLp.proj_apply]`. Rewrite using `[← diag_incl, hPg, diag_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsum : ∀ w : PiLp 2 (fun _ : ι => H), ∀ k, (C.starProjection w).ofLp k = ∑ l, Q k l (w.ofLp l)`. Introduce `w k`. Use `conv_lhs => rw [← sum_incl w]`. Simplify using `[Q, map_sum]`. Establish `key : C.starProjection (diag T z) = diag T (C.starProjection z)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `k`. Rewrite using `[hsum, diag_apply, hsum, map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[diag_apply]`. Conclude with `congrArg (fun S : H →L[ℂ] H => S (z.ofLp l)) (hQ k l)`.
-
-Establish `hz' : C.starProjection z = z` using `(Submodule.starProjection_eq_self_iff).2 hz`. Rewrite using `[← hz', ← key]`. Conclude with `C.starProjection_apply_mem _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diag_mem_of_bicomm (σ : G →* (H →L[ℂ] H)) (hσ : ∀ g v, ‖σ g v‖ = ‖v‖)
     (C : Submodule ℂ (PiLp 2 (fun _ : ι => H))) (hcl : IsClosed (C : Set (PiLp 2 (fun _ : ι => H))))
@@ -62,21 +60,19 @@ theorem diag_mem_of_bicomm (σ : G →* (H →L[ℂ] H)) (hσ : ∀ g v, ‖σ g
   exact C.starProjection_apply_mem _
 
 /- English proof (translation)
-Set `y' : PiLp 2 (fun _ : ι => H)` to `WithLp.toLp 2 y`. Set `V : Submodule ℂ (PiLp 2 (fun _ : ι => H))` to `Submodule.span ℂ (Set.range fun g : G => diag (σ g) y')`. Establish `hdiag_mul : ∀ a b : G, ∀ w : PiLp 2 (fun _ : ι => H), diag (σ a) (diag (σ b) w) = diag (σ (a * b)) w`. Introduce `a b w`. Use extensionality with `k`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Simplify using `only [diag_apply, map_mul, ContinuousLinearMap.mul_apply]`. Establish `hCinv : ∀ g, ∀ z ∈ V.topologicalClosure, diag (σ g) z ∈ V.topologicalClosure`. Introduce `g`. Establish `hle : V ≤ V.topologicalClosure.comap ((diag (σ g) : (PiLp 2 (fun _ : ι => H)) →L[ℂ] (PiLp 2 (fun _ : ι => H))) : (PiLp 2 (fun _ : ι => H)) →ₗ[ℂ] (PiLp 2 (fun _ : ι => H)))`. Rewrite using `[Submodule.span_le]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨b, rfl⟩`. Use `show diag (σ g) (diag (σ b) y') ∈ V.topologicalClosure`. Rewrite using `[hdiag_mul]`. Conclude with `V.le_topologicalClosure (Submodule.subset_span ⟨g * b, rfl⟩)`. Establish `hcl' : IsClosed ((V.topologicalClosure.comap ((diag (σ g) : (PiLp 2 (fun _ : ι => H)) →L[ℂ] (PiLp 2 (fun _ : ι => H))) : (PiLp 2 (fun _ : ι => H)) →ₗ[ℂ] (PiLp 2 (fun _ : ι => H))) : Submodule ℂ (PiLp 2 (fun _ : ι => H))) : Set (PiLp 2 (fun _ : ι => H)))` using `V.isClosed_topologicalClosure.preimage (diag (σ g)).continuous`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `z hz`. Conclude with `Submodule.topologicalClosure_minimal V hle hcl' hz`. Establish `hy' : y' ∈ V.topologicalClosure`. Apply `V.le_topologicalClosure` to reduce the goal to its premises. Apply `Submodule.subset_span` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `⟨1, ?_⟩` and prove the remaining obligations. Use extensionality with `k`. Simplify using `[diag_apply]`. Establish `hT'` using `diag_mem_of_bicomm σ hσ V.topologicalClosure V.isClosed_topologicalClosure hCinv T hT y' hy'`. Set `Λ : (PiLp 2 (fun _ : ι => H)) →L[ℂ] H` to `∑ k, (L k).comp (PiLp.proj 2 (fun _ : ι => H) k)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hΛ : ∀ w : PiLp 2 (fun _ : ι => H), Λ w = ∑ k, L k (w.ofLp k)`. Introduce `w`. Simplify using `[Λ]`. Establish `hker : V.topologicalClosure ≤ LinearMap.ker (Λ : (PiLp 2 (fun _ : ι => H)) →ₗ[ℂ] H)`. Apply `Submodule.topologicalClosure_minimal` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨g, rfl⟩`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, ContinuousLinearMap.coe_coe, hΛ, diag_apply]`. Simplify `h g` using `[y']`. Conclude with `Λ.isClosed_ker`.
-
-Establish `hfin` using `hker hT'`. Simplify using `only [LinearMap.mem_ker, ContinuousLinearMap.coe_coe, hΛ, diag_apply] at hfin`. Simplify `hfin` using `[y']`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem sum_eq_zero_of_bicomm (σ : G →* (H →L[ℂ] H)) (hσ : ∀ g v, ‖σ g v‖ = ‖v‖)
     (L : ι → H →L[ℂ] H) (y : ι → H) (h : ∀ g, ∑ k, L k (σ g (y k)) = 0) (T : H →L[ℂ] H)
@@ -133,23 +129,23 @@ theorem sum_eq_zero_of_bicomm (σ : G →* (H →L[ℂ] H)) (hσ : ∀ g v, ‖�
 end Diag
 
 /- English proof (translation)
-Establish `step : ∀ j : ℕ, ∀ g : Fin M → G, stdPoly E (fun i : Fin M => if (i : ℕ) < j then a i else σ (g i)) = 0`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro g`. Simplify using `using h g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ j ih`. Introduce `g`. Distinguish the cases in `hj : j < M`. Set `k : Fin M` to `⟨j, hj⟩`. Set `b : Fin M → H →L[ℂ] H` to `fun i => if (i : ℕ) < j then a i else σ (g i)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hb : (fun i : Fin M => if (i : ℕ) < j + 1 then a i else σ (g i)) = Function.update b k (a k)`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hik : i = k`. Substitute `hik` using the available equality. Simplify using `[b, k]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[Function.update_of_ne hik]`. Establish `hne : (i : ℕ) ≠ j` using `fun e => hik (Fin.ext e)`. Distinguish the cases in `hlt : (i : ℕ) < j`. Establish `h2 : (i : ℕ) < j + 1` using `by omega`. Simplify using `[b, hlt, h2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2 : ¬ (i : ℕ) < j + 1` using `by omega`. Simplify using `[b, hlt, h2]`. Take `⟨A, B, hAB⟩` from `CompanionTheory.D.gk.admitted.FinOfPIAux.stdPoly_update E b k`. Establish `hσk : ∀ x : G, stdPoly E (Function.update b k (σ x)) = 0`. Introduce `x`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx` using `ih (Function.update g k x)`. Use `hx using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Distinguish the cases in `hik : i = k`. Substitute `hik` using the available equality.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[b, k]`. Rewrite using `[Function.update_of_ne hik]`. Simplify using `[b, Function.update_of_ne hik]`. Rewrite using `[hb, hAB]`. Use extensionality with `v`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.mul_apply, ContinuousLinearMap.zero_apply]`. Use `sum_eq_zero_of_bicomm σ hσ A (fun π => B π v) ?_ (a k) (ha k)` and prove the remaining obligations. Introduce `x`. Establish `hv` using `congrArg (fun S : H →L[ℂ] H => S v) ((hAB (σ x)).symm.trans (hσk x))`. Simplify `hv` using `[ContinuousLinearMap.sum_apply, ContinuousLinearMap.mul_apply]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hiff : ∀ i : Fin M, ((i : ℕ) < j + 1 ↔ (i : ℕ) < j)` using `fun i => by`. Use `i.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify `ih g` using `[hiff]`. Simplify using `using step M (fun _ => 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem standard_polynomial_vanishes_on_bicommutant (σ : G →* (H →L[ℂ] H)) (hσ : ∀ g v, ‖σ g v‖ = ‖v‖)
     (E : H →L[ℂ] H) (M : ℕ) (h : ∀ g : Fin M → G, stdPoly E (fun i => σ (g i)) = 0)
@@ -206,7 +202,7 @@ theorem standard_polynomial_vanishes_on_bicommutant (σ : G →* (H →L[ℂ] H)
   simpa using step M (fun _ => 1)
 
 /- English proof (translation)
-Introduce `G H _ _ _ _ σ hσ E m h a ha`. Conclude with `standard_polynomial_vanishes_on_bicommutant σ hσ E m h a ha`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem stdPoly_bicomm : ∀ (G H : Type) [Group G] [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : G →* (H →L[ℂ] H)),
     (∀ g v, ‖σ g v‖ = ‖v‖) → ∀ (E : H →L[ℂ] H) (m : ℕ), (∀ g : Fin m → G, stdPoly E (fun i => σ (g i)) = 0) →

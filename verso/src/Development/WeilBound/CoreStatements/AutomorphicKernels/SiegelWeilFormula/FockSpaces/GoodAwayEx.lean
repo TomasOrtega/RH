@@ -13,7 +13,7 @@ namespace PositivityTheory.SiegelWeilFormula.KFock
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Unfold `fP evX gs`. Rewrite using `[map_one, one_mul]`. Conclude with `Complex.exp_ne_zero _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fP_one_ne {m n : ℕ} (u : Fin m → Fin n → ℂ) : fP (1 : PX m n) u ≠ 0 := by
   unfold fP evX gs
@@ -21,13 +21,13 @@ theorem fP_one_ne {m n : ℕ} (u : Fin m → Fin n → ℂ) : fP (1 : PX m n) u 
   exact Complex.exp_ne_zero _
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d R w`. Set `g` to `(GlobalTheory.RealLift.intPts F (Fin d.m × Fin d.n × Fin 2)).indicator (1 : (Fin d.m × Fin d.n × Fin 2 → Af F) → ℂ)`. Establish `hg : g ∈ SB (Fin d.m × Fin d.n × Fin 2 → Af F)` using `GlobalTheory.RealLift.indicator_intPts_mem_SB`. Set `Ψ : Mx F E d.m d.n → ℂ` to `fun X => (∏ w' ∈ Finset.univ.erase w, fP (1 : PX d.m d.n) (R.loc w' X)) * g fun k => (d.crd X k).2`. Establish `hΨ : Ψ ∈ R.away w` using `Submodule.subset_span ⟨fun _ => 1, g, hg, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨Ψ, away_inv R w Ψ hΨ, fun h0 => ?_, fun f hf => tens_mem d R w f hf Ψ hΨ⟩` and prove the remaining obligations. Establish `h1` using `congrFun h0 0`. Establish `hc : (fun k => (d.crd (0 : Mx F E d.m d.n) k).2) = 0`. Use function extensionality and compare the values at `k`. Unfold `SD.crd`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Rewrite using `[Matrix.zero_apply, map_zero, Finsupp.zero_apply]`. Both sides reduce to the same expression. Establish `hg0 : g (fun k => (d.crd (0 : Mx F E d.m d.n) k).2) = 1`. Rewrite using `[hc]`. Conclude with `Set.indicator_of_mem GlobalTheory.RealLift.zero_mem_intPts _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hp : (∏ w' ∈ Finset.univ.erase w, fP (1 : PX d.m d.n) (R.loc w' 0)) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun w' _ => fP_one_ne _`. Conclude with `hp (by simpa [Ψ, hg0] using h1)`.
+A detailed English derivation is pending.
 -/
 theorem goodAwayEx : GoodAwayEx := by
   intro F E _ _ _ _ _ σ d R w

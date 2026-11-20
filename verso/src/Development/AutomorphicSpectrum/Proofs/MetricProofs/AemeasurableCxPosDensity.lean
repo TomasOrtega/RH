@@ -28,9 +28,9 @@ def setSecSet (S : Set ((Σ k, ι k) → ℂ)) (Ψ : (((k : K) → ι k) → ℂ
   {G | (∀ y ∉ B, G y = 0) ∧ DifferentiableOn ℂ G B ∧ ∀ y ∈ B, G y ∈ setFibre S Ψ y}
 
 /- English proof (translation)
-Take `⟨y0, hy0⟩` from `Function.ne_iff.mp hne`. Establish `hy0B : y0 ∈ ball c r`. Assume the negation of the conclusion as `h`. Conclude with `hy0 ((hG.1 y0 h).trans (hG'.1 y0 h).symm)`. Take `⟨v, hv⟩` from `Function.ne_iff.mp hy0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hd : DifferentiableOn ℂ (fun y => G y v - G' y v) (ball c r)` using `(differentiableOn_pi.mp hG.2.1 v).sub (differentiableOn_pi.mp hG'.2.1 v)`. Establish `han` using `osgood e _ _ isOpen_ball hd`. Use `measure_mono_null ?_ (ReciprocityTheory.AnForm.volume_zero_set_of_analyticOnNhd isOpen_ball (convex_ball c r).isPreconnected han ⟨y0, hy0B, sub_ne_zero.mpr hv⟩)` and prove the remaining obligations. Introduce and unpack `y ⟨hyB, hy⟩`. Conclude with `⟨hyB, by simp [hy]⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem setCoincide_null {S : Set ((Σ k, ι k) → ℂ)}
     {Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)} {c : Fin e → ℂ} {r : ℝ}
@@ -51,11 +51,11 @@ theorem setCoincide_null {S : Set ((Σ k, ι k) → ℂ)}
   exact ⟨hyB, by simp [hy]⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hinf`. Set `f` to `Set.Infinite.natEmbedding _ hinf`. Use `set N : Set (Fin e → ℂ) := ⋃ i : ℕ, ⋃ j : ℕ, ⋃ (_ : i ≠ j), {y | y ∈ ball c r ∧ (f i : (Fin e → ℂ) → ((k : K) → ι k) → ℂ) y = (f j : (Fin e → ℂ) → ((k : K) → ι k) → ℂ) y}`. Establish `hN : volume N = 0`. Use `measure_iUnion_null fun i => measure_iUnion_null fun j => measure_iUnion_null fun hij => ?_` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `setCoincide_null (f i).2 (f j).2 fun h => hij (f.injective (Subtype.ext h))` and prove the remaining obligations. Establish `hpos : 0 < volume (ball c r)` using `measure_ball_pos volume c hr`. Choose the witnesses or unpack the hypotheses as in `⟨y, hyB, hyN⟩ : ∃ y ∈ ball c r, y ∉ N := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hpos.ne' (measure_mono_null h hN)`. Use `(hfin y).not_infinite (Set.infinite_of_injective_forall_mem (f := fun n => (f n : (Fin e → ℂ) → ((k : K) → ι k) → ℂ) y) ?_ fun n => (f n).2.2.2 y hyB)` and prove the remaining obligations. Introduce `i j hij`. Assume the negation of the conclusion as `h`. Conclude with `hyN (Set.mem_iUnion.mpr ⟨i, Set.mem_iUnion.mpr ⟨j, Set.mem_iUnion.mpr ⟨h, hyB, hij⟩⟩⟩)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem setSecSet_finite {S : Set ((Σ k, ι k) → ℂ)}
     {Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)} (hfin : ∀ y, (setFibre S Ψ y).Finite)
@@ -84,7 +84,7 @@ def setBadSet (S : Set ((Σ k, ι k) → ℂ)) (Ψ : (((k : K) → ι k) → ℂ
     ¬ ((fun y' => segre (γ y')) =ᶠ[𝓝 y] fun y' => segre (γ' y'))}
 
 /- English proof (translation)
-Use `⟨fun y hy => Set.indicator_of_notMem hy _, ?_, fun y hy => ?_⟩` and prove the remaining obligations. Use `DifferentiableOn.congr (f := fun y' => segre (γ y')) ?_ fun y hy => Set.indicator_of_mem hy _` and prove the remaining obligations. Conclude with `fun y hy => (segre_differentiableAt (h y hy).1).differentiableWithinAt`. Rewrite using `[Set.indicator_of_mem hy]`. Conclude with `⟨γ y, (h y hy).2.1, rfl, (h y hy).2.2⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_setSecSet_of_sheet {S : Set ((Σ k, ι k) → ℂ)}
     {Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)} {B : Set (Fin e → ℂ)}
@@ -98,17 +98,15 @@ theorem mem_setSecSet_of_sheet {S : Set ((Σ k, ι k) → ℂ)}
     exact ⟨γ y, (h y hy).2.1, rfl, (h y hy).2.2⟩
 
 /- English proof (translation)
-Take `⟨D, hDc, hDd⟩` from `TopologicalSpace.exists_countable_dense (Fin e → ℂ)`. Establish `hρ : ∀ n : ℕ, (0 : ℝ) < 1 / (n + 1)` using `fun n => by positivity`. Use `measure_mono_null (t := ⋃ d ∈ D, ⋃ n : ℕ, ⋃ G ∈ setSecSet S Ψ (ball d (1 / (n + 1))), ⋃ G' ∈ setSecSet S Ψ (ball d (1 / (n + 1))), ⋃ (_ : G ≠ G'), {y | y ∈ ball d (1 / (n + 1)) ∧ G y = G' y}) ?_ ?_` and prove the remaining obligations. Introduce and unpack `y ⟨w, γ, γ', h1, h2, hne⟩`. Take `⟨ε, hε, hball⟩` from `Metric.eventually_nhds_iff_ball.mp (h1.2.and h2.2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `exists_nat_one_div_lt (half_pos hε)`. Take `⟨d, hdy, hdD⟩` from `Metric.dense_iff.mp hDd y _ (hρ n)`. Use `set B := ball d (1 / ((n : ℝ) + 1))`. Establish `hyB : y ∈ B`. Rewrite using `[mem_ball, dist_comm]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hdy`. Establish `hBsub : B ⊆ ball y ε`. Introduce `y' hy'`. Rewrite `hy'`, `hdy`, the goal using `[mem_ball]`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG` using `mem_setSecSet_of_sheet (S := S) (Ψ := Ψ) (B := B) (γ := γ) fun y' hy' => (hball y' (hBsub hy')).1`. Establish `hG'` using `mem_setSecSet_of_sheet (S := S) (Ψ := Ψ) (B := B) (γ := γ') fun y' hy' => (hball y' (hBsub hy')).2`. Use `Set.mem_iUnion₂.mpr ⟨d, hdD, Set.mem_iUnion.mpr ⟨n, Set.mem_iUnion₂.mpr ⟨_, hG, Set.mem_iUnion₂.mpr ⟨_, hG', Set.mem_iUnion.mpr ⟨fun heq => hne ?_, hyB, ?_⟩⟩⟩⟩⟩` and prove the remaining obligations. Use `filter_upwards [isOpen_ball.mem_nhds hyB] with y' hy'`. Use `congrFun heq y'` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[Set.indicator_of_mem hy', Set.indicator_of_mem hy']`. Then use the resulting hypothesis. Simplify using `only [Set.indicator_of_mem hyB]`. Rewrite using `[h1.1, h2.1]`. Use `(measure_biUnion_null_iff hDc).mpr fun d _ => measure_iUnion_null fun n => ?_` and prove the remaining obligations. Establish `hfinS` using `setSecSet_finite hfin d (hρ n) (S := S) (Ψ := Ψ)`.
-
-Use `(measure_biUnion_null_iff hfinS.countable).mpr fun G hG => ?_` and prove the remaining obligations. Use `(measure_biUnion_null_iff hfinS.countable).mpr fun G' hG' => ?_` and prove the remaining obligations. Conclude with `measure_iUnion_null fun hne => setCoincide_null hG hG' hne`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem setBadSet_null {S : Set ((Σ k, ι k) → ℂ)}
     {Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)} (hfin : ∀ y, (setFibre S Ψ y).Finite) :
@@ -150,7 +148,7 @@ theorem setBadSet_null {S : Set ((Σ k, ι k) → ℂ)}
     exact measure_iUnion_null fun hne => setCoincide_null hG hG' hne
 
 /- English proof (translation)
-Take `⟨ε, hε, hb⟩` from `Metric.eventually_nhds_iff_ball.mp h.2`. Use `analyticAt_pi_iff.mpr fun p => ?_` and prove the remaining obligations. Conclude with `osgood e _ _ isOpen_ball (fun y' hy' => (differentiableAt_pi.mp (hb y' hy').1 p).differentiableWithinAt) y (mem_ball_self hε)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem setSheet_analyticAt {S : Set ((Σ k, ι k) → ℂ)}
     {Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)} {y : Fin e → ℂ}
@@ -162,11 +160,11 @@ theorem setSheet_analyticAt {S : Set ((Σ k, ι k) → ℂ)}
     (differentiableAt_pi.mp (hb y' hy').1 p).differentiableWithinAt) y (mem_ball_self hε)
 
 /- English proof (translation)
-Establish `hs : IsSectionOn (⊥ : Ideal (MRing ι)) (HermLine.ofWeight (fun _ => (1 : ℝ)) (fun _ _ _ => rfl)) 1`. Use `⟨0, fun k => by simp [HermLine.ofWeight], fun m hm k => ?_, ?_⟩` and prove the remaining obligations. Rewrite `hm` using `[MvPolynomial.support_one, Finset.mem_singleton]`. Substitute `hm` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `h` using `density_eq hL hs hγ hγ' hy hseg`. Establish `h1 : ∀ z, logNorm (HermLine.ofWeight (fun _ : (Σ k, ι k) → ℂ => (1 : ℝ)) (fun _ _ _ => rfl)) 1 z = 1`. Introduce `z`. Simplify using `[logNorm, HermLine.ofWeight, Real.exp_neg, Real.log_exp]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify `h` using `only [h1, one_mul]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem maDensity_eq_of_segre {L : Fin e → HermLine ι} (hL : ∀ j, IsSmoothHerm (L j))
     {γ γ' : (Fin e → ℂ) → (Σ k, ι k) → ℂ} {y : Fin e → ℂ}
@@ -187,7 +185,7 @@ theorem maDensity_eq_of_segre {L : Fin e → HermLine ι} (hL : ∀ j, IsSmoothH
   simpa only [h1, one_mul] using h
 
 /- English proof (translation)
-Use `ae_iff.mpr (measure_mono_null (fun y hy => ?_) (setBadSet_null hfin))` and prove the remaining obligations. Simplify using `only [Set.mem_ofPred_eq, not_forall] at hy`. Take `⟨w, γ, γ', h1, h2, hne⟩` from `hy`. Use `⟨w, γ, γ', h1, h2, fun hseg => hne ?_⟩` and prove the remaining obligations. Conclude with `maDensity_eq_of_segre hL (setSheet_analyticAt h1) (setSheet_analyticAt h2) (hS _ h1.2.self_of_nhds.2.1) hseg`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem setSheetIndep {S : Set ((Σ k, ι k) → ℂ)} (hS : ∀ z ∈ S, ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0)
     {Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)} (hfin : ∀ y, (setFibre S Ψ y).Finite)
@@ -203,27 +201,25 @@ theorem setSheetIndep {S : Set ((Σ k, ι k) → ℂ)} (hS : ∀ z ∈ S, ∀ k,
     (hS _ h1.2.self_of_nhds.2.1) hseg
 
 /- English proof (translation)
-Take `⟨D, hDc, hDd⟩` from `TopologicalSpace.exists_countable_dense (Fin e → ℂ)`. Establish `hρ : ∀ n : ℕ, (0 : ℝ) < 1 / (n + 1)` using `fun n => by positivity`. Set `Bl : D × ℕ → Set (Fin e → ℂ)` to `fun p => ball (p.1 : Fin e → ℂ) (1 / (p.2 + 1))`. Establish `: Countable D` using `hDc.to_subtype`. Establish `: ∀ p : D × ℕ, Countable (setSecSet S Ψ (Bl p))` using `fun p => (setSecSet_finite hfin (p.1 : Fin e → ℂ) (hρ p.2)).countable.to_subtype`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `T` to `Σ p : D × ℕ, setSecSet S Ψ (Bl p)`. Set `Lift : T → ((Fin e → ℂ) → (Σ k, ι k) → ℂ) → Prop` to `fun t γ => ∀ y ∈ Bl t.1, DifferentiableAt ℂ γ y ∧ γ y ∈ S ∧ segre (γ y) = (t.2 : (Fin e → ℂ) → ((k : K) → ι k) → ℂ) y`. Set `Bo : Option T → Set (Fin e → ℂ)` to `fun o => o.elim ∅ fun t => if ∃ γ, Lift t γ then Bl t.1 else ∅`. Set `γo : Option T → (Fin e → ℂ) → (Σ k, ι k) → ℂ` to `fun o => o.elim (fun _ _ => 0) fun t => if h : ∃ γ, Lift t γ then h.choose else fun _ _ => 0`. Take `⟨f, hf⟩` from `exists_surjective_nat (Option T)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `hBsome : ∀ t : T, Bo (some t) = if ∃ γ, Lift t γ then Bl t.1 else ∅` using `fun t => rfl`. Establish `hγsome : ∀ t : T, (h : ∃ γ, Lift t γ) → γo (some t) = h.choose` using `fun t h => by show (if h : ∃ γ, Lift t γ then h.choose else fun _ _ => 0) = _`. Rewrite using `[dif_pos h]`. Establish `hBo : ∀ o, IsOpen (Bo o)`. Introduce and unpack `(_ | t)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `isOpen_empty`. Rewrite using `[hBsome] split_ifs`. Conclude with `isOpen_ball`. Conclude with `isOpen_empty`. Establish `hlift : ∀ o, ∀ y ∈ Bo o, DifferentiableAt ℂ (γo o) y ∧ γo o y ∈ S ∧ Ψ (segre (γo o y)) = Fin.cons 1 y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `(_ | t) y hy`. Conclude with `absurd hy (Set.notMem_empty y)`. Rewrite `hy`, `with`, `h` using `[hBsome] at hy split_ifs`. Rewrite using `[hγsome t h]`. Take `⟨h1, h2, h3⟩` from `h.choose_spec y hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨h1, h2, ?_⟩` and prove the remaining obligations. Take `⟨-, -, hfib⟩` from `t.2.2`. Take `⟨z, -, -, hΨ⟩` from `hfib y hy`. Rewrite using `[h3, hΨ]`. Conclude with `absurd hy (Set.notMem_empty y)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `⟨fun m => Bo (f m), fun m => γo (f m), fun m => hBo (f m), fun m => hlift (f m), fun y w γ' hγ' => ?_⟩` and prove the remaining obligations. Take `⟨ε, hε, hball⟩` from `Metric.eventually_nhds_iff_ball.mp hγ'.2`. Take `⟨n, hn⟩` from `exists_nat_one_div_lt (half_pos hε)`. Take `⟨d, hdy, hdD⟩` from `Metric.dense_iff.mp hDd y _ (hρ n)`. Set `p : D × ℕ` to `(⟨d, hdD⟩, n)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hyB : y ∈ Bl p` using `by show y ∈ ball d (1 / ((n : ℝ) + 1))`. Rewrite using `[mem_ball, dist_comm]`. Conclude with `hdy`. Establish `hBsub : Bl p ⊆ ball y ε`. Introduce `y' hy'`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hy'' : dist y' d < 1 / ((n : ℝ) + 1)` using `hy'`. Rewrite `hdy`, the goal using `[mem_ball]`. Combine the equalities or inequalities in the displayed calculation. Establish `hG` using `mem_setSecSet_of_sheet (S := S) (Ψ := Ψ) (B := Bl p) (γ := γ') fun y' hy' => hball y' (hBsub hy')`. Set `t : T` to `⟨p, _, hG⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hL : ∃ γ, Lift t γ` using `⟨γ', fun y' hy' => ⟨(hball y' (hBsub hy')).1, (hball y' (hBsub hy')).2.1, by simp only [t]; rw [Set.indicator_of_mem hy']⟩⟩`. Take `⟨m, hm⟩` from `hf (some t)`. Use `⟨m, ?_, ?_⟩` and prove the remaining obligations. Use `show y ∈ Bo (f m)`. Rewrite using `[hm, hBsome, if_pos hL]`.
-
-Conclude with `hyB`. Use `show segre (γo (f m) y) = w`. Rewrite using `[hm, hγsome t hL, (hL.choose_spec y hyB).2.2]`. Simplify using `only [t]`. Rewrite using `[Set.indicator_of_mem hyB, hγ'.1]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_setLift_family {S : Set ((Σ k, ι k) → ℂ)}
     {Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)} (hfin : ∀ y, (setFibre S Ψ y).Finite) :
@@ -305,47 +301,41 @@ theorem exists_setLift_family {S : Set ((Σ k, ι k) → ℂ)}
       rw [Set.indicator_of_mem hyB, hγ'.1]
 
 /- English proof (translation)
-Take `⟨B, γ, hBo, hlift, hcov⟩` from `exists_setLift_family (S := S) (Ψ := Ψ) hfin`. Establish `hind` using `setSheetIndep hS hfin hL`. Establish `hsheet : ∀ m, ∀ y ∈ B m, IsSetSheet S Ψ y (segre (γ m y)) (γ m)` using `fun m y hy => ⟨rfl, Filter.eventually_of_mem ((hBo m).mem_nhds hy) fun y' hy' => hlift m y' hy'⟩`. Establish `hγc : ∀ m, ContinuousOn (γ m) (B m)` using `fun m y hy => (hlift m y hy).1.continuousAt.continuousWithinAt`. Establish `hO : ∀ m, Set.MapsTo (γ m) (B m) {z | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}` using `fun m y hy => hS _ (hlift m y hy).2.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hseg : Continuous (segre : ((Σ k, ι k) → ℂ) → ((k : K) → ι k) → ℂ)` using `continuous_pi fun i => continuous_finsetProd _ fun k _ => continuous_apply _`. Use `set σ : ℕ → (Fin e → ℂ) → ((k : K) → ι k) → ℂ := fun m => (B m).piecewise (fun y => segre (γ m y)) 0 with hσdef`. Establish `hσB : ∀ m, ∀ y ∈ B m, σ m y = segre (γ m y)` using `fun m y hy => Set.piecewise_eq_of_mem _ _ _ hy`. Establish `hσm : ∀ m, Measurable (σ m)` using `fun m => (hseg.comp_continuousOn (hγc m)).measurable_piecewise continuousOn_const (hBo m).measurableSet`. Use `set γt : ℕ → (Fin e → ℂ) → (Σ k, ι k) → ℂ := fun m => (B m).piecewise (γ m) 0 with hγtdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hγtm : ∀ m, Measurable (γt m)` using `fun m => (hγc m).measurable_piecewise continuousOn_const (hBo m).measurableSet`. Use `set dens : ℕ → (Fin e → ℂ) → ℝ := fun m y => max (g (γt m y) * maDensity (fun j y' => pot L j (γ m y')) y) 0 with hddef`. Establish `hdm : ∀ m, Measurable (dens m)` using `fun m => ((hg.comp (hγtm m)).mul (GroundTheory.Heights₂.Heights.PtsSumMeasurable.measurable_maDensity _)).max measurable_const`. Establish `hdens : ∀ m, ∀ y ∈ B m, dens m y = max (g (γ m y) * maDensity (fun j y' => pot L j (γ m y')) y) 0`. Introduce `m y hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hddef, hγtdef, Set.piecewise_eq_of_mem _ _ _ hy]`. Use `set T : ℕ → Set (Fin e → ℂ) := fun m => {y | y ∈ B m ∧ ∀ m' < m, ¬ (y ∈ B m' ∧ σ m' y = σ m y)} with hTdef`. Establish `hTm : ∀ m, MeasurableSet (T m)`. Introduce `m`. Establish `: T m = B m ∩ ⋂ m' ∈ Finset.range m, (B m' ∩ {y | σ m' y = σ m y})ᶜ`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `y`. Simplify using `[hTdef]`. Rewrite using `[this]`. Conclude with `(hBo m).measurableSet.inter (Finset.measurableSet_biInter _ fun m' _ => ((hBo m').measurableSet.inter (measurableSet_eq_fun (hσm m') (hσm m))).compl)`. Use `set f : ℕ → (Fin e → ℂ) → ℝ := fun m => (T m).indicator (dens m) with hfdef`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hfm : ∀ m, Measurable (f m)` using `fun m => (hdm m).indicator (hTm m)`. Establish `key : AEStronglyMeasurable (cxPosDens S Ψ (pot L) g) volume`. Establish `hpp : cxPosDens S Ψ (pot L) g = fun y => ∑ᶠ w ∈ setFibre S Ψ y, max (setSheetDensity S Ψ (pot L) g y w) 0` using `rfl`. Rewrite using `[hpp]`. Use `aestronglyMeasurable_of_tendsto_ae atTop (f := fun N y => ∑ m ∈ Finset.range N, f m y) (fun N => (Finset.measurable_sum _ fun m _ => hfm m).aestronglyMeasurable) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [hind] with y hy`. Establish `hterm : ∀ m, y ∈ T m → f m y = max (setSheetDensity S Ψ (pot L) g y (σ m y)) 0`. Introduce `m hm`. Establish `hsh` using `hsheet m y hm.1`. Rewrite `hsh` using `[← hσB m y hm.1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hex : ∃ γ', IsSetSheet S Ψ y (σ m y) γ'` using `⟨_, hsh⟩`. Rewrite using `[hfdef]`. Simplify using `only`. Rewrite using `[Set.indicator_of_mem hm, hdens m y hm.1]`. Unfold `setSheetDensity`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos hex, hy _ _ _ hex.choose_spec hsh]`. Use `choose i0 hi0 using hO m hm.1`. Establish `hs : segre (γ m y) = segre (hex.choose y)`. Rewrite using `[hex.choose_spec.1, hσB m y hm.1]`. Take `⟨hc', hrel⟩` from `eq_bsmul_of_segre_eq i0 hi0 hs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hgy : g (hex.choose y) = g (γ m y)`. Rewrite using `[hrel]`. Conclude with `hdeg _ _ fun k => div_ne_zero (hc' k) (hi0 k)`. Rewrite using `[hgy]`. Establish `hmemF : ∀ m, y ∈ T m → σ m y ∈ (hfin y).toFinset`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `m hm`. Rewrite using `[Set.Finite.mem_toFinset, hσB m y hm.1]`. Conclude with `⟨γ m y, (hlift m y hm.1).2.1, rfl, (hlift m y hm.1).2.2⟩`. Establish `hfy : ∀ m, (∑ w ∈ (hfin y).toFinset, if σ m y = w then f m y else 0) = f m y`. Introduce `m`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.sum_ite_eq]`. Distinguish the cases in `hm : y ∈ T m`. Rewrite using `[if_pos (hmemF m hm)]`. Use `split_ifs`. Both sides reduce to the same expression.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[hfdef]`. Simplify using `only`. Rewrite using `[Set.indicator_of_notMem hm]`. Establish `hev : ∀ w ∈ (hfin y).toFinset, ∀ᶠ N in atTop, max (setSheetDensity S Ψ (pot L) g y w) 0 = ∑ m ∈ Finset.range N, if σ m y = w then f m y else 0`. Introduce `w _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hex : ∃ γ', IsSetSheet S Ψ y w γ'`. Take `⟨γ', hγ'⟩` from `hex`. Establish `hP' : ∃ m, y ∈ B m ∧ σ m y = w`. Take `⟨m, hm, hmw⟩` from `hcov y w γ' hγ'`. Conclude with `⟨m, hm, (hσB m y hm).trans hmw⟩`.
+It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hm1B, hm1w⟩` from `Nat.find_spec hP'`. Establish `hm1T : y ∈ T (Nat.find hP')` using `⟨hm1B, fun m' hm' h => Nat.find_min hP' hm' ⟨h.1, h.2.trans hm1w⟩⟩`. Use `filter_upwards [eventually_gt_atTop (Nat.find hP')] with N hN`. Rewrite using `[Finset.sum_eq_single_of_mem (Nat.find hP') (Finset.mem_range.2 hN), if_pos hm1w, hterm _ hm1T, hm1w]`. Introduce `m _ hne`.
+Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs with hmw`. Distinguish the cases in `hmT : y ∈ T m`. It suffices to derive a contradiction. Establish `hle : Nat.find hP' ≤ m` using `Nat.find_min' hP' ⟨hmT.1, hmw⟩`. Conclude with `hmT.2 _ (lt_of_le_of_ne hle (Ne.symm hne)) ⟨hm1B, hm1w.trans hmw.symm⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hfdef]`. Simplify using `only`. Rewrite using `[Set.indicator_of_notMem hmT]`. Both sides reduce to the same expression. Establish `h0 : setSheetDensity S Ψ (pot L) g y w = 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Unfold `setSheetDensity`. Rewrite using `[dif_neg hex]`. Use `Eventually.of_forall fun N => ?_` and prove the remaining obligations. Rewrite using `[h0, max_self]`. Use `(Finset.sum_eq_zero fun m _ => ?_).symm` and prove the remaining obligations.
-
-Use `split_ifs with hmw`. Distinguish the cases in `hmT : y ∈ T m`. Establish `hsh` using `hsheet m y hmT.1`. Rewrite `hsh` using `[← hσB m y hmT.1, hmw]`. Conclude with `absurd ⟨_, hsh⟩ hex`.
-
-Rewrite using `[hfdef]`. Simplify using `only`. Rewrite using `[Set.indicator_of_notMem hmT]`. Both sides reduce to the same expression. Establish `hsum : ∑ᶠ w ∈ setFibre S Ψ y, max (setSheetDensity S Ψ (pot L) g y w) 0 = ∑ w ∈ (hfin y).toFinset, max (setSheetDensity S Ψ (pot L) g y w) 0` using `finsum_mem_eq_finite_toFinset_sum _ (hfin y)`.
-
-Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `filter_upwards [(eventually_all_finset _).2 hev] with N hN`. Rewrite using `[hsum, Finset.sum_congr rfl hN, Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun m _ => hfy m`. Conclude with `key.aemeasurable`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cxPosDens_aemeasurable_of_finite {S : Set ((Σ k, ι k) → ℂ)}
     (hS : ∀ z ∈ S, ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0)
@@ -487,7 +477,7 @@ theorem cxPosDens_aemeasurable_of_finite {S : Set ((Σ k, ι k) → ℂ)}
   exact key.aemeasurable
 
 /- English proof (translation)
-Introduce `K _ ι _ Q e Ψ L g hQ hΨ hL hg hdeg`. Conclude with `cxPosDens_aemeasurable_of_finite (fun z hz => hz.1) (GlobalTheory.CompanionTheory.Ar.Pub.CxFib.setFibre_finite K ι Q e Ψ hQ hΨ) hL hg hdeg`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cxPosDens_aemeasurable : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)]
     (Q : Ideal (MRingOver ℂ ι)) (e : ℕ) (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ))

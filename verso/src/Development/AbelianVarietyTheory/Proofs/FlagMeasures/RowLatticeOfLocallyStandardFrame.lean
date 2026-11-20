@@ -21,19 +21,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.RowLatAdapt
 
 /- English proof (translation)
-Establish `hind : ∀ G : FlagG (VS D) D.R.rS T, LinearIndependent D.host.E G.fvec`. Introduce `G`. Unfold `FlagG.fvec`. Rewrite using `[linearIndependent_fin_snoc]`. Use `⟨G.e_indep, fun hz => hT ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0 : ∀ x ∈ Submodule.span D.host.E (Set.range G.e), (VS D).hT x G.z = 0`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => obtain ⟨a, rfl⟩ := hy`. Conclude with `G.z_orth a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => simp [hx, hy]`. Consider the case `smul c x _ hx => simp [hx]`. Use `h0 _ hz` as an intermediate fact. Rewrite `this` using `[G.z_norm]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `neg_eq_zero.1 this`. Establish `hgram : ∀ G : FlagG (VS D) D.R.rS T, ∀ i j, (VS D).hT (G.fvec i) (G.fvec j) = if i = Fin.last _ ∧ j = Fin.last _ then -T else 0`. Introduce `G i j`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => simp [FlagG.fvec, G.z_norm]`. Consider the case `cast b`. Simplify using `only [FlagG.fvec, Fin.snoc_last, Fin.snoc_castSucc]`. Rewrite using `[← (VS D).herm.eq (G.e b) G.z, G.z_orth b, map_zero]`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using `[Fin.castSucc_ne_last]`. Consider the case `cast a`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => simp [FlagG.fvec, G.z_orth, Fin.castSucc_ne_last]`. Consider the case `cast b => simp [FlagG.fvec, G.e_iso, Fin.castSucc_ne_last]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨g, hg, hgi⟩` from `GlobalTheory.St.WittT.witt_family F.fvec F'.fvec (hind F) (hind F') (fun i j => by rw [hgram F, hgram F'])`. Conclude with `⟨g, hg, hgi⟩`.
+A detailed English derivation is pending.
 -/
 theorem witt_flag (D : D7) (T : D.host.E) (hT : T ≠ 0) (F F' : FlagG (VS D) D.R.rS T) :
     ∃ g : GV D, g ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT ∧ ∀ a, g (F.fvec a) = F'.fvec a := by
@@ -72,11 +72,11 @@ theorem witt_flag (D : D7) (T : D.host.E) (hT : T ≠ 0) (F F' : FlagG (VS D) D.
   exact ⟨g, hg, hgi⟩
 
 /- English proof (translation)
-Introduce `y hy x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨b, rfl⟩` from `hw`. Proceed by induction on `hy using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Consider the case `mem v hv => obtain ⟨a, rfl⟩ := hv`. Conclude with `G.e_iso a b`. Consider the case `zero => simp`. Consider the case `add u v _ _ hu hv => simp [hu, hv]`. Consider the case `smul c u _ hu => simp [hu]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add u v _ _ hu hv => simp [hu, hv]`. Consider the case `smul c u _ hu => simp [hu]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem iso_X {D : D7} {T : D.host.E} (G : FlagG (VS D) D.R.rS T) :
     ∀ y ∈ G.X, ∀ x ∈ G.X, (VS D).hT y x = 0 := by
@@ -94,7 +94,7 @@ theorem iso_X {D : D7} {T : D.host.E} (G : FlagG (VS D) D.R.rS T) :
   | smul c u _ hu => simp [hu]
 
 /- English proof (translation)
-Unfold `FlagG.Xa FlagG.X`. Use `congr 1`. Use extensionality with `v`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem xa_last {D : D7} {T : D.host.E} (G : FlagG (VS D) D.R.rS T) : G.Xa D.R.rS = G.X := by
   unfold FlagG.Xa FlagG.X
@@ -103,37 +103,35 @@ theorem xa_last {D : D7} {T : D.host.E} (G : FlagG (VS D) D.R.rS T) : G.Xa D.R.r
   simp
 
 /- English proof (translation)
-Simplify using `only [Lsub, Lrep, Xsp, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lsub_eq {D : D7} {T T' : D.host.E} (F : LFlag (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T')
     (h : F.fl.X = F'.fl.X) (Λ : LV D) : Lsub Λ F = Lsub Λ F' := by
   simp only [Lsub, Lrep, Xsp, h]
 
 /- English proof (translation)
-Simplify using `only [XLam, Xsp, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem xlam_eq {D : D7} {T T' : D.host.E} (F : LFlag (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T')
     (h : F.fl.X = F'.fl.X) (Λ : LV D) : XLam Λ F = XLam Λ F' := by
   simp only [XLam, Xsp, h]
 
 /- English proof (translation)
-Introduce `D Tn hTn F0 G Z A hA Λ hΛ hloc`. Establish `hU` using `GlobalTheory.T.isUnimodular_of_local_standardLattice_translates`. Establish `hX` using `GlobalTheory.T.isotropicPart_eq_span_scaledFrame_unitriangular`. Establish `hZ` using `GlobalTheory.T.exists_add_isotropicSpan_mem_locallyStandardLattice`. Establish `hP` using `GlobalTheory.T.anisotropicFrameVector_primitive_in_innerLattice`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM` using `GlobalTheory.T.exists_flag_of_unitriangular_isotropic_shift`. Establish `hTr` using `GlobalTheory.T.rowLattice_properties_transport_by_isometry`. Establish `hC` using `GlobalTheory.T.fixed_conv_of_integral_flag_lattice`. Establish `hu` using `hU D Z A Λ hΛ hloc`. Take `⟨e', he', hXe⟩` from `hX D _ G Z A hA Λ hΛ hloc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, hzx⟩` from `hZ D _ G Z A hA Λ hΛ hloc`. Establish `hpr` using `hP D _ G Z A hA Λ hΛ hloc`. Take `⟨G', hGe, hGz, hGX⟩` from `hM D _ G.fl e' x he' hx`. Establish `hT0 : ((Tn : ℕ) : D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 hTn`. Take `⟨g, hg, hga⟩` from `witt_flag D _ hT0 F0 G'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hX' : XLam Λ (lf D G') = XS D G'`. Rewrite using `[xlam_eq (lf D G') G hGX, hXe, XS, hGe]`. Establish `hpr' : ∀ c : D.host.E, c • G'.z ∈ Lsub Λ (lf D G') → ∃ o : 𝓞 D.host.E, (o : D.host.E) = c`. Introduce `c hc`. Rewrite `hc` using `[lsub_eq (lf D G') G hGX]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hpr c ?_` and prove the remaining obligations. Establish `hcx : c • G.fl.z = c • G'.z - c • x` using `by rw [hGz, smul_add]; abel`. Rewrite using `[hcx]`. Use `Submodule.sub_mem _ hc ?_` and prove the remaining obligations. Establish `hxX : c • x ∈ (Xsp G : Submodule D.host.E (VS D).V)` using `Submodule.smul_mem _ c hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨Submodule.mem_sup_right hxX, ?_⟩` and prove the remaining obligations. Use `show c • x ∈ orth (VS D) (Xsp G)`. Simplify using `only [orth, Submodule.mem_iInf, LinearMap.mem_ker]`. Introduce `y hy`. Conclude with `iso_X G.fl y hy _ hxX`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h1, h2, h3, h4, h5, h6⟩` from `hTr D _ F0 G' g hg hga Λ hΛ hu (hGz ▸ hzx) hX' hpr'`. Use `⟨g, ⟨hg, fun a => ?_⟩, h1, ⟨h2, h3, ⟨h4, rfl⟩, hC D _ F0 _ h5 h6⟩, h5⟩` and prove the remaining obligations. Use `show g (F0.fvec a) - G.fl.fvec a ∈ G.fl.Xa a.val`. Rewrite using `[hga a]`. Proceed by induction on `a using Fin.lastCases with`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `last`. Simplify using `only [FlagG.fvec, Fin.snoc_last, Fin.val_last, hGz, xa_last]`. Simplify using `using hx`. Consider the case `cast b`. Simplify using `only [FlagG.fvec, Fin.snoc_castSucc, Fin.coe_castSucc, hGe]`.
-
-Conclude with `he' b`.
+Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem row_lattice_of_local_standard : ∀ (D : D7) (Tn : ℕ), Tn ≠ 0 → ∀ (F0 : FlagG (VS D) D.R.rS (Tn : D.host.E)) (G : LFlag (VS D) D.R.rS (Tn : D.host.E)) (Z : LocDat D) (A : ∀ p : PlF D, LocNG.FrameD (locH Z p) D.R.rS), (∀ p, (A p).f = fun a => frFac Z.δ p a • baseChange₂ D p (frame G a)) → ∀ Λ : LV D, Submodule.IsLattice D.host.E Λ → (∀ p, ∃ n ∈ (A p).N, ∃ L, (A p).IsInner L ∧ lattice₂ D Z.M p Λ = LocNG.img n ((A p).LamStd L)) → ∃ g, Adapt g (lf D F0) G ∧ IsRowLat D F0 (Formalism.HermitianLatticesTheory.gmap g⁻¹ Λ) := by
   intro D Tn hTn F0 G Z A hA Λ hΛ hloc

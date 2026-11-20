@@ -45,7 +45,7 @@ def pairVec (S : GridChoice W U) {t : T} (x : ∀ j, FinPt G (.top j)) (y : ∀ 
   (brPair (listedWt G (.grid D.R.m D.R.m)) G.sp.topDec.rank.symm (wt G (.top D.R.m))).compl₁₂ (colV S fs x) (rowV S fs y)
 
 /- English proof (translation)
-Unfold `pairPts Finsupp.sum`. Rewrite using `[LinearMap.sum_apply, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, LinearMap.smul_apply, smul_eq_mul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pairPts_eq (S : GridChoice W U) {t : T} (τ : PureDat G t →₀ ℂ) (x : ∀ j, FinPt G (.top j))
     (y : ∀ i, FinPt G (.grid i D.R.m)) (v w) :

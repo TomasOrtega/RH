@@ -34,12 +34,12 @@ def Improves (D : Datum H) (y : D.La →ₗ[𝓞 E] X) (n : ℕ) (𝔭 : Ideal (
     ¬ img D y Z'' 𝔭 ≤ img D y Z' 𝔭
 
 /- English proof (translation)
-The claim follows from `H.starRing.star_involutive a`.
+A detailed English derivation is pending.
 -/
 theorem bar_bar (H : Host E) (a : 𝓞 E) : H.bar (H.bar a) = a := H.starRing.star_involutive a
 
 /- English proof (translation)
-Establish `h` using `D.alt (a + b)`. Simplify using `only [map_add, LinearMap.add_apply, D.alt] at h`. Take the linear combination `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem ef_swap (D : Datum H) (a b : D.La) : D.EF a b = -D.EF b a := by
   have h := D.alt (a + b)
@@ -47,16 +47,16 @@ theorem ef_swap (D : Datum H) (a b : D.La) : D.EF a b = -D.EF b a := by
   linear_combination h
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_perp {D : Datum H} {Z : Submodule (𝓞 E) D.La} {a : D.La} : a ∈ perp D Z ↔ ∀ z ∈ Z, D.EF a z = 0 := Iff.rfl
 
 variable {D : Datum H} {Z Z' : Submodule (𝓞 E) D.La}
 
 /- English proof (translation)
-Use `⟨h.2.1, h.1, fun φ => ?_, fun φ => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, hu⟩` from `h.2.2.2 (-φ)`. Use `⟨a, fun b => by rw [ef_swap, ha]; simp, fun a' ha' => hu a' fun b => ?_⟩` and prove the remaining obligations. Rewrite using `[ef_swap, ha']`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨a, ha, hu⟩` from `h.2.2.1 (-φ)`. Use `⟨a, fun b => by rw [ef_swap, ha]; simp, fun a' ha' => hu a' fun b => ?_⟩` and prove the remaining obligations. Rewrite using `[ef_swap, ha']`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem IsOpp.symm (h : IsOpp D Z Z') : IsOpp D Z' Z := by
   refine ⟨h.2.1, h.1, fun φ => ?_, fun φ => ?_⟩
@@ -68,7 +68,7 @@ theorem IsOpp.symm (h : IsOpp D Z Z') : IsOpp D Z' Z := by
     rw [ef_swap, ha']; simp
 
 /- English proof (translation)
-Take `⟨c, -, hu⟩` from `h.2.2.1 0`. Establish `h1` using `hu ⟨b, hb⟩ fun a => by rw [ef_swap, h0 _ a.2]; simp`. Establish `h2` using `hu 0 fun a => by simp`. Conclude with `congrArg Subtype.val (h1.trans h2.symm)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem IsOpp.eq_zero (h : IsOpp D Z Z') {b : D.La} (hb : b ∈ Z') (h0 : b ∈ perp D Z) : b = 0 := by
   obtain ⟨c, -, hu⟩ := h.2.2.1 0
@@ -77,9 +77,9 @@ theorem IsOpp.eq_zero (h : IsOpp D Z Z') {b : D.La} (hb : b ∈ Z') (h0 : b ∈ 
   exact congrArg Subtype.val (h1.trans h2.symm)
 
 /- English proof (translation)
-Take `⟨b, hb, -⟩` from `h.2.2.1 ((D.EF.flip a).toAddMonoidHom.comp Z.subtype.toAddMonoidHom)`. Use `⟨b, b.2, fun z hz => ?_⟩` and prove the remaining obligations. Use `hb ⟨z, hz⟩` as an intermediate fact. Simplify using `only [AddMonoidHom.comp_apply, LinearMap.toAddMonoidHom_coe, Submodule.subtype_apply, LinearMap.flip_apply] at this`. Rewrite using `[ef_swap, map_sub, this]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `neg_eq_zero.2 (sub_self _)`.
+A detailed English derivation is pending.
 -/
 theorem IsOpp.exists_sub_mem_perp (h : IsOpp D Z Z') (a : D.La) : ∃ b ∈ Z', a - b ∈ perp D Z := by
   obtain ⟨b, hb, -⟩ := h.2.2.1 ((D.EF.flip a).toAddMonoidHom.comp Z.subtype.toAddMonoidHom)
@@ -90,7 +90,7 @@ theorem IsOpp.exists_sub_mem_perp (h : IsOpp D Z Z') (a : D.La) : ∃ b ∈ Z', 
   exact neg_eq_zero.2 (sub_self _)
 
 /- English proof (translation)
-Take `⟨b, hb, h1⟩` from `h.exists_sub_mem_perp a`. Take `⟨z, hz, h2⟩` from `h.symm.exists_sub_mem_perp a`. Use `⟨z, hz, a - b - z, ⟨sub_mem h1 (h.1 hz), ?_⟩, b, hb, by abel⟩` and prove the remaining obligations. Rewrite using `[sub_right_comm]`. Conclude with `sub_mem h2 (h.2.1 hb)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsOpp.exists_decomp (h : IsOpp D Z Z') (a : D.La) :
     ∃ z ∈ Z, ∃ m ∈ perp D Z ⊓ perp D Z', ∃ b ∈ Z', a = z + m + b := by
@@ -101,13 +101,13 @@ theorem IsOpp.exists_decomp (h : IsOpp D Z Z') (a : D.La) :
   exact sub_mem h2 (h.2.1 hb)
 
 /- English proof (translation)
-Use `⟨h.1, fun n x hn hx => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, m, hm, b, hb, rfl⟩` from `h.exists_decomp x`. Establish `cancel : ∀ (W : Submodule (𝓞 E) D.La) (v : D.La), n • v ∈ perp D W → v ∈ perp D W` using `fun W v hv w hw => by`. Use `hv w hw` as an intermediate fact. Rewrite `this` using `[map_nsmul, LinearMap.smul_apply, smul_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.resolve_left hn`. Establish `hb0 : b = 0` using `h.eq_zero hb (by`. Use `sub_mem (cancel Z _ (h.1 hx)) (add_mem (h.1 hz) hm.1)` as an intermediate fact. Rewrite using `[add_sub_cancel_left] at this)` and apply the resulting hypothesis. Substitute `hb0` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hm0 : n • m = 0` using `h.symm.eq_zero (by have := sub_mem hx (nsmul_mem hz n); rwa [add_zero, smul_add, add_sub_cancel_left] at this) (nsmul_mem hm.2 n)`. Establish `: m = 0` using `D.unimod.1 (LinearMap.ext fun w => by`. Use `congrArg (fun v => D.EF v w) hm0` as an intermediate fact. Simplify using `only [map_nsmul, LinearMap.smul_apply, map_zero, LinearMap.zero_apply, smul_eq_zero] at this`. Simplify using `using this.resolve_left hn)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hz` using `[this]`.
+A detailed English derivation is pending.
 -/
 theorem IsOpp.isIsoSat (h : IsOpp D Z Z') : IsIsoSat D Z := by
   refine ⟨h.1, fun n x hn hx => ?_⟩
@@ -129,11 +129,11 @@ theorem IsOpp.isIsoSat (h : IsOpp D Z Z') : IsIsoSat D Z := by
   simpa [this] using hz
 
 /- English proof (translation)
-Establish `key : ∀ (a : Z) (b : Z'), D.EF a (t b) = D.EF a b` using `fun a b => by`. Use `ht b a a.2` as an intermediate fact. Rewrite `this` using `[map_sub, LinearMap.sub_apply, sub_eq_zero]`. Rewrite using `[ef_swap, this, ← ef_swap]`. Use `⟨h.1, ?_, fun φ => ?_, fun φ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨b, rfl⟩ _ ⟨b', rfl⟩`. Conclude with `hiso b b'`. Take `⟨b, hb, hu⟩` from `h.2.2.1 φ`. Use `⟨⟨t b, b, rfl⟩, fun a => (key a b).trans (hb a), ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨_, b', rfl⟩ hb'`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `Subtype.ext (congrArg t (hu b' fun a => (key a b').symm.trans (hb' a)))`. Take `⟨a, ha, hu⟩` from `h.2.2.2 (φ.comp t.rangeRestrict.toAddMonoidHom)`. Use `⟨a, ?_, fun a' ha' => hu a' fun b => (key a' b).symm.trans (ha' ⟨t b, b, rfl⟩)⟩` and prove the remaining obligations. Introduce and unpack `⟨_, b, rfl⟩`. Conclude with `(key a b).trans (ha b)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem IsOpp.shear (h : IsOpp D Z Z') (t : Z' →ₗ[𝓞 E] D.La) (ht : ∀ b, t b - b ∈ perp D Z)
     (hiso : ∀ b b', D.EF (t b) (t b') = 0) : IsOpp D Z (LinearMap.range t) := by
@@ -154,14 +154,14 @@ theorem IsOpp.shear (h : IsOpp D Z Z') (t : Z' →ₗ[𝓞 E] D.La) (ht : ∀ b,
     exact (key a b).trans (ha b)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨bot_le, bot_le, fun φ => ⟨0, fun a => by rw [Subsingleton.elim a 0]; simp, fun _ _ => Subsingleton.elim _ _⟩, fun φ => ⟨0, fun a => by rw [Subsingleton.elim a 0]; simp, fun _ _ => Subsingleton.elim _ _⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isOpp_bot (D : Datum H) : IsOpp D ⊥ ⊥ :=
   ⟨bot_le, bot_le, fun φ => ⟨0, fun a => by rw [Subsingleton.elim a 0]; simp, fun _ _ => Subsingleton.elim _ _⟩,
     fun φ => ⟨0, fun a => by rw [Subsingleton.elim a 0]; simp, fun _ _ => Subsingleton.elim _ _⟩⟩
 
 /- English proof (translation)
-Establish `h1` using `congrArg H.bar H.two_weight_eq_one_add_root`. Rewrite `h1` using `[map_mul, map_add, map_one, GlobalTheory.CharRank.bar_rt_neg, map_ofNat]`. Establish `h2` using `H.two_weight_eq_one_add_root`. Conclude with `mul_left_cancel₀ (two_ne_zero (α := 𝓞 E)) (by linear_combination h1 + h2)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cmHostUnit_add_conj_eq_one (H : Host E) : H.w0 + H.bar H.w0 = 1 := by
   have h1 := congrArg H.bar H.two_weight_eq_one_add_root
@@ -170,11 +170,9 @@ theorem cmHostUnit_add_conj_eq_one (H : Host E) : H.w0 + H.bar H.w0 = 1 := by
   exact mul_left_cancel₀ (two_ne_zero (α := 𝓞 E)) (by linear_combination h1 + h2)
 
 /- English proof (translation)
-Use `choose c hc hu using fun b : Z => hd (AddMonoidHom.mk' (fun a => β (H.w0 • a) b) fun a a' => by simp)`. Simplify using `only [AddMonoidHom.mk'_apply] at hc hu`. Use `⟨{ toFun := c, map_add' := fun b b' => (hu _ _ fun a => ?_).symm, map_smul' := fun x b => (hu _ _ fun a => ?_).symm }, fun a b => ?_⟩` and prove the remaining obligations. Simplify using `[hc]`. Establish `h1` using `hc b (H.bar x • a)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Submodule.coe_smul, D.adj, bar_bar, smul_comm, hadj, bar_bar]`. Conclude with `h1`. Use `show D.EF a (c b) + D.EF (c a) b = _`. Rewrite using `[ef_swap D (c a), hc, hc, ← hβ]`. Establish `h2` using `hadj (H.bar H.w0) a b`.
-
-Rewrite `h2` using `[bar_bar]`. Rewrite using `[← h2, ← LinearMap.add_apply, ← map_add, ← add_smul, cmHostUnit_add_conj_eq_one, one_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_skew_solve (hd : ∀ φ : Z →+ ℤ, ∃! b : Z', ∀ a : Z, D.EF a b = φ a) (β : LinearMap.BilinForm ℤ Z)
     (hβ : ∀ a b, β a b = -β b a) (hadj : ∀ (c : 𝓞 E) a b, β (c • a) b = β a (H.bar c • b)) :
@@ -194,15 +192,15 @@ theorem exists_skew_solve (hd : ∀ φ : Z →+ ℤ, ∃! b : Z', ∀ a : Z, D.E
     rw [← h2, ← LinearMap.add_apply, ← map_add, ← add_smul, cmHostUnit_add_conj_eq_one, one_smul]
 
 /- English proof (translation)
-Use `choose z hz hu using fun ℓ : Z' →ₗ[𝓞 E] 𝓞 E => h.symm.2.2.1 (θ.comp ℓ.toAddMonoidHom)`. Simplify using `only [AddMonoidHom.comp_apply, LinearMap.toAddMonoidHom_coe] at hz hu`. Use `⟨AddMonoidHom.mk' (fun ℓ => (z ℓ : D.La)) fun ℓ ℓ' => congrArg Subtype.val (hu _ (z ℓ + z ℓ') fun x => ?_).symm, fun ℓ => (z ℓ).2, hz, fun c ℓ => congrArg Subtype.val (hu _ (H.bar c • z ℓ) fun x => ?_).symm, fun ℓ => ?_⟩` and prove the remaining obligations. Simplify using `[hz]`. Use `hz ℓ (c • x)` as an intermediate fact.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Submodule.coe_smul, D.adj, ℓ.map_smul]`. Conclude with `this`. Use `h.shear _ (fun b => ?_) fun b b' => ?_` and prove the remaining obligations. Simplify using `using (perp D Z).smul_mem (ℓ b) (add_mem hm.1 (h.1 (z ℓ).2))`. Establish `e1 : D.EF b b' = 0` using `h.2.1 b.2 _ b'.2`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : ∀ (c : 𝓞 E) (x : Z'), D.EF (c • m) x = 0` using `fun c x => (perp D Z').smul_mem c hm.2 _ x.2`. Establish `e3 : ∀ c c' : 𝓞 E, D.EF (c • m) (c' • z ℓ) = 0` using `fun c c' => (perp D Z).smul_mem c hm.1 _ (Z.smul_mem c' (z ℓ).2)`. Establish `e4 : ∀ c c' : 𝓞 E, D.EF (c • z ℓ) (c' • z ℓ) = 0` using `fun c c' => h.1 (Z.smul_mem c (z ℓ).2) _ (Z.smul_mem c' (z ℓ).2)`. Establish `e5 : ∀ (c : 𝓞 E) (x : Z'), D.EF x (c • z ℓ) = θ (H.bar c * ℓ x)` using `fun c x => by`. Use `hz ℓ (H.bar c • x)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[Submodule.coe_smul, D.adj, bar_bar, ℓ.map_smul]`. Conclude with `this`. Establish `e6 : D.EF (ℓ b • m) (ℓ b' • m) = D.EF ((H.bar (ℓ b') * ℓ b) • m) m`. Rewrite using `[mul_smul, D.adj (H.bar (ℓ b')), bar_bar]`. Establish `e7` using `hθ (H.bar (ℓ b') * ℓ b)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e7` using `[map_mul H.bar, bar_bar, mul_comm (ℓ b')]`. Simplify using `only [LinearMap.add_apply, Submodule.subtype_apply, LinearMap.smulRight_apply, AddMonoidHom.mk'_apply, smul_add, map_add]`. Rewrite using `[ef_swap D b (ℓ b' • m), ef_swap D (ℓ b • (z ℓ : D.La)) b', ef_swap D (ℓ b • (z ℓ : D.La)) (ℓ b' • m), e1, e2, e2, e3, e3, e4, e5, e5, e6]`. Take the linear combination `e7`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem IsOpp.exists_rank_one (h : IsOpp D Z Z') {m : D.La} (hm : m ∈ perp D Z ⊓ perp D Z') (θ : 𝓞 E →+ ℤ)
     (hθ : ∀ t, θ t - θ (H.bar t) + D.EF (t • m) m = 0) :
@@ -240,9 +238,9 @@ theorem IsOpp.exists_rank_one (h : IsOpp D Z Z') {m : D.La} (hm : m ∈ perp D Z
       linear_combination e7
 
 /- English proof (translation)
-Use `⟨AddMonoidHom.mk' (fun t => -D.EF ((H.w0 * t) • m) m) fun a b => by simp [mul_add, add_smul, add_comm], fun t => ?_⟩` and prove the remaining obligations. Establish `h1 : D.EF ((H.w0 * H.bar t) • m) m = -D.EF ((H.bar H.w0 * t) • m) m`. Rewrite using `[D.adj, map_mul, bar_bar, ef_swap]`. Establish `h2 : D.EF (t • m) m = D.EF ((H.w0 * t) • m) m + D.EF ((H.bar H.w0 * t) • m) m`. Rewrite using `[← LinearMap.add_apply, ← map_add, ← add_smul, ← add_mul, cmHostUnit_add_conj_eq_one, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [AddMonoidHom.mk'_apply]`. Take the linear combination `h1 + h2`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem exists_theta_vec (D : Datum H) (m : D.La) :
     ∃ θ : 𝓞 E →+ ℤ, ∀ t, θ t - θ (H.bar t) + D.EF (t • m) m = 0 := by
@@ -256,7 +254,7 @@ theorem exists_theta_vec (D : Datum H) (m : D.La) :
   linear_combination h1 + h2
 
 /- English proof (translation)
-Use `sup_le ?_ le_sup_right` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Establish `: f x = (f + ℓ.smulRight u) x - ℓ x • u` using `by simp`. Rewrite using `[this]`. Conclude with `sub_mem (Submodule.mem_sup_left ⟨x, rfl⟩) (Submodule.mem_sup_right (Submodule.smul_mem_smul (h x) trivial))`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem range_le_of_mem {O P X : Type} [CommRing O] [AddCommGroup P] [Module O P] [AddCommGroup X] [Module O X]
     (f : P →ₗ[O] X) (ℓ : P →ₗ[O] O) (u : X) (I : Ideal O) (h : ∀ x, ℓ x ∈ I) :
@@ -268,11 +266,11 @@ theorem range_le_of_mem {O P X : Type} [CommRing O] [AddCommGroup P] [Module O P
   exact sub_mem (Submodule.mem_sup_left ⟨x, rfl⟩) (Submodule.mem_sup_right (Submodule.smul_mem_smul (h x) trivial))
 
 /- English proof (translation)
-Establish `hu : u ∈ LinearMap.range (f + ℓ.smulRight u) ⊔ I • (⊤ : Submodule O X)`. Take `⟨c, i, hi, hc⟩` from `hI.exists_inv hl`. Establish `: (f + ℓ.smulRight u) (c • v) - c • f v + i • u = u`. Simplify using `only [LinearMap.add_apply, map_smul, LinearMap.smulRight_apply, smul_add, add_sub_cancel_left, smul_smul]`. Rewrite using `[← add_smul, hc, one_smul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (f + ℓ.smulRight u) (c • v) - c • f v + i • u ∈ LinearMap.range (f + ℓ.smulRight u) ⊔ I • (⊤ : Submodule O X)` using `add_mem (sub_mem (Submodule.mem_sup_left ⟨_, rfl⟩) (Submodule.mem_sup_right (Submodule.smul_mem _ _ hv))) (Submodule.mem_sup_right (Submodule.smul_mem_smul hi trivial))`. Rewrite `h2` using `[this]`. Then use the resulting hypothesis. Use `⟨hu, sup_le ?_ le_sup_right⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Establish `: f x = (f + ℓ.smulRight u) x - ℓ x • u` using `by simp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `sub_mem (Submodule.mem_sup_left ⟨x, rfl⟩) (Submodule.smul_mem _ _ hu)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem range_le_of_ker {O P X : Type} [CommRing O] [AddCommGroup P] [Module O P] [AddCommGroup X] [Module O X]
     (f : P →ₗ[O] X) (ℓ : P →ₗ[O] O) (u : X) (I : Ideal O) (hI : I.IsMaximal) {v : P}

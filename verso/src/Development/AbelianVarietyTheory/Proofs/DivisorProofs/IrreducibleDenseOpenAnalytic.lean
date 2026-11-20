@@ -17,9 +17,9 @@ section ChartAssemble
 variable {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] {N : ℕ}
 
 /- English proof (translation)
-Establish `hw : η[G].left ≫ G.hom = 𝟙 _` using `Over.w η[G]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hw]`. Both sides reduce to the same expression. Use `_ = pullback.fst ((𝟙 G) ^ N : G ⟶ G).left η[G].left ≫ ((𝟙 G) ^ N : G ⟶ G).left ≫ G.hom := by`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, ← pullback.condition, Category.assoc]`. Use `_ = _ := by rw [Over.w]`.
+A detailed English derivation is pending.
 -/
 theorem torsPullback_snd :
     (pullback.snd ((𝟙 G) ^ N : G ⟶ G).left η[G].left : _ ⟶ Sp R) =
@@ -33,11 +33,11 @@ theorem torsPullback_snd :
     _ = _ := by rw [Over.w]
 
 /- English proof (translation)
-Establish `e1 : x ^ N = x ≫ (𝟙 G) ^ N` using `by rw [MonObj.comp_pow, Category.comp_id]`. Establish `e2 : (1 : SpAlg R B ⟶ G).left = spMap (algebraMap R B) ≫ η[G].left`. Rewrite using `[Hom.one_def, Over.comp_left, Over.toUnit_left]`. Both sides reduce to the same expression. Rewrite using `[e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← e2, ← Over.comp_left, h]`. Introduce `h`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Over.comp_left, h, e2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_eq_one_iff_left (B : Type) [CommRing B] [Algebra R B] (x : SpAlg R B ⟶ G) :
     x ^ N = 1 ↔ x.left ≫ ((𝟙 G) ^ N : G ⟶ G).left = spMap (algebraMap R B) ≫ η[G].left := by
@@ -52,35 +52,27 @@ theorem pow_eq_one_iff_left (B : Type) [CommRing B] [Algebra R B] (x : SpAlg R B
 end ChartAssemble
 
 /- English proof (translation)
-Introduce `R _ G _ _ _ N q r hr C _ _ _ _ _ _ U e he hU`. Establish `hw : η[G].left ≫ G.hom = 𝟙 _` using `Over.w η[G]`. Use `haveI : IsClosedImmersion (η[G].left ≫ G.hom) := hw ▸ inferInstance`. Use `haveI : IsClosedImmersion η[G].left := IsClosedImmersion.of_comp _ G.hom`. Use `haveI hfc : IsClosedImmersion (pullback.fst ((𝟙 G) ^ N : G ⟶ G).left η[G].left) := inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨W, hWo, hWU⟩` from `(pullback.fst ((𝟙 G) ^ N : G ⟶ G).left η[G].left).isClosedEmbedding.isInducing.isOpen_iff.1 U.2`. Set `W' : G.left.Opens` to `⟨W, hWo⟩`. Establish `hmem : ∀ t, t ∈ U ↔ pullback.fst ((𝟙 G) ^ N : G ⟶ G).left η[G].left t ∈ W'` using `fun t => by`. Express the relevant statement in the definitionally equal form `t ∈ U.carrier ↔ _ ∈ W`. Rewrite using `[← hWU]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Set `m` to `e.hom ≫ U.ι ≫ pullback.fst ((𝟙 G) ^ N : G ⟶ G).left η[G].left`. Establish `hm : m ≫ G.hom = spMap (algebraMap R C)` using `by simpa only [m, Category.assoc] using he`. Set `j0 : SpAlg R C ⟶ G` to `Over.homMk m hm`. Establish `hj : j0 ^ N = 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Rewrite using `[pow_eq_one_iff_left]`. Use `show m ≫ _ = _`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [m, Category.assoc, pullback.condition]`. Use `_ = (m ≫ G.hom) ≫ η[G].left := by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[torsPullback_snd]`. Simplify using `only [m, Category.assoc]`. Use `_ = _ := by rw [hm]`. Establish `hrange : ∀ {T : Scheme.{0}} (a : T ⟶ U.toScheme), Set.range (a ≫ U.ι ≫ pullback.fst ((𝟙 G) ^ N : G ⟶ G).left η[G].left) ⊆ W'`. Introduce and unpack `T a _ ⟨x, rfl⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx : U.ι (a x) ∈ U` using `by rw [← SetLike.mem_coe, ← U.range_ι]; exact ⟨_, rfl⟩`. Establish `h'` using `(hmem _).1 hx`. Simplify using `only [Scheme.Hom.comp_apply, SetLike.mem_coe]`. Conclude with `h'`. Establish `hlift : ∀ (B : Type) [CommRing B] [Algebra R B] (z : Tors G N B), ∃ t : Sp B ⟶ pullback ((𝟙 G) ^ N : G ⟶ G).left η[G].left, t ≫ pullback.fst ((𝟙 G) ^ N : G ⟶ G).left η[G].left = z.1.left` using `fun B _ _ z => ⟨pullback.lift z.1.left (spMap (algebraMap R B)) ((pow_eq_one_iff_left B z.1).1 z.2), pullback.lift_fst _ _ _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Mono m := inferInstance`. Use `⟨{ r := r, hr := hr, C := C, j := ⟨j0, hj⟩, W := W', bij := fun B _ _ => ?_, fibre := ?_ }⟩` and prove the remaining obligations. Use `⟨fun ψ _ => hrange (spMap (ψ : C →+* B) ≫ e.hom), fun ψ _ ψ' _ h => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Establish `h1 : spMap (ψ : C →+* B) ≫ m = spMap (ψ' : C →+* B) ≫ m` using `congrArg (fun z => z.1.left) h`. Establish `h2` using `congrArg CommRingCat.Hom.hom (Spec.map_injective ((cancel_mono m).1 h1))`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `AlgHom.coe_ringHom_injective h2`. Take `⟨t, ht⟩` from `hlift B z`. Establish `htU : Set.range t ⊆ Set.range U.ι`. Rewrite using `[U.range_ι]`. Introduce and unpack `_ ⟨x, rfl⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SetLike.mem_coe, hmem, ← Scheme.Hom.comp_apply, ht]`. Conclude with `hz ⟨x, rfl⟩`. Set `s` to `IsOpenImmersion.lift U.ι t htU ≫ e.inv`. Take `⟨φ, hφ⟩` from `Spec.map_surjective s`. Establish `hs : s ≫ m = z.1.left`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [s, m, Category.assoc, Iso.inv_hom_id_assoc, IsOpenImmersion.lift_fac_assoc, ht]`. Establish `halg : φ.hom.comp (algebraMap R C) = algebraMap R B`. Establish `h3 : Spec.map (CommRingCat.ofHom (φ.hom.comp (algebraMap R C))) = Spec.map (CommRingCat.ofHom (algebraMap R B))`. Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp, CommRingCat.ofHom_hom, hφ]`. Use `show s ≫ spMap (algebraMap R C) = _`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hm, ← Category.assoc, hs]`. Conclude with `Over.w z.1`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective h3)`. Set `ψ : C →ₐ[R] B` to `{ φ.hom with commutes' := fun c => congrArg (fun g => g c) halg }`. Use `⟨ψ, trivial, Subtype.ext (Over.OverMorphism.ext ?_)⟩` and prove the remaining obligations.
-
-Use `show spMap (ψ : C →+* B) ≫ m = z.1.left`. Establish `: spMap (ψ : C →+* B) = s` using `by rw [← hφ]; rfl`. Rewrite using `[this, hs]`. Introduce `k _ _ hk z`. Take `⟨t, ht⟩` from `hlift k z`.
-
-Introduce and unpack `_ ⟨x, rfl⟩`. Establish `hx : t x ∈ U`. Apply `hU` to reduce the goal to its premises. Rewrite using `[← Scheme.Hom.comp_apply, ← Category.assoc, ht, Over.w z.1]`. Use `PrimeSpectrum.ext (R := R) ?_` and prove the remaining obligations.
-
-Use `show Ideal.comap (algebraMap R k) x.asIdeal = q.asIdeal`. Use `haveI := x.isPrime`. Rewrite using `[Ideal.eq_bot_of_prime x.asIdeal, ← RingHom.ker_eq_comap_bot, hk]`. Use `(hmem _).1 hx` as an intermediate fact. Rewrite `this` using `[← Scheme.Hom.comp_apply, ht]`.
-
-Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem preChart_of_open : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] [IsSeparated G.hom]
     (N : ℕ) (q : PrimeSpectrum R) (r : R), r ∉ q.asIdeal → ∀ (C : Type) [CommRing C] [Algebra R C]

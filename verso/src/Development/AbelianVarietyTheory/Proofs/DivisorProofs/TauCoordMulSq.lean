@@ -26,9 +26,9 @@ namespace GlobalTheory.PsiFromTauEven
 open GlobalTheory.IndefiniteRowSideFullHecke.GeneratorValues
 
 /- English proof (translation)
-Take `⟨x₀, hx₀, e₀⟩` from `(GlobalTheory.PeriodFormCompare.psiCoord_iff D y r).1 hr`. Establish `h0 : IsPsiCoord D (y + -y) (psiCoord D 0)` using `by rw [add_neg_cancel]; exact psiCoord_spec D 0`. Take `⟨u₂, hu₂⟩` from `GlobalTheory.T.tauCoordinate_eq_unit_mul_psi_quotient A D y (-y) x _ _ _ hx h0 hx₀ (psiCoord_spec D (-y))`. Take `⟨u₃, hu₃⟩` from `GlobalTheory.T.psiEven_coordinates_neg_differ_by_unit A D hE y _ _ hx₀ (psiCoord_spec D (-y))`. Take `⟨u₄, hu₄⟩` from `GlobalTheory.MonoTriv.psiCoord_zero D hB _ (psiCoord_spec D 0)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨u₂ * u₄ * u₃⁻¹, ?_⟩` and prove the remaining obligations. Establish `hne : (x₀ : FractionRing A) ≠ 0` using `x₀.ne_zero`. Establish `h3 : algebraMap A (FractionRing A) (u₃ : A) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective A (FractionRing A))).2 u₃.ne_zero`. Rewrite using `[hu₂, hu₃, hu₄, ← e₀]`. Simplify using `only [Units.val_mul, map_mul, map_units_inv]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -49,15 +49,15 @@ theorem tauCoord_mul_sq (A : Type) [CommRing A] [IsDomain A] [IsLocalRing A] (D 
   field_simp
 
 /- English proof (translation)
-Introduce `R _ _ _ V _ _ _ hV g gK hgK D D' hB hE hB' hE' ρ hρ y r r' hr hr'`. Take `⟨x, hx⟩` from `GlobalTheory.PsiFromTau.exists_isTauCoord R D y (-y)`. Take `⟨x', hx'⟩` from `GlobalTheory.PsiFromTau.exists_isTauCoord V D' (ρ y) (-(ρ y))`. Take `⟨w, hw⟩` from `tauCoord_mul_sq R D hB hE y r hr x hx`. Take `⟨w', hw'⟩` from `tauCoord_mul_sq V D' hB' hE' (ρ y) r' hr' x' hx'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hx'' : IsTauCoord D' (ρ y) (ρ (-y)) x'` using `by rwa [map_neg]`. Take `⟨u, hu⟩` from `hρ y (-y) x x' hx hx''`. Establish `e` using `congrArg gK hw`. Rewrite `e` using `[map_mul, map_pow, hgK, hgK, hu]`. Set `v : Vˣ` to `u * w' * (Units.map g.toMonoidHom w)⁻¹`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Establish `key : (g r) ^ 2 * (v : V) = r' ^ 2`. Establish `k1 : ((u : V) * w') * (g r) ^ 2 = g w * r' ^ 2`. Apply `IsFractionRing.injective V (FractionRing V)` to reduce the goal to its premises. Simplify using `only [map_mul, map_pow]`. Rewrite using `[← hw', ← e]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hw1 : (g w : V) * ((Units.map g.toMonoidHom w)⁻¹ : Vˣ) = 1`. Establish `h : ((Units.map g.toMonoidHom w : Vˣ) : V) = g w` using `rfl`. Rewrite using `[← h, Units.mul_inv]`. Simplify using `only [v, Units.val_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hsq : Associated ((g r) ^ 2) (r' ^ 2)` using `⟨v, key⟩`. Use `haveI : IsIntegrallyClosed V := inferInstance`. Conclude with `associated_of_dvd_dvd ((IsIntegrallyClosed.pow_dvd_pow_iff two_ne_zero).1 hsq.dvd) ((IsIntegrallyClosed.pow_dvd_pow_iff two_ne_zero).1 hsq.symm.dvd)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], IsDiscreteValuationRing V → ∀ (g : R →+* V) (gK : FractionRing R →+* FractionRing V), (∀ r, gK (algebraMap R _ r) = algebraMap V _ (g r)) →
   ∀ (D : DegPre R) (D' : DegPre V), D.TauBimult → D.PsiEven → D'.TauBimult → D'.PsiEven → ∀ ρ : D.X →+ D'.X,

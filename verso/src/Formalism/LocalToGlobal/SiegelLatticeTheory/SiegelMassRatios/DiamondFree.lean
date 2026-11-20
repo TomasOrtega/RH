@@ -21,7 +21,7 @@ def fixF (i : ι) : Submodule K ((∀ i, G i) → M) :=
   ⨅ g : G i, LinearMap.ker (trl K M (Pi.mulSingle i g) - 1)
 
 /- English proof (translation)
-Unfold `fixF`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, Module.End.one_apply, sub_eq_zero]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem mem_fixF (i : ι) (F : (∀ i, G i) → M) :
     F ∈ fixF K G M i ↔ ∀ g : G i, trl K M (Pi.mulSingle i g) F = F := by
@@ -29,7 +29,7 @@ theorem mem_fixF (i : ι) (F : (∀ i, G i) → M) :
   simp only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, Module.End.one_apply, sub_eq_zero]
 
 /- English proof (translation)
-Unfold `nmF`. Rewrite using `[Finset.mul_sum]`. Repeatedly rewrite using `[trl_mul, ← Pi.mulSingle_mul]`. Conclude with `Fintype.sum_equiv (Equiv.mulLeft g) _ _ (fun h => rfl)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trl_mulSingle_mul_nmF (i : ι) (g : G i) :
     trl K M (Pi.mulSingle i g) * nmF K M (G := G) i = nmF K M i := by
@@ -39,7 +39,7 @@ theorem trl_mulSingle_mul_nmF (i : ι) (g : G i) :
   exact Fintype.sum_equiv (Equiv.mulLeft g) _ _ (fun h => rfl)
 
 /- English proof (translation)
-Unfold `nmF`. Rewrite using `[LinearMap.sum_apply]`. Repeatedly rewrite using `[(mem_fixF K G M i F).1 hF]`. Rewrite using `[Finset.sum_const, Finset.card_univ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem nmF_apply_of_mem (i : ι) {F : (∀ i, G i) → M} (hF : F ∈ fixF K G M i) :
     nmF K M (G := G) i F = (Fintype.card (G i)) • F := by
@@ -51,9 +51,9 @@ theorem nmF_apply_of_mem (i : ι) {F : (∀ i, G i) → M} (hF : F ∈ fixF K G 
 variable [CharZero K]
 
 /- English proof (translation)
-Rewrite using `[mem_fixF]`. Introduce `g`. Rewrite using `[LinearMap.smul_apply, map_smul, ← Module.End.mul_apply, trl_mulSingle_mul_nmF]`. Use `map_id F hF := by`. Establish `hc : (Fintype.card (G i) : K) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.smul_apply, nmF_apply_of_mem K G M i hF, ← Nat.cast_smul_eq_nsmul K, smul_smul, inv_mul_cancel₀ hc, one_smul]`.
+A detailed English derivation is pending.
 -/
 theorem isProj_fixF (i : ι) :
     LinearMap.IsProj (fixF K G M i) (((Fintype.card (G i) : K)⁻¹) • nmF K M (G := G) i) where
@@ -69,9 +69,9 @@ theorem isProj_fixF (i : ι) :
 variable [FiniteDimensional K M]
 
 /- English proof (translation)
-Unfold `nmF`. Rewrite using `[map_sum, Finset.sum_eq_single (1 : G i)]`. Rewrite using `[Pi.mulSingle_one, trl_one, LinearMap.trace_one]`. Introduce `g _ hg`. Apply `trace_trl` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h`. Conclude with `hg ((Pi.mulSingle_eq_one_iff).1 h)`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem trace_nmF (i : ι) :
     LinearMap.trace K _ (nmF K M (G := G) i) = (finrank K ((∀ i, G i) → M) : K) := by
@@ -86,9 +86,9 @@ theorem trace_nmF (i : ι) :
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Establish `h` using `(isProj_fixF K G M i).trace`. Rewrite `h` using `[map_smul, trace_nmF, smul_eq_mul]`. Establish `hc : (Fintype.card (G i) : K) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Establish `: ((finrank K (fixF K G M i) * Fintype.card (G i) : ℕ) : K) = ((finrank K ((∀ i, G i) → M) : ℕ) : K)`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[← h, mul_comm, ← mul_assoc, mul_inv_cancel₀ hc, one_mul]`. Conclude with `this` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_fixF_mul (i : ι) :
     finrank K (fixF K G M i) * Fintype.card (G i) = finrank K ((∀ i, G i) → M) := by
@@ -126,12 +126,12 @@ def IsDiamondFreeWord (u : Pr.Word) : Prop :=
   DiaFreeCols W Ch u ∧ ∀ P : {P // P ∈ Pr.vT u}, FixedDimCols W Ch u P
 
 /- English proof (translation)
-The claim follows from `hPr.vT_card u`.
+A detailed English derivation is pending.
 -/
 theorem card_places (hPr : Pr.Ok) (u : Pr.Word) : (Pr.vT u).card = X.f := hPr.vT_card u
 
 /- English proof (translation)
-The claim follows from `colDiaFree W Ch hX hPr hbig u`.
+A detailed English derivation is pending.
 -/
 theorem diaFreeCols_holds (hX : X.Ok) (hPr : Pr.Ok) (hbig : 2 * X.f * R.k < Pr.g 0 - 1) (u : Pr.Word) :
     DiaFreeCols W Ch u :=
@@ -139,19 +139,17 @@ theorem diaFreeCols_holds (hX : X.Ok) (hPr : Pr.Ok) (hbig : 2 * X.f * R.k < Pr.g
 
 open Classical in
 /- English proof (translation)
-Set `_ : ∀ P : {P // P ∈ Pr.vT u}, Fintype (𝓞 X.E ⧸ P.1.asIdeal)ˣ` to `fun P => fintypeResU P.1`. Take `⟨σ⟩` from `(colGSD W Ch u 0).exists_slice (DiaG X.E (Pr.vT u)) (colDiaFree W Ch hX hPr hbig u)`. Establish `: FiniteDimensional X.K ((colGSD W Ch u 0).restr σ.T).EqFun` using `GSD.finiteDimensional_EqFun _ ((colGSD W Ch u 0).restr_ok (colOk W Ch hX u 0) σ.T)`. Establish `hmap : (FixPart W Ch u P).map (σ.split : ColV W Ch u 0 →ₗ[X.K] _) = RamFunX.fixF X.K (fun P : {P // P ∈ Pr.vT u} => (𝓞 X.E ⧸ P.1.asIdeal)ˣ) ((colGSD W Ch u 0).restr σ.T).EqFun P`. Use extensionality with `F`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨φ, hφ, rfl⟩`. Rewrite using `[RamFunX.mem_fixF]`. Introduce `g`. Establish `hfix : diaOp W Ch u 0 P g φ = φ`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `(Submodule.mem_iInf _).1 hφ g` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, LinearMap.sub_apply, Module.End.one_apply, sub_eq_zero]`. Then use the resulting hypothesis. Use function extensionality and compare the values at `c`. Rewrite using `[RamFun.trl_apply]`. Use `(σ.split_dia (Pi.mulSingle P g) c φ).symm.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show σ.split (diaOp W Ch u 0 P g φ) c = σ.split φ c`. Rewrite using `[hfix]`. Introduce `hF`. Use `⟨σ.split.symm F, ?_, σ.split.apply_symm_apply F⟩` and prove the remaining obligations. Use `(Submodule.mem_iInf _).2 fun g => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, Module.End.one_apply, sub_eq_zero]`. Apply `σ.split.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `c`. Establish `e` using `σ.split_dia (Pi.mulSingle P g) c (σ.split.symm F)`. Use `e.trans ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[σ.split.apply_symm_apply]`. Conclude with `congrFun ((RamFunX.mem_fixF X.K _ _ P F).1 hF g) c`. Establish `h1` using `RamFunX.finrank_fixF_mul X.K (fun P : {P // P ∈ Pr.vT u} => (𝓞 X.E ⧸ P.1.asIdeal)ˣ) ((colGSD W Ch u 0).restr σ.T).EqFun P`. Rewrite `h1` using `[← hmap, LinearEquiv.finrank_map_eq]`. Unfold `FixedDimCols`.
-
-Rewrite using `[σ.split.finrank_eq, ← h1, ← card_resU hPr u P, Nat.card_eq_fintype_card]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixedDimCols_holds (hX : X.Ok) (hPr : Pr.Ok) (hbig : 2 * X.f * R.k < Pr.g 0 - 1) (u : Pr.Word)
     (P : {P // P ∈ Pr.vT u}) : FixedDimCols W Ch u P := by
@@ -192,7 +190,7 @@ theorem fixedDimCols_holds (hX : X.Ok) (hPr : Pr.Ok) (hbig : 2 * X.f * R.k < Pr.
   rw [σ.split.finrank_eq, ← h1, ← card_resU hPr u P, Nat.card_eq_fintype_card]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨diaFreeCols_holds W Ch hX hPr hbig u, fun P => fixedDimCols_holds W Ch hX hPr hbig u P⟩`.
+Supply the required witnesses or components.
 -/
 theorem diamondFree_holds (hX : X.Ok) (hPr : Pr.Ok) (hbig : 2 * X.f * R.k < Pr.g 0 - 1) (u : Pr.Word) :
     IsDiamondFreeWord W Ch u :=

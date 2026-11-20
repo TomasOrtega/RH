@@ -26,7 +26,7 @@ section Help
 variable {S S' : Scheme.{0}}
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `hp.1.hom_ext` to reduce the goal to its premises. Rewrite using `[GlobalTheory.SiegelPull.secPull_left, GlobalTheory.SiegelPull.secPull_left, hxy]`. Rewrite using `[Over.w (GlobalTheory.SiegelPull.secPull hp x), Over.w (GlobalTheory.SiegelPull.secPull hp y)]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem secPull_congr {A : Over S} {A' : Over S'} [GrpObj A] [GrpObj A'] {f : S' ⟶ S} {φ : A'.left ⟶ A.left}
     (hp : IsGrpPullback A' A f φ) {x y : 𝟙_ (Over S) ⟶ A} (hxy : f ≫ x.left = f ≫ y.left) :
@@ -37,9 +37,9 @@ theorem secPull_congr {A : Over S} {A' : Over S'} [GrpObj A] [GrpObj A'] {f : S'
   · rw [Over.w (GlobalTheory.SiegelPull.secPull hp x), Over.w (GlobalTheory.SiegelPull.secPull hp y)]
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `(Pdiv.PullbackComparison.isGrpPullback f A).1.hom_ext` to reduce the goal to its premises. Rewrite using `[GlobalTheory.SiegelPull.secPull_left, Over.comp_left, Category.assoc] show _ ≫ _ ≫ pullback.fst A.hom f = _`. Rewrite using `[Pdiv.PullbackComparison.pullback_map_left_fst', ← Category.assoc]`. Use `show (_ ≫ Pdiv.PullbackComparison.pφ f G) ≫ _ = _`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.SiegelPull.secPull_left, Over.comp_left, Category.assoc]`. Rewrite using `[Over.w, Over.w]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secPull_map (f : S' ⟶ S) {G A : Over S} [GrpObj G] [IsCommMonObj G] [GrpObj A] [IsCommMonObj A]
     (m : G ⟶ A) (x : 𝟙_ (Over S) ⟶ G) :
@@ -55,9 +55,9 @@ theorem secPull_map (f : S' ⟶ S) {G A : Over S} [GrpObj G] [IsCommMonObj G] [G
   · rw [Over.w, Over.w]
 
 /- English proof (translation)
-Apply `GlobalTheory.SiegelPull.push_injective hp` to reduce the goal to its premises. Rewrite using `[GlobalTheory.SiegelPull.push_secPull', GlobalTheory.comp_list_prod_ofFn, map_list_prod, List.map_ofFn]`. Use `congr 1`. Apply `congrArg List.ofFn` to reduce the goal to its premises. Use function extensionality and compare the values at `k`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(GlobalTheory.SiegelPull.push_secPull' hp (y k)).symm`.
+A detailed English derivation is pending.
 -/
 theorem secPull_prod {A : Over S} {A' : Over S'} [GrpObj A] [GrpObj A'] {f : S' ⟶ S} {φ : A'.left ⟶ A.left}
     (hp : IsGrpPullback A' A f φ) {n : ℕ} (y : Fin n → (𝟙_ (Over S) ⟶ A)) :
@@ -76,11 +76,11 @@ end GlobalTheory.IdemLocus
 namespace GlobalTheory.IdemLocus
 
 /- English proof (translation)
-Establish `e₁ : (lift (1 : G ⟶ G) (𝟙 G)).left ≫ (inc ⊗ₘ inc).left = inc.left ≫ (lift (1 : A ⟶ A) (𝟙 A)).left`. Rewrite using `[← Over.comp_left, ← Over.comp_left]`. Use `congr 1`. Simplify using `[lift_map, comp_lift, MonObj.one_comp, MonObj.comp_one]`. Establish `e₂ : (lift (𝟙 G) (1 : G ⟶ G)).left ≫ (inc ⊗ₘ inc).left = inc.left ≫ (lift (𝟙 A) (1 : A ⟶ A)).left`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← Over.comp_left, ← Over.comp_left]`. Use `congr 1`. Simplify using `[lift_map, comp_lift, MonObj.one_comp, MonObj.comp_one]`. Establish `e₃ : (lift (snd G G) (fst G G)).left ≫ (inc ⊗ₘ inc).left = (inc ⊗ₘ inc).left ≫ (lift (snd A A) (fst A A)).left`. Rewrite using `[← Over.comp_left, ← Over.comp_left]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `[lift_map, comp_lift]`. Take `⟨t₁, ht₁⟩` from `r₁`. Take `⟨t₂, ht₂⟩` from `r₂`. Conclude with `⟨gen_chartPull (chartPullLinComb P (inc ⊗ₘ inc).left _ _ _ inc.left (fun _ => e₁)) t₁ ht₁, gen_chartPull (chartPullLinComb P (inc ⊗ₘ inc).left _ _ _ inc.left (fun _ => e₂)) t₂ ht₂, LBIso.chartPull (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull P _ _ rfl) (chartPullLi …`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem image_bundle_rig {S : Scheme.{0}} (A G : Over S) [GrpObj A] [IsCommMonObj A] [GrpObj G] [IsCommMonObj G]
     (P : LB (G2 A).left) (inc : G ⟶ A) [IsMonHom inc]
@@ -115,13 +115,13 @@ end GlobalTheory.IdemLocus
 namespace GlobalTheory.IdemLocus
 
 /- English proof (translation)
-Establish `hm : ((Over.pullback f).map inc).left ≫ Pdiv.PullbackComparison.pφ f A = Pdiv.PullbackComparison.pφ f G ≫ inc.left` using `Pdiv.PullbackComparison.pullback_map_left_fst' f inc`. Establish `key : Pdiv.PullbackComparison.pφ₂ f G ≫ (inc ⊗ₘ inc).left = ((Over.pullback f).map inc ⊗ₘ (Over.pullback f).map inc).left ≫ Pdiv.PullbackComparison.pφ₂ f A`. Apply `Pdiv.PullbackComparison.adelic_GL2_ext_of_local_components` to reduce the goal to its premises. Establish `ht : (inc ⊗ₘ inc).left ≫ (fst A A).left = (fst G G).left ≫ inc.left`. Rewrite using `[← Over.comp_left, tensorHom_fst, Over.comp_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ht' : ((Over.pullback f).map inc ⊗ₘ (Over.pullback f).map inc).left ≫ (fst ((Over.pullback f).obj A) ((Over.pullback f).obj A)).left = (fst ((Over.pullback f).obj G) ((Over.pullback f).obj G)).left ≫ ((Over.pullback f).map inc).left`. Rewrite using `[← Over.comp_left, tensorHom_fst, Over.comp_left]`. Simplify using `only [Category.assoc]`. Rewrite using `[ht, reassoc_of% (Pdiv.PullbackComparison.pφ₂_fst f G), Pdiv.PullbackComparison.pφ₂_fst f A, reassoc_of% ht', hm]`. Establish `ht : (inc ⊗ₘ inc).left ≫ (snd A A).left = (snd G G).left ≫ inc.left`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Over.comp_left, tensorHom_snd, Over.comp_left]`. Establish `ht' : ((Over.pullback f).map inc ⊗ₘ (Over.pullback f).map inc).left ≫ (snd ((Over.pullback f).obj A) ((Over.pullback f).obj A)).left = (snd ((Over.pullback f).obj G) ((Over.pullback f).obj G)).left ≫ ((Over.pullback f).map inc).left`. Rewrite using `[← Over.comp_left, tensorHom_snd, Over.comp_left]`. Simplify using `only [Category.assoc]`. Rewrite using `[ht, reassoc_of% (Pdiv.PullbackComparison.pφ₂_snd f G), Pdiv.PullbackComparison.pφ₂_snd f A, reassoc_of% ht', hm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e₁` using `GlobalTheory.ZM.SiegPull.lbIso_pull_comp (GlobalTheory.lbIso_refl (pull_isLB hP (inc ⊗ₘ inc).left)) (Pdiv.PullbackComparison.pφ₂ f G)`. Establish `e₂` using `GlobalTheory.ZM.SiegPull.lbIso_pull_comp (GlobalTheory.lbIso_refl (pull_isLB hP (Pdiv.PullbackComparison.pφ₂ f A))) ((Over.pullback f).map inc ⊗ₘ (Over.pullback f).map inc).left`. Rewrite `e₁` using `[key]`. Conclude with `LBIso.trans (pull_isLB (pull_isLB hP _) _) (pull_isLB hP _) (pull_isLB (pull_isLB hP _) _) e₁ e₂.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem image_bundle_pull {S S' : Scheme.{0}} (f : S' ⟶ S) (A G : Over S) [GrpObj A] [IsCommMonObj A] [GrpObj G]
     [IsCommMonObj G] (P : LB (G2 A).left) (hP : P.IsLB) (inc : G ⟶ A) :
@@ -160,11 +160,11 @@ end GlobalTheory.IdemLocus
 namespace GlobalTheory.IdemLocus
 
 /- English proof (translation)
-Establish `hw : Pdiv.PullbackComparison.pφ f A ≫ A.hom = ((Over.pullback f).obj A).hom ≫ f` using `pullback.condition`. Establish `hA' : Adj A (Q.pull (𝟙 _)) bar act` using `fun a => by`. Establish `e₁` using `GlobalTheory.ZM.SiegPull.lbIso_pull_comp (GlobalTheory.lbIso_refl (pull_isLB hQ (𝟙 (G2 A).left))) (lift (fst A A ≫ act a) (snd A A)).left`. Establish `e₂` using `GlobalTheory.ZM.SiegPull.lbIso_pull_comp (GlobalTheory.lbIso_refl (pull_isLB hQ (𝟙 (G2 A).left))) (lift (fst A A) (snd A A ≫ act (bar a))).left`. Rewrite `e₁`, `e₂` using `[Category.comp_id]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `LBIso.trans (pull_isLB (pull_isLB hQ _) _) (pull_isLB hQ _) (pull_isLB (pull_isLB hQ _) _) e₁ (LBIso.trans (pull_isLB hQ _) (pull_isLB hQ _) (pull_isLB (pull_isLB hQ _) _) (hA a) e₂.symm)`. Establish `key` using `ActUnr.adj_along hw act (fun a => (Over.pullback f).map (act a)) (fun a => Pdiv.PullbackComparison.pullback_map_left_fst' f (act a)) Q (𝟙 _) bar hA'`. Establish `hsq : ActUnr.sqMap hw ≫ 𝟙 _ = Pdiv.PullbackComparison.pφ₂ f A`. Rewrite using `[Category.comp_id]`. Apply `Pdiv.PullbackComparison.adelic_GL2_ext_of_local_components` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ActUnr.sqMap_fst, Pdiv.PullbackComparison.pφ₂_fst]`. Rewrite using `[ActUnr.sqMap_snd, Pdiv.PullbackComparison.pφ₂_snd]`. Rewrite `key` using `[hsq]`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adj_pullback' {S S' : Scheme.{0}} (f : S' ⟶ S) {O : Type} [Ring O] (A : Over S) [GrpObj A] [IsCommMonObj A]
     (Q : LB (G2 A).left) (bar : O → O) (act : O → (A ⟶ A)) (hQ : Q.IsLB) (hA : Adj A Q bar act) :
@@ -193,43 +193,35 @@ end GlobalTheory.IdemLocus
 namespace GlobalTheory.IdemLocus
 
 /- English proof (translation)
-Introduce `h h' M d O _ bar e jl n o κ S' _ t z act hh hM hMo hd hMd hz hRA hAdj hee`. Establish `hee' : act e ≫ act e = act e` using `by rw [← hRA.2.2.1, hee]`. Use `haveI hae := hRA.1 e`. Take `⟨G, _, _, inc, pr, hGs, hinc, hpr, hip, hpi⟩` from `GlobalTheory.Mum.IdemImage.isSemiAbelian_image S' z.A (GlobalTheory.isSemiAbelian_of_isAbelianScheme z.A z.ab) (act e) (hRA.1 e) hee'`. Use `haveI := hinc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI := hpr`. Establish `hGab : IsAbelianScheme G` using `GlobalTheory.T.isAbelianScheme_of_semiAbelian_hom_retract S' z.A G inc pr z.ab hGs hinc hpr hip`. Set `Pe : LB (G2 G).left` to `z.P.pull (inc ⊗ₘ inc).left`. Establish `hPe : Pe.IsLB` using `pull_isLB z.isLB _`. Take `⟨hr₁, hr₂, hsy⟩` from `image_bundle_rig z.A G z.P inc z.rig₁ z.rig₂ z.symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `lev : (Fin h ⊕ Fin h → ℤ) → (𝟙_ (Over S') ⟶ G)` to `fun a => z.lev (jl a) ≫ pr`. Establish `lev_add : ∀ a b, lev (a + b) = lev a * lev b` using `fun a b => by`. Simplify using `only [lev, map_add, z.lev_add, MonObj.mul_comp]`. Establish `lev_tors : ∀ a, lev a ^ M = 1` using `fun a => by`. Simplify using `only [lev, ← MonObj.pow_comp, z.lev_tors, MonObj.one_comp]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hM1 : 1 ≤ M` using `by omega`. Set `x₂ : (Fin h ⊕ Fin h → ℤ) → (𝟙_ (Over S') ⟶ z.A)` to `fun a => z.lev (jl a) ≫ act e`. Set `y₂ : (Fin h ⊕ Fin h → ℤ) → (𝟙_ (Over S') ⟶ z.A)` to `fun a => z.lev (jl a)`. Set `y₃ : (Fin h' ⊕ Fin h' → ℤ) → (𝟙_ (Over S') ⟶ z.A)` to `fun a => (List.ofFn fun k => z.lev (jl (κ k a)) ≫ act (o k)).prod`. Establish `hy₃ : ∀ a, y₃ a = ∏ k, z.lev (jl (κ k a)) ≫ act (o k)` using `fun a => List.prod_ofFn`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨U₁, hU₁, hT₁⟩` from `GlobalTheory.T.natCast_unit_locus_open S' d`. Take `⟨U₂, hU₂, hT₂⟩` from `GlobalTheory.T.additive_torsion_families_equal_locus_open h M S' t z.A z.ab hM1 x₂ y₂ (fun a b => by simp only [x₂, map_add, z.lev_add, MonObj.mul_comp]) (fun a b => by simp only [y₂, map_add, z.lev_add]) (fun a => by simp only [x₂, ← MonObj.pow_comp, z.lev_tors, MonObj.one_comp] …`. Take `⟨U₃, hU₃, hT₃⟩` from `GlobalTheory.T.additive_torsion_families_equal_locus_open h' M S' t z.A z.ab hM1 z.lev y₃ z.lev_add (fun a b => by haveI := fun k => hRA.1 (o k)`. Simplify using `only [hy₃, map_add, z.lev_add, MonObj.mul_comp, Finset.prod_mul_distrib])`. Use the proof step `z.lev_tors`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use the proof step `(fun a => by haveI := fun k => hRA.1 (o k)`. Simplify using `only [hy₃, ← Finset.prod_pow, ← MonObj.pow_comp, z.lev_tors, MonObj.one_comp, Finset.prod_const_one])`. Take `⟨U₄, hU₄, hT₄⟩` from `GlobalTheory.T.isOpen_symplecticLevel_locus h M S' t G Pe lev hGab hPe hr₁ hr₂ hsy hM hMo lev_add lev_tors`. Take `⟨U₅, hU₅, hT₅⟩` from `GlobalTheory.T.diagonal_restriction_relAmple_locus_open S' G Pe hGab hPe`. Take `⟨U₆, hU₆, hT₆⟩` from `GlobalTheory.T.exists_open_locus_kernel_killed_symmetric_bundle d S' G Pe hGab hPe hr₁ hr₂ hsy`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `U : S'.Opens` to `U₁ ⊓ U₂ ⊓ U₃ ⊓ U₄ ⊓ U₅ ⊓ U₆`. Establish `l₁ : U ≤ U₁` using `inf_le_left.trans (inf_le_left.trans (inf_le_left.trans (inf_le_left.trans inf_le_left)))`. Establish `l₂ : U ≤ U₂` using `inf_le_left.trans (inf_le_left.trans (inf_le_left.trans (inf_le_left.trans inf_le_right)))`. Establish `l₃ : U ≤ U₃` using `inf_le_left.trans (inf_le_left.trans (inf_le_left.trans inf_le_right))`. Establish `l₄ : U ≤ U₄` using `inf_le_left.trans (inf_le_left.trans inf_le_right)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `l₅ : U ≤ U₅` using `inf_le_left.trans inf_le_right`. Establish `l₆ : U ≤ U₆` using `inf_le_right`. Establish `pbG` using `Pdiv.PullbackComparison.isGrpPullback U.ι G`. Establish `hS` using `hU₄ U l₄`. Set `c : SiegPre h M (zetaAway M) (U.ι ≫ t)` to `{ A := (Over.pullback U.ι).obj G ab := GlobalTheory.isAbelianScheme_pullback_obj U.ι G hGab P := Pe.pull (Pdiv.PullbackComparison.pφ₂ U.ι G) isLB := pull_isLB hPe _ rig₁ := by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Use symmetry to reverse the relation. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨t₁, ht₁⟩` from `hr₁`. Conclude with `gen_chartPull (chartPullLinComb Pe _ _ _ _ (Pdiv.PullbackComparison.pφ U.ι G) (fun _ => Pdiv.PullbackComparison.lift_one_id U.ι G)) t₁ ht₁`. Use `rig₂ := by`. Take `⟨t₂, ht₂⟩` from `hr₂`. Conclude with `gen_chartPull (chartPullLinComb Pe _ _ _ _ (Pdiv.PullbackComparison.pφ U.ι G) (fun _ => Pdiv.PullbackComparison.lift_id_one U.ι G)) t₂ ht₂`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use symmetry as in `:= LBIso.chartPull (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull Pe _ _ rfl) (chartPullLinComb Pe _ _ _ _ (Pdiv.PullbackComparison.pφ₂ U.ι G) (fun _ => Pdiv.PullbackComparison.lift_swap U.ι G)) hsy`. Use `lev := fun a => GlobalTheory.SiegelPull.secPull (Pdiv.PullbackComparison.isGrpPullback U.ι G) (lev a)`. Use `lev_add := hS.1`. Use `lev_tors := hS.2.1`. Use `geom := hS.2.2 }`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Set `w : SiegPre h' M (zetaAway M) (U.ι ≫ t)` to `GlobalTheory.LowChart.siegPull z U.ι (U.ι ≫ t) rfl`. Set `actw : O → (w.A ⟶ w.A)` to `fun a => (Over.pullback U.ι).map (act a)`. Use `⟨U, c, w, actw, ⟨hU₅ U l₅, hU₆ U l₆⟩, hU₁ U l₁, GlobalTheory.LowChart.principal_siegPull z U.ι _ rfl hz, ActUnr.isRAct_pullback U.ι z.A act hRA, adj_pullback' U.ι z.A z.P bar act z.isLB hAdj, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `⟨Pdiv.PullbackComparison.pφ U.ι z.A, Pdiv.PullbackComparison.pφ₂ U.ι z.A, Pdiv.PullbackComparison.isGrpPullback U.ι z.A, Pdiv.PullbackComparison.isSquare U.ι z.A, Pdiv.PullbackComparison.gen_refl _ (pull_isLB z.isLB _), fun a => GlobalTheory.SiegelPull.secPull_left (Pdiv.Pullback …`. Use `⟨(Over.pullback U.ι).map inc, (Over.pullback U.ι).map pr, (by exact (inferInstance : IsMonHom ((Over.pullback U.ι).map inc))), (by exact (inferInstance : IsMonHom ((Over.pullback U.ι).map pr))), ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(CategoryTheory.Functor.map_comp _ _ _).symm.trans ((congrArg _ hip).trans (CategoryTheory.Functor.map_id _ _))`. Conclude with `(CategoryTheory.Functor.map_comp _ _ _).symm.trans (congrArg _ hpi)`. Conclude with `image_bundle_pull U.ι z.A G z.P z.isLB inc`. Introduce `a show GlobalTheory.SiegelPull.secPull (Pdiv.PullbackComparison.isGrpPullback U.ι G) (z.lev (jl a) ≫ pr) ≫ (Over.pullback U.ι).map inc = GlobalTheory.SiegelPull.secPull (Pdiv.PullbackComparison.isGrpPullback U.ι z.A) (z.lev (jl a))`. Rewrite using `[secPull_map, Category.assoc, hpi]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `secPull_congr _ (hU₂ U l₂ a)`. Introduce `a show GlobalTheory.SiegelPull.secPull (Pdiv.PullbackComparison.isGrpPullback U.ι z.A) (z.lev a) = _`. Rewrite using `[secPull_congr _ (hU₃ U l₃ a), secPull_prod]`. Use `congr 1`. Apply `congrArg List.ofFn` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `k`. Use `show _ = GlobalTheory.SiegelPull.secPull (Pdiv.PullbackComparison.isGrpPullback U.ι G) (z.lev (jl (κ k a)) ≫ pr) ≫ (Over.pullback U.ι).map inc ≫ (Over.pullback U.ι).map (act (o k))`. Rewrite using `[← Category.assoc, secPull_map, secPull_map]`. Simplify using `only [Category.assoc, reassoc_of% hpi]`. Apply `secPull_congr` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `hU₂ U l₂ (κ k a)` as an intermediate fact. Simplify using `only [x₂, y₂, Over.comp_left] at this ⊢`. Rewrite using `[reassoc_of% this]`. Introduce `T g c' hdT hker ⟨w', actw', hpb, hzr⟩`. Take `⟨hl₂, hl₃⟩` from `GlobalTheory.T.level_sections_formulas_of_idempotent_image_pullback h h' M O e jl n o κ S' T t z act g c' w' actw' hpb hzr`.
-
-Take `⟨inc', pr', hinc', hpr', hip', hpi', hP', hl', -⟩` from `hzr`. Take `⟨ψ, ψ₂, hψ, hsq, hw', hlw, hact⟩` from `hpb`. Take `⟨φ, φ₂, hφ, hsqφ, hiφ, hiφ₂⟩` from `GlobalTheory.T.idempotent_endomorphism_image_commutes_base_change S' T g z.A G inc pr (act e) w'.A c'.A inc' pr' (actw' e) ψ ψ₂ hinc hpr hip hpi hinc' hpr' hip' hpi' hψ hsq (hact e)`. Establish `hcP : LBIso c'.P (Pe.pull φ₂)`. Establish `e₁` using `GlobalTheory.ZM.SiegPull.lbIso_pull_comp hw' (inc' ⊗ₘ inc').left`.
-
-Rewrite `e₁` using `[hiφ₂]`. Establish `e₂` using `GlobalTheory.ZM.SiegPull.lbIso_pull_comp (GlobalTheory.lbIso_refl hPe) φ₂`. Conclude with `LBIso.trans c'.isLB (pull_isLB w'.isLB _) (pull_isLB hPe _) hP' (LBIso.trans (pull_isLB w'.isLB _) (pull_isLB z.isLB _) (pull_isLB hPe _) e₁ e₂.symm)`. Establish `hcl : ∀ a, (c'.lev a).left ≫ φ = g ≫ (lev a).left` using `fun a => by`. Establish `h₀ : (c'.lev a).left ≫ φ ≫ inc.left = g ≫ (z.lev (jl a)).left`.
-
-Rewrite using `[← hiφ, ← Category.assoc, ← Over.comp_left, hl' a, hlw]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hip, Over.id_left, Category.comp_id]`. Use `_ = ((c'.lev a).left ≫ φ ≫ inc.left) ≫ pr.left := by rw [Over.comp_left]; simp only [Category.assoc]`. Use `_ = g ≫ (lev a).left := by rw [h₀]; simp only [lev, Over.comp_left, Category.assoc]`.
-
-Introduce `x hx`. Simplify using `only [U, TopologicalSpace.Opens.coe_inf, Set.mem_inter_iff]`. Conclude with `⟨⟨⟨⟨⟨hT₁ T g hdT hx, hT₂ T g hl₂ hx⟩, hT₃ T g hl₃ hx⟩, hT₄ T g c' φ φ₂ hφ hsqφ hcP hcl hx⟩, hT₅ T g c'.A φ φ₂ c'.P hφ hsqφ c'.isLB hcP hker.1 hx⟩, hT₆ T g c'.A φ φ₂ c'.P hφ hsqφ c'.isLB hcP hdT hker.1 hker.2 hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_open_locus : ∀ (h h' M d : ℕ) (O : Type) [Ring O] (bar : O → O) (e : O) (jl : (Fin h ⊕ Fin h → ℤ) →+ (Fin h' ⊕ Fin h' → ℤ)) (n : ℕ) (o : Fin n → O) (κ : Fin n → (Fin h' ⊕ Fin h' → ℤ) →+ (Fin h ⊕ Fin h → ℤ)) (S' : Scheme.{0}) [IsLocallyNoetherian S'] (t : S' ⟶ Sp (cycAway M)) (z : SiegPre h' M (zetaAway M) t) (act : O → (z.A ⟶ z.A)), 1 ≤ h → 3 ≤ M → Odd M → 0 < d → M.Coprime d → z.Principal → IsRAct z.A act → Adj z.A z.P bar act → e * e = e → ∃ (U : S'.Opens) (c : SiegPre h M (zetaAway M) (U.ι ≫ t)) (w : SiegPre h' M (zetaAway M) (U.ι ≫ t)) (actw : O → (w.A ⟶ w.A)), SiegKerBy c d ∧ IsUnit ((d : ℕ) : Γ(U.toScheme, ⊤)) ∧ w.Principal ∧ IsRAct w.A actw ∧ Adj w.A w.P bar actw ∧ ActPB w actw z act U.ι ∧ ZRel e jl o κ c w actw ∧ ∀ (T : Scheme.{0}) (g : T ⟶ S') (c' : SiegPre h M (zetaAway M) (g ≫ t)), IsUnit ((d : ℕ) : Γ(T, ⊤)) → SiegKerBy c' d → (∃ (w' : SiegPre h' M (zetaAway M) (g ≫ t)) (actw' : O → (w'.A ⟶ w'.A)), ActPB w' actw' z act g ∧ ZRel e jl o κ c' w' actw') → Set.range g.base ⊆ (U : Set S') := by
   intro h h' M d O _ bar e jl n o κ S' _ t z act hh hM hMo hd hMd hz hRA hAdj hee

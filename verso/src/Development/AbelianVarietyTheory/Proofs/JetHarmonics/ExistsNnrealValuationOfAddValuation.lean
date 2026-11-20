@@ -20,7 +20,7 @@ Both sides reduce to the same expression.
 theorem expNegTop_coe (q : ℚ) : ((expNegTop (q : WithTop ℚ) : ℝ≥0) : ℝ) = Real.exp (-(q : ℝ)) := rfl
 
 /- English proof (translation)
-Apply `NNReal.coe_injective` to reduce the goal to its premises. Establish `h` using `expNegTop_coe 0`. Simplify using `using h`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem expNegTop_zero : expNegTop 0 = 1 := by
   apply NNReal.coe_injective
@@ -28,9 +28,9 @@ theorem expNegTop_zero : expNegTop 0 = 1 := by
   simpa using h
 
 /- English proof (translation)
-Proceed by induction on `a using WithTop.recTopCoe with`. Consider the case `top => simp`. Consider the case `coe a`. Proceed by induction on `b using WithTop.recTopCoe with`. Consider the case `top => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `coe b`. Apply `NNReal.coe_injective` to reduce the goal to its premises. Rewrite using `[← WithTop.coe_add, NNReal.coe_mul, expNegTop_coe, expNegTop_coe, expNegTop_coe, ← Real.exp_add]`. Use `push_cast`. Put the polynomial expressions in normal form.
+Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form.
 -/
 theorem expNegTop_add (a b : WithTop ℚ) : expNegTop (a + b) = expNegTop a * expNegTop b := by
   induction a using WithTop.recTopCoe with
@@ -46,9 +46,9 @@ theorem expNegTop_add (a b : WithTop ℚ) : expNegTop (a + b) = expNegTop a * ex
       ring_nf
 
 /- English proof (translation)
-Proceed by induction on `a using WithTop.recTopCoe with`. Consider the case `top => simp`. Consider the case `coe a`. Proceed by induction on `b using WithTop.recTopCoe with`. Consider the case `top`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Rewrite using `[← NNReal.coe_le_coe, expNegTop_coe]`. Simplify using `only [expNegTop_top, NNReal.coe_zero, top_le_iff, WithTop.coe_ne_top, iff_false, not_le]`. Conclude with `Real.exp_pos _`. Consider the case `coe b`. Rewrite using `[← NNReal.coe_le_coe, expNegTop_coe, expNegTop_coe, Real.exp_le_exp, neg_le_neg_iff, Rat.cast_le, WithTop.coe_le_coe]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expNegTop_le_iff (a b : WithTop ℚ) : expNegTop a ≤ expNegTop b ↔ b ≤ a := by
   induction a using WithTop.recTopCoe with
@@ -81,16 +81,16 @@ theorem expNegValuation_apply {F : Type} [Field F] (v : AddValuation F (WithTop 
     expNegValuation v x = expNegTop (v x) := rfl
 
 /- English proof (translation)
-Rewrite using `[expNegValuation_apply, ← expNegTop_zero, expNegTop_le_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem expNegValuation_le_one_iff {F : Type} [Field F] (v : AddValuation F (WithTop ℚ)) (x : F) :
     expNegValuation v x ≤ 1 ↔ 0 ≤ v x := by
   rw [expNegValuation_apply, ← expNegTop_zero, expNegTop_le_iff]
 
 /- English proof (translation)
-Introduce `F _ v`. Use `⟨expNegValuation v, fun x y => expNegTop_le_iff _ _, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Subtype.val_injective`. Introduce `x`. Conclude with `(expNegValuation_le_one_iff v _).mpr x.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `r hr`. Conclude with `⟨⟨r, (expNegValuation_le_one_iff v r).mp hr⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_nnreal_valuation_of_addValuation :
     ∀ (F : Type) [Field F] (v : AddValuation F (WithTop ℚ)), ∃ v' : Valuation F NNReal,

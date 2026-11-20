@@ -17,7 +17,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {A T : HSp D} {ι : A.V →ₗ[D.host.E] T.V}
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[frameMat, Formalism.L2.GlobalTheoryTheory.VolumeCarry.frameMat, LinearMap.toMatrix_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem frameMat_eq_global : frameMat T A ι = Formalism.L2.GlobalTheoryTheory.VolumeCarry.frameMat D T A ι := by
   ext i j
@@ -27,9 +27,9 @@ def embP' (A T : HSp D) (ι : A.V →ₗ[D.host.E] T.V) : Matrix (Fin A.rank) (F
   A.gram⁻¹ * Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (frameMat T A ι) * T.gram
 
 /- English proof (translation)
-Establish `hG` using `Formalism.L2.GlobalTheoryTheory.VolumeCarry.gram_frameMat D T A ι hι`. Rewrite `hG` using `[← frameMat_eq_global]`. Unfold `embP'`. Rewrite using `[show A.gram⁻¹ * Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (frameMat T A ι) * T.gram * frameMat T A ι = A.gram⁻¹ * (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (frameMat T A ι) * T.gram * frameMat T A ι) by`. Simplify using `only [Matrix.mul_assoc], ← hG]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr (Formalism.IndefR.Eqv.gram_det_ne' D A))`.
+A detailed English derivation is pending.
 -/
 theorem embP'_mul (hι : HSpace.IsIsomEmb A T ι) : embP' A T ι * frameMat T A ι = 1 := by
   have hG := Formalism.L2.GlobalTheoryTheory.VolumeCarry.gram_frameMat D T A ι hι
@@ -41,9 +41,9 @@ theorem embP'_mul (hι : HSpace.IsIsomEmb A T ι) : embP' A T ι * frameMat T A 
   exact Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr (Formalism.IndefR.Eqv.gram_det_ne' D A))
 
 /- English proof (translation)
-Establish `hG` using `Formalism.L2.GlobalTheoryTheory.VolumeCarry.gram_frameMat D T A ι hι`. Rewrite `hG` using `[← frameMat_eq_global]`. Establish `hu : A.gram * A.gram⁻¹ = 1` using `Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr (Formalism.IndefR.Eqv.gram_det_ne' D A))`. Rewrite using `[Matrix.mul_sub, Matrix.mul_one]`. Unfold `embP'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[sub_eq_zero]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hu, Matrix.one_mul]`. Use `_ = _ := by rw [hG]; simp only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem perp_of_embP' (hι : HSpace.IsIsomEmb A T ι) :
     Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (frameMat T A ι) * T.gram * (1 - frameMat T A ι * embP' A T ι) = 0 := by
@@ -61,17 +61,15 @@ theorem perp_of_embP' (hι : HSpace.IsIsomEmb A T ι) :
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `set F := frameMat T A ι`. Use `set P := embP' A T ι`. Use `set Q : Matrix (Fin T.rank) (Fin T.rank) D.host.E := 1 - F * P with hQ`. Establish `hperp : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) F * T.gram * Q = 0` using `perp_of_embP' hι`. Establish `h1 : mt T g * F.map (incA D) = F.map (incA D) * mt A h` using `hr.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `h2 : mt T g * Q.map (incA D) = Q.map (incA D)`. Use extensionality with `i k`. Establish `hx : (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) F * T.gram).mulVec (fun i => Q i k) = 0`. Use function extensionality and compare the values at `i'`. Use `congrFun (congrFun hperp i') k` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.mul_apply, Matrix.zero_apply]`. Rewrite using `[Pi.zero_apply, Matrix.mulVec, dotProduct]`. Conclude with `this`. Use `congrFun (hr.2 (fun i => Q i k) hx) i` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec, dotProduct]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.mul_apply, Matrix.map_apply]`. Conclude with `this`. Establish `hQmap : Q.map (incA D) = 1 - (F * P).map (incA D)`. Use extensionality with `i j`. Simplify using `only [hQ, Matrix.map_apply, Matrix.sub_apply, map_sub, Matrix.one_apply]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `hsplit : (1 : Matrix (Fin T.rank) (Fin T.rank) (AE D)) = (F * P).map (incA D) + Q.map (incA D)`. Rewrite using `[hQmap, add_sub_cancel]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hsplit, Matrix.mul_add, Matrix.map_mul]`.
-
-Use `_ = _ := by rw [← Matrix.mul_assoc, h1, h2, hQmap]`.
+A detailed English derivation is pending.
 -/
 theorem mt_of_embRel (hι : HSpace.IsIsomEmb A T ι) {g : GA D T} {h : GA D A} (hr : EmbRel T A ι g h) :
     mt T g = (frameMat T A ι).map (incA D) * mt A h * (embP' A T ι).map (incA D) +

@@ -22,7 +22,7 @@ def StdSupp (ϖ : kˣ) (c : ℕ) (x : Matrix (Fin n ⊕ Fin n') (Fin n) k) : Pro
   (∀ i j, x.toRows₁ i j ∈ 𝒪[k]) ∧ valuation k x.toRows₁.det = 1 ∧ ∀ i j, x.toRows₂ i j ∈ cball (ϖ ^ c)
 
 /- English proof (translation)
-Introduce `h0` and use `by have := h.2.1 rw [h0, map_zero] at this exact zero_ne_one this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem StdSupp.det_ne {ϖ : kˣ} {c : ℕ} {x : Matrix (Fin n ⊕ Fin n') (Fin n) k} (h : StdSupp ϖ c x) :
     x.toRows₁.det ≠ 0 := fun h0 => by
@@ -36,7 +36,7 @@ def stdDatum (μ : kˣ →* ℂˣ) (ϖ : kˣ) (c : ℕ) (x : Matrix (Fin n ⊕ F
   if h : StdSupp ϖ c x then (((μ (Units.mk0 _ h.det_ne))⁻¹ : ℂˣ) : ℂ) else 0
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Conclude with `Subring.sum_mem _ fun l _ => mul_mem (hA i l) (hB l j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_mul {m p r : Type} [Fintype p] {A : Matrix m p k} {B : Matrix p r k} (hA : ∀ i j, A i j ∈ 𝒪[k])
     (hB : ∀ i j, B i j ∈ 𝒪[k]) (i j) : (A * B) i j ∈ 𝒪[k] := by
@@ -44,9 +44,9 @@ theorem int_mul {m p r : Type} [Fintype p] {A : Matrix m p k} {B : Matrix p r k}
   exact Subring.sum_mem _ fun l _ => mul_mem (hA i l) (hB l j)
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_induction _ (· ∈ cball s) (fun _ _ => add_mem_cball) (by simp [cball]) fun l _ => ?_` and prove the remaining obligations. Establish `h1` using `hA i l`. Establish `h2` using `hB l j`. Simplify using `only [cball, Set.mem_setOf_eq, map_mul] at h1 ⊢`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h2` using `[Valuation.mem_integer_iff]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem cball_mul {m p r : Type} [Fintype p] {s : kˣ} {A : Matrix m p k} {B : Matrix p r k}
     (hA : ∀ i j, A i j ∈ cball s) (hB : ∀ i j, B i j ∈ 𝒪[k]) (i j) : (A * B) i j ∈ cball s := by
@@ -60,19 +60,19 @@ theorem cball_mul {m p r : Type} [Fintype p] {s : kˣ} {A : Matrix m p k} {B : M
     _ = _ := mul_one _
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.toRows₁, Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem toRows₁_mul {m : Type} [Fintype m] (x : Matrix (Fin n ⊕ Fin n') m k) (g : Matrix m (Fin n) k) :
     (x * g).toRows₁ = x.toRows₁ * g := by ext i j; simp [Matrix.toRows₁, Matrix.mul_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.toRows₂, Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem toRows₂_mul {m : Type} [Fintype m] (x : Matrix (Fin n ⊕ Fin n') m k) (g : Matrix m (Fin n) k) :
     (x * g).toRows₂ = x.toRows₂ * g := by ext i j; simp [Matrix.toRows₂, Matrix.mul_apply]
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `hg`. Establish `h1 : (Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) u).val.det = algebraMap 𝒪[k] k u.val.det` using `((algebraMap 𝒪[k] k).map_det _).symm`. Rewrite using `[h1]`. Conclude with `(Valuation.integer.integers (valuation k)).one_of_isUnit ((Matrix.isUnit_iff_isUnit_det _).1 u.isUnit)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_det_KO {g : GL (Fin n) k} (hg : g ∈ KO k (Fin n)) : valuation k g.val.det = 1 := by
   obtain ⟨u, rfl⟩ := hg
@@ -82,9 +82,9 @@ theorem valuation_det_KO {g : GL (Fin n) k} (hg : g ∈ KO k (Fin n)) : valuatio
   exact (Valuation.integer.integers (valuation k)).one_of_isUnit ((Matrix.isUnit_iff_isUnit_det _).1 u.isUnit)
 
 /- English proof (translation)
-Establish `hgi` using `((SplitFlip.mem_KO_iff g).1 hg).1`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[toRows₁_mul]`. Conclude with `int_mul h.1 hgi`. Rewrite using `[toRows₁_mul, Matrix.det_mul, map_mul, h.2.1, valuation_det_KO hg, one_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[toRows₂_mul]`. Conclude with `cball_mul h.2.2 hgi`.
+A detailed English derivation is pending.
 -/
 theorem StdSupp.mul {ϖ : kˣ} {c : ℕ} {x : Matrix (Fin n ⊕ Fin n') (Fin n) k} (h : StdSupp ϖ c x)
     {g : GL (Fin n) k} (hg : g ∈ KO k (Fin n)) : StdSupp ϖ c (x * g.val) := by

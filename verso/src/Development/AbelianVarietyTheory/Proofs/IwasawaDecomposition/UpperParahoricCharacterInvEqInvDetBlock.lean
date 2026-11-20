@@ -12,9 +12,9 @@ noncomputable section
 namespace GlobalTheory.Mem.R3.LiftBrg.LamQInv
 
 /- English proof (translation)
-Unfold `Formalism.L2.DIV.blk2`. Use `split_ifs with hi`. Conclude with `Formalism.L2.Col.coarse_of_lt hi`. Rewrite using `[Formalism.L2.Col.coarse_of_le (Nat.not_lt.mp hi)]`. Establish `hi2` using `i.2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: i.val - r < b` using `by omega`. Simplify using `[Formalism.L2.Col.blkIdx, this]`.
+A detailed English derivation is pending.
 -/
 theorem coarseBlockIndex_single_eq_twoBlock {a r b : ℕ} (hn : a = r + b) (i : Fin a) :
     Formalism.L2.Col.coarse r [b] i.val = Formalism.L2.DIV.blk2 r i := by
@@ -27,13 +27,13 @@ theorem coarseBlockIndex_single_eq_twoBlock {a r b : ℕ} (hn : a = r + b) (i : 
     simp [Formalism.L2.Col.blkIdx, this]
 
 /- English proof (translation)
-Introduce `κ K _ _ a n r b h hn y hy χ hz`. Substitute `h` using the available equality. Establish `hc : LiftBrg.castGL (rfl : a = a) y = y` using `by ext; simp [LiftBrg.castGL]`. Establish `hy' : y ∈ Formalism.L2.Col.blockUT a κ r [b]`. Introduce `i j hij`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hy` to reduce the goal to its premises. Use `show Formalism.L2.DIV.blk2 r j < Formalism.L2.DIV.blk2 r i`. Rewrite using `[← coarseBlockIndex_single_eq_twoBlock hn, ← coarseBlockIndex_single_eq_twoBlock hn]`. Conclude with `hij`. Establish `he : (⟨_, hz⟩ : ↥(Formalism.L2.Col.HQ κ a r b)) = (⟨y, hy'⟩ : ↥(Formalism.L2.Col.HQ κ a r b))⁻¹` using `by ext1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hc]`. Rewrite using `[he, map_inv, Formalism.L2.Col.lamQ_apply]`. Use `congr 2`. Use `ext`. Rewrite using `[Formalism.L2.Col.blkDet_val, Formalism.L2.DIV.diag_block_det_val 1 hy]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[Matrix.toSquareBlock_def]`. Set `e : {i : Fin a // Formalism.L2.Col.coarse r [b] i.val = 1} ≃ {i : Fin a // Formalism.L2.DIV.blk2 r i = 1}` to `Equiv.subtypeEquivRight (fun i => by rw [coarseBlockIndex_single_eq_twoBlock hn])`. Conclude with `Matrix.det_submatrix_equiv_self e (((y : GL (Fin a) κ) : Matrix (Fin a) (Fin a) κ).submatrix (Subtype.val : {i : Fin a // Formalism.L2.DIV.blk2 r i = 1} → Fin a) Subtype.val)`.
+A detailed English derivation is pending.
 -/
 theorem lamQ_castGL_inv : ∀ {κ K : Type} [CommRing κ] [Field K] {a n r b : ℕ} (h : a = n) (hn : n = r + b) (y : GL (Fin a) κ)
     (hy : y ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blk2 r)) (χ : κˣ →* Kˣ)

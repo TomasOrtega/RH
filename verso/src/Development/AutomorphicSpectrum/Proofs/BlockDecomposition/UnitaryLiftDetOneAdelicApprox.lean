@@ -18,14 +18,14 @@ section Ring
 variable {R : Type} [CommRing R] {M : ℕ}
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_add_right (c : R →+* R) (Jm : Matrix (Fin M) (Fin M) R) (x y z : Fin M → R) :
     Formalism.UG.hform c Jm x (y + z) = Formalism.UG.hform c Jm x y + Formalism.UG.hform c Jm x z := by
   simp only [Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hform_smul_right (c : R →+* R) (Jm : Matrix (Fin M) (Fin M) R) (x y : Fin M → R) (k : R) :
     Formalism.UG.hform c Jm x (k • y) = k * Formalism.UG.hform c Jm x y := by
@@ -33,14 +33,14 @@ theorem hform_smul_right (c : R →+* R) (Jm : Matrix (Fin M) (Fin M) R) (x y : 
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_add_left (c : R →+* R) (Jm : Matrix (Fin M) (Fin M) R) (x y z : Fin M → R) :
     Formalism.UG.hform c Jm (x + y) z = Formalism.UG.hform c Jm x z + Formalism.UG.hform c Jm y z := by
   simp only [Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hform_smul_left (c : R →+* R) (Jm : Matrix (Fin M) (Fin M) R) (x y : Fin M → R) (k : R) :
     Formalism.UG.hform c Jm (k • x) y = c k * Formalism.UG.hform c Jm x y := by
@@ -48,7 +48,7 @@ theorem hform_smul_left (c : R →+* R) (Jm : Matrix (Fin M) (Fin M) R) (x y : F
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, map_sum, map_mul, hc]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hJ]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hform_conj (c : R →+* R) (hc : ∀ x, c (c x) = x) (Jm : Matrix (Fin M) (Fin M) R)
     (hJ : ∀ i j, c (Jm j i) = Jm i j) (x y : Fin M → R) :
@@ -60,7 +60,7 @@ theorem hform_conj (c : R →+* R) (hc : ∀ x, c (c x) = x) (Jm : Matrix (Fin M
   ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.vecMulVec_apply, Matrix.mulVec, dotProduct, Finset.sum_mul, mul_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mul_vmv (A : Matrix (Fin M) (Fin M) R) (x y : Fin M → R) :
     A * Matrix.vecMulVec x y = Matrix.vecMulVec (A.mulVec x) y := by
@@ -68,7 +68,7 @@ theorem mul_vmv (A : Matrix (Fin M) (Fin M) R) (x y : Fin M → R) :
   simp only [Matrix.mul_apply, Matrix.vecMulVec_apply, Matrix.mulVec, dotProduct, Finset.sum_mul, mul_assoc]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.vecMulVec_apply, Matrix.vecMul, dotProduct, Finset.mul_sum, mul_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem vmv_mul (A : Matrix (Fin M) (Fin M) R) (x y : Fin M → R) :
     Matrix.vecMulVec x y * A = Matrix.vecMulVec x (Matrix.vecMul y A) := by
@@ -76,23 +76,23 @@ theorem vmv_mul (A : Matrix (Fin M) (Fin M) R) (x y : Fin M → R) :
   simp only [Matrix.mul_apply, Matrix.vecMulVec_apply, Matrix.vecMul, dotProduct, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Take `⟨v, hv⟩ : ∃ v : Fin M → R, v = fun j => ∑ i, c (u i) * Jm i j` from `⟨_, rfl⟩`. Establish `hq : qr c Jm u k = 1 + k • Matrix.vecMulVec u v` using `by rw [hv]; rfl`. Establish `hcv : ∀ i, c (v i) = Jm.mulVec u i`. Introduce `i`. Simplify using `only [hv, map_sum, map_mul, hc, Matrix.mulVec, dotProduct]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hJ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hvu : dotProduct v u = 0`. Rewrite using `[← hu]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hv, dotProduct, Formalism.UG.hform, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Establish `hvJ : Matrix.vecMul (fun i => c (u i)) Jm = v`. Rewrite using `[hv]`. Use extensionality with `j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.vecMul, dotProduct]`. Establish `hcT : Formalism.UG.cT c (qr c Jm u k) = 1 + c k • Matrix.vecMulVec (Jm.mulVec u) (fun i => c (u i))`. Rewrite using `[hq]`. Use extensionality with `i j`. Simplify using `only [Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, Matrix.vecMulVec_apply, smul_eq_mul, map_add, map_mul, hcv]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `h1 : c ((1 : Matrix (Fin M) (Fin M) R) j i) = (1 : Matrix (Fin M) (Fin M) R) i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Matrix.one_apply_ne h, Matrix.one_apply_ne (Ne.symm h), map_zero]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Expand and normalize the polynomial expressions, which then agree. Establish `hA : Matrix.vecMulVec (Jm.mulVec u) (fun i => c (u i)) * Jm = Matrix.vecMulVec (Jm.mulVec u) v`. Rewrite using `[vmv_mul, hvJ]`. Establish `hN : Matrix.vecMulVec (Jm.mulVec u) v * Matrix.vecMulVec u v = 0`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : (Matrix.vecMulVec (Jm.mulVec u) v).mulVec u = 0`. Use extensionality with `i`. Establish `h1 : ∑ j, Jm.mulVec u i * v j * u j = Jm.mulVec u i * dotProduct v u`. Simplify using `only [dotProduct, Finset.mul_sum, mul_assoc]`. Simplify using `only [Matrix.mulVec.eq_1 (Matrix.vecMulVec _ _), dotProduct, Matrix.vecMulVec_apply, Pi.zero_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, hvu, mul_zero]`. Rewrite using `[mul_vmv, h0]`. Use extensionality with `i j`. Simplify using `[Matrix.vecMulVec_apply]`. Rewrite using `[hcT, hq]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one, Matrix.smul_mul, Matrix.mul_smul, hA, mul_vmv Jm, hN, smul_zero, add_zero]`. Rewrite using `[add_assoc, ← add_smul, add_comm (c k) k, hk, zero_smul, add_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem qr_unitary (c : R →+* R) (hc : ∀ x, c (c x) = x) (Jm : Matrix (Fin M) (Fin M) R)
     (hJ : ∀ i j, c (Jm j i) = Jm i j) (u : Fin M → R) (k : R) (hk : k + c k = 0)
@@ -152,7 +152,7 @@ def pB (P : PlaceMap F K) : AF F ⊗[F] E →ₐ[F] K ⊗[F] E :=
   Algebra.TensorProduct.map P.proj (AlgHom.id F E)
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul k e => simp [pB, iB, P.proj_inj]`. Consider the case `add y z hy hz => rw [map_add, map_add, hy, hz]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem pB_iB (P : PlaceMap F K) (y : K ⊗[F] E) : pB P (iB P y) = y := by
   induction y using TensorProduct.induction_on with
@@ -167,30 +167,30 @@ def phi (K : Type) [CommRing K] [Algebra F K] (ψ : E →ₗ[F] F) : K ⊗[F] E 
   (TensorProduct.AlgebraTensorModule.rid F K K).toLinearMap ∘ₗ ψ.baseChange K
 
 /- English proof (translation)
-Simplify using `[cd]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cd_tmul (ψ : E →ₗ[F] F) (a : AF F) (e : E) : cd ψ (a ⊗ₜ[F] e) = ψ e • a := by
   simp [cd]
 
 /- English proof (translation)
-Simplify using `[phi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem phi_tmul (ψ : E →ₗ[F] F) (k : K) (e : E) : phi K ψ (k ⊗ₜ[F] e) = ψ e • k := by
   simp [phi]
 
 /- English proof (translation)
-Use `haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩`. Conclude with `IsModuleTopology.continuous_of_linearMap (cd ψ)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_cd (ψ : E →ₗ[F] F) : Continuous (cd ψ) := by
   haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩
   exact IsModuleTopology.continuous_of_linearMap (cd ψ)
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e`. Establish `h : ∀ i, P.proj (cd (B.coord i) (a ⊗ₜ[F] e)) • inclR K (B i) = P.proj a ⊗ₜ[F] (B.coord i e • B i)`. Introduce `i`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[cd_tmul, map_smul]`. Express the relevant statement in the definitionally equal form `(B.coord i e • P.proj a) • ((1 : K) ⊗ₜ[F] B i) = _`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one, TensorProduct.smul_tmul]`. Simplify using `only [h, ← TensorProduct.tmul_sum]`. Establish `h2 : ∑ i, B.coord i e • B i = e` using `B.sum_repr e`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[h2]`. Simplify using `[pB]`. Consider the case `add x y hx hy`. Simplify using `only [map_add, add_smul, Finset.sum_add_distrib, hx, hy]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem pB_eq_sum (P : PlaceMap F K) (B : Module.Basis (Fin 2) F E) (x : AF F ⊗[F] E) :
     pB P x = ∑ i, P.proj (cd (B.coord i) x) • inclR K (B i) := by
@@ -211,9 +211,9 @@ theorem pB_eq_sum (P : PlaceMap F K) (B : Module.Basis (Fin 2) F E) (x : AF F �
     simp only [map_add, add_smul, Finset.sum_add_distrib, hx, hy]
 
 /- English proof (translation)
-Establish `h : (fun x : AF F ⊗[F] E => phi K ψ (w * pB P x)) = fun x => ∑ i, P.proj (cd (B.coord i) x) * phi K ψ (w * inclR K (B i))`. Use function extensionality and compare the values at `x`. Rewrite using `[pB_eq_sum P B, Finset.mul_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, map_smul, smul_eq_mul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `continuous_finset_sum _ fun i _ => (P.cont_proj.comp (continuous_cd (B.coord i))).mul continuous_const`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_phi_pB (P : PlaceMap F K) (B : Module.Basis (Fin 2) F E) (ψ : E →ₗ[F] F) (w : K ⊗[F] E) :
     Continuous fun x : AF F ⊗[F] E => phi K ψ (w * pB P x) := by
@@ -230,9 +230,9 @@ theorem continuous_phi_pB (P : PlaceMap F K) (B : Module.Basis (Fin 2) F E) (ψ 
 variable {σ : E →ₐ[F] E} {M : ℕ} {J : Matrix (Fin M) (Fin M) E}
 
 /- English proof (translation)
-Establish `h1 : ((HA.mat (AF F) σ J (L x)).1 : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)) j l = iB P ((((HA.mat K σ J x).1 : Matrix (Fin M) (Fin M) (K ⊗[F] E)) - 1) j l) + (1 : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)) j l`. Rewrite using `[← hL x j l, Matrix.sub_apply, sub_add_cancel]`. Establish `h2 : pB P ((1 : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)) j l) = (1 : Matrix (Fin M) (Fin M) (K ⊗[F] E)) j l`. Distinguish the cases in `h : j = l`. Substitute `h` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Rewrite using `[Matrix.one_apply_ne h, Matrix.one_apply_ne h, map_zero]`. Rewrite using `[h1, map_add, pB_iB, h2, Matrix.sub_apply, sub_add_cancel]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem pB_lift (P : PlaceMap F K) {L : HA K σ J →* HA (AF F) σ J} (hL : IsLift P σ J L) (x : HA K σ J)
     (j l : Fin M) :
@@ -251,9 +251,9 @@ theorem pB_lift (P : PlaceMap F K) {L : HA K σ J →* HA (AF F) σ J} (hL : IsL
   rw [h1, map_add, pB_iB, h2, Matrix.sub_apply, sub_add_cancel]
 
 /- English proof (translation)
-Establish `h0 : (((HA.mat (AF F) σ J (L x)).1 : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)) - 1).mulVec (vA t) = 0`. Use extensionality with `i`. Establish `hs : ∑ j, (((HA.mat K σ J x).1 : Matrix (Fin M) (Fin M) (K ⊗[F] E)) - 1) i j * inclR K (t j) = ((((HA.mat K σ J x).1 : Matrix (Fin M) (Fin M) (K ⊗[F] E)) - 1).mulVec (incV K t)) i` using `rfl`. Simplify using `only [Matrix.mulVec, dotProduct, hL x i, vA, iB_mul_one_tmul, ← map_sum, Pi.zero_apply]`. Rewrite using `[hs, Matrix.sub_mulVec, hz, Matrix.one_mulVec, sub_self]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite `h0` using `[Matrix.sub_mulVec, Matrix.one_mulVec, sub_eq_zero]`. Conclude with `h0`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_fixes (P : PlaceMap F K) {L : HA K σ J →* HA (AF F) σ J} (hL : IsLift P σ J L) (x : HA K σ J)
     (t : Fin M → E)
@@ -270,9 +270,9 @@ theorem lift_fixes (P : PlaceMap F K) {L : HA K σ J →* HA (AF F) σ J} (hL : 
   exact h0
 
 /- English proof (translation)
-Establish `hdet : (qr (sigR K σ) (JR K J) u k).det = 1`. Rewrite using `[det_qr]`. Establish `hu' : Formalism.UG.hform (sigR K σ) (JR K J) u u = 0` using `hu`. Rewrite using `[hu', mul_zero, add_zero]`. Establish `hJ' : ∀ i j, sigR K σ (JR K J j i) = JR K J i j` using `fun i j => map_mem_HermR K σ J hJ i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨(⟨Matrix.GeneralLinearGroup.mk'' _ (isUnit_iff_exists_inv.2 ⟨1, (mul_one _).trans hdet⟩), qr_unitary _ hc _ hJ' u k hk hu⟩ : HR K σ J), rfl, hdet⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem exists_point (hc : ∀ t, sigR K σ (sigR K σ t) = t) (hJ : ∀ i j, σ (J j i) = J i j)
     (u : Fin M → K ⊗[F] E) (k : K ⊗[F] E) (hk : k + sigR K σ k = 0) (hu : hR K σ J u u = 0) :
@@ -287,9 +287,9 @@ theorem exists_point (hc : ∀ t, sigR K σ (sigR K σ t) = t) (hJ : ∀ i j, σ
     qr_unitary _ hc _ hJ' u k hk hu⟩ : HR K σ J), rfl, hdet⟩
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, Matrix.mulVec, dotProduct]`. Rewrite using `[Finset.sum_comm (s := Finset.univ) (t := Finset.univ) (f := fun i j => c (z i) * Jm i j * ∑ l, X j l * z l)]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun l _ => by ring`.
+A detailed English derivation is pending.
 -/
 theorem sum_form (c : K ⊗[F] E →+* K ⊗[F] E) (Jm X : Matrix (Fin M) (Fin M) (K ⊗[F] E)) (z : Fin M → K ⊗[F] E) :
     ∑ j, ∑ l, ((∑ i, c (z i) * Jm i j) * z l) * X j l = Formalism.UG.hform c Jm z (X.mulVec z) := by
@@ -303,29 +303,29 @@ theorem sum_form (c : K ⊗[F] E →+* K ⊗[F] E) (Jm X : Matrix (Fin M) (Fin M
 end Lift
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ K _ _ P L hL hdet ε hε a b hiso hcomp`. Take `⟨-, x, y, z, huu, huz⟩` from `hiso`. Take `⟨θ₀, d, B, -, -, hσθ, -, -, hB1⟩` from `GlobalTheory.CompanionTheory.SaGen.Dichotomy.exists_theta hCM`. Establish `hc : ∀ t, sigR K σ (sigR K σ t) = t`. Introduce `t`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul k e => simp [sigR, GlobalTheory.CompanionTheory.SaGen.Dichotomy.sigma_sigma hCM]`. Consider the case `add s t hs ht => rw [map_add, map_add, hs, ht]`. Establish `hJm : ∀ i j, sigR K σ (JR K J j i) = JR K J i j` using `fun i j => map_mem_HermR K σ J hJ.1 i j`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Take `⟨u, hu⟩ : ∃ u : Fin M → K ⊗[F] E, u = x • incV K a + y • incV K b` from `⟨_, rfl⟩`. Rewrite `huu`, `huz` using `[← hu]`. Establish `huz' : Formalism.UG.hform (sigR K σ) (JR K J) u z = 1` using `huz`. Establish `hzu : Formalism.UG.hform (sigR K σ) (JR K J) z u = 1`. Rewrite using `[← hform_conj _ hc _ hJm u z, huz', map_one]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `ψ : E →ₗ[F] F` to `B.coord 1`. Establish `hψ : ψ θ₀ = 1`. Express the relevant statement in the definitionally equal form `B.coord 1 θ₀ = 1`. Rewrite using `[← hB1]`. Simplify using the standard rewrite rules.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Set `kk : K → K ⊗[F] E` to `fun r => r ⊗ₜ[F] θ₀`. Establish `hkk : ∀ r, kk r + sigR K σ (kk r) = 0`. Introduce `r`. Establish `: sigR K σ (kk r) = r ⊗ₜ[F] (σ θ₀)` using `by simp [kk, sigR]`. Rewrite using `[this, hσθ, TensorProduct.tmul_neg]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[kk]`. Establish `hphi : ∀ r, phi K ψ (kk r) = r`. Introduce `r`. Simplify using `[kk, phi_tmul, hψ]`. Set `w : Fin M → Fin M → K ⊗[F] E` to `fun j l => (∑ i, sigR K σ (z i) * JR K J i j) * z l`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `Φ : HA (AF F) σ J → K` to `fun g => ∑ j, ∑ l, phi K ψ (w j l * pB P (((HA.mat (AF F) σ J g).1 : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)) j l))`. Establish `hΦ : Continuous Φ`. Use `continuous_finset_sum _ fun j _ => continuous_finset_sum _ fun l _ => ?_` and prove the remaining obligations. Establish `hent : Continuous fun g : HA (AF F) σ J => ((HA.mat (AF F) σ J g).1 : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)) j l` using `(Units.continuous_val.comp continuous_subtype_val).matrix_elem j l`. Conclude with `(continuous_phi_pB P B ψ (w j l)).comp hent`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC⟩` from `(hcomp.image hΦ).isBounded.exists_norm_le`. Take `⟨s, hs⟩` from `NormedField.exists_lt_norm K C`. Use `set C₀ := phi K ψ (Formalism.UG.hform (sigR K σ) (JR K J) z z) with hC₀`. Take `⟨g, hg, hgd⟩` from `exists_point hc hJ.1 u (kk (s - C₀)) (hkk _) huu`. Establish `hval : Φ (L g) = s`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : Φ (L g) = phi K ψ (Formalism.UG.hform (sigR K σ) (JR K J) z (((HA.mat K σ J g).1 : Matrix (Fin M) (Fin M) (K ⊗[F] E)).mulVec z))`. Rewrite using `[← sum_form]`. Simplify using `only [Φ, pB_lift P hL, map_sum, w]`. Rewrite using `[h1, hg, qr_mulVec, huz', mul_one, hform_add_right, hform_smul_right, hzu, mul_one, map_add, hphi, ← hC₀]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hmem : L g ∈ PlaneSupp σ J ε a b`. Take `⟨h1, h2⟩` from `hdet g hgd`. Use `⟨⟨h1, fun i j => ?_⟩, fun t hat hbt => ?_⟩` and prove the remaining obligations. Rewrite using `[← h2 i j, ← mul_assoc, ← map_mul, hε]`. Apply `lift_fixes P hL` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hg, qr_mulVec]`. Establish `h0 : Formalism.UG.hform (sigR K σ) (JR K J) u (incV K t) = 0`. Rewrite using `[hu, hform_add_left, hform_smul_left, hform_smul_left, hform_incV, hform_incV, hat, hbt]`. Simplify using the standard rewrite rules. Rewrite using `[h0, mul_zero, zero_smul, add_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hC (Φ (L g)) ⟨L g, hmem, rfl⟩` as an intermediate fact. Rewrite `this` using `[hval]`. Conclude with `absurd this (not_le.2 hs)`.
+A detailed English derivation is pending.
 -/
 theorem not_isCompact_planeSupp : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ {M : ℕ} (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ {K : Type} [NontriviallyNormedField K] [Algebra F K] (P : PlaceMap F K) (L : HA K σ J →* HA (AF F) σ J), IsLift P σ J L → (∀ x : HA K σ J, ((HA.mat K σ J x).1 : Matrix (Fin M) (Fin M) (K ⊗[F] E)).det = 1 → L x ∈ SUSupp σ J (P.inj 1)) → ∀ ε : AF F, ε * P.inj 1 = P.inj 1 → ∀ a b : Fin M → E, IsoPlane K σ J (incV K a) (incV K b) → ¬ IsCompact (PlaneSupp σ J ε a b) := by
   intro F E _ _ _ _ _ σ hCM M J hJ K _ _ P L hL hdet ε hε a b hiso hcomp

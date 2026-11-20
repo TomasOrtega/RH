@@ -11,11 +11,11 @@ namespace ReciprocityTheory.ChartRestriction.G.PullbackSections.PfModelDataX
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.WeightAlgebra Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 /- English proof (translation)
-Establish `e1 : D.host.φ₀ D.host.xi0 = -1 / ((Ideal.absNorm D.host.ccK : ℂ) * D.host.φ₀ D.host.sqrtMinusD)`. Unfold `Host.xi0`. Simplify using `[map_div₀, map_mul, map_neg, map_natCast]`. Establish `e2 : ‖D.host.φ₀ D.host.sqrtMinusD‖ = Real.sqrt D.host.d`. Establish `h0 : (D.host.φ₀ D.host.sqrtMinusD) ^ 2 = -(D.host.d : ℂ)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← map_pow, Formalism.BasicNotions.Host.sqrtMinusD_sq D.host, map_neg, map_natCast]`. Rewrite using `[← Real.sqrt_sq (norm_nonneg (D.host.φ₀ D.host.sqrtMinusD)), ← norm_pow, h0, norm_neg, Complex.norm_natCast]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `xiR`. Rewrite using `[e1, norm_div, norm_neg, norm_one, norm_mul, Complex.norm_natCast, e2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `h : Ideal.absNorm D.host.ccK ≠ 0` using `fun h0 => D.host.ccK_ne_bot (Ideal.absNorm_eq_zero_iff.1 h0)`. Conclude with `Nat.one_le_iff_ne_zero.2 h` after adjusting the coercions. Establish `hd : 1 ≤ D.host.d` using `by have := D.host.qd_big.2; omega`. Rewrite using `[show (1 : ℝ) = Real.sqrt 1 by simp]`. Conclude with `Real.sqrt_le_sqrt (by exact_mod_cast hd)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma xiR_facts (D : D7) : xiR D = 1 / ((Ideal.absNorm D.host.ccK : ℝ) * Real.sqrt D.host.d) ∧
     1 ≤ (Ideal.absNorm D.host.ccK : ℝ) ∧ 1 ≤ Real.sqrt D.host.d := by
@@ -36,11 +36,11 @@ lemma xiR_facts (D : D7) : xiR D = 1 / ((Ideal.absNorm D.host.ccK : ℝ) * Real.
     exact Real.sqrt_le_sqrt (by exact_mod_cast hd)
 
 /- English proof (translation)
-Take `⟨hxi, hN1, hd1⟩` from `xiR_facts D`. Establish `ht : 1 ≤ D.R.t` using `D.R.t_odd.pos`. Establish `hr : 1 ≤ D.R.r` using `(PfTies1.dimPos_fr D).2`. Establish `h4 : 4 ≤ 4 * D.R.t * D.R.r` using `by nlinarith`. Establish `hd : 4 ≤ D.host.d` using `by have := D.host.qd_big.2; omega`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsd : 2 ≤ Real.sqrt D.host.d`. Rewrite using `[show (2 : ℝ) = Real.sqrt 4 by rw [show (4 : ℝ) = 2 ^ 2 by norm_num, Real.sqrt_sq (by norm_num)]]`. Conclude with `Real.sqrt_le_sqrt (by exact_mod_cast hd)`. Rewrite using `[hxi]`. Establish `hpos : 0 < (Ideal.absNorm D.host.ccK : ℝ) * Real.sqrt D.host.d` using `by positivity`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_le_div_iff₀ hpos (by norm_num)]`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 lemma xiR_le_half (D : D7) : xiR D ≤ 1 / 2 := by
   obtain ⟨hxi, hN1, hd1⟩ := xiR_facts D

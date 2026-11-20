@@ -17,13 +17,13 @@ open Formalism.L2.Th1.A (shortW)
 variable {l : ℕ} [Fact l.Prime] {g2 g3 : ℂ_[l]}
 
 /- English proof (translation)
-Establish `hl : ¬ (l ∣ 2)`. Introduce `hd`. Establish `h1` using `Nat.le_of_dvd (by norm_num) hd`. Establish `h2` using `h.five`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `hQ : ‖(2 : ℚ_[l])‖ = 1`. Establish `e2` using `Padic.eq_padicNorm (p := l) (2 : ℚ)`. Move the coercions through the operations in `at e2`. Rewrite using `[e2]`. Conclude with `(padicNorm.nat_eq_one_iff 2).mpr hl` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (2 : ℂ_[l]) = (((2 : ℚ_[l]) : PadicAlgCl l) : ℂ_[l])`. Rewrite using `[map_ofNat]`. Use `first`. Consider the case `exact (map_ofNat (UniformSpace.Completion.coeRingHom (α := PadicAlgCl l)) 2).symm`. Consider the case `exact (UniformSpace.Completion.coe_ofNat 2).symm`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `exact (map_ofNat (algebraMap (PadicAlgCl l) ℂ_[l]) 2).symm`. Rewrite using `[e, PadicComplex.norm_extends, PadicAlgCl.norm_extends, hQ]`.
+A detailed English derivation is pending.
 -/
 theorem good_norm_two (h : GoodPair l g2 g3) : ‖(2 : ℂ_[l])‖ = 1 := by
   have hl : ¬ (l ∣ 2) := by
@@ -45,15 +45,15 @@ theorem good_norm_two (h : GoodPair l g2 g3) : ‖(2 : ℂ_[l])‖ = 1 := by
   rw [e, PadicComplex.norm_extends, PadicAlgCl.norm_extends, hQ]
 
 /- English proof (translation)
-Rewrite using `[show (4 : ℂ_[l]) = 2 * 2 by norm_num, norm_mul, good_norm_two h, mul_one]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem good_norm_four (h : GoodPair l g2 g3) : ‖(4 : ℂ_[l])‖ = 1 := by
   rw [show (4 : ℂ_[l]) = 2 * 2 by norm_num, norm_mul, good_norm_two h, mul_one]
 
 /- English proof (translation)
-Establish `h4` using `good_norm_four h`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `IntegralModel shortW`. Simplify using `only [norm_zero, zero_le_one, norm_neg, norm_div, h4, div_one, true_and, h.norm2, h.norm3, and_self]`. Establish `hΔ : (shortW g2 g3).Δ = g2 ^ 3 - 27 * g3 ^ 2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [shortW, WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆, WeierstrassCurve.b₈]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hΔ, h.disc]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem good_model (h : GoodPair l g2 g3) : IntegralModel (shortW g2 g3) ∧ ‖(shortW g2 g3).Δ‖ = 1 := by
   have h4 := good_norm_four h
@@ -68,7 +68,7 @@ theorem good_model (h : GoodPair l g2 g3) : IntegralModel (shortW g2 g3) ∧ ‖
     rw [hΔ, h.disc]
 
 /- English proof (translation)
-Establish `h4` using `good_norm_four h`. Establish `hΔ` using `(good_model h).2`. Unfold `IntCurve`. Simplify using `only [shortW] at hΔ ⊢`. Simplify using `only [norm_zero, zero_le_one, norm_neg, norm_div, h4, div_one, true_and, h.norm2, h.norm3, and_self, hΔ]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem good_int (h : GoodPair l g2 g3) : IntCurve (shortW g2 g3) := by
   have h4 := good_norm_four h
@@ -79,9 +79,7 @@ theorem good_int (h : GoodPair l g2 g3) : IntCurve (shortW g2 g3) := by
     h.norm3, and_self, hΔ]
 
 /- English proof (translation)
-Establish `h4 : (4 : ℂ_[l]) ∈ MaximalUnramifiedExtension l` using `by first`. Consider the case `exact ofNat_mem (MaximalUnramifiedExtension l) 4`. Consider the case `(have h4' := natCast_mem (MaximalUnramifiedExtension l) 4`. Conclude with `h4')` after adjusting the coercions. Unfold `CoeffSub shortW`.
-
-Conclude with `⟨zero_mem _, zero_mem _, zero_mem _, div_mem (neg_mem h.mem2) h4, div_mem (neg_mem h.mem3) h4⟩`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem good_coeff (h : GoodPair l g2 g3) : CoeffSub (MaximalUnramifiedExtension l) (shortW g2 g3) := by
   have h4 : (4 : ℂ_[l]) ∈ MaximalUnramifiedExtension l := by
@@ -94,15 +92,13 @@ theorem good_coeff (h : GoodPair l g2 g3) : CoeffSub (MaximalUnramifiedExtension
     div_mem (neg_mem h.mem3) h4⟩
 
 /- English proof (translation)
-Unfold `InFormalGroupPoints at hP`. Consider the cases of `P with`. Consider the case `zero => exact absurd trivial hP`. Consider the case `some x y hxy`. Establish `hx : ‖x‖ ≤ 1` using `not_lt.mp hP`.
+Replace the relevant objects with their definitions. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `h4` using `good_norm_four h`. Establish `heq` using `(WeierstrassCurve.Affine.equation_iff x y).mp hxy.1`. Simplify using `only [shortW, zero_mul, mul_zero, add_zero] at heq`. Establish `hb1 : ‖x ^ 3‖ ≤ 1`. Rewrite using `[norm_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_le_one₀ (norm_nonneg _) hx`. Establish `hb2 : ‖-g2 / 4 * x‖ ≤ 1`. Rewrite using `[norm_mul, norm_div, norm_neg, h4, div_one]`. Conclude with `mul_le_one₀ h.norm2 (norm_nonneg _) hx`. Establish `hb3 : ‖-g3 / 4‖ ≤ 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[norm_div, norm_neg, h4, div_one]`. Conclude with `h.norm3`. Establish `hsum : ‖x ^ 3 + -g2 / 4 * x + -g3 / 4‖ ≤ 1` using `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ((IsUltrametricDist.norm_add_le_max _ _).trans (max_le hb1 hb2)) hb3)`. Establish `hy2 : ‖y‖ ^ 2 ≤ 1`. Rewrite using `[← norm_pow, heq]`.
-
-Conclude with `hsum`. Use `⟨by rintro (_ | _), ?_, ?_⟩` and prove the remaining obligations. Conclude with `hx`. Use `show ‖y‖ ≤ 1`. Use polynomial arithmetic with `[norm_nonneg y]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem integral_of_not_mem_formalGroup (h : GoodPair l g2 g3) (P : (shortW g2 g3).toAffine.Point) (hP : ¬ InFormalGroupPoints P) :
     P ≠ 0 ∧ ‖px _ P‖ ≤ 1 ∧ ‖py _ P‖ ≤ 1 := by
@@ -135,14 +131,14 @@ theorem integral_of_not_mem_formalGroup (h : GoodPair l g2 g3) (P : (shortW g2 g
       nlinarith [norm_nonneg y]
 
 /- English proof (translation)
-Introduce `hE` and use `hP0 (formal_group_points_no_torsion ℂ_[l] _ (good_model h).1 (good_model h).2 N (norm_natCast_Cl_of_not_dvd (l := l) hN) P hE hNP)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem torsion_not_mem_formalGroup (h : GoodPair l g2 g3) (P : (shortW g2 g3).toAffine.Point) (N : ℕ) (hN : ¬ l ∣ N)
     (hNP : N • P = 0) (hP0 : P ≠ 0) : ¬ InFormalGroupPoints P := fun hE =>
   hP0 (formal_group_points_no_torsion ℂ_[l] _ (good_model h).1 (good_model h).2 N (norm_natCast_Cl_of_not_dvd (l := l) hN) P hE hNP)
 
 /- English proof (translation)
-Introduce `hE` and use `by have := (formal_group_points_subgroup ℂ_[l] _ (good_model h).1 (good_model h).2 (P - D) D hE hD).1 rw [sub_add_cancel] at this exact hP this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_mem_formalGroup_sub (h : GoodPair l g2 g3) (P D : (shortW g2 g3).toAffine.Point) (hP : ¬ InFormalGroupPoints P)
     (hD : InFormalGroupPoints D) : ¬ InFormalGroupPoints (P - D) := fun hE => by
@@ -151,9 +147,9 @@ theorem not_mem_formalGroup_sub (h : GoodPair l g2 g3) (P D : (shortW g2 g3).toA
   exact hP this
 
 /- English proof (translation)
-Establish `hP0 : P ≠ 0` using `fun h0 => h2 (by rw [h0, add_zero])`. Take `⟨-, hx, hy⟩` from `integral_of_not_mem_formalGroup h P (torsion_not_mem_formalGroup h P N hN hNP hP0)`. Establish `hN2 : N • (P + P) = 0` using `by rw [smul_add, hNP, add_zero]`. Take `⟨-, hx2, -⟩` from `integral_of_not_mem_formalGroup h (P + P) (torsion_not_mem_formalGroup h (P + P) N hN hN2 h2)`. Establish `hu` using `Formalism.L2.Th1.E.UnitPsi2_of Formalism.L2.Th1.E.nonsingular_norm ℂ_[l] _ (good_int h) P hP0 h2 hx hy hx2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `he : Formalism.L2.Th1.E.psi2 (shortW g2 g3) P = 2 * py _ P`. Simplify using `[Formalism.L2.Th1.E.psi2, shortW]`. Rewrite `hu` using `[he, norm_mul, good_norm_two h, one_mul]`. Conclude with `hu`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tor_y_unit (h : GoodPair l g2 g3) (P : (shortW g2 g3).toAffine.Point) (N : ℕ) (hN : ¬ l ∣ N)
     (hNP : N • P = 0) (h2 : P + P ≠ 0) : ‖py _ P‖ = 1 := by

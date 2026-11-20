@@ -11,21 +11,19 @@ namespace Formalism.FourierDecayAlt.P.A5x4
 open Formalism.DoubleCosetMeasures.P Formalism.DoubleCosetMeasures.P.Supp in
 
 /- English proof (translation)
-Take `⟨Ph, Pu, hPh, hPu, hP⟩` from `lu_rec (K := K) (n := s.sum)`. Take `⟨wi, h1, h2⟩ : ∃ wi : Matrix (Fin s.sum) (Fin s.sum) K, wi * pt s t = 1 ∧ pt s t * wi = 1` from `⟨pt s (fun b => (t b)⁻¹), pt_mul_pt s _ _ (fun b => by simp), pt_mul_pt s _ _ (fun b => by simp)⟩`. Establish `hV : Continuous fun Z : Matrix (Fin s.sum) (Fin s.sum) K => pt s t * Ph (wi * Z) * wi` using `(continuous_const.mul (hPh.comp (continuous_const.mul continuous_id))).mul continuous_const`. Establish `hU : Continuous fun Z : Matrix (Fin s.sum) (Fin s.sum) K => Pu (wi * Z)` using `hPu.comp (continuous_const.mul continuous_id)`. Set `Φ : Matrix (Fin s.sum) (Fin s.sum) K → (Matrix (Fin s.sum) (Fin s.sum) K × (Matrix (Fin s.sum) (Fin s.sum) K)ᵐᵒᵖ) × (Matrix (Fin s.sum) (Fin s.sum) K × (Matrix (Fin s.sum) (Fin s.sum) K)ᵐᵒᵖ)` to `fun Z => ((pt s t * Ph (wi * Z) * wi, MulOpposite.op (pt s t * Ph (wi * Z) * wi).adjugate), (Pu (wi * Z), MulOpposite.op (Pu (wi * Z)).adjugate))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hΦ : Continuous Φ` using `(hV.prodMk (MulOpposite.continuous_op.comp hV.matrix_adjugate)).prodMk (hU.prodMk (MulOpposite.continuous_op.comp hU.matrix_adjugate))`. Set `ι : lowW K s t × upUniG K s.sum → (Matrix (Fin s.sum) (Fin s.sum) K × (Matrix (Fin s.sum) (Fin s.sum) K)ᵐᵒᵖ) × (Matrix (Fin s.sum) (Fin s.sum) K × (Matrix (Fin s.sum) (Fin s.sum) K)ᵐᵒᵖ)` to `fun p => (Units.embedProduct _ (p.1 : GL (Fin s.sum) K), Units.embedProduct _ (p.2 : GL (Fin s.sum) K))`. Establish `hι : IsClosedEmbedding ι` using `(Units.isClosedEmbedding_embedProduct.comp (isClosed_lowW s t wi h1 h2).isClosedEmbedding_subtypeVal).prodMap (Units.isClosedEmbedding_embedProduct.comp (isClosed_upUniG (K := K) s.sum).isClosedEmbedding_subtypeVal)`. Set `Mset : Set (Matrix (Fin s.sum) (Fin s.sum) K)` to `{Z | IsInt R Z}`. Establish `hMc : IsCompact Mset`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `key : Mset = Set.univ.pi fun _ => Set.univ.pi fun _ => (R : Set K)`. Use extensionality with `Z`. Use `show (∀ a b, Z a b ∈ R) ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Set.mem_univ_pi.2 fun i => Set.mem_univ_pi.2 fun j => h i j`. Introduce `h a b`. Conclude with `Set.mem_univ_pi.1 (Set.mem_univ_pi.1 h a) b`. Rewrite using `[key]`. Conclude with `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => hRc`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `S : Set (lowW K s t × upUniG K s.sum)` to `{p | IsInt R (((p.1 : GL (Fin s.sum) K) : Matrix (Fin s.sum) (Fin s.sum) K) * pt s t * ((p.2 : GL (Fin s.sum) K) : Matrix (Fin s.sum) (Fin s.sum) K))}`. Establish `hScl : IsClosed S` using `hMc.isClosed.preimage (((Units.continuous_val.comp (continuous_subtype_val.comp continuous_fst)).mul continuous_const).mul (Units.continuous_val.comp (continuous_subtype_val.comp continuous_snd)))`. Establish `hSsub : S ⊆ ι ⁻¹' (Φ '' Mset)`. Introduce `p hp`. Use `⟨_, hp, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hv1, hv2⟩` from `(mem_lowW_iff s t wi h1 h2 p.1.1).1 p.1.2`. Establish `hu : IsUpUni ((p.2 : GL (Fin s.sum) K) : Matrix (Fin s.sum) (Fin s.sum) K)` using `p.2.2`. Take `⟨e1, e2⟩` from `hP _ _ hv2 hu`. Establish `eY : wi * (((p.1 : GL (Fin s.sum) K) : Matrix (Fin s.sum) (Fin s.sum) K) * pt s t * ((p.2 : GL (Fin s.sum) K) : Matrix (Fin s.sum) (Fin s.sum) K)) = (wi * ((p.1 : GL (Fin s.sum) K) : Matrix (Fin s.sum) (Fin s.sum) K) * pt s t) * ((p.2 : GL (Fin s.sum) K) : Matrix (Fin s.sum) (Fin …`. Simplify using `only [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `eV : pt s t * (wi * ((p.1 : GL (Fin s.sum) K) : Matrix (Fin s.sum) (Fin s.sum) K) * pt s t) * wi = ((p.1 : GL (Fin s.sum) K) : Matrix (Fin s.sum) (Fin s.sum) K)`. Simplify using `only [← Matrix.mul_assoc, h2, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, h2, Matrix.mul_one]`. Simplify using `only [Φ, ι, eY, e1, e2, eV, Units.embedProduct_apply]`. Rewrite using `[coe_inv_of_det _ (isLowUni_det K hv1), coe_inv_of_det _ (isUpUni_det K hu)]`.
-
-Conclude with `(hι.isCompact_preimage (hMc.image hΦ)).of_isClosed_subset hScl hSsub`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_intPairs {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K]
     [T2Space K] (R : Subring K) (hRc : IsCompact (R : Set K)) (s : List ℕ) (t : ℕ → Kˣ) :
@@ -98,7 +96,7 @@ theorem isCompact_intPairs {K : Type} [CommRing K] [TopologicalSpace K] [IsTopol
   exact (hι.isCompact_preimage (hMc.image hΦ)).of_isClosed_subset hScl hSsub
 
 /- English proof (translation)
-Establish `h` using `Formalism.DoubleCosetMeasures.P.intInv K R w.1.sum _ _ (orbZ w (x, y)) a.2.1 b.2 ha.1 hb.1`. Rewrite using `[← h]`. Establish `: orbZ w (a * x, y * b) = ((a : GL (Fin w.1.sum) K) : Matrix (Fin w.1.sum) (Fin w.1.sum) K) * orbZ w (x, y) * ((b : GL (Fin w.1.sum) K) : Matrix (Fin w.1.sum) (Fin w.1.sum) K)`. Simplify using `only [orbZ, Subgroup.coe_mul, Units.val_mul, Matrix.mul_assoc]`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem isInt_orbZ_inv {K : Type} [CommRing K] (R : Subring K) (w : Point K)
     (a : lowW K w.1 w.2) (ha : a ∈ intSub R (lowW K w.1 w.2))
@@ -120,15 +118,15 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.FourierDecayAlt.P.A5x4
 
 /- English proof (translation)
-Introduce `K _ _ _ R ψ hL w`. Use `hL.t2` as an intermediate fact. Set `f : lowW K w.1 w.2 × upUniG K w.1.sum → ℝ` to `fun p => if IsInt R (orbZ w p) then 1 else 0`. Establish `hinv : ∀ a ∈ intSub R (lowW K w.1 w.2), ∀ b ∈ intSub R (upUniG K w.1.sum), ∀ (x : lowW K w.1 w.2) (y : upUniG K w.1.sum), f (a * x, y * b) = f (x, y)`. Introduce `a ha b hb x y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [f, isInt_orbZ_inv R w a ha b hb x y]`. Establish `hS` using `isCompact_intPairs R hL.isCompact w.1 w.2`. Establish `hc : HasCompactSupport f`. Use `hS.of_isClosed_subset isClosed_closure (closure_minimal ?_ hS.isClosed)` and prove the remaining obligations. Introduce `p hp`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hn`. Apply `hp` to reduce the goal to its premises. Simplify using `only [f]`. Rewrite using `[if_neg]`. Conclude with `hn`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (0 : Measure (lowW K w.1 w.2)).IsMulRightInvariant` using `⟨fun g => by simp⟩`. Establish `: (0 : Measure (upUniG K w.1.sum)).IsMulLeftInvariant` using `⟨fun g => by simp⟩`. Establish `key` using `(Formalism.DoubleCosetMeasures.P.intTwoSided (lowW K w.1 w.2) (upUniG K w.1.sum) 0 0 (intSub R (lowW K w.1 w.2)) (intSub R (upUniG K w.1.sum)) (Formalism.DoubleCosetMeasures.P.isOpen_intSub R hL.isOpen _) (Formalism.DoubleCosetMeasures.P.isOpen_intSub R hL.isOpen _) ℝ f hinv hc). …`. Use `key.subset ?_` and prove the remaining obligations. Introduce `q hq`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hq' : IsInt R (orbZ w (q.1.out, q.2.out))` using `hq`. Simplify using `[f, hq']`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_points_finite : Formalism.FourierDecayAlt.A5.IntFinite := by
   intro K _ _ _ R ψ hL w
@@ -159,9 +157,9 @@ theorem integral_points_finite : Formalism.FourierDecayAlt.A5.IntFinite := by
   simp [f, hq']
 
 /- English proof (translation)
-Introduce `K _ _ _ R ψ hL w w'`. Use `((integral_points_finite K R ψ hL w).prod (integral_points_finite K R ψ hL w')).subset ?_` and prove the remaining obligations. Introduce `q hq`. Simplify using `only [Function.mem_support, pairTerm] at hq`. Assume the negation of the conclusion as `hcon`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction.
 
-Apply `hq` to reduce the goal to its premises. Rewrite using `[if_neg]`. Simplify using the standard rewrite rules. Introduce `hI`. Conclude with `hcon ⟨hI.1, hI.2⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem kernel_quotient_finite : Formalism.FourierDecayAlt.A5.KpFinite := by
   intro K _ _ _ R ψ hL w w'
@@ -182,13 +180,13 @@ namespace Formalism.FourierDecayAlt.P.A5x4
 section Sums
 
 /- English proof (translation)
-Unfold `Kp`. Rewrite using `[finsum_eq_sum_of_support_subset (s := h.toFinset ×ˢ h'.toFinset), Finset.sum_product]`. Use `Finset.sum_congr rfl fun q hq => Finset.sum_congr rfl fun q' hq' => ?_` and prove the remaining obligations. Establish `h1 : IsInt R (orbZ w (rep R q))` using `by simpa using hq`. Establish `h2 : IsInt R (orbZ w' (rep R q'))` using `by simpa using hq'`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [pairTerm]`. Rewrite using `[if_pos ⟨h1, h2⟩]`. Introduce `q hq`. Simplify using `only [Function.mem_support, pairTerm] at hq`. Assume the negation of the conclusion as `hcon`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction.
 
-Apply `hq` to reduce the goal to its premises. Rewrite using `[if_neg]`. Simplify using the standard rewrite rules. Introduce `hI`. Apply `hcon` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[hI.1, hI.2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Kp_eq_sum {K : Type} [CommRing K] (R : Subring K) (ψ : AddChar K ℂ) (w w' : Point K)
     (h : {q : Cos R w | IsInt R (orbZ w (rep R q))}.Finite)
@@ -216,15 +214,15 @@ theorem Kp_eq_sum {K : Type} [CommRing K] (R : Subring K) (ψ : AddChar K ℂ) (
 open Classical in
 
 /- English proof (translation)
-Use `hL.t2` as an intermediate fact. Establish `hψ : ∀ r ∈ R, ψ r = 1`. Introduce `r hr`. Use `(hL.selfDual 1).2 R.one_mem r hr` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Formalism.DoubleCosetMeasures.Final.bbNorm K R hL.isOpen w.1 w.2 ψ hψ μ₁ μ₂ h1 h2 C e lam (Formalism.DoubleCosetMeasures.Final.suppCompact K R hL.isOpen hL.isCompact w.1 w.2 ψ C e lam), finsum_eq_sum_of_support_subset (s := h.toFinset)]`. Use `Finset.sum_congr rfl fun q hq => ?_` and prove the remaining obligations. Establish `h1 : IsInt R (orbZ w (rep R q))` using `by simpa using hq`. Establish `h3 : phi R w.1 w.2 ψ C e lam (q.1.out, q.2.out) = (if IsInt R (orbZ w (rep R q)) then (Nat.card (isoSet R (orbZ w (rep R q)) C e lam) : ℂ) else 0) * phase ψ (rep R q)` using `rfl`. Rewrite using `[h3, if_pos h1]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `q hq`. Establish `h3 : phi R w.1 w.2 ψ C e lam (q.1.out, q.2.out) = (if IsInt R (orbZ w (rep R q)) then (Nat.card (isoSet R (orbZ w (rep R q)) C e lam) : ℂ) else 0) * phase ψ (rep R q)` using `rfl`. Simplify using `only [Function.mem_support] at hq`. Rewrite `hq` using `[h3]`. Assume the negation of the conclusion as `hcon`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Apply `hq` to reduce the goal to its premises. Rewrite using `[if_neg]`. Simplify using the standard rewrite rules. Introduce `hI`. Apply `hcon` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `using hI`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem BB_eq_sum {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K]
     (R : Subring K) (ψ : AddChar K ℂ) (hL : LocalDatum K R ψ) (w : Point K)
@@ -271,13 +269,13 @@ section Count
 variable {K : Type} [CommRing K] (R : Subring K)
 
 /- English proof (translation)
-Use `Nat.card_congr ⟨fun φ => ⟨φ0.symm.trans φ.1, ?_⟩, fun σ => ⟨φ0.trans σ.1, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Use `⟨?_, fun c => ?_⟩` and prove the remaining obligations. Establish `: φ0.symm e = eZ R Z` using `by rw [← hφ0.1]; simp`. Simplify using `[this, φ.2.1]`. Take `⟨v, hv⟩` from `Submodule.Quotient.mk_surjective _ (φ0.symm c)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `h3 : φ0 (Submodule.Quotient.mk v) = c` using `by rw [hv]; simp`. Simplify using `only [LinearEquiv.trans_apply]`. Rewrite using `[← hv, φ.2.2 v, ← hφ0.2 v, h3]`. Use `⟨?_, fun v => ?_⟩` and prove the remaining obligations. Simplify using `[hφ0.1, σ.2.1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearEquiv.trans_apply]`. Rewrite using `[σ.2.2, hφ0.2]`. Introduce `φ`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Introduce `σ`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem card_isoSet {n : ℕ} (Z : Matrix (Fin n) (Fin n) K)
     (C : Type) [AddCommGroup C] [Module R C] (e : C) (lam : C →ₗ[R] KR R)
@@ -299,15 +297,15 @@ theorem card_isoSet {n : ℕ} (Z : Matrix (Fin n) (Fin n) K)
   · intro σ; ext x; simp
 
 /- English proof (translation)
-Use `Nat.card_congr ⟨fun ρ => ⟨φ0.trans ρ.1.symm, ?_⟩, fun φ => ⟨φ.1.symm.trans φ0, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Use `⟨?_, fun v v' hv => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearEquiv.trans_apply, hφ0.1]`. Conclude with `(LinearEquiv.symm_apply_eq _).2 ρ.2.1.symm`. Simplify using `only [LinearEquiv.trans_apply] at hv`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h4 : φ0 (Submodule.Quotient.mk v) = ρ.1 (Submodule.Quotient.mk v')`. Rewrite using `[← hv]`. Simplify using the standard rewrite rules. Rewrite using `[← ρ.2.2 v', ← h4, hφ0.2]`. Use `⟨?_, fun v' => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: φ.1.symm (eZ R Z') = eZ R Z` using `by rw [← φ.2.1]; simp`. Simplify using `[this, hφ0.1]`. Take `⟨v, hv⟩` from `Submodule.Quotient.mk_surjective _ (φ.1.symm (Submodule.Quotient.mk v'))`. Establish `h3 : φ.1 (Submodule.Quotient.mk v) = Submodule.Quotient.mk v'` using `by rw [hv]; simp`. Simplify using `only [LinearEquiv.trans_apply]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hv, hφ0.2 v, φ.2.2 v v' h3]`. Introduce `ρ`. Use extensionality with `x`. Simplify using the standard rewrite rules. Introduce `φ`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem card_isoZZ {n n' : ℕ} (Z : Matrix (Fin n) (Fin n) K)
     (Z' : Matrix (Fin n') (Fin n') K)
@@ -333,15 +331,15 @@ theorem card_isoZZ {n n' : ℕ} (Z : Matrix (Fin n) (Fin n) K)
   · intro φ; ext x; simp
 
 /- English proof (translation)
-Take `⟨a0, φ0, hφ0⟩` from `hex`. Establish `hzero : ∀ b, b ≠ a0 → IsEmpty (isoSet R Z (C b) (e b) (lam b))`. Introduce `b hb`. Use `⟨fun ⟨φ1, h1⟩ => hne b a0 hb ⟨φ1.symm.trans φ0, ?_, ?_⟩⟩` and prove the remaining obligations. Establish `: φ1.symm (e b) = eZ R Z` using `by rw [← h1.1]; simp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[this, hφ0.1]`. Introduce `c`. Take `⟨v, hv⟩` from `Submodule.Quotient.mk_surjective _ (φ1.symm c)`. Establish `h3 : φ1 (Submodule.Quotient.mk v) = c` using `by rw [hv]; simp`. Simplify using `only [LinearEquiv.trans_apply]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hv, hφ0.2 v, ← h1.2 v, h3]`. Rewrite using `[Finset.sum_eq_single a0 (fun b _ hb => by have := hzero b hb; simp) (by simp)]`. Rewrite using `[card_isoSet R Z _ _ _ φ0 hφ0, ← card_isoZZ R Z Z' _ _ _ φ0 hφ0]`. Distinguish the cases in `hN : Nat.card (autSet R (C a0) (e a0) (lam a0)) = 0`. Establish `hM : Nat.card (isoSet R Z' (C a0) (e a0) (lam a0)) = 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hE : (isoSet R Z' (C a0) (e a0) (lam a0)).Nonempty`. Take `⟨ρ, hρ⟩` from `hE`. Rewrite using `[card_isoSet R Z' _ _ _ ρ hρ, hN]`. Rewrite `hE` using `[Set.not_nonempty_iff_eq_empty]`. Rewrite using `[hE]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Simplify using `[hN, hM]`. Establish `: (Nat.card (autSet R (C a0) (e a0) (lam a0)) : ℂ) ≠ 0` using `by exact_mod_cast hN`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 theorem isoCount {n n' : ℕ} (Z : Matrix (Fin n) (Fin n) K)
     (Z' : Matrix (Fin n') (Fin n') K) (ι : Type) [Fintype ι] (C : ι → Type)
@@ -385,13 +383,13 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.FourierDecayAlt.P.A5x4
 
 /- English proof (translation)
-Introduce `K _ _ _ R ψ hL w w' μ₁ μ₂ μ₁' μ₂' _ _ _ _ _ _ _ _ h1 h2 h1' h2' ι _ C _ _ e lam hne hex`. Establish `hf` using `integral_points_finite K R ψ hL w`. Establish `hf'` using `integral_points_finite K R ψ hL w'`. Rewrite using `[Kp_eq_sum R ψ w w' hf hf']`. Establish `hterm : ∀ a, BB R w.1 w.2 ψ (C a) (e a) (lam a) μ₁ μ₂ * conj (BB R w'.1 w'.2 ψ (C a) (e a) (lam a) μ₁' μ₂') / (Nat.card (autSet R (C a) (e a) (lam a)) : ℂ) = ∑ q ∈ hf.toFinset, ∑ q' ∈ hf'.toFinset, ((Nat.card (isoSet R (orbZ w (rep R q)) (C a) (e a) (lam a)) : ℂ) * (Nat.card (iso …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `a`. Rewrite using `[BB_eq_sum R ψ hL w μ₁ μ₂ h1 h2 (C a) (e a) (lam a) hf, BB_eq_sum R ψ hL w' μ₁' μ₂' h1' h2' (C a) (e a) (lam a) hf', map_sum, Finset.sum_mul_sum, Finset.sum_div]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_div]`. Use `Finset.sum_congr rfl fun q' _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl fun a _ => hterm a, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun q hq => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun q' _ => ?_` and prove the remaining obligations. Establish `hq1 : IsInt R (orbZ w (rep R q))` using `by simpa using hq`. Rewrite using `[← isoCount R (orbZ w (rep R q)) (orbZ w' (rep R q')) ι C e lam hne (hex _ hq1), Finset.sum_mul, Finset.sum_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem gram_kernel_identity : Formalism.FourierDecayAlt.A5.GramIdentity := by
   intro K _ _ _ R ψ hL w w' μ₁ μ₂ μ₁' μ₂' _ _ _ _ _ _ _ _ h1 h2 h1' h2' ι _ C _ _ e lam hne hex
@@ -432,11 +430,11 @@ section Groupoid
 variable {K : Type} [CommRing K] (R : Subring K)
 
 /- English proof (translation)
-Establish `h1 : v - v' ∈ latZ R Z` using `(Submodule.Quotient.eq _).1 h`. Take `⟨y, hy⟩` from `(Formalism.DoubleCosetMeasures.P.mem_latZ R Z _).1 h1`. Establish `h2 : lamLin R Z (v - v') = 0`. Rewrite using `[Formalism.DoubleCosetMeasures.P.lamLin_apply, ← hy, Matrix.mulVec_mulVec]`. Distinguish the cases in `hd : IsUnit Z.det`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Matrix.nonsing_inv_mul _ hd, Matrix.one_mulVec, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Formalism.DoubleCosetMeasures.P.lastCoord_apply]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `⟨y j, (Formalism.DoubleCosetMeasures.P.coeLin_apply R y j).symm⟩`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.nonsing_inv_apply_not_isUnit _ hd]`. Simplify using the standard rewrite rules. Rewrite `h2` using `[map_sub, sub_eq_zero]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lamLin_mk_eq {n : ℕ} (Z : Matrix (Fin n) (Fin n) K) {v v' : Fin n → R}
     (h : (Submodule.Quotient.mk v : coker R Z) = Submodule.Quotient.mk v') :
@@ -458,14 +456,14 @@ theorem lamLin_mk_eq {n : ℕ} (Z : Matrix (Fin n) (Fin n) K) {v v' : Fin n → 
   exact h2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, fun _ _ h => (lamLin_mk_eq R Z h).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem isoZZ_refl {n : ℕ} (Z : Matrix (Fin n) (Fin n) K) :
     LinearEquiv.refl R (coker R Z) ∈ isoZZ R Z Z :=
   ⟨rfl, fun _ _ h => (lamLin_mk_eq R Z h).symm⟩
 
 /- English proof (translation)
-Use `⟨by rw [← h.1]; simp, fun v' v hv => ?_⟩` and prove the remaining obligations. Establish `: φ (Submodule.Quotient.mk v) = Submodule.Quotient.mk v'` using `by rw [← hv]; simp`. Conclude with `(h.2 v v' this).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isoZZ_symm {n n' : ℕ} {Z : Matrix (Fin n) (Fin n) K} {Z' : Matrix (Fin n') (Fin n') K}
     {φ : coker R Z ≃ₗ[R] coker R Z'} (h : φ ∈ isoZZ R Z Z') : φ.symm ∈ isoZZ R Z' Z := by
@@ -474,7 +472,7 @@ theorem isoZZ_symm {n n' : ℕ} {Z : Matrix (Fin n) (Fin n) K} {Z' : Matrix (Fin
   exact (h.2 v v' this).symm
 
 /- English proof (translation)
-Use `⟨by simp [h.1, h'.1], fun v v'' hv => ?_⟩` and prove the remaining obligations. Take `⟨v', hv'⟩` from `Submodule.Quotient.mk_surjective _ (φ (Submodule.Quotient.mk v))`. Simplify using `only [LinearEquiv.trans_apply] at hv`. Rewrite `hv` using `[← hv']`. Rewrite using `[h'.2 v' v'' hv, h.2 v v' hv'.symm]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isoZZ_trans {n n' n'' : ℕ} {Z : Matrix (Fin n) (Fin n) K}
     {Z' : Matrix (Fin n') (Fin n') K} {Z'' : Matrix (Fin n'') (Fin n'') K}
@@ -487,9 +485,9 @@ theorem isoZZ_trans {n n' n'' : ℕ} {Z : Matrix (Fin n) (Fin n) K}
   rw [h'.2 v' v'' hv, h.2 v v' hv'.symm]
 
 /- English proof (translation)
-Use `Nat.card_congr ⟨fun φ => ⟨φ1.symm.trans (φ.1.trans φ2), ?_⟩, fun ρ => ⟨φ1.trans (ρ.1.trans φ2.symm), ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `isoZZ_trans R (isoZZ_symm R h1) (isoZZ_trans R φ.2 h2)`. Conclude with `isoZZ_trans R h1 (isoZZ_trans R ρ.2 (isoZZ_symm R h2))`. Introduce `φ`. Use extensionality with `x`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Introduce `ρ`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem card_isoZZ_congr {n n' m m' : ℕ} {A : Matrix (Fin n) (Fin n) K}
     {A' : Matrix (Fin n') (Fin n') K} {B : Matrix (Fin m) (Fin m) K}
@@ -509,13 +507,13 @@ end Groupoid
 section PSD
 
 /- English proof (translation)
-Establish `h : ∀ κ, ((μ κ * Complex.normSq (∑ i, if f i = κ then c i else 0) : ℝ) : ℂ) = ∑ i, ∑ j, (μ κ : ℂ) * ((if f i = κ then c i else 0) * conj (if f j = κ then c j else 0))`. Introduce `κ`. Rewrite using `[Complex.ofReal_mul, ← Complex.mul_conj, map_sum, Finset.sum_mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.ofReal_sum, Finset.sum_congr rfl fun κ _ => h κ, Finset.sum_comm (s := (Finset.univ : Finset Q))]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm (s := (Finset.univ : Finset Q))]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single (f i)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : f i = f j`. Simplify using `[h]`. Expand and normalize the polynomial expressions, which then agree. Establish `h' : ¬ f j = f i` using `fun e => h e.symm`. Simplify using `[h, h']`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `κ _ hκ`. Establish `: ¬ f i = κ` using `fun e => hκ e.symm`. Simplify using `[this]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sum_of_classes {T Q : Type} [Fintype T] [Fintype Q] [DecidableEq Q] (f : T → Q)
     (μ : Q → ℝ) (c : T → ℂ) :
@@ -544,11 +542,11 @@ theorem sum_of_classes {T Q : Type} [Fintype T] [Fintype Q] [DecidableEq Q] (f :
   · simp
 
 /- English proof (translation)
-Establish `key : ∑ i, ∑ j, c i * conj (c j) * (N i j : ℂ) = ((∑ κ : Quotient r, ((N κ.out κ.out : ℕ) : ℝ) * Complex.normSq (∑ i, if (Quotient.mk r i) = κ then c i else 0) : ℝ) : ℂ)`. Rewrite using `[← sum_of_classes (fun i => Quotient.mk r i) (fun κ => ((N κ.out κ.out : ℕ) : ℝ)) c]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 1`. Distinguish the cases in `h : r i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos (Quotient.sound h), h1 i j (Quotient.mk r i).out h (Setoid.symm (Quotient.mk_out i))]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg (fun e => h (Quotient.exact e)), h0 i j h]`. Simplify using the standard rewrite rules. Rewrite using `[key]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Complex.ofReal_im _, ?_⟩` and prove the remaining obligations. Rewrite using `[Complex.ofReal_re]`. Conclude with `Finset.sum_nonneg fun κ _ => mul_nonneg (Nat.cast_nonneg _) (Complex.normSq_nonneg _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psd_of_rel {T : Type} [Fintype T] (r : Setoid T) (N : T → T → ℕ)
     (h0 : ∀ i j, ¬ r i j → N i j = 0) (h1 : ∀ i j k, r i j → r i k → N i j = N k k)
@@ -582,19 +580,19 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.FourierDecayAlt.P.A5x4
 
 /- English proof (translation)
-Introduce `K _ _ _ R ψ hL F a`. Establish `hfin` using `integral_points_finite K R ψ hL`. Set `I : ∀ x : Point K, Finset (Cos R x)` to `fun x => (hfin x).toFinset`. Set `S : Finset (Σ x : Point K, Cos R x)` to `F.sigma I`. Set `c : (Σ x : Point K, Cos R x) → ℂ` to `fun i => a i.1 * phase ψ (rep R i.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `N : (Σ x : Point K, Cos R x) → (Σ x : Point K, Cos R x) → ℕ` to `fun i j => Nat.card (isoZZ R (orbZ i.1 (rep R i.2)) (orbZ j.1 (rep R j.2)))`. Establish `hsum : ∑ x ∈ F, ∑ y ∈ F, a x * conj (a y) * Kp R ψ x y = ∑ i : S, ∑ j : S, c i * conj (c j) * (N i j : ℂ)`. Rewrite using `[Finset.sum_coe_sort S (fun i => ∑ j : S, c i * conj (c j) * (N i j : ℂ))]`. Establish `hin : ∀ i, ∑ j : S, c i * conj (c j) * (N i j : ℂ) = ∑ y ∈ F, ∑ q' ∈ I y, c i * conj (c ⟨y, q'⟩) * (N i ⟨y, q'⟩ : ℂ)`. Introduce `i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.sum_coe_sort S (fun j => c i * conj (c j) * (N i j : ℂ)), Finset.sum_sigma]`. Rewrite using `[Finset.sum_congr rfl fun i _ => hin i, Finset.sum_sigma]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Kp_eq_sum R ψ x y (hfin x) (hfin y), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun q' _ => ?_` and prove the remaining obligations. Simplify using `only [c, N, map_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsum]`. Set `r : Setoid S` to `{ r := fun i j => (isoZZ R (orbZ i.1.1 (rep R i.1.2)) (orbZ j.1.1 (rep R j.1.2))).Nonempty iseqv := ⟨fun i => ⟨_, isoZZ_refl R _⟩, fun ⟨_, h⟩ => ⟨_, isoZZ_symm R h⟩, fun ⟨_, h⟩ ⟨_, h'⟩ => ⟨_, isoZZ_trans R h h'⟩⟩ }`. Use `psd_of_rel r (fun i j => N i j) ?_ ?_ (fun i => c i)` and prove the remaining obligations. Introduce `i j h`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h' : isoZZ R (orbZ i.1.1 (rep R i.1.2)) (orbZ j.1.1 (rep R j.1.2)) = ∅` using `Set.not_nonempty_iff_eq_empty.1 h`. Simplify using `only [N]`. Rewrite using `[h']`. Simplify using the standard rewrite rules. Introduce and unpack `i j k ⟨φ, hφ⟩ ⟨φ', hφ'⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Conclude with `card_isoZZ_congr R hφ' (isoZZ_trans R (isoZZ_symm R hφ) hφ')`.
+A detailed English derivation is pending.
 -/
 theorem kernel_gram_property : Formalism.FourierDecayAlt.A5.KpGram := by
   intro K _ _ _ R ψ hL F a

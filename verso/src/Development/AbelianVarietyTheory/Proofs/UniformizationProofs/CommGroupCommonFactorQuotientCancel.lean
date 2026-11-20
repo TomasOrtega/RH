@@ -22,7 +22,7 @@ section Units
 variable {X Y Z W : Scheme.{0}}
 
 /- English proof (translation)
-Establish `e : Units.map (f.appLE U ⊤ h).hom.toMonoidHom a = res h (pullU f U a)` using `Units.ext rfl`. Rewrite using `[e, gm_res _ z h trivial, gm_pull _ f z U (h trivial), Category.id_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem gm_appLE (f : Z ⟶ Y) (U : Y.Opens) (h : ⊤ ≤ f ⁻¹ᵁ U) (a : Γ(Y, U)ˣ) (z : Z) :
     gm (𝟙 Z) z ⊤ (Units.map (f.appLE U ⊤ h).hom.toMonoidHom a) = gm f z U a := by
@@ -30,7 +30,7 @@ theorem gm_appLE (f : Z ⟶ Y) (U : Y.Opens) (h : ⊤ ≤ f ⁻¹ᵁ U) (a : Γ(
   rw [e, gm_res _ z h trivial, gm_pull _ f z U (h trivial), Category.id_comp]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[gm_val (κ ≫ r) w U h]`. Use `show (κ.stalkMap w).hom (gm r (κ w) U a).val = _`. Rewrite using `[gm_val r (κ w) U h]`. Conclude with `Scheme.Hom.germ_stalkMap_apply κ (r ⁻¹ᵁ U) w h _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gm_stalkMap (κ : W ⟶ Z) (w : W) (r : Z ⟶ Y) (U : Y.Opens) (h : r (κ w) ∈ U) (a : Γ(Y, U)ˣ) :
     Units.map (κ.stalkMap w).hom.toMonoidHom (gm r (κ w) U a) = gm (κ ≫ r) w U a := by
@@ -41,7 +41,7 @@ theorem gm_stalkMap (κ : W ⟶ Z) (w : W) (r : Z ⟶ Y) (U : Y.Opens) (h : r (�
   exact Scheme.Hom.germ_stalkMap_apply κ (r ⁻¹ᵁ U) w h _
 
 /- English proof (translation)
-Establish `e : pullU π U a = pullU π U b` using `unit_ext fun x hx => by`. Rewrite using `[gm_pull (𝟙 X) π x U hx, gm_pull (𝟙 X) π x U hx, Category.id_comp]`. Conclude with `h x hx`. Conclude with `Units.ext (FunDescent.app_injective π U (congrArg Units.val e))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_ext_of_flat (π : X ⟶ Y) [Flat π] [Surjective π] {U : Y.Opens} {a b : Γ(Y, U)ˣ}
     (h : ∀ x, π x ∈ U → gm π x U a = gm π x U b) : a = b := by
@@ -50,9 +50,9 @@ theorem unit_ext_of_flat (π : X ⟶ Y) [Flat π] [Surjective π] {U : Y.Opens} 
   exact Units.ext (FunDescent.app_injective π U (congrArg Units.val e))
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `FunDescent.exists_app_eq π U f.val fun Z g₁ g₂ h₁ h₂ e => by`. Establish `: Units.map (g₁.appLE _ ⊤ h₁).hom.toMonoidHom f = Units.map (g₂.appLE _ ⊤ h₂).hom.toMonoidHom f` using `unit_ext fun z _ => by`. Rewrite using `[gm_appLE, gm_appLE]`. Conclude with `hf Z g₁ g₂ z e (h₁ trivial) (h₂ trivial)`. Conclude with `congrArg Units.val this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu : IsUnit a` using `FunDescent.isUnit_of_isUnit_app π U a (ha ▸ f.isUnit)`. Use `⟨hu.unit, fun Z g z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[← gm_pull g π z U hz]`. Conclude with `congrArg _ (Units.ext ha)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unit_desc (π : X ⟶ Y) [Flat π] [Surjective π] [QuasiCompact π] (U : Y.Opens)
     (f : Γ(X, π ⁻¹ᵁ U)ˣ)
@@ -72,13 +72,13 @@ theorem exists_unit_desc (π : X ⟶ Y) [Flat π] [Surjective π] [QuasiCompact 
   exact congrArg _ (Units.ext ha)
 
 /- English proof (translation)
-Establish `le : ∀ (j : K → N.ι) k, π ⁻¹ᵁ LB.wchart N φ j ≤ ψ k ⁻¹ᵁ (q ⁻¹ᵁ N.U (j k))` using `fun j k y hy => (congrArg (fun m : Y' ⟶ B => m y ∈ N.U (j k)) (hψ k)).mpr (Set.mem_iInter.1 hy k)`. Establish `loc : ∀ j : K → N.ι, ∃ a : Γ(Y, LB.wchart N φ j)ˣ, ∀ (Z : Scheme.{0}) (g : Z ⟶ Y') (z : Z), π (g z) ∈ LB.wchart N φ j → gm (g ≫ π) z (LB.wchart N φ j) a = ∏ k, gm (g ≫ ψ k) z (q ⁻¹ᵁ N.U (j k)) (u (j k)) ^ ε k` using `fun j => by`. Establish `v : ∀ (Z : Scheme.{0}) (g : Z ⟶ Y') (z : Z), π (g z) ∈ LB.wchart N φ j → gm g z (π ⁻¹ᵁ LB.wchart N φ j) (∏ k, res (le j k) (pullU (ψ k) _ (u (j k))) ^ ε k) = ∏ k, gm (g ≫ ψ k) z (q ⁻¹ᵁ N.U (j k)) (u (j k)) ^ ε k` using `fun Z g z hz => by`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_zpow, gm_res g z (le j k) hz, gm_pull g (ψ k) z _ (le j k hz)]`. Take `⟨a, ha⟩` from `exists_unit_desc π (LB.wchart N φ j) (∏ k, res (le j k) (pullU (ψ k) _ (u (j k))) ^ ε k) fun Z g₁ g₂ z e h₁ h₂ => by`. Rewrite using `[v Z g₁ z h₁, v Z g₂ z h₂]`. Conclude with `inv Z g₁ g₂ z j e fun k => le j k h₂`. Conclude with `⟨a, fun Z g z hz => (ha Z g z hz).trans (v Z g z hz)⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose a ha using loc`. Use `⟨⟨a⟩, fun j j' => unit_ext_of_flat π fun y hy => ?_⟩` and prove the remaining obligations. Establish `b : ∀ j, π y ∈ LB.wchart N φ j → gm π y (LB.wchart N φ j) (a j) = ∏ k, gm (ψ k) y (q ⁻¹ᵁ N.U (j k)) (u (j k)) ^ ε k` using `fun j hj => by`. Use `ha j _ (𝟙 Y') y hj` as an intermediate fact. Simplify `this` using `only [Category.id_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `((gm_res π y _ hy _).trans (b j hy.1)).trans (Eq.symm ((map_mul _ _ _).trans ((congrArg₂ (· * ·) (gm_linComb N φ ε π y j j' hy.1 hy.2) ((gm_res π y _ hy _).trans (b j' hy.2))).trans ?_)))` and prove the remaining obligations. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_zpow, hu _ (ψ k) y (j k) (j' k) (le j k hy.1) (le j' k hy.2), hψ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_gen_desc {G B Y' : Scheme.{0}} (q : G ⟶ B) (N : LB B) (u : ∀ j, Γ(G, q ⁻¹ᵁ N.U j)ˣ)
     (hu : ∀ (Z : Scheme.{0}) (g : Z ⟶ G) (z : Z) (i j : N.ι), q (g z) ∈ N.U i → q (g z) ∈ N.U j →
@@ -121,7 +121,7 @@ theorem exists_gen_desc {G B Y' : Scheme.{0}} (q : G ⟶ B) (N : LB B) (u : ∀ 
 end Units
 
 /- English proof (translation)
-Rewrite using `[← div_eq_mul_inv, mul_div_mul_left_eq_div, div_eq_mul_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem commGroup_common_factor_quotient_cancel {U : Type} [CommGroup U] (c a b : U) : c * a * (c * b)⁻¹ = a * b⁻¹ := by
   rw [← div_eq_mul_inv, mul_div_mul_left_eq_div, div_eq_mul_inv]
@@ -130,11 +130,11 @@ section Wt
 variable {S : Scheme.{0}} {G : Over S} [GrpObj G] {X : Type} [AddCommGroup X]
 
 /- English proof (translation)
-Set `W : Z.left.Opens` to `((t ≫ i) * g).left ⁻¹ᵁ V ⊓ g.left ⁻¹ᵁ V`. Set `Z' : Over S` to `Over.mk (W.ι ≫ Z.hom)`. Set `κ : Z' ⟶ Z` to `Over.homMk W.ι rfl`. Set `w : W.toScheme` to `⟨z, h₁, h₂⟩`. Establish `e : ((κ ≫ t) ≫ i) * (κ ≫ g) = κ ≫ ((t ≫ i) * g)` using `by rw [MonObj.comp_mul, Category.assoc]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `k₁ : ⊤ ≤ (((κ ≫ t) ≫ i) * (κ ≫ g)).left ⁻¹ᵁ V`. Rewrite using `[e]`. Conclude with `fun y _ => y.2.1`. Establish `k₂ : ⊤ ≤ (κ ≫ g).left ⁻¹ᵁ V` using `fun y _ => y.2.2`. Establish `a : Units.map ((((κ ≫ t) ≫ i) * (κ ≫ g)).left.appLE V ⊤ k₁).hom.toMonoidHom u = chV (κ ≫ t) χ * Units.map ((κ ≫ g).left.appLE V ⊤ k₂).hom.toMonoidHom u` using `Units.ext ((hu Z' _ _ k₁ k₂).trans (congrArg (· * _) (chV_val _ χ).symm))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b` using `congrArg (gm (𝟙 Z'.left) w ⊤) a`. Rewrite `b` using `[map_mul, gm_appLE, gm_appLE, ← gm_charUnit, e]`. Rewrite using `[← gm_charUnit]`. Apply `Units.map_injective (f := (W.ι.stalkMap w).hom.toMonoidHom) (ConcreteCategory.bijective_of_isIso (W.ι.stalkMap w)).1` to reduce the goal to its premises. Conclude with `(gm_stalkMap W.ι w _ V h₁ u).trans (b.trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_stalkMap W.ι w t.left ⊤ trivial _) (gm_stalkMap W.ι w g.left V h₂ u))).symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem gm_of_isWt {i : splitTorus S X ⟶ G} {V : G.left.Opens} {u : Γ(G.left, V)ˣ} {χ : X} (hu : IsWt i V u.val χ)
     {Z : Over S} (t : Z ⟶ splitTorus S X) (g : Z ⟶ G) (z : Z.left) (h₁ : ((t ≫ i) * g).left z ∈ V)
@@ -162,14 +162,14 @@ theorem gm_of_isWt {i : splitTorus S X ⟶ G} {V : G.left.Opens} {u : Γ(G.left,
 variable (Q : TQ G X)
 
 /- English proof (translation)
-Use `Q.q_hom` as an intermediate fact. Rewrite using `[MonObj.mul_comp, Category.assoc, Q.isKernel.w, ← Category.assoc, comp_toUnit, ← Hom.one_def, _root_.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem act_comp {Z : Over S} (t : Z ⟶ splitTorus S X) (g : Z ⟶ G) : ((t ≫ Q.i) * g) ≫ Q.q = g ≫ Q.q := by
   have := Q.q_hom
   rw [MonObj.mul_comp, Category.assoc, Q.isKernel.w, ← Category.assoc, comp_toUnit, ← Hom.one_def, _root_.one_mul]
 
 /- English proof (translation)
-Use `Q.q_hom` as an intermediate fact. Establish `w : (a * b⁻¹) ≫ Q.q = toUnit Z ≫ η[Q.B]`. Rewrite using `[MonObj.mul_comp, GrpObj.inv_comp, e, mul_inv_cancel]`. Both sides reduce to the same expression. Conclude with `⟨Q.isKernel.lift _ _ w, by rw [Q.isKernel.lift_fst, inv_mul_cancel_right]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Supply the required witnesses or components.
 -/
 theorem exists_act {Z : Over S} {a b : Z ⟶ G} (e : a ≫ Q.q = b ≫ Q.q) :
     ∃ t : Z ⟶ splitTorus S X, a = (t ≫ Q.i) * b := by
@@ -180,7 +180,7 @@ theorem exists_act {Z : Over S} {a b : Z ⟶ G} (e : a ≫ Q.q = b ≫ Q.q) :
   exact ⟨Q.isKernel.lift _ _ w, by rw [Q.isKernel.lift_fst, inv_mul_cancel_right]⟩
 
 /- English proof (translation)
-The claim follows from `gm_of_isWt hu t g z ((congrArg (fun m : Z ⟶ Q.B => m.left z ∈ V) (act_comp Q t g)).mpr h) h`.
+A detailed English derivation is pending.
 -/
 theorem gm_act {V : Q.B.left.Opens} {u : Γ(G.left, Q.q.left ⁻¹ᵁ V)ˣ} {χ : X} (hu : IsWt Q.i _ u.val χ)
     {Z : Over S} (t : Z ⟶ splitTorus S X) (g : Z ⟶ G) (z : Z.left) (h : Q.q.left (g.left z) ∈ V) :
@@ -189,19 +189,17 @@ theorem gm_act {V : Q.B.left.Opens} {u : Γ(G.left, Q.q.left ⁻¹ᵁ V)ˣ} {χ 
   gm_of_isWt hu t g z ((congrArg (fun m : Z ⟶ Q.B => m.left z ∈ V) (act_comp Q t g)).mpr h) h
 
 /- English proof (translation)
-Use `Q.q_flat` as an intermediate fact. Use `Q.q_surj` as an intermediate fact. Use `Q.q_affine` as an intermediate fact. Use `choose V hV u hu using fun b => Q.loc b χ`. Establish `tr : ∀ i j, ∃ a : Γ(Q.B.left, V i ⊓ V j)ˣ, ∀ (Z : Scheme.{0}) (g : Z ⟶ G.left) (z : Z), Q.q.left (g z) ∈ V i → Q.q.left (g z) ∈ V j → gm (g ≫ Q.q.left) z (V i ⊓ V j) a = gm g z (Q.q.left ⁻¹ᵁ V i) (u i) * (gm g z (Q.q.left ⁻¹ᵁ V j) (u j))⁻¹` using `fun i j => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `l₁ : Q.q.left ⁻¹ᵁ (V i ⊓ V j) ≤ Q.q.left ⁻¹ᵁ V i` using `fun _ h => h.1`. Establish `l₂ : Q.q.left ⁻¹ᵁ (V i ⊓ V j) ≤ Q.q.left ⁻¹ᵁ V j` using `fun _ h => h.2`. Establish `v : ∀ (Z : Scheme.{0}) (g : Z ⟶ G.left) (z : Z), Q.q.left (g z) ∈ V i ⊓ V j → gm g z (Q.q.left ⁻¹ᵁ (V i ⊓ V j)) (res l₁ (u i) * (res l₂ (u j))⁻¹) = gm g z (Q.q.left ⁻¹ᵁ V i) (u i) * (gm g z (Q.q.left ⁻¹ᵁ V j) (u j))⁻¹` using `fun Z g z hz => by`. Rewrite using `[map_mul, map_inv, gm_res g z l₁ hz, gm_res g z l₂ hz]`. Take `⟨a, ha⟩` from `exists_unit_desc Q.q.left (V i ⊓ V j) (res l₁ (u i) * (res l₂ (u j))⁻¹) fun Z g₁ g₂ z e h₁ h₂ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `Z' : Over S` to `Over.mk (g₂ ≫ G.hom)`. Set `k₂ : Z' ⟶ G` to `Over.homMk g₂ rfl`. Set `k₁ : Z' ⟶ G` to `Over.homMk g₁ (by`. Express the relevant statement in the definitionally equal form `g₁ ≫ G.hom = g₂ ≫ G.hom`. Rewrite using `[← Over.w Q.q, reassoc_of% e])`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `exists_act Q (show k₁ ≫ Q.q = k₂ ≫ Q.q from Over.OverMorphism.ext e)`. Establish `a₁` using `gm_act Q (hu i) t k₂ z h₂.1`. Establish `a₂` using `gm_act Q (hu j) t k₂ z h₂.2`. Rewrite `a₁`, `a₂` using `[← ht]`. Rewrite using `[v Z g₁ z h₁, v Z g₂ z h₂]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `(congrArg₂ (fun a b => a * b⁻¹) a₁ a₂).trans (commGroup_common_factor_quotient_cancel _ _ _)`. Conclude with `⟨a, fun Z g z h₁ h₂ => (ha Z g z ⟨h₁, h₂⟩).trans (v Z g z ⟨h₁, h₂⟩)⟩`. Use `choose a ha using tr`. Establish `b : ∀ i j x, Q.q.left x ∈ V i → Q.q.left x ∈ V j → gm Q.q.left x (V i ⊓ V j) (a i j) = gm (𝟙 _) x (Q.q.left ⁻¹ᵁ V i) (u i) * (gm (𝟙 _) x (Q.q.left ⁻¹ᵁ V j) (u j))⁻¹` using `fun i j x h₁ h₂ => by`. Use `ha i j _ (𝟙 _) x h₁ h₂` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[Category.id_comp]`. Then use the resulting hypothesis. Use `⟨⟨_, V, a⟩, u, ⟨?_, fun i => ?_, fun i j k => ?_⟩, hu, fun Z g z i j h₁ h₂ => ?_⟩` and prove the remaining obligations. Conclude with `top_le_iff.1 fun x _ => TopologicalSpace.Opens.mem_iSup.2 ⟨x, hV x⟩`. Use `unit_ext_of_flat Q.q.left fun x hx => ?_` and prove the remaining obligations. Conclude with `(gm_res _ x _ hx _).trans ((b i i x hx hx).trans ((mul_inv_cancel _).trans (map_one _).symm))`.
-
-Use `unit_ext_of_flat Q.q.left fun x hx => ?_` and prove the remaining obligations. Use `((map_mul _ _ _).trans (congrArg₂ (· * ·) ((gm_res _ x _ hx _).trans (b i j x hx.1.1 hx.1.2)) ((gm_res _ x _ hx _).trans (b j k x hx.1.2 hx.2)))).trans (Eq.trans ?_ ((gm_res _ x _ hx _).trans (b i k x hx.1.1 hx.2)).symm)` and prove the remaining obligations. Rewrite using `[_root_.mul_assoc, inv_mul_cancel_left]`. Conclude with `eq_mul_of_mul_inv_eq (ha i j Z g z h₁ h₂).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_bundle (χ : X) : ∃ (N : LB Q.B.left) (u : ∀ j, Γ(G.left, Q.q.left ⁻¹ᵁ N.U j)ˣ), N.IsLB ∧
     (∀ j, IsWt Q.i _ (u j).val χ) ∧
@@ -259,7 +257,7 @@ variable {S : Scheme.{0}}
 def sq {G T : Over S} [GrpObj G] (x y : T ⟶ G) : Fin 4 → (T ⟶ G) := ![x * y, x, y, 1]
 
 /- English proof (translation)
-Use `fin_cases k`. Use `exacts [MonObj.comp_mul _ _ _, rfl, rfl, MonObj.comp_one _]`.
+A detailed English derivation is pending.
 -/
 theorem comp_sq {G T T' : Over S} [GrpObj G] (ρ : T' ⟶ T) (x y : T ⟶ G) (k : Fin 4) :
     ρ ≫ sq x y k = sq (ρ ≫ x) (ρ ≫ y) k := by
@@ -267,7 +265,7 @@ theorem comp_sq {G T T' : Over S} [GrpObj G] (ρ : T' ⟶ T) (x y : T ⟶ G) (k 
   exacts [MonObj.comp_mul _ _ _, rfl, rfl, MonObj.comp_one _]
 
 /- English proof (translation)
-Use `fin_cases k`. Use `exacts [MonObj.mul_comp _ _ _, rfl, rfl, MonObj.one_comp _]`.
+A detailed English derivation is pending.
 -/
 theorem sq_comp {G H T : Over S} [GrpObj G] [GrpObj H] (x y : T ⟶ G) (f : G ⟶ H) [IsMonHom f] (k : Fin 4) :
     sq x y k ≫ f = sq (x ≫ f) (y ≫ f) k := by
@@ -275,7 +273,7 @@ theorem sq_comp {G H T : Over S} [GrpObj G] [GrpObj H] (x y : T ⟶ G) (f : G �
   exacts [MonObj.mul_comp _ _ _, rfl, rfl, MonObj.one_comp _]
 
 /- English proof (translation)
-Use `fin_cases k`. Use `exacts [mul_mul_mul_comm _ _ _ _, rfl, rfl, (_root_.mul_one _).symm]`.
+A detailed English derivation is pending.
 -/
 theorem sq_mul {G T : Over S} [GrpObj G] [IsCommMonObj G] (a b x y : T ⟶ G) (k : Fin 4) :
     sq (a * x) (b * y) k = sq a b k * sq x y k := by
@@ -283,7 +281,7 @@ theorem sq_mul {G T : Over S} [GrpObj G] [IsCommMonObj G] (a b x y : T ⟶ G) (k
   exacts [mul_mul_mul_comm _ _ _ _, rfl, rfl, (_root_.mul_one _).symm]
 
 /- English proof (translation)
-Rewrite using `[Fin.prod_univ_four]`. Express the relevant statement in the definitionally equal form `F (x * y) ^ (1 : ℤ) * F x ^ (-1 : ℤ) * F y ^ (-1 : ℤ) * F 1 ^ (1 : ℤ) = _`. Simplify using `only [zpow_neg, zpow_one]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem prod_sq {G T : Over S} [GrpObj G] (x y : T ⟶ G) {U : Type} [CommGroup U] (F : (T ⟶ G) → U) :
     ∏ k, F (sq x y k) ^ Oε k = F (x * y) * (F x)⁻¹ * (F y)⁻¹ * F 1 := by
@@ -292,11 +290,11 @@ theorem prod_sq {G T : Over S} [GrpObj G] (x y : T ⟶ G) {U : Type} [CommGroup 
   simp only [zpow_neg, zpow_one]
 
 /- English proof (translation)
-Use `(Fintype.prod_equiv Equiv.ulift _ (fun J => F (psum B x J) ^ ((-1 : ℤ) ^ (2 - J.card))) (fun _ => rfl)).trans ?_` and prove the remaining obligations. Rewrite using `[show (Finset.univ : Finset (Finset (Fin 2))) = {∅, {0}, {1}, {0, 1}} by decide, Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_singleton]`. Establish `p₀ : psum B x ∅ = 1` using `rfl`. Establish `p₁ : psum B x {0} = x 0` using `_root_.mul_one (x 0)`. Establish `p₂ : psum B x {1} = x 1` using `_root_.mul_one (x 1)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p₃ : psum B x {0, 1} = x 0 * x 1` using `congrArg (x 0 * ·) (_root_.mul_one (x 1))`. Establish `q₀ : (-1 : ℤ) ^ (2 - (∅ : Finset (Fin 2)).card) = 1` using `by decide`. Establish `q₁ : ∀ i : Fin 2, (-1 : ℤ) ^ (2 - ({i} : Finset (Fin 2)).card) = -1` using `by decide`. Establish `q₃ : (-1 : ℤ) ^ (2 - ({0, 1} : Finset (Fin 2)).card) = 1` using `by decide`. Rewrite using `[p₀, p₁, p₂, p₃, q₀, q₁, q₁, q₃]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [zpow_neg, zpow_one]`. The two sides agree by associativity and commutativity.
+Simplify using the standard rewrite rules. The two sides agree by associativity and commutativity.
 -/
 theorem prod_psum {B T : Over S} [GrpObj B] (x : Fin 2 → (T ⟶ B)) {U : Type} [CommGroup U] (F : (T ⟶ B) → U) :
     ∏ J : ULift.{0} (Finset (Fin 2)), F (psum B x J.down) ^ ((-1 : ℤ) ^ (2 - J.down.card)) =
@@ -320,19 +318,17 @@ theorem prod_psum {B T : Over S} [GrpObj B] (x : Fin 2 → (T ⟶ B)) {U : Type}
 variable {G : Over S} [GrpObj G] [IsCommMonObj G] {X : Type} [AddCommGroup X] (Q : TQ G X)
 
 /- English proof (translation)
-Use `Q.q_hom` as an intermediate fact. Use `Q.i_hom` as an intermediate fact. Use `Q.q_affine` as an intermediate fact. Establish `: Flat (Q.q ⊗ₘ Q.q).left` using `MorphismProperty.pullbackMap (P := @Flat) Q.q_flat Q.q_flat (Over.w Q.q).symm (Over.w Q.q).symm`. Establish `: MorphismProperty.IsStableUnderComposition @Surjective` using `⟨fun f g _ _ => inferInstance⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Surjective (Q.q ⊗ₘ Q.q).left` using `MorphismProperty.pullbackMap (P := @Surjective) Q.q_surj Q.q_surj (Over.w Q.q).symm (Over.w Q.q).symm`. Establish `: QuasiCompact (Q.q ⊗ₘ Q.q).left` using `MorphismProperty.pullbackMap (P := @QuasiCompact) (inferInstanceAs (QuasiCompact Q.q.left)) (inferInstanceAs (QuasiCompact Q.q.left)) (Over.w Q.q).symm (Over.w Q.q).symm`. Take `⟨s, hs⟩` from `exists_gen_desc Q.q.left N u hu (Q.q ⊗ₘ Q.q).left (fun k => (sq (fst Q.B Q.B) (snd Q.B Q.B) k).left) (fun k => (sq (fst G G) (snd G G) k).left) (fun k => by`. Rewrite using `[← Over.comp_left, ← Over.comp_left, sq_comp, comp_sq, tensorHom_fst, tensorHom_snd]) Oε`. Use `fun Z g₁ g₂ z j e h₂ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `Z' : Over S` to `Over.mk (g₂ ≫ (G ⊗ G).hom)`. Set `k₂ : Z' ⟶ G ⊗ G` to `Over.homMk g₂ rfl`. Set `k₁ : Z' ⟶ G ⊗ G` to `Over.homMk g₁ (by`. Express the relevant statement in the definitionally equal form `g₁ ≫ (G ⊗ G).hom = g₂ ≫ (G ⊗ G).hom`. Rewrite using `[← Over.w (Q.q ⊗ₘ Q.q), reassoc_of% e])`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e' : k₁ ≫ (Q.q ⊗ₘ Q.q) = k₂ ≫ (Q.q ⊗ₘ Q.q)` using `Over.OverMorphism.ext e`. Take `⟨t, ht⟩` from `exists_act Q (a := k₁ ≫ fst G G) (b := k₂ ≫ fst G G) (by`. Rewrite using `[Category.assoc, Category.assoc, ← tensorHom_fst Q.q Q.q, reassoc_of% e'])`. Take `⟨t', ht'⟩` from `exists_act Q (a := k₁ ≫ snd G G) (b := k₂ ≫ snd G G) (by`. Rewrite using `[Category.assoc, Category.assoc, ← tensorHom_snd Q.q Q.q, reassoc_of% e'])`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `a : ∀ k, k₁ ≫ sq (fst G G) (snd G G) k = (sq t t' k ≫ Q.i) * (k₂ ≫ sq (fst G G) (snd G G) k)` using `fun k => by rw [comp_sq, comp_sq, ht, ht', sq_mul, sq_comp]`. Establish `b : ∀ k, gm (k₁ ≫ sq (fst G G) (snd G G) k).left z (Q.q.left ⁻¹ᵁ N.U (j k)) (u (j k)) = gm (𝟙 Z'.left) z ⊤ (chV (sq t t' k) χ) * gm (k₂ ≫ sq (fst G G) (snd G G) k).left z (Q.q.left ⁻¹ᵁ N.U (j k)) (u (j k))` using `fun k => by`. Rewrite using `[a]`. Conclude with `gm_act Q (hw (j k)) (sq t t' k) (k₂ ≫ sq (fst G G) (snd G G) k) z (h₂ k)`. Establish `c : ∏ k, gm (𝟙 Z'.left) z ⊤ (chV (sq t t' k) χ) ^ Oε k = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `o : chV (1 : Z' ⟶ splitTorus S X) χ = 1` using `by rw [chV, map_one]; rfl`. Rewrite using `[prod_sq t t' fun a => gm (𝟙 Z'.left) z ⊤ (chV a χ), chV_mul, o, map_mul, map_one, _root_.mul_one, mul_right_comm, mul_inv_cancel_right, mul_inv_cancel]`. Use `(Finset.prod_congr rfl fun k _ => (congrArg (· ^ Oε k) (b k)).trans (mul_zpow _ _ _)).trans ?_` and prove the remaining obligations. Conclude with `Finset.prod_mul_distrib.trans ((congrArg (· * _) c).trans (_root_.one_mul _))`. Take `⟨s', hs', -⟩` from `exists_gen hN (K' := ULift.{0} (Finset (Fin 2))) (φ' := fun I => (psum Q.B (x2 Q.B) I.down).left) (ε' := fun I => (-1) ^ (2 - I.down.card)) (fun U _ h => (prod_sq _ _ fun a => h a.left).trans (prod_psum (x2 Q.B) fun a => h a.left).symm) s hs`.
-
-Conclude with `⟨s', hs'⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_gen_lam (χ : X) (N : LB Q.B.left) (hN : N.IsLB) (u : ∀ j, Γ(G.left, Q.q.left ⁻¹ᵁ N.U j)ˣ)
     (hw : ∀ j, IsWt Q.i _ (u j).val χ)
@@ -384,7 +380,7 @@ theorem exists_gen_lam (χ : X) (N : LB Q.B.left) (hN : N.IsLB) (u : ∀ j, Γ(G
   exact ⟨s', hs'⟩
 
 /- English proof (translation)
-Take `⟨N, u, hN, hw, hu⟩` from `exists_bundle Q χ`. Establish `le : ∀ J : PUnit → N.ι, (N.pull Q.q.left).U J ≤ Q.q.left ⁻¹ᵁ N.U (J PUnit.unit)` using `fun J _ h => mem_pull.1 h`. Use `⟨N, ⟨fun J => res (le J) (u _)⟩, hN, ⟨fun J J' => unit_ext fun y hy => ?_, fun J => (hw _).res (le J)⟩, exists_gen_lam Q χ N hN u hw hu⟩` and prove the remaining obligations. Conclude with `((gm_res _ y _ hy _).trans ((gm_res _ y _ hy.1 _).trans (hu _ (𝟙 _) y _ _ (le J hy.1) (le J' hy.2)))).trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_pull_g N Q.q.left (𝟙 _) y J J' hy.1 hy.2) ((gm_res _ y _ hy _).trans (gm_res _ y _ hy.2 _)))).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_genWt (χ : X) : ∃ (N : LB Q.B.left) (t : LB.Gen (N.pull Q.q.left)), N.IsLB ∧ Q.GenWt N t χ ∧
     ∃ u : LB.Gen (abelian₂ Q.B N), u.IsGen := by
@@ -403,7 +399,7 @@ end GlobalTheory.WtBundle
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ Q χ` and use `WtBundle.exists_genWt Q χ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_weight_bundle : (∀ (A : Type) [CommRing A] [IsLocalRing A] (X : Type) [AddCommGroup X] (G : Over (Spec (CommRingCat.of A))) [GrpObj G] [IsCommMonObj G] (Q : TQ G X) (χ : X), ∃ (N : LB Q.B.left) (t : LB.Gen (N.pull Q.q.left)), N.IsLB ∧ Q.GenWt N t χ ∧ ∃ u : LB.Gen (abelian₂ Q.B N), u.IsGen) :=
   fun _ _ _ _ _ _ _ _ Q χ => WtBundle.exists_genWt Q χ

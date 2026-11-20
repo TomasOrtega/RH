@@ -13,9 +13,9 @@ namespace GlobalTheory.UTau0
 namespace GenTr
 
 /- English proof (translation)
-Distinguish the cases in `h : g (f z) ∈ U`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.coe_map, gm_val g (f z) U h, gm_val (f ≫ g) z U h]`. Conclude with `(Scheme.Hom.germ_stalkMap_apply f _ z h _).trans rfl`. Establish `h' : (f ≫ g) z ∉ U` using `h`.
+Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [gm, dif_neg h, dif_neg h', MonoidHom.one_apply, map_one]`.
+A detailed English derivation is pending.
 -/
 theorem stalkMap_gm_comp {X Y Z : Scheme.{0}} (f : Z ⟶ Y) (g : Y ⟶ X) (z : Z) (U : X.Opens) (u : Γ(X, U)ˣ) :
     Units.map (f.stalkMap z).hom.toMonoidHom (gm g (f z) U u) = gm (f ≫ g) z U u := by
@@ -27,7 +27,7 @@ theorem stalkMap_gm_comp {X Y Z : Scheme.{0}} (f : Z ⟶ Y) (g : Y ⟶ X) (z : Z
     simp only [gm, dif_neg h, dif_neg h', MonoidHom.one_apply, map_one]
 
 /- English proof (translation)
-Substitute `hq` using the available equality. Rewrite using `[val_of t g (r z) _ (fun k => J ((r ≫ g) ≫ φ k)) (fun k => by rw [Category.assoc])]`. Conclude with `(stalkMap_gm_comp r g z _ _).symm`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_stalk {X Y Y' Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (t : LB.Gen (LB.LinComb L φ ε)) (r : Z ⟶ Y') (g : Y' ⟶ Y) (q : Z ⟶ Y) (hq : r ≫ g = q) (z : Z)
@@ -38,14 +38,14 @@ theorem val_stalk {X Y Y' Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ 
   exact (stalkMap_gm_comp r g z _ _).symm
 
 /- English proof (translation)
-Use `Over.w (toUnit (TK R))` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem toUnit_TK_left (R : Type) [CommRing R] [IsDomain R] : (toUnit (TK R)).left = jK R := by
   have := Over.w (toUnit (TK R))
   simpa using this
 
 /- English proof (translation)
-Unfold `DegPre.tau`. Rewrite using `[val_mul hJ, val_mul hJ, val_mul hJ, val_inv, val_inv, val_inv]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_tau {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) {z : (TK R).left} {J} (hJ : Good D.P.L z J)
     (a b : D.X) : val (D.tau a b) (𝟙 _) z J = val (D.psi (a + b)) (𝟙 _) z J * (val (D.psi a) (𝟙 _) z J)⁻¹ *
@@ -58,27 +58,25 @@ end GenTr
 open GenTr
 
 /- English proof (translation)
-Introduce `R _ _ D₀ O _ _ _ onB hc w0 uw huw hnw ψ hR`. Take `⟨hgen, h1, h2, h3, h4⟩` from `hR`. Establish `hL` using `D₀.P.isLB`. Establish `htu` using `toUnit_TK_left R`. Set `Dn : DegPre R` to `{ D₀ with psi := fun y => LB.pullGen D₀.P.L _ _ (ψ y) (jK R), psi_gen := fun y => DVR.pullGen_isGen _ _ _ _ (hgen y) _ }`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `Fψ : ∀ (z : (TK R).left) J, Good D₀.P.L z J → ∀ y, val (Dn.psi y) (𝟙 _) z J = Units.map ((jK R).stalkMap z).hom.toMonoidHom (val (ψ y) (𝟙 _) ((jK R) z) (fun f => J (jK R ≫ f)))` using `fun z J hJ y => (val_pull hJ _ _ _).trans (val_stalk _ _ _ _ (by simp) _ _)`. Establish `Frig : ∀ (z : (TK R).left) J, Good D₀.P.L z J → val Dn.rigK (𝟙 _) z J = Units.map ((jK R).stalkMap z).hom.toMonoidHom (rigV D₀ ((jK R) z) (fun f => J (jK R ≫ f)))` using `fun z J hJ => (val_pull hJ _ _ _).trans (val_stalk _ _ _ _ (by simp [htu]) _ _)`. Establish `Ftau : ∀ (z : (TK R).left) J, Good D₀.P.L z J → ∀ a b : D₀.X, val (Dn.tau a b) (𝟙 _) z J = Units.map ((jK R).stalkMap z).hom.toMonoidHom (tauV D₀ ψ ((jK R) z) (fun f => J (jK R ≫ f)) a b)`. Introduce `z J hJ a b`. Rewrite using `[val_tau Dn hJ, Fψ z J hJ, Fψ z J hJ, Fψ z J hJ, Frig z J hJ, tauV, map_mul, map_mul, map_mul, map_inv, map_inv, map_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `Fx : ∀ (z : (TK R).left) J, Good D₀.P.L z J → ∀ {K : Type} [Fintype K] (φ : K → (D₀.P.A.left ⟶ D₀.P.A.left)) (ε : K → ℤ) (t : LB.Gen (LB.LinComb D₀.P.L φ ε)) (y : D₀.X), val (LB.pullGen D₀.P.L _ _ t (Dn.xK y)) (𝟙 _) z J = Units.map ((jK R).stalkMap z).hom.toMonoidHom (val t (D₀.c …`. Introduce `z J hJ K _ φ ε t y`. Use `(val_pull hJ _ _ _).trans (val_stalk _ _ _ _ ?_ _ _)` and prove the remaining obligations. Rewrite using `[Category.id_comp]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = (toUnit (TK R) ≫ D₀.c y).left`. Rewrite using `[Over.comp_left, htu]`. Establish `F2 : ∀ (z : (TK R).left) J, Good D₀.P.L z J → ∀ {K : Type} [Fintype K] (φ : K → ((D₀.P.A ⊗ D₀.P.A).left ⟶ D₀.P.A.left)) (ε : K → ℤ) (t : LB.Gen (LB.LinComb D₀.P.L φ ε)) (y y' : D₀.X), val (LB.pullGen D₀.P.L _ _ t (Dn.pt2 y y')) (𝟙 _) z J = Units.map ((jK R).stalkMap z).hom.toMono …`. Introduce `z J hJ K _ φ ε t y y'`. Use `(val_pull hJ _ _ _).trans (val_stalk _ _ _ _ ?_ _ _)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.id_comp, DegPre.pt2, ← htu, ← Over.comp_left, comp_lift]`. Establish `Fcub : ∀ (z : (TK R).left) J, Good D₀.P.L z J → ∀ a a' b : D₀.X, val (LB.pullGen D₀.P.L (thφ D₀.P.A (x3 D₀.P.A)) thε D₀.cub.t (Dn.pt3 a a' b)) (𝟙 _) z J = Units.map ((jK R).stalkMap z).hom.toMonoidHom (val D₀.cub.t (lift (D₀.c a) (lift (D₀.c a') (D₀.c b))).left ((jK R) z) (fun f …`. Introduce `z J hJ a a' b`. Use `(val_pull hJ _ _ _).trans (val_stalk _ _ (lift (D₀.c a) (lift (D₀.c a') (D₀.c b))).left _ ?_ _ _)` and prove the remaining obligations. Rewrite using `[Category.id_comp, DegPre.pt3, ← htu, ← Over.comp_left, comp_lift, comp_lift]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun y => DVR.pullGen_isGen _ _ _ _ (hgen y) _, ⟨onB, hc, ?_⟩, rfl, ?_, ?_, ⟨uw, huw, hnw, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `a u hu hun y y'`. Use `corr_of_val hL fun z J hJ => ?_` and prove the remaining obligations. Rewrite using `[val_mul hJ, Ftau z J hJ, F2 z J hJ, Ftau z J hJ, ← map_mul]`. Conclude with `congrArg _ (h3 a u hu hun y y' _ _ fun f => hJ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `χ`. Use `corr_of_val hL fun z J hJ => ?_` and prove the remaining obligations. Rewrite using `[val_mul hJ, Fψ z J hJ, Fx z J hJ, Fψ z J hJ, ← map_mul]`. Conclude with `congrArg _ (h2 χ _ _ fun f => hJ _)`. Introduce `a a' b`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `corr_of_val hL fun z J hJ => ?_` and prove the remaining obligations. Establish `key : val (Dn.tau (a + a') b) (𝟙 _) z J * val (LB.pullGen D₀.P.L (thφ D₀.P.A (x3 D₀.P.A)) thε D₀.cub.t (Dn.pt3 a a' b)) (𝟙 _) z J = val (Dn.tau a b) (𝟙 _) z J * val (Dn.tau a' b) (𝟙 _) z J`. Rewrite using `[Ftau z J hJ, Fcub z J hJ, Ftau z J hJ, Ftau z J hJ, ← map_mul, ← map_mul]`. Conclude with `congrArg _ (h1 a a' b _ _ fun f => hJ _)`. Conclude with `(val_mul hJ _ _ _).trans (key.trans (val_mul hJ _ _ _).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Use `corr_of_val hL fun z J hJ => ?_` and prove the remaining obligations. Establish `key : val (Dn.tau y (w0 • y)) (𝟙 _) z J * val (LB.pullGen D₀.P.L _ _ uw (Dn.xK y)) (𝟙 _) z J = val (Dn.psi y) (𝟙 _) z J * val Dn.rigK (𝟙 _) z J`. Rewrite using `[Ftau z J hJ, Fx z J hJ, Fψ z J hJ, Frig z J hJ, ← map_mul, ← map_mul]`. Conclude with `congrArg _ (h4 y _ _ fun f => hJ _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(val_mul hJ _ _ _).trans (key.trans (val_mul hJ _ _ _).symm)`. Introduce `y j V _ _ hV h`. Establish `hle : V ≤ LB.wchart D₀.P.L (fun _ : PUnit => (D₀.c y).left) j` using `fun x hx => Set.mem_iInter.2 fun _ => hV hx`. Use `⟨(res hle ((ψ y).s j)).val, Units.isUnit _, ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (fun q => q.hom ((ψ y).s j).val) ((jK R).naturality (homOfLE hle).op)`.
-
-Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at e`. Use `e.trans ?_` and prove the remaining obligations. Use `show _ = ((TK R).left.presheaf.map (homOfLE h).op).hom (((TK R).left.presheaf.map (homOfLE _).op).hom (((jK R).app _).hom ((ψ y).s j).val))`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rlaws_transfer : ∀ (R : Type) [CommRing R] [IsDomain R] (D₀ : DegPre R) (O : Type) [CommRing O] [StarRing O]
     [Module O D₀.X] (onB : D₀.P.OAct O), (∀ (a : O) (y : D₀.X), D₀.c (a • y) = D₀.c y ≫ onB.act a) →

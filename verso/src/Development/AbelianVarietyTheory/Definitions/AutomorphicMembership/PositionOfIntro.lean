@@ -96,13 +96,13 @@ structure ColT.Objs {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : Col
   cmp : c.O.cmp = t.cmp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨w, Z, c, h, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem positionOf_intro {P : CP} {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {Z : w.Lt}
     {c : V4.Core K (w.st Z) f T} (h : P K B f T w Z c) : positionOf P K (w.st Z) f T c := ⟨w, Z, c, h, rfl⟩
 
 /- English proof (translation)
-Take `⟨B, C, W, V, S, N, G⟩` from `X`. Simplify using `only at f T`. Take `⟨w, Z, c', hp, e⟩` from `hc`. Conclude with `Eq.mpr (congrArg (fun y : Σ (C : Cols B) (Y : TC.Later B C), V4.Core K ⟨B, C, Y.W, Y.V, Y.S, Y.N, Y.G⟩ f T => R K ⟨B, y.1, y.2.1.W, y.2.1.V, y.2.1.S, y.2.1.N, y.2.1.G⟩ f T y.2.2) e) (h K B f T w Z c' hp)`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem positionOf_ind {P : CP} {R : V4.Slot}
     (h : ∀ K B f T (w : ColW B f T) (Z : w.Lt) (c : V4.Core K (w.st Z) f T), P K B f T w Z c → R K (w.st Z) f T c)
@@ -114,32 +114,32 @@ theorem positionOf_ind {P : CP} {R : V4.Slot}
     R K ⟨B, y.1, y.2.1.W, y.2.1.V, y.2.1.S, y.2.1.N, y.2.1.G⟩ f T y.2.2) e) (h K B f T w Z c' hp)
 
 /- English proof (translation)
-The claim follows from `let ⟨w, Z, c', hp, e⟩ := hc; ⟨w, Z, c', h _ _ _ _ _ _ _ hp, e⟩`.
+A detailed English derivation is pending.
 -/
 theorem positionOf_mono {P P' : CP} (h : ∀ K B f T w Z c, P K B f T w Z c → P' K B f T w Z c) (K : Ctx) (X : Stages) (f : Fr X.B.toPre)
     (T : TwDat X.B) (c : V4.Core K X f T) (hc : positionOf P K X f T c) : positionOf P' K X f T c :=
   let ⟨w, Z, c', hp, e⟩ := hc; ⟨w, Z, c', h _ _ _ _ _ _ _ hp, e⟩
 
 /- English proof (translation)
-The claim follows from `Step.of_all fun K B f T a _ b _ w => h K B f T w a b`.
+A detailed English derivation is pending.
 -/
 theorem StepW.of_all {p q : WP} (h : ∀ K B f T w, K.Over B.toPre → Forced K B T → p K B f T w → q K B f T w) : StepW p q :=
   Step.of_all fun K B f T a _ b _ w => h K B f T w a b
 
 /- English proof (translation)
-The claim follows from `(Step.and h h').trans (Step.of_all fun _ _ _ _ _ _ _ H w a => H.2 w (H.1 w a))`.
+A detailed English derivation is pending.
 -/
 theorem StepW.trans {p q r : WP} (h : StepW p q) (h' : StepW q r) : StepW p r :=
   (Step.and h h').trans (Step.of_all fun _ _ _ _ _ _ _ H w a => H.2 w (H.1 w a))
 
 /- English proof (translation)
-The claim follows from `(Step.and h h').trans (Step.of_all fun _ _ _ _ _ _ _ H w a => ⟨H.1 w a, H.2 w a⟩)`.
+A detailed English derivation is pending.
 -/
 theorem StepW.and {p q r : WP} (h : StepW p q) (h' : StepW p r) : StepW p fun K B f T w => q K B f T w ∧ r K B f T w :=
   (Step.and h h').trans (Step.of_all fun _ _ _ _ _ _ _ H w a => ⟨H.1 w a, H.2 w a⟩)
 
 /- English proof (translation)
-The claim follows from `(h0.and ((Step.of_all fun _ _ _ _ _ _ _ _ => trivial).trans h1)).trans (Step.of_all fun _ _ _ _ _ _ _ H => let ⟨w, a⟩ := H.1 let ⟨Z, c, hc⟩ := H.2 w a ⟨w.C, Z.W, Z.V, Z.S, Z.N, Z.G, c, positionOf_intro hc⟩)`.
+A detailed English derivation is pending.
 -/
 theorem step_hasCore {admitted : AtP} {p : WP} {P : CP} (h0 : Step KPx admitted fun K B f T => ∃ w : ColW B f T, p K B f T w)
     (h1 : StepW p (HasC P)) : Step KPx admitted (HasCore (positionOf P)) :=

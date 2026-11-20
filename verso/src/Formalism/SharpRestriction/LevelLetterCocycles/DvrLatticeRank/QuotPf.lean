@@ -20,9 +20,9 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     (ρ : Representation LL G V)
 
 /- English proof (translation)
-Establish `h : (PD.Fil (a + 1)).restrictScalars Qp ≤ (PD.Fil a).restrictScalars Qp` using `fun x hx => PD.Fil_anti a hx`. Introduce `x hx`. Rewrite `hx`, the goal using `[FilV, LinearMap.mem_range]`. Take `⟨y, rfl⟩` from `hx`. Use `⟨AlgebraTensorModule.map (LinearMap.id : V →ₗ[LL] V) (Submodule.inclusion h) y, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← LinearMap.comp_apply, ← AlgebraTensorModule.map_comp, LinearMap.id_comp, Submodule.subtype_comp_inclusion]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem qpf_filV_succ_le (a : ℤ) :
     FilV PD (LL := LL) (V := V) (a + 1) ≤ FilV PD (LL := LL) (V := V) a := by
@@ -34,7 +34,7 @@ theorem qpf_filV_succ_le (a : ℤ) :
   rw [← LinearMap.comp_apply, ← AlgebraTensorModule.map_comp, LinearMap.id_comp, Submodule.subtype_comp_inclusion]
 
 /- English proof (translation)
-Unfold `FildR`. Conclude with `inf_le_inf_left _ (qpf_filV_succ_le PD a)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem qpf_fildR_succ_le (τ : K →ₐ[Qp] LL) (a : ℤ) :
     FildR PD ρ τ (a + 1) ≤ FildR PD ρ τ a := by
@@ -42,11 +42,9 @@ theorem qpf_fildR_succ_le (τ : K →ₐ[Qp] LL) (a : ℤ) :
   exact inf_le_inf_left _ (qpf_filV_succ_le PD a)
 
 /- English proof (translation)
-Establish `hle` using `qpf_fildR_succ_le PD ρ τ a`. Use `haveI := hfin`. Use `haveI : Module.Finite LL ↥(FildR PD ρ τ a) := Module.Finite.of_injective (Submodule.inclusion (inf_le_left : FildR PD ρ τ a ≤ DdRE PD ρ τ)) (Submodule.inclusion_injective _)`. Unfold `IsJumpV multV`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hne`. Establish `hlt` using `Submodule.finrank_lt_finrank_of_lt (lt_of_le_of_ne hle hne)`. Use linear arithmetic over natural numbers and integers. Introduce `hpos heq`. Rewrite `hpos` using `[heq]`.
-
-Simplify using `at hpos`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem qpf_isJumpV_iff_pos (τ : K →ₐ[Qp] LL) (hfin : Module.Finite LL ↥(DdRE PD ρ τ)) (a : ℤ) :
     IsJumpV PD ρ τ a ↔ 0 < multV PD ρ τ a := by
@@ -65,7 +63,7 @@ theorem qpf_isJumpV_iff_pos (τ : K →ₐ[Qp] LL) (hfin : Module.Finite LL ↥(
     simp at hpos
 
 /- English proof (translation)
-Distinguish the cases in `h : FildR PD ρ τ (a + 1) = FildR PD ρ τ a`. Unfold `multV`. Rewrite using `[h]`. Simplify using the standard rewrite rules. Conclude with `le_of_lt ((qpf_isJumpV_iff_pos PD ρ τ hfin a).1 h)`.
+Consider separately whether the proposition holds or fails. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem qpf_multV_nonneg (τ : K →ₐ[Qp] LL) (hfin : Module.Finite LL ↥(DdRE PD ρ τ)) (a : ℤ) :
     0 ≤ multV PD ρ τ a := by
@@ -78,17 +76,17 @@ theorem qpf_multV_nonneg (τ : K →ₐ[Qp] LL) (hfin : Module.Finite LL ↥(DdR
 end Gen
 
 /- English proof (translation)
-Unfold `quotR`. Introduce `l _ hl2 K LL hG`. Unfold `quotA`. Introduce `T₁ T₂ F hc1 hc2 hon τ X hJ a ha`. Use `haveI : IsLocalRing ↥(OL LL) := Formalism.MainNotions.LiftingTheory.lkd_local (D.loc l) LL`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hden : Formalism.MainNotions.LiftingTheory.lker_Den ↥LL.1 ↥(OL LL)`. Introduce `c`. Establish `hint : IsIntegral ℚ_[l] c` using `Algebra.IsIntegral.isIntegral c`. Establish `halg : IsAlgebraic ℤ_[l] c` using `(IsFractionRing.isAlgebraic_iff ℤ_[l] ℚ_[l] ↥LL.1).2 hint.isAlgebraic`. Establish `hinj : Function.Injective (algebraMap ℤ_[l] ↥LL.1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsScalarTower.algebraMap_eq ℤ_[l] ℚ_[l] ↥LL.1]`. Conclude with `(algebraMap ℚ_[l] ↥LL.1).injective.comp (IsFractionRing.injective ℤ_[l] ℚ_[l])`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy, hyc⟩ : ∃ y ≠ (0 : ℤ_[l]), IsIntegral ℤ_[l] (y • c) := by`. Conclude with `IsAlgebraic.exists_integral_multiple halg`. Use `⟨algebraMap ℤ_[l] ↥(OL LL) y, ?_, ⟨y • c, hyc⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← IsScalarTower.algebraMap_apply]`. Conclude with `fun h => hy (hinj (h.trans (map_zero _).symm))`. Rewrite using `[← IsScalarTower.algebraMap_apply]`. Express the relevant statement in the definitionally equal form `_ = y • c`. Rewrite using `[Algebra.smul_def]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hses : IsSESLat (Qp` using `ℚ_[l]) (Formalism.MainNotions.LiftingTheory.lker_ι F hon hden) F := by`. Use `⟨(LinearMap.ker F.f).injective_subtype, Formalism.MainNotions.LiftingTheory.lker_surj F hon, hon, fun x => ⟨fun hx => ⟨⟨x, hx⟩, rfl⟩, ?_⟩, fun y hy => hy⟩` and prove the remaining obligations. Introduce and unpack `⟨y, rfl⟩`. Conclude with `LinearMap.mem_ker.1 y.2`. Take `⟨-, -, hmult⟩` from `h11 l K LL _ T₁ T₂ (Formalism.MainNotions.LiftingTheory.lker_ι F hon hden) F hses hc1`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `hJ` to reduce the goal to its premises. Rewrite `ha` using `[qpf_isJumpV_iff_pos _ _ τ ((h8 l K LL T₂).2 τ).1]`. Rewrite using `[qpf_isJumpV_iff_pos _ _ τ ((h8 l K LL T₁).2 τ).1, hmult τ a]`. Establish `h0` using `qpf_multV_nonneg _ _ τ ((h8 l K LL (Formalism.MainNotions.LiftingTheory.lker_T₀ F hon hden)).2 τ).1 a`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem quotient_jumps_subset (D : D7) (h8 : adm8 D) (h11 : adm11 D) : quotR D := by
   unfold quotR

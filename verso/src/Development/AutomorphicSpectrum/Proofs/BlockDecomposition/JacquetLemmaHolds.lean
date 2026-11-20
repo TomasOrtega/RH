@@ -8,11 +8,11 @@ open GlobalTheory.PRep PositivityTheory.SphericalProduct
 namespace GlobalTheory.CompanionTheory.Cass
 
 /- English proof (translation)
-Introduce `G _ _ _`. Unfold `PositivityTheory.SphericalProduct.A4`. Introduce `D V _ _ π hπ hex`. Take `⟨t, ht⟩` from `hex`. Use `⟨fun v => GlobalTheory.CompanionTheory.Cass.proj_mem_fixed_piN G D V π v, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsm : GlobalTheory.PRep.IsSmooth π`. Unfold `GlobalTheory.PRep.IsAdmissible at hπ`. Conclude with `hπ.1`. Establish `hH` using `GlobalTheory.T.hecke_character_exists_unique`. Unfold `PositivityTheory.Lbc.HeckeExistsUnique at hH`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hU, -⟩` from `hH G D.J D.isOpen_J D.isCompact_J V π hsm (t : G)`. Conclude with `GlobalTheory.T.jacquet_projection_surjective_holds G D V π hπ t ht U hU`.
+A detailed English derivation is pending.
 -/
 theorem sphericalProduct_A4 : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G], PositivityTheory.SphericalProduct.A4 G := by
   intro G _ _ _

@@ -19,21 +19,21 @@ namespace GlobalTheory.CompanionTheory.Ar.Conj.IsoAlpha
 variable {R : Type} [CommRing R] {d : ℕ}
 
 /- English proof (translation)
-The claim follows from `hasSubst_of_constantCoeff_zero fun p => hb p.1 p.2`.
+A detailed English derivation is pending.
 -/
 theorem hs {m n : ℕ} (b : Fin m → Pt R n d) (hb : ∀ j i, constantCoeff (b j i) = 0) :
     HasSubst (fun p : Fin m × Fin d => b p.1 p.2) :=
   hasSubst_of_constantCoeff_zero fun p => hb p.1 p.2
 
 /- English proof (translation)
-The claim follows from `constantCoeff_subst_eq_zero (a := fun p : Fin m × Fin d => b p.1 p.2) (hs b hb) (fun p => hb p.1 p.2) hf`.
+A detailed English derivation is pending.
 -/
 theorem cc_ev {m n : ℕ} (b : Fin m → Pt R n d) (hb : ∀ j i, constantCoeff (b j i) = 0) (f : PS R m d)
     (hf : constantCoeff f = 0) : constantCoeff (ev b f) = 0 :=
   constantCoeff_subst_eq_zero (a := fun p : Fin m × Fin d => b p.1 p.2) (hs b hb) (fun p => hb p.1 p.2) hf
 
 /- English proof (translation)
-Introduce `j i`. Rewrite using `[Matrix.cons_val_fin_one]`. Conclude with `ha i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hb1 {n : ℕ} {a : Pt R n d} (ha : ∀ i, constantCoeff (a i) = 0) :
     ∀ (j : Fin 1) (i : Fin d), constantCoeff ((![a] : Fin 1 → Pt R n d) j i) = 0 := by
@@ -42,7 +42,7 @@ theorem hb1 {n : ℕ} {a : Pt R n d} (ha : ∀ i, constantCoeff (a i) = 0) :
   exact ha i
 
 /- English proof (translation)
-Introduce `j i`. Use `fin_cases j`. Conclude with `ha i`. Conclude with `hb i`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hb2 {n : ℕ} {a b : Pt R n d} (ha : ∀ i, constantCoeff (a i) = 0) (hb : ∀ i, constantCoeff (b i) = 0) :
     ∀ (j : Fin 2) (i : Fin d), constantCoeff ((![a, b] : Fin 2 → Pt R n d) j i) = 0 := by
@@ -52,20 +52,20 @@ theorem hb2 {n : ℕ} {a b : Pt R n d} (ha : ∀ i, constantCoeff (a i) = 0) (hb
   · exact hb i
 
 /- English proof (translation)
-The claim follows from `cc_ev _ (hb1 ha) _ (hφ i)`.
+A detailed English derivation is pending.
 -/
 theorem cc_comp1 {n : ℕ} {φ : Pt R 1 d} {a : Pt R n d} (hφ : ∀ i, constantCoeff (φ i) = 0)
     (ha : ∀ i, constantCoeff (a i) = 0) (i : Fin d) : constantCoeff (comp1 φ a i) = 0 :=
   cc_ev _ (hb1 ha) _ (hφ i)
 
 /- English proof (translation)
-Simplify using `[pt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cc_pt {n : ℕ} (j : Fin n) (i : Fin d) : constantCoeff (pt R d j i) = 0 := by
   simp [pt]
 
 /- English proof (translation)
-The claim follows from `subst_comp_subst_apply (hs a ha) (hs b hb) f`.
+A detailed English derivation is pending.
 -/
 theorem ev_ev {l m n : ℕ} (b : Fin m → Pt R n d) (hb : ∀ j i, constantCoeff (b j i) = 0)
     (a : Fin l → Pt R m d) (ha : ∀ j i, constantCoeff (a j i) = 0) (f : PS R l d) :
@@ -73,16 +73,16 @@ theorem ev_ev {l m n : ℕ} (b : Fin m → Pt R n d) (hb : ∀ j i, constantCoef
   subst_comp_subst_apply (hs a ha) (hs b hb) f
 
 /- English proof (translation)
-The claim follows from `subst_X (hs b hb) (j, l)`.
+A detailed English derivation is pending.
 -/
 theorem ev_pt {m n : ℕ} (b : Fin m → Pt R n d) (hb : ∀ j i, constantCoeff (b j i) = 0) (j : Fin m) (l : Fin d) :
     ev b (pt R d j l) = b j l :=
   subst_X (hs b hb) (j, l)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `ev b (ev ![a] (C i)) = ev ![fun l => ev b (a l)] (C i)`. Rewrite using `[ev_ev b hb _ (hb1 ha)]`. Use `congr 1`. Use function extensionality and compare the values at `j l`. Use `fin_cases j`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem ev_comp1 {m n : ℕ} (b : Fin m → Pt R n d) (hb : ∀ j i, constantCoeff (b j i) = 0) (C : Pt R 1 d)
     (a : Pt R m d) (ha : ∀ i, constantCoeff (a i) = 0) (i : Fin d) :
@@ -95,9 +95,9 @@ theorem ev_comp1 {m n : ℕ} (b : Fin m → Pt R n d) (hb : ∀ j i, constantCoe
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `ev ![a] (ev ![A] (C i)) = ev ![comp1 A a] (C i)`. Rewrite using `[ev_ev _ (hb1 ha) _ (hb1 hA)]`. Use `congr 1`. Use function extensionality and compare the values at `j l`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `fin_cases j`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem composition_assoc_no_constant {n : ℕ} (C A : Pt R 1 d) (a : Pt R n d) (hA : ∀ i, constantCoeff (A i) = 0)
     (ha : ∀ i, constantCoeff (a i) = 0) : comp1 (comp1 C A) a = comp1 C (comp1 A a) := by
@@ -110,20 +110,20 @@ theorem composition_assoc_no_constant {n : ℕ} (C A : Pt R 1 d) (a : Pt R n d) 
   rfl
 
 /- English proof (translation)
-The claim follows from `funext fun i => ev_pt_self _ (fun j => by fin_cases j; rfl) _`.
+A detailed English derivation is pending.
 -/
 theorem composition_identity_point_right (a : Pt R 1 d) : comp1 a (pt R d 0) = a :=
   funext fun i => ev_pt_self _ (fun j => by fin_cases j; rfl) _
 
 /- English proof (translation)
-Simplify using `[ptPow, hp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cc_ptPow {n : ℕ} {p : ℕ} (hp : p ≠ 0) (j : Fin n) (i : Fin d) :
     constantCoeff (ptPow R d p j i) = 0 := by
   simp [ptPow, hp]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `ev ![a] ((X ((0 : Fin 1), i) : PS R 1 d) ^ p) = _`. Unfold `ev`. Rewrite using `[← coe_substAlgHom (hs _ (hb1 ha)), map_pow, coe_substAlgHom, subst_X (hs _ (hb1 ha))]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem comp1_point_power_expand {n : ℕ} (p : ℕ) (a : Pt R n d) (ha : ∀ i, constantCoeff (a i) = 0) :
     comp1 (ptPow R d p (0 : Fin 1)) a = fun i => a i ^ p := by
@@ -141,7 +141,7 @@ section Frob
 variable (p : ℕ) [Fact p.Prime] [CharP R p]
 
 /- English proof (translation)
-Establish `h` using `congrArg (frobenius R p) (hφ i)`. Rewrite `h` using `[map_zero]`. Rewrite using `[← h, frobPt, ← coeff_zero_eq_constantCoeff_apply, ← coeff_zero_eq_constantCoeff_apply, coeff_map]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem cc_frobPt {φ : Pt R 1 d} (hφ : ∀ i, constantCoeff (φ i) = 0) (i : Fin d) :
     constantCoeff (frobPt p φ i) = 0 := by
@@ -150,16 +150,16 @@ theorem cc_frobPt {φ : Pt R 1 d} (hφ : ∀ i, constantCoeff (φ i) = 0) (i : F
   rw [← h, frobPt, ← coeff_zero_eq_constantCoeff_apply, ← coeff_zero_eq_constantCoeff_apply, coeff_map]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [lin, frobPt, coeff_map, Matrix.map_apply, frobenius_def]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem lin_frobPt (φ : Pt R 1 d) : lin (frobPt p φ) 1 = (lin φ 1).map (· ^ p) := by
   ext i j
   simp only [lin, frobPt, coeff_map, Matrix.map_apply, frobenius_def]
 
 /- English proof (translation)
-Rewrite using `[comp1_point_power_expand p φ hφ]`. Use function extensionality and compare the values at `i`. Rewrite using `[GlobalTheory.T.power_series_pow_p_frobenius R p d 1 (φ i)]`. Express the relevant statement in the definitionally equal form `_ = ev ![ptPow R d p (0 : Fin 1)] (frobPt p φ i)`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `j`. Use `fin_cases j`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem frobenius_point_commutes_composition {φ : Pt R 1 d} (hφ : ∀ i, constantCoeff (φ i) = 0) :
     comp1 (ptPow R d p (0 : Fin 1)) φ = comp1 (frobPt p φ) (ptPow R d p (0 : Fin 1)) := by
@@ -178,13 +178,13 @@ def E (A B : Pt R 1 d) (f : PS R 2 d) : PS R 2 d :=
   ev (n := 2) ![comp1 A (pt R d 0), comp1 B (pt R d 1)] f
 
 /- English proof (translation)
-Establish `h0 : ∀ i, constantCoeff ((pt R d 0 : Pt R 2 d) i) = 0` using `cc_pt 0`. Establish `h1 : ∀ i, constantCoeff ((pt R d 1 : Pt R 2 d) i) = 0` using `cc_pt 1`. Establish `hb` using `hb2 (cc_comp1 hA h0) (cc_comp1 hB h1)`. Unfold `E`. Rewrite using `[ev_ev _ hb _ (hb2 (cc_comp1 hC h0) (cc_comp1 hD h1))]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `j l`. Use `fin_cases j`. Express the relevant statement in the definitionally equal form `ev _ (comp1 C (pt R d 0) l) = comp1 (comp1 C A) (pt R d 0) l`. Rewrite using `[ev_comp1 _ hb _ _ h0, composition_assoc_no_constant C A _ hA h0]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Use function extensionality and compare the values at `m`. Conclude with `ev_pt _ hb 0 m`. Express the relevant statement in the definitionally equal form `ev _ (comp1 D (pt R d 1) l) = comp1 (comp1 D B) (pt R d 1) l`. Rewrite using `[ev_comp1 _ hb _ _ h1, composition_assoc_no_constant D B _ hB h1]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 2`. Use function extensionality and compare the values at `m`. Conclude with `ev_pt _ hb 1 m`.
+A detailed English derivation is pending.
 -/
 theorem E_E {A B C D : Pt R 1 d} (hA : ∀ i, constantCoeff (A i) = 0) (hB : ∀ i, constantCoeff (B i) = 0)
     (hC : ∀ i, constantCoeff (C i) = 0) (hD : ∀ i, constantCoeff (D i) = 0) (f : PS R 2 d) :
@@ -209,7 +209,7 @@ theorem E_E {A B C D : Pt R 1 d} (hA : ∀ i, constantCoeff (A i) = 0) (hB : ∀
     exact ev_pt _ hb 1 m
 
 /- English proof (translation)
-Establish `e : (pt R d 1 : Pt R 2 d) = ptPow R d 1 1` using `funext fun i => (pow_one _).symm`. Unfold `E`. Rewrite using `[comp1_point_power_expand p _ (cc_pt 0), germ_comp1_zero_point_left _ (cc_pt 1), e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem E_eq_ptPow (p : ℕ) (f : PS R 2 d) :
     E (ptPow R d p (0 : Fin 1)) (pt R d 0) f = ev (n := 2) ![ptPow R d p 0, ptPow R d 1 1] f := by
@@ -219,7 +219,7 @@ theorem E_eq_ptPow (p : ℕ) (f : PS R 2 d) :
   rfl
 
 /- English proof (translation)
-Unfold `E`. Rewrite using `[comp1_point_power_expand p _ (cc_pt 0), germ_comp1_zero_point_left _ (cc_pt 1)]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem E_eq_ptPow' (p : ℕ) (f : PS R 2 d) :
     E (ptPow R d p (0 : Fin 1)) (pt R d 0) f = ev (n := 2) ![ptPow R d p 0, pt R d 1] f := by
@@ -228,21 +228,21 @@ theorem E_eq_ptPow' (p : ℕ) (f : PS R 2 d) :
   rfl
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.formal_bilinear_term_product R d f f A B hf hf hA hB).2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem axOne_E {A B : Pt R 1 d} (hA : ∀ i, constantCoeff (A i) = 0) (hB : ∀ i, constantCoeff (B i) = 0)
     {f : PS R 2 d} (hf : AxOne f) : AxOne (E A B f) :=
   (GlobalTheory.T.formal_bilinear_term_product R d f f A B hf hf hA hB).2.2.2.1
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.formal_bilinear_term_product R d f f A B hf hf hA hB).2.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem bil_E {A B : Pt R 1 d} (hA : ∀ i, constantCoeff (A i) = 0) (hB : ∀ i, constantCoeff (B i) = 0)
     {f : PS R 2 d} (hf : AxOne f) : bil (E A B f) 1 1 = (lin A 1).transpose * bil f 1 1 * lin B 1 :=
   (GlobalTheory.T.formal_bilinear_term_product R d f f A B hf hf hA hB).2.2.2.2.1
 
 /- English proof (translation)
-Establish `hc : ∀ i, constantCoeff ((pt R d 0 : Pt R 1 d) i) = 0` using `cc_pt 0`. Rewrite using `[E_eq_ptPow]`. Conclude with `(GlobalTheory.T.formal_bilinear_term_product R d f f _ _ hf hf hc hc).2.2.2.2.2.2 p 1 hp le_rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bil_E_ptPow {p : ℕ} (hp : 1 ≤ p) {f : PS R 2 d} (hf : AxOne f) :
     bil (E (ptPow R d p (0 : Fin 1)) (pt R d 0) f) p 1 = bil f 1 1 := by
@@ -251,25 +251,25 @@ theorem bil_E_ptPow {p : ℕ} (hp : 1 ≤ p) {f : PS R 2 d} (hf : AxOne f) :
   exact (GlobalTheory.T.formal_bilinear_term_product R d f f _ _ hf hf hc hc).2.2.2.2.2.2 p 1 hp le_rfl
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.formal_bilinear_term_product R d f g _ _ hf hg (cc_pt 0) (cc_pt 0)).1`.
+A detailed English derivation is pending.
 -/
 theorem axOne_mul {f g : PS R 2 d} (hf : AxOne f) (hg : AxOne g) : AxOne (f * g) :=
   (GlobalTheory.T.formal_bilinear_term_product R d f g _ _ hf hg (cc_pt 0) (cc_pt 0)).1
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.formal_bilinear_term_product R d f g _ _ hf hg (cc_pt 0) (cc_pt 0)).2.1 m`.
+A detailed English derivation is pending.
 -/
 theorem bil_mul {f g : PS R 2 d} (hf : AxOne f) (hg : AxOne g) (m : ℕ) :
     bil (f * g) m 1 = bil f m 1 + bil g m 1 :=
   (GlobalTheory.T.formal_bilinear_term_product R d f g _ _ hf hg (cc_pt 0) (cc_pt 0)).2.1 m
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ev_one _, ev_one _⟩`.
+Supply the required witnesses or components.
 -/
 theorem axOne_one : AxOne (1 : PS R 2 d) := ⟨ev_one _, ev_one _⟩
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using axOne_one`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `axOne_mul ih hf`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem axOne_pow {f : PS R 2 d} (hf : AxOne f) (n : ℕ) : AxOne (f ^ n) := by
   induction n with
@@ -277,7 +277,7 @@ theorem axOne_pow {f : PS R 2 d} (hf : AxOne f) (n : ℕ) : AxOne (f ^ n) := by
   | succ n ih => rw [pow_succ]; exact axOne_mul ih hf
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [bil_one_eq_zero hm]`. Consider the case `succ n ih => rw [pow_succ, bil_mul (axOne_pow hf n) hf, ih, succ_nsmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem bil_pow {f : PS R 2 d} (hf : AxOne f) {m : ℕ} (hm : m ≠ 0) (n : ℕ) :
     bil (f ^ n) m 1 = n • bil f m 1 := by
@@ -291,9 +291,9 @@ variable {O : Type} [CommRing O] [StarRing O] (p : ℕ) [Fact p.Prime] [CharP R 
 variable {B B₂ : FB R d O} {φ ψ : Pt R 1 d} {lam : PS R 2 d}
 
 /- English proof (translation)
-Take `⟨V, cV, eV, lV⟩` from `GlobalTheory.T.multiplication_by_p_factors_frobenius R p d O B`. Take `⟨V₂, cV₂, eV₂, lV₂⟩` from `GlobalTheory.T.multiplication_by_p_factors_frobenius R p d O B₂`. Establish `hp : p ≠ 0` using `(Fact.out : p.Prime).ne_zero`. Establish `hp1 : 1 ≤ p` using `Nat.one_le_iff_ne_zero.2 hp`. Establish `e` using `h.act (p : O)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[eV₂, eV, composition_assoc_no_constant V _ φ (cc_ptPow hp 0) h.c₁, frobenius_point_commutes_composition p h.c₁]`. Establish `l1` using `((GlobalTheory.T.formal_linear_term_composition R d φ V₂ h.c₁ cV₂).2.2 p hp1).2`. Establish `l2` using `((GlobalTheory.T.formal_linear_term_composition R d V (frobPt p φ) cV (cc_frobPt p h.c₁)).2.2 p hp1).2`. Rewrite using `[← lV₂, ← lV, ← lin_frobPt, ← l1, ← l2, e]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem hw_rel (h : IsIso B B₂ φ ψ lam) : lin φ 1 * hw B₂ p = hw B p * (lin φ 1).map (· ^ p) := by
   obtain ⟨V, cV, eV, lV⟩ := GlobalTheory.T.multiplication_by_p_factors_frobenius R p d O B
@@ -307,17 +307,17 @@ theorem hw_rel (h : IsIso B B₂ φ ψ lam) : lin φ 1 * hw B₂ p = hw B p * (l
   rw [← lV₂, ← lV, ← lin_frobPt, ← l1, ← l2, e]
 
 /- English proof (translation)
-Take `⟨V₂, cV₂, eV₂, lV₂⟩` from `GlobalTheory.T.multiplication_by_p_factors_frobenius R p d O B₂`. Take `⟨g₂, ax₂, e₂, b₂⟩` from `GlobalTheory.T.pow_one_series_p_formula R p d O B₂`. Take `⟨g, ax, e, b⟩` from `GlobalTheory.T.pow_one_series_p_formula R p d O B`. Establish `hp : p ≠ 0` using `(Fact.out : p.Prime).ne_zero`. Establish `hp1 : 1 ≤ p` using `Nat.one_le_iff_ne_zero.2 hp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cPw : ∀ i, constantCoeff (ptPow R d p (0 : Fin 1) i) = 0` using `cc_ptPow hp 0`. Establish `cI : ∀ i, constantCoeff ((pt R d 0 : Pt R 1 d) i) = 0` using `cc_pt 0`. Establish `cF : ∀ i, constantCoeff (frobPt p φ i) = 0` using `cc_frobPt p h.c₁`. Establish `key` using `GlobalTheory.T.iso_pow_one_law_formula R d O B B₂ φ ψ lam p h`. Establish `r1 : pow1 B₂ p = E (ptPow R d p (0 : Fin 1)) (pt R d 0) g₂` using `by rw [e₂, E_eq_ptPow']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `r2 : ev (n` using `2) ![comp1 (B₂.A.act (p : O)) (pt R d 0), pt R d 1] lam = E (ptPow R d p (0 : Fin 1)) (pt R d 0) (E V₂ (pt R d 0) lam) := by`. Rewrite using `[E_E cPw cI cV₂ cI, composition_identity_point_right, ← eV₂]`. Unfold `E`. Rewrite using `[germ_comp1_zero_point_left _ (cc_pt 1)]`. Establish `r3 : ev (n` using `2) ![comp1 φ (pt R d 0), comp1 φ (pt R d 1)] (pow1 B p) = E (ptPow R d p (0 : Fin 1)) (pt R d 0) (E (frobPt p φ) φ g) := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `E φ φ (pow1 B p) = _`. Rewrite using `[e, ← E_eq_ptPow', E_E h.c₁ h.c₁ cPw cI, E_E cPw cI cF h.c₁, frobenius_point_commutes_composition p h.c₁, germ_comp1_zero_point_left _ h.c₁, composition_identity_point_right]`. Rewrite `key` using `[r1, r2, r3]`. Establish `a1` using `axOne_E cPw cI ax₂`. Establish `aL` using `axOne_E cV₂ cI h.ax`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2` using `axOne_E cPw cI aL`. Establish `aG` using `axOne_E cF h.c₁ ax`. Establish `a3` using `axOne_E cPw cI aG`. Establish `k` using `congrArg (fun f => bil f p 1) key`. Establish `z : p • bil lam p 1 = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `[nsmul_eq_mul, CharP.cast_eq_zero R p]`. Use `beta_reduce at k`. Rewrite `k` using `[bil_mul a1 a2, bil_mul (axOne_pow h.ax p) a3, bil_E_ptPow hp1 ax₂, bil_E_ptPow hp1 aL, bil_E_ptPow hp1 aG, bil_pow h.ax hp, z, zero_add, bil_E cV₂ cI h.ax, bil_E cF h.c₁ ax, lV₂, b₂, b, lin_frobPt, lin_pt_eq_one, mul_one]`. Conclude with `k`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem am_rel (h : IsIso B B₂ φ ψ lam) :
     am B₂ p + (hw B₂ p).transpose * bil lam 1 1 =
@@ -359,7 +359,7 @@ theorem am_rel (h : IsIso B B₂ φ ψ lam) :
   exact k
 
 /- English proof (translation)
-Establish `e : ∀ M : Matrix (Fin d) (Fin d) R, M.map (· ^ p) = (frobenius R p).mapMatrix M` using `fun M => by`. Use extensionality with `i j`. Simplify using `[frobenius_def]`. Rewrite using `[e, e, ← map_mul, h, map_one]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem frob_mul_eq_one {g g' : Matrix (Fin d) (Fin d) R} (h : g * g' = 1) :
     g.map (· ^ p) * g'.map (· ^ p) = 1 := by
@@ -375,15 +375,15 @@ end GlobalTheory.CompanionTheory.Ar.Conj.IsoAlpha
 namespace GlobalTheory.CompanionTheory.Ar.Conj
 
 /- English proof (translation)
-Introduce `R _ p _ _ d O _ _ B B₂ φ ψ lam h`. Take `⟨i1, -, -, -, -, hpair⟩` from `GlobalTheory.T.formal_isomorphism_transport R d O B B₂ φ ψ lam h`. Establish `H1` using `IsoAlpha.hw_rel p h`. Establish `H2` using `IsoAlpha.am_rel p h`. Establish `A : ∀ u, alpha B p (((lin φ 1).map (· ^ p)).mulVec u) = transH φ ψ lam (alpha B₂ p u)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `u`. Rewrite using `[alpha_apply, alpha_apply, transH_apply]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `only [Matrix.mulVec_mulVec, H1]`. Express the relevant statement in the definitionally equal form `(am B p).transpose.mulVec (((lin φ 1).map (· ^ p)).mulVec u) = (lin ψ 1).transpose.mulVec ((am B₂ p).transpose.mulVec u + (bil lam 1 1).transpose.mulVec ((hw B₂ p).mulVec u))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `t : (am B₂ p).transpose + (bil lam 1 1).transpose * hw B₂ p = (lin φ 1).transpose * ((am B p).transpose * (lin φ 1).map (· ^ p))`. Use `congrArg Matrix.transpose H2` as an intermediate fact. Simplify `this` using `[Matrix.transpose_add, Matrix.transpose_mul, Matrix.mul_assoc]`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.add_mulVec, Matrix.mulVec_mulVec, t, ← Matrix.mul_assoc, ← Matrix.transpose_mul, i1, Matrix.transpose_one, Matrix.one_mul]`. Use `⟨A, fun y => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : ∀ v, ((lin φ 1).map (· ^ p)).mulVec v ⬝ᵥ beta B p (transH φ ψ lam y) = v ⬝ᵥ beta B₂ p y` using `fun v => by`. Rewrite using `[dotProduct_beta, A, hpair, ← dotProduct_beta]`. Establish `k2 : ((lin φ 1).map (· ^ p)).transpose.mulVec (beta B p (transH φ ψ lam y)) = beta B₂ p y`. Establish `k3 : ∀ v, v ⬝ᵥ ((lin φ 1).map (· ^ p)).transpose.mulVec (beta B p (transH φ ψ lam y)) = v ⬝ᵥ beta B₂ p y` using `fun v => by`. Rewrite using `[Matrix.dotProduct_mulVec, Matrix.vecMul_transpose, key]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Simplify using `using k3 (Pi.single i 1)`. Rewrite using `[← k2, Matrix.mulVec_mulVec, Matrix.transpose_map, ← Matrix.transpose_mul, IsoAlpha.frob_mul_eq_one p i1, Matrix.transpose_one, Matrix.one_mulVec]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem alpha_beta_of_isIso : ∀ (R : Type) [CommRing R] (p : ℕ) [Fact p.Prime] [CharP R p] (d : ℕ) (O : Type)
     [CommRing O] [StarRing O] (B : FB R d O) (B₂ : FB R d O) (φ ψ : Pt R 1 d) (lam : PS R 2 d),

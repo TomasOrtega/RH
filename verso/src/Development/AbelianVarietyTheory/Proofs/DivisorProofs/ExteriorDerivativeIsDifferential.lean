@@ -5,9 +5,9 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsEtCoord
 open CategoryTheory AlgebraicGeometry TopologicalSpace GlobalTheory GlobalTheory.DI GlobalTheory.LogDR GlobalTheory.LogPair GlobalTheory.Cartier ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 /- English proof (translation)
-Introduce `K _`. Use `{ mul := ?_, sq := ?_, alg := ?_ }` and prove the remaining obligations. Introduce `x y`. Rewrite using `[extD_apply, extD_apply, extD_apply, CechDR.dDR_mul, add_comm]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `x`. Rewrite using `[extD_apply, extD_apply, CechDR.dDR_dDR]`. Introduce `a`. Rewrite using `[extD_apply, CechDR.dDR_algebraMap]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem GlobalTheory.LogDR.isExtD_extD : ∀ (K : Type) [Field K], IsExtD ℤ K (extD K) := by
   intro K _

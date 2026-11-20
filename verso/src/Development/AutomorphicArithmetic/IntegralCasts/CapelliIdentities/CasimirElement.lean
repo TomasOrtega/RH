@@ -8,7 +8,7 @@ noncomputable def UpperTheory.Reformulated.B.CasimirElement.casC :
 namespace YgaHelp
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_ite, Finset.sum_const_zero, add_zero, Finset.sum_const, Finset.filter_lt_eq_Ioi, Fin.card_Ioi, nsmul_eq_mul]`. Establish `h : (a : ℕ) ≤ n - 1` using `by omega`. Establish `h1 : 1 ≤ n` using `by omega`. Rewrite using `[Nat.cast_sub h, Nat.cast_sub h1]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -22,7 +22,7 @@ private lemma inner_left {n : ℕ} (σ : Fin n → ℂ) (a : Fin n) :
   push_cast; ring
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_ite, Finset.sum_const_zero, add_zero, Finset.sum_const, Finset.filter_gt_eq_Iio, Fin.card_Iio, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma inner_right {n : ℕ} (σ : Fin n → ℂ) (b : Fin n) :
     (∑ a : Fin n, if a < b then σ b else (0 : ℂ)) = σ b * ((b : ℕ) : ℂ) := by
@@ -33,11 +33,11 @@ private lemma inner_right {n : ℕ} (σ : Fin n → ℂ) (b : Fin n) :
 end YgaHelp
 
 /- English proof (translation)
-Introduce `n σ`. Unfold `UpperTheory.Reformulated.B.CasimirElement.casC`. Use `congr 1`. Establish `hsplit : ∀ a b : Fin n, (if a < b then σ a - σ b else (0 : ℂ)) = (if a < b then σ a else 0) - (if a < b then σ b else 0)`. Apply the tactic sequence `intro a b; split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Repeatedly rewrite using `[hsplit, Finset.sum_sub_distrib]`. Rewrite using `[Finset.sum_comm (f := fun a b => if a < b then σ b else (0 : ℂ))]`. Repeatedly rewrite using `[YgaHelp.inner_left, YgaHelp.inner_right]`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl ?_` and prove the remaining obligations.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a _`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem UpperTheory.Reformulated.B.CasimirElement.main :
     ∀ {n : ℕ} (σ : Fin n → ℂ),

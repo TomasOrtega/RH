@@ -26,9 +26,9 @@ open GlobalTheory.LamT (CMPt)
 namespace GlobalTheory.CoeffDenom
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Take `⟨a, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hd hϖ`. Take `⟨b, u', hu'⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hπ hϖ`. Establish `hb : b ≠ 0`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hπu (by rw [hu', pow_zero, mul_one]; exact u'.isUnit)`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[hu, hu', mul_pow, ← pow_mul]`. Use `(Units.isUnit u).mul_left_dvd.2 (Dvd.dvd.mul_left ?_ _)` and prove the remaining obligations. Conclude with `pow_dvd_pow ϖ (Nat.le_mul_of_pos_left a (Nat.pos_of_ne_zero hb))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem dvd_pow_of_ne_zero_of_not_isUnit {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     {d π : V} (hd : d ≠ 0) (hπ : π ≠ 0) (hπu : ¬ IsUnit π) : ∃ N : ℕ, d ∣ π ^ N := by
@@ -50,33 +50,31 @@ namespace GlobalTheory.CoeffDenom
 open GlobalTheory.LamT in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c _ z f La hz e k he p`. Take `⟨T, iK, hT, hiK⟩` from `GlobalTheory.T.exists_completeDVR_completion_integral_iff z.K p`. Take `⟨M⟩` from `(GlobalTheory.T.exists_cmPoint_localModel_over_dvr E H Dw l Xo c z T iK).1 fun a => (hiK _).2 (p.valuation_le_one a)`. Set `io : c.F →+* T.Fr` to `iK.comp (algebraMap c.F z.K)`. Use `letI := io.toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Set `φ : z.K →ₐ[c.F] T.Fr` to `{ iK with commutes' := fun _ => rfl }`. Take `⟨yT, hyT⟩` from `GlobalTheory.Frames.FramedBaseChange.exists_frMap GlobalTheory.lawsFieldsSeparately.2.1 E H Dw l Xo c _ _ φ z.y`. Establish `hyx : yT.x = spMap iK ≫ z.x` using `by rw [hyT.1, hz.2.2.2.1]`. Take `⟨g, hg, hgL⟩` from `(GlobalTheory.T.exists_integralEigenbasis_of_frame_at_localModel E H Dw l Xo c T io M.G.t M.t'.t _ M.m1 M.m2 yT hyx).1`. Take `⟨s, hsS⟩` from `GlobalTheory.T.exists_unit_integral_generator_principal_local_model E H Dw l Xo c T io M.G M.t'.t _ M.m1 M.m2 yT hyx`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y', hy', -⟩` from `GlobalTheory.Frames.existsUnique_frChg E H Dw l Xo c T.Fr yT g s hg`. Establish `hL` using `hgL _ _ hy'`. Establish `hS` using `hsS _ _ hy'`. Use `choose c0 hc0 using fun (b : E →+* ℂ) (j : Fin (Dw.mult b)) => LocClause.exists_isLocGen p (z.ℓ (z.e ⟨b, j⟩)).I`. Set `cl : ∀ b : E →+* ℂ, Fin (Dw.mult b) → T.Fr` to `fun b j => iK (c0 b j)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcl : ∀ b j i, cl b j * (g b)⁻¹ j i ∈ Set.range (algebraMap T.V T.Fr)` using `fun b j i => GlobalTheory.T.lieLetter_integral_in_integral_eigenbasis E H Dw l Xo c z f La hz p T iK M hiK φ yT y' g s rfl hyT hy' hg hL b j i _ (hc0 b j)`. Establish `hloc` using `GlobalTheory.T.framePolynomial_coeff_bounded_by_determinants E H Dw l Xo c z f La hz e k he p T iK hT hiK M φ yT y' g s rfl hyT hy' s.ne_zero hg hL hS cl hcl`. Set `D : ℤ` to `∑ b, ((Dw.mult b : ℤ) * (k b : ℤ) + ∑ i : Fin (Dw.mult b), e (some ⟨b, i⟩))`. Set `S : Finset (Formalism.L2.LamCM.FrVar Dw.mult →₀ ℕ)` to `(Finsupp.finite_of_degree_le (σ := Formalism.L2.LamCM.FrVar Dw.mult) D.toNat).toFinset`. Set `τ : T.Fr` to `∏ b, (g b).det ^ k b`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `yμ : (Formalism.L2.LamCM.FrVar Dw.mult →₀ ℕ) → T.Fr` to `fun μ => τ * (∏ v : Formalism.L2.LamCM.FrVar Dw.mult, cl v.1 v.2.2 ^ μ v)⁻¹`. Take `⟨d, hd⟩` from `IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors T.V) (S.image yμ)`. Take `⟨ϖ, hϖp, hϖ0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot p.ne_bot`. Establish `hϖv : p.valuation z.K (ϖ : z.K) < 1` using `(p.valuation_lt_one_iff_mem ϖ).2 hϖp`. Take `⟨π, hπ⟩` from `(hiK (ϖ : z.K)).2 (p.valuation_le_one ϖ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hϖK : (ϖ : z.K) ≠ 0` using `fun h => hϖ0 (RingOfIntegers.coe_eq_zero_iff.1 h)`. Establish `hπ0 : π ≠ 0`. Introduce and unpack `rfl`. Rewrite `hπ` using `[map_zero, eq_comm, map_eq_zero]`. Conclude with `hϖK hπ`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hπu : ¬ IsUnit π`. Introduce and unpack `⟨u, rfl⟩`. Establish `h1 : iK ((ϖ : z.K)⁻¹) ∈ Set.range (algebraMap T.V T.Fr)`. Use `⟨((u⁻¹ : T.Vˣ) : T.V), ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv₀, ← hπ]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `map_units_inv (algebraMap T.V T.Fr) u`. Establish `h2` using `(hiK _).1 h1`. Rewrite `h2` using `[map_inv₀]`. Establish `h0 : p.valuation z.K (ϖ : z.K) ≠ 0` using `(Valuation.ne_zero_iff _).2 hϖK`. Establish `h4 : (1 : _) ≤ p.valuation z.K (ϖ : z.K)`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `absurd hϖv (not_lt.2 h4)`. Take `⟨N, t, hNt⟩` from `dvd_pow_of_ne_zero_of_not_isUnit (nonZeroDivisors.ne_zero d.2) hπ0 hπu`. Use `⟨ϖ ^ N, pow_ne_zero _ hϖ0, ?_⟩` and prove the remaining obligations. Introduce `F hF hv G hG μ`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hμ : MvPolynomial.coeff μ G = 0`. Simplify using `[hμ]`. Establish `hG1 : ∀ (y' : FrPt Xo c z.K) (Y : ∀ b : E →+* ℂ, Matrix (Fin (Dw.mult b)) (Fin (Dw.mult b)) z.K), (∀ b, (Y b).det ≠ 0) → GlobalTheory.Frames.FrChg (fun b => (Y b).transpose) 1 z.y y' → (∏ b, (Y b).det ^ k b) * evR Xo c F y' = Formalism.L2.LamCM.evalFr G Y` using `fun y'' Y hY hc => hG y'' Y 1 hY (by rw [Units.val_one]; exact hc)`. Establish `hdeg` using `GlobalTheory.T.framePolynomial_integerExponent_degree_eq E H Dw l Xo c z.K z.y e k he F hF G hG1 μ hμ`. Establish `hμS : μ ∈ S`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [S, Set.Finite.mem_toFinset, Set.mem_setOf_eq]`. Use linear arithmetic over natural numbers and integers. Take `⟨w, hw⟩` from `hloc F hF hv G hG1 μ`. Take `⟨r, hr⟩` from `hd (yμ μ) (Finset.mem_image_of_mem yμ hμS)`. Apply `(hiK _).1` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hP : (∏ v : Formalism.L2.LamCM.FrVar Dw.mult, cl v.1 v.2.2 ^ μ v) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun v _ => pow_ne_zero _ ((map_ne_zero iK).2 (hc0 v.1 v.2.2).1)`. Establish `hc : iK (MvPolynomial.coeff μ G) = yμ μ * algebraMap T.V T.Fr w`. Simplify using `only [yμ]`. Rewrite using `[mul_comm τ, mul_assoc, ← hw]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hr` using `[Algebra.smul_def]`. Establish `e1 : (((ϖ ^ N : 𝓞 z.K)) : z.K) = (ϖ : z.K) ^ N` using `by simp`. Use `⟨t * r * w, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul iK, e1, map_pow, ← hπ, ← map_pow, hNt, hc]`. Simplify using `only [map_mul]`.
-
-Rewrite using `[hr]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_clear_coeff_at_prime : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H)
     (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)] (z : CMPt Xo c) (f : ℕ) (La : ℝ), z.Good f La →

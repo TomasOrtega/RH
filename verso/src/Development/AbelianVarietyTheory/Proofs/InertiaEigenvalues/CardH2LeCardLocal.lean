@@ -8,9 +8,9 @@ open ReciprocityTheory.Gal Formalism.RepresentationBoundsCohomology.LOC Reciproc
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hT l _ K hK r M _ _ _ _ _ rho hr hrho`. Use `haveI : NeZero (l ^ r) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Establish `hfin` using `(GlobalTheory.finite_H1_H2_of_localTateDuality hT l K hK r M rho hr hrho).2`. Take `⟨⟨e⟩, -, -, -, h20⟩` from `hT l K hK r M rho hr hrho`. Use `⟨hfin, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Use `haveI : Finite (TDual (ZMod (l ^ r)) M) := Finite.of_injective (fun φ : TDual (ZMod (l ^ r)) M => (φ : M → ZMod (l ^ r))) DFunLike.coe_injective`. Use `haveI : Finite (H0 ((twDual (Formalism.GaloisCohomology.cycK l K r) rho).comp (MonoidHom.id (Formalism.GaloisCohomology.GK l K)))) := Subtype.finite`. Use `haveI : Finite (H2 ((charRep (Formalism.GaloisCohomology.cycK l K r)).comp (MonoidHom.id (Formalism.GaloisCohomology.GK l K)))) := Finite.of_equiv _ e.toEquiv.symm`. Use `haveI : Finite (H0 ((twDual (Formalism.GaloisCohomology.cycK l K r) rho).comp (MonoidHom.id (Formalism.GaloisCohomology.GK l K))) →ₗ[ZMod (l ^ r)] H2 ((charRep (Formalism.GaloisCohomology.cycK l K r)).comp (MonoidHom.id (Formalism.GaloisCohomology.GK l K)))) := Finite.of_injectiv …`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem card_H2_le_of_local_duality : Formalism.GaloisCohomology.LocalTateDualityK → ∀ (l : ℕ) [Fact l.Prime] (K : IntermediateField ℚ_[l] (PadicAlgCl l)), FiniteDimensional ℚ_[l] K → ∀ (r : ℕ) (M : Type) [AddCommGroup M] [Module (ZMod (l ^ r)) M] [Finite M] [TopologicalSpace M] [DiscreteTopology M] (rho : Representation (ZMod (l ^ r)) (Formalism.GaloisCohomology.GK l K) M), 0 < r → ContAction rho → Finite (H2 rho) ∧ Nat.card (H2 rho) ≤ Nat.card M := by
   intro hT l _ K hK r M _ _ _ _ _ rho hr hrho

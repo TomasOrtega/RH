@@ -9,7 +9,7 @@ open MeasureTheory NumberField IsDedekindDomain MvPolynomial Filter Topology Upp
 open PositivityTheory.Rg.Fx
 
 /- English proof (translation)
-Unfold `homog`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[rename_monomial, X_pow_eq_monomial, monomial_mul, one_mul]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem homog_eq {ι : Type} (d : ℕ) (p : MvPolynomial ι ℂ) :
     homog d p = ∑ α ∈ p.support,
@@ -19,7 +19,7 @@ private theorem homog_eq {ι : Type} (d : ℕ) (p : MvPolynomial ι ℂ) :
   rw [rename_monomial, X_pow_eq_monomial, monomial_mul, one_mul]
 
 /- English proof (translation)
-Use `(le_totalDegree hα).trans h` as an intermediate fact. Simplify `this` using `[Finsupp.degree_apply, Finsupp.sum]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem deg_le {ι : Type} {d : ℕ} {p : MvPolynomial ι ℂ} (h : p.totalDegree ≤ d) {α : ι →₀ ℕ}
     (hα : α ∈ p.support) : α.degree ≤ d := by
@@ -27,7 +27,7 @@ private theorem deg_le {ι : Type} {d : ℕ} {p : MvPolynomial ι ℂ} (h : p.to
   simpa [Finsupp.degree_apply, Finsupp.sum] using this
 
 /- English proof (translation)
-Rewrite using `[map_add, Finsupp.degree_single, Finsupp.degree_mapDomain]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem deg_exp {ι : Type} {d : ℕ} {α : ι →₀ ℕ} (h : α.degree ≤ d) :
     (Finsupp.single none (d - α.degree) + α.mapDomain some : Option ι →₀ ℕ).degree = d := by
@@ -35,7 +35,7 @@ private theorem deg_exp {ι : Type} {d : ℕ} {α : ι →₀ ℕ} (h : α.degre
   omega
 
 /- English proof (translation)
-Rewrite using `[homog_eq]`. Use `totalDegree_finsetSum_le fun α hα => (totalDegree_monomial_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Use `deg_exp (deg_le h hα)` as an intermediate fact. Rewrite `this` using `[Finsupp.degree_apply]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem homog_deg {ι : Type} {d : ℕ} {p : MvPolynomial ι ℂ} (h : p.totalDegree ≤ d) :
     (homog d p).totalDegree ≤ d := by
@@ -46,11 +46,11 @@ private theorem homog_deg {ι : Type} {d : ℕ} {p : MvPolynomial ι ℂ} (h : p
   exact this
 
 /- English proof (translation)
-Unfold `homog`. Use `conv_rhs => rw [p.as_sum]`. Rewrite using `[map_sum, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun α hα => ?_` and prove the remaining obligations. Establish `hd` using `deg_le h hα`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_pow, eval_X, eval_rename, eval_monomial, eval_monomial]`. Establish `e : (α.prod fun n e => ((fun o : Option ι => o.elim x fun y => x * g y) ∘ some) n ^ e) = x ^ α.degree * α.prod fun n e => g n ^ e`. Simplify using `only [Function.comp, Option.elim, mul_pow, Finsupp.prod, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, Finsupp.degree_apply]`. Rewrite using `[e]`. Establish `: x ^ d = x ^ (d - α.degree) * x ^ α.degree` using `by rw [← pow_add]; congr 1; omega`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Simplify using `only [Option.elim]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem homog_eval {ι : Type} {d : ℕ} {p : MvPolynomial ι ℂ} (h : p.totalDegree ≤ d) (x : ℂ) (g : ι → ℂ) :
     eval (fun o : Option ι => o.elim x fun y => x * g y) (homog d p) = x ^ d * eval g p := by
@@ -71,13 +71,13 @@ private theorem homog_eval {ι : Type} {d : ℕ} {p : MvPolynomial ι ℂ} (h : 
   ring
 
 /- English proof (translation)
-Establish `h0 : 0 ≤ ∑ i, ‖ψ (X i)‖` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`. Use `⟨1 + ∑ i, ‖ψ (X i)‖, by linarith, fun m => ?_⟩` and prove the remaining obligations. Establish `h1 : ‖(1 : H →L[ℂ] H)‖ ≤ 1` using `ContinuousLinearMap.norm_id_le`. Proceed by induction on `m using Finsupp.induction_linear with`. Consider the case `zero => simpa using h1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `add a b ha hb`. Establish `: (monomial (a + b) 1 : MvPolynomial σ ℂ) = monomial a 1 * monomial b 1`. Rewrite using `[monomial_mul, one_mul]`. Rewrite using `[this, map_mul, map_add, pow_add]`. Conclude with `(norm_mul_le _ _).trans (mul_le_mul ha hb (norm_nonneg _) (by positivity))`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `single i e`. Rewrite using `[← X_pow_eq_monomial, map_pow, Finsupp.degree_single]`. Establish `hi : ‖ψ (X i)‖ ≤ 1 + ∑ i, ‖ψ (X i)‖`. Use `Finset.single_le_sum (f := fun i => ‖ψ (X i)‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ i)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Proceed by induction.
 
-Proceed by induction on `e with`. Consider the case `zero => simpa using h1`. Consider the case `succ e ih`. Rewrite using `[pow_succ, pow_succ]`. Conclude with `(norm_mul_le _ _).trans (mul_le_mul ih hi (norm_nonneg _) (by positivity))`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mon_norm {σ : Type} [Fintype σ] {H : Type} [NormedAddCommGroup H] [NormedSpace ℂ H]
     (ψ : MvPolynomial σ ℂ →+* (H →L[ℂ] H)) :
@@ -104,9 +104,9 @@ private theorem mon_norm {σ : Type} [Fintype σ] {H : Type} [NormedAddCommGroup
       exact (norm_mul_le _ _).trans (mul_le_mul ih hi (norm_nonneg _) (by positivity))
 
 /- English proof (translation)
-Take `⟨D, hD, h⟩` from `mon_norm ψ`. Use `⟨D, hD, fun d p hp => ?_⟩` and prove the remaining obligations. Rewrite using `[homog_eq, map_sum, l1, Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun α hα => ?_)` and prove the remaining obligations. Rewrite using `[← mul_one (p.coeff α), ← C_mul_monomial, map_mul, hψ, smul_mul_assoc, one_mul, norm_smul, mul_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `mul_le_mul_of_nonneg_left ((h _).trans (le_of_eq ?_)) (norm_nonneg _)` and prove the remaining obligations. Rewrite using `[deg_exp (deg_le hp hα)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem homog_norm {ι : Type} [Fintype ι] {H : Type} [NormedAddCommGroup H] [NormedSpace ℂ H]
     (ψ : MvPolynomial (Option ι) ℂ →+* (H →L[ℂ] H)) (hψ : ∀ c : ℂ, ψ (C c) = c • 1) :
@@ -120,9 +120,9 @@ private theorem homog_norm {ι : Type} [Fintype ι] {H : Type} [NormedAddCommGro
   rw [deg_exp (deg_le hp hα)]
 
 /- English proof (translation)
-Unfold `trunc`. Simplify using `only [map_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_subset (h k) fun β _ hβ => ?_` and prove the remaining obligations. Rewrite using `[notMem_support_iff.mp hβ]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[homog]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem trunc_eq {K : Type} [Field K] [NumberField K] {n : ℕ} (d : ℕ)
     (G : ℕ → MvPolynomial (Pl K × Fin n) (MvPolynomial (Ix K n) ℂ)) (s : Finset ((Pl K × Fin n) →₀ ℕ))
@@ -136,9 +136,9 @@ private theorem trunc_eq {K : Type} [Field K] [NumberField K] {n : ℕ} (d : ℕ
   simp [homog]
 
 /- English proof (translation)
-Establish `e : ∀ y : Ix K n, eval L (blockE y) = (msOf L y.1).esymm (y.2 + 1)`. Introduce `y`. Rewrite using `[blockE, eval_rename, ← coe_aeval_eq_eval]`. Conclude with `aeval_esymm_eq_multiset_esymm (Fin n) ℂ _ _`. Proceed by induction on `p using MvPolynomial.induction_on with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `C a => simp`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p i hp => simp only [map_mul, hp, aeval_X, eval_X, e]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem eval_blockE {K : Type} [Field K] [NumberField K] {n : ℕ} (L : Ix K n → ℂ)
     (p : MvPolynomial (Ix K n) ℂ) :
@@ -153,39 +153,35 @@ private theorem eval_blockE {K : Type} [Field K] [NumberField K] {n : ℕ} (L : 
   | mul_X p i hp => simp only [map_mul, hp, aeval_X, eval_X, e]
 
 /- English proof (translation)
-Introduce `K _ _ n S Φ hΦ`. Take `⟨K₀, G₀, hG₀⟩` from `UpperTheory.ConvolutionTheory.FX.gen_piecesK (K →+* ℂ) (Pl K × Fin n) n Φ (by`. Introduce `w`. Use `hΦ.1 w)` and compare the differences between its conclusion and the goal. Use `⟨⟨G₀, fun k => (hG₀ k).1⟩, fun G hG => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hGG : G = G₀`. Use function extensionality and compare the values at `k`. Use `map_injective _ (UpperTheory.ConvolutionTheory.FX.blockE_inj (K →+* ℂ) n) ?_` and prove the remaining obligations. Conclude with `(hG k).trans (hG₀ k).1.symm`. Substitute `hGG` using the available equality.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hs : ∀ k, (G k).support ⊆ Φ.support` using `fun k => (hG₀ k).2.1`. Establish `hdeg : ∀ d β, ∀ k ∈ Finset.range (d + 1), ((G k).coeff β).totalDegree ≤ d` using `fun d β k hk => ((hG₀ k).2.2 β).1.trans (Nat.lt_succ_iff.mp (Finset.mem_range.mp hk))`. Establish `hT` using `fun d => trunc_eq d G Φ.support hs`. Use `⟨⟨Φ.vars.image Prod.fst, Φ.totalDegree, ?_, fun d => ?_⟩, fun L t => ?_, fun H _ _ _ ev hev => ?_⟩` and prove the remaining obligations. Introduce `w hw`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, rfl⟩` from `Finset.mem_image.mp hw`. Conclude with `hΦ.2 x hx`. Establish `hsup : (trunc d G).support ⊆ Φ.support`. Rewrite using `[hT]`. Use `support_sum.trans (Finset.biUnion_subset.mpr fun β hβ => support_monomial_subset.trans ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using hβ`. Use `⟨fun x hx => ?_, Finset.sup_mono hsup, fun β => ?_⟩` and prove the remaining obligations. Take `⟨m, hm, hx⟩` from `(mem_vars_iff_mem_support x).mp hx`. Conclude with `Finset.mem_image_of_mem _ ((mem_vars_iff_mem_support x).mpr ⟨m, hsup hm, hx⟩)`. Rewrite using `[hT, coeff_sum]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `totalDegree_finsetSum_le fun γ _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_monomial]`. Use `split_ifs`. Conclude with `totalDegree_finsetSum_le fun k hk => homog_deg (hdeg d γ k hk)`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hc : ∀ k, ∀ β ∈ Φ.support, eval (fun y : Ix K n => (msOf L y.1).esymm (y.2 + 1)) ((G k).coeff β) = eval L (piece k (Φ.coeff β))`. Introduce `k β hβ`. Rewrite using `[← eval_blockE]`. Use `congr 1`. Use `congrArg (coeff β) (hG k)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[coeff_map, pieceK, coeff_sum]`. Simplify using `only [coeff_monomial, Finset.sum_ite_eq', if_pos hβ] at this`. Conclude with `this`. Use `⟨fun d => ∑ β ∈ Φ.support, (∑ k ∈ Finset.range (d + 1), eval L (piece k (Φ.coeff β))) * β.prod fun i e => hval t i ^ e, ?_, fun x d => ?_⟩` and prove the remaining obligations. Establish `: evK L (hval t) Φ = ∑ β ∈ Φ.support, PositivityTheory.Rg.Fx.ev L (Φ.coeff β) * β.prod fun i e => hval t i ^ e` using `by conv_lhs => rw [Φ.as_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun β _ => ?_` and prove the remaining obligations. Rewrite using `[evK, eval₂Hom_monomial]`. Rewrite using `[this]`. Use `tendsto_finsetSum _ fun β _ => Tendsto.mul_const _ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(UpperTheory.ConvolutionTheory.FX.piece_sum _ (Φ.coeff β) L).tendsto_sum_nat.comp (tendsto_add_atTop_nat 1)`. Rewrite using `[hT, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun β hβ => ?_` and prove the remaining obligations. Rewrite using `[val, eval₂Hom_monomial, map_sum, ← mul_assoc, Finset.mul_sum]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Rewrite using `[← hc k β hβ]`. Conclude with `homog_eval (hdeg d β k hk) _ _`. Take `⟨D, hD, hb⟩` from `homog_norm (ev.comp C) hev set A : ℝ := ∑ β ∈ Φ.support, ‖ev (monomial β 1)‖ with hA`. Establish `hA0 : 0 ≤ A` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set E : ℝ := |K₀| + 1 with hE`. Establish `hE1 : 1 ≤ E` using `by have := abs_nonneg K₀; linarith`. Use `⟨(A + 1) * 2 * E * D, fun d => ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ β, ‖ev (C (∑ k ∈ Finset.range (d + 1), homog d ((G k).coeff β)))‖ ≤ 2 ^ (d + 1) * E ^ (d + 1) * D ^ (d + 1)`. Introduce `β`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_sum, map_sum]`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Establish `h2 : ∀ k ∈ Finset.range (d + 1), ‖ev (C (homog d ((G k).coeff β)))‖ ≤ E ^ (d + 1) * D ^ (d + 1)`. Introduce `k hk`. Use `(hb d _ (hdeg d β k hk)).trans (mul_le_mul ?_ (pow_le_pow_right₀ hD (Nat.le_succ d)) (by positivity) (by positivity))` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `((hG₀ k).2.2 β).2.trans ?_` and prove the remaining obligations. Establish `h3 : K₀ ^ (k + 1) ≤ E ^ (k + 1)` using `(le_abs_self _).trans (by rw [abs_pow]; exact pow_le_pow_left₀ (abs_nonneg _) (by linarith) _)`. Establish `h4 : E ^ (k + 1) ≤ E ^ (d + 1)` using `pow_le_pow_right₀ hE1 (by have := Finset.mem_range.mp hk; omega)`. Establish `h5 : (1 : ℝ) ≤ k.factorial` using `by exact_mod_cast Nat.factorial_pos k`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Finset.sum_le_card_nsmul _ _ _ h2).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.card_range, nsmul_eq_mul, mul_assoc]`. Use `mul_le_mul_of_nonneg_right ?_ (by positivity)` and prove the remaining obligations. Conclude with `(Nat.lt_two_pow_self (n := d + 1)).le` after adjusting the coercions. Rewrite using `[hT, map_sum]`.
-
-Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Establish `h6 : ∀ β ∈ Φ.support, ‖ev (monomial β (∑ k ∈ Finset.range (d + 1), homog d ((G k).coeff β)))‖ ≤ 2 ^ (d + 1) * E ^ (d + 1) * D ^ (d + 1) * ‖ev (monomial β 1)‖`. Introduce `β _`. Rewrite using `[← mul_one (∑ k ∈ Finset.range (d + 1), homog d ((G k).coeff β)), ← C_mul_monomial, map_mul]`. Conclude with `(norm_mul_le _ _).trans (mul_le_mul_of_nonneg_right (h1 β) (norm_nonneg _))`.
-
-Use `(Finset.sum_le_sum h6).trans ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum, ← hA, mul_pow, mul_pow, mul_pow]`. Establish `h7 : A ≤ (A + 1) ^ (d + 1)` using `(by linarith : A ≤ A + 1).trans (le_self_pow₀ (by linarith) (Nat.succ_ne_zero d))`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Ci.truncSpec :
     TruncSpec := by

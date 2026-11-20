@@ -12,19 +12,19 @@ section Generic
 variable {S : Type*} [Ring S]
 
 /- English proof (translation)
-Rewrite using `[← MulOpposite.unop_mul, ← map_mul, Units.inv_mul, map_one, MulOpposite.unop_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unop_mul_inv (σ : S →+* Sᵐᵒᵖ) (y : Sˣ) : (σ (y : S)).unop * (σ ((y⁻¹ : Sˣ) : S)).unop = 1 := by
   rw [← MulOpposite.unop_mul, ← map_mul, Units.inv_mul, map_one, MulOpposite.unop_one]
 
 /- English proof (translation)
-Rewrite using `[← MulOpposite.unop_mul, ← map_mul, Units.mul_inv, map_one, MulOpposite.unop_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unop_inv_mul (σ : S →+* Sᵐᵒᵖ) (y : Sˣ) : (σ ((y⁻¹ : Sˣ) : S)).unop * (σ (y : S)).unop = 1 := by
   rw [← MulOpposite.unop_mul, ← map_mul, Units.mul_inv, map_one, MulOpposite.unop_one]
 
 /- English proof (translation)
-Establish `h` using `unop_mul_inv σ y`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Units.val_mul, map_mul, MulOpposite.unop_mul, mul_assoc]`. Use `_ = _ := by rw [Units.inv_mul, h, mul_one, mul_one]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem triv_conj (σ : S →+* Sᵐᵒᵖ) (b : S) (x y : Sˣ) :
     ((x * y⁻¹ : Sˣ) : S) * ((y : S) * b * (σ (y : S)).unop) * (σ ((x * y⁻¹ : Sˣ) : S)).unop =
@@ -41,13 +41,13 @@ end Generic
 variable {p : ℕ} [Fact p.Prime] (G : HTGroup p)
 
 /- English proof (translation)
-Simplify using `only [sh, map_mul, MulOpposite.unop_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sh_mul (a b : G.C) : sh G (a * b) = sh G b * sh G a := by
   simp only [sh, map_mul, MulOpposite.unop_mul]
 
 /- English proof (translation)
-The claim follows from `G.star_star a`.
+A detailed English derivation is pending.
 -/
 theorem sh_sh (a : G.C) : sh G (sh G a) = a := G.star_star a
 
@@ -71,7 +71,7 @@ def conjAlg (y : G.Cˣ) : G.C →ₐ[G.F] G.C where
     rw [← Algebra.commutes, mul_assoc, Units.mul_inv, mul_one]
 
 /- English proof (translation)
-Introduce `a b h`. Establish `h' : (y : G.C) * a * ((y⁻¹ : G.Cˣ) : G.C) = y * b * ((y⁻¹ : G.Cˣ) : G.C)` using `h`. Use `congrArg (fun z => ((y⁻¹ : G.Cˣ) : G.C) * z * (y : G.C)) h'` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem conjAlg_injective (y : G.Cˣ) : Function.Injective (conjAlg G y) := by
   intro a b h
@@ -81,7 +81,7 @@ theorem conjAlg_injective (y : G.Cˣ) : Function.Injective (conjAlg G y) := by
 
 variable {G} in
 /- English proof (translation)
-The claim follows from `(starT_tmul G.star R 1 a).symm`.
+A detailed English derivation is pending.
 -/
 theorem inC_sh (R : Type) [CommRing R] [Algebra ℚ R] (a : G.C) :
     inC G R (sh G a) = (starT G.star R (inC G R a)).unop :=
@@ -90,7 +90,7 @@ theorem inC_sh (R : Type) [CommRing R] [Algebra ℚ R] (a : G.C) :
 variable {G} in
 
 /- English proof (translation)
-Unfold `Triv at hx ⊢`. Establish `e : inC G R ((y : G.C) * β * sh G y) = ((Units.map (inC G R).toMonoidHom y : (R ⊗[ℚ] G.C)ˣ) : R ⊗[ℚ] G.C) * inC G R β * (starT G.star R ((Units.map (inC G R).toMonoidHom y : (R ⊗[ℚ] G.C)ˣ) : R ⊗[ℚ] G.C)).unop`. Rewrite using `[map_mul, map_mul, inC_sh]`. Both sides reduce to the same expression. Rewrite using `[e, triv_conj, hx]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem triv_conj_unit (R : Type) [CommRing R] [Algebra ℚ R] (β : G.C) (y : G.Cˣ)
     (x : (R ⊗[ℚ] G.C)ˣ) (t : Rˣ) (hx : Triv G R β x t) :
@@ -106,7 +106,7 @@ theorem triv_conj_unit (R : Type) [CommRing R] [Algebra ℚ R] (β : G.C) (y : G
 variable {G}
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, Units.val_mul, shU_val]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_val (β y : G.Cˣ) : ((y * β * shU G y : G.Cˣ) : G.C) = (y : G.C) * β * sh G y := by
   rw [Units.val_mul, Units.val_mul, shU_val]
@@ -143,7 +143,7 @@ def conjPair (P : Pair G) (y : G.Cˣ) : Pair G where
     exact ⟨_, h⟩
 
 /- English proof (translation)
-The claim follows from `conj_val P.β y`.
+A detailed English derivation is pending.
 -/
 theorem conjPair_β (P : Pair G) (y : G.Cˣ) :
     (((conjPair P y).β : G.Cˣ) : G.C) = (y : G.C) * P.β * sh G y := conj_val P.β y
@@ -153,11 +153,11 @@ end GlobalTheory.LKMid.PairConj
 open GlobalTheory.LKMid.PairConj in
 
 /- English proof (translation)
-Introduce `p _ G P y`. Use `⟨conjPair P y, ⟨y, 1, one_pos, ?_, rfl⟩, rfl, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[map_one, one_mul, conjPair_β]`. Introduce `x t hx`. Establish `h` using `triv_conj_unit (AfP p) (P.β : G.C) y x t hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[← conjPair_β]`. Use `⟨_, h, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Prod.ext` to reduce the goal to its premises. Use `show (x * (Units.map (inC G (AfP p)).toMonoidHom y)⁻¹) * Units.map (inC G (AfP p)).toMonoidHom (y * P.γ * y⁻¹) * (x * (Units.map (inC G (AfP p)).toMonoidHom y)⁻¹)⁻¹ = x * Units.map (inC G (AfP p)).toMonoidHom P.γ * x⁻¹`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, map_inv]`. Use `group`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LKMid.Pair.exists_conj : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (P : Pair G) (y : G.Cˣ),
     ∃ P' : Pair G, P.Rel P' ∧ P'.γ = y * P.γ * y⁻¹ ∧ P'.c = P.c ∧

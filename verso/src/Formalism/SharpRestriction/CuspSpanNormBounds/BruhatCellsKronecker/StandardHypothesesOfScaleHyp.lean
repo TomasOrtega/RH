@@ -9,13 +9,13 @@ namespace Formalism.MainNotions.BridgeLemma
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S Formalism.MainNotions.S.ThB Formalism.MainNotions.S.Bridge Formalism.QuantumDeterminants
 
 /- English proof (translation)
-Establish `key : ∀ (d a : ℕ) (hh : a + d + 1 < N), g < f ⟨a, by omega⟩ - f ⟨a + d + 1, hh⟩`. Introduce `d`. Proceed by induction on `d with`. Consider the case `zero => intro a hh`. Conclude with `h a hh`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ d ih`. Introduce `a hh`. Establish `h1` using `ih a (by omega)`. Establish `h2` using `h (a + d + 1) (by omega)`. Establish `e : (⟨a + (d + 1) + 1, hh⟩ : Fin N) = ⟨a + d + 1 + 1, by omega⟩` using `Fin.ext (by simp; omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `a b hab`. Establish `hlt : a.val < b.val` using `hab`. Take `⟨d, hd⟩ : ∃ d, b.val = a.val + d + 1` from `⟨b.val - a.val - 1, by omega⟩`.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `key d a.val (by have := b.isLt; omega)` as an intermediate fact. Establish `eb : b = ⟨a.val + d + 1, by have` using `b.isLt; omega⟩ := Fin.ext hd`. Rewrite using `[eb]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem std_drop {N : ℕ} (f : Fin N → ℝ) (g : ℝ) (hg : 0 ≤ g)
     (h : ∀ (s : ℕ) (hs : s + 1 < N), g < f ⟨s, by omega⟩ - f ⟨s + 1, hs⟩) :
@@ -40,7 +40,7 @@ theorem std_drop {N : ℕ} (f : Fin N → ℝ) (g : ℝ) (hg : 0 ≤ g)
   exact this
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `D.R.m_even`. Establish `h2` using `D.R.two_le_m`. Simplify using `only [Ranks.rS]`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem std_two_rS (D : D7) : 2 * D.R.rS + 2 = D.R.m := by
   obtain ⟨t, ht⟩ := D.R.m_even
@@ -49,7 +49,7 @@ theorem std_two_rS (D : D7) : 2 * D.R.rS + 2 = D.R.m := by
   omega
 
 /- English proof (translation)
-Establish `h2 : 1 ≤ s.val + 1 ∧ s.val + 1 ≤ D.R.k - 1` using `⟨by omega, by omega⟩`. Unfold `lamD lamSH lamS vOne`. Rewrite using `[dif_pos h2]`. Simplify using `only [Fin.val_cast]`. Rewrite using `[dif_pos h]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -63,9 +63,9 @@ theorem std_lamD_cloud (D : D7) (τ : D.what₂.Tau) (s : Fin (2 * D.R.rS + D.R.
   rfl
 
 /- English proof (translation)
-Establish `hm` using `std_two_rS D`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `h3 : s.val - (D.R.k - 1) < D.R.m` using `by have := s.isLt; omega`. Establish `h2 : 1 ≤ s.val - (D.R.k - 1) + 1 ∧ s.val - (D.R.k - 1) + 1 ≤ D.R.m` using `⟨by omega, by omega⟩`. Unfold `lamD lamSH lamS bOne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos h2]`. Simplify using `only [Fin.val_cast]`. Rewrite using `[dif_neg h, dif_pos h3]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem std_lamD_node (D : D7) (τ : D.what₂.Tau) (s : Fin (2 * D.R.rS + D.R.k + 1)) (h : ¬ s.val < D.R.k - 1) :
     lamD D τ s = -bOne D τ (s.val - (D.R.k - 1) + 1) := by
@@ -80,7 +80,7 @@ theorem std_lamD_node (D : D7) (τ : D.what₂.Tau) (s : Fin (2 * D.R.rS + D.R.k
   rfl
 
 /- English proof (translation)
-Establish `h2 : 1 ≤ i.val + 1 ∧ i.val + 1 ≤ D.R.k` using `⟨by omega, by have := i.isLt; omega⟩`. Unfold `uOne`. Rewrite using `[dif_pos h2]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem std_uS (D : D7) (w : D.what₂.Word) (τ : D.what₂.Tau) (i : Fin D.R.k) :
     uS D w τ i = uOne D w τ (i.val + 1) := by
@@ -94,24 +94,24 @@ section Rec
 variable (D : D7) (large₂ : SizeData₂ D) {C' Cl Cg cb Cu cT CT C0 : ℝ}
 
 /- English proof (translation)
-Rewrite using `[dimS_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem std_castN : ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) = (D.R.r : ℝ) := by rw [dimS_eq]
 
 /- English proof (translation)
-Rewrite using `[std_two_rS]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem std_castM : ((2 * D.R.rS + 2 : ℕ) : ℝ) = (D.R.m : ℝ) := by rw [std_two_rS]
 
 /- English proof (translation)
-Unfold `Scale.L`. Conclude with `Real.one_le_rpow large₂.sc.one_lt_alt.le large₂.sc.eps_pos.le`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem std_L_ge : 1 ≤ large₂.sc.L := by
   unfold Scale.L
   exact Real.one_le_rpow large₂.sc.one_lt_alt.le large₂.sc.eps_pos.le
 
 /- English proof (translation)
-Unfold `Scale.b`. Use `std_L_ge D large₂` as an intermediate fact. Conclude with `Real.one_lt_exp_iff.2 (by linarith)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem std_b_gt : 1 < large₂.sc.b := by
   unfold Scale.b
@@ -119,14 +119,14 @@ theorem std_b_gt : 1 < large₂.sc.b := by
   exact Real.one_lt_exp_iff.2 (by linarith)
 
 /- English proof (translation)
-Unfold `Scale.b`. Conclude with `Real.log_exp _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem std_log_b : Real.log large₂.sc.b = large₂.sc.L := by unfold Scale.b; exact Real.log_exp _
 
 variable {D large₂}
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, hgap, _, _, hCl⟩` from `H.1`. Use `std_drop _ _ (by positivity) (fun s hs => ?_)` and prove the remaining obligations. Conclude with `hgap τ ⟨s, by have := dimS_eq D.R; omega⟩ (by have := dimS_eq D.R; simp only; omega)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem std_gapAll (H : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) (τ : D.what₂.Tau) :
     ∀ a b : Fin (2 * D.R.rS + D.R.k + 1), a < b →
@@ -136,7 +136,7 @@ theorem std_gapAll (H : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) (τ : D.wha
   exact hgap τ ⟨s, by have := dimS_eq D.R; omega⟩ (by have := dimS_eq D.R; simp only; omega)
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, hCl⟩` from `H.1`. Introduce `a b hab`. Use `std_gapAll H τ a b hab` as an intermediate fact. Establish `h0 : 0 ≤ Cl * D.R.k * (D.R.m : ℝ) ^ 4 + (D.R.r : ℝ) * (D.R.m : ℝ) ^ 10` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem std_anti (H : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) (τ : D.what₂.Tau) : StrictAnti (lamD D τ) := by
   obtain ⟨_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, hCl⟩ := H.1
@@ -146,17 +146,17 @@ theorem std_anti (H : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) (τ : D.what�
   linarith
 
 /- English proof (translation)
-Use `⟨std_anti H τ, fun a => ?_⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `D.R.k_even`. Establish `hN : (((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) - 1) / 2 = ((D.R.rS + t : ℕ) : ℝ)`. Rewrite using `[ht]`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hN]`. Distinguish the cases in `h : a.val < D.R.k - 1`. Rewrite using `[std_lamD_cloud D τ a h]`. Unfold `vOne`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos ⟨by omega, by omega⟩]`. Take `⟨z, hz⟩` from `(D.hc τ).v_int ⟨a.val + 1 - 1, by omega⟩`. Use `⟨z - (D.R.rS + t : ℕ), ?_⟩` and prove the remaining obligations. Rewrite using `[hz]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[std_lamD_node D τ a h]`. Establish `hm` using `std_two_rS D`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `h3 : a.val - (D.R.k - 1) < D.R.m` using `by have := a.isLt; omega`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `bOne`. Rewrite using `[dif_pos ⟨by omega, by omega⟩]`. Take `⟨z, hz⟩` from `(D.hc τ).b_int ⟨a.val - (D.R.k - 1) + 1 - 1, by omega⟩`. Use `⟨-z - (D.R.rS + t : ℕ), ?_⟩` and prove the remaining obligations. Rewrite using `[hz]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem std_isHC (H : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) (τ : D.what₂.Tau) : IsHCParam (lamD D τ) := by
   refine ⟨std_anti H τ, fun a => ?_⟩
@@ -182,7 +182,7 @@ theorem std_isHC (H : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) (τ : D.what�
     rw [hz]; push_cast; ring
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, _, hI, _⟩` from `H.2.1`. Conclude with `⟨fun i hi => (hI w τ).1 i hi, fun h0 => (hI w τ).2 h0⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem std_interlace (H : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) (w : D.what₂.Word) (τ : D.what₂.Tau) :
     InterlaceS (by omega) (uS D w τ) (lamD D τ) := by
@@ -196,7 +196,7 @@ section Rec2
 variable {D : D7} {large₂ : SizeData₂ D} {C' Cl Cg cb Cu cT CT C0 : ℝ}
 
 /- English proof (translation)
-Establish `h : D.R.r + 1 = D.R.k + D.R.m`. Use `D.R.two_le_m` as an intermediate fact. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem std_r_add (D : D7) : (D.R.r : ℝ) + 1 = (D.R.k : ℝ) + D.R.m := by
   have h : D.R.r + 1 = D.R.k + D.R.m := by
@@ -205,18 +205,18 @@ theorem std_r_add (D : D7) : (D.R.r : ℝ) + 1 = (D.R.k : ℝ) + D.R.m := by
   exact_mod_cast h
 
 /- English proof (translation)
-Conclude with `D.s.Del_pos` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem std_Del_pos (D : D7) : (0 : ℝ) < (D.s.Del : ℝ) := by exact_mod_cast D.s.Del_pos
 
 /- English proof (translation)
-Take `⟨_, _, h3, _, _, _, h7, _, _, _, _, _, _, _, _, _, _, _, _, h20, _, _, _, h24, _⟩` from `H.1`. Establish `hL` using `std_L_ge D large₂`. Establish `hm8 : (8 : ℝ) ≤ D.R.m` using `le_trans hCl h24`. Establish `hmk` using `m_le_k D`. Establish `hf : (1 : ℝ) ≤ D.R.f`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `D.R.two_le_m`. Establish `: 1 ≤ D.R.f` using `le_trans (Nat.one_le_pow _ _ (by omega)) h3`. Conclude with `this` after adjusting the coercions. Establish `hk8 : 8 * (D.R.m : ℝ) ^ 2 ≤ D.R.k`. Use `le_trans ?_ h7` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: (D.R.m : ℝ) ^ 2 ≤ (D.R.m : ℝ) ^ 2 * large₂.sc.L` using `le_mul_of_one_le_right (by positivity) hL`. Use polynomial arithmetic with `[sq_nonneg (D.R.m : ℝ)]`. Establish `hk1 : (1 : ℝ) ≤ D.R.k` using `by linarith`. Use `⟨hm8, hmk, hk8, ?_, hf⟩` and prove the remaining obligations. Use `le_trans ?_ h20` and prove the remaining obligations.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hbase : (D.R.k : ℝ) ≤ (D.R.k : ℝ) * D.R.f * large₂.sc.L`. Establish `: (D.R.k : ℝ) ≤ (D.R.k : ℝ) * D.R.f` using `le_mul_of_one_le_right (by linarith) hf`. Conclude with `le_trans this (le_mul_of_one_le_right (by positivity) hL)`. Establish `h1 : (1 : ℝ) ≤ (D.R.k : ℝ) * D.R.f * large₂.sc.L` using `le_trans hk1 hbase`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem std_sizes (H : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) (hCl : 8 ≤ Cl) :
     (8 : ℝ) ≤ D.R.m ∧ (D.R.m : ℝ) ≤ D.R.k ∧ 8 * (D.R.m : ℝ) ^ 2 ≤ D.R.k ∧ (D.R.k : ℝ) ^ 2 ≤ (D.s.Del : ℝ) ∧
@@ -245,11 +245,11 @@ theorem std_sizes (H : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) (hCl : 8 ≤
     _ ≤ ((D.R.k : ℝ) * D.R.f * large₂.sc.L) ^ Cl := Real.rpow_le_rpow_of_exponent_le h1 (by linarith)
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, _, _, h8, _⟩` from `H.1`. Take `⟨d1, _⟩` from `H.2.1`. Take `⟨hm8, _, _, _, _⟩` from `std_sizes H hCl`. Rewrite using `[std_lamD_cloud D τ s h]`. Establish `hv` using `d1 τ (s.val + 1) (by omega) (by omega)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb` using `h8 τ 1 le_rfl (by have := D.R.two_le_m; omega)`. Establish `hD` using `std_Del_pos D`. Establish `hkD : 0 ≤ (D.R.k : ℝ) * (D.s.Del : ℝ)` using `by positivity`. Establish `h64 : 64 ≤ Cl * (D.R.m : ℝ)` using `by nlinarith`. Use `⟨hv.1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: 64 * ((D.R.k : ℝ) * (D.s.Del : ℝ)) ≤ bOne D τ 1`. Use `le_trans ?_ hb` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_right h64 hkD` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hv2` using `hv.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -274,7 +274,7 @@ theorem std_cloud_bd (H : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) (hCl : 8 
   linarith
 
 /- English proof (translation)
-Rewrite using `[std_lamD_node D τ _ (by simp)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem std_first_node (D : D7) (τ : D.what₂.Tau) :
     lamD D τ ⟨D.R.k - 1, by have := D.R.m_add_three_le_k; omega⟩ = -bOne D τ 1 := by
@@ -282,7 +282,7 @@ theorem std_first_node (D : D7) (τ : D.what₂.Tau) :
   simp
 
 /- English proof (translation)
-Establish `hm` using `std_two_rS D`. Establish `hk` using `D.R.m_add_three_le_k`. Rewrite using `[std_lamD_node D τ _ (by simp only; omega)]`. Use `congr 2`. Simplify using `only`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -296,9 +296,9 @@ theorem std_last_node (D : D7) (τ : D.what₂.Tau) :
   omega
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, h17, _⟩` from `H.1`. Establish `ha` using `(std_anti H τ).antitone`. Establish `h1 : lamD D τ s ≤ lamD D τ ⟨D.R.k - 1, by have` using `D.R.m_add_three_le_k; omega⟩ := ha (Fin.le_def.2 (by simp only; omega))`. Establish `h2 : lamD D τ ⟨2 * D.R.rS + D.R.k, by omega⟩ ≤ lamD D τ s` using `ha (Fin.le_def.2 (by have := s.isLt; simp only; omega))`. Rewrite `h1` using `[std_first_node]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[std_last_node]`. Use `h17 τ` as an intermediate fact. Conclude with `⟨by linarith, h1⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem std_node_bd (H : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) (τ : D.what₂.Tau)
     (s : Fin (2 * D.R.rS + D.R.k + 1)) (h : ¬ s.val < D.R.k - 1) :
@@ -315,18 +315,18 @@ theorem std_node_bd (H : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) (τ : D.wh
   exact ⟨by linarith, h1⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨⟨s.val, by omega⟩, (hI.1 s.val h).1⟩, ⟨⟨s.val + 1, h⟩, (hI.1 s.val h).2⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem std_isCloud {k n : ℕ} {hkn : k ≤ n} {u : Fin k → ℝ} {lam : Fin n → ℝ} (hI : InterlaceS hkn u lam)
     (s : Fin n) (h : s.val + 1 < k) : IsCloud u lam s :=
   ⟨⟨⟨s.val, by omega⟩, (hI.1 s.val h).1⟩, ⟨⟨s.val + 1, h⟩, (hI.1 s.val h).2⟩⟩
 
 /- English proof (translation)
-Break down `h with ⟨h1, h2⟩ | ⟨h1, h2⟩` into its components or cases. Use `⟨i, _, _, by rw [h1, h2]; intro e; linarith, by linarith, rfl, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h1, h2]; exact min_lt_iff.2 (Or.inl (by linarith))`. Rewrite using `[h1, h2]; exact lt_max_iff.2 (Or.inr (by linarith))`. Introduce `y hy`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h1, h2]`. Conclude with `⟨le_abs.2 (Or.inl (by linarith [hy.1])), le_abs.2 (Or.inr (by linarith [hy.2]))⟩`. Use `⟨i, _, _, by rw [h1, h2]; intro e; linarith, by linarith, rfl, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h1, h2]; exact min_lt_iff.2 (Or.inr (by linarith))`. Rewrite using `[h1, h2]; exact lt_max_iff.2 (Or.inl (by linarith))`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy`. Rewrite using `[h1, h2]`. Conclude with `⟨le_abs.2 (Or.inr (by linarith [hy.2])), le_abs.2 (Or.inl (by linarith [hy.1]))⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem std_cut {k : ℕ} (u u' : Fin k → ℝ) (i : Fin k) (V De : ℝ)
     (h : (u i = V ∧ u' i = V - De) ∨ (u i = V - De ∧ u' i = V)) (hD : 4 ≤ De) :
@@ -346,9 +346,9 @@ theorem std_cut {k : ℕ} (u u' : Fin k → ℝ) (i : Fin k) (V De : ℝ)
       exact ⟨le_abs.2 (Or.inr (by linarith [hy.2])), le_abs.2 (Or.inl (by linarith [hy.1]))⟩
 
 /- English proof (translation)
-Establish `hk` using `D.R.m_add_three_le_k`. Establish `hm` using `D.R.two_le_m`. Establish `h` using `D.s.cloud_gap D.u₀ τ 0 (by omega)`. Rewrite `h` using `[D.hcW_v]`. Unfold `vOne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos ⟨le_rfl, by omega⟩, dif_pos ⟨by omega, by omega⟩]`. Conclude with `h` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vertex_difference_eq (D : D7) (τ : D.what₂.Tau) : vOne D τ 1 - vOne D τ 2 = 4 * (D.s.Del : ℝ) := by
   have hk := D.R.m_add_three_le_k
@@ -366,13 +366,13 @@ section Rec3
 variable {D : D7} {large₂ : SizeData₂ D} {C' Cl Cg cb Cu cT CT C0 : ℝ}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Establish `hlt : a.val < b.val` using `hab`. Establish `ha : a.val < D.R.k - 1` using `by omega`. Apply `he` to reduce the goal to its premises. Establish `ea : epsSH D.R a = true`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Unfold `epsSH epsS`. Simplify using `only [Fin.val_cast]`. Rewrite using `[if_pos ha]`. Establish `eb : epsSH D.R b = true`. Unfold `epsSH epsS`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only [Fin.val_cast]`. Distinguish the cases in `hb : b.val < D.R.k - 1`. Rewrite using `[if_pos hb]`. Rewrite using `[if_neg hb]`. Establish `: b.val - (D.R.k - 1) = 0` using `by omega`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `decide_eq_true (by rw [this])`. Rewrite using `[ea, eb]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem std_nc_idx (D : D7) (a b : Fin (2 * D.R.rS + D.R.k + 1)) (hab : a < b)
     (he : epsSH D.R a ≠ epsSH D.R b) : D.R.k - 1 < b.val := by
@@ -395,15 +395,15 @@ theorem std_nc_idx (D : D7) (a b : Fin (2 * D.R.rS + D.R.k + 1)) (hab : a < b)
   rw [ea, eb]
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, h21, _⟩` from `H.1`. Establish `ha` using `(std_anti H τ).antitone`. Establish `hm` using `std_two_rS D`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `key : ∀ a b : Fin (2 * D.R.rS + D.R.k + 1), a < b → epsSH D.R a ≠ epsSH D.R b → Cl * (D.R.r : ℝ) ^ 19 * (D.R.f : ℝ) ^ 5 * large₂.sc.L ≤ lamD D τ a - lamD D τ b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a b hab he`. Establish `hb` using `std_nc_idx D a b hab he`. Establish `hlt : a.val < b.val` using `hab`. Establish `hbl` using `b.isLt`. Establish `h1 : lamD D τ ⟨b.val - 1, by omega⟩ ≤ lamD D τ a` using `ha (Fin.le_def.2 (by simp only; omega))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[std_lamD_node D τ ⟨b.val - 1, by omega⟩ (by simp only; omega)]`. Rewrite using `[std_lamD_node D τ b (by omega)]`. Establish `h2` using `h21 τ (b.val - 1 - (D.R.k - 1) + 1) (by omega) (by omega)`. Establish `e : b.val - 1 - (D.R.k - 1) + 1 + 1 = b.val - (D.R.k - 1) + 1` using `by omega`. Rewrite `h2` using `[e]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only at h1`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `a b he`. Break down `lt_trichotomy a b with h | h | h` into its components or cases. Conclude with `le_trans (key a b h he) (le_abs_self _)`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd (by rw [h]) he`. Rewrite using `[abs_sub_comm]`. Conclude with `le_trans (key b a h (Ne.symm he)) (le_abs_self _)`.
+A detailed English derivation is pending.
 -/
 theorem std_ncgap (H : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) (τ : D.what₂.Tau) :
     GapAtLeast (epsSH D.R) (lamD D τ) (Cl * (D.R.r : ℝ) ^ 19 * (D.R.f : ℝ) ^ 5 * large₂.sc.L) := by
@@ -433,21 +433,21 @@ theorem std_ncgap (H : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) (τ : D.what
     exact le_trans (key b a h (Ne.symm he)) (le_abs_self _)
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, _, _, _, _, _, h11, h12, h13, h14, h15, _, _, _, h19, _⟩` from `H.1`. Take `⟨hm8, hmk, _, _, _⟩` from `std_sizes H hCl`. Establish `hb` using `std_b_gt D large₂`. Establish `hb0 : 0 < large₂.sc.b` using `by linarith`. Establish `hL` using `std_L_ge D large₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkb : (8 : ℝ) ≤ (D.R.k : ℝ) * large₂.sc.b` using `by nlinarith`. Establish `hkb8 : (8 : ℝ) ≤ ((D.R.k : ℝ) * large₂.sc.b) ^ 8`. Combine the equalities or inequalities in the displayed calculation. Establish `hg0 : (8 : ℝ) ≤ (D.host.g 0 : ℝ)` using `le_trans hkb8 h12`. Establish `hg1 : (8 : ℝ) ≤ (D.host.g 1 : ℝ)` using `le_trans hkb8 h14`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : D.host.v = D.host.rdE / 2` using `rfl`. Establish `hrd : 2 ≤ D.host.rdE` using `by rw [hv] at h19; linarith`. Establish `hpi` using `Real.pi_gt_three`. Establish `hpi4` using `Real.pi_le_four`. Establish `hka : kaS D = Real.pi / (D.host.rdE / 2) / ((D.host.g 0 : ℝ) * D.host.g 1)` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgg : (64 : ℝ) ≤ (D.host.g 0 : ℝ) * D.host.g 1` using `by nlinarith`. Establish `hrdb : D.host.rdE ≤ large₂.sc.b ^ ((1 : ℝ) / 8)`. Rewrite using `[Real.le_rpow_iff_log_le (by linarith) hb0, std_log_b]`. Use `le_trans h11 ?_` and prove the remaining obligations. Rewrite using `[div_le_iff₀ (by linarith)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Use `⟨by rw [hka]; positivity, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hka, div_div, div_le_one (by positivity)]`. Establish `h1 : (1 : ℝ) * 64 ≤ D.host.rdE / 2 * ((D.host.g 0 : ℝ) * D.host.g 1)` using `mul_le_mul (by linarith) hgg (by norm_num) (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hinv : (kaS D)⁻¹ = D.host.rdE * ((D.host.g 0 : ℝ) * D.host.g 1) / (2 * Real.pi)`. Rewrite using `[hka]`. Establish `: D.host.rdE ≠ 0` using `by linarith`. Establish `: (D.host.g 0 : ℝ) ≠ 0` using `by linarith`. Establish `: (D.host.g 1 : ℝ) ≠ 0` using `by linarith`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[hinv]`. Establish `e : large₂.sc.b ^ (1 / 8 + 2 * Cg) = large₂.sc.b ^ ((1 : ℝ) / 8) * (large₂.sc.b ^ Cg * large₂.sc.b ^ Cg)`. Rewrite using `[← Real.rpow_add hb0, ← Real.rpow_add hb0]`. Use `congr 1`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Establish `h1 : (D.host.g 0 : ℝ) * D.host.g 1 ≤ large₂.sc.b ^ Cg * large₂.sc.b ^ Cg` using `mul_le_mul h13 h15 (by linarith) (by positivity)`. Establish `h2 : D.host.rdE * ((D.host.g 0 : ℝ) * D.host.g 1) ≤ large₂.sc.b ^ ((1 : ℝ) / 8) * (large₂.sc.b ^ Cg * large₂.sc.b ^ Cg)` using `mul_le_mul hrdb h1 (by positivity) (by positivity)`. Conclude with `le_trans (div_le_self (by positivity) (by linarith)) h2`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem std_kaS (H : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) (hCl : 8 ≤ Cl) :
     0 < kaS D ∧ kaS D ≤ 1 ∧ (kaS D)⁻¹ ≤ large₂.sc.b ^ (1 / 8 + 2 * Cg) := by
@@ -497,9 +497,9 @@ theorem std_kaS (H : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) (hCl : 8 ≤ C
     exact le_trans (div_le_self (by positivity) (by linarith)) h2
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, h16, _⟩` from `H.1`. Take `⟨hm8, hmk, _, _, _⟩` from `std_sizes H hCl`. Establish `h` using `h16 τ 1 le_rfl (by have := D.R.two_le_m; omega)`. Establish `hk1 : (1 : ℝ) ≤ D.R.k` using `by linarith`. Use `⟨?_, by simpa using h.2, by linarith [h.2]⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem first_node_size_bounds (H : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) (hCl : 8 ≤ Cl) (τ : D.what₂.Tau) :
     (D.R.k : ℝ) ^ 8 ≤ bOne D τ 1 ∧ bOne D τ 1 ≤ large₂.sc.b ^ (2 : ℝ) / 1 ∧ 2 * bOne D τ 1 ≤ 2 * large₂.sc.b ^ (2 : ℝ) := by
@@ -519,7 +519,7 @@ section Rec4
 variable {D : D7} {large₂ : SizeData₂ D} {C' Cl Cg cb Cu cT CT C0 : ℝ}
 
 /- English proof (translation)
-Introduce `s s' hne`. Break down `lt_or_gt_of_ne hne with h | h` into its components or cases. Conclude with `le_trans (le_trans hX (std_gapAll H τ s s' h).le) (le_abs_self _)`. Rewrite using `[abs_sub_comm]`. Conclude with `le_trans (le_trans hX (std_gapAll H τ s' s h).le) (le_abs_self _)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem std_allGaps (H : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) (τ : D.what₂.Tau) (X : ℝ)
     (hX : X ≤ Cl * D.R.k * (D.R.m : ℝ) ^ 4 + (D.R.r : ℝ) * (D.R.m : ℝ) ^ 10) : AllGaps (lamD D τ) X := by
@@ -530,13 +530,13 @@ theorem std_allGaps (H : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) (τ : D.wh
     exact le_trans (le_trans hX (std_gapAll H τ s' s h).le) (le_abs_self _)
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, h16, _⟩` from `H.1`. Take `⟨hm8, hmk, _, _, _⟩` from `std_sizes H hCl`. Establish `hk0 : (0 : ℝ) < D.R.k` using `by linarith`. Distinguish the cases in `h : s.val < D.R.k - 1`. Take `⟨h1, h2⟩` from `std_cloud_bd H hCl τ s h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨h3, h4, _⟩` from `first_node_size_bounds H hCl τ`. Establish `h5 : 0 ≤ bOne D τ 1` using `le_trans (by positivity) h3`. Rewrite using `[abs_of_nonneg h1]`. Simplify using `only [div_one] at h4`. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hm` using `std_two_rS D`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `hs` using `s.isLt`. Rewrite using `[std_lamD_node D τ s h, abs_neg]`. Establish `h1` using `h16 τ (s.val - (D.R.k - 1) + 1) (by omega) (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : 0 ≤ bOne D τ (s.val - (D.R.k - 1) + 1)` using `le_trans (by positivity) (le_trans (le_max_left _ _) h1.1)`. Rewrite using `[abs_of_nonneg h2]`. Conclude with `h1.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem std_lam_abs (H : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) (hCl : 8 ≤ Cl) (τ : D.what₂.Tau)
     (s : Fin (2 * D.R.rS + D.R.k + 1)) : |lamD D τ s| ≤ large₂.sc.b ^ (2 : ℝ) := by
@@ -561,19 +561,19 @@ theorem std_lam_abs (H : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) (hCl : 8 �
     exact h1.2
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, h18, _⟩` from `H.1`. Establish `hI` using `std_interlace H w τ`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `hil` using `i.isLt`. Rewrite using `[abs_le]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Distinguish the cases in `h : i.val + 1 < D.R.k`. Establish `h1` using `(hI.1 i.val h).1`. Establish `h2` using `(std_cloud_bd H hCl τ ⟨i.val, by omega⟩ (by simp only; omega)).1`. Establish `h3 : 0 ≤ max (large₂.sc.b ^ (2 : ℝ)) (large₂.sc.b ^ Cu)` using `le_trans (Real.rpow_nonneg (by have := std_b_gt D large₂; linarith) _) (le_max_left _ _)`.
+Prove the components needed by the constructor for the conclusion. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (⟨i.val, by omega⟩ : Fin D.R.k) = i` using `Fin.ext rfl`. Rewrite `h1` using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `hI.2 (by omega)`. Establish `e : (⟨D.R.k - 1, by omega⟩ : Fin D.R.k) = i` using `Fin.ext (by simp only; omega)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[e]`. Establish `h2` using `std_lam_abs H hCl τ ⟨D.R.k - 1, by omega⟩`. Establish `h3` using `(abs_le.1 h2).1`. Establish `h4` using `le_max_left (large₂.sc.b ^ (2 : ℝ)) (large₂.sc.b ^ Cu)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Distinguish the cases in `h : i.val = 0`. Establish `h1` using `h18 w τ`. Rewrite using `[std_uS, h]`. Conclude with `le_trans h1 (le_max_right _ _)`. Establish `h1` using `(hI.1 (i.val - 1) (by omega)).2`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (⟨i.val - 1 + 1, by omega⟩ : Fin D.R.k) = i` using `Fin.ext (by simp only; omega)`. Rewrite `h1` using `[e]`. Establish `h2` using `std_lam_abs H hCl τ ⟨i.val - 1, by omega⟩`. Establish `h3` using `(abs_le.1 h2).2`. Establish `h4` using `le_max_left (large₂.sc.b ^ (2 : ℝ)) (large₂.sc.b ^ Cu)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem std_u_abs (H : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) (hCl : 8 ≤ Cl) (w : D.what₂.Word) (τ : D.what₂.Tau)
     (i : Fin D.R.k) : |uS D w τ i| ≤ max (large₂.sc.b ^ (2 : ℝ)) (large₂.sc.b ^ Cu) := by
@@ -611,13 +611,13 @@ theorem std_u_abs (H : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) (hCl : 8 ≤
       linarith
 
 /- English proof (translation)
-Establish `hI` using `std_interlace H w τ`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `ha` using `(std_anti H τ).antitone`. Introduce `s`. Distinguish the cases in `h : s.val < D.R.k - 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `⟨fun _ => std_cloud_bd H hCl τ s h, fun hn => absurd (std_isCloud hI s (by omega)) hn⟩`. Use `⟨fun hc => ?_, fun _ => std_node_bd H τ s h⟩` and prove the remaining obligations. It suffices to derive a contradiction. Take `⟨_, i, hi⟩` from `hc`. Establish `hil` using `i.isLt`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0 : lamD D τ s ≤ lamD D τ ⟨D.R.k - 1, by omega⟩` using `ha (Fin.le_def.2 (by simp only; omega))`. Distinguish the cases in `h' : i.val + 1 < D.R.k`. Establish `h1` using `(hI.1 i.val h').1`. Establish `e : (⟨i.val, by omega⟩ : Fin D.R.k) = i` using `Fin.ext rfl`. Rewrite `h1` using `[e]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : lamD D τ ⟨D.R.k - 1, by omega⟩ ≤ lamD D τ ⟨i.val, by omega⟩` using `ha (Fin.le_def.2 (by simp only; omega))`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `hI.2 (by omega)`. Establish `e : (⟨D.R.k - 1, by omega⟩ : Fin D.R.k) = i` using `Fin.ext (by simp only; omega)`. Rewrite `h1` using `[e]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -651,15 +651,15 @@ end Rec4
 section Num
 
 /- English proof (translation)
-Establish `hCs0` using `abs_nonneg Cs`. Establish `hCs : Cs ≤ |Cs|` using `le_abs_self _`. Establish `hn1 : 1 ≤ n` using `by linarith`. Establish `hn0 : 0 ≤ n` using `by linarith`. Establish `hA0 : 0 ≤ m ^ ((9 : ℝ) / 2)` using `Real.rpow_nonneg (by linarith) _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : m ^ ((9 : ℝ) / 2) ≤ n ^ 5`. Combine the equalities or inequalities in the displayed calculation. Establish `hB0 : 0 ≤ r3 * n ^ 2 + n ^ 3` using `by positivity`. Establish `hB : r3 * n ^ 2 + n ^ 3 ≤ 3 * n ^ 3`. Use `mul_le_mul_of_nonneg_right h3 (by positivity : (0 : ℝ) ≤ n ^ 2)` as an intermediate fact.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : 2 * n * n ^ 2 = 2 * n ^ 3` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hC : Cs ≤ n / 128` using `by linarith`. Establish `hC0 : (0 : ℝ) ≤ n / 128` using `by positivity`. Establish `s1 : Cs * m ^ ((9 : ℝ) / 2) ≤ n / 128 * n ^ 5` using `le_trans (mul_le_mul_of_nonneg_right hC hA0) (mul_le_mul_of_nonneg_left hA hC0)`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s2 : Cs * m ^ ((9 : ℝ) / 2) * (r3 * n ^ 2 + n ^ 3) ≤ n / 128 * n ^ 5 * (3 * n ^ 3)` using `le_trans (mul_le_mul_of_nonneg_right s1 hB0) (mul_le_mul_of_nonneg_left hB (by positivity))`. Establish `s3 : n / 128 * n ^ 5 * (3 * n ^ 3) ≤ n ^ 9`. Establish `: (0 : ℝ) ≤ n ^ 9` using `by positivity`. Establish `e : n / 128 * n ^ 5 * (3 * n ^ 3) = 3 / 128 * n ^ 9` using `by ring`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `s4 : n ^ 9 ≤ n ^ 19` using `pow_le_pow_right₀ hn1 (by norm_num)`. Establish `a1 : n ^ 19 ≤ Cl * n ^ 19` using `le_mul_of_one_le_left (by positivity) (by linarith)`. Establish `a2 : Cl * n ^ 19 ≤ Cl * n ^ 19 * f ^ 5` using `le_mul_of_one_le_right (by positivity) (one_le_pow₀ hf)`. Establish `a3 : Cl * n ^ 19 * f ^ 5 ≤ Cl * n ^ 19 * f ^ 5 * L` using `le_mul_of_one_le_right (by positivity) hL`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -700,9 +700,9 @@ theorem std_num_nc (Cs Cl m n f L r3 : ℝ) (hm8 : 8 ≤ m) (hmn : m ≤ n) (hs 
   linarith
 
 /- English proof (translation)
-Establish `hCs0` using `abs_nonneg Cs`. Establish `hCs : Cs ≤ |Cs|` using `le_abs_self _`. Establish `hk0 : 0 ≤ k` using `by linarith`. Establish `h1 : n ^ 7 ≤ (2 * k) ^ 7` using `pow_le_pow_left₀ hn0 hn2k 7`. Establish `h2 : Cs * n ^ 7 ≤ |Cs| * (2 * k) ^ 7` using `le_trans (mul_le_mul_of_nonneg_right hCs (by positivity)) (mul_le_mul_of_nonneg_left h1 hCs0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : |Cs| * (2 * k) ^ 7 = 128 * |Cs| * k ^ 7` using `by ring`. Establish `h4 : 128 * |Cs| * k ^ 7 ≤ k * k ^ 7` using `mul_le_mul_of_nonneg_right (by linarith) (by positivity)`. Establish `h5 : k * k ^ 7 = k ^ 8` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem std_num_bv (Cs m k n : ℝ) (hm8 : 8 ≤ m) (hmk : m ≤ k) (hs : 128 * |Cs| ≤ m) (hn0 : 0 ≤ n)
     (hn2k : n ≤ 2 * k) : Cs * n ^ 7 ≤ k ^ 8 := by
@@ -719,9 +719,9 @@ theorem std_num_bv (Cs m k n : ℝ) (hm8 : 8 ≤ m) (hmk : m ≤ k) (hs : 128 * 
   linarith
 
 /- English proof (translation)
-Establish `hCs0` using `abs_nonneg Cs`. Establish `hCs : Cs ≤ |Cs|` using `le_abs_self _`. Establish `hm4 : m ^ 4 ≤ Cl * k * m ^ 4`. Establish `: (1 : ℝ) ≤ Cl * k` using `by nlinarith`. Conclude with `le_mul_of_one_le_left (by positivity) this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn0' : 0 ≤ n * m ^ 10` using `by positivity`. Establish `h1 : Cs * m ^ 3 ≤ m * m ^ 3` using `mul_le_mul_of_nonneg_right (by linarith) (by positivity)`. Establish `h2 : m * m ^ 3 = m ^ 4` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem numerical_bound_first_alt (Cs Cl m k n : ℝ) (hm8 : 8 ≤ m) (hmk : m ≤ k) (hs : 128 * |Cs| ≤ m) (hCl : 8 ≤ Cl)
     (hn0 : 0 ≤ n) : Cs * m ^ 3 ≤ Cl * k * m ^ 4 + n * m ^ 10 := by
@@ -736,7 +736,7 @@ theorem numerical_bound_first_alt (Cs Cl m k n : ℝ) (hm8 : 8 ≤ m) (hmk : m �
   linarith
 
 /- English proof (translation)
-Establish `hCs' : Cs' ≤ |Cs'|` using `le_abs_self _`. Establish `hn0' : 0 ≤ n * m ^ 10` using `by positivity`. Establish `h1 : Cs' * k * m ^ 3 ≤ m * k * m ^ 3` using `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (by linarith) (by linarith)) (by positivity)`. Establish `h2 : m * k * m ^ 3 = 1 * k * m ^ 4` using `by ring`. Establish `h3 : 1 * k * m ^ 4 ≤ Cl * k * m ^ 4` using `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (by linarith) (by linarith)) (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -752,13 +752,13 @@ theorem numerical_bound_second_alt (Cs' Cl m k n : ℝ) (hm8 : 8 ≤ m) (hmk : m
   linarith
 
 /- English proof (translation)
-Establish `hCs0` using `abs_nonneg Cs`. Establish `hCs : Cs ≤ |Cs|` using `le_abs_self _`. Establish `hD64 : 64 * m ^ 4 ≤ De`. Use `le_trans ?_ hDel` and prove the remaining obligations. Establish `: (8 * m ^ 2) ^ 2 ≤ k ^ 2` using `pow_le_pow_left₀ (by positivity) hk8 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : (8 * m ^ 2) ^ 2 = 64 * m ^ 4` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hm4' : (4096 : ℝ) ≤ m ^ 4`. Combine the equalities or inequalities in the displayed calculation. Establish `hCr : Cs * (r + 1) ^ 2 ≤ m ^ 4`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `e : r + 1 = m / 2` using `by linarith`. Rewrite using `[e]`. Establish `h1 : Cs * (m / 2) ^ 2 ≤ m * (m / 2) ^ 2` using `mul_le_mul_of_nonneg_right (by linarith) (by positivity)`. Establish `h2 : m * (m / 2) ^ 2 = m ^ 3 / 4` using `by ring`. Establish `h3 : m ^ 3 ≤ m ^ 4` using `pow_le_pow_right₀ (by linarith) (by norm_num)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : 0 ≤ m ^ 3` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `⟨by linarith, by linarith, by linarith⟩`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Supply the required witnesses or components.
 -/
 theorem std_num_position (Cs m k r De : ℝ) (hm8 : 8 ≤ m) (hk8 : 8 * m ^ 2 ≤ k) (hs : 128 * |Cs| ≤ m)
     (hr : 2 * r + 2 = m) (hDel : k ^ 2 ≤ De) :
@@ -791,11 +791,11 @@ section Rec5
 variable {D : D7} {large₂ : SizeData₂ D} {C' Cl Cg cb Cu cT CT C0 : ℝ}
 
 /- English proof (translation)
-Take `⟨_, d2, _⟩` from `H.2.1`. Establish `hI` using `std_interlace H w τ`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `hm` using `D.R.two_le_m`. Establish `hD` using `std_Del_pos D`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : uS D w τ ⟨1, by omega⟩ = uOne D w τ (1 + 1)` using `std_uS D w τ ⟨1, by omega⟩`. Establish `e2 : uS D w τ ⟨1 + 1, by omega⟩ = uOne D w τ (2 + 1)` using `std_uS D w τ ⟨1 + 1, by omega⟩`. Establish `hv` using `vertex_difference_eq D τ`. Use `⟨1, by omega, ?_, ⟨⟨0, by omega⟩, std_isCloud hI _ (by simp only; omega), (hI.1 0 (by omega)).2.le⟩, ⟨⟨2, by omega⟩, std_isCloud hI _ (by simp only; omega), (hI.1 2 (by omega)).1.le⟩⟩` and prove the remaining obligations. Rewrite using `[e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rcases d2 w 1 le_rfl (by omega) with a | a <;> rcases d2 w 2 (by omega) (by omega) with b | b <;>`. Apply the tactic sequence `rw [a τ, b τ] <;> linarith`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem std_position (H : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) (w : D.what₂.Word) (τ : D.what₂.Tau) (X : ℝ)
     (hX : X ≤ 3 * (D.s.Del : ℝ)) : HasSeparatingGap (uS D w τ) (lamD D τ) X := by
@@ -814,17 +814,17 @@ theorem std_position (H : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) (w : D.wh
     rw [a τ, b τ] <;> linarith
 
 /- English proof (translation)
-Take `⟨_, d2, _⟩` from `H.2.1`. Establish `hk` using `D.R.m_add_three_le_k`. Take `⟨i, hi⟩` from `Function.ne_iff.1 hne`. Establish `hil` using `i.isLt`. Establish `h0 : i.val ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Apply `hi` to reduce the goal to its premises. Establish `e : i = ⟨0, by omega⟩` using `Fin.ext h`. Unfold `uS`. Rewrite using `[e, D.hcW_first w τ (by omega), D.hcW_first w' τ (by omega)]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : i.val ≠ D.R.k - 1`. Introduce `h`. Apply `hi` to reduce the goal to its premises. Establish `e : i = ⟨D.R.k - 1, by omega⟩` using `Fin.ext h`. Unfold `uS`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[e, D.hcW_last w τ (by omega), D.hcW_last w' τ (by omega)]`. Establish `ei : i.val - 1 + 1 + 1 = i.val + 1` using `by omega`. Establish `a` using `d2 w (i.val - 1 + 1) (by omega) (by omega)`. Establish `b` using `d2 w' (i.val - 1 + 1) (by omega) (by omega)`. Rewrite `a`, `b` using `[ei]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hi` using `[std_uS, std_uS]`. Use `⟨_, _, std_cut (uS D w τ) (uS D w' τ) i (vOne D τ (i.val - 1 + 1) - 1 / 2) (D.s.Del : ℝ) ?_ hD4, by linarith⟩` and prove the remaining obligations. Rewrite using `[std_uS, std_uS]`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b`. Conclude with `absurd (by rw [a τ, b τ]) hi`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Prove the first alternative.
 
-Conclude with `Or.inl ⟨a τ, b τ⟩`. Conclude with `Or.inr ⟨a τ, b τ⟩`. Conclude with `absurd (by rw [a τ, b τ]) hi`.
+Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem std_cutW (H : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) (w w' : D.what₂.Word) (τ : D.what₂.Tau) (X : ℝ)
     (hne : uS D w τ ≠ uS D w' τ) (hD4 : 4 ≤ (D.s.Del : ℝ)) (hX : X ≤ (D.s.Del : ℝ) - 4) :
@@ -859,23 +859,21 @@ theorem std_cutW (H : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) (w w' : D.wha
   · exact absurd (by rw [a τ, b τ]) hi
 
 /- English proof (translation)
-Introduce `H τ w w'`. Take `⟨hm8, hmk, hk8, hDel, hf⟩` from `std_sizes H hCl`. Take `⟨hka0, hka1, hka2⟩` from `std_kaS H hCl`. Take `⟨_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, h23, _, _⟩` from `H.1`. Establish `hb` using `std_b_gt D large₂`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb0 : 0 < large₂.sc.b` using `by linarith`. Establish `hL` using `std_L_ge D large₂`. Establish `hn` using `std_r_add D`. Establish `hrS : 2 * (D.R.rS : ℝ) + 2 = D.R.m` using `by have := std_castM D; push_cast at this; exact this`. Establish `hpw : ∀ y : ℝ, (large₂.sc.b ^ Cβ) ^ y = large₂.sc.b ^ (Cβ * y)` using `fun y => (Real.rpow_mul hb0.le Cβ y).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb2 : large₂.sc.b ^ (2 : ℝ) ≤ large₂.sc.b ^ Cβ` using `Real.rpow_le_rpow_of_exponent_le hb.le hβ`. Establish `hbu : large₂.sc.b ^ Cu ≤ large₂.sc.b ^ Cβ` using `Real.rpow_le_rpow_of_exponent_le hb.le hu`. Establish `hT1 : ∀ w : D.what₂.Word, 1 ≤ Tr D w` using `fun w => by`. Use `(D.mem w).A.T_prime.one_lt` as an intermediate fact. Unfold `Tr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `this.le` after adjusting the coercions. Establish `hT2 : ∀ w : D.what₂.Word, Tr D w ≤ (large₂.sc.b ^ Cβ) ^ (Ch * ((2 * D.R.rS + 2 : ℕ) : ℝ))` using `fun w => by`. Rewrite using `[hpw, std_castM]`. Use `le_trans (h23 w).2 (Real.rpow_le_rpow_of_exponent_le hb.le ?_)` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_right hT (by linarith : (0 : ℝ) ≤ D.R.m)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hn0 : (0 : ℝ) ≤ D.R.r` using `by positivity`. Establish `hG1 : Cs * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 3 ≤ Cl * D.R.k * (D.R.m : ℝ) ^ 4 + (D.R.r : ℝ) * (D.R.m : ℝ) ^ 10`. Rewrite using `[std_castM]`. Conclude with `numerical_bound_first_alt _ _ _ _ _ hm8 hmk hs hCl hn0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hG2 : Cs' * D.R.k * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 3 ≤ Cl * D.R.k * (D.R.m : ℝ) ^ 4 + (D.R.r : ℝ) * (D.R.m : ℝ) ^ 10`. Rewrite using `[std_castM]`. Conclude with `numerical_bound_second_alt _ _ _ _ _ hm8 hmk hs' hCl hn0`. Establish `hNC : Cs * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ ((9 : ℝ) / 2) * (((3 * (D.R.rS + 1) : ℕ) : ℝ) * ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) ^ 2 + ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) ^ 3) ≤ Cl * (D.R.r : ℝ) ^ 19 * (D.R.f : ℝ) ^ 5 * large₂.sc.L`. Rewrite using `[std_castM, std_castN]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `std_num_nc _ _ _ _ _ _ _ hm8 (by linarith) hs hCl hf hL (by positivity) (by push_cast; linarith)`. Establish `hbv : Cs * ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) ^ 7 ≤ bOne D τ 1`. Rewrite using `[std_castN]`. Conclude with `le_trans (std_num_bv _ _ _ _ hm8 hmk hs hn0 (by linarith)) (first_node_size_bounds H hCl τ).1`. Take `⟨hS1, hS2, hS3⟩` from `std_num_position Cs _ _ _ _ hm8 hk8 hs hrS hDel`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative.
 
-Use `⟨⟨std_isHC H τ, std_interlace H w τ, std_interlace H w' τ, hka0, ?_, ?_, hT1 w, hT1 w', hT2 w, hT2 w', fun s => le_trans (std_lam_abs H hCl τ s) hb2, fun i => le_trans (std_u_abs H hCl w τ i) (max_le hb2 hbu), fun i => le_trans (std_u_abs H hCl w' τ i) (max_le hb2 hbu), std_allGa …` and prove the remaining obligations. Conclude with `le_trans hka1 (Real.one_le_rpow (Real.one_le_rpow hb.le (by linarith)) hCh)`. Rewrite using `[hpw]`. Conclude with `le_trans hka2 (Real.rpow_le_rpow_of_exponent_le hb.le hg)`. Distinguish the cases in `he : uS D w τ = uS D w' τ`.
-
-Conclude with `Or.inl ⟨he, std_position H w τ _ hS1⟩`. Conclude with `Or.inr ⟨he, std_cutW H w w' τ _ he hS2 hS3⟩`.
+A detailed English derivation is pending.
 -/
 theorem stdOfHyp_rec (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 Ch Cs Cs' Cβ : ℝ)
     (hCl : 8 ≤ Cl) (hCh : 0 ≤ Ch) (hβ : 2 ≤ Cβ) (hu : Cu ≤ Cβ) (hT : CT ≤ Cβ * Ch)
@@ -938,7 +936,7 @@ section Fam
 variable {eps : ℝ} (Fm : FamP eps)
 
 /- English proof (translation)
-Introduce `Cs Cs'`. Take `⟨x0, _, h0⟩` from `ev_m Fm (max (128 * |Cs|) |Cs'|)`. Conclude with `ownEv_intro Fm x0 (fun x hx _ i => stdOfHyp_rec _ _ _ _ _ _ _ _ _ _ _ _ _ _ hCl hCh hβ hu hT hg (le_trans (le_max_left _ _) (h0 x hx i)) (le_trans (le_max_right _ _) (h0 x hx i)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem stdHypS_of (Cg cb Cu cT CT C0 Ch Cβ : ℝ) (hCl : 8 ≤ sCl Fm) (hCh : 0 ≤ Ch) (hβ : 2 ≤ Cβ) (hu : Cu ≤ Cβ)
     (hT : CT ≤ Cβ * Ch) (hg : 1 / 8 + 2 * Cg ≤ Cβ * Ch) : PX.StdHypS Fm Cg cb Cu cT CT C0 Ch Cβ := by

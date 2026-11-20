@@ -8,7 +8,7 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.LocLang
 open GroundTheory.Global.SemiLocal UpperTheory.V.Published
 
 /- English proof (translation)
-Introduce `K _ _ _ n hn π v`. Use `⟨fun t hw => ?_, ?_⟩` and prove the remaining obligations. Conclude with `(UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.plainIff K n hn π v).2 ⟨hw.1, UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.winUnl K n π t v hw⟩`. Introduce and unpack `⟨B, hB⟩`. Conclude with `(UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.plainIff K n hn π v).2 (UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.sphUnl K n hn π v B hB)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Win.plainOf :
     PlainOf := by

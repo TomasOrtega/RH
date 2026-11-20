@@ -97,13 +97,13 @@ def lowPart (U : ℤ → Submodule ℂ V) (N : End ℂ V) (m : ℕ) : Submodule 
   ⨆ k : ℤ, U k ⊓ LinearMap.ker (N ^ (((m : ℤ) - k + 1) / 2).toNat)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨fun _ _ _ => trivial, fun _ _ => trivial⟩, ⟨fun _ v hv => by simp_all, fun v hv => by simp_all⟩⟩`.
+Supply the required witnesses or components.
 -/
 example (a : WDRep h V) : IsSubWD a ⊤ ∧ IsSubWD a ⊥ :=
   ⟨⟨fun _ _ _ => trivial, fun _ _ => trivial⟩, ⟨fun _ v hv => by simp_all, fun v hv => by simp_all⟩⟩
 
 /- English proof (translation)
-Introduce `v hv`. Conclude with `Submodule.mem_iSup_of_mem (0 : Fin (m + 1)) ⟨v, hv, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem le_strand (N : End ℂ V) (S : Submodule ℂ V) (m : ℕ) : S ≤ strand N S m := by
   intro v hv

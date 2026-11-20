@@ -8,17 +8,17 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps 
 namespace GlobalTheory.DetInv
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ hv ε hε Λ _ _ _ _ _ _ r hr`. Take `⟨-, -, hker, -, -, -, -⟩` from `GlobalTheory.T.fontaineAinf_localDomain_xiAdic_order p C v O hv ε hε`. Use `haveI : Module.Free ℤ_[p] Λ := inferInstance`. Set `b` to `Module.finBasis ℤ_[p] Λ`. Set `B` to `Algebra.TensorProduct.basis (Ainf p O) b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hrsum : r = ∑ j, B.repr r j ⊗ₜ b j` using `by conv_lhs => rw [← B.sum_repr r]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Establish `hθ : ∀ j, WittVector.fontaineTheta O p (B.repr r j) = 0`. Establish `hc` using `GlobalTheory.embedding_matrix_independent p C v O hv Λ _ b (fun j => algebraMap O C (WittVector.fontaineTheta O p (B.repr r j))) (by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `σ`. Take `⟨f, hf, -⟩` from `theta_tensor_exists p C v O hv ε hε Λ σ`. Establish `h0` using `hr σ f hf`. Rewrite `h0` using `[hrsum, map_sum]`. Rewrite `h0` using `[show ∀ a l, f (a ⊗ₜ l) = _ from hf]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses repeatedly using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `congrArg (algebraMap O C) h0`. Simplify `h1)` using `[map_sum, map_mul]`. Introduce `j`. Use `congrFun hc j` as an intermediate fact. Conclude with `hv.hom_inj (by simpa using this)`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hrsum]`. Use `Finset.dvd_sum fun j _ => ?_` and prove the remaining obligations. Establish `hmem : B.repr r j ∈ Ideal.span {xi ε}`. Rewrite using `[← hker]`. Conclude with `hθ j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.mp hmem`. Use `⟨c ⊗ₜ b j, ?_⟩` and prove the remaining obligations. Use `show _ = (xi ε ⊗ₜ[ℤ_[p]] (1 : Λ)) * _`. Rewrite using `[← hc, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem dvd_xi_of_theta_tensor_vanish : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O], v.Integers O → ∀ (ε : PreTilt O p), IsPrimitiveRoot (root ε).untilt p → ∀ (Λ : Type) [CommRing Λ] [IsDomain Λ] [IsDiscreteValuationRing Λ] [Algebra ℤ_[p] Λ] [Module.Finite ℤ_[p] Λ] [FaithfulSMul ℤ_[p] Λ], ∀ r : RL p O Λ, (∀ (σ : Λ →+* O) (f : RL p O Λ →+* O), IsTheta σ f → f r = 0) → (inA (xi ε) : RL p O Λ) ∣ r := by
   intro p _ C _ _ _ v O _ _ _ _ hv ε hε Λ _ _ _ _ _ _ r hr

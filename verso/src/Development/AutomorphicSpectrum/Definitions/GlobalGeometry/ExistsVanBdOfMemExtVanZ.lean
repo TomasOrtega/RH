@@ -15,9 +15,9 @@ open GlobalTheory.AllWt (secZ exOf)
 open GlobalTheory.FlagMod (FlagCover)
 
 /- English proof (translation)
-Establish `key` using `Scheme.germ_stalkClosedPointTo (R := CommRingCat.of V) x W hy`. Establish `e : (Scheme.stalkClosedPointTo (R` using `CommRingCat.of V) x).hom (ger _ hy g) = evalPt x W h g := by`. Use `congrArg (fun φ => φ.hom g) key` as an intermediate fact. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at this`. Use `this.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [evalPt, Scheme.Hom.appLE, Iso.trans_hom, Functor.mapIso_hom, Iso.op_hom, eqToIso.hom, CommRingCat.hom_comp, RingHom.comp_apply, Category.assoc]`. Use `congr!`. Conclude with `⟨fun hg hu => hg (e ▸ hu.map _), fun hg hu => hg (isUnit_of_map_unit (Scheme.stalkClosedPointTo (R := CommRingCat.of V) x).hom _ (e ▸ hu))⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem evalPt_mem_maximalIdeal_iff {Y : Scheme.{0}} {V : Type} [CommRing V] [IsLocalRing V] (x : Sp V ⟶ Y)
     (W : Y.Opens) (h : ⊤ ≤ x ⁻¹ᵁ W) (g : Γ(Y, W)) (hy : x (IsLocalRing.closedPoint V) ∈ W) :
@@ -57,7 +57,7 @@ def extVanZ (e : Ix Dw → ℤ) : Submodule c.F (Rul Xo c) := (vanOut X e).map (
 variable {X} {e : Ix Dw → ℤ}
 
 /- English proof (translation)
-Use `forall₂_congr fun y _ => ⟨fun h hy => ?_, fun h i hi hu => h ((isUnit_ger_iff _ hi).1 (by rwa [ger_toSec]))⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `exists_chart (X.F.isLB_LL e) y`. Conclude with `h i hi (by rw [← ger_toSec]; exact (isUnit_ger_iff _ hi).2 hy)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_vanOut {s : H0 (flagStr X) (X.LL e) ⊤} :
     s ∈ vanOut X e ↔ ∀ y, y ∉ flagOpen X → y ∉ nonzeroLocus (toSec s) := by
@@ -66,27 +66,27 @@ theorem mem_vanOut {s : H0 (flagStr X) (X.LL e) ⊤} :
   exact h i hi (by rw [← ger_toSec]; exact (isUnit_ger_iff _ hi).2 hy)
 
 /- English proof (translation)
-The claim follows from `mem_vanOut.trans (forall_congr' fun _ => not_imp_not)`.
+A detailed English derivation is pending.
 -/
 theorem mem_vanOut_iff_le {s : H0 (flagStr X) (X.LL e) ⊤} :
     s ∈ vanOut X e ↔ nonzeroLocus (toSec s) ≤ flagOpen X :=
   mem_vanOut.trans (forall_congr' fun _ => not_imp_not)
 
 /- English proof (translation)
-The claim follows from `((secOf X e).symm (restr le_top s)).2`.
+A detailed English derivation is pending.
 -/
 theorem ruleTop_mem_secZ (s : H0 (flagStr X) (X.LL e) ⊤) : ruleTop X e s ∈ secZ Xo c e :=
   ((secOf X e).symm (restr le_top s)).2
 
 /- English proof (translation)
-The claim follows from `(secOf X e).apply_symm_apply _`.
+A detailed English derivation is pending.
 -/
 theorem secOf_ruleTop (s : H0 (flagStr X) (X.LL e) ⊤) :
     secOf X e ⟨ruleTop X e s, ruleTop_mem_secZ s⟩ = restr le_top s :=
   (secOf X e).apply_symm_apply _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => h ▸ ⟨ruleTop_mem_secZ s, (secOf_ruleTop s).symm⟩, fun ⟨_, h⟩ => congrArg Subtype.val ((secOf X e).symm_apply_eq.2 h)⟩`.
+Supply the required witnesses or components.
 -/
 theorem ruleTop_eq_iff {s : H0 (flagStr X) (X.LL e) ⊤} {f : Rul Xo c} :
     ruleTop X e s = f ↔ ∃ hf : f ∈ secZ Xo c e, restr le_top s = secOf X e ⟨f, hf⟩ :=
@@ -96,7 +96,7 @@ theorem ruleTop_eq_iff {s : H0 (flagStr X) (X.LL e) ⊤} {f : Rul Xo c} :
 variable (X e) in
 
 /- English proof (translation)
-The claim follows from `Subtype.val_injective.comp ((secOf X e).symm.injective.comp (restr_injective_of_dense le_top (dense_flagOpen X)))`.
+A detailed English derivation is pending.
 -/
 theorem ruleTop_injective : Function.Injective (ruleTop X e) :=
   Subtype.val_injective.comp ((secOf X e).symm.injective.comp (restr_injective_of_dense le_top (dense_flagOpen X)))
@@ -104,7 +104,7 @@ theorem ruleTop_injective : Function.Injective (ruleTop X e) :=
 open Classical in
 
 /- English proof (translation)
-Use `(evR_eq_val_secOf ⟨_, ruleTop_mem_secZ s⟩ hO hQ ht).trans (congrArg (_ * ·) ?_)` and prove the remaining obligations. Rewrite using `[secOf_ruleTop]`. Conclude with `evalPt_res z (inf_le_inf_right _ le_top) (FlagMod.le_preimage_inf le_top hz) (FlagMod.le_preimage_inf hO hz) _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evR_ruleTop {S : Type} [CommRing S] [Algebra c.F S] [_root_.IsReduced S] (s : H0 (flagStr X) (X.LL e) ⊤)
     {P Q : FrPt Xo c S} {k : X.F.J} {z : Sp S ⟶ X.YY} {hz : ⊤ ≤ z ⁻¹ᵁ X.F.U k} (hO : ⊤ ≤ z ⁻¹ᵁ flagOpen X)
@@ -115,14 +115,14 @@ theorem evR_ruleTop {S : Type} [CommRing S] [Algebra c.F S] [_root_.IsReduced S]
   exact evalPt_res z (inf_le_inf_right _ le_top) (FlagMod.le_preimage_inf le_top hz) (FlagMod.le_preimage_inf hO hz) _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨s, h⟩ => (ruleTop_eq_iff.1 h).imp fun _ h => ⟨s, h⟩, fun ⟨hf, s, h⟩ => ⟨s, ruleTop_eq_iff.2 ⟨hf, h⟩⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_extZ {f : Rul Xo c} : f ∈ extZ X e ↔
     ∃ hf : f ∈ secZ Xo c e, ∃ s : H0 (flagStr X) (X.LL e) ⊤, restr le_top s = secOf X e ⟨f, hf⟩ :=
   ⟨fun ⟨s, h⟩ => (ruleTop_eq_iff.1 h).imp fun _ h => ⟨s, h⟩, fun ⟨hf, s, h⟩ => ⟨s, ruleTop_eq_iff.2 ⟨hf, h⟩⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨_, hs, h⟩ => ruleTop_injective X e h ▸ hs, fun h => ⟨s, h, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem ruleTop_mem_extVanZ {s : H0 (flagStr X) (X.LL e) ⊤} : ruleTop X e s ∈ extVanZ X e ↔ s ∈ vanOut X e :=
   ⟨fun ⟨_, hs, h⟩ => ruleTop_injective X e h ▸ hs, fun h => ⟨s, h, rfl⟩⟩
@@ -130,21 +130,21 @@ theorem ruleTop_mem_extVanZ {s : H0 (flagStr X) (X.LL e) ⊤} : ruleTop X e s �
 variable (X e) in
 
 /- English proof (translation)
-The claim follows from `LinearMap.map_le_range`.
+A detailed English derivation is pending.
 -/
 theorem extVanZ_le_extZ : extVanZ X e ≤ extZ X e := LinearMap.map_le_range
 
 variable (X e) in
 
 /- English proof (translation)
-Introduce `_ h` and use `(mem_extZ.1 h).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem extZ_le_secZ : extZ X e ≤ secZ Xo c e := fun _ h => (mem_extZ.1 h).1
 
 variable (X e) in
 
 /- English proof (translation)
-The claim follows from `(extVanZ_le_extZ X e).trans (extZ_le_secZ X e)`.
+A detailed English derivation is pending.
 -/
 theorem extVanZ_le_secZ : extVanZ X e ≤ secZ Xo c e := (extVanZ_le_extZ X e).trans (extZ_le_secZ X e)
 
@@ -168,7 +168,7 @@ Both sides reduce to the same expression.
 @[simp] theorem coe_extEquiv (s : H0 (flagStr X) (X.LL e) ⊤) : (extEquiv X e s : Rul Xo c) = ruleTop X e s := rfl
 
 /- English proof (translation)
-Introduce `y hy i hi hu` and use `hs _ hy _ _ (isUnit_of_map_unit ((inc₀ X Z).stalkMap y).hom _ (germ_pull (inc₀ X Z) _ i y (memTop y) hi s ▸ hu))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem germ_pull_inc₀_mem {s : H0 (flagStr X) (X.LL e) ⊤} (hs : s ∈ vanOut X e) (Z : Comp Xo c) :
     ∀ y ∈ bd₀ X Z, ∀ i hi, germ (B := LL₀ X Z e) i y (memTop y) hi (H0.pull (inc₀ X Z) le_top s) ∈
@@ -176,14 +176,14 @@ theorem germ_pull_inc₀_mem {s : H0 (flagStr X) (X.LL e) ⊤} (hs : s ∈ vanOu
   hs _ hy _ _ (isUnit_of_map_unit ((inc₀ X Z).stalkMap y).hom _ (germ_pull (inc₀ X Z) _ i y (memTop y) hi s ▸ hu))
 
 /- English proof (translation)
-The claim follows from `germ_pull_inc₀_mem hs Z`.
+A detailed English derivation is pending.
 -/
 theorem pull_inc₀_mem_vanBd {la : AllWt.Weight Dw} {s : H0 (flagStr X) (X.LL (exOf Dw la 0)) ⊤}
     (hs : s ∈ vanOut X (exOf Dw la 0)) (Z : Comp Xo c) : H0.pull (inc₀ X Z) le_top s ∈ vanBd X Z la :=
   germ_pull_inc₀_mem hs Z
 
 /- English proof (translation)
-Use `(congrArg (H0.pull (inc₀ X Z) (le_refl (U₀ X Z))) (secOf_ruleTop s)).trans ((pull_restr _ _ _ _).trans (ext_germ fun y hy => ?_))` and prove the remaining obligations. Take `⟨i, hi⟩` from `exists_chart (LB.isLB_pull (X.F.isLB_LL e) (inc₀ X Z)) y`. Conclude with `⟨i, hi, (germ_pull (inc₀ X Z) _ i y hy hi s).trans ((germ_restr _ _ _ _ _ _).trans (germ_pull (inc₀ X Z) _ i y (memTop y) hi s)).symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sec₀_ruleTop (s : H0 (flagStr X) (X.LL e) ⊤) (Z : Comp Xo c) :
     sec₀ X Z e ⟨ruleTop X e s, ruleTop_mem_secZ s⟩ = restr le_top (H0.pull (inc₀ X Z) le_top s) := by
@@ -194,7 +194,7 @@ theorem sec₀_ruleTop (s : H0 (flagStr X) (X.LL e) ⊤) (Z : Comp Xo c) :
     ((germ_restr _ _ _ _ _ _).trans (germ_pull (inc₀ X Z) _ i y (memTop y) hi s)).symm⟩
 
 /- English proof (translation)
-Take `⟨f, hf'⟩` from `f`. Take `⟨s, hs, rfl⟩` from `hf`. Conclude with `⟨_, pull_inc₀_mem_vanBd hs Z, (sec₀_ruleTop s Z).symm⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_vanBd_of_mem_extVanZ {la : AllWt.Weight Dw} {f : secZ Xo c (exOf Dw la 0)}
     (hf : f.1 ∈ extVanZ X (exOf Dw la 0)) (Z : Comp Xo c) :
@@ -206,9 +206,9 @@ theorem exists_vanBd_of_mem_extVanZ {la : AllWt.Weight Dw} {f : secZ Xo c (exOf 
 variable (X) in
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `exists_of_germs (p := flagStr X) (O := ⊤) (X.F.isLB_LL 0) X.F.U id (fun _ => le_top) (fun _ => le_rfl) (fun y _ => (commonLL X).cover y) (fun _ => 1) fun y k k' h h' => by`. Use `(commonLL X).nsmul 0 0 h h'` as an intermediate fact. Rewrite `this` using `[zero_smul, pow_zero]`. Rewrite using `[map_one, map_one, mul_one]`. Conclude with `(congrArg Units.val this).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨s, fun k y hk => (hs k y hk).trans (map_one _)⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_one : ∃ s : H0 (flagStr X) (X.LL 0) ⊤, ∀ k y hk, germ k y (memTop y) hk s = 1 := by
   obtain ⟨s, hs⟩ := exists_of_germs (p := flagStr X) (O := ⊤) (X.F.isLB_LL 0) X.F.U id (fun _ => le_top)
@@ -224,7 +224,7 @@ variable (X) in
 def oneTop : H0 (flagStr X) (X.LL 0) ⊤ := (exists_one X).choose
 
 /- English proof (translation)
-The claim follows from `(exists_one X).choose_spec k y hk`.
+A detailed English derivation is pending.
 -/
 theorem germ_oneTop (k : X.F.J) (y : X.YY) (hk : y ∈ X.F.U k) :
     germ (B := X.LL 0) k y (memTop y) hk (oneTop X) = 1 := (exists_one X).choose_spec k y hk
@@ -232,9 +232,9 @@ theorem germ_oneTop (k : X.F.J) (y : X.YY) (hk : y ∈ X.F.U k) :
 variable (X) in
 
 /- English proof (translation)
-Use `ruleTop_eq_iff.2 ⟨AllWt.one_mem_secZ, ext_germ fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `(commonLL X).cover y`. Establish `h` using `secOf_mul (X := X) (add_zero 0) ⟨1, AllWt.one_mem_secZ⟩ ⟨_, ruleTop_mem_secZ (oneTop X)⟩ ⟨_, ruleTop_mem_secZ (oneTop X)⟩ (one_mul _).symm`. Rewrite `h` using `[secOf_ruleTop]`. Establish `h'` using `(congrArg (germ (B := X.LL 0) k y hy hk) h).trans (((commonLL X).addChart (add_zero 0)).germ_mul _ _ k y hy hk hk hk)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h₁ : germ (B` using `X.LL 0) k y hy hk (restr le_top (oneTop X)) = 1 := (germ_restr _ _ _ _ _ _).trans (germ_oneTop k y hk)`. Conclude with `⟨k, hk, h'.trans ((congrArg (_ * ·) h₁).trans (mul_one _))⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem ruleTop_oneTop : ruleTop X 0 (oneTop X) = 1 := by
   refine ruleTop_eq_iff.2 ⟨AllWt.one_mem_secZ, ext_germ fun y hy => ?_⟩
@@ -251,7 +251,7 @@ theorem ruleTop_oneTop : ruleTop X 0 (oneTop X) = 1 := by
 variable (X) in
 
 /- English proof (translation)
-Rewrite using `[← ruleTop_oneTop X, ruleTop_mem_extVanZ]`. Use `⟨fun h => top_le_iff.1 fun y _ => by_contra fun hy => ?_, fun h y hy => (hy (h.ge (memTop y))).elim⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `(commonLL X).cover y`. Conclude with `h y hy k hk ((germ_oneTop k y hk).symm ▸ isUnit_one)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem one_mem_extVanZ_iff : (1 : Rul Xo c) ∈ extVanZ X 0 ↔ flagOpen X = ⊤ := by
   rw [← ruleTop_oneTop X, ruleTop_mem_extVanZ]
@@ -267,7 +267,7 @@ def extVan (T : TorFlag Xo c) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) : Sub
 variable (T : TorFlag Xo c) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ)
 
 /- English proof (translation)
-The claim follows from `(extVanZ_le_secZ T.X _).trans (AllWt.secZ_nat Xo c a n).le`.
+A detailed English derivation is pending.
 -/
 theorem extVan_le_sec : extVan T a n ≤ sec Xo c a n :=
   (extVanZ_le_secZ T.X _).trans (AllWt.secZ_nat Xo c a n).le
@@ -275,13 +275,13 @@ theorem extVan_le_sec : extVan T a n ≤ sec Xo c a n :=
 def extVanEquiv : (vanOut T.X fun i => (ex Dw a n i : ℤ)) ≃ₗ[c.F] extVan T a n := vanOutEquiv T.X _
 
 /- English proof (translation)
-Apply the tactic sequence `funext i; cases i <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ex_zero : (fun i => (ex Dw 0 0 i : ℤ)) = 0 := by
   funext i; cases i <;> rfl
 
 /- English proof (translation)
-Rewrite using `[extVan, ex_zero, one_mem_extVanZ_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem one_mem_extVan_iff : (1 : Rul Xo c) ∈ extVan T 0 0 ↔ flagOpen T.X = ⊤ := by
   rw [extVan, ex_zero, one_mem_extVanZ_iff]
@@ -289,7 +289,7 @@ theorem one_mem_extVan_iff : (1 : Rul Xo c) ∈ extVan T 0 0 ↔ flagOpen T.X = 
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[← T.X.F.LL_single_none]`. Use `congr 1`. Apply the tactic sequence `funext i; cases i <;> simp [ex]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 example : T.X.LL (fun i => (ex Dw 0 1 i : ℤ)) = T.X.F.de := by
   rw [← T.X.F.LL_single_none]
@@ -297,20 +297,20 @@ example : T.X.LL (fun i => (ex Dw 0 1 i : ℤ)) = T.X.F.de := by
   funext i; cases i <;> simp [ex]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨zero_mem _, (one_mem_extVan_iff T).2⟩`.
+Supply the required witnesses or components.
 -/
 example : (0 : Rul Xo c) ∈ extVan T a n ∧ (flagOpen T.X = ⊤ → (1 : Rul Xo c) ∈ extVan T 0 0) :=
   ⟨zero_mem _, (one_mem_extVan_iff T).2⟩
 
 /- English proof (translation)
-The claim follows from `lt_of_le_of_ne (extVan_le_sec T 0 0) fun h => hy (((one_mem_extVan_iff T).1 (h.ge ((AllWt.secZ_nat Xo c 0 0).le (ex_zero (Dw := Dw) ▸ AllWt.one_mem_secZ)))).ge (memTop y))`.
+A detailed English derivation is pending.
 -/
 example (y : T.X.YY) (hy : y ∉ flagOpen T.X) : extVan T 0 0 < sec Xo c 0 0 :=
   lt_of_le_of_ne (extVan_le_sec T 0 0) fun h => hy (((one_mem_extVan_iff T).1
     (h.ge ((AllWt.secZ_nat Xo c 0 0).le (ex_zero (Dw := Dw) ▸ AllWt.one_mem_secZ)))).ge (memTop y))
 
 /- English proof (translation)
-Introduce `hb` and use `by have h₁ : (1 : Rul Xo c) = 0 := hb.le ((one_mem_extVan_iff T).2 h) have h₂ : oneTop T.X = 0 := ruleTop_injective T.X 0 (by rw [ruleTop_oneTop, h₁, map_zero]) obtain ⟨k, hk⟩ := (commonLL T.X).cover y have h₃ := germ_oneTop k y hk rw [h₂, map_zero] at h₃ exact zero_ne_one h₃`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (h : flagOpen T.X = ⊤) (y : T.X.YY) : extVan T 0 0 ≠ ⊥ := fun hb => by
   have h₁ : (1 : Rul Xo c) = 0 := hb.le ((one_mem_extVan_iff T).2 h)

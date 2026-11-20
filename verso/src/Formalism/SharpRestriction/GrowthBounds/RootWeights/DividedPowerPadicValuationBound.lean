@@ -9,7 +9,7 @@ namespace Formalism.MainNotions.G.GLWeightTheory
 open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees
 
 /- English proof (translation)
-Establish `h1` using `Nat.choose_mul_factorial_mul_factorial h`. Establish `h2` using `Nat.choose_mul_factorial_mul_factorial (Nat.le_add_left f α)`. Rewrite `h2` using `[Nat.add_sub_cancel]`. Apply `Nat.eq_of_mul_eq_mul_left (Nat.factorial_pos f)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 -/
 theorem choose_factorial_identity (α β f : ℕ) (h : f ≤ β) :
     β.choose f * ((β - f).factorial * (α + f).factorial) = (α + f).choose f * (β.factorial * α.factorial) := by
@@ -24,9 +24,9 @@ theorem choose_factorial_identity (α β f : ℕ) (h : f ≤ β) :
     _ = f.factorial * ((α + f).choose f * (β.factorial * α.factorial)) := by ring
 
 /- English proof (translation)
-Establish `hs : ∀ f : Fin n → ℕ, ∏ c, f c = f a * f b * ∏ c ∈ (univ.erase a).erase b, f c`. Introduce `f`. Rewrite using `[← Finset.mul_prod_erase univ f (mem_univ a), ← Finset.mul_prod_erase (univ.erase a) f (mem_erase.2 ⟨hab.symm, mem_univ b⟩)]`. Expand and normalize the polynomial expressions, which then agree. Establish `hrest : ∏ c ∈ (univ.erase a).erase b, g' c = ∏ c ∈ (univ.erase a).erase b, g c` using `prod_congr rfl fun c hc => h c (ne_of_mem_erase (mem_of_mem_erase hc)) (ne_of_mem_erase hc)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[hs g', hs g, hrest]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem product_two_coordinates_swap {n : ℕ} (g g' : Fin n → ℕ) (a b : Fin n) (hab : a ≠ b)
     (h : ∀ c, c ≠ a → c ≠ b → g' c = g c) :
@@ -43,13 +43,13 @@ theorem product_two_coordinates_swap {n : ℕ} (g g' : Fin n → ℕ) (a b : Fin
   ring
 
 /- English proof (translation)
-Rewrite using `[Finsupp.finset_sum_apply]`. Establish `key : ∀ l, g l = v → l = v.1 ∧ v = g v.1`. Introduce and unpack `l rfl`. Conclude with `⟨(hg l).symm, by rw [hg l]⟩`. Use `split_ifs with hv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single v.1]`. Rewrite using `[← hv, Finsupp.single_eq_same]`. Introduce `l _ hl`. Rewrite using `[Finsupp.single_apply, if_neg]`. Conclude with `fun h => hl (key l h).1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hnot`. Simplify using `only [Finsupp.mem_support_iff, not_not] at hnot`. Simplify using `[hnot]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.single_apply, if_neg]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun h => hv (key l h).2`.
+A detailed English derivation is pending.
 -/
 theorem sum_single_apply_section {ι : Type} {n : ℕ} (g : ι → ι × Fin n) (hg : ∀ l, (g l).1 = l) (f : ι →₀ ℕ)
     (v : ι × Fin n) [Decidable (v = g v.1)] :
@@ -73,7 +73,7 @@ theorem sum_single_apply_section {ι : Type} {n : ℕ} (g : ι → ι × Fin n) 
     exact fun h => hv (key l h).2
 
 /- English proof (translation)
-Unfold `expFact`. Rewrite using `[Finsupp.prod_fintype _ _ (fun _ => Nat.factorial_zero), Fintype.prod_prod_type]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem exponent_factorial_eq_prod {ι : Type} [Fintype ι] {n : ℕ} (m : ι × Fin n →₀ ℕ) :
     expFact m = ∏ l : ι, ∏ c : Fin n, (m (l, c)).factorial := by
@@ -82,36 +82,34 @@ theorem exponent_factorial_eq_prod {ι : Type} [Fintype ι] {n : ℕ} (m : ι ×
   rw [Finsupp.prod_fintype _ _ (fun _ => Nat.factorial_zero), Fintype.prod_prod_type]
 
 /- English proof (translation)
-Unfold `expFact Finsupp.prod`. Conclude with `Finset.prod_ne_zero_iff.2 fun _ _ => Nat.factorial_ne_zero _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem exponent_factorial_ne_zero {σ : Type} (m : σ →₀ ℕ) : expFact m ≠ 0 := by
   unfold expFact Finsupp.prod
   exact Finset.prod_ne_zero_iff.2 fun _ _ => Nat.factorial_ne_zero _
 
 /- English proof (translation)
-Distinguish the cases in `hall : ∀ l ∈ f.support, f l ≤ m (src l)`. Use `swap`. Use `left`. Use `push_neg at hall`. Take `⟨l, hl, hlt⟩` from `hall`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `Finset.prod_eq_zero hl` to reduce the goal to its premises. Use `hz l` as an intermediate fact. Rewrite `this` using `[Nat.choose_eq_zero_of_lt hlt]`. Conclude with `Int.natAbs_eq_zero.1 this`. Establish `hall' : ∀ l, f l ≤ m (src l)` using `fun l => by`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hl : l ∈ f.support`. Conclude with `hall l hl`. Simplify using `only [Finsupp.mem_support_iff, not_not] at hl`. Rewrite using `[hl]`. Conclude with `Nat.zero_le _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `right`. Establish `hm' : ∀ x : ι × Fin n, ((m - ∑ l ∈ f.support, Finsupp.single (src l) (f l)) + ∑ l ∈ f.support, Finsupp.single (dst l) (f l)) x = (m x - (if x = src x.1 then f x.1 else 0)) + (if x = dst x.1 then f x.1 else 0)`. Introduce `x`. Rewrite using `[Finsupp.add_apply, Finsupp.tsub_apply, sum_single_apply_section src hs f x, sum_single_apply_section dst hd f x]`. Use `set m' : ι × Fin n →₀ ℕ := (m - ∑ l ∈ f.support, Finsupp.single (src l) (f l)) + ∑ l ∈ f.support, Finsupp.single (dst l) (f l) with hm'def`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hrow : ∀ l, (∏ c, (m (l, c)).factorial) * (m (dst l) + f l).choose (f l) = (∏ c, (m' (l, c)).factorial) * (m (src l)).choose (f l)`. Introduce `l`. Take `⟨a, ha⟩ : ∃ a, src l = (l, a)` from `⟨(src l).2, Prod.ext (hs l) rfl⟩`. Take `⟨b, hb⟩ : ∃ b, dst l = (l, b)` from `⟨(dst l).2, Prod.ext (hd l) rfl⟩`. Establish `hab : a ≠ b` using `fun h => hne l (by rw [ha, hb, h])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hma : m' (l, a) = m (l, a) - f l`. Rewrite using `[hm']`. Simplify using `[ha, hb, hab]`. Establish `hmb : m' (l, b) = m (l, b) + f l`. Rewrite using `[hm']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[ha, hb, hab, Ne.symm hab]`. Establish `hmc : ∀ c, c ≠ a → c ≠ b → m' (l, c) = m (l, c)`. Introduce `c hca hcb`. Rewrite using `[hm']`. Simplify using `[ha, hb, hca, hcb]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hF : f l ≤ m (l, a)` using `ha ▸ hall' l`. Establish `h2` using `product_two_coordinates_swap (fun c => (m (l, c)).factorial) (fun c => (m' (l, c)).factorial) a b hab (fun c hca hcb => by simp only [hmc c hca hcb])`. Use `beta_reduce at h2`. Rewrite `h2` using `[hma, hmb]`. Establish `h3` using `choose_factorial_identity (m (l, b)) (m (l, a)) (f l) hF`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Rewrite using `[ha, hb]`. Apply `Nat.eq_of_mul_eq_mul_right (Nat.mul_pos (Nat.factorial_pos (m (l, a))) (Nat.factorial_pos (m (l, b))))` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `htot : expFact m * ∏ l, (m (dst l) + f l).choose (f l) = expFact m' * ∏ l, (m (src l)).choose (f l)`. Rewrite using `[exponent_factorial_eq_prod m, exponent_factorial_eq_prod m', ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.prod_congr rfl fun l _ => hrow l`. Establish `hY : (∏ l ∈ f.support, zf l).natAbs = ∏ l, (m (src l)).choose (f l)`. Establish `hnat : (∏ l ∈ f.support, zf l).natAbs = ∏ l ∈ f.support, (zf l).natAbs` using `by first`. Consider the case `exact map_prod Int.natAbsHom zf f.support`. Consider the case `simpa using map_prod Int.natAbsHom zf f.support`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[hnat, Finset.prod_congr rfl (fun l _ => hz l)]`. Use `Finset.prod_subset (Finset.subset_univ _) fun l _ hl => ?_` and prove the remaining obligations. Simplify using `only [Finsupp.mem_support_iff, not_not] at hl`. Rewrite using `[hl, Nat.choose_zero_right]`. Establish `hX0 : ∏ l, (m (dst l) + f l).choose (f l) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun l _ => (Nat.choose_pos (Nat.le_add_left _ _)).ne'`.
-
-Establish `hY0 : ∏ l, (m (src l)).choose (f l) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun l _ => (Nat.choose_pos (hall' l)).ne'`. Establish `hv` using `congrArg (padicValNat p) htot`. Rewrite `hv` using `[padicValNat.mul (exponent_factorial_ne_zero m) hX0, padicValNat.mul (exponent_factorial_ne_zero m') hY0]`. Rewrite using `[show padicValInt p (∏ l ∈ f.support, zf l) = padicValNat p (∏ l ∈ f.support, zf l).natAbs from rfl, hY]`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem divided_power_padic_valuation_bound {ι : Type} [Fintype ι] {n : ℕ} (p : ℕ) [Fact p.Prime] (src dst : ι → ι × Fin n)
     (hs : ∀ l, (src l).1 = l) (hd : ∀ l, (dst l).1 = l) (hne : ∀ l, src l ≠ dst l)

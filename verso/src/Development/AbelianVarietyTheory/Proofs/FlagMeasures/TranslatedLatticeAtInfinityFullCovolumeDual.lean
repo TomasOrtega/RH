@@ -18,16 +18,16 @@ def cube : Set (VecInf E j) :=
   {y | ∀ w a, (y w a).re ∈ Set.Ico (0 : ℝ) 1 ∧ (y w a).im ∈ Set.Ico (0 : ℝ) 1}
 
 /- English proof (translation)
-Use extensionality with `z`. Simplify using `[ZSpan.fundamentalDomain, stdB, cube, Pi.basis_repr, Sigma.forall, Fin.forall_fin_two]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem fd_stdB : ZSpan.fundamentalDomain (stdB E j) = cube E j := by
   ext z
   simp [ZSpan.fundamentalDomain, stdB, cube, Pi.basis_repr, Sigma.forall, Fin.forall_fin_two]
 
 /- English proof (translation)
-Establish `h : cube E j = Set.pi Set.univ fun _ : InfinitePlace E => Set.pi Set.univ fun _ : Fin j => Complex.measurableEquivRealProd ⁻¹' (Set.Ico (0 : ℝ) 1 ×ˢ Set.Ico (0 : ℝ) 1)`. Use extensionality with `z`. Simplify using `[cube]`. Rewrite using `[h, volume_pi_pi]`. Use `Finset.prod_eq_one fun _ _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[volume_pi_pi]`. Use `Finset.prod_eq_one fun _ _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.volume_preserving_equiv_real_prod.measure_preimage (measurableSet_Ico.prod measurableSet_Ico).nullMeasurableSet]`. Simplify using `[Measure.volume_eq_prod]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem volume_cube : volume (cube E j) = 1 := by
   have h : cube E j = Set.pi Set.univ fun _ : InfinitePlace E => Set.pi Set.univ fun _ : Fin j =>
@@ -45,7 +45,7 @@ theorem volume_cube : volume (cube E j) = 1 := by
 instance : (volume : Measure (VecInf E j)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _
 
 /- English proof (translation)
-The claim follows from `ZLattice.covolume_eq_measure_fundamentalDomain _ volume (ZSpan.isAddFundamentalDomain b volume)`.
+A detailed English derivation is pending.
 -/
 theorem covAt_span {ι : Type} [Fintype ι] (b : Basis ι ℝ (VecInf E j)) :
     covAt E j (Submodule.span ℤ (Set.range b)) = volume.real (ZSpan.fundamentalDomain b) :=
@@ -53,7 +53,7 @@ theorem covAt_span {ι : Type} [Fintype ι] (b : Basis ι ℝ (VecInf E j)) :
 
 open Classical in
 /- English proof (translation)
-Rewrite using `[covAt_span, ZSpan.measureReal_fundamentalDomain b volume (stdB E j), fd_stdB, Measure.real, volume_cube]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem covAt_span_std (b : Basis (Idx E j) ℝ (VecInf E j)) :
     covAt E j (Submodule.span ℤ (Set.range b)) = |(stdB E j).det b| := by
@@ -73,17 +73,17 @@ Both sides reduce to the same expression.
 theorem form_apply (x y : VecInf E j) : form E j x y = ∑ w, (x w ⬝ᵥ y w).re := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun x y => by simp [form_apply, dotProduct_comm]⟩`.
+Supply the required witnesses or components.
 -/
 theorem form_symm : (form E j).IsSymm := ⟨fun x y => by simp [form_apply, dotProduct_comm]⟩
 
 open Classical in
 /- English proof (translation)
-Use extensionality with `⟨w, a, s⟩ ⟨w', a', s'⟩`. Rewrite using `[LinearMap.BilinForm.toMatrix_apply, form_apply, Matrix.diagonal_apply]`. Simplify using `only [stdB, Pi.basis_apply]`. Rewrite using `[Finset.sum_eq_single w]`. Distinguish the cases in `hw : w = w'`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hw` using the available equality. Simplify using `only [Pi.single_eq_same, single_dotProduct]`. Distinguish the cases in `ha : a = a'`. Apply the tactic sequence `subst ha fin_cases s <;> fin_cases s' <;> simp`. Simplify using `[ha, Pi.single_eq_of_ne ha]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `[hw, Pi.single_eq_of_ne hw]`. Introduce `w'' _ h`. Simplify using `[Pi.single_eq_of_ne h]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem toMatrix_form : LinearMap.BilinForm.toMatrix (stdB E j) (form E j) =
     Matrix.diagonal fun i : Idx E j => if i.2.2 = 0 then (1 : ℝ) else -1 := by
@@ -105,14 +105,14 @@ theorem toMatrix_form : LinearMap.BilinForm.toMatrix (stdB E j) (form E j) =
 
 open Classical in
 /- English proof (translation)
-Rewrite using `[toMatrix_form, Matrix.det_diagonal, Finset.abs_prod]`. Apply the tactic sequence `exact Finset.prod_eq_one fun i _ => by split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem abs_det_form : |(LinearMap.BilinForm.toMatrix (stdB E j) (form E j)).det| = 1 := by
   rw [toMatrix_form, Matrix.det_diagonal, Finset.abs_prod]
   exact Finset.prod_eq_one fun i _ => by split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[LinearMap.BilinForm.nondegenerate_iff_det_ne_zero (stdB E j)]`. Introduce `h`. Use `abs_det_form E j` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `at this`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem form_nondeg : (form E j).Nondegenerate := by
   classical
@@ -123,9 +123,9 @@ theorem form_nondeg : (form E j).Nondegenerate := by
   simp at this
 
 /- English proof (translation)
-Rewrite using `[dualAt, ← Submodule.span_eq ((form E j).dualSubmodule L)]`. Use `congr 1`. Use extensionality with `y`. Simplify using `only [Set.mem_setOf_eq, SetLike.mem_coe, LinearMap.BilinForm.mem_dualSubmodule, Submodule.mem_one, form_apply, eq_intCast]`. Use `forall₂_congr fun x _ => exists_congr fun z => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [dotProduct_comm (y _)]`. Conclude with `eq_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dualAt_eq (L : Submodule ℤ (VecInf E j)) : dualAt E j L = (form E j).dualSubmodule L := by
   rw [dualAt, ← Submodule.span_eq ((form E j).dualSubmodule L)]
@@ -138,7 +138,7 @@ theorem dualAt_eq (L : Submodule ℤ (VecInf E j)) : dualAt E j L = (form E j).d
   exact eq_comm
 
 /- English proof (translation)
-Rewrite using `[dualAt_eq, dualAt_eq]`. Conclude with `LinearMap.BilinForm.dualSubmodule_dualSubmodule_of_basis _ (form_nondeg E j) (form_symm E j) b`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dual_dual {ι : Type} [Fintype ι] (b : Basis ι ℝ (VecInf E j)) :
     dualAt E j (dualAt E j (Submodule.span ℤ (Set.range b))) = Submodule.span ℤ (Set.range b) := by
@@ -146,13 +146,11 @@ theorem dual_dual {ι : Type} [Fintype ι] (b : Basis ι ℝ (VecInf E j)) :
   exact LinearMap.BilinForm.dualSubmodule_dualSubmodule_of_basis _ (form_nondeg E j) (form_symm E j) b
 
 /- English proof (translation)
-Rewrite using `[dualAt_eq, LinearMap.BilinForm.dualSubmodule_span_of_basis _ (form_nondeg E j) b, covAt_span_std, covAt_span_std]`. Use `set d := (form E j).dualBasis (form_nondeg E j) b with hd`. Establish `h : ((stdB E j).toMatrix d)ᵀ * LinearMap.BilinForm.toMatrix (stdB E j) (form E j) * (stdB E j).toMatrix b = 1`. Use extensionality with `i k`. Establish `h1 : form E j (d i) (b k) = if k = i then 1 else 0` using `LinearMap.BilinForm.apply_dualBasis_left (form_nondeg E j) b i k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (1 : Matrix (Idx E j) (Idx E j) ℝ) i k = form E j (d i) (b k)`. Rewrite using `[h1, Matrix.one_apply]`. Conclude with `if_congr eq_comm rfl rfl`. Rewrite using `[h3]`. Use `conv_rhs => rw [← (stdB E j).sum_repr (d i), ← (stdB E j).sum_repr (b k)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Basis.toMatrix_apply, LinearMap.BilinForm.toMatrix_apply, map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum]`. Use `first`. Consider the case `exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Consider the case `(rw [Finset.sum_comm]; exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring)`. Establish `h2` using `congrArg (fun M => |Matrix.det M|) h`.
-
-Simplify using `only [Matrix.det_mul, Matrix.det_transpose, abs_mul, abs_det_form, Matrix.det_one, abs_one, mul_one] at h2`. Rewrite using `[Basis.det_apply, Basis.det_apply]`. Conclude with `eq_inv_of_mul_eq_one_left h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem covAt_dual (b : Basis (Idx E j) ℝ (VecInf E j)) :
     covAt E j (dualAt E j (Submodule.span ℤ (Set.range b))) = (covAt E j (Submodule.span ℤ (Set.range b)))⁻¹ := by
@@ -190,7 +188,7 @@ theorem act_apply (M : InfinitePlace E → Matrix (Fin j) (Fin j) ℂ) (x : VecI
     act E j M x w = M w *ᵥ x w := rfl
 
 /- English proof (translation)
-Rewrite using `[act, LinearMap.det_pi]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.det_restrictScalars, LinearMap.det_toLin', Algebra.norm_complex_apply, Complex.normSq_eq_norm_sq]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_act (M : InfinitePlace E → Matrix (Fin j) (Fin j) ℂ) :
     LinearMap.det (act E j M) = ∏ w, ‖(M w).det‖ ^ 2 := by
@@ -199,7 +197,7 @@ theorem det_act (M : InfinitePlace E → Matrix (Fin j) (Fin j) ℂ) :
   rw [LinearMap.det_restrictScalars, LinearMap.det_toLin', Algebra.norm_complex_apply, Complex.normSq_eq_norm_sq]
 
 /- English proof (translation)
-Rewrite using `[det_act, detNorm, ← Finset.prod_inv_distrib]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.det_nonsing_inv, Ring.inverse_eq_inv', norm_inv, inv_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_act_inv (g : MatInf E j) :
     LinearMap.det (act E j fun w => (Matrix.of (g w))⁻¹) = (detNorm E j g)⁻¹ := by
@@ -237,9 +235,9 @@ def intB [IsTotallyComplex E] : Basis (Σ _ : Fin j, Free.ChooseBasisIndex ℤ (
   (Pi.basis fun _ => mixedEmbedding.latticeBasis E).map (mix E j)
 
 /- English proof (translation)
-Take `⟨a, i⟩` from `i`. Use function extensionality and compare the values at `w c`. Simplify using `only [intB, ratB, Basis.map_apply, Pi.basis_apply, mix_apply, emb, AddMonoidHom.coe_mk, ZeroHom.coe_mk]`. Distinguish the cases in `h : c = a`. Substitute `h` using the available equality.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem intB_apply [IsTotallyComplex E] (i) : intB E j i = emb E j (ratB E j i) := by
   obtain ⟨a, i⟩ := i
@@ -254,19 +252,17 @@ instance : MeasurableAdd (mixedEmbedding.mixedSpace E) := MeasurableAdd₂.toMea
 
 open Classical in
 /- English proof (translation)
-Use `haveI : (volume : Measure (Fin j → mixedEmbedding.mixedSpace E)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Use `haveI : @BorelSpace (Fin j → mixedEmbedding.mixedSpace E) _ MeasureSpace.toMeasurableSpace := Pi.borelSpace`. Establish `hpi : ∀ {κ : Type} [Fintype κ] (c : Basis κ ℝ (mixedEmbedding.mixedSpace E)), volume.real (ZSpan.fundamentalDomain (Pi.basis fun _ : Fin j => c)) = volume.real (ZSpan.fundamentalDomain c) ^ j`. Introduce `κ _ c`. Establish `: ZSpan.fundamentalDomain (Pi.basis fun _ : Fin j => c) = Set.pi Set.univ fun _ => ZSpan.fundamentalDomain c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `y`. Simplify using `only [ZSpan.mem_fundamentalDomain, Pi.basis_repr, Sigma.forall, Set.mem_pi, Set.mem_univ, true_implies]`. Rewrite using `[this, measureReal_def, volume_pi_pi, ENNReal.toReal_prod, measureReal_def]`. Simplify using the standard rewrite rules. Set `s` to `(mixedEmbedding.stdBasis E).reindex ((mixedEmbedding.stdBasis E).indexEquiv b)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : ZSpan.fundamentalDomain s = ZSpan.fundamentalDomain (mixedEmbedding.stdBasis E)` using `ZSpan.fundamentalDomain_reindex _ _`. Establish `hs1 : volume.real (ZSpan.fundamentalDomain s) = 1`. Rewrite using `[hs, Measure.real, mixedEmbedding.volume_fundamentalDomain_stdBasis]`. Simplify using the standard rewrite rules. Establish `hc : ZSpan.fundamentalDomain ((Pi.basis fun _ : Fin j => s).map (mix E j)) = cube E j`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `y`. Simplify using `only [ZSpan.mem_fundamentalDomain, Basis.map_repr, LinearEquiv.trans_apply, Pi.basis_repr, Sigma.forall]`. Establish `: ∀ a, (∀ i, s.repr ((mix E j).symm y a) i ∈ Set.Ico (0 : ℝ) 1) ↔ ∀ w, (y w a).re ∈ Set.Ico (0 : ℝ) 1 ∧ (y w a).im ∈ Set.Ico (0 : ℝ) 1`. Introduce `a`. Rewrite using `[← ZSpan.mem_fundamentalDomain, hs, ZSpan.mem_fundamentalDomain]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Simplify using `only [Sum.forall, Prod.forall, Fin.forall_fin_two, mixedEmbedding.stdBasis_apply_isReal, mixedEmbedding.stdBasis_apply_isComplex_fst, mixedEmbedding.stdBasis_apply_isComplex_snd]`. Prove the components needed by the constructor for the conclusion. Introduce `h w`. Conclude with `h.2 ⟨w, IsTotallyComplex.isComplex w⟩`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨fun w => absurd w.2 (InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex w.1)), fun w => h w.1⟩`. Simplify using `only [this, cube, Set.mem_setOf_eq]`. Conclude with `forall_swap`. Rewrite using `[ZSpan.measureReal_fundamentalDomain _ volume ((Pi.basis fun _ : Fin j => s).map (mix E j)), hc, ← hpi b, ZSpan.measureReal_fundamentalDomain _ volume (Pi.basis fun _ : Fin j => s), hpi s, hs1, Measure.real, volume_cube, Basis.det_map]`. Establish `: (mix E j).symm ∘ ((Pi.basis fun _ : Fin j => b).map (mix E j)) = Pi.basis fun _ : Fin j => b`.
-
-Use function extensionality and compare the values at `fun i => by rw [Function.comp_apply, Basis.map_apply, LinearEquiv.symm_apply_apply]`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem volume_fd_map [IsTotallyComplex E] {ι : Type} [Fintype ι] (b : Basis ι ℝ (mixedEmbedding.mixedSpace E)) :
     volume.real (ZSpan.fundamentalDomain ((Pi.basis fun _ : Fin j => b).map (mix E j))) =
@@ -315,11 +311,11 @@ theorem volume_fd_map [IsTotallyComplex E] {ι : Type} [Fintype ι] (b : Basis �
   simp
 
 /- English proof (translation)
-Rewrite using `[intB, volume_fd_map, pow_mul]`. Use `congr 1`. Establish `hf : Formalism.HermitianLatticesTheory.fDeg E ≠ 0` using `Fintype.card_ne_zero`. Establish `hc : InfinitePlace.nrComplexPlaces E = Formalism.HermitianLatticesTheory.fDeg E`. Use `InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces E` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[IsTotallyComplex.nrRealPlaces_eq_zero, zero_add]`. Conclude with `this.symm`. Rewrite using `[Measure.real, mixedEmbedding.volume_fundamentalDomain_latticeBasis, hc, Formalism.HermitianLatticesTheory.vInv, div_pow, ← Real.rpow_natCast, ← Real.rpow_mul (abs_nonneg _)]`. Establish `: (1 : ℝ) / (2 * Formalism.HermitianLatticesTheory.fDeg E) * Formalism.HermitianLatticesTheory.fDeg E = 1 / 2`. Clear the denominators using the available nonvanishing facts.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, ← Real.sqrt_eq_rpow]`. Simplify using `[div_eq_inv_mul, Int.norm_eq_abs]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem volume_fd_intB [IsTotallyComplex E] :
     volume.real (ZSpan.fundamentalDomain (intB E j)) = Formalism.HermitianLatticesTheory.vInv E ^ (Formalism.HermitianLatticesTheory.fDeg E * j) := by
@@ -339,11 +335,11 @@ theorem volume_fd_intB [IsTotallyComplex E] :
   simp [div_eq_inv_mul, Int.norm_eq_abs]
 
 /- English proof (translation)
-Establish `: Module.Finite (𝓞 E) Λ` using `Module.Finite.iff_fg.2 h.fg`. Establish `: Module.Finite ℤ Λ` using `Module.Finite.trans (𝓞 E) Λ`. Conclude with `Module.Finite.iff_fg.1 (this : Module.Finite ℤ (Λ.restrictScalars ℤ))`. Use `span_eq_top := by`. Rewrite using `[eq_top_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y _`. Establish `hy : y ∈ Submodule.span E (Λ : Set (Fin j → E))` using `by rw [h.span_eq_top]; trivial`. Take `⟨n, c, v, rfl⟩` from `Submodule.mem_span_set'.1 hy`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← (integralBasis E).sum_repr (c i), Finset.sum_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_assoc]`. Use `Submodule.smul_mem _ _ (Submodule.subset_span ?_)` and prove the remaining obligations. Rewrite using `[integralBasis_apply, algebraMap_smul]`. Conclude with `Λ.smul_mem _ (v i).2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLattice_int (Λ : Submodule (𝓞 E) (Fin j → E)) (h : Submodule.IsLattice E Λ) :
     Submodule.IsLattice ℚ (Λ.restrictScalars ℤ) where
@@ -365,19 +361,17 @@ theorem isLattice_int (Λ : Submodule (𝓞 E) (Fin j → E)) (h : Submodule.IsL
     exact Λ.smul_mem _ (v i).2
 
 /- English proof (translation)
-Use `haveI := isLattice_int E j Λ h`. Set `β₀` to `Module.Free.chooseBasis ℤ (Λ.restrictScalars ℤ)`. Set `β` to `β₀.reindex (((β₀.extendOfIsLattice ℚ).indexEquiv (ratB E j)).trans ((intB E j).indexEquiv (stdB E j)))`. Set `q` to `β.extendOfIsLattice ℚ`. Establish `hq : ∀ i, q i = (β i : Fin j → E)` using `fun i => Basis.extendOfIsLattice_apply ℚ β i`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hall : ∀ y, emb E j y ∈ Submodule.span ℝ (Set.range fun i => emb E j (q i))`. Introduce `y`. Rewrite using `[← q.sum_repr y, map_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_rat_smul, ← Rat.cast_smul_eq_qsmul ℝ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Establish `htop : ⊤ ≤ Submodule.span ℝ (Set.range fun i => emb E j (q i))`. Rewrite using `[← (intB E j).span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[intB_apply]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hall _`. Use `⟨basisOfTopLeSpanOfCardEqFinrank _ htop (Module.finrank_eq_card_basis (stdB E j)).symm, ?_⟩` and prove the remaining obligations. Rewrite using `[coe_basisOfTopLeSpanOfCardEqFinrank]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `_ ⟨y, hy, rfl⟩`. Use `congrArg Subtype.val (β.sum_repr ⟨y, hy⟩)` as an intermediate fact. Rewrite `this` using `[Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul_of_tower] at this`. Rewrite using `[← this, map_sum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, ← hq]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`.
-
-Conclude with `⟨q i, by rw [hq]; exact (β i).2, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_basis [IsTotallyComplex E] (Λ : Submodule (𝓞 E) (Fin j → E)) (h : Submodule.IsLattice E Λ) :
     ∃ b : Basis (Idx E j) ℝ (VecInf E j),
@@ -416,7 +410,7 @@ theorem exists_basis [IsTotallyComplex E] (Λ : Submodule (𝓞 E) (Fin j → E)
     exact ⟨q i, by rw [hq]; exact (β i).2, rfl⟩
 
 /- English proof (translation)
-Use `Submodule.map_span ((act E j fun w => (Matrix.of (g w))⁻¹).restrictScalars ℤ) (emb E j '' (Λ : Set (Fin j → E)))` as an intermediate fact. Establish `h2` using `Submodule.span_eq ((Submodule.span ℤ (emb E j '' (Λ : Set (Fin j → E)))).map ((act E j fun w => (Matrix.of (g w))⁻¹).restrictScalars ℤ))`. Use `Eq.trans ?_ h2.symm` and prove the remaining obligations. Rewrite using `[this, Set.image_image]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem latAt_eq_map (Λ : Submodule (𝓞 E) (Fin j → E)) (g : MatInf E j) :
     latAt E j Λ g = Submodule.span ℤ
@@ -430,15 +424,15 @@ theorem latAt_eq_map (Λ : Submodule (𝓞 E) (Fin j → E)) (g : MatInf E j) :
   rfl
 
 /- English proof (translation)
-Establish `h1 : (Matrix.of fun a b : Fin j => if a = b then (1 : ℂ) else 0) = 1` using `rfl`. Establish `h2 : latAt E j (Submodule.span (𝓞 E) (Set.range fun a => (Pi.single a 1 : Fin j → E))) (fun _ a b => if a = b then 1 else 0) = Submodule.span ℤ (emb E j '' (Submodule.span (𝓞 E) (Set.range fun a => (Pi.single a 1 : Fin j → E)) : Set (Fin j → E)))`. Simplify using `only [latAt, h1, inv_one, Matrix.one_mulVec]`. Both sides reduce to the same expression. Establish `h3 : ∀ a i, ratB E j ⟨a, i⟩ = RingOfIntegers.basis E i • (Pi.single a 1 : Fin j → E)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `a i`. Rewrite using `[ratB, Pi.basis_apply, ← Pi.single_smul, integralBasis_apply, Algebra.smul_def, mul_one]`. Rewrite using `[h2]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨y, hy, rfl⟩`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 E)).1 hy`. Rewrite using `[map_sum]`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← (RingOfIntegers.basis E).sum_repr (c a), Finset.sum_smul, map_sum]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_assoc, map_zsmul, ← h3, ← intB_apply]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨a, i⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ratB E j ⟨a, i⟩, ?_, (intB_apply E j _).symm⟩` and prove the remaining obligations. Rewrite using `[h3]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_std [IsTotallyComplex E] :
     latAt E j (Submodule.span (𝓞 E) (Set.range fun a => (Pi.single a 1 : Fin j → E)))
@@ -470,13 +464,13 @@ theorem span_std [IsTotallyComplex E] :
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)
 
 /- English proof (translation)
-Introduce `E _ _ hE j`. Use `⟨fun Λ hΛ => ?_, by rw [span_std, covAt_span, volume_fd_intB]⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `exists_basis E j Λ hΛ`. Use `⟨|(stdB E j).det b|, abs_pos.2 ((stdB E j).isUnit_det b).ne_zero, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hdet : LinearMap.det (act E j fun w => (Matrix.of (g w))⁻¹) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[det_act_inv]`. Conclude with `inv_ne_zero hg.ne'`. Set `T` to `LinearMap.equivOfDetNeZero _ hdet`. Establish `hL : latAt E j Λ g = Submodule.span ℤ (Set.range (b.map T))`. Rewrite using `[latAt_eq_map, hb]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Submodule.map_span ((act E j fun w => (Matrix.of (g w))⁻¹).restrictScalars ℤ) (Set.range b)` as an intermediate fact. Establish `h2` using `Submodule.span_eq ((Submodule.span ℤ (Set.range b)).map ((act E j fun w => (Matrix.of (g w))⁻¹).restrictScalars ℤ))`. Use `Eq.trans h2 ?_` and prove the remaining obligations. Rewrite using `[this, ← Set.range_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hL]`. Use `⟨⟨inferInstance, inferInstance⟩, ?_, covAt_dual E j _, dual_dual E j _⟩` and prove the remaining obligations. Establish `h4 : ⇑(b.map T) = (act E j fun w => (Matrix.of (g w))⁻¹) ∘ b` using `rfl`. Rewrite using `[covAt_span_std, h4, Basis.det_comp, det_act_inv, abs_mul, abs_of_pos (inv_pos.2 hg), div_eq_inv_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lattice_facts : ∀ (E : Type) [Field E] [NumberField E], IsTotallyComplex E → ∀ j : ℕ, (∀ Λ : Submodule (𝓞 E) (Fin j → E), Submodule.IsLattice E Λ → ∃ κ : ℝ, 0 < κ ∧ ∀ g : MatInf E j, 0 < detNorm E j g → (∃ _ : DiscreteTopology (latAt E j Λ g), IsZLattice ℝ (latAt E j Λ g)) ∧ covAt E j (latAt E j Λ g) = κ / detNorm E j g ∧ covAt E j (dualAt E j (latAt E j Λ g)) = (covAt E j (latAt E j Λ g))⁻¹ ∧ dualAt E j (dualAt E j (latAt E j Λ g)) = latAt E j Λ g) ∧ covAt E j (latAt E j (Submodule.span (𝓞 E) (Set.range fun a => (Pi.single a 1 : Fin j → E))) fun _ a b => if a = b then 1 else 0) = Formalism.HermitianLatticesTheory.vInv E ^ (Formalism.HermitianLatticesTheory.fDeg E * j) := by
   intro E _ _ hE j

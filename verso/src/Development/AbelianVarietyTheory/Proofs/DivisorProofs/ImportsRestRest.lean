@@ -17,7 +17,7 @@ open GlobalTheory.TopFlip
 namespace GlobalTheory.TopFlip.MeasW
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.FunObjModel.isAt_unique (hM.vtx (.grid (i + 1) (j + 1)) ⟨i.2, j.2⟩) (hM'.vtx (.grid (i + 1) (j + 1)) ⟨i.2, j.2⟩)`.
+A detailed English derivation is pending.
 -/
 theorem nu_eq {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GridData L sc} {t t' : T} {M M' : Vol G}
     (hM : M.Is t) (hM' : M'.Is t') (i j : Fin D.R.m) :
@@ -25,13 +25,13 @@ theorem nu_eq {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Con
   GlobalTheory.FunObjModel.isAt_unique (hM.vtx (.grid (i + 1) (j + 1)) ⟨i.2, j.2⟩) (hM'.vtx (.grid (i + 1) (j + 1)) ⟨i.2, j.2⟩)
 
 /- English proof (translation)
-Introduce `D T L sc G μ₀ _ i j m hm`. Distinguish the cases in `h : ∃ (t : T) (M : Vol G) (s : NNReal), M.Is t ∧ M.ν (.grid (i + 1) (j + 1)) = s • m`. Take `⟨t₀, M₀, s₀, hM₀, e₀⟩` from `h`. Establish `hH` using `(hM₀.vtx (.grid (i + 1) (j + 1)) ⟨i.2, j.2⟩).haar_fund.1`. Take `⟨a1, a2, a3, a4, a5, -, a7⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D (spW G i j)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨K⟩ : Nonempty (TopologicalSpace.PositiveCompacts (GA D (spW G i j)))` from `inferInstance`. Establish `hK0 : m K ≠ 0` using `((isOpen_interior.measure_pos m K.interior_nonempty).trans_le (measure_mono interior_subset)).ne'`. Establish `hK1 : m K ≠ ⊤` using `K.isCompact.measure_lt_top.ne`. Use `⟨s₀, ?_, fun t M hM s e => ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite `hH` using `[e₀, zero_smul]`. Conclude with `(isOpen_univ.measure_pos (0 : Measure (GA D (spW G i j))) Set.univ_nonempty).ne' rfl`. Establish `e1 : s • m = s₀ • m` using `e.symm.trans ((nu_eq hM hM₀ i j).trans e₀)`. Establish `e2 : (s : ENNReal) * m K = (s₀ : ENNReal) * m K`. Establish `e3` using `congrArg (fun μ : Measure (GA D (spW G i j)) => μ K) e1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `e3`. Conclude with `(ENNReal.mul_left_inj hK0 hK1).1 e2` after adjusting the coercions. Conclude with `⟨1, one_ne_zero, fun t M hM s e => absurd ⟨t, M, s, hM, e⟩ h⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_ratio : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GridData L sc} {μ₀ : T}, L.Is μ₀ → ∀ (i j : Fin D.R.m) (m : Measure (GA D (spW G i j))), m.IsHaarMeasure →
       ∃ s₀ : NNReal, s₀ ≠ 0 ∧ ∀ (t : T) (M : Vol G), M.Is t → ∀ s : NNReal, M.ν (.grid (i + 1) (j + 1)) = s • m → s = s₀ := by

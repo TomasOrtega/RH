@@ -7,9 +7,9 @@ open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Loc PositivityTheory.Rg.
 open scoped NumberField.AdeleRing
 
 /- English proof (translation)
-Introduce `E _ _ n γ x`. Use `⟨fun w => ?_, fun w => ?_⟩` and prove the remaining obligations. Establish `h : ((finAt w (AdelicGLn.diagonal E n γ) : GL (Fin n) (w.adicCompletion E)) : Matrix (Fin n) (Fin n) (w.adicCompletion E)) = (γ : Matrix (Fin n) (Fin n) E).map (algebraMap E (w.adicCompletion E))`. Use extensionality with `a b`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Rewrite using `[finAt_mul, finAt_mul, finAt_inv, Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj', h, Matrix.charpoly_map]`. Establish `h : ((infAt w (AdelicGLn.diagonal E n γ) : GL (Fin n) w.Completion) : Matrix (Fin n) (Fin n) w.Completion) = (γ : Matrix (Fin n) (Fin n) E).map (algebraMap E w.Completion)`. Use extensionality with `a b`. Both sides reduce to the same expression. Rewrite using `[infAt_mul, infAt_mul, infAt_inv, Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj', h, Matrix.charpoly_map]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.charpoly_local_adelic_conj_diagonal_eq :
     ∀ (E : Type) [Field E] [NumberField E] (n : ℕ) (γ : GL (Fin n) E) (x : AdelicGLn.AdelicGL E n),

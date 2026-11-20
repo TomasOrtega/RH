@@ -25,7 +25,7 @@ instance : Algebra.FormallyEtale ℚ_[p] (PadicAlgCl p) :=
   Algebra.FormallyEtale.of_isSeparable _ _
 
 /- English proof (translation)
-Establish `h : a ∈ 𝔪` using `Ideal.pow_le_self (Nat.succ_ne_zero n) ha`. Rewrite `h` using `[IsPerfectoidField.maximalIdeal_bDeRhamPlus, RingHom.mem_ker]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaAlgHom_eq_zero_of_mem_pow {n : ℕ} {a : 𝔹} (ha : a ∈ 𝔪 ^ (n + 1)) :
     thetaAlgHom p a = 0 := by
@@ -43,7 +43,7 @@ theorem thetaQuot_mk (n : ℕ) (x : 𝔹) :
     thetaQuot p n (Ideal.Quotient.mk _ x) = thetaAlgHom p x := rfl
 
 /- English proof (translation)
-Introduce `y`. Take `⟨x, hx⟩` from `IsPerfectoidField.surjective_thetaBDeRhamPlusField (K := ℂ_[p]) p y`. Conclude with `⟨Ideal.Quotient.mk _ x, hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem surjective_thetaQuot (n : ℕ) : Function.Surjective (thetaQuot p n) := by
   intro y
@@ -51,9 +51,9 @@ theorem surjective_thetaQuot (n : ℕ) : Function.Surjective (thetaQuot p n) := 
   exact ⟨Ideal.Quotient.mk _ x, hx⟩
 
 /- English proof (translation)
-Establish `hle : RingHom.ker (thetaQuot p n : 𝔹 ⧸ 𝔪 ^ (n + 1) →+* ℂ_[p]) ≤ Ideal.map (Ideal.Quotient.mk (𝔪 ^ (n + 1))) 𝔪`. Introduce `y hy`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Use `Ideal.mem_map_of_mem _ ?_` and prove the remaining obligations. Rewrite using `[IsPerfectoidField.maximalIdeal_bDeRhamPlus, RingHom.mem_ker]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy`. Use `⟨n + 1, le_bot_iff.1 ((Ideal.pow_right_mono hle (n + 1)).trans ?_)⟩` and prove the remaining obligations. Rewrite using `[← Ideal.map_pow, Ideal.map_quotient_self]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isNilpotent_ker_thetaQuot (n : ℕ) :
     IsNilpotent (RingHom.ker (thetaQuot p n : 𝔹 ⧸ 𝔪 ^ (n + 1) →+* ℂ_[p])) := by
@@ -72,14 +72,14 @@ def algClToQuot (n : ℕ) : PadicAlgCl p →ₐ[ℚ_[p]] 𝔹 ⧸ 𝔪 ^ (n + 1)
     (thetaQuot p n) (surjective_thetaQuot p n) (isNilpotent_ker_thetaQuot p n)
 
 /- English proof (translation)
-The claim follows from `Algebra.FormallySmooth.liftOfSurjective_apply _ _ _ _ x`.
+A detailed English derivation is pending.
 -/
 theorem thetaQuot_algClToQuot (n : ℕ) (x : PadicAlgCl p) :
     thetaQuot p n (algClToQuot p n x) = (x : ℂ_[p]) :=
   Algebra.FormallySmooth.liftOfSurjective_apply _ _ _ _ x
 
 /- English proof (translation)
-The claim follows from `Algebra.FormallyUnramified.lift_unique' (thetaQuot p n) (isNilpotent_ker_thetaQuot p n) g _ (AlgHom.ext fun x => by simp only [AlgHom.comp_apply] rw [hg, thetaQuot_algClToQuot])`.
+A detailed English derivation is pending.
 -/
 theorem eq_algClToQuot (n : ℕ) (g : PadicAlgCl p →ₐ[ℚ_[p]] 𝔹 ⧸ 𝔪 ^ (n + 1))
     (hg : ∀ x, thetaQuot p n (g x) = (x : ℂ_[p])) : g = algClToQuot p n :=
@@ -89,7 +89,7 @@ theorem eq_algClToQuot (n : ℕ) (g : PadicAlgCl p →ₐ[ℚ_[p]] 𝔹 ⧸ 𝔪
       rw [hg, thetaQuot_algClToQuot])
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem thetaQuot_factorₐ {k n : ℕ} (hle : k ≤ n) (y : 𝔹 ⧸ 𝔪 ^ (n + 1)) :
     thetaQuot p k (Ideal.Quotient.factorₐ ℚ_[p] (Ideal.pow_le_pow_right (Nat.succ_le_succ hle)) y) =
@@ -98,7 +98,7 @@ theorem thetaQuot_factorₐ {k n : ℕ} (hle : k ≤ n) (y : 𝔹 ⧸ 𝔪 ^ (n 
   rfl
 
 /- English proof (translation)
-Use extensionality with `y`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem factorₐ_comp_factorₐ {a b c : ℕ} (hab : a ≤ b) (hbc : b ≤ c) :
     (Ideal.Quotient.factorₐ ℚ_[p] (Ideal.pow_le_pow_right hab) : 𝔹 ⧸ 𝔪 ^ b →ₐ[ℚ_[p]] 𝔹 ⧸ 𝔪 ^ a).comp
@@ -109,7 +109,7 @@ theorem factorₐ_comp_factorₐ {a b c : ℕ} (hab : a ≤ b) (hbc : b ≤ c) :
   rfl
 
 /- English proof (translation)
-The claim follows from `eq_algClToQuot p k _ fun x => by rw [AlgHom.comp_apply, thetaQuot_factorₐ p hle, thetaQuot_algClToQuot]`.
+A detailed English derivation is pending.
 -/
 theorem factorₐ_comp_algClToQuot {k n : ℕ} (hle : k ≤ n) :
     (Ideal.Quotient.factorₐ ℚ_[p] (Ideal.pow_le_pow_right (Nat.succ_le_succ hle))).comp
@@ -121,7 +121,7 @@ def algClToQuot' (n : ℕ) : PadicAlgCl p →ₐ[ℚ_[p]] 𝔹 ⧸ 𝔪 ^ n :=
   (Ideal.Quotient.factorₐ ℚ_[p] (Ideal.pow_le_pow_right (Nat.le_succ n))).comp (algClToQuot p n)
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [algClToQuot', AlgHom.comp_apply]`. Rewrite using `[← factorₐ_comp_algClToQuot p hle, AlgHom.comp_apply]`. Take `⟨y, hy⟩` from `Ideal.Quotient.mk_surjective (algClToQuot p n x)`. Rewrite using `[← hy]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -139,27 +139,27 @@ def algClToBdR : PadicAlgCl p →ₐ[ℚ_[p]] 𝔹 :=
   IsAdicComplete.liftAlgHom 𝔪 (algClToQuot' p) fun hle => factorₐ_comp_algClToQuot' p hle
 
 /- English proof (translation)
-The claim follows from `IsAdicComplete.mk_liftAlgHom _ _ _ n x`.
+A detailed English derivation is pending.
 -/
 theorem mk_algClToBdR (n : ℕ) (x : PadicAlgCl p) :
     Ideal.Quotient.mk (𝔪 ^ n) (algClToBdR p x) = algClToQuot' p n x :=
   IsAdicComplete.mk_liftAlgHom _ _ _ n x
 
 /- English proof (translation)
-Rewrite using `[mk_algClToBdR, algClToQuot', ← factorₐ_comp_algClToQuot p (Nat.le_succ n)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mk_succ_algClToBdR (n : ℕ) (x : PadicAlgCl p) :
     Ideal.Quotient.mk (𝔪 ^ (n + 1)) (algClToBdR p x) = algClToQuot p n x := by
   rw [mk_algClToBdR, algClToQuot', ← factorₐ_comp_algClToQuot p (Nat.le_succ n)]
 
 /- English proof (translation)
-Rewrite using `[← thetaQuot_mk p 0, mk_succ_algClToBdR, thetaQuot_algClToQuot]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem thetaAlgHom_algClToBdR (x : PadicAlgCl p) : thetaAlgHom p (algClToBdR p x) = (x : ℂ_[p]) := by
   rw [← thetaQuot_mk p 0, mk_succ_algClToBdR, thetaQuot_algClToQuot]
 
 /- English proof (translation)
-Establish `h1 : ∀ n, (Ideal.Quotient.mkₐ ℚ_[p] (𝔪 ^ (n + 1))).comp g = algClToQuot p n` using `fun n => eq_algClToQuot p n _ fun x => by`. Rewrite using `[AlgHom.comp_apply, Ideal.Quotient.mkₐ_eq_mk, thetaQuot_mk, hg]`. Use `IsAdicComplete.algHom_ext 𝔪 fun n => AlgHom.ext fun x => ?_` and prove the remaining obligations. Simplify using `only [AlgHom.comp_apply, Ideal.Quotient.mkₐ_eq_mk]`. Rewrite using `[mk_algClToBdR, algClToQuot', ← h1 n]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -174,7 +174,7 @@ theorem eq_algClToBdR (g : PadicAlgCl p →ₐ[ℚ_[p]] 𝔹) (hg : ∀ x, theta
   rfl
 
 /- English proof (translation)
-The claim follows from `(algClToBdR p).toRingHom.injective`.
+A detailed English derivation is pending.
 -/
 theorem injective_algClToBdR : Function.Injective (algClToBdR p) :=
   (algClToBdR p).toRingHom.injective
@@ -188,7 +188,7 @@ variable {p : ℕ} [Fact p.Prime] {K : IntermediateField ℚ_[p] (PadicAlgCl p)}
 local notation "𝔹" => BDeRhamPlus (normInteger ℂ_[p]) p
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[AInf.gal_smul_coeff]`. Simplify using `only [IsPerfectoidField.padicIntToWitt, RingHom.comp_apply, WittVector.map_coeff]`. Conclude with `RingHom.congr_fun (RingHom.ext_zmod ((preTiltMap p (galCp σ : ℂ_[p] →+* ℂ_[p]) (AInf.norm_galCp_toRingHom σ)).comp (ZMod.castHom (dvd_refl p) _)) (ZMod.castHom (dvd_refl p) _)) _`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gal_smul_padicIntToWitt (σ : Gal(PadicAlgCl p/K)) (x : ℤ_[p]) :
     σ • IsPerfectoidField.padicIntToWitt (K := ℂ_[p]) p x =
@@ -201,9 +201,9 @@ theorem gal_smul_padicIntToWitt (σ : Gal(PadicAlgCl p/K)) (x : ℤ_[p]) :
       (ZMod.castHom (dvd_refl p) _)) (ZMod.castHom (dvd_refl p) _)) _
 
 /- English proof (translation)
-Establish `h : (galBdR σ : 𝔹 →+* 𝔹).comp (algebraMap ℚ_[p] 𝔹) = algebraMap ℚ_[p] 𝔹`. Use `IsLocalization.ringHom_ext (nonZeroDivisors ℤ_[p]) (RingHom.ext fun x => ?_)` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, RingHom.coe_coe, galBdR_apply]`. Establish `hx : algebraMap ℤ_[p] ℚ_[p] x = (x : ℚ_[p])` using `rfl`. Rewrite using `[hx, IsPerfectoidField.algebraMap_padic_coe, gal_smul_wittToBDeRhamPlus, gal_smul_padicIntToWitt]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `RingHom.congr_fun h q` as an intermediate fact. Simplify `this` using `only [RingHom.comp_apply, RingHom.coe_coe, galBdR_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem gal_smul_algebraMap_bdR (σ : Gal(PadicAlgCl p/K)) (q : ℚ_[p]) :
     σ • algebraMap ℚ_[p] 𝔹 q = algebraMap ℚ_[p] 𝔹 q := by
@@ -217,11 +217,11 @@ theorem gal_smul_algebraMap_bdR (σ : Gal(PadicAlgCl p/K)) (q : ℚ_[p]) :
   simpa only [RingHom.comp_apply, RingHom.coe_coe, galBdR_apply] using this
 
 /- English proof (translation)
-Set `g : PadicAlgCl p →ₐ[ℚ_[p]] 𝔹` to `{ toRingHom := ((galBdR σ⁻¹ : 𝔹 ≃+* 𝔹) : 𝔹 →+* 𝔹).comp (((algClToBdR p : PadicAlgCl p →ₐ[ℚ_[p]] 𝔹) : PadicAlgCl p →+* 𝔹).comp (σ : PadicAlgCl p →+* PadicAlgCl p)) commutes' := fun q => by`. Simplify using `only [RingHom.toMonoidHom_eq_coe, OneHom.toFun_eq_coe, MonoidHom.toOneHom_coe, MonoidHom.coe_coe, RingHom.coe_comp, Function.comp_apply, RingHom.coe_coe, galBdR_apply]`. Rewrite using `[IsScalarTower.algebraMap_apply ℚ_[p] K (PadicAlgCl p), AlgEquiv.commutes, ← IsScalarTower.algebraMap_apply, AlgHom.commutes, gal_smul_algebraMap_bdR] }`. Establish `hg : g = algClToBdR p` using `eq_algClToBdR p g fun y => by`. Express the relevant statement in the definitionally equal form `thetaAlgHom p (σ⁻¹ • algClToBdR p (σ y)) = (y : ℂ_[p])`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[thetaAlgHom_apply, thetaBDeRhamPlusField_gal_smul, ← thetaAlgHom_apply, thetaAlgHom_algClToBdR, gal_smul_coe]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `(σ⁻¹ * σ) y = y`. Rewrite using `[inv_mul_cancel]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h2 : σ⁻¹ • algClToBdR p (σ x) = algClToBdR p x` using `AlgHom.congr_fun hg x`. Rewrite using `[← h2, smul_inv_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem gal_smul_algClToBdR (σ : Gal(PadicAlgCl p/K)) (x : PadicAlgCl p) :
     σ • algClToBdR p x = algClToBdR p (σ x) := by

@@ -27,9 +27,9 @@ def unip {n : ℕ} (N : Matrix (Fin n) (Fin n) F) (h : N * N = 0) : GL (Fin n) F
 
 variable {w} in
 /- English proof (translation)
-Establish `one : ∀ i j : Fin n, w ((1 : Matrix (Fin n) (Fin n) F) i j) ≤ 1` using `fun i j => by`. Apply the tactic sequence `rw [Matrix.one_apply]; split_ifs <;> simp`. Use `⟨fun i j => ?_, fun i j => ?_, fun i j hi hj => ?_⟩` and prove the remaining obligations. Conclude with `w.map_add_le (one i j) (h1 i j)`. Conclude with `w.map_sub_le (one i j) (h1 i j)`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `: i ≠ j` using `by rintro rfl; omega`. Express the relevant statement in the definitionally equal form `w ((1 + N) i j) < 1`. Rewrite using `[Matrix.add_apply, Matrix.one_apply_ne this, zero_add]`. Conclude with `h2 i j hi hj`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem parMem_unip {r n : ℕ} {N : Matrix (Fin n) (Fin n) F} (h : N * N = 0)
     (h1 : ∀ i j, w (N i j) ≤ 1) (h2 : ∀ i j : Fin n, r ≤ i → (j : ℕ) < r → w (N i j) < 1) :
@@ -45,49 +45,45 @@ theorem parMem_unip {r n : ℕ} {N : Matrix (Fin n) (Fin n) F} (h : N * N = 0)
     exact h2 i j hi hj
 
 /- English proof (translation)
-Set `f : Fin m × Fin n → Lex (Γ × ℕ)` to `fun p => toLex (w (z p.1 p.2), (if r ≤ (p.1 : ℕ) then 1 else 0) + if (p.2 : ℕ) < r then 1 else 0)`. Take `⟨⟨i₀, j₀⟩, hm, hmax⟩` from `Finset.exists_max_image (Finset.univ.filter fun p : Fin m × Fin n => ¬ ∃ j, Iso z p.1 j) f ⟨(i₁, j₁), by simpa using hn⟩`. Establish `hm0 : ¬ ∃ j, Iso z i₀ j` using `by simpa using hm`. Establish `hle : ∀ i j, (¬ ∃ j, Iso z i j) → w (z i j) < w (z i₀ j₀) ∨ (w (z i j) = w (z i₀ j₀) ∧ ((if r ≤ (i : ℕ) then 1 else 0) + if (j : ℕ) < r then 1 else 0) ≤ (if r ≤ (i₀ : ℕ) then 1 else 0) + if (j₀ : ℕ) < r then 1 else 0)` using `fun i j h => by`. Use `hmax (i, j) (by simpa using h)` as an intermediate fact.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Prod.Lex.toLex_le_toLex.1 this`. Establish `hp : z i₀ j₀ ≠ 0`. Introduce `h0`. Establish `: 0 < w (z i₁ j₁)` using `zero_lt_iff.2 (w.ne_zero_iff.2 h1)`. Break down `hle i₁ j₁ hn with h | h` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[h0, map_zero]`. Conclude with `absurd h not_lt_zero'`. Rewrite `h` using `[h0, map_zero]`. Conclude with `this.ne' h.1`. Establish `hwp : 0 < w (z i₀ j₀)` using `zero_lt_iff.2 (w.ne_zero_iff.2 hp)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hcol : ∀ i j, Iso z i j → z i j₀ = 0` using `fun i j h => by`. Use `h.2.1 j₀ ?_` and prove the remaining obligations. Introduce and unpack `rfl`. Distinguish the cases in `e : i₀ = i`. Conclude with `hm0 ⟨_, e ▸ h⟩`.
+Consider separately whether the proposition holds or fails. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `hp (h.2.2 i₀ e)`. Set `a : Fin m → F` to `fun i => if i = i₀ then 0 else -(z i j₀ / z i₀ j₀)`. Set `b : Fin n → F` to `fun j => if j = j₀ then 0 else -(z i₀ j / z i₀ j₀)`. Set `N' : Matrix (Fin m) (Fin m) F` to `Matrix.of fun i l => if l = i₀ then a i else 0`. Set `N : Matrix (Fin n) (Fin n) F` to `Matrix.of fun l j => if l = j₀ then b j else 0`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hN' : N' * N' = 0`. Use extensionality with `i l`. Rewrite using `[Matrix.mul_apply, Matrix.zero_apply]`. Use `Finset.sum_eq_zero fun x _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases hx : x = i₀ <;> simp [N', a, hx]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : N * N = 0`. Use extensionality with `i l`. Simplify using `[N, Matrix.mul_apply, b]`. Establish `hent : ∀ i j, ((unip N' hN').1 * z * (unip N hN).1) i j = (z i j + a i * z i₀ j) + (z i j₀ + a i * z i₀ j₀) * b j` using `fun i j => by`. Establish `e1 : ∀ j, ((1 + N') * z : Matrix (Fin m) (Fin n) F) i j = z i j + a i * z i₀ j` using `fun j => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.add_mul, Matrix.one_mul, Matrix.add_apply, Matrix.mul_apply]`. Simplify using `[N']`. Express the relevant statement in the definitionally equal form `((1 + N') * z * (1 + N) : Matrix (Fin m) (Fin n) F) i j = _`. Rewrite using `[Matrix.mul_add, Matrix.mul_one, Matrix.add_apply, e1, Matrix.mul_apply]`. Simplify using `only [N, Matrix.of_apply, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, e1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hq : ∀ x : F, w x ≤ w (z i₀ j₀) → w (-(x / z i₀ j₀)) ≤ 1` using `fun x h => by`. Rewrite using `[Valuation.map_neg, map_div₀]`. Conclude with `div_le_one_of_le₀ h zero_le'`. Establish `hq' : ∀ x : F, w x < w (z i₀ j₀) → w (-(x / z i₀ j₀)) < 1` using `fun x h => by`. Rewrite using `[Valuation.map_neg, map_div₀]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `(div_lt_one₀ hwp).2 h`. Use `⟨unip N' hN', unip N hN, parMem_unip _ (fun i l => ?_) (fun i l hi hl => ?_), parMem_unip _ (fun l j => ?_) (fun l j hl hj => ?_), fun i j h => ?_, i₀, j₀, hm0, ?_⟩` and prove the remaining obligations. Simplify using `only [N', a, Matrix.of_apply] split_ifs`. Simplify using the standard rewrite rules. Use `hq _ ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hi : ∃ j, Iso z i j`. Take `⟨j, hj⟩` from `hi`. Simplify using `[hcol i j hj]`. Break down `hle i j₀ hi with h | h exacts [h.le, h.1.le]` into its components or cases. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [N', a, Matrix.of_apply] split_ifs with e1 e2`. Simplify using the standard rewrite rules. Use `hq' _ ?_` and prove the remaining obligations. Substitute `e1` using the available equality. Distinguish the cases in `hi' : ∃ j, Iso z i j`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Take `⟨j, hj⟩` from `hi'`. Simplify `hwp` using `[hcol i j hj]`. Break down `hle i j₀ hi' with h | h` into its components or cases. Conclude with `h`. Use `h.2` as an intermediate fact.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[if_pos hi, if_neg (by omega : ¬ r ≤ (l : ℕ))]`. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Simplify using `only [N, b, Matrix.of_apply] split_ifs`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis.
 
-Use `hq _ ?_` and prove the remaining obligations. Break down `hle i₀ j hm0 with h | h` into its components or cases. Use `exacts [h.le, h.1.le]`. Simplify using the standard rewrite rules. Simplify using `only [N, b, Matrix.of_apply] split_ifs with e1 e2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Use `hq' _ ?_` and prove the remaining obligations. Substitute `e1` using the available equality. Break down `hle i₀ j hm0 with h | h` into its components or cases. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h.2` as an intermediate fact. Rewrite `this` using `[if_pos hj, if_neg (by omega : ¬ (l : ℕ) < r)]`. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Establish `hi : i ≠ i₀` using `by rintro rfl; exact hm0 ⟨j, h⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h0` using `hcol i j h`. Establish `hj : j ≠ j₀` using `by rintro rfl; exact h.1 h0`. Establish `h0' : z i₀ j = 0` using `h.2.2 i₀ hi.symm`. Establish `ha : a i = 0` using `by simp [a, h0]`. Establish `hb : b j = 0` using `by simp [b, h0']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨?_, fun j' hj' => ?_, fun i' hi' => ?_⟩` and prove the remaining obligations. Rewrite using `[hent, ha, hb]`. Simplify using `using h.1`. Rewrite using `[hent, ha, h0, h.2.1 j' hj']`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hent, hb, h0', h.2.2 i' hi']`. Simplify using the standard rewrite rules. Use `⟨?_, fun j' hj' => ?_, fun i' hi' => ?_⟩` and prove the remaining obligations. Rewrite using `[hent]`. Simplify `hp` using `[a, b]`.
-
-Rewrite using `[hent]`. Simplify using `only [a, b, if_true, if_neg hj']`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hent]`.
-
-Simplify using `only [a, b, if_true, if_neg hi']`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem step {r m n : ℕ} (z : Matrix (Fin m) (Fin n) F) (i₁ : Fin m) (j₁ : Fin n)
     (h1 : z i₁ j₁ ≠ 0) (hn : ¬ ∃ j, Iso z i₁ j) :

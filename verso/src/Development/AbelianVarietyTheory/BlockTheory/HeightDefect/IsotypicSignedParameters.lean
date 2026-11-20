@@ -71,13 +71,13 @@ def signedParameterU11 : SignedPar 2 where
       · exact ⟨-1, by norm_num⟩
 
 /- English proof (translation)
-Apply the tactic sequence `constructor <;> decide`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem signedParameter_one_one_isOfSig : signedParameterU11.IsOfSig 1 1 := by
   constructor <;> decide
 
 /- English proof (translation)
-Establish `h0 : (Finset.univ.filter fun b : Fin 2 => (0 : Fin 2) < b) = {1}` using `by decide`. Establish `h1 : (Finset.univ.filter fun b : Fin 2 => (1 : Fin 2) < b) = ∅` using `by decide`. Simplify using `only [SignedPar.dimV, Fin.prod_univ_two, h0, h1, Finset.prod_range_succ]`. Simplify using `[signedParameterU11]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 -/
 theorem signedParameter_one_one_dimV_eq_one : signedParameterU11.dimV = 1 := by
   have h0 : (Finset.univ.filter fun b : Fin 2 => (0 : Fin 2) < b) = {1} := by decide
@@ -198,7 +198,7 @@ def IsFdegPar {n : ℕ} (P : SignedPar n) (d : ℝ) : Prop :=
     (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), IsDSPar P σ → HasFdeg P.sgn σ d
 
 /- English proof (translation)
-Take `⟨⟨H, _, _, σ, hσ⟩, h2⟩` from `h`. Take `⟨_, μ, _, hd⟩` from `h2 H σ hσ`. Conclude with `hd.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsFdegPar.pos {n : ℕ} {P : SignedPar n} {d : ℝ} (h : IsFdegPar P d) : 0 < d := by
   obtain ⟨⟨H, _, _, σ, hσ⟩, h2⟩ := h

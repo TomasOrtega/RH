@@ -11,7 +11,7 @@ open Formalism.DworkPowerSeriesWeights (JetsIntegral)
 namespace GlobalTheory.Proof.integral_jets_realPlace_local_bases
 
 /- English proof (translation)
-Establish `hm : ∀ x, embT D τ x ∈ Qbar` using `fun x => mem_algebraicClosure_iff.2 ((Algebra.IsAlgebraic.isAlgebraic (R := ℚ) x).algHom (embT D τ).toRatAlgHom)`. Conclude with `⟨lm.comp ((embT D τ).codRestrict Qbar hm), fun x => dif_pos (hm x)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem tauEmb_ringHom (D : D7) {p : ℕ} [Fact p.Prime] (lm : Qbar →+* ℂ_[p]) (τ : D.what₂.Tau) :
     ∃ g : D.host.E →+* ℂ_[p], ∀ x, tauEmb D lm τ x = g x := by
@@ -20,25 +20,21 @@ theorem tauEmb_ringHom (D : D7) {p : ℕ} [Fact p.Prime] (lm : Qbar →+* ℂ_[p
   exact ⟨lm.comp ((embT D τ).codRestrict Qbar hm), fun x => dif_pos (hm x)⟩
 
 /- English proof (translation)
-Introduce `D cD hD N N' L L' hA p _ lm B B' κ hB hB' hκ F hF`. Use `(GlobalTheory.Proof.latticeJetsIntegral_iff_integralFrames.jetsInt_frames D N N' p lm (YYl D L L') F).2 hF _ _ ?_` and prove the remaining obligations. Introduce and unpack `⟨j1, a, b⟩`. Distinguish the cases in `h0 : lamC lm (cD (tauPl D j1)) = 0`. Use `⟨0, Fin.elim0, Fin.elim0, fun j => j.elim0, fun j => j.elim0, fun ⟨τ, k1, k2⟩ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Finset.univ_eq_empty, Finset.sum_empty]`. Use `split_ifs with h`. Substitute `h` using the available equality. Establish `: κ (tauPl D j1) = 0`. Use `hκ (tauPl D j1)` as an intermediate fact.
+Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[h0, norm_zero]`. Conclude with `norm_le_zero_iff.1 this`. Simplify using `[this]`. Both sides reduce to the same expression. Use `set τ0 := tauPl D j1 with hτ0 set c := κ τ0 / lamC lm (cD τ0) with hc`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hcn : ‖c‖ ≤ 1`. Rewrite using `[hc, norm_div]`. Conclude with `div_le_one_of_le₀ (hκ τ0) (norm_nonneg _)`. Take `⟨n, r, aa, hr, haa, hsum⟩` from `GlobalTheory.Proof.IntegralEigenCombination.eigGen_integral_comb D cD hD p lm τ0`. Take `⟨m, r', A, hr', hA', hAsum⟩` from `GlobalTheory.T.matrixUnit_integral_comb_embedded_homs D N N' L L' hA p lm τ0 (B τ0) (B' τ0) (hB τ0) (hB' τ0) a b`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `⟨n * m, fun t => c * r (finProdFinEquiv.symm t).1 * r' (finProdFinEquiv.symm t).2, fun t => aa (finProdFinEquiv.symm t).1 • A (finProdFinEquiv.symm t).2, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `t`. Rewrite using `[norm_mul, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hr _`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hr' _`. Use `_ = 1 := by norm_num`. Introduce `t`. Conclude with `Submodule.subset_span ⟨aa _, haa _, A _, hA' _, rfl⟩`. Introduce and unpack `⟨τ, k1, k2⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g, hg⟩` from `tauEmb_ringHom D lm τ`. Rewrite using `[← finProdFinEquiv.sum_comp]`. Simplify using `only [Equiv.symm_apply_apply]`. Rewrite using `[Fintype.sum_prod_type]`. Establish `key : ∑ i : Fin n, ∑ j : Fin m, c * r i * r' j * tauEmb D lm τ ((aa i • A j) k1 k2) = c * ((∑ i, r i * tauEmb D lm τ (aa i)) * (∑ j, r' j * tauEmb D lm τ (A j k1 k2)))`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Rewrite using `[Finset.sum_mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [hg, Matrix.smul_apply, smul_eq_mul, map_mul]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, hsum τ]`. Use `split_ifs with h1 h2 h2`. Substitute `h2` using the available equality. Rewrite using `[← hAsum k1 k2, hc, ← mul_assoc, div_mul_cancel₀ _ h0, mul_assoc]`.
-
-Conclude with `absurd h1.symm h2`. Conclude with `absurd h2.symm h1`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jetsIntegral_basR : ∀ (D : D7) (cD : D.what₂.Tau → ℂ), Formalism.L2.Ker.IsDgen D cD → ∀ (N N' : ℕ) (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)), admitted D N N' L L' → ∀ (p : ℕ) [Fact p.Prime] (lm : TaylorLogMetric.Qbar →+* ℂ_[p]), ∀ (B : D.what₂.Tau → Matrix (Fin N) (Fin N) ℂ_[p]) (B' : D.what₂.Tau → Matrix (Fin N') (Fin N') ℂ_[p]) (κ : D.what₂.Tau → ℂ_[p]), (∀ τ, GL3Columns.BasR D lm τ L (B τ)) → (∀ τ, GL3Columns.BasR D lm τ L' (B' τ)) → (∀ τ, ‖κ τ‖ ≤ ‖lamC lm (cD τ)‖) → ∀ F : MvPowerSeries (D.what₂.Tau × Fin N' × Fin N) ℂ_[p], JetsInt D lm (YYl D L L') F → JetsIntegral (atLin (fun (k : D.what₂.Tau × Fin N' × Fin N) (j : (Bool × HH D) × Fin N × Fin N') => if tauPl D j.1 = k.1 then κ k.1 * B' k.1 k.2.1 j.2.2 * (B k.1)⁻¹ j.2.1 k.2.2 else 0) (fun j => MvPowerSeries.X j) F) := by
   intro D cD hD N N' L L' hA p _ lm B B' κ hB hB' hκ F hF

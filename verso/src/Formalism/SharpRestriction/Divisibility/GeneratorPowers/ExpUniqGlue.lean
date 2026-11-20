@@ -29,7 +29,7 @@ def bcJ (κ : Type) (m : ℕ) : Jet S κ m →+* Jet T κ m :=
     exact ((Ideal.pow_right_mono h1 _).trans (Ideal.le_comap_pow _ _)) hP)
 
 /- English proof (translation)
-Unfold `zz`. Use `show Ideal.Quotient.mk _ (MvPolynomial.map f (X j)) = _`. Rewrite using `[MvPolynomial.map_X]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem base_change_jet_variable {κ : Type} (m : ℕ) (j : κ) : bcJ f κ m (zz m j) = zz m j := by
   unfold zz
@@ -37,7 +37,7 @@ theorem base_change_jet_variable {κ : Type} (m : ℕ) (j : κ) : bcJ f κ m (zz
   rw [MvPolynomial.map_X]
 
 /- English proof (translation)
-Use `show Ideal.Quotient.mk _ (MvPolynomial.map f (C s)) = Ideal.Quotient.mk _ (C (f s))`. Rewrite using `[MvPolynomial.map_C]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bcJ_C {κ : Type} (m : ℕ) (s : S) :
     bcJ f κ m (algebraMap S (Jet S κ m) s) = algebraMap T (Jet T κ m) (f s) := by
@@ -45,15 +45,15 @@ theorem bcJ_C {κ : Type} (m : ℕ) (s : S) :
   rw [MvPolynomial.map_C]
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun s => bcJ_C f (κ := κ) m s`.
+A detailed English derivation is pending.
 -/
 theorem bcJ_comp (κ : Type) (m : ℕ) :
     (bcJ f κ m).comp (algebraMap S (Jet S κ m)) = (algebraMap T (Jet T κ m)).comp f := RingHom.ext fun s => bcJ_C f (κ := κ) m s
 
 /- English proof (translation)
-Apply `Ideal.Quotient.ringHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `s`. Establish `e1 : (Ideal.Quotient.mk (orig S κ ^ (m + 1)) (C s)) = algebraMap S (Jet S κ m) s` using `rfl`. Simplify using `only [RingHom.comp_apply, AlgHom.coe_toRingHom, e1, bcJ_C, AlgHom.commutes, hB]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `j`. Establish `e2 : (Ideal.Quotient.mk (orig S κ ^ (m + 1)) (X j)) = zz m j` using `rfl`. Simplify using `only [RingHom.comp_apply, AlgHom.coe_toRingHom, e2, base_change_jet_variable, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem nat_ring {κ : Type} {m : ℕ} {B B' : Type} [CommRing B] [Algebra S B] [CommRing B'] [Algebra T B']
     (ψ : Jet S κ m →ₐ[S] B) (ψ' : Jet T κ m →ₐ[T] B') (bB : B →+* B')
@@ -88,7 +88,7 @@ theorem bcO_left {A A' : Type} [CommRing A] [Algebra S A] [CommRing A'] [Algebra
     (bcO f x0 bA hA).left = Spec.map (CommRingCat.ofHom bA) := rfl
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `only [Over.comp_left, bcO_left, homAt, Over.homMk_left, ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp, e]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem nat_over {A A' B B' : Type} [CommRing A] [Algebra S A] [CommRing A'] [Algebra T A'] [CommRing B]
     [Algebra S B] [CommRing B'] [Algebra T B'] (bA : A →+* A') (hA : bA.comp (algebraMap S A) = (algebraMap T A').comp f)
@@ -139,15 +139,15 @@ private theorem jetCopy_mk_lemma_3 {R : Type} [CommRing R] (d' : ℕ) {n : ℕ} 
   rfl
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hx`. Use `⟨fun m => ?_, fun m => ?_⟩` and prove the remaining obligations. Establish `e` using `nat_ring f (ψ := (jetTrunc : Jet S (Fin 1 × Fin d) (m + 1) →ₐ[S] Jet S (Fin 1 × Fin d) m)) (ψ' := (jetTrunc : Jet T (Fin 1 × Fin d) (m + 1) →ₐ[T] Jet T (Fin 1 × Fin d) m)) (bB := bcJ f _ m) (fun s => bcJ_C f m s) (fun j => (base_change_jet_variable f m j).symm)`. Establish `k` using `nat_over f x0 (bcJ f _ (m + 1)) (bcJ_comp f _ (m + 1)) (bcJ f _ m) (bcJ_comp f _ m) _ _ e`. Unfold `xT`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← Category.assoc, k, Category.assoc, h1 m]`. Establish `eS` using `nat_ring f (ψ := (jetSubstP m fun p : Fin 1 × Fin d => X ((0 : Fin 2), p.2) + X ((1 : Fin 2), p.2) : Jet S (Fin 1 × Fin d) m →ₐ[S] Jet S (Fin 2 × Fin d) m)) (ψ' := (jetSubstP m fun p : Fin 1 × Fin d => X ((0 : Fin 2), p.2) + X ((1 : Fin 2), p.2) : Jet T (Fin 1 × Fin d) m →ₐ[T] Je …`. Rewrite using `[show zz m j = Ideal.Quotient.mk (orig S (Fin 1 × Fin d) ^ (m + 1)) (X j) from rfl, show zz m j = Ideal.Quotient.mk (orig T (Fin 1 × Fin d) ^ (m + 1)) (X j) from rfl, jetSubstP_apply_mk, jetSubstP_apply_mk, bcJ_mk_lemma_2]`. Use the proof step `simp)`. Establish `eC : ∀ i : Fin 2, _` using `fun i => nat_ring f (ψ := (jetCopy d m i : Jet S (Fin 1 × Fin d) m →ₐ[S] Jet S (Fin 2 × Fin d) m)) (ψ' := (jetCopy d m i : Jet T (Fin 1 × Fin d) m →ₐ[T] Jet T (Fin 2 × Fin d) m)) (bB := bcJ f _ m) (fun s => bcJ_C f m s) (fun j => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show zz m j = Ideal.Quotient.mk (orig S (Fin 1 × Fin d) ^ (m + 1)) (X j) from rfl, show zz m j = Ideal.Quotient.mk (orig T (Fin 1 × Fin d) ^ (m + 1)) (X j) from rfl, jetCopy_mk_lemma_3, jetCopy_mk_lemma_3, bcJ_mk_lemma_2]`. Use the proof step `simp)`. Establish `kS` using `nat_over f x0 (bcJ f _ m) (bcJ_comp f _ m) (bcJ f _ m) (bcJ_comp f _ m) _ _ eS`. Establish `k0` using `nat_over f x0 (bcJ f _ m) (bcJ_comp f _ m) (bcJ f _ m) (bcJ_comp f _ m) _ _ (eC 0)`. Establish `k1` using `nat_over f x0 (bcJ f _ m) (bcJ_comp f _ m) (bcJ f _ m) (bcJ_comp f _ m) _ _ (eC 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Unfold `xT`. Simplify using `only [← Category.assoc, kS, k0, k1]`. Simplify using `only [Category.assoc, h2 m]`. Use `first`. Consider the case `exact Hom.comp_mul _ _ _`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact MonObj.comp_mul _ _ _`. Consider the case `exact CategoryTheory.Hom.comp_mul _ _ _`. Consider the case `simp only [Hom.comp_mul]`. Consider the case `simp only [MonObj.comp_mul]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isExpHomR_bc {x : ∀ m, overAt x0 (Jet S (Fin 1 × Fin d) m) ⟶ Xo.univ.t.G} (hx : IsExpHomR x0 d x) :
     IsExpHomR (x0T f x0) d (xT f x0 x) := by
@@ -191,16 +191,16 @@ theorem isExpHomR_bc {x : ∀ m, overAt x0 (Jet S (Fin 1 × Fin d) m) ⟶ Xo.uni
     | simp only [MonObj.comp_mul]
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun s => by ext <;> simp [ReciprocityTheory.ChartRestriction.G.Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`.
+A detailed English derivation is pending.
 -/
 theorem dual_comp : (ReciprocityTheory.ChartRestriction.G.Chart.dualMapR f).comp (algebraMap S (DualNumber S)) =
     (algebraMap T (DualNumber T)).comp f := RingHom.ext fun s => by
   ext <;> simp [ReciprocityTheory.ChartRestriction.G.Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Introduce `j`. Establish `e` using `nat_ring f (ψ := (jetTan ((0 : Fin 1), j) : Jet S (Fin 1 × Fin d) (0 + 1) →ₐ[S] DualNumber S)) (ψ' := (jetTan ((0 : Fin 1), j) : Jet T (Fin 1 × Fin d) (0 + 1) →ₐ[T] DualNumber T)) (bB := ReciprocityTheory.ChartRestriction.G.Chart.dualMapR f) (fun s => RingHom.congr_fun (dual_comp …`. Simplify using `only [aeval_X]`. Apply the tactic sequence `split_ifs <;> ext <;> simp [ReciprocityTheory.ChartRestriction.G.Chart.dualMapR])`. Establish `k` using `nat_over f x0 (bcJ f _ 1) (bcJ_comp f _ 1) (ReciprocityTheory.ChartRestriction.G.Chart.dualMapR f) (dual_comp f) _ _ e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Unfold `xT`. Simplify using `only [← Category.assoc, k]`. Simplify using `only [Category.assoc, ht j]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sameTan_bc {x x' : ∀ m, overAt x0 (Jet S (Fin 1 × Fin d) m) ⟶ Xo.univ.t.G} (ht : SameTanR x0 d x x') :
     SameTanR (x0T f x0) d (xT f x0 x) (xT f x0 x') := by
@@ -220,17 +220,17 @@ theorem sameTan_bc {x x' : ∀ m, overAt x0 (Jet S (Fin 1 × Fin d) m) ⟶ Xo.un
 end Transfer
 
 /- English proof (translation)
-Establish `hu : ∀ y : p.primeCompl, IsUnit (((algebraMap (ReciprocityTheory.ChartRestriction.G.TB.JetRing S κ m) (ReciprocityTheory.ChartRestriction.G.TB.JetLoc S κ m p)).comp (algebraMap S (ReciprocityTheory.ChartRestriction.G.TB.JetRing S κ m))) y)` using `fun y => IsLocalization.map_units (ReciprocityTheory.ChartRestriction.G.TB.JetLoc S κ m p) (⟨algebraMap S (ReciprocityTheory.ChartRestriction.G.TB.JetRing S κ m) y, by first`. Consider the case `exact Algebra.mem_algebraMapSubmonoid_of_mem y`. Consider the case `exact Submonoid.mem_map_of_mem _ y.2⟩ :`. Use the proof step `Algebra.algebraMapSubmonoid (ReciprocityTheory.ChartRestriction.G.TB.JetRing S κ m) p.primeCompl)`. Set `g : Localization.AtPrime p →+* ReciprocityTheory.ChartRestriction.G.TB.JetLoc S κ m p` to `IsLocalization.lift (M := p.primeCompl) hu`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `F : MvPolynomial κ (Localization.AtPrime p) →+* ReciprocityTheory.ChartRestriction.G.TB.JetLoc S κ m p` to `MvPolynomial.eval₂Hom g fun j => algebraMap (ReciprocityTheory.ChartRestriction.G.TB.JetRing S κ m) (ReciprocityTheory.ChartRestriction.G.TB.JetLoc S κ m p) (Ideal.Quotient.mk (Ideal.span (Set.range (X : κ → MvPolynomial κ S)) ^ (m + 1)) (X j))`. Establish `hF : ∀ a ∈ orig (Localization.AtPrime p) κ ^ (m + 1), F a = 0`. Introduce `a ha`. Establish `h1 : F a ∈ Ideal.map F (orig (Localization.AtPrime p) κ ^ (m + 1))` using `Ideal.mem_map_of_mem _ ha`. Rewrite `h1` using `[map_orig_pow]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : Ideal.span (Set.range fun i => F (X i)) = Ideal.map (algebraMap (ReciprocityTheory.ChartRestriction.G.TB.JetRing S κ m) (ReciprocityTheory.ChartRestriction.G.TB.JetLoc S κ m p)) (Ideal.map (Ideal.Quotient.mk (Ideal.span (Set.range (X : κ → MvPolynomial κ S)) ^ (m + 1))) (Ide …`. Rewrite using `[Ideal.map_map, Ideal.map_span, ← Set.range_comp]`. Use `congr 1`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[F]`. Rewrite `h1` using `[h3, ← Ideal.map_pow, ← Ideal.map_pow, Ideal.map_quotient_self, Ideal.map_bot]`. Conclude with `(Submodule.mem_bot _).1 h1`. Use `⟨Ideal.Quotient.lift _ F hF, ?_⟩` and prove the remaining obligations. Apply `Ideal.Quotient.ringHom_ext` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `s show F (MvPolynomial.map (algebraMap S (Localization.AtPrime p)) (C s)) = _`. Rewrite using `[MvPolynomial.map_C]`. Simplify using `only [F, MvPolynomial.eval₂Hom_C]`. Conclude with `IsLocalization.lift_eq hu s`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `j show F (MvPolynomial.map (algebraMap S (Localization.AtPrime p)) (X j)) = _`. Rewrite using `[MvPolynomial.map_X]`. Simplify using `only [F, MvPolynomial.eval₂Hom_X']`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem theta {S : Type} [CommRing S] (p : Ideal S) [p.IsPrime] (κ : Type) (m : ℕ) :
     ∃ θ : Jet (Localization.AtPrime p) κ m →+* ReciprocityTheory.ChartRestriction.G.TB.JetLoc S κ m p,
@@ -281,11 +281,11 @@ theorem theta {S : Type} [CommRing S] (p : Ideal S) [p.IsPrime] (κ : Type) (m :
     rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo S _ _ x0 d x x' hx hx' ht`. Use function extensionality and compare the values at `m`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `ReciprocityTheory.ChartRestriction.G.TB.JGPf.jetGlue S (Fin 1 × Fin d) m Xo.univ.t.G.left (x m).left (x' m).left ?_` and prove the remaining obligations. Introduce `p _`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨θ, hθ⟩` from `theta p (Fin 1 × Fin d) m`. Establish `hloc` using `ExpUniqBC.expUniqLoc E H Dw l Xo (Localization.AtPrime p) (x0T (algebraMap S (Localization.AtPrime p)) x0) d _ _ (isExpHomR_bc (algebraMap S (Localization.AtPrime p)) x0 hx) (isExpHomR_bc (algebraMap S (Localization.AtPrime p)) x0 hx') (sameTan_bc (algebraMap S (Localization.AtPr …`. Establish `hm` using `congrArg (fun g => (g m).left) hloc`. Simplify using `only [xT, Over.comp_left, bcO_left] at hm`. Establish `key : Spec.map (CommRingCat.ofHom (algebraMap (ReciprocityTheory.ChartRestriction.G.TB.JetRing S (Fin 1 × Fin d) m) (ReciprocityTheory.ChartRestriction.G.TB.JetLoc S (Fin 1 × Fin d) m p))) = Spec.map (CommRingCat.ofHom θ) ≫ Spec.map (CommRingCat.ofHom (bcJ (algebraMap S (Localiza …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Conclude with `congrArg (fun h => Spec.map (CommRingCat.ofHom h)) hθ.symm`. Establish `e1` using `(congrArg (fun t => t ≫ (x m).left) key).trans (Category.assoc _ _ _)`. Establish `e2` using `(congrArg (fun t => t ≫ (x' m).left) key).trans (Category.assoc _ _ _)`. Conclude with `e1.trans ((congrArg (fun t => Spec.map (CommRingCat.ofHom θ) ≫ t) hm).trans e2.symm)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem expUniqRaw : ExpUniqRawSt := by
   intro E _ _ _ H Dw l Xo S _ _ x0 d x x' hx hx' ht
@@ -310,7 +310,7 @@ theorem expUniqRaw : ExpUniqRawSt := by
   exact e1.trans ((congrArg (fun t => Spec.map (CommRingCat.ofHom θ) ≫ t) hm).trans e2.symm)
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c S _ _ _ y d x x' hx hx' ht`. Conclude with `expUniqRaw E H Dw l Xo S y.x d x x' hx hx' ht`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem expUniq : ExpUniqSt := by
   intro E _ _ _ H Dw l Xo c S _ _ _ y d x x' hx hx' ht

@@ -26,16 +26,16 @@ namespace GlobalTheory.KSplit.RightTr
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Apply `(TensorProduct.lid ℂ ℂ).injective` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem lid_tmul_one (t : ℂ ⊗[ℂ] ℂ) : (TensorProduct.lid ℂ ℂ t) ⊗ₜ[ℂ] (1 : ℂ) = t := by
   apply (TensorProduct.lid ℂ ℂ).injective
   simp
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul c d`. Simplify using `only [MonoidHom.coe_comp, Function.comp_apply, twist_apply, MonoidHom.coe_coe]`. Simplify using `[parChar, detRep, ofChar_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `add s t hs ht => simp only [map_add, hs, ht]`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 -/
 theorem lid_law (ν β : kˣ →* ℂˣ) (a b : ℕ) (p : parab k (blocks a b)) (t : ℂ ⊗[ℂ] ℂ) :
     TensorProduct.lid ℂ ℂ (((twist ((extTensor (detRep (Fin a) (ν * β)) (detRep (Fin b) β)).comp
@@ -51,9 +51,9 @@ theorem lid_law (ν β : kˣ →* ℂˣ) (a b : ℕ) (p : parab k (blocks a b)) 
   | add s t hs ht => simp only [map_add, hs, ht]
 
 /- English proof (translation)
-Use `⟨?_, fun p x => ?_⟩` and prove the remaining obligations. Establish `hF` using `isSmooth_parInd (two (stdSum (rfl : a + b = a + b))) ((extTensor (detRep (Fin a) (ν * β)) (detRep (Fin b) β)).comp (leviTwo k (Fin a) (Fin b)).symm.toMonoidHom) F`. Use `mem_smoothPart_of_nhds (Filter.mem_of_superset (hF.mem_nhds (by exact LinearMap.congr_fun (map_one (parInd _ _)) F)) fun g hg => ?_)` and prove the remaining obligations. Establish `hg' : parInd _ _ g F = F` using `hg`. Use function extensionality and compare the values at `x`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show TensorProduct.lid ℂ ℂ (F.1.1 (x * g)) = TensorProduct.lid ℂ ℂ (F.1.1 x)`. Rewrite using `[← parInd_apply, hg']`. Use `show TensorProduct.lid ℂ ℂ (F.1.1 (p * x)) = _`. Rewrite using `[F.1.2 p x]`. Conclude with `lid_law ν β a b p _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem indScalVal_mem (ν β : kˣ →* ℂˣ) (a b : ℕ)
     (F : IndSp (two (stdSum (rfl : a + b = a + b)))
@@ -98,16 +98,16 @@ def rep (ν β : kˣ →* ℂˣ) (a b : ℕ) : Representation ℂ (GL (Fin (a + 
     Module.End.mul_apply, LinearEquiv.symm_apply_apply, LinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-The claim follows from `indScal_lift_apply ν β a b f.2 (x * g)`.
+A detailed English derivation is pending.
 -/
 theorem rep_apply (ν β : kˣ →* ℂˣ) (a b : ℕ) (g : GL (Fin (a + b)) k) (f : indScal ν β a b) (x : GL (Fin (a + b)) k) :
     ((rep ν β a b g f : indScal ν β a b) : GL (Fin (a + b)) k → ℂ) x = (f : GL (Fin (a + b)) k → ℂ) (x * g) :=
   indScal_lift_apply ν β a b f.2 (x * g)
 
 /- English proof (translation)
-Use `⟨rep ν β a b, rep_apply ν β a b, fun f => ?_, ⟨Representation.Equiv.mk (scalEquiv ν β a b) fun g => ?_⟩⟩` and prove the remaining obligations. Establish `hs` using `isSmooth_prod₂ (detRep (Fin a) (ν * β)) (detRep (Fin b) β) (scalEquiv ν β a b f)`. Use `hs using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `show (scalEquiv ν β a b).symm _ = f ↔ _`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`. Use extensionality with `f : 1`. Simplify using `only [rep, MonoidHom.coe_mk, OneHom.coe_mk, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem scal_main (ν β : kˣ →* ℂˣ) (a b : ℕ) :
     ∃ ρ : Representation ℂ (GL (Fin (a + b)) k) (indScal ν β a b),
@@ -130,7 +130,7 @@ end GlobalTheory.KSplit.RightTr
 namespace GlobalTheory.KSplit
 
 /- English proof (translation)
-Introduce `k _ _ _ _ a a' α β _ _`. Establish `h` using `GlobalTheory.KSplit.RightTr.scal_main (α * β⁻¹) β a a'`. Establish `hα : α * β⁻¹ * β = α` using `by ext x; simp`. Rewrite `h` using `[hα, ← indSp_eq_indScal]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem indSp_rightTr_equiv_prod₂ : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (a a' : ℕ)
     (α β : kˣ →* ℂˣ), IsSmoothChar α → IsSmoothChar β →

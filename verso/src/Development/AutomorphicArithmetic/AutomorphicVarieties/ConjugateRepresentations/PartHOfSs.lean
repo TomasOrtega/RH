@@ -63,11 +63,11 @@ def ExactSub : Prop :=
     ∃ B : Submodule ℂ (Co Ξ q), (∀ ω, ω ∈ B ↔ Exact Ξ ω) ∧ ∀ x, ∀ ω ∈ B, trans x ω ∈ B
 
 /- English proof (translation)
-Introduce `E _ _ _ a ha Ξ m hm q`. Take `⟨M, h1, h2, h3, h4, h5⟩` from `h E a ha Ξ m hm q`. Take `⟨B, b1, b2⟩` from `hB E a Ξ q`. Take `⟨N, n1, n2, n3, n4⟩` from `h4 (M ⊓ B) inf_le_left fun x ω hω => ⟨h1 x ω hω.1, b2 x ω hω.2⟩`. Use `⟨N, n2, fun ω hω => h2 ω (n1 hω), fun ω hω => h3 ω (n1 hω), fun ω hω he => ?_, fun α a1 a2 a3 => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Submodule.mem_bot ℂ).1 (n3 ▸ (⟨⟨n1 hω, (b1 ω).2 he⟩, hω⟩ : ω ∈ M ⊓ B ⊓ N))`. Take `⟨ω, hω, he⟩` from `h5 α a1 a2 a3`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 (n4.ge hω)`. Use `⟨z, hz, (b1 _).1 ?_⟩` and prove the remaining obligations. Establish `e : α - z = α - (y + z) + y` using `by abel`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `B.add_mem ((b1 _).2 he) hy.2`.
+A detailed English derivation is pending.
 -/
 theorem partH_of_ss (hB : ExactSub) (h : PartHss) : PartH := by
   intro E _ _ _ a ha Ξ m hm q

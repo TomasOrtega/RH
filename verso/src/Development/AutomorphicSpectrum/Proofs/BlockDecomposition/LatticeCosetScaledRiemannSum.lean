@@ -19,9 +19,9 @@ def reps (j : O →+ A) (rep : Q → O) : Finset (ι → A) :=
   Finset.univ.image fun (c : ι → Q) (i : ι) => j (rep (c i))
 
 /- English proof (translation)
-Unfold `reps`. Rewrite using `[Finset.card_image_of_injective, Finset.card_univ, Fintype.card_fun]`. Introduce `c c' h`. Use function extensionality and compare the values at `i`. Establish `h1 : j (rep (c i)) = j (rep (c' i))` using `congrFun h i`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h2` using `congrArg q (hj h1)`. Rewrite `h2` using `[hrep, hrep]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem card_reps (j : O →+ A) (hj : Function.Injective j) (q : O → Q) (rep : Q → O)
     (hrep : ∀ c, q (rep c) = c) :
@@ -35,19 +35,17 @@ theorem card_reps (j : O →+ A) (hj : Function.Injective j) (q : O → Q) (rep 
   rwa [hrep, hrep] at h2
 
 /- English proof (translation)
-Use `choose a ha hau using fun i => hD (y i)`. Use `⟨(fun i => j (rep (q (a i))), fun i => j (a i - rep (q (a i)))), ⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `Finset.mem_image.2 ⟨fun i => q (a i), Finset.mem_univ _, rfl⟩`. Introduce `i _`. Use `AddSubgroup.mem_map.2 ⟨a i - rep (q (a i)), ?_, rfl⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(hq _ _).1 (hrep _).symm`. Introduce `i _`. Establish `: y i - j (rep (q (a i))) - j (a i - rep (q (a i))) = y i - j (a i)`. Rewrite using `[map_sub]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Simplify `ha i` using `[this]`. Introduce and unpack `⟨p₁, p₂⟩ ⟨h1, h2, h3⟩`. Take `⟨c, -, rfl⟩` from `Finset.mem_image.1 h1`. Establish `hl : ∀ i, ∃ l ∈ H, j l = p₂ i` using `fun i => by`. Take `⟨l, hl, e⟩` from `AddSubgroup.mem_map.1 (h2 i (Set.mem_univ i))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨l, hl, e⟩`. Use `choose l hlH hlj using hl`. Establish `hai : ∀ i, rep (c i) + l i = a i` using `fun i => by`. Use `hau i _ ?_` and prove the remaining obligations. Establish `h4` using `h3 i (Set.mem_univ i)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Establish `h5 : y i - j (rep (c i) + l i) = (y - (fun i => j (rep (c i))) - p₂) i`. Simplify using `only [Pi.sub_apply, map_add, hlj]`. Normalize the expressions using the abelian group laws. Use `show y i - j (rep (c i) + l i) ∈ D₀`. Rewrite using `[h5]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h4`. Establish `hc : ∀ i, q (a i) = c i` using `fun i => by`. Establish `h6 : q (a i) = q (rep (c i))` using `(hq _ _).2 (by rw [← hai i]; simpa using hlH i)`. Rewrite `h6` using `[hrep]`. Then use the resulting hypothesis. Use `Prod.ext (funext fun i => ?_) (funext fun i => ?_)` and prove the remaining obligations.
-
-Use `show j (rep (c i)) = j (rep (q (a i)))`. Rewrite using `[hc]`. Use `show p₂ i = j (a i - rep (q (a i)))`. Rewrite using `[hc, ← hai i, add_sub_cancel_left, hlj]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tile_pi (H : AddSubgroup O) (j : O →+ A) (hj : Function.Injective j) (q : O → Q) (rep : Q → O)
     (hrep : ∀ c, q (rep c) = c) (hq : ∀ a b, q a = q b ↔ a - b ∈ H) (D₀ : Set A)
@@ -104,41 +102,33 @@ end GlobalTheory.CompanionTheory.Equi.LatSum
 open GlobalTheory.CompanionTheory.Equi.LatSum in
 
 /- English proof (translation)
-Introduce `F _ _ hF θ hθ li hli ι _ I hI x0 φ hφ hφs`. Use `haveI : BorelSpace (Ainf F) := ⟨rfl⟩`. Take `⟨hTR, hLC, hSC, hT2, -⟩` from `GlobalTheory.CompanionTheory.SW.isLocR_Ainf F hF`. Use `haveI := hTR`. Use `haveI := hLC`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI := hSC`. Use `haveI := hT2`. Use `haveI : li.IsAddHaarMeasure := hli.1`. Take `⟨D₀, K₀, hDm, hK, hDK, hD1, htile⟩` from `GlobalTheory.T.archimedean_fundamental_domain_integers F hF li hli`. Establish `hg : Function.Injective (algebraMap F (Ainf F))` using `(algebraMap F (Ainf F)).injective`.
+Establish an intermediate fact. Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `j : 𝓞 F →+ Ainf F` to `((algebraMap F (Ainf F)).comp (algebraMap (𝓞 F) F)).toAddMonoidHom`. Establish `hj : Function.Injective j` using `hg.comp (IsFractionRing.injective (𝓞 F) F)`. Set `H : AddSubgroup (𝓞 F)` to `I.toAddSubgroup`. Use `haveI hfin : Finite (𝓞 F ⧸ I) := Ideal.finiteQuotientOfFreeOfNeBot I hI`. Use `letI : Fintype (𝓞 F ⧸ I) := Fintype.ofFinite _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `rep : 𝓞 F ⧸ I → 𝓞 F` to `Function.surjInv Ideal.Quotient.mk_surjective`. Establish `hrep : ∀ c, Ideal.Quotient.mk I (rep c) = c` using `Function.surjInv_eq _`. Establish `hq : ∀ a b, Ideal.Quotient.mk I a = Ideal.Quotient.mk I b ↔ a - b ∈ H` using `fun a b => Ideal.Quotient.eq`. Set `Λ : AddSubgroup (ι → Ainf F)` to `AddSubgroup.pi Set.univ (fun _ : ι => H.map j)`. Use `haveI : Countable (𝓞 F) := (RingOfIntegers.basis F).equivFun.toEquiv.injective.countable`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Countable (H.map j) := by`. Establish `: (↑(H.map j) : Set (Ainf F)).Countable` using `(Set.to_countable (H : Set (𝓞 F))).image j`. Conclude with `this.to_subtype`. Use `haveI : Countable Λ := by`. Use `Function.Injective.countable (f := fun (l : Λ) (i : ι) => (⟨l.1 i, l.2 i (Set.mem_univ i)⟩ : H.map j)) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `l l' h`. Conclude with `Subtype.ext (funext fun i => congrArg Subtype.val (congrFun h i))`. Establish `hcard : ((reps (ι` using `ι) j rep).card : ℝ) = (Ideal.absNorm I : ℝ) ^ Fintype.card ι := by`. Rewrite using `[card_reps j hj (Ideal.Quotient.mk I) rep hrep, Nat.cast_pow, Ideal.absNorm_apply, Submodule.cardQuot_apply, Nat.card_eq_fintype_card]`. Set `T : ℝ → (ι → Ainf F) →+ (ι → Ainf F)` to `fun ε => scal ι (θ ε)`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hjoint : Continuous fun p : ℝ × (ι → Ainf F) => T p.1 p.2` using `continuous_pi fun i => (hθ.comp continuous_fst).mul ((continuous_apply i).comp continuous_snd)`. Establish `hθ0 : θ 0 = 0` using `map_zero θ`. Establish `key` using `GlobalTheory.T.lattice_point_count_scaling (ι → Ainf F) (Measure.pi fun _ => li) Λ (Set.pi Set.univ fun _ => D₀) (Set.pi Set.univ fun _ => K₀) (reps (ι := ι) j rep) T (Module.finrank ℚ F * Fintype.card ι) (MeasurableSet.univ_pi fun _ => hDm) (isCompact_univ_pi fun _ => hK) (Set.p …`. Establish `h1 : θ ε⁻¹ * θ ε = 1` using `by rw [← map_mul, inv_mul_cancel₀ hε.ne', map_one]`. Establish `h2 : θ ε * θ ε⁻¹ = 1` using `by rw [mul_comm, h1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Prove the components needed by the constructor for the conclusion. Use function extensionality and compare the values at `i show θ ε⁻¹ * (θ ε * y i) = y i`. Rewrite using `[← mul_assoc, h1, one_mul]`. Use function extensionality and compare the values at `i show θ ε * (θ ε⁻¹ * y i) = y i`. Rewrite using `[← mul_assoc, h2, one_mul])`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun ε hε => GlobalTheory.T.scaling_measure_product_archimedean F hF θ hθ li hli.1 ι ε hε)`. Use the proof step `(fun B hB U hU => by`. Establish `h0 : ∀ b ∈ B, ∀ᶠ z : ℝ × (ι → Ainf F) in 𝓝 ((0 : ℝ), b), T z.1 z.2 ∈ U`. Introduce `b _`. Use `hjoint.continuousAt.eventually_mem ?_` and prove the remaining obligations.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: T (0 : ℝ) b = 0`. Use function extensionality and compare the values at `i`. Use `show θ 0 * b i = 0`. Rewrite using `[hθ0, zero_mul]`. Simplify `hU` using `[this]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hB.eventually_forall_of_forall_eventually h0).filter_mono nhdsWithin_le_nhds)`. Use the proof step `(fun i => algebraMap F (Ainf F) (x0 i)) φ hφ hφs`. Rewrite `key` using `[hcard]`. Set `f : latCoset I x0 → Λ` to `fun x => ⟨fun i => algebraMap F (Ainf F) (x.1 i - x0 i), fun i _ => by`. Take `⟨y, hy, e⟩` from `x.2 i`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `AddSubgroup.mem_map.2 ⟨y, hy, ?_⟩` and prove the remaining obligations. Use `show algebraMap F (Ainf F) (y : F) = algebraMap F (Ainf F) (x.1 i - x0 i)`. Rewrite using `[e]⟩`. Establish `hf : Function.Bijective f`. Prove the components needed by the constructor for the conclusion.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x x' h`. Use `Subtype.ext (funext fun i => ?_)` and prove the remaining obligations. Establish `h1` using `hg (congrFun (congrArg Subtype.val h) i)`. Conclude with `sub_left_injective h1`. Introduce and unpack `⟨l, hl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Establish `hy : ∀ i, ∃ y ∈ I, j y = l i` using `fun i => by`. Take `⟨y, hy, e⟩` from `AddSubgroup.mem_map.1 (hl i (Set.mem_univ i))`. Conclude with `⟨y, hy, e⟩`. Use `choose y hyI hyl using hy`. Use `⟨⟨fun i => x0 i + (y i : F), fun i => ⟨y i, hyI i, by simp⟩⟩, Subtype.ext (funext fun i => ?_)⟩` and prove the remaining obligations.
-
-Use `show algebraMap F (Ainf F) (x0 i + (y i : F) - x0 i) = l i`. Rewrite using `[add_sub_cancel_left, ← hyl]`. Both sides reduce to the same expression. Set `e : latCoset I x0 ≃ Λ` to `Equiv.ofBijective f hf`. Establish `hterm : ∀ (ε : ℝ) (x : latCoset I x0), φ (fun i => θ ε * algebraMap F (Ainf F) (x.1 i)) = φ (T ε ((fun i => algebraMap F (Ainf F) (x0 i)) + (e x : ι → Ainf F)))`.
-
-Introduce `ε x`. Use `congr 1`. Use function extensionality and compare the values at `i`. Use `show _ = θ ε * (algebraMap F (Ainf F) (x0 i) + algebraMap F (Ainf F) (x.1 i - x0 i))`. Rewrite using `[← map_add, add_sub_cancel]`.
-
-Prove the components needed by the constructor for the conclusion. Introduce `ε hε`. Establish `h1` using `(e.summable_iff (f := fun l : Λ => φ (T ε ((fun i => algebraMap F (Ainf F) (x0 i)) + l)))).2 (key.1 ε hε)`. Use `h1.congr fun x => ?_` and prove the remaining obligations. Conclude with `(hterm ε x).symm`.
-
-Use `key.2.congr fun ε => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[← e.tsum_eq]`. Conclude with `tsum_congr fun x => (hterm ε x).symm`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.Equi.lat_sum : ∀ (F : Type) [Field F] [NumberField F], IsTotallyReal F → ∀ θ : ℝ →+* Ainf F, Continuous θ → ∀ li : Measure (Ainf F), IsStdInf li → ∀ (ι : Type) [Fintype ι] (I : Ideal (𝓞 F)), I ≠ ⊥ → ∀ (x0 : ι → F) (φ : (ι → Ainf F) → ℝ), Continuous φ → HasCompactSupport φ → (∀ ε : ℝ, 0 < ε → Summable fun x : latCoset I x0 => φ (fun i => θ ε * algebraMap F (Ainf F) (x.1 i))) ∧ Tendsto (fun ε : ℝ => ε ^ (Module.finrank ℚ F * Fintype.card ι) * ∑' x : latCoset I x0, φ (fun i => θ ε * algebraMap F (Ainf F) (x.1 i))) (𝓝[>] 0) (𝓝 (((Ideal.absNorm I : ℝ) ^ Fintype.card ι)⁻¹ * ∫ y, φ y ∂(Measure.pi fun _ => li))) := by
   intro F _ _ hF θ hθ li hli ι _ I hI x0 φ hφ hφs

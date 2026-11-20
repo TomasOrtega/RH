@@ -16,14 +16,14 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
   (mu : Tup X.F X.E X.K S)
 
 /- English proof (translation)
-Unfold `cOf`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ookC {m2 i : ℕ} (hm : R.m = m2 + 2) (hi : i < m2) : cOf R i = cOf R (i + 1) + 1 := by
   unfold cOf
   omega
 
 /- English proof (translation)
-Unfold `Jat`. Rewrite using `[if_pos hw]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ookJat (j : ℕ) {w : HeightOneSpectrum (𝓞 X.E)} (hw : w ∈ Pr.vGs) :
     Jat (Pr := Pr) (R := R) true j w = LocE.JGsym w (qOf w) R.k R.rS R.r R.t (R.N j) (cOf R j) := by
@@ -37,7 +37,7 @@ def ookKap (c : LocCst X (rowSG Pr sel mu)) (i : ℕ) (P : rowSG Pr sel mu) : X.
     c.sq P ^ (LocE.vP P.1 (qOf P.1) 1 * ((R.N i + cOf R i : ℕ) : ℤ))
 
 /- English proof (translation)
-Unfold `omPhi`. Rewrite using `[ciOm_one]`. Unfold `PhiAt`. Rewrite using `[if_pos hP, hs, if_pos rfl]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ookOmPhi_eq (c : LocCst X (rowSG Pr sel mu)) (hs : c.sharp = true) (i : ℕ) (P : rowSG Pr sel mu) (hP : P.1 ∈ Pr.vGs)
     (y : HomE X.E (R.N i + cOf R i) (R.N (i + 1) + cOf R (i + 1))) :
@@ -50,7 +50,7 @@ theorem ookOmPhi_eq (c : LocCst X (rowSG Pr sel mu)) (hs : c.sharp = true) (i : 
   rfl
 
 /- English proof (translation)
-Introduce `y hy`. Rewrite `hy` using `[ookOmPhi_eq Ch sel mu c hs i P hP]`. Conclude with `ocbPhiGS_supp (psi0P Ch P.1) (chiP Ch P.1) (ocbRanks_step hm hi) (ookC hm hi) y (right_ne_zero_of_mul hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ookSupp (c : LocCst X (rowSG Pr sel mu)) (hs : c.sharp = true) {m2 i : ℕ} (hm : R.m = m2 + 2) (hi : i < m2)
     (P : rowSG Pr sel mu) (hP : P.1 ∈ Pr.vGs) :
@@ -61,7 +61,7 @@ theorem ookSupp (c : LocCst X (rowSG Pr sel mu)) (hs : c.sharp = true) {m2 i : �
   exact ocbPhiGS_supp (psi0P Ch P.1) (chiP Ch P.1) (ocbRanks_step hm hi) (ookC hm hi) y (right_ne_zero_of_mul hy)
 
 /- English proof (translation)
-Use `⟨fun ybar => σ (ookKap Ch sel mu c i P) * @ocbPhiS (𝓞 X.E ⧸ P.1.asIdeal) (resField P.1) ((σ : X.K →* ℂ).compAddChar (psi0P Ch P.1)) (fun s => (Units.map (σ : X.K →* ℂ)).comp (chiP Ch P.1 s)) R.k R.m R.t (i + 1) (R.N i) (cOf R (i + 1)) (R.N (i + 1)) ybar, ?_⟩` and prove the remaining obligations. Introduce `y ybar hint hred`. Rewrite using `[ookOmPhi_eq Ch sel mu c hs i P hP, map_mul]`. Conclude with `congrArg (σ (ookKap Ch sel mu c i P) * ·) (ocbPhiGS_red (ciQ_mem P.1) (ciQ_notMem_sq hX hPr hP) σ (psi0P Ch P.1) (chiP Ch P.1) (ocbRanks_step hm hi) (ookC hm hi) y ybar hint hred)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ookRedPsi (hX : X.Ok) (hPr : Pr.Ok) (c : LocCst X (rowSG Pr sel mu)) (hs : c.sharp = true) {m2 i : ℕ} (hm : R.m = m2 + 2)
     (hi : i < m2) (P : rowSG Pr sel mu) (hP : P.1 ∈ Pr.vGs) (σ : X.K →+* ℂ) :
@@ -79,7 +79,7 @@ theorem ookRedPsi (hX : X.Ok) (hPr : Pr.Ok) (c : LocCst X (rowSG Pr sel mu)) (hs
     (ocbPhiGS_red (ciQ_mem P.1) (ciQ_notMem_sq hX hPr hP) σ (psi0P Ch P.1) (chiP Ch P.1) (ocbRanks_step hm hi) (ookC hm hi) y ybar hint hred)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `xj`. Take `⟨Ψr, hred⟩` from `ookRedPsi Ch sel mu hX hPr c hs hm hi P hP σ`. Establish `hAc : cOf R (i + 1) + 1 ≤ c.A` using `by unfold cOf; omega`. Establish `hAc' : cOf R (i + 1) + 1 ≤ A'` using `by unfold cOf; omega`. Conclude with `firstUnfolding_reduction_independent (ciQ_mem P.1) (ciQ_notMem_sq hX hPr hP) (ciQOf_prime hPr hP) (ciCard P.1) (ookC hm hi) σ (omPhi Ch sel mu c i P 1 1) Ψr (ookSupp Ch sel mu c hs hm hi P hP) hred (c.psi P) (fun u => σ (psi0P Ch P.1 u)) (fun a ha => by rw [hψ a ha]) hAc hB hAc' …`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ookE1at_indep (hX : X.Ok) (hPr : Pr.Ok) (c : LocCst X (rowSG Pr sel mu)) (hs : c.sharp = true) {m2 i : ℕ} (hm : R.m = m2 + 2)
     (hi : i < m2) (P : rowSG Pr sel mu) (hP : P.1 ∈ Pr.vGs)
@@ -95,9 +95,9 @@ theorem ookE1at_indep (hX : X.Ok) (hPr : Pr.Ok) (c : LocCst X (rowSG Pr sel mu))
     (fun a ha => by rw [hψ a ha]) hAc hB hAc' hB' xj
 
 /- English proof (translation)
-Unfold `XiAt at h`. Establish `h1` using `right_ne_zero_of_mul h`. Establish `hx` using `xInt_of_firstUnfolding_ne_zero (ookC hm hi) (omPhi Ch sel mu c i P 1 1) (ookSupp Ch sel mu c hs hm hi P hP) _ _ _ x h1`. Establish `h2` using `hx l.1 s.1 l.2 s.2`. Rewrite `h2` using `[ocbS_eN_single s.2, ocbS_atN_of_lt _ l.2]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `IntAt.mul ?_ h2` and prove the remaining obligations. Rewrite using `[← Nat.cast_pow]`. Conclude with `ocbS_intAt_natCast _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ookXiSupp (c : LocCst X (rowSG Pr sel mu)) (hs : c.sharp = true) {m2 i : ℕ} (hm : R.m = m2 + 2) (hi : i < m2)
     (P : rowSG Pr sel mu) (hP : P.1 ∈ Pr.vGs) (x : HomE X.E (R.N i) (R.N (i + 1))) (h : XiAt Ch sel mu c i P 1 1 x ≠ 0)
@@ -112,11 +112,9 @@ theorem ookXiSupp (c : LocCst X (rowSG Pr sel mu)) (hs : c.sharp = true) {m2 i :
   exact ocbS_intAt_natCast _
 
 /- English proof (translation)
-Take `⟨Ψr, hred⟩` from `ookRedPsi Ch sel mu hX hPr c hs hm hi P hP σ`. Establish `hAc : cOf R (i + 1) + 1 ≤ c.A` using `by unfold cOf; omega`. Establish `hz' : ∀ l s, l < R.N (i + 1) → s < R.N i → IntAt P.1 (Loc.atN (z (Loc.eN X.E (R.N i) s)) l / (qOf P.1 : X.E))`. Introduce `l s hl hs`. Establish `h1` using `hz ⟨s, hs⟩ ⟨l, hl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[hB, pow_one, inv_mul_eq_div]`. Rewrite using `[ocbS_eN_single hs, ocbS_atN_of_lt _ hl]`. Conclude with `h1`. Unfold `XiAt`. Use `congr 1`.
-
-Conclude with `firstUnfolding_add_eq_self_of_intAt_div (ciQ_mem P.1) (ciQ_notMem_sq hX hPr hP) (ciQOf_prime hPr hP) (ciCard P.1) (ookC hm hi) σ (omPhi Ch sel mu c i P 1 1) Ψr (ookSupp Ch sel mu c hs hm hi P hP) hred (c.psi P) (fun u => σ (psi0P Ch P.1 u)) (fun a ha => by rw [hψ a ha]) hAc (by r …`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem ookXiInv (hX : X.Ok) (hPr : Pr.Ok) (c : LocCst X (rowSG Pr sel mu)) (hs : c.sharp = true) {m2 i : ℕ} (hm : R.m = m2 + 2)
     (hi : i < m2) (P : rowSG Pr sel mu) (hP : P.1 ∈ Pr.vGs)
@@ -139,11 +137,11 @@ theorem ookXiInv (hX : X.Ok) (hPr : Pr.Ok) (c : LocCst X (rowSG Pr sel mu)) (hs 
     (fun a ha => by rw [hψ a ha]) hAc (by rw [hB]) x z hz'
 
 /- English proof (translation)
-Establish `h1 : cOf R m2 = 1` using `by unfold cOf; omega`. Establish `h2 : cOf R (m2 + 1) = 0` using `by unfold cOf; omega`. Establish `h3` using `Y_eq_X_add (R := R) (j := m2) (by omega)`. Establish `h4 : R.N (m2 + 1) = R.N m2 + R.t + 1` using `by unfold Ranks.N; ring`. Establish `h5 : R.k ≤ R.N m2` using `by unfold Ranks.N; omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h6 : R.k ≤ R.r` using `by unfold Ranks.r; omega`. Establish `h7 : R.m - 1 - m2 = 1` using `by omega`. Rewrite `h3` using `[h7]`. Use `⟨h1, h2, h5, h6, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.add_sub_cancel, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h3`. Rewrite using `[Nat.add_sub_cancel, h3, h4, h2]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem ookLast {m2 : ℕ} (hm : R.m = m2 + 2) :
     cOf R m2 = 1 ∧ cOf R (m2 + 1) = 0 ∧ R.k ≤ R.N m2 ∧ R.k ≤ R.r ∧ R.r + (m2 + 1 - 1) * R.t = R.N m2 + cOf R m2 ∧
@@ -161,11 +159,11 @@ theorem ookLast {m2 : ℕ} (hm : R.m = m2 + 2) :
   · rw [Nat.add_sub_cancel, h3, h4, h2]; omega
 
 /- English proof (translation)
-Take `⟨hc', hc, hk, -, ha, -⟩` from `ookLast (R := R) hm`. Unfold `PsiAt at h`. Rewrite `h` using `[ookOmPhi_eq Ch sel mu c hs m2 P hP]`. Establish `h'` using `right_ne_zero_of_mul h`. Rewrite `h'` using `[phiGS_eq]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hC` using `(ite_ne_right_iff.1 h').1`. Establish `hp' : LocE.fPos R.k (cOf R m2) (R.N m2) s.1 < R.r + (m2 + 1 - 1) * R.t`. Rewrite using `[ha]`. Conclude with `ocbPhi_fPos_lt hk (Nat.lt_of_lt_of_le s.2 (Nat.le_add_right _ _))`. Establish `h1` using `hC.1 l.1 _ (Nat.lt_of_lt_of_le l.2 (Nat.le_add_right _ _)) hp'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[ookEntB_joinX (qOf P.1) hc' hc hk x₀ y' l.2 s.2]`. Use `IntAt.mul ?_ h1` and prove the remaining obligations. Rewrite using `[← Nat.cast_pow]`. Conclude with `ocbS_intAt_natCast _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ookPsiSuppX (c : LocCst X (rowSG Pr sel mu)) (hs : c.sharp = true) {m2 : ℕ} (hm : R.m = m2 + 2) (P : rowSG Pr sel mu)
     (hP : P.1 ∈ Pr.vGs) (x₀ : HomE X.E (R.N m2) (R.N (m2 + 1))) (y' : Sp X.E (R.N (m2 + 1)))
@@ -187,11 +185,11 @@ theorem ookPsiSuppX (c : LocCst X (rowSG Pr sel mu)) (hs : c.sharp = true) {m2 :
   exact ocbS_intAt_natCast _
 
 /- English proof (translation)
-Take `⟨hc', hc, hk, hkr, ha, han⟩` from `ookLast (R := R) hm`. Unfold `PsiAt`. Rewrite using `[ookOmPhi_eq Ch sel mu c hs m2 P hP, ookOmPhi_eq Ch sel mu c hs m2 P hP]`. Use `congr 1`. Use `ookPhiGS_congr (ciQ_mem P.1) (ciQ_ne_zero (ciQ_notMem_sq hX hPr hP)) _ _ _ _ hkr han fun p p' hp hp' => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hp0 : p < R.N (m2 + 1)` using `by omega`. Distinguish the cases in `hpk : p' = R.k`. Rewrite using `[hpk, symEntB_join_col _ hc' hc x₀ (y' + z) hp0, symEntB_join_col _ hc' hc x₀ y' hp0]`. Conclude with `⟨z ⟨p, hp0⟩, hz _, by rw [Pi.add_apply, mul_add]⟩`. Take `⟨hsl, hfp⟩` from `ookFIdx_lt hc' hk (by omega) hpk`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hfp, ookEntB_joinX _ hc' hc hk x₀ (y' + z) hp0 hsl, ookEntB_joinX _ hc' hc hk x₀ y' hp0 hsl]`. Conclude with `⟨0, ciIntAt_zero, by rw [mul_zero, add_zero]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem ookPsiInv (hX : X.Ok) (hPr : Pr.Ok) (c : LocCst X (rowSG Pr sel mu)) (hs : c.sharp = true) {m2 : ℕ} (hm : R.m = m2 + 2)
     (P : rowSG Pr sel mu) (hP : P.1 ∈ Pr.vGs) (x₀ : HomE X.E (R.N m2) (R.N (m2 + 1))) (y' z : Sp X.E (R.N (m2 + 1)))
@@ -210,13 +208,13 @@ theorem ookPsiInv (hX : X.Ok) (hPr : Pr.Ok) (c : LocCst X (rowSG Pr sel mu)) (hs
     exact ⟨0, ciIntAt_zero, by rw [mul_zero, add_zero]⟩
 
 /- English proof (translation)
-Take `⟨hc', hc, hk, hkr, ha, han⟩` from `ookLast (R := R) hm`. Establish `hq0 : (qOf P.1 : X.E) ≠ 0` using `ciQ_ne_zero (ciQ_notMem_sq hX hPr hP)`. Unfold `PsiAt`. Rewrite using `[ookOmPhi_eq Ch sel mu c hs m2 P hP, ookOmPhi_eq Ch sel mu c hs m2 P hP]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `ookPhiGS_congr (ciQ_mem P.1) hq0 _ _ _ _ hkr han fun p p' hp hp' => ?_` and prove the remaining obligations. Establish `hp0 : p < R.N (m2 + 1)` using `by omega`. Distinguish the cases in `hpk : p' = R.k`. Rewrite using `[hpk, symEntB_join_col _ hc' hc (x₀ + z) y' hp0, symEntB_join_col _ hc' hc x₀ y' hp0]`. Conclude with `⟨0, ciIntAt_zero, by rw [mul_zero, add_zero]⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨hsl, hfp⟩` from `ookFIdx_lt hc' hk (by omega) hpk`. Rewrite using `[← hfp, ookEntB_joinX _ hc' hc hk (x₀ + z) y' hp0 hsl, ookEntB_joinX _ hc' hc hk x₀ y' hp0 hsl]`. Establish `h1` using `hz ⟨_, hsl⟩ ⟨p, hp0⟩`. Rewrite `h1` using `[hB, pow_one]`. Use `⟨_, h1, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[LinearMap.add_apply, Pi.add_apply, ← mul_assoc, mul_inv_cancel₀ hq0, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ookPsiInvX (hX : X.Ok) (hPr : Pr.Ok) (c : LocCst X (rowSG Pr sel mu)) (hs : c.sharp = true) {m2 : ℕ} (hm : R.m = m2 + 2)
     (P : rowSG Pr sel mu) (hP : P.1 ∈ Pr.vGs) (hB : c.B = 1) (x₀ z : HomE X.E (R.N m2) (R.N (m2 + 1))) (y' : Sp X.E (R.N (m2 + 1)))
@@ -251,7 +249,7 @@ def ookCst (SB : Finset (HeightOneSpectrum (𝓞 X.E))) (mq : ℕ → SB → X.K
 variable {Ch}
 
 /- English proof (translation)
-The claim follows from `(ciCst_ok hPr hCh hSB h4 (mq := mq)).psi_add psi_int := (ciCst_ok hPr hCh hSB h4 (mq := mq)).psi_int psi_ne := (ciCst_ok hPr hCh hSB h4 (mq := mq)).psi_ne D_pos _ := le_refl 1 sq_sq := (ciCst_ok hPr hCh hSB h4 (mq := mq)).sq_sq M_pos := le_refl 1 M_le_A := hA M_le_B := le_refl 1 …`.
+A detailed English derivation is pending.
 -/
 theorem ookCst_ok (hPr : Pr.Ok) (hCh : Ch.Ok) {SB : Finset (HeightOneSpectrum (𝓞 X.E))} (hSB : ∀ P ∈ SB, P ∈ Pr.vGs)
     (h4 : ∀ P ∈ SB, qOf P % 4 = 1) {mq : ℕ → SB → X.K} {A : ℕ} (hA : 1 ≤ A) : (ookCst Ch SB mq A).Ok where
@@ -266,9 +264,9 @@ theorem ookCst_ok (hPr : Pr.Ok) (hCh : Ch.Ok) {SB : Finset (HeightOneSpectrum (�
   B_pos := le_refl 1
 
 /- English proof (translation)
-Establish `hne : redP w xi0 ≠ 0`. Introduce `h0`. Apply `hCh.psi_zero_nontrivial_character ⟨w, hw⟩` to reduce the goal to its premises. Use extensionality with `c`. Apply `σ₀.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hW ⟨w, hw⟩ c 0 (by rw [h0, zero_mul, Int.cast_zero]), AddChar.one_apply, map_one]`. Simplify using the standard rewrite rules. Conclude with `⟨intAt_of_redP_ne_zero₂ hne, hne⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem ookXiUnit (hCh : Ch.Ok) {σ₀ : X.K →+* ℂ} {xi0 : X.E} (hW : Ch.WeilTied σ₀ xi0) (w : HeightOneSpectrum (𝓞 X.E))
     (hw : w ∈ Pr.vGs) : IntAt w xi0 ∧ redP w xi0 ≠ 0 := by
@@ -294,7 +292,7 @@ def ookCstR (G : ChGlob X R.m) : LocCst X (rowSG Pr sel (mu0 X.F X.E X.K S)) :=
 variable {Ch}
 
 /- English proof (translation)
-Use `show ciPsi Ch P _ = _`. Establish `hq0 : (qOf P.1 : X.E) ≠ 0` using `by exact_mod_cast (ciQOf_prime hPr (ciMemG sel S P)).ne_zero`. Unfold `ciPsi`. Rewrite using `[mul_div_cancel₀ _ hq0, if_pos ha]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem referenceConstants_psi_depth_one (hPr : Pr.Ok) (G : ChGlob X R.m) (P : rowSG Pr sel (mu0 X.F X.E X.K S)) (a : X.E) (ha : IntAt P.1 a) :
     (ookCstR Ch sel S G).psi P (a / (qOf P.1 : X.E)) = psi0P Ch P.1 (redP P.1 a) := by
@@ -304,7 +302,7 @@ theorem referenceConstants_psi_depth_one (hPr : Pr.Ok) (G : ChGlob X R.m) (P : r
   rw [mul_div_cancel₀ _ hq0, if_pos ha]
 
 /- English proof (translation)
-The claim follows from `hX hPr := hPr hCh := hCh hm := hm cst_ok := ookCst_ok hPr hCh (fun P hP => ciMemG sel S ⟨P, hP⟩) (fun P hP => h4 P (ciMemG sel S ⟨P, hP⟩)) (by have := R.two_le_m; omega) sharp := rfl psi0 P a _ ha := referenceConstants_psi_depth_one sel S hPr G P a ha depthG _ _ := rfl`.
+A detailed English derivation is pending.
 -/
 theorem ookCstR_base (hX : X.Ok) (hPr : Pr.Ok) (hCh : Ch.Ok) (h4 : ∀ w ∈ Pr.vGs, qOf w % 4 = 1) (G : ChGlob X R.m) {m2 : ℕ}
     (hm : R.m = m2 + 2) : OcbBase Ch sel (mu0 X.F X.E X.K S) (ookCstR Ch sel S G) m2 where
@@ -318,15 +316,11 @@ theorem ookCstR_base (hX : X.Ok) (hPr : Pr.Ok) (hCh : Ch.Ok) (h4 : ∀ w ∈ Pr.
   depthG _ _ := rfl
 
 /- English proof (translation)
-Establish `hG : ∀ P : rowSG Pr sel (mu0 X.F X.E X.K S), P.1 ∈ Pr.vGs` using `ciMemG sel S`. Establish `hSB : ∀ P ∈ rowSG Pr sel (mu0 X.F X.E X.K S), P ∈ Pr.vGs` using `fun P hP => ciMemG sel S ⟨P, hP⟩`. Establish `hψ : ∀ (P : rowSG Pr sel (mu0 X.F X.E X.K S)) (a : X.E), IntAt P.1 a → (ookCstR Ch sel S G).psi P (a / (qOf P.1 : X.E)) = psi0P Ch P.1 (redP P.1 a)` using `fun P a ha => referenceConstants_psi_depth_one sel S hPr G P a ha`. Establish `hs : (ookCstR Ch sel S G).sharp = true` using `rfl`. Establish `hA : R.m ≤ (ookCstR Ch sel S G).A` using `le_refl _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : (ookCstR Ch sel S G).B = 1` using `rfl`. Take `⟨hc', hc, -, -, -, -⟩` from `ookLast (R := R) hm`. Take `⟨hn, hinj, hsurj⟩` from `oneIdx_clauses hO hN`. Conclude with `{ hm := hm cst_ok := ookCst_ok hPr hCh hSB (fun P hP => h4 P (hSB P hP)) (by have := R.two_le_m; omega) xiUnitAtPrime := fun P => ookXiUnit hCh hW P.1 (hG P) weil := ciCst_weil Ch hX hPr hSB (ciMuq G ((mu0 X.F X.E X.K S : Tup X.F X.E X.K S) : Chr X.F X.E X.K)) hW (fun P hP => (oo …`. Rewrite using `[if_pos (hG P), pow_one]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(psiAt_sym Ch sel _ _ hc' hc hs P (hG P) x₀ y' h i).1`. Use `psiInv := fun _ P x₀ y' z hz => ookPsiInv Ch sel _ hX hPr _ hs hm P (hG P) x₀ y' z fun i => by`. Establish `h1` using `hz i`. Rewrite `h1` using `[if_pos (hG P), pow_zero, inv_one, one_mul]`. Then use the resulting hypothesis. Use `xiSupp := fun i hi _ _ P x h s l => ookXiSupp Ch sel _ _ hs hm hi P (hG P) x h s l`.
-
-Use `xiInv := fun i hi _ _ P x z hz => ookXiInv Ch sel _ hX hPr _ hs hm hi P (hG P) (hψ P) G.σ₀ hA hB x z hz`. Use `psiSuppX := fun _ P x₀ y' h s l => ookPsiSuppX Ch sel _ _ hs hm P (hG P) x₀ y' h s l`. Use `psiInvX := fun _ P x₀ z y' hz => ookPsiInvX Ch sel _ hX hPr _ hs hm P (hG P) hB x₀ z y' hz`. Use `int := fun j _ P => by show Loc.prX (Loc.Cbe (Jat (Pr := Pr) true j P.1) 1) ≤ _`. Rewrite using `[ookJat j (hG P)]`.
-
-Conclude with `ookPrX_le`. Use `grpQ := fun _ _ P => absurd P.2 (ciNotQ sel S P.1)`. Use `chrQ := fun _ _ P => absurd P.2 (ciNotQ sel S P.1)`. Use `grpG := fun j b w hbar => hO.grpG j b.2 w hbar`. Use `chrG := fun j b w hbar g r hr hrg hred => hO.chrG j b.2 w hbar g r hr hrg hred }`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem oneIdx_ok (hX : X.Ok) (hPr : Pr.Ok) (hCh : Ch.Ok) (h4 : ∀ w ∈ Pr.vGs, qOf w % 4 = 1) (G : ChGlob X R.m)
     {e : Fin R.m → X.Tau → ℚ} {eta : Formalism.L2.Host.HChar X.E} (hT : Ch.Tied G.σ₀ e G.mu0 eta) (hW : Ch.WeilTied G.σ₀ G.xi0)

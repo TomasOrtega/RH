@@ -19,30 +19,30 @@ namespace GlobalTheory.ZM.RepMap
 variable {X : Scheme.{0}} {σ : Type}
 
 /- English proof (translation)
-Rewrite using `[gs_eq (𝟙 X) x U h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gs_one (x : X) (U : X.Opens) (h : x ∈ U) (f : Γ(X, U)) :
     gs (𝟙 X) x U f = (X.presheaf.germ U x h).hom f := by
   rw [gs_eq (𝟙 X) x U h]; rfl
 
 /- English proof (translation)
-Establish `uniq : ∀ (y : X) (j : B.ι) (k : A.ι), y ∈ B.U j → y ∈ A.U k → ∀ u u' : (X.presheaf.stalk y)ˣ, (∀ i, gs (𝟙 X) y (B.U j) ((b i).f j) = u * gs (𝟙 X) y (A.U k) ((a i).f k)) → (∀ i, gs (𝟙 X) y (B.U j) ((b i).f j) = u' * gs (𝟙 X) y (A.U k) ((a i).f k)) → u = u'`. Introduce `y j k hj hk u u' h h'`. Take `⟨i, hi⟩` from `(H y j k hj hk).1`. Conclude with `Units.ext (hi.mul_right_cancel ((h i).symm.trans (h' i)))`. Establish `loc : ∀ (j : B.ι) (k : A.ι) (y : ↥(B.U j ⊓ A.U k : X.Opens)), ∃ (W : X.Opens) (_ : W ≤ B.U j ⊓ A.U k) (c : Γ(X, W)ˣ), y.1 ∈ W ∧ ∀ z ∈ W, ∀ i, gs (𝟙 X) z (B.U j) ((b i).f j) = gm (𝟙 X) z W c * gs (𝟙 X) z (A.U k) ((a i).f k)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `j k ⟨y, hy⟩`. Take `⟨⟨i₀, hi₀⟩, u, hu⟩` from `H y j k hy.1 hy.2`. Set `t : Γ(X, B.U j ⊓ A.U k)` to `resG X inf_le_left ((b i₀).f j) * resG X inf_le_right ((a i₀).f k)`. Establish `hle` using `X.basicOpen_le t`. Establish `ht : IsUnit (resG X hle t)` using `RingedSpace.isUnit_res_basicOpen X.toRingedSpace t`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ht` using `[map_mul]`. Take `⟨c₁, h₁⟩` from `isUnit_of_mul_isUnit_left ht`. Take `⟨c₂, h₂⟩` from `isUnit_of_mul_isUnit_right ht`. Use `⟨X.basicOpen t, hle, c₁ * c₂⁻¹, ?_, fun z hz i => ?_⟩` and prove the remaining obligations. Rewrite using `[X.mem_basicOpen t y hy, ← gs_one y _ hy, gs_mul _ y _ hy, gs_res _ y _ hy, gs_res _ y _ hy, hu]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(u.isUnit.mul hi₀).mul hi₀`. Take `⟨-, u', hu'⟩` from `H z j k (hle hz).1 (hle hz).2`. Establish `e₁ : (gm (𝟙 X) z _ c₁).val = gs (𝟙 X) z (B.U j) ((b i₀).f j)`. Rewrite using `[← gs_unit _ z _ hz, h₁, gs_res _ z _ hz, gs_res _ z _ (hle hz)]`. Establish `e₂ : (gm (𝟙 X) z _ c₂).val = gs (𝟙 X) z (A.U k) ((a i₀).f k)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← gs_unit _ z _ hz, h₂, gs_res _ z _ hz, gs_res _ z _ (hle hz)]`. Establish `e : gm (𝟙 X) z _ c₁ = u' * gm (𝟙 X) z _ c₂` using `Units.ext (by rw [Units.val_mul, e₁, e₂, hu'])`. Rewrite using `[map_mul, map_inv, e, mul_inv_cancel_right, hu']`. Use `choose W hW c hy hc using loc`. Establish `glue : ∀ (j : B.ι) (k : A.ι), ∃ w : Γ(X, B.U j ⊓ A.U k)ˣ, ∀ z ∈ B.U j ⊓ A.U k, ∀ i, gs (𝟙 X) z (B.U j) ((b i).f j) = gm (𝟙 X) z _ w * gs (𝟙 X) z (A.U k) ((a i).f k)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `j k`. Take `⟨w, hw⟩` from `glue_unit (B.U j ⊓ A.U k) (W j k) (hW j k) (fun z hz => TopologicalSpace.Opens.mem_iSup.2 ⟨⟨z, hz⟩, hy j k ⟨z, hz⟩⟩) (c j k) (fun p q z hz => uniq z j k (hW j k p hz.1).1 (hW j k p hz.1).2 _ _ (hc j k p z hz.1) (hc j k q z hz.2))`. Use `⟨w, fun z hz i => ?_⟩` and prove the remaining obligations. Rewrite using `[← gm_res (𝟙 X) z (hW j k ⟨z, hz⟩) (hy j k ⟨z, hz⟩), hw]`. Conclude with `hc j k ⟨z, hz⟩ z (hy j k ⟨z, hz⟩) i`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `choose w hw using glue`. Use `⟨⟨fun p => w p.1 p.2⟩, fun p q => unit_ext fun y hy => ?_⟩` and prove the remaining obligations. Use `(gm_res _ y _ hy _).trans (Eq.trans ?_ ((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_div A B (𝟙 X) y p q hy) (gm_res _ y _ hy _))).symm)` and prove the remaining obligations. Use `uniq y p.1 p.2 hy.1.1 hy.1.2 _ _ (hw p.1 p.2 y hy.1) fun i => ?_` and prove the remaining obligations. Establish `hB : y ∈ B.U p.1 ⊓ B.U q.1` using `⟨hy.1.1, hy.2.1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hA : y ∈ A.U p.2 ⊓ A.U q.2` using `⟨hy.1.2, hy.2.2⟩`. Establish `eB` using `congrArg (gs (𝟙 X) y _) ((b i).compat p.1 q.1)`. Establish `eA` using `congrArg (gs (𝟙 X) y _) ((a i).compat p.2 q.2)`. Rewrite `eB` using `[gs_mul _ y _ hB, gs_res _ y _ hB, gs_res _ y _ hB, gs_unit _ y _ hB]`. Rewrite `eA` using `[gs_mul _ y _ hA, gs_res _ y _ hA, gs_res _ y _ hA, gs_unit _ y _ hA]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[eB, eA, hw q.1 q.2 y hy.2 i]`. Express the relevant statement in the definitionally equal form `_ = ((_ * _ * gm (𝟙 X) y _ (w q.1 q.2) : (X.presheaf.stalk y)ˣ) : X.presheaf.stalk y) * _`. Rewrite using `[Units.val_mul, Units.val_mul]`. Use `(gm (𝟙 X) y _ (A.g p.2 q.2)).inv_mul` as an intermediate fact. Take the linear combination `(-(gm (𝟙 X) y _ (B.g p.1 q.1)).val * (gm (𝟙 X) y _ (w q.1 q.2)).val * gs (𝟙 X) y (A.U q.2) ((a i).f q.2)) * this`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_of_germs (A B : LB X) (a : σ → A.Sec) (b : σ → B.Sec)
     (H : ∀ (y : X) (j : B.ι) (k : A.ι), y ∈ B.U j → y ∈ A.U k → (∃ i, IsUnit (gs (𝟙 X) y (A.U k) ((a i).f k))) ∧
@@ -103,9 +103,9 @@ theorem lbIso_of_germs (A B : LB X) (a : σ → A.Sec) (b : σ → B.Sec)
     gs (𝟙 X) y (A.U q.2) ((a i).f q.2)) * this
 
 /- English proof (translation)
-Take `⟨τ, -, h⟩` from `h`. Establish `hp : p ∈ (M.pull x).U (fun _ => k)` using `mem_pull.2 hk`. Use `⟨gm (𝟙 _) p _ (τ.s fun _ => k), fun i => ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (gs (𝟙 _) p _) (h i (fun _ => k) (RepBC.pull_le M x _))`. Rewrite `e` using `[gs_appLE x _ _ _ (𝟙 _) p hp, gs_mul _ p _ hp, gs_res _ p _ hp, gs_one p ⊤ trivial, Category.id_comp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← gs_unit _ p _ hp]`. Conclude with `e`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coord_germ {M : LB X} {th : σ → M.Sec} {R : Type} [CommRing R] {x : Sp R ⟶ X} {v : σ → R}
     (h : SecCoord M th x v) (p : Sp R) (k : M.ι) (hk : x p ∈ M.U k) :
@@ -120,17 +120,15 @@ theorem coord_germ {M : LB X} {th : σ → M.Sec} {R : Type} [CommRing R] {x : S
   exact e
 
 /- English proof (translation)
-Use `lbIso_of_germs A B a b fun y j k hj hk => ?_` and prove the remaining obligations. Take `⟨R, _, x, v, _, ⟨p, rfl⟩, hv, hA, hB⟩` from `H y`. Take `⟨t, ht⟩` from `coord_germ hA p k hk`. Take `⟨t', ht'⟩` from `coord_germ hB p j hj`. Set `e` to `(asIso (x.stalkMap p)).commRingCatIsoToRingEquiv`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `he : ∀ (U : X.Opens) (_ : x p ∈ U) f, gs x p U f = e (gs (𝟙 X) (x p) U f)` using `fun U h f => gs_stalkMap x p U h f`. Set `ψ : R →+* (Sp R).presheaf.stalk p` to `((Sp R).presheaf.germ ⊤ p trivial).hom.comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom`. Prove the components needed by the constructor for the conclusion. Establish `: ∃ i, IsUnit (ψ (v i))`. Assume the negation of the conclusion as `hn`.
+Establish an intermediate fact. Introduce a local definition for the expression. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hn`. Establish `: Ideal.span (Set.range v) ≤ (IsLocalRing.maximalIdeal _).comap ψ`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `hn i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[hv, top_le_iff, Ideal.comap_eq_top_iff]`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal _).ne_top this`. Take `⟨i, hi⟩` from `this`. Use `⟨i, ?_⟩` and prove the remaining obligations. Rewrite using `[← MulEquiv.isUnit_map e, ← he _ hk, ht]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hi.mul t.isUnit`. Use `⟨Units.map e.symm.toMonoidHom (t' * t⁻¹), fun i => e.injective ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ← he _ hk, ← he _ hj, ht, ht']`. Establish `: e (Units.map e.symm.toMonoidHom (t' * t⁻¹)).val = (t' * t⁻¹).val` using `e.apply_symm_apply _`. Rewrite using `[this, Units.val_mul]`.
-
-Take the linear combination `(-(ψ (v i)) * t'.val) * t.inv_mul`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem lbIso_of_coord (A B : LB X) (a : σ → A.Sec) (b : σ → B.Sec)
     (H : ∀ y : X, ∃ (R : Type) (_ : CommRing R) (x : Sp R ⟶ X) (v : σ → R), IsOpenImmersion x ∧ y ∈ Set.range x ∧
@@ -164,17 +162,17 @@ theorem lbIso_of_coord (A B : LB X) (a : σ → A.Sec) (b : σ → B.Sec)
     linear_combination (-(ψ (v i)) * t'.val) * t.inv_mul
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(Spec.preimage a).hom, (Spec.map_preimage a).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_spMap {R R' : Type} [CommRing R] [CommRing R'] (a : Sp R' ⟶ Sp R) : ∃ φ : R →+* R', a = spMap φ :=
   ⟨(Spec.preimage a).hom, (Spec.map_preimage a).symm⟩
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `h`. Take `⟨z, hz, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := y) (g := u) p q hq.symm`. Take `⟨i, r, hr⟩` from `(pullback y u).affineOpenCover.openCover.exists_eq z`. Set `C` to `(pullback y u).affineOpenCover.X i`. Set `w : Sp C ⟶ pullback y u` to `(pullback y u).affineOpenCover.f i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `: IsOpenImmersion w` using `(pullback y u).affineOpenCover.map_prop i`. Take `⟨φ, hφ⟩` from `exists_spMap (w ≫ pullback.fst y u)`. Use `⟨C, inferInstance, φ, w ≫ pullback.snd y u, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hφ]`. Use `infer_instance`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hφ]`. Use `⟨r, ?_⟩` and prove the remaining obligations. Rewrite using `[← hz, ← hr]`. Both sides reduce to the same expression. Rewrite using `[← hφ, Category.assoc, Category.assoc, pullback.condition]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_factor {U : Scheme.{0}} {R : Type} [CommRing R] (y : Sp R ⟶ X) (u : U ⟶ X) [IsOpenImmersion u]
     (p : Sp R) (h : y p ∈ Set.range u) : ∃ (R' : Type) (_ : CommRing R') (φ : R →+* R') (a : Sp R' ⟶ U),
@@ -194,31 +192,29 @@ theorem exists_factor {U : Scheme.{0}} {R : Type} [CommRing R] (y : Sp R ⟶ X) 
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Introduce `R σ _ I Z Y s sY M N th ty ⟨hM, hloc, hpts⟩ hN hY`. Establish `uniq : ∀ (T : Type) [CommRing T] (x x' : Sp T ⟶ Z) (v : σ → T), x ≫ s = x' ≫ s → SecCoord M th x v → SecCoord M th x' v → x = x'`. Introduce `T _ x x' v e h h'`. Take `⟨β, hβ⟩` from `exists_spMap (x ≫ s)`. Take `⟨h₁, h₂⟩` from `hloc T β x v hβ h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `(hpts T β v h₁ h₂).unique ⟨hβ, h⟩ ⟨e.symm.trans hβ, h'⟩`. Establish `uni : ∀ (T : Type) [CommRing T] (y : Sp T ⟶ Y) (v : σ → T), SecCoord N ty y v → Ideal.span (Set.range v) = ⊤ ∧ ∃ x : Sp T ⟶ Z, x ≫ s = y ≫ sY ∧ SecCoord M th x v`. Introduce `T _ y v h`. Take `⟨β, hβ⟩` from `exists_spMap (y ≫ sY)`. Take `⟨h₁, h₂⟩` from `hY T β y v hβ h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, hx'⟩` from `(hpts T β v h₁ h₂).exists`. Conclude with `⟨h₁, x, hx.trans hβ.symm, hx'⟩`. Use `choose A iA u v hu hp hv using (GlobalTheory.T.sectionCoordinateVector_exists_locally Y N σ ty hN).2.2`. Use `choose g hg hgv using fun p => (uni (A p) (u p) (v p) (hv p)).2`. Establish `key : ∀ (p : Y) (T : Type) [CommRing T] (a : Sp T ⟶ Sp (A p)), (∃ w, SecCoord N ty (a ≫ u p) w) ∧ ∀ w, SecCoord N ty (a ≫ u p) w ↔ SecCoord M th (a ≫ g p) w`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `p T _ a`. Take `⟨φ, rfl⟩` from `exists_spMap a`. Establish `h₁` using `(GlobalTheory.ZM.Coord.secCoord_bc_scale_unique Y N σ ty _ _ _ hN (hv p)).1 T φ`. Establish `h₂` using `(GlobalTheory.ZM.Coord.secCoord_bc_scale_unique Z M σ th _ _ _ hM (hgv p)).1 T φ`. Use `⟨⟨_, h₁⟩, fun w => ⟨fun h => ?_, fun h => ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `(GlobalTheory.ZM.Coord.secCoord_bc_scale_unique Y N σ ty _ _ _ hN h₁).2.2 w h`. Rewrite using `[show w = _ from funext hc]`. Conclude with `(GlobalTheory.ZM.Coord.secCoord_bc_scale_unique Z M σ th _ _ _ hM h₂).2.1 c`. Take `⟨c, hc⟩` from `(GlobalTheory.ZM.Coord.secCoord_bc_scale_unique Z M σ th _ _ _ hM h₂).2.2 w h`. Rewrite using `[show w = _ from funext hc]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(GlobalTheory.ZM.Coord.secCoord_bc_scale_unique Y N σ ty _ _ _ hN h₁).2.1 c`. Set `𝒰 : Y.OpenCover` to `Scheme.Cover.mkOfCovers Y (fun p => Sp (A p)) u (fun p => ⟨p, hp p⟩) hu`. Establish `hglue : ∀ p q : Y, pullback.fst (u p) (u q) ≫ g p = pullback.snd (u p) (u q) ≫ g q`. Introduce `p q`. Use `Scheme.Cover.hom_ext (pullback (u p) (u q)).affineOpenCover.openCover _ _ fun i => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Set `C` to `(pullback (u p) (u q)).affineOpenCover.X i`. Set `r : Sp C ⟶ pullback (u p) (u q)` to `(pullback (u p) (u q)).affineOpenCover.f i`. Establish `e : (r ≫ pullback.fst _ _) ≫ u p = (r ≫ pullback.snd _ _) ≫ u q`. Rewrite using `[Category.assoc, Category.assoc, pullback.condition]`. Take `⟨⟨w, hw⟩, h⟩` from `key p C (r ≫ pullback.fst _ _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `uniq C _ _ w (by rw [Category.assoc, hg, ← Category.assoc, e, Category.assoc _ (g q), hg, Category.assoc _ (u q)]) ((h w).1 hw) (((key q C (r ≫ pullback.snd _ _)).2 w).1 (e ▸ hw))` as an intermediate fact. Rewrite `this` using `[Category.assoc, Category.assoc]`. Conclude with `this`. Set `f : Y ⟶ Z` to `𝒰.glueMorphisms g hglue`. Establish `hf : ∀ p, u p ≫ f = g p` using `fun p => Scheme.Cover.ι_glueMorphisms 𝒰 _ hglue p`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfs : f ≫ s = sY`. Use `Scheme.Cover.hom_ext 𝒰 _ _ fun p => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `u p ≫ _ = u p ≫ _`. Rewrite using `[← Category.assoc, hf, hg]`. Use `⟨f, hfs, ?_, fun T _ y w => ⟨fun h => ?_, fun h => ?_⟩, fun f' hf' h => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `lbIso_of_coord N (M.pull f) ty (fun i => RepBC.secPull M f (th i)) fun p => ⟨A p, iA p, u p, v p, hu p, hp p, (uni _ _ _ (hv p)).1, hv p, (RepBC.secCoord_pull M th f _ _).2 ?_⟩` and prove the remaining obligations. Rewrite using `[hf]`. Conclude with `hgv p`. Use `GlobalTheory.T.isSectionCoordinateVector_of_locally_on_ring Z M σ th T _ w hM (uni T y w h).1 fun q => ?_` and prove the remaining obligations. Use `hu (y q)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨T', _, φ, a, h₁, h₂, e⟩` from `exists_factor y (u (y q)) q (hp _)`. Use `⟨T', inferInstance, φ, h₁, h₂, ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, e, Category.assoc, hf, ← (key _ T' a).2, ← e]`. Conclude with `(GlobalTheory.ZM.Coord.secCoord_bc_scale_unique Y N σ ty _ _ _ hN h).1 T' φ`. Take `⟨β, hβ⟩` from `exists_spMap ((y ≫ f) ≫ s)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.T.isSectionCoordinateVector_of_locally_on_ring Y N σ ty T _ w hN (hloc T β _ w hβ h).1 fun q => ?_` and prove the remaining obligations. Use `hu (y q)` as an intermediate fact. Take `⟨T', _, φ, a, h₁, h₂, e⟩` from `exists_factor y (u (y q)) q (hp _)`. Use `⟨T', inferInstance, φ, h₁, h₂, ?_⟩` and prove the remaining obligations. Rewrite using `[e, (key _ T' a).2, ← hf, ← Category.assoc, ← e, Category.assoc]`.
-
-Conclude with `(GlobalTheory.ZM.Coord.secCoord_bc_scale_unique Z M σ th _ _ _ hM h).1 T' φ`. Use `Scheme.Cover.hom_ext 𝒰 _ _ fun p => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `u p ≫ _ = u p ≫ _`. Rewrite using `[hf]`. Conclude with `uniq _ _ _ (v p) (by rw [Category.assoc, hf', hg]) (h _ _ _ (hv p)) (hgv p)`.
+A detailed English derivation is pending.
 -/
 theorem exists_map_of_coord : ∀ (R σ : Type) [CommRing R] (I : Ideal (MvPolynomial σ R)) (Z Y : Scheme.{0}) (s : Z ⟶ Sp R) (sY : Y ⟶ Sp R) (M : LB Z) (N : LB Y) (th : σ → M.Sec) (ty : σ → N.Sec), ProjRep I s M th → N.IsLB → (∀ (R' : Type) [CommRing R'] (β : R →+* R') (y : Sp R' ⟶ Y) (v : σ → R'), y ≫ sY = spMap β → SecCoord N ty y v → Ideal.span (Set.range v) = ⊤ ∧ ∀ F ∈ I, MvPolynomial.eval₂ β v F = 0) → ∃ f : Y ⟶ Z, f ≫ s = sY ∧ LBIso N (M.pull f) ∧ (∀ (R' : Type) [CommRing R'] (y : Sp R' ⟶ Y) (v : σ → R'), SecCoord N ty y v ↔ SecCoord M th (y ≫ f) v) ∧ ∀ f' : Y ⟶ Z, f' ≫ s = sY → (∀ (R' : Type) [CommRing R'] (y : Sp R' ⟶ Y) (v : σ → R'), SecCoord N ty y v → SecCoord M th (y ≫ f') v) → f' = f := by
   intro R σ _ I Z Y s sY M N th ty ⟨hM, hloc, hpts⟩ hN hY

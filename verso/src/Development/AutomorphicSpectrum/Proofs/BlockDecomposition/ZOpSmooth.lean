@@ -20,7 +20,7 @@ namespace GlobalTheory.CompanionTheory.WaveMult.Swap
 variable {n : ℕ} {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
 /- English proof (translation)
-Introduce `x hx`. Establish `h1 : DifferentiableAt ℝ f x` using `(hf.contDiffAt (isOpen_GLs.mem_nhds hx)).differentiableAt (by simp)`. Establish `h3 : fderiv ℝ (c • f) x = c • fderiv ℝ f x` using `(h1.hasFDerivAt.const_smul c).fderiv`. Simplify using `only [Rd, Pi.smul_apply, h3]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem Rd_csmul {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (c : ℂ) (X : Mat n) :
     Set.EqOn (Rd X (c • f)) (c • Rd X f) (GLs n) := by
@@ -32,7 +32,7 @@ theorem Rd_csmul {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (c : ℂ)
   rfl
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [Eu, Pi.smul_apply, Pi.add_apply, Rd_csmul hf c _ hx]`. Rewrite using `[smul_comm c (1 / 2 : ℂ), smul_add c, smul_comm c]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem Eu_csmul {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (c : ℂ) (s : Bool) (a b : Fin n) :
     Set.EqOn (Eu s a b (c • f)) (c • Eu s a b f) (GLs n) := by
@@ -41,9 +41,9 @@ theorem Eu_csmul {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (c : ℂ)
   rw [smul_comm c (1 / 2 : ℂ), smul_add c, smul_comm c]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Introduce `a b x hx`. Apply the tactic sequence `by_cases hab : a = b <;> simp [Epow, hab]`. Consider the case `succ m ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Introduce `a b x hx`. Simplify using `only [Epow, Finset.sum_apply, Pi.smul_apply, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[Eu_congr isOpen_GLs (ih d b) s a d hx]`. Conclude with `Eu_csmul (Epow_smooth hR hf s m d b) c s a d hx`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Epow_csmul (hR : RCalc) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (c : ℂ) (s : Bool) (m : ℕ) :
     ∀ a b : Fin n, Set.EqOn (Epow s m a b (c • f)) (c • Epow s m a b f) (GLs n) := by
@@ -59,7 +59,7 @@ theorem Epow_csmul (hR : RCalc) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GL
     exact Eu_csmul (Epow_smooth hR hf s m d b) c s a d hx
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [gel, Finset.sum_apply, Pi.smul_apply, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => Epow_csmul hR hf c s m a a hx`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gel_csmul (hR : RCalc) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (c : ℂ) (s : Bool) (m : ℕ) :
     Set.EqOn (gel s m (c • f)) (c • gel s m f) (GLs n) := by
@@ -68,9 +68,9 @@ theorem gel_csmul (hR : RCalc) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs
   exact Finset.sum_congr rfl fun a _ => Epow_csmul hR hf c s m a a hx
 
 /- English proof (translation)
-Introduce `x hx`. Establish `e : f + f' = f - (-1 : ℂ) • f'`. Use extensionality with `y`. Simplify using the standard rewrite rules. Establish `hm : ContDiffOn ℝ ∞ ((-1 : ℂ) • f') (GLs n)` using `hf'.const_smul (-1 : ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h` using `gel_sub hR hf hm s m hx`. Rewrite using `[e, h]`. Simplify using `only [Pi.sub_apply, Pi.add_apply, gel_csmul hR hf' (-1) s m hx, Pi.smul_apply]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem gel_add (hR : RCalc) {f f' : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n))
     (hf' : ContDiffOn ℝ ∞ f' (GLs n)) (s : Bool) (m : ℕ) :
@@ -86,7 +86,7 @@ theorem gel_add (hR : RCalc) {f f' : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GL
   simp
 
 /- English proof (translation)
-Introduce `x hx`. Establish `h` using `gel_csmul hR (contDiffOn_const (c := (0 : V)) : ContDiffOn ℝ ∞ (0 : Mat n → V) (GLs n)) 0 s m hx`. Simplify using `using h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem gel_zero (hR : RCalc) (s : Bool) (m : ℕ) :
     Set.EqOn (gel s m (0 : Mat n → V)) 0 (GLs n) := by
@@ -95,11 +95,11 @@ theorem gel_zero (hR : RCalc) (s : Bool) (m : ℕ) :
   simpa using h
 
 /- English proof (translation)
-Introduce `x hx`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simpa using gel_zero hR s m hx`. Consider the case `insert i S hi ih`. Establish `hS : ContDiffOn ℝ ∞ (∑ j ∈ S, F j) (GLs n)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `e : (∑ j ∈ S, F j) = fun y => ∑ j ∈ S, F j y`. Use extensionality with `y`. Simplify using `only [Finset.sum_apply]`. Rewrite using `[e]`. Conclude with `ContDiffOn.sum fun j _ => hF j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi, gel_add hR (hF i) hS s m hx, Pi.add_apply, Pi.add_apply, ih]`.
+A detailed English derivation is pending.
 -/
 theorem gel_sum (hR : RCalc) {ι : Type} (S : Finset ι) {F : ι → Mat n → V}
     (hF : ∀ i, ContDiffOn ℝ ∞ (F i) (GLs n)) (s : Bool) (m : ℕ) :
@@ -118,7 +118,7 @@ theorem gel_sum (hR : RCalc) {ι : Type} (S : Finset ι) {F : ι → Mat n → V
     rw [Finset.sum_insert hi, Finset.sum_insert hi, gel_add hR (hF i) hS s m hx, Pi.add_apply, Pi.add_apply, ih]
 
 /- English proof (translation)
-Establish `e : gel s m f = fun x => ∑ a, Epow s m a a f x`. Use extensionality with `x`. Simplify using `only [gel, Finset.sum_apply]`. Rewrite using `[e]`. Conclude with `ContDiffOn.sum fun a _ => Epow_smooth hR hf s m a a`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gel_smooth (hR : RCalc) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (s : Bool) (m : ℕ) :
     ContDiffOn ℝ ∞ (gel s m f) (GLs n) := by
@@ -129,7 +129,7 @@ theorem gel_smooth (hR : RCalc) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GL
   exact ContDiffOn.sum fun a _ => Epow_smooth hR hf s m a a
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => exact hf`. Consider the case `cons p w ih => exact gel_smooth hR ih p.1 p.2`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem zOp_smooth (hR : RCalc) (w : List (Bool × ℕ)) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) :
     ContDiffOn ℝ ∞ (zOp w f) (GLs n) := by
@@ -138,9 +138,9 @@ theorem zOp_smooth (hR : RCalc) (w : List (Bool × ℕ)) {f : Mat n → V} (hf :
   | cons p w ih => exact gel_smooth hR ih p.1 p.2
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hc` using `(hR n).1 V f hf`. Establish `hS` using `hc.1`. Establish `hG` using `hc.2.2.1`. Use `set d : ℂ := if s' then -Complex.I else Complex.I with hd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdB : ContDiffOn ℝ ∞ (d • Rd (Matrix.single a b Complex.I) f) (GLs n)` using `(hS _).const_smul d`. Establish `hsum : ContDiffOn ℝ ∞ (Rd (Matrix.single a b 1) f + d • Rd (Matrix.single a b Complex.I) f) (GLs n)` using `(hS _).add hdB`. Establish `e : Eu s' a b f = (1 / 2 : ℂ) • (Rd (Matrix.single a b 1) f + d • Rd (Matrix.single a b Complex.I) f)` using `rfl`. Rewrite using `[e, gel_csmul hR hsum _ s m hx, Pi.smul_apply, gel_add hR (hS _) hdB s m hx, Pi.add_apply, gel_csmul hR (hS _) d s m hx, Pi.smul_apply, ← hG s m _ x hx, ← hG s m _ x hx]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem Eu_gel (hR : RCalc) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (s' : Bool) (a b : Fin n)
     (s : Bool) (m : ℕ) : Set.EqOn (Eu s' a b (gel s m f)) (gel s m (Eu s' a b f)) (GLs n) := by
@@ -159,11 +159,11 @@ theorem Eu_gel (hR : RCalc) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)
   rfl
 
 /- English proof (translation)
-Proceed by induction on `m' with`. Consider the case `zero`. Introduce `a b x hx`. Distinguish the cases in `hab : a = b`. Simplify using `[Epow, hab]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `only [Epow, if_neg hab]`. Conclude with `(gel_zero hR s m hx).symm`. Consider the case `succ m' ih`. Introduce `a b x hx`. Establish `e : Epow s' (m' + 1) a b f = ∑ c, Eu s' a c (Epow s' m' c b f)` using `rfl`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, gel_sum hR _ (fun c => Eu_smooth hR (Epow_smooth hR hf s' m' c b) s' a c) s m hx]`. Simplify using `only [Epow, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Eu_congr isOpen_GLs (ih c b) s' a c hx]`. Conclude with `Eu_gel hR (Epow_smooth hR hf s' m' c b) s' a c s m hx`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Epow_gel (hR : RCalc) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (s' : Bool) (m' : ℕ)
     (s : Bool) (m : ℕ) :
@@ -185,9 +185,9 @@ theorem Epow_gel (hR : RCalc) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs 
     exact Eu_gel hR (Epow_smooth hR hf s' m' c b) s' a c s m hx
 
 /- English proof (translation)
-Introduce `x hx`. Establish `e : gel s' m' f = ∑ a, Epow s' m' a a f` using `rfl`. Rewrite using `[e, gel_sum hR _ (fun a => Epow_smooth hR hf s' m' a a) s m hx]`. Simplify using `only [gel, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `Epow_gel hR hf s' m' s m a a hx`. Simplify `h` using `only [gel, Finset.sum_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem gel_gel (hR : RCalc) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (s' : Bool) (m' : ℕ)
     (s : Bool) (m : ℕ) : Set.EqOn (gel s' m' (gel s m f)) (gel s m (gel s' m' f)) (GLs n) := by
@@ -200,7 +200,7 @@ theorem gel_gel (hR : RCalc) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n
   simpa only [gel, Finset.sum_apply] using h
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons p w ih`. Express the relevant statement in the definitionally equal form `gel p.1 p.2 (zOp (w ++ w') f) = gel p.1 p.2 (zOp w (zOp w' f))`. Rewrite using `[ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem zOp_append (w w' : List (Bool × ℕ)) (f : Mat n → V) : zOp (w ++ w') f = zOp w (zOp w' f) := by
   induction w with
@@ -210,9 +210,9 @@ theorem zOp_append (w w' : List (Bool × ℕ)) (f : Mat n → V) : zOp (w ++ w')
     rw [ih]
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => exact fun _ _ => rfl`. Consider the case `cons p w ih`. Introduce `x hx`. Express the relevant statement in the definitionally equal form `gel s m (gel p.1 p.2 (zOp w f)) x = gel p.1 p.2 (zOp w (gel s m f)) x`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[gel_gel hR (zOp_smooth hR w hf) s m p.1 p.2 hx]`. Conclude with `gel_congr isOpen_GLs ih p.1 p.2 hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gel_zOp (hR : RCalc) (s : Bool) (m : ℕ) (w : List (Bool × ℕ)) {f : Mat n → V}
     (hf : ContDiffOn ℝ ∞ f (GLs n)) : Set.EqOn (gel s m (zOp w f)) (zOp w (gel s m f)) (GLs n) := by
@@ -225,9 +225,9 @@ theorem gel_zOp (hR : RCalc) (s : Bool) (m : ℕ) (w : List (Bool × ℕ)) {f : 
     exact gel_congr isOpen_GLs ih p.1 p.2 hx
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => exact fun _ _ => rfl`. Consider the case `cons p w ih`. Introduce `x hx`. Express the relevant statement in the definitionally equal form `gel p.1 p.2 (zOp w (zOp w' f)) x = zOp w' (gel p.1 p.2 (zOp w f)) x`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[gel_congr isOpen_GLs ih p.1 p.2 hx]`. Conclude with `gel_zOp hR p.1 p.2 w' (zOp_smooth hR w hf) hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zOp_zOp (hR : RCalc) (w w' : List (Bool × ℕ)) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) :
     Set.EqOn (zOp w (zOp w' f)) (zOp w' (zOp w f)) (GLs n) := by
@@ -240,7 +240,7 @@ theorem zOp_zOp (hR : RCalc) (w w' : List (Bool × ℕ)) {f : Mat n → V} (hf :
     exact gel_zOp hR p.1 p.2 w' (zOp_smooth hR w hf) hx
 
 /- English proof (translation)
-Introduce `hR n V _ _ w w' f hf x hx`. Rewrite using `[zOp_append, zOp_append]`. Conclude with `zOp_zOp hR w w' hf hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zOp_swap : RCalc → ∀ (n : ℕ) {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
     (w w' : List (Bool × ℕ)) (f : Mat n → V), ContDiffOn ℝ ∞ f (GLs n) →

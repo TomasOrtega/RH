@@ -7,7 +7,7 @@ open PositivityTheory.EisRk1 GroundTheory.Global GroundTheory.Automorphic Ground
 namespace GlobalTheory.CompanionTheory.EisRk1
 
 /- English proof (translation)
-Establish `h : archExponent w μ = -archExponent w μ`. Rewrite using `[← archExponent_inv, ← eq_inv_of_mul_eq_one_left hμ]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem archExponent_eq_zero_of_mul_self {K : Type _} [Field K] [NumberField K]
     (w : InfinitePlace K) {μ : HeckeCharacter K} (hμ : μ * μ = 1) : archExponent w μ = 0 := by

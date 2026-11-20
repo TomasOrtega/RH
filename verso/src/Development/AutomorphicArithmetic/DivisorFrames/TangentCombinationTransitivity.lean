@@ -9,15 +9,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.RootFrame
 
 /- English proof (translation)
-Introduce `E _ _ _ H X t K _ x g r e u A he hA`. Establish `hu : ∀ i, IsTanAtG t x (u i)` using `fun i => GlobalTheory.ShFam.Pad.Guard.comb_tan he (hA i)`. Establish `hm : ∀ cf : Fin r → K, Matrix.mulVec (Matrix.of fun j i => A i j) cf = ∑ i, cf i • A i`. Introduce `cf`. Use function extensionality and compare the values at `j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`. Establish `fwd : ∀ (cf : Fin r → K) w, IsCombAtG t x u cf w → IsCombAtG t x e (∑ i, cf i • A i) w`. Introduce `cf w h`. Rewrite using `[← hm]`. Conclude with `tanLinG e he u (Matrix.of fun j i => A i j) cf w hA h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ (cf : Fin r → K) w, IsCombAtG t x u cf w ↔ IsCombAtG t x e (∑ i, cf i • A i) w`. Introduce `cf w`. Use `⟨fwd cf w, fun h => ?_⟩` and prove the remaining obligations. Take `⟨w', -, h'⟩` from `GlobalTheory.ShFam.Pad.Guard.exists_comb hu cf`. Conclude with `GlobalTheory.ShFam.Pad.Guard.comb_unique he (fwd cf w' h') h ▸ h'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨key, fun hi => ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.linearIndependent_iffₛ]`. Introduce `cf cf' hc`. Take `⟨w, -, h⟩` from `GlobalTheory.ShFam.Pad.Guard.exists_comb hu cf`. Establish `h' : IsCombAtG t x u cf' w` using `(key cf' w).2 (hc ▸ (key cf w).1 h)`.
-
-Conclude with `congrFun (hi _ _ w h h')`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.tangent_combination_transitivity :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) (t : SAB H X) (K : Type) [Field K] (x : Sp K ⟶ X) (g r : ℕ) (e : Fin g → (Sp (DualNumber K) ⟶ t.G.left)) (u : Fin r → (Sp (DualNumber K) ⟶ t.G.left)) (A : Fin r → Fin g → K), (∀ i, IsTanAtG t x (e i)) → (∀ i, IsCombAtG t x e (A i) (u i)) → (∀ (cf : Fin r → K) w, IsCombAtG t x u cf w ↔ IsCombAtG t x e (∑ i, cf i • A i) w) ∧ (IsIndep t x u → LinearIndependent K A) := by

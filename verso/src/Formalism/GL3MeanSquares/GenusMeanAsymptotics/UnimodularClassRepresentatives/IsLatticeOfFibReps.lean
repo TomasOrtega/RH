@@ -17,15 +17,15 @@ variable {h : V →ₗ⋆[K] V →ₗ[K] K} {h' : V' →ₗ⋆[K] V' →ₗ[K] K
 open UnimodularLocalization GoodPrimeTerms GoodGenusOrbits
 
 /- English proof (translation)
-Establish `hnF : ¬ IsField (𝓞 F)` using `NumberField.RingOfIntegers.not_isField F`. Establish `hI : Ideal.span {n} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]` and apply the resulting hypothesis. Set `f : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal} → IsDedekindDomain.HeightOneSpectrum (𝓞 F)` to `fun 𝔭 => ⟨𝔭.1, 𝔭.2.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField 𝔭.2 hnF⟩`. Establish `hf : Function.Injective f` using `fun a b h => Subtype.ext (congrArg IsDedekindDomain.HeightOneSpectrum.asIdeal h)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `((Ideal.finite_factors hI).preimage hf.injOn).subset ?_` and prove the remaining obligations. Introduce `𝔭 h𝔭`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage] at h𝔭 ⊢`. Use `show 𝔭.1 ∣ Ideal.span {n}`. Rewrite using `[Ideal.dvd_span_singleton]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hmem`. Apply `h𝔭` to reduce the goal to its premises. Unfold `vF`. Establish `hset : {e : ℕ | n ∈ 𝔭.1 ^ e} = {0}`. Use extensionality with `e`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_setOf_eq, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `he`. Assume the negation of the conclusion as `h0`. Conclude with `hmem (Ideal.pow_le_self h0 he)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Introduce and unpack `rfl`. Simplify using the standard rewrite rules. Rewrite using `[hset, csSup_singleton]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_vF_ne_zero {n : 𝓞 F} (hn : n ≠ 0) :
     {𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal} | vF 𝔭.1 n ≠ 0}.Finite := by
@@ -57,7 +57,7 @@ theorem finite_vF_ne_zero {n : 𝓞 F} (hn : n ≠ 0) :
   rw [hset, csSup_singleton]
 
 /- English proof (translation)
-Unfold `psiP`. Rewrite using `[dif_pos hex]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem psiP_eq (S : VecSplit h h') (L : Submodule (𝓞 K) V) (𝔭 : Ideal (𝓞 F))
     (hex : ∃ s, IsLocReps S L 𝔭 s) :
@@ -66,7 +66,7 @@ theorem psiP_eq (S : VecSplit h h') (L : Submodule (𝓞 K) V) (𝔭 : Ideal (�
   rw [dif_pos hex]
 
 /- English proof (translation)
-Unfold `psiP`. Use `split_ifs with hs`. Simplify using `[H]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem psiP_eq_zero (S : VecSplit h h') (L : Submodule (𝓞 K) V) (𝔭 : Ideal (𝓞 F))
     (H : ∀ T, fibLoc S L 𝔭 T = 0) : psiP S L 𝔭 = 0 := by
@@ -76,7 +76,7 @@ theorem psiP_eq_zero (S : VecSplit h h') (L : Submodule (𝓞 K) V) (𝔭 : Idea
   · rfl
 
 /- English proof (translation)
-Rewrite using `[card_fibG_eq_prod hK hF hs hd S hL hLi hΛ']`. Conclude with `tprod_of_exists_eq_zero ⟨𝔭, by rw [H]; simp⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_fibG_eq_zero (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) (hs : h.IsSymm)
     (hd : IsTotPosDef h) (S : VecSplit h h') {L : Submodule (𝓞 K) V}
@@ -87,7 +87,7 @@ theorem card_fibG_eq_zero (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (
   exact tprod_of_exists_eq_zero ⟨𝔭, by rw [H]; simp⟩
 
 /- English proof (translation)
-Take `⟨Λ, hΛ, -, rfl⟩` from `hs'.1 Λ' hΛ'`. Conclude with `StabilizerLattices.isLattice_cut S hΛ.1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isLattice_of_fibReps (S : VecSplit h h') {L : Submodule (𝓞 K) V}
     {s' : Finset (Submodule (𝓞 K) V')} (hs' : IsFibReps S L s') {Λ' : Submodule (𝓞 K) V'}
@@ -96,11 +96,11 @@ theorem isLattice_of_fibReps (S : VecSplit h h') {L : Submodule (𝓞 K) V}
   exact StabilizerLattices.isLattice_cut S hΛ.1
 
 /- English proof (translation)
-Establish `hloc : ∀ 𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}, h S.x₀ S.x₀ ∈ locF 𝔭.1 (1 : Submodule (𝓞 K) K)`. Introduce `𝔭`. Take `⟨T, hT⟩` from `H 𝔭`. Take `⟨g, hg, hx, -⟩` from `UnimodularLocalization.exists_of_fibLoc_ne_zero S hT`. Conclude with `GoodPrimeTerms.isIntegralAt_locF 𝔭.2.isPrime hF (UnimodularLocalization.isIntegralLat_gmap hg hLi) _ hx _ hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : h S.x₀ S.x₀ ∈ (1 : Submodule (𝓞 K) K)`. Rewrite using `[← LocF.iInf_locF (F := F) (1 : Submodule (𝓞 K) K)]`. Conclude with `Submodule.mem_iInf _ |>.mpr hloc`. Take `⟨y, hy⟩` from `Submodule.mem_one.mp h1`. Establish `hc : conjO K y = y`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `FaithfulSMul.algebraMap_injective (𝓞 K) K` to reduce the goal to its premises. Rewrite using `[BallB.algebraMap_conjO, hy]`. Simplify `hs.eq S.x₀ S.x₀` using `[starRingEnd_apply]`. Take `⟨t, ht⟩` from `(conjO_eq_iff_mem_range hF y).mp hc`. Conclude with `⟨t, by rw [← hy, ← ht]; rfl⟩`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_norm_eq (hF : IsFixF K F) (hs : h.IsSymm) (S : VecSplit h h')
     {L : Submodule (𝓞 K) V} (hLi : Formalism.HermitianLatticesTheory.IsIntegralLat h L)
@@ -128,17 +128,17 @@ theorem exists_norm_eq (hF : IsFixF K F) (hs : h.IsSymm) (S : VecSplit h h')
 open Classical in
 
 /- English proof (translation)
-Establish `hs2` using `S.isSymm hs`. Establish `hd2` using `S.isTotPosDef hd`. Establish `hMi` using `hM.integral hF hL hLi`. Establish `hmass : Formalism.HermitianLatticesTheory.mass h' M = ∑ Λ' ∈ s'.filter (fun Λ' => Formalism.HermitianLatticesTheory.SameGenus h' M Λ'), ((Nat.card (Formalism.ThetaLiftIndependence.autL h' Λ') : ℕ) : ℝ)⁻¹` using `(Formalism.HermitianLatticesTheory.massBasic K V' h' hs2 (StabilizerLattices.trace_pos hd2) M hM.1).2.1 _ (isClassReps_filter hK hF hs hd S hL hLi hs' hM)`. Establish `hfr : finrank K V' = finrank K V - 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `S.finrank_add_one` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hmc` using `hc V' h' M hs2 hd2 hfr hM.1 hMi`. Establish `e1 : ∀ Λ' ∈ s'.filter (fun Λ' => Formalism.HermitianLatticesTheory.SameGenus h' M Λ'), (Nat.card (fibG S L Λ') : ℝ) / (Nat.card (Formalism.ThetaLiftIndependence.autL h' Λ') : ℝ) = (∏ 𝔭 ∈ Z, (fibLoc S L 𝔭.1 (locF 𝔭.1 M) : ℝ)) * ((Nat.card (Formalism.ThetaLiftIndependence.autL h' Λ …`. Introduce `Λ' hΛ'`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hΛ'` using `[Finset.mem_filter]`. Rewrite using `[card_fibG_eq_prod (F := F) hK hF hs hd S hL hLi (isLattice_of_fibReps S hs' hΛ'.1), div_eq_mul_inv]`. Use `congr 1`. Establish `e2 : ∀ 𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}, fibLoc S L 𝔭.1 Λ' = fibLoc S L 𝔭.1 (locF 𝔭.1 M)` using `fun 𝔭 => by`. Rewrite using `[fibLoc_eq_of_rel hs S L ((sameGenus_iff hK hF M Λ').mp hΛ'.2 𝔭), fibLoc_locF]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [e2]`. Apply `tprod_eq_prod` to reduce the goal to its premises. Introduce `𝔭 h𝔭`. Rewrite using `[fibLoc_locF, fibLoc_congr S L (hMA 𝔭 h𝔭), hZ1 𝔭 h𝔭, Nat.cast_one]`. Rewrite using `[Finset.sum_congr rfl e1, ← Finset.mul_sum, ← hmass, hmc, Finset.prod_mul_distrib]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : lamG F h' M = ∏ 𝔭 ∈ Z, lamP h' (locF 𝔭.1 M) 𝔭.1`. Unfold `lamG`. Establish `e4 : ∀ 𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}, lamP h' M 𝔭.1 = lamP h' (locF 𝔭.1 M) 𝔭.1` using `fun 𝔭 => (localFactor_localField hK hF hs2 hd2 hM.1 hMi 𝔭.2).symm`. Simplify using `only [e4]`. Apply `tprod_eq_prod` to reduce the goal to its premises.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `𝔭 h𝔭`. Rewrite using `[hMA 𝔭 h𝔭, localFactor_localField hK hF hs2 hd2 hA hAi 𝔭.2]`. Conclude with `localMassFactor_of_valuation_eq_zero hK hF hs2 hd2 hA hAi 𝔭.2 (hZ2 𝔭 h𝔭)`. Rewrite using `[e3]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sum_genus (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) (hs : h.IsSymm)
     (hd : IsTotPosDef h) (S : VecSplit h h') {L : Submodule (𝓞 K) V}

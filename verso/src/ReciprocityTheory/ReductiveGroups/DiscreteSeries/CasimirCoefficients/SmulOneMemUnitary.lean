@@ -35,19 +35,19 @@ Both sides reduce to the same expression.
 lemma toMK_mul' {ε : Fin n → Bool} (k k' : KG ε) : toMK (k * k') = toMK k * toMK k' := rfl
 
 /- English proof (translation)
-The claim follows from `k.2`.
+A detailed English derivation is pending.
 -/
 lemma toMK_mem (ε : Fin n → Bool) (k : KG ε) : toMK k ∈ Kset ε := k.2
 
 /- English proof (translation)
-Unfold `blockDet`. Rewrite using `[Matrix.submatrix_one _ Subtype.val_injective, Matrix.det_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma blockDet_one (ε : Fin n → Bool) (s : Bool) : blockDet ε s 1 = 1 := by
   unfold blockDet
   rw [Matrix.submatrix_one _ Subtype.val_injective, Matrix.det_one]
 
 /- English proof (translation)
-Unfold `blockDet`. Rewrite using `[InhabA.submatrix_mul_blk s (fun i j hij => InhabA.eq_zero_of_comm hg.2 i j hij) h, Matrix.det_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma blockDet_mul_K {ε : Fin n → Bool} (s : Bool) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Kset ε)
     (h : Matrix (Fin n) (Fin n) ℂ) : blockDet ε s (g * h) = blockDet ε s g * blockDet ε s h := by
@@ -55,21 +55,21 @@ lemma blockDet_mul_K {ε : Fin n → Bool} (s : Bool) {g : Matrix (Fin n) (Fin n
   rw [InhabA.submatrix_mul_blk s (fun i j hij => InhabA.eq_zero_of_comm hg.2 i j hij) h, Matrix.det_mul]
 
 /- English proof (translation)
-The claim follows from `InhabA.det_ne_zero s hg`.
+A detailed English derivation is pending.
 -/
 lemma blockDet_ne_zero {ε : Fin n → Bool} (s : Bool) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Kset ε) :
     blockDet ε s g ≠ 0 := InhabA.det_ne_zero s hg
 
 /- English proof (translation)
-The claim follows from `InhabA.star_det_mul_det s hg`.
+A detailed English derivation is pending.
 -/
 lemma star_blockDet_mul {ε : Fin n → Bool} (s : Bool) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Kset ε) :
     star (blockDet ε s g) * blockDet ε s g = 1 := InhabA.star_det_mul_det s hg
 
 /- English proof (translation)
-Establish `h1` using `star_blockDet_mul true hg`. Establish `h2` using `star_blockDet_mul false hg`. Rewrite using `[star_mul', star_zpow₀, star_zpow₀]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_zpow, mul_zpow]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ = 1 := by rw [h1, h2, _root_.one_zpow, _root_.one_zpow, one_mul]`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma star_char_mul {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Kset ε) (a b : ℤ) :
     star (blockDet ε true g ^ a * blockDet ε false g ^ b) * (blockDet ε true g ^ a * blockDet ε false g ^ b)
@@ -85,7 +85,7 @@ lemma star_char_mul {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg :
     _ = 1 := by rw [h1, h2, _root_.one_zpow, _root_.one_zpow, one_mul]
 
 /- English proof (translation)
-Establish `hc1 : (starRingEnd ℂ) c * c = 1` using `hc`. Establish `hc2 : c * (starRingEnd ℂ) c = 1` using `by rw [mul_comm]; exact hc`. Rewrite using `[Unitary.mem_iff]`. Apply the tactic sequence `constructor <;> simp [star_smul, smul_smul, hc1, hc2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma smul_one_mem_unitary {c : ℂ} (hc : star c * c = 1) : c • (1 : ℂ →L[ℂ] ℂ) ∈ unitary (ℂ →L[ℂ] ℂ) := by
   have hc1 : (starRingEnd ℂ) c * c = 1 := hc
@@ -94,28 +94,28 @@ lemma smul_one_mem_unitary {c : ℂ} (hc : star c * c = 1) : c • (1 : ℂ →L
   constructor <;> simp [star_smul, smul_smul, hc1, hc2]
 
 /- English proof (translation)
-Simplify using `[blockTr, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 lemma blockTr_add {m : ℕ} (ε : Fin m → Bool) (s : Bool) (X Y : Matrix (Fin m) (Fin m) ℂ) :
     blockTr ε s (X + Y) = blockTr ε s X + blockTr ε s Y := by
   simp [blockTr, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[blockTr, Finset.mul_sum]`.
+Simplify using the standard rewrite rules.
 -/
 lemma blockTr_smul {m : ℕ} (ε : Fin m → Bool) (s : Bool) (c : ℂ) (X : Matrix (Fin m) (Fin m) ℂ) :
     blockTr ε s (c • X) = c * blockTr ε s X := by
   simp [blockTr, Finset.mul_sum]
 
 /- English proof (translation)
-Simplify using `[blockTr, Matrix.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 lemma blockTr_single_diag {m : ℕ} (ε : Fin m → Bool) (s : Bool) (i : Fin m) :
     blockTr ε s (Matrix.single i i 1) = if ε i = s then 1 else 0 := by
   simp [blockTr, Matrix.single_apply]
 
 /- English proof (translation)
-Unfold `blockTr`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.single_apply]`. Conclude with `if_neg fun h => hij (h.1.trans h.2.symm)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma blockTr_single_ne {m : ℕ} (ε : Fin m → Bool) (s : Bool) {i j : Fin m} (hij : i ≠ j) :
     blockTr ε s (Matrix.single i j 1) = 0 := by
@@ -214,9 +214,9 @@ def detKType (p q : ℕ) (a b : ℤ) : KType (epsHol p q) (detWt p q a b) where
     simp
 
 /- English proof (translation)
-Establish `e : (univ.filter Q).map Fin.valEmbedding = Finset.Ico lo hi`. Use extensionality with `x`. Simplify using `only [Finset.mem_map, Finset.mem_filter, Finset.mem_univ, true_and, Fin.valEmbedding_apply, Finset.mem_Ico]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `(hQ b).1 hb`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨⟨x, by omega⟩, (hQ _).2 ⟨h1, h2⟩, rfl⟩`. Rewrite using `[← Finset.card_map Fin.valEmbedding, e, Nat.card_Ico]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma card_filter_fin {N : ℕ} (Q : Fin N → Prop) [DecidablePred Q] (lo hi : ℕ) (hhi : hi ≤ N)
     (hQ : ∀ b : Fin N, Q b ↔ lo ≤ (b : ℕ) ∧ (b : ℕ) < hi) : (univ.filter Q).card = hi - lo := by
@@ -232,35 +232,21 @@ lemma card_filter_fin {N : ℕ} (Q : Fin N → Prop) [DecidablePred Q] (lo hi : 
   rw [← Finset.card_map Fin.valEmbedding, e, Nat.card_Ico]
 
 /- English proof (translation)
-Establish `hi` using `i.2`. Simplify using `only [Pi.add_apply, Pi.sub_apply, rhoN, rhoC, detWt]`. Distinguish the cases in `h : (i : ℕ) < p`. Establish `r1 : (((univ.filter fun b : Fin (p + q) => i < b ∧ epsHol p q b ≠ epsHol p q i).card : ℕ) : ℝ) = (q : ℝ)`. Rewrite using `[card_filter_fin _ (p) (p + q) (by omega) fun b => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `b.2` as an intermediate fact. Simplify using `only [epsHol, Fin.lt_def, ne_eq, decide_eq_decide]`. Use the proof step `omega,`. Use the proof step `Nat.cast_sub (by omega)]`. Apply the tactic sequence `all_goals (try push_cast)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply the tactic sequence `all_goals (try ring)`. Establish `r2 : (((univ.filter fun b : Fin (p + q) => b < i ∧ epsHol p q b ≠ epsHol p q i).card : ℕ) : ℝ) = 0`. Rewrite using `[card_filter_fin _ (0) (0) (by omega) fun b => by`. Use `b.2` as an intermediate fact. Simplify using `only [epsHol, Fin.lt_def, ne_eq, decide_eq_decide]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use the proof step `omega,`. Use the proof step `Nat.cast_sub (by omega)]`. Apply the tactic sequence `all_goals (try push_cast)`. Apply the tactic sequence `all_goals (try ring)`. Establish `r3 : (((univ.filter fun b : Fin (p + q) => i < b ∧ epsHol p q b = epsHol p q i).card : ℕ) : ℝ) = (p : ℝ) - (i : ℕ) - 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[card_filter_fin _ ((i : ℕ) + 1) (p) (by omega) fun b => by`. Use `b.2` as an intermediate fact. Simplify using `only [epsHol, Fin.lt_def, ne_eq, decide_eq_decide]`. Use the proof step `omega,`. Use the proof step `Nat.cast_sub (by omega)]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `all_goals (try push_cast)`. Apply the tactic sequence `all_goals (try ring)`. Establish `r4 : (((univ.filter fun b : Fin (p + q) => b < i ∧ epsHol p q b = epsHol p q i).card : ℕ) : ℝ) = ((i : ℕ) : ℝ)`. Rewrite using `[card_filter_fin _ (0) ((i : ℕ)) (by omega) fun b => by`. Use `b.2` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [epsHol, Fin.lt_def, ne_eq, decide_eq_decide]`. Use the proof step `omega,`. Use the proof step `Nat.cast_sub (by omega)]`. Apply the tactic sequence `all_goals (try push_cast)`. Apply the tactic sequence `all_goals (try ring)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos h, if_pos h, r1, r2, r3, r4]`. Expand and normalize the polynomial expressions, which then agree. Establish `r1 : (((univ.filter fun b : Fin (p + q) => i < b ∧ epsHol p q b ≠ epsHol p q i).card : ℕ) : ℝ) = 0`. Rewrite using `[card_filter_fin _ (0) (0) (by omega) fun b => by`. Use `b.2` as an intermediate fact.
-
-Simplify using `only [epsHol, Fin.lt_def, ne_eq, decide_eq_decide]`. Use the proof step `omega,`. Use the proof step `Nat.cast_sub (by omega)]`. Apply the tactic sequence `all_goals (try push_cast)`. Apply the tactic sequence `all_goals (try ring)`.
-
-Establish `r2 : (((univ.filter fun b : Fin (p + q) => b < i ∧ epsHol p q b ≠ epsHol p q i).card : ℕ) : ℝ) = (p : ℝ)`. Rewrite using `[card_filter_fin _ (0) (p) (by omega) fun b => by`. Use `b.2` as an intermediate fact. Simplify using `only [epsHol, Fin.lt_def, ne_eq, decide_eq_decide]`. Use the proof step `omega,`.
-
-Use the proof step `Nat.cast_sub (by omega)]`. Apply the tactic sequence `all_goals (try push_cast)`. Apply the tactic sequence `all_goals (try ring)`. Establish `r3 : (((univ.filter fun b : Fin (p + q) => i < b ∧ epsHol p q b = epsHol p q i).card : ℕ) : ℝ) = (p : ℝ) + q - (i : ℕ) - 1`. Rewrite using `[card_filter_fin _ ((i : ℕ) + 1) (p + q) (by omega) fun b => by`.
-
-Use `b.2` as an intermediate fact. Simplify using `only [epsHol, Fin.lt_def, ne_eq, decide_eq_decide]`. Use the proof step `omega,`. Use the proof step `Nat.cast_sub (by omega)]`. Apply the tactic sequence `all_goals (try push_cast)`.
-
-Apply the tactic sequence `all_goals (try ring)`. Establish `r4 : (((univ.filter fun b : Fin (p + q) => b < i ∧ epsHol p q b = epsHol p q i).card : ℕ) : ℝ) = ((i : ℕ) : ℝ) - p`. Rewrite using `[card_filter_fin _ (p) ((i : ℕ)) (by omega) fun b => by`. Use `b.2` as an intermediate fact. Simplify using `only [epsHol, Fin.lt_def, ne_eq, decide_eq_decide]`.
-
-Use the proof step `omega,`. Use the proof step `Nat.cast_sub (by omega)]`. Apply the tactic sequence `all_goals (try push_cast)`. Apply the tactic sequence `all_goals (try ring)`. Rewrite using `[if_neg h, if_neg h, r1, r2, r3, r4]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma lam_hol (p q : ℕ) (a b : ℤ) (i : Fin (p + q)) :
     (detWt p q a b - rhoN (epsHol p q) + rhoC (epsHol p q)) i =
@@ -339,27 +325,25 @@ lemma lam_hol (p q : ℕ) (a b : ℤ) (i : Fin (p + q)) :
     ring
 
 /- English proof (translation)
-Use `⟨?_, fun hab => ⟨⟨?_, ?_⟩, ?_, ?_⟩⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `only [lowK, Pi.add_apply, Pi.sub_apply]`. Expand and normalize the polynomial expressions, which then agree. Introduce `i j hij`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hij' : (i : ℕ) < j` using `hij`. Rewrite using `[lam_hol, lam_hol]`. Establish `hij'' : ((i : ℕ) : ℝ) < (j : ℕ)` using `by exact_mod_cast hij'`. Apply the tactic sequence `by_cases hi : (i : ℕ) < p <;> by_cases hj : (j : ℕ) < p`. Rewrite using `[if_pos hi, if_pos hj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[if_pos hi, if_neg hj]`. Establish `h1 : ((i : ℕ) : ℝ) + 1 ≤ p` using `by exact_mod_cast hi`. Establish `h2 : (p : ℝ) ≤ (j : ℕ)` using `by exact_mod_cast (not_lt.1 hj)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-It suffices to derive a contradiction. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg hi, if_neg hj]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `i`.
+It suffices to derive a contradiction. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[lam_hol]`. Use `split_ifs with h`. Conclude with `⟨a - q - (i : ℕ), by push_cast; ring⟩`. Conclude with `⟨b - (i : ℕ) + p, by push_cast; ring⟩`. Introduce `x y hxy`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lam_hol, lam_hol]`. Apply the tactic sequence `by_cases hx : (x : ℕ) < p <;> by_cases hy : (y : ℕ) < p`. Conclude with `absurd (by simp [epsHol, hx, hy]) hxy`. Rewrite using `[if_pos hx, if_neg hy]`. Establish `h1 : ((x : ℕ) : ℝ) + 1 ≤ p` using `by exact_mod_cast hx`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (p : ℝ) ≤ (y : ℕ)` using `by exact_mod_cast (not_lt.1 hy)`. Conclude with `le_trans (by linarith) (le_abs_self _)`. Rewrite using `[if_neg hx, if_pos hy, abs_sub_comm]`. Establish `h1 : ((y : ℕ) : ℝ) + 1 ≤ p` using `by exact_mod_cast hy`. Establish `h2 : (p : ℝ) ≤ (x : ℕ)` using `by exact_mod_cast (not_lt.1 hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_trans (by linarith) (le_abs_self _)`. Conclude with `absurd (by simp [epsHol, hx, hy]) hxy`. Establish `hP : pOf (epsHol p q) = p`. Unfold `pOf`. Rewrite using `[card_filter_fin _ 0 p (by omega) fun b => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `b.2` as an intermediate fact. Simplify using `only [epsHol, decide_eq_true_eq]`. Use the proof step `omega]`. Use linear arithmetic over natural numbers and integers. Establish `hQ : qOf (epsHol p q) = q`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Unfold `qOf`. Rewrite using `[card_filter_fin _ p (p + q) le_rfl fun b => by`. Use `b.2` as an intermediate fact. Simplify using `only [epsHol, decide_eq_false_iff_not]`. Use the proof step `omega]`.
-
-Use linear arithmetic over natural numbers and integers. Simplify using `only [q0, hP, hQ]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem detKType_param (p q : ℕ) (a b : ℤ) (hp : 1 ≤ p) (hq : 1 ≤ q) :
     lowK (epsHol p q) (detWt p q a b - rhoN (epsHol p q) + rhoC (epsHol p q)) = detWt p q a b ∧

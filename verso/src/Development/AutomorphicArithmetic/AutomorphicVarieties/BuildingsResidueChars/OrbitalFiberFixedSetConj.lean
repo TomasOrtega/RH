@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Glob
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Subgroup.mem_subgroupOf.1 hz`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_mul, ← ha]`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [MonoidHom.comp_apply, Units.val_mul]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Conclude with `(Matrix.scalar_commute _ (fun r => Commute.all _ _) _).eq`.
+A detailed English derivation is pending.
 -/
 private lemma zd_comm {K : Type} [Field K] {Δ : K} {z : DX Δ} (hz : z ∈ ZD Δ) (g : DX Δ) : z * g = g * z := by
   obtain ⟨a, ha⟩ := Subgroup.mem_subgroupOf.1 hz
@@ -16,11 +16,11 @@ private lemma zd_comm {K : Type} [Field K] {Δ : K} {z : DX Δ} (hz : z ∈ ZD �
   exact (Matrix.scalar_commute _ (fun r => Commute.all _ _) _).eq
 
 /- English proof (translation)
-Set `S : Subgroup G` to `{ carrier := {u | ∀ g, f (u⁻¹ * g * u) = f g} one_mem' := by intro g; simp mul_mem' := by`. Introduce `a b ha hb g`. Establish `: (a * b)⁻¹ * g * (a * b) = b⁻¹ * (a⁻¹ * g * a) * b` using `by group`. Rewrite using `[this, hb, ha]`. Use the proof step `inv_mem' := by`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha g`. Rewrite using `[← ha]`. Use `congr 1`. Use `group }`. Establish `h : Z ⊔ J ≤ S`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `sup_le (fun z hz g => ?_) (fun u hu => hJ u hu)` and prove the remaining obligations. Rewrite using `[mul_assoc, ← hZ z hz, inv_mul_cancel_left]`. Conclude with `fun u hu => h hu`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 private lemma conj_sup {G : Type} [Group G] (Z J : Subgroup G) (f : G → ℂ)
     (hZ : ∀ z ∈ Z, ∀ g, z * g = g * z) (hJ : ∀ u ∈ J, ∀ g, f (u⁻¹ * g * u) = f g) :
@@ -43,13 +43,13 @@ private lemma conj_sup {G : Type} [Group G] (Z J : Subgroup G) (f : G → ℂ)
   exact fun u hu => h hu
 
 /- English proof (translation)
-Introduce `F _ _ Δ D hD t ht u hu g`. Unfold `Dat.FS`. Use `finprod_congr fun v => ?_` and prove the remaining obligations. Establish `huv : u.1 v ∈ ZD _ ⊔ D.J2v v`. Simplify using `only [Dat.UZ, RPG.box, Subgroup.mem_iInf, Subgroup.mem_comap] at hu`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hu v`. Use `show D.fSv t v ((u.1 v)⁻¹ * g.1 v * u.1 v) = D.fSv t v (g.1 v)`. Use `conj_sup _ _ (D.fSv t v) (fun z hz => zd_comm hz) ?_ _ huv _` and prove the remaining obligations. Introduce `k hk y`. Unfold `Dat.fSv`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Unfold `Dat.J2v at hk`. Distinguish the cases in `hv : v ∈ D.Sg`. Simplify using `only [if_pos hv] at hk ⊢`. Establish `H` using `(hD.sig v hv).S_inv (t v) (ht v hv)`. Rewrite using `[(H k hk _).2, (H _ (inv_mem hk) _).1]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [if_neg hv] at hk ⊢`. Use `congr 1`. Apply `propext` to reduce the goal to its premises. Rewrite using `[Subgroup.mul_mem_cancel_right _ hk, Subgroup.mul_mem_cancel_left _ (inv_mem hk)]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.orbitalFiber_fixedSet_conj :
     UpperTheory.V.Z.Sym.Glob.Fib.FSConj := by

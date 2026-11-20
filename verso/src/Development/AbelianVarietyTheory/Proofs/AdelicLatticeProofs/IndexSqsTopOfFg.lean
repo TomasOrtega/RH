@@ -6,19 +6,19 @@ open scoped WithZero
 namespace GlobalTheory.QNorm
 
 /- English proof (translation)
-Establish `h1 : (nsmulAddMonoidHom (α` using `L × T) 2).range = ((nsmulAddMonoidHom (α := L) 2).range).prod (nsmulAddMonoidHom (α := T) 2).range := by`. Use extensionality with `⟨x, y⟩`. Simplify using `only [AddMonoidHom.mem_range, AddSubgroup.mem_prod, nsmulAddMonoidHom_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨a, b⟩, h⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨a, congrArg Prod.fst h⟩, ⟨b, congrArg Prod.snd h⟩⟩`. Introduce and unpack `⟨⟨a, ha⟩, ⟨b, hb⟩⟩`. Conclude with `⟨(a, b), Prod.ext ha hb⟩`. Establish `h2 : (nsmulAddMonoidHom (α` using `L × T) 2).ker = (⊥ : AddSubgroup L).prod (nsmulAddMonoidHom (α := T) 2).ker := by`. Use extensionality with `⟨x, y⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hx : 2 • x = 0 ↔ x = 0`. Rewrite using `[← natCast_zsmul, smul_eq_zero]`. Simplify using the standard rewrite rules. Simplify using `[AddMonoidHom.mem_ker, AddSubgroup.mem_prod, hx]`. Establish `h3 : Module.finrank ℤ (L × T) = Module.finrank ℤ L`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hT : Module.rank ℤ T = 0`. Rewrite using `[rank_eq_zero_iff]`. Introduce `x`. Use `⟨(Nat.card T : ℤ), by exact_mod_cast Nat.card_pos.ne', ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hq` using `Submodule.rank_quotient_add_rank (LinearMap.ker (LinearMap.fst ℤ L T))`. Establish `e1` using `(LinearMap.quotKerEquivOfSurjective (LinearMap.fst ℤ L T) LinearMap.fst_surjective).rank_eq`. Establish `e2 : Module.rank ℤ (LinearMap.ker (LinearMap.fst ℤ L T)) = 0`. Rewrite using `[LinearMap.ker_fst, rank_range_of_injective _ LinearMap.inr_injective, hT]`. Unfold `Module.finrank`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[← hq, e1, e2, add_zero]`. Establish `h4 : (nsmulAddMonoidHom (α` using `T) 2).range.index = Nat.card (nsmulAddMonoidHom (α := T) 2).ker := by`. Establish `a` using `AddSubgroup.card_mul_index (nsmulAddMonoidHom (α := T) 2).range`. Establish `b` using `AddSubgroup.card_mul_index (nsmulAddMonoidHom (α := T) 2).ker`. Rewrite `b` using `[AddSubgroup.index_ker]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpos : 0 < Nat.card (nsmulAddMonoidHom (α` using `T) 2).range := Nat.card_pos`. Apply `Nat.eq_of_mul_eq_mul_left hpos` to reduce the goal to its premises. Rewrite using `[a, mul_comm, b]`. Rewrite using `[h1, h2, h3, AddSubgroup.index_prod, AddSubgroup.index_range_nsmul, h4, Nat.card_congr (AddSubgroup.prodEquiv _ _).toEquiv, Nat.card_prod]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem index_double_prod (L T : Type) [AddCommGroup L] [AddCommGroup T] [Module.Free ℤ L]
     [Module.Finite ℤ L] [Finite T] :
@@ -65,11 +65,9 @@ theorem index_double_prod (L T : Type) [AddCommGroup L] [AddCommGroup T] [Module
   simp
 
 /- English proof (translation)
-Take `⟨n, ι, _, p, hp, e, ⟨f⟩⟩` from `AddCommGroup.equiv_free_prod_directSum_zmod M`. Use `haveI : ∀ i, NeZero (p i ^ e i) := fun i => ⟨pow_ne_zero _ (hp i).ne_zero⟩`. Use `haveI : Finite (DirectSum ι fun i => ZMod (p i ^ e i)) := Finite.of_equiv _ (DFinsupp.equivFunOnFintype).symm`. Establish `h` using `index_double_prod (Fin n →₀ ℤ) (DirectSum ι fun i => ZMod (p i ^ e i))`. Rewrite using `[← AddSubgroup.index_map_equiv _ f, AddEquiv.map_range_nsmulAddMonoidHom, h, f.toIntLinearEquiv.finrank_eq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `Nat.card_congr (f.toEquiv.subtypeEquiv ?_).symm` and prove the remaining obligations. Introduce `a`. Simplify using `only [AddMonoidHom.mem_ker, nsmulAddMonoidHom_apply]`. Express the relevant statement in the definitionally equal form `_ ↔ 2 • f a = 0`.
-
-Rewrite using `[← map_nsmul, f.map_eq_zero_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem index_double_of_fg (M : Type) [AddCommGroup M] [AddGroup.FG M] :
     (nsmulAddMonoidHom (α := M) 2).range.index =
@@ -89,11 +87,11 @@ theorem index_double_of_fg (M : Type) [AddCommGroup M] [AddGroup.FG M] :
   rw [← map_nsmul, f.map_eq_zero_iff]
 
 /- English proof (translation)
-Introduce `G _ _`. Establish `h` using `index_double_of_fg (Additive G)`. Establish `h1 : (sqs (⊤ : Subgroup G)).toAddSubgroup = (nsmulAddMonoidHom (α` using `Additive G) 2).range := by`. Use extensionality with `x`. Simplify using `only [sqs, AddMonoidHom.mem_range, nsmulAddMonoidHom_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, -, hy⟩`. Conclude with `⟨Additive.ofMul y, hy⟩`. Introduce and unpack `⟨y, hy⟩`. Conclude with `⟨Additive.toMul y, trivial, hy⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite using `[← Subgroup.index_toAddSubgroup, h1, h]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem index_sqs_top_of_fg : ∀ (G : Type) [CommGroup G] [Group.FG G],
     (sqs (⊤ : Subgroup G)).index =

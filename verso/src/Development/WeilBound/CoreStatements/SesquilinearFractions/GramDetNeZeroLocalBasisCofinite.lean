@@ -10,25 +10,23 @@ open scoped ComplexOrder
 namespace PositivityTheory.Xgf
 
 /- English proof (translation)
-Introduce `E _ _ _ H D I _ _ e hcard he`. Use `D.fin` as an intermediate fact. Use `D.proj` as an intermediate fact. Take `⟨n, hn, hsp⟩` from `exists_nsmul_mem_span_full_family e (hcard.trans D.rank.symm) he`. Use `⟨fun hdet => ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨v, hv0, hv⟩` from `(Matrix.exists_vecMul_eq_zero_iff).2 hdet`. Take `⟨c, hc⟩` from `IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors (𝓞 E)) (Finset.univ.image v)`. Use `choose u hu using fun m => hc (v m) (Finset.mem_image_of_mem v (Finset.mem_univ m))`. Establish `hc0 : ((c : 𝓞 E) : E) ≠ 0` using `by exact_mod_cast nonZeroDivisors.coe_ne_zero c`. Establish `huv : ∀ m, (u m : E) = (c : 𝓞 E) * v m` using `fun m => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show ((u m : 𝓞 E) : E) = algebraMap (𝓞 E) E (u m) from rfl, hu m, Algebra.smul_def]`. Use `set z : D.La := ∑ i, u i • e i with hz`. Establish `hzj : ∀ j, sesq D z (e j) = 0`. Introduce `j`. Rewrite using `[hz, sesq_sum_smul_left]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hvj` using `congrFun hv j`. Simplify using `only [Matrix.vecMul, dotProduct, Pi.zero_apply, gramE, Matrix.of_apply] at hvj`. Repeatedly rewrite using `[huv]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun i _ => by ring`.
+Rewrite the conclusion repeatedly using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `_ = 0 := by rw [hvj, mul_zero]`. Establish `hz0 : ∀ x, sesq D x z = 0`. Introduce `x`. Take `⟨S, hS⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 E)).1 (hsp x)`. Establish `h1 : sesq D z (n • x) = (n : E) * sesq D z x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← Nat.cast_smul_eq_nsmul (𝓞 E), (GlobalTheory.T.sesq_sesquilinear_skew_hermitian E H D).2.2.2.2.1]`. Simplify using the standard rewrite rules. Establish `h2 : sesq D z (n • x) = 0`. Rewrite using `[← hS, sesq_sum_smul_right]`. Conclude with `Finset.sum_eq_zero fun j _ => by rw [hzj j, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : sesq D z x = 0`. Rewrite `h1` using `[h2]`. Conclude with `(mul_eq_zero.1 h1.symm).resolve_left (by exact_mod_cast hn.ne')`. Rewrite using `[(GlobalTheory.T.sesq_sesquilinear_skew_hermitian E H D).2.2.2.2.2.1 z x, h3, map_zero, neg_zero]`. Establish `hzz : z = 0` using `(GlobalTheory.T.sesq_unimodular_dual E H D).1 z hz0`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hu0` using `(Fintype.linearIndependent_iff.1 he) u (by rw [← hz]; exact hzz)`. Apply `hv0` to reduce the goal to its premises. Use function extensionality and compare the values at `m`. Establish `: (c : 𝓞 E) * v m = 0` using `by rw [← huv, hu0 m]; simp`. Simplify `this` using `[hc0]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Use `(Set.finite_le_nat n).preimage (f := fun ℓ : Nat.Primes => (ℓ : ℕ)) (fun a _ b _ h => Subtype.ext h) |>.subset ?_` and prove the remaining obligations. Introduce `ℓ hℓ`. Simplify using `only [Set.mem_setOf_eq] at hℓ ⊢`. Assume the negation of the conclusion as `hlt`. Apply `hℓ` to reduce the goal to its premises.
-
-Use `⟨he, n, fun hd => hlt ?_, hsp⟩` and prove the remaining obligations. Conclude with `Nat.le_of_dvd hn hd`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gram_det_ne_zero_local_basis_cofinite : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (I : Type) [Fintype I] [DecidableEq I] (e : I → D.La), Fintype.card I = D.p + D.q → LinearIndependent (𝓞 E) e → (gramE D e).det ≠ 0 ∧ {ℓ : Nat.Primes | ¬ IsLocBasis (𝓞 E) ℓ e}.Finite := by
   intro E _ _ _ H D I _ _ e hcard he

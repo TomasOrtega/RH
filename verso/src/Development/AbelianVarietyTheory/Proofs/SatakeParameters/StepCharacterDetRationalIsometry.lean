@@ -6,9 +6,9 @@ open Formalism.BasicNotions NumberField IsDedekindDomain Formalism.MainNotions.G
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S j hj`. Take `⟨e, he, hz⟩` from `S.law.mu_rat j hj`. Use `⟨e, he, fun k hk γ hγ => ?_⟩` and prove the remaining obligations. Establish `hu` using `((GlobalTheory.T.det_rational_unitary_orthonormalChange_matrices S) k hk).2 γ hγ`. Establish `key : Matrix.GeneralLinearGroup.det (ratA D.host.F γ) = Formalism.L2.DIV.ratId D.host.F D.host.E (Matrix.GeneralLinearGroup.det γ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ext`. Simplify using `[ratA, Formalism.UG.bc, Formalism.L2.DIV.ratId, Matrix.GeneralLinearGroup.val_det_apply, RingHom.map_det]`. Rewrite using `[key]`. Establish `h2` using `hz (Matrix.GeneralLinearGroup.det γ) (by simpa using hu.2)`. Simplify using `using h2`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem GlobalTheory.TwV.muT_det_ratA : AllSites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S => ∀ j (hj : j < D.R.m), ∃ e : D.what₂.Tau → ℤ, (∀ τ, ((e τ : ℤ) : ℚ) = (D.hc τ).e ⟨j, hj⟩) ∧ ∀ k (hk : k ≤ D.R.m), ∀ γ ∈ UJ (sigD D : D.host.E →+* D.host.E) (gramN D k hk), S.muT (j + 1) (Matrix.GeneralLinearGroup.det (ratA D.host.F γ)) = ∏ τ, TaylorLogMetric.embT D τ γ.1.det ^ e τ) := by
   intro D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S j hj

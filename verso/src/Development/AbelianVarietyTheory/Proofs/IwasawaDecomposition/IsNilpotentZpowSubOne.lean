@@ -5,13 +5,11 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 namespace GlobalTheory.WeilDeligne.FrobSemisimpleUnique
 
 /- English proof (translation)
-Establish `hnat : ∀ n : ℕ, IsNilpotent (((u ^ n : Rˣ) : R) - 1)`. Introduce `n`. Rewrite using `[Units.val_pow_eq_pow_val, ← geom_sum_mul]`. Use `Commute.isNilpotent_mul_left ?_ hu` and prove the remaining obligations. Use `Commute.sum_left _ _ _ fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `((Commute.refl (u : R)).sub_right (Commute.one_right _)).pow_left i`. Take `⟨n, rfl | rfl⟩` from `d.eq_nat_or_neg`. Rewrite using `[zpow_natCast]`. Conclude with `hnat n`. Rewrite using `[zpow_neg, zpow_natCast]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Establish `h1` using `hnat n`. Generalize the expression as in `u ^ n = v at h1`. Establish `h2 : ((v⁻¹ : Rˣ) : R) - 1 = -(((v⁻¹ : Rˣ) : R) * ((v : R) - 1))`. Rewrite using `[mul_sub, Units.inv_mul, mul_one, neg_sub]`. Rewrite using `[h2]`.
-
-Use `(Commute.isNilpotent_mul_left ?_ h1).neg` and prove the remaining obligations. Conclude with `((Commute.refl v).inv_left.units_val).sub_right (Commute.one_right _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isNilpotent_zpow_sub_one {R : Type*} [Ring R] (u : Rˣ) (hu : IsNilpotent ((u : R) - 1))
     (d : ℤ) : IsNilpotent (((u ^ d : Rˣ) : R) - 1) := by
@@ -33,9 +31,9 @@ theorem isNilpotent_zpow_sub_one {R : Type*} [Ring R] (u : Rˣ) (hu : IsNilpoten
     exact ((Commute.refl v).inv_left.units_val).sub_right (Commute.one_right _)
 
 /- English proof (translation)
-Establish `hs : s = f * ((v⁻¹ : Rˣ) : R)` using `by rw [hf, Units.mul_inv_cancel_right]`. Establish `hvs : Commute (v : R) s`. Rewrite using `[hs]`. Conclude with `hc.mul_right (Commute.refl v).inv_right.units_val`. Establish `h1 : f - s = s * ((v : R) - 1)` using `by rw [hf, mul_sub, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Commute s ((v : R) - 1)` using `hvs.symm.sub_right (Commute.one_right _)`. Rewrite using `[h1]`. Conclude with `⟨h2.isNilpotent_mul_left hv, (Commute.refl s).mul_left h2.symm⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nilpotent_part {R : Type*} [Ring R] {f s : R} (v : Rˣ) (hv : IsNilpotent ((v : R) - 1))
     (hc : Commute (v : R) f) (hf : f = s * v) : IsNilpotent (f - s) ∧ Commute (f - s) s := by

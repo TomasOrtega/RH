@@ -10,11 +10,11 @@ variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [Inne
   {σ : Mx n → (H →L[ℂ] H)}
 
 /- English proof (translation)
-Introduce `S`. Proceed by induction on `S with`. Consider the case `nil => intro _ a b _ _`. Simplify using `[sobNorm]`. Consider the case `cons l S ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `hS a b ha hb`. Establish `hl : ∀ X ∈ l, X ∈ lieSet ε` using `hS l List.mem_cons_self`. Establish `hS' : Words (lieSet ε) S` using `fun l' hl' => hS l' (List.mem_cons_of_mem _ hl')`. Establish `e : l.foldr (dRep σ) (a + b) = l.foldr (dRep σ) a + l.foldr (dRep σ) b` using `Dw_add hσ hl ha hb`. Establish `h1` using `ih hS' ha hb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [sobNorm, List.map_cons, List.sum_cons] at h1 ⊢`. Rewrite using `[e]`. Use `norm_add_le (l.foldr (dRep σ) a) (l.foldr (dRep σ) b)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem sob_add (hσ : IsURepOn (UJset ε) σ) : ∀ S : List (List (Mx n)), Words (lieSet ε) S → ∀ {a b : H},
     Sm ε σ a → Sm ε σ b → sobNorm σ S (a + b) ≤ sobNorm σ S a + sobNorm σ S b := by
@@ -33,9 +33,9 @@ theorem sob_add (hσ : IsURepOn (UJset ε) σ) : ∀ S : List (List (Mx n)), Wor
     linarith
 
 /- English proof (translation)
-Unfold `sobNorm`. Rewrite using `[← List.sum_map_mul_left]`. Use `congr 1`. Use `List.map_congr_left fun l hl => ?_` and prove the remaining obligations. Establish `e : l.foldr (dRep σ) (c • a) = c • l.foldr (dRep σ) a` using `Dw_smul hσ (hS l hl) c ha`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e, norm_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sob_smul (hσ : IsURepOn (UJset ε) σ) (S : List (List (Mx n))) (hS : Words (lieSet ε) S) (c : ℂ) {a : H}
     (ha : Sm ε σ a) : sobNorm σ S (c • a) = ‖c‖ * sobNorm σ S a := by
@@ -47,7 +47,7 @@ theorem sob_smul (hσ : IsURepOn (UJset ε) σ) (S : List (List (Mx n))) (hS : W
   rw [e, norm_smul]
 
 /- English proof (translation)
-Establish `hba : Sm ε σ (b - a)` using `sm_iff.2 ((smooth (Jm ε) σ).sub_mem (sm_iff.1 hb) (sm_iff.1 ha))`. Rewrite using `[← neg_sub, ← neg_one_smul ℂ (b - a), sob_smul hσ S hS _ hba]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sob_comm (hσ : IsURepOn (UJset ε) σ) (S : List (List (Mx n))) (hS : Words (lieSet ε) S) {a b : H}
     (ha : Sm ε σ a) (hb : Sm ε σ b) : sobNorm σ S (a - b) = sobNorm σ S (b - a) := by
@@ -56,7 +56,7 @@ theorem sob_comm (hσ : IsURepOn (UJset ε) σ) (S : List (List (Mx n))) (hS : W
   simp
 
 /- English proof (translation)
-Establish `e : a - c = (a - b) + (b - c)` using `by abel`. Rewrite using `[e]`. Conclude with `sob_add hσ S hS (sm_iff.2 ((smooth (Jm ε) σ).sub_mem (sm_iff.1 ha) (sm_iff.1 hb))) (sm_iff.2 ((smooth (Jm ε) σ).sub_mem (sm_iff.1 hb) (sm_iff.1 hc)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sob_tri (hσ : IsURepOn (UJset ε) σ) (S : List (List (Mx n))) (hS : Words (lieSet ε) S) {a b c : H}
     (ha : Sm ε σ a) (hb : Sm ε σ b) (hc : Sm ε σ c) :
@@ -67,7 +67,7 @@ theorem sob_tri (hσ : IsURepOn (UJset ε) σ) (S : List (List (Mx n))) (hS : Wo
     (sm_iff.2 ((smooth (Jm ε) σ).sub_mem (sm_iff.1 hb) (sm_iff.1 hc)))
 
 /- English proof (translation)
-Introduce `L`. Proceed by induction on `L with`. Consider the case `nil => simp [sobNorm]`. Consider the case `cons j L ih => rw [List.flatMap_cons, sobNorm_append, ih, List.map_cons, List.sum_cons]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem sob_flatMap (f : ℕ → List (List (Mx n))) (w : H) : ∀ L : List ℕ,
     sobNorm σ (L.flatMap f) w = (L.map fun j => sobNorm σ (f j) w).sum := by
@@ -77,7 +77,7 @@ theorem sob_flatMap (f : ℕ → List (List (Mx n))) (w : H) : ∀ L : List ℕ,
   | cons j L ih => rw [List.flatMap_cons, sobNorm_append, ih, List.map_cons, List.sum_cons]
 
 /- English proof (translation)
-Rewrite using `[sob_flatMap]`. Conclude with `List.single_le_sum (fun x hx => by`. Take `⟨j, -, rfl⟩` from `List.mem_map.1 hx`. Conclude with `sobNorm_nonneg _ _ _) _ (List.mem_map.2 ⟨i, List.mem_range.2 (by omega), rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sob_le_flatMap (f : ℕ → List (List (Mx n))) (w : H) {i k : ℕ} (hik : i ≤ k) :
     sobNorm σ (f i) w ≤ sobNorm σ ((List.range (k + 1)).flatMap f) w := by
@@ -92,7 +92,7 @@ variable {E : Type} [AddCommGroup E] [Module ℂ E] [UniformSpace E] [IsUniformA
   [T2Space E] {p : ℕ → Seminorm ℂ E}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Take `⟨i, hi⟩` from `hp.separating_of_T1 y h`. Conclude with `hi (le_antisymm (le_of_forall_pos_le_add fun δ hδ => by simpa using hy i δ hδ) (apply_nonneg _ _))`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem zero_of (hp : WithSeminorms p) (y : E) (hy : ∀ i, ∀ δ : ℝ, 0 < δ → p i y ≤ δ) : y = 0 := by
   by_contra h
@@ -100,23 +100,23 @@ theorem zero_of (hp : WithSeminorms p) (y : E) (hy : ∀ i, ∀ δ : ℝ, 0 < δ
   exact hi (le_antisymm (le_of_forall_pos_le_add fun δ hδ => by simpa using hy i δ hδ) (apply_nonneg _ _))
 
 /- English proof (translation)
-Establish `hsm : ∀ v, IsKFin ε σ v → Sm ε σ v` using `hD.1`. Establish `hsub : ∀ a b : H, Sm ε σ a → Sm ε σ b → Sm ε σ (a - b)` using `fun a b ha hb => sm_iff.2 ((smooth (Jm ε) σ).sub_mem (sm_iff.1 ha) (sm_iff.1 hb))`. Establish `est : ∀ i a b, IsKFin ε σ a → IsKFin ε σ b → p i (T₀ a - T₀ b) ≤ |C i| * (sobNorm σ (S i) (w - a) + sobNorm σ (S i) (w - b))`. Introduce `i a b ha hb`. Rewrite using `[← map_sub]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `((hC i _ ((kfin ε σ).sub_mem ha hb)).trans (mul_le_mul_of_nonneg_right (le_abs_self _) (sobNorm_nonneg _ _ _))).trans (mul_le_mul_of_nonneg_left ?_ (abs_nonneg _))` and prove the remaining obligations. Use `sob_tri hσ (S i) (hS i) (hsm a ha) hw (hsm b hb)` as an intermediate fact. Rewrite `this` using `[sob_comm hσ (S i) (hS i) (hsm a ha) hw]`. Then use the resulting hypothesis. Set `SS : ℕ → List (List (Mx n))` to `fun k => (List.range (k + 1)).flatMap S`. Establish `hSS : ∀ k, Words (lieSet ε) (SS k)` using `fun k l hl X hX => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨j, -, hj⟩` from `List.mem_flatMap.1 hl`. Conclude with `hS j l hj X hX`. Use `choose v hv hvw using fun k : ℕ => hD.2.2 w hw (SS k) (hSS k) (1 / ((k : ℝ) + 1)) (by positivity)`. Establish `hcl : ∀ i k, i ≤ k → sobNorm σ (S i) (w - v k) < 1 / ((k : ℝ) + 1)` using `fun i k hik => (sob_le_flatMap S (w - v k) hik).trans_lt (hvw k)`. Establish `hcau : CauchySeq fun k => T₀ (v k)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[cauchySeq_iff_tendsto, uniformity_eq_comap_nhds_zero E, tendsto_comap_iff, hp.tendsto_nhds _ 0]`. Introduce `i δ hδ`. Take `⟨K, hK⟩` from `exists_nat_gt (2 * (|C i| + 1) / δ)`. Establish `small : ∀ k : ℕ, K ≤ k → 1 / ((k : ℝ) + 1) < δ / (2 * (|C i| + 1))`. Introduce `k hk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk' : (K : ℝ) ≤ k` using `by exact_mod_cast hk`. Establish `h1` using `(div_lt_iff₀ hδ).1 hK`. Establish `h2` using `mul_le_mul_of_nonneg_right (by linarith : (K : ℝ) ≤ k + 1) hδ.le`. Rewrite using `[div_lt_div_iff₀ (by positivity) (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Filter.eventually_atTop]`. Use `⟨(max i K, max i K), fun q hq => ?_⟩` and prove the remaining obligations. Establish `hq1 : max i K ≤ q.1` using `hq.1`. Establish `hq2 : max i K ≤ q.2` using `hq.2`. Simplify using `only [Function.comp_apply, Prod.map_fst, Prod.map_snd, sub_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `(hcl i q.1 (le_of_max_le_left hq1)).trans (small q.1 (le_of_max_le_right hq1))`. Establish `e2` using `(hcl i q.2 (le_of_max_le_left hq2)).trans (small q.2 (le_of_max_le_right hq2))`. Establish `h3` using `est i (v q.2) (v q.1) (hv _) (hv _)`. Establish `a0` using `sobNorm_nonneg σ (S i) (w - v q.1)`. Establish `b0` using `sobNorm_nonneg σ (S i) (w - v q.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA` using `abs_nonneg (C i)`. Establish `hηd : 2 * (|C i| + 1) * (δ / (2 * (|C i| + 1))) = δ` using `by field_simp`. Use `h3.trans_lt ?_` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities. Take `⟨x, hx⟩` from `cauchySeq_tendsto_of_complete hcau`.
+Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨x, fun i v' hv' => ?_⟩` and prove the remaining obligations. Establish `hlim : Tendsto (fun k => p i (T₀ (v k) - T₀ v')) atTop (𝓝 (p i (x - T₀ v')))` using `((hp.continuous_seminorm i).tendsto _).comp (hx.sub_const _)`. Establish `hg : Tendsto (fun k : ℕ => |C i| * (1 / ((k : ℝ) + 1) + sobNorm σ (S i) (w - v'))) atTop (𝓝 (|C i| * (0 + sobNorm σ (S i) (w - v'))))` using `(tendsto_one_div_add_atTop_nhds_zero_nat.add_const _).const_mul _`. Use `le_of_tendsto_of_tendsto hlim hg (Filter.eventually_atTop.2 ⟨i, fun k hk => (est i (v k) v' (hv k) hv').trans (mul_le_mul_of_nonneg_left (by linarith [(hcl i k hk).le]) (abs_nonneg _))⟩)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_lim (hσ : IsURepOn (UJset ε) σ) (hp : WithSeminorms p) (hD : Dens ε σ) (T₀ : H →ₗ[ℂ] E)
     (S : ℕ → List (List (Mx n))) (C : ℕ → ℝ) (hS : ∀ i, Words (lieSet ε) (S i))
@@ -186,43 +186,41 @@ namespace PositivityTheory.CW
 open PageTheorem
 
 /- English proof (translation)
-Introduce `n ε H _ _ _ σ hU hI E _ _ _ _ _ _ p π dπ hπ hD T₀ hT₀`. Establish `hp` using `hπ.withSeminorms`. Establish `hT₀' : ∀ i, ∃ (S : List (List (Mx n))) (C : ℝ), Words (lieSet ε) S ∧ ∀ w, IsKFin ε σ w → p i (T₀ w) ≤ C * sobNorm σ S w` using `hT₀`. Use `choose S C hS hC using hT₀'`. Establish `hsm : ∀ v, IsKFin ε σ v → Sm ε σ v` using `hD.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : ∀ a b : H, Sm ε σ a → Sm ε σ b → Sm ε σ (a - b)` using `fun a b ha hb => sm_iff.2 ((smooth (Jm ε) σ).sub_mem (sm_iff.1 ha) (sm_iff.1 hb))`. Establish `hC' : ∀ i v, IsKFin ε σ v → p i (T₀ v) ≤ |C i| * sobNorm σ (S i) v` using `fun i v hv => (hC i v hv).trans (mul_le_mul_of_nonneg_right (le_abs_self _) (sobNorm_nonneg _ _ _))`. Use `choose! F hF using exists_lim hU hp hD T₀ S C hS hC`. Establish `hadd : ∀ a b : H, Sm ε σ a → Sm ε σ b → F (a + b) = F a + F b`. Introduce `a b ha hb`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hab : Sm ε σ (a + b)` using `sm_iff.2 ((smooth (Jm ε) σ).add_mem (sm_iff.1 ha) (sm_iff.1 hb))`. Rewrite using `[← sub_eq_zero]`. Use `zero_of hp _ fun i δ hδ => ?_` and prove the remaining obligations. Establish `hη0 : 0 < δ / (4 * (|C i| + 1))` using `by positivity`. Take `⟨va, hva, hva'⟩` from `hD.2.2 a ha (S i) (hS i) _ hη0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨vb, hvb, hvb'⟩` from `hD.2.2 b hb (S i) (hS i) _ hη0`. Establish `h1` using `hF (a + b) hab i (va + vb) ((kfin ε σ).add_mem hva hvb)`. Establish `h2` using `hF a ha i va hva`. Establish `h3` using `hF b hb i vb hvb`. Establish `h4 : sobNorm σ (S i) (a + b - (va + vb)) ≤ sobNorm σ (S i) (a - va) + sobNorm σ (S i) (b - vb)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : a + b - (va + vb) = (a - va) + (b - vb)` using `by abel`. Rewrite using `[e]`. Conclude with `sob_add hU (S i) (hS i) (hsub _ _ ha (hsm _ hva)) (hsub _ _ hb (hsm _ hvb))`. Establish `e5 : F (a + b) - (F a + F b) = (F (a + b) - T₀ (va + vb)) - (F a - T₀ va) - (F b - T₀ vb)`. Rewrite using `[map_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Establish `h6 : p i (F (a + b) - (F a + F b)) ≤ p i (F (a + b) - T₀ (va + vb)) + p i (F a - T₀ va) + p i (F b - T₀ vb)`. Rewrite using `[e5]`. Use `(map_sub_le_add _ _ _).trans ?_` and prove the remaining obligations. Use `map_sub_le_add (p i) (F (a + b) - T₀ (va + vb)) (F a - T₀ va)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hA` using `abs_nonneg (C i)`. Establish `m1` using `mul_le_mul_of_nonneg_left h4 hA`. Establish `m2` using `mul_le_mul_of_nonneg_left hva'.le hA`. Establish `m3` using `mul_le_mul_of_nonneg_left hvb'.le hA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hηd : 4 * ((|C i| + 1) * (δ / (4 * (|C i| + 1)))) = δ` using `by field_simp`. Use the polynomial consequences of the given equalities and inequalities. Establish `hsmul : ∀ (c : ℂ) (a : H), Sm ε σ a → F (c • a) = c • F a`. Introduce `c a ha`. Establish `hca : Sm ε σ (c • a)` using `sm_iff.2 ((smooth (Jm ε) σ).smul_mem c (sm_iff.1 ha))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← sub_eq_zero]`. Use `zero_of hp _ fun i δ hδ => ?_` and prove the remaining obligations. Establish `hη0 : 0 < δ / (2 * ((|C i| + 1) * (‖c‖ + 1)))` using `by positivity`. Take `⟨v, hv, hv'⟩` from `hD.2.2 a ha (S i) (hS i) _ hη0`. Establish `h1` using `hF (c • a) hca i (c • v) ((kfin ε σ).smul_mem c hv)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `hF a ha i v hv`. Establish `e : c • a - c • v = c • (a - v)` using `(smul_sub c a v).symm`. Rewrite `h1` using `[e, sob_smul hU (S i) (hS i) c (hsub _ _ ha (hsm _ hv))]`. Establish `e5 : F (c • a) - c • F a = (F (c • a) - T₀ (c • v)) - c • (F a - T₀ v)`. Rewrite using `[map_smul, smul_sub]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Establish `h6 : p i (F (c • a) - c • F a) ≤ p i (F (c • a) - T₀ (c • v)) + ‖c‖ * p i (F a - T₀ v)`. Rewrite using `[e5, ← map_smul_eq_mul]`. Conclude with `map_sub_le_add _ _ _`. Establish `hA` using `abs_nonneg (C i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc0` using `norm_nonneg c`. Establish `s0` using `sobNorm_nonneg σ (S i) (a - v)`. Establish `m1` using `mul_le_mul_of_nonneg_left h2 hc0`. Establish `m2 : |C i| * ‖c‖ * sobNorm σ (S i) (a - v) ≤ |C i| * ‖c‖ * (δ / (2 * ((|C i| + 1) * (‖c‖ + 1))))` using `mul_le_mul_of_nonneg_left hv'.le (by positivity)`. Establish `m3 : |C i| * ‖c‖ * (δ / (2 * ((|C i| + 1) * (‖c‖ + 1)))) ≤ (|C i| + 1) * (‖c‖ + 1) * (δ / (2 * ((|C i| + 1) * (‖c‖ + 1))))` using `mul_le_mul_of_nonneg_right (by nlinarith) hη0.le`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `hηd : 2 * ((|C i| + 1) * (‖c‖ + 1) * (δ / (2 * ((|C i| + 1) * (‖c‖ + 1))))) = δ` using `by field_simp`. Use the polynomial consequences of the given equalities and inequalities. Set `f : smooth (Jm ε) σ →ₗ[ℂ] E` to `{ toFun := fun w => F w map_add' := fun a b => hadd a b a.2 b.2 map_smul' := fun c a => hsmul c a a.2 }`. Take `⟨T, hT⟩` from `LinearMap.exists_extend f`. Establish `e : ∀ w, Sm ε σ w → T w = F w` using `fun w hw => LinearMap.congr_fun hT ⟨w, sm_iff.1 hw⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨T, fun v hv => ?_, fun i => ⟨S i, |C i|, hS i, fun w hw => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[e v (hsm v hv), ← sub_eq_zero]`. Use `zero_of hp _ fun i δ hδ => ?_` and prove the remaining obligations. Establish `h0 : sobNorm σ (S i) (v - v) = 0`. Rewrite using `[show v - v = (0 : ℂ) • v by simp, sob_smul hU (S i) (hS i) 0 (hsm v hv)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using the standard rewrite rules. Use `hF v (hsm v hv) i v hv` as an intermediate fact. Rewrite `this` using `[h0, mul_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[e w hw]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `le_of_forall_pos_le_add fun δ hδ => ?_` and prove the remaining obligations. Establish `hη0 : 0 < δ / (2 * (|C i| + 1))` using `by positivity`. Take `⟨v, hv, hv'⟩` from `hD.2.2 w hw (S i) (hS i) _ hη0`. Establish `h1` using `hF w hw i v hv`. Establish `h2` using `hC' i v hv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h3 : sobNorm σ (S i) v ≤ sobNorm σ (S i) w + sobNorm σ (S i) (w - v)`. Use `sob_add hU (S i) (hS i) hw (hsub _ _ (hsm v hv) hw)` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Rewrite `this` using `[sob_comm hU (S i) (hS i) (hsm v hv) hw]`. Then use the resulting hypothesis. Establish `h4 : p i (F w) ≤ p i (F w - T₀ v) + p i (T₀ v)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `map_add_le_add (p i) (F w - T₀ v) (T₀ v)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Establish `hA` using `abs_nonneg (C i)`. Establish `s0` using `sobNorm_nonneg σ (S i) (w - v)`. Establish `m1` using `mul_le_mul_of_nonneg_left h3 hA`.
-
-Establish `m2` using `mul_le_mul_of_nonneg_left hv'.le hA`. Establish `hηd : 2 * ((|C i| + 1) * (δ / (2 * (|C i| + 1)))) = δ` using `by field_simp`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem d2 : D2 := by
   classical

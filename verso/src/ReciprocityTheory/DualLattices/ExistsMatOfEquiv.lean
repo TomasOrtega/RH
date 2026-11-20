@@ -44,9 +44,9 @@ theorem pullHopf_carrier {N X : Type} [AddCommGroup N] [Fintype N] [DecidableEq 
     (pullHopf ψ AA hlat).carrier = AA.carrier.map (LinearMap.funLeft R C ψ) := rfl
 
 /- English proof (translation)
-Take `⟨B, hB, rfl⟩` from `hM`. Use `⟨B.submatrix e e, by rwa [Matrix.det_submatrix_equiv_self], ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Establish `h1 : (fun j x => (B.submatrix e e) x j) = (⇑(LinearMap.funLeft R C e) ∘ fun j x => B x j) ∘ e`. Use function extensionality and compare the values at `j x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Both sides reduce to the same expression. Rewrite using `[h1, e.surjective.range_comp]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem isLat_map_equiv {X K : Type} [Fintype X] [DecidableEq X] {_ : Fintype K} {_ : DecidableEq K}
     (e : X ≃ K) {M : Submodule R (K → C)} (hM : IsLat R M) :
@@ -61,15 +61,15 @@ theorem isLat_map_equiv {X K : Type} [Fintype X] [DecidableEq X] {_ : Fintype K}
   rw [h1, e.surjective.range_comp]
 
 /- English proof (translation)
-The claim follows from `A.lat`.
+A detailed English derivation is pending.
 -/
 theorem hopfLat {K : Type} {_ : AddCommGroup K} {_ : Fintype K} {_ : DecidableEq K}
     (A : HopfOrder (C := C) R K) : IsLat R A.carrier := A.lat
 
 /- English proof (translation)
-Take `⟨⟨AK, hAK⟩, -⟩` from `h2 C R v hv N ψ.range AA`. Set `e` to `AddMonoidHom.ofInjective hψ`. Establish `hmap : (AA.carrier.map (resK ψ.range)).map (LinearMap.funLeft R C e.toEquiv) = AA.carrier.map (LinearMap.funLeft R C ψ)`. Rewrite using `[← Submodule.map_comp]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← hmap, ← hAK]`. Conclude with `isLat_map_equiv e.toEquiv (hopfLat AK)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLat_pull (v : Valuation C NNReal) (hv : v.Integers R) {N X : Type} [AddCommGroup N]
     [Fintype N] [DecidableEq N] [AddCommGroup X] [Fintype X] [DecidableEq X]
@@ -92,21 +92,21 @@ section Split
 variable {S : Type} [CommRing S] {n k : Type} [Fintype n] [DecidableEq n] [Fintype k] [DecidableEq k]
 
 /- English proof (translation)
-Establish `hcol : ∀ j : n, ∃ c : k → S, B *ᵥ c = e *ᵥ Pi.single j 1`. Introduce `j`. Establish `hmem : e *ᵥ Pi.single j 1 ∈ LinearMap.range B.mulVecLin`. Rewrite using `[hr]`. Conclude with `⟨_, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨c, hc⟩` from `hmem`. Conclude with `⟨c, hc⟩`. Use `choose c hc using hcol`. Set `L : Matrix k n S` to `Matrix.of fun i j => c j i`. Establish `hBL : B * L = e`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Establish `h1` using `congrFun (hc j) i`. Rewrite `h1` using `[Matrix.mulVec_single_one, Matrix.col_apply]`. Rewrite using `[← h1]`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, L]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `heB : e * B = B`. Use extensionality with `i j`. Establish `hmem : B *ᵥ Pi.single j 1 ∈ LinearMap.range e.mulVecLin`. Rewrite using `[← hr]`. Conclude with `⟨_, rfl⟩`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `hmem`. Establish `h2 : e *ᵥ (B *ᵥ Pi.single j 1) = B *ᵥ Pi.single j 1`. Rewrite using `[← hw]`. Simplify using `only [Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, he]`. Rewrite `h2` using `[Matrix.mulVec_mulVec, Matrix.mulVec_single_one, Matrix.mulVec_single_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `congrFun h2 i` using `[Matrix.col_apply]`. Establish `hinj : Function.Injective B.mulVecLin` using `LinearMap.ker_eq_bot.1 hk`. Use `⟨L, ?_, hBL⟩` and prove the remaining obligations. Use extensionality with `i j`. Establish `h3 : B *ᵥ ((L * B) *ᵥ Pi.single j 1) = B *ᵥ Pi.single j 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_mulVec, ← Matrix.mul_assoc, hBL, heB]`. Establish `h4 : (L * B) *ᵥ Pi.single j 1 = Pi.single j 1` using `hinj h3`. Rewrite `h4` using `[Matrix.mulVec_single_one]`. Establish `h5` using `congrFun h4 i`. Simplify using `only [Matrix.col_apply] at h5`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h5, Matrix.one_apply, Pi.single_apply]`.
+A detailed English derivation is pending.
 -/
 theorem exists_split (e : Matrix n n S) (he : e * e = e) (B : Matrix n k S)
     (hr : LinearMap.range B.mulVecLin = LinearMap.range e.mulVecLin)

@@ -11,7 +11,7 @@ open GlobalTheory.MumFam GlobalTheory.MumProd
 namespace GlobalTheory.MumProd
 
 /- English proof (translation)
-Introduce `Y X X₁ X₂ Z L L₁ L₂ f₁ f₂ w p n a b₁ b₂ hM r z J J₁ J₂ hJ hJ₁ hJ₂`. Establish `hm : r z ∈ p ⁻¹ᵁ (LB.div (extLB L₁ L₂ f₁ f₂) L).U (extIdx (f₁` using `f₁) (f₂ := f₂) (J₁ (r ≫ p ≫ f₁)) (J₂ (r ≫ p ≫ f₂)), J (r ≫ p)) := ⟨⟨Set.mem_iInter.2 fun _ => hJ₁ (r ≫ p ≫ f₁), Set.mem_iInter.2 fun _ => hJ₂ (r ≫ p ≫ f₂)⟩, hJ (r ≫ p)⟩`. Establish `e` using `congrArg (gm r z _) (hM (J₁ (r ≫ p ≫ f₁)) (J₂ (r ≫ p ≫ f₂)) (J (r ≫ p)))`. Rewrite `e` using `[map_mul, map_mul, map_zpow]`. Conclude with `(congrArg₂ (· * ·) (gm_res r z _ hm _) (gm_res r z _ hm _)).symm.trans (e.trans (congrArg₂ (· * ·) (congrArg (· ^ n) (gm_pull r p z _ hm _)) (gm_res r z _ hm _)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mapsAt₂_val : ∀ (Y X X₁ X₂ Z : Scheme.{0}) (L : LB X) (L₁ : LB X₁) (L₂ : LB X₂) (f₁ : X ⟶ X₁) (f₂ : X ⟶ X₂) (w : LB.Iso L (extLB L₁ L₂ f₁ f₂)) (p : Y ⟶ X) (n : ℤ) (a : LB.Gen (LB.LinComb L (K := PUnit) (fun _ => p) (fun _ => n))) (b₁ : LB.Gen (LB.LinComb L₁ (K := PUnit) (fun _ => p ≫ f₁) (fun _ => n))) (b₂ : LB.Gen (LB.LinComb L₂ (K := PUnit) (fun _ => p ≫ f₂) (fun _ => n))), MapsAt₂ w p n a b₁ b₂ → ∀ (r : Z ⟶ Y) (z : Z) (J : (Z ⟶ X) → L.ι) (J₁ : (Z ⟶ X₁) → L₁.ι) (J₂ : (Z ⟶ X₂) → L₂.ι), Good L z J → Good L₁ z J₁ → Good L₂ z J₂ → val b₁ r z J₁ * val b₂ r z J₂ = gm (r ≫ p) z _ (w.s (extIdx (f₁ := f₁) (f₂ := f₂) (J₁ (r ≫ p ≫ f₁)) (J₂ (r ≫ p ≫ f₂)), J (r ≫ p))) ^ n * val a r z J := by
   intro Y X X₁ X₂ Z L L₁ L₂ f₁ f₂ w p n a b₁ b₂ hM r z J J₁ J₂ hJ hJ₁ hJ₂

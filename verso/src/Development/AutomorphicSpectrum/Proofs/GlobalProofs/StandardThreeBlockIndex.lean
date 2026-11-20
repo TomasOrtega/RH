@@ -18,7 +18,7 @@ namespace GlobalTheory.CompanionTheory.ZFin
 open Polynomial in
 
 /- English proof (translation)
-Rewrite using `[Polynomial.aeval_eq_sum_range]`. Conclude with `Commute.sum_right _ _ _ fun i _ => (h.pow_right i).smul_right _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem commute_aeval {M : Type} [AddCommGroup M] [Module ℂ M] {T S : Module.End ℂ M} (h : Commute S T) (q : ℂ[X]) :
     Commute S (aeval T q) := by
@@ -28,7 +28,7 @@ theorem commute_aeval {M : Type} [AddCommGroup M] [Module ℂ M] {T S : Module.E
 open Polynomial in
 
 /- English proof (translation)
-Use `conv_lhs => rw [← Polynomial.modByMonic_add_div q p]`. Rewrite using `[map_add, LinearMap.add_apply, mul_comm, map_mul, Module.End.mul_apply, hw, map_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_modByMonic {M : Type} [AddCommGroup M] [Module ℂ M] (T : Module.End ℂ M) {p : ℂ[X]} {w : M}
     (hw : aeval T p w = 0) (q : ℂ[X]) : aeval T q w = aeval T (q %ₘ p) w := by
@@ -38,17 +38,15 @@ theorem aeval_modByMonic {M : Type} [AddCommGroup M] [Module ℂ M] (T : Module.
 open Polynomial in
 
 /- English proof (translation)
-Set `B : ℂ[X] →ₗ[ℂ] M →ₗ[ℂ] M` to `(aeval T).toLinearMap`. Establish `hB : ∀ q w, B q w = aeval T q w` using `fun _ _ => rfl`. Establish `hdeg : ∀ q : ℂ[X], q %ₘ p ∈ degreeLT ℂ p.natDegree` using `fun q => by`. Rewrite using `[Polynomial.mem_degreeLT, ← Polynomial.degree_eq_natDegree hp.ne_zero]`. Conclude with `Polynomial.degree_modByMonic_lt q hp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmem : ∀ q, ∀ w ∈ W, aeval T q w ∈ Submodule.map₂ B (degreeLT ℂ p.natDegree) W` using `fun q w hw => by`. Rewrite using `[aeval_modByMonic T (hW w hw) q]`. Conclude with `Submodule.apply_mem_map₂ B (hdeg q) hw`. Establish `hfg : (degreeLT ℂ p.natDegree).FG`. Rewrite using `[← Module.Finite.iff_fg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `Module.Finite.equiv (Polynomial.degreeLTEquiv ℂ p.natDegree).symm`. Use `⟨Submodule.map₂ B (degreeLT ℂ p.natDegree) W, Submodule.FG.map₂ _ hfg hF, fun w hw => ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `using hmem 1 w hw`. Establish `: Submodule.map₂ B (degreeLT ℂ p.natDegree) W ≤ (Submodule.map₂ B (degreeLT ℂ p.natDegree) W).comap T` using `Submodule.map₂_le.2 fun q _ w hw => by`. Establish `e : T * aeval T q = aeval T (X * q)` using `by rw [map_mul, Polynomial.aeval_X]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Submodule.mem_comap, hB, ← Module.End.mul_apply, e]`. Conclude with `hmem _ w hw`. Conclude with `fun w hw => this hw`. Introduce `S hS hSW`. Establish `: Submodule.map₂ B (degreeLT ℂ p.natDegree) W ≤ (Submodule.map₂ B (degreeLT ℂ p.natDegree) W).comap S` using `Submodule.map₂_le.2 fun q _ w hw => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Submodule.mem_comap, hB, ← Module.End.mul_apply, (commute_aeval hS q).eq, Module.End.mul_apply]`. Conclude with `hmem _ _ (hSW w hw)`. Conclude with `fun w hw => this hw`. Introduce `S hS hSW`. Establish `: Submodule.map₂ B (degreeLT ℂ p.natDegree) W ≤ LinearMap.ker S` using `Submodule.map₂_le.2 fun q _ w hw => by`.
-
-Rewrite using `[LinearMap.mem_ker, hB, ← Module.End.mul_apply, (commute_aeval hS q).eq, Module.End.mul_apply, hSW w hw, map_zero]`. Conclude with `fun w hw => this hw`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem exists_step {M : Type} [AddCommGroup M] [Module ℂ M] (T : Module.End ℂ M) {p : ℂ[X]} (hp : p.Monic)
     {W : Submodule ℂ M} (hF : W.FG) (hW : ∀ w ∈ W, aeval T p w = 0) :
@@ -92,13 +90,11 @@ theorem exists_step {M : Type} [AddCommGroup M] [Module ℂ M] (T : Module.End �
 open Polynomial in
 
 /- English proof (translation)
-Establish `key : ∀ s : Finset ι, ∃ W : Submodule ℂ M, W.FG ∧ v ∈ W ∧ (∀ i ∈ s, ∀ w ∈ W, T i w ∈ W) ∧ ∀ i, ∀ w ∈ W, aeval (T i) (p i) w = 0`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `⟨Submodule.span ℂ {v}, Submodule.fg_span_singleton v, Submodule.mem_span_singleton_self v, by simp, fun i w hw => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hw`. Rewrite using `[map_smul, hv, smul_zero]`. Consider the case `insert j s _ ih`. Take `⟨W, hF, hvW, hs, hk⟩` from `ih`. Take `⟨W', hF', hle, hT, hS, hZ⟩` from `exists_step (T j) (hp j) hF (hk j)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨W', hF', hle hvW, fun i hi => ?_, fun i => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hi with rfl | hi` into its components or cases. Conclude with `hT`. Conclude with `hS _ (hc i j) (hs i hi)`. Conclude with `hZ _ ((commute_aeval (hc j i) (p i)).symm) (hk i)`.
-
-Take `⟨W, hF, hvW, hs, _⟩` from `key Finset.univ`. Conclude with `⟨W, hF, hvW, fun i => hs i (Finset.mem_univ i)⟩`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_fg_stable {M ι : Type} [AddCommGroup M] [Module ℂ M] [Fintype ι] (T : ι → Module.End ℂ M)
     (p : ι → ℂ[X]) (hp : ∀ i, (p i).Monic) (hc : ∀ i j, Commute (T i) (T j)) (v : M)
@@ -135,9 +131,9 @@ abbrev unitOp (hθ : IsInfFam θ) (V : HSp D) (τ : D.what₂.Tau) : Fin V.rank 
   fun a b => derEnd hθ τ (Matrix.single a b 1)
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `GlobalTheory.SmoothAutCheck.parts_mem V τ Z`. Establish `e1 : ∀ g : SmFun θ V, (gelfA (unitOp hθ V τ') k g).1 = gelf θ V τ' k g.1` using `fun g => (gelf_eq hθ τ' k g).symm`. Establish `L` using `linOnSm_gelf (θ := θ) (V := V) τ' k`. Use `LinearMap.ext fun f => Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `RderC θ V τ Z (gelfA (unitOp hθ V τ') k f).1 = (gelfA (unitOp hθ V τ') k (derEnd hθ τ Z f)).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e1, e1]`. Express the relevant statement in the definitionally equal form `_ = gelf θ V τ' k (RderC θ V τ Z f.1)`. Simplify using `only [RderC]`. Rewrite using `[L.add _ (Rder_mem f.2 h1) _ (Submodule.smul_mem _ _ (Rder_mem f.2 h2)), L.smul, GlobalTheory.CuspLie.gelf_Rder hθ h1 f.2, GlobalTheory.CuspLie.gelf_Rder hθ h2 f.2]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem commute_derEnd_gelfA (hθ : IsInfFam θ) (τ τ' : D.what₂.Tau) (Z : Matrix (Fin V.rank) (Fin V.rank) ℂ) (k : ℕ) :
     Commute (derEnd hθ τ Z) (gelfA (unitOp hθ V τ') k) := by
@@ -153,7 +149,7 @@ theorem commute_derEnd_gelfA (hθ : IsInfFam θ) (τ τ' : D.what₂.Tau) (Z : M
     GlobalTheory.CuspLie.gelf_Rder hθ h1 f.2, GlobalTheory.CuspLie.gelf_Rder hθ h2 f.2]
 
 /- English proof (translation)
-Use `Commute.sum_left _ _ _ fun idx _ => Commute.list_prod_left _ _ fun x hx => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `List.mem_ofFn.1 hx`. Conclude with `commute_derEnd_gelfA hθ τ τ' _ k'`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem commute_gelfA (hθ : IsInfFam θ) (τ τ' : D.what₂.Tau) (k k' : ℕ) :
     Commute (gelfA (unitOp hθ V τ) k) (gelfA (unitOp hθ V τ') k') := by
@@ -164,7 +160,7 @@ theorem commute_gelfA (hθ : IsInfFam θ) (τ τ' : D.what₂.Tau) (k k' : ℕ) 
 open Polynomial in
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons a L ih`. Simplify using `only [List.foldr_cons, List.map_cons, List.prod_cons]`. Rewrite using `[ih, gelf_eq hθ τ k, map_mul, map_sub, aeval_X, aeval_C, Module.End.mul_apply, LinearMap.sub_apply, Module.algebraMap_end_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -181,7 +177,7 @@ theorem foldr_gelf_eq (hθ : IsInfFam θ) (τ : D.what₂.Tau) (k : ℕ) (φ : S
 
 open Polynomial in
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons a L ih => simpa using (monic_X_sub_C a).mul ih`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem monic_prod_roots (L : List ℂ) : ((L.map fun a => (X - C a : ℂ[X])).prod).Monic := by
   induction L with
@@ -196,13 +192,13 @@ open GlobalTheory.Mem.AutSpace GlobalTheory.Mem.RealTranslate GlobalTheory.Smoot
 open Polynomial in
 
 /- English proof (translation)
-Introduce `D θ hθ V φ hA hs hg hz`. Use `choose L hL using hz`. Establish `hsm : φ ∈ SmFun θ V` using `hs`. Take `⟨W, hF, hv, hS⟩` from `exists_fg_stable (ι := D.what₂.Tau × Fin V.rank) (fun i => gelfA (unitOp hθ V i.1) i.2.val) (fun i => ((L i.1 i.2.val).map fun a => (X - C a : ℂ[X])).prod) (fun i => monic_prod_roots _) (fun i j => commute_gelfA hθ _ _ _ _) ⟨φ, hsm⟩ (fun i => Subtype.ext ((foldr_gelf_eq hθ i.1 i. …`. Use `{ toIsAutFun := hA, smooth := hs, growth := hg, zfin := ⟨W.map (SmFun θ V).subtype, Module.Finite.iff_fg.2 (hF.map _), ⟨⟨φ, hsm⟩, hv, rfl⟩, ?_⟩ }` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `τ k _ ⟨f, hf, rfl⟩`. Establish `hstab : ∀ x ∈ Algebra.adjoin ℂ (Set.range fun k : Fin V.rank => gelfA (unitOp hθ V τ) k.val), ∀ w ∈ W, x w ∈ W`. Introduce `x hx`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨j, rfl⟩` from `hx`. Conclude with `hS (τ, j)`. Consider the case `algebraMap r`. Introduce `w hw`. Simplify using `using W.smul_mem r hw`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => exact fun w hw => add_mem (hx w hw) (hy w hw)`. Consider the case `mul x y _ _ hx hy => exact fun w hw => hx _ (hy w hw)`. Conclude with `⟨_, hstab _ (gelfA_mem_adjoin_low _ _ _ (GlobalTheory.Mem.Lift.glRel_derEnd hθ V τ) k) f hf, (gelf_eq hθ τ k f).symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.ZFin.isAutFunSm_of_gelf_roots : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)), IsInfFam θ → ∀ (V : HSp D) (φ : GA D V → ℂ), IsAutFun V φ → (∀ (k : ℕ) (τs : Fin k → D.what₂.Tau) (Xs : Fin k → Matrix (Fin V.rank) (Fin V.rank) ℂ), (∀ i, Xs i ∈ lieAt V (τs i)) → ∀ g, ContDiff ℝ ∞ fun t : Fin k → ℝ => φ (g * (List.ofFn fun i => oneP θ V (τs i) (Xs i) (t i)).prod)) → (∃ N : ℕ, ∀ l : List (D.what₂.Tau × Matrix (Fin V.rank) (Fin V.rank) ℂ), (∀ p ∈ l, p.2 ∈ lieAt V p.1) → ∀ x, ∃ C : ℝ, ∀ g ∈ GinfC V, ‖(l.foldr (fun p f => Rder θ V p.1 p.2 f) φ) (x * g)‖ ≤ C * normInf θ V g ^ N) → (∀ τ k, ∃ L : List ℂ, L.foldr (fun a f => gelf θ V τ k f - a • f) φ = 0) → IsAutFunSm θ V φ := by
   intro D θ hθ V φ hA hs hg hz

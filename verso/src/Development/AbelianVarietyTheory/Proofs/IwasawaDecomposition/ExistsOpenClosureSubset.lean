@@ -20,7 +20,7 @@ def glue (c : AlgChart p σ d) (ρ : CxPts p σ → ℝ) (E E' : ChartMap p σ d
   fun c₀ y ξ => if ρ y = 0 then E c₀ y ξ else c.e.symm ((1 - ρ y) • c.e (E c₀ y ξ) + ρ y • c.e (E' c₀ y ξ))
 
 /- English proof (translation)
-Introduce `c₀ c₁ y h₀ h₁ ξ`. Simplify using `only [glue, hE c₀ c₁ y h₀ h₁ ξ, hE' c₀ c₁ y h₀ h₁ ξ]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem glue_trans (c : AlgChart p σ d) (ρ : CxPts p σ → ℝ) {E E' : ChartMap p σ d}
     (hE : ∀ (c c' : AlgChart p σ d), ∀ y ∈ c.e.source, y ∈ c'.e.source → ∀ ξ, E c y ξ = E c' y (c.dtrans c' y ξ))
@@ -31,11 +31,9 @@ theorem glue_trans (c : AlgChart p σ d) (ρ : CxPts p σ → ℝ) {E E' : Chart
   simp only [glue, hE c₀ c₁ y h₀ h₁ ξ, hE' c₀ c₁ y h₀ h₁ ξ]
 
 /- English proof (translation)
-Introduce `c₀ y hy hW`. Unfold `glue`. Use `split_ifs with h`. Break down `hW with hW | hW` into its components or cases. Conclude with `hE c₀ y hy (hW₀ hW)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd (hO₁ y hW) (by rw [h]; exact zero_ne_one)`. Establish `h'` using `hρ y h`. Rewrite using `[hE' c₀ y hy h']`. Break down `hW with hW | hW` into its components or cases. Rewrite using `[hE c₀ y hy (hW₀ hW), ← add_smul, sub_add_cancel, one_smul]`.
-
-Conclude with `c.e.left_inv (hW' h')`. Rewrite using `[hO₁ y hW, sub_self, zero_smul, zero_add, one_smul]`. Conclude with `c.e.left_inv (hW' h')`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glue_zero (c : AlgChart p σ d) {ρ : CxPts p σ → ℝ} {E E' : ChartMap p σ d} {W W' W₀ O₁ : Set (CxPts p σ)}
     (hE : ∀ c : AlgChart p σ d, ∀ y ∈ c.e.source, y ∈ W → E c y 0 = y)
@@ -57,7 +55,7 @@ theorem glue_zero (c : AlgChart p σ d) {ρ : CxPts p σ → ℝ} {E E' : ChartM
       exact c.e.left_inv (hW' h')
 
 /- English proof (translation)
-Establish `ho` using `isOpen_over c.e c'.e.open_source`. Establish `h : ContDiffOn ℂ ∞ (c'.e ∘ c.e.symm) (c.e.target ∩ c.e.symm ⁻¹' c'.e.source)` using `(contDiffOn_piLp 2).2 fun a => ReciprocityTheory.L2DbarEstimates.contDiffOn_of_differentiableOn d _ _ ho (differentiableOn_euclidean.1 (c.holo_trans c') a)`. Conclude with `((h.contDiffAt (ho.mem_nhds ⟨hv, hv'⟩)).restrict_scalars ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiffAt_trans (c c' : AlgChart p σ d) {v : ReciprocityTheory.L2DbarEstimates.V d} (hv : v ∈ c.e.target)
     (hv' : c.e.symm v ∈ c'.e.source) : ContDiffAt ℝ ∞ (c'.e ∘ c.e.symm) v := by
@@ -68,7 +66,7 @@ theorem contDiffAt_trans (c c' : AlgChart p σ d) {v : ReciprocityTheory.L2DbarE
   exact ((h.contDiffAt (ho.mem_nhds ⟨hv, hv'⟩)).restrict_scalars ℝ)
 
 /- English proof (translation)
-Take `⟨r, hr, h⟩` from `(hL.image_of_continuousOn (c.e.continuousOn.mono hLs)).exists_thickening_subset_open c.e.open_target (image_subset_iff.2 fun y hy => c.e.map_source (hLs hy))`. Conclude with `⟨r, hr, fun y hy => (Metric.ball_subset_thickening (mem_image_of_mem _ hy) r).trans h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_ball_subset (c : AlgChart p σ d) {L : Set (CxPts p σ)} (hL : IsCompact L) (hLs : L ⊆ c.e.source) :
     ∃ r > 0, ∀ y ∈ L, Metric.ball (c.e y) r ⊆ c.e.target := by
@@ -77,7 +75,7 @@ theorem exists_ball_subset (c : AlgChart p σ d) {L : Set (CxPts p σ)} (hL : Is
   exact ⟨r, hr, fun y hy => (Metric.ball_subset_thickening (mem_image_of_mem _ hy) r).trans h⟩
 
 /- English proof (translation)
-Take `⟨W₀, h₁, h₂, h₃, -⟩` from `exists_open_between_and_isCompact_closure hK hW hKW`. Conclude with `⟨W₀, h₁, h₂, h₃⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_open_closure_subset {X : Type} [TopologicalSpace X] [T2Space X] [CompactSpace X] {K W : Set X}
     (hK : IsCompact K) (hW : IsOpen W) (hKW : K ⊆ W) : ∃ W₀, IsOpen W₀ ∧ K ⊆ W₀ ∧ closure W₀ ⊆ W := by

@@ -15,7 +15,7 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.SiegJoin.siegelToroidalPolCharts_of_steps5 GlobalTheory.T.exists_siegelFamily_cyclotomicAway_odd_level GlobalTheory.T.minimalSiegelCompactification_exists GlobalTheory.T.normalisedBlowup_ampleDivisor_compactification GlobalTheory.T.minimalBlowup_smooth_with_semiAbeli …`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SiegJoin.siegelToroidalPolCharts : GlobalTheory.Published.SiegelToroidalPolCharts :=
   GlobalTheory.SiegJoin.siegelToroidalPolCharts_of_steps5 GlobalTheory.T.exists_siegelFamily_cyclotomicAway_odd_level GlobalTheory.T.minimalSiegelCompactification_exists GlobalTheory.T.normalisedBlowup_ampleDivisor_compactification

@@ -10,7 +10,7 @@ open Matrix MeasureTheory Formalism.REAL Formalism.QuantumDeterminants Formalism
 namespace Formalism.FourierDecayAlt.P.CutMK
 
 /- English proof (translation)
-Substitute `e` using the available equality. Rewrite using `[Formalism.FourierDecayAlt.P.Dx2.Tower.castV_rfl, Formalism.FourierDecayAlt.P.Dx2.MN.castM_rfl]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_cast {k a b : ℕ} (e : a = b) (v : Fin (2 * a + k + 1) → ℂ) (c : ℂ) (g : B.Mat k a) :
     psi k b (D.castV e v) c (D.castM e g) = psi k a v c g := by
@@ -18,15 +18,15 @@ theorem psi_cast {k a b : ℕ} (e : a = b) (v : Fin (2 * a + k + 1) → ℂ) (c 
   rw [Formalism.FourierDecayAlt.P.Dx2.Tower.castV_rfl, Formalism.FourierDecayAlt.P.Dx2.MN.castM_rfl]
 
 /- English proof (translation)
-Introduce `hC Wp Wq _ _ _ _ _ _ P p`. Establish `hT` using `p.hT`. Establish `hr : P.r ≤ P.r` using `le_rfl`. Establish `e0 : P.r + (P.r - P.r) = P.r` using `by omega`. Establish `hρ : P.r - P.r = 0` using `Nat.sub_self _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨b, hbs, hbc, hκL, hκR⟩` from `Formalism.FourierDecayAlt.P.CutEX.MkTopBump.bump_exists (k := P.k) (p := P.r) (ρ := P.r - P.r) (p.T.bs P.r).z (p.T.bs P.r).z' (p.T.bs P.r).z_mem (p.T.bs P.r).z'_mem`. Take `⟨β, hβs, hβi, hβK⟩` from `Formalism.FourierDecayAlt.P.CutEXMT.top_truncation_construction P.r`. Use `⟨b, b, β, kapL (p.T.bs P.r).z b * kapR (p.T.bs P.r).z' b, hbs, hbc, hbs, hbc, mul_ne_zero hκL hκR, hβs, ?_, ?_⟩` and prove the remaining obligations. Introduce `K hK hKU`. Take `⟨K', hK', hK'1, hK'2⟩` from `hβK (Mt P.k (P.r - P.r)) K hK (fun q hq => (hKU hq).1)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨K', hK', fun q hq => ?_, hK'2⟩` and prove the remaining obligations. Take `⟨hd, q₀, hq₀, he⟩` from `hK'1 q hq`. Conclude with `⟨hd, he ▸ (hKU hq₀).2⟩`. Introduce `Φ hΦL hΦU Z y hZ hy`. Establish `hyG : (Matrix.of y : B.Mat P.k (P.r - P.r)) ∈ B.GV P.k (P.r - P.r)` using `(Formalism.FourierDecayAlt.P.CutEX.MkCptPf.glev_last_iff hρ _).1 hy`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hz : p.T.base.z' = D.castV e0 (liftVec P.k P.r (P.r - P.r) (p.T.bs P.r).z')` using `(p.T.z'_lev P.r hr).symm`. Establish `hpsi : ∀ u : G.UT P.r → ℂ, CutEX.psiU p (G.upper u) = psi P.k (P.r + (P.r - P.r)) (liftVec P.k P.r (P.r - P.r) (p.T.bs P.r).z') cStd (U.muP P.k P.r (P.r - P.r) (G.upper u))`. Introduce `u`. Unfold `CutEX.psiU`. Rewrite using `[hz]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `psi_cast e0 _ _ _`. Establish `key` using `hC P.k P.r (P.r - P.r) P.r Wp Wq e0 hρ (p.T.bs P.r) p.T.base (p.T.z'_lev P.r hr) (p.T.π'_lev P.r hr) (hT P.r hr).1 (hT P.r hr).2.1 (Formalism.FourierDecayAlt.P.PBM.tower_haarW' p.T hT P.r hr e0) (hT P.r hr).2.2 (hT 0 (Nat.zero_le _)).2.2 b b β Φ hbs.continuous hbc hbs.continuous …`. Rewrite using `[hΦU Z y' (G.upper u) hZ ((Formalism.FourierDecayAlt.P.CutEX.MkCptPf.glev_last_iff hρ _).2 hy') (Formalism.FourierDecayAlt.P.LeftFubiniLemmas.upper_isUpUni u), hpsi u])`. Conclude with `key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem top_construction : TopMk := by
   intro hC Wp Wq _ _ _ _ _ _ P p
@@ -65,7 +65,7 @@ theorem top_construction : TopMk := by
     exact key
 
 /- English proof (translation)
-The claim follows from `mkTop_of_leaves hR hL top_construction`.
+A detailed English derivation is pending.
 -/
 theorem mkTop_of_avgs (hR : RightAvg) (hL : LeftAvg) : CutEX.MkTop := mkTop_of_leaves hR hL top_construction
 

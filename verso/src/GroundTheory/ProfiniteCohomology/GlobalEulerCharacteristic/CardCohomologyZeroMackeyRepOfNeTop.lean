@@ -24,7 +24,7 @@ variable (ιr : ∀ v : {v : InfinitePlace K.1 // v.IsReal}, ℚ̄ →ₐ[K.1] A
   [IsDiscreteRep B]
 
 /- English proof (translation)
-The claim follows from `(Nat.card_congr (mackeyCohomologyEquiv (gsOpenSubgroup S hL) (gsRealFamily S ιr v) B 0).toEquiv).trans Nat.card_pi`.
+A detailed English derivation is pending.
 -/
 theorem gsRealH0Card_coind (v : {v : InfinitePlace K.1 // v.IsReal}) :
     gsRealH0Card S (Rep.coind (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).subtype B)
@@ -37,7 +37,7 @@ theorem gsRealH0Card_coind (v : {v : InfinitePlace K.1 // v.IsReal}) :
     Nat.card_pi
 
 /- English proof (translation)
-The claim follows from `card_cohomology_zero_of_forall_eq_one _ fun g => by have hb := eq_bot_of_ne_top_realGal v _ hd have hg : g = 1 := Subtype.ext (Subgroup.mem_bot.1 (hb ▸ g.2)) subst hg exact map_one _`.
+A detailed English derivation is pending.
 -/
 theorem card_cohomology_zero_mackeyRep_of_ne_top (v : {v : InfinitePlace K.1 // v.IsReal})
     (d : MackeyDoubleCoset (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S))
@@ -53,11 +53,9 @@ theorem card_cohomology_zero_mackeyRep_of_ne_top (v : {v : InfinitePlace K.1 // 
     exact map_one _
 
 /- English proof (translation)
-Establish `key : ∀ h : mackeySubgroup (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) (gsRealFamily S ιr p.1.1).toMonoidHom p.1.2.out, (gsBaseChange S hL).symm (gsRealFamily (placesOver S) ιrL w (e h)) = mackeyConj (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ …` using `fun h => (ContinuousMulEquiv.symm_apply_eq _).2 (he h h.2).symm`. Establish `hiff : ∀ b : B, (∀ h : mackeySubgroup (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) (gsRealFamily S ιr p.1.1).toMonoidHom p.1.2.out, B.ρ (mackeyConj (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) (gsRealFamily S ιr p.1.1).toMonoidHom p.1.2.out …`. Introduce `b`. Prove the components needed by the constructor for the conclusion. Introduce `hb g'`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hm : e.symm g' ∈ mackeySubgroup (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) (gsRealFamily S ιr p.1.1).toMonoidHom p.1.2.out` using `(Subgroup.eq_top_iff' _).1 p.2 (e.symm g')`. Establish `h4 : (gsBaseChange S hL).symm (gsRealFamily (placesOver S) ιrL w g') = mackeyConj (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) (gsRealFamily S ιr p.1.1).toMonoidHom p.1.2.out ⟨e.symm g', hm⟩` using `(congrArg (fun t => (gsBaseChange S hL).symm (gsRealFamily (placesOver S) ιrL w t)) (e.apply_symm_apply g').symm).trans (key ⟨e.symm g', hm⟩)`. Conclude with `(congrArg (fun t => B.ρ t b) h4).trans (hb ⟨e.symm g', hm⟩)`. Introduce `hb h`. Conclude with `(congrArg (fun t => B.ρ t b) (key h)).symm.trans (hb (e h))`.
-
-Conclude with `(Nat.card_congr (H0Iso (mackeyRep (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) (gsRealFamily S ιr p.1.1).toMonoidHom B p.1.2.out)).toLinearEquiv.toEquiv).trans <| (Nat.card_congr (Equiv.subtypeEquivRight hiff)).trans (Nat.card_congr (H0Iso (Rep.res (gsRealFami …`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem card_cohomology_zero_mackeyRep_top
     (ιrL : ∀ w : {w : InfinitePlace L.1 // w.IsReal}, ℚ̄ →ₐ[L.1] AlgebraicClosure w.1.Completion)

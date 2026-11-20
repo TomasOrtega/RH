@@ -5,33 +5,29 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.CoiCo
 open Polynomial Matrix IsLocalRing TensorProduct
 
 /- English proof (translation)
-Introduce `F _ ι _ _ a P ha hP`. Establish `hu : ∀ i j, i ≠ j → IsUnit (a i - a j)` using `fun i j hij => (sub_ne_zero.2 (fun h => hij (ha h))).isUnit`. Establish `hCH : aeval P (∏ i, (X - C (a i))) = 0`. Rewrite using `[← hP]`. Conclude with `Matrix.aeval_self_charpoly P`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨hcoi, -, -, hcomm⟩` from `UpperTheory.V.AlgebraTools.lag_coi a P hu hCH`. Establish `hne` using `UpperTheory.V.AlgebraTools.lag_ne_zero a P hu (by`. Rewrite using `[hP, Polynomial.map_prod]`. Use the proof step `simp)`. Take `⟨g, hg⟩` from `UpperTheory.V.AlgebraTools.coi_conj_single _ hcoi hne`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpoly : ∀ i, ∃ q : F[X], UpperTheory.V.AlgebraTools.lag a P i = aeval P q` using `fun i => ⟨_ • _, by rw [UpperTheory.V.AlgebraTools.lag, map_smul]⟩`. Use `set f := UpperTheory.V.AlgebraTools.lag a P with hf`. Establish `hinj : ∀ A B : Matrix ι ι F, (g : Matrix ι ι F) * A * ((g⁻¹ : GL ι F) : Matrix ι ι F) = (g : Matrix ι ι F) * B * ((g⁻¹ : GL ι F) : Matrix ι ι F) → A = B`. Introduce `A B h`. Conclude with `(Units.mul_right_inj g).1 ((Units.mul_left_inj g⁻¹).1 h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hmul : ∀ A B : Matrix ι ι F, (g : Matrix ι ι F) * (A * B) * ((g⁻¹ : GL ι F) : Matrix ι ι F) = ((g : Matrix ι ι F) * A * ((g⁻¹ : GL ι F) : Matrix ι ι F)) * ((g : Matrix ι ι F) * B * ((g⁻¹ : GL ι F) : Matrix ι ι F))`. Introduce `A B`. Simplify using `only [mul_assoc, Units.inv_mul_cancel_left]`. Establish `hspan : ∀ Y, P * Y = Y * P → ∃ c : ι → F, Y = ∑ i, c i • f i`. Introduce `Y hY`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `set Z := (g : Matrix ι ι F) * Y * ((g⁻¹ : GL ι F) : Matrix ι ι F) with hZ`. Use `⟨fun i => Z i i, hinj _ _ ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, hg]`. Rewrite using `[← hZ]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Rewrite using `[Matrix.sum_apply, Finset.sum_eq_single i]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : Z * single j j (1 : F) = single j j 1 * Z`. Rewrite using `[← hg j, hZ, ← hmul, ← hmul, (hcomm Y j hY.symm).eq]`. Establish `h2` using `congrFun (congrFun h1 i) j`. Rewrite `h2` using `[Matrix.mul_single_apply_same, Matrix.single_mul_apply_of_ne _ _ _ _ _ hij]`. Rewrite `h2` using `[mul_one]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hij, h2]`. Introduce `b _ hb`. Simplify using `[hb]`. Simplify using the standard rewrite rules. Establish `hq : ∀ Y, P * Y = Y * P → ∃ q : F[X], Y = aeval P q`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `Y hY`. Take `⟨c, rfl⟩` from `hspan Y hY`. Use `choose q hq using hpoly`. Conclude with `⟨∑ i, c i • q i, by simp [hq]⟩`. Use `⟨?_, hq⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hli : LinearIndependent F f`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc j`. Establish `h1 : (∑ i, c i • f i) * f j = c j • f j`. Rewrite using `[Finset.sum_mul, Finset.sum_eq_single j]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[smul_mul_assoc, (hcoi.idem j).eq]`. Introduce `b _ hb`. Rewrite using `[smul_mul_assoc, hcoi.ortho hb, smul_zero]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[hc, zero_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(smul_eq_zero.1 h1.symm).resolve_right (hne j)`. Establish `hker : LinearMap.ker (LinearMap.mulLeft F P - LinearMap.mulRight F P) = Submodule.span F (Set.range f)`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `Y hY`. Establish `hY' : P * Y = Y * P` using `by simpa [sub_eq_zero] using hY`.
-
-Take `⟨c, rfl⟩` from `hspan Y hY'`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Use `(hcomm P i (Commute.refl P)).eq` as an intermediate fact.
-
-Simplify `this` using `[sub_eq_zero]`. Rewrite using `[hker, finrank_span_eq_card hli]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.centraliser_rank :
     ∀ {F : Type} [Field F] {ι : Type} [Fintype ι] [DecidableEq ι] (a : ι → F) (P : Matrix ι ι F), Function.Injective a → P.charpoly = ∏ i, (X - C (a i)) → Module.finrank F (LinearMap.ker (LinearMap.mulLeft F P - LinearMap.mulRight F P)) = Fintype.card ι ∧ ∀ Y, P * Y = Y * P → ∃ q : F[X], Y = aeval P q := by

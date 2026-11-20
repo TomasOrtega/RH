@@ -12,7 +12,7 @@ section General
 variable {m : Type*} [Fintype m] [DecidableEq m] {J : Matrix m m ℂ}
 
 /- English proof (translation)
-Establish `hu : IsUnit J` using `⟨⟨J, J, hJJ, hJJ⟩, rfl⟩`. Establish `hinv : J⁻¹ = J` using `inv_eq_left_inv hJJ`. Use `Matrix.exp_conj J X hu` as an intermediate fact. Rewrite `this` using `[hinv]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exp_conj_J (hJJ : J * J = 1) (X : Matrix m m ℂ) : exp (J * X * J) = J * exp X * J := by
   have hu : IsUnit J := ⟨⟨J, J, hJJ, hJJ⟩, rfl⟩
@@ -21,27 +21,25 @@ theorem exp_conj_J (hJJ : J * J = 1) (X : Matrix m m ℂ) : exp (J * X * J) = J 
   rwa [hinv] at this
 
 /- English proof (translation)
-The claim follows from `(expUnit ℝ (Matrix m m ℂ) X).mul_inv`.
+A detailed English derivation is pending.
 -/
 theorem exp_mul_exp_neg' (X : Matrix m m ℂ) : exp X * exp (-X) = 1 :=
   (expUnit ℝ (Matrix m m ℂ) X).mul_inv
 
 /- English proof (translation)
-The claim follows from `(expUnit ℝ (Matrix m m ℂ) X).inv_mul`.
+A detailed English derivation is pending.
 -/
 theorem exp_neg_mul_exp' (X : Matrix m m ℂ) : exp (-X) * exp X = 1 :=
   (expUnit ℝ (Matrix m m ℂ) X).inv_mul
 
 /- English proof (translation)
-Establish `h1 : -(J * X * J) = J * (-X) * J` using `by rw [Matrix.mul_neg, Matrix.neg_mul]`. Rewrite using `[hG, coe_expUnit, ← Matrix.exp_conjTranspose, (mem_lieJ_iff hJJ).1 hX, h1, exp_conj_J hJJ, mul_J_J hJJ (J * exp (-X)), Matrix.mul_assoc, exp_neg_mul_exp', Matrix.mul_one]`. Use `exists_nhds := by`. Take `⟨ε, εpos, hε⟩` from `Metric.isOpen_iff.1 (expPartialHomeomorph ℝ (Matrix m m ℂ)).open_source (0 : Matrix m m ℂ) (zero_mem_expPartialHomeomorph_source ℝ (Matrix m m ℂ))`. Use `⟨Metric.ball (0 : Matrix m m ℂ) ε ∩ (fun X : Matrix m m ℂ => Xᴴ) ⁻¹' Metric.ball (0 : Matrix m m ℂ) ε ∩ (fun X : Matrix m m ℂ => -(J * X * J)) ⁻¹' Metric.ball (0 : Matrix m m ℂ) ε, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `(Metric.isOpen_ball.inter (Metric.isOpen_ball.preimage continuous_id.matrix_conjTranspose)).inter (Metric.isOpen_ball.preimage ((continuous_const.matrix_mul continuous_id).matrix_mul continuous_const).neg)`. Apply the tactic sequence `refine ⟨⟨Metric.mem_ball_self εpos, ?_⟩, ?_⟩ <;>`. Simplify using `using Metric.mem_ball_self (x := (0 : Matrix m m ℂ)) εpos`. Conclude with `fun X hX => hε hX.1.1`. Introduce `X hX hGX`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hGX` using `[hG, coe_expUnit]`. Rewrite using `[mem_lieJ_iff hJJ]`. Establish `h1 : (exp X)ᴴ = J * exp (-X) * J`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[exp_mul_exp_neg', Matrix.mul_one, mul_J_J hJJ]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `_ = (exp X)ᴴ * J * exp X * exp (-X) * J := by simp only [Matrix.mul_assoc]`. Use `_ = J * exp (-X) * J := by rw [hGX]`. Establish `h2 : exp Xᴴ = exp (-(J * X * J))`. Rewrite using `[Matrix.exp_conjTranspose, h1, show -(J * X * J) = J * (-X) * J by`. Rewrite using `[Matrix.mul_neg, Matrix.neg_mul], exp_conj_J hJJ]`.
-
-Conclude with `(expPartialHomeomorph ℝ (Matrix m m ℂ)).injOn (hε hX.1.2) (hε hX.2) h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isExpLieAlgebra_of_J (hJJ : J * J = 1) (G : Subgroup (Matrix m m ℂ)ˣ)
     (hG : ∀ g : (Matrix m m ℂ)ˣ, g ∈ G ↔ (g : Matrix m m ℂ)ᴴ * J * g = J) :
@@ -82,13 +80,13 @@ section UJ
 variable {n : ℕ} (ε : Fin n → Bool)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_UJ_iff (g : (Matrix (Fin n) (Fin n) ℂ)ˣ) :
     g ∈ UJ ε ↔ (g : Matrix (Fin n) (Fin n) ℂ)ᴴ * Jm ε * g = Jm ε := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `isExpLieAlgebra_of_J (Jm_mul_self ε) _ (mem_UJ_iff ε)`.
+A detailed English derivation is pending.
 -/
 theorem isExpLieAlgebra_UJ : IsExpLieAlgebra (UJ ε) (lieJ (Jm ε)) :=
   isExpLieAlgebra_of_J (Jm_mul_self ε) _ (mem_UJ_iff ε)
@@ -100,9 +98,9 @@ instance lieGroup_UJ (k : WithTop ℕ∞) : LieGroup 𝓘(ℝ, lieJ (Jm ε)) k (
   (isExpLieAlgebra_UJ ε).lieGroup k
 
 /- English proof (translation)
-Establish `hcl : IsClosed (Kset ε)`. Use `IsClosed.inter ?_ ?_` and prove the remaining obligations. Establish `: (Matrix.unitaryGroup (Fin n) ℂ : Set (Matrix (Fin n) (Fin n) ℂ)) = {u | star u * u = 1}` using `by ext u; exact Matrix.mem_unitaryGroup_iff'`. Rewrite using `[this]`. Conclude with `isClosed_eq (continuous_star.matrix_mul continuous_id) continuous_const`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `isClosed_eq (continuous_id.matrix_mul continuous_const) (continuous_const.matrix_mul continuous_id)`. Establish `hB : IsCompact (Set.pi Set.univ fun _ : Fin n => Set.pi Set.univ fun _ : Fin n => Metric.closedBall (0 : ℂ) 1)` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall _ _`. Use `hB.of_isClosed_subset hcl ?_` and prove the remaining obligations. Introduce and unpack `u ⟨hu, -⟩ i - j -`. Simplify using `using entry_norm_bound_of_unitary hu i j`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isCompact_Kset : IsCompact (Kset ε) := by
   have hcl : IsClosed (Kset ε) := by
@@ -121,7 +119,7 @@ theorem isCompact_Kset : IsCompact (Kset ε) := by
   simpa using entry_norm_bound_of_unitary hu i j
 
 /- English proof (translation)
-Establish `hE` using `(isClosedEmbeddingMatrix n ε).1`. Establish `: (KG ε : Set (UJ ε)) = (fun g : UJ ε => ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)) ⁻¹' Kset ε` using `rfl`. Rewrite using `[this]`. Conclude with `hE.isCompact_preimage (isCompact_Kset ε)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_KG : IsCompact (KG ε : Set (UJ ε)) := by
   have hE := (isClosedEmbeddingMatrix n ε).1

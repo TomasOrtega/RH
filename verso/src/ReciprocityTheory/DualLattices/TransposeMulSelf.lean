@@ -19,11 +19,11 @@ private lemma invPerm_apply (e : G ≃ AddChar G K) (h : G) :
     invPerm e h = e.symm (e h)⁻¹ := rfl
 
 /- English proof (translation)
-Use extensionality with `g h`. Establish `key : ∀ x, e g x * e h x = (e g * e h) x` using `fun x => (AddChar.mul_apply _ _ _).symm`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.of_apply, Matrix.smul_apply, Equiv.Perm.permMatrix, PEquiv.toMatrix_apply, Equiv.toPEquiv_apply, Option.mem_def, Option.some.injEq, smul_eq_mul, key]`. Distinguish the cases in `hgh : e g * e h = 1`. Establish `h1 : invPerm e g = h`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[invPerm_apply, inv_eq_of_mul_eq_one_right hgh, Equiv.symm_apply_apply]`. Rewrite using `[if_pos h1, hgh]`. Simplify using the standard rewrite rules. Establish `h1 : ¬ invPerm e g = h`. Introduce `h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hgh` to reduce the goal to its premises. Rewrite `h1` using `[invPerm_apply]`. Rewrite using `[← h1, Equiv.apply_symm_apply, mul_inv_cancel]`. Rewrite using `[if_neg h1, AddChar.sum_eq_zero_of_ne_one hgh, mul_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private lemma transpose_mul_self (e : G ≃ AddChar G K) :
     (Matrix.of fun g h : G => e h g)ᵀ * (Matrix.of fun g h : G => e h g) =
@@ -46,7 +46,7 @@ private lemma transpose_mul_self (e : G ≃ AddChar G K) :
     rw [if_neg h1, AddChar.sum_eq_zero_of_ne_one hgh, mul_zero]
 
 /- English proof (translation)
-Establish `h` using `congrArg Matrix.det (transpose_mul_self e)`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_transpose, Matrix.det_smul, Matrix.det_permutation]`. Rewrite using `[sq]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma det_sq (e : G ≃ AddChar G K) :
     (Matrix.of fun g h : G => e h g).det ^ 2 =
@@ -59,9 +59,9 @@ private lemma det_sq (e : G ≃ AddChar G K) :
 end
 
 /- English proof (translation)
-Introduce `K _ G _ _ _ e`. Rewrite using `[det_sq e]`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign (invPerm e)) with h | h <;> rw [h]`. Use `left`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `right`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem charTable : CharTableStatement := by
   intro K _ G _ _ _ e

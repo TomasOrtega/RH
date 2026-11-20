@@ -18,7 +18,7 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
 end GlobalTheory.CovTop.AnchorRd
 namespace GlobalTheory.CovTop
 /- English proof (translation)
-Use `Closed.imp (Closed.and _root_.GlobalTheory.CovTop.WtShape.wtN_z (_root_.GlobalTheory.CovTop.Sizes.hostN_alt 1)) ?_` and prove the remaining obligations. Introduce and unpack `eps Fm CH - ⟨⟨C1, -, hW⟩, ⟨A, -, hH⟩⟩`. Take `⟨x0, h⟩` from `_root_.GlobalTheory.CovTop.EventuallyAtAllPoints.and hW hH`. Conclude with `⟨100, by norm_num, x0, fun x hx hle ι p hp i => AnchorRd.anchorAt_of p i (Fm.params x hx ι) ((h x hx hle ι p hp).1 i) ((h x hx hle ι p hp).2 i)⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem anchor_holds_alt : _root_.GlobalTheory.CovTop.AnchorCondition := by
   refine Closed.imp (Closed.and _root_.GlobalTheory.CovTop.WtShape.wtN_z (_root_.GlobalTheory.CovTop.Sizes.hostN_alt 1)) ?_

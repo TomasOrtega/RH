@@ -22,7 +22,7 @@ namespace GlobalTheory.TensorScalarOne
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨f, hf, hf0⟩` from `((GlobalTheory.ThetaAllChar.thetaFacts D).std hψ S T).2.2.2`. Take `⟨w, hw⟩` from `Function.ne_iff.mp hf0`. Use `⟨heisO ψ S T w f, (GlobalTheory.HeisThetaLaws.heis_theta_laws D ψ hψ S T).1 w f hf, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.RealDirectionThetaNonzero.heisO_apply_zero]`. Conclude with `hw`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_theta_ne_zero_at_zero {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (S T : HSp D) :
     ∃ f, IsThetaFunO ψ S T f ∧ f 0 ≠ 0 := by
@@ -32,7 +32,7 @@ theorem exists_theta_ne_zero_at_zero {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsS
   rw [GlobalTheory.IndefiniteRowSideFullHecke.RealDirectionThetaNonzero.heisO_apply_zero]; exact hw
 
 /- English proof (translation)
-Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem om_inv_apply {S T : HSp D} (om : Om S T) (p : GA D S × GA D T) (f : WO S T → ℂ) : om p (om p⁻¹ f) = f := by
   rw [← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]
@@ -46,18 +46,18 @@ variable {ψ : AddChar (AF D.host.F) ℂ} {S A B T : HSp D} (o : OrthDec S A B) 
     (omB : Om B T)
 
 /- English proof (translation)
-Simplify using `only [OrthDec.boxS, AddEquiv.apply_symm_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem boxS_resS_symm (fA : WO A T → ℂ) (fB : WO B T → ℂ) (u : WO A T) (v : WO B T) :
     o.boxS T fA fB ((o.resS T).symm (u, v)) = fA u * fB v := by
   simp only [OrthDec.boxS, AddEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Introduce `fA fB hA hB`. Use function extensionality and compare the values at `w`. Take `⟨⟨u, v⟩, rfl⟩` from `(o.resS T).symm.surjective w`. Rewrite using `[H _ (o.isThetaFunO_boxS hA hB) u v]`. Establish `e1 : ∀ u', (fun v' => o.boxS T fA fB ((o.resS T).symm (u', v'))) = fA u' • fB`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `u'`. Use function extensionality and compare the values at `v'`. Simplify using `[boxS_resS_symm]`. Repeatedly rewrite using `[e1, LinearMap.map_smul]`. Establish `e2 : (fun u' => (fA u' • omB (b, h) fB) v) = (omB (b, h) fB v) • fA`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `u'`. Simplify using `[mul_comm]`. Rewrite using `[e2, LinearMap.map_smul]`. Simplify using `only [Pi.smul_apply, boxS_resS_symm, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem prodLaw_of (a : GA D A) (b : GA D B) (h : GA D T) (c : ℂ)
     (H : ∀ f, IsThetaFunO ψ S T f → ∀ u v, omS (o.emb (a, b), h) f ((o.resS T).symm (u, v)) =
@@ -82,9 +82,9 @@ variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S A B T : HSp D} {o : OrthDe
     {omB : Om B T} {χA χB χT : (AE D)ˣ →* Circle}
 
 /- English proof (translation)
-Take `⟨fA, hfA, hfA0⟩` from `exists_theta_ne_zero_at_zero hψ A T`. Take `⟨fB, hfB, hfB0⟩` from `exists_theta_ne_zero_at_zero hψ B T`. Establish `tA` using `hA.om_pres (a, h)⁻¹ fA hfA`. Establish `tB` using `hB.om_pres (b, h)⁻¹ fB hfB`. Establish `e` using `congrFun ((h1 _ _ tA tB).symm.trans (h2 _ _ tA tB)) 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Pi.smul_apply, om_inv_apply, OrthDec.boxS_zero, smul_eq_mul] at e`. Conclude with `mul_right_cancel₀ (mul_ne_zero hfA0 hfB0) e`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem prodLaw_unique (hψ : IsStdChar D ψ (-1)) (hA : IsWeilDatumO ψ A T χA χT omA)
     (hB : IsWeilDatumO ψ B T χB χT omB) {a : GA D A} {b : GA D B} {h : GA D T} {c c' : ℂ}
@@ -98,9 +98,9 @@ theorem prodLaw_unique (hψ : IsStdChar D ψ (-1)) (hA : IsWeilDatumO ψ A T χA
   exact mul_right_cancel₀ (mul_ne_zero hfA0 hfB0) e
 
 /- English proof (translation)
-Introduce `fA fB hfA hfB`. Establish `eS : ((o.emb (a * a', b * b'), h * h') : GA D S × GA D T) = (o.emb (a, b), h) * (o.emb (a', b'), h')`. Rewrite using `[Prod.mk_mul_mk, ← map_mul, Prod.mk_mul_mk]`. Establish `eA : ((a * a', h * h') : GA D A × GA D T) = (a, h) * (a', h')` using `rfl`. Establish `eB : ((b * b', h * h') : GA D B × GA D T) = (b, h) * (b', h')` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[eS, eA, eB, map_mul omS, map_mul omA, map_mul omB, Module.End.mul_apply, Module.End.mul_apply, Module.End.mul_apply, h2 fA fB hfA hfB, LinearMap.map_smul, h1 _ _ (hA.om_pres _ fA hfA) (hB.om_pres _ fB hfB), smul_smul, mul_comm c' c]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prodLaw_mul (hA : IsWeilDatumO ψ A T χA χT omA) (hB : IsWeilDatumO ψ B T χB χT omB)
     {a a' : GA D A} {b b' : GA D B} {h h' : GA D T} {c c' : ℂ}
@@ -116,9 +116,9 @@ theorem prodLaw_mul (hA : IsWeilDatumO ψ A T χA χT omA) (hB : IsWeilDatumO ψ
     smul_smul, mul_comm c' c]
 
 /- English proof (translation)
-Take `⟨fA, hfA, hfA0⟩` from `exists_theta_ne_zero_at_zero hψ A T`. Take `⟨fB, hfB, hfB0⟩` from `exists_theta_ne_zero_at_zero hψ B T`. Establish `e` using `congrFun (H fA fB hfA hfB) 0`. Rewrite `e` using `[hS.om_aut _ (o.emb_mem_GQ ha hb) h hh _ (o.isThetaFunO_boxS hfA hfB)]`. Simplify using `only [Pi.smul_apply, OrthDec.boxS_zero, smul_eq_mul, hA.om_aut a ha h hh fA hfA, hB.om_aut b hb h hh fB hfB] at e`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e' : (1 : ℂ) * (fA 0 * fB 0) = c * (fA 0 * fB 0)` using `by rw [one_mul]; exact e`. Conclude with `(mul_right_cancel₀ (mul_ne_zero hfA0 hfB0) e').symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem prodLaw_rat (hψ : IsStdChar D ψ (-1)) (hS : IsWeilDatumO ψ S T (χA * χB) χT omS)
     (hA : IsWeilDatumO ψ A T χA χT omA) (hB : IsWeilDatumO ψ B T χB χT omB) {a : GA D A} {b : GA D B} {h : GA D T}
@@ -133,15 +133,13 @@ theorem prodLaw_rat (hψ : IsStdChar D ψ (-1)) (hS : IsWeilDatumO ψ S T (χA *
   exact (mul_right_cancel₀ (mul_ne_zero hfA0 hfB0) e').symm
 
 /- English proof (translation)
-Take `⟨fA, hfA, hfA0⟩` from `exists_theta_ne_zero_at_zero hψ A T`. Take `⟨fB, hfB, hfB0⟩` from `exists_theta_ne_zero_at_zero hψ B T`. Rewrite using `[continuous_iff_continuousAt]`. Introduce and unpack `⟨a₀, b₀, h₀⟩`. Use `set gA := omA (a₀, h₀)⁻¹ fA with hgA`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `set gB := omB (b₀, h₀)⁻¹ fB with hgB`. Establish `tA : IsThetaFunO ψ A T gA` using `hA.om_pres _ fA hfA`. Establish `tB : IsThetaFunO ψ B T gB` using `hB.om_pres _ fB hfB`. Set `den : GA D A × GA D B × GA D T → ℂ` to `fun p => omA (p.1, p.2.2) gA 0 * omB (p.2.1, p.2.2) gB 0`. Set `num : GA D A × GA D B × GA D T → ℂ` to `fun p => omS (o.emb (p.1, p.2.1), p.2.2) (o.boxS T gA gB) 0`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hden : Continuous den` using `((hA.om_cont gA tA 0).comp (continuous_fst.prodMk (continuous_snd.comp continuous_snd))).mul ((hB.om_cont gB tB 0).comp ((continuous_fst.comp continuous_snd).prodMk (continuous_snd.comp continuous_snd)))`. Establish `hnum : Continuous num` using `(hS.om_cont _ (o.isThetaFunO_boxS tA tB) 0).comp ((o.continuous_emb.comp (continuous_fst.prodMk (continuous_fst.comp continuous_snd))).prodMk (continuous_snd.comp continuous_snd))`. Establish `hd0 : den (a₀, b₀, h₀) ≠ 0`. Simplify using `only [den, hgA, hgB, om_inv_apply]`. Conclude with `mul_ne_zero hfA0 hfB0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hnd : ∀ p, num p = c p * den p`. Introduce and unpack `⟨a, b, h⟩`. Use `congrFun (hc a b h gA gB tA tB) 0` as an intermediate fact. Simplify using `only [Pi.smul_apply, OrthDec.boxS_zero, smul_eq_mul] at this`. Conclude with `this`.
-
-Establish `hev : (fun p => num p / den p) =ᶠ[nhds (a₀, b₀, h₀)] c` using `by filter_upwards [hden.continuousAt.eventually_ne hd0] with p hp`. Rewrite using `[hnd p]`. Clear the denominators using the available nonvanishing facts. Conclude with `(hnum.continuousAt.div hden.continuousAt hd0).congr hev`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem prodLaw_cont (hψ : IsStdChar D ψ (-1)) (hS : IsWeilDatumO ψ S T (χA * χB) χT omS)
     (hA : IsWeilDatumO ψ A T χA χT omA) (hB : IsWeilDatumO ψ B T χB χT omB) (c : GA D A × GA D B × GA D T → ℂ)
@@ -176,7 +174,7 @@ theorem prodLaw_cont (hψ : IsStdChar D ψ (-1)) (hS : IsWeilDatumO ψ S T (χA 
   exact (hnum.continuousAt.div hden.continuousAt hd0).congr hev
 
 /- English proof (translation)
-Use `first`. Consider the case `exact continuous_induced_rng.2 hf`. Consider the case `exact Circle.isEmbedding_coe.continuous_iff.2 hf`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem circ_cont {X : Type*} [TopologicalSpace X] {f : X → Circle} (hf : Continuous fun x => (f x : ℂ)) :
     Continuous f := by
@@ -189,11 +187,9 @@ end GlobalTheory.TensorScalarOne
 namespace GlobalTheory.TensorScalarOne
 
 /- English proof (translation)
-Establish `hPQ : Matrix.fromCols o.jA o.jB ⬝ Matrix.fromRows o.pA o.pB = 1`. Rewrite using `[Matrix.fromCols_mul_fromRows]`. Conclude with `o.sum_eq_one`. Establish `hQP : Matrix.fromRows o.pA o.pB ⬝ Matrix.fromCols o.jA o.jB = 1`. Rewrite using `[Matrix.fromRows_mul_fromCols, o.pA_jA, o.pA_jB, o.pB_jA, o.pB_jB, Matrix.fromBlocks_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : Matrix.fromRows o.pA o.pB ⬝ (Formalism.L2.Theta.mt S (o.emb (a, b)) ⬝ Matrix.fromCols o.jA o.jB) = Matrix.fromBlocks (Formalism.L2.Theta.mt A a) 0 0 (Formalism.L2.Theta.mt B b)`. Rewrite using `[← Matrix.mul_assoc, Matrix.fromRows_mul, Matrix.fromRows_mul_fromCols, o.pA_emb, o.pB_emb, Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_assoc, o.pA_jA, o.pA_jB, o.pB_jA, o.pB_jB]`. Simplify using the standard rewrite rules. Establish `h` using `Matrix.det_comm' hQP hPQ (N := Formalism.L2.Theta.mt S (o.emb (a, b)) ⬝ Matrix.fromCols o.jA o.jB)`. Rewrite `h` using `[key, Matrix.mul_assoc, hPQ, Matrix.mul_one, Matrix.det_fromBlocks_zero₂₁]`.
-
-Conclude with `h.symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_emb {D : D7} {S A B : HSp D} (o : OrthDec S A B) (a : GA D A) (b : GA D B) :
     (Formalism.L2.Theta.mt S (o.emb (a, b))).det = (Formalism.L2.Theta.mt A a).det * (Formalism.L2.Theta.mt B b).det := by
@@ -211,13 +207,13 @@ theorem det_emb {D : D7} {S A B : HSp D} (o : OrthDec S A B) (a : GA D A) (b : G
   exact h.symm
 
 /- English proof (translation)
-Establish `key : ∀ {n : ℕ} (N : Matrix (Fin n) (Fin n) (AE D)), (∀ i j, (e + cA D e) * N i j = N i j) ↔ (e + cA D e) • N = N`. Introduce `n N`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Rewrite using `[Matrix.smul_apply, smul_eq_mul, h]`. Introduce `h i j`. Use `congrFun (congrFun h i) j` as an intermediate fact. Rewrite `this` using `[Matrix.smul_apply, smul_eq_mul]`. Then use the resulting hypothesis. Establish `hM : Formalism.L2.Theta.mt S (o.emb (a, b)) - 1 = o.jA ⬝ (Formalism.L2.Theta.mt A a - 1) ⬝ o.pA + o.jB ⬝ (Formalism.L2.Theta.mt B b - 1) ⬝ o.pB`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[o.mt_emb]`. Use `conv_lhs => rw [← o.sum_eq_one]`. Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one]`. Normalize the expressions using the abelian group laws. Unfold `SuppAt at ha hb ⊢`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `ha`, `hb`, the goal using `[key]`. Rewrite using `[hM, smul_add, ← Matrix.smul_mul, ← Matrix.mul_smul, ha, ← Matrix.smul_mul, ← Matrix.mul_smul, hb]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem suppAt_emb {D : D7} {S A B : HSp D} (o : OrthDec S A B) (e : AE D) {a : GA D A} {b : GA D B}
     (ha : SuppAt e A a) (hb : SuppAt e B b) : SuppAt e S (o.emb (a, b)) := by
@@ -239,19 +235,19 @@ variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S A B T : HSp D} {o : OrthDe
     {omB : Om B T} {χA χB χT : (AE D)ˣ →* Circle}
 
 /- English proof (translation)
-Establish `hψ` using `hS.std`. Establish `he1 : e * e = e` using `he.1`. Take `⟨ℓA, hℓA, fA, hfA, hℓfA⟩` from `GlobalTheory.HalfCoinv.exists_invariant_form D ψ hψ A T e he`. Take `⟨ℓB, hℓB, fB, hfB, hℓfB⟩` from `GlobalTheory.HalfCoinv.exists_invariant_form D ψ hψ B T e he`. Take `⟨ℓ, hℓ, hbox⟩` from `GlobalTheory.T.theta_functional_invariance_product D ψ hψ S A B T o e he ℓA ℓB hℓA hℓB`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `dA` using `GlobalTheory.VecInv.isDetAt_detAt e he1 A a`. Establish `dB` using `GlobalTheory.VecInv.isDetAt_detAt e he1 B b`. Establish `dT` using `GlobalTheory.VecInv.isDetAt_detAt e he1 T h`. Use `set xA := GlobalTheory.VecInv.detAt e he1 A a`. Use `set xB := GlobalTheory.VecInv.detAt e he1 B b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `set y := GlobalTheory.VecInv.detAt e he1 T h`. Establish `dS : IsDetAt e S (o.emb (a, b)) (xA * xB)`. Unfold `IsDetAt at dA dB ⊢`. Rewrite using `[Units.val_mul, dA, dB, det_emb]`. Take the linear combination `((Formalism.L2.Theta.mt A a).det * (Formalism.L2.Theta.mt B b).det - (Formalism.L2.Theta.mt A a).det - (Formalism.L2.Theta.mt B b).det + 1) * he1`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨rS, hrS, HS⟩` from `hS.om_split e he (o.emb (a, b)) h (suppAt_emb o e ha hb) hh (xA * xB) y dS dT`. Take `⟨rA, hrA, HA⟩` from `hA.om_split e he a h ha hh xA y dA dT`. Take `⟨rB, hrB, HB⟩` from `hB.om_split e he b h hb hh xB y dB dT`. Establish `k1` using `HS ℓ hℓ _ (o.isThetaFunO_boxS hfA hfB)`. Rewrite `k1` using `[H fA fB hfA hfB, LinearMap.map_smul, hbox _ _ (hA.om_pres _ _ hfA) (hB.om_pres _ _ hfB), HA ℓA hℓA fA hfA, HB ℓB hℓB fB hfB, hbox fA fB hfA hfB, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hfac : splitFacO (χA * χB) χT (xA * xB) y = splitFacO χA χT xA y * splitFacO χB χT xB y`. Simplify using `only [splitFacO, map_mul, MonoidHom.mul_apply, mul_inv]`. Conclude with `mul_mul_mul_comm _ _ _ _`. Rewrite `k1` using `[hfac, Circle.coe_mul]`. Establish `hZ : (splitFacO χA χT xA y : ℂ) * (splitFacO χB χT xB y : ℂ) * (ℓA fA * ℓB fB) ≠ 0` using `mul_ne_zero (mul_ne_zero (Circle.coe_ne_zero _) (Circle.coe_ne_zero _)) (mul_ne_zero hℓfA hℓfB)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `key : c * ((rA : ℂ) * rB) = rS`. Apply `mul_right_cancel₀ hZ` to reduce the goal to its premises. Take the linear combination `k1`. Establish `hrA0 : (rA : ℂ) ≠ 0` using `by exact_mod_cast hrA.ne'`. Establish `hrB0 : (rB : ℂ) ≠ 0` using `by exact_mod_cast hrB.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hc' : c = ((rS / (rA * rB) : ℝ) : ℂ)` using `by push_cast; field_simp; linear_combination key`. Rewrite `hc1`, the goal using `[hc']`. Rewrite `hc1` using `[Complex.norm_real, Real.norm_eq_abs, abs_of_pos (by positivity)]`. Rewrite using `[hc1]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem prodLaw_split (hS : IsWeilDatumO ψ S T (χA * χB) χT omS)
     (hA : IsWeilDatumO ψ A T χA χT omA) (hB : IsWeilDatumO ψ B T χB χT omB) (e : AE D) (he : IsSplitIdem D e)
@@ -301,23 +297,21 @@ end GlobalTheory.TensorScalarOne
 namespace GlobalTheory.TensorScalarOne
 
 /- English proof (translation)
-Introduce `i j`. Simplify using `[GlobalTheory.AdelicLatMove.mt_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem suppAt_one {D : D7} (U : HSp D) (e : AE D) : SuppAt e U (1 : GA D U) := by
   intro i j; simp [GlobalTheory.AdelicLatMove.mt_one]
 
 /- English proof (translation)
-Introduce `D ψ S A B T o χA χB χT omS omA omB hS hA hB`. Establish `hψ` using `hS.std`. Use `choose C hC using GlobalTheory.T.weilRep_orthogonal_sum_eq_unit_smul_product D ψ S A B T o χA χB χT omS omA omB hS hA hB`. Establish `law : ∀ a b h, ProdLaw ψ o omS omA omB a b h (C a b h)` using `fun a b h => prodLaw_of o omS omA omB a b h _ (hC a b h)`. Establish `cmul : ∀ a a' b b' h h', (C (a * a') (b * b') (h * h') : ℂ) = C a b h * C a' b' h'` using `fun a a' b b' h h' => prodLaw_unique hψ hA hB (law _ _ _) (prodLaw_mul hA hB (law a b h) (law a' b' h'))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ccont : Continuous fun p : GA D A × GA D B × GA D T => (C p.1 p.2.1 p.2.2 : ℂ)` using `prodLaw_cont hψ hS hA hB _ fun a b h => law a b h`. Establish `crat : ∀ a ∈ GQ A, ∀ b ∈ GQ B, ∀ h ∈ GQ T, C a b h = 1` using `fun a ha b hb h hh => Circle.ext (by rw [Circle.coe_one]; exact prodLaw_rat hψ hS hA hB ha hb hh (law a b h))`. Establish `csplit : ∀ e, IsSplitIdem D e → ∀ a b h, SuppAt e A a → SuppAt e B b → SuppAt e T h → C a b h = 1` using `fun e he a b h ha hb hh => Circle.ext (by`. Rewrite using `[Circle.coe_one]`. Conclude with `prodLaw_split hS hA hB e he ha hb hh (Circle.norm_coe _) (law a b h))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `c1 : C 1 1 1 = 1` using `crat 1 (one_mem _) 1 (one_mem _) 1 (one_mem _)`. Set `νA : GA D A →* Circle` to `{ toFun := fun a => C a 1 1, map_one' := c1, map_mul' := fun a a' => Circle.ext (by simpa using cmul a a' 1 1 1 1) }`. Set `νB : GA D B →* Circle` to `{ toFun := fun b => C 1 b 1, map_one' := c1, map_mul' := fun b b' => Circle.ext (by simpa using cmul 1 1 b b' 1 1) }`. Set `νT : GA D T →* Circle` to `{ toFun := fun h => C 1 1 h, map_one' := c1, map_mul' := fun h h' => Circle.ext (by simpa using cmul 1 1 1 1 h h') }`. Establish `hνA : ∀ a, C a 1 1 = 1` using `GlobalTheory.SplitCharTrivial.eq_one_of_rat_of_split D A νA (circ_cont (f := νA) (by exact ccont.comp (continuous_id.prodMk (continuous_const (y := ((1 : GA D B), (1 : GA D T))))))) (fun γ hγ => crat γ hγ 1 (one_mem _) 1 (one_mem _)) (fun e he g hg => csplit e he g 1 1 hg (suppAt …`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hνB : ∀ b, C 1 b 1 = 1` using `GlobalTheory.SplitCharTrivial.eq_one_of_rat_of_split D B νB (circ_cont (f := νB) (by exact ccont.comp ((continuous_const (y := (1 : GA D A))).prodMk (continuous_id.prodMk (continuous_const (y := (1 : GA D T))))))) (fun γ hγ => crat 1 (one_mem _) γ hγ 1 (one_mem _)) (fun e he g hg …`. Establish `hνT : ∀ h, C 1 1 h = 1` using `GlobalTheory.SplitCharTrivial.eq_one_of_rat_of_split D T νT (circ_cont (f := νT) (by exact ccont.comp ((continuous_const (y := (1 : GA D A))).prodMk ((continuous_const (y := (1 : GA D B))).prodMk continuous_id)))) (fun γ hγ => crat 1 (one_mem _) 1 (one_mem _) γ hγ) (fun e he g hg …`. Establish `hall : ∀ a b h, (C a b h : ℂ) = 1`. Introduce `a b h`. Establish `e1` using `cmul a 1 1 b 1 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e2` using `cmul a 1 b 1 1 h`. Simplify using `only [mul_one, one_mul] at e1 e2`. Rewrite using `[e2, e1, hνA, hνB, hνT]`. Simplify using the standard rewrite rules. Introduce `a b h f hf u v`.
-
-Rewrite using `[hC a b h f hf u v, hall, one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tensor_scalar_one : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S A B T : HSp D) (o : OrthDec S A B) (χA χB χT : (AE D)ˣ →* Circle) (omS : Om S T) (omA : Om A T) (omB : Om B T), IsWeilDatumO ψ S T (χA * χB) χT omS → IsWeilDatumO ψ A T χA χT omA → IsWeilDatumO ψ B T χB χT omB → ∀ a b h f, IsThetaFunO ψ S T f → ∀ u v, omS (o.emb (a, b), h) f ((o.resS T).symm (u, v)) = omA (a, h) (fun u' => omB (b, h) (fun v' => f ((o.resS T).symm (u', v'))) v) u := by
   intro D ψ S A B T o χA χB χT omS omA omB hS hA hB

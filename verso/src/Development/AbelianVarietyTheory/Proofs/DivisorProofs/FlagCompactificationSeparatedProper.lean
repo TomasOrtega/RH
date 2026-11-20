@@ -17,24 +17,24 @@ noncomputable section
 namespace GlobalTheory.FlagClsLoc
 
 /- English proof (translation)
-The claim follows from `congrArg CommRingCat.Hom.hom (Spec.map_injective h)`.
+A detailed English derivation is pending.
 -/
 theorem spMap_inj {R R' : Type} [CommRing R] [CommRing R'] {f g : R →+* R'} (h : spMap f = spMap g) : f = g :=
   congrArg CommRingCat.Hom.hom (Spec.map_injective h)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(Spec.preimage f).hom, (Spec.map_preimage f).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_eq_spMap {R R' : Type} [CommRing R] [CommRing R'] (f : Sp R' ⟶ Sp R) : ∃ χ : R →+* R', f = spMap χ :=
   ⟨(Spec.preimage f).hom, (Spec.map_preimage f).symm⟩
 
 /- English proof (translation)
-The claim follows from `Spec.map_id _`.
+A detailed English derivation is pending.
 -/
 theorem spMap_id (R : Type) [CommRing R] : spMap (RingHom.id R) = 𝟙 _ := Spec.map_id _
 
 /- English proof (translation)
-Establish `ht : t = IsLocalRing.closedPoint (IsLocalRing.ResidueField V)` using `Subsingleton.elim (α := PrimeSpectrum (IsLocalRing.ResidueField V)) _ _`. Substitute `ht` using the available equality. Conclude with `IsLocalRing.comap_closedPoint (IsLocalRing.residue V)`.
+Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem spMap_residue_apply {V : Type} [CommRing V] [IsLocalRing V] (t : Sp (IsLocalRing.ResidueField V)) :
     spMap (IsLocalRing.residue V) t = IsLocalRing.closedPoint V := by
@@ -63,11 +63,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 include h1 h3 h4 in
 
 /- English proof (translation)
-Substitute `hz` using the available equality. Take `⟨a1, a2⟩` from `h1 _ _ _ _ _ hg`. Take `⟨b1, b2⟩` from `h1 _ _ _ _ _ hg'`. Establish `hχ : χ' = ψ.comp χ` using `spMap_inj (by rw [← b2, GlobalTheory.CarrySpec.spMap_comp, ← a2, Category.assoc])`. Establish `hx : x' = spMap ψ ≫ x` using `by rw [b1, a1, Category.assoc]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨g₁, hg₁⟩` from `g.exists_isMap ψ hχ hx`. Establish `ht` using `EigFrame.IsMap.tri hg₁ hχ hx`. Establish `c1 : x = p ≫ C.π ≫ genι Z` using `by rw [a1, ← Category.assoc p, hp, Category.assoc]`. Establish `c2 : p ≫ C.π ≫ genStr Z = spMap χ` using `by rw [← a2, ← Category.assoc p, hp, Category.assoc]`. Establish `hc₁` using `(GlobalTheory.T.flag_compactification_point_extension E H Dw l Xo c Oz β Z F e C K χ x g K' ψ χ' x' g₁ 1 p c1 c2 ht).2 hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨t, ht'⟩` from `h4 _ _ _ _ g₁ g' (h3 _ _ _ _ _ _ _ _ _ _ _ hg ht) hg'`. Use `(GlobalTheory.T.flag_compactification_point_extension E H Dw l Xo c Oz β Z F e C K' χ' x' g₁ K' (RingHom.id K') χ' x' g' t (spMap ψ ≫ p) (by rw [hx, c1, Category.assoc]) (by rw [hχ, GlobalTheory.CarrySpec.spMap_comp, ← c2, Category.assoc]) ht').2 hc₁` as an intermediate fact. Rewrite `this` using `[spMap_id, Category.id_comp]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem carries_of_bears {K K' : Type} [Field K] [Field K'] (ψ : K →+* K') {z : Sp K ⟶ G} {χ : c.F →+* K}
     {x : Sp K ⟶ Z.X} {g : EigFrame Z χ x} (hg : Br K z χ x g) {z' : Sp K' ⟶ G} (hz : z' = spMap ψ ≫ z)
@@ -91,21 +91,21 @@ theorem carries_of_bears {K K' : Type} [Field K] [Field K'] (ψ : K →+* K') {z
 include h1 h3 h4 in
 
 /- English proof (translation)
-Establish `hu : ∀ (k : Type) [Field k] (z : Sp k ⟶ G) (χ : c.F →+* k) (x : Sp k ⟶ Z.X) (g : EigFrame Z χ x), Br k z χ x g → ∃! p : Sp k ⟶ C.Y.X, p ≫ C.π = z ≫ γ ∧ C.Carries p g`. Introduce `k _ z χ x g hb`. Take `⟨a1, a2⟩` from `h1 _ _ _ _ _ hb`. Rewrite `a1`, `a2` using `[← Category.assoc]`. Substitute `a1` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Use `hl k χ (z ≫ γ) a2 ?_ g` and prove the remaining obligations. Introduce and unpack `_ ⟨t, rfl⟩`. Conclude with `hr ⟨z t, by simp⟩`. Take `⟨χ₀, hχ₀⟩` from `exists_eq_spMap ((spMap (IsLocalRing.residue R) ≫ s) ≫ γ ≫ genStr Z)`. Take `⟨g₀, hg₀⟩` from `h2 _ _ _ hχ₀`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨p₀, ⟨hp₀, hc₀⟩, -⟩` from `hu _ _ _ _ _ hg₀`. Use `GlobalTheory.T.valuative_criterion_extension R K C.Y.X p (p₀ (IsLocalRing.closedPoint _)) fun V ρ hρ hV => ?_` and prove the remaining obligations. Establish `hη' : η = spMap V.subtype ≫ spMap ρ ≫ s`. Rewrite using `[hη, ← hV, GlobalTheory.CarrySpec.spMap_comp, Category.assoc]`. Take `⟨q, hq, hqp⟩` from `GlobalTheory.T.exists_flagComponent_point_lift_valuationRing E H Dw l Xo c Oz β Z F e C V K ((spMap ρ ≫ s) ≫ γ) p (by rw [hp, hη', Category.assoc]; rfl)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hqp' : spMap V.subtype ≫ q = p` using `hqp`. Use `⟨q, hqp', ?_⟩` and prove the remaining obligations. Take `⟨χV, hχV⟩` from `exists_eq_spMap ((spMap ρ ≫ s) ≫ γ ≫ genStr Z)`. Take `⟨gV, hgV⟩` from `h2 _ _ _ hχV`. Take `⟨gL, hgL⟩` from `gV.exists_isMap V.subtype rfl rfl`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `tL` using `EigFrame.IsMap.tri hgL rfl rfl`. Take `⟨gk, hgk⟩` from `gV.exists_isMap (IsLocalRing.residue V) rfl rfl`. Establish `tk` using `EigFrame.IsMap.tri hgk rfl rfl`. Establish `bL` using `h3 _ _ _ _ _ _ _ _ _ _ _ hgV tL`. Establish `bk` using `h3 _ _ _ _ _ _ _ _ _ _ _ hgV tk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cL` using `carries_of_bears C γ Br h1 h3 h4 (RingHom.id K) hg (by rw [spMap_id, Category.id_comp, hη']) bL hp hc`. Rewrite `cL` using `[spMap_id, Category.id_comp, ← hqp']`. Establish `ck` using `GlobalTheory.T.carriedFrames_specialise_flagComponent_localRing E H Dw l Xo c Oz β Z F e C V K V.subtype Subtype.val_injective _ (IsLocalRing.residue V) IsLocalRing.ker_residue q χV _ (by rw [← Category.assoc q, hq]; simp only [Category.assoc]) gV _ _ gL 1 tL cL _ _ gk 1 tk`. Establish `hz : spMap (IsLocalRing.residue V) ≫ spMap ρ ≫ s = spMap (IsLocalRing.ResidueField.map ρ) ≫ spMap (IsLocalRing.residue R) ≫ s`. Rewrite using `[← Category.assoc, ← Category.assoc, ← GlobalTheory.CarrySpec.spMap_comp, ← GlobalTheory.CarrySpec.spMap_comp, IsLocalRing.ResidueField.map_comp_residue]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ck'` using `carries_of_bears C γ Br h1 h3 h4 (IsLocalRing.ResidueField.map ρ) hg₀ hz bk hp₀ hc₀`. Establish `heq : spMap (IsLocalRing.residue V) ≫ q = spMap (IsLocalRing.ResidueField.map ρ) ≫ p₀` using `(hu _ _ _ _ _ bk).unique ⟨by rw [Category.assoc, hq]; simp only [Category.assoc], ck⟩ ⟨by rw [Category.assoc, hp₀, hz]; simp only [Category.assoc], ck'⟩`. Take `⟨t⟩ : Nonempty (Sp (IsLocalRing.ResidueField V))` from `⟨IsLocalRing.closedPoint _⟩`. Use `congrArg (fun f : Sp (IsLocalRing.ResidueField V) ⟶ C.Y.X => f t) heq` as an intermediate fact. Simplify using `only [Scheme.Hom.comp_apply] at this`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[spMap_residue_apply]`. Conclude with `this.trans (congrArg p₀ (Subsingleton.elim (α := PrimeSpectrum (IsLocalRing.ResidueField R)) _ _))`.
+A detailed English derivation is pending.
 -/
 theorem exists_ext
     (hl : ∀ (K : Type) [Field K] (χ : c.F →+* K) (x : Sp K ⟶ gen Z), x ≫ genStr Z = spMap χ →
@@ -168,13 +168,11 @@ end
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Oz _ β Z F _ e C hs hl G _ γ Br h1 h2 h3 h4 hn hr p χ g hg hp hc z`. Use `haveI := (hn z).1`. Use `haveI := (hn z).2`. Establish `hη : GlobalTheory.FlagCov.genPt G = spMap (algebraMap (G.presheaf.stalk z) G.functionField) ≫ G.fromSpecStalk z` using `(Scheme.SpecMap_stalkSpecializes_fromSpecStalk ((genericPoint_spec G).specializes (Set.mem_univ z))).symm`. Take `⟨q, hq⟩` from `exists_ext C γ Br h1 h3 h4 hl h2 hr (G.presheaf.stalk z) G.functionField (G.fromSpecStalk z) hη p hg hp hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨q, hq, ?_⟩` and prove the remaining obligations. Establish `hi : Function.Injective (algebraMap (G.presheaf.stalk z) G.functionField)` using `IsFractionRing.injective _ _`. Establish `he : spMap (algebraMap (G.presheaf.stalk z) G.functionField) ≫ q ≫ C.π = spMap (algebraMap (G.presheaf.stalk z) G.functionField) ≫ G.fromSpecStalk z ≫ γ`. Rewrite using `[← Category.assoc, hq, hp, hη, Category.assoc]`. Use `haveI : IsDominant (spMap (algebraMap (G.presheaf.stalk z) G.functionField)) := ⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).2 (((RingHom.injective_iff_ker_eq_bot _).1 hi).le.trans bot_le)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `ext_of_isDominant_of_isSeparated (genStr Z) ?_ _ he` and prove the remaining obligations. Take `⟨a, ha⟩` from `exists_eq_spMap ((q ≫ C.π) ≫ genStr Z)`. Take `⟨b, hb⟩` from `exists_eq_spMap ((G.fromSpecStalk z ≫ γ : Sp (G.presheaf.stalk z) ⟶ _) ≫ genStr Z)`. Establish `hab : (algebraMap _ G.functionField).comp a = (algebraMap _ G.functionField).comp b` using `spMap_inj (by`. Rewrite using `[GlobalTheory.CarrySpec.spMap_comp, GlobalTheory.CarrySpec.spMap_comp, ← ha, ← hb, ← Category.assoc, he, Category.assoc])`.
-
-Establish `: a = b` using `RingHom.ext fun r => hi (RingHom.congr_fun hab r)`. Conclude with `ha.trans (this ▸ hb.symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l) (c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l) (Oz : Type) [CommRing Oz] (β : Oz →+* c.F) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) (F : Type) [Field F] (e : F ≃+* c.F) (C : FlagCpt Z e), IsSeparated (genStr Z) → (∀ (K : Type) [Field K] (χ : c.F →+* K) (x : Sp K ⟶ gen Z), x ≫ genStr Z = spMap χ → Set.range x ⊆ Set.range C.π → ∀ g : EigFrame Z χ (x ≫ genι Z), ∃! p : Sp K ⟶ C.Y.X, p ≫ C.π = x ∧ C.Carries p g) → ∀ (G : Scheme.{0}) [IsIntegral G] (γ : G ⟶ gen Z) (Br : ∀ (K : Type) [CommRing K], (Sp K ⟶ G) → ∀ (χ : c.F →+* K) (x : Sp K ⟶ Z.X), EigFrame Z χ x → Prop), (∀ (K : Type) [CommRing K] (z : Sp K ⟶ G) (χ : c.F →+* K) (x : Sp K ⟶ Z.X) (g : EigFrame Z χ x), Br K z χ x g → x = z ≫ γ ≫ genι Z ∧ z ≫ γ ≫ genStr Z = spMap χ) → (∀ (K : Type) [CommRing K] [IsLocalRing K] (z : Sp K ⟶ G) (χ : c.F →+* K), z ≫ γ ≫ genStr Z = spMap χ → ∃ g : EigFrame Z χ (z ≫ γ ≫ genι Z), Br K z χ _ g) → (∀ (K : Type) [CommRing K] [IsLocalRing K] (z : Sp K ⟶ G) (χ : c.F →+* K) (x : Sp K ⟶ Z.X) (g : EigFrame Z χ x) (K' : Type) [CommRing K'] (ψ : K →+* K') (χ' : c.F →+* K') (x' : Sp K' ⟶ Z.X) (g' : EigFrame Z χ' x') (t : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → K'ˣ), Br K z χ x g → g.Tri ψ g' t → Br K' (spMap ψ ≫ z) χ' x' g') → (∀ (K : Type) [CommRing K] [IsLocalRing K] (z : Sp K ⟶ G) (χ : c.F →+* K) (x : Sp K ⟶ Z.X) (g g' : EigFrame Z χ x), Br K z χ x g → Br K z χ x g' → ∃ t : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Kˣ, g.Tri (RingHom.id K) g' t) → ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme G → Set.range γ ⊆ Set.range C.π → ∀ (p : Sp G.functionField ⟶ C.Y.X) (χ : c.F →+* G.functionField) (g : EigFrame Z χ (GlobalTheory.FlagCov.genPt G ≫ γ ≫ genι Z)), Br _ (GlobalTheory.FlagCov.genPt G) χ _ g → p ≫ C.π = GlobalTheory.FlagCov.genPt G ≫ γ → C.Carries p g → ∀ z : G, ∃ q : Sp (G.presheaf.stalk z) ⟶ C.Y.X, spMap (algebraMap (G.presheaf.stalk z) G.functionField) ≫ q = p ∧ q ≫ C.π = G.fromSpecStalk z ≫ γ := by
   intro E _ _ _ H Dw l Xo c Oz _ β Z F _ e C hs hl G _ γ Br h1 h2 h3 h4 hn hr p χ g hg hp hc z

@@ -33,7 +33,7 @@ lemma freeSheafHomEquiv_comp (U : C) {F G : Sheaf J AddCommGrpCat.{v}}
     freeSheafHomEquiv U G (φ ≫ f) = f.hom.app (op U) (freeSheafHomEquiv U F φ) := rfl
 
 /- English proof (translation)
-Establish `h₁` using `ConcreteCategory.congr_hom (NatTrans.congr_app (toSheafify_naturality J (Functor.whiskerRight (yoneda.map i) AddCommGrpCat.free.{v})) (op V)) (FreeAbelianGroup.of (𝟙 V))`. Establish `h₂` using `ConcreteCategory.congr_hom ((toSheafify J (yoneda.obj U ⋙ AddCommGrpCat.free.{v})).naturality i.op) (FreeAbelianGroup.of (𝟙 U))`. Use `h₁.symm.trans (Eq.trans ?_ h₂)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(toSheafify J (yoneda.obj U ⋙ AddCommGrpCat.free.{v})).app (op V) (FreeAbelianGroup.of (𝟙 V ≫ i)) = (toSheafify J (yoneda.obj U ⋙ AddCommGrpCat.free.{v})).app (op V) (FreeAbelianGroup.of (i ≫ 𝟙 U))`. Rewrite using `[Category.id_comp, Category.comp_id]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 lemma freeSheaf_map_tautSection {U V : C} (i : V ⟶ U) :
     ((freeSheaf J).map i).hom.app (op V) (tautSection J V) =
@@ -52,7 +52,7 @@ lemma freeSheaf_map_tautSection {U V : C} (i : V ⟶ U) :
   rw [Category.id_comp, Category.comp_id]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `φ.hom.app (op V) (((freeSheaf J).map i).hom.app (op V) (tautSection J V)) = _`. Rewrite using `[freeSheaf_map_tautSection]`. Conclude with `ConcreteCategory.congr_hom (φ.hom.naturality i.op) _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma freeSheafHomEquiv_map_comp {U V : C} (i : V ⟶ U) {F : Sheaf J AddCommGrpCat.{v}}
     (φ : (freeSheaf J).obj U ⟶ F) :
@@ -122,7 +122,7 @@ def zeroEquiv (F : Sheaf J AddCommGrpCat.{v}) (U : C) : F.H' 0 U ≃+ F.obj.obj 
   (extEquiv F 0 U).trans (Ext.addEquiv₀.trans (freeSheafHomEquiv U F))
 
 /- English proof (translation)
-Simplify using `only [zeroEquiv, AddEquiv.trans_apply, AddEquiv.apply_symm_apply]`. Use `congr 1`. Conclude with `Ext.addEquiv₀.apply_symm_apply φ`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 lemma zeroEquiv_mk₀ (F : Sheaf J AddCommGrpCat.{v}) (U : C) (φ : (freeSheaf J).obj U ⟶ F) :
     zeroEquiv F U ((extEquiv F 0 U).symm (Ext.mk₀ φ)) = freeSheafHomEquiv U F φ := by
@@ -131,9 +131,9 @@ lemma zeroEquiv_mk₀ (F : Sheaf J AddCommGrpCat.{v}) (U : C) (φ : (freeSheaf J
   exact Ext.addEquiv₀.apply_symm_apply φ
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `(extEquiv F 0 U).symm.surjective x`. Take `⟨φ, rfl⟩` from `(Ext.mk₀_bijective _ _).surjective y`. Rewrite using `[zeroEquiv_mk₀, ← freeSheafHomEquiv_comp, ← zeroEquiv_mk₀]`. Use `congr 1`. Apply `(extEquiv G 0 U).injective` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[extEquiv_map, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, Ext.mk₀_comp_mk₀]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma zeroEquiv_map {F G : Sheaf J AddCommGrpCat.{v}} (f : F ⟶ G) (U : C) (x : F.H' 0 U) :
     zeroEquiv G U (map f 0 U x) = f.hom.app (op U) (zeroEquiv F U x) := by
@@ -145,9 +145,9 @@ lemma zeroEquiv_map {F G : Sheaf J AddCommGrpCat.{v}} (f : F ⟶ G) (U : C) (x :
   rw [extEquiv_map, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, Ext.mk₀_comp_mk₀]
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `(extEquiv F 0 U).symm.surjective x`. Take `⟨φ, rfl⟩` from `(Ext.mk₀_bijective _ _).surjective y`. Rewrite using `[zeroEquiv_mk₀, ← freeSheafHomEquiv_map_comp, ← zeroEquiv_mk₀]`. Use `congr 1`. Apply `(extEquiv F 0 V).injective` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[extEquiv_res, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, Ext.mk₀_comp_mk₀]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma zeroEquiv_res (F : Sheaf J AddCommGrpCat.{v}) {U V : C} (i : V ⟶ U) (x : F.H' 0 U) :
     zeroEquiv F V (res F 0 i x) = F.obj.map i.op (zeroEquiv F U x) := by
@@ -172,7 +172,7 @@ lemma terminalEquiv_apply (F : Sheaf J AddCommGrpCat.{v}) (n : ℕ) {T : C} (hT 
       (Ext.mk₀ (freeSheafIsoConst hT).inv).comp (extEquiv F n T x) (zero_add n) := rfl
 
 /- English proof (translation)
-Rewrite using `[terminalEquiv_apply, terminalEquiv_apply, extEquiv_map, Sheaf.H.map_apply]`. Use `symm`. Apply `Ext.comp_assoc` to reduce the goal to its premises. Apply the tactic sequence `all_goals omega`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 lemma terminalEquiv_map {F G : Sheaf J AddCommGrpCat.{v}} (f : F ⟶ G) (n : ℕ) {T : C}
     (hT : IsTerminal T) (x : F.H' n T) :
@@ -183,9 +183,9 @@ lemma terminalEquiv_map {F G : Sheaf J AddCommGrpCat.{v}} (f : F ⟶ G) (n : ℕ
   all_goals omega
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `(extEquiv F 0 T).symm.surjective x`. Take `⟨φ, rfl⟩` from `(Ext.mk₀_bijective _ _).surjective y`. Rewrite using `[zeroEquiv_mk₀, terminalEquiv_apply, AddEquiv.apply_symm_apply, Ext.mk₀_comp_mk₀]`. Take `⟨ψ, rfl⟩ : ∃ ψ, (freeSheafIsoConst hT).hom ≫ ψ = φ` from `⟨(freeSheafIsoConst hT).inv ≫ φ, by simp⟩`. Rewrite using `[Iso.inv_hom_id_assoc, freeSheafHomEquiv_comp]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `h : (Ext.addEquiv₀ (Ext.mk₀.{w} ψ)) = ψ` using `Ext.addEquiv₀.apply_symm_apply ψ`. Simplify using `only [Sheaf.H.equiv₀, AddEquiv.trans_apply, h]`. Establish `h₁` using `ConcreteCategory.congr_hom (NatTrans.congr_app (toSheafify_naturality J (freePresheafIsoConst hT).hom) (op T)) (FreeAbelianGroup.of (𝟙 T))`. Conclude with `congrArg (ψ.hom.app (op T)) h₁`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma equiv₀_terminalEquiv (F : Sheaf J AddCommGrpCat.{v}) {T : C} (hT : IsTerminal T)
     (x : F.H' 0 T) :
@@ -209,7 +209,7 @@ instance subsingleton_of_injective (F : Sheaf J AddCommGrpCat.{v}) [Injective F]
     (extEquiv F (n + 1) U).injective ((Ext.eq_zero_of_injective _).trans (map_zero _).symm)
 
 /- English proof (translation)
-Establish `h : 𝟙 ((freeSheaf J).obj U) = 0` using `(freeSheafHomEquiv U _).injective (Subsingleton.elim _ _)`. Use `subsingleton_of_forall_eq 0 fun x ↦ (extEquiv F n U).injective ?_` and prove the remaining obligations. Rewrite using `[← Ext.mk₀_id_comp (extEquiv F n U x), h, Ext.mk₀_zero, Ext.zero_comp, map_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma subsingleton_of_subsingleton_freeSheaf (F : Sheaf J AddCommGrpCat.{v}) (n : ℕ) (U : C)
     [Subsingleton (((freeSheaf J).obj U).obj.obj (op U))] : Subsingleton (F.H' n U) := by

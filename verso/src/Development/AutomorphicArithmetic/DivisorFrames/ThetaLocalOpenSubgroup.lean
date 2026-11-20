@@ -13,11 +13,11 @@ section
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Set `c` to `GlobalTheory.LocTateInt.coordEv (F := F) (E := E) v`. Set `f : (Fin n → Fv F v ⊗[F] E) →+ (Fin n → Fin (Module.finrank F E) → Fv F v)` to `{ toFun := fun y i => c (y i) map_zero' := by funext i; simp map_add' := fun a b => by funext i; simp }`. Establish `hf : Continuous f` using `continuous_pi fun i => c.continuous.comp (continuous_apply i)`. Set `g : (Fin n → Fin (Module.finrank F E) → Fv F v) → (Fin n → Fv F v ⊗[F] E)` to `fun z i => c.symm (z i)`. Establish `hg : Continuous g` using `continuous_pi fun i => c.symm.continuous.comp (continuous_apply i)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `g0 : g 0 = 0` using `by funext i; simp [g]`. Establish `hU' : g ⁻¹' U ∈ 𝓝 0` using `hg.continuousAt.preimage_mem_nhds (by rwa [g0])`. Use `haveI : NonarchimedeanAddGroup (Fin n → Fin (Module.finrank F E) → Fv F v) := IsUltrametricDist.nonarchimedeanAddGroup`. Take `⟨V, hV⟩` from `NonarchimedeanAddGroup.is_nonarchimedean _ hU'`. Use `⟨V.toAddSubgroup.comap f, V.isOpen.preimage hf, fun y hy => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h : g (f y) ∈ U` using `hV hy`. Establish `e : g (f y) = y` using `by funext i; simp [g, f]`. Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem exists_open_sub (v : Pl F) (n : ℕ) (U : Set (Fin n → Fv F v ⊗[F] E)) (hU : U ∈ 𝓝 0) :
     ∃ L : AddSubgroup (Fin n → Fv F v ⊗[F] E), IsOpen (L : Set (Fin n → Fv F v ⊗[F] E)) ∧ ∀ y ∈ L, y ∈ U := by
@@ -40,7 +40,7 @@ private theorem exists_open_sub (v : Pl F) (n : ℕ) (U : Set (Fin n → Fv F v 
   rwa [e] at h
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul b e => simp [sigR, TensorProduct.smul_tmul']`. Consider the case `add x y hx hy => rw [smul_add, map_add, hx, hy, map_add, smul_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem sigR_smul (σ : E →ₐ[F] E) (v : Pl F) (a : Fv F v) (t : Fv F v ⊗[F] E) :
     sigR (Fv F v) σ (a • t) = a • sigR (Fv F v) σ t := by
@@ -79,13 +79,11 @@ private noncomputable def trY (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n)
 end
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d d₁ X W M H' hψ v φ hφ x`. Use `haveI : IsModuleTopology (Fv F v) (Fv F v ⊗[F] E) := ⟨rfl⟩`. Establish `hψv : Continuous (GlobalTheory.LatVac.psiAt B.ψ v)` using `GlobalTheory.SchrSB.continuous_psiAt B.ψ hψ v`. Establish `hc : Continuous (locY M H' v)` using `IsModuleTopology.continuous_of_linearMap _`. Establish `hc' : Continuous (trY σ X.J v x)` using `IsModuleTopology.continuous_of_linearMap _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hc.tendsto 0`. Rewrite `h1` using `[map_zero]`. Establish `e1` using `h1.eventually (GlobalTheory.SchrSmall.schr_eventually_eq v _ hψv φ hφ)`. Establish `e2` using `((GlobalTheory.SchrSB.isLocallyConstant_addChar _ hψv).comp_continuous hc').eventually_eq (x := 0)`. Take `⟨L, hL, hLU⟩` from `exists_open_sub v n _ (e1.and e2)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨L, hL, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨a, b⟩` from `hLU y hy`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[(locOp_rho M.co hψ v _ hφ).2]`. Conclude with `a`.
-
-Simplify using `only [Function.comp_apply, map_zero, AddChar.map_zero_eq_one] at b`. Conclude with `b`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.theta_local_open_subgroup :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W)

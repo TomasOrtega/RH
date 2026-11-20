@@ -7,7 +7,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AmpleRigid.levelRigid_of_serreAmple | exact GlobalTheory.AmpleRigid.levelRigid_of_serreAmple | (intros; apply GlobalTheory.AmpleRigid.levelRigid_of_serreAmple <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.ample_rigid_level_rigid : GlobalTheory.AmpleRigid.SerreAmpleSt → GlobalTheory.AmpleRigid.LevelRigidSt := by
   first | exact @GlobalTheory.AmpleRigid.levelRigid_of_serreAmple | exact GlobalTheory.AmpleRigid.levelRigid_of_serreAmple | (intros; apply GlobalTheory.AmpleRigid.levelRigid_of_serreAmple <;> assumption)

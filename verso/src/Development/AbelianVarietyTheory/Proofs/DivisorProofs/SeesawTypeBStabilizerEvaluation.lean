@@ -36,9 +36,9 @@ namespace GlobalTheory.ConeMajorant
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Rewrite using `[finprod_eq_prod_of_mulSupport_subset c (s := S ∪ (hc.toFinset \ S)) (by`. Introduce `v hv`. Distinguish the cases in `h : v ∈ S`. Simplify using `[h]`. Simplify using `only [Finset.coe_union, Set.mem_union, Finset.mem_coe, Finset.mem_sdiff, Set.Finite.mem_toFinset]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `Or.inr ⟨hv, h⟩), Finset.prod_union Finset.disjoint_sdiff, norm_mul, norm_prod, norm_prod]`. Establish `a1 : ∏ v ∈ S, ‖c v‖ ≤ ∏ v ∈ S, C v` using `Finset.prod_le_prod (fun _ _ => norm_nonneg _) hS`. Establish `a2 : ∏ v ∈ hc.toFinset \ S, ‖c v‖ ≤ 1` using `Finset.prod_le_one (fun _ _ => norm_nonneg _) fun v hv => h1 v (Finset.mem_sdiff.1 hv).2`. Conclude with `(mul_le_of_le_one_right (Finset.prod_nonneg fun _ _ => norm_nonneg _) a2).trans a1`.
+Prove the second alternative. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_finprod_le {ι : Type} (c : ι → ℂ) (hc : (Function.mulSupport c).Finite) (S : Finset ι) (C : ι → ℝ)
     (hS : ∀ v ∈ S, ‖c v‖ ≤ C v) (h1 : ∀ v ∉ S, ‖c v‖ ≤ 1) : ‖∏ᶠ v, c v‖ ≤ ∏ v ∈ S, C v := by
@@ -56,23 +56,23 @@ theorem norm_finprod_le {ι : Type} (c : ι → ℂ) (hc : (Function.mulSupport 
 omit [NumberField E] in
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.closure_mono fun _ ⟨a, ha, x, hx, e⟩ => ⟨a, ha, x, h hx, e⟩`.
+A detailed English derivation is pending.
 -/
 theorem locId_mono (v : Pl F) {𝔞 𝔟 : FractionalIdeal (𝓞 E)⁰ E} (h : 𝔞 ≤ 𝔟) : locId v 𝔞 ≤ locId v 𝔟 :=
   AddSubgroup.closure_mono fun _ ⟨a, ha, x, hx, e⟩ => ⟨a, ha, x, h hx, e⟩
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨1, by rw [mul_zero]; exact zero_mem _⟩`. Consider the case `tmul a x`. Take `⟨c, hc, hca⟩` from `HeightOneSpectrum.adicCompletion.mul_nonZeroDivisor_mem_adicCompletionIntegers v a`. Take `⟨n, m, hm, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) x`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hm0 : algebraMap (𝓞 E) E m ≠ 0` using `by simpa using nonZeroDivisors.ne_zero hm`. Establish `hc' : algebraMap (𝓞 F) (𝓞 E) c ∈ (𝓞 E)⁰` using `mem_nonZeroDivisors_of_ne_zero (by`. Simplify using `using nonZeroDivisors.ne_zero hc)`. Use `⟨⟨_, mul_mem hc' hm⟩, ?_⟩` and prove the remaining obligations. Use `tmul_mem_intLoc (E := E) hca n using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Establish `e : (((algebraMap (𝓞 F) (𝓞 E) c * m : 𝓞 E)) : E) * (algebraMap (𝓞 E) E n / algebraMap (𝓞 E) E m) = (c : F) • (n : E)`. Rewrite using `[Algebra.smul_def]`. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 E) E (algebraMap (𝓞 F) (𝓞 E) c * m) * _ = algebraMap F E (algebraMap (𝓞 F) F c) * algebraMap (𝓞 E) E n`. Rewrite using `[map_mul, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[e, ← TensorProduct.smul_tmul, Algebra.smul_def, mul_comm]`. Both sides reduce to the same expression. Consider the case `add y z hy hz`. Take `⟨c, hc⟩` from `hy`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd⟩` from `hz`. Use `⟨c * d, ?_⟩` and prove the remaining obligations. Establish `e : ((1 : Fv F v) ⊗ₜ[F] (((c * d : (𝓞 E)⁰) : 𝓞 E) : E)) * (y + z) = ((1 : Fv F v) ⊗ₜ[F] ((d : 𝓞 E) : E)) * (((1 : Fv F v) ⊗ₜ[F] ((c : 𝓞 E) : E)) * y) + ((1 : Fv F v) ⊗ₜ[F] ((c : 𝓞 E) : E)) * (((1 : Fv F v) ⊗ₜ[F] ((d : 𝓞 E) : E)) * z)`. Rewrite using `[← mul_assoc, ← mul_assoc, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, mul_add]`. Simplify using `[mul_comm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Conclude with `add_mem (mul_mem (tmul_mem_intLoc (one_mem _) _) hc) (mul_mem (tmul_mem_intLoc (one_mem _) _) hd)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mul_mem_intLoc (v : Pl F) (z : Fv F v ⊗[F] E) :
     ∃ d : (𝓞 E)⁰, ((1 : Fv F v) ⊗ₜ[F] ((d : 𝓞 E) : E)) * z ∈ intLoc F E v := by
@@ -108,13 +108,11 @@ theorem exists_mul_mem_intLoc (v : Pl F) (z : Fv F v ⊗[F] E) :
     exact add_mem (mul_mem (tmul_mem_intLoc (one_mem _) _) hc) (mul_mem (tmul_mem_intLoc (one_mem _) _) hd)
 
 /- English proof (translation)
-Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (Fv F v ⊗[F] E) := GlobalTheory.Doubling.isTopologicalRing_tens`. Take `⟨d, hd⟩` from `hC.elim_directed_cover (fun d : (𝓞 E)⁰ => {z | ((1 : Fv F v) ⊗ₜ[F] ((d : 𝓞 E) : E)) * z ∈ intLoc F E v}) (fun d => (isCompact_isOpen_intLoc v).2.preimage (continuous_const_mul _)) (fun z _ => Set.mem_iUnion.2 (exists_mul_mem_intLoc v z)) (fun c d => ⟨c * d, fun z hz => by`. Use `mul_mem (tmul_mem_intLoc (one_mem (v.adicCompletionIntegers F)) (d : 𝓞 E)) hz` as an intermediate fact. Rewrite `this` using `[← mul_assoc, Algebra.TensorProduct.tmul_mul_tmul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this, fun z hz => by` using `[mul_comm]`. Use `mul_mem (tmul_mem_intLoc (one_mem (v.adicCompletionIntegers F)) (c : 𝓞 E)) hz` as an intermediate fact. Rewrite `this` using `[← mul_assoc, Algebra.TensorProduct.tmul_mul_tmul]`. Simplify using `using this⟩)`. Establish `hd0 : ((d : 𝓞 E) : E) ≠ 0` using `by simpa using nonZeroDivisors.ne_zero d.2`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨FractionalIdeal.spanSingleton _ ((d : 𝓞 E) : E)⁻¹, fun z hz => ?_⟩` and prove the remaining obligations. Establish `e : z = ((1 : Fv F v) ⊗ₜ[F] ((d : 𝓞 E) : E)⁻¹) * (((1 : Fv F v) ⊗ₜ[F] ((d : 𝓞 E) : E)) * z)`. Rewrite using `[← mul_assoc, Algebra.TensorProduct.tmul_mul_tmul, one_mul, inv_mul_cancel₀ hd0, ← Algebra.TensorProduct.one_def, one_mul]`. Rewrite using `[e]`. Use `intLoc_induction (p := fun w => ((1 : Fv F v) ⊗ₜ[F] ((d : 𝓞 E) : E)⁻¹) * w ∈ locId v _) (fun a ha x => ?_) (by rw [mul_zero]; exact zero_mem _) (fun _ _ h h' => by rw [mul_add]; exact add_mem h h') (fun _ h => by rw [mul_neg]; exact neg_mem h) (hd hz)` and prove the remaining obligations.
-
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Conclude with `tmul_mem_locId ha ((FractionalIdeal.mem_spanSingleton _).2 ⟨x, by rw [Algebra.smul_def, mul_comm]⟩)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_subset_locId (v : Pl F) {C : Set (Fv F v ⊗[F] E)} (hC : IsCompact C) :
     ∃ 𝔞 : FractionalIdeal (𝓞 E)⁰ E, ∀ z ∈ C, z ∈ locId v 𝔞 := by
@@ -143,7 +141,7 @@ theorem exists_subset_locId (v : Pl F) {C : Set (Fv F v ⊗[F] E)} (hC : IsCompa
   exact tmul_mem_locId ha ((FractionalIdeal.mem_spanSingleton _).2 ⟨x, by rw [Algebra.smul_def, mul_comm]⟩)
 
 /- English proof (translation)
-Establish `h` using `partInf_of_at (M := AF F) hu`. Rewrite `h` using `[partInf, smul_eq_mul]`. Rewrite using `[mul_comm]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_eInf {u : AF F} (hu : At (evI F) u) : u * eInf F = u := by
   have h := partInf_of_at (M := AF F) hu
@@ -151,7 +149,7 @@ theorem mul_eInf {u : AF F} (hu : At (evI F) u) : u * eInf F = u := by
   rw [mul_comm]; exact h
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.StabHaar.mat_mul, ← map_inv, mat_compArch, Matrix.add_mul, Matrix.smul_mul, Matrix.smul_mul, Matrix.one_mul, ← GlobalTheory.StabHaar.mat_mul, inv_mul_cancel, GlobalTheory.StabHaar.mat_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mat_finPart {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (k : UA σ J) :
     mat ((compArch σ J k)⁻¹ * k) = eInf F • (1 : Matrix (Fin n) (Fin n) (AE F E)) + (1 - eInf F) • mat k := by
@@ -159,9 +157,9 @@ theorem mat_finPart {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (k : UA σ J) :
     ← GlobalTheory.StabHaar.mat_mul, inv_mul_cancel, GlobalTheory.StabHaar.mat_one]
 
 /- English proof (translation)
-Use `Subtype.ext (Units.ext ?_)` and prove the remaining obligations. Use `show GlobalTheory.TruncFix.truncMat (GlobalTheory.TruncFix.idem {v}) (mat ((compArch σ J k)⁻¹ * k)) = mat (compAt σ J v k)`. Rewrite using `[GlobalTheory.TruncFix.idem_singleton, GlobalTheory.TruncFix.truncMat, mat_finPart, mat_compAt]`. Establish `h1 : GlobalTheory.LatVac.liftV v 1 * eInf F = 0`. Establish `h` using `at_partFin (M := AF F) v (1 : AF F) (eInf F) (map_zero (evalV F v))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[partFin, smul_eq_mul, smul_eq_mul, mul_one, mul_comm]`. Conclude with `h`. Establish `h2 : GlobalTheory.LatVac.liftV v 1 * (1 - eInf F) = GlobalTheory.LatVac.liftV v 1` using `by rw [mul_sub, mul_one, h1, sub_zero]`. Rewrite using `[smul_sub, smul_add, smul_smul, smul_smul, h1, h2, zero_smul, zero_add, show eFin v = GlobalTheory.LatVac.liftV v 1 from rfl, sub_smul, one_smul]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem truncU_finPart {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (k : UA σ J) (v : Pl F) :
     truncU {v} ((compArch σ J k)⁻¹ * k) = compAt σ J v k := by
@@ -178,7 +176,7 @@ theorem truncU_finPart {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (k : UA σ J) (v
   abel
 
 /- English proof (translation)
-Unfold `partFin`. Rewrite using `[smul_shiftB, smul_shiftB]`. Use `congr 2`. Use `show eFin v • (eFin v • (l : AE F E) + (1 - eFin v) • 1) = eFin v • (l : AE F E)`. Rewrite using `[smul_add, smul_smul, smul_smul, eFin_idem, idem_mul_one_sub (eFin_idem v), zero_smul, add_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem partFin_shiftB_unitAt {n d n₁ d₁ : ℕ} (H : Plane E n n₁) (H' : Plane E d d₁) (v : Pl F) (l : (AE F E)ˣ) :
     partFin v (shiftB σ H H' (unitAt E v l)) = partFin v (shiftB σ H H' l) := by
@@ -189,15 +187,13 @@ theorem partFin_shiftB_unitAt {n d n₁ d₁ : ℕ} (H : Plane E n n₁) (H' : P
   rw [smul_add, smul_smul, smul_smul, eFin_idem, idem_mul_one_sub (eFin_idem v), zero_smul, add_zero]
 
 /- English proof (translation)
-Establish `hA` using `GlobalTheory.ThK.LocalOps.actsEx hP`. Establish `hM` using `hT.geo.hM'`. Establish `hfix : ∀ v ∉ T, Acts (evFin F v) (om' (compAt σ G.V'.J v k, 1)) (G.M'.vac v) (G.M'.vac v)` using `fun v hv => (GlobalTheory.T.unramified_vacuum_fixed_by_stabilizer B G X om om' hT v fun h => hv (hXT h)).2 K hK _ (mem_KAt.2 ⟨(StabComp.comp_mem_of_isStab F E σ B _ _ K hK k hk).1 v, compAt_mem v k⟩)`. Establish `hvac : ∀ v ∉ T, locOp v (om' (compAt σ G.V'.J v k, 1)) (φ v) = G.M'.vac v`. Introduce `v hv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hT' v hv]`. Conclude with `locOp_eq (hM.vac v).1 (hM.vac v).1 (hfix v hv)`. Use `⟨?_, hvac⟩` and prove the remaining obligations. Use `set k' := (compArch σ G.V'.J k)⁻¹ * k with hk'`. Establish `hsplit : (k, (1 : UA σ G.W.J)) = (compArch σ G.V'.J k, 1) * (k', 1)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Prod.mk_mul_mk, mul_one, hk', mul_inv_cancel_left]`. Establish `h1 : om' (k', 1) (pure f φ) = pure f (fun v => locOp v (om' (compAt σ G.V'.J v k, 1)) (φ v))`. Use `GlobalTheory.TruncFixOm.om_archtriv B G.M' _ _ om' _ _ _ _ hA (Inhab.pairV' hT) k' (fun u hu => by` as an intermediate fact. Rewrite using `[hk', mat_finPart, smul_sub, smul_add, smul_smul, smul_smul, mul_eInf hu, mul_sub, mul_one, mul_eInf hu, sub_self, zero_smul, add_zero, sub_self]) T f φ hSB hT'`. Use the proof step `(fun v hv => by rw [hk', truncU_finPart]; exact hfix v hv)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify `this` using `only [hk', truncU_finPart]`. Establish `h1mem : (1 : UA σ G.W.J) ∈ UAt σ G.W (evI F)` using `fun u _ => by show u • (mat (1 : UA σ G.W.J) - 1) = 0`. Rewrite using `[GlobalTheory.StabHaar.mat_one, sub_self, smul_zero]`. Take `⟨Aop, hAop⟩` from `GlobalTheory.ArchLocalAct.exists_op_of_UAt hT.base.std hT.weil' (compArch σ G.V'.J k, 1) (compArch_mem k) h1mem`. Establish `hcof : ∀ᶠ v in Filter.cofinite, locOp v (om' (compAt σ G.V'.J v k, 1)) (φ v) = G.M'.vac v` using `Filter.eventually_cofinite.2 (T.finite_toSet.subset fun v hv => by`.
-
-Assume the negation of the conclusion as `h`. Conclude with `hv (hvac v h))`. Rewrite using `[hsplit, map_mul, Module.End.mul_apply, h1, GlobalTheory.ArchPureAct.acts_pure F E σ B.ψ a' (a + a') G.V' G.W G.M' om' hM _ Aop hAop f _ (fun v => locOp_mem _ _ _) hcof, locOpInf_eq (hAop f)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem om_pure_stab (hP : GlobalTheory.FunPr.Hypotheses₂) {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E}
     {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W} (hT : IsTriple B G X om om') {K : Subgroup (UA σ G.V'.J)}
@@ -247,11 +243,11 @@ variable {B : Base F E} {a b : ℕ} {G : Geo σ a (b + 2)} {G₁ : Geo σ a b} {
   {ev : ∀ v : Pl F, ((Fin (b + 2) × Fin (a + (b + 2)) → Fv F v) → ℂ) →ₗ[ℂ] (Fin b × Fin (a + b) → Fv F v) → ℂ}
 
 /- English proof (translation)
-Take `⟨C, hCc, hC0⟩` from `LemF.ShiftSupp.ev_shift_eq_zero_off_compact hP F E σ B a b G G₁ H H' hC e' he ei ev hL X om om' hT v ψ hψ`. Take `⟨g, hg, hgl⟩` from `GlobalTheory.SchrLocConst.shiftB_locOp_locallyConstant F E σ B G.M' H H' hT.base.std.1 v ψ hψ`. Take `⟨c, hc⟩` from `hCc.exists_bound_of_continuousOn (f := fun z => ev v (g z) y) (hg.comp fun w => ev v w y).continuous.continuousOn`. Establish `hu : ∀ l : (AE F E)ˣ, ((GlobalTheory.Doubling.unitFin F E v (unitAt E v l) : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E) = compFin F E v (l : AE F E)` using `fun l => compFin_unitAt_self v l`. Establish `h0 : ∀ l : (AE F E)ˣ, compFin F E v (l : AE F E) ∉ C → ev v (locOp v (G.M'.co.rho B.ψ (partFin v (shiftB σ H H' l))) ψ) y = 0` using `fun l hl => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← partFin_shiftB_unitAt, hC0 _ (unitAt_mem v l) (by rwa [hu])]`. Both sides reduce to the same expression. Use `⟨max c 0, C, le_max_right _ _, hCc, fun l => ⟨?_, h0 l⟩⟩` and prove the remaining obligations. Distinguish the cases in `hl : compFin F E v (l : AE F E) ∈ C`. Rewrite using `[← partFin_shiftB_unitAt, hgl _ (unitAt_mem v l), hu]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hc _ hl).trans (le_max_left _ _)`. Rewrite using `[h0 l hl, norm_zero]`. Conclude with `le_max_right _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shift_bound (hP : GlobalTheory.FunPr.Hypotheses₂) (hC : CfgB B G G₁ H H') (he : IsEv B G.M' G₁.M' H.ι H'.ι (isoB H H') e')
     (hL : LemF.IsLocPart G.M' G₁.M' e' ei ev) (hT : IsTriple B G X om om') (v : Pl F) (y : Fin b × Fin (a + b) → Fv F v)
@@ -278,9 +274,7 @@ theorem shift_bound (hP : GlobalTheory.FunPr.Hypotheses₂) (hC : CfgB B G G₁ 
     exact le_max_right _ _
 
 /- English proof (translation)
-Take `⟨hc, hlc⟩` from `GlobalTheory.T.local_stabilizer_locally_constant hP F E σ B a (b + 2) G X om om' hT K hK v`. Establish `hfin` using `(hlc φ hφ).range_finite`. Use `haveI := hfin.to_subtype`. Use `haveI := Fintype.ofFinite (Set.range fun k : KAt K (evFin F v) => locOp v (om' (k.1, 1)) φ)`. Use `choose c C hc0 hCc hb using fun ψ : Set.range fun k : KAt K (evFin F v) => locOp v (om' (k.1, 1)) φ => shift_bound hP hC he hL hT v y ψ.1 (by obtain ⟨_, k, rfl⟩ := ψ; exact locOp_mem _ _ _)`.
-
-Take `⟨𝔞, h𝔞⟩` from `exists_subset_locId v (isCompact_iUnion hCc)`. Use `⟨∑ ψ, c ψ, 𝔞, Finset.sum_nonneg fun ψ _ => hc0 ψ, fun k hk l => ⟨?_, fun hl => ?_⟩⟩` and prove the remaining obligations. Conclude with `(hb ⟨_, ⟨k, hk⟩, rfl⟩ l).1.trans (Finset.single_le_sum (fun ψ _ => hc0 ψ) (Finset.mem_univ _))`. Conclude with `(hb ⟨_, ⟨k, hk⟩, rfl⟩ l).2 fun h => hl (h𝔞 _ (Set.mem_iUnion.2 ⟨_, h⟩))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem local_bound (hP : GlobalTheory.FunPr.Hypotheses₂) (hC : CfgB B G G₁ H H') (he : IsEv B G.M' G₁.M' H.ι H'.ι (isoB H H') e')
     (hL : LemF.IsLocPart G.M' G₁.M' e' ei ev) (hT : IsTriple B G X om om') (hK : IsStab B K) (v : Pl F)
@@ -304,15 +298,15 @@ theorem local_bound (hP : GlobalTheory.FunPr.Hypotheses₂) (hC : CfgB B G G₁ 
 open GlobalTheory.ConeArchB GlobalTheory.XTermDecay GlobalTheory.HeisSchA GlobalTheory.DiffDecay GlobalTheory.EvZeroInf in
 
 /- English proof (translation)
-Take `⟨-, hev, hloc⟩` from `hL`. Establish `hM` using `hT.geo.hM'`. Establish `hψ` using `hT.base.std`. Establish `hKc : IsCompact (K : Set (UA σ G.V'.J))`. Take `⟨K', _, _, hK', hc, -, -⟩` from `GlobalTheory.StabHaar.stabEx hP F E σ B _ G.V' _ _ hT.base hT.geo.hV'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[show K = K' from Subgroup.ext fun g => (hK g).trans (hK' g).symm]` and apply the resulting hypothesis. Use `haveI : CompactSpace (KAt K (evI F)) := isCompact_iff_compactSpace.1 (isCompact_KAt hKc _)`. Establish `hSB : ∀ v, G.M'.vac v ∈ SB _` using `fun v => (hM.vac v).1`. Establish `hpure : pure f G.M'.vac ∈ schA F _` using `GlobalTheory.TensUniq.pure_mem_schA f _ hSB hM.std`. Establish `hei : ∀ f, e' (pure f G.M'.vac) = pure (ei f) G₁.M'.vac` using `fun f => by`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hloc f _ hSB (Eventually.of_forall fun _ => rfl)]`. Conclude with `congrArg _ (funext fun v => (hev v).1)`. Use `set Φ : KAt K (evI F) → SInf F (Fin (b + 2) × Fin (a + (b + 2))) := fun k => locOpInf (om' (k.1, 1)) f with hΦ`. Establish `hΦc : Continuous Φ`. Take `⟨c, hc⟩` from `exists_finPart_ne_zero G.M'.vac (fun v => (hM.vac v).2.1) hM.std`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `continuous_of_weak Φ (g := fun y => ∏ᶠ v, G.M'.vac v fun i => evalV F v (y i)) (c := c) (hc (fun i => mk 0 (c i)) fun _ => rfl) fun l hl => ?_` and prove the remaining obligations. Establish `hw : IsUWeilPair (cA σ) (adeleClass F) B.ψ (-1) (incM F G.V'.J) (incM F G.W.J) G.M'.co X.α (X.α / X.β) om'` using `hT.weil'`. Use `((hw.2.2 l hl _ hpure).comp (continuous_subtype_val.prodMk continuous_const : Continuous fun k : KAt K (evI F) => (k.1, (1 : UA σ G.W.J)))).congr fun k => congrArg l ?_` and prove the remaining obligations. Conclude with `acts_locOpInf (GlobalTheory.ArchLocalityX.acts_arch_left hP F E σ _ _ _ _ G.M' B.ψ _ _ om' hT.base.cm hψ hT.weil' k.1 k.2.2 f) _ ⟨fun x z hz => finPart_add _ x z hz, hpure⟩`. Set `L : SInf F (Fin b × Fin (a + b)) →L[ℂ] ℂ` to `(BoundedContinuousFunction.evalCLM ℂ y).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ (Fin b × Fin (a + b) → mixedEmbedding.mixedSpace F) ℂ)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Take `⟨c, hc⟩` from `shift_decay hT.base hT.geo.hV' hC.hH hC.hH' hM hM₁ he hei Φ (fun p hp => by`. Take `⟨c, hc⟩` from `(isCompact_range (hp.comp hΦc)).bddAbove`. Conclude with `⟨c, fun t => hc ⟨t, rfl⟩⟩)`. Use the proof step `((normSeminorm ℂ ℂ).comp L.toLinearMap) (continuous_norm.comp L.continuous) N`. Conclude with `⟨c, fun k hk l => hc ⟨k, hk⟩ l⟩`.
+A detailed English derivation is pending.
 -/
 theorem arch_bound (hP : GlobalTheory.FunPr.Hypotheses₂) (hC : CfgB B G G₁ H H') (he : IsEv B G.M' G₁.M' H.ι H'.ι (isoB H H') e')
     (hL : LemF.IsLocPart G.M' G₁.M' e' ei ev) (hT : IsTriple B G X om om') (hM₁ : G₁.M'.IsGood B.ψ) (hK : IsStab B K)
@@ -355,7 +349,7 @@ theorem arch_bound (hP : GlobalTheory.FunPr.Hypotheses₂) (hC : CfgB B G G₁ H
 end Step
 
 /- English proof (translation)
-Set `u : AF F` to `(1, 0)`. Establish `h` using `(compInf_smul w u ((m : AE F E) - 1)).symm.trans (congrArg (compInf F E w) (hm u rfl))`. Rewrite `h` using `[show evInf F w u = 1 from rfl, one_smul, map_zero, map_sub, map_one, sub_eq_zero]`. Rewrite using `[piInf, RingHom.comp_apply, h, map_one]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem piInf_eq_one {m : (AE F E)ˣ} (hm : m ∈ idelesAt E (fun x : AF F => x.2)) {w : InfinitePlace F} (τ : EmbOver E w) :
     piInf τ (m : AE F E) = 1 := by
@@ -365,29 +359,25 @@ theorem piInf_eq_one {m : (AE F E)ˣ} (hm : m ∈ idelesAt E (fun x : AF F => x.
   rw [piInf, RingHom.comp_apply, h, map_one]
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ B a b G G₁ H H' hC e' he K hK X om om' om₁ om₁' hT hT₁ ei ev hei hev hloc f φ hφ hφc y`. Establish `hL : LemF.IsLocPart G.M' G₁.M' e' ei ev` using `⟨hei, hev, hloc⟩`. Establish `hM` using `hT.geo.hM'`. Establish `hM₁` using `hT₁.geo.hM'`. Use `set z := (a - (b + 2)) / 2 + 1 with hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨μ₀, hμ₀⟩` from `exists_haar_idelesAt E (evI F)`. Take `⟨N, hN⟩` from `GlobalTheory.ArchIdeleDecay.integrable_absE_pow_div F E σ B hT.base μ₀ hμ₀ z (by omega)`. Take `⟨c₀, hc₀⟩` from `arch_bound hP hC he hL hT hM₁ hK (fun i => evI F (y i)) f N`. Use `choose c 𝔟 hc0 hcb using fun v : Pl F => local_bound hP hC he hL hT hK v (fun i => evFin F v (y i)) (φ v) (hφ v)`. Establish `hfin` using `eventually_cofinite.1 (hφc.and hM₁.std)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `set S : Finset (Pl F) := hfin.toFinset ∪ X.T with hS`. Establish `hoff : ∀ v ∉ S, φ v = G.M'.vac v ∧ G₁.M'.vac v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1` using `fun v hv => by`. Assume the negation of the conclusion as `h`. Conclude with `hv (Finset.mem_union_left _ (hfin.mem_toFinset.2 h))`. Use `set 𝔞 : FractionalIdeal (𝓞 E)⁰ E := 1 ⊔ (H.𝔟⁻¹ * GlobalTheory.UnrEuler.conjI σ H'.𝔟 ⊔ S.sup 𝔟) with h𝔞`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hP0 : ∀ l : (AE F E)ˣ, 0 < (1 + ∑ w, ‖piInf (B.emb w) (l : AE F E)‖) ^ N` using `fun l => by positivity`. Use `⟨fun l => (∏ v ∈ S, c v) * (c₀ / (1 + ∑ w, ‖piInf (B.emb w) (l : AE F E)‖) ^ N), 𝔞, fun h => ?_, ?_, fun l m hm => ?_, fun μ hμ => ?_, fun k l => ?_⟩` and prove the remaining obligations. Establish `h1 : (1 : FractionalIdeal (𝓞 E)⁰ E) ≤ 𝔞` using `le_sup_left`. Rewrite `h1` using `[h]`. Conclude with `one_ne_zero (le_bot_iff.1 h1)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Use `haveI : BorelSpace (AE F E)ˣ := ⟨rfl⟩`. Use `Continuous.measurable (continuous_const.mul (continuous_const.div (Continuous.pow (continuous_const.add (continuous_finset_sum _ fun w _ => ?_)) N) fun l => (hP0 l).ne'))` and prove the remaining obligations. Conclude with `((GlobalTheory.ContMapReal.continuous_piInf (B.emb w)).comp Units.continuous_val).norm`. Simplify using `only [Units.val_mul, map_mul, piInf_eq_one hm, mul_one]`. Take `⟨r, -, rfl⟩` from `haar_idelesAt_eq_smul μ μ₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `((hN.smul_measure_nnreal (c := r)).const_mul ((∏ v ∈ S, c v) * c₀)).congr (Eventually.of_forall fun m => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Take `⟨hA, hvac⟩` from `om_pure_stab hP hT hK k.2 f φ S Finset.subset_union_right hφ fun v hv => (hoff v hv).1`. Establish `hk` using `StabComp.comp_mem_of_isStab F E σ B _ _ K hK k.1 k.2`. Use `set φ₁ : ∀ v : Pl F, (Fin (b + 2) × Fin (a + (b + 2)) → Fv F v) → ℂ := fun v => locOp v (om' (compAt σ G.V'.J v k.1, 1)) (φ v) with hφ₁`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set f₁ := locOpInf (om' (compArch σ G.V'.J k.1, 1)) f with hf₁`. Establish `hcof₁ : ∀ᶠ v in cofinite, φ₁ v = G.M'.vac v` using `eventually_cofinite.2 (S.finite_toSet.subset fun v hv => by by_contra h; exact hv (hvac v h))`. Establish `hB` using `GlobalTheory.T.weil_action_restricted_product G.M' B.ψ hT.base.std (shiftB σ H H' l) f₁ φ₁ (fun v => locOp_mem _ _ _) ((hcof₁.and hM.std).mono fun v hv => hv.1.trans hv.2)`. Use `set φ₂ : ∀ v : Pl F, (Fin (b + 2) × Fin (a + (b + 2)) → Fv F v) → ℂ := fun v => locOp v (G.M'.co.rho B.ψ (partFin v (shiftB σ H H' l))) (φ₁ v) with hφ₂`. Establish `hcof₂ : ∀ᶠ v in cofinite, φ₂ v = G.M'.vac v` using `by filter_upwards [GlobalTheory.T.local_operator_fixes_integral_indicator G.M' B.ψ hT.base.std (shiftB σ H H' l), hcof₁, hM.std] with v h1 h2 h3`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hφ₂]`. Rewrite using `[h2, h3, h1]`. Establish `hsupp` using `GlobalTheory.PureFactor.mulSupport_finite (fun v => ev v (φ₂ v)) ((hcof₂.and hM₁.std).mono fun v hv => by rw [hv.1, (hev v).1, hv.2]) y`. Establish `hunr : ∀ v ∉ S, ev v (φ₂ v) = if compFin F E v (l : AE F E) ∈ locId v (H.𝔟⁻¹ * GlobalTheory.UnrEuler.conjI σ H'.𝔟) then G₁.M'.vac v else 0` using `fun v hv => by`. Use `UnrSuppB.evShift_vac B G G₁ H H' hT.base hT.geo hT₁.geo hC e' he ei ev hei hev hloc v (unitAt E v l) (unitAt_mem v l)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `this` using `[partFin_shiftB_unitAt, compFin_unitAt_self]`. Simplify using `only [hφ₂]`. Rewrite using `[show φ₁ v = G.M'.vac v from hvac v hv, this]`. Establish `hloc'` using `fun v => hcb v _ (mem_KAt.2 ⟨hk.1 v, compAt_mem v k.1⟩) l`. Rewrite using `[coneInt, hA, hB, hloc _ φ₂ (fun v => locOp_mem _ _ _) hcof₂, norm_mul, norm_mul, Circle.norm_coe, mul_one, norm_pow, Complex.norm_real, Real.norm_eq_abs, NNReal.abs_eq]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `mul_le_mul_of_nonneg_right ?_ (by positivity)` and prove the remaining obligations. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, norm_mul]`. Use `split_ifs with hl`. Rewrite using `[mul_one, mul_comm]`. Use `mul_le_mul (norm_finprod_le _ hsupp S c (fun v _ => (hloc' v).1) fun v hv => ?_) (hc₀ _ (mem_KAt.2 ⟨hk.2, compArch_mem k.1⟩) l) (norm_nonneg _) (Finset.prod_nonneg fun v _ => hc0 v)` and prove the remaining obligations.
-
-Rewrite using `[hunr v hv, (hoff v hv).2]`. Use `split_ifs`. Apply the tactic sequence `rw [Set.indicator_apply] split_ifs <;> simp`. Simplify using the standard rewrite rules. Take `⟨v, hv⟩` from `not_forall.1 hl`.
-
-Rewrite using `[finprod_eq_zero _ v ?_ hsupp, norm_zero, mul_zero, mul_zero]`. Distinguish the cases in `hvS : v ∈ S`. Conclude with `(hloc' v).2 fun h => hv (locId_mono v ((Finset.le_sup hvS).trans (le_sup_right.trans le_sup_right)) h)`. Rewrite using `[hunr v hvS, if_neg fun h => hv (locId_mono v (le_sup_left.trans le_sup_right) h)]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem coneInt_pure_le : GlobalTheory.FunPr.Hypotheses₂ → ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} (B : Base F E) {a b : ℕ}
     (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →

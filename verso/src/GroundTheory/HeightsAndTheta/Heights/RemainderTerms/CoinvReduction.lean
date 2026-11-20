@@ -17,14 +17,14 @@ def psumIdeal : Ideal (MvPolynomial (Fin f × Fin n) K) :=
 variable {K f n}
 
 /- English proof (translation)
-The claim follows from `Ideal.subset_span ⟨m, b, h1, h2, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem bps_mem_psumIdeal {m : ℕ} (b : Fin f) (h1 : 1 ≤ m) (h2 : m ≤ n) :
     bps K f n m b ∈ psumIdeal K f n :=
   Ideal.subset_span ⟨m, b, h1, h2, rfl⟩
 
 /- English proof (translation)
-Simplify using `[psum, bps]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rename_psum (b : Fin f) (m : ℕ) :
     rename (fun i : Fin n => (b, i)) (psum (Fin n) K m) = bps K f n m b := by
@@ -33,11 +33,11 @@ theorem rename_psum (b : Fin f) (m : ℕ) :
 variable [CharZero K]
 
 /- English proof (translation)
-Establish `hN` using `congrArg (rename (fun i : Fin n => (b, i))) (mul_esymm_eq_sum (Fin n) K m)`. Simplify using `only [map_mul, map_pow, map_neg, map_one, map_natCast, map_sum] at hN`. Establish `hmem : ((m : ℕ) : MvPolynomial (Fin f × Fin n) K) * rename (fun i : Fin n => (b, i)) (esymm (Fin n) K m) ∈ psumIdeal K f n`. Rewrite using `[hN]`. Use `Ideal.mul_mem_left _ _ (Ideal.sum_mem _ fun a ha => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `ha` using `[Finset.mem_filter]`. Establish `ha1 : a.1 + a.2 = m` using `by simpa using ha.1`. Rewrite using `[rename_psum]`. Conclude with `Ideal.mul_mem_left _ _ (bps_mem_psumIdeal b (by have := ha.2; omega) (by omega))`. Establish `hm : (m : K) ≠ 0` using `by exact_mod_cast (show m ≠ 0 by omega)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: rename (fun i : Fin n => (b, i)) (esymm (Fin n) K m) = C ((m : K)⁻¹) * (((m : ℕ) : MvPolynomial (Fin f × Fin n) K) * rename (fun i : Fin n => (b, i)) (esymm (Fin n) K m))`. Rewrite using `[← mul_assoc, ← map_natCast C, ← C_mul, inv_mul_cancel₀ hm, C_1, one_mul]`. Rewrite using `[this]`. Conclude with `Ideal.mul_mem_left _ _ hmem`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rename_esymm_mem {m : ℕ} (b : Fin f) (h1 : 1 ≤ m) (h2 : m ≤ n) :
     rename (fun i : Fin n => (b, i)) (esymm (Fin n) K m) ∈ psumIdeal K f n := by
@@ -60,13 +60,13 @@ theorem rename_esymm_mem {m : ℕ} (b : Fin f) (h1 : 1 ≤ m) (h2 : m ≤ n) :
   exact Ideal.mul_mem_left _ _ hmem
 
 /- English proof (translation)
-Use `set φ : MvPolynomial (Fin n) K →+* MvPolynomial (Fin f × Fin n) K ⧸ psumIdeal K f n := (Ideal.Quotient.mk (psumIdeal K f n)).comp (rename (fun i : Fin n => (b, i))).toRingHom`. Establish `hV` using `congrArg (Polynomial.map φ) (MvPolynomial.prod_C_add_X_eq_sum_esymm K (Fin n))`. Simplify using `only [Polynomial.map_prod, Polynomial.map_add, Polynomial.map_X, Polynomial.map_C, Polynomial.map_sum, Polynomial.map_mul, Polynomial.map_pow, Fintype.card_fin] at hV`. Establish `hφX : ∀ i : Fin n, φ (X i) = Ideal.Quotient.mk (psumIdeal K f n) (X (b, i))`. Introduce `i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[φ]`. Simplify using `only [hφX] at hV`. Rewrite using `[hV, Finset.sum_range_succ']`. Establish `hz : ∀ j ∈ range n, Polynomial.C (φ (esymm (Fin n) K (j + 1))) * (Polynomial.X : Polynomial (MvPolynomial (Fin f × Fin n) K ⧸ psumIdeal K f n)) ^ (n - (j + 1)) = 0`. Introduce `j hj`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hj` using `[Finset.mem_range]`. Establish `: φ (esymm (Fin n) K (j + 1)) = 0`. Simplify using `only [φ, RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr (rename_esymm_mem b (by omega) (by omega))`. Rewrite using `[this, map_zero, zero_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_eq_zero hz, zero_add]`. Simplify using `[esymm_zero]`.
+A detailed English derivation is pending.
 -/
 theorem prod_X_add_eq_pow (b : Fin f) :
     (∏ i : Fin n, (Polynomial.X + Polynomial.C
@@ -94,7 +94,7 @@ theorem prod_X_add_eq_pow (b : Fin f) :
 variable (K) in
 omit [CharZero K] in
 /- English proof (translation)
-Use `Ideal.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `P ⟨m, b, h1, -, rfl⟩`. Simplify using `[bps, constantCoeff_X, zero_pow (show m ≠ 0 by omega)]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 theorem psumIdeal_le_ker :
     psumIdeal K f n ≤ RingHom.ker (constantCoeff : MvPolynomial (Fin f × Fin n) K →+* K) := by
@@ -103,7 +103,7 @@ theorem psumIdeal_le_ker :
   simp [bps, constantCoeff_X, zero_pow (show m ≠ 0 by omega)]
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : (1 : MvPolynomial (Fin f × Fin n) K) ∈ RingHom.ker constantCoeff` using `psumIdeal_le_ker K (h ▸ Submodule.mem_top)`. Simplify using `at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem psumIdeal_ne_top : psumIdeal K f n ≠ ⊤ := by
   intro h
@@ -112,29 +112,27 @@ theorem psumIdeal_ne_top : psumIdeal K f n ≠ ⊤ := by
   simp at h1
 
 /- English proof (translation)
-Use `set ψ := rename (R := K) (fun s : ↥(Finset.Ioi k) => (b, (s : Fin n))) with hψ`. Establish `hinj : Function.Injective (fun s : ↥(Finset.Ioi k) => (b, (s : Fin n)))`. Introduce `s t h`. Conclude with `Subtype.ext (Prod.ext_iff.mp h).2`. Use `set A' : Polynomial (MvPolynomial ↥(Finset.Ioi k) K) := ∏ s : ↥(Finset.Ioi k), (Polynomial.X + Polynomial.C (X s)) with hA'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hA'm : A'.Monic` using `Polynomial.monic_prod_of_monic _ _ (fun s _ => Polynomial.monic_X_add_C _)`. Establish `hA'deg : A'.natDegree = n - 1 - k`. Rewrite using `[hA', Polynomial.natDegree_prod_of_monic _ _ (fun s _ => Polynomial.monic_X_add_C _)]`. Simplify using `[Fin.card_Ioi]`. Use `set Sh' := (Polynomial.X ^ n : Polynomial (MvPolynomial ↥(Finset.Ioi k) K)) /ₘ A' with hSh'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `hk : (k : ℕ) < n` using `k.isLt`. Establish `hSdeg : Sh'.natDegree = (k : ℕ) + 1`. Rewrite using `[hSh', Polynomial.natDegree_divByMonic _ hA'm, Polynomial.natDegree_X_pow, hA'deg]`. Use linear arithmetic over natural numbers and integers. Establish `hSlead : Sh'.leadingCoeff = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hSh', Polynomial.leadingCoeff_divByMonic_of_monic hA'm]`. Simplify using the standard rewrite rules. Rewrite using `[Polynomial.degree_eq_natDegree hA'm.ne_zero, Polynomial.degree_X_pow, hA'deg]`. Conclude with `(by omega : n - 1 - (k : ℕ) ≤ n)` after adjusting the coercions. Use `set I := psumIdeal K f n`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `: Nontrivial (MvPolynomial (Fin f × Fin n) K ⧸ I)` using `Ideal.Quotient.nontrivial_iff.mpr psumIdeal_ne_top`. Use `set π := Ideal.Quotient.mk I`. Establish `hsplit` using `prod_X_add_eq_pow (K := K) (f := f) (n := n) b`. Rewrite `hsplit` using `[← Finset.prod_filter_mul_prod_filter_not Finset.univ (fun i : Fin n => k < i)]`. Establish `hfilt : Finset.univ.filter (fun i : Fin n => k < i) = Finset.Ioi k`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `i`. Simplify using the standard rewrite rules. Rewrite `hsplit` using `[hfilt]`. Establish `hmapA : A'.map (π.comp ψ.toRingHom) = ∏ i ∈ Finset.Ioi k, (Polynomial.X + Polynomial.C (π (X (b, i))))`. Rewrite using `[hA', Polynomial.map_prod, ← Finset.prod_coe_sort (Finset.Ioi k)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[hψ, π]`. Establish `key : Sh'.map (π.comp ψ.toRingHom) = ∏ i ∈ Finset.univ.filter (fun i : Fin n => ¬ k < i), (Polynomial.X + Polynomial.C (π (X (b, i))))`. Rewrite using `[hSh', Polynomial.map_divByMonic _ hA'm, Polynomial.map_pow, Polynomial.map_X]`. Use `(Polynomial.div_modByMonic_unique _ (0 : Polynomial (MvPolynomial (Fin f × Fin n) K ⧸ I)) (hA'm.map (π.comp ψ.toRingHom)) ⟨?_, ?_⟩).1` and prove the remaining obligations. Rewrite using `[zero_add, hmapA, hsplit]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Polynomial.degree_zero]`. Conclude with `bot_lt_iff_ne_bot.mpr (fun h => (hA'm.map (π.comp ψ.toRingHom)).ne_zero (Polynomial.degree_eq_bot.mp h))`. Establish `hev : π (Polynomial.eval (-X (b, k)) (Sh'.map ψ.toRingHom)) = 0`. Rewrite using `[← Polynomial.eval₂_at_apply π, ← Polynomial.eval_map, Polynomial.map_map, key, Polynomial.eval_prod]`. Use `Finset.prod_eq_zero (i := k) (by simp) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hmem : Polynomial.eval (-X (b, k)) (Sh'.map ψ.toRingHom) ∈ I` using `Ideal.Quotient.eq_zero_iff_mem.mp hev`. Use `⟨fun j => (-1) ^ ((k : ℕ) + 1 + j) * Sh'.coeff j, ?_⟩` and prove the remaining obligations. Establish `hdegmap : (Sh'.map ψ.toRingHom).natDegree = (k : ℕ) + 1`. Rewrite using `[Polynomial.natDegree_map_eq_of_injective (rename_injective _ hinj), hSdeg]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite `hmem` using `[Polynomial.eval_eq_sum_range, hdegmap, Finset.sum_range_succ]`. Establish `htop : (Sh'.map ψ.toRingHom).coeff ((k : ℕ) + 1) = 1`. Rewrite using `[Polynomial.coeff_map, ← hSdeg]`. Express the relevant statement in the definitionally equal form `ψ (Sh'.leadingCoeff) = 1`. Rewrite using `[hSlead, map_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hmem` using `[htop, one_mul]`. Use `Ideal.mul_mem_left I ((-1) ^ ((k : ℕ) + 1)) hmem` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[mul_add, Finset.mul_sum, neg_pow (X (b, k) : MvPolynomial (Fin f × Fin n) K), ← mul_assoc, ← pow_add, ← two_mul, pow_mul, neg_one_sq, one_pow, one_mul, add_comm]`. Use `congr 1`.
-
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Polynomial.coeff_map, neg_pow (X (b, k) : MvPolynomial (Fin f × Fin n) K)]`. Simplify using `only [map_mul, map_pow, map_neg, map_one, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_reduction (b : Fin f) (k : Fin n) :
     ∃ c : ℕ → MvPolynomial ↥(Finset.Ioi k) K,

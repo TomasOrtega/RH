@@ -15,11 +15,11 @@ open ReciprocityTheory.ChartRestriction.DS.S7
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `hp : pmat ((s : ℂ) • y) = (s : ℂ) • pmat y`. Use extensionality with `a b`. Simplify using `only [pmat, Pi.smul_apply, Matrix.smul_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp [star_mul', Complex.conj_ofReal]`. Rewrite using `[hp]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Unfold `hs`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.smul_apply, smul_eq_mul, norm_mul, mul_pow, Complex.norm_real, Real.norm_eq_abs, sq_abs]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fdU_hs_smul {ε : Fin n → Bool} (s : ℝ) (y : PCoord ε → ℂ) :
     hs (pmat ((s : ℂ) • y)) = s ^ 2 * hs (pmat y) := by
@@ -36,21 +36,21 @@ theorem fdU_hs_smul {ε : Fin n → Bool} (s : ℝ) (y : PCoord ε → ℂ) :
   rw [Matrix.smul_apply, smul_eq_mul, norm_mul, mul_pow, Complex.norm_real, Real.norm_eq_abs, sq_abs]
 
 /- English proof (translation)
-Unfold `hs`. Conclude with `Finset.sum_nonneg (fun _ _ => Finset.sum_nonneg (fun _ _ => by positivity))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem fdU_hs_nonneg {ε : Fin n → Bool} (y : PCoord ε → ℂ) : 0 ≤ hs (pmat y) := by
   unfold hs
   exact Finset.sum_nonneg (fun _ _ => Finset.sum_nonneg (fun _ _ => by positivity))
 
 /- English proof (translation)
-Rewrite using `[fdU_hs_smul, Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq hs0]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fdU_sqrt_hs_smul {ε : Fin n → Bool} {s : ℝ} (hs0 : 0 ≤ s) (y : PCoord ε → ℂ) :
     Real.sqrt (hs (pmat ((s : ℂ) • y))) = s * Real.sqrt (hs (pmat y)) := by
   rw [fdU_hs_smul, Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq hs0]
 
 /- English proof (translation)
-Unfold `Qf`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun ab _ => ?_)` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, norm_mul, mul_pow, Complex.norm_real, Real.norm_eq_abs, sq_abs]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fdU_qf_smul {ε : Fin n → Bool} (lam : Fin n → ℝ) (s : ℝ) (y : PCoord ε → ℂ) :
     Qf lam ((s : ℂ) • y) = s ^ 2 * Qf lam y := by
@@ -61,12 +61,12 @@ theorem fdU_qf_smul {ε : Fin n → Bool} (lam : Fin n → ℝ) (s : ℝ) (y : P
   ring
 
 /- English proof (translation)
-Introduce `_ _ _` and use `le_rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fdU_antitone_zero : Antitone (0 : Fin n → ℝ) := fun _ _ _ => le_rfl
 
 /- English proof (translation)
-Rewrite using `[ph_lamT]`. Combine the linear relations using `[ph_nonneg hlam z]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem fdU_ph_ge {ε : Fin n → Bool} {lam : Fin n → ℝ} (hlam : Antitone lam) (t : ℕ) (z : PCoord ε → ℂ) :
     (t : ℝ) * Ph (0 : Fin n → ℝ) (pmat z) ≤ Ph (lamT lam t) (pmat z) := by
@@ -74,11 +74,11 @@ theorem fdU_ph_ge {ε : Fin n → Bool} {lam : Fin n → ℝ} (hlam : Antitone l
   linarith [ph_nonneg hlam z]
 
 /- English proof (translation)
-Establish `hrho : rhoP ((s : ℂ) • y) = s * rhoP y` using `by rw [rhoP_real_smul, abs_of_pos hs0]`. Establish `hl` using `ph_lower (lam := (0 : Fin n → ℝ)) fdU_antitone_zero ((s : ℂ) • y) (ep := s * rhoP y) hrho.le hr`. Rewrite `hl` using `[fdU_qf_smul]`. Establish `hg` using `fdU_ph_ge hlam t ((s : ℂ) • y)`. Establish `ht : (0 : ℝ) ≤ t` using `Nat.cast_nonneg t`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ : (1 - s * rhoP y) * Qf (0 : Fin n → ℝ) y = (t : ℝ) * ((1 - s * rhoP y) * (s ^ 2 * Qf (0 : Fin n → ℝ) y))`. Combine the equalities or inequalities in the displayed calculation. Establish `hm` using `mul_le_mul_of_nonneg_left hl ht`. Establish `h1 : (1 - s * rhoP y) * Qf (0 : Fin n → ℝ) y ≤ 2 * Ph (lamT lam t) (pmat ((s : ℂ) • y))`. Rewrite using `[hQ]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hJ` using `jac_le_exp ((s : ℂ) • y)`. Rewrite `hJ` using `[fdU_sqrt_hs_smul hs0.le]`. Rewrite using `[Real.exp_add]`. Conclude with `mul_le_mul (Real.exp_le_exp.mpr (by linarith)) hJ (le_trans zero_le_one (jac_ge_one _)) (Real.exp_pos _).le`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fdU_near {ε : Fin n → Bool} {lam : Fin n → ℝ} (hlam : Antitone lam) {s : ℝ} (hs0 : 0 < s) {t : ℕ}
     (hst : s ^ 2 * t = 1) (y : PCoord ε → ℂ) (hr : s * rhoP y ≤ 1) :
@@ -104,23 +104,23 @@ theorem fdU_near {ε : Fin n → Bool} {lam : Fin n → ℝ} (hlam : Antitone la
     (Real.exp_pos _).le
 
 /- English proof (translation)
-Establish `hhs : hs (pmat y) = Real.sqrt (hs (pmat y)) ^ 2` using `(Real.sq_sqrt (fdU_hs_nonneg y)).symm`. Establish `hm` using `potential_lower_min ((s : ℂ) • y)`. Rewrite `hm` using `[fdU_sqrt_hs_smul hs0.le, fdU_hs_smul]`. Establish `hJ` using `jac_le_exp ((s : ℂ) • y)`. Rewrite `hJ` using `[fdU_sqrt_hs_smul hs0.le]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hPh` using `fdU_ph_ge hlam t ((s : ℂ) • y)`. Use `set k := Real.sqrt (2 * (q0 ε : ℝ)) with hk`. Use `set r := Real.sqrt (hs (pmat y)) with hr`. Use `set X := Real.sqrt (t₀ : ℝ) with hX`. Use `set a := X / k with ha`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk0 : 0 ≤ k` using `Real.sqrt_nonneg _`. Establish `hr0 : 0 ≤ r` using `Real.sqrt_nonneg _`. Establish `hT0 : 0 < X` using `Real.sqrt_pos.mpr (by exact_mod_cast h0)`. Establish `ht0 : (0 : ℝ) ≤ t` using `Nat.cast_nonneg _`. Establish `hsT : s * X ≤ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h1 : s ^ 2 * t₀ ≤ 1`. Rewrite using `[← hst]; exact mul_le_mul_of_nonneg_left (by exact_mod_cast ht) (sq_nonneg s)`. Establish `h2 : (s * X) ^ 2 ≤ 1` using `by rw [mul_pow, hX, Real.sq_sqrt (Nat.cast_nonneg _)]; exact h1`. Use polynomial arithmetic with `[mul_pos hs0 hT0]`. Establish `hsinv : X ≤ s⁻¹`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hmin : a * r - a ^ 2 / 4 ≤ (t : ℝ) * min (s ^ 2 * hs (pmat y)) (s * r / k)`. Rewrite using `[mul_min_of_nonneg _ _ ht0]`. Use `le_min ?_ ?_` and prove the remaining obligations. Establish `e : (t : ℝ) * (s ^ 2 * hs (pmat y)) = r ^ 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[hhs]`. Take the linear combination `r ^ 2 * hst`. Rewrite using `[e]`. Use polynomial arithmetic with `[sq_nonneg (r - a / 2)]`. Establish `hrk : 0 ≤ r / k` using `div_nonneg hr0 hk0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e : (t : ℝ) * (s * r / k) = s⁻¹ * (r / k)`. Establish `: s⁻¹ = s * t` using `by field_simp; linear_combination -hst`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Establish `ea : a * r = X * (r / k)` using `by rw [ha]; ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hsinv hrk, sq_nonneg a]`. Establish `hs' : s ≤ 1 / X` using `by rw [le_div_iff₀ hT0]; exact hsT`. Establish `hJ2 : ((n : ℝ) - 1) * k * (s * r) ≤ |(n : ℝ) - 1| * k / X * r`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hm2` using `mul_le_mul_of_nonneg_left hm ht0`. Establish `hE : -2 * Ph (lamT lam t) (pmat ((s : ℂ) • y)) ≤ a ^ 2 / 32 - a / 8 * r`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem fdU_far {ε : Fin n → Bool} {lam : Fin n → ℝ} (hlam : Antitone lam) {t₀ t : ℕ} (h0 : 1 ≤ t₀)
     (ht : t₀ ≤ t) {s : ℝ} (hs0 : 0 < s) (hst : s ^ 2 * t = 1) (y : PCoord ε → ℂ) :
@@ -180,11 +180,9 @@ theorem fdU_far {ε : Fin n → Bool} {lam : Fin n → ℝ} (hlam : Antitone lam
     _ = _ := by rw [← Real.exp_add]; congr 1; ring
 
 /- English proof (translation)
-Unfold `q0 pOf qOf`. Establish `h` using `ab.2.2`. Establish `ht : ε ab.1.1 = true ∨ ε ab.1.2 = true`. Apply the tactic sequence `cases h1 : ε ab.1.1 <;> cases h2 : ε ab.1.2 <;> simp_all`. Establish `hf : ε ab.1.1 = false ∨ ε ab.1.2 = false`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `cases h1 : ε ab.1.1 <;> cases h2 : ε ab.1.2 <;> simp_all`. Apply `le_min` to reduce the goal to its premises. Break down `ht with h1 | h1` into its components or cases. Conclude with `Finset.card_pos.mpr ⟨_, Finset.mem_filter.mpr ⟨Finset.mem_univ _, h1⟩⟩`. Conclude with `Finset.card_pos.mpr ⟨_, Finset.mem_filter.mpr ⟨Finset.mem_univ _, h1⟩⟩`.
-
-Break down `hf with h1 | h1` into its components or cases. Conclude with `Finset.card_pos.mpr ⟨_, Finset.mem_filter.mpr ⟨Finset.mem_univ _, h1⟩⟩`. Conclude with `Finset.card_pos.mpr ⟨_, Finset.mem_filter.mpr ⟨Finset.mem_univ _, h1⟩⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem one_le_q0_of_coord {ε : Fin n → Bool} (ab : PCoord ε) : 1 ≤ q0 ε := by
   unfold q0 pOf qOf
@@ -202,7 +200,7 @@ theorem one_le_q0_of_coord {ε : Fin n → Bool} (ab : PCoord ε) : 1 ≤ q0 ε 
     · exact Finset.card_pos.mpr ⟨_, Finset.mem_filter.mpr ⟨Finset.mem_univ _, h1⟩⟩
 
 /- English proof (translation)
-The claim follows from `|(n : ℝ) - 1| * Real.sqrt (2 * (q0 ε : ℝ)) / Real.sqrt ((16 * n * q0 ε + 1 : ℕ) : ℝ) := by have hQ : (1 : ℝ) ≤ q0 ε := by exact_mod_cast one_le_q0_of_coord ab have hn : (1 : ℝ) ≤ n := by have := ab.1.1.isLt exact_mod_cast (show 1 ≤ n by omega) have hA : (((16 * n * q0 ε + 1 : ℕ) …`.
+A detailed English derivation is pending.
 -/
 theorem fdU_c_pos {ε : Fin n → Bool} (ab : PCoord ε) :
     0 < Real.sqrt ((16 * n * q0 ε + 1 : ℕ) : ℝ) / Real.sqrt (2 * (q0 ε : ℝ)) / 8 -
@@ -227,15 +225,15 @@ theorem fdU_c_pos {ε : Fin n → Bool} (ab : PCoord ε) :
   nlinarith
 
 /- English proof (translation)
-Rewrite using `[show (∏ ab : PCoord ε, Real.exp (-(c / ((Fintype.card (PCoord ε) : ℝ) + 1)) * ‖y ab‖)) = Real.exp (∑ ab : PCoord ε, -(c / ((Fintype.card (PCoord ε) : ℝ) + 1)) * ‖y ab‖) from (Real.exp_sum _ _).symm, Real.exp_le_exp]`. Establish `hent : ∀ ab : PCoord ε, ‖y ab‖ ≤ Real.sqrt (hs (pmat y))`. Introduce `ab`. Establish `hpm : pmat y ab.1.1 ab.1.2 = y ab`. Simplify using `only [pmat]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[dif_pos ab.2]`. Establish `h2 : ‖y ab‖ ^ 2 ≤ hs (pmat y)`. Unfold `hs`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Establish `hsq` using `Real.sqrt_nonneg (hs (pmat y))`. Establish `hsum : ∑ ab : PCoord ε, ‖y ab‖ ≤ ((Fintype.card (PCoord ε) : ℝ) + 1) * Real.sqrt (hs (pmat y))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Use `_ ≤ ((Fintype.card (PCoord ε) : ℝ) + 1) * Real.sqrt (hs (pmat y)) := by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.mul_sum]`. Establish `hN : (0 : ℝ) < (Fintype.card (PCoord ε) : ℝ) + 1` using `by positivity`. Establish `h3` using `mul_le_mul_of_nonneg_left hsum (div_nonneg hc hN.le)`. Establish `e : c / ((Fintype.card (PCoord ε) : ℝ) + 1) * (((Fintype.card (PCoord ε) : ℝ) + 1) * Real.sqrt (hs (pmat y))) = c * Real.sqrt (hs (pmat y))`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem fdU_exp_le_prod {ε : Fin n → Bool} {c : ℝ} (hc : 0 ≤ c) (y : PCoord ε → ℂ) :
     Real.exp (-c * Real.sqrt (hs (pmat y))) ≤

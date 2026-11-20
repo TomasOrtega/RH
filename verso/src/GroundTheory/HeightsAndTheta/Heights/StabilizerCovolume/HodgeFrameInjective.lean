@@ -44,11 +44,11 @@ def hodgeFrame (z : (Σ k, ι k) → ℂ) : ((Ψ × Fin D.N) → ℂ) →ₗ[ℝ
     ring
 
 /- English proof (translation)
-Rewrite using `[PiLp.inner_apply, Fintype.sum_prod_type, hodgeInner]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.re_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [hodgeFrame, embHom, LinearMap.coe_mk, AddHom.coe_mk, AddMonoidHom.coe_mk, ZeroHom.coe_mk, WithLp.ofLp_toLp, Complex.inner, map_mul, Complex.conj_ofReal]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hs : Real.sqrt (2 * ‖D.herm.emb τ D.herm.ξ‖) * Real.sqrt (2 * ‖D.herm.emb τ D.herm.ξ‖) = 2 * ‖D.herm.emb τ D.herm.ξ‖` using `Real.mul_self_sqrt (by positivity)`. Rewrite using `[show ∀ (s : ℝ) (u x : ℂ), (s * x * ((s : ℂ) * starRingEnd ℂ u)).re = (s * s) * (starRingEnd ℂ u * x).re by`. Introduce `s u x`. Rewrite using `[show (s : ℂ) * x * ((s : ℂ) * starRingEnd ℂ u) = ((s * s : ℝ) : ℂ) * (starRingEnd ℂ u * x) by`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use the proof step `ring, Complex.re_ofReal_mul], hs]`.
+A detailed English derivation is pending.
 -/
 theorem inner_hodgeFrame (z : (Σ k, ι k) → ℂ) (v w : Fin D.N → Em) :
     inner ℝ (D.hodgeFrame z (D.embHom v)) (D.hodgeFrame z (D.embHom w)) = D.hodgeInner z v w := by
@@ -67,13 +67,11 @@ theorem inner_hodgeFrame (z : (Σ k, ι k) → ℂ) (v w : Fin D.N → Em) :
       ring, Complex.re_ofReal_mul], hs]
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `y hy`. Use function extensionality and compare the values at `p`. Take `⟨τ, a⟩` from `p`. Establish `hP : IsUnit (D.per z τ).det` using `FirstMinPos.isUnit_det_of_eq_signMat (D.per_witt z hz τ)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hs : (Real.sqrt (2 * ‖D.herm.emb τ D.herm.ξ‖) : ℂ) ≠ 0`. Establish `: D.herm.emb τ D.herm.ξ ≠ 0` using `(map_ne_zero _).2 D.herm.ξ_ne`. Conclude with `(Real.sqrt_pos.2 (by positivity)).ne'` after adjusting the coercions. Establish `h0 : (D.per z τ)⁻¹ *ᵥ (fun b => y (τ, b)) = 0`. Use function extensionality and compare the values at `b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `congrArg (fun x : EuclideanSpace ℂ (Ψ × Fin D.N) => x (τ, b)) hy` as an intermediate fact. Simplify using `only [hodgeFrame, LinearMap.coe_mk, AddHom.coe_mk, WithLp.ofLp_toLp, PiLp.zero_apply] at this`. Conclude with `(mul_eq_zero.1 this).resolve_left hs`. Establish `h1 : (fun b => y (τ, b)) = 0`. Rewrite using `[← Matrix.one_mulVec (fun b => y (τ, b)), ← Matrix.mul_nonsing_inv _ hP, ← Matrix.mulVec_mulVec, h0, Matrix.mulVec_zero]`.
-
-Conclude with `congr_fun h1 a`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hodgeFrame_injective {z : (Σ k, ι k) → ℂ} (hz : z ∈ D.Xo) : Function.Injective (D.hodgeFrame z) := by
   rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
@@ -97,19 +95,17 @@ theorem hodgeFrame_injective {z : (Σ k, ι k) → ℂ} (hz : z ∈ D.Xo) : Func
 end FullerData
 
 /- English proof (translation)
-Introduce `II Ψ _ K _ ι _ Ω _ _ E _ _ Em _ _ _ D z hz I hI ρ v hv`. Establish `hex` using `D.herm.exists_isZBasis hI`. Establish `hcov : D.covolZ z I = Real.sqrt (Matrix.of fun k l => D.hodgeInner z (hex.choose_spec.choose k) (hex.choose_spec.choose l)).det`. Unfold `FullerData.covolZ`. Rewrite using `[dif_pos hex]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hb : IsZBasis I hex.choose_spec.choose` using `hex.choose_spec.choose_spec`. Establish `hm : hex.choose = 2 * D.f * ρ`. Rewrite using `[card_eq_of_isZBasis hv hb, D.herm.finrank_eq]`. Both sides reduce to the same expression. Use `set b := hex.choose_spec.choose`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Set `u : Fin hex.choose → EuclideanSpace ℂ (Ψ × Fin D.N)` to `fun k => D.hodgeFrame z (D.embHom (b k))`. Establish `hbQ : LinearIndependent ℚ b` using `(LinearIndependent.iff_fractionRing ℤ ℚ).1 hb.1`. Establish `hu_li : LinearIndependent ℝ u` using `(D.herm.linearIndependent_real hbQ).map' (D.hodgeFrame z) (LinearMap.ker_eq_bot.2 (D.hodgeFrame_injective hz))`. Establish `hgram : Matrix.gram ℝ u = Matrix.of fun k l => D.hodgeInner z (b k) (b l)`. Use extensionality with `k l`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `D.inner_hodgeFrame z _ _`. Establish `hlam0 : 0 ≤ D.lam1 z` using `Real.sInf_nonneg (by rintro x ⟨w, -, -, rfl⟩; exact Real.sqrt_nonneg _)`. Establish `hmin : ∀ x ∈ Submodule.span ℤ (Set.range u), x ≠ 0 → D.lam1 z ≤ ‖x‖`. Introduce `x hx hx0`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).1 hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hw : ∑ k, c k • u k = D.hodgeFrame z (D.embHom (∑ k, c k • b k))`. Simplify using `only [u, map_sum, map_zsmul]`. Establish `hwI : ∑ k, c k • b k ∈ I` using `(hb.2 _).2 ((Submodule.mem_span_range_iff_exists_fun ℤ).2 ⟨c, rfl⟩)`. Establish `hw0 : ∑ k, c k • b k ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hx0` to reduce the goal to its premises. Rewrite using `[hw, h, map_zero, map_zero]`. Rewrite using `[hw, norm_eq_sqrt_real_inner, D.inner_hodgeFrame, D.hodgeInner_self]`. Conclude with `D.firstMinimum_le_period_norm z (hI hwI) hw0`. Establish `key` using `pow_le_sqrt_det_gram u hu_li hlam0 hmin`.
-
-Rewrite `key` using `[hgram, ← hcov, hm]`. Move the coercions through the operations in `at key`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem UnitaryMinkowskiBound.proof : UnitaryMinkowskiBound.Statement := by
   intro II Ψ _ K _ ι _ Ω _ _ E _ _ Em _ _ _ D z hz I hI ρ v hv

@@ -9,11 +9,9 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo Filter Topology
 open ReciprocityTheory.AnForm.M (FinHolAtlas)
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `A.cover (ψ.symm (g y))`. Establish `hτ : AnalyticAt ℂ (A.chart i ∘ ψ.symm) (g y)` using `(hψ i).2 (g y) ⟨hgy, hi⟩`. Establish `hFi : AnalyticAt ℂ (F ∘ (A.chart i).symm) ((A.chart i ∘ ψ.symm) (g y))`. Use `hF i _ ⟨(A.chart i).map_source hi, ?_⟩` and prove the remaining obligations. Use `show (A.chart i).symm (A.chart i (ψ.symm (g y))) ∈ V`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(A.chart i).left_inv hi]`. Conclude with `hV`. Use `((hFi.comp hτ).comp hg).congr ?_` and prove the remaining obligations. Establish `hc : ContinuousAt (fun y' => ψ.symm (g y')) y` using `(ψ.continuousAt_symm hgy).comp hg.continuousAt`. Use `filter_upwards [hc.preimage_mem_nhds ((A.chart i).open_source.mem_nhds hi)] with y' hy'`.
-
-Simplify using `only [Function.comp_apply, (A.chart i).left_inv hy']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem analyticAt_holoOn_comp_chartSymm {e m : ℕ} {X : Type*} [TopologicalSpace X] {A : FinHolAtlas e X}
     {ψ : OpenPartialHomeomorph X (Fin e → ℂ)} (hψ : ReciprocityTheory.AnForm.M.IsCompatChart A ψ) {V : Set X}
@@ -33,41 +31,35 @@ theorem analyticAt_holoOn_comp_chartSymm {e m : ℕ} {X : Type*} [TopologicalSpa
   simp only [Function.comp_apply, (A.chart i).left_inv hy']
 
 /- English proof (translation)
-Introduce `K _ ι _ P n M Xo A S γ y j hγ hsrc hev`. Take `⟨g, hg'⟩ : ∃ g : (Fin n → ℂ) → Fin n → ℂ, g = fun y'' => S.R.chart j (M.proj (γ y''))` from `⟨_, rfl⟩`. Establish `hg : AnalyticAt ℂ g y`. Take `⟨V, hV, hVo, hyV⟩` from `eventually_nhds_iff.1 (hev.mono fun _ h => h.2)`. Use `AnalyticAt.pi fun i => ReciprocityTheory.AnForm.Osgood.osgood n V (fun w => g w i) hVo (fun z hz => ?_) y hyV` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hg']`. Conclude with `(differentiableAt_pi.mp (hV z hz) i).differentiableWithinAt`. Establish `hγc : ∀ p, AnalyticAt ℂ (fun w => γ w p) y`. Introduce `p`. Take `⟨V, hV, hVo, hyV⟩` from `eventually_nhds_iff.1 (hγ.mono fun _ h => h.1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `ReciprocityTheory.AnForm.Osgood.osgood n V (fun w => γ w p) hVo (fun z hz => (differentiableAt_pi.mp (hV z hz) p).differentiableWithinAt) y hyV`. Establish `hgy : g y ∈ (S.R.chart j).target` using `by rw [hg']; exact (S.R.chart j).map_source hsrc`. Establish `hxy : (S.R.chart j).symm (g y) = M.proj (γ y)` using `by rw [hg']; exact (S.R.chart j).left_inv hsrc`. Take `⟨U, hUo, hx0U, hUth, s, hs, hsh, G1, hG1, hG1eq⟩` from `S.th_ref (M.proj (γ y)) (M.proj (γ y)) (S.R.th.mem_U _)`. Take `⟨W, hWo, hx0W, G2, hG2, hG2eq⟩` from `S.R.q_th j (M.proj (γ y)) (M.proj (γ y)) ⟨S.R.th.mem_U _, hsrc⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x', hx'⟩ : ∃ x' : (Fin n → ℂ) → M.Xc, x' = fun y' => (S.R.chart j).symm (g y')` from `⟨_, rfl⟩`. Establish `hsxy : x' y = M.proj (γ y)` using `by rw [hx']; exact hxy`. Establish `hx'c : ContinuousAt x' y`. Rewrite using `[hx']`. Conclude with `((S.R.chart j).continuousAt_symm hgy).comp hg.continuousAt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsc : ∀ p, AnalyticAt ℂ (fun y' => s (x' y') p) y` using `fun p => by`. Rewrite using `[hx']`. Conclude with `analyticAt_holoOn_comp_chartSymm (S.R.compat j) (hsh p) hg hgy (by rw [hxy]; exact hx0U)`. Establish `hG1x : AnalyticAt ℂ (fun y' => G1 (x' y')) y`. Rewrite using `[hx']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `analyticAt_holoOn_comp_chartSymm (S.R.compat j) hG1 hg hgy (by rw [hxy]; exact hx0U)`. Establish `hG2x : AnalyticAt ℂ (fun y' => G2 (x' y')) y`. Rewrite using `[hx']`. Conclude with `analyticAt_holoOn_comp_chartSymm (S.R.compat j) hG2 hg hgy (by rw [hxy]; exact hx0W)`. Establish `hs0 : s (M.proj (γ y)) ∈ mcPts P` using `(hs _ hx0U).1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose i hi using hs0.1`. Take `⟨cf, hcf⟩ : ∃ cf : K → (Fin n → ℂ) → ℂ, cf = fun k y' => γ y' ⟨k, i k⟩ / s (x' y') ⟨k, i k⟩` from `⟨_, rfl⟩`. Establish `hsi : ∀ k, s (x' y) ⟨k, i k⟩ ≠ 0` using `fun k => by rw [hsxy]; exact hi k`. Establish `hcfa : ∀ k, AnalyticAt ℂ (cf k) y` using `fun k => by`. Rewrite using `[hcf]`.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `(hγc _).div (hsc _) (hsi k)`. Establish `hne : ∀ᶠ y' in 𝓝 y, ∀ k, s (x' y') ⟨k, i k⟩ ≠ 0` using `Filter.eventually_all.2 fun k => (hsc _).continuousAt.eventually_ne (hsi k)`. Establish `hUWn : U ∩ W ∈ 𝓝 (x' y)` using `(hUo.inter hWo).mem_nhds (by rw [hsxy]; exact ⟨hx0U, hx0W⟩)`. Establish `hgood : ∀ᶠ y' in 𝓝 y, (x' y' ∈ U ∩ W ∧ M.proj (γ y') ∈ (S.R.chart j).source ∧ γ y' ∈ mcPts P) ∧ ∀ k, s (x' y') ⟨k, i k⟩ ≠ 0` using `by filter_upwards [hx'c.preimage_mem_nhds hUWn, hev, hγ, hne] with y' h1 h2 h3 h4`. Conclude with `⟨⟨h1, h2.1, h3.2⟩, h4⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ y', ((x' y' ∈ U ∩ W ∧ M.proj (γ y') ∈ (S.R.chart j).source ∧ γ y' ∈ mcPts P) ∧ ∀ k, s (x' y') ⟨k, i k⟩ ≠ 0) → (∀ k, cf k y' ≠ 0) ∧ Real.log (S.ref.h (γ y')) = ∑ k, (S.ref.a k : ℝ) * Real.log ‖cf k y'‖ + (S.R.q j (S.R.chart j (M.proj (γ y'))) - (G2 (x' y')).re - (G1 (x' y' …`. Introduce and unpack `y' ⟨⟨⟨hU', hW'⟩, hsrc', hγ'⟩, hne'⟩`. Establish `hxp : x' y' = M.proj (γ y')` using `by rw [hx', hg']; exact (S.R.chart j).left_inv hsrc'`. Take `⟨hsm, hsp⟩` from `hs _ hU'`. Take `⟨c, hc, hγc'⟩` from `(M.fibre _ hsm _ hγ').1 (by rw [hsp, hxp])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hck : ∀ k, cf k y' = c k` using `fun k => by`. Establish `h` using `congrFun hγc' ⟨k, i k⟩`. Rewrite using `[hcf]`. Use `show γ y' ⟨k, i k⟩ / s (x' y') ⟨k, i k⟩ = c k`. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_div_cancel_right₀ (c k) (hne' k)`. Establish `hh : S.ref.h (γ y') = (∏ k, ‖c k‖ ^ S.ref.a k) * S.ref.h (s (x' y'))`. Rewrite using `[hγc']`. Conclude with `S.ref.smul c _ hc`. Establish `hpos : ∀ k, 0 < ‖c k‖` using `fun k => norm_pos_iff.2 (hc k)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hlog : Real.log (S.ref.h (γ y')) = ∑ k, (S.ref.a k : ℝ) * Real.log ‖c k‖ + Real.log (S.ref.h (s (x' y')))`. Rewrite using `[hh, Real.log_mul (Finset.prod_pos fun k _ => zpow_pos (hpos k) _).ne' (S.ref.pos _ hsm.1).ne', Real.log_prod fun k _ => (zpow_pos (hpos k) _).ne']`. Simplify using `only [Real.log_zpow]`. Establish `h1` using `hG1eq _ hU'`. Establish `hsrc'' : x' y' ∈ (S.R.chart j).source` using `by rw [hxp]; exact hsrc'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `hG2eq _ ⟨⟨hW', hUth hU'⟩, hsrc''⟩`. Use `⟨fun k => by rw [hck]; exact hc k, ?_⟩` and prove the remaining obligations. Rewrite using `[hlog, ← hxp]`. Simplify using `only [hck]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hcy : ∀ k, cf k y ≠ 0` using `(key y hgood.self_of_nhds).1`. Use `⟨fun y' => ∑ k, ((S.ref.a k : ℝ) : ℂ) * (Complex.log (cf k y' / cf k y) + (Real.log ‖cf k y‖ : ℂ)) - (G1 (x' y') + G2 (x' y')), ?_, ?_⟩` and prove the remaining obligations. Establish `hterm : ∀ k, AnalyticAt ℂ (fun y' => ((S.ref.a k : ℝ) : ℂ) * (Complex.log (cf k y' / cf k y) + (Real.log ‖cf k y‖ : ℂ))) y` using `fun k => by`. Establish `hl : AnalyticAt ℂ (fun y' => Complex.log (cf k y' / cf k y)) y`. Use `((hcfa k).div analyticAt_const (hcy k)).clog ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show cf k y / cf k y ∈ Complex.slitPlane`. Rewrite using `[div_self (hcy k)]`. Conclude with `Complex.one_mem_slitPlane`. Conclude with `analyticAt_const.mul (hl.add analyticAt_const)`. Establish `hsum : AnalyticAt ℂ (fun y' => ∑ k, ((S.ref.a k : ℝ) : ℂ) * (Complex.log (cf k y' / cf k y) + (Real.log ‖cf k y‖ : ℂ))) y`.
-
-Establish `h` using `Finset.analyticAt_sum (𝕜 := ℂ) (f := fun k y' => ((S.ref.a k : ℝ) : ℂ) * (Complex.log (cf k y' / cf k y) + (Real.log ‖cf k y‖ : ℂ))) Finset.univ fun k _ => hterm k`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `y'`. Simplify using `[Finset.sum_apply]`. Establish `hG12 : AnalyticAt ℂ (fun y' => G1 (x' y') + G2 (x' y')) y` using `hG1x.add hG2x`.
-
-Conclude with `hsum.sub hG12`. Use `filter_upwards [hgood] with y' hy'`. Take `⟨hnz, heq⟩` from `key y' hy'`. Rewrite using `[heq]`. Establish `hl : ∀ k, Real.log ‖cf k y' / cf k y‖ = Real.log ‖cf k y'‖ - Real.log ‖cf k y‖` using `fun k => by`.
-
-Rewrite using `[norm_div, Real.log_div (norm_ne_zero_iff.2 (hnz k)) (norm_ne_zero_iff.2 (hcy k))]`. Simplify using `only [Complex.sub_re, Complex.add_re, Complex.re_sum, Complex.re_ofReal_mul, Complex.log_re, Complex.ofReal_re, hl, sub_add_cancel]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem RefAlongSheet.proof : RefAlongSheet.Statement := by
   intro K _ ι _ P n M Xo A S γ y j hγ hsrc hev

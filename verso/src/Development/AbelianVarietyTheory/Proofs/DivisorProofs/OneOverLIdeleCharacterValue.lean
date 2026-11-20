@@ -23,33 +23,29 @@ set_option autoImplicit false
 namespace GlobalTheory.LatModel
 
 /- English proof (translation)
-Introduce `_hdR E _ _ _ _ I _ d φ hφ 𝔣 _h𝔣 l _ Q _hQ _hQl y _hy lam 𝔠 R _ _hR X₀ X U p cm hpull _hcm hα j hj φK hφK e a he D hD hcl`. Establish `hinj : Function.Injective φ`. Introduce `i i' h`. Take `⟨k, -, hk⟩` from `hφ.2.2.2.2.2.2.1 (φ i)`. Conclude with `(hk i (Or.inl rfl)).trans (hk i' (Or.inl h)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hKinj : Function.Injective φK` using `fun i i' h ↦ hinj (by rw [← hφK i, ← hφK i', h])`. Take `⟨hfree, hfin, hrk⟩` from `GlobalTheory.T.lie_algebra_free_rank_degree R X₀`. Take `⟨cd, hcd1, hcd2, hlam⟩` from `GlobalTheory.T.lie_algebra_period_coordinates R X₀ X U p hpull`. Use `choose t ht using fun i ↦ hcl (φK i)`. Use `choose T hT using fun i ↦ GlobalTheory.T.cm_order_action_descends R X₀ X U p (condQ 𝔣 Q) cm hα cd hcd1 hcd2 (t i)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hfac : ∀ i k, Algebra.TensorProduct.productMap ((φ (U.e k)).comp (orderC (condQ 𝔣 Q)).subtype).toIntAlgHom (algebraMap R ℂ).toIntAlgHom (t i) = if U.e k = i then ((D : R) : ℂ) else 0`. Introduce `i k`. Establish `h2 : ∀ x : orderC (condQ 𝔣 Q) ⊗[ℤ] R, Algebra.TensorProduct.productMap ((φ (U.e k)).comp (orderC (condQ 𝔣 Q)).subtype).toIntAlgHom (algebraMap R ℂ).toIntAlgHom x = j (GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.coordAt R (condQ 𝔣 Q) (φK (U.e k)) x)`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => simp`. Consider the case `tmul a x => show φ (U.e k) (a : E) * (x : ℂ) = j (φK (U.e k) (a : E) * algebraMap R (FractionRing R) x)`. Rewrite using `[map_mul, hj, ← hφK (U.e k)]`. Both sides reduce to the same expression. Consider the case `add x z hx hz => rw [map_add, map_add, hx, hz, map_add]`.
+Both sides reduce to the same expression. Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[h2, ht i (φK (U.e k))]`. Distinguish the cases in `h : U.e k = i`. Substitute `h` using the available equality. Simplify using `[hj]`. Rewrite using `[if_neg (fun h' ↦ h (hKinj h')), if_neg h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Establish `hspan : ∀ ω : X₀.Lie →ₗ[R] R, D • ω ∈ Submodule.span R (Set.range fun k ↦ e (U.e k))`. Introduce `ω`. Take `⟨lm, hlm⟩` from `hlam ω`. Establish `hval : ∀ i v, (((ω ∘ₗ T i) v : R) : ℂ) = ∑ k, lm k * ((if U.e k = i then ((D : R) : ℂ) else 0) * cd v k)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Introduce `i v`. Rewrite using `[LinearMap.comp_apply, hlm]`. Repeatedly rewrite using `[hT i v, hfac i]`. Establish `hg : ∀ i, ∃ s : R, ω ∘ₗ T i = s • e i`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `(he i).2.2 _ ((D : ℂ) * lm (U.e.symm i)) ?_` and prove the remaining obligations. Introduce `v v' W hv hW`. Rewrite using `[hcd2 v v' W hv hW, hval i v, Finset.sum_eq_single (U.e.symm i)]`. Simplify using `only [Equiv.apply_symm_apply, if_true]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `k _ hk`. Rewrite using `[if_neg (fun (h : U.e k = i) ↦ hk (by rw [← h, Equiv.symm_apply_apply]))]`. Simplify using the standard rewrite rules. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `choose s hs using hg`. Establish `heq : D • ω = ∑ i, s i • e i`. Use extensionality with `v`. Rewrite using `[LinearMap.smul_apply, LinearMap.sum_apply, AddSubmonoidClass.coe_finsetSum]`. Establish `key : ∀ i, (((s i • e i) v : R) : ℂ) = ∑ k, lm k * ((if U.e k = i then ((D : R) : ℂ) else 0) * cd v k)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `i`. Rewrite using `[← hs i, hval]`. Repeatedly rewrite using `[key]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [ite_mul, zero_mul, mul_ite, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[smul_eq_mul, Subring.coe_mul, hlm, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ ↦ ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq]`. Conclude with `Submodule.sum_mem _ fun i _ ↦ Submodule.smul_mem _ _ (Submodule.subset_span ⟨U.e.symm i, by simp⟩)`.
-
-Use `haveI := hfree`. Use `haveI := hfin`. Take `⟨δ₀, u₀, hδ, hu, hv⟩` from `GlobalTheory.T.exists_generator_top_exterior_power R X₀.Lie _ hrk (fun k ↦ e (U.e k)) D hD hspan l`. Use `⟨⟨δ₀, hδ⟩, u₀, hu, ?_⟩` and prove the remaining obligations. Establish `hc : Fintype.card I = Module.finrank ℚ (FR E)`.
-
-Rewrite using `[← Fintype.card_congr U.e, Fintype.card_fin]`. Rewrite using `[hc]`. Conclude with `hv`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_detGen_wedge_val_le : GlobalTheory.Published.AbelianDeRham → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsAbelianGalois ℚ E] (I : Type) [Fintype I] (d : ℕ)
       (φ : I → E →+* ℂ), GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.IsFieldData d φ → ∀ (𝔣 : Ideal (OF E)), IsBaseCond 𝔣 →

@@ -11,11 +11,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l} [Fintype (Comp Xo c)]
 
 /- English proof (translation)
-Establish `h1 : valV T.V (algebraMap T.V T.Fr (u : T.V)) = 1`. Apply `le_antisymm ((IsDiscreteValuationRing.maximalIdeal T.V).valuation_le_one _)` to reduce the goal to its premises. Establish `h2` using `(IsDiscreteValuationRing.maximalIdeal T.V).valuation_le_one (R := T.V) (K := T.Fr) ((u⁻¹ : T.Vˣ) : T.V)`. Establish `h3 : valV T.V (algebraMap T.V T.Fr (u : T.V)) * valV T.V (algebraMap T.V T.Fr ((u⁻¹ : T.Vˣ) : T.V)) = 1`. Rewrite using `[← map_mul, ← map_mul, Units.mul_inv, map_one, map_one]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`. Establish `: valV T.V (algebraMap T.V T.Fr (u : T.V)) * valV T.V (algebraMap T.V T.Fr ((u⁻¹ : T.Vˣ) : T.V)) < 1` using `mul_lt_one_of_lt_of_le hlt h2`. Rewrite `this` using `[h3]`. Conclude with `lt_irrefl _ this`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[vV, h1]`.
+A detailed English derivation is pending.
 -/
 theorem extVal_unit_zero (T : CDVR) (u : T.Vˣ) : vV T.V (algebraMap T.V T.Fr (u : T.V)) = 0 := by
   have h1 : valV T.V (algebraMap T.V T.Fr (u : T.V)) = 1 := by
@@ -39,19 +39,17 @@ def OrdTieQZ (h : GenFrEx Xo c) (δ : ∀ Z : Comp Xo c, AddValuation (Om Z) (Wi
       ∀ (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (f : Rul Xo c), f ∈ sec Xo c a n → evC h Z f = 0 → ordQ Xo c q f = ⊤
 
 /- English proof (translation)
-Establish `hc' : (0 : ℝ) ≤ cc / (2 * i)` using `div_nonneg hcc (by positivity)`. Establish `hR2` using `(hreg.1.2 ⟨uL, hdL⟩ ⟨uet, hdE⟩ (N + 1) (fun k => ⟨wR k, hws k⟩) ⟨etR, het⟩ nuA (cc / (2 * i)) hc' hnz (fun la y => halg la y.1 y.2)).2`. Unfold `Data.TrivialPlaceHyp`. Introduce `Z v hAdm hTv`. Take `⟨q, hq1, hq0⟩` from `htie Z v hAdm.1 hTv`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hqT : (fun f => ordQ Xo c q f) ∈ trivSet Xo c`. Use `⟨q.T, q.ι, q.y, fun a ha => ?_, rfl⟩` and prove the remaining obligations. Take `⟨u, hu⟩` from `q.triv a ha`. Rewrite using `[← hu]`. Conclude with `extVal_unit_zero q.T u`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨hE0, hEb⟩` from `hR2 ⟨_, hqT⟩`. Simplify using `only [dataOf, Data.n1] at *`. Rewrite using `[← huet]`. Establish `hEq : (((ordC (δ Z v) v (wtZ uet.1 uet.2) (valC h uet.1 uet.2 etR Z) : ℤ) : ℝ) : EReal) = ordQ Xo c q etR` using `hq1 uet.1 uet.2 etR (cusp_le_sec Xo c U _ _ het) (hnzet Z)`. Establish `hEne : ordQ Xo c q etR ≠ ⊤` using `by rw [← hEq]; exact EReal.coe_ne_top _`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb` using `hEb hEne`. Take `⟨k0, hk0⟩` from `exists_eq_ciInf_of_finite (f := fun k : Fin (N + 1) => ordQ Xo c q (wR k))`. Establish `hk0le : ordQ Xo c q (wR k0) ≤ ((cc / (2 * i) : ℝ) : EReal) * ordQ Xo c q etR`. Rewrite using `[hk0]`. Conclude with `hb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hev : evC h Z (wR k0) ≠ 0`. Introduce `h0`. Rewrite `hk0le` using `[hq0 uL.1 uL.2 (wR k0) (cusp_le_sec Xo c U _ _ (hws k0)) h0, ← hEq, ← EReal.coe_mul]`. Conclude with `EReal.coe_ne_top _ (top_le_iff.1 hk0le)`. Establish `hval : valC h uL.1 uL.2 (wR k0) Z ≠ 0` using `valC_ne_zero hev`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hk0'` using `hq1 uL.1 uL.2 (wR k0) (cusp_le_sec Xo c U _ _ (hws k0)) hev`. Rewrite `hk0le` using `[← hk0', ← hEq, ← EReal.coe_mul, EReal.coe_le_coe_iff]`. Establish `hle : (⨅ j : {j // valC h uL.1 uL.2 (wR j) Z ≠ 0}, ordC (δ Z v) v (wtZ uL.1 uL.2) (valC h uL.1 uL.2 (wR j) Z)) ≤ ordC (δ Z v) v (wtZ uL.1 uL.2) (valC h uL.1 uL.2 (wR k0) Z)` using `ciInf_le (Set.finite_range _).bddBelow (⟨k0, hval⟩ : {j // valC h uL.1 uL.2 (wR j) Z ≠ 0})`. Establish `hle' : ((⨅ j : {j // valC h uL.1 uL.2 (wR j) Z ≠ 0}, ordC (δ Z v) v (wtZ uL.1 uL.2) (valC h uL.1 uL.2 (wR j) Z) : ℤ) : ℝ) ≤ (ordC (δ Z v) v (wtZ uL.1 uL.2) (valC h uL.1 uL.2 (wR k0) Z) : ℝ)`. Conclude with `hle` after adjusting the coercions.
-
-Conclude with `hle'.trans hk0le`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem height_F1_of_data (h : GenFrEx Xo c)
     (δ : ∀ Z : Comp Xo c, AddValuation (Om Z) (WithTop ℤ) → Ix Dw → ℤ)

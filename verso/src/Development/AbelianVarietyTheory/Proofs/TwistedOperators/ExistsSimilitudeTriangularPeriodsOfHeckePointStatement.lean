@@ -8,7 +8,7 @@ open scoped Matrix
 open GlobalTheory.HkFam (admitted)
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.HeckeEx.exists_similitude_tri_of_hkPt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsSimilitudeTriangularPeriodsOfHeckePoint.lean&line=68#L68)
 -/

@@ -5,32 +5,32 @@ open MvPowerSeries
 namespace Formalism.L2.FormalSeriesBounds.LogEx
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨c, fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem poinc_ex {σ K : Type} [CommRing K] (c : (σ →₀ ℕ) → K) :
     ∃ g : MvPowerSeries σ K, ∀ μ, coeff μ g = c μ :=
   ⟨c, fun _ => rfl⟩
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `poinc_ex (fun μ : σ →₀ ℕ => ((μ.degree : ℕ) : K)⁻¹ * ∑ l, if μ l = 0 then 0 else coeff (μ - Finsupp.single l 1) (ω l))`. Use `⟨g, ?_, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, hg]`. Simplify using the standard rewrite rules. Use extensionality with `ν`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Rewrite using `[coeff_pderiv, hg]`. Establish `hdeg : (((ν + Finsupp.single j 1).degree : ℕ) : K) = (ν.degree : K) + 1`. Simplify using the standard rewrite rules. Establish `hterm : ∀ l, (if (ν + Finsupp.single j 1 : σ →₀ ℕ) l = 0 then 0 else coeff (ν + Finsupp.single j 1 - Finsupp.single l 1) (ω l)) * ((ν j : K) + 1) = coeff ν (ω j) * (((ν + Finsupp.single j 1 : σ →₀ ℕ) l : ℕ) : K)`. Introduce `l`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hlj : l = j`. Substitute `hlj` using the available equality. Establish `h0 : (ν + Finsupp.single l 1 : σ →₀ ℕ) l ≠ 0` using `by simp`. Rewrite using `[if_neg h0, add_tsub_cancel_right]`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hl : (ν + Finsupp.single j 1 : σ →₀ ℕ) l = ν l`. Simplify using `[Ne.symm hlj]`. Distinguish the cases in `hνl : ν l = 0`. Rewrite using `[if_pos (by rw [hl]; exact hνl), hl, hνl]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg (by rw [hl]; exact hνl), hl]`. Establish `h1` using `congrArg (coeff (ν - Finsupp.single l 1)) (hω j l)`. Rewrite `h1` using `[coeff_pderiv, coeff_pderiv]`. Establish `e1 : ν - Finsupp.single l 1 + Finsupp.single j 1 = ν + Finsupp.single j 1 - Finsupp.single l 1`. Use extensionality with `t`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Finsupp.add_apply, Finsupp.tsub_apply, Finsupp.single_apply]`. Apply the tactic sequence `split_ifs with h2 h3 h3 <;> (try subst h2) <;> (try subst h3) <;> omega`. Establish `e2 : ν - Finsupp.single l 1 + Finsupp.single l 1 = ν`. Use extensionality with `t`. Simplify using `only [Finsupp.add_apply, Finsupp.tsub_apply, Finsupp.single_apply]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs with h2 <;> (try subst h2) <;> omega`. Establish `e3 : (ν - Finsupp.single l 1 : σ →₀ ℕ) j = ν j`. Simplify using `[Finsupp.tsub_apply, hlj]`. Establish `e4 : (((ν - Finsupp.single l 1 : σ →₀ ℕ) l : ℕ) : K) + 1 = (ν l : K)`. Establish `: (ν - Finsupp.single l 1 : σ →₀ ℕ) l + 1 = ν l`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finsupp.tsub_apply, Finsupp.single_eq_same]`. Use linear arithmetic over natural numbers and integers. Conclude with `this` after adjusting the coercions. Rewrite `h1` using `[e1, e2, e3, e4]`. Rewrite using `[h1]`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsum : ∑ l, (((ν + Finsupp.single j 1 : σ →₀ ℕ) l : ℕ) : K) = (ν.degree : K) + 1`. Rewrite using `[← hdeg, Finsupp.degree_eq_sum]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hne : (ν.degree : K) + 1 ≠ 0` using `by exact_mod_cast Nat.succ_ne_zero ν.degree`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : (∑ l, (if (ν + Finsupp.single j 1 : σ →₀ ℕ) l = 0 then 0 else coeff (ν + Finsupp.single j 1 - Finsupp.single l 1) (ω l))) * ((ν j : K) + 1) = coeff ν (ω j) * ((ν.degree : K) + 1)`. Rewrite using `[Finset.sum_mul, ← hsum, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => hterm l`. Rewrite using `[mul_assoc, hS, hdeg, mul_comm (coeff ν (ω j)), ← mul_assoc, inv_mul_cancel₀ hne, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem poinc {σ : Type} [Fintype σ] {K : Type} [Field K] [CharZero K] (ω : σ → MvPowerSeries σ K)
     (hω : ∀ j l, MvPowerSeries.pderiv K j (ω l) = MvPowerSeries.pderiv K l (ω j)) :

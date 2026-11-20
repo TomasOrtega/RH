@@ -10,31 +10,29 @@ noncomputable section
 namespace GlobalTheory.ConeSoB
 
 /- English proof (translation)
-Use `set I : κ → ℂ := fun y => ∫ a, ∫ b, g a b y ∂μB ∂μA with hI`. Set `ε : κ → Module.Dual ℂ V` to `fun y => (LinearMap.proj y).comp V.subtype`. Establish `hspan : Submodule.span ℂ (Set.range ε) = ⊤`. Establish `h0 : (Submodule.span ℂ (Set.range ε)).dualCoannihilator = ⊥`. Rewrite using `[eq_bot_iff]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f hf`. Rewrite `hf` using `[Submodule.mem_dualCoannihilator]`. Rewrite using `[Submodule.mem_bot]`. Conclude with `Subtype.ext (funext fun y => hf (ε y) (Submodule.subset_span ⟨y, rfl⟩))`. Rewrite using `[← Subspace.dualCoannihilator_dualAnnihilator_eq (W := Submodule.span ℂ (Set.range ε)), h0, Submodule.dualAnnihilator_bot]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcomb : ∀ ℓ : Module.Dual ℂ V, ∃ c : κ →₀ ℂ, ∀ f : V, ℓ f = ∑ y ∈ c.support, c y * (f : κ → ℂ) y`. Introduce `ℓ`. Establish `hℓ : ℓ ∈ Submodule.span ℂ (Set.range ε)` using `by rw [hspan]; exact Submodule.mem_top`. Take `⟨c, hc⟩` from `(Finsupp.mem_span_range_iff_exists_finsupp).1 hℓ`. Use `⟨c, fun f => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← hc, Finsupp.sum, LinearMap.sum_apply]`. Both sides reduce to the same expression. Establish `lin : ∀ {J : Type} (t : Finset J) (c : J → ℂ) (p : J → κ), ∫ a, ∫ b, ∑ j ∈ t, c j * g a b (p j) ∂μB ∂μA = ∑ j ∈ t, c j * I (p j)`. Introduce `J t c p`. Establish `inner : ∀ a, ∫ b, ∑ j ∈ t, c j * g a b (p j) ∂μB = ∑ j ∈ t, c j * ∫ b, g a b (p j) ∂μB` using `fun a => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[integral_finset_sum _ fun j _ => ((hint (p j)).1 a).const_mul (c j)]`. Simplify using `only [integral_const_mul]`. Simplify using `only [inner]`. Rewrite using `[integral_finset_sum _ fun j _ => (hint (p j)).2.const_mul (c j)]`. Simplify using `only [integral_const_mul, hI]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hmem : I ∈ V`. Set `bV` to `Module.finBasis ℂ V`. Use `choose c hc using fun i => hcomb (bV.coord i)`. Establish `key : I = ∑ i, (∑ y ∈ (c i).support, c i y * I y) • ((bV i : V) : κ → ℂ)`. Use function extensionality and compare the values at `y₀`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hg' : ∀ a b, g a b y₀ = ∑ i, (∑ y ∈ (c i).support, c i y * g a b y) * ((bV i : V) : κ → ℂ) y₀`. Introduce `a b`. Establish `h` using `congrArg (fun f : V => (f : κ → ℂ) y₀) (bV.sum_repr ⟨g a b, hg a b⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at h`. Rewrite using `[← h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← hc i ⟨g a b, hg a b⟩]`. Both sides reduce to the same expression. Establish `h2 : ∀ a b, g a b y₀ = ∑ x ∈ Finset.univ.sigma fun i => (c i).support, (c x.1 x.2 * ((bV x.1 : V) : κ → ℂ) y₀) * g a b x.2`. Introduce `a b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg' a b, Finset.sum_sigma]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun y _ => by ring`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3 : I y₀ = ∫ a, ∫ b, ∑ x ∈ Finset.univ.sigma fun i => (c i).support, (c x.1 x.2 * ((bV x.1 : V) : κ → ℂ) y₀) * g a b x.2 ∂μB ∂μA`. Simplify using `only [hI, ← h2]`. Rewrite using `[h3, lin, Finset.sum_sigma]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun y _ => by ring`. Rewrite using `[key]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (bV i).2`. Use `⟨hmem, fun T Y hT => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `hcomb ((LinearMap.proj Y).comp (T.comp V.subtype))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1` using `hc ⟨I, hmem⟩`. Establish `h2 : ∀ a b, ∑ y ∈ c.support, c y * g a b y = 0` using `fun a b => by`. Rewrite using `[← hc ⟨g a b, hg a b⟩]`. Conclude with `hT a b`. Express the relevant statement in the definitionally equal form `T I Y = _ at h1`.
-
-Rewrite using `[h1, ← lin]`. Simplify using `only [h2, integral_zero]`.
+A detailed English derivation is pending.
 -/
 theorem dbl_mem {κ Z A B : Type} [MeasurableSpace A] [MeasurableSpace B] (μA : Measure A) (μB : Measure B)
     (V : Submodule ℂ (κ → ℂ)) [FiniteDimensional ℂ V] (g : A → B → κ → ℂ) (hg : ∀ a b, g a b ∈ V)
@@ -112,13 +110,13 @@ theorem dbl_mem {κ Z A B : Type} [MeasurableSpace A] [MeasurableSpace B] (μA :
   simp only [h2, integral_zero]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a b G G₁ H H' hC e' hE K hK X om om' om₁ om₁' hT hT₁ ei ev hei hvac hfac μK₁ μ₁ hμK hμ φ hφ`. Take `⟨ι₁, hι₁, hsupp⟩` from `GlobalTheory.T.config_b_evaluation_intertwines_theta B G G₁ H H' hC e' hE X om om' om₁ om₁' hT hT₁ ei ev hei hvac hfac`. Take `⟨V, hVf, hVSB, hVmem, hint⟩` from `GlobalTheory.T.config_b_evaluation_theta_equivariant B G G₁ H H' hC e' hE X om om' om₁ om₁' hT hT₁ ei ev hei hvac hfac K hK μK₁ μ₁ hμK hμ φ hφ.1`. Establish `hloc : ∀ k : KAt K (evFin F B.v₁), locOp B.v₁ (om' (k.1, 1)) φ ∈ G.M'.SoLoc B.ψ B.τ₁`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h : ∃ φ₁, φ₁ ∈ SB (Fin (b + 2) × Fin (a + (b + 2)) → Fv F B.v₁) ∧ Acts (evFin F B.v₁) (om' (k.1, 1)) φ φ₁`. Conclude with `GlobalTheory.T.local_schwartz_space_unitary_stable B G X om om' hT k.1 (mem_KAt.1 k.2).2 φ hφ _ (locOp_mem _ _ _) (acts_locOp h)`. Take `⟨-, ι, hι, -⟩` from `hφ`. Rewrite using `[locOp, dif_neg h]`. Conclude with `⟨zero_mem _, ι, hι, fun Y _ => by simp⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `haveI := hVf`. Take `⟨hmem, hT0⟩` from `dbl_mem μK₁ μ₁ V _ hVmem hint`. Use `⟨hVSB hmem, ι₁, hι₁, fun Y hY => hT0 ι₁ Y fun k l => ?_⟩` and prove the remaining obligations. Establish `e : (fun y => coneFinInt B G.M' om' B.v₁ (ev B.v₁) (shiftB σ H H') X.ν ((a - (b + 2)) / 2 + 1) φ k.1 l.1 y) = ((X.ν l.1 : ℂ) * ((GlobalTheory.Doubling.absE F E l.1 : ℝ) : ℂ) ^ ((a - (b + 2)) / 2 + 1)) • ev B.v₁ (locOp B.v₁ (G.M'.co.rho B.ψ (partFin B.v₁ (shiftB σ H H' l.1))) (loc …`. Use function extensionality and compare the values at `y`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [coneFinInt, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, map_smul, Pi.smul_apply, hsupp _ (hloc k) l.1 Y hY, smul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coneFin_mem_soLoc : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} (B : Base F E) {a b : ℕ}
     (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →

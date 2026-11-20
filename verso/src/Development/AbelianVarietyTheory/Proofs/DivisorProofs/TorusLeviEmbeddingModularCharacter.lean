@@ -5,25 +5,25 @@ open GlobalTheory.SmGL GlobalTheory.PRep GlobalTheory.LeviBlockExponent GlobalTh
 namespace GlobalTheory.IndJacBlock
 
 /- English proof (translation)
-Introduce `k _ _ _ _ d h2 x`. Establish `hsc : ∀ (n : Type) [Fintype n] [DecidableEq n] (u : kˣ) (i j : n), ((Matrix.GeneralLinearGroup.scalar n u : GL n k) : Matrix n n k) i j = if i = j then (u : k) else 0`. Introduce `n _ _ u i j`. Simplify using `[Matrix.GeneralLinearGroup.scalar, Matrix.scalar_apply, Matrix.diagonal_apply]`. Establish `hdet : ∀ (n : Type) [Fintype n] [DecidableEq n] (u : kˣ), Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.scalar n u) = u ^ Fintype.card n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `n _ _ u`. Use `ext`. Simplify using `[Matrix.GeneralLinearGroup.scalar]`. Prove the components needed by the constructor for the conclusion. Apply `Units.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `i j`. Take `⟨⟨a, i'⟩, rfl⟩` from `(place3 h2).surjective i`. Take `⟨⟨b, j'⟩, rfl⟩` from `(place3 h2).surjective j`. Rewrite using `[GlobalTheory.JacBlock₂.diagFirst_apply]`. Distinguish the cases in `hab : a = b`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hab` using the available equality. Rewrite using `[leviEmb_apply_same, torus_three_block_apply, hsc]`. Establish `hinj : (place3 h2 ⟨a, i'⟩ = place3 h2 ⟨a, j'⟩) ↔ i' = j'`. Rewrite using `[(place3 h2).injective.eq_iff]`. Simplify using the standard rewrite rules.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hv : ((place3 h2 ⟨a, i'⟩ : Fin d) : ℕ) = 0 ↔ (a : ℕ) = 0`. Establish `hi : (i' : ℕ) < sz3 d a` using `i'.2`. Unfold `place3`. Rewrite using `[stdBlocks_val]`. Apply the tactic sequence `fin_cases a <;> simp [sz3, Fin.sum_univ_succ] at hi ⊢ <;> omega`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [hinj, hv]`. Distinguish the cases in `hij : i' = j'`. Simplify using `only [hij, if_true]`. Unfold `torEntry`. Apply the tactic sequence `split_ifs <;> simp_all`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[hij]`. Rewrite using `[leviEmb_apply_ne k (place3 h2) _ hab, if_neg]`. Introduce `h`. Conclude with `hab (congrArg Sigma.fst ((place3 h2).injective h))`. Rewrite using `[deltaHalf_apply, Units.coe_prod, Fin.prod_univ_three]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : tor3 k d (x, 1) 1 = 1` using `by rw [torus_three_block_apply]; simp [torEntry]`. Establish `e2 : tor3 k d (x, 1) 2 = 1` using `by rw [torus_three_block_apply]; simp [torEntry]`. Establish `e0 : Matrix.GeneralLinearGroup.det (tor3 k d (x, 1) 0) = x`. Rewrite using `[torus_three_block_apply, hdet]`. Simplify using `[torEntry, sz3]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hm : modExp (fun j : Fin 3 => Fin (sz3 d j)) 0 = (d : ℤ) - 1`. Simplify using `only [modExp, Fintype.card_fin, Finset.sum_filter, Fin.sum_univ_three]`. Simplify using `[sz3]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e1, e2, e0, hm]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[val_absPow, GlobalTheory.SplitFlip.apow]`.
+A detailed English derivation is pending.
 -/
 theorem torus_levi_embedding_modulus_half : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (d : ℕ) (h2 : 2 ≤ d) (x : kˣ),

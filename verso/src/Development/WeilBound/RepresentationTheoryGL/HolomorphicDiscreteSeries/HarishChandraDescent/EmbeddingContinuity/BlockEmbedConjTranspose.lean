@@ -27,7 +27,7 @@ def psi (e : Fin n ⊕ Unit ≃ Fin (n + 1)) :
     rcases h1 : e.symm i with i' | i' <;> rcases h2 : e.symm j with j' | j' <;> simp [h1, h2]
 
 /- English proof (translation)
-Use `show Continuous fun p : Matrix (Fin n) (Fin n) ℂ × Matrix Unit Unit ℂ => (Matrix.fromBlocks p.1 0 0 p.2).submatrix e.symm e.symm`. Conclude with `(continuous_fst.matrix_fromBlocks continuous_const continuous_const continuous_snd).matrix_submatrix _ _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_psi (e : Fin n ⊕ Unit ≃ Fin (n + 1)) : Continuous (psi e) := by
   show Continuous fun p : Matrix (Fin n) (Fin n) ℂ × Matrix Unit Unit ℂ =>
@@ -37,9 +37,9 @@ theorem continuous_psi (e : Fin n ⊕ Unit ≃ Fin (n + 1)) : Continuous (psi e)
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Use `letI : NormedRing (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedRing`. Use `letI : NormedRing (Matrix Unit Unit ℂ) := Matrix.linftyOpNormedRing`. Use `letI : NormedRing (Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℚ (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedAlgebra`. Use `letI : NormedAlgebra ℚ (Matrix Unit Unit ℂ) := Matrix.linftyOpNormedAlgebra`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Establish `h` using `NormedSpace.map_exp (psi e) (by exact continuous_psi e) (Y, 0)`. Establish `h3 : psi e (NormedSpace.exp (Y, 0)) = emb e (NormedSpace.exp Y)` using `by show Matrix.reindex e e (Matrix.fromBlocks (NormedSpace.exp (Y, (0 : Matrix Unit Unit ℂ))).1 0 0 (NormedSpace.exp (Y, (0 : Matrix Unit Unit ℂ))).2) = _`. Rewrite using `[Prod.fst_exp, Prod.snd_exp, NormedSpace.exp_zero]`. Both sides reduce to the same expression. Rewrite using `[← h3, h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -60,7 +60,7 @@ theorem emb_exp (e : Fin n ⊕ Unit ≃ Fin (n + 1)) (Y : Matrix (Fin n) (Fin n)
   rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Take `⟨i, rfl⟩` from `e.surjective i`. Take `⟨j, rfl⟩` from `e.surjective j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> simp [blk0]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem block_embed_smul (e : Fin n ⊕ Unit ≃ Fin (n + 1)) (c : ℂ) (Y : Matrix (Fin n) (Fin n) ℂ) :
     blk0 e (c • Y) = c • blk0 e Y := by
@@ -70,7 +70,7 @@ theorem block_embed_smul (e : Fin n ⊕ Unit ≃ Fin (n + 1)) (c : ℂ) (Y : Mat
   rcases i with i | i <;> rcases j with j | j <;> simp [blk0]
 
 /- English proof (translation)
-Use extensionality with `i j`. Take `⟨i, rfl⟩` from `e.surjective i`. Take `⟨j, rfl⟩` from `e.surjective j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> simp [blk0]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem block_embed_add (e : Fin n ⊕ Unit ≃ Fin (n + 1)) (Y Z : Matrix (Fin n) (Fin n) ℂ) :
     blk0 e (Y + Z) = blk0 e Y + blk0 e Z := by
@@ -80,7 +80,7 @@ theorem block_embed_add (e : Fin n ⊕ Unit ≃ Fin (n + 1)) (Y Z : Matrix (Fin 
   rcases i with i | i <;> rcases j with j | j <;> simp [blk0]
 
 /- English proof (translation)
-Use extensionality with `i j`. Take `⟨x, rfl⟩` from `e.surjective i`. Take `⟨y, rfl⟩` from `e.surjective j`. Apply the tactic sequence `rcases x with x | x <;> rcases y with y | y <;> simp [blk0, Matrix.single_apply]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem block_embed_single (e : Fin n ⊕ Unit ≃ Fin (n + 1)) (a b : Fin n) :
     blk0 e (Matrix.single a b 1) = Matrix.single (e (Sum.inl a)) (e (Sum.inl b)) 1 := by
@@ -90,7 +90,7 @@ theorem block_embed_single (e : Fin n ⊕ Unit ≃ Fin (n + 1)) (a b : Fin n) :
   rcases x with x | x <;> rcases y with y | y <;> simp [blk0, Matrix.single_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Take `⟨i, rfl⟩` from `e.surjective i`. Take `⟨j, rfl⟩` from `e.surjective j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> simp [blk0, emb]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem embed_eq_block_embed_add (e : Fin n ⊕ Unit ≃ Fin (n + 1)) (h : Matrix (Fin n) (Fin n) ℂ) :
     emb e h = blk0 e h + emb e 0 := by
@@ -100,14 +100,14 @@ theorem embed_eq_block_embed_add (e : Fin n ⊕ Unit ≃ Fin (n + 1)) (h : Matri
   rcases i with i | i <;> rcases j with j | j <;> simp [blk0, emb]
 
 /- English proof (translation)
-Rewrite using `[emb_exp, block_embed_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem emb_exp_smul (e : Fin n ⊕ Unit ≃ Fin (n + 1)) (X : Matrix (Fin n) (Fin n) ℂ) (t : ℝ) :
     emb e (NormedSpace.exp ((t : ℂ) • X)) = NormedSpace.exp ((t : ℂ) • blk0 e X) := by
   rw [emb_exp, block_embed_smul]
 
 /- English proof (translation)
-Use extensionality with `a b`. Take `⟨a, rfl⟩` from `e.surjective a`. Take `⟨b, rfl⟩` from `e.surjective b`. Establish `h1 : ε (e (Sum.inr ())) = true` using `hF.1`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> simp [emb, Jm, Matrix.diagonal_apply, hF.2, h1]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem jm_eq {ε : Fin (n + 1) → Bool} {ε' : Fin n → Bool} {e : Fin n ⊕ Unit ≃ Fin (n + 1)} (hF : Fits ε ε' e) :
     Jm ε = emb e (Jm ε') := by
@@ -118,29 +118,29 @@ theorem jm_eq {ε : Fin (n + 1) → Bool} {ε' : Fin n → Bool} {e : Fin n ⊕ 
   rcases a with a | a <;> rcases b with b | b <;> simp [emb, Jm, Matrix.diagonal_apply, hF.2, h1]
 
 /- English proof (translation)
-Simplify using `[blk0, Matrix.fromBlocks_conjTranspose]`.
+Simplify using the standard rewrite rules.
 -/
 theorem block_embed_conjTranspose (e : Fin n ⊕ Unit ≃ Fin (n + 1)) (X : Matrix (Fin n) (Fin n) ℂ) : (blk0 e X)ᴴ = blk0 e Xᴴ := by
   simp [blk0, Matrix.fromBlocks_conjTranspose]
 
 /- English proof (translation)
-Simplify using `[blk0, emb, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem block_embed_mul_embed (e : Fin n ⊕ Unit ≃ Fin (n + 1)) (X Y : Matrix (Fin n) (Fin n) ℂ) :
     blk0 e X * emb e Y = blk0 e (X * Y) := by
   simp [blk0, emb, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]
 
 /- English proof (translation)
-Simplify using `[blk0, emb, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem embed_mul_block_embed (e : Fin n ⊕ Unit ≃ Fin (n + 1)) (X Y : Matrix (Fin n) (Fin n) ℂ) :
     emb e Y * blk0 e X = blk0 e (Y * X) := by
   simp [blk0, emb, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]
 
 /- English proof (translation)
-Establish `h1 : ∀ A B : Matrix (Fin n) (Fin n) ℂ, emb e (A * B) = emb e A * emb e B`. Introduce `A B`. Simplify using `only [emb, Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`. Simplify using the standard rewrite rules. Establish `h2 : (emb e h)ᴴ = emb e hᴴ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[emb, Matrix.fromBlocks_conjTranspose]`. Use `show (emb e h)ᴴ * Jm ε * emb e h = Jm ε`. Establish `hh' : hᴴ * Jm ε' * h = Jm ε'` using `hh`. Rewrite using `[h2, jm_eq hF, ← h1, ← h1, hh']`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem emb_mem {ε : Fin (n + 1) → Bool} {ε' : Fin n → Bool} {e : Fin n ⊕ Unit ≃ Fin (n + 1)} (hF : Fits ε ε' e)
     {h : Matrix (Fin n) (Fin n) ℂ} (hh : h ∈ UJset ε') : emb e h ∈ UJset ε := by
@@ -155,7 +155,7 @@ theorem emb_mem {ε : Fin (n + 1) → Bool} {ε' : Fin n → Bool} {e : Fin n �
   rw [h2, jm_eq hF, ← h1, ← h1, hh']
 
 /- English proof (translation)
-Use `show Continuous fun h : Matrix (Fin n) (Fin n) ℂ => (Matrix.fromBlocks h 0 0 1).submatrix e.symm e.symm`. Conclude with `(continuous_id.matrix_fromBlocks continuous_const continuous_const continuous_const).matrix_submatrix _ _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_emb' (e : Fin n ⊕ Unit ≃ Fin (n + 1)) : Continuous fun h : Matrix (Fin n) (Fin n) ℂ => emb e h := by
   show Continuous fun h : Matrix (Fin n) (Fin n) ℂ => (Matrix.fromBlocks h 0 0 1).submatrix e.symm e.symm
@@ -174,9 +174,9 @@ def blk0L (e : Fin n ⊕ Unit ≃ Fin (n + 1)) : Matrix (Fin n) (Fin n) ℂ →�
 
 open scoped ContDiff in
 /- English proof (translation)
-Establish `h1 : ContDiff ℝ ∞ (fun h : Matrix (Fin n) (Fin n) ℂ => blk0L e h)` using `(LinearMap.toContinuousLinearMap (blk0L e)).contDiff`. Establish `h2` using `h1.add (contDiff_const (c := emb e (0 : Matrix (Fin n) (Fin n) ℂ)))`. Establish `e1 : (fun h : Matrix (Fin n) (Fin n) ℂ => emb e h) = fun h => blk0L e h + emb e 0`. Use function extensionality and compare the values at `fun h => embed_eq_block_embed_add e h`. Rewrite using `[e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_emb (e : Fin n ⊕ Unit ≃ Fin (n + 1)) :
     ContDiff ℝ ∞ (fun h : Matrix (Fin n) (Fin n) ℂ => emb e h) := by
@@ -189,7 +189,7 @@ theorem contDiff_emb (e : Fin n ⊕ Unit ≃ Fin (n + 1)) :
   exact h2
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U, F, hU, h1, hFs, hFe⟩` from `hv (emb e g₀) (emb_mem hF hg₀)`. Use `⟨(fun h => emb e h) ⁻¹' U, fun h => F (emb e h), hU.preimage (continuous_emb' e), h1, hFs.comp (contDiff_emb e).contDiffOn (fun h hh => hh), fun g hg hJ => ?_⟩` and prove the remaining obligations. Conclude with `hFe _ hg (emb_mem hF hJ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem smooth_res {ε : Fin (n + 1) → Bool} {ε' : Fin n → Bool} {e : Fin n ⊕ Unit ≃ Fin (n + 1)} (hF : Fits ε ε' e)
     {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
@@ -204,7 +204,7 @@ theorem smooth_res {ε : Fin (n + 1) → Bool} {ε' : Fin n → Bool} {e : Fin n
 end Smooth
 
 /- English proof (translation)
-Simplify using `only [dS, res, emb_exp_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dS_res {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (e : Fin n ⊕ Unit ≃ Fin (n + 1))
     (π : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ → (H →L[ℂ] H)) (X : Matrix (Fin n) (Fin n) ℂ) (v : H) :
@@ -216,23 +216,21 @@ end BlockRestriction
 open ReciprocityTheory.ChartRestriction.DS PositivityTheory.UnitaryDecomposition PositivityTheory.RgHe BlockRestriction
 
 /- English proof (translation)
-Introduce `n ε ε' e H _ _ _ π hF hπ`. Establish `hmul : ∀ A B : Matrix (Fin n) (Fin n) ℂ, emb e (A * B) = emb e A * emb e B`. Introduce `A B`. Simplify using `only [emb, Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hone : emb e 1 = 1`. Simplify using `[emb, Matrix.fromBlocks_one]`. Establish `hU : ∀ g, g ∈ UJset ε' → emb e g ∈ UJset ε` using `fun g hg => emb_mem hF hg`. Establish `hres : IsURepOn (UJset ε') (res e π)`. Use `⟨⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show π (emb e 1) = 1`. Rewrite using `[hone]`. Conclude with `hπ.1.1`. Introduce `a ha b hb show π (emb e (a * b)) = π (emb e a) ∘SL π (emb e b)`. Rewrite using `[hmul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hπ.1.2 _ (hU a ha) _ (hU b hb)`. Introduce `g hg v`. Conclude with `hπ.2.1 _ (hU g hg) v`. Introduce `v`. Conclude with `(hπ.2.2 v).comp (continuous_emb' e).continuousOn (fun g hg => hU g hg)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨hres, ?_⟩` and prove the remaining obligations. Establish `hmem : ∀ x : smD ε π, (x : H) ∈ smD ε' (res e π)` using `fun x => (mem_smD_iff _ _ _).2 (smooth_res hF ((mem_smD_iff _ _ _).1 x.2))`. Use `⟨(smD ε π).subtype.codRestrict (smD ε' (res e π)) hmem, fun x => rfl, ?_⟩` and prove the remaining obligations. Introduce `a b x`. Establish `hsub : ∀ Y Z : Matrix (Fin n) (Fin n) ℂ, blk0 e (Y - Z) = blk0 e Y - blk0 e Z`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `Y Z`. Rewrite using `[eq_sub_iff_add_eq, ← block_embed_add, sub_add_cancel]`. Establish `hJ : ∀ Y : Matrix (Fin n) (Fin n) ℂ, Jm ε * (blk0 e Y)ᴴ * Jm ε = blk0 e (Jm ε' * Yᴴ * Jm ε')`. Introduce `Y`. Rewrite using `[jm_eq hF, block_embed_conjTranspose, embed_mul_block_embed, block_embed_mul_embed]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc1 : ∀ Y, blk0 e (S7.cpart1 ε' Y) = S7.cpart1 ε (blk0 e Y)`. Introduce `Y`. Simplify using `only [S7.cpart1]`. Rewrite using `[hJ, ← hsub, block_embed_smul]`. Establish `hc2 : ∀ Y, blk0 e (S7.cpart2 ε' Y) = S7.cpart2 ε (blk0 e Y)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `Y`. Simplify using `only [S7.cpart2]`. Rewrite using `[hJ, ← block_embed_add, block_embed_smul]`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((smE ε π (e (Sum.inl a)) (e (Sum.inl b))) x : H) = ((smE ε' (res e π) a b) ⟨x, hmem x⟩ : H)`.
-
-Rewrite using `[smE_apply hπ, smE_apply hres, dS_res, dS_res, hc1, hc2, block_embed_single]`.
+A detailed English derivation is pending.
 -/
 theorem restriction_holds : Restrict := by
   intro n ε ε' e H _ _ _ π hF hπ

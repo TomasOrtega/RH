@@ -97,7 +97,7 @@ def selfConjTuplesInLattice : Set (∀ o, MvPolynomial (Fin N × WV fun _ => IIs
 variable {J : Orb → Fin 2 → Type} [∀ o g, Fintype (J o g)]
 
 /- English proof (translation)
-Introduce `L mon wt pl plinj`. Establish `H : SelfConjugatePlaceSetting r cc a tau gm X F gaC N L pl` using `⟨inj, conj, gm_hyp, hty, std, alt, hj, supp, mon, wt, tie, plinj⟩`. Conclude with `⟨⟨h1 C V T r cc a Orb tau gm J X F gaC N L pl H n plc isX, h2 C V T r cc a Orb tau gm J X F gaC N L pl H n plc, h3 C V T r cc a Orb tau gm J X F gaC N L pl H n plc⟩, h4 C V T r Orb tau gm J X F N L pl n plc O gm_int⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem block_membership_self_conj_first (h1 : IsotropicToStdSubstHarmonic) (h2 : IsotropicToStdSubstLineInvariant) (h3 : IsotropicToStdSubstLineDegree) (h4 : IsotropicToStdSubstIntegral)
     (X : ∀ o, RowData C V 2 (fun _ => IIs r tau o) (J o)) (F : ∀ o, Flag (X o)) (gaC : Orb → ZMod 2 → ℕ → ℕ)
@@ -120,7 +120,7 @@ def OP {C : Type} [Field C] (O : Subring C) (σ : Type) : Subring (MvPolynomial 
   (MvPolynomial.map O.subtype).range
 
 /- English proof (translation)
-Take `⟨Q, rfl⟩` from `RingHom.mem_range.1 h`. Rewrite using `[MvPolynomial.coeff_map]`. Conclude with `(Q.coeff m).2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_mem_of_OP {C : Type} [Field C] {O : Subring C} {σ : Type} {P : MvPolynomial σ C} (h : P ∈ OP O σ)
     (m : σ →₀ ℕ) : P.coeff m ∈ O := by
@@ -129,11 +129,9 @@ theorem coeff_mem_of_OP {C : Type} [Field C] {O : Subring C} {σ : Type} {P : Mv
   exact (Q.coeff m).2
 
 /- English proof (translation)
-Take `⟨Q, rfl⟩` from `RingHom.mem_range.1 h`. Use `clear h`. Proceed by induction on `Q using MvPolynomial.induction_on`. Name the introduced variables `z`. Rewrite using `[MvPolynomial.map_C, MvPolynomial.aeval_C, eq_intCast (Int.castRingHom C) z, map_intCast]`.
+Extract witnesses or component facts from the available result. Proceed by induction. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `intCast_mem _ z`. Name the introduced variables `p q hp hq`. Rewrite using `[map_add, map_add]`. Conclude with `add_mem hp hq`. Name the introduced variables `p x hp`.
-
-Rewrite using `[map_mul, map_mul, MvPolynomial.map_X, MvPolynomial.aeval_X]`. Conclude with `mul_mem hp (hf x)`.
+A detailed English derivation is pending.
 -/
 theorem aeval_mem_OP {C : Type} [Field C] {O : Subring C} {σ τ : Type} (f : σ → MvPolynomial τ C)
     (hf : ∀ x, f x ∈ OP O τ) {P : MvPolynomial σ C} (h : P ∈ ZP C σ) : MvPolynomial.aeval f P ∈ OP O τ := by
@@ -151,9 +149,9 @@ theorem aeval_mem_OP {C : Type} [Field C] {O : Subring C} {σ τ : Type} (f : σ
     exact mul_mem hp (hf x)
 
 /- English proof (translation)
-Introduce `C _ V T r Orb _ tau gm J _ X F N L pl n plc O hO m`. Apply `coeff_mem_of_OP` to reduce the goal to its premises. Unfold `subG`. Use `aeval_mem_OP _ (fun x => ?_) (blkProd_mem_ZP X F N L pl)` and prove the remaining obligations. Use `sum_mem fun col _ => mul_mem ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `RingHom.mem_range.2 ⟨MvPolynomial.C ⟨_, hO _ _ _ _⟩, by rw [MvPolynomial.map_C]; rfl⟩`. Conclude with `RingHom.mem_range.2 ⟨MvPolynomial.X _, MvPolynomial.map_X _ _⟩`.
+A detailed English derivation is pending.
 -/
 theorem first_chern_integral : IsotropicToStdSubstIntegral := by
   intro C _ V T r Orb _ tau gm J _ X F N L pl n plc O hO m

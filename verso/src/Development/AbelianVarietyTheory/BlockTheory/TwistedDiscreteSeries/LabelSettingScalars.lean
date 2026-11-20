@@ -114,7 +114,7 @@ def OneStep : Prop :=
     (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), OneStepAt R F
 
 /- English proof (translation)
-Use `inf_le_inf_right _ fun u hu => ?_` and prove the remaining obligations. Rewrite `hu`, the goal using `[partDual, mem_partFull]`. Use `⟨hu.1, fun P d Rp hR => hu.2 P d Rp ?_⟩` and prove the remaining obligations. Take `⟨e, f, ϖ, α, h1, h2⟩` from `hR`. Conclude with `⟨e, f, ϖ, α, fun v hv => h1 v (h hv), h2⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rowPart_mono {Sb Sb' : Finset (HeightOneSpectrum (𝓞 D.host.F))} (h : Sb ⊆ Sb') (c : EigSys D) :
     rowPart R Sb c ≤ rowPart R Sb' c := by
@@ -125,21 +125,21 @@ theorem rowPart_mono {Sb Sb' : Finset (HeightOneSpectrum (𝓞 D.host.F))} (h : 
   exact ⟨e, f, ϖ, α, fun v hv => h1 v (h hv), h2⟩
 
 /- English proof (translation)
-Take `⟨eR, plg, iso, -, h1, h2, h3, -⟩` from `h`. Conclude with `⟨eR, plg, iso, h1, h2, h3⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem GoodTypes.record {R : RealDat D A Ks} (h : GoodTypes R) : R.grp_record := by
   obtain ⟨eR, plg, iso, -, h1, h2, h3, -⟩ := h
   exact ⟨eR, plg, iso, h1, h2, h3⟩
 
 /- English proof (translation)
-Conclude with `h.2.2.symm.trans h'.2.2` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem IsLValue.unique {R : RealDat D A Ks} {t : T} {B : GlobalTheory.LFun.Fam D.host.E} {j : ℕ} {l l' : ℝ}
     (h : IsLValue R t B j l) (h' : IsLValue R t B j l') : l = l' := by
   exact_mod_cast h.2.2.symm.trans h'.2.2
 
 /- English proof (translation)
-The claim follows from `ext_inner_right ℂ fun y => hasPeterssonInner_unique _ _ _ _ _ v hv (h y) (h' y)`.
+A detailed English derivation is pending.
 -/
 theorem IsUpTop.unique {R : RealDat D A Ks} {t : T} {u : MMap (R.MY (D.R.m - 1))} {x x' : (R.HX t).H}
     (v : (R.MY (D.R.m - 1)).Vec) (hv : ∏ τ, ⟪(v τ : (R.MY (D.R.m - 1)).H τ), (v τ : (R.MY (D.R.m - 1)).H τ)⟫_ℂ ≠ 0)

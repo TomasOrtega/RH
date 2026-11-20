@@ -10,9 +10,9 @@ open NumberField IsDedekindDomain GlobalTheory.HTW Formalism.WeaklyAdmissibleFil
 namespace GlobalTheory.HTW
 
 /- English proof (translation)
-Use `haveI : CharZero L := (RingHom.charZero_iff f.injective).1 inferInstance`. Use `letI : Algebra E L := f.toAlgebra`. Use `haveI : IsScalarTower ℚ E L := IsScalarTower.of_algebraMap_eq fun q => by`. Express the relevant statement in the definitionally equal form `_ = f (algebraMap ℚ E q)`. Simplify using the standard rewrite rules.
+Equip the data with the indicated structure. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨σ, hσ⟩` from `(Normal.algHomEquivAut ℚ L E).symm.surjective f'.toRatAlgHom`. Use `⟨σ, fun x => ?_⟩` and prove the remaining obligations. Use `DFunLike.congr_fun hσ x` as an intermediate fact. Conclude with `this.symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_aut_comp_eq_of_normal {E L : Type} [Field E] [CharZero E] [Normal ℚ E] [Field L]
     (f f' : E →+* L) : ∃ σ : E ≃ₐ[ℚ] E, ∀ x, f' x = f (σ x) := by
@@ -27,15 +27,13 @@ theorem exists_aut_comp_eq_of_normal {E L : Type} [Field E] [CharZero E] [Normal
   exact this.symm
 
 /- English proof (translation)
-Introduce `D i w hw τ`. Use `haveI : IsGalois ℚ D.host.E := D.host.hostE_isGalois`. Take `⟨σ, hσ⟩` from `exists_aut_comp_eq_of_normal (((Br.toLLK (D.nbr i w hw)).comp (D.nd.embK i)).comp D.embE) ((τ : Br.Kw D.nbr i w hw →+* Br.LL D.nbr i w hw).comp (Br.cEw D.nbr i w hw))`. Take `⟨g, hg⟩` from `(D.host.gal).symm.surjective σ`. Establish `hg' : D.host.sigmaOf g = σ` using `hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ x : D.host.E, τ (Br.cEw D.nbr i w hw x) = Br.toLLK (D.nbr i w hw) (D.nd.embK i (D.embE (D.host.sigmaOf g x)))`. Introduce `x`. Rewrite using `[hg']`. Conclude with `hσ x`. Establish `hemb : ∀ x, D.what₂.embLL (D.embE (D.host.sigmaOf g x)) = D.host.emb g x` using `fun x => DFunLike.congr_fun D.embE_φ₀ (D.host.sigmaOf g x)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨g, key, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨-, φ, hφ, h⟩`. Establish `: D.host.emb g = φ` using `RingHom.ext fun x => by`. Rewrite using `[← hemb x]`. Conclude with `h x _ (key x).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `((factEmb D.R D.host).2 g).1 (this ▸ hφ)`. Introduce `hgP`. Use `⟨fun x => ⟨_, (key x).symm⟩, D.host.emb g, ((factEmb D.R D.host).2 g).2 hgP, ?_⟩` and prove the remaining obligations. Introduce `x y hy`. Establish `hy' : y = D.embE (D.host.sigmaOf g x)` using `(D.nd.embK i).injective ((Br.toLLK (D.nbr i w hw)).injective (hy.trans (key x)))`.
-
-Rewrite using `[hy', hemb]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_letter_of_local_embedding : ∀ (D : D7) (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i)) (τ : Br.Kw D.nbr i w hw →ₐ[ℚ_[D.nd.l i]] Br.LL D.nbr i w hw), ∃ g : D.R.GG, (∀ x : D.host.E, τ (Br.cEw D.nbr i w hw x) = Br.toLLK (D.nbr i w hw) (D.nd.embK i (D.embE (D.host.sigmaOf g x)))) ∧ (Br.EmbTypeU D.nbr i w hw τ ↔ g ∈ D.R.Psi) := by
   intro D i w hw τ

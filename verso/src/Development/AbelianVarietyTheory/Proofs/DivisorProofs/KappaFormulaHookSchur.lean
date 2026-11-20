@@ -11,7 +11,7 @@ open MvPolynomial Finset GlobalTheory.FlagHook Formalism.DegreeFormula
 namespace GlobalTheory.FlagHook.KapFormula
 
 /- English proof (translation)
-Simplify using `only [altCoeff, coeff_sum, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem altCoeff_sum {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (n : ι → Fin N → ℕ)
     {α : Type} (s : Finset α) (P : α → MvPolynomial (ι × Fin N) ℝ) :
@@ -20,7 +20,7 @@ theorem altCoeff_sum {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (n : ι
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Simplify using `only [hookFl, altCoeff_sum, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hookFl_sum {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (τ : ι) (k : ℕ)
     {α : Type} (s : Finset α) (P : α → MvPolynomial (ι × Fin N) ℝ) :
@@ -29,7 +29,7 @@ theorem hookFl_sum {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (τ : ι)
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Unfold `rho`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun c => N - 1 - c) N, Finset.sum_range_reflect (fun c => c) N, Finset.sum_range_id]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_rho (N : ℕ) : ∑ c, rho N c = N * (N - 1) / 2 := by
   unfold rho
@@ -37,7 +37,7 @@ theorem sum_rho (N : ℕ) : ∑ c, rho N c = N * (N - 1) / 2 := by
     Finset.sum_range_id]
 
 /- English proof (translation)
-The claim follows from `| 0 => by simp | N + 1 => by rw [Finset.sum_range_succ, sum_hook_indicator a r N] simp only [Nat.succ_ne_zero, if_false] split_ifs <;> omega`.
+A detailed English derivation is pending.
 -/
 theorem sum_hook_indicator (a r : ℕ) : ∀ N : ℕ,
     ∑ c ∈ range (N + 1), (if c = 0 then a else if c ≤ r then 1 else 0) = a + min N r
@@ -48,9 +48,9 @@ theorem sum_hook_indicator (a r : ℕ) : ∀ N : ℕ,
     split_ifs <;> omega
 
 /- English proof (translation)
-Establish `h1` using `sum_rho N`. Unfold `rho at h1`. Unfold `hookRho`. Rewrite using `[Finset.sum_add_distrib, h1, Fin.sum_univ_eq_sum_range (fun c => if c = 0 then k - r else if c ≤ r then 1 else 0) N]`. Take `⟨M, rfl⟩ : ∃ M, N = M + 1` from `⟨N - 1, by omega⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[sum_hook_indicator]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem sum_hookRho (N k r : ℕ) (hr : r < k) (hk : k ≤ N) :
     ∑ c, hookRho N k r c = N * (N - 1) / 2 + k := by
@@ -64,9 +64,9 @@ theorem sum_hookRho (N k r : ℕ) (hr : r < k) (hk : k ≤ N) :
   omega
 
 /- English proof (translation)
-Establish `: ∀ t : ι, ∑ c, (if t = τ then hookRho N k r else rho N) c = N * (N - 1) / 2 + if t = τ then k else 0`. Introduce `t`. Use `split_ifs`. Conclude with `sum_hookRho N k r hr hk`. Simplify using `using sum_rho N`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [this, Finset.sum_add_distrib]`. Simplify using `[dimFl]`.
+A detailed English derivation is pending.
 -/
 theorem sum_exp {ι : Type} [Fintype ι] [DecidableEq ι] (N k r : ℕ) (τ : ι) (hr : r < k)
     (hk : k ≤ N) :
@@ -81,9 +81,9 @@ theorem sum_exp {ι : Type} [Fintype ι] [DecidableEq ι] (N k r : ℕ) (τ : ι
   simp [dimFl]
 
 /- English proof (translation)
-Establish `hc : 1 ≤ Fintype.card ι` using `Fintype.card_pos_iff.mpr ⟨τ⟩`. Establish `h2 : N - 1 ≤ N * (N - 1) / 2`. Break down `Nat.lt_or_ge N 2 with h | h` into its components or cases. Use linear arithmetic over natural numbers and integers. Rewrite using `[Nat.le_div_iff_mul_le (by norm_num), mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.mul_le_mul_right _ h`. Establish `h3 : N * (N - 1) / 2 ≤ dimFl ι N` using `Nat.le_mul_of_pos_left _ hc`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem le_dimFl {ι : Type} [Fintype ι] (τ : ι) (N k : ℕ) (hk : k ≤ N) : k ≤ dimFl ι N + 1 := by
   have hc : 1 ≤ Fintype.card ι := Fintype.card_pos_iff.mpr ⟨τ⟩
@@ -96,9 +96,9 @@ theorem le_dimFl {ι : Type} [Fintype ι] (τ : ι) (N k : ℕ) (hk : k ≤ N) :
   omega
 
 /- English proof (translation)
-Establish `: ∀ m : ℕ, (pderiv i)^[m] (hookR N k) = ∑ r ∈ range k, C ((-1 : ℝ) ^ r) * (pderiv i)^[m] (detE (hookRho N k r))`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => rfl`. Consider the case `succ m ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `only [Function.iterate_succ_apply', ih, map_sum, pderiv_C_mul]`. Rewrite using `[this, map_sum]`. Simplify using `only [map_mul, eval_C]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem iter_pderiv_hookR (N k m : ℕ) (i : Fin N) (v : Fin N → ℝ) :
     eval v ((pderiv i)^[m] (hookR N k))
@@ -114,7 +114,7 @@ theorem iter_pderiv_hookR (N k m : ℕ) (i : Fin N) (v : Fin N → ℝ) :
   simp only [map_mul, eval_C]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.T.flag_degree_vandermonde.2]`. Use `div_ne_zero ?_ ?_` and prove the remaining obligations. Use `Finset.prod_ne_zero_iff.mpr fun a _ => Finset.prod_ne_zero_iff.mpr fun b hb => ?_` and prove the remaining obligations. Conclude with `sub_ne_zero.mpr (hv a b (ne_of_lt (Finset.mem_Ioi.mp hb)))`. Conclude with `Finset.prod_ne_zero_iff.mpr fun m _ => by exact_mod_cast m.factorial_ne_zero`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem eval_detE_rho_ne_zero (N : ℕ) (v : Fin N → ℝ) (hv : ∀ a b, a ≠ b → v a ≠ v b) :
     eval v (detE (rho N)) ≠ 0 := by
@@ -125,13 +125,11 @@ theorem eval_detE_rho_ne_zero (N : ℕ) (v : Fin N → ℝ) (hv : ∀ a b, a ≠
   · exact Finset.prod_ne_zero_iff.mpr fun m _ => by exact_mod_cast m.factorial_ne_zero
 
 /- English proof (translation)
-Establish `hh : (γ * Q τ k).IsHomogeneous (dimFl ι N)`. Use `hγ.mul (hQ.1 τ k h1 hk)` as an intermediate fact. Establish `e : k - 1 + (dimFl ι N + 1 - k) = dimFl ι N`. Use `le_dimFl τ N k hk` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `this` using `[e]`. Then use the resulting hypothesis. Rewrite using `[hQ.2]`. Simplify using `only [Finset.mul_sum, hookFl_sum, mul_left_comm γ]`. Rewrite using `[Finset.sum_eq_single τ, Finset.sum_eq_single k]`. Conclude with `(GlobalTheory.T.hook_functional_power_sum ι N τ k _ h1 hk hh).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k' hk' hne`. Conclude with `GlobalTheory.T.hook_functional_power_sum_other ι N τ τ k k' _ h1 hk (Finset.mem_Icc.mp hk').1 (by simpa using hne)`. Introduce `h`. Conclude with `absurd (Finset.mem_Icc.mpr ⟨h1, hk⟩) h`. Introduce `t _ hne`.
-
-Use `Finset.sum_eq_zero fun k' hk' => ?_` and prove the remaining obligations. Conclude with `GlobalTheory.T.hook_functional_power_sum_other ι N τ t k k' _ h1 hk (Finset.mem_Icc.mp hk').1 (by simp [hne])`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem degFl_eq_hookFl {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (u : ι → Fin N → ℝ)
     (Q : ι → ℕ → MvPolynomial (ι × Fin N) ℝ) (hQ : IsDecomp u Q) (τ : ι) (k : ℕ) (h1 : 1 ≤ k)
@@ -157,23 +155,23 @@ theorem degFl_eq_hookFl {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (u :
   · simp
 
 /- English proof (translation)
-Introduce `ι _ _ N u Q hu hQ τ τ' i k h1 hk`. Establish `hE : ∀ t, eval (u t) (detE (rho N)) ≠ 0` using `fun t => eval_detE_rho_ne_zero N _ (hu t)`. Establish `hγ : (X (τ', i) ^ (k - 1) : MvPolynomial (ι × Fin N) ℝ).IsHomogeneous (k - 1)`. Simplify using `using (isHomogeneous_X ℝ (τ', i)).pow (k - 1)`. Establish `hk0 : (k : ℝ) ≠ 0` using `by exact_mod_cast (by omega : k ≠ 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hD : ((dimFl ι N).factorial : ℝ) ≠ 0` using `by exact_mod_cast Nat.factorial_ne_zero _`. Establish `hD1 : ((dimFl ι N : ℝ) + 1) ≠ 0` using `by positivity`. Establish `hsign : (-1 : ℝ) ^ (dimFl ι N + (dimFl ι N + 1)) = -1`. Rewrite using `[← add_assoc, pow_succ, ← two_mul, pow_mul]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hfac : (((dimFl ι N + 1).factorial : ℕ) : ℝ) = ((dimFl ι N : ℝ) + 1) * (dimFl ι N).factorial`. Rewrite using `[Nat.factorial_succ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hterm : ∀ r ∈ range k, (-1 : ℝ) ^ r * altCoeff (fun t => if t = τ then hookRho N k r else rho N) (X (τ', i) ^ (k - 1) * linRoot u ^ (dimFl ι N + 1)) = -(((dimFl ι N : ℝ) + 1) * (dimFl ι N).factorial) * ((-1 : ℝ) ^ r * (eval (u τ') ((pderiv i)^[k - 1] (detE (if τ' = τ then hookRho …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Introduce `r hr`. Rewrite using `[GlobalTheory.T.alternating_coefficient_formula ι N _ u τ' i (k - 1) (dimFl ι N + 1) (by rw [sum_exp N k r τ (Finset.mem_range.mp hr) hk]; omega), hsign, hfac]`. Expand and normalize the polynomial expressions, which then agree. Unfold `kap`. Rewrite using `[degFl_eq_hookFl u Q hQ τ k h1 hk _ hγ, GlobalTheory.T.flag_degree_vandermonde.1, hookFl, Finset.sum_congr rfl hterm, ← Finset.mul_sum, ← Finset.mul_prod_erase univ _ (Finset.mem_univ τ')]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : τ' = τ`. Substitute `h` using the available equality. Establish `hP : ∀ r, ∏ t ∈ univ.erase τ', eval (u t) (detE (if t = τ' then hookRho N k r else rho N)) = ∏ t ∈ univ.erase τ', eval (u t) (detE (rho N))` using `fun r => Finset.prod_congr rfl fun t ht => by rw [if_neg (Finset.ne_of_mem_erase ht)]`. Establish `hP0 : ∏ t ∈ univ.erase τ', eval (u t) (detE (rho N)) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun t _ => hE t`. Simplify using `only [hP, if_true, ← mul_assoc, ← Finset.sum_mul, ← iter_pderiv_hookR]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `hE τ'` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish `hmem : τ ∈ univ.erase τ'` using `Finset.mem_erase.mpr ⟨Ne.symm h, Finset.mem_univ _⟩`. Establish `hP : ∀ r, ∏ t ∈ univ.erase τ', eval (u t) (detE (if t = τ then hookRho N k r else rho N)) = eval (u τ) (detE (hookRho N k r)) * ∏ t ∈ (univ.erase τ').erase τ, eval (u t) (detE (rho N))` using `fun r => by`. Rewrite using `[← Finset.mul_prod_erase _ _ hmem, if_pos rfl]`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `Finset.prod_congr rfl fun t ht => by rw [if_neg (Finset.ne_of_mem_erase ht)]`. Establish `hP0 : ∏ t ∈ (univ.erase τ').erase τ, eval (u t) (detE (rho N)) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun t _ => hE t`. Establish `hR` using `iter_pderiv_hookR N k 0 i (u τ)`. Simplify using `only [Function.iterate_zero, id] at hR`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hS : ∑ r ∈ range k, (-1 : ℝ) ^ r * (eval (u τ') ((pderiv i)^[k - 1] (detE (if τ' = τ then hookRho N k r else rho N))) * ∏ t ∈ univ.erase τ', eval (u t) (detE (if t = τ then hookRho N k r else rho N))) = eval (u τ) (hookR N k) * (eval (u τ') ((pderiv i)^[k - 1] (detE (rho N))) * ∏ …`. Rewrite using `[hR, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[hP, if_neg h]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hS, if_neg h, ← Finset.mul_prod_erase _ (fun t => eval (u t) (detE (rho N))) hmem]`. Use `hE τ'` as an intermediate fact. Use `hE τ` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem kap_formula : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (N : ℕ) (u : ι → Fin N → ℝ) (Q : ι → ℕ → MvPolynomial (ι × Fin N) ℝ), (∀ τ a b, a ≠ b → u τ a ≠ u τ b) → IsDecomp u Q → ∀ (τ τ' : ι) (i : Fin N) (k : ℕ), 1 ≤ k → k ≤ N → kap u k (X (τ', i) ^ (k - 1)) (Q τ k) = if τ' = τ then -(eval (u τ) ((pderiv i)^[k - 1] (hookR N k)) / eval (u τ) (detE (rho N))) else -(eval (u τ) (hookR N k) / eval (u τ) (detE (rho N)) * (eval (u τ') ((pderiv i)^[k - 1] (detE (rho N))) / eval (u τ') (detE (rho N)))) := by
   intro ι _ _ N u Q hu hQ τ τ' i k h1 hk

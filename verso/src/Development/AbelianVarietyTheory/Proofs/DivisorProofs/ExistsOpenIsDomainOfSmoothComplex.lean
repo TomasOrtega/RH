@@ -10,9 +10,9 @@ open GlobalTheory GlobalTheory.CxPts
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `Y p D hp x`. Establish `hs : Smooth p` using `SmoothOfRelativeDimension.smooth D p`. Take `⟨-, hn, hl⟩` from `isReduced_isNormalScheme_isLocallyNoetherian_of_smooth_over_field ℂ Y p hs`. Use `IsNormalScheme.of_pred hn` as an intermediate fact. Take `⟨U, hx, hU⟩` from `GlobalTheory.ModelChart.exists_open_isDomain Y x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨U, hx, fun V hV hxV => hU V hxV hV⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_open_isDomain_of_smooth_complex :
     ∀ (Y : Scheme.{0}) (p : Y ⟶ Sp ℂ) (D : ℕ), SmoothOfRelativeDimension D p → ∀ x : Y,

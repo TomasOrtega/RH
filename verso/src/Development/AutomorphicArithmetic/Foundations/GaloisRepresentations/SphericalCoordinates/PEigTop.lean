@@ -6,39 +6,37 @@ open scoped Matrix
 open GlobalTheory.HodgeCoh GlobalTheory.CechDR Polynomial UpperTheory.Gal.W2
 
 /- English proof (translation)
-Introduce `hAd hDg hTy hRf hMk hBc hFd hFw hEv F _ _ O _ bar g ρ a n t₀ ε hSig D P₀ M₀ hP hM ga H hFix χ hMin hdeg hsep d co hco T hT k α hα`. Establish `hH : H.det ≠ 0` using `(hAd O bar g ρ D P₀ M₀ hP hM ga H hFix).1`. Take `⟨Sb, ty, ev, hD⟩` from `hDg F O bar g ρ a D P₀ hP ga H hFix.2 χ hMin hsep`. Establish `hcnt` using `hTy F O bar g ρ a n t₀ ε hSig H Sb ty ev hD`. Establish `hrts` using `hRf F O bar g ρ a n t₀ ε hSig D P₀ hP ga H hFix.2 Sb ty ev hD χ hMin hdeg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmk` using `hMk F O bar g ρ a n t₀ ε hSig H Sb ty ev hD`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h1 : (evAt ty ev t₀).card = 1`. Establish `h` using `(hcnt t₀).1`. Simplify `h` using `[typeMult]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨m, hm⟩` from `Multiset.card_eq_one.1 h1`. Conclude with `⟨m, (hmk m).2 hm⟩`. Introduce `mu hmu`. Establish `hE : evAt ty ev t₀ = {mu}` using `(hmk mu).1 hmu`. Establish `hev0 : ∀ i, ev i ≠ 0`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i h0`. Establish `hdet : H.det * Sb.det = Sb.det * ∏ j, ev j`. Establish `h` using `congrArg Matrix.det hD.2.2`. Simplify `h` using `[Matrix.det_mul, Matrix.det_diagonal]`. Rewrite `hdet` using `[Finset.prod_eq_zero (Finset.mem_univ i) h0, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_ne_zero hH hD.1 hdet`. Establish `hr0 : rts χ t₀ = mu ::ₘ (evAt ty ev (ComplexEmbedding.conjugate t₀)).map (starRingEnd ℂ)`. Rewrite using `[hrts t₀]`. Unfold `evFull`. Rewrite using `[hE, Multiset.singleton_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hnd : (rts χ t₀).Nodup` using `Polynomial.nodup_roots hsep.map`. Rewrite `hnd` using `[hr0, Multiset.nodup_cons]`. Establish `hne : ∀ r ∈ evAt ty ev (ComplexEmbedding.conjugate t₀), (starRingEnd ℂ) r ≠ mu`. Introduce `r hr h`. Conclude with `hnd.1 (h ▸ Multiset.mem_map_of_mem _ hr)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hnz : ∀ r ∈ evAt ty ev (ComplexEmbedding.conjugate t₀), (starRingEnd ℂ) r ≠ 0`. Introduce `r hr`. Take `⟨i, -, rfl⟩` from `Multiset.mem_map.1 hr`. Conclude with `(_root_.map_ne_zero _).2 (hev0 i)`. Establish `herase : (rts χ t₀).erase mu = (evAt ty ev (ComplexEmbedding.conjugate t₀)).map (starRingEnd ℂ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hr0, Multiset.erase_cons_head]`. Take `⟨-, hdetT⟩` from `hBc F O bar g ρ a n t₀ ε hSig D P₀ M₀ hP hM H hH Sb ty ev hD mu hE d co hco T hT`. Establish `hT1 : LinearMap.det (1 - T) = ((evAt ty ev (ComplexEmbedding.conjugate t₀)).map fun r => 1 - 1 * (mu / (starRingEnd ℂ) r)).prod`. Establish `h` using `hdetT 1`. Rewrite `h` using `[one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hfac : ∀ r ∈ evAt ty ev (ComplexEmbedding.conjugate t₀), 1 - 1 * (mu / (starRingEnd ℂ) r) ≠ 0`. Introduce `r hr h`. Apply `hne r hr` to reduce the goal to its premises. Establish `hs` using `hnz r hr`. Clear denominators, using `at h` for the nonvanishing conditions.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Take the linear combination `h`. Establish `hFib` using `hFd F O bar g ρ a H Sb ty ev hD k α`. Establish `hF1 : LinearMap.det (1 - fibMap H (diagAct a ρ α)) = ∏ s, ∏ i, (1 - ty i (α s : F) * ev i)`. Establish `h` using `hFib 1`. Rewrite `h` using `[one_smul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using h`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hr0]`. Conclude with `Multiset.mem_cons_self _ _`. Rewrite using `[hT1]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Multiset.prod_ne_zero fun h => ?_` and prove the remaining obligations. Take `⟨r, hr, h0⟩` from `Multiset.mem_map.1 h`. Conclude with `hfac r hr h0`. Rewrite using `[hF1]`. Use `Finset.prod_ne_zero_iff.2 fun s _ => Finset.prod_ne_zero_iff.2 fun i _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨x, hx⟩` from `hα s`. Establish `h` using `hEv F O bar g ρ a D P₀ hP ga H hFix.2 Sb ty ev hD i x`. Rewrite `h` using `[← hx]`. Then use the resulting hypothesis. Introduce `t`. Establish `hball : LinearMap.det (1 - t • T) / LinearMap.det (1 - T) = ballW t₀ t χ mu`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Unfold `ballW`. Rewrite using `[herase, Multiset.map_map, hdetT t, hT1, ← Multiset.prod_map_div]`. Use `congr 1`. Use `Multiset.map_congr rfl fun r hr => ?_` and prove the remaining obligations. Establish `hs` using `hnz r hr`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `h1` using `hfac r hr`. Establish `h2 : (starRingEnd ℂ) r - mu ≠ 0` using `sub_ne_zero.2 (hne r hr)`. Simplify using `only [Function.comp_apply]`. Rewrite using `[div_eq_div_iff h1 h2]`. Clear the denominators using the available nonvanishing facts.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Unfold `locW`. Rewrite using `[hball, hFib t, hF1, map_prod, ← Finset.prod_mul_distrib]`. Use `congr 1`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Establish `h` using `hFw F g n t₀ ε ty ev χ mu hSig.cx hSig.pos hSig.eps (fun τ => (hcnt τ).1) hrts hE (α s : F) t`.
-
-Rewrite using `[← h, map_prod]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.eigTop_of :
     UpperTheory.Gal.W2.AdExists → UpperTheory.Gal.W2.DiagExists → UpperTheory.Gal.W2.TypeCount → UpperTheory.Gal.W2.RootsFull → UpperTheory.Gal.W2.MarkDiag → UpperTheory.Gal.W2.BallChar → UpperTheory.Gal.W2.FibDet → UpperTheory.Gal.W2.FibW → UpperTheory.Gal.W2.EvIntegral → UpperTheory.Gal.W2.EigTop := by

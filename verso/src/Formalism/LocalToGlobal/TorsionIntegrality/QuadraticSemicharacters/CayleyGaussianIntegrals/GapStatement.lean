@@ -12,25 +12,25 @@ namespace SemicharacterExponentialLemmas
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Simplify using `only [altE, map_add, LinearMap.add_apply, Complex.add_im]`.
+Simplify using the standard rewrite rules.
 -/
 theorem altE_add_left (H : Sesq V) (x y z : V) : altE H (x + y) z = altE H x z + altE H y z := by
   simp only [altE, map_add, LinearMap.add_apply, Complex.add_im]
 
 /- English proof (translation)
-Simplify using `only [altE, map_add, Complex.add_im]`.
+Simplify using the standard rewrite rules.
 -/
 theorem altE_add_right (H : Sesq V) (x y z : V) : altE H x (y + z) = altE H x y + altE H x z := by
   simp only [altE, map_add, Complex.add_im]
 
 /- English proof (translation)
-Simplify using `only [altE, map_neg, Complex.neg_im]`.
+Simplify using the standard rewrite rules.
 -/
 theorem altE_neg_right (H : Sesq V) (x y : V) : altE H x (-y) = -altE H x y := by
   simp only [altE, map_neg, Complex.neg_im]
 
 /- English proof (translation)
-Establish `h` using `congrArg Complex.im (hH x x)`. Rewrite `h` using `[Complex.conj_im]`. Simplify using `only [altE]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem altE_self (H : Sesq V) (hH : IsHerm H) (x : V) : altE H x x = 0 := by
   have h := congrArg Complex.im (hH x x)
@@ -39,46 +39,46 @@ theorem altE_self (H : Sesq V) (hH : IsHerm H) (x : V) : altE H x x = 0 := by
   linarith
 
 /- English proof (translation)
-Simplify using `[altE, map_nsmul, nsmul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem altE_nsmul_left (H : Sesq V) (k : ℕ) (x y : V) : altE H (k • x) y = k * altE H x y := by
   simp [altE, map_nsmul, nsmul_eq_mul]
 
 /- English proof (translation)
-Simplify using `[altE, map_nsmul, nsmul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem altE_nsmul_right (H : Sesq V) (k : ℕ) (x y : V) : altE H x (k • y) = k * altE H x y := by
   simp [altE, map_nsmul, nsmul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[h, Complex.exp_add, Complex.exp_int_mul_two_pi_mul_I, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exp_eq_of_int {a c : ℂ} (n : ℤ) (h : a = c + (n : ℂ) * (2 * (Real.pi : ℂ) * Complex.I)) :
     Complex.exp a = Complex.exp c := by
   rw [h, Complex.exp_add, Complex.exp_int_mul_two_pi_mul_I, mul_one]
 
 /- English proof (translation)
-Apply the tactic sequence `rcases hα.1 x hx with h | h <;> rw [h] <;> norm_num`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem semi_sq {H : Sesq V} {Λ : AddSubgroup V} {α : V → ℂ} (hα : IsSemiChar H Λ α) {x : V}
     (hx : x ∈ Λ) : α x * α x = 1 := by
   rcases hα.1 x hx with h | h <;> rw [h] <;> norm_num
 
 /- English proof (translation)
-Apply the tactic sequence `rcases hα.1 x hx with h | h <;> rw [h] <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem semi_norm {H : Sesq V} {Λ : AddSubgroup V} {α : V → ℂ} (hα : IsSemiChar H Λ α) {x : V}
     (hx : x ∈ Λ) : ‖α x‖ = 1 := by
   rcases hα.1 x hx with h | h <;> rw [h] <;> simp
 
 /- English proof (translation)
-Establish `hs : α x ^ 2 = 1` using `by rw [sq]; exact semi_sq hα hx`. Proceed by induction on `k with`. Consider the case `zero`. Establish `h1` using `hα.2 0 Λ.zero_mem 0 Λ.zero_mem`. Establish `h2` using `semi_sq hα Λ.zero_mem`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [add_zero, altE, map_zero, LinearMap.zero_apply, Complex.zero_im, Complex.ofReal_zero, mul_zero, Complex.exp_zero, mul_one] at h1`. Rewrite using `[zero_nsmul]`. Combine the equalities or inequalities in the displayed calculation. Consider the case `succ k ih`. Establish `hk : k • x ∈ Λ` using `Λ.nsmul_mem hx k`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Treat this case separately. Establish an intermediate fact.
 
-Establish `e` using `hα.2 (k • x) hk x hx`. Establish `hz : altE H (k • x) x = 0` using `by rw [altE_nsmul_left, altE_self H hH, mul_zero]`. Rewrite using `[succ_nsmul, e, hz, ih]`. Simplify using `only [Complex.ofReal_zero, mul_zero, Complex.exp_zero, mul_one]`. Establish `hk2 : (k + 1) ^ 2 = k ^ 2 + 2 * k + 1` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hk2, pow_add, pow_add, pow_mul, hs, one_pow, mul_one, pow_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem semi_nsmul {H : Sesq V} (hH : IsHerm H) {Λ : AddSubgroup V} {α : V → ℂ}
     (hα : IsSemiChar H Λ α) {x : V} (hx : x ∈ Λ) (k : ℕ) : α (k • x) = α x ^ (k ^ 2) := by
@@ -107,33 +107,33 @@ end SemicharacterExponentialLemmas
 open SemicharacterExponentialLemmas
 
 /- English proof (translation)
-Introduce `V _ _ H α Λ₁ Λ₂ Λ₃ hT`. Establish `hH` using `hT.herm`. Establish `int₁` using `(semicharacterBasic V H hH Λ₁ α hT.sc₁).2.2`. Establish `int₂` using `(semicharacterBasic V H hH Λ₂ α hT.sc₂).2.2`. Establish `int₃` using `(semicharacterBasic V H hH Λ₃ α hT.sc₃).2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hadd : ∀ z ∈ Λ₃, ∀ y ∈ Λ₂, z + y ∈ Λ₁ → ∀ z' ∈ Λ₃, ∀ y' ∈ Λ₂, z' + y' ∈ Λ₁ → psiT H α (z + z') (y + y') = psiT H α z y * psiT H α z' y' * Complex.exp (2 * (Real.pi : ℂ) * Complex.I * (altE H y z' : ℂ))`. Introduce `z hz y hy hzy z' hz' y' hy' hzy'`. Take `⟨m, hm⟩` from `int₃ hz z' hz'`. Take `⟨k, hk⟩` from `int₂ hy y' hy'`. Establish `hsw` using `altE_swap H hH y z'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [psiT]`. Rewrite using `[show z + z' + (y + y') = (z + y) + (z' + y') by abel, hT.sc₃.2 z hz z' hz', hT.sc₂.2 y hy y' hy', hT.sc₁.2 _ hzy _ hzy']`. Establish `key : Complex.exp ((Real.pi : ℂ) * Complex.I * (altE H z z' : ℂ)) * Complex.exp ((Real.pi : ℂ) * Complex.I * (altE H y y' : ℂ)) * Complex.exp ((Real.pi : ℂ) * Complex.I * (altE H (z + y) (z' + y') : ℂ)) * Complex.exp (-(Real.pi : ℂ) * Complex.I * (altE H (z + z') (y + y') : ℂ)) = …`. Simplify using `only [← Complex.exp_add]`. Apply `exp_eq_of_int (m + k)` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [altE_add_left, altE_add_right, hsw, hm, hk]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take the linear combination `(α z * α z' * α y * α y' * α (z + y) * α (z' + y')) * key`. Use `⟨hadd, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `z hz y hy hzy k`. Simplify using `only [psiT]`. Rewrite using `[← smul_add, semi_nsmul hH hT.sc₃ hz, semi_nsmul hH hT.sc₂ hy, semi_nsmul hH hT.sc₁ hzy, altE_nsmul_left, altE_nsmul_right, mul_pow, mul_pow, mul_pow, ← Complex.exp_nat_mul]`. Use `congr 2`. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `z hz y hy hzy`. Simplify using `only [psiT]`. Rewrite using `[norm_mul, norm_mul, norm_mul, semi_norm hT.sc₃ hz, semi_norm hT.sc₂ hy, semi_norm hT.sc₁ hzy, show -(Real.pi : ℂ) * Complex.I * (altE H z y : ℂ) = ((-Real.pi * altE H z y : ℝ) : ℂ) * Complex.I by push_cast; ring, Complex.norm_exp_ofReal_mul_I]`. Evaluate the numerical expressions.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Introduce `z hz y hy hzy u' hu' u hu t ht`. Establish `hz' : u' + t ∈ Λ₃` using `Λ₃.add_mem hu'.2 ht.2`. Establish `hy' : u - t ∈ Λ₂` using `Λ₂.sub_mem hu.2 ht.1`. Establish `hzy' : u' + t + (u - t) ∈ Λ₁`. Rewrite using `[show u' + t + (u - t) = u' + u by abel]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Λ₁.add_mem hu'.1 hu.1`. Rewrite using `[show z + u' + t = z + (u' + t) by abel, show y + u - t = y + (u - t) by abel, hadd z hz y hy hzy _ hz' _ hy' hzy']`. Establish `h1 : psiT H α (u' + t) (u - t) = 1`. Take `⟨m, hm⟩` from `int₃ hu'.2 t ht.2`. Establish `hsw` using `altE_swap H hH u t`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hneg` using `(semicharacterBasic V H hH Λ₂ α hT.sc₂).2.1 t ht.1`. Simplify using `only [psiT]`. Rewrite using `[show u' + t + (u - t) = u' + u by abel, sub_eq_add_neg, hT.sc₃.2 u' hu'.2 t ht.2, hT.sc₂.2 u hu.2 (-t) (Λ₂.neg_mem ht.1), hT.sc₁.2 u' hu'.1 u hu.1, hneg]`. Establish `key : Complex.exp ((Real.pi : ℂ) * Complex.I * (altE H u' t : ℂ)) * Complex.exp ((Real.pi : ℂ) * Complex.I * (altE H u (-t) : ℂ)) * Complex.exp ((Real.pi : ℂ) * Complex.I * (altE H u' u : ℂ)) * Complex.exp (-(Real.pi : ℂ) * Complex.I * (altE H (u' + t) (u + -t) : ℂ)) = 1`. Simplify using `only [← Complex.exp_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Complex.exp_zero]`. Apply `exp_eq_of_int m` to reduce the goal to its premises. Simplify using `only [altE_add_left, altE_add_right, altE_neg_right, hsw, hm, altE_self H hH t]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `a1` using `semi_sq hT.sc₁ hu'.1`. Establish `a2` using `semi_sq hT.sc₂ hu.2`. Establish `a3` using `semi_sq hT.sc₂ ht.1`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : Complex.exp (2 * (Real.pi : ℂ) * Complex.I * (altE H y (u' + t) : ℂ)) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `int₂ hy t ht.1`. Take `⟨k, hk⟩` from `int₁ hzy u' hu'.1`. Take `⟨l, hl⟩` from `int₃ hz u' hu'.2`. Rewrite `hk` using `[altE_add_left]`. Establish `hyu : altE H y u' = (k : ℝ) - (l : ℝ)` using `by linarith`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Complex.exp_zero]`. Apply `exp_eq_of_int (k - l + m)` to reduce the goal to its premises. Rewrite using `[altE_add_right, hyu, hm]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2, mul_one, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem triplePhaseQuadratic : PsiQuadratic := by
   intro V _ _ H α Λ₁ Λ₂ Λ₃ hT
@@ -232,27 +232,27 @@ namespace IsQuadFn0
 variable {M : Type*} [AddCommGroup M] {φ : M → ℂ} {b : M → M → ℂ}
 
 /- English proof (translation)
-Rewrite using `[h.1 x y, eq_div_iff (mul_ne_zero (h.4 x) (h.4 y))]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem b_eq (h : IsQuadFn0 φ b) (x y : M) : b x y = φ (x + y) / (φ x * φ y) := by
   rw [h.1 x y, eq_div_iff (mul_ne_zero (h.4 x) (h.4 y))]
   ring
 
 /- English proof (translation)
-Rewrite using `[h.b_eq x y, h.b_eq y x, add_comm y x, mul_comm (φ y)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem symm (h : IsQuadFn0 φ b) (x y : M) : b x y = b y x := by
   rw [h.b_eq x y, h.b_eq y x, add_comm y x, mul_comm (φ y)]
 
 /- English proof (translation)
-Establish `h0 : φ 0 = 1` using `by simpa using h.3 0 y`. Rewrite using `[h.b_eq, zero_add, h0, one_mul, div_self (h.4 y)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem b_zero_left (h : IsQuadFn0 φ b) (y : M) : b 0 y = 1 := by
   have h0 : φ 0 = 1 := by simpa using h.3 0 y
   rw [h.b_eq, zero_add, h0, one_mul, div_self (h.4 y)]
 
 /- English proof (translation)
-Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[← h.2]`. Simplify using `[h.b_zero_left]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem b_neg_left (h : IsQuadFn0 φ b) (x y : M) : b (-x) y = (b x y)⁻¹ := by
   apply eq_inv_of_mul_eq_one_left
@@ -270,14 +270,14 @@ def rad (h : IsQuadFn0 φ b) : AddSubgroup M where
     rw [h.b_neg_left, hx y, inv_one]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_rad (h : IsQuadFn0 φ b) (x : M) : x ∈ h.rad ↔ ∀ y, b x y = 1 := Iff.rfl
 
 /- English proof (translation)
-Establish `hb : ∀ x, b x r = 1` using `fun x => (h.symm x r).trans ((h.mem_rad r).1 hr x)`. Establish `hshift : ∑ x, φ (x + r) = ∑ x, φ x` using `Fintype.sum_equiv (Equiv.addRight r) (fun x => φ (x + r)) φ (fun x => rfl)`. Establish `hm : ∑ x, φ (x + r) = φ r * ∑ x, φ x`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h.1, hb, mul_one, mul_comm]`. Rewrite `hm` using `[hshift]`. Conclude with `mul_right_cancel₀ hS (hm.symm.trans (one_mul _).symm)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_rad [Fintype M] (h : IsQuadFn0 φ b) (hS : ∑ x, φ x ≠ 0) {r : M} (hr : r ∈ h.rad) :
     φ r = 1 := by
@@ -294,35 +294,35 @@ theorem phi_rad [Fintype M] (h : IsQuadFn0 φ b) (hS : ∑ x, φ x ≠ 0) {r : M
 end IsQuadFn0
 
 /- English proof (translation)
-Introduce `M _ _ φ b h hS`. Use `set R : AddSubgroup M := h.rad with hR`. Establish `hφR : ∀ x, ∀ r ∈ R, φ (x + r) = φ x`. Introduce `x r hr`. Rewrite using `[h.add, h.symm, hr x, h.phi_rad hS hr, mul_one, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hbR : ∀ x y, ∀ r ∈ R, b (x + r) y = b x y`. Introduce `x y r hr`. Rewrite using `[h.left, hr y, mul_one]`. Establish `: Fintype (M ⧸ R)` using `Fintype.ofFinite _`. Establish `: Fintype R` using `Fintype.ofFinite _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `φ' : M ⧸ R → ℂ` to `fun q => φ q.out`. Set `b' : M ⧸ R → M ⧸ R → ℂ` to `fun q q' => b q.out q'.out`. Establish `hφ' : ∀ x : M, φ' (x : M ⧸ R) = φ x`. Introduce `x`. Take `⟨r, hr⟩` from `QuotientAddGroup.mk_out_eq_add R x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `φ (Quotient.out (x : M ⧸ R)) = φ x`. Rewrite using `[hr, hφR x r r.2]`. Establish `hb' : ∀ x y : M, b' (x : M ⧸ R) (y : M ⧸ R) = b x y`. Introduce `x y`. Take `⟨r, hr⟩` from `QuotientAddGroup.mk_out_eq_add R x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs⟩` from `QuotientAddGroup.mk_out_eq_add R y`. Express the relevant statement in the definitionally equal form `b (Quotient.out (x : M ⧸ R)) (Quotient.out (y : M ⧸ R)) = b x y`. Rewrite using `[hr, hs, hbR x _ r r.2, h.symm, hbR y _ s s.2, h.symm]`. Establish `hQ : IsQuadFn φ' b'`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p q`. Take `⟨x, rfl⟩` from `QuotientAddGroup.mk_surjective p`. Take `⟨y, rfl⟩` from `QuotientAddGroup.mk_surjective q`. Rewrite using `[← QuotientAddGroup.mk_add, hφ', hφ', hφ', hb', h.add]`. Introduce `p q s`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `QuotientAddGroup.mk_surjective p`. Take `⟨y, rfl⟩` from `QuotientAddGroup.mk_surjective q`. Take `⟨z, rfl⟩` from `QuotientAddGroup.mk_surjective s`. Rewrite using `[← QuotientAddGroup.mk_add, hb', hb', hb', h.left]`. Introduce `k p`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `QuotientAddGroup.mk_surjective p`. Rewrite using `[← QuotientAddGroup.mk_nsmul, hφ', hφ', h.sq]`. Introduce `p`. Conclude with `h.ne _`. Introduce `p hp`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, rfl⟩` from `QuotientAddGroup.mk_surjective p`. Rewrite using `[QuotientAddGroup.eq_zero_iff]`. Introduce `y`. Rewrite using `[← hb']`. Conclude with `hp _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Establish `hG` using `gaussSumEighthPower (M ⧸ R) φ' b' hQ`. Establish `hbij : Function.Bijective (fun p : (M ⧸ R) × R => (p.1.out + (p.2 : M) : M))`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, r⟩ ⟨q', r'⟩ hqr`. Simplify using `only at hqr`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hq : q = q'`. Establish `h1 : ((q.out + (r : M) : M) : M ⧸ R) = ((q'.out + (r' : M) : M) : M ⧸ R)` using `by rw [hqr]`. Rewrite `h1` using `[QuotientAddGroup.mk_add_of_mem _ r.2, QuotientAddGroup.mk_add_of_mem _ r'.2, QuotientAddGroup.out_eq', QuotientAddGroup.out_eq']`. Conclude with `h1`. Substitute `hq` using the available equality.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hr : (r : M) = r'` using `add_left_cancel hqr`. Rewrite using `[Subtype.ext hr]`. Introduce `x`. Take `⟨r, hr⟩` from `QuotientAddGroup.mk_out_eq_add R x`. Use `⟨((x : M ⧸ R), -r), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hr, AddSubgroup.coe_neg]`. Normalize the expressions using the abelian group laws. Establish `hsum : ∑ x, φ x = (Fintype.card R : ℂ) * ∑ q, φ' q`. Rewrite using `[← hbij.sum_comp φ, Fintype.sum_prod_type, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: ∀ r : R, φ (q.out + (r : M)) = φ' q` using `fun r => hφR _ r r.2`. Simplify using `only [this, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Use `⟨(Fintype.card R : ℝ) ^ 8 * (Fintype.card (M ⧸ R) : ℝ) ^ 4, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : 0 < Fintype.card R` using `Fintype.card_pos`. Establish `h2 : 0 < Fintype.card (M ⧸ R)` using `Fintype.card_pos`.
+Establish an intermediate fact. Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Check the signs of the components of the expression. Rewrite using `[hsum, mul_pow, hG]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem degenerateGaussSum : GaussDegenerate := by
   classical

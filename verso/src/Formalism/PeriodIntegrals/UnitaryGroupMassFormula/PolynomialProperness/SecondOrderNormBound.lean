@@ -7,9 +7,9 @@ noncomputable section
 namespace PI.PolynomialProperness.CB
 
 /- English proof (translation)
-Establish `hs` using `Finset.sum_subset (Finset.subset_univ (Finset.univ.map (Fin.castLEEmb h))) (f := f) (fun x _ hx => hf x (by`. Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`. Conclude with `hx (Finset.mem_map.2 ⟨⟨x.val, hlt⟩, Finset.mem_univ _, Fin.ext rfl⟩)))`. Rewrite using `[← hs, Finset.sum_map]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem sum_castLE {m n : ℕ} (h : n ≤ m) (f : Fin m → ℂ) (hf : ∀ l : Fin m, n ≤ l.val → f l = 0) :
     ∑ l, f l = ∑ t : Fin n, f (Fin.castLE h t) := by
@@ -32,7 +32,7 @@ Both sides reduce to the same expression.
 theorem rws_val {m : ℕ} (i : Fin m) (t : Fin (i.val + 1)) : (rws i t).val = t.val := rfl
 
 /- English proof (translation)
-Establish `h' : ∀ i j, NormedField.toAbsoluteValue ℂ (A i j) ≤ c` using `h`. Use `Matrix.det_le h'` as an intermediate fact. Rewrite `this` using `[nsmul_eq_mul]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_norm_le {ι : Type*} [Fintype ι] [DecidableEq ι] (A : Matrix ι ι ℂ) {c : ℝ}
     (h : ∀ i j, ‖A i j‖ ≤ c) : ‖A.det‖ ≤ (Fintype.card ι).factorial * c ^ Fintype.card ι := by
@@ -42,21 +42,19 @@ theorem det_norm_le {ι : Type*} [Fintype ι] [DecidableEq ι] (A : Matrix ι ι
   exact this
 
 /- English proof (translation)
-Establish `hfac : (L * U).submatrix (rws i) (cls i j) = L.submatrix (rws i) (rws i) * U.submatrix (rws i) (cls i j)`. Use extensionality with `a b`. Simplify using `only [submatrix_apply, mul_apply]`. Use `sum_castLE (Nat.succ_le_of_lt i.isLt) _ fun l hl => ?_` and prove the remaining obligations. Establish `h0 : L (rws i a) l = 0` using `hL.1 _ _ (by rw [Fin.lt_def, rws_val]; omega)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[h0, zero_mul]`. Establish `hlo : (L.submatrix (rws i) (rws i)).IsLowerTriangular`. Introduce `a b hab`. Establish `hab' : a < b` using `hab`. Conclude with `hL.1 _ _ hab'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hup : (U.submatrix (rws i) (cls i j)).IsUpperTriangular`. Introduce `a b hab`. Establish `hab' : b < a` using `hab`. Establish `hb : b.val < i.val`. Use `a.isLt` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hab'` using `[Fin.lt_def]`. Use linear arithmetic over natural numbers and integers. Use `show U (rws i a) (cls i j b) = 0`. Simplify using `only [cls, if_pos hb]`. Conclude with `hU.1 _ _ hab'`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hfac, det_mul, det_of_isLowerTriangular _ hlo]`. Establish `hl1 : ∀ t : Fin (i.val + 1), L.submatrix (rws i) (rws i) t t = 1` using `fun t => hL.2 _`. Establish `hcs : ∀ t : Fin i.val, U.submatrix (rws i) (cls i j) t.castSucc t.castSucc = 1`. Introduce `t`. Establish `h2 : cls i j t.castSucc = rws i t.castSucc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `ht : (t.castSucc : Fin (i.val + 1)).val < i.val` using `t.isLt`. Simplify using `only [cls, if_pos ht]`. Both sides reduce to the same expression. Use `show U (rws i t.castSucc) (cls i j t.castSucc) = 1`. Rewrite using `[h2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hU.2 _`. Establish `hlast1 : rws i (Fin.last i.val) = i` using `Fin.ext rfl`. Establish `hlast2 : cls i j (Fin.last i.val) = j`. Simplify using `only [cls, Fin.val_last, lt_irrefl, if_false]`. Rewrite using `[Finset.prod_eq_one (fun t _ => hl1 t), one_mul, det_of_isUpperTriangular hup, Fin.prod_univ_castSucc, Finset.prod_eq_one (fun t _ => hcs t), one_mul]`.
-
-Use `show U i j = U (rws i (Fin.last i.val)) (cls i j (Fin.last i.val))`. Rewrite using `[hlast1, hlast2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ut_entry_eq_det {m : ℕ} {L U : Matrix (Fin m) (Fin m) ℂ} (hL : L ∈ LTset m)
     (hU : U ∈ UTset m) (i j : Fin m) : U i j = ((L * U).submatrix (rws i) (cls i j)).det := by
@@ -97,9 +95,9 @@ theorem ut_entry_eq_det {m : ℕ} {L U : Matrix (Fin m) (Fin m) ℂ} (hL : L ∈
   rw [hlast1, hlast2]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `(GN.mx_le_iff _ (GN.mx_nonneg M)).2 fun i j => ?_` and prove the remaining obligations. Rewrite using `[transpose_apply]`. Conclude with `GN.entry_le_mx M j i`. Use `(GN.mx_le_iff _ (GN.mx_nonneg Mᵀ)).2 fun i j => ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `GN.entry_le_mx Mᵀ j i` as an intermediate fact. Rewrite `this` using `[transpose_apply]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mx_transpose {m : ℕ} (M : Matrix (Fin m) (Fin m) ℂ) : mx Mᵀ = mx M := by
   apply le_antisymm
@@ -110,9 +108,9 @@ theorem mx_transpose {m : ℕ} (M : Matrix (Fin m) (Fin m) ℂ) : mx Mᵀ = mx M
     rwa [transpose_apply] at this
 
 /- English proof (translation)
-Rewrite using `[ut_entry_eq_det hL hU i j]`. Establish `hd` using `det_norm_le ((L * U).submatrix (rws i) (cls i j)) (c := mx (L * U)) (fun a b => GN.entry_le_mx (L * U) (rws i a) (cls i j b))`. Rewrite `hd` using `[Fintype.card_fin]`. Establish `hx` using `GN.mx_nonneg (L * U)`. Establish `hi : i.val + 1 ≤ m` using `Nat.succ_le_of_lt i.isLt`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ((i.val + 1).factorial : ℝ) ≤ m.factorial` using `by exact_mod_cast Nat.factorial_le hi`. Establish `h2 : mx (L * U) ^ (i.val + 1) ≤ (1 + mx (L * U)) ^ m` using `(pow_le_pow_left₀ hx (by linarith) _).trans (pow_le_pow_right₀ (by linarith) hi)`. Conclude with `hd.trans (mul_le_mul h1 h2 (pow_nonneg hx _) (by positivity))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ut_entry_bound {m : ℕ} {L U : Matrix (Fin m) (Fin m) ℂ} (hL : L ∈ LTset m)
     (hU : U ∈ UTset m) (i j : Fin m) : ‖U i j‖ ≤ m.factorial * (1 + mx (L * U)) ^ m := by
@@ -128,7 +126,7 @@ theorem ut_entry_bound {m : ℕ} {L U : Matrix (Fin m) (Fin m) ℂ} (hL : L ∈ 
   exact hd.trans (mul_le_mul h1 h2 (pow_nonneg hx _) (by positivity))
 
 /- English proof (translation)
-Establish `hUt : Uᵀ ∈ LTset m` using `⟨fun a b hab => by rw [transpose_apply]; exact hU.1 _ _ hab, fun a => hU.2 a⟩`. Establish `hLt : Lᵀ ∈ UTset m` using `⟨fun a b hab => by rw [transpose_apply]; exact hL.1 _ _ hab, fun a => hL.2 a⟩`. Establish `h` using `ut_entry_bound hUt hLt j i`. Rewrite `h` using `[← transpose_mul, mx_transpose, transpose_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem lt_entry_bound {m : ℕ} {L U : Matrix (Fin m) (Fin m) ℂ} (hL : L ∈ LTset m)
     (hU : U ∈ UTset m) (i j : Fin m) : ‖L i j‖ ≤ m.factorial * (1 + mx (L * U)) ^ m := by
@@ -140,7 +138,7 @@ theorem lt_entry_bound {m : ℕ} {L U : Matrix (Fin m) (Fin m) ℂ} (hL : L ∈ 
   rwa [← transpose_mul, mx_transpose, transpose_apply] at h
 
 /- English proof (translation)
-Establish `h : U.IsUpperTriangular` using `fun a b hab => hU.1 _ _ hab`. Rewrite using `[det_of_isUpperTriangular h]`. Conclude with `Finset.prod_eq_one fun t _ => hU.2 t`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_ut {m : ℕ} {U : Matrix (Fin m) (Fin m) ℂ} (hU : U ∈ UTset m) : U.det = 1 := by
   have h : U.IsUpperTriangular := fun a b hab => hU.1 _ _ hab
@@ -148,7 +146,7 @@ theorem det_ut {m : ℕ} {U : Matrix (Fin m) (Fin m) ℂ} (hU : U ∈ UTset m) :
   exact Finset.prod_eq_one fun t _ => hU.2 t
 
 /- English proof (translation)
-Establish `h : L.IsLowerTriangular` using `fun a b hab => hL.1 _ _ hab`. Rewrite using `[det_of_isLowerTriangular _ h]`. Conclude with `Finset.prod_eq_one fun t _ => hL.2 t`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_lt {m : ℕ} {L : Matrix (Fin m) (Fin m) ℂ} (hL : L ∈ LTset m) : L.det = 1 := by
   have h : L.IsLowerTriangular := fun a b hab => hL.1 _ _ hab
@@ -156,7 +154,7 @@ theorem det_lt {m : ℕ} {L : Matrix (Fin m) (Fin m) ℂ} (hL : L ∈ LTset m) :
   exact Finset.prod_eq_one fun t _ => hL.2 t
 
 /- English proof (translation)
-Rewrite using `[inv_def, hM, Ring.inverse_one, one_smul, adjugate_fin_succ_eq_det_submatrix, norm_mul, norm_pow, norm_neg, norm_one, one_pow, one_mul]`. Use `det_norm_le (M.submatrix j.succAbove i.succAbove) (fun a b => hc _ _)` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem inv_entry_bound {n : ℕ} (M : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) (hM : M.det = 1) {c : ℝ}
     (hc : ∀ i j, ‖M i j‖ ≤ c) (i j : Fin (n + 1)) : ‖M⁻¹ i j‖ ≤ n.factorial * c ^ n := by
@@ -166,17 +164,15 @@ theorem inv_entry_bound {n : ℕ} (M : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) (
   rwa [Fintype.card_fin] at this
 
 /- English proof (translation)
-The claim follows from `(GN.mx_le_iff M hc).2 h`.
+A detailed English derivation is pending.
 -/
 theorem mx_of_entry {m : ℕ} (M : Matrix (Fin m) (Fin m) ℂ) {c : ℝ} (hc : 0 ≤ c)
     (h : ∀ i j, ‖M i j‖ ≤ c) : mx M ≤ c := (GN.mx_le_iff M hc).2 h
 
 /- English proof (translation)
-Establish `hQ : monoP w d * monoP w.symm (fun j => (d (w.symm j))⁻¹) = 1`. Use extensionality with `i j`. Simplify using `only [monoP, mul_apply, of_apply, one_apply]`. Rewrite using `[Finset.sum_eq_single (w.symm j)]`. Simplify using `only [if_true, Equiv.apply_symm_apply] split_ifs with h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `mul_inv_cancel₀ (hd _)`. Conclude with `zero_mul _`. Introduce `b _ hb`. Simplify using `[hb]`. Introduce `h`.
-
-Conclude with `absurd (Finset.mem_univ _) h`. Conclude with `isUnit_det_of_right_inverse hQ`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isUnit_det_monomialMatrix' {m : ℕ} (w : Equiv.Perm (Fin m)) (d : Fin m → ℂ) (hd : ∀ a, d a ≠ 0) :
     IsUnit (monoP w d).det := by
@@ -198,36 +194,34 @@ def Kc (m : ℕ) (P : Matrix (Fin m) (Fin m) ℂ) : ℝ :=
   m.factorial * kap m P ^ m * (1 + (m : ℝ) ^ 2 * mx P * mx P⁻¹)
 
 /- English proof (translation)
-Unfold `kap; have := GN.mx_nonneg P⁻¹; have : (0 : ℝ) ≤ m := by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Replace the relevant objects with their definitions. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem kap_ge (m : ℕ) (P : Matrix (Fin m) (Fin m) ℂ) : 1 ≤ kap m P := by
   unfold kap; have := GN.mx_nonneg P⁻¹; have : (0 : ℝ) ≤ m := by positivity
   nlinarith
 
 /- English proof (translation)
-Establish `hPP : P⁻¹ * P = 1` using `nonsing_inv_mul _ hP`. Establish `hPP' : P * P⁻¹ = 1` using `mul_nonsing_inv _ hP`. Establish `hX` using `GN.mx_nonneg (l * P * u)`. Establish `hmP` using `GN.mx_nonneg P`. Establish `hmPi` using `GN.mx_nonneg P⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : (0 : ℝ) ≤ m` using `by positivity`. Establish `hκ` using `kap_ge m P`. Establish `hA : P⁻¹ * l * P * u = P⁻¹ * (l * P * u)` using `by simp only [Matrix.mul_assoc]`. Establish `hmxA : 1 + mx (P⁻¹ * l * P * u) ≤ kap m P * (1 + mx (l * P * u))`. Rewrite using `[hA]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `GN.mx_mul_le P⁻¹ (l * P * u)`. Unfold `kap`. Establish `: (m : ℝ) * mx P⁻¹ * mx (l * P * u) ≥ 0` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `hA1 : 0 ≤ 1 + mx (P⁻¹ * l * P * u)` using `by have := GN.mx_nonneg (P⁻¹ * l * P * u); linarith`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hpow : (1 + mx (P⁻¹ * l * P * u)) ^ m ≤ kap m P ^ m * (1 + mx (l * P * u)) ^ m`. Rewrite using `[← mul_pow]`. Conclude with `pow_le_pow_left₀ hA1 hmxA m`. Establish `hfac : (0 : ℝ) ≤ m.factorial` using `by positivity`. Establish `hK1 : ∀ i j, ‖u i j‖ ≤ m.factorial * kap m P ^ m * (1 + mx (l * P * u)) ^ m ∧ ‖(P⁻¹ * l * P) i j‖ ≤ m.factorial * kap m P ^ m * (1 + mx (l * P * u)) ^ m`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j`. Prove the components needed by the constructor for the conclusion. Use `(ut_entry_bound hl.2 hu i j).trans ?_` and prove the remaining obligations. Conclude with `(mul_le_mul_of_nonneg_left hpow hfac).trans_eq (by ring)`. Use `(lt_entry_bound hl.2 hu i j).trans ?_` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(mul_le_mul_of_nonneg_left hpow hfac).trans_eq (by ring)`. Establish `hY : 0 ≤ m.factorial * kap m P ^ m * (1 + mx (l * P * u)) ^ m`. Establish `: 0 ≤ kap m P` using `by linarith`. Check the signs of the components of the expression. Establish `hext : 1 ≤ 1 + (m : ℝ) ^ 2 * mx P * mx P⁻¹`.
+Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `: 0 ≤ (m : ℝ) ^ 2 * mx P * mx P⁻¹` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hKeq : Kc m P * (1 + mx (l * P * u)) ^ m = (m.factorial * kap m P ^ m * (1 + mx (l * P * u)) ^ m) * (1 + (m : ℝ) ^ 2 * mx P * mx P⁻¹)`. Unfold `Kc`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `i j`. Rewrite using `[hKeq]`. Conclude with `(hK1 i j).1.trans (le_mul_of_one_le_right hY hext)`. Apply the tactic sequence `have hlt : mx (P⁻¹ * l * P) ≤ m.factorial * kap m P ^ m * (1 + mx (l * P * u)) ^ m := mx_of_entry _ hY fun i j => (hK1 i j).2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl_eq : l = P * (P⁻¹ * l * P) * P⁻¹`. Rewrite using `[show P * (P⁻¹ * l * P) * P⁻¹ = (P * P⁻¹) * l * (P * P⁻¹) by simp only [Matrix.mul_assoc], hPP', Matrix.one_mul, Matrix.mul_one]`. Establish `hml : mx l ≤ (m : ℝ) ^ 2 * mx P * mx P⁻¹ * mx (P⁻¹ * l * P)`. Establish `h1` using `GN.mx_mul_le (P * (P⁻¹ * l * P)) P⁻¹`. Establish `h2` using `GN.mx_mul_le P (P⁻¹ * l * P)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite `h1` using `[← hl_eq]`. Use `GN.mx_nonneg (P * (P⁻¹ * l * P))` as an intermediate fact. Use `GN.mx_nonneg (P⁻¹ * l * P)` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_right _ hmPi` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `mul_le_mul_of_nonneg_left h2 hm`. Use `_ = (m : ℝ) ^ 2 * mx P * mx P⁻¹ * mx (P⁻¹ * l * P) := by ring`. Introduce `i j`. Rewrite using `[hKeq]`. Establish `hc : 0 ≤ (m : ℝ) ^ 2 * mx P * mx P⁻¹` using `by positivity`.
-
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem factors_bound {m : ℕ} {P l u : Matrix (Fin m) (Fin m) ℂ} (hP : IsUnit P.det)
     (hl : l ∈ LPg P) (hu : u ∈ UTset m) :
@@ -305,21 +299,21 @@ namespace PI.PolynomialProperness
 open CB in
 
 /- English proof (translation)
-Introduce `m P hP`. Take `⟨w, d, hd, hPeq⟩` from `hP`. Establish `hPu : IsUnit P.det` using `by rw [hPeq]; exact isUnit_det_monomialMatrix' w d hd`. Consider the cases of `m with`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Use `⟨0, fun l _ u' _ => ?_⟩` and prove the remaining obligations. Establish `h0 : ∀ M : Matrix (Fin 0) (Fin 0) ℂ, mx M ≤ 0` using `fun M => (GN.mx_le_iff M le_rfl).2 fun i => i.elim0`. Simplify using `only [zero_mul]`. Conclude with `⟨h0 _, h0 _, h0 _, h0 _⟩`. Consider the case `succ n`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Treat this case separately.
 
-Establish `hK0 : 0 ≤ Kc (n + 1) P`. Unfold `Kc`. Use `kap_ge (n + 1) P` as an intermediate fact. Use `GN.mx_nonneg P` as an intermediate fact. Use `GN.mx_nonneg P⁻¹` as an intermediate fact.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (0 : ℝ) ≤ 1 + ((n + 1 : ℕ) : ℝ) ^ 2 * mx P * mx P⁻¹` using `by positivity`. Establish `: (0 : ℝ) ≤ kap (n + 1) P` using `by linarith`. Check the signs of the components of the expression. Use `⟨n.factorial * Kc (n + 1) P ^ n + Kc (n + 1) P, fun l hl u' hu' => ?_⟩` and prove the remaining obligations. Take `⟨hbu, hbl⟩` from `factors_bound hPu hl hu'`.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `set X := mx (l * P * u') with hXdef`. Establish `hX : 0 ≤ X` using `GN.mx_nonneg _`. Establish `hY : 0 ≤ Kc (n + 1) P * (1 + X) ^ (n + 1)` using `by positivity`. Establish `hfn : (0 : ℝ) ≤ n.factorial * Kc (n + 1) P ^ n` using `by positivity`. Establish `hCge : Kc (n + 1) P ≤ n.factorial * Kc (n + 1) P ^ n + Kc (n + 1) P` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmain : ∀ M : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ, (∀ i j, ‖M i j‖ ≤ Kc (n + 1) P * (1 + X) ^ (n + 1)) → mx M ≤ (n.factorial * Kc (n + 1) P ^ n + Kc (n + 1) P) * (1 + X) ^ (n + 1)`. Introduce `M hM`. Apply the tactic sequence `refine mx_of_entry M (by positivity) fun i j => (hM i j).trans ?_`. Conclude with `mul_le_mul_of_nonneg_right hCge (by positivity)`. Establish `hinv : ∀ M : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ, M.det = 1 → (∀ i j, ‖M i j‖ ≤ Kc (n + 1) P * (1 + X) ^ (n + 1)) → mx M⁻¹ ≤ (n.factorial * Kc (n + 1) P ^ n + Kc (n + 1) P) * (1 + X) ^ ((n + 1 - 1) * (n + 1))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `M hdet hM`. Establish `e : (1 + X) ^ ((n + 1 - 1) * (n + 1)) = ((1 + X) ^ (n + 1)) ^ n`. Rewrite using `[Nat.add_sub_cancel, ← pow_mul, mul_comm]`. Rewrite using `[e]`. Apply the tactic sequence `refine mx_of_entry _ (by positivity) fun i j => (inv_entry_bound M hdet hM i j).trans ?_`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_pow, ← mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right (by linarith) (by positivity)`. Use `⟨hmain l hbl, hmain u' hbu, hinv l (det_lt hl.1) hbl, hinv u' (det_ut hu') hbu⟩` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 theorem second_order_norm_bound : MonomialFactorizationBound := by
   intro m P hP

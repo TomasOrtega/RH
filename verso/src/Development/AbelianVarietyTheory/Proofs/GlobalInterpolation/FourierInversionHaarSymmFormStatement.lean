@@ -4,7 +4,7 @@ import Mathlib
 open MeasureTheory
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.fourier_inversion_haar_symm_form` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FGlobalInterpolation%2FFourierInversionHaarSymmForm.lean&line=68#L68)
 -/

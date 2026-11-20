@@ -11,13 +11,11 @@ open GlobalTheory
 open Classical
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw _ l Xo c C X₁ Y U₀ EE out πY hAdm _ hHom x`. Establish `hpt : Y.pt ≫ πY ≫ X₁.π = X₁.uΩ ≫ C.i`. Establish `h1 : Y.pt ≫ πY = X₁.M.pt`. Use `hHom` as an intermediate fact. Unfold `RatModel.IsHom at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[this]`. Use `show Spec.map (CommRingCat.ofHom (RingHom.id X₁.Ω₁)) ≫ _ = _`. Rewrite using `[CommRingCat.ofHom_id, Spec.map_id, Category.id_comp]`. Rewrite using `[← Category.assoc, h1, X₁.comp]`. Conclude with `(Category.assoc _ _ _).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨R, i1, i2, i3, j, Λ, i4, i5, p, hB, hC, h⟩` from `GlobalTheory.UPoinc.GPeriods.main E H Dw l Xo c C X₁ Y U₀ EE out (πY ≫ X₁.π) hAdm.1 hpt x`. Use `⟨R, i1, i2, i3, j, Λ, i4, i5, p, 1, hB.1.1, hB.2, hC, le_rfl, fun T ψ hψ ht => ?_⟩` and prove the remaining obligations. Take `⟨e, he⟩` from `h T ψ hψ (by rw [ht])`. Use `⟨e, fun a => ?_⟩` and prove the remaining obligations. Take `⟨k, hk, hA⟩` from `he a`.
-
-Conclude with `⟨k, by rw [hk]; push_cast; ring, hA⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.UPoinc.UPeriods.main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H), 1 ≤ Dw.p + Dw.q → ∀ (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (C : UCompact Xo c) (X₁ : USetup C) (Y : RatModel X₁.o₁ X₁.Ω₁) (U₀ : Y.Z.Opens) (EE : Y.Lat X₁.S.J) (out : ZHOut X₁.ρ Y U₀ EE) (πY : Y.Z ⟶ X₁.M.Z), X₁.S.admitted Y U₀ → X₁.S.IsEE Y U₀ EE → X₁.M.IsHom Y (AlgHom.id X₁.o₁ X₁.Ω₁) πY → ∀ x : Y.Z, ∃ (R : Type) (_ : CommRing R) (_ : IsDomain R) (_ : IsLocalRing R) (j : Y.Z.presheaf.stalk x →+* R) (Λ : Type) (_ : AddCommGroup Λ) (_ : Module (𝓞 E) Λ) (p : Λ → R) (c₀ : ℕ), IsNoetherianRing R ∧ CharZero R ∧ GlobalTheory.Poinc.Eq8.IsCpl j ∧ 1 ≤ c₀ ∧ ∀ (T : UTrait Xo c) (ψ : R →+* T.V), IsLocalHom ψ → T.y ≫ C.i = jK T.V ≫ (spMap (ψ.comp j) ≫ Y.Z.fromSpecStalk x) ≫ πY ≫ X₁.π → ∃ e : Λ ≃ₗ[𝓞 E] T.P.D.toPre.X, ∀ a, ∃ k : ℕ, (k : ℤ) = c₀ * T.be (e a) (e a) ∧ Associated (ψ (p a)) (T.ϖ ^ k) := by
   intro E _ _ _ H Dw _ l Xo c C X₁ Y U₀ EE out πY hAdm _ hHom x

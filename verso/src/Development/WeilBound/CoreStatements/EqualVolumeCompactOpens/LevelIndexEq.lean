@@ -10,12 +10,12 @@ import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsLevelBlockOfEq
 namespace PositivityTheory.EqVol
 
 /- English proof (translation)
-The claim follows from `indexEq_of (coSA saOpen) divisible`.
+A detailed English derivation is pending.
 -/
 theorem indexEq : IndexEq := indexEq_of (coSA saOpen) divisible
 
 /- English proof (translation)
-The claim follows from `levelIndexEq_of indexEq (levelCO hatCompactOpen) levelConj (levelRat hatRat)`.
+A detailed English derivation is pending.
 -/
 theorem levelIndexEq : LevelIndexEq :=
   levelIndexEq_of indexEq (levelCO hatCompactOpen) levelConj (levelRat hatRat)

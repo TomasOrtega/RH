@@ -25,9 +25,9 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.Frames
 
 /- English proof (translation)
-Introduce `hB E _ _ _ H Dw l Xo c`. Establish `hTest` using `GlobalTheory.T.framedPoint_reduced_from_testRing hB E H Dw l Xo c`. Establish `hCov` using `GlobalTheory.T.chartCoverF_of_sectionBaseChange hB E H Dw l Xo c`. Establish `hLat` using `GlobalTheory.T.integralLattice_structure_unique E H Dw l Xo c`. Establish `hFr : FrChartF Xo c` using `frChartF_of hCov`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBor : BorChartF Xo c` using `borChartF_of_cover hCov`. Use `⟨hFr, hBor, evalWD_fr hFr, wtField_of_borChart hBor, intDiagUnit_of hLat, unitIndep_of_charts hBor hLat, ?_⟩` and prove the remaining obligations. Introduce `S _ _ hS a n f hf t y y' hy`. Take `⟨hnat, hwt⟩` from `hf`. Conclude with `wtAll_of_borChart hBor (ex Dw a n) hnat hwt S t y y' (hTest S y) (hTest S y') hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem algebraic_laws : Out.SecBaseChangeSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), FrChartF Xo c ∧ BorChartF Xo c ∧ EvalWD (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) ∧ WtField Xo c ∧ IntDiagUnit Xo c ∧ UnitIndep Xo c ∧ ∀ (S : Type) [CommRing S] [Algebra c.F S], IsReduced S → ∀ (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), ∀ f ∈ sec Xo c a n, ∀ (t : Ix Dw → Sˣ) (y y' : FrPt Xo c S), FrBor t y y' → evR Xo c f y' = wchar (ex Dw a n) t * evR Xo c f y := by
   intro hB E _ _ _ H Dw l Xo c

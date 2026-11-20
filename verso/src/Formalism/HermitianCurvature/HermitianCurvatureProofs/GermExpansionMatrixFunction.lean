@@ -41,75 +41,75 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.FourierDecayAlt.A5 Formalism.FourierDecayAlt.A6
 
 /- English proof (translation)
-Establish `h` using `gauss_hessian_index_of_parts`. Unfold `Formalism.FourierDecayAlt.A6.GaussHessAssemble at h`. Apply the tactic sequence `apply h <;> clear h <;> try (first`. Consider the case `exact a6x_kpGram_proof`. Consider the case `exact kernel_gram_property`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_modMul_proof`. Consider the case `exact modulus_positive_multiplicative`. Consider the case `exact a6x_tripleForm_proof`. Consider the case `exact tripleForm`. Consider the case `exact a6x_avgClaim_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact lattice_average_identity`. Consider the case `exact a6x_tTEnd_proof`. Consider the case `exact triple_form_end_identity`. Consider the case `exact a6x_a2_proof`. Consider the case `exact second_gram_and_vanishing`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_n1Formula_proof`. Consider the case `exact first_kernel_explicit_formula`. Consider the case `exact a6x_intFinite_proof`. Consider the case `exact integral_points_finite`. Consider the case `exact a6x_charOrthDual_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact characterOrthogonalityDual`. Consider the case `exact a6x_charOrth_proof`. Consider the case `exact characterOrthogonality`. Consider the case `exact a6x_cokerCard_proof`. Consider the case `exact cokernel_card_inverse_modulus`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_a2Gram_proof`. Consider the case `exact second_gram_property`. Consider the case `exact a6x_n1Periodic_proof`. Consider the case `exact first_kernel_periodic`. Consider the case `exact a6x_n1Gram_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact first_kernel_gram_property`. Consider the case `exact a6x_n1Parseval_proof`. Consider the case `exact first_kernel_parseval`. Consider the case `exact a6x_nsSupport_proof`. Consider the case `exact added_block_kernel_support`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_nsBlockDiag_proof`. Consider the case `exact added_block_kernel_block_diagonal`. Consider the case `exact a6x_n0Ones_proof`. Consider the case `exact zero_kernel_all_ones`. Consider the case `exact a6x_th1Eq_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact first_theta_kernel_equality`. Consider the case `exact a6x_a13OneEq_proof`. Consider the case `exact first_theta_equals_first_kernel`. Consider the case `exact a6x_a13Step_proof`. Consider the case `exact lattice_average_induction`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_lemmaA_proof`. Consider the case `exact lattice_average_lemma_full`. Consider the case `exact doubleMeanSplit`. Consider the case `exact a5x_meanSplit_proof`. Consider the case `exact partialMeansOrthogonal`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_pOrth_proof`. Consider the case `exact orthogonalMeanNorm`. Consider the case `exact a5x_orthNorm_proof`. Consider the case `exact averageBound`. Consider the case `exact a5x_avgBound_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact gauss_sum_modulus_of_lattice`. Consider the case `exact a5x_gaussModulus_proof`. Consider the case `exact gauss_index_independent_of_choice`. Consider the case `exact a5x_gaussIndep_proof`. Consider the case `exact phase_hessian_determinant`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_hessDet_proof`. Consider the case `exact volume_scaling_identity`. Consider the case `exact a5x_volScale_proof`. Consider the case `exact gauss_hessian_index_exists`. Consider the case `exact a5x_gaussHess_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact admissible_gauss_sum_small`. Consider the case `exact a5x_gaussAdmSmall_proof`. Consider the case `exact gramRealisation`. Consider the case `exact gram_realise_cut`. Consider the case `exact padic_stationary_phase`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_stationaryPhase_proof`. Consider the case `exact germ_expansion_matrix_function`. Consider the case `exact a5x_germPhi_proof`. Consider the case `exact germ_expansion_with_head`. Consider the case `exact a5x_germ_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact germ_kernel_expansion`. Consider the case `exact a5x_germKernel_proof`. Consider the case `exact germ_identity_bis`. Consider the case `exact a5x_germIdentity_proof`. Consider the case `exact theta_omega_bound`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_thOm_proof`. Consider the case `exact nonStationary`. Consider the case `exact a5x_nonStationary_proof`. Consider the case `exact morseLemma`. Consider the case `exact a5x_morseLemma_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact integral_field_refinement`. Consider the case `exact a5x_intKRefine_proof`. Consider the case `exact rootsFinite`. Consider the case `exact a5x_rootsFinite_proof`. Consider the case `exact compactOpenChoice`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_latChoice_proof`. Consider the case `exact orthogonal_lattice_properties`. Consider the case `exact a5x_perpLat_proof`. Consider the case `exact modulusLocallyConstant`. Consider the case `exact a5x_modLocConst_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact oscillatory_integral_invariant`. Consider the case `exact a5x_oscInvariant_proof`. Consider the case `exact rootsSeparated`. Consider the case `exact a5x_rootsSeparated_proof`. Consider the case `exact smallModules`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_smallModules_proof`. Consider the case `exact lattice_family_finite`. Consider the case `exact a5x_latFinite_proof`. Consider the case `exact finite_family_truncation_module`. Consider the case `exact a5x_supportModule_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact head_size_one_in_GL`. Consider the case `exact a5x_cSizeOne_proof`. Consider the case `exact rootStableExhaustion`. Consider the case `exact a5x_exhaust_proof`. Consider the case `exact posSemidefEntryBound`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_pSDEntryBound_proof`. Consider the case `exact posSemidefClosed`. Consider the case `exact a5x_pSDClosed_proof`. Consider the case `exact boundedSubsequence`. Consider the case `exact a5x_boundedSubseq_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact parsevalGroup_statement`. Consider the case `exact a5x_parsevalGroup_proof`. Consider the case `exact orbital_integral_change_of_variables`. Consider the case `exact a5x_oscReduction_proof`. Consider the case `exact head_reduction_lemma`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_headReduction_proof`. Consider the case `exact kernel_as_coset_sum`. Consider the case `exact a5x_kpFromBB_proof`. Consider the case `exact gramKernelHermitian`. Consider the case `exact a5x_kpHerm_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_a2Vanish_proof`. Consider the case `exact second_vanishing_off_ring`. Consider the case `exact shiftUnit_statement`. Consider the case `exact a5x_shiftUnit_proof`. Consider the case `exact shiftSmall_statement`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_shiftSmall_proof`. Consider the case `exact rootCutStable`. Consider the case `exact a5x_cutSame_proof`. Consider the case `exact rootCorrection`. Consider the case `exact a5x_rootCorr_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact square_near_unit`. Consider the case `exact a5x_squareNear_proof`. Consider the case `exact phase_difference_estimate`. Consider the case `exact a5x_phaseDiff_proof`. Consider the case `exact phase_locally_constant`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_locConst_proof`. Consider the case `exact integral_lattice_refinement_identity`. Consider the case `exact a5x_intLatRefine_proof`. Consider the case `exact padic_change_of_variables`. Consider the case `exact a5x_changeVar_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact crossTermsVanish`. Consider the case `exact a5x_crossVanish_proof`. Consider the case `exact averaged_vector_choices_exist`. Consider the case `exact a5x_avgDataExists_proof`. Consider the case `exact smallUnits`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_smallUnits_proof`. Consider the case `exact gram_equality_of_vectors`. Consider the case `exact a5x_uGramEq_proof`. Consider the case `exact averaged_vector_norm_bound`. Consider the case `exact a5x_uNormBound_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact cut_posSemidef`. Consider the case `exact a5x_cutPSD_proof`. Consider the case `exact heads_distinct_determinant_orthogonal`. Consider the case `exact a5x_uBlock_proof`. Consider the case `exact head_size_add_block`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_cSizeAddBlock_proof`. Consider the case `exact a6x_kpBlockDiag_proof`. Consider the case `exact kernel_block_diagonal_by_modulus`. Consider the case `exact annihilatorCharacters`. Consider the case `exact a5x_perpDual_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact characterMean`. Consider the case `exact a5x_charMean_proof`. Consider the case `exact truncated_average_norm_formula`. Consider the case `exact a5x_cutNormEval_proof`. Consider the case `exact thetaAverageLower`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_thxLower_proof`. Consider the case `exact averaged_kernel_periodic_psd`. Consider the case `exact a5x_thxBasic_proof`. Consider the case `exact averaged_kernel_parseval`. Consider the case `exact a5x_thxSum_proof)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem gauss_hessian_index_exists : Formalism.FourierDecayAlt.A6.GaussHess := by
   have h := gauss_hessian_index_of_parts
@@ -289,75 +289,75 @@ theorem gauss_hessian_index_exists : Formalism.FourierDecayAlt.A6.GaussHess := b
       | exact a5x_thxSum_proof)
 
 /- English proof (translation)
-Establish `h` using `stationaryPhaseOfSteps`. Unfold `Formalism.FourierDecayAlt.A6.StationaryAssemble at h`. Apply the tactic sequence `apply h <;> clear h <;> try (first`. Consider the case `exact a6x_kpGram_proof`. Consider the case `exact kernel_gram_property`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_modMul_proof`. Consider the case `exact modulus_positive_multiplicative`. Consider the case `exact a6x_tripleForm_proof`. Consider the case `exact tripleForm`. Consider the case `exact a6x_avgClaim_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact lattice_average_identity`. Consider the case `exact a6x_tTEnd_proof`. Consider the case `exact triple_form_end_identity`. Consider the case `exact a6x_a2_proof`. Consider the case `exact second_gram_and_vanishing`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_n1Formula_proof`. Consider the case `exact first_kernel_explicit_formula`. Consider the case `exact a6x_intFinite_proof`. Consider the case `exact integral_points_finite`. Consider the case `exact a6x_charOrthDual_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact characterOrthogonalityDual`. Consider the case `exact a6x_charOrth_proof`. Consider the case `exact characterOrthogonality`. Consider the case `exact a6x_cokerCard_proof`. Consider the case `exact cokernel_card_inverse_modulus`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_a2Gram_proof`. Consider the case `exact second_gram_property`. Consider the case `exact a6x_n1Periodic_proof`. Consider the case `exact first_kernel_periodic`. Consider the case `exact a6x_n1Gram_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact first_kernel_gram_property`. Consider the case `exact a6x_n1Parseval_proof`. Consider the case `exact first_kernel_parseval`. Consider the case `exact a6x_nsSupport_proof`. Consider the case `exact added_block_kernel_support`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_nsBlockDiag_proof`. Consider the case `exact added_block_kernel_block_diagonal`. Consider the case `exact a6x_n0Ones_proof`. Consider the case `exact zero_kernel_all_ones`. Consider the case `exact a6x_th1Eq_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact first_theta_kernel_equality`. Consider the case `exact a6x_a13OneEq_proof`. Consider the case `exact first_theta_equals_first_kernel`. Consider the case `exact a6x_a13Step_proof`. Consider the case `exact lattice_average_induction`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_lemmaA_proof`. Consider the case `exact lattice_average_lemma_full`. Consider the case `exact doubleMeanSplit`. Consider the case `exact a5x_meanSplit_proof`. Consider the case `exact partialMeansOrthogonal`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_pOrth_proof`. Consider the case `exact orthogonalMeanNorm`. Consider the case `exact a5x_orthNorm_proof`. Consider the case `exact averageBound`. Consider the case `exact a5x_avgBound_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact gauss_sum_modulus_of_lattice`. Consider the case `exact a5x_gaussModulus_proof`. Consider the case `exact gauss_index_independent_of_choice`. Consider the case `exact a5x_gaussIndep_proof`. Consider the case `exact phase_hessian_determinant`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_hessDet_proof`. Consider the case `exact volume_scaling_identity`. Consider the case `exact a5x_volScale_proof`. Consider the case `exact gauss_hessian_index_exists`. Consider the case `exact a5x_gaussHess_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact admissible_gauss_sum_small`. Consider the case `exact a5x_gaussAdmSmall_proof`. Consider the case `exact gramRealisation`. Consider the case `exact gram_realise_cut`. Consider the case `exact padic_stationary_phase`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_stationaryPhase_proof`. Consider the case `exact germ_expansion_matrix_function`. Consider the case `exact a5x_germPhi_proof`. Consider the case `exact germ_expansion_with_head`. Consider the case `exact a5x_germ_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact germ_kernel_expansion`. Consider the case `exact a5x_germKernel_proof`. Consider the case `exact germ_identity_bis`. Consider the case `exact a5x_germIdentity_proof`. Consider the case `exact theta_omega_bound`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_thOm_proof`. Consider the case `exact nonStationary`. Consider the case `exact a5x_nonStationary_proof`. Consider the case `exact morseLemma`. Consider the case `exact a5x_morseLemma_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact integral_field_refinement`. Consider the case `exact a5x_intKRefine_proof`. Consider the case `exact rootsFinite`. Consider the case `exact a5x_rootsFinite_proof`. Consider the case `exact compactOpenChoice`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_latChoice_proof`. Consider the case `exact orthogonal_lattice_properties`. Consider the case `exact a5x_perpLat_proof`. Consider the case `exact modulusLocallyConstant`. Consider the case `exact a5x_modLocConst_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact oscillatory_integral_invariant`. Consider the case `exact a5x_oscInvariant_proof`. Consider the case `exact rootsSeparated`. Consider the case `exact a5x_rootsSeparated_proof`. Consider the case `exact smallModules`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_smallModules_proof`. Consider the case `exact lattice_family_finite`. Consider the case `exact a5x_latFinite_proof`. Consider the case `exact finite_family_truncation_module`. Consider the case `exact a5x_supportModule_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact head_size_one_in_GL`. Consider the case `exact a5x_cSizeOne_proof`. Consider the case `exact rootStableExhaustion`. Consider the case `exact a5x_exhaust_proof`. Consider the case `exact posSemidefEntryBound`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_pSDEntryBound_proof`. Consider the case `exact posSemidefClosed`. Consider the case `exact a5x_pSDClosed_proof`. Consider the case `exact boundedSubsequence`. Consider the case `exact a5x_boundedSubseq_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact parsevalGroup_statement`. Consider the case `exact a5x_parsevalGroup_proof`. Consider the case `exact orbital_integral_change_of_variables`. Consider the case `exact a5x_oscReduction_proof`. Consider the case `exact head_reduction_lemma`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_headReduction_proof`. Consider the case `exact kernel_as_coset_sum`. Consider the case `exact a5x_kpFromBB_proof`. Consider the case `exact gramKernelHermitian`. Consider the case `exact a5x_kpHerm_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_a2Vanish_proof`. Consider the case `exact second_vanishing_off_ring`. Consider the case `exact shiftUnit_statement`. Consider the case `exact a5x_shiftUnit_proof`. Consider the case `exact shiftSmall_statement`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_shiftSmall_proof`. Consider the case `exact rootCutStable`. Consider the case `exact a5x_cutSame_proof`. Consider the case `exact rootCorrection`. Consider the case `exact a5x_rootCorr_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact square_near_unit`. Consider the case `exact a5x_squareNear_proof`. Consider the case `exact phase_difference_estimate`. Consider the case `exact a5x_phaseDiff_proof`. Consider the case `exact phase_locally_constant`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_locConst_proof`. Consider the case `exact integral_lattice_refinement_identity`. Consider the case `exact a5x_intLatRefine_proof`. Consider the case `exact padic_change_of_variables`. Consider the case `exact a5x_changeVar_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact crossTermsVanish`. Consider the case `exact a5x_crossVanish_proof`. Consider the case `exact averaged_vector_choices_exist`. Consider the case `exact a5x_avgDataExists_proof`. Consider the case `exact smallUnits`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_smallUnits_proof`. Consider the case `exact gram_equality_of_vectors`. Consider the case `exact a5x_uGramEq_proof`. Consider the case `exact averaged_vector_norm_bound`. Consider the case `exact a5x_uNormBound_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact cut_posSemidef`. Consider the case `exact a5x_cutPSD_proof`. Consider the case `exact heads_distinct_determinant_orthogonal`. Consider the case `exact a5x_uBlock_proof`. Consider the case `exact head_size_add_block`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_cSizeAddBlock_proof`. Consider the case `exact a6x_kpBlockDiag_proof`. Consider the case `exact kernel_block_diagonal_by_modulus`. Consider the case `exact annihilatorCharacters`. Consider the case `exact a5x_perpDual_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact characterMean`. Consider the case `exact a5x_charMean_proof`. Consider the case `exact truncated_average_norm_formula`. Consider the case `exact a5x_cutNormEval_proof`. Consider the case `exact thetaAverageLower`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_thxLower_proof`. Consider the case `exact averaged_kernel_periodic_psd`. Consider the case `exact a5x_thxBasic_proof`. Consider the case `exact averaged_kernel_parseval`. Consider the case `exact a5x_thxSum_proof)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem padic_stationary_phase : Formalism.FourierDecayAlt.A6.StationaryPhase := by
   have h := stationaryPhaseOfSteps
@@ -537,75 +537,75 @@ theorem padic_stationary_phase : Formalism.FourierDecayAlt.A6.StationaryPhase :=
       | exact a5x_thxSum_proof)
 
 /- English proof (translation)
-Establish `h` using `germExpansionOfTestFunction`. Unfold `Formalism.FourierDecayAlt.A6.GermPhiAssemble at h`. Apply the tactic sequence `apply h <;> clear h <;> try (first`. Consider the case `exact a6x_kpGram_proof`. Consider the case `exact kernel_gram_property`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_modMul_proof`. Consider the case `exact modulus_positive_multiplicative`. Consider the case `exact a6x_tripleForm_proof`. Consider the case `exact tripleForm`. Consider the case `exact a6x_avgClaim_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact lattice_average_identity`. Consider the case `exact a6x_tTEnd_proof`. Consider the case `exact triple_form_end_identity`. Consider the case `exact a6x_a2_proof`. Consider the case `exact second_gram_and_vanishing`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_n1Formula_proof`. Consider the case `exact first_kernel_explicit_formula`. Consider the case `exact a6x_intFinite_proof`. Consider the case `exact integral_points_finite`. Consider the case `exact a6x_charOrthDual_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact characterOrthogonalityDual`. Consider the case `exact a6x_charOrth_proof`. Consider the case `exact characterOrthogonality`. Consider the case `exact a6x_cokerCard_proof`. Consider the case `exact cokernel_card_inverse_modulus`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_a2Gram_proof`. Consider the case `exact second_gram_property`. Consider the case `exact a6x_n1Periodic_proof`. Consider the case `exact first_kernel_periodic`. Consider the case `exact a6x_n1Gram_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact first_kernel_gram_property`. Consider the case `exact a6x_n1Parseval_proof`. Consider the case `exact first_kernel_parseval`. Consider the case `exact a6x_nsSupport_proof`. Consider the case `exact added_block_kernel_support`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_nsBlockDiag_proof`. Consider the case `exact added_block_kernel_block_diagonal`. Consider the case `exact a6x_n0Ones_proof`. Consider the case `exact zero_kernel_all_ones`. Consider the case `exact a6x_th1Eq_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact first_theta_kernel_equality`. Consider the case `exact a6x_a13OneEq_proof`. Consider the case `exact first_theta_equals_first_kernel`. Consider the case `exact a6x_a13Step_proof`. Consider the case `exact lattice_average_induction`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_lemmaA_proof`. Consider the case `exact lattice_average_lemma_full`. Consider the case `exact doubleMeanSplit`. Consider the case `exact a5x_meanSplit_proof`. Consider the case `exact partialMeansOrthogonal`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_pOrth_proof`. Consider the case `exact orthogonalMeanNorm`. Consider the case `exact a5x_orthNorm_proof`. Consider the case `exact averageBound`. Consider the case `exact a5x_avgBound_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact gauss_sum_modulus_of_lattice`. Consider the case `exact a5x_gaussModulus_proof`. Consider the case `exact gauss_index_independent_of_choice`. Consider the case `exact a5x_gaussIndep_proof`. Consider the case `exact phase_hessian_determinant`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_hessDet_proof`. Consider the case `exact volume_scaling_identity`. Consider the case `exact a5x_volScale_proof`. Consider the case `exact gauss_hessian_index_exists`. Consider the case `exact a5x_gaussHess_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact admissible_gauss_sum_small`. Consider the case `exact a5x_gaussAdmSmall_proof`. Consider the case `exact gramRealisation`. Consider the case `exact gram_realise_cut`. Consider the case `exact padic_stationary_phase`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_stationaryPhase_proof`. Consider the case `exact germ_expansion_matrix_function`. Consider the case `exact a5x_germPhi_proof`. Consider the case `exact germ_expansion_with_head`. Consider the case `exact a5x_germ_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact germ_kernel_expansion`. Consider the case `exact a5x_germKernel_proof`. Consider the case `exact germ_identity_bis`. Consider the case `exact a5x_germIdentity_proof`. Consider the case `exact theta_omega_bound`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_thOm_proof`. Consider the case `exact nonStationary`. Consider the case `exact a5x_nonStationary_proof`. Consider the case `exact morseLemma`. Consider the case `exact a5x_morseLemma_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact integral_field_refinement`. Consider the case `exact a5x_intKRefine_proof`. Consider the case `exact rootsFinite`. Consider the case `exact a5x_rootsFinite_proof`. Consider the case `exact compactOpenChoice`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_latChoice_proof`. Consider the case `exact orthogonal_lattice_properties`. Consider the case `exact a5x_perpLat_proof`. Consider the case `exact modulusLocallyConstant`. Consider the case `exact a5x_modLocConst_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact oscillatory_integral_invariant`. Consider the case `exact a5x_oscInvariant_proof`. Consider the case `exact rootsSeparated`. Consider the case `exact a5x_rootsSeparated_proof`. Consider the case `exact smallModules`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_smallModules_proof`. Consider the case `exact lattice_family_finite`. Consider the case `exact a5x_latFinite_proof`. Consider the case `exact finite_family_truncation_module`. Consider the case `exact a5x_supportModule_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact head_size_one_in_GL`. Consider the case `exact a5x_cSizeOne_proof`. Consider the case `exact rootStableExhaustion`. Consider the case `exact a5x_exhaust_proof`. Consider the case `exact posSemidefEntryBound`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_pSDEntryBound_proof`. Consider the case `exact posSemidefClosed`. Consider the case `exact a5x_pSDClosed_proof`. Consider the case `exact boundedSubsequence`. Consider the case `exact a5x_boundedSubseq_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact parsevalGroup_statement`. Consider the case `exact a5x_parsevalGroup_proof`. Consider the case `exact orbital_integral_change_of_variables`. Consider the case `exact a5x_oscReduction_proof`. Consider the case `exact head_reduction_lemma`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_headReduction_proof`. Consider the case `exact kernel_as_coset_sum`. Consider the case `exact a5x_kpFromBB_proof`. Consider the case `exact gramKernelHermitian`. Consider the case `exact a5x_kpHerm_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_a2Vanish_proof`. Consider the case `exact second_vanishing_off_ring`. Consider the case `exact shiftUnit_statement`. Consider the case `exact a5x_shiftUnit_proof`. Consider the case `exact shiftSmall_statement`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_shiftSmall_proof`. Consider the case `exact rootCutStable`. Consider the case `exact a5x_cutSame_proof`. Consider the case `exact rootCorrection`. Consider the case `exact a5x_rootCorr_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact square_near_unit`. Consider the case `exact a5x_squareNear_proof`. Consider the case `exact phase_difference_estimate`. Consider the case `exact a5x_phaseDiff_proof`. Consider the case `exact phase_locally_constant`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_locConst_proof`. Consider the case `exact integral_lattice_refinement_identity`. Consider the case `exact a5x_intLatRefine_proof`. Consider the case `exact padic_change_of_variables`. Consider the case `exact a5x_changeVar_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact crossTermsVanish`. Consider the case `exact a5x_crossVanish_proof`. Consider the case `exact averaged_vector_choices_exist`. Consider the case `exact a5x_avgDataExists_proof`. Consider the case `exact smallUnits`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_smallUnits_proof`. Consider the case `exact gram_equality_of_vectors`. Consider the case `exact a5x_uGramEq_proof`. Consider the case `exact averaged_vector_norm_bound`. Consider the case `exact a5x_uNormBound_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact cut_posSemidef`. Consider the case `exact a5x_cutPSD_proof`. Consider the case `exact heads_distinct_determinant_orthogonal`. Consider the case `exact a5x_uBlock_proof`. Consider the case `exact head_size_add_block`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_cSizeAddBlock_proof`. Consider the case `exact a6x_kpBlockDiag_proof`. Consider the case `exact kernel_block_diagonal_by_modulus`. Consider the case `exact annihilatorCharacters`. Consider the case `exact a5x_perpDual_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact characterMean`. Consider the case `exact a5x_charMean_proof`. Consider the case `exact truncated_average_norm_formula`. Consider the case `exact a5x_cutNormEval_proof`. Consider the case `exact thetaAverageLower`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_thxLower_proof`. Consider the case `exact averaged_kernel_periodic_psd`. Consider the case `exact a5x_thxBasic_proof`. Consider the case `exact averaged_kernel_parseval`. Consider the case `exact a5x_thxSum_proof)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem germ_expansion_matrix_function : Formalism.FourierDecayAlt.A6.GermPhi := by
   have h := germExpansionOfTestFunction
@@ -785,75 +785,75 @@ theorem germ_expansion_matrix_function : Formalism.FourierDecayAlt.A6.GermPhi :=
       | exact a5x_thxSum_proof)
 
 /- English proof (translation)
-Establish `h` using `germExpansionOfSteps`. Unfold `Formalism.FourierDecayAlt.A6.GermAssemble at h`. Apply the tactic sequence `apply h <;> clear h <;> try (first`. Consider the case `exact a6x_kpGram_proof`. Consider the case `exact kernel_gram_property`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_modMul_proof`. Consider the case `exact modulus_positive_multiplicative`. Consider the case `exact a6x_tripleForm_proof`. Consider the case `exact tripleForm`. Consider the case `exact a6x_avgClaim_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact lattice_average_identity`. Consider the case `exact a6x_tTEnd_proof`. Consider the case `exact triple_form_end_identity`. Consider the case `exact a6x_a2_proof`. Consider the case `exact second_gram_and_vanishing`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_n1Formula_proof`. Consider the case `exact first_kernel_explicit_formula`. Consider the case `exact a6x_intFinite_proof`. Consider the case `exact integral_points_finite`. Consider the case `exact a6x_charOrthDual_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact characterOrthogonalityDual`. Consider the case `exact a6x_charOrth_proof`. Consider the case `exact characterOrthogonality`. Consider the case `exact a6x_cokerCard_proof`. Consider the case `exact cokernel_card_inverse_modulus`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_a2Gram_proof`. Consider the case `exact second_gram_property`. Consider the case `exact a6x_n1Periodic_proof`. Consider the case `exact first_kernel_periodic`. Consider the case `exact a6x_n1Gram_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact first_kernel_gram_property`. Consider the case `exact a6x_n1Parseval_proof`. Consider the case `exact first_kernel_parseval`. Consider the case `exact a6x_nsSupport_proof`. Consider the case `exact added_block_kernel_support`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_nsBlockDiag_proof`. Consider the case `exact added_block_kernel_block_diagonal`. Consider the case `exact a6x_n0Ones_proof`. Consider the case `exact zero_kernel_all_ones`. Consider the case `exact a6x_th1Eq_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact first_theta_kernel_equality`. Consider the case `exact a6x_a13OneEq_proof`. Consider the case `exact first_theta_equals_first_kernel`. Consider the case `exact a6x_a13Step_proof`. Consider the case `exact lattice_average_induction`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_lemmaA_proof`. Consider the case `exact lattice_average_lemma_full`. Consider the case `exact doubleMeanSplit`. Consider the case `exact a5x_meanSplit_proof`. Consider the case `exact partialMeansOrthogonal`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_pOrth_proof`. Consider the case `exact orthogonalMeanNorm`. Consider the case `exact a5x_orthNorm_proof`. Consider the case `exact averageBound`. Consider the case `exact a5x_avgBound_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact gauss_sum_modulus_of_lattice`. Consider the case `exact a5x_gaussModulus_proof`. Consider the case `exact gauss_index_independent_of_choice`. Consider the case `exact a5x_gaussIndep_proof`. Consider the case `exact phase_hessian_determinant`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_hessDet_proof`. Consider the case `exact volume_scaling_identity`. Consider the case `exact a5x_volScale_proof`. Consider the case `exact gauss_hessian_index_exists`. Consider the case `exact a5x_gaussHess_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact admissible_gauss_sum_small`. Consider the case `exact a5x_gaussAdmSmall_proof`. Consider the case `exact gramRealisation`. Consider the case `exact gram_realise_cut`. Consider the case `exact padic_stationary_phase`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_stationaryPhase_proof`. Consider the case `exact germ_expansion_matrix_function`. Consider the case `exact a5x_germPhi_proof`. Consider the case `exact germ_expansion_with_head`. Consider the case `exact a5x_germ_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact germ_kernel_expansion`. Consider the case `exact a5x_germKernel_proof`. Consider the case `exact germ_identity_bis`. Consider the case `exact a5x_germIdentity_proof`. Consider the case `exact theta_omega_bound`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_thOm_proof`. Consider the case `exact nonStationary`. Consider the case `exact a5x_nonStationary_proof`. Consider the case `exact morseLemma`. Consider the case `exact a5x_morseLemma_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact integral_field_refinement`. Consider the case `exact a5x_intKRefine_proof`. Consider the case `exact rootsFinite`. Consider the case `exact a5x_rootsFinite_proof`. Consider the case `exact compactOpenChoice`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_latChoice_proof`. Consider the case `exact orthogonal_lattice_properties`. Consider the case `exact a5x_perpLat_proof`. Consider the case `exact modulusLocallyConstant`. Consider the case `exact a5x_modLocConst_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact oscillatory_integral_invariant`. Consider the case `exact a5x_oscInvariant_proof`. Consider the case `exact rootsSeparated`. Consider the case `exact a5x_rootsSeparated_proof`. Consider the case `exact smallModules`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_smallModules_proof`. Consider the case `exact lattice_family_finite`. Consider the case `exact a5x_latFinite_proof`. Consider the case `exact finite_family_truncation_module`. Consider the case `exact a5x_supportModule_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact head_size_one_in_GL`. Consider the case `exact a5x_cSizeOne_proof`. Consider the case `exact rootStableExhaustion`. Consider the case `exact a5x_exhaust_proof`. Consider the case `exact posSemidefEntryBound`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_pSDEntryBound_proof`. Consider the case `exact posSemidefClosed`. Consider the case `exact a5x_pSDClosed_proof`. Consider the case `exact boundedSubsequence`. Consider the case `exact a5x_boundedSubseq_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact parsevalGroup_statement`. Consider the case `exact a5x_parsevalGroup_proof`. Consider the case `exact orbital_integral_change_of_variables`. Consider the case `exact a5x_oscReduction_proof`. Consider the case `exact head_reduction_lemma`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_headReduction_proof`. Consider the case `exact kernel_as_coset_sum`. Consider the case `exact a5x_kpFromBB_proof`. Consider the case `exact gramKernelHermitian`. Consider the case `exact a5x_kpHerm_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_a2Vanish_proof`. Consider the case `exact second_vanishing_off_ring`. Consider the case `exact shiftUnit_statement`. Consider the case `exact a5x_shiftUnit_proof`. Consider the case `exact shiftSmall_statement`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_shiftSmall_proof`. Consider the case `exact rootCutStable`. Consider the case `exact a5x_cutSame_proof`. Consider the case `exact rootCorrection`. Consider the case `exact a5x_rootCorr_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact square_near_unit`. Consider the case `exact a5x_squareNear_proof`. Consider the case `exact phase_difference_estimate`. Consider the case `exact a5x_phaseDiff_proof`. Consider the case `exact phase_locally_constant`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_locConst_proof`. Consider the case `exact integral_lattice_refinement_identity`. Consider the case `exact a5x_intLatRefine_proof`. Consider the case `exact padic_change_of_variables`. Consider the case `exact a5x_changeVar_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact crossTermsVanish`. Consider the case `exact a5x_crossVanish_proof`. Consider the case `exact averaged_vector_choices_exist`. Consider the case `exact a5x_avgDataExists_proof`. Consider the case `exact smallUnits`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_smallUnits_proof`. Consider the case `exact gram_equality_of_vectors`. Consider the case `exact a5x_uGramEq_proof`. Consider the case `exact averaged_vector_norm_bound`. Consider the case `exact a5x_uNormBound_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact cut_posSemidef`. Consider the case `exact a5x_cutPSD_proof`. Consider the case `exact heads_distinct_determinant_orthogonal`. Consider the case `exact a5x_uBlock_proof`. Consider the case `exact head_size_add_block`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_cSizeAddBlock_proof`. Consider the case `exact a6x_kpBlockDiag_proof`. Consider the case `exact kernel_block_diagonal_by_modulus`. Consider the case `exact annihilatorCharacters`. Consider the case `exact a5x_perpDual_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact characterMean`. Consider the case `exact a5x_charMean_proof`. Consider the case `exact truncated_average_norm_formula`. Consider the case `exact a5x_cutNormEval_proof`. Consider the case `exact thetaAverageLower`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_thxLower_proof`. Consider the case `exact averaged_kernel_periodic_psd`. Consider the case `exact a5x_thxBasic_proof`. Consider the case `exact averaged_kernel_parseval`. Consider the case `exact a5x_thxSum_proof)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem germ_expansion_with_head : Formalism.FourierDecayAlt.A6.Germ := by
   have h := germExpansionOfSteps
@@ -1033,75 +1033,75 @@ theorem germ_expansion_with_head : Formalism.FourierDecayAlt.A6.Germ := by
       | exact a5x_thxSum_proof)
 
 /- English proof (translation)
-Establish `h` using `germExpansionKernelOfSteps`. Unfold `Formalism.FourierDecayAlt.A6.GermKernelAssemble at h`. Apply the tactic sequence `apply h <;> clear h <;> try (first`. Consider the case `exact a6x_kpGram_proof`. Consider the case `exact kernel_gram_property`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_modMul_proof`. Consider the case `exact modulus_positive_multiplicative`. Consider the case `exact a6x_tripleForm_proof`. Consider the case `exact tripleForm`. Consider the case `exact a6x_avgClaim_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact lattice_average_identity`. Consider the case `exact a6x_tTEnd_proof`. Consider the case `exact triple_form_end_identity`. Consider the case `exact a6x_a2_proof`. Consider the case `exact second_gram_and_vanishing`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_n1Formula_proof`. Consider the case `exact first_kernel_explicit_formula`. Consider the case `exact a6x_intFinite_proof`. Consider the case `exact integral_points_finite`. Consider the case `exact a6x_charOrthDual_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact characterOrthogonalityDual`. Consider the case `exact a6x_charOrth_proof`. Consider the case `exact characterOrthogonality`. Consider the case `exact a6x_cokerCard_proof`. Consider the case `exact cokernel_card_inverse_modulus`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_a2Gram_proof`. Consider the case `exact second_gram_property`. Consider the case `exact a6x_n1Periodic_proof`. Consider the case `exact first_kernel_periodic`. Consider the case `exact a6x_n1Gram_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact first_kernel_gram_property`. Consider the case `exact a6x_n1Parseval_proof`. Consider the case `exact first_kernel_parseval`. Consider the case `exact a6x_nsSupport_proof`. Consider the case `exact added_block_kernel_support`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_nsBlockDiag_proof`. Consider the case `exact added_block_kernel_block_diagonal`. Consider the case `exact a6x_n0Ones_proof`. Consider the case `exact zero_kernel_all_ones`. Consider the case `exact a6x_th1Eq_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact first_theta_kernel_equality`. Consider the case `exact a6x_a13OneEq_proof`. Consider the case `exact first_theta_equals_first_kernel`. Consider the case `exact a6x_a13Step_proof`. Consider the case `exact lattice_average_induction`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_lemmaA_proof`. Consider the case `exact lattice_average_lemma_full`. Consider the case `exact doubleMeanSplit`. Consider the case `exact a5x_meanSplit_proof`. Consider the case `exact partialMeansOrthogonal`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_pOrth_proof`. Consider the case `exact orthogonalMeanNorm`. Consider the case `exact a5x_orthNorm_proof`. Consider the case `exact averageBound`. Consider the case `exact a5x_avgBound_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact gauss_sum_modulus_of_lattice`. Consider the case `exact a5x_gaussModulus_proof`. Consider the case `exact gauss_index_independent_of_choice`. Consider the case `exact a5x_gaussIndep_proof`. Consider the case `exact phase_hessian_determinant`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_hessDet_proof`. Consider the case `exact volume_scaling_identity`. Consider the case `exact a5x_volScale_proof`. Consider the case `exact gauss_hessian_index_exists`. Consider the case `exact a5x_gaussHess_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact admissible_gauss_sum_small`. Consider the case `exact a5x_gaussAdmSmall_proof`. Consider the case `exact gramRealisation`. Consider the case `exact gram_realise_cut`. Consider the case `exact padic_stationary_phase`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_stationaryPhase_proof`. Consider the case `exact germ_expansion_matrix_function`. Consider the case `exact a5x_germPhi_proof`. Consider the case `exact germ_expansion_with_head`. Consider the case `exact a5x_germ_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact germ_kernel_expansion`. Consider the case `exact a5x_germKernel_proof`. Consider the case `exact germ_identity_bis`. Consider the case `exact a5x_germIdentity_proof`. Consider the case `exact theta_omega_bound`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_thOm_proof`. Consider the case `exact nonStationary`. Consider the case `exact a5x_nonStationary_proof`. Consider the case `exact morseLemma`. Consider the case `exact a5x_morseLemma_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact integral_field_refinement`. Consider the case `exact a5x_intKRefine_proof`. Consider the case `exact rootsFinite`. Consider the case `exact a5x_rootsFinite_proof`. Consider the case `exact compactOpenChoice`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_latChoice_proof`. Consider the case `exact orthogonal_lattice_properties`. Consider the case `exact a5x_perpLat_proof`. Consider the case `exact modulusLocallyConstant`. Consider the case `exact a5x_modLocConst_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact oscillatory_integral_invariant`. Consider the case `exact a5x_oscInvariant_proof`. Consider the case `exact rootsSeparated`. Consider the case `exact a5x_rootsSeparated_proof`. Consider the case `exact smallModules`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_smallModules_proof`. Consider the case `exact lattice_family_finite`. Consider the case `exact a5x_latFinite_proof`. Consider the case `exact finite_family_truncation_module`. Consider the case `exact a5x_supportModule_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact head_size_one_in_GL`. Consider the case `exact a5x_cSizeOne_proof`. Consider the case `exact rootStableExhaustion`. Consider the case `exact a5x_exhaust_proof`. Consider the case `exact posSemidefEntryBound`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_pSDEntryBound_proof`. Consider the case `exact posSemidefClosed`. Consider the case `exact a5x_pSDClosed_proof`. Consider the case `exact boundedSubsequence`. Consider the case `exact a5x_boundedSubseq_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact parsevalGroup_statement`. Consider the case `exact a5x_parsevalGroup_proof`. Consider the case `exact orbital_integral_change_of_variables`. Consider the case `exact a5x_oscReduction_proof`. Consider the case `exact head_reduction_lemma`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_headReduction_proof`. Consider the case `exact kernel_as_coset_sum`. Consider the case `exact a5x_kpFromBB_proof`. Consider the case `exact gramKernelHermitian`. Consider the case `exact a5x_kpHerm_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_a2Vanish_proof`. Consider the case `exact second_vanishing_off_ring`. Consider the case `exact shiftUnit_statement`. Consider the case `exact a5x_shiftUnit_proof`. Consider the case `exact shiftSmall_statement`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_shiftSmall_proof`. Consider the case `exact rootCutStable`. Consider the case `exact a5x_cutSame_proof`. Consider the case `exact rootCorrection`. Consider the case `exact a5x_rootCorr_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact square_near_unit`. Consider the case `exact a5x_squareNear_proof`. Consider the case `exact phase_difference_estimate`. Consider the case `exact a5x_phaseDiff_proof`. Consider the case `exact phase_locally_constant`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_locConst_proof`. Consider the case `exact integral_lattice_refinement_identity`. Consider the case `exact a5x_intLatRefine_proof`. Consider the case `exact padic_change_of_variables`. Consider the case `exact a5x_changeVar_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact crossTermsVanish`. Consider the case `exact a5x_crossVanish_proof`. Consider the case `exact averaged_vector_choices_exist`. Consider the case `exact a5x_avgDataExists_proof`. Consider the case `exact smallUnits`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_smallUnits_proof`. Consider the case `exact gram_equality_of_vectors`. Consider the case `exact a5x_uGramEq_proof`. Consider the case `exact averaged_vector_norm_bound`. Consider the case `exact a5x_uNormBound_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact cut_posSemidef`. Consider the case `exact a5x_cutPSD_proof`. Consider the case `exact heads_distinct_determinant_orthogonal`. Consider the case `exact a5x_uBlock_proof`. Consider the case `exact head_size_add_block`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_cSizeAddBlock_proof`. Consider the case `exact a6x_kpBlockDiag_proof`. Consider the case `exact kernel_block_diagonal_by_modulus`. Consider the case `exact annihilatorCharacters`. Consider the case `exact a5x_perpDual_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact characterMean`. Consider the case `exact a5x_charMean_proof`. Consider the case `exact truncated_average_norm_formula`. Consider the case `exact a5x_cutNormEval_proof`. Consider the case `exact thetaAverageLower`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_thxLower_proof`. Consider the case `exact averaged_kernel_periodic_psd`. Consider the case `exact a5x_thxBasic_proof`. Consider the case `exact averaged_kernel_parseval`. Consider the case `exact a5x_thxSum_proof)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem germ_kernel_expansion : Formalism.FourierDecayAlt.A6.GermKernel := by
   have h := germExpansionKernelOfSteps
@@ -1281,75 +1281,75 @@ theorem germ_kernel_expansion : Formalism.FourierDecayAlt.A6.GermKernel := by
       | exact a5x_thxSum_proof)
 
 /- English proof (translation)
-Establish `h` using `germIdentityOfSteps`. Unfold `Formalism.FourierDecayAlt.A6.GermIdentityAssemble at h`. Apply the tactic sequence `apply h <;> clear h <;> try (first`. Consider the case `exact a6x_kpGram_proof`. Consider the case `exact kernel_gram_property`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_modMul_proof`. Consider the case `exact modulus_positive_multiplicative`. Consider the case `exact a6x_tripleForm_proof`. Consider the case `exact tripleForm`. Consider the case `exact a6x_avgClaim_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact lattice_average_identity`. Consider the case `exact a6x_tTEnd_proof`. Consider the case `exact triple_form_end_identity`. Consider the case `exact a6x_a2_proof`. Consider the case `exact second_gram_and_vanishing`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_n1Formula_proof`. Consider the case `exact first_kernel_explicit_formula`. Consider the case `exact a6x_intFinite_proof`. Consider the case `exact integral_points_finite`. Consider the case `exact a6x_charOrthDual_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact characterOrthogonalityDual`. Consider the case `exact a6x_charOrth_proof`. Consider the case `exact characterOrthogonality`. Consider the case `exact a6x_cokerCard_proof`. Consider the case `exact cokernel_card_inverse_modulus`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_a2Gram_proof`. Consider the case `exact second_gram_property`. Consider the case `exact a6x_n1Periodic_proof`. Consider the case `exact first_kernel_periodic`. Consider the case `exact a6x_n1Gram_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact first_kernel_gram_property`. Consider the case `exact a6x_n1Parseval_proof`. Consider the case `exact first_kernel_parseval`. Consider the case `exact a6x_nsSupport_proof`. Consider the case `exact added_block_kernel_support`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_nsBlockDiag_proof`. Consider the case `exact added_block_kernel_block_diagonal`. Consider the case `exact a6x_n0Ones_proof`. Consider the case `exact zero_kernel_all_ones`. Consider the case `exact a6x_th1Eq_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact first_theta_kernel_equality`. Consider the case `exact a6x_a13OneEq_proof`. Consider the case `exact first_theta_equals_first_kernel`. Consider the case `exact a6x_a13Step_proof`. Consider the case `exact lattice_average_induction`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_lemmaA_proof`. Consider the case `exact lattice_average_lemma_full`. Consider the case `exact doubleMeanSplit`. Consider the case `exact a5x_meanSplit_proof`. Consider the case `exact partialMeansOrthogonal`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_pOrth_proof`. Consider the case `exact orthogonalMeanNorm`. Consider the case `exact a5x_orthNorm_proof`. Consider the case `exact averageBound`. Consider the case `exact a5x_avgBound_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact gauss_sum_modulus_of_lattice`. Consider the case `exact a5x_gaussModulus_proof`. Consider the case `exact gauss_index_independent_of_choice`. Consider the case `exact a5x_gaussIndep_proof`. Consider the case `exact phase_hessian_determinant`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_hessDet_proof`. Consider the case `exact volume_scaling_identity`. Consider the case `exact a5x_volScale_proof`. Consider the case `exact gauss_hessian_index_exists`. Consider the case `exact a5x_gaussHess_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact admissible_gauss_sum_small`. Consider the case `exact a5x_gaussAdmSmall_proof`. Consider the case `exact gramRealisation`. Consider the case `exact gram_realise_cut`. Consider the case `exact padic_stationary_phase`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_stationaryPhase_proof`. Consider the case `exact germ_expansion_matrix_function`. Consider the case `exact a5x_germPhi_proof`. Consider the case `exact germ_expansion_with_head`. Consider the case `exact a5x_germ_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact germ_kernel_expansion`. Consider the case `exact a5x_germKernel_proof`. Consider the case `exact germ_identity_bis`. Consider the case `exact a5x_germIdentity_proof`. Consider the case `exact theta_omega_bound`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_thOm_proof`. Consider the case `exact nonStationary`. Consider the case `exact a5x_nonStationary_proof`. Consider the case `exact morseLemma`. Consider the case `exact a5x_morseLemma_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact integral_field_refinement`. Consider the case `exact a5x_intKRefine_proof`. Consider the case `exact rootsFinite`. Consider the case `exact a5x_rootsFinite_proof`. Consider the case `exact compactOpenChoice`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_latChoice_proof`. Consider the case `exact orthogonal_lattice_properties`. Consider the case `exact a5x_perpLat_proof`. Consider the case `exact modulusLocallyConstant`. Consider the case `exact a5x_modLocConst_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact oscillatory_integral_invariant`. Consider the case `exact a5x_oscInvariant_proof`. Consider the case `exact rootsSeparated`. Consider the case `exact a5x_rootsSeparated_proof`. Consider the case `exact smallModules`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_smallModules_proof`. Consider the case `exact lattice_family_finite`. Consider the case `exact a5x_latFinite_proof`. Consider the case `exact finite_family_truncation_module`. Consider the case `exact a5x_supportModule_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact head_size_one_in_GL`. Consider the case `exact a5x_cSizeOne_proof`. Consider the case `exact rootStableExhaustion`. Consider the case `exact a5x_exhaust_proof`. Consider the case `exact posSemidefEntryBound`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_pSDEntryBound_proof`. Consider the case `exact posSemidefClosed`. Consider the case `exact a5x_pSDClosed_proof`. Consider the case `exact boundedSubsequence`. Consider the case `exact a5x_boundedSubseq_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact parsevalGroup_statement`. Consider the case `exact a5x_parsevalGroup_proof`. Consider the case `exact orbital_integral_change_of_variables`. Consider the case `exact a5x_oscReduction_proof`. Consider the case `exact head_reduction_lemma`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_headReduction_proof`. Consider the case `exact kernel_as_coset_sum`. Consider the case `exact a5x_kpFromBB_proof`. Consider the case `exact gramKernelHermitian`. Consider the case `exact a5x_kpHerm_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_a2Vanish_proof`. Consider the case `exact second_vanishing_off_ring`. Consider the case `exact shiftUnit_statement`. Consider the case `exact a5x_shiftUnit_proof`. Consider the case `exact shiftSmall_statement`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_shiftSmall_proof`. Consider the case `exact rootCutStable`. Consider the case `exact a5x_cutSame_proof`. Consider the case `exact rootCorrection`. Consider the case `exact a5x_rootCorr_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact square_near_unit`. Consider the case `exact a5x_squareNear_proof`. Consider the case `exact phase_difference_estimate`. Consider the case `exact a5x_phaseDiff_proof`. Consider the case `exact phase_locally_constant`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_locConst_proof`. Consider the case `exact integral_lattice_refinement_identity`. Consider the case `exact a5x_intLatRefine_proof`. Consider the case `exact padic_change_of_variables`. Consider the case `exact a5x_changeVar_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact crossTermsVanish`. Consider the case `exact a5x_crossVanish_proof`. Consider the case `exact averaged_vector_choices_exist`. Consider the case `exact a5x_avgDataExists_proof`. Consider the case `exact smallUnits`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_smallUnits_proof`. Consider the case `exact gram_equality_of_vectors`. Consider the case `exact a5x_uGramEq_proof`. Consider the case `exact averaged_vector_norm_bound`. Consider the case `exact a5x_uNormBound_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact cut_posSemidef`. Consider the case `exact a5x_cutPSD_proof`. Consider the case `exact heads_distinct_determinant_orthogonal`. Consider the case `exact a5x_uBlock_proof`. Consider the case `exact head_size_add_block`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_cSizeAddBlock_proof`. Consider the case `exact a6x_kpBlockDiag_proof`. Consider the case `exact kernel_block_diagonal_by_modulus`. Consider the case `exact annihilatorCharacters`. Consider the case `exact a5x_perpDual_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact characterMean`. Consider the case `exact a5x_charMean_proof`. Consider the case `exact truncated_average_norm_formula`. Consider the case `exact a5x_cutNormEval_proof`. Consider the case `exact thetaAverageLower`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_thxLower_proof`. Consider the case `exact averaged_kernel_periodic_psd`. Consider the case `exact a5x_thxBasic_proof`. Consider the case `exact averaged_kernel_parseval`. Consider the case `exact a5x_thxSum_proof)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem germ_identity_bis : Formalism.FourierDecayAlt.A6.GermIdentity := by
   have h := germIdentityOfSteps
@@ -1529,75 +1529,75 @@ theorem germ_identity_bis : Formalism.FourierDecayAlt.A6.GermIdentity := by
       | exact a5x_thxSum_proof)
 
 /- English proof (translation)
-Establish `h` using `thetaOnDomainOfSteps`. Unfold `Formalism.FourierDecayAlt.A6.ThOmAssemble at h`. Apply the tactic sequence `apply h <;> clear h <;> try (first`. Consider the case `exact a6x_kpGram_proof`. Consider the case `exact kernel_gram_property`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_modMul_proof`. Consider the case `exact modulus_positive_multiplicative`. Consider the case `exact a6x_tripleForm_proof`. Consider the case `exact tripleForm`. Consider the case `exact a6x_avgClaim_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact lattice_average_identity`. Consider the case `exact a6x_tTEnd_proof`. Consider the case `exact triple_form_end_identity`. Consider the case `exact a6x_a2_proof`. Consider the case `exact second_gram_and_vanishing`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_n1Formula_proof`. Consider the case `exact first_kernel_explicit_formula`. Consider the case `exact a6x_intFinite_proof`. Consider the case `exact integral_points_finite`. Consider the case `exact a6x_charOrthDual_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact characterOrthogonalityDual`. Consider the case `exact a6x_charOrth_proof`. Consider the case `exact characterOrthogonality`. Consider the case `exact a6x_cokerCard_proof`. Consider the case `exact cokernel_card_inverse_modulus`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_a2Gram_proof`. Consider the case `exact second_gram_property`. Consider the case `exact a6x_n1Periodic_proof`. Consider the case `exact first_kernel_periodic`. Consider the case `exact a6x_n1Gram_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact first_kernel_gram_property`. Consider the case `exact a6x_n1Parseval_proof`. Consider the case `exact first_kernel_parseval`. Consider the case `exact a6x_nsSupport_proof`. Consider the case `exact added_block_kernel_support`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_nsBlockDiag_proof`. Consider the case `exact added_block_kernel_block_diagonal`. Consider the case `exact a6x_n0Ones_proof`. Consider the case `exact zero_kernel_all_ones`. Consider the case `exact a6x_th1Eq_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact first_theta_kernel_equality`. Consider the case `exact a6x_a13OneEq_proof`. Consider the case `exact first_theta_equals_first_kernel`. Consider the case `exact a6x_a13Step_proof`. Consider the case `exact lattice_average_induction`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_lemmaA_proof`. Consider the case `exact lattice_average_lemma_full`. Consider the case `exact doubleMeanSplit`. Consider the case `exact a5x_meanSplit_proof`. Consider the case `exact partialMeansOrthogonal`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_pOrth_proof`. Consider the case `exact orthogonalMeanNorm`. Consider the case `exact a5x_orthNorm_proof`. Consider the case `exact averageBound`. Consider the case `exact a5x_avgBound_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact gauss_sum_modulus_of_lattice`. Consider the case `exact a5x_gaussModulus_proof`. Consider the case `exact gauss_index_independent_of_choice`. Consider the case `exact a5x_gaussIndep_proof`. Consider the case `exact phase_hessian_determinant`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_hessDet_proof`. Consider the case `exact volume_scaling_identity`. Consider the case `exact a5x_volScale_proof`. Consider the case `exact gauss_hessian_index_exists`. Consider the case `exact a5x_gaussHess_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact admissible_gauss_sum_small`. Consider the case `exact a5x_gaussAdmSmall_proof`. Consider the case `exact gramRealisation`. Consider the case `exact gram_realise_cut`. Consider the case `exact padic_stationary_phase`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_stationaryPhase_proof`. Consider the case `exact germ_expansion_matrix_function`. Consider the case `exact a5x_germPhi_proof`. Consider the case `exact germ_expansion_with_head`. Consider the case `exact a5x_germ_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact germ_kernel_expansion`. Consider the case `exact a5x_germKernel_proof`. Consider the case `exact germ_identity_bis`. Consider the case `exact a5x_germIdentity_proof`. Consider the case `exact theta_omega_bound`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_thOm_proof`. Consider the case `exact nonStationary`. Consider the case `exact a5x_nonStationary_proof`. Consider the case `exact morseLemma`. Consider the case `exact a5x_morseLemma_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact integral_field_refinement`. Consider the case `exact a5x_intKRefine_proof`. Consider the case `exact rootsFinite`. Consider the case `exact a5x_rootsFinite_proof`. Consider the case `exact compactOpenChoice`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_latChoice_proof`. Consider the case `exact orthogonal_lattice_properties`. Consider the case `exact a5x_perpLat_proof`. Consider the case `exact modulusLocallyConstant`. Consider the case `exact a5x_modLocConst_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact oscillatory_integral_invariant`. Consider the case `exact a5x_oscInvariant_proof`. Consider the case `exact rootsSeparated`. Consider the case `exact a5x_rootsSeparated_proof`. Consider the case `exact smallModules`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_smallModules_proof`. Consider the case `exact lattice_family_finite`. Consider the case `exact a5x_latFinite_proof`. Consider the case `exact finite_family_truncation_module`. Consider the case `exact a5x_supportModule_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact head_size_one_in_GL`. Consider the case `exact a5x_cSizeOne_proof`. Consider the case `exact rootStableExhaustion`. Consider the case `exact a5x_exhaust_proof`. Consider the case `exact posSemidefEntryBound`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_pSDEntryBound_proof`. Consider the case `exact posSemidefClosed`. Consider the case `exact a5x_pSDClosed_proof`. Consider the case `exact boundedSubsequence`. Consider the case `exact a5x_boundedSubseq_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact parsevalGroup_statement`. Consider the case `exact a5x_parsevalGroup_proof`. Consider the case `exact orbital_integral_change_of_variables`. Consider the case `exact a5x_oscReduction_proof`. Consider the case `exact head_reduction_lemma`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_headReduction_proof`. Consider the case `exact kernel_as_coset_sum`. Consider the case `exact a5x_kpFromBB_proof`. Consider the case `exact gramKernelHermitian`. Consider the case `exact a5x_kpHerm_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_a2Vanish_proof`. Consider the case `exact second_vanishing_off_ring`. Consider the case `exact shiftUnit_statement`. Consider the case `exact a5x_shiftUnit_proof`. Consider the case `exact shiftSmall_statement`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_shiftSmall_proof`. Consider the case `exact rootCutStable`. Consider the case `exact a5x_cutSame_proof`. Consider the case `exact rootCorrection`. Consider the case `exact a5x_rootCorr_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact square_near_unit`. Consider the case `exact a5x_squareNear_proof`. Consider the case `exact phase_difference_estimate`. Consider the case `exact a5x_phaseDiff_proof`. Consider the case `exact phase_locally_constant`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_locConst_proof`. Consider the case `exact integral_lattice_refinement_identity`. Consider the case `exact a5x_intLatRefine_proof`. Consider the case `exact padic_change_of_variables`. Consider the case `exact a5x_changeVar_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact crossTermsVanish`. Consider the case `exact a5x_crossVanish_proof`. Consider the case `exact averaged_vector_choices_exist`. Consider the case `exact a5x_avgDataExists_proof`. Consider the case `exact smallUnits`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_smallUnits_proof`. Consider the case `exact gram_equality_of_vectors`. Consider the case `exact a5x_uGramEq_proof`. Consider the case `exact averaged_vector_norm_bound`. Consider the case `exact a5x_uNormBound_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact cut_posSemidef`. Consider the case `exact a5x_cutPSD_proof`. Consider the case `exact heads_distinct_determinant_orthogonal`. Consider the case `exact a5x_uBlock_proof`. Consider the case `exact head_size_add_block`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_cSizeAddBlock_proof`. Consider the case `exact a6x_kpBlockDiag_proof`. Consider the case `exact kernel_block_diagonal_by_modulus`. Consider the case `exact annihilatorCharacters`. Consider the case `exact a5x_perpDual_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact characterMean`. Consider the case `exact a5x_charMean_proof`. Consider the case `exact truncated_average_norm_formula`. Consider the case `exact a5x_cutNormEval_proof`. Consider the case `exact thetaAverageLower`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_thxLower_proof`. Consider the case `exact averaged_kernel_periodic_psd`. Consider the case `exact a5x_thxBasic_proof`. Consider the case `exact averaged_kernel_parseval`. Consider the case `exact a5x_thxSum_proof)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem theta_omega_bound : Formalism.FourierDecayAlt.A6.ThOm := by
   have h := thetaOnDomainOfSteps
@@ -1777,75 +1777,75 @@ theorem theta_omega_bound : Formalism.FourierDecayAlt.A6.ThOm := by
       | exact a5x_thxSum_proof)
 
 /- English proof (translation)
-Establish `h` using `thetaExistsStepOfSteps`. Unfold `Formalism.FourierDecayAlt.A6.ThetaExistenceInductive at h`. Apply the tactic sequence `apply h <;> clear h <;> try (first`. Consider the case `exact a6x_kpGram_proof`. Consider the case `exact kernel_gram_property`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_modMul_proof`. Consider the case `exact modulus_positive_multiplicative`. Consider the case `exact a6x_tripleForm_proof`. Consider the case `exact tripleForm`. Consider the case `exact a6x_avgClaim_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact lattice_average_identity`. Consider the case `exact a6x_tTEnd_proof`. Consider the case `exact triple_form_end_identity`. Consider the case `exact a6x_a2_proof`. Consider the case `exact second_gram_and_vanishing`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_n1Formula_proof`. Consider the case `exact first_kernel_explicit_formula`. Consider the case `exact a6x_intFinite_proof`. Consider the case `exact integral_points_finite`. Consider the case `exact a6x_charOrthDual_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact characterOrthogonalityDual`. Consider the case `exact a6x_charOrth_proof`. Consider the case `exact characterOrthogonality`. Consider the case `exact a6x_cokerCard_proof`. Consider the case `exact cokernel_card_inverse_modulus`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_a2Gram_proof`. Consider the case `exact second_gram_property`. Consider the case `exact a6x_n1Periodic_proof`. Consider the case `exact first_kernel_periodic`. Consider the case `exact a6x_n1Gram_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact first_kernel_gram_property`. Consider the case `exact a6x_n1Parseval_proof`. Consider the case `exact first_kernel_parseval`. Consider the case `exact a6x_nsSupport_proof`. Consider the case `exact added_block_kernel_support`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_nsBlockDiag_proof`. Consider the case `exact added_block_kernel_block_diagonal`. Consider the case `exact a6x_n0Ones_proof`. Consider the case `exact zero_kernel_all_ones`. Consider the case `exact a6x_th1Eq_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact first_theta_kernel_equality`. Consider the case `exact a6x_a13OneEq_proof`. Consider the case `exact first_theta_equals_first_kernel`. Consider the case `exact a6x_a13Step_proof`. Consider the case `exact lattice_average_induction`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_lemmaA_proof`. Consider the case `exact lattice_average_lemma_full`. Consider the case `exact doubleMeanSplit`. Consider the case `exact a5x_meanSplit_proof`. Consider the case `exact partialMeansOrthogonal`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_pOrth_proof`. Consider the case `exact orthogonalMeanNorm`. Consider the case `exact a5x_orthNorm_proof`. Consider the case `exact averageBound`. Consider the case `exact a5x_avgBound_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact gauss_sum_modulus_of_lattice`. Consider the case `exact a5x_gaussModulus_proof`. Consider the case `exact gauss_index_independent_of_choice`. Consider the case `exact a5x_gaussIndep_proof`. Consider the case `exact phase_hessian_determinant`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_hessDet_proof`. Consider the case `exact volume_scaling_identity`. Consider the case `exact a5x_volScale_proof`. Consider the case `exact gauss_hessian_index_exists`. Consider the case `exact a5x_gaussHess_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact admissible_gauss_sum_small`. Consider the case `exact a5x_gaussAdmSmall_proof`. Consider the case `exact gramRealisation`. Consider the case `exact gram_realise_cut`. Consider the case `exact padic_stationary_phase`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_stationaryPhase_proof`. Consider the case `exact germ_expansion_matrix_function`. Consider the case `exact a5x_germPhi_proof`. Consider the case `exact germ_expansion_with_head`. Consider the case `exact a5x_germ_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact germ_kernel_expansion`. Consider the case `exact a5x_germKernel_proof`. Consider the case `exact germ_identity_bis`. Consider the case `exact a5x_germIdentity_proof`. Consider the case `exact theta_omega_bound`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_thOm_proof`. Consider the case `exact nonStationary`. Consider the case `exact a5x_nonStationary_proof`. Consider the case `exact morseLemma`. Consider the case `exact a5x_morseLemma_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact integral_field_refinement`. Consider the case `exact a5x_intKRefine_proof`. Consider the case `exact rootsFinite`. Consider the case `exact a5x_rootsFinite_proof`. Consider the case `exact compactOpenChoice`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_latChoice_proof`. Consider the case `exact orthogonal_lattice_properties`. Consider the case `exact a5x_perpLat_proof`. Consider the case `exact modulusLocallyConstant`. Consider the case `exact a5x_modLocConst_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact oscillatory_integral_invariant`. Consider the case `exact a5x_oscInvariant_proof`. Consider the case `exact rootsSeparated`. Consider the case `exact a5x_rootsSeparated_proof`. Consider the case `exact smallModules`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_smallModules_proof`. Consider the case `exact lattice_family_finite`. Consider the case `exact a5x_latFinite_proof`. Consider the case `exact finite_family_truncation_module`. Consider the case `exact a5x_supportModule_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact head_size_one_in_GL`. Consider the case `exact a5x_cSizeOne_proof`. Consider the case `exact rootStableExhaustion`. Consider the case `exact a5x_exhaust_proof`. Consider the case `exact posSemidefEntryBound`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_pSDEntryBound_proof`. Consider the case `exact posSemidefClosed`. Consider the case `exact a5x_pSDClosed_proof`. Consider the case `exact boundedSubsequence`. Consider the case `exact a5x_boundedSubseq_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact parsevalGroup_statement`. Consider the case `exact a5x_parsevalGroup_proof`. Consider the case `exact orbital_integral_change_of_variables`. Consider the case `exact a5x_oscReduction_proof`. Consider the case `exact head_reduction_lemma`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_headReduction_proof`. Consider the case `exact kernel_as_coset_sum`. Consider the case `exact a5x_kpFromBB_proof`. Consider the case `exact gramKernelHermitian`. Consider the case `exact a5x_kpHerm_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_a2Vanish_proof`. Consider the case `exact second_vanishing_off_ring`. Consider the case `exact shiftUnit_statement`. Consider the case `exact a5x_shiftUnit_proof`. Consider the case `exact shiftSmall_statement`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_shiftSmall_proof`. Consider the case `exact rootCutStable`. Consider the case `exact a5x_cutSame_proof`. Consider the case `exact rootCorrection`. Consider the case `exact a5x_rootCorr_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact square_near_unit`. Consider the case `exact a5x_squareNear_proof`. Consider the case `exact phase_difference_estimate`. Consider the case `exact a5x_phaseDiff_proof`. Consider the case `exact phase_locally_constant`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_locConst_proof`. Consider the case `exact integral_lattice_refinement_identity`. Consider the case `exact a5x_intLatRefine_proof`. Consider the case `exact padic_change_of_variables`. Consider the case `exact a5x_changeVar_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact crossTermsVanish`. Consider the case `exact a5x_crossVanish_proof`. Consider the case `exact averaged_vector_choices_exist`. Consider the case `exact a5x_avgDataExists_proof`. Consider the case `exact smallUnits`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_smallUnits_proof`. Consider the case `exact gram_equality_of_vectors`. Consider the case `exact a5x_uGramEq_proof`. Consider the case `exact averaged_vector_norm_bound`. Consider the case `exact a5x_uNormBound_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact cut_posSemidef`. Consider the case `exact a5x_cutPSD_proof`. Consider the case `exact heads_distinct_determinant_orthogonal`. Consider the case `exact a5x_uBlock_proof`. Consider the case `exact head_size_add_block`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_cSizeAddBlock_proof`. Consider the case `exact a6x_kpBlockDiag_proof`. Consider the case `exact kernel_block_diagonal_by_modulus`. Consider the case `exact annihilatorCharacters`. Consider the case `exact a5x_perpDual_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact characterMean`. Consider the case `exact a5x_charMean_proof`. Consider the case `exact truncated_average_norm_formula`. Consider the case `exact a5x_cutNormEval_proof`. Consider the case `exact thetaAverageLower`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_thxLower_proof`. Consider the case `exact averaged_kernel_periodic_psd`. Consider the case `exact a5x_thxBasic_proof`. Consider the case `exact averaged_kernel_parseval`. Consider the case `exact a5x_thxSum_proof)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem lattice_average_induction : Formalism.FourierDecayAlt.A5.ThetaExistsStep := by
   have h := thetaExistsStepOfSteps
@@ -2025,75 +2025,75 @@ theorem lattice_average_induction : Formalism.FourierDecayAlt.A5.ThetaExistsStep
       | exact a5x_thxSum_proof)
 
 /- English proof (translation)
-Establish `h` using `lattice_average_lemma_from_parts`. Unfold `Formalism.FourierDecayAlt.A5.LemmaAAssemble at h`. Apply the tactic sequence `apply h <;> clear h <;> try (first`. Consider the case `exact a6x_kpGram_proof`. Consider the case `exact kernel_gram_property`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_modMul_proof`. Consider the case `exact modulus_positive_multiplicative`. Consider the case `exact a6x_tripleForm_proof`. Consider the case `exact tripleForm`. Consider the case `exact a6x_avgClaim_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact lattice_average_identity`. Consider the case `exact a6x_tTEnd_proof`. Consider the case `exact triple_form_end_identity`. Consider the case `exact a6x_a2_proof`. Consider the case `exact second_gram_and_vanishing`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_n1Formula_proof`. Consider the case `exact first_kernel_explicit_formula`. Consider the case `exact a6x_intFinite_proof`. Consider the case `exact integral_points_finite`. Consider the case `exact a6x_charOrthDual_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact characterOrthogonalityDual`. Consider the case `exact a6x_charOrth_proof`. Consider the case `exact characterOrthogonality`. Consider the case `exact a6x_cokerCard_proof`. Consider the case `exact cokernel_card_inverse_modulus`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_a2Gram_proof`. Consider the case `exact second_gram_property`. Consider the case `exact a6x_n1Periodic_proof`. Consider the case `exact first_kernel_periodic`. Consider the case `exact a6x_n1Gram_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact first_kernel_gram_property`. Consider the case `exact a6x_n1Parseval_proof`. Consider the case `exact first_kernel_parseval`. Consider the case `exact a6x_nsSupport_proof`. Consider the case `exact added_block_kernel_support`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_nsBlockDiag_proof`. Consider the case `exact added_block_kernel_block_diagonal`. Consider the case `exact a6x_n0Ones_proof`. Consider the case `exact zero_kernel_all_ones`. Consider the case `exact a6x_th1Eq_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact first_theta_kernel_equality`. Consider the case `exact a6x_a13OneEq_proof`. Consider the case `exact first_theta_equals_first_kernel`. Consider the case `exact a6x_a13Step_proof`. Consider the case `exact lattice_average_induction`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_lemmaA_proof`. Consider the case `exact lattice_average_lemma_full`. Consider the case `exact doubleMeanSplit`. Consider the case `exact a5x_meanSplit_proof`. Consider the case `exact partialMeansOrthogonal`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_pOrth_proof`. Consider the case `exact orthogonalMeanNorm`. Consider the case `exact a5x_orthNorm_proof`. Consider the case `exact averageBound`. Consider the case `exact a5x_avgBound_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact gauss_sum_modulus_of_lattice`. Consider the case `exact a5x_gaussModulus_proof`. Consider the case `exact gauss_index_independent_of_choice`. Consider the case `exact a5x_gaussIndep_proof`. Consider the case `exact phase_hessian_determinant`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_hessDet_proof`. Consider the case `exact volume_scaling_identity`. Consider the case `exact a5x_volScale_proof`. Consider the case `exact gauss_hessian_index_exists`. Consider the case `exact a5x_gaussHess_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact admissible_gauss_sum_small`. Consider the case `exact a5x_gaussAdmSmall_proof`. Consider the case `exact gramRealisation`. Consider the case `exact gram_realise_cut`. Consider the case `exact padic_stationary_phase`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_stationaryPhase_proof`. Consider the case `exact germ_expansion_matrix_function`. Consider the case `exact a5x_germPhi_proof`. Consider the case `exact germ_expansion_with_head`. Consider the case `exact a5x_germ_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact germ_kernel_expansion`. Consider the case `exact a5x_germKernel_proof`. Consider the case `exact germ_identity_bis`. Consider the case `exact a5x_germIdentity_proof`. Consider the case `exact theta_omega_bound`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_thOm_proof`. Consider the case `exact nonStationary`. Consider the case `exact a5x_nonStationary_proof`. Consider the case `exact morseLemma`. Consider the case `exact a5x_morseLemma_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact integral_field_refinement`. Consider the case `exact a5x_intKRefine_proof`. Consider the case `exact rootsFinite`. Consider the case `exact a5x_rootsFinite_proof`. Consider the case `exact compactOpenChoice`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_latChoice_proof`. Consider the case `exact orthogonal_lattice_properties`. Consider the case `exact a5x_perpLat_proof`. Consider the case `exact modulusLocallyConstant`. Consider the case `exact a5x_modLocConst_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact oscillatory_integral_invariant`. Consider the case `exact a5x_oscInvariant_proof`. Consider the case `exact rootsSeparated`. Consider the case `exact a5x_rootsSeparated_proof`. Consider the case `exact smallModules`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_smallModules_proof`. Consider the case `exact lattice_family_finite`. Consider the case `exact a5x_latFinite_proof`. Consider the case `exact finite_family_truncation_module`. Consider the case `exact a5x_supportModule_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact head_size_one_in_GL`. Consider the case `exact a5x_cSizeOne_proof`. Consider the case `exact rootStableExhaustion`. Consider the case `exact a5x_exhaust_proof`. Consider the case `exact posSemidefEntryBound`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_pSDEntryBound_proof`. Consider the case `exact posSemidefClosed`. Consider the case `exact a5x_pSDClosed_proof`. Consider the case `exact boundedSubsequence`. Consider the case `exact a5x_boundedSubseq_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact parsevalGroup_statement`. Consider the case `exact a5x_parsevalGroup_proof`. Consider the case `exact orbital_integral_change_of_variables`. Consider the case `exact a5x_oscReduction_proof`. Consider the case `exact head_reduction_lemma`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_headReduction_proof`. Consider the case `exact kernel_as_coset_sum`. Consider the case `exact a5x_kpFromBB_proof`. Consider the case `exact gramKernelHermitian`. Consider the case `exact a5x_kpHerm_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a6x_a2Vanish_proof`. Consider the case `exact second_vanishing_off_ring`. Consider the case `exact shiftUnit_statement`. Consider the case `exact a5x_shiftUnit_proof`. Consider the case `exact shiftSmall_statement`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_shiftSmall_proof`. Consider the case `exact rootCutStable`. Consider the case `exact a5x_cutSame_proof`. Consider the case `exact rootCorrection`. Consider the case `exact a5x_rootCorr_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact square_near_unit`. Consider the case `exact a5x_squareNear_proof`. Consider the case `exact phase_difference_estimate`. Consider the case `exact a5x_phaseDiff_proof`. Consider the case `exact phase_locally_constant`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_locConst_proof`. Consider the case `exact integral_lattice_refinement_identity`. Consider the case `exact a5x_intLatRefine_proof`. Consider the case `exact padic_change_of_variables`. Consider the case `exact a5x_changeVar_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact crossTermsVanish`. Consider the case `exact a5x_crossVanish_proof`. Consider the case `exact averaged_vector_choices_exist`. Consider the case `exact a5x_avgDataExists_proof`. Consider the case `exact smallUnits`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_smallUnits_proof`. Consider the case `exact gram_equality_of_vectors`. Consider the case `exact a5x_uGramEq_proof`. Consider the case `exact averaged_vector_norm_bound`. Consider the case `exact a5x_uNormBound_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact cut_posSemidef`. Consider the case `exact a5x_cutPSD_proof`. Consider the case `exact heads_distinct_determinant_orthogonal`. Consider the case `exact a5x_uBlock_proof`. Consider the case `exact head_size_add_block`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_cSizeAddBlock_proof`. Consider the case `exact a6x_kpBlockDiag_proof`. Consider the case `exact kernel_block_diagonal_by_modulus`. Consider the case `exact annihilatorCharacters`. Consider the case `exact a5x_perpDual_proof`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact characterMean`. Consider the case `exact a5x_charMean_proof`. Consider the case `exact truncated_average_norm_formula`. Consider the case `exact a5x_cutNormEval_proof`. Consider the case `exact thetaAverageLower`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact a5x_thxLower_proof`. Consider the case `exact averaged_kernel_periodic_psd`. Consider the case `exact a5x_thxBasic_proof`. Consider the case `exact averaged_kernel_parseval`. Consider the case `exact a5x_thxSum_proof)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem lattice_average_lemma_full : Formalism.FourierDecayAlt.A5.LemmaA := by
   have h := lattice_average_lemma_from_parts

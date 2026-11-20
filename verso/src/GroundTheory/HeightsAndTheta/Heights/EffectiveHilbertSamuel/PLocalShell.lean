@@ -10,7 +10,7 @@ open MeasureTheory Set Filter Topology
 noncomputable section
 
 /- English proof (translation)
-Rewrite using `[tendsto_order]`. Use `⟨fun a ha => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨τ, hτ1, hτ2⟩` from `((hlo.eventually (lt_mem_nhds ha)).and h).exists filter_upwards [hτ2] with x hx using lt_of_lt_of_le hτ1 hx.1`. Take `⟨τ, hτ1, hτ2⟩` from `((hhi.eventually (gt_mem_nhds ha)).and h).exists filter_upwards [hτ2] with x hx using lt_of_le_of_lt hx.2 hτ1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 -/
 theorem localShell_tendsto_of_param_sandwich {α : Type*} {l : Filter α} {I : α → ENNReal}
     {lo hi : ℝ → ENNReal} {L : ENNReal} (hlo : Tendsto lo (𝓝[>] 0) (𝓝 L))
@@ -24,9 +24,7 @@ theorem localShell_tendsto_of_param_sandwich {α : Type*} {l : Filter α} {I : �
     filter_upwards [hτ2] with x hx using lt_of_le_of_lt hx.2 hτ1
 
 /- English proof (translation)
-Rewrite using `[lintegral_image_eq_lintegral_abs_det_fderiv_mul μ hN hf' hf g]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, ← ENNReal.ofReal_mul (inv_nonneg.2 hj.le), inv_mul_cancel₀ hj.ne', ENNReal.ofReal_one, one_mul]`. Use `_ ≤ ENNReal.ofReal j⁻¹ * ∫⁻ z in N, ENNReal.ofReal |(f' z).det| * g (f z) ∂μ := by gcongr`. Rewrite using `[← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`.
-
-Conclude with `setLIntegral_mono' hN fun z hz => by gcongr; exact hJ z hz`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localShell_lintegral_comp_le {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E] (μ : Measure E)
@@ -45,7 +43,7 @@ theorem localShell_lintegral_comp_le {E : Type*} [NormedAddCommGroup E] [NormedS
         exact setLIntegral_mono' hN fun z hz => by gcongr; exact hJ z hz
 
 /- English proof (translation)
-Rewrite using `[lintegral_image_eq_lintegral_abs_det_fderiv_mul μ hN hf' hf g, ← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Conclude with `setLIntegral_mono' hN fun z hz => by gcongr; exact hJ z hz`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localShell_lintegral_image_le {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E] (μ : Measure E)
@@ -58,7 +56,7 @@ theorem localShell_lintegral_image_le {E : Type*} [NormedAddCommGroup E] [Normed
   exact setLIntegral_mono' hN fun z hz => by gcongr; exact hJ z hz
 
 /- English proof (translation)
-The claim follows from `|(A.restrictScalars ℝ).det| = ‖LinearMap.det (A : (Fin D → ℂ) →ₗ[ℂ] (Fin D → ℂ))‖ ^ 2 := by have : (A.restrictScalars ℝ).det = Complex.normSq (LinearMap.det (A : (Fin D → ℂ) →ₗ[ℂ] (Fin D → ℂ))) := by rw [ContinuousLinearMap.det, ContinuousLinearMap.coe_restrictScalars, LinearMap. …`.
+A detailed English derivation is pending.
 -/
 theorem localShell_det_restrictScalars {D : ℕ} (A : (Fin D → ℂ) →L[ℂ] (Fin D → ℂ)) :
     |(A.restrictScalars ℝ).det| = ‖LinearMap.det (A : (Fin D → ℂ) →ₗ[ℂ] (Fin D → ℂ))‖ ^ 2 := by
@@ -71,13 +69,13 @@ theorem localShell_det_restrictScalars {D : ℕ} (A : (Fin D → ℂ) →L[ℂ] 
 def localShellSq {D : ℕ} (u : Fin D → ℂ) : ℝ := ∑ i, ‖u i‖ ^ 2
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun _ _ => sq_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem localShellSq_nonneg {D : ℕ} (u : Fin D → ℂ) : 0 ≤ localShellSq u :=
   Finset.sum_nonneg fun _ _ => sq_nonneg _
 
 /- English proof (translation)
-The claim follows from `(pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)).2 fun i => by have h : ‖u i‖ ^ 2 ≤ localShellSq u := Finset.single_le_sum (f := fun j => ‖u j‖ ^ 2) (fun j _ => sq_nonneg _) (Finset.mem_univ i) simpa [abs_of_nonneg (norm_nonneg _)] using Real.abs_le_sqrt h`.
+A detailed English derivation is pending.
 -/
 theorem localShell_norm_le_sqrt {D : ℕ} (u : Fin D → ℂ) : ‖u‖ ≤ Real.sqrt (localShellSq u) :=
   (pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)).2 fun i => by
@@ -86,13 +84,13 @@ theorem localShell_norm_le_sqrt {D : ℕ} (u : Fin D → ℂ) : ‖u‖ ≤ Real
     simpa [abs_of_nonneg (norm_nonneg _)] using Real.abs_le_sqrt h
 
 /- English proof (translation)
-Unfold `extShell`. Distinguish the cases in `hs : q * σ ∈ Icc (ε ^ 2 / 2) (ε ^ 2)`. Establish `hσ : 0 < σ` using `lt_of_lt_of_le hσl hσ1`. Establish `hε2 : 0 < ε ^ 2` using `by positivity`. Establish `hqσ : 0 < q * σ` using `lt_of_lt_of_le (by positivity) hs.1`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq0 : 0 < q` using `pos_of_mul_pos_left hqσ hσ.le`. Establish `hm : q ∈ Icc (ε ^ 2 / (2 * (σ₀ + τ))) (ε ^ 2 / (σ₀ - τ))`. Prove the components needed by the constructor for the conclusion. Rewrite using `[div_le_iff₀ (by linarith)]`. Use polynomial arithmetic with `[hs.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[le_div_iff₀ hσl]`. Use polynomial arithmetic with `[hs.2]`. Rewrite using `[indicator_of_mem hs, indicator_of_mem hm, Pi.one_apply, mul_one, ← ENNReal.ofReal_mul' (by positivity)]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Rewrite using `[mul_pow, mul_inv, mul_comm ((q ^ D)⁻¹), ← mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (σ ^ D)⁻¹ ≤ ((σ₀ - τ) ^ D)⁻¹` using `inv_anti₀ (pow_pos hσl D) (pow_le_pow_left₀ hσl.le hσ1 D)`. Establish `h2 : F * (σ ^ D)⁻¹ ≤ (F₀ + τ) * ((σ₀ - τ) ^ D)⁻¹` using `mul_le_mul hF' h1 (by positivity) (by linarith)`. Conclude with `mul_le_mul_of_nonneg_right h2 (by positivity)`. Rewrite using `[indicator_of_notMem hs, mul_zero, ENNReal.ofReal_zero]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem localShell_pointwise_upper (D : ℕ) {F σ q ε F₀ σ₀ τ : ℝ} (hF : 0 ≤ F) (hF' : F ≤ F₀ + τ)
     (hσl : 0 < σ₀ - τ) (hσ1 : σ₀ - τ ≤ σ) (hσ2 : σ ≤ σ₀ + τ) (hq : 0 ≤ q) (hε : 0 < ε) :
@@ -125,13 +123,13 @@ theorem localShell_pointwise_upper (D : ℕ) {F σ q ε F₀ σ₀ τ : ℝ} (hF
     simp
 
 /- English proof (translation)
-Unfold `extShell`. Distinguish the cases in `hm : q ∈ Icc (ε ^ 2 / (2 * (σ₀ - τ))) (ε ^ 2 / (σ₀ + τ))`. Establish `hσ : 0 < σ` using `lt_of_lt_of_le hσl hσ1`. Establish `hq0 : 0 < q` using `lt_of_lt_of_le (div_pos (by positivity) (by linarith)) hm.1`. Establish `hs : q * σ ∈ Icc (ε ^ 2 / 2) (ε ^ 2)`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hm.1`. Establish `h2` using `hm.2`. Rewrite `h1` using `[div_le_iff₀ (by linarith)]`. Rewrite `h2` using `[le_div_iff₀ (by linarith)]`. Apply the tactic sequence `constructor <;> nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[indicator_of_mem hs, indicator_of_mem hm, Pi.one_apply, mul_one, ← ENNReal.ofReal_mul' (by positivity)]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Rewrite using `[mul_pow, mul_inv, mul_comm ((q ^ D)⁻¹), ← mul_assoc]`. Establish `h1 : ((σ₀ + τ) ^ D)⁻¹ ≤ (σ ^ D)⁻¹` using `inv_anti₀ (pow_pos hσ D) (pow_le_pow_left₀ hσ.le hσ2 D)`. Establish `h2 : (F₀ - τ) * ((σ₀ + τ) ^ D)⁻¹ ≤ F * (σ ^ D)⁻¹` using `(mul_le_mul_of_nonneg_right hF' (inv_nonneg.2 (pow_nonneg (by linarith) D))).trans (mul_le_mul_of_nonneg_left h1 hF)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_right h2 (by positivity)`. Rewrite using `[indicator_of_notMem hm, mul_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem localShell_pointwise_lower (D : ℕ) {F σ q ε F₀ σ₀ τ : ℝ} (hF : 0 ≤ F) (hF' : F₀ - τ ≤ F)
     (hσl : 0 < σ₀ - τ) (hσ1 : σ₀ - τ ≤ σ) (hσ2 : σ ≤ σ₀ + τ) (hε : 0 < ε) :
@@ -162,7 +160,7 @@ theorem localShell_pointwise_lower (D : ℕ) {F σ q ε F₀ σ₀ τ : ℝ} (hF
     simp
 
 /- English proof (translation)
-Establish `hc : Continuous (fun u : Fin D → ℂ => localShellSq u)` using `continuous_finsetSum _ fun i _ => (continuous_norm.comp (continuous_apply i)).pow 2`. Establish `hmeas : MeasurableSet ((fun u : Fin D → ℂ => localShellSq u) ⁻¹' Icc a b)` using `measurableSet_Icc.preimage hc.measurable`. Rewrite using `[← hP D hD a b ha hab, ← lintegral_indicator (show MeasurableSet {w : Fin D → ℂ | a ≤ ∑ i, ‖w i‖ ^ 2 ∧ ∑ i, ‖w i‖ ^ 2 ≤ b} from hmeas)]`. Conclude with `lintegral_congr fun u => by`. Simplify using `only [Set.indicator_apply, localShellSq, Set.mem_Icc, Set.mem_ofPred_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem localShell_round (hP : ShellPolar.Statement) {D : ℕ} (hD : 1 ≤ D) {a b : ℝ} (ha : 0 < a)
     (hab : a ≤ b) :
@@ -178,27 +176,25 @@ theorem localShell_round (hP : ShellPolar.Statement) {D : ℕ} (hD : 1 ≤ D) {a
     simp only [Set.indicator_apply, localShellSq, Set.mem_Icc, Set.mem_ofPred_eq]
 
 /- English proof (translation)
-Establish `hNm : MeasurableSet (Metric.ball z₀ r)` using `measurableSet_ball`. Establish `hf' : ∀ z ∈ Metric.ball z₀ r, HasFDerivWithinAt w ((fderiv ℂ w z).restrictScalars ℝ) (Metric.ball z₀ r) z` using `fun z hz => ((hder z hz).restrictScalars ℝ).hasFDerivWithinAt`. Establish `hJdet : ∀ z, |((fderiv ℂ w z).restrictScalars ℝ).det| = ‖LinearMap.det (fderiv ℂ w z : (Fin D → ℂ) →ₗ[ℂ] (Fin D → ℂ))‖ ^ 2` using `fun z => localShell_det_restrictScalars _`. Establish `hC0 : 0 ≤ Real.pi ^ D / ((D - 1).factorial : ℝ)` using `by positivity`. Establish `hσm : 0 < σ₀ - τ` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσp : 0 < σ₀ + τ` using `by linarith`. Establish `hε2 : 0 < ε ^ 2` using `by positivity`. Use `set G : (Fin D → ℂ) → ENNReal := fun z => ENNReal.ofReal (F z * ((localShellSq (w z) * σ z) ^ D)⁻¹ * extShell ε (localShellSq (w z) * σ z)) with hG`. Use `set k : ℝ → ENNReal := fun x => ENNReal.ofReal ((x ^ D)⁻¹) with hk`. Establish `hIN : ∫⁻ z in V, G z = ∫⁻ z in Metric.ball z₀ r, G z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hEq : EqOn G ((Metric.ball z₀ r).indicator G) V` using `fun z hz => by`. Distinguish the cases in `hzN : z ∈ Metric.ball z₀ r`. Rewrite using `[indicator_of_mem hzN]`. Rewrite using `[indicator_of_notMem hzN]`. Establish `hd : r ≤ dist z z₀` using `not_lt.1 hzN`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `ht` using `hη z hz hd`. Simplify using `only [hG, extShell]`. Rewrite using `[indicator_of_notMem (fun h => by linarith [h.2]), mul_zero, ENNReal.ofReal_zero]`. Rewrite using `[setLIntegral_congr_fun hV hEq, lintegral_indicator hNm, Measure.restrict_restrict hNm, inter_eq_left.2 hNV]`. Establish `hup : ∫⁻ z in Metric.ball z₀ r, G z ≤ ENNReal.ofReal ((F₀ + τ) * ((σ₀ - τ) ^ D)⁻¹ * (J₀ - τ)⁻¹ * (Real.pi ^ D / ((D - 1).factorial : ℝ) * Real.log (2 * (σ₀ + τ) / (σ₀ - τ))))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hah : 0 < ε ^ 2 / (2 * (σ₀ + τ))` using `div_pos hε2 (by linarith)`. Establish `habh : ε ^ 2 / (2 * (σ₀ + τ)) ≤ ε ^ 2 / (σ₀ - τ)` using `div_le_div_of_nonneg_left hε2.le hσm (by linarith)`. Establish `hratio : ε ^ 2 / (σ₀ - τ) / (ε ^ 2 / (2 * (σ₀ + τ))) = 2 * (σ₀ + τ) / (σ₀ - τ)`. Clear the denominators using the available nonvanishing facts. Establish `hX : 0 ≤ Real.pi ^ D / ((D - 1).factorial : ℝ) * Real.log (2 * (σ₀ + τ) / (σ₀ - τ))` using `mul_nonneg hC0 (Real.log_nonneg ((one_le_div hσm).2 (by linarith)))`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hB : 0 ≤ (J₀ - τ)⁻¹` using `inv_nonneg.2 (by linarith)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[localShell_round hP hD hah habh, hratio, show (F₀ + τ) * ((σ₀ - τ) ^ D)⁻¹ * (J₀ - τ)⁻¹ * (Real.pi ^ D / ((D - 1).factorial : ℝ) * Real.log (2 * (σ₀ + τ) / (σ₀ - τ))) = (F₀ + τ) * ((σ₀ - τ) ^ D)⁻¹ * ((J₀ - τ)⁻¹ * (Real.pi ^ D / ((D - 1).factorial : ℝ) * Real.log (2 * (σ₀ + τ) / ( …`. Establish `hlo : ENNReal.ofReal ((F₀ - τ) * ((σ₀ + τ) ^ D)⁻¹ * (J₀ + τ)⁻¹ * (Real.pi ^ D / ((D - 1).factorial : ℝ) * Real.log (2 * (σ₀ - τ) / (σ₀ + τ)))) ≤ ∫⁻ z in Metric.ball z₀ r, G z`. Establish `hal : 0 < ε ^ 2 / (2 * (σ₀ - τ))` using `div_pos hε2 (by linarith)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `habl : ε ^ 2 / (2 * (σ₀ - τ)) ≤ ε ^ 2 / (σ₀ + τ)` using `div_le_div_of_nonneg_left hε2.le hσp (by linarith)`. Establish `hratio : ε ^ 2 / (σ₀ + τ) / (ε ^ 2 / (2 * (σ₀ - τ))) = 2 * (σ₀ - τ) / (σ₀ + τ)`. Clear the denominators using the available nonvanishing facts. Establish `hY : 0 ≤ Real.pi ^ D / ((D - 1).factorial : ℝ) * Real.log (2 * (σ₀ - τ) / (σ₀ + τ))` using `mul_nonneg hC0 (Real.log_nonneg ((one_le_div hσp).2 (by linarith)))`. Establish `hB : 0 ≤ (J₀ + τ)⁻¹` using `inv_nonneg.2 (by linarith)`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : ∀ u : Fin D → ℂ, (Icc (ε ^ 2 / (2 * (σ₀ - τ))) (ε ^ 2 / (σ₀ + τ))).indicator k (localShellSq u) ≠ 0 → u ∈ w '' Metric.ball z₀ r` using `fun u hu => by`. Establish `hm : localShellSq u ∈ Icc (ε ^ 2 / (2 * (σ₀ - τ))) (ε ^ 2 / (σ₀ + τ))`. Assume the negation of the conclusion as `h`. Conclude with `hu (indicator_of_notMem h _)`. Establish `hb : ε ^ 2 / (σ₀ + τ) < ρ ^ 2` using `(div_lt_iff₀ hσp).2 hερ`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `hρN` to reduce the goal to its premises. Rewrite using `[mem_ball_zero_iff]`. Conclude with `lt_of_le_of_lt (localShell_norm_le_sqrt u) ((Real.sqrt_lt' hρ).2 (lt_of_le_of_lt hm.2 hb))`. Establish `hW : ∫⁻ u in w '' Metric.ball z₀ r, (Icc (ε ^ 2 / (2 * (σ₀ - τ))) (ε ^ 2 / (σ₀ + τ))).indicator k (localShellSq u) = ENNReal.ofReal (Real.pi ^ D / ((D - 1).factorial : ℝ) * Real.log (2 * (σ₀ - τ) / (σ₀ + τ)))`. Rewrite using `[← hratio, ← localShell_round hP hD hal habl]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `setLIntegral_eq_of_support_subset fun u hu => hsub u hu`. Establish `hJ : 0 < J₀ + τ` using `by linarith`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hW, show (F₀ - τ) * ((σ₀ + τ) ^ D)⁻¹ * (J₀ + τ)⁻¹ * (Real.pi ^ D / ((D - 1).factorial : ℝ) * Real.log (2 * (σ₀ - τ) / (σ₀ + τ))) = (F₀ - τ) * ((σ₀ + τ) ^ D)⁻¹ * ((J₀ + τ)⁻¹ * (Real.pi ^ D / ((D - 1).factorial : ℝ) * Real.log (2 * (σ₀ - τ) / (σ₀ + τ)))) by ring, ENNReal.ofReal_mu …`. Use `_ ≤ ENNReal.ofReal ((F₀ - τ) * ((σ₀ + τ) ^ D)⁻¹) * (ENNReal.ofReal (J₀ + τ)⁻¹ * (ENNReal.ofReal (J₀ + τ) * ∫⁻ z in Metric.ball z₀ r, (Icc (ε ^ 2 / (2 * (σ₀ - τ))) (ε ^ 2 / (σ₀ + τ))).indicator k (localShellSq (w z)))) := mul_le_mul_right (mul_le_mul_right (localShell_lintegral_im …`.
-
-Use `_ = ENNReal.ofReal ((F₀ - τ) * ((σ₀ + τ) ^ D)⁻¹) * ∫⁻ z in Metric.ball z₀ r, (Icc (ε ^ 2 / (2 * (σ₀ - τ))) (ε ^ 2 / (σ₀ + τ))).indicator k (localShellSq (w z)) := by`. Rewrite using `[← mul_assoc (ENNReal.ofReal (J₀ + τ)⁻¹), ← ENNReal.ofReal_mul hB, inv_mul_cancel₀ hJ.ne', ENNReal.ofReal_one, one_mul]`. Use `_ = ∫⁻ z in Metric.ball z₀ r, ENNReal.ofReal ((F₀ - τ) * ((σ₀ + τ) ^ D)⁻¹) * (Icc (ε ^ 2 / (2 * (σ₀ - τ))) (ε ^ 2 / (σ₀ + τ))).indicator k (localShellSq (w z)) := (lintegral_const_mul' _ _ ENNReal.ofReal_ne_top).symm`. Use `_ ≤ ∫⁻ z in Metric.ball z₀ r, G z := setLIntegral_mono' hNm fun z hz => localShell_pointwise_lower D (hF0 z (hNV hz)) (hFb z hz).1 hσm (hσb z hz).1 (hσb z hz).2 hε`. Conclude with `⟨hlo.trans_eq hIN.symm, hIN.trans_le hup⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem localShell_bounds_on_ball (hP : ShellPolar.Statement) {D : ℕ} (hD : 1 ≤ D)
     {V : Set (Fin D → ℂ)} {z₀ : Fin D → ℂ} {w : (Fin D → ℂ) → Fin D → ℂ}
@@ -341,35 +337,29 @@ theorem localShell_bounds_on_ball (hP : ShellPolar.Statement) {D : ℕ} (hD : 1 
   exact ⟨hlo.trans_eq hIN.symm, hIN.trans_le hup⟩
 
 /- English proof (translation)
-Introduce `D hD V z₀ w F σ hV hz₀ hw hw0 hdet hF hF0 hσ hσ0 hlow`. Establish `hVn : V ∈ 𝓝 z₀` using `hV.mem_nhds hz₀`. Establish `hs0 : 0 < σ z₀` using `hσ0 z₀ hz₀`. Establish `hJc : ContinuousAt (fun z => ‖LinearMap.det (fderiv ℂ w z : (Fin D → ℂ) →ₗ[ℂ] (Fin D → ℂ))‖ ^ 2) z₀` using `((ContinuousLinearMap.continuous_det.continuousAt.comp (hw.fderiv z₀ hz₀).continuousAt).norm).pow 2`. Establish `hJ0' : 0 < ‖LinearMap.det (fderiv ℂ w z₀ : (Fin D → ℂ) →ₗ[ℂ] (Fin D → ℂ))‖ ^ 2` using `pow_pos (norm_pos_iff.2 hdet) 2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨J₀, hJ₀⟩ : ∃ J : ℝ, ‖LinearMap.det (fderiv ℂ w z₀ : (Fin D → ℂ) →ₗ[ℂ] (Fin D → ℂ))‖ ^ 2 = J` from `⟨_, rfl⟩`. Rewrite using `[hJ₀]`. Establish `hJ0 : 0 < J₀` using `hJ₀ ▸ hJ0'`. Use `set C := Real.pi ^ D / ((D - 1).factorial : ℝ) with hC`. Establish `hstrict : HasStrictFDerivAt w ((fderiv ℂ w z₀).toContinuousLinearEquivOfDetNeZero hdet : (Fin D → ℂ) →L[ℂ] (Fin D → ℂ)) z₀`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ContinuousLinearMap.coe_toContinuousLinearEquivOfDetNeZero]`. Conclude with `(hw z₀ hz₀).hasStrictFDerivAt`. Use `set Φ := hstrict.toOpenPartialHomeomorph w with hΦ`. Establish `hSn : Φ.source ∈ 𝓝 z₀` using `Φ.open_source.mem_nhds hstrict.mem_toOpenPartialHomeomorph_source`. Establish `hFc : ContinuousAt F z₀` using `hF.continuousAt hVn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hσc : ContinuousAt σ z₀` using `hσ.continuousAt hVn`. Establish `hlim0 : F z₀ / σ z₀ ^ D / J₀ * C * Real.log 2 = (F z₀ - 0) * ((σ z₀ + 0) ^ D)⁻¹ * (J₀ + 0)⁻¹ * (C * Real.log (2 * (σ z₀ - 0) / (σ z₀ + 0)))`. Rewrite using `[sub_zero, add_zero, add_zero, sub_zero, mul_div_assoc, div_self hs0.ne', mul_one]`. Expand and normalize the polynomial expressions, which then agree. Establish `hlim1 : F z₀ / σ z₀ ^ D / J₀ * C * Real.log 2 = (F z₀ + 0) * ((σ z₀ - 0) ^ D)⁻¹ * (J₀ - 0)⁻¹ * (C * Real.log (2 * (σ z₀ + 0) / (σ z₀ - 0)))`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[sub_zero, add_zero, sub_zero, add_zero, mul_div_assoc, div_self hs0.ne', mul_one]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : 2 * σ z₀ / σ z₀ ≠ 0` using `div_ne_zero (mul_ne_zero two_ne_zero hs0.ne') hs0.ne'`. Use `localShell_tendsto_of_param_sandwich (lo := fun τ => ENNReal.ofReal ((F z₀ - τ) * ((σ z₀ + τ) ^ D)⁻¹ * (J₀ + τ)⁻¹ * (C * Real.log (2 * (σ z₀ - τ) / (σ z₀ + τ))))) (hi := fun τ => ENNReal.ofReal ((F z₀ + τ) * ((σ z₀ - τ) ^ D)⁻¹ * (J₀ - τ)⁻¹ * (C * Real.log (2 * (σ z₀ + τ) / (σ z₀ …` and prove the remaining obligations. Rewrite using `[hlim0]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : σ z₀ + 0 ≠ 0` using `by rw [add_zero]; exact hs0.ne'`. Establish `e3 : J₀ + 0 ≠ 0` using `by rw [add_zero]; exact hJ0.ne'`. Establish `e4 : 2 * (σ z₀ - 0) / (σ z₀ + 0) ≠ 0` using `by rw [sub_zero, add_zero]; exact e2`. Establish `hc : ContinuousAt (fun τ : ℝ => (F z₀ - τ) * ((σ z₀ + τ) ^ D)⁻¹ * (J₀ + τ)⁻¹ * (C * Real.log (2 * (σ z₀ - τ) / (σ z₀ + τ)))) 0`. Apply `ContinuousAt.mul` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `ContinuousAt.mul` to reduce the goal to its premises. Apply `ContinuousAt.mul` to reduce the goal to its premises. Use `fun_prop`. Conclude with `ContinuousAt.inv₀ (by fun_prop) (pow_ne_zero _ e1)`. Conclude with `ContinuousAt.inv₀ (by fun_prop) e3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `ContinuousAt.mul continuousAt_const` to reduce the goal to its premises. Conclude with `ContinuousAt.log (ContinuousAt.div (by fun_prop) (by fun_prop) e1) e4`. Conclude with `ENNReal.tendsto_ofReal (tendsto_nhdsWithin_of_tendsto_nhds hc.tendsto)`. Rewrite using `[hlim1]`. Establish `e1 : σ z₀ - 0 ≠ 0` using `by rw [sub_zero]; exact hs0.ne'`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `e3 : J₀ - 0 ≠ 0` using `by rw [sub_zero]; exact hJ0.ne'`. Establish `e4 : 2 * (σ z₀ + 0) / (σ z₀ - 0) ≠ 0` using `by rw [sub_zero, add_zero]; exact e2`. Establish `hc : ContinuousAt (fun τ : ℝ => (F z₀ + τ) * ((σ z₀ - τ) ^ D)⁻¹ * (J₀ - τ)⁻¹ * (C * Real.log (2 * (σ z₀ + τ) / (σ z₀ - τ)))) 0`. Apply `ContinuousAt.mul` to reduce the goal to its premises. Apply `ContinuousAt.mul` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Apply `ContinuousAt.mul` to reduce the goal to its premises. Use `fun_prop`. Conclude with `ContinuousAt.inv₀ (by fun_prop) (pow_ne_zero _ e1)`. Conclude with `ContinuousAt.inv₀ (by fun_prop) e3`. Apply `ContinuousAt.mul continuousAt_const` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ContinuousAt.log (ContinuousAt.div (by fun_prop) (by fun_prop) e1) e4`. Conclude with `ENNReal.tendsto_ofReal (tendsto_nhdsWithin_of_tendsto_nhds hc.tendsto)`. Establish `hm : (0 : ℝ) < min (σ z₀ / 3) J₀` using `lt_min (by positivity) hJ0 filter_upwards [Ioo_mem_nhdsGT hm] with τ hτ`. Establish `hτ0 : 0 < τ` using `hτ.1`. Establish `hτσ : 3 * τ < σ z₀`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `lt_of_lt_of_le hτ.2 (min_le_left _ _)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hτJ : τ < J₀` using `lt_of_lt_of_le hτ.2 (min_le_right _ _)`. Establish `hev : ∀ᶠ z in 𝓝 z₀, z ∈ V ∧ z ∈ Φ.source ∧ F z ∈ Ioo (F z₀ - τ) (F z₀ + τ) ∧ σ z ∈ Ioo (σ z₀ - τ) (σ z₀ + τ) ∧ ‖LinearMap.det (fderiv ℂ w z : (Fin D → ℂ) →ₗ[ℂ] (Fin D → ℂ))‖ ^ 2 ∈ Ioo (J₀ - τ) (J₀ + τ)` using `Filter.Eventually.and (show ∀ᶠ z in 𝓝 z₀, z ∈ V from hVn) (Filter.Eventually.and (show ∀ᶠ z in 𝓝 z₀, z ∈ Φ.source from hSn) ((hFc.eventually (Ioo_mem_nhds (by linarith) (by linarith))).and ((hσc.eventually (Ioo_mem_nhds (by linarith) (by linarith))).and (hJc.eventually (Ioo_mem_n …`. Take `⟨r, hr, hball⟩` from `Metric.eventually_nhds_iff_ball.1 hev`.
-
-Establish `hNV : Metric.ball z₀ r ⊆ V` using `fun z hz => (hball z hz).1`. Establish `hNS : Metric.ball z₀ r ⊆ Φ.source` using `fun z hz => (hball z hz).2.1`. Establish `hinj : InjOn w (Metric.ball z₀ r)` using `Φ.injOn.mono hNS`. Establish `hopen : IsOpen (w '' Metric.ball z₀ r)` using `Φ.isOpen_image_of_subset_source Metric.isOpen_ball hNS`. Establish `h0 : (0 : Fin D → ℂ) ∈ w '' Metric.ball z₀ r` using `⟨z₀, Metric.mem_ball_self hr, hw0⟩`.
-
-Take `⟨ρ, hρ, hρN⟩` from `Metric.isOpen_iff.1 hopen 0 h0`. Take `⟨η, hη, hηV⟩` from `hlow r hr`. Establish `hm2 : 0 < min η (ρ ^ 2 * (σ z₀ + τ))` using `lt_min hη (mul_pos (by positivity) (by linarith))`. Establish `hsq : Tendsto (fun ε : ℝ => ε ^ 2) (𝓝[>] 0) (𝓝 0)` using `tendsto_nhdsWithin_of_tendsto_nhds ((continuous_pow 2).tendsto' (0 : ℝ) 0 (by norm_num))`. Use `filter_upwards [self_mem_nhdsWithin, hsq.eventually (gt_mem_nhds hm2)] with ε hε hε2`.
-
-Conclude with `localShell_bounds_on_ball hP hD hV.measurableSet hNV hinj (fun z hz => (hw z (hNV hz)).differentiableAt.hasFDerivAt) hρ hρN hF0 (fun z hz => ⟨(hball z hz).2.2.1.1.le, (hball z hz).2.2.1.2.le⟩) (fun z hz => ⟨(hball z hz).2.2.2.1.1.le, (hball z hz).2.2.2.1.2.le⟩) (fun z hz => ⟨(hba …`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem LocalShell.proof (hP : ShellPolar.Statement) : LocalShell.Statement := by
   intro D hD V z₀ w F σ hV hz₀ hw hw0 hdet hF hF0 hσ hσ0 hlow

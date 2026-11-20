@@ -28,7 +28,7 @@ Both sides reduce to the same expression.
     (semiThrough i s q).app n a = i.app n (s.app n (q.app n a)) := rfl
 
 /- English proof (translation)
-The claim follows from `SemiHom.ext_apply fun _ _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem semiThrough_ofHom {k : Type} [CommRing k] {A' G' G A : PDivGroup p k} (i : A' ⟶ G') (f : G' ⟶ G)
     (q : G ⟶ A) : semiThrough i (SemiHom.ofHom f) q = SemiHom.ofHom (i ≫ f ≫ q) :=
@@ -40,14 +40,14 @@ variable [Fact p.Prime] {P : ∀ (k : Type) [CommRing k], PDivGroup p k → Prop
   {k : Type} [Field k] [CharP k p] [PerfectRing k p]
 
 /- English proof (translation)
-The claim follows from `B.smap_comp hG hH hK (SemiHom.ofHom g) (SemiHom.ofHom f) (SemiHom.ofHom (f ≫ g)) (fun _ _ => rfl) m`.
+A detailed English derivation is pending.
 -/
 theorem map_comp {G H K : PDivGroup p k} (hG : P k G) (hH : P k H) (hK : P k K) (f : G ⟶ H)
     (g : H ⟶ K) (m : B.M K hK) : B.map hG hK (f ≫ g) m = B.map hG hH f (B.map hH hK g m) :=
   B.smap_comp hG hH hK (SemiHom.ofHom g) (SemiHom.ofHom f) (SemiHom.ofHom (f ≫ g)) (fun _ _ => rfl) m
 
 /- English proof (translation)
-Establish `h` using `B.smap_add hG hG 0 0 m`. Rewrite `h` using `[add_zero]`. Establish `h2 : B.smap hG hG (SemiHom.ofHom 0) m = 0` using `by simpa using h`. Rewrite using `[← B.smap_id G hG m, h0]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_id_eq_zero {G : PDivGroup p k} (hG : P k G) (h0 : 𝟙 G = 0) (m : B.M G hG) : m = 0 := by
   have h := B.smap_add hG hG 0 0 m
@@ -57,14 +57,14 @@ theorem eq_zero_of_id_eq_zero {G : PDivGroup p k} (hG : P k G) (h0 : 𝟙 G = 0)
   exact h2
 
 /- English proof (translation)
-Rewrite using `[rigExtMap_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rigExtMap_rigExtMap {k : Type} [CommRing k] {X Y Z : PDivGroup p k} (f : X ⟶ Y) (g : Y ⟶ Z)
     (x : Z.RigExt) : rigExtMap f (rigExtMap g x) = rigExtMap (f ≫ g) x := by
   rw [rigExtMap_comp]; rfl
 
 /- English proof (translation)
-Establish `h` using `(rigExtMap_add_and_natCast_smul_id p k (CharP.cast_eq_zero k p) X Y).1 0 0`. Rewrite `h` using `[add_zero]`. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem rigExtMap_zero' {X Y : PDivGroup p k} : rigExtMap (0 : X ⟶ Y) = 0 := by
   have h := (rigExtMap_add_and_natCast_smul_id p k (CharP.cast_eq_zero k p) X Y).1 0 0
@@ -72,7 +72,7 @@ theorem rigExtMap_zero' {X Y : PDivGroup p k} : rigExtMap (0 : X ⟶ Y) = 0 := b
   simpa using h
 
 /- English proof (translation)
-Rewrite using `[LinearMap.map_add, rigExtMap_rigExtMap, rigExtMap_rigExtMap, h₀, z, rigExtMap_zero', rigExtMap_id]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rig_split₀ {G G₀ G₁ : PDivGroup p k} (i₀ : G₀ ⟶ G) (q₀ : G ⟶ G₀) (q₁ : G ⟶ G₁)
     (h₀ : i₀ ≫ q₀ = 𝟙 G₀) (z : i₀ ≫ q₁ = 0) (r₀ : G₀.RigExt) (r₁ : G₁.RigExt) :
@@ -81,7 +81,7 @@ theorem rig_split₀ {G G₀ G₁ : PDivGroup p k} (i₀ : G₀ ⟶ G) (q₀ : G
   simp
 
 /- English proof (translation)
-Rewrite using `[LinearMap.map_add, rigExtMap_rigExtMap, rigExtMap_rigExtMap, h₁, z, rigExtMap_zero', rigExtMap_id]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rig_split₁ {G G₀ G₁ : PDivGroup p k} (i₁ : G₁ ⟶ G) (q₀ : G ⟶ G₀) (q₁ : G ⟶ G₁)
     (h₁ : i₁ ≫ q₁ = 𝟙 G₁) (z : i₁ ≫ q₀ = 0) (r₀ : G₀.RigExt) (r₁ : G₁.RigExt) :
@@ -103,7 +103,7 @@ theorem redSum_apply {W : Type} [CommRing W] (τ : W →+* k) {M₀ M₁ : Type}
     redSum τ q₀ q₁ r₀ r₁ m = rigExtMap q₀ (r₀ m.1) + rigExtMap q₁ (r₁ m.2) := rfl
 
 /- English proof (translation)
-Rewrite using `[← SemiHom.ofHom_rig, ← SemiHom.ofHom_rig, SemiHom.rig_rig (semiThrough i s q) (SemiHom.ofHom q') (s.comp (SemiHom.ofHom q)) (fun n a => (h n a).symm)]`. Conclude with `SemiHom.comp_rig _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rig_semiThrough {k' : Type} [CommRing k'] {σ : k →+* k'} {G' A' : PDivGroup p k'} {G A : PDivGroup p k}
     (i : A' ⟶ G') (q' : G' ⟶ A') (s : SemiHom σ G' G) (q : G ⟶ A)
@@ -116,49 +116,37 @@ theorem rig_semiThrough {k' : Type} [CommRing k'] {σ : k →+* k'} {G' A' : PDi
 end Base
 
 /- English proof (translation)
-Introduce `p _ Bc Be hK hE`. Use `choose G₀ G₁ i₀ q₀ i₁ q₁ hc he h₀ h₁ hs using fun (k : Type) [Field k] [CharP k p] [PerfectRing k p] (G : PDivGroup p k) => GlobalTheory.PDivGroup.exists_isConn_isEt_splitting p k G`. Establish `rz : ∀ (k : Type) [Field k] [CharP k p] [PerfectRing k p] (X Y : PDivGroup p k), rigExtMap (0 : X ⟶ Y) = 0`. Introduce `k _ _ _ X Y`. Establish `h` using `(rigExtMap_add_and_natCast_smul_id p k (CharP.cast_eq_zero k p) X Y).1 0 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[add_zero]`. Simplify using `using h`. Introduce the local definition `D : Base p (fun _ _ _ => True)`. Use the proof step `{ M := fun {k} _ _ _ G _ => ModuleCat.of (WittVector p k) (Bc.M (G₀ k G) (hc k G) × Be.M (G₁ k G) (he k G)) smap := fun {k k'} _ _ _ _ _ _ {σ G' G} _ _ s => (Bc.smap (hc k' G') (hc k G) (semiThrough (i₀ k' G') s (q₀ k G))).prodMap (Be.smap (he k' G') (he k G) (semiThrough (i₁ k' …`. Conclude with `(inferInstance : Module.Free (WittVector p k) (Bc.M (G₀ k G) (hc k G) × Be.M (G₁ k G) (he k G)))`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `finite := fun {k} _ _ _ G _ => by haveI := Bc.finite (G₀ k G) (hc k G) haveI := Be.finite (G₁ k G) (he k G)`. Conclude with `(inferInstance : Module.Finite (WittVector p k) (Bc.M (G₀ k G) (hc k G) × Be.M (G₁ k G) (he k G)))`. Use `red_surjective := fun {k} _ _ _ G _ x => by`. Take `⟨m₀, e₀⟩` from `Bc.red_surjective (G₀ k G) (hc k G) (rigExtMap (i₀ k G) x)`. Take `⟨m₁, e₁⟩` from `Be.red_surjective (G₁ k G) (he k G) (rigExtMap (i₁ k G) x)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨(m₀, m₁), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `rigExtMap (q₀ k G) (Bc.red _ _ m₀) + rigExtMap (q₁ k G) (Be.red _ _ m₁) = x`. Rewrite using `[e₀, e₁, rigExtMap_rigExtMap, rigExtMap_rigExtMap, ← LinearMap.add_apply, ← (rigExtMap_add_and_natCast_smul_id p k (CharP.cast_eq_zero k p) G G).1, hs, rigExtMap_id, LinearMap.id_apply]`. Use `red_eq_zero := fun {k} _ _ _ G _ m => by`. Take `⟨m₀, m₁⟩` from `m`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ke₀` using `Bc.red_eq_zero (G₀ k G) (hc k G) m₀`. Establish `ke₁` using `Be.red_eq_zero (G₁ k G) (he k G) m₁`. Establish `z01` using `(hom_eq_zero_of_isConn_of_isEt p k (G₀ k G) (G₁ k G) (hc k G) (he k G)).1 (i₀ k G ≫ q₁ k G)`. Establish `z10` using `(hom_eq_zero_of_isConn_of_isEt p k (G₀ k G) (G₁ k G) (hc k G) (he k G)).2 (i₁ k G ≫ q₀ k G)`. Express the relevant statement in the definitionally equal form `rigExtMap (q₀ k G) (Bc.red _ _ m₀) + rigExtMap (q₁ k G) (Be.red _ _ m₁) = 0 ↔ _`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `a₀` using `(rig_split₀ (i₀ k G) (q₀ k G) (q₁ k G) (h₀ k G) z01 _ _).symm.trans ((congrArg (rigExtMap (i₀ k G)) h).trans (map_zero _))`. Establish `a₁` using `(rig_split₁ (i₁ k G) (q₀ k G) (q₁ k G) (h₁ k G) z10 _ _).symm.trans ((congrArg (rigExtMap (i₁ k G)) h).trans (map_zero _))`. Take `⟨n₀, e₀⟩` from `ke₀.1 a₀`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨n₁, e₁⟩` from `ke₁.1 a₁`. Conclude with `⟨(n₀, n₁), Prod.ext e₀ e₁⟩`. Introduce and unpack `⟨n, h⟩`. Establish `h' : ((m₀, m₁) : Bc.M (G₀ k G) (hc k G) × Be.M (G₁ k G) (he k G)) = (p • n.1, p • n.2)` using `h`. Take `⟨e₀, e₁⟩` from `Prod.ext_iff.1 h'`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `(congrArg₂ (fun a b => rigExtMap (q₀ k G) a + rigExtMap (q₁ k G) b) (ke₀.2 ⟨n.1, e₀⟩) (ke₁.2 ⟨n.2, e₁⟩)).trans (by simp)`. Use `smap_smul := fun {k k'} _ _ _ _ _ _ {σ G' G} _ _ s a m => Prod.ext (Bc.smap_smul (hc k' G') (hc k G) _ a m.1) (Be.smap_smul (he k' G') (he k G) _ a m.2)`. Use `smap_id := fun {k} _ _ _ G _ m => by`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Bc.smap _ _ (semiThrough (i₀ k G) (SemiHom.ofHom (𝟙 G)) (q₀ k G)) m.1 = m.1`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[semiThrough_ofHom, Category.id_comp, h₀]`. Conclude with `Bc.smap_id _ _ _`. Express the relevant statement in the definitionally equal form `Be.smap _ _ (semiThrough (i₁ k G) (SemiHom.ofHom (𝟙 G)) (q₁ k G)) m.2 = m.2`. Rewrite using `[semiThrough_ofHom, Category.id_comp, h₁]`. Conclude with `Be.smap_id _ _ _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `smap_add := fun {k} _ _ _ G H _ _ f g m => by`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Bc.smap _ _ (semiThrough (i₀ k G) (SemiHom.ofHom (f + g)) (q₀ k H)) m.1 = Bc.smap _ _ (semiThrough (i₀ k G) (SemiHom.ofHom f) (q₀ k H)) m.1 + Bc.smap _ _ (semiThrough (i₀ k G) (SemiHom.ofHom g) (q₀ k H)) m.1`. Rewrite using `[semiThrough_ofHom, semiThrough_ofHom, semiThrough_ofHom, Preadditive.add_comp, Preadditive.comp_add]`. Conclude with `Bc.smap_add _ _ _ _ _`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `Be.smap _ _ (semiThrough (i₁ k G) (SemiHom.ofHom (f + g)) (q₁ k H)) m.2 = Be.smap _ _ (semiThrough (i₁ k G) (SemiHom.ofHom f) (q₁ k H)) m.2 + Be.smap _ _ (semiThrough (i₁ k G) (SemiHom.ofHom g) (q₁ k H)) m.2`. Rewrite using `[semiThrough_ofHom, semiThrough_ofHom, semiThrough_ofHom, Preadditive.add_comp, Preadditive.comp_add]`. Conclude with `Be.smap_add _ _ _ _ _`. Use `smap_comp := fun {k k' k''} _ _ _ _ _ _ _ _ _ {σ τ υ G'' G' G} _ _ _ s t u hu m => by`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Bc.smap_comp (hc k'' G'') (hc k' G') (hc k G) (semiThrough (i₀ k' G') s (q₀ k G)) (semiThrough (i₀ k'' G'') t (q₀ k' G')) (semiThrough (i₀ k'' G'') u (q₀ k G)) (fun n a => ?_) m.1` and prove the remaining obligations. Establish `e` using `GlobalTheory.T.semilinearHom_connected_factor_through_part p k k' _ G' (G₀ k' G') (G₁ k' G') (G₀ k G) (i₀ k' G') (q₀ k' G') (i₁ k' G') (q₁ k' G') (he k' G') (hc k G) (hs k' G') (s.comp (SemiHom.ofHom (q₀ k G))) n a`. Simplify using `only [SemiHom.comp_app, SemiHom.ofHom_app] at e`. Simplify using `only [semiThrough_app, hu, e]`. Use `Be.smap_comp (he k'' G'') (he k' G') (he k G) (semiThrough (i₁ k' G') s (q₁ k G)) (semiThrough (i₁ k'' G'') t (q₁ k' G')) (semiThrough (i₁ k'' G'') u (q₁ k G)) (fun n a => ?_) m.2` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `GlobalTheory.T.semilinearHom_etale_factor_through_part p k k' _ G' (G₀ k' G') (G₁ k' G') (G₁ k G) (i₀ k' G') (q₀ k' G') (i₁ k' G') (q₁ k' G') (hc k' G') (he k G) (hs k' G') (s.comp (SemiHom.ofHom (q₁ k G))) n a`. Simplify using `only [SemiHom.comp_app, SemiHom.ofHom_app] at e`. Simplify using `only [semiThrough_app, hu, e]`. Use `red_smap := fun {k k'} _ _ _ _ _ _ {σ G' G} _ _ s m => by`. Establish `c₀` using `rig_semiThrough (i₀ k' G') (q₀ k' G') s (q₀ k G) (fun n a => GlobalTheory.T.semilinearHom_connected_factor_through_part p k k' _ G' (G₀ k' G') (G₁ k' G') (G₀ k G) (i₀ k' G') (q₀ k' G') (i₁ k' G') (q₁ k' G') (he k' G') (hc k G) (hs k' G') (s.comp (SemiHom.ofHom (q₀ k G))) n a)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c₁` using `rig_semiThrough (i₁ k' G') (q₁ k' G') s (q₁ k G) (fun n a => GlobalTheory.T.semilinearHom_etale_factor_through_part p k k' _ G' (G₀ k' G') (G₁ k' G') (G₁ k G) (i₀ k' G') (q₀ k' G') (i₁ k' G') (q₁ k' G') (hc k' G') (he k G) (hs k' G') (s.comp (SemiHom.ofHom (q₁ k G))) n a)`. Take `⟨m₀, m₁⟩` from `m`. Establish `a` using `Bc.red_smap (hc k' G') (hc k G) (semiThrough (i₀ k' G') s (q₀ k G)) m₀`. Establish `b` using `Be.red_smap (he k' G') (he k G) (semiThrough (i₁ k' G') s (q₁ k G)) m₁`. Use `(redSum_apply _ _ _ _ _ _).trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `Eq.trans ?_ (congrArg s.rig (redSum_apply _ _ _ _ _ _)).symm` and prove the remaining obligations. Use `Eq.trans ?_ (map_add s.rig _ _).symm` and prove the remaining obligations. Conclude with `congrArg₂ (· + ·) ((congrArg (rigExtMap (q₀ k' G')) a).trans (c₀ _)) ((congrArg (rigExtMap (q₁ k' G')) b).trans (c₁ _)) }`. Establish `qz : ∀ (k : Type) [Field k] [CharP k p] [PerfectRing k p] (G : PDivGroup p k), G.IsConn → q₁ k G = 0` using `fun k _ _ _ G hG => (hom_eq_zero_of_isConn_of_isEt p k G (G₁ k G) hG (he k G)).1 _`. Establish `id1 : ∀ (k : Type) [Field k] [CharP k p] [PerfectRing k p] (G : PDivGroup p k), G.IsConn → 𝟙 (G₁ k G) = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `k _ _ _ G hG`. Rewrite using `[← h₁ k G, qz k G hG, Limits.comp_zero]`. Establish `qi0 : ∀ (k : Type) [Field k] [CharP k p] [PerfectRing k p] (G : PDivGroup p k), G.IsConn → q₀ k G ≫ i₀ k G = 𝟙 G`. Introduce `k _ _ _ G hG`. Use `hs k G` as an intermediate fact.
-
-Rewrite `this` using `[qz k G hG, Limits.zero_comp, add_zero]`. Then use the resulting hypothesis. Establish `iz : ∀ (k : Type) [Field k] [CharP k p] [PerfectRing k p] (G : PDivGroup p k), G.IsEt → q₀ k G = 0` using `fun k _ _ _ G hG => (hom_eq_zero_of_isConn_of_isEt p k (G₀ k G) G (hc k G) hG).2 _`. Establish `id0 : ∀ (k : Type) [Field k] [CharP k p] [PerfectRing k p] (G : PDivGroup p k), G.IsEt → 𝟙 (G₀ k G) = 0`. Introduce `k _ _ _ G hG`. Rewrite using `[← h₀ k G, iz k G hG, Limits.comp_zero]`.
-
-Establish `qi1 : ∀ (k : Type) [Field k] [CharP k p] [PerfectRing k p] (G : PDivGroup p k), G.IsEt → q₁ k G ≫ i₁ k G = 𝟙 G`. Introduce `k _ _ _ G hG`. Use `hs k G` as an intermediate fact. Rewrite `this` using `[iz k G hG, Limits.zero_comp, zero_add]`. Then use the resulting hypothesis. Use `⟨D, katz_etDual_of_iso p Bc Be D hK hE ⟨fun {k} _ _ _ G h => LinearEquiv.ofLinearMap ((Bc.map h (hc k G) (q₀ k G)).comp (LinearMap.fst _ _ _)) ((LinearMap.inl _ _ _).comp (Bc.map (hc k G) h (i₀ k G))) (LinearMap.ext fun m => (map_comp Bc h (hc k G) h (q₀ k G) (i₀ k G) m).symm.tra …` and prove the remaining obligations.
-
-Rewrite using `[qi0 k G h]`. Conclude with `Bc.smap_id G h m))`. Use the proof step `(LinearMap.ext fun m => Prod.ext ((map_comp Bc (hc k G) h (hc k G) (i₀ k G) (q₀ k G) m.1).symm.trans (by`. Rewrite using `[h₀ k G]`. Conclude with `Bc.smap_id _ _ m.1))`.
-
-Use the proof step `(eq_zero_of_id_eq_zero Be (he k G) (id1 k G h) m.2).symm), ?_⟩`. Use the proof step `⟨fun {k} _ _ _ G h => LinearEquiv.ofLinearMap ((Be.map h (he k G) (q₁ k G)).comp (LinearMap.snd _ _ _)) ((LinearMap.inr _ _ _).comp (Be.map (he k G) h (i₁ k G))) (LinearMap.ext fun m => (map_comp Be h (he k G) h (q₁ k G) (i₁ k G) m).symm.trans (by`. Rewrite using `[qi1 k G h]`. Conclude with `Be.smap_id G h m))`. Use the proof step `(LinearMap.ext fun m => Prod.ext (eq_zero_of_id_eq_zero Bc (hc k G) (id0 k G h) m.1).symm ((map_comp Be (he k G) h (he k G) (i₁ k G) (q₁ k G) m.2).symm.trans (by`.
-
-Rewrite using `[h₁ k G]`. Conclude with `Be.smap_id _ _ m.2))), ?_⟩⟩`. Introduce `k k' _ _ _ _ _ _ σ G' G h' h s m`. Conclude with `(Bc.smap_comp h' (hc k' G') (hc k G) (semiThrough (i₀ k' G') s (q₀ k G)) (SemiHom.ofHom (q₀ k' G')) (s.comp (SemiHom.ofHom (q₀ k G))) (fun n a => (GlobalTheory.T.semilinearHom_connected_factor_through_part p k k' _ G' (G₀ k' G') (G₁ k' G') (G₀ k G) (i₀ k' G') (q₀ k' G') (i₁ k' G' …`. Introduce `k k' _ _ _ _ _ _ σ G' G h' h s m`.
-
-Conclude with `(Be.smap_comp h' (he k' G') (he k G) (semiThrough (i₁ k' G') s (q₁ k G)) (SemiHom.ofHom (q₁ k' G')) (s.comp (SemiHom.ofHom (q₁ k G))) (fun n a => (GlobalTheory.T.semilinearHom_etale_factor_through_part p k k' _ G' (G₀ k' G') (G₁ k' G') (G₁ k G) (i₀ k' G') (q₀ k' G') (i₁ k' G') (q …`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_katz_etDual : ∀ (p : ℕ) [Fact p.Prime] (Bc : GlobalTheory.Dieu.Base p (fun _ _ G => G.IsConn))
     (Be : GlobalTheory.Dieu.Base p (fun _ _ G => G.IsEt)), Bc.Katz → Be.EtDual Bc →

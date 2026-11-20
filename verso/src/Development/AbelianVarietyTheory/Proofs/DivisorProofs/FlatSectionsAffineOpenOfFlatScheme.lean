@@ -11,7 +11,7 @@ open GlobalTheory.DeRham
 namespace GlobalTheory.CechDR
 
 /- English proof (translation)
-Establish `h1 : (s'.appLE ⊤ U.1 le_top).hom.Flat` using `HasRingHomProperty.appLE (P := @Flat) s' hs ⟨⊤, isAffineOpen_top _⟩ U le_top`. Establish `h0 : (Scheme.ΓSpecIso (CommRingCat.of R')).inv.hom.Flat` using `RingHom.Flat.of_bijective (ConcreteCategory.bijective_of_isIso _)`. Establish `h2 : (secMap s' U.1).hom.Flat`. Conclude with `RingHom.Flat.comp h0 h1`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem flat_sec (R' : Type) [CommRing R'] (X' : Scheme.{0}) (s' : X' ⟶ Sp R') (hs : Flat s')
     (U : X'.affineOpens) : Module.Flat R' (Sec s' U.1) := by

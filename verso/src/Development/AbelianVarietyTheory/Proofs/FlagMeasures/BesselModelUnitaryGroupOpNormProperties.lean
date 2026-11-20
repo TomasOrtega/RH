@@ -10,19 +10,19 @@ noncomputable section
 namespace GlobalTheory.SgInf.OpNormU
 
 /- English proof (translation)
-Rewrite using `[EuclideanSpace.norm_eq]`. Simplify using `only [eucl, Complex.normSq_eq_norm_sq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eucl_eq {N : ℕ} (v : Fin N → ℂ) : eucl v = ‖(WithLp.toLp 2 v : EuclideanSpace ℂ (Fin N))‖ := by
   rw [EuclideanSpace.norm_eq]
   simp only [eucl, Complex.normSq_eq_norm_sq]
 
 /- English proof (translation)
-The claim follows from `Real.sqrt_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem eucl_nonneg {N : ℕ} (v : Fin N → ℂ) : 0 ≤ eucl v := Real.sqrt_nonneg _
 
 /- English proof (translation)
-Rewrite using `[eucl_eq, eucl_eq, ← Matrix.toEuclideanCLM_toLp]`. Conclude with `ContinuousLinearMap.le_opNorm _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eucl_mulVec_le {N : ℕ} (x : Matrix (Fin N) (Fin N) ℂ) (v : Fin N → ℂ) :
     eucl (x *ᵥ v) ≤ opn x * eucl v := by
@@ -30,23 +30,23 @@ theorem eucl_mulVec_le {N : ℕ} (x : Matrix (Fin N) (Fin N) ℂ) (v : Fin N →
   exact ContinuousLinearMap.le_opNorm _ _
 
 /- English proof (translation)
-The claim follows from `(LinearMap.continuous_of_finiteDimensional (Matrix.toEuclideanCLM (𝕜 := ℂ) (n := Fin N)).toAlgEquiv.toLinearMap).norm`.
+A detailed English derivation is pending.
 -/
 theorem continuous_opn {N : ℕ} : Continuous fun x : Matrix (Fin N) (Fin N) ℂ => opn x :=
   (LinearMap.continuous_of_finiteDimensional
     (Matrix.toEuclideanCLM (𝕜 := ℂ) (n := Fin N)).toAlgEquiv.toLinearMap).norm
 
 /- English proof (translation)
-Unfold `opn`. Rewrite using `[← Matrix.star_eq_conjTranspose, map_star, norm_star]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem opn_conjTranspose {N : ℕ} (x : Matrix (Fin N) (Fin N) ℂ) : opn xᴴ = opn x := by
   unfold opn
   rw [← Matrix.star_eq_conjTranspose, map_star, norm_star]
 
 /- English proof (translation)
-Establish `h` using `eucl_mulVec_le x (Pi.single j 1)`. Establish `h1 : eucl (Pi.single j (1 : ℂ) : Fin N → ℂ) = 1`. Rewrite using `[eucl_eq]`. Simplify using `using (EuclideanSpace.norm_single (𝕜 := ℂ) j (1 : ℂ))`. Establish `h2 : ‖x i j‖ ≤ eucl (x *ᵥ Pi.single j 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[eucl_eq]`. Use `PiLp.norm_apply_le (p := 2) (WithLp.toLp 2 (x *ᵥ Pi.single j (1 : ℂ)) : EuclideanSpace ℂ (Fin N)) i` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_single]`. Rewrite `h` using `[h1, mul_one]`. Conclude with `h2.trans h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_entry_le {N : ℕ} (x : Matrix (Fin N) (Fin N) ℂ) (i j : Fin N) : ‖x i j‖ ≤ opn x := by
   have h := eucl_mulVec_le x (Pi.single j 1)
@@ -60,7 +60,7 @@ theorem norm_entry_le {N : ℕ} (x : Matrix (Fin N) (Fin N) ℂ) (i j : Fin N) :
   exact h2.trans h
 
 /- English proof (translation)
-Establish `h` using `norm_inner_le_norm (𝕜 := ℂ) (WithLp.toLp 2 v : EuclideanSpace ℂ (Fin N)) (WithLp.toLp 2 (H *ᵥ u))`. Rewrite `h` using `[EuclideanSpace.inner_toLp_toLp, dotProduct_comm, ← eucl_eq, ← eucl_eq, mul_comm]`. Conclude with `h.trans (mul_le_mul_of_nonneg_right (eucl_mulVec_le H u) (eucl_nonneg _))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem herm_le {N : ℕ} (H : Matrix (Fin N) (Fin N) ℂ) (u v : Fin N → ℂ) :
     ‖herm H u v‖ ≤ opn H * eucl u * eucl v := by
@@ -69,11 +69,11 @@ theorem herm_le {N : ℕ} (H : Matrix (Fin N) (Fin N) ℂ) (u v : Fin N → ℂ)
   exact h.trans (mul_le_mul_of_nonneg_right (eucl_mulVec_le H u) (eucl_nonneg _))
 
 /- English proof (translation)
-Unfold `eucl`. Establish `hnn : 0 ≤ Formalism.REAL.hs x` using `Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun j _ => sq_nonneg _`. Rewrite using `[← Real.sqrt_mul hnn]`. Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises. Simplify using `only [Complex.normSq_eq_norm_sq, Formalism.REAL.hs, Finset.sum_mul]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Establish `h1 : ‖(x *ᵥ w) i‖ ≤ ∑ j, ‖x i j‖ * ‖w j‖`. Rewrite using `[Matrix.mulVec, dotProduct]`. Use `(norm_sum_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [norm_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem eucl_mulVec_le_hs {N : ℕ} (x : Matrix (Fin N) (Fin N) ℂ) (w : Fin N → ℂ) :
     eucl (x *ᵥ w) ≤ Real.sqrt (Formalism.REAL.hs x) * eucl w := by
@@ -92,7 +92,7 @@ theorem eucl_mulVec_le_hs {N : ℕ} (x : Matrix (Fin N) (Fin N) ℂ) (w : Fin N 
     _ = _ := Finset.sum_mul _ _ _
 
 /- English proof (translation)
-Unfold `opn`. Use `ContinuousLinearMap.opNorm_le_bound _ (Real.sqrt_nonneg _) fun v => ?_` and prove the remaining obligations. Take `⟨w, rfl⟩ : ∃ w : Fin N → ℂ, v = WithLp.toLp 2 w` from `⟨v.ofLp, rfl⟩`. Rewrite using `[Matrix.toEuclideanCLM_toLp, ← eucl_eq, ← eucl_eq]`. Conclude with `eucl_mulVec_le_hs x w`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem opn_le_sqrt_hs {N : ℕ} (x : Matrix (Fin N) (Fin N) ℂ) : opn x ≤ Real.sqrt (Formalism.REAL.hs x) := by
   unfold opn
@@ -102,7 +102,7 @@ theorem opn_le_sqrt_hs {N : ℕ} (x : Matrix (Fin N) (Fin N) ℂ) : opn x ≤ Re
   exact eucl_mulVec_le_hs x w
 
 /- English proof (translation)
-Rewrite using `[Real.sqrt_le_iff]`. Use `⟨mul_nonneg (Nat.cast_nonneg _) (opn_nonneg _), ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sqrt_hs_le {N : ℕ} (x : Matrix (Fin N) (Fin N) ℂ) :
     Real.sqrt (Formalism.REAL.hs x) ≤ (N : ℝ) * opn x := by
@@ -117,9 +117,9 @@ theorem sqrt_hs_le {N : ℕ} (x : Matrix (Fin N) (Fin N) ℂ) :
 variable {k r : ℕ}
 
 /- English proof (translation)
-Establish `h : opn ((Hpk k r)ᴴ * Hpk k r) = opn (Hpk k r) * opn (Hpk k r)`. Unfold `opn`. Rewrite using `[← Matrix.star_eq_conjTranspose, map_mul, map_star, CStarRing.norm_star_mul_self]`. Rewrite `h` using `[GBasic.Hpk_herm, GBasic.Hpk_sq, opn_one]`. Break down `mul_self_eq_one_iff.mp h.symm with h1 | h1` into its components or cases.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `h1`. Use `opn_nonneg (Hpk k r)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem opn_Hpk (k r : ℕ) : opn (Hpk k r) = 1 := by
   have h : opn ((Hpk k r)ᴴ * Hpk k r) = opn (Hpk k r) * opn (Hpk k r) := by
@@ -131,7 +131,7 @@ theorem opn_Hpk (k r : ℕ) : opn (Hpk k r) = 1 := by
   · have := opn_nonneg (Hpk k r); linarith
 
 /- English proof (translation)
-Establish `hg' : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem left_inv {g : Mat k r} (hg : g ∈ GG k r) : Hpk k r * gᴴ * Hpk k r * g = 1 := by
   have hg' : gᴴ * Hpk k r * g = Hpk k r := hg
@@ -139,25 +139,25 @@ theorem left_inv {g : Mat k r} (hg : g ∈ GG k r) : Hpk k r * gᴴ * Hpk k r * 
     _ = 1 := by rw [hg', GBasic.Hpk_sq]
 
 /- English proof (translation)
-The claim follows from `Matrix.inv_eq_left_inv (left_inv hg)`.
+A detailed English derivation is pending.
 -/
 theorem inv_eq {g : Mat k r} (hg : g ∈ GG k r) : g⁻¹ = Hpk k r * gᴴ * Hpk k r :=
   Matrix.inv_eq_left_inv (left_inv hg)
 
 /- English proof (translation)
-Rewrite using `[inv_eq hg]`. Conclude with `left_inv hg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_mul {g : Mat k r} (hg : g ∈ GG k r) : g⁻¹ * g = 1 := by
   rw [inv_eq hg]; exact left_inv hg
 
 /- English proof (translation)
-Conclude with `Matrix.mul_nonsing_inv g (Matrix.isUnit_det_of_left_inverse (left_inv hg))`.
+A detailed English derivation is pending.
 -/
 theorem mul_inv {g : Mat k r} (hg : g ∈ GG k r) : g * g⁻¹ = 1 := by
   exact Matrix.mul_nonsing_inv g (Matrix.isUnit_det_of_left_inverse (left_inv hg))
 
 /- English proof (translation)
-Rewrite using `[inv_eq hg]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem opn_inv_le {g : Mat k r} (hg : g ∈ GG k r) : opn g⁻¹ ≤ opn g := by
   rw [inv_eq hg]
@@ -166,7 +166,7 @@ theorem opn_inv_le {g : Mat k r} (hg : g ∈ GG k r) : opn g⁻¹ ≤ opn g := b
     _ = opn g := by rw [opn_Hpk, opn_conjTranspose]; ring
 
 /- English proof (translation)
-Establish `e : g = Hpk k r * (g⁻¹)ᴴ * Hpk k r`. Rewrite using `[inv_eq hg]`. Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, GBasic.Hpk_herm, ← Matrix.mul_assoc, GBasic.Hpk_sq, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, GBasic.Hpk_sq, Matrix.mul_one]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem le_opn_inv {g : Mat k r} (hg : g ∈ GG k r) : opn g ≤ opn g⁻¹ := by
   have e : g = Hpk k r * (g⁻¹)ᴴ * Hpk k r := by
@@ -180,13 +180,13 @@ theorem le_opn_inv {g : Mat k r} (hg : g ∈ GG k r) : opn g ≤ opn g⁻¹ := b
     _ = opn g⁻¹ := by rw [opn_Hpk, opn_conjTranspose]; ring
 
 /- English proof (translation)
-The claim follows from `le_antisymm (opn_inv_le hg) (le_opn_inv hg)`.
+A detailed English derivation is pending.
 -/
 theorem opn_inv {g : Mat k r} (hg : g ∈ GG k r) : opn g⁻¹ = opn g :=
   le_antisymm (opn_inv_le hg) (le_opn_inv hg)
 
 /- English proof (translation)
-Establish `h : (1 : ℝ) ≤ opn g * opn g`. Use `opn_mul_le g g⁻¹` as an intermediate fact. Rewrite `this` using `[mul_inv hg, opn_one, opn_inv hg]`. Then use the resulting hypothesis. Assume the negation of the conclusion as `h'`. Establish `h0` using `opn_nonneg g`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -199,12 +199,12 @@ theorem one_le_opn {g : Mat k r} (hg : g ∈ GG k r) : 1 ≤ opn g := by
   nlinarith
 
 /- English proof (translation)
-The claim follows from `lt_of_lt_of_le one_pos (one_le_opn hg)`.
+A detailed English derivation is pending.
 -/
 theorem opn_pos {g : Mat k r} (hg : g ∈ GG k r) : 0 < opn g := lt_of_lt_of_le one_pos (one_le_opn hg)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[div_le_iff₀ (opn_pos hy)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_le_iff₀ (opn_pos hx)]`. Combine the equalities or inequalities in the displayed calculation.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem div_le_opn_mul {x y : Mat k r} (hx : x ∈ GG k r) (hy : y ∈ GG k r) :
     opn x / opn y ≤ opn (x * y) ∧ opn y / opn x ≤ opn (x * y) := by
@@ -223,7 +223,7 @@ end GlobalTheory.SgInf.OpNormU
 namespace GlobalTheory.SgInf
 
 /- English proof (translation)
-Introduce `k r`. Use `⟨fun g hg => ⟨OpNormU.opn_inv hg, OpNormU.one_le_opn hg⟩, fun x y => opn_mul_le x y, OpNormU.continuous_opn, OpNormU.norm_entry_le, OpNormU.eucl_mulVec_le, fun u v => ?_, fun x hx y hy => OpNormU.div_le_opn_mul hx hy, fun x => ⟨OpNormU.opn_le_sqrt_hs x, OpNormU.sqrt_hs_le x⟩⟩` and prove the remaining obligations. Simplify `OpNormU.herm_le (Hpk k r) u v` using `[OpNormU.opn_Hpk]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem opn_facts : ∀ (k r : ℕ) , (∀ g ∈ GG k r, opn g⁻¹ = opn g ∧ 1 ≤ opn g) ∧
     (∀ x y : Mat k r, opn (x * y) ≤ opn x * opn y) ∧ Continuous (fun x : Mat k r => opn x) ∧

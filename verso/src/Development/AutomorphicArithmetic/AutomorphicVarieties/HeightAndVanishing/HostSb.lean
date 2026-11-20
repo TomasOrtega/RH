@@ -8,7 +8,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.Top UpperTheory.V.HV
 
 /- English proof (translation)
-Use `⟨(orderOf ψ).factorization l, ?_⟩` and prove the remaining obligations. Rewrite using `[← (partOrd _ l hl ψ hψ).1]`. Conclude with `pow_orderOf_eq_one _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem kap_pow {O : Type} [CommRing O] {N : ℕ} (ψ : DirichletCharacter O N) (hψ : 0 < orderOf ψ)
     (l : ℕ) (hl : l.Prime) : ∃ s, kap l ψ ^ l ^ s = 1 := by
@@ -17,17 +17,15 @@ private theorem kap_pow {O : Type} [CommRing O] {N : ℕ} (ψ : DirichletCharact
   exact pow_orderOf_eq_one _
 
 /- English proof (translation)
-Take `⟨h1, -, h3, -⟩` from `partOrd _ l hl ψ hψ`. Take `⟨-, hmul, -, -, -, hsub, -⟩` from `compAlg O N p hp`. Establish `hsplit : comp p ψ = comp p (th0 l ψ) * comp p (kap l ψ)`. Rewrite using `[← hmul, dirichletPrimeToLPart_mul_lPowerPart]`. Establish `ha : ¬ l ∣ orderOf (comp p (th0 l ψ))` using `fun hd => h3 (hd.trans (hsub _).2.1)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb : orderOf (comp p (kap l ψ)) ∣ l ^ (orderOf ψ).factorization l`. Rewrite using `[← h1]`. Conclude with `(hsub _).2.1`. Establish `hcop : (orderOf (comp p (th0 l ψ))).Coprime (orderOf (comp p (kap l ψ)))`. Use `Nat.Coprime.coprime_dvd_right hb ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.Coprime.pow_right _ ((Nat.Prime.coprime_iff_not_dvd hl).2 ha).symm`. Rewrite using `[hsplit, (Commute.all _ _).orderOf_mul_eq_mul_orderOf_of_coprime hcop, hl.dvd_mul]`. Simplify using `only [ha, false_or]`. Take `⟨i, -, hi⟩` from `(Nat.dvd_prime_pow hl).1 hb`. Prove the components needed by the constructor for the conclusion.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h1' hd`. Rewrite `hd` using `[h1', orderOf_one]`. Conclude with `hl.ne_one (Nat.dvd_one.1 hd)`. Introduce `hd`. Rewrite using `[← orderOf_eq_one_iff, hi]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Break down `i with _ | i` into its components or cases. Conclude with `pow_zero l`. It suffices to derive a contradiction. Apply `hd` to reduce the goal to its premises. Rewrite using `[hi]`.
-
-Conclude with `dvd_pow_self l (Nat.succ_ne_zero i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem comp_kap_iff {O : Type} [CommRing O] [IsDomain O] {N : ℕ} [NeZero N] (ψ : DirichletCharacter O N)
     (hψ : 0 < orderOf ψ) (l : ℕ) (hl : l.Prime) (p : ℕ) (hp : p.Prime) :
@@ -59,9 +57,9 @@ private theorem comp_kap_iff {O : Type} [CommRing O] [IsDomain O] {N : ℕ} [NeZ
       exact dvd_pow_self l (Nat.succ_ne_zero i)
 
 /- English proof (translation)
-Take `⟨hq1, -, hd, -, hcop⟩` from `h.pair`. Establish `hq0 : h.q ≠ 0` using `h.chi.ne.out`. Establish `hqd0 : h.q1 * h.d ≠ 0` using `mul_ne_zero hq1.ne_zero hd.ne_zero`. Establish `h20 : (2 : ℕ) ^ (h.ex + 2) ≠ 0` using `pow_ne_zero _ two_ne_zero`. Establish `hl0 : (2 ^ (h.ex + 2)).lcm h.q ≠ 0` using `Nat.lcm_ne_zero h20 hq0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnd : ¬ p ∣ h.q1 * h.d` using `fun hd' => hp.ne_one (Nat.Coprime.eq_one_of_dvd (Nat.Coprime.coprime_dvd_left hd' hcop) hq)`. Establish `h2nd : ¬ p ∣ 2 ^ (h.ex + 2)` using `fun h' => h2 ((Nat.prime_dvd_prime_iff_eq hp Nat.prime_two).1 (hp.dvd_of_dvd_pow h'))`. Use `show ((2 ^ (h.ex + 2)).lcm h.q * (h.q1 * h.d)).factorization p = _`. Rewrite using `[Nat.factorization_mul hl0 hqd0, Finsupp.add_apply, Nat.factorization_eq_zero_of_not_dvd hnd, add_zero, Nat.factorization_lcm h20 hq0, Finsupp.sup_apply, Nat.factorization_eq_zero_of_not_dvd h2nd]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem ordProj_N (h : Host) (p : ℕ) (hp : p.Prime) (h2 : p ≠ 2) (hq : p ∣ h.q) :
     h.N.factorization p = h.q.factorization p := by
@@ -80,35 +78,31 @@ private theorem ordProj_N (h : Host) (p : ℕ) (hp : p.Prime) (h2 : p ≠ 2) (hq
   simp
 
 /- English proof (translation)
-Introduce `h O _ _ ψ hc l hl hl2`. Use `haveI : NeZero h.N := ⟨h.N_pos.ne'⟩`. Take `⟨-, hψ, hcomp⟩` from `hostComp h O ψ hc`. Take `⟨s, hs⟩` from `kap_pow ψ hψ l hl`. Establish `hlodd : ¬ l ∣ 2` using `fun hd => hl2 ((Nat.prime_dvd_prime_iff_eq hl Nat.prime_two).1 hd)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc2 : comp 2 (kap l ψ) = 1`. Take `⟨-, ⟨k, hk⟩, -⟩` from `compOrd O h.N (kap l ψ) 2 Nat.prime_two`. Take `⟨-, -, -, -, -, hsub, -⟩` from `compAlg O h.N 2 Nat.prime_two`. Establish `hdv : orderOf (comp 2 (kap l ψ)) ∣ l ^ s` using `((hsub _).2.1).trans (orderOf_dvd_of_pow_eq_one hs)`. Rewrite using `[← orderOf_eq_one_iff, hk]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `k with _ | k` into its components or cases. Conclude with `pow_zero 2`. It suffices to derive a contradiction. Rewrite `hdv` using `[hk]`. Establish `h2 : 2 ∣ l` using `Nat.prime_two.dvd_of_dvd_pow ((dvd_pow_self 2 (Nat.succ_ne_zero k)).trans hdv)`.
+It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hl2 ((Nat.prime_dvd_prime_iff_eq Nat.prime_two hl).1 h2).symm`. Establish `key : ∀ p, p.Prime → comp p (kap l ψ) ≠ 1 → p ≠ 2 ∧ p ∣ h.q`. Introduce `p hp hne`. Establish `hp2 : p ≠ 2`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `hne hc2`. Use `⟨hp2, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hq`. Take `⟨-, -, hsq, -⟩` from `hcomp p hp hp2`. Establish `h2 : orderOf (comp p ψ) ∣ 2` using `orderOf_dvd_of_pow_eq_one (hsq hq)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `hne ((comp_kap_iff ψ hψ l hl p hp).2 (fun hd => hlodd (hd.trans h2)))`. Establish `hSb : ∀ p, p ∈ Sb l ψ ↔ p.Prime ∧ p ∣ h.N ∧ p ≠ l ∧ comp p (kap l ψ) ≠ 1`. Introduce `p`. Simplify using `only [Sb, Finset.mem_filter, Nat.mem_primeFactors]`. Prove the components needed by the constructor for the conclusion.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨⟨hp, hd, -⟩, h1, h2⟩`. Conclude with `⟨hp, hd, h1, h2⟩`. Introduce and unpack `⟨hp, hd, h1, h2⟩`. Conclude with `⟨⟨hp, hd, h.N_pos.ne'⟩, h1, h2⟩`. Use `⟨?_, ?_, hc2, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Introduce `p hp`. Take `⟨hpp, -, hpl, hne⟩` from `(hSb p).1 hp`. Take `⟨hp2, hpq⟩` from `key p hpp hne`. Conclude with `⟨hpp, hp2, hpl, hpq, ((compOrd O h.N (kap l ψ) p hpp).2.2.2 l s hl (Ne.symm hpl) hs hne).1⟩`. Take `⟨-, -, -, -, -, hall⟩` from `compCond O h.N (kap l ψ) 2 Nat.prime_two`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hall h.q h.q_dvd]`. Introduce `p hp`. Establish `hpp` using `Nat.prime_of_mem_primeFactors hp`. Take `⟨hcd, hiff, -⟩` from `compCond O h.N (kap l ψ) p hpp`. Rewrite using `[hcd]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hne : comp p (kap l ψ) = 1`. Rewrite using `[Nat.factorization_eq_zero_of_not_dvd (hiff.1 hne), pow_zero]`. Conclude with `one_dvd _`. Take `⟨hp2, hpq⟩` from `key p hpp hne`. Establish `hcl` using `DirichletCharacter.conductor_dvd_level (kap l ψ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Establish `hc0 : (kap l ψ).conductor ≠ 0` using `fun h0 => h.N_pos.ne' (Nat.eq_zero_of_zero_dvd (h0 ▸ hcl))`. Establish `hle : (kap l ψ).conductor.factorization p ≤ h.q.factorization p`. Rewrite using `[← ordProj_N h p hpp hp2 hpq]`. Conclude with `(Nat.factorization_le_iff_dvd hc0 h.N_pos.ne').2 hcl p`. Conclude with `(pow_dvd_pow p hle).trans (Nat.ordProj_dvd h.q p)`.
+Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `p hp hpl`. Rewrite using `[hSb p]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, -, -, hne⟩`. Assume the negation of the conclusion as `hd`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hne ((comp_kap_iff ψ hψ l hl p hp).2 hd)`. Introduce `hd`. Use `⟨hp, ?_, hpl, fun h1 => (comp_kap_iff ψ hψ l hl p hp).1 h1 hd⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hN`. Take `⟨-, -, -, -, -, hsub, -⟩` from `compAlg O h.N p hp`.
-
-Rewrite `hd` using `[(hsub ψ).2.2.1 hN, orderOf_one]`. Conclude with `hl.ne_one (Nat.dvd_one.1 hd)`. Introduce `v hv`. Simplify using `only [Tb, Finset.mem_insert] at hv`. Break down `hv with rfl | hv` into its components or cases.
-
-Conclude with `dvd_mul_right _ _`. Take `⟨hvp, -, -, hne⟩` from `(hSb v).1 hv`. Conclude with `dvd_mul_of_dvd_right (key v hvp hne).2 _`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.HV.hostSb :
     ∀ (h : Host) (O : Type) [CommRing O] [IsDomain O] (ψ : DirichletCharacter O h.N), h.IsChar ψ → ∀ l, l.Prime → l ≠ 2 →

@@ -10,7 +10,7 @@ namespace UpperTheory.N.Cyc
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Use `(Polynomial.nthRoots M (1 : Om l)).toFinset.finite_toSet.subset fun x hx => ?_` and prove the remaining obligations. Simplify `hx` using `[Polynomial.mem_nthRoots hM]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem finite_roots {M : ℕ} (hM : 0 < M) : {x : Om l | x ^ M = 1}.Finite := by
   classical
@@ -23,7 +23,7 @@ def Kc (l : ℕ) [Fact l.Prime] (M : ℕ) (hM : 0 < M) : FinExt l :=
     exact IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x⟩
 
 /- English proof (translation)
-Establish `key : (Kc l M hM).1 ≤ S.comap σ` using `IntermediateField.adjoin_le_iff.2 fun y hy => by`. Use `hS _ ?_` and prove the remaining obligations. Establish `hy' : y ^ M = 1` using `hy`. Rewrite using `[← map_pow, hy', map_one]`. Conclude with `key hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mem {M : ℕ} (hM : 0 < M) (S : IntermediateField ℚ_[l] (Om l)) (hS : ∀ x : Om l, x ^ M = 1 → x ∈ S)
     (σ : Om l →ₐ[ℚ_[l]] Om l) (x : Om l) (hx : x ∈ (Kc l M hM).1) : σ x ∈ S := by
@@ -34,11 +34,9 @@ theorem map_mem {M : ℕ} (hM : 0 < M) (S : IntermediateField ℚ_[l] (Om l)) (h
   exact key hx
 
 /- English proof (translation)
-Use `haveI : NeZero M := ⟨hM.ne'⟩`. Take `⟨z, hz⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot (Om l) M`. Establish `e : (Kc l M hM).1 = IntermediateField.adjoin ℚ_[l] {z}`. Apply `le_antisymm` to reduce the goal to its premises. Use `IntermediateField.adjoin_le_iff.2 fun x hx => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨i, -, rfl⟩` from `hz.eq_pow_of_pow_eq_one (show x ^ M = 1 from hx)`. Conclude with `pow_mem (IntermediateField.mem_adjoin_simple_self _ _) _`. Conclude with `IntermediateField.adjoin.mono _ _ _ (by rintro x rfl; exact hz.pow_eq_one)`. Rewrite using `[e, IntermediateField.adjoin.finrank (Algebra.IsIntegral.isIntegral z)]`. Establish `hne : (X ^ M - C 1 : ℚ_[l][X]) ≠ 0` using `X_pow_sub_C_ne_zero hM 1`.
-
-Use `natDegree_le_of_dvd (minpoly.dvd ℚ_[l] z (p := X ^ M - C 1) (by simp [hz.pow_eq_one])) hne` as an intermediate fact. Rewrite `this` using `[natDegree_X_pow_sub_C]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem finrank_le {M : ℕ} (hM : 0 < M) : Module.finrank ℚ_[l] ↥(Kc l M hM).1 ≤ M := by
   haveI : NeZero M := ⟨hM.ne'⟩
@@ -55,17 +53,15 @@ theorem finrank_le {M : ℕ} (hM : 0 < M) : Module.finrank ℚ_[l] ↥(Kc l M hM
   rwa [natDegree_X_pow_sub_C] at this
 
 /- English proof (translation)
-Establish `hM'0 : 0 < M'` using `Nat.pos_of_ne_zero (by rintro rfl; simp at hl)`. Apply `le_antisymm` to reduce the goal to its premises. Use `sup_le inf_le_left (IntermediateField.adjoin.mono _ _ _ fun x hx => ?_)` and prove the remaining obligations. Establish `hx' : x ^ (l ^ s) = 1` using `hx`. Use `show x ^ M = 1`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hM', pow_mul, hx', one_pow]`. Use `IntermediateField.adjoin_le_iff.2 fun x hx => ?_` and prove the remaining obligations. Establish `hx' : x ^ M = 1` using `hx`. Establish `hcop : Nat.Coprime (l ^ s) M'` using `Nat.Coprime.pow_left _ ((Nat.Prime.coprime_iff_not_dvd Fact.out).2 hl)`. Establish `h0 : x ≠ 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Rewrite `hx'` using `[zero_pow hM.ne']`. Conclude with `zero_ne_one hx'`. Establish `hb : ((1 : ℕ) : ℤ) = (l ^ s : ℕ) * Nat.gcdA (l ^ s) M' + M' * Nat.gcdB (l ^ s) M'`. Rewrite using `[← Nat.gcd_eq_gcd_ab, hcop]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : x = (x ^ (l ^ s)) ^ Nat.gcdA (l ^ s) M' * (x ^ M') ^ Nat.gcdB (l ^ s) M'`. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_mul, ← zpow_add₀ h0, ← hb]`. Simplify using the standard rewrite rules. Establish `hxK : x ∈ (Kc l M hM).1` using `IntermediateField.subset_adjoin _ _ hx`. Establish `h1 : x ^ (l ^ s) ∈ Ks (Kc l M hM) s`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(le_sup_left : K0 _ ≤ _) ⟨pow_mem hxK _, IntermediateField.subset_adjoin _ _ ⟨M', hM'0, hl, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← pow_mul, ← hM', hx']`. Establish `h2 : x ^ M' ∈ Ks (Kc l M hM) s`. Use `(le_sup_right : _ ≤ Ks _ s) (IntermediateField.subset_adjoin _ _ ?_)` and prove the remaining obligations. Use `show (x ^ M') ^ (l ^ s) = 1`.
-
-Rewrite using `[← pow_mul, mul_comm, ← hM', hx']`. Use `show x ∈ Ks (Kc l M hM) s`. Rewrite using `[e]`. Conclude with `mul_mem (zpow_mem h1 _) (zpow_mem h2 _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Ks_eq {M M' s : ℕ} (hM : 0 < M) (hM' : M = l ^ s * M') (hl : ¬ l ∣ M') :
     Ks (Kc l M hM) s = (Kc l M hM).1 := by
@@ -99,12 +95,12 @@ theorem Ks_eq {M M' s : ℕ} (hM : 0 < M) (hM' : M = l ^ s * M') (hl : ¬ l ∣ 
     exact mul_mem (zpow_mem h1 _) (zpow_mem h2 _)
 
 /- English proof (translation)
-The claim follows from `Nat.lcm_pos (Fact.out : l.Prime).pos hN`.
+A detailed English derivation is pending.
 -/
 theorem lcm_pos {N : ℕ} (hN : 0 < N) : 0 < Nat.lcm l N := Nat.lcm_pos (Fact.out : l.Prime).pos hN
 
 /- English proof (translation)
-Establish `hp : l.Prime` using `Fact.out`. Establish `hf : (Nat.lcm l N).factorization l = max 1 (N.factorization l)`. Rewrite using `[Nat.factorization_lcm hp.ne_zero hN.ne', Finsupp.sup_apply, hp.factorization_self]`. Use `Ks_eq (M' := ordCompl[l] (Nat.lcm l N)) _ ?_ (Nat.not_dvd_ordCompl hp (lcm_pos hN).ne')` and prove the remaining obligations. Rewrite using `[← hf, Nat.ordProj_mul_ordCompl_eq_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem Ks_lcm {N : ℕ} (hN : 0 < N) :
     Ks (Kc l (Nat.lcm l N) (lcm_pos hN)) (max 1 (N.factorization l)) = (Kc l (Nat.lcm l N) (lcm_pos hN)).1 := by
@@ -115,7 +111,7 @@ theorem Ks_lcm {N : ℕ} (hN : 0 < N) :
   rw [← hf, Nat.ordProj_mul_ordCompl_eq_self]
 
 /- English proof (translation)
-Use `⟨le_max_left _ _, fun e => absurd e h2, (Ks_lcm hN).ge, fun τ x => ?_⟩` and prove the remaining obligations. Establish `e2 : τ.liftNormal (Om l) (x : Om l) = τ x` using `AlgHom.liftNormal_commutes τ (Om l) x`. Rewrite using `[← e2]`. Conclude with `map_mem _ _ hLL _ _ ((Ks_lcm hN).le x.2)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_lcm {N : ℕ} (hN : 0 < N) (h2 : l ≠ 2) (LL : FinExt l)
     (hLL : ∀ x : Om l, x ^ Nat.lcm l N = 1 → x ∈ LL.1) :
@@ -126,7 +122,7 @@ theorem good_lcm {N : ℕ} (hN : 0 < N) (h2 : l ≠ 2) (LL : FinExt l)
   exact map_mem _ _ hLL _ _ ((Ks_lcm hN).le x.2)
 
 /- English proof (translation)
-Use `⟨le_max_left _ _, fun e => le_max_of_le_right ?_, (Ks_lcm hN).ge, fun τ x => ?_⟩` and prove the remaining obligations. Conclude with `((Fact.out : l.Prime).pow_dvd_iff_le_factorization hN.ne').1 (by rw [e]; exact h2 e)`. Establish `e2 : τ.liftNormal (Om l) (x : Om l) = τ x` using `AlgHom.liftNormal_commutes τ (Om l) x`. Rewrite using `[← e2]`. Conclude with `map_mem _ _ hLL _ _ ((Ks_lcm hN).le x.2)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_lcm' {N : ℕ} (hN : 0 < N) (h2 : l = 2 → 4 ∣ N) (LL : FinExt l)
     (hLL : ∀ x : Om l, x ^ Nat.lcm l N = 1 → x ∈ LL.1) :
@@ -138,9 +134,9 @@ theorem good_lcm' {N : ℕ} (hN : 0 < N) (h2 : l = 2 → 4 ∣ N) (LL : FinExt l
     exact map_mem _ _ hLL _ _ ((Ks_lcm hN).le x.2)
 
 /- English proof (translation)
-Use `⟨fun n hn g => ?_⟩` and prove the remaining obligations. Rewrite `hn`, the goal using `[GK, IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`. Establish `h1 : g⁻¹ x ∈ (Kc l M hM).1` using `map_mem hM _ (fun y hy => IntermediateField.subset_adjoin _ _ hy) (g⁻¹ : GQ l).toAlgHom x hx`. Use `show g (n (g⁻¹ x)) = x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hn _ h1]`. Conclude with `g.apply_symm_apply x`.
+A detailed English derivation is pending.
 -/
 theorem GK_normal {M : ℕ} (hM : 0 < M) : (GK (Kc l M hM)).Normal := by
   refine ⟨fun n hn g => ?_⟩
@@ -153,7 +149,7 @@ theorem GK_normal {M : ℕ} (hM : 0 < M) : (GK (Kc l M hM)).Normal := by
   exact g.apply_symm_apply x
 
 /- English proof (translation)
-Rewrite using `[Subgroup.inclusion_range]`. Conclude with `(GK_normal hM).subgroupOf _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem range_normal {M : ℕ} (hM : 0 < M) (K : FinExt l) (hle : GK (Kc l M hM) ≤ GK K) :
     (Subgroup.inclusion hle).range.Normal := by
@@ -161,9 +157,9 @@ theorem range_normal {M : ℕ} (hM : 0 < M) (K : FinExt l) (hle : GK (Kc l M hM)
   exact (GK_normal hM).subgroupOf _
 
 /- English proof (translation)
-Establish `hp : l.Prime` using `Fact.out`. Use `(padicValNat_le_nat_log _).trans ?_` and prove the remaining obligations. Rewrite using `[← Nat.log_mul_base hp.one_lt hN.ne']`. Use `Nat.log_mono_right ((Nat.div_le_self _ _).trans ((finrank_le _).trans ?_))` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.le_of_dvd (Nat.mul_pos hp.pos hN) (Nat.lcm_dvd_mul _ _)`.
+A detailed English derivation is pending.
 -/
 theorem val_index_le {N : ℕ} (hN : 0 < N) (d : ℕ) :
     padicValNat l (Module.finrank ℚ_[l] ↥(Kc l (Nat.lcm l N) (lcm_pos hN)).1 / d) ≤ Nat.log l N + 1 := by

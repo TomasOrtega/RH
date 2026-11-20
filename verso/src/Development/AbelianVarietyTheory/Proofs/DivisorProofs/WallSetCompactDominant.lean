@@ -9,9 +9,7 @@ namespace GlobalTheory.FlagPoly
 variable {ι : Type} {N : ℕ}
 
 /- English proof (translation)
-Unfold `wallSet GapZero`. Simplify using `only [Set.setOf_and, Set.setOf_forall]`. Use `IsClosed.inter ?_ (IsClosed.inter ?_ ?_)` and prove the remaining obligations. Conclude with `isClosed_iInter fun τ => isClosed_iInter fun i => isClosed_le (by fun_prop) continuous_const`. Conclude with `isClosed_iInter fun a => isClosed_iInter fun b => isClosed_iInter fun _ => isClosed_iInter fun _ => isClosed_eq (by fun_prop) (by fun_prop)`.
-
-Conclude with `isClosed_iInter fun τ => isClosed_iInter fun a => isClosed_iInter fun b => isClosed_iInter fun _ => isClosed_iInter fun _ => isClosed_le continuous_const (by fun_prop)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isClosed_wallSet (j : ℕ) (τ₀ : ι) (c : ℝ) : IsClosed (wallSet (N := N) j τ₀ c) := by
   unfold wallSet GapZero
@@ -25,7 +23,7 @@ theorem isClosed_wallSet (j : ℕ) (τ₀ : ι) (c : ℝ) : IsClosed (wallSet (N
       isClosed_iInter fun _ => isClosed_iInter fun _ => isClosed_le continuous_const (by fun_prop)
 
 /- English proof (translation)
-Establish `h : IsCompact (Set.pi Set.univ fun _ : ι => Set.pi Set.univ fun _ : Fin N => Set.Icc (-(1 / 2 : ℝ)) (1 / 2))` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_Icc`. Use `h.of_isClosed_subset (isClosed_wallSet j τ₀ c) ?_` and prove the remaining obligations. Introduce `x hx τ _ i _`. Conclude with `abs_le.mp (hx.1 τ i)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isCompact_wallSet (j : ℕ) (τ₀ : ι) (c : ℝ) : IsCompact (wallSet (N := N) j τ₀ c) := by
   have h : IsCompact (Set.pi Set.univ fun _ : ι => Set.pi Set.univ fun _ : Fin N =>
@@ -36,15 +34,13 @@ theorem isCompact_wallSet (j : ℕ) (τ₀ : ι) (c : ℝ) : IsCompact (wallSet 
   exact abs_le.mp (hx.1 τ i)
 
 /- English proof (translation)
-Introduce `τ`. Establish `step : ∀ a b : Fin N, (b : ℕ) = a + 1 → lam τ b ≤ lam τ a`. Introduce `a b hab`. Distinguish the cases in `hw : τ = τ₀ ∧ (b : ℕ) = j`. Take `⟨rfl, hb⟩` from `hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `(h.2.1 a b hab hb).ge`. Use `h.2.2 τ a b hab hw` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `key : ∀ (k : ℕ) (a b : Fin N), (b : ℕ) = a + k → lam τ b ≤ lam τ a`. Introduce `k`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `k with`. Consider the case `zero`. Introduce `a b hab`. Establish `: b = a` using `Fin.ext (by simpa using hab)`. Rewrite using `[this]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ k ih`. Introduce `a b hab`. Establish `hb` using `b.2`. Conclude with `(step ⟨a + k, by omega⟩ b (by simp; omega)).trans (ih a ⟨a + k, by omega⟩ rfl)`. Introduce `a b hab`.
-
-Conclude with `key (b - a) a b (by have : (a : ℕ) ≤ b := hab; omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem dom_of_mem_wallSet (j : ℕ) (τ₀ : ι) {c : ℝ} (hc : 0 ≤ c) {lam : ι → Fin N → ℝ}
     (h : lam ∈ wallSet (N := N) j τ₀ c) : Dom lam := by
@@ -71,21 +67,19 @@ theorem dom_of_mem_wallSet (j : ℕ) (τ₀ : ι) {c : ℝ} (hc : 0 ≤ c) {lam 
   exact key (b - a) a b (by have : (a : ℕ) ≤ b := hab; omega)
 
 /- English proof (translation)
-Introduce `ι _ _ N j τ₀ hj hjN`. Establish `hN : (0 : ℝ) < N` using `by exact_mod_cast (by omega : 0 < N)`. Use `⟨isCompact_wallSet _ _ _, fun lam h => dom_of_mem_wallSet j τ₀ (by positivity) h, ?_⟩` and prove the remaining obligations. Use `⟨{x | (∀ τ i, |x τ i| < 1 / 2) ∧ ∀ τ (a b : Fin N), (b : ℕ) = a + 1 → ¬ (τ = τ₀ ∧ (b : ℕ) = j) → 1 / (4 * (N : ℝ)) < x τ a - x τ b}, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.setOf_and, Set.setOf_forall]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `IsOpen.inter ?_ ?_` and prove the remaining obligations. Conclude with `isOpen_iInter_of_finite fun τ => isOpen_iInter_of_finite fun i => isOpen_lt (by fun_prop) continuous_const`. Conclude with `isOpen_iInter_of_finite fun τ => isOpen_iInter_of_finite fun a => isOpen_iInter_of_finite fun b => isOpen_iInter_of_finite fun _ => isOpen_iInter_of_finite fun _ => isOpen_lt continuous_const (by fun_prop)`. Use `⟨fun τ i => ((if τ = τ₀ ∧ j ≤ (i : ℕ) then 1 else 0) - ((i : ℕ) : ℝ)) / (3 * N), ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `τ i`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi : ((i : ℕ) : ℝ) < N` using `by exact_mod_cast i.2`. Establish `hi0 : (0 : ℝ) ≤ ((i : ℕ) : ℝ)` using `by positivity`. Establish `hN1 : (1 : ℝ) ≤ N` using `by exact_mod_cast (by omega : 1 ≤ N)`. Rewrite using `[abs_div, abs_of_pos (by positivity : (0 : ℝ) < 3 * N), div_lt_iff₀ (by positivity), abs_lt]`. Apply the tactic sequence `split_ifs <;> constructor <;> linarith`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `τ a b hab hw`. Establish `hb : ((b : ℕ) : ℝ) = ((a : ℕ) : ℝ) + 1` using `by exact_mod_cast hab`. Establish `hiff : (τ = τ₀ ∧ j ≤ (b : ℕ)) ↔ (τ = τ₀ ∧ j ≤ (a : ℕ))`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `⟨h1, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h3`. Conclude with `hw ⟨h1, by omega⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨h1, by omega⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [hiff]`. Rewrite using `[← sub_div, hb]`. Establish `: ∀ t : ℝ, t - ((a : ℕ) : ℝ) - (t - (((a : ℕ) : ℝ) + 1)) = 1` using `fun t => by ring`. Rewrite using `[this]`. Conclude with `one_div_lt_one_div_of_lt (by positivity) (by linarith)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a b hab hb`. Establish `hb' : ((b : ℕ) : ℝ) = ((a : ℕ) : ℝ) + 1` using `by exact_mod_cast hab`. Establish `h1 : ¬ j ≤ (a : ℕ)` using `by omega`. Establish `h2 : j ≤ (b : ℕ)` using `by omega`. Simplify using `only [h1, h2, hb', and_true, and_false, if_true, if_false]`.
-
-Expand and normalize the polynomial expressions, which then agree. Introduce `x hx hg`. Conclude with `⟨fun τ i => (hx.1 τ i).le, hg, fun τ a b h1 h2 => (hx.2 τ a b h1 h2).le⟩`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem wallSet_compact_dom_interior :
     ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (N : ℕ) (j : ℕ) (τ₀ : ι), 1 ≤ j → j < N → IsCompact (wallSet (N := N) j τ₀ (1 / (4 * (N : ℝ)))) ∧ (∀ lam ∈ wallSet (N := N) j τ₀ (1 / (4 * (N : ℝ))), Dom lam) ∧ ∃ U : Set (ι → Fin N → ℝ), IsOpen U ∧ (∃ x ∈ U, GapZero j τ₀ x) ∧ ∀ x ∈ U, GapZero j τ₀ x → x ∈ wallSet j τ₀ (1 / (4 * (N : ℝ))) := by

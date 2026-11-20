@@ -28,19 +28,19 @@ def KillSt (Y : FBChart C V O dd) (p : ∀ o, PairData Y d (I o)) : Prop :=
     ∀ w : WVO I, (w.1, w.2.1) ≠ (o, g) → linAct ε ((p w.1).u w.2.1 w.2.2) = 0
 
 /- English proof (translation)
-Introduce `hs o g`. Establish `h` using `hP o`. Unfold `ProjSt at h`. Take `⟨e, h1, h2, hhom, -, hcomm, hfix, himg, -⟩` from `h`. Use `⟨e g, h1 g, h2 g, fun i => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `set A : Fin dd → MvPowerSeries (WVO I) C := fun m => ∑ w : WVO I, (p w.1).u w.2.1 w.2.2 m • (MvPowerSeries.X w : MvPowerSeries (WVO I) C) with hA`. Establish `hAc : ∀ m, MvPowerSeries.constantCoeff (A m) = 0` using `fun m => by simp [hA]`. Establish `hlin : (fun m => ∑ j, MvPowerSeries.coeff (Finsupp.single ((0 : Fin 1), j) 1) (e g m) • A j) = zePart Y p (o, g)`. Use function extensionality and compare the values at `m`. Simplify using `only [hA, Finset.smul_sum, smul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.sum_smul]`. Establish `hterm : ∀ w : WVO I, (∑ j, MvPowerSeries.coeff (Finsupp.single ((0 : Fin 1), j) 1) (e g m) * (p w.1).u w.2.1 w.2.2 j) = linAct (e g) ((p w.1).u w.2.1 w.2.2) m` using `fun w => rfl`. Simplify using `only [hterm]`. Unfold `zePart`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fintype.sum_sigma, Finset.sum_eq_single o]`. Rewrite using `[Fintype.sum_sigma, Finset.sum_eq_single g]`. Use `Finset.sum_congr rfl fun c _ => ?_ dsimp only` and prove the remaining obligations. Rewrite using `[hfix g c]`. Introduce `g' _ hg'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Rewrite using `[hK hs o g (e g) (h2 g) (hcomm g) (himg g) ⟨o, ⟨g', c⟩⟩ (by simp [hg'])]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce `o' _ ho'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_eq_zero fun x _ => ?_` and prove the remaining obligations. Rewrite using `[hK hs o g (e g) (h2 g) (hcomm g) (himg g) ⟨o', x⟩ (by simp [ho'])]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite using `[toAllS_expPt, ← hlin, ← hE (e g) (h2 g) (hhom g) (WVO I) A hAc i]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem projPull_of (Y : FBChart C V O dd) (p : ∀ o, PairData Y d (I o)) (hE : EndoLogSt Y) (hK : KillSt Y p)
     (hP : ∀ o, ProjSt Y (p o)) : ProjPullSt Y p := by

@@ -10,41 +10,35 @@ namespace PI.OkpW
 variable {K : Type} [Field K] [NumberField K] {p : ℕ} [hp : Fact p.Prime]
 
 /- English proof (translation)
-Use `haveI hmax := isMaximal_span_p (K := K) (p := p) hP`. Establish `hle : Ideal.span {(p : 𝓞 K)} ≤ (Ideal.span {(p : 𝓞 K)}).comap (RingOfIntegers.mapRingHom c)`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Use `show RingOfIntegers.mapRingHom c (p : 𝓞 K) ∈ Ideal.span {(p : 𝓞 K)}`. Rewrite using `[map_natCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `Ideal.mem_span_singleton_self _`. Set `σ : (𝓞 K ⧸ Ideal.span {(p : 𝓞 K)}) →+* (𝓞 K ⧸ Ideal.span {(p : 𝓞 K)})` to `Ideal.quotientMap _ (RingOfIntegers.mapRingHom c) hle`. Establish `hσ : ∀ y : 𝓞 K, σ (Ideal.Quotient.mk _ y) = Ideal.Quotient.mk _ (RingOfIntegers.mapRingHom c y)` using `fun y => Ideal.quotientMap_mk`. Use `haveI : CharP (𝓞 K ⧸ Ideal.span {(p : 𝓞 K)}) p := CharP.quotient (𝓞 K) p (mem_nonunits_iff.mpr fun hu => hP.ne_top (Ideal.span_singleton_eq_top.mpr hu))`. Use `haveI : ExpChar (𝓞 K ⧸ Ideal.span {(p : 𝓞 K)}) p := ExpChar.prime hp.out`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (2 : (𝓞 K ⧸ Ideal.span {(p : 𝓞 K)})) ≠ 0`. Introduce `h`. Establish `h' : ((2 : ℕ) : (𝓞 K ⧸ Ideal.span {(p : 𝓞 K)})) = 0` using `by exact_mod_cast h`. Establish `hd` using `(CharP.cast_eq_zero_iff (𝓞 K ⧸ Ideal.span {(p : 𝓞 K)}) p 2).mp h'`. Establish `hp3 : p ≤ 2` using `Nat.le_of_dvd (by norm_num) hd`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hp.out.two_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hfixZ : ∀ z : ℤ, ((z : (𝓞 K ⧸ Ideal.span {(p : 𝓞 K)}))) ^ p = z` using `fun z => by rw [← frobenius_def, map_intCast]`. Establish `h2p : (2 : (𝓞 K ⧸ Ideal.span {(p : 𝓞 K)})) ^ p = 2` using `by rw [← frobenius_def, map_ofNat]`. Establish `hdich : ∀ x : (𝓞 K ⧸ Ideal.span {(p : 𝓞 K)}), x ^ p = x ∨ x ^ p = σ x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `x`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Take `⟨n, hn⟩` from `add_c_int hK c hc a`. Take `⟨n2, hn2⟩` from `add_c_int hK c hc (a ^ 2)`. Establish `ht : Ideal.Quotient.mk (Ideal.span {(p : 𝓞 K)}) a + σ (Ideal.Quotient.mk (Ideal.span {(p : 𝓞 K)}) a) = (n : (𝓞 K ⧸ Ideal.span {(p : 𝓞 K)}))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hσ, ← map_add, hn, map_intCast]`. Establish `ht2 : Ideal.Quotient.mk (Ideal.span {(p : 𝓞 K)}) a ^ 2 + σ (Ideal.Quotient.mk (Ideal.span {(p : 𝓞 K)}) a) ^ 2 = (n2 : (𝓞 K ⧸ Ideal.span {(p : 𝓞 K)}))`. Use `congrArg (Ideal.Quotient.mk (Ideal.span {(p : 𝓞 K)})) hn2` as an intermediate fact. Rewrite `this` using `[map_add, map_intCast, map_pow, map_pow]`. Rewrite using `[hσ, ← this, map_pow (Ideal.Quotient.mk _) ((RingOfIntegers.mapRingHom c) a)]`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Generalize the expression as in `Ideal.Quotient.mk (Ideal.span {(p : 𝓞 K)}) a = x at ht ht2 ⊢`. Establish `hm : (2 : (𝓞 K ⧸ Ideal.span {(p : 𝓞 K)})) * (x * σ x) = (n : (𝓞 K ⧸ Ideal.span {(p : 𝓞 K)})) ^ 2 - n2`. Rewrite using `[← ht, ← ht2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmp : (x * σ x) ^ p = x * σ x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ((2 : (𝓞 K ⧸ Ideal.span {(p : 𝓞 K)})) * (x * σ x)) ^ p = 2 * (x * σ x)`. Rewrite using `[hm, sub_pow_char, ← pow_mul, mul_comm 2 p, pow_mul, hfixZ, hfixZ]`. Rewrite `h1` using `[mul_pow, h2p]`. Conclude with `mul_left_cancel₀ h2 h1`. Establish `hzero : x ^ 2 - (n : (𝓞 K ⧸ Ideal.span {(p : 𝓞 K)})) * x + x * σ x = 0`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ht]`. Expand and normalize the polynomial expressions, which then agree. Establish `hfr` using `congrArg (frobenius (𝓞 K ⧸ Ideal.span {(p : 𝓞 K)}) p) hzero`. Rewrite `hfr` using `[map_zero, map_add, map_sub, map_mul, map_pow, map_intCast, frobenius_def, frobenius_def, hmp]`. Establish `hq : (x ^ p - x) * (x ^ p - σ x) = 0`.
+Expand and normalize the polynomial expressions, which then agree. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Establish an intermediate fact.
 
-Rewrite using `[← hfr, ← ht]`. Expand and normalize the polynomial expressions, which then agree. Break down `mul_eq_zero.mp hq with h | h` into its components or cases. Conclude with `Or.inl (sub_eq_zero.mp h)`. Conclude with `Or.inr (sub_eq_zero.mp h)`.
+Assume the negation of the conclusion and derive a contradiction. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hex : ∃ y : (𝓞 K ⧸ Ideal.span {(p : 𝓞 K)}), y ^ p ≠ y`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Use `haveI := finite_quot (K := K) (p := p) hK`. Use `letI := Fintype.ofFinite (𝓞 K ⧸ Ideal.span {(p : 𝓞 K)})`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `letI : Field (𝓞 K ⧸ Ideal.span {(p : 𝓞 K)}) := Ideal.Quotient.field _`. Establish `hp1 : 1 < p` using `hp.out.one_lt`. Establish `hsub : (Finset.univ : Finset (𝓞 K ⧸ Ideal.span {(p : 𝓞 K)})) ⊆ ((Polynomial.X ^ p - Polynomial.X : Polynomial (𝓞 K ⧸ Ideal.span {(p : 𝓞 K)})).roots.toFinset)`. Introduce `y _`. Rewrite using `[Multiset.mem_toFinset, Polynomial.mem_roots (FiniteField.X_pow_card_sub_X_ne_zero (𝓞 K ⧸ Ideal.span {(p : 𝓞 K)}) hp1)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[Polynomial.IsRoot, hcon y]`. Establish `h1` using `Finset.card_le_card hsub`. Rewrite `h1` using `[Finset.card_univ]`. Establish `h2` using `(Multiset.toFinset_card_le _).trans (Polynomial.card_roots' (Polynomial.X ^ p - Polynomial.X : Polynomial (𝓞 K ⧸ Ideal.span {(p : 𝓞 K)})))`. Rewrite `h2` using `[FiniteField.X_pow_card_sub_X_natDegree_eq (𝓞 K ⧸ Ideal.span {(p : 𝓞 K)}) hp1]`.
+Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h3 : Fintype.card (𝓞 K ⧸ Ideal.span {(p : 𝓞 K)}) = p ^ 2`. Rewrite using `[← Nat.card_eq_fintype_card]`. Conclude with `natCard_quot (K := K) (p := p) hK`. Establish `h4 : p ^ 2 ≤ p` using `h3 ▸ h1.trans h2`. Use polynomial arithmetic with `[hp1]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨y, hy⟩` from `hex`. Establish `hyσ : y ^ p = σ y` using `(hdich y).resolve_left hy`. Establish `hall : ∀ x : (𝓞 K ⧸ Ideal.span {(p : 𝓞 K)}), σ x = x ^ p`. Introduce `x`. Break down `hdich x with hx | hx` into its components or cases.
-
-Establish `hxy : (x + y) ^ p ≠ x + y`. Rewrite using `[add_pow_char, hx]`. Introduce `h`. Conclude with `hy (add_left_cancel h)`. Establish `h1` using `(hdich (x + y)).resolve_left hxy`.
-
-Rewrite `h1` using `[add_pow_char, hx, hyσ, map_add]`. Rewrite using `[hx]`. Conclude with `(add_right_cancel h1).symm`. Conclude with `hx.symm`. Use `hall (Ideal.Quotient.mk _ a)` as an intermediate fact.
-
-Rewrite `this` using `[hσ, ← map_pow, ← sub_eq_zero, ← map_sub, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem c_frob (hK : Module.finrank ℚ K = 2) (c : K →+* K) (hc : ∃ x, c x ≠ x) (hp2 : p ≠ 2)
     (hP : (Ideal.span {(p : 𝓞 K)}).IsPrime) (a : 𝓞 K) :

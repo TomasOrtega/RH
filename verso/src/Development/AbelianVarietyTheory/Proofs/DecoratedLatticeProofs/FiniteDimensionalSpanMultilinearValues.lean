@@ -3,13 +3,13 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `ι _ E _ _ F _ _ T W hW`. Use `hW` as an intermediate fact. Set `T' : MultilinearMap ℂ (fun i => W i) F` to `T.compLinearMap (fun i => (W i).subtype)`. Establish `hset : {f | ∃ v : ∀ i, E i, (∀ i, v i ∈ W i) ∧ f = T v} = Set.range T'`. Use extensionality with `f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, rfl⟩`. Conclude with `⟨fun i => ⟨v i, hv i⟩, rfl⟩`. Introduce and unpack `⟨w, rfl⟩`. Conclude with `⟨fun i => (w i : E i), fun i => (w i).2, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `hle : Submodule.span ℂ (Set.range T') ≤ LinearMap.range (PiTensorProduct.lift T')`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨w, rfl⟩`. Conclude with `⟨PiTensorProduct.tprod ℂ w, by simp⟩`. Rewrite using `[hset]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.finiteDimensional_of_le hle`.
+A detailed English derivation is pending.
 -/
 theorem finiteDimensional_span_multilinear_values :
     ∀ {ι : Type} [Fintype ι] (E : ι → Type) [∀ i, AddCommGroup (E i)] [∀ i, Module ℂ (E i)]

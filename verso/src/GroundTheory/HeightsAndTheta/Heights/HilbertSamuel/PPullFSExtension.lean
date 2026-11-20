@@ -14,11 +14,11 @@ noncomputable section
 namespace PullFSExtension
 
 /- English proof (translation)
-Use `set Lr : (E → ℂ) →L[ℝ] (F → ℂ) := L.restrictScalars ℝ with hLr`. Establish `hLr' : ∀ y, Lr y = L y` using `fun _ => rfl`. Establish `hev : ∀ᶠ y in 𝓝 z, ContDiffAt ℝ 2 φ (L y)` using `(L.continuous.tendsto z).eventually (hφ.eventually (by simp))`. Establish `hfd : fderiv ℝ (fun y => φ (L y)) =ᶠ[𝓝 z] fun y => (ContinuousLinearMap.compL ℝ (E → ℂ) (F → ℂ) ℝ).flip Lr (fderiv ℝ φ (Lr y))` using `by filter_upwards [hev] with y hy`. Establish `h` using `(hy.differentiableAt (by norm_num)).hasFDerivAt.comp y Lr.hasFDerivAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h.fderiv`. Establish `hd2 : DifferentiableAt ℝ (fderiv ℝ φ) (Lr z)` using `(hφ.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`. Establish `hD : HasFDerivAt (fun y => (ContinuousLinearMap.compL ℝ (E → ℂ) (F → ℂ) ℝ).flip Lr (fderiv ℝ φ (Lr y))) (((ContinuousLinearMap.compL ℝ (E → ℂ) (F → ℂ) ℝ).flip Lr).comp ((fderiv ℝ (fderiv ℝ φ) (Lr z)).comp Lr)) z` using `((ContinuousLinearMap.compL ℝ (E → ℂ) (F → ℂ) ℝ).flip Lr).hasFDerivAt.comp z (hd2.hasFDerivAt.comp z Lr.hasFDerivAt)`. Unfold `leviForm`. Rewrite using `[hfd.fderiv_eq, hD.fderiv]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hI : Lr (Complex.I • w) = Complex.I • L w` using `by rw [hLr']; exact L.map_smul _ _`. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.flip_apply, ContinuousLinearMap.compL_apply, hI]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem leviForm_comp_clm {E F : Type} [Fintype E] [Fintype F] (L : (E → ℂ) →L[ℂ] (F → ℂ))
     (φ : (F → ℂ) → ℝ) (z w : E → ℂ) (hφ : ContDiffAt ℝ 2 φ (L z)) :
@@ -48,7 +48,7 @@ theorem leviForm_comp_clm {E F : Type} [Fintype E] [Fintype F] (L : (E → ℂ) 
   rfl
 
 /- English proof (translation)
-Establish `h1 : fderiv ℝ φ =ᶠ[𝓝 z] fderiv ℝ ψ` using `by filter_upwards [h.eventuallyEq_nhds] with y hy`. Conclude with `hy.fderiv_eq`. Unfold `leviForm`. Rewrite using `[h1.fderiv_eq]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leviForm_congr {E : Type} [Fintype E] {φ ψ : (E → ℂ) → ℝ} {z : E → ℂ} (h : φ =ᶠ[𝓝 z] ψ)
     (w : E → ℂ) : leviForm φ z w = leviForm ψ z w := by
@@ -59,34 +59,34 @@ theorem leviForm_congr {E : Type} [Fintype E] {φ ψ : (E → ℂ) → ℝ} {z :
   rw [h1.fderiv_eq]
 
 /- English proof (translation)
-Unfold `normSqE`. Rewrite using `[eL_apply, EuclideanSpace.norm_eq, Real.sq_sqrt (by positivity)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem normSqE_eq {J : Type} [Fintype J] (z : J → ℂ) : normSqE z = ∑ i, ‖z i‖ ^ 2 := by
   unfold normSqE
   rw [eL_apply, EuclideanSpace.norm_eq, Real.sq_sqrt (by positivity)]
 
 /- English proof (translation)
-Simplify using `only [normSqE_eq, Pi.smul_apply, smul_eq_mul, norm_mul, mul_pow, Finset.mul_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem normSqE_smul {J : Type} [Fintype J] (c : ℂ) (z : J → ℂ) :
     normSqE (c • z) = ‖c‖ ^ 2 * normSqE z := by
   simp only [normSqE_eq, Pi.smul_apply, smul_eq_mul, norm_mul, mul_pow, Finset.mul_sum]
 
 /- English proof (translation)
-Simplify using `only [normSqE_eq, Complex.norm_conj]`.
+Simplify using the standard rewrite rules.
 -/
 theorem normSqE_conj {J : Type} [Fintype J] (z : J → ℂ) :
     normSqE (fun i => (starRingEnd ℂ) (z i)) = normSqE z := by
   simp only [normSqE_eq, Complex.norm_conj]
 
 /- English proof (translation)
-Simplify using `[normSqE_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem normSqE_zero {J : Type} [Fintype J] : normSqE (0 : J → ℂ) = 0 := by
   simp [normSqE_eq]
 
 /- English proof (translation)
-Establish `: normSqE (J` using `J) = fun z => ‖eL z‖ ^ 2 := rfl`. Rewrite using `[this]`. Conclude with `(contDiff_norm_sq ℝ).comp (eL (J := J)).contDiff`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contDiff_normSqE {J : Type} [Fintype J] {n : WithTop ℕ∞} : ContDiff ℝ n (normSqE (J := J)) := by
   have : normSqE (J := J) = fun z => ‖eL z‖ ^ 2 := rfl
@@ -101,7 +101,7 @@ def pr (e : Fin (D + 1) → Ix κ) : (Ix κ → ℂ) →L[ℂ] (Fin (D + 1) → 
 def ratio (e : Fin (D + 1) → Ix κ) (z : Ix κ → ℂ) : ℝ := normSqE (pr e z) / normSqE z
 
 /- English proof (translation)
-Unfold `ratio`. Rewrite using `[map_smul, normSqE_smul, normSqE_smul]`. Conclude with `mul_div_mul_left _ _ (pow_ne_zero 2 (norm_ne_zero_iff.mpr hc))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratio_smul (e : Fin (D + 1) → Ix κ) {c : ℂ} (hc : c ≠ 0) (z : Ix κ → ℂ) :
     ratio e (c • z) = ratio e z := by
@@ -110,7 +110,7 @@ theorem ratio_smul (e : Fin (D + 1) → Ix κ) {c : ℂ} (hc : c ≠ 0) (z : Ix 
   exact mul_div_mul_left _ _ (pow_ne_zero 2 (norm_ne_zero_iff.mpr hc))
 
 /- English proof (translation)
-Unfold `ratio`. Establish `: pr e (fun i => (starRingEnd ℂ) (z i)) = fun k => (starRingEnd ℂ) (pr e z k)` using `rfl`. Rewrite using `[this, normSqE_conj, normSqE_conj]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ratio_conj (e : Fin (D + 1) → Ix κ) (z : Ix κ → ℂ) :
     ratio e (fun i => (starRingEnd ℂ) (z i)) = ratio e z := by
@@ -119,7 +119,7 @@ theorem ratio_conj (e : Fin (D + 1) → Ix κ) (z : Ix κ → ℂ) :
   rw [this, normSqE_conj, normSqE_conj]
 
 /- English proof (translation)
-The claim follows from `(contDiff_normSqE.comp ((pr e).restrictScalars ℝ).contDiff).contDiffAt.div contDiff_normSqE.contDiffAt (normSqE_pos hz).ne'`.
+A detailed English derivation is pending.
 -/
 theorem contDiffAt_ratio (e : Fin (D + 1) → Ix κ) {z : Ix κ → ℂ} (hz : z ≠ 0) {n : WithTop ℕ∞} :
     ContDiffAt ℝ n (ratio e) z :=
@@ -129,13 +129,13 @@ theorem contDiffAt_ratio (e : Fin (D + 1) → Ix κ) {z : Ix κ → ℂ} (hz : z
 def cut (δ t : ℝ) : ℝ := Real.smoothTransition ((t - δ / 4) / (δ / 4))
 
 /- English proof (translation)
-The claim follows from `Real.smoothTransition.zero_of_nonpos (div_nonpos_of_nonpos_of_nonneg (by linarith) (by linarith))`.
+A detailed English derivation is pending.
 -/
 theorem cut_of_le {δ t : ℝ} (hδ : 0 < δ) (ht : t ≤ δ / 4) : cut δ t = 0 :=
   Real.smoothTransition.zero_of_nonpos (div_nonpos_of_nonpos_of_nonneg (by linarith) (by linarith))
 
 /- English proof (translation)
-The claim follows from `Real.smoothTransition.one_of_one_le ((one_le_div (by linarith)).mpr (by linarith))`.
+A detailed English derivation is pending.
 -/
 theorem cut_of_ge {δ t : ℝ} (hδ : 0 < δ) (ht : δ / 2 ≤ t) : cut δ t = 1 :=
   Real.smoothTransition.one_of_one_le ((one_le_div (by linarith)).mpr (by linarith))
@@ -143,11 +143,9 @@ theorem cut_of_ge {δ t : ℝ} (hδ : 0 < δ) (ht : δ / 2 ≤ t) : cut δ t = 1
 def gfac (δ t : ℝ) : ℝ := Real.exp (cut δ t * Real.log t / 2)
 
 /- English proof (translation)
-Rewrite using `[contDiff_iff_contDiffAt]`. Introduce `t`. Distinguish the cases in `ht : t < δ / 4`. Establish `: gfac δ =ᶠ[𝓝 t] fun _ => 1` using `by filter_upwards [Iio_mem_nhds ht] with s hs`. Simplify using `[gfac, cut_of_le hδ (le_of_lt hs)]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `contDiffAt_const.congr_of_eventuallyEq this`. Establish `ht0 : t ≠ 0` using `by intro h; subst h; linarith`. Establish `hcut : ContDiff ℝ n (cut δ)`. Establish `: cut δ = Real.smoothTransition ∘ fun t => (t - δ / 4) / (δ / 4)` using `rfl`. Rewrite using `[this]`.
-
-Conclude with `Real.smoothTransition.contDiff.comp ((contDiff_id.sub contDiff_const).div_const _)`. Conclude with `Real.contDiff_exp.contDiffAt.comp t (((hcut.contDiffAt.mul (Real.contDiffAt_log.mpr ht0))).div_const _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contDiff_gfac {δ : ℝ} (hδ : 0 < δ) {n : ℕ∞} : ContDiff ℝ n (gfac δ) := by
   rw [contDiff_iff_contDiffAt]
@@ -166,7 +164,7 @@ theorem contDiff_gfac {δ : ℝ} (hδ : 0 < δ) {n : ℕ∞} : ContDiff ℝ n (g
       (((hcut.contDiffAt.mul (Real.contDiffAt_log.mpr ht0))).div_const _)
 
 /- English proof (translation)
-Establish `ht0 : 0 < t` using `by linarith`. Rewrite using `[gfac, cut_of_ge hδ ht, one_mul, ← Real.log_sqrt ht0.le, Real.exp_log (Real.sqrt_pos.mpr ht0)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem gfac_of_ge {δ t : ℝ} (hδ : 0 < δ) (ht : δ / 2 ≤ t) : gfac δ t = Real.sqrt t := by
   have ht0 : 0 < t := by linarith
@@ -188,7 +186,7 @@ theorem metric_rho (e : Fin (D + 1) → Ix κ) (δ : ℝ) (z : Ix κ → ℂ) :
     (metric e δ).ρ z = Real.sqrt (normSqE z) * gfac δ (ratio e z) := rfl
 
 /- English proof (translation)
-Rewrite using `[metric_rho, gfac_of_ge hδ hr, ← Real.sqrt_mul (normSqE_pos hz).le, ratio, mul_div_cancel₀ _ (normSqE_pos hz).ne']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem metric_of_ge (e : Fin (D + 1) → Ix κ) {δ : ℝ} (hδ : 0 < δ) {z : Ix κ → ℂ} (hz : z ≠ 0)
     (hr : δ / 2 ≤ ratio e z) : (metric e δ).ρ z = Real.sqrt (normSqE (pr e z)) := by
@@ -196,9 +194,9 @@ theorem metric_of_ge (e : Fin (D + 1) → Ix κ) {δ : ℝ} (hδ : 0 < δ) {z : 
     mul_div_cancel₀ _ (normSqE_pos hz).ne']
 
 /- English proof (translation)
-Introduce `z hz`. Establish `hz' : z ≠ 0` using `hz`. Use `ContDiffAt.contDiffWithinAt ?_` and prove the remaining obligations. Establish `h1 : ContDiffAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun y => Real.sqrt (normSqE y)) z` using `contDiff_normSqE.contDiffAt.sqrt (normSqE_pos hz').ne'`. Establish `h2 : ContDiffAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun y => gfac δ (ratio e y)) z` using `(contDiff_gfac hδ).contDiffAt.comp z (contDiffAt_ratio e hz')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h1.mul h2`.
+A detailed English derivation is pending.
 -/
 theorem isSmoothMetric_metric (e : Fin (D + 1) → Ix κ) {δ : ℝ} (hδ : 0 < δ) :
     IsSmoothMetric (metric e δ) := by
@@ -212,7 +210,7 @@ theorem isSmoothMetric_metric (e : Fin (D + 1) → Ix κ) {δ : ℝ} (hδ : 0 < 
   exact h1.mul h2
 
 /- English proof (translation)
-Introduce `z`. Rewrite using `[metric_rho, metric_rho, normSqE_conj, ratio_conj]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem isConjInvariant_metric (e : Fin (D + 1) → Ix κ) (δ : ℝ) : IsConjInvariant (metric e δ) := by
   intro z
@@ -221,13 +219,13 @@ theorem isConjInvariant_metric (e : Fin (D + 1) → Ix κ) (δ : ℝ) : IsConjIn
 variable {Ω : Type} [Field Ω] [CharZero Ω] {x : Ix κ → Ω} {e : Fin (D + 1) → Ix κ}
 
 /- English proof (translation)
-Introduce `h0`. Apply `hz.1` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Take `⟨u, j⟩` from `i`. Consider the cases of `u`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data.
 
-Take `⟨N, hN⟩` from `hBP D Ω κ x e hfr () (fun _ => j)`. Use `set ψ : MvPolynomial (Ix κ) ℤ →+* ℂ := (eval z).comp (map (Int.castRingHom ℂ)) with hψ`. Establish `hle : coordIdeal ℤ x ⊔ Ideal.span (Set.range fun k : Fin (D + 1) => linForm (ι` using `GlobalTheory κ) (ι₂ := GlobalTheory (Fin (D + 1))) (projMat e) ⟨(), k⟩) ≤ RingHom.ker ψ := by`. Use `sup_le (fun f hf => RingHom.mem_ker.mpr (hz.2 f hf)) (Ideal.span_le.mpr ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hk : z (e k) = 0` using `congrFun h0 k`. Establish `he : (⟨(), (e k).2⟩ : Ix κ) = e k` using `rfl`. Simplify using `only [SetLike.mem_coe, RingHom.mem_ker, hψ, RingHom.comp_apply, linForm, map_sum, map_mul, map_C, map_X, eval_C, eval_X, projMat]`. Simplify using `only [eq_intCast, Int.cast_ite, Int.cast_one, Int.cast_zero, ite_mul, one_mul, zero_mul]`. Rewrite using `[Finset.sum_eq_single (e k).2 (fun i _ hi => if_neg (Ne.symm hi)) (fun h => absurd (Finset.mem_univ _) h), if_pos rfl, he]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hk`. Establish `h1` using `hle hN`. Rewrite `h1` using `[RingHom.mem_ker]`. Simplify using `only [hψ, RingHom.comp_apply, map_pow, map_X, eval_X, Finset.univ_unique, Finset.prod_singleton] at h1`. Conclude with `eq_zero_of_pow_eq_zero h1`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pr_ne_zero (hBP : ProjFrameBasePtFree.Statement) (hfr : IsProjFrame x e) {z : Ix κ → ℂ}
     (hz : z ∈ pts (coordIdeal ℤ x)) : pr e z ≠ 0 := by
@@ -257,30 +255,28 @@ theorem pr_ne_zero (hBP : ProjFrameBasePtFree.Statement) (hfr : IsProjFrame x e)
   exact eq_zero_of_pow_eq_zero h1
 
 /- English proof (translation)
-The claim follows from `div_pos (normSqE_pos (pr_ne_zero hBP hfr hz)) (normSqE_pos hz.1)`.
+A detailed English derivation is pending.
 -/
 theorem ratio_pos (hBP : ProjFrameBasePtFree.Statement) (hfr : IsProjFrame x e) {z : Ix κ → ℂ}
     (hz : z ∈ pts (coordIdeal ℤ x)) : 0 < ratio e z :=
   div_pos (normSqE_pos (pr_ne_zero hBP hfr hz)) (normSqE_pos hz.1)
 
 /- English proof (translation)
-Use `set S : Set (Ix κ → ℂ) := {z | (∀ f ∈ coordIdeal ℤ x, eval z (map (Int.castRingHom ℂ) f) = 0) ∧ normSqE z = 1} with hSdef`. Establish `hSpts : ∀ z ∈ S, z ∈ pts (coordIdeal ℤ x)` using `fun z hz => ⟨fun h0 => by`. Establish `h1` using `hz.2`. Rewrite `h1` using `[h0, normSqE_zero]`. Conclude with `zero_ne_one h1, hz.1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hnorm : ∀ z ∈ pts (coordIdeal ℤ x), ∃ z' ∈ S, ratio e z' = ratio e z`. Introduce `z hz`. Establish `hq` using `normSqE_pos hz.1`. Establish `hs` using `Real.sqrt_pos.mpr hq`. Use `set c : ℂ := (((Real.sqrt (normSqE z))⁻¹ : ℝ) : ℂ) with hcdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcn : ‖c‖ = (Real.sqrt (normSqE z))⁻¹`. Rewrite using `[hcdef, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (inv_pos.mpr hs)]`. Establish `hc : c ≠ 0`. Introduce `h`. Rewrite `hcn` using `[h, norm_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(inv_pos.mpr hs).ne' hcn.symm`. Use `⟨c • z, ⟨(smul_mem_pts_coord x hz hc).2, ?_⟩, ratio_smul e hc z⟩` and prove the remaining obligations. Rewrite using `[normSqE_smul, hcn, inv_pow, Real.sq_sqrt hq.le, inv_mul_cancel₀ hq.ne']`. Establish `hSc : IsCompact S`. Apply `Metric.isCompact_of_isClosed_isBounded` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hA : IsClosed {z : Ix κ → ℂ | ∀ f ∈ coordIdeal ℤ x, eval z (map (Int.castRingHom ℂ) f) = 0}`. Establish `h : {z : Ix κ → ℂ | ∀ f ∈ coordIdeal ℤ x, eval z (map (Int.castRingHom ℂ) f) = 0} = ⋂ f ∈ coordIdeal ℤ x, {z | eval z (map (Int.castRingHom ℂ) f) = 0}`. Use extensionality with `z`. Simplify using the standard rewrite rules. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `isClosed_biInter fun f _ => isClosed_eq (MvPolynomial.continuous_eval _) continuous_const`. Conclude with `hA.inter (isClosed_eq (contDiff_normSqE (n := 0)).continuous continuous_const)`. Use `(Metric.isBounded_closedBall (x := (0 : Ix κ → ℂ)) (r := 1)).subset fun z hz => ?_` and prove the remaining obligations. Rewrite using `[Metric.mem_closedBall, dist_zero_right]`. Use `(pi_norm_le_iff_of_nonneg zero_le_one).mpr fun i => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : ‖z i‖ ^ 2 ≤ 1`. Rewrite using `[← hz.2, normSqE_eq]`. Conclude with `Finset.single_le_sum (f := fun i => ‖z i‖ ^ 2) (fun _ _ => sq_nonneg _) (Finset.mem_univ i)`. Use polynomial arithmetic with `[norm_nonneg (z i)]`. Establish `hcont : ContinuousOn (ratio e) S` using `fun z hz => (contDiffAt_ratio e (hSpts z hz).1 (n := 0)).continuousAt.continuousWithinAt`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Break down `S.eq_empty_or_nonempty with hS | hS` into its components or cases. Use `⟨1, one_pos, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨z', hz', -⟩` from `hnorm z hz`. Rewrite `hz'` using `[hS]`. Simplify using `at hz'`.
-
-Take `⟨z0, hz0, hmin⟩` from `hSc.exists_isMinOn hS hcont`. Use `⟨ratio e z0, ratio_pos hBP hfr (hSpts z0 hz0), fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨z', hz', hr⟩` from `hnorm z hz`. Rewrite using `[← hr]`. Conclude with `hmin hz'`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ratio_lb (hBP : ProjFrameBasePtFree.Statement) (hfr : IsProjFrame x e) :
     ∃ δ > 0, ∀ z ∈ pts (coordIdeal ℤ x), δ ≤ ratio e z := by
@@ -340,17 +336,15 @@ end PullFSExtension
 open PullFSExtension in
 
 /- English proof (translation)
-Introduce `D Ω _ _ κ _ x e hfr`. Take `⟨δ, hδ, hlb⟩` from `exists_ratio_lb hBP hfr`. Establish `hsm` using `isSmoothMetric_metric e hδ`. Use `⟨metric e δ, hsm, isConjInvariant_metric e δ, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `hsm.mono fun z hz => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨i, hi⟩` from `hz ()`. Conclude with `fun h0 => hi (congrFun h0 _)`. Introduce `z hz w _`. Establish `hzp : z ∈ pts (coordIdeal ℤ x)` using `⟨fun h0 => by obtain ⟨i, hi⟩ := hz.1 (); exact hi (congrFun h0 _), hz.2⟩`. Establish `hpz` using `pr_ne_zero hBP hfr hzp`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : (fun y => Real.log ((HermLine.ofCone (metric e δ)).h y)) =ᶠ[𝓝 z] fun y => Real.log ((fsMetric (Fin (D + 1))).ρ (pr e y))`. Establish `hr : ∀ᶠ y in 𝓝 z, δ / 2 < ratio e y` using `(contDiffAt_ratio e hzp.1 (n := 0)).continuousAt.eventually (lt_mem_nhds (by linarith [hlb z hzp]))`. Use `filter_upwards [hr, isOpen_ne.mem_nhds hzp.1] with y hy hy0`. Express the relevant statement in the definitionally equal form `Real.log ((metric e δ).ρ y) = _`. Rewrite using `[metric_of_ge e hδ hy0 hy.le, congrFun log_fs_eq (pr e y), Real.log_sqrt (by rw [normSqE_eq]; positivity)]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hφ : ContDiffAt ℝ 2 (fun u => Real.log ((fsMetric (Fin (D + 1))).ρ u)) (pr e z)`. Rewrite using `[log_fs_eq]`. Conclude with `contDiffAt_const.mul (contDiff_normSqE.contDiffAt.log (normSqE_pos hpz).ne')`. Establish `key` using `leviForm_comp_clm (pr e) (fun u => Real.log ((fsMetric (Fin (D + 1))).ρ u)) z w hφ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `beta_reduce at key`. Rewrite using `[leviForm_congr hev w, key]`. Conclude with `leviForm_log_fs_nonneg hpz (pr e w)`. Introduce `z hz`. Rewrite using `[metric_of_ge e hδ hz.1 (by linarith [hlb z hz]), normSqE_eq]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem PullFSExtension.proof (hBP : ProjFrameBasePtFree.Statement) : PullFSExtension.Statement := by
   intro D Ω _ _ κ _ x e hfr

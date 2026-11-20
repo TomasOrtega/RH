@@ -10,13 +10,11 @@ open scoped Formalism.Per
 namespace GlobalTheory.MemLoc
 
 /- English proof (translation)
-Introduce `l _`. Establish `hv` using `PadicComplexInt.integers l`. Use `haveI : IsDomain (Per.Fl l) := PreTilt.isDomain _ _ _ hv l`. Establish `hl : ((l : ℕ) : Per.Ainf l) ≠ 0` using `fun h => by`. Establish `h1` using `congrArg (Per.θ l) h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[map_natCast, map_zero]`. Conclude with `GlobalTheory.RingBasics.p_ne_zero (p := l) (by simpa using congrArg Subtype.val h1)`. Use `⟨ReciprocityTheory.PGsh.Ainf.theta_surj l _ hv, inferInstance, hl, fun e he => ?_⟩` and prove the remaining obligations. Establish `hε : IsPrimitiveRoot (((frobeniusEquiv (Per.Fl l) l).symm e).untilt) l`. Establish `h1 : (((frobeniusEquiv (Per.Fl l) l).symm e).untilt) ^ l = 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_pow, frobeniusEquiv_symm_pow_p]`. Conclude with `he.1`. Establish `h2` using `he.2`. Generalize the expression as in `((frobeniusEquiv (Per.Fl l) l).symm e).untilt = y at h1 h2 ⊢`. Establish `h3` using `IsPrimitiveRoot.orderOf y`.
-
-Rewrite `h3` using `[orderOf_eq_prime h1 h2]`. Then use the resulting hypothesis. Use `⟨ReciprocityTheory.PGsh.Ainf.ker_theta l _ hv e hε, fun h => ?_⟩` and prove the remaining obligations. Conclude with `one_ne_zero (ReciprocityTheory.PGsh.Ainf.xi_nzd l _ hv e hε 1 (by rw [one_mul]; exact h))`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem theta_ker_facts : ∀ (l : ℕ) [Fact l.Prime], Function.Surjective (Per.θ l) ∧ IsDomain (Per.Ainf l) ∧ ((l : ℕ) : Per.Ainf l) ≠ 0 ∧ ∀ e : Per.Fl l, IsEps e → RingHom.ker (Per.θ l) = Ideal.span {xi e} ∧ xi e ≠ 0 := by
   intro l _
@@ -38,17 +36,15 @@ theorem theta_ker_facts : ∀ (l : ℕ) [Fact l.Prime], Function.Surjective (Per
   exact one_ne_zero (ReciprocityTheory.PGsh.Ainf.xi_nzd l _ hv e hε 1 (by rw [one_mul]; exact h))
 
 /- English proof (translation)
-Introduce `l _`. Establish `key : ∀ (e : Per.Fl l) (n : ℕ), Ideal.Quotient.mk (Ideal.span {((l : ℕ) : Per.OC l)}) (rootT e n) = PreTilt.coeff n e`. Introduce `e n`. Rewrite using `[rootT, PreTilt.mk_untilt_eq_coeff_zero]`. Conclude with `PreTilt.coeff_iterate_frobeniusEquiv_symm 0 n e |>.trans (by rw [zero_add])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun x hx => ?_, fun e he => ?_, fun e m n => ?_⟩` and prove the remaining obligations. Set `e : Perfection (ModP (Per.OC l) l) l` to `⟨fun n => Ideal.Quotient.mk (Ideal.span {((l : ℕ) : Per.OC l)}) (x n), fun n => by`. Rewrite using `[← map_pow, hx]⟩`. Establish `hp : ∀ n k, x (n + k) ^ l ^ k = x n`. Introduce `n k`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ', pow_mul, ← add_assoc, hx, ih]`. Use `⟨e, fun n => ?_⟩` and prove the remaining obligations. Use `Perfection.teichmuller_spec (I := Ideal.span {((l : ℕ) : Per.OC l)}) fun k => ⟨x (n + k), ?_, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (PreTilt.coeff_iterate_frobeniusEquiv_symm (O := Per.OC l) k n e).symm` and prove the remaining obligations. Rewrite using `[add_comm]`. Both sides reduce to the same expression. Rewrite using `[hp]`. Use `Perfection.ext fun n => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `key e n` as an intermediate fact. Rewrite `this` using `[he, map_one]`. Conclude with `this.symm.trans (map_one (PreTilt.coeff n)).symm`. Rewrite using `[rootT, rootT, ← map_pow]`. Use `congr 1`.
-
-Conclude with `iterate_map_pow (frobeniusEquiv (Per.Fl l) l).symm.toRingHom n e m`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem tilt_facts : ∀ (l : ℕ) [Fact l.Prime], (∀ x : ℕ → Per.OC l, (∀ n, x (n + 1) ^ l = x n) → ∃ e : Per.Fl l, ∀ n, rootT e n = x n) ∧ (∀ e : Per.Fl l, (∀ n, rootT e n = 1) → e = 1) ∧ (∀ (e : Per.Fl l) (m n : ℕ), rootT (e ^ m) n = rootT e n ^ m) := by
   intro l _
@@ -80,23 +76,21 @@ theorem tilt_facts : ∀ (l : ℕ) [Fact l.Prime], (∀ x : ℕ → Per.OC l, (�
     exact iterate_map_pow (frobeniusEquiv (Per.Fl l) l).symm.toRingHom n e m
 
 /- English proof (translation)
-Introduce `l _`. Take `⟨hs, hdom, hl, hk⟩` from `theta_ker_facts l`. Establish `hle : Submonoid.powers ((l : ℕ) : Per.Ainf l) ≤ nonZeroDivisors _` using `powers_le_nonZeroDivisors_of_noZeroDivisors hl`. Establish `hA : ∀ a : Per.Ainf l, Per.θP l (algebraMap (Per.Ainf l) (Per.AinfP l) a) = (Per.θ l a : ℂ_[l])` using `fun a => GlobalTheory.RingIface.fontaineTheta_algebraMap l a`. Establish `hu` using `GlobalTheory.RingBasics.isUnit_l l`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsurj : ∀ y : Per.AinfP l, ∃ (n : ℕ) (a : Per.Ainf l), y * ((l : ℕ) : Per.AinfP l) ^ n = algebraMap (Per.Ainf l) (Per.AinfP l) a` using `fun y => by`. Take `⟨n, a, h⟩` from `IsLocalization.Away.surj ((l : ℕ) : Per.Ainf l) y`. Conclude with `⟨n, a, by rwa [map_natCast] at h⟩`. Establish `hz : ∀ y : Per.AinfP l, Per.θP l y = 0 → ∃ (n : ℕ) (a : Per.Ainf l), Per.θ l a = 0 ∧ y * ((l : ℕ) : Per.AinfP l) ^ n = algebraMap (Per.Ainf l) (Per.AinfP l) a` using `fun y hy => by`. Take `⟨n, a, h⟩` from `hsurj y`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨n, a, Subtype.ext ?_, h⟩` and prove the remaining obligations. Rewrite using `[← hA, ← h, map_mul, hy, zero_mul]`. Both sides reduce to the same expression. Establish `hker : RingHom.ker (Per.θP l) = Per.kerP l`. Use `le_antisymm (fun y hy => ?_) (fun y hy => GlobalTheory.RingBasics.fontaineTheta_eq_zero_of_mem_ker l y (by rwa [pow_one]))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨n, a, ha, h⟩` from `hz y hy`. Rewrite using `[← Ideal.mul_unit_mem_iff_mem _ (hu.pow n), h]`. Conclude with `GlobalTheory.RingIface.alg_mem_kerP l ha`. Use `⟨fun x => ?_, hker, hA, fun a => ?_, IsLocalization.isDomain_of_le_nonZeroDivisors _ hle, IsLocalization.injective _ hle, fun e he => ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨n, hn⟩ : ∃ n : ℕ, ‖x * ((l : ℕ) : ℂ_[l]) ^ n‖ ≤ 1 := by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `(tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) (GlobalTheory.RingBasics.norm_p_lt (p := l))).const_mul ‖x‖`. Rewrite `h1` using `[mul_zero]`. Take `⟨n, hn⟩` from `(h1.eventually (eventually_le_nhds one_pos)).exists`. Conclude with `⟨n, by rwa [norm_mul, norm_pow]⟩`. Take `⟨a, ha⟩` from `hs ⟨_, (GlobalTheory.RingBasics.mem_OC _).2 hn⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd⟩` from `(hu.pow n).exists_right_inv`. Use `⟨algebraMap _ _ a * d, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg (Per.θP l) hd`. Rewrite `h2` using `[map_mul, map_pow, map_natCast, map_one]`. Rewrite using `[map_mul, hA, ha, mul_assoc, h2, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `GlobalTheory.RingIface.thetaD_alg l a`. Take `⟨h1, -⟩` from `hk e he`. Use `le_antisymm (fun y hy => ?_) ?_` and prove the remaining obligations. Rewrite `hy` using `[← hker]`. Take `⟨n, a, ha, h⟩` from `hz y hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Ideal.mul_unit_mem_iff_mem _ (hu.pow n), h]`. Establish `h2 : a ∈ Ideal.span {xi e}` using `h1 ▸ ha`. Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton'.1 h2`. Rewrite using `[map_mul]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)`.
-
-Rewrite using `[Ideal.span_singleton_le_iff_mem, ← hker, RingHom.mem_ker, hA, Model.theta_xi he]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem thetaP_facts : ∀ (l : ℕ) [Fact l.Prime], Function.Surjective (Per.θP l) ∧ RingHom.ker (Per.θP l) = Per.kerP l ∧ (∀ a : Per.Ainf l, Per.θP l (algebraMap (Per.Ainf l) (Per.AinfP l) a) = (Per.θ l a : ℂ_[l])) ∧ (∀ a : Per.AinfP l, Per.θD l (algebraMap (Per.AinfP l) (Per.BdRp l) a) = Per.θP l a) ∧ IsDomain (Per.AinfP l) ∧ Function.Injective (algebraMap (Per.Ainf l) (Per.AinfP l)) ∧ ∀ e : Per.Fl l, IsEps e → Per.kerP l = Ideal.span {algebraMap (Per.Ainf l) (Per.AinfP l) (xi e)} := by
   intro l _

@@ -3,15 +3,15 @@ import Formalism.PadicSubsetSums.CentralIdempotents.GaloisIrreducibility
 namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 
 /- English proof (translation)
-Establish `hg' : (2 : ℝ) ≤ g` using `by exact_mod_cast hg`. Proceed by induction on `d using Multiset.induction_on with`. Consider the case `empty => intro _`. Simplify using the standard rewrite rules. Consider the case `cons a s ih`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `h`. Take `⟨h1, h2, h3⟩` from `ih (fun x hx => h x (Multiset.mem_cons_of_mem hx))`. Establish `ha : 1 ≤ a` using `h a (Multiset.mem_cons_self a s)`. Establish `hga : (g : ℝ) ≤ (g : ℝ) ^ a`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Multiset.map_cons, Multiset.prod_cons, Multiset.sum_cons, Multiset.card_cons, pow_add]`. Establish `hG : 0 < (g : ℝ) ^ s.sum` using `pow_pos (by linarith) _`. Generalize the expression as in `(s.map (fun x => (g : ℝ) ^ x - 1)).prod = T at h1 h2 h3 ⊢`. Generalize the expression as in `(g : ℝ) ^ s.sum = G at h2 h3 hG ⊢`. Generalize the expression as in `(g : ℝ) ^ a = A at hga ⊢`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Establish `hc : (0 : ℝ) ≤ (s.card : ℝ)` using `Nat.cast_nonneg _`. Use `push_cast`. Generalize the expression as in `(s.card : ℝ) = c at h3 hc ⊢`. Use `⟨mul_pos (by linarith) h1, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Establish `hg0 : (g : ℝ) ≠ 0` using `by linarith`. Establish `e1 : (A - 1) * (G * (1 - c / g)) - A * G * (1 - (c + 1) / g) = G * ((A - g + c) / g)` using `by field_simp; ring`. Establish `e2 : 0 ≤ G * ((A - g + c) / g)` using `mul_nonneg hG.le (div_nonneg (by linarith) (by linarith))`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem torus_bounds (g : ℕ) (hg : 2 ≤ g) (d : Multiset ℕ) : (∀ x ∈ d, 1 ≤ x) →
     0 < (d.map (fun x => (g : ℝ) ^ x - 1)).prod ∧
@@ -49,35 +49,31 @@ theorem torus_bounds (g : ℕ) (hg : 2 ≤ g) (d : Multiset ℕ) : (∀ x ∈ d,
         _ ≤ (A - 1) * T := mul_le_mul_of_nonneg_left h3 (by linarith)
 
 /- English proof (translation)
-Introduce `d g k n hd hg hk hkN hlow hup`. Establish `hg' : (2 : ℝ) ≤ g` using `by exact_mod_cast hg`. Establish `hg0 : (0 : ℝ) < g` using `by linarith`. Take `⟨hT0, hT1, hT2⟩` from `torus_bounds g hg d hd`. Use `set T := (d.map (fun x => (g : ℝ) ^ x - 1)).prod with hTdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set N := d.sum with hN`. Establish `hgk : (0 : ℝ) < (g : ℝ) ^ k` using `pow_pos hg0 k`. Establish `hgN : (0 : ℝ) < (g : ℝ) ^ N` using `pow_pos hg0 N`. Establish `hk1 : (g : ℝ) ^ k = (g : ℝ) ^ (k - 1) * g`. Rewrite using `[← pow_succ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Use `congr 1`. Use linear arithmetic over natural numbers and integers. Prove the components needed by the constructor for the conclusion. Establish `h1 : (g : ℝ) ^ k * (1 - 1 / (g : ℝ)) ≤ n`. Establish `: (g : ℝ) ^ k * (1 - 1 / (g : ℝ)) = (g : ℝ) ^ k - (g : ℝ) ^ (k - 1)`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[hk1]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Conclude with `hlow`. Establish `h0 : (0 : ℝ) ≤ 1 - 1 / (g : ℝ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_nonneg, div_le_one hg0]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[div_le_div_iff₀ hgN (mul_pos hgk hT0)]`. Combine the equalities or inequalities in the displayed calculation. Introduce `h2N set t : ℝ := (N : ℝ) / g with ht`.
+Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ht0 : 0 ≤ t` using `div_nonneg (Nat.cast_nonneg _) hg0.le`. Establish `ht1 : t ≤ 1 / 2`. Rewrite using `[ht, div_le_iff₀ hg0]`. Establish `: (2 : ℝ) * N ≤ g` using `by exact_mod_cast h2N`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hsum : ∑ i ∈ Finset.range (k + 1), (N : ℝ) ^ i * (g : ℝ) ^ (k - i) = (g : ℝ) ^ k * ∑ i ∈ Finset.range (k + 1), t ^ i`. Rewrite using `[Finset.mul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i hi`. Establish `hik : i ≤ k` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `: (g : ℝ) ^ k = (g : ℝ) ^ (k - i) * (g : ℝ) ^ i`. Rewrite using `[← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[ht, div_pow, this]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `hgi : (g : ℝ) ^ i ≠ 0` using `(pow_pos hg0 i).ne'`. Clear the denominators using the available nonvanishing facts. Establish `hgeom : (∑ i ∈ Finset.range (k + 1), t ^ i) * (1 - t) ≤ 1`. Rewrite using `[geom_sum_mul_neg]`. Establish `: 0 ≤ t ^ (k + 1)` using `pow_nonneg ht0 _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcard : (d.card : ℝ) ≤ (N : ℝ)`. Use `Multiset.card_nsmul_le_sum hd` as an intermediate fact. Simplify using `only [smul_eq_mul, mul_one] at this`. Conclude with `this` after adjusting the coercions.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hT3 : (g : ℝ) ^ N * (1 - t) ≤ T`. Use `le_trans ?_ hT2` and prove the remaining obligations. Apply `mul_le_mul_of_nonneg_left _ hgN.le` to reduce the goal to its premises. Establish `: (d.card : ℝ) / g ≤ t` using `div_le_div_of_nonneg_right hcard hg0.le`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1t : (0 : ℝ) < 1 - t` using `by linarith`. Use `set st := ∑ i ∈ Finset.range (k + 1), t ^ i with hsdef`. Establish `hs0 : 0 ≤ st` using `Finset.sum_nonneg (fun i _ => pow_nonneg ht0 i)`. Establish `hpoly : 1 ≤ (1 + 6 * t) * (1 - t) ^ 2` using `by nlinarith [mul_nonneg ht0 (mul_nonneg (by linarith : (0:ℝ) ≤ 1 - 2 * t) (by linarith : (0:ℝ) ≤ 4 - 3 * t))]`. Establish `e6 : 1 + 6 * (N : ℝ) / g = 1 + 6 * t` using `by rw [ht]; ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[e6, div_le_div_iff₀ (mul_pos hgk hT0) hgN]`. Establish `hn : n ≤ (g : ℝ) ^ k * st` using `by rw [← hsum]; exact hup`. Establish `hA : st ≤ (1 + 6 * t) * (1 - t)`. Establish `h7 : st * (1 - t) ≤ ((1 + 6 * t) * (1 - t)) * (1 - t)`. Combine the equalities or inequalities in the displayed calculation.
-
-Conclude with `le_of_mul_le_mul_right h7 h1t`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_right _ hgN.le` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_left hA hgk.le`. Use `_ = (1 + 6 * t) * ((g : ℝ) ^ k * ((g : ℝ) ^ N * (1 - t))) := by ring`.
-
-Use `_ ≤ (1 + 6 * t) * ((g : ℝ) ^ k * T) := by`. Apply `mul_le_mul_of_nonneg_left _ (by linarith)` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_left hT3 hgk.le`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem lemma_L_weight_holds : LemmaLWeight := by
   intro d g k n hd hg hk hkN hlow hup

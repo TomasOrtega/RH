@@ -7,15 +7,13 @@ open Formalism.BasicNotions Formalism.BasicNotions.LevelStarExponents Formalism.
 namespace GlobalTheory.EX
 
 /- English proof (translation)
-Establish `hC` using `abs_nonneg C`. Establish `hy2 : 2 ≤ y` using `by linarith`. Establish `hy1 : 1 ≤ y` using `by linarith`. Establish `hy0 : 0 < y` using `by linarith`. Establish `hn0 : 0 < n` using `lt_of_lt_of_le (by positivity) hn1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm0 : 0 < m` using `lt_of_lt_of_le (by positivity) hm1`. Establish `hR : w ^ 4 * y ^ 112 ≤ n * (y ^ 16)⁻¹`. Combine the equalities or inequalities in the displayed calculation. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h5 : 128 * |C| ≤ y ^ 4`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Conclude with `le_abs_self C`. Use `_ = (128 * |C|) * (w ^ 9 * y ^ 156) := by field_simp; ring`. Use `_ ≤ y ^ 4 * (w ^ 9 * y ^ 156) := by gcongr`.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use `_ = w ^ 9 * y ^ 160 := by ring`. Use `_ ≤ k := hk1`. Establish `h80 : 2 ≤ y ^ 80` using `hy2.trans (le_self_pow₀ hy1 (by norm_num))`. Combine the equalities or inequalities in the displayed calculation. Establish `h63 : 2 ≤ y ^ 63` using `hy2.trans (le_self_pow₀ hy1 (by norm_num))`.
-
-Use `le_trans ?_ hR` and prove the remaining obligations. Rewrite using `[Real.sqrt_le_left (by positivity)]`. Establish `hk0 : 0 < k` using `lt_of_lt_of_le (by positivity) hk1`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem rank_k_ineqs_poly_wide (C w y n m k : ℝ) (hw : 0 < w) (hy : 128 * |C| + 2 ≤ y)
     (hn1 : w ^ 4 * y ^ 128 ≤ n) (hn2 : n ≤ 2 * (w ^ 4 * y ^ 129))
@@ -59,7 +57,7 @@ private theorem rank_k_ineqs_poly_wide (C w y n m k : ℝ) (hw : 0 < w) (hy : 12
       _ = (w ^ 4 * y ^ 112) ^ 2 := by ring
 
 /- English proof (translation)
-Establish `hC` using `abs_nonneg C`. Establish `hy1 : 1 ≤ y` using `by linarith`. Use `rank_k_ineqs_poly_wide C w y n m k hw hy hn1 (hn2.trans ?_) hm1 hm2 hk1 hk2` and prove the remaining obligations. Establish `h : y ^ 128 ≤ y ^ 129` using `pow_le_pow_right₀ hy1 (by norm_num)`. Use `gcongr`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rank_k_ineqs_poly (C w y n m k : ℝ) (hw : 0 < w) (hy : 128 * |C| + 2 ≤ y)
     (hn1 : w ^ 4 * y ^ 128 ≤ n) (hn2 : n ≤ 2 * (w ^ 4 * y ^ 128))
@@ -74,27 +72,27 @@ theorem rank_k_ineqs_poly (C w y n m k : ℝ) (hw : 0 < w) (hy : 128 * |C| + 2 �
   gcongr
 
 /- English proof (translation)
-Introduce `eps he _ C _`. Use `⟨0, fun cD _ => ⟨0, fun ch _ => ?_⟩⟩` and prove the remaining obligations. Establish `ht : Filter.Tendsto (fun x : ℝ => x ^ (eps / 16)) Filter.atTop Filter.atTop` using `tendsto_rpow_atTop (by positivity)`. Take `⟨x0, hx0⟩` from `Filter.eventually_atTop.1 (ht.eventually_ge_atTop (128 * |C.P.CkLow| + 2))`. Use `⟨x0, fun D L hε hx hV => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hn2 : (D.R.n : ℝ) ≤ 2 * L.sc.x ^ (2 + 8 * L.sc.eps + L.sc.eps / 16)`. Establish `h1 : L.sc.x ^ (2 + 8 * L.sc.eps + L.sc.eps / 100) ≤ L.sc.x ^ (2 + 8 * L.sc.eps + L.sc.eps / 16)` using `Real.rpow_le_rpow_of_exponent_le L.sc.one_lt_alt.le (by linarith [L.sc.eps_pos])`. Combine the linear relations using `[hV.ranks.n_le]`. Take `⟨⟨hn1, -⟩, ⟨hm1, hm2⟩, ⟨hk1, hk2⟩, -⟩` from `hV.ranks`. Establish `hy` using `hx0 _ hx`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hy` using `[← hε]`. Establish `hxp : 0 < L.sc.x` using `lt_trans one_pos L.sc.one_lt_alt`. Establish `key : ∀ (a b : ℕ), (L.sc.x ^ ((1 : ℝ) / 2)) ^ a * (L.sc.x ^ (L.sc.eps / 16)) ^ b = L.sc.x ^ ((a : ℝ) / 2 + b * L.sc.eps / 16)`. Introduce `a b`. Rewrite using `[← Real.rpow_mul_natCast hxp.le, ← Real.rpow_mul_natCast hxp.le, ← Real.rpow_add hxp]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `e1 : L.sc.x ^ (2 + 8 * L.sc.eps) = (L.sc.x ^ ((1 : ℝ) / 2)) ^ 4 * (L.sc.x ^ (L.sc.eps / 16)) ^ 128`. Rewrite using `[key]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e1' : L.sc.x ^ (2 + 8 * L.sc.eps + L.sc.eps / 16) = (L.sc.x ^ ((1 : ℝ) / 2)) ^ 4 * (L.sc.x ^ (L.sc.eps / 16)) ^ 129`. Rewrite using `[key]`. Use `congr 1`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : L.sc.x ^ (9 / 2 + 10 * L.sc.eps) = (L.sc.x ^ ((1 : ℝ) / 2)) ^ 9 * (L.sc.x ^ (L.sc.eps / 16)) ^ 160`. Rewrite using `[key]`. Use `congr 1`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e3 : L.sc.x ^ L.sc.eps = (L.sc.x ^ (L.sc.eps / 16)) ^ 16`. Rewrite using `[← Real.rpow_mul_natCast hxp.le]`. Use `congr 1`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e4 : Real.sqrt (L.sc.x * L.sc.delta1) = L.sc.x ^ ((1 : ℝ) / 2) / L.sc.x ^ (L.sc.eps / 16)`. Unfold `Scale.delta1`. Rewrite using `[Real.sqrt_eq_rpow, Real.mul_rpow hxp.le (by positivity), ← Real.rpow_mul hxp.le, div_eq_mul_inv (_ ^ _), ← Real.rpow_neg hxp.le]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Establish `hf : (D.R.f : ℝ) = 2 * (D.R.n : ℝ)`. Unfold `Ranks.f`. Use `push_cast`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations.
 
-Both sides reduce to the same expression. Rewrite `hn1` using `[e1]`. Rewrite `hn2` using `[e1']`. Rewrite `hk1`, `hk2` using `[e2]`. Rewrite `hm1`, `hm2` using `[e4]`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `rank_k_ineqs_poly_wide C.P.CkLow _ _ _ _ _ (by positivity) hy hn1 hn2 hm1 hm2 hk1 hk2`. Simplify using `only [R0, jG, Scale.L, hf, Real.rpow_neg hxp.le, e3]`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem explicitChoice_rankK_lower_upper_bounds :
     SzRow (fun C D L => (C.P.CkLow * (D.R.m : ℝ) ^ jG * D.R.f * L.sc.L * L.sc.x ^ L.sc.eps ≤ D.R.k) ∧

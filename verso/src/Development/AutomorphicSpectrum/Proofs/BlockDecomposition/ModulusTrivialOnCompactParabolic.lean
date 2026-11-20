@@ -12,15 +12,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.CompanionTheory.ModCompactParab
 
 /- English proof (translation)
-Introduce `k _ _ _ _ a b n e K hK p hp`. Set `χ : parab k (two e) →* ℂˣ` to `(deltaHalf k (Two (Fin a) (Fin b))).comp (leviProj k (two e))`. Establish `hχ : Continuous (leviProj k (two e))` using `GlobalTheory.ParabLevel.continuous_leviProj (R := k) (two e)`. Establish `hemb : Topology.IsClosedEmbedding (Subtype.val : parab k (two e) → GL (Fin n) k)` using `(GlobalTheory.ParabLevel.isClosed_parab_two (R := k) e).isClosedEmbedding_subtypeVal`. Set `H : Subgroup (parab k (two e))` to `K.subgroupOf (parab k (two e))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hH : IsCompact (H : Set (parab k (two e)))` using `hemb.isCompact_preimage hK`. Use `haveI : CompactSpace H := isCompact_iff_compactSpace.1 hH`. Establish `hopen : IsOpen ((χ.ker.subgroupOf H : Subgroup H) : Set H)` using `(isSmoothChar_deltaHalf k (m := Two (Fin a) (Fin b))).preimage (hχ.comp continuous_subtype_val)`. Use `haveI : Finite (H ⧸ χ.ker.subgroupOf H) := Subgroup.quotient_finite_of_isOpen _ hopen`. Establish `hidx : (χ.ker.subgroupOf H).index ≠ 0` using `Subgroup.index_ne_zero_of_finite`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨m, hm, -, hmem⟩` from `Subgroup.exists_pow_mem_of_index_ne_zero hidx (⟨p, hp⟩ : H)`. Establish `hpow : deltaHalf k (Two (Fin a) (Fin b)) (leviProj k (two e) p) ^ m = 1`. Establish `h` using `Subgroup.mem_subgroupOf.1 hmem`. Simplify `h` using `[χ, MonoidHom.mem_ker, map_pow]`. Establish `hreal : (√(modulus k (Two (Fin a) (Fin b)) (leviProj k (two e) p)) : ℝ) ^ m = 1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h` using `congrArg (fun u : ℂˣ => (u : ℂ)) hpow`. Simplify using `only [Units.val_pow_eq_pow_val, val_deltaHalf, Units.val_one] at h`. Conclude with `h` after adjusting the coercions. Establish `hone : (√(modulus k (Two (Fin a) (Fin b)) (leviProj k (two e) p)) : ℝ) = 1` using `(pow_eq_one_iff_of_nonneg (Real.sqrt_nonneg _) hm.ne').1 hreal`. Use `ext`.
-
-Rewrite using `[val_deltaHalf, hone]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem deltaHalf_leviProj_eq_one_of_isCompact :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (a b n : ℕ)

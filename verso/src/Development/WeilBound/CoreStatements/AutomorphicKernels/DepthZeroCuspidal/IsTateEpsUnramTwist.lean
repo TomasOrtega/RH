@@ -35,7 +35,7 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
 section WDLemmas
 
 /- English proof (translation)
-Rewrite using `[WD.lpOfChar, WD.lpTwist_mk, WD.lpOfChar]`. Use `WD.sound ⟨LinearEquiv.refl ℂ _, fun σ v => ?_, fun v => rfl⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `only [LinearEquiv.refl_apply, WDRep.twist_ρ, WDRep.ofChars_ρ, LinearMap.smul_apply, Pi.smul_apply, diagEnd_apply, smul_eq_mul, ← e σ, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lpOfChar_lpTwist {p q r : Weil h →* ℂˣ} (hp : GlobalTheory.WeilDeligne.IsSmooth p)
     (hq : GlobalTheory.WeilDeligne.IsSmooth q) (hr : GlobalTheory.WeilDeligne.IsSmooth r) (e : ∀ σ, p σ * q σ = r σ) :

@@ -20,21 +20,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.OntoDecomp
 
 /- English proof (translation)
-Establish `hzero : ∀ x, ip x 0 = 0` using `fun x => by`. Use `hlin x 0 0 1` as an intermediate fact. Simplify using `only [one_smul, add_zero, one_mul] at this`. Take the linear combination `(-1 : ℂ) * this`. Establish `hadd : ∀ x y z, ip (x + y) z = ip x z + ip y z` using `fun x y z => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[hherm z (x + y), hherm z x, hherm z y]`. Use `hlin z x y 1` as an intermediate fact. Simplify using `only [one_smul, one_mul] at this`. Rewrite using `[this, star_add]`. Establish `hsmul : ∀ x y (r : ℂ), ip (r • x) y = conj r * ip x y` using `fun x y r => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hherm y (r • x), hherm y x]`. Use `hlin y 0 x r` as an intermediate fact. Simplify using `only [zero_add, hzero, zero_add] at this`. Rewrite using `[this, star_mul, mul_comm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Set `core : InnerProductSpace.Core ℂ E` to `{ inner := ip conj_inner_symm := fun x y => by rw [hherm y x]; rfl re_inner_nonneg := fun x => by`. Distinguish the cases in `h : x = 0`. Substitute `h` using the available equality. Use `hzero 0` as an intermediate fact. Simplify using `[this]`.
+Introduce a local definition for the expression. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(hpos x h).le`. Use `add_left := hadd`. Use `smul_left := hsmul`. Use `definite := fun x hx => by`. Assume the negation of the conclusion as `h`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Equip the data with the indicated structure.
 
-Use `hpos x h` as an intermediate fact. Rewrite `this` using `[hx]`. Simplify using `at this }`. Use `letI : NormedAddCommGroup E := InnerProductSpace.Core.toNormedAddCommGroup (cd := core)`. Use `letI : InnerProductSpace ℂ E := InnerProductSpace.ofCore core.toCore`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hin : ∀ x y : E, inner ℂ x y = ip x y` using `fun _ _ => rfl`. Establish `h` using `GlobalTheory.normalFamily_orthogonal_decomposition op (fun i j => hc i j) (fun i => by`. Take `⟨i', hi'⟩` from `hadj i`. Use `⟨i', (LinearMap.eq_adjoint_iff _ _).2 fun x y => ?_⟩` and prove the remaining obligations. Rewrite using `[hin, hin, hherm, ← hi' y x, hherm (op i y)])`.
-
-Rewrite using `[← h.2.1]`. Conclude with `iSup_congr fun x => (h.1 x).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iSup_jointEigenspace_eq_top {E I : Type} [AddCommGroup E] [Module ℂ E] [FiniteDimensional ℂ E]
     (ip : E → E → ℂ) (hlin : ∀ x y z (c : ℂ), ip x (y + c • z) = ip x y + c * ip x z)
@@ -88,35 +86,31 @@ end GlobalTheory.OntoDecomp
 namespace GlobalTheory.OntoDecomp
 
 /- English proof (translation)
-Introduce `hP D hfd hlev c hc j hj s hs`. Take `⟨-, -, hsplit, -, hunif⟩` from `GlobalTheory.T.thetaChainStage_level_spherical_off_set D c hc j hj s hs`. Establish `hmul` using `(hlev c hc j hj s hs).2.2.2.2.1`. Establish `hops` using `GlobalTheory.SphericalOps.spherical_ops s.V c.θ s.M (Lev.levG s.V s.β s.L) (Lev.levChi s.V s.β s.L) c.S hunif hc.inf hmul hsplit`. Establish `hJ : levS s.V s.β s.L = ((Lev.levG s.V s.β s.L : Subgroup (GA D s.V)) : Set (GA D s.V))` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hops` using `[← hJ]`. Take `⟨hLU, -, hH⟩` from `hops`. Distinguish the cases in `hsm : ∀ τ, s.M.sm τ ≠ ⊥`. Use `swap`. Use `push_neg at hsm`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨τ, hτ⟩` from `hsm`. Use `Submodule.eq_top_iff'.2 fun u => ?_` and prove the remaining obligations. Establish `h0 : PiTensorProduct.lift.symm (u : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ)) = 0`. Use `MultilinearMap.ext fun v => ?_` and prove the remaining obligations. Rewrite using `[MultilinearMap.zero_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : ((v τ : s.M.sm τ) : s.M.H τ) = 0` using `(Submodule.eq_bot_iff _).1 hτ _ (v τ).2`. Conclude with `MultilinearMap.map_coord_zero (PiTensorProduct.lift.symm (u : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ))) τ (Subtype.ext hv)`. Establish `h1` using `LinearEquiv.apply_symm_apply PiTensorProduct.lift (u : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ))`. Rewrite `h1` using `[h0, map_zero]`. Establish `: u = 0` using `Subtype.ext h1.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `zero_mem _`. Establish `hschur` using `GlobalTheory.MultFinite.schurMult (θ := c.θ) (M := s.M) (J := levS s.V s.β s.L) (χ := Lev.levChi s.V s.β s.L) hP s.ν s.fd`. Use `haveI := hs.haar`. Establish `hright : s.ν.IsMulRightInvariant` using `Formalism.IndefR.Eqv.unimodGA_holds s.V s.ν hs.haar`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨hlin, hpos⟩` from `GlobalTheory.SchurConst.ipM_posDef D c.θ s.V s.par s.M (levS s.V s.β s.L) (Lev.levChi s.V s.β s.L) s.ν s.fd hc.inf hs.haar hs.fund hschur hsm`. Take `⟨v0, hv0⟩` from `GlobalTheory.SchurConst.exists_vec s.M hsm`. Establish `hspec : ∀ T ∈ Mult c.θ s.M (levS s.V s.β s.L) (Lev.levChi s.V s.β s.L), ∀ T' ∈ Mult c.θ s.M (levS s.V s.β s.L) (Lev.levChi s.V s.β s.L), IsMultIP s.M s.ν s.fd T T' (ipM s.M s.ν s.fd T T')` using `fun T hT T' hT' => ipM_spec _ _ _ _ _ (hschur hc.inf hs.haar hs.fund T hT T' hT')`. Set `φ` to `Submodule.equivMapOfInjective (PiTensorProduct.lift : MMap s.M ≃ₗ[ℂ] _).toLinearMap (LinearEquiv.injective _) (Mult c.θ s.M (levS s.V s.β s.L) (Lev.levChi s.V s.β s.L))`. Use `haveI : FiniteDimensional ℂ ((Mult c.θ s.M (levS s.V s.β s.L) (Lev.levChi s.V s.β s.L)).map (PiTensorProduct.lift : MMap s.M ≃ₗ[ℂ] _).toLinearMap) := hfd c hc j hj s hs`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : FiniteDimensional ℂ (Mult c.θ s.M (levS s.V s.β s.L) (Lev.levChi s.V s.β s.L)) := LinearEquiv.finiteDimensional φ.symm`. Set `I` to `{t : HeightOneSpectrum (𝓞 D.host.E) × List ℤ × Finset (GA D s.V) // Hecke₂ s.V (levS s.V s.β s.L) (Lev.levChi s.V s.β s.L) c.S t.1 t.2.1 t.2.2}`. Set `op : I → Module.End ℂ (Mult c.θ s.M (levS s.V s.β s.L) (Lev.levChi s.V s.β s.L))` to `fun t => (heckeOn s.M t.1.2.2).restrict fun T hT => (hH _ _ _ t.2).1 T hT`. Establish `hcomm : ∀ i j, Commute (op i) (op j)` using `fun i j => by`. Use `LinearMap.ext fun T => Subtype.ext ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hH _ _ _ i.2).2.1 _ _ _ j.2 T T.2`. Establish `hadj : ∀ i, ∃ i', ∀ x y : Mult c.θ s.M (levS s.V s.β s.L) (Lev.levChi s.V s.β s.L), ipM s.M s.ν s.fd (op i x : MMap s.M) y = ipM s.M s.ν s.fd x (op i' y : MMap s.M)` using `fun i => by`. Take `⟨R', h', hip⟩` from `(hH _ _ _ i.2).2.2`. Use `⟨⟨(i.1.1, dualLab i.1.2.1, R'), h'⟩, fun x y => ?_⟩` and prove the remaining obligations. Establish `h1` using `hspec _ ((hH _ _ _ i.2).1 x x.2) y y.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `(hip s.ν s.fd hs.haar hright hs.fund hschur x x.2 y y.2 _).1 h1`. Establish `h3` using `hspec x x.2 _ ((hH _ _ _ h').1 y y.2)`. Conclude with `hasPeterssonInner_unique s.M s.ν s.fd _ _ v0 hv0 h2 h3`. Establish `htop` using `iSup_jointEigenspace_eq_top (fun x y : Mult c.θ s.M (levS s.V s.β s.L) (Lev.levChi s.V s.β s.L) => ipM s.M s.ν s.fd x y) (fun x y z a => (hlin x x.2 y y.2 z z.2 a).1) (fun x y => (hlin x x.2 y y.2 y y.2 0).2) (fun x hx => hpos x x.2 fun h => hx (Subtype.ext h)) op hcomm hadj`. Establish `hsub : ∀ x : I → ℂ, ∀ T ∈ ⨅ i, (op i).eigenspace (x i), ∃ e : HeightOneSpectrum (𝓞 D.host.E) → List ℤ → ℂ, (T : MMap s.M) ∈ partFull c.θ s.M (levS s.V s.β s.L) (Lev.levChi s.V s.β s.L) c.S e` using `by classical`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x T hT`. Use `⟨fun P d => if h : ∃ R, Hecke₂ s.V (levS s.V s.β s.L) (Lev.levChi s.V s.β s.L) c.S P d R then x ⟨(P, d, h.choose), h.choose_spec⟩ else 0, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_partFull]`. Use `⟨T.2, fun P d R hR v => ?_⟩` and prove the remaining obligations. Establish `hex : ∃ R, Hecke₂ s.V (levS s.V s.β s.L) (Lev.levChi s.V s.β s.L) c.S P d R` using `⟨R, hR⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[dif_pos hex]`. Establish `hlevT` using `((GlobalTheory.MultMem.mem_mult_iff ..).1 T.2).lev v`. Rewrite using `[hLU P d R hex.choose hR hex.choose_spec _ hlevT]`. Establish `h1` using `(Submodule.mem_iInf _).1 hT ⟨(P, d, hex.choose), hex.choose_spec⟩`. Rewrite `h1` using `[Module.End.mem_eigenspace_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg (fun U : Mult c.θ s.M (levS s.V s.β s.L) (Lev.levChi s.V s.β s.L) => (U : MMap s.M) v) h1`. Rewrite using `[eq_top_iff]`. Introduce and unpack `u -`. Take `⟨T, rfl⟩` from `φ.surjective u`. Establish `hT : T ∈ (⊤ : Submodule ℂ (Mult c.θ s.M (levS s.V s.β s.L) (Lev.levChi s.V s.β s.L)))` using `trivial`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hT` using `[← htop]`. Use `Submodule.iSup_induction (fun x : I → ℂ => ⨅ i, (op i).eigenspace (x i)) (motive := fun T => φ T ∈ Submodule.span ℂ {u : s.CC c | ∃ e : HeightOneSpectrum (𝓞 D.host.E) → List ℤ → ℂ, PiTensorProduct.lift.symm (u : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ)) ∈ partFull c.θ s.M (levS s.V s.β s.L) …` and prove the remaining obligations. Introduce `x T hT`. Take `⟨e, he⟩` from `hsub x T hT`. Use `Submodule.subset_span ⟨e, ?_⟩` and prove the remaining obligations.
-
-Establish `: ((φ T : s.CC c) : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ)) = PiTensorProduct.lift (T : MMap s.M)` using `rfl`. Rewrite using `[this, LinearEquiv.symm_apply_apply]`. Conclude with `he`. Rewrite using `[map_zero]`. Conclude with `zero_mem _`.
-
-Introduce `a b ha hb`. Rewrite using `[map_add]`. Conclude with `add_mem ha hb`.
+A detailed English derivation is pending.
 -/
 theorem multT_span_partFull : GlobalTheory.Published.CuspRapidDecay → ∀ D : D7, FinDim D → LevFacts D → ForStage D fun c _ s =>
     Submodule.span ℂ {u : s.CC c | ∃ e : HeightOneSpectrum (𝓞 D.host.E) → List ℤ → ℂ,

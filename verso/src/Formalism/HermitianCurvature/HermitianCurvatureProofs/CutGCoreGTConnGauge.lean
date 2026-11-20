@@ -8,19 +8,19 @@ namespace Formalism.FourierDecayAlt.P.CutMP.Gauge.GC
 noncomputable section
 
 /- English proof (translation)
-The claim follows from `mul_conjCoordinate_apply P f q`.
+A detailed English derivation is pending.
 -/
 theorem mulQ_zbP (P : M.Par) (f : MA.SmQ P.r P.TT) (q : MA.Qp P.r P.TT) :
     ((mulQ P (MA.DQ P).zbP f : MA.SmQ P.r P.TT) : MA.Qp P.r P.TT → ℂ) q = star q.1.2 * (f : MA.Qp P.r P.TT → ℂ) q := mul_conjCoordinate_apply P f q
 
 /- English proof (translation)
-The claim follows from `algebraMap_comp_ofPadicInt_apply P f q`.
+A detailed English derivation is pending.
 -/
 theorem mulQ_zP (P : M.Par) (f : MA.SmQ P.r P.TT) (q : MA.Qp P.r P.TT) :
     ((mulQ P (MA.DQ P).zP f : MA.SmQ P.r P.TT) : MA.Qp P.r P.TT → ℂ) q = q.1.2 * (f : MA.Qp P.r P.TT → ℂ) q := algebraMap_comp_ofPadicInt_apply P f q
 
 /- English proof (translation)
-The claim follows from `ggiP_apply P f q`.
+A detailed English derivation is pending.
 -/
 theorem mulQ_ggiP (P : M.Par) (f : MA.SmQ P.r P.TT) (q : MA.Qp P.r P.TT) :
     ((mulQ P ((MA.DQ P).ggiP P.TT) f : MA.SmQ P.r P.TT) : MA.Qp P.r P.TT → ℂ) q =
@@ -32,17 +32,17 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Establish `hu' : ∀ ρ, ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (u ρ) (Ann P) ∧ ∀ ζ ∈ Ann P, ‖u ρ ζ‖ = 1` using `fun ρ => ⟨(hu ρ).1, fun ζ hζ => ((hu ρ).2 ζ hζ).1⟩`. Introduce `Φ`. Prove the components needed by the constructor for the conclusion. Use function extensionality and compare the values at `ρ`. Rewrite using `[actA_nabA, trR_phase P Bs e u hu', trR_phase P Bs e u hu', (hC Φ ρ).1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `q`. Establish `hv` using `conj_smooth (hu ρ).1`. Establish `hζ : q.1.2 ∈ Ann P` using `q.2.2`. Take `⟨_, hA, _⟩` from `(hu ρ).2 q.1.2 hζ`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hdc` using `(dZ_conj_unit P (hu ρ).1 (fun ζ hζ => ((hu ρ).2 ζ hζ).1) hζ).1`. Simplify using `only [Subalgebra.coe_add, Subalgebra.coe_mul, Subalgebra.coe_smul, Pi.add_apply, Pi.mul_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[mulQ_zbP, mulQ_ggiP, dzQ_apply P hTT, dzQ_apply P hTT, wirtQ_mul, wirtinger_derivative_fibre_function P hv, fnZ_val P hv, fnZ_val P (hAB ρ).1, hdc]`. Simplify using `only [Subalgebra.coe_mul, Pi.mul_apply, fnZ_val P hv]`. Unfold `modA at hA`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Take the linear combination `(star (u ρ q.1.2) * ((trR P Bs e Φ ρ : MA.SmQ P.r P.TT) : MA.Qp P.r P.TT → ℂ) q) * hA`. Use function extensionality and compare the values at `ρ`. Rewrite using `[actA_nabsA, trR_phase P Bs e u hu', trR_phase P Bs e u hu', (hC Φ ρ).2]`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `q`.
+Take a linear combination of the given relations to obtain the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hv` using `conj_smooth (hu ρ).1`. Establish `hζ : q.1.2 ∈ Ann P` using `q.2.2`. Take `⟨_, _, hB⟩` from `(hu ρ).2 q.1.2 hζ`. Establish `hdc` using `(dZ_conj_unit P (hu ρ).1 (fun ζ hζ => ((hu ρ).2 ζ hζ).1) hζ).2`. Simplify using `only [Subalgebra.coe_add, Subalgebra.coe_mul, Subalgebra.coe_smul, Subalgebra.coe_neg, Pi.add_apply, Pi.mul_apply, Pi.neg_apply, Pi.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[mulQ_zP, mulQ_ggiP, dzbQ_apply P hTT, dzbQ_apply P hTT, wirtQ_mul, wirt_fnZ_zb P hv, fnZ_val P hv, fnZ_val P (hAB ρ).2, hdc]`. Simplify using `only [Subalgebra.coe_mul, Pi.mul_apply, fnZ_val P hv]`. Unfold `modB at hB`. Take the linear combination `(star (u ρ q.1.2) * ((trR P Bs e Φ ρ : MA.SmQ P.r P.TT) : MA.Qp P.r P.TT → ℂ) q) * hB`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem nabF_phase (P : M.Par) (hTT : 0 ≤ P.TT) (Bs : B.RealPlaceData P.k P.r Wp Wq)
     (d : Q.NFData P (Q.Pr (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π'))) (e : M.Ty P → ℂ → (Wq →L[ℂ] Wp))
@@ -86,7 +86,7 @@ theorem nabF_phase (P : M.Par) (hTT : 0 ≤ P.TT) (Bs : B.RealPlaceData P.k P.r 
 end main
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P Bs X d hH e he hk A B' u hAB hC hu`. Establish `hTT : 0 ≤ P.TT` using `torus_parameter Wp Wq P Bs X d hH`. Establish `hu' : ∀ ρ, ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (u ρ) (Ann P) ∧ ∀ ζ ∈ Ann P, ‖u ρ ζ‖ = 1` using `fun ρ => ⟨(hu ρ).1, fun ζ hζ => ((hu ρ).2 ζ hζ).1⟩`. Conclude with `⟨isFrameB_phase P Bs e u he hu', kapF_phase P Bs d e u hu' hk, nabF_phase P hTT Bs d e A B' u hAB hC hu⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem gauge_transform_holds : GTCGauge := by
   intro Wp Wq _ _ _ _ _ _ P Bs X d hH e he hk A B' u hAB hC hu

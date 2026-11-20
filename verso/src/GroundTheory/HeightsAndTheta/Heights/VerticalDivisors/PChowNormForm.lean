@@ -9,9 +9,9 @@ open MvPolynomial
 noncomputable section
 
 /- English proof (translation)
-Unfold `specRest`. Rewrite using `[eval₂_comp_left]`. Use `congr 1`. Conclude with `RingHom.ext fun a => by simp`. Use function extensionality and compare the values at `ij`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Take `⟨i, j⟩` from `ij`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) i <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem specRest_map {R S T : Type*} [CommRing R] [CommRing S] [CommRing T] {n e : ℕ}
     (φ : R →+* S) (ψ : S →+* T) (f : MvPolynomial (Fin (e + 1) × Fin n) R) (y : Par e n → S) :
@@ -25,13 +25,13 @@ theorem specRest_map {R S T : Type*} [CommRing R] [CommRing S] [CommRing T] {n e
     refine Fin.cases ?_ (fun i => ?_) i <;> simp
 
 /- English proof (translation)
-Introduce `k E _ _ _ _ n e Q g y hy hQ hg`. Establish `hinj : Function.Injective ((MvPolynomial.aeval y : MvPolynomial (Par e n) k →ₐ[k] E) : MvPolynomial (Par e n) k →+* E)` using `hy`. Use `set φ : GenParField k e n →+* E := IsFractionRing.lift hinj with hφ`. Establish `hφC : φ.comp (algebraMap k (GenParField k e n)) = algebraMap k E`. Use `RingHom.ext fun a => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.comp_apply, IsScalarTower.algebraMap_apply k (MvPolynomial (Par e n) k), hφ, IsFractionRing.lift_algebraMap]`. Simplify using the standard rewrite rules. Establish `hy' : y = φ ∘ genPar k e n`. Use function extensionality and compare the values at `p`. Simplify using `[hφ, genPar, IsFractionRing.lift_algebraMap]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hQ' : Q.map (MvPolynomial.map (algebraMap k E)) = (Q.map (MvPolynomial.map (algebraMap k (GenParField k e n)))).map (MvPolynomial.map φ)`. Rewrite using `[Ideal.map_map]`. Use `congr 1`. Conclude with `RingHom.ext fun p => by rw [RingHom.comp_apply, map_map, hφC]`. Take `⟨hfin₀, c, hc, heq⟩` from `h₁ k n e Q g hQ hg`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hfin, hnorm⟩` from `h₂ (GenParField k e n) E φ n e _ (genPar k e n) hfin₀`. Rewrite using `[hQ', hy']`. Use `⟨hfin, φ c, (map_ne_zero φ).mpr hc, ?_⟩` and prove the remaining obligations. Rewrite using `[← hnorm, ← hφC, ← specRest_map, heq, _root_.map_mul, map_C]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ChowNormForm.proof (h₁ : ChowNormFormGeneric.Statement)
     (h₂ : SecAlgFieldChange.Statement) : ChowNormForm.Statement := by

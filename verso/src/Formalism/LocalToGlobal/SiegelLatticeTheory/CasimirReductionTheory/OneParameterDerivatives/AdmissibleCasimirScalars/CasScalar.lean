@@ -8,7 +8,7 @@ set_option autoImplicit false
 namespace Formalism.L2.SG.Pf.admitted
 
 /- English proof (translation)
-The claim follows from `casScalar_of c1 c2 c3`.
+A detailed English derivation is pending.
 -/
 theorem casScalar : CasScalarStatement := casScalar_of c1 c2 c3
 

@@ -17,15 +17,15 @@ variable {k r : ℕ} {E₁ E₂ : Type*} [NormedAddCommGroup E₁] [NormedSpace 
   [NormedSpace ℂ E₂]
 
 /- English proof (translation)
-Introduce `g hg` and use `h g (hs hg)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ssn_ckOn_subset {m : ℕ∞} {UU UU' : Set (Mat k r)} {f : Mat k r → E₁} (h : CkOn m UU f) (hs : UU' ⊆ UU) :
     CkOn m UU' f := fun g hg => h g (hs hg)
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U₁, f₁', hU₁, hg₁, hc₁, he₁⟩` from `h₁ g₀ hg₀`. Take `⟨U₂, f₂', hU₂, hg₂, hc₂, he₂⟩` from `h₂ g₀ hg₀`. Use `⟨U₁ ∩ U₂, fun g => (f₁' g, f₂' g), hU₁.inter hU₂, ⟨hg₁, hg₂⟩, (hc₁.mono Set.inter_subset_left).prodMk (hc₂.mono Set.inter_subset_right), fun g hg hgG => ?_⟩` and prove the remaining obligations. Use `show (f₁ g, f₂ g) = (f₁' g, f₂' g)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he₁ g hg.1 hgG, he₂ g hg.2 hgG]`.
+A detailed English derivation is pending.
 -/
 theorem ssn_ckOn_pair {m : ℕ∞} {UU : Set (Mat k r)} {f₁ : Mat k r → E₁} {f₂ : Mat k r → E₂}
     (h₁ : CkOn m UU f₁) (h₂ : CkOn m UU f₂) : CkOn m UU (fun g => (f₁ g, f₂ g)) := by
@@ -38,13 +38,11 @@ theorem ssn_ckOn_pair {m : ℕ∞} {UU : Set (Mat k r)} {f₁ : Mat k r → E₁
   rw [he₁ g hg.1 hgG, he₂ g hg.2 hgG]
 
 /- English proof (translation)
-Introduce `w`. Proceed by induction on `w with`. Consider the case `nil => intro _ g _ _`. Both sides reduce to the same expression. Consider the case `cons x w ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 
-Introduce `hw g hg hgU`. Establish `hx : inLie k r x.2` using `hw x (by simp)`. Establish `hw' : ∀ y ∈ w, inLie k r y.2` using `fun y hy => hw y (by simp [hy])`. Use `show Dx x (Dw w (fun g => (f₁ g, f₂ g))) g = (Dx x (Dw w f₁) g, Dx x (Dw w f₂) g)`. Rewrite using `[Dx_congr_loc hx hU (f₂ := fun g => (Dw w f₁ g, Dw w f₂ g)) (fun g hg hgU => ih hw' g hg hgU) g hg hgU]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `c₁ : CkOn 1 (U ∩ GV k r) (Dw w f₁)` using `CkOn_Dw hw' (sCkOn_mono le_top h₁)`. Establish `c₂ : CkOn 1 (U ∩ GV k r) (Dw w f₂)` using `CkOn_Dw hw' (sCkOn_mono le_top h₂)`. Establish `d₁` using `CkOn_diff hx c₁ ⟨hgU, hg⟩ hg`. Establish `d₂` using `CkOn_diff hx c₂ ⟨hgU, hg⟩ hg`. Rewrite using `[Dx_eq]`.
-
-Conclude with `(d₁.prodMk d₂).deriv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ssn_Dw_pair {U : Set (Mat k r)} (hU : IsOpen U) {f₁ : Mat k r → E₁} {f₂ : Mat k r → E₂}
     (h₁ : CkOn ⊤ (U ∩ GV k r) f₁) (h₂ : CkOn ⊤ (U ∩ GV k r) f₂) :
@@ -69,23 +67,21 @@ theorem ssn_Dw_pair {U : Set (Mat k r)} (hU : IsOpen U) {f₁ : Mat k r → E₁
 end pair
 
 /- English proof (translation)
-Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T v Bg a a' ι Ψ hBg hD hΨ`. Introduce `ε hε m`. Use `set U : Set (B.Mat S.G.k S.G.r) := {g | ε / 2 < GfP S T v g} with hUdef`. Establish `hUo : IsOpen U` using `isOpen_lt continuous_const (Gf_cont (T v).base.z (T v).base.z')`. Use `set K : Set (B.Mat S.G.k S.G.r) := {g | g ∈ B.GV S.G.k S.G.r ∧ ε ≤ GfP S T v g} with hKdef`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUG : U ∩ B.GV S.G.k S.G.r ⊆ B.GPos (T v).base` using `fun g hg => ⟨hg.2, lt_trans (by linarith) hg.1⟩`. Establish `hKU : K ⊆ U` using `fun g hg => show ε / 2 < GfP S T v g by linarith [hg.2]`. Establish `hKG : K ⊆ B.GV S.G.k S.G.r` using `fun g hg => hg.1`. Use `set F : B.Mat S.G.k S.G.r → (Fin (2 * S.G.r + S.G.k + 1) → ℂ) × (Fin (2 * S.G.r + S.G.k + 1) → ℂ) × B.Mat S.G.k S.G.r := fun g => (a g, (a' g, ι g)) with hFdef`. Establish `cka : CkOn ⊤ (U ∩ B.GV S.G.k S.G.r) a` using `ssn_ckOn_subset hD.1 hUG`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cka' : CkOn ⊤ (U ∩ B.GV S.G.k S.G.r) a'` using `ssn_ckOn_subset hD.2.1 hUG`. Establish `ckι : CkOn ⊤ (U ∩ B.GV S.G.k S.G.r) ι` using `ssn_ckOn_subset hD.2.2.1 hUG`. Establish `ckF : CkOn ⊤ (U ∩ B.GV S.G.k S.G.r) F` using `ssn_ckOn_pair cka (ssn_ckOn_pair cka' ckι)`. Establish `hFb : ∀ m : ℕ, ∃ C : ℝ, ∀ u w : List (B.Mat S.G.k S.G.r), (∀ X ∈ u, unitLie S.G.k S.G.r X) → (∀ X ∈ w, unitLie S.G.k S.G.r X) → u.length + w.length ≤ m → ∀ g ∈ K, ‖dLR u w F g‖ ≤ C * gN g ^ (Bg * m)`. Introduce `m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨C₁, h₁⟩` from `hD.2.2.2.2.1 ε hε m`. Take `⟨C₂, h₂⟩` from `hD.2.2.2.2.2.1 ε hε m`. Take `⟨C₃, h₃⟩` from `hD.2.2.2.2.2.2.1 ε hε m`. Use `⟨C₁ + C₂ + C₃, fun u w hu hw hl g hg => ?_⟩` and prove the remaining obligations. Establish `hlie` using `lie_LR (unit_lie hu) (unit_lie hw)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : dLR u w F g = (dLR u w a g, (dLR u w a' g, dLR u w ι g))`. Rewrite using `[dLR_eq, dLR_eq, dLR_eq, dLR_eq]`. Rewrite using `[ssn_Dw_pair hUo cka (ssn_ckOn_pair cka' ckι) _ hlie g hg.1 (hKU hg), ssn_Dw_pair hUo cka' ckι _ hlie g hg.1 (hKU hg)]`. Rewrite using `[e1]`. Establish `b₁` using `h₁ u w hu hw hl g hg.1 hg.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `b₂` using `h₂ u w hu hw hl g hg.1 hg.2`. Establish `b₃` using `h₃ u w hu hw hl g hg.1 hg.2`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = (C₁ + C₂ + C₃) * gN g ^ (Bg * m) := by ring`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨C, hC⟩` from `hCh S.G.k S.G.r _ _ (fun x => Ψ x.1 x.2.1 x.2.2) hΨ F U K hUo ckF hKU hKG Bg hBg hFb m`. Use `⟨C, fun u w hu hw hl g hg hεg => ?_⟩` and prove the remaining obligations. Establish `hgK : g ∈ K` using `⟨hg, hεg⟩`. Establish `hO : IsOpen {g : B.Mat S.G.k S.G.r | 0 < GfP S T v g}` using `isOpen_lt continuous_const (Gf_cont (T v).base.z (T v).base.z')`. Establish `hlie` using `lie_LR (unit_lie hu) (unit_lie hw)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e : dLR u w (datumCoef S T v Ψ a a' ι) g = dLR u w (fun g => (fun x : (Fin (2 * S.G.r + S.G.k + 1) → ℂ) × (Fin (2 * S.G.r + S.G.k + 1) → ℂ) × B.Mat S.G.k S.G.r => Ψ x.1 x.2.1 x.2.2) (F g)) g`. Rewrite using `[dLR_eq, dLR_eq]`. Use `Dw_congr_loc hlie hO (fun g' hg' hg'O => ?_) g hg (show 0 < GfP S T v g by linarith)` and prove the remaining obligations. Conclude with `datumCoef_pos S T v a a' ι Ψ ⟨hg', hg'O⟩`. Rewrite using `[e]`.
-
-Conclude with `hC u w hu hw hl g hgK`.
+A detailed English derivation is pending.
 -/
 theorem datumBd_of_chain (hCh : SSn.ChainBd) : DatumBd := by
   intro E _ _ _ Wp Wq _ _ _ _ _ _ S T v Bg a a' ι Ψ hBg hD hΨ

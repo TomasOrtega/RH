@@ -19,18 +19,18 @@ open GlobalTheory.RootEx GlobalTheory.RowRep
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Simplify using `only [inBasis, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, map_mul, e]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inBasis_congr {D : D7} {n n' : ℕ} (h : n' = n) (β : GL (Fin n) (Lev.EAf D)) (w : Pl D.host.E)
     {x y : GL (Fin n) (Lev.EAf D)} (e : GlobalTheory.StdFrames.loc w x = GlobalTheory.StdFrames.loc w y) : inBasis h β w x = inBasis h β w y := by
   simp only [inBasis, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, map_mul, e]
 
 /- English proof (translation)
-Use `⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch hch _ => ?_⟩⟩` and prove the remaining obligations. Introduce `t j σ hi hj hj' hσ h1 r g hr hg`. Take `⟨e, ⟨⟨es, hes, rfl⟩, hc⟩, hsupp, hloc⟩` from `hr`. Take `⟨h, hh1, hh2, hr⟩` from `GlobalTheory.T.exists_prod_single_place_pieces_of_suppAt _ _ es hes hc r hsupp`. Rewrite using `[hr]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `Subgroup.list_prod_mem _ fun x hx => ?_` and prove the remaining obligations. Take `⟨w, -, rfl⟩` from `List.mem_map.1 hx`. Take `⟨q, hqe, -, hqpr⟩` from `GlobalTheory.T.exists_cmSplitPoint_at_place_over_split D w.1 (es w.1) (hes w.1 w.2) s.hF`. Establish `hF` using `ch.S.row t (Set.mem_univ t) w.1 w.2 j hj'`. Establish `e1 : GlobalTheory.StdFrames.loc w.1 (Lev.finE (ch.G.V (.grid D.R.m j)) (h w)) = GlobalTheory.StdFrames.loc w.1 (Lev.finE (ch.G.V (.grid D.R.m j)) r)` using `Units.ext (hh2 w)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : toFrame one_le_sLen hj' (g w) ∈ symR (Kw w.1) _ _` using `hg w`. Rewrite `hm` using `[← hloc w]`. Use `GlobalTheory.T.rowTest_mem_fourierJacobiGroup_of_sumFrame_symmetric (ch.G.rowDec j hj') hσ h1 w.1 _ _ _ hF (fun p => frameScal_ne w.1 _ _ p) (topRank_eq ch.G t w.1 hj) (rank_vertex ch.G t w.1 (X := (D.R.m, j)) ⟨le_rfl, hj⟩) (by have := topRank_add (G := locGrid ch.G t w.1) one_le …` and prove the remaining obligations. Rewrite using `[inBasis_congr _ _ _ e1]`. Conclude with `hm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_jacGrp_of_hasLoc : Big fun {D} _ _ _ _ _ _ _ _ _ _ _ ch => ∀ t j σ, j ∈ idx D → ∀ (hj : j ≤ D.R.m) (hj' : j < D.R.m) (hσ : D.R.m - 1 - j = 2 * σ),
     1 ≤ σ → ∀ (r : GA D (ch.G.V (.grid D.R.m j))) (g : ∀ w : locPl ch.G t, GL (Fin ((locGrid ch.G t w.1).rank (D.R.m, j))) (Kw w.1)),

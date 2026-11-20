@@ -5,17 +5,15 @@ open PowerSeries GlobalTheory.BK
 namespace GlobalTheory.CokerL
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ l e a ι _ _ _ _ _ _ _ P Δ c v hv`. Use `letI := Fintype.ofFinite (rootsOfUnity e K)`. Establish `key : ∀ s : ZMod a → K, (∀ τ, ‖s τ‖ ≤ 1) → ∀ w ∈ P.L, diagScale K a ι s w ∈ P.L`. Introduce `s hs w hw`. Establish `h : diagScale K a ι s w = (fun τ => C (s τ)) • w`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use extensionality with `τ i`. Simplify using `[diagScale_apply, Pi.smul_apply', PowerSeries.smul_eq_C_mul]`. Rewrite using `[h]`. Use `P.smul_tot_mem_ext (fun τ => mem_A.2 fun n => ?_) hw` and prove the remaining obligations. Rewrite using `[coeff_C]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Conclude with `hs τ`. Simplify using the standard rewrite rules. Establish `hnd : ¬ l ∣ e`. Introduce `h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : l ∣ e + 1`. Rewrite using `[TameDescentExponentData.succ_eq (K := K) (l := l) (e := e) (a := a)]`. Conclude with `dvd_pow_self l (NeZero.ne a)`. Conclude with `(Fact.out : l.Prime).one_lt.ne' (Nat.dvd_one.1 ((Nat.dvd_add_right h).1 h1))`. Establish `he : ‖(e : K)⁻¹‖ ≤ 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[norm_inv, norm_natCast_eq l, Padic.norm_natCast_eq_one_iff.2 ((Nat.Prime.coprime_iff_not_dvd Fact.out).2 hnd), inv_one]`. Establish `hsc : isoProj Δ c v = diagScale K a ι (fun _ => (e : K)⁻¹) (∑ ζ : rootsOfUnity e K, diagScale K a ι (fun τ => ((TameGal.inertia ζ : TameGal K l e a).root τ)⁻¹ ^ c.val) (Δ.act (TameGal.inertia ζ) v))`. Simplify using `only [isoProj, LinearMap.smul_apply, LinearMap.sum_apply, LinearMap.comp_apply]`. Both sides reduce to the same expression. Rewrite using `[hsc]`.
-
-Use `key _ (fun _ => he) _ (Submodule.sum_mem _ fun ζ _ => key _ (fun τ => ?_) _ ?_)` and prove the remaining obligations. Rewrite using `[norm_pow, norm_inv, TameGal.norm_root, inv_one, one_pow]`. Conclude with `Δ.act_mem_ext _ le_rfl rot_A hv`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isoProj_mem_L : ∀ (O K : Type) [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] (l e a : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] [NeZero a] [TameDescentExponentData K l e a] (P : PhiMod O K l e a ι) (Δ : Descent P) (c : ZMod e) (v : Vec K a ι), v ∈ P.L → GlobalTheory.CokerL.isoProj Δ c v ∈ P.L := by
   intro O K _ _ _ _ _ l e a ι _ _ _ _ _ _ _ P Δ c v hv

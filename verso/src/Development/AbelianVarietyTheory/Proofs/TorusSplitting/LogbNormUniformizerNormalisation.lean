@@ -17,7 +17,7 @@ noncomputable section
 namespace GlobalTheory.EtaVal.UnitNorm
 
 /- English proof (translation)
-Establish `h1 : (IsDiscreteValuationRing.maximalIdeal V).intValuation (u : V) = 1`. Rewrite using `[HeightOneSpectrum.intValuation_eq_one_iff]`. Conclude with `fun h => (IsLocalRing.mem_maximalIdeal (u : V)).1 h u.isUnit`. Establish `h2 : (IsDiscreteValuationRing.maximalIdeal V).intValuation ϖ = WithZero.exp (-1 : ℤ)` using `HeightOneSpectrum.intValuation_singleton _ hϖ.ne_zero hϖ.maximalIdeal_eq`. Rewrite using `[vV, valV, HeightOneSpectrum.valuation_of_algebraMap, map_mul, map_pow, h1, h2, _root_.one_mul, ← WithZero.exp_nsmul, WithZero.log_exp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -34,7 +34,7 @@ theorem vV_unit_mul_pow {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuatio
   simp
 
 /- English proof (translation)
-Establish `h : ‖f u‖ * ‖f (u⁻¹ : Vˣ)‖ = 1`. Rewrite using `[← norm_mul, ← map_mul, Units.mul_inv, map_one, norm_one]`. Use `le_antisymm (hf _) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_map_unit {V F : Type} [CommRing V] [NormedField F] (f : V →+* F) (hf : ∀ a, ‖f a‖ ≤ 1)
     (u : Vˣ) : ‖f u‖ = 1 := by
@@ -46,15 +46,15 @@ theorem norm_map_unit {V F : Type} [CommRing V] [NormedField F] (f : V →+* F) 
     _ = ‖f u‖ := _root_.mul_one _
 
 /- English proof (translation)
-Introduce `K _ _ la T io e ho ϖ hϖ C f hf`. Establish `hE` using `Formalism.MainNotions.ModuliIntegralCharts.H1.H1algLink.eWL_eq la`. Use `⟨?_, hE ▸ Nat.pos_of_ne_zero (Formalism.MainNotions.ModuliIntegralCharts.H1.H1algLink.ramOverZ_ne_zero la)⟩` and prove the remaining obligations. Establish `hp : (Formalism.MainNotions.WeightAlgebra.resCh la).Prime` using `Crude.resCharOf_prime la`. Establish `hv : vLa la ((Formalism.MainNotions.WeightAlgebra.resCh la : ℕ) : K) = Formalism.BasicNotions.eWL K la`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hE]`. Conclude with `Crude.crv_vLa_char la`. Establish `hn` using `C.norm_p`. Generalize the expression as in `Formalism.BasicNotions.eWL K la = E at hv ⊢`. Establish `h0 : ((Formalism.MainNotions.WeightAlgebra.resCh la : ℕ) : T.V) ≠ 0` using `by exact_mod_cast hp.ne_zero`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible h0 hϖ`. Establish `h1` using `vV_unit_mul_pow hϖ u n`. Rewrite `h1` using `[← hu, map_natCast, ← map_natCast io, ho.2, hv]`. Establish `h2 : ((e : ℝ) * E) = n` using `by exact_mod_cast h1`. Establish `h3 : ‖f ϖ‖ ^ n = ((Formalism.MainNotions.WeightAlgebra.resCh la : ℕ) : ℝ)⁻¹`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hn, ← map_natCast f, hu, map_mul, norm_mul, norm_map_unit f hf u, _root_.one_mul, map_pow, norm_pow]`. Establish `hp1 : (1 : ℝ) < ((Formalism.MainNotions.WeightAlgebra.resCh la : ℕ) : ℝ)` using `by exact_mod_cast hp.one_lt`. Establish `h4` using `congrArg (Real.logb (Formalism.MainNotions.WeightAlgebra.resCh la)) h3`. Rewrite `h4` using `[Real.logb_pow, Real.logb_inv, Real.logb_self_eq_one hp1]`. Rewrite using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem logb_norm_uniformiser : ∀ (K : Type) [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) (T : CDVR) (io : K →+* T.Fr) (e : ℕ), OverLa la T.V io e → ∀ (ϖ : T.V), Irreducible ϖ → ∀ (C : SCF (Formalism.MainNotions.WeightAlgebra.resCh la)) (f : T.V →+* ↥C.S), (∀ a, ‖f a‖ ≤ 1) → -Real.logb (Formalism.MainNotions.WeightAlgebra.resCh la) ‖f ϖ‖ * ((e : ℝ) * Formalism.BasicNotions.eWL K la) = 1 ∧ 0 < Formalism.BasicNotions.eWL K la := by
   intro K _ _ la T io e ho ϖ hϖ C f hf

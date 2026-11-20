@@ -19,9 +19,7 @@ namespace GlobalTheory.FlipTop
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts}
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(columnBlock L j).sp.rank = _`. Break down `hj.eq_or_lt with rfl | hk` into its components or cases. Rewrite using `[colY_m]`. Conclude with `D.sp.X'_rank`. Rewrite using `[colY_lt L hk]`.
-
-Conclude with `Comparison₂.rank_Yc hk.le`.
+Express the relevant assertion in an equivalent form by its definition. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rank_col (G : GridData L sc) {j : ℕ} (hj : j ≤ D.R.m) : (G.V (.grid 0 j)).rank = D.R.r + j * D.R.t := by
   change (columnBlock L j).sp.rank = _

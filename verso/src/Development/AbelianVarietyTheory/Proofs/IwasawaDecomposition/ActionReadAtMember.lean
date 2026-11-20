@@ -30,7 +30,7 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn
   (Y : R3.Read (A3 := A3) R.toRealDat F.lv2 X0)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ClassSumIdentity.lvlE_lvlOp hok.ok2.conj _ ((hok.ok2.lifts k s).hpos _) _ (hok.ok2.lifts k s).act _ _ a ha x`.
+A detailed English derivation is pending.
 -/
 theorem liftForm_lvlAct (hok : A3.fam3.Ok3 1) (k : Fin D.R.m) (s : T) (a : MonoidAlgebra D.what₂.LL G) (ha : ∀ b, b * a = a * b)
     (x : Fin (lDim D A3.A F.lv2.P0 F.lv2.ψ0 k s) → D.what₂.LL) :
@@ -41,7 +41,7 @@ theorem liftForm_lvlAct (hok : A3.fam3.Ok3 1) (k : Fin D.R.m) (s : T) (a : Monoi
 variable (R) in
 
 /- English proof (translation)
-The claim follows from `(map_sum (R.jV k s) (fun g => c g • v g) Finset.univ).trans (Finset.sum_congr rfl fun g _ => (R.jV k s).map_smulₛₗ (c g) (v g))`.
+A detailed English derivation is pending.
 -/
 theorem jV_sum (k : Fin D.R.m) (s : T) (c : G → D.what₂.LL) (v : G → A3.A.fam.amb.FL k s) :
     R.jV k s (∑ g, c g • v g) = ∑ g, D.what₂.embLL (c g) • R.jV k s (v g) :=
@@ -51,7 +51,7 @@ theorem jV_sum (k : Fin D.R.m) (s : T) (c : G → D.what₂.LL) (v : G → A3.A.
 variable (R) in
 
 /- English proof (translation)
-Establish `e` using `map_sum (R.extV k s) (fun g => c g • w g) Finset.univ`. Use `(congrFun e y).trans ((Finset.sum_apply y Finset.univ _).trans (Finset.sum_congr rfl fun g _ => ?_))` and prove the remaining obligations. Conclude with `congrFun ((R.extV k s).map_smul (c g) (w g)) y`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem extV_sum (k : Fin D.R.m) (s : T) (c : G → ℂ) (w : G → (R.HV k s).H) (y : GA D (Vc D k)) :
     R.extV k s (∑ g, c g • w g) y = ∑ g, c g • R.extV k s (w g) y := by
@@ -60,9 +60,9 @@ theorem extV_sum (k : Fin D.R.m) (s : T) (c : G → ℂ) (w : G → (R.HV k s).H
   exact congrFun ((R.extV k s).map_smul (c g) (w g)) y
 
 /- English proof (translation)
-Establish `e1` using `Formalism.IndefR.Eqv.Act.jV_act R hM k s g v _ (Formalism.IndefR.Eqv.Act.red_of_liftV R hred k s g hκ)`. Establish `e2` using `Formalism.IndefR.Eqv.Act.ext_g0Act (R.cV k) (hM.cV k) (levEnv (Vc D k) (R.βV k) (R.datVt k s)).ch ⟨_, Formalism.IndefR.Eqv.Act.mem_Q_of_liftV R k s g hκ⟩ κ hκ.1 rfl ((R.HV k s).e (R.jV k s v)) y`. Establish `e3` using `congrArg (fun f => (R.cV k).ext f y) e1`. Establish `hch : ((((levEnv (Vc D k) (R.βV k) (R.datVt k s)).ch ⟨_, Formalism.IndefR.Eqv.Act.mem_Q_of_liftV R k s g hκ⟩)⁻¹ : ℂˣ) : ℂ) = (levChi (Vc D k) (R.βV k) (flagL (R.datVt k s)) κ)⁻¹` using `Units.val_inv_eq_inv_val _`. Use `(Formalism.IndefR.Eqv.Act.extV_apply R k s _ y).trans (e3.trans (e2.trans ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg₂ (fun (c : ℂ) (w : (R.cV k).W) => c • w) hch (Formalism.IndefR.Eqv.Act.extV_apply R k s _ (y * κ)).symm`.
+A detailed English derivation is pending.
 -/
 theorem extV_act {A : FamIn D.what₂.LL G Pl0 T D.R.m} (R : RealDat D A Ks) (hM : R.IsModels) (hred : R.grp_red_L)
     (k : Fin D.R.m) (s : T) (g : G) {κ : GA D (Vc D k)} (hκ : IsLevelLift (Vc D k) (R.βV k) (R.datVt k s) (R.eG g) κ)
@@ -79,9 +79,9 @@ theorem extV_act {A : FamIn D.what₂.LL G Pl0 T D.R.m} (R : RealDat D A Ks) (hM
   exact congrArg₂ (fun (c : ℂ) (w : (R.cV k).W) => c • w) hch (Formalism.IndefR.Eqv.Act.extV_apply R k s _ (y * κ)).symm
 
 /- English proof (translation)
-Introduce `s h k a ha κ hκ x y`. Establish `hr : ∀ x', adForm Y (Y.tup s) h k (ratForm Y k s x') = R.extV k s (R.jV k s (liftForm A3.A F.lv2.P0 F.lv2.ψ0 k s x'))` using `fun x' => Y.mtRead k s h x'`. Establish `e1 : R.jV k s (liftForm A3.A F.lv2.P0 F.lv2.ψ0 k s (lvlAct F k s a x)) = ∑ g : G, D.what₂.embLL (a.coeff g) • R.jV k s (A3.A.fam.amb.opL k s (Sum.inr g) (liftForm A3.A F.lv2.P0 F.lv2.ψ0 k s x))` using `(congrArg (R.jV k s) (liftForm_lvlAct hok k s a ha x)).trans (jV_sum R k s _ _)`. Use `(congrFun (hr _) y).trans ((congrFun (congrArg (R.extV k s) e1) y).trans ((extV_sum R k s _ _ y).trans (Finset.sum_congr rfl fun g _ => ?_)))` and prove the remaining obligations. Use `(congrArg (fun w => D.what₂.embLL (a.coeff g) • w) (extV_act R.toRealDat hM hred k s g (hκ g) _ y)).trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(smul_smul _ _ _).trans (congrArg _ (congrFun (hr x) (y * κ g)).symm)`.
+A detailed English derivation is pending.
 -/
 theorem actRead_of (hM : R.toRealDat.IsModels) (hred : R.toRealDat.grp_red_L) (hok : A3.fam3.Ok3 1) : ActRead Y := by
   intro s h k a ha κ hκ x y
@@ -99,7 +99,7 @@ theorem actRead_of (hM : R.toRealDat.IsModels) (hred : R.toRealDat.grp_red_L) (h
 end Gen
 
 /- English proof (translation)
-Introduce `_` and use `GlobalTheory.HeightCounting.JumpsAt.evLgG_of_forall fun _ _ _ _ _ _ _ _ _ t _ _ _ _ _ _ _ => actRead_of t.r.Y t.r.z.pins.char.base.models t.r.z.pins.char.base.grp.red_L t.r.intersectionNumber_baseChange.ok`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem actRead_at : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AtMem hL fun _ _ _ _ _ _ _ _ t _ _ _ => GlobalTheory.CenLocAt.ActRead t.r.Y :=
   fun _ => GlobalTheory.HeightCounting.JumpsAt.evLgG_of_forall fun _ _ _ _ _ _ _ _ _ t _ _ _ _ _ _ _ =>

@@ -15,25 +15,21 @@ open Formalism.QuantumDeterminants Formalism.MainNotions.S
 variable {k r : ℕ}
 
 /- English proof (translation)
-Use `set μN := haarLie (Nset k r) κ with hμN`. Take `⟨μG, hμG⟩` from `Formalism.FourierDecayAlt.P.unitary_group_haar_exists k r`. Establish `hGsk : Formalism.MainNotions.S.IsHaarOn (UH (Hpk k r)) μG` using `⟨Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite hμG, hμG.ne_zero, hμG.conc, hμG.left⟩`. Establish `hS` using `Formalism.L2.SG.Pf.Choice.isHaarOn_muS hz hT hW hW1 hκ0 hκt`. Take `⟨νq, hq⟩` from `Formalism.L2.SG.Pf.QuotMeasExists.quotMeasExists k r z hz hT μG _ hGsk hS`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hN : Formalism.MainNotions.S.IsHaarOn (Nset k r) μN` using `Formalism.MainNotions.BridgeCSB.haarLieN k r κ hκ0 hκt`. Establish `hgr` using `Formalism.FourierDecayAlt.P.growth_spherical_bound k r z μW μN μG νq β hz hT hW hN hGsk hq hβ`. Establish `hβ0 : 0 < β` using `lt_of_le_of_lt (by unfold Formalism.FourierDecayAlt.ThreeDimData.AG; positivity) hβ`. Establish `hI : ∫⁻ p, ENNReal.ofReal (Formalism.FourierDecayAlt.B.gN (Matrix.of p.1 * Matrix.of p.2) ^ (-β)) ∂(μW.prod μN) < ⊤` using `(hasFiniteIntegral_iff_ofReal (Filter.Eventually.of_forall fun p => Real.rpow_nonneg (Formalism.FourierDecayAlt.P.gN_nonneg_bessel_integrability _) _)).1 hgr.2`. Take `⟨CW0, hCW0⟩` from `(Formalism.FourierDecayAlt.P.weyl_subgroup_compact k r z hz hT).exists_bound_of_continuousOn (f := fun x : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ => Formalism.FourierDecayAlt.B.gN x) Formalism.FourierDecayAlt.P.s3dx1S_gNc.continuousOn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set CW := max CW0 1 with hCW`. Establish `hCW1 : 1 ≤ CW` using `le_max_right _ _`. Establish `hNI` using `Formalism.FourierDecayAlt.P.norm_inverse_bound k r`. Establish `: SigmaFinite μW` using `hW.1`. Establish `: SFinite μN` using `Formalism.MainNotions.FrameBoundFromBesselTorus.sFinite_haarLie _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hae : ∀ᵐ p ∂(μW.prod μN), Matrix.of p.1 ∈ UWset k r z ∧ Matrix.of p.2 ∈ Nset k r`. Establish `h1 : ∀ᵐ x ∂μW, Matrix.of x ∈ UWset k r z` using `by rw [ae_iff]; exact hW.2.2.1`. Establish `h2 : ∀ᵐ x ∂μN, Matrix.of x ∈ Nset k r` using `by rw [ae_iff]; exact hN.2.2.1`. Conclude with `(Measure.quasiMeasurePreserving_fst.ae h1).and (Measure.quasiMeasurePreserving_snd.ae h2)`. Establish `hpt : ∀ᵐ p ∂(μW.prod μN), ENNReal.ofReal (Formalism.FourierDecayAlt.B.gN (Matrix.of p.2 * Matrix.of p.1) ^ (-β)) ≤ ENNReal.ofReal ((CW * CW) ^ β) * ENNReal.ofReal (Formalism.FourierDecayAlt.B.gN (Matrix.of p.1 * Matrix.of p.2) ^ (-β))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hae.mono fun p hp => ?_` and prove the remaining obligations. Use `set h := Matrix.of p.1`. Use `set n := Matrix.of p.2`. Establish `hhU : h ∈ UH (Hpk k r)` using `hp.1.1`. Establish `hhu : IsUnit h.det` using `uh_isUnit hhU`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnh : n * h ∈ UH (Hpk k r)` using `PI.WUN.UH_mul hp.2.1 hhU`. Establish `hhn : h * n ∈ UH (Hpk k r)` using `PI.WUN.UH_mul hhU hp.2.1`. Establish `h1 : 1 ≤ Formalism.FourierDecayAlt.B.gN (h * n)` using `(hNI.2 _ hhn).2`. Establish `hgh : Formalism.FourierDecayAlt.B.gN h ≤ CW`. Use `hCW0 h hp.1` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[Real.norm_of_nonneg (Formalism.FourierDecayAlt.P.gN_nonneg_bessel_integrability _)]`. Conclude with `this.trans (le_max_left _ _)`. Establish `hghi : Formalism.FourierDecayAlt.B.gN h⁻¹ ≤ CW` using `by rw [(hNI.2 h hhU).1]; exact hgh`. Establish `hle : Formalism.FourierDecayAlt.B.gN (h * n) ≤ CW * CW * Formalism.FourierDecayAlt.B.gN (n * h)`. Establish `e : h * n = h * (n * h) * h⁻¹`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hhu, Matrix.mul_one]`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation. Establish `hpos : 0 < Formalism.FourierDecayAlt.B.gN (h * n) / (CW * CW)` using `div_pos (by linarith) (by positivity)`. Establish `hle' : Formalism.FourierDecayAlt.B.gN (h * n) / (CW * CW) ≤ Formalism.FourierDecayAlt.B.gN (n * h)`.
-
-Rewrite using `[div_le_iff₀ (by positivity)]; linarith`. Establish `hm` using `Real.rpow_le_rpow_of_nonpos hpos hle' (by linarith : -β ≤ 0)`. Rewrite `hm` using `[Real.div_rpow (by linarith) (by positivity), Real.rpow_neg (by positivity : (0:ℝ) ≤ CW * CW), div_inv_eq_mul]`. Rewrite using `[← ENNReal.ofReal_mul (Real.rpow_nonneg (by positivity) _)]`. Conclude with `ENNReal.ofReal_le_ofReal (hm.trans_eq (mul_comm _ _))`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem growth_side {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hT : 0 < Tz k r z)
     {μW : Measure (Mt k r)} (hW : Formalism.MainNotions.S.IsHaarOn (UWset k r z) μW) (hW1 : μW Set.univ = 1)

@@ -20,7 +20,7 @@ variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 namespace DividedPowerLiftFacts
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `congrArg (fun z : OK l K => ((z : K) : PadicAlgCl l)) h`. Establish `h2 : ((l : ℕ) : PadicAlgCl l) = 0` using `by simpa using h1`. Conclude with `(Fact.out : l.Prime).ne_zero (by exact_mod_cast h2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem l_ne_zero : ((l : ℕ) : OK l K) ≠ 0 := by
   intro h
@@ -29,13 +29,11 @@ theorem l_ne_zero : ((l : ℕ) : OK l K) ≠ 0 := by
   exact (Fact.out : l.Prime).ne_zero (by exact_mod_cast h2)
 
 /- English proof (translation)
-Unfold `pdP`. Rewrite using `[Ideal.span_eq_bot]`. Introduce and unpack `z ⟨L, hL, hs, rfl⟩`. Establish `hpos : 0 < (List.map Prod.fst L).sum` using `lt_of_lt_of_le hr hs`. Choose the witnesses or unpack the hypotheses as in `⟨q, hq, hq0⟩ : ∃ q ∈ L, q.1 ≠ 0 := by`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Establish `: (List.map Prod.fst L).sum = 0` using `List.sum_eq_zero (by`. Introduce `x hx`. Take `⟨q, hq, rfl⟩` from `List.mem_map.1 hx`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `hc q hq)`. Use linear arithmetic over natural numbers and integers. Apply `List.prod_eq_zero` to reduce the goal to its premises. Use `List.mem_map.2 ⟨q, hq, ?_⟩` and prove the remaining obligations. Establish `h2 : q.2 = 0` using `(Ideal.mem_bot).1 (hL q hq)`.
-
-Rewrite using `[h2]`. Conclude with `dpow_eval_zero _ hq0`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dividedPowerFiltration_bot (r : ℕ) (hr : 1 ≤ r) : pdP (dividedPowersBot (OK l K)) r = ⊥ := by
   unfold pdP
@@ -57,7 +55,7 @@ theorem dividedPowerFiltration_bot (r : ℕ) (hr : 1 ≤ r) : pdP (dividedPowers
   exact dpow_eval_zero _ hq0
 
 /- English proof (translation)
-Rewrite using `[Ideal.eq_top_iff_one]`. Unfold `pdP`. Conclude with `Ideal.subset_span ⟨[], by simp, by simp, by simp⟩`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem dividedPowerFiltration_zero : pdP (dividedPowersBot (OK l K)) 0 = ⊤ := by
   rw [Ideal.eq_top_iff_one]
@@ -65,9 +63,9 @@ theorem dividedPowerFiltration_zero : pdP (dividedPowersBot (OK l K)) 0 = ⊤ :=
   exact Ideal.subset_span ⟨[], by simp, by simp, by simp⟩
 
 /- English proof (translation)
-Use `OK_dvr (l := l) (K := K)` as an intermediate fact. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible (OK l K)`. Take `⟨n, hn⟩` from `IsDiscreteValuationRing.associated_pow_irreducible ha hϖ`. Establish `hlm : ((l : ℕ) : OK l K) ∈ IsLocalRing.maximalIdeal (OK l K)`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, isUnit_OK_iff]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (((((l : ℕ) : OK l K) : K)) : PadicAlgCl l) = algebraMap ℚ_[l] (PadicAlgCl l) (l : ℚ_[l])` using `by simp`. Rewrite using `[e, PadicAlgCl.norm_extends]`. Conclude with `Padic.norm_p_lt_one.ne`. Rewrite `hlm` using `[(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ, Ideal.mem_span_singleton]`. Conclude with `⟨n, hn.dvd.trans (pow_dvd_pow_of_dvd hlm n)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem divides [FiniteDimensional ℚ_[l] K] (a : OK l K) (ha : a ≠ 0) : ∃ k : ℕ, a ∣ (l : OK l K) ^ k := by
   have := OK_dvr (l := l) (K := K)
@@ -85,15 +83,13 @@ end DividedPowerLiftFacts
 
 open DividedPowerLiftFacts in
 /- English proof (translation)
-Establish `hdvr : IsDiscreteValuationRing (OK l K)` using `OK_dvr`. Establish `hdiv : ∀ a : OK l K, a ≠ 0 → ∃ k : ℕ, a ∣ (l : OK l K) ^ k` using `divides`. Establish `hs1 : 1 ≤ s` using `le_trans hL.pos hs`. Establish `htf : TFBase (dividedPowersBot (OK l K)) l s` using `{ nil := dividedPowerFiltration_bot s hs1 tf := by`. Introduce `r x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `Nat.eq_zero_or_pos r with rfl | hr` into its components or cases. Rewrite using `[dividedPowerFiltration_zero]`. Conclude with `Submodule.mem_top`. Rewrite `hx`, the goal using `[dividedPowerFiltration_bot r hr, Ideal.mem_bot]`. Conclude with `(mul_eq_zero.1 hx).resolve_left l_ne_zero`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `dv := by`. Introduce `n hn`. Establish `hn' : ((n : ℕ) : OK l K) ≠ 0`. Introduce `h`. Establish `h1` using `congrArg (fun z : OK l K => ((z : K) : PadicAlgCl l)) h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `h2 : ((n : ℕ) : PadicAlgCl l) = 0` using `by simpa using h1`. Conclude with `hn (by exact_mod_cast h2)`. Take `⟨k, u, hu⟩` from `hdiv _ hn'`. Conclude with `⟨k, u, hu.symm⟩ }`. Establish `: IsProper M.p` using `sm_proper hM`.
-
-Take `⟨U⟩` from `(cov_ex M.p).1 hM.2`. Conclude with `liftA (O := OK l K) (A := L.A) L.γ l s s hdiv htf (hL.lat s hs) le_rfl M.p U {⊤} sSup_singleton j`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cg_lift_pf [FiniteDimensional ℚ_[l] K] {L : Lev R m} (hL : L.Good) (M : Model l K) (hM : M.Sm) (s : ℕ) (hs : m ≤ s)
     (j : ℕ) : ∃ e : ℕ, LiftP (QA L M s) (l : L.A) s j e := by

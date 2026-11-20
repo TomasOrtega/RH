@@ -17,9 +17,9 @@ section PhiQ
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)} {K : Type} [Field K]
 
 /- English proof (translation)
-Use extensionality with `l s`. Use `show redP P ((Pi.single s (1 : E) : Sp E n) l) = _`. Rewrite using `[Matrix.one_apply]`. Distinguish the cases in `h : l = s`. Substitute `h` using the available equality.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_eq_same, if_pos rfl, redP_one]`. Rewrite using `[Pi.single_eq_of_ne h, if_neg h, redP_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem clXQ_redMQ_one (n : ℕ) : redMQ P ((1 : Sp E n ≃ₗ[E] Sp E n).toLinearMap) = 1 := by
   ext l s
@@ -31,7 +31,7 @@ theorem clXQ_redMQ_one (n : ℕ) : redMQ P ((1 : Sp E n ≃ₗ[E] Sp E n).toLine
   · rw [Pi.single_eq_of_ne h, if_neg h, redP_zero]
 
 /- English proof (translation)
-Rewrite using `[clXQ_redMQ_one, Matrix.submatrix_one_equiv, Matrix.submatrix_one _ (Fin.castLE_injective hr), Matrix.det_one]`. Simplify using `using xiZ_unit ξ 1`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem clXQ_tl_one (ξ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) (k₀ c n r : ℕ) (h : k₀ ≤ n) (hr : r ≤ n + c) :
     xiZ ξ (((redMQ P (1 : Sp E (n + c) ≃ₗ[E] Sp E (n + c)).toLinearMap).submatrix (fE k₀ c n h) (fE k₀ c n h)).submatrix
@@ -40,7 +40,7 @@ theorem clXQ_tl_one (ξ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) (k₀ c n r : ℕ) 
   simpa using xiZ_unit ξ 1
 
 /- English proof (translation)
-Rewrite using `[jq_scal hq (ciQ_ne_zero hu) ξ h hk hkn e hr hg, unitV_eq, redP_detEquiv P hg.1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem clXQ_scal {q : ℕ} (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu : ((q : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) (ξ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ)
     {k₀ kj n c r : ℕ} (h : k₀ ≤ n) (hk : k₀ ≤ kj) (hkn : kj ≤ n) (e : kj + c = r) (hr : r ≤ n + c)
@@ -50,7 +50,7 @@ theorem clXQ_scal {q : ℕ} (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu : ((q 
   rw [jq_scal hq (ciQ_ne_zero hu) ξ h hk hkn e hr hg, unitV_eq, redP_detEquiv P hg.1]
 
 /- English proof (translation)
-Establish `e0` using `phiQ_lawG hq hu ξ k₀ r c' n' c n kj' kj h' h hk' hk e' e hr' hr (one_mem (LocE.JQ P q kj' n' c')) hg y`. Rewrite `e0` using `[clXQ_tl_one, mul_one, clXQ_scal hq hu ξ h hk hkn e hr hg]`. Conclude with `e0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem clXQ_phiQ_tgt {q : ℕ} (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu : ((q : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) (ξ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ)
     (k₀ r c' n' c n kj' kj : ℕ) (h' : k₀ ≤ n') (h : k₀ ≤ n) (hk' : k₀ ≤ kj') (hk : k₀ ≤ kj) (hkn : kj ≤ n) (e' : kj' + c' = r)
@@ -63,7 +63,7 @@ theorem clXQ_phiQ_tgt {q : ℕ} (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu : 
   exact e0
 
 /- English proof (translation)
-Establish `e0` using `phiQ_lawG hq hu ξ k₀ r c' n' c n kj' kj h' h hk' hk e' e hr' hr hf (one_mem (LocE.JQ P q kj n c)) y`. Rewrite `e0` using `[clXQ_tl_one, one_mul, clXQ_scal hq hu ξ h' hk' hkn' e' hr' hf]`. Conclude with `e0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_source_change_of_level {q : ℕ} (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hu : ((q : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) (ξ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ)
     (k₀ r c' n' c n kj' kj : ℕ) (h' : k₀ ≤ n') (h : k₀ ≤ n) (hk' : k₀ ≤ kj') (hk : k₀ ≤ kj) (hkn' : kj' ≤ n') (e' : kj' + c' = r)
@@ -84,7 +84,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m}
   {cst : LocCst X (rowSG Pr sel mu)}
 
 /- English proof (translation)
-Unfold `Ranks.N`. Establish `: j * (R.t + 1) = j * R.t + j` using `by ring`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem clXQ_kj_le (j : ℕ) : R.k + j ≤ R.N j := by
   unfold Ranks.N
@@ -92,14 +92,14 @@ theorem clXQ_kj_le (j : ℕ) : R.k + j ≤ R.N j := by
   omega
 
 /- English proof (translation)
-Unfold `cOf Ranks.r`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem clXQ_kj_c {j : ℕ} (hj : j + 1 ≤ R.m) : R.k + j + cOf R j = R.r := by
   unfold cOf Ranks.r
   omega
 
 /- English proof (translation)
-Establish `h1` using `(Subgroup.mem_inf.1 hr).2`. Rewrite `h1` using `[Subgroup.mem_comap, twJat_Q _ _ hw]`. Simplify `h1` using `[MulAut.conj_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem clXQ_conj_mem {j : ℕ} {w : rowSG Pr sel mu} (hw : w.1 ∉ Pr.vGs) {h r : AutY X R j}
     (hr : r ∈ Loc.Cbe (Jat (Pr := Pr) cst.sharp j w.1) h) :
@@ -109,15 +109,15 @@ theorem clXQ_conj_mem {j : ℕ} {w : rowSG Pr sel mu} (hw : w.1 ∉ Pr.vGs) {h r
   simpa [MulAut.conj_apply] using h1
 
 /- English proof (translation)
-Rewrite using `[map_mul, map_mul, map_inv, mul_comm, ← mul_assoc, mul_inv_cancel, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem clXQ_det_conj {j : ℕ} (h r : AutY X R j) : LinearEquiv.det (h⁻¹ * r * h : AutY X R j) = LinearEquiv.det r := by
   rw [map_mul, map_mul, map_inv, mul_comm, ← mul_assoc, mul_inv_cancel, one_mul]
 
 /- English proof (translation)
-Establish `hk` using `clXQ_conj_mem hw hr'`. Establish `hcomp : hbe.symm.toLinearMap ∘ₗ (r'.toLinearMap ∘ₗ x) ∘ₗ hal.toLinearMap = (hbe⁻¹ * r' * hbe : AutY X R (i + 1)).toLinearMap ∘ₗ (hbe.symm.toLinearMap ∘ₗ x ∘ₗ hal.toLinearMap)`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Use `show hbe.symm (r' (x (hal v))) = hbe.symm (r' (hbe (hbe.symm (x (hal v)))))`. Rewrite using `[LinearEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlaw` using `clXQ_phiQ_tgt (ciQ_mem w.1) hu (resChar (mu : Chr X.F X.E X.K) w.1) R.k R.r (cOf R i) (R.N i) (cOf R (i + 1)) (R.N (i + 1)) (R.k + i) (R.k + (i + 1)) (twAn_k_le i) (twAn_k_le (i + 1)) (by omega) (by omega) (clXQ_kj_le (i + 1)) (clXQ_kj_c (by omega)) (clXQ_kj_c (by omega)) (twAn_r …`. Unfold `omPhi Loc.om PhiAt lamRow`. Simplify using `only [if_neg hw]`. Rewrite using `[hcomp, hlaw, clXQ_det_conj]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem clXQ_omPhi_tgt {i : ℕ} {w : rowSG Pr sel mu} (hw : w.1 ∉ Pr.vGs) (hu : ((qOf w.1 : ℕ) : 𝓞 X.E) ∉ w.1.asIdeal ^ 2)
     (hi : i + 2 ≤ R.m) (hal : AutY X R i) {hbe r' : AutY X R (i + 1)}
@@ -141,9 +141,9 @@ theorem clXQ_omPhi_tgt {i : ℕ} {w : rowSG Pr sel mu} (hw : w.1 ∉ Pr.vGs) (hu
   ring
 
 /- English proof (translation)
-Establish `hk` using `clXQ_conj_mem hw hr`. Establish `hcomp : hbe.symm.toLinearMap ∘ₗ (x ∘ₗ r.toLinearMap) ∘ₗ hal.toLinearMap = (hbe.symm.toLinearMap ∘ₗ x ∘ₗ hal.toLinearMap) ∘ₗ (hal⁻¹ * r * hal : AutY X R i).toLinearMap`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Use `show hbe.symm (x (r (hal v))) = hbe.symm (x (hal (hal.symm (r (hal v)))))`. Rewrite using `[LinearEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlaw` using `phi_source_change_of_level (ciQ_mem w.1) hu (resChar (mu : Chr X.F X.E X.K) w.1) R.k R.r (cOf R i) (R.N i) (cOf R (i + 1)) (R.N (i + 1)) (R.k + i) (R.k + (i + 1)) (twAn_k_le i) (twAn_k_le (i + 1)) (by omega) (by omega) (clXQ_kj_le i) (clXQ_kj_c (by omega)) (clXQ_kj_c (by omega)) …`. Unfold `omPhi Loc.om PhiAt lamRow`. Simplify using `only [if_neg hw]`. Rewrite using `[hcomp, hlaw, clXQ_det_conj]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem unfoldingPhi_comp_leftUnipotent_source {i : ℕ} {w : rowSG Pr sel mu} (hw : w.1 ∉ Pr.vGs) (hu : ((qOf w.1 : ℕ) : 𝓞 X.E) ∉ w.1.asIdeal ^ 2)
     (hi : i + 2 ≤ R.m) {hal r : AutY X R i} (hbe : AutY X R (i + 1))
@@ -167,9 +167,9 @@ theorem unfoldingPhi_comp_leftUnipotent_source {i : ℕ} {w : rowSG Pr sel mu} (
   ring
 
 /- English proof (translation)
-Establish `hk` using `(clXQ_conj_mem hw hr).1`. Establish `h1 : ∀ l, IntAt w.1 ((h⁻¹ : AutY X R j) v l)` using `twAn_bdd_inv hw hb v hv`. Establish `h2 : ∀ l, IntAt w.1 ((h⁻¹ * r * h : AutY X R j) ((h⁻¹ : AutY X R j) v) l)` using `(ciMem_stdAt w.1 _).1 ((hk _).2 ((ciMem_stdAt w.1 _).2 h1))`. Establish `h3` using `twAn_bdd_q hw hb _ h2 l`. Establish `e : h ((h⁻¹ * r * h : AutY X R j) ((h⁻¹ : AutY X R j) v)) = r v` using `by show h (h.symm (r (h (h.symm v)))) = r v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Rewrite `h3` using `[e]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem clXQ_C_bdd {j : ℕ} {w : rowSG Pr sel mu} (hw : w.1 ∉ Pr.vGs) {h r : AutY X R j} (hb : TwBdd (Pr := Pr) j w.1 h)
     (hr : r ∈ Loc.Cbe (Jat (Pr := Pr) cst.sharp j w.1) h) (v : Sp X.E (R.N j + cOf R j)) (hv : ∀ l, IntAt w.1 (v l))
@@ -185,17 +185,13 @@ theorem clXQ_C_bdd {j : ℕ} {w : rowSG Pr sel mu} (hw : w.1 ∉ Pr.vGs) {h r : 
   rwa [e] at h3
 
 /- English proof (translation)
-Establish `hn : IntAt w.1 ((qOf w.1 : X.E) ^ cst.D w * Loc.n1Arg r)`. Unfold `Loc.n1Arg`. Rewrite using `[Finset.mul_sum]`. Use `ciIntAt_sum _ _ fun a _ => ?_` and prove the remaining obligations. Unfold `Loc.atN`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `split_ifs with hl`. Establish `h1` using `clXQ_C_bdd hw hb hr (Loc.eN X.E (R.N j + cOf R j) (R.N j + a + 1)) (fun l => by`. Unfold `Loc.eN`. Use `split_ifs`. Conclude with `ciIntAt_one`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ciIntAt_zero) ⟨R.N j + a, hl⟩`. Establish `e : (qOf w.1 : X.E) ^ cst.D w = (qOf w.1 : X.E) ^ (cst.D w - j) * (qOf w.1 : X.E) ^ j`. Rewrite using `[← pow_add, Nat.sub_add_cancel hD]`. Rewrite using `[e, mul_assoc]`. Establish `hqk : IntAt w.1 ((qOf w.1 : X.E) ^ (cst.D w - j))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0` using `ciIntAt_prod (P := w.1) (Finset.range (cst.D w - j)) (fun _ => (qOf w.1 : X.E)) (fun _ _ => ciIntAt_q)`. Simplify using `using h0`. Conclude with `hqk.mul h1`. Rewrite using `[mul_zero]`. Conclude with `ciIntAt_zero`.
-
-Establish `hn' : IntAt w.1 ((qOf w.1 : X.E) ^ cst.D w * -Loc.n1Arg r)`. Rewrite using `[mul_neg]`. Conclude with `ciIntAt_neg hn`. Establish `e` using `hc.psi_add w _ _ hn hn'`. Rewrite `e` using `[add_neg_cancel, hc.psi_int w 0 ciIntAt_zero]`.
-
-Conclude with `left_ne_zero_of_mul (e ▸ one_ne_zero)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem clXQ_psi_ne (hc : cst.Ok) {j : ℕ} {w : rowSG Pr sel mu} (hw : w.1 ∉ Pr.vGs) {h r : AutY X R j} (hb : TwBdd (Pr := Pr) j w.1 h)
     (hD : j ≤ cst.D w) (hr : r ∈ Loc.Cbe (Jat (Pr := Pr) cst.sharp j w.1) h) : cst.psi w (Loc.n1Arg r) ≠ 0 := by
@@ -253,13 +249,13 @@ def XiCovSrcQ (i : ℕ) (w : rowSG Pr sel mu) (hal : AutY X R i) (hbe : AutY X R
 variable {Ch sel mu cst}
 
 /- English proof (translation)
-Introduce `r' hr' c' hc' hx y`. Establish `e` using `hcov r' hr' c' hc' hx y`. Rewrite using `[show (fun x => omPhi Ch sel mu cst i w hal hbe (r'.toLinearMap ∘ₗ x)) = fun x => _ * omPhi Ch sel mu cst i w hal hbe x from`. Use function extensionality and compare the values at `(clXQ_omPhi_tgt hw hu hi hal hr'), first_sum_scalar_mul] at e`. Express the relevant statement in the definitionally equal form `_ * E1at Ch sel mu cst i w hal hbe y = _ at e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `e` using `[det_first_parabolic_eq_det_block (Subgroup.mem_inf.1 hr').1.1 hx]`. Establish `hd` using `intAt_det c' hc'`. Establish `hd'` using `intAt_det_inv c' hc'`. Establish `hd0 : ((LinearEquiv.det c' : X.Eˣ) : X.E) ≠ 0` using `Units.ne_zero _`. Establish `hne` using `clX_unitV_ne (resChar (mu : Chr X.F X.E X.K) w.1) (isUnit_reduction_of_integralAt_inv hd hd' hd0)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp` using `hψ r' hr'`. Establish `hT : rhoT Ch sel mu i w ((LinearEquiv.det c'⁻¹ : X.Eˣ) : X.E) = (LocE.unitV (resChar (mu : Chr X.F X.E X.K) w.1) ((LinearEquiv.det c' : X.Eˣ) : X.E))⁻¹`. Unfold `rhoT`. Rewrite using `[if_neg hw, map_inv, Units.val_inv_eq_inv_val, clX_unitV_inv _ hd hd' hd0]`. Establish `e2 : E1at Ch sel mu cst i w hal hbe (c'.toLinearMap ∘ₗ y) = (cst.psi w (Loc.n1Arg r'))⁻¹ * (LocE.unitV (resChar (mu : Chr X.F X.E X.K) w.1) ((LinearEquiv.det c' : X.Eˣ) : X.E) * lamRow Ch mu cst.sharp (i + 1) w.1 ((hbe⁻¹ * r' * hbe : AutY X R (i + 1))).toLinearMap * E1at Ch sel m …`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hT, e2]`. Unfold `chiInv`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Clear the denominators using the available nonvanishing facts.
 -/
 theorem clXQ_tgt_of_cov {i : ℕ} {w : rowSG Pr sel mu} (hw : w.1 ∉ Pr.vGs) (hu : ((qOf w.1 : ℕ) : 𝓞 X.E) ∉ w.1.asIdeal ^ 2)
     (hi : i + 2 ≤ R.m) {hal : AutY X R i} {hbe : AutY X R (i + 1)}
@@ -291,15 +287,15 @@ theorem clXQ_tgt_of_cov {i : ℕ} {w : rowSG Pr sel mu} (hw : w.1 ∉ Pr.vGs) (h
   field_simp
 
 /- English proof (translation)
-Introduce `r hr c hc hx y`. Establish `e` using `hcov r hr c hc hx (y ∘ₗ (c⁻¹).toLinearMap)`. Rewrite using `[show (fun x => omPhi Ch sel mu cst i w hal hbe (x ∘ₗ r.toLinearMap)) = fun x => _ * omPhi Ch sel mu cst i w hal hbe x from`. Use function extensionality and compare the values at `(unfoldingPhi_comp_leftUnipotent_source hw hu hi hbe hr), first_sum_scalar_mul] at e`. Express the relevant statement in the definitionally equal form `_ * E1at Ch sel mu cst i w hal hbe (y ∘ₗ (c⁻¹).toLinearMap) = _ at e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `e3 : (y ∘ₗ (c⁻¹).toLinearMap) ∘ₗ c.toLinearMap = y`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Use `show y (c.symm (c v)) = y v`. Rewrite using `[LinearEquiv.symm_apply_apply]`. Rewrite `e` using `[e3, det_first_parabolic_eq_det_block (Subgroup.mem_inf.1 hr).1.1 hx]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hd` using `intAt_det c hc`. Establish `hd'` using `intAt_det_inv c hc`. Establish `hd0 : ((LinearEquiv.det c : X.Eˣ) : X.E) ≠ 0` using `Units.ne_zero _`. Establish `hne` using `clX_unitV_ne (resChar (mu : Chr X.F X.E X.K) w.1) (isUnit_reduction_of_integralAt_inv hd hd' hd0)`. Establish `hp` using `hψ r hr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : rhoS Ch sel mu i w ((LinearEquiv.det c⁻¹ : X.Eˣ) : X.E) = LocE.unitV (resChar (mu : Chr X.F X.E X.K) w.1) ((LinearEquiv.det c : X.Eˣ) : X.E)`. Unfold `rhoS`. Rewrite using `[if_neg hw, map_inv, Units.val_inv_eq_inv_val, clX_unitV_inv _ hd hd' hd0, unitV_inv, inv_inv]`. Rewrite using `[hS]`. Unfold `chiInv`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `e4 : E1at Ch sel mu cst i w hal hbe y = (cst.psi w (Loc.n1Arg r))⁻¹ * (LocE.unitV (resChar (mu : Chr X.F X.E X.K) w.1) ((LinearEquiv.det c : X.Eˣ) : X.E) * lamRow Ch mu cst.sharp i w.1 ((hal⁻¹ * r * hal : AutY X R i)).toLinearMap * E1at Ch sel mu cst i w hal hbe (y ∘ₗ (c⁻¹).toLin …`. Rewrite using `[e]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e4]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem clXQ_src_of_cov {i : ℕ} {w : rowSG Pr sel mu} (hw : w.1 ∉ Pr.vGs) (hu : ((qOf w.1 : ℕ) : 𝓞 X.E) ∉ w.1.asIdeal ^ 2)
     (hi : i + 2 ≤ R.m) {hal : AutY X R i} {hbe : AutY X R (i + 1)}
@@ -375,14 +371,14 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m}
   {cst : LocCst X (rowSG Pr sel mu)}
 
 /- English proof (translation)
-Unfold `cOf`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem clXQ_cOf {i : ℕ} (hi : i + 2 ≤ R.m) : cOf R i = cOf R (i + 1) + 1 := by
   unfold cOf
   omega
 
 /- English proof (translation)
-The claim follows from `twAn_omPhi_congr w hw hq hi hal hbe hba hbb le_rfl x (x + z) fun s l => by have e : (x + z) (Pi.single s 1) l - x (Pi.single s 1) l = z (Pi.single s 1) l := by simp [LinearMap.add_apply] rw [e] exact hz s l`.
+A detailed English derivation is pending.
 -/
 theorem clXQ_omPhi_inv {i : ℕ} {w : rowSG Pr sel mu} (hw : w.1 ∉ Pr.vGs) (hq : (qOf w.1).Prime) (hi : i + 2 ≤ R.m) {hal : AutY X R i}
     {hbe : AutY X R (i + 1)} (hba : TwBdd (Pr := Pr) i w.1 hal) (hbb : TwBdd (Pr := Pr) (i + 1) w.1 hbe)
@@ -396,7 +392,7 @@ theorem clXQ_omPhi_inv {i : ℕ} {w : rowSG Pr sel mu} (hw : w.1 ∉ Pr.vGs) (hq
     exact hz s l
 
 /- English proof (translation)
-Use `⟨(i + 1) + (cOf R (i + 1) + 1) * (i + 1), i + 1, fun A' B' hA hB => ?_⟩` and prove the remaining obligations. Use `clXQ_tgt_of_cov (cst := { cst with A := A', B := B' }) hw hd.2 hi (fun r' hr' => clXQ_psi_ne hc hw hbb hD hr') ?_` and prove the remaining obligations. Introduce `r' hr' c' hc' hx y`. Conclude with `hCT X.E w.1 X.K (R.N i) (cOf R i) (R.N (i + 1)) (cOf R (i + 1)) (clXQ_cOf hi) hd.1 hd.2 (cst.psi w) (cst.D w) (i + 1) (i + 1) (i + 1) (hc.psi_add w) (hc.psi_int w) (omPhi Ch sel mu cst i w hal hbe) (fun x hx' => twAn_omPhi_supp w hw hal hbe hba hbb x hx') hD (clXQ_omPhi_inv hw hd …`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem clXQ_tgtEv (hCT : TruncatedUnfoldingChangeOfVarsTarget) (hc : cst.Ok) {i : ℕ} {w : rowSG Pr sel mu} (hw : w.1 ∉ Pr.vGs) (hd : TwDegOne X w.1) (hi : i + 2 ≤ R.m)
     (hD : i + 1 ≤ cst.D w) {hal : AutY X R i} {hbe : AutY X R (i + 1)} (hba : TwBdd (Pr := Pr) i w.1 hal)
@@ -412,7 +408,7 @@ theorem clXQ_tgtEv (hCT : TruncatedUnfoldingChangeOfVarsTarget) (hc : cst.Ok) {i
     A' B' hA hB (by omega) _ y
 
 /- English proof (translation)
-Use `⟨(i + 1) + (cOf R (i + 1) + 1) * i, i + 1, fun A' B' hA hB => ?_⟩` and prove the remaining obligations. Use `clXQ_src_of_cov (cst := { cst with A := A', B := B' }) hw hd.2 hi (fun r hr => clXQ_psi_ne hc hw hba (by omega) hr) ?_` and prove the remaining obligations. Introduce `r hr c hc' hx y`. Conclude with `hCS X.E w.1 X.K (R.N i) (cOf R i) (R.N (i + 1)) (cOf R (i + 1)) (clXQ_cOf hi) hd.1 hd.2 (cst.psi w) (cst.D w) (i + 1) (i + 1) i (hc.psi_add w) (hc.psi_int w) (omPhi Ch sel mu cst i w hal hbe) (fun x hx' => twAn_omPhi_supp w hw hal hbe hba hbb x hx') hD (clXQ_omPhi_inv hw hd.1 hi …`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem clXQ_srcEv (hCS : TruncatedUnfoldingChangeOfVarsSource) (hc : cst.Ok) {i : ℕ} {w : rowSG Pr sel mu} (hw : w.1 ∉ Pr.vGs) (hd : TwDegOne X w.1) (hi : i + 2 ≤ R.m)
     (hD : i + 1 ≤ cst.D w) {hal : AutY X R i} {hbe : AutY X R (i + 1)} (hba : TwBdd (Pr := Pr) i w.1 hal)
@@ -428,7 +424,7 @@ theorem clXQ_srcEv (hCS : TruncatedUnfoldingChangeOfVarsSource) (hc : cst.Ok) {i
     A' B' hA hB (by omega) _ y
 
 /- English proof (translation)
-The claim follows from `clXQ_xiLawQ_ev hok hi al be (fun w hw => clXQ_tgtEv hCT hok.cst_ok hw (hd w hw) (by have := hok.hm; omega) (by have := hD w hw; omega) (hb i al w hw) (hb (i + 1) be w hw)) (fun w hw => clXQ_srcEv hCS hok.cst_ok hw (hd w hw) (by have := hok.hm; omega) (by have := hD w hw; omega) ( …`.
+A detailed English derivation is pending.
 -/
 theorem clXQ_xiLawQ_of {L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))} {G : ChGlob X R.m} {m2 : ℕ} (hCT : TruncatedUnfoldingChangeOfVarsTarget) (hCS : TruncatedUnfoldingChangeOfVarsSource)
     (hok : L.Ok Ch sel mu cst G m2) (hd : ∀ w : rowSG Pr sel mu, w.1 ∉ Pr.vGs → TwDegOne X w.1)
@@ -442,7 +438,7 @@ theorem clXQ_xiLawQ_of {L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))} {G : C
       (hb (i + 1) be w hw))
 
 /- English proof (translation)
-The claim follows from `clXQ_chrOk hint (clXQ_tgtEv hCT hc hw hd hi hD hba hbb) hne`.
+A detailed English derivation is pending.
 -/
 theorem clXQ_chrOk_of (hCT : TruncatedUnfoldingChangeOfVarsTarget) (hc : cst.Ok) {i : ℕ} {w : rowSG Pr sel mu} (hw : w.1 ∉ Pr.vGs) (hd : TwDegOne X w.1) (hi : i + 2 ≤ R.m)
     (hD : i + 1 ≤ cst.D w) {hal : AutY X R i} {h : AutY X R (i + 1)} (hba : TwBdd (Pr := Pr) i w.1 hal)

@@ -15,13 +15,13 @@ open GlobalTheory.WeilDeligne GlobalTheory.ThetaExh
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R}
 
 /- English proof (translation)
-Apply the tactic sequence `rcases Int.units_eq_one_or ε with rfl | rfl <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sign_ne (ε : ℤˣ) : (0 : ℂ) ∉ ({((ε : ℤ) : ℂ)} : Multiset ℂ) := by
   rcases Int.units_eq_one_or ε with rfl | rfl <;> simp
 
 /- English proof (translation)
-Apply the tactic sequence `rcases Int.units_eq_one_or ε with rfl | rfl <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sign_inv (ε : ℤˣ) : ((ε : ℤ) : ℂ)⁻¹ = ((ε : ℤ) : ℂ) := by
   rcases Int.units_eq_one_or ε with rfl | rfl <;> simp
@@ -31,14 +31,14 @@ abbrev WDw (N : NData R H what₂) (w : PlE H) : Type := WD (E := H.E) (A := N.p
 def sg (N : NData R H what₂) (ε : ℤˣ) (w : PlE H) : WDw N w := WD.lpUnr _ {((ε : ℤ) : ℂ)}
 
 /- English proof (translation)
-The claim follows from `WD.lpUnr_spec _ (sign_ne ε)`.
+A detailed English derivation is pending.
 -/
 theorem sg_spec (N : NData R H what₂) (ε : ℤˣ) (w : PlE H) :
     (sg N ε w).unr ∧ (sg N ε w).frobEig = {((ε : ℤ) : ℂ)} ∧ (sg N ε w).lpDim = 1 :=
   WD.lpUnr_spec _ (sign_ne ε)
 
 /- English proof (translation)
-Establish `hu` using `WD.unr_lpChar _ _ (sg_spec N ε w).1 (sg_spec N δ w).1`. Rewrite using `[WD.unr_eq_lpUnr _ hu, WD.frobEig_char _ _ _ (sg_spec N ε w).1 (sg_spec N δ w).1 (sg_spec N δ w).2.1, (sg_spec N ε w).2.1]`. Simplify using `[sg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sg_mul (N : NData R H what₂) (ε δ : ℤˣ) (w : PlE H) :
     sg N (ε * δ) w = (sg N ε w).lpChar (sg N δ w) := by
@@ -189,16 +189,16 @@ def tie : WDTie N (wdAut N A₀ τ γ) where
   inePol := fun _ _ _ _ => rfl
 
 /- English proof (translation)
-Introduce `k v a ha σ _ hσ` and use `haveI : Fact (H.g k).Prime := ⟨H.g_prime k⟩ WD.inePol_wild_of_natDegree_lab ha hσ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem labTame : LabTame N (wdAut N A₀ τ γ) := fun k v a ha σ _ hσ =>
   haveI : Fact (H.g k).Prime := ⟨H.g_prime k⟩
   WD.inePol_wild_of_natDegree_lab ha hσ
 
 /- English proof (translation)
-Introduce `π w σ hσ α hα`. Establish `hm` using `mem_Weil_of_isFrob (N.plOm.2 w) hσ`. Establish `h1 : (tie N A₀ τ γ).eig w ((wdAut N A₀ τ γ).locG π w) σ = (sg N π.1 w).eig ⟨σ, hm⟩` using `by show ((sg N π.1 w).inePol σ).roots = _`. Rewrite using `[WD.inePol_of_mem _ hm]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `hα` using `[h1, WD.eig_eq_frobEig (sg_spec N _ w).1 (deg_eq_one_iff.mpr hσ), (sg_spec N _ w).2.1, Multiset.mem_singleton]`. Substitute `hα` using the available equality. Apply the tactic sequence `rcases Int.units_eq_one_or π.1 with h | h <;> simp [h]`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rankOneUnitary : RankOneUnitary (tie N A₀ τ γ) := by
   intro π w σ hσ α hα
@@ -221,11 +221,11 @@ variable {B : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlace
 open TensorProduct
 
 /- English proof (translation)
-Proceed by induction on `a using WD.ind with | hP _ a =>`. Proceed by induction on `b using WD.ind with | hP _ b =>`. Proceed by induction on `c using WD.ind with | hP _ c =>`. Simplify using `only [WD.lpSum_mk, WD.lpChar_mk]`. Use `WD.sound ⟨TensorProduct.prodLeft ℂ ℂ _ _ _, fun σ v => ?_, fun v => ?_⟩` and prove the remaining obligations.
+Proceed by induction. Proceed by induction. Proceed by induction. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul x y => obtain ⟨x, x'⟩ := x`. Simplify using the standard rewrite rules. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul x y => obtain ⟨x, x'⟩ := x`. Simplify using the standard rewrite rules. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem char_sum (a b c : WD h) : (a.lpSum b).lpChar c = (a.lpChar c).lpSum (b.lpChar c) := by
   induction a using WD.ind with | hP _ a =>
@@ -243,7 +243,7 @@ theorem char_sum (a b c : WD h) : (a.lpSum b).lpChar c = (a.lpChar c).lpSum (b.l
     | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `a using WD.ind with | hP _ a =>`. Proceed by induction on `c using WD.ind with | hP _ c =>`. Simplify using `only [WD.lpTw_mk, WD.lpChar_mk]`. Use `WD.sound ⟨.refl _ _, fun σ v => ?_, fun v => rfl⟩` and prove the remaining obligations. Simplify using `[TensorProduct.map_smul_left]`.
+Proceed by induction. Proceed by induction. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem char_tw_left (a c : WD h) (s : ℝ) : (a.lpTw s).lpChar c = (a.lpChar c).lpTw s := by
   induction a using WD.ind with | hP _ a =>
@@ -253,7 +253,7 @@ theorem char_tw_left (a c : WD h) (s : ℝ) : (a.lpTw s).lpChar c = (a.lpChar c)
   simp [TensorProduct.map_smul_left]
 
 /- English proof (translation)
-Proceed by induction on `a using WD.ind with | hP _ a =>`. Proceed by induction on `c using WD.ind with | hP _ c =>`. Simplify using `only [WD.lpTw_mk, WD.lpChar_mk]`. Use `WD.sound ⟨.refl _ _, fun σ v => ?_, fun v => rfl⟩` and prove the remaining obligations. Simplify using `[TensorProduct.map_smul_right]`.
+Proceed by induction. Proceed by induction. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem char_tw_right (a c : WD h) (s : ℝ) : a.lpChar (c.lpTw s) = (a.lpChar c).lpTw s := by
   induction a using WD.ind with | hP _ a =>
@@ -263,9 +263,9 @@ theorem char_tw_right (a c : WD h) (s : ℝ) : a.lpChar (c.lpTw s) = (a.lpChar c
   simp [TensorProduct.map_smul_right]
 
 /- English proof (translation)
-Proceed by induction on `a using WD.ind with | hP _ a =>`. Proceed by induction on `b using WD.ind with | hP _ b =>`. Proceed by induction on `c using WD.ind with | hP _ c =>`. Simplify using `only [WD.lpChar_mk]`. Use `WD.sound ⟨TensorProduct.assoc ℂ _ _ _, fun σ v => ?_, fun v => ?_⟩` and prove the remaining obligations.
+Proceed by induction. Proceed by induction. Proceed by induction. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (TensorProduct.assoc ℂ _ _ _).toLinearMap ∘ₗ ((a.tensor b).tensor c).ρ σ = (a.tensor (b.tensor c)).ρ σ ∘ₗ (TensorProduct.assoc ℂ _ _ _).toLinearMap` using `TensorProduct.ext_threefold fun x y z => by simp`. Conclude with `LinearMap.congr_fun this v`. Establish `: (TensorProduct.assoc ℂ _ _ _).toLinearMap ∘ₗ ((a.tensor b).tensor c).N = (a.tensor (b.tensor c)).N ∘ₗ (TensorProduct.assoc ℂ _ _ _).toLinearMap` using `TensorProduct.ext_threefold fun x y z => by simp [add_tmul, tmul_add, add_assoc]`. Conclude with `LinearMap.congr_fun this v`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem char_assoc (a b c : WD h) : (a.lpChar b).lpChar c = a.lpChar (b.lpChar c) := by
   induction a using WD.ind with | hP _ a =>
@@ -283,11 +283,11 @@ theorem char_assoc (a b c : WD h) : (a.lpChar b).lpChar c = a.lpChar (b.lpChar c
     exact LinearMap.congr_fun this v
 
 /- English proof (translation)
-Establish `h1 : WD.lpUnr h {1} = WD.mk (WDRep.diag h fun _ : Fin 1 => 1)`. Rewrite using `[WD.unr_eq_lpUnr (WD.mk (WDRep.diag h fun _ : Fin 1 => 1)) ((WD.unr_mk _).mpr (WDRep.unr_diag _)), WD.frobEig_diag]`. Simplify using the standard rewrite rules. Proceed by induction on `a using WD.ind with | hP _ a =>`. Rewrite using `[h1, WD.lpChar_mk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Proceed by induction. Rewrite the conclusion using the stated equalities.
 
-Use `WD.sound ⟨(TensorProduct.congr (.refl _ _) (LinearEquiv.funUnique (Fin 1) ℂ ℂ)).trans (TensorProduct.rid ℂ _), fun σ v => ?_, fun v => ?_⟩` and prove the remaining obligations. Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem char_one (a : WD h) : a.lpChar (WD.lpUnr h {1}) = a := by
   have h1 : WD.lpUnr h {1} = WD.mk (WDRep.diag h fun _ : Fin 1 => 1) := by
@@ -314,7 +314,7 @@ section Gen
 variable {N : NData R H what₂} {A : NAut N}
 
 /- English proof (translation)
-Take `⟨h1, h2, -⟩` from `A.lpUnr_spec w m hm`. Rewrite using `[WD.unr_eq_lpUnr _ ((T.unr w _).1 h1), ← T.frobEig w _ h1, h2]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem tie_lpUnr (T : WDTie N A) (w : PlE H) (m : Multiset ℂ) (hm : (0 : ℂ) ∉ m) :
     T.e w (A.lpUnr w m) = WD.lpUnr _ m := by
@@ -322,9 +322,9 @@ theorem tie_lpUnr (T : WDTie N A) (w : PlE H) (m : Multiset ℂ) (hm : (0 : ℂ)
   rw [WD.unr_eq_lpUnr _ ((T.unr w _).1 h1), ← T.frobEig w _ h1, h2]
 
 /- English proof (translation)
-Introduce `w a b χ χ' s h1 h2`. Establish `h3 : A.lpDim (A.lpTw χ s) = 1` using `by rw [A.lpDim_tw, h1]`. Establish `h4 : A.lpDim (A.lpChar χ χ') = 1` using `by rw [A.lpDim_char _ _ h2, h1]`. Establish `h5 : A.lpDim (A.lpUnr w {1}) = 1` using `(A.lpUnr_spec w {1} (by simp)).2.2`. Use `⟨(T.e w).injective ?_, (T.e w).injective ?_, (T.e w).injective ?_, (T.e w).injective ?_, (T.e w).injective ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[T.char _ _ _ h1, T.sum, T.sum, T.char _ _ _ h1, T.char _ _ _ h1, char_sum]`. Rewrite using `[T.char _ _ _ h1, T.tw, T.tw, T.char _ _ _ h1, char_tw_left]`. Rewrite using `[T.char _ _ _ h3, T.tw, T.tw, T.char _ _ _ h1, char_tw_right]`. Rewrite using `[T.char _ _ _ h2, T.char _ _ _ h1, T.char _ _ _ h4, T.char _ _ _ h2, char_assoc]`. Rewrite using `[T.char _ _ _ h5, tie_lpUnr T w _ (by simp), char_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem charLaws_of_tie (T : WDTie N A) : CharLaws N A := by
   intro w a b χ χ' s h1 h2
@@ -340,9 +340,7 @@ theorem charLaws_of_tie (T : WDTie N A) : CharLaws N A := by
   · rw [T.char _ _ _ h5, tie_lpUnr T w _ (by simp), char_one]
 
 /- English proof (translation)
-Use `⟨(T.e w).symm (WD.lpSp _ 2), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[T.mono0, Equiv.apply_symm_apply]`. Conclude with `WD.not_mono0_lpSp le_rfl`. Rewrite using `[T.tempered, Equiv.apply_symm_apply]`. Conclude with `WD.tempered_lpSp 2`.
-
-Rewrite using `[← T.dim, Equiv.apply_symm_apply]`. Conclude with `WD.lpDim_lpSp 2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_not_mono0 (T : WDTie N A) (w : PlE H) : ∃ a : A.LP w, ¬ A.mono0 a ∧ A.tempered a ∧ A.lpDim a = 2 := by
   refine ⟨(T.e w).symm (WD.lpSp _ 2), ?_, ?_, ?_⟩
@@ -351,7 +349,7 @@ theorem exists_not_mono0 (T : WDTie N A) (w : PlE H) : ∃ a : A.LP w, ¬ A.mono
   · rw [← T.dim, Equiv.apply_symm_apply]; exact WD.lpDim_lpSp 2
 
 /- English proof (translation)
-Introduce `hr`. Use `hr [(⟨a, π⟩, s)] [(⟨a, π'⟩, 0)] (by simpa) (by simpa) (Filter.Eventually.of_forall fun w => by simp [twSum, A.lpTw_zero, h])` as an intermediate fact. Rewrite `this` using `[List.perm_singleton]`. Simplify using `at this`. Conclude with `hs this.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem not_isobaricRigid {a : ℕ} (ha : 1 ≤ a) (π π' : A.CG a) {s : ℝ} (hs : s ≠ 0)
     (h : ∀ w, A.locG π' w = A.lpTw (A.locG π w) s) : ¬ IsobaricRigid N A := by
@@ -365,9 +363,9 @@ theorem not_isobaricRigid {a : ℕ} (ha : 1 ≤ a) (π π' : A.CG a) {s : ℝ} (
 end Gen
 
 /- English proof (translation)
-Establish `h : ∀ p : Nat.Primes, ∃ la : HeightOneSpectrum (𝓞 K), la.asIdeal.comap (algebraMap ℤ (𝓞 K)) = Ideal.span {((p : ℕ) : ℤ)}` using `fun p => by haveI : Fact (p : ℕ).Prime := ⟨p.2⟩ haveI : (Ideal.span {((p : ℕ) : ℤ)}).IsMaximal := Int.ideal_span_isMaximal_of_prime p`. Take `⟨M, hM, hc⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral (S := 𝓞 K) (Ideal.span {((p : ℕ) : ℤ)}) (by rw [(RingHom.injective_iff_ker_eq_bot _).1 (algebraMap ℤ (𝓞 K)).injective_int]; exact bot_le)`. Conclude with `⟨⟨M, hM.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hM (RingOfIntegers.not_isField K)⟩, hc⟩`. Use `choose f hf using h`. Use `Infinite.of_injective f fun p q hpq => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : Ideal.span {((p : ℕ) : ℤ)} = Ideal.span {((q : ℕ) : ℤ)}` using `by rw [← hf p, ← hf q, hpq]`. Use `Int.associated_iff_natAbs.1 (Ideal.span_singleton_eq_span_singleton.1 e)` as an intermediate fact. Conclude with `Subtype.ext (by simpa using this)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem infinite_places (K : Type) [Field K] [NumberField K] : Infinite (HeightOneSpectrum (𝓞 K)) := by
   have h : ∀ p : Nat.Primes, ∃ la : HeightOneSpectrum (𝓞 K), la.asIdeal.comap (algebraMap ℤ (𝓞 K)) =
@@ -392,13 +390,13 @@ def ev (w : PlE H) (p : (Σ a : ℕ, {_ε : ℤˣ // a = 1}) × ℝ) : ℂ :=
   ((p.1.2.1 : ℤ) : ℂ) * ((normV w : ℕ) : ℂ) ^ ((p.2 : ℝ) : ℂ)
 
 /- English proof (translation)
-Introduce and unpack `⟨⟨_, ε, rfl⟩, s⟩ ⟨⟨_, δ, rfl⟩, t⟩ h`. Establish `hq : (1 : ℝ) < ((normV w : ℕ) : ℝ)` using `by exact_mod_cast one_lt_normV w`. Establish `hn : ∀ (ε : ℤˣ) (s : ℝ), ‖((ε : ℤ) : ℂ) * ((normV w : ℕ) : ℂ) ^ ((s : ℝ) : ℂ)‖ = ((normV w : ℕ) : ℝ) ^ s`. Introduce `ε s`. Rewrite using `[norm_mul, Complex.norm_natCast_cpow_of_pos (by have := one_lt_normV w; omega)]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rcases Int.units_eq_one_or ε with rfl | rfl <;> simp`. Establish `h'` using `congrArg norm h`. Simplify using `only [ev, hn] at h'`. Establish `hst : s = t` using `(Real.rpow_right_inj (zero_lt_one.trans hq) hq.ne').1 h'`. Substitute `hst` using the available equality.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `h0 : ((normV w : ℕ) : ℂ) ^ ((s : ℝ) : ℂ) ≠ 0`. Introduce `h0`. Use `hn 1 s` as an intermediate fact. Rewrite `this` using `[h0]`. Establish `h2` using `Real.rpow_pos_of_pos (zero_lt_one.trans hq) s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `mul_right_cancel₀ h0 h`. Establish `h2 : ε = δ` using `Units.ext (by exact_mod_cast h1)`. Substitute `h2` using the available equality.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
 Both sides reduce to the same expression.
 -/
@@ -426,9 +424,9 @@ theorem ev_inj (w : PlE H) : Function.Injective (ev w) := by
   rfl
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => exact ⟨WD.lpZero_unr, WD.frobEig_zero⟩`. Consider the case `cons p L ih`. Establish `e : twSum N (wdAut N A₀ τ γ) (p :: L) w = WD.lpSum (WD.lpTw (sg N p.1.2.1 w) p.2) (twSum N (wdAut N A₀ τ γ) L w)` using `rfl`. Rewrite using `[e]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(WD.unr_sum _ _).2 ⟨(WD.unr_tw _ _).2 (sg_spec N _ w).1, ih.1⟩, ?_⟩` and prove the remaining obligations. Use `(WD.frobEig_lpSum _ _).trans ?_` and prove the remaining obligations. Use `(congrArg₂ (· + ·) ((WD.frobEig_tw _ _ (sg_spec N _ w).1).trans (congrArg _ (sg_spec N _ w).2.1)) ih.2).trans ?_` and prove the remaining obligations. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 -/
 theorem twSum_spec (w : PlE H) (L : List ((Σ a : ℕ, (wdAut N A₀ τ γ).CG a) × ℝ)) :
     WD.unr (twSum N (wdAut N A₀ τ γ) L w) ∧
@@ -446,9 +444,7 @@ theorem twSum_spec (w : PlE H) (L : List ((Σ a : ℕ, (wdAut N A₀ τ γ).CG a
     rfl
 
 /- English proof (translation)
-Introduce `L L' _ _ h`. Use `haveI : Infinite (PlE H) := infinite_places H.E`. Take `⟨w, hw⟩` from `h.exists`. Establish `h1` using `(twSum_spec N A₀ τ γ w L).2`. Rewrite `h1` using `[hw, (twSum_spec N A₀ τ γ w L').2, Multiset.coe_eq_coe]`.
-
-Conclude with `((List.map_perm_map_iff (ev_inj w)).1 h1).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isobaricRigid : IsobaricRigid N (wdAut N A₀ τ γ) := by
   intro L L' _ _ h
@@ -461,7 +457,7 @@ theorem isobaricRigid : IsobaricRigid N (wdAut N A₀ τ γ) := by
 end Rigid
 
 /- English proof (translation)
-The claim follows from `haveI : Fact (H.g k).Prime := ⟨H.g_prime k⟩ WD.lab_lpSp hL 2`.
+A detailed English derivation is pending.
 -/
 theorem label_full (N : NData R H what₂) [IsEmpty N.Loc] (A₀ : NAut N)
     (τ : ∀ k, Fb (H.g k) (H.g_prime k) →* ℂ) (γ : Fin 2 → PlE H → G H.E N.Om) (k : Fin 2) (w : PlE H)
@@ -471,7 +467,7 @@ theorem label_full (N : NData R H what₂) [IsEmpty N.Loc] (A₀ : NAut N)
   WD.lab_lpSp hL 2
 
 /- English proof (translation)
-The claim follows from `haveI : IsEmpty (Examples₂.ndToy H what₂ h).Loc := inferInstanceAs (IsEmpty Empty) ⟨wdAut _ (Examples₂.nautToy H what₂ h) τ γ, tie _ _ _ _, charLaws_of_tie (tie _ _ _ _), labTame _ _ _ _, rankOneUnitary _ _ _ _, isobaricRigid _ _ _ _⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_tie (H : Host R) (what₂ : Rows.Data R) (h : Examples₂.NHyp H what₂)
     (τ : ∀ k, Fb (H.g k) (H.g_prime k) →* ℂ) (γ : Fin 2 → PlE H → G H.E (Examples₂.ndToy H what₂ h).Om) :

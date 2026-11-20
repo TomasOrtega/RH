@@ -9,7 +9,7 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open scoped TensorProduct Pointwise
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.SaGen.ExtZero.continuous_iB_place` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FContinuousPlaceExtensionByZeroTensorOfPlace.lean&line=49#L49)
 -/

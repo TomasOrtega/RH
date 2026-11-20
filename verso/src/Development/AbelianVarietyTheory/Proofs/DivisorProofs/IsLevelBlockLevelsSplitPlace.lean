@@ -8,9 +8,9 @@ namespace GlobalTheory.BCT.CtLevel
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Rewrite using `[Units.continuous_iff]`. Prove the components needed by the constructor for the conclusion. Express the relevant statement in the definitionally equal form `Continuous fun x : GLw a w => dgMat h x.val (1 : GLw b w).val`. Conclude with `(Continuous.matrix_fromBlocks Units.continuous_val continuous_const continuous_const continuous_const).matrix_reindex _ _`. Establish `: (fun x : GLw a w => (((dgM h w).comp (MonoidHom.inl (GLw a w) (GLw b w))) x)⁻¹.val) = fun x => dgMat h (x⁻¹).val ((1 : GLw b w)⁻¹).val`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[← map_inv]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `(Continuous.matrix_fromBlocks Units.continuous_coe_inv continuous_const continuous_const continuous_const).matrix_reindex _ _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_dgM_inl {a b n : ℕ} (h : a + b = n) (w : Pl E) :
     Continuous ((dgM h w).comp (MonoidHom.inl (GLw a w) (GLw b w))) := by
@@ -29,9 +29,9 @@ theorem continuous_dgM_inl {a b n : ℕ} (h : a + b = n) (w : Pl E) :
       continuous_const).matrix_reindex _ _
 
 /- English proof (translation)
-Rewrite using `[Units.continuous_iff]`. Prove the components needed by the constructor for the conclusion. Express the relevant statement in the definitionally equal form `Continuous fun x : GLw b w => dgMat h (1 : GLw a w).val x.val`. Conclude with `(Continuous.matrix_fromBlocks continuous_const continuous_const continuous_const Units.continuous_val).matrix_reindex _ _`. Establish `: (fun x : GLw b w => (((dgM h w).comp (MonoidHom.inr (GLw a w) (GLw b w))) x)⁻¹.val) = fun x => dgMat h ((1 : GLw a w)⁻¹).val (x⁻¹).val`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[← map_inv]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `(Continuous.matrix_fromBlocks continuous_const continuous_const continuous_const Units.continuous_coe_inv).matrix_reindex _ _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_dgM_inr {a b n : ℕ} (h : a + b = n) (w : Pl E) :
     Continuous ((dgM h w).comp (MonoidHom.inr (GLw a w) (GLw b w))) := by
@@ -50,9 +50,9 @@ theorem continuous_dgM_inr {a b n : ℕ} (h : a + b = n) (w : Pl E) :
       Units.continuous_coe_inv).matrix_reindex _ _
 
 /- English proof (translation)
-Rewrite using `[Units.continuous_iff]`. Prove the components needed by the constructor for the conclusion. Express the relevant statement in the definitionally equal form `Continuous fun x : GLw m w => (x.val).det`. Conclude with `Units.continuous_val.matrix_det`. Establish `: (fun x : GLw m w => ((GeneralLinearGroup.det x)⁻¹ : (w.adicCompletion E)ˣ).val) = fun x => ((x⁻¹).val).det`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[← map_inv]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `Units.continuous_coe_inv.matrix_det`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_det_GLw (m : ℕ) (w : Pl E) :
     Continuous (GeneralLinearGroup.det : GLw m w → (w.adicCompletion E)ˣ) := by
@@ -69,14 +69,14 @@ theorem continuous_det_GLw (m : ℕ) (w : Pl E) :
     exact Units.continuous_coe_inv.matrix_det
 
 /- English proof (translation)
-The claim follows from `hμ.preimage (continuous_det_GLw m w)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_detKer (m : ℕ) (w : Pl E) (μ : (w.adicCompletion E)ˣ →* ℂˣ) (hμ : IsOpen {x | μ x = 1}) :
     IsOpen ((μ.ker.comap GeneralLinearGroup.det : Subgroup (GLw m w)) : Set (GLw m w)) :=
   hμ.preimage (continuous_det_GLw m w)
 
 /- English proof (translation)
-Rewrite using `[thL, if_pos hw]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem thL_split (m : ℕ) (w : Pl E) (hw : IsSplitAt w) : thL m w = MonoidHom.id _ := by
   rw [thL, if_pos hw]
@@ -84,11 +84,9 @@ theorem thL_split (m : ℕ) (w : Pl E) (hw : IsSplitAt w) : thL m w = MonoidHom.
 end GlobalTheory.BCT.CtLevel
 
 /- English proof (translation)
-Introduce `E _ _ _ a b n h w N μ hw hN hμ`. Use `⟨⟨?_, ?_, ?_⟩, ⟨?_, ?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `(((GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w a).1.inter (hN.preimage (continuous_dgM_inl h w))).inter (isOpen_detKer a w μ hμ))`. Conclude with `inf_le_left.trans inf_le_left`. Introduce `k hk`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[thL_split a w hw]`. Conclude with `hk`. Conclude with `(((GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w b).1.inter (hN.preimage (continuous_dgM_inr h w))).inter (isOpen_detKer b w μ hμ))`. Conclude with `inf_le_left.trans inf_le_left`. Introduce `k hk`.
-
-Rewrite using `[thL_split b w hw]`. Conclude with `hk`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.BCT.CtLevel.isLevel_lev_split : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a b n : ℕ) (h : a + b = n) (w : Pl E)
     (N : Subgroup (GLw n w)) (μ : (w.adicCompletion E)ˣ →* ℂˣ), IsSplitAt w → IsOpen (N : Set (GLw n w)) →

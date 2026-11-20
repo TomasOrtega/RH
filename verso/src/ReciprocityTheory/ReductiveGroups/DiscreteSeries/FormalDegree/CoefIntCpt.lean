@@ -11,20 +11,20 @@ namespace ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ} {ε : Fin n → Bool}
 
 /- English proof (translation)
-Conclude with `(Matrix.toEuclideanCLM (n := Fin n) (𝕜 := ℂ)).toAlgEquiv.toLinearMap.continuous_of_finiteDimensional`.
+A detailed English derivation is pending.
 -/
 theorem coefIntCpt_toE_continuous (n : ℕ) :
     Continuous (Matrix.toEuclideanCLM (n := Fin n) (𝕜 := ℂ)) := by
   exact (Matrix.toEuclideanCLM (n := Fin n) (𝕜 := ℂ)).toAlgEquiv.toLinearMap.continuous_of_finiteDimensional
 
 /- English proof (translation)
-Establish `h1 : inUJ ε (S7.toM g)` using `g.2`. Unfold `inUJ at h1`. Unfold `S7.q0 pOf qOf at hq`. Break down `Nat.min_eq_zero_iff.mp hq with h0 | h0` into its components or cases. Establish `hf : ∀ a, ε a = false` using `fun a => by`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Simplify using `using Finset.filter_eq_empty_iff.mp (Finset.card_eq_zero.mp h0) (Finset.mem_univ a)`. Establish `hJ : Jm ε = -1`. Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [Jm, Matrix.diagonal_apply, Matrix.one_apply, h, hf]`. Rewrite `h1` using `[hJ]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using h1`. Establish `hf : ∀ a, ε a = true` using `fun a => by`. Simplify using `using Finset.filter_eq_empty_iff.mp (Finset.card_eq_zero.mp h0) (Finset.mem_univ a)`. Establish `hJ : Jm ε = 1`. Use extensionality with `i j`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Apply the tactic sequence `by_cases h : i = j <;> simp [Jm, Matrix.diagonal_apply, Matrix.one_apply, h, hf]`. Rewrite `h1` using `[hJ]`. Simplify using `using h1`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem coefIntCpt_unitary (hq : S7.q0 ε = 0) (g : S7.UJ ε) :
     (S7.toM g)ᴴ * S7.toM g = 1 := by
@@ -48,13 +48,13 @@ theorem coefIntCpt_unitary (hq : S7.q0 ε = 0) (g : S7.UJ ε) :
     simpa using h1
 
 /- English proof (translation)
-Establish `hu` using `coefIntCpt_unitary hq g`. Unfold `S7.hs`. Establish `hcol : ∀ j, ∑ i, ‖S7.toM g i j‖ ^ 2 = 1`. Introduce `j`. Establish `h` using `congrFun (congrFun hu j) j`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[Matrix.mul_apply, Matrix.one_apply_eq]`. Simplify using `only [Matrix.conjTranspose_apply] at h`. Establish `h' : ((∑ i, ‖S7.toM g i j‖ ^ 2 : ℝ) : ℂ) = 1`. Rewrite using `[← h]`. Use `push_cast`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Complex.conj_mul']`. Both sides reduce to the same expression. Conclude with `h'` after adjusting the coercions. Rewrite using `[Finset.sum_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hcol]`.
+A detailed English derivation is pending.
 -/
 theorem coefIntCpt_hs (hq : S7.q0 ε = 0) (g : S7.UJ ε) : S7.hs (S7.toM g) = n := by
   have hu := coefIntCpt_unitary hq g
@@ -75,13 +75,13 @@ theorem coefIntCpt_hs (hq : S7.q0 ε = 0) (g : S7.UJ ε) : S7.hs (S7.toM g) = n 
   simp [hcol]
 
 /- English proof (translation)
-Take `⟨s, hsc⟩` from `S7.exists_signVG ε`. Establish `hfc : Continuous (fun g : S7.UJ ε => ‖Ψ (S7.toM g)‖ * ‖Matrix.toEuclideanCLM (𝕜` using `ℂ) (S7.toM g)‖ ^ N) := by`. Establish `h1 : Continuous fun g : S7.UJ ε => Ψ (S7.toM g)` using `hcont.comp_continuous (S7.continuous_toM ε) (fun g => g.2)`. Establish `h2 : Continuous fun g : S7.UJ ε => Matrix.toEuclideanCLM (𝕜` using `ℂ) (S7.toM g) := (coefIntCpt_toE_continuous n).comp (S7.continuous_toM ε)`. Conclude with `h1.norm.mul (h2.norm.rpow_const fun _ => Or.inr hN)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `S7.integrable_of_decayVG ε s ν _ hfc.aestronglyMeasurable (Real.sqrt n ^ N) (fun g _ => ?_) 1 ?_ (fun g hg => ?_)` and prove the remaining obligations. Establish `hop` using `coefOp_le_sqrt_hs (S7.toM g)`. Rewrite `hop` using `[coefIntCpt_hs hq g]`. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (by positivity)]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsc, hq]`. Evaluate the numerical expressions. It suffices to derive a contradiction. Rewrite `hg` using `[coefIntCpt_hs hq g]`. Establish `e1 : (1 : ℝ) ≤ Real.exp 2` using `Real.one_le_exp (by norm_num)`.
+Evaluate the numerical expressions. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e0 : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem integrable_opPow_of_compact (hq : S7.q0 ε = 0) (Ψ : Matrix (Fin n) (Fin n) ℂ → ℂ)
     (hcont : ContinuousOn Ψ {g | inUJ ε g}) (hle : ∀ g, inUJ ε g → ‖Ψ g‖ ≤ 1)

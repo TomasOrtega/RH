@@ -21,15 +21,15 @@ namespace GlobalTheory.RealFockAction
 variable {D : D7}
 
 /- English proof (translation)
-Use `haveI := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.isTopRing (F := D.host.F) (E := D.host.E)`. Take `⟨σ, hσ⟩` from `GlobalTheory.FockCompare.exists_chart hθ`. Set `a : (D.what₂.Tau → ℂ) → AE D` to `fun z => 1 + σ fun τ => Complex.exp (z τ) - 1`. Establish `a1 : ∀ z, finPart D (a z) = 1` using `fun z => by`. Simplify using `only [a]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.map_add, hσ.fin, RingHom.map_one, add_zero]`. Establish `a2 : ∀ z τ, θ τ (infPart D (a z)) = Complex.exp (z τ)` using `fun z τ => by`. Simplify using `only [a]`. Rewrite using `[RingHom.map_add, RingHom.map_add, hσ.comp, RingHom.map_one, RingHom.map_one]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `a3 : ∀ z, a z * a (-z) = 1` using `fun z => adele_ext hθ (by rw [RingHom.map_mul, a1, a1, RingHom.map_one, one_mul]) fun τ => by`. Rewrite using `[RingHom.map_mul, RingHom.map_mul, a2, a2, RingHom.map_one, RingHom.map_one, ← Complex.exp_add]`. Simplify using the standard rewrite rules. Establish `ac : Continuous a` using `continuous_const.add (hσ.cont.comp (by fun_prop))`. Set `e : (D.what₂.Tau → ℂ) → (AE D)ˣ` to `fun z => ⟨a z, a (-z), a3 z, (mul_comm _ _).trans (a3 z)⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `ec : Continuous e` using `Units.continuous_iff.2 ⟨ac, ac.comp continuous_neg⟩`. Establish `hcl : IsClopen (e ⁻¹' (χ.ker : Set (AE D)ˣ))` using `IsClopen.preimage ⟨Subgroup.isClosed_of_isOpen _ hχ, hχ⟩ ec`. Establish `e0 : e 0 = 1` using `Units.ext (adele_ext hθ ((a1 0).trans (RingHom.map_one _).symm) fun τ => by`. Use `(a2 0 τ).trans ?_` and prove the remaining obligations. Rewrite using `[Units.val_one, RingHom.map_one, RingHom.map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `simp)`. Establish `hall` using `hcl.eq_univ ⟨0, by rw [Set.mem_preimage, e0]; exact one_mem χ.ker⟩`. Establish `ex : e (fun τ => Complex.log (θ τ (infPart D (x : AE D)))) = x` using `Units.ext (adele_ext hθ ((a1 _).trans hx.symm) fun τ => (a2 _ τ).trans (Complex.exp_log ((x.isUnit.map (infPart D)).map (θ τ)).ne_zero))`. Rewrite using `[← ex]`. Conclude with `MonoidHom.mem_ker.1 (hall ▸ Set.mem_univ _ : _ ∈ e ⁻¹' (χ.ker : Set (AE D)ˣ))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_one_of_isOpen_ker {θ : InfFam D} (hθ : IsInfFam θ) {χ : (AE D)ˣ →* Circle}
     (hχ : IsOpen (χ.ker : Set (AE D)ˣ)) (x : (AE D)ˣ) (hx : finPart D (x : AE D) = 1) : χ x = 1 := by
@@ -61,7 +61,7 @@ theorem eq_one_of_isOpen_ker {θ : InfFam D} (hθ : IsInfFam θ) {χ : (AE D)ˣ 
   exact MonoidHom.mem_ker.1 (hall ▸ Set.mem_univ _ : _ ∈ e ⁻¹' (χ.ker : Set (AE D)ˣ))
 
 /- English proof (translation)
-Take `⟨n, hn, h1, h2⟩` from `hχ`. Use `⟨n, hn, h1, fun θ hθ x hx hτ => ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.mul_apply, eq_one_of_isOpen_ker hθ hν x hx, mul_one, h2 θ hθ x hx hτ]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem hasInfExp_mul_of_isOpen_ker {χ ν : (AE D)ˣ →* Circle} {τ : D.what₂.Tau} {a : ℚ} (hχ : HasInfExp D χ τ a)
     (hν : IsOpen (ν.ker : Set (AE D)ˣ)) : HasInfExp D (χ * ν) τ a := by
@@ -70,13 +70,13 @@ theorem hasInfExp_mul_of_isOpen_ker {χ ν : (AE D)ˣ →* Circle} {τ : D.what�
   rw [MonoidHom.mul_apply, eq_one_of_isOpen_ker hθ hν x hx, mul_one, h2 θ hθ x hx hτ]
 
 /- English proof (translation)
-Take `⟨ε, hε, h1, h2⟩` from `h`. Establish `e : (fun a => (ε a : ℂ)) = fun a : Fin k => if decide (a.val < p) then (1 : ℂ) else -1` using `funext fun a => by`. Break down `hε a with h | h` into its components or cases. Simplify using `[h.1, h.2]`. Simplify using `[h.1, not_lt.2 h.2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hd : B.det ≠ 0` using `fun h0 => by`. Establish `h3` using `congrArg Matrix.det h1`. Rewrite `h3` using `[Matrix.det_mul, h0, mul_zero, Matrix.det_diagonal]`. Take `⟨a, -, ha⟩` from `Finset.prod_eq_zero_iff.1 h3.symm`. Apply the tactic sequence `rcases hε a with h | h <;> simp [h.1] at ha`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `h2` using `[e]`. Use `⟨h2, ?_⟩` and prove the remaining obligations. Establish `h4 : s = B * (diagonal fun a : Fin k => if decide (a.val < p) then (1 : ℂ) else -1) * B⁻¹`. Rewrite using `[← h2, Matrix.mul_nonsing_inv_cancel_right _ _ (isUnit_iff_ne_zero.2 hd)]`. Rewrite using `[h4, Matrix.trace_mul_cycle, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 hd), Matrix.one_mul, Matrix.trace_diagonal]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨q, rfl⟩` from `Nat.exists_eq_add_of_le hp`. Rewrite using `[Fin.sum_univ_add]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem onb_laws {k : ℕ} {G s B : Matrix (Fin k) (Fin k) ℂ} {p : ℕ} (h : IsONBasis G s B p) (hp : p ≤ k) :
     (s * B = B * diagonal fun a : Fin k => if decide (a.val < p) then (1 : ℂ) else -1) ∧
@@ -103,9 +103,9 @@ theorem onb_laws {k : ℕ} {G s B : Matrix (Fin k) (Fin k) ℂ} {p : ℕ} (h : I
   ring
 
 /- English proof (translation)
-Take `⟨ε, hε, h1, -⟩` from `h`. Rewrite using `[h1, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Break down `hε a with h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `[h.1]`. Conclude with `absurd a.2 (not_lt.2 h.2)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem onb_posDef {k : ℕ} {G B : Matrix (Fin k) (Fin k) ℂ} (h : IsONBasis G 1 B k) : Bᴴ * G * B = 1 := by
   obtain ⟨ε, hε, h1, -⟩ := h
@@ -117,9 +117,9 @@ theorem onb_posDef {k : ℕ} {G B : Matrix (Fin k) (Fin k) ℂ} (h : IsONBasis G
   · exact absurd a.2 (not_lt.2 h.2)
 
 /- English proof (translation)
-Establish `hB : B * (Bᴴ * G) = 1` using `mul_eq_one_comm.1 h`. Establish `hi : B⁻¹ = Bᴴ * G` using `Matrix.inv_eq_right_inv hB`. Establish `h0 : B * B⁻¹ = 1` using `by rw [hi, hB]`. Establish `h1 : (B⁻¹)ᴴ * Bᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, h0, Matrix.conjTranspose_one]`. Establish `hG : (B⁻¹)ᴴ * B⁻¹ = G`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem conj_unitary {n : ℕ} {G B g : Matrix (Fin n) (Fin n) ℂ} (h : Bᴴ * G * B = 1) (hg : gᴴ * G * g = G) :
     B⁻¹ * g * B ∈ Matrix.unitaryGroup (Fin n) ℂ := by
@@ -137,15 +137,15 @@ theorem conj_unitary {n : ℕ} {G B g : Matrix (Fin n) (Fin n) ℂ} (h : Bᴴ * 
 variable {S T : HSp D}
 
 /- English proof (translation)
-Establish `hadd : ∀ g g', IsThetaFunO ψ S T g → IsThetaFunO ψ S T g' → IsThetaFunO ψ S T (g + g')` using `fun _ _ => GlobalTheory.OrientedHeis.theta_add`. Establish `hsm : ∀ (a : ℂ) g, IsThetaFunO ψ S T g → IsThetaFunO ψ S T (a • g)` using `fun a _ => GlobalTheory.OrientedHeis.theta_smul a`. Establish `hth : ∀ B B' v g, IsThetaFunO ψ S T g → IsThetaFunO ψ S T (aPlusAll (heisO ψ S T) θ (fun τ => cplxO 1 (sT τ)) B B' v g)` using `fun _ _ _ _ h => GlobalTheory.FockIndep.aPlus_theta hψ hθ _ _ _ h`. Establish `hX : ∀ B B' v Q, pureTensorL (aPlusAll (heisO ψ S T) θ (fun τ => cplxO 1 (sT τ)) B B') f (MvPolynomial.X v * Q) = aPlusAll (heisO ψ S T) θ (fun τ => cplxO 1 (sT τ)) B B' v (pureTensorL (aPlusAll (heisO ψ S T) θ (fun τ => cplxO 1 (sT τ)) B B') f Q)` using `fun B B' v Q => by`. Use `GlobalTheory.FockIndep.pure_X_mul (P := IsThetaFunO ψ S T) hadd hsm (hth B B') ?_ ?_ ?_ hf Q v` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `fun i j _ h => GlobalTheory.FockIndep.aPlus_comm' (sS := fun _ => 1) hψ hθ i.1 _ hS hT j.1 _ h`. Conclude with `fun _ _ _ h h' => GlobalTheory.FockIndep.aPlus_add hψ hθ _ _ _ h h'`. Conclude with `fun _ a _ h => GlobalTheory.FockIndep.aPlus_smul hψ hθ _ _ _ a h`. Establish `hA : ∀ v g, IsThetaFunO ψ S T g → aPlusAll (heisO ψ S T) θ (fun τ => cplxO 1 (sT τ)) (fun τ => BS τ * (u τ).val) BT v g = ∑ a, ∑ b, (if decide (v.2.1.val < p v.1) = true then (1 : Matrix (Fin T.rank) (Fin T.rank) ℂ) a v.2.1 * (u v.1).val⁻¹ v.2.2 b else (1 : Matrix (Fin T.rank) (F …` using `fun v g hg => by`. Unfold `aPlusAll`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `GlobalTheory.FockBasis.aPlus_unitMap_mul hψ hθ v.1 _ hg (ht v.1) (k := 1) ⟨one_mem _, by rw [Matrix.one_mul, Matrix.mul_one]⟩ (BS v.1) (hu v.1) v.2.1 v.2.2` as an intermediate fact. Rewrite `this` using `[Matrix.mul_one]`. Conclude with `this`. Establish `key` using `GlobalTheory.FockBasis.pure_subst (P := IsThetaFunO ψ S T) _ _ (GlobalTheory.FockIndep.pure_mem (P := IsThetaFunO ψ S T) hadd hsm (hth _ _) hf) (hX _ _) (hX _ _) hA P`. Unfold `pureTensorO`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Use `congr 2`. Unfold `fockSubst`. Use `congr 1`. Use function extensionality and compare the values at `⟨τ, i, j⟩`.
+Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single i]`. Apply the tactic sequence `by_cases h : i.val < p τ <;> simp [h]`. Introduce `a _ ha`. Simplify using `[Matrix.one_apply_ne ha, Matrix.one_apply_ne ha.symm]`. Simplify using the standard rewrite rules.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pureTensorO_subst {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
     {sT BT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ} {p : D.what₂.Tau → ℕ}
@@ -198,23 +198,23 @@ theorem pureTensorO_subst {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (hψ 
   · simp
 
 /- English proof (translation)
-Establish `hθ` using `hB.frame.vac.2.inf`. Establish `hS` using `fun τ => GlobalTheory.FockBasis.isCartanInv_one (onb_posDef (hB.frame.onbS τ))`. Establish `hT` using `hB.frame.cartT`. Establish `one : ∀ τ, compAt B.F.θ τ (Formalism.L2.Theta.mt T 1) = 1` using `fun τ => GlobalTheory.PointAtPlaceHom.infMat_one T _`. Establish `hpq : ∀ τ, B.w.p τ + B.w.q τ = T.rank` using `fun τ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨e, -⟩` from `hB.sigOK (tauE D τ)`. Rewrite `e` using `[← hB.sig τ]`. Simplify using `using (Fintype.card_congr e).symm`. Take `⟨x, hx, hxv⟩` from `exists_root hθ S (fun τ => by`. Use `(hS τ).2.2.det_pos.ne'` as an intermediate fact.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_one] at this) u hu` and apply the resulting hypothesis. Establish `hy : IsDetRoot T 1 1` using `by show _ = _`. Rewrite using `[Units.val_one, RingHom.map_one, mul_one]`. Conclude with `(Matrix.det_one).symm`. Use `choose p hp hd using fun τ => detPlus_one (n := S.rank) (B.F.sT τ) (hT τ).1`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ep : ∀ τ, p τ = B.w.p τ` using `fun τ => by`. Establish `h1` using `hB.frame.onbT τ`. Rewrite `h1` using `[← hB.sig τ]`. Establish `h2` using `(onb_laws h1 (hpq τ ▸ Nat.le_add_right _ _)).2`. Rewrite `h2` using `[hp]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : (p τ : ℂ) = B.w.p τ` using `by linear_combination h2 / 2`. Conclude with `h3` after adjusting the coercions. Rewrite using `[GlobalTheory.T.weilDatum_realPlaces_fockVacuum_character D B.F.ψ hω.std S T B.F.θ hθ _ _ ω B.eta hB.eta hω (fun _ => 1) B.F.sT hS hT u hu 1 (one_mem _) (fun τ => by rw [one_mul, mul_one]) (fun τ => by rw [one, one_mul, mul_one]) x 1 hx hy f hf hv]`. Use `congr 1`. Establish `hexp : ∀ τ, HasInfExp D (B.mu * ψ.chi * B.eta⁻¹ * (B.eta ^ T.rank)⁻¹) τ ((B.w.c τ - p τ : ℤ) : ℚ)` using `fun τ => by`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `h1` using `hasInfExp_twist (hasInfExp_twist (hasInfExp_mul_of_isOpen_ker (hasInfExp_mul_of_isOpen_ker (hB.inf τ) hB.de.isOpen) hψ.isOpen) (hB.eta.2.2.2 τ) 1) (hB.eta.2.2.2 τ) T.rank`. Rewrite `h1` using `[pow_one]`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression. Rewrite using `[← hpq τ, ep]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[MonoidHom.map_one, mul_one, Circle.coe_inv, hxv _ _ hexp, ← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib, Units.val_inv_eq_inv_val]`. Simplify using `only [detFam, MonoidHom.coe_mk, OneHom.coe_mk, Units.coe_prod, Units.val_zpow_eq_zpow_val, GeneralLinearGroup.val_det_apply]`. Rewrite using `[← Finset.prod_inv_distrib]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `inv` using `congrArg Matrix.det (GlobalTheory.OrientedHeis.compAt_mt_mul_inv (θ := B.F.θ) τ u)`. Rewrite `inv` using `[Matrix.det_mul, Matrix.det_one]`. Establish `g0` using `left_ne_zero_of_mul_eq_one inv`. Rewrite using `[one, (hd τ _ 1 (by rw [one_mul, mul_one])).1, eq_inv_of_mul_eq_one_right inv, mul_one, ← smul_add, add_add_sub_cancel, ← two_smul ℂ, smul_smul, show (1 / 2 * 2 : ℂ) = 1 by norm_num, one_smul, Matrix.det_one, one_pow, one_mul, show (realGL B.F.θ S u τ).val = compAt B.F.θ τ (Forma …`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Use `pow_ne_zero (p τ) g0` as an intermediate fact. Use `zpow_ne_zero (B.w.c τ) g0` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem om_vac {B : Base S T} {ψ : Twist D Circle} {ω : PairRep S T} (hB : B.Good) (hψ : ψ.Good)
     (hω : B.IsWeil ψ.chi ω) {f : WO S T → ℂ} (hf : IsThetaFunO B.F.ψ S T f)
@@ -273,13 +273,13 @@ theorem om_vac {B : Base S T} {ψ : Twist D Circle} {ω : PairRep S T} (hB : B.G
   field_simp
 
 /- English proof (translation)
-Introduce `D S T B ψ ω Q φ hB hψ hQ hω u hu P`. Establish `hθ` using `hB.frame.vac.2.inf`. Establish `hBS` using `fun τ => onb_posDef (hB.frame.onbS τ)`. Establish `hth` using `Base.isThetaAt_vecAt hB hQ φ`. Establish `hf` using `GlobalTheory.GalLift.Vec.theta_of_thetaAt hB.frame.vac.1 hθ hth hB.frame.vac.2.theta`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ho` using `hQ.1.isOrthSum.1`. Establish `hv` using `fun τ => GlobalTheory.DatumFock.isFockVacAt_of_isThetaAt hB.frame.vac.1.1.1 hθ ho.infPart_eq ho.conj.infPart_eq hth hB.frame.vac.2.theta hf (hB.frame.vac.2.fock τ)`. Establish `one : ∀ τ, compAt B.F.θ τ (Formalism.L2.Theta.mt T 1) = 1` using `fun τ => GlobalTheory.PointAtPlaceHom.infMat_one T _`. Establish `eu : ∀ τ, (inBasis B.F.BS (realGL B.F.θ S u) τ).val = (B.F.BS τ).val⁻¹ * compAt B.F.θ τ (Formalism.L2.Theta.mt S u) * (B.F.BS τ).val` using `fun τ => by`. Rewrite using `[← Matrix.coe_units_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hle : ∀ τ, B.w.p τ ≤ T.rank` using `fun τ => by`. Take `⟨e, -⟩` from `hB.sigOK (tauE D τ)`. Rewrite `e` using `[← hB.sig τ]`. Use `Fintype.card_congr e` as an intermediate fact.
+Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Fintype.card_fin, Fintype.card_sum] at this`. Use linear arithmetic over natural numbers and integers. Unfold `Frame.fock`. Rewrite using `[(GlobalTheory.OrientedHeis.om_pureTensorO D _ _ S T _ _ ω hω hθ (fun _ => 1) (fun _ => 1) (fun τ => (B.F.BS τ).val) (fun τ => (B.F.BS τ).val * (inBasis B.F.BS (realGL B.F.θ S u) τ).val) B.F.sT B.F.sT B.F.BT B.F.BT u 1 (fun τ => by rw [Matrix.one_mul, Matrix.mul_one]) (fun τ => b …`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 -/
 theorem om_fock_vecAt : ∀ (D : D7) (S T : HSp D) (B : Base S T) (ψ : Twist D Circle) (ω : PairRep S T) (Q : Finset (Pl D.host.E)) (φ : ∀ PP : ↥Q, Matrix (Fin T.rank) (Fin S.rank) (kP PP.1) → ℂ), B.Good → ψ.Good → B.admitted Q → B.IsWeil ψ.chi ω → ∀ u ∈ GinfC S, ∀ P, ω (u, 1) (B.F.fock (B.vecAt Q φ) P) = B.F.fock (B.vecAt Q φ) (B.act u P) := by
   intro D S T B ψ ω Q φ hB hψ hQ hω u hu P

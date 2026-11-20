@@ -24,29 +24,27 @@ open MeasureTheory Topology Matrix NumberField IsDedekindDomain Formalism.MainNo
 open scoped NNReal ENNReal TensorProduct
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `GlobalTheory.T.exists_finset_matrixPair_integral_outside F κ M M⁻¹`. Take `⟨hOc, hOs, hOt⟩` from `GlobalTheory.T.finiteIntegers_topology F S`. Set `_ : MeasurableSpace (OPart F S)` to `borel _`. Establish `_ : BorelSpace (OPart F S)` using `⟨rfl⟩`. Set `φS : Af F →+* SPart F S` to `RingHom.pi fun v => (evalV F v.1).toRingHom`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `φO : Af F →+* (∀ v : {v : HeightOneSpectrum (𝓞 F) // v ∉ S}, Fv F v.1)` to `RingHom.pi fun v => (evalV F v.1).toRingHom`. Set `ι : OPart F S →+* (∀ v : {v : HeightOneSpectrum (𝓞 F) // v ∉ S}, Fv F v.1)` to `RingHom.pi fun v => (v.1.adicCompletionIntegers F).toSubring.subtype.comp (Pi.evalRingHom _ v)`. Establish `hι : Function.Injective ι` using `fun x y h => funext fun v => Subtype.ext (congrFun h v)`. Set `MS : Matrix κ κ (SPart F S)` to `φS.mapMatrix M`. Set `MO : Matrix κ κ (OPart F S)` to `fun i j v => ⟨evalV F v.1 (M i j), (hS v.1 v.2 i j).1⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `NO : Matrix κ κ (OPart F S)` to `fun i j v => ⟨evalV F v.1 (M⁻¹ i j), (hS v.1 v.2 i j).2⟩`. Establish `hdS : MS.det = φS M.det` using `(RingHom.map_det φS M).symm`. Establish `huS : IsUnit MS.det` using `hdS ▸ hM.map φS`. Establish `hMO : ι MO.det = φO M.det`. Rewrite using `[RingHom.map_det, RingHom.map_det]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hNO : ι NO.det = φO M⁻¹.det`. Rewrite using `[RingHom.map_det, RingHom.map_det]`. Both sides reduce to the same expression. Establish `hON : MO.det * NO.det = 1` using `hι (by`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[map_mul, hMO, hNO, ← map_mul, ← Matrix.det_mul, Matrix.mul_nonsing_inv M hM, Matrix.det_one, map_one, map_one])`. Establish `huO : IsUnit MO.det` using `⟨⟨_, _, hON, by rw [mul_comm]; exact hON⟩, rfl⟩`. Set `j : ((κ → SPart F S) × (κ → OPart F S)) →+ (κ → Af F)` to `((jS F S).toAddMonoidHom.compLeft κ).comp (zipHom κ (SPart F S) (OPart F S))`. Establish `hj : IsOpenEmbedding j` using `(IsOpenEmbedding.piMap fun _ => GlobalTheory.T.isOpenEmbedding_finiteAdeleOfSPartAndIntegralPart F S).comp (GlobalTheory.T.isOpenEmbedding_pairOfTuplesToTupleOfPairs κ (SPart F S) (OPart F S))`. Establish `key` using `GlobalTheory.T.addEquivAddHaarChar_eq_of_isOpenEmbedding_restrict (κ → Af F) ((κ → SPart F S) × (κ → OPart F S)) j hj (mulVecCE M hM) (prodCE (mulVecCE MS huS) (mulVecCE MO huO)) (by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x`. Use function extensionality and compare the values at `i`. Rewrite using `[mulVecCE_apply, prodCE_apply, mulVecCE_apply, mulVecCE_apply]`. Apply `RestrictedProduct.ext` to reduce the goal to its premises. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `evalV F v ((M *ᵥ j x) i) = evalV F v (jS F S ((MS *ᵥ x.1) i, (MO *ᵥ x.2) i))`. Rewrite using `[evalV_jS]`. Distinguish the cases in `hv : v ∈ S`. Rewrite using `[dif_pos hv]`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, Finset.sum_apply, Pi.mul_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `evalV F v (M i k) * evalV F v (jS F S (x.1 k, x.2 k)) = _`. Rewrite using `[evalV_jS, dif_pos hv]`. Both sides reduce to the same expression. Rewrite using `[dif_neg hv]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ = ι ((MO *ᵥ x.2) i) ⟨v, hv⟩`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, Finset.sum_apply, Pi.mul_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `evalV F v (M i k) * evalV F v (jS F S (x.1 k, x.2 k)) = _`. Rewrite using `[evalV_jS, dif_neg hv]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `rfl)`. Rewrite using `[key, GlobalTheory.T.addEquivAddHaarChar_prodCongr, addEquivAddHaarChar_eq_one_of_compactSpace (mulVecCE MO huO), mul_one, GlobalTheory.T.addEquivAddHaarChar_mulVec_artinian_reduced (SPart F S) (by show IsArtinianRing (∀ v : S, Fv F v.1); infer_instance) ⟨fun x ⟨n, hn⟩ => funext …`. Both sides reduce to the same expression. Introduce `v hv`. Assume the negation of the conclusion as `hvS`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hv` to reduce the goal to its premises. Establish `h1` using `GlobalTheory.T.norm_eq_one_of_mul_eq_one_adicCompletionIntegers F v (MO.det ⟨v, hvS⟩) (NO.det ⟨v, hvS⟩) (congrFun hON ⟨v, hvS⟩)`. Establish `h2 : (MO.det ⟨v, hvS⟩ : Fv F v) = evalV F v M.det` using `congrFun hMO ⟨v, hvS⟩`. Use `show ‖evalV F v M.det‖ = 1`. Rewrite using `[← h2]`.
-
-Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_Af (F : Type) [Field F] [NumberField F] {κ : Type} [Fintype κ] [DecidableEq κ]
     (M : Matrix κ κ (Af F)) (hM : IsUnit M.det) :
@@ -120,13 +118,13 @@ theorem chi_Af (F : Type) [Field F] [NumberField F] {κ : Type} [Fintype κ] [De
     exact h1
 
 /- English proof (translation)
-Establish `hd₁ : (M.map (fstA F)).det = fstA F M.det` using `(RingHom.map_det (fstA F).toRingHom M).symm`. Establish `hd₂ : (M.map (sndA F)).det = sndA F M.det` using `(RingHom.map_det (sndA F).toRingHom M).symm`. Establish `hu₁ : IsUnit (M.map (fstA F)).det` using `hd₁ ▸ hM.map (fstA F)`. Establish `hu₂ : IsUnit (M.map (sndA F)).det` using `hd₂ ▸ hM.map (sndA F)`. Set `j : ((κ → Ainf F) × (κ → Af F)) →+ (κ → AF F)` to `zipHom κ (Ainf F) (Af F)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hj : IsOpenEmbedding j` using `GlobalTheory.T.isOpenEmbedding_pairOfTuplesToTupleOfPairs κ (Ainf F) (Af F)`. Establish `key` using `GlobalTheory.T.addEquivAddHaarChar_eq_of_isOpenEmbedding_restrict (κ → AF F) ((κ → Ainf F) × (κ → Af F)) j hj (mulVecCE M hM) (prodCE (mulVecCE (M.map (fstA F)) hu₁) (mulVecCE (M.map (sndA F)) hu₂)) (by`. Introduce `x`. Use function extensionality and compare the values at `i`. Rewrite using `[mulVecCE_apply, prodCE_apply, mulVecCE_apply, mulVecCE_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `fstA F _ = _`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul]`. Conclude with `Finset.sum_congr rfl fun k _ => rfl`. Express the relevant statement in the definitionally equal form `sndA F _ = _`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul]`. Conclude with `Finset.sum_congr rfl fun k _ => rfl)`. Rewrite using `[key, GlobalTheory.T.addEquivAddHaarChar_prodCongr, NNReal.coe_mul, chi_Af F _ hu₂, hd₂, GlobalTheory.T.addEquivAddHaarChar_mulVec_artinian_reduced (Ainf F) (by show IsArtinianRing (∀ v : InfinitePlace F, v.Completion); infer_instance) ⟨fun x ⟨n, hn⟩ => funext fun v => IsReduced. …`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_AF (F : Type) [Field F] [NumberField F] [IsTotallyReal F] {κ : Type} [Fintype κ] [DecidableEq κ]
     (M : Matrix κ κ (AF F)) (hM : IsUnit M.det) :
@@ -158,7 +156,7 @@ theorem chi_AF (F : Type) [Field F] [NumberField F] [IsTotallyReal F] {κ : Type
     GlobalTheory.GaugeProdFormula.modu_infinite F _ (hM.map (fstA F))]
 
 /- English proof (translation)
-Take `⟨κ, _, _, Λ, hΛ, hdet, hchar⟩` from `GlobalTheory.T.exists_restrictScalars_matrix_leftRightMul_adeleTensor F E m n g a`. Apply `NNReal.coe_injective` to reduce the goal to its premises. Rewrite using `[hchar, chi_AF F Λ hΛ, hdet, GlobalTheory.T.tensorIdeleNormalizedAbs_eq_adelic_abs_norm F E]`. Simplify using `[map_mul, map_pow]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem chi_lr (F E : Type) [Field F] [NumberField F] [IsTotallyReal F] [Field E] [NumberField E] [Algebra F E] (m n : ℕ)
     [LocallyCompactSpace (Matrix (Fin m) (Fin n) (AF F ⊗[F] E))] [SecondCountableTopology (Matrix (Fin m) (Fin n) (AF F ⊗[F] E))]
@@ -172,7 +170,7 @@ theorem chi_lr (F E : Type) [Field F] [NumberField F] [IsTotallyReal F] [Field E
   simp [map_mul, map_pow]
 
 /- English proof (translation)
-Establish `h` using `addEquivAddHaarChar_smul_map μ (lrCE g a)`. Rewrite `h` using `[chi_lr F E m n g a]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem smul_map_lr (F E : Type) [Field F] [NumberField F] [IsTotallyReal F] [Field E] [NumberField E] [Algebra F E] (m n : ℕ)
     [LocallyCompactSpace (Matrix (Fin m) (Fin n) (AF F ⊗[F] E))] [SecondCountableTopology (Matrix (Fin m) (Fin n) (AF F ⊗[F] E))]
@@ -190,9 +188,9 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 attribute [local instance] Formalism.BasicNotions.Host.cmStar in
 
 /- English proof (translation)
-Introduce `D m n μ hμ g a`. Establish `_ : LocallyCompactSpace (Matrix (Fin m) (Fin n) (AF D.host.F ⊗[D.host.F] D.host.E))` using `inferInstanceAs (LocallyCompactSpace (Fin m → Fin n → AF D.host.F ⊗[D.host.F] D.host.E))`. Establish `_ : SecondCountableTopology (Matrix (Fin m) (Fin n) (AF D.host.F ⊗[D.host.F] D.host.E))` using `inferInstanceAs (SecondCountableTopology (Fin m → Fin n → AF D.host.F ⊗[D.host.F] D.host.E))`. Establish `hb : BorelSpace (Fin m → Fin n → AE D)` using `inferInstance`. Apply the tactic sequence `have _ : BorelSpace (Matrix (Fin m) (Fin n) (AF D.host.F ⊗[D.host.F] D.host.E)) := ⟨by first | rfl | exact hb.measurable_eq⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `smul_map_lr D.host.F D.host.E m n μ g a`.
+A detailed English derivation is pending.
 -/
 theorem modu_lrMul : ∀ (D : D7) (m n : ℕ) (μ : Measure (Mx D m n)), μ.IsAddHaarMeasure → ∀ (g : GL (Fin m) (AE D)) (a : GL (Fin n) (AE D)), μ = ((GlobalTheory.Doubling.absE D.host.F D.host.E (Matrix.GeneralLinearGroup.det g) : ENNReal) ^ n * (GlobalTheory.Doubling.absE D.host.F D.host.E (Matrix.GeneralLinearGroup.det a) : ENNReal) ^ m) • Measure.map (fun u : Mx D m n => (HMul.hMul (HMul.hMul g.val (u : Matrix (Fin m) (Fin n) (AE D))) a.val : Mx D m n)) μ := by
   intro D m n μ hμ g a

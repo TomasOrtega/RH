@@ -27,13 +27,13 @@ def glSub (A : Submodule (𝓞 K) V) : Subgroup (V ≃ₗ[K] V) where
     rw [← autSub_gmap_mul, inv_mul_cancel, autSub_gmap_one]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_glSub {A : Submodule (𝓞 K) V} {X : V ≃ₗ[K] V} :
     X ∈ glSub A ↔ Formalism.HermitianLatticesTheory.gmap X A = A := Iff.rfl
 
 /- English proof (translation)
-Establish `hX' : Formalism.HermitianLatticesTheory.gmap X A = A` using `hX`. Rewrite using `[← hX']`. Conclude with `Submodule.mem_map_of_mem hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem apply_mem {A : Submodule (𝓞 K) V} {X : V ≃ₗ[K] V} (hX : X ∈ glSub A) {x : V} (hx : x ∈ A) :
     X x ∈ A := by
@@ -42,7 +42,7 @@ theorem apply_mem {A : Submodule (𝓞 K) V} {X : V ≃ₗ[K] V} (hX : X ∈ glS
   exact Submodule.mem_map_of_mem hx
 
 /- English proof (translation)
-Establish `h2 : A.map ((X : V →ₗ[K] V).restrictScalars (𝓞 K)) = A` using `hX`. Establish `h1 : X x ∈ (I • A).map ((X : V →ₗ[K] V).restrictScalars (𝓞 K))` using `Submodule.mem_map_of_mem hx`. Rewrite `h1` using `[Submodule.map_smul'', h2]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem apply_mem_smul {A : Submodule (𝓞 K) V} {X : V ≃ₗ[K] V} (hX : X ∈ glSub A) (I : Ideal (𝓞 K))
     {x : V} (hx : x ∈ I • A) : X x ∈ I • A := by
@@ -86,14 +86,14 @@ def nSub (A : Submodule (𝓞 K) V) (𝔭 : Ideal (𝓞 F)) (k : ℕ) : Subgroup
     simpa [e] using this
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_sSub {h : V →ₗ⋆[K] V →ₗ[K] K} {A : Submodule (𝓞 K) V} {𝔭 : Ideal (𝓞 F)} {k : ℕ}
     {X : V ≃ₗ[K] V} : X ∈ sSub h A 𝔭 k ↔
       X ∈ glSub A ∧ ∀ x ∈ A, ∀ y ∈ A, h (X x) (X y) - h x y ∈ pK K 𝔭 k := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_nSub {A : Submodule (𝓞 K) V} {𝔭 : Ideal (𝓞 F)} {k : ℕ} {X : V ≃ₗ[K] V} :
     X ∈ nSub A 𝔭 k ↔ X ∈ glSub A ∧ ∀ x ∈ A, X x - x ∈ extP K 𝔭 ^ k • A := Iff.rfl

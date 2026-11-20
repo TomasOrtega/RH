@@ -12,7 +12,7 @@ def sig (k r : ℕ) (i : Fin (2 * r + k + 1)) : Fin (2 * r + k + 1) :=
   if i.val < r ∨ r + k < i.val then ⟨2 * r + k - i.val, by omega⟩ else i
 
 /- English proof (translation)
-Unfold `sig`. Apply the tactic sequence `split_ifs <;> rfl`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma sig_val (k r : ℕ) (i : Fin (2 * r + k + 1)) :
     (sig k r i).val = if i.val < r ∨ r + k < i.val then 2 * r + k - i.val else i.val := by
@@ -20,7 +20,7 @@ lemma sig_val (k r : ℕ) (i : Fin (2 * r + k + 1)) :
   split_ifs <;> rfl
 
 /- English proof (translation)
-Establish `hi` using `i.isLt`. Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[sig_val, sig_val]`. Apply the tactic sequence `split_ifs <;> omega`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma sig_sig (k r : ℕ) (i : Fin (2 * r + k + 1)) : sig k r (sig k r i) = i := by
   have hi := i.isLt
@@ -31,7 +31,7 @@ lemma sig_sig (k r : ℕ) (i : Fin (2 * r + k + 1)) : sig k r (sig k r i) = i :=
 def sgn (k r : ℕ) (i : Fin (2 * r + k + 1)) : ℂ := if i.val = r + k then -1 else 1
 
 /- English proof (translation)
-Establish `hi` using `i.isLt`. Unfold `sgn`. Rewrite using `[sig_val]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma sgn_sig (k r : ℕ) (i : Fin (2 * r + k + 1)) : sgn k r (sig k r i) = sgn k r i := by
   have hi := i.isLt
@@ -40,7 +40,7 @@ lemma sgn_sig (k r : ℕ) (i : Fin (2 * r + k + 1)) : sgn k r (sig k r i) = sgn 
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Simplify using `only [Hpk, sgn, Fin.ext_iff, sig_val]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma Hpk_eq (k r : ℕ) (i j : Fin (2 * r + k + 1)) :
     Hpk k r i j = if j = sig k r i then sgn k r i else 0 := by
@@ -50,11 +50,11 @@ lemma Hpk_eq (k r : ℕ) (i j : Fin (2 * r + k + 1)) :
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify using `only [Hpk_eq]`. Rewrite using `[Finset.sum_eq_single (sig k r i)]`. Rewrite using `[if_pos rfl, sig_sig, sgn_sig]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl]`. Unfold `sgn`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[if_neg (Ne.symm h), if_neg h, mul_zero]`. Introduce `l _ hl`. Rewrite using `[if_neg hl, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma Hpk_sq (k r : ℕ) : Hpk k r * Hpk k r = 1 := by
   ext i j
@@ -74,9 +74,9 @@ lemma Hpk_sq (k r : ℕ) : Hpk k r * Hpk k r = 1 := by
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Establish `ha` using `a.isLt`. Establish `h1 : (eI k r a).val = a.val` using `rfl`. Establish `h2 : (esI k r a).val = 2 * r + k - a.val` using `rfl`. Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[sig_val, h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma sig_eI (k r : ℕ) (a : Fin r) : sig k r (eI k r a) = esI k r a := by
   have ha := a.isLt
@@ -87,9 +87,9 @@ lemma sig_eI (k r : ℕ) (a : Fin r) : sig k r (eI k r a) = esI k r a := by
   split_ifs <;> omega
 
 /- English proof (translation)
-Establish `ha` using `a.isLt`. Establish `h1 : (eI k r a).val = a.val` using `rfl`. Establish `h2 : (esI k r a).val = 2 * r + k - a.val` using `rfl`. Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[sig_val, h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma sig_esI (k r : ℕ) (a : Fin r) : sig k r (esI k r a) = eI k r a := by
   have ha := a.isLt
@@ -100,7 +100,7 @@ lemma sig_esI (k r : ℕ) (a : Fin r) : sig k r (esI k r a) = eI k r a := by
   split_ifs <;> omega
 
 /- English proof (translation)
-Establish `ha` using `a.isLt`. Establish `h1 : (eI k r a).val = a.val` using `rfl`. Unfold `sgn`. Rewrite using `[h1, if_neg (by omega)]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma sgn_eI (k r : ℕ) (a : Fin r) : sgn k r (eI k r a) = 1 := by
   have ha := a.isLt
@@ -109,7 +109,7 @@ lemma sgn_eI (k r : ℕ) (a : Fin r) : sgn k r (eI k r a) = 1 := by
   rw [h1, if_neg (by omega)]
 
 /- English proof (translation)
-Establish `ha` using `a.isLt`. Establish `h1 : (esI k r a).val = 2 * r + k - a.val` using `rfl`. Unfold `sgn`. Rewrite using `[h1, if_neg (by omega)]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma sgn_esI (k r : ℕ) (a : Fin r) : sgn k r (esI k r a) = 1 := by
   have ha := a.isLt
@@ -118,9 +118,9 @@ lemma sgn_esI (k r : ℕ) (a : Fin r) : sgn k r (esI k r a) = 1 := by
   rw [h1, if_neg (by omega)]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (sig k r (eI k r a))]`. Rewrite using `[Hpk_eq, if_pos rfl, sgn_eI, sig_eI, one_mul]`. Introduce `l _ hl`. Rewrite using `[Hpk_eq, if_neg hl, zero_mul]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ _) h`.
+A detailed English derivation is pending.
 -/
 lemma Hpk_mul_eI (k r : ℕ) (M : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (a : Fin r)
     (j : Fin (2 * r + k + 1)) : (Hpk k r * M) (eI k r a) j = M (esI k r a) j := by
@@ -132,9 +132,9 @@ lemma Hpk_mul_eI (k r : ℕ) (M : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k +
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (sig k r (esI k r b))]`. Rewrite using `[Hpk_eq, if_pos rfl, sgn_esI, sig_esI, one_mul]`. Introduce `l _ hl`. Rewrite using `[Hpk_eq, if_neg hl, zero_mul]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ _) h`.
+A detailed English derivation is pending.
 -/
 lemma Hpk_mul_esI (k r : ℕ) (M : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (b : Fin r)
     (j : Fin (2 * r + k + 1)) : (Hpk k r * M) (esI k r b) j = M (eI k r b) j := by
@@ -146,11 +146,9 @@ lemma Hpk_mul_esI (k r : ℕ) (M : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k 
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (esI k r a)]`. Rewrite using `[Hpk_eq, if_pos (sig_esI k r a).symm, sgn_esI, mul_one]`. Introduce `l _ hl`. Rewrite using `[Hpk_eq, if_neg, mul_zero]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hl` to reduce the goal to its premises. Establish `h2` using `congrArg (sig k r) h`. Rewrite `h2` using `[sig_sig, sig_eI]`. Conclude with `h2.symm`. Introduce `h`.
-
-Conclude with `absurd (Finset.mem_univ _) h`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma mul_Hpk_eI (k r : ℕ) (M : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (a : Fin r)
     (i : Fin (2 * r + k + 1)) : (M * Hpk k r) i (eI k r a) = M i (esI k r a) := by
@@ -167,7 +165,7 @@ lemma mul_Hpk_eI (k r : ℕ) (M : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k +
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[bvec, Matrix.mulVec, dotProduct, Pi.single_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma mulVec_bvec (k r : ℕ) (M : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (y : Fin (2 * r + k + 1)) :
     M *ᵥ bvec y = fun i => M i y := by
@@ -175,9 +173,9 @@ lemma mulVec_bvec (k r : ℕ) (M : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k 
   simp [bvec, Matrix.mulVec, dotProduct, Pi.single_apply]
 
 /- English proof (translation)
-Unfold `herm`. Rewrite using `[Matrix.mulVec_mulVec, mulVec_bvec, dotProduct, Finset.sum_eq_single x]`. Simplify using `[bvec]`. Introduce `l _ hl`. Simplify using `[bvec, Pi.single_apply, hl]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma herm_bvec_left (k r : ℕ) (H M : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (x y : Fin (2 * r + k + 1)) :
     herm H (M *ᵥ bvec y) (bvec x) = (H * M) x y := by
@@ -190,7 +188,7 @@ lemma herm_bvec_left (k r : ℕ) (H M : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Establish `ha : (a.castSucc : Fin (r + 1)).val < r` using `by simp`. Establish `hb : (b.castSucc : Fin (r + 1)).val < r` using `by simp`. Simplify using `only [Zhat, fvec, dif_pos ha, dif_pos hb]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 lemma zhat_lo (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ)
     (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (a b : Fin r) :
@@ -201,7 +199,7 @@ lemma zhat_lo (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ)
   rfl
 
 /- English proof (translation)
-Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Establish `h : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, h, Hpk_sq]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma inv_eq (k r : ℕ) (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (hg : g ∈ UH (Hpk k r)) :
     g⁻¹ = Hpk k r * gᴴ * Hpk k r := by
@@ -210,7 +208,7 @@ lemma inv_eq (k r : ℕ) (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1))
   rw [Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, h, Hpk_sq]
 
 /- English proof (translation)
-Introduce `k r z z' g a b hg`. Use `⟨(zhat_lo k r z z' g a b).symm, ?_⟩` and prove the remaining obligations. Rewrite using `[zhat_lo, herm_bvec_left, Hpk_mul_eI, mulVec_bvec, inv_eq k r g hg]`. Use `beta_reduce`. Rewrite using `[Matrix.mul_assoc, Hpk_mul_esI, mul_Hpk_eI, Matrix.conjTranspose_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem covec_entries : Formalism.FourierDecayAlt.C3.XiYZhat := by
   intro k r z z' g a b hg

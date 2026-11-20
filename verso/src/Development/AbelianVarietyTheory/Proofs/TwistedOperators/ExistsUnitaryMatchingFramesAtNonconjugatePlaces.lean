@@ -25,7 +25,7 @@ section General
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Use `show MulAut.conj (β * intGL F E n y) (intGL F E n z) = MulAut.conj β (intGL F E n (y * z * y⁻¹))`. Rewrite using `[MulAut.conj_apply, MulAut.conj_apply, map_mul, map_mul, map_inv]`. Use `group`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem frGL_mul_intGL (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))
     (y z : GL (Fin n) (Formalism.L2.Herm.intAf F E)) :
@@ -35,11 +35,9 @@ private theorem frGL_mul_intGL (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F
   group
 
 /- English proof (translation)
-Use extensionality with `x`. Use `show x ∈ (frGL (β * intGL F E n y)).range ↔ x ∈ (frGL β).range`. Simplify using `only [MonoidHom.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨y * z * y⁻¹, (frGL_mul_intGL β y z).symm⟩`. Introduce and unpack `⟨z, rfl⟩`. Use `⟨y⁻¹ * z * y, ?_⟩` and prove the remaining obligations. Rewrite using `[frGL_mul_intGL]`. Use `congr 1`.
-
-Use `group`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem St_mul_intGL (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (y : GL (Fin n) (Formalism.L2.Herm.intAf F E)) :
     St (β * intGL F E n y) = St β := by
@@ -56,11 +54,9 @@ theorem St_mul_intGL (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (y : GL
     group
 
 /- English proof (translation)
-Distinguish the cases in `hx : x ∈ St β`. Take `⟨z, rfl⟩` from `MonoidHom.mem_range.1 hx`. Establish `h1 : frGL β z = frGL (β * intGL F E n y) (y⁻¹ * z * y)`. Rewrite using `[frGL_mul_intGL]`. Use `congr 1`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `group`. Use `conv_lhs => rw [h1]`. Rewrite using `[redFn_frGL, redFn_frGL]`. Rewrite using `[map_mul, map_mul, map_inv]`. Establish `hx' : x ∉ St (β * intGL F E n y)` using `by rwa [St_mul_intGL]`.
-
-Simplify using `only [redFn, ext1, dif_neg hx, dif_neg hx', mul_one, inv_mul_cancel]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem redFn_mul_intGL (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (y : GL (Fin n) (Formalism.L2.Herm.intAf F E))
     (PP : Pl E) (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) :
@@ -79,7 +75,7 @@ theorem redFn_mul_intGL (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (y :
     simp only [redFn, ext1, dif_neg hx, dif_neg hx', mul_one, inv_mul_cancel]
 
 /- English proof (translation)
-Simplify using `only [frGL, MonoidHom.coe_comp, Function.comp_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`. Use `group`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frGL_mul (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (y : GL (Fin n) (Formalism.L2.Herm.intAf F E)) :
     frGL β y * β = β * intGL F E n y := by
@@ -87,21 +83,19 @@ theorem frGL_mul (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (y : GL (Fi
   group
 
 /- English proof (translation)
-Establish `key : ∀ {γ δ : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)}, IsFrame γ Λ → IsFrame δ Λ → ∀ i j, ((γ⁻¹ * δ : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) i j ∈ Formalism.L2.Herm.intAf F E`. Introduce `γ δ hγ hδ i j`. Use `set v : Fin n → E ⊗[F] Formalism.L2.Herm.Af F := (δ : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)).mulVec (Pi.single j 1) with hv`. Establish `hvL : v ∈ Formalism.L2.Herm.hatL (F` using `F) Λ := by`. Rewrite using `[hδ v]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Rewrite using `[hv, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Break down `eq_or_ne k j with hk | hk` into its components or cases. Substitute `hk` using the available equality. Simplify using `only [Pi.single_eq_same]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `Subring.one_mem _`. Simplify using `only [Pi.single_eq_of_ne hk]`. Conclude with `Subring.zero_mem _`. Establish `hi` using `(hγ v).1 hvL i`. Rewrite `hi` using `[hv, Matrix.mulVec_mulVec, Matrix.mulVec_single_one, ← Units.val_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Simplify `hi` using `[Matrix.transpose_apply]`. Set `M : Matrix (Fin n) (Fin n) (Formalism.L2.Herm.intAf F E)` to `fun i j => ⟨_, key h₁ h₂ i j⟩`. Set `N : Matrix (Fin n) (Fin n) (Formalism.L2.Herm.intAf F E)` to `fun i j => ⟨_, key h₂ h₁ i j⟩`. Establish `hM : M.map (Formalism.L2.Herm.intAf F E).subtype = ((β₁⁻¹ * β₂ : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))`. Use extensionality with `i j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Both sides reduce to the same expression. Establish `hN : N.map (Formalism.L2.Herm.intAf F E).subtype = ((β₂⁻¹ * β₁ : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))`. Use extensionality with `i j`. Both sides reduce to the same expression. Establish `hinj : Function.Injective (fun A : Matrix (Fin n) (Fin n) (Formalism.L2.Herm.intAf F E) => A.map (Formalism.L2.Herm.intAf F E).subtype)` using `Matrix.map_injective Subtype.val_injective`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hone : (1 : Matrix (Fin n) (Fin n) (Formalism.L2.Herm.intAf F E)).map (Formalism.L2.Herm.intAf F E).subtype = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hMN : M * N = 1` using `hinj (by`. Simplify using `only [Matrix.map_mul, hM, hN, hone, ← Units.val_mul]`. Rewrite using `[show β₁⁻¹ * β₂ * (β₂⁻¹ * β₁) = 1 by group, Units.val_one])`. Establish `hNM : N * M = 1` using `hinj (by`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.map_mul, hM, hN, hone, ← Units.val_mul]`. Rewrite using `[show β₂⁻¹ * β₁ * (β₁⁻¹ * β₂) = 1 by group, Units.val_one])`. Use `⟨⟨M, N, hMN, hNM⟩, ?_⟩` and prove the remaining obligations. Establish `hm : intGL F E n ⟨M, N, hMN, hNM⟩ = β₁⁻¹ * β₂` using `by ext1`. Rewrite using `[← hM]`.
-
-Conclude with `Formalism.UG.P.bc_coe _ _`. Rewrite using `[hm]`. Use `group`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_intGL_of_isFrame {β₁ β₂ : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} {Λ : Submodule (𝓞 E) (Fin n → E)}
     (h₁ : IsFrame β₁ Λ) (h₂ : IsFrame β₂ Λ) : ∃ m : GL (Fin n) (Formalism.L2.Herm.intAf F E), β₂ = β₁ * intGL F E n m := by
@@ -160,19 +154,17 @@ end General
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D V Pg hPg β₁ β₂ h₁ h₂`. Take `⟨m, hm⟩` from `exists_intGL_of_isFrame h₁ h₂`. Take `⟨β₀, ⟨c, h₀⟩, -⟩` from `GlobalTheory.StdFrames.exists_frame_std V`. Establish `hB : IsBaseFrame V β₁ (Formalism.L2.Herm.crdLat V V.L0) (1 ^ c)` using `⟨h₁, h₀.2⟩`. Establish `hloc : ∀ PP, ∃ κ : GA D V, κ ∈ GfC V ∧ finE V κ ∈ St β₁ ∧ (PP ∈ Pg → redFn β₁ PP (finE V κ) = Formalism.UG.bc (resS D.host.F PP) m) ∧ ∀ P', P' ≠ PP → (PP ∈ Pg → ¬ IsConjPl (D` using `D) PP P') → redFn β₁ P' (finE V κ) = 1 := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `PP`. Distinguish the cases in `hPP : PP ∈ Pg`. Take `⟨e, he⟩` from `GlobalTheory.ParahoricLift.exists_isIdemAt (hPg PP hPP PP hPP)`. Take `⟨κ, -, k1, k2, k3, k4⟩` from `GlobalTheory.ParahoricLift.exists_local_lift hB he (Formalism.UG.bc (resS D.host.F PP) m)`. Conclude with `⟨κ, k1, k2, fun _ => k3, fun P' hP' hc => k4 P' hP' (hc hPP)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨1, Subgroup.one_mem _, ?_, fun h => absurd h hPP, fun P' _ _ => ?_⟩` and prove the remaining obligations. Rewrite using `[map_one]`. Conclude with `Subgroup.one_mem _`. Rewrite using `[map_one]`. Conclude with `blockDiagonalExtendByOnePrimeField_one (St β₁) (redAt β₁ P')`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose κ hκG hκS hκR hκO using hloc`. Establish `hprod` using `GlobalTheory.ParahoricLift.redFn_list_prod V β₁ (Pg.toList.map κ) (by`. Introduce `g hg`. Take `⟨b, -, rfl⟩` from `List.mem_map.1 hg`. Conclude with `hκS b)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hred : ∀ PP ∈ Pg, redFn β₁ PP (finE V (Pg.toList.map κ).prod) = Formalism.UG.bc (resS D.host.F PP) m`. Introduce `PP hPP`. Establish `hs` using `GlobalTheory.ParahoricLift.prod_map_single (Finset.nodup_toList Pg) (Finset.mem_toList.2 hPP) (fun b => redFn β₁ PP (finE V (κ b))) (fun b hb => hκO b PP (Ne.symm hb) (fun hbP => hPg b hbP PP hPP))`. Rewrite using `[hprod.2 PP, List.map_map]`. Conclude with `hs.trans (hκR PP hPP)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨z, hz⟩` from `MonoidHom.mem_range.1 hprod.1`. Use `⟨(Pg.toList.map κ).prod, (GfC V).list_prod_mem (by` and prove the remaining obligations. Introduce `g hg`. Take `⟨b, -, rfl⟩` from `List.mem_map.1 hg`. Conclude with `hκG b), GlobalTheory.StabLatInv.isFrame_mul_of_mem_St β₁ _ _ h₁ hprod.1, ?_⟩`.
-
-Introduce `PP hPP x`. Establish `hz' : Formalism.UG.bc (resS D.host.F PP) z = Formalism.UG.bc (resS D.host.F PP) m`. Rewrite using `[← redFn_frGL β₁ PP z, hz]`. Conclude with `hred PP hPP`. Rewrite using `[← hz, frGL_mul, hm, redFn_mul_intGL, redFn_mul_intGL, hz']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frames_match : ∀ {D : D7} (V : HSp D) (Pg : Finset (Pl D.host.E)), (∀ PP ∈ Pg, ∀ PP' ∈ Pg, ¬ IsConjPl (D := D) PP PP') → ∀ β₁ β₂ : GL (Fin V.rank) (EAf D), IsFrame β₁ (Formalism.L2.Herm.crdLat V V.L0) → IsFrame β₂ (Formalism.L2.Herm.crdLat V V.L0) → ∃ u ∈ GfC V, IsFrame (finE V u * β₁) (Formalism.L2.Herm.crdLat V V.L0) ∧ ∀ PP ∈ Pg, ∀ x, redFn (finE V u * β₁) PP x = redFn β₂ PP x := by
   classical

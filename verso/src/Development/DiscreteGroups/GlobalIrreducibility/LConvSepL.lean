@@ -11,7 +11,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {ψ : AddChar k Circle}
 
 /- English proof (translation)
-Take `⟨K₁, h1o, -, h1⟩` from `exists_fix y`. Take `⟨K₂, h2o, -, h2⟩` from `exists_fix z`. Take `⟨K, hK, hsub⟩` from `exists_good hψ (Filter.inter_mem (h1o.mem_nhds K₁.one_mem) (h2o.mem_nhds K₂.one_mem))`. Conclude with `⟨K, hK, fun κ hκ => ⟨h1 κ (hsub hκ).1, h2 κ (hsub hκ).2⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_good_fix (hψ : Continuous ψ) (y z : WT (m := m) ψ) : ∃ K : Subgroup (GL (Fin m) k), Good ψ K ∧
     ∀ κ ∈ K, rhoW ψ κ y = y ∧ rhoW ψ κ z = z := by
@@ -27,9 +27,9 @@ def lamK (I : (GL (Fin m) k → ℂ) →ₗ[ℂ] ℂ) (B : WT (m := m) ψ →ₗ
   B y (delta ψ K) / cK ψ I K
 
 /- English proof (translation)
-Establish `h1 : ∀ κ ∈ K, ∀ x, B y (rhoW ψ κ x) = B y x` using `fun κ hκ x => by`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : ∀ κ ∈ K, ∀ x, formI ψ I (delta ψ K) (rhoW ψ κ x) = formI ψ I (delta ψ K) x` using `fun κ hκ x => by`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[rhoW_delta hκ]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = _ := (isInvForm_formI hI).2.2 κ _ x`. Establish `h` using `delta_avg hK hK' hle (B y) (formI ψ I (delta ψ K)) h1 h2`. Rewrite `h` using `[formI_delta_le I hK hK' hle]`. Rewrite using `[lamK, lamK, div_eq_div_iff (cK_ne_zero hI hK') (cK_ne_zero hI hK)]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lamK_mono {I : (GL (Fin m) k → ℂ) →ₗ[ℂ] ℂ} (hI : PosInt I)
     {B : WT (m := m) ψ →ₗ⋆[ℂ] WT (m := m) ψ →ₗ[ℂ] ℂ} (hB : IsInvForm (rhoW ψ) B)
@@ -48,7 +48,7 @@ theorem lamK_mono {I : (GL (Fin m) k → ℂ) →ₗ[ℂ] ℂ} (hI : PosInt I)
   exact h
 
 /- English proof (translation)
-Take `⟨K, hK, hsub⟩` from `exists_good hψ (Filter.inter_mem (h1.1.mem_nhds K₁.one_mem) (h2.1.mem_nhds K₂.one_mem))`. Rewrite using `[← lamK_mono hI hB h1 hK (fun x hx => (hsub hx).1) hy1, lamK_mono hI hB h2 hK (fun x hx => (hsub hx).2) hy2]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem lamK_eq (hψ : Continuous ψ) {I : (GL (Fin m) k → ℂ) →ₗ[ℂ] ℂ} (hI : PosInt I)
     {B : WT (m := m) ψ →ₗ⋆[ℂ] WT (m := m) ψ →ₗ[ℂ] ℂ} (hB : IsInvForm (rhoW ψ) B)
@@ -65,7 +65,7 @@ def lam (hψ : Continuous ψ) (I : (GL (Fin m) k → ℂ) →ₗ[ℂ] ℂ)
   lamK ψ I B (Classical.choose (exists_good_fix hψ y y)) y
 
 /- English proof (translation)
-Establish `h` using `Classical.choose_spec (exists_good_fix hψ y y)`. Conclude with `lamK_eq hψ hI hB h.1 hK (fun κ hκ => (h.2 κ hκ).1) hy`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lam_eq (hψ : Continuous ψ) {I : (GL (Fin m) k → ℂ) →ₗ[ℂ] ℂ} (hI : PosInt I)
     {B : WT (m := m) ψ →ₗ⋆[ℂ] WT (m := m) ψ →ₗ[ℂ] ℂ} (hB : IsInvForm (rhoW ψ) B)
@@ -75,7 +75,7 @@ theorem lam_eq (hψ : Continuous ψ) {I : (GL (Fin m) k → ℂ) →ₗ[ℂ] ℂ
   exact lamK_eq hψ hI hB h.1 hK (fun κ hκ => (h.2 κ hκ).1) hy
 
 /- English proof (translation)
-Take `⟨K, hK, hKf⟩` from `exists_good_fix hψ y z`. Rewrite using `[lam_eq hψ hI hB hK (fun κ hκ => by rw [map_add, (hKf κ hκ).1, (hKf κ hκ).2]), lam_eq hψ hI hB hK (fun κ hκ => (hKf κ hκ).1), lam_eq hψ hI hB hK (fun κ hκ => (hKf κ hκ).2)]`. Simplify using `only [lamK, map_add, LinearMap.add_apply, add_div]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lam_add (hψ : Continuous ψ) {I : (GL (Fin m) k → ℂ) →ₗ[ℂ] ℂ} (hI : PosInt I)
     {B : WT (m := m) ψ →ₗ⋆[ℂ] WT (m := m) ψ →ₗ[ℂ] ℂ} (hB : IsInvForm (rhoW ψ) B) (y z : WT (m := m) ψ) :
@@ -86,7 +86,7 @@ theorem lam_add (hψ : Continuous ψ) {I : (GL (Fin m) k → ℂ) →ₗ[ℂ] �
   simp only [lamK, map_add, LinearMap.add_apply, add_div]
 
 /- English proof (translation)
-Take `⟨K, hK, hKf⟩` from `exists_good_fix hψ y y`. Rewrite using `[lam_eq hψ hI hB hK (fun κ hκ => by rw [map_smul, (hKf κ hκ).1]), lam_eq hψ hI hB hK (fun κ hκ => (hKf κ hκ).1)]`. Simplify using `only [lamK, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, mul_div_assoc]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lam_smul (hψ : Continuous ψ) {I : (GL (Fin m) k → ℂ) →ₗ[ℂ] ℂ} (hI : PosInt I)
     {B : WT (m := m) ψ →ₗ⋆[ℂ] WT (m := m) ψ →ₗ[ℂ] ℂ} (hB : IsInvForm (rhoW ψ) B) (a : ℂ) (y : WT (m := m) ψ) :

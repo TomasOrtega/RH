@@ -5,7 +5,7 @@ open Formalism.L2.Pj
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `ModelDimension.algebraic_approximation_valued` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FWeilBound%2FCoreStatements%2FCommonZeroEvaluation%2FAlgebraicApproximationValued.lean&line=149#L149)
 -/

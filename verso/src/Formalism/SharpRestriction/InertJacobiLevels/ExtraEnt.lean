@@ -89,7 +89,7 @@ def thDataZero (D : D7) : ThData D where
   thetaBase_invariant_action := fun _ _ _ _ h => absurd h (Set.notMem_empty _)
 
 /- English proof (translation)
-Establish `h2` using `congrArg (iotaOk D i 1) h`. Rewrite `h2` using `[map_mul, iotaOk_alg, iotaOk_alg]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem embAt_frac (D : D7) (hLL0 : ∀ x : D.what₂.LL, x ∈ D.LL0) (i : D.ntw.Tw) (x : D.LL0) (y z : D.ntw.O0 i)
     (h : D.ntw.emb0 i x * algebraMap (D.ntw.O0 i) (FractionRing (D.ntw.O0 i)) z =
@@ -103,7 +103,7 @@ theorem embAt_frac (D : D7) (hLL0 : ∀ x : D.what₂.LL, x ∈ D.LL0) (i : D.nt
   exact h2
 
 /- English proof (translation)
-Establish `h2` using `congrArg (iotaOk D i 1) h`. Rewrite `h2` using `[map_mul, iotaOk_alg, iotaOk_alg]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem embAtB_frac (D : D7) (hLL0 : ∀ x : D.what₂.LL, x ∈ D.LL0) (i : D.ntw.Tw) (x : D.LL0) (y z : D.ntw.O0 i)
     (h : D.ntw.emb0b i x * algebraMap (D.ntw.O0 i) (FractionRing (D.ntw.O0 i)) z =
@@ -118,11 +118,11 @@ theorem embAtB_frac (D : D7) (hLL0 : ∀ x : D.what₂.LL, x ∈ D.LL0) (i : D.n
 
 open Classical in
 /- English proof (translation)
-Distinguish the cases in `hr : repW D w = w`. Establish `hs : (nchEmbOf D hLL0 hc).sd w = true` using `decide_eq_true hr`. Establish `he : (nchEmbOf D hLL0 hc).embW w = embAt D hLL0 ((nchEmbOf D hLL0 hc).twI w)` using `if_pos hr`. Rewrite `h` using `[if_pos hs]`. Rewrite using `[he]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `embAt_frac D hLL0 _ x y z h`. Establish `hs : ¬ (nchEmbOf D hLL0 hc).sd w = true`. Establish `: (nchEmbOf D hLL0 hc).sd w = false` using `decide_eq_false hr`. Rewrite using `[this]`. Conclude with `Bool.false_ne_true`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `he : (nchEmbOf D hLL0 hc).embW w = embAtB D hLL0 ((nchEmbOf D hLL0 hc).twI w)` using `if_neg hr`. Rewrite `h` using `[if_neg hs]`. Rewrite using `[he]`. Conclude with `embAtB_frac D hLL0 _ x y z h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nchEmbOf_frac (D : D7) (hLL0 : ∀ x : D.what₂.LL, x ∈ D.LL0) (hc : NTw.TwCover D.ntw) (w : D.what₂.places.Pl)
     (x : D.LL0) (y z : D.ntw.O0 ((nchEmbOf D hLL0 hc).twI w))
@@ -154,7 +154,7 @@ theorem nchEmbOf_frac (D : D7) (hLL0 : ∀ x : D.what₂.LL, x ∈ D.LL0) (hc : 
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `a` and use `isEmptyElim a twSide_eq := fun a => isEmptyElim a Q_eq := fun a => isEmptyElim a psi_eq := ⟨fun _ => 1, fun _ => rfl, fun w _ => (map_one ((nchEmbOf D hLL0 hc).embW w)).trans (map_one (algebraMap (D.ntw.Ok ((nchEmbOf D hLL0 hc).twI w) 1) (FractionRing (D.ntw.Ok ((nchEmbOf D hLL0 …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem nchTie_zero (D : D7) [∀ μ j, Subsingleton (D.what₂.MtL μ j)]
     [∀ i j b k Q ψ, Subsingleton (D.nexp.MtV i j b k Q ψ)] [IsEmpty D.nd.Loc]

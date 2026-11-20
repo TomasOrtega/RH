@@ -15,7 +15,7 @@ open GlobalTheory.SquareComm
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 namespace GlobalTheory.SquareComm.WeilOfTriple
 /- English proof (translation)
-Introduce `hP D ψ hψ W W₁ X α β h`. Take `⟨⟨ωA, hA⟩, ⟨ωB, hB⟩⟩` from `GlobalTheory.SquareSt.Model.exists_weil_of_isTriple hP.weilRepresentationUnitaryPair hψ h`. Conclude with `⟨ωA, ωB, hA, hB⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_weilPair_of_triple : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (W W₁ X : HSp D) (α β : (AE D)ˣ →* Circle), IsTriple W W₁ X α β →
@@ -39,7 +39,7 @@ open GlobalTheory.SquareComm
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.SquareComm.WeilOfTriple.exists_weilPair_of_triple | exact _root_.GlobalTheory.SquareComm.WeilOfTriple.exists_weilPair_of_triple | (intros; apply _root_.GlobalTheory.SquareComm.WeilOfTriple.exists_weilPair_of_triple <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.weilRepresentation_square_comm : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (W W₁ X : HSp D) (α β : (AE D)ˣ →* Circle), IsTriple W W₁ X α β →

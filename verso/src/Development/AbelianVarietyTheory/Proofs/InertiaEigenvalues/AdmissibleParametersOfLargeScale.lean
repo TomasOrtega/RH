@@ -8,9 +8,9 @@ open NumberField IsDedekindDomain Formalism Formalism.BasicNotions Formalism.Bas
 namespace GlobalTheory.HTW
 
 /- English proof (translation)
-Introduce `eps A heps`. Take `⟨x0, hx0⟩` from `admissible_params_large eps A heps`. Use `⟨x0, fun D L P h1 h2 h3 => ?_⟩` and prove the remaining obligations. Take `⟨⟨hw, hwb, hbb, hT, ht⟩, hS⟩` from `hx0 D L P h1 h2 h3`. Establish `he` using `L.etaSz_pos`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hSc` using `L.Sc_pos`. Establish `htt : (0 : ℝ) ≤ D.R.t` using `Nat.cast_nonneg _`. Use `⟨⟨by linarith, by linarith, fun tt => by linarith [hT tt], ht⟩, hS⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem admissibleParameters_of_large_scale : ∀ eps A : ℝ, 0 < eps → ∃ x0 : ℝ, ∀ (D : D7) (L : SizeData₂ D) (P : ParameterChoice' D L), L.sc.eps = eps → P.CLw ≤ A → x0 ≤ L.sc.x → AdmissibleParameterJ.AdmPar L ∧ EmbeddingTypeJumps.ParametersPolynomiallyBounded L := by
   intro eps A heps

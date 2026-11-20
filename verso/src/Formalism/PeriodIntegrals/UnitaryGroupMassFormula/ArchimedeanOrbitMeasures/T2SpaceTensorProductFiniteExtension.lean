@@ -19,7 +19,7 @@ instance isTopologicalRing_tens : IsTopologicalRing (R ⊗[F] E) :=
   IsModuleTopology.isTopologicalRing R (R ⊗[F] E)
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis R (R ⊗[F] E)`. Set `e : (R ⊗[F] E) ≃ₗ[R] (Module.Free.ChooseBasisIndex R (R ⊗[F] E) → R)` to `b.equivFun`. Use `⟨Module.Free.ChooseBasisIndex R (R ⊗[F] E), inferInstance, ⟨?_⟩⟩` and prove the remaining obligations. Conclude with `{ toEquiv := e.toEquiv continuous_toFun := IsModuleTopology.continuous_of_linearMap e.toLinearMap continuous_invFun := IsModuleTopology.continuous_of_linearMap e.symm.toLinearMap }`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_homeomorph_tens :
     ∃ (ι : Type) (_ : Fintype ι), Nonempty (R ⊗[F] E ≃ₜ (ι → R)) := by
@@ -33,7 +33,7 @@ theorem exists_homeomorph_tens :
       continuous_invFun := IsModuleTopology.continuous_of_linearMap e.symm.toLinearMap }
 
 /- English proof (translation)
-Take `⟨ι, _, ⟨h⟩⟩` from `exists_homeomorph_tens (F := F) (E := E) R`. Conclude with `h.isEmbedding.secondCountableTopology`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem secondCountable_tens [SecondCountableTopology R] : SecondCountableTopology (R ⊗[F] E) := by
   obtain ⟨ι, _, ⟨h⟩⟩ := exists_homeomorph_tens (F := F) (E := E) R
@@ -50,9 +50,9 @@ instance t2Space_tensorProduct_finiteExtension : T2Space (R ⊗[F] E) := by
   exact h.isEmbedding.t2Space
 
 /- English proof (translation)
-Establish `h : ∀ x : R ⊗[F] E, sigR R σ x = (σ.toLinearMap.baseChange R) x`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e => simp [sigR]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Establish `: (sigR R σ : R ⊗[F] E → R ⊗[F] E) = (σ.toLinearMap.baseChange R)` using `funext h`. Rewrite using `[this]`. Conclude with `IsModuleTopology.continuous_of_linearMap _`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_sigR (σ : E →ₐ[F] E) : Continuous (sigR R σ) := by
   have h : ∀ x : R ⊗[F] E, sigR R σ x = (σ.toLinearMap.baseChange R) x := by
@@ -74,9 +74,9 @@ instance t2Space_matrix_tensor : T2Space (Matrix (Fin M) (Fin M) (R ⊗[F] E)) :
   inferInstanceAs (T2Space (Fin M → Fin M → R ⊗[F] E))
 
 /- English proof (translation)
-Establish `hset : (HR R σ J : Set (GL (Fin M) (R ⊗[F] E))) = {g : GL (Fin M) (R ⊗[F] E) | Formalism.UG.cT (sigR R σ) (g : Matrix (Fin M) (Fin M) (R ⊗[F] E)) * JR R J * (g : Matrix (Fin M) (Fin M) (R ⊗[F] E)) = JR R J}` using `rfl`. Rewrite using `[hset]`. Establish `hv : Continuous (fun g : GL (Fin M) (R ⊗[F] E) => (g : Matrix (Fin M) (Fin M) (R ⊗[F] E)))` using `Units.continuous_val`. Use `isClosed_eq ?_ continuous_const` and prove the remaining obligations. Use `Continuous.matrix_mul (Continuous.matrix_mul ?_ continuous_const) hv` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `Formalism.UG.cT`. Conclude with `(hv.matrix_map (continuous_sigR R σ)).matrix_transpose`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isClosed_HR (σ : E →ₐ[F] E) (J : Matrix (Fin M) (Fin M) E) :
     IsClosed (HR R σ J : Set (GL (Fin M) (R ⊗[F] E))) := by
@@ -110,9 +110,9 @@ instance borelSpace_HA (σ : E →ₐ[F] E) (J : Matrix (Fin M) (Fin M) E) :
     BorelSpace (HA R σ J) := ⟨rfl⟩
 
 /- English proof (translation)
-Use `secondCountable_tens (F := F) (E := E) R` as an intermediate fact. Establish `: SecondCountableTopology (Matrix (Fin M) (Fin M) (R ⊗[F] E))` using `inferInstanceAs (SecondCountableTopology (Fin M → Fin M → R ⊗[F] E))`. Establish `: SecondCountableTopology (Matrix (Fin M) (Fin M) (R ⊗[F] E))ᵐᵒᵖ` using `MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology`. Establish `: SecondCountableTopology (GL (Fin M) (R ⊗[F] E))` using `Units.isEmbedding_embedProduct.secondCountableTopology`. Establish `h1 : SecondCountableTopology (HR R σ J)` using `Topology.IsEmbedding.subtypeVal.secondCountableTopology`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem secondCountable_HA [SecondCountableTopology R] (σ : E →ₐ[F] E)
     (J : Matrix (Fin M) (Fin M) E) : SecondCountableTopology (HA R σ J) := by
@@ -128,7 +128,7 @@ theorem secondCountable_HA [SecondCountableTopology R] (σ : E →ₐ[F] E)
   exact h1
 
 /- English proof (translation)
-Establish `hmat : Continuous (fun g : HA R σ J => ((HA.mat R σ J g : GL (Fin M) (R ⊗[F] E)) : Matrix (Fin M) (Fin M) (R ⊗[F] E)))` using `Units.continuous_val.comp continuous_subtype_val`. Use `show Continuous (fun g : HA R σ J => actTup R (HA.mat R σ J g) (ratTup (F := F) R X0))`. Unfold `actTup`. Conclude with `continuous_pi fun i => hmat.matrix_mulVec continuous_const`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_orbit (σ : E →ₐ[F] E) (J : Matrix (Fin M) (Fin M) E) {a : ℕ}
     (X0 : Fin a → Fin M → E) :
@@ -141,7 +141,7 @@ theorem continuous_orbit (σ : E →ₐ[F] E) (J : Matrix (Fin M) (Fin M) E) {a 
   exact continuous_pi fun i => hmat.matrix_mulVec continuous_const
 
 /- English proof (translation)
-Use `secondCountable_tens (F := F) (E := E) R` as an intermediate fact. Establish `: BorelSpace (R ⊗[F] E)` using `⟨rfl⟩`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem borelSpace_tup [SecondCountableTopology R] (a : ℕ) :
     BorelSpace (Fin a → Fin M → R ⊗[F] E) := by
@@ -165,11 +165,11 @@ instance secondCountable_infiniteAdeleRing : SecondCountableTopology (InfiniteAd
   inferInstanceAs (SecondCountableTopology ((v : InfinitePlace F) → v.Completion))
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : LocallyCompactSpace (InfiniteAdeleRing F) := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : IsTopologicalRing (InfiniteAdeleRing F) := inferInstance
 

@@ -14,7 +14,7 @@ namespace GlobalTheory.CM
 abbrev HomExtDvr : Prop := LN.HomExtSt
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem homExtDvr_iff : HomExtDvr ↔
     ∀ (T K : Type) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] [Field K] [Algebra T K] [IsFractionRing T K]
@@ -87,7 +87,7 @@ def IsThetaDeg (x : KeyIn K) (δ : ℝ) : Prop :=
     δ = (∑ᶠ 𝔭, (oa 𝔭 : ℝ) * Real.log (Ideal.absNorm 𝔭.asIdeal) + (1 / 2) * ∑ σ, Real.log (nth σ)) / Module.finrank ℚ K
 
 /- English proof (translation)
-Rewrite using `[logOm, rootDiscr_def, h2, hD, Real.sqrt_eq_rpow]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem logOm_of_finrank_eq_two {d : ℕ} [NeZero d] (h2 : Module.finrank ℚ K = 2) (hD : discr K = -d)
     (χ : DirichletCharacter ℂ d) :
@@ -96,7 +96,7 @@ theorem logOm_of_finrank_eq_two {d : ℕ} [NeZero d] (h2 : Module.finrank ℚ K 
   simp
 
 /- English proof (translation)
-Take `⟨n, hn, rfl⟩` from `hx`. Take `⟨m, hm, rfl⟩` from `hy`. Rewrite using `[show n = m from funext fun s => ((hm s).2 _).1 (((hn s).2 _).2 rfl)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem Ell.HasPeriod.unique {ω : 𝓞 K} {C : Ell H (𝓞 K) ω} {x y : ℝ} (hx : C.HasPeriod x) (hy : C.HasPeriod y) :
     x = y := by
@@ -105,14 +105,14 @@ theorem Ell.HasPeriod.unique {ω : 𝓞 K} {C : Ell H (𝓞 K) ω} {x y : ℝ} (
   rw [show n = m from funext fun s => ((hm s).2 _).1 (((hn s).2 _).2 rfl)]
 
 /- English proof (translation)
-Introduce `y` and use `⟨1, fun _ => (), fun _ => y, by simp⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 example {S : Scheme.{0}} {A : Over S} [GrpObj A] {k : Type} [Field k] (t : Sp k ⟶ S) :
     OntoAt (B := fun _ : Unit => A) (fun _ => 𝟙 A) t :=
   fun y => ⟨1, fun _ => (), fun _ => y, by simp⟩
 
 /- English proof (translation)
-Use `forall_congr' fun y => ⟨?_, fun h => ⟨0, Fin.elim0, fun m => m.elim0, by simpa using h⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨_ | n, i, x, h⟩`. Simplify using `using h`. Conclude with `(i 0).elim`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 example {S : Scheme.{0}} {A : Over S} [GrpObj A] {k : Type} [Field k] (t : Sp k ⟶ S) {B : Empty → Over S}
     (φ : ∀ i, B i ⟶ A) : OntoAt φ t ↔ ∀ y : Over.mk t ⟶ A, y = 1 := by
@@ -122,9 +122,9 @@ example {S : Scheme.{0}} {A : Over S} [GrpObj A] {k : Type} [Field k] (t : Sp k 
   · exact (i 0).elim
 
 /- English proof (translation)
-Take `⟨nth, nη, hn⟩` from `KeyPow.exists_archNorms hU x`. Use `⟨nth, 0, nth, fun 𝔭 => ?_, fun σ => ?_, by simp, by simp⟩` and prove the remaining obligations. Take `⟨M, hM⟩` from `h 𝔭`. Conclude with `⟨1, M, hM, by simp⟩`. Take `⟨x', h₁, h₂⟩` from `hn σ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨x', _, h₁, h₂⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_isThetaDeg_of_isLocalModel (hU : ThetaUnifAV) (x : KeyIn K)
     (h : ∀ 𝔭, ∃ M, KeyPow.IsLocalModel x 𝔭 1 M) :
@@ -141,7 +141,7 @@ namespace CMLat
 variable {D : Datum H} {g : ℕ} {ty : Fin g → (E →+* ℂ)} {Pe : D.La →+ (Fin g → ℂ)} {hP : IsPeriod D ty Pe} {p q : ℕ}
 
 /- English proof (translation)
-Rewrite using `[(Z.D₁ b).rank]`. Consider the cases of `b`. Rewrite using `[Z.sigM.1, Z.sigM.2]`. Rewrite using `[Z.sigP.1, Z.sigP.2]`.
+Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_D₁ (Z : CMLat hP p q) (b : Bool) : Module.finrank (𝓞 E) (Z.D₁ b).La = 1 := by
   rw [(Z.D₁ b).rank]
@@ -150,11 +150,9 @@ theorem finrank_D₁ (Z : CMLat hP p q) (b : Bool) : Module.finrank (𝓞 E) (Z.
   · rw [Z.sigP.1, Z.sigP.2]
 
 /- English proof (translation)
-Use `D₁.fin` as an intermediate fact. Use `D₁.proj` as an intermediate fact. Establish `hn : ¬ LinearIndependent (𝓞 E) ![a, b]` using `fun hi => by`. Use `hi.fintype_card_le_finrank` as an intermediate fact. Simplify using `[h] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `hn` using `[LinearIndependent.pair_iff]`. Use `push Not at hn`. Take `⟨s, r, e, hne⟩` from `hn`. Use `⟨r, -s, fun hr => ?_, by rw [neg_smul]; exact eq_neg_of_add_eq_zero_right e⟩` and prove the remaining obligations. Rewrite `e` using `[hr, zero_smul, add_zero, smul_eq_zero]`.
-
-Conclude with `hne (e.resolve_right ha) hr`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_smul_eq_smul {D₁ : Datum H} (h : Module.finrank (𝓞 E) D₁.La = 1) {a : D₁.La} (ha : a ≠ 0) (b : D₁.La) :
     ∃ r s : 𝓞 E, r ≠ 0 ∧ r • b = s • a := by
@@ -171,21 +169,19 @@ theorem exists_smul_eq_smul {D₁ : Datum H} (h : Module.finrank (𝓞 E) D₁.L
   exact hne (e.resolve_right ha) hr
 
 /- English proof (translation)
-Use `D.fin` as an intermediate fact. Use `D.proj` as an intermediate fact. Establish `hnt : ∀ b, Nontrivial (Z.D₁ b).La` using `fun b => Module.nontrivial_of_finrank_pos (R := 𝓞 E) (by rw [Z.finrank_D₁]; exact one_pos)`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a₀ h₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `ha₀`. Use `choose a ha using fun b => exists_ne (0 : (Z.D₁ b).La)`. Set `N` to `Submodule.span (𝓞 E) (Set.range fun i : {i // i ≠ j} => Z.f i.1 (a _))`. Establish `hN : Module.finrank (𝓞 E) N ≤ p + q - 1`. Use `finrank_range_le_card (R := 𝓞 E) fun i : {i // i ≠ j} => Z.f i.1 (a _)` as an intermediate fact.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[Set.finrank]`. Establish `ht : ∀ i x, N.mkQ (Z.f i x) ∈ Submodule.torsion (𝓞 E) (D.La ⧸ N)` using `fun i x => by`. Distinguish the cases in `hi : i = j`. Substitute `hi` using the available equality. Take `⟨r, s, hr, e⟩` from `exists_smul_eq_smul (Z.finrank_D₁ _) ha₀ x`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨⟨r, mem_nonZeroDivisors_of_ne_zero hr⟩, by`. Rewrite using `[Submonoid.mk_smul, ← map_smul, ← map_smul, e, map_smul, h₀, smul_zero, map_zero]⟩`. Take `⟨r, s, hr, e⟩` from `exists_smul_eq_smul (Z.finrank_D₁ _) (ha i.isLeft) x`. Conclude with `⟨⟨r, mem_nonZeroDivisors_of_ne_zero hr⟩, by`. Rewrite using `[Submonoid.mk_smul, ← map_smul, ← map_smul, e, map_smul]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Submodule.Quotient.mk_eq_zero N).2 (N.smul_mem _ (Submodule.subset_span ⟨⟨i, hi⟩, rfl⟩))⟩`. Establish `htor : Module.IsTorsion (𝓞 E) (D.La ⧸ N)` using `fun y => by`. Take `⟨y, rfl⟩` from `N.mkQ_surjective y`. Take `⟨n, hn, hs⟩` from `Z.span`. Take `⟨x, hx⟩` from `hs y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: N.mkQ (n • y) ∈ Submodule.torsion (𝓞 E) (D.La ⧸ N)`. Rewrite using `[hx, map_sum]`. Conclude with `Submodule.sum_mem _ fun i _ => ht i _`. Take `⟨r, hr⟩` from `this`. Use `⟨r * ⟨n, mem_nonZeroDivisors_of_ne_zero (by exact_mod_cast hn.ne')⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[mul_smul, Submonoid.mk_smul ((n : ℕ) : 𝓞 E), Nat.cast_smul_eq_nsmul, ← map_nsmul, hr]`. Establish `h1` using `Submodule.finrank_quotient_add_finrank N`. Rewrite `h1` using `[Module.finrank_eq_zero_iff_isTorsion.2 htor, D.rank]`. Establish `: 0 < Fintype.card (Fin p ⊕ Fin q)` using `Fintype.card_pos_iff.2 ⟨j⟩`. Simplify using `at this`.
-
-Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem f_injective (Z : CMLat hP p q) (hpq : p + q = D.p + D.q) (j : Fin p ⊕ Fin q) : Function.Injective (Z.f j) := by
   classical
@@ -228,7 +224,7 @@ theorem f_injective (Z : CMLat hP p q) (hpq : p + q = D.p + D.q) (j : Fin p ⊕ 
   omega
 
 /- English proof (translation)
-Establish `: Nontrivial (Z.D₁ j.isLeft).La` using `Module.nontrivial_of_finrank_pos (R := 𝓞 E) (by rw [Z.finrank_D₁]; exact one_pos)`. Take `⟨a, ha⟩` from `exists_ne (0 : (Z.D₁ j.isLeft).La)`. Introduce `h`. Apply the tactic sequence `refine PureType.form_w0_ne_zero hP (by split_ifs <;> simp [H.sqrt_neg_disc_sq]) (Z.pure j a) (fun e => ha (Z.f_injective hpq j (e.trans (map_zero _).symm))) ?_`. Rewrite using `[← map_smul, Z.form, h, zero_smul, map_zero, LinearMap.zero_apply]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem hh_ne_zero (Z : CMLat hP p q) (hpq : p + q = D.p + D.q) (j : Fin p ⊕ Fin q) : Z.hh j ≠ 0 := by
   have : Nontrivial (Z.D₁ j.isLeft).La :=
@@ -286,9 +282,9 @@ def ofNegative (hp : D.p = 0) (hq : D.q = 1) (hP : IsPeriod D ty Pe) (hty : IsTy
     | .inr _ => a, by simp; rfl⟩⟩
 
 /- English proof (translation)
-Take `⟨g, ty, Pe, hty, hP⟩` from `exists_type_period D`. Establish `key : ∀ p q, D.p = p → D.q = q → p + q = 1 → ∃ Z : CMLat hP p q, ∀ j, Z.hh j = 1`. Introduce `p q hp hq hpq`. Rewrite `hty` using `[hp, hq]`. Take `⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ : (1 = p ∧ 0 = q) ∨ (0 = p ∧ 1 = q)` from `by omega`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨ofPositive hp hq hP hty, fun _ => rfl⟩`. Conclude with `⟨ofNegative hp hq hP hty, fun _ => rfl⟩`. Take `⟨Z, hZ⟩` from `key _ _ rfl rfl h`. Conclude with `⟨g, ty, Pe, hP, Z, hty, Module.nontrivial_of_finrank_pos (R := 𝓞 E) (by rw [D.rank, h]; exact one_pos), fun j => ⟨Z.f_injective rfl j, hZ j⟩⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_of_rank_one (D : Datum H) (h : D.p + D.q = 1) :
     ∃ (g : ℕ) (ty : Fin g → (E →+* ℂ)) (Pe : D.La →+ (Fin g → ℂ)) (hP : IsPeriod D ty Pe) (Z : CMLat hP D.p D.q),
@@ -305,7 +301,7 @@ theorem exists_of_rank_one (D : Datum H) (h : D.p + D.q = 1) :
     fun j => ⟨Z.f_injective rfl j, hZ j⟩⟩
 
 /- English proof (translation)
-Take `⟨D, e, hp, hq, -⟩` from `PrincipalDatum.exists_datum E H 𝔞 hfg hne hd`. Take `⟨g, ty, Pe, hP, Z, h₁, -, h₂⟩` from `exists_of_rank_one D (by omega)`. Conclude with `⟨D, e, g, ty, Pe, hP, Z, hp, hq, h₁, h₂⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_of_selfDual (𝔞 : Submodule (𝓞 E) E) (hfg : 𝔞.FG) (hne : 𝔞 ≠ ⊥)
     (hd : ∀ y : E, y ∈ 𝔞 ↔ ∀ x ∈ 𝔞, ∃ n : ℤ, Algebra.trace ℚ E (x * IsCMField.complexConj E y / (H.rt : E)) = n) :
@@ -317,9 +313,9 @@ theorem exists_of_selfDual (𝔞 : Submodule (𝓞 E) E) (hfg : 𝔞.FG) (hne : 
   exact ⟨D, e, g, ty, Pe, hP, Z, hp, hq, h₁, h₂⟩
 
 /- English proof (translation)
-Take `⟨D, hp, hq⟩` from `CyclotomicTwentyEight.exists_datum`. Choose the witnesses or unpack the hypotheses as in `⟨D', hp', hq'⟩ : ∃ D' : Datum CyclotomicTwentyEight.host, D'.p = p ∧ D'.q = q := by`. Take `⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ : (1 = p ∧ 0 = q) ∨ (0 = p ∧ 1 = q)` from `by omega`. Conclude with `⟨D, hp, hq⟩`. Conclude with `⟨oppDatum D, hq, hp⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Take `⟨g, ty, Pe, hP, Z, h₁⟩` from `exists_of_rank_one D' (by omega)`. Conclude with `⟨D', g, ty, Pe, hP, Z, hp', hq', h₁⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_cyclotomic (p q : ℕ) (h : p + q = 1) :
     ∃ (D : Datum CyclotomicTwentyEight.host) (g : ℕ) (ty : Fin g → (CyclotomicTwentyEight.CyclotomicFieldTwentyEight →+* ℂ)) (Pe : D.La →+ (Fin g → ℂ))

@@ -3,7 +3,7 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IteratedDerivGa
 import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.HolomorphicContinuation.GlobData
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.DilFam.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FIteratedDerivGaussianExponentialAtZero.lean&line=196#L196)
 -/

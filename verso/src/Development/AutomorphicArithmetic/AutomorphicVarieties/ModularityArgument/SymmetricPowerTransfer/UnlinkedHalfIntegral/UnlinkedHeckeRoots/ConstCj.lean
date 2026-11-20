@@ -6,11 +6,11 @@ open Finset UpperTheory.V.Sd
 namespace UpperTheory.V.Z.Sym.Unl
 
 /- English proof (translation)
-Establish `hi : (χ⁻¹).IsPrimitive`. Rewrite using `[DirichletCharacter.isPrimitive_def, DirichletCharacter.conductor_inv]`. Conclude with `hχ`. Establish `h1 : ZMod.dft (χ : ZMod N → ℂ) = fun k => χ⁻¹ (-k) * gaussSum χ ZMod.stdAddChar`. Use function extensionality and compare the values at `fun k => hχ.fourierTransform_eq_inv_mul_gaussSum k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h2` using `congrFun (ZMod.dft_dft (χ : ZMod N → ℂ)) (-1)`. Rewrite `h2` using `[h1, ZMod.dft_mul_const (fun k => χ⁻¹ (-k)), ZMod.dft_comp_neg (fun k => χ⁻¹ k)]`. Simplify using `only [neg_neg, map_one, smul_eq_mul, mul_one] at h2`. Establish `h3` using `hi.fourierTransform_eq_inv_mul_gaussSum 1`. Rewrite `h3` using `[inv_inv]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : ZMod.dft (fun k => χ⁻¹ k) 1 = χ (-1) * gaussSum χ⁻¹ ZMod.stdAddChar` using `h3`. Rewrite `h2` using `[h4]`. Rewrite using `[← h2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem gauss_mul_gauss_inv {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hχ : χ.IsPrimitive) :
     gaussSum χ ZMod.stdAddChar * gaussSum χ⁻¹ ZMod.stdAddChar * χ (-1) = N := by
@@ -28,7 +28,7 @@ private theorem gauss_mul_gauss_inv {N : ℕ} [NeZero N] (χ : DirichletCharacte
   rw [← h2]; ring
 
 /- English proof (translation)
-Introduce `h`. Use `gauss_mul_gauss_inv χ hχ` as an intermediate fact. Rewrite `this` using `[h, mul_zero, zero_mul]`. Conclude with `(NeZero.ne N) (by exact_mod_cast this.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem gauss_inv_ne {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (hχ : χ.IsPrimitive) :
     gaussSum χ⁻¹ ZMod.stdAddChar ≠ 0 := by
@@ -38,7 +38,7 @@ private theorem gauss_inv_ne {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N
   exact (NeZero.ne N) (by exact_mod_cast this.symm)
 
 /- English proof (translation)
-Unfold `Lk`. Rewrite using `[map_div₀, map_pow, map_sub, map_one]`. Use `congr 1`. Conclude with `(Polynomial.aeval_algHom_apply (σ.toRingHom.toIntAlgHom) x (numL k)).symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem map_Lk (σ : ℂ ≃+* ℂ) (k : ℕ) (x : ℂ) : σ (Lk k x) = Lk k (σ x) := by
   unfold Lk
@@ -47,7 +47,7 @@ private theorem map_Lk (σ : ℂ ≃+* ℂ) (k : ℕ) (x : ℂ) : σ (Lk k x) = 
   exact (Polynomial.aeval_algHom_apply (σ.toRingHom.toIntAlgHom) x (numL k)).symm
 
 /- English proof (translation)
-Rewrite using `[MulChar.inv_apply, MulChar.inv_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem cj_inv_apply {N : ℕ} (σ : ℂ ≃+* ℂ) (χ : DirichletCharacter ℂ N) (a : ZMod N) :
     σ (χ⁻¹ a) = (cj σ χ)⁻¹ a := by
@@ -55,7 +55,7 @@ private theorem cj_inv_apply {N : ℕ} (σ : ℂ ≃+* ℂ) (χ : DirichletChara
   rfl
 
 /- English proof (translation)
-Rewrite using `[map_sum, Finset.mul_sum]`. Use `Fintype.sum_equiv (Units.mulLeft s) _ _ fun a => ?_` and prove the remaining obligations. Establish `hu : (Units.mulLeft s a : ZMod N) = (s : ZMod N) * a` using `rfl`. Rewrite using `[map_mul, hF, hs, cj_inv_apply, hu, ← mul_assoc, ← map_mul, ← mul_assoc, Units.inv_mul, one_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sum_conj {N : ℕ} [NeZero N] (σ : ℂ ≃+* ℂ) (χ : DirichletCharacter ℂ N) (s : (ZMod N)ˣ)
     (hs : ∀ b : ZMod N, σ (ZMod.stdAddChar b : ℂ) = (ZMod.stdAddChar ((s : ZMod N) * b) : ℂ))
@@ -68,13 +68,11 @@ private theorem sum_conj {N : ℕ} [NeZero N] (σ : ℂ ≃+* ℂ) (χ : Dirichl
   rw [map_mul, hF, hs, cj_inv_apply, hu, ← mul_assoc, ← map_mul, ← mul_assoc, Units.inv_mul, one_mul]
 
 /- English proof (translation)
-Introduce `N k _ hN χ hχ σ c c' h1 h2`. Take `⟨s, hs, -⟩` from `eisCj N hN σ`. Establish `hG` using `sum_conj σ χ s hs id (fun _ => rfl)`. Establish `hS` using `sum_conj σ χ s hs (Lk k) (map_Lk σ k)`. Simplify using `only [id] at hG`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hG' : σ (gaussSum χ⁻¹ ZMod.stdAddChar) = (cj σ χ)⁻¹ ((s⁻¹ : (ZMod N)ˣ) : ZMod N) * gaussSum (cj σ χ)⁻¹ ZMod.stdAddChar` using `hG`. Establish `hne : (cj σ χ)⁻¹ ((s⁻¹ : (ZMod N)ˣ) : ZMod N) * gaussSum (cj σ χ)⁻¹ ZMod.stdAddChar ≠ 0`. Rewrite using `[← hG']`. Conclude with `(map_ne_zero σ).2 (gauss_inv_ne χ hχ)`. Establish `h3` using `congrArg σ h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[hS, ← h2, map_mul, map_mul, hG', map_ofNat]`. Establish `h4 : ((cj σ χ)⁻¹ ((s⁻¹ : (ZMod N)ˣ) : ZMod N) * gaussSum (cj σ χ)⁻¹ ZMod.stdAddChar) * (2 * σ c) = ((cj σ χ)⁻¹ ((s⁻¹ : (ZMod N)ˣ) : ZMod N) * gaussSum (cj σ χ)⁻¹ ZMod.stdAddChar) * (2 * c')`. Take the linear combination `h3`. Establish `h5` using `mul_left_cancel₀ hne h4`. Establish `h6 : (2 : ℂ) ≠ 0` using `two_ne_zero`.
-
-Conclude with `(mul_left_cancel₀ h6 h5).symm`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem constCj : ConstCj := by
   intro N k _ hN χ hχ σ c c' h1 h2

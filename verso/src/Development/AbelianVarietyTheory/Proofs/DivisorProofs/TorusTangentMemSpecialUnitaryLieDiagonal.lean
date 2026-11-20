@@ -11,11 +11,11 @@ open scoped ComplexConjugate
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Consider the cases of `r with`. Consider the case `zero => simp`. Consider the case `succ n`. Rewrite using `[Fin.sum_univ_castSucc]`. Establish `h1 : ∀ i : Fin n, angles φ i.castSucc = φ ⟨i, by simp⟩`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `i; unfold angles; rw [dif_pos (by simp)]; rfl`. Establish `h2 : angles φ (Fin.last n) = -∑ k, φ k`. Unfold `angles; rw [dif_neg (by simp)]`. Rewrite using `[h2, Finset.sum_congr rfl fun i _ => h1 i]`. Rewrite using `[add_neg_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Fintype.sum_equiv (finCongr (by simp)) _ _ (fun i => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem torusDer_sum_angles (φ : Fin (r - 1) → ℝ) : ∑ a : Fin r, angles φ a = 0 := by
   cases r with
@@ -31,21 +31,21 @@ theorem torusDer_sum_angles (φ : Fin (r - 1) → ℝ) : ∑ a : Fin r, angles �
     exact Fintype.sum_equiv (finCongr (by simp)) _ _ (fun i => rfl)
 
 /- English proof (translation)
-Simplify using `[hermC, dotProduct, mulVec, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem torusDer_hermC_dot (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (u w : Fin r → ℂ) :
     hermC τ G u w = u ⬝ᵥ (G.map τ *ᵥ fun b => conj (w b)) := by
   simp [hermC, dotProduct, mulVec, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Use extensionality with `b`. Simplify using `[mulVec, dotProduct, map_sum]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem torusDer_conj_mulVec (Y : Matrix (Fin r) (Fin r) ℂ) (w : Fin r → ℂ) :
     (fun b => conj ((Y *ᵥ w) b)) = Y.map (starRingEnd ℂ) *ᵥ fun b => conj (w b) := by
   ext b; simp [mulVec, dotProduct, map_sum]
 
 /- English proof (translation)
-Rewrite using `[torusDer_hermC_dot, torusDer_hermC_dot, torusDer_conj_mulVec, ← vecMul_transpose, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, ← dotProduct_add, ← add_mulVec, hK, zero_mulVec, dotProduct_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem torusDer_skew_of_mat (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (Y : Matrix (Fin r) (Fin r) ℂ)
     (hK : Yᵀ * G.map τ + G.map τ * Y.map (starRingEnd ℂ) = 0) (u w : Fin r → ℂ) :
@@ -61,17 +61,15 @@ open Complex
 open scoped ComplexConjugate
 
 /- English proof (translation)
-Establish `e1 : Mᵀ * (Yᵀ * G) * M.map (starRingEnd ℂ) = diagonal d * diagonal s`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = diagonal d * diagonal s := by`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hYM, transpose_mul, diagonal_transpose, ← hJ]`. Simplify using `only [Matrix.mul_assoc]`. Establish `e2 : Mᵀ * (G * Y.map (starRingEnd ℂ)) * M.map (starRingEnd ℂ) = diagonal s * (diagonal d).map (starRingEnd ℂ)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.map_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = diagonal s * (diagonal d).map (starRingEnd ℂ) := by`. Rewrite using `[hYM, Matrix.map_mul, ← hJ]`. Simplify using `only [Matrix.mul_assoc]`. Establish `h2 : Mᵀ * (Yᵀ * G + G * Y.map (starRingEnd ℂ)) * M.map (starRingEnd ℂ) = 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[Matrix.mul_add, Matrix.add_mul, e1, e2]`. Use extensionality with `a b`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using `[diagonal_apply, hd]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `[diagonal_apply, h]`. Establish `hL : (M⁻¹)ᵀ * Mᵀ = 1` using `by rw [← transpose_mul, mul_nonsing_inv _ hu, transpose_one]`. Establish `hR : M.map (starRingEnd ℂ) * (M⁻¹).map (starRingEnd ℂ) = 1`. Rewrite using `[← Matrix.map_mul, mul_nonsing_inv _ hu, Matrix.map_one _ (map_zero _) (map_one _)]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem skewHermitian_of_diagonal_imaginary_frame {r : ℕ} (G M Y : Matrix (Fin r) (Fin r) ℂ) (hu : IsUnit M.det) (d s : Fin r → ℂ)
     (hd : ∀ a, conj (d a) = -d a) (hJ : Mᵀ * G * M.map (starRingEnd ℂ) = diagonal s)
@@ -105,7 +103,7 @@ theorem skewHermitian_of_diagonal_imaginary_frame {r : ℕ} (G M Y : Matrix (Fin
     _ = 0 := by rw [h2, Matrix.mul_zero, Matrix.zero_mul]
 
 /- English proof (translation)
-The claim follows from `skewHermitian_of_diagonal_imaginary_frame G M _ hu d s hd hJ (by rw [Matrix.mul_assoc, nonsing_inv_mul _ hu, Matrix.mul_one])`.
+A detailed English derivation is pending.
 -/
 theorem torusDer_skew_diag {r : ℕ} (G M : Matrix (Fin r) (Fin r) ℂ) (hu : IsUnit M.det) (d s : Fin r → ℂ)
     (hd : ∀ a, conj (d a) = -d a) (hJ : Mᵀ * G * M.map (starRingEnd ℂ) = diagonal s) :
@@ -113,13 +111,13 @@ theorem torusDer_skew_diag {r : ℕ} (G M : Matrix (Fin r) (Fin r) ℂ) (hu : Is
   skewHermitian_of_diagonal_imaginary_frame G M _ hu d s hd hJ (by rw [Matrix.mul_assoc, nonsing_inv_mul _ hu, Matrix.mul_one])
 
 /- English proof (translation)
-Introduce `E _ _ _ r X x hx θ`. Establish `key : ∀ τ : X.Ψ, Matrix.of (torusDer x θ τ) = mat x τ * diagonal (fun c => I * (angles (θ τ) c : ℂ)) * (mat x τ)⁻¹` using `fun τ => rfl`. Use `⟨?_, fun τ a b => ?_⟩` and prove the remaining obligations. Introduce `τ`. Establish `hu` using `isUnit_det_of_isOrth hx τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨?_, fun u w => ?_⟩` and prove the remaining obligations. Rewrite using `[key, Matrix.trace_mul_comm, ← Matrix.mul_assoc, nonsing_inv_mul _ hu, Matrix.one_mul, trace_diagonal, ← Finset.mul_sum, ← ofReal_sum, torusDer_sum_angles, ofReal_zero, mul_zero]`. Rewrite using `[key]`. Use `torusDer_skew_of_mat τ.1 X.Gm _ ?_ u w` and prove the remaining obligations. Use `torusDer_skew_diag _ _ hu _ (fun a => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ)) (fun a => ?_) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Rewrite using `[← gram_eq]`. Conclude with `hx τ`. Establish `hu` using `isUnit_det_of_isOrth hx τ`. Unfold `inFrame`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[key, show (mat x τ)⁻¹ * (mat x τ * diagonal (fun c => I * (angles (θ τ) c : ℂ)) * (mat x τ)⁻¹) * mat x τ = ((mat x τ)⁻¹ * mat x τ) * diagonal (fun c => I * (angles (θ τ) c : ℂ)) * ((mat x τ)⁻¹ * mat x τ) by`. Simplify using `only [Matrix.mul_assoc], nonsing_inv_mul _ hu, Matrix.one_mul, Matrix.mul_one, diagonal_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem torusDer_mem_realLie_and_inFrame : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r)
     (x : Frame X.Ψ r), IsOrth X x → ∀ θ : X.Ψ → Fin (r - 1) → ℝ, torusDer x θ ∈ realLie X.Ψ X.Gm ∧

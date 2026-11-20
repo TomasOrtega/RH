@@ -21,9 +21,9 @@ section Trans
 variable (W : LocWach PD LL O v n) (T : LocLat G Qp LL O)
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `hR.2.2.2.2.1`. Establish `hE : Formalism.MainNotions.DeltaInvariantLattices.Eat (fun _ : ZMod n => Polynomial.X + Polynomial.C ((PD.p : ℕ) : O)) W.π₀ = Formalism.MainNotions.LiftingTheory.qp W`. Use function extensionality and compare the values at `i`. Simplify using `[Formalism.MainNotions.DeltaInvariantLattices.Eat, Formalism.MainNotions.LiftingTheory.qp, LocWach.π₀]`. Rewrite `hw` using `[hE]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨w⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[Q_eq_q W hs, hw, ← mul_assoc, Units.inv_mul, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem qp_eq_unit (hs : W.s = 1) (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) :
     ∃ U : (LetA O n)ˣ, Formalism.MainNotions.LiftingTheory.qp W = (U : LetA O n) * W.Q := by
@@ -37,23 +37,21 @@ theorem qp_eq_unit (hs : W.s = 1) (hR : Formalism.MainNotions.UnusedSlot80.Tools
   rw [Q_eq_q W hs, hw, ← mul_assoc, Units.inv_mul, one_mul]
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `hdz`. Take `⟨m', hm'⟩` from `hdz'`. Establish `hQ : W.Q = W.q` using `Q_eq_q W hs`. Take `⟨U, hU⟩` from `qp_eq_unit W hs hR`. Establish `hxeq : Formalism.MainNotions.LiftingTheory.qp W ^ K • w = (U : LetA O n) ^ K • (W.Q ^ K • w)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hU, mul_pow, mul_smul]`. Establish `hxN : Formalism.MainNotions.LiftingTheory.qp W ^ K • w ∈ W.N T`. Rewrite using `[hxeq]`. Conclude with `(W.N T).smul_mem _ hK`. Establish `hxΔ : W.γD T δ (Formalism.MainNotions.LiftingTheory.qp W ^ K • w) = Formalism.MainNotions.LiftingTheory.qp W ^ K • w`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Formalism.MainNotions.UnusedSlot80.SatW.γD_smulA', map_pow, (qp_mem_AΔ W hR) δ hδ, hwΔ]`. Use `set x : ↥(W.N T) := ⟨Formalism.MainNotions.LiftingTheory.qp W ^ K • w, hxN⟩ with hxdef`. Establish `hγx : W.γD T δ (x : W.DD T) ∈ W.N T` using `by rw [hxdef]; simp only; rw [hxΔ]; exact hxN`. Establish `h1 : W.levN T c ζ x = resc χ (W.levN T c ζ' x)`. Use function extensionality and compare the values at `k`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [resc]`. Establish `hxx : (⟨W.γD T δ (x : W.DD T), hγx⟩ : ↥(W.N T)) = x` using `Subtype.ext hxΔ`. Rewrite using `[← hΔN x hγx k, hxx]`. Establish `hsplit : x = (U : LetA O n) ^ K • (⟨W.Q ^ K • w, hK⟩ : ↥(W.N T))` using `Subtype.ext hxeq`. Establish `h2 : ∀ (z : LL) (uz : PowerSeries LL) (dd : ℤ → T.V ⊗[Qp] BdR) (mm : ℤ), LB mm dd → W.levN T c z ⟨W.Q ^ K • w, hK⟩ = smulS ((X * uz) ^ K) dd → W.levN T c z x = smulS ((W.lev c z (U : LetA O n) * (X * uz)) ^ K) dd`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `z uz dd mm hdd e`. Rewrite using `[hsplit]`. Establish `this : W.levN T c z ((U : LetA O n) ^ K • (⟨W.Q ^ K • w, hK⟩ : ↥(W.N T))) = smulS (W.lev c z ((U : LetA O n) ^ K)) (W.levN T c z ⟨W.Q ^ K • w, hK⟩)`. Use function extensionality and compare the values at `fun k => W.levN_smul T c z ((U : LetA O n) ^ K) ⟨W.Q ^ K • w, hK⟩ k`. Rewrite using `[this, e, ← smulS_mul hdd, map_pow, ← mul_pow]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz` using `h2 ζ u dz m hm ez`. Establish `hz'` using `h2 ζ' u' dz' m' hm' ez'`. Establish `hresc : PowerSeries.rescale χ (W.lev c ζ' (U : LetA O n) * (X * u')) = W.lev c ζ (U : LetA O n) * (X * u)`. Establish `e1 : W.lev c ζ' (U : LetA O n) * (X * u') = W.lev c ζ' (Formalism.MainNotions.LiftingTheory.qp W)`. Rewrite using `[hU, map_mul, hQ, hu']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : W.lev c ζ (U : LetA O n) * (X * u) = W.lev c ζ (Formalism.MainNotions.LiftingTheory.qp W)`. Rewrite using `[hU, map_mul, hQ, hu]`. Rewrite using `[e1, e2, ← hΔA, (qp_mem_AΔ W hR) δ hδ]`. Rewrite `hz` using `[h1, hz', ← smulS_rescale hm' χ hχ0, map_pow, hresc]`. Establish `hUc : constantCoeff (W.lev c ζ (U : LetA O n) * u) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul]`. Use `mul_ne_zero ?_ hu0` and prove the remaining obligations. Establish `hu1 : IsUnit (W.lev c ζ (U : LetA O n))` using `(Units.isUnit U).map _`. Conclude with `(PowerSeries.isUnit_iff_constantCoeff.1 hu1).ne_zero`. Establish `e3 : W.lev c ζ (U : LetA O n) * (X * u) = X * (W.lev c ζ (U : LetA O n) * u)` using `by ring`.
-
-Rewrite `hz` using `[e3]`. Conclude with `div_unique (m := min m m') (LB_mono hm (min_le_left _ _)) (LB_mono (LB_resc hm' χ) (min_le_right _ _)) _ hUc K hz.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trans_d [IsDomain O] (hs : W.s = 1) (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) (c : ZMod n)
     (δ : W.Gam) (hδ : δ ∈ W.DelF) (ζ ζ' : LL) (χ : LL) (hχ0 : χ ≠ 0)

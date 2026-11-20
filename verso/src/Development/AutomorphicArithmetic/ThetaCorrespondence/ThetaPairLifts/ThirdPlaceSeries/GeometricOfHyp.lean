@@ -20,11 +20,11 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz) (i : Fin D.R.m)
 end Point
 /- English proof (translation)
-Introduce `hX hG hQ hP h1 h2 h3 _ hS`. Establish `hH` using `_root_.GlobalTheory.CovTop.Sizes.hostN_alt 0`. Establish `hW` using `_root_.GlobalTheory.CovTop.WtShape.wtN_z`. Unfold `_root_.GlobalTheory.CovHt.GeometricCondition _root_.GlobalTheory.CovTop.CoversCondition _root_.GlobalTheory.CovTop.LiftsCondition`. Unfold `_root_.GlobalTheory.CovTop.SizeCondition _root_.GlobalTheory.CovTop.LiftsCondition at hS`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Unfold `_root_.GlobalTheory.CovTop.HostNAlt _root_.GlobalTheory.CovTop.LiftsCondition at hH`. Unfold `_root_.GlobalTheory.CovTop.LiftWeightNumerator _root_.GlobalTheory.CovTop.LiftsCondition at hW`. Use `((hS.and hH).and hW).imp fun Fm CH _ h => ?_` and prove the remaining obligations. Take `⟨⟨⟨C1, -, e1⟩, ⟨C2, -, e2⟩⟩, ⟨C3, -, e3⟩⟩` from `h`. Take `⟨x0, hx0⟩` from `(e1.and e2).and e3`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨0, le_rfl, x0, fun x hx hle ι p hp i hi Y hY u1 hu => ?_⟩` and prove the remaining obligations. Take `⟨⟨b1, b2⟩, b3⟩` from `hx0 x hx hle ι p hp`. Conclude with `_root_.GlobalTheory.CovHt.GeomBound.geometric_height_bound_at_place p i hX hG hQ hP h1 h2 h3 (b1 i) (b2 i) (b3 i) hi Y hY u1 hu`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem geom_of_prints_toroidal_deepGood_size : GlobalTheory.CovTop.HypothesesX → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems →
     GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS →
@@ -49,7 +49,7 @@ section
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj Formalism.BasicNotions.TH Formalism.L2.Theta ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.AllWt GlobalTheory.CompHt GlobalTheory.CovTop GlobalTheory.BigTop GlobalTheory.CovHt
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.CovHt.GeomBound.geom_of_prints_toroidal_deepGood_size | exact _root_.GlobalTheory.CovHt.GeomBound.geom_of_prints_toroidal_deepGood_size | (intros; apply _root_.GlobalTheory.CovHt.GeomBound.geom_of_prints_toroidal_deepGood_size <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.covHt_geom_of_siegel_toroidal_semiAbelian : GlobalTheory.CovTop.HypothesesX → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.SemiAbelianLieSeminegative → _root_.GlobalTheory.CovTop.DeepGoodness → _root_.GlobalTheory.CovTop.SizeCondition → _root_.GlobalTheory.CovHt.GeometricCondition := by
   first | exact @_root_.GlobalTheory.CovHt.GeomBound.geom_of_prints_toroidal_deepGood_size | exact _root_.GlobalTheory.CovHt.GeomBound.geom_of_prints_toroidal_deepGood_size | (intros; apply _root_.GlobalTheory.CovHt.GeomBound.geom_of_prints_toroidal_deepGood_size <;> assumption)

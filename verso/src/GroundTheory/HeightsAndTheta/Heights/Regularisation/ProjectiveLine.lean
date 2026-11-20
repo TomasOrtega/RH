@@ -17,7 +17,7 @@ noncomputable section
 namespace ProjectiveLine
 
 /- English proof (translation)
-Establish `h : y = fun _ => y 0` using `funext fun i => by rw [Subsingleton.elim i 0]`. Use `conv_lhs => rw [h]`. Conclude with `pi_norm_const _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_fin_one_eq (y : Fin 1 → ℂ) : ‖y‖ = ‖y 0‖ := by
   have h : y = fun _ => y 0 := funext fun i => by rw [Subsingleton.elim i 0]
@@ -25,7 +25,7 @@ theorem norm_fin_one_eq (y : Fin 1 → ℂ) : ‖y‖ = ‖y 0‖ := by
   exact pi_norm_const _
 
 /- English proof (translation)
-Break down `F.eq_or_neBot with rfl | hF` into its components or cases. Simplify using `only [Filter.limsup, Filter.limsSup, Filter.map_bot, Filter.eventually_bot, Set.ofPred_true]`. Conclude with `Real.sInf_of_not_bddBelow not_bddBelow_univ`. Conclude with `limsup_const 0`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem limsup_zero_real {α : Type*} (F : Filter α) : limsup (fun _ : α => (0 : ℝ)) F = 0 := by
   rcases F.eq_or_neBot with rfl | hF
@@ -34,7 +34,7 @@ theorem limsup_zero_real {α : Type*} (F : Filter α) : limsup (fun _ : α => (0
   · exact limsup_const 0
 
 /- English proof (translation)
-Take `rfl | ⟨k, rfl⟩` from `Fin.eq_self_or_eq_succAbove i m`. Simplify using `only [CP.chartVec_self]`. Conclude with `analyticAt_const`. Simplify using `only [CP.chartVec_succAbove]`. Conclude with `(ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin N => ℂ) k).analyticAt z`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem analyticAt_chartVec_apply {N : ℕ} (i m : Fin (N + 1)) (z : Fin N → ℂ) :
     AnalyticAt ℂ (fun z : Fin N → ℂ => CP.chartVec i z m) z := by
@@ -44,7 +44,7 @@ theorem analyticAt_chartVec_apply {N : ℕ} (i m : Fin (N + 1)) (z : Fin N → �
     exact (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin N => ℂ) k).analyticAt z
 
 /- English proof (translation)
-Introduce `z hz`. Simplify using `only [CP.chartCoord_chartInv_eq]`. Rewrite using `[analyticAt_pi_iff]`. Introduce `k`. Conclude with `(analyticAt_chartVec_apply i _ z).div (analyticAt_chartVec_apply i j z) hz`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem analyticOnNhd_transition {N : ℕ} (i j : Fin (N + 1)) :
     AnalyticOnNhd ℂ (fun z => CP.chartCoord j (CP.chartInv i z)) {z | CP.chartVec i z j ≠ 0} := by
@@ -113,9 +113,9 @@ Both sides reduce to the same expression.
 theorem sChart_target (i : Fin 2) : (sChart i).target = ball 0 1 := rfl
 
 /- English proof (translation)
-Introduce `j`. Use `⟨fun z hz => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Establish `h1 : CP.chartVec j z i ≠ 0` using `hz.2.1`. Use `(analyticOnNhd_transition j i z h1).const_smul (c := (2 : ℂ)⁻¹)` as an intermediate fact. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : CP.chartVec i ((2 : ℂ) • y) j ≠ 0` using `hy.2`. Establish `hlin : AnalyticAt ℂ (fun y : Fin 1 → ℂ => (2 : ℂ) • y) y` using `((2 : ℂ) • ContinuousLinearMap.id ℂ (Fin 1 → ℂ)).analyticAt y`. Conclude with `(analyticOnNhd_transition i j _ h1).comp hlin`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sChart_compat (i : Fin 2) : IsCompatChart cpAtlas (sChart i) := by
   intro j
@@ -132,23 +132,21 @@ def closedReg (i : Fin 2) (c : ℝ) : Set (CP 1) :=
   {x | x ∈ CP.chartDomain i ∧ ‖CP.chartCoord i x‖ ≤ c}
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases i <;> fin_cases m <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fin_two_other (i : Fin 2) (m : Fin 2) : m = i ∨ m = i.succAbove 0 := by
   fin_cases i <;> fin_cases m <;> simp
 
 /- English proof (translation)
-Rewrite using `[GroundTheory.Heights₂.Heights.ProjTopology.isClosed_iff]`. Establish `: (Projectivization.mk' ℂ) ⁻¹' (closedReg i c) = {v : {v : Fin 2 → ℂ // v ≠ 0} | ‖v.1 (i.succAbove 0)‖ ≤ c * ‖v.1 i‖}`. Use extensionality with `⟨v, hv⟩`. Simplify using `only [closedReg, mem_preimage, Set.mem_ofPred_eq]`. Express the relevant statement in the definitionally equal form `(v i ≠ 0 ∧ ‖fun j => v (i.succAbove j) / v i‖ ≤ c) ↔ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[norm_fin_one_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hvi, h⟩`. Rewrite `h` using `[norm_div, div_le_iff₀ (norm_pos_iff.mpr hvi)]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `hvi : v i ≠ 0`. Introduce `h0`. Rewrite `h` using `[h0, norm_zero, mul_zero]`. Establish `h1 : v (i.succAbove 0) = 0` using `norm_le_zero_iff.mp h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hv` to reduce the goal to its premises. Use function extensionality and compare the values at `m`. Break down `fin_two_other i m with rfl | rfl` into its components or cases. Conclude with `h0`. Conclude with `h1`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hvi, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_div, div_le_iff₀ (norm_pos_iff.mpr hvi)]`. Conclude with `h`. Rewrite using `[this]`. Establish `hf : Continuous fun v : {v : Fin 2 → ℂ // v ≠ 0} => ‖v.1 (i.succAbove 0)‖` using `((continuous_apply (i.succAbove 0)).comp continuous_subtype_val).norm`.
-
-Establish `hg : Continuous fun v : {v : Fin 2 → ℂ // v ≠ 0} => c * ‖v.1 i‖` using `continuous_const.mul ((continuous_apply i).comp continuous_subtype_val).norm`. Conclude with `isClosed_le hf hg`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isClosed_closedReg (i : Fin 2) {c : ℝ} (hc : 0 ≤ c) : IsClosed (closedReg i c) := by
   rw [GroundTheory.Heights₂.Heights.ProjTopology.isClosed_iff]
@@ -183,14 +181,14 @@ theorem isClosed_closedReg (i : Fin 2) {c : ℝ} (hc : 0 ≤ c) : IsClosed (clos
   exact isClosed_le hf hg
 
 /- English proof (translation)
-Simplify using `[sChart_source]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_sChart_source_iff (i : Fin 2) (x : CP 1) :
     x ∈ (sChart i).source ↔ x ∈ CP.chartDomain i ∧ ‖CP.chartCoord i x‖ < 2 := by
   simp [sChart_source]
 
 /- English proof (translation)
-Rewrite using `[sChart_apply, norm_smul]`. Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_sChart (i : Fin 2) (x : CP 1) : ‖sChart i x‖ = ‖CP.chartCoord i x‖ / 2 := by
   rw [sChart_apply, norm_smul]
@@ -202,7 +200,7 @@ def cpMid (i : Fin 2) : Set (CP 1) := (sChart i).source ∩ sChart i ⁻¹' ball
 def cpInner (i : Fin 2) : Set (CP 1) := (sChart i).source ∩ sChart i ⁻¹' ball 0 (3 / 4)
 
 /- English proof (translation)
-Rewrite using `[mem_inter_iff, mem_sChart_source_iff, mem_preimage, mem_ball_zero_iff, norm_sChart]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨h1, _⟩, h3⟩; exact ⟨h1, by linarith⟩`. Introduce and unpack `⟨h1, h2⟩; exact ⟨⟨h1, by linarith⟩, by linarith⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 -/
 theorem mem_region_iff (i : Fin 2) (x : CP 1) {c : ℝ} (_hc : c ≤ 1) :
     x ∈ (sChart i).source ∩ sChart i ⁻¹' ball 0 c ↔
@@ -213,7 +211,7 @@ theorem mem_region_iff (i : Fin 2) (x : CP 1) {c : ℝ} (_hc : c ≤ 1) :
   · rintro ⟨h1, h2⟩; exact ⟨⟨h1, by linarith⟩, by linarith⟩
 
 /- English proof (translation)
-Introduce `x hx` and use `by obtain ⟨h1, h2⟩ := (mem_region_iff i x hc).1 hx exact ⟨h1, h2.le⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem region_subset_closedReg (i : Fin 2) {c : ℝ} (hc : c ≤ 1) :
     (sChart i).source ∩ sChart i ⁻¹' ball 0 c ⊆ closedReg i (2 * c) := fun x hx => by
@@ -221,31 +219,29 @@ theorem region_subset_closedReg (i : Fin 2) {c : ℝ} (hc : c ≤ 1) :
   exact ⟨h1, h2.le⟩
 
 /- English proof (translation)
-Introduce `x hx` and use `(mem_region_iff i x hd).2 ⟨hx.1, lt_of_le_of_lt hx.2 hcd⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem closedReg_subset_region (i : Fin 2) {c d : ℝ} (hd : d ≤ 1) (hcd : c < 2 * d) :
     closedReg i c ⊆ (sChart i).source ∩ sChart i ⁻¹' ball 0 d := fun x hx =>
   (mem_region_iff i x hd).2 ⟨hx.1, lt_of_le_of_lt hx.2 hcd⟩
 
 /- English proof (translation)
-The claim follows from `closure_minimal (region_subset_closedReg i hc) (isClosed_closedReg i (by linarith))`.
+A detailed English derivation is pending.
 -/
 theorem closure_region_subset (i : Fin 2) {c : ℝ} (hc0 : 0 ≤ c) (hc : c ≤ 1) :
     closure ((sChart i).source ∩ sChart i ⁻¹' ball 0 c) ⊆ closedReg i (2 * c) :=
   closure_minimal (region_subset_closedReg i hc) (isClosed_closedReg i (by linarith))
 
 /- English proof (translation)
-Proceed by induction on `x using Projectivization.ind with`. Consider the case `h v hv`. Break down `le_or_gt ‖v 1‖ ‖v 0‖ with h | h` into its components or cases. Establish `h0 : v 0 ≠ 0`. Introduce `h0`.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[h0, norm_zero]`. Apply `hv` to reduce the goal to its premises. Use function extensionality and compare the values at `m`. Use `fin_cases m`. Conclude with `h0`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `norm_le_zero_iff.mp h`. Use `⟨0, (mem_region_iff 0 _ (by norm_num)).2 ⟨h0, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[CP.chartCoord_mk, norm_fin_one_eq]`. Simplify using `only [norm_div]`. Rewrite using `[div_lt_iff₀ (norm_pos_iff.mpr h0)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (Fin.succAbove (0 : Fin 2) 0) = 1` using `rfl`. Rewrite using `[this]`. Use `norm_pos_iff.mpr h0` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `h1 : v 1 ≠ 0` using `fun h1 => by rw [h1, norm_zero] at h; exact absurd h (not_lt.2 (norm_nonneg _))`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨1, (mem_region_iff 1 _ (by norm_num)).2 ⟨h1, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[CP.chartCoord_mk, norm_fin_one_eq]`. Simplify using `only [norm_div]`. Rewrite using `[div_lt_iff₀ (norm_pos_iff.mpr h1)]`. Establish `: (Fin.succAbove (1 : Fin 2) 0) = 0` using `rfl`.
-
-Rewrite using `[this]`. Use polynomial arithmetic with `[norm_nonneg (v 0)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem cover_inner (x : CP 1) : ∃ j, x ∈ cpInner j := by
   induction x using Projectivization.ind with
@@ -275,7 +271,7 @@ theorem cover_inner (x : CP 1) : ∃ j, x ∈ cpInner j := by
       nlinarith [norm_nonneg (v 0)]
 
 /- English proof (translation)
-Introduce `_` and use `analyticOnNhd_const`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem holoOn_zero' {D : ℕ} {X : Type*} [TopologicalSpace X] (A : FinHolAtlas D X) (W : Set X) :
     A.HoloOn W (fun _ => (0 : ℂ)) :=
@@ -312,15 +308,15 @@ def ltSet (a b : Fin 2) : Set (CP 1) :=
     exact propext (mul_lt_mul_iff_right₀ (norm_pos_iff.mpr ht))) x}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mk_mem_ltSet (a b : Fin 2) (v : Fin 2 → ℂ) (hv : v ≠ 0) :
     Projectivization.mk ℂ v hv ∈ ltSet a b ↔ ‖v a‖ < ‖v b‖ := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[GroundTheory.Heights₂.Heights.ProjTopology.isOpen_iff]`. Establish `: (Projectivization.mk' ℂ) ⁻¹' (ltSet a b) = {v : {v : Fin 2 → ℂ // v ≠ 0} | ‖v.1 a‖ < ‖v.1 b‖}`. Use extensionality with `⟨v, hv⟩`. Conclude with `Iff.rfl`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Unfold both sides to obtain the same proposition, which implies itself. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isOpen_lt ((continuous_apply a).comp continuous_subtype_val).norm ((continuous_apply b).comp continuous_subtype_val).norm`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_ltSet (a b : Fin 2) : IsOpen (ltSet a b) := by
   rw [GroundTheory.Heights₂.Heights.ProjTopology.isOpen_iff]
@@ -332,9 +328,9 @@ theorem isOpen_ltSet (a b : Fin 2) : IsOpen (ltSet a b) := by
     ((continuous_apply b).comp continuous_subtype_val).norm
 
 /- English proof (translation)
-Proceed by induction on `x using Projectivization.ind with`. Consider the case `h v hv`. Rewrite `hx` using `[CP.mk_mem_chartDomain, not_not]`. Rewrite using `[mk_mem_ltSet, hx, norm_zero, norm_pos_iff]`. Introduce `hb`.
+Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hv` to reduce the goal to its premises. Use function extensionality and compare the values at `m`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> fin_cases m <;> simp_all`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mem_ltSet_of_not_mem (a b : Fin 2) (hab : a ≠ b) (x : CP 1) (hx : x ∉ CP.chartDomain a) :
     x ∈ ltSet a b := by
@@ -401,23 +397,21 @@ def cpF (j : Fin 2) (y : Fin 1 → ℂ) : ℝ :=
 def cpR (x : CP 1) : ℝ := Real.exp 1 + Real.log (1 + ‖CP.chartCoord 1 x 0‖ ^ 2)
 
 /- English proof (translation)
-The claim follows from `CP.chartVec_succAbove 0 z 0`.
+A detailed English derivation is pending.
 -/
 theorem chartVec_zero_one (z : Fin 1 → ℂ) : CP.chartVec 0 z 1 = z 0 :=
   CP.chartVec_succAbove 0 z 0
 
 /- English proof (translation)
-The claim follows from `CP.chartVec_succAbove 1 z 0`.
+A detailed English derivation is pending.
 -/
 theorem chartVec_one_zero (z : Fin 1 → ℂ) : CP.chartVec 1 z 0 = z 0 :=
   CP.chartVec_succAbove 1 z 0
 
 /- English proof (translation)
-Use `fin_cases j`. Establish `hx0 : x ∈ CP.chartDomain 0` using `hx.1`. Simplify using `only [cpS, coordDiv, Fin.zero_eta, Fin.isValue, Fin.val_zero, if_true, Finset.mem_singleton, exists_eq_left, Set.mem_ofPred_eq, sChart_apply, Pi.smul_apply, smul_eq_mul, mul_eq_zero, inv_eq_zero, OfNat.ofNat_ne_zero, false_or]`. Proceed by induction on `x using Projectivization.ind with`. Consider the case `h v hv`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hx0`, the goal using `[CP.mk_mem_chartDomain]`. Rewrite using `[CP.chartCoord_mk]`. Establish `: (Fin.succAbove (0 : Fin 2) 0) = 1` using `rfl`. Simplify using `only [this, div_eq_zero_iff, hx0, or_false]`. Simplify using `only [cpS, coordDiv, Fin.mk_one, Fin.isValue, Fin.val_one, one_ne_zero, if_false, Finset.notMem_empty, false_and, exists_false, Set.ofPred_false, mem_empty_iff_false, not_false_eq_true, iff_true]`.
-
-Conclude with `hx.1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cp_mem_Yo (j : Fin 2) (x : CP 1) (hx : x ∈ (sChart j).source) :
     x ∈ CP.chartDomain 1 ↔ sChart j x ∉ coordDiv (cpS j) := by
@@ -438,7 +432,7 @@ theorem cp_mem_Yo (j : Fin 2) (x : CP 1) (hx : x ∈ (sChart j).source) :
     exact hx.1
 
 /- English proof (translation)
-Establish `h2 : ContDiff ℝ ∞ (fun y : Fin 1 → ℂ => (2 : ℂ) * y 0)` using `contDiff_const.mul (contDiff_apply ℝ ℂ 0)`. Conclude with `(contDiff_const.add ((contDiff_norm_sq ℝ).comp h2)).log fun y => (by positivity : (0 : ℝ) < 1 + ‖(2 : ℂ) * y 0‖ ^ 2).ne'`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiff_logNormSq : ContDiff ℝ ∞ (fun y : Fin 1 → ℂ => Real.log (1 + ‖(2 : ℂ) * y 0‖ ^ 2)) := by
   have h2 : ContDiff ℝ ∞ (fun y : Fin 1 → ℂ => (2 : ℂ) * y 0) :=
@@ -447,13 +441,13 @@ theorem contDiff_logNormSq : ContDiff ℝ ∞ (fun y : Fin 1 → ℂ => Real.log
     (by positivity : (0 : ℝ) < 1 + ‖(2 : ℂ) * y 0‖ ^ 2).ne'
 
 /- English proof (translation)
-Establish `hy0 : ‖y 0‖ < 1`. Rewrite `hy` using `[mem_ball_zero_iff, norm_fin_one_eq]`. Conclude with `hy`. Establish `hs : ‖(2 : ℂ) * y 0‖ ^ 2 < 4`. Rewrite using `[norm_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions. Use polynomial arithmetic with `[norm_nonneg (y 0)]`. Establish `h1 : 0 ≤ Real.log (1 + ‖(2 : ℂ) * y 0‖ ^ 2)` using `Real.log_nonneg (by nlinarith [norm_nonneg ((2 : ℂ) * y 0)])`. Establish `h2 : Real.log (1 + ‖(2 : ℂ) * y 0‖ ^ 2) ≤ 4`. Use `Real.log_le_sub_one_of_pos (x := 1 + ‖(2 : ℂ) * y 0‖ ^ 2) (by positivity)` as an intermediate fact.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : 0 ≤ Real.log 4` using `Real.log_nonneg (by norm_num)`. Establish `h4 : Real.log 4 ≤ 3`. Use `Real.log_le_sub_one_of_pos (x := 4) (by norm_num)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions.
 
-Unfold `cpF`. Apply the tactic sequence `split_ifs <;> rw [abs_le] <;> constructor <;> linarith`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem cpF_bound (j : Fin 2) (y : Fin 1 → ℂ) (hy : y ∈ ball (0 : Fin 1 → ℂ) 1) : |cpF j y| ≤ 8 := by
   have hy0 : ‖y 0‖ < 1 := by
@@ -473,15 +467,13 @@ theorem cpF_bound (j : Fin 2) (y : Fin 1 → ℂ) (hy : y ∈ ball (0 : Fin 1 �
   split_ifs <;> rw [abs_le] <;> constructor <;> linarith
 
 /- English proof (translation)
-Use `fin_cases j`. Establish `hy0 : y 0 ≠ 0`. Introduce `h`. Conclude with `hy.2 ⟨0, by simp [cpS], h⟩`. Simplify using `only [cpR, cpF, cpS, sChart_symm_apply, Fin.zero_eta, Fin.isValue, Fin.val_zero, if_true, Finset.sum_singleton]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[CP.chartCoord_chartInv_eq]`. Establish `h10 : (Fin.succAbove (1 : Fin 2) 0) = 0` using `rfl`. Establish `hv1 : CP.chartVec 0 ((2 : ℂ) • y) 1 = 2 * y 0`. Rewrite using `[chartVec_zero_one]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [h10, CP.chartVec_self, hv1]`. Establish `hn : 0 < ‖y 0‖` using `norm_pos_iff.mpr hy0`. Establish `key : 1 + ‖1 / (2 * y 0)‖ ^ 2 = (1 + ‖(2 : ℂ) * y 0‖ ^ 2) / (4 * ‖y 0‖ ^ 2)`. Rewrite using `[norm_div, norm_one, norm_mul]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, Real.log_div (by positivity) (by positivity), Real.log_mul (by norm_num) (by positivity), Real.log_inv]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [cpR, cpF, cpS, sChart_symm_apply, Fin.mk_one, Fin.isValue, Fin.val_one, one_ne_zero, if_false, Finset.sum_empty, add_zero, CP.chartCoord_chartInv]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cpR_chart (j : Fin 2) (y : Fin 1 → ℂ) (hy : y ∈ ball (0 : Fin 1 → ℂ) 1 \ coordDiv (cpS j)) :
     cpR ((sChart j).symm y) = Real.exp 1 + cpF j y + ∑ i ∈ cpS j, Real.log (‖y i‖ ^ 2)⁻¹ := by
@@ -548,7 +540,7 @@ def cpBump : ContDiffBump (0 : Fin 1 → ℂ) := ⟨3 / 4, 13 / 16, by norm_num,
 def cpEta (j : Fin 2) (x : CP 1) : ℝ := cpBump (sChart j x) - 1
 
 /- English proof (translation)
-The claim follows from `((CP.contDiffOn_transition k j).restrict_scalars ℝ).const_smul _`.
+A detailed English derivation is pending.
 -/
 theorem transition_contDiffOn (k j : Fin 2) :
     ContDiffOn ℝ ∞ (fun z => (2 : ℂ)⁻¹ • CP.chartCoord j (CP.chartInv k z))
@@ -556,11 +548,11 @@ theorem transition_contDiffOn (k j : Fin 2) :
   ((CP.contDiffOn_transition k j).restrict_scalars ℝ).const_smul _
 
 /- English proof (translation)
-Use `set H := fderiv ℝ (fderiv ℝ φ) y with hH`. Establish `hM : 0 ≤ M` using `(ContinuousLinearMap.opNorm_nonneg _).trans h`. Establish `h1 : |H w w| ≤ M * ‖w‖ ^ 2`. Rewrite using `[← Real.norm_eq_abs]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hIw : ‖Complex.I • w‖ = ‖w‖` using `by rw [norm_smul, Complex.norm_I, one_mul]`. Establish `h2 : |H (Complex.I • w) (Complex.I • w)| ≤ M * ‖w‖ ^ 2`. Rewrite using `[← Real.norm_eq_abs]`. Combine the equalities or inequalities in the displayed calculation. Establish `e : levi φ y w = (H w w + H (Complex.I • w) (Complex.I • w)) / 4` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `neg_abs_le (H w w)` as an intermediate fact. Use `neg_abs_le (H (Complex.I • w) (Complex.I • w))` as an intermediate fact. Establish `: 0 ≤ M * ‖w‖ ^ 2` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem levi_ge_of_norm_le {D : ℕ} (φ : (Fin D → ℂ) → ℝ) (y w : Fin D → ℂ) (M : ℝ)
     (h : ‖fderiv ℝ (fderiv ℝ φ) y‖ ≤ M) : -M * ‖w‖ ^ 2 ≤ levi φ y w := by
@@ -586,13 +578,11 @@ theorem levi_ge_of_norm_le {D : ℕ} (φ : (Fin D → ℂ) → ℝ) (y w : Fin D
   linarith
 
 /- English proof (translation)
-Use `set O := (sChart k).target ∩ (sChart k).symm ⁻¹' (sChart j).source with hOdef`. Establish `hO : IsOpen O` using `(sChart k).isOpen_inter_preimage_symm (sChart j).open_source`. Establish `hF : ContDiffOn ℝ ∞ (cpEta j ∘ (sChart k).symm) O`. Establish `hlin : ContDiff ℝ ∞ (fun y : Fin 1 → ℂ => (2 : ℂ) • y)` using `contDiff_const_smul _`. Establish `hT` using `(transition_contDiffOn k j).comp hlin.contDiffOn (s := O) (fun y hy => hy.2.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(cpBump.contDiff.comp_contDiffOn hT).sub contDiffOn_const`. Establish `hcont : ContinuousOn (fun y => fderiv ℝ (fderiv ℝ (cpEta j ∘ (sChart k).symm)) y) O` using `(hF.fderiv_of_isOpen hO (m := 1) (by decide)).continuousOn_fderiv_of_isOpen hO le_rfl`. Use `set K := sChart k '' (closure (cpMid j) ∩ closure (cpMid k)) with hKdef`. Establish `hKc : IsCompact K` using `(isClosed_closure.inter isClosed_closure).isCompact.image_of_continuousOn ((sChart k).continuousOn.mono fun x hx => cpCharts.closure_mid k hx.2)`. Establish `hKO : K ⊆ O`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `hxk : x ∈ (sChart k).source` using `cpCharts.closure_mid k hx.2`. Use `⟨(sChart k).map_source hxk, ?_⟩` and prove the remaining obligations. Use `show (sChart k).symm (sChart k x) ∈ (sChart j).source`. Rewrite using `[(sChart k).left_inv hxk]`.
-
-Conclude with `cpCharts.closure_mid j hx.1`. Take `⟨M, hM⟩` from `hKc.exists_bound_of_continuousOn (f := fun y => fderiv ℝ (fderiv ℝ (cpEta j ∘ (sChart k).symm)) y) (by exact hcont.mono hKO)`. Conclude with `⟨M, fun x hx => hM _ ⟨x, ⟨subset_closure hx.1, subset_closure hx.2⟩, rfl⟩⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cpEta_hess_bound (j k : Fin 2) : ∃ M : ℝ, ∀ x ∈ cpMid j ∩ cpMid k,
     ‖fderiv ℝ (fderiv ℝ (cpEta j ∘ (sChart k).symm)) (sChart k x)‖ ≤ M := by
@@ -620,7 +610,7 @@ theorem cpEta_hess_bound (j k : Fin 2) : ∃ M : ℝ, ∀ x ∈ cpMid j ∩ cpMi
   exact ⟨M, fun x hx => hM _ ⟨x, ⟨subset_closure hx.1, subset_closure hx.2⟩, rfl⟩⟩
 
 /- English proof (translation)
-Establish `h` using `closure_region_subset j (c := 7 / 8) (by norm_num) (by norm_num) hx`. Use `⟨h.1, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_sChart]`. Use `h.2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem sChart_norm_le_of_closure (j : Fin 2) (x : CP 1) (hx : x ∈ closure (cpMid j)) :
     x ∈ CP.chartDomain j ∧ ‖sChart j x‖ ≤ 7 / 8 := by
@@ -631,7 +621,7 @@ theorem sChart_norm_le_of_closure (j : Fin 2) (x : CP 1) (hx : x ∈ closure (cp
   linarith
 
 /- English proof (translation)
-Introduce `k`. Establish `hsub : (CP.chart k).target ∩ (CP.chart k).symm ⁻¹' cpMid j ⊆ {z | CP.chartVec k z j ≠ 0}` using `fun z hz => hz.2.1.1`. Conclude with `(cpBump.contDiff.comp_contDiffOn ((transition_contDiffOn k j).mono hsub)).sub contDiffOn_const`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cpEta_smooth (j : Fin 2) : cpAtlas.SmoothOn (cpMid j) (cpEta j) := by
   intro k
@@ -641,7 +631,7 @@ theorem cpEta_smooth (j : Fin 2) : cpAtlas.SmoothOn (cpMid j) (cpEta j) := by
     contDiffOn_const
 
 /- English proof (translation)
-Establish `h1` using `cpBump.nonneg (x := sChart j x)`. Establish `h2` using `cpBump.le_one (x := sChart j x)`. Simplify using `only [cpEta]`. Apply the tactic sequence `constructor <;> linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cpEta_bounds (j : Fin 2) (x : CP 1) : -1 ≤ cpEta j x ∧ cpEta j x ≤ 0 := by
   have h1 := cpBump.nonneg (x := sChart j x)
@@ -650,7 +640,7 @@ theorem cpEta_bounds (j : Fin 2) (x : CP 1) : -1 ≤ cpEta j x ∧ cpEta j x ≤
   constructor <;> linarith
 
 /- English proof (translation)
-Establish `h : ‖sChart j x‖ < 3 / 4`. Use `hx.2` as an intermediate fact. Rewrite `this` using `[mem_preimage, mem_ball_zero_iff]`. Then use the resulting hypothesis. Establish `h1 : cpBump (sChart j x) = 1` using `cpBump.one_of_mem_closedBall (by rw [mem_closedBall_zero_iff]; exact h.le)`. Simplify using `[cpEta, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem cpEta_eq_zero (j : Fin 2) (x : CP 1) (hx : x ∈ cpInner j) : cpEta j x = 0 := by
   have h : ‖sChart j x‖ < 3 / 4 := by
@@ -660,11 +650,9 @@ theorem cpEta_eq_zero (j : Fin 2) (x : CP 1) (hx : x ∈ cpInner j) : cpEta j x 
   simp [cpEta, h1]
 
 /- English proof (translation)
-Establish `hxD : x ∈ CP.chartDomain j` using `hx.1.1.1`. Establish `hgt : 13 / 8 < ‖CP.chartCoord j x‖`. Assume the negation of the conclusion as `hle`. Conclude with `hx.2 ⟨hxD, not_lt.1 hle⟩`. Establish `hn` using `norm_sChart j x`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : cpBump (sChart j x) = 0`. Apply `cpBump.zero_of_le_dist` to reduce the goal to its premises. Rewrite using `[dist_zero_right]`. Use `show (13 / 16 : ℝ) ≤ ‖sChart j x‖`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Simplify using `[cpEta, h0]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cpEta_eq_neg_one (j : Fin 2) (x : CP 1) (hx : x ∈ cpMid j \ closedReg j (13 / 8)) :
     cpEta j x = -1 := by
@@ -681,9 +669,9 @@ theorem cpEta_eq_neg_one (j : Fin 2) (x : CP 1) (hx : x ∈ cpMid j \ closedReg 
   simp [cpEta, h0]
 
 /- English proof (translation)
-Use `choose M hM using cpEta_hess_bound`. Use `⟨∑ j, ∑ k, |M j k|, fun j => cpEta_smooth j, fun j x _ => cpEta_bounds j x, fun j x hx => cpEta_eq_zero j x hx, fun j => ⟨closedReg j (13 / 8), isClosed_closedReg j (by norm_num), closedReg_subset_region j (by norm_num) (by norm_num), fun x hx => cpEta_eq_neg_one j x hx⟩, ?_⟩` and prove the remaining obligations. Introduce `j k x hx w`. Use `le_trans ?_ (levi_ge_of_norm_le _ _ w _ (hM j k x hx))` and prove the remaining obligations. Establish `hle : M j k ≤ ∑ j, ∑ k, |M j k|` using `(le_abs_self _).trans ((Finset.single_le_sum (f := fun k => |M j k|) (fun _ _ => abs_nonneg _) (Finset.mem_univ k)).trans (Finset.single_le_sum (f := fun j => ∑ k, |M j k|) (fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _) (Finset.mem_univ j)))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 0 ≤ ‖w‖ ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem cpCutoff : ∃ Cη : ℝ, cpCharts.IsCutoffFamily cpEta Cη := by
   choose M hM using cpEta_hess_bound
@@ -701,9 +689,9 @@ theorem cpCutoff : ∃ Cη : ℝ, cpCharts.IsCutoffFamily cpEta Cη := by
   nlinarith
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Establish `hc : (fun y => max (cpReg.u j y) (-0)) = fun _ => (0 : ℝ)`. Use function extensionality and compare the values at `fun y => by simp [RegChartData.u, PotentialCharts.chartFun, cpReg, cpCharts]`. Unfold `RegChartData.trunc limsupExt`. Rewrite using `[hc]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Conclude with `limsup_zero_real _`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cpReg_trunc_zero (j : Fin cpReg.N) : cpReg.trunc 0 j = fun _ => 0 := by
   funext y
@@ -716,7 +704,7 @@ theorem cpReg_trunc_zero (j : Fin cpReg.N) : cpReg.trunc 0 j = fun _ => 0 := by
   · rfl
 
 /- English proof (translation)
-Simplify using `only [RegChartData.phReg, RegChartData.smoothed, ReciprocityTheory.AnForm.A.molli]`. Rewrite using `[cpReg_trunc_zero]`. Simplify using `[cpReg, cpCharts]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cpReg_phReg (ρ : Mollifier 1) (t : ℝ) (j : Fin cpReg.N) (x : CP 1) : cpReg.phReg ρ 0 t j x = 0 := by
   simp only [RegChartData.phReg, RegChartData.smoothed, ReciprocityTheory.AnForm.A.molli]
@@ -724,11 +712,11 @@ theorem cpReg_phReg (ρ : Mollifier 1) (t : ℝ) (j : Fin cpReg.N) (x : CP 1) : 
   simp [cpReg, cpCharts]
 
 /- English proof (translation)
-Take `⟨ρ⟩` from `ReciprocityTheory.AnForm.A.mollifierInhabit_thm 1`. Take `⟨Cη, hη⟩` from `cpCutoff`. Use `⟨ρ, Cη, hη, by norm_num, by norm_num, fun j x hx y hy => ?_, fun j k x _ => ?_⟩` and prove the remaining obligations. Establish `h` using `(sChart_norm_le_of_closure j x hx).2 show y ∈ ball 0 1`. Rewrite using `[mem_ball_zero_iff]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ‖y‖ ≤ ‖y - sChart j x‖ + ‖sChart j x‖` using `norm_le_norm_sub_add y (sChart j x)`. Establish `h2 : ‖y - sChart j x‖ ≤ 1 / 16` using `by rw [← dist_eq_norm]; exact hy`. Use `show ‖y‖ < 1`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[cpReg_phReg, cpReg_phReg]`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions.
+A detailed English derivation is pending.
 -/
 theorem cp_glueRegularised_hyp : ∃ (ρ : Mollifier 1) (Cη : ℝ),
     cpReg.IsCutoffFamily cpEta Cη ∧ (0 : ℝ) < 1 / 16 ∧ (0 : ℝ) < 1 ∧
@@ -749,7 +737,7 @@ theorem cp_glueRegularised_hyp : ∃ (ρ : Mollifier 1) (Cη : ℝ),
     norm_num
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstance, inferInstance, ⟨cpReg⟩, ⟨cpBounded⟩, ReciprocityTheory.AnForm.A.mollifierInhabit_thm 1, cpCutoff⟩`.
+Supply the required witnesses or components.
 -/
 theorem cp_hypotheses : CompactSpace (CP 1) ∧ T2Space (CP 1) ∧ Nonempty (RegChartData cpAtlas) ∧
     Nonempty (BoundedPshData cpAtlas) ∧ Nonempty (Mollifier 1) ∧

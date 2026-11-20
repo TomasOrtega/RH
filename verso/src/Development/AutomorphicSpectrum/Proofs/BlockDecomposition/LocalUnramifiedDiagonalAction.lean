@@ -7,9 +7,9 @@ open scoped ValuativeRel
 namespace GlobalTheory.CompanionTheory.LocalUnramified
 
 /- English proof (translation)
-Establish `hϖ` using `irreducible_uniformizer F`. Use `⟨(unitsEquivIntProd hϖ a).2, ?_⟩` and prove the remaining obligations. Establish `hx : a = unitsOfIntProd hϖ (unitsEquivIntProd hϖ a)`. Rewrite using `[← unitsEquivIntProd_symm_apply, MulEquiv.symm_apply_apply]`. Establish `h` using `coe_unitsOfIntProd hϖ (unitsEquivIntProd hϖ a).1 (unitsEquivIntProd hϖ a).2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[Prod.mk.eta, ← hx, unitsEquivIntProd_fst hϖ a, toAdd_ofAdd]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unit_eq_uniformizer_zpow_ord_mul (F : Type) [Field F] [ValuativeRel F]
     [TopologicalSpace F] [IsNonarchimedeanLocalField F] (a : Fˣ) :
@@ -23,9 +23,9 @@ theorem exists_unit_eq_uniformizer_zpow_ord_mul (F : Type) [Field F] [ValuativeR
   exact h
 
 /- English proof (translation)
-Introduce `F _ _ _ _ a b c`. Take `⟨u, hu⟩` from `exists_unit_eq_uniformizer_zpow_ord_mul F a`. Take `⟨v, hv⟩` from `exists_unit_eq_uniformizer_zpow_ord_mul F b`. Take `⟨w, hw⟩` from `exists_unit_eq_uniformizer_zpow_ord_mul F c`. Use `⟨integralGLHom F 3 (Ad3.dg u v w), ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Rewrite using `[Units.val_mul, coe_torusPow]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[Ad3.dg, integralGLHom, Matrix.diagonal_mul, ← hu, ← hv, ← hw]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem sDg : Ad3.LU.SDg := by
   intro F _ _ _ _ a b c

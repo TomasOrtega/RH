@@ -14,14 +14,14 @@ open GlobalTheory.FlagMod (ev tau tau_le spMap_ev ev_res ev_spMap le_preimage_in
 namespace GlobalTheory.DRFlag.StepLift
 
 /- English proof (translation)
-Rewrite using `[initSpan, initSpan, Submodule.map_span, Set.image_image]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem initSpan_map {K N N' : Type} [CommRing K] [AddCommGroup N] [Module K N] [AddCommGroup N'] [Module K N'] {m : ℕ}
     (L : N →ₗ[K] N') (v : Fin m → N) (j : ℕ) : initSpan K (fun i => L (v i)) j = (initSpan K v j).map L := by
   rw [initSpan, initSpan, Submodule.map_span, Set.image_image]
 
 /- English proof (translation)
-Rewrite using `[initSpan, ← Set.image_univ]`. Use `congr 2`. Conclude with `Set.eq_univ_of_forall fun i => i.2.trans_le hj`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem initSpan_of_le {K N : Type} [CommRing K] [AddCommGroup N] [Module K N] {m : ℕ}
     (v : Fin m → N) {j : ℕ} (hj : m ≤ j) : initSpan K v j = Submodule.span K (Set.range v) := by
@@ -30,11 +30,9 @@ theorem initSpan_of_le {K N : Type} [CommRing K] [AddCommGroup N] [Module K N] {
   exact Set.eq_univ_of_forall fun i => i.2.trans_le hj
 
 /- English proof (translation)
-Use `by_contra! hn`. Establish `h1 : c.repr (c q) q ∈ IsLocalRing.maximalIdeal R`. Rewrite using `[← b.sum_repr (c q), map_sum, Finsupp.finset_sum_apply]`. Use `Ideal.sum_mem _ fun x _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `x with i | j` into its components or cases. Rewrite using `[h i, mul_zero]`. Conclude with `Ideal.zero_mem _`. Conclude with `Ideal.mul_mem_right _ _ (hn j)`. Rewrite `h1` using `[c.repr_self, Finsupp.single_eq_same]`.
-
-Conclude with `h1 isUnit_one`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isUnit_repr {R N : Type} [CommRing R] [IsLocalRing R] [AddCommGroup N] [Module R N] {k m : ℕ} {κ : Type}
     (b : Module.Basis (Fin k ⊕ Fin m) R N) (c : Module.Basis κ R N) (q : κ)
@@ -51,9 +49,9 @@ theorem exists_isUnit_repr {R N : Type} [CommRing R] [IsLocalRing R] [AddCommGro
   exact h1 isUnit_one
 
 /- English proof (translation)
-Establish `: initSpan K (fun j => c (e j)) k ≤ LinearMap.ker (c.coord (e ⟨k, hk⟩))`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, hj, rfl⟩`. Establish `hne : e j ≠ e ⟨k, hk⟩` using `fun h => by`. Take `rfl` from `e.injective h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `lt_irrefl k hj`. Simplify using `[Finsupp.single_eq_of_ne hne.symm]`. Conclude with `this hv`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem repr_eq_zero_of_mem {K N : Type} [CommRing K] [AddCommGroup N] [Module K N] {κ : Type} {d : ℕ}
     (c : Module.Basis κ K N) (e : Fin d ↪ κ) {k : ℕ} (hk : k < d) {v : N}
@@ -70,9 +68,9 @@ theorem repr_eq_zero_of_mem {K N : Type} [CommRing K] [AddCommGroup N] [Module K
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
 
 /- English proof (translation)
-Substitute `hx` using the available equality. Take `⟨a, φ, e, -⟩` from `id h`. Take `⟨u₀, h₀⟩` from `A.exists_up_fr e`. Take `⟨hf, hs'⟩` from `(A.flagAt_iff e h₀ u).1 h`. Use `(A.flagAt_iff e h₀ u').2 ⟨(isFrame_up_iff _ _).2 fun σ => ⟨hli σ, ?_⟩, fun σ j hj => (hs σ j).trans (hs' σ j hj)⟩` and prove the remaining obligations.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← initSpan_of_le _ le_rfl, hs, initSpan_of_le _ le_rfl]`. Conclude with `((isFrame_up_iff _ _).1 hf σ).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flagAt_of_initSpan_eq {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {V : ValuationSubring c.F}
     {M : Model Xo c V.subtype} {X : Scheme.{0}} {π : X ⟶ M.X} {ty : (E →+* ℂ) → Finset ℕ} {A : Atlas M π ty}
@@ -90,17 +88,15 @@ theorem flagAt_of_initSpan_eq {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {V 
 variable {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}
 
 /- English proof (translation)
-Take `⟨U, hU, fr, hx, h1, h2⟩` from `hZ.2 (z (IsLocalRing.closedPoint R))`. Establish `hz : ⊤ ≤ z ⁻¹ᵁ U` using `((IsLocalRing.closed_point_mem_iff (U := z ⁻¹ᵁ U)).1 hx).ge`. Establish `ht : ∀ σ j, IsTanAtG (Y Z.i).t (tau hU ≫ Z.π) (fr σ j)` using `fun σ j => by`. Take `⟨n, v, q, hq, hv, -⟩` from `h1 σ`. Rewrite using `[← hq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hv _`. Establish `ez : spMap (ev z U hz) ≫ tau hU ≫ Z.π = z ≫ Z.π` using `by rw [← Category.assoc, tau, spMap_ev]`. Use `⟨fun σ j => tanPull (ev z U hz) ez (tanOf (ht σ j)), fun σ => ?_, fun σ j => ?_⟩` and prove the remaining obligations. Take `⟨n, v, q, hq, hv, hb⟩` from `h1 σ`. Establish `h3 : ∀ s : TanM (tau hU ≫ Z.π) (Y Z.i).t.G, ∃! a : Fin n → Γ(Z.X, U), s = ∑ i, a i • tanOf (x` using `tau hU ≫ Z.π) (hv i) := fun s => (existsUnique_congr fun a => isComb_iff (fun i => tanOf (x := tau hU ≫ Z.π) (hv i)) a s).1 (hb _ (isTan_tv s))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `b : Module.Basis (Fin n) Γ(Z.X, U) (TanM (tau hU ≫ Z.π) (Y Z.i).t.G)` to `Module.Basis.mk (v := fun i => tanOf (x := tau hU ≫ Z.π) (hv i)) (Fintype.linearIndependent_iff.2 fun a ha => congrFun ((h3 0).unique ha.symm (by simp : (0 : TanM (tau hU ≫ Z.π) (Y Z.i).t.G) = ∑ i, (0 : Fin n → Γ(Z.X, U)) i • tanOf (x := tau hU ≫ Z.π) (hv i)))) fun s _ => by`. Take `⟨a, rfl, -⟩` from `h3 s`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Use `⟨n, basPull _ ez b, q, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[basPull_apply, Module.Basis.mk_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg _ (tan_ext (hq j))`. Establish `ew : spMap (φ.comp (ev z U hz)) ≫ hU.fromSpec = w`. Rewrite using `[← spMap_comp', Category.assoc, spMap_ev, e]`. Establish `h4` using `h2 K (φ.comp (ev z U hz)) (ew ▸ hw)`. Rewrite `h4` using `[ew, ← Vecs.bc_bc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `T : TVecs Dw (Y Z.i).t (w ≫ Z.π)` to `fun σ i => tanPull φ e' (tanPull (ev z U hz) ez (tanOf (ht σ i)))`. Establish `h6 : up T = (fr.bc (ev z U hz)).bc φ` using `rfl`. Rewrite `h4` using `[← h6, ← atlasOf_flagAt]`. Establish `h5 : ∀ j ∈ Z.ty σ, initSpan K (T σ) j = initSpan K (u σ) j` using `fun j hj => Atlas.FlagAt.initSpan_eq h4 ((atlasOf_flagAt Z w _).2 hu) σ hj`. Use `show initSpan K (T σ) j = _`.
-
-Rewrite `h5` using `[hZ.1]`. Break down `le_total j (Dw.mult σ) with hj | hj` into its components or cases. Conclude with `h5 j (Finset.mem_range.2 (Nat.lt_succ_of_le hj))`. Rewrite using `[initSpan_of_le _ hj, initSpan_of_le _ hj, ← initSpan_of_le _ le_rfl, ← initSpan_of_le _ le_rfl]`. Conclude with `h5 _ (Finset.mem_range.2 (Nat.lt_succ_self _))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_int_frame {Z : Mdl Y i₀} (hZ : HasDR Z) {R K : Type} [CommRing R] [IsLocalRing R] [Field K] (φ : R →+* K)
     (z : Sp R ⟶ Z.X) {w : Sp K ⟶ Z.X} (e : spMap φ ≫ z = w) (e' : spMap φ ≫ z ≫ Z.π = w ≫ Z.π)
@@ -145,27 +141,25 @@ theorem exists_int_frame {Z : Mdl Y i₀} (hZ : HasDR Z) {R K : Type} [CommRing 
       exact h5 _ (Finset.mem_range.2 (Nat.lt_succ_self _))
 
 /- English proof (translation)
-Introduce `K _ w hw`. Take `⟨τ, mu, u, htr, hwτ, hu, hA⟩` from `hg K w hw`. Take `⟨u, rfl⟩` from `Atlas.FlagAt.exists_up (A := atlasOf Z) hu`. Take `⟨y, hy, hA'⟩` from `hA.exists_point A'`. Establish `e₁ : (w ≫ Z.π) ≫ τ = (y ≫ Cl.f) ≫ π` using `by rw [Category.assoc, ← hwτ, ← hy, Category.assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `u₁ : TVecs Dw (Y i).t ((y ≫ Cl.f) ≫ π)` to `fun σ j => pushE mu _ e₁ (u σ j)`. Establish `hA₁ : A'.FlagAt y (up u₁)` using `hA'`. Establish `hyf : y ≫ Cl.f = w ≫ g` using `Atlas.FlagAt.point_eq ((hS K y u₁).1 hA₁).1 hA (by rw [← hy, Category.assoc])`. Use `⟨y, ⟨τ, mu, _, htr, hy.trans hwτ, hu, hA'⟩, fun R _ _ _ _ _ _ z ez => ?_⟩` and prove the remaining obligations. Establish `hinj : Function.Injective (algebraMap R K)` using `IsFractionRing.injective R K`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e₂ : (z ≫ Z.π) ≫ τ = (z ≫ g) ≫ π`. Use `projProper _ _ _ (Y i).proj` as an intermediate fact. Establish `: (Y i).X.IsSeparated` using `⟨by`. Rewrite using `[← terminal.comp_from (Y i).s]`. Use the proof step `infer_instance⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: IsDominant (spMap (algebraMap R K))` using `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).2 (by`. Conclude with `((RingHom.injective_iff_ker_eq_bot _).1 hinj).le.trans bot_le)⟩`. Use `ext_of_isDominant (spMap (algebraMap R K)) ?_` and prove the remaining obligations. Simplify using `only [Category.assoc] at hwτ ⊢`. Rewrite using `[reassoc_of% ez, reassoc_of% ez, hwτ]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₃ : spMap (algebraMap R K) ≫ z ≫ Z.π = w ≫ Z.π` using `by rw [reassoc_of% ez]`. Establish `e₄ : spMap (algebraMap R K) ≫ z ≫ g = y ≫ Cl.f` using `by rw [reassoc_of% ez, hyf]`. Establish `e₅ : spMap (algebraMap R K) ≫ (z ≫ g) ≫ π = (y ≫ Cl.f) ≫ π` using `by rw [← Category.assoc, e₄]`. Take `⟨T, hT, hs⟩` from `exists_int_frame hZ (algebraMap R K) z ez e₃ hw hu`. Set `T₁ : TVecs Dw (Y i).t ((z ≫ g) ≫ π)` to `fun σ j => pushE mu _ e₂ (T σ j)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `T₂ : TVecs Dw (Y i).t ((y ≫ Cl.f) ≫ π)` to `fun σ j => tanPull (algebraMap R K) e₅ (T₁ σ j)`. Establish `hT₁ : ∀ σ, ∃ (n : ℕ) (c : Module.Basis (Fin n) R (TanM ((z ≫ g) ≫ π) (Y i).t.G)) (q : Fin (Dw.mult σ) ↪ Fin n), (∀ j, c (q j) = T₁ σ j) ∧ T₂ σ = fun j => basPull (algebraMap R K) e₅ c (q j)` using `fun σ => by`. Take `⟨n, c, q, hq⟩` from `hT σ`. Establish `: ∀ j, c.map (pushE mu _ e₂) (q j) = T₁ σ j` using `fun j => by rw [Module.Basis.map_apply, hq]`. Conclude with `⟨n, _, q, this, funext fun j => by rw [basPull_apply, this]⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hA₂ : A'.FlagAt y (up T₂)`. Use `flagAt_of_initSpan_eq (Category.assoc _ _ _).symm hA₁ (fun σ => ?_) fun σ j => ?_` and prove the remaining obligations. Take `⟨n, c, q, -, h⟩` from `hT₁ σ`. Rewrite using `[h]`. Conclude with `(basPull _ e₅ c).linearIndependent.comp _ q.injective`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `: T₂ σ = fun j => (pushE mu _ e₁).toLinearMap (tanPull (algebraMap R K) e₃ (T σ j))`. Use function extensionality and compare the values at `fun j => tan_ext (Category.assoc _ _ _).symm`. Rewrite using `[this, initSpan_map, hs]`. Conclude with `(initSpan_map (pushE mu _ e₁).toLinearMap _ _).symm`. Take `⟨hA₃, hc⟩` from `(hS K y T₂).1 hA₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨α, hα⟩` from `GlobalTheory.FlagMod.exists_chart_of_isLocalRing (U := D.C.B) (eq_top_iff.2 fun x _ => TopologicalSpace.Opens.mem_iSup.2 (D.C.cover x)) (z ≫ g)`. Establish `hα' : ⊤ ≤ (y ≫ Cl.f) ⁻¹ᵁ D.C.B α` using `e₄ ▸ le_preimage_comp _ hα`. Use `Cl.lift R K (z ≫ g) α hα (crd (D.b α) (z ≫ g) hα (T₁ σ ⟨k, hk⟩)) ?_ y e₄.symm fun h => ?_` and prove the remaining obligations. Take `⟨n, c, q, hq, h⟩` from `hT₁ σ`. Rewrite using `[← hq]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `exists_isUnit_repr _ c _ fun j => hinj ?_` and prove the remaining obligations. Rewrite using `[← basPull_repr _ e₅, map_zero, tanPull_basAt _ _ _ _ e₄ hα']`. Use `repr_eq_zero_of_mem _ q hk ?_` and prove the remaining obligations. Rewrite using `[← h, D.int α K _ hα' T₂ hA₃ k le_rfl]`. Conclude with `Submodule.subset_span ⟨j, j.2, rfl⟩`.
-
-Use `hc α h` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Conclude with `funext fun j => (basAt_repr _ _ _ hα e₄ h e₅ _ _).symm`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem locMaps_closure {i : Idx H p} {X : Scheme.{0}} {π : X ⟶ (Y i).X} {ty : (E →+* ℂ) → Finset ℕ}
     {A : Atlas (Y i) π ty} {σ : E →+* ℂ} {k r : ℕ} (D : Adapted A σ k) (hk : k < Dw.mult σ) {Sb : D.C.Sub A.ch r}
@@ -231,7 +225,7 @@ theorem locMaps_closure {i : Idx H p} {X : Scheme.{0}} {π : X ⟶ (Y i).X} {ty 
 end GlobalTheory.DRFlag.StepLift
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ D hk _ Cl _ _ _ _` and use `GlobalTheory.DRFlag.StepLift.locMaps_closure D hk Cl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.DRFlag.locMaps_closure_of_hasDR : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (Xo : ∀ l : Level H, Moduli Dw l) (p : ℕ) (W : ValuationSubring ℂ) (Y : LocalSystem Xo p W) (i₀ : Idx H p) (i : Idx H p) (X : Scheme.{0}) (π : X ⟶ (Y i).X) (ty : (E →+* ℂ) → Finset ℕ) (A : Atlas (Y i) π ty) (σ : E →+* ℂ) (k r : ℕ) (D : Adapted A σ k) (hk : k < Dw.mult σ) (Sb : D.C.Sub A.ch r) (Cl : Sb.Closure (π ≫ (Y i).s)) (ty' : (E →+* ℂ) → Finset ℕ) (A' : Atlas (Y i) (Cl.f ≫ π) ty') (Z : Mdl Y i₀) (g : Z.X ⟶ X), StepRel D hk Cl.L A' → HasDR Z → MapsTo Z A g → LocMaps Z A' :=
   fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ D hk _ Cl _ _ _ _ => GlobalTheory.DRFlag.StepLift.locMaps_closure D hk Cl

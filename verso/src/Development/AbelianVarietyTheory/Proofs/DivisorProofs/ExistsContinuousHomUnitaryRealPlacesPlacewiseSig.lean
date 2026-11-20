@@ -18,33 +18,29 @@ namespace GlobalTheory.RealLiftCompD
 open Matrix GlobalTheory.RealLiftGen
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ β _ _ R S τ J b C hcm hC`. Use `choose A' hA' using fun w => (hC w).2`. Use `set K : InfinitePlace F → Matrix β β ℂ := fun w => b • J.map (piInf (τ w)) with hK`. Establish `hF : ∀ w, (C w)ᵀ * K w * (C w).map star = Jm (R w) (S w)` using `fun w => (hC w).1`. Establish `hAC : ∀ w, A' w * C w = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `w`. Establish `h1 : (Jm (R w) (S w) * (C w)ᵀ * K w) * (C w).map star = 1`. Rewrite using `[Matrix.mul_assoc (Jm (R w) (S w)), Matrix.mul_assoc (Jm (R w) (S w)), hF, Jm_mul_Jm]`. Establish `h2 : (Jm (R w) (S w) * (C w)ᵀ * K w).map star * C w = 1`. Use `congrArg (fun X => X.map star) h1` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[map_star_mul, map_star_star]`. Rewrite using `[this]`. Use extensionality with `i j`. Simplify using `[Matrix.one_apply]`. Combine the equalities or inequalities in the displayed calculation.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set M : UG (cA σ) J → InfinitePlace F → Matrix β β ℂ := fun g w => (g.1 : Matrix β β (AE F E)).map (piInf (τ w)) with hM`. Establish `hMmul : ∀ g h w, M (g * h) w = M g w * M h w`. Introduce `g h w`. Simplify using `only [hM, Subgroup.coe_mul, Units.val_mul]`. Conclude with `Matrix.map_mul`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hM1 : ∀ w, M 1 w = 1`. Introduce `w`. Simplify using `only [hM, OneMemClass.coe_one, Units.val_one]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hMu : ∀ g w, (M g w)ᵀ * K w * (M g w).map star = K w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `g w`. Establish `hg` using `g.2`. Express the relevant statement in the definitionally equal form `((g.1 : Matrix β β (AE F E)))ᵀ * J * ((g.1 : Matrix β β (AE F E))).map (cA σ) = J at hg`. Establish `h2` using `congrArg (fun X => X.map (piInf (τ w))) hg`. Simplify using `only [Matrix.map_mul, Matrix.map_map] at h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : (piInf (τ w)) ∘ (cA σ) = star ∘ (piInf (τ w))` using `funext fun x => piInf_cA hcm (τ w) x`. Rewrite `h2` using `[h3, ← Matrix.map_map]`. Establish `h4 : (M g w)ᵀ * J.map (piInf (τ w)) * (M g w).map star = J.map (piInf (τ w))`. Simplify using `only [hM]`. Rewrite using `[← Matrix.transpose_map]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `h2`. Simplify using `only [hK, Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[h4]`. Set `k : UG (cA σ) J →* (∀ w : InfinitePlace F, Mat (R w) (S w))` to `{ toFun := fun g w => A' w * M g w * C w map_one' := by funext w; simp only [hM1, Matrix.mul_one, hAC, Pi.one_apply] map_mul' := by`. Introduce `g h`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `w`. Simplify using `only [hMmul, Pi.mul_apply]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hA', Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `_ = _ := by simp only [Matrix.mul_assoc] }`. Establish `hk : ∀ g w, k g w = A' w * M g w * C w` using `fun _ _ => rfl`. Establish `hCk : ∀ g w, C w * k g w = M g w * C w`. Introduce `g w`. Simplify using `only [hk, ← Matrix.mul_assoc, hA', Matrix.one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `⟨k, ?_, fun g w => (hCk g w).symm, fun g w => ?_, fun w X X' h => ?_⟩` and prove the remaining obligations. Establish `h1 : Continuous (fun g : UG (cA σ) J => ((g.1 : Matrix β β (AE F E))))` using `Units.continuous_val.comp continuous_subtype_val`. Use `continuous_pi fun w => ?_` and prove the remaining obligations. Conclude with `(continuous_const.matrix_mul (h1.matrix_map (GlobalTheory.ContMapReal.continuous_piInf (τ w)))).matrix_mul continuous_const`. Establish `hT : (k g w)ᵀ * Jm (R w) (S w) * (k g w).map star = Jm (R w) (S w)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[← hF w]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.transpose_mul, map_star_mul, Matrix.mul_assoc]`. Use `_ = (C w)ᵀ * ((M g w)ᵀ * K w * (M g w).map star) * (C w).map star := by`. Simplify using `only [hCk, Matrix.transpose_mul, map_star_mul, Matrix.mul_assoc]`.
-
-Use `_ = _ := by rw [hMu]`. Establish `h2` using `congrArg (fun X => X.map star) hT`. Simplify using `only [map_star_mul, Jm_map_star, map_star_star] at h2`. Conclude with `h2`. Use `congrArg (fun Y => A' w * Y) h` as an intermediate fact.
-
-Simplify `this` using `only [← Matrix.mul_assoc, hAC, Matrix.one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem exists_compD : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (β : Type) [Fintype β]
     [DecidableEq β] (R S : InfinitePlace F → ℕ) (τ : ∀ w : InfinitePlace F, EmbOver E w) (J : Matrix β β (AE F E)) (b : ℂ)

@@ -13,14 +13,14 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarR
 open scoped TensorProduct
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[reGL]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem reGL_refl_apply' {n : ℕ} (R : Type) [CommRing R] (g : GL (Fin n) R) : reGL rfl R g = g := by
   ext a b
   simp [reGL]
 
 /- English proof (translation)
-Use `ext1 g`. Conclude with `reGL_refl_apply' R g`.
+A detailed English derivation is pending.
 -/
 theorem reGL_refl_hom' {n : ℕ} (R : Type) [CommRing R] :
     (reGL (rfl : n = n) R).toMonoidHom = MonoidHom.id _ := by
@@ -29,18 +29,18 @@ theorem reGL_refl_hom' {n : ℕ} (R : Type) [CommRing R] :
 
 omit [StarRing E] in
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[reL, reV]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem reL_refl' {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E)) : reL rfl L = L := by
   ext x
   simp [reL, reV]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Substitute `hσ` using the available equality. Choose the witnesses or unpack the hypotheses as in `rfl : J = S.gram := by`. Use extensionality with `a b`. Simplify using `using hJ a b`.
+Substitute using the available equality. Substitute using the available equality. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 
-Substitute `hLb` using the available equality. Substitute `hU` using the available equality. Establish `hU0 : U.map (reGL (rfl : S.rank = S.rank) (E ⊗[F] Formalism.L2.Herm.Af F)).toMonoidHom = U`. Rewrite using `[reGL_refl_hom', Subgroup.map_id]`. Rewrite `y_bij`, `stabI_range` using `[hU0]`.
+Substitute using the available equality. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [reL_refl'] at y_lat`. Use `⟨⟨fun c' => y (e c'), y_bij.comp e.bijective, fun c' x => y_lat (e c') x, fun c' => stabI (e c'), fun c' => stabI_inj (e c'), fun c' γ => stabI_range (e c') γ⟩, fun c' => (reGL_refl_apply' _ _).symm, fun c' s => (reGL_refl_apply' _ _).symm⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem classTie_of_reindex (hc : CMData F E) (S : HSpace E) {n : ℕ} (h : S.rank = n) {σ : E →ₐ[F] E}
     (hσ : σ = hc.sig) {J : Matrix (Fin n) (Fin n) E}
@@ -80,7 +80,7 @@ theorem classTie_of_reindex (hc : CMData F E) (S : HSpace E) {n : ℕ} (h : S.ra
 end Gen
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[latCrd, reL, Formalism.L2.Herm.crdLat, reV, Formalism.L2.Herm.crd]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem latCrd_eq_reL (D : D7) (i : ℕ) (hi : i ≤ D.R.m) (L : Submodule (𝓞 D.host.E) (D.sp.X i).V) :
     latCrd D i hi L = reL (rankN D i hi) (Formalism.L2.Herm.crdLat (D.sp.X i) L) := by
@@ -88,7 +88,7 @@ theorem latCrd_eq_reL (D : D7) (i : ℕ) (hi : i ≤ D.R.m) (L : Submodule (𝓞
   simp [latCrd, reL, Formalism.L2.Herm.crdLat, reV, Formalism.L2.Herm.crd]
 
 /- English proof (translation)
-Introduce `D i hi T bad cl cl' e stab _ lat K T' f' L hLb hU`. Conclude with `classTie_of_reindex D.sp.cm (D.sp.X i) (rankN D i hi) rfl (fun a b => rfl) e lat K.y K.y_bij (fun c x => by rw [← latCrd_eq_reL]; exact K.y_lat c x) K.stabI K.stabI_inj K.stabI_range L.Lb L.U hLb hU`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem classTie_of_chart : ∀ (D : D7) (i : ℕ) (hi : i ≤ D.R.m) {T : ℕ} {bad : Set (HeightOneSpectrum (𝓞 D.host.F))} {cl cl' : Type} (e : cl' ≃ cl)
   {stab : cl → Type} [∀ c, Group (stab c)] (lat : cl → Submodule (𝓞 D.host.E) (D.sp.X i).V)

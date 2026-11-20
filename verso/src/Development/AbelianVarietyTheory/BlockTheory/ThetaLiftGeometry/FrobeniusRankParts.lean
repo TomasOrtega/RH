@@ -23,7 +23,7 @@ def twistRep (ρ : Γ →* GL (Fin a) O) (ξ : Γ →* Oˣ) : Γ →* GL (Fin a)
     rw [mul_assoc, mul_assoc, ← mul_assoc (Matrix.scalar (Fin a) (ξ h : O)), ← hc, mul_assoc]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Matrix.scalar (Fin a) (ξ g : O) * _ = _`. Rewrite using `[Matrix.scalar_apply, ← Matrix.smul_eq_diagonal_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem twistRep_val (ρ : Γ →* GL (Fin a) O) (ξ : Γ →* Oˣ) (g : Γ) :
     ((twistRep ρ ξ g : GL (Fin a) O) : Matrix (Fin a) (Fin a) O) =
@@ -51,7 +51,7 @@ def IsRankPart (i : N.Loc) (x : N.X i) (ρ' : G H.E N.Om →* GL (Fin R.r) (N.O 
       heckePol N i x w
 
 /- English proof (translation)
-Rewrite using `[hr.2.2 w hw B σ hB hσ, h.2.2 w hw B σ hB hσ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem IsRankPart.charpoly_frob {i : N.Loc} {x : N.X i} {ρ' : G H.E N.Om →* GL (Fin R.r) (N.O i)}
     (h : IsRankPart N i x ρ') {r : G H.E N.Om →* GL (Fin R.nV) (N.O i)} (hr : IsHeckeGalois N i x r)
@@ -63,7 +63,7 @@ theorem IsRankPart.charpoly_frob {i : N.Loc} {x : N.X i} {ρ' : G H.E N.Om →* 
   rw [hr.2.2 w hw B σ hB hσ, h.2.2 w hw B σ hB hσ]
 
 /- English proof (translation)
-Take `⟨P, hP, hBC⟩` from `hx`. Use `⟨⟨P, hP, _, hBC, ?_⟩, Sig, ⟨P, hP, hBC⟩, hg⟩` and prove the remaining obligations. Simplify using `[twistIso, muPart]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem mem_ZgoodN_of_param (A : NAut N) {i : N.Loc} {x : N.X i} {Sig : List (Part A.CG)}
     (hx : HasParamX N A i x Sig) (hg : goodSig N A Sig) : x ∈ ZgoodN N A i := by

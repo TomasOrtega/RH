@@ -5,7 +5,7 @@ open MeasureTheory NumberField IsDedekindDomain Filter GroundTheory.Automorphic 
 open GroundTheory.Automorphic.CuspidalSpectrum GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets GlobalTheory.PRep Formalism.BasicNotions GlobalTheory.CuspRep GlobalTheory.SmGL UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.C
 
 /- English proof (translation)
-Conclude with `PositivityTheory.TfC.OccursBasics_holds`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.C.occursBasics :
     UpperTheory.ConvolutionTheory.C.OccursBasics := by

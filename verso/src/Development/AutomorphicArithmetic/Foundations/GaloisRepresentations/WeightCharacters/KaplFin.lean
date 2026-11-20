@@ -10,7 +10,7 @@ namespace UpperTheory.Gal.Wt.KaplanskyFiniteness
 variable {k : Type} [NormedField k] [IsUltrametricDist k]
 
 /- English proof (translation)
-Establish `hc' : 0 < ‖c‖` using `norm_pos_iff.mpr hc`. Rewrite using `[sub_eq_add_neg]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (by simp) ?_)` and prove the remaining obligations. Rewrite using `[norm_neg, norm_mul, norm_inv, inv_mul_le_iff₀ hc', mul_one]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma norm_unit_le (c x : k) (hc : c ≠ 0) (h : ‖x‖ ≤ ‖c‖) : ‖1 - c⁻¹ * x‖ ≤ 1 := by
   have hc' : 0 < ‖c‖ := norm_pos_iff.mpr hc
@@ -20,7 +20,7 @@ private lemma norm_unit_le (c x : k) (hc : c ≠ 0) (h : ‖x‖ ≤ ‖c‖) : 
   exact h
 
 /- English proof (translation)
-Establish `hx : x = (x - c) + c` using `by ring`. Rewrite using `[hx]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (h.trans ?_) le_rfl)` and prove the remaining obligations. Use `norm_nonneg c` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private lemma norm_le_of_near (c x : k) (h : ‖x - c‖ ≤ ‖c‖ / 2) : ‖x‖ ≤ ‖c‖ := by
   have hx : x = (x - c) + c := by ring
@@ -30,9 +30,9 @@ private lemma norm_le_of_near (c x : k) (h : ‖x - c‖ ≤ ‖c‖ / 2) : ‖x
   linarith
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using hε`. Consider the case `succ n ih`. Establish `e : u ^ (n + 1) - 1 = u * (u ^ n - 1) + (u - 1)` using `by ring`. Rewrite using `[e]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ h)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 private lemma pow_near {u : k} {ε : ℝ} (hε : 0 ≤ ε) (hu : ‖u‖ ≤ 1) (h : ‖u - 1‖ ≤ ε) (n : ℕ) :
     ‖u ^ n - 1‖ ≤ ε := by
@@ -47,7 +47,7 @@ private lemma pow_near {u : k} {ε : ℝ} (hε : 0 ≤ ε) (hu : ‖u‖ ≤ 1) 
       _ = ε := one_mul ε
 
 /- English proof (translation)
-Rewrite using `[Polynomial.eval_eq_sum_range]`. Use `norm_sum_le_of_le _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow]`. Conclude with `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (norm_nonneg _) hx i) (norm_nonneg _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma eval_bound (p : Polynomial k) (x : k) (R : ℝ) (hx : ‖x‖ ≤ R) :
     ‖p.eval x‖ ≤ ∑ i ∈ Finset.range (p.natDegree + 1), ‖p.coeff i‖ * R ^ i := by
@@ -57,7 +57,7 @@ private lemma eval_bound (p : Polynomial k) (x : k) (R : ℝ) (hx : ‖x‖ ≤ 
   exact mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (norm_nonneg _) hx i) (norm_nonneg _)
 
 /- English proof (translation)
-Establish `hM1 : 0 < M + 1` using `by linarith`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one (div_pos hε hM1) (by norm_num : (1 / 2 : ℝ) < 1)`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `hp : (0 : ℝ) ≤ (1 / 2 : ℝ) ^ n` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 private lemma exists_pow_small (M ε : ℝ) (hM : 0 ≤ M) (hε : 0 < ε) :
     ∃ n : ℕ, M * (1 / 2 : ℝ) ^ n ≤ ε := by
@@ -73,25 +73,25 @@ end UpperTheory.Gal.Wt.KaplanskyFiniteness
 
 open UpperTheory.Gal.Wt.KaplanskyFiniteness in
 /- English proof (translation)
-Introduce `k _ _ s δ ε hδ hε hε1`. Use `Finset.induction_on_max_value (fun c : k => ‖c‖) s ?_ ?_` and prove the remaining obligations. Introduce `_`. Use `⟨1, fun x _ => by simp, fun c hc => absurd hc (Finset.notMem_empty c), fun x _ => ?_⟩` and prove the remaining obligations. Simplify using `using hε.le`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `c s _ hmax ih hs`. Take `⟨p', h1, h2, h3⟩` from `ih fun c' hc' => hs c' (Finset.mem_insert_of_mem hc')`. Establish `hδc : δ ≤ ‖c‖` using `hs c (Finset.mem_insert_self c s)`. Establish `hc0 : c ≠ 0`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hδc` using `[h, norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcpos : 0 < ‖c‖` using `norm_pos_iff.mpr hc0`. Take `⟨n, hn⟩` from `exists_pow_small (∑ i ∈ Finset.range (p'.natDegree + 1), ‖p'.coeff i‖ * ‖c‖ ^ i) ε (Finset.sum_nonneg fun i _ => mul_nonneg (norm_nonneg _) (pow_nonneg (norm_nonneg _) _)) hε`. Establish `hev : ∀ x, ((p' * (1 - Polynomial.C c⁻¹ * Polynomial.X) ^ n).eval x) = p'.eval x * (1 - c⁻¹ * x) ^ n`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `x`. Simplify using `[Polynomial.eval_mul, Polynomial.eval_pow]`. Use `⟨p' * (1 - Polynomial.C c⁻¹ * Polynomial.X) ^ n, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[hev, norm_mul, norm_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hu` using `norm_unit_le c x hc0 (hx.trans hδc)`. Combine the equalities or inequalities in the displayed calculation. Introduce `c' hc' x hx`. Rewrite using `[hev, norm_mul, norm_pow]`. Break down `Finset.mem_insert.mp hc' with rfl | hc's` into its components or cases.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hxc` using `norm_le_of_near c' x hx`. Establish `hu : ‖1 - c'⁻¹ * x‖ ≤ 1 / 2`. Establish `e : 1 - c'⁻¹ * x = c'⁻¹ * (c' - x)` using `by field_simp`. Rewrite using `[e, norm_mul, norm_inv, norm_sub_rev, inv_mul_le_iff₀ hcpos]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hxc : ‖x‖ ≤ ‖c‖` using `(norm_le_of_near c' x hx).trans (hmax c' hc's)`. Establish `hu` using `norm_unit_le c x hc0 hxc`. Combine the equalities or inequalities in the displayed calculation. Introduce `x hx`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hxδ : ‖x‖ ≤ δ` using `hx.trans (by nlinarith)`. Establish `hu` using `norm_unit_le c x hc0 (hxδ.trans hδc)`. Establish `hu1 : ‖(1 - c⁻¹ * x) - 1‖ ≤ ε`. Establish `e : (1 - c⁻¹ * x) - 1 = -(c⁻¹ * x)` using `by ring`. Rewrite using `[e, norm_neg, norm_mul, norm_inv, inv_mul_le_iff₀ hcpos]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hun` using `pow_near hε.le hu hu1 n`. Establish `e : p'.eval x * (1 - c⁻¹ * x) ^ n - 1 = p'.eval x * ((1 - c⁻¹ * x) ^ n - 1) + (p'.eval x - 1)` using `by ring`. Rewrite using `[hev, e]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ (h3 x hx))` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem UpperTheory.Gal.Wt.kaplFin_of :
     UpperTheory.Gal.Wt.KaplFin := by

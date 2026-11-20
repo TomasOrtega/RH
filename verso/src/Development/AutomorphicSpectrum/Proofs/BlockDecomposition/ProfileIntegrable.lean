@@ -11,7 +11,7 @@ namespace GlobalTheory.CompanionTheory.Parseval.OneDim
 open GlobalTheory.CompanionTheory.Parseval
 
 /- English proof (translation)
-Establish `h` using `integrable_one_add_norm (E := ℝ) (μ := volume) (r := 2) (by simp)`. Use `h.congr (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Establish `hp : (0 : ℝ) < 1 + |t|` using `by positivity`. Simplify using `only [Real.norm_eq_abs]`. Rewrite using `[Real.rpow_neg hp.le, Real.rpow_two]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma profile_integrable : Integrable (fun t : ℝ => ((1 + |t|) ^ 2)⁻¹) := by
   have h := integrable_one_add_norm (E := ℝ) (μ := volume) (r := 2) (by simp)
@@ -21,14 +21,14 @@ lemma profile_integrable : Integrable (fun t : ℝ => ((1 + |t|) ^ 2)⁻¹) := b
   rw [Real.rpow_neg hp.le, Real.rpow_two]
 
 /- English proof (translation)
-Simplify using `only [wt, abs_div, abs_of_pos ha]`.
+Simplify using the standard rewrite rules.
 -/
 lemma wt_eq_comp (a l ζ : ℝ) (ha : 0 < a) :
     wt a l ζ = (fun t : ℝ => (fun s : ℝ => ((1 + |s|) ^ 2)⁻¹) (t / a)) (ζ - l) := by
   simp only [wt, abs_div, abs_of_pos ha]
 
 /- English proof (translation)
-Establish `h1` using `profile_integrable.comp_div ha.ne'`. Establish `h2` using `h1.comp_sub_right l`. Conclude with `h2.congr (Filter.Eventually.of_forall fun ζ => (wt_eq_comp a l ζ ha).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma wt_integrable (a l : ℝ) (ha : 0 < a) : Integrable (wt a l) := by
   have h1 := profile_integrable.comp_div ha.ne'
@@ -36,7 +36,7 @@ lemma wt_integrable (a l : ℝ) (ha : 0 < a) : Integrable (wt a l) := by
   exact h2.congr (Filter.Eventually.of_forall fun ζ => (wt_eq_comp a l ζ ha).symm)
 
 /- English proof (translation)
-Establish `h : wt a l = fun ζ => (fun t : ℝ => (fun s : ℝ => ((1 + |s|) ^ 2)⁻¹) (t / a)) (ζ - l)`. Use function extensionality and compare the values at `fun ζ => wt_eq_comp a l ζ ha`. Rewrite using `[h, integral_sub_right_eq_self (fun t : ℝ => (fun s : ℝ => ((1 + |s|) ^ 2)⁻¹) (t / a)) l, Measure.integral_comp_div (fun s : ℝ => ((1 + |s|) ^ 2)⁻¹) a, abs_of_pos ha, smul_eq_mul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 lemma wt_integral (a l : ℝ) (ha : 0 < a) :
     ∫ ζ, wt a l ζ = a * ∫ t : ℝ, ((1 + |t|) ^ 2)⁻¹ := by
@@ -46,13 +46,13 @@ lemma wt_integral (a l : ℝ) (ha : 0 < a) :
     Measure.integral_comp_div (fun s : ℝ => ((1 + |s|) ^ 2)⁻¹) a, abs_of_pos ha, smul_eq_mul]
 
 /- English proof (translation)
-Establish `hlp : 0 < |l|` using `abs_pos.2 hl`. Establish `h1 : |l| / 2 ≤ |ζ - l|`. Use `abs_sub_abs_le_abs_sub l ζ` as an intermediate fact. Rewrite `this` using `[abs_sub_comm l ζ]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hy : |l| / (2 * a) ≤ |ζ - l| / a`. Rewrite using `[div_le_div_iff₀ (by positivity) ha]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hy0 : 0 < |l| / (2 * a)` using `by positivity`. Use `set y := |ζ - l| / a with hydef`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hypos : 0 < y` using `lt_of_lt_of_le hy0 hy`. Establish `h2 : ((1 + y) ^ 2)⁻¹ ≤ y⁻¹`. Apply `inv_anti₀ hypos` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities. Establish `h3 : y⁻¹ ≤ (|l| / (2 * a))⁻¹` using `inv_anti₀ hy0 hy`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : (|l| / (2 * a))⁻¹ = 2 * a / |l|` using `inv_div _ _`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma wt_le_near {a l ζ : ℝ} (ha : 0 < a) (hl : l ≠ 0) (h : |ζ| < |l| / 2) :
     wt a l ζ ≤ 2 * a / |l| := by
@@ -76,17 +76,15 @@ lemma wt_le_near {a l ζ : ℝ} (ha : 0 < a) (hl : l ≠ 0) (h : |ζ| < |l| / 2)
     _ ≤ 2 * a / |l| := by rw [← h4]; exact h2.trans h3
 
 /- English proof (translation)
-Establish `hlp : 0 < |l|` using `abs_pos.2 hl`. Use `set x := |l| / ε with hx`. Establish `hxp : 0 < x` using `by positivity`. Establish `hpi` using `Real.pi_gt_three`. Use `set u := Real.pi * x ^ 2 / 4 with hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : x ≤ Real.exp u`. Use `Real.add_one_le_exp u` as an intermediate fact. Establish `hx2 : 3 * x ^ 2 / 4 ≤ u`. Rewrite using `[hu]`. Establish `: 0 ≤ x ^ 2` using `sq_nonneg x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Use polynomial arithmetic with `[sq_nonneg (x - 1), sq_nonneg x]`. Establish `h2 : Real.exp (-u) ≤ x⁻¹`. Rewrite using `[Real.exp_neg]`. Conclude with `inv_anti₀ hxp h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : -Real.pi * ζ ^ 2 / ε ^ 2 ≤ -u`. Establish `hz : |l| ^ 2 / 4 ≤ ζ ^ 2`. Rewrite using `[← sq_abs ζ]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hux : u = Real.pi * (|l| ^ 2 / 4) / ε ^ 2`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu, hx]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hux, neg_mul, neg_div, neg_le_neg_iff]`. Use `gcongr`. Establish `h4 : Real.exp (-Real.pi * ζ ^ 2 / ε ^ 2) ≤ x⁻¹` using `(Real.exp_le_exp.2 h3).trans h2`.
-
-Unfold `gau`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma gau_le_far {ε l ζ : ℝ} (hε : 0 < ε) (hl : l ≠ 0) (h : |l| / 2 ≤ |ζ|) :
     gau ε ζ ≤ 1 / |l| := by
@@ -119,11 +117,11 @@ lemma gau_le_far {ε l ζ : ℝ} (hε : 0 < ε) (hl : l ≠ 0) (h : |l| / 2 ≤ 
     _ = 1 / |l| := by rw [hx]; field_simp
 
 /- English proof (translation)
-Establish `hlp : 0 < |l|` using `abs_pos.2 hl`. Establish `hw` using `wt_nonneg a l ζ`. Establish `hg` using `gau_nonneg ε ζ hε`. Distinguish the cases in `h : |ζ| < |l| / 2`. Establish `h1` using `mul_le_mul_of_nonneg_right (wt_le_near ha hl h) hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h2 : 0 ≤ 1 / |l| * wt a l ζ` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `mul_le_mul_of_nonneg_left (gau_le_far hε hl (not_lt.1 h)) hw`. Establish `h2 : 0 ≤ 2 * a / |l| * gau ε ζ` using `by positivity`. Rewrite `h1` using `[mul_comm (wt a l ζ) (1 / |l|)]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: wt a l ζ * gau ε ζ ≤ 1 / |l| * wt a l ζ`. Rewrite using `[mul_comm (1 / |l|)]`. Rewrite `h1` using `[mul_comm (1 / |l|)]`. Conclude with `h1`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma wt_mul_gau_le {ε a l : ℝ} (hε : 0 < ε) (ha : 0 < a) (hl : l ≠ 0) (ζ : ℝ) :
     wt a l ζ * gau ε ζ ≤ 2 * a / |l| * gau ε ζ + 1 / |l| * wt a l ζ := by
@@ -142,11 +140,11 @@ lemma wt_mul_gau_le {ε a l : ℝ} (hε : 0 < ε) (ha : 0 < a) (hl : l ≠ 0) (�
     linarith
 
 /- English proof (translation)
-Use `⟨2 + ∫ t : ℝ, ((1 + |t|) ^ 2)⁻¹, fun ε a l hε ha hl => ?_⟩` and prove the remaining obligations. Establish `hlp : 0 < |l|` using `abs_pos.2 hl`. Establish `hgi` using `gau_integrable ε hε`. Establish `hwi` using `wt_integrable a l ha`. Establish `hR : Integrable (fun ζ => 2 * a / |l| * gau ε ζ + 1 / |l| * wt a l ζ)` using `(hgi.const_mul _).add (hwi.const_mul _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : Integrable (fun ζ => wt a l ζ * gau ε ζ)`. Use `hR.mono' ?_ (Filter.Eventually.of_forall fun ζ => ?_)` and prove the remaining obligations. Conclude with `(hwi.aestronglyMeasurable).mul hgi.aestronglyMeasurable`. Rewrite using `[Real.norm_of_nonneg (mul_nonneg (wt_nonneg a l ζ) (gau_nonneg ε ζ hε))]`. Conclude with `wt_mul_gau_le hε ha hl ζ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmono` using `integral_mono hL hR (fun ζ => wt_mul_gau_le hε ha hl ζ)`. Establish `hval : ∫ ζ, (2 * a / |l| * gau ε ζ + 1 / |l| * wt a l ζ) = (2 + ∫ t : ℝ, ((1 + |t|) ^ 2)⁻¹) * (a / |l|)`. Rewrite using `[integral_add (hgi.const_mul _) (hwi.const_mul _), integral_const_mul, integral_const_mul, gau_integral ε hε, wt_integral a l ha]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `hmono.trans_eq hval`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem wt_gau_bound :
     ∃ C : ℝ, ∀ ε a l : ℝ, 0 < ε → 0 < a → l ≠ 0 →

@@ -12,9 +12,9 @@ open GlobalTheory.ZM
 namespace GlobalTheory.CoverGlue
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun z => z.left) (map_inv (pushHom h G') (𝟙 G'))`. Establish `e₁ : (𝟙 G' : G' ⟶ G')⁻¹ = GrpObj.inv` using `by rw [Hom.inv_def, Category.id_comp]`. Rewrite `e` using `[e₁, Hom.inv_def]`. Use `e.trans ?_` and prove the remaining obligations. Use `show ((𝟙 G' : G' ⟶ G').left ≫ φ) ≫ _ = _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Over.id_left, Category.id_comp]`.
+A detailed English derivation is pending.
 -/
 theorem sym_inv_comm {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G']
     {f : S' ⟶ S} {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) :
@@ -27,15 +27,15 @@ theorem sym_inv_comm {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] 
   rw [Over.id_left, Category.id_comp]
 
 /- English proof (translation)
-Introduce `s`. Take `⟨i, hi⟩ : ∃ i, s ∈ U i` from `TopologicalSpace.Opens.mem_iSup.1 (by rw [hU]; trivial)`. Take `⟨V, hV, c, hc⟩` from `hs i ⟨s, hi⟩`. Take `⟨w, hw⟩` from `hw i`. Use `⟨(U i).ι ''ᵁ V, ⟨⟨s, hi⟩, hV, rfl⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hp` using `(hψ i).1`. Take `⟨b, hb⟩ : ∃ b : (A.hom ⁻¹ᵁ ((U i).ι ''ᵁ V)).toScheme ⟶ V.toScheme, b ≫ V.ι ≫ (U i).ι = (A.hom ⁻¹ᵁ ((U i).ι ''ᵁ V)).ι ≫ A.hom` from `⟨IsOpenImmersion.lift (V.ι ≫ (U i).ι) _ (by`. Introduce and unpack `_ ⟨y, rfl⟩`. Take `⟨z, hz, e⟩` from `y.2`. Conclude with `⟨⟨z, hz⟩, e⟩), IsOpenImmersion.lift_fac _ _ _⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `sq : (A.hom ⁻¹ᵁ ((U i).ι ''ᵁ V)).ι ≫ A.hom = (b ≫ V.ι) ≫ (U i).ι` using `by rw [Category.assoc, hb]`. Set `m` to `hp.lift _ _ sq`. Establish `m₁ : m ≫ ψ i = (A.hom ⁻¹ᵁ ((U i).ι ''ᵁ V)).ι` using `hp.lift_fst _ _ _`. Establish `m₂ : m ≫ (G i).hom = b ≫ V.ι` using `hp.lift_snd _ _ _`. Take `⟨n, hn⟩ : ∃ n : (A.hom ⁻¹ᵁ ((U i).ι ''ᵁ V)).toScheme ⟶ ((G i).hom ⁻¹ᵁ V).toScheme, n ≫ ((G i).hom ⁻¹ᵁ V).ι = m` from `⟨IsOpenImmersion.lift _ m (by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `(congrArg (fun q => q y ∈ V) m₂).mpr (b y).2), IsOpenImmersion.lift_fac _ _ _⟩`. Take `⟨c₂, h₂, -⟩` from `exists_up ((isGen_iff w).1 hw) hL (hM i) c hc`. Use `gen_chartPull (chartPullSame L _ _ _ n fun k => ?_) c₂ h₂` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `fin_cases k`. Use `show _ ≫ _ = n ≫ (_ ≫ _) ≫ ψ i`. Rewrite using `[Category.assoc, sym_inv_comm (hψ i), ← Category.assoc n, hn, ← Category.assoc m, m₁]`. Use `show (A.hom ⁻¹ᵁ ((U i).ι ''ᵁ V)).ι = n ≫ ((G i).hom ⁻¹ᵁ V).ι ≫ ψ i`. Rewrite using `[← Category.assoc n, hn, m₁]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sym_of_cover (S : Scheme.{0}) (I : Type) (U : I → S.Opens) (A : Over S) [GrpObj A]
     (G : ∀ i, Over (U i).toScheme) [∀ i, GrpObj (G i)] (ψ : ∀ i, (G i).left ⟶ A.left) (hU : iSup U = ⊤)

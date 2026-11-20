@@ -50,7 +50,7 @@ private noncomputable def H2 (N : ℕ) [NeZero N] : Finset SL(2, ZMod (N * N)) :
   Finset.univ.filter fun η => η ∈ (CongruenceSubgroup.Gamma1 N).map (rd (N * N))
 
 /- English proof (translation)
-The claim follows from `Subgroup.mem_inf`.
+A detailed English derivation is pending.
 -/
 private lemma gam_iff {N l : ℕ} {g : SL(2, ℤ)} :
     g ∈ Gam N l ↔ g ∈ CongruenceSubgroup.Gamma1 N ∧ g ∈ CongruenceSubgroup.Gamma0 l :=
@@ -59,15 +59,15 @@ private lemma gam_iff {N l : ℕ} {g : SL(2, ℤ)} :
 end UpperTheory.Kd.L
 
 /- English proof (translation)
-Use `⟨((∏ p ∈ c.natAbs.primeFactors.filter (fun p : ℕ => ¬ (p : ℤ) ∣ d), (p : ℕ) : ℕ) : ℤ), ?_⟩` and prove the remaining obligations. Rewrite using `[Int.isCoprime_iff_gcd_eq_one]`. Assume the negation of the conclusion as `hne`. Take `⟨p, hp, hpg⟩` from `Nat.exists_prime_and_dvd hne`. Rewrite `hpg` using `[Int.gcd_eq_natAbs]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpc : (p : ℤ) ∣ c` using `Int.ofNat_dvd_left.2 (hpg.trans (Nat.gcd_dvd_left _ _))`. Establish `hpe` using `Int.ofNat_dvd_left.2 (hpg.trans (Nat.gcd_dvd_right _ _))`. Establish `hpz : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.mp hp`. Distinguish the cases in `hpd : (p : ℤ) ∣ d`. Establish `htM` using `(dvd_add_right hpd).1 hpe`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Break down `hpz.dvd_or_dvd htM with hpt | hpM` into its components or cases. Take `⟨q, hq, hpq⟩` from `(Prime.dvd_finset_prod_iff hp.prime _).1 (Int.natCast_dvd_natCast.1 hpt)`. Rewrite `hq` using `[Finset.mem_filter, Nat.mem_primeFactors]`. Establish `hpq' : p = q` using `(Nat.prime_dvd_prime_iff_eq hp hq.1.1).1 hpq`. Substitute `hpq'` using the available equality.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `hq.2 hpd`. Conclude with `h p hp hpc hpd hpM`. Establish `hpt : (p : ℤ) ∣ ((∏ p ∈ c.natAbs.primeFactors.filter (fun p : ℕ => ¬ (p : ℤ) ∣ d), (p : ℕ) : ℕ) : ℤ)`. Apply `Int.natCast_dvd_natCast.2` to reduce the goal to its premises. Apply `Finset.dvd_prod_of_mem` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[Finset.mem_filter, Nat.mem_primeFactors]`. Conclude with `⟨⟨hp, Int.ofNat_dvd_left.1 hpc, Int.natAbs_ne_zero.2 hc⟩, hpd⟩`. Conclude with `hpd ((dvd_add_left (dvd_mul_of_dvd_left hpt M)).1 hpe)`.
+A detailed English derivation is pending.
 -/
 private theorem coe_uel_eq_umat (c d M : ℤ) (hc : c ≠ 0)
     (h : ∀ p : ℕ, p.Prime → (p : ℤ) ∣ c → (p : ℤ) ∣ d → (p : ℤ) ∣ M → False) :
@@ -98,31 +98,29 @@ private theorem coe_uel_eq_umat (c d M : ℤ) (hc : c ≠ 0)
     exact hpd ((dvd_add_left (dvd_mul_of_dvd_left hpt M)).1 hpe)
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `ZMod.intCast_surjective (γ 0 0)`. Take `⟨b, hb⟩` from `ZMod.intCast_surjective (γ 0 1)`. Take `⟨c0, hc0⟩` from `ZMod.intCast_surjective (γ 1 0)`. Take `⟨d0, hd0⟩` from `ZMod.intCast_surjective (γ 1 1)`. Establish `h1 : (a : ZMod M) * d0 - b * c0 = 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `γ.det_coe` as an intermediate fact. Rewrite `this` using `[Matrix.det_fin_two]`. Rewrite using `[ha, hb, hc0, hd0]`. Conclude with `this`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : (M : ℤ) ∣ a * d0 - b * c0 - 1 := by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Use `push_cast`. Rewrite using `[h1]`. Expand and normalize the polynomial expressions, which then agree. Choose the witnesses or unpack the hypotheses as in `⟨c, d, hc, hd, hcd⟩ : ∃ c d : ℤ, (c : ZMod M) = γ 1 0 ∧ (d : ZMod M) = γ 1 1 ∧ IsCoprime c d := by`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hc00 : c0 + (if c0 = 0 then (M : ℤ) else 0) = 0`. Establish `hc0z : c0 = 0`. Assume the negation of the conclusion as `hne`. Simplify using `[hne] at hc00`. Establish `hM : (M : ℤ) = 0` using `by simpa [hc0z] using hc00`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c0, d0, hc0, hd0, ⟨0, a, ?_⟩⟩` and prove the remaining obligations. Rewrite `hs` using `[hM, hc0z]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨t, ht⟩` from `coe_uel_eq_umat _ d0 (M : ℤ) hc00 (by`. Introduce `p hp h1 h2 h3`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1' : (p : ℤ) ∣ c0` using `by split_ifs at h1 with hz`. Rewrite using `[hz]`. Conclude with `dvd_zero _`. Simplify using `using h1`. Establish `h4 : (p : ℤ) ∣ 1`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (1 : ℤ) = a * d0 - b * c0 - M * s` using `by linarith`. Rewrite using `[e]`. Conclude with `dvd_sub (dvd_sub (dvd_mul_of_dvd_right h2 _) (dvd_mul_of_dvd_right h1' _)) (dvd_mul_of_dvd_left h3 _)`. Establish `h5` using `Int.eq_one_of_dvd_one (by positivity) h4`. Conclude with `hp.one_lt.ne' (by exact_mod_cast h5))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 
-Use `⟨_, _, ?_, ?_, ht⟩` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> push_cast <;> simp [hc0]`. Use `push_cast`. Simplify using `[hd0]`. Take `⟨u, v, huv⟩` from `hcd`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1' : (a : ZMod M) * d - b * c = 1`. Use `γ.det_coe` as an intermediate fact. Rewrite `this` using `[Matrix.det_fin_two]`. Rewrite using `[ha, hb, hc, hd]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Establish `h2 : (v : ZMod M) * d + u * c = 1`. Use `congrArg (fun x : ℤ => (x : ZMod M)) huv` as an intermediate fact. Move the coercions through the operations in `at this`. Take the linear combination `this`. Take `⟨g, hg⟩ : ∃ g : SL(2, ℤ), (g : Matrix (Fin 2) (Fin 2) ℤ) = !![v + ((b + u) * v + (a - v) * u) * c, -u + ((b + u) * v + (a - v) * u) * d; c, d]` from `⟨⟨_, by`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.det_fin_two_of]`. Take the linear combination `huv⟩, rfl⟩`. Use `⟨g, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Rewrite using `[rd_apply, hg]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases j`. Simplify using the standard rewrite rules. Rewrite using `[← ha]`. Take the linear combination `(-(v : ZMod M)) * h1' + (a : ZMod M) * h2`. Simplify using the standard rewrite rules.
-
-Rewrite using `[← hb]`. Take the linear combination `(u : ZMod M) * h1' + (b : ZMod M) * h2`. Simplify using `[hc]`. Simplify using `[hd]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exists_rd_eq (M : ℕ) (γ : SL(2, ZMod M)) : ∃ g : SL(2, ℤ), rd M g = γ := by
   obtain ⟨a, ha⟩ := ZMod.intCast_surjective (γ 0 0)
@@ -195,15 +193,15 @@ private theorem exists_rd_eq (M : ℕ) (γ : SL(2, ZMod M)) : ∃ g : SL(2, ℤ)
   · simp [hd]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[red_apply, rd_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem red_rd_eq_rd_of_dvd {a b : ℕ} (h : b ∣ a) (g : SL(2, ℤ)) : red h (rd a g) = rd b g := by
   ext i j
   simp [red_apply, rd_apply]
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use `show ((ZMod.cast x : ZMod L × ZMod Q)).1 = _`. Rewrite using `[Prod.fst_zmod_cast]`. Both sides reduce to the same expression. Use `show ((ZMod.cast x : ZMod L × ZMod Q)).2 = _`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Prod.snd_zmod_cast]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private theorem chineseRemainder_fst_snd_eq_castHom {L Q : ℕ} (hLQ : L.Coprime Q) (x : ZMod (L * Q)) :
     (ZMod.chineseRemainder hLQ x).1 = ZMod.castHom (dvd_mul_right L Q) (ZMod L) x ∧
@@ -217,9 +215,9 @@ private theorem chineseRemainder_fst_snd_eq_castHom {L Q : ℕ} (hLQ : L.Coprime
     rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply `(ZMod.chineseRemainder hLQ).injective` to reduce the goal to its premises. Establish `e1` using `congrArg (fun z : SL(2, ZMod L) => z i j) h1`. Establish `e2` using `congrArg (fun z : SL(2, ZMod Q) => z i j) h2`. Simplify using `only [red_apply] at e1 e2`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Rewrite using `[(chineseRemainder_fst_snd_eq_castHom hLQ _).1, (chineseRemainder_fst_snd_eq_castHom hLQ _).1]`. Conclude with `e1`. Rewrite using `[(chineseRemainder_fst_snd_eq_castHom hLQ _).2, (chineseRemainder_fst_snd_eq_castHom hLQ _).2]`. Conclude with `e2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eq_of_red_eq_of_coprime {L Q : ℕ} (hLQ : L.Coprime Q) (x y : SL(2, ZMod (L * Q)))
     (h1 : red (dvd_mul_right L Q) x = red (dvd_mul_right L Q) y)
@@ -236,19 +234,17 @@ private theorem eq_of_red_eq_of_coprime {L Q : ℕ} (hLQ : L.Coprime Q) (x y : S
     exact e2
 
 /- English proof (translation)
-Establish `hA : ∀ z : ZMod L × ZMod Q, ZMod.castHom (dvd_mul_right L Q) (ZMod L) ((ZMod.chineseRemainder hLQ).symm z) = z.1` using `fun z => by`. Rewrite using `[← (chineseRemainder_fst_snd_eq_castHom hLQ _).1]`. Conclude with `congrArg Prod.fst ((ZMod.chineseRemainder hLQ).apply_symm_apply z)`. Establish `hB : ∀ z : ZMod L × ZMod Q, ZMod.castHom (dvd_mul_left Q L) (ZMod Q) ((ZMod.chineseRemainder hLQ).symm z) = z.2` using `fun z => by`. Rewrite using `[← (chineseRemainder_fst_snd_eq_castHom hLQ _).2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `congrArg Prod.snd ((ZMod.chineseRemainder hLQ).apply_symm_apply z)`. Take `⟨X, hX⟩ : ∃ X : Matrix (Fin 2) (Fin 2) (ZMod (L * Q)), X = fun i j => (ZMod.chineseRemainder hLQ).symm (δ i j, η i j)` from `⟨_, rfl⟩`. Establish `hXA : (ZMod.castHom (dvd_mul_right L Q) (ZMod L)).mapMatrix X = (δ : Matrix (Fin 2) (Fin 2) (ZMod L))`. Use extensionality with `i j`. Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply, hX]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `hA _`. Establish `hXB : (ZMod.castHom (dvd_mul_left Q L) (ZMod Q)).mapMatrix X = (η : Matrix (Fin 2) (Fin 2) (ZMod Q))`. Use extensionality with `i j`. Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply, hX]`. Conclude with `hB _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hdet : X.det = 1`. Apply `(ZMod.chineseRemainder hLQ).injective` to reduce the goal to its premises. Rewrite using `[map_one]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Rewrite using `[(chineseRemainder_fst_snd_eq_castHom hLQ _).1] show ZMod.castHom (dvd_mul_right L Q) (ZMod L) X.det = 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[RingHom.map_det, hXA, δ.det_coe]`. Rewrite using `[(chineseRemainder_fst_snd_eq_castHom hLQ _).2] show ZMod.castHom (dvd_mul_left Q L) (ZMod Q) X.det = 1`. Rewrite using `[RingHom.map_det, hXB, η.det_coe]`. Take `⟨x, hx⟩ : ∃ x : SL(2, ZMod (L * Q)), (x : Matrix (Fin 2) (Fin 2) (ZMod (L * Q))) = X` from `⟨⟨X, hdet⟩, rfl⟩`. Use `⟨x, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Rewrite using `[red_apply, hx]`. Conclude with `congrFun (congrFun hXA i) j`. Use extensionality with `i j`. Rewrite using `[red_apply, hx]`.
-
-Conclude with `congrFun (congrFun hXB i) j`.
+A detailed English derivation is pending.
 -/
 private theorem exists_red_eq_pair_of_coprime {L Q : ℕ} (hLQ : L.Coprime Q) (δ : SL(2, ZMod L)) (η : SL(2, ZMod Q)) :
     ∃ x : SL(2, ZMod (L * Q)), red (dvd_mul_right L Q) x = δ ∧ red (dvd_mul_left Q L) x = η := by
@@ -293,7 +289,7 @@ private theorem exists_red_eq_pair_of_coprime {L Q : ℕ} (hLQ : L.Coprime Q) (�
     exact congrFun (congrFun hXB i) j
 
 /- English proof (translation)
-Unfold `Gs`. Simplify using `[Subgroup.mem_map]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private theorem mem_gs_iff_exists_rd_eq (N l M : ℕ) [NeZero M] (γ : SL(2, ZMod M)) :
     γ ∈ Gs N l M ↔ ∃ g ∈ Gam N l, rd M g = γ := by
@@ -301,33 +297,31 @@ private theorem mem_gs_iff_exists_rd_eq (N l M : ℕ) [NeZero M] (γ : SL(2, ZMo
   simp [Subgroup.mem_map]
 
 /- English proof (translation)
-Rewrite using `[ZMod.castHom_apply, ZMod.cast_eq_val, ZMod.natCast_eq_zero_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem castHom_eq_zero_iff_dvd_val (l k : ℕ) [NeZero (l ^ k)] (hd : l ∣ l ^ k) (x : ZMod (l ^ k)) :
     ZMod.castHom hd (ZMod l) x = 0 ↔ l ∣ x.val := by
   rw [ZMod.castHom_apply, ZMod.cast_eq_val, ZMod.natCast_eq_zero_iff]
 /- English proof (translation)
-Establish `hl : l.Prime` using `Fact.out`. Establish `hLQ : (l ^ k).Coprime (N * N)`. Establish `h : l.Coprime N` using `(Nat.Prime.coprime_iff_not_dvd hl).2 hlN`. Conclude with `Nat.Coprime.pow_left _ (Nat.Coprime.mul_right h h)`. Use `set B := Finset.univ.filter (fun δ : SL(2, ZMod (l ^ k)) => ZMod.castHom (dvd_pow_self l hk) (ZMod l) (δ 1 0) = 0) with hB`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_nbij (fun γ => (red (dvd_mul_right (l ^ k) (N * N)) γ, red (dvd_mul_left (N * N) (l ^ k)) γ))` to reduce the goal to its premises. Introduce `γ hγ`. Take `⟨g, hg, rfl⟩` from `(mem_gs_iff_exists_rd_eq _ _ _ γ).1 hγ`. Rewrite `hg` using `[gam_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[red_rd_eq_rd_of_dvd, red_rd_eq_rd_of_dvd, Finset.mem_product, hB, Finset.mem_filter]`. Use `⟨⟨Finset.mem_univ _, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[rd_apply, map_intCast]`. Conclude with `CongruenceSubgroup.Gamma0_mem.1 hg.2`. Unfold `H2`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.mem_filter]`. Conclude with `⟨Finset.mem_univ _, Subgroup.mem_map_of_mem _ hg.1⟩`. Introduce `x _ y _ hxy`. Simplify using `only [Prod.mk.injEq] at hxy`. Conclude with `eq_of_red_eq_of_coprime hLQ x y hxy.1 hxy.2`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Introduce and unpack `⟨δ, η⟩ hp`. Rewrite `hp` using `[Finset.mem_coe, Finset.mem_product, hB, Finset.mem_filter]`. Take `⟨⟨_, hδ⟩, hη⟩` from `hp`. Unfold `H2 at hη`. Rewrite `hη` using `[Finset.mem_filter]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨g0, hg0, hg0e⟩` from `Subgroup.mem_map.1 hη.2`. Take `⟨x, hx1, hx2⟩` from `exists_red_eq_pair_of_coprime hLQ δ η`. Take `⟨g, rfl⟩` from `exists_rd_eq _ x`. Rewrite `hx1`, `hx2` using `[red_rd_eq_rd_of_dvd]`. Use `⟨rd _ g, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[Finset.mem_coe, mem_gs_iff_exists_rd_eq]`. Use `⟨g, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[gam_iff]`. Prove the components needed by the constructor for the conclusion. Establish `E` using `congrArg (red (dvd_mul_right N N)) (hx2.trans hg0e.symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `E` using `[red_rd_eq_rd_of_dvd, red_rd_eq_rd_of_dvd]`. Establish `e : ∀ i j, ((g i j : ℤ) : ZMod N) = ((g0 i j : ℤ) : ZMod N)` using `fun i j => by`. Use `congrArg (fun z : SL(2, ZMod N) => z i j) E` as an intermediate fact. Simplify `this` using `only [rd_apply]`. Rewrite `hg0`, the goal using `[CongruenceSubgroup.Gamma1_mem]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, e, e]`. Conclude with `hg0`. Rewrite using `[CongruenceSubgroup.Gamma0_mem]`. Use `congrArg (fun z : SL(2, ZMod (l ^ k)) => ZMod.castHom (dvd_pow_self l hk) (ZMod l) (z 1 0)) hx1` as an intermediate fact. Simplify using `only [rd_apply, map_intCast] at this`.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 
-Rewrite using `[this]`. Conclude with `hδ`. Simplify using `only`. Rewrite using `[red_rd_eq_rd_of_dvd, red_rd_eq_rd_of_dvd, hx1, hx2]`. Introduce `_ _`.
-
-Both sides reduce to the same expression. Use `_ = ∑ δ ∈ B, ∑ _η ∈ H2 N, F δ := Finset.sum_product _ _ _`. Use `_ = (H2 N).card • ∑ δ ∈ B, F δ := by`. Rewrite using `[Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl (fun δ _ => Finset.sum_const _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sum_gs_red_eq_card_smul_sum_lower_zero (l : ℕ) [Fact l.Prime] (N : ℕ) [NeZero N] (k : ℕ) (hk : k ≠ 0)
     (hlN : ¬ l ∣ N) [NeZero (l ^ k * (N * N))] {V : Type} [AddCommMonoid V]
@@ -396,7 +390,7 @@ private theorem sum_gs_red_eq_card_smul_sum_lower_zero (l : ℕ) [Fact l.Prime] 
         rw [Finset.smul_sum]
         exact Finset.sum_congr rfl (fun δ _ => Finset.sum_const _)
 /- English proof (translation)
-Establish `e11 : ∀ (v : Rˣ) (Y : SL(2, R)), (cj v Y) 1 1 = Y 1 1` using `fun _ _ => rfl`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [cj00, cj01, cj10, e11]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem cj_inv_cj_eq_self {R : Type} [CommRing R] (u : Rˣ) (X : SL(2, R)) : cj u⁻¹ (cj u X) = X := by
   have e11 : ∀ (v : Rˣ) (Y : SL(2, R)), (cj v Y) 1 1 = Y 1 1 := fun _ _ => rfl
@@ -404,51 +398,47 @@ private theorem cj_inv_cj_eq_self {R : Type} [CommRing R] (u : Rˣ) (X : SL(2, R
   fin_cases i <;> fin_cases j <;> simp [cj00, cj01, cj10, e11]
 
 /- English proof (translation)
-Establish `hl : l.Prime` using `Fact.out`. Use `haveI : NeZero (l ^ k) := ⟨pow_ne_zero _ hl.ne_zero⟩`. Use `set π := ZMod.castHom (dvd_pow_self l hk) (ZMod l) with hπ`. Use `set B := Finset.univ.filter (fun δ : SL(2, ZMod (l ^ k)) => π (δ 1 0) = 0) with hB`. Use `set S := Finset.univ.filter (fun h : SL(2, ZMod (l ^ k)) => ¬ l ∣ (h 0 0).val ∧ ¬ l ∣ (h 1 0).val) with hS`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Establish `hS' : ∀ h, h ∈ S ↔ π (h 0 0) ≠ 0 ∧ π (h 1 0) ≠ 0`. Introduce `h`. Rewrite using `[hS, Finset.mem_filter]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, a, b⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨fun h0 => a ((castHom_eq_zero_iff_dvd_val l k (dvd_pow_self l hk) _).1 h0), fun h0 => b ((castHom_eq_zero_iff_dvd_val l k (dvd_pow_self l hk) _).1 h0)⟩`. Introduce and unpack `⟨a, b⟩`. Conclude with `⟨Finset.mem_univ _, fun h0 => a ((castHom_eq_zero_iff_dvd_val l k (dvd_pow_self l hk) _).2 h0), fun h0 => b ((castHom_eq_zero_iff_dvd_val l k (dvd_pow_self l hk) _).2 h0)⟩`. Establish `hu : π (u : ZMod (l ^ k)) * π ((u⁻¹ : (ZMod (l ^ k))ˣ) : ZMod (l ^ k)) = 1`. Rewrite using `[← map_mul, u.mul_inv, map_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hu1 : π ((u⁻¹ : (ZMod (l ^ k))ˣ) : ZMod (l ^ k)) ≠ 0`. Introduce `h0`. Rewrite `hu` using `[h0, mul_zero]`. Conclude with `zero_ne_one hu`. Establish `hu2 : π (u : ZMod (l ^ k)) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h0`. Rewrite `hu` using `[h0, zero_mul]`. Conclude with `zero_ne_one hu`. Establish `hA : ∀ r, π (rd (l ^ k) (gm r) 1 0) = -(r : ZMod l) * π (rd (l ^ k) (gm r) 0 0)`. Introduce `r`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[rd_apply, rd_apply, map_intCast, map_intCast]`. Conclude with `col r`. Establish `hA00 : ∀ r, π (rd (l ^ k) (gm r) 0 0) ≠ 0`. Introduce `r h0`. Establish `hd` using `(gm r).det_coe`.
+Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hd` using `[Matrix.det_fin_two]`. Establish `h1` using `congrArg (fun x : ℤ => (x : ZMod l)) hd`. Move the coercions through the operations in `at h1`. Rewrite `h1` using `[col r]`. Rewrite `h0` using `[rd_apply, map_intCast]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h1` using `[h0]`. Simplify using `at h1`. Establish `pm : ∀ (X Y : SL(2, ZMod (l ^ k))) (i j : Fin 2), π ((X * Y) i j) = π (X i 0) * π (Y 0 j) + π (X i 1) * π (Y 1 j)`. Introduce `X Y i j`. Rewrite using `[Matrix.SpecialLinearGroup.coe_mul, Matrix.mul_apply, Fin.sum_univ_two, map_add, map_mul, map_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `pinv : ∀ X : SL(2, ZMod (l ^ k)), (X⁻¹) 1 0 = - X 1 0 ∧ (X⁻¹) 1 1 = X 0 0`. Introduce `X`. Rewrite using `[Matrix.SpecialLinearGroup.SL2_inv_expl]`. Simplify using the standard rewrite rules. Establish `hB00 : ∀ δ ∈ B, π (δ 0 0) ≠ 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `δ hδ h0`. Rewrite `hδ` using `[hB, Finset.mem_filter]`. Establish `hd` using `δ.det_coe`. Rewrite `hd` using `[Matrix.det_fin_two]`. Establish `h1` using `congrArg π hd`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h1` using `[map_sub, map_mul, map_mul, h0, hδ.2, map_one]`. Simplify using `at h1`. Establish `e11 : ∀ (v : (ZMod (l ^ k))ˣ) (Y : SL(2, ZMod (l ^ k))), (cj v Y) 1 1 = Y 1 1` using `fun _ _ => rfl`. Take `⟨w, hw⟩ : ∃ w : ZMod l → (ZMod l)ˣ, ∀ x, x ≠ 0 → (w x : ZMod l) = x` from `⟨fun x => if hx : x = 0 then 1 else Units.mk0 x hx, fun x hx => by simp [hx]⟩`. Take `⟨R, hR⟩ : ∃ R : SL(2, ZMod (l ^ k)) → (ZMod l)ˣ, ∀ h, R h = w (-(π ((cj u⁻¹ h) 1 0)) / π ((cj u⁻¹ h) 0 0))` from `⟨_, fun _ => rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Establish `hcc : ∀ X, cj u (cj u⁻¹ X) = X`. Introduce `X`. Use `cj_inv_cj_eq_self u⁻¹ X` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis. Rewrite using `[(Finset.sum_product' Finset.univ B (fun r δ => Φ (cj u (rd (l ^ k) (gm r) * δ)))).symm]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.sum_nbij' (fun p => cj u (rd (l ^ k) (gm p.1) * p.2)) (fun h => (R h, (rd (l ^ k) (gm (R h)))⁻¹ * cj u⁻¹ h))` to reduce the goal to its premises. Introduce and unpack `⟨r, δ⟩ hp`. Rewrite `hp` using `[Finset.mem_product]`. Establish `hδ` using `hp.2`. Establish `hδ' : π (δ 1 0) = 0`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hδ` using `[hB, Finset.mem_filter]`. Conclude with `hδ.2`. Rewrite using `[hS']`. Simplify using `only`. Rewrite using `[cj00, cj10, map_mul, pm, pm, hδ', hA]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_zero, add_zero]`. Conclude with `mul_ne_zero (hA00 r) (hB00 δ hδ)`. Rewrite using `[mul_zero, add_zero]`. Conclude with `mul_ne_zero hu1 (mul_ne_zero (mul_ne_zero (neg_ne_zero.2 r.ne_zero) (hA00 r)) (hB00 δ hδ))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h hh`. Rewrite `hh` using `[hS']`. Rewrite using `[Finset.mem_product, hB, Finset.mem_filter]`. Use `⟨Finset.mem_univ _, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Establish `h00 : π ((cj u⁻¹ h) 0 0) = π (h 0 0)` using `by rw [cj00]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `h10 : π ((cj u⁻¹ h) 1 0) = π (u : ZMod (l ^ k)) * π (h 1 0)`. Rewrite using `[cj10, inv_inv, map_mul]`. Establish `hx : ((R h : (ZMod l)ˣ) : ZMod l) = -(π ((cj u⁻¹ h) 1 0)) / π ((cj u⁻¹ h) 0 0)`. Rewrite using `[hR]`. Apply `hw` to reduce the goal to its premises.
+Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h00, h10]`. Simplify using `[hh.1, hh.2, hu2]`. Establish `hh1` using `hh.1`. Rewrite using `[pm, (pinv _).1, (pinv _).2, map_neg, hA, hx, h00, h10]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨r, δ⟩ hp`. Rewrite `hp` using `[Finset.mem_product]`. Establish `hδ` using `hp.2`. Establish `hδ' : π (δ 1 0) = 0`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Rewrite `hδ` using `[hB, Finset.mem_filter]`. Conclude with `hδ.2`. Establish `hA0` using `hA00 r`. Establish `hδ0` using `hB00 δ hδ`. Establish `hRr : R (cj u (rd (l ^ k) (gm r) * δ)) = r`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hR, cj_inv_cj_eq_self]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hw]`. Rewrite using `[pm, pm, hδ', hA]`. Simplify using `only [mul_zero, add_zero]`.
-
-Clear the denominators using the available nonvanishing facts. Rewrite using `[pm, pm, hδ', hA]`. Simplify using `only [mul_zero, add_zero]`. Conclude with `div_ne_zero (neg_ne_zero.2 (mul_ne_zero (mul_ne_zero (neg_ne_zero.2 r.ne_zero) hA0) hδ0)) (mul_ne_zero hA0 hδ0)`. Simplify using `only`.
-
-Rewrite using `[cj_inv_cj_eq_self, hRr, inv_mul_cancel_left]`. Introduce `h _ dsimp only`. Rewrite using `[mul_inv_cancel_left, hcc]`. Introduce `p _`. Both sides reduce to the same expression.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem sum_cj_eq_sum_entries_not_dvd (l : ℕ) [Fact l.Prime] (k : ℕ) (hk : k ≠ 0)
     (gm : (ZMod l)ˣ → SL(2, ℤ))
@@ -585,36 +575,34 @@ private theorem sum_cj_eq_sum_entries_not_dvd (l : ℕ) [Fact l.Prime] (k : ℕ)
   · intro p _
     rfl
 /- English proof (translation)
-Unfold `liftSL`. Conclude with `Classical.epsilon_spec (exists_rd_eq M γ)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem rd_liftSL (M : ℕ) (γ : SL(2, ZMod M)) : rd M (liftSL M γ) = γ := by
   unfold liftSL
   exact Classical.epsilon_spec (exists_rd_eq M γ)
 
 /- English proof (translation)
-Introduce `l _ N _`. Establish `hl : l.Prime` using `Fact.out`. Use `⟨(H2 N).card, ?_, ?_⟩` and prove the remaining obligations. Apply `Finset.card_pos.2` to reduce the goal to its premises. Use `⟨1, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `H2`. Rewrite using `[Finset.mem_filter]`. Conclude with `⟨Finset.mem_univ _, ⟨1, Subgroup.one_mem _, map_one _⟩⟩`. Introduce `c d gm hP n m hm V _ Φ Ψ hΨ`. Take `⟨_, _, cop, _, _, _, _, g0, ga, col⟩` from `hP`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Unfold `topMu`. Establish `hk : m + n ≠ 0` using `by omega`. Use `haveI : NeZero (l ^ (m + n) * (N * N)) := ⟨mul_ne_zero (pow_ne_zero _ hl.ne_zero) (mul_ne_zero (NeZero.ne N) (NeZero.ne N))⟩`. Establish `hcop : N.Coprime (l ^ (m + n))` using `Nat.Coprime.pow_right _ ((Nat.Prime.coprime_iff_not_dvd hl).2 cop).symm`. Take `⟨u, hu⟩ : ∃ u : (ZMod (l ^ (m + n)))ˣ, (u : ZMod (l ^ (m + n))) = N` from `⟨ZMod.unitOfCoprime N hcop, ZMod.coe_unitOfCoprime _ _⟩`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hNM : N ∣ l ^ (m + n) * (N * N)` using `(dvd_mul_right N N).trans (dvd_mul_left (N * N) _)`. Establish `key : ∀ r₀ : (ZMod l)ˣ, ∀ γ ∈ Gs N l (l ^ (m + n) * (N * N)), Ψ (gm r₀ * liftSL _ γ) = Φ (cj u (rd (l ^ (m + n)) (gm r₀) * red (dvd_mul_right (l ^ (m + n)) (N * N)) γ))`. Introduce `r₀ γ hγ`. Take `⟨g1, hg1, rfl⟩` from `(mem_gs_iff_exists_rd_eq _ _ _ γ).1 hγ`. Rewrite `hg1` using `[gam_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hL` using `rd_liftSL _ (rd (l ^ (m + n) * (N * N)) g1)`. Use `set L1 := liftSL _ (rd (l ^ (m + n) * (N * N)) g1)`. Rewrite using `[← hL, red_rd_eq_rd_of_dvd, ← map_mul]`. Establish `E` using `congrArg (red hNM) hL`. Rewrite `E` using `[red_rd_eq_rd_of_dvd, red_rd_eq_rd_of_dvd]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ∀ i j, ((L1 i j : ℤ) : ZMod N) = ((g1 i j : ℤ) : ZMod N)` using `fun i j => by`. Use `congrArg (fun z : SL(2, ZMod N) => z i j) E` as an intermediate fact. Simplify `this` using `only [rd_apply]`. Establish `hg1'` using `(CongruenceSubgroup.Gamma1_mem _ _).1 hg1.1`. Establish `hL00 : ((L1 0 0 : ℤ) : ZMod N) = 1` using `by rw [e]; exact hg1'.1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL10 : ((L1 1 0 : ℤ) : ZMod N) = 0` using `by rw [e]; exact hg1'.2.2`. Establish `hgΓ : gm r₀ * L1 ∈ CongruenceSubgroup.Gamma0 N` using `Subgroup.mul_mem _ (g0 r₀) (CongruenceSubgroup.Gamma0_mem.2 hL10)`. Establish `hg00 : ((en (gm r₀ * L1) 0 0 : ℤ) : ZMod N) = ((en (gm 1) 0 0 : ℤ) : ZMod N)`. Rewrite using `[← ga r₀]`. Unfold `en`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[Matrix.SpecialLinearGroup.coe_mul, Matrix.mul_apply, Fin.sum_univ_two]`. Use `push_cast`. Rewrite using `[hL00, hL10]`. Expand and normalize the polynomial expressions, which then agree. Apply `hΨ _ hgΓ hg00` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[cj00, rd_apply]`. Both sides reduce to the same expression. Rewrite using `[cj01, rd_apply, hu]`. Unfold `en`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[cj10, ← hu, ← mul_assoc, Units.mul_inv, one_mul, rd_apply]`. Both sides reduce to the same expression. Rewrite using `[show (cj u (rd (l ^ (m + n)) (gm r₀ * L1))) 1 1 = (rd (l ^ (m + n)) (gm r₀ * L1)) 1 1 from rfl, rd_apply]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `r₀ _`. Rewrite using `[Finset.sum_congr rfl (key r₀)]`. Conclude with `sum_gs_red_eq_card_smul_sum_lower_zero l N (m + n) hk cop (fun δ => Φ (cj u (rd (l ^ (m + n)) (gm r₀) * δ)))`.
-
-Use `_ = (H2 N).card • ∑ r₀ : (ZMod l)ˣ, ∑ δ ∈ Finset.univ.filter (fun δ : SL(2, ZMod (l ^ (m + n))) => ZMod.castHom (dvd_pow_self l hk) (ZMod l) (δ 1 0) = 0), Φ (cj u (rd (l ^ (m + n)) (gm r₀) * δ)) := by`. Rewrite using `[Finset.smul_sum]`. Use `_ = _ := by`. Rewrite using `[sum_cj_eq_sum_entries_not_dvd l (m + n) hk gm col u Φ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Kd.L.count :
     ∀ (l : ℕ) [Fact l.Prime] (N : ℕ) [NeZero N], ∃ μ : ℕ, 0 < μ ∧ ∀ (c d : ℕ) (gm : (ZMod l)ˣ → SL(2, ℤ)), Par l N c d gm → ∀ (n m : ℕ), 1 ≤ m → ∀ (V : Type) [AddCommMonoid V] (Φ : SL(2, ZMod (l ^ (m + n))) → V) (Ψ : SL(2, ℤ) → V), (∀ g ∈ CongruenceSubgroup.Gamma0 N, ((en g 0 0 : ℤ) : ZMod N) = ((en (gm 1) 0 0 : ℤ) : ZMod N) → ∀ h : SL(2, ZMod (l ^ (m + n))), h 0 0 = (en g 0 0 : ℤ) → h 0 1 = ((N : ℤ) * en g 0 1 : ℤ) → (N : ZMod (l ^ (m + n))) * h 1 0 = (en g 1 0 : ℤ) → h 1 1 = (en g 1 1 : ℤ) → Ψ g = Φ h) → ∑ r₀ : (ZMod l)ˣ, ∑ γ ∈ Gs N l (topMu l n m N), Ψ (gm r₀ * liftSL _ γ) = μ • ∑ h ∈ Finset.univ.filter (fun h : SL(2, ZMod (l ^ (m + n))) => ¬ l ∣ (h 0 0).val ∧ ¬ l ∣ (h 1 0).val), Φ h := by

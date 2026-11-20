@@ -7,29 +7,27 @@ open scoped SchwartzMap Uniformity
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `V _ _ _ I lam w hw hb`. Use `haveI : (𝓤 𝓢(V, ℂ)).IsCountablyGenerated := IsUniformAddGroup.uniformity_countably_generated`. Use `haveI : BaireSpace 𝓢(V, ℂ) := inferInstance`. Set `S : ℕ × ℕ → Set 𝓢(V, ℂ)` to `fun p => {f | ∀ i, ‖lam i f‖ ≤ (p.2 : ℝ) * w i ^ p.1}`. Establish `hS : ∀ p, IsClosed (S p)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `p`. Simplify using `only [S, Set.setOf_forall]`. Conclude with `isClosed_iInter fun i => isClosed_le (continuous_norm.comp (lam i).continuous) continuous_const`. Establish `hU : ⋃ p, S p = Set.univ`. Use `Set.eq_univ_of_forall fun f => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨N, C, hC⟩` from `hb f`. Take `⟨M, hM⟩` from `exists_nat_ge C`. Conclude with `Set.mem_iUnion.2 ⟨(N, M), fun i => (hC i).trans (mul_le_mul_of_nonneg_right hM (pow_nonneg (hw i) _))⟩`. Take `⟨p, f₀, hf₀⟩` from `nonempty_interior_of_iUnion_of_closed hS hU`. Establish `hn : interior (S p) ∈ 𝓝 f₀` using `isOpen_interior.mem_nhds hf₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Establish `hn' : (fun g => f₀ + g) ⁻¹' interior (S p) ∈ 𝓝 (0 : 𝓢(V, ℂ))`. Establish `h : Tendsto (fun g : 𝓢(V, ℂ) => f₀ + g) (𝓝 0) (𝓝 f₀)`. Simplify using `using (continuous_const_add f₀).tendsto 0`. Conclude with `h hn`. Take `⟨⟨T, ε⟩, hε, hT⟩` from `((schwartz_withSeminorms ℂ V ℂ).hasBasis_zero_ball).mem_iff.1 hn'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only at hε hT`. Use `set q := T.sup (schwartzSeminormFamily ℂ V ℂ) with hq`. Establish `hball : ∀ g, q g < ε → ∀ i, ‖lam i g‖ ≤ 2 * (p.2 : ℝ) * w i ^ p.1`. Introduce `g hg i`. Establish `h1 : f₀ + g ∈ S p` using `interior_subset (hT (by simpa [Seminorm.mem_ball] using hg))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : f₀ ∈ S p` using `interior_subset hf₀`. Establish `h3 : lam i g = lam i (f₀ + g) - lam i f₀` using `by simp`. Rewrite using `[h3]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨p.1, 2 * (p.2 : ℝ) / ε, T, fun i f => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set A := 2 * (p.2 : ℝ) * w i ^ p.1 / ε with hA`. Establish `hA0 : 0 ≤ A`. Use `pow_nonneg (hw i) p.1` as an intermediate fact. Check the signs of the components of the expression. Establish `hq0 : 0 ≤ q f` using `apply_nonneg _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hscale : ∀ t, q f < t → ‖lam i f‖ ≤ t * A`. Introduce `t ht`. Establish `htpos : 0 < t` using `lt_of_le_of_lt hq0 ht`. Establish `hc : ‖((ε / t : ℝ) : ℂ)‖ = ε / t`. Rewrite using `[Complex.norm_real, Real.norm_of_nonneg (div_pos hε htpos).le]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hg : q (((ε / t : ℝ) : ℂ) • f) < ε`. Rewrite using `[map_smul_eq_mul, hc]`. Combine the equalities or inequalities in the displayed calculation. Establish `h` using `hball _ hg i`. Rewrite `h` using `[map_smul, norm_smul, hc]`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hA, show t * (2 * (p.2 : ℝ) * w i ^ p.1 / ε) = (t / ε) * (2 * (p.2 : ℝ) * w i ^ p.1) by ring]`. Establish `: ‖lam i f‖ = (t / ε) * (ε / t * ‖lam i f‖)`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Conclude with `mul_le_mul_of_nonneg_left h (div_pos htpos hε).le`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hfin : ‖lam i f‖ ≤ q f * A`. Break down `hA0.lt_or_eq with hApos | hAz` into its components or cases. Use `le_of_forall_gt_imp_ge_of_dense fun a ha => ?_` and prove the remaining obligations. Establish `: q f < a / A` using `(lt_div_iff₀ hApos).2 ha`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[← hAz, mul_zero]`. Use `hscale (q f + 1) (by linarith)` as an intermediate fact. Rewrite `this` using `[← hAz, mul_zero]`. Then use the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem schwartz_family_uniform_bound : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V] (I : Type)

@@ -15,13 +15,13 @@ structure BiHyp (bar : O → O) (ψ : M → Q) : Prop where
   adj : ∀ (α : O) (a b : M), quadDiff ψ (α • a) b = quadDiff ψ a (bar α • b)
 
 /- English proof (translation)
-Unfold `quadDiff`. Rewrite using `[add_comm]`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem qd_comm (ψ : M → Q) (a b : M) : quadDiff ψ a b = quadDiff ψ b a := by
   unfold quadDiff; rw [add_comm]; abel
 
 /- English proof (translation)
-The claim follows from `map_sum (AddMonoidHom.mk' (fun a => quadDiff ψ a b) (fun a a' => H.add1 a a' b)) x s`.
+A detailed English derivation is pending.
 -/
 theorem sum1 {bar : O → O} {ψ : M → Q} (H : BiHyp bar ψ) {ι : Type*}
     (s : Finset ι) (x : ι → M) (b : M) :
@@ -29,7 +29,7 @@ theorem sum1 {bar : O → O} {ψ : M → Q} (H : BiHyp bar ψ) {ι : Type*}
   map_sum (AddMonoidHom.mk' (fun a => quadDiff ψ a b) (fun a a' => H.add1 a a' b)) x s
 
 /- English proof (translation)
-Rewrite using `[qd_comm, sum1 H]`. Conclude with `Finset.sum_congr rfl fun e _ => qd_comm _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum2 {bar : O → O} {ψ : M → Q} (H : BiHyp bar ψ) {ι : Type*}
     (s : Finset ι) (x : ι → M) (a : M) :
@@ -38,13 +38,13 @@ theorem sum2 {bar : O → O} {ψ : M → Q} (H : BiHyp bar ψ) {ι : Type*}
   exact Finset.sum_congr rfl fun e _ => qd_comm _ _ _
 
 /- English proof (translation)
-Use `Finset.induction_on_max s ?_ ?_` and prove the remaining obligations. Simplify using `[H.zero]`. Introduce `a s hlt ih`. Establish `ha : a ∉ s` using `fun h => lt_irrefl a (hlt a h)`. Establish `hdef : ∀ p q : M, ψ (p + q) = quadDiff ψ p q + ψ p + ψ q`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `p q`. Unfold `quadDiff`. Normalize the expressions using the abelian group laws. Establish `hfa : (insert a s).filter (fun e' => a < e') = ∅`. Rewrite using `[Finset.filter_eq_empty_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `z hz`. Break down `Finset.mem_insert.mp hz with rfl | hz` into its components or cases. Conclude with `lt_irrefl _`. Conclude with `not_lt.mpr (hlt z hz).le`. Establish `hse : ∀ e ∈ s, ∑ e' ∈ (insert a s).filter (fun e' => e < e'), quadDiff ψ (x e) (x e') = quadDiff ψ (x e) (x a) + ∑ e' ∈ s.filter (fun e' => e < e'), quadDiff ψ (x e) (x e')`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `e he`. Rewrite using `[Finset.filter_insert, if_pos (hlt e he), Finset.sum_insert (fun h => ha (Finset.mem_filter.mp h).1)]`. Rewrite using `[Finset.sum_insert ha, hdef, ih, Finset.sum_insert ha, Finset.sum_insert ha, hfa, Finset.sum_empty, Finset.sum_congr rfl hse, Finset.sum_add_distrib, qd_comm, sum1 H]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem expand {bar : O → O} {ψ : M → Q} (H : BiHyp bar ψ) {ι : Type*}
     [LinearOrder ι] (s : Finset ι) (x : ι → M) :
@@ -78,7 +78,7 @@ variable {O S M T : Type u} [CommRing O] [CommRing S] [AddCommGroup M] [Module O
     [AddCommGroup T] [Module S T]
 
 /- English proof (translation)
-Simplify using `[quadDiff, map_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mk_quadDiff (N : AddSubgroup T) (φ : M → T) (a b : M) :
     QuotientAddGroup.mk' N (quadDiff φ a b) =
@@ -86,11 +86,9 @@ theorem mk_quadDiff (N : AddSubgroup T) (φ : M → T) (a b : M) :
   simp [quadDiff, map_sub]
 
 /- English proof (translation)
-Establish `key : ∀ x : T, x ∈ N → QuotientAddGroup.mk' N x = 0` using `fun x hx => (QuotientAddGroup.eq_zero_iff x).mpr hx`. Use `⟨?_, key _ h.2.1, ?_⟩` and prove the remaining obligations. Introduce `a a' b`. Use `key _ (h.1 a a' b)` as an intermediate fact. Simplify using `only [map_sub, mk_quadDiff] at this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[sub_sub, sub_eq_zero]`. Conclude with `this`. Introduce `α a b`. Use `key _ (h.2.2.2 α a b)` as an intermediate fact. Simplify using `only [map_sub, mk_quadDiff] at this`.
-
-Conclude with `sub_eq_zero.mp this`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem biHyp_of {N : AddSubgroup T} {bar : O → O} {nrm : O → S} {φ : M → T}
     (h : QuadHyp N bar nrm φ) : BiHyp bar (fun a => QuotientAddGroup.mk' N (φ a)) := by
@@ -108,7 +106,7 @@ theorem biHyp_of {N : AddSubgroup T} {bar : O → O} {nrm : O → S} {φ : M →
     exact sub_eq_zero.mp this
 
 /- English proof (translation)
-The claim follows from `sub_eq_zero.mp (by rw [← map_sub]; exact (QuotientAddGroup.eq_zero_iff _).mpr (h.2.2.1 α s))`.
+A detailed English derivation is pending.
 -/
 theorem mk_nrm {N : AddSubgroup T} {bar : O → O} {nrm : O → S} {φ : M → T}
     (h : QuadHyp N bar nrm φ) (α : O) (s : M) :
@@ -116,13 +114,13 @@ theorem mk_nrm {N : AddSubgroup T} {bar : O → O} {nrm : O → S} {φ : M → T
   sub_eq_zero.mp (by rw [← map_sub]; exact (QuotientAddGroup.eq_zero_iff _).mpr (h.2.2.1 α s))
 
 /- English proof (translation)
-Use `set f := QuotientAddGroup.mk' N`. Establish `H` using `biHyp_of h`. Establish `e1 : ∀ i, f (φ (∑ e, y e i • t e)) = ∑ e, f (nrm (y e i) • φ (t e)) + ∑ e, ∑ e' ∈ Finset.univ.filter (fun e' => e < e'), quadDiff (fun a => f (φ a)) (t e) ((bar (y e i) * y e' i) • t e')`. Introduce `i`. Rewrite using `[expand H]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `Finset.sum_congr rfl fun e _ => mk_nrm h _ _`. Use `Finset.sum_congr rfl fun e _ => Finset.sum_congr rfl fun e' _ => ?_` and prove the remaining obligations. Rewrite using `[H.adj, smul_smul]`. Rewrite using `[map_sum, Finset.sum_congr rfl fun i _ => e1 i, Finset.sum_add_distrib, map_add, map_sum, map_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[← map_sum, ← Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm, map_sum]`. Use `Finset.sum_congr rfl fun e' _ => ?_` and prove the remaining obligations. Rewrite using `[mk_quadDiff, Finset.sum_smul, sum2 H]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expand_mk {N : AddSubgroup T} {bar : O → O} {nrm : O → S} {φ : M → T}
     (h : QuadHyp N bar nrm φ) (n m : ℕ) (y : Fin m → Fin n → O) (t : Fin m → M) :
@@ -164,7 +162,7 @@ open Formalism.ELL.QuadraticDifferenceHypotheses
 universe u
 
 /- English proof (translation)
-Introduce `O S M T _ _ _ _ _ _ N bar nrm φ h n m y t`. Establish `E` using `expand_mk h n m y t`. Rewrite `E` using `[← sub_eq_zero, ← map_sub]`. Conclude with `(QuotientAddGroup.eq_zero_iff _).mp E`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isogeny_expansion : IsoExpand.{u} := by
   intro O S M T _ _ _ _ _ _ N bar nrm φ h n m y t
@@ -173,9 +171,9 @@ theorem isogeny_expansion : IsoExpand.{u} := by
   exact (QuotientAddGroup.eq_zero_iff _).mp E
 
 /- English proof (translation)
-Introduce `O S M T _ _ _ _ _ _ N bar nrm φ h n m y t hiso hnrm`. Establish `E` using `isogeny_expansion O S M T N bar nrm φ h n m y t`. Establish `hz : ∀ a : M, quadDiff φ a 0 ∈ N` using `fun a => by`. Simplify `neg_mem h.2.1` using `[quadDiff]`. Simplify using `only [hiso, hnrm, zero_smul, Finset.sum_const_zero, zero_add] at E`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Establish `hS : (∑ e, ∑ e' ∈ Finset.univ.filter (fun e' => e < e'), quadDiff φ (t e) 0) ∈ N` using `sum_mem fun e _ => sum_mem fun e' _ => hz _`. Use `add_mem E hS` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isogeny_vanishing : IsoVanish.{u} := by
   intro O S M T _ _ _ _ _ _ N bar nrm φ h n m y t hiso hnrm

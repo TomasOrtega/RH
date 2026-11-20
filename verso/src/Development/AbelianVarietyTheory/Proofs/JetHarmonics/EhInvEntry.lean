@@ -9,11 +9,11 @@ namespace GlobalTheory
 open Matrix in
 
 /- English proof (translation)
-Introduce `k r a b c i g _`. Establish `h` using `Formalism.FourierDecayAlt.P.Qx5.eh_inv (k := k) (r := r) (LinearMap.proj c) (Pi.single i 1) g a b`. Establish `e : (fun y : B.Mat k r => y⁻¹ c i) = fun y : B.Mat k r => (LinearMap.proj c : (Fin (2 * r + k + 1) → ℂ) →ₗ[ℂ] ℂ) (y⁻¹ *ᵥ Pi.single i 1)`. Use function extensionality and compare the values at `y`. Simplify using `[Matrix.mulVec_single_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Use `h.trans ?_` and prove the remaining obligations. Distinguish the cases in `hac : a = c`. Substitute `hac` using the available equality. Simplify using `[Matrix.mulVec, dotProduct, Matrix.single, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.mulVec, dotProduct, Matrix.single, hac]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eh_inv_entry : ∀ (k r : ℕ) (a b c i : Fin (2 * r + k + 1)), ∀ g ∈ B.GV k r, Q.EH k r a b (fun y : B.Mat k r => y⁻¹ c i) g = -(if a = c then g⁻¹ b i else 0) := by
   intro k r a b c i g _

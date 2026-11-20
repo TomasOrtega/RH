@@ -28,21 +28,21 @@ variable {l ex ph : PowerSeries ℂ_[p]} (hex0 : PowerSeries.constantCoeff ex = 
 
 include hE hSub hC hD hZ hex0 hinv hph hIA hB in
 /- English proof (translation)
-Establish `hw2 : ∀ i, MvPowerSeries.constantCoeff (![w, w] i) = 0`. Apply the tactic sequence `intro i; fin_cases i <;> simpa using w0`. Establish `hcw0 : MvPowerSeries.constantCoeff (mulBy l ex c w) = 0` using `constantCoeff_formalSMul hex0 hinv c w w0`. Establish `hdw0 : MvPowerSeries.constantCoeff (mulBy l ex d w) = 0` using `constantCoeff_formalSMul hex0 hinv d w w0`. Establish `hcw : IntegralMv (mulBy l ex c w)` using `int_mulBy_of hSub hex0 hinv c hc w w0 wI`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdw : IntegralMv (mulBy l ex d w)` using `int_mulBy_of hSub hex0 hinv d hd w w0 wI`. Establish `S1 : Simeq (be l ex ph (mulBy l ex c w) w) (be l ex ph w (mulBy l ex d w))`. Establish `e` using `simeq_subst2 hSub hex0 hinv w w w0 w0 wI wI hsw`. Rewrite `e` using `[sb_be (![w, w]) hw2 hex0 hinv ph _ _ (constantCoeff_formalSMul hex0 hinv c _ (constantCoeff_var 0)) (constantCoeff_var 1), sb_be (![w, w]) hw2 hex0 hinv ph _ _ (constantCoeff_var 0) (constantCoeff_formalSMul hex0 hinv d _ (constantCoeff_var 1)), sb_mulBy (![w, w]) hw2 hex0 hinv …`. Simplify using `using e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `A : Simeq (be l ex ph w (mulBy l ex c w)) (be l ex ph w (mulBy l ex d w))`. Rewrite using `[be_comm]`. Conclude with `S1`. Establish `S3 : Simeq (be l ex ph w (mulBy l ex (zc t) w)) (be l ex ph w (mulBy l ex c w) + be l ex ph w (mulBy l ex d w))`. Rewrite using `[← ht, ← add_mulBy hex0 hinv c d w w0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `be_add_right hSub hex0 hinv hB _ _ _ hcw0 hdw0 w0 hcw hdw wI`. Establish `S4` using `be_zp hE hSub hex0 hinv hB hC hD hph hIA w w w0 w0 wI wI t`. Establish `S5 : Simeq (be l ex ph w w) (MvPowerSeries.C 2 * phAt ph w)`. Establish `n2` using `norm_at hSub hex0 hinv 2 (2 * 2) hU2 w w0 wI`. Establish `e : be l ex ph w w = phAt ph (mulBy l ex 2 w) - phAt ph w - phAt ph w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[be, add_self hex0 hinv w w0]`. Rewrite using `[e]`. Use `sTrans hE (sSub hE (sSub hE n2 (sRefl hE _)) (sRefl hE _)) (sOfEq hE ?_)` and prove the remaining obligations. Simplify using `only [map_mul, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `T1 : Simeq (MvPowerSeries.C 2 * be l ex ph w (mulBy l ex c w)) (MvPowerSeries.C 2 * (MvPowerSeries.C (c + d) * phAt ph w))`. Establish `e1 : MvPowerSeries.C (2 : ℂ_[p]) * be l ex ph w (mulBy l ex c w) = be l ex ph w (mulBy l ex c w) + be l ex ph w (mulBy l ex c w)`. Simplify using `only [map_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `sTrans hE (sAdd hE (sRefl hE _) A) (sTrans hE (sSymm hE S3) (sTrans hE S4 ?_))` and prove the remaining obligations. Use `sTrans hE (hZ p τ _ _ t S5) (sOfEq hE ?_)` and prove the remaining obligations. Rewrite using `[← ht]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨h, hh⟩` from `h2inv`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `T2` using `hZ p τ _ _ h T1`. Use `sTrans hE (sOfEq hE ?_) (sTrans hE T2 (sOfEq hE ?_))` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← map_mul, mul_comm (zc h), hh, map_one, one_mul]`. Rewrite using `[← mul_assoc, ← map_mul, mul_comm (zc h), hh, map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_at (c d : ℂ_[p]) (hc : IntegralMv (mulBy l ex c (Xv ()) : MvPowerSeries Unit ℂ_[p]))
     (hd : IntegralMv (mulBy l ex d (Xv ()) : MvPowerSeries Unit ℂ_[p])) (t : ℤ_[p]) (ht : c + d = zc t)
@@ -99,13 +99,13 @@ theorem trace_at (c d : ℂ_[p]) (hc : IntegralMv (mulBy l ex c (Xv ()) : MvPowe
 
 include hE hSub hex0 hinv in
 /- English proof (translation)
-Establish `hX0 : MvPowerSeries.constantCoeff (Xv () : MvPowerSeries Unit ℂ_[p]) = 0` using `constantCoeff_var ()`. Establish `hg0 : MvPowerSeries.constantCoeff (mulBy l ex γ.1 (Xv ()) : MvPowerSeries Unit ℂ_[p]) = 0` using `constantCoeff_formalSMul hex0 hinv γ.1 _ hX0`. Establish `hb0 : MvPowerSeries.constantCoeff (mulBy l ex β.1 (Xv ()) : MvPowerSeries Unit ℂ_[p]) = 0` using `constantCoeff_formalSMul hex0 hinv β.1 _ hX0`. Establish `hs2 : ∀ i, MvPowerSeries.constantCoeff (![Xv (), mulBy l ex γ.1 (Xv ())] i : MvPowerSeries Unit ℂ_[p]) = 0`. Introduce `i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `fin_cases i`. Simplify using `[hX0]`. Simplify using `using hg0`. Establish `S1 : Simeq (be l ex ph (mulBy l ex β.1 (Xv ())) (mulBy l ex γ.1 (Xv ())) : MvPowerSeries Unit ℂ_[p]) (be l ex ph (Xv ()) (mulBy l ex (β.2 * γ.1) (Xv ())))`. Establish `e` using `simeq_subst2 hSub hex0 hinv (Xv ()) (mulBy l ex γ.1 (Xv ())) hX0 hg0 (int_X ()) iγ hsw`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[sb_be _ hs2 hex0 hinv ph _ _ (constantCoeff_formalSMul hex0 hinv β.1 _ (constantCoeff_var 0)) (constantCoeff_var 1), sb_be _ hs2 hex0 hinv ph _ _ (constantCoeff_var 0) (constantCoeff_formalSMul hex0 hinv β.2 _ (constantCoeff_var 1)), sb_mulBy _ hs2 hex0 hinv β.1 _ (constantCoeff …`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one] at e`. Rewrite `e` using `[mulBy_mulBy hex0 hinv β.2 γ.1 _ hX0]`. Then use the resulting hypothesis. Establish `e : phAt ph (mulBy l ex (β.1 + γ.1) (Xv ())) = be l ex ph (mulBy l ex β.1 (Xv ())) (mulBy l ex γ.1 (Xv ())) + phAt ph (mulBy l ex β.1 (Xv ())) + phAt ph (mulBy l ex γ.1 (Xv ()))`. Rewrite using `[be, add_mulBy hex0 hinv β.1 γ.1 _ hX0]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `sTrans hE (sAdd hE (sAdd hE (sTrans hE S1 htr) nβ) nγ) (sOfEq hE ?_)` and prove the remaining obligations. Simplify using `only [map_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sum_at (β γ : ℂ_[p] × ℂ_[p]) (iγ : IntegralMv (mulBy l ex γ.1 (Xv ()) : MvPowerSeries Unit ℂ_[p]))
     (hsw : Simeq (be l ex ph (mulBy l ex β.1 (Xv 0)) (Xv 1) : MvPowerSeries (Fin 2) ℂ_[p])

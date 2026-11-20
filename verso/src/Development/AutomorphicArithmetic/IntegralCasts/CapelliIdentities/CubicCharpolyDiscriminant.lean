@@ -6,7 +6,7 @@ open Matrix Polynomial UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc UpperTheory.V
 namespace UpperTheory.Reformulated.B.CubicCharpolyDiscriminant
 
 /- English proof (translation)
-Simplify using `[Matrix.charpoly, Matrix.det_fin_three, Matrix.trace_fin_three, Matrix.adjugate_fin_three, Matrix.charmatrix_apply_eq, Matrix.charmatrix_apply_ne]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma charpoly_three {R : Type} [CommRing R] (M : Matrix (Fin 3) (Fin 3) R) :
     M.charpoly = X ^ 3 - C M.trace * X ^ 2 + C M.adjugate.trace * X - C M.det := by
@@ -15,11 +15,11 @@ private lemma charpoly_three {R : Type} [CommRing R] (M : Matrix (Fin 3) (Fin 3)
   ring
 
 /- English proof (translation)
-Establish `h1 : star M.trace = M.trace`. Substitute `h` using the available equality. Simplify using `only [Matrix.trace_fin_three, Matrix.mul_apply, Fin.sum_univ_three, Matrix.map_apply, star_add, star_mul', star_star]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : M.det = 1`.
+Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `e : A.map star = (star A)ᵀ`. Use extensionality with `i j`. Simplify using `[Matrix.star_apply]`. Rewrite using `[h, det_mul, e, det_transpose, ← det_mul, hA, det_one]`. Establish `h3 : M.adjugate = star M`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `⟨h1, ?_⟩` and prove the remaining obligations. Rewrite using `[charpoly_three, h3, h2, star_eq_conjTranspose, trace_conjTranspose, h1]`. Simplify using `only [map_sub, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma charpoly_tw {R : Type} [CommRing R] [StarRing R] (A M : Matrix (Fin 3) (Fin 3) R)
     (hA : A * star A = 1) (hM : M * star M = 1) (h : M = A * A.map star) :
@@ -44,13 +44,11 @@ private lemma charpoly_tw {R : Type} [CommRing R] [StarRing R] (A M : Matrix (Fi
 
 open scoped Matrix.Norms.L2Operator in
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Take `⟨s, hs⟩ : ∃ s : ℝ, s ^ 2 = t ^ 2 - 4` from `⟨√(t ^ 2 - 4), Real.sq_sqrt hc.le⟩`. Use `set r : ℝ := (t + s) / 2 with hr`. Establish `e : r ^ 2 - t * r + 1 = 0` using `by rw [hr]; linarith`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hroot : (r : ℂ) ∈ spectrum ℂ M`. Rewrite using `[Matrix.mem_spectrum_iff_isRoot_charpoly, h]`. Establish `e' : (r : ℂ) ^ 2 - t * r + 1 = 0` using `by exact_mod_cast e`. Simplify using `[e']`. Establish `hn` using `spectrum.norm_eq_one_of_unitary hM hroot`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hn` using `[Complex.norm_real, Real.norm_eq_abs]`. Establish `h2 : r ^ 2 = 1` using `by rw [← sq_abs, hn]; norm_num`. Establish `h3 : t * r = 2` using `by linarith`. Establish `h4 : t ^ 2 = 4`. Combine the equalities or inequalities in the displayed calculation.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private lemma disc_nonpos (M : Matrix (Fin 3) (Fin 3) ℂ) (hM : M ∈ unitary (Matrix (Fin 3) (Fin 3) ℂ)) (t : ℝ)
     (h : M.charpoly = (X - 1) * (X ^ 2 - C (t : ℂ) * X + 1)) : t ^ 2 - 4 ≤ 0 := by
@@ -73,13 +71,13 @@ private lemma disc_nonpos (M : Matrix (Fin 3) (Fin 3) ℂ) (hM : M ∈ unitary (
   linarith
 
 /- English proof (translation)
-Take `⟨s, hs⟩ : ∃ s : ℝ, s * s = -σ Δ` from `⟨√(-σ Δ), Real.mul_self_sqrt (by linarith)⟩`. Use `⟨{ toFun := fun x => ⟨σ x.re, σ x.im * s⟩ map_one' := ?_, map_mul' := ?_, map_zero' := ?_, map_add' := ?_ }, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `apply Complex.ext <;> simp [QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]`. Introduce `x y`. Apply `Complex.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using the standard rewrite rules. Take the linear combination `(σ x.im * σ y.im) * hs`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Apply the tactic sequence `apply Complex.ext <;> simp`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `x y`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `x`. Apply the tactic sequence `apply Complex.ext <;> simp`. Introduce `a`. Apply the tactic sequence `apply Complex.ext <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma exists_emb {F : Type} [Field F] (Δ : F) (σ : F →+* ℝ) (h : σ Δ < 0) :
     ∃ φ : Lsq F Δ →+* ℂ, (∀ x, φ (star x) = star (φ x)) ∧ ∀ a, φ (algebraMap F _ a) = σ a := by
@@ -107,17 +105,17 @@ private lemma exists_emb {F : Type} [Field F] (Δ : F) (σ : F →+* ℝ) (h : �
 end UpperTheory.Reformulated.B.CubicCharpolyDiscriminant
 
 /- English proof (translation)
-Introduce `F _ _ Δ D hD δ`. Use `set M : U3 Δ := δ * theta Δ δ with hMdef`. Take `⟨h1, h2⟩` from `charpoly_tw (δ : Matrix (Fin 3) (Fin 3) (Lsq F Δ)) (M : Matrix (Fin 3) (Fin 3) (Lsq F Δ)) δ.2.2 M.2.2 rfl`. Establish `him : (M : Matrix (Fin 3) (Fin 3) (Lsq F Δ)).trace.im = 0`. Use `congrArg QuadraticAlgebra.im h1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[QuadraticAlgebra.im_star]`. Take the linear combination `(-1 / 2 : F) * this`. Establish `hτ : algebraMap F (Lsq F Δ) ((M : Matrix (Fin 3) (Fin 3) (Lsq F Δ)).trace.re - 1) = (M : Matrix (Fin 3) (Fin 3) (Lsq F Δ)).trace - 1`. Apply the tactic sequence `ext <;> simp [QuadraticAlgebra.re_one, QuadraticAlgebra.im_one, him]`. Rewrite `h2` using `[← hτ]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(M : Matrix (Fin 3) (Fin 3) (Lsq F Δ)).trace.re - 1 = τ at h2`. Use `⟨τ, h2, fun hne σ => ?_⟩` and prove the remaining obligations. Take `⟨φ, hφ, hφa⟩` from `exists_emb Δ σ (hD.neg σ)`. Establish `hs : star ((M : Matrix (Fin 3) (Fin 3) (Lsq F Δ)).map φ) = (star (M : Matrix (Fin 3) (Fin 3) (Lsq F Δ))).map φ`. Use extensionality with `i j`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.star_apply, Matrix.map_apply, hφ]`. Establish `hu : (M : Matrix (Fin 3) (Fin 3) (Lsq F Δ)).map φ ∈ unitary (Matrix (Fin 3) (Fin 3) ℂ)`. Prove the components needed by the constructor for the conclusion. Rewrite using `[hs, ← Matrix.map_mul, M.2.1, Matrix.map_one _ (map_zero φ) (map_one φ)]`. Rewrite using `[hs, ← Matrix.map_mul, M.2.2, Matrix.map_one _ (map_zero φ) (map_one φ)]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle` using `disc_nonpos _ hu (σ τ) (by`. Rewrite using `[Matrix.charpoly_map, h2]`. Simplify using `only [Polynomial.map_mul, Polynomial.map_sub, Polynomial.map_add, Polynomial.map_pow, Polynomial.map_X, Polynomial.map_one, Polynomial.map_C, hφa])`. Establish `hne' : σ (τ ^ 2 - 4) ≠ 0` using `(map_ne_zero σ).2 hne`. Establish `e : σ (τ ^ 2 - 4) = σ τ ^ 2 - 4`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, map_pow, map_ofNat]`. Conclude with `lt_of_le_of_ne (e ▸ hle) hne'`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.CubicCharpolyDiscriminant.tauEx :
     UpperTheory.V.Z.Sym.Glob.TauEx := by

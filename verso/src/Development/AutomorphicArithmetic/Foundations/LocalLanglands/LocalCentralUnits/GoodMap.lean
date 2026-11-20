@@ -21,34 +21,34 @@ section Classes
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k]
 
 /- English proof (translation)
-The claim follows from `((clBasic k y).2.1 χ hχ).2.2.2.1 χ' hχ' h''`.
+A detailed English derivation is pending.
 -/
 private theorem tw_tw (y : IrrGL k) {χ χ' : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) (hχ' : IsSmoothChar χ')
     (h'' : IsSmoothChar (χ * χ')) : (y.tw χ hχ).tw χ' hχ' = y.tw (χ * χ') h'' :=
   ((clBasic k y).2.1 χ hχ).2.2.2.1 χ' hχ' h''
 
 /- English proof (translation)
-The claim follows from `(clBasic k y).2.2.1 h1`.
+A detailed English derivation is pending.
 -/
 private theorem tw_one (y : IrrGL k) (h1 : IsSmoothChar (1 : kˣ →* ℂˣ)) : y.tw 1 h1 = y :=
   (clBasic k y).2.2.1 h1
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem tw_congr (y : IrrGL k) {χ χ' : kˣ →* ℂˣ} (e : χ = χ') (hχ : IsSmoothChar χ)
     (hχ' : IsSmoothChar χ') : y.tw χ hχ = y.tw χ' hχ' := by
   subst e; rfl
 
 /- English proof (translation)
-Rewrite using `[tw_tw y hχ hχ.inv (hχ.mul hχ.inv), tw_congr y (mul_inv_cancel χ) _ isSmoothChar_one, tw_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem tw_tw_inv' (y : IrrGL k) {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) :
     (y.tw χ hχ).tw χ⁻¹ hχ.inv = y := by
   rw [tw_tw y hχ hχ.inv (hχ.mul hχ.inv), tw_congr y (mul_inv_cancel χ) _ isSmoothChar_one, tw_one]
 
 /- English proof (translation)
-Rewrite using `[← tw_tw y hχ hχ'.inv, e, tw_tw_inv']`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem eq_tw_of_tw_eq {y y' : IrrGL k} {χ χ' : kˣ →* ℂˣ} {hχ : IsSmoothChar χ}
     {hχ' : IsSmoothChar χ'} (e : y.tw χ hχ = y'.tw χ' hχ') :
@@ -61,21 +61,21 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem lpOfChar_congr' {ξ ξ' : Weil h →* ℂˣ} (e : ξ = ξ') (hξ : IsSmooth ξ) (hξ' : IsSmooth ξ') :
     WD.lpOfChar h ξ hξ = WD.lpOfChar h ξ' hξ' := by
   subst e; rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem lpTwist_congr' (V : WD h) {ξ ξ' : Weil h →* ℂˣ} (e : ξ = ξ') (hξ : IsSmooth ξ)
     (hξ' : IsSmooth ξ') : V.lpTwist ξ hξ = V.lpTwist ξ' hξ' := by
   subst e; rfl
 
 /- English proof (translation)
-Establish `e : (χ * χ').comp a = χ.comp a * χ'.comp a` using `MonoidHom.mul_comp _ _ _`. Conclude with `(((wDBasic E Ω A w h V).2.2.2.2.2.2.2.2 (χ.comp a) (ha.smooth hχ)).2.2.2.1 (χ'.comp a) (ha.smooth hχ') (e ▸ ha.smooth h'')).trans (lpTwist_congr' V e.symm _ _)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem lpTwist_lpTwist' (V : WD h) {a : Weil h →* (w.adicCompletion E)ˣ} (ha : IsLocalArtin h a)
     {χ χ' : (w.adicCompletion E)ˣ →* ℂˣ} (hχ : IsSmoothChar χ) (hχ' : IsSmoothChar χ')
@@ -94,9 +94,9 @@ private def Rel (a : Weil h →* (w.adicCompletion E)ˣ) (ha : IsLocalArtin h a)
       y₀.IsCusp ∧ DZ y₀ ∧ Par a y₀ V₀ ∧ x = y₀.tw χ hχ ∧ V = V₀.lpTwist (χ.comp a) (ha.smooth hχ))
 
 /- English proof (translation)
-Take `⟨g, hg, i, hi⟩` from `hq`. Use `haveI := hg`. Establish `hy` using `eq_tw_of_tw_eq e`. Establish `hψ : IsSmoothChar (χ * χ₁⁻¹)` using `hχ.mul hχ₁.inv`. Establish `pos : 0 < y₀.1` using `(clBasic _ y₀).2.2.2.1 c`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `tame : TameChar (χ * χ₁⁻¹)` using `(twTame _ y₀ _ hψ pos d).1 (hy ▸ d₁)`. Establish `pt` using `parTw E Ω A w h a ha g i hi y₀ c d V₀ p _ hψ tame`. Establish `hV : V₀.lpTwist ((χ * χ₁⁻¹).comp a) (ha.smooth hψ) = V₁` using `(parUniq E Ω A w h a ha g i hi y₁ c₁ d₁ V₁ p₁).1 _ (hy ▸ pt)`. Rewrite using `[← hV, lpTwist_lpTwist' V₀ ha hψ hχ₁ (hψ.mul hχ₁)]`. Conclude with `lpTwist_congr' V₀ (by rw [inv_mul_cancel_right]) _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem twist_eq_of_tw_eq {a : Weil h →* (w.adicCompletion E)ˣ} (ha : IsLocalArtin h a)
     (hq : ∃ (g : ℕ) (_ : Fact g.Prime) (i : ℚ_[g] ≃+* w.adicCompletion E), Continuous i)
@@ -118,11 +118,11 @@ private theorem twist_eq_of_tw_eq {a : Weil h →* (w.adicCompletion E)ˣ} (ha :
   exact lpTwist_congr' V₀ (by rw [inv_mul_cancel_right]) _ _
 
 /- English proof (translation)
-Take `⟨g, hg, i, hi⟩` from `hq`. Use `haveI := hg`. Establish `hψ' : IsSmoothChar (ψ * χ⁻¹)` using `hψ.mul hχ.inv`. Establish `po` using `parOne E Ω A w h a ha (ψ * χ⁻¹) hψ'`. Establish `hy : y₀ = .ofChar (ψ * χ⁻¹) hψ'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `tw_tw_inv' y₀ hχ`. Rewrite `h1` using `[← e]`. Rewrite using `[← h1]`. Conclude with `((parOne E Ω A w h a ha ψ hψ).2.2.2.2.2.2.1 χ⁻¹ hχ.inv hψ').1`. Establish `tame : TameChar (ψ * χ⁻¹)` using `po.2.2.2.2.1.1 (hy ▸ d)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hV : WD.lpOfChar h ((ψ * χ⁻¹).comp a) (ha.smooth hψ') = V₀` using `(parUniq E Ω A w h a ha g i hi y₀ c d V₀ p).1 _ (hy ▸ po.2.2.2.2.2.1 tame)`. Rewrite using `[← hV, (po.2.2.2.2.2.2.1 χ hχ (hψ'.mul hχ)).2]`. Conclude with `lpOfChar_congr' (by rw [inv_mul_cancel_right]) _ _`.
+A detailed English derivation is pending.
 -/
 private theorem ofChar_eq_of_tw_eq {a : Weil h →* (w.adicCompletion E)ˣ} (ha : IsLocalArtin h a)
     (hq : ∃ (g : ℕ) (_ : Fact g.Prime) (i : ℚ_[g] ≃+* w.adicCompletion E), Continuous i)
@@ -146,9 +146,9 @@ private theorem ofChar_eq_of_tw_eq {a : Weil h →* (w.adicCompletion E)ˣ} (ha 
   exact lpOfChar_congr' (by rw [inv_mul_cancel_right]) _ _
 
 /- English proof (translation)
-Apply the tactic sequence `rcases H with ⟨χ, hχ, e, rfl⟩ | ⟨hq, y₀, V₀, χ, hχ, c, d, p, e, rfl⟩ <;>`. Break down `H' with ⟨χ', hχ', e', rfl⟩ | ⟨hq', y₁, V₁, χ₁, hχ₁, c₁, d₁, p₁, e', rfl⟩` into its components or cases. Establish `: χ = χ'` using `(parOne E Ω A w h a ha χ hχ).2.2.2.2.2.2.2.2 χ' hχ' (e.symm.trans e')`. Substitute `this` using the available equality. Both sides reduce to the same expression.
+Apply the first step, then apply the next step to every resulting obligation. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression.
 
-Conclude with `ofChar_eq_of_tw_eq ha hq' c₁ d₁ p₁ (e.symm.trans e')`. Conclude with `(ofChar_eq_of_tw_eq ha hq c d p (e'.symm.trans e)).symm`. Conclude with `twist_eq_of_tw_eq ha hq c d p c₁ d₁ p₁ (e.symm.trans e')`.
+A detailed English derivation is pending.
 -/
 private theorem rel_unique {a : Weil h →* (w.adicCompletion E)ˣ} (ha : IsLocalArtin h a)
     {x : IrrGL (w.adicCompletion E)} {V V' : WD h} (H : Rel a ha x V) (H' : Rel a ha x V') : V = V' := by
@@ -162,7 +162,7 @@ private theorem rel_unique {a : Weil h →* (w.adicCompletion E)ˣ} (ha : IsLoca
   · exact twist_eq_of_tw_eq ha hq c d p c₁ d₁ p₁ (e.symm.trans e')
 
 /- English proof (translation)
-Break down `H with ⟨ψ, hψ, rfl, rfl⟩ | ⟨hq, y₀, V₀, ψ, hψ, c, d, p, rfl, rfl⟩` into its components or cases. Use `(parOne E Ω A w h a ha ψ hψ).2.2.2.2.2.2.1 χ hχ (hψ.mul hχ)` as an intermediate fact. Conclude with `Or.inl ⟨ψ * χ, hψ.mul hχ, this.1, this.2⟩`. Conclude with `Or.inr ⟨hq, y₀, V₀, ψ * χ, hψ.mul hχ, c, d, p, tw_tw y₀ hψ hχ (hψ.mul hχ), lpTwist_lpTwist' V₀ ha hψ hχ (hψ.mul hχ)⟩`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Prove the first alternative. Prove the second alternative.
 -/
 private theorem rel_tw {a : Weil h →* (w.adicCompletion E)ˣ} (ha : IsLocalArtin h a)
     {x : IrrGL (w.adicCompletion E)} {V : WD h} (H : Rel a ha x V)
@@ -175,9 +175,9 @@ private theorem rel_tw {a : Weil h →* (w.adicCompletion E)ˣ} (ha : IsLocalArt
       lpTwist_lpTwist' V₀ ha hψ hχ (hψ.mul hχ)⟩
 
 /- English proof (translation)
-Break down `gd with h1 | ⟨hq, y₀, χ, hχ, hfix, rfl⟩` into its components or cases. Take `⟨-, χ, hχ, e⟩` from `(clBasic _ x).2.2.2.2.1 h1`. Conclude with `⟨_, Or.inl ⟨χ, hχ, e, rfl⟩⟩`. Establish `c₀ : y₀.IsCusp` using `(((clBasic _ y₀).2.1 χ hχ).2.1).1 c`. Take `⟨g, hg, i, hi⟩` from `id hq`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI := hg`. Take `⟨V₀, p⟩` from `parEx E Ω A w h a ha g i hi y₀ c₀ hfix`. Conclude with `⟨_, Or.inr ⟨hq, y₀, V₀, χ, hχ, c₀, hfix, p, rfl, rfl⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem rel_of_good {a : Weil h →* (w.adicCompletion E)ˣ} (ha : IsLocalArtin h a)
     {x : IrrGL (w.adicCompletion E)} (c : x.IsCusp) (gd : GoodCusp x) : ∃ V, Rel a ha x V := by
@@ -191,13 +191,11 @@ private theorem rel_of_good {a : Weil h →* (w.adicCompletion E)ˣ} (ha : IsLoc
     exact ⟨_, Or.inr ⟨hq, y₀, V₀, χ, hχ, c₀, hfix, p, rfl, rfl⟩⟩
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A w h a ha`. Use `haveI : Nonempty (WD h) := ⟨WD.lpOfChar h (MonoidHom.comp 1 a) (ha.smooth isSmoothChar_one)⟩`. Establish `key : ∀ {x V}, Rel a ha x V → Classical.epsilon (Rel a ha x) = V` using `fun H => rel_unique ha (Classical.epsilon_spec ⟨_, H⟩) H`. Use `⟨fun x => Classical.epsilon (Rel a ha x), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `χ hχ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `key (Or.inl ⟨χ, hχ, rfl, rfl⟩)`. Introduce `x c gd χ hχ`. Take `⟨V, hV⟩` from `rel_of_good ha c gd`. Use `show Classical.epsilon _ = (Classical.epsilon (Rel a ha x)).lpTwist _ _`. Rewrite using `[key hV, key (rel_tw ha hV hχ)]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `hq y c d`. Take `⟨g, hg, i, hi⟩` from `id hq`. Use `haveI := hg`. Take `⟨V, p⟩` from `parEx E Ω A w h a ha g i hi y c d`. Establish `hV : Rel a ha y V` using `Or.inr ⟨hq, y, V, 1, isSmoothChar_one, c, d, p, (tw_one y _).symm, (((wDBasic E Ω A w h V).2.2.2.2.2.2.2.2 _ _).2.2.2.2.1 (MonoidHom.one_comp a)).symm⟩`.
-
-Use `show Par a y (Classical.epsilon (Rel a ha y))`. Rewrite using `[key hV]`. Conclude with `p`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goodMap : GoodMap := by
   intro E Ω _ _ _ _ _ A w h a ha

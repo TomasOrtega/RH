@@ -6,7 +6,7 @@ open scoped InnerProductSpace
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hv : σ g (σ g⁻¹ v) = v`. Rewrite using `[← ContinuousLinearMap.mul_apply, ← map_mul, mul_inv_cancel, map_one, ContinuousLinearMap.one_apply]`. Set `f : H →ₗᵢ[ℂ] H` to `{ toLinearMap := (σ g : H →ₗ[ℂ] H), norm_map' := hσ g }`. Establish `hf : ∀ x, f x = σ g x` using `fun _ => rfl`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem inner_isometricRep_inv {G : Type} [Group G] {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] (σ : G →* (H →L[ℂ] H)) (hσ : ∀ g x, ‖σ g x‖ = ‖x‖)
@@ -20,21 +20,19 @@ theorem inner_isometricRep_inv {G : Type} [Group G] {H : Type} [NormedAddCommGro
     _ = ⟪σ g u, v⟫_ℂ := by rw [hf, hf, hv]
 
 /- English proof (translation)
-Introduce `G _ _ μ H _ _ _ σ d hd hσ hS w hw`. Establish `adj : ∀ (g : G) (a b : H), ⟪a, σ g⁻¹ b⟫_ℂ = ⟪σ g a, b⟫_ℂ` using `fun g a b => inner_isometricRep_inv σ hσ g a b`. Establish `hc : ∀ a b : H, star ⟪a, b⟫_ℂ = ⟪b, a⟫_ℂ` using `fun a b => by`. Rewrite using `[← starRingEnd_apply, inner_conj_symm]`. Establish `hd0 : (d : ℂ) ≠ 0` using `by exact_mod_cast hd.ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdc : star (d : ℂ) = d` using `by simp`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g`. Rewrite using `[star_mul', star_star, hdc, adj, hc]`. Introduce `x y`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ g : G, star ⟪w, σ (x⁻¹ * g⁻¹ * y) w⟫_ℂ = ⟪σ y w, σ g (σ x w)⟫_ℂ`. Introduce `g`. Rewrite using `[map_mul, map_mul, ContinuousLinearMap.mul_apply, ContinuousLinearMap.mul_apply, adj, adj, hc]`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[key]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = ((d : ℂ) * d) * (⟪w, σ x w⟫_ℂ * ⟪σ y w, w⟫_ℂ / d) := by`. Rewrite using `[integral_const_mul, hS]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ⟪w, σ x w⟫_ℂ * ((d : ℂ) * star ⟪w, σ y w⟫_ℂ) := by`. Rewrite using `[hc]`. Clear the denominators using the available nonvanishing facts. Introduce `u u'`. Combine the equalities or inequalities in the displayed calculation.
+Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `g`. Expand and normalize the polynomial expressions, which then agree. Use `_ = ⟪w, u⟫_ℂ * ⟪u', w⟫_ℂ := by`. Rewrite using `[integral_const_mul, hS]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Introduce `y hy`. Establish `h0` using `hS w y w y`. Simplify using `only [hy, zero_mul, integral_zero] at h0`. Establish `hww : ⟪w, w⟫_ℂ = 1` using `by rw [inner_self_eq_norm_sq_to_K, hw]; simp`.
-
-Rewrite `h0` using `[hww, one_mul]`. Establish `hyy : ⟪y, y⟫_ℂ = 0` using `(div_eq_zero_iff.mp h0.symm).resolve_right hd0`. Conclude with `inner_self_eq_zero.mp hyy`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem matrixCoeff_idempotent_of_orthogonality : ∀ (G : Type) [Group G] [MeasurableSpace G] (μ : Measure G) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : G →* (H →L[ℂ] H)) (d : ℝ), 0 < d → (∀ g x, ‖σ g x‖ = ‖x‖) → (∀ v w v' w' : H, ∫ g, ⟪w, σ g v⟫_ℂ * star ⟪w', σ g v'⟫_ℂ ∂μ = ⟪v', v⟫_ℂ * ⟪w, w'⟫_ℂ / (d : ℂ)) → ∀ w : H, ‖w‖ = 1 → (∀ g : G, star ((d : ℂ) * star ⟪w, σ g⁻¹ w⟫_ℂ) = (d : ℂ) * star ⟪w, σ g w⟫_ℂ) ∧ (∀ x y : G, ∫ g, ((d : ℂ) * star ⟪w, σ g w⟫_ℂ) * ((d : ℂ) * star ⟪w, σ (x⁻¹ * g⁻¹ * y) w⟫_ℂ) ∂μ = ⟪w, σ x w⟫_ℂ * ((d : ℂ) * star ⟪w, σ y w⟫_ℂ)) ∧ (∀ u u' : H, ∫ g, ((d : ℂ) * star ⟪w, σ g w⟫_ℂ) * ⟪u', σ g u⟫_ℂ ∂μ = ⟪w, u⟫_ℂ * ⟪u', w⟫_ℂ) ∧ ∀ y : H, (∀ g, ⟪y, σ g w⟫_ℂ = 0) → y = 0 := by
   intro G _ _ μ H _ _ _ σ d hd hσ hS w hw

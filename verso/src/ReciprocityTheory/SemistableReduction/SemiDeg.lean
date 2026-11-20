@@ -7,7 +7,7 @@ import ReciprocityTheory.SemistableReduction.SemiDegD
 namespace ReciprocityTheory.MultiplicativeHeights
 
 /- English proof (translation)
-The claim follows from `SemiPt.semiPoint_of wittBasis_holds latDegBasis_holds integralIndex_holds selfDualIndex_holds (gradedExt_holds latDegBasis_holds hD) absDet_holds`.
+A detailed English derivation is pending.
 -/
 theorem semiDeg_holds (hD : DegAddStatement) : SemiPointStatement :=
   SemiPt.semiPoint_of wittBasis_holds latDegBasis_holds integralIndex_holds selfDualIndex_holds

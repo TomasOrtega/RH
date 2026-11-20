@@ -52,9 +52,9 @@ def cotD (q N : ℕ) (I : Cx R) (n : ℤ) : cotPre R q N I n ⟶ cotPre R q N I 
     rw [δ_zero_cochain_comp _ _ _ rfl, δ_ofHom, Cochain.zero_comp, smul_zero, add_zero]
 
 /- English proof (translation)
-Use extensionality with `U : 2`. Apply `ModuleCat.hom_ext` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `α`. Express the relevant statement in the definitionally equal form `δ (n + 1) (n + 1 + 1) (δ n (n + 1) α) = 0`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `δ_δ _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem cotD_comp (q N : ℕ) (I : Cx R) (n : ℤ) : cotD R q N I n ≫ cotD R q N I (n + 1) = 0 := by
   ext U : 2

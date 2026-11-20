@@ -1,17 +1,17 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `h`. Establish `hd : 2 ^ (m + 1) ∣ 2 ^ (m + 2)` using `pow_dvd_pow 2 (by omega)`. Establish `hf : ξ.FactorsThrough (2 ^ (m + 1))`. Use `(DirichletCharacter.factorsThrough_iff_ker_unitsMap hd).2 fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[MonoidHom.mem_ker, Units.ext_iff, ZMod.unitsMap_val, Units.val_one, ZMod.cast_eq_val]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hM : 1 < 2 ^ (m + 1)` using `Nat.one_lt_two_pow (by omega)`. Establish `hx1 : ((x : ZMod (2 ^ (m + 2))).val : ZMod (2 ^ (m + 1))) = ((1 : ℕ) : ZMod (2 ^ (m + 1)))`. Simplify using `using hx`. Establish `hx2` using `(ZMod.natCast_eq_natCast_iff' _ _ _).1 hx1`. Rewrite `hx2` using `[Nat.mod_eq_of_lt hM]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hlt` using `ZMod.val_lt (x : ZMod (2 ^ (m + 2)))`. Establish `h2 : 2 ^ (m + 2) = 2 ^ (m + 1) * 2` using `by ring`. Establish `hq : (x : ZMod (2 ^ (m + 2))).val / 2 ^ (m + 1) < 2`. Rewrite using `[Nat.div_lt_iff_lt_mul (by positivity)]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `hv` using `Nat.mod_add_div (x : ZMod (2 ^ (m + 2))).val (2 ^ (m + 1))`. Rewrite `hv` using `[hx2]`. Establish `hx' : (x : ZMod (2 ^ (m + 2))) = ((1 + 2 ^ (m + 1) * ((x : ZMod (2 ^ (m + 2))).val / 2 ^ (m + 1)) : ℕ) : ZMod (2 ^ (m + 2)))`. Rewrite using `[hv, ZMod.natCast_zmod_val]`. Rewrite using `[MonoidHom.mem_ker, Units.ext_iff, MulChar.coe_toUnitHom, Units.val_one, hx']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `interval_cases hq' : (x : ZMod (2 ^ (m + 2))).val / 2 ^ (m + 1)`. Simplify using the standard rewrite rules. Use `push_cast`. Simplify using `using h`. Establish `hle : ξ.conductor ≤ 2 ^ (m + 1)` using `Nat.sInf_le hf`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hle` using `[hξ]`. Establish `h2 : 2 ^ (m + 2) = 2 ^ (m + 1) * 2` using `by ring`. Establish `: 0 < 2 ^ (m + 1)` using `by positivity`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem primitive_dyadic_character_ne_one (R : Type) [CommRing R] (m : ℕ)
     (ξ : DirichletCharacter R (2 ^ (m + 2))) (hξ : ξ.IsPrimitive) :
@@ -50,9 +50,9 @@ private theorem primitive_dyadic_character_ne_one (R : Type) [CommRing R] (m : �
   omega
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => simpa using hx`. Consider the case `succ j ih`. Take `⟨d, hd⟩` from `ih`. Use `⟨d + 2 ^ (k + j) * (2 * d + 1) ^ 2, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pow_succ 2 j, pow_mul, hd]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem two_adic_unit_pow_two_pow (x k : ℕ) (j : ℕ) (hx : ∃ d, x = 1 + 2 ^ (k + 2) * (2 * d + 1)) :
     ∃ d, x ^ (2 ^ j) = 1 + 2 ^ (k + 2 + j) * (2 * d + 1) := by
@@ -65,9 +65,9 @@ private theorem two_adic_unit_pow_two_pow (x k : ℕ) (j : ℕ) (hx : ∃ d, x =
     ring
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `hx`. Proceed by induction on `w with`. Consider the case `zero => exact ⟨c, by simpa using hc⟩`. Consider the case `succ w ih`. Take `⟨d, hd⟩` from `ih`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨d + ((2 * c + 1) + 2 ^ k * (2 * c + 1) ^ 2) * (1 + 2 ^ (k + 1) * (2 * d + 1)), ?_⟩` and prove the remaining obligations. Establish `: x ^ (2 * (w + 1) + 1) = x ^ (2 * w + 1) * x ^ 2` using `by ring`. Rewrite using `[this, hd, hc]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem two_adic_unit_pow_odd (x k : ℕ) (w : ℕ) (hx : ∃ d, x = 1 + 2 ^ (k + 1) * (2 * d + 1)) :
     ∃ d, x ^ (2 * w + 1) = 1 + 2 ^ (k + 1) * (2 * d + 1) := by
@@ -82,27 +82,27 @@ private theorem two_adic_unit_pow_odd (x k : ℕ) (w : ℕ) (hx : ∃ d, x = 1 +
     ring
 
 /- English proof (translation)
-Introduce `O _ _ n ξ hξ v a u hv hv1 hu h`. Take `⟨t, ht⟩` from `hv`. Take `⟨u', hu'⟩` from `hu`. Establish `hv3 : 3 ≤ v` using `by omega`. Establish `hpos : 0 < 2 ^ a` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `Nat.lt_or_ge n 2 with hn | hn` into its components or cases. Apply the tactic sequence `have h1 : 2 ^ n ≤ 2 := by interval_cases n <;> norm_num`. Establish `h2 : 9 ≤ v ^ 2` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨m, rfl⟩ : ∃ m, n = m + 2` from `⟨n - 2, by omega⟩`.
+Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result.
 
-Establish `hsq : v ^ 2 = 4 * (t * (t + 1)) + 1` using `by rw [ht]; ring`. Establish `hw : v ^ 2 - 1 ≠ 0`. Rewrite using `[hsq, Nat.add_sub_cancel]`. Establish `: 0 < t` using `by omega`. Check the signs of the components of the expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Take `⟨s, r, hr, hsr⟩` from `Nat.exists_eq_two_pow_mul_odd hw`. Establish `hs : 2 ≤ s`. Assume the negation of the conclusion as `hs`. Take `⟨e, he⟩` from `hr`. Rewrite `hsr` using `[hsq, Nat.add_sub_cancel]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Generalize the expression as in `t * (t + 1) = P at hsr`. Apply the tactic sequence `interval_cases s <;> omega`. Take `⟨k, rfl⟩ : ∃ k, s = k + 2` from `⟨s - 2, by omega⟩`. Take `⟨d, rfl⟩` from `hr`. Establish `hW : v ^ 2 = 1 + 2 ^ (k + 1 + 1) * (2 * d + 1)`.
+Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Nat.eq_add_of_sub_eq (by omega) hsr` as an intermediate fact. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨d1, hd1⟩` from `two_adic_unit_pow_odd (v ^ 2) (k + 1) u' ⟨d, hW⟩`. Take `⟨d2, hd2⟩` from `two_adic_unit_pow_two_pow ((v ^ 2) ^ (2 * u' + 1)) k a ⟨d1, by rw [hd1]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hbig : m + 2 ≤ k + 2 + a`. Assume the negation of the conclusion as `hlt`. Take `⟨d3, hd3⟩` from `two_adic_unit_pow_two_pow (((v ^ 2) ^ (2 * u' + 1)) ^ 2 ^ a) (k + a) (m + 1 - (k + 2 + a)) ⟨d2, by rw [hd2, show k + 2 + a = k + a + 2 by ring]⟩`. Rewrite `hd3` using `[show k + a + 2 + (m + 1 - (k + 2 + a)) = m + 1 by omega]`. Apply `primitive_dyadic_character_ne_one O m ξ hξ` to reduce the goal to its premises.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hcast : ((((((v ^ 2) ^ (2 * u' + 1)) ^ 2 ^ a) ^ 2 ^ (m + 1 - (k + 2 + a)) : ℕ)) : ZMod (2 ^ (m + 2))) = 1 + 2 ^ (m + 1)`. Rewrite using `[hd3]`. Use `push_cast`. Establish `h0 : (2 : ZMod (2 ^ (m + 2))) ^ (m + 2) = 0`. Rewrite using `[show (2 : ZMod (2 ^ (m + 2))) ^ (m + 2) = ((2 ^ (m + 2) : ℕ) : ZMod (2 ^ (m + 2))) by push_cast; rfl, ZMod.natCast_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(d3 : ZMod (2 ^ (m + 2))) * h0`. Rewrite using `[← hcast]`. Establish `hval : ((((((v ^ 2) ^ (2 * u' + 1)) ^ 2 ^ a) ^ 2 ^ (m + 1 - (k + 2 + a)) : ℕ)) : ZMod (2 ^ (m + 2))) = ((v : ZMod (2 ^ (m + 2))) ^ (2 ^ a * u)) ^ (2 * 2 ^ (m + 1 - (k + 2 + a)))`. Rewrite using `[hu']`. Use `push_cast`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hval, map_pow, map_pow, h, one_pow]`. Establish `hk : 2 ^ (k + 2) < v ^ 2`. Rewrite using `[hW]`. Establish `: 2 ^ (k + 2) ≤ 2 ^ (k + 1 + 1) * (2 * d + 1)` using `Nat.le_mul_of_pos_right _ (by omega)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation.
+Use linear arithmetic over natural numbers and integers. Chain the equalities or inequalities of the calculation.
 -/
 theorem UpperTheory.two_pow_lt_sq_mul_of_primitive_char_pow_eq_one :
     ∀ (O : Type) [CommRing O] [IsDomain O] (n : ℕ) (ξ : DirichletCharacter O (2 ^ n)), ξ.IsPrimitive → ∀ v a u : ℕ, Odd v → 1 < v → Odd u → ξ (v : ZMod (2 ^ n)) ^ (2 ^ a * u) = 1 → 2 ^ n < v ^ 2 * 2 ^ a := by

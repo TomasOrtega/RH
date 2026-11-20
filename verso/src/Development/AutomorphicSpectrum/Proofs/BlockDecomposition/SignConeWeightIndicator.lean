@@ -10,15 +10,11 @@ section Abstract
 variable {V : Type} [Fintype V] [DecidableEq V]
 
 /- English proof (translation)
-Use `revert hne hc`. Use `Finset.induction_on B ?_ ?_` and prove the remaining obligations. Introduce `hne _`. Conclude with `absurd hne Finset.not_nonempty_empty`. Introduce `a s ha ih hne hc`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hcs : IsChain R (↑s : Set V)` using `hc.mono (Finset.coe_subset.2 (Finset.subset_insert a s))`. Distinguish the cases in `hs : s.Nonempty`. Take `⟨e, he, hle⟩` from `ih hs hcs`. Establish `hae : a ≠ e` using `fun h => ha (h ▸ he)`. Break down `hc (Finset.mem_coe.2 (Finset.mem_insert_self a s)) (Finset.mem_coe.2 (Finset.mem_insert_of_mem he)) hae with h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Use `⟨a, Finset.mem_insert_self a s, fun x hx => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hx with rfl | hx` into its components or cases. Conclude with `hr _`. Conclude with `ht _ _ _ h (hle x hx)`. Use `⟨e, Finset.mem_insert_of_mem he, fun x hx => ?_⟩` and prove the remaining obligations.
-
-Break down `Finset.mem_insert.1 hx with rfl | hx` into its components or cases. Conclude with `h`. Conclude with `hle x hx`. Use `⟨a, Finset.mem_insert_self a s, fun x hx => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hx with rfl | hx` into its components or cases.
-
-Conclude with `hr _`. Conclude with `absurd ⟨x, hx⟩ hs`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem exists_least (R : V → V → Prop) (hr : ∀ x, R x x) (ht : ∀ x y z, R x y → R y z → R x z)
     (B : Finset V) (hne : B.Nonempty) (hc : IsChain R (↑B : Set V)) : ∃ e ∈ B, ∀ x ∈ B, R e x := by
@@ -47,47 +43,39 @@ theorem exists_least (R : V → V → Prop) (hr : ∀ x, R x x) (ht : ∀ x y z,
       · exact absurd ⟨x, hx⟩ hs
 
 /- English proof (translation)
-Take `⟨least, hleast⟩ : ∃ least : Finset V → V, ∀ U : Finset V, U.Nonempty → IsChain R (↑U : Set V) → least U ∈ U ∧ ∀ x ∈ U, R (least U) x` from `⟨fun U => if h : U.Nonempty ∧ IsChain R (↑U : Set V) then Classical.choose (exists_least R hr ht U h.1 h.2) else es, fun U hU hcU => by beta_reduce`. Rewrite using `[dif_pos ⟨hU, hcU⟩]`. Conclude with `Classical.choose_spec (exists_least R hr ht U hU hcU)⟩`. Take `⟨U, hU⟩ : ∃ U : Finset V → Finset V, ∀ s, U s = s.filter (fun x => ¬ R x es)` from `⟨_, fun _ => rfl⟩`. Establish `hmem : ∀ s x, x ∈ U s ↔ x ∈ s ∧ ¬ R x es` using `fun s x => by rw [hU, Finset.mem_filter]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩ : ∃ c : Finset V → V, ∀ s, c s = if (U s).Nonempty then mt (least (U s)) else es` from `⟨_, fun _ => rfl⟩`. Take `⟨g, hg⟩ : ∃ g : Finset V → Finset V, ∀ s, g s = if c s ∈ s then s.erase (c s) else insert (c s) s` from `⟨_, fun _ => rfl⟩`. Establish `hcD : ∀ s, R (c s) es`. Introduce `s`. Rewrite using `[hc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `split_ifs`. Conclude with `h2 _`. Conclude with `hr es`. Establish `hUg : ∀ s, U (g s) = U s`. Introduce `s`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[hU, hU, hg]`. Use `split_ifs with h`. Use extensionality with `x`. Simplify using `only [Finset.mem_filter, Finset.mem_erase]`. Prove the components needed by the constructor for the conclusion.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨⟨_, hx⟩, hxR⟩`. Conclude with `⟨hx, hxR⟩`. Introduce and unpack `⟨hx, hxR⟩`. Use `⟨⟨?_, hx⟩, hxR⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `hxR (hcD s)`. Use extensionality with `x`. Simplify using `only [Finset.mem_filter, Finset.mem_insert]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨rfl | hx, hxR⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd (hcD s) hxR`. Conclude with `⟨hx, hxR⟩`. Introduce and unpack `⟨hx, hxR⟩`. Conclude with `⟨Or.inr hx, hxR⟩`. Establish `hcg : ∀ s, c (g s) = c s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `s`. Rewrite using `[hc, hc, hUg]`. Establish `hgg : ∀ s, g (g s) = s`. Introduce `s`. Distinguish the cases in `h : c s ∈ s`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1 : g s = s.erase (c s)` using `by rw [hg, if_pos h]`. Establish `e2 : c s ∉ g s` using `by rw [e1]; simp`. Rewrite using `[hg (g s), hcg, if_neg e2, e1, Finset.insert_erase h]`. Establish `e1 : g s = insert (c s) s` using `by rw [hg, if_neg h]`. Establish `e2 : c s ∈ g s` using `by rw [e1]; exact Finset.mem_insert_self (c s) s`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hg (g s), hcg, if_pos e2, e1, Finset.erase_insert h]`. Use `Finset.sum_involution (fun s _ => g s) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `s _`. Distinguish the cases in `h : c s ∈ s`. Establish `e1 : g s = s.erase (c s)` using `by rw [hg, if_pos h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[← Finset.card_erase_add_one h, ← e1, pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Establish `e1 : g s = insert (c s) s` using `by rw [hg, if_neg h]`. Rewrite using `[e1, Finset.card_insert_eq_ite, if_neg h, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `s _ _ hEq`. Distinguish the cases in `h : c s ∈ s`. Establish `e1 : g s = s.erase (c s)` using `by rw [hg, if_pos h]`. Establish `e2 : c s ∉ g s` using `by rw [e1]; simp`. Rewrite `e2` using `[hEq]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `e2 h`. Establish `e1 : g s = insert (c s) s` using `by rw [hg, if_neg h]`. Establish `e2 : c s ∈ g s` using `by rw [e1]; exact Finset.mem_insert_self (c s) s`. Rewrite `e2` using `[hEq]`. Conclude with `h e2`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `s hs`. Rewrite `hs`, the goal using `[Finset.mem_filter]`. Take `⟨_, hcs, hA⟩` from `hs`. Use `⟨Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : c s ∈ s`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1 : g s = s.erase (c s)` using `by rw [hg, if_pos h]`. Rewrite using `[e1]`. Conclude with `⟨hcs.mono (Finset.coe_subset.2 (Finset.erase_subset _ _)), fun e he => hA e (Finset.mem_of_mem_erase he)⟩`. Establish `e1 : g s = insert (c s) s` using `by rw [hg, if_neg h]`. Establish `hUc : ∀ hne : (U s).Nonempty, least (U s) ∈ U s ∧ ∀ x ∈ U s, R (least (U s)) x` using `fun hne => hleast (U s) hne (hcs.mono (by rw [hU]; exact Finset.coe_subset.2 (Finset.filter_subset _ _)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[e1]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.coe_insert]`. Use `hcs.insert fun x hx _ => ?_` and prove the remaining obligations. Establish `hx' : x ∈ s` using `Finset.mem_coe.1 hx`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hc]`. Use `split_ifs with hne`. Take `⟨hu, hul⟩` from `hUc hne`. Establish `hu'` using `(hmem s _).1 hu`. Distinguish the cases in `hxR : R x es`.
-
-Use `right`. Establish `hxu : x ≠ least (U s)` using `fun hE => hu'.2 (hE ▸ hxR)`. Break down `hcs (Finset.mem_coe.2 hx') (Finset.mem_coe.2 hu'.1) hxu with h5 | h5` into its components or cases. Conclude with `h3 x _ h5 hxR`. Conclude with `absurd (ht _ _ _ h5 hxR) hu'.2`.
-
-Use `left`. Establish `hxU : x ∈ U s` using `(hmem s x).2 ⟨hx', hxR⟩`. Conclude with `ht _ _ _ (h1 _) (hul x hxU)`. Use `right`. Assume the negation of the conclusion as `hxR`.
-
-Conclude with `hne ⟨x, (hmem s x).2 ⟨hx', hxR⟩⟩`. Introduce `e he`. Break down `Finset.mem_insert.1 he with rfl | he` into its components or cases. Rewrite using `[hc] split_ifs with hne`. Take `⟨hu, _⟩` from `hUc hne`.
-
-Conclude with `h4 _ (hA _ ((hmem s _).1 hu).1)`. Conclude with `hes`. Conclude with `hA e he`. Introduce `s _`. Conclude with `hgg s`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sum_chains_eq_zero (R : V → V → Prop) (hr : ∀ x, R x x) (ht : ∀ x y z, R x y → R y z → R x z)
     (A : V → Prop) (es : V) (hes : A es) (mt : V → V) (h1 : ∀ e, R (mt e) e) (h2 : ∀ e, R (mt e) es)
@@ -220,14 +208,14 @@ section Signs
 variable {m : ℕ}
 
 /- English proof (translation)
-Introduce `i _`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 -/
 theorem sLe_refl (e : Fin m → SignType) : SLe e e := by
   intro i _
   rfl
 
 /- English proof (translation)
-Introduce `i hi`. Establish `hb : b i = a i` using `h i hi`. Rewrite using `[h' i (by rw [hb]; exact hi), hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sLe_trans (a b c : Fin m → SignType) (h : SLe a b) (h' : SLe b c) : SLe a c := by
   intro i hi
@@ -235,9 +223,9 @@ theorem sLe_trans (a b c : Fin m → SignType) (h : SLe a b) (h' : SLe b c) : SL
   rw [h' i (by rw [hb]; exact hi), hb]
 
 /- English proof (translation)
-Introduce `i hi`. Simplify using `only [sMeet] at hi ⊢`. Distinguish the cases in `h : e i = e' i`. Rewrite using `[if_pos h]`. Rewrite `hi` using `[if_neg h]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd rfl hi`.
+A detailed English derivation is pending.
 -/
 theorem sMeet_le_left (e e' : Fin m → SignType) : SLe (sMeet e e') e := by
   intro i hi
@@ -248,9 +236,9 @@ theorem sMeet_le_left (e e' : Fin m → SignType) : SLe (sMeet e e') e := by
     exact absurd rfl hi
 
 /- English proof (translation)
-Introduce `i hi`. Simplify using `only [sMeet] at hi ⊢`. Distinguish the cases in `h : e i = e' i`. Rewrite using `[if_pos h, h]`. Rewrite `hi` using `[if_neg h]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd rfl hi`.
+A detailed English derivation is pending.
 -/
 theorem sMeet_le_right (e e' : Fin m → SignType) : SLe (sMeet e e') e' := by
   intro i hi
@@ -261,7 +249,7 @@ theorem sMeet_le_right (e e' : Fin m → SignType) : SLe (sMeet e e') e' := by
     exact absurd rfl hi
 
 /- English proof (translation)
-Introduce `i hi`. Simplify using `only [sMeet]`. Establish `h1 : e i = x i` using `h i hi`. Establish `h2 : e' i = x i` using `h' i hi`. Rewrite using `[if_pos (h1.trans h2.symm), h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem le_sMeet (x e e' : Fin m → SignType) (h : SLe x e) (h' : SLe x e') : SLe x (sMeet e e') := by
   intro i hi
@@ -271,12 +259,12 @@ theorem le_sMeet (x e e' : Fin m → SignType) (h : SLe x e) (h' : SLe x e') : S
   rw [if_pos (h1.trans h2.symm), h1]
 
 /- English proof (translation)
-Simplify using `[sdot]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sdot_zero (a : Fin m → ℝ) : sdot (0 : Fin m → SignType) a = 0 := by simp [sdot]
 
 /- English proof (translation)
-Simplify using `only [sdot, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [sMeet, sJoin]`. Apply the tactic sequence `cases h1 : e i <;> cases h2 : e' i <;> simp <;> ring`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sdot_meet_join (e e' : Fin m → SignType) (a : Fin m → ℝ) :
     sdot e a + sdot e' a = sdot (sMeet e e') a + sdot (sJoin e e') a := by
@@ -288,9 +276,9 @@ theorem sdot_meet_join (e e' : Fin m → SignType) (a : Fin m → ℝ) :
 open Classical in
 
 /- English proof (translation)
-Simplify using `only [gam, gamOn]`. Rewrite using `[Finset.sum_filter, Finset.sum_filter]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_boole]`. Distinguish the cases in `hA : ∀ e ∈ s, y e < sdot e a`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hc : IsChain SLe (↑s : Set (Fin m → SignType))`. Establish `h0s : (0 : Fin m → SignType) ∉ s` using `fun h => h0 (hA 0 h)`. Simplify using `[hA, hc, h0s]`. Simplify using `[hA, hc]`. Simplify using `[hA]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem gam_eq_sum (y : (Fin m → SignType) → ℝ) (a : Fin m → ℝ) (h0 : ¬ y 0 < sdot 0 a) :
     gam y a = ∑ s ∈ (Finset.univ : Finset (Finset (Fin m → SignType))).filter
@@ -308,21 +296,19 @@ theorem gam_eq_sum (y : (Fin m → SignType) → ℝ) (a : Fin m → ℝ) (h0 : 
   · simp [hA]
 
 /- English proof (translation)
-Introduce `m y a hy`. Establish `hy' : y 0 = 0 ∧ ∀ e e', y (sMeet e e') + y (sJoin e e') ≤ y e + y e'` using `hy`. Establish `h0 : ¬ y 0 < sdot 0 a`. Rewrite using `[hy'.1, sdot_zero]`. Conclude with `lt_irrefl 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gam_eq_sum y a h0]`. Distinguish the cases in `hall : ∀ e, sdot e a ≤ y e`. Rewrite using `[Set.indicator_of_mem (show a ∈ {a | ∀ e, sdot e a ≤ y e} from hall)]`. Use `(Finset.sum_eq_single ∅ ?_ ?_).trans ?_` and prove the remaining obligations. Introduce `s hs hne`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. It suffices to derive a contradiction.
 
-It suffices to derive a contradiction. Rewrite `hs` using `[Finset.mem_filter]`. Take `⟨e, he⟩` from `Finset.nonempty_iff_ne_empty.2 hne`. Conclude with `absurd (hs.2.2 e he) (not_lt.2 (hall e))`. Introduce `h`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-It suffices to derive a contradiction. Apply `h` to reduce the goal to its premises. Rewrite using `[Finset.mem_filter]`. Use `⟨Finset.mem_univ _, ?_, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite `hall` using `[Set.indicator_apply, if_neg (show a ∉ {a | ∀ e, sdot e a ≤ y e} from hall)] push_neg`. Take `⟨es, -, hesmax⟩` from `Finset.exists_max_image Finset.univ (fun e => sdot e a - y e) Finset.univ_nonempty`. Take `⟨e1, he1⟩` from `hall`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hes : y es < sdot es a`. Establish `h5 : sdot e1 a - y e1 ≤ sdot es a - y es` using `hesmax e1 (Finset.mem_univ _)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `key` using `sum_chains_eq_zero SLe sLe_refl sLe_trans (fun e => y e < sdot e a) es hes (fun e => sMeet e es) (fun e => sMeet_le_left e es) (fun e => sMeet_le_right e es) (fun x e h h' => le_sMeet x e es h h') (fun e he => by`. Establish `hPos` using `hy'.2 e es`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdot` using `sdot_meet_join e es a`. Establish `hjoin : sdot (sJoin e es) a - y (sJoin e es) ≤ sdot es a - y es` using `hesmax (sJoin e es) (Finset.mem_univ _)`. Use `show y (sMeet e es) < sdot (sMeet e es) a`. Establish `he' : y e < sdot e a` using `he`. Use the proof step `linarith)`.
-
-Use `key` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem gam_eq_indicator : ∀ m : ℕ, ∀ (y : (Fin m → SignType) → ℝ) a, PosFam y →
     gam y a = Set.indicator {a | ∀ e, sdot e a ≤ y e} 1 a := by

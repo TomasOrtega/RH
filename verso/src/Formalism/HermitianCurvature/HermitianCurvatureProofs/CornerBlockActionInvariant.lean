@@ -14,15 +14,15 @@ open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants
 variable {k p ρ : ℕ}
 
 /- English proof (translation)
-Break down `x with (a | b) | c` into its components or cases. Establish `ha` using `a.isLt`. Simplify using `only [liftVec, Sum.elim_inl]`. Rewrite using `[dif_neg]`. Simplify using `only [U.eB, Equiv.trans_apply, Equiv.sumCongr_apply, Sum.map_inl, Sum.map_inr, finSumFinEquiv_apply_left, finSumFinEquiv_apply_right, finCongr_apply, Equiv.refl_apply, Fin.coe_cast, Fin.coe_castAdd, Fin.coe_natAdd, eI]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Establish `hb` using `b.isLt`. Simplify using `only [liftVec, Sum.elim_inl, Sum.elim_inr]`. Rewrite using `[dif_pos]`. Use `congr 1`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `ext`. Simplify using `only [U.eB, Equiv.trans_apply, Equiv.sumCongr_apply, Sum.map_inl, Sum.map_inr, finSumFinEquiv_apply_left,`. Use the proof step `finSumFinEquiv_apply_right, finCongr_apply, Equiv.refl_apply, Fin.coe_cast, Fin.coe_castAdd, Fin.coe_natAdd, eI]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [U.eB, Equiv.trans_apply, Equiv.sumCongr_apply, Sum.map_inl, Sum.map_inr, finSumFinEquiv_apply_left, finSumFinEquiv_apply_right, finCongr_apply, Equiv.refl_apply, Fin.coe_cast, Fin.coe_castAdd, Fin.coe_natAdd, eI]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hc` using `c.isLt`. Simplify using `only [liftVec, Sum.elim_inr]`. Rewrite using `[dif_neg]`. Simplify using `only [U.eB, Equiv.trans_apply, Equiv.sumCongr_apply, Sum.map_inl, Sum.map_inr, finSumFinEquiv_apply_left, finSumFinEquiv_apply_right, finCongr_apply, Equiv.refl_apply, Fin.coe_cast, Fin.coe_castAdd, Fin.coe_natAdd, eI]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem liftVec_eB (u : Fin (2 * ρ + k + 1) → ℂ) (x : U.Ix k p ρ) :
     liftVec k p ρ u (U.eB k p ρ x) = Sum.elim (Sum.elim (fun _ => 0) u) (fun _ => 0) x := by
@@ -52,7 +52,7 @@ theorem liftVec_eB (u : Fin (2 * ρ + k + 1) → ℂ) (x : U.Ix k p ρ) :
     omega
 
 /- English proof (translation)
-Introduce `i hi`. Simplify using `only [liftVec]`. Use `split_ifs with h`. Conclude with `hz _ (by show i.val - p < ρ ∨ ρ + k < i.val - p; omega)`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem inWb_liftVec {z : Fin (2 * ρ + k + 1) → ℂ} (hz : inWb k ρ z) : inWb k (p + ρ) (liftVec k p ρ z) := by
   intro i hi
@@ -62,7 +62,7 @@ theorem inWb_liftVec {z : Fin (2 * ρ + k + 1) → ℂ} (hz : inWb k ρ z) : inW
   · rfl
 
 /- English proof (translation)
-Use `ext`. Simplify using `only [U.eB, Equiv.trans_apply, Equiv.sumCongr_apply, Sum.map_inl, Sum.map_inr, finSumFinEquiv_apply_left, finSumFinEquiv_apply_right, finCongr_apply, Equiv.refl_apply, Fin.coe_cast, Fin.coe_castAdd, Fin.coe_natAdd, eI]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem eI_X (a : Fin p) : eI k (p + ρ) (Fin.castAdd ρ a) = U.eB k p ρ (Sum.inl (Sum.inl a)) := by
   ext
@@ -70,7 +70,7 @@ theorem eI_X (a : Fin p) : eI k (p + ρ) (Fin.castAdd ρ a) = U.eB k p ρ (Sum.i
       finSumFinEquiv_apply_right, finCongr_apply, Equiv.refl_apply, Fin.coe_cast, Fin.coe_castAdd, Fin.coe_natAdd, eI]
 
 /- English proof (translation)
-Use `ext`. Simplify using `only [U.eB, Equiv.trans_apply, Equiv.sumCongr_apply, Sum.map_inl, Sum.map_inr, finSumFinEquiv_apply_left, finSumFinEquiv_apply_right, finCongr_apply, Equiv.refl_apply, Fin.coe_cast, Fin.coe_castAdd, Fin.coe_natAdd, eI]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem eI_V (a : Fin ρ) : eI k (p + ρ) (Fin.natAdd p a) = U.eB k p ρ (Sum.inl (Sum.inr (eI k ρ a))) := by
   ext
@@ -78,7 +78,7 @@ theorem eI_V (a : Fin ρ) : eI k (p + ρ) (Fin.natAdd p a) = U.eB k p ρ (Sum.in
       finSumFinEquiv_apply_right, finCongr_apply, Equiv.refl_apply, Fin.coe_cast, Fin.coe_castAdd, Fin.coe_natAdd, eI]
 
 /- English proof (translation)
-Use `ext`. Simplify using `only [U.eB, Equiv.trans_apply, Equiv.sumCongr_apply, Sum.map_inl, Sum.map_inr, finSumFinEquiv_apply_left, finSumFinEquiv_apply_right, finCongr_apply, Equiv.refl_apply, Fin.coe_cast, Fin.coe_castAdd, Fin.coe_natAdd, eI]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem eI_V' (a : ℕ) (ha : a < ρ) (h : p + a < p + ρ) :
     eI k (p + ρ) ⟨p + a, h⟩ = U.eB k p ρ (Sum.inl (Sum.inr (eI k ρ ⟨a, ha⟩))) := by
@@ -87,7 +87,7 @@ theorem eI_V' (a : ℕ) (ha : a < ρ) (h : p + a < p + ρ) :
       finSumFinEquiv_apply_right, finCongr_apply, Equiv.refl_apply, Fin.coe_cast, Fin.coe_castAdd, Fin.coe_natAdd, eI]
 
 /- English proof (translation)
-Use `ext`. Simplify using `only [U.eB, Equiv.trans_apply, Equiv.sumCongr_apply, Sum.map_inl, Sum.map_inr, finSumFinEquiv_apply_left, finSumFinEquiv_apply_right, finCongr_apply, Equiv.refl_apply, Fin.coe_cast, Fin.coe_castAdd, Fin.coe_natAdd, eI]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem eI_X' (a : ℕ) (ha : a < p) (h : a < p + ρ) :
     eI k (p + ρ) ⟨a, h⟩ = U.eB k p ρ (Sum.inl (Sum.inl ⟨a, ha⟩)) := by
@@ -100,14 +100,14 @@ local macro "blks" : tactic => `(tactic| simp only [Ux3.block3_apply, Matrix.fro
   Matrix.fromCols_apply_inl, Matrix.fromCols_apply_inr])
 
 /- English proof (translation)
-Apply the tactic sequence `rcases x with (a' | b') | c' <;> simp [U.embG, Ux6.block3_apply, Matrix.one_apply] <;> (try split_ifs) <;> simp_all`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem embG_eB_inl_inl_apply_eq_ite (y : B.Mat k ρ) (a : Fin p) (x : U.Ix k p ρ) :
     U.embG k p ρ y (U.eB k p ρ (Sum.inl (Sum.inl a))) (U.eB k p ρ x) = if x = Sum.inl (Sum.inl a) then 1 else 0 := by
   rcases x with (a' | b') | c' <;> simp [U.embG, Ux6.block3_apply, Matrix.one_apply] <;> (try split_ifs) <;> simp_all
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[← Equiv.sum_comp (U.eB k p ρ)]`. Simplify using `only [U.embG, Ux6.block3_apply, liftVec_eB]`. Apply the tactic sequence `rcases x with (a | b) | c <;> simp [Fintype.sum_sum_type, Matrix.mulVec, dotProduct, Matrix.one_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem embG_mulVec_liftVec_eB_apply (y : B.Mat k ρ) (z : Fin (2 * ρ + k + 1) → ℂ) (x : U.Ix k p ρ) :
     (U.embG k p ρ y *ᵥ liftVec k p ρ z) (U.eB k p ρ x) =
@@ -118,15 +118,15 @@ private theorem embG_mulVec_liftVec_eB_apply (y : B.Mat k ρ) (z : Fin (2 * ρ +
   rcases x with (a | b) | c <;> simp [Fintype.sum_sum_type, Matrix.mulVec, dotProduct, Matrix.one_apply]
 
 /- English proof (translation)
-Simplify using `only [Formalism.QuantumDeterminants.ell]`. Rewrite using `[Fin.sum_univ_add, Finset.sum_eq_zero, zero_add]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `b _`. Establish `hb` using `b.isLt`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hV : eI k (p + ρ) (Fin.natAdd p b) = U.eB k p ρ (Sum.inl (Sum.inr (eI k ρ b)))` using `eI_V b`. Distinguish the cases in `h : b.val + 1 < ρ`. Establish `h' : (Fin.natAdd p b).val + 1 < p + ρ` using `by simp; omega`. Establish `hV' : eI k (p + ρ) ⟨(Fin.natAdd p b).val + 1, h'⟩ = U.eB k p ρ (Sum.inl (Sum.inr (eI k ρ ⟨b.val + 1, h⟩)))` using `eI_V' (b.val + 1) h (by simp; omega)`. Rewrite using `[dif_pos h', dif_pos h, hV, hV']`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[U.embG, Ux6.block3_apply]`. Establish `h' : ¬ (Fin.natAdd p b).val + 1 < p + ρ` using `by simp; omega`. Rewrite using `[dif_neg h', dif_neg h, hV, embG_mulVec_liftVec_eB_apply]`. Both sides reduce to the same expression. Introduce `a _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ha` using `a.isLt`. Rewrite using `[eI_X a]`. Use `split_ifs with h`. Take `⟨x, hx⟩` from `(U.eB k p ρ).surjective (eI k (p + ρ) ⟨(Fin.castAdd ρ a).val + 1, h⟩)`. Rewrite using `[← hx, embG_eB_inl_inl_apply_eq_ite, if_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Use `congrArg Fin.val hx` as an intermediate fact. Simplify using `[U.eB, eI] at this`. Rewrite using `[embG_mulVec_liftVec_eB_apply]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ell_embG (z : Fin (2 * ρ + k + 1) → ℂ) (y : B.Mat k ρ) :
     ell k (p + ρ) (liftVec k p ρ z) (U.embG k p ρ y) = ell k ρ z y := by
@@ -158,7 +158,7 @@ theorem ell_embG (z : Fin (2 * ρ + k + 1) → ℂ) (y : B.Mat k ρ) :
       rfl
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[← Equiv.sum_comp (U.eB k p ρ)]`. Simplify using `only [U.muP, Ux6.block3_apply, liftVec_eB]`. Apply the tactic sequence `rcases x with (a | b) | c <;> simp [Fintype.sum_sum_type, Matrix.one_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem muP_mulVec_liftVec_eB_apply (q : Matrix (Fin p) (Fin p) ℂ) (z : Fin (2 * ρ + k + 1) → ℂ) (x : U.Ix k p ρ) :
     (U.muP k p ρ q *ᵥ liftVec k p ρ z) (U.eB k p ρ x) = Sum.elim (Sum.elim (fun _ => 0) z) (fun _ => 0) x := by
@@ -168,19 +168,19 @@ private theorem muP_mulVec_liftVec_eB_apply (q : Matrix (Fin p) (Fin p) ℂ) (z 
   rcases x with (a | b) | c <;> simp [Fintype.sum_sum_type, Matrix.one_apply]
 
 /- English proof (translation)
-Simplify using `only [Formalism.QuantumDeterminants.ell, U.supS]`. Rewrite using `[Fin.sum_univ_add]`. Use `(congrArg₂ HAdd.hAdd ?_ (Finset.sum_eq_zero fun b _ => ?_)).trans (add_zero _)` and prove the remaining obligations. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `a _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ha` using `a.isLt`. Rewrite using `[eI_X a]`. Distinguish the cases in `h : a.val + 1 < p`. Establish `h' : (Fin.castAdd ρ a).val + 1 < p + ρ` using `by simp; omega`. Establish `hX' : eI k (p + ρ) ⟨(Fin.castAdd ρ a).val + 1, h'⟩ = U.eB k p ρ (Sum.inl (Sum.inl ⟨a.val + 1, h⟩))` using `eI_X' (a.val + 1) h h'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[dif_pos h', dif_pos h, hX']`. Simplify using `[U.muP, Ux6.block3_apply]`. Rewrite using `[dif_neg h] split_ifs with h'`. Establish `hρ : 0 < ρ` using `by simp at h'; omega`. Establish `hV' : eI k (p + ρ) ⟨(Fin.castAdd ρ a).val + 1, h'⟩ = U.eB k p ρ (Sum.inl (Sum.inr (eI k ρ ⟨0, hρ⟩)))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ext`. Apply the tactic sequence `simp [U.eB, eI] <;> omega`. Rewrite using `[hV']`. Simplify using `[U.muP, Ux6.block3_apply]`. Rewrite using `[muP_mulVec_liftVec_eB_apply]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hb` using `b.isLt`. Rewrite using `[eI_V b]`. Use `split_ifs with h'`. Establish `h : b.val + 1 < ρ` using `by simp at h'; omega`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hV' : eI k (p + ρ) ⟨(Fin.natAdd p b).val + 1, h'⟩ = U.eB k p ρ (Sum.inl (Sum.inr (eI k ρ ⟨b.val + 1, h⟩)))` using `eI_V' (b.val + 1) h (by simp; omega)`. Establish `hne : eI k ρ b ≠ eI k ρ ⟨b.val + 1, h⟩`. Introduce `e`. Use `congrArg Fin.val e` as an intermediate fact. Simplify using `[eI] at this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hV']`. Simplify using `[U.muP, Ux6.block3_apply, Matrix.one_apply, hne]`. Rewrite using `[muP_mulVec_liftVec_eB_apply]`. Conclude with `hz _ (Or.inl (by simp [eI]))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ell_muP (z : Fin (2 * ρ + k + 1) → ℂ) (hz : inWb k ρ z) (q : Matrix (Fin p) (Fin p) ℂ) :
     ell k (p + ρ) (liftVec k p ρ z) (U.muP k p ρ q) = U.supS q := by
@@ -224,16 +224,16 @@ theorem ell_muP (z : Fin (2 * ρ + k + 1) → ℂ) (hz : inWb k ρ z) (q : Matri
       exact hz _ (Or.inl (by simp [eI]))
 
 /- English proof (translation)
-Simplify using `only [Formalism.QuantumDeterminants.psi, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem psi_of_ell {r r' : ℕ} (z : Fin (2 * r + k + 1) → ℂ) (z' : Fin (2 * r' + k + 1) → ℂ) (g : B.Mat k r)
     (g' : B.Mat k r') (h : ell k r z g = ell k r' z' g') : psi k r z cStd g = psi k r' z' cStd g' := by
   simp only [Formalism.QuantumDeterminants.psi, h]
 
 /- English proof (translation)
-Introduce `k p ρ z' u hz`. Simplify using `only [Formalism.QuantumDeterminants.psi, G.psi, U.betaU, ell_muP z' hz]`. Use `show (starRingEnd ℂ) (Complex.exp _) = _`. Rewrite using `[← Complex.exp_conj]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `[neg_mul, Complex.ofReal_neg]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem psi_measure_preserving : PsiMuP := by
   intro k p ρ z' u hz
@@ -245,7 +245,7 @@ theorem psi_measure_preserving : PsiMuP := by
   ring
 
 /- English proof (translation)
-Use `⟨fun i j hij => ?_, fun a => ?_⟩` and prove the remaining obligations. Establish `h1 : i ≠ j` using `ne_of_gt hij`. Establish `h2 : ¬ i < j` using `not_lt.mpr (le_of_lt hij)`. Simplify using `[G.upper, G.strictUpper, Matrix.one_apply, h1, h2]`. Simplify using `[G.upper, G.strictUpper]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem upper_isUpUni (u : G.UT p → ℂ) : Formalism.DoubleCosetMeasures.IsUpUni (G.upper u) := by
   refine ⟨fun i j hij => ?_, fun a => ?_⟩
@@ -255,15 +255,15 @@ theorem upper_isUpUni (u : G.UT p → ℂ) : Formalism.DoubleCosetMeasures.IsUpU
   · simp [G.upper, G.strictUpper]
 
 /- English proof (translation)
-The claim follows from `(Formalism.FourierDecayAlt.P.radical_parametrisation k p ρ).2.2 (by rw [← (Formalism.FourierDecayAlt.P.radical_parametrisation k p ρ).2.1]; exact ⟨x, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem rn_nset (x : U.RC k p ρ) : U.Rn k p ρ x ∈ QuantumDeterminants.Nset k (p + ρ) :=
   (Formalism.FourierDecayAlt.P.radical_parametrisation k p ρ).2.2 (by rw [← (Formalism.FourierDecayAlt.P.radical_parametrisation k p ρ).2.1]; exact ⟨x, rfl⟩)
 
 /- English proof (translation)
-Introduce `k p ρ z' ν' u x hz hν`. Establish `hz0` using `inWb_liftVec (p := p) hz`. Establish `hcl` using `Formalism.FourierDecayAlt.P.unipotent_radical_closed k (p + ρ)`. Establish `h1` using `embG_nset (p := p) hν`. Establish `h2` using `Formalism.FourierDecayAlt.P.BigCellDiagonalMap.leviElement_nset (k := k) (ρ := ρ) _ (upper_isUpUni u)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Formalism.FourierDecayAlt.P.PBG.psi_mul_nset _ hz0 _ (hcl.mul_mem _ h1 _ h2) (rn_nset x), Formalism.FourierDecayAlt.P.PBG.psi_mul_nset _ hz0 _ h1 h2, psi_of_ell _ z' _ ν' (ell_embG z' ν')]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_right_equivariant : PsiRight := by
   intro k p ρ z' ν' u x hz hν
@@ -275,9 +275,9 @@ theorem psi_right_equivariant : PsiRight := by
     Formalism.FourierDecayAlt.P.PBG.psi_mul_nset _ hz0 _ h1 h2, psi_of_ell _ z' _ ν' (ell_embG z' ν')]
 
 /- English proof (translation)
-Establish `h1 : Matrix.of (rcAct y x).1 = y * Matrix.of x.1` using `rfl`. Establish `hv' : yᴴ *ᵥ (Hpk k ρ *ᵥ v) = Hpk k ρ *ᵥ v`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : (G.wMat p * (Matrix.of x.1)ᴴ * yᴴ * Hpk k ρ) *ᵥ v = (G.wMat p * (Matrix.of x.1)ᴴ * Hpk k ρ) *ᵥ v`. Simplify using `only [← Matrix.mulVec_mulVec, hv']`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, Matrix.conjTranspose_mul, Matrix.neg_mulVec, Matrix.neg_mulVec, ← Matrix.mul_assoc, h2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem corner_block_action_invariant (y : B.Mat k ρ) (x : U.RC k p ρ) (v : Fin (2 * ρ + k + 1) → ℂ) (hy : yᴴ * Hpk k ρ * y = Hpk k ρ)
     (hv : y *ᵥ v = v) :
@@ -292,13 +292,13 @@ theorem corner_block_action_invariant (y : B.Mat k ρ) (x : U.RC k p ρ) (v : Fi
   rw [h1, Matrix.conjTranspose_mul, Matrix.neg_mulVec, Matrix.neg_mulVec, ← Matrix.mul_assoc, h2]
 
 /- English proof (translation)
-Introduce `k p ρ z' h' x hz hh`. Establish `hz0` using `inWb_liftVec (p := p) hz`. Apply `psi_of_ell` to reduce the goal to its premises. Rewrite using `[Ux3.rn_eq, Ux3.rn_eq, Formalism.FourierDecayAlt.P.PBH.ell_uni _ hz0, Formalism.FourierDecayAlt.P.PBH.ell_uni _ hz0]`. Distinguish the cases in `hp : 0 < p`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[dif_pos hp, dif_pos hp]`. Distinguish the cases in `hρ : 0 < ρ`. Rewrite using `[dif_pos hρ, dif_pos hρ]`. Establish `e` using `congrFun (corner_block_action_invariant h' x (bvec (eI k ρ ⟨0, hρ⟩)) hh.1 (hh.2.1 ⟨0, hρ⟩).1) ⟨p - 1, by omega⟩`. Establish `e2 : ∀ M : Matrix (Fin p) (Fin (2 * ρ + k + 1)) ℂ, M ⟨p - 1, by omega⟩ ⟨0, by omega⟩ = (M *ᵥ bvec (eI k ρ ⟨0, hρ⟩)) ⟨p - 1, by omega⟩`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `M`. Simplify using `only [bvec, Matrix.mulVec_single_one]`. Both sides reduce to the same expression. Conclude with `(e2 _).trans (e.trans (e2 _).symm)`. Rewrite using `[dif_neg hρ, dif_neg hρ]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlow : U.lowV k p ρ (liftVec k p ρ z') = z'`. Use function extensionality and compare the values at `q; simp only [U.lowV, liftVec]; rw [dif_pos (by omega)]; congr 1; ext; simp`. Rewrite using `[hlow]`. Conclude with `congrFun (corner_block_action_invariant h' x z' hh.1 hh.2.2) _`. Rewrite using `[dif_neg hp, dif_neg hp]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_right_action_comm : PsiRnAct := by
   intro k p ρ z' h' x hz hh

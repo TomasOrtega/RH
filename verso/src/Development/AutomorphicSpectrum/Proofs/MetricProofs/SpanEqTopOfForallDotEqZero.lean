@@ -12,13 +12,13 @@ open MvPolynomial ReciprocityTheory.AnForm.R ReciprocityTheory.AnForm.R.Jacobian
 variable {m : ℕ}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Take `⟨f, hf0, hle⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.mpr hne)`. Establish `hv : (fun j => f (fun k => if j = k then (1 : ℂ) else 0)) = 0`. Apply `hS` to reduce the goal to its premises. Introduce `w hw`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : f w = 0` using `LinearMap.mem_ker.mp (hle (Submodule.subset_span hw))`. Rewrite `h1` using `[LinearMap.pi_apply_eq_sum_univ f w]`. Use `Eq.trans ?_ h1` and prove the remaining obligations. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul, mul_comm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `hf0` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Rewrite using `[LinearMap.pi_apply_eq_sum_univ f x, LinearMap.zero_apply]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrFun hv j` as an intermediate fact. Simplify using `only [Pi.zero_apply] at this`. Rewrite using `[this, smul_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem span_eq_top_of_forall_dot_eq_zero (S : Set (Fin m → ℂ))
     (hS : ∀ v : Fin m → ℂ, (∀ w ∈ S, ∑ j, v j * w j = 0) → v = 0) :
@@ -43,7 +43,7 @@ theorem span_eq_top_of_forall_dot_eq_zero (S : Set (Fin m → ℂ))
   rw [this, smul_zero]
 
 /- English proof (translation)
-Establish `h` using `hJ (ReciprocityTheory.AnForm.R.JacobianCriterionAlt.taylor t a)`. Rewrite `h` using `[h0, map_zero, sub_zero]`. Establish `h2` using `J.sub_mem ha h`. Rewrite `h2` using `[sub_sub_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem lin_mem_of_eval_eq_zero (t : Fin m → ℂ) (J : Ideal (MvPolynomial (Fin m) ℂ))
     (hJ : ptI t ^ 2 ≤ J) {a : MvPolynomial (Fin m) ℂ} (ha : a ∈ J) (h0 : eval t a = 0) :
@@ -54,15 +54,13 @@ theorem lin_mem_of_eval_eq_zero (t : Fin m → ℂ) (J : Ideal (MvPolynomial (Fi
   rwa [sub_sub_cancel] at h2
 
 /- English proof (translation)
-Set `φ : (Fin m → ℂ) →ₗ[ℂ] MvPolynomial (Fin m) ℂ` to `{ toFun := fun v => ∑ i, C (v i) * (X i - C (t i)) map_add' := fun v w => by`. Simplify using `only [Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`. Use the proof step `map_smul' := fun c v => by`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul, RingHom.id_apply, Finset.smul_sum, MvPolynomial.smul_eq_C_mul, mul_assoc] }`. Establish `hφ : ∀ v, φ v = ∑ i, C (v i) * (X i - C (t i))` using `fun v => rfl`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hspan : Submodule.span ℂ (gradP t '' A) ≤ Submodule.comap φ (J.restrictScalars ℂ)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, haA, rfl⟩`. Use `show φ (gradP t a) ∈ J`. Rewrite using `[hφ]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `lin_mem_of_eval_eq_zero t J hJ (hAJ haA) (hA0 a haA)`. Establish `key : ∀ i, X i - C (t i) ∈ J`. Introduce `i`. Establish `hmem : (Pi.single i 1 : Fin m → ℂ) ∈ Submodule.comap φ (J.restrictScalars ℂ)` using `hspan (by rw [hA]; exact Submodule.mem_top)`. Establish `h2 : φ (Pi.single i 1) ∈ J` using `hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h2` using `[hφ, Finset.sum_eq_single i]`. Simplify using `using h2`. Introduce `j _ hji`. Rewrite using `[Pi.single_eq_of_ne hji, map_zero, zero_mul]`. Introduce `h`.
-
-Conclude with `absurd (Finset.mem_univ i) h`. Rewrite using `[ReciprocityTheory.AnForm.R.JacobianCriterionAlt.ptIdeal_eq_span, Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `key i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem ptI_le_of_span_grad_eq_top (t : Fin m → ℂ) (J : Ideal (MvPolynomial (Fin m) ℂ))
     (hJ : ptI t ^ 2 ≤ J) (A : Set (MvPolynomial (Fin m) ℂ)) (hAJ : A ⊆ J)
@@ -98,11 +96,11 @@ theorem ptI_le_of_span_grad_eq_top (t : Fin m → ℂ) (J : Ideal (MvPolynomial 
   exact key i
 
 /- English proof (translation)
-Proceed by induction on `a using MvPolynomial.induction_on`. Use `next c =>`. Rewrite using `[ReciprocityTheory.AnForm.R.JacobianCriterionAlt.grad_C, pderiv_C, map_zero, Pi.zero_apply]`. Use `next p q hp hq =>`. Rewrite using `[ReciprocityTheory.AnForm.R.JacobianCriterionAlt.grad_add, Pi.add_apply, hp, hq, map_add, map_add]`.
+Proceed by induction. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `next p i hp =>`. Establish `hX : gradP t (X i) = Pi.single i 1`. Establish `h2 : (X i : MvPolynomial (Fin m) ℂ) = (X i - C (t i)) + C (t i)` using `by ring`. Rewrite using `[h2, ReciprocityTheory.AnForm.R.JacobianCriterionAlt.grad_add, ReciprocityTheory.AnForm.R.JacobianCriterionAlt.grad_lin, ReciprocityTheory.AnForm.R.JacobianCriterionAlt.grad_C, add_zero]`. Rewrite using `[ReciprocityTheory.AnForm.R.JacobianCriterionAlt.grad_mul, Pi.add_apply, Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul, hp, hX, Derivation.leibniz, pderiv_X, smul_eq_mul, smul_eq_mul, map_add, map_mul, map_mul, eval_X]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hij, Ne.symm hij]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem gradP_eq_eval_pderiv (t : Fin m → ℂ) (a : MvPolynomial (Fin m) ℂ) (j : Fin m) :
     gradP t a j = eval t (pderiv j a) := by
@@ -125,33 +123,27 @@ private theorem gradP_eq_eval_pderiv (t : Fin m → ℂ) (a : MvPolynomial (Fin 
     · simp [Pi.single_apply, hij, Ne.symm hij]
 
 /- English proof (translation)
-Take `⟨hloc, hnoeth⟩` from `locRing_isLocalRing_isNoetherian I t hI`. Establish `hpt : ptI t = ptIdeal t`. Use extensionality with `a`. Rewrite using `[ReciprocityTheory.AnForm.R.JacobianCriterionAlt.mem_ptIdeal]`. Unfold `ptIdeal`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[RingHom.mem_ker]`. Establish `hmemPt : ∀ a, eval t a = 0 → a ∈ ptIdeal t` using `fun a ha => by`. Rewrite using `[← hpt, ReciprocityTheory.AnForm.R.JacobianCriterionAlt.mem_ptIdeal]`. Conclude with `ha`. Establish `hφ : ∀ a, algebraMap (MvPolynomial (Fin m) ℂ) (locRing I t) a = Ideal.Quotient.mk (Ideal.map (algebraMap (MvPolynomial (Fin m) ℂ) (locPt t)) I) (algebraMap (MvPolynomial (Fin m) ℂ) (locPt t) a)` using `fun a => rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI0 : ∀ a ∈ I, algebraMap (MvPolynomial (Fin m) ℂ) (locRing I t) a = 0`. Introduce `a ha`. Rewrite using `[hφ, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_map_of_mem _ ha`. Use `set N : Ideal (locRing I t) := Ideal.span (Set.range fun l => algebraMap _ (locRing I t) (r l)) with hN`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `set M : Ideal (locRing I t) := Ideal.map (algebraMap _ (locRing I t)) (ptIdeal t) with hM`. Establish `hNM : N ≤ M`. Rewrite using `[hN, Ideal.span_le]`. Introduce and unpack `_ ⟨l, rfl⟩`. Conclude with `Ideal.mem_map_of_mem _ (hmemPt _ (hr l))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `key : ptI t ≤ Ideal.comap (algebraMap _ (locRing I t)) (N ⊔ M ^ 2)`. Use `ptI_le_of_span_grad_eq_top t _ ?_ ((I : Set (MvPolynomial (Fin m) ℂ)) ∪ Set.range r) ?_ ?_ ?_` and prove the remaining obligations. Introduce `a ha`. Rewrite using `[Ideal.mem_comap]`. Apply `Ideal.mem_sup_right` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hM, ← Ideal.map_pow]`. Conclude with `Ideal.mem_map_of_mem _ (by rw [← hpt]; exact ha)`. Introduce and unpack `a (ha | ⟨l, rfl⟩)`. Rewrite using `[SetLike.mem_coe, Ideal.mem_comap, hI0 a ha]`. Conclude with `Submodule.zero_mem _`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[SetLike.mem_coe, Ideal.mem_comap]`. Conclude with `Ideal.mem_sup_left (Ideal.subset_span ⟨l, rfl⟩)`. Introduce and unpack `a (ha | ⟨l, rfl⟩)`. Conclude with `hI a ha`. Conclude with `hr l`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Apply `span_eq_top_of_forall_dot_eq_zero` to reduce the goal to its premises. Introduce `v hvS`. Apply `hv v` to reduce the goal to its premises. Introduce `h hh`. Establish `h3` using `hvS _ ⟨h, Or.inl hh, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify `h3` using `only [gradP_eq_eval_pderiv]`. Introduce `l`. Establish `h3` using `hvS _ ⟨r l, Or.inr ⟨l, rfl⟩, rfl⟩`. Simplify `h3` using `only [gradP_eq_eval_pderiv]`. Establish `hMle : M ≤ N ⊔ M ^ 2` using `Ideal.map_le_iff_le_comap.mpr (hpt.symm.le.trans key)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI := hloc`. Use `haveI := hnoeth`. Establish `hMtop : M ≠ ⊤` using `by haveI : (ptIdeal t).IsPrime := ptIdeal_isPrime t`. Introduce `htop`. Establish `hmax : Ideal.map (algebraMap (MvPolynomial (Fin m) ℂ) (locPt t)) (ptIdeal t) = IsLocalRing.maximalIdeal (Localization.AtPrime (ptIdeal t))` using `Localization.AtPrime.map_eq_maximalIdeal`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hMeq : M = Ideal.map (Ideal.Quotient.mk (Ideal.map (algebraMap (MvPolynomial (Fin m) ℂ) (locPt t)) I)) (Ideal.map (algebraMap (MvPolynomial (Fin m) ℂ) (locPt t)) (ptIdeal t))`. Rewrite using `[hM, Ideal.map_map]`. Conclude with `congrArg (fun f => Ideal.map f (ptIdeal t)) (RingHom.ext fun a => rfl)`. Establish `hc` using `Ideal.comap_map_of_surjective (Ideal.Quotient.mk (Ideal.map (algebraMap (MvPolynomial (Fin m) ℂ) (locPt t)) I)) Ideal.Quotient.mk_surjective (Ideal.map (algebraMap (MvPolynomial (Fin m) ℂ) (locPt t)) (ptIdeal t))`. Rewrite `hc` using `[← hMeq, htop, Ideal.comap_top]`.
-
-Establish `hb : Ideal.comap (Ideal.Quotient.mk (Ideal.map (algebraMap (MvPolynomial (Fin m) ℂ) (locPt t)) I)) ⊥ ≤ Ideal.map (algebraMap (MvPolynomial (Fin m) ℂ) (locPt t)) (ptIdeal t)`. Introduce `x hx`. Rewrite `hx` using `[Ideal.mem_comap, Ideal.mem_bot, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.map_mono (fun a ha => hmemPt a (hI a ha)) hx`. Rewrite `hc` using `[sup_eq_left.mpr hb, hmax]`.
-
-Conclude with `(IsLocalRing.maximalIdeal.isMaximal (Localization.AtPrime (ptIdeal t))).ne_top hc.symm`. Establish `hMj : M ≤ Ideal.jacobson ⊥`. Rewrite using `[IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top]`. Conclude with `IsLocalRing.le_maximalIdeal hMtop`. Establish `hle : M ≤ N`.
-
-Use `Submodule.le_of_le_smul_of_le_jacobson_bot (IsNoetherian.noetherian M) hMj ?_` and prove the remaining obligations. Rewrite using `[Ideal.smul_eq_mul, ← pow_two]`. Conclude with `hMle`. Conclude with `le_antisymm hNM hle`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_algebraMap_eq_map_ptIdeal (e : ℕ) (I : Ideal (MvPolynomial (Fin m) ℂ)) (t : Fin m → ℂ)
     (r : Fin e → MvPolynomial (Fin m) ℂ) (hI : ∀ h ∈ I, eval t h = 0) (hr : ∀ l, eval t (r l) = 0)

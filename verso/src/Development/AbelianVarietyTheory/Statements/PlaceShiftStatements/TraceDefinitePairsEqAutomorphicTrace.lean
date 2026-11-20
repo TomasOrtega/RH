@@ -31,9 +31,9 @@ def heckeTrace (ι : Γ →* H) (K : Subgroup H) (ξ : Representation ℂ Γ V) 
   if h : ∃ T, IsHecke ι K ξ F T then LinearMap.trace ℂ (forms ι K ξ) h.choose else 0
 
 /- English proof (translation)
-Establish `h0 : IsHecke ι K ξ (fun _ => 0) 0` using `fun φ g => by simp`. Establish `h : ∃ T, IsHecke ι K ξ (fun _ => 0) T` using `⟨0, h0⟩`. Establish `hT : h.choose = 0`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `φ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Rewrite using `[h.choose_spec φ g]`. Simplify using the standard rewrite rules. Rewrite using `[heckeTrace, dif_pos h, hT, map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem heckeTrace_zero (ι : Γ →* H) (K : Subgroup H) (ξ : Representation ℂ Γ V) :
     heckeTrace ι K ξ (fun _ => 0) = 0 := by
@@ -111,9 +111,9 @@ namespace HeckeTraceExample
 open GlobalTheory.LKTrip.Example GlobalTheory.LKMid.Example GlobalTheory.LKDef.Example
 
 /- English proof (translation)
-Establish `hr : Module.finrank G.F G.C = 1` using `by rw [G.rankC, hn]; rfl`. Establish `htop : (⊥ : Subalgebra G.F G.C) = ⊤` using `Subalgebra.bot_eq_top_of_finrank_eq_one hr`. Establish `hx : x ∈ (⊥ : Subalgebra G.F G.C)` using `by rw [htop]; exact Algebra.mem_top`. Take `⟨a, rfl⟩` from `Algebra.mem_bot.1 hx`. Rewrite using `[RegIrr, minpoly.eq_X_sub_C, hn]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨Polynomial.natDegree_X_sub_C _, Polynomial.separable_X_sub_C, Polynomial.irreducible_X_sub_C _⟩`.
+Supply the required witnesses or components.
 -/
 theorem regIrr_of_n_one (G : HTGroup p) (hn : G.n = 1) (x : G.C) : RegIrr G x := by
   have hr : Module.finrank G.F G.C = 1 := by rw [G.rankC, hn]; rfl
@@ -126,14 +126,14 @@ theorem regIrr_of_n_one (G : HTGroup p) (hn : G.n = 1) (x : G.C) : RegIrr G x :=
 def exDF : DForm (ex 1 one_ne_zero) := DForm.ofDPair exD
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Quot.mk _ exDF⟩`.
+Supply the required witnesses or components.
 -/
 theorem dFCls_nonempty : Nonempty (DFCls (ex 1 one_ne_zero)) := ⟨Quot.mk _ exDF⟩
 
 /- English proof (translation)
-Introduce `k hk k' hk' g`. Establish `: k * g * k' ∈ K ↔ g ∈ K`. Rewrite using `[K.mul_mem_cancel_right hk', K.mul_mem_cancel_left hk]`. Distinguish the cases in `hg : g ∈ K`. Simplify using `[Set.indicator_apply, hg, this.2 hg]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Establish `h2 : k * g * k' ∉ K` using `fun h => hg (this.1 h)`. Simplify using `[Set.indicator_apply, hg, h2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem indicator_bi {H : Type} [Group H] (K : Subgroup H) :
     ∀ k ∈ K, ∀ k' ∈ K, ∀ g, Set.indicator (K : Set H) (1 : H → ℂ) (k * g * k') = Set.indicator (K : Set H) 1 g := by
@@ -146,9 +146,9 @@ theorem indicator_bi {H : Type} [Group H] (K : Subgroup H) :
     simp [Set.indicator_apply, hg, h2]
 
 /- English proof (translation)
-Take `⟨L⟩` from `GlobalTheory.LKTrip.LevelExists.level_exists 5 (ex 1 one_ne_zero)`. Use `⟨a_ex_one, fun B y _ _ => ?_, L, _, _, _, Set.indicator_of_mem (Subgroup.one_mem _) _, Set.indicator_of_mem (Subgroup.one_mem _) _, isTest_indicator _ _ (by simp), indicator_bi _, isTest_indicator _ _ ?_, indicator_bi _, fun B x t hx y hy => absurd (regIrr_of_n_one _ rfl _) hy, d …` and prove the remaining obligations. Simplify using `[Representation.trivial]`. Introduce and unpack `_ ⟨k, hk, rfl⟩`. Rewrite using `[GlobalTheory.LKCx.sigG_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hk`.
+A detailed English derivation is pending.
 -/
 theorem hyps_ex :
     (ex 1 one_ne_zero).a = 1 ∧
@@ -180,9 +180,9 @@ theorem hyps_ex :
     rw [GlobalTheory.LKCx.sigG_one]; exact hk
 
 /- English proof (translation)
-Establish `h1 : dSumIrr G wt Kf (fun _ => 0) 1 K' f' = 0`. Simplify using `[dSumIrr, DPair.term, DPair.termAt, GlobalTheory.LKCount.pointSum]`. Establish `h2 : dTrace G ξ Kf (fun _ => 0) K' f' = 0`. Simplify using `only [dTrace, DForm.trace, zero_mul]`. Simplify using `[HeckeTraceForms.heckeTrace_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, h2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 example (G : HTGroup p) {V : Type} [AddCommGroup V] [Module ℂ V] (ξ : Representation ℂ (G.Cˣ × ℚˣ) V)
     (wt : Polynomial G.F → ℂ) (Kf : Subgroup G.GAf) (K' : Subgroup (Gr G 1)) (f' : Gr G 1 → ℂ) :

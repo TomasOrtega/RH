@@ -13,11 +13,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.GodementH.MinInf
 
 /- English proof (translation)
-Establish `h1 : Uᴴ * U = 1` using `mul_eq_one_comm.1 hU`. Use `set T := Matrix.toEuclideanCLM (n := ι) (𝕜 := ℂ) U with hT`. Establish `h2 : star T * T = 1`. Rewrite using `[hT, ← map_star, ← map_mul, Matrix.star_eq_conjTranspose, h1, map_one]`. Establish `h3 : ‖T‖ * ‖T‖ ≤ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← CStarRing.norm_star_mul_self, h2]`. Conclude with `ContinuousLinearMap.norm_id_le`. Establish `h4 : ‖T‖ ≤ 1`. Assume the negation of the conclusion as `h`. Establish `h' : 1 < ‖T‖` using `not_le.1 h`.
-
-Use the polynomial consequences of the given equalities and inequalities. Conclude with `h4` after adjusting the coercions.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem opNorm_le_one_of_unitary {ι : Type} [Fintype ι] [DecidableEq ι] (U : Matrix ι ι ℂ) (hU : U * Uᴴ = 1) :
     opNorm U ≤ 1 := by
@@ -35,9 +33,9 @@ theorem opNorm_le_one_of_unitary {ι : Type} [Fintype ι] [DecidableEq ι] (U : 
   exact_mod_cast h4
 
 /- English proof (translation)
-Unfold `opNorm`. Establish `h1 : (Matrix.toEuclideanCLM (n` using `ι) (𝕜 := ℂ) A (EuclideanSpace.single j 1)) i = A i j := by`. Express the relevant statement in the definitionally equal form `∑ d, A i d * (EuclideanSpace.single j (1 : ℂ) : EuclideanSpace ℂ ι) d = A i j`. Simplify using the standard rewrite rules. Establish `h2` using `ContinuousLinearMap.le_opNNNorm (Matrix.toEuclideanCLM (n := ι) (𝕜 := ℂ) A) (EuclideanSpace.single j 1)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h2` using `[PiLp.nnnorm_single, nnnorm_one, mul_one]`. Rewrite using `[← h1]`. Conclude with `(PiLp.nnnorm_apply_le _ i).trans h2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nnnorm_entry_le {ι : Type} [Fintype ι] [DecidableEq ι] (A : Matrix ι ι ℂ) (i j : ι) :
     ‖A i j‖₊ ≤ opNorm A := by
@@ -51,7 +49,7 @@ theorem nnnorm_entry_le {ι : Type} [Fintype ι] [DecidableEq ι] (A : Matrix ι
   exact (PiLp.nnnorm_apply_le _ i).trans h2
 
 /- English proof (translation)
-Establish `h1` using `Matrix.det_le (A := M) (abv := NormedField.toAbsoluteValue ℂ) (x := (c : ℝ)) (fun i j => NNReal.coe_le_coe.2 (h i j))`. Simplify using `only [Fintype.card_fin, nsmul_eq_mul] at h1`. Conclude with `h1` after adjusting the coercions.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nnnorm_det_le {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (c : ℝ≥0) (h : ∀ i j, ‖M i j‖₊ ≤ c) :
     ‖M.det‖₊ ≤ (n.factorial : ℝ≥0) * c ^ n := by
@@ -61,7 +59,7 @@ theorem nnnorm_det_le {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (c : ℝ≥0) (
   exact_mod_cast h1
 
 /- English proof (translation)
-Establish `hAU : opNorm (A.map φ * κ.map φ) ≤ c` using `(opNorm_mul_le _ _).trans ((mul_le_of_le_one_right' (opNorm_le_one_of_unitary _ hκ)).trans hA)`. Establish `hdet : φ ((A * κ).submatrix f e).det = ((A.map φ * κ.map φ).submatrix f e).det`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, ← Matrix.submatrix_map, Matrix.map_mul]`. Rewrite using `[hdet]`. Conclude with `nnnorm_det_le _ c fun i j => (nnnorm_entry_le (A.map φ * κ.map φ) (f i) (e j)).trans hAU`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minor_le {R : Type} [CommRing R] (φ : R →+* ℂ) {n : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι]
     (A κ : Matrix ι ι R) (c : ℝ≥0) (hA : opNorm (A.map φ) ≤ c) (hκ : κ.map φ * (κ.map φ)ᴴ = 1) (f e : Fin n → ι) :
@@ -74,7 +72,7 @@ theorem minor_le {R : Type} [CommRing R] (φ : R →+* ℂ) {n : ℕ} {ι : Type
   exact nnnorm_det_le _ c fun i j => (nnnorm_entry_le (A.map φ * κ.map φ) (f i) (e j)).trans hAU
 
 /- English proof (translation)
-Establish `e : X.1.map (piInf τ) = ((Formalism.UG.bc (compInf F E w) X).1).map (infEmb τ)`. Use extensionality with `i j`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `((normInf_le_iff F w).1 le_rfl τ).trans (le_htOf (normInf F w) (Formalism.UG.bc (compInf F E w) X))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem opNorm_le_htInf (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (ι : Type) [Fintype ι] [DecidableEq ι] (w : InfinitePlace F) (τ : EmbOver E w) (X : GL ι (AE F E)) :
@@ -86,7 +84,7 @@ theorem opNorm_le_htInf (F E : Type) [Field F] [NumberField F] [Field E] [Number
   exact ((normInf_le_iff F w).1 le_rfl τ).trans (le_htOf (normInf F w) (Formalism.UG.bc (compInf F E w) X))
 
 /- English proof (translation)
-The claim follows from `minor_le (piInf τ) X.1 κ _ (opNorm_le_htInf F E ι w τ X) hκ f e`.
+A detailed English derivation is pending.
 -/
 theorem minor_le_htInf (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ)
     (ι : Type) [Fintype ι] [DecidableEq ι] (w : InfinitePlace F) (τ : EmbOver E w) (X : GL ι (AE F E))

@@ -6,7 +6,7 @@ open NumberField
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Grid.isFinVec_of_isCosetVec | exact GlobalTheory.Grid.isFinVec_of_isCosetVec | (intros; apply GlobalTheory.Grid.isFinVec_of_isCosetVec <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.isFiniteDatum_of_homLatticeCoset_selfDual : ∀ {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {ε : Bool} {S T : GlobalTheory.Grid.Node D} {e : AE D}
     {P : Finset (Pl D.host.E)} {I : Ideal (𝓞 D.host.E)} (c : GlobalTheory.Grid.Coset S T I) {f₀ f : WO S.V T.V → ℂ},

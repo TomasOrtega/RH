@@ -10,19 +10,17 @@ open ValuativeRel Matrix GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitW
 namespace GlobalTheory.RecT
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.geometricLemma_of_filtration GlobalTheory.bernsteinZelevinskyFiniteness_holds GlobalTheory.geometricLemmaFiltration_holds`.
+A detailed English derivation is pending.
 -/
 theorem geometricLemma_holds : GlobalTheory.Published.GeometricLemma :=
   GlobalTheory.geometricLemma_of_filtration GlobalTheory.bernsteinZelevinskyFiniteness_holds GlobalTheory.geometricLemmaFiltration_holds
 
 /- English proof (translation)
-Introduce `k _ _ _ _ t y x hd hsq`. Establish `hG` using `geometricLemma_holds`. Establish `hBZ` using `GlobalTheory.bernsteinZelevinskyFiniteness_holds`. Use `choose s hs using fun i => GlobalTheory.CompanionTheory.Hypotheses₂.TD.exists_hasSupport hBZ hG (y i)`. Establish `hx : HasSupport x.rep (∑ i, s i)` using `GlobalTheory.CompanionTheory.Hypotheses₂.TD.hasSupport_of_isSubquotient_prodIrr hs x.2.rep.irr hsq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `down : ∀ P : IrrGL k → Prop, (∃ u, HasSupport x.rep u ∧ ∀ z ∈ u, P z) → ∀ i, ∃ u, HasSupport (y i).rep u ∧ ∀ z ∈ u, P z`. Introduce and unpack `P ⟨u, hu, hP⟩ i`. Use `GlobalTheory.CompanionTheory.Hypotheses₂.TD.hasSupport_unique hG hBZ hu hx` as an intermediate fact. Conclude with `⟨s i, hs i, fun z hz => hP z (this ▸ Multiset.mem_sum.2 ⟨i, Finset.mem_univ _, hz⟩)⟩`. Establish `up : ∀ P : IrrGL k → Prop, (∀ i, ∃ u, HasSupport (y i).rep u ∧ ∀ z ∈ u, P z) → ∃ u, HasSupport x.rep u ∧ ∀ z ∈ u, P z`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `P h`. Use `choose u hu hP using h`. Use `⟨∑ i, u i, GlobalTheory.CompanionTheory.Hypotheses₂.TD.hasSupport_of_isSubquotient_prodIrr hu x.2.rep.irr hsq, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨i, -, hz⟩` from `Multiset.mem_sum.1 hz`. Conclude with `hP i z hz`.
-
-Conclude with `⟨down _, down _, up _, up _⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem good_toral_of_isSubquotient_prodIrr : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (t : ℕ) (y : Fin t → IrrGL k) (x : IrrGL k) (hd : ∑ i, (y i).1 = x.1),

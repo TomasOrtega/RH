@@ -25,21 +25,21 @@ open Formalism.BasicNotions Formalism.MainNotions NumberField IsDedekindDomain F
 open GlobalTheory.Mem.Chr (finPartI finPartI_eq_self unitIdl)
 
 /- English proof (translation)
-Use `letI := D.host.cmStar`. Establish `hcm : IsCMField D.host.E` using `D.host.isCMField_hostE`. Introduce `i hi`. Establish `hun : (C.mu0 ⟨i, hi⟩ * ξ).IsUnitary` using `fun x => by`. Establish `e : (C.mu0 ⟨i, hi⟩ * ξ).1 x = (C.mu0 ⟨i, hi⟩).1 x * ξ.1 x` using `rfl`.
+Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, Units.val_mul, norm_mul, (C.isMu0 ⟨i, hi⟩).unitary x, CharModel.isUnitary_of_orderDvd hn hord x, one_mul]`. Use `⟨fun k hk => ?_, ?_⟩` and prove the remaining obligations. Take `⟨a, ha, rfl⟩` from `(Dt.UO_eq k).1 hk`. Take `⟨m, hm, hu⟩` from `GlobalTheory.UnUnitCmp.Val.finUnit_pow _ hun`. Use `⟨m, hm, Units.ext ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← CharModel.eDt_finPart Dt a, h ⟨i, hi⟩ _ (CharModel.isFin_finPart a), Units.val_pow_eq_pow_val]`. Conclude with `hu _ (CharModel.isFin_finPart a) ha`. Use `choose e he using fun τ => (D.hcW u τ).e_int ⟨i, hi⟩`. Use `⟨e, fun τ => (he τ).symm, fun z => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `GlobalTheory.Mem.Col2.exists_eq_div_conj D.host z`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨m, hm, hinf⟩` from `(C.isMu0 ⟨i, hi⟩).inf`. Rewrite using `[← Dt.rat k z hk, ← CharModel.eDt_finPart Dt, h ⟨i, hi⟩ _ (CharModel.isFin_finPart _), GlobalTheory.Mem.Chr.DetGroupModel.fin_diag, HChar.inf_mul, GlobalTheory.TypeValues.inf_eq_one _ hn hord, mul_one, Units.val_inv_eq_inv_val, hinf k, ← Finset.prod_inv_distrib, ← D.eTau.prod_com …`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `hme : m (D.eTau τ) = 2 * -e τ`. Establish `h1` using `hm (D.eTau τ)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : eExp D ⟨i, hi⟩ (D.eTau τ) = e τ`. Rewrite using `[← he τ, D.hcW_e]`. Simplify using `[eExp]`. Simplify using `only [h2] at h1`. Conclude with `h1` after adjusting the coercions.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `congrArg (embPsi D.host (D.eTau τ)) hk`. Rewrite `h1` using `[map_mul, GlobalTheory.Mem.Chr.DetGroupModel.emb_conj]`. Establish `h0 : embPsi D.host (D.eTau τ) (k : D.host.E) ≠ 0` using `by simp`. Use `show _ = embPsi D.host (D.eTau τ) z.1 ^ e τ`. Generalize the expression as in `embPsi D.host (D.eTau τ) (k : D.host.E) = a at *`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `embPsi D.host (D.eTau τ) z.1 = b at *`. Establish `hn' : ((‖a‖ : ℝ) : ℂ) ≠ 0` using `by simpa using h0`. Establish `h2 : a * star a = ((‖a‖ : ℝ) : ℂ) ^ 2`. Rewrite using `[Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Both sides reduce to the same expression. Establish `h3 : (a / ((‖a‖ : ℝ) : ℂ)) ^ (2 : ℤ) = b`. Rewrite using `[zpow_ofNat, div_pow, div_eq_iff (pow_ne_zero _ hn'), ← h2]`. Take the linear combination `(-a) * h1`. Rewrite using `[hme, zpow_mul, h3, zpow_neg, inv_inv]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mtType_of_hecke {D : D7} {C : CharFrame D} (Dt : DtTied D C) (ξ : HChar D.host.E) {n : ℕ} (hn : 0 < n) (hord : ξ.OrderDvd n)
     (mt : ℕ → D.Dt →* ℂˣ) (h : ∀ (j : Fin D.R.m) a, IsFinIdele a → mt (j.1 + 1) (Dt.eDt a) = (C.mu0 j * ξ).1 a) (u : D.what₂.Word) :
@@ -96,11 +96,9 @@ open Formalism.FrobeniusOrbits Neutral.B1 ReciprocityTheory.Neutral.Bridge.HCFR 
 variable {B : Base} {X : PreX B.toPre} (I : TC B X)
 
 /- English proof (translation)
-Take `⟨idl, h⟩` from `GlobalTheory.Mem.NormOneIdeal.pinned_of_finer (I.rec7 l Z) I.SQ (MulEquiv.refl _) (by show UOQ B.host I.SQ = _`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨x, h, rfl⟩`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `hy)`. Use the proof step `(fun z => rfl)`. Use the proof step `(fun N L L' t ht => by`. Conclude with `(trueDtPackQ_relDet I.SQ I.C N L L').trans ht)`.
-
-Conclude with `GL3Theta.powRatAll_of _ idl h (GlobalTheory.KernelScalarUnit.normOne_pow _)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem powRatAll_true (l : I.Laws) (Z : TC.Later B (I.cols l)) : GL3Theta.PowRatAll (I.rec7 l Z) := by
   obtain ⟨idl, h⟩ := GlobalTheory.Mem.NormOneIdeal.pinned_of_finer (I.rec7 l Z) I.SQ (MulEquiv.refl _)
@@ -118,11 +116,11 @@ theorem powRatAll_true (l : I.Laws) (Z : TC.Later B (I.cols l)) : GL3Theta.PowRa
   exact GL3Theta.powRatAll_of _ idl h (GlobalTheory.KernelScalarUnit.normOne_pow _)
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `TC.dtTied_true I hok hp l Z`. Establish `ht : IsOfFinOrder (I.tup a : Chr B.fields.F B.fields.E B.fields.K)` using `(Subgroup.mem_inf.1 (Subgroup.mem_inf.1 (Subgroup.mem_inf.1 (Subgroup.mem_inf.1 (I.tup a).2).1).1).1).2`. Take `⟨n, hn, hpow⟩` from `isOfFinOrder_iff_pow_eq_one.1 ht`. Establish `hk : KDq B.host I.SQ ≤ ((I.xi a).1.comp (finPartI B.host.E)).ker` using `(KDq_anti B.host (I.Q_subset_SQ a)).trans ((GlobalTheory.Mem.LevTwist.levOk_twists B X I hok).2.2 a).1`. Use `mtType_of_hecke T (I.xi a) hn ((hok.xi_reads a).orderDvd hpow) _ (fun j x hx => ?_) u` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm : 1 ≤ j.1 + 1 ∧ j.1 + 1 ≤ B.R.m` using `⟨by omega, j.2⟩`. Establish `e1 : (O u a).mt (j.1 + 1) = (I.rec7 l Z).muTil (j.1 + 1) * (show (I.rec7 l Z).Dt →* ℂˣ from tildeQ B.host I.SQ (I.xi a))`. Rewrite using `[hO.mt u a]`. Conclude with `if_pos hm`. Rewrite using `[e1, MonoidHom.mul_apply, T.muTil_eq j x hx, hT x]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : (tildeQ B.host I.SQ (I.xi a)) (QuotientGroup.mk x) = (I.xi a).1 x` using `(tildeQ_mk B.host I.SQ hk x).trans (congrArg _ (finPartI_eq_self hx))`. Conclude with `congrArg _ e2`.
+A detailed English derivation is pending.
 -/
 theorem mtType_std (hok : I.Ok) (hp : TC.Pins B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) {Qp : I.ι → Finset ℕ}
     {O : ∀ u a, GL3Theta.LiftObj (I.rec7 l Z) ((I.rec7 l Z).chTw u a)} (hO : I.StdO l Z Qp O) (u : (I.rec7 l Z).what₂.Word) (a : (I.rec7 l Z).what₂.Tup) :
@@ -144,9 +142,9 @@ theorem mtType_std (hok : I.Ok) (hp : TC.Pins B X) (l : I.Laws) (Z : TC.Later B 
   exact congrArg _ e2
 
 /- English proof (translation)
-Establish `h3` using `GlobalTheory.KerJ.RhoThree.rhoThreeOf_of_mtType _ u ((I.rec7 l Z).chTw u a) (O u a).mt (mtType_std I hok hp l Z hO u a)`. Establish `hq` using `powRatAll_true I l Z`. Introduce `i hi`. Use `⟨fun c => ?_, fun c' => ?_⟩` and prove the remaining obligations. Take `⟨h, z, hz⟩` from `hq ((O u a).dt i c)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `((h3 i hi).1 _ h z hz).1.1`. Take `⟨h, z, hz⟩` from `hq ((O u a).dt (i + 1) c')`. Conclude with `((h3 i hi).1 _ h z hz).2.1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rhoAlg_std (hok : I.Ok) (hp : TC.Pins B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) {Qp : I.ι → Finset ℕ}
     {O : ∀ u a, GL3Theta.LiftObj (I.rec7 l Z) ((I.rec7 l Z).chTw u a)} (hO : I.StdO l Z Qp O) (u : (I.rec7 l Z).what₂.Word) (a : (I.rec7 l Z).what₂.Tup) :
@@ -163,19 +161,17 @@ theorem rhoAlg_std (hok : I.Ok) (hp : TC.Pins B X) (l : I.Laws) (Z : TC.Later B 
 open Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.G in
 
 /- English proof (translation)
-Introduce `w hw u μ hl`. Take `⟨Pm, h1, h2, h3, h4⟩` from `hA w hw u μ hl`. Use `⟨Pm, h1, h2, h3, fun i hi c c' => ?_⟩` and prove the remaining obligations. Use `show thAtW P O Bs u μ w i c c' = _`. Unfold `thAtW`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `k j`. Unfold `adCoef`. Use `split_ifs with hk`. Use `set s := Formalism.MainNotions.TaylorLogMetric.lamC (P.lam w) ((O u μ).dgen k.1) with hs`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hs0 : s ≠ 0`. Introduce `h0`. Establish `hd` using `(hB u μ w (i + 1) hi c' k.1).1`. Use `haveI hne : Nonempty (Fin (D.R.N (i + 1))) := ⟨j.2.2⟩`. Rewrite `hd` using `[h4 (i + 1) hi c' k.1, ← hs, h0, _root_.inv_zero, zero_pow (by omega), zero_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hd Matrix.det_zero`. Establish `hdet : ((Pm i c k.1).map (tauEmb D (P.lam w) k.1)).det ≠ 0` using `(h1 i hi.le c k.1).1`. Establish `ht : s⁻¹ ^ i ≠ 0` using `pow_ne_zero _ (inv_ne_zero hs0)`. Establish `hinv : (s⁻¹ ^ i • (Pm i c k.1).map (tauEmb D (P.lam w) k.1))⁻¹ = (s⁻¹ ^ i)⁻¹ • ((Pm i c k.1).map (tauEmb D (P.lam w) k.1))⁻¹`. Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, mul_inv_cancel₀ ht, one_smul]`. Conclude with `Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 hdet)`. Rewrite using `[h4 (i + 1) hi c' k.1, h4 i hi.le c k.1, ← hs, hinv]`. Simplify using `only [Matrix.smul_apply, smul_eq_mul]`. Establish `e : (1 : ℂ_[D.what₂.places.resChar w]) * s * s⁻¹ ^ (i + 1) * (s⁻¹ ^ i)⁻¹ = 1`.
+Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[inv_pow, inv_pow, inv_inv, pow_succ]`. Clear the denominators using the available nonvanishing facts. Simplify using `only [show (kerEntC P O Bs h).lam w = P.lam w from rfl]`. Generalize the expression as in `((Pm (i + 1) c' k.1).map (tauEmb D (P.lam w) k.1)) k.2.1 j.2.2 = x`. Generalize the expression as in `((Pm i c k.1).map (tauEmb D (P.lam w) k.1))⁻¹ j.2.1 k.2.2 = y`.
-
-Take the linear combination `(x * y) * e`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem adaptedTh_kerEntC {D : D7} {P : Examples₂.EntPl D} {O : ∀ u μ, GL3Theta.LiftObj D (D.chTw u μ)} {Bs : PlaceMatrixFamily D} {Dx : DivX D} {Tw : TwForms D}
     (hB : BasOk P O Bs) (hA : AdaptedEnt P O Bs Dx) (h : KerEntHyp P O Bs Dx Tw) : AdaptedTh (kerEntC P O Bs h) O := by
@@ -216,9 +212,9 @@ theorem adaptedTh_kerEntC {D : D7} {P : Examples₂.EntPl D} {O : ∀ u μ, GL3T
 end GlobalTheory.Mem.Col2.KerEntTrue
 
 /- English proof (translation)
-Introduce `B X I hok hp l Z l0 Y O Pl hq hs hu hj`. Use `choose Pm h1 h2 h3 using AdaptedBases.exists_sys Pl O`. Establish `hU` using `AdaptedBases.dgenUnitAd Pl O`. Establish `hB : BasOk Pl O (fun u μ w i c τ => (Pm w u μ i c τ).map (Formalism.MainNotions.TaylorLogMetric.tauEmb _ (Pl.lam w) τ))` using `fun u μ w i hi c τ => h1 w u μ i hi c τ`. Establish `hC` using `GlobalTheory.T.toy_entPl_canOnto _ Pl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `GlobalTheory.T.kernelEntryHyp_of_trueColumnChoices I hok hp l Z l0 Y O Pl _ hq hs hB (fun u a w _ i _ c τ j k => GlobalTheory.KerRescale.tauEmb_mem Pl w τ (Pm w u a i c τ j k)) hu hj`. Conclude with `⟨GlobalTheory.KerRescale.kerEntR Pl O _ (GlobalTheory.KerRescale.adUnit Pl O) (GlobalTheory.KerRescale.norm_adUnit Pl O hU) h, rfl, ⟨fun u μ w _ => GlobalTheory.KerRescale.tieR Pl O _ _ _ hB hC h u μ w, fun u μ w _ => GlobalTheory.KerRescale.tieR_un Pl O _ _ _ hB hC h u μ (KerEnt …`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mem.Col2.TC.kerEnt_true : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (l0 : I.Law0 l) (Y : DivX (I.rec7 l Z)) (O : ∀ u a, GL3Theta.LiftObj (I.rec7 l Z) ((I.rec7 l Z).chTw u a)) (Pl : Examples₂.EntPl (I.rec7 l Z)), I.QpIs Y.Qp → I.StdO l Z Y.Qp O → (∀ u a i, i < B.R.m → UnfIsAll (O u a) i) → ColIn.JetsIn I → ∃ E : KerEnt (I.rec7 l Z) Y (I.tw l l0 Z), E.lam = Pl.lam ∧ EntOk E O := by
   intro B X I hok hp l Z l0 Y O Pl hq hs hu hj

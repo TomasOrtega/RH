@@ -20,17 +20,17 @@ variable {D : D7}
 instance factTypePrime (D : D7) (k : Fin 2) : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩
 
 /- English proof (translation)
-Establish `h0 : matHom V h ∈ HR (AF D.host.F) D.sp.cm.sig V.gram`. Set `h' : HR (AF D.host.F) D.sp.cm.sig V.gram` to `h`. Conclude with `h'.2`. Establish `h1` using `Formalism.UG.P.bc_mem _ (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig) (Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E)).toRingHom ?c1 _ _ h0`. Establish `h2` using `Formalism.UG.P.bc_mem _ (Formalism.UG.sigR D.sp.cm.sig (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F)) (swapAE D) ?c2 _ _ h1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `h2 using 1` and compare the differences between its conclusion and the goal. Use `case e'_5 => rfl`. Use `case e'_4 =>`. Unfold `UA Formalism.UG.UPts`. Use `congr 1`.
+Treat this case separately. Treat this case separately. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Treat this case separately.
 
-Use `case c2 =>`. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul a e => simp [swapAE, sigR, Formalism.UG.sigR]`. Consider the case `add x y hx hy => simp only [RingHom.comp_apply, map_add] at hx hy ⊢`. Rewrite using `[hx, hy]`. Use `case c1 =>`. Apply `RingHom.ext` to reduce the goal to its premises.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [sigR]`. Consider the case `add x y hx hy => simp only [RingHom.comp_apply, map_add] at hx hy ⊢`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx, hy]`.
+A detailed English derivation is pending.
 -/
 theorem finE_mem (V : HSp D) (h : GA D V) : finE V h ∈ UA D.sp.cm V.gram := by
   have h0 : matHom V h ∈ HR (AF D.host.F) D.sp.cm.sig V.gram := by
@@ -86,7 +86,7 @@ def eig {G M : Type} [Group G] [AddCommGroup M] [Module ℂ M] (ρ : Representat
   ⨅ g : P, LinearMap.ker (ρ g - χ g • LinearMap.id)
 
 /- English proof (translation)
-Simplify using `only [eig, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_eig {G M : Type} [Group G] [AddCommGroup M] [Module ℂ M] {ρ : Representation ℂ G M} {P : Subgroup G}
     {χ : P → ℂ} {x : M} : x ∈ eig ρ P χ ↔ ∀ g : P, ρ g x = χ g • x := by

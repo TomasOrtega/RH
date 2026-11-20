@@ -22,19 +22,19 @@ local instance (priority := high)  {F : Type} [Field F] [NumberField F] {κ : Ty
     MeasurableSpace (κ → AF F) := borel _
 local instance  {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] : BorelSpace (κ → AF F) := ⟨rfl⟩
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d ν hν Λ hΛ hinv`. Establish `hψ : IsStd d.B.ψ` using `d.ok.good.std`. Take `⟨τ, S0, S0', C, hop, hT⟩` from `_root_.PositivityTheory.SiegelWeilFormula.Tunit.T_chart_k d`. Distinguish the cases in `hC : C = 0`. Use `⟨0, fun Φ hΦ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0 : d.T Φ = 0` using `funext fun X => by rw [hT Φ hΦ X, hC, zero_mul]; rfl`. Rewrite using `[(_root_.PositivityTheory.SiegelWeilFormula.TBij_k.tBij F E σ d).2.2 Φ hΦ h0, map_zero, zero_mul]`. Establish `rhoS : ∀ w, ∀ φ ∈ schA F d.κ, S0 (d.dd.rho d.B.ψ w φ) = schr d.B.ψ (_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.c0 d τ w) (S0 φ)`. Introduce `w φ hφ`. Simplify using `only [Darboux.rho]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[hop.Heisenberg₂ _ _ hφ, LinearEquiv.symm_apply_apply]`. Establish `rhoS' : ∀ w, ∀ φ ∈ schA F d.κ, S0' (schr d.B.ψ (_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.c0 d τ w) φ) = d.dd.rho d.B.ψ w (S0' φ)`. Introduce `w φ hφ`. Establish `h1` using `rhoS w (S0' φ) (hop.pres' φ hφ)`. Rewrite `h1` using `[hop.right φ hφ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hm : d.dd.rho d.B.ψ w (S0' φ) ∈ schA F d.κ` using `GlobalTheory.HeisSchA.schr_mem_schA d.B.ψ hψ _ _ (hop.pres' φ hφ)`. Rewrite using `[← h1, hop.left _ hm]`. Take `⟨hμ, hint⟩` from `_root_.PositivityTheory.SiegelWeilFormula.KTunit.map_haar_k d τ ν hν`. Take `⟨c, hc⟩` from `translation_invariant_functional_haar d.B.ψ hψ d.κ (ν.map (_root_.PositivityTheory.SiegelWeilFormula.KTunit.cmap_k d τ)) hμ (Λ ∘ₗ S0') (hop.adm' Λ hΛ) (by`. Introduce `a φ hφ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e0` using `_root_.PositivityTheory.SiegelWeilFormula.TBij_k.Adp.coordinates_frame d τ (_root_.PositivityTheory.SiegelWeilFormula.KTunit.cinv_k d τ a)`. Establish `ea : (fun k => d.crd (_root_.PositivityTheory.SiegelWeilFormula.KTunit.cinv_k d τ a) (τ k)) = a` using `_root_.PositivityTheory.SiegelWeilFormula.KTunit.cmap_cinv_k d τ a`. Rewrite `e0` using `[ea]`. Rewrite using `[← schr_zero_right, ← e0, LinearMap.comp_apply, LinearMap.comp_apply, rhoS' _ φ hφ]`. Conclude with `hinv _ _ (hop.pres' φ hφ))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c / C, fun Φ hΦ => ?_⟩` and prove the remaining obligations. Establish `h1` using `hc (S0 Φ) (hop.pres Φ hΦ)`. Rewrite `h1` using `[LinearMap.comp_apply, hop.left Φ hΦ]`. Rewrite using `[h1, ← hint]`. Establish `e2 : ∫ Z, d.T Φ Z ∂ν = C * ∫ Z, S0 Φ (_root_.PositivityTheory.SiegelWeilFormula.KTunit.cmap_k d τ Z) ∂ν`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← integral_const_mul]`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun Z => hT Φ hΦ Z)`. Rewrite using `[e2]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem uniq_k : _root_.PositivityTheory.SiegelWeilFormula.TW.Uniq_k := by
   classical

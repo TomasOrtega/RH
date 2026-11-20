@@ -5,35 +5,33 @@ namespace Formalism.A
 open Module
 
 /- English proof (translation)
-Set `b0 : Module.Basis (Fin (Module.finrank R M)) R M` to `Module.finBasis R M`. Take `⟨n, snf⟩` from `Submodule.smithNormalForm b0 (LinearMap.range y)`. Take `⟨k, bK⟩` from `Submodule.basisOfPid b0 (LinearMap.ker y)`. Establish `hx : ∀ i, ∃ x : M, y x = (snf.bN i : M)` using `fun i => LinearMap.mem_range.mp (snf.bN i).2`. Use `choose x hx using hx`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `s : LinearMap.range y →ₗ[R] M` to `snf.bN.constr R x`. Establish `hys : y ∘ₗ s = (LinearMap.range y).subtype`. Use `snf.bN.ext fun i => ?_` and prove the remaining obligations. Simplify using `[s, hx]`. Establish `hyS : ∀ z : LinearMap.range y, y (s z) = z` using `fun z => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using LinearMap.congr_fun hys z`. Establish `hrr : ∀ m : M, (y.rangeRestrict m : M) = y m` using `fun m => rfl`. Set `pK : M →ₗ[R] M` to `LinearMap.id - s ∘ₗ y.rangeRestrict`. Establish `hpK : ∀ m : M, pK m = m - s (y.rangeRestrict m)` using `fun m => rfl`. Establish `hker : ∀ m : M, pK m ∈ LinearMap.ker y`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m`. Rewrite using `[LinearMap.mem_ker, hpK, map_sub, hyS, hrr, sub_self]`. Establish `hrz : ∀ (c : LinearMap.ker y) (z : LinearMap.range y), y.rangeRestrict ((c : M) + s z) = z`. Introduce `c z`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hrr, map_add, LinearMap.mem_ker.mp c.2, zero_add, hyS]`. Set `fwd : (LinearMap.ker y × LinearMap.range y) →ₗ[R] M` to `(LinearMap.ker y).subtype.coprod s`. Set `bwd : M →ₗ[R] (LinearMap.ker y × LinearMap.range y)` to `LinearMap.prod (LinearMap.codRestrict (LinearMap.ker y) pK hker) y.rangeRestrict`. Establish `hf : ∀ (c : LinearMap.ker y) (z : LinearMap.range y), fwd (c, z) = (c : M) + s z`. Introduce `c z`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[fwd]`. Establish `h1 : fwd ∘ₗ bwd = LinearMap.id`. Use `LinearMap.ext fun m => ?_` and prove the remaining obligations. Use `show fwd (bwd m) = m`. Establish `hb : bwd m = (⟨m - s (y.rangeRestrict m), hker m⟩, y.rangeRestrict m)` using `rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hb, hf]`. Conclude with `sub_add_cancel m _`. Establish `h2 : bwd ∘ₗ fwd = LinearMap.id`. Use `LinearMap.ext fun p => ?_` and prove the remaining obligations. Take `⟨c, z⟩` from `p`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show bwd (fwd (c, z)) = (c, z)`. Rewrite using `[hf]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Apply `Subtype.ext show (c : M) + s z - s (y.rangeRestrict ((c : M) + s z)) = c` to reduce the goal to its premises. Rewrite using `[hrz]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `add_sub_cancel_right _ _`. Conclude with `hrz c z`. Set `e : (LinearMap.ker y × LinearMap.range y) ≃ₗ[R] M` to `LinearEquiv.ofLinear fwd bwd h1 h2`. Set `B : Module.Basis (Fin k ⊕ Fin n) R M` to `(bK.prod snf.bN).map e`. Establish `hB1 : ∀ l, y (B (Sum.inl l)) = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l`. Establish `: B (Sum.inl l) = bK l`. Simplify using `[B, e, hf]`. Rewrite using `[this]`. Conclude with `LinearMap.mem_ker.mp (bK l).2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hB2 : ∀ i, y (B (Sum.inr i)) = snf.a i • snf.bM (snf.f i)`. Introduce `i`. Establish `: B (Sum.inr i) = s (snf.bN i)`. Simplify using `[B, e, hf]`. Rewrite using `[this, hyS, snf.snf i]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hcard : k + n = Module.finrank R M`. Simplify using `using (Module.finrank_eq_card_basis B).symm`. Establish `hcompl : Fintype.card (Fin k) = Fintype.card ↥(Set.range snf.f)ᶜ`. Rewrite using `[Fintype.card_compl_set, Set.card_range_of_injective snf.f.injective, Fintype.card_fin, Fintype.card_fin, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `τ : Fin k ≃ ↥(Set.range snf.f)ᶜ` to `Fintype.equivOfCardEq hcompl`. Set `σ : Fin k ⊕ Fin n ≃ Fin (Module.finrank R M)` to `(Equiv.sumComm _ _).trans ((Equiv.sumCongr (Equiv.ofInjective snf.f snf.f.injective) τ).trans (Equiv.Set.sumCompl (Set.range snf.f)))`. Establish `hσ : ∀ i, σ (Sum.inr i) = snf.f i`. Introduce `i`. Simplify using `[σ]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨SmithData.mk (B.reindex σ) snf.bM (fun j => Sum.elim (fun _ => 0) snf.a (σ.symm j)) ?_⟩` and prove the remaining obligations. Introduce `j`. Take `⟨z, rfl⟩` from `σ.surjective j`. Rewrite using `[Module.Basis.reindex_apply, Equiv.symm_apply_apply]`. Break down `z with l | i` into its components or cases.
-
-Rewrite using `[hB1 l, Sum.elim_inl, zero_smul]`. Rewrite using `[hB2 i, hσ i, Sum.elim_inr]`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_smith_normal_form {R M : Type} [CommRing R] [IsDomain R] [IsPrincipalIdealRing R]
     [AddCommGroup M] [Module R M] [Module.Free R M] [Module.Finite R M] (y : M →ₗ[R] M) :
@@ -125,7 +123,7 @@ theorem nonempty_smith_normal_form {R M : Type} [CommRing R] [IsDomain R] [IsPri
   · rw [hB2 i, hσ i, Sum.elim_inr]
 
 /- English proof (translation)
-Unfold `SmithExists`. Introduce `R M _ _ _ _ _ _ _ y`. Conclude with `nonempty_smith_normal_form y`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem smith_form_exists : SmithExists := by
   unfold SmithExists

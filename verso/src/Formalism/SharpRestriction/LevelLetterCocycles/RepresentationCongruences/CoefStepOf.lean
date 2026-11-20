@@ -19,55 +19,53 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 variable (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-Take `⟨hbij, hs1, hp2⟩` from `hcase`. Establish `hfin : Module.finrank K₀ K = 1` using `finrank_one_of_bij' hbij`. Take `⟨-, -, h9c⟩` from `hP9 T hT hs1 hp2`. Take `⟨⟨hπΔ', -, ⟨wπ, hwπ⟩, -⟩, -⟩` from `h9c hfin`. Establish `hπ : W.π₀ ∈ W.AΔ` using `hπΔ'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp1 : PD.p - 1 ≠ 0` using `by have := PD.hp.two_le; omega`. Establish `hO : ∀ c : O, ((PD.p : ℕ) : O) * c = 0 → c = 0` using `p_nzd_O W hinj`. Establish `hQe : qA W = W.π₀ + ((PD.p : ℕ) : LetA O n)` using `rfl`. Establish `hQΔ : qA W ∈ W.AΔ` using `by rw [hQe]; exact add_mem hπ (natCast_mem _ _)`. Establish `hUπ : UPi PD.p W.π₀` using `⟨wπ, PD.p - 1, 0, by rw [hwπ, mul_zero, add_zero]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUQ : UPi PD.p (qA W)` using `⟨wπ, PD.p - 1, 1, by rw [hQe, hwπ, mul_one]⟩`. Establish `hEQ : IsUnit (algebraMap (LetA O n) W.EE (qA W))` using `isUnit_EE_of_UPi W hUQ`. Establish `hΓ : ∀ a : LetA O n, W.γE W.gam (algebraMap (LetA O n) W.EE a) = algebraMap (LetA O n) W.EE (W.γA W.gam a)` using `fun a => W.γE_ext W.gam a`. Take `⟨g4, hg4, h4⟩` from `hA4`. Take `⟨Xc, hXc⟩ : ∃ X : LetA O n, X = algebraMap O (LetA O n) ((W.χΓ W.gam : Oˣ) : O)` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hXcΔ : Xc ∈ W.AΔ` using `by rw [hXc]; exact Subalgebra.algebraMap_mem _ _`. Take `⟨w, hw⟩ : ∃ w : LetA O n, w = Xc + qA W * g4` from `⟨_, rfl⟩`. Establish `hwΔ : w ∈ W.AΔ` using `by rw [hw]; exact add_mem hXcΔ (mul_mem hQΔ hg4)`. Establish `h4' : W.γA W.gam (qA W) = qA W * w`. Rewrite using `[h4, hw, hXc, Algebra.smul_def]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨g5, hg5, h5⟩` from `hA2 (qA W) hQΔ`. Establish `hw1 : w = 1 + W.π₀ * g5`. Apply `W.EE_inj` to reduce the goal to its premises. Apply `hEQ.mul_left_cancel` to reduce the goal to its premises.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← map_mul (algebraMap (LetA O n) W.EE), ← map_mul (algebraMap (LetA O n) W.EE)]`. Conclude with `congrArg (algebraMap (LetA O n) W.EE) (by linear_combination h5 - h4')`. Establish `hmulw : w * (fun i => PowerSeries.invOfUnit (w i) 1) = 1` using `funext fun i => by show w i * PowerSeries.invOfUnit (w i) 1 = 1`. Use `PowerSeries.mul_invOfUnit (w i) 1 ?_` and prove the remaining obligations. Rewrite using `[hw1, hwπ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[letπ, zero_pow hp1]`. Establish `hwU : IsUnit w` using `⟨⟨w, _, hmulw, by rw [mul_comm]; exact hmulw⟩, rfl⟩`. Take `⟨wu, hwu⟩` from `id hwU`. Take `⟨wi, hwi⟩ : ∃ x : LetA O n, x = ((wu⁻¹ : (LetA O n)ˣ) : LetA O n)` from `⟨_, rfl⟩`. Establish `hwwi : w * wi = 1` using `by rw [hwi, ← hwu]; exact wu.mul_inv`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwiΔ : wi ∈ W.AΔ`. Establish `hwδ : ∀ δ ∈ W.DelF, W.γA δ w = w` using `hwΔ`. Use `show ∀ δ ∈ W.DelF, W.γA δ wi = wi`. Introduce `δ hδ`. Apply `hwU.mul_left_cancel` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result.
 
-Combine the equalities or inequalities in the displayed calculation. Take `⟨m, hm⟩ : ∃ m : ℕ, m = bi - j` from `⟨_, rfl⟩`. Establish `hbi : bi = j + m` using `by omega`. Establish `e' : -((bi : ℤ) - (j : ℤ)) = -((m : ℕ) : ℤ)` using `by rw [hm, Nat.cast_sub hj]`. Establish `key : ((((W.χΓ W.gam) ^ m)⁻¹ : Oˣ) : O) = 1 - ((PD.p : ℕ) : O) * cc ((bi : ℤ) - j)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0` using `hcc ((bi : ℤ) - j)`. Rewrite `h0` using `[e', zpow_neg, zpow_natCast]`. Take the linear combination `-h0`. Establish `hc' : ((W.χΓ W.gam : Oˣ) : O) ^ m * (1 - ((PD.p : ℕ) : O) * cc ((bi : ℤ) - j)) = 1`. Rewrite using `[← key, ← Units.val_pow_eq_pow_val, Units.mul_inv]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨C, hC⟩ : ∃ C : LetA O n, C = algebraMap O (LetA O n) (cc ((bi : ℤ) - j))` from `⟨_, rfl⟩`. Establish `hCΔ : C ∈ W.AΔ` using `by rw [hC]; exact Subalgebra.algebraMap_mem _ _`. Establish `hcA : Xc ^ m * (1 - ((PD.p : ℕ) : LetA O n) * C) = 1`. Use `congrArg (algebraMap O (LetA O n)) hc'` as an intermediate fact. Simplify `this` using `only [map_mul, map_sub, map_one, map_pow, map_natCast, ← hC, ← hXc]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨R1, hR1d⟩ : ∃ R : LetA O n, R = (Finset.range m).sum (fun i => w ^ i * Xc ^ (m - 1 - i))` from `⟨_, rfl⟩`. Take `⟨R2, hR2d⟩ : ∃ R : LetA O n, R = (Finset.range m).sum (fun i => w ^ i)` from `⟨_, rfl⟩`. Establish `hR1 : R1 * (w - Xc) = w ^ m - Xc ^ m` using `by rw [hR1d]; exact geom_sum₂_mul w Xc m`. Establish `hR2 : R2 * (w - 1) = w ^ m - 1` using `by rw [hR2d]; exact geom_sum_mul w m`. Establish `hR1Δ : R1 ∈ W.AΔ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hR1d]`. Conclude with `sum_mem fun i _ => mul_mem (pow_mem hwΔ _) (pow_mem hXcΔ _)`. Establish `hR2Δ : R2 ∈ W.AΔ` using `by rw [hR2d]; exact sum_mem fun i _ => pow_mem hwΔ _`. Take `⟨M, hMd⟩ : ∃ M : LetA O n, M = Xc ^ m * C + g4 * R1 * (1 + W.π₀ * C)` from `⟨_, rfl⟩`. Take `⟨N, hNd⟩ : ∃ N : LetA O n, N = g5 * R2 * (1 + W.π₀ * C) + C` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hQM : w ^ m * (1 + W.π₀ * C) = 1 + qA W * M`. Take the linear combination `(-(1 + W.π₀ * C)) * hR1 + (R1 * (1 + W.π₀ * C)) * hw + hcA - (Xc ^ m * C) * hQe - qA W * hMd`. Establish `hπN : w ^ m * (1 + W.π₀ * C) = 1 + W.π₀ * N`. Take the linear combination `(-(1 + W.π₀ * C)) * hR2 + (R2 * (1 + W.π₀ * C)) * hw1 - W.π₀ * hNd`. Establish `hpM : ((PD.p : ℕ) : LetA O n) ^ 1 * M = W.π₀ * (N - M)`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take the linear combination `hπN - hQM - M * hQe`. Take `⟨Z, hZ⟩` from `dvd_of_UPi hO hUπ 1 (N - M) M hpM`. Establish `hMZ : M = W.π₀ * Z`. Apply `p_cancel hO` to reduce the goal to its premises. Take the linear combination `hpM + W.π₀ * hZ`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hMΔ : M ∈ W.AΔ`. Rewrite using `[hMd]`. Conclude with `add_mem (mul_mem (pow_mem hXcΔ _) hCΔ) (mul_mem (mul_mem hg4 hR1Δ) (add_mem (one_mem _) (mul_mem hπ hCΔ)))`. Establish `hNΔ : N ∈ W.AΔ`. Rewrite using `[hNd]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Conclude with `add_mem (mul_mem (mul_mem hg5 hR2Δ) (add_mem (one_mem _) (mul_mem hπ hCΔ))) hCΔ`. Establish `hZΔ : Z ∈ W.AΔ` using `mem_AΔ_of_p_pow W hO 1 (by rw [← hZ]; exact sub_mem hNΔ hMΔ)`. Establish `hYM : w ^ m * (1 + W.π₀ * C) = 1 + qA W * (W.π₀ * Z)` using `by rw [← hMZ]; exact hQM`. Set `S : Submonoid (LetA O n)` to `{ carrier := {x | ∃ t ∈ W.AΔ, W.γA W.gam x = x * (1 + W.π₀ * qA W * t)} mul_mem' := by`. Introduce and unpack `a b ⟨ta, hta, ha⟩ ⟨tb, htb, hb⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `⟨ta + tb + W.π₀ * qA W * ta * tb, add_mem (add_mem hta htb) (mul_mem (mul_mem (mul_mem hπ hQΔ) hta) htb), ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul (W.γA W.gam), ha, hb]`. Expand and normalize the polynomial expressions, which then agree. Use the proof step `one_mem' := ⟨0, zero_mem _, by simp⟩ }`. Establish `hsub : {x : LetA O n | ∃ k ≥ 1, x = ps W k} ⊆ (S : Set (LetA O n))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `x ⟨k, hk, rfl⟩`. Conclude with `hA3 k hk`. Establish `hsS : s' ∈ S` using `Submonoid.closure_le.mpr hsub hs'`. Take `⟨t, ht, hts⟩` from `hsS`. Establish `h1` using `congrArg (W.γE W.gam) hs`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite `h1` using `[map_mul (W.γE W.gam), hΓ, hΓ, hts, map_pow (W.γA W.gam), h4', mul_pow, map_mul (algebraMap (LetA O n) W.EE), map_mul (algebraMap (LetA O n) W.EE), ← hs]`. Establish `hu : IsUnit (algebraMap (LetA O n) W.EE (qA W ^ bi))`. Rewrite using `[map_pow]`. Conclude with `hEQ.pow bi`. Establish `h2' : algebraMap (LetA O n) W.EE (w ^ bi) * W.γE W.gam s = s * algebraMap (LetA O n) W.EE (1 + W.π₀ * qA W * t)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Apply `hu.mul_left_cancel` to reduce the goal to its premises. Take the linear combination `h1`. Establish `hEwb : algebraMap (LetA O n) W.EE w ^ bi * algebraMap (LetA O n) W.EE wi ^ bi = 1`. Rewrite using `[← mul_pow, ← map_mul, hwwi, map_one, one_pow]`. Rewrite `h2'` using `[map_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hΓs : W.γE W.gam s = algebraMap (LetA O n) W.EE wi ^ bi * (s * algebraMap (LetA O n) W.EE (1 + W.π₀ * qA W * t))`. Take the linear combination `(algebraMap (LetA O n) W.EE wi ^ bi) * h2' - (W.γE W.gam s) * hEwb`. Take `⟨g2, hg2, h2⟩` from `hA2 g hg`. Establish `hg' : W.γA W.gam g = g + W.π₀ * qA W * g2` using `by linear_combination h2`. Establish `hwj : w ^ j * wi ^ j = 1` using `by rw [← mul_pow, hwwi, one_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hwm1 : w ^ m * wi ^ m = 1` using `by rw [← mul_pow, hwwi, one_pow]`. Establish `hwbi : wi ^ bi = wi ^ j * wi ^ m` using `by rw [← pow_add, ← hbi]`. Take `⟨h, hh⟩ : ∃ h : LetA O n, h = wi ^ m * (g2 + g * t + W.π₀ * qA W * g2 * t - g * Z)` from `⟨_, rfl⟩`. Establish `keyA : W.γA W.gam (qA W ^ j * g) * (wi ^ bi * (1 + W.π₀ * qA W * t)) = qA W ^ j * g + W.π₀ * qA W ^ j * (C * g + qA W * h)`. Rewrite using `[map_mul (W.γA W.gam), map_pow (W.γA W.gam), h4', hg']`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `((qA W * w) ^ j * (g + W.π₀ * qA W * g2) * (1 + W.π₀ * qA W * t)) * hwbi + (qA W ^ j * (g + W.π₀ * qA W * g2) * (1 + W.π₀ * qA W * t) * wi ^ m) * hwj - (qA W ^ j * g * wi ^ m) * hYM + (qA W ^ j * g * (1 + W.π₀ * C)) * hwm1 - (W.π₀ * qA W ^ j * qA W) * hh`. Establish `hfin2 : W.γE W.gam (algebraMap (LetA O n) W.EE (qA W ^ j * g) * s) = algebraMap (LetA O n) W.EE (qA W ^ j * g + W.π₀ * qA W ^ j * (C * g + qA W * h)) * s`. Rewrite using `[map_mul (W.γE W.gam), hΓ, hΓs, ← keyA]`. Simplify using `only [map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `⟨h, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hh]`. Conclude with `mul_mem (pow_mem hwiΔ _) (sub_mem (add_mem (add_mem hg2 (mul_mem hg ht)) (mul_mem (mul_mem (mul_mem hπ hQΔ) hg2) ht)) (mul_mem hg hZΔ))`. Rewrite using `[← hC, hfin2, map_add]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem coef_step_of (hcase : Formalism.MainNotions.LiftingTheory.CaseA W) (hP9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W) {T : LocLat G Qp LL O}
     (hT : IsCrys PD T.ρ)

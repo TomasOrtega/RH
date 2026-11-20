@@ -23,7 +23,7 @@ def SeedBd : Prop :=
       SeedW K P f F F₀ px (S : Set ℕ) (IntermediateField.adjoin ℚ (S₂ : Set ℂ))
 
 /- English proof (translation)
-Take `⟨B₀, f₀, T₀, w₀, Z₀, hX₀, Wt₀, z₀, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12⟩` from `h`. Conclude with `⟨B₀, f₀, T₀, w₀, Z₀, hX₀, Wt₀, z₀, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, fun v hv => hS (a11 v hv), a12.trans hL⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem SeedW.mono {K : Ctx} {P : Pre} {f : Fr P} {F F₀ : IntermediateField ℚ ℂ} {px : PreX P} {S S' : Set ℕ}
     {L L' : IntermediateField ℚ ℂ} (h : SeedW K P f F F₀ px S L) (hS : S ⊆ S') (hL : L ≤ L') : SeedW K P f F F₀ px S' L' := by
@@ -31,9 +31,9 @@ theorem SeedW.mono {K : Ctx} {P : Pre} {f : Fr P} {F F₀ : IntermediateField �
   exact ⟨B₀, f₀, T₀, w₀, Z₀, hX₀, Wt₀, z₀, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, fun v hv => hS (a11 v hv), a12.trans hL⟩
 
 /- English proof (translation)
-Use `⟨hP.symm, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `congrArg (fun F : IntermediateField ℚ ℂ => (F : Set ℂ)) hKs` as an intermediate fact. Simplify using `only [Base.KsC, IntermediateField.coe_map] at this`. Conclude with `this.symm`. Use `congrArg (fun F : IntermediateField ℚ ℂ => (F : Set ℂ)) hL0` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Base.fixedCoefficientFieldInComplex, IntermediateField.coe_map] at this`. Conclude with `this.symm`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `(B.mem_LLC).1 (hLL ((B₀.mem_LLC).2 ⟨x, rfl⟩))`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem enl_of_fields {B₀ B : Base} (hP : B₀.toPre = B.toPre) (hKs : B₀.KsC = B.KsC) (hL0 : B₀.fixedCoefficientFieldInComplex = B.fixedCoefficientFieldInComplex)
     (hLL : B₀.LLC ≤ B.LLC) : Enl B₀ B := by

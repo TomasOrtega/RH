@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.Katz
 
 /- English proof (translation)
-Establish `hs : HasSubst (fun i => (C (c.x n i) : MvPowerSeries Empty (G.A n)))` using `hasSubst_of_constantCoeff_nilpotent fun i => by simpa using c.nil n i`. Use `show constantCoeff (substAlgHom (R := k) hs (X i)) = c.x n i`. Rewrite using `[coe_substAlgHom, subst_X hs, constantCoeff_C]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Chart.ev_X {p : ℕ} {k : Type} [CommRing k] {d : ℕ} {G : PDivGroup p k} (c : Chart G d)
     (n : ℕ) (i : Fin d) : c.ev n (X i) = c.x n i := by
@@ -23,19 +23,17 @@ theorem Chart.ev_X {p : ℕ} {k : Type} [CommRing k] {d : ℕ} {G : PDivGroup p 
   rw [coe_substAlgHom, subst_X hs, constantCoeff_C]
 
 /- English proof (translation)
-Introduce `p k _ d e G H c c' ν f g φ ψ hν hf hg n j`. Establish `hφ` using `((GlobalTheory.T.connectedPDivGroupHom_coordinates_existsUnique p k d e G H c c' f).2 φ hf).1`. Establish `hψ` using `((GlobalTheory.T.connectedPDivGroupHom_coordinates_existsUnique p k d e G H c c' g).2 ψ hg).1`. Set `L : H.A n ⊗[k] H.A n →ₐ[k] G.A n` to `Algebra.TensorProduct.lift (f.app n : H.A n →ₐ[k] G.A n) (g.app n : H.A n →ₐ[k] G.A n) (fun _ _ => Commute.all _ _)`. Establish `hadd : ∀ a, (f + g).app n a = L (Coalgebra.comul a)` using `fun a => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h` using `congrArg (fun u => u.ofConv a) (map_mul toPts (f.conv n) (g.conv n))`. Simplify using `only [toPts_ofConv] at h`. Conclude with `h.trans (AlgHom.convMul_apply _ _ a)`. Establish `hy : ∀ i, IsNilpotent (L (c'.x₂ n i))` using `fun i => (c'.nil₂ n i).map L`. Establish `ha : ∀ i, constantCoeff (Sum.elim φ ψ i) = 0` using `fun i => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `i with`. Consider the case `inl i => exact hφ i`. Consider the case `inr i => exact hψ i`. Establish `hnil : ∀ t, IsNilpotent (c.ev n (X t))` using `fun t => by`. Rewrite using `[Chart.ev_X]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `c.nil n t`. Establish `h1 : ∀ i, c.ev n (Sum.elim φ ψ i) = L (c'.x₂ n i)` using `fun i => by`. Consider the cases of `i with`. Consider the case `inl i`. Express the relevant statement in the definitionally equal form `c.ev n (φ i) = L (c'.x n i ⊗ₜ 1)`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hf, Algebra.TensorProduct.lift_tmul, map_one, mul_one]`. Both sides reduce to the same expression. Consider the case `inr i`. Express the relevant statement in the definitionally equal form `c.ev n (ψ i) = L (1 ⊗ₜ c'.x n i)`. Rewrite using `[hg, Algebra.TensorProduct.lift_tmul, map_one, one_mul]`.
+Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `e1` using `(GlobalTheory.T.nilpotent_eval_commutes_subst_and_algebraMap k (Fin e ⊕ Fin e) (G.A n)).1 (Fin d) (c.ev n) hnil (Sum.elim φ ψ) ha (fun i => L (c'.x₂ n i)) hy h1 (ν j)`. Establish `e2` using `(GlobalTheory.T.nilpotent_eval_commutes_subst_and_algebraMap k (Fin e ⊕ Fin e) (H.A n ⊗[k] H.A n)).2 (G.A n) L (c'.x₂ n) (c'.nil₂ n) (fun i => L (c'.x₂ n i)) hy (fun _ => rfl) (ν j)`. Express the relevant statement in the definitionally equal form `c.ev n (subst (Sum.elim φ ψ) (ν j)) = _`. Rewrite using `[e1, ← e2, hadd]`.
-
-Conclude with `congrArg L (hν n j)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Chart.isMapOf_add : ∀ (p : ℕ) (k : Type) [CommRing k] (d e : ℕ) (G H : PDivGroup p k)
     (c : Chart G d) (c' : Chart H e), ∀ (ν : Fin e → MvPowerSeries (Fin e ⊕ Fin e) k)

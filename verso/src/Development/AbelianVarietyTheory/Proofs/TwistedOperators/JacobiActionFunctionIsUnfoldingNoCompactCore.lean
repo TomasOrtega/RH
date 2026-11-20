@@ -23,39 +23,35 @@ noncomputable section
 open GlobalTheory.ThLaws in
 
 /- English proof (translation)
-Introduce `D ψ hψ σ J B y hy x₀ hx₀`. Take `⟨hcont, -, hleft, hcen, -, -⟩` from `GlobalTheory.T.jacobiActionUnipotent_laws D ψ hψ σ J B y hy`. Use `beta_reduce at hcen hleft`. Take `⟨x₁, hx₁, -, -, hlast, hq⟩` from `GlobalTheory.T.besselBasePoint_isUnfoldingBasePoint_spec D σ B`. Establish `e : x₁ = x₀` using `rat_injective (hx₁.trans hx₀.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hcont.comp continuous_subtype_val, fun γ hγQ hγN n hn => hleft γ hγN hγQ n hn, fun c n hn => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hcen c n hn, hx₀, hq]`. Introduce `j a ha1 ha0 hg`. Establish `hl : a (Fin.last σ) = 0` using `hlast a (by rw [e]; exact hg)`. Establish `hj : j.1 < σ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hc`. Establish `: j = Fin.last σ` using `Fin.ext (by have := j.2; simp only [Fin.val_last]; omega)`. Rewrite `ha1` using `[this, hl]`. Conclude with `zero_ne_one ha1`. Set `j' : Fin (σ + 1)` to `⟨j.1 + 1, by omega⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hjj : j < j'` using `by rw [Fin.lt_def]; simp [j']`. Take `⟨t, ht⟩` from `exists_psiE_ne_one hψ`. Set `A : Fin (σ + 1) → AE D` to `GlobalTheory.IndefiniteRowSideFullHecke.TransvectionAction.ratVec a`. Set `Bv : Fin (σ + 1) → AE D` to `fun k => if k = j' then cA D t else 0`. Establish `hB0 : ∀ k, k ≠ j' → Bv k = 0` using `fun k hk => if_neg hk`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hA0 : ∀ i, j < i → A i = 0` using `fun i hi => by show incA D (a i) = 0`. Rewrite using `[ha0 i hi, map_zero]`. Establish `hN : ∀ i k, ¬(i ≤ j ∧ k = j') → A i * cA D (Bv k) = 0`. Introduce `i k hik`. Distinguish the cases in `hk : k = j'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hA0 i (not_le.1 fun hi => hik ⟨hi, hk⟩), zero_mul]`. Rewrite using `[hB0 k hk, map_zero, mul_zero]`. Establish `hAB : (fun k => cA D (Bv k)) ⬝ᵥ A = 0`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hN k k fun h => absurd (h.2 ▸ h.1) (not_le.2 hjj)`. Establish `hupper : tvGL A Bv hAB ∈ upperUni (σ + 1) (AE D)` using `fun i k => by`. Use `⟨fun hki => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[tvGL_val, Matrix.add_apply, Matrix.one_apply_ne (ne_of_gt hki), tvN_apply, hN i k fun h => absurd (h.2 ▸ hki) (not_lt.2 (le_of_lt (lt_of_le_of_lt h.1 hjj))), zero_add]`. Rewrite using `[tvGL_val, Matrix.add_apply, Matrix.one_apply_eq, tvN_apply, hN i i fun h => absurd (h.2 ▸ h.1) (not_le.2 hjj), add_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUX : tvGL A Bv hAB ∈ UX D (σ + 1)` using `mem_UX.2 hupper`. Establish `hu : J.d.levi (tvGL A Bv hAB) ∈ flagN J.d` using `J.d.levi_mem_NFlag hupper`. Establish `hup : upSum (tvN A Bv) = t`. Unfold `upSum`. Rewrite using `[Finset.sum_eq_single j, Finset.sum_eq_single j']`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_pos (by simp [j']), tvN_apply, show Bv j' = cA D t from if_pos rfl, cA_cA'] show incA D (a j) * t = t`. Rewrite using `[ha1, map_one, one_mul]`. Introduce `k _ hk`. Rewrite using `[tvN_apply, hB0 k hk, map_zero, mul_zero, ite_self]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Conclude with `absurd (Finset.mem_univ _) h`. Introduce `i _ hi`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : k = j'`. Rewrite using `[if_neg]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Apply `hi` to reduce the goal to its premises. Rewrite `h` using `[hk]`. Conclude with `Fin.ext (by simp [j'] at h; omega)`. Rewrite using `[tvN_apply, hB0 k hk, map_zero, mul_zero, ite_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Use `⟨J.d.jY *ᵥ Bv, J.d.levi (tvGL A Bv hAB), star (psiE ψ t), ?_, levi_isTransv J.d A Bv hAB, Subgroup.mem_inf.2 ⟨hu, Subgroup.mem_iInf.2 fun i => ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show GlobalTheory.IndefiniteRowSideFullHecke.TransvectionAction.form J.W (J.d.jX *ᵥ A) (J.d.jY *ᵥ Bv) = 0`. Rewrite using `[form_mulVec, ← J.d.pX_eq, Matrix.mulVec_mulVec, J.d.pX_jX, Matrix.one_mulVec, hAB]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_fixer]`. Establish `hcol : ∀ m, (tvGL A Bv hAB).1 m i.1 = (1 : Mx D (σ + 1) (σ + 1)) m i.1` using `fun m => by`. Rewrite using `[tvGL_val, Matrix.add_apply, tvN_apply, hN m i.1 fun h => absurd (h.2 ▸ i.2) (not_le.2 hjj), add_zero]`. Use extensionality with `k l`. Establish `h1` using `congrFun (congrFun (J.d.levi_jX (tvGL A Bv hAB)) k) i.1`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Matrix.mul_apply, Matrix.submatrix_apply, id] at h1 ⊢`. Rewrite using `[h1]`. Simplify using `only [hcol, Matrix.one_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Introduce `h1`. Apply `ht` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[← star_star (psiE ψ t), h1, star_one]`. Introduce `n hn n' hn'`. Establish `hx : ∀ u ∈ UX D (σ + 1), zEll B.L (σ + 1) B.ζ ⬝ u.1 = zEll B.L (σ + 1) B.ζ` using `fun u hu => zEll_mul B.L B.ζ hu`. Establish `hJu : jacS ψ J.d B.L (zEll B.L (σ + 1) B.ζ) (J.d.levi (tvGL A Bv hAB)) = id`. Use `jacS_levi_mul ψ J.d B.L (zEll B.L (σ + 1) B.ζ) (hx _ hUX) 1` as an intermediate fact.
-
-Rewrite `this` using `[mul_one, jacS_one]`. Then use the resulting hypothesis. Establish `hpu : psiFlag ψ J.d (J.d.levi (tvGL A Bv hAB)) = psiE ψ t`. Rewrite using `[psiFlag, blockX_levi, tvGL_val, upSum_add, upSum_one, zero_add, hup]`. Use `beta_reduce`. Rewrite using `[GlobalTheory.JacHom.jacS_mul J.d hx ψ (mul_mem hn hu) hn', GlobalTheory.JacHom.jacS_mul J.d hx ψ hn hu, hJu, GlobalTheory.JacHom.jacS_mul J.d hx ψ hn hn', psiFlag_mul J.d ψ (mul_mem hn hu) hn', psiFlag_mul J.d ψ hn hu, psiFlag_mul J.d ψ hn hn', hpu]`.
-
-Simplify using `only [id, star_mul']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.th_isTh_lev : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (σ : ℕ) (J : JacL D (σ + 1)) (B : BesL D σ) (y : WO J.W₀ B.L → ℂ), GlobalTheory.Unf.FB.Quasi ψ J.W₀ B.L y → ∀ x₀ : Matrix (Fin B.V.rank) (Fin (σ + 1)) D.host.E, (rat x₀ : Mx D B.V.rank (σ + 1)) = xLast B.d (vecB B.o B.ζ) → IsTh ψ J.d B.V x₀ (fun n => star (jacS ψ J.d B.L (zEll B.L (σ + 1) B.ζ) n y 0) * star (psiFlag ψ J.d n)) := by
   intro D ψ hψ σ J B y hy x₀ hx₀

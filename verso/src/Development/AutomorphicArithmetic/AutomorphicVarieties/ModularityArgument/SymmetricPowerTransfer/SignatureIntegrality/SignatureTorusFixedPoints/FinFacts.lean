@@ -8,21 +8,19 @@ noncomputable section
 open ValuativeRel Matrix Polynomial GlobalTheory.SmGL GlobalTheory.SplitWeil UpperTheory.V.Hi UpperTheory.V.AlgebraTools UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Sig UpperTheory.V.Z.Sym.Loc UpperTheory.V.Z.Sym.Glob
 
 /- English proof (translation)
-Establish `hq : ∀ u, P u → ∃ t, t ∈ C ∧ P t ∧ (QuotientGroup.mk t : G ⧸ K) = QuotientGroup.mk u`. Introduce `u hu`. Take `⟨t, ht, hPt, hut⟩` from `hC u hu`. Use `⟨t, ht, hPt, ?_⟩` and prove the remaining obligations. Rewrite using `[QuotientGroup.eq, mul_comm, ← div_eq_mul_inv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hut`. Set `f : G ⧸ K → G` to `fun q => if h : ∃ t, t ∈ C ∧ P t ∧ (QuotientGroup.mk t : G ⧸ K) = q then h.choose else 1`. Establish `hf : ∀ t, t ∈ C → P t → f (QuotientGroup.mk t) ∈ C ∧ P (f (QuotientGroup.mk t)) ∧ (QuotientGroup.mk (f (QuotientGroup.mk t)) : G ⧸ K) = QuotientGroup.mk t`. Introduce `t ht hPt`. Establish `h : ∃ s, s ∈ C ∧ P s ∧ (QuotientGroup.mk s : G ⧸ K) = QuotientGroup.mk t` using `⟨t, ht, hPt, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [f, dif_pos h]`. Conclude with `h.choose_spec`. Use `⟨(C.filter P).image (fun t : G => f (QuotientGroup.mk t)), ?_, ?_⟩` and prove the remaining obligations. Introduce `e he`. Rewrite `he` using `[Finset.mem_image]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨t, ht, rfl⟩` from `he`. Rewrite `ht` using `[Finset.mem_filter]`. Conclude with `⟨(hf t ht.1 ht.2).1, (hf t ht.1 ht.2).2.1⟩`. Introduce `u hu`. Take `⟨t0, ht0, hPt0, ht0u⟩` from `hq u hu`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨f (QuotientGroup.mk t0), ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_image]`. Conclude with `⟨t0, Finset.mem_filter.mpr ⟨ht0, hPt0⟩, rfl⟩`. Establish `h3` using `(hf t0 ht0 hPt0).2.2.trans ht0u`. Rewrite `h3` using `[QuotientGroup.eq]`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[div_eq_mul_inv, mul_comm]`. Conclude with `h3`. Introduce and unpack `e ⟨he, heu⟩`. Rewrite `he` using `[Finset.mem_image]`. Take `⟨t, ht, rfl⟩` from `he`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `ht` using `[Finset.mem_filter]`. Establish `h3` using `(hf t ht.1 ht.2).2.2`. Establish `htu : (QuotientGroup.mk t : G ⧸ K) = QuotientGroup.mk t0`. Rewrite using `[← h3, ht0u, QuotientGroup.eq, mul_comm, ← div_eq_mul_inv]`. Conclude with `heu`.
-
-Rewrite using `[htu]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_finite_residue_reps_mod_natCast {G : Type} [CommGroup G] (K : Subgroup G) (P : G → Prop) (C : Finset G)
     (hC : ∀ u, P u → ∃ t ∈ C, P t ∧ u / t ∈ K) :
@@ -67,51 +65,43 @@ private theorem exists_finite_residue_reps_mod_natCast {G : Type} [CommGroup G] 
       rw [htu]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ V`. Set `φ : kˣ →* GL (Fin 1) k` to `(diagT k (Fin 1)).comp { toFun := fun u _ => u, map_one' := rfl, map_mul' := fun _ _ => rfl }`. Establish `hφc : Subgroup.comap φ (Kc k 1 (V.c + 1)) = Uc k (V.c + 1)`. Use extensionality with `u`. Rewrite using `[Subgroup.mem_comap]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(dg_mem_Kc (k := k) (n := 1) (c := V.c + 1) (s := fun _ => u)).trans (by simp)`. Establish `hidx : (Uc k (V.c + 1)).relIndex (Uo k) ≠ 0`. Rewrite using `[← hφc, Subgroup.relIndex_comap]`. Apply `GlAx.Kc_index` to reduce the goal to its premises. Rewrite using `[Subgroup.map_le_iff_le_comap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u hu`. Rewrite using `[Subgroup.mem_comap]`. Conclude with `dg_mem_KO (k := k) (n := 1) (s := fun _ => u) (fun _ => hu)`. Establish `hH : V.H.relIndex (Uo k) ≠ 0` using `ne_zero_of_dvd_ne_zero hidx (Subgroup.relIndex_dvd_of_le_left _ V.le)`. Establish `hH2 : V.H2 ≤ Uo k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `u hu`. Establish `h2 : u ^ 2 ∈ Uo k` using `V.H_le hu`. Establish `h2' : valuation k (u : k) * valuation k (u : k) = 1`. Establish `: valuation k ((u ^ 2 : kˣ) : k) = 1` using `h2`. Rewrite `this` using `[Units.val_pow_eq_pow_val, map_pow, sq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `this`. Use `show valuation k (u : k) = 1`. Break down `lt_trichotomy (valuation k (u : k)) 1 with h | h | h` into its components or cases. Conclude with `absurd h2' (ne_of_lt (mul_lt_one_of_lt_of_le h h.le))`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `absurd h2' (ne_of_gt (one_lt_mul_of_lt_of_le h h.le))`. Establish `hHH2 : V.H ≤ V.H2`. Introduce `u hu`. Use `show u ^ 2 ∈ V.H`. Conclude with `V.H.pow_mem hu 2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨T, hTU, hT⟩ : ∃ T : Finset kˣ, (∀ t ∈ T, t ∈ Uo k) ∧ ∀ u ∈ Uo k, ∃ t ∈ T, u / t ∈ V.H` from `by classical haveI : (V.H.subgroupOf (Uo k)).FiniteIndex := ⟨hH⟩ haveI := Fintype.ofFinite (Uo k ⧸ V.H.subgroupOf (Uo k))`. Use `⟨Finset.univ.image (fun q : Uo k ⧸ V.H.subgroupOf (Uo k) => ((Quotient.out q : Uo k) : kˣ)), ?_, ?_⟩` and prove the remaining obligations. Introduce `t ht`. Take `⟨q, -, rfl⟩` from `Finset.mem_image.mp ht`. Conclude with `(Quotient.out q).2`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `u hu`. Use `⟨((Quotient.out (QuotientGroup.mk ⟨u, hu⟩ : Uo k ⧸ V.H.subgroupOf (Uo k)) : Uo k) : kˣ), Finset.mem_image.mpr ⟨_, Finset.mem_univ _, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `h` using `QuotientGroup.out_eq' (QuotientGroup.mk ⟨u, hu⟩ : Uo k ⧸ V.H.subgroupOf (Uo k))`. Rewrite `h` using `[QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Rewrite using `[div_eq_mul_inv, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `using h`. Use `⟨hH, hH2, hHH2, ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨R, hR1, hR2⟩` from `exists_finite_residue_reps_mod_natCast V.H (· ∈ V.H2) T (by`. Introduce `u hu`. Take `⟨t, ht, hut⟩` from `hT u (hH2 hu)`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨t, ht, ?_, hut⟩` and prove the remaining obligations. Rewrite using `[← div_div_cancel u t]`. Conclude with `V.H2.div_mem hu (hHH2 hut))`. Conclude with `⟨R, fun e he => (hR1 e he).2, hR2⟩`. Set `S : Subgroup kˣ` to `V.H ⊔ (powMonoidHom 2 : kˣ →* kˣ).range`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hS : ∀ u y : kˣ, u / y ∈ S ↔ ∃ s, u / (y * s ^ 2) ∈ V.H`. Introduce `u y`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨a, ha, b, ⟨s, rfl⟩, hab⟩` from `Subgroup.mem_sup.mp h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨s, ?_⟩` and prove the remaining obligations. Rewrite using `[← div_div, ← hab]`. Simplify using `using ha`. Introduce and unpack `⟨s, hs⟩`. Use `Subgroup.mem_sup.mpr ⟨_, hs, s ^ 2, ⟨s, rfl⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[← div_div, div_mul_cancel]`. Establish `hcov : ∀ u : kˣ, ∃ t ∈ T ∪ T.image (fun t => unif k * t), True ∧ u / t ∈ S`. Introduce `u`. Use `set m := ord k u`. Use `set w := u / unif k ^ m`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hw : w ∈ Uo k` using `GlAx.val_div_ord u`. Take `⟨t0, ht0, hwt⟩` from `hT w hw`. Use `set s := unif k ^ (m / 2)`. Establish `hu_eq : u = w * unif k ^ (m % 2) * s ^ 2`. Establish `: unif k ^ m = unif k ^ (m % 2) * s ^ 2`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← zpow_natCast s 2, ← _root_.zpow_mul, ← _root_.zpow_add]`. Use `congr 1`. Use `push_cast`. Use linear arithmetic over natural numbers and integers. Rewrite using `[mul_assoc, ← this, div_mul_cancel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Break down `Int.emod_two_eq_zero_or_one m with hr | hr` into its components or cases. Use `⟨t0, Finset.mem_union_left _ ht0, trivial, (hS u t0).mpr ⟨s, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hu_eq, hr, zpow_zero, mul_one, mul_div_mul_right_eq_div]`. Conclude with `hwt`. Use `⟨unif k * t0, Finset.mem_union_right _ (Finset.mem_image.mpr ⟨t0, ht0, rfl⟩), trivial, (hS u _).mpr ⟨s, ?_⟩⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[hu_eq, hr, zpow_one, mul_div_mul_right_eq_div, mul_comm (unif k) t0, mul_div_mul_right_eq_div]`. Conclude with `hwt`. Take `⟨R, hR1, hR2⟩` from `exists_finite_residue_reps_mod_natCast S (fun _ => True) (T ∪ T.image (fun t => unif k * t)) (fun u _ => hcov u)`. Use `⟨R, ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hyC` using `(hR1 y hy).1`. Establish `hu1 : valuation k ((unif k : kˣ) : k) ≤ 1`. Rewrite using `[GlAx.unif_spec]`. Conclude with `ValuativeRel.uniformizer_lt_one.le`. Break down `Finset.mem_union.mp hyC with hyT | hyT` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: valuation k (y : k) = 1` using `hTU y hyT`. Rewrite using `[this]`. Conclude with `⟨hu1, le_rfl⟩`. Take `⟨t, ht, rfl⟩` from `Finset.mem_image.mp hyT`. Establish `: valuation k (t : k) = 1` using `hTU t ht`.
-
-Rewrite using `[Units.val_mul, map_mul, this, mul_one]`. Conclude with `⟨le_rfl, hu1⟩`. Introduce `u`. Take `⟨e, ⟨he, heu⟩, huniq⟩` from `hR2 u trivial`. Use `⟨e, ⟨he, (hS u e).mp heu⟩, ?_⟩` and prove the remaining obligations.
-
-Introduce and unpack `y ⟨hy, hyu⟩`. Conclude with `huniq y ⟨hy, (hS u y).mpr hyu⟩`. Introduce `n`. Establish `hopen : IsOpen (V.J n : Set (GL (Fin n) k))` using `Subgroup.isOpen_mono (kc_le V) (isOpen_Kc _)`. Establish `hcpt : IsCompact (V.J n : Set (GL (Fin n) k))` using `GlobalTheory.SplitFlip.isCompact_KO.of_isClosed_subset (Subgroup.isClosed_of_isOpen _ hopen) V.J_le_KO`.
-
-Use `⟨?_, hopen, hcpt, V.J_le_KO⟩` and prove the remaining obligations. Introduce `x`. Use `show (MulAction.orbit (V.J n) (x : GL (Fin n) k ⧸ V.J n)).Finite`. Use `haveI := QuotientGroup.discreteTopology hopen`. Use `((hcpt.image (f := fun g => ((g * x : GL (Fin n) k) : GL (Fin n) k ⧸ V.J n)) (QuotientGroup.continuous_mk.comp (continuous_mul_right x))).finite_of_discrete).subset ?_` and prove the remaining obligations.
-
-Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `⟨j, j.2, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Sig.finFacts : UpperTheory.V.Z.Sym.Sig.FinFacts := by
   intro k _ _ _ _ V

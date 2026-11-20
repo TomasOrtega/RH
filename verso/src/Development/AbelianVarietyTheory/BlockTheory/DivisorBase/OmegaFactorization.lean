@@ -30,7 +30,7 @@ variable (F : Type) [Field F] [NumberField F] in
 variable {F} in
 
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.latM`. Rewrite using `[FractionalIdeal.dual_eq_mul_inv ℤ ℚ, coeIdeal_differentIdeal ℤ ℚ F (𝓞 F), inv_inv, Units.val_inv_eq_inv_val]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.latM_eq_dual (𝔞 : _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Frac F) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.latM 𝔞 =
@@ -45,7 +45,7 @@ variable (F : Type) [Field F] [NumberField F] in
 variable {F} in
 
 /- English proof (translation)
-Use `norm_cast`. Simplify using the standard rewrite rules.
+Put the expressions in a common number system so they can be compared. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.unit_inv_mul (ε : (𝓞 F)ˣ) :
     (((ε⁻¹ : (𝓞 F)ˣ) : 𝓞 F) : F) * ((ε : 𝓞 F) : F) = 1 := by
@@ -151,11 +151,11 @@ variable (F : Type) [Field F] [NumberField F] in
 variable {F} in
 
 /- English proof (translation)
-Establish `h1` using `Algebra.norm_eq_prod_embeddings ℚ ℂ x`. Rewrite `h1` using `[eq_ratCast]`. Rewrite using `[h1]`. Establish `h2 : ∏ σ : F →ₐ[ℚ] ℂ, σ x = ∏ φ : F →+* ℂ, φ x` using `Fintype.prod_bijective (fun σ : F →ₐ[ℚ] ℂ => (σ : F →+* ℂ)) (RingHom.equivRatAlgHom F ℂ).symm.bijective _ _ (fun _ => rfl)`. Establish `h3 : ∏ τ : F →+* ℝ, ((τ x : ℝ) : ℂ) = ∏ φ : F →+* ℂ, φ x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Fintype.prod_bijective (fun τ : F →+* ℝ => Complex.ofRealHom.comp τ) ⟨?_, ?_⟩ _ _ (fun _ => rfl)` and prove the remaining obligations. Introduce `a b h`. Use extensionality with `y`. Use `congrArg (fun f : F →+* ℂ => f y) h` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `φ`. Establish `hφ : ComplexEmbedding.IsReal φ` using `InfinitePlace.isReal_mk_iff.mp (IsTotallyReal.isReal _)`. Conclude with `⟨hφ.embedding, by ext y; simp [ComplexEmbedding.IsReal.coe_embedding_apply]⟩`. Rewrite using `[h2, h3]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.prod_emb [IsTotallyReal F] (x : F) :
     ∏ τ : _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Emb F, ((τ x : ℝ) : ℂ) = ((Algebra.norm ℚ x : ℚ) : ℂ) := by
@@ -184,11 +184,11 @@ variable (F : Type) [Field F] [NumberField F] in
 variable {F} in
 
 /- English proof (translation)
-Establish `hprod : ∏ τ, _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.latPt z (((ε : 𝓞 F) : F) * a, ((ε : 𝓞 F) : F) * b) τ = ((Algebra.norm ℚ ((ε : 𝓞 F) : F) : ℚ) : ℂ) * ∏ τ, _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.latPt z (a, b) τ`. Rewrite using `[← _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.prod_emb, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `only [_root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.latPt, map_mul]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hn : |Algebra.norm ℚ ((ε : 𝓞 F) : F)| = 1` using `NumberField.Units.norm F ε`. Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.eisTerm`. Rewrite using `[hprod]`. Apply the tactic sequence `rcases (abs_eq zero_le_one).mp hn with h | h <;> rw [h] <;>`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[hk.neg_pow, inv_neg, norm_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.eisTerm_unit [IsTotallyReal F] {k : ℕ} (hk : Even k)
     (σ : ℂ) (z : _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Emb F → ℂ) (ε : (𝓞 F)ˣ) (a b : F) :
@@ -213,9 +213,9 @@ variable (F : Type) [Field F] [NumberField F] in
 variable {F} in
 
 /- English proof (translation)
-Establish `hrel` using `Quotient.mk_out (s := _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.latRel 𝔞 𝔟) p`. Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.eisClass`. Generalize the expression as in `(Quotient.mk (_root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.latRel 𝔞 𝔟) p).out = q at hrel ⊢`. Take `⟨ε, h1, h2⟩` from `hrel`. Establish `hp : p.1 = (((ε : 𝓞 F) : F) * q.1.1, ((ε : 𝓞 F) : F) * q.1.2)` using `Prod.ext h1 h2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hp, _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.eisTerm_unit hk]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.eisClass_mk [IsTotallyReal F] (𝔞 𝔟 : _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Frac F)
     {k : ℕ} (hk : Even k) (σ : ℂ) (z : _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Emb F → ℂ)
@@ -235,11 +235,11 @@ variable (F : Type) [Field F] [NumberField F] in
 variable {F} in
 
 /- English proof (translation)
-Establish `hrel` using `Quotient.mk_out (s := _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.qRel 𝔞 𝔟) p`. Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.qClass`. Generalize the expression as in `(Quotient.mk (_root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.qRel 𝔞 𝔟) p).out = q at hrel ⊢`. Take `⟨ε, h1, h2⟩` from `hrel`. Establish `hu : |Algebra.norm ℚ (((ε⁻¹ : (𝓞 F)ˣ) : 𝓞 F) : F)| = 1` using `NumberField.Units.norm F ε⁻¹`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmul : p.1.1 * p.1.2 = q.1.1 * q.1.2`. Rewrite using `[h1, h2, mul_mul_mul_comm, _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.unit_inv_mul, one_mul]`. Establish `hn : |((Algebra.norm ℚ p.1.1 : ℚ) : ℝ)| = |((Algebra.norm ℚ q.1.1 : ℚ) : ℝ)|`. Rewrite using `[h1, map_mul, Rat.cast_mul, abs_mul, ← Rat.cast_abs, hu, Rat.cast_one, one_mul]`. Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.qTerm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[hn, hmul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.qClass_mk (𝔞 𝔟 : _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Frac F) (k : ℕ)
     (z : _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Emb F → ℂ) (p : _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.QPair 𝔞 𝔟) :
@@ -263,11 +263,11 @@ variable (F : Type) [Field F] [NumberField F] in
 variable {F} in
 
 /- English proof (translation)
-Introduce `h`. Establish `h2 : (2 * (Real.pi : ℂ) * I) ≠ 0` using `by simp [Real.pi_ne_zero, I_ne_zero]`. Break down `mul_eq_zero.mp h with h' | h'` into its components or cases. Conclude with `h2 h'`. Distinguish the cases in `hb : p.2 = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `ha : p.1 ≠ 0` using `fun ha => hp (Prod.ext ha hb)`. Rewrite `h'` using `[hb, map_zero]`. Simplify using `only [Complex.ofReal_zero, zero_mul, add_zero, Complex.ofReal_eq_zero, map_eq_zero] at h'`. Conclude with `ha h'`. Establish `him` using `congrArg Complex.im h'`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [Complex.add_im, Complex.ofReal_im, Complex.mul_im, Complex.ofReal_re, zero_mul, add_zero, zero_add, Complex.zero_im] at him`. Break down `mul_eq_zero.mp him with h1 | h1` into its components or cases. Conclude with `hb ((map_eq_zero τ).mp h1)`. Conclude with `(hz τ).ne' h1`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.latPt_ne_zero {z : _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Emb F → ℂ}
     (hz : z ∈ _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.upperHalf F) {p : F × F} (hp : p ≠ 0) (τ : _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Emb F) :
@@ -290,7 +290,7 @@ theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.latPt_
       · exact (hz τ).ne' h1
 
 /- English proof (translation)
-Establish `h : fderiv ℝ (fun w : Unit → ℂ => w ()) z = ContinuousLinearMap.proj ()` using `(ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Unit => ℂ) ()).fderiv`. Apply the tactic sequence `constructor <;> simp [wirt, h]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 example (z : Unit → ℂ) : wirt () false (fun w => w ()) z = 1 ∧ wirt () true (fun w => w ()) z = 0 := by
   have h : fderiv ℝ (fun w : Unit → ℂ => w ()) z = ContinuousLinearMap.proj () :=

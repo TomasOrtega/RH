@@ -12,7 +12,7 @@ def nsUnits (E : Type) [Field E] [NumberField E] [IsCMField E] : Subgroup (Neutr
     Valued.v (u : w.adicCompletion E) = 1 ∧ x = Neutral.B1.localIdele E w u}
 
 /- English proof (translation)
-The claim follows from `Subgroup.subset_closure ⟨w, u, hw, hu, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem localIdele_mem_nsUnits {E : Type} [Field E] [NumberField E] [IsCMField E] (w : HeightOneSpectrum (𝓞 E))
     (u : (w.adicCompletion E)ˣ) (hw : ¬ GlobalTheory.UnitaryBC.IsSplitAt w) (hu : Valued.v (u : w.adicCompletion E) = 1) :

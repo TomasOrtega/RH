@@ -18,7 +18,7 @@ def IsLocModerate (F : GA E a → ℂ) : Prop :=
   ∀ g₀ : GA E a, ∃ (C : ℝ) (N : ℕ), 0 ≤ C ∧ ∀ᶠ g in 𝓝 g₀, ∀ y, ‖F (g * infGL E a y)‖ ≤ C * height y ^ N
 
 /- English proof (translation)
-The claim follows from `Continuous.units_map _ (continuous_id.matrix_map hp)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_mapGL {R S : Type} [CommRing R] [CommRing S] [TopologicalSpace R] [TopologicalSpace S]
     [IsTopologicalRing R] [IsTopologicalRing S] {p : R →+* S} (hp : Continuous p) :
@@ -26,7 +26,7 @@ theorem continuous_mapGL {R S : Type} [CommRing R] [CommRing S] [TopologicalSpac
   Continuous.units_map _ (continuous_id.matrix_map hp)
 
 /- English proof (translation)
-Establish `h : Continuous (infEq E).symm`. Use `continuous_pi fun w => ?_` and prove the remaining obligations. Conclude with `(InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)).continuous.comp (continuous_apply w)`. Conclude with `h.comp continuous_fst`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_pInf_ad : Continuous (pInf E) := by
   have h : Continuous (infEq E).symm := by
@@ -36,12 +36,12 @@ theorem continuous_pInf_ad : Continuous (pInf E) := by
   exact h.comp continuous_fst
 
 /- English proof (translation)
-The claim follows from `continuous_snd`.
+A detailed English derivation is pending.
 -/
 theorem continuous_pFin_ad : Continuous (pFin E) := continuous_snd
 
 /- English proof (translation)
-Establish `ht : Continuous fun x : Matrix (Fin a) (Fin a) (Cinf E) => toL x` using `continuous_id`. Use `show Continuous fun y : GL (Fin a) (Cinf E) => 1 + ‖toL y.val‖ + ‖toL (y⁻¹).val‖`. Conclude with `(continuous_const.add (ht.comp Units.continuous_val).norm).add (ht.comp Units.continuous_coe_inv).norm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_height_inf : Continuous (height : GL (Fin a) (Cinf E) → ℝ) := by
   have ht : Continuous fun x : Matrix (Fin a) (Fin a) (Cinf E) => toL x := continuous_id
@@ -49,23 +49,21 @@ theorem continuous_height_inf : Continuous (height : GL (Fin a) (Cinf E) → ℝ
   exact (continuous_const.add (ht.comp Units.continuous_val).norm).add (ht.comp Units.continuous_coe_inv).norm
 
 /- English proof (translation)
-Establish `cI : Continuous fun g : GA E a => GeneralLinearGroup.map (pInf E) g` using `continuous_mapGL continuous_pInf_ad`. Establish `cF : Continuous fun g : GA E a => GeneralLinearGroup.map (pFin E) g` using `continuous_mapGL continuous_pFin_ad`. Establish `dec : ∀ g₀ g : GA E a, finRep E a (GeneralLinearGroup.map (pFin E) (g₀⁻¹ * g)) φ = φ → ∀ y, φ.1 (g * infGL E a y) = φ.1 (g₀ * infGL E a (GeneralLinearGroup.map (pInf E) (g₀⁻¹ * g) * y))`. Introduce `g₀ g hk y`. Establish `hu : g = g₀ * (infGL E a (GeneralLinearGroup.map (pInf E) (g₀⁻¹ * g)) * finGL E a (GeneralLinearGroup.map (pFin E) (g₀⁻¹ * g)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[infGL_mul_finGL, mul_inv_cancel_left]`. Establish `e : g * infGL E a y = g₀ * infGL E a (GeneralLinearGroup.map (pInf E) (g₀⁻¹ * g) * y) * finGL E a (GeneralLinearGroup.map (pFin E) (g₀⁻¹ * g))` using `by conv_lhs => rw [hu]`. Rewrite using `[map_mul (infGL E a) (GeneralLinearGroup.map (pInf E) (g₀⁻¹ * g)) y]`. Simplify using `only [mul_assoc]`. Rewrite using `[← infGL_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `congrArg (fun ψ : Sm E a => ψ.1 (g₀ * infGL E a (GeneralLinearGroup.map (pInf E) (g₀⁻¹ * g) * y))) hk`. Establish `nb : ∀ g₀ : GA E a, ∀ᶠ g in 𝓝 g₀, finRep E a (GeneralLinearGroup.map (pFin E) (g₀⁻¹ * g)) φ = φ`. Introduce `g₀`. Establish `hc : Continuous fun g : GA E a => GeneralLinearGroup.map (pFin E) (g₀⁻¹ * g)` using `cF.comp (continuous_const.mul continuous_id)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hc.continuousAt.preimage_mem_nhds (hA.level.mem_nhds ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules. Use `⟨continuous_iff_continuousAt.2 fun g₀ => ?_, fun g₀ => ?_⟩` and prove the remaining obligations. Establish `e : (fun g => φ.1 g) =ᶠ[𝓝 g₀] fun g => chart φ.1 g₀ (toL (GeneralLinearGroup.map (pInf E) (g₀⁻¹ * g)).val)` using `by filter_upwards [nb g₀] with g hg`. Rewrite using `[chart_val]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `dec g₀ g hg 1` as an intermediate fact. Simplify using `only [map_one, mul_one] at this`. Conclude with `this`. Use `ContinuousAt.congr ?_ e.symm` and prove the remaining obligations. Use `ContinuousAt.comp_of_eq (contDiffAt_chart (x := oneL E a) φ.2 g₀ isUnit_one).continuousAt ?_ (by simp [oneL])` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `ht : Continuous fun x : Matrix (Fin a) (Fin a) (Cinf E) => toL x` using `continuous_id`. Conclude with `((ht.comp Units.continuous_val).comp (cI.comp (continuous_const.mul continuous_id))).continuousAt`. Take `⟨C, N, hC⟩` from `hA.growth g₀`. Establish `ha : (0 : ℝ) ≤ 1 + 2 * a` using `by positivity`. Establish `h1'` using `one_le_height (1 : GL (Fin a) (Cinf E))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨|C| * ((1 + 2 * a) * (height (1 : GL (Fin a) (Cinf E)) + 1)) ^ N, N, mul_nonneg (abs_nonneg C) (pow_nonneg (mul_nonneg ha (by linarith)) N), ?_⟩` and prove the remaining obligations. Establish `hh : ∀ᶠ g in 𝓝 g₀, height (GeneralLinearGroup.map (pInf E) (g₀⁻¹ * g)) < height (1 : GL (Fin a) (Cinf E)) + 1`. Establish `hc : Continuous fun g : GA E a => height (GeneralLinearGroup.map (pInf E) (g₀⁻¹ * g))` using `continuous_height_inf.comp (cI.comp (continuous_const.mul continuous_id))`. Conclude with `hc.continuousAt.eventually_lt continuousAt_const (by simp)`. Use `filter_upwards [nb g₀, hh] with g hg hg' y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[dec g₀ g hg y]`. Establish `h1` using `one_le_height (GeneralLinearGroup.map (pInf E) (g₀⁻¹ * g))`. Establish `h2` using `one_le_height y`. Establish `h3` using `one_le_height (GeneralLinearGroup.map (pInf E) (g₀⁻¹ * g) * y)`. Combine the equalities or inequalities in the displayed calculation.
-
-Use `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (mul_nonneg ha (mul_nonneg (by linarith) (by linarith))) ?_ N) (abs_nonneg C)` and prove the remaining obligations. Rewrite using `[← mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hg'.le ha) (by linarith)`. Use `_ = _ := by rw [mul_pow]; ring`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAutForm_continuous_locModerate {φ : Sm E a} (hA : IsAutForm φ) : Continuous φ.1 ∧ IsLocModerate φ.1 := by
   have cI : Continuous fun g : GA E a => GeneralLinearGroup.map (pInf E) g := continuous_mapGL continuous_pInf_ad
@@ -156,19 +154,17 @@ def regSpan : Submodule ℂ (GA E a → ℂ) where
     exact mul_le_mul_of_nonneg_left (h y) (norm_nonneg _)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_regSpan {π : CuspSub E a} {F : GA E a → ℂ} :
     F ∈ regSpan π ↔ F ∈ rspan π ∧ Continuous F ∧ IsLocModerate F := Iff.rfl
 
 /- English proof (translation)
-Use `⟨rt_mem_rspan hF.1 h, hF.2.1.comp (continuous_mul_right h), fun g₀ => ?_⟩` and prove the remaining obligations. Take `⟨y₀, k, rfl⟩ : ∃ y₀ k, h = infGL E a y₀ * finGL E a k` from `⟨_, _, (infGL_mul_finGL h).symm⟩`. Take `⟨C, N, h0, e⟩` from `hF.2.2 (g₀ * finGL E a k)`. Establish `hy₀` using `one_le_height y₀`. Use `⟨C * ((1 + 2 * a) * height y₀) ^ N, N, mul_nonneg h0 (pow_nonneg (mul_nonneg (by positivity) (by linarith)) N), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ht : Tendsto (fun g => g * finGL E a k) (𝓝 g₀) (𝓝 (g₀ * finGL E a k))` using `(continuous_mul_right _).tendsto g₀`. Use `filter_upwards [ht.eventually e] with g hg z`. Establish `ex : g * infGL E a z * (infGL E a y₀ * finGL E a k) = g * finGL E a k * infGL E a (z * y₀)`. Rewrite using `[mul_assoc g (finGL E a k), ← infGL_comm, map_mul]`. Simplify using `only [mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `‖F (g * infGL E a z * (infGL E a y₀ * finGL E a k))‖ ≤ _`. Rewrite using `[ex]`. Use `(hg _).trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc C, ← mul_pow]`. Use `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (by linarith [one_le_height (z * y₀)]) ?_ N) h0` and prove the remaining obligations.
-
-Conclude with `(RapidModel.height_mul_le z y₀).trans_eq (by ring)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem rt_mem_regSpan {π : CuspSub E a} {F : GA E a → ℂ} (hF : F ∈ regSpan π) (h : GA E a) :
     (fun g => F (g * h)) ∈ regSpan π := by
@@ -190,15 +186,15 @@ theorem rt_mem_regSpan {π : CuspSub E a} {F : GA E a → ℂ} (hF : F ∈ regSp
   exact (RapidModel.height_mul_le z y₀).trans_eq (by ring)
 
 /- English proof (translation)
-Establish `hM` using `RapidModel.rspan_le_modGr π hF.1`. Use `⟨kerInf_mem_rspan hF.1 ν hk, continuous_iff_continuousAt.2 fun g₀ => ?_, fun g₀ => ?_⟩` and prove the remaining obligations. Take `⟨C, N, h0, e⟩` from `hF.2.2 g₀ show ContinuousAt (fun g => ∫ x, k x * F (g * infGL E a (γ x)) ∂ν) g₀`. Use `continuousAt_of_dominated (bound := fun x => C * (‖k x‖ * height (γ x) ^ N)) (Eventually.of_forall fun g => (RapidModel.integrable_of_modGr hM hk g).aestronglyMeasurable) ?_ ((hk.2.2 N).const_mul C) (Eventually.of_forall fun x => (continuous_const.mul (hF.2.1.comp (continuous_mul …` and prove the remaining obligations. Use `filter_upwards [e] with g hg`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eventually.of_forall fun x => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨C, N, h0, e⟩` from `hF.2.2 g₀`. Use `⟨C * (1 + 2 * a) ^ N * ∫ x, ‖k x‖ * height (γ x) ^ N ∂ν, N, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_nonneg (by positivity) (integral_nonneg fun x => ?_)` and prove the remaining obligations. Use `one_le_height (γ x)` as an intermediate fact. Check the signs of the components of the expression. Use `filter_upwards [e] with g hC z`. Rewrite using `[kerInf]`.
+Establish an intermediate fact. Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Use `norm_integral_le_of_norm_le ((hk.2.2 N).const_mul _) (Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, mul_assoc g, ← map_mul]`. Establish `h1` using `(hC (z * γ x)).trans (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (by linarith [one_le_height (z * γ x)]) (RapidModel.height_mul_le z (γ x)) N) h0)`. Use `(mul_le_mul_of_nonneg_left h1 (norm_nonneg _)).trans_eq ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[mul_pow, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by rw [integral_const_mul]; ring`.
+A detailed English derivation is pending.
 -/
 theorem kerInf_mem_regSpan {π : CuspSub E a} {F : GA E a → ℂ} (hF : F ∈ regSpan π) {X : Type} [MeasurableSpace X]
     (ν : Measure X) [SFinite ν] {k : X → ℂ} {γ : X → GL (Fin a) (Cinf E)} (hk : IsRapidInf ν k γ) :
@@ -234,9 +230,9 @@ theorem kerInf_mem_regSpan {π : CuspSub E a} {F : GA E a → ℂ} (hF : F ∈ r
         _ = _ := by rw [integral_const_mul]; ring
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.CompactUniformHeightBound.compact_uniform_bound`. Consider the case `exact _root_.GlobalTheory.CompactUniformHeightBound.compact_uniform_bound`. Consider the case `(apply _root_.GlobalTheory.CompactUniformHeightBound.compact_uniform_bound <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.CompactUniformHeightBound.compact_uniform_bound <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.CompactUniformHeightBound.compact_uniform_bound <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.CompactUniformHeightBound.compact_uniform_bound ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem IsLocModerate.bound_of_isCompact {F : GA E a → ℂ} (hF : IsLocModerate F) {K : Set (GA E a)}
     (hK : IsCompact K) :
@@ -250,7 +246,7 @@ theorem IsLocModerate.bound_of_isCompact {F : GA E a → ℂ} (hF : IsLocModerat
   | (intros; exact _root_.GlobalTheory.CompactUniformHeightBound.compact_uniform_bound ..)
 
 /- English proof (translation)
-The claim follows from `locSpan_le (mem_regSpan.2 ⟨mem_rspan hφ, isAutForm_continuous_locModerate (π.cusp φ hφ).1⟩) (fun _ hF h _ => rt_mem_regSpan hF h) fun _ hF _ _ ν _ _ _ hk => kerInf_mem_regSpan hF ν hk`.
+A detailed English derivation is pending.
 -/
 theorem locSpan_le_regSpan {π : CuspSub E a} {φ : Sm E a} (hφ : φ ∈ π.V) (S : Finset (HeightOneSpectrum (𝓞 E))) :
     locSpan S φ.1 ≤ regSpan π :=
@@ -262,7 +258,7 @@ end GlobalTheory.JSW.MirSemi
 open NumberField IsDedekindDomain GlobalTheory.CuspRep Formalism.UG GlobalTheory.LFun Matrix MeasureTheory in
 
 /- English proof (translation)
-Introduce `E _ _ _ a S π φ hφ F hF`. Establish `hG` using `GlobalTheory.JSW.MirSemi.locSpan_le_regSpan hφ S hF`. Use `⟨hG.2.1, fun K hK => ?_⟩` and prove the remaining obligations. Take `⟨C, N, -, h⟩` from `hG.2.2.bound_of_isCompact hK`. Conclude with `⟨C, N, h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.JSW.MirSemi.locSpan_continuous_moderate :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E)))

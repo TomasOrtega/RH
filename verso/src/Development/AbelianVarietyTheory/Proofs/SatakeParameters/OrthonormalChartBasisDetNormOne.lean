@@ -10,7 +10,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.TwV.DelA
 
 /- English proof (translation)
-Substitute `hT` using the available equality. Substitute `h` using the available equality. Conclude with `⟨β, rfl⟩`.
+Substitute using the available equality. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem castSt_lb {D : D7} {u : D.what₂.Word} {C C' : ColumnChain D.R D.what₂.Tau (D.hcW u)} (h : C = C') {i : ℕ} {hi : i ≤ D.R.m}
     (S : GlobalTheory.TwU.StepCharts C i hi) (β : S.Ch) (T : GlobalTheory.TwU.StepCharts C' i hi) (hT : T = castSt h S) :
@@ -20,13 +20,13 @@ theorem castSt_lb {D : D7} {u : D.what₂.Word} {C C' : ColumnChain D.R D.what�
   exact ⟨β, rfl⟩
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S hPos ι hι j hj a τ`. Establish `hU` using `GlobalTheory.T.local_space_gram_transform S hPos ι hι j hj`. Establish `hO` using `(bAt_orth_lev S j hj a).1`. Establish `e : (uB J j hj a).1.det = (J.A.crd j hj).1.det * (bAt J j hj a).1.det`. Simplify using `[uB, Matrix.det_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Consider the cases of `j with`. Consider the case `zero`. Take `⟨c⟩` from `Formalism.MainNotions.G.KAat.cl_nonempty J.one a`. Use `hU ((J.St 0 hj).chOf (J.e0 c)) (bAt J 0 hj a) hO (fun v => ?_) τ` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[(J.lev0 _).1]`. Conclude with `J.lb0 v`. Consider the case `succ j`. Take `⟨β, hβ⟩` from `castSt_lb (X.onCh j hj) (GlobalTheory.TwU.StepCharts.ofStepIn (I.at' j hj).st) ((I.at' j hj).st.eC.symm a).1 _ (J.st j hj)`. Use `hU β (bAt J (j + 1) hj a) hO (fun v => ?_) τ` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hβ]`. Establish `h1` using `J.lbB j hj ((I.at' j hj).st.eC.symm a).1 v`. Rewrite `h1` using `[J.iw j hj _ v]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uB_det_unit : AllSites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S => S.Pos → ∀ ι : ℂ →+* ℂ_[D.what₂.places.resChar w], (∀ z : TaylorLogMetric.Qbar, ι z = S.lam z) → ∀ j (hj : j ≤ D.R.m) (a : Lv.comp j) τ, ‖ι (embT D τ (uB J j hj a).1.det)‖ = 1) := by
   intro D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S hPos ι hι j hj a τ

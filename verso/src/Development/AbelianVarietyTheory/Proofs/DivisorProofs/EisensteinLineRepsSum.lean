@@ -20,41 +20,37 @@ noncomputable section
 namespace GlobalTheory.EisMidHt
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ n J r X Y L a h hS Yr hY s hs`. Establish `hS'` using `hS`. Take `⟨hCM, hUn, hND, hn4, hW, hA, hI⟩` from `hS`. Establish `hnn : ∀ {k : ℕ} (L' : Submodule (𝓞 E) (Fin k → E)) (a' : GL (Fin k) (AF F ⊗[F] E)) u, 0 ≤ GlobalTheory.EisMidHt.ht L' a' u` using `fun L' a' u => mul_nonneg (finprod_nonneg fun _ => NNReal.coe_nonneg _) (Finset.prod_nonneg fun _ _ => pow_nonneg (norm_nonneg _) _)`. Establish `hinj : ∀ {k : ℕ}, Function.Injective (GlobalTheory.EisMidHt.adVec F : (Fin k → E) → Fin k → AF F ⊗[F] E)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k u v huv`. Use function extensionality and compare the values at `i`. Conclude with `Algebra.TensorProduct.includeRight_injective (AdeleRing.algebraMap_injective (𝓞 F) F) (congrFun huv i)`. Consider the cases of `r with`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact.
 
-Establish `hE0 : Yr = ∅`. Use extensionality with `y`. Simplify using `only [Set.mem_empty_iff_false, iff_false]`. Introduce `hy`. Take `⟨h0, hyy, hx, hyv⟩` from `hY.1 y hy`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h0` to reduce the goal to its premises. Use `hW.aniso y ?_ ?_ hyy` and prove the remaining obligations. Use function extensionality and compare the values at `i fin_cases i`. Simplify using `[hE, Formalism.UG.hform, Matrix.mulVec, dotProduct, Matrix.mul_apply, Formalism.UG.cT, Finset.sum_mul, GlobalTheory.EisMidHt.firstColumn] at hx ⊢`. Rewrite using `[Finset.sum_comm]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `hx`. Use function extensionality and compare the values at `i fin_cases i`. Simplify using `[hE, Formalism.UG.hform, Matrix.mulVec, dotProduct, Matrix.mul_apply, Formalism.UG.cT, Finset.sum_mul, GlobalTheory.EisMidHt.firstColumn] at hyv ⊢`. Rewrite using `[Finset.sum_comm]`. Conclude with `hyv`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. Treat this case separately.
 
-Substitute `hE0` using the available equality. Simplify using the standard rewrite rules. Consider the case `succ r`. Take `⟨m, ι, J₀, X₀, Y₀, L₀, a₀, hm, hND₀, hW₀, hA₀, hh, hsurj, hht⟩` from `GlobalTheory.T.wittFrame_lattice_adapted_basis F E σ n J r X Y L a hCM hUn hND hW hA`. Take `⟨h₀, hI₀⟩` from `GlobalTheory.T.iwasawa_height_adapted_lattice F E σ m J₀ r X₀ Y₀ L₀ a₀ hCM hUn hND₀ hW₀ hA₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨T, hT⟩` from `GlobalTheory.T.exists_coset_representatives_adelic_line_stabilizer F E σ m J₀ (col0 X₀)`. Take `⟨hpos, hid⟩` from `GlobalTheory.T.iwasawa_height_adapted F E σ m J₀ r X₀ Y₀ L₀ a₀ h₀ hCM hUn hND₀ hW₀ hA₀ hI₀`. Take `⟨Eis, c, h1, -⟩` from `hP F E σ hCM hUn m J₀ hND₀ r X₀ Y₀ hW₀ (col0 X₀) (col0 Y₀) rfl rfl L₀ a₀ hA₀ h₀ hI₀.1 hI₀.2`. Establish `hmR : (m : ℝ) + 2 = n` using `by exact_mod_cast hm`. Establish `hsum` using `h1 T hT ((s : ℂ) - ((m : ℂ) - 1) / 2) (by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Simplify using the standard rewrite rules.
 
-Simplify using `only [Complex.sub_re, Complex.ofReal_re, Complex.div_re, Complex.natCast_re, Complex.one_re, Complex.natCast_im, Complex.one_im, Complex.sub_im]`. Evaluate the numerical expressions. Use the proof step `linarith) 1`. Simplify using `only [mul_one, sub_add_cancel] at hsum`. Use `set H₀ := GlobalTheory.EisMidHt.ht L₀ a₀ (GlobalTheory.EisMidHt.adVec F (GlobalTheory.EisMidHt.firstColumn X₀))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hpos0 : ∀ g : GAd σ J₀, 0 < h₀ g` using `fun g => by`. Establish `e` using `hid g`. Establish `h2` using `hnn L₀ a₀ ((matHom _ σ J₀ g⁻¹).1 *ᵥ GlobalTheory.EisMidHt.adVec F (GlobalTheory.EisMidHt.firstColumn X₀))`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: h₀ g * GlobalTheory.EisMidHt.ht L₀ a₀ ((matHom _ σ J₀ g⁻¹).1 *ᵥ GlobalTheory.EisMidHt.adVec F (GlobalTheory.EisMidHt.firstColumn X₀)) ≤ 0` using `mul_nonpos_of_nonpos_of_nonneg hc h2`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsR : Summable (fun t : T => h₀ t.1.1 ^ s)`. Establish `e : (fun t : T => ((h₀ t.1.1 : ℂ) ^ (s : ℂ))) = fun t => ((h₀ t.1.1 ^ s : ℝ) : ℂ)`. Use function extensionality and compare the values at `fun t => (Complex.ofReal_cpow (hpos0 _).le _).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hsum` using `[e]`. Conclude with `Complex.summable_ofReal.1 hsum.summable`. Establish `key : ∀ y : Yr, ∃ t : T, GlobalTheory.EisMidHt.ht L a (GlobalTheory.EisMidHt.adVec F y.1) * h₀ t.1.1 = H₀ ∧ ∃ c : E, c ≠ 0 ∧ ∃ u, ι u = y.1 ∧ (matHom _ σ J₀ (t.1 : GAd σ J₀)⁻¹).1 *ᵥ GlobalTheory.EisMidHt.adVec F (GlobalTheory.EisMidHt.firstColumn X₀) = GlobalTheory.EisMidHt.adVec …`. Introduce `y`. Take `⟨h0, hyy, hx, hyv⟩` from `hY.1 y.1 y.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨u, hu⟩` from `hsurj y.1 hx hyv`. Establish `hu0 : u ≠ 0` using `by rintro rfl; exact h0 (by rw [← hu, map_zero])`. Establish `huu : hE σ J₀ u u = 0` using `by rw [hh, hu]; exact hyy`. Take `⟨t, htT, c, hc, he⟩` from `GlobalTheory.T.wittFrame_line_coset_representatives F E σ m J₀ r X₀ Y₀ hCM hND₀ hW₀ T hT u hu0 huu`. Use `⟨⟨t, htT⟩, ?_, c, hc, u, hu, he⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e1` using `hid t.1`. Rewrite `e1` using `[he, hht, map_smul, hu, GlobalTheory.T.eisenstein_height_smul_invariant F E σ n J (r + 1) X Y L a h hS' c hc]`. Rewrite using `[mul_comm]`. Conclude with `e1`. Use `choose f hf1 hf2 using key`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfinj : Function.Injective f`. Introduce `y y' hyy'`. Take `⟨c, hc, u, hu, he⟩` from `hf2 y`. Take `⟨c', hc', u', hu', he'⟩` from `hf2 y'`. Rewrite `he` using `[hyy', he']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `congrArg ι (hinj he)`. Rewrite `e2` using `[map_smul, map_smul, hu, hu']`. Apply `Subtype.ext` to reduce the goal to its premises. Use `hY.2.1 y.1 y.2 y'.1 y'.2 (c⁻¹ * c') ?_` and prove the remaining obligations. Rewrite using `[mul_smul, e2, smul_smul, inv_mul_cancel₀ hc, one_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hterm : ∀ y : Yr, ENNReal.ofReal (GlobalTheory.EisMidHt.ht L a (GlobalTheory.EisMidHt.adVec F y.1) ^ (-s)) = ENNReal.ofReal (H₀ ^ (-s)) * ENNReal.ofReal (h₀ (f y).1.1 ^ s)`. Introduce `y`. Establish `hp` using `hpos0 (f y).1.1`. Establish `e : GlobalTheory.EisMidHt.ht L a (GlobalTheory.EisMidHt.adVec F y.1) = H₀ / h₀ (f y).1.1`. Rewrite using `[eq_div_iff hp.ne']`.
-
-Conclude with `hf1 y`. Rewrite using `[e, Real.div_rpow hpos.le hp.le, Real.rpow_neg hp.le, div_eq_mul_inv, inv_inv, ENNReal.ofReal_mul (Real.rpow_nonneg hpos.le _)]`. Combine the equalities or inequalities in the displayed calculation. Use `ENNReal.mul_lt_top ENNReal.ofReal_lt_top ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_tsum_of_nonneg (fun t => Real.rpow_nonneg (hpos0 _).le _) hsR]`.
-
-Conclude with `ENNReal.ofReal_lt_top`.
+A detailed English derivation is pending.
 -/
 theorem midLines_sum_rpow_lt_top : GlobalTheory.Published.EisensteinIsotropicLine → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E) (L : Submodule (𝓞 E) (Fin n → E))

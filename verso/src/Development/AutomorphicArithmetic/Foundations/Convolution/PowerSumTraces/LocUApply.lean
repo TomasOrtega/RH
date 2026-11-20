@@ -22,9 +22,9 @@ Both sides reduce to the same expression.
 theorem locU_apply (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] (w : Pl K) (g : Gw n w) : locU μ w g = rhoL μ w g := rfl
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `only [mem_fixU, fixL, fixF, Submodule.mem_iInf, LinearMap.mem_eqLocus, ContinuousLinearMap.coe_coe, LinearMap.id_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `h _ ⟨u, hu, rfl⟩`. Conclude with `h u hu`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h u hu`. Conclude with `h _ (Subgroup.mem_map_of_mem _ hu)`.
+A detailed English derivation is pending.
 -/
 theorem fixU_locU (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] (w : Pl K) (J : Subgroup (Gw n w)) :
     fixU (locU μ w) J = fixL μ w J := by

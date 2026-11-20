@@ -20,7 +20,7 @@ variable {F₁ F₂ : Type} [Field F₁] [Field F₂] (e : F₁ ≃+* F₂)
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Unfold `IsMultiHomog IsWeightedHomogeneous`. Simplify using `only [coeff_map, ne_eq, RingHom.coe_coe, EmbeddingLike.map_eq_zero_iff]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem isMultiHomog_map_iff (f : MRing ι F₁) (b : K → ℕ) :
     IsMultiHomog (map (e : F₁ →+* F₂) f) b ↔ IsMultiHomog f b := by
@@ -43,9 +43,9 @@ theorem quotEquiv_mk (P : Ideal (MRing ι F₁)) (f : MRing ι F₁) :
 omit [Fintype K] [DecidableEq K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Take `⟨f, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Establish `h₁ : r • Ideal.Quotient.mk P f = Ideal.Quotient.mk P (C r * f)`. Rewrite using `[← Ideal.Quotient.mkₐ_eq_mk F₁, ← map_smul, smul_eq_C_mul]`. Establish `h₂ : e r • Ideal.Quotient.mk (P.map (map (e : F₁ →+* F₂))) (map (e : F₁ →+* F₂) f) = Ideal.Quotient.mk (P.map (map (e : F₁ →+* F₂))) (C (e r) * map (e : F₁ →+* F₂) f)`. Rewrite using `[← Ideal.Quotient.mkₐ_eq_mk F₂, ← map_smul, smul_eq_C_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h₁, quotEquiv_mk, quotEquiv_mk, h₂, map_mul, map_C]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem quotEquiv_smul (P : Ideal (MRing ι F₁)) (r : F₁) (x : MRing ι F₁ ⧸ P) :
     quotEquiv e P (r • x) = e r • quotEquiv e P x := by
@@ -61,7 +61,7 @@ theorem quotEquiv_smul (P : Ideal (MRing ι F₁)) (r : F₁) (x : MRing ι F₁
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Take `⟨f, hf, rfl⟩` from `Submodule.mem_map.1 hx`. Use `Submodule.mem_map.2 ⟨map (e : F₁ →+* F₂) f, ?_, rfl⟩` and prove the remaining obligations. Rewrite `hf`, the goal using `[mem_weightedHomogeneousSubmodule]`. Conclude with `(isMultiHomog_map_iff e f n).2 hf`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotEquiv_mem_gradedPiece (P : Ideal (MRing ι F₁)) (n : K → ℕ) (x : MRing ι F₁ ⧸ P)
     (hx : x ∈ gradedPiece P n) : quotEquiv e P x ∈ gradedPiece (P.map (map (e : F₁ →+* F₂))) n := by
@@ -71,15 +71,15 @@ theorem quotEquiv_mem_gradedPiece (P : Ideal (MRing ι F₁)) (n : K → ℕ) (x
   exact (isMultiHomog_map_iff e f n).2 hf
 
 /- English proof (translation)
-Set `j₀ : gradedPiece P n →+ gradedPiece (P.map (map (e : F₁ →+* F₂))) n` to `{ toFun := fun x => ⟨quotEquiv e P x.1, quotEquiv_mem_gradedPiece e P n x.1 x.2⟩ map_zero' := Subtype.ext (map_zero (quotEquiv e P)) map_add' := fun a b => Subtype.ext (map_add (quotEquiv e P) a.1 b.1) }`. Establish `hinj : Function.Injective j₀` using `fun a b h => Subtype.ext ((quotEquiv e P).injective (congrArg Subtype.val h))`. Establish `hsurj : Function.Surjective j₀`. Introduce and unpack `⟨z, hz⟩`. Take `⟨g, hg, rfl⟩` from `Submodule.mem_map.1 hz`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `hg' : map (e.symm : F₂ →+* F₁) g ∈ weightedHomogeneousSubmodule F₁ (blockWeight ι) n`. Rewrite `hg`, the goal using `[mem_weightedHomogeneousSubmodule]`. Establish `hgg : map (e : F₁ →+* F₂) (map (e.symm : F₂ →+* F₁) g) = g` using `(mapEquiv (Σ k, ι k) e).apply_symm_apply g`. Establish `h' : IsMultiHomog (map (e : F₁ →+* F₂) (map (e.symm : F₂ →+* F₁) g)) n`. Rewrite using `[hgg]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hg`. Conclude with `(isMultiHomog_map_iff e _ n).1 h'`. Use `⟨⟨Ideal.Quotient.mk P (map (e.symm : F₂ →+* F₁) g), Submodule.mem_map.2 ⟨_, hg', rfl⟩⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `quotEquiv e P (Ideal.Quotient.mk P (map (e.symm : F₂ →+* F₁) g)) = Ideal.Quotient.mk _ g`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[quotEquiv_mk]`. Use `congr 1`. Conclude with `(mapEquiv (Σ k, ι k) e).apply_symm_apply g`. Set `j` to `AddEquiv.ofBijective j₀ ⟨hinj, hsurj⟩`. Establish `hrank` using `rank_eq_of_equiv_equiv (e : F₁ → F₂) j e.bijective (fun r m => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `quotEquiv_smul e P r m)`. Unfold `Module.finrank`. Rewrite using `[hrank]`.
+A detailed English derivation is pending.
 -/
 theorem finrank_gradedPiece_map (P : Ideal (MRing ι F₁)) (n : K → ℕ) :
     Module.finrank F₂ (gradedPiece (P.map (map (e : F₁ →+* F₂))) n) =
@@ -115,7 +115,7 @@ theorem finrank_gradedPiece_map (P : Ideal (MRing ι F₁)) (n : K → ℕ) :
   rw [hrank]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `m`. Unfold `hilbFn`. Use `split_ifs`. Rewrite using `[finrank_gradedPiece_map]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem hilbFn_map (P : Ideal (MRing ι F₁)) :
     hilbFn (P.map (map (e : F₁ →+* F₂))) = hilbFn P := by
@@ -126,7 +126,7 @@ theorem hilbFn_map (P : Ideal (MRing ι F₁)) :
   · rfl
 
 /- English proof (translation)
-Unfold `intNum`. Rewrite using `[hilbFn_map]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem intNum_map (P : Ideal (MRing ι F₁)) {n : ℕ} (bs : Fin n → K → ℤ) :
     intNum F₂ (P.map (map (e : F₁ →+* F₂))) bs = intNum F₁ P bs := by

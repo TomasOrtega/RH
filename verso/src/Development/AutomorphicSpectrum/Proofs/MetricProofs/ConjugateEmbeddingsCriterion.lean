@@ -9,7 +9,7 @@ open GlobalTheory.CompanionTheory.Ar.Cusp.Univ
 namespace GlobalTheory.CompanionTheory.Ar.Cusp.Univ.EmbConj
 
 /- English proof (translation)
-Establish `h1 : σ τ = (starRingEnd ℂ).comp (σ τ')` using `RingHom.ext h`. Conclude with `((hσ.2 (σ τ')).1 ⟨τ', rfl⟩) ⟨τ, h1⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem not_eq_conj {E : Type} [Field E] [NumberField E] [IsCMField E] {Ψ : Type} [Fintype Ψ]
     {σ : Ψ → (𝓞 E →+* ℂ)} (hσ : IsCMFam σ) (τ τ' : Ψ) (h : ∀ a : 𝓞 E, σ τ a = star (σ τ' a)) : False := by
@@ -17,17 +17,17 @@ theorem not_eq_conj {E : Type} [Field E] [NumberField E] [IsCMField E] {Ψ : Typ
   exact ((hσ.2 (σ τ')).1 ⟨τ', rfl⟩) ⟨τ, h1⟩
 
 /- English proof (translation)
-Take `⟨s, τ⟩` from `i`. Take `⟨t, τ'⟩` from `k`. Consider the cases of `s with`. Consider the case `inl s`. Consider the cases of `t with`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Split into cases according to the possible forms of the given data.
 
-Consider the case `inl t`. Simplify using `only [emb, Sum.elim_inl, Sum.isLeft_inl, ne_eq, not_true_eq_false, and_false, iff_false]`. Introduce `h`. Conclude with `not_eq_conj hσ τ τ' h`. Consider the case `inr t`.
+Treat this case separately. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [emb, Sum.elim_inl, Sum.elim_inr, Sum.isLeft_inl, Sum.isLeft_inr, RingHom.comp_apply, starRingEnd_apply, star_star, ne_eq, Bool.true_eq_false, not_false_eq_true, and_true]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `hσ.1 (RingHom.ext h)`. Introduce and unpack `rfl a`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Treat this case separately.
 
-Both sides reduce to the same expression. Consider the case `inr s`. Consider the cases of `t with`. Consider the case `inl t`. Simplify using `only [emb, Sum.elim_inl, Sum.elim_inr, Sum.isLeft_inl, Sum.isLeft_inr, RingHom.comp_apply, starRingEnd_apply, ne_eq, Bool.false_eq_true, not_false_eq_true, and_true]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `hσ.1 (RingHom.ext fun a => star_injective (h a))`. Introduce and unpack `rfl a`. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Treat this case separately. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `inr t`. Simplify using `only [emb, Sum.elim_inr, Sum.isLeft_inr, RingHom.comp_apply, starRingEnd_apply, star_star, ne_eq, not_true_eq_false, and_false, iff_false]`. Introduce `h`. Conclude with `not_eq_conj hσ τ' τ fun a => (h a).symm`.
+A detailed English derivation is pending.
 -/
 theorem emb_eq_star_iff {E : Type} [Field E] [NumberField E] [IsCMField E] {Ψ : Type} [Fintype Ψ] {j j' : ℕ}
     (σ : Ψ → (𝓞 E →+* ℂ)) (hσ : IsCMFam σ) (i k : Ix Ψ j j') :

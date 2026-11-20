@@ -15,14 +15,14 @@ noncomputable def xPolynomial : R[X][Y] :=
   Y ^ 3 + C (C W.a₂) * Y ^ 2 + C (C W.a₄ - C W.a₁ * X) * Y + C (C W.a₆ - X ^ 2 - C W.a₃ * X)
 
 /- English proof (translation)
-Use `compute_degree!`.
+A detailed English derivation is pending.
 -/
 theorem degree_xPolynomial_lt : (C (C W.a₂) * Y ^ 2 + C (C W.a₄ - C W.a₁ * X) * Y +
     C (C W.a₆ - X ^ 2 - C W.a₃ * X) : R[X][Y]).degree < 3 := by
   compute_degree!
 
 /- English proof (translation)
-Unfold `xPolynomial`. Rewrite using `[add_assoc, add_assoc]`. Conclude with `monic_X_pow_add (by simpa [add_assoc] using degree_xPolynomial_lt W)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem monic_xPolynomial : (xPolynomial W).Monic := by
   unfold xPolynomial
@@ -30,7 +30,7 @@ theorem monic_xPolynomial : (xPolynomial W).Monic := by
   exact monic_X_pow_add (by simpa [add_assoc] using degree_xPolynomial_lt W)
 
 /- English proof (translation)
-Unfold `xPolynomial`. Use `compute_degree!`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem natDegree_xPolynomial [Nontrivial R] : (xPolynomial W).natDegree = 3 := by
   unfold xPolynomial
@@ -39,9 +39,9 @@ theorem natDegree_xPolynomial [Nontrivial R] : (xPolynomial W).natDegree = 3 := 
 abbrev XRing : Type u := AdjoinRoot (xPolynomial W)
 
 /- English proof (translation)
-Establish `h : AdjoinRoot.mk (xPolynomial W) (Y ^ 3 + C (C W.a₂) * Y ^ 2 + C (C W.a₄ - C W.a₁ * X) * Y + C (C W.a₆ - X ^ 2 - C W.a₃ * X)) = 0` using `AdjoinRoot.mk_self`. Simplify using `only [map_sub, map_add, map_mul, map_pow, AdjoinRoot.mk_X, AdjoinRoot.mk_C] at h`. Simplify using `only [WeierstrassCurve.Affine.polynomial, eval₂_sub, eval₂_add, eval₂_mul, eval₂_pow, eval₂_X, eval₂_C, coe_eval₂RingHom]`. Establish `ha : ∀ a : R, algebraMap R (XRing W) a = AdjoinRoot.of (xPolynomial W) (C a)` using `fun a => rfl`. Simplify using `only [ha]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take the linear combination `-h`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem eval₂_polynomial_XRing :
     (W.toAffine.polynomial).eval₂ (Polynomial.eval₂RingHom (algebraMap R (XRing W))
@@ -56,7 +56,7 @@ theorem eval₂_polynomial_XRing :
   linear_combination -h
 
 /- English proof (translation)
-Establish `E` using `equation_xC_yC W`. Simplify using `only [xPolynomial, eval₂_sub, eval₂_add, eval₂_mul, eval₂_pow, eval₂_X, eval₂_C, coe_eval₂RingHom]`. Take the linear combination `-E`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem eval₂_xPolynomial_coord :
     (xPolynomial W).eval₂ (Polynomial.eval₂RingHom (algebraMap R W.toAffine.CoordinateRing) (yC W))
@@ -75,18 +75,18 @@ noncomputable def ofXRing : XRing W →+* W.toAffine.CoordinateRing :=
     (xC W) (eval₂_xPolynomial_coord W)
 
 /- English proof (translation)
-Unfold `infPolynomial`. Use `compute_degree!`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem infNatDegree [Nontrivial R] : (infPolynomial W).natDegree = 3 := by
   unfold infPolynomial
   compute_degree!
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((ofXRing W).comp (toXRing W)) a = RingHom.id _ a`. Use `congr 1`. Apply `AdjoinRoot.ringHom_ext` to reduce the goal to its premises. Use extensionality with `p`. Simplify using `only [toXRing, ofXRing, RingHom.comp_apply, AdjoinRoot.lift_of, coe_eval₂RingHom, eval₂_C, RingHom.id_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `AdjoinRoot.lift _ _ (eval₂_xPolynomial_coord W) (AdjoinRoot.of _ (C p)) = _`. Rewrite using `[AdjoinRoot.lift_of]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using `only [toXRing, ofXRing, RingHom.comp_apply, AdjoinRoot.lift_of, coe_eval₂RingHom, eval₂_X, RingHom.id_apply, AdjoinRoot.lift_root]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Simplify using `[toXRing, ofXRing, yC]`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 -/
 theorem ofXRing_toXRing (a : W.toAffine.CoordinateRing) : ofXRing W (toXRing W a) = a := by
   change ((ofXRing W).comp (toXRing W)) a = RingHom.id _ a
@@ -105,11 +105,11 @@ theorem ofXRing_toXRing (a : W.toAffine.CoordinateRing) : ofXRing W (toXRing W a
   · simp [toXRing, ofXRing, yC]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((toXRing W).comp (ofXRing W)) a = RingHom.id _ a`. Use `congr 1`. Apply `AdjoinRoot.ringHom_ext` to reduce the goal to its premises. Use extensionality with `p`. Simplify using `only [toXRing, ofXRing, RingHom.comp_apply, AdjoinRoot.lift_of, coe_eval₂RingHom, eval₂_C, RingHom.id_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `AdjoinRoot.lift _ _ (eval₂_polynomial_XRing W) (AdjoinRoot.of _ (C p)) = _`. Rewrite using `[AdjoinRoot.lift_of]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using `only [toXRing, ofXRing, RingHom.comp_apply, AdjoinRoot.lift_of, coe_eval₂RingHom, eval₂_X, RingHom.id_apply, yC, AdjoinRoot.lift_root]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Simplify using `only [toXRing, ofXRing, RingHom.comp_apply, AdjoinRoot.lift_root, RingHom.id_apply, xC, AdjoinRoot.mk_C, AdjoinRoot.lift_of, coe_eval₂RingHom, eval₂_X]`.
+Simplify using the standard rewrite rules.
 -/
 theorem toXRing_ofXRing (a : XRing W) : toXRing W (ofXRing W a) = a := by
   change ((toXRing W).comp (ofXRing W)) a = RingHom.id _ a
@@ -138,7 +138,7 @@ noncomputable def xAlgEquiv : W.toAffine.CoordinateRing ≃ₐ[R] XRing W :=
     simp)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `AdjoinRoot.lift _ _ (eval₂_polynomial_XRing W) (AdjoinRoot.mk _ (C X)) = _`. Rewrite using `[AdjoinRoot.mk_C, AdjoinRoot.lift_of]`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem xAlgEquiv_xC : xAlgEquiv W (xC W) = AdjoinRoot.root (xPolynomial W) := by
   change AdjoinRoot.lift _ _ (eval₂_polynomial_XRing W) (AdjoinRoot.mk _ (C X)) = _
@@ -146,7 +146,7 @@ theorem xAlgEquiv_xC : xAlgEquiv W (xC W) = AdjoinRoot.root (xPolynomial W) := b
   simp
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `AdjoinRoot.lift _ _ (eval₂_polynomial_XRing W) (AdjoinRoot.root _) = _`. Rewrite using `[AdjoinRoot.lift_root]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem xAlgEquiv_yC : xAlgEquiv W (yC W) = AdjoinRoot.of (xPolynomial W) X := by
   change AdjoinRoot.lift _ _ (eval₂_polynomial_XRing W) (AdjoinRoot.root _) = _
@@ -160,7 +160,7 @@ noncomputable def basisX : Module.Basis (Fin 3) R[X] (XRing W) :=
   (AdjoinRoot.powerBasis' (monic_xPolynomial W)).basis.reindex (finCongr (natDegree_xPolynomial W))
 
 /- English proof (translation)
-Rewrite using `[basisX, Module.Basis.reindex_apply, PowerBasis.basis_eq_pow]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem basisX_apply (i : Fin 3) : basisX W i = AdjoinRoot.root (xPolynomial W) ^ (i : ℕ) := by
   rw [basisX, Module.Basis.reindex_apply, PowerBasis.basis_eq_pow]
@@ -170,7 +170,7 @@ noncomputable def basisI : Module.Basis (Fin 3) R[X] (InfChart W) :=
   (AdjoinRoot.powerBasis' (monic_infPolynomial W)).basis.reindex (finCongr (infNatDegree W))
 
 /- English proof (translation)
-Rewrite using `[basisI, Module.Basis.reindex_apply, PowerBasis.basis_eq_pow]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem basisI_apply (i : Fin 3) : basisI W i = xI W ^ (i : ℕ) := by
   rw [basisI, Module.Basis.reindex_apply, PowerBasis.basis_eq_pow]

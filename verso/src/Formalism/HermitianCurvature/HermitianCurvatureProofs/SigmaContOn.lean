@@ -53,17 +53,17 @@ Both sides reduce to the same expression.
 theorem uh_eq (k r : ℕ) : PI.UpqRep.UH (PI.UpqRep.Hpk k r) = Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r) := rfl
 
 /- English proof (translation)
-Take `⟨P, ⟨⟨hPu, hPJ⟩, hPunit⟩, hDS⟩` from `hσ`. Establish `hc` using `hDS.2.2.1.2.2 v`. Establish `hdet : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).mp hPu`. Establish `hmaps : Set.MapsTo (fun g : Mx k r => P * g * P⁻¹) (Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)) (PI.UpqRep.UJset ε)`. Introduce `g hg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show (P * g * P⁻¹)ᴴ * PI.UpqRep.Jm ε * (P * g * P⁻¹) = PI.UpqRep.Jm ε`. Establish `hg' : gᴴ * Formalism.QuantumDeterminants.Hpk k r * g = Formalism.QuantumDeterminants.Hpk k r` using `hg`. Establish `hJ : (P⁻¹)ᴴ * Formalism.QuantumDeterminants.Hpk k r * P⁻¹ = PI.UpqRep.Jm ε`. Rewrite using `[← hpk_eq, ← hPJ]`. Establish `h1 : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P hdet`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (P⁻¹)ᴴ * Pᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, h1, Matrix.conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation. Establish `hPP : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul P hdet`. Establish `hPPh : Pᴴ * (P⁻¹)ᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, hPP, Matrix.conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hJ]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = (P⁻¹)ᴴ * (gᴴ * Formalism.QuantumDeterminants.Hpk k r * g) * P⁻¹ := by`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc Pᴴ (P⁻¹)ᴴ, hPPh, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_assoc P⁻¹ P, hPP, Matrix.one_mul]`. Use `_ = PI.UpqRep.Jm ε := by rw [hg', hJ]`. Establish `hcont : Continuous (fun g : Mx k r => P * g * P⁻¹)` using `by fun_prop`. Use `hc.comp hcont.continuousOn hmaps` as an intermediate fact. Use `this.congr ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Introduce `g _`. Use `show σ g v = σ (P⁻¹ * (P * g * P⁻¹) * P) v`. Use `congr 2`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul P hdet, Matrix.one_mul, Matrix.mul_assoc, Matrix.nonsing_inv_mul P hdet, Matrix.mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem sigma_contOn {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ}
     {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {σ : Mx k r → (H →L[ℂ] H)}

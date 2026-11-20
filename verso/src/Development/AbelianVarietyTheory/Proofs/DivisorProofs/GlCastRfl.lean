@@ -15,7 +15,7 @@ def glCast {n m : ℕ} (h : n = m) : GL (Fin n) k →* GL (Fin m) k :=
   Units.map (Matrix.reindexAlgEquiv k k (finCongr h)).toMonoidHom
 
 /- English proof (translation)
-Use extensionality with `g i j`. Simplify using `[glCast]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem glCast_rfl (n : ℕ) : glCast k (rfl : n = n) = MonoidHom.id _ := by
   ext g i j

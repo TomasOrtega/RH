@@ -6,11 +6,11 @@ namespace GlobalTheory.HoweR
 variable {ι M : Type} [Fintype ι] [DecidableEq ι] [AddCommGroup M] [Module ℂ M]
 
 /- English proof (translation)
-Establish `h1` using `hF b a j k`. Establish `h2` using `hF a b j k`. Establish `e1 : F b a * F j k = F j k * F b a + ((if a = j then F b k else 0) - (if k = b then F j a else 0))`. Rewrite using `[← h1]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `e2 : F a b * F j k = F j k * F a b + ((if b = j then F a k else 0) - (if k = a then F j b else 0))`. Rewrite using `[← h2]`. Normalize the expressions using the abelian group laws. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e1, mul_add, mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = _ := by rw [e2]; simp only [add_mul, sub_mul, mul_sub, mul_assoc]; abel`.
+A detailed English derivation is pending.
 -/
 theorem casDrop_term (F : ι → ι → Module.End ℂ M) (hF : IsGl F) (a b j k : ι) :
     F a b * F b a * F j k = F j k * (F a b * F b a) + (F a b * (if a = j then F b k else 0) - F a b * (if k = b then F j a else 0))
@@ -27,29 +27,29 @@ theorem casDrop_term (F : ι → ι → Module.End ℂ M) (hF : IsGl F) (a b j k
     _ = _ := by rw [e2]; simp only [add_mul, sub_mul, mul_sub, mul_assoc]; abel
 
 /- English proof (translation)
-Establish `hjk : j ≠ k` using `by intro h; rw [h, hk] at hj; exact Bool.noConfusion hj`. Establish `sw : ∀ a, F a k * F j a = F j a * F a k - F j k`. Introduce `a`. Establish `h` using `hF a k j a`. Rewrite `h` using `[if_neg (Ne.symm hjk), if_pos rfl]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `cnt : ∀ c : Bool, (∑ a, if s a = c then F a k * F j a else 0) = (∑ a, if s a = c then F j a * F a k else 0) - ((Finset.univ.filter fun a => s a = c).card : ℂ) • F j k`. Introduce `c`. Establish `: (∑ a, if s a = c then F a k * F j a else 0) = ∑ a, ((if s a = c then F j a * F a k else 0) - (if s a = c then F j k else 0))`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : s a = c`. Simplify using `only [if_pos h, sw]`. Simplify using `[h]`. Rewrite using `[this, Finset.sum_sub_distrib]`. Use `congr 1`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← Finset.sum_filter, Finset.sum_const, Nat.cast_smul_eq_nsmul]`. Establish `S1 : ∑ a, ∑ b, (if s a = s b then F a b * (if a = j then F b k else 0) else 0) = ∑ b, if s b = false then F j b * F b k else 0`. Rewrite using `[Finset.sum_eq_single j]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Apply the tactic sequence `rw [hj]; by_cases h : s b <;> simp [h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `a _ ha`. Simplify using `[ha]`. Simplify using the standard rewrite rules. Establish `S2 : ∑ a, ∑ b, (if s a = s b then F a b * (if k = b then F j a else 0) else 0) = ∑ a, if s a = true then F a k * F j a else 0`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_eq_single k]`. Rewrite using `[hk]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Ne.symm hb]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `S3 : ∑ a, ∑ b, (if s a = s b then (if b = j then F a k else 0) * F b a else 0) = ∑ a, if s a = false then F a k * F j a else 0`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single j]`. Rewrite using `[hj]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[hb]`. Simplify using the standard rewrite rules. Establish `S4 : ∑ a, ∑ b, (if s a = s b then (if k = a then F j b else 0) * F b a else 0) = ∑ b, if s b = true then F j b * F b k else 0`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_eq_single k]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Apply the tactic sequence `rw [hk]; by_cases h : s b <;> simp [h]`. Introduce `a _ ha`. Simplify using `[Ne.symm ha]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `expand : ∀ a b, (if s a = s b then F a b * F b a else 0) * F j k = (if s a = s b then F j k * (F a b * F b a) else 0) + ((if s a = s b then F a b * (if a = j then F b k else 0) else 0) - (if s a = s b then F a b * (if k = b then F j a else 0) else 0)) + ((if s a = s b then (if b …`. Introduce `a b`. Distinguish the cases in `h : s a = s b`. Simplify using `only [if_pos h]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Conclude with `casDrop_term F hF a b j k`. Simplify using `[h]`. Unfold `cas`. Simplify using `only [Finset.sum_mul, expand, Finset.sum_add_distrib, Finset.sum_sub_distrib]`. Rewrite using `[S1, S2, S3, S4, cnt, cnt]`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mul_sum, mul_ite, mul_zero]`. Simplify using `only [two_smul, sub_smul]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem cas_mul_off (s : ι → Bool) (F : ι → ι → Module.End ℂ M) (hF : IsGl F) (j k : ι) (hj : s j = false)
     (hk : s k = true) :
@@ -125,23 +125,21 @@ end GlobalTheory.HoweR
 namespace GlobalTheory.HoweR
 
 /- English proof (translation)
-Introduce `ι M _ _ _ _ s F α β x ω y hF hq hy0 hyA hω j hj`. Use `set r : ℂ := ((Finset.univ.filter fun a => s a = true).card : ℂ)`. Use `set r' : ℂ := ((Finset.univ.filter fun a => s a = false).card : ℂ)`. Use `set T : ι → Module.End ℂ M := fun b => ∑ c, if s c = true then F j c * F c b else 0 with hT`. Establish `quad : ∀ b, s b = true → (∑ c, if s c = false then F j c * F c b else 0) = α • F j b - T b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `b hb`. Establish `hjb : j ≠ b` using `by intro h; rw [h, hb] at hj; exact Bool.noConfusion hj`. Establish `h` using `hq j b`. Simplify using `only [qop, if_neg hjb, sub_zero] at h`. Establish `split : (∑ c, F j c * F c b) = (∑ c, if s c = false then F j c * F c b else 0) + T b`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[hT, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Apply the tactic sequence `cases s c <;> simp`. Rewrite `h` using `[split]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Establish `term : ∀ b, cas s F (F j b (y b)) = (ω + 2 * α + r - r') • F j b (y b) - (4 : ℂ) • T b (y b)`. Introduce `b`. Consider the cases of `hb : s b`. Simplify using `[hT, hy0 b hb]`. Establish `h` using `cas_mul_off s F hF j b hj hb`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[quad b hb]`. Establish `h'` using `congrArg (fun L : Module.End ℂ M => L (y b)) h`. Simplify using `only [Module.End.mul_apply, LinearMap.add_apply, LinearMap.sub_apply, LinearMap.smul_apply] at h'`. Rewrite using `[h', hω b, map_smul]`. Use `module`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `sumT : (∑ b, T b (y b)) = x • ∑ b, F j b (y b)`. Establish `: ∀ b, T b (y b) = ∑ c, if s c = true then F j c (F c b (y b)) else 0`. Introduce `b`. Simplify using `only [hT, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `split_ifs <;> rfl`. Simplify using `only [this]`. Rewrite using `[Finset.sum_comm, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Consider the cases of `hc : s c`.
+Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hy0 c hc]`. Simplify using `only [if_true]`. Rewrite using `[← map_sum, hyA c hc, map_smul]`. Rewrite using `[map_sum]`. Simplify using `only [term]`.
-
-Rewrite using `[Finset.sum_sub_distrib, ← Finset.smul_sum, ← Finset.smul_sum, sumT, smul_smul, ← sub_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cas_drop : ∀ (ι M : Type) [Fintype ι] [DecidableEq ι] [AddCommGroup M] [Module ℂ M] (s : ι → Bool)
     (F : ι → ι → Module.End ℂ M), ∀ (α β x ω : ℂ) (y : ι → M), IsGl F → (∀ a b, qop F α β a b = 0) →

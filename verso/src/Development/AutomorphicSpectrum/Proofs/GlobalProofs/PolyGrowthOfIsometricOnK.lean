@@ -12,7 +12,7 @@ namespace GlobalTheory.CompanionTheory.Hypotheses₂.HCA.PolyGrowth
 variable {n : ℕ} {ε : Fin n → Bool}
 
 /- English proof (translation)
-Unfold `wt`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, conjTranspose_apply, Complex.re_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def, Complex.conj_mul', ← Complex.ofReal_pow, Complex.ofReal_re]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem wt_eq_sum (g : Matrix (Fin n) (Fin n) ℂ) : wt g = ∑ i, ∑ j, ‖g i j‖ ^ 2 := by
   unfold wt
@@ -22,7 +22,7 @@ theorem wt_eq_sum (g : Matrix (Fin n) (Fin n) ℂ) : wt g = ∑ i, ∑ j, ‖g i
   rw [Complex.star_def, Complex.conj_mul', ← Complex.ofReal_pow, Complex.ofReal_re]
 
 /- English proof (translation)
-Rewrite using `[wt_eq_sum]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem entry_sq_le_wt (g : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) : ‖g i j‖ ^ 2 ≤ wt g := by
   rw [wt_eq_sum]
@@ -32,11 +32,11 @@ theorem entry_sq_le_wt (g : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) : ‖g i j
         (fun _ _ => Finset.sum_nonneg fun _ _ => by positivity) (Finset.mem_univ i)
 
 /- English proof (translation)
-Establish `h` using `congrFun (congrFun hg a) a`. Apply the tactic sequence `have hd : ∀ i, ‖(if ε i = true then (1 : ℂ) else -1)‖ = 1 := fun i => by split_ifs <;> simp`. Establish `h1 : ‖Jm ε a a‖ = 1`. Rewrite using `[Jm, Matrix.diagonal_apply_eq]`. Conclude with `hd a`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (gᴴ * Jm ε * g) a a = ∑ i, star (g i a) * (if ε i = true then (1 : ℂ) else -1) * g i a`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Jm, Matrix.mul_diagonal, conjTranspose_apply]`. Rewrite using `[← h1, ← h, e, wt_eq_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul, hd i, norm_star, mul_one, sq]`. Use `_ ≤ ∑ i, ∑ j, ‖g i j‖ ^ 2 := Finset.sum_le_sum fun i _ => Finset.single_le_sum (f := fun j => ‖g i j‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ a)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_le_wt {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) (a : Fin n) : 1 ≤ wt g := by
   have h := congrFun (congrFun hg a) a
@@ -57,7 +57,7 @@ theorem one_le_wt {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) (a : Fin n) 
         Finset.single_le_sum (f := fun j => ‖g i j‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ a)
 
 /- English proof (translation)
-Unfold `inUJ at *`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Jm ε := by rw [ha, hb]`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inUJ_mul {a b : Matrix (Fin n) (Fin n) ℂ} (ha : inUJ ε a) (hb : inUJ ε b) : inUJ ε (a * b) := by
   unfold inUJ at *
@@ -66,7 +66,7 @@ theorem inUJ_mul {a b : Matrix (Fin n) (Fin n) ℂ} (ha : inUJ ε a) (hb : inUJ 
     _ = Jm ε := by rw [ha, hb]
 
 /- English proof (translation)
-Establish `h : Jm ε * gᴴ * Jm ε * g = 1`. Combine the equalities or inequalities in the displayed calculation. Conclude with `⟨⟨g, Jm ε * gᴴ * Jm ε, mul_eq_one_comm.mp h, h⟩, rfl⟩`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Supply the required witnesses or components.
 -/
 theorem isUnit_of_inUJ' {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) : IsUnit g := by
   have h : Jm ε * gᴴ * Jm ε * g = 1 := by
@@ -75,11 +75,11 @@ theorem isUnit_of_inUJ' {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) : IsUn
   exact ⟨⟨g, Jm ε * gᴴ * Jm ε, mul_eq_one_comm.mp h, h⟩, rfl⟩
 
 /- English proof (translation)
-Establish `hwt : Continuous (wt : Matrix (Fin n) (Fin n) ℂ → ℝ)`. Establish `: (wt : Matrix (Fin n) (Fin n) ℂ → ℝ) = fun g => ∑ i, ∑ j, ‖g i j‖ ^ 2` using `funext wt_eq_sum`. Rewrite using `[this]`. Conclude with `continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ => ((continuous_id.matrix_elem i j).norm).pow 2`. Establish `hcl : IsClosed {h : Matrix (Fin n) (Fin n) ℂ | inUJ ε h ∧ wt h ≤ R}`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsClosed.inter (isClosed_eq ?_ continuous_const) (isClosed_le hwt continuous_const)` and prove the remaining obligations. Conclude with `(continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id`. Establish `hK : IsCompact (Set.pi Set.univ fun _ : Fin n => Set.pi Set.univ fun _ : Fin n => Metric.closedBall (0 : ℂ) (R + 1))` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall 0 _`. Use `IsCompact.of_isClosed_subset hK hcl ?_` and prove the remaining obligations. Introduce and unpack `h ⟨-, hR⟩ i - j -`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `(entry_sq_le_wt h i j).trans hR`. Rewrite using `[mem_closedBall_zero_iff]`. Use polynomial arithmetic with `[sq_nonneg (‖h i j‖ - 1), norm_nonneg (h i j)]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem isCompact_wt_le (ε : Fin n → Bool) (R : ℝ) :
     IsCompact {h : Matrix (Fin n) (Fin n) ℂ | inUJ ε h ∧ wt h ≤ R} := by
@@ -106,7 +106,7 @@ variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
 /- English proof (translation)
-Establish `hb : ∀ x : H, ∃ C, ∀ i : S, ‖π (i : Matrix (Fin n) (Fin n) ℂ) x‖ ≤ C` using `fun x => by`. Take `⟨C, hC⟩` from `hS.exists_bound_of_continuousOn ((hc x).mono hSU)`. Conclude with `⟨C, fun i => hC i i.2⟩`. Take `⟨C', hC'⟩` from `banach_steinhaus (g := fun i : S => π (i : Matrix (Fin n) (Fin n) ℂ)) hb`. Conclude with `⟨max C' 1, le_max_right _ _, fun h hh => (hC' ⟨h, hh⟩).trans (le_max_left _ _)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_bound_on_compact [CompleteSpace H] (hc : ∀ v, ContinuousOn (fun g => π g v) (UJset ε))
     {S : Set (Matrix (Fin n) (Fin n) ℂ)} (hS : IsCompact S) (hSU : S ⊆ UJset ε) :
@@ -118,11 +118,9 @@ theorem exists_bound_on_compact [CompleteSpace H] (hc : ∀ v, ContinuousOn (fun
   exact ⟨max C' 1, le_max_right _ _, fun h hh => (hC' ⟨h, hh⟩).trans (le_max_left _ _)⟩
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Use `⟨?_, fun x => ?_⟩` and prove the remaining obligations. Simplify using `[inUJ]`. Simplify using `[hrep.1]`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Consider the case `succ m ih`. Use `⟨by rw [pow_succ]; exact inUJ_mul ih.1 hh, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ, hrep.2 _ ih.1 _ hh, ContinuousLinearMap.comp_apply]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `((π h).le_opNorm x).trans (by gcongr)`.
-
-Use `_ = B ^ (m + 1) * ‖x‖ := by ring`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem pow_bound (hrep : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) π) {h : Matrix (Fin n) (Fin n) ℂ} (hh : inUJ ε h)
     {B : ℝ} (hB : 0 ≤ B) (hb : ‖π h‖ ≤ B) (m : ℕ) :
@@ -144,13 +142,13 @@ theorem pow_bound (hrep : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) π) 
 end rep
 
 /- English proof (translation)
-Use `set V : Matrix (Fin n) (Fin n) ℂ := (hL.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) with hV`. Establish `h1 : Vᴴ * V = 1` using `Matrix.mem_unitaryGroup_iff'.1 hL.eigenvectorUnitary.2`. Establish `h2 : V * Vᴴ = 1` using `Matrix.mem_unitaryGroup_iff.1 hL.eigenvectorUnitary.2`. Establish `hsp : L = V * diagonal (fun i => (hL.eigenvalues i : ℂ)) * Vᴴ`. Establish `h0` using `hL.spectral_theorem`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[Unitary.conjStarAlgAut_apply]`. Use `conv_lhs => rw [h0]`. Simplify using `only [Matrix.star_eq_conjTranspose]`. Both sides reduce to the same expression. Set `U : (Matrix (Fin n) (Fin n) ℂ)ˣ` to `⟨V, Vᴴ, h2, h1⟩`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : diagonal (fun i => ((t * hL.eigenvalues i : ℝ) : ℂ)) = t • diagonal (fun i => (hL.eigenvalues i : ℂ))`. Rewrite using `[← Matrix.diagonal_smul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : t • L = (U : Matrix (Fin n) (Fin n) ℂ) * diagonal (fun i => ((t * hL.eigenvalues i : ℝ) : ℂ)) * ((U⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)` using `by show t • L = V * _ * Vᴴ`. Rewrite using `[hd, Matrix.mul_smul, Matrix.smul_mul, ← hsp]`. Rewrite using `[hs, Matrix.exp_units_conj, Matrix.trace_units_conj, Matrix.exp_diagonal, trace_diagonal, Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.exp_def, ← Complex.exp_eq_exp_ℂ, Complex.exp_ofReal_re]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_exp_smul {L : Matrix (Fin n) (Fin n) ℂ} (hL : L.IsHermitian) (t : ℝ) :
     (NormedSpace.exp (t • L)).trace.re = ∑ i, Real.exp (t * hL.eigenvalues i) := by
@@ -179,21 +177,21 @@ theorem trace_exp_smul {L : Matrix (Fin n) (Fin n) ℂ} (hL : L.IsHermitian) (t 
   rw [Pi.exp_def, ← Complex.exp_eq_exp_ℂ, Complex.exp_ofReal_re]
 
 /- English proof (translation)
-Rewrite using `[add_smul, Matrix.exp_add_of_commute _ _ (((Commute.refl L).smul_left s).smul_right r)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exp_smul_add (L : Matrix (Fin n) (Fin n) ℂ) (s r : ℝ) :
     NormedSpace.exp (s • L) * NormedSpace.exp (r • L) = NormedSpace.exp ((s + r) • L) := by
   rw [add_smul, Matrix.exp_add_of_commute _ _ (((Commute.refl L).smul_left s).smul_right r)]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.exp_conjTranspose, conjTranspose_smul, hL, star_trivial]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exp_smul_herm {L : Matrix (Fin n) (Fin n) ℂ} (hL : Lᴴ = L) (s : ℝ) :
     (NormedSpace.exp (s • L))ᴴ = NormedSpace.exp (s • L) := by
   rw [← Matrix.exp_conjTranspose, conjTranspose_smul, hL, star_trivial]
 
 /- English proof (translation)
-Unfold `wt`. Rewrite using `[exp_smul_herm hL, exp_smul_add, show s + s = 2 * s by ring, trace_exp_smul hL]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem wt_exp_smul {L : Matrix (Fin n) (Fin n) ℂ} (hL : L.IsHermitian) (s : ℝ) :
     wt (NormedSpace.exp (s • L)) = ∑ i, Real.exp (2 * s * hL.eigenvalues i) := by
@@ -201,11 +199,11 @@ theorem wt_exp_smul {L : Matrix (Fin n) (Fin n) ℂ} (hL : L.IsHermitian) (s : �
   rw [exp_smul_herm hL, exp_smul_add, show s + s = 2 * s by ring, trace_exp_smul hL]
 
 /- English proof (translation)
-Rewrite using `[wt_exp_smul hL]`. Establish `hmr : (0 : ℝ) < m` using `by exact_mod_cast hm`. Establish `key : ∀ i, Real.exp (2 * (1 / (2 * (m : ℝ))) * hL.eigenvalues i) ≤ Real.exp 1`. Introduce `i`. Establish `h1 : Real.exp (hL.eigenvalues i) ≤ wt g`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : wt g = ∑ i, Real.exp (1 * hL.eigenvalues i)`. Rewrite using `[← trace_exp_smul hL 1, one_smul, he]`. Both sides reduce to the same expression. Rewrite using `[e]`. Simplify using `using Finset.single_le_sum (f := fun i => Real.exp (1 * hL.eigenvalues i)) (fun _ _ => (Real.exp_pos _).le) (Finset.mem_univ i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : hL.eigenvalues i ≤ Real.log (wt g)` using `(Real.le_log_iff_exp_le hw).2 h1`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Rewrite using `[show 2 * (1 / (2 * (m : ℝ))) * hL.eigenvalues i = hL.eigenvalues i / m by field_simp, div_le_one hmr]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation.
 -/
 theorem wt_root_le {g L : Matrix (Fin n) (Fin n) ℂ} (hL : L.IsHermitian) (he : NormedSpace.exp L = gᴴ * g) {m : ℕ}
     (hm : 0 < m) (hw : 0 < wt g) (hlog : Real.log (wt g) ≤ m) :
@@ -230,7 +228,7 @@ theorem wt_root_le {g L : Matrix (Fin n) (Fin n) ℂ} (hL : L.IsHermitian) (he :
 
 open scoped Matrix.Norms.L2Operator in
 /- English proof (translation)
-Rewrite using `[← CFC.log_exp A hA, ← CFC.log_exp B hB, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_exp_injective {A B : Matrix (Fin n) (Fin n) ℂ} (hA : Aᴴ = A) (hB : Bᴴ = B)
     (h : NormedSpace.exp A = NormedSpace.exp B) : A = B := by
@@ -239,35 +237,35 @@ theorem herm_exp_injective {A B : Matrix (Fin n) (Fin n) ℂ} (hA : Aᴴ = A) (h
 def signUnit (ε : Fin n → Bool) : (Matrix (Fin n) (Fin n) ℂ)ˣ := ⟨Jm ε, Jm ε, Jm_mul_self ε, Jm_mul_self ε⟩
 
 /- English proof (translation)
-The claim follows from `Matrix.exp_units_conj' (signUnit ε) A`.
+A detailed English derivation is pending.
 -/
 theorem exp_sign_conj (A : Matrix (Fin n) (Fin n) ℂ) :
     NormedSpace.exp (Jm ε * A * Jm ε) = Jm ε * NormedSpace.exp A * Jm ε :=
   Matrix.exp_units_conj' (signUnit ε) A
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mul_assoc, Jm_mul_self, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sign_sign_mul (x : Matrix (Fin n) (Fin n) ℂ) : Jm ε * (Jm ε * x) = x := by
   rw [← Matrix.mul_assoc, Jm_mul_self, Matrix.one_mul]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem left_inv_of_inUJ {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) : Jm ε * gᴴ * Jm ε * g = 1 := by
   calc Jm ε * gᴴ * Jm ε * g = Jm ε * (gᴴ * Jm ε * g) := by simp only [Matrix.mul_assoc]
     _ = 1 := by rw [hg, Jm_mul_self]
 
 /- English proof (translation)
-The claim follows from `mul_eq_one_comm.mp (left_inv_of_inUJ hg)`.
+A detailed English derivation is pending.
 -/
 theorem right_inv_of_inUJ {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) : g * (Jm ε * gᴴ * Jm ε) = 1 :=
   mul_eq_one_comm.mp (left_inv_of_inUJ hg)
 
 /- English proof (translation)
-Use `herm_exp_injective ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[conjTranspose_mul, conjTranspose_mul, Jm_conjTranspose, hL, Matrix.mul_assoc]`. Rewrite using `[conjTranspose_neg, hL]`. Rewrite using `[exp_sign_conj, he, Matrix.exp_neg, he]`. Use `(Matrix.inv_eq_left_inv ?_).symm` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc, sign_sign_mul]`. Use `_ = 1 := by rw [right_inv_of_inUJ hg, Matrix.mul_one, ← Matrix.mul_assoc]; exact left_inv_of_inUJ hg`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sign_conj_log {g L : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) (hL : Lᴴ = L)
     (he : NormedSpace.exp L = gᴴ * g) : Jm ε * L * Jm ε = -L := by
@@ -281,9 +279,9 @@ theorem sign_conj_log {g L : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) (hL : 
       _ = 1 := by rw [right_inv_of_inUJ hg, Matrix.mul_one, ← Matrix.mul_assoc]; exact left_inv_of_inUJ hg
 
 /- English proof (translation)
-Unfold `inUJ`. Establish `hJE : Jm ε * NormedSpace.exp (s • L) * Jm ε = NormedSpace.exp ((-s) • L)`. Rewrite using `[← exp_sign_conj, Matrix.mul_smul, Matrix.smul_mul, sign_conj_log hg hL he, smul_neg, neg_smul]`. Rewrite using `[exp_smul_herm hL]`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Matrix.mul_assoc, sign_sign_mul]`. Use `_ = Jm ε := by`. Rewrite using `[hJE, Matrix.mul_assoc, exp_smul_add, neg_add_cancel, zero_smul, NormedSpace.exp_zero, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_log_inUJ {g L : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) (hL : Lᴴ = L)
     (he : NormedSpace.exp L = gᴴ * g) (s : ℝ) : inUJ ε (NormedSpace.exp (s • L)) := by
@@ -298,7 +296,7 @@ theorem exp_log_inUJ {g L : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) (hL : L
         rw [hJE, Matrix.mul_assoc, exp_smul_add, neg_add_cancel, zero_smul, NormedSpace.exp_zero, Matrix.mul_one]
 
 /- English proof (translation)
-Use `⟨Matrix.mem_unitaryGroup_iff'.2 hu, ?_⟩` and prove the remaining obligations. Establish `h1 : k * kᴴ = 1` using `mul_eq_one_comm.mp hu`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem mem_Kset_of_unitary {k : Matrix (Fin n) (Fin n) ℂ} (hk : inUJ ε k) (hu : kᴴ * k = 1) : k ∈ Kset ε := by
   refine ⟨Matrix.mem_unitaryGroup_iff'.2 hu, ?_⟩
@@ -308,29 +306,29 @@ theorem mem_Kset_of_unitary {k : Matrix (Fin n) (Fin n) ℂ} (hk : inUJ ε k) (h
     _ = Jm ε * k := by rw [h1, Matrix.one_mul]
 
 /- English proof (translation)
-Introduce `n ε H _ _ _ π hrep hc hK`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Use `⟨1, 0, one_pos, le_rfl, fun g _ x => ?_⟩` and prove the remaining obligations. Establish `hg1 : g = 1` using `Subsingleton.elim _ _`. Rewrite using `[hg1, hrep.1]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Take `⟨B, hB1, hB⟩` from `exists_bound_on_compact (π := π) hc (isCompact_wt_le ε ((n : ℝ) * Real.exp 1)) (fun h hh => hh.1)`. Establish `hB0 : 0 < B` using `by linarith`. Use `⟨B ^ 2, Real.log B, by positivity, Real.log_nonneg hB1, fun g hg x => ?_⟩` and prove the remaining obligations. Establish `hg' : inUJ ε g` using `hg`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hw : 1 ≤ wt g` using `one_le_wt hg' ⟨0, hn⟩`. Establish `hw0 : 0 < wt g` using `by linarith`. Establish `hlog0 : 0 ≤ Real.log (wt g)` using `Real.log_nonneg hw`. Take `⟨L, -, hLs, hLe, -⟩` from `GlobalTheory.posDef_conjTranspose_mul_self_eq_exp_polynomial n g (isUnit_of_inUJ' hg')`. Establish `hLh : L.IsHermitian` using `hLs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨m, hm⟩ : ∃ m : ℕ, m = ⌈Real.log (wt g)⌉₊ + 1` from `⟨_, rfl⟩`. Establish `hm0 : 0 < m` using `by omega`. Establish `hmr : (0 : ℝ) < m` using `by exact_mod_cast hm0`. Establish `hml : Real.log (wt g) ≤ m`. Rewrite using `[hm]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Combine the linear relations using `[Nat.le_ceil (Real.log (wt g))]`. Establish `hmu : (m : ℝ) ≤ Real.log (wt g) + 2`. Rewrite using `[hm]`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Combine the linear relations using `[Nat.ceil_lt_add_one hlog0]`. Take `⟨h, hh⟩ : ∃ h, h = NormedSpace.exp ((1 / (2 * (m : ℝ))) • L)` from `⟨_, rfl⟩`. Establish `hhU : inUJ ε h` using `hh ▸ exp_log_inUJ hg' hLs hLe _`. Establish `hhS : ‖π h‖ ≤ B` using `hB h ⟨hhU, hh ▸ wt_root_le hLh hLe hm0 hw0 hml⟩`. Take `⟨hPU, hPb⟩` from `pow_bound hrep hhU hB0.le hhS m`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hP : h ^ m = NormedSpace.exp ((1 / 2 : ℝ) • L)`. Rewrite using `[hh, ← Matrix.exp_nsmul]`. Use `congr 1`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℝ, smul_smul]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Clear the denominators using the available nonvanishing facts. Take `⟨Q, hQ⟩ : ∃ Q, Q = NormedSpace.exp ((-(1 / 2) : ℝ) • L)` from `⟨_, rfl⟩`. Establish `hQU : inUJ ε Q` using `hQ ▸ exp_log_inUJ hg' hLs hLe _`. Establish `hk : inUJ ε (g * Q)` using `inUJ_mul hg' hQU`. Establish `hku : (g * Q)ᴴ * (g * Q) = 1`.
+Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQh : Qᴴ = Q` using `by rw [hQ]; exact exp_smul_herm hLs _`. Rewrite using `[conjTranspose_mul, hQh]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[one_smul, hLe, hQ]`. Use `_ = 1 := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[exp_smul_add, exp_smul_add, show (-(1 / 2) + 1 + -(1 / 2) : ℝ) = 0 by norm_num, zero_smul, NormedSpace.exp_zero]`. Establish `hgk : (g * Q) * h ^ m = g`. Rewrite using `[hP, hQ, Matrix.mul_assoc, exp_smul_add, show (-(1 / 2) + 1 / 2 : ℝ) = 0 by norm_num, zero_smul, NormedSpace.exp_zero, Matrix.mul_one]`. Establish `e1 : π g x = π (g * Q) (π (h ^ m) x)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, hK _ (mem_Kset_of_unitary hk hku)]`. Use `(hPb x).trans ?_` and prove the remaining obligations. Establish `hfin : B ^ m ≤ B ^ 2 * wt g ^ Real.log B`. Rewrite using `[← Real.rpow_natCast B m]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_comm, Real.rpow_add hB0, Real.rpow_two, Real.rpow_def_of_pos hB0 (Real.log (wt g)), Real.rpow_def_of_pos hw0 (Real.log B), mul_comm (Real.log B)]`. Conclude with `mul_le_mul_of_nonneg_right hfin (norm_nonneg x)`.
+A detailed English derivation is pending.
 -/
 theorem polyGrowth_of_isometric_on_K : ∀ {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] [CompleteSpace H] {π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}

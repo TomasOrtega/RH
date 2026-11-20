@@ -34,7 +34,7 @@ variable (N : Subgroup G) [N.Normal] {s : G ⧸ N → G} (hs : Continuous s)
 include hsec in
 
 /- English proof (translation)
-The claim follows from `QuotientGroup.eq.mp (hsec x)`.
+A detailed English derivation is pending.
 -/
 theorem inv_section_mul_mem (x : G) : (s (x : G ⧸ N))⁻¹ * x ∈ N :=
   QuotientGroup.eq.mp (hsec x)
@@ -51,13 +51,13 @@ theorem coe_sectionRetraction (x : G) :
 
 include hs in
 /- English proof (translation)
-The claim follows from `Continuous.subtype_mk ((hs.comp QuotientGroup.continuous_mk).inv.mul continuous_id) _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_sectionRetraction : Continuous (sectionRetraction N hsec) :=
   Continuous.subtype_mk ((hs.comp QuotientGroup.continuous_mk).inv.mul continuous_id) _
 
 /- English proof (translation)
-Rewrite using `[coe_sectionRetraction, mul_inv_cancel_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem section_mul_sectionRetraction (x : G) :
     s (x : G ⧸ N) * (sectionRetraction N hsec x : G) = x := by
@@ -65,14 +65,14 @@ theorem section_mul_sectionRetraction (x : G) :
 
 include hsec in
 /- English proof (translation)
-The claim follows from `(QuotientGroup.eq.mpr (by rw [mul_inv_rev, inv_mul_cancel_right]; exact N.inv_mem m.2) : ((s c * m : G) : G ⧸ N) = (s c : G ⧸ N)).trans (hsec c)`.
+A detailed English derivation is pending.
 -/
 theorem mk_section_mul (c : G ⧸ N) (m : N) : ((s c * m : G) : G ⧸ N) = c :=
   (QuotientGroup.eq.mpr (by rw [mul_inv_rev, inv_mul_cancel_right]; exact N.inv_mem m.2) :
     ((s c * m : G) : G ⧸ N) = (s c : G ⧸ N)).trans (hsec c)
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_sectionRetraction, mk_section_mul N hsec, inv_mul_cancel_left]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sectionRetraction_section_mul (c : G ⧸ N) (m : N) :
     sectionRetraction N hsec (s c * m) = m := by
@@ -85,9 +85,9 @@ def restrictSlice (f : LocallyConstant G X) (m : N) : LocallyConstant (G ⧸ N) 
   ⟨fun c => f (s c * m), f.isLocallyConstant.comp_continuous (hs.mul continuous_const)⟩
 
 /- English proof (translation)
-Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `m₀`. Establish `hc : Continuous fun m : N => (m₀ : G)⁻¹ * m` using `continuous_const.mul continuous_subtype_val`. Establish `h1 : Tendsto (fun m : N => (m₀ : G)⁻¹ * m) (𝓝 m₀) (𝓝 1)`. Simplify using `using hc.tendsto m₀`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `filter_upwards [h1.eventually (eventually_forall_mul_eq f)] with m hm`. Use extensionality with `c`. Use `hm (s c * m₀)` as an intermediate fact. Simplify using `only [mul_assoc, mul_inv_cancel_left] at this`. Conclude with `this`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_restrictSlice (f : LocallyConstant G X) :
     IsLocallyConstant (restrictSlice X N hs f) := by
@@ -123,13 +123,13 @@ noncomputable def unrestrictCoind (F : LocallyConstant N (LocallyConstant (G ⧸
       ((continuous_sectionRetraction N hs hsec).prodMk QuotientGroup.continuous_mk)
 
 /- English proof (translation)
-The claim follows from `QuotientGroup.eq.mpr (by rw [mul_inv_rev, inv_mul_cancel_right]; exact N.inv_mem m.2)`.
+A detailed English derivation is pending.
 -/
 theorem mk_mul_mem (x : G) (m : N) : ((x * m : G) : G ⧸ N) = x :=
   QuotientGroup.eq.mpr (by rw [mul_inv_rev, inv_mul_cancel_right]; exact N.inv_mem m.2)
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_sectionRetraction, mk_mul_mem, Subgroup.coe_mul, coe_sectionRetraction, mul_assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sectionRetraction_mul (x : G) (m : N) :
     sectionRetraction N hsec (x * m) = sectionRetraction N hsec x * m := by
@@ -168,7 +168,7 @@ instance isDiscreteRep_res_discreteCoind : IsDiscreteRep (Rep.res N.subtype (dis
   isDiscreteRep_res_subtype _ N
 
 /- English proof (translation)
-Take `⟨s, hs, hsec, -⟩` from `exists_continuous_section N hN`. Establish `: CompactSpace N` using `isCompact_iff_compactSpace.mp hN.isCompact`. Conclude with `(isZero_cohomology_discreteCoind k N (LocallyConstant (G ⧸ N) X) n).of_iso (cohomologyIsoOfIso (resDiscreteCoindIso X N hs hsec) (n + 1))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isZero_cohomology_res_discreteCoind (hN : IsClosed (N : Set G)) (n : ℕ) :
     Limits.IsZero (cohomology (Rep.res N.subtype (discreteCoind k G X)) (n + 1)) := by
@@ -186,7 +186,7 @@ variable (N : Subgroup G) [N.Normal]
 variable {X N} in
 
 /- English proof (translation)
-Establish `hn : x⁻¹ * y ∈ N` using `QuotientGroup.eq.mp h`. Use `congrArg (fun φ : LocallyConstant G X => φ x) (hf ⟨x⁻¹ * y, hn⟩)` as an intermediate fact. Express the relevant statement in the definitionally equal form `f (x * (x⁻¹ * y)) = f x at this`. Rewrite `this` using `[mul_inv_cancel_left]`. Conclude with `this.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem apply_eq_of_mem_invariants {f : LocallyConstant G X}
     (hf : f ∈ Representation.invariants ((discreteCoindRep k G X).comp N.subtype)) {x y : G}
@@ -212,7 +212,7 @@ noncomputable def descendInvariant (f : Representation.invariants ((discreteCoin
     exact (f : LocallyConstant G X).isLocallyConstant S
 
 /- English proof (translation)
-The claim follows from `apply_eq_of_mem_invariants f.2 (QuotientGroup.out_eq' (x : G ⧸ N))`.
+A detailed English derivation is pending.
 -/
 theorem descendInvariant_mk (f : Representation.invariants ((discreteCoindRep k G X).comp N.subtype)) (x : G) :
     descendInvariant X N f x = (f : LocallyConstant G X) x :=
@@ -274,7 +274,7 @@ instance isDiscreteRep_quotientToInvariants_discreteCoind :
   isDiscreteRep_quotientToInvariants_of_normal _ N
 
 /- English proof (translation)
-The claim follows from `(isZero_cohomology_discreteCoind k (G ⧸ N) X n).of_iso (cohomologyIsoOfIso (quotientToInvariantsDiscreteCoindIso X N) (n + 1))`.
+A detailed English derivation is pending.
 -/
 theorem isZero_cohomology_quotientToInvariants_discreteCoind (n : ℕ) :
     Limits.IsZero (cohomology ((discreteCoind k G X).quotientToInvariants N) (n + 1)) :=

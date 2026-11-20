@@ -65,7 +65,7 @@ theorem ev_apply {n k : ℕ} (s : ComposableArrows C k) (p : Fin (n + 1) → Fin
     ev s p hp j h x = (F.map (s.map (homOfLE h))).hom (x (hp.functor ⋙ s)) := rfl
 
 /- English proof (translation)
-Take `rfl : p = q` from `funext fun a => Fin.ext (hpq a)`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem ev_congr {n k : ℕ} (s : ComposableArrows C k) (p q : Fin (n + 1) → Fin (k + 1)) (hp : Monotone p)
     (hq : Monotone q) (hpq : ∀ a, (p a : ℕ) = q a) (j : Fin (k + 1)) (h : p (Fin.last n) ≤ j)
@@ -74,7 +74,7 @@ theorem ev_congr {n k : ℕ} (s : ComposableArrows C k) (p q : Fin (n + 1) → F
   rfl
 
 /- English proof (translation)
-Establish `e : s.map (homOfLE h) ≫ s.map (homOfLE hj) = s.map (homOfLE (h.trans hj))` using `(s.map_comp _ _).symm`. Conclude with `(congrArg (fun φ : F.obj (s.obj (p (Fin.last n))) ⟶ F.obj (s.obj j') => φ.hom (x (hp.functor ⋙ s))) (F.map_comp (s.map (homOfLE h)) (s.map (homOfLE hj))).symm).trans (congrArg (fun φ : s.obj (p (Fin.last n)) ⟶ s.obj j' => (F.map φ).hom (x (hp.functor ⋙ s))) e)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem map_ev {n k : ℕ} (s : ComposableArrows C k) (p : Fin (n + 1) → Fin (k + 1)) (hp : Monotone p)
     {j j' : Fin (k + 1)} (h : p (Fin.last n) ≤ j) (hj : j ≤ j') (x : Cn F n) :
@@ -99,7 +99,7 @@ theorem d_apply_ev {n : ℕ} (x : Cn F n) (s : ComposableArrows C (n + 1)) :
       ev s (Fin.succAboveOrderEmb i) (Fin.succAboveOrderEmb i).monotone (Fin.last _) (Fin.le_last _) x := rfl
 
 /- English proof (translation)
-Rewrite using `[ev_apply, d_apply_ev]`. Use `(map_sum (F.map (s.map (homOfLE h))).hom _ _).trans (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations. Use `(map_zsmul _ _ _).trans ?_` and prove the remaining obligations. Conclude with `congrArg _ (map_ev s (p ∘ ⇑(Fin.succAboveOrderEmb i)) _ (hp (Fin.le_last _)) h x)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ev_d {n k : ℕ} (s : ComposableArrows C k) (p : Fin (n + 2) → Fin (k + 1)) (hp : Monotone p)
     (j : Fin (k + 1)) (h : p (Fin.last (n + 1)) ≤ j) (x : Cn F n) :
@@ -114,14 +114,14 @@ theorem ev_d {n k : ℕ} (s : ComposableArrows C k) (p : Fin (n + 2) → Fin (k 
 def fr (m k : ℕ) (h : m ≤ k) : Fin (m + 1) → Fin (k + 1) := Fin.castLE (by omega)
 
 /- English proof (translation)
-Introduce `_ _ hab` and use `hab`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fr_mono (m k : ℕ) (h : m ≤ k) : Monotone (fr m k h) := fun _ _ hab => hab
 
 def bk (m n k : ℕ) (h : m + n ≤ k) : Fin (n + 1) → Fin (k + 1) := fun b => ⟨m + b, by omega⟩
 
 /- English proof (translation)
-Introduce `a b hab` and use `show m + (a : ℕ) ≤ m + b from Nat.add_le_add_left hab m`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem bk_mono (m n k : ℕ) (h : m + n ≤ k) : Monotone (bk m n k h) := fun a b hab =>
   show m + (a : ℕ) ≤ m + b from Nat.add_le_add_left hab m
@@ -137,14 +137,14 @@ Both sides reduce to the same expression.
 @[simp] theorem val_bk (m n k : ℕ) (h : m + n ≤ k) (b : Fin (n + 1)) : (bk m n k h b : ℕ) = m + b := rfl
 
 /- English proof (translation)
-Rewrite using `[Fin.succAbove_of_castSucc_lt _ _ (by simpa [Fin.lt_def] using h)]; simp`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem val_succAbove_lt {n : ℕ} (i : Fin (n + 2)) (a : Fin (n + 1)) (h : (a : ℕ) < i) :
     (i.succAbove a : ℕ) = a := by
   rw [Fin.succAbove_of_castSucc_lt _ _ (by simpa [Fin.lt_def] using h)]; simp
 
 /- English proof (translation)
-Rewrite using `[Fin.succAbove_of_le_castSucc _ _ (by simpa [Fin.le_def] using h)]; simp [Fin.val_succ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem val_succAbove_ge {n : ℕ} (i : Fin (n + 2)) (a : Fin (n + 1)) (h : (i : ℕ) ≤ a) :
     (i.succAbove a : ℕ) = a + 1 := by
@@ -178,7 +178,7 @@ theorem cupC_apply {m n k : ℕ} (h : m + n = k) (f : Cn F m) (g : Cn F n) (s : 
       (ev s (bk m n k h.le) (bk_mono _ _ _ _) (Fin.last k) (Fin.le_last _) g) := rfl
 
 /- English proof (translation)
-Use `(μ.map_mul _ _ _).trans ?_` and prove the remaining obligations. Conclude with `congrArg₂ (fun a b => μ.mul _ a b) (map_ev s (p ∘ fr m k (by omega)) (hp.comp (fr_mono _ _ _)) (hp (Fin.le_last _)) hj f) (map_ev s (p ∘ bk m n k h.le) (hp.comp (bk_mono _ _ _ _)) (hp (Fin.le_last _)) hj g)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem map_cupC_sub {m n k K : ℕ} (h : m + n = k) (f : Cn F m) (g : Cn F n) (s : ComposableArrows C K)
     (p : Fin (k + 1) → Fin (K + 1)) (hp : Monotone p) (j : Fin (K + 1)) (hj : p (Fin.last k) ≤ j) :
@@ -191,7 +191,7 @@ theorem map_cupC_sub {m n k K : ℕ} (h : m + n = k) (f : Cn F m) (g : Cn F n) (
     (map_ev s (p ∘ bk m n k h.le) (hp.comp (bk_mono _ _ _ _)) (hp (Fin.le_last _)) hj g)
 
 /- English proof (translation)
-Rewrite using `[ev_congr s p p' hp hp' e1, ev_congr s q q' hq hq' e2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_ev_congr {m n k : ℕ} (s : ComposableArrows C k) (j : Fin (k + 1)) (f : Cn F m) (g : Cn F n)
     {p p' : Fin (m + 1) → Fin (k + 1)} {hp : Monotone p} {hp' : Monotone p'}
@@ -201,14 +201,14 @@ theorem mul_ev_congr {m n k : ℕ} (s : ComposableArrows C k) (j : Fin (k + 1)) 
   rw [ev_congr s p p' hp hp' e1, ev_congr s q q' hq hq' e2]
 
 /- English proof (translation)
-Rewrite using `[h1, h2, ← add_assoc, add_assoc C, h3, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem add_rearrange_of_cancel_middle {M : Type*} [AddCommGroup M] {A B C c d D : M} (h1 : A = C) (h2 : B = D) (h3 : c + d = 0) :
     A + B = C + c + (d + D) := by
   rw [h1, h2, ← add_assoc, add_assoc C, h3, add_zero]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[pow_zero, one_smul, pow_succ, mul_neg_one, neg_smul, neg_add_cancel]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem neg_one_pow_boundary_terms_cancel {M : Type*} [AddCommGroup M] (m : ℕ) {X Y : M} (h : X = Y) :
     (-1 : ℤ) ^ (m + 1) • X + (-1 : ℤ) ^ m • ((-1 : ℤ) ^ 0 • Y) = 0 := by
@@ -216,15 +216,15 @@ theorem neg_one_pow_boundary_terms_cancel {M : Type*} [AddCommGroup M] (m : ℕ)
   rw [pow_zero, one_smul, pow_succ, mul_neg_one, neg_smul, neg_add_cancel]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Use function extensionality and compare the values at `s`. Rewrite using `[Pi.add_apply, Pi.smul_apply, cupC_apply, cupC_apply, ev_d, ev_d]`. Express the relevant statement in the definitionally equal form `∑ i : Fin (m + n + 2), (-1 : ℤ) ^ (i : ℕ) • (F.map (s.map (homOfLE (Fin.le_last _)))).hom (cupC μ rfl f g ((Fin.succAboveOrderEmb i).monotone.functor ⋙ s)) = _`. Use `(Finset.sum_congr rfl fun (i : Fin (m + n + 2)) _ => congrArg (fun z => (-1 : ℤ) ^ (i : ℕ) • z) (map_cupC_sub μ rfl f g s _ (Fin.succAboveOrderEmb i).monotone _ (Fin.le_last _))).trans ?_` and prove the remaining obligations.
+Substitute using the available equality. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_sum, LinearMap.sum_apply, map_zsmul, LinearMap.smul_apply]`. Rewrite using `[← (finCongr (show m + 1 + (n + 1) = m + n + 1 + 1 by omega)).sum_comp, Fin.sum_univ_add, Fin.sum_univ_castSucc (n := m + 1), Fin.sum_univ_succ (n := n + 1), smul_add, Finset.smul_sum]`. Use `add_rearrange_of_cancel_middle (Finset.sum_congr rfl fun i _ => ?_) (Finset.sum_congr rfl fun j _ => ?_) ?_` and prove the remaining obligations. Use `i.isLt` as an intermediate fact. Use `congrArg₂ (· • ·) rfl (mul_ev_congr μ s _ f g (fun a => ?_) (fun b => ?_))` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `a.isLt` as an intermediate fact. Apply the tactic sequence `rcases lt_or_ge (a : ℕ) i with h1 | h1 <;> fin_index_simp`. Use `b.isLt fin_index_simp` as an intermediate fact. Use `j.isLt` as an intermediate fact. Rewrite using `[smul_smul, ← pow_add]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg₂ (· • ·) (congrArg _ (by simp [Fin.val_succ]; omega)) (mul_ev_congr μ s _ f g (fun a => ?_) (fun b => ?_))` and prove the remaining obligations. Use `a.isLt fin_index_simp` as an intermediate fact. Use `b.isLt` as an intermediate fact. Apply the tactic sequence `rcases lt_or_ge (b : ℕ) (j + 1) with h1 | h1 <;> fin_index_simp`. Rewrite using `[Fin.val_last, Fin.val_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `neg_one_pow_boundary_terms_cancel m (mul_ev_congr μ s _ f g (fun a => ?_) (fun b => ?_))` and prove the remaining obligations. Use `a.isLt fin_index_simp` as an intermediate fact. Use `b.isLt fin_index_simp` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 -/
 theorem d_cupC {m n k : ℕ} (h : m + n = k) (f : Cn F m) (g : Cn F n) :
     d F k (cupC μ h f g) = cupC μ (show m + 1 + n = k + 1 by omega) (d F m f) g +
@@ -262,16 +262,16 @@ theorem d_cupC {m n k : ℕ} (h : m + n = k) (f : Cn F m) (g : Cn F n) :
       fin_index_simp
 
 /- English proof (translation)
-Rewrite using `[d_cupC, hf, hg, map_zero, LinearMap.zero_apply, map_zero, smul_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cupC_mem_ker {m n k : ℕ} (h : m + n = k) {f : Cn F m} {g : Cn F n} (hf : d F m f = 0)
     (hg : d F n g = 0) : d F k (cupC μ h f g) = 0 := by
   rw [d_cupC, hf, hg, map_zero, LinearMap.zero_apply, map_zero, smul_zero, add_zero]
 
 /- English proof (translation)
-Consider the cases of `m with`. Consider the case `zero`. Take `rfl : f = 0` from `(Submodule.mem_bot R).1 hf`. Rewrite using `[map_zero, LinearMap.zero_apply]`. Conclude with `Submodule.zero_mem _`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ m`. Take `⟨f0, rfl⟩` from `hf`. Take `⟨k, rfl⟩ : ∃ k', k = k' + 1` from `⟨k - 1, by omega⟩`. Use `⟨cupC μ (show m + n = k by omega) f0 g, ?_⟩` and prove the remaining obligations. Rewrite using `[d_cupC, hg, map_zero, smul_zero, add_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cupC_mem_left {m n k : ℕ} (h : m + n = k) {f : Cn F m} {g : Cn F n} (hf : f ∈ Bn F m)
     (hg : d F n g = 0) : cupC μ h f g ∈ Bn F k := by
@@ -287,9 +287,9 @@ theorem cupC_mem_left {m n k : ℕ} (h : m + n = k) {f : Cn F m} {g : Cn F n} (h
     rw [d_cupC, hg, map_zero, smul_zero, add_zero]
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `zero`. Take `rfl : g = 0` from `(Submodule.mem_bot R).1 hg`. Rewrite using `[map_zero]`. Conclude with `Submodule.zero_mem _`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ n`. Take `⟨g0, rfl⟩` from `hg`. Take `⟨k, rfl⟩ : ∃ k', k = k' + 1` from `⟨k - 1, by omega⟩`. Use `⟨((-1 : ℤ) ^ m) • cupC μ (show m + n = k by omega) f g0, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zsmul, d_cupC, hf, map_zero, LinearMap.zero_apply, zero_add, smul_smul, ← mul_pow, neg_one_mul, neg_neg, one_pow, one_smul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cupC_mem_right {m n k : ℕ} (h : m + n = k) {f : Cn F m} {g : Cn F n} (hf : d F m f = 0)
     (hg : g ∈ Bn F n) : cupC μ h f g ∈ Bn F k := by
@@ -350,7 +350,7 @@ theorem cup_mk {m n k : ℕ} (h : m + n = k) (f : LinearMap.ker (d F m)) (g : Li
 def oneC : Cn F 0 := fun s => μ.one _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Express the relevant statement in the definitionally equal form `∑ i : Fin 2, (-1 : ℤ) ^ (i : ℕ) • (F.map (toLast i s)).hom (μ.one _) = 0`. Simplify using `only [μ.map_one, Fin.sum_univ_two, Fin.val_zero, Fin.val_one, pow_zero, one_smul, pow_one, neg_smul, add_neg_cancel]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem d_oneC : d F 0 (oneC μ) = 0 := by
   funext s
@@ -363,7 +363,7 @@ def oneZ : LinearMap.ker (d F 0) := ⟨oneC μ, LinearMap.mem_ker.2 (d_oneC μ)�
 def oneH : H F 0 := Submodule.Quotient.mk (oneZ μ)
 
 /- English proof (translation)
-Introduce `h0`. Establish `h1` using `(Submodule.Quotient.mk_eq_zero _).1 h0`. Establish `h2 : (oneZ μ : Cn F 0) = 0` using `(Submodule.mem_bot R).1 h1`. Conclude with `h (congrFun h2 s)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem oneH_ne_zero (s : ComposableArrows C 0) (h : μ.one (s.obj (Fin.last 0)) ≠ 0) : oneH μ ≠ 0 := by
   intro h0
@@ -382,7 +382,7 @@ def IsMult (M : Mor F F' σ) (μ : Mult F) (μ' : Mult F') : Prop :=
   ∀ (T : C') (a b : F.obj (M.G.obj T)), M.τ T (μ.mul _ a b) = μ'.mul T (M.τ T a) (M.τ T b)
 
 /- English proof (translation)
-The claim follows from `M.nat _ _`.
+A detailed English derivation is pending.
 -/
 theorem τ_ev (M : Mor F F' σ) {n k : ℕ} (s : ComposableArrows C' k) (p : Fin (n + 1) → Fin (k + 1))
     (hp : Monotone p) (j : Fin (k + 1)) (h : p (Fin.last n) ≤ j) (x : Cn F n) :
@@ -390,7 +390,7 @@ theorem τ_ev (M : Mor F F' σ) {n k : ℕ} (s : ComposableArrows C' k) (p : Fin
   M.nat _ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Use `(hM _ _ _).trans ?_` and prove the remaining obligations. Conclude with `congrArg₂ (fun x y => μ'.mul _ x y) (M.τ_ev _ _ _ _ _ f) (M.τ_ev _ _ _ _ _ g)`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pullC_cupC (M : Mor F F' σ) {μ : Mult F} {μ' : Mult F'} (hM : M.IsMult μ μ') {m n k : ℕ}
     (h : m + n = k) (f : Cn F m) (g : Cn F n) :
@@ -400,7 +400,7 @@ theorem pullC_cupC (M : Mor F F' σ) {μ : Mult F} {μ' : Mult F'} (hM : M.IsMul
   exact congrArg₂ (fun x y => μ'.mul _ x y) (M.τ_ev _ _ _ _ _ f) (M.τ_ev _ _ _ _ _ g)
 
 /- English proof (translation)
-Use `Submodule.Quotient.induction_on _ x fun f => ?_` and prove the remaining obligations. Use `Submodule.Quotient.induction_on _ y fun g => ?_` and prove the remaining obligations. Conclude with `congrArg Submodule.Quotient.mk (Subtype.ext (M.pullC_cupC hM h f g))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pull_cup (M : Mor F F' σ) {μ : Mult F} {μ' : Mult F'} (hM : M.IsMult μ μ') {m n k : ℕ}
     (h : m + n = k) (x : H F m) (y : H F n) :
@@ -422,7 +422,7 @@ def cup {m n k : ℕ} (h : m + n = k) : H L m →ₗ[b.R] H L n →ₗ[b.R] H L 
 def one : H L 0 := CatH.oneH (mult L)
 
 /- English proof (translation)
-The claim follows from `CatH.Mor.pull_cup _ (μ := mult L) (μ' := mult L') (fun _ _ _ => rfl) h x y`.
+A detailed English derivation is pending.
 -/
 theorem Mor.pull_cup {b' : Base} {L' : b'.Fun} {σ : b.R →+* b'.R} (M : Mor L L' σ) {m n k : ℕ} (h : m + n = k)
     (x : H L m) (y : H L n) : M.pull k (cup L h x y) = cup L' h (M.pull m x) (M.pull n y) :=
@@ -480,7 +480,7 @@ def IsDPLog {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) (v a : 
     a = ∑ n ∈ Finset.Ico 1 N, (-1) ^ (n + 1) * ((n - 1).factorial : B) * δ.dpow n (v - 1)
 
 /- English proof (translation)
-Use `⟨by rw [sub_self]; exact J.zero_mem, 1, fun n hn => ?_, by simp⟩` and prove the remaining obligations. Rewrite using `[sub_self, δ.dpow_eval_zero (by omega), mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isDPLog_one {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) : IsDPLog δ 1 0 := by
   refine ⟨by rw [sub_self]; exact J.zero_mem, 1, fun n hn => ?_, by simp⟩
@@ -503,7 +503,7 @@ def IsFirstChernClassOfLineBundle (E : LB L) (z : H L 2) : Prop :=
     Submodule.Quotient.mk ℓ = z
 
 /- English proof (translation)
-Use `⟨fun _ => 1, 0, fun φ => map_one _, fun s => ?_, Submodule.Quotient.mk_zero _⟩` and prove the remaining obligations. Establish `e : chainUnit (fun _ => 1) s = 1` using `by simp [chainUnit]`. Rewrite using `[e]`. Conclude with `isDPLog_one (s.obj (Fin.last 2)).δ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem firstChernClass_trivialBundle : IsFirstChernClassOfLineBundle (LB.triv : LB L) 0 := by
   refine ⟨fun _ => 1, 0, fun φ => map_one _, fun s => ?_, Submodule.Quotient.mk_zero _⟩
@@ -523,7 +523,7 @@ theorem Mor.pull_eq {b' : Base} {L' : b'.Fun} {σ : b.R →+* b'.R} (M : Mor L L
     M.pull n = M.catMor.pull n := rfl
 
 /- English proof (translation)
-Take `⟨u, ℓ, hu, hℓ, rfl⟩` from `hz`. Conclude with `⟨fun φ => u (M.map φ), M.catMor.pullZ 2 ℓ, fun φ => hu (M.map φ), fun s => hℓ (s ⋙ M.functor), rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsFirstChernClassOfLineBundle.pull {b' : Base} {L' : b'.Fun} {σ : b.R →+* b'.R} (M : Mor L L' σ) {E : LB L} {z : H L 2}
     (hz : IsFirstChernClassOfLineBundle E z) : IsFirstChernClassOfLineBundle (E.pull M) (M.pull 2 z) := by
@@ -531,13 +531,13 @@ theorem IsFirstChernClassOfLineBundle.pull {b' : Base} {L' : b'.Fun} {σ : b.R �
   exact ⟨fun φ => u (M.map φ), M.catMor.pullZ 2 ℓ, fun φ => hu (M.map φ), fun s => hℓ (s ⋙ M.functor), rfl⟩
 
 /- English proof (translation)
-The claim follows from `CatH.oneH_ne_zero _ (ComposableArrows.mk₀ Ex.T) (one_ne_zero (α := Ex.D))`.
+A detailed English derivation is pending.
 -/
 theorem one_node_ne_zero : (one Ex.nodeL : H Ex.nodeL 0) ≠ 0 :=
   CatH.oneH_ne_zero _ (ComposableArrows.mk₀ Ex.T) (one_ne_zero (α := Ex.D))
 
 /- English proof (translation)
-The claim follows from `firstChernClass_trivialBundle`.
+A detailed English derivation is pending.
 -/
 example : IsFirstChernClassOfLineBundle (LB.triv : LB Ex.nodeL) 0 := firstChernClass_trivialBundle
 

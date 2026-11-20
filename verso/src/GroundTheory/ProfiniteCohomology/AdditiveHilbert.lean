@@ -12,9 +12,9 @@ section NormalBasis
 variable {K L : Type*} [Field K] [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
 
 /- English proof (translation)
-Establish `hb (ρ : Gal(L/K)) : σ (IsGalois.normalBasis K L ρ) = IsGalois.normalBasis K L (σ * ρ)`. Rewrite using `[IsGalois.normalBasis_apply (σ * ρ), IsGalois.normalBasis_apply ρ, AlgEquiv.mul_apply]`. Establish `key : (Finsupp.lapply τ ∘ₗ (IsGalois.normalBasis K L).repr.toLinearMap ∘ₗ σ.toLinearMap : L →ₗ[K] K) = Finsupp.lapply (σ⁻¹ * τ) ∘ₗ (IsGalois.normalBasis K L).repr.toLinearMap`. Use `(IsGalois.normalBasis K L).ext fun ρ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(IsGalois.normalBasis K L).repr (σ (IsGalois.normalBasis K L ρ)) τ = (IsGalois.normalBasis K L).repr (IsGalois.normalBasis K L ρ) (σ⁻¹ * τ)`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hb, Module.Basis.repr_self, Module.Basis.repr_self]`. Simplify using `only [Finsupp.single_apply, eq_inv_mul_iff_mul_eq]`. Conclude with `LinearMap.congr_fun key y`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem normalBasis_repr_apply_smul (σ τ : Gal(L/K)) (y : L) :
     (IsGalois.normalBasis K L).repr (σ y) τ = (IsGalois.normalBasis K L).repr y (σ⁻¹ * τ) := by
@@ -68,7 +68,7 @@ variable (k : Type u) (K L : Type u) [CommRing k] [Field K] [Field L] [Algebra K
   [Algebra k K] [Algebra k L] [IsScalarTower k K L] [FiniteDimensional K L] [IsGalois K L]
 
 /- English proof (translation)
-The claim follows from `(isZero_groupCohomology_succ_of_subsingleton (Rep.trivial k (⊥ : Subgroup Gal(L/K)) K) n).of_iso ((groupCohomology.functor k Gal(L/K) (n + 1)).mapIso (galoisCoindIso k K L) ≪≫ groupCohomology.coindIso _ (n + 1))`.
+A detailed English derivation is pending.
 -/
 theorem isZero_groupCohomology_succ (n : ℕ) :
     IsZero (groupCohomology (Rep.ofDistribMulAction k Gal(L/K) L) (n + 1)) :=
@@ -78,7 +78,7 @@ theorem isZero_groupCohomology_succ (n : ℕ) :
       groupCohomology.coindIso _ (n + 1))
 
 /- English proof (translation)
-Take `⟨m, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hn`. Conclude with `isZero_groupCohomology_succ k K L m`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isZero_groupCohomology {n : ℕ} (hn : n ≠ 0) :
     IsZero (groupCohomology (Rep.ofDistribMulAction k Gal(L/K) L) n) := by
@@ -86,21 +86,21 @@ theorem isZero_groupCohomology {n : ℕ} (hn : n ≠ 0) :
   exact isZero_groupCohomology_succ k K L m
 
 /- English proof (translation)
-The claim follows from `isZero_groupCohomology K K L hn`.
+A detailed English derivation is pending.
 -/
 theorem isZero_groupCohomology_galois {n : ℕ} (hn : n ≠ 0) :
     IsZero (groupCohomology (Rep.ofDistribMulAction K Gal(L/K) L) n) :=
   isZero_groupCohomology K K L hn
 
 /- English proof (translation)
-The claim follows from `ModuleCat.subsingleton_of_isZero (isZero_groupCohomology_galois K L hn)`.
+A detailed English derivation is pending.
 -/
 theorem subsingleton_groupCohomology_galois {n : ℕ} (hn : n ≠ 0) :
     Subsingleton (groupCohomology (Rep.ofDistribMulAction K Gal(L/K) L) n) :=
   ModuleCat.subsingleton_of_isZero (isZero_groupCohomology_galois K L hn)
 
 /- English proof (translation)
-Use `subsingleton_groupCohomology_galois K L one_ne_zero` as an intermediate fact. Establish `h0 : H1π (Rep.ofDistribMulAction K Gal(L/K) L) (cocyclesOfIsCocycle₁ hf) = 0` using `Subsingleton.elim _ _`. Rewrite `h0` using `[H1π_eq_zero_iff]`. Conclude with `isCoboundary₁_of_mem_coboundaries₁ f h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCoboundary₁_of_isCocycle₁_galois (f : Gal(L/K) → L) (hf : IsCocycle₁ f) :
     IsCoboundary₁ f := by

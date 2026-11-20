@@ -21,9 +21,9 @@ def rorth (β : Z →ₗ[k] Z' →ₗ[k] k) (W : Submodule k Z) : Submodule k Z'
   (W.map β).dualCoannihilator
 
 /- English proof (translation)
-Unfold `rorth`. Rewrite using `[Submodule.mem_dualCoannihilator]`. Prove the components needed by the constructor for the conclusion. Introduce `h a ha`. Conclude with `h _ ⟨a, ha, rfl⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `h _ ⟨a, ha, rfl⟩`. Conclude with `h a ha`.
+A detailed English derivation is pending.
 -/
 theorem mem_rorth (β : Z →ₗ[k] Z' →ₗ[k] k) (W : Submodule k Z) (b : Z') :
     b ∈ rorth β W ↔ ∀ a ∈ W, β a b = 0 := by
@@ -36,9 +36,9 @@ theorem mem_rorth (β : Z →ₗ[k] Z' →ₗ[k] k) (W : Submodule k Z) (b : Z')
     exact h a ha
 
 /- English proof (translation)
-Establish `h1` using `Subspace.finrank_add_finrank_dualCoannihilator_eq (W.map β)`. Establish `h2` using `LinearMap.finrank_range_add_finrank_ker (β.domRestrict W)`. Establish `h3 : LinearMap.range (β.domRestrict W) = W.map β`. Rewrite using `[LinearMap.range_domRestrict]`. Establish `h4 : LinearMap.ker (β.domRestrict W) = (LinearMap.ker β).comap W.subtype`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.ker_domRestrict]`. Establish `h5 : finrank k ((LinearMap.ker β).comap W.subtype) = finrank k (LinearMap.ker β)` using `(Submodule.comapSubtypeEquivOfLe hW).finrank_eq`. Rewrite `h2` using `[h3, h4, h5]`. Unfold `rorth`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem finrank_rorth (β : Z →ₗ[k] Z' →ₗ[k] k) (W : Submodule k Z) (hW : LinearMap.ker β ≤ W) :
     finrank k (rorth β W) + finrank k W = finrank k Z' + finrank k (LinearMap.ker β) := by
@@ -55,9 +55,9 @@ theorem finrank_rorth (β : Z →ₗ[k] Z' →ₗ[k] k) (W : Submodule k Z) (hW 
   linarith
 
 /- English proof (translation)
-Use extensionality with `b`. Rewrite using `[mem_rorth, LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `a`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Conclude with `h a trivial`. Introduce `h a _`. Use `LinearMap.congr_fun h a` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem rorth_top (β : Z →ₗ[k] Z' →ₗ[k] k) : rorth β ⊤ = LinearMap.ker β.flip := by
   ext b
@@ -71,11 +71,9 @@ theorem rorth_top (β : Z →ₗ[k] Z' →ₗ[k] k) : rorth β ⊤ = LinearMap.k
     simpa using this
 
 /- English proof (translation)
-Establish `hT` using `finrank_rorth β ⊤ (le_top)`. Rewrite `hT` using `[rorth_top, finrank_top]`. Establish `hA` using `finrank_rorth β W hW`. Establish `hB` using `finrank_rorth β.flip W' hW'`. Establish `l1 : W' ≤ rorth β W` using `fun b hb => (mem_rorth β W b).2 fun a ha => hort a ha b hb`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `l2 : W ≤ rorth β.flip W'` using `fun a ha => (mem_rorth β.flip W' a).2 fun b hb => by`. Rewrite using `[LinearMap.flip_apply]`. Conclude with `hort a ha b hb`. Prove the components needed by the constructor for the conclusion. Conclude with `(Submodule.eq_of_le_of_finrank_eq l1 (by omega)).symm`.
-
-Conclude with `(Submodule.eq_of_le_of_finrank_eq l2 (by omega)).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. A detailed English derivation is pending.
 -/
 theorem exact_ann (β : Z →ₗ[k] Z' →ₗ[k] k) (W : Submodule k Z) (W' : Submodule k Z')
     (hW : LinearMap.ker β ≤ W) (hW' : LinearMap.ker β.flip ≤ W')
@@ -111,9 +109,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [Algebra O LL]
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨x, rfl⟩`. Use `⟨?_, fun g h => ?_⟩` and prove the remaining obligations. Establish `: (cob A.ρ x : G → A.V) = fun g => A.ρ g x + (-x)`. Use function extensionality and compare the values at `g`. Simplify using `[cob, sub_eq_add_neg]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Conclude with `(A.cont x).add continuous_const`. Simplify using `only [cob, LinearMap.pi_apply, LinearMap.sub_apply, LinearMap.id_apply, map_mul, Module.End.mul_apply, map_sub]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem galoisCoboundaries_le_continuousCocycles (A : GRep G Qp LL O) : B1 A.ρ ≤ continuousCocycles A.ρ := by
   rintro _ ⟨x, rfl⟩
@@ -128,7 +126,7 @@ theorem galoisCoboundaries_le_continuousCocycles (A : GRep G Qp LL O) : B1 A.ρ 
     abel
 
 /- English proof (translation)
-Introduce `c hc`. Use `⟨galoisCoboundaries_le_continuousCocycles A hc, ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `hc`. Use `⟨x ⊗ₜ[Qp] (1 : B), fun g => ?_⟩` and prove the remaining obligations. Simplify using `[cob, actVB, sub_tmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem B1_le_Z1f (A : GRep G Qp LL O) : B1 A.ρ ≤ finiteCocycles PD A.ρ := by
   intro c hc
@@ -138,14 +136,14 @@ theorem B1_le_Z1f (A : GRep G Qp LL O) : B1 A.ρ ≤ finiteCocycles PD A.ρ := b
   simp [cob, actVB, sub_tmul]
 
 /- English proof (translation)
-Introduce `_ h` and use `h.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem blochKatoFiniteCocycles_le_continuousCocycles (A : GRep G Qp LL O) : finiteCocycles PD A.ρ ≤ continuousCocycles A.ρ := fun _ h => h.1
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional LL (B1 A.ρ) := LinearMap.finiteDimensional_range (cob A.ρ)`. Establish `hK : FiniteDimensional LL ((B1 A.ρ).comap (continuousCocycles A.ρ).subtype)` using `Module.Finite.equiv (Submodule.comapSubtypeEquivOfLe (galoisCoboundaries_le_continuousCocycles A)).symm`. Use `show Module.Finite LL (continuousCocycles A.ρ)`. Rewrite using `[Module.finite_def]`. Apply `Submodule.fg_of_fg_map_of_fg_inf_ker ((B1 A.ρ).comap (continuousCocycles A.ρ).subtype).mkQ` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.map_top, Submodule.range_mkQ]`. Conclude with `Module.finite_def.1 h`. Rewrite using `[top_inf_eq, Submodule.ker_mkQ]`. Conclude with `Module.Finite.iff_fg.1 hK`.
+A detailed English derivation is pending.
 -/
 theorem finite_continuous_cocycles_localGaloisRep (A : GRep G Qp LL O) (h : Module.Finite LL (H1V A.ρ)) :
     FiniteDimensional LL (continuousCocycles A.ρ) := by
@@ -161,7 +159,7 @@ theorem finite_continuous_cocycles_localGaloisRep (A : GRep G Qp LL O) (h : Modu
     exact Module.Finite.iff_fg.1 hK
 
 /- English proof (translation)
-Establish `e` using `Submodule.finrank_quotient_add_finrank ((B1 A.ρ).comap (continuousCocycles A.ρ).subtype)`. Rewrite `e` using `[(Submodule.comapSubtypeEquivOfLe (galoisCoboundaries_le_continuousCocycles A)).finrank_eq]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_H1V (A : GRep G Qp LL O) [FiniteDimensional LL (continuousCocycles A.ρ)] :
     finrank LL (H1V A.ρ) + finrank LL (B1 A.ρ) = finrank LL (continuousCocycles A.ρ) := by
@@ -170,9 +168,7 @@ theorem finrank_H1V (A : GRep G Qp LL O) [FiniteDimensional LL (continuousCocycl
   exact e
 
 /- English proof (translation)
-Establish `eW` using `(Submodule.comapSubtypeEquivOfLe (blochKatoFiniteCocycles_le_continuousCocycles PD A))`. Use `haveI : FiniteDimensional LL (finiteCocycles PD A.ρ) := Module.Finite.equiv eW`. Establish `e` using `Submodule.finrank_quotient_add_finrank ((B1 A.ρ).comap (finiteCocycles PD A.ρ).subtype)`. Rewrite `e` using `[(Submodule.comapSubtypeEquivOfLe (B1_le_Z1f PD A)).finrank_eq]`. Rewrite using `[eW.finrank_eq]`.
-
-Conclude with `e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_H1fV (A : GRep G Qp LL O) [FiniteDimensional LL (continuousCocycles A.ρ)] :
     finrank LL (FiniteCohomology PD A.ρ) + finrank LL (B1 A.ρ) =
@@ -191,41 +187,35 @@ end GlobalTheory.BlochKatoAnn
 namespace GlobalTheory.BlochKatoAnn
 
 /- English proof (translation)
-Introduce `hTD hEC l _ P AI hT K`. Introduce `LL _ _ _ O _ _ hO A A' m hdr hdual`. Establish `hdual' : IsDual1 (P.PD K) A'.ρ A.ρ m.flip`. Take `⟨h1, h2, h3, h4⟩` from `hdual`. Use `⟨fun g y x => ?_, fun y hy => h3 y hy, fun x hx => h2 x hx, h4.symm⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [LinearMap.flip_apply]`. Conclude with `h1 g x y`. Take `⟨hdrd, hfd⟩` from `GlobalTheory.T.de_rham_filtration_duality l P AI hT K`. Establish `hdr' : IsDR (P.PD K) A'.ρ` using `hdrd LL O hO A A' m hdr hdual`. Establish `hfil` using `hfd LL O hO A A' m hdr hdual`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hH1fin, hH1⟩` from `GlobalTheory.T.finrank_H1_dual_pair hTD hEC l P K LL O hO A A' m hdual`. Take `⟨hH1fin', -⟩` from `GlobalTheory.T.finrank_H1_dual_pair hTD hEC l P K LL O hO A' A m.flip hdual'`. Take `⟨-, hf⟩` from `GlobalTheory.T.finrank_H1f_de_rham l P AI hT K LL O hO A hdr`. Take `⟨-, hf'⟩` from `GlobalTheory.T.finrank_H1f_de_rham l P AI hT K LL O hO A' hdr'`. Establish `hort` using `GlobalTheory.T.cup_product_finite_classes_coboundary l P AI hT K LL O hO A A' m hdr hdual`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨β, hβ, hl, hr⟩` from `GlobalTheory.T.tateDuality_degreeOne_continuous_cocycles hTD l P K LL O hO A A' m hdual`. Use `haveI := finite_continuous_cocycles_localGaloisRep A hH1fin`. Use `haveI := finite_continuous_cocycles_localGaloisRep A' hH1fin'`. Establish `hkl : LinearMap.ker β = (B1 A.ρ).comap (continuousCocycles A.ρ).subtype`. Use extensionality with `a`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[LinearMap.mem_ker, Submodule.mem_comap, Submodule.subtype_apply, ← hl a]`. Prove the components needed by the constructor for the conclusion. Introduce `h b`. Rewrite using `[h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Introduce `h`. Use extensionality with `b`. Conclude with `h b`. Establish `hkr : LinearMap.ker β.flip = (B1 A'.ρ).comap (continuousCocycles A'.ρ).subtype`. Use extensionality with `b`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.mem_ker, Submodule.mem_comap, Submodule.subtype_apply, ← hr b]`. Prove the components needed by the constructor for the conclusion. Introduce `h a`. Use `LinearMap.congr_fun h a` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `h`. Use extensionality with `a`. Simplify using `using h a`. Establish `hW : LinearMap.ker β ≤ (finiteCocycles (P.PD K) A.ρ).comap (continuousCocycles A.ρ).subtype`. Rewrite using `[hkl]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.comap_mono (B1_le_Z1f (P.PD K) A)`. Establish `hW' : LinearMap.ker β.flip ≤ (finiteCocycles (P.PD K) A'.ρ).comap (continuousCocycles A'.ρ).subtype`. Rewrite using `[hkr]`. Conclude with `Submodule.comap_mono (B1_le_Z1f (P.PD K) A')`. Establish `horth : ∀ a ∈ (finiteCocycles (P.PD K) A.ρ).comap (continuousCocycles A.ρ).subtype, ∀ b ∈ (finiteCocycles (P.PD K) A'.ρ).comap (continuousCocycles A'.ρ).subtype, β a b = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a ha b hb`. Rewrite using `[hβ]`. Conclude with `hort a.1 ha b.1 hb`. Establish `eZ` using `finrank_H1V A`. Establish `eW` using `finrank_H1fV (P.PD K) A`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `eW'` using `finrank_H1fV (P.PD K) A'`. Establish `eKl : finrank LL (LinearMap.ker β) = finrank LL (B1 A.ρ)`. Rewrite using `[hkl]`. Conclude with `(Submodule.comapSubtypeEquivOfLe (galoisCoboundaries_le_continuousCocycles A)).finrank_eq`. Establish `eKr : finrank LL (LinearMap.ker β.flip) = finrank LL (B1 A'.ρ)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hkr]`. Conclude with `(Submodule.comapSubtypeEquivOfLe (galoisCoboundaries_le_continuousCocycles A')).finrank_eq`. Establish `hdV` using `hdual.2.2.2`. Unfold `IsDR at hdr hdr'`. Rewrite `hdr'` using `[← hdV]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Establish `hdim : finrank LL ((finiteCocycles (P.PD K) A.ρ).comap (continuousCocycles A.ρ).subtype) + finrank LL ((finiteCocycles (P.PD K) A'.ρ).comap (continuousCocycles A'.ρ).subtype) = finrank LL (continuousCocycles A.ρ) + finrank LL (LinearMap.ker β.flip)`. Rewrite using `[eKr]`. Use `zify at eZ eW eW' hH1 hfil hdr hdr' ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨h1, h2⟩` from `exact_ann β _ _ hW hW' horth hdim`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `a ha`. Express the relevant statement in the definitionally equal form `(⟨a, ha⟩ : continuousCocycles A.ρ) ∈ (finiteCocycles (P.PD K) A.ρ).comap (continuousCocycles A.ρ).subtype ↔ _`. Rewrite using `[← h2, mem_rorth]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h b hb`. Use `h ⟨b, hb.1⟩ hb` as an intermediate fact. Rewrite `this` using `[LinearMap.flip_apply, hβ]`. Conclude with `this`. Introduce `h b hb`.
-
-Rewrite using `[LinearMap.flip_apply, hβ]`. Conclude with `h b.1 hb`. Introduce `b hb`. Express the relevant statement in the definitionally equal form `(⟨b, hb⟩ : continuousCocycles A'.ρ) ∈ (finiteCocycles (P.PD K) A'.ρ).comap (continuousCocycles A'.ρ).subtype ↔ _`. Rewrite using `[← h1, mem_rorth]`.
-
-Prove the components needed by the constructor for the conclusion. Introduce `h a ha`. Use `h ⟨a, ha.1⟩ ha` as an intermediate fact. Rewrite `this` using `[hβ]`. Conclude with `this`.
-
-Introduce `h a ha`. Rewrite using `[hβ]`. Conclude with `h a.1 ha`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bkA_exact_annihilators : Formalism.GaloisCohomology.LocalTateDualityK → Formalism.GaloisCohomology.LocalEulerCharK →
     ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI →

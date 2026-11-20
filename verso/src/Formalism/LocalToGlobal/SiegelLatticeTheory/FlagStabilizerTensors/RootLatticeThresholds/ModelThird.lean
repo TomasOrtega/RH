@@ -15,7 +15,7 @@ variable {r : ℕ} (pN : Formalism.MainNotions.S.Point ℂ (r + 1))
 local notation "W" => wPt pN
 
 /- English proof (translation)
-The claim follows from `(Equiv.symm_apply_eq _).2 (wPt_invol pN x).symm`.
+A detailed English derivation is pending.
 -/
 theorem w_symm (x : Fin (r + 1)) : (W).symm x = W x := (Equiv.symm_apply_eq _).2 (wPt_invol pN x).symm
 
@@ -27,7 +27,7 @@ def sw (q : Formalism.FourierDecayAlt.C2.Lstidx W) : Formalism.FourierDecayAlt.C
     · rw [w_symm, w_symm, wPt_invol, wPt_invol]; exact h.1⟩
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `Prod.ext (wPt_invol pN _) (wPt_invol pN _)`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem sw_sw (q : Formalism.FourierDecayAlt.C2.Lstidx W) : sw pN (sw pN q) = q := by
   apply Subtype.ext
@@ -45,13 +45,11 @@ def Rm (x' : Formalism.FourierDecayAlt.C2.Lstidx W → ℂ) : Formalism.FourierD
   fun q => d (W q.1.1) / d (W q.1.2) * star (x' (sw pN q))
 
 /- English proof (translation)
-Simplify using `only [Formalism.FourierDecayAlt.P.Dx2.Rad.low, Formalism.FourierDecayAlt.C2.lowOf, Matrix.add_apply, Matrix.one_apply, Matrix.of_apply]`. Use `congr 1`. Use `split_ifs with h`. Rewrite using `[Finset.sum_eq_single ⟨(i, j), h⟩]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q _ hq`. Rewrite using `[if_neg]`. Introduce `hq'`. Conclude with `hq (Subtype.ext hq')`. Introduce `hh`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd (Finset.mem_univ _) hh`. Use `Finset.sum_eq_zero fun q _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg]`. Introduce `hq'`. Apply `h` to reduce the goal to its premises.
-
-Establish `hq2` using `q.2`. Rewrite `hq2` using `[hq']`. Conclude with `hq2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem low_apply' (v : Formalism.FourierDecayAlt.C2.Lstidx W → ℂ) (i j : Fin (r + 1)) :
     low W v i j = (if i = j then 1 else 0) +
@@ -76,15 +74,15 @@ private theorem low_apply' (v : Formalism.FourierDecayAlt.C2.Lstidx W → ℂ) (
     exact hq2
 
 /- English proof (translation)
-Use extensionality with `i b`. Rewrite using `[Matrix.mul_apply, Matrix.mul_apply, Finset.sum_eq_single ((wPt pN) b) (fun c _ hc => by simp [Formalism.FourierDecayAlt.C2.monoP, hc]) (by simp), Finset.sum_eq_single ((wPt pN) i) (fun a _ ha => by`. Establish `hia : i ≠ (wPt pN) a` using `fun hi => ha (by rw [hi, wPt_invol])`. Simplify using `[Formalism.FourierDecayAlt.C2.monoP, hia]) (by simp)]`. Simplify using `only [Formalism.FourierDecayAlt.C2.monoP, Matrix.of_apply, Matrix.conjTranspose_apply, wPt_invol, eq_self_iff_true, if_true]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[low_apply', low_apply']`. Distinguish the cases in `h1 : i = (wPt pN) b`. Substitute `h1` using the available equality. Simplify using `[wPt_invol, w_symm]`. Establish `h1' : b ≠ (wPt pN) i` using `fun h => h1 (by rw [h, wPt_invol])`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[if_neg h1, if_neg h1', zero_add, zero_add]`. Establish `key : ((wPt pN) b < i ∧ (wPt pN).symm i < (wPt pN).symm ((wPt pN) b)) ↔ ((wPt pN) i < b ∧ (wPt pN).symm b < (wPt pN).symm ((wPt pN) i))`. Rewrite using `[Equiv.symm_apply_apply, Equiv.symm_apply_apply, w_symm, w_symm]`. Conclude with `And.comm`. Distinguish the cases in `h2 : (wPt pN) b < i ∧ (wPt pN).symm i < (wPt pN).symm ((wPt pN) b)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h3` using `key.1 h2`. Establish `hsw : sw pN ⟨(i, (wPt pN) b), h2⟩ = ⟨(b, (wPt pN) i), h3⟩` using `Subtype.ext (Prod.ext (wPt_invol pN b) rfl)`. Rewrite using `[dif_pos h2, dif_pos h3]`. Simplify using `only [Rm]`. Rewrite using `[hsw, wPt_invol]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear denominators, using `[hd b]` for the nonvanishing conditions. Establish `h3 : ¬ ((wPt pN) i < b ∧ (wPt pN).symm b < (wPt pN).symm ((wPt pN) i))` using `fun h => h2 (key.2 h)`. Rewrite using `[dif_neg h2, dif_neg h3]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem low_R_mono (hd : ∀ a, d a ≠ 0) (x' : Formalism.FourierDecayAlt.C2.Lstidx W → ℂ) :
     low W (Rm pN d x') * Formalism.FourierDecayAlt.C2.monoP W d = Formalism.FourierDecayAlt.C2.monoP W d * (low W x')ᴴ := by
@@ -119,9 +117,9 @@ theorem low_R_mono (hd : ∀ a, d a ≠ 0) (x' : Formalism.FourierDecayAlt.C2.Ls
       simp
 
 /- English proof (translation)
-Use extensionality with `i b`. Simplify using `only [Formalism.FourierDecayAlt.C2.monoP, Matrix.mul_apply, Matrix.of_apply, Matrix.one_apply]`. Rewrite using `[Finset.sum_eq_single ((wPt pN).symm b)]`. Simplify using `only [Equiv.apply_symm_apply, eq_self_iff_true, if_true] split_ifs with h`. Conclude with `mul_inv_cancel₀ (hd _)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `zero_mul _`. Introduce `a _ ha`. Simplify using `[ha]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mono_mul_inv (hd : ∀ a, d a ≠ 0) :
     Formalism.FourierDecayAlt.C2.monoP W d * Formalism.FourierDecayAlt.C2.monoP (wPt pN).symm (fun j => (d ((wPt pN).symm j))⁻¹) = 1 := by

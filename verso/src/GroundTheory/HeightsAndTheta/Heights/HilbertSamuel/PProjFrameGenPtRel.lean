@@ -12,27 +12,25 @@ noncomputable section
 open ProjFrameFibrePt in
 
 /- English proof (translation)
-Introduce `D Ω _ _ κ _ x e _ hF G`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `n hn`. Establish `h1 : (C (n : ℤ) : MRing (Sum.elim (GlobalTheory κ) (GlobalTheory (Fin (D + 1))))) ∈ graphP x e`. Rewrite using `[graphP, ← G.genericFibre_ker_target, RingHom.mem_ker, aeval_C, eq_intCast, Int.cast_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hn`. Rewrite `h1` using `[graphP, graphIdeal, RingHom.mem_ker, graphMap, eval₂Hom_C, eq_intCast, Int.cast_natCast, ← map_natCast (C : (MRing (GlobalTheory κ) ⧸ coordIdeal ℤ x) →+* MvPolynomial Unit _), C_eq_zero, ← map_natCast (Ideal.Quotient.mk (coordIdeal ℤ x)), Ideal.Quotient.eq_zero_iff_mem, coordIde …`. Conclude with `h1` after adjusting the coercions. Establish `hker : ∀ h : MRing (GlobalTheory κ), aeval (fun p : Ix κ => G.x' ⟨Sum.inl p.1, p.2⟩) h = 0 ↔ h ∈ coordIdeal ℤ x`. Introduce `h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h0`. Establish `h2 : rename (fun p : Ix κ => aV D p.2) h ∈ graphP x e`. Rewrite using `[graphP, ← G.genericFibre_ker_target, RingHom.mem_ker, aeval_rename]`. Conclude with `h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Rewrite `h2` using `[graphP, graphIdeal, RingHom.mem_ker, graphMap_rename_inl, C_eq_zero, Ideal.Quotient.eq_zero_iff_mem]`. Then use the resulting hypothesis. Introduce `hh`. Conclude with `aeval_inl_eq_zero G hh`. Use extensionality with `f`. Establish `hu : f ∈ coordIdeal ℤ (fun p : Ix κ => G.x' ⟨Sum.inl p.1, p.2⟩) ↔ ∀ d, homogeneousComponent d f ∈ coordIdeal ℤ x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[coordIdeal, RingHom.mem_ker, Polynomial.ext_iff]`. Simplify using `only [coeff_coneMap, Polynomial.coeff_zero, hker]`. Rewrite using `[hu]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← sum_homogeneousComponent f]`. Conclude with `Ideal.sum_mem _ fun d _ => h d`. Introduce `h d`. Conclude with `coordIdeal_isHomogIdeal ℤ x f h d`. Introduce `k`.
+Express the relevant assertion in an equivalent form by its definition. Take a linear combination of the given relations to obtain the conclusion. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `x'_frame_mul G (e := e) k`. Express the relevant statement in the definitionally equal form `G.x' (bV κ k) * G.x' (aV D (e 0).2) = G.x' (bV κ 0) * G.x' (aV D (e k).2)`. Take the linear combination `-h`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `y hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Rewrite `hy` using `[RingHom.mem_fieldRange]`. Take `⟨c, rfl⟩` from `hy`. Take `⟨f, g, _, rfl⟩` from `G.gen c`. Establish `key : ∀ h : MRing (GlobalTheory (Fin (D + 1))), algebraMap G.Φ G.Φ' (aeval G.x h) ∈ Subfield.closure (Set.range fun k : Fin (D + 1) => G.x' ⟨Sum.inr (), k⟩)`. Introduce `h`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Proceed by induction on `h using MvPolynomial.induction_on with`. Consider the case `C a`. Rewrite using `[aeval_C, eq_intCast, map_intCast]`. Conclude with `intCast_mem _ a`. Consider the case `add p q hp hq`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite using `[map_add, map_add]`. Conclude with `add_mem hp hq`. Consider the case `mul_X p i hp`. Rewrite using `[map_mul, map_mul, aeval_X]`. Conclude with `mul_mem hp (Subfield.subset_closure ⟨i.2, G.compat i⟩)`.
-
-Rewrite using `[map_div₀]`. Conclude with `div_mem (key f) (key g)`. Rewrite using `[Subfield.closure_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨G.x ⟨(), k⟩, (G.compat ⟨(), k⟩).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem ProjFrameGenPtRel.proof : ProjFrameGenPtRel.Statement := by
   intro D Ω _ _ κ _ x e _ hF G

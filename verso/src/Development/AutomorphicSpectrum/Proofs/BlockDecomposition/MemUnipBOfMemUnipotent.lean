@@ -17,17 +17,15 @@ section Local
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
 /- English proof (translation)
-Establish `h1 : ∀ y : F, ValuativeRel.valuation F y ≤ 1 → ψ₁ y = 1` using `fun y hy => (h 1).mpr (by simp) y (by simpa using hy)`. Use `⟨fun x hx => ?_, ?_, fun x => Circle.norm_coe (ψ₁ x)⟩` and prove the remaining obligations. Simplify using `[h1 x ((Valuation.mem_integer_iff _ _).mp hx)]`. Establish `hlt` using `GroundTheory.Automorphic.GLnLocal.valuation_uniformizer_lt_one F`. Establish `hne` using `GroundTheory.Automorphic.GLnLocal.valuation_uniformizer_ne_zero F`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set ϖ : F := (GroundTheory.Automorphic.GLnLocal.uniformizer F : F) with hϖdef`. Establish `hϖ : ϖ ≠ 0` using `fun h0 => hne (by rw [h0, map_zero])`. Establish `hinv : ValuativeRel.valuation F ϖ * ValuativeRel.valuation F ϖ⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel₀ hϖ, map_one]`. Establish `hnot : ¬ ValuativeRel.valuation F ϖ⁻¹ ≤ ValuativeRel.valuation F ((1 : Fˣ) : F)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_one, map_one]`. Introduce `hle`. Establish `h3 : ValuativeRel.valuation F ϖ * ValuativeRel.valuation F ϖ⁻¹ ≤ ValuativeRel.valuation F ϖ * 1` using `by gcongr`. Rewrite `h3` using `[hinv, mul_one]`. Conclude with `absurd hlt (not_lt.mpr h3)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hex : ¬ ∀ y : F, ValuativeRel.valuation F y ≤ ValuativeRel.valuation F ϖ⁻¹ → ψ₁ y = 1` using `fun hall => hnot ((h _).mp hall)`. Use `push Not at hex`. Take `⟨y, hy, hy1⟩` from `hex`. Use `⟨y, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Valuation.mem_integer_iff, map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Combine the equalities or inequalities in the displayed calculation. Introduce `hc`. Apply `hy1` to reduce the goal to its premises. Apply `Circle.ext` to reduce the goal to its premises. Rewrite using `[Circle.coe_one]`.
-
-Conclude with `hc`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiOK_of_hasConductor {ψ₁ : AddChar F Circle} (h : GlobalTheory.SplitWeil.HasConductor ψ₁ 1) :
     PsiOK (Circle.coeHom.compAddChar ψ₁) := by
@@ -64,11 +62,9 @@ theorem psiOK_of_hasConductor {ψ₁ : AddChar F Circle} (h : GlobalTheory.Split
       exact hc
 
 /- English proof (translation)
-Take `⟨hut, hdiag⟩` from `hg`. Establish `hp : g ∈ GlobalTheory.SmGL.parab F (GlobalTheory.SmGL.points (Fin n))`. Introduce `i j hij`. Conclude with `hut (by simpa [GlobalTheory.SmGL.blk, GlobalTheory.SmGL.points] using hij)`. Use `⟨⟨g, hp⟩, ?_, rfl⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `show GlobalTheory.SmGL.leviProj F (GlobalTheory.SmGL.points (Fin n)) ⟨g, hp⟩ = 1`. Use `funext fun a => ?_` and prove the remaining obligations. Use `show (GlobalTheory.SmGL.diagBlock F (GlobalTheory.SmGL.points (Fin n)) a).toHomUnits ⟨g, hp⟩ = 1`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`.
-
-Use `show (GlobalTheory.SmGL.diagBlock F (GlobalTheory.SmGL.points (Fin n)) a ⟨g, hp⟩) i j = (1 : Matrix Unit Unit F) i j`. Take `rfl : i = j` from `Subsingleton.elim _ _`. Rewrite using `[Matrix.one_apply_eq]`. Conclude with `hdiag a`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_unipB_of_mem_unipotent {n : ℕ} {g : GL (Fin n) F} (hg : g ∈ Iwasawa.unipotent F n) :
     g ∈ GlobalTheory.SmGL.unipB F (Fin n) := by
@@ -88,14 +84,14 @@ theorem mem_unipB_of_mem_unipotent {n : ℕ} {g : GL (Fin n) F} (hg : g ∈ Iwas
   exact hdiag a
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.Whittaker.superDiag, GroundTheory.Automorphic.Whittaker.superdiagSum, Finset.sum_filter]`.
+Simplify using the standard rewrite rules.
 -/
 theorem superDiag_eq_superdiagSum {n : ℕ} (g : GL (Fin n) F) :
     GlobalTheory.Whittaker.superDiag g = Whittaker.superdiagSum (g : Matrix (Fin n) (Fin n) F) := by
   simp only [GlobalTheory.Whittaker.superDiag, GroundTheory.Automorphic.Whittaker.superdiagSum, Finset.sum_filter]
 
 /- English proof (translation)
-Introduce `g hg u`. Rewrite using `[h g (mem_unipB_of_mem_unipotent hg) u, GroundTheory.Automorphic.Whittaker.psiN, ← superDiag_eq_superdiagSum]`. Apply the tactic sequence `all_goals rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem whit_of_isFunctional {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     {ρ : Representation ℂ (GL (Fin n) F) V} {ψ₁ : AddChar F Circle} {l : Module.Dual ℂ V}
@@ -108,11 +104,11 @@ theorem whit_of_isFunctional {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V
 end Local
 
 /- English proof (translation)
-Establish `h1 : ∀ y : k, ValuativeRel.valuation k y ≤ 1 → ψ₁ y = 1` using `fun y hy => (h 1).mpr (by simp) y (by simpa using hy)`. Establish `hopen : IsOpen ((ValuativeRel.valuation k).integer : Set k)` using `Valuation.isOpen_integer`. Use `IsLocallyConstant.continuous ?_` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨(fun y => y - x) ⁻¹' ((ValuativeRel.valuation k).integer : Set k), hopen.preimage (continuous_sub_right x), ?_, ?_⟩` and prove the remaining obligations. Use `show x - x ∈ (ValuativeRel.valuation k).integer`. Rewrite using `[sub_self]`. Conclude with `zero_mem _`. Introduce `y hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hy' : ψ₁ (y - x) = 1` using `h1 _ ((Valuation.mem_integer_iff _ _).mp hy)`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 private theorem continuous_of_hasConductor_one {k : Type} [Field k] [ValuativeRel k]
     [TopologicalSpace k] [IsNonarchimedeanLocalField k] {ψ₁ : AddChar k Circle}
@@ -135,9 +131,9 @@ private theorem continuous_of_hasConductor_one {k : Type} [Field k] [ValuativeRe
       _ = ψ₁ x := by rw [hy', one_mul]
 
 /- English proof (translation)
-Introduce `E _ _ _ a ha π w`. Take `⟨ψ₁, hψ⟩` from `GlobalTheory.SplitWeil.Model.exists_hasConductor (k := w.adicCompletion E)`. Establish `hne : ψ₁ ≠ 1`. Introduce and unpack `rfl`. Conclude with `GlobalTheory.SplitWeil.Model.not_hasConductor_one 1 hψ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨l, hl0, hl⟩` from `GlobalTheory.Published.cuspidalGeneric_holds E a ha π w ψ₁ (continuous_of_hasConductor_one hψ) hne`. Conclude with `⟨_, psiOK_of_hasConductor hψ, l, hl0, whit_of_isFunctional hl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem global_character_holds : G4 := by
   intro E _ _ _ a ha π w

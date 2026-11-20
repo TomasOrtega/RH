@@ -18,9 +18,9 @@ namespace GlobalTheory
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor in
 
 /- English proof (translation)
-Use `fn_ext fun z hz ↦ ?_` and prove the remaining obligations. Establish `hz' : b z ∈ a ⁻¹ᵁ U` using `hz`. Establish `key : ∀ {W : Scheme.{0}} (c : Y ⟶ W) (V : W.Opens) (g : Γ(W, V)), c (b z) ∈ V → gs (b ≫ c) z V g = (b.stalkMap z).hom (gs c (b z) V g)` using `fun c V g hV ↦ by`. Rewrite using `[← gs_pull b c z V hV, gs_stalkMap b z _ hV, gs_pull (𝟙 Y) c (b z) V hV, Category.id_comp]`. Take `⟨t, ht⟩` from `h (b z) hz'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h0 : (b.stalkMap z).hom (cst (a ≫ p) (b z) r) = 0` using `(key (a ≫ p) ⊤ _ trivial).symm.trans (hr z)`. Rewrite using `[gs_pull (𝟙 Z) (b ≫ a) z U hz, Category.id_comp, key a U f hz', ht, map_mul, h0, zero_mul, ThickeningDivisible.gs_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem app_comp_eq_zero_of_germ_dvd {R : Type} [CommRing R] {X Y Z : Scheme.{0}}
     (p : X ⟶ Spec (CommRingCat.of R)) (a : Y ⟶ X) (b : Z ⟶ Y) (r : R)
@@ -41,21 +41,19 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R Car
   ThickeningDivisible in
 
 /- English proof (translation)
-Set `φ : R →+* R ⧸ Ideal.span {r}` to `Ideal.Quotient.mk _`. Set `q` to `Spec.map (CommRingCat.ofHom φ)`. Set `H₀ : Over (Spec (CommRingCat.of (R ⧸ Ideal.span {r})))` to `(Over.pullback q).obj H`. Set `π : H₀.left ⟶ H.left` to `pullback.fst H.hom q`. Establish `: IsClosedImmersion q` using `IsClosedImmersion.spec_of_surjective _ Ideal.Quotient.mk_surjective`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: Smooth H₀.hom` using `inferInstanceAs (Smooth (pullback.snd H.hom q))`. Establish `: GeometricallyConnected H₀.hom` using `inferInstanceAs (GeometricallyConnected (pullback.snd H.hom q))`. Use `grpObj_geometricallyIntegral_of_smooth _ H₀` as an intermediate fact. Establish `key` using `isIso_of_isClosedImmersion_of_thickenings _ (I.map φ) (map_le_jacobson φ Ideal.Quotient.mk_surjective hI) H₀ η[H₀] (fun p ↦ inferInstance) _ (pullback.snd (secIdeal hN s).subschemeι π) fun n ↦ by`. Establish `: IsClosedImmersion (thick _ (I.map φ) n)` using `IsClosedImmersion.spec_of_surjective _ Ideal.Quotient.mk_surjective`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: QuasiCompact (fstG (I.map φ) n H₀).left` using `inferInstanceAs (QuasiCompact (pullback.fst H₀.hom (thick _ (I.map φ) n)))`. Establish `: QuasiCompact π` using `inferInstanceAs (QuasiCompact (pullback.fst H.hom q))`. Establish `hπ : π ≫ H.hom = H₀.hom ≫ q` using `pullback.condition`. Set `b : (thickObj _ (I.map φ) n H₀).left ⟶ (thickObj R I n H).left` to `pullback.lift ((fstG (I.map φ) n H₀).left ≫ π) (pullback.snd H₀.hom (thick _ (I.map φ) n) ≫ Spec.map (CommRingCat.ofHom (Ideal.quotientMap ((I.map φ) ^ (n + 1)) φ (by rw [← Ideal.map_pow]; exact Ideal.le_comap_map)))) (by`. Rewrite using `[Category.assoc, hπ, Category.assoc, ← Spec.map_comp, ← Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Use `erw [pullback.condition]`. Rewrite using `[Category.assoc, ← Spec.map_comp]`. Use the proof step `rfl)`. Establish `hb : b ≫ (fstG I n H).left = (fstG (I.map φ) n H₀).left ≫ π` using `pullback.lift_fst _ _ _`. Establish `h0 : ∀ j, (((fstG (I.map φ) n H₀).left ≫ π).app _).hom (s.f j) = 0` using `fun j ↦ by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hb]`. Use `app_comp_eq_zero_of_germ_dvd H.hom _ b r (fun z ↦ ?_) _ _ (hs n j)` and prove the remaining obligations. Rewrite using `[← Category.assoc, hb, Category.assoc, hπ, ← Category.assoc]`. Conclude with `cst_comp_eq_zero φ (Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self r)) _ z`. Conclude with `⟨pullback.lift (IsClosedImmersion.lift _ ((fstG (I.map φ) n H₀).left ≫ π) (by`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Scheme.IdealSheafData.ker_subschemeι]`. Conclude with `secIdeal_le_ker hN s _ h0)) _ (IsClosedImmersion.lift_fac _ _ _),`. Use the proof step `pullback.lift_snd _ _ _⟩`. Use `exists_div_sec H.hom hr s fun j x hx ↦ ?_` and prove the remaining obligations. Take `⟨W, hxW, hW⟩` from `exists_affine_le (V := N.U j) hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `constFn_dvd_of_mem_ker H.hom r (secIdeal hN s).subschemeι (inv (pullback.snd (secIdeal hN s).subschemeι π) ≫ pullback.fst _ _) (by rw [Category.assoc, pullback.condition, IsIso.inv_hom_id_assoc]) W.2 (a := resG _ hW (s.f j)) (by`. Rewrite using `[Scheme.IdealSheafData.ker_subschemeι]`. Conclude with `(ideal_locIdeal _ _ (exists_mem_chart hN) (associated_germ_sec s) W j hW).ge (Ideal.mem_span_singleton_self _))`. Take `⟨c, hc⟩` from `h1`. Use `⟨gs (𝟙 _) x W.1 c, ?_⟩` and prove the remaining obligations.
-
-Establish `h2` using `congrArg (gs (𝟙 _) x W.1) hc`. Rewrite `h2` using `[gs_mul _ _ _ hxW, gs_constFn _ _ _ _ hxW, Category.id_comp]`. Conclude with `(gs_res _ x hW hxW _).symm.trans h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sec_div_of_germ_dvd (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] (I : Ideal R)
     (hI : I ≤ Ideal.jacobson ⊥) (H : Over (Spec (CommRingCat.of R))) [GrpObj H] [Smooth H.hom]
@@ -121,13 +119,13 @@ theorem sec_div_of_germ_dvd (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRi
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.DVR in
 
 /- English proof (translation)
-Introduce `R _ _ I hR D A G _ _ _ U k r hr σ₀ f₀ f hf hE`. Establish `: IsNoetherianRing R` using `hR.1`. Establish `hI : I ≤ Ideal.jacobson ⊥` using `have := hR.2.2.2`. Use the proof step `IsAdicComplete.le_jacobson_bot I`. Use `U.smooth` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `sec_div_of_germ_dvd R I hI G _ (linComb_isLB _ U.LG.isLB _ _) σ₀ r hr fun e j y hy ↦ ?_` and prove the remaining obligations. Take `⟨S, H⟩` from `(expandsAt_iff_stalks U e k σ₀ f₀).1 (hE e)`. Use `choose J hJ using fun ψ : (thickObj R I e G).left ⟶ D.toPre.P.A.left ↦ exists_chart D.toPre.P.isLB (ψ y)`. Establish `hJ : Good D.toPre.P.L y J` using `hJ`. Establish `hc : pGl U e ≫ D.toPre.P.A.hom = fGl I G e ≫ G.hom` using `(Over.w (U.gt e).pG).trans (Over.w (fstG I e G)).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨jL, rfl⟩ : ∃ jL : U.LG.L.ι, j = fun _ ↦ jL` from `⟨j 0, funext fun i ↦ congrArg j (Subsingleton.elim i 0)⟩`. Establish `h` using `(H y J hJ).2 jL (Set.mem_iInter.1 hy 0)`. Use `(Units.dvd_mul_left (u := wv U e (𝟙 _) y (J (pGl U e)) jL ^ k)).1 (h.symm ▸ ?_)` and prove the remaining obligations. Use `Finset.dvd_sum fun α _ ↦ Dvd.dvd.mul_right ⟨sval (f α) (pGl U e) y J, ?_⟩ _` and prove the remaining obligations. Rewrite using `[← hc]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `gs_of_eq_sum_scal (n := 1) D.toPre.P.A.hom (pGl U e) y _ (hJ.mem (D.toPre.famφB α) _) (fun _ ↦ r) (a := (f₀ α).f _) (b := fun _ ↦ (f α).f _) (by rw [Fin.sum_univ_one]; exact hf α _)` as an intermediate fact. Rewrite `this` using `[Fin.sum_univ_one]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem sec_div_of_expandsAt : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R), AdmBase R I → ∀ (D : DegData R I) (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] [GeometricallyConnected G.hom] (U : UnifPre I D A G) (k : ℕ) (r : R), r ≠ 0 → ∀ (σ₀ : LB.Sec (LB.LinComb U.LG.L (K := Fin 1) (fun _ => 𝟙 G.left) (fun _ => (k : ℤ)))) (f₀ f : ∀ α, D.toPre.SecB k α), (∀ α, (∀ j, (f₀ α).f j = resTop _ (scal D.toPre.P.A.hom r) * (f α).f j)) → (∀ e, U.ExpandsAt e k σ₀ f₀) → ∃ σ : LB.Sec (LB.LinComb U.LG.L (K := Fin 1) (fun _ => 𝟙 G.left) (fun _ => (k : ℤ))), (∀ j, (σ₀).f j = resTop _ (scal G.hom r) * (σ).f j) := by
   intro R _ _ I hR D A G _ _ _ U k r hr σ₀ f₀ f hf hE

@@ -16,39 +16,31 @@ noncomputable section
 namespace GlobalTheory.GalCover
 
 /- English proof (translation)
-Introduce `A R _ _ _ _ _ b hA hfin hinj`. Take `⟨hnoeth, hnorm, hcomp, hchar⟩` from `hA`. Use `letI : Algebra A R := b.toAlgebra`. Use `haveI : Module.Finite A R := hfin`. Use `haveI : Algebra.IsIntegral A R := Algebra.IsIntegral.of_finite A R`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `K` to `FractionRing A`. Use `haveI : CharZero K := charZero_of_injective_algebraMap (IsFractionRing.injective A K)`. Set `Ω` to `AlgebraicClosure K`. Establish `hιK : Function.Injective (algebraMap A Ω)`. Rewrite using `[IsScalarTower.algebraMap_eq A K Ω]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(algebraMap K Ω).injective.comp (IsFractionRing.injective A K)`. Use `haveI : Module.IsTorsionFree A R := Module.isTorsionFree_iff_algebraMap_injective.2 hinj`. Use `haveI : Module.IsTorsionFree A Ω := Module.isTorsionFree_iff_algebraMap_injective.2 hιK`. Use `haveI : Algebra.IsAlgebraic A R := Algebra.IsIntegral.isAlgebraic`. Set `φ : R →ₐ[A] Ω` to `IsAlgClosed.lift`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφinj : Function.Injective φ`. Establish `hk : (RingHom.ker (φ : R →+* Ω)).comap (algebraMap A R) = ⊥`. Use `eq_bot_iff.2 fun a ha => ?_` and prove the remaining obligations. Establish `h1 : φ (algebraMap A R a) = 0` using `ha`. Rewrite `h1` using `[φ.commutes]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `(Ideal.mem_bot).2 (hιK (h1.trans (map_zero _).symm))`. Establish `h2` using `Ideal.eq_bot_of_comap_eq_bot hk`. Conclude with `(RingHom.injective_iff_ker_eq_bot _).2 h2`. Establish `hint : ∀ x : R, IsIntegral A (φ x)` using `fun x => (Algebra.IsIntegral.isIntegral (R := A) x).map φ`. Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := A) (M := R)`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Set `L : IntermediateField K Ω` to `IntermediateField.adjoin K ((φ '' (s : Set R)) : Set Ω)`. Establish `hintK : ∀ x : R, IsIntegral K (φ x)` using `fun x => (hint x).tower_top`. Use `haveI : FiniteDimensional K L := IntermediateField.finiteDimensional_adjoin (by`. Introduce and unpack `_ ⟨x, -, rfl⟩`. Conclude with `hintK x)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hmemL : ∀ x : R, φ x ∈ L` using `fun x => by`. Establish `hx : x ∈ Submodule.span A (s : Set R)` using `hs ▸ Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact IntermediateField.subset_adjoin K _ ⟨y, hy, rfl⟩`. Consider the case `zero => rw [map_zero]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `zero_mem L`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `add_mem hy hz`. Consider the case `smul r y _ hy`. Rewrite using `[map_smul, Algebra.smul_def]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `mul_mem ?_ hy` and prove the remaining obligations. Rewrite using `[IsScalarTower.algebraMap_apply A K Ω]`. Conclude with `L.algebraMap_mem _`. Set `M : IntermediateField K Ω` to `IntermediateField.normalClosure K L Ω`. Establish `hmem : ∀ x : R, φ x ∈ M` using `fun x => IntermediateField.le_normalClosure L (hmemL x)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Set `W` to `integralClosure A M`. Use `haveI hWf : Module.Finite A W := IsIntegralClosure.finite A K M W`. Use `haveI : IsLocalRing W := ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.isLocalRing_finite_domain (R := A) W`. Establish `hAM : Function.Injective (algebraMap A M)`. Rewrite using `[IsScalarTower.algebraMap_eq A K M]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(algebraMap K M).injective.comp (IsFractionRing.injective A K)`. Establish `hinjW : Function.Injective (algebraMap A W)` using `fun x y h => hAM (congrArg Subtype.val h)`. Set `φM : R →+* M` to `(φ : R →+* Ω).codRestrict M hmem`. Establish `hran : ∀ x : R, φM x ∈ W` using `fun x => by show IsIntegral A (φM x)`. Conclude with `(isIntegral_algHom_iff ((IntermediateField.val M).restrictScalars A) Subtype.val_injective).1 (hint x)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `θ : R →+* W` to `φM.codRestrict W hran`. Establish `hθval : ∀ x : R, (((θ x : M)) : Ω) = φ x` using `fun x => rfl`. Establish `hθinj : Function.Injective θ` using `fun x y h => hφinj (by`. Rewrite using `[← hθval, ← hθval, h])`. Establish `hcomm : θ.comp b = algebraMap A W` using `RingHom.ext fun a => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Apply `Subtype.val_injective` to reduce the goal to its premises. Apply `Subtype.val_injective` to reduce the goal to its premises. Conclude with `φ.commutes a`. Use `haveI : CharZero W := charZero_of_injective_algebraMap hinjW`. Establish `hθfin : θ.Finite` using `RingHom.Finite.of_comp_finite (f := b) (by rw [hcomm]; exact RingHom.finite_algebraMap.2 hWf)`.
-
-Establish `hθloc : IsLocalHom θ` using `RingHom.IsIntegral.isLocalHom hθfin.to_isIntegral hθinj`. Set `res : (M ≃ₐ[K] M) →* (W ≃+* W)` to `{ toFun := fun σ => { toFun := fun x => ⟨σ (x : M), x.2.map ((σ : M →ₐ[K] M).restrictScalars A)⟩ invFun := fun x => ⟨σ.symm (x : M), x.2.map ((σ.symm : M →ₐ[K] M).restrictScalars A)⟩ left_inv := fun x => Subtype.ext (σ.symm_apply_apply (x : M)) right_inv := fun x => Subtype.ext ( …`. Use `⟨W, inferInstance, inferInstance, inferInstance, θ, ⟨IsNoetherianRing.of_finite A W, integralClosure.isIntegrallyClosedOfFiniteExtension K, GlobalTheory.CompleteFiniteExtension.isAdicComplete_of_finite_local A W, inferInstance⟩, hθloc, hθinj, hθfin, fun r hr => ?_⟩` and prove the remaining obligations. Establish `hfix : ∀ σ : M ≃ₐ[K] M, σ (θ r : M) = (θ r : M)` using `fun σ => by`. Establish `h1` using `hr (res σ) (res.isOfFinOrder (isOfFinOrder_of_finite σ)) (fun a => by`.
-
-Rewrite using `[← RingHom.comp_apply θ b, hcomm]`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show σ (algebraMap A M a) = algebraMap A M a`. Rewrite using `[IsScalarTower.algebraMap_apply A K M]`. Conclude with `σ.commutes _)`.
-
-Conclude with `congrArg Subtype.val h1`. Take `⟨k, hk⟩` from `(IsGalois.mem_range_algebraMap_iff_fixed (F := K) (θ r : M)).2 hfix`. Establish `hkint : IsIntegral A k`. Establish `: IsIntegral A (algebraMap K M k)` using `hk ▸ (θ r).2`. Conclude with `(isIntegral_algHom_iff (IsScalarTower.toAlgHom A K M) (algebraMap K M).injective).1 this`.
-
-Take `⟨a, ha⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hkint`. Use `⟨a, hφinj ?_⟩` and prove the remaining obligations. Use `show φ (algebraMap A R a) = φ r`. Rewrite using `[φ.commutes, ← hθval, ← hk, ← ha, IsScalarTower.algebraMap_apply A K Ω]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_isCN_galois_of_finite : ∀ (A R : Type) [CommRing A] [IsDomain A] [IsLocalRing A] [CommRing R] [IsDomain R] (b : A →+* R), IsCN A → b.Finite → Function.Injective b → ∃ (R' : Type) (_ : CommRing R') (_ : IsDomain R') (_ : IsLocalRing R') (θ : R →+* R'), IsCN R' ∧ IsLocalHom θ ∧ Function.Injective θ ∧ θ.Finite ∧ ∀ r : R, (∀ σ : R' ≃+* R', IsOfFinOrder σ → (∀ a, σ (θ (b a)) = θ (b a)) → σ (θ r) = θ r) → r ∈ b.range := by
   intro A R _ _ _ _ _ b hA hfin hinj

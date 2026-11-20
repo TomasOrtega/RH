@@ -8,13 +8,13 @@ set_option autoImplicit false
 namespace GlobalTheory.WholeFlag.Glue
 
 /- English proof (translation)
-Unfold `antiDiag`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply]`. Rewrite using `[Finset.sum_eq_single i.rev]`. Establish `h : (i : ℕ) + (i.rev : ℕ) = g - 1`. Use `i.2` as an intermediate fact.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Fin.val_rev]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_pos h, one_mul]`. Introduce `k _ hk`. Establish `h : ¬ ((i : ℕ) + (k : ℕ) = g - 1)`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Apply `hk` to reduce the goal to its premises. Use `i.2` as an intermediate fact. Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[Fin.val_rev]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg h, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem antiDiag_mulVec_rev {κ : Type} [Field κ] {g : ℕ} (b : Fin g → κ) (i : Fin g) :
     (antiDiag κ g *ᵥ b) i = b i.rev := by
@@ -37,7 +37,7 @@ theorem antiDiag_mulVec_rev {κ : Type} [Field κ] {g : ℕ} (b : Fin g → κ) 
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Use function extensionality and compare the values at `r`. Rewrite using `[Pi.add_apply]`. Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[Fin.sum_univ_add]`. Simplify using `only [fullFrame_left, fullFrame_right]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fullFrame_mulVec_halves {κ : Type} [Field κ] {g : ℕ} (U : Matrix (Fin (g + g)) (Fin g) κ)
     (J : Matrix (Fin (g + g)) (Fin (g + g)) κ) (Lft : Matrix (Fin g) (Fin (g + g)) κ) (v : Fin (g + g) → κ) :
@@ -50,17 +50,15 @@ theorem fullFrame_mulVec_halves {κ : Type} [Field κ] {g : ℕ} (U : Matrix (Fi
   simp only [fullFrame_left, fullFrame_right]
 
 /- English proof (translation)
-Introduce `hdet`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 hdet`. Rewrite `hv` using `[fullFrame_mulVec_halves]`. Use `set a : Fin g → κ := fun k => v (Fin.castAdd g k) with ha`. Use `set b : Fin g → κ := fun k => v (Fin.natAdd g k) with hb`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `key : U.transpose * J * (J⁻¹ * Lft.transpose * antiDiag κ g) = antiDiag κ g`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = (Lft * U).transpose * antiDiag κ g := by`. Rewrite using `[Matrix.mul_nonsing_inv J hJ, Matrix.mul_one, Matrix.transpose_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `_ = antiDiag κ g := by rw [hL, Matrix.transpose_one, Matrix.one_mul]`. Establish `h1` using `congrArg (fun w => (U.transpose * J) *ᵥ w) hv`. Simplify using `only [Matrix.mulVec_add, Matrix.mulVec_mulVec, Matrix.mulVec_zero] at h1`. Rewrite `h1` using `[hU, key, Matrix.zero_mulVec, zero_add]`. Establish `hb0 : b = 0`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use function extensionality and compare the values at `k`. Use `congrFun h1 k.rev` as an intermediate fact. Rewrite `this` using `[antiDiag_mulVec_rev, Fin.rev_rev]`. Conclude with `this`. Rewrite `hv` using `[hb0, Matrix.mulVec_zero, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `ha0 : a = 0`. Establish `h2` using `congrArg (fun w => Lft *ᵥ w) hv`. Simplify using `only [Matrix.mulVec_mulVec, Matrix.mulVec_zero] at h2`. Rewrite `h2` using `[hL, Matrix.one_mulVec]`. Then use the resulting hypothesis. Apply `hv0` to reduce the goal to its premises.
-
-Use function extensionality and compare the values at `c`. Use `Fin.addCases (fun k => ?_) (fun k => ?_) c` and prove the remaining obligations. Conclude with `congrFun ha0 k`. Conclude with `congrFun hb0 k`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem fullFrame_det_ne_zero_field {κ : Type} [Field κ] {g : ℕ} (U : Matrix (Fin (g + g)) (Fin g) κ)
     (Lft : Matrix (Fin g) (Fin (g + g)) κ) (J : Matrix (Fin (g + g)) (Fin (g + g)) κ) (hJ : IsUnit J.det)

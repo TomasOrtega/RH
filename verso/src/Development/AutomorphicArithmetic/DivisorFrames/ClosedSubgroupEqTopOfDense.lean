@@ -2,21 +2,19 @@ import Mathlib
 open Filter Topology
 
 /- English proof (translation)
-Establish `hne : (Additive.ofMul (a : G ⧸ H)) ≠ 0` using `fun h => ha ((QuotientGroup.eq_one_iff _).1 h)`. Take `⟨χ, hχ⟩` from `CharacterModule.exists_character_apply_ne_zero_of_ne_zero hne`. Set `e : AddCircle (1 : ℚ) →+ AddCircle (1 : ℝ)` to `QuotientAddGroup.map _ _ (Rat.castHom ℝ).toAddMonoidHom (by`. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨k, by simp⟩)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `he : ∀ a, e a = 0 → a = 0`. Introduce `a`. Proceed by induction on `a using QuotientAddGroup.induction_on with`. Consider the case `H q`. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : (((q : ℝ)) : AddCircle (1 : ℝ)) = 0` using `h`. Rewrite `h1`, the goal using `[AddCircle.coe_eq_zero_iff]`. Take `⟨k, hk⟩` from `h1`. Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `: ((k : ℚ) : ℝ) = q` using `by simpa using hk`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h5 : (k : ℚ) = q` using `by exact_mod_cast this`. Simplify using `using h5`. Set `f : G → AddCircle (1 : ℝ)` to `fun x => e (χ (Additive.ofMul (x : G ⧸ H)))`. Establish `hf1 : f 1 = 0` using `by show e (χ 0) = 0`. Rewrite using `[map_zero, map_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfm : ∀ a b, f (a * b) = f a + f b`. Introduce `a b`. Use `show e (χ (Additive.ofMul (a : G ⧸ H) + Additive.ofMul (b : G ⧸ H))) = _`. Rewrite using `[map_add, map_add]`. Set `ψ : G →* Circle` to `{ toFun := fun x => AddCircle.toCircle (f x) map_one' := by rw [hf1, AddCircle.toCircle_zero] map_mul' := fun a b => by rw [hfm, AddCircle.toCircle_add] }`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ψ, fun u hu => ?_, ?_⟩` and prove the remaining obligations. Establish `h0 : (u : G ⧸ H) = 1` using `(QuotientGroup.eq_one_iff _).2 hu`. Establish `: f u = 0` using `by show e (χ (Additive.ofMul (u : G ⧸ H))) = 0`. Rewrite using `[h0, ofMul_one, map_zero, map_zero]`. Use `show AddCircle.toCircle (f u) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this, AddCircle.toCircle_zero]`. Introduce `h`. Establish `h2 : AddCircle.toCircle (f a) = AddCircle.toCircle (0 : AddCircle (1 : ℝ))`. Rewrite using `[AddCircle.toCircle_zero]`. Conclude with `h`.
-
-Conclude with `hχ (he _ (AddCircle.injective_toCircle (T := (1 : ℝ)) one_ne_zero h2))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.exists_character_nontrivial_off {G : Type} [CommGroup G] (H : Subgroup G) {a : G} (ha : a ∉ H) :
     ∃ ψ : G →* Circle, (∀ u ∈ H, ψ u = 1) ∧ ψ a ≠ 1 := by
@@ -63,17 +61,15 @@ private theorem UpperTheory.exists_character_nontrivial_off {G : Type} [CommGrou
     exact hχ (he _ (AddCircle.injective_toCircle (T := (1 : ℝ)) one_ne_zero h2))
 
 /- English proof (translation)
-Introduce `G _ _ _ M hM hchar hsmall`. Establish `step1 : ∀ (O : OpenSubgroup G) (g : G), g ∈ M ⊔ O.toSubgroup`. Introduce `O g`. Assume the negation of the conclusion as `hg`. Take `⟨ψ, h1, h2⟩` from `UpperTheory.exists_character_nontrivial_off _ hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Establish `hc : Continuous ψ`. Apply `continuous_of_continuousAt_one` to reduce the goal to its premises. Establish `hev : (fun _ : G => (1 : Circle)) =ᶠ[nhds (1 : G)] ψ` using `by filter_upwards [O.mem_nhds_one] with x hx`. Conclude with `(h1 x (Subgroup.mem_sup_right hx)).symm`. Conclude with `continuousAt_const.congr hev`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hchar ψ hc (fun m hm => h1 m (Subgroup.mem_sup_left hm))` as an intermediate fact. Conclude with `h2 (by rw [this]; rfl)`. Rewrite using `[eq_top_iff]`. Introduce `g _`. Establish `: g ∈ closure (M : Set G)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[mem_closure_iff_nhds]`. Introduce `U hU`. Establish `hcont : Continuous (fun w : G => g * w⁻¹)` using `by fun_prop`. Establish `hW : (fun w : G => g * w⁻¹) ⁻¹' U ∈ nhds (1 : G)` using `hcont.continuousAt.preimage_mem_nhds (by simpa using hU)`. Take `⟨O, hO⟩` from `hsmall _ hW`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨m, hm, o, ho, hmo⟩` from `Subgroup.mem_sup.1 (step1 O g)`. Take `⟨m', hm', w, hw, rfl⟩` from `hO o ho`. Use `⟨g * w⁻¹, hw, ?_⟩` and prove the remaining obligations. Establish `: g * w⁻¹ = m * m'` using `by rw [← hmo]; group`. Rewrite using `[this]`.
-
-Conclude with `M.mul_mem hm hm'`. Rewrite `this` using `[hM.closure_eq]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem UpperTheory.closed_subgroup_eq_top_of_dense :
     ∀ (G : Type) [CommGroup G] [TopologicalSpace G] [IsTopologicalGroup G] (M : Subgroup G), IsClosed (M : Set G) →

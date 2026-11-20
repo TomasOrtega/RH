@@ -8,35 +8,33 @@ open scoped Pointwise ENNReal Classical NNReal
 namespace GlobalTheory.ModuleUnits
 
 /- English proof (translation)
-Introduce `F _ _ _ E _ _ _ _ M hM`. Take `⟨h1, h2, h3, h4, h5, hRc, hRo, hOc, hOo, -⟩` from `GlobalTheory.SgLoc.Top.model_topology M hM`. Use `hM.borel` as an intermediate fact. Use `hM.loc` as an intermediate fact. Use `hM.char0` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hM.haar.haar` as an intermediate fact. Establish `hreg : M.mu.Regular` using `inferInstance`. Establish `hO0 : M.mu (M.L.O : Set E) ≠ 0` using `hOo.measure_ne_zero M.mu ⟨0, M.L.O.zero_mem⟩`. Establish `hOt : M.mu (M.L.O : Set E) ≠ ∞` using `hOc.measure_lt_top.ne`. Establish `hmodK : ∀ u : Eˣ, M.modK u = (distribHaarChar E u : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `u`. Establish `h` using `distribHaarChar_mul M.mu u (M.R : Set E)`. Rewrite `h` using `[hM.haar.volR, mul_one]`. Express the relevant statement in the definitionally equal form `(M.mu (u • (M.R : Set E))).toReal = _`. Rewrite using `[← h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x y hx hy`. Take `⟨u, rfl⟩` from `hx`. Take `⟨v, rfl⟩` from `hy`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Units.val_mul, hmodK, hmodK, hmodK, map_mul, NNReal.coe_mul]`. Introduce `x hx`. Take `⟨u, rfl⟩` from `hx`. Use `⟨by rw [hmodK]; exact NNReal.coe_pos.mpr distribHaarChar_pos, ?_⟩` and prove the remaining obligations. Establish `hcjO : ∀ z, z ∈ M.L.O → M.L.cj z ∈ M.L.O`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `z hz`. Rewrite `hz`, the goal using `[M.L.O_def]`. Conclude with `hz.map ((M.L.cj : E →ₐ[F] E).restrictScalars 𝒪[F])`. Establish `hcjO' : ∀ z, M.L.cj z ∈ M.L.O ↔ z ∈ M.L.O` using `fun z => ⟨fun h => by simpa [M.L.cj_cj] using hcjO _ h, hcjO z⟩`. Establish `: IsModuleTopology F E` using `M.L.top`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc1 : Continuous M.L.cj` using `IsModuleTopology.continuous_of_linearMap M.L.cj.toLinearMap`. Establish `hc2 : Continuous M.L.cj.symm` using `IsModuleTopology.continuous_of_linearMap M.L.cj.symm.toLinearMap`. Set `φ : E ≃ₜ+ E` to `{ M.L.cj.toAddEquiv with continuous_toFun := hc1, continuous_invFun := hc2 }`. Establish `hpre : ∀ X : Set E, addEquivAddHaarChar φ • M.mu (φ ⁻¹' X) = M.mu X` using `fun X => addEquivAddHaarChar_smul_preimage M.mu φ`. Establish `hφO : φ ⁻¹' (M.L.O : Set E) = M.L.O`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `z`. Conclude with `hcjO' z`. Establish `hc : (addEquivAddHaarChar φ : ℝ≥0∞) = 1`. Establish `h` using `hpre M.L.O`. Rewrite `h` using `[hφO]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [ENNReal.smul_def, smul_eq_mul] at h`. Combine the equalities or inequalities in the displayed calculation. Set `w : Eˣ` to `Units.map (M.L.cj : E →* E) u`. Establish `hw : φ ⁻¹' (u • (M.L.O : Set E)) = w • (M.L.O : Set E)`. Use extensionality with `z`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Set.mem_preimage, Set.mem_smul_set_iff_inv_smul_mem, Set.mem_smul_set_iff_inv_smul_mem]`. Express the relevant statement in the definitionally equal form `((u⁻¹ : Eˣ) : E) * M.L.cj z ∈ M.L.O ↔ ((w⁻¹ : Eˣ) : E) * z ∈ M.L.O`. Rewrite using `[← hcjO' (((w⁻¹ : Eˣ) : E) * z), map_mul]`. Simplify using `[w, M.L.cj_cj]`. Establish `hχ : distribHaarChar E w = distribHaarChar E u`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `distribHaarChar_eq_of_measure_smul_eq_mul hO0 hOt` to reduce the goal to its premises. Rewrite using `[← hw, distribHaarChar_mul M.mu u]`. Establish `h` using `hpre (u • (M.L.O : Set E))`. Simplify using `only [ENNReal.smul_def, smul_eq_mul, hc, one_mul] at h`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Rewrite using `[show M.L.cj (u : E) = (w : E) from rfl, hmodK, hmodK, hχ]`. Introduce and unpack `x hx ⟨y, hy, hxy⟩`. Set `u : Eˣ` to `⟨x, y, hxy, by rw [mul_comm]; exact hxy⟩`. Establish `hset : u • (M.L.O : Set E) = M.L.O`. Use extensionality with `z`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem]`. Express the relevant statement in the definitionally equal form `y * z ∈ M.L.O ↔ z ∈ M.L.O`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h'` using `M.L.O.mul_mem hx h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h'` using `[← mul_assoc, hxy, one_mul]`. Then use the resulting hypothesis. Introduce `h`. Conclude with `M.L.O.mul_mem hy h`. Establish `h1 : distribHaarChar E u = 1` using `distribHaarChar_eq_of_measure_smul_eq_mul hO0 hOt (by rw [hset]; simp)`. Rewrite using `[show x = (u : E) from rfl, hmodK, h1]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem modK_units : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] (M : Model F E), M.OK → (∀ x y : E, IsUnit x → IsUnit y → M.modK (x * y) = M.modK x * M.modK y) ∧ (∀ x : E, IsUnit x → 0 < M.modK x ∧ M.modK (M.L.cj x) = M.modK x) ∧ ∀ x : E, x ∈ M.L.O → (∃ y ∈ M.L.O, x * y = 1) → M.modK x = 1 := by
   intro F _ _ _ E _ _ _ _ M hM

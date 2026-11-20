@@ -11,7 +11,7 @@ namespace UpperTheory.V.Alg.FrameCount
 open ReciprocityTheory.Gal
 
 /- English proof (translation)
-Establish `h' : LinearMap.ker δ = LinearMap.ker (S.mkQ.comp π)`. Rewrite using `[h, LinearMap.ker_comp, Submodule.ker_mkQ]`. Establish `e : LinearMap.range δ ≃ₗ[k] (A ⧸ S)` using `(LinearMap.quotKerEquivRange δ).symm.trans ((Submodule.quotEquivOfEq _ _ h').trans (LinearMap.quotKerEquivOfSurjective _ (S.mkQ_surjective.comp hπ)))`. Conclude with `⟨Module.Finite.equiv e.symm, by rw [e.finrank_eq, Submodule.finrank_quotient_add_finrank]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private theorem rank_range {k P A B : Type} [Field k] [AddCommGroup P] [Module k P] [AddCommGroup A] [Module k A]
     [AddCommGroup B] [Module k B] [Module.Finite k A] (π : P →ₗ[k] A) (hπ : Function.Surjective π)
@@ -26,7 +26,7 @@ private theorem rank_range {k P A B : Type} [Field k] [AddCommGroup P] [Module k
   exact ⟨Module.Finite.equiv e.symm, by rw [e.finrank_eq, Submodule.finrank_quotient_add_finrank]⟩
 
 /- English proof (translation)
-Rewrite using `[Module.finrank_prod, Module.finrank_pi_fintype, Module.finrank_pi_fintype]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem finrank_prod_pi (k : Type) [Field k] {T Q : Type} [Fintype T] [Fintype Q] (A : T → Type) (B : Q → Type)
     [∀ v, AddCommGroup (A v)] [∀ v, Module k (A v)] [∀ v, Module.Finite k (A v)]
@@ -40,7 +40,7 @@ variable {k Γ M : Type} [Field k] [Group Γ] [TopologicalSpace Γ] [IsTopologic
 
 omit [TopologicalSpace Γ] [IsTopologicalGroup Γ] [TopologicalSpace M] [DiscreteTopology M] [IsTopologicalAddGroup M] [ContinuousConstSMul k M] in
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Take `⟨s, t⟩` from `p`. Use `show a s + ρ s (a t) - a (s * t) = ρ s (a t) - a (s * t) + a s`. Normalize the expressions using the abelian group laws.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 private theorem dOne_eq (a : Γ → M) : dOne ρ a = d1 ρ a := by
   funext p
@@ -52,7 +52,7 @@ variable (F : Frame Γ)
 
 omit [IsTopologicalGroup Γ] in
 /- English proof (translation)
-Use `haveI : Module.Finite k (B1 ρ) := LinearMap.finiteDimensional_range _`. Use `haveI : Module.Finite k ((B1 ρ).comap (Z1 ρ).subtype) := Module.Finite.of_injective ((Z1 ρ).subtype.restrict (q := B1 ρ) (fun x hx => hx)) (fun x y h => Subtype.ext (Subtype.ext (congrArg (fun z : B1 ρ => z.1) h)))`. Use `haveI : Module.Finite k (Z1 ρ) := Module.Finite.of_submodule_quotient ((B1 ρ).comap (Z1 ρ).subtype)`. Set `f : F.H1c ρ →ₗ[k] (Z1 ρ × (F.T → M))` to `{ toFun := fun x => (⟨x.1.1, x.2.1.continuous, x.2.2.1⟩, x.1.2) map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Conclude with `Module.Finite.of_injective f fun x y h => Subtype.ext (Prod.ext (congrArg (fun z => z.1.1) h) (congrArg (fun z => z.2) h))`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 private theorem finite_compactly_supported_H1 [Module.Finite k M] [Module.Finite k (H1 ρ)] : Module.Finite k (F.H1c ρ) := by
   haveI : Module.Finite k (B1 ρ) := LinearMap.finiteDimensional_range _
@@ -69,15 +69,15 @@ private theorem finite_compactly_supported_H1 [Module.Finite k M] [Module.Finite
 
 omit [IsTopologicalGroup Γ] [TopologicalSpace M] [DiscreteTopology M] [IsTopologicalAddGroup M] [ContinuousConstSMul k M] in
 /- English proof (translation)
-Use `⟨fun hx => ?_, fun hx => Submodule.subset_span hx⟩` and prove the remaining obligations. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `zero`. Conclude with `⟨0, 0, 0, IsLocallyConstant.const 0, fun q => ⟨IsLocallyConstant.const 0, by simp, by simp⟩, by funext p; simp [dOne], by simp, by simp⟩`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Supply the required witnesses or components.
 
-Consider the case `add x x' _ _ hx hx'`. Take `⟨h, y, e, a1, a2, a3, a4, a5⟩` from `hx`. Take `⟨h', y', e', b1, b2, b3, b4, b5⟩` from `hx'`. Use `⟨h + h', y + y', e + e', a1.add b1, fun q => ⟨(a2 q).1.add (b2 q).1, fun s t => ?_, fun n hn => ?_⟩, ?_, fun v s => ?_, fun q s => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, (a2 q).2.1, (b2 q).2.1, map_add]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Simplify using `[(a2 q).2.2 n hn, (b2 q).2.2 n hn]`. Rewrite using `[Prod.fst_add, a3, b3, dOne_eq, dOne_eq, dOne_eq, map_add]`. Simplify using `only [Prod.fst_add, Prod.snd_add, Pi.add_apply, a4, b4, map_add]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Simplify using `only [Prod.snd_add, Pi.add_apply, a5, b5]`. Normalize the expressions using the abelian group laws. Consider the case `smul c x _ hx`. Take `⟨h, y, e, a1, a2, a3, a4, a5⟩` from `hx`. Use `⟨c • h, c • y, c • e, a1.comp (c • ·), fun q => ⟨(a2 q).1.comp (c • ·), fun s t => ?_, fun n hn => ?_⟩, ?_, fun v s => ?_, fun q s => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[(a2 q).2.1]`. Simplify using `[(a2 q).2.2 n hn]`. Rewrite using `[Prod.smul_fst, a3, dOne_eq, dOne_eq, map_smul]`. Simplify using `[a4, smul_sub]`. Simplify using `[a5, smul_sub]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem mem_coboundaries_compact (x : F.C2 M) : x ∈ F.framedTwoCoboundaries ρ ↔
     ∃ (h : Γ → M) (y : F.T → M) (e : ∀ q, F.Gq q → M), IsLocallyConstant h ∧
@@ -148,9 +148,7 @@ private def fgt : F.Ob ρ →ₗ[k] H2 ρ :=
 
 omit [IsTopologicalGroup Γ] [DiscreteTopology M] in
 /- English proof (translation)
-Introduce and unpack `⟨a, b⟩`. Use `choose a' ha using fun v => Submodule.mkQ_surjective _ (a v)`. Use `choose b' hb using fun q => Submodule.mkQ_surjective _ (b q)`. Use `choose b'' hb' using fun q => Submodule.mkQ_surjective _ (b' q)`. Use `⟨(a', b''), Prod.ext (funext ha) (funext fun q => ?_)⟩` and prove the remaining obligations.
-
-Use `show _ = b q`. Rewrite using `[← hb q, ← hb' q]`. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem piA_surj : Function.Surjective (piA ρ F) := by
   rintro ⟨a, b⟩
@@ -163,7 +161,7 @@ private theorem piA_surj : Function.Surjective (piA ρ F) := by
 
 omit [IsTopologicalGroup Γ] [DiscreteTopology M] in
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[Submodule.mem_inf, mem_Sel, Sha1, Submodule.mem_iInf, LinearMap.mem_ker, Prod.ext_iff, funext_iff, funext_iff]`. Use `and_congr Iff.rfl (forall_congr' fun q => ?_)` and prove the remaining obligations. Conclude with `Submodule.Quotient.mk_eq_zero _`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem kernel_restriction_sha_selmer : LinearMap.ker (res1 ρ F) = Sha1 ρ F.φ F.hφ ⊓
     Sel ρ F.ψ F.hψ (fun q => H1ur (ρ.comp (F.ψ q) : Representation k _ M) (F.N q)) := by
@@ -174,11 +172,9 @@ private theorem kernel_restriction_sha_selmer : LinearMap.ker (res1 ρ F) = Sha1
 
 omit [IsTopologicalGroup Γ] [DiscreteTopology M] in
 /- English proof (translation)
-Use `show Submodule.Quotient.mk (restrictCocycles1 ρ N.subtype continuous_subtype_val z) = (0 : H1 (ρ.comp N.subtype)) ↔ _`. Rewrite using `[Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, mem_coboundaries1]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, hm⟩ n hn`. Establish `e : z.1 n = ρ n m - m` using `hm ⟨n, hn⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, hN n hn]`. Simplify using the standard rewrite rules. Introduce `h`. Use `⟨0, fun j => ?_⟩` and prove the remaining obligations. Use `show z.1 j = _`.
-
-Rewrite using `[h j j.2, map_zero, sub_zero]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mk_mem_ur (N : Subgroup Γ) (hN : ∀ n ∈ N, ρ n = 1) (z : Z1 ρ) :
     (Submodule.Quotient.mk z : H1 ρ) ∈ H1ur ρ N ↔ ∀ n ∈ N, z.1 n = 0 := by
@@ -195,19 +191,17 @@ private theorem mk_mem_ur (N : Subgroup Γ) (hN : ∀ n ∈ N, ρ n = 1) (z : Z1
 
 omit [IsTopologicalGroup Γ] in
 /- English proof (translation)
-Use extensionality with `z`. Rewrite using `[LinearMap.mem_ker, Submodule.mem_comap, LinearMap.mem_range]`. Use `(Submodule.Quotient.mk_eq_zero _).trans ((mem_coboundaries_compact ρ F _).trans ?_)` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, y, e, a1, a2, a3, a4, a5⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Set `c : Z1 ρ` to `⟨h, a1.continuous, fun s t => by`. Establish `: 0 = h s + ρ s (h t) - h (s * t)` using `congrFun a3 (s, t)`. Conclude with `(sub_eq_zero.1 this.symm).symm⟩`. Use `⟨Submodule.Quotient.mk c, Prod.ext (funext fun v => ?_) (funext fun q => ?_)⟩` and prove the remaining obligations. Use `(Submodule.Quotient.eq _).2 ((mem_coboundaries1 _ _).2 ⟨y v, fun s => ?_⟩)` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: (z.1 v).1 s = _` using `a4 v s`. Use `show h (F.φ v s) - (z.1 v).1 s = ρ (F.φ v s) (y v) - y v`. Rewrite using `[this]`. Normalize the expressions using the abelian group laws. Use `(Submodule.Quotient.eq _).2 ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(mk_mem_ur _ _ (hN q) (restrictCocycles1 ρ (F.ψ q) (F.hψ q) c - z.2 q)).2 fun n hn => ?_` and prove the remaining obligations. Establish `: (z.2 q).1 n = _` using `a5 q n`. Use `show h (F.ψ q n) - (z.2 q).1 n = 0`. Rewrite using `[this, (a2 q).2.2 n hn]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `⟨x, hx⟩`. Take `⟨c, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `h1 : ∀ v, ∃ m, ∀ s, c.1 (F.φ v s) - (z.1 v).1 s = ρ (F.φ v s) m - m` using `fun v => (mem_coboundaries1 _ _).1 ((Submodule.Quotient.eq _).1 (congrFun (congrArg Prod.fst hx) v))`. Establish `h2 : ∀ q, ∀ n ∈ F.N q, c.1 (F.ψ q n) - (z.2 q).1 n = 0` using `fun q => (mk_mem_ur _ _ (hN q) (restrictCocycles1 ρ (F.ψ q) (F.hψ q) c - z.2 q)).1 ((Submodule.Quotient.eq _).1 (congrFun (congrArg Prod.snd hx) q))`. Use `choose y hy using h1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨c.1, y, fun q => (restrictCocycles1 ρ (F.ψ q) (F.hψ q) c - z.2 q).1, (IsLocallyConstant.iff_continuous _).2 c.2.1, fun q => ⟨(IsLocallyConstant.iff_continuous _).2 (restrictCocycles1 ρ (F.ψ q) (F.hψ q) c - z.2 q).2.1, (restrictCocycles1 ρ (F.ψ q) (F.hψ q) c - z.2 q).2.2, h2 q⟩, …` and prove the remaining obligations. Use function extensionality and compare the values at `p show 0 = c.1 p.1 + ρ p.1 (c.1 p.2) - c.1 (p.1 * p.2)`. Rewrite using `[c.2.2, sub_self]`. Use `show (z.1 v).1 s = _`. Rewrite using `[← hy v s]`.
-
-Normalize the expressions using the abelian group laws. Use `show (z.2 q).1 s = c.1 (F.ψ q s) - (c.1 (F.ψ q s) - (z.2 q).1 s)`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 private theorem ker_del (hN : ∀ q, ∀ n ∈ F.N q, ρ (F.ψ q n) = 1) :
     LinearMap.ker (del ρ F) = (LinearMap.range (res1 ρ F)).comap (piA ρ F) := by
@@ -250,19 +244,17 @@ private theorem ker_del (hN : ∀ q, ∀ n ∈ F.N q, ρ (F.ψ q n) = 1) :
 
 omit [IsTopologicalGroup Γ] in
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨h, hh, e⟩` from `(separated_dvr_second_cohomology_mem _ _).1 ((Submodule.Quotient.mk_eq_zero _).1 hx)`. Establish `e' : x.1.1 = dOne ρ h` using `by rw [dOne_eq]; exact e.symm`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a1, a2, a3, a4, a5, a6⟩` from `x.2`. Use `⟨(fun v => ⟨fun s => x.1.2.1 v s - h (F.φ v s), (a2 v).continuous.sub (hh.comp (F.hφ v)), fun s t => ?_⟩, fun q => ⟨fun s => x.1.2.2 q s - h (F.ψ q s), (a3 q).continuous.sub (hh.comp (F.hψ q)), fun s t => ?_⟩), ?_⟩` and prove the remaining obligations. Use `a5 v s t` as an intermediate fact. Rewrite `this` using `[e']`. Simplify using `only [dOne, MonoidHom.comp_apply] at this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, map_sub, MonoidHom.comp_apply]`. Rewrite `this`, the goal using `[← sub_eq_zero]`. Rewrite using `[← this]`. Normalize the expressions using the abelian group laws. Use `a6 q s t` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Rewrite `this` using `[e']`. Simplify using `only [dOne, MonoidHom.comp_apply] at this`. Simplify using `only [map_mul, map_sub, MonoidHom.comp_apply]`. Rewrite `this`, the goal using `[← sub_eq_zero]`. Rewrite using `[← this]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Use `symm`. Use `(Submodule.Quotient.eq _).2 ((mem_coboundaries_compact ρ F _).2 ⟨h, 0, 0, (IsLocallyConstant.iff_continuous _).2 hh, fun q => ⟨IsLocallyConstant.const 0, by simp, by simp⟩, ?_, fun v s => ?_, fun q s => ?_⟩)` and prove the remaining obligations. Use `show x.1.1 - 0 = _`. Rewrite using `[sub_zero, e']`.
+Normalize the expressions using the abelian group laws. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show x.1.2.1 v s - (x.1.2.1 v s - h (F.φ v s)) = _`. Simplify using the standard rewrite rules. Use `show x.1.2.2 q s - (x.1.2.2 q s - h (F.ψ q s)) = _`. Simplify using the standard rewrite rules. Introduce and unpack `_ ⟨z, rfl⟩`.
-
-Use `(Submodule.Quotient.mk_eq_zero _).2 ?_` and prove the remaining obligations. Conclude with `(B2 ρ).zero_mem`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem ker_fgt : LinearMap.ker (fgt ρ F) = LinearMap.range (del ρ F) := by
   apply le_antisymm
@@ -304,15 +296,13 @@ private def res2 : H2 ρ →ₗ[k] ((∀ v, H2 (ρ.comp (F.φ v) : Representatio
 
 omit [IsTopologicalGroup Γ] in
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, rfl⟩`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨a1, a2, a3, a4, a5, a6⟩` from `x.2`. Use `Prod.ext (funext fun v => ?_) (funext fun q => ?_)` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Submodule.Quotient.mk_eq_zero _).2 ((separated_dvr_second_cohomology_mem _ _).2 ⟨x.1.2.1 v, (a2 v).continuous, ?_⟩)` and prove the remaining obligations. Rewrite using `[← dOne_eq]`. Conclude with `funext fun p => (a5 v p.1 p.2).symm`. Use `(Submodule.Quotient.mk_eq_zero _).2 ((separated_dvr_second_cohomology_mem _ _).2 ⟨x.1.2.2 q, (a3 q).continuous, ?_⟩)` and prove the remaining obligations. Rewrite using `[← dOne_eq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `funext fun p => (a6 q p.1 p.2).symm`. Introduce `x hx`. Take `⟨c, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Use `choose a ha ha' using fun v => (separated_dvr_second_cohomology_mem _ _).1 ((Submodule.Quotient.mk_eq_zero _).1 (congrFun (congrArg Prod.fst hx) v))`. Use `choose b hb hb' using fun q => (separated_dvr_second_cohomology_mem _ _).1 ((Submodule.Quotient.mk_eq_zero _).1 (congrFun (congrArg Prod.snd hx) q))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Use `⟨Submodule.Quotient.mk ⟨(c.1, a, b), (IsLocallyConstant.iff_continuous _).2 c.2.1, fun v => (IsLocallyConstant.iff_continuous _).2 (ha v), fun q => (IsLocallyConstant.iff_continuous _).2 (hb q), fun s t u => ?_, fun v s t => ?_, fun q s t => ?_⟩, rfl⟩` and prove the remaining obligations. Use `c.2.2 s t u` as an intermediate fact. Rewrite using `[← sub_eq_zero, ← this]`. Normalize the expressions using the abelian group laws. Rewrite using `[dOne_eq]`.
-
-Conclude with `(congrFun (ha' v) (s, t)).symm`. Rewrite using `[dOne_eq]`. Conclude with `(congrFun (hb' q) (s, t)).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem range_fgt : LinearMap.range (fgt ρ F) = LinearMap.ker (res2 ρ F) := by
   apply le_antisymm
@@ -345,15 +335,13 @@ end UpperTheory.V.Alg.FrameCount
 end
 
 /- English proof (translation)
-Introduce `k Γ M _ _ _ _ _ _ _ _ _ _ _ ρ hρ F _ _ hN h1 h2 hv hq`. Use `haveI := fun v => (hv v).1`. Use `haveI := fun v => (hv v).2`. Use `haveI := fun q => (hq q).1`. Use `haveI := fun q => (hq q).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e0` using `UpperTheory.V.Alg.finrank_compact_support_H1 k Γ M ρ hρ F hN h1`. Rewrite `e0` using `[← FrameCount.kernel_restriction_sha_selmer]`. Establish `e1` using `(FrameCount.res1 ρ F).finrank_range_add_finrank_ker`. Take `⟨f2, e2⟩` from `FrameCount.rank_range (FrameCount.piA ρ F) (FrameCount.piA_surj ρ F) (FrameCount.del ρ F) _ (FrameCount.ker_del ρ F hN)`. Rewrite `e2` using `[FrameCount.finrank_prod_pi]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e3 : ∑ q, Module.finrank k (ReciprocityTheory.Gal.H1 (ρ.comp (F.ψ q) : Representation k _ M) ⧸ ReciprocityTheory.Gal.H1ur (ρ.comp (F.ψ q) : Representation k _ M) (F.N q)) + ∑ q, Module.finrank k (ReciprocityTheory.Gal.H1ur (ρ.comp (F.ψ q) : Representation k _ M) (F.N q)) = ∑ q, M …`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun q _ => Submodule.finrank_quotient_add_finrank _`. Rewrite `f2`, `e2` using `[← FrameCount.ker_fgt]`. Use `haveI fOb : Module.Finite k (F.Ob ρ) := by haveI := Module.Finite.equiv (FrameCount.fgt ρ F).quotKerEquivRange.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Module.Finite.of_submodule_quotient (LinearMap.ker (FrameCount.fgt ρ F))`. Establish `e4` using `(FrameCount.fgt ρ F).finrank_range_add_finrank_ker`. Rewrite `e4` using `[FrameCount.range_fgt]`. Establish `e5` using `(FrameCount.res2 ρ F).finrank_range_add_finrank_ker`. Establish `e6` using `Submodule.finrank_quotient_add_finrank (LinearMap.range (FrameCount.res2 ρ F))`.
-
-Rewrite `e6` using `[FrameCount.finrank_prod_pi]`. Use `⟨FrameCount.finite_compactly_supported_H1 ρ F, fOb, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ + Module.finrank k (_ ⧸ LinearMap.range (FrameCount.res2 ρ F)) = _`. Use linear arithmetic over natural numbers and integers.
+Express the relevant assertion in an equivalent form by its definition. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.frame_count :
     ∀ (k Γ M : Type) [Field k] [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [AddCommGroup M] [Module k M] [Module.Finite k M] [TopologicalSpace M] [DiscreteTopology M] [IsTopologicalAddGroup M] [ContinuousConstSMul k M]

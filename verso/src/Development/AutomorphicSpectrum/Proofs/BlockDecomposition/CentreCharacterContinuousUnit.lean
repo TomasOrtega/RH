@@ -11,7 +11,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CompanionTheory.CentreChar
 
 /- English proof (translation)
-Introduce `_ _ _ hψ b₀` and use `⟨GlobalTheory.CompanionTheory.PcB.continuous_chz hψ b₀, GlobalTheory.CompanionTheory.PcB.chz_norm hψ b₀⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem continuous_and_norm_chz : ∀ (D : D7) (ρ : ℕ) (ψ : AddChar (AF D.host.F) ℂ), IsCharAF D.host.F ψ → ∀ b₀ : HermE D ρ,
   Continuous (chz ψ b₀) ∧ ∀ z, ‖chz ψ b₀ z‖ = 1 := fun _ _ _ hψ b₀ =>

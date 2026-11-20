@@ -24,9 +24,9 @@ open ReciprocityTheory.ChartRestriction.G.TB (colM dAct)
 namespace GlobalTheory.PowGerm
 
 /- English proof (translation)
-Set `φ : O →+* TWO.Ov v` to `(algebraMap O F).codRestrict (TWO.Ov v) fun a => (hr _).2 ⟨a, rfl⟩`. Establish `hφ : Function.Bijective φ`. Use `⟨fun a b h => hinj (congrArg Subtype.val h), fun z => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `(hr z).1 z.2`. Conclude with `⟨a, Subtype.ext ha⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `h` using `(IsAdicComplete.congr_ringEquiv (Ideal.span {((g : ℕ) : O)}) (RingEquiv.ofBijective φ hφ)).2 hc`. Rewrite `h` using `[Ideal.map_span, Set.image_singleton, map_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isAdicComplete_ov_of_range {F : Type} [Field F] (v : AddValuation F (WithTop ℚ)) (O : Type) [CommRing O]
     [Algebra O F] (hinj : Function.Injective (algebraMap O F))
@@ -42,7 +42,7 @@ theorem isAdicComplete_ov_of_range {F : Type} [Field F] (v : AddValuation F (Wit
   rwa [Ideal.map_span, Set.image_singleton, map_natCast] at h
 
 /- English proof (translation)
-Use `⟨fun hx hy => h (hx.mul hy), fun hy => ?_⟩` and prove the remaining obligations. Break down `IsLocalRing.isUnit_or_isUnit_of_add_one h1 with h2 | h2` into its components or cases. Conclude with `isUnit_of_mul_isUnit_right h2`. Conclude with `absurd (isUnit_of_mul_isUnit_right h2) hy`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem isUnit_iff_not_isUnit_of_coprime {R : Type} [CommRing R] [IsLocalRing R] {x y u u' : R}
     (h : ¬ IsUnit (x * y)) (h1 : u * x + u' * y = 1) : IsUnit x ↔ ¬ IsUnit y := by
@@ -52,42 +52,38 @@ theorem isUnit_iff_not_isUnit_of_coprime {R : Type} [CommRing R] [IsLocalRing R]
   · exact absurd (isUnit_of_mul_isUnit_right h2) hy
 
 /- English proof (translation)
-Rewrite using `[Fin.card_filter_val_lt]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem card_filter_val_lt (n₁ n₂ : ℕ) :
     (Finset.univ.filter fun b : Fin (n₁ + n₂) => b.val < n₁).card = n₁ := by
   rw [Fin.card_filter_val_lt]; omega
 
 /- English proof (translation)
-Introduce `L1 L2 L4 TB hch E _ _ _ H Dw l Xo c inst hst`. Take `rfl` from `starSt E H inst hst`. Use `letI := H.starRing`. Introduce `T io y hy C hfr P tors ϖ hϖ Q hQ g g' hg hg' hne og og' π π' hπ hπ' hcop hcop' hcard hnd hnu F _ _ _ _ _ _ v hv O _ _ _ _ hinj hO hOc I Φ M0 r b hΦ hb1 hb2 n₁ n₂ hn D' A' G' _ _ pD pA pG U' PU _ oD' hx1 hx2 m hm hd1 hd2 hd3 ρg hρg`. Use `letI := io.toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure.
 
-Use `haveI : Fact g.Prime := ⟨hg⟩`. Take `⟨σ, e, hσ, he1, -, heig, hval, hconj, ⟨lam, hlam⟩, hε, hgu⟩` from `GlobalTheory.T.exists_integral_types_and_directions' E H Dw l Xo c T io y C ϖ hϖ g hg hnu hcard hnd F v hv`. Take `⟨x, hx, j, hj, u, hu, B, hB, ρ, hρ, -, hact, htr⟩` from `GlobalTheory.T.integralChart_columns_to_tuple_harmonicValues L1 L2 L4 TB E H Dw l Xo c T io y C hfr P tors ϖ hϖ Q hQ F v hv`. Take `⟨BT, -, hBT, -, -, -, -, hBF⟩` from `integralChart_formalBiext E H Dw l Xo c T io y C`. Establish `hdA : ∀ a, dAct F B a = dAct F C.ch.B a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Establish `h1 : B.actK F a = C.ch.B.actK F a`. Rewrite using `[← (hBF F).2.1 a]`. Unfold `FB.actK`. Rewrite using `[hact, hBT]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `dAct`. Rewrite using `[h1]`. Take `⟨rk, hrk, col, m', hcol, hty, hdeg, hmin⟩` from `minorSt E H Dw F (fun τ => 0 < v (algebraMap T.Fr F (io (embK c τ (star π))))) m n₁ n₂ (by convert hm)`. Take `⟨h₀, hh₀⟩` from `canonGauge_exists T.V (chD C.ch) (𝓞 E) F B`. Establish `hππ : star π * star (star π) = (g : 𝓞 E)` using `by rw [star_star, mul_comm, hπ]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨u₁, u₂, hu12⟩` from `hcop`. Establish `hg'0 : (0 : ℝ) < g'` using `by exact_mod_cast hg'.pos`. Establish `hred : (FamGerm.Pt1.mk ϖ hϖ T.cpl C.I.G P tors Q hQ v hv (chD C.ch) x hx j hj u hu B hB ρ hρ : FamGerm.Pt1 E H T.V F).Red r b Φ (max M0 0)`. Use `⟨hΦ, le_max_right _ _, hb1, fun i z => ?_⟩` and prove the remaining obligations. Establish `h1` using `hb2 i z`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (0 : ℝ) ≤ Q z`. Distinguish the cases in `hz : z = 0`. Rewrite using `[hz, Q_zero hϖ P.D hQ, Int.cast_zero]`. Establish `h3` using `Q_pos hϖ P.D hQ hz`. Conclude with `(by omega : 0 ≤ Q z)` after adjusting the coercions.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h1.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) h2)`. Take `⟨s, s', t, f, gm, hs, hgm, hle⟩` from `GlobalTheory.T.depth_bound_from_characters_pointDatum L1 L2 L4 TB hch g E H T.V F (FamGerm.Pt1.mk ϖ hϖ T.cpl C.I.G P tors Q hQ v hv (chD C.ch) x hx j hj u hu B hB ρ hρ) (isAdicComplete_ov_of_range v O hinj hO g hOc) hgu Dw I r b Φ (max M0 0) hred (star π) g' hππ ⟨u₂, u₁, by rw [s …`. Use `(hlam _ _).trans (if_congr ?_ rfl rfl)` and prove the remaining obligations. Take `⟨τ, i⟩` from `l`. Take `⟨τ', i'⟩` from `l'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `rfl : τ = τ'` from `congrArg Sigma.fst h`. Establish `h2` using `eq_of_heq (Sigma.mk.inj h).2`. Take `rfl : i = i'` from `Fin.castLE_injective _ h2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Introduce `h`. Rewrite using `[h]⟩`. Use the proof step `(by convert hε) (n₁ + n₂) (Finset.univ.filter fun b => b.val < n₁) col m' hcol`. Use the proof step `(fun τ i => by rw [Finset.mem_filter, ← hty τ i]; simp) (degOf Dw m) hdeg.symm hd1 hd2`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use the proof step `(by`. Break down `le_total M0 0 with h | h` into its components or cases. Rewrite using `[max_eq_right h, mul_zero]`. Conclude with `hg'0`. Rewrite using `[max_eq_left h]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hd3)`. Use `h₀ hh₀ ρg hρg`. Simplify using `only [star_star] at hs`. Take `⟨S, S₂, p', w', ζ', x', T₀, T₁, σ', h, un, hbox, -, -, hvl⟩` from `htr g g' π hg.one_le hg'.one_le hπ (n₁ + n₂) D' A' G' pD pA pG U' PU oD' hx1 hx2 s s' t f hs`. Take `⟨b1, b2, b3, b4, b5, b6, b7, b8, b9⟩` from `hbox`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨S, S₂, p', w', ζ', x', T₀, T₁, σ', h, gm, b1, b2, b3, b4, b5, b6, b7, b8, b9, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hmin, hvl h₀ hh₀ rk hrk (FamGerm.minorsP F col m') ?_, ← hgm]`. Simplify using `only [he1]`. Introduce `τ`. Use `minors_disjoint_columns_harmonic F _ rk _ col m' _ rfl τ _ fun i i' hii => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. The claim follows by propositional logic. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `k1` using `hty τ i`. Establish `k2` using `hty _ i'`. Rewrite `k1` using `[hii, k2, ← hσ, ← hσ, hconj, star_star]`. Establish `k3 : ∀ a, 0 < v (σ τ a : F) ↔ ¬ IsUnit (σ τ a)` using `fun a => ⟨fun h hu => hgu (isUnit_of_dvd_unit (Ideal.mem_span_singleton.1 ((hval τ a).1 h)) hu), fun h => by_contra fun h' => h ((hval τ a).2 h')⟩`. Rewrite `k1` using `[k3, k3]`.
-
-Establish `k4 : IsUnit (σ τ π) ↔ ¬ IsUnit (σ τ (star π))` using `isUnit_iff_not_isUnit_of_coprime (u := σ τ u₁) (u' := σ τ u₂) (by rw [← map_mul, hπ, map_natCast]; exact hgu) (by rw [← map_mul, ← map_mul, ← map_add, hu12, map_one])`. The claim follows by propositional logic. Rewrite `hle` using `[card_filter_val_lt]`. Establish `h1 : (0 : ℝ) ≤ (degOf Dw m : ℝ) ^ 2 * Φ / g'` using `by positivity`. Establish `h2 : 2 * (degOf Dw m : ℝ) ^ 2 * Φ / g' = 2 * ((degOf Dw m : ℝ) ^ 2 * Φ / g')` using `by ring`.
-
-Rewrite using `[h2, mul_comm (ρg : ℝ)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem lemmaBT_of_characters : Laws → Laws2 → Laws4 → TwistBaseChangeStatement → (∀ (p : ℕ) [Fact p.Prime], ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (F : Type) [Field F] [IsAlgClosed F] [CharZero F] [Algebra (FractionRing V) F] [Algebra V F] [IsScalarTower V (FractionRing V) F] (y : FamGerm.Pt1 E H V F), letI := H.starRing; IsAdicComplete (Ideal.span {(p : TWO.Ov y.v)}) (TWO.Ov y.v) → ¬ IsUnit (p : TWO.Ov y.v) → ∀ a : 𝓞 E, a * star a = (p : 𝓞 E) → (∃ u u' : 𝓞 E, u * a + u' * star a = 1) → ∀ (T : Type) [Fintype T] [DecidableEq T] (rk : T → ℕ) (τ : T → 𝓞 E →+* TWO.Ov y.v) (e : (Σ t, Fin (rk t)) → Fin y.d → TWO.Ov y.v), (∀ (c : 𝓞 E) l, (dAct F y.B c).mulVec (fun i => (e l i : F)) = (τ l.1 c : F) • fun i => (e l i : F)) → (∀ t, τ t a ∈ Ideal.span {(p : TWO.Ov y.v)}) → (∀ t, ∃ lam : Fin (rk t) → Fin y.d → TWO.Ov y.v, ∀ i i', ∑ s, lam i s * e ⟨t, i'⟩ s = if i = i' then 1 else 0) → (∃ ε : T → 𝓞 E, ∀ t t', τ t' (ε t) - (if t = t' then 1 else 0) ∈ Ideal.span {(p : TWO.Ov y.v)}) → ∀ c : TWO.Ov y.v, (p - 1) • y.v (c : F) = y.v (p : F) → ∀ (n : ℕ) (col : ∀ t, Fin (rk t) → Fin n), (∀ t, Function.Injective (col t)) → ∃ yy : (Σ t, Fin (rk t)) × Fin n → TWO.Ov y.v, (∀ b, y.CharAt a p e (fun l => yy (l, b))) ∧ ∀ t (s : Fin (rk t)), y.v (((Matrix.of fun a i : Fin (s.val + 1) => yy (⟨t, Fin.castLE s.isLt a⟩, col t (Fin.castLE s.isLt i))).det : TWO.Ov y.v) : F) ≤ (s.val + 1) • y.v (c : F)) → LemmaBT := by
   intro L1 L2 L4 TB hch E _ _ _ H Dw l Xo c inst hst

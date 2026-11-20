@@ -16,19 +16,17 @@ open GlobalTheory.CompanionTheory.ModelS
 variable {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `Fin.castLE_injective _`.
+A detailed English derivation is pending.
 -/
 theorem ini_injective (j : Fin n) : Function.Injective (ini j) :=
   Fin.castLE_injective _
 
 /- English proof (translation)
-Use extensionality with `a c`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply, id]`. Use `symm`. Use `Fintype.sum_of_injective (ini j) (ini_injective j) _ _ ?_ (fun i => rfl)` and prove the remaining obligations. Introduce `k hk`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hjk : j < k`. Assume the negation of the conclusion as `h`. Establish `h' : (k : ℕ) ≤ j`. Use `not_lt.1 h` as an intermediate fact. Conclude with `Fin.le_def.1 this`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hk ⟨⟨k, by omega⟩, by ext; rfl⟩`. Establish `haj : ini j a ≤ j`. Use `a.isLt` as an intermediate fact. Rewrite using `[Fin.le_def]`. Use `show (a : ℕ) ≤ j`.
-
-Use linear arithmetic over natural numbers and integers. Rewrite using `[hz _ _ haj hjk, zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rows_mul (j : Fin n) (p g : Mat n) (hz : ∀ a b : Fin n, a ≤ j → j < b → p a b = 0) :
     (p * g).submatrix (ini j) id = p.submatrix (ini j) (ini j) * g.submatrix (ini j) id := by
@@ -51,7 +49,7 @@ theorem rows_mul (j : Fin n) (p g : Mat n) (hz : ∀ a b : Fin n, a ≤ j → j 
   rw [hz _ _ haj hjk, zero_mul]
 
 /- English proof (translation)
-Establish `h : (p * g).submatrix (ini j) (ini j) = p.submatrix (ini j) (ini j) * g.submatrix (ini j) (ini j)`. Use extensionality with `a c`. Conclude with `congrFun (congrFun (rows_mul j p g hz) a) (ini j c)`. Rewrite using `[lm, h, Matrix.det_mul, lm, lm]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lm_mul (j : Fin n) (p g : Mat n) (hz : ∀ a b : Fin n, a ≤ j → j < b → p a b = 0) :
     lm j (p * g) = lm j p * lm j g := by
@@ -62,7 +60,7 @@ theorem lm_mul (j : Fin n) (p g : Mat n) (hz : ∀ a b : Fin n, a ≤ j → j < 
   rw [lm, h, Matrix.det_mul, lm, lm]
 
 /- English proof (translation)
-Rewrite using `[gm, rows_mul j p g hz, Matrix.conjTranspose_mul]`. Establish `h : p.submatrix (ini j) (ini j) * g.submatrix (ini j) id * ((g.submatrix (ini j) id)ᴴ * (p.submatrix (ini j) (ini j))ᴴ) = p.submatrix (ini j) (ini j) * (g.submatrix (ini j) id * (g.submatrix (ini j) id)ᴴ) * (p.submatrix (ini j) (ini j))ᴴ`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[h, Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose, lm, gm]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gm_mul (j : Fin n) (p g : Mat n) (hz : ∀ a b : Fin n, a ≤ j → j < b → p a b = 0) :
     gm j (p * g) = lm j p * star (lm j p) * gm j g := by
@@ -76,7 +74,7 @@ theorem gm_mul (j : Fin n) (p g : Mat n) (hz : ∀ a b : Fin n, a ≤ j → j < 
   ring
 
 /- English proof (translation)
-Establish `h : ((1 : Mat n).submatrix (ini j) id) * ((1 : Mat n).submatrix (ini j) id)ᴴ = 1`. Rewrite using `[Matrix.conjTranspose_submatrix, Matrix.conjTranspose_one, ← Matrix.submatrix_mul _ _ _ _ _ Function.bijective_id, Matrix.mul_one, Matrix.submatrix_one _ (ini_injective j)]`. Rewrite using `[gm, h, Matrix.det_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem gm_one (j : Fin n) : gm j (1 : Mat n) = 1 := by
   have h : ((1 : Mat n).submatrix (ini j) id) * ((1 : Mat n).submatrix (ini j) id)ᴴ = 1 := by
@@ -86,7 +84,7 @@ theorem gm_one (j : Fin n) : gm j (1 : Mat n) = 1 := by
   rw [gm, h, Matrix.det_one]
 
 /- English proof (translation)
-Use `gm_mul j p 1 hz` as an intermediate fact. Rewrite `this` using `[Matrix.mul_one, gm_one, mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem gm_left (j : Fin n) (p : Mat n) (hz : ∀ a b : Fin n, a ≤ j → j < b → p a b = 0) :
     gm j p = lm j p * star (lm j p) := by
@@ -94,9 +92,9 @@ theorem gm_left (j : Fin n) (p : Mat n) (hz : ∀ a b : Fin n, a ≤ j → j < b
   rwa [Matrix.mul_one, gm_one, mul_one] at this
 
 /- English proof (translation)
-Take `⟨-, hl⟩` from `hl`. Establish `hlam` using `hl _ _ he`. Establish `hmu : muZ lam lev j = muZ lam lev ⟨j + 1, h⟩`. Simplify using `only [muZ, hlam, he]`. Establish `hy : yZ lam lev j = yZ lam lev ⟨j + 1, h⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [yZ, hlam, hmu]`. Prove the components needed by the constructor for the conclusion. Simplify using `only [dif, dif_pos h, hmu, sub_self]`. Simplify using `only [dif, dif_pos h, hy, sub_self]`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem dif_eq_zero (lam : Fin n → ℤ) (lev : Fin n → ℕ) (hl : IsLev lam lev) (j : Fin n) (h : (j : ℕ) + 1 < n)
     (he : lev j = lev ⟨j + 1, h⟩) : dif (muZ lam lev) j = 0 ∧ dif (yZ lam lev) j = 0 := by
@@ -111,15 +109,15 @@ theorem dif_eq_zero (lam : Fin n → ℤ) (lev : Fin n → ℕ) (hl : IsLev lam 
   · simp only [dif, dif_pos h, hy, sub_self]
 
 /- English proof (translation)
-Introduce `n lam _ lev hl p hp g hg`. Take `⟨hp1, hp2⟩` from `hp`. Establish `hpg : p * g ∈ GLs n` using `by show (p * g).det ≠ 0`. Rewrite using `[Matrix.det_mul]`. Conclude with `mul_ne_zero hp1 hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [fRaw, Set.indicator_of_mem hpg, Set.indicator_of_mem hp1, Set.indicator_of_mem hg]`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hgood : ∀ a b : Fin n, a ≤ j → j < b → lev a < lev b`. Establish `hz : ∀ a b : Fin n, a ≤ j → j < b → p a b = 0` using `fun a b h1 h2 => hp2 a b (hgood a b h1 h2)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lm_mul j p g hz, gm_mul j p g hz, ← gm_left j p hz, mul_zpow, mul_zpow, mul_mul_mul_comm]`. Use `push_neg at hgood`. Take `⟨a, b, haj, hjb, hba⟩` from `hgood`. Establish `hmono` using `hl.1`. Establish `hb : (j : ℕ) < b` using `Fin.lt_def.1 hjb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : (j : ℕ) + 1 < n` using `by have := b.isLt; omega`. Establish `h1 : lev j ≤ lev ⟨j + 1, h⟩` using `hmono (Fin.le_def.2 (by simp))`. Establish `h2 : lev ⟨j + 1, h⟩ ≤ lev b` using `hmono (Fin.le_def.2 (by simpa using hb))`. Establish `h3 : lev a ≤ lev j` using `hmono haj`. Establish `he : lev j = lev ⟨j + 1, h⟩` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨d1, d2⟩` from `dif_eq_zero lam lev hl j h he`. Simplify using `only [d1, d2, zpow_zero, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem fRaw_mul : ∀ (n : ℕ) (lam : Fin n → ℤ), Antitone lam → ∀ lev : Fin n → ℕ, IsLev lam lev →
     ∀ p ∈ GlobalTheory.CompanionTheory.ModelS.Pb lev, ∀ g ∈ GLs n,

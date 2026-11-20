@@ -21,16 +21,14 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S
 namespace GlobalTheory.AmpFamGap
 
 /- English proof (translation)
-The claim follows from `Formalism.MainNotions.S.Pv.AmpDDPf.cell_convergence`.
+A detailed English derivation is pending.
 -/
 theorem cellConv : GlobalTheory.CellAmp.CellConv := Formalism.MainNotions.S.Pv.AmpDDPf.cell_convergence
 
 /- English proof (translation)
-Introduce `hH hA Cg cb Cu cT CT C0 C1`. Use `⟨1000, fun eps Fm hC' hCl _ Cn => ?_⟩` and prove the remaining obligations. Take `⟨m₀, hm⟩` from `GlobalTheory.T.openCellAmplitudeNorm_eq_const_div_degree_largeGap hH hA cellConv Cg cb Cu cT CT C0 C1 Cn`. Take `⟨x0, hx0⟩` from `GlobalTheory.family_sizes_eventually_large eps Fm m₀`. Use `⟨x0, fun x hx i hZ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨-, hm0, -, -, hrd, -⟩` from `hx0 x hx i`. Establish `hm2 : (1 : ℝ) ≤ ((Fm.D x i).R.m : ℝ)`. Use `(Fm.D x i).R.two_le_m` as an intermediate fact. Conclude with `(by omega : 1 ≤ (Fm.D x i).R.m)` after adjusting the coercions. Establish `hbig : GlobalTheory.Amp.Big (Fm.D x i) (Fm.L x i) (sCl Fm) m₀` using `⟨hrd, by nlinarith, hm0⟩`.
-
-Conclude with `hm (Fm.D x i) (Fm.L x i) (sC' Fm) (sCl Fm) hCl hbig (Fm.ties x i).cdScale_tie hZ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem amplitudeNormDegree_along_family_of_kFiniteIdentity : GlobalTheory.GapIn.Hyp → GlobalTheory.GapIn.AmpKF0 → ∀ Cg cb Cu cT CT C0 C1 : ℝ, ∃ thr : ℝ,
     ∀ (eps : ℝ) (Fm : FamP eps), thr ≤ sC' Fm → thr ≤ sCl Fm → PX.RanksF Fm C0 Cg cb Cu cT CT →
@@ -49,7 +47,7 @@ theorem amplitudeNormDegree_along_family_of_kFiniteIdentity : GlobalTheory.GapIn
   exact hm (Fm.D x i) (Fm.L x i) (sC' Fm) (sCl Fm) hCl hbig (Fm.ties x i).cdScale_tie hZ
 
 /- English proof (translation)
-Introduce `_ hH _`. Conclude with `amplitudeNormDegree_along_family_of_kFiniteIdentity hH (GlobalTheory.T.amplitude_eq_kFiniteOrbitalIntegral_gap hH)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem amplitudeNormDegree_along_family_largeGaps : Formalism.HermitianLatticesTheory.SiegelMassRatio → GlobalTheory.GapIn.Hyp → BpJoin.ThmBpDS → ∀ Cg cb Cu cT CT C0 C1 : ℝ, ∃ thr : ℝ,
     ∀ (eps : ℝ) (Fm : FamP eps), thr ≤ sC' Fm → thr ≤ sCl Fm → PX.RanksF Fm C0 Cg cb Cu cT CT →

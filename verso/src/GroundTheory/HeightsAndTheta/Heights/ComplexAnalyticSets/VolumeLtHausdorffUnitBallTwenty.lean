@@ -15,7 +15,7 @@ noncomputable section
 namespace AreaLinear
 
 /- English proof (translation)
-Unfold `areaFactor`. Rewrite using `[← LinearMap.normDet_sq L]`. Use `push_cast`. Conclude with `Real.sqrt_sq (LinearMap.normDet_nonneg L)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem areaFactor_eq_normDet {k m : ℕ}
     (L : EuclideanSpace ℝ (Fin k) →ₗ[ℝ] EuclideanSpace ℝ (Fin m)) :
@@ -26,7 +26,7 @@ theorem areaFactor_eq_normDet {k m : ℕ}
   exact Real.sqrt_sq (LinearMap.normDet_nonneg L)
 
 /- English proof (translation)
-Introduce `k m L _ A`. Establish `h` using `LinearMap.hausdorffMeasure_image L A`. Rewrite `h` using `[finrank_euclideanSpace_fin]`. Rewrite using `[h, areaFactor_eq_normDet]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem dividedDifference_real_holds : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.AreaLinear.Statement := by
   intro k m L _ A
@@ -40,7 +40,7 @@ def LebesgueForm : Prop :=
       μH[(k : ℝ)] (L '' A) = ENNReal.ofReal (areaFactor L) * volume A
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem statement_iff :
     GroundTheory.Heights₂.Heights.AreaLinear.Statement ↔

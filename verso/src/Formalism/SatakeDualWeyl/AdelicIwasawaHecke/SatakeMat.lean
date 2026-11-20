@@ -14,11 +14,11 @@ variable {L : Type} [Field L] (O : Subring L) {n : ℕ}
 abbrev satakePairs (S : Finset (Fin n)) : Type := {p : Fin n × Fin n // p.1 ∈ S ∧ p.2 ∉ S ∧ p.1 < p.2}
 
 /- English proof (translation)
-Unfold `satakeInv`. Rewrite using `[Fintype.card_subtype, Finset.card_eq_sum_card_fiberwise (f := Prod.fst) (t := S) ?_]`. Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Use `Eq.trans ?_ (Finset.card_image_of_injective (f := Prod.mk a) _ (fun x y h => congrArg Prod.snd h))` and prove the remaining obligations. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `⟨b, l⟩`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_image, Finset.mem_sdiff, Prod.mk.injEq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨hb, hl, hbl⟩, rfl⟩`. Conclude with `⟨l, ⟨hl, hbl⟩, rfl, rfl⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨l', ⟨hl', hal'⟩, rfl, rfl⟩`. Conclude with `⟨⟨ha, hl', hal'⟩, rfl⟩`. Introduce `p hp`. Rewrite `hp` using `[Finset.mem_coe, Finset.mem_filter]`. Conclude with `Finset.mem_coe.2 hp.2.1`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem satakePairs_card (S : Finset (Fin n)) :
     Fintype.card (satakePairs S) = satakeInv Finset.univ S := by
@@ -52,7 +52,7 @@ private lemma satakeN_apply (S : Finset (Fin n)) (c : satakePairs S → O) (a l 
     satakeN O S c a l = if h : a ∈ S ∧ l ∉ S ∧ a < l then ((c ⟨(a, l), h⟩ : O) : L) else 0 := rfl
 
 /- English proof (translation)
-Rewrite using `[satakeN_apply]`. Use `split_ifs with h`. Conclude with `(c ⟨(a, l), h⟩).2`. Conclude with `O.zero_mem`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem satakeN_mem (S : Finset (Fin n)) (c : satakePairs S → O) (a l : Fin n) :
     satakeN O S c a l ∈ O := by
@@ -62,9 +62,9 @@ theorem satakeN_mem (S : Finset (Fin n)) (c : satakePairs S → O) (a l : Fin n)
   · exact O.zero_mem
 
 /- English proof (translation)
-Use extensionality with `a l`. Rewrite using `[Matrix.mul_apply, Matrix.zero_apply]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hb : b ∈ S`. Rewrite using `[satakeN_apply O S c a b, dif_neg (fun h => h.2.1 hb), zero_mul]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[satakeN_apply O S c' b l, dif_neg (fun h => hb h.1), mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem satakeN_mul_self (S : Finset (Fin n)) (c c' : satakePairs S → O) :
     satakeN O S c * satakeN O S c' = 0 := by
@@ -76,7 +76,7 @@ theorem satakeN_mul_self (S : Finset (Fin n)) (c c' : satakePairs S → O) :
   · rw [satakeN_apply O S c' b l, dif_neg (fun h => hb h.1), mul_zero]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hab : a < b`. Rewrite using `[satakeN_apply O S' c' b a, dif_neg (fun h => absurd h.2.2 (lt_asymm hab)), mul_zero]`. Rewrite using `[satakeN_apply O S c a b, dif_neg (fun h => hab h.2.2), zero_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem satakeN_mul_diag (S S' : Finset (Fin n)) (c : satakePairs S → O) (c' : satakePairs S' → O)
     (a : Fin n) : (satakeN O S c * satakeN O S' c') a a = 0 := by
@@ -87,14 +87,14 @@ theorem satakeN_mul_diag (S S' : Finset (Fin n)) (c : satakePairs S → O) (c' :
   · rw [satakeN_apply O S c a b, dif_neg (fun h => hab h.2.2), zero_mul]
 
 /- English proof (translation)
-Rewrite using `[satakeN_apply, dif_neg (fun h => lt_irrefl a h.2.2)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem satakeN_diag (S : Finset (Fin n)) (c : satakePairs S → O) (a : Fin n) :
     satakeN O S c a a = 0 := by
   rw [satakeN_apply, dif_neg (fun h => lt_irrefl a h.2.2)]
 
 /- English proof (translation)
-Rewrite using `[satakeN_apply, dif_neg (fun h' => absurd h'.2.2 (lt_asymm h))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem satakeN_lower (S : Finset (Fin n)) (c : satakePairs S → O) (a l : Fin n) (h : l < a) :
     satakeN O S c a l = 0 := by
@@ -103,7 +103,7 @@ theorem satakeN_lower (S : Finset (Fin n)) (c : satakePairs S → O) (a l : Fin 
 variable {O}
 
 /- English proof (translation)
-Simplify using `only [satakeD, Matrix.diagonal_mul_diagonal]`. Rewrite using `[← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> simp [hπ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem satakeD_mul_inv {π : L} (hπ : π ≠ 0) (S : Finset (Fin n)) :
     satakeD π S * satakeD π⁻¹ S = 1 := by
@@ -114,7 +114,7 @@ theorem satakeD_mul_inv {π : L} (hπ : π ≠ 0) (S : Finset (Fin n)) :
   split_ifs <;> simp [hπ]
 
 /- English proof (translation)
-Simplify using `only [satakeD, Matrix.diagonal_mul_diagonal]`. Rewrite using `[← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> simp [hπ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem satakeD_inv_mul {π : L} (hπ : π ≠ 0) (S : Finset (Fin n)) :
     satakeD π⁻¹ S * satakeD π S = 1 := by
@@ -145,7 +145,7 @@ def satakeGL {π : L} (hπ : π ≠ 0) (S : Finset (Fin n)) (c : satakePairs S �
         simp only [Matrix.mul_assoc], h, Matrix.mul_one, satakeD_inv_mul hπ]
 
 /- English proof (translation)
-Use `show ((1 + satakeN O S c) * satakeD π S) a l = _`. Rewrite using `[satakeD, Matrix.mul_diagonal, Matrix.add_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem satakeGL_apply {π : L} (hπ : π ≠ 0) (S : Finset (Fin n)) (c : satakePairs S → O) (a l : Fin n) :
     ((satakeGL O hπ S c : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) a l =
@@ -154,23 +154,23 @@ theorem satakeGL_apply {π : L} (hπ : π ≠ 0) (S : Finset (Fin n)) (c : satak
   rw [satakeD, Matrix.mul_diagonal, Matrix.add_apply]
 
 /- English proof (translation)
-Rewrite using `[satakeGL_apply, Matrix.one_apply_ne h.ne', satakeN_lower O S c a l h, add_zero, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem satakeGL_lower {π : L} (hπ : π ≠ 0) (S : Finset (Fin n)) (c : satakePairs S → O) (a l : Fin n)
     (h : l < a) : ((satakeGL O hπ S c : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) a l = 0 := by
   rw [satakeGL_apply, Matrix.one_apply_ne h.ne', satakeN_lower O S c a l h, add_zero, zero_mul]
 
 /- English proof (translation)
-Rewrite using `[satakeGL_apply, Matrix.one_apply_eq, satakeN_diag, add_zero, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem satakeGL_diag {π : L} (hπ : π ≠ 0) (S : Finset (Fin n)) (c : satakePairs S → O) (a : Fin n) :
     ((satakeGL O hπ S c : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) a a = if a ∈ S then π else 1 := by
   rw [satakeGL_apply, Matrix.one_apply_eq, satakeN_diag, add_zero, one_mul]
 
 /- English proof (translation)
-Set `φ : Matrix (Fin n) (Fin n) O →+* Matrix (Fin n) (Fin n) L` to `O.subtype.mapMatrix`. Establish `hφ : Function.Injective φ` using `fun x y h => Matrix.ext fun i j => Subtype.ext (congrFun (congrFun h i) j)`. Set `M : Matrix (Fin n) (Fin n) O` to `fun a b => ⟨(g : Matrix (Fin n) (Fin n) L) a b, h1 a b⟩`. Set `M' : Matrix (Fin n) (Fin n) O` to `fun a b => ⟨((g⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) a b, h2 a b⟩`. Establish `hM : φ M = (g : Matrix (Fin n) (Fin n) L)` using `rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hM' : φ M' = ((g⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)` using `rfl`. Establish `e1 : M * M' = 1` using `hφ (by rw [map_mul, map_one, hM, hM', ← Units.val_mul, mul_inv_cancel, Units.val_one])`. Establish `e2 : M' * M = 1` using `hφ (by rw [map_mul, map_one, hM, hM', ← Units.val_mul, inv_mul_cancel, Units.val_one])`. Unfold `Formalism.UG.GLint`. Conclude with `MonoidHom.mem_range.2 ⟨⟨M, M', e1, e2⟩, Units.ext rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem satake_mem_glint (g : GL (Fin n) L)
     (h1 : ∀ a b, (g : Matrix (Fin n) (Fin n) L) a b ∈ O)
@@ -192,7 +192,7 @@ theorem satake_mem_glint (g : GL (Fin n) L)
   exact MonoidHom.mem_range.2 ⟨⟨M, M', e1, e2⟩, Units.ext rfl⟩
 
 /- English proof (translation)
-Unfold `Formalism.UG.GLint at hg`. Take `⟨x, rfl⟩` from `MonoidHom.mem_range.1 hg`. Conclude with `((x : Matrix (Fin n) (Fin n) O) a b).2`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem satake_glint_entry {g : GL (Fin n) L} (hg : g ∈ GLint (Fin n) O) (a b : Fin n) :
     (g : Matrix (Fin n) (Fin n) L) a b ∈ O := by
@@ -211,9 +211,7 @@ def satakeU (S : Finset (Fin n)) (c : satakePairs S → O) : GL (Fin n) L where
       Matrix.mul_one, Matrix.one_mul]; abel
 
 /- English proof (translation)
-Use `satake_mem_glint O _ (fun a b => ?_) (fun a b => ?_)` and prove the remaining obligations. Use `show (1 + satakeN O S c) a b ∈ O`. Rewrite using `[Matrix.add_apply, Matrix.one_apply]`. Conclude with `O.add_mem (by split_ifs; exacts [O.one_mem, O.zero_mem]) (satakeN_mem O S c a b)`. Use `show (1 - satakeN O S c) a b ∈ O`.
-
-Rewrite using `[Matrix.sub_apply, Matrix.one_apply]`. Conclude with `O.sub_mem (by split_ifs; exacts [O.one_mem, O.zero_mem]) (satakeN_mem O S c a b)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem satakeU_mem (S : Finset (Fin n)) (c : satakePairs S → O) : satakeU O S c ∈ GLint (Fin n) O := by
   refine satake_mem_glint O _ (fun a b => ?_) (fun a b => ?_)
@@ -235,9 +233,7 @@ def satakeP (σ : Equiv.Perm (Fin n)) : GL (Fin n) L where
       PEquiv.toMatrix_refl]
 
 /- English proof (translation)
-Use `satake_mem_glint O _ (fun a b => ?_) (fun a b => ?_)` and prove the remaining obligations. Use `show σ.toPEquiv.toMatrix a b ∈ O`. Rewrite using `[PEquiv.toMatrix_apply]`. Use `split_ifs`. Use `exacts [O.one_mem, O.zero_mem]`.
-
-Use `show σ.symm.toPEquiv.toMatrix a b ∈ O`. Rewrite using `[PEquiv.toMatrix_apply]`. Use `split_ifs`. Use `exacts [O.one_mem, O.zero_mem]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem permMatrix_mem_integralGL (σ : Equiv.Perm (Fin n)) : satakeP (L := L) σ ∈ GLint (Fin n) O := by
   refine satake_mem_glint O _ (fun a b => ?_) (fun a b => ?_)
@@ -251,9 +247,7 @@ theorem permMatrix_mem_integralGL (σ : Equiv.Perm (Fin n)) : satakeP (L := L) �
     exacts [O.one_mem, O.zero_mem]
 
 /- English proof (translation)
-Establish `hk : S.card ≤ n` using `(Finset.card_le_univ S).trans_eq (Fintype.card_fin n)`. Set `e : {a // a ∈ S} ≃ {i : Fin n // (i : ℕ) < S.card}` to `S.equivFin.trans (Fin.castLEquiv hk)`. Use `⟨e.extendSubtype, fun a => ?_⟩` and prove the remaining obligations. Distinguish the cases in `ha : a ∈ S`. Conclude with `iff_of_true ha (e.extendSubtype_mem a ha)`.
-
-Conclude with `iff_of_false ha (e.extendSubtype_not_mem a ha)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem satake_exists_perm (S : Finset (Fin n)) :
     ∃ σ : Equiv.Perm (Fin n), ∀ a, a ∈ S ↔ ((σ a : Fin n) : ℕ) < S.card := by
@@ -265,9 +259,9 @@ theorem satake_exists_perm (S : Finset (Fin n)) :
   · exact iff_of_false ha (e.extendSubtype_not_mem a ha)
 
 /- English proof (translation)
-Take `⟨σ, hσ⟩` from `satake_exists_perm S`. Use `⟨satakeU O S c * satakeP σ, mul_mem (satakeU_mem O S c) (permMatrix_mem_integralGL O σ), satakeP σ.symm, permMatrix_mem_integralGL O σ.symm, ?_⟩` and prove the remaining obligations. Use `show (1 + satakeN O S c) * satakeD π S = (1 + satakeN O S c) * σ.toPEquiv.toMatrix * diagJ n π S.card * σ.symm.toPEquiv.toMatrix`. Rewrite using `[Matrix.mul_assoc (1 + satakeN O S c), Matrix.mul_assoc (1 + satakeN O S c)]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[PEquiv.toMatrix_toPEquiv_mul, PEquiv.mul_toMatrix_toPEquiv, Equiv.symm_symm]`. Use extensionality with `a b`. Simplify using `only [Matrix.submatrix_apply, id_eq, satakeD, diagJ, Matrix.diagonal_apply, σ.injective.eq_iff, hσ]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem satakeGL_mem_doset {π : L} (hπ : π ≠ 0) (S : Finset (Fin n)) (c : satakePairs S → O) :
     ∃ a ∈ GLint (Fin n) O, ∃ b ∈ GLint (Fin n) O,
@@ -285,7 +279,7 @@ theorem satakeGL_mem_doset {π : L} (hπ : π ≠ 0) (S : Finset (Fin n)) (c : s
   simp only [Matrix.submatrix_apply, id_eq, satakeD, diagJ, Matrix.diagonal_apply, σ.injective.eq_iff, hσ]
 
 /- English proof (translation)
-Use `show (satakeD π⁻¹ S * (1 - satakeN O S c) * ((1 + satakeN O S' c') * satakeD π S')) a l = _`. Rewrite using `[← Matrix.mul_assoc, satakeD, satakeD, Matrix.mul_diagonal, Matrix.mul_assoc, Matrix.diagonal_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem satakeGL_inv_mul_apply {π : L} (hπ : π ≠ 0) (S S' : Finset (Fin n)) (c : satakePairs S → O)
     (c' : satakePairs S' → O) (a l : Fin n) :
@@ -296,7 +290,7 @@ theorem satakeGL_inv_mul_apply {π : L} (hπ : π ≠ 0) (S S' : Finset (Fin n))
   rw [← Matrix.mul_assoc, satakeD, satakeD, Matrix.mul_diagonal, Matrix.mul_assoc, Matrix.diagonal_mul]
 
 /- English proof (translation)
-Simplify using `only [Matrix.sub_mul, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one, Matrix.sub_apply, Matrix.add_apply, Matrix.one_apply_eq, satakeN_diag, satakeN_mul_diag, add_zero, sub_zero]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma one_sub_satakeN_mul_one_add_satakeN_diag (S S' : Finset (Fin n)) (c : satakePairs S → O)
     (c' : satakePairs S' → O) (a : Fin n) :
@@ -305,7 +299,7 @@ private lemma one_sub_satakeN_mul_one_add_satakeN_diag (S S' : Finset (Fin n)) (
     Matrix.add_apply, Matrix.one_apply_eq, satakeN_diag, satakeN_mul_diag, add_zero, sub_zero]
 
 /- English proof (translation)
-Introduce `a ha`. Assume the negation of the conclusion as `ha'`. Apply the tactic sequence `have h1 := satake_glint_entry O h a a`. Rewrite `h1` using `[satakeGL_inv_mul_apply, one_sub_satakeN_mul_one_add_satakeN_diag, if_pos ha, if_neg ha', mul_one, mul_one]`. Conclude with `hπO h1`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem satake_subset_of_mem {π : L} (hπ : π ≠ 0) (hπO : π⁻¹ ∉ O) (S S' : Finset (Fin n))
     (c : satakePairs S → O) (c' : satakePairs S' → O)
@@ -317,7 +311,7 @@ theorem satake_subset_of_mem {π : L} (hπ : π ≠ 0) (hπO : π⁻¹ ∉ O) (S
   exact hπO h1
 
 /- English proof (translation)
-Take `⟨⟨a, l⟩, ha, hl, hal⟩` from `p`. Apply the tactic sequence `have h1 := satake_glint_entry O h a l`. Rewrite `h1` using `[satakeGL_inv_mul_apply, if_pos ha, if_neg hl, mul_one, Matrix.sub_mul, Matrix.mul_add, Matrix.mul_add, satakeN_mul_self, Matrix.one_mul, Matrix.one_mul, Matrix.mul_one, add_zero, Matrix.sub_apply, Matrix.add_apply, Matrix.one_apply_ne hal.ne, satakeN_apply O S c' a l, satakeN_ap …`. Conclude with `h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem satake_entry_of_mem {π : L} (hπ : π ≠ 0) (S : Finset (Fin n)) (c c' : satakePairs S → O)
     (h : (satakeGL O hπ S c)⁻¹ * satakeGL O hπ S c' ∈ GLint (Fin n) O) (p : satakePairs S) :
@@ -336,7 +330,7 @@ def satakeSec (π : O) (r : satakeRes O π) : O :=
   Function.surjInv (Ideal.Quotient.mk_surjective (I := Ideal.span {π})) r
 
 /- English proof (translation)
-The claim follows from `Function.surjInv_eq (Ideal.Quotient.mk_surjective (I := Ideal.span {π})) r`.
+A detailed English derivation is pending.
 -/
 theorem satakeSec_mk (π : O) (r : satakeRes O π) : Ideal.Quotient.mk _ (satakeSec O π r) = r :=
   Function.surjInv_eq (Ideal.Quotient.mk_surjective (I := Ideal.span {π})) r
@@ -346,13 +340,13 @@ def satakeRep (π : O) (hπ : (π : L) ≠ 0) (j : ℕ)
   satakeGL O hπ i.1.1 (fun p => satakeSec O π (i.2 p))
 
 /- English proof (translation)
-Take `⟨⟨S, hS⟩, r⟩` from `i`. Take `⟨⟨S', hS'⟩, r'⟩` from `i'`. Establish `hsub : S ⊆ S'` using `satake_subset_of_mem O hπ hπO S S' (fun p => satakeSec O π (r p)) (fun p => satakeSec O π (r' p)) h`. Establish `hSS : S = S'` using `Finset.eq_of_subset_of_card_le hsub (hS'.trans hS.symm).le`. Substitute `hSS` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hr : r = r'`. Use function extensionality and compare the values at `p`. Establish `h2 : (π : L)⁻¹ * (((satakeSec O π (r' p) : O) : L) - ((satakeSec O π (r p) : O) : L)) ∈ O` using `satake_entry_of_mem O hπ S (fun p => satakeSec O π (r p)) (fun p => satakeSec O π (r' p)) h p`. Establish `hmem : satakeSec O π (r' p) - satakeSec O π (r p) ∈ Ideal.span {π}`. Rewrite using `[Ideal.mem_span_singleton]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨_, h2⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((satakeSec O π (r' p) : O) : L) - ((satakeSec O π (r p) : O) : L) = (π : L) * ((π : L)⁻¹ * (((satakeSec O π (r' p) : O) : L) - ((satakeSec O π (r p) : O) : L)))`. Rewrite using `[← mul_assoc, mul_inv_cancel₀ hπ, one_mul]`. Conclude with `(satakeSec_mk O π (r p)).symm.trans ((Ideal.Quotient.eq.2 hmem).symm.trans (satakeSec_mk O π (r' p)))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Both sides reduce to the same expression.
 
-Substitute `hr` using the available equality. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem satakeRep_inj (π : O) (hπ : (π : L) ≠ 0) (hπO : (π : L)⁻¹ ∉ O) (j : ℕ)
     (i i' : Σ S : {S : Finset (Fin n) // S.card = j}, satakePairs S.1 → satakeRes O π)

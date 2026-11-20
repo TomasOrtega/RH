@@ -13,21 +13,21 @@ def qm (a b : Lsq K Δ) : Matrix (Fin 2) (Fin 2) (Lsq K Δ) := !![a, b; -star b,
 def Shape (m : Matrix (Fin 2) (Fin 2) (Lsq K Δ)) : Prop := m 1 1 = star (m 0 0) ∧ m 1 0 = -star (m 0 1)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem shape_qm (a b : Lsq K Δ) : Shape (qm a b) := ⟨rfl, rfl⟩
 
 /- English proof (translation)
-Use extensionality with `i j : 1`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [qm, h.1, h.2]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Shape.eq {m : Matrix (Fin 2) (Fin 2) (Lsq K Δ)} (h : Shape m) : m = qm (m 0 0) (m 0 1) := by
   ext i j : 1
   fin_cases i <;> fin_cases j <;> simp [qm, h.1, h.2]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `GeneralLinearGroup.map (starRingEnd (Lsq K Δ)) g = MulAut.conj (wJ Δ)⁻¹ g ↔ _`. Rewrite using `[Units.ext_iff]`. Simplify using `[MulAut.conj_apply, wJ, Matrix.mul_apply, Fin.sum_univ_two, ← Matrix.ext_iff, Fin.forall_fin_two, Matrix.vecMul, dotProduct, Shape, starRingEnd_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨h1, h2⟩, -, -⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨h1.symm, by rw [h2, neg_neg]⟩`. Introduce and unpack `⟨h1, h2⟩`. Use `⟨⟨h1.symm, by rw [h2, neg_neg]⟩, by rw [h2, star_neg, star_star], by rw [h1, star_star]⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem mem_DX (g : GL (Fin 2) (Lsq K Δ)) : g ∈ DX Δ ↔ Shape (g : Matrix (Fin 2) (Fin 2) (Lsq K Δ)) := by
   change GeneralLinearGroup.map (starRingEnd (Lsq K Δ)) g = MulAut.conj (wJ Δ)⁻¹ g ↔ _
@@ -40,18 +40,18 @@ theorem mem_DX (g : GL (Fin 2) (Lsq K Δ)) : g ∈ DX Δ ↔ Shape (g : Matrix (
     refine ⟨⟨h1.symm, by rw [h2, neg_neg]⟩, by rw [h2, star_neg, star_star], by rw [h1, star_star]⟩
 
 /- English proof (translation)
-The claim follows from `(mem_DX _).1 g.2`.
+A detailed English derivation is pending.
 -/
 theorem shape_mt (g : DX Δ) : Shape (mt g) := (mem_DX _).1 g.2
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [lmap]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lmap_star (f : K →+* K') (x : Lsq K Δ) : lmap f Δ (star x) = star (lmap f Δ x) := by
   ext <;> simp [lmap]
 
 /- English proof (translation)
-Introduce `x y h` and use `by have h1 := congrArg QuadraticAlgebra.re h have h2 := congrArg QuadraticAlgebra.im h exact QuadraticAlgebra.ext (f.injective h1) (f.injective h2)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lmap_inj (f : K →+* K') : Function.Injective (lmap f Δ) := fun x y h => by
   have h1 := congrArg QuadraticAlgebra.re h
@@ -59,14 +59,14 @@ theorem lmap_inj (f : K →+* K') : Function.Injective (lmap f Δ) := fun x y h 
   exact QuadraticAlgebra.ext (f.injective h1) (f.injective h2)
 
 /- English proof (translation)
-Use extensionality with `i j : 1`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [qm, lmap_star]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem qm_map (f : K →+* K') (a b : Lsq K Δ) : (qm a b).map (lmap f Δ) = qm (lmap f Δ a) (lmap f Δ b) := by
   ext i j : 1
   fin_cases i <;> fin_cases j <;> simp [qm, lmap_star]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `h`. Simplify using `only [Matrix.map_apply, ← lmap_star, ← map_neg] at h1 h2`. Conclude with `⟨lmap_inj f h1, lmap_inj f h2⟩`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem shape_of_map (f : K →+* K') {m : Matrix (Fin 2) (Fin 2) (Lsq K Δ)} (h : Shape (m.map (lmap f Δ))) : Shape m := by
   obtain ⟨h1, h2⟩ := h
@@ -74,7 +74,7 @@ theorem shape_of_map (f : K →+* K') {m : Matrix (Fin 2) (Fin 2) (Lsq K Δ)} (h
   exact ⟨lmap_inj f h1, lmap_inj f h2⟩
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_fin_two]`. Apply the tactic sequence `refine QuadraticAlgebra.ext ?_ ?_ <;> simp only [QuadraticAlgebra.algebraMap_re, QuadraticAlgebra.algebraMap_im] <;> simp [qm, pow_two] <;> ring`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem det_qm (a b : Lsq K Δ) :
     (qm a b).det = algebraMap K (Lsq K Δ) (a.re ^ 2 - Δ * a.im ^ 2 + b.re ^ 2 - Δ * b.im ^ 2) := by
@@ -84,7 +84,7 @@ theorem det_qm (a b : Lsq K Δ) :
 variable (O : Type) [CommRing O] [Algebra O K]
 
 /- English proof (translation)
-Set `φ : Lsq K Δ →ₐ[O] Lsq K Δ` to `{ starRingEnd (Lsq K Δ) with commutes' := fun r => by`. Rewrite using `[IsScalarTower.algebraMap_apply O K (Lsq K Δ)]`. Apply the tactic sequence `refine QuadraticAlgebra.ext ?_ ?_ <;> simp [starRingEnd_apply, QuadraticAlgebra.re_star, QuadraticAlgebra.im_star] }`. Conclude with `h.map φ`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem int_star {x : Lsq K Δ} (h : IsIntegral O x) : IsIntegral O (star x) := by
   let φ : Lsq K Δ →ₐ[O] Lsq K Δ :=
@@ -117,7 +117,7 @@ def RL : Subring (Matrix (Fin 2) (Fin 2) (Lsq K Δ)) where
     exact ⟨⟨by simp [h1], by simp [h2]⟩, fun i j => (ha i j).neg⟩
 
 /- English proof (translation)
-Use `⟨shape_qm a b, fun i j => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [qm]`. Use `exacts [ha, hb, int_star O hb, int_star O ha]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem qm_mem {a b : Lsq K Δ} (ha : IsIntegral O a) (hb : IsIntegral O b) : qm a b ∈ RL Δ O := by
   refine ⟨shape_qm a b, fun i j => ?_⟩
@@ -125,19 +125,17 @@ theorem qm_mem {a b : Lsq K Δ} (ha : IsIntegral O a) (hb : IsIntegral O b) : qm
   exacts [ha, hb, int_star O hb, int_star O ha]
 
 /- English proof (translation)
-Rewrite using `[KD, Subgroup.mem_subgroupOf, MonoidHom.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu⟩`. Establish `e1 : mt g = (u : Matrix (Fin 2) (Fin 2) (integralClosure O (Lsq K Δ))).map Subtype.val` using `by show ((g : GL (Fin 2) (Lsq K Δ)) : Matrix (Fin 2) (Fin 2) (Lsq K Δ)) = _`. Rewrite using `[← hu]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `e2 : mt g⁻¹ = ((u⁻¹ : GL (Fin 2) (integralClosure O (Lsq K Δ))) : Matrix (Fin 2) (Fin 2) (integralClosure O (Lsq K Δ))).map Subtype.val` using `by show (((g⁻¹ : DX Δ) : GL (Fin 2) (Lsq K Δ)) : Matrix (Fin 2) (Fin 2) (Lsq K Δ)) = _`. Rewrite using `[Subgroup.coe_inv, ← hu, ← map_inv]`. Both sides reduce to the same expression. Use `⟨⟨shape_mt g, fun i j => ?_⟩, ⟨shape_mt g⁻¹, fun i j => ?_⟩⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e1]`. Conclude with `((u : Matrix (Fin 2) (Fin 2) (integralClosure O (Lsq K Δ))) i j).2`. Rewrite using `[e2]`. Conclude with `(((u⁻¹ : GL (Fin 2) (integralClosure O (Lsq K Δ))) : Matrix (Fin 2) (Fin 2) (integralClosure O (Lsq K Δ))) i j).2`. Introduce and unpack `⟨⟨-, h1⟩, ⟨-, h2⟩⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `f` to `(integralClosure O (Lsq K Δ)).val.toRingHom`. Set `A : Matrix (Fin 2) (Fin 2) (integralClosure O (Lsq K Δ))` to `Matrix.of fun i j => ⟨mt g i j, h1 i j⟩`. Set `B : Matrix (Fin 2) (Fin 2) (integralClosure O (Lsq K Δ))` to `Matrix.of fun i j => ⟨mt g⁻¹ i j, h2 i j⟩`. Establish `hA : A.map f = mt g` using `rfl`. Establish `hB : B.map f = mt g⁻¹` using `rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `inj : Function.Injective (fun M : Matrix (Fin 2) (Fin 2) (integralClosure O (Lsq K Δ)) => M.map f)` using `fun M N h => Matrix.ext fun i j => Subtype.ext (congrFun (congrFun h i) j)`. Establish `hAB : A * B = 1` using `inj (by`. Simplify using `only [Matrix.map_mul, hA, hB, Matrix.map_one f (map_zero f) (map_one f)]`. Use `show mt (g * g⁻¹) = 1`. Rewrite using `[mul_inv_cancel]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `rfl)`. Establish `hBA : B * A = 1` using `inj (by`. Simplify using `only [Matrix.map_mul, hA, hB, Matrix.map_one f (map_zero f) (map_one f)]`. Use `show mt (g⁻¹ * g) = 1`. Rewrite using `[inv_mul_cancel]`.
-
-Use the proof step `rfl)`. Conclude with `⟨⟨A, B, hAB, hBA⟩, Units.ext hA⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_KD (g : DX Δ) : g ∈ KD Δ O ↔ mt g ∈ RL Δ O ∧ mt g⁻¹ ∈ RL Δ O := by
   rw [KD, Subgroup.mem_subgroupOf, MonoidHom.mem_range]
@@ -176,19 +174,17 @@ Both sides reduce to the same expression.
 theorem mt_mul (g h : DX Δ) : mt (g * h) = mt g * mt h := rfl
 
 /- English proof (translation)
-Establish `mt1 : mt (1 : DX Δ) = 1` using `rfl`. Establish `base : ∀ w : DX Δ, w ∈ ZD Δ ∨ w ∈ KD Δ O → ∀ s ∈ RL Δ O, mt w * s * mt w⁻¹ ∈ RL Δ O`. Introduce and unpack `w (hw | hw) s hs`. Rewrite `hw` using `[ZD, Subgroup.mem_subgroupOf, MonoidHom.mem_range]`. Take `⟨t, ht⟩` from `hw`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hc : Commute (mt w) s` using `by show Commute ((w : GL (Fin 2) (Lsq K Δ)) : Matrix (Fin 2) (Fin 2) (Lsq K Δ)) s`. Rewrite using `[← ht]`. Conclude with `Matrix.scalar_commute _ (fun _ => Commute.all _ _) s`. Rewrite using `[hc.eq, mul_assoc, ← mt_mul, mul_inv_cancel, mt1, mul_one]`. Conclude with `hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨h1, h2⟩` from `(mem_KD O w).1 hw`. Conclude with `(RL Δ O).mul_mem ((RL Δ O).mul_mem h1 hs) h2`. Rewrite `hu` using `[Subgroup.sup_eq_closure]`. Use `(Subgroup.closure_induction (p := fun v _ => (∀ s ∈ RL Δ O, mt v * s * mt v⁻¹ ∈ RL Δ O) ∧ (∀ s ∈ RL Δ O, mt v⁻¹ * s * mt v ∈ RL Δ O)) ?_ ?_ ?_ ?_ hu).1 r hr` and prove the remaining obligations. Introduce `x hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨base x hx, fun s hs => ?_⟩` and prove the remaining obligations. Establish `hx' : x⁻¹ ∈ ZD Δ ∨ x⁻¹ ∈ KD Δ O` using `hx.imp (fun h => inv_mem h) (fun h => inv_mem h)`. Simplify using `using base x⁻¹ hx' s hs`. Apply the tactic sequence `refine ⟨fun s hs => ?_, fun s hs => ?_⟩ <;> simpa [mt1] using hs`. Introduce and unpack `x y - - ⟨hx1, hx2⟩ ⟨hy1, hy2⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨fun s hs => ?_, fun s hs => ?_⟩` and prove the remaining obligations. Establish `e : mt (x * y) * s * mt (x * y)⁻¹ = mt x * (mt y * s * mt y⁻¹) * mt x⁻¹`. Simplify using `only [_root_.mul_inv_rev, mt_mul, mul_assoc]`. Rewrite using `[e]`. Conclude with `hx1 _ (hy1 s hs)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `e : mt (x * y)⁻¹ * s * mt (x * y) = mt y⁻¹ * (mt x⁻¹ * s * mt x) * mt y`. Simplify using `only [_root_.mul_inv_rev, mt_mul, mul_assoc]`. Rewrite using `[e]`. Conclude with `hy2 _ (hx2 s hs)`. Introduce and unpack `x - ⟨hx1, hx2⟩`.
-
-Conclude with `⟨hx2, by simpa using hx1⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem conj_mem {u : DX Δ} (hu : u ∈ ZD Δ ⊔ KD Δ O) {r : Matrix (Fin 2) (Fin 2) (Lsq K Δ)} (hr : r ∈ RL Δ O) :
     mt u * r * mt u⁻¹ ∈ RL Δ O := by
@@ -226,7 +222,7 @@ theorem conj_mem {u : DX Δ} (hu : u ∈ ZD Δ ⊔ KD Δ O) {r : Matrix (Fin 2) 
     exact ⟨hx2, by simpa using hx1⟩
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (IsScalarTower.toAlgHom O K (Lsq K Δ))`. Introduce `u v huv`. Use `congrArg QuadraticAlgebra.re huv` as an intermediate fact. Simplify using `using this`. Conclude with `isIntegral_algHom_iff _ hinj`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem int_alg {x : K} : IsIntegral O (algebraMap K (Lsq K Δ) x) ↔ IsIntegral O x := by
   have hinj : Function.Injective (IsScalarTower.toAlgHom O K (Lsq K Δ)) := by
@@ -236,7 +232,7 @@ theorem int_alg {x : K} : IsIntegral O (algebraMap K (Lsq K Δ) x) ↔ IsIntegra
   exact isIntegral_algHom_iff _ hinj
 
 /- English proof (translation)
-Establish `e : x + star x = algebraMap K (Lsq K Δ) (2 * x.re)`. Apply the tactic sequence `refine QuadraticAlgebra.ext ?_ ?_ <;> simp [QuadraticAlgebra.re_star, QuadraticAlgebra.im_star] <;> ring`. Rewrite using `[← int_alg O, ← e]`. Conclude with `h.add (int_star O h)`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_re {x : Lsq K Δ} (h : IsIntegral O x) : IsIntegral O (2 * x.re) := by
   have e : x + star x = algebraMap K (Lsq K Δ) (2 * x.re) := by
@@ -245,7 +241,7 @@ theorem int_re {x : Lsq K Δ} (h : IsIntegral O x) : IsIntegral O (2 * x.re) := 
   exact h.add (int_star O h)
 
 /- English proof (translation)
-Use `IsIntegral.of_pow (n := 2) (by norm_num) ?_` and prove the remaining obligations. Establish `e : (⟨0, c⟩ : Lsq K Δ) ^ 2 = algebraMap K (Lsq K Δ) (c * ((c : K) * Δ))`. Apply the tactic sequence `refine QuadraticAlgebra.ext ?_ ?_ <;> simp [pow_two] <;> ring`. Rewrite using `[e, int_alg O]`. Conclude with `(isIntegral_natCast c).mul hc`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_om {c : ℕ} (hc : IsIntegral O ((c : K) * Δ)) : IsIntegral O (⟨0, c⟩ : Lsq K Δ) := by
   refine IsIntegral.of_pow (n := 2) (by norm_num) ?_
@@ -255,7 +251,7 @@ theorem int_om {c : ℕ} (hc : IsIntegral O ((c : K) * Δ)) : IsIntegral O (⟨0
   exact (isIntegral_natCast c).mul hc
 
 /- English proof (translation)
-Establish `e : (⟨0, c⟩ : Lsq K Δ) * (x - star x) = algebraMap K (Lsq K Δ) (2 * c * Δ * x.im)`. Apply the tactic sequence `refine QuadraticAlgebra.ext ?_ ?_ <;> simp [QuadraticAlgebra.re_star, QuadraticAlgebra.im_star] <;> ring`. Rewrite using `[← int_alg O, ← e]`. Conclude with `(int_om O hc).mul (h.sub (int_star O h))`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_im {c : ℕ} (hc : IsIntegral O ((c : K) * Δ)) {x : Lsq K Δ} (h : IsIntegral O x) : IsIntegral O (2 * c * Δ * x.im) := by
   have e : (⟨0, c⟩ : Lsq K Δ) * (x - star x) = algebraMap K (Lsq K Δ) (2 * c * Δ * x.im) := by
@@ -264,7 +260,7 @@ theorem int_im {c : ℕ} (hc : IsIntegral O ((c : K) * Δ)) {x : Lsq K Δ} (h : 
   exact (int_om O hc).mul (h.sub (int_star O h))
 
 /- English proof (translation)
-Establish `e : (⟨r, c * s⟩ : Lsq K Δ) = algebraMap K (Lsq K Δ) r + (⟨0, c⟩ : Lsq K Δ) * algebraMap K (Lsq K Δ) s`. Apply the tactic sequence `refine QuadraticAlgebra.ext ?_ ?_ <;> simp`. Rewrite using `[e]`. Conclude with `((int_alg O).2 hr).add ((int_om O hc).mul ((int_alg O).2 hs))`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_mk {c : ℕ} (hc : IsIntegral O ((c : K) * Δ)) {r s : K} (hr : IsIntegral O r) (hs : IsIntegral O s) :
     IsIntegral O (⟨r, c * s⟩ : Lsq K Δ) := by
@@ -274,21 +270,21 @@ theorem int_mk {c : ℕ} (hc : IsIntegral O ((c : K) * Δ)) {r s : K} (hr : IsIn
   exact ((int_alg O).2 hr).add ((int_om O hc).mul ((int_alg O).2 hs))
 
 /- English proof (translation)
-Establish `hs` using `shape_mt g`. Establish `a01` using `congrFun (congrFun h1 0) 1`. Establish `b00` using `congrFun (congrFun h2 0) 0`. Establish `b01` using `congrFun (congrFun h2 0) 1`. Simplify using `[qm, Matrix.mul_apply, Fin.sum_univ_two, QuadraticAlgebra.ext_iff] at a01 b00 b01`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `two : (2 : K) ≠ 0` using `two_ne_zero`. Establish `q01 : mt g 0 1 = 0`. Use `QuadraticAlgebra.ext ?_ ?_` and prove the remaining obligations. Establish `e : (2 * c) * (mt g 0 1).re = 0` using `by linear_combination -a01.2`. Simplify `e` using `[two, hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `e : (2 * Δ * c) * (mt g 0 1).im = 0` using `by linear_combination -a01.1`. Simplify `e` using `[two, hc, hΔ]`. Establish `r10 : mt g 1 0 = 0`. Use `QuadraticAlgebra.ext ?_ ?_` and prove the remaining obligations. Rewrite using `[← b00.1]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[q01]`. Rewrite using `[← b00.2]`. Simplify using `[q01]`. Establish `s11 : mt g 1 1 = mt g 0 0` using `(QuadraticAlgebra.ext b01.1 b01.2).symm`. Establish `pim : (mt g 0 0).im = 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `congrArg QuadraticAlgebra.im hs.1`. Rewrite `e` using `[s11, QuadraticAlgebra.im_star]`. Establish `e2 : 2 * (mt g 0 0).im = 0` using `by linear_combination e`. Simplify `e2` using `[two]`. Establish `hp : mt g 0 0 = algebraMap K (Lsq K Δ) (mt g 0 0).re` using `QuadraticAlgebra.ext (by simp) (by simp [pim])`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hre : (mt g 0 0).re ≠ 0`. Introduce `h0`. Establish `e` using `congrFun (congrFun (show mt g * mt g⁻¹ = 1 by rw [← mt_mul, mul_inv_cancel]; rfl) 0) 0`. Rewrite `e` using `[Matrix.mul_apply, Fin.sum_univ_two, hp, h0, q01]`. Establish `h3` using `congrArg QuadraticAlgebra.re e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h11 : (1 : Lsq K Δ).re = 1` using `rfl`. Simplify using `[h11] at h3`. Rewrite using `[ZD, Subgroup.mem_subgroupOf, MonoidHom.mem_range]`. Use `⟨Units.mk0 _ hre, Units.ext (Matrix.ext fun i j => ?_)⟩` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `hp.symm`. Conclude with `q01.symm`. Conclude with `r10.symm`. Conclude with `(s11.trans hp).symm`.
+A detailed English derivation is pending.
 -/
 theorem mem_ZD [CharZero K] (hΔ : Δ ≠ 0) {c : K} (hc : c ≠ 0) (g : DX Δ) (h1 : mt g * qm ⟨0, c⟩ 0 = qm ⟨0, c⟩ 0 * mt g)
     (h2 : mt g * qm 0 1 = qm 0 1 * mt g) : g ∈ ZD Δ := by
@@ -332,7 +328,7 @@ theorem mem_ZD [CharZero K] (hΔ : Δ ≠ 0) {c : K} (hc : c ≠ 0) (g : DX Δ) 
   · exact (s11.trans hp).symm
 
 /- English proof (translation)
-Establish `hu : IsUnit (qm a b).det`. Rewrite using `[det_qm]`. Conclude with `((Units.mk0 _ h).map (algebraMap K (Lsq K Δ)).toMonoidHom).isUnit`. Use `⟨⟨Matrix.GeneralLinearGroup.mk'' (qm a b) hu, (mem_DX _).2 (shape_qm a b)⟩, rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_DX {a b : Lsq K Δ} (h : a.re ^ 2 - Δ * a.im ^ 2 + b.re ^ 2 - Δ * b.im ^ 2 ≠ 0) : ∃ g : DX Δ, mt g = qm a b := by
   have hu : IsUnit (qm a b).det := by
@@ -341,7 +337,7 @@ theorem exists_DX {a b : Lsq K Δ} (h : a.re ^ 2 - Δ * a.im ^ 2 + b.re ^ 2 - Δ
   refine ⟨⟨Matrix.GeneralLinearGroup.mk'' (qm a b) hu, (mem_DX _).2 (shape_qm a b)⟩, rfl⟩
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `h`. Rewrite using `[← Matrix.diagonal_natCast']`. Apply the tactic sequence `constructor <;> simp [Matrix.diagonal_mul, h1, h2, mul_comm]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem shape_nat (n : ℕ) {m : Matrix (Fin 2) (Fin 2) (Lsq K Δ)} (h : Shape m) :
     Shape ((n : Matrix (Fin 2) (Fin 2) (Lsq K Δ)) * m) := by
@@ -350,19 +346,17 @@ theorem shape_nat (n : ℕ) {m : Matrix (Fin 2) (Fin 2) (Lsq K Δ)} (h : Shape m
   constructor <;> simp [Matrix.diagonal_mul, h1, h2, mul_comm]
 
 /- English proof (translation)
-Establish `one : ∀ x : Lsq K Δ, ∃ n : ℕ, n ≠ 0 ∧ IsIntegral O ((n : Lsq K Δ) * x)`. Introduce `x`. Take `⟨n1, hn1, h1⟩` from `hd x.re`. Take `⟨n2, hn2, h2⟩` from `hd (x.im / c)`. Use `⟨n1 * n2, mul_ne_zero hn1 hn2, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : ((n1 * n2 : ℕ) : Lsq K Δ) * x = ⟨n2 * (n1 * x.re), c * (n1 * (n2 * (x.im / c)))⟩`. Use `QuadraticAlgebra.ext ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `int_mk O hc ((isIntegral_natCast n2).mul h1) ((isIntegral_natCast n1).mul h2)`. Take `⟨na, hna, ha⟩` from `one (m 0 0)`. Take `⟨nb, hnb, hb⟩` from `one (m 0 1)`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨nb * na, mul_ne_zero hnb hna, shape_nat (nb * na) h, fun i j => ?_⟩` and prove the remaining obligations. Establish `hA : IsIntegral O (((nb * na : ℕ) : Lsq K Δ) * m 0 0)`. Rewrite using `[Nat.cast_mul, mul_assoc]`. Conclude with `(isIntegral_natCast nb).mul ha`. Establish `hB : IsIntegral O (((nb * na : ℕ) : Lsq K Δ) * m 0 1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Nat.cast_mul, mul_comm (nb : Lsq K Δ), mul_assoc]`. Conclude with `(isIntegral_natCast na).mul hb`. Establish `st : ∀ x : Lsq K Δ, ((nb * na : ℕ) : Lsq K Δ) * star x = star (((nb * na : ℕ) : Lsq K Δ) * x)`. Introduce `x`. Rewrite using `[star_mul, star_natCast, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.diagonal_natCast', Matrix.diagonal_mul]`. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Conclude with `hA`. Conclude with `hB`. Use `show IsIntegral O (((nb * na : ℕ) : Lsq K Δ) * m 1 0)`.
-
-Rewrite using `[h.2, mul_neg, st]`. Conclude with `(int_star O hB).neg`. Use `show IsIntegral O (((nb * na : ℕ) : Lsq K Δ) * m 1 1)`. Rewrite using `[h.1, st]`. Conclude with `int_star O hA`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem den_mat {c : ℕ} (hc0 : (c : K) ≠ 0) (hc : IsIntegral O ((c : K) * Δ)) (hd : ∀ x : K, ∃ n : ℕ, n ≠ 0 ∧ IsIntegral O ((n : K) * x))
     {m : Matrix (Fin 2) (Fin 2) (Lsq K Δ)} (h : Shape m) :

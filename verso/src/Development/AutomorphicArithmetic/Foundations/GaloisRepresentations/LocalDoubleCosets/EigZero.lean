@@ -7,7 +7,7 @@ noncomputable section
 namespace UpperTheory.Gal.LocD
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.CommonEigenvectorExistence.common_eigenvector φ hc`.
+A detailed English derivation is pending.
 -/
 private theorem common_eigenvector {T D : Type} [AddCommGroup D] [Module ℂ D] [FiniteDimensional ℂ D] [Nontrivial D]
     (φ : T → Module.End ℂ D) (hc : ∀ s t, Commute (φ s) (φ t)) :
@@ -15,35 +15,29 @@ private theorem common_eigenvector {T D : Type} [AddCommGroup D] [Module ℂ D] 
   _root_.UpperTheory.Reformulated.B.CommonEigenvectorExistence.common_eigenvector φ hc
 
 /- English proof (translation)
-Introduce `T J _ _ _ _ _ ρ`. Establish `hcomm : ∀ s t, Commute (ρ s) (ρ t)` using `fun s t => by`. Express the relevant statement in the definitionally equal form `ρ s * ρ t = ρ t * ρ s`. Rewrite using `[← map_mul, ← map_mul, mul_comm]`. Use `haveI : Nontrivial (Module.Dual ℂ J) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `exists_ne (0 : J)`. Establish `hex : ∃ g : Module.Dual ℂ J, g y ≠ 0`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hy ((Module.forall_dual_apply_eq_zero_iff ℂ y).1 h)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩` from `hex`. Conclude with `⟨g, 0, fun h => hg (by simp [h])⟩`. Take `⟨l, a, hl0, hl⟩` from `common_eigenvector (fun t => (ρ t).dualMap) (fun s t => by`. Express the relevant statement in the definitionally equal form `(ρ s).dualMap * (ρ t).dualMap = (ρ t).dualMap * (ρ s).dualMap`. Use extensionality with `g y`.
+Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h` using `congrArg (fun F : Module.End ℂ J => F y) (hcomm s t).eq`. Simplify using `only [Module.End.mul_apply] at h`. Simplify using `[Module.End.mul_apply, LinearMap.dualMap_apply, h])`. Establish `hact : ∀ t y, l (ρ t y) = a t * l y` using `fun t y => by`. Use `congrArg (fun g : Module.Dual ℂ J => g y) (hl t)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Simplify `this` using `[LinearMap.dualMap_apply]`. Choose the witnesses or unpack the hypotheses as in `⟨y₀, hy₀⟩ : ∃ y, l y ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hl0 (LinearMap.ext h)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `am : T →* ℂ` to `{ toFun := a map_one' := by`. Use `hact 1 y₀` as an intermediate fact. Simplify using `only [map_one, Module.End.one_apply] at this`. Conclude with `(mul_right_cancel₀ hy₀ (by rw [one_mul]; exact this)).symm`. Use the proof step `map_mul' := fun s t => by`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hact (s * t) y₀` as an intermediate fact. Rewrite `this` using `[map_mul, Module.End.mul_apply, hact s, hact t, ← mul_assoc]`. Conclude with `(mul_right_cancel₀ hy₀ this).symm }`. Use `⟨am.toHomUnits, l, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hl0`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `t y`. Simplify `hact t y` using `[am]`. Establish `hval : ∀ t, ((am.toHomUnits t : ℂˣ) : ℂ) = a t` using `fun t => by simp [am]`. Establish `htop` using `Module.End.iSup_iInf_maxGenEigenspace_eq_top_of_iSup_maxGenEigenspace_eq_top_of_commute (fun t => ρ t) (fun s t _ => hcomm s t) (fun t => Module.End.iSup_maxGenEigenspace_eq_top (ρ t))`. Choose the witnesses or unpack the hypotheses as in `⟨χ, y, hy, hly⟩ : ∃ (χ : T → ℂ) (y : J), y ∈ (⨅ t, Module.End.maxGenEigenspace (ρ t) (χ t) : Submodule ℂ J) ∧ l y ≠ 0 := by`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `: (⊤ : Submodule ℂ J) ≤ LinearMap.ker l`. Rewrite using `[← htop]`. Conclude with `iSup_le fun χ y hy => LinearMap.mem_ker.2 (h χ y hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hl0 (LinearMap.ker_eq_top.1 (top_le_iff.1 this))`. Establish `hpow : ∀ (t : T) (c : ℂ) (m : ℕ) (z : J), l (((ρ t - c • 1) ^ m) z) = (a t - c) ^ m * l z`. Introduce `t c m`. Proceed by induction on `m with`. Consider the case `zero => intro z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using the standard rewrite rules. Consider the case `succ m ih`. Introduce `z`. Rewrite using `[pow_succ, Module.End.mul_apply, ih]`. Simplify using `[hact, pow_succ, sub_mul, mul_assoc]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hχ : ∀ t, χ t = a t`. Introduce `t`. Take `⟨m, hm⟩` from `(Module.End.mem_maxGenEigenspace _ _ _).1 ((Submodule.mem_iInf _).1 hy t)`. Establish `h0` using `hpow t (χ t) m y`. Rewrite `h0` using `[hm, map_zero]`.
-
-Establish `: (a t - χ t) ^ m = 0`. Break down `mul_eq_zero.1 h0.symm with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h hly`. Establish `hm0 : m ≠ 0`.
-
-Introduce and unpack `rfl`. Simplify using `at this`. Conclude with `(sub_eq_zero.1 ((pow_eq_zero_iff hm0).1 this)).symm`. Introduce `hbot`. Establish `hy' : y ∈ (⨅ t, Module.End.maxGenEigenspace (ρ t) ((am.toHomUnits t : ℂˣ) : ℂ) : Submodule ℂ J)`.
-
-Simplify using `only [hval, ← hχ]`. Conclude with `hy`. Rewrite `hy'` using `[hbot, Submodule.mem_bot]`. Conclude with `hly (by rw [hy', map_zero])`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eigZero : EigZero := by
   intro T J _ _ _ _ _ ρ

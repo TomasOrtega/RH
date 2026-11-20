@@ -17,9 +17,9 @@ abbrev ex3 (a b c : ℕ) : Fin 3 →₀ ℕ :=
   Finsupp.single (0 : Fin 3) a + Finsupp.single 1 b + Finsupp.single 2 c
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h0` using `DFunLike.congr_fun h 0`. Establish `h1` using `DFunLike.congr_fun h 1`. Establish `h2` using `DFunLike.congr_fun h 2`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `at h0 h1 h2`. Conclude with `⟨h0.symm, h1.symm, h2.symm⟩`. Introduce and unpack `⟨rfl, rfl, rfl⟩`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Both sides reduce to the same expression.
 -/
 theorem threeVariableMonomialExponent_eq_iff (a b c a' b' c' : ℕ) : ex3 a b c = ex3 a' b' c' ↔ a' = a ∧ b' = b ∧ c' = c := by
   constructor
@@ -32,9 +32,9 @@ theorem threeVariableMonomialExponent_eq_iff (a b c a' b' c' : ℕ) : ex3 a b c 
   · rintro ⟨rfl, rfl, rfl⟩; rfl
 
 /- English proof (translation)
-Rewrite using `[← map_natCast (C : R →+* MvPowerSeries (Fin 3) R), coeff_mul_C, X_pow_eq, X_pow_eq, X_pow_eq, monomial_mul_monomial, monomial_mul_monomial, coeff_monomial]`. Use `threeVariableMonomialExponent_eq_iff i j l a b c` as an intermediate fact. Distinguish the cases in `h : a = i ∧ b = j ∧ c = l`. Rewrite using `[if_pos (this.2 h), if_pos h]`. Simplify using the standard rewrite rules.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg (fun h' => h (this.1 h')), if_neg h, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_mono3 (a b c i j l : ℕ) (r : ℕ) :
     coeff (R := R) (ex3 i j l) (X 0 ^ a * X 1 ^ b * X 2 ^ c * (r : MvPowerSeries (Fin 3) R)) =
@@ -47,11 +47,11 @@ theorem coeff_mono3 (a b c i j l : ℕ) (r : ℕ) :
   · rw [if_neg (fun h' => h (this.1 h')), if_neg h, zero_mul]
 
 /- English proof (translation)
-Rewrite using `[add_pow, Finset.sum_mul, map_sum]`. Simplify using `only [mul_right_comm _ (_ : MvPowerSeries (Fin 3) R) (X 2 ^ q)]`. Establish `h : ∀ k, coeff (R` using `R) (ex3 i j l) (X 0 ^ k * X 2 ^ q * X 1 ^ (p - k) * ((p.choose k : ℕ) : MvPowerSeries (Fin 3) R)) = if k = i ∧ p - k = j ∧ q = l then (p.choose k : R) else 0 := by`. Introduce `k`. Rewrite using `[← coeff_mono3, mul_right_comm (X 0 ^ k)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [h]`. Rewrite using `[Finset.sum_eq_single i]`. Distinguish the cases in `hp : i ≤ p`. Conclude with `if_congr (by omega) rfl rfl`. Rewrite using `[Nat.choose_eq_zero_of_lt (by omega)]; simp`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k _ hk`. Conclude with `if_neg fun h' => hk h'.1`. Introduce `hi`. Rewrite using `[Nat.choose_eq_zero_of_lt (by simpa using hi)]; simp`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_left (p q i j l : ℕ) :
     coeff (ex3 i j l) ((X 0 + X 1) ^ p * X 2 ^ q : MvPowerSeries (Fin 3) R) =
@@ -73,9 +73,9 @@ theorem coeff_left (p q i j l : ℕ) :
     rw [Nat.choose_eq_zero_of_lt (by simpa using hi)]; simp
 
 /- English proof (translation)
-Rewrite using `[add_pow, Finset.mul_sum, map_sum]`. Simplify using `only [← mul_assoc, coeff_mono3]`. Rewrite using `[Finset.sum_eq_single j]`. Distinguish the cases in `hp : j ≤ q`. Conclude with `if_congr (by omega) rfl rfl`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.choose_eq_zero_of_lt (by omega)]; simp`. Introduce `k _ hk`. Conclude with `if_neg fun h' => hk h'.2.1`. Introduce `hi`. Rewrite using `[Nat.choose_eq_zero_of_lt (by simpa using hi)]; simp`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_right (p q i j l : ℕ) :
     coeff (ex3 i j l) (X 0 ^ p * (X 1 + X 2) ^ q : MvPowerSeries (Fin 3) R) =
@@ -92,7 +92,7 @@ theorem coeff_right (p q i j l : ℕ) :
     rw [Nat.choose_eq_zero_of_lt (by simpa using hi)]; simp
 
 /- English proof (translation)
-Simplify using `using coeff_mono3 (R := R) 0 p q i j l 1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem coeff_yz (p q i j l : ℕ) :
     coeff (ex3 i j l) (X 1 ^ p * X 2 ^ q : MvPowerSeries (Fin 3) R) =
@@ -100,7 +100,7 @@ theorem coeff_yz (p q i j l : ℕ) :
   simpa using coeff_mono3 (R := R) 0 p q i j l 1
 
 /- English proof (translation)
-Simplify using `using coeff_mono3 (R := R) p q 0 i j l 1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem coeff_xy (p q i j l : ℕ) :
     coeff (ex3 i j l) (X 0 ^ p * X 1 ^ q : MvPowerSeries (Fin 3) R) =
@@ -108,19 +108,17 @@ theorem coeff_xy (p q i j l : ℕ) :
   simpa using coeff_mono3 (R := R) p q 0 i j l 1
 
 /- English proof (translation)
-Establish `h0 : ∀ {A : MvPowerSeries τ R}, constantCoeff A = 0 → ∀ i, constantCoeff ((Pi.single m A : Fin d → MvPowerSeries τ R) i) = 0`. Introduce `A hA i`. Distinguish the cases in `hi : i = m`. Substitute `hi` using the available equality. Simplify using `using hA`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[hi]`. Establish `hs` using `SubstCalc.hasSubst_elim (h0 hA) (h0 hB)`. Establish `hprod : ∀ p' q', (Finsupp.single (Sum.inl m) p' + Finsupp.single (Sum.inr m) q' : Fin d ⊕ Fin d →₀ ℕ).prod (fun s k => (Sum.elim (Pi.single m A) (Pi.single m B) s : MvPowerSeries τ R) ^ k) = A ^ p' * B ^ q'`. Introduce `p' q'`. Rewrite using `[Finsupp.prod_add_index' (fun _ => pow_zero _) (fun _ _ _ => pow_add _ _ _), Finsupp.prod_single_index (by exact pow_zero _), Finsupp.prod_single_index (by exact pow_zero _)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Unfold `at2`. Rewrite using `[coeff_subst hs, finsum_eq_single _ (Finsupp.single (Sum.inl m) p + Finsupp.single (Sum.inr m) q), hprod, smul_eq_mul]`. Introduce `δ hδ`. Distinguish the cases in `hc : δ = Finsupp.single (Sum.inl m) (δ (Sum.inl m)) + Finsupp.single (Sum.inr m) (δ (Sum.inr m))`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[congrArg (fun δ' : Fin d ⊕ Fin d →₀ ℕ => δ'.prod _) hc, hprod, h, smul_zero]`. Introduce and unpack `⟨h1, h2⟩`. Rewrite `hc` using `[h1, h2]`. Conclude with `hδ hc`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs'⟩ : ∃ s, δ s ≠ (Finsupp.single (Sum.inl m) (δ (Sum.inl m)) + Finsupp.single (Sum.inr m) (δ (Sum.inr m)) : Fin d ⊕ Fin d →₀ ℕ) s := by`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hh`. Conclude with `hc (Finsupp.ext fun s => by_contra fun h' => hh ⟨s, h'⟩)`. Establish `key : δ s ≠ 0 ∧ (Sum.elim (Pi.single m A) (Pi.single m B) s : MvPowerSeries τ R) = 0`. Apply the tactic sequence `rcases s with t | t <;> by_cases ht : t = m`. Substitute `ht` using the available equality.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `at hs'`. Simplify `hs'` using `[ht, Finsupp.single_apply, Ne.symm ht]`. Substitute `ht` using the available equality. Simplify using `at hs'`. Simplify `hs'` using `[ht, Finsupp.single_apply, Ne.symm ht]`.
-
-Rewrite using `[Finsupp.prod, Finset.prod_eq_zero (Finsupp.mem_support_iff.2 key.1) (by rw [key.2, zero_pow key.1]), map_zero, smul_zero]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_powerSeriesEvalTwoGroups_piSingle (c : MvPowerSeries (Fin d ⊕ Fin d) R) (m : Fin d)
     {A B : MvPowerSeries τ R} (hA : constantCoeff A = 0) (hB : constantCoeff B = 0)
@@ -168,23 +166,23 @@ theorem coeff_powerSeriesEvalTwoGroups_piSingle (c : MvPowerSeries (Fin d ⊕ Fi
       (by rw [key.2, zero_pow key.1]), map_zero, smul_zero]
 
 /- English proof (translation)
-Use `set w : Fin d ⊕ (Fin d ⊕ Fin d) → MvPowerSeries τ R := Sum.elim u (Sum.elim v t) with hw`. Establish `hw0 : ∀ s, constantCoeff (w s) = 0` using `fun s => by`. Apply the tactic sequence `rcases s with s | s | s <;> simp [hw, hu, hv, ht]`. Establish `hsw : HasSubst w` using `hasSubst_of_constantCoeff_zero hw0`. Establish `h1 : ∀ i, subst w (x1 (R` using `R) (d := d) i) = u i := fun i => by`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `x1`. Rewrite using `[subst_X hsw]`. Both sides reduce to the same expression. Establish `h2 : ∀ i, subst w (x2 (R` using `R) (d := d) i) = v i := fun i => by`. Unfold `x2`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[subst_X hsw]`. Both sides reduce to the same expression. Establish `h3 : ∀ i, subst w (x3 (R` using `R) (d := d) i) = t i := fun i => by`. Unfold `x3`. Rewrite using `[subst_X hsw]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hx0 : ∀ i, constantCoeff (x1 (R` using `R) (d := d) i) = 0 := fun i => constantCoeff_X _`. Establish `hx20 : ∀ i, constantCoeff (x2 (R` using `R) (d := d) i) = 0 := fun i => constantCoeff_X _`. Establish `hx30 : ∀ i, constantCoeff (x3 (R` using `R) (d := d) i) = 0 := fun i => constantCoeff_X _`. Establish `hop : ∀ (a b : Fin d → MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) R), (∀ i, constantCoeff (a i) = 0) → (∀ i, constantCoeff (b i) = 0) → op (addLaw R d) a b = a + b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b ha hb`. Use function extensionality and compare the values at `i`. Unfold `op addLaw at2`. Use `SubstCalc.hasSubst_elim ha hb` as an intermediate fact. Rewrite using `[subst_add this, subst_X this, subst_X this]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hop0 : ∀ (a b : Fin d → MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) R), (∀ i, constantCoeff (a i) = 0) → (∀ i, constantCoeff (b i) = 0) → ∀ i, constantCoeff ((a + b) i) = 0`. Introduce `a b ha hb i`. Simplify using `[ha, hb]`. Establish `key` using `congrArg (subst w) hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `cob2 at key`. Rewrite `key` using `[hop _ _ hx0 hx20, hop _ _ hx20 hx30]`. Rewrite `key` using `[subst_sub hsw, subst_add hsw, subst_sub hsw, SubstCalc.subst_powerSeriesEvalTwoGroups hx20 hx30 hw0, SubstCalc.subst_powerSeriesEvalTwoGroups (hop0 _ _ hx0 hx20) hx30 hw0, SubstCalc.subst_powerSeriesEvalTwoGroups hx0 (hop0 _ _ hx20 hx30) hw0, SubstCalc.subst_powerSeriesEvalTwoGr …`. Establish `e : ∀ (a b : Fin d → MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) R), (fun i => subst w ((a + b) i)) = (fun i => subst w (a i)) + (fun i => subst w (b i))`. Introduce `a b`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply]`. Conclude with `subst_add hsw _ _`. Rewrite `key` using `[e, e]`. Simplify using `only [h1, h2, h3] at key`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `e0 : subst w (0 : MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) R) = 0`. Simplify using `using (subst_sub hsw (0 : MvPowerSeries _ R) 0)`. Rewrite `key` using `[e0]`. Use `key using 2` and compare the differences between its conclusion and the goal.
+Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem cocycle_at (c : MvPowerSeries (Fin d ⊕ Fin d) R) (hc : cob2 (addLaw R d) c = 0)
     {u v t : Fin d → MvPowerSeries τ R} (hu : ∀ i, constantCoeff (u i) = 0)
@@ -233,13 +231,13 @@ theorem cocycle_at (c : MvPowerSeries (Fin d ⊕ Fin d) R) (hc : cob2 (addLaw R 
   convert key using 2
 
 /- English proof (translation)
-Introduce `R _ d c hc m`. Establish `h0 : ∀ (k : Fin 3) i, constantCoeff ((Pi.single m (X k) : Fin d → MvPowerSeries (Fin 3) R) i) = 0`. Introduce `k i`. Distinguish the cases in `hi : i = m`. Substitute `hi` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[hi]`. Establish `hid` using `cocycle_at c hc (h0 0) (h0 1) (h0 2)`. Rewrite `hid` using `[← Pi.single_add, ← Pi.single_add]`. Establish `key : ∀ i j l : ℕ, 0 < i → - coeff (Finsupp.single (Sum.inl m) (i + j) + Finsupp.single (Sum.inr m) l) c * ((i + j).choose i : R) + coeff (Finsupp.single (Sum.inl m) i + Finsupp.single (Sum.inr m) (j + l)) c * ((j + l).choose j : R) - coeff (Finsupp.single (Sum.inl m) i + Finsupp …`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `i j l hi`. Establish `h` using `congrArg (coeff (ex3 i j l)) hid`. Rewrite `h` using `[map_sub, map_add, map_sub, map_zero, coeff_powerSeriesEvalTwoGroups_piSingle c m (by simp) (by simp) _ j l (fun p q hpq => by rw [coeff_yz, if_neg (by omega)]), coeff_powerSeriesEvalTwoGroups_piSingle c m (by simp) (by simp) _ (i + j) l (fun p q hpq => by rw [coeff_left, if_neg …`. Simplify using `only [true_and] at h`. Take the linear combination `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `⟨fun n hn => ?_, fun i j l hi _ hl => ?_⟩` and prove the remaining obligations. Simplify using `using key n 0 0 hn`. Establish `h` using `key i j l hi`. Rewrite `h` using `[if_neg (by omega)]`. Take the linear combination `-h`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem relations : ∀ (R : Type) [CommRing R] (d : ℕ) (c : MvPowerSeries (Fin d ⊕ Fin d) R), cob2 (addLaw R d) c = 0 → ∀ m : Fin d, (∀ n, 0 < n → coeff (Finsupp.single (Sum.inl m) n) c = 0) ∧ ∀ i j l, 0 < i → 0 < j → 0 < l → coeff (Finsupp.single (Sum.inl m) (i + j) + Finsupp.single (Sum.inr m) l) c * ((i + j).choose i : R) = coeff (Finsupp.single (Sum.inl m) i + Finsupp.single (Sum.inr m) (j + l)) c * ((j + l).choose j : R) := by
   intro R _ d c hc m

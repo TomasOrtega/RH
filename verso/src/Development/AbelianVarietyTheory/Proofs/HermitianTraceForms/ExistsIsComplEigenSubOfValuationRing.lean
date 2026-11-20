@@ -17,7 +17,7 @@ variable {O : Type*} [CommRing O] {R : Type*} [CommRing R]
   {N : Type*} [AddCommGroup N] [Module R N] {N' : Type*} [AddCommGroup N'] [Module R N']
 
 /- English proof (translation)
-The claim follows from `isSaturatedSubmodule_iff.2 fun c hc x hx => mem_eigenSub.2 fun a => by have h := mem_eigenSub.1 hx a rw [map_smul, smul_comm] at h exact smul_right_injective N hc h`.
+A detailed English derivation is pending.
 -/
 theorem isSaturatedSubmodule_eigenSub [IsDomain R] [Module.IsTorsionFree R N]
     (ρ : O →+* Module.End R N) (χ : O →+* R) : IsSaturatedSubmodule (eigenSub ρ χ) :=
@@ -27,9 +27,9 @@ theorem isSaturatedSubmodule_eigenSub [IsDomain R] [Module.IsTorsionFree R N]
     exact smul_right_injective N hc h
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [mem_eigenSub, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`. Use `⟨fun h a => h a, fun h a => ?_⟩` and prove the remaining obligations. Establish `ha : a ∈ Submodule.span ℤ s` using `hs ▸ Submodule.mem_top`. Proceed by induction on `ha using Submodule.span_induction with`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `mem a ha => exact h ⟨a, ha⟩`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => simp [ha, hb, add_smul]`. Consider the case `smul n a _ ha => rw [map_zsmul, map_zsmul, LinearMap.smul_apply, ha, smul_assoc]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem eigenSub_eq_iInf_ker (ρ : O →+* Module.End R N) (χ : O →+* R) {s : Set O}
     (hs : Submodule.span ℤ s = ⊤) :
@@ -46,7 +46,7 @@ theorem eigenSub_eq_iInf_ker (ρ : O →+* Module.End R N) (χ : O →+* R) {s :
   | smul n a _ ha => rw [map_zsmul, map_zsmul, LinearMap.smul_apply, ha, smul_assoc]
 
 /- English proof (translation)
-Introduce `a y` and use `by obtain ⟨x, rfl⟩ := e.surjective y have := he a x simp only [LinearEquiv.coe_coe] at this ⊢ rw [← this, e.symm_apply_apply, e.symm_apply_apply]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsEquivariant.symm {ρ : O →+* Module.End R N} {ρ' : O →+* Module.End R N'}
     {e : N ≃ₗ[R] N'} (he : IsEquivariant ρ ρ' (e : N →ₗ[R] N')) :
@@ -57,7 +57,7 @@ theorem IsEquivariant.symm {ρ : O →+* Module.End R N} {ρ' : O →+* Module.E
   rw [← this, e.symm_apply_apply, e.symm_apply_apply]
 
 /- English proof (translation)
-Use `le_antisymm ?_ fun y hy => ⟨e.symm y, he.symm.map_mem hy, e.apply_symm_apply y⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `he.map_mem hx`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem IsEquivariant.map_eigenSub {ρ : O →+* Module.End R N} {ρ' : O →+* Module.End R N'}
     {e : N ≃ₗ[R] N'} (he : IsEquivariant ρ ρ' (e : N →ₗ[R] N')) (χ : O →+* R) :
@@ -88,7 +88,7 @@ variable {O : Type*} [CommRing O] {R : Type*} [CommRing R]
   {ρ : O →+* Module.End R N} {ρ' : O →+* Module.End R' M} {f : N →ₗ[R] M}
 
 /- English proof (translation)
-Use extensionality with `x`. Use `⟨fun hx => map_mem_eigenSub_algebraMap hf hx, fun hx => mem_eigenSub.2 fun a => hi ?_⟩` and prove the remaining obligations. Rewrite using `[hf, map_smul, mem_eigenSub.1 hx a]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eigenSub_eq_comap (hf : ∀ a x, f (ρ a x) = ρ' a (f x)) (hi : Function.Injective f)
     (χ : O →+* R) :
@@ -99,7 +99,7 @@ theorem eigenSub_eq_comap (hf : ∀ a x, f (ρ a x) = ρ' a (f x)) (hi : Functio
   simp
 
 /- English proof (translation)
-Introduce `a t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r x => simp [hf]`. Consider the case `add s t hs ht => simp only [map_add, hs, ht]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem isEquivariant_equiv (hf : ∀ a x, f (ρ a x) = ρ' a (f x)) (hb : IsBaseChange R' f) :
     IsEquivariant (baseChangeAction R' ρ) ρ' (hb.equiv : R' ⊗[R] N →ₗ[R'] M) := by
@@ -110,7 +110,7 @@ theorem isEquivariant_equiv (hf : ∀ a x, f (ρ a x) = ρ' a (f x)) (hb : IsBas
   | add s t hs ht => simp only [map_add, hs, ht]
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.charpoly_baseChange, ← hb.equiv.charpoly_conj]`. Use `congr 1`. Use extensionality with `y`. Take `⟨t, rfl⟩` from `hb.equiv.surjective y`. Simplify using `using (isEquivariant_equiv hf hb a t).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem charpoly_of_isBaseChange [Module.Free R N] [Module.Finite R N] [Module.Free R' M]
     [Module.Finite R' M] (hf : ∀ a x, f (ρ a x) = ρ' a (f x)) (hb : IsBaseChange R' f) (a : O) :
@@ -126,9 +126,9 @@ variable [Module.Finite ℤ O] [Module.Flat R R']
 variable (R' ρ) in
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := ℤ) (M := O)`. Rewrite using `[eigenSub_eq_iInf_ker _ _ hs, eigenSub_eq_iInf_ker _ _ hs, baseChange_iInf]`. Use `iInf_congr fun a => ?_` and prove the remaining obligations. Rewrite using `[baseChange_ker]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `x`. Simplify using `[TensorProduct.tmul_sub]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem eigenSub_baseChangeAction_of_flat (χ : O →+* R) :
     eigenSub (baseChangeAction R' ρ) ((algebraMap R R').comp χ)
@@ -142,7 +142,7 @@ theorem eigenSub_baseChangeAction_of_flat (χ : O →+* R) :
   simp [TensorProduct.tmul_sub]
 
 /- English proof (translation)
-The claim follows from `IsBaseChange.of_equiv (baseChangeEquiv R' (eigenSub ρ χ) ≪≫ₗ LinearEquiv.ofEq _ _ (eigenSub_baseChangeAction_of_flat R' ρ χ).symm ≪≫ₗ (isEquivariant_equiv hf hb).eigenLinearEquiv _) fun x => Subtype.ext (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem isBaseChange_eigenMapAlgebra_of_flat (hf : ∀ a x, f (ρ a x) = ρ' a (f x))
     (hb : IsBaseChange R' f) (χ : O →+* R) : IsBaseChange R' (eigenMapAlgebra hf χ) :=
@@ -151,7 +151,7 @@ theorem isBaseChange_eigenMapAlgebra_of_flat (hf : ∀ a x, f (ρ a x) = ρ' a (
     (isEquivariant_equiv hf hb).eigenLinearEquiv _) fun x => Subtype.ext (by simp)
 
 /- English proof (translation)
-Rewrite using `[← (isEquivariant_equiv hf hb).map_eigenSub, eigenSub_baseChangeAction_of_flat, Submodule.baseChange_eq_span, Submodule.map_span, Submodule.map_coe, Set.image_image]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eigenSub_eq_span_of_flat (hf : ∀ a x, f (ρ a x) = ρ' a (f x))
     (hb : IsBaseChange R' f) (χ : O →+* R) :
@@ -161,7 +161,7 @@ theorem eigenSub_eq_span_of_flat (hf : ∀ a x, f (ρ a x) = ρ' a (f x))
   simp
 
 /- English proof (translation)
-The claim follows from `(isBaseChange_eigenMapAlgebra_of_flat hf hb χ).finrank_eq`.
+A detailed English derivation is pending.
 -/
 theorem finrank_eigenSub_of_flat [NoZeroDivisors R'] [FaithfulSMul R R']
     (hf : ∀ a x, f (ρ a x) = ρ' a (f x)) (hb : IsBaseChange R' f) (χ : O →+* R) :
@@ -188,14 +188,14 @@ Both sides reduce to the same expression.
     extendTensor A S T N (s ⊗ₜ x) = algebraMap S T s ⊗ₜ x := rfl
 
 /- English proof (translation)
-The claim follows from `isBaseChange_tensorProduct_map T (IsBaseChange.linearMap S T)`.
+A detailed English derivation is pending.
 -/
 theorem isBaseChange_extendTensor : IsBaseChange T (extendTensor A S T N) :=
   isBaseChange_tensorProduct_map T (IsBaseChange.linearMap S T)
 
 variable {A N} in
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r x => simp`. Consider the case `add s t hs ht => simp only [map_add, hs, ht]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem extendTensor_equivariant {O : Type*} [CommRing O] (ρ : O →+* Module.End A N) (a : O)
     (x : S ⊗[A] N) : extendTensor A S T N (baseChangeAction S ρ a x)
@@ -206,7 +206,7 @@ theorem extendTensor_equivariant {O : Type*} [CommRing O] (ρ : O →+* Module.E
   | add s t hs ht => simp only [map_add, hs, ht]
 
 /- English proof (translation)
-The claim follows from `Module.Flat.rTensor_preserves_injective_linearMap (M := N) (IsScalarTower.toAlgHom A S T).toLinearMap (FaithfulSMul.algebraMap_injective S T)`.
+A detailed English derivation is pending.
 -/
 theorem extendTensor_injective [Module.Flat A N] [FaithfulSMul S T] :
     Function.Injective (extendTensor A S T N) :=
@@ -224,7 +224,7 @@ variable {O : Type*} [CommRing O] [Module.Finite ℤ O] {A : Type*} [CommRing A]
 omit [Module.Finite ℤ O] in
 
 /- English proof (translation)
-Use `h.map (IsFractionRing.lift (K := FractionRing A) hg) using 2 with i` and compare the differences between its conclusion and the goal. Use extensionality with `a`. Simplify using the standard rewrite rules.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem isSplitting_comp_of_injective
     (h : IsSplitting fun i => (algebraMap A (FractionRing A)).comp (σ i))
@@ -237,7 +237,7 @@ theorem isSplitting_comp_of_injective
 omit [Module.Finite ℤ O] in
 
 /- English proof (translation)
-The claim follows from `isSplitting_comp_of_injective h (g := (algebraMap B (FractionRing B)).comp g) ((IsFractionRing.injective B (FractionRing B)).comp hg)`.
+A detailed English derivation is pending.
 -/
 theorem isSplitting_fractionRing_of_injective
     (h : IsSplitting fun i => (algebraMap A (FractionRing A)).comp (σ i))
@@ -252,7 +252,7 @@ include h
 variable (ρ) in
 
 /- English proof (translation)
-Apply `Polynomial.map_injective _ (IsFractionRing.injective A (FractionRing A))` to reduce the goal to its premises. Establish `hf` using `mk_equivariant (FractionRing A) ρ`. Establish `hb` using `TensorProduct.isBaseChange A N (FractionRing A)`. Rewrite using `[← charpoly_of_isBaseChange hf hb, charpoly_eq_prod_of_isLocalRing h]`. Simplify using `[Polynomial.map_prod, finrank_eigenSub_of_flat hf hb]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem charpoly_eq_prod_of_isDomain [Module.Free A N] (a : O) :
     (ρ a).charpoly = ∏ i, (X - C (σ i a)) ^ Module.finrank A (eigenSub ρ (σ i)) := by
@@ -267,15 +267,15 @@ variable [Module.Flat A N] {S : Type*} [CommRing S] [Algebra A S]
   {ρ' : O →+* Module.End S M} {f : N →ₗ[A] M}
 
 /- English proof (translation)
-Set `p : Ideal A` to `(IsLocalRing.maximalIdeal S).comap (algebraMap A S)`. Set `B` to `Localization.AtPrime p`. Set `g : B →+* S` to `IsLocalization.lift (M := p.primeCompl) (g := algebraMap A S) fun y => (IsLocalRing.notMem_maximalIdeal).1 y.2`. Set `: Algebra B S` to `g.toAlgebra`. Establish `: IsScalarTower A B S` using `.of_algebraMap_eq fun x => (IsLocalization.lift_eq _ x).symm`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `: Module B M` to `Module.compHom M g`. Establish `: IsScalarTower B S M` using `⟨fun x y z => by`. Rewrite using `[Algebra.smul_def, mul_smul]`. Use the proof step `rfl⟩`. Establish `: IsScalarTower A B M` using `IsScalarTower.to₁₂₄ _ _ S _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Module.Free B (B ⊗[A] N)` using `Module.free_of_flat_of_isLocalRing`. Establish `hinj : Function.Injective (algebraMap A B)` using `IsLocalization.injective B p.primeCompl_le_nonZeroDivisors`. Establish `: FaithfulSMul A B` using `(faithfulSMul_iff_algebraMap_injective _ _).2 hinj`. Establish `hB` using `TensorProduct.isBaseChange A N B`. Establish `hb' : IsBaseChange S (hB.lift f)` using `hB.of_comp (by rwa [hB.lift_comp])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf' : ∀ a x, hB.lift f (baseChangeAction B ρ a x) = ρ' a (hB.lift f x)`. Introduce `a x`. Proceed by induction on `x using hB.inductionOn with`. Consider the case `zero => simp`. Consider the case `tmul x => rw [← mk_equivariant, hB.lift_eq, hB.lift_eq, hf]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul s x hx`. Rewrite using `[map_smul, map_smul, map_smul, hx, ← algebraMap_smul S s, ← algebraMap_smul S s, map_smul]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Rewrite using `[charpoly_of_isBaseChange hf' hb', charpoly_eq_prod_of_isDomain _ (isSplitting_fractionRing_of_injective h hinj)]`. Simplify using `[Polynomial.map_prod, finrank_eigenSub_of_flat (mk_equivariant B ρ) hB, ← IsScalarTower.algebraMap_apply]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem charpoly_eq_prod_local [IsLocalRing S] [Module.Free S M] [Module.Finite S M]
     (hf : ∀ a x, f (ρ a x) = ρ' a (f x)) (hb : IsBaseChange S f) (a : O) :
@@ -311,11 +311,11 @@ private theorem charpoly_eq_prod_local [IsLocalRing S] [Module.Free S M] [Module
     ← IsScalarTower.algebraMap_apply]
 
 /- English proof (translation)
-Use extensionality with `n`. Use `Module.eq_of_localization_maximal (R := S) (fun P _ => Localization.AtPrime P) (fun P _ => Algebra.linearMap S (Localization.AtPrime P)) _ _ fun m hm => ?_` and prove the remaining obligations. Set `T` to `Localization.AtPrime m`. Establish `hT` using `TensorProduct.isBaseChange S M T`. Establish `h1` using `charpoly_eq_prod_local h (ρ := ρ) (ρ' := baseChangeAction T ρ') (fun a x => by simp [hf]) (hb.comp hT) a`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[charpoly_of_isBaseChange (mk_equivariant T ρ') hT]`. Establish `h2 : (∏ i, (X - C (algebraMap A S (σ i a))) ^ Module.finrank A (eigenSub ρ (σ i))).map (algebraMap S T) = ∏ i, (X - C (algebraMap A T (σ i a))) ^ Module.finrank A (eigenSub ρ (σ i))`. Simplify using `[Polynomial.map_prod, ← IsScalarTower.algebraMap_apply]`. Use `congrArg (fun q => Polynomial.coeff q n) (h1.trans h2.symm)` as an intermediate fact. Simplify using `only [Polynomial.coeff_map] at this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem charpoly_eq_prod_of_isBaseChange [Module.Free S M] [Module.Finite S M]
     (hf : ∀ a x, f (ρ a x) = ρ' a (f x)) (hb : IsBaseChange S f) (a : O) :
@@ -338,7 +338,7 @@ theorem charpoly_eq_prod_of_isBaseChange [Module.Free S M] [Module.Finite S M]
   exact this
 
 /- English proof (translation)
-Establish `: Module.Finite S M` using `Module.Finite.equiv hb.equiv`. Establish `: Module.Flat S M` using `Module.Flat.of_linearEquiv hb.equiv.symm`. Establish `: Module.Free S M` using `Module.free_of_flat_of_isLocalRing`. Conclude with `(charpoly_eq_iff_finrank_eq hS ρ' fun i => Module.finrank A (eigenSub ρ (σ i))).1 (charpoly_eq_prod_of_isBaseChange h hf hb) i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finrank_eigenSub_of_isLocalRing [IsLocalRing S]
     (hS : IsSplitting fun i => (algebraMap A S).comp (σ i))
@@ -352,9 +352,9 @@ theorem finrank_eigenSub_of_isLocalRing [IsLocalRing S]
     (charpoly_eq_prod_of_isBaseChange h hf hb) i
 
 /- English proof (translation)
-Set `T` to `Localization.AtPrime p.asIdeal`. Establish `hT` using `TensorProduct.isBaseChange S M T`. Establish `e : ∀ i, (algebraMap S T).comp ((algebraMap A S).comp (σ i)) = (algebraMap A T).comp (σ i)` using `fun i => by`. Rewrite using `[← RingHom.comp_assoc, ← IsScalarTower.algebraMap_eq]`. Establish `hs` using `hS.map (algebraMap S T)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [e] at hs`. Rewrite using `[Module.rankAtStalk_eq_finrank_tensorProduct, (eigenBaseChangeEquiv T ρ' hS i).finrank_eq, e]`. Conclude with `finrank_eigenSub_of_isLocalRing h hs (fun a x => by simp [hf]) (hb.comp hT) i`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rankAtStalk_eigenSub (hS : IsSplitting fun i => (algebraMap A S).comp (σ i))
     (hf : ∀ a x, f (ρ a x) = ρ' a (f x)) (hb : IsBaseChange S f) (i : ι) (p : PrimeSpectrum S) :
@@ -371,9 +371,9 @@ theorem rankAtStalk_eigenSub (hS : IsSplitting fun i => (algebraMap A S).comp (�
   exact finrank_eigenSub_of_isLocalRing h hs (fun a x => by simp [hf]) (hb.comp hT) i
 
 /- English proof (translation)
-Set `T` to `FractionRing S`. Establish `hT` using `TensorProduct.isBaseChange S M T`. Establish `e : ∀ i, (algebraMap S T).comp ((algebraMap A S).comp (σ i)) = (algebraMap A T).comp (σ i)` using `fun i => by`. Rewrite using `[← RingHom.comp_assoc, ← IsScalarTower.algebraMap_eq]`. Establish `hs : IsSplitting fun i => (algebraMap A T).comp (σ i)` using `by simpa only [← e] using hS`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← finrank_eigenSub_of_flat (mk_equivariant T ρ') hT, e]`. Conclude with `finrank_eigenSub_of_isLocalRing h hs (fun a x => by simp [hf]) (hb.comp hT) i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_eigenSub_of_isDomain [IsDomain S]
     (hS : IsSplitting fun i => (algebraMap S (FractionRing S)).comp ((algebraMap A S).comp (σ i)))
@@ -402,7 +402,7 @@ variable {O : Type*} [CommRing O] [Module.Finite ℤ O] {A : Type*} [CommRing A]
 
 omit [Module.Finite ℤ O] in
 /- English proof (translation)
-Use `le_antisymm (fun y hy => ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((⟨y, hy⟩ : eigenSub ρ' ((algebraMap A S).comp χ)) : M) ∈ _`. Use `hb.inductionOn ⟨y, hy⟩ (fun z => (z : M) ∈ Submodule.span S (f '' eigenSub ρ χ)) (Submodule.zero_mem _) (fun x => Submodule.subset_span ⟨x, x.2, rfl⟩) (fun s _ hz => Submodule.smul_mem _ s hz) fun _ _ h₁ h₂ => Submodule.add_mem _ h₁ h₂` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `map_mem_eigenSub_algebraMap hf hx`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem eigenSub_eq_span_of_isBaseChange {hf : ∀ a x, f (ρ a x) = ρ' a (f x)}
     {χ : O →+* A} (hb : IsBaseChange S (eigenMapAlgebra hf χ)) :
@@ -417,13 +417,13 @@ private theorem eigenSub_eq_span_of_isBaseChange {hf : ∀ a x, f (ρ a x) = ρ'
     exact map_mem_eigenSub_algebraMap hf hx
 
 /- English proof (translation)
-Set `: Module B M` to `Module.compHom M (algebraMap B S)`. Establish `: IsScalarTower B S M` using `⟨fun x y z => by`. Rewrite using `[Algebra.smul_def, mul_smul]`. Use the proof step `rfl⟩`. Establish `: IsScalarTower A B M` using `IsScalarTower.to₁₂₄ _ _ S _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN` using `TensorProduct.isBaseChange A N B`. Establish `hb' : IsBaseChange S (hN.lift f)` using `hN.of_comp (by rwa [hN.lift_comp])`. Establish `hf' : ∀ a x, hN.lift f (baseChangeAction B ρ a x) = ρ' a (hN.lift f x)`. Introduce `a x`. Proceed by induction on `x using hN.inductionOn with`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `tmul x => rw [← mk_equivariant, hN.lift_eq, hN.lift_eq, hf]`. Consider the case `smul s x hx`. Rewrite using `[map_smul, map_smul, map_smul, hx, ← algebraMap_smul S s, ← algebraMap_smul S s, map_smul]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Establish `h1` using `eigenSub_eq_span_of_isBaseChange (isBaseChange_eigenMapAlgebra hB hf' hb' i)`. Rewrite `h1` using `[← RingHom.comp_assoc, ← IsScalarTower.algebraMap_eq, eigenSub_eq_span_of_flat (mk_equivariant B ρ) hN, ← Submodule.map_coe, Submodule.map_span, Submodule.span_span_of_tower, Set.image_image]`. Simplify `h1` using `only [hN.lift_eq]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eigenSub_eq_span_of_factor (B : Type*) [CommRing B] [Algebra A B] [Module.Flat A B]
     [Algebra B S] [IsScalarTower A B S] (hB : IsSplitting fun i => (algebraMap A B).comp (σ i))
@@ -459,7 +459,7 @@ variable {O : Type*} [CommRing O] {V : Type*} [CommRing V] [IsDomain V] [Valuati
 variable (V) in
 
 /- English proof (translation)
-The claim follows from `Module.Flat.flat_iff_torsion_eq_bot_of_isBezout.2 (Submodule.isTorsionFree_iff_torsion_eq_bot.1 (Module.isTorsionFree_iff_algebraMap_injective.2 (FaithfulSMul.algebraMap_injective V V')))`.
+A detailed English derivation is pending.
 -/
 theorem flat_of_valuationRing (V' : Type*) [CommRing V'] [IsDomain V'] [Algebra V V']
     [FaithfulSMul V V'] : Module.Flat V V' :=
@@ -470,19 +470,19 @@ theorem flat_of_valuationRing (V' : Type*) [CommRing V'] [IsDomain V'] [Algebra 
 variable [Module.Finite V M] [Module.IsTorsionFree V M] (ρ : O →+* Module.End V M) (χ : O →+* V)
 
 /- English proof (translation)
-The claim follows from `(isSaturatedSubmodule_eigenSub ρ χ).finite_of_valuationRing`.
+A detailed English derivation is pending.
 -/
 theorem finite_eigenSub_of_valuationRing : Module.Finite V (eigenSub ρ χ) :=
   (isSaturatedSubmodule_eigenSub ρ χ).finite_of_valuationRing
 
 /- English proof (translation)
-The claim follows from `(isSaturatedSubmodule_eigenSub ρ χ).free_of_valuationRing`.
+A detailed English derivation is pending.
 -/
 theorem free_eigenSub_of_valuationRing : Module.Free V (eigenSub ρ χ) :=
   (isSaturatedSubmodule_eigenSub ρ χ).free_of_valuationRing
 
 /- English proof (translation)
-The claim follows from `(isSaturatedSubmodule_eigenSub ρ χ).exists_isCompl_of_valuationRing`.
+A detailed English derivation is pending.
 -/
 theorem exists_isCompl_eigenSub_of_valuationRing : ∃ Q : Submodule V M, IsCompl (eigenSub ρ χ) Q :=
   (isSaturatedSubmodule_eigenSub ρ χ).exists_isCompl_of_valuationRing
@@ -497,7 +497,7 @@ variable {R : Type*} [CommRing R] {K : Type*} [CommRing K] [Algebra R K]
   {ι : Type*} [Fintype ι] (b b' : Module.Basis ι R P) (j : P →ₗ[R] W)
 
 /- English proof (translation)
-Use extensionality with `i k`. Use `Fintype.linearIndependent_iffₛ.1 hli (fun i => g i k) (fun i => algebraMap R K (b'.toMatrix b i k)) ?_ i` and prove the remaining obligations. Rewrite using `[← hg, ← b'.sum_toMatrix_smul_self b k, map_sum]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eq_map_toMatrix_of_eq_sum (hli : LinearIndependent K fun i => j (b' i))
     {g : Matrix ι ι K} (hg : ∀ k, j (b k) = ∑ i, g i k • j (b' i)) :
@@ -511,9 +511,9 @@ theorem eq_map_toMatrix_of_eq_sum (hli : LinearIndependent K fun i => j (b' i))
 variable [LinearOrder ι]
 
 /- English proof (translation)
-Use `choose l hl hl' using fun k => (Finsupp.mem_span_image_iff_linearCombination K).1 (h k)`. Establish `hg` using `eq_map_toMatrix_of_eq_sum b b' j hli (g := Matrix.of fun i k => l k i) fun k => by`. Rewrite using `[← hl' k, Finsupp.linearCombination_apply, Finsupp.sum_fintype _ _ (by simp)]`. Both sides reduce to the same expression. Introduce `i k hik`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `FaithfulSMul.algebraMap_injective R K` to reduce the goal to its premises. Establish `h1 : l k i = algebraMap R K (b'.toMatrix b i k)` using `congrFun (congrFun hg i) k`. Rewrite using `[← h1, map_zero]`. Conclude with `(Finsupp.mem_supported' K _).1 (hl k) i (not_le.2 hik)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUpperTriangular_toMatrix_of_mem_span [FaithfulSMul R K]
     (hli : LinearIndependent K fun i => j (b' i))
@@ -530,7 +530,7 @@ theorem isUpperTriangular_toMatrix_of_mem_span [FaithfulSMul R K]
   exact (Finsupp.mem_supported' K _).1 (hl k) i (not_le.2 hik)
 
 /- English proof (translation)
-Rewrite `hu` using `[Matrix.det_of_isUpperTriangular hg]`. Conclude with `isUnit_of_dvd_unit (Finset.dvd_prod_of_mem (fun i => g i i) (Finset.mem_univ i)) hu`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_diag_of_isUpperTriangular {g : Matrix ι ι R} (hg : g.IsUpperTriangular)
     (hu : IsUnit g.det) (i : ι) : IsUnit (g i i) := by
@@ -538,7 +538,7 @@ theorem isUnit_diag_of_isUpperTriangular {g : Matrix ι ι R} (hg : g.IsUpperTri
   exact isUnit_of_dvd_unit (Finset.dvd_prod_of_mem (fun i => g i i) (Finset.mem_univ i)) hu
 
 /- English proof (translation)
-Establish `ht` using `isUpperTriangular_toMatrix_of_mem_span b b' j hli h`. Conclude with `⟨⟨b'.toMatrix b, b.toMatrix b', b'.toMatrix_mul_toMatrix_flip b, b.toMatrix_mul_toMatrix_flip b'⟩, ht, isUnit_diag_of_isUpperTriangular ht (b'.isUnit_det b), fun k => (b'.sum_toMatrix_smul_self b k).symm, fun _ hg => eq_map_toMatrix_of_eq_sum b b' j hli hg⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_triangular_of_mem_span [FaithfulSMul R K]
     (hli : LinearIndependent K fun i => j (b' i))
@@ -556,7 +556,7 @@ theorem exists_triangular_of_mem_span [FaithfulSMul R K]
 omit [Fintype ι] [LinearOrder ι] in
 
 /- English proof (translation)
-Use `(Module.Flat.linearIndependent_one_tmul (S := K) hv).map' hb.equiv.toLinearMap hb.equiv.ker` as an intermediate fact. Simplify `this` using `[Function.comp_def]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem linearIndependent_of_isBaseChange [Module.Flat R K] {f : P →ₗ[R] W}
     (hb : IsBaseChange K f) {v : ι → P} (hv : LinearIndependent R v) :
@@ -569,9 +569,9 @@ variable {O : Type*} [CommRing O] {M M' : Type*} [AddCommGroup M] [Module R M] [
   [Module R M'] {ρ : O →+* Module.End R M} {ρ' : O →+* Module.End R M'}
 
 /- English proof (translation)
-Establish `hli` using `linearIndependent_of_isBaseChange (TensorProduct.isBaseChange R M' K) (c'.linearIndependent.map' (eigenSub ρ' χ).subtype (Submodule.ker_subtype _))`. Take `⟨g, h1, h2, h3, h4⟩` from `exists_triangular_of_mem_span (K := K) (c.map (he.eigenLinearEquiv χ)) c' (TensorProduct.mk R K M' 1 ∘ₗ (eigenSub ρ' χ).subtype) hli fun k => by`. Establish `: (1 : K) ⊗ₜ[R] e (c k) ∈ F' k`. Rewrite using `[← hF, ← hc]`. Conclude with `⟨_, Submodule.subset_span ⟨k, le_rfl, rfl⟩, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `this` using `[← hc']`. Conclude with `this`. Use `⟨g, h1, h2, fun k => ?_, h4⟩` and prove the remaining obligations. Simplify using `using congrArg Subtype.val (h3 k)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem IsEquivariant.exists_triangular [FaithfulSMul R K] [Module.Flat R K] {e : M ≃ₗ[R] M'}
     (he : IsEquivariant ρ ρ' (e : M →ₗ[R] M')) {χ : O →+* R}
@@ -608,7 +608,7 @@ variable {E : Type*} [Field E] [NumberField E] {A : Type*} [CommRing A] [IsDomai
 omit [CharZero A] in
 
 /- English proof (translation)
-Rewrite using `[Module.Flat.flat_iff_torsion_eq_bot_of_isBezout, ← Submodule.isTorsionFree_iff_torsion_eq_bot, Module.isTorsionFree_iff_algebraMap_injective]`. Conclude with `⟨fun h => charZero_of_injective_algebraMap h, fun _ => RingHom.injective_int _⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem flat_int_iff_charZero : Module.Flat ℤ A ↔ CharZero A := by
   rw [Module.Flat.flat_iff_torsion_eq_bot_of_isBezout,
@@ -617,14 +617,14 @@ theorem flat_int_iff_charZero : Module.Flat ℤ A ↔ CharZero A := by
 
 omit [IsDomain A] [CharZero A] in
 /- English proof (translation)
-Simplify using `using NumberField.discr_ne_zero E`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isUnit_discr_of_charZero (K : Type*) [Field K] [CharZero K] :
     IsUnit (NumberField.discr E : K) := by
   simpa using NumberField.discr_ne_zero E
 
 /- English proof (translation)
-Take `⟨b⟩` from `nonempty_basis hc`. Use `(isSplitting_of_isUnit_discr b (det_sq_eq_discr_map (det_sq_conjugateHom hφ b) (algebraMap A (FractionRing A))) (isUnit_discr_of_charZero _)).injective` as an intermediate fact. Conclude with `fun i j hij => this (congrArg (algebraMap A (FractionRing A)).comp hij)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem conjugateHom_injective {L : Type*} [Field L] [Algebra (𝓞 L) A] {φ : ι → E →+* L}
     (hφ : Function.Injective φ) (hc : Fintype.card ι = Module.finrank ℚ E) :
@@ -639,7 +639,7 @@ variable (hσ : Function.Injective σ) (hc : Fintype.card ι = Module.finrank �
 include hσ hc
 
 /- English proof (translation)
-The claim follows from `isSplitting_of_isDomain hσ hc _ (isUnit_discr_of_charZero _)`.
+A detailed English derivation is pending.
 -/
 theorem isSplitting_fractionRing :
     IsSplitting fun i => (algebraMap A (FractionRing A)).comp (σ i) :=
@@ -651,9 +651,9 @@ variable {N : Type*} [AddCommGroup N] [Module A N] {ρ : 𝓞 E →+* Module.End
   {ρ' : 𝓞 E →+* Module.End S M} {f : N →ₗ[A] M}
 
 /- English proof (translation)
-Establish `hu' : IsUnit (algebraMap A S (NumberField.discr E : A))` using `by rwa [map_intCast]`. Set `B` to `Localization.Away (NumberField.discr E : A)`. Set `: Algebra B S` to `(IsLocalization.Away.lift (NumberField.discr E : A) hu').toAlgebra`. Establish `: IsScalarTower A B S` using `.of_algebraMap_eq' (IsLocalization.Away.lift_comp _ hu').symm`. Use `eigenSub_eq_span_of_factor B (isSplitting_of_isDomain hσ hc _ ?_) hf hb i` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using IsLocalization.Away.algebraMap_isUnit (S := B) (NumberField.discr E : A)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eigenSub_eq_span_of_isUnit_discr (hu : IsUnit (NumberField.discr E : S))
     (hf : ∀ a x, f (ρ a x) = ρ' a (f x)) (hb : IsBaseChange S f) (i : ι) :
@@ -666,9 +666,9 @@ theorem eigenSub_eq_span_of_isUnit_discr (hu : IsUnit (NumberField.discr E : S))
   simpa using IsLocalization.Away.algebraMap_isUnit (S := B) (NumberField.discr E : A)
 
 /- English proof (translation)
-Set `K` to `FractionRing S`. Establish `hK` using `TensorProduct.isBaseChange S M K`. Establish `hl` using `(isLocalizedModule_iff_isBaseChange (nonZeroDivisors S) K _).2 hK`. Establish `hi : Function.Injective (TensorProduct.mk S K M 1)` using `(IsLocalizedModule.injective_iff_isRegular (nonZeroDivisors S) _).2 fun c => smul_right_injective M (nonZeroDivisors.coe_ne_zero c)`. Establish `h1` using `eigenSub_eq_span_of_isUnit_discr hσ hc (ρ := ρ) (ρ' := baseChangeAction K ρ') (isUnit_discr_of_charZero K) (fun a x => by simp [hf]) (hb.comp hK) i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[saturation_eq_comap_localized' K (TensorProduct.mk S K M 1), Submodule.localized'_eq_span, ← Submodule.map_coe, Submodule.map_span, Submodule.span_span_of_tower, Set.image_image, eigenSub_eq_comap (mk_equivariant K ρ') hi, ← RingHom.comp_assoc, ← IsScalarTower.algebraMap_eq, h1]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eigenSub_eq_saturation [IsDomain S] [CharZero S] [Module.IsTorsionFree S M]
     (hf : ∀ a x, f (ρ a x) = ρ' a (f x)) (hb : IsBaseChange S f) (i : ι) :
@@ -691,7 +691,7 @@ theorem eigenSub_eq_saturation [IsDomain S] [CharZero S] [Module.IsTorsionFree S
 variable [Module.Finite A N] [Module.Flat A N]
 
 /- English proof (translation)
-The claim follows from `finrank_eigenSub_of_isDomain (isSplitting_fractionRing hσ hc) (isSplitting_of_isDomain hσ hc ((algebraMap S (FractionRing S)).comp (algebraMap A S)) (isUnit_discr_of_charZero _)) hf hb i`.
+A detailed English derivation is pending.
 -/
 theorem finrank_eigenSub_of_charZero [IsDomain S] [CharZero S]
     (hf : ∀ a x, f (ρ a x) = ρ' a (f x)) (hb : IsBaseChange S f) (i : ι) :
@@ -702,9 +702,9 @@ theorem finrank_eigenSub_of_charZero [IsDomain S] [CharZero S]
       (isUnit_discr_of_charZero _)) hf hb i
 
 /- English proof (translation)
-Set `T` to `Localization.Away (NumberField.discr E : S)`. Establish `: Nontrivial T` using `not_subsingleton_iff_nontrivial.1 fun h => hd ((IsLocalization.subsingleton_iff (M := Submonoid.powers (NumberField.discr E : S))).1 h)`. Establish `hs` using `isSplitting_of_isDomain hσ hc ((algebraMap S T).comp (algebraMap A S)) (by simpa using IsLocalization.Away.algebraMap_isUnit (S := T) (NumberField.discr E : S))`. Use `congrFun (hs.exponents_eq r (fun i => Module.finrank A (eigenSub ρ (σ i))) fun a => ?_) i` and prove the remaining obligations. Use `congrArg (Polynomial.map (algebraMap S T)) ((hr a).symm.trans (charpoly_eq_prod_of_isBaseChange (isSplitting_fractionRing hσ hc) hf hb a))` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `this` using `[Polynomial.map_prod]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_finrank_of_charpoly [Module.Free S M] [Module.Finite S M]
     (hd : ¬ IsNilpotent (NumberField.discr E : S))
@@ -730,21 +730,19 @@ universe u v
 open EigenSplit in
 
 /- English proof (translation)
-Establish `h` using `isSplitting_fractionRing hσ hc`. Use `⟨fun i => Module.finrank A (eigenSub ρ (σ i)), fun i => ?_, ⟨?_, ?_⟩, fun S _ _ hu => ?_, fun S _ _ _ => ⟨?_, fun hd r' hr => ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Cardinal.cast_toNat_of_lt_aleph0 ((Submodule.rank_le _).trans_lt (Module.rank_lt_aleph0 A N))).symm`. Establish `hd : (NumberField.discr E : A) ≠ 0` using `by simpa using NumberField.discr_ne_zero E`. Conclude with `(IsLocalization.injective (Localization.Away (NumberField.discr E : A)) (powers_le_nonZeroDivisors_of_noZeroDivisors hd)).nontrivial`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using IsLocalization.Away.algebraMap_isUnit (S := Localization.Away (NumberField.discr E : A)) (NumberField.discr E : A)`. Establish `hS` using `isSplitting_of_isDomain hσ hc (algebraMap A S) hu`. Establish `hb` using `TensorProduct.isBaseChange A N S`. Use `⟨isInternal_eigenSub hS _, fun i => ⟨?_, finite_eigenSub hS _ i, projective_eigenSub hS _ i, rankAtStalk_eigenSub h hS (mk_equivariant S ρ) hb i⟩⟩` and prove the remaining obligations. Rewrite using `[eigenSub_eq_span_of_isUnit_discr hσ hc hu (mk_equivariant S ρ) hb, Submodule.baseChange_eq_span, Submodule.map_coe]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `charpoly_eq_prod_of_isBaseChange h (mk_equivariant S ρ) (TensorProduct.isBaseChange A N S)`. Conclude with `funext (eq_finrank_of_charpoly hσ hc hd (mk_equivariant S ρ) (TensorProduct.isBaseChange A N S) r' hr)`. Introduce and unpack `V _ _ _ _ _ i _ rfl`. Establish `hb` using `TensorProduct.isBaseChange A N V`. Establish `: Module.Free V (V ⊗[A] N)` using `Module.free_of_flat_of_isLocalRing`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `⟨isSaturatedSubmodule_eigenSub _ _, ?_, finite_eigenSub_of_valuationRing _ _, free_eigenSub_of_valuationRing _ _, finrank_eigenSub_of_charZero hσ hc (mk_equivariant V ρ) hb i, exists_isCompl_eigenSub_of_valuationRing _ _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[eigenSub_eq_saturation hσ hc (mk_equivariant V ρ) hb, Submodule.baseChange_eq_span, Submodule.map_coe]`. Introduce and unpack `K _ _ _ _ _ _ rfl`. Establish `: CharZero K` using `charZero_of_injective_algebraMap (IsFractionRing.injective V K)`. Use `flat_of_valuationRing V K` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (algebraMap A K).comp (σ i) = (algebraMap V K).comp ((algebraMap A V).comp (σ i))`. Rewrite using `[← RingHom.comp_assoc, ← IsScalarTower.algebraMap_eq]`. Use `⟨extendTensor_injective A V K N, isBaseChange_extendTensor A V K N, ?_, ?_, finrank_eigenSub_of_charZero hσ hc (mk_equivariant K ρ) (TensorProduct.isBaseChange A N K) i⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `eigenSub_eq_comap (extendTensor_equivariant V K ρ) (extendTensor_injective A V K N) _`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Rewrite using `[e]`. Conclude with `(eigenSub_eq_span_of_flat (extendTensor_equivariant V K ρ) (isBaseChange_extendTensor A V K N) _).symm`. Introduce and unpack `V' _ _ _ _ _ _ _ P' hP'`. Use `flat_of_valuationRing V V'` as an intermediate fact. Rewrite `hP'` using `[IsScalarTower.algebraMap_eq A V V', RingHom.comp_assoc]`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Substitute `hP'` using the available equality. Conclude with `⟨(eigenSub_eq_span_of_flat (extendTensor_equivariant V V' ρ) (isBaseChange_extendTensor A V V' N) _).symm, (isBaseChange_eigenMapAlgebra_of_flat (extendTensor_equivariant V V' ρ) (isBaseChange_extendTensor A V V' N) _).equiv, fun x => by simp⟩`. Introduce `V _ _ _ M M' _ _ _ _ τ τ' e he χ`. Establish `he' : IsEquivariant τ τ' (e : M →ₗ[V] M')` using `he`. Use `⟨he'.map_eigenSub χ, fun K _ _ _ n c c' F F' hc hc' hF => ?_⟩` and prove the remaining obligations.
-
-Use `flat_of_valuationRing V K` as an intermediate fact. Conclude with `he'.exists_triangular c c' hc hc' hF`.
+A detailed English derivation is pending.
 -/
 theorem eigenBundle_of_injective {E : Type*} [Field E] [NumberField E]
     {A : Type u} [CommRing A] [IsDomain A] [CharZero A] {ι : Type*} [Fintype ι] [DecidableEq ι]
@@ -865,7 +863,7 @@ theorem eigenBundle_of_injective {E : Type*} [Field E] [NumberField E]
 open EigenSplit in
 
 /- English proof (translation)
-The claim follows from `have : CharZero A := flat_int_iff_charZero.1 ‹_› eigenBundle_of_injective (conjugateHom_injective Function.injective_id (card_embeddings_of_splits hL)) (card_embeddings_of_splits hL) ρ`.
+A detailed English derivation is pending.
 -/
 theorem eigenBundle {E : Type*} [Field E] [NumberField E]
     {L : Type*} [Field L] [CharZero L] [Fintype (E →+* L)] [DecidableEq (E →+* L)]
@@ -935,7 +933,7 @@ theorem eigenBundle {E : Type*} [Field E] [NumberField E]
 open EigenSplit in
 
 /- English proof (translation)
-Establish `: Module.Flat ℤ (𝓞 ℂ)` using `flat_int_iff_charZero.2 inferInstance`. Take `⟨r, hr, -⟩` from `eigenBundle.{0, 0} (L := ℂ) (A := 𝓞 ℂ) (fun _ => IsAlgClosed.splits _) (baseChangeAction (𝓞 ℂ) (Algebra.lmul ℤ (𝓞 E)).toRingHom)`. Conclude with `⟨r, hr⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 example (E : Type) [Field E] [NumberField E] :
     ∃ r : (E →+* ℂ) → ℕ, ∀ i, Module.rank (𝓞 ℂ) (eigenSub (baseChangeAction (𝓞 ℂ)

@@ -6,12 +6,12 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CountNonIntegrality.NGD
 namespace PI.CntNotIntW
 
 /- English proof (translation)
-The claim follows from `normG_of (frIntG_of hL hD) congruence_subgroup_index`.
+A detailed English derivation is pending.
 -/
 theorem normG_of_loc (hL : LocDiff) (hD : DiffG) : NormG := normG_of (frIntG_of hL hD) congruence_subgroup_index
 
 /- English proof (translation)
-The claim follows from `normG_of_loc hL different_lattice_index`.
+A detailed English derivation is pending.
 -/
 theorem normG_of_locDiff (hL : LocDiff) : NormG := normG_of_loc hL different_lattice_index
 

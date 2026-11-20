@@ -7,7 +7,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalVolumeIndices.IdxP
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalVolumeIndices.HelpSng
 
 /- English proof (translation)
-The claim follows from `PI.MassDataKppVolLemmas.massDataKppVol_of PI.MassDataKppVolLemmas.global_index_every_setting PI.MassDataKppVolLemmas.locIdxAll PI.MassDataKppVolLemmas.locPosAll (PI.MassDataKppVolLemmas.idxProdAll_of PI.MassDataKppVolLemmas.single_component_surjective)`.
+A detailed English derivation is pending.
 -/
 theorem kpp_volume_at_instance : ∀ {D : Formalism.BasicNotions.D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
     (hb : Formalism.L2.SG.AdBridge.AdBridgeIso X.B.I) (hK : X.LevelSubgroupCharacter) (FdN FdN' : Set X.B.I.Ginf)

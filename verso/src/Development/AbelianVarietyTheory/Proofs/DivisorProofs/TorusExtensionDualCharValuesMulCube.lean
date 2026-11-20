@@ -14,7 +14,7 @@ noncomputable section
 namespace GlobalTheory.DualMult
 
 /- English proof (translation)
-Establish `hl : IsLocalHom (CommRingCat.ofHom (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom).hom` using `⟨fun a ha => TrivSqZeroExt.isUnit_iff_isUnit_fst.2 ha⟩`. Conclude with `Spec_closedPoint (f := CommRingCat.ofHom (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem redE_closedPoint :
     (redE ℂ) (IsLocalRing.closedPoint ℂ) = IsLocalRing.closedPoint (DualNumber ℂ) := by
@@ -25,7 +25,7 @@ theorem redE_closedPoint :
 variable {X : Scheme.{0}} {L : LB X}
 
 /- English proof (translation)
-Introduce `ψ`. Establish `h` using `hJ (redE ℂ ≫ ψ) (x := IsLocalRing.closedPoint ℂ) trivial`. Express the relevant statement in the definitionally equal form `ψ ((redE ℂ) (IsLocalRing.closedPoint ℂ)) ∈ L.U (J (redE ℂ ≫ ψ)) at h`. Rewrite `h` using `[redE_closedPoint]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem good_dual (J : (Sp ℂ ⟶ X) → L.ι) (hJ : ∀ ψ, ⊤ ≤ ψ ⁻¹ᵁ L.U (J ψ)) :
     Good L (IsLocalRing.closedPoint (DualNumber ℂ) : Sp (DualNumber ℂ)) (fun ψ => J (redE ℂ ≫ ψ)) := by
@@ -35,7 +35,7 @@ theorem good_dual (J : (Sp ℂ ⟶ X) → L.ι) (hJ : ∀ ψ, ⊤ ≤ ψ ⁻¹�
   rwa [redE_closedPoint] at h
 
 /- English proof (translation)
-Establish `hm` using `(good_dual J hJ).mem φ (𝟙 _)`. Unfold `vE val`. Conclude with `(GlobalTheory.ZH.ThetaData.valR_eq_gs _ _ hm _).trans (congrArg _ (gs_unit _ _ _ hm _))`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem vE_eq_val (J : (Sp ℂ ⟶ X) → L.ι) (hJ : ∀ ψ, ⊤ ≤ ψ ⁻¹ᵁ L.U (J ψ)) {K : Type} [Fintype K]
     {φ : K → (Sp (DualNumber ℂ) ⟶ X)} {ε : K → ℤ} (t : LB.Gen (LB.LinComb L φ ε)) :
@@ -51,9 +51,7 @@ namespace GlobalTheory.DualMult
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} [Algebra (FractionRing R) ℂ] {N : NumD ℂ}
 
 /- English proof (translation)
-Establish `hJ` using `good_dual (L := D.P.L) ν.J ν.good`. Establish `e` using `val_corr hJ (gm.mult χ χ') (𝟙 _)`. Use `replace e := (val_mul hJ _ _ _).symm.trans (e.trans (val_mul hJ _ _ _))`. Use `(congrArg₂ (· * ·) (vE_eq_val ν.J ν.good _) (vE_eq_val ν.J ν.good _)).trans (Eq.trans ?_ (congrArg₂ (· * ·) (vE_eq_val ν.J ν.good _) (vE_eq_val ν.J ν.good _)).symm)` and prove the remaining obligations. Rewrite using `[← map_mul, ← map_mul, ← Units.val_mul, ← Units.val_mul]`.
-
-Conclude with `congrArg (fun u => (stalkClosedPointIso (CommRingCat.of (DualNumber ℂ))).hom.hom (Units.val u)) e`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mult_vE (ν : NumOf D ℂ N) (gm : GtPt D (TE R ℂ)) (χ χ' : D.X) :
     vE (gm.s (χ + χ')) (𝟙 _) ν.J *

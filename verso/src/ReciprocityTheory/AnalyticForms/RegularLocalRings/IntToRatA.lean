@@ -14,7 +14,7 @@ noncomputable abbrev intS (σ : Type) : Submonoid (MvPolynomial σ ℤ) := (nonZ
 attribute [local instance] MvPolynomial.algebraMvPolynomial
 
 /- English proof (translation)
-Rewrite using `[Set.disjoint_left]`. Introduce and unpack `_ ⟨m, hm, rfl⟩ hmP`. Conclude with `nonZeroDivisors.ne_zero hm (hP m hmP)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 lemma disj_intS (P : Ideal (MvPolynomial σ ℤ)) (hP : ChZero P) :
     Disjoint ((intS σ : Submonoid _) : Set (MvPolynomial σ ℤ)) (P : Set _) := by
@@ -23,7 +23,7 @@ lemma disj_intS (P : Ideal (MvPolynomial σ ℤ)) (hP : ChZero P) :
   exact nonZeroDivisors.ne_zero hm (hP m hmP)
 
 /- English proof (translation)
-Establish `hA : algebraMap (MvPolynomial σ ℤ) (MvPolynomial σ ℚ) = MvPolynomial.map (Int.castRingHom ℚ)`. Rewrite using `[MvPolynomial.algebraMap_def, algebraMap_int_eq]`. Rewrite using `[← hA]`. Conclude with `IsLocalization.isPrime_of_isPrime_disjoint (intS σ) (MvPolynomial σ ℚ) P ‹_› (disj_intS P hP)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma map_isPrime (P : Ideal (MvPolynomial σ ℤ)) [P.IsPrime] (hP : ChZero P) :
     (Ideal.map (MvPolynomial.map (Int.castRingHom ℚ)) P).IsPrime := by
@@ -33,7 +33,7 @@ lemma map_isPrime (P : Ideal (MvPolynomial σ ℤ)) [P.IsPrime] (hP : ChZero P) 
   exact IsLocalization.isPrime_of_isPrime_disjoint (intS σ) (MvPolynomial σ ℚ) P ‹_› (disj_intS P hP)
 
 /- English proof (translation)
-Establish `hA : algebraMap (MvPolynomial σ ℤ) (MvPolynomial σ ℚ) = MvPolynomial.map (Int.castRingHom ℚ)`. Rewrite using `[MvPolynomial.algebraMap_def, algebraMap_int_eq]`. Rewrite using `[← hA]`. Conclude with `IsLocalization.under_map_of_isPrime_disjoint (intS σ) (MvPolynomial σ ℚ) ‹_› (disj_intS P hP)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma comap_map_eq (P : Ideal (MvPolynomial σ ℤ)) [P.IsPrime] (hP : ChZero P) :
     (Ideal.map (MvPolynomial.map (Int.castRingHom ℚ)) P).comap
@@ -44,7 +44,7 @@ lemma comap_map_eq (P : Ideal (MvPolynomial σ ℤ)) [P.IsPrime] (hP : ChZero P)
   exact IsLocalization.under_map_of_isPrime_disjoint (intS σ) (MvPolynomial σ ℚ) ‹_› (disj_intS P hP)
 
 /- English proof (translation)
-Introduce `m hm`. Rewrite `hm` using `[Ideal.mem_comap, MvPolynomial.map_C]`. Assume the negation of the conclusion as `h`. Establish `hu : IsUnit (C (Int.castRingHom ℚ m) : MvPolynomial σ ℚ)` using `(isUnit_iff_ne_zero.mpr (by simpa using h)).map C`. Conclude with `(‹Q.IsPrime›).ne_top (Ideal.eq_top_of_isUnit_mem Q hm hu)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma chZero_comap (Q : Ideal (MvPolynomial σ ℚ)) [Q.IsPrime] :
     ChZero (Q.comap (MvPolynomial.map (Int.castRingHom ℚ))) := by
@@ -56,7 +56,7 @@ lemma chZero_comap (Q : Ideal (MvPolynomial σ ℚ)) [Q.IsPrime] :
   exact (‹Q.IsPrime›).ne_top (Ideal.eq_top_of_isUnit_mem Q hm hu)
 
 /- English proof (translation)
-Establish `hA : algebraMap (MvPolynomial σ ℤ) (MvPolynomial σ ℚ) = MvPolynomial.map (Int.castRingHom ℚ)`. Rewrite using `[MvPolynomial.algebraMap_def, algebraMap_int_eq]`. Rewrite using `[← hA]`. Conclude with `(IsLocalization.orderEmbedding (intS σ) (MvPolynomial σ ℚ)).strictMono`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma comap_strictMono :
     StrictMono (fun Q : Ideal (MvPolynomial σ ℚ) => Q.comap (MvPolynomial.map (Int.castRingHom ℚ))) := by
@@ -66,11 +66,11 @@ lemma comap_strictMono :
   exact (IsLocalization.orderEmbedding (intS σ) (MvPolynomial σ ℚ)).strictMono
 
 /- English proof (translation)
-Rewrite using `[isJacobsonRing_iff_prime_eq]`. Introduce `P hP`. Distinguish the cases in `h : P = ⊥`. Substitute `h` using the available equality. Use `le_antisymm (fun x hx => ?_) Ideal.le_jacobson` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hx` using `[Ideal.mem_jacobson_bot]`. Rewrite using `[Ideal.mem_bot]`. Break down `Int.isUnit_iff.mp (hx x) with hu | hu` into its components or cases. Conclude with `mul_self_eq_zero.mp (by linarith)`. Use polynomial arithmetic with `[mul_self_nonneg x]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use `hP` as an intermediate fact. Establish `: P.IsMaximal` using `IsPrime.to_maximal_ideal h`. Conclude with `Ideal.jacobson_eq_self_of_isMaximal`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isJacobsonRing_int : IsJacobsonRing ℤ := by
   rw [isJacobsonRing_iff_prime_eq]
@@ -88,7 +88,7 @@ theorem isJacobsonRing_int : IsJacobsonRing ℤ := by
     exact Ideal.jacobson_eq_self_of_isMaximal
 
 /- English proof (translation)
-Rewrite using `[Order.coheight_eq_krullDim_Ici]`. Unfold `ringKrullDim`. Rewrite using `[Order.krullDim_eq_of_orderIso (Ideal.primeSpectrumQuotientOrderIsoZeroLocus I)]`. Conclude with `Order.krullDim_eq_of_orderIso (OrderIso.setCongr _ _ (Set.ext fun p => Iff.rfl))`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma ringKrullDim_quotient_eq_coheight {A : Type*} [CommRing A] (I : Ideal A) [hI : I.IsPrime] :
     ringKrullDim (A ⧸ I) = (Order.coheight (⟨I, hI⟩ : PrimeSpectrum A) : WithBot ℕ∞) := by
@@ -98,19 +98,17 @@ lemma ringKrullDim_quotient_eq_coheight {A : Type*} [CommRing A] (I : Ideal A) [
   exact Order.krullDim_eq_of_orderIso (OrderIso.setCongr _ _ (Set.ext fun p => Iff.rfl))
 
 /- English proof (translation)
-Establish `: NeZero p` using `⟨by omega⟩`. Establish `hp0 : (C (p : ℤ) : MvPolynomial σ ℤ) ∉ q` using `fun h => by`. Use `hq _ h` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `key : ∀ k : ℕ, ∀ G : MvPolynomial ι ℤ, aeval x G ∈ q → ∀ s, ((p : ℤ) ^ k) ∣ G.coeff s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intros`. Simplify using the standard rewrite rules. Consider the case `succ k ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `G hG s`. Establish `hdiv : C (p : ℤ) ∣ G`. Rewrite using `[MvPolynomial.C_dvd_iff_dvd_coeff]`. Introduce `i`. Establish `h0` using `congrArg (MvPolynomial.coeff i) (hred G hG)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h0` using `[MvPolynomial.coeff_map, MvPolynomial.coeff_zero, eq_intCast, ZMod.intCast_zmod_eq_zero_iff_dvd]`. Conclude with `h0`. Take `⟨H, rfl⟩` from `hdiv`. Establish `hH : aeval x H ∈ q`. Rewrite `hG` using `[map_mul, MvPolynomial.aeval_C]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(‹q.IsPrime›.mem_or_mem hG).resolve_left (by simpa using hp0)`. Rewrite using `[MvPolynomial.coeff_C_mul, pow_succ']`. Conclude with `mul_dvd_mul_left _ (ih H hH s)`. Use extensionality with `s`. Rewrite using `[MvPolynomial.coeff_zero]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Establish `hd` using `key (G.coeff s).natAbs G hG s`. Establish `h1` using `Int.natAbs_dvd_natAbs.mpr hd`. Rewrite `h1` using `[Int.natAbs_pow, Int.natAbs_natCast]`. Establish `h2` using `Nat.le_of_dvd (Int.natAbs_pos.mpr hne) h1`.
-
-Establish `h3 : (G.coeff s).natAbs < p ^ (G.coeff s).natAbs` using `Nat.lt_pow_self hp`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 lemma eq_zero_of_aeval_mem {ι : Type*} (q : Ideal (MvPolynomial σ ℤ)) [q.IsPrime] (hq : ChZero q)
     (p : ℕ) (hp : 1 < p) (x : ι → MvPolynomial σ ℤ)
@@ -150,35 +148,31 @@ lemma eq_zero_of_aeval_mem {ι : Type*} (q : Ideal (MvPolynomial σ ℤ)) [q.IsP
   omega
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨m, hmq', hm0⟩ : ∃ m : ℤ, (C m : MvPolynomial σ ℤ) ∈ q' ∧ m ≠ 0 := by`. Assume the negation of the conclusion as `h`. Conclude with `hq' fun m hm => by_contra fun hne => h ⟨m, hm, hne⟩`. Establish `hgen` using `Ideal.span_singleton_generator (q'.comap (C : ℤ →+* MvPolynomial σ ℤ))`. Take `⟨g, hg⟩ : ∃ g : ℤ, Ideal.span {g} = q'.comap (C : ℤ →+* MvPolynomial σ ℤ)` from `⟨_, hgen⟩`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hspan : Ideal.span {((g.natAbs : ℕ) : ℤ)} = q'.comap (C : ℤ →+* MvPolynomial σ ℤ)`. Rewrite using `[Int.span_natAbs, hg]`. Establish `hmemC : ∀ n : ℤ, (C n : MvPolynomial σ ℤ) ∈ q' ↔ ((g.natAbs : ℕ) : ℤ) ∣ n`. Introduce `n`. Rewrite using `[← Ideal.mem_span_singleton, hspan]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hp0 : ((g.natAbs : ℕ) : ℤ) ≠ 0`. Introduce `h`. Use `(hmemC m).mp hmq'` as an intermediate fact. Rewrite `this` using `[h, zero_dvd_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hm0 this`. Establish `hpP : Nat.Prime g.natAbs`. Establish `hpr : (Ideal.span {((g.natAbs : ℕ) : ℤ)}).IsPrime`. Rewrite using `[hspan]`. Use `infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `(Ideal.span_singleton_prime hp0).mp hpr` as an intermediate fact. Rewrite `this` using `[Int.prime_iff_natAbs_prime, Int.natAbs_natCast]`. Conclude with `this`. Use `set p := g.natAbs with hpdef`. Establish `: Fact p.Prime` using `⟨hpP⟩`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: CharP (MvPolynomial σ ℤ ⧸ q') p` using `⟨fun n => by`. Rewrite using `[← map_natCast (Ideal.Quotient.mk q'), Ideal.Quotient.eq_zero_iff_mem, ← map_natCast (C : ℤ →+* MvPolynomial σ ℤ), hmemC, Int.natCast_dvd_natCast]⟩`. Set `: Algebra (ZMod p) (MvPolynomial σ ℤ ⧸ q')` to `ZMod.algebra _ p`. Establish `: Algebra.FiniteType ℤ (MvPolynomial σ ℤ ⧸ q')` using `Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ ℤ q') (Ideal.Quotient.mkₐ_surjective ℤ q')`. Establish `: Algebra.FiniteType (ZMod p) (MvPolynomial σ ℤ ⧸ q')` using `Algebra.FiniteType.of_restrictScalars_finiteType ℤ (ZMod p) _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨d, hdB, htrB⟩` from `ReciprocityTheory.CA.exists_dim_trdeg_field (K := ZMod p) (A := MvPolynomial σ ℤ ⧸ q')`. Establish `: FaithfulSMul (ZMod p) (MvPolynomial σ ℤ ⧸ q')` using `(faithfulSMul_iff_algebraMap_injective _ _).mpr (RingHom.injective _)`. Take `⟨s, hs⟩` from `exists_isTranscendenceBasis (ZMod p) (MvPolynomial σ ℤ ⧸ q')`. Set `x : s → MvPolynomial σ ℤ` to `fun i => (Ideal.Quotient.mk_surjective (i : MvPolynomial σ ℤ ⧸ q')).choose`. Establish `hx : ∀ i, Ideal.Quotient.mk q' (x i) = i` using `fun i => (Ideal.Quotient.mk_surjective (i : MvPolynomial σ ℤ ⧸ q')).choose_spec`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hred : ∀ G : MvPolynomial s ℤ, aeval x G ∈ q → map (Int.castRingHom (ZMod p)) G = 0`. Introduce `G hG`. Apply `hs.1.eq_zero_of_aeval_eq_zero` to reduce the goal to its premises. Rewrite using `[← algebraMap_int_eq, MvPolynomial.aeval_map_algebraMap, show ((↑) : s → MvPolynomial σ ℤ ⧸ q') = fun i => Ideal.Quotient.mkₐ ℤ q' (x i) from`. Use function extensionality and compare the values at `fun i => (hx i).symm,`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use the proof step `← MvPolynomial.comp_aeval_apply, Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hle hG`. Establish `hinj` using `eq_zero_of_aeval_mem q hq p hpP.one_lt x hred`. Use `map_isPrime q hq` as an intermediate fact. Establish `: Algebra.FiniteType ℚ (MvPolynomial σ ℚ ⧸ Ideal.map (MvPolynomial.map (Int.castRingHom ℚ)) q)` using `Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ ℚ _) (Ideal.Quotient.mkₐ_surjective ℚ _)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨e, hdC, htrC⟩` from `ReciprocityTheory.CA.exists_dim_trdeg_field (K := ℚ) (A := MvPolynomial σ ℚ ⧸ Ideal.map (MvPolynomial.map (Int.castRingHom ℚ)) q)`. Set `φ : MvPolynomial σ ℤ →ₐ[ℤ] MvPolynomial σ ℚ ⧸ Ideal.map (MvPolynomial.map (Int.castRingHom ℚ)) q` to `((Ideal.Quotient.mk _).comp (MvPolynomial.map (Int.castRingHom ℚ))).toIntAlgHom`. Set `y : s → MvPolynomial σ ℚ ⧸ Ideal.map (MvPolynomial.map (Int.castRingHom ℚ)) q` to `fun i => φ (x i)`. Establish `hy : AlgebraicIndependent ℚ y`. Rewrite using `[algebraicIndependent_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `H hH`. Take `⟨⟨G, c⟩, hGH⟩` from `IsLocalization.surj ((nonZeroDivisors ℤ).map (C (σ := s))) H`. Take `⟨n, hn, hnc⟩` from `Submonoid.mem_map.mp c.2`. Establish `hG0 : G = 0`. Apply `hinj G` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `congrArg (MvPolynomial.aeval y) hGH`. Rewrite `h1` using `[map_mul, hH, zero_mul, MvPolynomial.algebraMap_def, MvPolynomial.aeval_map_algebraMap, ← MvPolynomial.comp_aeval_apply]`. Establish `h2 : Ideal.Quotient.mk _ (MvPolynomial.map (Int.castRingHom ℚ) (aeval x G)) = 0` using `h1.symm`. Rewrite `h2` using `[Ideal.Quotient.eq_zero_iff_mem]`. Rewrite using `[← comap_map_eq q hq]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h2`. Rewrite `hGH` using `[hG0, map_zero]`. Establish `hc0 : algebraMap (MvPolynomial s ℤ) (MvPolynomial s ℚ) (c : MvPolynomial s ℤ) ≠ 0`. Rewrite using `[← hnc, MvPolynomial.algebraMap_def, MvPolynomial.map_C, Ne, MvPolynomial.C_eq_zero]`. Simplify using `using nonZeroDivisors.ne_zero hn`.
-
-Conclude with `(mul_eq_zero.mp hGH).resolve_right hc0`. Establish `hle'` using `hy.cardinalMk_le_trdeg`. Rewrite `hle'` using `[hs.cardinalMk_eq_trdeg, htrB, htrC]`. Establish `hde : d ≤ e` using `by exact_mod_cast hle'`. Rewrite using `[hdB, hdC]`.
-
-Conclude with `hde` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma dim_le_of_charP (q q' : Ideal (MvPolynomial σ ℤ)) [q.IsPrime] [q'.IsPrime] (hle : q ≤ q')
     (hq : ChZero q) (hq' : ¬ ChZero q') :

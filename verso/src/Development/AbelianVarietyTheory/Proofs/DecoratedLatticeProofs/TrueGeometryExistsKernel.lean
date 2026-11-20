@@ -11,7 +11,7 @@ attribute [local instance] GlobalTheory.Fam.GeoAll.fld GlobalTheory.Fam.GeoAll.v
 namespace GlobalTheory.Fam.KomExist
 
 /- English proof (translation)
-Rewrite using `[Formalism.L2.Forms.rankN D j hj]`. Use `show Even (D.R.k + j * (D.R.t + 1))`. Take `⟨c, hc⟩` from `D.R.t_odd`. Conclude with `D.R.k_even.add (Even.mul_left ⟨c + 1, by omega⟩ j)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem even_rankX {D : D7} (j : ℕ) (hj : j ≤ D.R.m) : Even (D.sp.X j).rank := by
   rw [Formalism.L2.Forms.rankN D j hj]
@@ -20,9 +20,9 @@ theorem even_rankX {D : D7} (j : ℕ) (hj : j ≤ D.R.m) : Even (D.sp.X j).rank 
   exact D.R.k_even.add (Even.mul_left ⟨c + 1, by omega⟩ j)
 
 /- English proof (translation)
-Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a _ haT`. Establish `hL` using `hW.pk.bot.hyp.2.2.2.1.lev`. Establish `hE` using `GlobalTheory.WeilDatumExistence.weilDatumExists (I.rec7 l Z)`. Establish `key : ∀ (t : W.P.T) j, j < B.R.m → ∃ om : Om ((I.rec7 l Z).sp.X j) ((I.rec7 l Z).sp.X (j + 1)), IsWeilDatumO (pk W).ψ _ _ (chrK W t j) (chrK W t j) om`. Introduce `t j hj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hH` using `GlobalTheory.HeckeCharacterRestriction.isHecke_mu hL t ⟨j, hj⟩`. Conclude with `hE _ _ (pk W).ψ _ _ haT.pinX.std hH hH (GlobalTheory.HeckeCharacterRestriction.resEta_even hL t ⟨j, hj⟩ (even_rankX j (le_of_lt hj))) (GlobalTheory.HeckeCharacterRestriction.resEta_even hL t ⟨j, hj⟩ (even_rankX (j + 1) hj))`. Use `⟨fun t j => if h : j < B.R.m then (key t j h).choose else 1, fun t j hj => ?_⟩` and prove the remaining obligations. Simplify using `only [dif_pos hj]`. Conclude with `(key t j hj).choose_spec`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kom_exists : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → ∃ kom : ∀ (_ : W.P.T) j, Om ((I.rec7 l Z).sp.X j) ((I.rec7 l Z).sp.X (j + 1)),
     ∀ t j, j < B.R.m → IsWeilDatumO (pk W).ψ _ _ (chrK W t j) (chrK W t j) (kom t j) := by

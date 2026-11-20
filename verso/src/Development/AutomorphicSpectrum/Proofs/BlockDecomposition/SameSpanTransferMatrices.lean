@@ -7,19 +7,19 @@ open GlobalTheory.StdUnn PositivityTheory.GramSchwartzFunctions.EC
 namespace GlobalTheory.CompanionTheory.BruhatCoeffs
 
 /- English proof (translation)
-Establish `hT0 : ∀ j, ∃ t : Fin r → K, ∑ i, t i • c i = C j`. Introduce `j`. Establish `hj : C j ∈ Submodule.span K (Set.range c)`. Rewrite using `[hs]`. Conclude with `Submodule.subset_span (Set.mem_range_self j)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Submodule.mem_span_range_iff_exists_fun K).mp hj`. Establish `hL0 : ∀ i, ∃ t : Fin n → K, ∑ j, t j • C j = c i`. Introduce `i`. Establish `hi : c i ∈ Submodule.span K (Set.range C)`. Rewrite using `[← hs]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.subset_span (Set.mem_range_self i)`. Conclude with `(Submodule.mem_span_range_iff_exists_fun K).mp hi`. Take `⟨T, hT⟩ : ∃ T : Matrix (Fin n) (Fin r) K, ∀ j, ∑ i, T j i • c i = C j` from `⟨fun j => (hT0 j).choose, fun j => (hT0 j).choose_spec⟩`. Take `⟨L, hL⟩ : ∃ L : Matrix (Fin r) (Fin n) K, ∀ i, ∑ j, L i j • C j = c i` from `⟨fun i => (hL0 i).choose, fun i => (hL0 i).choose_spec⟩`. Establish `hCT : C = T * c`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `j k`. Rewrite using `[← hT j, Matrix.mul_apply]`. Simplify using `[Finset.sum_apply]`. Establish `hcL : c = L * C`. Use extensionality with `i k`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← hL i, Matrix.mul_apply]`. Simplify using `[Finset.sum_apply]`. Use `⟨T, L, hCT, hcL, ?_⟩` and prove the remaining obligations. Establish `hLT : L * T * c = c` using `by rw [Matrix.mul_assoc, ← hCT, ← hcL]`. Establish `hz0 : (L * T - 1) * c = 0` using `by rw [Matrix.sub_mul, hLT, Matrix.one_mul, sub_self]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hc'` using `Fintype.linearIndependent_iff.mp hc`. Use extensionality with `i0 i`. Establish `hrow : ∑ i, (L * T - 1 : Matrix (Fin r) (Fin r) K) i0 i • c i = 0`. Use function extensionality and compare the values at `k`. Establish `h0` using `congrFun (congrFun hz0 i0) k`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h0` using `[Matrix.mul_apply]`. Simplify `h0` using `[Finset.sum_apply]`. Establish `h1 : (L * T - 1 : Matrix (Fin r) (Fin r) K) i0 i = 0` using `hc' (fun i => (L * T - 1 : Matrix (Fin r) (Fin r) K) i0 i) hrow i`. Rewrite `h1` using `[Matrix.sub_apply, sub_eq_zero]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem exists_coeff_matrices_of_span_eq {K : Type} [Field K] {n r : ℕ}
     (C : Matrix (Fin n) (Fin n) K) (c : Matrix (Fin r) (Fin n) K)

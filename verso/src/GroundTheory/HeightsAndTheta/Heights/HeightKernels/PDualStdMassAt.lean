@@ -16,7 +16,7 @@ variable {K : Type} [Field K] [NumberField K] {T : Type} [Fintype T] [DecidableE
 
 omit [Fintype T] [DecidableEq T] in
 /- English proof (translation)
-Simplify using `[segre]`.
+Simplify using the standard rewrite rules.
 -/
 theorem segre_const (z : (Σ _ : Unit, T) → ℂ) (t : T) :
     segre (ι := dualBlocks T) z (fun _ => t) = z ⟨(), t⟩ := by
@@ -26,7 +26,7 @@ omit [Fintype T] [DecidableEq T] in
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[dualRecover, LinearEquiv.symm_apply_eq, LinearEquiv.ofBijective_apply]`. Use function extensionality and compare the values at `t`. Simplify using `[Matrix.mulVec, dotProduct, dualEmbMatrix, dualPlanePt, Fintype.sum_prod_type]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem recover_planePt {i : ℕ} {F : HermLattice K i} (b : Module.Basis T ℤ (dualLattice F))
     (hb : Function.Bijective (Matrix.mulVecLin (dualEmbMatrix b))) (σ : K →+* ℂ) (v : Fin i → ℂ) :
@@ -40,7 +40,7 @@ theorem recover_planePt {i : ℕ} {F : HermLattice K i} (b : Module.Basis T ℤ 
 omit [Fintype T] [DecidableEq T] in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `only [dualProj_apply, segre_const, recover_planePt]`. Rewrite using `[Finset.sum_eq_single σ (fun τ _ hτ => if_neg hτ) (by simp)]`. Conclude with `if_pos rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_segre_planePt {i : ℕ} {F : HermLattice K i} (b : Module.Basis T ℤ (dualLattice F))
     (hb : Function.Bijective (Matrix.mulVecLin (dualEmbMatrix b))) (σ : K →+* ℂ) (v : Fin i → ℂ) :
@@ -51,13 +51,11 @@ theorem proj_segre_planePt {i : ℕ} {F : HermLattice K i} (b : Module.Basis T �
   exact if_pos rfl
 
 /- English proof (translation)
-Take `⟨σ, hσ⟩` from `hOn K (D + 1) F T b hb z hz`. Establish `hp : ∀ j, dualProj b hb (segre z) j = dualRecover b hb (fun t => z ⟨(), t⟩) (σ, j)`. Introduce `j`. Simplify using `only [dualProj_apply, segre_const]`. Conclude with `Finset.sum_eq_single σ (fun τ _ hτ => hσ τ hτ j) (by simp)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `show Real.sqrt (dualNormSq b hb _) = _`. Use `congr 1`. Rewrite using `[dualNormSq, Finset.sum_eq_single σ]`. Rewrite using `[hF, one_mulVec, dotProduct, Complex.re_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Pi.star_apply, Complex.star_def, ← Complex.normSq_eq_conj_mul_self, Complex.ofReal_re, Complex.normSq_eq_norm_sq, hp]`. Introduce `τ _ hτ`. Establish `h0 : (fun j => dualRecover b hb (fun t => z ⟨(), t⟩) (τ, j)) = 0` using `funext (hσ τ hτ)`. Rewrite using `[h0]`. Simplify using the standard rewrite rules.
-
-Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem h_eq (hOn : DualPtsOnPlane.Statement) {D : ℕ} {F : HermLattice K (D + 1)}
     (hF : ∀ σ, F.metric σ = 1) (b : Module.Basis T ℤ (dualLattice F))
@@ -83,9 +81,9 @@ theorem h_eq (hOn : DualPtsOnPlane.Statement) {D : ℕ} {F : HermLattice K (D + 
   · simp
 
 /- English proof (translation)
-Unfold `sheetDensity`. Rewrite using `[dif_pos h, one_mul]`. Apply `maDensity_congr_of_eventuallyEq` to reduce the goal to its premises. Introduce `j`. Use `filter_upwards [h.choose_spec.2] with y' hy'`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hmc, hΨ⟩` from `hy'`. Use `show Real.log ((dualLine F b hb).h (h.choose y')) = gbPot y'`. Rewrite using `[h_eq hOn hF b hb hmc, hΨ, gbPot, Fin.sum_univ_succ]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sheetDensity_eq (hOn : DualPtsOnPlane.Statement) {D : ℕ} {F : HermLattice K (D + 1)}
     (hF : ∀ σ, F.metric σ = 1) (b : Module.Basis T ℤ (dualLattice F))
@@ -104,15 +102,13 @@ theorem sheetDensity_eq (hOn : DualPtsOnPlane.Statement) {D : ℕ} {F : HermLatt
   simp
 
 /- English proof (translation)
-Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl, hΨ⟩`. Take `⟨σ, hσ⟩` from `hOn K (D + 1) F T b hb z hz`. Use `⟨σ, congrArg segre ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hW : dualRecover b hb (fun t => z ⟨(), t⟩) = dualRecover b hb (fun t => dualPlanePt b σ (Fin.cons 1 y) ⟨(), t⟩)`. Rewrite using `[recover_planePt]`. Use function extensionality and compare the values at `⟨τ, j⟩`. Distinguish the cases in `hτ : τ = σ`. Substitute `hτ` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[if_pos rfl, ← hΨ]`. Simplify using `only [dualProj_apply, segre_const]`. Conclude with `(Finset.sum_eq_single τ (fun τ' _ h' => hσ τ' h' j) (by simp)).symm`. Rewrite using `[if_neg hτ]`. Conclude with `hσ τ hτ j`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h1` using `(dualRecover b hb).injective hW`. Use function extensionality and compare the values at `⟨u, t⟩`. Consider the cases of `u`. Conclude with `(congrFun h1 t).symm`. Introduce and unpack `⟨σ, rfl⟩`.
-
-Establish `hv : (Fin.cons 1 y : Fin (D + 1) → ℂ) ≠ 0` using `fun h0 => by simpa using congrFun h0 0`. Conclude with `⟨_, hOf K (D + 1) F T b hb σ _ hv, rfl, proj_segre_planePt b hb σ _⟩`.
+Split into cases according to the possible forms of the given data. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem fibre_eq (hOn : DualPtsOnPlane.Statement) (hOf : DualPtsOfPlane.Statement) {D : ℕ}
     {F : HermLattice K (D + 1)} (b : Module.Basis T ℤ (dualLattice F))
@@ -146,7 +142,7 @@ theorem fibre_eq (hOn : DualPtsOnPlane.Statement) (hOf : DualPtsOfPlane.Statemen
 omit [Fintype T] [DecidableEq T] in
 
 /- English proof (translation)
-Introduce `σ τ h`. Establish `h1` using `congrArg (fun w : ((k : Unit) → dualBlocks T k) → ℂ => dualRecover b hb (fun t => w fun _ => t)) h`. Simplify using `only [segre_const, recover_planePt] at h1`. Establish `h2` using `congrFun h1 (σ, 0)`. Simplify using `using h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem planePt_injective {D : ℕ} {F : HermLattice K (D + 1)} (b : Module.Basis T ℤ (dualLattice F))
     (hb : Function.Bijective (Matrix.mulVecLin (dualEmbMatrix b))) (y : Fin D → ℂ) :
@@ -159,11 +155,9 @@ theorem planePt_injective {D : ℕ} {F : HermLattice K (D + 1)} (b : Module.Basi
   simpa using h2
 
 /- English proof (translation)
-Establish `hc : Differentiable ℂ (fun y' : Fin D → ℂ => (Fin.cons 1 y' : Fin (D + 1) → ℂ))`. Rewrite using `[differentiable_pi]`. Introduce `j`. Use `Fin.cases ?_ (fun k => ?_) j` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `using differentiable_apply (𝕜 := ℂ) k`. Use `⟨rfl, Filter.Eventually.of_forall fun y' => ⟨?_, ?_, proj_segre_planePt b hb σ _⟩⟩` and prove the remaining obligations. Use `(differentiable_pi.mpr fun p => ?_) y'` and prove the remaining obligations. Simplify using `only [dualPlanePt]`. Conclude with `Differentiable.fun_sum fun j _ => (differentiable_pi.mp hc j).const_mul _`.
-
-Conclude with `hOf K (D + 1) F T b hb σ _ fun h0 => by simpa using congrFun h0 0`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isSheet_planePt (hOf : DualPtsOfPlane.Statement) {D : ℕ} {F : HermLattice K (D + 1)}
     (b : Module.Basis T ℤ (dualLattice F))
@@ -187,9 +181,9 @@ end StandardDualMassAtPoint
 open StandardDualMassAtPoint in
 
 /- English proof (translation)
-Introduce `K _ _ D F T _ _ b hb hF`. Establish `hint : ∀ y : Fin D → ℂ, ∑ᶠ w ∈ fibre (dualIdeal b) (dualProj b hb) y, sheetDensity (dualIdeal b) (dualProj b hb) (fun _ z => Real.log ((dualLine F b hb).h z)) (fun _ => 1) y w = (Fintype.card (K →+* ℂ) : ℝ) * maDensity (fun _ : Fin D => gbPot) y`. Introduce `y`. Rewrite using `[fibre_eq hOn hOf b hb y, finsum_mem_range (planePt_injective b hb y), finsum_eq_sum_of_fintype, Finset.sum_congr rfl fun σ _ => sheetDensity_eq hOn hF b hb ⟨_, isSheet_planePt hOf b hb σ y⟩, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Unfold `ptsIntegralAt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Simplify using `only [hint]`. Rewrite using `[integral_const_mul, integral_maDensity_gbPot, mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem DualStdMassAt.proof (hOn : DualPtsOnPlane.Statement) (hOf : DualPtsOfPlane.Statement) :
     DualStdMassAt.Statement := by

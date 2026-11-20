@@ -10,7 +10,7 @@ open GlobalTheory.WeilM GlobalTheory.SplitFlip
 open scoped Matrix
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LiftLowerLoc.loc_of_parts GlobalTheory.MultSupp.vanish_of_mult_invariant GlobalTheory.T.frobenius_reciprocity_unitary GlobalTheory.T.nonreal_char_functional_unique`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LiftLowerLoc.form_eq_zero : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (a b : ℕ)
     (ν β : kˣ →* ℂˣ) (ϖ : kˣ), GlobalTheory.SplitFlip.IsUnif ϖ → GlobalTheory.SmGL.IsSmoothChar ν → GlobalTheory.SmGL.IsUnitaryChar ν →

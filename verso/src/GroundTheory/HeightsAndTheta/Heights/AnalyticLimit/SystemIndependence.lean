@@ -21,7 +21,7 @@ section Integrals
 variable {D : ℕ} {X : Type} [TopologicalSpace X]
 
 /- English proof (translation)
-Introduce `j K hK hKc` and use `IntegrableOn.congr_fun (((hf j K hK hKc).const_mul c).add (hf' j K hK hKc)) (fun y _ => by simp only [Pi.add_apply]; ring) hKc.measurableSet`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mIntegrable_linComb (A : FinHolAtlas D X) (Φ : Fin D → LocPot X) (c : ℝ) {f f' : X → ℝ}
     (hf : MIntegrable A Φ f) (hf' : MIntegrable A Φ f') :
@@ -30,7 +30,7 @@ theorem mIntegrable_linComb (A : FinHolAtlas D X) (Φ : Fin D → LocPot X) (c :
     (fun y _ => by simp only [Pi.add_apply]; ring) hKc.measurableSet
 
 /- English proof (translation)
-Introduce `j K hK hKc` and use `IntegrableOn.congr_fun ((hf j K hK hKc).const_mul c) (fun y _ => by beta_reduce; ring) hKc.measurableSet`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mIntegrable_const_mul (A : FinHolAtlas D X) (Φ : Fin D → LocPot X) (c : ℝ) {f : X → ℝ}
     (hf : MIntegrable A Φ f) : MIntegrable A Φ (fun x => c * f x) := fun j K hK hKc =>
@@ -38,23 +38,23 @@ theorem mIntegrable_const_mul (A : FinHolAtlas D X) (Φ : Fin D → LocPot X) (c
     hKc.measurableSet
 
 /- English proof (translation)
-Introduce `j K _ _` and use `by simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mIntegrable_zero (A : FinHolAtlas D X) (Φ : Fin D → LocPot X) :
     MIntegrable A Φ (fun _ => 0) := fun j K _ _ => by
   simp
 
 /- English proof (translation)
-Unfold `mInt ReciprocityTheory.AnForm.M.integralWith`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mInt_zero (A : FinHolAtlas D X) (Φ : Fin D → LocPot X) : mInt A Φ (fun _ => 0) = 0 := by
   unfold mInt ReciprocityTheory.AnForm.M.integralWith
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `mInt`. Use `split_ifs with h`. Unfold `ReciprocityTheory.AnForm.M.integralWith`. Use `Finset.sum_nonneg fun j _ => setIntegral_nonneg (A.chart j).open_target.measurableSet fun y hy => ?_` and prove the remaining obligations. Distinguish the cases in `hyV : (A.chart j).symm y ∈ V`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hd : 0 ≤ ReciprocityTheory.AnForm.M.locDens A Φ j y` using `ReciprocityTheory.AnForm.A.maDens_nonneg_of_posSemidef _ y fun i => ReciprocityTheory.AnForm.M.hessC_posSemidef_of_levi _ y (ReciprocityTheory.AnForm.M.pot_contDiffAt_two (hpot i) _ j hy ((Φ i).mem_U _)) (fun w => hnn i _ j y ⟨hy, hyV, (Φ i).mem_U _⟩ w)`. Conclude with `mul_nonneg (mul_nonneg (h.some.nonneg j _) (hf _)) hd`. Rewrite using `[hf0 _ hyV]`. Simplify using the standard rewrite rules. Conclude with `le_rfl`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mInt_nonneg_on (A : FinHolAtlas D X) (V : Set X) (Φ : Fin D → LocPot X)
     (hpot : ∀ i, IsPotential A (Φ i)) (hnn : ∀ i, FormNonneg A V (Φ i)) (f : X → ℝ)
@@ -76,7 +76,7 @@ theorem mInt_nonneg_on (A : FinHolAtlas D X) (V : Set X) (Φ : Fin D → LocPot 
   · exact le_rfl
 
 /- English proof (translation)
-The claim follows from `|mInt A Φ h| ≤ mInt A Φ b := by have key : ∀ c : ℝ, |c| = 1 → 0 ≤ mInt A Φ (fun x => c * h x + b x) := by intro c hc have hcongr := ReciprocityTheory.AnForm.M.mIntCongrNull A Φ Vᶜ hAn hint (fun x => c * h x + b x) (V.indicator fun x => c * h x + b x) (fun x hx => by rw [Set.indic …`.
+A detailed English derivation is pending.
 -/
 theorem abs_mInt_le [CompactSpace X] [T2Space X] (A : FinHolAtlas D X) (V : Set X)
     (Φ : Fin D → LocPot X) (hpot : ∀ i, IsPotential A (Φ i)) (hnn : ∀ i, FormNonneg A V (Φ i))
@@ -119,7 +119,7 @@ def SystemIndependence.Statement : Prop :=
       (fun x => S.ph t x - S'.ph t x - g x)) (𝓝[>] 0) (𝓝 0)
 
 /- English proof (translation)
-The claim follows from `|mInt A (fun i => potForm (th t i) (u t i)) (fun x => S.ph t x - S'.ph t x - g x)| ≤ (2 * t ^ (1 / 3 : ℝ) + errE |S.C| t + errE |S'.C| t) * V + K * (CE * Real.log (ell t - B) ^ (D + 1) / (ell t - B)) := by obtain ⟨V, CE, hVC⟩ := hE A R Om C₁ obtain ⟨hAn, hint⟩ := hN A R have hlog …`.
+A detailed English derivation is pending.
 -/
 theorem SystemIndependence.bound (hN : DivisorNull.Statement) (hE : ProductBounds.Statement)
     {D : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace X] [T2Space X] (A : FinHolAtlas D X)
@@ -244,17 +244,15 @@ theorem SystemIndependence.bound (hN : DivisorNull.Statement) (hE : ProductBound
   linarith
 
 /- English proof (translation)
-Introduce `D X _ _ _ A R R' S S' g B hYo hg hφ hr Om C₁ th u hT`. Take `⟨V, CE, K, _, hbd⟩` from `SystemIndependence.bound hN hE A R R' S S' g B hYo hg hφ hr Om C₁ th u hT`. Establish `hell : Tendsto ell (𝓝[>] 0) atTop` using `Real.tendsto_log_atTop.comp tendsto_inv_nhdsGT_zero`. Establish `hlog : ∀ n : ℕ, Tendsto (fun y : ℝ => Real.log y ^ n / y) atTop (𝓝 0)` using `fun n => by`. Simplify using `using Real.tendsto_pow_log_div_mul_add_atTop 1 0 n one_ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `herr : ∀ c : ℝ, Tendsto (fun t => errE c t) (𝓝[>] 0) (𝓝 0)` using `fun c => by`. Establish `h` using `((hlog 1).comp hell).const_mul c`. Rewrite `h` using `[mul_zero]`. Use `h.congr fun t => ?_` and prove the remaining obligations. Simplify using `[errE, Function.comp, mul_div_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hrp : Tendsto (fun t : ℝ => t ^ (1 / 3 : ℝ)) (𝓝[>] 0) (𝓝 0)`. Establish `h` using `(Real.continuousAt_rpow_const 0 (1 / 3 : ℝ) (Or.inr (by norm_num))).tendsto`. Rewrite `h` using `[Real.zero_rpow (by norm_num)]`. Conclude with `h.mono_left nhdsWithin_le_nhds`. Establish `htail : Tendsto (fun t => CE * Real.log (ell t - B) ^ (D + 1) / (ell t - B)) (𝓝[>] 0) (𝓝 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `((hlog (D + 1)).comp (tendsto_atTop_add_const_right _ (-B) hell)).const_mul CE`. Rewrite `h` using `[mul_zero]`. Use `h.congr fun t => ?_` and prove the remaining obligations. Simplify using `[Function.comp, sub_eq_add_neg, mul_div_assoc]`. Establish `hlim : Tendsto (fun t => (2 * t ^ (1 / 3 : ℝ) + errE |S.C| t + errE |S'.C| t) * V + K * (CE * Real.log (ell t - B) ^ (D + 1) / (ell t - B))) (𝓝[>] 0) (𝓝 0)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `((((hrp.const_mul 2).add (herr |S.C|)).add (herr |S'.C|)).mul_const V).add (htail.const_mul K)`. Simplify using `using h`. Use `squeeze_zero_norm' ?_ hlim` and prove the remaining obligations. Establish `ev : ∀ L : ℝ, ∀ᶠ t in 𝓝[>] (0 : ℝ), L ≤ ell t` using `fun L => hell.eventually_ge_atTop L`. Use `filter_upwards [self_mem_nhdsWithin, ev S.ell₀, ev S'.ell₀, ev 1, ev (Real.exp 1 + B)] with t ht h1 h2 h3 h4`.
-
-Rewrite using `[Real.norm_eq_abs]`. Conclude with `hbd t ht h1 h2 h3 h4`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SystemIndependence.proof (hN : DivisorNull.Statement) (hE : ProductBounds.Statement) :
     SystemIndependence.Statement := by

@@ -17,7 +17,7 @@ def IsIntegralOp (μ : Measure G) (π : Representation ℂ G V) (f : G → ℂ) 
     Integrable (fun g => f g * l (π g v)) μ ∧ l (A v) = ∫ g, f g * l (π g v) ∂μ
 
 /- English proof (translation)
-Use extensionality with `v`. Rewrite using `[← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff ℂ]`. Introduce `l`. Rewrite using `[map_sub, (hA v l).2, (hB v l).2, sub_self]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsIntegralOp.unique {μ : Measure G} {π : Representation ℂ G V} {f : G → ℂ} {A B : V →ₗ[ℂ] V}
     (hA : IsIntegralOp μ π f A) (hB : IsIntegralOp μ π f B) : A = B := by
@@ -36,7 +36,7 @@ def HasTrace (μ : Measure G) (π : Representation ℂ G V) (f : G → ℂ) (c :
   ∃ A : V →ₗ[ℂ] V, IsIntegralOp μ π f A ∧ HasFinTrace A c
 
 /- English proof (translation)
-Take `⟨A, hA, -, rfl⟩` from `hc`. Take `⟨B, hB, -, rfl⟩` from `hd`. Take `rfl` from `hA.unique hB`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem HasTrace.unique {μ : Measure G} {π : Representation ℂ G V} {f : G → ℂ} {c d : ℂ}
     (hc : HasTrace μ π f c) (hd : HasTrace μ π f d) : c = d := by
@@ -63,20 +63,20 @@ def Contracts (t : n → kˣ) : Prop :=
     ∀ u ∈ unipLowerOne k n, (diagT k n t)⁻¹ * u * diagT k n t ∈ unipLowerOne k n
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun u hu => by simpa using hu, fun u hu => by simpa using hu⟩`.
+Supply the required witnesses or components.
 -/
 example : Contracts (1 : n → kˣ) := ⟨fun u hu => by simpa using hu, fun u hu => by simpa using hu⟩
 
 def deltaB (t : n → kˣ) : ℝ := ∏ i, ∏ j with i < j, nabs k (t i / t j)
 
 /- English proof (translation)
-The claim follows from `Finset.prod_pos fun _ _ => Finset.prod_pos fun _ _ => nabs_pos' k _`.
+A detailed English derivation is pending.
 -/
 theorem deltaB_pos (t : n → kˣ) : 0 < deltaB t :=
   Finset.prod_pos fun _ _ => Finset.prod_pos fun _ _ => nabs_pos' k _
 
 /- English proof (translation)
-The claim follows from `(modulus_torus t).symm`.
+A detailed English derivation is pending.
 -/
 theorem deltaB_eq_modulus (t : n → kˣ) :
     deltaB t = modulus k (fun _ : n => Unit) (leviTorus k n t) := (modulus_torus t).symm
@@ -94,7 +94,7 @@ def IsExponents (π : Representation ℂ (GL n k) V) (E : Multiset ((n → kˣ) 
   (∀ χ ∈ E, ∀ s ∈ torusO k n, χ s = 1) ∧ ∀ χ, (E.count χ : ℕ∞) = expMult π χ
 
 /- English proof (translation)
-Use extensionality with `χ`. Use `(h.2 χ).trans (h'.2 χ).symm` as an intermediate fact. Establish `h2` using `Nat.cast_injective this`. Use `h2` and compare the differences between its conclusion and the goal.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 -/
 theorem IsExponents.unique {π : Representation ℂ (GL n k) V} {E E' : Multiset ((n → kˣ) →* ℂˣ)}
     (h : IsExponents π E) (h' : IsExponents π E') : E = E' := by

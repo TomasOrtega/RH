@@ -12,49 +12,45 @@ open GlobalTheory.FrameNormLie GlobalTheory.WeightLie
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c σ r U hσ hU k' x γ hγ b hb hx' t hB τ₀ i₀`. Take `⟨x', hxx, hB⟩ : ∃ x' : (U.X k').dom, x'.1 = rmul (lact γ x.1) b ∧ FrBor t (U.un k' x) (U.un k' x')` from `⟨⟨_, hx'⟩, rfl, hB⟩`. Take `⟨hr, hty0, -, -, -, g, e, F, ik, φ, hEF, hpt⟩` from `hU`. Take `⟨hp0, hty⟩` from `hty0 k'`. Take `⟨P, hP, p, hPx, hv, -⟩` from `hpt k' x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨P', hP', p', hPx', hv', -⟩` from `hpt k' x'`. Take `⟨hbij, hrt, -, -⟩` from `GlobalTheory.Relab.relab_good E H l c σ hσ`. Use `replace hbij : Function.Bijective (relab c σ) := hbij`. Use `replace hrt : ∀ τ, relab c σ τ (H.rt : E) = H.rt0 ↔ τ (H.rt : E) = H.rt0 := hrt`. Establish `hcc : ∀ τ : E →+* ℂ, ComplexEmbedding.conjugate (ComplexEmbedding.conjugate τ) = τ` using `fun τ => ComplexEmbedding.involutive_conjugate E τ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf⟩` from `FrameUnif.exists_letter_equiv (U.X k').Ψ (U.X k').cmType Dw.p Dw.q r hr (relab c σ) hbij Dw.mult (fun τ h => by unfold Datum.mult; rw [if_pos ((hrt τ).1 ((hty _).1 h))]) (fun τ h => by unfold Datum.mult; rw [if_neg (fun h' => h ((hty _).2 ((hrt τ).2 h')))])`. Take `⟨idx, hi⟩ : ∃ idx : Fin g ≃ (U.X k').Ψ × Fin r, ∀ j, (relab c σ (e j).1 ∈ (U.X k').Ψ ∧ (idx j).1.1 = relab c σ (e j).1 ∧ ((idx j).2 : ℕ) = Dw.q + (e j).2) ∨ (relab c σ (e j).1 ∉ (U.X k').Ψ ∧ (idx j).1.1 = ComplexEmbedding.conjugate (relab c σ (e j).1) ∧ ((idx j).2 : ℕ) = Dw.q - 1 …` from `⟨e.trans f, fun j => hf (e j)⟩`. Rewrite `hi` using `[← hp0]`. Establish `hper : ∀ (x : Frame (U.X k').Ψ r) v j, perFr (U.X k') x v (relab c σ (e j).1) (e j).2 = perVec (U.X k') idx x v j`. Introduce `x v j`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Unfold `perVec`. Establish `h` using `hi j`. Generalize the expression as in `idx j = t at h ⊢`. Take `⟨⟨τ, hτ⟩, ⟨n, hn⟩⟩` from `t`. Simplify using `only at h ⊢`.
+Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `h with ⟨a, rfl, rfl⟩ | ⟨a, rfl, rfl, d⟩` into its components or cases. Rewrite using `[if_neg (by omega)]`. Unfold `perFr`. Rewrite using `[dif_pos a, dif_pos hn]`. Rewrite using `[if_pos (by omega)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `perFr`. Rewrite using `[dif_neg a, dif_pos (show conjEmb (relab c σ (e j).1) ∈ (U.X k').Ψ from hτ), dif_pos hn]`. Both sides reduce to the same expression. Establish `hinj : ∀ j j', (e j).1 = (e j').1 → ((e j).2 : ℕ) = (e j').2 → j = j'`. Introduce `j j' h1 h2`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `e.injective` to reduce the goal to its premises. Use `Sigma.ext h1 ((Fin.heq_ext_iff (by rw [h1])).2 h2)` and prove the remaining obligations. Establish `hs : ∀ b ∈ Bor (U.X k').Ψ r, Supp (fun j => (e j).1) (fun j => ((e j).2 : ℕ)) (PerBor.moveMat (U.X k').p0 idx b)`. Introduce `b hb j j' hne`. Take `⟨h1, h2⟩` from `PerBor.moveMat_support _ idx hb j j' hne`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `rcases hi j with ⟨a1, b1, c1⟩ | ⟨a1, b1, c1, d1⟩ <;> rcases hi j' with ⟨a2, b2, c2⟩ | ⟨a2, b2, c2, d2⟩`. Rewrite `h2` using `[if_neg (by omega)]`. Conclude with `⟨hbij.1 (by rw [← b1, ← b2, h1]), by simp only; omega⟩`. Rewrite `h2` using `[if_neg (by omega)]`. Use linear arithmetic over natural numbers and integers.
+Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `h2` using `[if_pos (by omega)]`. Use linear arithmetic over natural numbers and integers. Rewrite `h2` using `[if_pos (by omega)]`. Conclude with `⟨hbij.1 (by rw [← hcc (relab c σ (e j).1), ← b1, ← h1, b2, hcc]), by simp only; omega⟩`. Take `⟨T, T', hT, hT', hT0, hTT, hTf, hTf'⟩` from `exists_tri_pair (U.X k') idx hinj hs x.1 x.2 hγ hb`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hTf'` using `[← hxx]`. Establish `hPv : ∀ a, P a = perVec (U.X k') idx x.1 (φ k' a : Fin r → E)` using `fun a => funext fun j => (hP a j).trans (hper _ _ _)`. Establish `hPv' : ∀ a, P' a = perVec (U.X k') idx x'.1 (φ k' a : Fin r → E)` using `fun a => funext fun j => (hP' a j).trans (hper _ _ _)`. Take `⟨h, gam, hex, hh, hiso, -⟩` from `familyUnif_exp_unique E H Dw l Xo _ g _ F (ik k') (ik k') P' P p' p (by rw [← hPx, ← hPx', hB.1])`. Use `set A := LinearMap.toMatrix' h.toLinearMap with hAdef`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hAv : ∀ z, A *ᵥ z = h z` using `fun z => by rw [hAdef, LinearMap.toMatrix'_mulVec]; rfl`. Use `choose cf hcf1 hcf2 hcf3 using hB.2.1`. Establish `hcol : ∀ τ i, A *ᵥ Pi.single (e.symm ⟨τ, i⟩) 1 = (∑ j, (show ℂ from cf τ i j) • (Pi.single (e.symm ⟨τ, j⟩) 1 : Fin g → ℂ))`. Introduce `τ i`. Establish `d1` using `(DerLin.isCombAt_iff_isDerivAt0 E H Dw l Xo _ g _ F _ P p _ ((U.un k' x).u τ) _ (hv τ) (cf τ i) ((U.un k' x').u τ i)).1 (hPx ▸ hcf3 τ i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `d2` using `(ExpChain.isDerivAt0_ex_iff E H Dw l Xo _ g _ F _ P' p' _ P h.toLinearMap p hex _ _).1 (hv' τ i)`. Establish `tn` using `isDerivAt0_ex_isTanAt E H Dw l Xo _ g _ F _ P p`. Rewrite using `[hAv]`. Conclude with `(tn.2.2 _ (tn.1 _ _ d2)).unique d2 d1`. Establish `hAe : ∀ j τ i, A j (e.symm ⟨τ, i⟩) = ∑ i', (show ℂ from cf τ i i') * (Pi.single (e.symm ⟨τ, i'⟩) 1 : Fin g → ℂ) j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j τ i`. Use `congrFun (hcol τ i) j` as an intermediate fact. Simplify using `only [Matrix.mulVec_single_one, Matrix.col_apply, Finset.sum_apply] at this`. Conclude with `this`. Establish `hA : Supp (fun j => (e j).1) (fun j => ((e j).2 : ℕ)) A`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `j j' hne`. Take `⟨⟨τ, i⟩, rfl⟩` from `e.symm.surjective j'`. Rewrite `hne` using `[hAe]`. Take `⟨i', -, hi'⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hne`. Take `⟨h1, h2⟩` from `mul_ne_zero_iff.1 hi'`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Assume the negation of the conclusion and derive a contradiction.
 
-Choose the witnesses or unpack the hypotheses as in `rfl : j = e.symm ⟨τ, i'⟩ := by`. Assume the negation of the conclusion as `hj`. Conclude with `h2 (Pi.single_eq_of_ne hj _)`. Use `beta_reduce`. Rewrite using `[Equiv.apply_symm_apply, Equiv.apply_symm_apply]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨rfl, ?_⟩` and prove the remaining obligations. Simplify using `only`. Assume the negation of the conclusion as `hlt`. Conclude with `h1 (hcf2 τ i i' (by rw [Fin.lt_def]; omega))`. Establish `key` using `UnitDet.eq_of_im_hermForm_eq _ p'.2.2.2.1 ((T * A)ᵀ * (Matrix.diagonal (diagXi (U.X k') idx) * (T * A).map (starRingEnd ℂ))) (T'ᵀ * (Matrix.diagonal (diagXi (U.X k') idx) * T'.map (starRingEnd ℂ))) (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `_ ⟨a, rfl⟩ _ ⟨a', rfl⟩`. Rewrite using `[← UnitDet.hermForm_mulVec, ← UnitDet.hermForm_mulVec, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hAv, hAv, ← hh, ← hh, hPv, hPv, hPv', hPv', hTf, hTf', ← hEF, ← hEF, hiso])`. Establish `hdiag : ∀ j, ‖toC (t (some (e j)) : CAt σ)‖ = ‖(PerBor.moveMat (U.X k').p0 idx b j j)⁻¹‖`. Introduce `j`. Take `⟨⟨τ, i⟩, rfl⟩` from `e.symm.surjective j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `norm_diag_eq_norm_diag hinj (hT.mul hA) hT' (fun j => by rw [hTT]; exact mul_ne_zero (hT0 j) (inv_ne_zero (moveMat_diag_ne _ idx hb j))) _ (diagXi_ne _ idx) key (e.symm ⟨τ, i⟩)`. Rewrite `h1` using `[Supp.mul_diag hinj hT hA, hTT, norm_mul, norm_mul, mul_right_inj' (norm_ne_zero_iff.2 (hT0 _)), hAe, Finset.sum_eq_single i, Pi.single_eq_same, mul_one, hcf1]`. Rewrite using `[Equiv.apply_symm_apply]`. Conclude with `h1`. Introduce `i' _ hi'`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify by unfolding definitions.
 
-Use `mul_eq_zero_of_right _ (Pi.single_eq_of_ne (fun h0 => hi' ?_) _)` and prove the remaining obligations. Use `e.symm.injective h0` as an intermediate fact. Conclude with `(eq_of_heq (Sigma.mk.inj this).2).symm`. Simplify using the standard rewrite rules. Establish `h0` using `hdiag (e.symm ⟨τ₀, i₀⟩)`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hi (e.symm ⟨τ₀, i₀⟩)`. Rewrite `h0` using `[PerBor.moveMat_diag _ idx hb]`. Generalize the expression as in `idx (e.symm ⟨τ₀, i₀⟩) = s at h0 h1`. Rewrite `h0`, `h1` using `[Equiv.apply_symm_apply]`. Take `⟨⟨τ, hτ⟩, ⟨n, hn⟩⟩` from `s`.
-
-Simplify using `only at h0 h1`. Rewrite using `[h0]`. Unfold `bdiag`. Break down `h1 with ⟨a, rfl, rfl⟩ | ⟨a, rfl, rfl, d⟩` into its components or cases. Rewrite using `[if_neg (by omega), inv_inv, dif_pos a, dif_pos hn]`.
-
-Rewrite using `[if_pos (by omega), dif_neg a, dif_pos (show conjEmb (relab c σ τ₀) ∈ (U.X k').Ψ from hτ), dif_pos hn]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem norm_diag_eq_norm_bdiag : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Unf Xo c σ r), GoodEmb c σ → IsUnf U → ∀ (k : U.Comp) (x : (U.X k).dom), ∀ γ ∈ (U.X k).Γ, ∀ b ∈ Bor (U.X k).Ψ r, ∀ (hx : rmul (lact γ x.1) b ∈ (U.X k).dom) (t : Ix Dw → (CAt σ)ˣ), FrBor t (U.un k x) (U.un k ⟨_, hx⟩) → ∀ (τ : E →+* ℂ) (i : Fin (Dw.mult τ)), ‖toC (t (some ⟨τ, i⟩) : CAt σ)‖ = ‖bdiag (U.X k) b (relab c σ τ) i‖ := by
   classical

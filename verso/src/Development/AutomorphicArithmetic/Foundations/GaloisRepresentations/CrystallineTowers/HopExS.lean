@@ -23,13 +23,13 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.PAdic
 open UpperTheory.Gal.Seam
 
 /- English proof (translation)
-The claim follows from `UpperTheory.Gal.G3.pBcSplits (UpperTheory.Gal.G3.pSplitsBasic (UpperTheory.Gal.G3.pSplitsPts UpperTheory.Gal.G3.pIsoPts) UpperTheory.Gal.G3.pPtsOfSplits)`.
+A detailed English derivation is pending.
 -/
 private theorem bcSplits : UpperTheory.Gal.G3.BcSplits :=
   UpperTheory.Gal.G3.pBcSplits (UpperTheory.Gal.G3.pSplitsBasic (UpperTheory.Gal.G3.pSplitsPts UpperTheory.Gal.G3.pIsoPts) UpperTheory.Gal.G3.pPtsOfSplits)
 
 /- English proof (translation)
-The claim follows from `UpperTheory.Gal.G3.pHopSpec (UpperTheory.Gal.G3.pEtGood (UpperTheory.Gal.G3.pEtnGood (UpperTheory.Gal.G3.pFEtBasic UpperTheory.Gal.G3.pPtsOfSplits) UpperTheory.Gal.G3.pEtTr)) (UpperTheory.Gal.G3.pBcGood bcSplits (UpperTheory.Gal.G3.pBcGal bcSplits)) (UpperTheory.Gal.G3.pGalClos ( …`.
+A detailed English derivation is pending.
 -/
 private theorem hopSpec : UpperTheory.Gal.G3.HopSpec :=
   UpperTheory.Gal.G3.pHopSpec
@@ -41,9 +41,9 @@ private theorem hopSpec : UpperTheory.Gal.G3.HopSpec :=
     (UpperTheory.Gal.G3.pOpBc bcSplits (UpperTheory.Gal.G3.pBcGal bcSplits)) bcSplits
 
 /- English proof (translation)
-Introduce `_ l _ k Ω _ _ _ _ _ H hN g`. Take `⟨d, hd⟩` from `hN.2.2 g`. Establish `hl : (l : k) ≠ 0`. Introduce `h`. Establish `h0 : (l : Ω) = 0` using `by rw [← map_natCast (algebraMap k Ω), h, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(Fact.out : l.Prime).ne_zero (Nat.cast_eq_zero.mp h0)`. Conclude with `(hopSpec l hl H Ω g d hd).1`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Seam.hopExS :
     True → HopEx := by

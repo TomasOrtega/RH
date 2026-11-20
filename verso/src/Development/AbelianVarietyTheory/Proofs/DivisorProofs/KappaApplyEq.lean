@@ -9,9 +9,9 @@ namespace GlobalTheory.HilbAff
 variable (A B : Type) [CommRing A] [CommRing B] [Algebra A B]
 
 /- English proof (translation)
-Establish `h1` using `Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap A B))`. Establish `h2 : (Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom (algebraMap A B a) = (str A B).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom a)` using `congrArg (fun f => f.hom a) h1`. Establish `key : (str A B).appTop ≫ (pullback.fst (str A B) g).appLE ⊤ ((pullback.snd (str A B) g) ⁻¹ᵁ U) (by simp) = g.appLE ⊤ U (by simp) ≫ (pullback.snd (str A B) g).app U`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Scheme.Hom.app_eq_appLE]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Scheme.Hom.appLE_comp_appLE _ _ _ _ _ _ _).symm`. Rewrite using `[h2, secAlg, RingHom.comp_apply, ← CommRingCat.comp_apply, key, CommRingCat.comp_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_comm {T : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of A)) (U : T.Opens) (a : A) :
     ((pullback.fst (str A B) g).appLE ⊤ ((pullback.snd (str A B) g) ⁻¹ᵁ U) (by simp)).hom
@@ -48,7 +48,7 @@ def theta {T : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of A)) (U : T.Opens) :
     (fun _ _ => Commute.all _ _)).toRingHom
 
 /- English proof (translation)
-Use `letI := (secAlg A g U).toAlgebra`. Use `letI : Algebra A Γ(pullback (str A B) g, (pullback.snd (str A B) g) ⁻¹ᵁ U) := (((pullback.snd (str A B) g).app U).hom.comp (secAlg A g U)).toAlgebra`. Conclude with `Algebra.TensorProduct.lift_tmul _ _ _ _ _`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem theta_tmul {T : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of A)) (U : T.Opens)
     (c : Γ(T, U)) (b : B) :
@@ -62,11 +62,11 @@ theorem theta_tmul {T : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of A)) (U : T.O
   exact Algebra.TensorProduct.lift_tmul _ _ _ _ _
 
 /- English proof (translation)
-Use `letI := (secAlg A g U).toAlgebra`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Both sides reduce to the same expression. Consider the case `tmul c b`.
+Equip the data with the indicated structure. Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 
-Rewrite using `[kappa_tmul, theta_tmul, map_mul]`. Use `congr 1`. Establish `e : (pullback.fst (str A B) g).appLE ⊤ ((pullback.snd (str A B) g) ⁻¹ᵁ U) (by simp) ≫ I.subschemeι.app ((pullback.snd (str A B) g) ⁻¹ᵁ U) = (I.subschemeι ≫ pullback.fst (str A B) g).appLE ⊤ ((I.subschemeι ≫ pullback.snd (str A B) g) ⁻¹ᵁ U) (by simp)`. Rewrite using `[Scheme.Hom.app_eq_appLE]`. Conclude with `Scheme.Hom.appLE_comp_appLE _ _ _ _ _ _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e]`. Both sides reduce to the same expression. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Treat this case separately. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem kappa_apply_eq {T : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of A))
     (I : (pullback (str A B) g).IdealSheafData) (U : T.Opens) (x : letI := (secAlg A g U).toAlgebra; Γ(T, U) ⊗[A] B) :
@@ -87,7 +87,7 @@ theorem kappa_apply_eq {T : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of A))
   | add x y hx hy => simp only [map_add, hx, hy]; rfl
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[RingHom.mem_ker, Ideal.mem_comap, RingHom.mem_ker, kappa_apply_eq]`. Conclude with `Iff.rfl`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem ker_kappa_eq {T : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of A))
     (I : (pullback (str A B) g).IdealSheafData) (U : T.Opens) :

@@ -10,7 +10,7 @@ open GlobalTheory.Doubling (absE)
 open GlobalTheory.ThK.LemF.QuotInv
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.ThK.LemF.QuotInv.modulus_levi` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLeviEmbeddingLocalContinuous.lean&line=22#L22)
 -/

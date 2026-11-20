@@ -5,13 +5,13 @@ namespace GlobalTheory.UpperUnipotentMul
 open Matrix
 
 /- English proof (translation)
-Introduce `i j`. Use `⟨fun hji => ?_, fun hij => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero (fun k _ => ?_)` and prove the remaining obligations. Break down `lt_or_ge k i with hki | hik` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[(hA i k).1 hki, zero_mul]`. Rewrite using `[(hB k j).1 (lt_of_lt_of_le hji hik), mul_zero]`. Substitute `hij` using the available equality. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Rewrite using `[(hA i i).2 rfl, (hB i i).2 rfl, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `k _ hki`. Break down `lt_or_gt_of_ne hki with h | h` into its components or cases. Rewrite using `[(hA i k).1 h, zero_mul]`. Rewrite using `[(hB k i).1 h, mul_zero]`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ i) h`.
+A detailed English derivation is pending.
 -/
 theorem isUpUni_mul {K : Type} [Field K] {n : ℕ} {A B : Matrix (Fin n) (Fin n) K}
     (hA : Formalism.MainNotions.S.IsUpUni A) (hB : Formalism.MainNotions.S.IsUpUni B) : Formalism.MainNotions.S.IsUpUni (A * B) := by
@@ -32,7 +32,7 @@ theorem isUpUni_mul {K : Type} [Field K] {n : ℕ} {A B : Matrix (Fin n) (Fin n)
     · intro h; exact absurd (Finset.mem_univ i) h
 
 /- English proof (translation)
-Introduce `hA hB` and use `isUpUni_mul hA hB`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ {K : Type} [inst : Field K] {n : ℕ} {A B : Matrix (Fin n) (Fin n) K},
     Formalism.MainNotions.S.IsUpUni A → Formalism.MainNotions.S.IsUpUni B → Formalism.MainNotions.S.IsUpUni (A * B) :=

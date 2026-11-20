@@ -27,9 +27,9 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Set `J : nonZeroDivisors (Ideal (𝓞 E))` to `⟨I, mem_nonZeroDivisors_of_ne_zero hI⟩`. Take `⟨h, hh, e⟩` from `isOfFinOrder_iff_pow_eq_one.1 (isOfFinOrder_of_finite (ClassGroup.mk0 J))`. Rewrite `e` using `[← map_pow]`. Take `⟨x, hx⟩ : (I ^ h).IsPrincipal` from `(ClassGroup.mk0_eq_one_iff (J ^ h).2).1 e`. Establish `hx' : I ^ h = Ideal.span {x}` using `hx`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨x, Ideal.pow_le_self hh.ne' (hx' ▸ Ideal.mem_span_singleton_self x), ?_, fun Q hQ => ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `pow_ne_zero h hI (by rw [hx']; simp)`. Use `Q.isPrime` as an intermediate fact. Conclude with `Ideal.IsPrime.le_of_pow_le (hx'.le.trans ((Ideal.span_singleton_le_iff_mem _).2 hQ))`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_gen_pow {E : Type} [Field E] [NumberField E] {I : Ideal (𝓞 E)} (hI : I ≠ ⊥) :
     ∃ x ∈ I, x ≠ 0 ∧ ∀ Q : HeightOneSpectrum (𝓞 E), x ∈ Q.asIdeal → I ≤ Q.asIdeal := by
@@ -45,9 +45,9 @@ theorem exists_gen_pow {E : Type} [Field E] [NumberField E] {I : Ideal (𝓞 E)}
     exact Ideal.IsPrime.le_of_pow_le (hx'.le.trans ((Ideal.span_singleton_le_iff_mem _).2 hQ))
 
 /- English proof (translation)
-Establish `h2` using `congrArg (fun M => (β⁻¹).1 * M * β.1) hx`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul] at h2`. Simplify using `only [Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one] at h2`. Use extensionality with `i j`. Establish `h3 : p * y i j = p * Y i j` using `Subtype.ext (congrFun (congrFun h2 i) j)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `h4` using `congrArg ψ h3`. Rewrite `h4` using `[map_mul, map_mul, hp, one_mul, one_mul]`. Conclude with `h4`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_eq_of_smul_eq {A T : Type} [CommRing A] [CommRing T] {n : ℕ} (S : Subring A) (β : GL (Fin n) A)
     (ψ : S →+* T) (p : S) (hp : ψ p = 1) (y Y : Matrix (Fin n) (Fin n) S)
@@ -63,7 +63,7 @@ theorem map_eq_of_smul_eq {A T : Type} [CommRing A] [CommRing T] {n : ℕ} (S : 
   exact h4
 
 /- English proof (translation)
-Establish `h6 : 1 - p = w * x` using `Subtype.ext (by show (1 : A) - p = w * x`. Rewrite using `[hw, map_sub, map_one, hp])`. Establish `h7` using `congrArg ψ h6`. Rewrite `h7` using `[map_mul, hx, mul_zero, map_sub, map_one, sub_eq_zero]`. Conclude with `h7.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_eq_one_of_sub {R A T : Type} [CommRing R] [CommRing A] [CommRing T] (S : Subring A) (f : R →+* A)
     (ψ : S →+* T) {e : R} {p w x : S} (hp : (p : A) = f e) (hw : (w : A) * x = f (1 - e)) (hx : ψ x = 0) : ψ p = 1 := by
@@ -75,9 +75,9 @@ theorem map_eq_one_of_sub {R A T : Type} [CommRing R] [CommRing A] [CommRing T] 
   exact h7.symm
 
 /- English proof (translation)
-Set `g : (Fin n → O ⧸ I) ≃ₗ[O ⧸ I] (Fin n → O ⧸ I)` to `f.extendScalarsOfSurjective Ideal.Quotient.mk_surjective`. Use `choose M hM using fun i j => Ideal.Quotient.mk_surjective (LinearMap.toMatrix' g.toLinearMap i j)`. Establish `e : Matrix.map (Matrix.of M) (Ideal.Quotient.mk I) = LinearMap.toMatrix' g.toLinearMap` using `Matrix.ext hM`. Use `⟨Matrix.of M, ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, e, LinearMap.det_toMatrix']`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `g.isUnit_det'`. Rewrite using `[e, ← Matrix.toLin'_apply, Matrix.toLin'_toMatrix']`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_matrix {O : Type} [CommRing O] (I : Ideal O) {n : ℕ} (f : (Fin n → O ⧸ I) ≃ₗ[O] (Fin n → O ⧸ I)) :
     ∃ Y : Matrix (Fin n) (Fin n) O, IsUnit (Ideal.Quotient.mk I Y.det) ∧
@@ -94,9 +94,7 @@ theorem exists_matrix {O : Type} [CommRing O] (I : Ideal O) {n : ℕ} (f : (Fin 
 variable {D : D7}
 
 /- English proof (translation)
-Use `⟨⟨_, swapAE_int (not_not.1 fun hn => ?_ : finPart D (e * incA D ((d : D.host.E)⁻¹)) ∈ intAE D)⟩, ?_⟩` and prove the remaining obligations. Take `⟨Q, h1, h2⟩` from `(not_int_iff hΦ he d0).1 hn`. Conclude with `hd Q h1 h2`. Use `show finSw D (e * incA D ((d : D.host.E)⁻¹)) * finSw D (incA D (d : D.host.E)) = _`. Establish `: (d : D.host.E) ≠ 0` using `by simpa using d0`.
-
-Rewrite using `[← RingHom.map_mul, mul_assoc, ← RingHom.map_mul, inv_mul_cancel₀ this, RingHom.map_one, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_div {Φ : AE D →+* FiniteAdeleRing (𝓞 D.host.E) D.host.E} (hΦ : Comp D Φ) {e : AE D} (he : e * e = e)
     {d : 𝓞 D.host.E} (d0 : d ≠ 0) (hd : ∀ Q, Φ e Q ≠ 0 → d ∉ Q.asIdeal) :
@@ -110,11 +108,11 @@ theorem exists_div {Φ : AE D →+* FiniteAdeleRing (𝓞 D.host.E) D.host.E} (h
     rw [← RingHom.map_mul, mul_assoc, ← RingHom.map_mul, inv_mul_cancel₀ this, RingHom.map_one, mul_one]
 
 /- English proof (translation)
-Use `choose δ hδ using exists_delta hΦ`. Establish `ev : ∀ (f : HeightOneSpectrum (𝓞 D.host.E) → AE D) (s : Finset (HeightOneSpectrum (𝓞 D.host.E))) Q, Φ (∑ P ∈ s, f P) Q = ∑ P ∈ s, Φ (f P) Q`. Introduce `f s Q`. Proceed by induction on `s using Finset.cons_induction with`. Consider the case `empty => rw [Finset.sum_empty, Finset.sum_empty, ev_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `cons a s ha ih => rw [Finset.sum_cons, Finset.sum_cons, ev_add, ih]`. Use `⟨∑ P ∈ T, δ P, ?_, fun Q hQ => ?_, fun Q hQ => ?_, fun Q hQ => ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_zero fun P _ => (hδ P).1`. Rewrite using `[ev, Finset.sum_eq_single_of_mem Q hQ fun P _ h => (hδ P).2.2 Q h.symm, (hδ Q).2.1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ev]`. Conclude with `Finset.sum_eq_zero fun P hP => (hδ P).2.2 Q fun h => hQ (h ▸ hP)`. Rewrite using `[map_sum, ev]`. Conclude with `Finset.sum_eq_zero fun P hP => (delta_conj hΦ (hδ P)).2.2 Q fun h => hT P hP (h ▸ hQ)`.
+A detailed English derivation is pending.
 -/
 theorem exists_idem_finset {Φ : AE D →+* FiniteAdeleRing (𝓞 D.host.E) D.host.E} (hΦ : Comp D Φ)
     (T : Finset (HeightOneSpectrum (𝓞 D.host.E))) (hT : ∀ P ∈ T, cP P ∉ T) :
@@ -139,21 +137,19 @@ theorem exists_idem_finset {Φ : AE D →+* FiniteAdeleRing (𝓞 D.host.E) D.ho
 variable {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E}
 
 /- English proof (translation)
-Take `⟨Φ, hΦ⟩` from `exists_comp D`. Establish `hT : ∀ Q, Q ∈ (Ideal.finite_factors (half_ne_bot l)).toFinset ↔ l.Mb ≤ Q.asIdeal` using `fun Q => by`. Rewrite using `[Set.Finite.mem_toFinset, Set.mem_setOf_eq, Ideal.dvd_iff_le]`. Generalize the expression as in `(Ideal.finite_factors (half_ne_bot l)).toFinset = T at hT`. Take `⟨e, h0, h1, h2, h3⟩` from `exists_idem_finset hΦ T fun P hP hP' => GlobalTheory.GeoLevel.not_isConjPl_of_le l ((hT _).1 hP) ((hT _).1 hP') ((isConjPl_iff _ _).2 rfl)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result.
 
-Establish `he : e * e = e` using `hΦ.ext' (by rw [map_mul, h0, mul_zero]) fun Q => by`. Rewrite using `[ev_mul]`. Distinguish the cases in `hQ : Q ∈ T`. Rewrite using `[h1 Q hQ, mul_one]`. Rewrite using `[h2 Q hQ, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `he' : e * cA D e = 0` using `hΦ.ext' (by rw [map_mul, h0, zero_mul, map_zero]) fun Q => by`. Rewrite using `[ev_mul, ev_zero]`. Distinguish the cases in `hQ : Q ∈ T`. Rewrite using `[h3 Q hQ, mul_zero]`. Rewrite using `[h2 Q hQ, zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hdiv : ∀ d : 𝓞 D.host.E, IsUnit (Ideal.Quotient.mk l.Mb d) → ∃ u : Formalism.L2.Herm.intAf D.host.F D.host.E, (u : EAf D) * (oToS D.host.F D.host.E d : Formalism.L2.Herm.intAf D.host.F D.host.E) = finSw D e`. Introduce `d hd`. Establish `hd' : ∀ Q ∈ T, d ∉ Q.asIdeal` using `fun Q hQ h => by`. Establish `h4` using `hd.map (Ideal.Quotient.factor ((hT Q).1 hQ))`. Rewrite `h4` using `[Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem.2 h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Q.isPrime` as an intermediate fact. Conclude with `not_isUnit_zero h4`. Distinguish the cases in `d0 : d = 0`. Establish `: e = 0` using `hΦ.ext' (h0.trans (map_zero _).symm) fun Q => by`. Rewrite using `[ev_zero, h2 Q fun hQ => hd' Q hQ (d0 ▸ zero_mem _)]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨0, by rw [this, map_zero, ZeroMemClass.coe_zero, zero_mul]⟩`. Conclude with `exists_div hΦ he d0 fun Q hQ => hd' Q (by_contra fun h => hQ (h2 Q h))`. Take `⟨u, hu⟩` from `hdiv 1 (by rw [map_one]; exact isUnit_one)`. Take `⟨p, hp⟩ : ∃ p : Formalism.L2.Herm.intAf D.host.F D.host.E, (p : EAf D) = finSw D e` from `⟨u * oToS D.host.F D.host.E 1, hu⟩`. Use `⟨e, p, he, he', h0, hp, ?_, fun d hd => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, x0, hxQ⟩` from `exists_gen_pow (half_ne_bot l)`. Take `⟨w, hw⟩` from `exists_div hΦ (e := 1 - e) (by linear_combination he) x0 fun Q hQ h => hQ (by`. Establish `h5` using `ev_add (Φ := Φ) (1 - e) e Q`. Rewrite `h5` using `[sub_add_cancel, map_one, h1 Q ((hT Q).2 (hxQ Q h))]`. Conclude with `left_eq_add.1 (h5.trans (add_comm _ _)))`.
-
-Conclude with `map_eq_one_of_sub _ (finSw D) _ hp hw ((resI_oToS l.Mb (half_ne_bot l) x).trans (Ideal.Quotient.eq_zero_iff_mem.2 hx))`. Take `⟨u, hu⟩` from `hdiv d hd`. Conclude with `⟨u, Subtype.ext (hu.trans hp.symm)⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_half_idem (l : Level H) :
     ∃ (e : AE D) (p : Formalism.L2.Herm.intAf D.host.F D.host.E), e * e = e ∧ e * cA D e = 0 ∧ infPart D e = 0 ∧
@@ -204,11 +200,11 @@ theorem exists_half_idem (l : Level H) :
     exact ⟨u, Subtype.ext (hu.trans hp.symm)⟩
 
 /- English proof (translation)
-Take `⟨M, M', hM, hMM⟩` from `part_lift (swapAE D) (swp_bij (F := D.host.F) (E := D.host.E)) (finPart D e) m m' h`. Take `⟨φ, hφ, -⟩` from `GlobalTheory.AdSplit.exists_adele_equiv D.host.F D.host.E`. Establish `hφ' : ∀ z, (φ z).1 = infPart D z ∧ (φ z).2 = finPart D z` using `hφ`. Establish `hJK : JR (AF D.host.F) V.gram * (V.gram⁻¹).map (incA D) = 1` using `by show V.gram.map (incA D) * (V.gram⁻¹).map (incA D) = 1`. Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv _ (GlobalTheory.UnitaryGlue.gram_det_ne_zero V).isUnit, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hJ : Formalism.UG.cT (cA D) (JR (AF D.host.F) V.gram) = JR (AF D.host.F) V.gram`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `show cA D (incA D (V.gram j i)) = incA D (V.gram i j)`. Rewrite using `[GlobalTheory.DualPairCheck.cA_incA, GlobalTheory.DualPairCheck.gram_star]`. Take `⟨g, hg, h1, h2⟩` from `GlobalTheory.SplitLift.exists_unitary_prod (infPart D) (finPart D) φ hφ' (cA D) GlobalTheory.DualPairCheck.cA_cA _ _ hJ hJK e he he' hinf M M' hMM`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨g, hg⟩, h1, ?_⟩` and prove the remaining obligations. Rewrite using `[← hM]`. Conclude with `part_map (swapAE D) _ _ _ h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unitary_part (V : HSp D) {e : AE D} (he : e * e = e) (he' : e * cA D e = 0) (hinf : infPart D e = 0)
     (m m' : Matrix (Fin V.rank) (Fin V.rank) (EAf D))
@@ -232,15 +228,15 @@ theorem exists_unitary_part (V : HSp D) {e : AE D} (he : e * e = e) (he' : e * c
   exact part_map (swapAE D) _ _ _ h2
 
 /- English proof (translation)
-Establish `hB` using `GlobalTheory.GeoLevel.isBaseFrame_of_isLatBasis V β hβ`. Take `⟨e, p, he, he', hinf, hp, hres, hdiv⟩` from `exists_half_idem l`. Establish `hpp : p * p = p` using `Subtype.ext (by show (p : EAf D) * p = p`. Rewrite using `[hp, ← RingHom.map_mul, he])`. Take `⟨u, hu⟩` from `hdiv _ hY₀`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨Y, hY⟩ : ∃ Y, Y = Y₀.map (oToS D.host.F D.host.E)` from `⟨_, rfl⟩`. Establish `hu' : u * Y.det = p`. Rewrite using `[hY, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `hu`. Establish `hmm` using `conj_inv_part β p u Y hu' hpp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hmm` using `[hp]`. Take `⟨κ, hs, hκ⟩` from `exists_unitary_part V he he' hinf _ _ hmm`. Establish `hsf` using `supp_fin V (f := e + cA D e) hs`. Rewrite `hκ` using `[← hp]`. Establish `hf : finSw D (e + cA D e) = p + Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F) p`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.map_add, finSw_cA, hp]`. Establish `hSt : finE V κ ∈ St β` using `mem_St_of_part D.sp.cm.sig V.gram _ β hB.1 (hatL_selfDual hB) p u hpp (sigR_int p.2) Y hu' (finE V κ) (finE_mem_UA V κ) _ hf hsf hκ`. Establish `hSt' : GlobalTheory.IndefiniteRowSideFullHecke.LatticeBasisLifts.finR V rfl κ ∈ St β` using `by rw [GlobalTheory.GeoLevel.finR_rfl]; exact hSt`. Use `⟨κ, mem_GfC_of_suppF V (f := e + cA D e) ?_ hs, hSt', ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, (parts_cA e).1, hinf, map_zero, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `(Formalism.L2.DIV.frGL_pullFr β ⟨_, hSt'⟩).trans (GlobalTheory.GeoLevel.finR_rfl V κ)`. Rewrite `hκ` using `[← h1]`. Rewrite using `[map_eq_of_smul_eq _ β _ p hres _ Y hκ, hY]`. Conclude with `Matrix.ext fun i j => resI_oToS l.Mb (half_ne_bot l) _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_stab_lift (l : Level H) {V : HSp D} {β : GL (Fin V.rank) (EAf D)}
     (hβ : GlobalTheory.IndefiniteRowSideFullHecke.LatticeBasisLifts.IsLatBasis V rfl β) (Y₀ : Matrix (Fin V.rank) (Fin V.rank) (𝓞 D.host.E))
@@ -278,9 +274,9 @@ theorem exists_stab_lift (l : Level H) {V : HSp D} {β : GL (Fin V.rank) (EAf D)
 variable {Dw : Datum H}
 
 /- English proof (translation)
-Take `⟨β, hβ⟩` from `GlobalTheory.T.exists_lattice_basis_hermitian_space D V _ rfl`. Take `⟨φ, hφ⟩` from `exists_coord l V rfl β hβ ι hι`. Take `⟨Y, hY, hf⟩` from `exists_matrix l.Mb (φ.symm.trans (LinearEquiv.trans γ φ))`. Take `⟨κ, h1, h2, h3⟩` from `exists_stab_lift l hβ Y hY`. Use `⟨κ, h1, (GlobalTheory.T.completedLattice_stabilizer_iff_basis_integral D V _ rfl β hβ κ).2 h2, (graph_iff φ _ _ (hφ κ h2) γ).1 fun q => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h3, ← hf, LinearEquiv.trans_apply, φ.symm_apply_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_isLevLift (l : Level H) (V : HSp D) (ι : Dw.La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E)) (hι : LatEmb V ι)
     (γ : GlobalTheory.IndefiniteRowSideFullHecke.LevelLiftConditions.LevGrp Dw l) : ∃ κ, GlobalTheory.IndefiniteRowSideFullHecke.LevelLiftConditions.IsLevLift l V ι γ κ := by
@@ -295,13 +291,13 @@ theorem exists_isLevLift (l : Level H) (V : HSp D) (ι : Dw.La →ₗ[𝓞 D.hos
 open GlobalTheory.UnifEvery in
 
 /- English proof (translation)
-Introduce `D H Dw l V ι hι`. Establish `hs : ∀ k : GlobalTheory.IndefiniteRowSideFullHecke.LiftedCharacterResidue.stabLat V, (k : GA D V) ∈ GlobalTheory.IndefiniteRowSideFullHecke.EmbeddingLevelSets.levSet V 1` using `fun k => mem_levSet_one.2 ⟨k.2.1, fun z hz => (k.2.2 z).2 hz⟩`. Establish `hs' : ∀ {k : GA D V}, k ∈ GlobalTheory.IndefiniteRowSideFullHecke.EmbeddingLevelSets.levSet V 1 → k ∈ GlobalTheory.IndefiniteRowSideFullHecke.LiftedCharacterResidue.stabLat V` using `fun {k} h => ⟨h.1, fun z => ⟨fun hz => by`. Use `GlobalTheory.RecDict.finHom_inv_mulVec_mem V k (mem_levSet_one.1 h).2 _ hz` as an intermediate fact. Rewrite using `[← finHom_mul, inv_mul_cancel, map_one, Units.val_one, Matrix.one_mulVec] at this,` and apply the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use the proof step `(mem_levSet_one.1 h).2 z⟩⟩`. Use `choose r hr using fun k : GlobalTheory.IndefiniteRowSideFullHecke.LiftedCharacterResidue.stabLat V => GlobalTheory.T.exists_lattice_automorphism_mod_halfLevel D V H Dw l ι hι k (hs k)`. Establish `hi : ∀ k, Ind V l ι (r k) k` using `fun k => ⟨hs k, hr k⟩`. Take `⟨Kf, hK, -⟩` from `GlobalTheory.RecDict.exists_isLevelK D V l.M`. Establish `hone` using `ind_one_iff hι hK ((GlobalTheory.Member.finCong_iff_half_and_kfHalf D H l V).2 Kf hK)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨MonoidHom.mk' r fun a b => (hi (a * b)).unique hι ((hi a).mul hι (hi b)), fun γ => ?_, fun k => ⟨fun h => ?_, fun h => ?_⟩, fun k a ha => ?_⟩` and prove the remaining obligations. Take `⟨κ, hκ⟩` from `exists_isLevLift l V ι hι γ`. Establish `h` using `ind_of_isLevLift hι hκ`. Conclude with `⟨⟨κ, hs' h.1⟩, (hi _).unique hι h⟩`. Establish `h1 : r k = 1` using `h`.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨k.2, ((hone k).1 (h1 ▸ hi k)).2⟩`. Conclude with `(hi k).unique hι ((hone k).2 ⟨k.2.1, h.2⟩)`. Take `⟨w, hw, e⟩` from `((hi k).isLevLift hι).2.2 a ha _ (map_mem_smul_top (liftLa (r k)) ha) (liftLa_spec _ a)`. Conclude with `⟨-w, neg_mem hw, by rw [neg_nsmul, ← e, neg_sub]; rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isReduction : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H) (V : Formalism.BasicNotions.TH.HSp D) (ι : Dw.La →ₗ[𝓞 D.host.E] (Fin (@HSpace.rank D.host.E _ _ D.host.cmStar V) → D.host.E)), LatEmb V ι → ∃ red : GlobalTheory.IndefiniteRowSideFullHecke.LiftedCharacterResidue.stabLat V →* GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms.LevelAut Dw l, GlobalTheory.LevDesc.IsReduction V ι red := by
   intro D H Dw l V ι hι

@@ -18,7 +18,7 @@ namespace SheetOnlyNull
 variable {n d : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← isUnit_iff_ne_zero, ← LinearMap.isUnit_iff_isUnit_det, LinearMap.isUnit_iff_ker_eq_bot, LinearMap.ker_eq_bot]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem injective_iff_det_ne_zero (L : (Fin d → ℂ) →L[ℂ] (Fin d → ℂ)) :
     Function.Injective L ↔ LinearMap.det (L : (Fin d → ℂ) →ₗ[ℂ] (Fin d → ℂ)) ≠ 0 := by
@@ -27,14 +27,14 @@ theorem injective_iff_det_ne_zero (L : (Fin d → ℂ) →L[ℂ] (Fin d → ℂ)
   rfl
 
 /- English proof (translation)
-Rewrite using `[Module.finrank_pi_fintype, Finset.sum_const, Finset.card_univ, Fintype.card_fin, Complex.finrank_real_complex, smul_eq_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_real_fin_complex (d : ℕ) : Module.finrank ℝ (Fin d → ℂ) = 2 * d := by
   rw [Module.finrank_pi_fintype, Finset.sum_const, Finset.card_univ, Fintype.card_fin,
     Complex.finrank_real_complex, smul_eq_mul, mul_comm]
 
 /- English proof (translation)
-The claim follows from `(LinearMap.toContinuousLinearMap B.mulVecLin).differentiable.comp_differentiableOn hs`.
+A detailed English derivation is pending.
 -/
 theorem differentiableOn_mulVec {m : ℕ} (B : Matrix (Fin m) (Fin n) ℂ) {U : Set (Fin d → ℂ)}
     {s : (Fin d → ℂ) → Fin n → ℂ} (hs : DifferentiableOn ℂ s U) :
@@ -42,7 +42,7 @@ theorem differentiableOn_mulVec {m : ℕ} (B : Matrix (Fin m) (Fin n) ℂ) {U : 
   (LinearMap.toContinuousLinearMap B.mulVecLin).differentiable.comp_differentiableOn hs
 
 /- English proof (translation)
-Introduce `w hw` and use `AnalyticAt.pi fun i => ReciprocityTheory.AnForm.Osgood.osgood d U (fun z => F z i) hU (differentiableOn_pi.1 hF i) w hw`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem analyticOnNhd_of_differentiableOn {m : ℕ} {U : Set (Fin d → ℂ)}
     {F : (Fin d → ℂ) → Fin m → ℂ} (hU : IsOpen U) (hF : DifferentiableOn ℂ F U) :
@@ -51,9 +51,7 @@ theorem analyticOnNhd_of_differentiableOn {m : ℕ} {U : Set (Fin d → ℂ)}
     (differentiableOn_pi.1 hF i) w hw
 
 /- English proof (translation)
-Introduce `w hw`. Establish `hF'` using `(analyticOnNhd_of_differentiableOn hU hF).fderiv w hw`. Establish `hent : ∀ a k, AnalyticAt ℂ (fun z => ReciprocityTheory.AnForm.A.jacC F z a k) w` using `fun a k => by show AnalyticAt ℂ (fun z => fderiv ℂ F z (Pi.single k 1) a) w`. Conclude with `(((ContinuousLinearMap.proj a).comp (ContinuousLinearMap.apply ℂ (Fin d → ℂ) (Pi.single k (1 : ℂ)))).analyticAt _).comp hF'`. Simplify using `only [Matrix.det_apply']`.
-
-Conclude with `Finset.analyticAt_fun_sum _ fun σ _ => analyticAt_const.mul (Finset.analyticAt_fun_prod _ fun i _ => hent _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem analyticOnNhd_det_jacC {U : Set (Fin d → ℂ)} {F : (Fin d → ℂ) → Fin d → ℂ}
     (hU : IsOpen U) (hF : DifferentiableOn ℂ F U) :
@@ -69,9 +67,9 @@ theorem analyticOnNhd_det_jacC {U : Set (Fin d → ℂ)} {F : (Fin d → ℂ) �
     (Finset.analyticAt_fun_prod _ fun i _ => hent _ _)
 
 /- English proof (translation)
-Distinguish the cases in `hx : ∃ s, IsSheetAt J A x s`. Take `⟨s, U, hU, hxU, hsd, hsx, hsec, V, hV, hVs⟩` from `hx`. Establish `hAc : Continuous fun z : Fin n → ℂ => A *ᵥ z` using `by fun_prop`. Use `⟨s, U, interior V ∩ (fun z => A *ᵥ z) ⁻¹' U, hU, isOpen_interior.inter (hU.preimage hAc), hsd, ?_, fun _ => ⟨mem_interior_iff_mem_nhds.2 hV, hxU⟩⟩` and prove the remaining obligations. Introduce and unpack `x' ⟨hx'Z, hx'V, hx'U⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hx's : s (A *ᵥ x') = x'` using `(hVs x' ⟨hx'Z, interior_subset hx'V⟩ hx'U).symm`. Conclude with `⟨hx'U, U, hU, hx'U, hsd, hx's, hsec, interior V, isOpen_interior.mem_nhds hx'V, fun x'' hx'' hAx'' => hVs x'' ⟨hx''.1, interior_subset hx''.2⟩ hAx''⟩`. Conclude with `⟨fun _ => x, ∅, ∅, isOpen_empty, isOpen_empty, differentiableOn_empty, by simp, fun h => absurd h hx⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_sheet_nhds {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin d) (Fin n) ℂ}
     (x : Fin n → ℂ) :
@@ -93,19 +91,15 @@ theorem exists_sheet_nhds {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fi
       by simp, fun h => absurd h hx⟩
 
 /- English proof (translation)
-Take `⟨U, hU, hyU, hsd, hsx, hsec, V, hV, hVs⟩` from `hs`. Use `set F : (Fin d → ℂ) → Fin d → ℂ := fun w => A' *ᵥ s w with hFdef`. Establish `hFa` using `analyticOnNhd_of_differentiableOn hU (differentiableOn_mulVec A' hsd)`. Use `set G : Set (Fin d → ℂ) := U ∩ (fun w => (ReciprocityTheory.AnForm.A.jacC F w).det) ⁻¹' {0}ᶜ with hGdef`. Establish `hG : IsOpen G` using `(analyticOnNhd_det_jacC hU (differentiableOn_mulVec A' hsd)).continuousOn |>.isOpen_inter_preimage hU isOpen_compl_singleton`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj : ∀ w, (ReciprocityTheory.AnForm.A.jacC F w).det ≠ 0 → Function.Injective (fderiv ℂ F w)` using `fun w hw => (injective_iff_det_ne_zero _).2 (by rwa [← ReciprocityTheory.AnForm.A.det_jacC])`. Establish `hequiv : ∀ w ∈ G, ∃ e : (Fin d → ℂ) ≃L[ℂ] (Fin d → ℂ), HasStrictFDerivAt F (e : (Fin d → ℂ) →L[ℂ] (Fin d → ℂ)) w`. Introduce `w hw`. Use `⟨(LinearEquiv.ofInjectiveEndo _ (hinj w hw.2)).toContinuousLinearEquiv, ?_⟩` and prove the remaining obligations. Conclude with `(hFa w hw.1).hasStrictFDerivAt.congr_fderiv (ContinuousLinearMap.ext fun v => rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨e, he⟩` from `hequiv _ ⟨hyU, hdet⟩`. Use `set φ := he.toOpenPartialHomeomorph F with hφdef`. Establish `hφ : ∀ w, φ w = F w` using `fun w => by rw [hφdef, HasStrictFDerivAt.toOpenPartialHomeomorph_coe]`. Establish `hysrc : A *ᵥ x ∈ φ.source` using `he.mem_toOpenPartialHomeomorph_source`. Establish `hFx : F (A *ᵥ x) = A' *ᵥ x` using `by simp only [hFdef, hsx]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hsym : φ.symm (A' *ᵥ x) = A *ᵥ x` using `by rw [← hFx, ← hφ, φ.left_inv hysrc]`. Use `⟨s ∘ φ.symm, φ.target ∩ φ.symm ⁻¹' G, φ.isOpen_inter_preimage_symm hG, ⟨by rw [← hFx, ← hφ]; exact φ.map_source hysrc, by rw [Set.mem_preimage, hsym]; exact ⟨hyU, hdet⟩⟩, ?_, by simp only [Function.comp_apply, hsym, hsx], fun z hz => ⟨?_, (hsec _ hz.2.1).2⟩, ?_⟩` and prove the remaining obligations. Introduce `z ⟨hzT, hzG⟩`. Take `⟨e', he'⟩` from `hequiv _ hzG`. Establish `hsymd : HasFDerivAt φ.symm _ z` using `φ.hasFDerivAt_symm hzT (f' := e') (by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (φ : (Fin d → ℂ) → Fin d → ℂ) = F` using `funext hφ`. Rewrite using `[this]`. Conclude with `he'.hasFDerivAt)`. Conclude with `((hsd.differentiableAt (hU.mem_nhds hzG.1)).comp z hsymd.differentiableAt).differentiableWithinAt`. Use `show F (φ.symm z) = z`.
-
-Rewrite using `[← hφ, φ.right_inv hz.1]`. Use `⟨V ∩ (fun z => A *ᵥ z) ⁻¹' (φ.source ∩ U), inter_mem hV (((φ.open_source.inter hU).preimage (by fun_prop)).mem_nhds ⟨hysrc, hyU⟩), ?_⟩` and prove the remaining obligations. Introduce and unpack `x'' ⟨hx''Z, hx''V, hx''src, hx''U⟩ -`. Establish `hx'' : x'' = s (A *ᵥ x'')` using `hVs x'' ⟨hx''Z, hx''V⟩ hx''U`. Establish `hA' : A' *ᵥ x'' = φ (A *ᵥ x'')` using `by rw [hφ, hFdef]; exact congrArg _ hx''`.
-
-Rewrite using `[Function.comp_apply, hA', φ.left_inv hx''src]`. Conclude with `hx''`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sheet_of_det_ne_zero {J : Ideal (MvPolynomial (Fin n) ℂ)}
     {A A' : Matrix (Fin d) (Fin n) ℂ} {x : Fin n → ℂ} {s : (Fin d → ℂ) → Fin n → ℂ}
@@ -153,15 +147,13 @@ theorem exists_sheet_of_det_ne_zero {J : Ideal (MvPolynomial (Fin n) ℂ)}
     exact hx''
 
 /- English proof (translation)
-Take `⟨U, hU, hyU, hsd, hsx, hsec, V, hV, hVs⟩` from `hs`. Use `set F : (Fin d → ℂ) → Fin d → ℂ := fun w => A' *ᵥ s w with hFdef`. Assume the negation of the conclusion as `hall`. Use `push Not at hall`. Establish `hcrit : F '' (W₀ ∩ U) ⊆ F '' {w | w ∈ U ∧ ¬ Function.Injective (fderiv ℂ F w)}` using `Set.image_mono fun w hw => ⟨hw.2, fun hinj => (injective_iff_det_ne_zero _).1 hinj (by rw [← ReciprocityTheory.AnForm.A.det_jacC]; exact hall w hw.1)⟩`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnull` using `measure_mono_null hcrit (h₂ d d U F hU (differentiableOn_mulVec A' hsd))`. Establish `hxZ : x ∈ zeroSet J` using `hsx ▸ (hsec _ hyU).2`. Establish `hAc : Continuous fun z : Fin n → ℂ => A *ᵥ z` using `by fun_prop`. Establish `hnhds` using `h₁ n d J (linPoly A') hJ hA'.injective hA'.finite x hxZ (V ∩ (fun z => A *ᵥ z) ⁻¹' (W₀ ∩ U)) (inter_mem hV (((hW₀.inter hU).preimage hAc).mem_nhds ⟨hxW₀, hyU⟩))`. Establish `hev : ∀ z : Fin n → ℂ, (fun i => eval z (linPoly A' i)) = A' *ᵥ z` using `fun z => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i`. Simplify using `[linPoly, Matrix.mulVec, dotProduct]`. Simplify using `only [hev] at hnhds`. Establish `hsub : (fun z => A' *ᵥ z) '' (IndefiniteRowSideFullHecke.ComplexSets.zeroLocus J ∩ (V ∩ (fun z => A *ᵥ z) ⁻¹' (W₀ ∩ U))) ⊆ F '' (W₀ ∩ U)`. Introduce and unpack `_ ⟨z, ⟨hzZ, hzV, hzW⟩, rfl⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨A *ᵥ z, hzW, ?_⟩` and prove the remaining obligations. Simplify using `only [hFdef]`. Rewrite using `[← hVs z ⟨hzZ, hzV⟩ hzW.2]`. Establish `hpos` using `Measure.measure_pos_of_mem_nhds (μ := μH[(Module.finrank ℝ (Fin d → ℂ) : ℝ)]) (Filter.mem_of_superset hnhds hsub)`. Rewrite `hpos` using `[finrank_real_fin_complex]`.
-
-Conclude with `hpos.ne' hnull`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_det_ne_zero (h₁ : IndefiniteRowSideFullHecke.ComplexSets.FiniteMapOpen.Statement)
     (h₂ : IndefiniteRowSideFullHecke.ComplexSets.CriticalImageNull.Statement) {J : Ideal (MvPolynomial (Fin n) ℂ)}
@@ -200,13 +192,13 @@ theorem exists_det_ne_zero (h₁ : IndefiniteRowSideFullHecke.ComplexSets.Finite
 end SheetOnlyNull
 
 /- English proof (translation)
-Introduce `n d J A A' hJ _ _ hA'`. Use `set B := {x | x ∈ zeroSet J ∧ (∃ s, IsSheetAt J A x s) ∧ ¬ ∃ s', IsSheetAt J A' x s'} with hBdef`. Use `choose σ U W hU hW hσd hWsh hxW using fun x : Fin n → ℂ => SheetOnlyNull.exists_sheet_nhds (J := J) (A := A) x`. Take `⟨T, hTc, hTU⟩` from `TopologicalSpace.isOpen_iUnion_countable W hW`. Establish `hpiece : ∀ i, volume ((fun x => A *ᵥ x) '' (B ∩ W i)) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `i`. Apply `ReciprocityTheory.AnForm.volume_eq_zero_of_locally_in_analytic_zero_set` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, ⟨hxB, hxWi⟩, rfl⟩`. Take `⟨hAx, hsh⟩` from `hWsh i x ⟨hxB.1, hxWi⟩`. Take `⟨r, hr, hball⟩` from `Metric.isOpen_iff.mp (hU i) _ hAx`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨Metric.ball (A *ᵥ x) r, Metric.isOpen_ball, Metric.mem_ball_self hr, (convex_ball _ r).isPreconnected, fun w => (ReciprocityTheory.AnForm.A.jacC (fun v => A' *ᵥ σ i v) w).det, (SheetOnlyNull.analyticOnNhd_det_jacC (hU i) (SheetOnlyNull.differentiableOn_mulVec A' (hσd i))).mono h …` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨x'', ⟨hx''B, hx''W⟩, rfl⟩, -⟩`. Assume the negation of the conclusion as `hne`. Conclude with `hx''B.2.2 (SheetOnlyNull.exists_sheet_of_det_ne_zero (hWsh i x'' ⟨hx''B.1, hx''W⟩).2 hne)`. Use `measure_mono_null ?_ ((measure_biUnion_null_iff hTc).2 fun i _ => hpiece i)` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `_ ⟨x, hxB, rfl⟩`. Establish `hx : x ∈ ⋃ i ∈ T, W i` using `hTU ▸ Set.mem_iUnion.2 ⟨x, hxW x hxB.2.1⟩`. Take `⟨i, hiT, hxi⟩` from `Set.mem_iUnion₂.1 hx`. Conclude with `Set.mem_biUnion hiT ⟨x, ⟨hxB, hxi⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem SheetOnlyNull.proof (h₁ : IndefiniteRowSideFullHecke.ComplexSets.FiniteMapOpen.Statement)
     (h₂ : IndefiniteRowSideFullHecke.ComplexSets.CriticalImageNull.Statement) : SheetOnlyNull.Statement := by

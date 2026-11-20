@@ -22,7 +22,7 @@ namespace GlobalTheory.ClassSumRat
 variable {D : D7} {ρ : Setup D.ntw} (hρ : ρ.Good) {i : D.ntw.Tw} {j : Fin D.R.m} {b : Bool} (rd : Rd ρ D.nexp i j b)
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `hx`. Take `⟨y, rfl⟩` from `hy`. Conclude with `⟨x + y, map_add _ _ _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem add_mem_range {k : ℕ} {x y : GA D (Wc D j) → ℂ} (hx : x ∈ Set.range (rdK rd hρ k)) (hy : y ∈ Set.range (rdK rd hρ k)) :
     x + y ∈ Set.range (rdK rd hρ k) := by
@@ -31,14 +31,14 @@ theorem add_mem_range {k : ℕ} {x y : GA D (Wc D j) → ℂ} (hx : x ∈ Set.ra
   exact ⟨x + y, map_add _ _ _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, map_zero _⟩`.
+Supply the required witnesses or components.
 -/
 theorem zero_mem_range {k : ℕ} : (0 : GA D (Wc D j) → ℂ) ∈ Set.range (rdK rd hρ k) := ⟨0, map_zero _⟩
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `hy`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, smul_zero]`. Conclude with `zero_mem_range hρ rd`. Consider the case `add x y hx hy => rw [map_add, smul_add]`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `add_mem_range hρ rd hx hy`. Consider the case `tmul a f => exact ⟨a ⊗ₜ (c • f), by rw [rdK_tmul, rdK_tmul, LinearMap.map_smulₛₗ, smul_comm]⟩`.
+A detailed English derivation is pending.
 -/
 theorem e_smul_mem_range {k : ℕ} (c : FractionRing (D.ntw.O i)) {y : GA D (Wc D j) → ℂ} (hy : y ∈ Set.range (rdK rd hρ k)) :
     ρ.e i b c • y ∈ Set.range (rdK rd hρ k) := by
@@ -49,11 +49,9 @@ theorem e_smul_mem_range {k : ℕ} (c : FractionRing (D.ntw.O i)) {y : GA D (Wc 
   | tmul a f => exact ⟨a ⊗ₜ (c • f), by rw [rdK_tmul, rdK_tmul, LinearMap.map_smulₛₗ, smul_comm]⟩
 
 /- English proof (translation)
-Take `⟨p, d, hd, e⟩` from `D.ntw.Ok_gen i k a`. Generalize the expression as in `Polynomial.aeval (D.ntw.zk i k : D.ntw.Ok i k) p = u at e`. Establish `h1 : ρ.ek i b k a * ρ.eO i b d = ρ.eOk i b k u`. Rewrite using `[← hρ.ek_e i b k d]`. Conclude with `(map_mul (ρ.ek i b k) _ _).symm.trans (congrArg (ρ.ek i b k) e)`.
+Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd0 : ρ.eO i b d ≠ 0` using `fun h => hd (ρ.eO_injective i b (h.trans (map_zero _).symm))`. Establish `h2 : ρ.ek i b k a = ρ.e i b (algebraMap (D.ntw.O i) _ d)⁻¹ * ρ.eOk i b k u`. Rewrite using `[map_inv₀, ← h1, mul_comm (ρ.ek i b k a)]`. Conclude with `(inv_mul_cancel_left₀ hd0 _).symm`. Take `⟨x, rfl⟩` from `hy`.
-
-Rewrite using `[h2, mul_smul]`. Conclude with `e_smul_mem_range hρ rd _ ⟨u • x, LinearMap.map_smulₛₗ _ _ _⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ek_smul_mem_range {k : ℕ} (a : FractionRing (D.ntw.Ok i k)) {y : GA D (Wc D j) → ℂ} (hy : y ∈ Set.range (rdK rd hρ k)) :
     ρ.ek i b k a • y ∈ Set.range (rdK rd hρ k) := by
@@ -73,9 +71,9 @@ theorem ek_smul_mem_range {k : ℕ} (a : FractionRing (D.ntw.Ok i k)) {y : GA D 
 include hρ in
 
 /- English proof (translation)
-Take `⟨N₀, hN₀, hK⟩` from `GlobalTheory.LevFinCong.exists_finCong_lev D (Vc D j) (ρ.B i j b).F.βS ((ρ.B i j b).levS t)`. Establish `hbad : 0 < ρ.bad i` using `Nat.pos_of_ne_zero (hρ.bad_ne i)`. Establish `hK' : ∀ k ∈ GfC (Vc D j), GlobalTheory.Member.FinCong (Vc D j) N₀ k → FWT.fin (Vc D j) k ∈ (ρ.B i j b).levJ t` using `fun k hk hc => ((ρ.B i j b).finPt_mem_levJ _ hk).2 (hK k hk hc).1`. Take `⟨h', ⟨hh', hs⟩, γ, k, e⟩` from `GlobalTheory.SplitReps.exists_split_rep (Vc D j) hN₀ hK' hbad (finPt (Vc D j) h)`. Take `⟨-, e', P, hP, hoff, hsupp⟩` from `GlobalTheory.SplitReps.splitOffBad_of_suppSplit (Vc D j) (ρ.bad i) h' hh' hs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨γ, P, h', k, ⟨e', hP⟩, hoff, hh', ?_, e⟩` and prove the remaining obligations. Rewrite using `[idem_eq hP]`. Conclude with `hsupp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rep (t : Twist D Circle) (h : GA D (Vc D j)) : ∃ (γ : GQ (Vc D j)) (s : Finset (Pl D.host.E)) (h' : GA D (Vc D j))
     (κ : (ρ.B i j b).levJ t), SplitSet s ∧ (∀ v ∈ s, ((ρ.bad i : ℕ) : 𝓞 D.host.E) ∉ v.asIdeal) ∧ h' ∈ GfC (Vc D j) ∧
@@ -92,9 +90,9 @@ theorem exists_rep (t : Twist D Circle) (h : GA D (Vc D j)) : ∃ (γ : GQ (Vc D
   exact hsupp
 
 /- English proof (translation)
-Take `⟨ht, hadm, hval⟩` from `GlobalTheory.TwistGood.tw_good D _ D.ntw ρ hρ i j b k Q ψ hψ`. Establish `h1` using `hR k Q ψ hψ hQ s h P hd ⟨1, GlobalTheory.SplitLinear.suppAt_one _ _, rfl⟩`. Rewrite `h1` using `[mul_one, GlobalTheory.TwTraceCx.gen_eq_smul (hρ.base i j b) ht hadm (hρ.weil_base i j b) (hρ.weil i j b _ ht)]`. Take `⟨u, hu⟩` from `hval (detRoot (Vc D j) h)`. Establish `hc : ((detChar (Vc D j) (ρ.tw i b k Q ψ).chi h : Circle) : ℂ) = ρ.ek i b k (algebraMap (D.ntw.Ok i k) _ u)` using `hu`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `ek_smul_mem_range hρ rd (algebraMap (D.ntw.Ok i k) _ u)⁻¹ h1`. Rewrite `h2` using `[map_inv₀, ← hc, inv_smul_smul₀ (Circle.coe_ne_zero _)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem series_datum (hR : RatTwist hρ rd) {k Q ψ} (hψ : TwOK i k Q ψ) (hQ : ClsQ (D := D) Q) {s h P}
     (hd : ρ.IsDatum i j b s h P) :
@@ -108,15 +106,13 @@ theorem series_datum (hR : RatTwist hρ rd) {k Q ψ} (hψ : TwOK i k Q ψ) (hQ :
   rwa [map_inv₀, ← hc, inv_smul_smul₀ (Circle.coe_ne_zero _)] at h2
 
 /- English proof (translation)
-Take `⟨ht, hadm, -⟩` from `GlobalTheory.TwistGood.tw_good D _ D.ntw ρ hρ i j b k Q ψ hψ`. Establish `hB` using `hρ.base i j b`. Take `⟨hF1, hF2⟩` from `((ρ.B i j b).mem_mtLat _ _ _).1 hF`. Take `⟨γ, s, h', κ, hs, hoff, hh', hsupp, e⟩` from `exists_rep hρ (i := i) (b := b) (ρ.tw i b k Q ψ) h`. Establish `hlaw` using `((ρ.B i j b).mem_formsC.1 hF1).2 γ (finPt _ h') κ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hinv : ((ρ.B i j b).act ((γ⁻¹ : GQ (Vc D j)) : GA D (Vc D j))) ((ρ.B i j b).act (γ : GA D (Vc D j)) (F (finPt _ h'))) = F (finPt _ h')`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Subgroup.coe_inv, inv_mul_cancel, map_one, Module.End.one_apply]`. Rewrite using `[e, hlaw, LinearMap.map_smul, GlobalTheory.BaseClassSum.series_move hB (D.sp.V_sig _) ht hadm (hρ.weil i j b _ ht) hh hh' γ κ e, hinv, smul_smul, mul_inv_cancel₀ (Units.ne_zero _), one_smul]`. Establish `hspan : F (finPt _ h') ∈ Submodule.span (ρ.eOk i b k).range (ρ.lat i j b (ρ.eO i b).range h' : Set (PolF D (Wc D j).rank (Vc D j).rank))` using `GlobalTheory.SmallSpan.harmLat_le_span (RingHom.id _) (embLL0 D) (labLL0 D) (ρ.eO i b).range (ρ.eOk i b k).range (hρ.isCoefRing_k i b k).int _ _ hB.wt (GlobalTheory.CoefLatConj.pq_le hB) (GlobalTheory.SmallSpan.isLattice_latAt hB.frame _) (hF2 _)`. Generalize the expression as in `F (finPt _ h') = P at hspan`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Proceed by induction on `hspan using Submodule.span_induction with`. Consider the case `mem P hP => exact series_datum hρ rd hR hψ hQ ⟨hs, hoff, hh', hsupp, hP⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem_range hρ rd`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `add_mem_range hρ rd hx hy`. Consider the case `smul a x _ hx`. Take `⟨_, u, rfl⟩` from `a`. Establish `h2` using `ek_smul_mem_range hρ rd (algebraMap (D.ntw.Ok i k) _ u) hx`. Rewrite `h2` using `[← map_smul]`.
-
-Conclude with `h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem term_mem (hR : RatTwist hρ rd) {k Q ψ} (hψ : TwOK i k Q ψ) (hQ : ClsQ (D := D) Q) {F} (hF : F ∈ ρ.mt i j b k Q ψ)
     {h : GA D (Vc D j)} (hh : h ∈ GfC (Vc D j)) :
@@ -148,13 +144,13 @@ theorem term_mem (hR : RatTwist hρ rd) {k Q ψ} (hψ : TwOK i k Q ψ) (hQ : Cls
     exact h2
 
 /- English proof (translation)
-Introduce `D ρ hρ i j b rd T hR _ k Q ψ hψ hQ f`. Take `⟨ht, hadm, -⟩` from `GlobalTheory.TwistGood.tw_good D _ D.ntw ρ hρ i j b k Q ψ hψ`. Establish `hc` using `hρ.classes i j b _ ht hadm`. Establish `hf : f ∈ Submodule.span (FractionRing (D.ntw.Ok i k)) (D.nexp.MtLat i ((j : ℕ) + 1) b k Q ψ : Set (D.nexp.MtV i ((j : ℕ) + 1) b k Q ψ))`. Rewrite using `[D.nexp.MtLat_span]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f hf`. Establish `hF` using `(T.mtLat_iff k Q ψ hψ _).2 ⟨f, hf, rfl⟩`. Rewrite using `[Setup.sum, Base.classSum_apply]`.
+Check the elementary cases of the proposition. Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_induction _ (· ∈ Set.range (rdK rd hρ k)) (fun _ _ => add_mem_range hρ rd) (zero_mem_range hρ rd) fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← map_natCast (ρ.ek i b k), ← map_inv₀]`. Conclude with `ek_smul_mem_range hρ rd _ (term_mem hρ rd hR hψ hQ hF (hc.fin c))`. Consider the case `zero => rw [map_zero, map_zero]`. Conclude with `zero_mem_range hρ rd`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [map_add, map_add]`. Conclude with `add_mem_range hρ rd hx hy`. Consider the case `smul a x _ hx => rw [LinearMap.map_smulₛₗ, map_smul]`. Conclude with `ek_smul_mem_range hρ rd a hx`.
+A detailed English derivation is pending.
 -/
 theorem sum_mem_range : ∀ (D : D7) (ρ : Setup D.ntw) (hρ : ρ.Good) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool) (rd : Rd ρ D.nexp i j b) (T : CellTie hρ D.nexp rd), RatTwist hρ rd → (∀ (k : Fin 2) (z : ℂ), z ^ (D.host.g k * (D.host.g k - 1)) = 1 → z ∈ (embLL0 D).fieldRange) →
   ∀ k Q ψ, TwOK i k Q ψ → ClsQ (D := D) Q → ∀ f, ρ.sum i j b k Q ψ (T.rdV k Q ψ f) ∈ Set.range (rdK rd hρ k) := by

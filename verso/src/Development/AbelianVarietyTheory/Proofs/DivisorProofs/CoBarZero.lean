@@ -31,7 +31,7 @@ def coBar (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.
     (Γ.W.J.map Bs.τ₁)ᵀ * (1 : GL (Fin (a + a')) (Fv D.host.F Bs.v₁)).1)
 
 /- English proof (translation)
-Unfold `coBar`. Rewrite using `[Matrix.map_add _ (map_add _)]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, neg_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coBar_add (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo D.sp.cm.sig a a')
     (u u' : Matrix (Fin a') (Fin (a + a')) (AE D.host.F D.host.E)) :
@@ -41,7 +41,7 @@ theorem coBar_add (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
   simp only [Matrix.mul_add, Matrix.add_mul, neg_add]
 
 /- English proof (translation)
-Unfold `coBar`. Rewrite using `[Matrix.map_zero _ (map_zero _)]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coBar_zero (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo D.sp.cm.sig a a') : coBar Bs Γ 0 = 0 := by
   unfold coBar

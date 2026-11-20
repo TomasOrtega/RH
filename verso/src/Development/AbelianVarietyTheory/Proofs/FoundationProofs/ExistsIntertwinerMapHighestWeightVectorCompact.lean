@@ -8,7 +8,7 @@ open Formalism.BasicNotions.TH
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `conv_lhs => rw [Matrix.matrix_eq_sum_single Z]`. Simplify using `only [Fintype.sum_sum_type, Finset.univ_eq_empty, Finset.sum_empty, add_zero, Eab, Matrix.smul_single, smul_eq_mul, mul_one]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mat_compact_eq_sum_units {n : ℕ} (Z : Mat n 0) :
     Z = ∑ a : Fin n, ∑ b : Fin n,
@@ -18,13 +18,11 @@ theorem mat_compact_eq_sum_units {n : ℕ} (Z : Mat n 0) :
     Matrix.smul_single, smul_eq_mul, mul_one]
 
 /- English proof (translation)
-Introduce `a b c d`. Use `show M.act _ * M.act _ - M.act _ * M.act _ = _`. Rewrite using `[← M.lie, map_sub]`. Use `congr 1`. Use `split_ifs with h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `h` using the available equality. Simplify using `[Eab]`. Rewrite using `[Eab, Eab, Matrix.single_mul_single_of_ne, map_zero]`. Introduce `h'`. Conclude with `h (Sum.inl_injective h')`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using `[Eab]`. Rewrite using `[Eab, Eab, Matrix.single_mul_single_of_ne, map_zero]`. Introduce `h'`.
-
-Conclude with `h (Sum.inl_injective h')`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem gkMod_compact_glRel {n : ℕ} (M : GKMod n 0) :
     Formalism.REAL.GlRel (fun a b : Fin n => M.act (Eab (Sum.inl a : Ix n 0) (Sum.inl b))) := by
@@ -42,7 +40,7 @@ theorem gkMod_compact_glRel {n : ℕ} (M : GKMod n 0) :
       intro h'; exact h (Sum.inl_injective h')
 
 /- English proof (translation)
-Use `h.2 S fun Z y hy => ?_` and prove the remaining obligations. Rewrite using `[mat_compact_eq_sum_units Z]`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply]`. Conclude with `S.sum_mem fun a _ => S.sum_mem fun b _ => S.smul_mem _ (hS a b y hy)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gkMod_compact_irr_units {n : ℕ} (M : GKMod n 0) (h : Formalism.MainNotions.SchurIrreducible.IrrGK M)
     (S : Submodule ℂ M.V)
@@ -54,7 +52,7 @@ theorem gkMod_compact_irr_units {n : ℕ} (M : GKMod n 0) (h : Formalism.MainNot
   exact S.sum_mem fun a _ => S.sum_mem fun b _ => S.smul_mem _ (hS a b y hy)
 
 /- English proof (translation)
-Take `⟨-, h1, h2⟩` from `h`. Simplify using `only [wtSub, SetLike.mem_coe, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero] at h1 h2`. Conclude with `⟨fun a => h1 _, fun a b hab => h2 (Sum.inl a) (Sum.inl b) hab⟩`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem gkMod_compact_isHW_units {n : ℕ} (M : GKMod n 0) (Λ : Ix n 0 → ℚ) (v : M.V)
     (h : IsHW M.act Λ v) :
@@ -66,15 +64,15 @@ theorem gkMod_compact_isHW_units {n : ℕ} (M : GKMod n 0) (Λ : Ix n 0 → ℚ)
   exact ⟨fun a => h1 _, fun a b hab => h2 (Sum.inl a) (Sum.inl b) hab⟩
 
 /- English proof (translation)
-Introduce `n M M' Λ v v' hM hM' hv hv'`. Establish `w` using `gkMod_compact_isHW_units M Λ v hv`. Establish `w'` using `gkMod_compact_isHW_units M' Λ v' hv'`. Take `⟨T, hT⟩` from `exists_linearEquiv_of_irreducible_isHW M.V M'.V n _ _ _ v v' (gkMod_compact_glRel M) (gkMod_compact_glRel M') (gkMod_compact_irr_units M hM) (gkMod_compact_irr_units M' hM') w w' hv.1 hv'.1`. Take `⟨S, hS, hvS, htop⟩` from `exists_stable_submodule_topWeight_line M'.V n _ _ v' (gkMod_compact_glRel M') w'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hStop : S = ⊤`. Break down `gkMod_compact_irr_units M' hM' S hS with h | h` into its components or cases. Rewrite `hvS` using `[h, Submodule.mem_bot]`. Conclude with `absurd hvS hv'.1`. Conclude with `h`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc⟩` from `htop (T v) (by rw [hStop]; trivial) (fun a => by`. Rewrite using `[← hT a a v, w.1 a, map_smul])`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Rewrite `hc` using `[zero_smul, map_eq_zero_iff T T.injective]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `hv.1 hc`. Use `⟨c⁻¹ • T.toLinearMap, ?_, fun Z x => ?_⟩` and prove the remaining obligations. Simplify using `[hc, smul_smul, hc0]`. Establish `key : T (M.act Z x) = M'.act Z (T x)`. Rewrite using `[mat_compact_eq_sum_units Z]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hT a b x]`. Simplify using `only [LinearMap.smul_apply, LinearEquiv.coe_coe, key, map_smul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_intertwiner_map_highestVector :
     ∀ (n : ℕ) (M M' : GKMod n 0) (Λ : Ix n 0 → ℚ) (v : M.V) (v' : M'.V),

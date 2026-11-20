@@ -7,7 +7,7 @@ open Formalism.BasicNotions GlobalTheory GlobalTheory.Cartier GlobalTheory.CechP
 open scoped Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.ConstLat.unitAt_det_compl_of_atTest` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCoverChartLeftInverseRegular.lean&line=29#L29)
 -/

@@ -15,7 +15,7 @@ universe u
 section Valuation
 
 /- English proof (translation)
-Set `f : R →+* w.integer` to `(algebraMap R L).codRestrict w.integer hR`. Establish `hx' : IsIntegral w.integer (RingHom.id L x)` using `IsIntegral.map_of_comp_eq f (RingHom.id L) (by ext r; rfl) hx`. Conclude with `(Valuation.integer.integers w).mem_of_integral hx'`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem valuation_le_one_of_isIntegral {R L : Type*} [CommRing R] [Field L] [Algebra R L]
     (w : Valuation L (WithZero (Multiplicative ℤ))) (hR : ∀ r : R, w (algebraMap R L r) ≤ 1)
@@ -26,9 +26,9 @@ theorem valuation_le_one_of_isIntegral {R L : Type*} [CommRing R] [Field L] [Alg
   exact (Valuation.integer.integers w).mem_of_integral hx'
 
 /- English proof (translation)
-Take `⟨k, rfl⟩ : ∃ k, a = WithZero.exp k` from `⟨_, (WithZero.exp_log ha0).symm⟩`. Take `⟨m, rfl⟩ : ∃ m, b = WithZero.exp m` from `⟨_, (WithZero.exp_log hb).symm⟩`. Establish `hk : k < 0`. Rewrite `ha` using `[← WithZero.exp_zero]`. Conclude with `WithZero.exp_lt_exp.1 ha`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨m.toNat, ?_⟩` and prove the remaining obligations. Rewrite using `[← WithZero.exp_nsmul, ← WithZero.exp_add, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Establish `: (m.toNat : ℤ) * k ≤ -(m.toNat : ℤ)` using `by nlinarith [Int.self_le_toNat m]`. Rewrite using `[nsmul_eq_mul]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_mul_pow_le_one {a b : WithZero (Multiplicative ℤ)} (ha0 : a ≠ 0) (ha : a < 1)
     (hb : b ≠ 0) : ∃ N : ℕ, b * a ^ N ≤ 1 := by
@@ -59,7 +59,7 @@ instance liesOver_underPlace (w : HeightOneSpectrum (𝓞 L)) :
 
 omit [NumberField F] [NumberField L] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => HeightOneSpectrum.ext h.over, fun h => h ▸ ⟨rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem liesOver_iff_eq_underPlace {w : HeightOneSpectrum (𝓞 L)} {v : HeightOneSpectrum (𝓞 F)} :
     w.asIdeal.LiesOver v.asIdeal ↔ v = underPlace w :=
@@ -68,7 +68,7 @@ theorem liesOver_iff_eq_underPlace {w : HeightOneSpectrum (𝓞 L)} {v : HeightO
 variable {S} in
 omit [NumberField F] [NumberField L] in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, hwv⟩`. Rewrite using `[← liesOver_iff_eq_underPlace.1 hwv]` and apply the resulting hypothesis. Introduce `h`. Conclude with `⟨_, h, inferInstance⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem mem_placesOver_iff {w : HeightOneSpectrum (𝓞 L)} :
     w ∈ placesOver S ↔ underPlace w ∈ S := by
@@ -79,7 +79,7 @@ theorem mem_placesOver_iff {w : HeightOneSpectrum (𝓞 L)} :
     exact ⟨_, h, inferInstance⟩
 
 /- English proof (translation)
-Establish `hv : underPlace (F` using `F) w ∉ S := fun h => hw (mem_placesOver_iff.2 h)`. Rewrite using `[← valuation_liesOver (K := F) L (underPlace (F := F) w) w]`. Conclude with `pow_le_one₀ zero_le (r.2 _ hv)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_algebraMap_integer_le_one {w : HeightOneSpectrum (𝓞 L)} (hw : w ∉ placesOver S)
     (r : S.integer F) : w.valuation L (algebraMap F L r) ≤ 1 := by
@@ -88,7 +88,7 @@ theorem valuation_algebraMap_integer_le_one {w : HeightOneSpectrum (𝓞 L)} (hw
   exact pow_le_one₀ zero_le (r.2 _ hv)
 
 /- English proof (translation)
-The claim follows from `valuation_le_one_of_isIntegral (w.valuation L) (fun r => valuation_algebraMap_integer_le_one S hw r) hx`.
+A detailed English derivation is pending.
 -/
 theorem valuation_le_one_of_isIntegral_integer {x : L} (hx : IsIntegral (S.integer F) x)
     {w : HeightOneSpectrum (𝓞 L)} (hw : w ∉ placesOver S) : w.valuation L x ≤ 1 :=
@@ -96,31 +96,25 @@ theorem valuation_le_one_of_isIntegral_integer {x : L} (hx : IsIntegral (S.integ
     (fun r => valuation_algebraMap_integer_le_one S hw r) hx
 
 /- English proof (translation)
-Break down `eq_or_ne x 0 with rfl | hx0` into its components or cases. Conclude with `isIntegral_zero`. Establish `hT : (Support (𝓞 L) x).Finite` using `Support.finite (𝓞 L) x`. Establish `hTS : ∀ w ∈ Support (𝓞 L) x, underPlace (F` using `F) w ∈ S := fun w hw => by`. Assume the negation of the conclusion as `hn`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression.
 
-Conclude with `(not_lt.2 (h w fun hm => hn (mem_placesOver_iff.1 hm))) hw`. Set `V : Finset (HeightOneSpectrum (𝓞 F))` to `hT.toFinset.image underPlace`. Set `π : HeightOneSpectrum (𝓞 F) → 𝓞 F` to `fun v => (Global.SUnit.exists_pow_classNumber_eq_span v).choose`. Set `t : Fˣ` to `∏ v ∈ V, Global.SUnit.placeUnit v`. Establish `htS : t ∈ S.unit F` using `Subgroup.prod_mem _ fun v hv => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w, hw, rfl⟩` from `Finset.mem_image.1 hv`. Conclude with `Global.SUnit.placeUnit_mem S (hTS w (hT.mem_toFinset.1 hw))`. Establish `ht₀ : (t : F) = algebraMap (𝓞 F) F (∏ v ∈ V, π v)`. Simplify using `only [t, Units.coe_prod, map_prod]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hπ : ∀ v, π v ∈ v.asIdeal` using `fun v => by`. Establish `h1 : π v ∈ Ideal.span {π v}` using `Ideal.mem_span_singleton_self _`. Rewrite `h1` using `[← (Global.SUnit.exists_pow_classNumber_eq_span v).choose_spec.2]`. Conclude with `Ideal.pow_le_self Fintype.card_ne_zero h1`. Establish `hwt : ∀ w ∈ Support (𝓞 L) x, w.valuation L (algebraMap F L t) < 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `w hw`. Establish `hv : underPlace w ∈ V` using `Finset.mem_image_of_mem _ (hT.mem_toFinset.2 hw)`. Establish `hmem : ∏ v ∈ V, π v ∈ (underPlace (F` using `F) w).asIdeal := by`. Rewrite using `[← Finset.mul_prod_erase V π hv]`. Conclude with `Ideal.mul_mem_right _ _ (hπ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem' : algebraMap (𝓞 F) (𝓞 L) (∏ v ∈ V, π v) ∈ w.asIdeal` using `hmem`. Rewrite using `[ht₀, ← IsScalarTower.algebraMap_apply (𝓞 F) F L, IsScalarTower.algebraMap_apply (𝓞 F) (𝓞 L) L, valuation_of_algebraMap]`. Conclude with `(intValuation_lt_one_iff_mem w _).2 hmem'`. Establish `hwt1 : ∀ w : HeightOneSpectrum (𝓞 L), w.valuation L (algebraMap F L t) ≤ 1`. Introduce `w`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Rewrite using `[ht₀, ← IsScalarTower.algebraMap_apply (𝓞 F) F L, IsScalarTower.algebraMap_apply (𝓞 F) (𝓞 L) L]`. Conclude with `w.valuation_le_one _`. Establish `ht0 : algebraMap F L t ≠ 0` using `(map_ne_zero _).2 t.ne_zero`. Establish `hN : ∀ w : HeightOneSpectrum (𝓞 L), ∃ N : ℕ, w ∈ Support (𝓞 L) x → w.valuation L x * w.valuation L (algebraMap F L t) ^ N ≤ 1`. Introduce `w`.
+Supply the required witnesses or components. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Distinguish the cases in `hw : w ∈ Support (𝓞 L) x`. Take `⟨N, hN⟩` from `exists_mul_pow_le_one ((map_ne_zero (w.valuation L)).2 ht0) (hwt w hw) ((map_ne_zero (w.valuation L)).2 hx0)`. Conclude with `⟨N, fun _ => hN⟩`. Conclude with `⟨0, fun h => absurd h hw⟩`. Use `choose Nw hNw using hN`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `N` to `∑ w ∈ hT.toFinset, Nw w`. Set `y` to `algebraMap F L t ^ N * x`. Establish `hy : ∀ w : HeightOneSpectrum (𝓞 L), w.valuation L y ≤ 1`. Introduce `w`. Simplify using `only [y, map_mul, map_pow]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hw : w ∈ Support (𝓞 L) x`. Establish `hle : Nw w ≤ N` using `Finset.single_le_sum (fun _ _ => Nat.zero_le _) (hT.mem_toFinset.2 hw)`. Rewrite using `[mul_comm]`. Conclude with `(mul_le_mul' le_rfl (pow_le_pow_right_of_le_one' (hwt1 w) hle)).trans (hNw w hw)`. Establish `hx1 : w.valuation L x ≤ 1` using `not_lt.1 hw`.
-
-Conclude with `mul_le_one' (pow_le_one₀ zero_le (hwt1 w)) hx1`. Take `⟨b, hb⟩` from `mem_integers_of_valuation_le_one (R := 𝓞 L) L y hy`. Establish `hyI : IsIntegral (S.integer F) y`. Rewrite using `[← hb]`. Conclude with `(RingOfIntegers.isIntegral_coe b).tower_top`.
-
-Establish `hc : (((t⁻¹ ^ N : Fˣ)) : F) ∈ S.integer F` using `fun v hv => (Subgroup.pow_mem _ (inv_mem htS) N v hv).le`. Establish `hxy : x = algebraMap (S.integer F) L ⟨_, hc⟩ * y`. Express the relevant statement in the definitionally equal form `x = algebraMap F L (((t⁻¹ ^ N : Fˣ)) : F) * (algebraMap F L t ^ N * x)`. Rewrite using `[← mul_assoc, ← map_pow, ← map_mul, ← Units.val_pow_eq_pow_val, ← Units.val_mul, inv_pow, inv_mul_cancel, Units.val_one, map_one, one_mul]`. Rewrite using `[hxy]`.
-
-Conclude with `isIntegral_algebraMap.mul hyI`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegral_integer_of_valuation_le_one {x : L}
     (h : ∀ w ∉ placesOver (L := L) S, w.valuation L x ≤ 1) : IsIntegral (S.integer F) x := by
@@ -197,9 +191,9 @@ theorem isIntegral_integer_of_valuation_le_one {x : L}
   exact isIntegral_algebraMap.mul hyI
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx w hw`. Establish `h1` using `valuation_le_one_of_isIntegral_integer S hx.1 hw`. Establish `h2` using `valuation_le_one_of_isIntegral_integer S hx.2 hw`. Use `eq_one_of_one_le_mul_left h1 h2 (Eq.ge ?_)` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← map_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, map_one]`. Introduce `hx`. Conclude with `⟨isIntegral_integer_of_valuation_le_one S fun w hw => (hx w hw).le, isIntegral_integer_of_valuation_le_one S fun w hw => (inv_mem hx w hw).le⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem mem_sUnitsOf_iff_mem_unit {x : Lˣ} :
     x ∈ sUnitsOf S L ↔ x ∈ (placesOver S : Set (HeightOneSpectrum (𝓞 L))).unit L := by
@@ -223,14 +217,14 @@ variable {F : Type u} [Field F] [NumberField F] (S : Set (HeightOneSpectrum (�
 variable (E : Type u) [Field E] [Algebra F E]
 
 /- English proof (translation)
-The claim follows from `isIntegral_algebraMap (x := (⟨c, hc⟩ : S.integer F))`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_algebraMap_of_mem_integer {c : F} (hc : c ∈ S.integer F) :
     IsIntegral (S.integer F) (algebraMap F E c) :=
   isIntegral_algebraMap (x := (⟨c, hc⟩ : S.integer F))
 
 /- English proof (translation)
-The claim follows from `(isIntegral_algHom_iff ((Algebra.ofId F E).restrictScalars (S.integer F)) (algebraMap F E).injective).1 hc`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_of_isIntegral_algebraMap {c : F}
     (hc : IsIntegral (S.integer F) (algebraMap F E c)) : IsIntegral (S.integer F) c :=
@@ -238,7 +232,7 @@ theorem isIntegral_of_isIntegral_algebraMap {c : F}
     (algebraMap F E).injective).1 hc
 
 /- English proof (translation)
-Introduce `v _` and use `valuation_le_one_of_isIntegral (v.valuation F) (fun r => r.2 v ‹_›) hc`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_integer_of_isIntegral {c : F} (hc : IsIntegral (S.integer F) c) : c ∈ S.integer F :=
   fun v _ => valuation_le_one_of_isIntegral (v.valuation F) (fun r => r.2 v ‹_›) hc
@@ -246,11 +240,11 @@ theorem mem_integer_of_isIntegral {c : F} (hc : IsIntegral (S.integer F) c) : c 
 variable {E} in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h v hv`. Establish `h1 : (a : F) ∈ S.integer F` using `mem_integer_of_isIntegral S (isIntegral_of_isIntegral_algebraMap S E h.1)`. Establish `h2 : ((a⁻¹ : Fˣ) : F) ∈ S.integer F`. Use `mem_integer_of_isIntegral S (isIntegral_of_isIntegral_algebraMap S E ?_)` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `h.2` as an intermediate fact. Rewrite `this` using `[← map_inv]`. Then use the resulting hypothesis. Use `eq_one_of_one_le_mul_left (h1 v hv) (h2 v hv) (Eq.ge ?_)` and prove the remaining obligations. Rewrite using `[← map_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, map_one]`. Introduce `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨isIntegral_algebraMap_of_mem_integer S E fun v hv => (h v hv).le, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `isIntegral_algebraMap_of_mem_integer S E fun v hv => (inv_mem h v hv).le`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mem_sUnitsOf_iff {a : Fˣ} :
     Units.map (algebraMap F E : F →* E) a ∈ sUnitsOf S E ↔ a ∈ S.unit F := by
@@ -286,7 +280,7 @@ theorem coe_sUnitsToInvariants_apply (a : Additive (S.unit F)) :
   rfl
 
 /- English proof (translation)
-Introduce `a b h`. Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Conclude with `(algebraMap F E).injective (congrArg (fun v : (galSUnits S E).ρ.invariants => (((Additive.toMul (α := sUnitsOf S E) v.1 : sUnitsOf S E) : Eˣ) : E)) h)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem sUnitsToInvariants_injective : Function.Injective (sUnitsToInvariants S E) := by
   intro a b h
@@ -297,11 +291,11 @@ theorem sUnitsToInvariants_injective : Function.Injective (sUnitsToInvariants S 
     (((Additive.toMul (α := sUnitsOf S E) v.1 : sUnitsOf S E) : Eˣ) : E)) h)
 
 /- English proof (translation)
-Introduce `v`. Set `u : Eˣ` to `((Additive.toMul (α := sUnitsOf S E) v.1 : sUnitsOf S E) : Eˣ)`. Take `⟨a, ha⟩` from `(InfiniteGalois.mem_range_algebraMap_iff_fixed (u : E)).2 fun σ => congrArg (fun w : Additive (sUnitsOf S E) => (((Additive.toMul w : sUnitsOf S E) : Eˣ) : E)) (v.2 σ)`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `ha` using `[map_zero]`. Conclude with `u.ne_zero ha.symm`. Establish `hmap : Units.map (algebraMap F E : F →* E) (Units.mk0 a ha0) = u` using `Units.ext ha`. Establish `hS : Units.mk0 a ha0 ∈ S.unit F`. Rewrite using `[← map_mem_sUnitsOf_iff S (E := E), hmap]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `(Additive.toMul (α := sUnitsOf S E) v.1).2`. Conclude with `⟨Additive.ofMul ⟨Units.mk0 a ha0, hS⟩, Subtype.ext (Additive.toMul.injective (Subtype.ext hmap))⟩`.
+A detailed English derivation is pending.
 -/
 theorem sUnitsToInvariants_surjective [IsGalois F E] :
     Function.Surjective (sUnitsToInvariants S E) := by
@@ -346,11 +340,11 @@ variable (F : Type u) [Field F] [NumberField F] (Ω : Type u) [Field Ω] [Algebr
 variable (S : Set (HeightOneSpectrum (𝓞 F)))
 
 /- English proof (translation)
-Set `f` to `(IntermediateField.inclusion hL).restrictScalars (S.integer F)`. Establish `hf : Function.Injective f` using `(IntermediateField.inclusion hL).toRingHom.injective`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨(isIntegral_algHom_iff f hf).1 h.1, (isIntegral_algHom_iff f hf).1 ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `h.2` as an intermediate fact. Rewrite `this` using `[← map_inv]`. Then use the resulting hypothesis. Introduce `h`. Use `⟨(isIntegral_algHom_iff f hf).2 h.1, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(isIntegral_algHom_iff f hf).2 h.2`.
+A detailed English derivation is pending.
 -/
 theorem map_inclusion_mem_sUnitsMax_iff {L : IntermediateField F Ω}
     (hL : L ≤ maxUnramifiedOutside F Ω S) {x : Lˣ} :
@@ -371,11 +365,11 @@ theorem map_inclusion_mem_sUnitsMax_iff {L : IntermediateField F Ω}
 variable [IsGalois F Ω]
 
 /- English proof (translation)
-Take `⟨L, hf, hu, hmem⟩` from `(mem_maxUnramifiedOutside_iff S).1 (y : maxUnramifiedOutside F Ω S).2`. Establish `hL` using `le_maxUnramifiedOutside S hu`. Establish `hx0 : (⟨_, hmem⟩ : L) ≠ 0`. Introduce `h`. Apply `y.ne_zero` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `congrArg Subtype.val h` as an intermediate fact. Simplify using `at this`. Establish `hmap : Units.map (IntermediateField.inclusion hL : L →* maxUnramifiedOutside F Ω S) (Units.mk0 _ hx0) = y` using `Units.ext rfl`. Use `⟨L, hf, hL, Units.mk0 _ hx0, ?_, hmap⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← map_inclusion_mem_sUnitsMax_iff F Ω S hL, hmap]`. Conclude with `hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_of_mem_sUnitsMax {y : (maxUnramifiedOutside F Ω S)ˣ}
     (hy : y ∈ sUnitsMax F Ω S) :
@@ -405,7 +399,7 @@ variable {F : Type u} [Field F] [NumberField F] {Ω : Type u} [Field Ω] [Algebr
 variable (S : Set (HeightOneSpectrum (𝓞 F)))
 
 /- English proof (translation)
-Apply `IntermediateField.map_injective (IntermediateField.adjoin L {α}).val` to reduce the goal to its premises. Rewrite using `[IntermediateField.adjoin_map, Set.image_singleton, IntermediateField.val_mk, IntermediateField.AdjoinSimple.coe_gen, ← AlgHom.fieldRange_eq_map, IntermediateField.fieldRange_val]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem adjoin_gen_eq_top (L : Type u) [Field L] [Algebra L Ω] (α : Ω) :
     IntermediateField.adjoin L {IntermediateField.AdjoinSimple.gen L α} = ⊤ := by
@@ -417,19 +411,17 @@ theorem adjoin_gen_eq_top (L : Type u) [Field L] [Algebra L Ω] (α : Ω) :
 variable [IsGalois F Ω]
 
 /- English proof (translation)
-Take `⟨L, hfin, hLle, x, hxS, rfl⟩` from `exists_of_mem_sUnitsMax F Ω S hy`. Establish `: NumberField L` using `NumberField.of_module_finite F L`. Establish `hxU` using `(mem_sUnitsOf_iff_mem_unit S).1 hxS`. Establish `hLu : IsUnramifiedOutside S L` using `(isUnramifiedOutside_iff_le_maxUnramifiedOutside S).2 hLle`. Establish `hα' : α ^ n = algebraMap L Ω (x : L)` using `hα`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hαint : IsIntegral L α`. Use `IsIntegral.of_pow (Nat.pos_of_ne_zero hn) ?_` and prove the remaining obligations. Rewrite using `[hα']`. Conclude with `isIntegral_algebraMap`. Set `M : IntermediateField L Ω` to `IntermediateField.adjoin L {α}`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: FiniteDimensional L M` using `IntermediateField.adjoin.finiteDimensional hαint`. Establish `: NumberField M` using `NumberField.of_module_finite L M`. Establish `hgen : α ^ n = algebraMap L Ω (x : L)` using `hα'`. Establish `hβ : IntermediateField.AdjoinSimple.gen L α ^ n = algebraMap L M (x : L)`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SubmonoidClass.coe_pow, IntermediateField.AdjoinSimple.coe_gen, hgen]`. Both sides reduce to the same expression. Establish `hMu : IsUnramifiedOutside (placesOver S) M`. Introduce `w hw`. Use `Global.Kummer.isUnramifiedIn_of_pow_eq x hβ (adjoin_gen_eq_top L α) w ?_ ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hmem`. Establish `hv : underPlace (F` using `F) w ∉ S := fun h => hw (mem_placesOver_iff.2 h)`. Apply `hnS _ hv` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((n : ℕ) : 𝓞 F) ∈ Ideal.comap (algebraMap (𝓞 F) (𝓞 L)) w.asIdeal`. Rewrite using `[Ideal.mem_comap, map_natCast]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hmem`. Rewrite using `[hxU w hw, WithZero.log_one]`. Conclude with `dvd_zero _`. Establish `hMF` using `(isUnramifiedOutside_restrictScalars_iff S hLu M).2 hMu`. Establish `: FiniteDimensional F (M.restrictScalars F)` using `FiniteDimensional.trans F L M`.
-
-Conclude with `le_maxUnramifiedOutside S hMF (IntermediateField.mem_adjoin_simple_self L α)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_maxUnramifiedOutside_of_pow_eq {n : ℕ} (hn : n ≠ 0)
     (hnS : ∀ v ∉ S, ((n : ℕ) : 𝓞 F) ∉ v.asIdeal) {y : (maxUnramifiedOutside F Ω S)ˣ}
@@ -468,7 +460,7 @@ theorem mem_maxUnramifiedOutside_of_pow_eq {n : ℕ} (hn : n ≠ 0)
   exact le_maxUnramifiedOutside S hMF (IntermediateField.mem_adjoin_simple_self L α)
 
 /- English proof (translation)
-The claim follows from `mem_maxUnramifiedOutside_of_pow_eq S hn hnS (sUnitsMax F Ω S).one_mem hζ`.
+A detailed English derivation is pending.
 -/
 theorem mem_maxUnramifiedOutside_of_pow_eq_one {n : ℕ} (hn : n ≠ 0)
     (hnS : ∀ v ∉ S, ((n : ℕ) : 𝓞 F) ∉ v.asIdeal) {ζ : Ω} (hζ : ζ ^ n = 1) :
@@ -476,7 +468,7 @@ theorem mem_maxUnramifiedOutside_of_pow_eq_one {n : ℕ} (hn : n ≠ 0)
   mem_maxUnramifiedOutside_of_pow_eq S hn hnS (sUnitsMax F Ω S).one_mem hζ
 
 /- English proof (translation)
-Use `⟨IsIntegral.of_pow (Nat.pos_of_ne_zero hn) ?_, IsIntegral.of_pow (Nat.pos_of_ne_zero hn) ?_⟩` and prove the remaining obligations. Rewrite using `[← Units.val_pow_eq_pow_val]`. Conclude with `hβ.1`. Rewrite using `[← Units.val_pow_eq_pow_val, inv_pow]`. Conclude with `hβ.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_sUnitsOf_of_pow_mem (E : Type u) [Field E] [Algebra F E] {n : ℕ} (hn : n ≠ 0)
     {β : Eˣ} (hβ : β ^ n ∈ sUnitsOf S E) : β ∈ sUnitsOf S E := by
@@ -489,11 +481,11 @@ theorem mem_sUnitsOf_of_pow_mem (E : Type u) [Field E] [Algebra F E] {n : ℕ} (
 variable [IsSepClosed Ω]
 
 /- English proof (translation)
-Establish `: NeZero ((n : ℕ) : Ω)` using `⟨by`. Rewrite using `[← map_natCast (algebraMap F Ω)]`. Conclude with `(map_ne_zero _).2 (Nat.cast_ne_zero.2 hn)⟩`. Take `⟨α, hα⟩` from `IsSepClosed.exists_pow_nat_eq (((y : maxUnramifiedOutside F Ω S) : Ω)) n`. Establish `hαS` using `mem_maxUnramifiedOutside_of_pow_eq S hn hnS hy hα`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hα0 : (⟨α, hαS⟩ : maxUnramifiedOutside F Ω S) ≠ 0`. Introduce `h`. Establish `h' : α = 0` using `congrArg Subtype.val h`. Rewrite `hα` using `[h', zero_pow hn]`. Conclude with `y.ne_zero (Subtype.ext hα.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpow : Units.mk0 _ hα0 ^ n = y` using `Units.ext (Subtype.ext (by`. Rewrite using `[Units.val_pow_eq_pow_val, Units.val_mk0, SubmonoidClass.coe_pow]`. Conclude with `hα))`. Use `⟨Units.mk0 _ hα0, mem_sUnitsOf_of_pow_mem S _ hn (hpow ▸ hy), hpow⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_pow_eq_of_mem_sUnitsMax {n : ℕ} (hn : n ≠ 0)
     (hnS : ∀ v ∉ S, ((n : ℕ) : 𝓞 F) ∉ v.asIdeal) {y : (maxUnramifiedOutside F Ω S)ˣ}
@@ -515,13 +507,13 @@ theorem exists_pow_eq_of_mem_sUnitsMax {n : ℕ} (hn : n ≠ 0)
   refine ⟨Units.mk0 _ hα0, mem_sUnitsOf_of_pow_mem S _ hn (hpow ▸ hy), hpow⟩
 
 /- English proof (translation)
-Apply `shortComplex_exact_of_forall_exists` to reduce the goal to its premises. Introduce `x hx`. Set `x' : Additive (sUnitsMax F Ω S)` to `x`. Establish `hx2 : n • x' = 0` using `(nsmul_id_hom_apply (galSUnits S (maxUnramifiedOutside F Ω S)) n x).symm.trans hx`. Establish `hx' : (Additive.toMul x' : sUnitsMax F Ω S) ^ n = 1`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← toMul_nsmul, hx2]`. Both sides reduce to the same expression. Establish `hmem : ((Additive.toMul x' : sUnitsMax F Ω S) : (maxUnramifiedOutside F Ω S)ˣ) ∈ rootsOfUnity n (maxUnramifiedOutside F Ω S)`. Rewrite using `[mem_rootsOfUnity, ← Subgroup.coe_pow, hx']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `⟨Additive.ofMul ⟨_, hmem⟩, rfl⟩`. Use `mono_f := (Rep.mono_iff_injective _).2 fun a b h => Additive.toMul.injective (Subtype.ext (congrArg (fun z : Additive (sUnitsMax F Ω S) => ((Additive.toMul z : sUnitsMax F Ω S) : (maxUnramifiedOutside F Ω S)ˣ)) h))`. Use `epi_g := (Rep.epi_iff_surjective _).2 fun y => by`. Take `⟨β, hβ, hβn⟩` from `exists_pow_eq_of_mem_sUnitsMax S (NeZero.ne n) hnS (Additive.toMul y : sUnitsMax F Ω S).2`. Use `⟨Additive.ofMul ⟨β, hβ⟩, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `(nsmul_id_hom_apply (galSUnits S (maxUnramifiedOutside F Ω S)) n _).trans ?_` and prove the remaining obligations. Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `β ^ n = _`. Conclude with `hβn`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem sUnitsKummerSequence_shortExact (n : ℕ) [NeZero n]
     (hnS : ∀ v ∉ S, ((n : ℕ) : 𝓞 F) ∉ v.asIdeal) :

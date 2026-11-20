@@ -13,7 +13,7 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.UpLReS
 open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.SRe
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Mem.SRe.UpS.stepW_has4` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FLevelThreeToFour.lean&line=160#L160)
 -/

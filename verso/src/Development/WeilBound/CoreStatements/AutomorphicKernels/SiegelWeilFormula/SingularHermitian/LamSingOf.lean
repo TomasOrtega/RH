@@ -10,11 +10,11 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace PositivityTheory.SiegelWeilFormula.KSing
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d R w f hf hinv hlam ψ₀ hψ nb hnb g a b`. Establish `htg : IsTopologicalGroup d.G` using `(hAux F E σ d).2.2.1`. Establish `h0` using `fourierStep hCE hFZ hAux d R w f hf hinv hlam ψ₀ hψ nb hnb`. Take `⟨y, x, rfl, hx⟩` from `split d R w g`. Establish `h2` using `twoSidedW hDW d R w htg f hf hinv ψ₀ hψ.1 hψ.2.1 nb hnb h0 x (y * a) b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Eq.trans ?_ h2` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `t`. Use `congr 2`. Rewrite using `[mul_assoc, hx, ← mul_assoc, ← map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lamSing_of (hCE : CoefEx) (hFZ : FourierZero) (hDW : DenseW) (hAux : AuxiliaryPrimeFunction) : LamSing := by
   intro F E _ _ _ _ _ σ d R w f hf hinv hlam ψ₀ hψ nb hnb g a b

@@ -4,7 +4,7 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.standardEtale_mvPolynomial_hypersurface` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FStandardEtaleMvPolynomialHypersurface.lean&line=45#L45)
 -/

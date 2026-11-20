@@ -15,7 +15,7 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 namespace GlobalTheory.NLink
 
 /- English proof (translation)
-Introduce `D HW F Cm` and use `GlobalTheory.T.wachHypothesis_crystallineLattices D HW F Cm (GlobalTheory.T.wachModuleLocalConclusions_usedForms D HW F Cm).1 (GlobalTheory.T.wachModuleLocalConclusions_usedForms D HW F Cm).2 (GlobalTheory.crysOnCond_all D HW F)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem wAll_holds : ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F), WAll D HW F :=
   fun D HW F Cm =>

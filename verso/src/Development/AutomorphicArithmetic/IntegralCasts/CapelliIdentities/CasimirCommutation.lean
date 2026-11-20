@@ -2,19 +2,19 @@ import Mathlib
 import Formalism.RealPlaceAnalysis.StatementA
 
 /- English proof (translation)
-Introduce `A _ n ε E h c d hcd`. Establish `key : ∀ a b, E a b * E b a * E c d - E c d * (E a b * E b a) = E a b * (if a = c then E b d else 0) - E a b * (if d = b then E c a else 0) + (if b = c then E a d else 0) * E b a - (if d = a then E c b else 0) * E b a`. Introduce `a b`. Establish `h1` using `h b a c d`. Establish `h2` using `h a b c d`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: E a b * (if a = c then E b d else 0) - E a b * (if d = b then E c a else 0) + (if b = c then E a d else 0) * E b a - (if d = a then E c b else 0) * E b a = E a b * ((if a = c then E b d else 0) - (if d = b then E c a else 0)) + ((if b = c then E a d else 0) - (if d = a then E c …` using `by noncomm_ring`. Rewrite using `[this, ← h1, ← h2]`. Use `noncomm_ring`. Establish `S1 : ∑ a, ∑ b, (if ε a = ε b then E a b * (if a = c then E b d else 0) else 0) = ∑ b, if ε c = ε b then E c b * E b d else 0`. Rewrite using `[Finset.sum_eq_single c (fun a _ ha => by simp [ha]) (by simp)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `S4 : ∑ a, ∑ b, (if ε a = ε b then (if d = a then E c b else 0) * E b a else 0) = ∑ b, if ε d = ε b then E c b * E b d else 0`. Rewrite using `[Finset.sum_eq_single d (fun a _ ha => by simp [Ne.symm ha]) (by simp)]`. Simplify using the standard rewrite rules. Establish `S2 : ∑ a, ∑ b, (if ε a = ε b then E a b * (if d = b then E c a else 0) else 0) = ∑ a, if ε a = ε d then E a d * E c a else 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single d (fun b _ hb => by simp [Ne.symm hb]) (by simp)]`. Simplify using the standard rewrite rules. Establish `S3 : ∑ a, ∑ b, (if ε a = ε b then (if b = c then E a d else 0) * E b a else 0) = ∑ a, if ε a = ε c then E a d * E c a else 0`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single c (fun b _ hb => by simp [hb]) (by simp)]`. Simplify using the standard rewrite rules. Establish `e : Formalism.REAL.CasK ε E * E c d - E c d * Formalism.REAL.CasK ε E = ∑ a, ∑ b, (if ε a = ε b then E a b * E b a * E c d - E c d * (E a b * E b a) else 0)`. Simplify using `only [Formalism.REAL.CasK, Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `e2 : ∑ a, ∑ b, (if ε a = ε b then E a b * E b a * E c d - E c d * (E a b * E b a) else 0) = ∑ a, ∑ b, (if ε a = ε b then E a b * (if a = c then E b d else 0) else 0) - ∑ a, ∑ b, (if ε a = ε b then E a b * (if d = b then E c a else 0) else 0) + ∑ a, ∑ b, (if ε a = ε b then (if b = …`. Simplify using `only [← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[key]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[← sub_eq_zero, e, e2, S1, S2, S3, S4, hcd]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.CasimirCommutation.casComm_casK_comm :
     ∀ {A : Type} [inst : Ring A] {n : ℕ} (ε : Fin n → Bool) (E : Fin n → Fin n → A),

@@ -10,7 +10,7 @@ open Formalism.MainNotions.DIV.Cons (intO)
 namespace GlobalTheory.FlagEmb.PlkPt
 
 /- English proof (translation)
-Use function extensionality and compare the values at `q`. Establish `h` using `Matrix.det_smul (Matrix.of fun l l' => c (e l) (plE M k q l')) γ`. Rewrite `h` using `[Fintype.card_fin]`. Conclude with `h`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem plk_smul {S ι : Type} [CommRing S] {M k : ℕ} (γ : S) (c : ι → Fin (M + 1) → S) (e : Fin k → ι) :
     plk (fun z => γ • c z) e = γ ^ k • plk c e := by
@@ -20,7 +20,7 @@ theorem plk_smul {S ι : Type} [CommRing S] {M k : ℕ} (γ : S) (c : ι → Fin
   exact h
 
 /- English proof (translation)
-Rewrite using `[valF, dif_pos h]`. Conclude with `((f.isUnit.map _).map _).ne_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valF_unit_ne {F : Type} [Field F] {X : Scheme.{0}} (x : Sp F ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U)
     (f : Γ(X, U)ˣ) : valF x U f.val ≠ 0 := by
@@ -28,7 +28,7 @@ theorem valF_unit_ne {F : Type} [Field F] {X : Scheme.{0}} (x : Sp F ⟶ X) (U :
   exact ((f.isUnit.map _).map _).ne_zero
 
 /- English proof (translation)
-Establish `h` using `(spMap φ).preimage_mono hU.fromSpec_preimage_self.ge`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem top_le_pre {A : Type} [CommRing A] {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) (φ : Γ(X, U) →+* A) :
     ⊤ ≤ (spMap φ ≫ hU.fromSpec) ⁻¹ᵁ U := by
@@ -36,7 +36,7 @@ theorem top_le_pre {A : Type} [CommRing A] {X : Scheme.{0}} {U : X.Opens} (hU : 
   exact h
 
 /- English proof (translation)
-Establish `: dualMap (RingHom.id R) = RingHom.id _`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [dualMap]`. Rewrite using `[this]`. Conclude with `Spec.map_id _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spMap_dualMap_id' (R : Type) [CommRing R] : spMap (dualMap (RingHom.id R)) = 𝟙 _ := by
   have : dualMap (RingHom.id R) = RingHom.id _ := by
@@ -46,17 +46,17 @@ theorem spMap_dualMap_id' (R : Type) [CommRing R] : spMap (dualMap (RingHom.id R
   exact Spec.map_id _
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw Xo p W Y i₀ Z L aff M crd ι ρ g T k _ a i φ ψ hψ en`. Take `⟨hu, h⟩` from `T.plk a en`. Establish `hφ : spMap (φ.comp (ρ a)) ≫ (aff (ι a)).fromSpec = spMap φ ≫ Z.chart a ≫ Z.π`. Rewrite using `[← T.res a, ← Category.assoc]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Spec.map_comp _ _`. Establish `tan : ∀ z : Let Dw.mult, IsTanAtG (Y Z.i).t (spMap (ρ a) ≫ (aff (ι a)).fromSpec) (Z.fr a z.1 z.2)`. Introduce `z`. Establish `h1` using `((T.frame a _ (RingHom.id _)).1 z.1 z.2).1`. Establish `h2 : spMap (RingHom.id Γ(Z.X, (Z.U a).1)) = 𝟙 _` using `Spec.map_id _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h2, Category.id_comp, Vecs.bc, spMap_dualMap_id', Category.id_comp]`. Rewrite using `[T.res a]`. Conclude with `h1`. Establish `nat : (fun z : Let Dw.mult => φ ∘ crd (ι a) _ (ρ a) (Z.fr a z.1 z.2)) = fun z : Let Dw.mult => crd (ι a) k (φ.comp (ρ a)) ((Z.fr a).bc φ z.1 z.2)`. Use function extensionality and compare the values at `fun z => (T.emb.nat (ι a) _ k (ρ a) φ _ (tan z)).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hγ : valF (spMap ψ ≫ (aff i).fromSpec) _ (L.g i (ι a)).val ≠ 0`. Use `valF_unit_ne _ _ ?_ _` and prove the remaining obligations. Establish `h1` using `top_le_pre (aff i) ψ`. Establish `h2` using `top_le_pre (aff (ι a)) (φ.comp (ρ a))`. Rewrite `h2` using `[hφ, ← hψ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `le_inf h1 h2`. Establish `tr : (fun z : Let Dw.mult => crd i k ψ ((Z.fr a).bc φ z.1 z.2)) = fun z : Let Dw.mult => valF (spMap ψ ≫ (aff i).fromSpec) _ (L.g i (ι a)).val • crd (ι a) k (φ.comp (ρ a)) ((Z.fr a).bc φ z.1 z.2)`. Use function extensionality and compare the values at `fun z => T.emb.trans i (ι a) k ψ (φ.comp (ρ a)) _ (hψ.trans hφ.symm) (by rw [hψ]; exact ((T.frame a k φ).1 z.1 z.2).1)`. Establish `key : plk (fun z : Let Dw.mult => crd i k ψ ((Z.fr a).bc φ z.1 z.2)) en.2.1 = (Units.mk0 _ hγ) ^ en.1 • (φ ∘ plk (fun z : Let Dw.mult => crd (ι a) _ (ρ a) (Z.fr a z.1 z.2)) en.2.1)`. Rewrite using `[map_plk, nat, tr, plk_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Establish `hv` using `span_range_comp_eq_top _ hu φ`. Use `⟨key ▸ span_range_units_smul hv _, ?_⟩` and prove the remaining obligations. Rewrite using `[h, GlobalTheory.ProjSpace.spMap_pt]`. Conclude with `(pt_eq_pt_iff _ _ _).2 ⟨_, key⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem plk_pt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (Xo : ∀ l : Level H, Moduli Dw l) (p : ℕ) (W : ValuationSubring ℂ) (Y : LocalSystem Xo p W) (i₀ : Idx H p) (Z : Pre Y i₀) (L : FinLB (Y Z.i).X) (aff : ∀ i, IsAffineOpen (L.U i)) (M : ℕ) (crd : Crd (Y Z.i).t L M) (ι : Fin Z.m → Fin L.n) (ρ : ∀ a, Γ((Y Z.i).X, L.U (ι a)) →+* Γ(Z.X, (Z.U a).1)) (g : ∀ en : En Dw.mult, Z.X ⟶ PSpace (Z.i.c.V W) (plN M en.1)), Comparison₂ Z L aff crd ι ρ g → ∀ (k : Type) [Field k] a i (φ : Γ(Z.X, (Z.U a).1) →+* k) (ψ : Γ((Y Z.i).X, L.U i) →+* k), spMap ψ ≫ (aff i).fromSpec = spMap φ ≫ Z.chart a ≫ Z.π → ∀ en : En Dw.mult, ∃ hu, spMap φ ≫ Z.chart a ≫ g en = pt (φ.comp ((Z.alg a).comp (Z.i.c.V W).subtype)) (plk (fun z : Let Dw.mult => crd i k ψ ((Z.fr a).bc φ z.1 z.2)) en.2.1) hu := by
   intro E _ _ _ H Dw Xo p W Y i₀ Z L aff M crd ι ρ g T k _ a i φ ψ hψ en

@@ -46,7 +46,7 @@ def ordOf (a : HeightOneSpectrum (𝓞 k) → k) (𝔭 : HeightOneSpectrum (𝓞
   (WithZero.log (𝔭.valuation k (a 𝔭)) : ℤ)
 
 /- English proof (translation)
-Establish `f : ∀ 𝔞, {𝔭 | ¬ EigenvectorLieDegree.ordIdeal τ 𝔞 𝔭 = 0}.Finite` using `fun 𝔞 => Filter.eventually_cofinite.1 (FractionalIdeal.finite_factors _)`. Use `((f (differentIdeal ℤ (𝓞 E))).union (f (Ideal.span {H.rt}))).subset fun 𝔭 h => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Simplify using `only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at hc`. Conclude with `h (by rw [EigenvectorLieDegree.ordTwist, hc.1, hc.2]; rfl)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finite_support_ordTwist (τ : E →+* k) : (Function.support (EigenvectorLieDegree.ordTwist H τ)).Finite := by
   have f : ∀ 𝔞, {𝔭 | ¬ EigenvectorLieDegree.ordIdeal τ 𝔞 𝔭 = 0}.Finite := fun 𝔞 =>
@@ -63,24 +63,24 @@ section Lie
 variable {k : Type} [Field k] [NumberField k] {t : SAB H (Sp k)} {m : ℕ} {x : Fin m → (epsR k ⟶ t.G)}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isEigBasis_iff (τ : E →+* k) : EigenvectorLieDegree.IsEigBasis t.act (τ.comp (algebraMap (𝓞 E) E)) x ↔
     AdelicDegreeTameRamification.IsEigenBasis t (fun a => τ (a : E)) x := Iff.rfl
 
 open GlobalTheory.KeyPow GlobalTheory.KeyKa GlobalTheory.KeyEq GlobalTheory.KeyIsoNormal in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨A, _, φ, g, u', Hm, χ, v, W, hφ, hA, hv, h0, hN⟩`. Take `⟨t', ⟨n⟩⟩` from `exists_sab (spMap σ) t`. Take `⟨e, he, hφ'⟩` from `grpPullback_iso hφ n.cart`. Establish `hL : LBIso t'.PP.L (t.PP.L.pull n.cm.F)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w, hw, -⟩` from `n.lin`. Conclude with `⟨w, hw⟩`. Take `⟨w, hw⟩ : LBIso (t.PP.L.pull φ) (t'.PP.L.pull e.hom.left)` from `hφ' ▸ EllComp.lbIso_pull_comp hL.symm _`. Establish `hL'` using `pull_isLB t.PP.isLB φ`. Take `⟨u, hex, hΛ, hfr⟩` from `exists_push t'.PP.isLB hL' e.hom (isGrpPullback_of_iso e) w ((isGen_iff w).1 hw) u'`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨t', n, g, u, Hm, fun l => χ ⟨l.1, hΛ ▸ l.2⟩, fun i => v i ≫ e.hom, W, ⟨hA.1, hA.2.1, fun l => hA.2.2.1 _, fun l j z hz => ?_⟩, fun i => ?_, fun i U hU f => ?_, hN, h0⟩` and prove the remaining obligations. Rewrite `hz` using `[hex]`. Establish `hj : e.hom.left ((u'.ex z).left pt) ∈ t'.PP.L.U j` using `(top_le_preimage_iff_mem _ _).1 hz`. Take `⟨c, hc⟩` from `exists_chart hL' ((u'.ex z).left pt)`. Establish `hl : u'.ex (z + l.1) = u'.ex z`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[u'.ex_add, (u'.ker l.1).2 (hΛ ▸ l.2), _root_.mul_one]`. Establish `a` using `hA.2.2.2 ⟨l.1, hΛ ▸ l.2⟩ c z ((top_le_preimage_iff_mem _ _).2 hc)`. Rewrite using `[hfr j c z hj hc, hfr j c (z + l.1) (hl ▸ hj) (hl ▸ hc), hl, a]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Over.comp_left, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg _ hφ').trans (hv i).1`. Use `(hv i).2 (e.hom.left ⁻¹ᵁ U) hU ((e.hom.left.app U).hom f)` as an intermediate fact. Simplify using `only [valAt'_comp, ← hex] at this`. Rewrite using `[← this]`. Use `congr 2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨t', n, g, u, Hm, χ, v, W, hA, hv, hW, hN, h0⟩`. Take `⟨w, hw, -⟩` from `n.lin`. Conclude with `⟨t'.G, inferInstance, n.φ, g, TorsionTauCompare.transport t'.PP.isLB (pull_isLB t.PP.isLB _) hw u, Hm, χ, v, W, n.cart, TorsionTauCompare.isAH_transport _ _ hw u hA, fun i => ⟨hv i, hW i⟩, h0, hN⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isArchSq_iff (σ : k →+* ℂ) (N : ℝ) : EigenvectorLieDegree.IsArchSq t.G t.PP.L x σ N ↔ AdelicDegreeTameRamification.IsArchNormSq t x σ N := by
   constructor
@@ -174,7 +174,7 @@ structure IsUnder (i : k →+* k') (π : HeightOneSpectrum (𝓞 k') → HeightO
       (Module.finrank ℚ k' : ℝ) * Real.log (Ideal.absNorm 𝔭.asIdeal)
 
 /- English proof (translation)
-The claim follows from `let ⟨π, ε, a, b⟩ := GlobalTheory.T.ramification_weighted_log_norm_sum k k' i ⟨π, ε, a, b⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_isUnder (i : k →+* k') : ∃ π ε, IsUnder i π ε :=
   let ⟨π, ε, a, b⟩ := GlobalTheory.T.ramification_weighted_log_norm_sum k k' i
@@ -183,13 +183,13 @@ theorem exists_isUnder (i : k →+* k') : ∃ π ε, IsUnder i π ε :=
 variable {π : HeightOneSpectrum (𝓞 k') → HeightOneSpectrum (𝓞 k)} {ε : HeightOneSpectrum (𝓞 k') → ℕ}
 
 /- English proof (translation)
-The claim follows from `Nat.pos_of_ne_zero fun e => by simpa [e] using h.val 𝔓 0`.
+A detailed English derivation is pending.
 -/
 theorem IsUnder.pos (h : IsUnder i π ε) (𝔓 : HeightOneSpectrum (𝓞 k')) : 0 < ε 𝔓 :=
   Nat.pos_of_ne_zero fun e => by simpa [e] using h.val 𝔓 0
 
 /- English proof (translation)
-Introduce `𝔭` and use `let ⟨_, hs, ⟨𝔓, h𝔓⟩, _⟩ := h.sum 𝔭 ⟨𝔓, (hs 𝔓).1 h𝔓⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsUnder.surjective (h : IsUnder i π ε) : Function.Surjective π := fun 𝔭 =>
   let ⟨_, hs, ⟨𝔓, h𝔓⟩, _⟩ := h.sum 𝔭
@@ -199,7 +199,7 @@ def up (π : HeightOneSpectrum (𝓞 k') → HeightOneSpectrum (𝓞 k)) (ε : H
     (r : HeightOneSpectrum (𝓞 k) → ℝ) (𝔓 : HeightOneSpectrum (𝓞 k')) : ℝ := ε 𝔓 * r (π 𝔓)
 
 /- English proof (translation)
-The claim follows from `(hr.image π).subset fun 𝔭 h𝔭 => by obtain ⟨𝔓, rfl⟩ := h.surjective 𝔭 exact ⟨𝔓, mul_ne_zero (Nat.cast_ne_zero.2 (h.pos 𝔓).ne') h𝔭, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem IsUnder.finite_of_up (h : IsUnder i π ε) {r : HeightOneSpectrum (𝓞 k) → ℝ}
     (hr : (Function.support (up π ε r)).Finite) : (Function.support r).Finite :=
@@ -208,15 +208,15 @@ theorem IsUnder.finite_of_up (h : IsUnder i π ε) {r : HeightOneSpectrum (𝓞 
     exact ⟨𝔓, mul_ne_zero (Nat.cast_ne_zero.2 (h.pos 𝔓).ne') h𝔭, rfl⟩
 
 /- English proof (translation)
-Use `choose s hs _ hsum using h.sum`. Establish `n0 : (Module.finrank ℚ k : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 Module.finrank_pos.ne'`. Establish `n0' : (Module.finrank ℚ k' : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 Module.finrank_pos.ne'`. Establish `a` using `GlobalTheory.T.embedding_sum_degree_formula k k' i fun σ => Real.log (N σ)`. Establish `b : (Module.finrank ℚ k : ℝ) * ∑ᶠ 𝔓, up π ε r 𝔓 * Real.log (Ideal.absNorm 𝔓.asIdeal) = (Module.finrank ℚ k' : ℝ) * ∑ᶠ 𝔭, r 𝔭 * Real.log (Ideal.absNorm 𝔭.asIdeal)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[finsum_eq_sum_of_support_subset (s := hr.toFinset.biUnion s), finsum_eq_sum_of_support_subset (s := hr.toFinset), Finset.sum_biUnion, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun 𝔭 _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, ← hsum, mul_left_comm, Finset.mul_sum (s 𝔭) _ (r 𝔭)]`. Use `congr 1`. Use `Finset.sum_congr rfl fun 𝔓 h𝔓 => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[up, (hs _ _).1 h𝔓]`. Expand and normalize the polynomial expressions, which then agree. Introduce `𝔭 _ 𝔮 _ e`. Conclude with `Finset.disjoint_left.2 fun 𝔓 u v => e (((hs _ _).1 u).symm.trans ((hs _ _).1 v))`. Introduce `𝔭 h𝔭`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using left_ne_zero_of_mul h𝔭`. Introduce `𝔓 h𝔓`. Use `right_ne_zero_of_mul (left_ne_zero_of_mul h𝔓)` as an intermediate fact. Simplify using `only [Finset.coe_biUnion, Set.mem_iUnion, Finset.mem_coe, Set.Finite.mem_toFinset]`. Conclude with `⟨π 𝔓, this, (hs _ _).2 rfl⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[EigenvectorLieDegree.adDeg, EigenvectorLieDegree.adDeg, div_eq_div_iff n0' n0]`. Take the linear combination `b - 1 / 2 * a`.
+A detailed English derivation is pending.
 -/
 theorem IsUnder.adDeg_up (h : IsUnder i π ε) {r : HeightOneSpectrum (𝓞 k) → ℝ} (hr : (Function.support r).Finite)
     (N : (k →+* ℂ) → ℝ) : EigenvectorLieDegree.adDeg (up π ε r) (fun σ => N (σ.comp i)) = EigenvectorLieDegree.adDeg r N := by
@@ -246,7 +246,7 @@ theorem IsUnder.adDeg_up (h : IsUnder i π ε) {r : HeightOneSpectrum (𝓞 k) �
   linear_combination b - 1 / 2 * a
 
 /- English proof (translation)
-Establish `e : ∀ 𝔞, EigenvectorLieDegree.ordIdeal (i.comp τ) 𝔞 𝔓 = ε 𝔓 * EigenvectorLieDegree.ordIdeal τ 𝔞 (π 𝔓)` using `fun 𝔞 => GlobalTheory.T.ideal_count_under_extension E k k' i τ 𝔞 _ _ _ (h.val 𝔓)`. Simplify using `only [EigenvectorLieDegree.ordTwist, e]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem IsUnder.ordTwist (h : IsUnder i π ε) (τ : E →+* k) (𝔓 : HeightOneSpectrum (𝓞 k')) :
     EigenvectorLieDegree.ordTwist H (i.comp τ) 𝔓 = ε 𝔓 * EigenvectorLieDegree.ordTwist H τ (π 𝔓) := by
@@ -258,9 +258,9 @@ theorem IsUnder.ordTwist (h : IsUnder i π ε) (τ : E →+* k) (𝔓 : HeightOn
 variable {t : SAB H (Sp k)} {t' : SAB H (Sp k')}
 
 /- English proof (translation)
-Take `⟨x, hx, hr, hN⟩` from `hd`. Use `choose x' hx' _ using fun a => existsUnique_isVecOver n.cart.1 (x a)`. Establish `h₁` using `GlobalTheory.T.eigenbasis_base_change E H k k' i t t' n m x x' _ hx' hx`. Establish `h₂` using `fun 𝔓 => GlobalTheory.T.nonarchimedean_norm_base_change E H k k' i t t' n m x x' (π 𝔓) 𝔓 (ε 𝔓) (r (π 𝔓)) (Indep.of_eigBasis hx) hx' (h.val 𝔓) (hr _)`. Establish `h₃` using `fun σ : k' →+* ℂ => (isArchSq_iff σ _).2 (GlobalTheory.T.archimedean_norm_square_base_change E H k k' i t t' n m x x' σ (N (σ.comp i)) hx' ((isArchSq_iff (σ.comp i) _).1 (hN _)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨x', h₁, h₂, h₃⟩`.
+A detailed English derivation is pending.
 -/
 theorem IsEigData.up (h : IsUnder i π ε) (n : SABMap t' t (spMap i)) {τ : E →+* k} {m : ℕ}
     {r : HeightOneSpectrum (𝓞 k) → ℝ} {N : (k →+* ℂ) → ℝ} (hd : IsEigData t τ m r N) :
@@ -274,13 +274,13 @@ theorem IsEigData.up (h : IsUnder i π ε) (n : SABMap t' t (spMap i)) {τ : E �
   exact ⟨x', h₁, h₂, h₃⟩
 
 /- English proof (translation)
-Take `⟨π, ε, h⟩` from `exists_isUnder i`. Introduce `r N r' N' h₁ h₂`. Take `⟨f₁, f₂, d₁, d₂, b⟩` from `c _ _ _ _ (h₁.up h n) (h₂.up h n)`. Establish `g₁` using `h.finite_of_up f₁`. Establish `g₂` using `h.finite_of_up f₂`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `d₁` using `[h.adDeg_up g₁, h.adDeg_up g₂]`. Use `⟨g₁, g₂, d₁, Eq.trans ?_ d₂, b⟩` and prove the remaining obligations. Rewrite using `[← h.adDeg_up]`. Use `congr 1`. Use function extensionality and compare the values at `𝔓`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [FlatDegreeCompare.up, h.ordTwist]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `((g₁.union g₂).union (finite_support_ordTwist (H := H) τ)).subset fun 𝔭 h𝔭 => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hc`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Simplify using `only [Set.mem_union, Function.mem_support, not_or, not_not] at hc`. Conclude with `h𝔭 (by simp [hc.1.1, hc.1.2, hc.2])`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ClaimOrd.down (n : SABMap t' t (spMap i)) {x : ℝ} {τ τ' : E →+* k} {p q : ℕ}
     (c : ClaimOrd x t' (i.comp τ) (i.comp τ') p q) : ClaimOrd x t τ τ' p q := by

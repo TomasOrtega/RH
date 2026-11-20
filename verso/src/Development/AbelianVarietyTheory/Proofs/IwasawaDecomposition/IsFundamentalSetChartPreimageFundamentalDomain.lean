@@ -9,11 +9,11 @@ namespace GlobalTheory.FlagFibre.FundPre
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Establish `hφ : Measurable (Bad.indicator (1 : Frame X.Ψ r → ℝ≥0∞))` using `measurable_one.indicator hB`. Establish `hM` using `measInv_holds (E := E) r X x0 (lact γ x0) ho (KU.isOrth_lact X hγ ho) (Bad.indicator 1) hφ (fun x _ b hb => by classical`. Simplify using `only [Set.indicator_apply, hinv x b hb, Pi.one_apply])`. Establish `h1 : ∫⁻ z, Bad.indicator (1 : Frame X.Ψ r → ℝ≥0∞) (cpt X x0 z) ∂muF X x0 = 0`. Rewrite using `[lintegral_congr_ae (g := fun _ => 0), lintegral_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [h0] with z hz`. Conclude with `Set.indicator_of_notMem hz _`. Rewrite `hM` using `[h1, KU.muF_lact X hγ]`. Establish `hm : Measurable fun z => Bad.indicator (1 : Frame X.Ψ r → ℝ≥0∞) (cpt X (lact γ x0) z)` using `hφ.comp (KU.cont_cpt X _).measurable`. Establish `h2` using `(lintegral_eq_zero_iff hm).1 hM.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `filter_upwards [h2] with z hz hbad`. Rewrite `hbad` using `[← KU.cpt_lact]`. Simplify using `only [Set.indicator_of_mem hbad, Pi.one_apply, Pi.zero_apply] at hz`. Conclude with `one_ne_zero hz`.
+A detailed English derivation is pending.
 -/
 theorem ae_lact_notMem (X : Data E r) {x0 : Frame X.Ψ r} (ho : IsOrth X x0)
     {Bad : Set (Frame X.Ψ r)} (hB : MeasurableSet Bad)
@@ -40,27 +40,25 @@ theorem ae_lact_notMem (X : Data E r) {x0 : Frame X.Ψ r} (ho : IsOrth X x0)
   exact one_ne_zero hz
 
 /- English proof (translation)
-Take `⟨hFm, hFD, hcov, hbad⟩` from `hF`. Take `⟨N0, hN0, hN0m, hN0z⟩` from `exists_measurable_superset_of_null hbad`. Establish `ho` using `isOrth_x0F X`. Establish `hOm : MeasurableSet (OmF X (x0F X))` using `((FourierCoefficientDomain.isOpen_dom X).preimage (KU.cont_cpt X (x0F X))).measurableSet`. Establish `hNm : MeasurableSet (F ∩ N0)` using `hFm.inter hN0m`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNz : muD Tau j (r - j) (F ∩ N0) = 0` using `measure_mono_null Set.inter_subset_right hN0z`. Use `⟨F \ N0, hFm.diff hN0m, Set.sdiff_subset, ?_, ?_, Set.inter_subset_right, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.sdiff_sdiff_right_self]`. Conclude with `hNz`. Conclude with `(measurable_proj X hj κ (hFm.diff hN0m)).inter hOm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `z ⟨⟨hz, hzN⟩, hzO⟩ z' ⟨⟨hz', -⟩, -⟩ γ hγ b hb h`. Establish `hd : domPt X hj κ (cpt X (x0F X) z') = domPt X hj κ (lact γ (cpt X (x0F X) z))`. Rewrite using `[h, KU.lact_rmul', domPt_rmul X hj κ hb]`. Establish `hfix : domPt X hj κ (lact γ (cpt X (x0F X) z)) = domPt X hj κ (cpt X (x0F X) z)`. Assume the negation of the conclusion as `hne`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hzN` to reduce the goal to its premises. Apply `hN0` to reduce the goal to its premises. Use `⟨hz, toUpq X hj κ γ, ⟨γ, hγ, rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `flat (moebI _ (domPt X hj κ (cpt X (x0F X) z))) ∈ F`. Rewrite using `[← domPt_lact X hj κ hp γ hzO, ← hd]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hz'`. Express the relevant statement in the definitionally equal form `moebI _ (domPt X hj κ (cpt X (x0F X) z)) ≠ domPt X hj κ (cpt X (x0F X) z)`. Rewrite using `[← domPt_lact X hj κ hp γ hzO]`. Conclude with `hne`. Establish `h1` using `hfree γ hγ _ hzO hfix`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `h` using `[h1, KU.lact_one]`. Establish `hS : cpt X (x0F X) z' ∈ KU.Sset X (x0F X) {z}`. Rewrite using `[h, KU.rmul_mem_S X hb, KU.cpt_mem_S X ho]`. Both sides reduce to the same expression. Conclude with `((KU.cpt_mem_S X ho z').1 hS).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `KU.countable_Γ X` as an intermediate fact. Establish `hA : ∀ᵐ z ∂muF X (x0F X), ∀ γ : X.Γ, lact (γ : GL (Fin r) E) (cpt X (x0F X) z) ∉ (fun x => flat (domPt X hj κ x)) ⁻¹' (F ∩ N0)`. Use `ae_all_iff.2 fun γ => ae_lact_notMem X ho (measurable_domPt X hj κ hNm) ?_ ?_ γ.2` and prove the remaining obligations. Introduce `x b hb`. Simplify using `only [Set.mem_preimage, domPt_rmul X hj κ hb]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `measure_eq_zero_iff_ae_notMem.1 (hnull _ hNm (Set.inter_subset_left.trans hFD) hNz)`. Establish `hB : ∀ᵐ z ∂muF X (x0F X), ∀ γ : X.Γ, lact (γ : GL (Fin r) E) (cpt X (x0F X) z) ∉ (KU.Sset X (x0F X) (OmF X (x0F X)))ᶜ`. Use `ae_all_iff.2 fun γ => ae_lact_notMem X ho (KU.meas_S X ho hOm).compl ?_ ?_ γ.2` and prove the remaining obligations. Introduce `x b hb`. Simplify using `only [Set.mem_compl_iff, KU.rmul_mem_S X hb]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [ExtFPf.ae_OmF (X := X) (x0 := x0F X)] with z hz hn`. Conclude with `hn ((KU.cpt_mem_S X ho z).2 hz)`. Use `filter_upwards [hA, hB, ExtFPf.ae_OmF (X := X) (x0 := x0F X)] with z hzA hzB hzO`. Take `⟨_, ⟨γ, hγ, rfl⟩, hγF⟩` from `hcov _ (domPt_mem X hj κ hp hzO)`. Rewrite `hγF` using `[← domPt_lact X hj κ hp γ hzO]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `h1` using `hzA ⟨γ, hγ⟩`. Take `⟨⟨z', b⟩, ⟨hz', hb⟩, he⟩` from `not_not.1 (hzB ⟨γ, hγ⟩)`. Establish `he' : rmul (cpt X (x0F X) z') b = lact γ (cpt X (x0F X) z)` using `he`. Establish `hpr : proj X hj κ z' = flat (domPt X hj κ (lact γ (cpt X (x0F X) z)))`. Rewrite using `[← he', domPt_rmul X hj κ hb]`.
-
-Both sides reduce to the same expression. Use `⟨z', ⟨?_, hz'⟩, γ⁻¹, X.Γ.inv_mem hγ, b, hb, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.mem_preimage, hpr]`. Conclude with `⟨hγF, fun hn => h1 ⟨hγF, hn⟩⟩`. Rewrite using `[he', KU.lact_lact, inv_mul_cancel, KU.lact_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFundSet_preimage (E : Type) [Field E] [NumberField E] [IsCMField E] (r j : ℕ)
     (X : Data E r) (hj : j ≤ r) (Tau : Type) [Fintype Tau] (κ : Tau ≃ X.Ψ)

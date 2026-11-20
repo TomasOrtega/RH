@@ -18,20 +18,20 @@ variable {G : Type} [Group G]
 def SameDC (K : Subgroup G) (a b : G) : Prop := ∃ k₁ ∈ K, ∃ k₂ ∈ K, b = k₁ * a * k₂
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, one_mem _, 1, one_mem _, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem SameDC.refl (K : Subgroup G) (a : G) : SameDC K a a :=
   ⟨1, one_mem _, 1, one_mem _, by simp⟩
 
 /- English proof (translation)
-Take `⟨k₁, h₁, k₂, h₂, rfl⟩` from `h`. Conclude with `⟨k₁⁻¹, inv_mem h₁, k₂⁻¹, inv_mem h₂, by group⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem SameDC.symm {K : Subgroup G} {a b : G} (h : SameDC K a b) : SameDC K b a := by
   obtain ⟨k₁, h₁, k₂, h₂, rfl⟩ := h
   exact ⟨k₁⁻¹, inv_mem h₁, k₂⁻¹, inv_mem h₂, by group⟩
 
 /- English proof (translation)
-Take `⟨k₁, h₁, k₂, h₂, rfl⟩` from `h`. Take `⟨l₁, i₁, l₂, i₂, rfl⟩` from `h'`. Conclude with `⟨l₁ * k₁, mul_mem i₁ h₁, k₂ * l₂, mul_mem h₂ i₂, by group⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem SameDC.trans {K : Subgroup G} {a b c : G} (h : SameDC K a b) (h' : SameDC K b c) : SameDC K a c := by
   obtain ⟨k₁, h₁, k₂, h₂, rfl⟩ := h
@@ -39,11 +39,11 @@ theorem SameDC.trans {K : Subgroup G} {a b c : G} (h : SameDC K a b) (h' : SameD
   exact ⟨l₁ * k₁, mul_mem i₁ h₁, k₂ * l₂, mul_mem h₂ i₂, by group⟩
 
 /- English proof (translation)
-Set `s : Setoid G` to `⟨SameDC K, ⟨SameDC.refl K, SameDC.symm, SameDC.trans⟩⟩`. Use `⟨fun z => if SameDC K a z then a else (Quotient.mk s z).out, ?_, fun z => ?_, fun b c hbc => ?_⟩` and prove the remaining obligations. Simplify using `[SameDC.refl K a]`. Distinguish the cases in `hz : SameDC K a z`. Simplify `hz.symm` using `[hz]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [hz, if_false]`. Conclude with `SameDC.symm (Quotient.exact (s := s) (Quotient.out_eq (Quotient.mk s z)))`. Distinguish the cases in `hb : SameDC K a b`. Simplify using `[hb, hb.trans hbc]`. Establish `hc : ¬ SameDC K a c` using `fun h => hb (h.trans hbc.symm)`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hb, hc, if_false]`. Rewrite using `[Quotient.sound (s := s) hbc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_dc_choice (K : Subgroup G) (a : G) :
     ∃ r : G → G, r a = a ∧ (∀ z, SameDC K z (r z)) ∧ ∀ b c, SameDC K b c → r b = r c := by
@@ -62,7 +62,7 @@ theorem exists_dc_choice (K : Subgroup G) (a : G) :
       rw [Quotient.sound (s := s) hbc]
 
 /- English proof (translation)
-Use `(h.2 b (h.1 b hb)).unique ⟨ha, ?_⟩ ⟨hb, by rw [inv_mul_cancel]; exact one_mem _⟩` and prove the remaining obligations. Use `mul_mem (inv_mem e₁) e₂` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `group`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem Reps.uniq {K : Subgroup G} {g a b c x : G} {R : Finset G} (h : Reps K g R) (ha : a ∈ R) (hb : b ∈ R)
     (e₁ : c⁻¹ * (x * a) ∈ K) (e₂ : c⁻¹ * (x * b) ∈ K) : a = b := by
@@ -72,7 +72,7 @@ theorem Reps.uniq {K : Subgroup G} {g a b c x : G} {R : Finset G} (h : Reps K g 
   group
 
 /- English proof (translation)
-Take `⟨k₁, h₁, k₂, h₂, e⟩` from `h.1 γ hγ`. Take `⟨δ, ⟨hδ, hd⟩, -⟩` from `h'.2 (k * γ) ⟨k * k₁, mul_mem hk h₁, k₂, h₂, by rw [e]; group⟩`. Conclude with `⟨δ, hδ, hd⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Reps.exists_left {K : Subgroup G} {g γ k : G} {R R' : Finset G} (h : Reps K g R) (h' : Reps K g R')
     (hγ : γ ∈ R) (hk : k ∈ K) : ∃ δ ∈ R', δ⁻¹ * (k * γ) ∈ K := by
@@ -86,17 +86,17 @@ noncomputable def pairMult (K : Subgroup G) (R₁ R₂ : Finset G) (y : G) : ℕ
   ((R₁ ×ˢ R₂).filter fun p => (p.1 * p.2)⁻¹ * y ∈ K).card
 
 /- English proof (translation)
-Establish `ex1 : ∀ γ, γ ∈ R₁ → ∃ δ, δ ∈ R₁ ∧ δ⁻¹ * (k * γ) ∈ K` using `fun γ hγ => (h₁.exists_left h₁ hγ hk).imp fun _ h => ⟨h.1, h.2⟩`. Establish `ex2 : ∀ κ γ, κ ∈ K → γ ∈ R₂ → ∃ δ, δ ∈ R₂ ∧ δ⁻¹ * (κ * γ) ∈ K` using `fun κ γ hκ hγ => (h₂.exists_left h₂ hγ hκ).imp fun _ h => ⟨h.1, h.2⟩`. Use `choose! a ha using ex1`. Use `choose! b hb using ex2`. Unfold `pairMult`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.card_le_card_of_injOn (fun p => (a p.1, b ((a p.1)⁻¹ * (k * p.1)) p.2)) ?_ ?_` and prove the remaining obligations. Introduce `p hp`. Establish `hp'` using `Finset.mem_filter.1 (Finset.mem_coe.1 hp)`. Take `⟨p1, p2⟩` from `Finset.mem_product.1 hp'.1`. Establish `hκ` using `(ha _ p1).2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hb'` using `hb _ _ hκ p2`. Use `Finset.mem_coe.2 (Finset.mem_filter.2 ⟨Finset.mem_product.2 ⟨(ha _ p1).1, hb'.1⟩, ?_⟩)` and prove the remaining obligations. Use `mul_mem hb'.2 hp'.2` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `group`. Introduce `p hp q hq e`. Establish `hp'` using `Finset.mem_filter.1 (Finset.mem_coe.1 hp)`. Establish `hq'` using `Finset.mem_filter.1 (Finset.mem_coe.1 hq)`. Take `⟨p1, p2⟩` from `Finset.mem_product.1 hp'.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨q1, q2⟩` from `Finset.mem_product.1 hq'.1`. Establish `e1 : a p.1 = a q.1` using `congrArg Prod.fst e`. Establish `e2` using `congrArg Prod.snd e`. Simplify using `only at e2`. Establish `f1 : p.1 = q.1` using `h₁.uniq p1 q1 (ha _ p1).2 (e1 ▸ (ha _ q1).2)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e2` using `[e1, f1]`. Establish `hκ` using `(ha _ q1).2`. Establish `f2 : p.2 = q.2` using `h₂.uniq p2 q2 (hb _ _ hκ p2).2 (e2 ▸ (hb _ _ hκ q2).2)`. Conclude with `Prod.ext f1 f2`.
+A detailed English derivation is pending.
 -/
 theorem pairMult_le {K : Subgroup G} {g h k : G} {R₁ R₂ : Finset G} (h₁ : Reps K g R₁) (h₂ : Reps K h R₂)
     (hk : k ∈ K) (y : G) : pairMult K R₁ R₂ y ≤ pairMult K R₁ R₂ (k * y) := by
@@ -134,7 +134,7 @@ theorem pairMult_le {K : Subgroup G} {g h k : G} {R₁ R₂ : Finset G} (h₁ : 
     exact Prod.ext f1 f2
 
 /- English proof (translation)
-Use `le_antisymm ?_ (pairMult_le h₁ h₂ hk y)` and prove the remaining obligations. Simplify using `using pairMult_le h₁ h₂ (inv_mem hk) (k * y)`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pairMult_mul_left {K : Subgroup G} {g h k : G} {R₁ R₂ : Finset G} (h₁ : Reps K g R₁) (h₂ : Reps K h R₂)
     (hk : k ∈ K) (y : G) : pairMult K R₁ R₂ (k * y) = pairMult K R₁ R₂ y := by
@@ -142,7 +142,7 @@ theorem pairMult_mul_left {K : Subgroup G} {g h k : G} {R₁ R₂ : Finset G} (h
   simpa using pairMult_le h₁ h₂ (inv_mem hk) (k * y)
 
 /- English proof (translation)
-Unfold `pairMult`. Use `congr 1`. Use `Finset.filter_congr fun p _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, Subgroup.mul_mem_cancel_right _ hk]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem pairMult_mul_right {K : Subgroup G} {k : G} (R₁ R₂ : Finset G) (hk : k ∈ K) (y : G) :
     pairMult K R₁ R₂ (y * k) = pairMult K R₁ R₂ y := by
@@ -153,7 +153,7 @@ theorem pairMult_mul_right {K : Subgroup G} {k : G} (R₁ R₂ : Finset G) (hk :
   rw [← mul_assoc, Subgroup.mul_mem_cancel_right _ hk]
 
 /- English proof (translation)
-Take `⟨k₁, i₁, k₂, i₂, rfl⟩` from `e`. Rewrite using `[pairMult_mul_right _ _ i₂, pairMult_mul_left h₁ h₂ i₁]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem pairMult_dc {K : Subgroup G} {g h a b : G} {R₁ R₂ : Finset G} (h₁ : Reps K g R₁) (h₂ : Reps K h R₂)
     (e : SameDC K a b) : pairMult K R₁ R₂ b = pairMult K R₁ R₂ a := by
@@ -162,11 +162,9 @@ theorem pairMult_dc {K : Subgroup G} {g h a b : G} {R₁ R₂ : Finset G} (h₁ 
 
 open Classical in
 /- English proof (translation)
-Take `⟨y₀, ⟨hy₀, e⟩, hu⟩` from `(hS x₀ hx₀).2 z hz`. Rewrite using `[Finset.sum_eq_single x₀ ?_ (fun h => absurd hx₀ h), Finset.sum_eq_single y₀ ?_ (fun h => absurd hy₀ h), if_pos e]`. Use `hF y₀ _ e` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis. Introduce `y hy hne`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `if_neg fun h => hne (hu y ⟨hy, h⟩)`. Introduce `x hx hne`. Use `Finset.sum_eq_zero fun y hy => if_neg fun h => hne ?_` and prove the remaining obligations. Establish `hxy : SameDC K x y` using `(hS x hx).1 y hy`. Establish `hyz : SameDC K y z` using `⟨1, one_mem _, _, h, by group⟩`.
-
-Conclude with `hT x hx x₀ hx₀ ((hxy.trans hyz).trans hz.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sum_single_of_dc {K : Subgroup G} {T : Finset G} {S : G → Finset G} (hS : ∀ x ∈ T, Reps K x (S x))
     (hT : ∀ x ∈ T, ∀ y ∈ T, SameDC K x y → x = y) {M : Type} [AddCommMonoid M] (F : G → M)
@@ -186,11 +184,11 @@ theorem sum_single_of_dc {K : Subgroup G} {T : Finset G} {S : G → Finset G} (h
     exact hT x hx x₀ hx₀ ((hxy.trans hyz).trans hz.symm)
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_product' (f := fun γ γ' => F (γ * γ'))]`. Establish `e1 : ∀ p ∈ R₁ ×ˢ R₂, F (p.1 * p.2) = ∑ x ∈ T, ∑ y ∈ S x, if y⁻¹ * (p.1 * p.2) ∈ K then F y else 0` using `fun p hp => by`. Take `⟨x, hx, hd⟩` from `hcov p hp`. Use `sum_single_of_dc hS hT F hF hx hd` and compare the differences between its conclusion and the goal. Rewrite using `[Finset.sum_congr rfl e1, Finset.sum_comm]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun y hy => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_filter, Finset.sum_const, ← pairMult_dc h₁ h₂ ((hS x hx).1 y hy : SameDC K x y)]`. Unfold `pairMult`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `congr 2`. Use `Finset.filter_congr fun p _ => ?_` and prove the remaining obligations. Establish `e : (p.1 * p.2)⁻¹ * y = (y⁻¹ * (p.1 * p.2))⁻¹` using `by group`. Rewrite using `[e, inv_mem_iff]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_pairs_eq {K : Subgroup G} {g h : G} {R₁ R₂ : Finset G} (h₁ : Reps K g R₁) (h₂ : Reps K h R₂)
     {T : Finset G} {S : G → Finset G} (hS : ∀ x ∈ T, Reps K x (S x))
@@ -216,15 +214,15 @@ theorem sum_pairs_eq {K : Subgroup G} {g h : G} {R₁ R₂ : Finset G} (h₁ : R
   rw [e, inv_mem_iff]
 
 /- English proof (translation)
-Introduce `G _ K g h R₁ R₂ h₁ h₂`. Take `⟨r, r0, r1, r2⟩` from `exists_dc_choice K (g * h)`. Establish `rr : ∀ z, r (r z) = r z` using `fun z => (r2 _ _ (r1 z)).symm`. Establish `fixT : ∀ x ∈ (R₁ ×ˢ R₂).image (fun p => r (p.1 * p.2)), r x = x` using `fun x hx => by`. Take `⟨p, -, rfl⟩` from `Finset.mem_image.1 hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `rr _`. Establish `hT : ∀ x ∈ (R₁ ×ˢ R₂).image (fun p => r (p.1 * p.2)), ∀ y ∈ (R₁ ×ˢ R₂).image (fun p => r (p.1 * p.2)), SameDC K x y → x = y` using `fun x hx y hy e => by`. Rewrite using `[← fixT x hx, ← fixT y hy]`. Conclude with `r2 _ _ e`. Use `⟨(R₁ ×ˢ R₂).image fun p => r (p.1 * p.2), pairMult K R₁ R₂, ?_, fun x hx => ?_, hT, fun S hS M _ _ π u hu => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, ⟨hγ, e⟩, -⟩` from `h₁.2 g (SameDC.refl K g)`. Take `⟨γ', ⟨hγ', e'⟩, -⟩` from `h₂.2 (γ⁻¹ * g * h) ⟨_, e, 1, one_mem _, by group⟩`. Use `Finset.mem_image.2 ⟨(γ, γ'), Finset.mem_product.2 ⟨hγ, hγ'⟩, ?_⟩` and prove the remaining obligations. Establish `hd : SameDC K (γ * γ') (g * h)` using `⟨1, one_mem _, _, e', by group⟩`. Conclude with `(r2 _ _ hd).trans r0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨p, hp, rfl⟩` from `Finset.mem_image.1 hx`. Take `⟨p1, p2⟩` from `Finset.mem_product.1 hp`. Use `⟨?_, p.1, p1, p.2, p2, r1 _⟩` and prove the remaining obligations. Rewrite using `[pairMult_dc h₁ h₂ (r1 _)]`. Use `Finset.card_pos.2 ⟨p, Finset.mem_filter.2 ⟨hp, ?_⟩⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv_mul_cancel]`. Conclude with `one_mem _`. Use `sum_pairs_eq h₁ h₂ hS hT (fun p hp => ⟨_, Finset.mem_image_of_mem _ hp, (r1 _).symm⟩) (fun z => π z u) fun x l hl => ?_` and prove the remaining obligations. Rewrite using `[map_mul, Module.End.mul_apply, hu l hl]`.
+A detailed English derivation is pending.
 -/
 theorem reps_mul_decomp : ∀ {G : Type} [Group G] (K : Subgroup G) (g h : G) (R₁ R₂ : Finset G), GlobalTheory.SphLabelOps.Reps K g R₁ → GlobalTheory.SphLabelOps.Reps K h R₂ → ∃ (T : Finset G) (m : G → ℕ), g * h ∈ T ∧ (∀ x ∈ T, 0 < m x ∧ ∃ γ ∈ R₁, ∃ γ' ∈ R₂, ∃ k₁ ∈ K, ∃ k₂ ∈ K, x = k₁ * (γ * γ') * k₂) ∧ (∀ x ∈ T, ∀ y ∈ T, (∃ k₁ ∈ K, ∃ k₂ ∈ K, y = k₁ * x * k₂) → x = y) ∧ ∀ (S : G → Finset G), (∀ x ∈ T, GlobalTheory.SphLabelOps.Reps K x (S x)) → ∀ (M : Type) [AddCommGroup M] [Module ℂ M] (π : G →* Module.End ℂ M) (u : M), (∀ k ∈ K, π k u = u) → ∑ γ ∈ R₁, ∑ γ' ∈ R₂, π (γ * γ') u = ∑ x ∈ T, m x • ∑ y ∈ S x, π y u := by
   intro G _ K g h R₁ R₂ h₁ h₂

@@ -19,7 +19,7 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   (p : KB.Pl P Wp Wq) (j : ℕ) (hj : j ≤ P.r) (w : List C.Letter)
 
 /- English proof (translation)
-Establish `h` using `PBL.form_slC p j hj w 0 0 y 1 PBL.cv_zero PBL.cv_zero hy`. Simplify using `only [one_smul, add_zero, one_mul] at h`. Take the linear combination `-h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem formC_zero_l (y : Wd.Ix (Fin w.length) → B.Mat P.k (P.r - j) → (Wq →L[ℂ] Wp))
     (hy : PBL.CV (p.T.bs j) y) : p.form j hj w 0 y = 0 := by
@@ -28,7 +28,7 @@ theorem formC_zero_l (y : Wd.Ix (Fin w.length) → B.Mat P.k (P.r - j) → (Wq �
   linear_combination -h
 
 /- English proof (translation)
-Establish `h` using `PBL.form_srC p j hj w x 0 0 1 hx PBL.cv_zero PBL.cv_zero`. Simplify using `only [one_smul, add_zero, map_one, one_mul] at h`. Take the linear combination `-h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem formC_zero_r (x : Wd.Ix (Fin w.length) → B.Mat P.k (P.r - j) → (Wq →L[ℂ] Wp))
     (hx : PBL.CV (p.T.bs j) x) : p.form j hj w x 0 = 0 := by
@@ -37,7 +37,7 @@ theorem formC_zero_r (x : Wd.Ix (Fin w.length) → B.Mat P.k (P.r - j) → (Wq �
   linear_combination -h
 
 /- English proof (translation)
-Establish `h` using `PBL.form_slC p j hj w 0 x y c PBL.cv_zero hx hy`. Rewrite `h` using `[zero_add, formC_zero_l p j hj w y hy, zero_add]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem formC_smul_l (x y : Wd.Ix (Fin w.length) → B.Mat P.k (P.r - j) → (Wq →L[ℂ] Wp)) (c : ℂ)
     (hx : PBL.CV (p.T.bs j) x) (hy : PBL.CV (p.T.bs j) y) : p.form j hj w (c • x) y = c * p.form j hj w x y := by
@@ -45,7 +45,7 @@ theorem formC_smul_l (x y : Wd.Ix (Fin w.length) → B.Mat P.k (P.r - j) → (Wq
   rwa [zero_add, formC_zero_l p j hj w y hy, zero_add] at h
 
 /- English proof (translation)
-Establish `h` using `PBL.form_srC p j hj w x 0 y c hx PBL.cv_zero hy`. Rewrite `h` using `[zero_add, formC_zero_r p j hj w x hx, zero_add]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem formC_smul_r (x y : Wd.Ix (Fin w.length) → B.Mat P.k (P.r - j) → (Wq →L[ℂ] Wp)) (c : ℂ)
     (hx : PBL.CV (p.T.bs j) x) (hy : PBL.CV (p.T.bs j) y) : p.form j hj w x (c • y) = conj c * p.form j hj w x y := by
@@ -55,29 +55,27 @@ theorem formC_smul_r (x y : Wd.Ix (Fin w.length) → B.Mat P.k (P.r - j) → (Wq
 end forms
 
 /- English proof (translation)
-Introduce `hA Wp Wq _ _ _ _ _ _ P p nn F Y N Cb hCb hF hnn i hi w hw hN`. Establish `hpos : TBBx5.FormNonneg p` using `TBBx5.formNonneg_of hA (Formalism.FourierDecayAlt.P.pb_formPos : PBL.FormPos) p`. Establish `hnC : 0 < TBB.normC nn w`. Unfold `TBB.normC`. Use `List.prod_pos fun x hx => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨l, _, rfl⟩` from `List.mem_map.1 hx`. Conclude with `hnn _`. Use `set c0 : ℝ := 1 / TBB.normC nn w with hc0`. Establish `hc0n : 0 ≤ c0` using `by positivity`. Set `sq : C.LPt → ℝ` to `fun a => Real.sqrt (TBB.nPt P.k P.r (TBB.TTp p) a)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `u : C.LPt → (Wd.Ix (Fin w.length) → B.Mat P.k (P.r - i) → (Wq →L[ℂ] Wp))` to `fun a => if ha : D.IsLocPt a i then ((sq a : ℝ) : ℂ) • KB.slv p.T F i hi w a ha.2 else 0`. Establish `hslv : ∀ a (ha : D.IsLocPt a i), PBL.CV (p.T.bs i) (KB.slv p.T F i hi w a ha.2)` using `fun a ha e => Formalism.FourierDecayAlt.P.slice_compact_support_coefficient Wp Wq P p F i hi w a ha hF e`. Establish `hu : ∀ a, PBL.CV (p.T.bs i) (u a)`. Introduce `a`. Distinguish the cases in `ha : D.IsLocPt a i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [u, dif_pos ha]`. Conclude with `PBL.cv_smul _ (hslv a ha)`. Simplify using `only [u, dif_neg ha]`. Conclude with `PBL.cv_zero`. Set `β : (Wd.Ix (Fin w.length) → B.Mat P.k (P.r - i) → (Wq →L[ℂ] Wp)) → (Wd.Ix (Fin w.length) → B.Mat P.k (P.r - i) → (Wq →L[ℂ] Wp)) → ℂ` to `fun x y => (c0 : ℂ) * p.form i hi w x y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpsd : ∀ Y' : Finset C.LPt, TB.PSDOn Y' (fun a b => β (u a) (u b))`. Introduce `Y'`. Use `PBL.gram_psd (PBL.CV (S := Fin w.length) (p.T.bs i)) β PBL.cv_zero (fun x y hx hy => PBL.cv_add hx hy) (fun c x hx => PBL.cv_smul c hx) ?_ ?_ ?_ Y' u hu` and prove the remaining obligations. Introduce `x₁ x₂ y c h₁ h₂ hy`. Simplify using `only [β, PBL.form_slC p i hi w x₁ x₂ y c h₁ h₂ hy]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `x y₁ y₂ c hx h₁ h₂`. Simplify using `only [β, PBL.form_srC p i hi w x y₁ y₂ c hx h₁ h₂]`. Expand and normalize the polynomial expressions, which then agree. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨ε, hε, hnv⟩` from `PBL.nv_of_cv hx`. Conclude with `mul_nonneg (by exact_mod_cast hc0n) (hpos i hi w hw.1 x ε hε hnv)`. Take `⟨H, i1, i2, i3, V, hV⟩` from `Formalism.FourierDecayAlt.P.GermFibreKernels.kolmogorov _ hpsd`. Use `⟨H, i1, i2, i3, V, fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[← hV]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [β]`. Distinguish the cases in `ha : D.IsLocPt a i`. Distinguish the cases in `hb : D.IsLocPt b i`. Simplify using `only [u, dif_pos ha, dif_pos hb]`. Rewrite using `[formC_smul_l p i hi w _ _ _ (hslv a ha) (PBL.cv_smul _ (hslv b hb)), formC_smul_r p i hi w _ _ _ (hslv a ha) (hslv b hb), Complex.conj_ofReal]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions.
 
-Establish `hrr : p.RR F i w a b = p.form i hi w (KB.slv p.T F i hi w a ha.2) (KB.slv p.T F i hi w b hb.2)`. Unfold `KB.Pl.RR D.RRplace`. Rewrite using `[dif_pos ⟨ha, hb⟩, dif_pos hi]`. Both sides reduce to the same expression. Unfold `TBB.NP`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Rewrite using `[hrr, hc0]`. Simplify using `only [sq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [u, dif_neg hb]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[formC_zero_r p i hi w _ (hu a)]`. Unfold `TBB.NP KB.Pl.RR D.RRplace`. Rewrite using `[dif_neg (fun h => hb h.2)]`. Simplify using the standard rewrite rules. Simplify using `only [u, dif_neg ha]`.
-
-Rewrite using `[formC_zero_l p i hi w _ (hu b)]`. Unfold `TBB.NP KB.Pl.RR D.RRplace`. Rewrite using `[dif_neg (fun h => ha h.1)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem glGram : GLGram := by
   intro hA Wp Wq _ _ _ _ _ _ P p nn F Y N Cb hCb hF hnn i hi w hw hN
@@ -147,6 +145,6 @@ end
 end Formalism.FourierDecayAlt.P.CutBP
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.CutBP.glGram`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.CutBP.low_level_gram : Formalism.FourierDecayAlt.P.CutBP.GLGram := Formalism.FourierDecayAlt.P.CutBP.glGram

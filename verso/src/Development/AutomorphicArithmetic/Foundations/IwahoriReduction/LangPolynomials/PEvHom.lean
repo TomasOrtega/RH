@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.UnitBal
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.HV GlobalTheory.Ord2 GlobalTheory.KZ GlobalTheory.Col UpperTheory.Kd.C7
 
 /- English proof (translation)
-Rewrite using `[norm_mul, norm_pow]`. Conclude with `mul_le_of_le_one_left (by positivity) (hf _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem term_le {R K : Type} [CommRing R] [NormedField K] (f : R →+* K) (hf : ∀ x, ‖f x‖ ≤ 1) (t : K)
     (h : PowerSeries R) (i : ℕ) : ‖f (h.coeff i) * t ^ i‖ ≤ ‖t‖ ^ i := by
@@ -11,7 +11,7 @@ private theorem term_le {R K : Type} [CommRing R] [NormedField K] (f : R →+* K
   exact mul_le_of_le_one_left (by positivity) (hf _)
 
 /- English proof (translation)
-The claim follows from `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (term_le f hf t h) (summable_geometric_of_lt_one (norm_nonneg _) ht)`.
+A detailed English derivation is pending.
 -/
 private theorem summ {R K : Type} [CommRing R] [NormedField K] (f : R →+* K) (hf : ∀ x, ‖f x‖ ≤ 1) (t : K) (ht : ‖t‖ < 1)
     (h : PowerSeries R) : Summable fun i => ‖f (h.coeff i) * t ^ i‖ :=
@@ -19,13 +19,13 @@ private theorem summ {R K : Type} [CommRing R] [NormedField K] (f : R →+* K) (
     (summable_geometric_of_lt_one (norm_nonneg _) ht)
 
 /- English proof (translation)
-Use `⟨{ toFun := fun h => ∑' i, f (h.coeff i) * t ^ i map_one' := ?_, map_mul' := ?_, map_zero' := ?_, map_add' := ?_ }, fun _ => rfl⟩` and prove the remaining obligations. Rewrite using `[tsum_eq_single 0]`. Simplify using the standard rewrite rules. Introduce `b hb`. Simplify using `[PowerSeries.coeff_one, hb]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `a b`. Rewrite using `[tsum_mul_tsum_eq_tsum_sum_antidiagonal_of_summable_norm (summ f hf t ht a) (summ f hf t ht b)]`. Use `tsum_congr fun n => ?_` and prove the remaining obligations. Rewrite using `[PowerSeries.coeff_mul, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.HasAntidiagonal.mem_antidiagonal.1 hp, map_mul, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Introduce `a b`. Rewrite using `[← Summable.tsum_add (summ f hf t ht a).of_norm (summ f hf t ht b).of_norm]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `tsum_congr fun n => ?_` and prove the remaining obligations. Rewrite using `[map_add, map_add, add_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem exE {R K : Type} [CommRing R] [NormedField K] [CompleteSpace K] (f : R →+* K) (hf : ∀ x, ‖f x‖ ≤ 1)
     (t : K) (ht : ‖t‖ < 1) : ∃ E : PowerSeries R →+* K, ∀ h, E h = ∑' i, f (h.coeff i) * t ^ i := by
@@ -47,7 +47,7 @@ private theorem exE {R K : Type} [CommRing R] [NormedField K] [CompleteSpace K] 
     rw [map_add, map_add, add_mul]
 
 /- English proof (translation)
-Rewrite using `[← (summ f hf t ht h).of_norm.sum_add_tsum_nat_add N, add_sub_cancel_left]`. Use `IsUltrametricDist.norm_tsum_le_of_forall_le_of_nonneg (by positivity) fun i => ?_` and prove the remaining obligations. Conclude with `(term_le f hf t h _).trans (pow_le_pow_of_le_one (norm_nonneg _) ht.le (by omega))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem tail {R K : Type} [CommRing R] [NormedField K] [CompleteSpace K] [IsUltrametricDist K]
     (f : R →+* K) (hf : ∀ x, ‖f x‖ ≤ 1) (t : K) (ht : ‖t‖ < 1) (h : PowerSeries R) (N : ℕ) :
@@ -57,28 +57,28 @@ private theorem tail {R K : Type} [CommRing R] [NormedField K] [CompleteSpace K]
   exact (term_le f hf t h _).trans (pow_le_pow_of_le_one (norm_nonneg _) ht.le (by omega))
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qh18.rootb l m hl h2 z hz`.
+A detailed English derivation is pending.
 -/
 private theorem rootb {K : Type} [NormedField K] [IsUltrametricDist K] (l m : ℕ) (hl : l.Prime) (h2 : l ≠ 2)
     (z : K) (hz : z ^ l ^ m = 1) : ‖z - 1‖ ^ l ^ m ≤ ‖(l : K)‖ :=
   _root_.UpperTheory.Reformulated.B.Qh18.rootb l m hl h2 z hz
 
 /- English proof (translation)
-Introduce `l hl h2 Ω _ _ _ A _ j Φ m hm z hz`. Establish `hb` using `rootb l m hl.out h2 z hz.pow_eq_one`. Establish `hl1 : ‖(l : ℂ_[l])‖ < 1`. Establish `: (l : ℂ_[l]) = algebraMap ℚ_[l] ℂ_[l] (l : ℚ_[l])` using `by simp`. Rewrite using `[this, norm_algebraMap']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Padic.norm_p_lt_one`. Establish `ht : ‖z - 1‖ < 1`. Assume the negation of the conclusion as `hc`. Conclude with `absurd (hb.trans_lt hl1) (not_lt.2 (one_le_pow₀ (not_lt.1 hc)))`. Take `⟨E, hE⟩` from `exE Φ.jh Φ.jh_le (z - 1) ht`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hC : ∀ x, E (PowerSeries.C x) = Φ.jh x`. Introduce `x`. Rewrite using `[hE, tsum_eq_single 0]`. Simplify using the standard rewrite rules. Introduce `b hb`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[PowerSeries.coeff_C, hb]`. Establish `hX : E (1 + PowerSeries.X) = z`. Rewrite using `[map_add, map_one, hE, tsum_eq_single 1]`. Simplify using the standard rewrite rules. Introduce `b hb`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[PowerSeries.coeff_X, hb]`. Establish `hcyc : E (GlobalTheory.Col.cyc Φ.R l m) = 0`. Establish `: E.comp PowerSeries.C = Φ.jh` using `RingHom.ext hC`. Rewrite using `[GlobalTheory.Col.cyc, Polynomial.hom_eval₂, this, hX, Polynomial.eval₂_eq_eval_map, Polynomial.map_cyclotomic]`. Conclude with `hz.isRoot_cyclotomic (pow_pos hl.out.pos m)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Ideal.Quotient.lift _ E (fun a ha => ?_), fun y => ?_, hC, hX, fun h => ?_⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 ha`. Rewrite using `[map_mul, hcyc, mul_zero]`. Take `⟨h, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Use `tail Φ.jh Φ.jh_le (z - 1) ht h 0` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.Quotient.lift_mk, hE]`. Simplify using `using this`. Rewrite using `[Ideal.Quotient.lift_mk, hE]`. Use `(tail Φ.jh Φ.jh_le (z - 1) ht h _).trans ?_` and prove the remaining obligations. Establish `hle : l ^ m * m ≤ l ^ (3 * m)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show 3 * m = m + 2 * m by ring, pow_add]`. Conclude with `Nat.mul_le_mul_left _ (le_trans (by omega) (Nat.lt_pow_self hl.out.one_lt).le)`. Use `(pow_le_pow_of_le_one (norm_nonneg _) ht.le hle).trans ?_` and prove the remaining obligations. Rewrite using `[pow_mul, norm_pow]`. Conclude with `pow_le_pow_left₀ (by positivity) hb m`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Kd.C7.pEvHom :
     UpperTheory.Kd.C7.SEvHom := by

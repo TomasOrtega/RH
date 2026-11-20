@@ -18,13 +18,11 @@ def pairCLM {P : V → V → ℝ} (hP : GlobalTheory.ArchUniq.IsPairing P) : V �
       map_smul' := fun c b => by ext y; simp [pairR_apply, hP.smulR] }
 
 /- English proof (translation)
-Take `⟨q₁, M₁, hq₁, hb₁⟩` from `GlobalTheory.PhaseLipschitz.seminorm_smulLeft_eChar_sub_le V p hp`. Take `⟨q₂, M₂, -, hb₂⟩` from `GlobalTheory.SchwartzTranslateLip.translate_sub_le V p hp`. Take `⟨q₃, M₃, -, hb₃⟩` from `GlobalTheory.SchwartzTranslateLip.translate_sub_le V q₁ hq₁`. Use `⟨q₁, q₂, q₃, M₁, M₂, M₃, fun w g => ?_⟩` and prove the remaining obligations. Use `set T := SchwartzMap.compSubConstCLM ℂ (-w.1) g with hT`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `map_add_le_add p (SchwartzMap.smulLeftCLM ℂ (fun y => GlobalTheory.Published.Metaplectic.eChar ((-pairR hP w.2) y + -(P w.1 w.2 / 2))) T - T) (T - g)`. Rewrite `h1` using `[sub_add_sub_cancel]`. Establish `e : schrSch hP w g = SchwartzMap.smulLeftCLM ℂ (fun y => GlobalTheory.Published.Metaplectic.eChar ((-pairR hP w.2) y + -(P w.1 w.2 / 2))) T` using `rfl`. Rewrite using `[e]`. Use `le_trans h1 (add_le_add ((hb₁ _ _ T).trans ?_) (hb₂ _ g))` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_neg, abs_neg]`. Establish `h2` using `map_add_le_add q₁ (T - g) g`. Rewrite `h2` using `[sub_add_cancel]`. Establish `h3` using `hb₃ w.1 g`. Use `gcongr`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem seminorm_schrSch_sub_le {P : V → V → ℝ} (hP : GlobalTheory.ArchUniq.IsPairing P)
     (p : Seminorm ℂ 𝓢(V, ℂ)) (hp : Continuous p) :
@@ -51,25 +49,23 @@ theorem seminorm_schrSch_sub_le {P : V → V → ℝ} (hP : GlobalTheory.ArchUni
   linarith
 
 /- English proof (translation)
-Introduce `V _ _ _ P hP g k m`. Take `⟨q₁, q₂, q₃, M₁, M₂, M₃, hb⟩` from `seminorm_schrSch_sub_le hP (SchwartzMap.seminorm ℂ k m) ((schwartz_withSeminorms ℂ V ℂ).continuous_seminorm (k, m))`. Use `set p := SchwartzMap.seminorm ℂ k m (E := V) (F := ℂ) with hpdef`. Use `set c := ‖pairCLM hP‖ with hcdef`. Use `set N := 3 + M₁ + M₂ + M₃ with hN`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq1 : 0 ≤ q₁ g` using `apply_nonneg _ _`. Establish `hq2 : 0 ≤ q₂ g` using `apply_nonneg _ _`. Establish `hq3 : 0 ≤ q₃ g` using `apply_nonneg _ _`. Establish `hp : 0 ≤ p g` using `apply_nonneg _ _`. Use `⟨(1 + c) ^ N * (2 * q₃ g + 2 * q₁ g + q₂ g + p g), N, fun w => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : 0 ≤ c` using `norm_nonneg _`. Establish `hw` using `norm_nonneg w`. Use `set X := (1 + c) * (1 + ‖w‖) with hX`. Establish `hX1 : 1 ≤ X` using `by rw [hX]; nlinarith`. Establish `hw1 : ‖w.1‖ ≤ ‖w‖` using `norm_fst_le w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw2 : ‖w.2‖ ≤ ‖w‖` using `norm_snd_le w`. Establish `hLb : ‖pairR hP w.2‖ ≤ c * ‖w.2‖` using `(pairCLM hP).le_opNorm w.2`. Establish `hL : ‖pairR hP w.2‖ ≤ c * ‖w‖` using `hLb.trans (mul_le_mul_of_nonneg_left hw2 hc)`. Establish `hP1 : |P w.1 w.2| ≤ ‖pairR hP w.2‖ * ‖w.1‖`. Use `(pairR hP w.2).le_opNorm w.1` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[pairR_apply, Real.norm_eq_abs]`. Then use the resulting hypothesis. Establish `ha : 1 + ‖w.1‖ ≤ X` using `by rw [hX]; nlinarith`. Establish `hb' : 1 + ‖pairR hP w.2‖ ≤ X` using `by rw [hX]; nlinarith`. Establish `ha' : ‖w.1‖ ≤ X` using `by linarith`. Establish `hb'' : ‖pairR hP w.2‖ ≤ X` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hk : ‖pairR hP w.2‖ + |P w.1 w.2 / 2| ≤ 2 * X ^ 2`. Establish `h2 : ‖pairR hP w.2‖ * ‖w.1‖ ≤ X * X` using `mul_le_mul hb'' ha' (norm_nonneg _) (by linarith)`. Rewrite using `[abs_div, abs_two]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hsub : p (schrSch hP w g) ≤ p (schrSch hP w g - g) + p g`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `using map_add_le_add p (schrSch hP w g - g) g`. Combine the equalities or inequalities in the displayed calculation. Use `add_le_add ((hb w g).trans ?_) le_rfl` and prove the remaining obligations. Use `gcongr`. Use `_ = 2 * X ^ (3 + M₁ + M₃) * q₃ g + 2 * X ^ (2 + M₁) * q₁ g + X ^ (1 + M₂) * q₂ g + 1 * p g := by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_ ≤ 2 * X ^ N * q₃ g + 2 * X ^ N * q₁ g + X ^ N * q₂ g + X ^ N * p g := by`. Establish `e1 : X ^ (3 + M₁ + M₃) ≤ X ^ N` using `pow_le_pow_right₀ hX1 (by omega)`. Establish `e2 : X ^ (2 + M₁) ≤ X ^ N` using `pow_le_pow_right₀ hX1 (by omega)`. Establish `e3 : X ^ (1 + M₂) ≤ X ^ N` using `pow_le_pow_right₀ hX1 (by omega)`. Establish `e4 : (1 : ℝ) ≤ X ^ N` using `one_le_pow₀ hX1`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `f1` using `mul_le_mul_of_nonneg_right e1 hq3`. Establish `f2` using `mul_le_mul_of_nonneg_right e2 hq1`. Establish `f3` using `mul_le_mul_of_nonneg_right e3 hq2`. Establish `f4` using `mul_le_mul_of_nonneg_right e4 hp`. Use the polynomial consequences of the given equalities and inequalities.
-
-Use `_ = (1 + c) ^ N * (2 * q₃ g + 2 * q₁ g + q₂ g + p g) * (1 + ‖w‖) ^ N := by`. Rewrite using `[hX, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem seminorm_schrSch_le : ∀ {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     {P : V → V → ℝ} (hP : GlobalTheory.ArchUniq.IsPairing P) (f : 𝓢(V, ℂ)), ∀ k m : ℕ, ∃ (C : ℝ) (N : ℕ), ∀ w : V × V,

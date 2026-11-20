@@ -9,9 +9,9 @@ open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory
 namespace GlobalTheory.WSolve
 
 /- English proof (translation)
-Introduce `p _ C _ _ v O _ _ hp hv x hx`. Establish `hx1 : v (algebraMap O C x) < 1` using `lt_of_le_of_ne (hv.map_le_one x) (fun h => hx (hv.isUnit_iff_valuation_eq_one.2 h))`. Establish `hp0 : 0 < v (algebraMap O C (p : O))`. Rewrite using `[map_natCast]`. Conclude with `(Valuation.pos_iff v).2 (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `exists_pow_lt_of_lt_one hp0 hx1`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`. Rewrite using `[hv.dvd_iff_le, map_pow, map_pow]`. Conclude with `hk.le`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nilp_mod_p : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)], v.Integers O → ∀ x : O, ¬IsUnit x → IsNilpotent (Ideal.Quotient.mk (Ideal.span {(p : O)}) x) := by
   intro p _ C _ _ v O _ _ hp hv x hx
@@ -27,24 +27,24 @@ theorem nilp_mod_p : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [CharZero
   exact hk.le
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.frobeniusSemilinearMatrix_iterate_eq_zero_of_nilpotent`.
+A detailed English derivation is pending.
 -/
 theorem semilin_nil : ∀ (p : ℕ) [Fact p.Prime] (S : Type) [CommRing S] [CharP S p] (ι : Type) [Fintype ι] [DecidableEq ι] (Q : Matrix ι ι S) (N : ℕ), (∀ j i, IsNilpotent ((fun w : ι → S => Q.mulVec fun k => frobenius S p (w k))^[N] (Pi.single j 1) i)) → ∃ K : ℕ, ∀ z : ι → S, (fun w : ι → S => Q.mulVec fun k => frobenius S p (w k))^[K] z = 0 := GlobalTheory.T.frobeniusSemilinearMatrix_iterate_eq_zero_of_nilpotent
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.perfection_existsUnique_sub_matrix_frobenius_eq`.
+A detailed English derivation is pending.
 -/
 theorem perf_solve : ∀ (p : ℕ) [Fact p.Prime] (S : Type) [CommRing S] [CharP S p] (ι : Type) [Fintype ι] (Q : Matrix ι ι (Perfection S p)), (∀ n : ℕ, ∃ K : ℕ, ∀ z : ι → S, (fun w : ι → S => (Q.map (Perfection.coeff S p n)).mulVec fun k => frobenius S p (w k))^[K] z = 0) → ∀ c : ι → Perfection S p, ∃! x : ι → Perfection S p, x - Q.mulVec (fun k => frobenius (Perfection S p) p (x k)) = c := GlobalTheory.T.perfection_existsUnique_sub_matrix_frobenius_eq
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.wittVector_existsUnique_sub_matrix_frobenius_eq`.
+A detailed English derivation is pending.
 -/
 theorem witt_solve : ∀ (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R] [CharP R p] [PerfectRing R p] (ι : Type) [Fintype ι] (M : Matrix ι ι (WittVector p R)), (∀ c : ι → R, ∃! x : ι → R, x - (M.map WittVector.constantCoeff).mulVec (fun k => frobenius R p (x k)) = c) → ∀ c : ι → WittVector p R, ∃! v : ι → WittVector p R, v - M.mulVec (fun k => WittVector.frobenius (v k)) = c := GlobalTheory.T.wittVector_existsUnique_sub_matrix_frobenius_eq
 
 /- English proof (translation)
-Proceed by induction on `k generalizing w with`. Consider the case `zero => rfl`. Consider the case `succ k ih`. Rewrite using `[Function.iterate_succ_apply, Function.iterate_succ_apply, ← ih]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [← hf]`. Conclude with `(RingHom.map_mulVec f M _ i).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem iter_map {T T' : Type} [CommRing T] [CommRing T'] {ι : Type} [Fintype ι] (f : T →+* T')
     (σ : T →+* T) (σ' : T' →+* T') (hf : ∀ x, f (σ x) = σ' (f x)) (M : Matrix ι ι T) (k : ℕ)
@@ -61,9 +61,9 @@ theorem iter_map {T T' : Type} [CommRing T] [CommRing T'] {ι : Type} [Fintype �
     exact (RingHom.map_mulVec f M _ i).symm
 
 /- English proof (translation)
-Establish `e : ∀ n, Perfection.coeff S p n y ^ (p ^ n) = Perfection.coeff S p 0 y`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ', pow_mul, Perfection.coeff_pow_p', ih]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `IsNilpotent.of_pow (m := p ^ n) (by rw [e]; exact h)`.
+A detailed English derivation is pending.
 -/
 theorem coeff_nil {S : Type} [CommRing S] {p : ℕ} [Fact p.Prime] [CharP S p] (y : Perfection S p)
     (h : IsNilpotent (Perfection.coeff S p 0 y)) (n : ℕ) : IsNilpotent (Perfection.coeff S p n y) := by
@@ -75,17 +75,15 @@ theorem coeff_nil {S : Type} [CommRing S] {p : ℕ} [Fact p.Prime] [CharP S p] (
   exact IsNilpotent.of_pow (m := p ^ n) (by rw [e]; exact h)
 
 /- English proof (translation)
-Apply `witt_solve p (PreTilt O p) ι M` to reduce the goal to its premises. Apply `perf_solve p (ModP O p) ι (M.map WittVector.constantCoeff)` to reduce the goal to its premises. Introduce `n`. Apply `semilin_nil p (ModP O p) ι _ N` to reduce the goal to its premises. Introduce `j i`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1 : (Pi.single j 1 : ι → ModP O p) = fun k => Perfection.coeff (ModP O p) p n ((Pi.single j 1 : ι → PreTilt O p) k)`. Use function extensionality and compare the values at `k`. Distinguish the cases in `h : k = j`. Substitute `h` using the available equality. Simplify using `only [Pi.single_eq_same]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Conclude with `(map_one _).symm`. Simplify using `only [Pi.single_eq_of_ne h]`. Conclude with `(map_zero _).symm`. Establish `e2 : (Pi.single j 1 : ι → PreTilt O p) = fun k => WittVector.constantCoeff ((Pi.single j 1 : ι → Ainf p O) k)`. Use function extensionality and compare the values at `k`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `h : k = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`. Establish `h1` using `congrFun (iter_map (T := PreTilt O p) (Perfection.coeff (ModP O p) p n) (frobenius (PreTilt O p) p) (frobenius (ModP O p) p) (fun x => by rw [frobenius_def, frobenius_def]; exact map_pow (Perfection.coeff (ModP O p) p n) x p) (M.map WittVector.constantCoeff) N (Pi.single j 1)) i`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `iter_map WittVector.constantCoeff WittVector.frobenius (frobenius (PreTilt O p) p) (fun x => by simp [frobenius_def, WittVector.constantCoeff_apply, WittVector.coeff_frobenius_charP]) M N (Pi.single j 1)`. Rewrite using `[e1]`. Use `erw [h1]`. Rewrite using `[e2, h2]`. Apply `coeff_nil` to reduce the goal to its premises.
-
-Use `hN j i` as an intermediate fact. Rewrite `this` using `[WittVector.mk_fontaineTheta]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem key (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] [Fact ¬IsUnit (p : O)]
     [IsAdicComplete (Ideal.span {(p : O)}) O] (ι : Type) [Fintype ι] [DecidableEq ι]
@@ -122,7 +120,7 @@ theorem key (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] [Fact ¬IsUnit (p :
   exact this
 
 /- English proof (translation)
-Establish `h : WittVector.frobenius (WittVector.teichmuller p ε) = (WittVector.teichmuller p ε) ^ p`. Rewrite using `[WittVector.frobenius_eq_map_frobenius, WittVector.map_teichmuller, frobenius_def, map_pow]`. Rewrite using `[Sandwich.mu, map_sub, map_one, h, geom_sum_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem frobenius_mu_eq (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] [Fact ¬IsUnit (p : O)]
     (ε : PreTilt O p) :
@@ -133,23 +131,21 @@ theorem frobenius_mu_eq (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] [Fact �
   rw [Sandwich.mu, map_sub, map_one, h, geom_sum_mul]
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ _ hv ε hε ι _ M hM`. Take `⟨N, hN⟩` from `hM`. Establish `hK` using `key p O ι M N (fun j i => nilp_mod_p p C v O hv _ (hN _ i))`. Use `⟨fun c => ?_, ?_⟩` and prove the remaining obligations. Take `⟨x, hx, -⟩` from `hK c`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨x, fun i => congrFun hx i⟩`. Introduce `w hw`. Use `choose u hu using hw`. Establish `hφμ` using `frobenius_mu_eq p O ε`. Use `set s : Ainf p O := ∑ i ∈ Finset.range p, (WittVector.teichmuller p ε) ^ i with hs`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ε.untilt = 1` using `by simpa [zeta] using hε.zeta_zero`. Establish `hθs : WittVector.fontaineTheta O p s = p`. Simplify using `[hs, map_sum, map_pow, WittVector.fontaineTheta_teichmuller, h1]`. Establish `hK'` using `key p O ι (s • M) 1 (fun j i => by`. Establish `e : (fun k => WittVector.frobenius ((Pi.single j 1 : ι → Ainf p O) k)) = Pi.single j 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Use function extensionality and compare the values at `k`. Distinguish the cases in `h : k = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Function.iterate_one, e, Matrix.mulVec_single_one, Matrix.col_apply, Matrix.smul_apply, smul_eq_mul, map_mul, hθs]`. Rewrite using `[← map_mul, Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _))]`. Conclude with `IsNilpotent.zero)`. Take `⟨w', hw', -⟩` from `hK' u`. Establish `hz : (w - Sandwich.mu ε • w') - M.mulVec (fun k => WittVector.frobenius ((w - Sandwich.mu ε • w') k)) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Establish `a` using `hu i`. Establish `b` using `congrFun hw' i`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul, Matrix.mulVec, dotProduct, Matrix.smul_apply, map_sub, map_mul, hφμ, Pi.zero_apply] at a b ⊢`. Establish `hsum : ∑ x, M i x * (WittVector.frobenius (w x) - s * Sandwich.mu ε * WittVector.frobenius (w' x)) = ∑ x, M i x * WittVector.frobenius (w x) - Sandwich.mu ε * ∑ x, s * M i x * WittVector.frobenius (w' x)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[Finset.mul_sum, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl (fun x _ => by ring)`. Rewrite using `[hsum]`. Take the linear combination `a - Sandwich.mu ε * b`. Establish `h0 : (0 : ι → Ainf p O) - M.mulVec (fun k => WittVector.frobenius ((0 : ι → Ainf p O) k)) = 0`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct]`. Use `(hK 0).unique hz h0` as an intermediate fact. Introduce `i`. Use `⟨w' i, ?_⟩` and prove the remaining obligations.
-
-Use `congrFun this i` as an intermediate fact. Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply, sub_eq_zero] at this`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem main : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : IsPrimitiveSystem ε), ∀ (ι : Type) [Fintype ι] (M : Matrix ι ι (Ainf p O)), IsNil (WittVector.fontaineTheta O p) (WittVector.frobenius : Ainf p O →+* Ainf p O) M → (∀ c : ι → Ainf p O, ∃ v : ι → Ainf p O, ∀ i, v i - M.mulVec (fun j => WittVector.frobenius (v j)) i = c i) ∧ ∀ v : ι → Ainf p O, (∀ i, Sandwich.mu ε ∣ v i - M.mulVec (fun j => WittVector.frobenius (v j)) i) → ∀ i, Sandwich.mu ε ∣ v i := by
   intro p _ C _ _ _ v O _ _ _ _ _ hv ε hε ι _ M hM

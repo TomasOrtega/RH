@@ -110,7 +110,7 @@ def towerOf {p : ℕ} {Xo : Moduli D l} {c : Coeff l} (h : ModelsAt p Xo c) : At
   (Classical.choice h).1
 
 /- English proof (translation)
-The claim follows from `(Classical.choice h).2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem towerOf_at {p : ℕ} {Xo : Moduli D l} {c : Coeff l} (h : ModelsAt p Xo c) : TowerAt (towerOf h).T :=
   (Classical.choice h).2.2.2.1

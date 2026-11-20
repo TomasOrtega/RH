@@ -42,7 +42,7 @@ Both sides reduce to the same expression.
 @[simp] theorem lowMono_nil (act : Mat p q →ₗ[ℂ] Module.End ℂ V) (v : V) : lowMono act [] v = v := rfl
 
 /- English proof (translation)
-Simplify using `[lowMono]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem lowMono_cons (act : Mat p q →ₗ[ℂ] Module.End ℂ V) (c : Ix p q × Ix p q) (l : List (Ix p q × Ix p q)) (v : V) :
     lowMono act (c :: l) v = act (Eab c.2 c.1) (lowMono act l v) := by
@@ -53,7 +53,7 @@ end Mono
 def shIx {R S : ℕ} : Ix R S → Ix (R + 1) (S + 1) := Sum.map Fin.succ Fin.succ
 
 /- English proof (translation)
-Apply the tactic sequence `rcases a with a | a <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 @[simp] theorem lowIx_shIx {R S : ℕ} (a : Ix R S) : lowIx (shIx a) = some a := by
   rcases a with a | a <;> rfl

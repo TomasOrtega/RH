@@ -25,7 +25,7 @@ namespace GlobalTheory.VdmSurf
 open Limits
 
 /- English proof (translation)
-Use `(genericPoint_spec A).image f.continuous` as an intermediate fact. Rewrite `this` using `[Set.image_univ, f.isClosedEmbedding.isClosed_range.closure_eq]`. Conclude with `this.def`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem closure_genericPoint {A B : Scheme.{0}} [IrreducibleSpace A] (f : A ⟶ B) [IsClosedImmersion f] :
     closure {f (genericPoint A)} = Set.range f := by
@@ -34,7 +34,7 @@ theorem closure_genericPoint {A B : Scheme.{0}} [IrreducibleSpace A] (f : A ⟶ 
   exact this.def
 
 /- English proof (translation)
-Simplify using `[vdmPol, Fintype.sum_sigma, smul_eq_C_mul, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vdmPol_zero (r : ℕ) : vdmPol r 0 = ((r.factorial : ℝ)⁻¹) •
     (aeval fun z : Σ _ : Unit, Fin r => (MvPolynomial.X (some z.2) : MvPolynomial (Option (Fin r)) ℝ))
@@ -43,19 +43,17 @@ theorem vdmPol_zero (r : ℕ) : vdmPol r 0 = ((r.factorial : ℝ)⁻¹) •
   simp [vdmPol, Fintype.sum_sigma, smul_eq_C_mul, mul_assoc]
 
 /- English proof (translation)
-Introduce `hP hC hR k _ X _ p d hX E r h H F N S _ i _ hS c hc`. Use `haveI := hX.isLocallyNoetherian`. Use `haveI := hS.isLocallyNoetherian`. Establish `hi : closure {i (genericPoint S)} = Set.range i` using `closure_genericPoint i`. Establish `hdim : topologicalKrullDim (closure ({i (genericPoint S)} : Set X)) = (0 + 2 : ℕ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[topologicalKrullDim_eq_of_isEmbedding i.isClosedEmbedding.isEmbedding hi.symm, hS.dim_eq]`. Take `⟨y, Φ, hy, hΦ, hv⟩ : F.IsVal H N (i (genericPoint S)) 0 (F.val H N (i (genericPoint S)) 0)` from `Classical.epsilon_spec ((GlobalTheory.VdmWd.existsUnique_val_arch hC k X p d hX E r h H F N _ 0).1 hdim).exists`. Rewrite using `[← hv]`. Take `⟨hY, -, hz⟩` from `(GlobalTheory.FlagTop.main k X p d hX E r h.isVB).2 F`. Take `⟨y', hy', hcl, -⟩` from `hz (i (genericPoint S))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `rfl : y = y'` from `((hy.2 y' hy'.1).antisymm (hy'.2 y hy.1)).eq`. Set `F' : FlagSp ((Scheme.Modules.pullback i).obj E) r` to `⟨pullback F.π i, pullback.snd F.π i, GlobalTheory.FlagBaseChange.pullFlag F.π i F.fl, GlobalTheory.FlagBaseChange.isFlagBundle_pullFlag X F.Y _ F.π i Unit _ _ _ F.univ⟩`. Set `j` to `pullback.fst F.π i`. Establish `w' : pullback.snd F.π i ≫ i ≫ p = j ≫ F.π ≫ p`. Rewrite using `[← Category.assoc, ← pullback.condition, Category.assoc]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hY' : IsArithVar (j ≫ F.π ≫ p) (1 + r.choose 2)` using `w' ▸ ((GlobalTheory.FlagTop.main k S (i ≫ p) 1 hS _ r (h.pull i rfl).isVB).2 F').1`. Use `haveI : IsIntegral (pullback F.π i : Scheme.{0}) := hY'.isIntegral`. Establish `hj : j (genericPoint (pullback F.π i : Scheme.{0})) = y`. Use `(inseparable_iff_closure_eq.2 ?_).eq` and prove the remaining obligations. Rewrite using `[closure_genericPoint j, hcl, hi]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Scheme.Pullback.range_fst F.π i`. Establish `e : 0 + 2 + r.choose 2 = 1 + r.choose 2 + 1` using `by omega`. Rewrite `hΦ` using `[e]`. Establish `hA : IsArFun (fun o => (F.fam H N o).pull j rfl) (1 + r.choose 2) Φ`. Use `⟨fun n => ?_, hΦ.2⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨g, hg, e₁⟩` from `hΦ.1 n`. Rewrite using `[← e₁, ← hj]`. Conclude with `(isometric_comb_pull _ n j rfl).symm.isSelfInter hY' (hg.isSelfInter_restrict hY j rfl)`. Establish `hB` using `((hC.arIso k _ _ _ hY').2 _ _ Φ hA).2.2 (Σ _ : Unit, Fin r) (fun z => VMetric.grLB F'.fl z.2 ((H.pull i rfl).pull (pullback.snd F.π i) w')) (fun z => Pi.single (some z.2) 1) fun z => (isometric_comb_single _ _).trans (GlobalTheory.FlagBaseChange.isometric_grLB_pullFlag k X F.Y S …`. Establish `key` using `GlobalTheory.T.vertical_flag_bundle_exists hP hC hR k S _ (i ≫ p) _ _ hS hY' (pullback.snd F.π i) w' Unit (fun _ => _) (fun _ => r) (fun _ => h.pull i rfl) (fun _ => H.pull i rfl) (fun _ => F'.fl) F'.univ (fun _ => c) (fun _ => hc) _ hB`.
-
-Simplify using `only [lin_single, LinearMap.comp_apply, AlgHom.toLinearMap_apply] at key`. Rewrite using `[vdmPol_zero, map_smul, key]`. Establish `: (r.factorial : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 r.factorial_ne_zero`. Simplify using `[this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem val_eq_two_mul : Hypotheses2 → ArCalc → RegularAlteration → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (d : ℕ), IsArithVar p d → ∀ (E : X.Modules) (r : ℕ) (h : VMetric p E r) (H : h.IsCInf) (F : FlagSp E r) (N : HermLB p) (S : Scheme.{0}) [IsIntegral S] (i : S ⟶ X) [IsClosedImmersion i], IsArithVar (i ≫ p) 1 → ∀ c : ℝ, (h.pull i rfl).IsCh2Deg c → F.val H N (i (genericPoint S)) 0 = 2 * c := by
   intro hP hC hR k _ X _ p d hX E r h H F N S _ i _ hS c hc

@@ -6,9 +6,9 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 
 open CompanionTheory.PlaceDict in
 /- English proof (translation)
-Establish `: Algebra.IsIntegral (𝓞 L) (𝓞 Ω)` using `⟨fun b => (RingOfIntegers.isIntegral b).tower_top⟩`. Use `w.isMaximal` as an intermediate fact. Take `⟨Q, hQ, hw⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral (S := 𝓞 Ω) w.asIdeal (by`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot _).1 (FaithfulSMul.algebraMap_injective (𝓞 L) (𝓞 Ω))]`. Conclude with `bot_le)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨A, rfl⟩` from `exists_cen Q`. Conclude with `⟨A, hQ, hw⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_over {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
     [Algebra.IsAlgebraic E Ω] (L : IntermediateField E Ω) [NumberField L]
@@ -23,9 +23,9 @@ private theorem exists_over {E Ω : Type} [Field E] [NumberField E] [Field Ω] [
 
 open CompanionTheory.PlaceDict in
 /- English proof (translation)
-Take `⟨A, hm, hw⟩` from `exists_over L w`. Take `⟨φ, h1, h2⟩` from `lift L (cen A) τ (RingHom.id _) fun x => by`. Rewrite using `[RingHom.id_apply, Ideal.Quotient.eq, ← map_sub, ← Ideal.mem_comap]`. Conclude with `(hw.ge (hτ x) :)`. Take `⟨h3, h4⟩` from `of_cong A φ one_ne_zero fun b => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_one]`. Conclude with `Ideal.Quotient.eq.1 (h2 b)`. Conclude with `⟨A, φ, h1, h3, fun x hx => by`. Simplify using `using (A.mem_nonunits_iff).1 (h4 x ((A.valuation_le_one_iff _).1 hx))⟩`.
+Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem lift_ine {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
     [IsGalois E Ω] (L : IntermediateField E Ω) [FiniteDimensional E L] [Normal E L] [NumberField L]
@@ -42,13 +42,13 @@ private theorem lift_ine {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Alg
     simpa using (A.mem_nonunits_iff).1 (h4 x ((A.valuation_le_one_iff _).1 hx))⟩
 
 /- English proof (translation)
-Set `_ : Algebra L ℂ` to `j₀.toAlgebra`. Set `_ : Algebra E ℂ` to `(j₀.comp (algebraMap E L)).toAlgebra`. Establish `: IsScalarTower E L ℂ` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `: Algebra.IsAlgebraic L Ω` using `Algebra.IsAlgebraic.tower_top (K := E) L`. Set `j : Ω →ₐ[L] ℂ` to `IsAlgClosed.lift`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `j₁ : Ω →ₐ[E] ℂ` to `j.restrictScalars E`. Set `j₂ : Ω →ₐ[E] ℂ` to `{ (starRingEnd ℂ).comp j₁.toRingHom with commutes' := fun y => by show starRingEnd ℂ (j₁ (algebraMap E Ω y)) = _`. Rewrite using `[j₁.commutes]`. Conclude with `DFunLike.congr_fun (ComplexEmbedding.isReal_iff.1 hE) y }`. Set `_ : Algebra Ω ℂ` to `j₁.toRingHom.toAlgebra`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: IsScalarTower E Ω ℂ` using `IsScalarTower.of_algebraMap_eq fun y => (j₁.commutes y).symm`. Establish `hc : ∀ x, j₁ (j₂.restrictNormal' Ω x) = starRingEnd ℂ (j₁ x)` using `fun x => j₂.restrictNormal_commutes Ω x`. Use `⟨j₂.restrictNormal' Ω, ⟨j₁.toRingHom, hc⟩, fun x hx => ?_⟩` and prove the remaining obligations. Use `hc x` as an intermediate fact. Rewrite `this` using `[hx]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e : j₁ x = j₀ x` using `j.commutes x`. Rewrite using `[← e]`. Conclude with `this.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_conj {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
     [IsAlgClosure E Ω] (L : IntermediateField E Ω) (j₀ : L →+* ℂ)
@@ -78,17 +78,17 @@ private theorem exists_conj {E Ω : Type} [Field E] [NumberField E] [Field Ω] [
 
 open GroundTheory.Global IntermediateField in
 /- English proof (translation)
-Establish `: IsGalois E Ω` using `IsAlgClosure.isGalois E Ω`. Set `Hc : ClosedSubgroup (Ω ≃ₐ[E] Ω)` to `⟨H, H.isClosed_of_isOpen ho⟩`. Establish `hfix : (fixedField H).fixingSubgroup = H` using `InfiniteGalois.fixingSubgroup_fixedField Hc`. Generalize the expression as in `fixedField H = L at hfix`. Substitute `hfix` using the available equality.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Substitute using the available equality.
 
-Establish `: FiniteDimensional E L` using `(InfiniteGalois.isOpen_iff_finite _).1 ho`. Establish `: IsGalois E L` using `(InfiniteGalois.normal_iff_isGalois _).1 (Subgroup.Normal.of_commutator_le _ hcm)`. Establish `: NumberField L` using `NumberField.of_module_finite E _`. Establish `hker : ∀ g ∈ L.fixingSubgroup, AlgEquiv.restrictNormalHom L g = 1` using `fun g hg => by`. Rewrite using `[← MonoidHom.mem_ker, restrictNormalHom_ker]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hg`. Establish `: IsAbelianGalois E L` using `{ is_comm := ⟨fun a b => by`. Take `⟨a, rfl⟩` from `AlgEquiv.restrictNormalHom_surjective (F := E) (K₁ := L) (E := Ω) a`. Take `⟨b, rfl⟩` from `AlgEquiv.restrictNormalHom_surjective (F := E) (K₁ := L) (E := Ω) b`. Rewrite using `[← commutatorElement_eq_one_iff_mul_comm, ← map_commutatorElement]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hker _ (hcm (Subgroup.commutator_mem_commutator trivial trivial))⟩ }`. Use `fixingSubgroup_le ((le_hilbertClassField_iff E Ω L).2 ⟨fun v => ?_, fun v w hw => ?_⟩)` and prove the remaining obligations. Rewrite using `[isUnramifiedIn_iff_ramificationIdx]`. Introduce `w hw`. Rewrite using `[← natCard_inertia v w, Subgroup.card_eq_one, eq_bot_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `τ hτ`. Take `⟨A, φ, h1, h2⟩` from `lift_ine L w τ hτ`. Rewrite using `[Subgroup.mem_bot, ← h1]`. Conclude with `hker _ (hI A h2)`. Rewrite using `[InfinitePlace.isUnramified_iff, ← InfinitePlace.not_isReal_iff_isComplex, ← w.mk_embedding, InfinitePlace.comap_mk, InfinitePlace.isReal_mk_iff, InfinitePlace.isReal_mk_iff, or_iff_not_imp_right, not_not]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `hE`. Take `⟨c, hc', h⟩` from `exists_conj L w.embedding hE`. Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `y`. Conclude with `h y ((mem_fixingSubgroup_iff _ _).1 (hc c hc') _ y.2)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private theorem hilbert_le {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
     [IsAlgClosure E Ω] [IsAlgClosed Ω] (H : Subgroup (Ω ≃ₐ[E] Ω)) (ho : IsOpen (H : Set (Ω ≃ₐ[E] Ω)))
@@ -129,7 +129,7 @@ private theorem hilbert_le {E Ω : Type} [Field E] [NumberField E] [Field Ω] [A
     exact h y ((mem_fixingSubgroup_iff _ _).1 (hc c hc') _ y.2)
 
 /- English proof (translation)
-Introduce `K Ω _ _ _ _ _ C _ χ ho hI hc g hg`. Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed K`. Use `hilbert_le χ.ker ho (Abelianization.commutator_subset_ker χ) hI hc ?_` and prove the remaining obligations. Rewrite using `[← IntermediateField.restrictNormalHom_ker, MonoidHom.mem_ker]`. Conclude with `(GroundTheory.Global.hilbertClassFieldArtinEquiv K Ω).symm.map_eq_one_iff.1 hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Kum.artKer :
     ∀ (K Ω : Type) [Field K] [NumberField K] [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω] (C : Type) [CommGroup C] (χ : G K Ω →* C), IsOpen (χ.ker : Set (G K Ω)) → (∀ A : ValuationSubring Ω, Ine (F := K) A ≤ χ.ker) →

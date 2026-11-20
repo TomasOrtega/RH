@@ -29,15 +29,15 @@ namespace GlobalTheory.FlipStart
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
 /- English proof (translation)
-Establish `hθ : ∀ j : Fin D.R.m, pathArgs B t w (givenPath t D.R.m) (Path.Fam.append (q` using `rowPath T 0 D.R.m) (downFam (S := fun a => WO (G.pS a.pair) (G.pT a.pair)) t 0 D.R.m y) (rowFam (S := fun a => WO (G.pS a.pair) (G.pT a.pair)) 0 D.R.m x)) (.theta 0 j) = locArg B t w (.down t 0 j) (y j) := by`. Introduce `j`. Use `((GlobalTheory.OppConv.pathArgs_comp B t w (downPath t 0 D.R.m) _ (.theta 0 j) (rowPath T 0 D.R.m) _).2 ?_).trans (GlobalTheory.OppConv.pathArgs_down B t w 0 D.R.m y j j.2)` and prove the remaining obligations. Rewrite using `[GlobalTheory.OppConv.mem_edges_row]`. Introduce and unpack `⟨i, -, h⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Consider the cases of `h`. Establish `hex : ∀ i : Fin D.R.m, pathArgs B t w (givenPath t D.R.m) (Path.Fam.append (q` using `rowPath T 0 D.R.m) (downFam (S := fun a => WO (G.pS a.pair) (G.pT a.pair)) t 0 D.R.m y) (rowFam (S := fun a => WO (G.pS a.pair) (G.pT a.pair)) 0 D.R.m x)) (.ex i 0) = locArg B t w (.right i 0) (x i) := fun i => ((GlobalTheory.OppConv.pathArgs_comp B t w (downPath t 0 D.R.m) _ (.e …`. Use `show ((GlobalTheory.SplitFlip.givenPath D.R.m).map fun b => givenDatum t w B Φ b _).prod = _`. Simplify using `only [GlobalTheory.SplitFlip.givenPath, List.map_append, List.prod_append, List.map_map, List.map_reverse, List.prod_reverse]`. Establish `hl : ∀ f : ℕ → ℂ, ((List.range D.R.m).map f).prod = ∏ i : Fin D.R.m, f i` using `fun f => by`.
+Split into cases according to the possible forms of the given data. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.prod_range, Finset.prod_eq_multiset_prod]`. Both sides reduce to the same expression. Rewrite using `[hl, hl]`. Use `congr 1`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp_apply]`. Rewrite using `[hθ j]`. Both sides reduce to the same expression. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hex i]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tensor_given (B : Frames G) (t : T) (Φ : G.Datum) (w : Pl D.host.E)
     (y : ∀ j : Fin D.R.m, WO (G.pS (Arrow.down t 0 j).pair) (G.pT (Arrow.down t 0 j).pair))
@@ -83,13 +83,11 @@ namespace GlobalTheory.FlipStart
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
 /- English proof (translation)
-Use `⟨e, he, fun _ => Path.Fam.append (q := rowPath T 0 D.R.m) (downFam t 0 D.R.m fun j => c j • givenFn B t Φ e (.down t 0 j)) (rowFam 0 D.R.m fun i => givenFn B t Φ e (.right i 0)), fun d hd => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite `hd` using `[Finsupp.support_single_ne_zero _ (by rintro rfl; simp at hz), Finset.mem_singleton]`. Substitute `hd` using the available equality. Conclude with `(GlobalTheory.OppConv.vecAll_append ρ e _ _ _ _ _ _).2 ⟨(GlobalTheory.OppConv.vecAll_down ρ e t 0 _ _ _).2 hcol, (GlobalTheory.OppConv.vecAll_row ρ e 0 _ _ _).2 hrow⟩`. Rewrite using `[Finsupp.sum_single_index (by rw [zero_mul])]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨x₁, x₂, rfl⟩` from `GlobalTheory.OppConv.append_surj (downPath t 0 D.R.m) (rowPath T 0 D.R.m) x`. Take `⟨y, rfl⟩` from `GlobalTheory.OppConv.downFam_surj t 0 D.R.m x₁`. Take `⟨y', rfl⟩` from `GlobalTheory.OppConv.rowFam_surj 0 D.R.m x₂`. Take `⟨h1, h2⟩` from `(GlobalTheory.OppConv.halfAll_append e _ _ _ _).1 hx`. Establish `hy` using `(GlobalTheory.OppConv.halfAll_down e t 0 _ _).1 h1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy'` using `(GlobalTheory.OppConv.halfAll_row e 0 _ _).1 h2`. Simplify using `only`. Rewrite using `[Finset.prod_congr rfl fun w _ => tensor_given B t Φ w y y']`. Use `erw [GlobalTheory.OppConv.famProd_append (downPath t 0 D.R.m), GlobalTheory.OppConv.famProd_down, GlobalTheory.OppConv.famProd_row]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Finset.prod_mul_distrib, givenFn, if_pos (hy _), if_pos (hy' _)]`.
-
-Rewrite using `[Finset.prod_comm (s := Finset.univ) (t := locPl G t), Finset.prod_comm (s := Finset.univ) (t := locPl G t), ← mul_assoc, ← mul_assoc, hz, one_mul]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem repFin_of (W : G.Weil) (B : Frames G) (ρ : RealMatch W) (t : T) (f : ∀ j : Fin D.R.m, Sch G (.down t 0 j))
     (Φ : G.Datum) (e : AE D) (he : IsIdemSum e (locPl G t)) (c : Fin D.R.m → ℂ) (z : ℂ) (hz : z * ∏ j, c j = 1)

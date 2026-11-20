@@ -11,11 +11,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Giv.Mix
 
 /- English proof (translation)
-Introduce `K _ ι _ P n M Xo B S hS K' hK' hc`. Establish `hYo : IsOpen S.R.Yo` using `(GlobalTheory.T.regular_chart_data_properties n M.Xc M.atlas S.R).1`. Rewrite using `[← tendstoLocallyUniformlyOn_iff_tendstoUniformlyOn_of_compact hc]`. Introduce `u hu x hx`. Take `⟨j, hj⟩` from `M.atlas.cover x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hO : IsOpen ((M.atlas.chart j).target ∩ (M.atlas.chart j).symm ⁻¹' S.R.Yo)` using `(M.atlas.chart j).isOpen_inter_preimage_symm hYo`. Establish `hy : M.atlas.chart j x ∈ (M.atlas.chart j).target ∩ (M.atlas.chart j).symm ⁻¹' S.R.Yo` using `⟨(M.atlas.chart j).map_source hj, by`. Simplify `hK' hx⟩` using `[Set.mem_preimage, (M.atlas.chart j).left_inv hj]`. Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.1 hO _ hy`. Establish `hsub : Metric.closedBall (M.atlas.chart j x) (ε / 2) ⊆ (M.atlas.chart j).target ∩ (M.atlas.chart j).symm ⁻¹' S.R.Yo` using `(Metric.closedBall_subset_ball (by linarith)).trans hball`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hU` using `(GlobalTheory.T.regularized_weight_tendsto_C2 K ι P n M Xo B S hS j _ hsub (isCompact_closedBall _ _)).1`. Use `⟨(M.atlas.chart j).source ∩ (M.atlas.chart j) ⁻¹' Metric.ball (M.atlas.chart j x) (ε / 2), mem_nhdsWithin_of_mem_nhds (((M.atlas.chart j).isOpen_inter_preimage Metric.isOpen_ball).mem_nhds ⟨hj, by simp [hε]⟩), ?_⟩` and prove the remaining obligations. Use `filter_upwards [hU u hu] with t ht y hy'`. Establish `h` using `ht (M.atlas.chart j y) (Metric.ball_subset_closedBall hy'.2)`. Simplify `h` using `[Function.comp, (M.atlas.chart j).left_inv hy'.1]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem tendstoUniformlyOn_regWeight_of_isCompact_subset_Yo : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (P : Ideal (MRing ι)) (n : ℕ) (M : CxModel P n) (Xo : Set ((Σ k, ι k) → ℂ)) (B : HermLine ι) (S : LogLogRegularisationSetting M Xo B), S.IsTied → ∀ K' ⊆ S.R.Yo, IsCompact K' → TendstoUniformlyOn S.regWeight S.R.ph (𝓝[>] 0) K' := by
   intro K _ ι _ P n M Xo B S hS K' hK' hc

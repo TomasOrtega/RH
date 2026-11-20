@@ -15,9 +15,9 @@ variable {H : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [Local
   [SecondCountableTopology H] [T2Space H] [MeasurableSpace H] [BorelSpace H]
 
 /- English proof (translation)
-Take `⟨K, hK, hK1⟩` from `exists_compact_mem_nhds (1 : H)`. Establish `h0 : ρ K ≠ 0` using `(measure_pos_of_mem_nhds ρ hK1).ne'`. Establish `h1 : ρ K ≠ ∞` using `hK.measure_lt_top.ne`. Establish `h2 : (c : ℝ≥0∞) * ρ K = (d : ℝ≥0∞) * ρ K`. Use `congrArg (fun τ : Measure H => τ K) h` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Conclude with `ENNReal.coe_injective ((ENNReal.mul_left_inj h0 h1).1 h2)`.
+A detailed English derivation is pending.
 -/
 theorem smul_haar_cancel (ρ : Measure H) [ρ.IsHaarMeasure] {c d : ℝ≥0} (h : c • ρ = d • ρ) : c = d := by
   obtain ⟨K, hK, hK1⟩ := exists_compact_mem_nhds (1 : H)
@@ -29,7 +29,7 @@ theorem smul_haar_cancel (ρ : Measure H) [ρ.IsHaarMeasure] {c d : ℝ≥0} (h 
   exact ENNReal.coe_injective ((ENNReal.mul_left_inj h0 h1).1 h2)
 
 /- English proof (translation)
-Rewrite using `[modularCharacterFun_eq_haarScalarFactor ρ g]`. Conclude with `isMulLeftInvariant_eq_smul _ ρ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_right_eq (ρ : Measure H) [ρ.IsHaarMeasure] (g : H) :
     ρ.map (· * g) = modularCharacterFun g • ρ := by
@@ -37,9 +37,9 @@ theorem map_right_eq (ρ : Measure H) [ρ.IsHaarMeasure] (g : H) :
   exact isMulLeftInvariant_eq_smul _ ρ
 
 /- English proof (translation)
-Set `ρ : Measure H` to `Measure.haar`. Establish `hφ : Measurable φ` using `φ.continuous.measurable`. Use `haveI : (ρ.map φ).IsHaarMeasure := φ.toMulEquiv.isHaarMeasure_map ρ φ.continuous φ.symm.continuous`. Apply `smul_haar_cancel (ρ.map φ)` to reduce the goal to its premises. Rewrite using `[← map_right_eq, ← Measure.map_smul, ← map_right_eq, map_map (measurable_mul_const _) hφ, map_map hφ (measurable_mul_const _)]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem modular_aut (φ : H ≃ₜ* H) (g : H) : modularCharacterFun (φ g) = modularCharacterFun g := by
   let ρ : Measure H := Measure.haar
@@ -53,9 +53,9 @@ theorem modular_aut (φ : H ≃ₜ* H) (g : H) : modularCharacterFun (φ g) = mo
   simp
 
 /- English proof (translation)
-Set `ρ : Measure H` to `Measure.haar`. Take `⟨f, hfc, hf0, hf1⟩` from `exists_continuous_nonneg_pos (1 : H)`. Establish `hI : ∫ x, f x ∂ρ ≠ 0` using `ne_of_gt (f.continuous.integral_pos_of_hasCompactSupport_nonneg_nonzero hfc hf0 hf1)`. Establish `hc : Continuous fun x : H => ∫ y, f (y⁻¹ * x) ∂ρ.inv` using `continuous_integral_apply_inv_mul f.continuous hfc`. Establish `he : ∀ g : H, (modularCharacterFun g : ℝ) = (∫ y, f (y⁻¹ * g) ∂ρ.inv) / ∫ x, f x ∂ρ`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g`. Rewrite using `[modularCharacterFun_eq_haarScalarFactor ρ g, haarScalarFactor_eq_integral_div _ _ f.continuous hfc hI, integral_map (measurable_mul_const g).aemeasurable f.continuous.aestronglyMeasurable, Measure.inv_def, integral_map measurable_inv.aemeasurable (by fun_prop : Continuous fun y …`. Simplify using the standard rewrite rules. Repeatedly rewrite using `[he]`. Conclude with `hc.div_const _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_modular : Continuous fun g : H => (modularCharacterFun g : ℝ) := by
   let ρ : Measure H := Measure.haar
@@ -76,11 +76,11 @@ theorem continuous_modular : Continuous fun g : H => (modularCharacterFun g : �
   exact hc.div_const _
 
 /- English proof (translation)
-Establish `h : ρ.inv = haarScalarFactor ρ.inv ρ • ρ` using `isMulLeftInvariant_eq_smul _ ρ`. Use `set c := haarScalarFactor ρ.inv ρ`. Establish `h2 : (c * c) • ρ = (1 : ℝ≥0) • ρ`. Establish `h3 : ρ.inv.inv = c • ρ.inv` using `by conv_lhs => rw [h]`. Rewrite using `[Measure.inv_def, Measure.map_smul, ← Measure.inv_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[Measure.inv_inv, h, smul_smul]`. Rewrite using `[one_smul]`. Conclude with `h3.symm`. Establish `h4 : c * c = 1` using `smul_haar_cancel ρ h2`. Establish `h5 : c = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (c : ℝ) * c = 1` using `by exact_mod_cast h4`. Establish `h0 : (0 : ℝ) ≤ c` using `c.2`. Establish `: (c : ℝ) = 1` using `by nlinarith`. Conclude with `this` after adjusting the coercions. Rewrite using `[h, h5, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_inv_eq (ρ : Measure H) [ρ.IsHaarMeasure] [ρ.IsMulRightInvariant] : ρ.inv = ρ := by
   have h : ρ.inv = haarScalarFactor ρ.inv ρ • ρ := isMulLeftInvariant_eq_smul _ ρ
@@ -113,19 +113,15 @@ def conjAut {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (N 
   continuous_invFun := Continuous.subtype_mk (by fun_prop) _
 
 /- English proof (translation)
-Take `⟨hne, hfin, hcar, hleft⟩` from `hν`. Use `haveI : LocallyCompactSpace N := hN.locallyCompactSpace`. Use `haveI : SecondCountableTopology N := Topology.IsEmbedding.subtypeVal.secondCountableTopology`. Establish `hE : MeasurableEmbedding (Subtype.val : N → G)` using `MeasurableEmbedding.subtype_coe hN.measurableSet`. Establish `hv : Measurable (Subtype.val : N → G)` using `hE.measurable`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `μ : Measure N` to `ν.comap Subtype.val`. Establish `hμ : μ.map Subtype.val = ν`. Rewrite using `[hE.map_comap, Subtype.range_coe_subtype]`. Conclude with `Measure.restrict_eq_self_of_ae_mem hcar`. Use `haveI : μ.IsMulLeftInvariant := ⟨fun g => by`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `hE.map_injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(μ.map (g * ·)).map Subtype.val = μ.map Subtype.val`. Establish `: (Subtype.val : N → G) ∘ (g * ·) = (fun x : G => (g : G) * x) ∘ Subtype.val` using `rfl`. Rewrite using `[map_map hv (measurable_const_mul g), this, ← map_map (measurable_const_mul _) hv, hμ, hleft g g.2]⟩`. Use `haveI : IsFiniteMeasureOnCompacts μ := ⟨fun K hK => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hE.comap_apply]`. Conclude with `(hK.image continuous_subtype_val).measure_lt_top⟩`. Use `haveI : NeZero μ := ⟨fun h => hne (by rw [← hμ, h, Measure.map_zero])⟩`. Use `haveI : TopologicalSpace.PseudoMetrizableSpace N := inferInstance`. Use `haveI : μ.Regular := inferInstance`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : μ.IsHaarMeasure := {}`. Establish `hmod : ∀ g : N, modularCharacterFun g = 1`. Introduce `g`. Establish `t1 : Tendsto (fun s : ℝ => conjAut N (a s) (h1 s) (h2 s) g) atBot (nhds (1 : N))` using `tendsto_subtype_rng.2 (h3 g g.2)`. Establish `t2` using `((continuous_modular (H := N)).tendsto 1).comp t1`.
-
-Simplify using `only [Function.comp_def, modular_aut, modularCharacterFun_map_one] at t2`. Conclude with `tendsto_const_nhds_iff.1 t2` after adjusting the coercions. Establish `hr : ∀ g : N, μ.map (· * g) = μ` using `fun g => by rw [map_right_eq, hmod, one_smul]`. Use `haveI : μ.IsMulRightInvariant := ⟨hr⟩`. Use `⟨fun m hm => ?_, ?_⟩` and prove the remaining obligations.
-
-Establish `: (fun x : G => x * m) ∘ (Subtype.val : N → G) = Subtype.val ∘ (· * (⟨m, hm⟩ : N))` using `rfl conv_lhs => rw [← hμ]`. Rewrite using `[map_map (measurable_mul_const m) hv, this, ← map_map hv (measurable_mul_const _), hr, hμ]`. Establish `: (fun x : G => x⁻¹) ∘ (Subtype.val : N → G) = Subtype.val ∘ (Inv.inv : N → N)` using `rfl conv_lhs => rw [← hμ]`. Rewrite using `[map_map measurable_inv hv, this, ← map_map hv measurable_inv, ← Measure.inv_def, map_inv_eq, hμ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unimodular_of_contracted {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G]

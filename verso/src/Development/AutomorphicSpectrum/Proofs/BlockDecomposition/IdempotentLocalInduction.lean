@@ -6,21 +6,21 @@ open CategoryTheory AlgebraicGeometry CrystallineSemistableComparison Crystallin
 namespace GlobalTheory.CompanionTheory.Idem
 
 /- English proof (translation)
-Introduce `S _ Q h0 hmul hadd hloc`. Set `I : Ideal S` to `{ carrier := {x | ∃ e : S, IsIdempotentElem e ∧ Q e ∧ e * x = x} zero_mem' := ⟨0, IsIdempotentElem.zero, h0, by simp⟩ add_mem' := by`. Introduce and unpack `x y ⟨e, he, hQe, hex⟩ ⟨e', he', hQe', hey⟩`. Establish `hee : e * e = e` using `he`. Establish `hee' : e' * e' = e'` using `he'`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1e : IsIdempotentElem (1 - e)` using `he.one_sub`. Establish `hg : IsIdempotentElem (e' * (1 - e))` using `IsIdempotentElem.mul he' h1e`. Establish `horth : e * (e' * (1 - e)) = 0`. Establish `: e * (e' * (1 - e)) = e' * (e - e * e)` using `by ring`. Rewrite using `[this, hee]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `⟨e + e' * (1 - e), ?_, hadd e _ he hg horth hQe (hmul e' _ he' h1e hQe'), ?_⟩` and prove the remaining obligations. Use `show (e + e' * (1 - e)) * (e + e' * (1 - e)) = e + e' * (1 - e)`. Establish `hg' : (e' * (1 - e)) * (e' * (1 - e)) = e' * (1 - e)` using `hg`. Establish `: (e + e' * (1 - e)) * (e + e' * (1 - e)) = e * e + 2 * (e * (e' * (1 - e))) + (e' * (1 - e)) * (e' * (1 - e))` using `by ring`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, hee, horth, hg']`. Simplify using the standard rewrite rules. Establish `h1 : (e + e' * (1 - e)) * x = x`. Establish `: (e + e' * (1 - e)) * x = e * x + e' * (x - e * x)` using `by ring`. Rewrite using `[this, hex]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `h2 : (e + e' * (1 - e)) * y = y`. Establish `: (e + e' * (1 - e)) * y = e * y + (e' * y) - e * (e' * y)` using `by ring`. Rewrite using `[this, hey]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_add, h1, h2]`. Use the proof step `smul_mem' := by`. Introduce and unpack `c x ⟨e, he, hQe, hex⟩`. Use `⟨e, he, hQe, ?_⟩` and prove the remaining obligations. Use `show e * (c * x) = c * x`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `htop : I = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨m, hm, hIm⟩` from `Ideal.exists_le_maximal I hne`. Take `⟨e, he, hem, hQ⟩` from `hloc m hm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hem (hIm ⟨e, he, hQ, by rw [show e * e = e from he]⟩)`. Establish `h1 : (1 : S) ∈ I` using `by rw [htop]; exact Submodule.mem_top`. Take `⟨e, _, hQ, he1⟩` from `h1`. Establish `: e = 1` using `by simpa using he1`. Conclude with `this ▸ hQ`.
+A detailed English derivation is pending.
 -/
 theorem glue_idempotent_property :
     ∀ {S : Type} [CommRing S] (Q : S → Prop), Q 0 →

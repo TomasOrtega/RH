@@ -12,11 +12,11 @@ namespace GlobalTheory.PsType
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Set `M : Matrix I I 𝒪[k]` to `fun i j => ⟨g.val i j, (Valuation.mem_integer_iff _ _).2 (hM i j)⟩`. Establish `hmap : M.map (algebraMap 𝒪[k] k) = g.val`. Use extensionality with `i j`. Both sides reduce to the same expression. Establish `hdet : IsUnit M.det`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `(Valuation.integer.integers (valuation k)).isUnit_of_one' ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, hmap, hd]`. Take `⟨u, hu⟩` from `(Matrix.isUnit_iff_isUnit_det M).2 hdet`. Use `⟨u, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Rewrite using `[Matrix.GeneralLinearGroup.map_apply, hu]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_KO_of_int_det {I : Type} [Fintype I] [DecidableEq I] {g : GL I k}
     (hM : ∀ i j, valuation k (g.val i j) ≤ 1) (hd : valuation k g.val.det = 1) : g ∈ KO k I := by
@@ -41,7 +41,7 @@ namespace GlobalTheory.PsType
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [strip, Set.mem_ofPred_eq] at hy`. Establish `h0` using `hy i j`. Rewrite `h0` using `[if_neg h]`. Conclude with `h0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem strip_off {ψ : Fin n → kˣ →* ℂˣ} {r : ℕ} {ϖ : k} {m : ℕ} {y : GL (Fin n) k} (hy : y ∈ strip ψ r ϖ m)
     (i j : Fin n) (h : ¬ ((i : ℕ) < r ∧ r ≤ (j : ℕ))) : y.val i j = (1 : Matrix (Fin n) (Fin n) k) i j := by
@@ -51,7 +51,7 @@ theorem strip_off {ψ : Fin n → kˣ →* ℂˣ} {r : ℕ} {ϖ : k} {m : ℕ} {
   exact h0
 
 /- English proof (translation)
-Simplify using `only [strip, Set.mem_ofPred_eq] at hy`. Establish `h0` using `hy i j`. Rewrite `h0` using `[if_pos h]`. Conclude with `h0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem strip_on {ψ : Fin n → kˣ →* ℂˣ} {r : ℕ} {ϖ : k} {m : ℕ} {y : GL (Fin n) k} (hy : y ∈ strip ψ r ϖ m)
     (i j : Fin n) (h : (i : ℕ) < r ∧ r ≤ (j : ℕ)) :
@@ -62,7 +62,7 @@ theorem strip_on {ψ : Fin n → kˣ →* ℂˣ} {r : ℕ} {ϖ : k} {m : ℕ} {y
   exact h0
 
 /- English proof (translation)
-Establish `hji : (j : ℕ) < (i : ℕ)` using `h`. Rewrite using `[strip_off hy i j (fun hc => by omega), Matrix.one_apply_ne (ne_of_gt h)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem strip_lower {ψ : Fin n → kˣ →* ℂˣ} {r : ℕ} {ϖ : k} {m : ℕ} {y : GL (Fin n) k} (hy : y ∈ strip ψ r ϖ m)
     (i j : Fin n) (h : j < i) : y.val i j = 0 := by
@@ -70,14 +70,14 @@ theorem strip_lower {ψ : Fin n → kˣ →* ℂˣ} {r : ℕ} {ϖ : k} {m : ℕ}
   rw [strip_off hy i j (fun hc => by omega), Matrix.one_apply_ne (ne_of_gt h)]
 
 /- English proof (translation)
-Rewrite using `[strip_off hy i i (fun hc => by omega), Matrix.one_apply_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem strip_diag {ψ : Fin n → kˣ →* ℂˣ} {r : ℕ} {ϖ : k} {m : ℕ} {y : GL (Fin n) k} (hy : y ∈ strip ψ r ϖ m)
     (i : Fin n) : y.val i i = 1 := by
   rw [strip_off hy i i (fun hc => by omega), Matrix.one_apply_eq]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_isUpperTriangular (fun i j h => strip_lower hy i j h)]`. Simplify using `[strip_diag hy]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem strip_det {ψ : Fin n → kˣ →* ℂˣ} {r : ℕ} {ϖ : k} {m : ℕ} {y : GL (Fin n) k} (hy : y ∈ strip ψ r ϖ m) :
     y.val.det = 1 := by
@@ -85,33 +85,31 @@ theorem strip_det {ψ : Fin n → kˣ →* ℂˣ} {r : ℕ} {ϖ : k} {m : ℕ} {
   simp [strip_diag hy]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n ψ r ϖ hϖ hϖ1 hunif hcut`. Establish `hent : ∀ (m : ℕ) (y : GL (Fin n) k), y ∈ strip ψ r ϖ m → ∀ i j : Fin n, ¬ ((i : ℕ) < r ∧ r ≤ (j : ℕ)) → valuation k (y.val i j) ≤ 1`. Introduce `m y hy i j h`. Rewrite using `[strip_off hy i j h]`. Distinguish the cases in `hij : i = j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne hij]`. Establish `hdet1 : ∀ (m : ℕ) (y : GL (Fin n) k), y ∈ strip ψ r ϖ m → valuation k y.val.det = 1`. Introduce `m y hy`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[strip_det hy, map_one]`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Use `(show y ∈ KO k (Fin n) ∧ ∀ i j : Fin n, i < j → Triv (ψ i / ψ j) (y.val i j) from ⟨?_, ?_⟩)` and prove the remaining obligations. Use `mem_KO_of_int_det (fun i j => ?_) (hdet1 0 y hy)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : (i : ℕ) < r ∧ r ≤ (j : ℕ)`. Establish `h0` using `(strip_on hy i j h).1`. Rewrite `h0` using `[pow_zero, one_mul]`. Then use the resulting hypothesis. Conclude with `hent 0 y hy i j h`. Introduce `i j hij`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : (i : ℕ) < r ∧ r ≤ (j : ℕ)`. Establish `h0` using `(strip_on hy i j h).2`. Rewrite `h0` using `[pow_zero, one_mul]`. Then use the resulting hypothesis. Rewrite using `[strip_off hy i j h, Matrix.one_apply_ne (ne_of_lt hij)]`. Conclude with `triv_zero _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `m y hy`. Rewrite using `[GlobalTheory.T.principalSeriesTypeCharacter_triangular k n ψ y (fun _ => 1) (fun _ => by simp) (fun i => by simp [strip_diag hy i]) (Or.inr fun i j h => strip_lower hy i j h)]`. Simplify using the standard rewrite rules. Introduce `y hy`. Use `mem_KO_of_int_det (fun i j => ?_) (hdet1 1 y hy)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `h : (i : ℕ) < r ∧ r ≤ (j : ℕ)`. Take `⟨h1, h2⟩` from `strip_on hy i j h`. Rewrite `h1`, `h2` using `[pow_one]`. Establish `hlt : valuation k (ϖ * y.val i j) < 1`. Use `lt_of_le_of_ne h1 fun heq => hcut i j h.1 h.2 ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `triv_mono _ _ _ (le_of_eq (by rw [heq, map_one])) h2`. Establish `hle` using `hunif _ hlt`. Rewrite `hle` using `[map_mul]`. Establish `hpos : 0 < valuation k ϖ` using `zero_lt_iff.2 ((map_ne_zero _).2 hϖ)`. Conclude with `le_of_mul_le_mul_left (by rwa [mul_one]) hpos`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `hent 1 y hy i j h`. Introduce `z hz m y set d : Fin n → k := fun i : Fin n => if (i : ℕ) < r then ϖ else 1 with hd_def`. Establish `hd : ∀ i, d i ≠ 0`. Introduce `i`. Simplify using `only [hd_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `split_ifs`. Use `exacts [hϖ, one_ne_zero]`. Establish `hzz : z.val * (z⁻¹).val = 1` using `by simp`. Establish `hzinv : (z⁻¹).val = Matrix.diagonal (fun i => (d i)⁻¹)`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hz, Matrix.diagonal_mul_diagonal]`. Rewrite using `[show (fun i => (d i)⁻¹ * d i) = fun _ => (1 : k) from funext fun i => inv_mul_cancel₀ (hd i)]`. Rewrite using `[Matrix.diagonal_one, one_mul]`. Use `_ = Matrix.diagonal (fun i => (d i)⁻¹) := by rw [mul_assoc, hzz, mul_one]`. Apply the tactic sequence `have hentry : ∀ i j : Fin n, (z * y * z⁻¹).val i j = d i * y.val i j * (d j)⁻¹ := by`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i j`. Rewrite using `[Units.val_mul, Units.val_mul, hz, hzinv, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Simplify using `only [strip, Set.mem_ofPred_eq, hentry]`. Use `forall_congr' fun i => forall_congr' fun j => ?_` and prove the remaining obligations. Distinguish the cases in `h : (i : ℕ) < r ∧ r ≤ (j : ℕ)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos h, if_pos h]`. Establish `hdi : d i = ϖ` using `by simp only [hd_def]; rw [if_pos h.1]`. Establish `hdj : d j = 1` using `by simp only [hd_def]; rw [if_neg (by omega)]`. Rewrite using `[hdi, hdj, show ϖ ^ m * (ϖ * y.val i j * (1 : k)⁻¹) = ϖ ^ (m + 1) * y.val i j by ring]`. Rewrite using `[if_neg h, if_neg h]`.
-
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[Matrix.one_apply_eq, mul_comm (d i), mul_inv_cancel_right₀ (hd i)]`. Rewrite using `[Matrix.one_apply_ne hij]`. Simplify using `[hd i, hd j]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem strip_props : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (ψ : Fin n → kˣ →* ℂˣ) (r : ℕ) (ϖ : k), ϖ ≠ 0 → valuation k ϖ < 1 → (∀ x : k, valuation k x < 1 → valuation k x ≤ valuation k ϖ) → Cut ψ r → (∀ y ∈ strip ψ r ϖ 0, y ∈ grp ψ) ∧ (∀ m, ∀ y ∈ strip ψ r ϖ m, theta ψ y = 1) ∧ (∀ y ∈ strip ψ r ϖ 1, y ∈ KO k (Fin n)) ∧ ∀ (z : GL (Fin n) k), z.val = Matrix.diagonal (fun i : Fin n => if (i : ℕ) < r then ϖ else 1) → ∀ m y, y ∈ strip ψ r ϖ (m + 1) ↔ z * y * z⁻¹ ∈ strip ψ r ϖ m := by
   intro k _ _ _ _ n ψ r ϖ hϖ hϖ1 hunif hcut

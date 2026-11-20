@@ -7,7 +7,7 @@ open Matrix LevelData
 variable {A : Type} [Ring A] [Algebra ℂ A]
 
 /- English proof (translation)
-The claim follows from `| [], _ => by intro i j by_cases h : i = j <;> simp [Matrix.one_apply, h] | M :: l, h => by intro i j rw [List.prod_cons, Matrix.mul_apply] exact Commute.sum_right _ _ _ fun k _ => (h M (by simp) i k).mul_right (comm_mat_prod x l (fun N hN => h N (by simp [hN])) k j)`.
+A detailed English derivation is pending.
 -/
 theorem comm_mat_prod (x : A) :
     ∀ l : List (Matrix (Fin 2) (Fin 2) A), (∀ M ∈ l, ∀ i j, Commute x (M i j)) →
@@ -22,7 +22,7 @@ theorem comm_mat_prod (x : A) :
         (h M (by simp) i k).mul_right (comm_mat_prod x l (fun N hN => h N (by simp [hN])) k j)
 
 /- English proof (translation)
-The claim follows from `| 0, _, _, _, _ => by simp | n + 1, f, g, h1, hc => by rw [List.ofFn_succ, List.ofFn_succ, List.prod_cons, List.prod_cons] have hP : Commute (List.ofFn fun i => f i.succ).prod (g 0) := Commute.list_prod_left _ _ (by intro a ha obtain ⟨i, rfl⟩ := List.mem_ofFn.mp ha exact hc _ _) …`.
+A detailed English derivation is pending.
 -/
 theorem prod_mul_prod_eq_one : ∀ (n : ℕ) (f g : Fin n → A), (∀ i, f i * g i = 1) →
     (∀ i j, Commute (f i) (g j)) → (List.ofFn f).prod * (List.ofFn g).prod = 1
@@ -46,54 +46,54 @@ theorem prod_mul_prod_eq_one : ∀ (n : ℕ) (f g : Fin n → A), (∀ i, f i * 
 variable {r : ℕ} (L : LevelData A r)
 
 /- English proof (translation)
-The claim follows from `L.fns_comm x hx y hy`.
+A detailed English derivation is pending.
 -/
 theorem _root_.Formalism.FourierDecayAlt.R.LevelData.inv_fcomm {x y : A} (hx : x ∈ L.fns) (hy : y ∈ L.fns) : Commute x y :=
   L.fns_comm x hx y hy
 
 /- English proof (translation)
-Simplify using `[LevelData.fns]`.
+Simplify using the standard rewrite rules.
 -/
 theorem _root_.Formalism.FourierDecayAlt.R.LevelData.inv_mem_cb (l) : L.cb l ∈ L.fns := by simp [LevelData.fns]
 /- English proof (translation)
-Simplify using `[LevelData.fns]`.
+Simplify using the standard rewrite rules.
 -/
 theorem _root_.Formalism.FourierDecayAlt.R.LevelData.inv_mem_cbi (l) : L.cbi l ∈ L.fns := by simp [LevelData.fns]
 /- English proof (translation)
-Simplify using `[LevelData.fns]`.
+Simplify using the standard rewrite rules.
 -/
 theorem _root_.Formalism.FourierDecayAlt.R.LevelData.inv_mem_c (l) : L.c l ∈ L.fns := by simp [LevelData.fns]
 /- English proof (translation)
-Simplify using `[LevelData.fns]`.
+Simplify using the standard rewrite rules.
 -/
 theorem _root_.Formalism.FourierDecayAlt.R.LevelData.inv_mem_ci (l) : L.ci l ∈ L.fns := by simp [LevelData.fns]
 /- English proof (translation)
-Simplify using `[LevelData.fns]`.
+Simplify using the standard rewrite rules.
 -/
 theorem _root_.Formalism.FourierDecayAlt.R.LevelData.inv_mem_ζ : L.ζ ∈ L.fns := by simp [LevelData.fns]
 /- English proof (translation)
-Simplify using `[LevelData.fns]`.
+Simplify using the standard rewrite rules.
 -/
 theorem _root_.Formalism.FourierDecayAlt.R.LevelData.inv_mem_ζi : L.ζi ∈ L.fns := by simp [LevelData.fns]
 /- English proof (translation)
-Simplify using `[LevelData.fns]`.
+Simplify using the standard rewrite rules.
 -/
 theorem _root_.Formalism.FourierDecayAlt.R.LevelData.inv_mem_ζb : L.ζb ∈ L.fns := by simp [LevelData.fns]
 /- English proof (translation)
-Simplify using `[LevelData.fns]`.
+Simplify using the standard rewrite rules.
 -/
 theorem _root_.Formalism.FourierDecayAlt.R.LevelData.inv_mem_ζbi : L.ζbi ∈ L.fns := by simp [LevelData.fns]
 /- English proof (translation)
-Simplify using `[LevelData.fns]`.
+Simplify using the standard rewrite rules.
 -/
 theorem _root_.Formalism.FourierDecayAlt.R.LevelData.inv_mem_GG : L.GG ∈ L.fns := by simp [LevelData.fns]
 /- English proof (translation)
-Simplify using `[LevelData.fns]`.
+Simplify using the standard rewrite rules.
 -/
 theorem _root_.Formalism.FourierDecayAlt.R.LevelData.inv_mem_GGi : L.GGi ∈ L.fns := by simp [LevelData.fns]
 
 /- English proof (translation)
-The claim follows from `Commute.list_prod_right _ _ (by intro a ha obtain ⟨i, rfl⟩ := List.mem_ofFn.mp ha exact h i)`.
+A detailed English derivation is pending.
 -/
 theorem _root_.Formalism.FourierDecayAlt.R.LevelData.inv_comm_ofFn {x : A} {f : Fin r → A} (h : ∀ i, Commute x (f i)) :
     Commute x (List.ofFn f).prod :=
@@ -103,9 +103,9 @@ theorem _root_.Formalism.FourierDecayAlt.R.LevelData.inv_comm_ofFn {x : A} {f : 
     exact h i)
 
 /- English proof (translation)
-Apply `comm_mat_prod` to reduce the goal to its premises. Introduce `M hM`. Take `⟨l, rfl⟩` from `List.mem_ofFn.mp (List.mem_reverse.mp hM)`. Introduce `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[LevelData.Tl, (hp l).add_left, Algebra.commutes, hc l, hci l, Commute.neg_right, Commute.add_right, Commute.zero_right]`. Conclude with `Commute.add_right (Algebra.commute_algebraMap_right Y x) (hp l)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.Formalism.FourierDecayAlt.R.LevelData.inv_comm_Tprod {x : A} (hp : ∀ l, Commute x (L.p l)) (hc : ∀ l, Commute x (L.c l))
     (hci : ∀ l, Commute x (L.ci l)) (Y : ℂ) (i j) : Commute x (L.Tprod Y i j) := by
@@ -119,9 +119,9 @@ theorem _root_.Formalism.FourierDecayAlt.R.LevelData.inv_comm_Tprod {x : A} (hp 
   exact Commute.add_right (Algebra.commute_algebraMap_right Y x) (hp l)
 
 /- English proof (translation)
-Apply `comm_mat_prod` to reduce the goal to its premises. Introduce `M hM`. Take `⟨l, rfl⟩` from `List.mem_ofFn.mp (List.mem_reverse.mp hM)`. Introduce `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [LevelData.Tvl, hc l, hci l]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `Commute.sub_right (Algebra.commute_algebraMap_right Y x) (hp l)`.
+A detailed English derivation is pending.
 -/
 theorem _root_.Formalism.FourierDecayAlt.R.LevelData.inv_comm_Tvprod {x : A} (hp : ∀ l, Commute x (L.pb l)) (hc : ∀ l, Commute x (L.cb l))
     (hci : ∀ l, Commute x (L.cbi l)) (Y : ℂ) (i j) : Commute x (L.Tvprod Y i j) := by
@@ -133,17 +133,17 @@ theorem _root_.Formalism.FourierDecayAlt.R.LevelData.inv_comm_Tvprod {x : A} (hp
   exact Commute.sub_right (Algebra.commute_algebraMap_right Y x) (hp l)
 
 /- English proof (translation)
-The claim follows from `Algebra.commute_algebraMap_right y x`.
+A detailed English derivation is pending.
 -/
 theorem comm_alg (x : A) (y : ℂ) : Commute x (algebraMap ℂ A y) := Algebra.commute_algebraMap_right y x
 
 /- English proof (translation)
-The claim follows from `Algebra.subset_adjoin hx`.
+A detailed English derivation is pending.
 -/
 theorem _root_.Formalism.FourierDecayAlt.R.LevelData.inv_S_mem {x : A} (hx : x ∈ L.fns) : x ∈ Algebra.adjoin ℂ L.fns := Algebra.subset_adjoin hx
 
 /- English proof (translation)
-The claim follows from `Subalgebra.list_prod_mem _ (by intro a ha obtain ⟨i, rfl⟩ := List.mem_ofFn.mp ha exact L.inv_S_mem (hf i))`.
+A detailed English derivation is pending.
 -/
 theorem _root_.Formalism.FourierDecayAlt.R.LevelData.inv_S_prod {f : Fin r → A} (hf : ∀ i, f i ∈ L.fns) :
     (List.ofFn f).prod ∈ Algebra.adjoin ℂ L.fns :=
@@ -153,32 +153,32 @@ theorem _root_.Formalism.FourierDecayAlt.R.LevelData.inv_S_prod {f : Fin r → A
     exact L.inv_S_mem (hf i))
 
 /- English proof (translation)
-The claim follows from `prod_mul_prod_eq_one r L.cbi L.cb L.cbi_cb (fun i j => L.inv_fcomm (L.inv_mem_cbi i) (L.inv_mem_cb j))`.
+A detailed English derivation is pending.
 -/
 theorem _root_.Formalism.FourierDecayAlt.R.LevelData.inv_Drbi_Drb : L.Drbi * L.Drb = 1 :=
   prod_mul_prod_eq_one r L.cbi L.cb L.cbi_cb (fun i j => L.inv_fcomm (L.inv_mem_cbi i) (L.inv_mem_cb j))
 /- English proof (translation)
-The claim follows from `prod_mul_prod_eq_one r L.cb L.cbi L.cb_cbi (fun i j => L.inv_fcomm (L.inv_mem_cb i) (L.inv_mem_cbi j))`.
+A detailed English derivation is pending.
 -/
 theorem _root_.Formalism.FourierDecayAlt.R.LevelData.inv_Drb_Drbi : L.Drb * L.Drbi = 1 :=
   prod_mul_prod_eq_one r L.cb L.cbi L.cb_cbi (fun i j => L.inv_fcomm (L.inv_mem_cb i) (L.inv_mem_cbi j))
 /- English proof (translation)
-The claim follows from `prod_mul_prod_eq_one r L.ci L.c L.ci_c (fun i j => L.inv_fcomm (L.inv_mem_ci i) (L.inv_mem_c j))`.
+A detailed English derivation is pending.
 -/
 theorem _root_.Formalism.FourierDecayAlt.R.LevelData.inv_Dri_Dr : L.Dri * L.Dr = 1 :=
   prod_mul_prod_eq_one r L.ci L.c L.ci_c (fun i j => L.inv_fcomm (L.inv_mem_ci i) (L.inv_mem_c j))
 /- English proof (translation)
-The claim follows from `prod_mul_prod_eq_one r L.c L.ci L.c_ci (fun i j => L.inv_fcomm (L.inv_mem_c i) (L.inv_mem_ci j))`.
+A detailed English derivation is pending.
 -/
 theorem _root_.Formalism.FourierDecayAlt.R.LevelData.inv_Dr_Dri : L.Dr * L.Dri = 1 :=
   prod_mul_prod_eq_one r L.c L.ci L.c_ci (fun i j => L.inv_fcomm (L.inv_mem_c i) (L.inv_mem_ci j))
 
 /- English proof (translation)
-Use `letI : CommRing (Algebra.adjoin ℂ L.fns) := Algebra.adjoinCommRingOfComm ℂ L.fns_comm`. Set `Dr' : Algebra.adjoin ℂ L.fns` to `⟨L.Dr, L.inv_S_prod L.inv_mem_c⟩`. Set `Drb' : Algebra.adjoin ℂ L.fns` to `⟨L.Drb, L.inv_S_prod L.inv_mem_cb⟩`. Set `Drbi' : Algebra.adjoin ℂ L.fns` to `⟨L.Drbi, L.inv_S_prod L.inv_mem_cbi⟩`. Set `GG' : Algebra.adjoin ℂ L.fns` to `⟨L.GG, L.inv_S_mem L.inv_mem_GG⟩`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `z' : Algebra.adjoin ℂ L.fns` to `⟨L.ζbi, L.inv_S_mem L.inv_mem_ζbi⟩`. Establish `h1 : Drb' * Drbi' = 1` using `Subtype.ext L.inv_Drb_Drbi`. Establish `hS : Dr' * Drb' * GG' * (z' * Drbi') * (z' * Drbi') * Drb' = Dr' * GG' * (z' * z')`. Take the linear combination `(Dr' * GG' * z' * z' * (Drb' * Drbi' + 1)) * h1`. Establish `hA` using `congrArg Subtype.val hS`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Simplify using `only [LevelData.G, LevelData.Dbi, LevelData.Ahatv]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 -/
 theorem _root_.Formalism.FourierDecayAlt.R.LevelData.inv_hR_bar (Y : ℂ) :
     L.G * L.Dbi * L.Dbi * L.Ahatv Y = L.Dr * L.GG * (L.ζbi * L.ζbi * L.Avr Y) := by
@@ -200,11 +200,11 @@ theorem _root_.Formalism.FourierDecayAlt.R.LevelData.inv_hR_bar (Y : ℂ) :
     _ = L.Dr * L.GG * (L.ζbi * L.ζbi * L.Avr Y) := by noncomm_ring
 
 /- English proof (translation)
-Use `letI : CommRing (Algebra.adjoin ℂ L.fns) := Algebra.adjoinCommRingOfComm ℂ L.fns_comm`. Set `Dr' : Algebra.adjoin ℂ L.fns` to `⟨L.Dr, L.inv_S_prod L.inv_mem_c⟩`. Set `Drb' : Algebra.adjoin ℂ L.fns` to `⟨L.Drb, L.inv_S_prod L.inv_mem_cb⟩`. Set `Dri' : Algebra.adjoin ℂ L.fns` to `⟨L.Dri, L.inv_S_prod L.inv_mem_ci⟩`. Set `GG' : Algebra.adjoin ℂ L.fns` to `⟨L.GG, L.inv_S_mem L.inv_mem_GG⟩`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `z' : Algebra.adjoin ℂ L.fns` to `⟨L.ζi, L.inv_S_mem L.inv_mem_ζi⟩`. Establish `h1 : Dr' * Dri' = 1` using `Subtype.ext L.inv_Dr_Dri`. Establish `hS : Dr' * Drb' * GG' * (z' * Dri') * (z' * Dri') * Dr' = Drb' * GG' * (z' * z')`. Take the linear combination `(Drb' * GG' * z' * z' * (Dr' * Dri' + 1)) * h1`. Establish `hA` using `congrArg Subtype.val hS`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Simplify using `only [LevelData.G, LevelData.Di, LevelData.Ahat]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 -/
 theorem _root_.Formalism.FourierDecayAlt.R.LevelData.inv_hR_hol (Y : ℂ) :
     L.G * L.Di * L.Di * L.Ahat Y = L.Drb * L.GG * (L.ζi * L.ζi * L.Ar Y) := by
@@ -226,31 +226,25 @@ theorem _root_.Formalism.FourierDecayAlt.R.LevelData.inv_hR_hol (Y : ℂ) :
     _ = L.Drb * L.GG * (L.ζi * L.ζi * L.Ar Y) := by noncomm_ring
 
 /- English proof (translation)
-Introduce `A _ _ r L Y`. Establish `zb_p : ∀ l, Commute L.ζbi (L.p l)` using `fun l => (L.p_ζbi l).symm`. Establish `zb_pb : ∀ l, Commute L.ζbi (L.pb l)` using `fun l => (L.pb_ζbi l).symm`. Establish `z_p : ∀ l, Commute L.ζi (L.p l)` using `fun l => (L.p_ζi l).symm`. Establish `z_pb : ∀ l, Commute L.ζi (L.pb l)` using `fun l => (L.pb_ζi l).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `fc` using `fun {x y : A} (hx : x ∈ L.fns) (hy : y ∈ L.fns) => L.inv_fcomm hx hy`. Establish `zbAr : ∀ i j, Commute L.ζbi (L.Tprod Y i j)` using `L.inv_comm_Tprod zb_p (fun l => fc L.inv_mem_ζbi (L.inv_mem_c l)) (fun l => fc L.inv_mem_ζbi (L.inv_mem_ci l)) Y`. Establish `zbAv : ∀ i j, Commute L.ζbi (L.Tvprod Y i j)` using `L.inv_comm_Tvprod zb_pb (fun l => fc L.inv_mem_ζbi (L.inv_mem_cb l)) (fun l => fc L.inv_mem_ζbi (L.inv_mem_cbi l)) Y`. Establish `zAr : ∀ i j, Commute L.ζi (L.Tprod Y i j)` using `L.inv_comm_Tprod z_p (fun l => fc L.inv_mem_ζi (L.inv_mem_c l)) (fun l => fc L.inv_mem_ζi (L.inv_mem_ci l)) Y`. Establish `zAv : ∀ i j, Commute L.ζi (L.Tvprod Y i j)` using `L.inv_comm_Tvprod z_pb (fun l => fc L.inv_mem_ζi (L.inv_mem_cb l)) (fun l => fc L.inv_mem_ζi (L.inv_mem_cbi l)) Y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `zbDr : Commute L.ζbi L.Dr` using `LevelData.inv_comm_ofFn fun l => fc L.inv_mem_ζbi (L.inv_mem_c l)`. Establish `zbDrb : Commute L.ζbi L.Drb` using `LevelData.inv_comm_ofFn fun l => fc L.inv_mem_ζbi (L.inv_mem_cb l)`. Establish `zDr : Commute L.ζi L.Dr` using `LevelData.inv_comm_ofFn fun l => fc L.inv_mem_ζi (L.inv_mem_c l)`. Establish `zDrb : Commute L.ζi L.Drb` using `LevelData.inv_comm_ofFn fun l => fc L.inv_mem_ζi (L.inv_mem_cb l)`. Establish `zbGG : Commute L.ζbi L.GG` using `fc L.inv_mem_ζbi L.inv_mem_GG`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `zGG : Commute L.ζi L.GG` using `fc L.inv_mem_ζi L.inv_mem_GG`. Establish `zb_l0 : Commute L.ζbi (L.l0 Y)`. Simplify using `only [LevelData.l0]`. Conclude with `((show Commute L.ζbi L.nab from L.nab_ζbi.symm).neg_right).sub_right ((comm_alg _ _).mul_right ((fc L.inv_mem_ζbi L.inv_mem_ζb).mul_right (fc L.inv_mem_ζbi L.inv_mem_GGi)))`. Establish `z_m0 : Commute L.ζi (L.m0 Y)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [LevelData.m0]`. Conclude with `((show Commute L.ζi L.nabs from L.nabs_ζi.symm).neg_right).sub_right ((comm_alg _ _).mul_right ((fc L.inv_mem_ζi L.inv_mem_ζ).mul_right (fc L.inv_mem_ζi L.inv_mem_GGi)))`. Establish `hm : L.m0 Y * L.ζbi = L.ζbi * L.m0 Y - L.ζbi * L.ζbi`. Establish `hX : Commute L.ζbi (algebraMap ℂ A (Y - 1/2) * (L.ζ * L.GGi))` using `(comm_alg _ _).mul_right ((fc L.inv_mem_ζbi L.inv_mem_ζ).mul_right (fc L.inv_mem_ζbi L.inv_mem_GGi))`. Simplify using `only [LevelData.m0]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[L.nabs_ζbi, hX.eq]`. Use `_ = _ := by noncomm_ring`. Establish `hl : L.l0 Y * L.ζi = L.ζi * L.l0 Y + L.ζi * L.ζi`. Establish `hX : Commute L.ζi (algebraMap ℂ A (Y + 1/2) * (L.ζb * L.GGi))` using `(comm_alg _ _).mul_right ((fc L.inv_mem_ζi L.inv_mem_ζb).mul_right (fc L.inv_mem_ζi L.inv_mem_GGi))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LevelData.l0]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[L.nab_ζi, hX.eq]`. Use `_ = _ := by noncomm_ring`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(zbDr.mul_right (zbAr 0 0)).eq`. Conclude with `((zbDrb.mul_right zbGG).mul_right ((zb_l0.mul_right (zbAr 0 0)).add_right (zbAr 1 0))).eq`. Conclude with `(zbDrb.mul_right (zbAv 0 0)).eq`. Rewrite using `[inv_hR_bar]`. Establish `e1 : (L.m0 Y * L.Avr Y + L.Bvr Y) * L.ζbi = (L.ζbi * L.m0 Y - L.ζbi * L.ζbi) * L.Avr Y + L.ζbi * L.Bvr Y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hA1 : Commute L.ζbi (L.Avr Y)` using `zbAv 0 0`. Establish `hB1 : Commute L.ζbi (L.Bvr Y)` using `zbAv 1 0`. Rewrite using `[add_mul, mul_assoc, ← hA1.eq, ← mul_assoc, hm, ← hB1.eq]`. Establish `hDG : Commute L.ζbi (L.Dr * L.GG)` using `zbDr.mul_right zbGG`. Simplify using `only [LevelData.R0v]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e1, hDG.eq]`. Use `_ = _ := by noncomm_ring`. Conclude with `(zDr.mul_right (zAr 0 0)).eq`. Conclude with `(zDrb.mul_right (zAv 0 0)).eq`.
-
-Conclude with `((zDr.mul_right zGG).mul_right ((z_m0.mul_right (zAv 0 0)).add_right (zAv 1 0))).eq`. Rewrite using `[inv_hR_hol]`. Establish `e1 : (L.l0 Y * L.Ar Y + L.Br Y) * L.ζi = (L.ζi * L.l0 Y + L.ζi * L.ζi) * L.Ar Y + L.ζi * L.Br Y`. Establish `hA1 : Commute L.ζi (L.Ar Y)` using `zAr 0 0`. Establish `hB1 : Commute L.ζi (L.Br Y)` using `zAr 1 0`.
-
-Rewrite using `[add_mul, mul_assoc, ← hA1.eq, ← mul_assoc, hl, ← hB1.eq]`. Establish `hDG : Commute L.ζi (L.Drb * L.GG)` using `zDrb.mul_right zGG`. Simplify using `only [LevelData.R0]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e1, hDG.eq]`.
-
-Use `_ = _ := by noncomm_ring`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ruleInv : RuleInv := by
   intro A _ _ r L Y
@@ -339,6 +333,6 @@ theorem ruleInv : RuleInv := by
 end Formalism.FourierDecayAlt.R.PInv
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.R.PInv.ruleInv`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.inverseCommutators : Formalism.FourierDecayAlt.R.RuleInv := Formalism.FourierDecayAlt.R.PInv.ruleInv

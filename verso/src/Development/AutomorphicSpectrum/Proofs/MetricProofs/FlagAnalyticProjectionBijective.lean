@@ -7,13 +7,13 @@ open GlobalTheory.CompanionTheory.Ar.PB.WSq
 namespace GlobalTheory.CompanionTheory.Ar.PB.WSq.FC
 
 /- English proof (translation)
-Introduce `K _ ι _ Φ _ y Ψ _ _ N j M n d BM FA`. Establish `hdeg0` using `FA.Re.degree`. Unfold `ReciprocityTheory.AnForm.M.IsDegreeOff at hdeg0`. Establish `hdeg` using `hdeg0.2.2.2.2.1`. Rewrite `hdeg` using `[FA.br_empty, FA.deg_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : ∀ x, ∃ a, FA.Re.π ⁻¹' {x} = {a}` using `fun x => Set.ncard_eq_one.1 (hdeg x (by simp))`. Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Take `⟨c, hc⟩` from `h1 (FA.Re.π a)`. Establish `ha : a ∈ FA.Re.π ⁻¹' {FA.Re.π a}` using `Set.mem_preimage.2 (Set.mem_singleton _)`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb : b ∈ FA.Re.π ⁻¹' {FA.Re.π a}` using `Set.mem_preimage.2 (Set.mem_singleton_iff.2 hab.symm)`. Rewrite `ha`, `hb` using `[hc]`. Conclude with `(Set.mem_singleton_iff.1 ha).trans (Set.mem_singleton_iff.1 hb).symm`. Introduce `x`. Take `⟨c, hc⟩` from `h1 x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcx : c ∈ FA.Re.π ⁻¹' {x}`. Rewrite using `[hc]`. Conclude with `Set.mem_singleton c`. Conclude with `⟨c, Set.mem_singleton_iff.1 (Set.mem_preimage.1 hcx)⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem re_pi_bijective : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n d : ℕ) (BM : BaseMetric M n) (FA : FlagAn BM d), Function.Bijective FA.Re.π := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M n d BM FA

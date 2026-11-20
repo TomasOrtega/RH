@@ -13,13 +13,13 @@ section General
 variable {σ : Type} [DecidableEq σ]
 
 /- English proof (translation)
-Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C c => simp`. Consider the case `add p q hp hq`. Use `dvd_add hp hq` as an intermediate fact. Rewrite using `[map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul_X p i hp`. Rewrite using `[map_mul, rename_X]`. Establish `h2 : (X a - X b : MvPolynomial σ ℝ) ∣ X i - X (Function.update id a b i)`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `h : i = a`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`. Use `dvd_add (hp.mul_right (X i)) (h2.mul_left (rename (Function.update id a b) p))` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sub_dvd_sub_rename (a b : σ) (Q : MvPolynomial σ ℝ) :
     (X a - X b : MvPolynomial σ ℝ) ∣ Q - rename (Function.update id a b) Q := by
@@ -38,7 +38,7 @@ theorem sub_dvd_sub_rename (a b : σ) (Q : MvPolynomial σ ℝ) :
     convert this using 1; ring
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨R, rfl⟩`. Simplify using `[hab.symm]`. Introduce `h`. Simplify `sub_dvd_sub_rename a b Q` using `[h]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sub_dvd_iff {a b : σ} (hab : a ≠ b) (Q : MvPolynomial σ ℝ) :
     (X a - X b : MvPolynomial σ ℝ) ∣ Q ↔ rename (Function.update id a b) Q = 0 := by
@@ -49,15 +49,15 @@ theorem sub_dvd_iff {a b : σ} (hab : a ≠ b) (Q : MvPolynomial σ ℝ) :
     simpa [h] using sub_dvd_sub_rename a b Q
 
 /- English proof (translation)
-Rewrite using `[sub_ne_zero]`. Conclude with `fun h => hab (X_injective h)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sub_ne_zero' {a b : σ} (hab : a ≠ b) : (X a - X b : MvPolynomial σ ℝ) ≠ 0 := by
   rw [sub_ne_zero]; exact fun h => hab (X_injective h)
 
 /- English proof (translation)
-Use `⟨sub_ne_zero' hab, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Use `(sub_dvd_iff hab 1).1 h.dvd` as an intermediate fact. Simplify using `at this`. Introduce `p q h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[sub_dvd_iff hab, map_mul, mul_eq_zero]`. Rewrite using `[sub_dvd_iff hab, sub_dvd_iff hab]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prime_sub {a b : σ} (hab : a ≠ b) : Prime (X a - X b : MvPolynomial σ ℝ) := by
   refine ⟨sub_ne_zero' hab, ?_, ?_⟩
@@ -69,7 +69,7 @@ theorem prime_sub {a b : σ} (hab : a ≠ b) : Prime (X a - X b : MvPolynomial �
     rw [sub_dvd_iff hab, sub_dvd_iff hab]; exact h
 
 /- English proof (translation)
-Rewrite using `[sub_dvd_iff hab]`. Use `congrArg (rename (Function.update id a b)) hP` as an intermediate fact. Rewrite `this` using `[rename_rename, hs, map_neg]`. Conclude with `self_eq_neg.1 this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_dvd_of_anti {a b : σ} (hab : a ≠ b) (s : σ → σ)
     (hs : Function.update id a b ∘ s = Function.update id a b) (P : MvPolynomial σ ℝ)
@@ -84,9 +84,9 @@ end General
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `⟨t, i⟩`. Distinguish the cases in `h : t = τ`. Substitute `h` using the available equality. Simplify using `only [swapAt, Function.comp, if_true, Prod.mk.injEq, true_and]`. Simplify using `only [Equiv.swap_apply_def]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `grind`. Simplify using `[swapAt, h]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem swapAt_conj (τ : ι) (a c b : Fin N) (hac : a ≠ c) (hab : a ≠ b) :
     swapAt τ a b = swapAt τ c b ∘ swapAt τ a c ∘ swapAt τ c b := by
@@ -99,11 +99,11 @@ theorem swapAt_conj (τ : ι) (a c b : Fin N) (hac : a ≠ c) (hab : a ≠ b) :
   · simp [swapAt, h]
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro b hb hj; exact hP τ a b hb (by omega)`. Consider the case `succ k ih`. Introduce `b hb hj`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hbN` using `b.isLt`. Use `set c : Fin N := ⟨a + k + 1, by omega⟩ with hc`. Establish `hcv : (c : ℕ) = a + k + 1` using `rfl`. Establish `h1` using `ih c hcv (by omega)`. Establish `h2` using `hP τ c b (by omega) (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[swapAt_conj τ a c b (by intro h; rw [← h] at hcv; omega) (by intro h; rw [← h] at hb; omega), ← rename_rename, ← rename_rename, h2, map_neg, h1, neg_neg, h2]`.
+A detailed English derivation is pending.
 -/
 theorem anti_of_same_block {j : ℕ} {P : Pol ι N} (hP : AntiL j P) (τ : ι) (a : Fin N) :
     ∀ (k : ℕ) (b : Fin N), (b : ℕ) = a + k + 1 → ¬ ((a : ℕ) < j ∧ j ≤ (b : ℕ)) →
@@ -122,9 +122,9 @@ theorem anti_of_same_block {j : ℕ} {P : Pol ι N} (hP : AntiL j P) (τ : ι) (
       ← rename_rename, ← rename_rename, h2, map_neg, h1, neg_neg, h2]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `⟨t, i⟩`. Distinguish the cases in `h : t = τ`. Substitute `h` using the available equality. Simplify using `only [swapAt, Function.comp, if_true, Function.update_apply, Prod.mk.injEq, true_and, id]`. Simplify using `only [Equiv.swap_apply_def]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `grind`. Simplify using `[swapAt, h, Function.update_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem update_comp_swapAt (τ : ι) (a b : Fin N) :
     Function.update id (τ, a) (τ, b) ∘ swapAt τ a b = Function.update id (τ, a) (τ, b) := by
@@ -137,9 +137,9 @@ theorem update_comp_swapAt (τ : ι) (a b : Fin N) :
   · simp [swapAt, h, Function.update_apply]
 
 /- English proof (translation)
-Establish `hne : (τ, a) ≠ (τ, b)` using `by simp [hab.ne]`. Distinguish the cases in `h : (a : ℕ) < j ∧ j ≤ (b : ℕ)`. Take `⟨U, hUo, ⟨x, hx, hxe⟩, hv⟩` from `hU τ a b h.1 h.2`. Use `GlobalTheory.X_sub_X_dvd_of_vanish_on_open_hyperplane _ _ _ P ((fun (y : ι × Fin N → ℝ) t i => y (t, i)) ⁻¹' U) hne (hUo.preimage (by fun_prop)) ⟨fun p => x p.1 p.2, hx, hxe⟩ ?_` and prove the remaining obligations. Introduce `y hy hye`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hv _ hy hye`. Establish `hlt : (a : ℕ) < b` using `hab`. Conclude with `sub_dvd_of_anti hne _ (update_comp_swapAt τ a b) P (anti_of_same_block hP τ a (b - a - 1) b (by omega) h)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem root_dvd {j : ℕ} {P : Pol ι N} (hP : AntiL j P)
     (hU : ∀ (τ : ι) (a b : Fin N), (a : ℕ) < j → j ≤ (b : ℕ) → ∃ U : Set (ι → Fin N → ℝ), IsOpen U ∧
@@ -157,15 +157,11 @@ theorem root_dvd {j : ℕ} {P : Pol ι N} (hP : AntiL j P)
       (anti_of_same_block hP τ a (b - a - 1) b (by omega) h)
 
 /- English proof (translation)
-Establish `e : delPol ι N = ∏ x : ι × Fin N × Fin N, (if x.2.1 < x.2.2 then X (x.1, x.2.1) - X (x.1, x.2.2) else 1 : Pol ι N)`. Simplify using `only [delPol, Fintype.prod_prod_type]`. Rewrite using `[e]`. Apply `Fintype.prod_dvd_of_isRelPrime` to reduce the goal to its premises. Introduce and unpack `⟨τ, a, b⟩ ⟨τ', a', b'⟩ hne`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Simplify using `only [Function.onFun]`. Use `split_ifs with h1 h2`. Establish `hne1 : (τ, a) ≠ (τ, b)` using `by simp [h1.ne]`. Rewrite using `[(prime_sub hne1).irreducible.isRelPrime_iff_not_dvd, sub_dvd_iff hne1]`. Simplify using `only [map_sub, rename_X]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `sub_ne_zero'` to reduce the goal to its premises. Simplify using `only [Function.update_apply, id, ne_eq, Prod.mk.injEq] at hne ⊢`. Use `grind`. Conclude with `isRelPrime_one_right`. Conclude with `isRelPrime_one_left`.
-
-Conclude with `isRelPrime_one_left`. Introduce and unpack `⟨τ, a, b⟩`. Simplify using `only`. Use `split_ifs with h1`. Conclude with `h τ a b h1`.
-
-Conclude with `one_dvd _`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem delPol_dvd {P : Pol ι N}
     (h : ∀ (τ : ι) (a b : Fin N), a < b → (X (τ, a) - X (τ, b) : Pol ι N) ∣ P) : delPol ι N ∣ P := by
@@ -193,7 +189,7 @@ theorem delPol_dvd {P : Pol ι N}
     · exact one_dvd _
 
 /- English proof (translation)
-Unfold `delPol`. Use `Finset.prod_congr rfl fun τ _ => Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_filter]`. Use `congr 1`. Use extensionality with `b`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
 Simplify using the standard rewrite rules.
 -/
@@ -205,7 +201,7 @@ theorem delPol_eq : delPol ι N =
   congr 1; ext b; simp
 
 /- English proof (translation)
-Rewrite using `[delPol_eq]`. Simplify using `only [Finset.prod_ne_zero_iff]`. Introduce `τ _ a _ b hb`. Conclude with `sub_ne_zero' (by simp [(Finset.mem_Ioi.1 hb).ne])`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem delPol_ne_zero : delPol ι N ≠ 0 := by
   rw [delPol_eq]
@@ -214,7 +210,7 @@ theorem delPol_ne_zero : delPol ι N ≠ 0 := by
   exact sub_ne_zero' (by simp [(Finset.mem_Ioi.1 hb).ne])
 
 /- English proof (translation)
-Rewrite using `[delPol_eq]`. Establish `: dimFl ι N = ∑ _τ : ι, ∑ a : Fin N, ∑ _b ∈ Finset.Ioi a, 1`. Simplify using `[dimFl, ← PermutationPointDegree.sum_delta]`. Rewrite using `[this]`. Use `IsHomogeneous.prod _ _ _ fun τ _ => IsHomogeneous.prod _ _ _ fun a _ => IsHomogeneous.prod _ _ _ fun b _ => (isHomogeneous_X _ _).sub (isHomogeneous_X _ _)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem delPol_homog : (delPol ι N).IsHomogeneous (dimFl ι N) := by
   rw [delPol_eq]
@@ -225,9 +221,9 @@ theorem delPol_homog : (delPol ι N).IsHomogeneous (dimFl ι N) := by
     IsHomogeneous.prod _ _ _ fun b _ => (isHomogeneous_X _ _).sub (isHomogeneous_X _ _)
 
 /- English proof (translation)
-Rewrite using `[delPol_eq, map_prod, ← Finset.mul_prod_erase _ _ (Finset.mem_univ τ), ← Finset.mul_prod_erase _ _ (Finset.mem_univ τ), ← neg_mul]`. Use `congr 1`. Use `(Equiv.swap a b).prod_Ioi_comp_eq_sign_mul_prod (f := fun i k => (X (τ, i) - X (τ, k) : Pol ι N)) (by intro i k; ring)` as an intermediate fact. Rewrite `this` using `[Equiv.Perm.sign_swap hab]`. Simplify `this` using `[map_prod, swapAt]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `Finset.prod_congr rfl fun t ht => ?_` and prove the remaining obligations. Simplify using `[map_prod, swapAt, (Finset.mem_erase.1 ht).1]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem rename_delPol (τ : ι) {a b : Fin N} (hab : a ≠ b) :
     rename (swapAt τ a b) (delPol ι N) = -delPol ι N := by
@@ -242,9 +238,9 @@ theorem rename_delPol (τ : ι) {a b : Fin N} (hab : a ≠ b) :
     simp [map_prod, swapAt, (Finset.mem_erase.1 ht).1]
 
 /- English proof (translation)
-Take `⟨l, rfl⟩` from `h`. Use `letI := (MvPolynomial.gradedAlgebra : GradedAlgebra (homogeneousSubmodule (ι × Fin N) ℝ))`. Establish `h1` using `DirectSum.coe_decompose_mul_add_of_left_mem (homogeneousSubmodule (ι × Fin N) ℝ) (b := l) (j := 1) ((mem_homogeneousSubmodule _ _).2 (delPol_homog (ι := ι) (N := N)))`. Rewrite `h1` using `[DirectSum.decompose_of_mem_same _ ((mem_homogeneousSubmodule _ _).2 hP)]`. Establish `h2` using `(DirectSum.decompose (homogeneousSubmodule (ι × Fin N) ℝ) l 1).2`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Generalize the expression as in `(DirectSum.decompose (homogeneousSubmodule (ι × Fin N) ℝ) l 1 : Pol ι N) = m at h1 h2`. Rewrite `h2` using `[homogeneousSubmodule_one_eq_span_X, Submodule.mem_span_range_iff_exists_fun]`. Take `⟨c, rfl⟩` from `h2`. Conclude with `⟨c, h1⟩`.
+Replace the chosen expression with an arbitrary variable. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_linear {P : Pol ι N} (hP : P.IsHomogeneous (dimFl ι N + 1)) (h : delPol ι N ∣ P) :
     ∃ c : ι × Fin N → ℝ, P = delPol ι N * ∑ x, c x • X x := by
@@ -260,18 +256,18 @@ theorem exists_linear {P : Pol ι N} (hP : P.IsHomogeneous (dimFl ι N + 1)) (h 
   exact ⟨c, h1⟩
 
 /- English proof (translation)
-Simplify using `[Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coeff_linear (c : ι × Fin N → ℝ) (y : ι × Fin N) :
     eval (Pi.single y 1) (∑ x, c x • X x : Pol ι N) = c y := by
   simp [Pi.single_apply]
 
 /- English proof (translation)
-Establish `hab : a ≠ b` using `by intro h; rw [h] at hb; omega`. Establish `h1` using `h τ a b hb hj`. Rewrite `h1` using `[map_mul, rename_delPol τ hab, neg_mul, neg_inj, mul_right_inj' delPol_ne_zero]`. Establish `h2` using `congrArg (eval (Pi.single (τ, b) 1)) h1`. Rewrite `h2` using `[eval_rename, coeff_linear]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← h2, ← coeff_linear c (τ, a)]`. Use `congr 2`. Use function extensionality and compare the values at `⟨t, i⟩`. Distinguish the cases in `h : t = τ`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [swapAt, Function.comp, if_true, Pi.single_apply, Prod.mk.injEq, true_and]`. Simplify using `only [Equiv.swap_apply_def]`. Use `grind`. Simplify using `[swapAt, h, Pi.single_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coef_step {j : ℕ} {c : ι × Fin N → ℝ} (h : AntiL j (delPol ι N * ∑ x, c x • X x))
     (τ : ι) (a b : Fin N) (hb : (b : ℕ) = a + 1) (hj : (b : ℕ) ≠ j) : c (τ, a) = c (τ, b) := by
@@ -291,11 +287,9 @@ theorem coef_step {j : ℕ} {c : ι × Fin N → ℝ} (h : AntiL j (delPol ι N 
   · simp [swapAt, h, Pi.single_apply]
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro b hb _`. Rewrite using `[show b = a from Fin.ext hb]`. Consider the case `succ k ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Introduce `b hb hj`. Establish `hbN` using `b.isLt`. Use `set d : Fin N := ⟨a + k, by omega⟩ with hd`. Establish `hdv : (d : ℕ) = a + k` using `rfl`. Rewrite using `[ih d hdv (by omega)]`.
-
-Conclude with `coef_step h τ d b (by omega) (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coef_block {j : ℕ} {c : ι × Fin N → ℝ} (h : AntiL j (delPol ι N * ∑ x, c x • X x))
     (τ : ι) (a : Fin N) : ∀ (k : ℕ) (b : Fin N), (b : ℕ) = a + k → ¬ ((a : ℕ) < j ∧ j ≤ (b : ℕ)) →
@@ -316,11 +310,11 @@ end GlobalTheory.FlagPoly.WallDiv
 open GlobalTheory.FlagPoly.WallDiv in
 
 /- English proof (translation)
-Introduce `ι _ _ N j P hP hA hU`. Take `⟨c, rfl⟩` from `exists_linear hP (delPol_dvd (root_dvd hA hU))`. Use `⟨fun τ => if h : 0 < N then c (τ, ⟨0, h⟩) else 0, fun τ => if h : 0 < N then c (τ, ⟨N - 1, by omega⟩) else 0, ?_⟩` and prove the remaining obligations. Use `congr 1`. Rewrite using `[Fintype.sum_prod_type, invForm]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `only [pLow, pHigh, Finset.mul_sum, Finset.sum_filter, pow_one, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hi` using `i.isLt`. Establish `hN : 0 < N` using `by omega`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [dif_pos hN, smul_eq_C_mul]`. Distinguish the cases in `hij : (i : ℕ) < j`. Rewrite using `[if_pos hij, if_neg (by omega), mul_zero, add_zero, coef_block hA τ ⟨0, hN⟩ i i (by simp) (by omega)]`. Rewrite using `[if_neg hij, if_pos (by omega), mul_zero, zero_add, coef_block hA τ i (N - 1 - i) ⟨N - 1, by omega⟩ (by simp; omega) (by omega)]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem GlobalTheory.FlagPoly.eq_delPol_mul_invForm : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (N : ℕ) (j : ℕ) (P : Pol ι N), P.IsHomogeneous (dimFl ι N + 1) → AntiL j P → (∀ (τ : ι) (a b : Fin N), (a : ℕ) < j → j ≤ (b : ℕ) → ∃ U : Set (ι → Fin N → ℝ), IsOpen U ∧ (∃ x ∈ U, x τ a = x τ b) ∧ ∀ x ∈ U, x τ a = x τ b → ev x P = 0) → ∃ al be : ι → ℝ, P = delPol ι N * invForm j al be := by
   intro ι _ _ N j P hP hA hU

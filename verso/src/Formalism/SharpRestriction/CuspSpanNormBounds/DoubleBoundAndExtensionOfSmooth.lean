@@ -35,13 +35,11 @@ def ExtDDAt (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → (Wp →
       ∫ p, FI z c π σ u v p ∂(μW.prod μN) = (innerSL ℂ (B v)).smulRight (B u)
 
 /- English proof (translation)
-Take `⟨l, hl, ha, hb⟩` from `hAt`. Use `⟨l, hl, fun u hu v hv => ⟨(hE u hu v hv).1, (hE u hu v hv).2 l hl (fun v' hv' => (ha u (hSm u hu) v' hv').2)⟩, ?_⟩` and prove the remaining obligations. Introduce `u hu hu0 v hv`. Distinguish the cases in `hex : ∃ v', IsKFinHpk (k := k) (r := r) σ v' ∧ l v' ≠ 0`. Take `⟨v', hv', hlv'⟩` from `hex`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `h` using `hb u (hSm u hu) hu0 v' hv'`. Establish `ha0 : 0 < ‖l v'‖ ^ 2` using `by positivity`. Establish `hL : l2SG νq (fun g => l (σ g u)) = ENNReal.ofReal (‖u‖ ^ 2 / fdegH μG σ u)`. Rewrite `h` using `[show ‖u‖ ^ 2 * ‖l v'‖ ^ 2 / fdegH μG σ u = ‖l v'‖ ^ 2 * (‖u‖ ^ 2 / fdegH μG σ u) by ring, ENNReal.ofReal_mul ha0.le]`. Conclude with `(ENNReal.mul_right_inj (ENNReal.ofReal_pos.2 ha0).ne' ENNReal.ofReal_ne_top).1 h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hL, ← ENNReal.ofReal_mul (sq_nonneg _)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `push Not at hex`. Establish `h0 : l v = 0` using `hK l hl hex v (hSm v hv)`.
-
-Simplify using `[h0]`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem s3dDD_of_at {z : Fin (2 * r + k + 1) → ℂ} {c : ℂ} {π : Mx k r → (Wp →L[ℂ] Wp)}
     {μW μN μG νq : Measure (Mt k r)} {σ : Mx k r → (H →L[ℂ] H)} {w0 : H}
@@ -78,7 +76,7 @@ def DDSteps (D : D7) (Ch Cg Cq : ℝ) : Prop :=
         (ExtDDAt L.z' L.c L.π' L.μW' L.μN σ w0 ∧ KZeroAt L.z' L.c L.π' σ)
 
 /- English proof (translation)
-Introduce `L lam0 μ ka b κ H _ _ _ σ μG νq νq' w0 hN hσ _ hG hq hq'`. Establish `h'` using `h L lam0 μ ka b κ H σ μG νq νq' hN hσ hG hq hq'`. Conclude with `⟨fun _ => h'.1, fun _ => h'.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem extension_smooth_of_admissible (D : D7) (Ch Cg Cq : ℝ) (h : adm22 D Ch Cg Cq) : ExtSm D Ch Cg Cq := by
   intro L lam0 μ ka b κ H _ _ _ σ μG νq νq' w0 hN hσ _ hG hq hq'
@@ -86,7 +84,7 @@ theorem extension_smooth_of_admissible (D : D7) (Ch Cg Cq : ℝ) (h : adm22 D Ch
   exact ⟨fun _ => h'.1, fun _ => h'.2⟩
 
 /- English proof (translation)
-Introduce `L lam0 μ ka b κ H _ _ _ σ μG νq νq' w0 hN hσ hw0 hG hq hq'`. Establish `h'` using `h L lam0 μ ka b κ H σ μG νq νq' hN hσ hG hq hq'`. Take `⟨hSm, ⟨hE, hK⟩, hE', hK'⟩` from `hS L lam0 μ ka b κ H σ μG νq νq' w0 hN hσ hw0 hG hq hq'`. Conclude with `⟨s3dDD_of_at h'.1 hSm hE hK, s3dDD_of_at h'.2 hSm hE' hK'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem double_bound_of_admissible_and_steps (D : D7) (Ch Cg Cq : ℝ) (h : adm22 D Ch Cg Cq) (hS : DDSteps D Ch Cg Cq) :
     DoubleCosetBesselBound D Ch Cg Cq := by
@@ -96,7 +94,7 @@ theorem double_bound_of_admissible_and_steps (D : D7) (Ch Cg Cq : ℝ) (h : adm2
   exact ⟨s3dDD_of_at h'.1 hSm hE hK, s3dDD_of_at h'.2 hSm hE' hK'⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨double_bound_of_admissible_and_steps D Ch Cg Cq h hS, extension_smooth_of_admissible D Ch Cg Cq h⟩`.
+Supply the required witnesses or components.
 -/
 theorem double_bound_and_extension_of_smooth (D : D7) (Ch Cg Cq : ℝ) (h : adm22 D Ch Cg Cq) (hS : DDSteps D Ch Cg Cq) :
     DoubleCosetBesselBound D Ch Cg Cq ∧ ExtSm D Ch Cg Cq :=

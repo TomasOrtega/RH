@@ -14,21 +14,21 @@ namespace TwistData
 variable {K : Type} [Field K] (D : TwistData K)
 
 /- English proof (translation)
-Unfold `abelian₂`. Simplify using `only [gaAct_eq_dg, map_sub, fock_sub_right]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem Lam_sub (p : ℕ) (F : MvPolynomial (D.OL × Fin D.r) K) (Z W : MvPolynomial (D.ML × Fin D.r) K) :
     D.abelian₂ p F (Z - W) = D.abelian₂ p F Z - D.abelian₂ p F W := by
   unfold abelian₂; simp only [gaAct_eq_dg, map_sub, fock_sub_right]
 
 /- English proof (translation)
-Unfold `abelian₂`. Simplify using `only [gaAct_eq_dg, map_smul, fock_smul_right]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem Lam_smul (p : ℕ) (F : MvPolynomial (D.OL × Fin D.r) K) (a : K) (Z : MvPolynomial (D.ML × Fin D.r) K) :
     D.abelian₂ p F (a • Z) = a * D.abelian₂ p F Z := by
   unfold abelian₂; simp only [gaAct_eq_dg, map_smul, fock_smul_right]
 
 /- English proof (translation)
-Unfold `abelian₂`. Rewrite using `[ph_monomial, gaAct_eq_dg, dg_monomial, fock_monomial_right]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Lam_monomial (p : ℕ) (F : MvPolynomial (D.OL × Fin D.r) K) (ζ : D.EM) (c : K) :
     D.abelian₂ p F (monomial ζ c) =
@@ -36,7 +36,7 @@ theorem Lam_monomial (p : ℕ) (F : MvPolynomial (D.OL × Fin D.r) K) (ζ : D.EM
   unfold abelian₂; rw [ph_monomial, gaAct_eq_dg, dg_monomial, fock_monomial_right]
 
 /- English proof (translation)
-Use `conv_lhs => rw [Z.as_sum]`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun ζ _ => D.ph_monomial p ζ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ph_eq_sum (p : ℕ) (Z : MvPolynomial (D.ML × Fin D.r) K) :
     D.ph p Z = ∑ ζ ∈ Z.support, monomial (D.phE p ζ) (Z.coeff ζ) := by
@@ -45,9 +45,9 @@ theorem ph_eq_sum (p : ℕ) (Z : MvPolynomial (D.ML × Fin D.r) K) :
   exact Finset.sum_congr rfl fun ζ _ => D.ph_monomial p ζ _
 
 /- English proof (translation)
-Rewrite using `[mem_PolK_iff]`. Introduce `β hβ`. Use `support_monomial_subset hβ` as an intermediate fact. Rewrite `this` using `[Finset.mem_singleton]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem monomial_mem_PolK {L : Type} {r : ℕ} (d : L → ℕ) (α : L × Fin r →₀ ℕ) (c : K)
     (h : ∀ i, ldeg α i = d i) : monomial α c ∈ PolK K r d := by
@@ -59,7 +59,7 @@ theorem monomial_mem_PolK {L : Type} {r : ℕ} (d : L → ℕ) (α : L × Fin r 
   rw [this]; exact h
 
 /- English proof (translation)
-Rewrite using `[ph_eq_sum]`. Conclude with `Submodule.sum_mem _ fun ζ hζ => monomial_mem_PolK _ _ _ (D.ldeg_phE p ζ (hZ ζ hζ))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ph_mem_PolK (p : ℕ) {Z : MvPolynomial (D.ML × Fin D.r) K} (hZ : D.Good p Z) :
     D.ph p Z ∈ PolK K D.r D.dO := by
@@ -67,7 +67,7 @@ theorem ph_mem_PolK (p : ℕ) {Z : MvPolynomial (D.ML × Fin D.r) K} (hZ : D.Goo
   exact Submodule.sum_mem _ fun ζ hζ => monomial_mem_PolK _ _ _ (D.ldeg_phE p ζ (hZ ζ hζ))
 
 /- English proof (translation)
-Rewrite using `[ph_eq_sum]`. Conclude with `cge_sum v _ _ fun ζ _ => cge_monomial v _ (hZ ζ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cge_ph (v : AddValuation K (WithTop ℚ)) (p : ℕ) {a : ℝ} {Z : MvPolynomial (D.ML × Fin D.r) K}
     (hZ : cge v a Z) : cge v a (D.ph p Z) := by
@@ -75,7 +75,7 @@ theorem cge_ph (v : AddValuation K (WithTop ℚ)) (p : ℕ) {a : ℝ} {Z : MvPol
   exact cge_sum v _ _ fun ζ _ => cge_monomial v _ (hZ ζ)
 
 /- English proof (translation)
-Unfold `eC`. Use `lg_ge_one hp hr (2 * D.totDeg)` as an intermediate fact. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem eC_nonneg {p : ℕ} (hp : 2 ≤ p) (hr : 1 ≤ D.r) {C0 : ℝ} (h1 : 1 ≤ C0) : 0 ≤ D.eC p C0 := by
   unfold eC
@@ -83,7 +83,7 @@ theorem eC_nonneg {p : ℕ} (hp : 2 ≤ p) (hr : 1 ≤ D.r) {C0 : ℝ} (h1 : 1 �
   positivity
 
 /- English proof (translation)
-Unfold `Dm`. Use `D.eC_nonneg hp hr h1` as an intermediate fact. Conclude with `Finset.sum_nonneg fun j _ => by positivity`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Dm_nonneg {p : ℕ} (hp : 2 ≤ p) (hr : 1 ≤ D.r) {C0 : ℝ} (h1 : 1 ≤ C0) : 0 ≤ D.Dm p C0 := by
   unfold Dm
@@ -91,7 +91,7 @@ theorem Dm_nonneg {p : ℕ} (hp : 2 ≤ p) (hr : 1 ≤ D.r) {C0 : ℝ} (h1 : 1 �
   exact Finset.sum_nonneg fun j _ => by positivity
 
 /- English proof (translation)
-Unfold `Dl`. Use `D.eC_nonneg hp hr h1` as an intermediate fact. Establish `h2 : (0 : ℝ) ≤ (D.r : ℝ) - 1`. Establish `: (1 : ℝ) ≤ D.r` using `by exact_mod_cast hr`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
 Check the signs of the components of the expression.
 -/
@@ -104,9 +104,9 @@ theorem Dl_nonneg {p : ℕ} (hp : 2 ≤ p) (hr : 1 ≤ D.r) {C0 : ℝ} (h1 : 1 �
   positivity
 
 /- English proof (translation)
-Unfold `kapD`. Use `le_trans ?_ (kap_ge_card hp hr D.dO)` and prove the remaining obligations. Establish `h1 : 1 ≤ Fintype.card D.OL`. Rewrite using `[Fintype.card_sum, Fintype.card_prod, Fintype.card_fin, Fintype.card_fin]`. Establish `: 1 ≤ D.J * D.r` using `Nat.mul_pos hJ hr`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `h2 : (1 : ℝ) ≤ (Fintype.card D.OL : ℝ)` using `by exact_mod_cast h1`. Establish `h3 : (1 : ℝ) ≤ (D.r : ℝ)` using `by exact_mod_cast hr`. Use the polynomial consequences of the given equalities and inequalities.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem kapD_ge_one {p : ℕ} (hp : 2 ≤ p) (hr : 1 ≤ D.r) (hJ : 1 ≤ D.J) : 1 ≤ D.kapD p := by
   unfold kapD
@@ -126,9 +126,9 @@ section Top
 variable {K : Type} [Field K] [CharZero K] {v : AddValuation K (WithTop ℚ)} {p : ℕ} {C0 : ℝ}
 
 /- English proof (translation)
-Introduce `hD D hV hc F hF hF0`. Take `⟨Gt, hGt, hval, hle⟩` from `hB hD D hV hc F hF hF0`. Take `⟨Z, hZi, hZg, hZph, hZv⟩` from `hC hD D hV.1 hV.2.1 (fun j m => D.thl j m - 6 * D.c) Gt hGt hval`. Use `⟨Z, hZi, hZg, hZv, ?_⟩` and prove the remaining obligations. Unfold `TwistData.abelian₂`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[hZph]`. Conclude with `hle`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stepBC_of (hB : StepB K v p C0) (hC : StepC K v p) : StepBC K v p C0 := by
   intro hD D hV hc F hF hF0
@@ -139,29 +139,27 @@ theorem stepBC_of (hB : StepB K v p C0) (hC : StepC K v p) : StepBC K v p C0 := 
   rw [hZph]; exact hle
 
 /- English proof (translation)
-Introduce `hD D hV hH hc F hF hF0`. Take `⟨Z, hZi, hZg, hZy, hZl⟩` from `hBC hD D hV hc F hF hF0`. Take `⟨Om, N2, hN2, hOi, hOg, hOc, hOy, hOl⟩` from `hDEF hD D hV hH hc F hF hF0`. Establish `hp : 2 ≤ p` using `two_le_p hD`. Establish `hr : 1 ≤ D.r` using `hV.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ : 1 ≤ D.J` using `hV.2.1`. Establish `hkap` using `D.kapD_ge_one hp hr hJ`. Establish `hDm` using `D.Dm_nonneg hp hr h1`. Establish `hDl` using `D.Dl_nonneg hp hr h1`. Establish `hcc : 4 * (D.Dm p C0 + D.Dl p C0 + 3 * D.kapD p) < D.c` using `hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG : D.Good p (((p : K) ^ N2) • Om Z)` using `TwistData.Good.smul D (hOg Z hZg) _`. Establish `hGi : Integral v (((p : K) ^ N2) • Om Z)` using `hOi Z hZi hZg`. Use `⟨((p : K) ^ N2) • Om Z, 0, ⟨⟨hGi, ?_⟩, ?_, ?_⟩, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `α hα j m hm a`. Conclude with `(hG α hα).2.1 j m hm a`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j i`. Conclude with `vala_smul _ (hOc Z hZg j i)`. Introduce `j m hm`. Use `vala_smul ((p : K) ^ N2) (hOy Z hZg j m _ hm (hZy j m hm))` as an intermediate fact. Conclude with `vala_mono (by linarith) this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `α hα t a`. Conclude with `(hG α hα).1 t a`. Introduce `α hα`. Simplify using `at hα`. Introduce `α hα`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `at hα`. Introduce `α`. Simplify using `[vR]`. Introduce `α hα`. Conclude with `⟨(hG α hα).2.2.1, fun t => by`.
+Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(hG α hα).2.2.2.1 t` as an intermediate fact. Simplify using `only [ldeg] at this`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_add_distrib, ← Finset.mul_sum]`. Conclude with `this⟩`. Introduce `α hα`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `at hα`. Rewrite using `[add_zero, ← bge_iff]`. Establish `h2` using `bge_of_cge hD (D.ph_mem_PolK p hG) (D.cge_ph v p ((cge_zero_iff_Integral v _).mpr hGi))`. Use `bge_mono v ?_ h2` and prove the remaining obligations. Establish `h3` using `kapL_le_kap' hp hr D.dO`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : D.n0 v = vN v (∏ i : D.OL, (D.dO i).factorial) / 2` using `rfl`. Establish `h5 : D.kapD p = kap p D.r D.dO` using `rfl`. Rewrite using `[h4, h5]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : fock F (D.gaAct (D.ph p (((p : K) ^ N2) • Om Z))) = (p : K) ^ N2 * D.abelian₂ p F (Om Z)` using `D.Lam_smul p F _ _`. Establish `e2 : D.abelian₂ p F (Om Z) = D.abelian₂ p F Z + (D.abelian₂ p F (Om Z) - D.abelian₂ p F Z)` using `by ring`. Establish `h6 : vle v (D.n0 v + D.Dl p C0 + 1) (D.abelian₂ p F (Om Z))`. Rewrite using `[e2]`. Conclude with `vle_add_of_lt v hZl (hOl Z hZi hZg) (by linarith)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h7` using `vle_pow_p hD N2 h6`. Rewrite using `[e1]`. Establish `h8 : vR v ((p : K) ^ N2 * D.abelian₂ p F (Om Z)) ≤ ((D.n0 v + D.Dl p C0 + 1 + N2 : ℝ) : WithTop ℝ)` using `h7`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← WithTop.coe_add]`.
-
-Use `_ ≤ ((D.E p C0 2 + 2 * D.kapD p : ℝ) : WithTop ℝ) := by`. Rewrite using `[WithTop.coe_le_coe]`. Unfold `TwistData.E`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem plane_gram_theorem_of_combined_lemmas (h1 : 1 ≤ C0) (hBC : StepBC K v p C0) (hDEF : StepDEF K v p C0) :
     LiftBoundUniform K v p C0 := by

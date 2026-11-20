@@ -15,9 +15,9 @@ noncomputable section
 namespace GenSecKer
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (IsScalarTower.toAlgHom k (MvPolynomial (Par e n) k) (GenParField k e n))` using `IsFractionRing.injective (MvPolynomial (Par e n) k) (GenParField k e n)`. Establish `h` using `(MvPolynomial.algebraicIndependent_X (Par e n) k).map' hinj`. Establish `hc : (⇑(IsScalarTower.toAlgHom k (MvPolynomial (Par e n) k) (GenParField k e n)) ∘ X) = genPar k e n`. Use function extensionality and compare the values at `p`. Simplify using `only [Function.comp_apply, IsScalarTower.coe_toAlgHom', genPar]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[hc]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem genPar_algIndep (k : Type*) [Field k] (e n : ℕ) :
     AlgebraicIndependent k (genPar k e n) := by
@@ -32,9 +32,9 @@ theorem genPar_algIndep (k : Type*) [Field k] (e n : ℕ) :
   rwa [hc] at h
 
 /- English proof (translation)
-Establish `hsplit` using `Finset.add_sum_erase Finset.univ (fun j => c j * x j) (Finset.mem_univ j₀)`. Establish `hval : c j₀ = (b - ∑ j ∈ Finset.univ.erase j₀, c j * x j) / x j₀`. Rewrite using `[eq_div_iff hx0, ← hsum, ← hsplit]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hval]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `div_mem (sub_mem hb (sum_mem fun j hj => mul_mem (hc j (Finset.ne_of_mem_erase hj)) (hx j))) (hx j₀)`.
+A detailed English derivation is pending.
 -/
 theorem coeff_mem_of_sum {k L : Type*} [Field k] [Field L] [Algebra k L] (K : IntermediateField k L)
     {n : ℕ} (x c : Fin n → L) (b : L) (j₀ : Fin n) (hx : ∀ j, x j ∈ K) (hx0 : x j₀ ≠ 0)
@@ -48,49 +48,41 @@ theorem coeff_mem_of_sum {k L : Type*} [Field k] [Field L] [Algebra k L] (K : In
     (hx j₀)
 
 /- English proof (translation)
-Use `letI : Field L := hL.toField`. Choose the witnesses or unpack the hypotheses as in `⟨j₀, hj₀⟩ : ∃ j, x j ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `h0 : ∑ j, algebraMap (GenParField k e n) L (genPar k e n (.inr j)) * x j = 0` using `Finset.sum_eq_zero fun j _ => by rw [h j, mul_zero]`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `one_ne_zero (hR2.symm.trans h0)`. Set `y : Par e n → L` to `fun p => algebraMap (GenParField k e n) L (genPar k e n p)`. Set `col : Par e n → Fin n` to `fun p => Sum.elim Prod.snd id p`. Set `t : Set L` to `Set.range x ∪ y '' {p | col p = j₀}ᶜ`. Establish `hxK : ∀ j, x j ∈ IntermediateField.adjoin k t` using `fun j => IntermediateField.subset_adjoin k t (Or.inl ⟨j, rfl⟩)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyK' : ∀ p, col p ≠ j₀ → y p ∈ IntermediateField.adjoin k t` using `fun p hp => IntermediateField.subset_adjoin k t (Or.inr ⟨p, hp, rfl⟩)`. Establish `hyK : ∀ p, y p ∈ IntermediateField.adjoin k t`. Introduce and unpack `(⟨i, j⟩ | j)`. Distinguish the cases in `hj : j = j₀`. Rewrite using `[hj]`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `coeff_mem_of_sum _ x (fun j => y (.inl (i, j))) 0 j₀ hxK hj₀ (hR1 i) (zero_mem _) (fun j' hj' => hyK' _ hj')`. Conclude with `hyK' _ hj`. Distinguish the cases in `hj : j = j₀`. Rewrite using `[hj]`. Conclude with `coeff_mem_of_sum _ x (fun j => y (.inr j)) 1 j₀ hxK hj₀ hR2 (one_mem _) (fun j' hj' => hyK' _ hj')`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hyK' _ hj`. Establish `hpoly : ∀ a : MvPolynomial (Par e n) k, algebraMap (GenParField k e n) L (algebraMap _ (GenParField k e n) a) ∈ IntermediateField.adjoin k t`. Introduce `a`. Proceed by induction on `a using MvPolynomial.induction_on with`. Consider the case `C c`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← MvPolynomial.algebraMap_eq, ← IsScalarTower.algebraMap_apply k (MvPolynomial (Par e n) k) (GenParField k e n), ← IsScalarTower.algebraMap_apply k (GenParField k e n) L]`. Conclude with `IntermediateField.algebraMap_mem _ c`. Consider the case `add a b ha hb`. Rewrite using `[map_add, map_add]`. Conclude with `add_mem ha hb`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `mul_X a p ha`. Rewrite using `[map_mul, map_mul]`. Conclude with `mul_mem ha (hyK p)`. Establish `hF : ∀ f, algebraMap (GenParField k e n) L f ∈ IntermediateField.adjoin k t`. Introduce `f`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, b, _, rfl⟩` from `IsFractionRing.div_surjective (A := MvPolynomial (Par e n) k) f`. Rewrite using `[map_div₀]`. Conclude with `div_mem (hpoly a) (hpoly b)`. Establish `hall : ∀ p : MvPolynomial (Fin n) (GenParField k e n), aeval x p ∈ IntermediateField.adjoin k t`. Introduce `p`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C c`. Rewrite using `[aeval_C]`. Conclude with `hF c`. Consider the case `add a b ha hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[map_add]`. Conclude with `add_mem ha hb`. Consider the case `mul_X a j ha`. Rewrite using `[map_mul, aeval_X]`. Conclude with `mul_mem ha (hxK j)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `htop : IntermediateField.adjoin k t = ⊤`. Use `eq_top_iff.2 fun z _ => ?_` and prove the remaining obligations. Take `⟨p, rfl⟩` from `hgen z`. Conclude with `hall p`. Establish `: Algebra.IsAlgebraic (Algebra.adjoin k t) L`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← IntermediateField.isAlgebraic_adjoin_iff_top, htop, Algebra.isAlgebraic_iff_isIntegral]`. Conclude with `Algebra.isIntegral_of_surjective IntermediateField.topEquiv.surjective`. Establish `: FaithfulSMul k L` using `(faithfulSMul_iff_algebraMap_injective k L).2 (algebraMap k L).injective`. Take `⟨u, hut, hu⟩` from `exists_isTranscendenceBasis_subset (R := k) t`. Establish `hyind : AlgebraicIndependent k y` using `(genPar_algIndep k e n).map' (f := IsScalarTower.toAlgHom k (GenParField k e n) L) (algebraMap (GenParField k e n) L).injective`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `hPar : #(Par e n) ≤ Algebra.trdeg k L` using `hyind.cardinalMk_le_trdeg`. Establish `hucard : #u = Algebra.trdeg k L` using `hu.cardinalMk_eq_trdeg`. Establish `hQP : Q ≤ RingHom.ker (aeval x : MvPolynomial (Fin n) k →ₐ[k] L)` using `fun q hq => (RingHom.mem_ker).2 (hQ q hq)`. Establish `: (RingHom.ker (aeval x : MvPolynomial (Fin n) k →ₐ[k] L)).IsPrime` using `RingHom.ker_isPrime _`. Use `le_antisymm ?_ hQP` and prove the remaining obligations.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hle`. Establish `hlt : Q < RingHom.ker (aeval x : MvPolynomial (Fin n) k →ₐ[k] L)` using `lt_of_le_not_ge hQP hle`. Establish `hdrop` using `NumbersDVR.DimStrictDrop.proof _ Q _ hlt`. Rewrite `hdrop` using `[hdim]`. Establish `: Algebra.FiniteType k (MvPolynomial (Fin n) k ⧸ RingHom.ker (aeval x : MvPolynomial (Fin n) k →ₐ[k] L))` using `Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ k _) (Ideal.Quotient.mkₐ_surjective k _)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨m, hm, htr⟩` from `GroundTheory.Arith.Abelian.Jacobian.exists_ringKrullDim_eq_trdeg k (A := MvPolynomial (Fin n) k ⧸ RingHom.ker (aeval x : MvPolynomial (Fin n) k →ₐ[k] L))`. Rewrite `hdrop` using `[hm]`. Establish `hme : m ≤ e`. Establish `h' : ((m + 1 : ℕ) : WithBot ℕ∞) ≤ ((e + 1 : ℕ) : WithBot ℕ∞)`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Conclude with `hdrop`. Use `(Nat.cast_le (α := WithBot ℕ∞)).1 h'` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hu1 : AlgebraicIndependent k ((↑) : (u ∩ Set.range x : Set L) → L)` using `hu.1.mono Set.inter_subset_left`. Set `v : (u ∩ Set.range x : Set L) → MvPolynomial (Fin n) k ⧸ RingHom.ker (aeval x : MvPolynomial (Fin n) k →ₐ[k] L)` to `fun z => Ideal.Quotient.mk _ (X z.2.2.choose)`.
+Treat this case separately. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hcomp : ⇑(Ideal.kerLiftAlg (aeval x : MvPolynomial (Fin n) k →ₐ[k] L)) ∘ v = ((↑) : (u ∩ Set.range x : Set L) → L)`. Use function extensionality and compare the values at `z`. Simplify using `only [Function.comp_apply, v, Ideal.kerLiftAlg_mk, aeval_X]`. Conclude with `z.2.2.choose_spec`. Establish `hv : AlgebraicIndependent k v` using `AlgebraicIndependent.of_comp (Ideal.kerLiftAlg _) (by rw [hcomp]; exact hu1)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hcard1 : #(u ∩ Set.range x : Set L) ≤ m` using `htr ▸ hv.cardinalMk_le_trdeg`. Establish `hsub : u ⊆ (u ∩ Set.range x) ∪ y '' {p | col p = j₀}ᶜ` using `fun z hz => (hut hz).elim (fun h => Or.inl ⟨hz, h⟩) Or.inr`. Take `⟨a, ha⟩` from `Cardinal.lt_aleph0.1 (Cardinal.lt_aleph0_of_finite {p : Par e n | col p = j₀})`. Take `⟨b, hb⟩` from `Cardinal.lt_aleph0.1 (Cardinal.lt_aleph0_of_finite ({p : Par e n | col p = j₀}ᶜ : Set (Par e n)))`. Establish `hE0 : #(Fin e ⊕ Unit) ≤ #{p : Par e n | col p = j₀}`.
-
-Use `Cardinal.mk_le_of_injective (f := fun s => match s with` and prove the remaining obligations. Consider the case `.inl i => ⟨.inl (i, j₀), rfl⟩`. Consider the case `.inr _ => ⟨.inr j₀, rfl⟩) ?_`. Introduce and unpack `(i | u) (i' | u') h`. Establish `h'` using `congrArg Subtype.val h`.
-
-Simplify using `only [Sum.inl.injEq, Prod.mk.injEq] at h'`. Conclude with `congrArg Sum.inl h'.1`. Conclude with `(Sum.inl_ne_inr (congrArg Subtype.val h)).elim`. Conclude with `(Sum.inr_ne_inl (congrArg Subtype.val h)).elim`. Conclude with `congrArg Sum.inr (Subsingleton.elim _ _)`.
-
-Establish `hea : e + 1 ≤ a`. Rewrite `hE0` using `[ha, Cardinal.mk_fintype, Fintype.card_sum, Fintype.card_fin, Fintype.card_unit]`. Conclude with `hE0` after adjusting the coercions. Establish `hchain : ((a + b : ℕ) : Cardinal) ≤ ((m + b : ℕ) : Cardinal)`. Use `push_cast`.
-
-Combine the equalities or inequalities in the displayed calculation. Establish `: a + b ≤ m + b` using `by exact_mod_cast hchain`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem ker_eq {k L : Type} [Field k] [CommRing L] (hL : IsField L) [Algebra k L] {n e : ℕ}
     [Algebra (GenParField k e n) L] [IsScalarTower k (GenParField k e n) L]
@@ -245,25 +237,21 @@ theorem ker_eq {k L : Type} [Field k] [CommRing L] (hL : IsField L) [Algebra k L
 end GenSecKer
 
 /- English proof (translation)
-Introduce `k _ n e Q g hQ hg`. Establish `: Q.IsPrime` using `hQ.isPrime`. Use `set I := secIdeal (Q.map (MvPolynomial.map (algebraMap k (GenParField k e n)))) (genPar k e n) with hI`. Establish `hfield : IsField (MvPolynomial (Fin n) (GenParField k e n) ⧸ I)` using `h₁ k n e Q g hQ hg`. Establish `hsec : ∀ i, secForm (genPar k e n) i ∈ I` using `fun i => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hI]`. Conclude with `Ideal.mem_sup_left (Ideal.mem_sup_right (Ideal.subset_span ⟨i, rfl⟩))`. Establish `hchart : chartForm (genPar k e n) - 1 ∈ I`. Rewrite using `[hI]`. Conclude with `Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hQI : Q.map (MvPolynomial.map (algebraMap k (GenParField k e n))) ≤ I`. Rewrite using `[hI]`. Conclude with `le_sup_left.trans le_sup_left`. Set `x : Fin n → MvPolynomial (Fin n) (GenParField k e n) ⧸ I` to `fun j => Ideal.Quotient.mk I (X j)`. Establish `hmk : (aeval x : MvPolynomial (Fin n) (GenParField k e n) →ₐ[GenParField k e n] _) = Ideal.Quotient.mkₐ (GenParField k e n) I` using `MvPolynomial.algHom_ext fun j => by rw [aeval_X]; rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hlin : ∀ c : Fin n → GenParField k e n, Ideal.Quotient.mk I (linForm c) = ∑ j, algebraMap (GenParField k e n) (MvPolynomial (Fin n) (GenParField k e n) ⧸ I) (c j) * x j`. Introduce `c`. Use `show Ideal.Quotient.mkₐ (GenParField k e n) I (linForm c) = _`. Rewrite using `[← hmk]`. Simplify using `[linForm, aeval_X]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hR1 : ∀ i : Fin e, ∑ j, algebraMap (GenParField k e n) (MvPolynomial (Fin n) (GenParField k e n) ⧸ I) (genPar k e n (.inl (i, j))) * x j = 0`. Introduce `i`. Rewrite using `[← hlin, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hsec i`. Establish `hR2 : ∑ j, algebraMap (GenParField k e n) (MvPolynomial (Fin n) (GenParField k e n) ⧸ I) (genPar k e n (.inr j)) * x j = 1`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hlin, ← sub_eq_zero, ← map_one (Ideal.Quotient.mk I), ← map_sub, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hchart`. Establish `hker : (Ideal.Quotient.mk I).comp (MvPolynomial.map (algebraMap k (GenParField k e n))) = ((aeval x : MvPolynomial (Fin n) k →ₐ[k] _) : MvPolynomial (Fin n) k →+* _)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify using `only [RingHom.coe_comp, Function.comp_apply, map_C, RingHom.coe_coe, aeval_C]`. Rewrite using `[IsScalarTower.algebraMap_apply k (GenParField k e n) (MvPolynomial (Fin n) (GenParField k e n) ⧸ I)]`. Both sides reduce to the same expression. Introduce `j`. Simplify using `only [RingHom.coe_comp, Function.comp_apply, map_X, RingHom.coe_coe, aeval_X]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hQ0 : ∀ q ∈ Q, (aeval x : MvPolynomial (Fin n) k →ₐ[k] _) q = 0`. Introduce `q hq`. Establish `h1` using `RingHom.congr_fun hker q`. Simplify using `only [RingHom.coe_comp, Function.comp_apply, RingHom.coe_coe] at h1`.
-
-Rewrite using `[← h1]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (hQI (Ideal.mem_map_of_mem _ hq))`. Establish `hgen : ∀ z : MvPolynomial (Fin n) (GenParField k e n) ⧸ I, ∃ p : MvPolynomial (Fin n) (GenParField k e n), aeval x p = z` using `fun z => by`. Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Conclude with `⟨p, by rw [hmk]; rfl⟩`.
-
-Rewrite using `[hker]`. Conclude with `GenSecKer.ker_eq hfield Q (h₂ k n (e + 1) Q g hQ hg) x hgen hR1 hR2 hQ0`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GenSecKer.proof (h₁ : SecAlgField.Statement) (h₂ : ConeDimOfChowForm.Statement) :
     GenSecKer.Statement := by

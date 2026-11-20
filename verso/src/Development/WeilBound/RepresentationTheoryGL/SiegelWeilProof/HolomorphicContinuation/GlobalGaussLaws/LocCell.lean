@@ -23,15 +23,13 @@ namespace PositivityTheory.Rg.Sw.Glob.LocCell
 variable {D : D7} {n : ℕ}
 
 /- English proof (translation)
-Set `W : AddSubgroup (Matrix (Fin V.rank) (Fin n) (Af D.host.F ⊗[D.host.F] D.host.E))` to `{ carrier := {a | ∀ i j, a i j ∈ intAE D} add_mem' := fun ha hb i j => (intAE D).add_mem (ha i j) (hb i j) zero_mem' := fun _ _ => (intAE D).zero_mem neg_mem' := fun ha i j => (intAE D).neg_mem (ha i j) }`. Establish `hWe : (W : Set (Matrix (Fin V.rank) (Fin n) (Af D.host.F ⊗[D.host.F] D.host.E))) = ⋂ i, ⋂ j, (fun a : Matrix (Fin V.rank) (Fin n) (Af D.host.F ⊗[D.host.F] D.host.E) => a i j) ⁻¹' (intAE D : Set (Af D.host.F ⊗[D.host.F] D.host.E))`. Use extensionality with `a`. Simplify using `only [Set.mem_iInter, Set.mem_preimage, SetLike.mem_coe]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `hWo : IsOpen (W : Set (Matrix (Fin V.rank) (Fin n) (Af D.host.F ⊗[D.host.F] D.host.E)))`. Rewrite using `[hWe]`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => (GlobalTheory.SchwartzBruhatTensor.isOpen_intAE D).preimage ((continuous_apply j).comp (continuous_apply i))`. Establish `hWc : IsCompact (W : Set (Matrix (Fin V.rank) (Fin n) (Af D.host.F ⊗[D.host.F] D.host.E)))` using `isCompact_pi_infinite fun _ => isCompact_pi_infinite fun _ => GlobalTheory.SchwartzBruhatTensor.isCompact_intAE D`. Set `g : (Fin V.rank → Fin n → Af D.host.F ⊗[D.host.F] D.host.E) → ℂ` to `fun a => if (QuotientAddGroup.mk (show Matrix (Fin V.rank) (Fin n) _ from a) : _ ⧸ W) = 0 then (1 : ℂ) else 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hg : g ∈ GlobalTheory.WeilM.SB (Fin V.rank → Fin n → Af D.host.F ⊗[D.host.F] D.host.E)` using `GlobalTheory.SchwartzBruhatTensor.coset_mem_SB W hWo hWc 0`. Use `⟨fun x => gAway V l s τ (fun τ => compAt θ τ x) * g (fun i j => finPart D (x i j)), ?_, ?_⟩` and prove the remaining obligations. Use `Submodule.subset_span ⟨1, g, hg, by simp, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Simplify using `[evalPoly]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hg0 : g (fun i j => finPart D ((0 : Mx D V.rank n) i j)) = 1`. Simplify using `only [g]`. Rewrite using `[if_pos]`. Conclude with `(QuotientAddGroup.eq_zero_iff (N := W) _).2 fun i j => by simp`. Use `show gAway V l s τ (fun τ => compAt θ τ 0) * g (fun i j => finPart D ((0 : Mx D V.rank n) i j)) ≠ 0`.
-
-Rewrite using `[hg0, mul_one]`. Simplify using `[gAway, compAt]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_away (θ : InfFam D) (V : HSp D) (n : ℕ) (l : D.what₂.Tau → ℝ)
     (s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) (τ : D.what₂.Tau) :
@@ -73,19 +71,17 @@ theorem exists_away (θ : InfFam D) (V : HSp D) (n : ℕ) (l : D.what₂.Tau →
 def piT {m : ℕ} (θ : InfFam D) (τ : D.what₂.Tau) (x : Mx D m n) : Fin m → Fin n → ℂ := fun a i => compAt θ τ x a i
 
 /- English proof (translation)
-Establish `hL` using `fun z : Matrix (Fin m) (Fin n) ℂ => GlobalTheory.OrientedHeis.isLineAt_lineAt hθ τ z`. Set `S : (Fin m → Fin n → ℂ) → Mx D m n` to `fun u => ∑ a, ∑ i, (lineAt θ τ (Matrix.single a i 1) (u a i).re + lineAt θ τ (Matrix.single a i Complex.I) (u a i).im)`. Establish `e : ∀ (τ' : D.what₂.Tau) (y : Mx D m n), compAt θ τ' y = ((θ τ').comp (infPart D)).toAddMonoidHom.mapMatrix y` using `fun _ _ => rfl`. Establish `ef : ∀ y : Mx D m n, y.map (finPart D) = (finPart D).toAddMonoidHom.mapMatrix y` using `fun _ => rfl`. Establish `hc : ∀ τ' (u : Fin m → Fin n → ℂ), compAt θ τ' (S u) = if τ' = τ then Matrix.of u else 0`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `τ' u`. Rewrite using `[e]`. Simplify using `only [S]`. Repeatedly rewrite using `[map_sum, map_add]`. Repeatedly rewrite using `[← e, (hL _).2.2]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Use `split_ifs with h`. Use extensionality with `a' i'`. Simplify using `[Matrix.sum_apply, Matrix.single_apply]`. Rewrite using `[Fintype.sum_eq_single a' (fun c hc => by simp [hc]), Fintype.sum_eq_single i' (fun c hc => by simp [hc])]`. Simplify using `only [and_self, if_true]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `Complex.re_add_im _`. Simplify using the standard rewrite rules. Establish `hf : ∀ u, (S u).map (finPart D) = 0`. Introduce `u`. Rewrite using `[ef]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities.
 
-Simplify using `only [S]`. Repeatedly rewrite using `[map_sum, map_add]`. Repeatedly rewrite using `[← ef, (hL _).2.1]`. Simplify using the standard rewrite rules. Use `⟨S, fun x u => ?_, fun x u τ' h => ?_, fun x u => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `a i`. Simplify using `only [piT, Pi.add_apply]`. Rewrite using `[e, map_add, ← e, ← e, hc, if_pos rfl]`. Both sides reduce to the same expression. Rewrite using `[e, map_add, ← e, ← e, hc, if_neg h, add_zero]`.
-
-Rewrite using `[ef, map_add, ← ef, ← ef, hf, add_zero]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sec (θ : InfFam D) (hθ : IsInfFam θ) (τ : D.what₂.Tau) (m n : ℕ) :
     ∃ S : (Fin m → Fin n → ℂ) → Mx D m n,
@@ -128,17 +124,15 @@ theorem exists_sec (θ : InfFam D) (hθ : IsInfFam θ) (τ : D.what₂.Tau) (m n
   · rw [ef, map_add, ← ef, ← ef, hf, add_zero]
 
 /- English proof (translation)
-Use `haveI : (volume : Measure (Fin n → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Use `haveI : (volume : Measure (Fin m → Fin n → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Establish `h1 : fr * fr⁻¹ = 1` using `Matrix.mul_nonsing_inv fr hfr`. Establish `h2 : fr⁻¹ * fr = 1` using `Matrix.nonsing_inv_mul fr hfr`. Set `T : (Fin m → Fin n → ℂ) ≃ₗ[ℝ] (Fin m → Fin n → ℂ)` to `{ toFun := fun u => Matrix.of.symm (fr⁻¹ * Matrix.of u) invFun := fun u => Matrix.of.symm (fr * Matrix.of u) map_add' := fun u v => by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `a i`. Simplify using `[Matrix.mul_apply, Finset.sum_add_distrib, mul_add]`. Use the proof step `map_smul' := fun r u => by`. Use extensionality with `a i`. Simplify using `only [Matrix.of_symm_apply, Matrix.mul_apply, Matrix.of_apply, Pi.smul_apply, RingHom.id_apply, Finset.smul_sum]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Simplify using `only [Complex.real_smul]`. Expand and normalize the polynomial expressions, which then agree. Use `left_inv := fun u => by show fr * (fr⁻¹ * Matrix.of u) = u`. Rewrite using `[← Matrix.mul_assoc, h1, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Use `right_inv := fun u => by show fr⁻¹ * (fr * Matrix.of u) = u`. Rewrite using `[← Matrix.mul_assoc, h2, Matrix.one_mul]`. Use `rfl }`. Establish `hT : LinearMap.det (T : (Fin m → Fin n → ℂ) →ₗ[ℝ] (Fin m → Fin n → ℂ)) ≠ 0` using `(LinearEquiv.isUnit_det' T).ne_zero`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨|(LinearMap.det (T : (Fin m → Fin n → ℂ) →ₗ[ℝ] (Fin m → Fin n → ℂ)))⁻¹|, abs_pos.2 (inv_ne_zero hT), fun f => ?_⟩` and prove the remaining obligations. Establish `hmap` using `MeasureTheory.Measure.map_linearMap_addHaar_eq_smul_addHaar (μ := (volume : Measure (Fin m → Fin n → ℂ))) hT`. Set `Te : (Fin m → Fin n → ℂ) ≃ᵐ (Fin m → Fin n → ℂ)` to `(T.toContinuousLinearEquiv.toHomeomorph).toMeasurableEquiv`. Establish `hTe : ∀ u, Te u = fr⁻¹ * Matrix.of u` using `fun u => rfl`. Establish `hm : Measure.map Te volume = Measure.map (T : (Fin m → Fin n → ℂ) →ₗ[ℝ] (Fin m → Fin n → ℂ)) volume` using `rfl`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hm, hmap, integral_smul_measure]`. Simplify using `[ENNReal.toReal_ofReal (abs_nonneg _)]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cov {m n : ℕ} (fr : Matrix (Fin m) (Fin m) ℂ) (hfr : IsUnit fr.det) :
     ∃ c' : ℝ, 0 < c' ∧ ∀ f : (Fin m → Fin n → ℂ) → ℂ,
@@ -184,7 +178,7 @@ theorem cov {m n : ℕ} (fr : Matrix (Fin m) (Fin m) ℂ) (hfr : IsUnit fr.det) 
       simp [ENNReal.toReal_ofReal (abs_nonneg _)]
 
 /- English proof (translation)
-Unfold `evX`. Use `(MvPolynomial.continuous_eval P).comp (continuous_pi fun k => ?_)` and prove the remaining obligations. Use `split_ifs`. Conclude with `continuous_star.comp ((continuous_apply k.2.1).comp (continuous_apply k.1))`. Conclude with `(continuous_apply k.2.1).comp (continuous_apply k.1)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_evX {m n : ℕ} (P : PX m n) : Continuous (evX P) := by
   unfold evX
@@ -194,11 +188,11 @@ theorem continuous_evX {m n : ℕ} (P : PX m n) : Continuous (evX P) := by
   · exact (continuous_apply k.2.1).comp (continuous_apply k.1)
 
 /- English proof (translation)
-Use `haveI : (volume : Measure (Fin n → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Use `haveI : (volume : Measure (Fin m → Fin n → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Take `⟨S, hS⟩` from `hSF m n c hc 1`. Establish `hint : Integrable (fP c (1 : PX m n))` using `hS ▸ S.integrable`. Establish `e : fP c (1 : PX m n) = fun y => ((Real.exp (-(c * ∑ a, ∑ i, ‖y a i‖ ^ 2)) : ℝ) : ℂ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `y`. Simplify using `[fP, evX, gs, Complex.ofReal_exp]`. Rewrite using `[e]`. Use `beta_reduce`. Rewrite using `[integral_complex_ofReal]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hr : Integrable (fun y : Fin m → Fin n → ℂ => Real.exp (-(c * ∑ a, ∑ i, ‖y a i‖ ^ 2)))`. Use `hint.norm.congr (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Use `show ‖fP c (1 : PX m n) y‖ = _`. Rewrite using `[congrFun e y, Complex.norm_real, Real.norm_of_nonneg (Real.exp_pos _).le]`. Conclude with `(integral_exp_pos hr).ne'` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem int_gauss_ne (hSF : SchFP) {m n : ℕ} {c : ℝ} (hc : 0 < c) : ∫ y : Fin m → Fin n → ℂ, fP c (1 : PX m n) y ≠ 0 := by
   haveI : (volume : Measure (Fin n → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _
@@ -218,7 +212,7 @@ theorem int_gauss_ne (hSF : SchFP) {m n : ℕ} {c : ℝ} (hc : 0 < c) : ∫ y : 
   exact_mod_cast (integral_exp_pos hr).ne'
 
 /- English proof (translation)
-Rewrite using `[hω.weyl W hW Φ 0]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `[GlobalTheory.StdUnn.inner]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem weyl0 {θ : InfFam D} {V : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {χ : (AE D)ˣ →* Circle}
     {μ : Measure (Mx D V.rank n)} {ω : G D n →* Module.End ℂ (schwartzA θ V.rank n)} (hω : IsWeilSch ψ χ θ V μ ω)
@@ -229,9 +223,9 @@ theorem weyl0 {θ : InfFam D} {V : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {χ :
   simp [GlobalTheory.StdUnn.inner]
 
 /- English proof (translation)
-Establish `e : mat x * mat x⁻¹ = 1`. Unfold `mat`. Rewrite using `[← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]`. Establish `h2 : compAt θ τ (mat x * mat x⁻¹) = compAt θ τ (mat x) * compAt θ τ (mat x⁻¹)` using `Matrix.map_mul (f := (θ τ).comp (infPart D))`. Unfold `IsTrivAt at *`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `h2` using `[e, hx, one_mul]`. Rewrite using `[← h2]`. Conclude with `Matrix.map_one ((θ τ).comp (infPart D)) (map_zero _) (map_one _)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trivInv {θ : InfFam D} {τ : D.what₂.Tau} {x : G D n} (hx : IsTrivAt θ τ x) : IsTrivAt θ τ x⁻¹ := by
   have e : mat x * mat x⁻¹ = 1 := by
@@ -245,17 +239,17 @@ theorem trivInv {θ : InfFam D} {τ : D.what₂.Tau} {x : G D n} (hx : IsTrivAt 
   exact Matrix.map_one ((θ τ).comp (infPart D)) (map_zero _) (map_one _)
 
 /- English proof (translation)
-Take `⟨x, y, hx, hWxy, hcomm⟩` from `hDA D n θ τ ι hθ hι W`. Establish `hmm : ∀ a b : G D n, mat (a * b) = mat a * mat b` using `fun a b => by`. Unfold `mat`. Rewrite using `[map_mul, Units.val_mul]`. Establish `hy : mR y = JJ n`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : compAt θ τ (mat W) = compAt θ τ (mat x) * compAt θ τ (mat (ι y))`. Rewrite using `[hWxy, hmm]`. Conclude with `Matrix.map_mul (f := (θ τ).comp (infPart D))`. Unfold `IsTrivAt at hx`. Rewrite `h1` using `[hx, Matrix.one_mul, (hι.2 y).1, hW]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : compAt θ τ (blk4 (0 : Matrix (Fin n) (Fin n) (AE D)) 1 (-1) 0) = reidx (JJ n)`. Express the relevant statement in the definitionally equal form `(blk4 (0 : Matrix (Fin n) (Fin n) (AE D)) 1 (-1) 0).map ((θ τ).comp (infPart D)) = _`. Rewrite using `[LocCellA.block_matrix_map, LocCellA.map_neg_one', LocCellA.map_one', Matrix.map_zero _ (map_zero _)]`. Both sides reduce to the same expression. Rewrite `h1` using `[h2]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Use `congrFun (congrFun h1 (finSumFinEquiv i)) (finSumFinEquiv j)` as an intermediate fact. Simplify `this.symm` using `[reidx]`. Use `⟨x, hx, ⟨y, hy⟩, fun g b hgb => ⟨y⁻¹ * g, ?_, ?_⟩⟩` and prove the remaining obligations. Establish `hm : ∀ a c : GR n, mR (a * c) = mR a * mR c` using `fun _ _ => rfl`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyy : mR y⁻¹ * mR y = 1` using `by rw [← hm, inv_mul_cancel]; rfl`. Rewrite using `[hm, hgb, ← hy, ← Matrix.mul_assoc, hyy, Matrix.one_mul]`. Establish `hyW : ι y = W * x⁻¹`. Rewrite using `[hWxy, hcomm y]`. Use `group`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc2 : ι (y⁻¹ * g) * x⁻¹ = x⁻¹ * ι (y⁻¹ * g)`. Use `hcomm (y⁻¹ * g)` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem wSplit (hDA : DecompAway) {θ : InfFam D} (hθ : IsInfFam θ) {τ : D.what₂.Tau} {ι : GR n →* G D n}
     (hι : IsPlaceEmb θ τ ι) (W : G D n) (hW : mat W = blk4 0 1 (-1) 0) :
@@ -302,65 +296,57 @@ namespace PositivityTheory.Rg.Sw.Glob
 open LocCell in
 
 /- English proof (translation)
-Introduce `D n V ψ χ θ μ ω H l s ν τ ε fr ι hC hTM L hL`. Establish `hl0 : ∀ τ', l τ' ≠ 0` using `hLN D ψ θ l hC.hψ hC.hθ hC.hl`. Establish `hcpos : 0 < cLoc l τ`. Unfold `cLoc`. Use `abs_pos.2 (hl0 τ)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Take `⟨Ψ0, hΨ0a, hΨ00⟩` from `exists_away θ V n l s τ`. Establish `hΨ0 : AwayCls θ τ fr Ψ0` using `hAI D n V θ l s τ ε fr hC.hθ hC.hs hC.hfr hl0 Ψ0 hΨ0a`. Take `⟨W, hW⟩` from `wEx D n`. Take `⟨x, hx, ⟨y0, hy0⟩, hsplit⟩` from `wSplit hDA hC.hθ hC.hι W hW`.
+Check the signs of the components of the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨A, hA⟩` from `hAw D n V ψ χ θ μ ω H l s ν τ ε fr ι hC x⁻¹ (trivInv hx)`. Take `⟨hB, hAf⟩` from `hA Ψ0 hΨ0`. Establish `hphi : ∀ P : PX V.rank n, phiS θ τ fr (cLoc l τ) Ψ0 P = ⟨tens θ τ fr (fP (cLoc l τ) P) Ψ0, hΨ0.2 _ (hSF _ _ _ hcpos P)⟩`. Introduce `P`. Unfold `phiS`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos (hΨ0.2 _ (hSF _ _ _ hcpos P))]`. Set `aF : PX V.rank n → Matrix (Fin n) (Fin n) ℂ → (Fin V.rank → Fin n → ℂ) → ℂ` to `fun P b u => Complex.exp (Complex.I * tLoc l τ * (b * gramX ε (fr⁻¹ * Matrix.of u)).trace) * fP (cLoc l τ) P (fr⁻¹ * Matrix.of u)`. Establish `key : ∀ P (g : GR n) (b : Matrix (Fin n) (Fin n) ℂ), bᴴ = b → mR g = JJ n * nU b → ∃ Nb : GR n, (∀ z, aF P b (piT θ τ z) * A Ψ0 z = (ω (ι Nb) (ω x⁻¹ (phiS θ τ fr (cLoc l τ) Ψ0 P))).1 z) ∧ sLd L (cLoc l τ) P g * Ψ0 0 = ∫ z, aF P b (piT θ τ z) * A Ψ0 z ∂μ`. Introduce `P g b hb hgb`. Take `⟨Nb, hNb, hg⟩` from `hsplit g b hgb`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hpt : ∀ z, aF P b (piT θ τ z) * A Ψ0 z = (ω (ι Nb) (ω x⁻¹ (phiS θ τ fr (cLoc l τ) Ψ0 P))).1 z`. Introduce `z`. Rewrite using `[hU D n V ψ χ θ μ ω H l s ν τ ε fr ι hC Nb b hb hNb, hphi P, hAf _ (hSF _ _ _ hcpos P)]`. Establish `e : Matrix.of (piT θ τ z) = compAt θ τ z` using `rfl`. Simplify using `only [aF, tens, e]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨Nb, hpt, ?_⟩` and prove the remaining obligations. Establish `e1 : (ω (ι g) (phiS θ τ fr (cLoc l τ) Ψ0 P)).1 0 = sLd L (cLoc l τ) P g * Ψ0 0`. Rewrite using `[hL g Ψ0 hΨ0a P]`. Simplify using `[tens, sLd, compAt]`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Or.inl rfl`. Rewrite using `[← e1, hg, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, weyl0 hC.hω W hW]`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun z => (hpt z).symm)`. Take `⟨𝓕, hμ1⟩` from `hC.hμ`. Use `haveI : μ.IsAddHaarMeasure := hμ1.1`.
+Prove the first alternative. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : BorelSpace (Mx D V.rank n) := ⟨rfl⟩`. Take `⟨S, hS1, hS2, hS3⟩` from `exists_sec θ hC.hθ τ V.rank n`. Establish `hπc : Continuous (piT θ τ : Mx D V.rank n → Fin V.rank → Fin n → ℂ)`. Use `GlobalTheory.RealWeil.continuous_compAt hC.hθ τ V.rank n` as an intermediate fact. Conclude with `continuous_pi fun a => continuous_pi fun i => this.matrix_elem a i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hBinv : ∀ z u, A Ψ0 (z + S u) = A Ψ0 z` using `fun z u => hB.1 _ _ (fun τ' h => hS2 z u τ' h) (hS3 z u)`. Establish `hfPc : ∀ P : PX V.rank n, Continuous (fP (cLoc l τ) P)` using `fun P => by`. Take `⟨Sf, hSf⟩` from `hSF _ _ _ hcpos P`. Rewrite using `[← hSf]`. Conclude with `Sf.continuous`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlin : Continuous (fun u : Fin V.rank → Fin n → ℂ => fr⁻¹ * Matrix.of u)` using `continuous_const.matrix_mul continuous_id`. Establish `hne1 : ∀ y, fP (cLoc l τ) (1 : PX V.rank n) y ≠ 0` using `fun y => by`. Simplify using `[fP, evX, gs, Complex.exp_ne_zero]`. Establish `hBm : Measurable (A Ψ0)`. Establish `hm` using `hB.2 (fP (cLoc l τ) 1) (hSF _ _ _ hcpos 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hcont` using `(GlobalTheory.CompanionTheory.WeilTheta.schwartzA_continuous_and_dominated D θ hC.hθ _ _ _ hm).1`. Establish `e : A Ψ0 = fun z => tens θ τ fr (fP (cLoc l τ) 1) (A Ψ0) z / fP (cLoc l τ) 1 (fr⁻¹ * compAt θ τ z)`. Use function extensionality and compare the values at `z`. Simplify using `only [tens]`. Conclude with `(mul_div_cancel_left₀ _ (hne1 _)).symm`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Use `(hcont.div ((hfPc 1).comp ?_) fun z => hne1 _).measurable` and prove the remaining obligations. Conclude with `continuous_const.matrix_mul (GlobalTheory.RealWeil.continuous_compAt hC.hθ τ V.rank n)`. Set `a0 : (Fin V.rank → Fin n → ℂ) → ℂ` to `fun u => fP (cLoc l τ) 1 (fr⁻¹ * Matrix.of u)`. Establish `ha0c : Continuous a0` using `(hfPc 1).comp hlin`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `haFc : ∀ P b, Continuous (aF P b)` using `fun P b => ((Complex.continuous_exp.comp (continuous_const.mul (Continuous.matrix_trace (continuous_const.matrix_mul (continuous_pi fun i => continuous_pi fun j => (continuous_evX (Qp ε i j)).comp hlin))))).mul ((hfPc P).comp hlin))`. Establish `hTF : ∀ (P : PX V.rank n) (b : Matrix (Fin n) (Fin n) ℂ) (Nb : GR n), (∀ z, aF P b (piT θ τ z) * A Ψ0 z = (ω (ι Nb) (ω x⁻¹ (phiS θ τ fr (cLoc l τ) Ψ0 P))).1 z) → ∃ κ : ℂ, (∫ z, aF P b (piT θ τ z) * A Ψ0 z ∂μ = κ * ∫ u, aF P b u) ∧ ∫ z, a0 (piT θ τ z) * A Ψ0 z ∂μ = κ * ∫ u, a0 u`. Introduce `P b Nb hpt`. Establish `hint1 : Integrable (fun z => aF P b (piT θ τ z) * A Ψ0 z) μ`. Repeatedly rewrite using `[hpt]`.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `GlobalTheory.CompanionTheory.BigCellJ.integrable_schwartzA hC.hθ hμ1 (ω (ι Nb) (ω x⁻¹ (phiS θ τ fr (cLoc l τ) Ψ0 P))).2`. Establish `hint2 : Integrable (fun z => a0 (piT θ τ z) * A Ψ0 z) μ`. Use `GlobalTheory.CompanionTheory.BigCellJ.integrable_schwartzA hC.hθ hμ1 (hB.2 (fP (cLoc l τ) 1) (hSF _ _ _ hcpos 1))` as an intermediate fact. Use `this.congr (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨κ, hκ⟩` from `LocCellT.tauFact μ (piT θ τ) hπc S hS1 (A Ψ0) hBm hBinv (fun u => ‖aF P b u‖ + ‖a0 u‖) ((haFc P b).norm.add ha0c.norm) (fun u => add_pos_of_nonneg_of_pos (norm_nonneg _) (norm_pos_iff.2 (hne1 _))) ((hint1.norm.add hint2.norm).congr (Filter.Eventually.of_forall fun z => by`. Simplify using `only [Pi.add_apply, norm_mul]`. Use the proof step `ring))`. Use `⟨κ, hκ _ (haFc P b).measurable ⟨1, fun u => ?_⟩, hκ _ ha0c.measurable ⟨1, fun u => ?_⟩⟩` and prove the remaining obligations. Simplify using `only [one_mul]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `le_add_of_nonneg_right (norm_nonneg _)`. Simplify using `only [one_mul]`. Conclude with `le_add_of_nonneg_left (norm_nonneg _)`. Take `⟨c', hc'pos, hcov⟩` from `cov (n := n) fr hC.hfr.1`. Establish `hy0' : mR y0 = JJ n * nU 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hy0]`. Simplify using `[nU]`. Take `⟨N0, hpt0, -⟩` from `key 1 y0 0 (by simp) hy0'`. Take `⟨κ, -, hκ0⟩` from `hTF 1 0 N0 hpt0`. Establish `hint0 : ∫ u, a0 u ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (∫ u, a0 u) = (c' : ℂ) * ∫ y, fP (cLoc l τ) (1 : PX V.rank n) y` using `hcov (fP (cLoc l τ) 1)`. Rewrite using `[e]`. Conclude with `mul_ne_zero (by exact_mod_cast hc'pos.ne') (int_gauss_ne hSF hcpos)`. Establish `hcell : ∀ (P : PX V.rank n) (g : GR n) (b : Matrix (Fin n) (Fin n) ℂ), b.IsHermitian → mR g = JJ n * nU b → sLd L (cLoc l τ) P g = κ * c' / Ψ0 0 * secN ε (cLoc l τ) (tLoc l τ) P b`. Introduce `P g b hb hgb`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Take `⟨Nb, hpt, hv⟩` from `key P g b hb hgb`. Take `⟨κ', h1, h2⟩` from `hTF P b Nb hpt`. Establish `hk : κ' = κ` using `mul_right_cancel₀ hint0 (h2.symm.trans hκ0)`. Establish `hcovP : ∫ u, aF P b u = (c' : ℂ) * ∫ y, Complex.exp (Complex.I * tLoc l τ * (b * gramX ε y).trace) * fP (cLoc l τ) P y` using `hcov (fun y => Complex.exp (Complex.I * tLoc l τ * (b * gramX ε y).trace) * fP (cLoc l τ) P y)`. Establish `hsec : (∫ y, Complex.exp (Complex.I * tLoc l τ * (b * gramX ε y).trace) * fP (cLoc l τ) P y) = secN ε (cLoc l τ) (tLoc l τ) P b`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `secN`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [fP]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hv` using `[h1, hk, hcovP, hsec]`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[hv]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨κ * c' / Ψ0 0, ?_, hcell⟩` and prove the remaining obligations. Introduce `hC0`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨e, he⟩` from `hLl D n V ψ χ θ μ ω H l s ν τ ε fr ι hC hTM L hL`. Establish `hsign : (tLoc l τ = cLoc l τ ∧ (pqOf ε l τ).1 = cnt ε true ∧ (pqOf ε l τ).2 = cnt ε false) ∨ (tLoc l τ = -cLoc l τ ∧ (pqOf ε l τ).1 = cnt ε false ∧ (pqOf ε l τ).2 = cnt ε true)`. Unfold `tLoc cLoc pqOf`. Break down `lt_or_gt_of_ne (hl0 τ) with h | h` into its components or cases. Use `right`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[abs_of_neg h]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[if_neg (not_lt.2 h.le)]`. Simplify using `[if_neg (not_lt.2 h.le)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Use `left`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[abs_of_pos h]`. Simplify using `[if_pos h]`. Simplify using `[if_pos h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS1 : sLd L (cLoc l τ) 1 1 = 1`. Establish `h` using `congrFun (hL 1 Ψ0 hΨ0a 1) 0`. Rewrite `h` using `[map_one, map_one, hphi 1]`. Simplify using `only [Module.End.one_apply, tens] at h`. Establish `h0 : fr⁻¹ * compAt θ τ (0 : Mx D V.rank n) = 0` using `by simp [compAt]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[h0]`. Establish `h'` using `mul_right_cancel₀ hΨ00 h`. Simplify using `only [sLd]`. Combine the equalities or inequalities in the displayed calculation. Establish `hv` using `hLv V.rank n ε (cLoc l τ) (tLoc l τ) (pqOf ε l τ).1 (pqOf ε l τ).2 e hcpos hsign (sLd L (cLoc l τ) 1) (κ * c' / Ψ0 0) (hLc D n V ψ χ θ μ ω H l s ν τ ε fr ι hC hTM L hL 1) hS1 (fun y g hy => he 1 y g hy) (fun g b hb hgb => hcell 1 g b hb hgb) y0`.
-
-Rewrite `hv` using `[hcell 1 y0 0 (by simp [Matrix.IsHermitian]) hy0', hC0, zero_mul]`. Establish `hdet : (mR y0).det ≠ 0`. Use `(Matrix.isUnit_iff_isUnit_det _).1 y0.1.isUnit` as an intermediate fact. Conclude with `this.ne_zero`. Establish `hu1 : (u1 (mR y0)).det ≠ 0`.
-
-Rewrite using `[hy0]`. Simplify using `only [u1, JJ, Matrix.toBlocks_fromBlocks₂₁, Matrix.toBlocks_fromBlocks₂₂, add_zero, smul_neg, Matrix.det_neg, Matrix.det_smul, Matrix.det_one]`. Simplify using `[Complex.I_ne_zero]`. Establish `hu2 : (u2 (mR y0)).det ≠ 0`. Rewrite using `[hy0]`.
-
-Simplify using `only [u2, JJ, Matrix.toBlocks_fromBlocks₂₁, Matrix.toBlocks_fromBlocks₂₂, add_zero, smul_neg, neg_neg, Matrix.det_smul, Matrix.det_one]`. Simplify using `[Complex.I_ne_zero]`. Establish `: F0 (pqOf ε l τ).1 (pqOf ε l τ).2 e y0 ≠ 0`. Unfold `F0 f0`. Conclude with `mul_ne_zero (zpow_ne_zero _ hdet) (mul_ne_zero (zpow_ne_zero _ hu1) (zpow_ne_zero _ hu2))`.
-
-Conclude with `this hv.symm`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem lIcell_of (hAw : AwayAct) (hDA : DecompAway) (hU : UnipTau) (hAI : AwayIn) (hSF : SchFP) (hLN : LNe)
     (hLc : LIcont) (hLl : LIlaw) (hLv : LIvac) : LIcell := by

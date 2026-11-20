@@ -12,7 +12,7 @@ namespace PositivityTheory.Xgn.A_s_divcyclehomloc
 open GroundTheory.Heights₂.Heights.NumbersDVR
 
 /- English proof (translation)
-The claim follows from `HomLocRingLocal.proof (HomLocRingIsLocal.proof HomLocRingMem.proof) (HomLocRingNoetherian.proof HomLocRingMem.proof) (HomLocRingDimLe.proof HomLocRingMem.proof (HomLocRingIsLocal.proof HomLocRingMem.proof))`.
+A detailed English derivation is pending.
 -/
 theorem homLocRingLocal : HomLocRingLocal.Statement.{0} :=
   HomLocRingLocal.proof (HomLocRingIsLocal.proof HomLocRingMem.proof)
@@ -22,7 +22,7 @@ theorem homLocRingLocal : HomLocRingLocal.Statement.{0} :=
 end PositivityTheory.Xgn.A_s_divcyclehomloc
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Heights₂.Heights.NumbersDVR.DivCycleHomLoc.proof PositivityTheory.Xgn.A_s_divcyclehomloc.homLocRingLocal`.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.t_s_divcyclehomloc : GroundTheory.Heights₂.Heights.NumbersDVR.DivCycleHomLoc.Statement.{0} :=
   GroundTheory.Heights₂.Heights.NumbersDVR.DivCycleHomLoc.proof PositivityTheory.Xgn.A_s_divcyclehomloc.homLocRingLocal

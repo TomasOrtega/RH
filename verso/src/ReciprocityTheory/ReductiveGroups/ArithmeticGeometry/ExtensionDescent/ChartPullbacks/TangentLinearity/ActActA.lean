@@ -26,13 +26,11 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {O : Type} [Ring O] 
 include hO in
 
 /- English proof (translation)
-Establish `hq0 : WeightPf.act (U.gt e) ≫ (U.gt e).q = snd (WeightPf.Te D.toPre I e) (thickObj R I e G) ≫ (U.gt e).q` using `by haveI := (U.gt e).q_hom`. Establish `hiq` using `(U.gt e).isKernel.w`. Simplify using `only [WeightPf.act, Category.assoc, IsMonHom.mul_hom, lift_map_assoc, hiq, comp_toUnit_assoc, MonObj.lift_comp_one_left]`. Establish `hq : (WeightPf.act (U.gt e) ≫ (Over.pullback (thick R I e)).map (ιG.act a)) ≫ (U.gt e).q = (snd (WeightPf.Te D.toPre I e) (thickObj R I e G) ≫ (Over.pullback (thick R I e)).map (ιG.act a)) ≫ (U.gt e).q`. Rewrite using `[Category.assoc, Category.assoc, hO, reassoc_of% hq0]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `gen : ∀ {f g : WeightPf.Te D.toPre I e ⊗ thickObj R I e G ⟶ thickObj R I e G}, f ≫ (U.gt e).q = g ≫ (U.gt e).q → ∀ k : Fin 4, f.left ≫ D.toPre.Oφ (U.gt e).pG χ k = g.left ≫ D.toPre.Oφ (U.gt e).pG χ k`. Introduce `f g hfg k`. Establish `h2 : (Over.map (thick R I e)).map f ≫ (U.gt e).pG = (Over.map (thick R I e)).map g ≫ (U.gt e).pG`. Simplify using `only [GtCoord.pG, ← Functor.map_comp_assoc, hfg]`. Use `fin_cases k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `congrArg CommaMorphism.left (show (Over.map (thick R I e)).map f ≫ padd D.toPre.P.A (U.gt e).pG (toUnit _ ≫ D.toPre.c χ) = (Over.map (thick R I e)).map g ≫ padd D.toPre.P.A (U.gt e).pG (toUnit _ ≫ D.toPre.c χ) by`. Simplify using `only [padd, comp_lift_assoc, h2, comp_toUnit_assoc])`. Conclude with `congrArg CommaMorphism.left (show (Over.map (thick R I e)).map f ≫ (toUnit _ ≫ D.toPre.c χ) = (Over.map (thick R I e)).map g ≫ (toUnit _ ≫ D.toPre.c χ) by`. Simplify using `only [comp_toUnit_assoc])`. Conclude with `congrArg CommaMorphism.left h2`.
-
-Conclude with `congrArg CommaMorphism.left (show (Over.map (thick R I e)).map f ≫ (toUnit _ ≫ η[D.toPre.P.A]) = (Over.map (thick R I e)).map g ≫ (toUnit _ ≫ η[D.toPre.P.A]) by`. Simplify using `only [comp_toUnit_assoc])`. Simplify `gen hq k` using `only [Over.comp_left, Category.assoc, φB]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hB_act (k : Fin 4) :
     (WeightPf.act (U.gt e)).left ≫ φB U ιG e a χ k =
@@ -88,21 +86,21 @@ def mA (ta : WeightPf.Te D.toPre I e ⟶ WeightPf.Te D.toPre I e) :
   lift (fst _ _ ≫ ta) (snd _ _ ≫ actA ιG e a)
 
 /- English proof (translation)
-Simplify using `only [mA, lift_fst]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mA_fst (ta : WeightPf.Te D.toPre I e ⟶ WeightPf.Te D.toPre I e) :
     mA ιG e a ta ≫ fst _ _ = fst _ _ ≫ ta := by
   simp only [mA, lift_fst]
 
 /- English proof (translation)
-Simplify using `only [mA, lift_snd]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mA_snd (ta : WeightPf.Te D.toPre I e ⟶ WeightPf.Te D.toPre I e) :
     mA ιG e a ta ≫ snd _ _ = snd _ _ ≫ actA ιG e a := by
   simp only [mA, lift_snd]
 
 /- English proof (translation)
-Use `haveI := ιG.hom a`. Establish `hμ : μ[thickObj R I e G] ≫ actA ιG e a = (actA ιG e a ⊗ₘ actA ιG e a) ≫ μ[thickObj R I e G]` using `IsMonHom.mul_hom _`. Simplify using `only [WeightPf.act, mA, Category.assoc, hμ, lift_map_assoc, comp_lift_assoc, lift_fst_assoc, lift_snd, hia]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem act_actA (ta : WeightPf.Te D.toPre I e ⟶ WeightPf.Te D.toPre I e)
     (hia : (U.gt e).i ≫ actA ιG e a = ta ≫ (U.gt e).i) :
@@ -116,13 +114,13 @@ theorem act_actA (ta : WeightPf.Te D.toPre I e ⟶ WeightPf.Te D.toPre I e)
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Establish `hF : (mA ιG e a ta).left ≫ (fst (WeightPf.Te D.toPre I e) (thickObj R I e G)).left = (fst (WeightPf.Te D.toPre I e) (thickObj R I e G)).left ≫ ta.left`. Rewrite using `[← Over.comp_left, mA_fst, Over.comp_left]`. Establish `hTop : (fst (WeightPf.Te D.toPre I e) (thickObj R I e G)).left.appTop ≫ (mA ιG e a ta).left.appTop = ta.left.appTop ≫ (fst (WeightPf.Te D.toPre I e) (thickObj R I e G)).left.appTop`. Rewrite using `[← Scheme.Hom.comp_appTop, hF, Scheme.Hom.comp_appTop]`. Establish `hval` using `congrArg Units.val (hta χ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Semi.res, Semi.pullU, Units.coe_map, MonoidHom.coe_coe] at hval`. Simplify using `only [Semi.TorusInj.chiP, ← hval]`. Simplify using `only [Scheme.Hom.appLE]`. Establish `hTop' : (fst (WeightPf.Te D.toPre I e) (thickObj R I e G)).left.appTop ≫ (mA ιG e a ta).left.app ⊤ = ta.left.app ⊤ ≫ (fst (WeightPf.Te D.toPre I e) (thickObj R I e G)).left.app ⊤` using `hTop`. Establish `key : (fst (WeightPf.Te D.toPre I e) (thickObj R I e G)).left.appTop ≫ (WeightPf.Te D.toPre I e ⊗ thickObj R I e G).left.presheaf.map (homOfLE (le_top : W2 ≤ ⊤)).op ≫ (mA ιG e a ta).left.app W2 ≫ (WeightPf.Te D.toPre I e ⊗ thickObj R I e G).left.presheaf.map (homOfLE hm).op = ta. …`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Scheme.Hom.naturality_assoc, Scheme.Hom.naturality_assoc, reassoc_of% hTop']`. Simplify using `only [← Functor.map_comp]`. Both sides reduce to the same expression. Establish `hk` using `congrArg (fun φ => φ.hom (charUnit _ D.toPre.X χ).val) key`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at hk ⊢`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hk`.
+A detailed English derivation is pending.
 -/
 theorem mA_chiP (ta : WeightPf.Te D.toPre I e ⟶ WeightPf.Te D.toPre I e)
     (hta : TorusEndOf D.toPre.X (fun χ => star a • χ) ta) (χ : D.toPre.X)
@@ -167,21 +165,17 @@ end Rhs
 include hO in
 
 /- English proof (translation)
-Take `⟨ta, hta, hia⟩` from `hi`. Use `set hL := (actA ιG e a).left with hhL`. Use `set actL := (WeightPf.act (U.gt e)).left with hactL`. Use `set sndL := (snd (WeightPf.Te D.toPre I e) (thickObj R I e G)).left with hsndL`. Use `set mL := (mA ιG e a ta).left with hmL`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set Wt := LB.wchart D.toPre.P.L (D.toPre.Oφ (U.gt e).pG χ) jB with hWt`. Establish `hWb : LB.wchart D.toPre.P.L (φB U ιG e a χ) jB ≤ hL ⁻¹ᵁ Wt` using `Semi.LBVal.wchart_pull_le D.toPre.P.L (D.toPre.Oφ (U.gt e).pG χ) hL jB`. Establish `eqA : actL ≫ hL = mL ≫ actL`. Rewrite using `[hactL, hhL, hmL, ← Over.comp_left, act_actA U ιG e a ta hia, Over.comp_left]`. Establish `eqS : mL ≫ sndL = sndL ≫ hL`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hsndL, hhL, hmL, ← Over.comp_left, mA_snd, Over.comp_left]`. Set `W2 : (WeightPf.Te D.toPre I e ⊗ thickObj R I e G).left.Opens` to `sndL ⁻¹ᵁ Wt ⊓ actL ⁻¹ᵁ Wt`. Establish `hs2 : W2 ≤ sndL ⁻¹ᵁ Wt` using `inf_le_left`. Establish `ha2 : W2 ≤ actL ⁻¹ᵁ Wt` using `inf_le_right`. Establish `hm : W' ≤ mL ⁻¹ᵁ W2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `z hz`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show sndL (mL z) ∈ Wt`. Rewrite using `[← Scheme.Hom.comp_apply, eqS, Scheme.Hom.comp_apply]`. Conclude with `hWb (hs hz)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show actL (mL z) ∈ Wt`. Rewrite using `[← Scheme.Hom.comp_apply, ← eqA, Scheme.Hom.comp_apply]`. Conclude with `hWb (ha hz)`. Establish `hjt : LB.Coh D.toPre.P.L (D.toPre.Oφ (U.gt e).pG χ) jB` using `fun k1 k2 h => cB k1 k2 (congrArg (hL ≫ ·) h)`. Establish `T` using `WeightPf.t_act (U.gt e) χ jB hjt W2 hs2 ha2`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `M1 : hL.appLE Wt _ hWb ≫ actL.appLE _ W' ha = actL.appLE Wt W2 ha2 ≫ mL.appLE W2 W' hm`. Rewrite using `[Scheme.Hom.appLE_comp_appLE, Scheme.Hom.appLE_comp_appLE, Semi.TorusInj.appLE_of_eq eqA]`. Establish `M3 : sndL.appLE Wt W2 hs2 ≫ mL.appLE W2 W' hm = hL.appLE Wt _ hWb ≫ sndL.appLE _ W' hs`. Rewrite using `[Scheme.Hom.appLE_comp_appLE, Scheme.Hom.appLE_comp_appLE, Semi.TorusInj.appLE_of_eq eqS]`. Establish `C` using `mA_chiP ιG e a ta hta χ W2 W' hm`.
-
-Use `set x := (((U.gt e).t χ).s jB).val with hx`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[T, map_mul]`. Use `_ = _ := by`. Rewrite using `[C]`.
-
-Use `congr 1`. Conclude with `congrArg (fun φ => φ.hom x) M3`.
+A detailed English derivation is pending.
 -/
 theorem rhs_act
     (hi : ∃ t : splitTorus (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) D.toPre.X ⟶

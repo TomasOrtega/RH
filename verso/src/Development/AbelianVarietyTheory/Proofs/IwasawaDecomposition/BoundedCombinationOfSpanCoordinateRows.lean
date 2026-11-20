@@ -6,13 +6,13 @@ open scoped Matrix CategoryTheory.Obj Topology
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Introduce `X g r r₀ T lam u A C hu hC w hw`. Rewrite `hw` using `[Submodule.mem_span_range_iff_exists_fun]`. Take `⟨c, rfl⟩` from `hw`. Use `⟨∑ i, |c i| * C, fun x hx => ?_⟩` and prove the remaining obligations. Establish `key : ∑ j, ((∑ i, c i • fun j => (A i j : ℝ)) j : ℂ) • lam x j = ∑ i, (c i : ℂ) • u x i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Repeatedly rewrite using `[hu x hx, Finset.smul_sum]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Use `push_cast`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_smul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul, Int.cast_smul_eq_zsmul]`. Rewrite using `[key]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_smul, Complex.norm_real, Real.norm_eq_abs]`. Conclude with `mul_le_mul_of_nonneg_left ((norm_le_pi_norm (u x) i).trans (hC x hx)) (abs_nonneg _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.combo_of_bounded_rows_bounded : ∀ (X : Type) (g r r₀ : ℕ) (T : Set X) (lam : X → Fin r → Fin g → ℂ) (u : X → Fin r₀ → Fin g → ℂ) (A : Fin r₀ → Fin r → ℤ) (C : ℝ), (∀ x ∈ T, ∀ i, u x i = ∑ m, A i m • lam x m) → (∀ x ∈ T, ‖u x‖ ≤ C) → ∀ w ∈ Submodule.span ℝ (Set.range fun i j => (A i j : ℝ)), ∃ C' : ℝ, ∀ x ∈ T, ‖∑ j, (w j : ℂ) • lam x j‖ ≤ C' := by
   intro X g r r₀ T lam u A C hu hC w hw

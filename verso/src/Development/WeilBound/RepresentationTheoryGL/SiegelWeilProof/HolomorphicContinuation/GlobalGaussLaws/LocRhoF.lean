@@ -18,19 +18,19 @@ def reImInv {m : ℕ} : Fin m × Fin n × Bool → MvPolynomial (Fin m × Fin n 
   else C (1 / 2) * (X (k.1, k.2.1, false) + X (k.1, k.2.1, true))
 
 /- English proof (translation)
-Establish `h2 : (C (1 / 2 : ℂ) + C (1 / 2) : MvPolynomial (Fin m × Fin n × Bool) ℂ) = 1`. Rewrite using `[← C_add, ← C_1]`. Evaluate the numerical expressions. Establish `hI : (C Complex.I * C (1 / (2 * Complex.I)) : MvPolynomial (Fin m × Fin n × Bool) ℂ) = C (1 / 2)`. Rewrite using `[← C_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Clear the denominators using the available nonvanishing facts. Establish `hinv : ∀ k, bind₁ reImInv (reIm (n` using `n) (m := m) k) = X k := by`. Introduce and unpack `⟨a, i, b⟩`. Consider the cases of `b`.
+Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data.
 
-Simplify using `only [reIm, reImInv, Bool.false_eq_true, ↓reduceIte, map_add, map_mul, map_sub, bind₁_X_right, bind₁_C_right]`. Take the linear combination `(X (a, i, false) - X (a, i, true)) * hI + X (a, i, false) * h2`. Simplify using `only [reIm, reImInv, Bool.false_eq_true, ↓reduceIte, map_add, map_mul, map_sub, bind₁_X_right, bind₁_C_right]`. Take the linear combination `-(X (a, i, false) - X (a, i, true)) * hI + X (a, i, true) * h2`. Establish `hQ : bind₁ reIm P = 0`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Apply `GlobalTheory.UnitaryZariskiDense.eq_zero_of_eval_real` to reduce the goal to its premises. Introduce `u`. Set `z : Fin m → Fin n → ℂ` to `fun a i => (u (a, i, false) : ℂ) + Complex.I * (u (a, i, true) : ℂ)`. Express the relevant statement in the definitionally equal form `eval₂Hom (RingHom.id ℂ) _ (bind₁ reIm P) = 0`. Rewrite using `[eval₂Hom_bind₁]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hf : (fun k => eval₂Hom (RingHom.id ℂ) (fun v => ((u v : ℝ) : ℂ)) (reIm (n` using `n) (m := m) k)) = fun k => if k.2.2 = true then star (z k.1 k.2.1) else z k.1 k.2.1 := by`. Use function extensionality and compare the values at `⟨a, i, b⟩`. Consider the cases of `b`. Simplify using `[reIm, z]`. Apply the tactic sequence `apply Complex.ext <;> simp [reIm, z]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[hf]`. Conclude with `h z`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[bind₁_bind₁]`. Simplify using `only [hinv]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[bind₁_X_left]`. Both sides reduce to the same expression. Use `_ = 0 := by rw [hQ, map_zero]`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem evX_eq_zero {m : ℕ} (P : PX m n) (h : ∀ u : Fin m → Fin n → ℂ, evX P u = 0) : P = 0 := by
   have h2 : (C (1 / 2 : ℂ) + C (1 / 2) : MvPolynomial (Fin m × Fin n × Bool) ℂ) = 1 := by
@@ -69,14 +69,14 @@ theorem evX_eq_zero {m : ℕ} (P : PX m n) (h : ∀ u : Fin m → Fin n → ℂ,
     _ = 0 := by rw [hQ, map_zero]
 
 /- English proof (translation)
-The claim follows from `Complex.exp_ne_zero _`.
+A detailed English derivation is pending.
 -/
 theorem gs_ne_zero {m : ℕ} (c : ℝ) (u : Fin m → Fin n → ℂ) : gs c u ≠ 0 := Complex.exp_ne_zero _
 
 /- English proof (translation)
-Establish `h0 : P - Q = 0`. Apply `evX_eq_zero` to reduce the goal to its premises. Introduce `u`. Use `congrFun h u` as an intermediate fact. Unfold `fP at this`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `h2` using `mul_right_cancel₀ (gs_ne_zero c u) this`. Unfold `evX at h2 ⊢`. Rewrite using `[map_sub, h2, sub_self]`. Conclude with `sub_eq_zero.1 h0`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fP_inj {m : ℕ} (c : ℝ) {P Q : PX m n} (h : fP c P = fP c Q) : P = Q := by
   have h0 : P - Q = 0 := by
@@ -90,7 +90,7 @@ theorem fP_inj {m : ℕ} (c : ℝ) {P Q : PX m n} (h : fP c P = fP c Q) : P = Q 
   exact sub_eq_zero.1 h0
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Simplify using `only [fP, evX, map_add, MvPolynomial.smul_eval, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fP_add_smul {m : ℕ} (c : ℝ) (a : ℂ) (P Q : PX m n) : fP c (a • P + Q) = a • fP c P + fP c Q := by
   funext u

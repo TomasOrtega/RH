@@ -39,14 +39,14 @@ section Checks
 open ReciprocityTheory.AnForm.A (IsPsh isPsh_iff_isLeviPsh_thm isPsh_sup_thm)
 
 /- English proof (translation)
-The claim follows from `h.1`.
+A detailed English derivation is pending.
 -/
 example {R : AnRead p σ d} {a : ChartForm p σ d} (h : IsKaehlerForm R a) : IsClosedForm R a := h.1
 
 /- English proof (translation)
-Use `⟨fun z _ => EReal.coe_ne_top _, ?_, fun z hz => subset_closure ⟨hz, EReal.coe_ne_bot _⟩, fun κ => ?_⟩` and prove the remaining obligations. Conclude with `continuous_coe_real_ereal.comp_upperSemicontinuousOn h.1 EReal.coe_strictMono.monotone`. Establish `hc : IsPsh U fun _ => -κ` using `⟨upperSemicontinuousOn_const, fun z w _ => ⟨circleIntegrable_const _ _ _, by rw [Real.circleAverage_const]⟩⟩`. Use `isPsh_sup_thm d Bool U (fun b => if b then u else fun _ => -κ) hU ?_ using 2 with z` and compare the differences between its conclusion and the goal. Rewrite using `[← EReal.coe_strictMono.monotone.map_max, EReal.toReal_coe]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Finset.sup'_insert]`. Introduce and unpack `(_ | _)`. Simplify using `using hc`. Simplify using `using h`.
+Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem IsPshExt.of_isPsh {U : Set (Fin d → ℂ)} {u : (Fin d → ℂ) → ℝ} (hU : IsOpen U) (h : IsPsh U u) :
     IsPshExt U fun z => (u z : EReal) := by
@@ -62,22 +62,22 @@ theorem IsPshExt.of_isPsh {U : Set (Fin d → ℂ)} {u : (Fin d → ℂ) → ℝ
       · simpa using h
 
 /- English proof (translation)
-The claim follows from `.of_isPsh isOpen_univ (ReciprocityTheory.AnForm.A.isPshInhabit_thm d).1`.
+A detailed English derivation is pending.
 -/
 example : IsPshExt univ fun z : Fin d → ℂ => ((∑ j, ‖z j‖ ^ 2 : ℝ) : EReal) :=
   .of_isPsh isOpen_univ (ReciprocityTheory.AnForm.A.isPshInhabit_thm d).1
 
 /- English proof (translation)
-Introduce `h` and use `by simpa using h.2.2.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : ¬ IsPshExt (univ : Set (Fin d → ℂ)) fun _ => ⊥ := fun h => by simpa using h.2.2.1
 
 /- English proof (translation)
-Introduce `W φ hφ c`. Establish `hs : R.SmoothOn W fun y => φ y + u y` using `fun i => (hφ.2.1 i).add ((hu.mono (subset_univ W)) i)`. Establish `h₁ : ContDiffOn ℝ 2 ((fun y => φ y + u y) ∘ c.finChart.symm) (c.finChart.target ∩ c.finChart.symm ⁻¹' W)` using `((c.contDiffOn_finChart_iff _ W _).2 (hs.chart hφ.1 c)).of_le (WithTop.coe_le_coe.2 le_top)`. Establish `ho` using `c.finChart.isOpen_inter_preimage_symm hφ.1`. Use `.of_isPsh ho ((isPsh_iff_isLeviPsh_thm d _ _ ho h₁).2 ⟨h₁, fun z hz w => ?_⟩)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hy` using `c.finChart.map_target hz.1`. Establish `e : θ c (c.finChart.symm z) w + ddcForm u c (c.finChart.symm z) w = ReciprocityTheory.AnForm.levi ((fun y => φ y + u y) ∘ c.finChart.symm) (c.finChart (c.finChart.symm z)) w / Real.pi`. Rewrite using `[hφ.2.2 c _ hy hz.2, ← c.leviV_re_eq (hs.contDiffAt_two hφ.1 hy hz.2), ddcForm, ddcForm, ← add_div, ← AlgChart.levi_add (hφ.2.1.contDiffAt_two hφ.1 hy hz.2) (hu.contDiffAt_two isOpen_univ hy trivial)]`. Both sides reduce to the same expression. Use `h c _ hy w` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite `this` using `[e, c.finChart.right_inv hz.1]`. Conclude with `(div_nonneg_iff.1 this).elim (·.1) fun h => absurd h.2 Real.pi_pos.not_ge`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsFormPsh.of_smooth {R : AnRead p σ d} {θ : ChartForm p σ d} {u : CxPts p σ → ℝ} (hu : R.SmoothOn univ u)
     (h : ∀ c : AlgChart p σ d, ∀ y ∈ c.e.source, ∀ ξ, 0 ≤ θ c y ξ + ddcForm u c y ξ) :
@@ -99,7 +99,7 @@ theorem IsFormPsh.of_smooth {R : AnRead p σ d} {θ : ChartForm p σ d} {u : CxP
   exact (div_nonneg_iff.1 this).elim (·.1) fun h => absurd h.2 Real.pi_pos.not_ge
 
 /- English proof (translation)
-The claim follows from `.of_smooth (u := fun _ => r) (fun _ => contDiffOn_const) fun c y hy ξ => by have e : ddcForm (fun _ => r) c y ξ = 0 := by rw [ddcForm, AlgChart.levi, c.leviV_re_eq (f := fun _ => r) contDiffAt_const] simp [ReciprocityTheory.AnForm.levi, Function.comp_def] rw [e, add_zero] rcases …`.
+A detailed English derivation is pending.
 -/
 theorem IsFormPsh.const {R : AnRead p σ d} {a : ChartForm p σ d} (ha : IsKaehlerForm R a) (r : ℝ) :
     IsFormPsh R a fun _ => (r : EReal) :=
@@ -115,7 +115,7 @@ theorem IsFormPsh.const {R : AnRead p σ d} {a : ChartForm p σ d} (ha : IsKaehl
     · exact (ha.2 c y hy ξ h).le
 
 /- English proof (translation)
-Simplify using `[rho_const ha]`.
+Simplify using the standard rewrite rules.
 -/
 example [SmoothOfRelativeDimension d p] {R : AnRead p σ d} {a : ChartForm p σ d} (ha : IsKaehlerForm R a)
     (E : ChartMap p σ d) (r : ℝ) (y : CxPts p σ) :

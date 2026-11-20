@@ -12,13 +12,13 @@ def lineCoeff (h : ℂ → ℂ) (k : ℤ) (y : ℝ) : ℂ :=
   ∫ x in (0 : ℝ)..1, h (x + y * I) * cexp (-2 * π * I * k * (x + y * I))
 
 /- English proof (translation)
-Use `set F : ℂ → ℂ := fun w => h w * cexp (-2 * π * I * k * w) with hF`. Establish `hFd : Differentiable ℂ F` using `hd.mul (by fun_prop)`. Establish `hper : ∀ w, F (w + 1) = F w`. Introduce `w`. Simplify using `only [hF, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[Complex.exp_eq_exp_iff_exists_int]`. Conclude with `⟨-k, by push_cast; ring⟩`. Use `integral_boundary_rect_eq_zero_of_differentiableOn F ⟨0, y₁⟩ ⟨1, y₂⟩ hFd.differentiableOn` as an intermediate fact. Simplify using `only at this`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hv : (∫ y : ℝ in y₁..y₂, F ((1 : ℝ) + y * I)) = ∫ y : ℝ in y₁..y₂, F ((0 : ℝ) + y * I)`. Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[show ((1 : ℝ) : ℂ) + y * I = ((0 : ℝ) + y * I) + 1 by push_cast; ring, hper]`. Rewrite `this` using `[hv, add_sub_cancel_right, sub_eq_zero]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[lineCoeff, hF]`.
+A detailed English derivation is pending.
 -/
 lemma lineCoeff_const (h : ℂ → ℂ) (hd : Differentiable ℂ h) (h1 : ∀ w, h (w + 1) = h w)
     (k : ℤ) (y₁ y₂ : ℝ) : lineCoeff h k y₁ = lineCoeff h k y₂ := by
@@ -39,11 +39,11 @@ lemma lineCoeff_const (h : ℂ → ℂ) (hd : Differentiable ℂ h) (h1 : ∀ w,
   simpa [lineCoeff, hF] using this
 
 /- English proof (translation)
-Unfold `lineCoeff`. Rewrite using `[← intervalIntegral.integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Establish `e : (x : ℂ) + ((y + 1 : ℝ) : ℂ) * I = ((x : ℂ) + (y : ℂ) * I) + I` using `by push_cast; ring`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[e, h2]`. Establish `: cexp (-2 * π * I * k * ((x + y * I) + I)) * cexp (-2 * π * I * n * (x + y * I)) = cexp (2 * π * k) * cexp (-2 * π * I * ((k + n : ℤ) : ℂ) * (x + y * I))`. Rewrite using `[← Complex.exp_add, ← Complex.exp_add]`. Use `congr 1`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Put the polynomial expressions in normal form. Rewrite using `[I_sq]`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation.
+Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation.
 -/
 lemma lineCoeff_shift (h : ℂ → ℂ) (n : ℕ) (C : ℂ)
     (h2 : ∀ w, h (w + I) = C * cexp (-2 * π * I * n * w) * h w) (k : ℤ) (y : ℝ) :
@@ -63,41 +63,39 @@ lemma lineCoeff_shift (h : ℂ → ℂ) (n : ℕ) (C : ℂ)
     _ = _ := by rw [this]; ring
 
 /- English proof (translation)
-Establish `hrec : ∀ k : ℤ, lineCoeff h k 0 = C * cexp (2 * π * k) * lineCoeff h (k + n) 0`. Introduce `k`. Rewrite using `[lineCoeff_const h hd h1 k 0 (0 + 1), lineCoeff_shift h n C h2]`. Establish `hne : ∀ k : ℤ, C * cexp (2 * π * k) ≠ 0` using `fun k => mul_ne_zero hC (Complex.exp_ne_zero _)`. Establish `base : ∀ r : ℕ, r < n → lineCoeff h r 0 = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `r hr`. Simplify `h0 r hr` using `[lineCoeff]`. Establish `hq : ∀ q : ℤ, ∀ r : ℕ, r < n → lineCoeff h (q * n + r) 0 = 0`. Introduce `q r hr`. Proceed by induction on `q using Int.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simpa using base r hr`. Consider the case `succ q ih`. Use `hrec (q * n + r)` as an intermediate fact. Rewrite `this` using `[ih, show (q : ℤ) * n + r + n = (q + 1) * n + r by ring]`. Conclude with `(mul_eq_zero.mp this.symm).resolve_left (hne _)`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately.
 
-Consider the case `pred q ih`. Use `hrec ((-(q : ℤ) - 1) * n + r)` as an intermediate fact. Rewrite `this` using `[show (-(q : ℤ) - 1) * n + r + n = -(q : ℤ) * n + r by ring, ih, mul_zero]`. Conclude with `this`. Establish `hall : ∀ (k : ℤ) (y : ℝ), lineCoeff h k y = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `k y`. Rewrite using `[lineCoeff_const h hd h1 k y 0]`. Establish `hn' : (0 : ℤ) < n` using `by exact_mod_cast hn`. Establish `hlt` using `Int.emod_lt_of_pos k hn'`. Establish `hnn` using `Int.emod_nonneg k hn'.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `hq (k / n) (k % n).toNat (by omega)` as an intermediate fact. Rewrite `this` using `[Int.toNat_of_nonneg (Int.emod_nonneg k hn'.ne'), Int.ediv_mul_add_emod]`. Then use the resulting hypothesis. Establish `: Fact ((0 : ℝ) < 1)` using `⟨one_pos⟩`. Establish `hint : ∀ m : ℤ, ∀ w, h (w + m) = h w`. Introduce `m`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `m using Int.induction_on with`. Consider the case `zero => simp`. Consider the case `succ m ih => intro w`. Move the coercions through the operations in `at ih ⊢`. Rewrite using `[← add_assoc, h1, ih]`.
+Treat this case separately. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `pred m ih`. Introduce `w`. Move the coercions through the operations in `at ih ⊢`. Rewrite using `[← h1 (w + (-(m : ℂ) - 1)), show w + (-(m : ℂ) - 1) + 1 = w + -(m : ℂ) by ring, ih]`. Establish `hline : ∀ (y x : ℝ), x ∈ Set.Ico (0 : ℝ) (0 + 1) → h (x + y * I) = 0`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y x hx`. Use `set g : ℝ → ℂ := fun x => h (x + y * I) with hg`. Establish `hgc : Continuous g` using `hd.continuous.comp (by fun_prop)`. Establish `hg01 : g 0 = g (0 + 1)`. Simplify using `only [hg]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `push_cast`. Rewrite using `[show (0 : ℂ) + 1 + y * I = (0 + y * I) + 1 by ring, h1]`. Set `f : C(AddCircle (1 : ℝ), ℂ)` to `⟨AddCircle.liftIco 1 0 g, AddCircle.liftIco_continuous hg01 hgc.continuousOn⟩`. Establish `hcoef : ∀ k : ℤ, fourierCoeff f k = 0`. Introduce `k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `fourierCoeff (AddCircle.liftIco 1 0 g) k = 0`. Rewrite using `[fourierCoeff_liftIco_eq, fourierCoeffOn_eq_integral]`. Establish `e : ∀ x : ℝ, fourier (-k) (x : AddCircle ((0 : ℝ) + 1 - 0)) • g x = cexp (-2 * π * k * y) * (h (x + y * I) * cexp (-2 * π * I * k * (x + y * I)))`. Introduce `x`. Rewrite using `[fourier_coe_apply, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `: cexp (2 * π * I * ((-k : ℤ) : ℂ) * x / ((0 + 1 - 0 : ℝ) : ℂ)) = cexp (-2 * π * k * y) * cexp (-2 * π * I * k * (x + y * I))`. Rewrite using `[← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Take the linear combination `(2 * π * k * y) * I_sq`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[this]`. Simplify using `only [hg]`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[e]`. Rewrite using `[intervalIntegral.integral_const_mul]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `hall k y` as an intermediate fact. Simplify using `only [lineCoeff] at this`. Simplify using `only [zero_add, this, mul_zero, smul_zero]`. Establish `hs` using `has_pointwise_sum_fourier_series_of_summable (f := f) (by rw [show fourierCoeff f = fun _ => 0 from funext hcoef]; exact summable_zero) (x : AddCircle (1 : ℝ))`. Simplify using `only [hcoef, zero_smul] at hs`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h0f : f (x : AddCircle (1 : ℝ)) = g x`. Express the relevant statement in the definitionally equal form `AddCircle.liftIco 1 0 g (x : AddCircle (1 : ℝ)) = g x`. Conclude with `AddCircle.liftIco_coe_apply hx`. Express the relevant statement in the definitionally equal form `g x = 0`. Rewrite using `[← h0f]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `(hasSum_zero.unique hs).symm`. Use function extensionality and compare the values at `w`. Establish `hx : Int.fract w.re ∈ Set.Ico (0 : ℝ) (0 + 1)`. Rewrite using `[zero_add]`. Conclude with `⟨Int.fract_nonneg _, Int.fract_lt_one _⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use `hline w.im (Int.fract w.re) hx` as an intermediate fact. Rewrite `this` using `[← hint ⌊w.re⌋]`. Establish `hw : ((Int.fract w.re : ℝ) : ℂ) + w.im * I + (⌊w.re⌋ : ℂ) = w`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `[Int.fract_add_floor]`.
-
-Simplify using the standard rewrite rules. Rewrite `this` using `[hw]`. Simplify using `using this`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem quasiPeriodic_eq_zero (n : ℕ) (hn : 0 < n) (h : ℂ → ℂ) (hd : Differentiable ℂ h) (C : ℂ)
     (hC : C ≠ 0) (h1 : ∀ w, h (w + 1) = h w)
@@ -198,7 +196,7 @@ Simplify using the standard rewrite rules.
 lemma im_three_I_pos : 0 < (3 * I).im := by simp
 
 /- English proof (translation)
-Introduce `w`. Establish `h1 : DifferentiableAt ℂ (fun w : ℂ => jacobiTheta₂ w (3 * I)) (3 * w + ν * I)` using `differentiableAt_jacobiTheta₂_fst _ im_three_I_pos`. Establish `h2 : DifferentiableAt ℂ (fun w : ℂ => 3 * w + ν * I) w` using `by fun_prop`. Establish `h3 : DifferentiableAt ℂ ((fun w : ℂ => jacobiTheta₂ w (3 * I)) ∘ (fun w : ℂ => 3 * w + ν * I)) w` using `DifferentiableAt.comp w h1 h2`. Conclude with `(by fun_prop : DifferentiableAt ℂ (fun w : ℂ => cexp (π * I * ν ^ 2 * I / 3 + 2 * π * I * ν * w)) w).mul h3`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma thetaThree_differentiable (ν : ℕ) : Differentiable ℂ (thetaThree ν) := by
   intro w
@@ -211,7 +209,7 @@ lemma thetaThree_differentiable (ν : ℕ) : Differentiable ℂ (thetaThree ν) 
     (fun w : ℂ => cexp (π * I * ν ^ 2 * I / 3 + 2 * π * I * ν * w)) w).mul h3
 
 /- English proof (translation)
-Unfold `thetaThree`. Rewrite using `[show 3 * (w + 1) + ν * I = (3 * w + ν * I) + ((3 : ℤ) : ℂ) by push_cast; ring, jacobiTheta₂_add_int]`. Use `congr 1`. Rewrite using `[Complex.exp_eq_exp_iff_exists_int]`. Conclude with `⟨ν, by push_cast; ring⟩`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 lemma thetaThree_add_one (ν : ℕ) (w : ℂ) : thetaThree ν (w + 1) = thetaThree ν w := by
   unfold thetaThree
@@ -222,7 +220,7 @@ lemma thetaThree_add_one (ν : ℕ) (w : ℂ) : thetaThree ν (w + 1) = thetaThr
   exact ⟨ν, by push_cast; ring⟩
 
 /- English proof (translation)
-Unfold `thetaThree`. Rewrite using `[show 3 * (w + k * I) + ν * I = (3 * w + ν * I) + k * (3 * I) by ring, jacobiTheta₂_add_int_mul]`. Simplify using `only [← mul_assoc, ← Complex.exp_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma thetaThree_add_int_mul_I (ν : ℕ) (k : ℤ) (w : ℂ) :
     thetaThree ν (w + k * I) =
@@ -233,9 +231,9 @@ lemma thetaThree_add_int_mul_I (ν : ℕ) (k : ℤ) (w : ℂ) :
   congr 2; ring
 
 /- English proof (translation)
-Proceed by induction on `m using Int.induction_on generalizing w with`. Consider the case `zero => simp`. Consider the case `succ j ih => push_cast at ih ⊢`. Rewrite using `[← add_assoc, thetaThree_add_one, ih]`. Consider the case `pred j ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Move the coercions through the operations in `at ih ⊢`. Rewrite using `[← thetaThree_add_one ν (w + (-(j : ℂ) - 1)), show w + (-(j : ℂ) - 1) + 1 = w + -(j : ℂ) by ring, ih]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 lemma thetaThree_add_int (ν : ℕ) (m : ℤ) (w : ℂ) : thetaThree ν (w + m) = thetaThree ν w := by
   induction m using Int.induction_on generalizing w with
@@ -249,7 +247,7 @@ lemma thetaThree_add_int (ν : ℕ) (m : ℤ) (w : ℂ) : thetaThree ν (w + m) 
 def zeta3 : ℂ := cexp (2 * π * I / 3)
 
 /- English proof (translation)
-Unfold `zeta3`. Rewrite using `[← Complex.exp_nat_mul, show ((3 : ℕ) : ℂ) * (2 * π * I / 3) = 2 * π * I by push_cast; ring, Complex.exp_two_pi_mul_I]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 lemma zeta_three_cube : zeta3 ^ 3 = 1 := by
   unfold zeta3
@@ -257,7 +255,7 @@ lemma zeta_three_cube : zeta3 ^ 3 = 1 := by
     Complex.exp_two_pi_mul_I]
 
 /- English proof (translation)
-Establish `h` using `(Complex.isPrimitiveRoot_exp 3 (by norm_num)).geom_sum_eq_zero (by norm_num)`. Simplify using `only [Finset.sum_range_succ, Finset.sum_range_zero, pow_zero, pow_one, zero_add] at h`. Establish `e : cexp (2 * π * I / ((3 : ℕ) : ℂ)) = zeta3` using `by unfold zeta3; push_cast; rfl`. Rewrite `h` using `[e]`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma one_add_zeta_three_add_sq : 1 + zeta3 + zeta3 ^ 2 = 0 := by
   have h := (Complex.isPrimitiveRoot_exp 3 (by norm_num)).geom_sum_eq_zero (by norm_num)
@@ -266,7 +264,7 @@ lemma one_add_zeta_three_add_sq : 1 + zeta3 + zeta3 ^ 2 = 0 := by
   rw [e] at h; exact h
 
 /- English proof (translation)
-Unfold `thetaThree zeta3`. Rewrite using `[show 3 * (w + 1 / 3) + ν * I = (3 * w + ν * I) + 1 by ring, jacobiTheta₂_add_left, ← Complex.exp_nat_mul, ← mul_assoc, ← Complex.exp_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma thetaThree_add_third (ν : ℕ) (w : ℂ) : thetaThree ν (w + 1 / 3) = zeta3 ^ ν * thetaThree ν w := by
   unfold thetaThree zeta3
@@ -275,13 +273,13 @@ lemma thetaThree_add_third (ν : ℕ) (w : ℂ) : thetaThree ν (w + 1 / 3) = ze
   congr 2; ring
 
 /- English proof (translation)
-Introduce `h`. Establish `hb` using `norm_jacobiTheta_sub_one_le (τ := 3 * I) im_three_I_pos`. Rewrite `hb` using `[jacobiTheta_eq_jacobiTheta₂, h]`. Simplify using `only [zero_sub, norm_neg, norm_one] at hb`. Establish `him : (3 * I).im = 3` using `by simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `hb` using `[him]`. Establish `hπ : 3 < Real.exp (Real.pi * 3)`. Use `Real.add_one_le_exp (Real.pi * 3)` as an intermediate fact. Use polynomial arithmetic with `[Real.pi_gt_three]`. Establish `ht : Real.exp (-Real.pi * 3) < 1 / 3`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Rewrite using `[show -Real.pi * 3 = -(Real.pi * 3) by ring, Real.exp_neg, inv_lt_comm₀ (Real.exp_pos _) (by norm_num)]`. Simplify using `using hπ`. Establish `htpos` using `Real.exp_pos (-Real.pi * 3)`. Establish `h1 : 0 < 1 - Real.exp (-Real.pi * 3)` using `by linarith`. Establish `: 2 / (1 - Real.exp (-Real.pi * 3)) * Real.exp (-Real.pi * 3) < 1`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[div_mul_eq_mul_div, div_lt_one h1]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma jacobiTheta₂_zero_three_I_ne : jacobiTheta₂ 0 (3 * I) ≠ 0 := by
   intro h
@@ -304,7 +302,7 @@ lemma jacobiTheta₂_zero_three_I_ne : jacobiTheta₂ 0 (3 * I) ≠ 0 := by
   linarith
 
 /- English proof (translation)
-Use `⟨-(ν * I) / 3, ?_⟩` and prove the remaining obligations. Unfold `thetaThree`. Rewrite using `[show 3 * (-(ν * I) / 3) + ν * I = 0 by ring]`. Conclude with `mul_ne_zero (Complex.exp_ne_zero _) jacobiTheta₂_zero_three_I_ne`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma thetaThree_ne_zero (ν : ℕ) : ∃ w, thetaThree ν w ≠ 0 := by
   refine ⟨-(ν * I) / 3, ?_⟩
@@ -315,15 +313,15 @@ lemma thetaThree_ne_zero (ν : ℕ) : ∃ w, thetaThree ν w ≠ 0 := by
 def thetaThreeSec (ν : ℕ) : (Fin 1 → ℂ) → ℂ := fun z => thetaThree ν (z 0)
 
 /- English proof (translation)
-Use `⟨?_, fun v z => ?_, fun u z => ?_⟩` and prove the remaining obligations. Introduce `z`. Conclude with `(thetaThree_differentiable ν (z 0)).comp z ((differentiable_apply 0) z)`. Establish `: perFactor (HalfChar.zero 1) 3 v = 1`. Simplify using `[perFactor, HalfChar.a, HalfChar.zero, dotProduct]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, one_mul]`. Simplify using `only [thetaThreeSec, Pi.add_apply, intVec_one]`. Proceed by induction on `(v 0) using Int.induction_on with`. Consider the case `zero => simp`. Consider the case `succ k ih => push_cast at ih ⊢`.
+Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← add_assoc, thetaThree_add_one, ih]`. Consider the case `pred k ih`. Move the coercions through the operations in `at ih ⊢`. Rewrite using `[← thetaThree_add_one ν (z 0 + (-(k : ℂ) - 1)), show z 0 + (-(k : ℂ) - 1) + 1 = z 0 + -(k : ℂ) by ring, ih]`. Simplify using `only [thetaThreeSec, Pi.add_apply, autFactor, tauI]`.
+Treat this case separately. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hτ : ((I • (1 : Matrix (Fin 1) (Fin 1) ℂ)) *ᵥ intVec u) 0 = (u 0 : ℂ) * I`. Simplify using `[Matrix.mulVec, dotProduct, intVec, mul_comm]`. Rewrite using `[hτ, thetaThree_add_int_mul_I]`. Use `congr 2`. Simplify using `[dotProduct, Matrix.mulVec, intVec, HalfChar.b, HalfChar.zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Put the polynomial expressions in normal form.
 
-Put the polynomial expressions in normal form.
+A detailed English derivation is pending.
 -/
 theorem thetaThreeSec_mem (ν : ℕ) : thetaThreeSec ν ∈ thetaSec tauI (HalfChar.zero 1) 3 := by
   refine ⟨?_, fun v z => ?_, fun u z => ?_⟩
@@ -351,23 +349,21 @@ theorem thetaThreeSec_mem (ν : ℕ) : thetaThreeSec ν ∈ thetaSec tauI (HalfC
 def thetaThreeFam : Fin (2 + 1) → (Fin 1 → ℂ) → ℂ := fun ν => thetaThreeSec ν
 
 /- English proof (translation)
-Use `congr 1`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma fn_eq_line (f : (Fin 1 → ℂ) → ℂ) (z : Fin 1 → ℂ) : f z = f (fun _ => z 0) := by
   congr 1; funext i; fin_cases i; rfl
 
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc`. Establish `hE : ∀ w : ℂ, c 0 * thetaThree 0 w + c 1 * thetaThree 1 w + c 2 * thetaThree 2 w = 0`. Introduce `w`. Use `congrFun hc (fun _ => w)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `[Fin.sum_univ_three, thetaThreeFam, thetaThreeSec]`. Establish `key : ∀ w : ℂ, c 0 * thetaThree 0 w = 0 ∧ c 1 * thetaThree 1 w = 0 ∧ c 2 * thetaThree 2 w = 0`. Introduce `w`. Establish `e0` using `hE w`. Establish `e1` using `hE (w + 1 / 3)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `hE (w + 1 / 3 + 1 / 3)`. Simplify using `only [thetaThree_add_third] at e1 e2`. Establish `hs` using `one_add_zeta_three_add_sq`. Establish `hc3` using `zeta_three_cube`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take the linear combination `(1 / 3 : ℂ) * (e0 + e1 + e2) - (1 / 3 : ℂ) * (c 1 * thetaThree 1 w + c 2 * thetaThree 2 w) * hs - (1 / 3 : ℂ) * c 2 * thetaThree 2 w * zeta3 * hc3`. Take the linear combination `(1 / 3 : ℂ) * (e0 + zeta3 ^ 2 * e1 + zeta3 * e2) - (1 / 3 : ℂ) * (c 0 * thetaThree 0 w + c 2 * thetaThree 2 w) * hs - (1 / 3 : ℂ) * (2 * c 1 * thetaThree 1 w + c 2 * thetaThree 2 w * (zeta3 + zeta3 ^ 2)) * hc3`. Take the linear combination `(1 / 3 : ℂ) * (e0 + zeta3 * e1 + zeta3 ^ 2 * e2) - (1 / 3 : ℂ) * (c 0 * thetaThree 0 w + c 1 * thetaThree 1 w) * hs - (1 / 3 : ℂ) * (c 1 * thetaThree 1 w * zeta3 + c 2 * thetaThree 2 w * (zeta3 ^ 3 + 2)) * hc3`. Introduce `i`. Use `fin_cases i`.
+Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `thetaThree_ne_zero 0`. Conclude with `(mul_eq_zero.mp (key w).1).resolve_right hw`. Take `⟨w, hw⟩` from `thetaThree_ne_zero 1`. Conclude with `(mul_eq_zero.mp (key w).2.1).resolve_right hw`. Take `⟨w, hw⟩` from `thetaThree_ne_zero 2`.
-
-Conclude with `(mul_eq_zero.mp (key w).2.2).resolve_right hw`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem thetaThreeFam_linearIndependent : LinearIndependent ℂ thetaThreeFam := by
   rw [Fintype.linearIndependent_iff]
@@ -407,7 +403,7 @@ theorem thetaThreeFam_linearIndependent : LinearIndependent ℂ thetaThreeFam :=
 abbrev thetaThreeSpace : Submodule ℂ ((Fin 1 → ℂ) → ℂ) := thetaSec tauI (HalfChar.zero 1) 3
 
 /- English proof (translation)
-The claim follows from `(hf.1.continuous.comp (continuous_pi fun _ => Complex.continuous_ofReal)).mul (by fun_prop)`.
+A detailed English derivation is pending.
 -/
 lemma line_continuous {f : (Fin 1 → ℂ) → ℂ} (hf : f ∈ thetaThreeSpace) (k : ℕ) :
     Continuous (fun x : ℝ => f (fun _ => (x : ℂ)) * cexp (-2 * π * I * k * x)) :=
@@ -427,21 +423,19 @@ def coeffMap : thetaThreeSpace →ₗ[ℂ] (Fin 3 → ℂ) where
     exact intervalIntegral.integral_const_mul _ _
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce and unpack `⟨f, hf⟩ h0`. Take `⟨hd, hper, haut⟩` from `id hf`. Use `set F : ℂ → ℂ := fun w => f (fun _ => w) with hF`. Establish `hFd : Differentiable ℂ F` using `hd.comp (differentiable_pi.2 fun _ => differentiable_id)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∀ w, F (w + 1) = F w`. Introduce `w`. Use `hper (fun _ => 1) (fun _ => w)` as an intermediate fact. Establish `hp : perFactor (HalfChar.zero 1) 3 (fun _ => 1) = 1`. Simplify using `[perFactor, HalfChar.a, HalfChar.zero, dotProduct]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hp, one_mul]`. Simplify using `only [hF]`. Use `this using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `[intVec]`.
+Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : ∀ w, F (w + I) = cexp (-(π * I * 3 * I)) * cexp (-2 * π * I * (3 : ℕ) * w) * F w`. Introduce `w`. Use `haut (fun _ => 1) (fun _ => w)` as an intermediate fact. Simplify using `only [hF]`. Establish `hz : (fun _ : Fin 1 => w) + tauI.τ *ᵥ intVec (fun _ => 1) = fun _ => w + I`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Use `fin_cases i`. Simplify using `[tauI, Matrix.mulVec, dotProduct, intVec]`. Rewrite `this` using `[hz]`. Rewrite using `[this, ← Complex.exp_add]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `congr 2`. Simplify using `[autFactor, tauI, Matrix.mulVec, dotProduct, intVec, HalfChar.b, HalfChar.zero]`. Put the polynomial expressions in normal form. Establish `hzero : F = 0`. Use `quasiPeriodic_eq_zero 3 (by norm_num) F hFd _ (Complex.exp_ne_zero _) h1 h2 ?_` and prove the remaining obligations.
+Put the polynomial expressions in normal form. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `k hk`. Use `congrFun h0 ⟨k, hk⟩` as an intermediate fact. Simplify `this` using `[coeffMap, hF]`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `z`.
-
-Use `show f z = 0`. Rewrite using `[fn_eq_line f z]`. Conclude with `congrFun hzero (z 0)`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeffMap_injective : Function.Injective coeffMap := by
   rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
@@ -481,11 +475,11 @@ theorem coeffMap_injective : Function.Injective coeffMap := by
   exact congrFun hzero (z 0)
 
 /- English proof (translation)
-Establish `: Module.Finite ℂ thetaThreeSpace` using `Module.Finite.of_injective coeffMap coeffMap_injective`. Establish `hle : Module.finrank ℂ thetaThreeSpace ≤ 3`. Simplify using `using LinearMap.finrank_le_finrank_of_injective coeffMap_injective`. Set `y : Fin (2 + 1) → thetaThreeSpace` to `fun ν => ⟨thetaThreeFam ν, thetaThreeSec_mem ν⟩`. Establish `hy : LinearIndependent ℂ y` using `LinearIndependent.of_comp thetaThreeSpace.subtype thetaThreeFam_linearIndependent`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcard : Fintype.card (Fin (2 + 1)) = Module.finrank ℂ thetaThreeSpace` using `le_antisymm hy.fintype_card_le_finrank (by simpa using hle)`. Establish `hspan` using `hy.span_eq_top_of_card_eq_finrank' hcard`. Establish `hr : Set.range thetaThreeFam = thetaThreeSpace.subtype '' Set.range y`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hr, Submodule.span_image, hspan, Submodule.map_subtype_top]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem thetaThreeFam_span : Submodule.span ℂ (Set.range thetaThreeFam) = thetaThreeSpace := by
   have : Module.Finite ℂ thetaThreeSpace := Module.Finite.of_injective coeffMap coeffMap_injective
@@ -502,19 +496,15 @@ theorem thetaThreeFam_span : Submodule.span ℂ (Set.range thetaThreeFam) = thet
   rw [hr, Submodule.span_image, hspan, Submodule.map_subtype_top]
 
 /- English proof (translation)
-Use `set S : Set ℂ := {w | w ∈ Metric.closedBall (0 : ℂ) 2 ∧ thetaThree 0 w = 0} with hS`. Establish `hSfin : S.Finite`. Assume the negation of the conclusion as `hinf`. Take `⟨x, -, hx⟩` from `Set.Infinite.exists_accPt_of_subset_isCompact hinf (isCompact_closedBall (0 : ℂ) 2) (fun w hw => hw.1)`. Rewrite `hx` using `[accPt_iff_frequently_nhdsNE]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `han : AnalyticOnNhd ℂ (thetaThree 0) Set.univ` using `fun z _ => (thetaThree_differentiable 0).analyticAt z`. Use `han.eqOn_zero_of_preconnected_of_frequently_eq_zero isPreconnected_univ (Set.mem_univ x) (hx.mono fun w hw => hw.2)` as an intermediate fact. Take `⟨w, hw⟩` from `thetaThree_ne_zero 0`. Conclude with `hw (this (Set.mem_univ w))`. Use `⟨hSfin.toFinset, fun w hw => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set m := ⌊w.re⌋ with hm`. Use `set k := ⌊w.im⌋ with hk`. Use `set w' : ℂ := w - k * I - m with hw'`. Establish `hshift : thetaThree 0 w = cexp (-(3 * π * I * k ^ 2 * I) - 6 * π * I * k * (w' + m)) * thetaThree 0 w'`. Establish `e : w = (w' + m) + k * I` using `by rw [hw']; ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, thetaThree_add_int_mul_I, thetaThree_add_int]`. Establish `hz' : thetaThree 0 w' = 0`. Rewrite `hw` using `[hshift]`. Conclude with `(mul_eq_zero.mp hw).resolve_left (Complex.exp_ne_zero _)`. Establish `hre : w'.re = Int.fract w.re` using `by rw [← Int.self_sub_floor]; simp [hw', hm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `him : w'.im = Int.fract w.im` using `by rw [← Int.self_sub_floor]; simp [hw', hk]`. Establish `hball : w' ∈ Metric.closedBall (0 : ℂ) 2`. Rewrite using `[Metric.mem_closedBall, dist_zero_right]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hre, him]`.
-
-Use `gcongr`. Rewrite using `[abs_of_nonneg (Int.fract_nonneg _)]`. Conclude with `(Int.fract_lt_one _).le`. Rewrite using `[abs_of_nonneg (Int.fract_nonneg _)]`. Conclude with `(Int.fract_lt_one _).le`.
-
-Use `_ = 2 := by norm_num`. Use `⟨w', hSfin.mem_toFinset.mpr ⟨hball, hz'⟩, m, k, ?_⟩` and prove the remaining obligations. Rewrite using `[hw']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem thetaThree_zero_finite :
     ∃ W : Finset ℂ, ∀ w, thetaThree 0 w = 0 → ∃ w' ∈ W, ∃ m k : ℤ, w = w' + k * I + m := by

@@ -14,9 +14,9 @@ open GlobalTheory.TwU
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {N : ℕ} {P : HeightOneSpectrum (𝓞 E)}
 
 /- English proof (translation)
-Take `⟨s, hs, h1⟩` from `ha`. Take `⟨r, hr, h2⟩` from `hb`. Establish `hi : ∀ x : 𝓞 E, iA F E (algebraMap (𝓞 E) E x) ∈ Formalism.L2.Herm.intAf F E` using `fun x => (toRInt F E x).2`. Use `⟨s * r, fun h => (P.isPrime.mem_or_mem h).elim hs hr, ?_⟩` and prove the remaining obligations. Establish `e : iA F E (algebraMap (𝓞 E) E (s * r)) * (a + b) = iA F E (algebraMap (𝓞 E) E r) * (iA F E (algebraMap (𝓞 E) E s) * a) + iA F E (algebraMap (𝓞 E) E s) * (iA F E (algebraMap (𝓞 E) E r) * b)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `add_mem (mul_mem (hi r) h1) (mul_mem (hi s) h2)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intAtA_add {a b : E ⊗[F] FiniteAdeleRing (𝓞 F) F} (ha : IntAtA (F := F) P a) (hb : IntAtA (F := F) P b) :
     IntAtA (F := F) P (a + b) := by
@@ -32,9 +32,9 @@ theorem intAtA_add {a b : E ⊗[F] FiniteAdeleRing (𝓞 F) F} (ha : IntAtA (F :
   exact add_mem (mul_mem (hi r) h1) (mul_mem (hi s) h2)
 
 /- English proof (translation)
-Take `⟨s, hs, h1⟩` from `ha`. Take `⟨r, hr, h2⟩` from `hb`. Use `⟨s * r, fun h => (P.isPrime.mem_or_mem h).elim hs hr, ?_⟩` and prove the remaining obligations. Establish `e : iA F E (algebraMap (𝓞 E) E (s * r)) * (a * b) = (iA F E (algebraMap (𝓞 E) E s) * a) * (iA F E (algebraMap (𝓞 E) E r) * b)`. Rewrite using `[map_mul, map_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `mul_mem h1 h2`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intAtA_mul {a b : E ⊗[F] FiniteAdeleRing (𝓞 F) F} (ha : IntAtA (F := F) P a) (hb : IntAtA (F := F) P b) :
     IntAtA (F := F) P (a * b) := by
@@ -48,14 +48,14 @@ theorem intAtA_mul {a b : E ⊗[F] FiniteAdeleRing (𝓞 F) F} (ha : IntAtA (F :
   exact mul_mem h1 h2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, fun h => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h), by rw [map_one, map_one, one_mul]; exact (toRInt F E x).2⟩`.
+Supply the required witnesses or components.
 -/
 theorem intAtA_int (x : 𝓞 E) : IntAtA (F := F) P (iA F E (algebraMap (𝓞 E) E x)) :=
   ⟨1, fun h => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h), by
     rw [map_one, map_one, one_mul]; exact (toRInt F E x).2⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using intAtA_int (F := F) (P := P) 0`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `intAtA_add (h a (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intAtA_sum {ι : Type} (s : Finset ι) (f : ι → E ⊗[F] FiniteAdeleRing (𝓞 F) F)
     (h : ∀ i ∈ s, IntAtA (F := F) P (f i)) : IntAtA (F := F) P (∑ i ∈ s, f i) := by
@@ -67,7 +67,7 @@ theorem intAtA_sum {ι : Type} (s : Finset ι) (f : ι → E ⊗[F] FiniteAdeleR
     exact intAtA_add (h a (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Simplify using `using intAtA_int (F := F) (P := P) 1`. Simplify using `using intAtA_int (F := F) (P := P) 0`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem intAtA_one_apply (a b : Fin N) :
     IntAtA (F := F) P ((1 : Matrix (Fin N) (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) a b) := by
@@ -77,9 +77,9 @@ theorem intAtA_one_apply (a b : Fin N) :
   · simpa using intAtA_int (F := F) (P := P) 0
 
 /- English proof (translation)
-Establish `hq : ((qOf P : ℕ) : E) ≠ 0`. Establish `: qOf P ≠ 0` using `fun h0 => P.ne_bot (Ideal.absNorm_eq_zero_iff.1 h0)`. Conclude with `this` after adjusting the coercions. Use `⟨by rw [← map_mul, mul_inv_cancel₀ (pow_ne_zero _ hq), map_one], ?_⟩` and prove the remaining obligations. Use `intAtA_int (F := F) (P := P) (((qOf P : ℕ) : 𝓞 E) ^ n)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem qpow_facts (P : HeightOneSpectrum (𝓞 E)) (n : ℕ) :
     iA F E (((qOf P : ℕ) : E) ^ n) * iA F E (((qOf P : ℕ) : E) ^ n)⁻¹ = 1 ∧
@@ -92,9 +92,9 @@ theorem qpow_facts (P : HeightOneSpectrum (𝓞 E)) (n : ℕ) :
   simpa using this
 
 /- English proof (translation)
-Take `⟨hdc, hd⟩` from `qpow_facts (F := F) P n`. Establish `e : (k : Matrix (Fin N) (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) a b = (1 : Matrix (Fin N) (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) a b + iA F E (((qOf P : ℕ) : E) ^ n) * (iA F E (((qOf P : ℕ) : E) ^ n)⁻¹ * ((k : Matrix (Fin N) (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) - 1) a b …`. Rewrite using `[← mul_assoc, hdc, one_mul, Matrix.sub_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `intAtA_add (intAtA_one_apply a b) (intAtA_mul hd (h a b))`.
+A detailed English derivation is pending.
 -/
 theorem intAtA_of_congAt (n : ℕ) {k : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)} (h : CongAt P n k) (a b : Fin N) :
     IntAtA (F := F) P ((k : Matrix (Fin N) (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) a b) := by
@@ -108,11 +108,9 @@ theorem intAtA_of_congAt (n : ℕ) {k : GL (Fin N) (E ⊗[F] FiniteAdeleRing (�
   exact intAtA_add (intAtA_one_apply a b) (intAtA_mul hd (h a b))
 
 /- English proof (translation)
-Introduce `a b`. Establish `hk'` using `intAtA_of_congAt n h'`. Use `set K := (k : Matrix (Fin N) (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F))`. Use `set K' := (k' : Matrix (Fin N) (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F))`. Establish `e : ((k * k' : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) : Matrix (Fin N) (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) - 1 = (K - 1) * K' + (K' - 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[Units.val_mul, Matrix.sub_mul, Matrix.one_mul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, Matrix.add_apply, Matrix.mul_apply, mul_add, Finset.mul_sum]`. Use `intAtA_add (intAtA_sum _ _ fun j _ => ?_) (h' a b)` and prove the remaining obligations. Rewrite using `[← mul_assoc]`.
-
-Conclude with `intAtA_mul (h a j) (hk' j b)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem congAt_mul (n : ℕ) {k k' : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)} (h : CongAt P n k) (h' : CongAt P n k') :
     CongAt P n (k * k') := by
@@ -129,11 +127,11 @@ theorem congAt_mul (n : ℕ) {k k' : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 
   exact intAtA_mul (h a j) (hk' j b)
 
 /- English proof (translation)
-Introduce `a b`. Use `set Bm := (B : Matrix (Fin N) (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F))`. Use `set Bi := ((B⁻¹ : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) : Matrix (Fin N) (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F))`. Use `set Am := (A : Matrix (Fin N) (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F))`. Establish `hBB : Bi * Bm = 1` using `by rw [← Units.val_mul, inv_mul_cancel, Units.val_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ((B⁻¹ * A * B : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) : Matrix (Fin N) (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) - 1 = Bi * ((Am - 1) * Bm)`. Rewrite using `[Units.val_mul, Units.val_mul, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_sub, ← hBB, Matrix.mul_assoc]`. Rewrite using `[e, Matrix.mul_apply, Finset.mul_sum]`. Use `intAtA_sum _ _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.mul_sum, Finset.mul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `intAtA_sum _ _ fun l _ => ?_` and prove the remaining obligations. Establish `e2 : iA F E (((qOf P : ℕ) : E) ^ n)⁻¹ * (Bi a j * ((Am - 1) j l * Bm l b)) = Bi a j * (iA F E (((qOf P : ℕ) : E) ^ n)⁻¹ * (Am - 1) j l) * Bm l b` using `by ring`. Rewrite using `[e2]`. Conclude with `intAtA_mul (intAtA_mul (hBi a j) (hA j l)) (hB l b)`.
+A detailed English derivation is pending.
 -/
 theorem congAt_conj (n : ℕ) {A B : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)} (hA : CongAt P n A)
     (hB : ∀ r s, IntAtA (F := F) P ((B : Matrix (Fin N) (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) r s))
@@ -164,11 +162,9 @@ namespace GlobalTheory.CongMove
 open GlobalTheory.TwU
 
 /- English proof (translation)
-Unfold `NearAt at hg ⊢`. Use `set Fr := ratA F f`. Use `set G := ratA F g`. Use `set m := k⁻¹ * x * k`. Establish `key : (Fr⁻¹ * κ * Fr)⁻¹ * G = (Fr⁻¹ * k) * (k⁻¹ * (κ⁻¹ * x) * k) * (m⁻¹ * (k⁻¹ * Fr) * m) * (m⁻¹ * G)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [m]`. Use `group`. Rewrite using `[key]`. Use `congAt_mul n (congAt_mul n (congAt_mul n hei ?_) ?_) hg` and prove the remaining obligations. Establish `h` using `congAt_conj n hκ (B := k) hk hki`.
-
-Simplify `h` using `only [inv_inv]`. Establish `h` using `congAt_conj n he (B := m) hm hmi`. Conclude with `h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nearAt_conj_ratA {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {N : ℕ}
     (P : HeightOneSpectrum (𝓞 E)) (n : ℕ) (κ x k : GL (Fin N) (TensorProduct F E (FiniteAdeleRing (𝓞 F) F))) (f g : GL (Fin N) E)

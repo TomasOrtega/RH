@@ -15,9 +15,9 @@ namespace GlobalTheory.LogDR
 variable {X : Scheme.{0}} [IsIntegral X]
 
 /- English proof (translation)
-Use extensionality with `w`. Simplify using `only [latSec, AddSubgroup.mem_map, AddSubgroup.mem_iInf]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, rfl⟩ y hy`. Conclude with `⟨v, hv y hy, rfl⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce `hw`. Take `⟨v, -, hv⟩` from `hw _ h`. Use `⟨v, fun y hy => ?_, hv⟩` and prove the remaining obligations. Take `⟨u, hu, hu'⟩` from `hw y hy`. Rewrite `hu` using `[hφ (hu'.trans hv.symm)]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem latSec_map {V V' : Type} [AddCommGroup V] [AddCommGroup V'] (M : X → AddSubgroup V)
     (φ : V →+ V') (hφ : Function.Injective φ) (U : X.Opens) (h : genericPoint X ∈ U) :
@@ -55,7 +55,7 @@ def LatModel.transfer {V : Type} [AddCommGroup V] [Module X.functionField V] {M 
     rw [L'.range U h, ← L.range U h]; exact ⟨s, rfl⟩)
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (show L.val U h s ∈ (L'.val U h).range by rw [L'.range U h, ← L.range U h]; exact ⟨s, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem LatModel.val_transfer {V : Type} [AddCommGroup V] [Module X.functionField V]
     {M : X → AddSubgroup V} {F F' : X.Modules} (L : LatModel M F) (L' : LatModel M F') (U : X.Opens)
@@ -75,7 +75,7 @@ def LatModel.secEquiv {V : Type} [AddCommGroup V] [Module X.functionField V] {M 
   right_inv s := L'.inj U h (by simp only [LatModel.val_transfer])
 
 /- English proof (translation)
-The claim follows from `L.val_transfer L' U h s`.
+A detailed English derivation is pending.
 -/
 theorem LatModel.val_secEquiv {V : Type} [AddCommGroup V] [Module X.functionField V]
     {M : X → AddSubgroup V} {F F' : X.Modules} (L : LatModel M F) (L' : LatModel M F') (U : X.Opens)
@@ -83,7 +83,7 @@ theorem LatModel.val_secEquiv {V : Type} [AddCommGroup V] [Module X.functionFiel
   L.val_transfer L' U h s
 
 /- English proof (translation)
-Use `haveI : Subsingleton Γ(X, U) := ⟨fun a b => fn_ext fun h => absurd h hU⟩`. Conclude with `Module.subsingleton Γ(X, U) Γ(F, U)`.
+A detailed English derivation is pending.
 -/
 theorem subsingleton_sec_of_not_gen (F : X.Modules) {U : X.Opens} (hU : genericPoint X ∉ U) :
     Subsingleton Γ(F, U) := by
@@ -112,7 +112,7 @@ def LatModel.iso {V : Type} [AddCommGroup V] [Module X.functionField V] {M : X �
       exact Subsingleton.elim _ _
 
 /- English proof (translation)
-Introduce `X _ V V' _ _ _ _ M F F' φ hφ L`. Conclude with `⟨⟨L.mapLin φ hφ⟩, fun L' => ⟨L.iso L'⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem latModel_map_and_unique : ∀ (X : Scheme.{0}) [IsIntegral X] {V V' : Type} [AddCommGroup V] [Module X.functionField V] [AddCommGroup V'] [Module X.functionField V'] (M : X → AddSubgroup V) (F F' : X.Modules) (φ : V →ₗ[X.functionField] V'), Function.Injective φ → LatModel M F → (Nonempty (LatModel (fun y => (M y).map φ.toAddMonoidHom) F)) ∧ (LatModel M F' → Nonempty (F ≅ F')) := by
   intro X _ V V' _ _ _ _ M F F' φ hφ L

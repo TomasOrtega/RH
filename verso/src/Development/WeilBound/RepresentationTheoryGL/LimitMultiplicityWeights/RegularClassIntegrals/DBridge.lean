@@ -10,7 +10,7 @@ noncomputable section
 namespace MainStatements.WeightKernel.Dec
 
 /- English proof (translation)
-Introduce `D V r X Y hW j`. Rewrite using `[NA_frameFlag]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem bridge : Bridge := by
   intro D V r X Y hW j

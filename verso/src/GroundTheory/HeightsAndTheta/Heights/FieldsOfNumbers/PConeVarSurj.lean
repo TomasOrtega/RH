@@ -13,27 +13,25 @@ universe u
 set_option maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `F _ K _ _ ι _ P hP W hW hPW v hv`. Use `hP.isPrime` as an intermediate fact. Use `hW.isPrime` as an intermediate fact. Introduce `z`. Use `set L := FractionRing (MRing ι F ⧸ P)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `π : MRing ι F → L` to `fun x => algebraMap (MRing ι F ⧸ P) L (Ideal.Quotient.mk P x)`. Establish `hπ : ∀ x, x ∉ P → π x ≠ 0` using `fun x hx => by`. Simplify using `only [π, Ne, IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hx`. Set `U : (K → ℕ) → MRing ι F` to `fun d => ∏ k, (X ⟨k, v k⟩ : MRing ι F) ^ d k`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUh : ∀ d, IsMultiHomog (U d) d` using `fun d => by`. Use `IsWeightedHomogeneous.prod Finset.univ (fun k => (X ⟨k, v k⟩ : MRing ι F) ^ d k) (fun k => d k • blockWeight ι ⟨k, v k⟩) (fun k _ => (isWeightedHomogeneous_X _ _ _).pow _)` as an intermediate fact. Establish `hd : ∑ k, d k • blockWeight ι ⟨k, v k⟩ = d`. Use function extensionality and compare the values at `j`. Simplify using `[blockWeight, Finset.sum_apply, Pi.single_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[hd]`. Conclude with `this`. Establish `hUW : ∀ d, U d ∉ W` using `fun d => W.primeCompl.prod_mem fun k _ => W.primeCompl.pow_mem (hv k) _`. Set `comp : MRing ι F → (K → ℕ) → MRing ι F` to `fun h d => weightedHomogeneousComponent (blockWeight ι) d h`. Set `c : MRing ι F → (K → ℕ) → degZeroLoc P {W}` to `fun h d => ⟨π (comp h d) / π (U d), div_mem_degZeroLoc P {W} (weightedHomogeneousComponent_isWeightedHomogeneous _ _) (hUh d) (fun h' => hUW d (hPW h')) (by rintro _ rfl; exact hUW d)⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `D : MRing ι F → Finset (K → ℕ)` to `fun h => h.support.image (Finsupp.weight (blockWeight ι))`. Establish `hsum : ∀ h, ∑ d ∈ D h, comp h d = h` using `fun h => by`. Rewrite using `[← finsum_eq_sum_of_support_subset _ (s := D h) (fun d hd => by`. Assume the negation of the conclusion as `hd'`. Conclude with `hd (weightedHomogeneousComponent_eq_zero_of_notMem _ h d hd'))]`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `sum_weightedHomogeneousComponent (blockWeight ι) h`. Set `Q : MRing ι F → MvPolynomial K (degZeroLoc P {W})` to `fun h => ∑ d ∈ D h, monomial (Finsupp.equivFunOnFinite.symm d) (c h d)`. Establish `hQ : ∀ h, coneVarMap P W hPW v (Q h) = algebraMap (MRing ι F ⧸ P) (coneLocal P W hPW) (Ideal.Quotient.mk P h)` using `fun h => by conv_rhs => rw [← hsum h, map_sum, map_sum]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[coneVarMap, aeval_monomial, Finsupp.prod_fintype _ _ (fun _ => pow_zero _)]`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Subalgebra.coe_mul, degZeroLoc.algebraMap_cone_coe, SubmonoidClass.coe_finsetProd, SubmonoidClass.coe_pow, Subalgebra.coe_algebraMap, Finsupp.coe_equivFunOnFinite_symm]`. Establish `hU : ∏ k, algebraMap (MRing ι F ⧸ P) L (Ideal.Quotient.mk P (X ⟨k, v k⟩)) ^ d k = π (U d)`. Simplify using `[π, U, map_prod, map_pow]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hU]`. Conclude with `div_mul_cancel₀ _ (hπ _ fun h' => hUW d (hPW h'))`. Take `⟨⟨x, s⟩, hxs⟩` from `IsLocalization.surj (W.primeCompl.map (Ideal.Quotient.mk P)) z`. Take `⟨g, hg, hgs⟩` from `Submonoid.mem_map.mp s.2`. Take `⟨f, rfl⟩` from `Ideal.Quotient.mk_surjective x`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Choose the witnesses or unpack the hypotheses as in `⟨d, hdD, hdW⟩ : ∃ d ∈ D g, comp g d ∉ W := by`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Conclude with `hg (hsum g ▸ W.sum_mem hne)`. Use `⟨Q f, Q g, Finsupp.equivFunOnFinite.symm d, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hcoeff : (Q g).coeff (Finsupp.equivFunOnFinite.symm d) = c g d`. Simplify using `only [Q, coeff_sum, coeff_monomial, EmbeddingLike.apply_eq_iff_eq]`. Rewrite using `[Finset.sum_ite_eq', if_pos hdD]`. Rewrite using `[hcoeff]`. Use `isUnit_iff_exists_inv.mpr ⟨⟨π (U d) / π (comp g d), div_mem_degZeroLoc P {W} (hUh d) (weightedHomogeneousComponent_isWeightedHomogeneous _ _) (fun h' => hdW (hPW h')) (by rintro _ rfl; exact hdW)⟩, Subtype.ext ?_⟩` and prove the remaining obligations.
-
-Simplify using `only [c, Subalgebra.coe_mul, Subalgebra.coe_one]`. Rewrite using `[div_mul_div_cancel₀ (hπ _ fun h' => hUW d (hPW h')), div_self (hπ _ fun h' => hdW (hPW h'))]`. Rewrite using `[hQ, hQ, hgs]`. Conclude with `hxs`.
+A detailed English derivation is pending.
 -/
 theorem ConeVarSurj.proof : ConeVarSurj.Statement.{u} := by
   intro F _ K _ _ ι _ P hP W hW hPW v hv

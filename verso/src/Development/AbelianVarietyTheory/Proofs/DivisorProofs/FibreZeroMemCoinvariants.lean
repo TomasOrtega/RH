@@ -23,7 +23,7 @@ namespace GlobalTheory.RankFibreKer
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Break down `lt_trichotomy (idx J) (idx J') with hl | he | hl` into its components or cases. Conclude with `absurd ((h'.2 J).2 hl) (fun H => lt_irrefl _ (H.trans_le ((h.2 J').1)))`. Conclude with `idx.injective he`. Conclude with `absurd ((h.2 J').2 hl) (fun H => lt_irrefl _ (H.trans_le ((h'.2 J).1)))`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem isFirstMax_unique {a d : ℕ} {Y : Matrix (Fin a) (Fin d) k} {J J' : Fin a ↪ Fin d} (h : IsFirstMax Y J)
     (h' : IsFirstMax Y J') : J = J' := by
@@ -33,7 +33,7 @@ theorem isFirstMax_unique {a d : ℕ} {Y : Matrix (Fin a) (Fin d) k} {J J' : Fin
   · exact absurd ((h.2 J').2 hl) (fun H => lt_irrefl _ (H.trans_le ((h'.2 J).1)))
 
 /- English proof (translation)
-Establish `hex : ∃ J, IsFirstMax Y J` using `⟨J, h⟩`. Rewrite using `[sec, dif_pos hex]`. Use `show Y.submatrix id hex.choose = _`. Rewrite using `[isFirstMax_unique hex.choose_spec h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sec_val {a d : ℕ} {Y : Matrix (Fin a) (Fin d) k} {J : Fin a ↪ Fin d} (h : IsFirstMax Y J) :
     (sec Y).val = Y.submatrix id J := by
@@ -43,9 +43,9 @@ theorem sec_val {a d : ℕ} {Y : Matrix (Fin a) (Fin d) k} {J : Fin a ↪ Fin d}
   rw [isFirstMax_unique hex.choose_spec h]
 
 /- English proof (translation)
-Introduce `Y hY`. Take `⟨J, hJ⟩` from `GlobalTheory.T.exists_first_maximal_minor k a d Y ((GlobalTheory.T.full_rank_iff_nonzero_minor k a d Y).1 hY)`. Rewrite using `[isEmbedding_val_GL.isInducing.continuousWithinAt_iff]`. Use `ContinuousAt.continuousWithinAt ?_` and prove the remaining obligations. Establish `hc : Continuous fun Y : Matrix (Fin a) (Fin d) k => Y.submatrix id J` using `(continuous_id.matrix_submatrix id J)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hc.continuousAt.congr ?_` and prove the remaining obligations. Use `filter_upwards [GlobalTheory.T.first_maximal_minor_locally_constant k a d Y J hJ] with Y' hY'`. Conclude with `(sec_val hY').symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuousOn_sec {a d : ℕ} : ContinuousOn (sec (k := k) (a := a) (d := d)) {Y | Y.rank = a} := by
   intro Y hY
@@ -59,7 +59,7 @@ theorem continuousOn_sec {a d : ℕ} : ContinuousOn (sec (k := k) (a := a) (d :=
   exact (sec_val hY').symm
 
 /- English proof (translation)
-Take `⟨J, hJ⟩` from `GlobalTheory.T.exists_first_maximal_minor k a d Y ((GlobalTheory.T.full_rank_iff_nonzero_minor k a d Y).1 hY)`. Conclude with `GlobalTheory.T.section_inverse_into_slice k a d Y J hJ`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sec_mem_slice {a d : ℕ} (Y : Matrix (Fin a) (Fin d) k) (hY : Y.rank = a) :
     ((sec Y)⁻¹).val * Y ∈ slice k a d := by
@@ -67,7 +67,7 @@ theorem sec_mem_slice {a d : ℕ} (Y : Matrix (Fin a) (Fin d) k) (hY : Y.rank = 
   exact GlobalTheory.T.section_inverse_into_slice k a d Y J hJ
 
 /- English proof (translation)
-Establish `h0 : haarVol (KO k (Fin a)) (K : Set (GL (Fin a) k)) ≠ 0` using `(hK.measure_pos (haarVol (KO k (Fin a))) ⟨1, K.one_mem⟩).ne'`. Establish `h1 : haarVol (KO k (Fin a)) (K : Set (GL (Fin a) k)) ≠ ⊤` using `((measure_mono (μ := haarVol (KO k (Fin a))) (show (K : Set (GL (Fin a) k)) ⊆ KO k (Fin a) from hKO)).trans_lt (by rw [haarVol_self isOpen_KO le_rfl]; exact ENNReal.one_lt_top)).ne`. Conclude with `ENNReal.toReal_ne_zero.2 ⟨h0, h1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem vol_ne_zero [MeasurableSpace k] [BorelSpace k] {a : ℕ} (K : Subgroup (GL (Fin a) k))
     (hK : IsOpen (K : Set (GL (Fin a) k))) (hKO : K ≤ KO k (Fin a)) :
@@ -80,35 +80,31 @@ theorem vol_ne_zero [MeasurableSpace k] [BorelSpace k] {a : ℕ} (K : Subgroup (
   exact ENNReal.toReal_ne_zero.2 ⟨h0, h1⟩
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ a b ν β hν _ Φ hΦ hfib`. Establish `hun : ∀ (Z : Matrix (Fin a) (Fin (a + b)) k) (g : GL (Fin a) k), Z ∈ slice k a (a + b) → g.val * Z ∈ slice k a (a + b) → g = 1` using `GlobalTheory.T.slice_stabilizer_trivial k a (a + b)`. Establish `hsc` using `continuousOn_sec (k := k) (a := a) (d := a + b)`. Establish `hsl` using `sec_mem_slice (k := k) (a := a) (d := a + b)`. Take `⟨U, hU, hUf⟩` from `GlobalTheory.T.continuous_slice_section_integral k a (a + b) Φ hΦ sec hsc hsl hun`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `Kf : Subgroup (GL (Fin a) k)` to `{ carrier := {x | ∀ g : GL (Fin a) k, ∀ Z ∈ slice k a (a + b), Φ (g.val * x.val * Z) = Φ (g.val * Z)} one_mem' := fun g Z _ => by simp mul_mem' := fun {x y} hx hy g Z hZ => by`. Rewrite using `[Units.val_mul, ← Matrix.mul_assoc, ← Units.val_mul, hy (g * x) Z hZ, Units.val_mul, hx g Z hZ]`. Use the proof step `inv_mem' := fun {x} hx g Z hZ => by`. Use `hx (g * x⁻¹) Z hZ` as an intermediate fact. Rewrite `this` using `[Units.val_mul, Matrix.mul_assoc (g.val), ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.mul_one]`.
+Introduce a local definition for the expression. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this.symm }`. Establish `hKf : IsOpen (Kf : Set (GL (Fin a) k))` using `Subgroup.isOpen_of_mem_nhds Kf (g := 1) (Filter.mem_of_superset hU fun x hx g Z hZ => hUf x hx g Z hZ)`. Set `K : Subgroup (GL (Fin a) k)` to `KO k (Fin a) ⊓ (detChar (Fin a) ν).ker ⊓ Kf`. Establish `hK : IsOpen (K : Set (GL (Fin a) k))` using `(isOpen_KO.inter hν.detChar).inter hKf`. Establish `hKO : K ≤ KO k (Fin a)` using `le_trans inf_le_left inf_le_left`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htw : ∀ x ∈ K, tw ν (a + b) x = 1` using `fun x hx => by`. Establish `h1 : ν (gdet x) = 1` using `hx.1.2`. Simplify using `[tw, h1, apow_of_valuation_eq_one (valuation_gdet_of_mem_KO hx.1.1)]`. Establish `hright : ∀ (g x : GL (Fin a) k) (Z : Matrix (Fin a) (Fin (a + b)) k), x ∈ K → Z ∈ slice k a (a + b) → Φ (g.val * x.val * Z) = Φ (g.val * Z)` using `fun g x Z hx hZ => hx.2 g Z hZ`. Take `⟨C, hC, hEC⟩` from `GlobalTheory.T.continuous_slice_section_measure k a (a + b) Φ hΦ sec hsc hsl hun`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨R, hRd, hRc⟩` from `GlobalTheory.T.compact_covered_by_open_cosets (GL (Fin a) k) K hK C hC`. Use `set T : Set (Matrix (Fin a) (Fin (a + b)) k) := {Y | ∃ x ∈ K, ∃ Z ∈ slice k a (a + b), Y = x.val * Z} with hT`. Establish `hrank : ∀ Y, Φ Y ≠ 0 → Y.rank = a` using `fun Y hY => by`. Assume the negation of the conclusion as `h`. Conclude with `hY (hΦ.2 Y h)`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `GlobalTheory.T.coinvariant_of_locally_constant_twist k ν β a b Φ (T.indicator 1) R hΦ.1 (GlobalTheory.T.isLocallyConstant_indicator_mul_slice k a (a + b) K hK hKO (GlobalTheory.T.full_rank_iff_nonzero_minor k a (a + b)) sec hsc hsl hun) (fun Y => ?_) (fun Y => ?_)` and prove the remaining obligations. Distinguish the cases in `hY : Φ Y = 0`. Simplify using `[hY]`. Take `⟨g, hg⟩ : ∃ g : GL (Fin a) k, (g⁻¹).val * Y ∈ slice k a (a + b)` from `⟨sec Y, hsl Y (hrank Y hY)⟩`. Use `set Z := (g⁻¹).val * Y with hZdef`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hYZ : Y = g.val * Z` using `by rw [hZdef, ← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul]`. Take `⟨r, hr, hrg⟩` from `hRc g (hEC g Z hg (hYZ ▸ hY))`. Rewrite using `[Finset.sum_eq_single r]`. Rewrite using `[Set.indicator_of_mem, Pi.one_apply, one_mul]`. Conclude with `⟨r⁻¹ * g, hrg, Z, hg, by rw [hYZ, Units.val_mul, Matrix.mul_assoc]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `r' hr' hne`. Rewrite using `[Set.indicator_of_notMem, zero_mul]`. Introduce and unpack `⟨x', hx', Z', hZ', he⟩`. Establish `h1 : ((x'⁻¹ * r'⁻¹ * g : GL (Fin a) k)).val * Z ∈ slice k a (a + b)`. Establish `: ((x'⁻¹ * r'⁻¹ * g : GL (Fin a) k)).val * Z = Z'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Units.val_mul, Matrix.mul_assoc]`. Rewrite using `[← hYZ, he, ← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul]`. Rewrite using `[this]`. Conclude with `hZ'`. Establish `h2` using `hun Z _ hg h1`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `h3 : g = r' * x'`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hne (hRd r hr r' hr' (by`. Establish `: r⁻¹ * r' = (r⁻¹ * g) * x'⁻¹` using `by rw [h3]; group`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `K.mul_mem hrg (K.inv_mem hx'))).symm`. Introduce `h`. Conclude with `absurd hr h`. Distinguish the cases in `hY : Y ∈ T`. Take `⟨x, hx, Z, hZ, rfl⟩` from `hY`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_mem (show x.val * Z ∈ T from ⟨x, hx, Z, hZ, rfl⟩), Pi.one_apply, one_mul]`. Establish `e1 : ∀ r : GL (Fin a) k, Φ (r.val * (x.val * Z)) = Φ (r.val * Z)` using `fun r => by`. Rewrite using `[← Matrix.mul_assoc]`. Conclude with `hright r x Z hx hZ`. Simplify using `only [e1]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hZr : Z.rank = a`. Take `⟨J, hJ, -⟩` from `hZ`. Conclude with `(GlobalTheory.T.full_rank_iff_nonzero_minor k a (a + b) Z).2 ⟨J, by simp [minor, hJ]⟩`. Establish `hint` using `GlobalTheory.T.haar_integral_over_coset_representatives k a K hK hKO (fun g => Φ (g.val * Z) * tw ν (a + b) g) (fun g x' hx' => by`. Simplify using `only [Units.val_mul, tw_mul, htw x' hx', mul_one]`.
-
-Rewrite using `[hright g x' Z hx' hZ])`. Use `R hRd (fun g hg => hRc g (hEC g Z hZ (left_ne_zero_of_mul hg)))`. Rewrite `hint` using `[GlobalTheory.T.orbital_integral_vanishes_of_fibre k ν β a b Φ hfib Z hZr]`. Establish `hv` using `vol_ne_zero K hK hKO`. Use `(mul_eq_zero.1 hint.symm).resolve_left (by exact_mod_cast hv)` as an intermediate fact.
-
-Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun r _ => mul_comm _ _`. Simplify using `[Set.indicator_of_notMem hY]`.
+A detailed English derivation is pending.
 -/
 theorem fibre_ker : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [MeasurableSpace k] [BorelSpace k] (a b : ℕ) (ν β : kˣ →* ℂˣ), GlobalTheory.SmGL.IsSmoothChar ν →

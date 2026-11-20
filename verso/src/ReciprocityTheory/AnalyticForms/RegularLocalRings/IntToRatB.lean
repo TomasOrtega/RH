@@ -11,9 +11,9 @@ noncomputable def eQ (x : PrimeSpectrum (MvPolynomial σ ℤ)) (h : ChZero x.asI
   ⟨Ideal.map (MvPolynomial.map (Int.castRingHom ℚ)) x.asIdeal, map_isPrime x.asIdeal h⟩
 
 /- English proof (translation)
-Establish `hle : (eQ x hx).asIdeal ≤ (eQ y hy).asIdeal` using `by show Ideal.map (MvPolynomial.map (Int.castRingHom ℚ)) x.asIdeal ≤ Ideal.map (MvPolynomial.map (Int.castRingHom ℚ)) y.asIdeal`. Conclude with `Ideal.map_mono (show x.asIdeal ≤ y.asIdeal from hxy.le)`. Use `show (eQ x hx).asIdeal < (eQ y hy).asIdeal`. Use `lt_of_le_of_ne hle ?_` and prove the remaining obligations. Introduce `heq`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : (Ideal.map (MvPolynomial.map (Int.castRingHom ℚ)) x.asIdeal).comap (MvPolynomial.map (Int.castRingHom ℚ)) = (Ideal.map (MvPolynomial.map (Int.castRingHom ℚ)) y.asIdeal).comap (MvPolynomial.map (Int.castRingHom ℚ))` using `congrArg (Ideal.comap _) heq`. Rewrite `h2` using `[comap_map_eq x.asIdeal hx, comap_map_eq y.asIdeal hy]`. Conclude with `(show x.asIdeal ≠ y.asIdeal from ne_of_lt hxy) h2`.
+A detailed English derivation is pending.
 -/
 lemma eQ_lt {x y : PrimeSpectrum (MvPolynomial σ ℤ)} (hx : ChZero x.asIdeal)
     (hy : ChZero y.asIdeal) (hxy : x < y) : eQ x hx < eQ y hy := by
@@ -32,13 +32,13 @@ lemma eQ_lt {x y : PrimeSpectrum (MvPolynomial σ ℤ)} (hx : ChZero x.asIdeal)
   exact (show x.asIdeal ≠ y.asIdeal from ne_of_lt hxy) h2
 
 /- English proof (translation)
-Proceed by induction on `s using RelSeries.inductionOn with`. Consider the case `singleton x => intros`. Simplify using the standard rewrite rules. Consider the case `cons t x hx ih`. Introduce `z hz h0`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hz` using `[RelSeries.head_cons]`. Substitute `hz` using the available equality. Simplify using `only [RelSeries.cons_length, Nat.cast_add, Nat.cast_one]`. Distinguish the cases in `h1 : ChZero t.head.asIdeal`. Establish `h2` using `ih t.head rfl h1`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h3` using `Order.coheight_add_one_le (eQ_lt h0 h1 hx)`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : (t.length : ℕ∞) ≤ Order.coheight t.head` using `Order.length_le_coheight_head`. Establish `h3` using `dim_le_of_charP x.asIdeal t.head.asIdeal hx.le h0 h1`. Rewrite `h3` using `[ringKrullDim_quotient_eq_coheight, ringKrullDim_quotient_eq_coheight (hI := map_isPrime _ h0)]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4 : Order.coheight t.head ≤ Order.coheight (eQ x h0)` using `WithBot.coe_le_coe.mp h3`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 lemma length_le_coheight_eQ (s : LTSeries (PrimeSpectrum (MvPolynomial σ ℤ))) :
     ∀ z, s.head = z → ∀ h0 : ChZero z.asIdeal,
@@ -64,13 +64,13 @@ lemma length_le_coheight_eQ (s : LTSeries (PrimeSpectrum (MvPolynomial σ ℤ)))
         _ ≤ Order.coheight (eQ x h0) + 1 := add_le_add_left h4 1
 
 /- English proof (translation)
-Rewrite using `[isJacobsonRing_iff_prime_eq]`. Introduce `P hP`. Use `le_antisymm ?_ Ideal.le_jacobson` and prove the remaining obligations. Distinguish the cases in `hb : P = ⊥`. Substitute `hb` using the available equality.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Introduce `m hm`. Rewrite `hm` using `[Ideal.mem_jacobson_bot]`. Rewrite using `[Ideal.mem_bot]`. Establish `h1` using `Int.isUnit_iff.mp (hm 1)`. Establish `h2` using `Int.isUnit_iff.mp (hm 2)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hmax : P.IsMaximal` using `by first`. Consider the case `exact Ideal.IsPrime.isMaximal hP hb`. Consider the case `exact hP.isMaximal hb`. Consider the case `exact Ideal.IsPrime.to_maximal_ideal hb`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact Ring.DimensionLEOne.maximalOfPrime hb hP`. Conclude with `sInf_le ⟨le_rfl, hmax⟩`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 private lemma isJacobsonRing_int_regular_local_rings : IsJacobsonRing ℤ := by
   rw [isJacobsonRing_iff_prime_eq]
@@ -93,13 +93,13 @@ private lemma isJacobsonRing_int_regular_local_rings : IsJacobsonRing ℤ := by
     exact sInf_le ⟨le_rfl, hmax⟩
 
 /- English proof (translation)
-Introduce `hmax`. Use `haveI := hmax`. Use `haveI := isJacobsonRing_int_regular_local_rings`. Use `letI : Field (MvPolynomial σ ℤ ⧸ Q) := Ideal.Quotient.field Q`. Establish `hint` using `MvPolynomial.comp_C_integral_of_surjective_of_isJacobsonRing (Ideal.Quotient.mk Q) Ideal.Quotient.mk_surjective`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Establish `hfe : (Ideal.Quotient.mk Q).comp (MvPolynomial.C) = algebraMap ℤ (MvPolynomial σ ℤ ⧸ Q)` using `RingHom.ext_int _ _`. Use `haveI : Algebra.IsIntegral ℤ (MvPolynomial σ ℤ ⧸ Q) := by`. Prove the components needed by the constructor for the conclusion. Introduce `x`. Establish `hx` using `hint x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hx` using `[hfe]`. Conclude with `hx`. Establish `hinj : Function.Injective (algebraMap ℤ (MvPolynomial σ ℤ ⧸ Q))`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `m hm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `hm` using `[← hfe, RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hQ m hm`. Establish `hF : IsField ℤ` using `isField_of_isIntegral_of_isField hinj ((Ideal.Quotient.maximal_ideal_iff_isField_quotient Q).mp hmax)`. Take `⟨b, hb⟩` from `hF.mul_inv_cancel (two_ne_zero : (2 : ℤ) ≠ 0)`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 private lemma not_isMaximal_of_chZero (Q : Ideal (MvPolynomial σ ℤ)) (hQ : ChZero Q) :
     ¬ Q.IsMaximal := by
@@ -128,25 +128,21 @@ private lemma not_isMaximal_of_chZero (Q : Ideal (MvPolynomial σ ℤ)) (hQ : Ch
   omega
 
 /- English proof (translation)
-Set `φ : MvPolynomial σ ℤ →+* MvPolynomial σ ℚ` to `MvPolynomial.map (Int.castRingHom ℚ)`. Set `g : PrimeSpectrum (MvPolynomial σ ℚ) → PrimeSpectrum (MvPolynomial σ ℤ)` to `fun Q => ⟨Q.asIdeal.comap φ, inferInstance⟩`. Establish `hg : StrictMono g`. Introduce `a b hab`. Use `show a.asIdeal.comap φ < b.asIdeal.comap φ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `comap_strictMono (show a.asIdeal < b.asIdeal from hab)`. Establish `hg0 : g (eQ P hP) = P` using `PrimeSpectrum.ext (comap_map_eq P.asIdeal hP)`. Establish `hup : ∀ L : PrimeSpectrum (MvPolynomial σ ℚ), ∃ M, g L < M`. Introduce `L`. Establish `hQ : ChZero (g L).asIdeal` using `chZero_comap L.asIdeal`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hnm` using `not_isMaximal_of_chZero (g L).asIdeal hQ`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal (g L).asIdeal (g L).isPrime.ne_top`. Use `⟨⟨M, hM.isPrime⟩, ?_⟩` and prove the remaining obligations. Use `show (g L).asIdeal < M`. Use `lt_of_le_of_ne hle ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `heq`. Apply `hnm` to reduce the goal to its premises. Rewrite using `[heq]`. Conclude with `hM`. Establish `key : ∀ n : ℕ, (n : ℕ∞) ≤ Order.coheight (eQ P hP) → ((n + 1 : ℕ) : ℕ∞) ≤ Order.coheight P`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `n hn`. Take `⟨p, hph, hpl⟩` from `Order.exists_series_of_le_coheight (eQ P hP) hn`. Take `⟨M, hM⟩` from `hup p.last`. Establish `hlast : (p.map g hg).last < M` using `hM`. Set `q` to `(p.map g hg).snoc M hlast`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hqh : q.head = P`. Rewrite using `[RelSeries.head_snoc]`. Use `show g p.head = P`. Rewrite using `[hph]`. Conclude with `hg0`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hql : q.length = n + 1`. Rewrite using `[← hpl]`. Both sides reduce to the same expression. Rewrite using `[← hql, ← hqh]`. Conclude with `Order.length_le_coheight_head`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Break down `eq_or_ne (Order.coheight (eQ P hP)) ⊤ with h | h` into its components or cases. Establish `htop : Order.coheight P = ⊤`. Assume the negation of the conclusion as `hne`. Establish `h1` using `key (Order.coheight P).toNat (by rw [h]; exact le_top)`. Establish `h2 : (((Order.coheight P).toNat + 1 : ℕ) : ℕ∞) ≤ ((Order.coheight P).toNat : ℕ∞)`.
-
-Rewrite using `[ENat.coe_toNat hne]`. Conclude with `h1`. Establish `h3` using `(Nat.cast_le (α := ℕ∞)).mp h2`. Use linear arithmetic over natural numbers and integers. Rewrite using `[htop]`.
-
-Conclude with `le_top`. Establish `h1` using `key (Order.coheight (eQ P hP)).toNat (by rw [ENat.coe_toNat h])`. Rewrite using `[← ENat.coe_toNat h]`. Conclude with `h1` after adjusting the coercions.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma coheight_eQ_add_one_le (P : PrimeSpectrum (MvPolynomial σ ℤ)) (hP : ChZero P.asIdeal) :
     Order.coheight (eQ P hP) + 1 ≤ Order.coheight P := by

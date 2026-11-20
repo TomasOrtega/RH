@@ -11,7 +11,7 @@ section Basic
 variable {A : Type} [CommRing A] {r : ℕ}
 
 /- English proof (translation)
-Unfold `subY`. Rewrite using `[aeval_X]`. Simplify using `only [h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem qa_subY_X_some (v : Fin (r + 1 + 1) × Fin (r + 1 + 1)) (j : Fin r) (h : midOf v.2 = some j) :
     subY A r (X v) = ∑ i : Fin r, C (X (i, j)) * X (v.1, midI r i) := by
@@ -20,7 +20,7 @@ theorem qa_subY_X_some (v : Fin (r + 1 + 1) × Fin (r + 1 + 1)) (j : Fin r) (h :
   simp only [h]
 
 /- English proof (translation)
-Unfold `subY`. Rewrite using `[aeval_X]`. Simplify using `only [h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem qa_subY_X_none (v : Fin (r + 1 + 1) × Fin (r + 1 + 1)) (h : midOf v.2 = none) :
     subY A r (X v) = X v := by
@@ -29,7 +29,7 @@ theorem qa_subY_X_none (v : Fin (r + 1 + 1) × Fin (r + 1 + 1)) (h : midOf v.2 =
   simp only [h]
 
 /- English proof (translation)
-Unfold `subY`. Conclude with `aeval_C _ a`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem qa_subY_C (a : A) : subY A r (C a) = C (C a) := by
   unfold subY
@@ -38,7 +38,7 @@ theorem qa_subY_C (a : A) : subY A r (C a) = C (C a) := by
 end Basic
 
 /- English proof (translation)
-Unfold `rowAct`. Conclude with `aeval_X _ x`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem qa_rowAct_X {R : Type} [CommRing R] {k n : ℕ} (g : Matrix (Fin k) (Fin k) R) (x : Fin k × Fin n) :
     rowAct R g (X x) = ∑ b : Fin k, C (g x.1 b) * X (b, x.2) := by
@@ -46,7 +46,7 @@ theorem qa_rowAct_X {R : Type} [CommRing R] {k n : ℕ} (g : Matrix (Fin k) (Fin
   exact aeval_X _ x
 
 /- English proof (translation)
-Unfold `rowAct`. Conclude with `aeval_C _ c`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem qa_rowAct_C {R : Type} [CommRing R] {k n : ℕ} (g : Matrix (Fin k) (Fin k) R) (c : R) :
     rowAct R (n := n) g (C c) = C c := by
@@ -54,11 +54,11 @@ theorem qa_rowAct_C {R : Type} [CommRing R] {k n : ℕ} (g : Matrix (Fin k) (Fin
   exact aeval_C _ c
 
 /- English proof (translation)
-Introduce `A B _ _ φ r v`. Establish `h : ((subY B r).toRingHom.comp (map φ)) = ((map (map φ)).comp (subY A r).toRingHom)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a show subY B r (map φ (C a)) = map (map φ) (subY A r (C a))`. Rewrite using `[map_C, qa_subY_C, qa_subY_C, map_C, map_C]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `w show subY B r (map φ (X w)) = map (map φ) (subY A r (X w))`. Rewrite using `[map_X]`. Consider the cases of `hm : midOf w.2 with`. Consider the case `none => rw [qa_subY_X_none w hm, qa_subY_X_none w hm, map_X]`. Consider the case `some j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Rewrite using `[qa_subY_X_some w j hm, qa_subY_X_some w j hm, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_C, map_X, map_X]`. Conclude with `RingHom.congr_fun h v`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subMapP : SubMapP := by
   intro A B _ _ φ r v
@@ -81,9 +81,9 @@ theorem subMapP : SubMapP := by
 def rowInd {k n : ℕ} (a : Fin k) : Fin k × Fin n → ℕ := fun v => if v.1 = a then 1 else 0
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Fintype.sum_prod_type, rowDeg]`. Rewrite using `[Finset.sum_eq_single a]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Simplify using `[rowInd]`. Introduce `b _ hb`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_eq_zero fun s _ => ?_` and prove the remaining obligations. Simplify using `[rowInd, hb]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem qa_weight_rowInd {k n : ℕ} (a : Fin k) (u : Fin k × Fin n →₀ ℕ) :
     Finsupp.weight (rowInd a) u = rowDeg u a := by
@@ -98,9 +98,9 @@ theorem qa_weight_rowInd {k n : ℕ} (a : Fin k) (u : Fin k × Fin n →₀ ℕ)
     exact absurd (Finset.mem_univ a) h
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Rewrite using `[pow_zero, zero_smul]`. Conclude with `isWeightedHomogeneous_one R w`. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ, succ_nsmul]`. Conclude with `ih.mul h`.
+A detailed English derivation is pending.
 -/
 theorem qa_iwh_pow {σ R M : Type} [CommSemiring R] [AddCommMonoid M] {w : σ → M} {φ : MvPolynomial σ R} {n : M}
     (h : IsWeightedHomogeneous w φ n) (k : ℕ) : IsWeightedHomogeneous w (φ ^ k) (k • n) := by
@@ -113,19 +113,17 @@ theorem qa_iwh_pow {σ R M : Type} [CommSemiring R] [AddCommMonoid M] {w : σ �
     exact ih.mul h
 
 /- English proof (translation)
-Introduce `A _ r a d v hv`. Establish `hX : ∀ x, IsWeightedHomogeneous (rowInd a) (subY A r (X x)) (rowInd a x)`. Introduce `x`. Consider the cases of `hm : midOf x.2 with`. Consider the case `none`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Rewrite using `[qa_subY_X_none x hm]`. Conclude with `isWeightedHomogeneous_X _ _ _`. Consider the case `some j`. Rewrite using `[qa_subY_X_some x j hm]`. Use `IsWeightedHomogeneous.sum _ _ _ fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `(isWeightedHomogeneous_C (rowInd a) (X (i, j) : MvPolynomial (Fin r × Fin r) A)).mul (isWeightedHomogeneous_X (MvPolynomial (Fin r × Fin r) A) (rowInd a) (x.1, midI r i))`. Rewrite `h` using `[zero_add]`. Conclude with `h`. Establish `hmain : IsWeightedHomogeneous (rowInd a) (subY A r v) d`. Rewrite using `[← support_sum_monomial_coeff v, map_sum]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `IsWeightedHomogeneous.sum _ _ _ fun u hu => ?_` and prove the remaining obligations. Establish `hd : rowDeg u a = d` using `hv u (mem_support_iff.1 hu)`. Establish `e : (monomial u (coeff u v) : MvPolynomial (Fin (r + 1 + 1) × Fin (r + 1 + 1)) A) = C (coeff u v) * ∏ x ∈ u.support, X x ^ u x` using `monomial_eq`. Rewrite using `[e, map_mul (subY A r), qa_subY_C, map_prod]`. Establish `h1 : IsWeightedHomogeneous (rowInd a) (∏ x ∈ u.support, subY A r (X x ^ u x)) (∑ x ∈ u.support, u x • rowInd a x)` using `IsWeightedHomogeneous.prod _ _ _ fun x _ => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_pow]`. Conclude with `qa_iwh_pow (hX x) (u x)`. Establish `h2 : ∑ x ∈ u.support, u x • rowInd a x = d`. Establish `h0` using `qa_weight_rowInd a u`. Rewrite `h0` using `[Finsupp.weight_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h0.trans hd`. Establish `h3` using `(isWeightedHomogeneous_C (rowInd a) (C (coeff u v) : MvPolynomial (Fin r × Fin r) A)).mul h1`. Rewrite `h3` using `[zero_add, h2]`. Conclude with `h3`. Introduce `u hu`.
-
-Rewrite using `[← qa_weight_rowInd a u]`. Conclude with `hmain hu`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subRowP : SubRowP := by
   classical
@@ -167,17 +165,15 @@ theorem subRowP : SubRowP := by
   exact hmain hu
 
 /- English proof (translation)
-Establish `h : (subY A r).toRingHom.comp (rowAct A g).toRingHom = (rowAct (MvPolynomial (Fin r × Fin r) A) (g.map C)).toRingHom.comp (subY A r).toRingHom`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a show subY A r (rowAct A g (C a)) = rowAct _ (g.map C) (subY A r (C a))`. Rewrite using `[qa_rowAct_C, qa_subY_C, qa_rowAct_C]`. Introduce `x show subY A r (rowAct A g (X x)) = rowAct _ (g.map C) (subY A r (X x))`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[qa_rowAct_X, map_sum]`. Consider the cases of `hm : midOf x.2 with`. Consider the case `none`. Rewrite using `[qa_subY_X_none x hm, qa_rowAct_X]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul (subY A r), qa_subY_C, qa_subY_X_none (b, x.2) hm]`. Apply the tactic sequence `try rfl`. Consider the case `some j`. Rewrite using `[qa_subY_X_some x j hm, map_sum]`. Establish `e1 : ∀ b, subY A r (C (g x.1 b) * X (b, x.2)) = ∑ i, C (C (g x.1 b)) * (C (X (i, j)) * X (b, midI r i))`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b`. Rewrite using `[map_mul (subY A r), qa_subY_C, qa_subY_X_some (b, x.2) j hm, Finset.mul_sum]`. Establish `e2 : ∀ i, rowAct (MvPolynomial (Fin r × Fin r) A) (g.map C) (C (X (i, j)) * X (x.1, midI r i)) = ∑ b, C (X (i, j)) * (C (C (g x.1 b)) * X (b, midI r i))`. Introduce `i`. Rewrite using `[map_mul (rowAct (MvPolynomial (Fin r × Fin r) A) (g.map C)), qa_rowAct_C, qa_rowAct_X, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `try rfl`. Simplify using `only [e1, e2]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
-
-Conclude with `RingHom.congr_fun h v`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem qa_subY_rowAct {A : Type} [CommRing A] {r : ℕ} (g : Matrix (Fin (r + 1 + 1)) (Fin (r + 1 + 1)) A)
     (v : MvPolynomial (Fin (r + 1 + 1) × Fin (r + 1 + 1)) A) :

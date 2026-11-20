@@ -12,7 +12,7 @@ open scoped CategoryTheory.Obj
 open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar
 
 /- English proof (translation)
-Rewrite using `[← IsAffineOpen.SpecMap_appLE_fromSpec f hV hU hUV, ← Category.assoc, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spMap_fromSpec_hom {X Y : Scheme.{0}} (f : X ⟶ Y) {U : X.Opens} {V : Y.Opens}
     (hU : IsAffineOpen U) (hV : IsAffineOpen V) (hUV : U ≤ f ⁻¹ᵁ V) {D : Type} [CommRing D]
@@ -22,7 +22,7 @@ theorem spMap_fromSpec_hom {X Y : Scheme.{0}} (f : X ⟶ Y) {U : X.Opens} {V : Y
   rfl
 
 /- English proof (translation)
-Rewrite `h` using `[cancel_mono]`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective h)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ringHom_eq_of_fromSpec {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) {D : Type} [CommRing D]
     {ψ ψ' : Γ(X, U) →+* D} (h : spMap ψ ≫ hU.fromSpec = spMap ψ' ≫ hU.fromSpec) : ψ = ψ' := by
@@ -30,7 +30,7 @@ theorem ringHom_eq_of_fromSpec {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen
   exact congrArg CommRingCat.Hom.hom (Spec.map_injective h)
 
 /- English proof (translation)
-Use `⟨(x.appLE U ⊤ hx ≫ (Scheme.ΓSpecIso (CommRingCat.of D)).hom).hom, ?_⟩` and prove the remaining obligations. Establish `h` using `IsAffineOpen.SpecMap_appLE_fromSpec x hU (isAffineOpen_top (Spec (CommRingCat.of D))) hx`. Rewrite `h` using `[IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv]`. Express the relevant statement in the definitionally equal form `x = Spec.map (CommRingCat.ofHom (x.appLE U ⊤ hx ≫ (Scheme.ΓSpecIso (CommRingCat.of D)).hom).hom) ≫ _`. Rewrite using `[CommRingCat.ofHom_hom, Spec.map_comp, Category.assoc, h, ← Category.assoc, ← Spec.map_comp, Iso.inv_hom_id, Spec.map_id, Category.id_comp]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_ringHom_of_le {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) {D : Type} [CommRing D]
     (x : Sp D ⟶ X) (hx : ⊤ ≤ x ⁻¹ᵁ U) : ∃ φ : Γ(X, U) →+* D, x = spMap φ ≫ hU.fromSpec := by
@@ -42,13 +42,13 @@ theorem exists_ringHom_of_le {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U
     Iso.inv_hom_id, Spec.map_id, Category.id_comp]
 
 /- English proof (translation)
-Introduce `p _`. Establish `hs : Function.Surjective (TrivSqZeroExt.fstHom C C C).toRingHom` using `fun c => ⟨TrivSqZeroExt.inl c, by simp⟩`. Establish `hker : RingHom.ker (TrivSqZeroExt.fstHom C C C).toRingHom ≤ p.asIdeal` using `fun a ha => by`. Establish `h0 : a.fst = 0` using `ha`. Establish `h2 : a ^ 2 = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `ext <;> simp [pow_two, TrivSqZeroExt.fst_mul, TrivSqZeroExt.snd_mul, h0]`. Conclude with `p.isPrime.mem_of_pow_mem 2 (by rw [h2]; exact zero_mem _)`. Use `haveI := p.isPrime`. Establish `hprime` using `Ideal.map_isPrime_of_surjective hs hker`. Set `p₀ : ↥(Sp C)` to `(⟨p.asIdeal.map (TrivSqZeroExt.fstHom C C C).toRingHom, hprime⟩ : PrimeSpectrum C)`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hp : (spMap (TrivSqZeroExt.fstHom C C C).toRingHom).base p₀ = p`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Ideal.comap (TrivSqZeroExt.fstHom C C C).toRingHom (Ideal.map (TrivSqZeroExt.fstHom C C C).toRingHom p.asIdeal) = p.asIdeal`. Rewrite using `[Ideal.comap_map_of_surjective' _ hs, sup_eq_left.mpr hker]`. Establish `e` using `h p₀`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Scheme.Hom.comp_apply] at e`. Use `show x p ∈ U`. Rewrite using `[← hp]`. Conclude with `e`.
+A detailed English derivation is pending.
 -/
 theorem le_preimage_of_fst {X : Scheme.{0}} {U : X.Opens} {C : Type} [CommRing C] (x : Sp (DualNumber C) ⟶ X)
     (h : ∀ p, (spMap (TrivSqZeroExt.fstHom C C C).toRingHom ≫ x) p ∈ U) : ⊤ ≤ x ⁻¹ᵁ U := by
@@ -74,23 +74,21 @@ theorem le_preimage_of_fst {X : Scheme.{0}} {U : X.Opens} {C : Type} [CommRing C
   exact e
 
 /- English proof (translation)
-Introduce `h1`. Establish `hal : ∀ c : C, algebraMap C (DualNumber C) c = TrivSqZeroExt.inl c` using `fun _ => rfl`. Establish `hy : y = spMap (u.comp (G.hom.appLE V U hUV).hom) ≫ hV.fromSpec`. Establish `hw` using `Over.w (1 : Over.mk y ⟶ G)`. Rewrite `hw` using `[h1, Category.assoc, spMap_fromSpec_hom G.hom hU hV hUV u]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hw.symm`. Establish `hbase : spMap (algebraMap C (DualNumber C)) ≫ y = spMap (((algebraMap C (DualNumber C)).comp u).comp (G.hom.appLE V U hUV).hom) ≫ hV.fromSpec`. Rewrite using `[hy, ← Category.assoc, ← Spec.map_comp]`. Both sides reduce to the same expression. Use `⟨fun φ hφ hb => ?_, fun v hv => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hcomp : φ.comp (G.hom.appLE V U hUV).hom = ((algebraMap C (DualNumber C)).comp u).comp (G.hom.appLE V U hUV).hom`. Use extensionality with `b`. Simplify `hφ _` using `[hal]`. Simplify `hb b` using `[hal]`. Use `⟨Over.homMk (spMap φ ≫ hU.fromSpec) ?_, ?_, rfl⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(spMap φ ≫ hU.fromSpec) ≫ G.hom = spMap (algebraMap C (DualNumber C)) ≫ y`. Rewrite using `[Category.assoc, spMap_fromSpec_hom G.hom hU hV hUV φ, hbase, hcomp]`. Establish `hfst : (TrivSqZeroExt.fstHom C C C).toRingHom.comp φ = u`. Use extensionality with `a`. Conclude with `hφ a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `spMap (TrivSqZeroExt.fstHom C C C).toRingHom ≫ spMap φ ≫ hU.fromSpec = _`. Rewrite using `[h1, ← Category.assoc, ← Spec.map_comp, ← hfst]`. Both sides reduce to the same expression. Establish `hv' : spMap (TrivSqZeroExt.fstHom C C C).toRingHom ≫ v.left = spMap u ≫ hU.fromSpec` using `hv.trans h1`. Establish `hle : ⊤ ≤ v.left ⁻¹ᵁ U`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `le_preimage_of_fst v.left fun p => ?_` and prove the remaining obligations. Rewrite using `[hv']`. Simplify using `only [Scheme.Hom.comp_apply]`. Conclude with `hU.range_fromSpec.subset (Set.mem_range_self _)`. Take `⟨φ, hφ⟩` from `exists_ringHom_of_le hU v.left hle`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hfst : (TrivSqZeroExt.fstHom C C C).toRingHom.comp φ = u`. Apply `ringHom_eq_of_fromSpec hU` to reduce the goal to its premises. Rewrite using `[← hv', hφ, ← Category.assoc, ← Spec.map_comp]`. Both sides reduce to the same expression. Establish `hcomp : φ.comp (G.hom.appLE V U hUV).hom = ((algebraMap C (DualNumber C)).comp u).comp (G.hom.appLE V U hUV).hom`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `ringHom_eq_of_fromSpec hV` to reduce the goal to its premises. Rewrite using `[← hbase, ← spMap_fromSpec_hom G.hom hU hV hUV φ, ← Category.assoc, ← hφ]`. Conclude with `Over.w v`. Use `⟨φ, fun a => RingHom.congr_fun hfst a, fun b => ?_, hφ⟩` and prove the remaining obligations. Use `RingHom.congr_fun hcomp b` as an intermediate fact.
-
-Simplify `congrArg TrivSqZeroExt.snd this` using `[hal]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem tan_iff_der (S : Scheme.{0}) (G : Over S) [GrpObj G] (U : G.left.Opens) (V : S.Opens) (hU : IsAffineOpen U)
     (hV : IsAffineOpen V) (hUV : U ≤ G.hom ⁻¹ᵁ V)

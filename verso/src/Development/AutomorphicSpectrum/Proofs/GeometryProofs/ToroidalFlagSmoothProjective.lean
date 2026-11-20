@@ -24,7 +24,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `GlobalTheory.BaseVar.surjective_π X x`. Establish `hz : z ∈ (⨆ k, X.F.U k)` using `by rw [X.F.cover]; trivial`. Take `⟨k, hk⟩` from `Opens.mem_iSup.1 hz`. Conclude with `⟨X.F.M k, X.F.le k hk⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_gChart_of_flagCover {Y : Model Xo c (RingHom.id c.F)} (X : FlagCover Y) (x : Y.X) :
     ∃ M : GChart Y, x ∈ M.U := by
@@ -34,19 +34,15 @@ theorem exists_gChart_of_flagCover {Y : Model Xo c (RingHom.id c.F)} (X : FlagCo
   exact ⟨X.F.M k, X.F.le k hk⟩
 
 /- English proof (translation)
-Establish `: IsProper Y.s` using `projProper _ _ _ Y.proj`. Establish `: IsReduced Y.X`. Establish `: ∀ x : Y.X, _root_.IsReduced (Y.X.presheaf.stalk x)` using `fun x => by`. Use `(Y.normal x).1` as an intermediate fact. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `isReduced_of_isReduced_stalk _`. Take `⟨L, N, σ, A, C, haff, hle, hCA, htw⟩` from `GlobalTheory.TwistEmb.exists_twist_embedding c.F Y.X Y.s (GChart Y) (fun j => j.U) (fun j => j.n) (fun j j' => chg j.toMChart j'.toMChart) Y.proj (fun x => hG x) (fun K _ w j hw => by`. Establish `hh : ⊤ ≤ w ⁻¹ᵁ (j.U ⊓ j.U)` using `GlobalTheory.TwistEmb.le_inf' w hw hw`. Use `show (chg j.toMChart j.toMChart).map (valF w (j.U ⊓ j.U)) = 1`. Rewrite using `[map_valF_eq_ev w _ hh, chg_map _ _ w hw hw hh, Module.Basis.toMatrix_self])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `(fun K _ w j j' j'' h1 h2 h3 => by show (chg j.toMChart j'.toMChart).map (valF w (j.U ⊓ j'.U)) * (chg j'.toMChart j''.toMChart).map (valF w (j'.U ⊓ j''.U)) = (chg j.toMChart j''.toMChart).map (valF w (j.U ⊓ j''.U))`. Rewrite using `[map_valF_eq_ev w _ (GlobalTheory.TwistEmb.le_inf' w h1 h2), map_valF_eq_ev w _ (GlobalTheory.TwistEmb.le_inf' w h2 h3), map_valF_eq_ev w _ (GlobalTheory.TwistEmb.le_inf' w h1 h3), chg_map _ _ w h1 h2, chg_map _ _ w h2 h3, chg_map _ _ w h1 h3, Module.Basis.toMatrix_mul_toMatrix])`. Establish `hcovL : ∀ x : Y.X, ∃ i, x ∈ L.U i` using `fun x => exists_chart L.isLB x`. Establish `hk : ∀ x : Y.X, ∃ i, ∃ k : ECh Y p, k.M = σ i ∧ x ∈ k.V ∧ IsAffineOpen k.V ∧ k.V ≤ L.U i` using `fun x => by`. Take `⟨i, hi⟩` from `hcovL x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨k, h1, h2, h3, h4⟩` from `GlobalTheory.T.exists_eigenChart_affineOpen_within E H Dw l Xo c Y p (σ i) x (hle i hi) (L.U i) hi`. Conclude with `⟨i, k, h1, h2, h3, h4⟩`. Use `choose ix kx hkM hxk haffk hlek using hk`. Establish `hc : IsCompact (Set.univ : Set Y.X)`. Establish `e : (Set.univ : Set Y.X) = ⋃ i, ((L.U i : Y.X.Opens) : Set Y.X)` using `(Set.eq_univ_of_forall fun x => Set.mem_iUnion.2 (hcovL x)).symm`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e]`. Conclude with `isCompact_iUnion fun i => (haff i).isCompact`. Take `⟨t, ht⟩` from `hc.elim_finite_subcover (fun x => ((kx x).V : Set Y.X)) (fun x => (kx x).V.isOpen) (fun x _ => Set.mem_iUnion.2 ⟨x, hxk x⟩)`. Establish `hUM : ∀ i i', L.U i ⊓ L.U i' ≤ (σ i').U ⊓ (σ i).U` using `fun i i' => le_inf (inf_le_right.trans (hle i')) (inf_le_left.trans (hle i))`. Conclude with `⟨{ B := t fin := inferInstance k := fun b => kx b.1 aff := fun b => haffk b.1 cov := fun x => by`.
-
-Take `⟨z, hz, hxz⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ x))`. Conclude with `⟨⟨z, hz⟩, hxz⟩`. Use `N := N`. Use `A := fun b => trA (hkM b.1) (hlek b.1) (A (ix b.1))`. Use `C := fun b => trC (hkM b.1) (hlek b.1) (C (ix b.1))`.
-
-Use `CA := fun b => trC_mul_trA _ _ _ _ (hCA _)`. Use `tw := fun S _ x b b' h h' hM => tw_tr (hkM b.1) (hkM b'.1) (hlek b.1) (hlek b'.1) (hUM _ _) (A (ix b.1)) (A (ix b'.1)) (L.g (ix b.1) (ix b'.1)) (fun K _ w hw hw' => htw K w _ _ hw hw') S x h h' hM }⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_atlas_of_cover (Y : Model Xo c (RingHom.id c.F)) (p : Proj (RingHom.id c.F))
     (hG : ∀ x : Y.X, ∃ M : GChart Y, x ∈ M.U) : Nonempty (Atlas Y p) := by
@@ -102,15 +98,13 @@ theorem nonempty_atlas_of_cover (Y : Model Xo c (RingHom.id c.F)) (p : Proj (Rin
       (A (ix b'.1)) (L.g (ix b.1) (ix b'.1)) (fun K _ w hw hw' => htw K w _ _ hw hw') S x h h' hM }⟩
 
 /- English proof (translation)
-Use `A.fin` as an intermediate fact. Take `⟨Z, π, g, κ, h1, h2, h3, h4, h5, h6⟩` from `GlobalTheory.T.exists_proper_normal_flagScheme_of_affine_cover c.F Y.X Y.s (E →+* ℂ) Dw.mult A.N A.B A.V A.alpha A.cv A.Dv Y.proj Y.normal (GlobalTheory.T.eigenbundleFrameAffineAtlas_isFlagFrameCover E H Dw l Xo c Y p A) A.cov`. Establish `hZ : Cells A π g κ` using `⟨h1, h2, h3, h5, h6⟩`. Use `h4` as an intermediate fact. Establish `ht` using `GlobalTheory.T.flagCellFrameChangeTriangular_of_cells E H Dw l Xo c Y p A Z π g κ hZ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `huniq : ∀ (S' : Type) [CommRing S'] [Algebra c.F S'] (P₁ : FrPt Xo c S') (z₁ z₂ : Sp S' ⟶ Z), (cellFrames hZ ht).Lies z₁ P₁ → (cellFrames hZ ht).Lies z₂ P₁ → z₁ = z₂`. Introduce `S' _ _ P₁ z₁ z₂ e₁ e₂`. Use `GlobalTheory.T.spec_hom_ext_of_localizations_at_all_primes S' Z z₁ z₂ fun q => ?_` and prove the remaining obligations. Take `⟨P', hP'⟩` from `exists_frMap (IsScalarTower.toAlgHom c.F S' (Localization.AtPrime q.asIdeal)) P₁`. Establish `l₁` using `e₁.frMap hP'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `l₂` using `e₂.frMap hP'`. Use `GlobalTheory.T.flagBundle_points_eq_of_same_steps_localRing E H Dw l Xo c Y p A Z π g κ hZ ht _ _ _ _ l₁.1 l₂.1 fun σ i => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `exists_chart_of_isLocalRing (cellFrames hZ ht).cover (spMap (algebraMap S' (Localization.AtPrime q.asIdeal)) ≫ z₁)`. Take `⟨k', hk'⟩` from `exists_chart_of_isLocalRing (cellFrames hZ ht).cover (spMap (algebraMap S' (Localization.AtPrime q.asIdeal)) ≫ z₂)`. Conclude with `(l₁.initSpan_eq hk l₁.1 rfl σ i).symm.trans (l₂.initSpan_eq hk' l₂.1 rfl σ i)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨{ YY := Z, π := π, proper := h1, normal := h2, flat := ?_, F := cellFrames hZ ht dense := GlobalTheory.T.dense_flagBundle_preimage_moduli E H Dw l Xo c Y p A Z π g κ hZ, top := GlobalTheory.T.flagCellFrames_lastStep_eigenmodules E H Dw l Xo c Y p A Z π g κ hZ ht rep := fun S _ _ …` and prove the remaining obligations. Conclude with `GlobalTheory.T.flat_to_spec_field' c.F Z (π ≫ Y.s)`. Take `⟨z, hz⟩` from `GlobalTheory.T.exists_flagBundle_point_carrying_of_local E H Dw l Xo c Y p A Z π g κ hZ ht S P huniq fun q => GlobalTheory.T.exists_flagCell_containing_framed_point E H Dw l Xo c Y p A Z π g κ hZ ht S P q`. Conclude with `⟨z, hz, fun z' hz' => huniq S P z' z hz' hz⟩`. Use `(Set.finite_singleton z).subset fun z' ⟨hx, h⟩ => ?_` and prove the remaining obligations.
-
-Conclude with `GlobalTheory.T.flagBundle_points_eq_of_same_steps_localRing E H Dw l Xo c Y p A Z π g κ hZ ht K z' z _ hx rfl h`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_cellModel (Y : Model Xo c (RingHom.id c.F)) (p : Proj (RingHom.id c.F)) (A : Atlas Y p) :
     ∃ (M : FlagModel Y) (g : ∀ en : En Dw.mult, M.YY ⟶ PSpace c.F (plN A.N en.1))
@@ -146,11 +140,11 @@ theorem exists_cellModel (Y : Model Xo c (RingHom.id c.F)) (p : Proj (RingHom.id
     exact GlobalTheory.T.flagBundle_points_eq_of_same_steps_localRing E H Dw l Xo c Y p A Z π g κ hZ ht K z' z _ hx rfl h
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c T`. Take `⟨p⟩` from `GlobalTheory.FlagMod.LowRank.nonempty_proj_id (E := E) (c := c)`. Take `⟨A⟩` from `nonempty_atlas_of_cover T.Y p (exists_gChart_of_flagCover T.X)`. Take `⟨M, g, κ, hκ, hZ⟩` from `exists_cellModel T.Y p A`. Take `⟨d, hsm, hpr⟩` from `GlobalTheory.T.flag_atlas_projective_embedding E H D l Xo c T.Y p A M.YY M.π g κ hκ hZ T.smooth`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h, hh, hπ⟩` from `GlobalTheory.T.exists_flagModel_isIso_of_open_cells E H D l Xo c T.Y p A M g κ hκ hZ T.smooth T.flag`. Establish `e : flagStr T.X = h ≫ M.π ≫ T.Y.s`. Rewrite using `[← Category.assoc, hπ]`. Use `⟨d, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.VarFlag.smooth_iso h _ hsm`. Rewrite using `[e]`. Take `⟨N, i, hi, hs⟩` from `hpr`. Conclude with `⟨N, h ≫ i, inferInstance, by rw [Category.assoc, hs]⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem smooth_proj_flagStr : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (T : GlobalTheory.CompHS.TorFlag Xo c), ∃ d : ℕ, SmoothOfRelativeDimension d (GlobalTheory.CompHS.flagStr T.X) ∧ IsProjOver (GlobalTheory.CompHS.flagStr T.X) := by
   intro E _ _ _ H D l Xo c T

@@ -20,7 +20,7 @@ open GlobalTheory.UU GlobalTheory.LN
 namespace GlobalTheory.ThetaClosed
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`. Take `⟨i, rfl⟩ : ∃ i : L.ι, j = fun _ => i` from `⟨j 0, funext fun a => congrArg j (Subsingleton.elim a 0)⟩`. Use `TopologicalSpace.Opens.mem_iSup.2 ⟨i, ?_⟩` and prove the remaining obligations. Establish `e` using `X.basicOpen_res (σ.f fun _ => i) (homOfLE (DVR.chart_le_weighted_chart_single (L := L) i)).op`. Conclude with `e.ge ⟨DVR.h0_le (fun _ => i) (X.basicOpen_le _ hj), hj⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nonzeroLocus_firstPower_section_subset {X : Scheme.{0}} {L : LB X} (σ : H0 L 1) {x : X} (hx : x ∈ nonzeroLocus σ) :
     x ∈ nonzeroLocus (DVR.secOfH0 σ) := by
@@ -31,9 +31,9 @@ theorem nonzeroLocus_firstPower_section_subset {X : Scheme.{0}} {L : LB X} (σ :
   exact e.ge ⟨DVR.h0_le (fun _ => i) (X.basicOpen_le _ hj), hj⟩
 
 /- English proof (translation)
-Introduce `R _ _ _ hN _ _ _ D A G _ _ hG U`. Establish `: GeometricallyConnected G.hom` using `hG.geomConnected`. Establish `hL` using `GlobalTheory.allSixLaws.1`. Take `⟨th, hth⟩` from `GlobalTheory.ThetaCompare.exists_nonzero_closed hL.secBaseChange D.toPre`. Take `⟨σ, fam, h0, hE, hm, -⟩` from `GlobalTheory.ThetaUnit.exists_theta hL.globalFns hL.secBaseChange le_rfl U th hth`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg, hn⟩` from `GlobalTheory.ThetaUnit.exists_mem_nonzeroLocus le_rfl U.toUnifPre (hE 0) (h0 ▸ hth) hm`. Conclude with `⟨DVR.secOfH0 σ, g, nonzeroLocus_firstPower_section_subset σ hn, hg⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_section_nonzero_closed : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], IsNoetherianRing R → IsIntegrallyClosed R → IsAdicComplete (IsLocalRing.maximalIdeal R) R → CharZero R → ∀ (D : DegData R (IsLocalRing.maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (U : Unif (IsLocalRing.maximalIdeal R) D A G), ∃ θ : LB.Sec U.LG.L, ∃ x ∈ nonzeroLocus θ, G.hom x = IsLocalRing.closedPoint R := by
   intro R _ _ _ hN _ _ _ D A G _ _ hG U

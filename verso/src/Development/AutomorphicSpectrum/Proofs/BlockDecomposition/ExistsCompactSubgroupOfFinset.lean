@@ -8,9 +8,9 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.UnipExhaust
 
 /- English proof (translation)
-Introduce `k _ _ _ _ N s hs`. Take `⟨U₀, hU, hsU⟩` from `GlobalTheory.UnipCptSub.exists_compact_subgroup_of_isCompact (↑s : Set (GL (Fin N) k)) s.finite_toSet.isCompact hs`. Establish `hcl : IsClosed (unipB k (Fin N) : Set (GL (Fin N) k))`. Rewrite using `[GlobalTheory.UnipCptSub.unipB_eq_unipOf]`. Conclude with `GlobalTheory.UnipCompact.isClosed_unipOf _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨U₀ ⊓ unipB k (Fin N), inf_le_right, fun g hg => ⟨hsU hg, hs hg⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.coe_inf]`. Conclude with `hU.inter_right hcl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_compact_subgroup_of_finset :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (N : ℕ)

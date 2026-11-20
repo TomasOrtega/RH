@@ -10,17 +10,17 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `⟨fun τ => ?_, fun T _ _ ψ g a hg => ?_⟩` and prove the remaining obligations. Use `(h.1 τ).map (e : A →+* B)` as an intermediate fact. Rewrite `this` using `[RingHom.map_det]`. Conclude with `this`. Take `⟨k, ⟨h1, h2, h3⟩, hu⟩` from `h.2 T ψ g a hg`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨k.comp (e.symm : B →ₐ[K] A), ⟨?_, fun τ => ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← h1]`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[← h2 τ]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[← h3]`. Simplify using the standard rewrite rules. Introduce and unpack `k' ⟨h1', h2', h3'⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `: k'.comp (e : A →ₐ[K] B) = k`. Use `hu _ ⟨?_, fun τ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← h1']`. Both sides reduce to the same expression. Rewrite using `[← h2' τ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[← h3']`. Simplify using the standard rewrite rules. Rewrite using `[← this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem FrameRing_of_algEquiv {K : Type} [Field K] {J : Type} (m : J → ℕ) {R A B : Type} [CommRing R] [Algebra K R]
     [CommRing A] [Algebra K A] [CommRing B] [Algebra K B] (π : R →ₐ[K] A)
@@ -44,33 +44,29 @@ theorem FrameRing_of_algEquiv {K : Type} [Field K] {J : Type} (m : J → ℕ) {R
       rw [← this]; ext x; simp
 
 /- English proof (translation)
-Set `σ` to `Option (Σ τ, Fin (m τ) × Fin (m τ))`. Set `P` to `MvPolynomial σ R`. Set `Y : ∀ τ, Matrix (Fin (m τ)) (Fin (m τ)) P` to `fun τ => Matrix.of fun i j => MvPolynomial.X (some ⟨τ, i, j⟩)`. Set `d : P` to `MvPolynomial.X none * ∏ τ, (Y τ).det`. Set `A` to `Localization.Away d`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hd : IsUnit (algebraMap P A d)` using `IsLocalization.Away.algebraMap_isUnit d`. Establish `hs : IsUnit (algebraMap P A (MvPolynomial.X none))`. Conclude with `isUnit_of_dvd_unit (map_dvd (algebraMap P A) (dvd_mul_right _ _)) hd`. Establish `hY : ∀ τ, IsUnit (algebraMap P A (Y τ).det)`. Introduce `τ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h0 : (Y τ).det ∣ d` using `Dvd.dvd.mul_left (Finset.dvd_prod_of_mem (fun τ => (Y τ).det) (Finset.mem_univ τ)) _`. Conclude with `isUnit_of_dvd_unit (map_dvd (algebraMap P A) h0) hd`. Establish `hPred : IsReduced P` using `inferInstance`. Establish `hPft : Algebra.FiniteType R P` using `inferInstance`. Establish `hAft : Algebra.FiniteType P A` using `inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hPft' : Algebra.FiniteType K P` using `Algebra.FiniteType.trans inferInstance hPft`. Use `⟨A, inferInstance, inferInstance, IsScalarTower.toAlgHom K R A, fun τ => (Y τ).map (algebraMap P A), hs.unit, Algebra.FiniteType.trans hPft' hAft, inferInstance, fun τ => ?_, fun T _ _ ψ g a hg => ?_⟩` and prove the remaining obligations. Use `hY τ` as an intermediate fact. Rewrite `this` using `[RingHom.map_det]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `v : σ → T` to `fun o => Option.elim o (a : T) (fun x => g x.1 x.2.1 x.2.2)`. Set `φ : P →ₐ[K] T` to `MvPolynomial.aevalTower ψ v`. Establish `hφY : ∀ τ, (Y τ).map φ = g τ`. Introduce `τ`. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[φ, Y, v, P]`. Establish `hφs : φ (MvPolynomial.X none) = a` using `by simp [φ, v, P]`. Establish `hφd : IsUnit (φ d)`. Simplify using `only [d, map_mul, map_prod, hφs]`. Use `a.isUnit.mul (IsUnit.prod_univ_iff.2 fun τ => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[AlgHom.map_det]`. Use `hg τ` as an intermediate fact. Rewrite `this` using `[← hφY τ]`. Conclude with `this`. Set `k : A →ₐ[K] T` to `IsLocalization.liftAlgHom (M := Submonoid.powers d) (f := φ) (by`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨_, n, rfl⟩`. Simplify using `using hφd.pow n)`. Establish `hk : ∀ x : P, k (algebraMap P A x) = φ x` using `fun x => by simp [k]`. Use `⟨k, ⟨?_, fun τ => ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `x`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `k (algebraMap R A x) = ψ x`. Rewrite using `[IsScalarTower.algebraMap_apply R P A, hk]`. Simplify using `[φ, P]`. Rewrite using `[← hφY τ]`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Simplify using `[hk]`. Simplify using `[hk, hφs]`. Introduce and unpack `k' ⟨h1, h2, h3⟩`. Establish `key : (k' : A →+* T).comp (algebraMap P A) = (φ : P →+* T)`. Use `MvPolynomial.ringHom_ext (fun r => ?_) (fun o => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `AlgHom.congr_fun h1 r` as an intermediate fact. Express the relevant statement in the definitionally equal form `k' (algebraMap R A r) = ψ r at this`. Rewrite `this` using `[IsScalarTower.algebraMap_apply R P A]`. Establish `h' : φ (MvPolynomial.C r) = ψ r` using `by simp [φ, P]`. Conclude with `this.trans h'.symm`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Break down `o with _ | ⟨τ, i, j⟩` into its components or cases. Conclude with `h3.trans hφs.symm`. Establish `a1` using `congrFun (congrFun (h2 τ) i) j`. Establish `a2` using `congrFun (congrFun (hφY τ) i) j`. Conclude with `a1.trans a2.symm`.
-
-Apply `AlgHom.coe_ringHom_injective` to reduce the goal to its premises. Apply `IsLocalization.ringHom_ext (Submonoid.powers d)` to reduce the goal to its premises. Rewrite using `[key]`. Use extensionality with `x`. Conclude with `(hk _).symm`.
-
-Conclude with `(hk _).symm`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem exists_frameRing_reduced {K : Type} [Field K] {J : Type} [Fintype J] (m : J → ℕ) (R : Type) [CommRing R]
     [Algebra K R] [Algebra.FiniteType K R] [IsReduced R] :
@@ -144,7 +140,7 @@ theorem exists_frameRing_reduced {K : Type} [Field K] {J : Type} [Fintype J] (m 
       · exact (hk _).symm
 
 /- English proof (translation)
-Introduce `K _ J _ m p`. Take `⟨h1, h2⟩` from `(reduced_finiteType_iff_testRing K).2 p`. Take `⟨A, _, _, π, X, s, hft, hred, hF⟩` from `exists_frameRing_reduced (K := K) m p.R`. Take `⟨q, ⟨e⟩⟩` from `(reduced_finiteType_iff_testRing K).1 A hft hred`. Conclude with `⟨q, _, _, _, FrameRing_of_algEquiv m π X s hF e.symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_frameRing_testRing :
     ∀ (K : Type) [Field K] (J : Type) [Fintype J] (m : J → ℕ) (p : TRing K), ∃ (A : TRing K) (π : p.R →ₐ[K] A.R) (X : ∀ τ, Matrix (Fin (m τ)) (Fin (m τ)) A.R) (s : (A.R)ˣ), FrameRing m π X s := by

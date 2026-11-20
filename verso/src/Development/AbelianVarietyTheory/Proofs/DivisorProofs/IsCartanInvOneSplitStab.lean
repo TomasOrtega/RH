@@ -16,35 +16,35 @@ namespace GlobalTheory.AdTh
 noncomputable section
 
 /- English proof (translation)
-Unfold `Formalism.L2.Theta.mt`. Rewrite using `[map_mul, Units.val_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mt_mul_splitStab {D : D7} (V : HSp D) (g h : GA D V) : Formalism.L2.Theta.mt V (g * h) = Formalism.L2.Theta.mt V g * Formalism.L2.Theta.mt V h := by
   unfold Formalism.L2.Theta.mt
   rw [map_mul, Units.val_mul]
 
 /- English proof (translation)
-Unfold `Formalism.L2.Theta.mt`. Rewrite using `[map_one, Units.val_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mt_one_splitStab {D : D7} (V : HSp D) : Formalism.L2.Theta.mt V 1 = 1 := by
   unfold Formalism.L2.Theta.mt
   rw [map_one, Units.val_one]
 
 /- English proof (translation)
-Take the linear combination `(e * e) * h + (2 - d - d') * he`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem idem_unit_splitStab {R : Type} [CommRing R] {e d d' : R} (he : e * e = e) (h : d' * d = 1) :
     (e * d + (1 - e)) * (e * d' + (1 - e)) = 1 := by
   linear_combination (e * e) * h + (2 - d - d') * he
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Units.mkOfMulEqOne _ _ (idem_unit_splitStab he (det_conj_mul V g)), Units.val_mkOfMulEqOne _⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_isDetAt_splitStab {D : D7} {e : AE D} (he : e * e = e) (V : HSp D) (g : GA D V) : ∃ y, IsDetAt e V g y :=
   ⟨Units.mkOfMulEqOne _ _ (idem_unit_splitStab he (det_conj_mul V g)), Units.val_mkOfMulEqOne _⟩
 
 open scoped ComplexOrder in
 /- English proof (translation)
-Use `⟨by simp, by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_one]`. Conclude with `Matrix.PosDef.one`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCartanInv_one_splitStab (k : ℕ) : IsCartanInv (1 : Matrix (Fin k) (Fin k) ℂ) 1 := by
   refine ⟨by simp, by simp, ?_⟩
@@ -52,26 +52,24 @@ theorem isCartanInv_one_splitStab (k : ℕ) : IsCartanInv (1 : Matrix (Fin k) (F
   exact Matrix.PosDef.one
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `[heisO, symplOH, symplO, hO]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem heisO_zero_splitStab {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) (f : WO V W → ℂ) : heisO ψ V W 0 f = f := by
   funext w
   simp [heisO, symplOH, symplO, hO]
 
 /- English proof (translation)
-Introduce `D ψ θ V W χV χW om hP mu hmu ΛV ΛW hV hW s hs f hf e k he hk hst`. Take `⟨y, hy⟩` from `exists_isDetAt_splitStab he.1 W k`. Establish `h1 : ∀ τ, IsCartanInv (gramAt D V τ) ((fun _ => 1 : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) τ)`. Introduce `τ`. Establish `: gramAt D V τ = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `gramAt`. Rewrite using `[hP.std]`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `isCartanInv_one_splitStab _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs1 : SuppAt e V 1`. Introduce `i j`. Rewrite using `[mt_one_splitStab, sub_self, Matrix.zero_apply, mul_zero]`. Establish `hx : IsDetAt e V 1 1`. Unfold `IsDetAt`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mt_one_splitStab, Matrix.det_one, Units.val_one]`. Expand and normalize the polynomial expressions, which then agree. Establish `hact : ∀ u, actO V W 1 k (actO V W 1 k⁻¹ u) = u`. Introduce `u`. Unfold `actO`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv_one, mt_one_splitStab, Matrix.mul_one, Matrix.mul_one, ← Matrix.mul_assoc, ← mt_mul_splitStab, mul_inv_cancel, mt_one_splitStab, Matrix.one_mul]`. Establish `key` using `GlobalTheory.SplitScalar.om_vacuum_eq_splitFac_smul_sum D ψ θ V W χV χW om hP.weil hP.inf hP.sigV hP.sigW (fun _ => 1) s h1 hs ΛV ΛV ΛW ΛW hV hV hW hW e he 1 k hs1 hk 1 y hx hy (fun u => ⟨fun hu => ⟨actO V W 1 k⁻¹ u, (hst _).2 (by rw [hact]; exact hu), (hact u).symm⟩, fun ⟨u₀, hu …`. Rewrite using `[Finset.mem_singleton.1 hu]`. Conclude with `⟨zero_mem _, fun i j => mul_zero _⟩)`. Use the proof step `(fun u hu _ => ⟨0, ⟨Finset.mem_singleton_self _, by rwa [sub_zero]⟩, fun v hv => Finset.mem_singleton.1 hv.1⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use the proof step `(fun u hu => by`. Rewrite using `[Finset.mem_singleton.1 hu]`. Conclude with `⟨zero_mem _, fun i j => mul_zero _⟩)`. Use the proof step `(fun u hu _ => ⟨0, ⟨Finset.mem_singleton_self _, by rwa [sub_zero]⟩, fun v hv => Finset.mem_singleton.1 hv.1⟩)`. Use `f hf`.
-
-Establish `hr : IsDetRoot W k y` using `isDetAt_root he W k hk y hy`. Rewrite using `[key, hmu.2 k y hr]`. Simplify using `[heisO_zero_splitStab, splitFacO]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem om_vacuum_split_stab : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (V W : HSp D) (χV χW : (AE D)ˣ →* Circle) (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)), IsPair ψ θ V W χV χW om → ∀ mu : GA D W → ℂ, Formalism.L2.Pj.MuVal W χV mu → ∀ (ΛV : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (ΛW : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E)), IsSelfDualC V ΛV → IsSelfDualC W ΛW → ∀ (s : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ), (∀ τ, IsCartanInv (gramAt D W τ) (s τ)) → ∀ f, IsVacO ψ θ V W (fun _ => 1) s (ΛV : Set (Fin V.rank → D.host.E)) (ΛW : Set (Fin W.rank → D.host.E)) f → ∀ (e : AE D) (k : GA D W), IsSplitIdem D e → SuppAt e W k → (∀ u, u ∈ (latO V W (ΛV : Set (Fin V.rank → D.host.E)) (ΛW : Set (Fin W.rank → D.host.E)) fun _ => True) ↔ actO V W 1 k u ∈ (latO V W (ΛV : Set (Fin V.rank → D.host.E)) (ΛW : Set (Fin W.rank → D.host.E)) fun _ => True)) → om (1, k) f = mu k • f := by
   intro D ψ θ V W χV χW om hP mu hmu ΛV ΛW hV hW s hs f hf e k he hk hst

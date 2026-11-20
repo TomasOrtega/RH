@@ -9,21 +9,21 @@ open GlobalTheory GlobalTheory.CM GlobalTheory.LamF
 namespace GlobalTheory.LamF
 
 /- English proof (translation)
-Introduce `K _ _ p R _ _ _ _ _ _`. Establish `hinj : Function.Injective (algebraMap R K)` using `IsFractionRing.injective R K`. Establish `htow : ∀ a : 𝓞 K, algebraMap R K (algebraMap (𝓞 K) R a) = algebraMap (𝓞 K) K a` using `fun a => (IsScalarTower.algebraMap_apply (𝓞 K) R K a).symm`. Establish `hone : ∀ s : p.asIdeal.primeCompl, p.valuation K (algebraMap (𝓞 K) K s) = 1` using `fun s => (p.valuation_eq_one_iff_notMem (K := K)).2 s.2`. Establish `hne : ∀ s : p.asIdeal.primeCompl, algebraMap (𝓞 K) K s ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `s h`. Use `hone s` as an intermediate fact. Rewrite `this` using `[h, map_zero]`. Conclude with `zero_ne_one this`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `(isLocalization_iff _ _).2 ⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `s`. Take `⟨r, hr⟩` from `(h (algebraMap (𝓞 K) K s)⁻¹).2 (by rw [map_inv₀, hone s, inv_one])`. Use `IsUnit.of_mul_eq_one r (hinj ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, htow, hr, map_one, mul_inv_cancel₀ (hne s)]`. Introduce `z`. Take `⟨n, d, hnd⟩` from `p.exists_primeCompl_mul_eq_of_integer (algebraMap R K z) ((h _).1 ⟨z, rfl⟩)`. Use `⟨(n, d), hinj ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, htow, htow]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hnd`. Introduce `x y hxy`. Use `⟨1, ?_⟩` and prove the remaining obligations. Establish `h2 : algebraMap (𝓞 K) K x = algebraMap (𝓞 K) K y`. Rewrite using `[← htow, ← htow, hxy]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[IsFractionRing.injective (𝓞 K) K h2]`. Introduce `h y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩`. Take `⟨⟨n, d⟩, hnd⟩` from `IsLocalization.surj p.asIdeal.primeCompl z`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2` using `congrArg (fun t => p.valuation K (algebraMap R K t)) hnd`. Simplify using `only [map_mul, htow, hone] at h2`. Rewrite using `[(_root_.mul_one _).symm.trans h2]`. Conclude with `p.valuation_le_one n`. Introduce `hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨n, d, hnd⟩` from `p.exists_primeCompl_mul_eq_of_integer y hy`. Use `⟨IsLocalization.mk' R n d, ?_⟩` and prove the remaining obligations. Apply `mul_right_cancel₀ (hne d)` to reduce the goal to its premises. Rewrite using `[hnd, ← htow, ← htow, ← map_mul, IsLocalization.mk'_spec]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem range_eq_valuationRing_iff_isLocalization :
     ∀ (K : Type) [Field K] [NumberField K] (p : HeightOneSpectrum (𝓞 K)) (R : Type) [CommRing R] [IsDomain R] [Algebra R K] [IsFractionRing R K] [Algebra (𝓞 K) R] [IsScalarTower (𝓞 K) R K], (∀ y : K, y ∈ Set.range (algebraMap R K) ↔ p.valuation K y ≤ 1) ↔ IsLocalization p.asIdeal.primeCompl R := by

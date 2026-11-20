@@ -21,25 +21,25 @@ variable {L : Type} [Field L]
 open Polynomial in
 
 /- English proof (translation)
-Take `⟨d, hd, h⟩` from `exists_piece_succ_eq o t`. Set `A` to `integralClosure (cone o t) L[X]`. Set `τ : σ → A` to `fun i => ⟨C (t i) * X, isIntegral_algebraMap (x := (⟨_, C_mul_X_mem_cone i⟩ : cone o t))⟩`. Set `I : Ideal A` to `Ideal.span (Set.range fun i => τ i ^ e)`. Establish `h1 : ∀ m, ∀ b ∈ Submodule.span o (Set.range t) * piece o t m, ∃ q : A, q ∈ I.radical ∧ (q : L[X]) = C b * X ^ (m + 1)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `m b hb`. Proceed by induction on `hb using Submodule.mul_induction_on' with`. Consider the case `add x _ y _ hx hy`. Take `⟨q, hq, hx⟩` from `hx`. Take `⟨q', hq', hy⟩` from `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨q + q', add_mem hq hq', by rw [AddMemClass.coe_add, hx, hy, map_add, add_mul]⟩`. Consider the case `mem_mul_mem x hx y hy`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`.
+Supply the required witnesses or components. Treat this case separately. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `: τ i ∈ I.radical` using `⟨e, Ideal.subset_span ⟨i, rfl⟩⟩`. Use `⟨τ i * ⟨_, mem_piece.mp hy⟩, I.radical.mul_mem_right _ this, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(C (t i) * X) * (C y * X ^ m) = _`. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Consider the case `zero => exact ⟨0, zero_mem _, by simp⟩`. Consider the case `add x x' _ _ hx hx'`. Take `⟨q, hq, hx⟩` from `hx`. Take `⟨q', hq', hy⟩` from `hx'`. Conclude with `⟨q + q', add_mem hq hq', by rw [AddMemClass.coe_add, hx, hy, add_mul, map_add, add_mul]⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `smul c x _ hx`. Take `⟨q, hq, hx⟩` from `hx`. Use `⟨algebraMap (cone o t) A (algebraMap o _ c) * q, I.radical.mul_mem_left _ hq, ?_⟩` and prove the remaining obligations. Rewrite using `[MulMemClass.coe_mul, hx]`. Express the relevant statement in the definitionally equal form `algebraMap o L[X] c * _ = _`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Algebra.smul_def, Polynomial.algebraMap_apply]`. Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨m, hm⟩ : ∃ m, (d + 1) * e = m + 1` from `Nat.exists_eq_add_one.mpr (by positivity)`. Establish `hdm : d ≤ m` using `by nlinarith`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h3 : a ^ (d + 1) ∈ piece o t (m + 1)`. Rewrite using `[← hm, hv _ d.succ_pos]`. Conclude with `Submodule.pow_mem_pow _ ha _`. Rewrite `h3` using `[h m hdm]`. Take `⟨q, ⟨N, hN⟩, hq⟩` from `h1 m _ h3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp⟩` from `Ideal.mem_span_range_iff_exists_fun.mp (I.pow_mem_of_pow_mem hN (Nat.le_add_right N 2))`. Take `⟨n, hn⟩ : ∃ n, (d + 1) * (N + 2) = n + 1` from `Nat.exists_eq_add_one.mpr (by positivity)`. Establish `hn0 : 0 < n` using `by nlinarith`. Use `⟨n, fun i => (p i : L[X]).coeff (n * e), fun i => hv n hn0 ▸ isIntegral_cone_iff.mp (p i).2 _, ?_⟩` and prove the remaining obligations. Establish `h4` using `congrArg (fun q : A => (q : L[X]).coeff (n * e + e)) hp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [τ, hq, AddSubmonoidClass.coe_finsetSum, MulMemClass.coe_mul, SubmonoidClass.coe_pow, finsetSum_coeff, mul_pow, ← C_pow, ← pow_mul, ← mul_assoc, coeff_mul_X_pow, coeff_mul_C] at h4`. Rewrite `h4` using `[hn, ← hm, show (d + 1) * e * (N + 2) = n * e + e by rw [mul_right_comm, hn]; ring, coeff_C_mul_X_pow, if_pos rfl]`. Rewrite using `[← h4]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_mem_forms (o : Type*) [CommRing o] {L : Type*} [Field L] [Algebra o L] {σ : Type*}
     (t : σ → L) [IsDedekindDomain o] [CharZero L] [Algebra.EssFiniteType o L] [Fintype σ] {e : ℕ}
@@ -100,11 +100,11 @@ theorem pow_mem_forms (o : Type*) [CommRing o] {L : Type*} [Field L] [Algebra o 
   exact Finset.sum_congr rfl fun i _ => mul_comm _ _
 
 /- English proof (translation)
-Set `ψ : A →+* S` to `φ.codRestrict S fun x => show φ x ∈ (S : Set L) from h ▸ ⟨x, rfl⟩`. Establish `hψ : Function.Surjective ψ` using `fun s => by`. Take `⟨x, hx⟩ : s.1 ∈ Set.range φ` from `h ▸ s.2`. Conclude with `⟨x, Subtype.ext hx⟩`. Establish `e : φ = (algebraMap S L).comp ψ` using `rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, hp, hpa⟩`. Conclude with `⟨p.map ψ, hp.map _, by rwa [Polynomial.eval₂_map]⟩`. Introduce and unpack `⟨p, hp, hpa⟩`. Take `⟨q, hq, -, hq'⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic ((Polynomial.mem_lifts p).mpr (Polynomial.map_surjective ψ hψ p)) hp`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨q, hq', by rwa [← hq, Polynomial.eval₂_map] at hpa⟩`.
+Supply the required witnesses or components.
 -/
 theorem isIntegralElem_iff_of_range_eq {o A : Type*} [CommRing o] [Algebra o L] [CommRing A]
     (φ : A →+* L) (S : Subalgebra o L) (h : Set.range φ = S) (a : L) :
@@ -123,15 +123,13 @@ theorem isIntegralElem_iff_of_range_eq {o A : Type*} [CommRing o] [Algebra o L] 
     exact ⟨q, hq', by rwa [← hq, Polynomial.eval₂_map] at hpa⟩
 
 /- English proof (translation)
-Set `` to `(f.app V).hom.toAlgebra`. Establish `h₀ : ⊤ ≤ 𝟙 (Sp L) ⁻¹ᵁ (f ⁻¹ᵁ V)` using `h`. Set `v` to `(valMap (𝟙 (Sp L)) (f ⁻¹ᵁ V) h₀).hom`. Establish `hv₁ : Function.Injective v` using `valMap_injective _ h₀`. Establish `hv₂ : Function.Surjective v` using `fun x => ⟨_, valMap_baseRingHom (o := L) (f := 𝟙 _) ((Category.id_comp _).trans (Spec.map_id _).symm) h₀ x⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₁ : (valMap f V h).hom = v.comp (f.app V).hom` using `RingHom.ext fun s => by`. Use `valR_comp (𝟙 (Sp L)) f V s` as an intermediate fact. Rewrite `this` using `[Category.id_comp, valR_eq _ _ h, valR_eq _ _ h₀]`. Then use the resulting hypothesis. Establish `e₂ (s) : (valMap f.toNormalization _ h').hom s = v ((f.normalizationObjIso hV).hom.hom s).1`. Use `valR_appLE (𝟙 (Sp L)) f.toNormalization (U := f.fromNormalization ⁻¹ᵁ V) (V := f ⁻¹ᵁ V) (le_top.trans h') h₀ s` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Category.id_comp, valR_eq _ _ h', valR_eq _ _ h₀, ← f.normalizationObjIso_hom_val hV]`. Conclude with `this.symm`. Rewrite using `[e₁]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e₂]`. Conclude with `RingHom.IsIntegralElem.map ((f.normalizationObjIso hV).hom.hom s).2 v`. Introduce `ha`. Take `⟨b, rfl⟩` from `hv₂ a`. Take `⟨s, hs⟩` from `(ConcreteCategory.bijective_of_isIso (f.normalizationObjIso hV).hom).2 ⟨b, RingHom.IsIntegralElem.of_map hv₁ ha⟩`.
-
-Conclude with `⟨s, (e₂ s).trans (congrArg (fun x => v x.1) hs)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_range_valMap_toNormalization {Y : Scheme.{0}} (f : Sp L ⟶ Y) {V : Y.Opens}
     (hV : IsAffineOpen V) (h : ⊤ ≤ f ⁻¹ᵁ V)
@@ -191,31 +189,31 @@ Simplify using the standard rewrite rules.
 theorem nmPoint_toProj : nmPoint o t ht ≫ toProj o t ht = point o t ht := by simp
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, nmPoint_toProj, point_str]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nmPoint_str : nmPoint o t ht ≫ str o t ht = spMap (algebraMap o L) := by
   rw [← Category.assoc, nmPoint_toProj, point_str]
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_Nm : IsIntegral (Nm o t ht) := inferInstance
 
 /- English proof (translation)
-The claim follows from `IsNormalScheme.pred _`.
+A detailed English derivation is pending.
 -/
 theorem isNormalScheme_Nm : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme (Nm o t ht) :=
   IsNormalScheme.pred _
 
 /- English proof (translation)
-The claim follows from `(isAffineOpen_chart o r i).preimage _`.
+A detailed English derivation is pending.
 -/
 theorem isAffineOpen_preimage_chart (i : Fin (r + 1)) :
     IsAffineOpen (toProj o t ht ⁻¹ᵁ chart o r i) :=
   (isAffineOpen_chart o r i).preimage _
 
 /- English proof (translation)
-Use `top_le_iff.mp fun x _ => Opens.mem_iSup.mpr ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `exists_mem_chart o r (toProj o t ht x)`. Conclude with `⟨⟨i, ne_zero_of_le (nmPoint_toProj o t ht) (le_preimage_of_mem (W := toProj o t ht ⁻¹ᵁ chart o r i) _ hi) le_rfl⟩, hi⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem iSup_preimage_chart :
     ⨆ i : {i // t i ≠ 0}, toProj o t ht ⁻¹ᵁ chart o r i.1 = ⊤ := by
@@ -227,11 +225,11 @@ theorem iSup_preimage_chart :
 variable {o t ht} in
 
 /- English proof (translation)
-Substitute `hW` using the available equality. Establish `h₁ : ⊤ ≤ point o t ht ⁻¹ᵁ chart o r i` using `(le_point_preimage_iff i).2 (ne_zero_of_le (nmPoint_toProj o t ht) h le_rfl)`. Establish `h₂ : ⊤ ≤ clPoint o t ht ⁻¹ᵁ (clι o t ht ⁻¹ᵁ chart o r i)`. Rewrite using `[← Scheme.Hom.comp_preimage, Scheme.Hom.toImage_imageι]` and apply the resulting hypothesis. Use `(mem_range_valMap_toNormalization (clPoint o t ht) ((isAffineOpen_chart o r i).preimage (clι o t ht)) h₂ h a).trans (isIntegralElem_iff_of_range_eq _ _ ?_ a)` and prove the remaining obligations.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ratioRing, ← range_valMap_point h₁, ← ((clι o t ht).app_surjective _ (isAffineOpen_chart o r i)).range_comp]`. Use `congr 1`. Use function extensionality and compare the values at `s`. Use `valR_comp (clPoint o t ht) (clι o t ht) (chart o r i) s` as an intermediate fact. Rewrite `this` using `[Scheme.Hom.toImage_imageι, valR_eq _ _ h₁, valR_eq _ _ h₂]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`.
+A detailed English derivation is pending.
 -/
 theorem mem_range_valMap_iff {i : Fin (r + 1)} {W : (Nm o t ht).Opens}
     (hW : W = toProj o t ht ⁻¹ᵁ chart o r i) (h : ⊤ ≤ nmPoint o t ht ⁻¹ᵁ W) (a : L) :
@@ -253,7 +251,7 @@ theorem mem_range_valMap_iff {i : Fin (r + 1)} {W : (Nm o t ht).Opens}
   exact this.symm
 
 /- English proof (translation)
-Establish `hη (i : {i // t i ≠ 0})` using `le_preimage_chart (nmPoint_toProj o t ht) i.2`. Use `choose u hu using fun i k => (mem_range_valMap_iff rfl (hη i) _).2 (h i k)`. Conclude with `exists_hom_of_coords _ _ (nmPoint_str o t ht) _ (iSup_preimage_chart o t ht) hη hz c hc u fun i k => (valR_eq _ _ (hη i) _).trans (hu i k)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_hom_of_isIntegral {z : Fin (m + 1) → L} (hz : z ≠ 0)
     (c : {i // t i ≠ 0} → Fin (m + 1)) (hc : ∀ i, z (c i) ≠ 0)
@@ -267,9 +265,9 @@ theorem exists_hom_of_isIntegral {z : Fin (m + 1) → L} (hz : z ≠ 0)
     fun i k => (valR_eq _ _ (hη i) _).trans (hu i k)
 
 /- English proof (translation)
-Take `⟨φ, h₁, h₂, -⟩` from `exists_hom_of_isIntegral o t ht hz (fun i => (p i.1).1) (fun i => left_ne_zero_of_mul (hp i.1 ▸ i.2)) fun i k => by`. Establish `: z k / z (p i.1).1 = t (p.symm (k, (p i.1).2)) / t i.1`. Rewrite using `[hp, hp i.1, Equiv.apply_symm_apply, mul_div_mul_right _ _ (right_ne_zero_of_mul (hp i.1 ▸ i.2))]`. Rewrite using `[this]`. Conclude with `isIntegral_algebraMap (x := (⟨_, Algebra.subset_adjoin ⟨_, rfl⟩⟩ : ratioRing o t i.1))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `IsSchemeTheoreticallyDominant.of_isDominant (nmPoint o t ht)` as an intermediate fact. Use `⟨closureLift _ φ (nmPoint o t ht) (𝟙 _) (by simpa using h₁), by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[closureLift_imageι_assoc, h₂]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_hom_Cl_of_factor {z : Fin (m + 1) → L} (hz : z ≠ 0) {τ : Type*} (z' : τ → L)
     (p : Fin (r + 1) ≃ Fin (m + 1) × τ) (hp : ∀ i, t i = z (p i).1 * z' (p i).2) :
@@ -294,11 +292,11 @@ def ratioField : Subfield L :=
 variable {t} in
 
 /- English proof (translation)
-Use `le_antisymm (Subfield.closure_le.mpr ?_) (Subfield.closure_le.mpr fun x hx => ?_)` and prove the remaining obligations. Establish `h (k) : t k / t i ∈ Subfield.closure (ratioRing o t i : Set L)` using `Subfield.subset_closure (Algebra.subset_adjoin ⟨k, rfl⟩)`. Introduce and unpack `_ (⟨a, rfl⟩ | ⟨p, rfl⟩)`. Conclude with `Subfield.subset_closure ((ratioRing o t i).algebraMap_mem a)`. Use `div_mem (h p.1) (h p.2)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[div_div_div_cancel_right₀ hi]`. Then use the resulting hypothesis. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨k, rfl⟩` from `hx`. Conclude with `Subfield.subset_closure (Or.inr ⟨(k, i), rfl⟩)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `algebraMap a => exact Subfield.subset_closure (Or.inl ⟨a, rfl⟩)`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `mul x y _ _ hx hy => exact mul_mem hx hy`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ratioField_eq {i : Fin (r + 1)} (hi : t i ≠ 0) :
     ratioField o t = Subfield.closure (ratioRing o t i : Set L) := by
@@ -320,11 +318,11 @@ theorem ratioField_eq {i : Fin (r + 1)} (hi : t i ≠ 0) :
 variable {t} in
 
 /- English proof (translation)
-Establish `hK` using `ratioField_eq o hi`. Set `: Algebra (ratioRing o t i) (ratioField o t)` to `((algebraMap (ratioRing o t i) L).codRestrict (ratioField o t) fun x => hK ▸ Subfield.subset_closure x.2).toAlgebra`. Establish `: IsScalarTower (ratioRing o t i) (ratioField o t) L` using `.of_algebraMap_eq' rfl`. Establish `: FaithfulSMul (ratioRing o t i) (ratioField o t)` using `(faithfulSMul_iff_algebraMap_injective _ _).mpr fun x y h => Subtype.ext (congrArg (fun a : ratioField o t => (a : L)) h)`. Establish `: IsFractionRing (ratioRing o t i) (ratioField o t)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `IsFractionRing.of_field _ _ fun x => ?_` and prove the remaining obligations. Take `⟨a, ha, b, hb, h⟩` from `Subfield.mem_closure_iff.mp (hK.le x.2)`. Establish `e` using `Subring.closure_eq (ratioRing o t i).toSubring`. Conclude with `⟨⟨a, e.le ha⟩, ⟨b, e.le hb⟩, Subtype.ext h.symm⟩`. Establish `: Algebra.EssFiniteType (ratioRing o t i) (ratioField o t)` using `.of_isLocalization _ (nonZeroDivisors _)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨(IsFractionRing.comap_isAlgebraic_iff (K := ratioField o t)).mpr inferInstance, .comp _ (ratioField o t) _⟩`.
+Supply the required witnesses or components.
 -/
 theorem isAlgebraic_and_essFiniteType [FiniteDimensional (ratioField o t) L] {i : Fin (r + 1)}
     (hi : t i ≠ 0) :
@@ -350,7 +348,7 @@ theorem isAlgebraic_and_essFiniteType [FiniteDimensional (ratioField o t) L] {i 
 include ht in
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `Function.ne_iff.mp ht`. Use `(isAlgebraic_and_essFiniteType o hi).2` as an intermediate fact. Establish `: Algebra.FiniteType o (ratioRing o t i)` using `.adjoin_of_finite (Set.finite_range _)`. Conclude with `.comp o (ratioRing o t i) L`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem essFiniteType_of_finiteDimensional [FiniteDimensional (ratioField o t) L] :
     Algebra.EssFiniteType o L := by
@@ -360,17 +358,17 @@ theorem essFiniteType_of_finiteDimensional [FiniteDimensional (ratioField o t) L
   exact .comp o (ratioRing o t i) L
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `Function.ne_iff.mp ht`. Use `(isAlgebraic_and_essFiniteType o hi).1` as an intermediate fact. Establish `h` using `le_preimage_chart (nmPoint_toProj o t ht) hi`. Set `` to `(valMap (nmPoint o t ht) _ h).hom.toAlgebra`. Establish `: FaithfulSMul Γ(Nm o t ht, toProj o t ht ⁻¹ᵁ chart o r i) L` using `(faithfulSMul_iff_algebraMap_injective _ _).mpr (valMap_injective _ h)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: IsFractionRing Γ(Nm o t ht, toProj o t ht ⁻¹ᵁ chart o r i) L`. Use `IsFractionRing.of_field _ _ fun x => ?_` and prove the remaining obligations. Take `⟨y, hy, hyx⟩` from `(Algebra.IsAlgebraic.isAlgebraic (R := ratioRing o t i) x).exists_integral_multiple`. Take `⟨a, ha⟩` from `(mem_range_valMap_iff rfl h _).2 hyx`. Take `⟨b, hb⟩` from `(mem_range_valMap_iff rfl h _).2 (isIntegral_algebraMap (x := y))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨a, b, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.algebraMap_toAlgebra, ha, hb, Algebra.smul_def]`. Conclude with `(mul_div_cancel_left₀ _ fun h0 => hy (Subtype.ext h0)).symm`. Establish `h1 : IsPreimmersion (Spec.map (valMap (nmPoint o t ht) _ h))` using `IsPreimmersion.of_isLocalization (R := Γ(Nm o t ht, toProj o t ht ⁻¹ᵁ chart o r i)) (S := L) (nonZeroDivisors _)`. Establish `h2 : IsPreimmersion (nmPoint o t ht)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← specMap_valMap_fromSpec (isAffineOpen_preimage_chart o t ht i) _ h]`. Use `infer_instance`. Establish `hη : nmPoint o t ht x = genericPoint _`. Use `IsGenericPoint.eq ?_ (genericPoint_spec _)` and prove the remaining obligations. Rewrite using `[isGenericPoint_def, ← (nmPoint o t ht).denseRange.closure_range]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use `congr 1`. Use extensionality with `y`. Conclude with `⟨fun hy => ⟨x, hy.symm⟩, fun ⟨x', hy⟩ => by rw [← hy, Subsingleton.elim x' x]; rfl⟩`. Establish `hf : IsField ((Nm o t ht).presheaf.stalk (nmPoint o t ht x))`. Rewrite using `[hη]`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Field.toIsField (Nm o t ht).functionField`. Rewrite using `[ConcreteCategory.isIso_iff_bijective]`. Use `⟨?_, (nmPoint o t ht).stalkMap_surjective _⟩` and prove the remaining obligations. Set `` to `hf.toField`. Conclude with `RingHom.injective ((nmPoint o t ht).stalkMap x).hom`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem isIso_stalkMap_nmPoint [FiniteDimensional (ratioField o t) L] (x : Sp L) :
     IsIso ((nmPoint o t ht).stalkMap x) := by
@@ -410,17 +408,15 @@ theorem isIso_stalkMap_nmPoint [FiniteDimensional (ratioField o t) L] (x : Sp L)
   exact RingHom.injective ((nmPoint o t ht).stalkMap x).hom
 
 /- English proof (translation)
-Establish `hπ` using `nmPoint_toProj o t ht`. Take `⟨φ, h₁, h₂, h₃⟩` from `exists_hom_of_isIntegral o t ht hz (fun i => c i.1) (fun i => hc i.1 ▸ pow_ne_zero e i.2) fun i k => hc i.1 ▸ isIntegral_div_of_mem_piece i.1 (hs ▸ Submodule.subset_span ⟨k, rfl⟩)`. Establish `h₄ (j) : φ ⁻¹ᵁ chart o m (c j) = toProj o t ht ⁻¹ᵁ chart o r j`. Use `le_antisymm (fun x hx => ?_) fun x hx => h₃ ⟨j, ne_zero_of_le hπ (le_preimage_of_mem _ hx) le_rfl⟩ hx` and prove the remaining obligations. Take `⟨i, hi⟩` from `Opens.mem_iSup.1 ((iSup_preimage_chart o t ht).ge (Set.mem_univ x))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `e₁ : pullRatio φ _ (c i.1) (h₃ i) (c j) = pullRatio (toProj o t ht) _ i.1 le_rfl j ^ e` using `ext_of_dense (nmPoint o t ht) fun h => by`. Rewrite using `[valR_pow _ _ h, valR_pullRatio h₁ h, valR_pullRatio hπ h, hc, hc, div_pow]`. Establish `e₂` using `basicOpen_pullRatio (hi := h₃ i) (j := c j)`. Rewrite `e₂` using `[e₁, Scheme.basicOpen_pow _ _ he, basicOpen_pullRatio]`. Conclude with `(e₂.ge ⟨hi, hx⟩).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨φ, ?_, h₁, h₂, h₄⟩` and prove the remaining obligations. Use `isProper_str o r` as an intermediate fact. Use `isProper_str o m` as an intermediate fact. Establish `: IsProper (φ ≫ PSpace.str o m)` using `by rw [h₂]; infer_instance`. Establish `: IsProper φ` using `.of_comp φ (PSpace.str o m)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `isClosedImmersion_of_cover φ φ.isClosedMap.isClosed_range (fun i : {i // t i ≠ 0} => chart o m (c i.1)) (fun i => isAffineOpen_chart o m _) (fun i => h₄ i.1 ▸ isAffineOpen_preimage_chart o t ht i.1) (fun i => ?_) (by simpa only [h₄] using iSup_preimage_chart o t ht)` and prove the remaining obligations. Rewrite using `[Scheme.Hom.app_eq_appLE, surjective_appLE_chart_iff]`. Introduce `s`. Establish `h : ⊤ ≤ nmPoint o t ht ⁻¹ᵁ (φ ⁻¹ᵁ chart o m (c i.1))` using `h₄ i.1 ▸ le_preimage_chart hπ i.2`. Establish `h₅` using `(isIntegral_ratioRing_iff_mem_adjoin he hs hv i.2).1 ((mem_range_valMap_iff (h₄ i.1) h _).1 ⟨s, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h₅` using `[Algebra.adjoin_range_eq_range_aeval]`. Take `⟨p, hp⟩` from `h₅`. Use `⟨p, valMap_injective _ h ?_⟩` and prove the remaining obligations. Rewrite using `[valMap_eval₂Hom (by rw [h₂, nmPoint_str]) h]`. Simplify using `only [valR_pullRatio h₁ h, hc]`.
-
-Conclude with `hp`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_isClosedImmersion [IsFinite (toCl o t ht)] {e : ℕ} (he : 0 < e)
     (hv : ∀ j, 0 < j → piece o t (j * e) = piece o t e ^ j) {z : Fin (m + 1) → L} (hz : z ≠ 0)
@@ -469,9 +465,9 @@ section Dedekind
 variable [IsDedekindDomain o] [CharZero L] [Algebra.EssFiniteType o L]
 
 /- English proof (translation)
-Use `isProper_str o r` as an intermediate fact. Use `isFinite_fromNormalization_of_genericPoints (o := .of o) _ (clι o t ht ≫ PSpace.str o r) (fun x _ => charZero_of_injective_ringHom ((Scheme.ΓSpecIso (.of L)).inv ≫ (Spec (.of L)).Γevaluation x).hom.injective) fun x _ => ?_` and prove the remaining obligations. Establish `h : ((clPoint o t ht ≫ clι o t ht ≫ PSpace.str o r).stalkMap x).hom.EssFiniteType`. Rewrite using `[Scheme.Hom.toImage_imageι_assoc, point_str]`. Conclude with `essFiniteType_stalkMap_SpecMap _ (RingHom.essFiniteType_algebraMap.mpr ‹_›) x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[Scheme.Hom.stalkMap_comp]`. Conclude with `RingHom.EssFiniteType.residueFieldMap (.of_comp _ h)`.
+A detailed English derivation is pending.
 -/
 theorem isFinite_toCl : IsFinite (toCl o t ht) := by
   have := isProper_str o r
@@ -485,13 +481,13 @@ theorem isFinite_toCl : IsFinite (toCl o t ht) := by
   exact RingHom.EssFiniteType.residueFieldMap (.of_comp _ h)
 
 /- English proof (translation)
-Use `isFinite_toCl o t ht` as an intermediate fact. Take `⟨e, he, hv⟩` from `exists_piece_mul_eq_pow o t`. Take `⟨M, z, c, hs, hc⟩` from `exists_spanning_tuple o t e`. Establish `hz : z ≠ 0`. Take `⟨i, hi⟩` from `Function.ne_iff.mp ht`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `Function.ne_iff.mpr ⟨c i, hc i ▸ pow_ne_zero e hi⟩`. Take `⟨φ, _, h₁, h₂, h₃⟩` from `exists_isClosedImmersion o t ht he hv hz hs c hc`. Use `IsSchemeTheoreticallyDominant.of_isDominant (nmPoint o t ht)` as an intermediate fact. Set `ν` to `(asIso (closureToClosed (point o z hz) (nmPoint o t ht) φ h₁)).symm`. Establish `hν : ν.hom ≫ clι o z hz = φ` using `by simp [ν, IsIso.inv_comp_eq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨e, he, M, z, hz, hv, hs, fun j => ⟨c j, hc j⟩, ν, by simp [ν, IsIso.comp_inv_eq], ?_⟩` and prove the remaining obligations. Rewrite using `[hν]`. Use `⟨h₂, fun j k hk => ?_, exists_iso_lbPow (nmPoint_toProj o t ht) h₁ c hc fun j => (h₃ j).ge⟩` and prove the remaining obligations. Take `⟨φ', -, h₁', -, h₃'⟩` from `exists_isClosedImmersion o t ht he hv hz hs (Function.update c j k) fun j' => by`. Distinguish the cases in `h : j' = j`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, Function.update_self, hk]`. Rewrite using `[Function.update_of_ne h, hc]`. Rewrite using `[ext_of_isDominant (nmPoint o t ht) (h₁.trans h₁'.symm), ← h₃' j, Function.update_self]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_iso_Cl : ∃ (e : ℕ) (_ : 0 < e) (M : ℕ) (z : Fin (M + 1) → L) (hz : z ≠ 0),
     (∀ j, 0 < j → piece o t (j * e) = piece o t e ^ j) ∧
@@ -529,14 +525,14 @@ theorem exists_iso_Cl : ∃ (e : ℕ) (_ : 0 < e) (M : ℕ) (z : Fin (M + 1) →
   rw [ext_of_isDominant (nmPoint o t ht) (h₁.trans h₁'.symm), ← h₃' j, Function.update_self]
 
 /- English proof (translation)
-Take `⟨e, -, M, z, hz, -, -, -, ν, -, h, -⟩` from `exists_iso_Cl o t ht`. Conclude with `⟨M, ν.hom ≫ clι o z hz, inferInstance, h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isProjOver_str : IsProjOver (str o t ht) := by
   obtain ⟨e, -, M, z, hz, -, -, -, ν, -, h, -⟩ := exists_iso_Cl o t ht
   exact ⟨M, ν.hom ≫ clι o z hz, inferInstance, h⟩
 
 /- English proof (translation)
-Take `⟨e, he, M, z, hz, -, -, -, ν, -, h, -, w, hw, -⟩` from `exists_iso_Cl o t ht`. Conclude with `⟨e, he, M, ν.hom ≫ clι o z hz, inferInstance, h, w, hw⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_pow_twist_veryAmple : ∃ (e : ℕ) (_ : 0 < e) (M : ℕ) (φ : Nm o t ht ⟶ PSpace o M),
     IsClosedImmersion φ ∧ φ ≫ PSpace.str o M = str o t ht ∧
@@ -547,9 +543,9 @@ theorem exists_pow_twist_veryAmple : ∃ (e : ℕ) (_ : 0 < e) (M : ℕ) (φ : N
 end Dedekind
 
 /- English proof (translation)
-Establish `: CharZero L` using `charZero_of_injective_algebraMap (FaithfulSMul.algebraMap_injective o L)`. Use `essFiniteType_of_finiteDimensional o t ht` as an intermediate fact. Take `⟨e, he, M, z, hz, h₁, h₂, h₃, ν, h₄, h₅, h₆, w, hw, -⟩` from `exists_iso_Cl o t ht`. Establish `h₇ : ⨆ k : {k // ∃ j, t j ≠ 0 ∧ z k = t j ^ e}, clι o z hz ⁻¹ᵁ chart o M k.1 = ⊤`. Use `top_le_iff.mp fun y _ => Opens.mem_iSup.mpr ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, rfl⟩` from `ν.hom.surjective y`. Take `⟨i, hi⟩` from `Opens.mem_iSup.1 ((iSup_preimage_chart o t ht).ge (Set.mem_univ x))`. Take `⟨k, hk⟩` from `h₃ i.1`. Conclude with `⟨⟨k, i.1, i.2, hk⟩, (h₆ i.1 k hk).ge hi⟩`. Conclude with `⟨fun _ => isIntegral_cone_iff, finite_integralClosure_cone o t, piece_zero, piece_fg o t, isIntegral_Nm o t ht, isNormalScheme_Nm o t ht, isIso_stalkMap_nmPoint o t ht, isFinite_toCl o t ht, fun i hi => ⟨le_preimage_chart (nmPoint_toProj o t ht) hi, valMap_injective _ _, Set.ext …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem normalization_closure_projective [IsDedekindDomain o] [CharZero o] [FaithfulSMul o L]
     [FiniteDimensional (ratioField o t) L] :
@@ -594,7 +590,7 @@ theorem normalization_closure_projective [IsDedekindDomain o] [CharZero o] [Fait
     ν, h₄, h₅, h₆, w, hw⟩
 
 /- English proof (translation)
-The claim follows from `have : FiniteDimensional (ratioField ℤ t) K := Module.Finite.of_restrictScalars_finite ℚ _ _ (normalization_closure_projective ℤ t ht).2.2.2.2.2.2.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 example (K : Type) [Field K] [NumberField K] (t : Fin (r + 1) → K) (ht : t ≠ 0) :
     IsProjOver (str ℤ t ht) :=
@@ -602,7 +598,7 @@ example (K : Type) [Field K] [NumberField K] (t : Fin (r + 1) → K) (ht : t ≠
   (normalization_closure_projective ℤ t ht).2.2.2.2.2.2.2.2.2.1
 
 /- English proof (translation)
-Introduce `K x`. Establish `: Algebra.EssFiniteType ℤ K` using `.comp ℤ (Polynomial ℤ) K`. Conclude with `⟨Function.ne_iff.mpr ⟨0, one_ne_zero⟩, isProjOver_str _ _ _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 example : let K := FractionRing (Polynomial ℤ)
     let x : K := algebraMap (Polynomial ℤ) K Polynomial.X

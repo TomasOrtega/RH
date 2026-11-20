@@ -6,7 +6,7 @@ open GlobalTheory.KeyKa
 namespace GlobalTheory.DiscrJacobianBlocks
 
 /- English proof (translation)
-Establish `: Ideal.span (Set.range F) ≤ RingHom.ker e`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `h i`. Conclude with `this hG`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem map_eq_zero_of_mem_span {O A ι : Type} [CommRing O] [CommRing A] [Algebra O A]
     (e : A →ₐ[O] O) (F : ι → A) (h : ∀ i, e (F i) = 0) {G : A}
@@ -18,7 +18,7 @@ theorem map_eq_zero_of_mem_span {O A ι : Type} [CommRing O] [CommRing A] [Algeb
   exact this hG
 
 /- English proof (translation)
-Set `_ : LinearOrder Y` to `@linearOrderOfSTO Y WellOrderingRel _ (Classical.decRel _)`. Establish `hb : M.BlockTriangular p` using `fun a a' h => hM a a' (ne_of_gt h)`. Use `hb.det` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Both sides reduce to the same expression.
 -/
 theorem det_eq_prod_fibres {O Y : Type} [CommRing O] [DecidableEq Y] {d : ℕ} (p : Fin d → Y)
     (M : Matrix (Fin d) (Fin d) O) (hM : ∀ a a', p a ≠ p a' → M a a' = 0) :
@@ -31,7 +31,7 @@ theorem det_eq_prod_fibres {O Y : Type} [CommRing O] [DecidableEq Y] {d : ℕ} (
   rfl
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_filter]`. Conclude with `Finset.sum_subtype _ (fun a => by simp [eq_comm]) f`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_ite_fibre {M Y : Type} [AddCommMonoid M] [DecidableEq Y] {d : ℕ} (p : Fin d → Y)
     (y : Y) (f : Fin d → M) :
@@ -40,45 +40,41 @@ theorem sum_ite_fibre {M Y : Type} [AddCommMonoid M] [DecidableEq Y] {d : ℕ} (
   exact Finset.sum_subtype _ (fun a => by simp [eq_comm]) f
 
 /- English proof (translation)
-Introduce `O _ _ _ _ g d N Y p F ρ e u ev hF hX hev hsurj hinj hc`. Take `⟨c, hc0, hc⟩` from `hc`. Establish `hker : ∀ a {G}, G ∈ Ideal.span (Set.range (F (p a))) → e a G = 0` using `fun a G hG => map_eq_zero_of_mem_span (e a) _ (hF a) hG`. Establish `hmul : ∀ v a, ev.mulVec v a = u a * e a (∑ k, v k • ρ (p a) k)`. Introduce `v a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Matrix.mulVec, dotProduct, hev, map_sum, map_smul, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Establish `hloc` using `fun y : Y => GlobalTheory.T.exists_basis_discr_associated_prod_jacobian O g {a // p a = y} (F y) (fun a => e a.1) (by rintro ⟨a, rfl⟩ i; exact hF a i) (fun a i => hX a.1 i) (by`. Introduce `G hG`. Take `⟨v, hv⟩` from `hsurj (Pi.single y G)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0 : ev.mulVec v = 0`. Use function extensionality and compare the values at `a`. Rewrite using `[hmul]`. Establish `h1` using `hker a (hv (p a))`. Rewrite `h1` using `[map_sub, sub_eq_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1]`. Distinguish the cases in `h : p a = y`. Substitute `h` using the available equality. Use `hG ⟨a, rfl⟩` as an intermediate fact. Simplify using `only [Pi.single_eq_same, Pi.zero_apply]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, mul_zero]`. Simplify using `[Pi.single_eq_of_ne h]`. Establish `h2` using `Ideal.add_mem _ (hv y) (hinj v h0 y)`. Simplify using `using h2)`. Use the proof step `⟨c, hc0, by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `t`. Take `⟨v, hv⟩` from `hc (fun a => if h : p a = y then u a * t ⟨a, h⟩ else 0)`. Use `⟨∑ k, v k • ρ y k, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨a, rfl⟩`. Establish `h1` using `congrFun hv a`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[hmul]`. Simplify using `only [Pi.smul_apply, dite_true, smul_eq_mul] at h1`. Apply `(u a).isUnit.mul_left_cancel` to reduce the goal to its premises. Rewrite using `[h1]`. Use the proof step `ring⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `choose β hβ hdet hass using hloc`. Use `choose r hr huniq using hβ`. Set `γ : Fin d → MvPowerSeries (Fin g) O` to `fun a => β (p a) ⟨a, rfl⟩`. Establish `hγ : ∀ y (x : {a // p a = y}), γ x.1 = β y x`. Introduce and unpack `y ⟨a, rfl⟩`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Both sides reduce to the same expression. Set `M : Matrix (Fin d) (Fin d) O` to `Matrix.of fun a a' => if p a = p a' then e a (γ a') else 0`. Set `ev₀ : Matrix (Fin d) (Fin N) O` to `Matrix.of fun a k => r (p a) (ρ (p a) k) ⟨a, rfl⟩`. Establish `hev₀ : ∀ y (x : {a // p a = y}) k, ev₀ x.1 k = r y (ρ y k) x`. Introduce and unpack `y ⟨a, rfl⟩ k`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Both sides reduce to the same expression. Establish `hMdet : M.det = ∏ y ∈ Finset.univ.image p, (Matrix.of fun a a' : {a // p a = y} => e a.1 (β y a')).det`. Rewrite using `[det_eq_prod_fibres p M (fun a a' h => by simp [M, h])]`. Use `Finset.prod_congr rfl fun y _ => ?_` and prove the remaining obligations. Use `congr 1`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `a a'`. Simplify using `[M, a.2, a'.2, hγ]`. Establish `hU : IsUnit (Matrix.diagonal fun a => (u a : O)).det`. Rewrite using `[Matrix.det_diagonal]`. Conclude with `IsUnit.prod_univ_iff.2 fun a => (u a).isUnit`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨ev₀, Matrix.diagonal (fun a => (u a : O)) * M, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `a k`. Rewrite using `[Matrix.mul_assoc, Matrix.diagonal_mul, hev, Matrix.mul_apply]`. Use `congr 1`. Establish `h1` using `hker a (hr (p a) (ρ (p a) k))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[map_sub, sub_eq_zero]`. Rewrite using `[h1]`. Simplify using `only [M, Matrix.of_apply, ite_mul, zero_mul]`. Rewrite using `[sum_ite_fibre p (p a) (fun a' => e a (γ a') * ev₀ a' k), map_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hγ, hev₀, map_smul, smul_eq_mul, mul_comm]`. Rewrite using `[Matrix.det_mul, hMdet]`. Conclude with `mul_ne_zero hU.ne_zero (Finset.prod_ne_zero_iff.2 fun y _ => hdet y)`. Introduce `t`. Take `⟨v, hv⟩` from `hsurj (fun y => ∑ x : {a // p a = y}, t x.1 • β y x)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨v, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Use `set y := p a with hy`. Establish `h1 : (fun x : {a // p a = y} => t x.1) = r y (∑ x : {a // p a = y}, t x.1 • β y x)` using `huniq y _ _ (by simp)`. Establish `h2 : (fun x : {a // p a = y} => ∑ k, v k * r y (ρ y k) x) = r y (∑ x : {a // p a = y}, t x.1 • β y x)`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Apply `huniq` to reduce the goal to its premises. Establish `h3 : ∑ k, v k • (ρ y k - ∑ x, r y (ρ y k) x • β y x) ∈ Ideal.span (Set.range (F y))` using `Submodule.sum_mem _ fun k _ => Submodule.smul_of_tower_mem _ _ (hr y (ρ y k))`. Establish `h4` using `Ideal.add_mem _ (hv y) h3`. Use `h4 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [smul_sub, Finset.sum_sub_distrib, Finset.smul_sum, Finset.sum_smul, mul_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Normalize the expressions using the abelian group laws. Establish `h5` using `congrFun (h2.trans h1.symm) ⟨a, hy.symm⟩`. Simplify using `only at h5`. Rewrite using `[← h5]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mulVec, dotProduct]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Both sides reduce to the same expression. Rewrite using `[Matrix.det_mul, mul_pow, hMdet, ← Finset.prod_pow, ← Finset.prod_fiberwise_of_maps_to (s := Finset.univ) (t := Finset.univ.image p) (g := p) (fun a _ => Finset.mem_image_of_mem p (Finset.mem_univ a))]`.
-
-Use `(associated_unit_mul_left _ _ (hU.pow 2)).trans ?_` and prove the remaining obligations. Use `Associated.prod _ _ _ fun y _ => (hass y).trans (Associated.of_eq ?_)` and prove the remaining obligations. Rewrite using `[Finset.prod_subtype (p := fun a => p a = y) (F := inferInstance) _ (fun a => by simp)]`. Use `Finset.prod_congr rfl ?_` and prove the remaining obligations. Introduce and unpack `⟨a, rfl⟩ _`.
-
-Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_factor_associated_jacobian : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O] (g d N : ℕ) (Y : Type) (p : Fin d → Y) (F : Y → Fin g → (MvPowerSeries (Fin g) O)) (ρ : Y → Fin N → (MvPowerSeries (Fin g) O)) (e : Fin d → ((MvPowerSeries (Fin g) O) →ₐ[O] O)) (u : Fin d → Oˣ) (ev : Matrix (Fin d) (Fin N) O), (∀ a i, e a (F (p a) i) = 0) → (∀ a i, e a (MvPowerSeries.X i) ∈ IsLocalRing.maximalIdeal O) → (∀ a k, ev a k = u a * e a (ρ (p a) k)) → (∀ G : Y → (MvPowerSeries (Fin g) O), ∃ v : Fin N → O, ∀ y, G y - ∑ k, v k • ρ y k ∈ Ideal.span (Set.range (F y))) → (∀ v, ev.mulVec v = 0 → ∀ y, ∑ k, v k • ρ y k ∈ Ideal.span (Set.range (F y))) → (∃ c : O, c ≠ 0 ∧ ∀ t, ∃ v, ev.mulVec v = c • t) → ∃ (ev₀ : Matrix (Fin d) (Fin N) O) (Pm : Matrix (Fin d) (Fin d) O), ev = Pm * ev₀ ∧ Pm.det ≠ 0 ∧ Function.Surjective ev₀.mulVec ∧ Associated (Pm.det ^ 2) (∏ a, e a (Matrix.of fun i j => MvPowerSeries.pderiv O j (F (p a) i)).det) := by
   intro O _ _ _ _ g d N Y p F ρ e u ev hF hX hev hsurj hinj hc

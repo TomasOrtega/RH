@@ -5,7 +5,7 @@ import Formalism.SharpRestriction.GrowthBounds.ColumnSpanDensity.QuadraticBasis.
 namespace Formalism.MainNotions.flipOneThree.Pf.QuadraticBasis
 
 /- English proof (translation)
-Take `⟨f0, f1, θ₁, θ₂, r₁, r₂, s₁, s₂⟩` from `hR p n' hp hn W₁ W₂ O₁ O₂ j₁ j₂ w₁ w₂ a₁ a₂ b₁ b₂ e₁ e₂ f₁ f₂ g₁ g₂ h₁ h₂ φW`. Establish `B₁` using `basisCriterion_holds p n' hp W₁ O₁ j₁ w₁ θ₁ a₁ b₁ d₁ f₁ g₁ h₁ s₁`. Establish `B₂` using `basisCriterion_holds p n' hp W₂ O₂ j₂ w₂ θ₂ a₂ b₂ d₂ f₂ g₂ h₂ s₂`. Take `⟨φO, k1, k2, _⟩` from `presentationIso_holds W₁ W₂ O₁ O₂ j₁ j₂ θ₁ w₁ θ₂ w₂ f0 f1 (p : W₁) φW r₁ r₂ (by rw [f₁, map_natCast]) (by rw [f₂, map_natCast, map_natCast]) B₁ B₂`. Conclude with `⟨φO, k1, k2⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem oIso_of (hR : QuadRoots)
     (p n' : ℕ) (hp : p.Prime) (hn : 0 < n') (W₁ W₂ O₁ O₂ : Type) [CommRing W₁] [IsDomain W₁]

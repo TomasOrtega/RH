@@ -14,7 +14,7 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.EndLoc.HomFixFinite
 
 /- English proof (translation)
-Introduce `S _ A B _ _ _ _ L M hA hB hL hM rA rB aA aB`. Take `⟨R, hqc, hsep, hlft⟩` from `GlobalTheory.T.exists_finiteType_representing_polarizedHoms_locNoeth S A B L M hA hB hL hM rA rB aA aB`. Establish `hpr : IsProper R.π` using `GlobalTheory.EndLoc.HomFixProper.isProper_of_finiteType S A B L M R hA hB hL hM rA rB hqc hsep hlft`. Establish `hun : FormallyUnramified R.π` using `GlobalTheory.T.formallyUnramified_homWithFixedPullback_scheme S A B L M R hA hB`. Conclude with `⟨R, GlobalTheory.PropFin.isFinite_of_isProper_of_formallyUnramified _ _ R.π hpr hun, hun⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_finite_unramified : ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (A B : Over S) [GrpObj A] [IsCommMonObj A] [GrpObj B] [IsCommMonObj B] (L : LB A.left) (M : LB B.left), IsAbelianScheme A → IsAbelianScheme B → L.IsLB → M.IsLB → Out.Rigidified A L → Out.Rigidified B M → Out.RelAmple A L → Out.RelAmple B M → ∃ R : HomFixRep A B L M, IsFinite R.π ∧ FormallyUnramified R.π := by
   intro S _ A B _ _ _ _ L M hA hB hL hM rA rB aA aB

@@ -18,7 +18,7 @@ variable {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {H : Type} [NormedAddCo
   {μW μN : Measure (Mt k r)} {P x₀ g : Mat k r} {w : H} {a : ℝ}
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `hm.2 []`. Use `⟨|C|, fun y hy => (hC y hy).trans ?_⟩` and prove the remaining obligations. Establish `h1` using `tmA_one_le_frob hy (0 : Fin (2 * r + k + 1))`. Conclude with `mul_le_mul (le_abs_self C) (Real.rpow_le_rpow_of_exponent_le h1 (by linarith)) (Real.rpow_nonneg (by linarith) _) (abs_nonneg C)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem good_bound {m : H} (hm : TmGood ε σ x₀ w a m) :
     ∃ C : ℝ, ∀ y ∈ UJset ε, ‖coefX σ x₀ w m y‖ ≤ C * frob y ^ (1 - a) := by
@@ -29,9 +29,9 @@ theorem good_bound {m : H} (hm : TmGood ε σ x₀ w a m) :
     (Real.rpow_nonneg (by linarith) _) (abs_nonneg C)
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `good_bound hm`. Take `⟨C', hC'⟩` from `good_bound hm'`. Establish `i1` using `CurveContinuity.int_of_bound hP hB hg ξ a hb _ (CurveContinuity.smooth_contOn hm.1) C hC`. Establish `i2` using `CurveContinuity.int_of_bound hP hB hg ξ a hb _ (CurveContinuity.smooth_contOn hm'.1) C' hC'`. Unfold `per sInt`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← integral_smul]`. Use `Eq.trans ?_ (integral_add i1 (i2.smul t))` and prove the remaining obligations. Use `integral_congr_ae (Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Simplify using `only [coefX, map_add, map_smul, inner_add_right, inner_smul_right, add_smul, smul_smul, Pi.smul_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem per_lin (hP : Formalism.MainNotions.S.IsCayley k r ε P) (hB : IsBData z c u π μW μN) (hg : g ∈ UH (Hpk k r))
     (hb : S0.bS k r < a - 1) (ξ : Vp) {m m' : H} (hm : TmGood ε σ x₀ w a m)
@@ -51,9 +51,9 @@ theorem per_lin (hP : Formalism.MainNotions.S.IsCayley k r ε P) (hB : IsBData z
     Pi.smul_apply]
 
 /- English proof (translation)
-Establish `hd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).mp hP.1`. Establish `h1 : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P hd`. Establish `h2 : (P⁻¹)ᴴ * Pᴴ = 1` using `by rw [← conjTranspose_mul, h1, conjTranspose_one]`. Establish `hg' : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Use `⟨by rw [Matrix.det_mul]; exact (TransportGeo.uh_det hg).mul (Matrix.isUnit_nonsing_inv_det P hd), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = (P⁻¹)ᴴ * Pᴴ * Formalism.REAL.Jm ε * (P * P⁻¹) := by rw [hg', ← hP.2]; simp only [Matrix.mul_assoc]`. Use `_ = Jm ε := by rw [h1, h2, Matrix.one_mul, Matrix.mul_one]; rfl`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frame_form (hP : Formalism.MainNotions.S.IsCayley k r ε P) (hg : g ∈ UH (Hpk k r)) :
     IsUnit (g * P⁻¹).det ∧ (g * P⁻¹)ᴴ * Hpk k r * (g * P⁻¹) = Jm ε := by
@@ -69,9 +69,7 @@ theorem frame_form (hP : Formalism.MainNotions.S.IsCayley k r ε P) (hg : g ∈ 
     _ = Jm ε := by rw [h1, h2, Matrix.one_mul, Matrix.mul_one]; rfl
 
 /- English proof (translation)
-Use `show (P * y * P⁻¹)ᴴ * Jm ε * (P * y * P⁻¹) = Jm ε`. Establish `h` using `(frame_form hP hy).2`. Rewrite `h` using `[← hP.2]`. Use `Eq.trans ?_ h` and prove the remaining obligations. Use `show (P * y * P⁻¹)ᴴ * Formalism.REAL.Jm ε * (P * y * P⁻¹) = _`.
-
-Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_inUJ (hP : Formalism.MainNotions.S.IsCayley k r ε P) {y : Mat k r} (hy : y ∈ UH (Hpk k r)) :
     P * y * P⁻¹ ∈ UJset ε := by
@@ -83,21 +81,19 @@ theorem mul_inUJ (hP : Formalism.MainNotions.S.IsCayley k r ε P) {y : Mat k r} 
   simp only [conjTranspose_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Take `⟨hR, hJ⟩` from `frame_form hP hg`. Use `set R := g * P⁻¹ with hRd`. Establish `hX : inG ε (R⁻¹ * Y * R)`. Establish `e1 : Jm ε * (R⁻¹ * Y * R) = Rᴴ * (Hpk k r * Y) * R`. Rewrite using `[← hJ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hR]`. Establish `e2 : (R⁻¹ * Y * R)ᴴ * Jm ε = Rᴴ * (Yᴴ * Hpk k r) * R`. Establish `h2 : (R⁻¹)ᴴ * Rᴴ = 1`. Rewrite using `[← conjTranspose_mul, Matrix.mul_nonsing_inv _ hR, conjTranspose_one]`. Rewrite using `[← hJ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (R⁻¹)ᴴ, h2, Matrix.one_mul]`. Use `show (R⁻¹ * Y * R)ᴴ * Jm ε + Jm ε * (R⁻¹ * Y * R) = 0`. Rewrite using `[e1, e2, ← Matrix.add_mul, ← Matrix.mul_add, hY, Matrix.mul_zero, Matrix.zero_mul]`. Establish `hRd' : ∀ y ∈ UJset ε, Formalism.REAL.Rd (R⁻¹ * Y * R) (coefX σ x₀ w (m : H)) y = coefX σ x₀ w ((actM E (R⁻¹ * Y * R) m : D) : H) y` using `fun y hy => tmB_rd_coef hσ hD (tmA_inUJ_mul (tmA_inUJ_inv hx₀) hy) hX w m`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC⟩` from `good_bound hm`. Take `⟨C', hC'⟩` from `good_bound hm'`. Establish `h` using `(CurveContinuity.deriv_int hP hB hg ξ a hb _ hm.1 C hC _ hX C' (fun y hy => by rw [hRd' y hy]; exact hC' y hy)).2`. Use `HasDerivAt.congr_deriv (h.congr_of_eventuallyEq (Eventually.of_forall fun t => ?_)) ?_` and prove the remaining obligations. Establish `e : NormedSpace.exp ((t : ℂ) • (R⁻¹ * Y * R)) = R⁻¹ * NormedSpace.exp ((t : ℂ) • Y) * R`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.exp_conj' _ _ ((Matrix.isUnit_iff_isUnit_det R).mpr hR), Matrix.mul_smul, Matrix.smul_mul]`. Simplify using `only [per, sInt, e]`. Use `congr 1`. Use function extensionality and compare the values at `p`. Use `congr 2`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hRd]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = P * (Matrix.of p.1 * Matrix.of p.2) * (R * (R⁻¹ * (NormedSpace.exp ((t : ℂ) • Y) * R))) := by`. Rewrite using `[Matrix.mul_nonsing_inv_cancel_left _ _ hR]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities.
 
-Use `_ = _ := by`. Rewrite using `[← Matrix.mul_assoc R⁻¹]`. Generalize the expression as in `R⁻¹ * NormedSpace.exp ((t : ℂ) • Y) * R = A`. Rewrite using `[hRd]`. Simplify using `only [Matrix.mul_assoc]`.
-
-Unfold `per sInt`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [CurveContinuity.ae_supp hB.2.2.2.2.1 hB.2.2.2.2.2] with p hp`. Rewrite using `[hRd' _ (mul_inUJ hP (TransportGeo.uh_mul (TransportGeo.uh_mul hp.1.1 hp.2.1) hg))]`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem per_deriv (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) (hx₀ : x₀ ∈ UJset ε)
     (hP : Formalism.MainNotions.S.IsCayley k r ε P) (hB : IsBData z c u π μW μN) (hg : g ∈ UH (Hpk k r))

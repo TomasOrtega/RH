@@ -28,9 +28,9 @@ def colMat (n : ℕ) (v : Fin n → k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k :=
   fun i j => if j = Fin.last n then Fin.lastCases (0 : k) v i else 0
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Matrix.zero_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : l = Fin.last n`. Substitute `hl` using the available equality.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[GlobalTheory.BZMir.colMat]`. Simplify using `[GlobalTheory.BZMir.colMat, hl]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem colMat_mul_colMat (n : ℕ) (v w : Fin n → k) : colMat k n v * colMat k n w = 0 := by
   ext i j
@@ -42,7 +42,7 @@ theorem colMat_mul_colMat (n : ℕ) (v w : Fin n → k) : colMat k n v * colMat 
   · simp [GlobalTheory.BZMir.colMat, hl]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [GlobalTheory.BZMir.colMat, Matrix.add_apply]`. Use `split_ifs`. Apply the tactic sequence `cases i using Fin.lastCases <;> simp`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem colMat_add (n : ℕ) (v w : Fin n → k) : colMat k n (v + w) = colMat k n v + colMat k n w := by
   ext i j
@@ -52,7 +52,7 @@ theorem colMat_add (n : ℕ) (v w : Fin n → k) : colMat k n (v + w) = colMat k
   · simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [GlobalTheory.BZMir.colMat, Matrix.zero_apply]`. Use `split_ifs`. Apply the tactic sequence `cases i using Fin.lastCases <;> simp`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem colMat_zero (n : ℕ) : colMat k n 0 = 0 := by
   ext i j
@@ -74,7 +74,7 @@ def unip (n : ℕ) : Multiplicative (Fin n → k) →* GL (Fin (n + 1)) k where
     abel
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(1 + GlobalTheory.BZMir.colMat k n (Multiplicative.toAdd v)) (Fin.castSucc i) (Fin.last n) = _`. Simplify using `[GlobalTheory.BZMir.colMat, Matrix.one_apply_ne (Fin.castSucc_ne_last i)]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem unip_apply_castSucc_last (n : ℕ) (v : Multiplicative (Fin n → k)) (i : Fin n) :
     ((unip k n v : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) (Fin.castSucc i) (Fin.last n) =
@@ -83,7 +83,7 @@ theorem unip_apply_castSucc_last (n : ℕ) (v : Multiplicative (Fin n → k)) (i
   simp [GlobalTheory.BZMir.colMat, Matrix.one_apply_ne (Fin.castSucc_ne_last i)]
 
 /- English proof (translation)
-Introduce `v w hvw`. Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Establish `hi` using `congrArg (fun g : GL (Fin (n + 1)) k => (g : Matrix (Fin (n + 1)) (Fin (n + 1)) k) (Fin.castSucc i) (Fin.last n)) hvw`. Simplify `hi` using `only [GlobalTheory.BZMir.unip_apply_castSucc_last]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem unip_injective (n : ℕ) : Function.Injective (unip k n) := by
   intro v w hvw
@@ -98,16 +98,16 @@ def MirU (n : ℕ) : Subgroup (GL (Fin (n + 1)) k) := (unip k n).range
 def unipEquiv (n : ℕ) : Multiplicative (Fin n → k) ≃* MirU k n := MonoidHom.ofInjective (unip_injective k n)
 
 /- English proof (translation)
-Use extensionality with `j`. Simplify using `[GlobalTheory.BZMir.eLast, Matrix.vecMul, dotProduct, Pi.single_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem vecMul_eLast (n : ℕ) (M : Matrix (Fin (n + 1)) (Fin (n + 1)) k) : vecMul (eLast k n) M = M (Fin.last n) := by
   ext j
   simp [GlobalTheory.BZMir.eLast, Matrix.vecMul, dotProduct, Pi.single_apply]
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨v, rfl⟩`. Express the relevant statement in the definitionally equal form `vecMul (GlobalTheory.BZMir.eLast k n) ((GlobalTheory.BZMir.unip k n v : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) = GlobalTheory.BZMir.eLast k n`. Rewrite using `[GlobalTheory.BZMir.vecMul_eLast]`. Use extensionality with `j`. Express the relevant statement in the definitionally equal form `(1 + GlobalTheory.BZMir.colMat k n (Multiplicative.toAdd v)) (Fin.last n) j = GlobalTheory.BZMir.eLast k n j`.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Distinguish the cases in `h : j = Fin.last n`. Substitute `h` using the available equality. Simplify using `[GlobalTheory.BZMir.colMat, GlobalTheory.BZMir.eLast]`. Simplify using `[GlobalTheory.BZMir.colMat, GlobalTheory.BZMir.eLast, Matrix.one_apply_ne (Ne.symm h), h, Pi.single_apply]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem MirU_le_Mir (n : ℕ) : MirU k n ≤ Mir k n := by
   rintro _ ⟨v, rfl⟩
@@ -126,7 +126,7 @@ def glEmbMat (n : ℕ) (A : Matrix (Fin n) (Fin n) k) : Matrix (Fin (n + 1)) (Fi
   fun i j => Fin.lastCases (Fin.lastCases 1 (fun _ => 0) j) (fun i' => Fin.lastCases 0 (fun j' => A i' j') j) i
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `cases i using Fin.lastCases <;> cases j using Fin.lastCases <;>`. Simplify using `[GlobalTheory.BZMir.glEmbMat, Matrix.mul_apply, Fin.sum_univ_castSucc]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem glEmbMat_mul (n : ℕ) (A B : Matrix (Fin n) (Fin n) k) :
     glEmbMat k n (A * B) = glEmbMat k n A * glEmbMat k n B := by
@@ -135,9 +135,9 @@ theorem glEmbMat_mul (n : ℕ) (A B : Matrix (Fin n) (Fin n) k) :
     simp [GlobalTheory.BZMir.glEmbMat, Matrix.mul_apply, Fin.sum_univ_castSucc]
 
 /- English proof (translation)
-Use extensionality with `i j`. Consider the cases of `i using Fin.lastCases with`. Consider the case `last`. Consider the cases of `j using Fin.lastCases with`. Consider the case `last => simp [GlobalTheory.BZMir.glEmbMat]`.
+By extensionality, compare the relevant components. Split into cases according to the possible forms of the given data. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `cast b => simp [GlobalTheory.BZMir.glEmbMat, Matrix.one_apply_ne (Fin.castSucc_ne_last b).symm]`. Consider the case `cast a`. Consider the cases of `j using Fin.lastCases with`. Consider the case `last => simp [GlobalTheory.BZMir.glEmbMat, Matrix.one_apply_ne (Fin.castSucc_ne_last a)]`. Consider the case `cast b => simp [GlobalTheory.BZMir.glEmbMat, Matrix.one_apply]`.
+Treat this case separately. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem glEmbMat_one (n : ℕ) : glEmbMat k n 1 = 1 := by
   ext i j
@@ -159,9 +159,9 @@ def glEmbHom (n : ℕ) : Matrix (Fin n) (Fin n) k →* Matrix (Fin (n + 1)) (Fin
 def glEmb (n : ℕ) : GL (Fin n) k →* GL (Fin (n + 1)) k := Units.map (glEmbHom k n)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `vecMul (GlobalTheory.BZMir.eLast k n) (GlobalTheory.BZMir.glEmbMat k n (g : Matrix (Fin n) (Fin n) k)) = GlobalTheory.BZMir.eLast k n`. Rewrite using `[GlobalTheory.BZMir.vecMul_eLast]`. Use extensionality with `j`. Consider the cases of `j using Fin.lastCases with`. Consider the case `last => simp [GlobalTheory.BZMir.glEmbMat, GlobalTheory.BZMir.eLast]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `cast b => simp [GlobalTheory.BZMir.glEmbMat, GlobalTheory.BZMir.eLast, Pi.single_apply, Fin.castSucc_ne_last]`.
+Treat this case separately.
 -/
 theorem glEmb_mem_Mir (n : ℕ) (g : GL (Fin n) k) : glEmb k n g ∈ Mir k n := by
   change vecMul (GlobalTheory.BZMir.eLast k n) (GlobalTheory.BZMir.glEmbMat k n (g : Matrix (Fin n) (Fin n) k)) =

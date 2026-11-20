@@ -16,11 +16,11 @@ variable {Xo : Moduli Dw l} {c : Coeff l}
 attribute [local instance] Over.cartesianMonoidalCategory CategoryTheory.Hom.group
 
 /- English proof (translation)
-Establish `p1 : IsPullback (snd (Over.mk x) Xo.univ.t.G).left (fst (Over.mk x) Xo.univ.t.G).left Xo.univ.t.G.hom x` using `(IsPullback.of_hasPullback x Xo.univ.t.G.hom).flip`. Establish `p2 : IsPullback (snd (Over.mk (x ≫ ρ)) Xo.univ.t.G).left (fst (Over.mk (x ≫ ρ)) Xo.univ.t.G).left Xo.univ.t.G.hom (x ≫ ρ)` using `(IsPullback.of_hasPullback (x ≫ ρ) Xo.univ.t.G.hom).flip`. Establish `p3` using `p1.paste_horiz ν.cart.1`. Establish `: pm = (p3.isoIsPullback _ _ p2).hom`. Apply `p2.hom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hs]`. Simplify using the standard rewrite rules. Rewrite using `[hf]`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem pinned_isIso {S : Type} [CommRing S] {ρ : Xo.X ⟶ Xo.X} (ν : SABMap Xo.univ.t Xo.univ.t ρ)
     (x : Sp S ⟶ Xo.X) (pm : Gx x ⟶ Gx (x ≫ ρ))
@@ -39,13 +39,13 @@ theorem pinned_isIso {S : Type} [CommRing S] {ρ : Xo.X ⟶ Xo.X} (ν : SABMap X
   rw [this]; infer_instance
 
 /- English proof (translation)
-Use `haveI := pinned_isIso ν x pm hf hs`. Establish `inj : Function.Injective (pm.app ((PPx (x ≫ ρ)).U (fun _ => i))).hom` using `(ConcreteCategory.bijective_of_isIso (pm.app ((PPx (x ≫ ρ)).U (fun _ => i)))).1`. Apply `inj` to reduce the goal to its premises. Set `W : Xo.univ.t.PP.L.ι → (Gx x).Opens` to `fun j => (snd (Over.mk x) Xo.univ.t.G).left ⁻¹ᵁ ((LB.div (Xo.univ.t.PP.L.pull ν.cm.F) Xo.univ.t.PP.L).U ((fun _ => i), j))`. Establish `hW : ∀ j, W j ≤ pm ⁻¹ᵁ (PPx (x ≫ ρ)).U (fun _ => i)` using `fun j => GlobalTheory.LevActCompare.overlap_le_tgt ν.cm.F pm hs i j`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Gx x).sheaf.eq_of_locally_eq' W _ (fun j => homOfLE (hW j)) ?_ _ _ ?_` and prove the remaining obligations. Introduce `z hz`. Establish `hc : (snd (Over.mk x) Xo.univ.t.G).left.base z ∈ (⨆ j, Xo.univ.t.PP.L.U j)`. Rewrite using `[Xo.univ.t.PP.isLB.cover]`. Discharge the goal by the elementary cases of `trivial`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 hc`. Use `TopologicalSpace.Opens.mem_iSup.2 ⟨j, ?_, hj⟩` and prove the remaining obligations. Use `Set.mem_iInter.2 fun _ => ?_` and prove the remaining obligations. Establish `h1 : (pm ≫ (snd (Over.mk (x ≫ ρ)) Xo.univ.t.G).left).base z ∈ (Xo.univ.t.PP.L.U i : Set _)` using `Set.mem_iInter.1 hz 0`. Rewrite `h1` using `[hs]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h1`. Introduce `j`. Conclude with `h i j _ rfl (hW j)`.
+A detailed English derivation is pending.
 -/
 theorem carried_generator_unique {S : Type} [CommRing S] {ρ : Xo.X ⟶ Xo.X} (ν : SABMap Xo.univ.t Xo.univ.t ρ)
     (x : Sp S ⟶ Xo.X) (pm : Gx x ⟶ Gx (x ≫ ρ))
@@ -82,15 +82,15 @@ theorem carried_generator_unique {S : Type} [CommRing S] {ρ : Xo.X ⟶ Xo.X} (�
     exact h i j _ rfl (hW j)
 
 /- English proof (translation)
-Take `⟨x', o', u', t', e', b', s', g'⟩` from `y'`. Take `⟨x'', o'', u'', t'', e'', b'', s'', g''⟩` from `y''`. Take `⟨hx, hu, pm, w, hf, hs, hc, h⟩` from `h'`. Take `⟨hx2, hu2, pm2, w2, hf2, hs2, hc2, h2⟩` from `h''`. Simplify using `only at hx hu hf hs h hx2 hu2 hf2 hs2 h2 pm pm2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions.
 
-Substitute `hx hx2` using the available equality. Take `rfl` from `hw w w2 hc hc2`. Establish `p2 : IsPullback (snd (Over.mk (y.x ≫ ρ)) Xo.univ.t.G).left (fst (Over.mk (y.x ≫ ρ)) Xo.univ.t.G).left Xo.univ.t.G.hom (y.x ≫ ρ)` using `(IsPullback.of_hasPullback (y.x ≫ ρ) Xo.univ.t.G.hom).flip`. Take `rfl : pm = pm2` from `p2.hom_ext (hs.trans hs2.symm) (hf.trans hf2.symm)`. Take `rfl : u' = u''` from `by funext τ i; rw [hu, hu2]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hs' : s' = s''`. Establish `key` using `carried_generator_unique ν y.x pm hf hs s' s'' (fun i j W hW h₁ => by`. Substitute `hW` using the available equality. Conclude with `(h i j _ rfl le_rfl h₁ (GlobalTheory.LevActCompare.levelAction_overlap_le_source_chart ν.cm.F y.x i j)).trans (h2 i j _ rfl le_rfl h₁ (GlobalTheory.LevActCompare.levelAction_overlap_le_source_chart ν.cm.F y.x i j)).symm)`. Take `⟨f', c'⟩` from `s'`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨f'', c''⟩` from `s''`. Choose the witnesses or unpack the hypotheses as in `rfl : f' = f'' := by`. Use function extensionality and compare the values at `i`. Establish `: i = fun _ => i 0` using `funext fun k => congrArg i (Subsingleton.elim _ _)`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `key (i 0)`. Both sides reduce to the same expression. Substitute `hs'` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem frMove_unique {S : Type} [CommRing S] [Algebra c.F S] {ρ : Xo.X ⟶ Xo.X}
     (ν : SABMap Xo.univ.t Xo.univ.t ρ) (hw : ∀ w w', CubIso ν w → CubIso ν w' → w = w')

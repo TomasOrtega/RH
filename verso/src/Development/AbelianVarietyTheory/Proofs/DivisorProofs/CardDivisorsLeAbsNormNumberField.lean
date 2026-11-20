@@ -7,17 +7,15 @@ open GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `F _ _ I hI s hs`. Use `haveI : Finite (𝓞 F ⧸ I) := Ideal.finiteQuotientOfFreeOfNeBot I hI`. Use `letI : Fintype (𝓞 F ⧸ I) := Fintype.ofFinite _`. Establish `hgen : ∀ J : Ideal (𝓞 F), ∃ a : 𝓞 F, I ≤ J → I ⊔ Ideal.span {a} = J`. Introduce `J`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : I ≤ J`. Take `⟨a, ha⟩` from `IsDedekindDomain.exists_sup_span_eq h hI`. Conclude with `⟨a, fun _ => ha⟩`. Conclude with `⟨0, fun h' => absurd h' h⟩`. Use `choose g hg using hgen`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hle : ∀ J K : Ideal (𝓞 F), I ≤ J → I ≤ K → Ideal.Quotient.mk I (g J) = Ideal.Quotient.mk I (g K) → J ≤ K`. Introduce `J K hJ hK heq`. Rewrite using `[← hg J hJ]`. Use `sup_le hK ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : g J - g K ∈ I` using `Ideal.Quotient.eq.mp heq`. Establish `hk : g K ∈ K`. Establish `h0 : g K ∈ I ⊔ Ideal.span {g K}` using `Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)`. Rewrite `h0` using `[hg K hK]`. Then use the resulting hypothesis. Establish `: g J = (g J - g K) + g K` using `by ring`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `K.add_mem (hK hd) hk`. Establish `hinj : Set.InjOn (fun J => Ideal.Quotient.mk I (g J)) (s : Set (Ideal (𝓞 F)))`. Introduce `J hJ K hK heq`. Conclude with `le_antisymm (hle J K (hs J hJ) (hs K hK) heq) (hle K J (hs K hK) (hs J hJ) heq.symm)`.
-
-Establish `h1 : s.card ≤ (Finset.univ : Finset (𝓞 F ⧸ I)).card` using `Finset.card_le_card_of_injOn _ (fun _ _ => Finset.mem_coe.mpr (Finset.mem_univ _)) hinj`. Rewrite `h1` using `[Finset.card_univ, ← Nat.card_eq_fintype_card, ← Submodule.cardQuot_apply, ← Ideal.absNorm_apply]`. Conclude with `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_le_absNorm_of_forall_le : ∀ (F : Type) [Field F] [NumberField F] (I : Ideal (𝓞 F)), I ≠ ⊥ →
     ∀ s : Finset (Ideal (𝓞 F)), (∀ J ∈ s, I ≤ J) → s.card ≤ Ideal.absNorm I := by

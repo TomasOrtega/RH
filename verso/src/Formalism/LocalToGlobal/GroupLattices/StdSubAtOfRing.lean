@@ -48,7 +48,7 @@ def RingCompatibleAt (D : D7) (u : D.what₂.Word) (w : D.what₂.places.Pl)
     eO ((extRec D w ((D.gat u w hg).P.n' v)).φ (wU (D.what₂.places.resChar w) ((D.gat u w hg).P.n' v))) = (D.gat u w hg).P.w
 
 /- English proof (translation)
-Introduce `u w hg v`. Take `⟨eW, eQ, eO, eK, hWQ, hOK, hι, hj, hw⟩` from `h u w hg v`. Establish `hD` using `(D.gat u w hg).P.setting v`. Conclude with `stdSub_of_iso hD eW eQ hWQ ((extRec D w ((D.gat u w hg).P.n' v)).map eO eK hOK hD.frac_O hD.complete_O) hι hj hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem stdSubAt_of_ring (D : D7) (h : ∀ u w hg v, RingCompatibleAt D u w hg v) : Joints.StdSubAt D := by
   intro u w hg v
@@ -68,7 +68,7 @@ def GatIs (D : D7) (H : LevelData D) (u : D.what₂.Word) (w : D.what₂.places.
     (e : ℕ), Cmp.HypAtP I ∧ D.gat u w hg = gatOfLevelP (H u) hS nV r lam0 dom hk I ψ e
 
 /- English proof (translation)
-Introduce `u w hg`. Take `⟨W, Qq, O, Kf, _, _, _, _, _, _, _, _, _, _, n', ι, σ, j, w0, hS, nV, r, m, lam0, dom, hk, I, ψ, e, hH, heq⟩` from `h u w hg`. Rewrite using `[heq]`. Conclude with `⟨Cmp.trivStab hS r lam0 dom hk I ψ e (isUnit_det_gram0 D.sp) hH (hT u), Cmp.finClasses hS r lam0 dom hk I ψ e (isUnit_det_gram0 D.sp) hH⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem gatE_of_gatIs (D : D7) (H : LevelData D) (hT : ∀ u, Cmp.TrivStabU (H u))
     (h : ∀ u w hg, GatIs D H u w hg) : TrivialStabiliserFiniteClasses D := by

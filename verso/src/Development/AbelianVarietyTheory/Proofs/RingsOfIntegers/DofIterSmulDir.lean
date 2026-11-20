@@ -14,9 +14,9 @@ namespace GlobalTheory.DirScale
 variable {R : Type} [CommRing R] {d : ℕ}
 
 /- English proof (translation)
-Unfold `Dof`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, Finset.mul_sum]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, map_mul, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem dof_smul_dir (F : Fin d → PS R 2 d) (c : R) (u : Fin d → R) (f : PS R 1 d) :
     Dof F (c • u) f = C c * Dof F u f := by
@@ -29,7 +29,7 @@ theorem dof_smul_dir (F : Fin d → PS R 2 d) (c : R) (u : Fin d → R) (f : PS 
   rw [Pi.smul_apply, smul_eq_mul, map_mul, mul_assoc]
 
 /- English proof (translation)
-Proceed by induction on `n generalizing f with`. Consider the case `zero => rfl`. Consider the case `succ n ih`. Rewrite using `[Function.iterate_succ_apply, Function.iterate_succ_apply, GE.dof_C_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem dof_iter_C_mul (F : Fin d → PS R 2 d) (u : Fin d → R) (n : ℕ) (r : R) (f : PS R 1 d) :
     (Dof F u)^[n] (C r * f) = C r * (Dof F u)^[n] f := by
@@ -39,7 +39,7 @@ theorem dof_iter_C_mul (F : Fin d → PS R 2 d) (u : Fin d → R) (n : ℕ) (r :
     rw [Function.iterate_succ_apply, Function.iterate_succ_apply, GE.dof_C_mul, ih]
 
 /- English proof (translation)
-Proceed by induction on `n generalizing f with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Function.iterate_succ_apply, Function.iterate_succ_apply, ih, dof_smul_dir, dof_iter_C_mul, pow_succ, map_mul, mul_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem dof_iter_smul_dir (F : Fin d → PS R 2 d) (c : R) (u : Fin d → R) (n : ℕ) (f : PS R 1 d) :
     (Dof F (c • u))^[n] f = C (c ^ n) * (Dof F u)^[n] f := by
@@ -50,7 +50,7 @@ theorem dof_iter_smul_dir (F : Fin d → PS R 2 d) (c : R) (u : Fin d → R) (n 
       pow_succ, map_mul, mul_assoc]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons l L ih`. Simplify using `only [List.foldr_cons, List.map_cons, List.prod_cons]`. Rewrite using `[ih, dof_iter_smul_dir, dof_iter_C_mul, map_mul, mul_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem foldr_smul_dir (F : Fin d → PS R 2 d) {ι : Type} (c : ι → R) (u : ι → Fin d → R)
     (m : ι → ℕ) (f : PS R 1 d) (L : List ι) :
@@ -63,7 +63,7 @@ theorem foldr_smul_dir (F : Fin d → PS R 2 d) {ι : Type} (c : ι → R) (u : 
     rw [ih, dof_iter_smul_dir, dof_iter_C_mul, map_mul, mul_assoc]
 
 /- English proof (translation)
-Introduce `R _ d F ι _ c u m f`. Unfold `DmonOf`. Establish `h : ((Finset.univ : Finset ι).toList.map fun l => c l ^ m l).prod = ∏ l, c l ^ m l` using `Finset.prod_map_toList _ _`. Rewrite using `[← h]`. Conclude with `foldr_smul_dir F c u (fun l => m l) f _`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dmonOf_smul_dir : ∀ (R : Type) [CommRing R] (d : ℕ) (F : Fin d → PS R 2 d) (ι : Type)
     [Fintype ι] (c : ι → R) (u : ι → Fin d → R) (m : ι →₀ ℕ) (f : PS R 1 d),

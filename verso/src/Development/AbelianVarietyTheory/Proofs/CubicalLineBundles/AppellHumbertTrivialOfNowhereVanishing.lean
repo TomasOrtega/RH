@@ -7,13 +7,13 @@ namespace GlobalTheory
 namespace AppellHumbertTrivial
 
 /- English proof (translation)
-Establish `hbd : Bornology.IsBounded (Set.range f)`. Rewrite using `[isBounded_iff_forall_norm_le]`. Use `⟨max C 0, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨t, rfl⟩`. Establish `he : Real.exp (‖t‖ ^ 2 * a) ≤ 1` using `Real.exp_le_one_iff.2 (mul_nonpos_of_nonneg_of_nonpos (by positivity) ha.le)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hp` using `Real.exp_pos (‖t‖ ^ 2 * a)`. Use `(h t).trans ?_` and prove the remaining obligations. Break down `le_or_gt 0 C with hC | hC` into its components or cases. Conclude with `(mul_le_of_le_one_right hC he).trans (le_max_left _ _)`. Use polynomial arithmetic with `[le_max_right C 0]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hconst : ∀ t, f 0 = f t` using `fun t => hf.apply_eq_apply_of_bounded hbd 0 t`. Establish `h1 : Filter.Tendsto (fun n : ℕ => (n : ℝ) ^ 2 * a) Filter.atTop Filter.atBot` using `((Filter.tendsto_pow_atTop two_ne_zero).comp tendsto_natCast_atTop_atTop).atTop_mul_const_of_neg ha`. Establish `hlim : Filter.Tendsto (fun n : ℕ => C * Real.exp ((n : ℝ) ^ 2 * a)) Filter.atTop (nhds 0)`. Simplify using `using (Real.tendsto_exp_atBot.comp h1).const_mul C`. Establish `hle : ∀ n : ℕ, ‖f 0‖ ≤ C * Real.exp ((n : ℝ) ^ 2 * a)` using `fun n => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hconst (n : ℂ)]`. Simplify using `using h (n : ℂ)`. Conclude with `norm_le_zero_iff.1 (ge_of_tendsto' hlim hle)`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.AppellHumbertTrivial.eq_zero_of_gaussian_decay (f : ℂ → ℂ) (hf : Differentiable ℂ f) (C a : ℝ) (ha : a < 0)
     (h : ∀ t, ‖f t‖ ≤ C * Real.exp (‖t‖ ^ 2 * a)) : f 0 = 0 := by
@@ -40,7 +40,7 @@ theorem _root_.GlobalTheory.AppellHumbertTrivial.eq_zero_of_gaussian_decay (f : 
   exact norm_le_zero_iff.1 (ge_of_tendsto' hlim hle)
 
 /- English proof (translation)
-Use `haveI : IsZLattice ℝ Λ := ⟨hΛ⟩`. Conclude with `(IsZLattice.isCompact_range_of_periodic Λ φ hφ (fun z w hw => hp ⟨w, hw⟩ z)).isBounded`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.AppellHumbertTrivial.exists_bound_of_periodic {g : ℕ} (Λ : Submodule ℤ (Fin g → ℂ)) [DiscreteTopology Λ]
     (hΛ : Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤) {F : Type} [NormedAddCommGroup F]
@@ -54,7 +54,7 @@ variable {g : ℕ}
 
 variable {g : ℕ} in
 /- English proof (translation)
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm`. Rewrite using `[add_dotProduct]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.AppellHumbertTrivial.hermForm_add_left (B : Matrix (Fin g) (Fin g) ℂ) (x y w : Fin g → ℂ) :
     _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm B (x + y) w = _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm B x w + _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm B y w := by
@@ -63,7 +63,7 @@ theorem _root_.GlobalTheory.AppellHumbertTrivial.hermForm_add_left (B : Matrix (
 
 variable {g : ℕ} in
 /- English proof (translation)
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm`. Rewrite using `[star_add, Matrix.mulVec_add, dotProduct_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.AppellHumbertTrivial.hermForm_add_right (B : Matrix (Fin g) (Fin g) ℂ) (x y w : Fin g → ℂ) :
     _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm B w (x + y) = _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm B w x + _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm B w y := by
@@ -72,7 +72,7 @@ theorem _root_.GlobalTheory.AppellHumbertTrivial.hermForm_add_right (B : Matrix 
 
 variable {g : ℕ} in
 /- English proof (translation)
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm`. Rewrite using `[smul_dotProduct, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.AppellHumbertTrivial.hermForm_smul_left (B : Matrix (Fin g) (Fin g) ℂ) (t : ℂ) (x w : Fin g → ℂ) :
     _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm B (t • x) w = t * _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm B x w := by
@@ -81,7 +81,7 @@ theorem _root_.GlobalTheory.AppellHumbertTrivial.hermForm_smul_left (B : Matrix 
 
 variable {g : ℕ} in
 /- English proof (translation)
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm`. Rewrite using `[star_smul, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.AppellHumbertTrivial.hermForm_smul_right (B : Matrix (Fin g) (Fin g) ℂ) (t : ℂ) (x w : Fin g → ℂ) :
     _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm B w (t • x) = star t * _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm B w x := by
@@ -90,7 +90,7 @@ theorem _root_.GlobalTheory.AppellHumbertTrivial.hermForm_smul_right (B : Matrix
 
 variable {g : ℕ} in
 /- English proof (translation)
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm`. Simplify using `only [dotProduct, Matrix.mulVec, star_sum, star_mul', Finset.mul_sum, Pi.star_apply, star_star]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← hB.apply j i]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -106,7 +106,7 @@ theorem _root_.GlobalTheory.AppellHumbertTrivial.hermForm_swap {B : Matrix (Fin 
 
 variable {g : ℕ} in
 /- English proof (translation)
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.AppellHumbertTrivial.continuous_hermForm_self (B : Matrix (Fin g) (Fin g) ℂ) :
     Continuous fun z => _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm B z z := by
@@ -115,7 +115,7 @@ theorem _root_.GlobalTheory.AppellHumbertTrivial.continuous_hermForm_self (B : M
 
 variable {g : ℕ} in
 /- English proof (translation)
-Rewrite using `[_root_.GlobalTheory.AppellHumbertTrivial.hermForm_add_left, _root_.GlobalTheory.AppellHumbertTrivial.hermForm_add_right, _root_.GlobalTheory.AppellHumbertTrivial.hermForm_add_right, _root_.GlobalTheory.AppellHumbertTrivial.hermForm_swap hB y x]`. Simplify using `only [Complex.add_re, Complex.star_def, Complex.conj_re]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem _root_.GlobalTheory.AppellHumbertTrivial.re_hermForm_add_self {B : Matrix (Fin g) (Fin g) ℂ} (hB : B.IsHermitian)
     (x y : Fin g → ℂ) :
@@ -131,39 +131,35 @@ end AppellHumbertTrivial
 variable {g : ℕ} in
 
 /- English proof (translation)
-Introduce `g Λ _ hΛ B c r hB hc hr hr0 hper`. Establish `hnorm : ∀ (l : Λ) z, ‖r (z + l)‖ = Real.exp (Real.pi * (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm B z l).re + Real.pi / 2 * (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm B l l).re) * ‖r z‖`. Introduce `l z`. Rewrite using `[hper l z, norm_mul, norm_mul, hc, one_mul, Complex.norm_exp]`. Use `congr 2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using the standard rewrite rules. Establish `hφper : ∀ (l : Λ) z, ‖r (z + l)‖ * Real.exp (-(Real.pi / 2) * (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm B (z + l) (z + l)).re) = ‖r z‖ * Real.exp (-(Real.pi / 2) * (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm B z z).re)`. Introduce `l z`. Rewrite using `[hnorm, _root_.GlobalTheory.AppellHumbertTrivial.re_hermForm_add_self hB, mul_comm (Real.exp _) ‖r z‖, mul_assoc, ← Real.exp_add]`. Use `congr 2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hφcont : Continuous fun z => ‖r z‖ * Real.exp (-(Real.pi / 2) * (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm B z z).re)` using `hr.continuous.norm.mul (Real.continuous_exp.comp (continuous_const.mul (Complex.continuous_re.comp (_root_.GlobalTheory.AppellHumbertTrivial.continuous_hermForm_self B))))`. Take `⟨M, hM⟩` from `isBounded_iff_forall_norm_le.1 (_root_.GlobalTheory.AppellHumbertTrivial.exists_bound_of_periodic Λ hΛ _ hφcont hφper)`. Establish `hup : ∀ z, ‖r z‖ ≤ M * Real.exp (Real.pi / 2 * (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm B z z).re)`. Introduce `z`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `hM _ ⟨z, rfl⟩`. Rewrite `h` using `[Real.norm_of_nonneg (by positivity)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, ← Real.exp_add]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ ≤ M * Real.exp (Real.pi / 2 * (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm B z z).re) := mul_le_mul_of_nonneg_right h (Real.exp_pos _).le`. Establish `hψcont : Continuous fun z => (‖r z‖ * Real.exp (-(Real.pi / 2) * (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm B z z).re))⁻¹` using `hφcont.inv₀ fun z => (mul_pos (norm_pos_iff.2 (hr0 z)) (Real.exp_pos _)).ne'`. Take `⟨M', hM'⟩` from `isBounded_iff_forall_norm_le.1 (_root_.GlobalTheory.AppellHumbertTrivial.exists_bound_of_periodic Λ hΛ _ hψcont fun l z => congrArg (·⁻¹) (hφper l z))`. Establish `hlow : ∀ z, ‖r z‖⁻¹ ≤ M' * Real.exp (-(Real.pi / 2) * (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm B z z).re)`. Introduce `z`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `hM' _ ⟨z, rfl⟩`. Rewrite `h` using `[Real.norm_of_nonneg (by positivity)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_inv, mul_assoc, inv_mul_cancel₀ (Real.exp_pos _).ne', mul_one]`. Use `_ ≤ M' * Real.exp (-(Real.pi / 2) * (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm B z z).re) := mul_le_mul_of_nonneg_right h (Real.exp_pos _).le`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hscale : ∀ (t : ℂ) v, (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm B (t • v) (t • v)).re = ‖t‖ ^ 2 * (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm B v v).re`. Introduce `t v`. Rewrite using `[_root_.GlobalTheory.AppellHumbertTrivial.hermForm_smul_left, _root_.GlobalTheory.AppellHumbertTrivial.hermForm_smul_right, ← mul_assoc]`. Establish `ht : t * star t = ((‖t‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ht, Complex.re_ofReal_mul]`. Establish `hq0 : ∀ v, (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm B v v).re = 0`. Introduce `v`. Establish `hd : Differentiable ℂ fun t : ℂ => r (t • v)` using `hr.comp (differentiable_id.smul_const v)`. Break down `lt_trichotomy (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm B v v).re 0 with hneg | hzero | hpos` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact.
 
-It suffices to derive a contradiction. Establish `h` using `_root_.GlobalTheory.AppellHumbertTrivial.eq_zero_of_gaussian_decay (fun t => r (t • v)) hd M (Real.pi / 2 * (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm B v v).re) (mul_neg_of_pos_of_neg (by positivity) hneg) (fun t => by`. Use `(hup (t • v)).trans_eq ?_` and prove the remaining obligations. Rewrite using `[hscale]`. Use `congr 2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Use the proof step `ring)`. Conclude with `hr0 0 (by simpa using h)`. Conclude with `hzero`. It suffices to derive a contradiction. Establish `h` using `_root_.GlobalTheory.AppellHumbertTrivial.eq_zero_of_gaussian_decay (fun t => (r (t • v))⁻¹) (hd.inv fun t => hr0 _) M' (-(Real.pi / 2) * (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm B v v).re) (by nlinarith [Real.pi_pos]) (fun t => by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[norm_inv]`. Use `(hlow (t • v)).trans_eq ?_` and prove the remaining obligations. Rewrite using `[hscale]`. Use `congr 2`. Use the proof step `ring)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hr0 0 (by simpa using h)`. Establish `hH : ∀ x y, _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm B x y = 0`. Introduce `x y`. Establish `h1` using `_root_.GlobalTheory.AppellHumbertTrivial.re_hermForm_add_self hB x y`. Establish `h2` using `_root_.GlobalTheory.AppellHumbertTrivial.re_hermForm_add_self hB x (Complex.I • y)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [hq0] at h1`. Rewrite `h2` using `[hq0, hq0, hq0, _root_.GlobalTheory.AppellHumbertTrivial.hermForm_smul_right]`. Use `Complex.ext ?_ ?_` and prove the remaining obligations. Simplify using `only [Complex.zero_re]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[Complex.star_def] at h2`. Simplify using `using h2`. Establish `hB0 : B = 0`. Use extensionality with `i j`. Establish `h` using `hH (Pi.single i 1) (Pi.single j 1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 
-Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.hermForm at h`. Simplify using `using h`. Establish `hbdd : Bornology.IsBounded (Set.range r)`. Rewrite using `[isBounded_iff_forall_norm_le]`. Use `⟨M, ?_⟩` and prove the remaining obligations.
-
-Introduce and unpack `_ ⟨z, rfl⟩`. Simplify `hup z` using `[hq0]`. Establish `hconst : ∀ z, r z = r 0` using `fun z => hr.apply_eq_apply_of_bounded hbdd z 0`. Use `⟨hB0, fun l => ?_, hconst⟩` and prove the remaining obligations. Establish `h` using `hper l 0`.
-
-Simplify using `only [hH, hconst (0 + (l : Fin g → ℂ)), mul_zero, add_zero, Complex.exp_zero, mul_one] at h`. Conclude with `mul_right_cancel₀ (hr0 0) (h.symm.trans (one_mul _).symm)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.appellHumbert_trivial_of_nowhere_vanishing :
     ∀ (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)) [DiscreteTopology Λ], Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤ →

@@ -15,42 +15,42 @@ def mj (z x y : S.V) : E := S.hT x y - 2 / S.hT z z * (S.hT x z * S.hT z y)
 variable {S}
 
 /- English proof (translation)
-Establish `h` using `S.herm.eq z z`. Rewrite `h` using `[starRingEnd_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem star_hzz (z : S.V) : star (S.hT z z) = S.hT z z := by
   have h := S.herm.eq z z
   rwa [starRingEnd_apply] at h
 
 /- English proof (translation)
-Simplify using `only [mj, map_add, LinearMap.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mj_add_left (z x x' y : S.V) : mj S z (x + x') y = mj S z x y + mj S z x' y := by
   simp only [mj, map_add, LinearMap.add_apply]
   ring
 
 /- English proof (translation)
-Simplify using `only [mj, LinearMap.map_smulₛₗ₂, smul_eq_mul, starRingEnd_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mj_smul_left (z : S.V) (c : E) (x y : S.V) : mj S z (c • x) y = star c * mj S z x y := by
   simp only [mj, LinearMap.map_smulₛₗ₂, smul_eq_mul, starRingEnd_apply]
   ring
 
 /- English proof (translation)
-Simplify using `only [mj, map_add]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mj_add_right (z x y y' : S.V) : mj S z x (y + y') = mj S z x y + mj S z x y' := by
   simp only [mj, map_add]
   ring
 
 /- English proof (translation)
-Simplify using `only [mj, map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mj_smul_right (z : S.V) (c : E) (x y : S.V) : mj S z x (c • y) = c * mj S z x y := by
   simp only [mj, map_smul, smul_eq_mul]
   ring
 
 /- English proof (translation)
-Establish `hs : ∀ a b : S.V, star (S.hT a b) = S.hT b a` using `fun a b => by`. Establish `h` using `S.herm.eq a b`. Rewrite `h` using `[starRingEnd_apply]`. Then use the resulting hypothesis. Simplify using `only [mj, star_sub, star_mul', star_div₀, hs, star_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mj_swap (z x y : S.V) : mj S z y x = star (mj S z x y) := by
   have hs : ∀ a b : S.V, star (S.hT a b) = S.hT b a := fun a b => by
@@ -60,12 +60,12 @@ theorem mj_swap (z x y : S.V) : mj S z y x = star (mj S z x y) := by
   ring
 
 /- English proof (translation)
-The claim follows from `(mj_swap z x x).symm`.
+A detailed English derivation is pending.
 -/
 theorem mj_self_star (z x : S.V) : star (mj S z x x) = mj S z x x := (mj_swap z x x).symm
 
 /- English proof (translation)
-Establish `h` using `hstar a`. Rewrite `h` using `[ha]`. Conclude with `(Complex.conj_eq_iff_re.1 h.symm).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tau_real {τ : E →+* ℂ} (hstar : ∀ a : E, τ (star a) = starRingEnd ℂ (τ a)) {a : E}
     (ha : star a = a) : τ a = ((τ a).re : ℂ) := by
@@ -74,7 +74,7 @@ theorem tau_real {τ : E →+* ℂ} (hstar : ∀ a : E, τ (star a) = starRingEn
   exact (Complex.conj_eq_iff_re.1 h.symm).symm
 
 /- English proof (translation)
-Rewrite using `[map_mul, hstar, Complex.normSq_eq_conj_mul_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tau_normSq {τ : E →+* ℂ} (hstar : ∀ a : E, τ (star a) = starRingEnd ℂ (τ a)) (c : E) :
     τ (star c * c) = (Complex.normSq (τ c) : ℂ) := by
@@ -89,21 +89,19 @@ variable (hstar : ∀ (τ : E →+* ℂ) (a : E), τ (star a) = starRingEnd ℂ 
 include hstar hPX hzP hzz hpos
 
 /- English proof (translation)
-Establish `hzz0 : S.hT z z ≠ 0`. Introduce `h`. Rewrite `hzz` using `[h, map_zero]`. Simplify using `at hzz`. Use `set c := S.hT z y / S.hT z z with hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set y0 := y - c • z with hy0def`. Establish `h1 : S.hT z y0 = 0`. Simplify using `only [y0, map_sub, LinearMap.map_smul, smul_eq_mul, c]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy0 : y0 ∈ P` using `P.sub_mem hy (P.smul_mem c hzP)`. Establish `h2 : S.hT y0 z = 0` using `by rw [herm_swap, h1, star_zero]`. Establish `hm : mj S z y y = S.hT y0 y0 - star c * c * S.hT z z`. Establish `hyy : y = y0 + c • z` using `by simp [y0]`. Rewrite using `[hyy]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Simplify using `only [mj, map_add, LinearMap.add_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, h1, h2, starRingEnd_apply, RingHom.id_apply]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hq : 0 ≤ (τ (S.hT y0 y0)).re ∧ ((τ (S.hT y0 y0)).re = 0 → y0 ∈ X)`. Distinguish the cases in `hX : y0 ∈ X`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: S.hT y0 y0 = 0` using `hPX y0 hX y0 hy0`. Simplify using `[this, hX]`. Use `hpos y0 hy0 h1 hX` as an intermediate fact. Conclude with `⟨this.le, fun h => absurd h this.ne'⟩`. Establish `hτ : (τ (mj S z y y)).re = (τ (S.hT y0 y0)).re - Complex.normSq (τ c) * (τ (S.hT z z)).re`.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hm, map_sub, map_mul, tau_normSq (hstar τ), Complex.sub_re, Complex.re_ofReal_mul]`. Establish `hns` using `Complex.normSq_nonneg (τ c)`. Use `⟨by rw [hτ]; nlinarith, fun h0 => ?_⟩` and prove the remaining obligations. Rewrite `h0` using `[hτ]`. Establish `hA : Complex.normSq (τ c) * (τ (S.hT z z)).re = 0` using `by nlinarith`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : (τ (S.hT y0 y0)).re = 0` using `by nlinarith`. Establish `hc0 : c = 0`. Break down `mul_eq_zero.mp hA with h | h` into its components or cases. Conclude with `τ.injective (by rw [Complex.normSq_eq_zero.mp h, map_zero])`. Conclude with `absurd h hzz.ne`.
-
-Establish `: y = y0` using `by simp [y0, hc0]`. Rewrite using `[this]`. Conclude with `hq.2 hB`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mj_pos (y : S.V) (hy : y ∈ P) :
     0 ≤ (τ (mj S z y y)).re ∧ ((τ (mj S z y y)).re = 0 → y ∈ X) := by
@@ -144,21 +142,21 @@ theorem mj_pos (y : S.V) (hy : y ∈ P) :
   rw [this]; exact hq.2 hB
 
 /- English proof (translation)
-Establish `hnn : ∀ s : E, 0 ≤ (τ (mj S z (s • x + y) (s • x + y))).re` using `fun s => (mj_pos hstar τ X P hPX z hzP hzz hpos _ (P.add_mem (P.smul_mem s hx) hy)).1`. Establish `hexp : ∀ s : E, mj S z (s • x + y) (s • x + y) = star s * s * mj S z x x + star s * mj S z x y + s * star (mj S z x y) + mj S z y y`. Introduce `s`. Rewrite using `[mj_add_left, mj_add_right, mj_add_right, mj_smul_left, mj_smul_left, mj_smul_right, mj_smul_right, mj_swap z x y]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hareal` using `tau_real (hstar τ) (mj_self_star z x)`. Establish `ha0` using `(mj_pos hstar τ X P hPX z hzP hzz hpos x hx).1`. Break down `ha0.lt_or_eq with hapos | hazero` into its components or cases. Establish `hane : mj S z x x ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hapos` using `[h, map_zero]`. Simplify using `at hapos`. Establish `h` using `hnn (-(mj S z x y) / mj S z x x)`. Rewrite `h` using `[hexp]`. Establish `hval : star (-(mj S z x y) / mj S z x x) * (-(mj S z x y) / mj S z x x) * mj S z x x + star (-(mj S z x y) / mj S z x x) * mj S z x y + (-(mj S z x y) / mj S z x x) * star (mj S z x y) + mj S z y y = mj S z y y - (star (mj S z x y) * mj S z x y) / mj S z x x`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[star_div₀, star_neg, mj_self_star]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[hval, map_sub, map_div₀, tau_normSq (hstar τ), hareal, Complex.sub_re]`. Rewrite `h` using `[← Complex.ofReal_div, Complex.ofReal_re]`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[sub_nonneg, div_le_iff₀ hapos]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hτa : τ (mj S z x x) = 0` using `by rw [hareal, ← hazero]; simp`. Establish `ha : mj S z x x = 0` using `τ.injective (by rw [hτa, map_zero])`. Rewrite using `[← hazero, zero_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hlt`. Establish `hpos' : 0 < Complex.normSq (τ (mj S z x y))` using `lt_of_not_ge hlt`. Take `⟨N, hN⟩` from `exists_nat_gt ((τ (mj S z y y)).re / (2 * Complex.normSq (τ (mj S z x y))))`. Establish `h` using `hnn (-(N : E) * mj S z x y)`. Rewrite `h` using `[hexp, ha]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hval : star (-(N : E) * mj S z x y) * (-(N : E) * mj S z x y) * 0 + star (-(N : E) * mj S z x y) * mj S z x y + (-(N : E) * mj S z x y) * star (mj S z x y) + mj S z y y = mj S z y y - (2 * (N : E)) * (star (mj S z x y) * mj S z x y)`. Rewrite using `[star_mul, star_neg, star_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[hval, map_sub, map_mul, tau_normSq (hstar τ), Complex.sub_re]`. Establish `h2 : (τ (2 * (N : E))) = ((2 * (N : ℝ) : ℝ) : ℂ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_natCast, map_ofNat]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[h2, ← Complex.ofReal_mul, Complex.ofReal_re]`. Rewrite `hN` using `[div_lt_iff₀ (by positivity)]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/

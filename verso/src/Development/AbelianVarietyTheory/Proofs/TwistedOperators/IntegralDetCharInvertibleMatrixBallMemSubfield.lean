@@ -18,29 +18,25 @@ open MeasureTheory
 open scoped Pointwise
 
 /- English proof (translation)
-Use `set q : G → G ⧸ K := QuotientGroup.mk`. Establish `hcov : S ⊆ ⋃ s ∈ S, s • (K : Set G)` using `fun s hs => Set.mem_biUnion hs ⟨1, one_mem K, by simp⟩`. Take `⟨b, hbS, hbf, hb⟩` from `hS.elim_finite_subcover_image (fun s _ => hKo.smul s) hcov`. Establish `hfin : (q '' S).Finite`. Use `(hbf.image q).subset ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨s, hs, rfl⟩`. Take `⟨g, hg, hy⟩` from `Set.mem_iUnion₂.1 (hb hs)`. Use `⟨g, hg, ?_⟩` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `hy`. Simplify using `only [smul_eq_mul, q]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(QuotientGroup.mk_mul_of_mem g hy).symm`. Establish `hout : ∀ Q ∈ q '' S, Q.out ∈ S`. Introduce and unpack `_ ⟨s, hs, rfl⟩`. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul K s`. Rewrite using `[hh]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hSK s hs h h.2`. Take `⟨T, hT⟩ : ∃ T : Finset (G ⧸ K), ∀ Q, Q ∈ T ↔ Q ∈ q '' S` from `⟨hfin.toFinset, fun Q => hfin.mem_toFinset⟩`. Establish `hSeq : S = ⋃ Q ∈ T, Q.out • (K : Set G)`. Use extensionality with `g`. Simplify using `only [Set.mem_iUnion, hT, exists_prop]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hg`. Use `⟨q g, ⟨g, hg, rfl⟩, ?_⟩` and prove the remaining obligations. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul K g`. Use `⟨h⁻¹, (h⁻¹).2, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Simplify using `[q, hh, mul_assoc]`. Introduce and unpack `⟨Q, hQ, y, hy, rfl⟩`. Conclude with `hSK _ (hout Q hQ) y hy`. Establish `hconst : ∀ Q ∈ q '' S, ∀ y ∈ Q.out • (K : Set G), f y = f Q.out`. Introduce and unpack `Q hQ _ ⟨y, hy, rfl⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hf _ (hout Q hQ) y hy`. Use `⟨T, ?_⟩` and prove the remaining obligations. Rewrite using `[hSeq, integral_biUnion_finset]`. Use `Finset.sum_congr rfl fun Q hQ => ?_` and prove the remaining obligations. Rewrite `hQ` using `[hT]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[setIntegral_congr_fun (hKo.smul _).measurableSet (hconst Q hQ), setIntegral_const, measureReal_def, measure_smul, ← measureReal_def, Complex.real_smul, mul_comm]`. Conclude with `fun Q _ => (hKo.smul _).measurableSet`. Introduce `Q _ Q' _ hne`. Use `Set.disjoint_left.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩ ⟨y', hy', he⟩`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `hne` to reduce the goal to its premises. Establish `h1 : q (Q.out * y) = Q`. Simplify using `only [q]`. Rewrite using `[QuotientGroup.mk_mul_of_mem _ hy]`. Conclude with `QuotientGroup.out_eq' Q`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : q (Q'.out * y') = Q'`. Simplify using `only [q]`. Rewrite using `[QuotientGroup.mk_mul_of_mem _ hy']`. Conclude with `QuotientGroup.out_eq' Q'`. Simplify using `only [smul_eq_mul] at he`.
-
-Rewrite using `[← h1, ← h2, he]`. Introduce `Q hQ`. Rewrite `hQ` using `[hT]`. Use `(integrableOn_congr_fun (hconst Q hQ) (hKo.smul _).measurableSet).2 ?_` and prove the remaining obligations. Use `integrableOn_const ?_` and prove the remaining obligations.
-
-Rewrite using `[measure_smul]`. Conclude with `hKt`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_eq_sum_of_rightInv {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsMulLeftInvariant] (K : Subgroup G)
@@ -111,9 +107,9 @@ open MeasureTheory
 open scoped Pointwise
 
 /- English proof (translation)
-Establish `hKt : μ K ≠ ⊤` using `((measure_mono (show (K : Set G) ⊆ J from hKJ)).trans_lt (by simp [hJ1])).ne`. Take `⟨t, ht⟩` from `integral_eq_sum_of_rightInv μ K hKo hKt hJc (fun s hs k hk => J.mul_mem hs (hKJ hk)) (fun _ => (1 : ℂ)) (fun _ _ _ _ => rfl)`. Rewrite `ht` using `[setIntegral_const, measureReal_def, hJ1, Finset.sum_const, nsmul_eq_mul, one_mul]`. Simplify using `only [ENNReal.toReal_one, one_smul] at ht`. Use `⟨t.card, eq_inv_of_mul_eq_one_right ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `ht.symm` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem measureReal_eq_inv_natCast {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsMulLeftInvariant] {J K : Subgroup G}
@@ -134,9 +130,9 @@ def rightStab {G : Type} [Group G] (S : Set G) : Subgroup G where
   inv_mem' := fun {a} ha g => by rw [ha (g * a⁻¹), inv_mul_cancel_right]
 
 /- English proof (translation)
-Take `⟨V, hV, hSV⟩` from `compact_open_separated_mul_right hSc hSo subset_rfl`. Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) (Filter.mem_of_superset (Filter.inter_mem hV (inv_mem_nhds_one G hV)) ?_)` and prove the remaining obligations. Introduce and unpack `k ⟨hk, hk'⟩ g`. Use `⟨fun hg => hSV (Set.mul_mem_mul hg hk), fun hg => ?_⟩` and prove the remaining obligations. Use `hSV (Set.mul_mem_mul hg hk')` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[mul_inv_cancel_right]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isOpen_rightStab {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] {S : Set G}
     (hSc : IsCompact S) (hSo : IsOpen S) : IsOpen (rightStab S : Set G) := by
@@ -159,7 +155,7 @@ def matBall (x : Matrix A' A' k) (c : kˣ) : Set (Matrix A' A' k) :=
   {y | ∀ i j, valuation k (y i j - x i j) ≤ valuation k (c : k)}
 
 /- English proof (translation)
-Establish `h0 : 0 < valuation k (c : k)` using `zero_lt_iff.2 (by simp)`. Use extensionality with `y`. Simplify using `only [matBall, Set.mem_setOf_eq, Set.mem_iInter, Set.mem_preimage, SetLike.mem_coe, Valuation.mem_integer_iff, map_div₀, div_le_one₀ h0]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem matBall_eq_preimage (x : Matrix A' A' k) (c : kˣ) :
     matBall x c = ⋂ i, ⋂ j, (fun y : Matrix A' A' k => (y i j - x i j) / (c : k)) ⁻¹' (𝒪[k] : Set k) := by
@@ -169,7 +165,7 @@ theorem matBall_eq_preimage (x : Matrix A' A' k) (c : kˣ) :
     Valuation.mem_integer_iff, map_div₀, div_le_one₀ h0]
 
 /- English proof (translation)
-Rewrite using `[matBall_eq_preimage]`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => IsOpen.preimage (by fun_prop) Valuation.isOpen_integer`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_matBall (x : Matrix A' A' k) (c : kˣ) : IsOpen (matBall x c) := by
   rw [matBall_eq_preimage]
@@ -177,13 +173,11 @@ theorem isOpen_matBall (x : Matrix A' A' k) (c : kˣ) : IsOpen (matBall x c) := 
     IsOpen.preimage (by fun_prop) Valuation.isOpen_integer
 
 /- English proof (translation)
-Establish `hc : (c : k) ≠ 0` using `c.ne_zero`. Establish `e : matBall x c = (fun A : Matrix A' A' k => (c : k) • A + x) '' {A | ∀ i j, A i j ∈ 𝒪[k]}`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun i j => (y i j - x i j) / (c : k), fun i j => ?_, ?_⟩` and prove the remaining obligations. Use `(matBall_eq_preimage x c ▸ hy : y ∈ _)` as an intermediate fact. Simplify using `only [Set.mem_iInter, Set.mem_preimage] at this`. Conclude with `this i j`. Use extensionality with `i j show (c : k) * ((y i j - x i j) / (c : k)) + x i j = y i j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_div_cancel₀ _ hc, sub_add_cancel]`. Introduce and unpack `⟨A, hA, rfl⟩ i j`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, add_sub_cancel_right, map_mul]`. Conclude with `mul_le_of_le_one_right' ((Valuation.mem_integer_iff _ _).1 (hA i j))`. Rewrite using `[e]`.
-
-Conclude with `isCompact_intMatrix.image (by fun_prop)`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_matBall (x : Matrix A' A' k) (c : kˣ) : IsCompact (matBall x c) := by
   have hc : (c : k) ≠ 0 := c.ne_zero
@@ -205,9 +199,9 @@ theorem isCompact_matBall (x : Matrix A' A' k) (c : kˣ) : IsCompact (matBall x 
   exact isCompact_intMatrix.image (by fun_prop)
 
 /- English proof (translation)
-Establish `e : {g : GL A' k | ∀ i j, valuation k (g.val i j - x i j) ≤ valuation k (c : k)} = (fun g : GL A' k => g.val) ⁻¹' matBall x c` using `rfl`. Rewrite using `[e]`. Use `⟨?_, (isOpen_matBall x c).preimage Units.continuous_val⟩` and prove the remaining obligations. Rewrite using `[isEmbedding_val_GL.isInducing.isCompact_iff]`. Use `isCompact_matBall x c using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use extensionality with `y`. Use `⟨fun ⟨g, hg, hgy⟩ => hgy ▸ hg, fun hy => ⟨Matrix.GeneralLinearGroup.mkOfDetNeZero y (hdet y hy), hy, rfl⟩⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem isCompact_isOpen_glBall (x : Matrix A' A' k) (c : kˣ) (hdet : ∀ y ∈ matBall x c, y.det ≠ 0) :
     IsCompact {g : GL A' k | ∀ i j, valuation k (g.val i j - x i j) ≤ valuation k (c : k)} ∧
@@ -227,15 +221,13 @@ namespace GlobalTheory.GLBallInt
 open MeasureTheory GlobalTheory.SplitFlip GlobalTheory.SplitWeil ValuativeRel
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ A' _ _ F J hJo hJK ν z ϖ e _ hcond hνF hapF c x hdet`. Use `haveI := isHaarMeasure_haarVol hJo hJK`. Take `⟨hSc, hSo⟩` from `isCompact_isOpen_glBall x c hdet`. Use `set S := {g : GL A' k | ∀ i j, valuation k (g.val i j - x i j) ≤ valuation k (c : k)} with hSdef`. Use `set K : Subgroup (GL A' k) := J ⊓ GlobalTheory.SplitFlip.glLatCong (ϖ ^ e) (stdLat k A') ⊓ rightStab S with hKdef`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hKo : IsOpen (K : Set (GL A' k))`. Simplify using `only [hKdef, Subgroup.coe_inf]`. Conclude with `(hJo.inter (GlobalTheory.FunObj.GivenAdm.isOpen_glLatCong _)).inter (isOpen_rightStab hSc hSo)`. Establish `hKJ : K ≤ J` using `inf_le_left.trans inf_le_left`. Establish `hJc : IsCompact (J : Set (GL A' k))` using `isCompact_KO.of_isClosed_subset (J.isClosed_of_isOpen hJo) hJK`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hKt : haarVol J K ≠ ⊤` using `((measure_mono (show (K : Set (GL A' k)) ⊆ J from hKJ)).trans_lt (by simp [haarVol_self hJo hJK])).ne`. Establish `hinv : ∀ s ∈ S, ∀ k' ∈ K, ((ν (gdet (s * k')) : ℂ) * apow (gdet (s * k')) z) = (ν (gdet s) : ℂ) * apow (gdet s) z`. Introduce `s _ k' hk`. Establish `hu : gdet k' ∈ unitCong (ϖ ^ e)` using `GlobalTheory.FunObj.GivenAdm.gdet_mem_unitCong (Subgroup.mem_inf.1 (Subgroup.mem_inf.1 hk).1).2`. Rewrite using `[gdet_mul, map_mul, Units.val_mul, apow_mul, hcond _ hu, apow_of_valuation_eq_one hu.1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using the standard rewrite rules. Take `⟨t, ht⟩` from `integral_eq_sum_of_rightInv (haarVol J) K hKo hKt hSc (fun s hs k' hk => ((Subgroup.mem_inf.1 hk).2 s).1 hs) (fun g => (ν (gdet g) : ℂ) * apow (gdet g) z) hinv`. Rewrite using `[ht]`. Take `⟨n, hn⟩` from `measureReal_eq_inv_natCast (haarVol J) hJc (haarVol_self hJo hJK) hKo hKJ`. Use `Subfield.sum_mem _ fun Q _ => F.mul_mem (F.mul_mem (hνF _) (hapF _)) ?_` and prove the remaining obligations.
-
-Rewrite using `[hn]`. Use `push_cast`. Conclude with `F.inv_mem (natCast_mem F n)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem integral_glBall_mem : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] {A' : Type} [Fintype A'] [DecidableEq A'] (F : Subfield ℂ) {J : Subgroup (GL A' k)}, IsOpen (J : Set (GL A' k)) → J ≤ KO k A' → ∀ (ν : kˣ →* ℂˣ) (z : ℂ) {ϖ : kˣ} {e : ℕ}, IsUnif ϖ → CondLE ϖ e ν → (∀ u, (ν u : ℂ) ∈ F) → (∀ u : kˣ, apow u z ∈ F) → ∀ (c : kˣ) (x : Matrix A' A' k), (∀ y : Matrix A' A' k, (∀ i j, valuation k (y i j - x i j) ≤ valuation k (c : k)) → y.det ≠ 0) → ∫ g in {g : GL A' k | ∀ i j, valuation k (g.val i j - x i j) ≤ valuation k (c : k)}, (ν (gdet g) : ℂ) * apow (gdet g) z ∂(haarVol J) ∈ F := by
   intro k _ _ _ _ _ _ A' _ _ F J hJo hJK ν z ϖ e _ hcond hνF hapF c x hdet

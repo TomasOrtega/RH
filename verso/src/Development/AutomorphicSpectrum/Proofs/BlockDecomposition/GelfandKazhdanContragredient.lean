@@ -13,7 +13,7 @@ def revMat (A : Type) [CommRing A] (N : ℕ) : Matrix (Fin N) (Fin N) A :=
   (1 : Matrix (Fin N) (Fin N) A).submatrix Fin.rev id
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[revMat, Matrix.mul_apply, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem revMat_mul {A : Type} [CommRing A] {N : ℕ} (M : Matrix (Fin N) (Fin N) A) :
     revMat A N * M = M.submatrix Fin.rev id := by
@@ -21,9 +21,9 @@ theorem revMat_mul {A : Type} [CommRing A] {N : ℕ} (M : Matrix (Fin N) (Fin N)
   simp [revMat, Matrix.mul_apply, Matrix.one_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [revMat, Matrix.mul_apply, Matrix.submatrix_apply, Matrix.one_apply, id]`. Rewrite using `[Finset.sum_eq_single (Fin.rev j)]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg, mul_zero]`. Introduce `h`. Conclude with `hb (by rw [← h, Fin.rev_rev])`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_revMat {A : Type} [CommRing A] {N : ℕ} (M : Matrix (Fin N) (Fin N) A) :
     M * revMat A N = M.submatrix id Fin.rev := by
@@ -38,7 +38,7 @@ theorem mul_revMat {A : Type} [CommRing A] {N : ℕ} (M : Matrix (Fin N) (Fin N)
   · simp
 
 /- English proof (translation)
-Rewrite using `[revMat_mul]`. Use extensionality with `i j`. Simplify using `[revMat, Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem revMat_mul_self (A : Type) [CommRing A] (N : ℕ) : revMat A N * revMat A N = 1 := by
   rw [revMat_mul]
@@ -49,7 +49,7 @@ def w₀ (A : Type) [CommRing A] (N : ℕ) : GL (Fin N) A :=
   ⟨revMat A N, revMat A N, revMat_mul_self A N, revMat_mul_self A N⟩
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use `show _ = revMat A N * (invT g).1 * revMat A N`. Rewrite using `[revMat_mul, mul_revMat]`. Use extensionality with `i j`. Simplify using `[thetaW, Matrix.reindexAlgEquiv_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem thetaW_eq_conj (A : Type) [CommRing A] (N : ℕ) (g : GL (Fin N) A) :
     thetaW A N g = w₀ A N * invT g * (w₀ A N)⁻¹ := by
@@ -72,7 +72,7 @@ def compInvTEquiv {A : Type} [CommRing A] {N : ℕ} {V : Type} [AddCommGroup V] 
         inv_mul_cancel_right]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ hGK N V _ _ π hs hi`. Take `⟨e⟩` from `hGK N π hs hi`. Conclude with `⟨(compInvTEquiv π).symm.trans e⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem comp_thetaW_equiv_contra : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k], GKLocal k → ∀ (N : ℕ) {V : Type} [AddCommGroup V] [Module ℂ V]

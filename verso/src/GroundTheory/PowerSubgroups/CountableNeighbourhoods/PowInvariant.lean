@@ -19,14 +19,14 @@ def mulZPowers (U : Subgroup Gal(AlgebraicClosure ℚ/ℚ)) (s : Gal(AlgebraicCl
     group
 
 /- English proof (translation)
-Introduce `u hu` and use `⟨0, u, hu, by simp⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem le_powerSubgroup₂ (U : Subgroup Gal(AlgebraicClosure ℚ/ℚ))
     (s : Gal(AlgebraicClosure ℚ/ℚ)) (hU : ∀ (k : ℤ), ∀ x ∈ U, s ^ k * x * (s ^ k)⁻¹ ∈ U) :
     U ≤ mulZPowers U s hU := fun u hu => ⟨0, u, hu, by simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, 1, U.one_mem, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_mulZPowers_self (U : Subgroup Gal(AlgebraicClosure ℚ/ℚ))
     (s : Gal(AlgebraicClosure ℚ/ℚ)) (hU : ∀ (k : ℤ), ∀ x ∈ U, s ^ k * x * (s ^ k)⁻¹ ∈ U) :

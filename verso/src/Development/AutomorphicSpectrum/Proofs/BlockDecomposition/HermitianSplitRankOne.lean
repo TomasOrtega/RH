@@ -13,26 +13,26 @@ section SwapHerm
 variable {R V : Type} [CommRing R] [AddCommGroup V] [Module R V] {c : R →+* R} {h : V → V → R}
 
 /- English proof (translation)
-Use `hH.smul_right 0 x 0` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem swapHerm_zero_right (hH : IsHerm c h) (x : V) : h x 0 = 0 := by
   have := hH.smul_right 0 x 0
   simpa using this
 
 /- English proof (translation)
-Rewrite using `[hH.symm z (x + y), hH.add_right, map_add, ← hH.symm z x, ← hH.symm z y]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem swapHerm_add_left (hH : IsHerm c h) (x y z : V) : h (x + y) z = h x z + h y z := by
   rw [hH.symm z (x + y), hH.add_right, map_add, ← hH.symm z x, ← hH.symm z y]
 
 /- English proof (translation)
-Rewrite using `[hH.symm y (a • x), hH.smul_right, map_mul, ← hH.symm y x]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem swapHerm_smul_left (hH : IsHerm c h) (a : R) (x y : V) : h (a • x) y = c a * h x y := by
   rw [hH.symm y (a • x), hH.smul_right, map_mul, ← hH.symm y x]
 
 /- English proof (translation)
-Use `hH.add_right x (y - z) z` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Conclude with `eq_sub_of_add_eq this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem swapHerm_sub_right (hH : IsHerm c h) (x y z : V) : h x (y - z) = h x y - h x z := by
   have := hH.add_right x (y - z) z
@@ -40,7 +40,7 @@ theorem swapHerm_sub_right (hH : IsHerm c h) (x y z : V) : h x (y - z) = h x y -
   exact eq_sub_of_add_eq this.symm
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem swapHerm_part {e e' : R} (hce : c e = e') (hH : IsHerm c h) {a : V} (ha : e • a = a) (z : V) :
     h a z = e' * h a z := by
@@ -48,7 +48,7 @@ theorem swapHerm_part {e e' : R} (hce : c e = e') (hH : IsHerm c h) {a : V} (ha 
     _ = e' * h a z := by rw [swapHerm_smul_left hH, hce]
 
 /- English proof (translation)
-Establish `h1 : h a a = e * h a a`. Combine the equalities or inequalities in the displayed calculation. Establish `h2` using `swapHerm_part hce hH ha a`. Rewrite using `[h1, h2, ← mul_assoc, hee, zero_mul]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem swapHerm_self {e e' : R} (hee : e * e' = 0) (hce : c e = e') (hH : IsHerm c h) {a : V}
     (ha : e • a = a) : h a a = 0 := by
@@ -59,7 +59,7 @@ theorem swapHerm_self {e e' : R} (hee : e * e' = 0) (hce : c e = e') (hH : IsHer
   rw [h1, h2, ← mul_assoc, hee, zero_mul]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Conclude with `ha (hP.nondeg a hne)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem swapHerm_exists_ne (hP : IsPerfect h) {a : V} (ha : a ≠ 0) : ∃ y, h a y ≠ 0 := by
   by_contra hne
@@ -67,19 +67,17 @@ theorem swapHerm_exists_ne (hP : IsPerfect h) {a : V} (ha : a ≠ 0) : ∃ y, h 
   exact ha (hP.nondeg a hne)
 
 /- English proof (translation)
-Introduce `hab`. Establish `hee' : e' * e = 0` using `by rw [mul_comm]; exact hee`. Establish `haa : h a a = 0` using `swapHerm_self hee hce hH ha`. Establish `hbb : h b b = 0` using `swapHerm_self hee' hce' hH hb`. Establish `hba : h b a = 0` using `by rw [hH.symm a b, hab, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxx : h (a + b) (a + b) = 0`. Rewrite using `[swapHerm_add_left hH, hH.add_right, hH.add_right, haa, hab, hba, hbb]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨y1, hy1⟩` from `swapHerm_exists_ne hP ha0`. Take `⟨y2, hy2⟩` from `swapHerm_exists_ne hP hb0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hex : ∃ y, h a y ≠ 0 ∧ h b y ≠ 0`. Distinguish the cases in `h1 : h b y1 = 0`. Distinguish the cases in `h2 : h a y2 = 0`. Use `⟨y1 + y2, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hH.add_right, h2, add_zero]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy1`. Rewrite using `[hH.add_right, h1, zero_add]`. Conclude with `hy2`. Conclude with `⟨y2, h2, hy2⟩`. Conclude with `⟨y1, hy1, h1⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y, hya, hyb⟩` from `hex`. Establish `hpa : h a y = e' * h a y` using `swapHerm_part hce hH ha y`. Establish `hpb : h b y = e * h b y` using `swapHerm_part hce' hH hb y`. Establish `hunit : IsUnit (h (a + b) y)`. Apply `hu` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[swapHerm_add_left hH, mul_add, hpa, ← mul_assoc, hee, zero_mul, zero_add, ← hpb]`. Conclude with `hyb`. Rewrite using `[swapHerm_add_left hH, mul_add, hpb, ← mul_assoc, hee', zero_mul, add_zero, ← hpa]`. Conclude with `hya`. Take `⟨U, hU⟩` from `hunit`.
-
-Apply `hno (a + b) ((↑U⁻¹ : R) • y) hxx` to reduce the goal to its premises. Rewrite using `[hH.smul_right, ← hU, Units.inv_mul]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem swapHerm_pair_ne {e e' : R} (hee : e * e' = 0) (hce : c e = e') (hce' : c e' = e)
     (hu : ∀ u, e * u ≠ 0 → e' * u ≠ 0 → IsUnit u) (hH : IsHerm c h) (hP : IsPerfect h)
@@ -114,9 +112,9 @@ theorem swapHerm_pair_ne {e e' : R} (hee : e * e' = 0) (hce : c e = e') (hce' : 
   rw [hH.smul_right, ← hU, Units.inv_mul]
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `swapHerm_exists_ne hP ha0`. Establish `hidem : e' * e' = e'`. Establish `h0 : e' * e = 0` using `by rw [mul_comm]; exact hee`. Combine the equalities or inequalities in the displayed calculation. Use `⟨e' • y, by rw [← mul_smul, hidem], fun h0 => hy ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : h a (e' • y) = h a y` using `by rw [hH.smul_right, ← swapHerm_part hce hH ha y]`. Rewrite using `[← h1, h0, swapHerm_zero_right hH]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem swapHerm_partner {e e' : R} (he : e + e' = 1) (hee : e * e' = 0) (hce : c e = e')
     (hH : IsHerm c h) (hP : IsPerfect h) {a : V} (ha : e • a = a) (ha0 : a ≠ 0) :
@@ -131,15 +129,15 @@ theorem swapHerm_partner {e e' : R} (he : e + e' = 1) (hee : e * e' = 0) (hce : 
   rw [← h1, h0, swapHerm_zero_right hH]
 
 /- English proof (translation)
-Establish `hβ` using `swapHerm_pair_ne hee hce hce' hu hH hP hno ha hb ha0 hb0`. Establish `hee' : e' * e = 0` using `by rw [mul_comm]; exact hee`. Establish `hidem : e * e = e`. Combine the equalities or inequalities in the displayed calculation. Establish `he0 : e ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Introduce `h0`. Apply `ha0` to reduce the goal to its premises. Rewrite using `[← ha, h0, zero_smul]`. Establish `hpβ : h a b = e' * h a b` using `swapHerm_part hce hH ha b`. Establish `hpγ : h a z = e' * h a z` using `swapHerm_part hce hH ha z`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hunit : IsUnit (e + h a b)`. Apply `hu` to reduce the goal to its premises. Rewrite using `[mul_add, hidem, hpβ, ← mul_assoc, hee, zero_mul, add_zero]`. Conclude with `he0`. Rewrite using `[mul_add, hee', zero_add, ← hpβ]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hβ`. Take `⟨U, hU⟩` from `hunit`. Establish `hβU : h a b = e' * ↑U` using `by rw [hU, mul_add, hee', zero_add, ← hpβ]`. Use `⟨h a z * ↑U⁻¹, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hw : e' • (z - (h a z * ↑U⁻¹) • b) = z - (h a z * ↑U⁻¹) • b`. Rewrite using `[smul_sub, hz, smul_comm, hb]`. Establish `hw0 : z - (h a z * ↑U⁻¹) • b ≠ 0` using `sub_ne_zero.mpr hne`. Apply `swapHerm_pair_ne hee hce hce' hu hH hP hno ha hw ha0 hw0` to reduce the goal to its premises. Rewrite using `[swapHerm_sub_right hH, hH.smul_right, hβU, show h a z * ↑U⁻¹ * (e' * ↑U) = h a z * e' * (↑U⁻¹ * ↑U) by ring, Units.inv_mul, mul_one, mul_comm, ← hpγ, sub_self]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem swapHerm_coord {e e' : R} (he : e + e' = 1) (hee : e * e' = 0) (hce : c e = e') (hce' : c e' = e)
     (hu : ∀ u, e * u ≠ 0 → e' * u ≠ 0 → IsUnit u) (hH : IsHerm c h) (hP : IsPerfect h)
@@ -171,17 +169,17 @@ theorem swapHerm_coord {e e' : R} (he : e + e' = 1) (hee : e * e' = 0) (hce : c 
     mul_comm, ← hpγ, sub_self]
 
 /- English proof (translation)
-Establish `hee' : e' * e = 0` using `by rw [mul_comm]; exact hee`. Establish `he' : e' + e = 1` using `by rw [add_comm]; exact he`. Establish `hidem : e * e = e`. Combine the equalities or inequalities in the displayed calculation. Establish `hidem' : e' * e' = e'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `he'a : e' • a = 0` using `by rw [← ha, ← mul_smul, hee', zero_smul]`. Establish `heb : e • b = 0` using `by rw [← hb, ← mul_smul, hee, zero_smul]`. Use `⟨fun x => ?_, ?_⟩` and prove the remaining obligations. Take `⟨ρ', hρ'⟩` from `swapHerm_coord he hee hce hce' hu hH hP hno ha hb ha0 hb0 (z := e' • x) (by rw [← mul_smul, hidem'])`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨ρ, hρ⟩` from `swapHerm_coord he' hee' hce' hce (fun u h1 h2 => hu u h2 h1) hH hP hno hb ha hb0 ha0 (z := e • x) (by rw [← mul_smul, hidem])`. Use `⟨ρ * e + ρ' * e', ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, add_smul, add_smul, mul_smul, mul_smul, mul_smul, mul_smul, ha, hb, he'a, heb, smul_zero, smul_zero, add_zero, zero_add, ← hρ, ← hρ', ← add_smul, he, one_smul]`. Establish `hβ` using `swapHerm_pair_ne hee hce hce' hu hH hP hno ha hb ha0 hb0`. Establish `haa : h a a = 0` using `swapHerm_self hee hce hH ha`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbb : h b b = 0` using `swapHerm_self hee' hce' hH hb`. Establish `hpβ : h a b = e' * h a b` using `swapHerm_part hce hH ha b`. Establish `hpβ' : h b a = e * h b a` using `swapHerm_part hce' hH hb a`. Establish `hβ' : h b a ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hβ` to reduce the goal to its premises. Rewrite using `[hH.symm b a, h0, map_zero]`. Rewrite using `[swapHerm_add_left hH, hH.add_right, hH.add_right, haa, hbb, zero_add, add_zero]`. Apply `hu` to reduce the goal to its premises. Rewrite using `[mul_add, hpβ, ← mul_assoc, hee, zero_mul, zero_add, ← hpβ']`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hβ'`. Rewrite using `[mul_add, hpβ', ← mul_assoc, hee', zero_mul, add_zero, ← hpβ]`. Conclude with `hβ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem swapHerm_gen {e e' : R} (he : e + e' = 1) (hee : e * e' = 0) (hce : c e = e') (hce' : c e' = e)
     (hu : ∀ u, e * u ≠ 0 → e' * u ≠ 0 → IsUnit u) (hH : IsHerm c h) (hP : IsPerfect h)
@@ -221,23 +219,23 @@ theorem swapHerm_gen {e e' : R} (he : e + e' = 1) (hee : e * e' = 0) (hce : c e 
 end SwapHerm
 
 /- English proof (translation)
-Take `⟨e, he_def⟩ : ∃ e : R, e = φ.symm (1, 0)` from `⟨_, rfl⟩`. Take `⟨e', he'_def⟩ : ∃ e' : R, e' = φ.symm (0, 1)` from `⟨_, rfl⟩`. Establish `hφe : φ e = (1, 0)` using `by rw [he_def]; simp`. Establish `hφe' : φ e' = (0, 1)` using `by rw [he'_def]; simp`. Apply the tactic sequence `have he : e + e' = 1 := φ.injective (by rw [map_add, hφe, hφe', map_one]; ext <;> simp)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `have hee : e * e' = 0 := φ.injective (by rw [map_mul, hφe, hφe', map_zero]; ext <;> simp)`. Establish `hce : c e = e'` using `φ.injective (by rw [hc, hφe, hφe']; rfl)`. Establish `hce' : c e' = e` using `φ.injective (by rw [hc, hφe, hφe']; rfl)`. Establish `hu : ∀ u : R, e * u ≠ 0 → e' * u ≠ 0 → IsUnit u`. Introduce `u h1 h2`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1' : (φ u).1 ≠ 0`. Introduce `h0`. Apply `h1` to reduce the goal to its premises. Apply `φ.injective` to reduce the goal to its premises. Apply the tactic sequence `rw [map_mul, hφe, map_zero]; ext <;> simp [h0]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h2' : (φ u).2 ≠ 0`. Introduce `h0`. Apply `h2` to reduce the goal to its premises. Apply `φ.injective` to reduce the goal to its premises. Apply the tactic sequence `rw [map_mul, hφe', map_zero]; ext <;> simp [h0]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[← isUnit_map_iff φ, Prod.isUnit_iff]`. Conclude with `⟨isUnit_iff_ne_zero.mpr h1', isUnit_iff_ne_zero.mpr h2'⟩`. Establish `hee' : e' * e = 0` using `by rw [mul_comm]; exact hee`. Establish `he' : e' + e = 1` using `by rw [add_comm]; exact he`. Establish `hidem : e * e = e`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hidem' : e' * e' = e'`. Combine the equalities or inequalities in the displayed calculation. Break down `subsingleton_or_nontrivial V with hs | hs` into its components or cases. Conclude with `Or.inl hs`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Use `right`. Take `⟨v, hv⟩` from `exists_ne (0 : V)`. Establish `hv' : v = e • v + e' • v` using `by rw [← add_smul, he, one_smul]`. Distinguish the cases in `hev : e • v = 0`. Establish `hb0 : e' • v ≠ 0` using `by intro h0; apply hv; rw [hv', hev, h0, add_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : e' • (e' • v) = e' • v` using `by rw [← mul_smul, hidem']`. Take `⟨a, ha, ha0⟩` from `swapHerm_partner he' hee' hce' hH hP hb hb0`. Conclude with `⟨_, swapHerm_gen he hee hce hce' hu hH hP hno ha hb ha0 hb0⟩`. Establish `ha : e • (e • v) = e • v` using `by rw [← mul_smul, hidem]`. Take `⟨b, hb, hb0⟩` from `swapHerm_partner he hee hce hH hP ha hev`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨_, swapHerm_gen he hee hce hce' hu hH hP hno ha hb hev hb0⟩`.
+A detailed English derivation is pending.
 -/
 theorem hermitian_split_rank_one_struct {k R V : Type} [Field k] [CommRing R] [AddCommGroup V] [Module R V]
     (φ : R ≃+* k × k) (c : R →+* R) (hc : ∀ r, φ (c r) = (φ r).swap) (h : V → V → R)
@@ -284,7 +282,7 @@ theorem hermitian_split_rank_one_struct {k R V : Type} [Field k] [CommRing R] [A
     exact ⟨_, swapHerm_gen he hee hce hce' hu hH hP hno ha hb hev hb0⟩
 
 /- English proof (translation)
-Introduce `k R V _ _ _ _ φ c hc h hH hP hno`. Conclude with `hermitian_split_rank_one_struct φ c hc h hH hP hno`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hermSwap_struct : ∀ {k R V : Type} [Field k] [CommRing R] [AddCommGroup V] [Module R V]
     (φ : R ≃+* k × k) (c : R →+* R), (∀ r, φ (c r) = (φ r).swap) → ∀ h : V → V → R, IsHerm c h →

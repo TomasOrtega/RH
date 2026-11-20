@@ -16,7 +16,7 @@ namespace GlobalTheory.CompanionTheory.SW.Fujisaki
 variable {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K] [T2Space K]
 
 /- English proof (translation)
-Establish `hc : IsCompact (Ω ×ˢ (MulOpposite.op '' W))` using `hΩ.prod (hW.image MulOpposite.continuous_op)`. Establish `h` using `(Units.isClosedEmbedding_embedProduct (α := K)).isCompact_preimage hc`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `u`. Simplify using `[Units.embedProduct]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem isCompact_units_setOf {Ω W : Set K} (hΩ : IsCompact Ω) (hW : IsCompact W) :
     IsCompact {u : Kˣ | (u : K) ∈ Ω ∧ ((u⁻¹ : Kˣ) : K) ∈ W} := by
@@ -33,7 +33,7 @@ def act (t : Kˣ) : (Fin 1 → Fin 1 → K) →+ (Fin 1 → Fin 1 → K) where
   map_add' := smul_add _
 
 /- English proof (translation)
-Use `continuous_pi fun a => continuous_pi fun i => ?_` and prove the remaining obligations. Establish `h1 : Continuous fun p : Kˣ × (Fin 1 → Fin 1 → K) => ((p.1 : Kˣ) : K)` using `Units.continuous_val.comp continuous_fst`. Establish `h2 : Continuous fun p : Kˣ × (Fin 1 → Fin 1 → K) => p.2 a i` using `(continuous_apply i).comp ((continuous_apply a).comp continuous_snd)`. Conclude with `h1.mul h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_act : Continuous fun p : Kˣ × (Fin 1 → Fin 1 → K) => act p.1 p.2 := by
   refine continuous_pi fun a => continuous_pi fun i => ?_
@@ -44,9 +44,9 @@ theorem continuous_act : Continuous fun p : Kˣ × (Fin 1 → Fin 1 → K) => ac
   exact h1.mul h2
 
 /- English proof (translation)
-Take `⟨Q, hQc, hQ⟩` from `exists_compact_mem_nhds (0 : V)`. Establish `h0 : μ Q ≠ 0` using `(Measure.measure_pos_of_mem_nhds μ hQ).ne'`. Establish `h1 : μ Q ≠ ⊤` using `hQc.measure_lt_top.ne`. Establish `h2 : (c : ℝ≥0∞) * μ Q = ENNReal.ofReal r * μ Q`. Use `congrArg (fun m : Measure V => m Q) h` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Measure.smul_apply, smul_eq_mul] at this`. Conclude with `this`. Establish `h3 : (c : ℝ≥0∞) = ENNReal.ofReal r` using `(ENNReal.mul_left_inj h0 h1).1 h2`. Establish `h4` using `congrArg ENNReal.toReal h3`. Rewrite `h4` using `[ENNReal.coe_toReal, ENNReal.toReal_ofReal hr]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem chi_flow {V : Type} [TopologicalSpace V] [AddCommGroup V] [IsTopologicalAddGroup V]
     [LocallyCompactSpace V] [MeasurableSpace V] [BorelSpace V] (μ : Measure V)
@@ -64,41 +64,35 @@ theorem chi_flow {V : Type} [TopologicalSpace V] [AddCommGroup V] [IsTopological
   rwa [ENNReal.coe_toReal, ENNReal.toReal_ofReal hr] at h4
 
 /- English proof (translation)
-Take `⟨C, hCc, hC⟩` from `hcov`. Use `haveI : LocallyCompactSpace Kˣ := Units.isClosedEmbedding_embedProduct.locallyCompactSpace`. Use `haveI : SecondCountableTopology Kᵐᵒᵖ := (MulOpposite.opHomeomorph (M := K)).symm.secondCountableTopology`. Use `haveI : SecondCountableTopology Kˣ := Units.isEmbedding_embedProduct.secondCountableTopology`. Take `⟨χ, -, hχ⟩` from `GlobalTheory.T.group_action_haar_scaling_continuous (Fin 1 → Fin 1 → K) μ Kˣ act continuous_act continuous_inv (fun y => by simp [act]) (fun s t y => by simp [act, mul_smul])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `jj : (Fin 1 → Fin 1 → E) →+ (Fin 1 → Fin 1 → K)` to `{ toFun := fun X a i => ι (X a i) map_zero' := by ext a i; simp map_add' := fun X Y => by ext a i; simp }`. Take `⟨ΩV, hΩc, hΩ⟩` from `GlobalTheory.T.exists_compact_for_measure_preserving_endos (Fin 1 → Fin 1 → K) μ hinf (Fin 1 → Fin 1 → E) jj C hCc hC`. Use `set Ω : Set K := (fun Y : Fin 1 → Fin 1 → K => Y 0 0) '' ΩV with hΩdef`. Establish `hΩK : IsCompact Ω` using `hΩc.image ((continuous_apply 0).comp (continuous_apply 0))`. Establish `hΩ2 : IsCompact (Ω * Ω)` using `hΩK.mul hΩK`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hconst : Continuous fun k : K => (fun _ _ => k : Fin 1 → Fin 1 → K)` using `continuous_pi fun _ => continuous_pi fun _ => continuous_id`. Establish `hS` using `hfin _ (hΩ2.image hconst)`. Use `set Z : Set E := (fun X : Fin 1 → Fin 1 → E => X 0 0) '' {X : Fin 1 → Fin 1 → E | (fun a i => ι (X a i)) ∈ (fun k : K => (fun _ _ => k : Fin 1 → Fin 1 → K)) '' (Ω * Ω)} with hZdef`. Establish `hZ : Z.Finite` using `hS.image _`. Use `set Zi : Set K := (fun z : E => ι z⁻¹) '' Z with hZidef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hZi : IsCompact Zi` using `(hZ.image _).isCompact`. Establish `hW : IsCompact (Zi * Ω)` using `hZi.mul hΩK`. Establish `hω₀` using `isCompact_units_setOf hΩK hW`. Use `set T₀ : Set Kˣ := (fun r : ℝ => τ (Multiplicative.ofAdd r)) '' Set.Icc 0 1 with hT₀`. Establish `hT₀c : IsCompact T₀` using `isCompact_Icc.image (hτ.comp continuous_ofAdd)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `⟨T₀ * {u : Kˣ | (u : K) ∈ Ω ∧ ((u⁻¹ : Kˣ) : K) ∈ Zi * Ω}, hT₀c.mul hω₀, fun a => ?_⟩` and prove the remaining obligations. Establish `hτχ : ∀ x : ℝ, ((χ (τ (Multiplicative.ofAdd x)) : ℝ≥0) : ℝ) = Real.exp (-(D * x))`. Introduce `x`. Use `chi_flow μ (Real.exp_pos _).le ?_` and prove the remaining obligations. Rewrite using `[← hχ, ← hflow x]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Both sides reduce to the same expression. Establish `hχa : χ a ≠ 0`. Introduce `h`. Use `map_mul χ a a⁻¹` as an intermediate fact. Simplify using `[h] at this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `set x : ℝ := -Real.log (χ a : ℝ) / D with hx`. Use `set a₁ : Kˣ := a * τ (Multiplicative.ofAdd (-x)) with ha₁`. Establish `hχ₁ : χ a₁ = 1`. Apply `NNReal.coe_injective` to reduce the goal to its premises. Establish `hpos : 0 < (χ a : ℝ)` using `by exact_mod_cast pos_iff_ne_zero.2 hχa`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[ha₁, map_mul, NNReal.coe_mul, hτχ]`. Establish `: -(D * -x) = -Real.log (χ a : ℝ)` using `by rw [hx]; field_simp`. Rewrite using `[this, Real.exp_neg, Real.exp_log hpos]`. Simplify using `[hpos.ne']`. Establish `hχ₂ : χ a₁⁻¹ = 1` using `by rw [map_inv, hχ₁, inv_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Establish `hm₁ : μ.map (act a₁) = μ` using `by rw [hχ, hχ₁, one_smul]`. Establish `hm₂ : μ.map (act a₁⁻¹) = μ` using `by rw [hχ, hχ₂, one_smul]`. Establish `hcont : ∀ t : Kˣ, Continuous (act t)` using `fun t => continuous_act.comp (continuous_const.prodMk continuous_id)`. Take `⟨X, hX0, hX⟩` from `hΩ (act a₁) (hcont _) hm₁`. Take `⟨X', hX'0, hX'⟩` from `hΩ (act a₁⁻¹) (hcont _) hm₂`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : ∀ Y : Fin 1 → Fin 1 → E, Y ≠ 0 → Y 0 0 ≠ 0`. Introduce `Y hY h`. Apply `hY` to reduce the goal to its premises. Use extensionality with `a i`. Rewrite using `[Subsingleton.elim a 0, Subsingleton.elim i 0]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Simplify using `using h`. Use `set l : E := X 0 0 with hl`. Use `set l' : E := X' 0 0 with hl'`. Establish `hl0 : l ≠ 0` using `hne _ hX0`. Establish `hl'0 : l' ≠ 0` using `hne _ hX'0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1 : (a₁ : K) * ι l ∈ Ω` using `⟨_, hX, rfl⟩`. Establish `h2 : ((a₁⁻¹ : Kˣ) : K) * ι l' ∈ Ω` using `⟨_, hX', rfl⟩`. Establish `hll : ι (l * l') ∈ Ω * Ω`. Use `⟨_, h1, _, h2, ?_⟩` and prove the remaining obligations. Use `show (a₁ : K) * ι l * (((a₁⁻¹ : Kˣ) : K) * ι l') = ι (l * l')`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu : (a₁ : K) * ((a₁⁻¹ : Kˣ) : K) = 1` using `Units.mul_inv_of_eq rfl`. Combine the equalities or inequalities in the displayed calculation. Establish `hz : l * l' ∈ Z`. Use `⟨fun _ _ => l * l', ⟨_, hll, rfl⟩, rfl⟩` and prove the remaining obligations. Set `lU : Eˣ` to `Units.mk0 l hl0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Set `m : Kˣ` to `Units.map ι.toMonoidHom lU`. Establish `hm : (m : K) = ι l` using `rfl`. Establish `hmi : ((m⁻¹ : Kˣ) : K) = ι l⁻¹` using `by show ι.toMonoidHom ((lU⁻¹ : Eˣ) : E) = _`. Simplify using `[lU]`. Establish `hu1 : ((a₁ * m : Kˣ) : K) ∈ Ω` using `by simpa [hm] using h1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu2 : (((a₁ * m)⁻¹ : Kˣ) : K) ∈ Zi * Ω`. Use `⟨ι (l * l')⁻¹, ⟨_, hz, rfl⟩, _, h2, ?_⟩` and prove the remaining obligations. Use `show ι (l * l')⁻¹ * (((a₁⁻¹ : Kˣ) : K) * ι l') = _`. Establish `e : ((a₁ * m)⁻¹ : Kˣ) = a₁⁻¹ * m⁻¹` using `mul_inv _ _`. Establish `ez : (l * l')⁻¹ = l'⁻¹ * l⁻¹` using `mul_inv_rev _ _`.
-
-Establish `: ι l'⁻¹ * ι l' = 1` using `by rw [← map_mul, inv_mul_cancel₀ hl'0, map_one]`. Rewrite using `[e, Units.val_mul, hmi, ez, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hfr : x - (⌊x⌋ : ℝ) ∈ Set.Icc (0 : ℝ) 1` using `⟨sub_nonneg.2 (Int.floor_le x), (sub_le_iff_le_add').2 (Int.lt_floor_add_one x).le |>.trans' le_rfl⟩`. Use `⟨lU⁻¹, m⁻¹, τ (Multiplicative.ofAdd (x - (⌊x⌋ : ℝ))) * (a₁ * m), ⌊x⌋, ?_, ?_, ?_⟩` and prove the remaining obligations.
-
-Conclude with `hmi.trans (by simp [lU])`. Conclude with `⟨_, ⟨_, hfr, rfl⟩, _, ⟨hu1, hu2⟩, rfl⟩`. Establish `hone : τ (Multiplicative.ofAdd ((⌊x⌋ : ℤ) : ℝ)) * τ (Multiplicative.ofAdd (x - (⌊x⌋ : ℝ))) * τ (Multiplicative.ofAdd (-x)) = 1`. Rewrite using `[← map_mul, ← map_mul, ← ofAdd_add, ← ofAdd_add]`. Simplify using the standard rewrite rules.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hone]`. Simplify using the standard rewrite rules. Use `_ = _ := by rw [ha₁]; ac_rfl`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem core {E : Type} [Field E] [Countable E] [LocallyCompactSpace K] [SecondCountableTopology K]
     (ι : E →+* K) [MeasurableSpace (Fin 1 → Fin 1 → K)] [BorelSpace (Fin 1 → Fin 1 → K)]
@@ -226,15 +220,11 @@ end GlobalTheory.CompanionTheory.SW.Fujisaki
 namespace GlobalTheory.CompanionTheory.SW.Fujisaki
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ τ hτ`. Take `⟨⟨hLC, hSC, hT2⟩, -⟩` from `GlobalTheory.CompanionTheory.AdeleTop.adele_top F`. Use `haveI := hLC`. Use `haveI := hSC`. Use `haveI := hT2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hTR, hLCK, hSCK, hT2K, -, -, -, hBor, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hσ (AF F)`. Use `haveI := hTR`. Use `haveI := hLCK`. Use `haveI := hSCK`. Use `haveI := hT2K`.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `haveI : BorelSpace (Fin 1 → Fin 1 → AF F ⊗[F] E) := hBor 1 1`. Use `haveI : Countable E := ((Module.finBasis ℚ E).equivFun.toEquiv.injective).countable`. Take `⟨hcov, hfin, hnc⟩` from `GlobalTheory.T.rational_tuples_discrete_cocompact_adelic F E σ hσ 1 1`. Use `haveI := hnc one_pos one_pos`. Establish `hinf : (Measure.addHaar : Measure (Fin 1 → Fin 1 → AF F ⊗[F] E)) Set.univ = ⊤` using `measure_univ_of_isAddLeftInvariant _`.
-
-Establish `hD : (0 : ℝ) < 2 * Module.finrank ℚ F`. Establish `: 0 < Module.finrank ℚ F` using `Module.finrank_pos`. Check the signs of the components of the expression. Use `core (inclR (AF F)) Measure.addHaar hinf hcov hfin τ hτ.1 _ hD fun x => ?_` and prove the remaining obligations. Establish `h` using `GlobalTheory.T.haar_scaling_under_flow F E σ hσ τ hτ 1 1 Measure.addHaar inferInstance x`.
-
-Simplify using `using h`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem units_decomp : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ τ : Multiplicative ℝ →* (AF F ⊗[F] E)ˣ, IsFlow τ → ∃ ω : Set (AF F ⊗[F] E)ˣ, IsCompact ω ∧ ∀ a : (AF F ⊗[F] E)ˣ, ∃ (l : Eˣ) (a' : (AF F ⊗[F] E)ˣ) (c : (AF F ⊗[F] E)ˣ) (j : ℤ), (a' : AF F ⊗[F] E) = inclR (AF F) (l : E) ∧ c ∈ ω ∧ a = a' * τ (Multiplicative.ofAdd (j : ℝ)) * c := by
   intro F E _ _ _ _ _ σ hσ τ hτ

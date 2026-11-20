@@ -9,11 +9,9 @@ namespace Formalism.ExponentWindows.E.Full
 open PowerSeries
 
 /- English proof (translation)
-Take `⟨cN, cD, cDU, cDD, cUD⟩` from `CL.lifts_mod_const_of_words`. Break down `hW with hW | hW | hW | hW | hW` into its components or cases. Conclude with `cN levels_mod_const_iff_of_no_down O ϖ hϖ ℓ ell r₁ r₂ a₀ p H b kind U₁ U₂ prL hS hW`. Take `⟨s₁, h1, h2, h3⟩` from `hW`. Conclude with `cD descent_estimate_down O ϖ hϖ ℓ ell r₁ r₂ a₀ rr p H b kind U₁ U₂ prL hS hL hr s₁ h1 h2 h3`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s₀, s₁, h0, h1, h2, h3, h4, h5⟩` from `hW`. Conclude with `cDU descent_estimate_down_up O ϖ hϖ ℓ ell r₁ r₂ a₀ rr p H b kind U₁ U₂ prL hS hL hr s₀ s₁ h0 h1 h2 h3 h4 h5`. Take `⟨s₀, s₁, h0, h1, h2, h3, h4, ρ, fρ, h5, h6, h7, h8⟩` from `hW`. Conclude with `cDD levels_mod_const_iff_of_down_down O ϖ hϖ ℓ ell r₁ r₂ a₀ rr p H b kind U₁ U₂ prL hS hL hr s₀ s₁ h0 h1 h2 h3 h4 ρ fρ h5 h6 h7 h8`. Take `⟨s₀, s₁, h0, h1, h2, h3, h4, hC, c, α, β, h5, h6⟩` from `hW`.
-
-Conclude with `cUD descent_estimate_up_down O ϖ hϖ ℓ ell r₁ r₂ a₀ rr p H b kind U₁ U₂ prL hS hL hr s₀ s₁ h0 h1 h2 h3 h4 hC c α β h5 h6`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem constLift_of_word {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {ϖ : O}
     (hϖ : Irreducible ϖ) {ℓ ell r₁ r₂ a₀ rr : ℕ} {p : ℕ → PowerSeries O} {H b : ℕ → ℕ}
@@ -41,11 +39,9 @@ section
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Unfold `CoprimeRat at h`. Take `⟨N, a, a', hN⟩` from `h`. Use `⟨N * (b₁ + b₀), ?_⟩` and prove the remaining obligations. Establish `hmem : C (ϖ ^ N) ∈ Ideal.span {p₁} ⊔ Ideal.span {p₀}`. Rewrite using `[← hN]`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem (Ideal.mem_sup_left (Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _))) (Ideal.mem_sup_right (Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)))`. Establish `h2 : C (ϖ ^ N) ^ (b₁ + b₀) ∈ (Ideal.span {p₁} ⊔ Ideal.span {p₀}) ^ (b₁ + b₀)` using `Ideal.pow_mem_pow hmem _`. Establish `h3` using `Ideal.sup_pow_add_le_pow_sup_pow h2`. Rewrite `h3` using `[Ideal.span_singleton_pow, Ideal.span_singleton_pow]`. Rewrite using `[pow_mul, map_pow, Ideal.span_insert]`.
-
-Conclude with `h3`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_mem_pair {ϖ : O} {p₁ p₀ : PowerSeries O} (h : CoprimeRat ϖ p₁ p₀) (b₁ b₀ : ℕ) :
     ∃ N : ℕ, C (ϖ ^ N) ∈ Ideal.span {p₁ ^ b₁, p₀ ^ b₀} := by
@@ -64,9 +60,9 @@ theorem pow_mem_pair {ϖ : O} {p₁ p₀ : PowerSeries O} (h : CoprimeRat ϖ p�
   exact h3
 
 /- English proof (translation)
-Establish `hex` using `pow_mem_pair h b₁ b₀`. Establish `hρ : C (ϖ ^ Nat.find hex) ∈ Ideal.span {p₁ ^ b₁, p₀ ^ b₀}` using `Nat.find_spec hex`. Take `⟨x, y, hxy⟩` from `Ideal.mem_span_pair.mp hρ`. Use `⟨Nat.find hex, x * p₁ ^ b₁, hρ, fun k hk => Nat.find_min' hex hk, Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _), ?_⟩` and prove the remaining obligations. Rewrite using `[← hxy]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e : x * p₁ ^ b₁ - (x * p₁ ^ b₁ + y * p₀ ^ b₀) = (-y) * p₀ ^ b₀` using `by ring`. Rewrite using `[e]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem consts_DD {ϖ : O} {p₁ p₀ : PowerSeries O} (h : CoprimeRat ϖ p₁ p₀) (b₁ b₀ : ℕ) :
     ∃ (ρ : ℕ) (fρ : PowerSeries O),
@@ -85,21 +81,21 @@ theorem consts_DD {ϖ : O} {p₁ p₀ : PowerSeries O} (h : CoprimeRat ϖ p₁ p
   exact Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `pow_mem_pair h b₁ b₀`. Establish `hex : ∃ c : ℕ, p₁ ^ b₁ ∉ Ideal.span {C (ϖ ^ (c + 1)), p₀ ^ b₀}`. Use `⟨N, fun hmem => ?_⟩` and prove the remaining obligations. Take `⟨u, v, huv⟩` from `Ideal.mem_span_pair.1 hmem`. Take `⟨x, y, hxy⟩` from `Ideal.mem_span_pair.1 hN`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h1 : C (ϖ ^ N) * (1 - C ϖ * (x * u)) ∈ Ideal.span {p₀ ^ b₀}`. Rewrite using `[Ideal.mem_span_singleton]`. Use `⟨x * v + y, ?_⟩` and prove the remaining obligations. Establish `e : C (ϖ ^ (N + 1)) = C (ϖ ^ N) * C ϖ` using `by rw [pow_succ, map_mul]`. Rewrite `huv` using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h2` using `mem_span_pow_of_uniformizer_mul O ϖ hϖ d p₀ hp₀ b₀ N _ h1`. Take `⟨w, hw⟩` from `Ideal.mem_span_singleton.1 h2`. Establish `h3` using `congrArg (coeff 0) hw`. Establish `h0` using `constantCoeff_mem_of_unitDist ϖ d p₀ hp₀ hd`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨e0, he0⟩` from `Ideal.mem_span_singleton.1 h0`. Take `⟨b', rfl⟩ : ∃ b', b₀ = b' + 1` from `⟨b₀ - 1, by omega⟩`. Simplify using `only [coeff_zero_eq_constantCoeff, map_sub, map_one, map_mul, map_pow, constantCoeff_C] at h3 he0`. Establish `: ϖ ∣ 1`. Use `⟨constantCoeff x * constantCoeff u + e0 * (constantCoeff p₀) ^ b' * constantCoeff w, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h4 : (1 : O) = ϖ * (constantCoeff x * constantCoeff u) + (constantCoeff p₀) ^ (b' + 1) * constantCoeff w` using `by rw [← h3]; ring`. Establish `h5 : (constantCoeff p₀) ^ (b' + 1) = (constantCoeff p₀) ^ b' * (ϖ * e0)`. Rewrite using `[← he0, pow_succ]`. Rewrite `h4` using `[h5]`. Rewrite using `[h4]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Conclude with `hϖ.not_isUnit (isUnit_of_dvd_one this)`. Establish `hs` using `Nat.find_spec hex`. Establish `hmem : p₁ ^ b₁ ∈ Ideal.span {C (ϖ ^ (Nat.find hex)), p₀ ^ b₀}`. Break down `Nat.eq_zero_or_pos (Nat.find hex) with h0 | h0` into its components or cases.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0, pow_zero, map_one]`. Establish `: Ideal.span {(1 : PowerSeries O), p₀ ^ b₀} = ⊤` using `Ideal.eq_top_of_unit_mem _ 1 1 (Ideal.subset_span (by simp)) (one_mul 1)`. Rewrite using `[this]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨c', hc'⟩ : ∃ c', Nat.find hex = c' + 1` from `⟨Nat.find hex - 1, by omega⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Nat.find_min hex (m := c') (by omega)` as an intermediate fact. Rewrite using `[hc']`. Conclude with `not_not.1 this`. Take `⟨u, v, huv⟩` from `Ideal.mem_span_pair.1 hmem`. Conclude with `⟨Nat.find hex, u, v, huv.symm.trans (by ring), hs⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem consts_UD {ϖ : O} (hϖ : Irreducible ϖ) {d : ℕ} (hd : 1 ≤ d) {p₁ p₀ : PowerSeries O}
     (hp₀ : UnitDist ϖ d p₀) (h : CoprimeRat ϖ p₁ p₀) (b₁ b₀ : ℕ) (hb : 1 ≤ b₀) :
@@ -165,9 +161,9 @@ namespace Formalism.ExponentWindows.E
 open PowerSeries
 
 /- English proof (translation)
-Unfold `WordConsts`. Introduce `O _ _ _ ϖ hϖ ℓ ell p b hℓ hP s₀ s₁ h01 h1e`. Unfold `DistinguishedFamily at hP`. Establish `hs₀ : s₀ < ell` using `lt_trans h01 h1e`. Establish `hc : CoprimeRat ϖ (p s₁) (p s₀)` using `hP.2 s₁ h1e s₀ hs₀ (ne_of_gt h01)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨Full.consts_DD hc _ _, fun hb => Full.consts_UD hϖ ?_ (hP.1 s₀ hs₀) hc _ _ hb⟩` and prove the remaining obligations. Conclude with `Nat.one_le_iff_ne_zero.mpr (pow_ne_zero _ (by omega))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem word_constants_holds : WordConsts := by
   unfold WordConsts
@@ -179,7 +175,7 @@ theorem word_constants_holds : WordConsts := by
   exact Nat.one_le_iff_ne_zero.mpr (pow_ne_zero _ (by omega))
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ B n _ Cu abelian₂ j M g sig rr a₀ kap V₁ V₂ V₀ _ _ _ _ _ _ L₁ L₂ L₀ e₀ h Zf₁ Zf₂ hM hB hL₁ hL₂ h1 h2 h3 h4 h5 h6 hr hA`. Use `theorem_E_assembled O B n Cu abelian₂ j M g sig rr a₀ kap V₁ V₂ V₀ L₁ L₂ L₀ e₀ h Zf₁ Zf₂ hM hB hL₁ hL₂ h1 h2 h3 h4 h5 h6 ?_` and prove the remaining obligations. Introduce `c hc`. Take `⟨r₁, r₂, S₁, S₂, m, H, b, kind, U₁, U₂, PP, PP', a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21, a22, a23, a24, a25, a26, a27⟩` from `hA c hc`. Conclude with `arc_lift_of_localization_data O B n Cu abelian₂ g sig rr a₀ kap V₁ V₂ L₁ L₂ h c r₁ r₂ S₁ S₂ m ϖ H b kind U₁ U₂ PP PP' a1 hB.1 (hL₂.1 c) a2 a3 a4 a5 a6 a7 a8 a9 a10 a11 a12 a13 a14 a15 a16 a17 a18 a19 a20 a21 a22 a23 (Full.constLift_of_word hϖ a25 a26 hr a27) a24`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem theorem_E_full_form : ThmEFull := by
   intro O _ _ _ ϖ hϖ B n _ Cu abelian₂ j M g sig rr a₀ kap V₁ V₂ V₀ _ _ _ _ _ _ L₁ L₂ L₀ e₀ h Zf₁ Zf₂

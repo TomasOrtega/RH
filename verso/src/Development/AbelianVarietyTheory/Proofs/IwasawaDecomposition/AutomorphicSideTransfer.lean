@@ -4,7 +4,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 namespace GlobalTheory.HeightCounting
 
 /- English proof (translation)
-Introduce `D cf jE A N`. Set `A' : SideA N.toD7 (N.cf cf) jE` to `{ bare := A.bare wdT := A.wdT lab := A.lab chr := { A.chr with } row := N.row A.row pl := { A.pl with } iota := A.iota wd := { A.wd with } grp := { A.grp with } par := { A.par with } au := { A.au with } chiT := A.chiT }`. Use `⟨⟨A', rfl, fun _ => rfl, fun _ _ => rfl, fun _ _ _ _ => rfl, fun hL => ⟨fun ⟨h⟩ => ⟨{ h with }⟩, fun h => h⟩⟩, fun M tup Q h => { h with }, fun h => h⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem twist_settings_unread : ∀ (D : D7) (cf : CharFrame D) (jE : D.host.E →+* Qb) (A : SideA D cf jE) (N : TwNew D), (∃ A' : SideA N.toD7 (N.cf cf) jE, A'.row = N.row A.row ∧ (∀ lam, A'.pl.ι lam = A.pl.ι lam) ∧ (∀ w a, A'.wdT.e w a = A.wdT.e w a) ∧ (∀ j h1 h2 π, A'.au.cls j h1 h2 π = A.au.cls j h1 h2 π) ∧ ∀ hL, (Nonempty (CGTrue hL D A.wdT) → Nonempty (CGTrue hL N.toD7 A'.wdT)) ∧ (AUTrue hL D A.wdT A.au → AUTrue hL N.toD7 A'.wdT A'.au)) ∧ (∀ M tup Q, MtInput D M tup Q → MtInput N.toD7 (N.mt M) tup Q) ∧ (BlocksUnique D → BlocksUnique N.toD7) := by
   intro D cf jE A N

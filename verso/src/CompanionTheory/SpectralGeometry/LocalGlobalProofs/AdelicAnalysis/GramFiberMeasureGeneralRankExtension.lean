@@ -12,23 +12,15 @@ open scoped TensorProduct ENNReal NNReal Matrix
 namespace GlobalTheory.CompanionTheory.SW.PiLocalization₂
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM N n J₂ hJ R _ _ _ _ _ hR d b lam hlam m hm`. Take `⟨iTR, iLC, iSC, iT2, -⟩` from `id hR`. Use `haveI := iTR`. Use `haveI := iLC`. Use `haveI := iSC`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := iT2`. Take `⟨kTR, kLC, kSC, kT2, -, -, -, kB, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hCM R`. Use `haveI := kTR`. Use `haveI := kLC`. Use `haveI := kSC`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `haveI := kT2`. Use `haveI := kB n N`. Take `⟨hLC, hSC, hT2, hB, hg⟩` from `GlobalTheory.T.hermitian_matrices_locally_compact_borel F E σ hCM R n`. Use `haveI := hLC`. Use `haveI := hSC`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `haveI := hT2`. Use `haveI := hB`. Take `⟨g, gc, hgg⟩` from `hg N J₂ hJ`. Take `⟨-, hW, hH⟩` from `GlobalTheory.T.coordinate_haar_measure F E σ hCM R d b lam hlam`. Use `haveI := hW n N`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := hH n`. Establish `hopen : IsOpen (Unt σ R n)`. Establish `hu : IsOpen {x : R ⊗[F] E | IsUnit x}`. Use `(GlobalTheory.T.units_open_embedding_local_tensor F E σ hCM R hR).isOpen_range` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
-
-Use extensionality with `x`. Simplify using `[IsUnit]`. Establish `hc : Continuous fun S : HermR R σ n => (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)).det` using `continuous_subtype_val.matrix_det`. Conclude with `hu.preimage hc`. Establish `hset : {X | IsUnit (gramR R σ J₂ X).det} = g ⁻¹' (Unt σ R n)`.
-
-Use extensionality with `X`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage, Unt, hgg X]`. Establish `hm' : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsFibreFamily (coordW R b lam n N) (gramR R σ J₂) Subtype.val (g ⁻¹' (Unt σ R n)) (coordHerm R σ b lam n) (Unt σ R n) m`. Rewrite using `[← hset]`. Conclude with `hm`.
-
-Take `⟨h1, h2, h3, h4⟩` from `GlobalTheory.CompanionTheory.SW.FibreFam.fibre_family_basic _ _ _ (coordW R b lam n N) (coordHerm R σ b lam n) (gramR R σ J₂) g Subtype.val Subtype.val_injective gc hgg (Unt σ R n) hopen m hm'`. Use `⟨hopen, h1, h2, h3, h4, fun S => ?_⟩` and prove the remaining obligations. Establish `h0` using `hm'.1 S`. Establish `: ∀ᵐ X ∂(m S), X ∈ gramR R σ J₂ ⁻¹' {((S : HermR R σ n) : Matrix (Fin n) (Fin n) (R ⊗[F] E))} ∩ g ⁻¹' (Unt σ R n)` using `mem_ae_iff.2 h0`. Use `filter_upwards [this] with X hX`.
-
-Conclude with `hX.1`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gramFib_basic : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (N n : ℕ) (J₂ : Matrix (Fin N) (Fin N) E), IsHermND σ J₂ → ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R], IsLocR R → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (lam : Measure R), lam.IsAddHaarMeasure → ∀ m : HermR R σ n → Measure (Fin n → Fin N → R ⊗[F] E), IsGramFib R σ J₂ n (coordW R b lam n N) (coordHerm R σ b lam n) m → IsOpen (Unt σ R n) ∧ (∀ S, IsLocallyFiniteMeasure (m S)) ∧ (∀ S, S ∉ Unt σ R n → m S = 0) ∧ (∀ A : Set (Fin n → Fin N → R ⊗[F] E), MeasurableSet A → Measurable fun S => m S A) ∧ (∀ (C : Set (Fin n → Fin N → R ⊗[F] E)) (D : Set (HermR R σ n)), IsCompact C → IsCompact D → D ⊆ Unt σ R n → ∃ c : ℝ≥0, ∀ S ∈ D, m S C ≤ c) ∧ ∀ S : HermR R σ n, ∀ᵐ X ∂(m S), gramR R σ J₂ X = (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) := by
   intro F E _ _ _ _ _ σ hCM N n J₂ hJ R _ _ _ _ _ hR d b lam hlam m hm

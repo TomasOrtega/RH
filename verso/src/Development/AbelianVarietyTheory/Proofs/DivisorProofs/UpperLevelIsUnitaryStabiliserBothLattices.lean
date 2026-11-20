@@ -7,11 +7,11 @@ open NumberField Module ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheor
 namespace GlobalTheory.UpperStab
 
 /- English proof (translation)
-Introduce and unpack `β ⟨u, hu, γ, hγ, rfl⟩`. Establish `hs` using `(M.comp c).Γ_stab γ hγ`. Establish `hh : ∀ x y, herm (M.comp c).Gm (Matrix.mulVec ((γ * M.tr u c : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) x) (Matrix.mulVec ((γ * M.tr u c : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) y) = herm (M.comp c).Gm x y`. Introduce `x y`. Rewrite using `[Units.val_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hs.1, M.comp_Gm c, M.tr_herm]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨hh, fun v => ?_⟩, ⟨hh, fun v => ?_⟩⟩` and prove the remaining obligations. Establish `h1` using `M.tr_L' u c v`. Rewrite `h1` using `[hu]`. Rewrite using `[Units.val_mul, ← Matrix.mulVec_mulVec, h1]`. Conclude with `M.Γ_L' c γ hγ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `M.tr_Λ u c v`. Rewrite `h1` using `[hu]`. Rewrite using `[Units.val_mul, ← Matrix.mulVec_mulVec, h1]`. Conclude with `hs.2 _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem upper_isUStab (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (U C : Type) [Group U] [MulAction U C]
     (M : TwoLevels E r U C) (c : C) :

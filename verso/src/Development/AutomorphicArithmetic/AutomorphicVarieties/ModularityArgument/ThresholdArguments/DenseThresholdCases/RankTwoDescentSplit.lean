@@ -15,9 +15,7 @@ noncomputable section
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.GalOfCusp UpperTheory.V.Base UpperTheory.V.Af
 open scoped Matrix
 /- English proof (translation)
-Use `haveI : Algebra.IsAlgebraic ℚ Ω := IsAlgClosure.isAlgebraic`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Set `j : Ω →ₐ[ℚ] ℂ` to `IsAlgClosed.lift`. Use `letI : Algebra Ω ℂ := j.toRingHom.toAlgebra`. Use `haveI : IsScalarTower ℚ Ω ℂ := IsScalarTower.of_algebraMap_eq fun x => (j.commutes x).symm`.
-
-Use `haveI : Normal ℚ Ω := IsAlgClosure.normal ℚ Ω`. Set `τ : ℂ ≃ₐ[ℚ] ℂ` to `AlgEquiv.ofRingEquiv (f := starRingAut) fun x => by simp`. Conclude with `⟨τ.restrictNormal Ω, algebraMap Ω ℂ, fun x => AlgEquiv.restrictNormal_commutes τ Ω x⟩`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem cc_ex (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] : ∃ c : G ℚ Ω, IsConjEl c := by
   haveI : Algebra.IsAlgebraic ℚ Ω := IsAlgClosure.isAlgebraic
@@ -29,7 +27,7 @@ private theorem cc_ex (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω]
   let τ : ℂ ≃ₐ[ℚ] ℂ := AlgEquiv.ofRingEquiv (f := starRingAut) fun x => by simp
   exact ⟨τ.restrictNormal Ω, algebraMap Ω ℂ, fun x => AlgEquiv.restrictNormal_commutes τ Ω x⟩
 /- English proof (translation)
-Take `⟨j, hj⟩` from `hc`. Apply `j.injective` to reduce the goal to its premises. Establish `h1 : (j ζ) ^ M = 1` using `by rw [← map_pow, h, map_one]`. Rewrite using `[hj, map_inv₀, Complex.inv_eq_conj (Complex.norm_eq_one_of_pow_eq_one h1 (by omega))]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem cc_mu {Ω : Type} [Field Ω] [CharZero Ω] {c : G ℚ Ω} (hc : IsConjEl c) {M : ℕ} (hM : 1 ≤ M) {ζ : Ω}
     (h : ζ ^ M = 1) : c ζ = ζ⁻¹ := by
@@ -38,7 +36,7 @@ private theorem cc_mu {Ω : Type} [Field Ω] [CharZero Ω] {c : G ℚ Ω} (hc : 
   have h1 : (j ζ) ^ M = 1 := by rw [← map_pow, h, map_one]
   rw [hj, map_inv₀, Complex.inv_eq_conj (Complex.norm_eq_one_of_pow_eq_one h1 (by omega))]
 /- English proof (translation)
-Use `hχ (c⁻¹ * c') fun ζ h => by` as an intermediate fact. Rewrite using `[AlgEquiv.mul_apply, cc_mu hc' hM h, ← cc_mu hc hM h]`. Conclude with `c.symm_apply_apply ζ`. Rewrite `this` using `[map_mul, map_inv, inv_mul_eq_one]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem kills_cc {Ω : Type} [Field Ω] [CharZero Ω] {C : Type} [CommGroup C] {M : ℕ} (hM : 1 ≤ M) {χ : G ℚ Ω →* C}
     (hχ : KillsMu M χ) {c c' : G ℚ Ω} (hc : IsConjEl c) (hc' : IsConjEl c') : χ c = χ c' := by
@@ -48,9 +46,9 @@ private theorem kills_cc {Ω : Type} [Field Ω] [CharZero Ω] {C : Type} [CommGr
   rw [map_mul, map_inv, inv_mul_eq_one] at this
   exact this
 /- English proof (translation)
-Use `haveI : NeZero M := ⟨by omega⟩`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Take `⟨μ, hμ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω M`. Use `⟨Fintype.card (ZMod M)ˣ, Fintype.card_pos, fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hχ _ fun ζ h => ?_` and prove the remaining obligations. Establish `h1` using `hμ.autToPow_spec ℚ (s ^ Fintype.card (ZMod M)ˣ)`. Rewrite `h1` using `[map_pow, pow_card_eq_one, Units.val_one, ZMod.val_one_eq_one_mod, ← pow_eq_pow_mod _ hμ.pow_eq_one, pow_one]`. Take `⟨i, -, rfl⟩` from `hμ.eq_pow_of_pow_eq_one h`. Rewrite using `[map_pow, ← h1]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem kills_pow {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {C : Type} [CommGroup C] {M : ℕ} (hM : 1 ≤ M)
     {χ : G ℚ Ω →* C} (hχ : KillsMu M χ) : ∃ k : ℕ, 0 < k ∧ ∀ s, χ s ^ k = 1 := by
@@ -65,16 +63,16 @@ private theorem kills_pow {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ
   obtain ⟨i, -, rfl⟩ := hμ.eq_pow_of_pow_eq_one h
   rw [map_pow, ← h1]
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_succ, Matrix.det_fin_two] <;> ring`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem pair2 {k : Type} [Field k] (A : Matrix (Fin 2) (Fin 2) k) :
     Aᵀ * !![0, 1; -1, 0] * A = A.det • (!![0, 1; -1, 0] : Matrix (Fin 2) (Fin 2) k) := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_succ, Matrix.det_fin_two] <;> ring
 /- English proof (translation)
-Set `J : GL (Fin 2) k` to `Matrix.GeneralLinearGroup.mkOfDetNeZero !![0, 1; -1, 0] (by simp [Matrix.det_fin_two])`. Use `⟨J * r c⁻¹, fun s s' h => ?_⟩` and prove the remaining obligations. Establish `h' : s' = c * s * c⁻¹` using `h`. Establish `e : r c⁻¹ * r s' = r s * r c⁻¹` using `by rw [h', ← map_mul, ← map_mul]; congr 1; group`. Establish `e' : (r c⁻¹).val * (r s').val = (r s).val * (r c⁻¹).val` using `congrArg Units.val e`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : (r s).valᵀ * J.val * (r s).val = (r s).val.det • J.val` using `pair2 _`. Establish `hd : (((Matrix.GeneralLinearGroup.det.comp r).comp (resG F F Ω) s : kˣ) : k) = (r s).val.det` using `rfl`. Rewrite using `[hd, Units.val_mul, ← Matrix.smul_mul, ← hp]`. Simplify using `only [Matrix.mul_assoc, e']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem pairing2 {F Ω k : Type} [Field F] [Field Ω] [Algebra F Ω] [Field k] (r : G F Ω →* GL (Fin 2) k) (c : G F Ω) :
     ∃ P, IsPairing c r ((Matrix.GeneralLinearGroup.det.comp r).comp (resG F F Ω)) P := by
@@ -88,22 +86,20 @@ private theorem pairing2 {F Ω k : Type} [Field F] [Field Ω] [Algebra F Ω] [Fi
   rw [hd, Units.val_mul, ← Matrix.smul_mul, ← hp]
   simp only [Matrix.mul_assoc, e']
 /- English proof (translation)
-The claim follows from `DivisionSemiring.to_moduleIsTorsionFree`.
+A detailed English derivation is pending.
 -/
 private theorem tf (L Ω : Type) [Field L] [Field Ω] [Algebra L Ω] : Module.IsTorsionFree L Ω :=
   DivisionSemiring.to_moduleIsTorsionFree
 attribute [local instance] tf
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) L⟩`.
+Supply the required witnesses or components.
 -/
 private theorem algClosure_up (L Ω : Type) [Field L] [CharZero L] [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] [Algebra L Ω] :
     IsAlgClosure L Ω :=
   ⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) L⟩
 open UpperTheory.V UpperTheory.V.Af in
 /- English proof (translation)
-Use `haveI : IsAlgClosure K Ω := algClosure_up K Ω`. Use `haveI : IsAlgClosure L Ω := algClosure_up L Ω`. Use `haveI a : IsAbelianGalois K L := IsAbelianGalois.tower_top ℚ K L`. Establish `e : (W.comp (resG ℚ K Ω)).comp (resG K L Ω) = W.comp (resG ℚ L Ω)` using `MonoidHom.ext fun _ => rfl`. Rewrite `hirr`, `haut` using `[← e]`.
-
-Establish `h1` using `(_root_.UpperTheory.V.Z.Bc.solC_alt P cyc K L Ω (isSolvable_of_comm a.is_comm.comm) hC hL l ι 2 one_le_two (W.comp (resG ℚ K Ω)) (hW.comp (continuous_restrictScalarsHom ℚ K Ω)) hirr (UpperTheory.solvable_polarized_restriction ℚ K Ω l ι 2 W hpol)).2 haut`. Conclude with `_root_.UpperTheory.V.Z.Bc.automorphic_rank_two_of_automorphic_restrict_of_finite_det P cyc2 hG (_root_.UpperTheory.V.Z.Bc.exists_residual_rep_quadratic_alt P) K Ω hK hC l ι W hW ((UpperTheory.galoisRep_irreducibility_criterion.1 _ _ _ 2 _).1 _ hirr) hfin h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem via (P : _root_.UpperTheory.V.Af.HypothesesH') (cyc : Z.Bc.CycC) (cyc2 : Z.Bc.DescS) (hG : Z.Bc.GapTwo) (K L Ω : Type) [Field K] [NumberField K] [Field L] [NumberField L]
     [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] [Algebra K L] [Algebra K Ω] [Algebra L Ω] [IsScalarTower K L Ω] [IsAbelianGalois ℚ L]
@@ -121,13 +117,13 @@ private theorem via (P : _root_.UpperTheory.V.Af.HypothesesH') (cyc : Z.Bc.CycC)
   exact _root_.UpperTheory.V.Z.Bc.automorphic_rank_two_of_automorphic_restrict_of_finite_det P cyc2 hG (_root_.UpperTheory.V.Z.Bc.exists_residual_rep_quadratic_alt P) K Ω hK hC l ι W hW ((UpperTheory.galoisRep_irreducibility_criterion.1 _ _ _ 2 _).1 _ hirr) hfin h1
 open UpperTheory.V UpperTheory.V.Af in
 /- English proof (translation)
-Introduce `L Ω _ _ _ _ _ _ _ _ l _ ι W hW hdet hirr ⟨η, σ, hσ, hησ, hηL⟩ haut`. Use `haveI : IsAlgClosure L Ω := algClosure_up L Ω`. Take `⟨M, χ, hM, hχ, hθ⟩` from `hdet`. Rewrite `hθ` using `[zpow_zero, one_mul]`. Establish `hcont : Continuous (Matrix.GeneralLinearGroup.det.comp W)` using `Matrix.GeneralLinearGroup.continuous_det.comp hW`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk, hpow⟩` from `kills_pow hM hχ`. Establish `halg : IsAlgChar ι (Matrix.GeneralLinearGroup.det.comp W)`. Use `(_root_.UpperTheory.V.Af.algOfCyc_s P ℚ Ω l ι).1 _ hcont fun w _ => ?_` and prove the remaining obligations. Take `⟨A, hA⟩ : ∃ A : ValuationSubring Ω, IsPlaceOver A w` from `exists_isPlaceOver Ω w`. Conclude with `⟨A, hA, 0, k, hk, fun s _ => by rw [neg_zero, zpow_zero, mul_one, hθ, hpow]⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `cc_ex Ω`. Take `⟨Q, hQ⟩` from `pairing2 W c`. Establish `hfin : ∃ N : ℕ, 0 < N ∧ ∀ s, Matrix.GeneralLinearGroup.det (W s) ^ N = 1` using `⟨k, hk, fun s => by`. Establish `e : Matrix.GeneralLinearGroup.det (W s) = χ s` using `DFunLike.congr_fun hθ s`. Rewrite using `[e, hpow]⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨K, hK, hC⟩` from `Z.Bc.exists_quad L Ω η σ hσ hησ hηL`. Establish `hpol : Sol.Pol ι W` using `⟨ℚ, _, _, _, _, inferInstance, inferInstance, inferInstance, _, c, Q, halg, fun c c' h h' => by rw [hθ]; exact kills_cc hM hχ h h', hc, hQ⟩`. Conclude with `(_root_.UpperTheory.GalN.V.automorphy_bridge_of_printed_hida P ℚ Ω l ι 2 W).1.1 (via P cyc cyc2 hG K L Ω hK hC inferInstance l ι W hW hirr hpol hfin ((_root_.UpperTheory.GalN.V.automorphy_bridge_of_printed_hida P L Ω l ι 2 _).2.1.2 haut))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Bc.isAutR_of_isAutC_comp_galEmb_of_odd_quadratic_char (P : _root_.UpperTheory.V.Af.HypothesesH') (cyc : Z.Bc.CycC) (cyc2 : Z.Bc.DescS) (hG : Z.Bc.GapTwo) :
   ∀ (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [IsAbelianGalois ℚ L] [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω]

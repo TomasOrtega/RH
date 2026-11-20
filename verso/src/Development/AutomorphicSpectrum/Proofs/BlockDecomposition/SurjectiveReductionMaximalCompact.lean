@@ -17,7 +17,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Jp.RhoSplit
 
 /- English proof (translation)
-Use `⟨((MonoidHom.ofInjective hι).symm.toMonoidHom).comp (φ.codRestrict ι.range h), fun a => ?_⟩` and prove the remaining obligations. Use `(MonoidHom.ofInjective hι).apply_symm_apply (φ.codRestrict ι.range h a)` as an intermediate fact. Conclude with `(congrArg Subtype.val this).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_lift {A B C : Type} [Group A] [Group B] [Group C] (φ : A →* C) (ι : B →* C)
     (hι : Function.Injective ι) (h : ∀ a, φ a ∈ ι.range) : ∃ ρ : A →* B, ∀ a, φ a = ι (ρ a) := by
@@ -26,9 +26,9 @@ theorem exists_lift {A B C : Type} [Group A] [Group B] [Group C] (φ : A →* C)
   exact (congrArg Subtype.val this).symm
 
 /- English proof (translation)
-Introduce `a b e`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply `h` to reduce the goal to its premises. Use `congrArg (fun g : GL (Ix n) L => g.1 i j) e` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem inL_injective {O L : Type} [CommRing O] [IsLocalRing O] [Field L] [Algebra O L]
     (h : Function.Injective (algebraMap O L)) {n : ℕ} :
@@ -41,9 +41,9 @@ theorem inL_injective {O L : Type} [CommRing O] [IsLocalRing O] [Field L] [Algeb
   simpa using this
 
 /- English proof (translation)
-Establish `h1 : (1 : Matrix (Ix n) (Ix n) (O ⧸ Ideal.span {ϖ ^ 2})) = (1 : Matrix (Ix n) (Ix n) O).map (Ideal.Quotient.mk (Ideal.span {ϖ ^ 2}))` using `(Matrix.map_one _ (map_zero _) (map_one _)).symm`. Unfold `Gam2`. Rewrite using `[MonoidHom.mem_ker, Units.ext_iff, Units.val_one, h1]`. Prove the components needed by the constructor for the conclusion. Introduce `h i j`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrFun (congrFun h i) j` as an intermediate fact. Conclude with `Ideal.Quotient.eq.1 (by simpa using this)`. Introduce `h`. Use extensionality with `i j`. Simplify using `using Ideal.Quotient.eq.2 (h i j)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_level_square_congruence_iff {O : Type} [CommRing O] [IsLocalRing O] {n : ℕ} (ϖ : O) (κ : GL (Ix n) O) :
     κ ∈ Gam2 (n := n) ϖ ↔
@@ -62,15 +62,13 @@ theorem mem_level_square_congruence_iff {O : Type} [CommRing O] [IsLocalRing O] 
     simpa using Ideal.Quotient.eq.2 (h i j)
 
 /- English proof (translation)
-Establish `hc : algebraMap (Ov D v) (Lv D v) (ϖ ^ 2) ≠ 0`. Introduce `e`. Conclude with `pow_ne_zero 2 h (Subtype.val_injective (by simpa using e))`. Use `set c := algebraMap (Ov D v) (Lv D v) (ϖ ^ 2) with hcdef`. Establish `hO : IsOpen ((Valued.v.valuationSubring : ValuationSubring (Lv D v)) : Set (Lv D v))` using `Valued.isOpen_valuationSubring _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hs : {x : Lv D v | ∃ y ∈ Ideal.span {ϖ ^ 2}, algebraMap (Ov D v) (Lv D v) y = x} = (fun x => c⁻¹ * x) ⁻¹' ((Valued.v.valuationSubring : ValuationSubring (Lv D v)) : Set (Lv D v))`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Take `⟨z, rfl⟩` from `Ideal.mem_span_singleton'.1 hy`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: c⁻¹ * algebraMap (Ov D v) (Lv D v) (z * ϖ ^ 2) = algebraMap (Ov D v) (Lv D v) z`. Rewrite using `[map_mul, ← hcdef]`. Clear the denominators using the available nonvanishing facts. Simplify using `only [Set.mem_preimage, this]`. Conclude with `z.2`.
+Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `hx`. Use `⟨⟨c⁻¹ * x, hx⟩ * ϖ ^ 2, Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _), ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ← hcdef]`. Establish `: algebraMap (Ov D v) (Lv D v) ⟨c⁻¹ * x, hx⟩ = c⁻¹ * x` using `rfl`. Rewrite using `[this]`.
-
-Clear the denominators using the available nonvanishing facts. Rewrite using `[hs]`. Conclude with `hO.preimage (continuous_const.mul continuous_id)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_ideal (D : D7) (v : Pl D) (ϖ : Ov D v) (h : ϖ ≠ 0) :
     IsOpen {x : Lv D v | ∃ y ∈ Ideal.span {ϖ ^ 2}, algebraMap (Ov D v) (Lv D v) y = x} := by
@@ -99,7 +97,7 @@ theorem isOpen_ideal (D : D7) (v : Pl D) (ϖ : Ov D v) (h : ϖ ≠ 0) :
   exact hO.preimage (continuous_const.mul continuous_id)
 
 /- English proof (translation)
-Establish `h1 : Continuous fun k : KAt D n v => splitHom D.sp.cm.sig (Jst D n) τ (proj D.sp.cm.sig (Jst D n) v k)` using `(continuous_splitHom τ).comp ((continuous_proj _ _ v).comp continuous_subtype_val)`. Establish `h2 : Continuous fun k : KAt D n v => (splitHom D.sp.cm.sig (Jst D n) τ (proj D.sp.cm.sig (Jst D n) v k)).1` using `Units.continuous_val.comp h1`. Conclude with `h2.matrix_elem (finSumFinEquiv i) (finSumFinEquiv j)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_entry (D : D7) (n : ℕ) (v : Pl D) (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) (i j : Ix n) :
     Continuous fun k : KAt D n v => (thU D n v τ (proj D.sp.cm.sig (Jst D n) v k)).1 i j := by
@@ -112,21 +110,21 @@ theorem continuous_entry (D : D7) (n : ℕ) (v : Pl D) (τ : D.host.E →ₐ[D.h
   exact h2.matrix_elem (finSumFinEquiv i) (finSumFinEquiv j)
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (inL (O` using `Ov D v) (L := Lv D v) (n := n)) := inL_injective Subtype.val_injective`. Establish `hmem : ∀ k : KAt D n v, ((thU D n v τ).comp ((proj D.sp.cm.sig (Jst D n) v).comp (KAt D n v).subtype)) k ∈ (inL (O` using `Ov D v) (L := Lv D v) (n := n)).range := by`. Introduce `k`. Establish `hk : (k : G D n) ∈ GlobalTheory.LocIntw.KUpAd D.sp.cm.sig (Jst D n)` using `(Subgroup.mem_inf.1 k.2).1`. Conclude with `(GlobalTheory.T.mem_maximal_compact_iff_integral_image D n v τ _).1 ((GlobalTheory.LocIntw.mem_KUpAd.1 hk).1 v)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ρ, hρ⟩` from `exists_lift _ _ hinj hmem`. Establish `hρ' : ∀ k : KAt D n v, thU D n v τ (proj D.sp.cm.sig (Jst D n) v k) = inL (L` using `Lv D v) (ρ k) := hρ`. Use `⟨ρ, hρ', ?_, ?_⟩` and prove the remaining obligations. Introduce `κ`. Take `⟨g, hg⟩` from `(GlobalTheory.T.bijective_local_unitary_to_GL D n v τ).2 (inL (L := Lv D v) κ)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hK` using `(GlobalTheory.T.mem_maximal_compact_iff_integral_image D n v τ g).2 ⟨κ, hg.symm⟩`. Establish `h1 : emb D.sp.cm.sig (Jst D n) v g ∈ KAt D n v` using `Subgroup.mem_inf.2 ⟨GlobalTheory.LocIntw.emb_mem_KUpAd hK, by rw [← range_emb]; exact ⟨g, rfl⟩⟩`. Use `⟨⟨_, h1⟩, hinj ?_⟩` and prove the remaining obligations. Rewrite using `[← hρ', proj_emb_self, hg]`. Introduce `ϖ hϖ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hU` using `isOpen_ideal D v ϖ hϖ.ne_zero`. Use `set U := {x : Lv D v | ∃ y ∈ Ideal.span {ϖ ^ 2}, algebraMap (Ov D v) (Lv D v) y = x} with hUdef`. Establish `hs : ρ ⁻¹' (Gam2 (n` using `n) ϖ : Set (GL (Ix n) (Ov D v))) = ⋂ i : Ix n, ⋂ j : Ix n, (fun k : KAt D n v => (thU D n v τ (proj D.sp.cm.sig (Jst D n) v k)).1 i j - (1 : Matrix (Ix n) (Ix n) (Lv D v)) i j) ⁻¹' U := by`. Use extensionality with `k`. Establish `he : ∀ i j, (thU D n v τ (proj D.sp.cm.sig (Jst D n) v k)).1 i j - (1 : Matrix (Ix n) (Ix n) (Lv D v)) i j = algebraMap (Ov D v) (Lv D v) ((ρ k).1 i j - (1 : Matrix (Ix n) (Ix n) (Ov D v)) i j)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i j`. Establish `h1 : (1 : Matrix (Ix n) (Ix n) (Lv D v)) i j = algebraMap (Ov D v) (Lv D v) ((1 : Matrix (Ix n) (Ix n) (Ov D v)) i j)`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Rewrite using `[Matrix.one_apply_eq, Matrix.one_apply_eq, map_one]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.one_apply_ne h, Matrix.one_apply_ne h, map_zero]`. Rewrite using `[hρ', map_sub, h1]`. Both sides reduce to the same expression. Simplify using `only [Set.mem_preimage, Set.mem_iInter, SetLike.mem_coe, mem_level_square_congruence_iff, he, hUdef, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `fun h i j => ⟨_, h i j, rfl⟩`. Introduce `h i j`. Take `⟨y, hy, e⟩` from `h i j`. Establish `hA : Function.Injective (algebraMap (Ov D v) (Lv D v))` using `Subtype.val_injective`. Establish `e'` using `hA e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e']`. Conclude with `hy`. Rewrite using `[hs]`. Use `IsOpen.measurableSet (isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => hU.preimage ?_)` and prove the remaining obligations. Apply the tactic sequence `exact (continuous_entry D n v τ i j).sub continuous_const`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_rho (D : D7) (n : ℕ) (v : Pl D) (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) :
     ∃ ρ : KAt D n v →* GL (Ix n) (Ov D v),

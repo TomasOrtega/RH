@@ -16,11 +16,11 @@ variable {K : Type} [Field K]
 variable {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [FiniteDimensional ℂ E] {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Use `Submodule.iSup_induction Q (motive := fun y => ∃ ys : ι → M, (∀ p, ys p ∈ Q p) ∧ ∑ p, ys p = y) hy ?_ ?_ ?_` and prove the remaining obligations. Introduce `i x hx`. Use `⟨Pi.single i x, fun p => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : p = i`. Substitute `h` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `using hx`. Simplify using `[h]`. Simplify using `[Finset.sum_pi_single']`. Conclude with `⟨0, fun _ => zero_mem _, by simp⟩`. Introduce and unpack `x y ⟨xs, hxs, rfl⟩ ⟨ys, hys, rfl⟩`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨xs + ys, fun p => add_mem (hxs p) (hys p), by simp [Finset.sum_add_distrib]⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_sum_of_mem_iSup {R M : Type} [Ring R] [AddCommGroup M] [Module R M] {ι : Type} [Fintype ι]
     (Q : ι → Submodule R M) {y : M} (hy : y ∈ ⨆ p, Q p) : ∃ ys : ι → M, (∀ p, ys p ∈ Q p) ∧ ∑ p, ys p = y := by
@@ -40,14 +40,14 @@ def specOp (U : ι → Submodule ℂ E) (a : ι → ℂ) : Module.End ℂ E :=
   ∑ p, a p • ((U p).starProjection : E →L[ℂ] E).toLinearMap
 
 /- English proof (translation)
-Simplify using `[specOp, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem specOp_apply (U : ι → Submodule ℂ E) (a : ι → ℂ) (x : E) :
     specOp U a x = ∑ p, a p • (U p).starProjection x := by
   simp [specOp, LinearMap.sum_apply]
 
 /- English proof (translation)
-Conclude with `Submodule.starProjection_apply_mem (U p) x`.
+A detailed English derivation is pending.
 -/
 theorem proj_mem (U : ι → Submodule ℂ E) (p : ι) (x : E) : (U p).starProjection x ∈ U p := by
   exact Submodule.starProjection_apply_mem (U p) x
@@ -56,9 +56,7 @@ variable (U : ι → Submodule ℂ E) (hU : ∀ p q, p ≠ q → ∀ x ∈ U p, 
 include hU
 
 /- English proof (translation)
-Use `split_ifs with h`. Substitute `h` using the available equality. Conclude with `Submodule.starProjection_eq_self_iff.2 hx`. Establish `ho : x ∈ (U p)ᗮ` using `(Submodule.mem_orthogonal _ _).2 fun u hu => hU p q h u hu x hx`. Establish `h1` using `Submodule.starProjection_eq_self_iff.2 ho`.
-
-Rewrite `h1` using `[Submodule.starProjection_orthogonal_val]`. Conclude with `sub_eq_self.1 h1`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_of_mem [DecidableEq ι] {p q : ι} {x : E} (hx : x ∈ U q) :
     (U p).starProjection x = if p = q then x else 0 := by
@@ -71,7 +69,7 @@ theorem proj_of_mem [DecidableEq ι] {p q : ι} {x : E} (hx : x ∈ U q) :
     exact sub_eq_self.1 h1
 
 /- English proof (translation)
-Rewrite using `[specOp_apply]`. Simplify using `only [proj_of_mem U hU hx, smul_ite, smul_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem specOp_of_mem {a : ι → ℂ} {q : ι} {x : E} (hx : x ∈ U q) : specOp U a x = a q • x := by
   classical
@@ -80,9 +78,9 @@ theorem specOp_of_mem {a : ι → ℂ} {q : ι} {x : E} (hx : x ∈ U q) : specO
   simp
 
 /- English proof (translation)
-Rewrite using `[specOp_apply, map_sum, Finset.sum_eq_single q]`. Rewrite using `[map_smul, Submodule.starProjection_eq_self_iff.2 (proj_mem U q x)]`. Introduce `p _ hp`. Rewrite using `[map_smul, proj_of_mem U hU (proj_mem U p x), if_neg (Ne.symm hp), smul_zero]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ q) h`.
+A detailed English derivation is pending.
 -/
 theorem proj_specOp (a : ι → ℂ) (q : ι) (x : E) :
     (U q).starProjection (specOp U a x) = a q • (U q).starProjection x := by
@@ -95,9 +93,9 @@ theorem proj_specOp (a : ι → ℂ) (q : ι) (x : E) :
     exact absurd (Finset.mem_univ q) h
 
 /- English proof (translation)
-Use `Submodule.iSup_induction U (motive := fun x => ∑ p, (U p).starProjection x = x) hx ?_ ?_ ?_` and prove the remaining obligations. Introduce `q x hx`. Simplify using `only [proj_of_mem U hU hx]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `x y hx hy`. Simplify using `only [map_add, Finset.sum_add_distrib, hx, hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem sum_proj {x : E} (hx : x ∈ ⨆ p, U p) : ∑ p, (U p).starProjection x = x := by
   classical
@@ -112,7 +110,7 @@ theorem sum_proj {x : E} (hx : x ∈ ⨆ p, U p) : ∑ p, (U p).starProjection x
 omit hU in
 
 /- English proof (translation)
-Rewrite using `[specOp_apply]`. Conclude with `Submodule.sum_mem _ fun p _ => Submodule.smul_mem _ _ (hUW p (proj_mem U p x))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem specOp_mem (a : ι → ℂ) (W : Submodule ℂ E) (hUW : ∀ p, U p ≤ W) (x : E) : specOp U a x ∈ W := by
   rw [specOp_apply]
@@ -126,17 +124,15 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K]
 variable {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [FiniteDimensional ℂ E] {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Use `⟨(Submodule.mem_iInf _).2 fun T => ?_, hx.2⟩` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, specOp_of_mem (fun p => P p ⊓ W) hO hx]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce and unpack `x ⟨hx, hW⟩`. Establish `hT : ∀ T, specOp (fun p => P p ⊓ W) (fun p => σ (e p T)) x = σ (e c T) • x` using `fun T => by`. Establish `h` using `(Submodule.mem_iInf _).1 hx T`. Rewrite `h` using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero]`. Simplify using `using h`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h0 : ∀ q, q ≠ c → (P q ⊓ W).starProjection x = 0`. Introduce `q hq`. Choose the witnesses or unpack the hypotheses as in `⟨T, hTq⟩ : ∃ T, e q T ≠ e c T := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hq (he (funext h))`. Establish `h1` using `proj_specOp (fun p => P p ⊓ W) hO (fun p => σ (e p T)) q x`. Rewrite `h1` using `[hT T, map_smul]`. Establish `h2 : (σ (e q T) - σ (e c T)) • (P q ⊓ W).starProjection x = 0`. Rewrite using `[sub_smul, ← h1, sub_self]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `smul_eq_zero.1 h2 with h3 | h3` into its components or cases. Conclude with `absurd (σ.injective (sub_eq_zero.1 h3)) hTq`. Conclude with `h3`. Establish `hx' : x ∈ ⨆ p, P p ⊓ W` using `by rw [hS]; exact hW`. Establish `hsum` using `sum_proj (fun p => P p ⊓ W) hO hx'`.
-
-Rewrite `hsum` using `[Finset.sum_eq_single c (fun q _ hq => h0 q hq) (fun h => absurd (Finset.mem_univ c) h)]`. Rewrite using `[← hsum]`. Conclude with `proj_mem (fun p => P p ⊓ W) c x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spec_eig (σ : K →+* ℂ) {H : Type} (P : ι → Submodule ℂ E) (W : Submodule ℂ E) (e : ι → H → K)
     (he : Function.Injective e) (hO : ∀ p q, p ≠ q → ∀ x ∈ P p ⊓ W, ∀ y ∈ P q ⊓ W, ⟪x, y⟫_ℂ = 0)
@@ -172,13 +168,13 @@ theorem spec_eig (σ : K →+* ℂ) {H : Type} (P : ι → Submodule ℂ E) (W :
     exact proj_mem (fun p => P p ⊓ W) c x
 
 /- English proof (translation)
-Introduce `i k`. Take `⟨ys, hys, hsum⟩` from `exists_sum_of_mem_iSup _ (hK (Pi.single k 1))`. Establish `hmem : ∀ p, f (cpt σ (ys p)) ∈ P p ⊓ LinearMap.range f` using `fun p => ⟨hys p, ⟨_, rfl⟩⟩`. Establish `hcs : ∀ z : ι → Fin D → K, cpt σ (∑ p, z p) = ∑ p, cpt σ (z p)` using `fun z => by`. Use function extensionality and compare the values at `l`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[cpt, Finset.sum_apply]`. Establish `hk : (Pi.single k 1 : Fin D → ℂ) = cpt σ (∑ p, ys p)`. Rewrite using `[hsum]`. Use function extensionality and compare the values at `l`. Distinguish the cases in `h : l = k`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using `[cpt]`. Simplify using `[cpt, h]`. Establish `key : (specOp (fun p => P p ⊓ LinearMap.range f) (fun p => σ (a p)) ∘ₗ f) (Pi.single k 1) = f (cpt σ (∑ p, a p • ys p))`. Rewrite using `[LinearMap.comp_apply, hk, hcs, map_sum, map_sum, hcs, map_sum]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[specOp_of_mem (fun p => P p ⊓ LinearMap.range f) hO (hmem p), cpt_smul, map_smul]`. Use `⟨(∑ p, a p • ys p) i, ?_⟩` and prove the remaining obligations. Simplify using `only [relMat, Matrix.of_apply]`. Rewrite using `[key, hf (solve_spec f (⟨_, rfl⟩ : f (cpt σ (∑ p, a p • ys p)) ∈ LinearMap.range f))]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -220,7 +216,7 @@ namespace CxData
 variable {Bs : DefBase K} {A : DefAmb Bs} {X : CxData A} {fc : DefSub A → DefFace Bs} {cr : Crd A fc} {b : Bool}
 
 /- English proof (translation)
-Establish `hle : (⨆ p, (lv (fc X.zs) b).Qp Bs.μ0 p) ≤ ⨆ p, X.Ep cr b p` using `iSup_mono fun p x hx => (X.mem_Ep cr b p x).2 ((h3 p x).1 hx)`. Conclude with `hle (hW.Qp_top ▸ Submodule.mem_top)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rowsK (hW : (lv (fc X.zs) b).WF) (h3 : X.H3 cr b) (y : Fin ((lv (fc X.zs) b).dQ Bs.μ0) → K) :
     y ∈ ⨆ p, X.Ep cr b p := by
@@ -229,9 +225,9 @@ theorem rowsK (hW : (lv (fc X.zs) b).WF) (h3 : X.H3 cr b) (y : Fin ((lv (fc X.zs
   exact hle (hW.Qp_top ▸ Submodule.mem_top)
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `(X.liftMat_bij cr b hk he hn h5 hr j Bs.μ0).2 y`. Establish `hx : x ∈ ⨆ p, (lv (fc X.zs) b).Zp j Bs.μ0 p`. Rewrite using `[ht j]`. Conclude with `Submodule.mem_top`. Establish `hle : (⨆ p, (lv (fc X.zs) b).Zp j Bs.μ0 p).map (X.liftMat cr b j Bs.μ0).mulVecLin ≤ ⨆ p, X.WpK b j p`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.map_iSup]`. Conclude with `iSup_mono fun p => Submodule.map_le_iff_le_comap.2 fun z hz => by`. Rewrite using `[Submodule.mem_comap, Matrix.mulVecLin_apply, X.mem_WpK b j p, X.key_lift cr b h5 hr j Bs.μ0 z]`. Conclude with `(h3W j p z).1 hz`. Conclude with `hle (Submodule.mem_map_of_mem hx)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftsK (ht : (lv (fc X.zs) b).Types) (hk : X.KForm b) (he : X.EWnorm b) (hn : 0 < X.nP b) (h5 : X.H5 cr b)
     (hr : X.RATth cr b) (h3W : X.H3W cr b) (j : Bs.J) (y : Fin (X.dW b j) → K) : y ∈ ⨆ p, X.WpK b j p := by
@@ -247,9 +243,9 @@ theorem liftsK (ht : (lv (fc X.zs) b).Types) (hk : X.KForm b) (he : X.EWnorm b) 
   exact hle (Submodule.mem_map_of_mem hx)
 
 /- English proof (translation)
-Establish `hO' : ∀ p q, p ≠ q → ∀ x ∈ X.EEp p ⊓ LinearMap.range (X.iC cr b Bs.μ0), ∀ y ∈ X.EEp q ⊓ LinearMap.range (X.iC cr b Bs.μ0), ⟪x, y⟫_ℂ = 0`. Rewrite using `[h2.2.2]`. Conclude with `hE.1`. Use `⟨{ hC := fun T => specOp (fun p => X.EEp p ⊓ X.EEl b) (fun p => Bs.v0.embedding (cf.ev p T)), maps := fun T e _ => specOp_mem _ _ _ (fun _ => inf_le_right) e, rat := fun T => ?_, eig := fun c => spec_eig Bs.v0.embedding X.EEp (X.EEl b) cf.ev cf.ev_inj hE.1 hE.2 c }⟩` and prove the remaining obligations. Establish `h` using `spec_rat Bs.v0.embedding (X.iC cr b Bs.μ0) h2.1 X.EEp (fun p => cf.ev p T) hO' hQ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[h2.2.2]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem heckeRows_spec (h2 : X.H2 cr b) (hE : X.PartsE b) (hQ : ∀ y, y ∈ ⨆ p, X.Ep cr b p) (cf : ConvFace Bs) :
     Nonempty (X.HeckeRowsC cr b cf) := by
@@ -266,7 +262,7 @@ theorem heckeRows_spec (h2 : X.H2 cr b) (hE : X.PartsE b) (hQ : ∀ y, y ∈ ⨆
   exact h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨{ hC := fun j T => specOp (fun p => X.Wp j p ⊓ LinearMap.range (X.w0C b j)) (fun p => Bs.v0.embedding (cf.ev p T)), maps := fun _ _ _ => specOp_mem _ _ _ (fun _ => inf_le_right) _, rat := fun j T => spec_rat Bs.v0.embedding (X.w0C b j) (X.principal_form_injective b hk he hn j) ( …`.
+Supply the required witnesses or components.
 -/
 theorem heckeW_spec (hk : X.KForm b) (he : X.EWnorm b) (hn : 0 < X.nP b) (hP : X.PartsW b)
     (hK : ∀ j y, y ∈ ⨆ p, X.WpK b j p) (cf : ConvFace Bs) : Nonempty (X.HeckeWC b cf) :=
@@ -292,7 +288,7 @@ variable {A3 : FamIn3 K G Pl0 I0 Ty T m} {P0 : Subgroup G} {ψ0 : P0 →* Kˣ} {
   {gE : Representation ℂ G X.EE} {gW : ∀ j, Representation ℂ G (X.W j)}
 
 /- English proof (translation)
-The claim follows from `CxData.heckeRows_spec (hR.what₂ false).1 (hR.partsE false) (CxData.rowsK (hR.rowHyp false).wf (hR.rowHyp false).h3) cf`.
+A detailed English derivation is pending.
 -/
 theorem heckeRB_of (hR : ComplexDataConditionsBaseLevel A3 P0 ψ0 P1 ψ1 Dc Sp Zsc X s C0 hE hW gE gW) (cf : ConvFace A3.fam3.base3) :
     Nonempty (X.HeckeRowsC (crdOf3 A3 P0 ψ0 P1 ψ1 Dc Sp Zsc) false cf) :=
@@ -300,7 +296,7 @@ theorem heckeRB_of (hR : ComplexDataConditionsBaseLevel A3 P0 ψ0 P1 ψ1 Dc Sp Z
     (CxData.rowsK (hR.rowHyp false).wf (hR.rowHyp false).h3) cf
 
 /- English proof (translation)
-The claim follows from `CxData.heckeRows_spec (hR.what₂ true).1 (hR.partsE true) (CxData.rowsK (hR.rowHyp true).wf (hR.rowHyp true).h3) cf`.
+A detailed English derivation is pending.
 -/
 theorem heckeRC_of (hR : ComplexDataConditionsBaseLevel A3 P0 ψ0 P1 ψ1 Dc Sp Zsc X s C0 hE hW gE gW) (cf : ConvFace A3.fam3.base3) :
     Nonempty (X.HeckeRowsC (crdOf3 A3 P0 ψ0 P1 ψ1 Dc Sp Zsc) true cf) :=
@@ -308,7 +304,7 @@ theorem heckeRC_of (hR : ComplexDataConditionsBaseLevel A3 P0 ψ0 P1 ψ1 Dc Sp Z
     (CxData.rowsK (hR.rowHyp true).wf (hR.rowHyp true).h3) cf
 
 /- English proof (translation)
-The claim follows from `CxData.heckeW_spec hR.kForm hR.ewNorm (hR.h4pos.2.2 false) hR.partsW (CxData.liftsK hR.types0 hR.kForm hR.ewNorm (hR.h4pos.2.2 false) hR.lifts0.1 hR.ratTh hR.liftHyp0.h3W) cf`.
+A detailed English derivation is pending.
 -/
 theorem heckeWB_of (hR : ComplexDataConditionsBaseLevel A3 P0 ψ0 P1 ψ1 Dc Sp Zsc X s C0 hE hW gE gW) (cf : ConvFace A3.fam3.base3) :
     Nonempty (X.HeckeWC false cf) :=

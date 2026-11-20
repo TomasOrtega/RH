@@ -8,7 +8,7 @@ open CategoryTheory Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalC
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.BT
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.Ar.BT.charValues_mul` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FCharacterSectionMultiplicative.lean&line=279#L279)
 -/

@@ -3,15 +3,15 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `g n n' h`. Distinguish the cases in `hall : ∀ i, Even (n i)`. Use `⟨Matrix.diagonal n', Matrix.isSymm_diagonal _, fun i => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `hall i`. Rewrite using `[Matrix.mulVec_diagonal, Matrix.diagonal_apply_eq, hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨n' i * k, by ring⟩`. Take `⟨p, hp⟩` from `not_forall.mp hall`. Take `⟨k, hk⟩` from `Int.not_even_iff_odd.mp hp`. Take `⟨m, hm⟩` from `h`. Use `⟨Matrix.of fun i j => (if i = p then n' j else 0) + (if j = p then n' i else 0), ?_, fun i => ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `i j`. Simplify using `only [Matrix.transpose_apply, Matrix.of_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hm' : ∑ j, n' j * n j = m + m`. Rewrite using `[← hm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Establish `h2 : ∑ j, (if j = p then n' i else 0) * n j = n' i * n p`. Simplify using the standard rewrite rules. Distinguish the cases in `hi : i = p`. Substitute `hi` using the available equality.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply, add_mul, Finset.sum_add_distrib, if_true, hm', h2, hk]`. Conclude with `⟨m + n' i * k + n' i, by ring⟩`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply, add_mul, Finset.sum_add_distrib, if_neg hi, h2, hk, zero_mul, Finset.sum_const_zero]`. Conclude with `⟨n' i * k, by ring⟩`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isSymm_mulVec_add_diag_mod_two :
     ∀ (g : ℕ) (n n' : Fin g → ℤ), Even (n ⬝ᵥ n') →

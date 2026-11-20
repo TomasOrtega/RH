@@ -11,34 +11,34 @@ namespace GlobalTheory.Hk3.VacPhase
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.cT, Matrix.map_mul, Matrix.transpose_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cT_mul' (σ : L →+* L) {a b c : ℕ} (A : Matrix (Fin a) (Fin b) L) (B : Matrix (Fin b) (Fin c) L) :
     Formalism.UG.cT σ (A * B) = Formalism.UG.cT σ B * Formalism.UG.cT σ A := by
   simp only [Formalism.UG.cT, Matrix.map_mul, Matrix.transpose_mul]
 
 /- English proof (translation)
-Simplify using `[Formalism.UG.cT, Matrix.map_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cT_one' (σ : L →+* L) {a : ℕ} : Formalism.UG.cT σ (1 : Matrix (Fin a) (Fin a) L) = 1 := by
   simp [Formalism.UG.cT, Matrix.map_one]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_sub' (σ : L →+* L) {a b : ℕ} (A B : Matrix (Fin a) (Fin b) L) :
     Formalism.UG.cT σ (A - B) = Formalism.UG.cT σ A - Formalism.UG.cT σ B := by
   ext i j; simp [Formalism.UG.cT]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_add' (σ : L →+* L) {a b : ℕ} (A B : Matrix (Fin a) (Fin b) L) :
     Formalism.UG.cT σ (A + B) = Formalism.UG.cT σ A + Formalism.UG.cT σ B := by
   ext i j; simp [Formalism.UG.cT]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Conclude with `Subring.sum_mem _ fun k _ => Subring.mul_mem _ (hA i k) (hB k j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_int {a b c : ℕ} {A : Matrix (Fin a) (Fin b) L} {B : Matrix (Fin b) (Fin c) L}
     (hA : ∀ i j, A i j ∈ Formalism.UG.intL L) (hB : ∀ i j, B i j ∈ Formalism.UG.intL L) (i : Fin a) (j : Fin c) :
@@ -47,7 +47,7 @@ theorem mul_int {a b c : ℕ} {A : Matrix (Fin a) (Fin b) L} {B : Matrix (Fin b)
   exact Subring.sum_mem _ fun k _ => Subring.mul_mem _ (hA i k) (hB k j)
 
 /- English proof (translation)
-Establish `h` using `hA j i`. Express the relevant statement in the definitionally equal form `Valued.v (σ (A j i)) ≤ 1`. Rewrite using `[hσ]`. Conclude with `h`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cT_int (σ : L →+* L) (hσ : ∀ x, Valued.v (σ x) = Valued.v x) {a b : ℕ} {A : Matrix (Fin a) (Fin b) L}
     (hA : ∀ i j, A i j ∈ Formalism.UG.intL L) (i : Fin b) (j : Fin a) : Formalism.UG.cT σ A i j ∈ Formalism.UG.intL L := by
@@ -56,29 +56,25 @@ theorem cT_int (σ : L →+* L) (hσ : ∀ x, Valued.v (σ x) = Valued.v x) {a b
   rw [hσ]; exact h
 
 /- English proof (translation)
-Introduce `L _ _ σ δ hσ hδ n n' JS a k JT E y hJ hP hT hSD hE hAiE hEA hk hKi hyA`. Use `set J : Matrix (Fin n) (Fin n) L := (JS : Matrix (Fin n) (Fin n) L) with hJdef`. Use `set P : Matrix (Fin n) (Fin n) L := ((JS⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) with hPdef`. Use `set T : Matrix (Fin n') (Fin n') L := (JT : Matrix (Fin n') (Fin n') L) with hTdef`. Use `set K : Matrix (Fin n) (Fin n) L := (k : Matrix (Fin n) (Fin n) L) with hKdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Ki : Matrix (Fin n) (Fin n) L := ((k⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) with hKidef`. Use `set A : Matrix (Fin n) (Fin n) L := (a : Matrix (Fin n) (Fin n) L) with hAdef`. Use `set Ai : Matrix (Fin n) (Fin n) L := ((a⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) with hAidef`. Establish `hPJ : P * J = 1` using `by rw [hPdef, hJdef]; exact JS.inv_mul`. Establish `hJP : J * P = 1` using `by rw [hPdef, hJdef]; exact JS.mul_inv`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hKKi : K * Ki = 1` using `by rw [hKdef, hKidef]; exact k.mul_inv`. Establish `hAAi : A * Ai = 1` using `by rw [hAdef, hAidef]; exact a.mul_inv`. Use `set R : Matrix (Fin n) (Fin n) L := P * Formalism.UG.cT σ Ki * J with hRdef`. Use `set Z : Matrix (Fin n) (Fin n) L := P * Formalism.UG.cT σ y * T * y with hZdef`. Establish `h1 : GlobalTheory.Hk3.locH σ δ JS JT y (y * (Ki - 1)) = δ * Matrix.trace ((R - 1) * Z)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `GlobalTheory.Hk3.locH`. Establish `: ((y * (Ki - 1)).map σ)ᵀ = Formalism.UG.cT σ (Ki - 1) * Formalism.UG.cT σ y` using `cT_mul' σ y (Ki - 1)`. Rewrite using `[← hPdef, ← hTdef, this, cT_sub', cT_one']`. Use `congr 1`. Rewrite using `[hRdef, hZdef]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.sub_mul, Matrix.mul_sub, Matrix.one_mul, Matrix.mul_one, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc J P, hJP, Matrix.one_mul]`. Establish `h2 : δ * Matrix.trace (E * P * Formalism.UG.cT σ y * T * y) = δ * Matrix.trace (E * Z)`. Rewrite using `[hZdef]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hR : R * (1 - E) = 1`. Establish `hcK : Formalism.UG.cT σ K * J = J * (1 - E)`. Rewrite using `[hk, cT_add', cT_one', Matrix.add_mul, hE, Matrix.one_mul, Matrix.mul_sub, Matrix.mul_one, sub_eq_add_neg]`. Rewrite using `[hRdef, Matrix.mul_assoc, ← hcK, ← Matrix.mul_assoc, Matrix.mul_assoc P, ← cT_mul', hKKi, cT_one', Matrix.mul_one, hPJ]`. Establish `hR' : (1 - E) * R = 1` using `mul_eq_one_comm.mp hR`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hRE : R - 1 - E = E * R * E`. Establish `e1 : R - 1 = R * E`. Use `hR` as an intermediate fact. Rewrite `this` using `[Matrix.mul_sub, Matrix.mul_one]`. Rewrite using `[← this]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Establish `e2 : R - 1 = E * R`. Use `hR'` as an intermediate fact. Rewrite `this` using `[Matrix.sub_mul, Matrix.one_mul]`. Rewrite using `[← this]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : GlobalTheory.Hk3.locH σ δ JS JT y (y * (Ki - 1)) - δ * Matrix.trace (E * P * Formalism.UG.cT σ y * T * y) = δ * Matrix.trace (R * (E * Z * E))`. Rewrite using `[h1, h2, ← mul_sub, ← Matrix.trace_sub, ← Matrix.sub_mul, hRE]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, Matrix.trace_mul_comm E]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[h3]`. Establish `hRint : ∀ i j, R i j ∈ Formalism.UG.intL L` using `mul_int (mul_int hP (cT_int σ hσ hKi)) hJ`. Establish `hy' : Formalism.UG.cT σ y = Formalism.UG.cT σ Ai * Formalism.UG.cT σ (y * A)`.
-
-Rewrite using `[← cT_mul', Matrix.mul_assoc, hAAi, Matrix.mul_one]`. Establish `hW : E * Z * E = ((E * A) * (Ai * P * Formalism.UG.cT σ Ai) * Formalism.UG.cT σ (y * A)) * T * ((y * A) * (Ai * E))`. Rewrite using `[hZdef, hy']`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc A Ai, hAAi, Matrix.one_mul, ← Matrix.mul_assoc A Ai E, hAAi, Matrix.one_mul]`.
-
-Establish `hWint : ∀ i j, (E * Z * E) i j ∈ Formalism.UG.intL L`. Rewrite using `[hW]`. Conclude with `mul_int (mul_int (mul_int (mul_int hEA hSD.2) (cT_int σ hσ hyA)) hT) (mul_int hyA hAiE)`. Use `Subring.mul_mem _ hδ ?_` and prove the remaining obligations. Conclude with `Subring.sum_mem _ fun i _ => mul_int hRint hWint i i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem locH_sub_trace_mem : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (σ : L →+* L) (δ : L), (∀ x, Valued.v (σ x) = Valued.v x) → δ ∈ Formalism.UG.intL L →
   ∀ (n n' : ℕ) (JS a k : GL (Fin n) L) (JT : GL (Fin n') L) (E : Matrix (Fin n) (Fin n) L) (y : Matrix (Fin n') (Fin n) L),

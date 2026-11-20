@@ -5,17 +5,17 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCou
 namespace Formalism.L2.SG.LsDatumA
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.LocalCountModules.localCountZeroGlobal_holds`.
+A detailed English derivation is pending.
 -/
 theorem modSide0G : ModSide0G := Formalism.L2.SG.LocalCountModules.localCountZeroGlobal_holds
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.LocalCountModules.localCountUnitGlobal_holds`.
+A detailed English derivation is pending.
 -/
 theorem modSideUG : ModSideUG := Formalism.L2.SG.LocalCountModules.localCountUnitGlobal_holds
 
 /- English proof (translation)
-The claim follows from `globalCount_of_split_mode D modSide0G modSideUG`.
+A detailed English derivation is pending.
 -/
 theorem integralClosureRank_and_residueTrdegLe (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.ThinScalesBound.T2 D := globalCount_of_split_mode D modSide0G modSideUG
 

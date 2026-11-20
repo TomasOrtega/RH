@@ -5,7 +5,7 @@ namespace Formalism.GaloisIrreducibility
 open Finset
 
 /- English proof (translation)
-Unfold `IsSubSum`. Conclude with `⟨J.val.map f, Multiset.map_le_map (Finset.val_le_iff.2 hJ), rfl⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 lemma isSubSum_of_subset {ι : Type} (f : ι → ℕ) (I J : Finset ι) (hJ : J ⊆ I) :
     IsSubSum (I.val.map f) (∑ i ∈ J, f i) := by
@@ -13,15 +13,15 @@ lemma isSubSum_of_subset {ι : Type} (f : ι → ℕ) (I J : Finset ι) (hJ : J 
   exact ⟨J.val.map f, Multiset.map_le_map (Finset.val_le_iff.2 hJ), rfl⟩
 
 /- English proof (translation)
-Introduce `hA K V P ι _ _ _ _ _ τ F q O I hFτ hO hroots hsub W hWτ hWF`. Establish `hs1 : ∀ v, IsSubSum ((I v).val.map fun i => (O v i).card) (Module.finrank K W)`. Introduce `v`. Take `⟨J, hJ, hJeq⟩` from `hA K V ι (τ v) (F v) (q v) (O v) (I v) (hFτ v) (hO v) (hroots v) ⊥ W bot_le (by simp) (by simp) (hWτ v) (hWF v)`. Rewrite `hJeq` using `[finrank_bot, Nat.sub_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hJeq]`. Conclude with `isSubSum_of_subset _ _ _ hJ`. Establish `hs2 : ∀ v, IsSubSum ((I v).val.map fun i => (O v i).card) (Module.finrank K V - Module.finrank K W)`. Introduce `v`. Take `⟨J, hJ, hJeq⟩` from `hA K V ι (τ v) (F v) (q v) (O v) (I v) (hFτ v) (hO v) (hroots v) W ⊤ le_top (hWτ v) (hWF v) (by simp) (by simp)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hJeq` using `[finrank_top]`. Rewrite using `[hJeq]`. Conclude with `isSubSum_of_subset _ _ _ hJ`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨h0, h1⟩` from `hne`. Establish `hd0 : 0 < Module.finrank K W` using `Nat.pos_of_ne_zero fun h => h0 (Submodule.finrank_eq_zero.mp h)`. Establish `hdN : Module.finrank K W < Module.finrank K V` using `Submodule.finrank_lt h1`. Take `⟨v, hv⟩` from `hsub (min (Module.finrank K W) (Module.finrank K V - Module.finrank K W)) (by omega) (by omega)`. Apply `hv` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Break down `min_choice (Module.finrank K W) (Module.finrank K V - Module.finrank K W) with h | h` into its components or cases. Rewrite using `[h]`. Conclude with `hs1 v`. Rewrite using `[h]`. Conclude with `hs2 v`.
+A detailed English derivation is pending.
 -/
 theorem irreducible_of_galois_conditions : IrredOf := by
   intro hA K V P ι _ _ _ _ _ τ F q O I hFτ hO hroots hsub W hWτ hWF

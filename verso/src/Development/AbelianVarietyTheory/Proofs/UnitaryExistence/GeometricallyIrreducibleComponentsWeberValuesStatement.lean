@@ -8,7 +8,7 @@ import Formalism.LocalToGlobal.ProjectiveLattices.HasDataCondition
 open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj GlobalTheory.FinalJoin GlobalTheory.CompRat
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.FinalJoin.FieldAlg.fnAlgClosed_of_weberIn` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUnitaryExistence%2FGeometricallyIrreducibleComponentsWeberValues.lean&line=16#L16)
 -/

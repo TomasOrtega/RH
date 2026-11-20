@@ -8,7 +8,7 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 namespace PositivityTheory.RgBcC
 
 /- English proof (translation)
-Establish `hsw : SwapLaws` using `swapLaws_of rmLaws`. Establish `hfd : MatrixFrechetDerivativeAtZero` using `fr0Der_of gamDer gamMul mtLaws rmLaws`. Conclude with `cxData_of cfPair mtLaws gamMul car gamCre gamScal number rmLaws rmChar avg fr0Laws hsw (tdOf avg hbOrtho hsw hfd (wedgeDer_of gamDer)) (eigOf avg gamMul rmLaws rmHol rmAnti eigProd eigLocal) lam hlam`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cxData_model {n : ℕ} (lam : Fin n → ℤ) (hlam : Antitone lam) :
     CxData lam (lefE n lam) (lefFr n lam) (lefε n lam) (lefι n lam) (lefS n lam) (lefΓ n lam) (lefT n lam) := by
@@ -19,7 +19,7 @@ theorem cxData_model {n : ℕ} (lam : Fin n → ℤ) (hlam : Antitone lam) :
     (eigOf avg gamMul rmLaws rmHol rmAnti eigProd eigLocal) lam hlam
 
 /- English proof (translation)
-Introduce `n lam hlam` and use `⟨lefE n lam, lefFr n lam, lefε n lam, lefι n lam, lefS n lam, lefΓ n lam, lefT n lam, cxData_model lam hlam⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem cxEx_model : CxEx := fun n lam hlam =>
   ⟨lefE n lam, lefFr n lam, lefε n lam, lefι n lam, lefS n lam, lefΓ n lam, lefT n lam, cxData_model lam hlam⟩

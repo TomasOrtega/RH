@@ -13,17 +13,17 @@ attribute [local instance] SplitExt.free SplitExt.finite MvPolynomial.gradedAlge
 namespace GlobalTheory.ZH.TorsionVanish
 
 /- English proof (translation)
-Introduce `L1 L2 k _ _ Φ g N N' q J _ cls F π hBig hGood hg hN' d Pf hd hPf hx v hv`. Break down `Nat.eq_zero_or_pos d with rfl | hd1` into its components or cases. Take `⟨v0, -, hv0⟩` from `hx 1 (one_pow _)`. Establish `hC : Pf = MvPolynomial.C (Pf.coeff 0)` using `MvPolynomial.totalDegree_eq_zero_iff_eq_C.1 (Nat.le_zero.1 hPf.totalDegree_le)`. Rewrite `hv0`, the goal using `[hC]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `using hv0`. Take `⟨φ, -, hsupp, hval⟩` from `GlobalTheory.ZH.FormSec.exists_formSec k Φ J F d Pf hPf`. Take `⟨hpart, hfin, -, hsum⟩` from `GlobalTheory.ZH.WtPart.weight_parts k Φ d`. Take `⟨-, -, hsep⟩` from `GlobalTheory.exists_basis_unique_min_and_sums_separated Φ.E.X q hGood.pos _ g N N' (N ^ g * g.factorial) rfl (by omega) hBig.lll hBig.sep`. Establish `hdist : ∀ α ∈ Φ.supp φ, ∀ β ∈ Φ.supp φ, (∃ w, α = β + N' • w) → α = β`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `α hα β hβ ⟨w, hw⟩`. Take `⟨a, ha, rfl⟩` from `hsupp α hα`. Take `⟨b, hb, rfl⟩` from `hsupp β hβ`. Establish `h0 : w = 0` using `hsep d a b hd (fun j => by obtain ⟨i, hi⟩ := ha j; exact (hGood.supp i _ hi).1) (fun j => by obtain ⟨i, hi⟩ := hb j; exact (hGood.supp i _ hi).1) w hw`. Rewrite using `[hw, h0, smul_zero, add_zero]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `htor : ∀ x : Φ.Pt, x ^ N' = 1 → ¬ ⊤ ≤ x.left ⁻¹ᵁ Out.nonzeroLocus φ` using `fun x hx1 => by`. Take `⟨v0, hc, h0⟩` from `hx x hx1`. Conclude with `(hval x v0 hc).1 h0`. Use `choose ψ hψ using hpart φ`. Establish `hψ0 : ∀ α l, (ψ α).f l = 0` using `fun α => GlobalTheory.PureZero.pure_eq_zero_of_vanishing_on_torsion L1 L2 k Φ g N N' d π hBig hN' (by omega) hd1 hd α (ψ α) (hψ α).1 (GlobalTheory.T.part_vanishes_on_torus_torsion_fourier k Φ d N' hN' φ hdist htor α (ψ α) (hψ α))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hφ0 : ∀ l, φ.f l = 0` using `fun l => by`. Rewrite using `[hsum φ (hfin φ).toFinset ψ (by simp) (fun α _ => hψ α) l]`. Conclude with `Finset.sum_eq_zero fun α _ => hψ0 α l`. Take `⟨x, hxp, hc⟩` from `hv`. Use `(hval (Over.homMk x hxp) v hc).2 fun h => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hb : Out.nonzeroLocus φ = ⊥`. Simplify using `[Out.nonzeroLocus, hφ0]`. Rewrite `h` using `[hb]`. Take `⟨p⟩ : Nonempty (Sp k)` from `(inferInstance : Nonempty (PrimeSpectrum k))`. Conclude with `h (Set.mem_univ p)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem form_vanishes_of_torsion : Out.Laws → Out.Laws2 → (∀ (k : Type) [Field k] [IsAlgClosed k] (Φ : FibPre k) (g N N' : ℕ) (q : QuadraticMap ℤ Φ.E.X ℝ) (J : Type) [Fintype J] (cls : J → Φ.E.X) (F : J → (Φ.H 1).Sec) (π : Φ.Pol N), Big g N N' → Φ.Good N q cls F → π.PB.g + Module.finrank ℤ Φ.E.X = g → (N' : k) ≠ 0 → ∀ (d : ℕ) (Pf : MvPolynomial J k), d ≤ N ^ g * g.factorial → Pf.IsHomogeneous d → (∀ x : Φ.Pt, x ^ N' = 1 → ∃ v, Crd (Φ.H 1) F x.left v ∧ MvPolynomial.eval v Pf = 0) → ∀ v ∈ cone Φ.G.hom (Φ.H 1) F, MvPolynomial.eval v Pf = 0) := by
   intro L1 L2 k _ _ Φ g N N' q J _ cls F π hBig hGood hg hN' d Pf hd hPf hx v hv

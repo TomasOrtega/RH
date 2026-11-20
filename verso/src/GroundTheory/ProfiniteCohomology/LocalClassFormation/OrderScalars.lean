@@ -34,7 +34,7 @@ def cocycles₂IntRepAddEquiv :
   map_add' _ _ := rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_coboundaries₂_intRepOfMonoidEnd_iff (f : G × G → Additive M) :
     f ∈ coboundaries₂ (Rep.of (intRepOfMonoidEnd.{0} φ)) ↔
@@ -42,25 +42,25 @@ theorem mem_coboundaries₂_intRepOfMonoidEnd_iff (f : G × G → Additive M) :
   Iff.rfl
 
 /- English proof (translation)
-The claim follows from `(ModuleCat.epi_iff_surjective _).1 inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem h2π_intRepOfMonoidEnd_surjective :
     Function.Surjective (H2π (Rep.of (intRepOfMonoidEnd.{0} φ))).hom :=
   (ModuleCat.epi_iff_surjective _).1 inferInstance
 
 /- English proof (translation)
-The claim follows from `(ModuleCat.epi_iff_surjective _).1 inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem h2π_zRepOfMonoidEnd_surjective :
     Function.Surjective (H2π (Rep.of (zRepOfMonoidEnd φ))).hom :=
   (ModuleCat.epi_iff_surjective _).1 inferInstance
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Express the relevant statement in the definitionally equal form `(H2π _).hom _ = 0`. Express the relevant statement in the definitionally equal form `(H2π _).hom y = 0 at hy`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `hy`, the goal using `[H2π_eq_zero_iff]`. Conclude with `hy`. Introduce `hx`. Use `⟨(cocycles₂IntRepAddEquiv φ).symm x, ?_, rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(H2π _).hom x = 0 at hx`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(H2π _).hom _ = 0`. Rewrite `hx`, the goal using `[H2π_eq_zero_iff]`. Conclude with `hx`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_ker_h2π_intRepOfMonoidEnd :
     (H2π (Rep.of (intRepOfMonoidEnd.{0} φ))).hom.toAddMonoidHom.ker.map
@@ -91,7 +91,7 @@ noncomputable def h2IntRepAddEquiv :
     (QuotientAddGroup.quotientKerEquivOfSurjective _ (h2π_zRepOfMonoidEnd_surjective φ))
 
 /- English proof (translation)
-Establish `h1 : (QuotientAddGroup.quotientKerEquivOfSurjective (H2π (Rep.of (intRepOfMonoidEnd.{0} φ))).hom.toAddMonoidHom (h2π_intRepOfMonoidEnd_surjective φ)).symm ((H2π _).hom x) = (QuotientAddGroup.mk x : _ ⧸ _)`. Rewrite using `[AddEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Rewrite using `[h2IntRepAddEquiv, AddEquiv.trans_apply, AddEquiv.trans_apply, h1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem h2IntRepAddEquiv_H2_class (x : cocycles₂ (Rep.of (intRepOfMonoidEnd.{0} φ))) :
     h2IntRepAddEquiv φ ((H2π _).hom x) = (H2π _).hom (cocycles₂IntRepAddEquiv φ x) := by
@@ -114,7 +114,7 @@ noncomputable def h2GalUnitsAddEquiv :
   h2IntRepAddEquiv (galUnitsHom K L)
 
 /- English proof (translation)
-The claim follows from `h2IntRepAddEquiv_H2_class (galUnitsHom K L) x`.
+A detailed English derivation is pending.
 -/
 theorem h2GalUnitsAddEquiv_H2_class (x : cocycles₂ (galUnits K L)) :
     h2GalUnitsAddEquiv K L ((H2π _).hom x) =

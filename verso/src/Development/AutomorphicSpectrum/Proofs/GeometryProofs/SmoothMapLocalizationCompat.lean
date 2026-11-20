@@ -10,9 +10,9 @@ def denomMonoid {R : Type} [CommRing R] (c : R) : Submonoid R where
     exact ⟨n * m, k + l, mul_ne_zero hn hm, by push_cast; ring⟩
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨n, k, hn, rfl⟩, rfl⟩`. Conclude with `⟨n, k, hn, by simp⟩`. Introduce and unpack `⟨n, k, hn, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨_, ⟨n, k, hn, rfl⟩, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem map_denomMonoid {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') (c : R) :
     (denomMonoid c).map f = denomMonoid (f c) := by
@@ -24,15 +24,15 @@ theorem map_denomMonoid {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R'
     exact ⟨_, ⟨n, k, hn, rfl⟩, by simp⟩
 
 /- English proof (translation)
-Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, by simpa using hx⟩`. Consider the case `algebraMap r`. Use `⟨r.den, r.den_nz, ?_⟩` and prove the remaining obligations. Establish `: (r.den : Ω) * algebraMap ℚ Ω r = ((r.num : ℤ) : Ω)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hd : (r.den : Ω) ≠ 0` using `Nat.cast_ne_zero.2 r.den_nz`. Rewrite using `[eq_ratCast, Rat.cast_def]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Conclude with `intCast_mem A _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨n, hn, hnx⟩` from `hx`. Take `⟨m, hm, hmy⟩` from `hy`. Use `⟨n * m, mul_ne_zero hn hm, ?_⟩` and prove the remaining obligations. Establish `: ((n * m : ℕ) : Ω) * (x + y) = (m : Ω) * ((n : Ω) * x) + (n : Ω) * ((m : Ω) * y)` using `by push_cast; ring`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `add_mem (mul_mem (natCast_mem A _) hnx) (mul_mem (natCast_mem A _) hmy)`. Consider the case `mul x y _ _ hx hy`. Take `⟨n, hn, hnx⟩` from `hx`. Take `⟨m, hm, hmy⟩` from `hy`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨n * m, mul_ne_zero hn hm, ?_⟩` and prove the remaining obligations. Establish `: ((n * m : ℕ) : Ω) * (x * y) = ((n : Ω) * x) * ((m : Ω) * y)` using `by push_cast; ring`. Rewrite using `[this]`. Conclude with `mul_mem hnx hmy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nat_mul_mem {Ω : Type} [Field Ω] [CharZero Ω] (A : Subalgebra ℤ Ω) {x : Ω}
     (hx : x ∈ Algebra.adjoin ℚ (A : Set Ω)) : ∃ N : ℕ, N ≠ 0 ∧ (N : Ω) * x ∈ A := by
@@ -64,31 +64,31 @@ theorem exists_nat_mul_mem {Ω : Type} [Field Ω] [CharZero Ω] (A : Subalgebra 
     exact mul_mem hnx hmy
 
 /- English proof (translation)
-Establish `hNΩ : (N : Ω) ≠ 0` using `Nat.cast_ne_zero.2 hN`. Establish `hinv : h⁻¹ ∈ S` using `hS ▸ Algebra.subset_adjoin (Set.mem_insert _ _)`. Establish `hnat : ∀ n : ℕ, n ≠ 0 → IsUnit (algebraMap A S (n : A))`. Introduce `n hn`. Establish `hnΩ : (n : Ω) ≠ 0` using `Nat.cast_ne_zero.2 hn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `IsUnit.of_mul_eq_one (algebraMap ℚ S (n : ℚ)⁻¹) (Subtype.ext ?_)` and prove the remaining obligations. Establish `h1 : ((algebraMap ℚ S (n : ℚ)⁻¹ : S) : Ω) = (n : Ω)⁻¹`. Express the relevant statement in the definitionally equal form `algebraMap ℚ Ω (n : ℚ)⁻¹ = _`. Simplify using the standard rewrite rules. Rewrite using `[Subalgebra.coe_mul, hι, h1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hnΩ]`. Establish `hcu : IsUnit (algebraMap A S c)`. Use `IsUnit.of_mul_eq_one (algebraMap ℚ S (N : ℚ)⁻¹ * ⟨h⁻¹, hinv⟩) (Subtype.ext ?_)` and prove the remaining obligations. Establish `h1 : ((algebraMap ℚ S (N : ℚ)⁻¹ : S) : Ω) = (N : Ω)⁻¹`. Express the relevant statement in the definitionally equal form `algebraMap ℚ Ω (N : ℚ)⁻¹ = _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using the standard rewrite rules. Rewrite using `[Subalgebra.coe_mul, Subalgebra.coe_mul, hι, h1, hc]`. Simplify using `only [Subalgebra.coe_one]`. Clear the denominators using the available nonvanishing facts. Establish `hcmem : c ∈ denomMonoid c` using `⟨1, 1, one_ne_zero, by simp⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `hnmem : ∀ n : ℕ, n ≠ 0 → (n : A) ∈ denomMonoid c` using `fun n hn => ⟨n, 0, hn, by simp⟩`. Establish `key : ∀ w ∈ Algebra.adjoin ℚ (insert h⁻¹ (A : Set Ω)), ∃ (a : A) (m : denomMonoid c), w * (((m : A)) : Ω) = a`. Introduce `w hw`. Proceed by induction on `hw using Algebra.adjoin_induction with`. Consider the case `mem x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Break down `hx with rfl | hx` into its components or cases. Use `⟨(N : A), ⟨c, hcmem⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [hc]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Conclude with `⟨⟨x, hx⟩, 1, by simp⟩`. Consider the case `algebraMap r`. Use `⟨(r.num : A), ⟨(r.den : A), hnmem _ r.den_nz⟩, ?_⟩` and prove the remaining obligations. Establish `hd : (r.den : Ω) ≠ 0` using `Nat.cast_ne_zero.2 r.den_nz`. Use `push_cast`.
+Supply the required witnesses or components. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[eq_ratCast, Rat.cast_def]`. Clear the denominators using the available nonvanishing facts. Consider the case `add x y _ _ hx hy`. Take `⟨a, m, hx⟩` from `hx`. Take `⟨b, l, hy⟩` from `hy`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨a * (l : A) + b * (m : A), m * l, ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[← hx, ← hy]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul x y _ _ hx hy`.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Take `⟨a, m, hx⟩` from `hx`. Take `⟨b, l, hy⟩` from `hy`. Use `⟨a * b, m * l, ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[← hx, ← hy]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨_, n, k, hn, rfl⟩`. Simplify using `only [map_mul, map_pow]`. Conclude with `(hnat n hn).mul (hcu.pow k)`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z`. Take `⟨a, m, hz⟩` from `key z (hS ▸ z.2)`. Use `⟨(a, m), Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[Subalgebra.coe_mul, hι, hι]`. Conclude with `hz`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x y hxy`. Use `⟨1, ?_⟩` and prove the remaining obligations. Establish `: (x : Ω) = y` using `by rw [← hι, ← hι, hxy]`. Rewrite using `[Subtype.ext this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocalization_adjoin {Ω : Type} [Field Ω] [CharZero Ω] (A : Subalgebra ℤ Ω)
     (S : Subalgebra ℚ Ω) [Algebra A S] (hι : ∀ a : A, ((algebraMap A S a : S) : Ω) = a)
@@ -166,21 +166,17 @@ end GlobalTheory.CompanionTheory.Ar.LocalisedSmooth
 open GlobalTheory.CompanionTheory.Ar.LocalisedSmooth in
 
 /- English proof (translation)
-Take `⟨N, hN, hNh⟩` from `exists_nat_mul_mem A₀ hh`. Set `c₀ : A₀` to `⟨(N : Ω₀) * h, hNh⟩`. Establish `hc₀ : (c₀ : Ω₀) = N * h` using `rfl`. Establish `hc₁ : ((φ c₀ : A₁) : Ω) = N * algebraMap Ω₀ Ω h`. Rewrite using `[hφ, hc₀, map_mul, map_natCast]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hAS : ∀ a : A₀, (a : Ω₀) ∈ S` using `fun a => hS ▸ Algebra.subset_adjoin (Set.mem_insert_of_mem _ a.2)`. Establish `hAT : ∀ a : A₁, (a : Ω) ∈ T` using `fun a => hT ▸ Algebra.subset_adjoin (Set.mem_insert_of_mem _ a.2)`. Set `ι₀ : A₀ →+* S` to `(A₀.val : A₀ →+* Ω₀).codRestrict S.toSubsemiring hAS`. Set `ι₁ : A₁ →+* T` to `(A₁.val : A₁ →+* Ω).codRestrict T.toSubsemiring hAT`. Use `letI : Algebra A₀ S := ι₀.toAlgebra`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Use `letI : Algebra A₁ T := ι₁.toAlgebra`. Use `haveI L₀ : IsLocalization (denomMonoid c₀) S := isLocalization_adjoin A₀ S (fun _ => rfl) c₀ N hN h h0 hc₀ hS`. Use `haveI L₁ : IsLocalization (denomMonoid (φ c₀)) T := isLocalization_adjoin A₁ T (fun _ => rfl) (φ c₀) N hN (algebraMap Ω₀ Ω h) ((map_ne_zero _).2 h0) hc₁ hT`. Establish `hle : denomMonoid c₀ ≤ (denomMonoid (φ c₀)).comap φ`. Introduce `x hx`.
+Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[Submonoid.mem_comap, ← map_denomMonoid]`. Conclude with `⟨x, hx, rfl⟩`. Set `ψ : S →+* T` to `IsLocalization.map T φ hle`. Establish `hψ : ∀ a : A₀, ψ (algebraMap A₀ S a) = algebraMap A₁ T (φ a)` using `fun a => IsLocalization.map_eq hle a`. Use `⟨ψ, ?_, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: ((T.val : T →+* Ω).comp ψ) = (algebraMap Ω₀ Ω).comp (S.val : S →+* Ω₀)`. Use `IsLocalization.ringHom_ext (denomMonoid c₀) (RingHom.ext fun a => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((ψ (algebraMap A₀ S a) : T) : Ω) = algebraMap Ω₀ Ω (a : Ω₀)`. Rewrite using `[hψ]`. Conclude with `hφ a`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Conclude with `fun s => RingHom.congr_fun this s`. Use `letI : Algebra S T := ψ.toAlgebra`. Use `letI : Algebra A₀ A₁ := φ.toAlgebra`. Use `letI : Algebra A₀ T := ((algebraMap A₁ T).comp φ).toAlgebra`. Use `haveI : IsScalarTower A₀ A₁ T := .of_algebraMap_eq' rfl`.
-
-Use `haveI : IsScalarTower A₀ S T := .of_algebraMap_eq fun a => (hψ a).symm`. Establish `hsub : Algebra.algebraMapSubmonoid A₁ (denomMonoid c₀) = denomMonoid (φ c₀)` using `map_denomMonoid φ c₀`. Use `haveI : IsLocalization (Algebra.algebraMapSubmonoid A₁ (denomMonoid c₀)) T := by`. Rewrite using `[hsub]`. Conclude with `L₁`.
-
-Use `haveI P : Algebra.IsPushout A₀ A₁ S T := Algebra.isPushout_of_isLocalization (denomMonoid c₀) S A₁ T`. Conclude with `RingHom.Smooth.isStableUnderBaseChange A₀ A₁ S T hsm`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.Ar.LocalisedSmooth.smooth_localised
     (Ω₀ Ω : Type) [Field Ω₀] [Field Ω] [CharZero Ω₀] [CharZero Ω] [Algebra Ω₀ Ω]

@@ -172,7 +172,7 @@ def adm9 : Prop :=
       Complex.cos (Real.pi * s / 2) * riemannZeta s
 
 /- English proof (translation)
-Introduce `s hs hs'`. Conclude with `riemannZeta_one_sub hs hs'`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem content_divisibility_clause : adm9 := by
   intro s hs hs'

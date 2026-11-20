@@ -36,7 +36,7 @@ def jPS (S : StepG I N) :
     (MonoidHom.pi fun v => (S.uGL v).symm.toMonoidHom.comp (Pi.evalMonoidHom _ v))
 
 /- English proof (translation)
-Use `show bc _ (bc (prV (E := E) (I.plc v)) (secAll F E sp.cm.sig S.J I.plc I.plc_inj _ : GL (Fin N) _)) = g v`. Rewrite using `[bc_secAll_same]`. Use `locGL_apply sp.cm.sig S.J S.hJ S.hdet _ (I.spl (I.plc v) (I.pl v).2) (I.spl_sig (I.plc v) (I.pl v).2) ((S.uGL v).symm (g v))` as an intermediate fact. Conclude with `this.symm.trans ((S.uGL v).apply_symm_apply (g v))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem jPS_at (S : StepG I N) (g : ∀ v : Fin nV, GL (Fin N) ((I.plc v).adicCompletion F)) (v : Fin nV) :
     bc ((RingHom.fst _ _).comp (I.spl (I.plc v) (I.pl v).2).toRingHom)
@@ -48,7 +48,7 @@ theorem jPS_at (S : StepG I N) (g : ∀ v : Fin nV, GL (Fin N) ((I.plc v).adicCo
   exact this.symm.trans ((S.uGL v).apply_symm_apply (g v))
 
 /- English proof (translation)
-The claim follows from `bc_secAll_off F E sp.cm.sig S.J I.plc I.plc_inj w' (fun v h => hw (h ▸ (I.pl v).2)) _`.
+A detailed English derivation is pending.
 -/
 theorem jPS_off (S : StepG I N) (g : ∀ v : Fin nV, GL (Fin N) ((I.plc v).adicCompletion F))
     (w' : HeightOneSpectrum (𝓞 F)) (hw : ((p : ℕ) : 𝓞 F) ∉ w'.asIdeal) :
@@ -56,7 +56,7 @@ theorem jPS_off (S : StepG I N) (g : ∀ v : Fin nV, GL (Fin N) ((I.plc v).adicC
   bc_secAll_off F E sp.cm.sig S.J I.plc I.plc_inj w' (fun v h => hw (h ▸ (I.pl v).2)) _
 
 /- English proof (translation)
-Use `(mem_awayG sp.cm.sig S.J S.Uloc p _).2 ⟨(jPS S g).2, ?_⟩` and prove the remaining obligations. Introduce `v hv`. Rewrite using `[jPS_off S g v hv]`. Conclude with `Subgroup.one_mem _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jPS_mem_awayG (S : StepG I N) (g : ∀ v : Fin nV, GL (Fin N) ((I.plc v).adicCompletion F)) :
     (jPS S g : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) ∈ awayG sp.cm.sig S.J S.Uloc p := by
@@ -94,7 +94,7 @@ def jQS (S : StepG I N) {m : ℕ} (hk : m + 1 = N) : (Fin nV → GL (Fin (m + 1)
   (jPS S).comp (MonoidHom.pi fun v => (toFS S hk v).toMonoidHom.comp (Pi.evalMonoidHom _ v))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Rewrite using `[prPS_apply]`. Use `jPS_at S (fun v => toFS S hk v (g v)) v` as an intermediate fact. Use `show (toFS S hk v).symm (bc (fstV I v) (bc (prV (E := E) (I.plc v)) (jPS S (fun v => toFS S hk v (g v)) : GL (Fin N) _))) = g v`. Rewrite using `[this, MulEquiv.symm_apply_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prPS_jQS (S : StepG I N) {m : ℕ} (hk : m + 1 = N) (g : Fin nV → GL (Fin (m + 1)) Qq) :
     prPS S hk (jQS S hk g) = g := by
@@ -114,13 +114,13 @@ def HypAtPS (S : StepG I N) : Prop :=
         (I.plc v).adicCompletionIntegers F)
 
 /- English proof (translation)
-Rewrite using `[stabStd_iff, ← map_inv, toFS_symm, toFS_symm]`. Establish `key : ∀ M : GL (Fin N) ((I.plc v).adicCompletion F), (∀ a b, ((castGL hk Qq).symm ((bcE (I.eQ v)).symm M) : Matrix (Fin (m + 1)) (Fin (m + 1)) Qq) a b ∈ (algebraMap W Qq).range) ↔ ∀ a b, (M : Matrix (Fin N) (Fin N) _) a b ∈ (I.plc v).adicCompletionIntegers F`. Introduce `M`. Establish `h1 : ∀ a b, ((castGL hk Qq).symm ((bcE (I.eQ v)).symm M) : Matrix (Fin (m + 1)) (Fin (m + 1)) Qq) a b ∈ (algebraMap W Qq).range ↔ (M : Matrix (Fin N) (Fin N) _) (Fin.cast hk a) (Fin.cast hk b) ∈ (I.plc v).adicCompletionIntegers F`. Introduce `a b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[castGL_symm_apply, bcE_symm_apply]`. Use `I.completion_integers_iff v ((I.eQ v).symm ((M : Matrix (Fin N) (Fin N) _) (Fin.cast hk a) (Fin.cast hk b)))` as an intermediate fact. Rewrite `this` using `[RingEquiv.apply_symm_apply]`. Conclude with `this`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h a b`. Use `(h1 (Fin.cast hk.symm a) (Fin.cast hk.symm b)).1 (h _ _)` as an intermediate fact. Simplify using `using this`. Introduce `h a b`. Conclude with `(h1 a b).2 (h _ _)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (frVS S v)⁻¹ * X⁻¹ * frVS S v = ((frVS S v)⁻¹ * X * frVS S v)⁻¹` using `by group`. Rewrite using `[key, e, key]`.
+A detailed English derivation is pending.
 -/
 theorem toFS_symm_stab (S : StepG I N) {m : ℕ} (hk : m + 1 = N) (v : Fin nV)
     (X : GL (Fin N) ((I.plc v).adicCompletion F)) :

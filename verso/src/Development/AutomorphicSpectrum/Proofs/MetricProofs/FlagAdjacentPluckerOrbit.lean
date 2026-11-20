@@ -9,9 +9,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.PB.WSq.FC
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_add, Matrix.mul_one, Matrix.add_apply, Matrix.mul_apply]`. Use `congr 1`. Simplify using `only [Matrix.single_apply]`. Use `split_ifs with hc`. Substitute `hc` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[mul_comm]`. Simplify using `[Ne.symm hc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_one_add_single_apply {N : ℕ} (h : Matrix (Fin N) (Fin N) ℂ) (ca cb : Fin N) (t : ℂ) (r c : Fin N) :
     (h * (1 + Matrix.single cb ca t)) r c = h r c + if c = ca then t * h r cb else 0 := by
@@ -24,15 +24,15 @@ theorem mul_one_add_single_apply {N : ℕ} (h : Matrix (Fin N) (Fin N) ℂ) (ca 
   · simp [Ne.symm hc]
 
 /- English proof (translation)
-Unfold `minorIJ`. Use `split_ifs with e`. Distinguish the cases in `hca : ca ∈ J`. Establish `hcb` using `hJ.1 hca`. Choose the witnesses or unpack the hypotheses as in `⟨p, hp⟩ : ca ∈ Set.range (J.orderEmbOfFin (rfl : J.card = J.card)) := by`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.range_orderEmbOfFin]`. Conclude with `hca`. Choose the witnesses or unpack the hypotheses as in `⟨q, hq⟩ : cb ∈ Set.range (J.orderEmbOfFin (rfl : J.card = J.card)) := by`. Rewrite using `[Finset.range_orderEmbOfFin]`. Conclude with `hcb`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Establish `hpq : p ≠ q` using `fun h' => hne (by rw [← hp, ← hq, h'])`. Use `(congrArg Matrix.det ?_).trans (Matrix.det_updateCol_add_smul_self (h.submatrix (I.orderEmbOfFin e) (J.orderEmbOfFin rfl)) hpq t)` and prove the remaining obligations. Use extensionality with `a b`. Rewrite using `[Matrix.submatrix_apply, mul_one_add_single_apply]`. Distinguish the cases in `hb : b = p`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hb, Matrix.updateCol_self]`. Simplify using `[hp, hq]`. Establish `hbc : J.orderEmbOfFin rfl b ≠ ca` using `fun h' => hb ((J.orderEmbOfFin rfl).injective (h'.trans hp.symm))`. Rewrite using `[Matrix.updateCol_ne hb]`. Simplify using `[hbc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `congr 1`. Use extensionality with `a b`. Establish `hbc : J.orderEmbOfFin rfl b ≠ ca` using `fun h' => hca (h' ▸ Finset.orderEmbOfFin_mem J rfl b)`. Simplify using `[mul_one_add_single_apply, hbc]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem minorIJ_mul_transvection {N : ℕ} (h : Matrix (Fin N) (Fin N) ℂ) (I J : Finset (Fin N)) {ca cb : Fin N}
     (hne : ca ≠ cb) (t : ℂ) (hJ : ca ∈ J ↔ cb ∈ J) :
@@ -64,9 +64,9 @@ theorem minorIJ_mul_transvection {N : ℕ} (h : Matrix (Fin N) (Fin N) ℂ) (I J
   · rfl
 
 /- English proof (translation)
-Establish `hi' : (i : ℕ) ≠ a` using `fun h => hi (Fin.ext h)`. Use `a.isLt` as an intermediate fact. Use `b.isLt` as an intermediate fact. Use `i.isLt` as an intermediate fact. Use `ca.isLt` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `cb.isLt` as an intermediate fact. Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and]`. Unfold `lastCol at hca`. Apply the tactic sequence `split_ifs at hca ⊢ <;> omega`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mem_stepCols_iff {N j : ℕ} {a b i ca cb : Fin N} (hb : (b : ℕ) = a + 1) (hab : (b : ℕ) < j ∨ j ≤ (a : ℕ))
     (hca : (ca : ℕ) = lastCol N j a) (hcb : (cb : ℕ) = ca + 1) (hi : i ≠ a) :
@@ -82,19 +82,19 @@ theorem mem_stepCols_iff {N j : ℕ} {a b i ca cb : Fin N} (hb : (b : ℕ) = a +
   split_ifs at hca ⊢ <;> omega
 
 /- English proof (translation)
-Introduce `K _ ι _ Φ _ y Ψ _ _ N j M τ a b k₀ ca cb hb hab hblk hca hcb F bv h t`. Establish `hne : ca ≠ cb`. Introduce `e`. Use `congrArg Fin.val e` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Take `⟨k, m⟩` from `p`. Both sides reduce to the same expression. Use function extensionality and compare the values at `p`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨k, m⟩` from `p`. Simplify using `only [sndPt, Function.comp_apply]`. Distinguish the cases in `hk : k = k₀`. Substitute `hk` using the available equality. Rewrite using `[v₁_self]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Use `show (∑ I, valAt M.x (F.u ⟨k, m⟩ I) bv * minorIJ (h τ * (1 + Matrix.single cb ca t)) I (stepCols N j a)) = _`. Rewrite using `[flagPt_step M F bv _ hblk m]`. Simplify using `[Function.update_self]`. Rewrite using `[v₁_ne (p := ⟨k, m⟩) hk] show FC.flagPt M F bv h ⟨k, m⟩ = _`. Distinguish the cases in `hbase : ∀ p, M.blk p ≠ some k`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[FC.flagPt, hbase]`. Use `push Not at hbase`. Take `⟨⟨τ', i⟩, hp⟩` from `hbase`. Rewrite using `[flagPt_step M F bv h hp m, flagPt_step M F bv _ hp m]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only`. Use `congr 1`. Distinguish the cases in `hτ : τ' = τ`. Substitute `hτ` using the available equality. Establish `hia : i ≠ a`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `rfl`. Conclude with `hk (Option.some_injective _ (hp.symm.trans hblk))`. Rewrite using `[Function.update_self, minorIJ_mul_transvection _ _ _ hne t (mem_stepCols_iff hb hab hca hcb hia)]`. Rewrite using `[Function.update_of_ne hτ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fstPt_sndPt_wVec : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (τ : Ψ) (a b : Fin N) (k₀ : K) (ca cb : Fin N), (b : ℕ) = a + 1 → ((b : ℕ) < j ∨ j ≤ (a : ℕ)) → M.blk (τ, a) = some k₀ → (ca : ℕ) = lastCol N j a → (cb : ℕ) = ca + 1 → ∀ (F : FrameData ι Ψ N M.Ω M.blk) (b : (Σ k, baseIdx ι M.blk k) → ℂ) (h : Ψ → Matrix (Fin N) (Fin N) ℂ) (t : ℂ), fstPt k₀ (FC.wVec M F b h τ a k₀ ca cb t) = FC.flagPt M F b h ∧ sndPt k₀ (FC.wVec M F b h τ a k₀ ca cb t) = FC.flagPt M F b (Function.update h τ (h τ * (1 + Matrix.single cb ca t))) := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M τ a b k₀ ca cb hb hab hblk hca hcb F bv h t

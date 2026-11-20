@@ -214,7 +214,7 @@ def RoundGram : Prop :=
         gramK (fun τ => (emb τ).comp cE) (Jg : Matrix (Fin n) (Fin n) E) τ
 
 /- English proof (translation)
-Introduce `K _ _ σ f g`. Rewrite using `[fockS_eq_sum g f (f.support ∪ g.support) Finset.subset_union_right, fockS_eq_sum f g (f.support ∪ g.support) Finset.subset_union_left, star_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Simplify using `only [star_mul', star_star, star_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fockSHerm : FockSHerm := by
   classical
@@ -226,9 +226,9 @@ theorem fockSHerm : FockSHerm := by
   ring
 
 /- English proof (translation)
-Introduce `K _ ι _ n lam g f`. Establish `h1 : ∀ τ, trAct g (Formalism.GradedWeylDivisibility.blockEmb K τ (f τ)) = Formalism.GradedWeylDivisibility.blockEmb K τ (Formalism.GradedWeylDivisibility.rowAct K ((g τ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)ᵀ (f τ))` using `fun τ => (Formalism.GradedWeylDivisibility.blockActTensor K K ι n n _).1 τ (f τ)`. Simplify using `only [actP, ten, LinearMap.smul_apply, AlgHom.toLinearMap_apply, map_prod, h1, sqAct, detTwK, smul_eq_C_mul]`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul]`. Simplify using `only [Formalism.GradedWeylDivisibility.blockEmb, rename_C]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem actTen : ActTen := by
   intro K _ ι _ n lam g f
@@ -243,7 +243,7 @@ theorem actTen : ActTen := by
   simp only [Formalism.GradedWeylDivisibility.blockEmb, rename_C]
 
 /- English proof (translation)
-Introduce `i j hij`. Use `lam.anti hij` as an intermediate fact. Simplify using `only [DomWeight.natW]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem natW_antitone {n : ℕ} (lam : DomWeight n) : Antitone lam.natW := by
   intro i j hij
@@ -252,7 +252,7 @@ theorem natW_antitone {n : ℕ} (lam : DomWeight n) : Antitone lam.natW := by
   omega
 
 /- English proof (translation)
-Introduce and unpack `x ⟨s, hs, hx⟩`. Conclude with `⟨s, hs, h hx⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem localization_mono {R W : Type} [CommRing R] [AddCommGroup W] [Module R W] (p : Ideal R) [p.IsPrime]
     {L L' : Submodule R W} (h : L ≤ L') : Formalism.HermitianLatticesTheory.localization₂ p L ≤ Formalism.HermitianLatticesTheory.localization₂ p L' := by
@@ -260,7 +260,7 @@ theorem localization_mono {R W : Type} [CommRing R] [AddCommGroup W] [Module R W
   exact ⟨s, hs, h hx⟩
 
 /- English proof (translation)
-The claim follows from `iInf_mono fun w => iInf_mono fun _ => iInf_mono fun _ => Submodule.comap_mono (localization_mono w.asIdeal h)`.
+A detailed English derivation is pending.
 -/
 theorem transLat_mono {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n)
     {T T' : Submodule (𝓞 K) (Pol K ι n)} (h : T ≤ T') (M : ι → Submodule (𝓞 K) (Fin n → K)) :
@@ -268,7 +268,7 @@ theorem transLat_mono {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype 
   iInf_mono fun w => iInf_mono fun _ => iInf_mono fun _ => Submodule.comap_mono (localization_mono w.asIdeal h)
 
 /- English proof (translation)
-Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `P ⟨F, hF, rfl⟩`. Conclude with `⟨F, fun τ => Submodule.map_mono (Formalism.GradedWeylDivisibility.weylLeDual (𝓞 K) n n le_rfl _ (natW_antitone (lam τ))) (hF τ), rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem delStd_le_nabStd (K : Type) [Field K] [NumberField K] {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n) :
     delStd K lam ≤ nabStd K lam := by
@@ -277,14 +277,14 @@ theorem delStd_le_nabStd (K : Type) [Field K] [NumberField K] {ι : Type} [Finty
   exact ⟨F, fun τ => Submodule.map_mono (Formalism.GradedWeylDivisibility.weylLeDual (𝓞 K) n n le_rfl _ (natW_antitone (lam τ))) (hF τ), rfl⟩
 
 /- English proof (translation)
-Introduce `K _ _ ι _ n lam M`. Conclude with `Submodule.comap_mono (transLat_mono lam (delStd_le_nabStd K lam) M)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem delLeNab : DelLeNab := by
   intro K _ _ ι _ n lam M
   exact Submodule.comap_mono (transLat_mono lam (delStd_le_nabStd K lam) M)
 
 /- English proof (translation)
-Establish `h` using `hF`. Simplify using `only [nabP, transLat, Submodule.mem_iInf] at h`. Conclude with `h w B fun _ => rfl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nabP_colLat_le {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n)
     (B : ι → GL (Fin n) K) (w : HeightOneSpectrum (𝓞 K)) {F : Pol K ι n} (hF : F ∈ nabP lam fun τ => colLat (B τ)) :
@@ -306,7 +306,7 @@ theorem embGL_coe {E K : Type} [Field E] [Field K] {ι : Type} {n : ℕ} (emb : 
     ((embGL emb γ τ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) = (γ : Matrix (Fin n) (Fin n) E).map (emb τ) := rfl
 
 /- English proof (translation)
-Rewrite using `[map_inv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem embGL_inv {E K : Type} [Field E] [Field K] {ι : Type} {n : ℕ} (emb : ι → E →+* K) (γ : GL (Fin n) E) (τ : ι) :
     (embGL emb γ τ)⁻¹ = embGL emb γ⁻¹ τ := by
@@ -320,7 +320,7 @@ theorem invTrK_coe {K : Type} [Field K] {ι : Type} {n : ℕ} (g : ι → GL (Fi
       (((g τ)⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)ᵀ := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, Matrix.conjTranspose_apply, h]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_conjTranspose_eq {E K : Type} [Field E] [Field K] [StarRing K] {n : ℕ} (φ : E →+* K) (cE : E →+* E)
     (h : ∀ x, star (φ x) = φ (cE x)) (A : Matrix (Fin n) (Fin n) E) : (A.map φ)ᴴ = (Formalism.UG.cT cE A).map φ := by
@@ -328,7 +328,7 @@ theorem map_conjTranspose_eq {E K : Type} [Field E] [Field K] [StarRing K] {n : 
   simp [Formalism.UG.cT, Matrix.conjTranspose_apply, h]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.conjTranspose_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem conjTranspose_transpose' {K : Type} [Field K] [StarRing K] {n : ℕ} (A : Matrix (Fin n) (Fin n) K) :
     (Aᵀ)ᴴ = (Aᴴ)ᵀ := by
@@ -336,9 +336,9 @@ theorem conjTranspose_transpose' {K : Type} [Field K] [StarRing K] {n : ℕ} (A 
   simp [Matrix.conjTranspose_apply]
 
 /- English proof (translation)
-Introduce `E K _ _ _ ι n emb cE τ h J hJ`. Establish `h1 : (gramK emb J τ)ᴴ = gramK emb J τ`. Unfold `gramK`. Rewrite using `[map_conjTranspose_eq (emb τ) cE h, hJ]`. Use `⟨h1, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `gramKd`. Unfold `gramK at h1`. Rewrite using `[conjTranspose_transpose', Matrix.conjTranspose_nonsing_inv, h1]`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem gramHerm : GramHerm := by
   intro E K _ _ _ ι n emb cE τ h J hJ
@@ -351,9 +351,9 @@ theorem gramHerm : GramHerm := by
   rw [conjTranspose_transpose', Matrix.conjTranspose_nonsing_inv, h1]
 
 /- English proof (translation)
-Introduce `E K _ _ _ ι n emb cE τ h J γ hγ`. Establish `hγ' : Formalism.UG.cT cE (γ : Matrix (Fin n) (Fin n) E) * J * (γ : Matrix (Fin n) (Fin n) E) = J` using `hγ`. Establish `h1 : ((γ : Matrix (Fin n) (Fin n) E).map (emb τ))ᴴ * J.map (emb τ) * (γ : Matrix (Fin n) (Fin n) E).map (emb τ) = J.map (emb τ)`. Rewrite using `[map_conjTranspose_eq (emb τ) cE h, ← Matrix.map_mul, ← Matrix.map_mul, hγ']`. Use `⟨h1, fun _ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[invTrK_coe, Matrix.coe_units_inv, embGL_coe]`. Unfold `gramKd`. Use `set g := (γ : Matrix (Fin n) (Fin n) E).map (emb τ) with hg`. Use `set G := J.map (emb τ) with hG`. Rewrite using `[conjTranspose_transpose', ← Matrix.transpose_mul, ← Matrix.transpose_mul, Matrix.conjTranspose_nonsing_inv, ← Matrix.mul_inv_rev, ← Matrix.mul_inv_rev, h1]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uJUnitary : UJUnitary := by
   intro E K _ _ _ ι n emb cE τ h J γ hγ
@@ -370,11 +370,11 @@ theorem uJUnitary : UJUnitary := by
     ← Matrix.mul_inv_rev, ← Matrix.mul_inv_rev, h1]
 
 /- English proof (translation)
-Introduce `E K _ _ _ _ ι n emb τ L γ`. Unfold `tauLat gLat`. Rewrite using `[Submodule.map_span]`. Use `congr 1`. Use extensionality with `y`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `only [Set.mem_image, SetLike.mem_coe, Submodule.mem_map, LinearMap.coe_restrictScalars, Matrix.mulVecLin_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨x, hx, rfl⟩, rfl⟩`. Use `⟨_, ⟨x, hx, rfl⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[embGL_coe, Matrix.mulVec, dotProduct, map_sum]`. Introduce and unpack `⟨_, ⟨x, hx, rfl⟩, rfl⟩`. Use `⟨_, ⟨x, hx, rfl⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Simplify using `[embGL_coe, Matrix.mulVec, dotProduct, map_sum]`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem tauLatG : TauLatG := by
   intro E K _ _ _ _ ι n emb τ L γ
@@ -398,7 +398,7 @@ section Adj
 variable {K : Type} [Field K] [StarRing K]
 
 /- English proof (translation)
-Rewrite using `[fockL_apply, fockS_eq_sum _ _ {u} support_monomial_subset, Finset.sum_singleton, coeff_monomial, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fockL_monomial_left {σ : Type} (u : σ →₀ ℕ) (c : K) (g : MvPolynomial σ K) :
     fockL (monomial u c) g = star c * g.coeff u * (mfact u : K) := by
@@ -406,17 +406,17 @@ theorem fockL_monomial_left {σ : Type} (u : σ →₀ ℕ) (c : K) (g : MvPolyn
   rw [fockL_apply, fockS_eq_sum _ _ {u} support_monomial_subset, Finset.sum_singleton, coeff_monomial, if_pos rfl]
 
 /- English proof (translation)
-The claim follows from `fockSHerm K σ g f`.
+A detailed English derivation is pending.
 -/
 theorem fockL_symm {σ : Type} (f g : MvPolynomial σ K) : fockL f g = star (fockL g f) :=
   fockSHerm K σ g f
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on' with`. Consider the case `monomial u c`. Rewrite using `[pderiv_monomial, fockL_monomial_left, fockL_monomial_left, coeff_X_mul']`. Distinguish the cases in `hv : u v = 0`. Establish `: v ∉ u.support` using `Finsupp.notMem_support_iff.mpr hv`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Simplify using `[hv, this]`. Establish `: v ∈ u.support` using `Finsupp.mem_support_iff.mpr hv`. Rewrite using `[if_pos this]`. Unfold `mfact`. Rewrite using `[Formalism.REAL.prod_factorial_support_sub_single u v hv, star_mul', star_natCast]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add p q hp hq => rw [map_add, map_add, map_add, LinearMap.add_apply, LinearMap.add_apply, hp, hq]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 -/
 theorem fockL_pderiv_X {σ : Type} [DecidableEq σ] (v : σ) (f g : MvPolynomial σ K) :
     fockL (pderiv v f) g = fockL f (X v * g) := by
@@ -434,14 +434,14 @@ theorem fockL_pderiv_X {σ : Type} [DecidableEq σ] (v : σ) (f g : MvPolynomial
   | add p q hp hq => rw [map_add, map_add, map_add, LinearMap.add_apply, LinearMap.add_apply, hp, hq]
 
 /- English proof (translation)
-Rewrite using `[fockL_symm, ← fockL_pderiv_X, ← fockL_symm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fockL_X_pderiv {σ : Type} [DecidableEq σ] (v : σ) (f g : MvPolynomial σ K) :
     fockL (X v * f) g = fockL f (pderiv v g) := by
   rw [fockL_symm, ← fockL_pderiv_X, ← fockL_symm]
 
 /- English proof (translation)
-Rewrite using `[← monomial_zero', fockL_monomial_left]`. Simplify using `[constantCoeff, mfact]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fockL_C_left {σ : Type} (a : K) (g : MvPolynomial σ K) : fockL (C a) g = star a * constantCoeff g := by
   rw [← monomial_zero', fockL_monomial_left]
@@ -451,7 +451,7 @@ variable {ι : Type} [Fintype ι] {n : ℕ}
 
 omit [StarRing K] in
 /- English proof (translation)
-Simplify using `[Formalism.GradedWeylDivisibility.blockAct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blockAct_X (U : ι → Matrix (Fin n) (Fin n) K) (v : ι × Fin n × Fin n) :
     Formalism.GradedWeylDivisibility.blockAct K U (X v) = ∑ b : Fin n, C (U v.1 v.2.1 b) * X (v.1, (b, v.2.2)) := by
@@ -459,9 +459,9 @@ theorem blockAct_X (U : ι → Matrix (Fin n) (Fin n) K) (v : ι × Fin n × Fin
 
 omit [StarRing K] in
 /- English proof (translation)
-Establish `: (constantCoeff : Pol K ι n →+* K).comp (Formalism.GradedWeylDivisibility.blockAct K U).toRingHom = constantCoeff`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using the standard rewrite rules. Introduce `i`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[blockAct_X]`. Conclude with `congrArg (fun φ : Pol K ι n →+* K => φ g) this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem constantCoeff_blockAct (U : ι → Matrix (Fin n) (Fin n) K) (g : Pol K ι n) :
     constantCoeff (Formalism.GradedWeylDivisibility.blockAct K U g) = constantCoeff g := by
@@ -474,25 +474,25 @@ theorem constantCoeff_blockAct (U : ι → Matrix (Fin n) (Fin n) K) (g : Pol K 
 omit [StarRing K] in
 
 /- English proof (translation)
-Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C c => simp`. Consider the case `add p q hp hq => simp only [map_add, hp, hq, mul_add, Finset.sum_add_distrib]`. Consider the case `mul_X p k hp`. Establish `hX : pderiv (s, (a, t)) (Formalism.GradedWeylDivisibility.blockAct K V (X k)) = if k.1 = s ∧ k.2.2 = t then C (V s k.2.1 a) else 0`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[blockAct_X, map_sum]`. Distinguish the cases in `hk : k.1 = s ∧ k.2.2 = t`. Take `⟨h1, h2⟩` from `hk`. Substitute `h1` using the available equality. Substitute `h2` using the available equality.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Substitute using the available equality. Substitute using the available equality.
 
-Rewrite using `[if_pos ⟨rfl, rfl⟩, Finset.sum_eq_single a]`. Simplify using `[pderiv_X]`. Introduce `b _ hb`. Rewrite using `[Derivation.leibniz, pderiv_C, pderiv_X_of_ne (by`. Introduce `h; exact hb (by simpa using congrArg (fun z : ι × Fin n × Fin n => z.2.1) h))]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite using `[if_neg hk]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Derivation.leibniz, pderiv_C, pderiv_X_of_ne (by`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Apply `hk` to reduce the goal to its premises. Conclude with `⟨by simpa using congrArg (fun z : ι × Fin n × Fin n => z.1) h, by simpa using congrArg (fun z : ι × Fin n × Fin n => z.2.2) h⟩)]`. Simplify using the standard rewrite rules. Rewrite using `[map_mul, Derivation.leibniz, hX, hp, smul_eq_mul, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[Derivation.leibniz, smul_eq_mul, map_add, map_mul, mul_add, Finset.sum_add_distrib]`. Use `congr 1`. Distinguish the cases in `hk : k.1 = s ∧ k.2.2 = t`. Take `⟨h1, h2⟩` from `hk`. Substitute `h1` using the available equality.
+Rewrite the conclusion repeatedly using the stated equalities. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Substitute `h2` using the available equality. Rewrite using `[if_pos ⟨rfl, rfl⟩, Finset.sum_eq_single k.2.1]`. Rewrite using `[show ((k.1, (k.2.1, k.2.2)) : ι × Fin n × Fin n) = k from rfl, pderiv_X_self, map_one]`. Expand and normalize the polynomial expressions, which then agree. Introduce `b _ hb`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pderiv_X_of_ne (by`. Introduce `h; exact hb (by simpa using (congrArg (fun z : ι × Fin n × Fin n => z.2.1) h).symm))]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite using `[if_neg hk, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `symm`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Rewrite using `[pderiv_X_of_ne (by`. Introduce `h`. Apply `hk` to reduce the goal to its premises.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `⟨by simpa using congrArg (fun z : ι × Fin n × Fin n => z.1) h, by simpa using congrArg (fun z : ι × Fin n × Fin n => z.2.2) h⟩)]`. Simplify using the standard rewrite rules. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pderiv_blockAct [DecidableEq ι] (V : ι → Matrix (Fin n) (Fin n) K) (s : ι) (a t : Fin n) (g : Pol K ι n) :
     pderiv (s, (a, t)) (Formalism.GradedWeylDivisibility.blockAct K V g) =
@@ -549,11 +549,11 @@ theorem pderiv_blockAct [DecidableEq ι] (V : ι → Matrix (Fin n) (Fin n) K) (
       ring
 
 /- English proof (translation)
-Proceed by induction on `F using MvPolynomial.induction_on generalizing F' with`. Consider the case `C a => rw [algHom_C, algebraMap_eq, fockL_C_left, fockL_C_left, constantCoeff_blockAct]`. Consider the case `add p q hp hq => rw [map_add, map_add, map_add, LinearMap.add_apply, LinearMap.add_apply, hp, hq]`. Consider the case `mul_X p v hp`. Establish `e1 : Formalism.GradedWeylDivisibility.blockAct K U (p * X v) = ∑ b : Fin n, U v.1 v.2.1 b • (X (v.1, (b, v.2.2)) * Formalism.GradedWeylDivisibility.blockAct K U p)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[map_mul, blockAct_X, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_C_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, map_sum, LinearMap.sum_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[LinearMap.map_smulₛₗ, LinearMap.smul_apply, fockL_X_pderiv, hp]`. Rewrite using `[mul_comm p, fockL_X_pderiv, show v = (v.1, (v.2.1, v.2.2)) from rfl, pderiv_blockAct, map_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← smul_eq_C_mul, map_smul, Matrix.conjTranspose_apply, starRingEnd_apply]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem fockL_blockAct_adj (U : ι → Matrix (Fin n) (Fin n) K) (F F' : Pol K ι n) :
     fockL (Formalism.GradedWeylDivisibility.blockAct K U F) F' = fockL F (Formalism.GradedWeylDivisibility.blockAct K (fun τ => (U τ)ᴴ) F') := by
@@ -576,7 +576,7 @@ theorem fockL_blockAct_adj (U : ι → Matrix (Fin n) (Fin n) K) (F F' : Pol K �
 end Adj
 
 /- English proof (translation)
-Introduce `K _ _ ι _ n U F F'`. Conclude with `fockL_blockAct_adj U F F'`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fockSAdj : FockSAdj := by
   intro K _ _ ι _ n U F F'
@@ -590,7 +590,7 @@ theorem pairP_apply {K : Type} [Field K] [StarRing K] {ι : Type} [Fintype ι] {
     pairP lam G F F' = gramTw lam G / extNorm K lam * fockL F (Formalism.GradedWeylDivisibility.blockAct K (fun τ => (G τ)ᵀ) F') := rfl
 
 /- English proof (translation)
-Unfold `detTwK detPow`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.val_zpow_eq_zpow_val]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem detTw_eq {K : Type} [Field K] {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n) (g : ι → GL (Fin n) K) :
     detTwK lam g = ∏ τ, ((g τ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K).det ^ (lam τ).detShift := by
@@ -600,13 +600,13 @@ theorem detTw_eq {K : Type} [Field K] {ι : Type} [Fintype ι] {n : ℕ} (lam : 
   rfl
 
 /- English proof (translation)
-Introduce `K _ _ ι _ n lam G g g' F F'`. Establish `hs : gramTw lam (fun τ => (g τ : Matrix (Fin n) (Fin n) K)ᴴ * G τ * (g' τ : Matrix (Fin n) (Fin n) K)) = star (detTwK lam g) * gramTw lam G * detTwK lam g'`. Rewrite using `[detTw_eq, detTw_eq, star_prod]`. Unfold `gramTw`. Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose, mul_zpow, mul_zpow, star_zpow₀]`. Establish `hb : Formalism.GradedWeylDivisibility.blockAct K (fun τ => (((g τ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)ᵀ)ᴴ) (Formalism.GradedWeylDivisibility.blockAct K (fun τ => (G τ)ᵀ) (trAct g' F')) = Formalism.GradedWeylDivisibility.blockAct K (fun τ => ((g τ : Matrix (Fin n) (Fin n) K …`. Unfold `trAct`. Rewrite using `[← AlgHom.comp_apply, ← AlgHom.comp_apply, blockAct_comp, blockAct_comp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use function extensionality and compare the values at `τ`. Rewrite using `[Matrix.transpose_mul, Matrix.transpose_mul, conjTranspose_transpose']`. Rewrite using `[pairP_apply, pairP_apply, hs]`. Simplify using `only [actP, LinearMap.smul_apply, AlgHom.toLinearMap_apply, LinearMap.map_smulₛₗ, map_smul, smul_eq_mul, starRingEnd_apply]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `trAct at hb ⊢`. Rewrite using `[fockL_blockAct_adj, hb]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pairTransport : PairTransport := by
   intro K _ _ ι _ n lam G g g' F F'
@@ -634,7 +634,7 @@ theorem pairTransport : PairTransport := by
   ring
 
 /- English proof (translation)
-The claim follows from `LinearMap.domRestrict₁₂_apply _ _ _ x y`.
+A detailed English derivation is pending.
 -/
 theorem pairK_apply {K : Type} [Field K] [StarRing K] {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n)
     (G : ι → Matrix (Fin n) (Fin n) K) (x y : VV K lam) : pairK lam G x y = pairP lam G x.1 y.1 :=
@@ -647,7 +647,7 @@ theorem rhoK_coe {K : Type} [Field K] {ι : Type} [Fintype ι] {n : ℕ} (lam : 
     (g : ι → GL (Fin n) K) (x : VV K lam) : ((rhoK lam g x : VV K lam) : Pol K ι n) = actP lam g x.1 := rfl
 
 /- English proof (translation)
-Introduce `K _ _ ι _ n lam G g hg x y`. Rewrite using `[pairK_apply, pairK_apply, rhoK_coe, rhoK_coe, pairTransport K ι n lam G g g x.1 y.1]`. Simplify using `only [hg]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pairInv : PairInv := by
   intro K _ _ ι _ n lam G g hg x y
@@ -655,13 +655,13 @@ theorem pairInv : PairInv := by
   simp only [hg]
 
 /- English proof (translation)
-Introduce `K _ _ ι _ n lam G hG`. Establish `hc : star (gramTw lam G / extNorm K lam) = gramTw lam G / extNorm K lam`. Establish `h1 : star (gramTw lam G) = gramTw lam G`. Unfold `gramTw`. Rewrite using `[star_prod]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[star_zpow₀, ← Matrix.det_conjTranspose, hG]`. Establish `h2 : star (extNorm K lam) = extNorm K lam`. Unfold `extNorm`. Rewrite using `[star_prod]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Conclude with `(fockSHerm K _ _ _).symm`. Rewrite using `[star_div₀, h1, h2]`. Establish `e : (fun τ => ((G τ)ᵀ)ᴴ) = fun τ => (G τ)ᵀ`. Use function extensionality and compare the values at `τ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[conjTranspose_transpose', hG]`. Rewrite using `[LinearMap.isSymm_def]`. Introduce `x y`. Rewrite using `[pairK_apply, pairK_apply, pairP_apply, pairP_apply, starRingEnd_apply, star_mul', hc, ← fockL_symm, fockL_blockAct_adj, e]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairSymm : PairSymm := by
   intro K _ _ ι _ n lam G hG
@@ -686,11 +686,11 @@ theorem pairSymm : PairSymm := by
     fockL_blockAct_adj, e]
 
 /- English proof (translation)
-Introduce `hT hP K _ _ _ ι _ n lam G B hB`. Rewrite using `[pairTransport K ι n lam G B B]`. Simplify using `only [hB]`. Take `⟨q, hq, hq'⟩` from `hP K ι n lam`. Establish `hne : extNorm K lam ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hq']`. Simplify using `using hq.ne'`. Establish `h1 : gramTw lam (fun _ : ι => (1 : Matrix (Fin n) (Fin n) K)) = 1`. Unfold `gramTw`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Rewrite using `[pairP_apply, h1]`. Simplify using `only [Matrix.transpose_one]`. Rewrite using `[blockAct_one, AlgHom.id_apply, fockL_apply, hT K ι n]`. Conclude with `div_mul_cancel₀ 1 hne |>.trans rfl |> fun h => by simpa [extNorm] using h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairExtremal_of : FockSTen → ExtNormPos → PairExtremal := by
   intro hT hP K _ _ _ ι _ n lam G B hB
@@ -713,7 +713,7 @@ section Equiv
 variable {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι] {n : ℕ}
 
 /- English proof (translation)
-Unfold `colLat gLat`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Use `congr 2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem colLat_mul (g B : GL (Fin n) K) : colLat (g * B) = gLat g (colLat B) := by
   unfold colLat gLat
@@ -721,13 +721,11 @@ theorem colLat_mul (g B : GL (Fin n) K) : colLat (g * B) = gLat g (colLat B) := 
   congr 2
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, y, hy, hyx⟩`. Establish `hyx' : (g : Matrix (Fin n) (Fin n) K) *ᵥ y = s • x` using `hyx`. Use `⟨((g⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ x, ⟨s, hs, ?_⟩, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: s • (((g⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ x) = y`. Rewrite using `[← Matrix.mulVec_smul, ← hyx', Matrix.mulVec_mulVec]`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show (g : Matrix (Fin n) (Fin n) K) *ᵥ (((g⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ x) = x`. Rewrite using `[Matrix.mulVec_mulVec]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨y, ⟨s, hs, hy⟩, rfl⟩`. Use `⟨s, hs, s • y, hy, ?_⟩` and prove the remaining obligations.
-
-Use `show (g : Matrix (Fin n) (Fin n) K) *ᵥ (s • y) = s • ((g : Matrix (Fin n) (Fin n) K) *ᵥ y)`. Rewrite using `[Matrix.mulVec_smul]`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localization_gLat (w : HeightOneSpectrum (𝓞 K)) (g : GL (Fin n) K) (M : Submodule (𝓞 K) (Fin n → K)) :
     Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (gLat g M) = gLat g (Formalism.HermitianLatticesTheory.localization₂ w.asIdeal M) := by
@@ -750,7 +748,7 @@ theorem localization_gLat (w : HeightOneSpectrum (𝓞 K)) (g : GL (Fin n) K) (M
     rw [Matrix.mulVec_smul]
 
 /- English proof (translation)
-Use `Submodule.map_injective_of_injective ?_` and prove the remaining obligations. Introduce `x y hxy`. Establish `h : (g : Matrix (Fin n) (Fin n) K) *ᵥ x = (g : Matrix (Fin n) (Fin n) K) *ᵥ y` using `hxy`. Use `congrArg (fun z => ((g⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ z) h` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_mulVec]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem gLat_injective (g : GL (Fin n) K) : Function.Injective (gLat (K := K) g) := by
   refine Submodule.map_injective_of_injective ?_
@@ -760,7 +758,7 @@ theorem gLat_injective (g : GL (Fin n) K) : Function.Injective (gLat (K := K) g)
   simpa [Matrix.mulVec_mulVec] using this
 
 /- English proof (translation)
-Unfold `IsBasisAt`. Rewrite using `[colLat_mul, localization_gLat, localization_gLat]`. Conclude with `(gLat_injective g).eq_iff`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isBasisAt_gLat (w : HeightOneSpectrum (𝓞 K)) (g B : GL (Fin n) K) (M : Submodule (𝓞 K) (Fin n → K)) :
     IsBasisAt w (gLat g M) (g * B) ↔ IsBasisAt w M B := by
@@ -770,7 +768,7 @@ theorem isBasisAt_gLat (w : HeightOneSpectrum (𝓞 K)) (g B : GL (Fin n) K) (M 
 
 omit [NumberField K] in
 /- English proof (translation)
-The claim follows from `congrArg (fun φ : Module.End K (Pol K ι n) => φ F) ((rhoP lam).map_mul g h)`.
+A detailed English derivation is pending.
 -/
 theorem polyAction_mul (lam : ι → DomWeight n) (g h : ι → GL (Fin n) K) (F : Pol K ι n) :
     actP lam (g * h) F = actP lam g (actP lam h F) :=
@@ -778,17 +776,17 @@ theorem polyAction_mul (lam : ι → DomWeight n) (g h : ι → GL (Fin n) K) (F
 
 omit [NumberField K] in
 /- English proof (translation)
-The claim follows from `congrArg (fun φ : Module.End K (Pol K ι n) => φ F) (rhoP lam).map_one`.
+A detailed English derivation is pending.
 -/
 theorem polyAction_one₂ (lam : ι → DomWeight n) (F : Pol K ι n) : actP lam 1 F = F :=
   congrArg (fun φ : Module.End K (Pol K ι n) => φ F) (rhoP lam).map_one
 
 /- English proof (translation)
-Simplify using `only [transLat, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.coe_restrictScalars]`. Prove the components needed by the constructor for the conclusion. Introduce `h w B hB`. Establish `h1` using `h w (g * B) fun τ => (isBasisAt_gLat w (g τ) (B τ) (M τ)).mpr (hB τ)`. Rewrite `h1` using `[mul_inv_rev, polyAction_mul]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `h w B hB`. Establish `h1` using `h w (g⁻¹ * B) fun τ => (isBasisAt_gLat w (g τ) ((g⁻¹ * B) τ) (M τ)).mp (by`. Establish `: g τ * (g⁻¹ * B) τ = B τ` using `by simp`. Rewrite using `[this]`. Conclude with `hB τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h1` using `[← polyAction_mul, mul_inv_rev, inv_inv, mul_assoc, mul_inv_cancel, mul_one]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem mem_transLat_gLat (lam : ι → DomWeight n) (T : Submodule (𝓞 K) (Pol K ι n))
     (M : ι → Submodule (𝓞 K) (Fin n → K)) (g : ι → GL (Fin n) K) (F : Pol K ι n) :
@@ -806,9 +804,9 @@ theorem mem_transLat_gLat (lam : ι → DomWeight n) (T : Submodule (𝓞 K) (Po
     rwa [← polyAction_mul, mul_inv_rev, inv_inv, mul_assoc, mul_inv_cancel, mul_one] at h1
 
 /- English proof (translation)
-Use extensionality with `F`. Rewrite using `[mem_transLat_gLat, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨_, h, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `show actP lam g (actP lam g⁻¹ F) = F`. Rewrite using `[← polyAction_mul, mul_inv_cancel, polyAction_one₂]`. Introduce and unpack `⟨y, hy, rfl⟩ show actP lam g⁻¹ (actP lam g y) ∈ _`. Rewrite using `[← polyAction_mul, inv_mul_cancel, polyAction_one₂]`. Conclude with `hy`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transLat_gLat (lam : ι → DomWeight n) (T : Submodule (𝓞 K) (Pol K ι n))
     (M : ι → Submodule (𝓞 K) (Fin n → K)) (g : ι → GL (Fin n) K) :
@@ -828,16 +826,16 @@ theorem transLat_gLat (lam : ι → DomWeight n) (T : Submodule (𝓞 K) (Pol K 
 end Equiv
 
 /- English proof (translation)
-Introduce `K _ _ ι _ n lam M g`. Conclude with `⟨transLat_gLat lam _ M g, transLat_gLat lam _ M g⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem nabDelEquiv : NabDelEquiv := by
   intro K _ _ ι _ n lam M g
   exact ⟨transLat_gLat lam _ M g, transLat_gLat lam _ M g⟩
 
 /- English proof (translation)
-Introduce `K _ _ _ σ f g`. Establish `hinj : Function.Injective (algebraMap ℚ K)` using `(algebraMap ℚ K).injective`. Unfold `fockS Formalism.GradedWeylDivisibility.fockQ mfact`. Rewrite using `[support_map_of_injective _ hinj, map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [coeff_map, map_mul, map_natCast, eq_ratCast, star_ratCast]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fockSQ : FockSQ := by
   intro K _ _ _ σ f g
@@ -848,9 +846,9 @@ theorem fockSQ : FockSQ := by
   simp only [coeff_map, map_mul, map_natCast, eq_ratCast, star_ratCast]
 
 /- English proof (translation)
-Unfold `extremal Formalism.GradedWeylDivisibility.hw Formalism.GradedWeylDivisibility.lpMinor`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, RingHom.map_det]`. Use `congr 2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `p q`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_extremal {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (n : ℕ) (lam : DomWeight n) :
     map φ (extremal R n lam) = extremal S n lam := by
@@ -863,9 +861,9 @@ theorem map_extremal {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (n 
   simp
 
 /- English proof (translation)
-Introduce `K _ _ _ ι _ n lam`. Use `⟨∏ τ, Formalism.GradedWeylDivisibility.fockQ (extremal ℚ n (lam τ)) (extremal ℚ n (lam τ)), ?_, ?_⟩` and prove the remaining obligations. Use `Finset.prod_pos fun τ _ => ?_` and prove the remaining obligations. Conclude with `(Formalism.GradedWeylDivisibility.fockQPos _ _ (extremal ℚ n (lam τ))).2 (Formalism.GradedWeylDivisibility.hwNe ℚ n n le_rfl _)`. Unfold `extNorm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← fockSQ K, map_extremal]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extNormPos : ExtNormPos := by
   intro K _ _ _ ι _ n lam
@@ -890,20 +888,20 @@ def lamVec : DomWeight 2 where
 def vecP (v : Fin 2 → K) : Pol K Unit 2 := ∑ a : Fin 2, C (v a) * X ((), (a, 0))
 
 /- English proof (translation)
-Simplify using `[DomWeight.detShift, lamVec]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lamVec_detShift : lamVec.detShift = 0 := by
   simp [DomWeight.detShift, lamVec]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp only [DomWeight.natW, lamVec_detShift] <;> simp [lamVec]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lamVec_natW : lamVec.natW = ![1, 0] := by
   funext i
   fin_cases i <;> simp only [DomWeight.natW, lamVec_detShift] <;> simp [lamVec]
 
 /- English proof (translation)
-Unfold `extremal Formalism.GradedWeylDivisibility.hw`. Rewrite using `[lamVec_natW, Fin.prod_univ_two]`. Simplify using `[Formalism.GradedWeylDivisibility.nuNext, Formalism.GradedWeylDivisibility.lpMinor]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem extremal_lamVec : extremal K 2 lamVec = X (0, 0) := by
   unfold extremal Formalism.GradedWeylDivisibility.hw
@@ -913,9 +911,9 @@ theorem extremal_lamVec : extremal K 2 lamVec = X (0, 0) := by
 variable [StarRing K]
 
 /- English proof (translation)
-Establish `h` using `fockL_X_pderiv (K := K) i 1 (X j)`. Rewrite `h` using `[mul_one]`. Rewrite using `[h, ← C_1, fockL_C_left, pderiv_X]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[hij, Ne.symm hij]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem fockL_X_X {σ : Type} [DecidableEq σ] (i j : σ) :
     fockL (X i : MvPolynomial σ K) (X j) = if i = j then 1 else 0 := by
@@ -927,9 +925,9 @@ theorem fockL_X_X {σ : Type} [DecidableEq σ] (i j : σ) :
   · simp [hij, Ne.symm hij]
 
 /- English proof (translation)
-Establish `h1 : gramTw (fun _ : Unit => lamVec) G = 1` using `by simp [gramTw, lamVec_detShift]`. Establish `h2 : extNorm K (fun _ : Unit => lamVec) = 1`. Simplify using `only [extNorm, Finset.univ_unique, Finset.prod_singleton, extremal_lamVec]`. Rewrite using `[← fockL_apply, fockL_X_X, if_pos rfl]`. Rewrite using `[pairP_apply, h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [vecP, blockAct_X, Fin.sum_univ_two, Matrix.transpose_apply, ← smul_eq_C_mul, map_add, map_smul, LinearMap.map_smulₛₗ, LinearMap.add_apply, LinearMap.smul_apply, fockL_X_X, smul_add, smul_smul]`. Simplify using `[Matrix.mulVec, dotProduct, Fin.sum_univ_two]`. Simplify using `only [starRingEnd_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pairP_vecP (G : Unit → Matrix (Fin 2) (Fin 2) K) (v w : Fin 2 → K) :
     pairP (fun _ => lamVec) G (vecP v) (vecP w) = star v ⬝ᵥ (G () *ᵥ w) := by
@@ -950,11 +948,11 @@ def lamChar (e : ℤ) : DomWeight 1 where
   anti := fun _ _ _ => le_rfl
 
 /- English proof (translation)
-Establish `h0 : (lamChar e).natW = fun _ => 0`. Use function extensionality and compare the values at `i`. Simplify using `[DomWeight.natW, DomWeight.detShift, lamChar]`. Establish `h2 : extNorm K (fun _ : Unit => lamChar e) = 1`. Simplify using `only [extNorm, Finset.univ_unique, Finset.prod_singleton, extremal, Formalism.GradedWeylDivisibility.hw, h0]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Formalism.GradedWeylDivisibility.nuNext]`. Simplify using `only [Nat.sub_self, dite_eq_ite, ite_self, pow_zero]`. Rewrite using `[← fockL_apply, ← C_1, fockL_C_left]`. Simplify using the standard rewrite rules. Establish `hb : Formalism.GradedWeylDivisibility.blockAct K (fun τ => (G τ)ᵀ) (1 : Pol K Unit 1) = 1` using `map_one _`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[pairP_apply, h2, hb, ← C_1, fockL_C_left]`. Simplify using `[gramTw, lamChar, DomWeight.detShift]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pairP_char (e : ℤ) (G : Unit → Matrix (Fin 1) (Fin 1) K) :
     pairP (fun _ => lamChar e) G (1 : Pol K Unit 1) 1 = G () 0 0 ^ e := by
@@ -978,11 +976,11 @@ section RankOne
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Unfold `colLat`. Use `congr 1`. Use extensionality with `x`. Simplify using `only [Set.mem_range, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨j, rfl⟩`. Use function extensionality and compare the values at `a`. Rewrite using `[Subsingleton.elim a 0, Subsingleton.elim j 0]`. Introduce and unpack `rfl`. Use `⟨0, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `a`. Rewrite using `[Subsingleton.elim a 0]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem colLat_one_eq (B : GL (Fin 1) K) :
     colLat B = Submodule.span (𝓞 K) {fun _ : Fin 1 => (B : Matrix (Fin 1) (Fin 1) K) 0 0} := by

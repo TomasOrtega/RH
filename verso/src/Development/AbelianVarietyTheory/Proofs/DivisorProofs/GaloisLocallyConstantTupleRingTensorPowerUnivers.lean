@@ -9,7 +9,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 open GlobalTheory.EtC.GalSec
 
 /- English proof (translation)
-Establish `: Algebra.IsSeparable K E` using `Algebra.isSeparable_tower_bot_of_isSeparable K E Ω`. Take `⟨α, hα⟩` from `Field.exists_primitive_element K E`. Use `⟨(α : Ω), ?_⟩` and prove the remaining obligations. Simplify `congr_arg IntermediateField.lift hα` using `only [IntermediateField.lift_adjoin_simple, IntermediateField.lift_top]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem prim_lemma (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω] [Algebra.IsSeparable K Ω]
     (E : IntermediateField K Ω) [FiniteDimensional K E] :
@@ -21,9 +21,9 @@ private theorem prim_lemma (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω] [Al
     congr_arg IntermediateField.lift hα
 
 /- English proof (translation)
-Introduce `K Ω _ _ _ _ θ₁ θ₂`. Establish `h1 : IsIntegral K θ₁` using `(Algebra.IsSeparable.isSeparable K θ₁).isIntegral`. Establish `h2 : IsIntegral K θ₂` using `(Algebra.IsSeparable.isSeparable K θ₂).isIntegral`. Establish `: FiniteDimensional K (IntermediateField.adjoin K {θ₁, θ₂})` using `IntermediateField.finiteDimensional_adjoin_pair h1 h2`. Take `⟨θ, hθ⟩` from `prim_lemma K Ω (IntermediateField.adjoin K {θ₁, θ₂})`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `refine ⟨θ, ?_, ?_⟩ <;> rw [hθ]`. Conclude with `IntermediateField.subset_adjoin K _ (Set.mem_insert _ _)`. Conclude with `IntermediateField.subset_adjoin K _ (Set.mem_insert_of_mem _ rfl)`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.EtC.GalSec.Tens.lem_ref : ∀ (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω] [IsSepClosure K Ω] (θ₁ θ₂ : Ω), ∃ θ : Ω, θ₁ ∈ IntermediateField.adjoin K {θ} ∧ θ₂ ∈ IntermediateField.adjoin K {θ} := by
   intro K Ω _ _ _ _ θ₁ θ₂
@@ -37,7 +37,7 @@ theorem GlobalTheory.EtC.GalSec.Tens.lem_ref : ∀ (K Ω : Type) [Field K] [Fiel
   · exact IntermediateField.subset_adjoin K _ (Set.mem_insert_of_mem _ rfl)
 
 /- English proof (translation)
-Rewrite `hx` using `[← IntermediateField.mem_toSubalgebra, IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic (Algebra.IsAlgebraic.isAlgebraic θ)]`. Establish `hle : Algebra.adjoin K {θ} ≤ AlgHom.equalizer (σ : Ω →ₐ[K] Ω) (τ : Ω →ₐ[K] Ω)` using `Algebra.adjoin_le (Set.singleton_subset_iff.mpr h)`. Conclude with `hle hx`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem algEquiv_eq_on_adjoin_of_eq_generator (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω] [Algebra.IsAlgebraic K Ω]
     (σ τ : Ω ≃ₐ[K] Ω) (θ x : Ω) (hx : x ∈ IntermediateField.adjoin K {θ}) (h : σ θ = τ θ) :
@@ -49,26 +49,26 @@ private theorem algEquiv_eq_on_adjoin_of_eq_generator (K Ω : Type) [Field K] [F
   exact hle hx
 
 /- English proof (translation)
-Introduce `K Ω _ _ _ _ k θ θ' φ hθ hφ g g' h`. Conclude with `hφ g g' fun i => algEquiv_eq_on_adjoin_of_eq_generator K Ω (g i) (g' i) θ' θ hθ (h i)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.EtC.GalSec.Tens.lem_mono : ∀ (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω] [IsSepClosure K Ω] (k : ℕ) (θ θ' : Ω) (φ : GlobalTheory.EtC.GalSec.LCRing K Ω k), θ ∈ IntermediateField.adjoin K {θ'} → GlobalTheory.EtC.GalSec.Tens.DependsOn K Ω k θ φ → GlobalTheory.EtC.GalSec.Tens.DependsOn K Ω k θ' φ := by
   intro K Ω _ _ _ _ k θ θ' φ hθ hφ g g' h
   exact hφ g g' fun i => algEquiv_eq_on_adjoin_of_eq_generator K Ω (g i) (g' i) θ' θ hθ (h i)
 
 /- English proof (translation)
-Introduce `K Ω _ _ _ _ k φ`. Establish `hinv : ∃ V ∈ nhds (1 : Fin k → (Ω ≃ₐ[K] Ω)), ∀ g v, v ∈ V → φ (g * v) = φ g`. Establish `hfin : (Set.range φ).Finite` using `φ.range_finite`. Establish `hV : ∀ a, ∃ V ∈ nhds (1 : Fin k → (Ω ≃ₐ[K] Ω)), ∀ x v, φ x = a → v ∈ V → φ (x * v) = a`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc` using `φ.isLocallyConstant.isClopen_fiber a`. Take `⟨V, hV1, hV2⟩` from `compact_open_separated_mul_right hc.isClosed.isCompact hc.isOpen subset_rfl`. Conclude with `⟨V, hV1, fun x v hx hv => hV2 (Set.mul_mem_mul hx hv)⟩`. Use `choose V hV1 hV2 using hV`. Use `⟨⋂ a ∈ Set.range φ, V a, (Filter.biInter_mem hfin).mpr fun a _ => hV1 a, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g v hv`. Establish `hv' : v ∈ V (φ g)` using `Set.mem_iInter₂.mp hv (φ g) ⟨g, rfl⟩`. Conclude with `hV2 (φ g) g v rfl hv'`. Take `⟨V, hV, hφV⟩` from `hinv`. Rewrite `hV` using `[nhds_pi, Filter.mem_pi']`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨I, t, ht, hIt⟩` from `hV`. Establish `hW : (⋂ i, t i) ∈ nhds (1 : Ω ≃ₐ[K] Ω)` using `Filter.iInter_mem.mpr fun i => by simpa using ht i`. Take `⟨E, hE, hEW⟩` from `(krullTopology_mem_nhds_one_iff K Ω _).mp hW`. Take `⟨θ, hθ⟩` from `prim_lemma K Ω E`. Use `⟨θ, fun g g' h => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hu : ∀ i, (g i)⁻¹ * g' i ∈ ⋂ i, t i`. Introduce `i`. Use `hEW ((IntermediateField.mem_fixingSubgroup_iff E _).mpr fun x hx => ?_)` and prove the remaining obligations. Rewrite `hx` using `[← hθ]`. Establish `hx'` using `algEquiv_eq_on_adjoin_of_eq_generator K Ω (g' i) (g i) θ x hx (h i).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[AlgEquiv.mul_apply, hx', AlgEquiv.aut_inv, AlgEquiv.symm_apply_apply]`. Establish `hmem : (fun i => (g i)⁻¹ * g' i) ∈ V` using `hIt fun i _ => Set.mem_iInter.mp (hu i) i`. Establish `hg : g * (fun i => (g i)⁻¹ * g' i) = g'`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.mul_apply, mul_inv_cancel_left]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hφV g _ hmem` as an intermediate fact. Rewrite `this` using `[hg]`. Conclude with `this.symm`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.EtC.GalSec.Tens.lem_dep : ∀ (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω] [IsSepClosure K Ω] (k : ℕ) (φ : GlobalTheory.EtC.GalSec.LCRing K Ω k), ∃ θ : Ω, GlobalTheory.EtC.GalSec.Tens.DependsOn K Ω k θ φ := by
   intro K Ω _ _ _ _ k φ
@@ -105,7 +105,7 @@ theorem GlobalTheory.EtC.GalSec.Tens.lem_dep : ∀ (K Ω : Type) [Field K] [Fiel
   rw [hg] at this
   exact this.symm
 /- English proof (translation)
-The claim follows from `Tens.idem_spec (K := K) g₀ θ (σ' θ) (Tens.prod_sub_conj_eq_zero (K := K) g₀ σ' h θ)`.
+A detailed English derivation is pending.
 -/
 private theorem exists_unitary_diagonal_of_isHermitian {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] [IsSepClosure K Ω]
     {B : Type} [CommRing B] (g₀ σ' : Ω →+* B)
@@ -116,14 +116,14 @@ private theorem exists_unitary_diagonal_of_isHermitian {K Ω : Type} [Field K] [
   Tens.idem_spec (K := K) g₀ θ (σ' θ) (Tens.prod_sub_conj_eq_zero (K := K) g₀ σ' h θ)
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem sum_pi_prod_eq_prod_sum {ι κ R : Type} [Fintype ι] [DecidableEq ι] [Fintype κ] [CommSemiring R]
     (f : ι → κ → R) : ∑ t : ι → κ, ∏ i, f i (t i) = ∏ i, ∑ s, f i s := by
   rw [Finset.prod_univ_sum, Fintype.piFinset_univ]
 
 /- English proof (translation)
-Rewrite using `[sum_pi_prod_eq_prod_sum]`. Conclude with `Finset.prod_eq_one fun i _ => (exists_unitary_diagonal_of_isHermitian g₀ (gs i) (hgs i) θ).1.complete`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sum_prod_tens_idem {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] [IsSepClosure K Ω]
     {B : Type} [CommRing B] {k : ℕ} (g₀ : Ω →+* B) (gs : Fin k → (Ω →+* B))
@@ -133,9 +133,9 @@ private theorem sum_prod_tens_idem {K Ω : Type} [Field K] [Field Ω] [Algebra K
   exact Finset.prod_eq_one fun i _ => (exists_unitary_diagonal_of_isHermitian g₀ (gs i) (hgs i) θ).1.complete
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_mul_distrib]`. Distinguish the cases in `hts : t = s`. Substitute `hts` using the available equality. Rewrite using `[if_pos rfl]`. Conclude with `Finset.prod_congr rfl fun i _ => ((exists_unitary_diagonal_of_isHermitian g₀ (gs i) (hgs i) θ).1.idem (t i)).eq`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `Function.ne_iff.mp hts`. Rewrite using `[if_neg hts]`. Use `Finset.prod_eq_zero (Finset.mem_univ i) ?_` and prove the remaining obligations. Rewrite using `[(exists_unitary_diagonal_of_isHermitian g₀ (gs i) (hgs i) θ).1.toOrthogonalIdempotents.mul_eq (t i) (s i), if_neg hi]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem prod_tens_idem_mul {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] [IsSepClosure K Ω]
     {B : Type} [CommRing B] {k : ℕ} (g₀ : Ω →+* B) (gs : Fin k → (Ω →+* B))
@@ -154,11 +154,11 @@ private theorem prod_tens_idem_mul {K Ω : Type} [Field K] [Field Ω] [Algebra K
     rw [(exists_unitary_diagonal_of_isHermitian g₀ (gs i) (hgs i) θ).1.toOrthogonalIdempotents.mul_eq (t i) (s i), if_neg hi]
 
 /- English proof (translation)
-Introduce `K Ω _ _ _ _ B _ k g₀ gs hgs θ`. Use `⟨{ toFun := fun φ => Tens.lev g₀ gs θ φ, map_one' := ?_, map_mul' := ?_, map_zero' := ?_, map_add' := ?_ }, fun φ => rfl⟩` and prove the remaining obligations. Simplify using `only [Tens.lev, LocallyConstant.coe_one, Pi.one_apply, map_one, one_mul]`. Conclude with `sum_prod_tens_idem g₀ gs hgs θ`. Introduce `φ ψ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Tens.lev, LocallyConstant.coe_mul, Pi.mul_apply, map_mul]`. Rewrite using `[Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl fun s _ => by rw [mul_mul_mul_comm, prod_tens_idem_mul g₀ gs hgs θ]]`. Simplify using `only [mul_ite, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Tens.lev]`. Introduce `φ ψ`. Simplify using `only [Tens.lev, LocallyConstant.coe_add, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.EtC.GalSec.Tens.lem_hom : ∀ (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω] [IsSepClosure K Ω] (B : Type) [CommRing B] (k : ℕ) (g₀ : Ω →+* B) (gs : Fin k → (Ω →+* B)), (∀ i, (gs i).comp (algebraMap K Ω) = g₀.comp (algebraMap K Ω)) → ∀ θ : Ω, ∃ v : GlobalTheory.EtC.GalSec.LCRing K Ω k →+* B, ∀ φ, v φ = GlobalTheory.EtC.GalSec.Tens.lev g₀ gs θ φ := by
   intro K Ω _ _ _ _ B _ k g₀ gs hgs θ
@@ -176,11 +176,11 @@ theorem GlobalTheory.EtC.GalSec.Tens.lem_hom : ∀ (K Ω : Type) [Field K] [Fiel
   · intro φ ψ
     simp only [Tens.lev, LocallyConstant.coe_add, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 /- English proof (translation)
-Establish `key : ∀ i, q.eval b * e i = q.eval (c i) * e i`. Introduce `i`. Use `Polynomial.induction_on' q (fun p r hp hr => ?_) (fun n a => ?_)` and prove the remaining obligations. Simplify using `only [Polynomial.eval_add, add_mul, hp, hr]`. Establish `hpow : ∀ m : ℕ, b ^ m * e i = c i ^ m * e i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Polynomial.eval_monomial]`. Rewrite using `[mul_assoc, hpow n, ← mul_assoc]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => key i`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem polynomial_eval_eq_sum_eval_mul_idempotent {ι B : Type} [Fintype ι] [CommRing B] (e : ι → B) (he : ∑ i, e i = 1)
     (c : ι → B) (b : B) (hb : ∀ i, b * e i = c i * e i) (q : Polynomial B) :
@@ -207,7 +207,7 @@ private theorem polynomial_eval_eq_sum_eval_mul_idempotent {ι B : Type} [Fintyp
       exact Finset.sum_congr rfl fun i _ => key i
 
 /- English proof (translation)
-Simplify using `[Polynomial.eval_prod]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem mul_prod_eval_sub_eq_eval_C_mul_prod {ι B : Type} [CommRing B] (S : Finset ι) (a : B) (c : ι → B)
     (P : Polynomial B) (y : B) :
@@ -216,7 +216,7 @@ private theorem mul_prod_eval_sub_eq_eval_C_mul_prod {ι B : Type} [CommRing B] 
   simp [Polynomial.eval_prod]
 
 /- English proof (translation)
-Unfold `Tens.idem`. Simplify using `only [← map_sub, ← map_prod, ← map_mul]`. Rewrite using `[inv_mul_cancel₀, map_one]`. Use `Finset.prod_ne_zero_iff.mpr fun j hj => sub_ne_zero.mpr fun e => ?_` and prove the remaining obligations. Conclude with `Finset.ne_of_mem_erase hj (Subtype.ext e.symm)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem tens_idem_self {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] {B : Type} [CommRing B]
     (g₀ : Ω →+* B) (θ r : Ω) (hr : r ∈ Tens.conj K Ω θ) :
@@ -229,7 +229,7 @@ private theorem tens_idem_self {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω]
   exact Finset.ne_of_mem_erase hj (Subtype.ext e.symm)
 
 /- English proof (translation)
-Unfold `Tens.idem`. Use `mul_eq_zero_of_right _ (Finset.prod_eq_zero (i := ⟨r, hr⟩) ?_ (sub_self _))` and prove the remaining obligations. Conclude with `Finset.mem_erase.mpr ⟨h, Finset.mem_univ _⟩`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem tens_idem_of_ne {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] {B : Type} [CommRing B]
     (g₀ : Ω →+* B) (θ r : Ω) (hr : r ∈ Tens.conj K Ω θ) (s : Tens.conj K Ω θ)
@@ -241,25 +241,25 @@ private theorem tens_idem_of_ne {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω
   exact Finset.mem_erase.mpr ⟨h, Finset.mem_univ _⟩
 
 /- English proof (translation)
-Introduce `K Ω _ _ _ _ B _ k g₀ gs hgs θ θ' φ hθ hφ`. Establish `hθ' : θ ∈ Algebra.adjoin K {θ'}`. Rewrite using `[← IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic (Algebra.IsAlgebraic.isAlgebraic θ')]`. Conclude with `hθ`. Rewrite `hθ'` using `[Algebra.adjoin_singleton_eq_range_aeval]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp⟩` from `hθ'`. Use `replace hp : Polynomial.aeval θ' p = θ := hp`. Establish `hπ : ∀ s' : Tens.conj K Ω θ', Polynomial.aeval (s' : Ω) p ∈ Tens.conj K Ω θ`. Introduce `s'`. Take `⟨σ, hσ⟩` from `(Tens.mem_conj_iff θ' s').mp s'.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : Polynomial.aeval (σ θ') p = σ (Polynomial.aeval θ' p)` using `Polynomial.aeval_algHom_apply (σ : Ω →ₐ[K] Ω) θ' p`. Rewrite using `[← hσ, e1, hp]`. Conclude with `Tens.apply_mem_conj θ σ`. Establish `hrel : ∀ (i : Fin k) (s : Tens.conj K Ω θ), Tens.idem (K` using `K) g₀ θ (gs i θ) s = ∑ s' : Tens.conj K Ω θ', if (⟨Polynomial.aeval (s' : Ω) p, hπ s'⟩ : Tens.conj K Ω θ) = s then Tens.idem (K := K) g₀ θ' (gs i θ') s' else 0 := by`. Introduce `i s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hco, hmul, -⟩` from `exists_unitary_diagonal_of_isHermitian g₀ (gs i) (hgs i) θ'`. Establish `hb : gs i θ = (p.map (g₀.comp (algebraMap K Ω))).eval (gs i θ')`. Rewrite using `[← hp, Polynomial.aeval_def, Polynomial.hom_eval₂, hgs i, Polynomial.eval_map]`. Establish `hs' : ∀ s' : Tens.conj K Ω θ', (p.map (g₀.comp (algebraMap K Ω))).eval (g₀ s') = g₀ (Polynomial.aeval (s' : Ω) p)`. Introduce `s'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Rewrite using `[Polynomial.aeval_def, Polynomial.hom_eval₂, Polynomial.eval_map]`. Take `⟨Q, hQ⟩ : ∃ Q : Polynomial B, ∀ y, Tens.idem (K` from `K) g₀ θ ((p.map (g₀.comp (algebraMap K Ω))).eval y) s = Q.eval y := by`. Unfold `Tens.idem`. Conclude with `⟨_, fun y => mul_prod_eval_sub_eq_eval_C_mul_prod _ _ (fun j : Tens.conj K Ω θ => g₀ (j : Ω)) _ y⟩`. Rewrite using `[hb, hQ, polynomial_eval_eq_sum_eval_mul_idempotent _ hco.complete (fun s' => g₀ s') _ (fun s' => hmul s')]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Use `Finset.sum_congr rfl fun s' _ => ?_` and prove the remaining obligations. Rewrite using `[← hQ, hs']`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[tens_idem_self g₀ θ _ (hπ s'), one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tens_idem_of_ne g₀ θ _ (hπ s') s h, zero_mul]`. Establish `hsum : ∀ t : Fin k → Tens.conj K Ω θ, ∏ i, Tens.idem (K` using `K) g₀ θ (gs i θ) (t i) = ∑ t' : Fin k → Tens.conj K Ω θ', if (fun i => (⟨Polynomial.aeval (t' i : Ω) p, hπ (t' i)⟩ : Tens.conj K Ω θ)) = t then ∏ i, Tens.idem (K := K) g₀ θ' (gs i θ') (t' i) else 0 := by`. Introduce `t`. Rewrite using `[Finset.prod_congr rfl fun i _ => hrel i (t i), ← sum_pi_prod_eq_prod_sum]`. Use `Finset.sum_congr rfl fun t' _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Finset.prod_ite_zero, funext_iff, Finset.mem_univ, true_implies]`. Establish `key : ∀ t' : Fin k → Tens.conj K Ω θ', φ (Tens.pick K Ω k θ (fun i => Polynomial.aeval (t' i : Ω) p)) = φ (Tens.pick K Ω k θ' (fun i => (t' i : Ω)))`. Introduce `t'`. Apply `hφ` to reduce the goal to its premises. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Tens.pick_spec (K := K) k θ _ (fun j => hπ (t' j)) i, ← hp]`. Establish `e2` using `Polynomial.aeval_algHom_apply ((Tens.pick K Ω k θ' (fun j => (t' j : Ω)) i : Ω ≃ₐ[K] Ω) : Ω →ₐ[K] Ω) θ' p`. Establish `e3 : (Tens.pick K Ω k θ' (fun j => (t' j : Ω)) i) θ' = t' i` using `Tens.pick_spec (K := K) k θ' _ (fun j => (t' j).2) i`. Rewrite `e2` using `[show ((Tens.pick K Ω k θ' (fun j => (t' j : Ω)) i : Ω ≃ₐ[K] Ω) : Ω →ₐ[K] Ω) θ' = t' i from e3]`. Conclude with `e2`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Unfold `Tens.lev`. Simplify using `only [hsum, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun t' _ => ?_` and prove the remaining obligations. Simplify using `only [mul_ite, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true, key]`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.EtC.GalSec.Tens.lem_indep : ∀ (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω] [IsSepClosure K Ω] (B : Type) [CommRing B] (k : ℕ) (g₀ : Ω →+* B) (gs : Fin k → (Ω →+* B)), (∀ i, (gs i).comp (algebraMap K Ω) = g₀.comp (algebraMap K Ω)) → ∀ (θ θ' : Ω) (φ : GlobalTheory.EtC.GalSec.LCRing K Ω k), θ ∈ IntermediateField.adjoin K {θ'} → GlobalTheory.EtC.GalSec.Tens.DependsOn K Ω k θ φ → GlobalTheory.EtC.GalSec.Tens.lev g₀ gs θ φ = GlobalTheory.EtC.GalSec.Tens.lev g₀ gs θ' φ := by
   intro K Ω _ _ _ _ B _ k g₀ gs hgs θ θ' φ hθ hφ
@@ -325,13 +325,13 @@ theorem GlobalTheory.EtC.GalSec.Tens.lem_indep : ∀ (K Ω : Type) [Field K] [Fi
   refine Finset.sum_congr rfl fun t' _ => ?_
   simp only [mul_ite, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true, key]
 /- English proof (translation)
-Introduce `K Ω _ _ _ _ B _ k g₀ gs hgs`. Use `⟨fun θ a => ?_, fun i a => ?_⟩` and prove the remaining obligations. Establish `h0 : legHom K Ω k 0 a = LocallyConstant.const _ a` using `rfl`. Simplify using `only [Tens.lev, h0, LocallyConstant.coe_const, Function.const_apply]`. Rewrite using `[← Finset.mul_sum, sum_prod_tens_idem g₀ gs hgs θ, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : legHom K Ω k i.succ a = coord K Ω k i a` using `by simp [legHom]`. Establish `hp : ∀ t : Fin k → Tens.conj K Ω a, (Tens.pick K Ω k a (fun j => (t j : Ω)) i) a = t i` using `fun t => Tens.pick_spec (K := K) k a _ (fun j => (t j).2) i`. Simplify using `only [Tens.lev, h1, coord_apply, hp]`. Establish `hfac : ∀ t : Fin k → Tens.conj K Ω a, g₀ (t i : Ω) * ∏ j, Tens.idem (K` using `K) g₀ a (gs j a) (t j) = ∏ j, (if j = i then g₀ (t j : Ω) else 1) * Tens.idem (K := K) g₀ a (gs j a) (t j) := by`. Introduce `t`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.prod_mul_distrib, Finset.prod_ite_eq' Finset.univ i, if_pos (Finset.mem_univ _)]`. Rewrite using `[Finset.sum_congr rfl fun t _ => hfac t, sum_pi_prod_eq_prod_sum (fun (j : Fin k) (s : Tens.conj K Ω a) => (if j = i then g₀ (s : Ω) else 1) * Tens.idem (K := K) g₀ a (gs j a) s)]`. Rewrite using `[Finset.prod_eq_single i]`. Simplify using `only [if_true]`. Conclude with `(exists_unitary_diagonal_of_isHermitian g₀ (gs i) (hgs i) a).2.2.symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j _ hj`. Simplify using `only [if_neg hj, one_mul]`. Conclude with `(exists_unitary_diagonal_of_isHermitian g₀ (gs j) (hgs j) a).1.complete`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.EtC.GalSec.Tens.lem_legs : ∀ (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω] [IsSepClosure K Ω] (B : Type) [CommRing B] (k : ℕ) (g₀ : Ω →+* B) (gs : Fin k → (Ω →+* B)), (∀ i, (gs i).comp (algebraMap K Ω) = g₀.comp (algebraMap K Ω)) → (∀ (θ a : Ω), GlobalTheory.EtC.GalSec.Tens.lev g₀ gs θ (GlobalTheory.EtC.GalSec.legHom K Ω k 0 a) = g₀ a) ∧ ∀ (i : Fin k) (a : Ω), GlobalTheory.EtC.GalSec.Tens.lev g₀ gs a (GlobalTheory.EtC.GalSec.legHom K Ω k i.succ a) = gs i a := by
   intro K Ω _ _ _ _ B _ k g₀ gs hgs
@@ -359,7 +359,7 @@ theorem GlobalTheory.EtC.GalSec.Tens.lem_legs : ∀ (K Ω : Type) [Field K] [Fie
       exact (exists_unitary_diagonal_of_isHermitian g₀ (gs j) (hgs j) a).1.complete
     · intro h; exact absurd (Finset.mem_univ i) h
 /- English proof (translation)
-Unfold `Tens.idem`. Simplify using `only [map_mul, map_prod, map_sub, RingHom.comp_apply]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private theorem map_tens_idem {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] {B C : Type} [CommRing B]
     [CommRing C] (f : B →+* C) (g₀ : Ω →+* B) (θ : Ω) (b : B) (s : Tens.conj K Ω θ) :
@@ -368,7 +368,7 @@ private theorem map_tens_idem {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] 
   simp only [map_mul, map_prod, map_sub, RingHom.comp_apply]
 
 /- English proof (translation)
-Unfold `Tens.lev`. Simplify using `only [map_sum, map_mul, map_prod, map_tens_idem, RingHom.comp_apply]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private theorem map_tens_lev {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] {B C : Type} [CommRing B]
     [CommRing C] (f : B →+* C) (g₀ : Ω →+* B) {k : ℕ} (gs : Fin k → (Ω →+* B)) (θ : Ω)
@@ -378,15 +378,15 @@ private theorem map_tens_lev {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] {
   simp only [map_sum, map_mul, map_prod, map_tens_idem, RingHom.comp_apply]
 
 /- English proof (translation)
-Use extensionality with `g`. Express the relevant statement in the definitionally equal form `LocallyConstant.evalRingHom g (Tens.lev (legHom K Ω k 0) (fun i => legHom K Ω k i.succ) θ φ) = φ g`. Rewrite using `[map_tens_lev]`. Establish `h0 : (LocallyConstant.evalRingHom g).comp (legHom K Ω k 0) = RingHom.id Ω`. Use extensionality with `a`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[legHom]`. Establish `h1 : ∀ i, ((LocallyConstant.evalRingHom g).comp (legHom K Ω k i.succ)) θ = g i θ`. Introduce `i`. Simplify using `[legHom, coord_apply]`. Establish `hmem : ∀ i, g i θ ∈ Tens.conj K Ω θ` using `fun i => Tens.apply_mem_conj θ (g i)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Unfold `Tens.lev`. Simplify using `only [h0, h1, RingHom.id_apply]`. Rewrite using `[Finset.sum_eq_single (fun i => (⟨g i θ, hmem i⟩ : Tens.conj K Ω θ))]`. Simplify using `only`. Rewrite using `[Finset.prod_eq_one (fun i _ => by`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Use `tens_idem_self (K := K) (RingHom.id Ω) θ (g i θ) (hmem i)` as an intermediate fact. Rewrite using `[RingHom.id_apply] at this), mul_one]` and apply the resulting hypothesis. Conclude with `hφ _ _ (fun i => Tens.pick_spec (K := K) k θ _ (fun j => hmem j) i)`. Introduce `t _ ht`. Take `⟨i, hi⟩` from `Function.ne_iff.mp ht`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ i) (by`. Use `tens_idem_of_ne (K := K) (RingHom.id Ω) θ (g i θ) (hmem i) (t i) (Ne.symm hi)` as an intermediate fact. Rewrite using `[RingHom.id_apply] at this), mul_zero]` and apply the resulting hypothesis. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem tens_lev_legHom_eq_of_dependsOn {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] [IsSepClosure K Ω] (k : ℕ)
     (θ : Ω) (φ : LCRing K Ω k) (hφ : Tens.DependsOn K Ω k θ φ) :
@@ -416,7 +416,7 @@ private theorem tens_lev_legHom_eq_of_dependsOn {K Ω : Type} [Field K] [Field �
   · intro h; exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Introduce `K Ω _ _ _ _ k B _ u u' hdep hleg`. Use extensionality with `φ`. Take `⟨θ, hθ⟩` from `hdep φ`. Rewrite using `[← tens_lev_legHom_eq_of_dependsOn k θ φ hθ, map_tens_lev, map_tens_lev]`. Simplify using `only [hleg]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem GlobalTheory.EtC.GalSec.Tens.lem_uniq : ∀ (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω] [IsSepClosure K Ω] (k : ℕ) (B : Type) [CommRing B] (u u' : GlobalTheory.EtC.GalSec.LCRing K Ω k →+* B), (∀ φ : GlobalTheory.EtC.GalSec.LCRing K Ω k, ∃ θ : Ω, GlobalTheory.EtC.GalSec.Tens.DependsOn K Ω k θ φ) → (∀ i, u.comp (GlobalTheory.EtC.GalSec.legHom K Ω k i) = u'.comp (GlobalTheory.EtC.GalSec.legHom K Ω k i)) → u = u' := by
   intro K Ω _ _ _ _ k B _ u u' hdep hleg
@@ -428,27 +428,25 @@ theorem GlobalTheory.EtC.GalSec.Tens.lem_uniq : ∀ (K Ω : Type) [Field K] [Fie
 namespace GlobalTheory.EtC.GalSec.Tens
 
 /- English proof (translation)
-Introduce `K Ω _ _ _ _ k B _ g c hg`. Use `set g₀ := g 0 with hg₀`. Use `set gs : Fin k → (Ω →+* B) := fun i => g i.succ with hgsd`. Establish `hgs : ∀ i, (gs i).comp (algebraMap K Ω) = g₀.comp (algebraMap K Ω)` using `fun i => (hg i.succ).trans (hg 0).symm`. Use `choose θf hθf using fun φ : LCRing K Ω k => lem_dep K Ω k φ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hwd : ∀ (φ : LCRing K Ω k) (θ : Ω), DependsOn K Ω k θ φ → lev g₀ gs θ φ = lev g₀ gs (θf φ) φ`. Introduce `φ θ hθ`. Take `⟨η, h1, h2⟩` from `lem_ref K Ω θ (θf φ)`. Rewrite using `[lem_indep K Ω B k g₀ gs hgs θ η φ h1 hθ, lem_indep K Ω B k g₀ gs hgs (θf φ) η φ h2 (hθf φ)]`. Establish `hcommon : ∀ φ ψ : LCRing K Ω k, ∃ η, DependsOn K Ω k η φ ∧ DependsOn K Ω k η ψ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `φ ψ`. Take `⟨η, h1, h2⟩` from `lem_ref K Ω (θf φ) (θf ψ)`. Conclude with `⟨η, lem_mono K Ω k _ η φ h1 (hθf φ), lem_mono K Ω k _ η ψ h2 (hθf ψ)⟩`. Establish `hdmul : ∀ η (φ ψ : LCRing K Ω k), DependsOn K Ω k η φ → DependsOn K Ω k η ψ → DependsOn K Ω k η (φ * ψ)`. Introduce `η φ ψ h1 h2 x x' h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [LocallyConstant.coe_mul, Pi.mul_apply, h1 x x' h, h2 x x' h]`. Establish `hdadd : ∀ η (φ ψ : LCRing K Ω k), DependsOn K Ω k η φ → DependsOn K Ω k η ψ → DependsOn K Ω k η (φ + ψ)`. Introduce `η φ ψ h1 h2 x x' h`. Simplify using `only [LocallyConstant.coe_add, Pi.add_apply, h1 x x' h, h2 x x' h]`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : ∃ u : LCRing K Ω k →+* B, ∀ φ, u φ = lev g₀ gs (θf φ) φ := by`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨{ toFun := fun φ => lev g₀ gs (θf φ) φ, map_one' := ?_, map_mul' := ?_, map_zero' := ?_, map_add' := ?_ }, fun _ => rfl⟩` and prove the remaining obligations. Take `⟨v, hv⟩` from `lem_hom K Ω B k g₀ gs hgs (θf 1) show lev g₀ gs (θf 1) 1 = 1`. Rewrite using `[← hv, map_one]`. Introduce `φ ψ`. Take `⟨η, h1, h2⟩` from `hcommon φ ψ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv⟩` from `lem_hom K Ω B k g₀ gs hgs η`. Use `show lev g₀ gs (θf (φ * ψ)) (φ * ψ) = lev g₀ gs (θf φ) φ * lev g₀ gs (θf ψ) ψ`. Rewrite using `[← hwd _ η (hdmul η φ ψ h1 h2), ← hwd φ η h1, ← hwd ψ η h2, ← hv, ← hv, ← hv, map_mul]`. Take `⟨v, hv⟩` from `lem_hom K Ω B k g₀ gs hgs (θf 0) show lev g₀ gs (θf 0) 0 = 0`. Rewrite using `[← hv, map_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `φ ψ`. Take `⟨η, h1, h2⟩` from `hcommon φ ψ`. Take `⟨v, hv⟩` from `lem_hom K Ω B k g₀ gs hgs η`. Use `show lev g₀ gs (θf (φ + ψ)) (φ + ψ) = lev g₀ gs (θf φ) φ + lev g₀ gs (θf ψ) ψ`. Rewrite using `[← hwd _ η (hdadd η φ ψ h1 h2), ← hwd φ η h1, ← hwd ψ η h2, ← hv, ← hv, ← hv, map_add]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. By extensionality, compare the relevant components.
 
-Establish `hlegs : ∀ i, u.comp (legHom K Ω k i) = g i`. Introduce `i`. Consider the cases of `i using Fin.cases with`. Consider the case `zero`. Use extensionality with `x`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[RingHom.comp_apply, hu, (lem_legs K Ω B k g₀ gs hgs).1]`. Consider the case `succ j`. Use extensionality with `x`. Establish `hdep : DependsOn K Ω k x (legHom K Ω k j.succ x)`. Introduce `y y' h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [legHom, Fin.cases_succ, coord_apply]`. Conclude with `h j`. Rewrite using `[RingHom.comp_apply, hu, ← hwd _ x hdep, (lem_legs K Ω B k g₀ gs hgs).2 j x]`. Establish `hbase : u.comp (baseHom K Ω k) = c`. Use extensionality with `a`.
-
-Establish `e : baseHom K Ω k a = legHom K Ω k 0 (algebraMap K Ω a)` using `rfl`. Rewrite using `[RingHom.comp_apply, e, ← RingHom.comp_apply, hlegs 0]`. Conclude with `RingHom.congr_fun (hg 0) a`. Conclude with `⟨u, ⟨hbase, hlegs⟩, fun u' hu' => lem_uniq K Ω k B u' u (fun φ => lem_dep K Ω k φ) fun i => (hu'.2 i).trans (hlegs i).symm⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lcRing_universal : ∀ (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω] [IsSepClosure K Ω] (k : ℕ) (B : Type) [CommRing B] (g : Fin (k + 1) → (Ω →+* B)) (c : K →+* B), (∀ i, (g i).comp (algebraMap K Ω) = c) → ∃! u : GlobalTheory.EtC.GalSec.LCRing K Ω k →+* B, u.comp (GlobalTheory.EtC.GalSec.baseHom K Ω k) = c ∧ ∀ i, u.comp (GlobalTheory.EtC.GalSec.legHom K Ω k i) = g i := by
   intro K Ω _ _ _ _ k B _ g c hg

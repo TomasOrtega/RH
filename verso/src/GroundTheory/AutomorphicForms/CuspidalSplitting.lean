@@ -16,9 +16,9 @@ variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchi
   {n : ℕ}
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `MeasureTheory.Measure.modularCharacterFun g = 1`. Use `borelize H`. Rewrite using `[MeasureTheory.Measure.modularCharacterFun_eq_haarScalarFactor MeasureTheory.Measure.haar g]`. Establish `hcomm : (fun x : H => x * g) = (fun x => g * x)`. Use function extensionality and compare the values at `fun x => Subgroup.mem_center_iff.1 hg x`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `key : MeasureTheory.Measure.map (fun x : H => x * g) (MeasureTheory.Measure.haar : MeasureTheory.Measure H) = MeasureTheory.Measure.haar`. Rewrite using `[hcomm]`. Conclude with `MeasureTheory.map_mul_left_eq_self _ g`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem modularCharacter_eq_one_of_mem_center {H : Type*} [TopologicalSpace H] [Group H]
     [IsTopologicalGroup H] [LocallyCompactSpace H] {g : H} (hg : g ∈ Subgroup.center H) :
@@ -45,9 +45,9 @@ theorem modularCharacter_eq_one_of_mem_center {H : Type*} [TopologicalSpace H] [
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 
 /- English proof (translation)
-Introduce `z hz`. Take `⟨a, ha⟩` from `Matrix.GeneralLinearGroup.mem_center_iff_val_mem_range_scalar.1 hz`. Rewrite using `[mem_levi]`. Introduce `i j hij`. Establish `hij' : i ≠ j` using `fun h => hij (h ▸ rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(z : Matrix (Fin n) (Fin n) F) i j = 0`. Rewrite using `[← ha, Matrix.scalar_apply, Matrix.diagonal_apply_ne _ hij']`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem center_le_levi {α : Type*} [LinearOrder α] (β : Fin n → α) :
     Subgroup.center (GL (Fin n) F) ≤ levi F n β := by
@@ -60,7 +60,7 @@ theorem center_le_levi {α : Type*} [LinearOrder α] (β : Fin n → α) :
   rw [← ha, Matrix.scalar_apply, Matrix.diagonal_apply_ne _ hij']
 
 /- English proof (translation)
-Establish `hc : (⟨z, levi_le_blockUpper (center_le_levi β hz)⟩ : blockUpper F n β) ∈ Subgroup.center (blockUpper F n β)` using `Subgroup.mem_center_iff.2 fun p => Subtype.ext (Subgroup.mem_center_iff.1 hz p)`. Express the relevant statement in the definitionally equal form `((NNReal.sqrt (MeasureTheory.Measure.modularCharacter _) : ℝ) : ℂ) = 1`. Rewrite using `[modularCharacter_eq_one_of_mem_center hc]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sqrtModular_of_mem_center {α : Type*} [LinearOrder α] {β : Fin n → α}
     {z : GL (Fin n) F} (hz : z ∈ Subgroup.center (GL (Fin n) F)) :
@@ -73,9 +73,9 @@ theorem sqrtModular_of_mem_center {α : Type*} [LinearOrder α] {β : Fin n → 
   simp
 
 /- English proof (translation)
-Introduce `z hz f`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Establish `hf` using `((mem_parabolicIndSpace τ).1 f.2).1 ⟨z, levi_le_blockUpper (center_le_levi β hz)⟩ x`. Express the relevant statement in the definitionally equal form `(f : GL (Fin n) F → W) (x * z) = ω z • (f : GL (Fin n) F → W) x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Subgroup.mem_center_iff.1 hz x]`. Express the relevant statement in the definitionally equal form `(f : GL (Fin n) F → W) (z * x) = _ at hf`. Rewrite using `[hf, sqrtModular_of_mem_center hz, one_smul, leviProj_of_mem_levi (center_le_levi β hz), hτ z hz]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem hasCentralChar_parabolicInd {α : Type*} [LinearOrder α] {β : Fin n → α}
     {W : Type*} [AddCommGroup W] [Module ℂ W] {τ : Representation ℂ (levi F n β) W}
@@ -96,13 +96,13 @@ theorem hasCentralChar_parabolicInd {α : Type*} [LinearOrder α] {β : Fin n �
 variable {V : Type*} [AddCommGroup V] [Module ℂ V] {π : Representation ℂ (GL (Fin n) F) V}
 
 /- English proof (translation)
-Introduce `hp`. Take `⟨u₀, hu₀⟩` from `exists_ne_zero_of_isIrreducible (ρ := π)`. Establish `hωπ : HasCentralChar π ω`. Introduce `z hz x`. Take `⟨a, rfl⟩` from `hp x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Representation.IntertwiningMap.isIntertwining, (hωτ.toRepresentation A) z hz a, map_smul]`. Take `⟨s, hs⟩` from `exists_lift_of_isSupercuspidal hπ hsc hωπ (isSmooth_toRepresentation (isSmooth_parabolicInd τ) A) (hωτ.toRepresentation A) p hp (Representation.IntertwiningMap.id π)`. Set `Φ` to `(subrepIncl A).comp s`. Establish `hJ` using `hsc β hβ`. Establish `h0 : frobeniusParabolic F n β τ hπ Φ = 0` using `Representation.IntertwiningMap.ext (LinearMap.ext fun x => by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Subsingleton.elim x 0, map_zero]`. Use the proof step `rfl)`. Establish `hΦ : Φ = 0` using `(frobeniusParabolic F n β τ hπ).injective (h0.trans (map_zero _).symm)`. Establish `h1 : p (s u₀) = u₀` using `congrArg (fun φ : Representation.IntertwiningMap π π => φ u₀) hs`. Establish `h2 : s u₀ = 0` using `Subtype.ext (congrArg (fun φ : Representation.IntertwiningMap π (parabolicInd F n β τ) => φ u₀) hΦ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h2, map_zero]`. Conclude with `hu₀ h1.symm`.
+A detailed English derivation is pending.
 -/
 theorem not_surjective_of_le_parabolicInd [π.IsIrreducible] (hπ : IsSmooth π)
     (hsc : IsSupercuspidal π) {β : Fin n → ℕ} (hβ : ∃ i j, β i ≠ β j) {W : Type*}
@@ -134,9 +134,7 @@ theorem not_surjective_of_le_parabolicInd [π.IsIrreducible] (hπ : IsSmooth π)
   exact hu₀ h1.symm
 
 /- English proof (translation)
-Establish `hc : ∀ z (hz : z ∈ Subgroup.center (GL (Fin n) F)), ∃ c : ℂ, ∀ w, τ ⟨z, center_le_levi β hz⟩ w = c • w` using `fun z hz => exists_central_character hτ (Subgroup.mem_center_iff.2 fun m => Subtype.ext (Subgroup.mem_center_iff.1 hz m))`. Set `ω : GL (Fin n) F → ℂ` to `fun z => if hz : z ∈ Subgroup.center (GL (Fin n) F) then (hc z hz).choose else 0`. Establish `hωτ : ∀ z (hz : z ∈ Subgroup.center (GL (Fin n) F)), ∀ w, τ ⟨z, center_le_levi β hz⟩ w = ω z • w` using `fun z hz w => by`. Simplify using `only [ω, dif_pos hz]`. Conclude with `(hc z hz).choose_spec w`.
-
-Conclude with `not_surjective_of_le_parabolicInd hπ hsc hβ (hasCentralChar_parabolicInd hωτ) A p`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem not_surjective_of_isIrreducible [π.IsIrreducible] (hπ : IsSmooth π)
     (hsc : IsSupercuspidal π) {β : Fin n → ℕ} (hβ : ∃ i j, β i ≠ β j) {W : Type*}

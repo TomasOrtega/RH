@@ -10,7 +10,7 @@ open GlobalTheory.CompanionTheory.UnfoldingAlt
 open scoped NumberField.AdeleRing ENNReal
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.UnfoldingAlt.TiDeriv.EA_comp_ti` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FLieActionCompTransposeInv.lean&line=75#L75)
 -/

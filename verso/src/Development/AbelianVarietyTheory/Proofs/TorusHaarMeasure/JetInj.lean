@@ -12,7 +12,7 @@ open scoped ContDiff ENNReal Matrix
 namespace GlobalTheory.UpTie
 
 /- English proof (translation)
-Introduce `E _ _ _ r X Xa Fl f hf hV`. Establish `hb : X.IsBddSec (Xa.Fp + Xa.T • Xa.L) f` using `hf.1`. Conclude with `GlobalTheory.HighOrderVanishing.eq_zero E r X Xa Fl f hb (GlobalTheory.isBigO_of_vanS E r X Xa Fl _ f hb.1.1 hV)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem jetInj : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r)
     (Xa : ArchInM X) (Fl : FlatM X Xa), JetInj X Xa Fl := by

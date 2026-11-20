@@ -13,7 +13,7 @@ variable (K L Ω : Type*) [Field K] [Field L] [Field Ω] [Algebra K L] [Algebra 
   [FiniteDimensional K L] [Algebra.IsSeparable K L]
 
 /- English proof (translation)
-The claim follows from `Fintype.ofFinite _ algebraMap K Ω (Algebra.norm K x) = ∏ τ : L →ₐ[K] Ω, τ x := by classical let _ : Fintype (L →ₐ[K] Ω) := Fintype.ofFinite _ let ι : Ω →ₐ[K] AlgebraicClosure Ω := IsScalarTower.toAlgHom K Ω (AlgebraicClosure Ω) let c : (L →ₐ[K] Ω) → (L →ₐ[K] AlgebraicClosure Ω) : …`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_norm_eq_prod_embeddings_of_splits
     (hL : ∀ x : L, ((minpoly K x).map (algebraMap K Ω)).Splits) (x : L) :
@@ -57,7 +57,7 @@ theorem coe_fixingOpenSubgroup (L : IntermediateField K Ω) [FiniteDimensional K
 variable [IsGalois K Ω]
 
 /- English proof (translation)
-The claim follows from `InfiniteGalois.fixingSubgroup_fixedField (⟨(U : Subgroup G), U.isClosed⟩ : ClosedSubgroup G)`.
+A detailed English derivation is pending.
 -/
 theorem fixingSubgroup_fixedField_openSubgroup (U : OpenSubgroup G) :
     (fixedField (U : Subgroup G)).fixingSubgroup = U :=
@@ -70,14 +70,14 @@ instance finiteDimensional_fixedField_openSubgroup (U : OpenSubgroup G) :
     exact U.isOpen)
 
 /- English proof (translation)
-The claim follows from `InfiniteGalois.fixedField_fixingSubgroup L`.
+A detailed English derivation is pending.
 -/
 theorem fixedField_fixingOpenSubgroup (L : IntermediateField K Ω) [FiniteDimensional K L] :
     fixedField (fixingOpenSubgroup L : Subgroup G) = L :=
   InfiniteGalois.fixedField_fixingSubgroup L
 
 /- English proof (translation)
-The claim follows from `OpenSubgroup.ext fun σ => by rw [← OpenSubgroup.mem_toSubgroup, coe_fixingOpenSubgroup, fixingSubgroup_fixedField_openSubgroup] rfl`.
+A detailed English derivation is pending.
 -/
 theorem fixingOpenSubgroup_fixedField (U : OpenSubgroup G) :
     fixingOpenSubgroup (fixedField (U : Subgroup G)) = U :=
@@ -87,9 +87,7 @@ theorem fixingOpenSubgroup_fixedField (U : OpenSubgroup G) :
     rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← InfiniteGalois.fixedField_fixingSubgroup L, ← InfiniteGalois.fixedField_fixingSubgroup L']`. Conclude with `IntermediateField.fixedField_antitone h`. Introduce `h`.
-
-Conclude with `IntermediateField.fixingSubgroup_antitone h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fixingSubgroup_le_fixingSubgroup_iff {L L' : IntermediateField K Ω} :
     L.fixingSubgroup ≤ L'.fixingSubgroup ↔ L' ≤ L := by
@@ -101,7 +99,7 @@ theorem fixingSubgroup_le_fixingSubgroup_iff {L L' : IntermediateField K Ω} :
     exact IntermediateField.fixingSubgroup_antitone h
 
 /- English proof (translation)
-Use `conv_lhs => rw [← InfiniteGalois.fixedField_fixingSubgroup L]`. Rewrite using `[IntermediateField.mem_fixedField_iff]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_iff_forall_fixingSubgroup (L : IntermediateField K Ω) (x : Ω) :
     x ∈ L ↔ ∀ σ ∈ L.fixingSubgroup, σ x = x := by
@@ -119,7 +117,7 @@ local notation "G" => Ω ≃ₐ[K] Ω
 omit [IsGalois K Ω] in
 
 /- English proof (translation)
-Rewrite using `[mem_fixedModule]`. Use `forall₂_congr fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.ext_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_fixedModule_units_iff' (H : Subgroup G) (a : Ωˣ) :
     a ∈ fixedModule Ωˣ H ↔ ∀ σ ∈ H, σ (a : Ω) = a := by
@@ -168,7 +166,7 @@ theorem coe_unitsEquivOfForall_symm {k : Type*} [Field k] [Algebra k Ω] (H : Su
   rfl
 
 /- English proof (translation)
-Rewrite using `[mem_iff_forall_fixingSubgroup, mem_fixedModule]`. Use `forall₂_congr fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.ext_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_fixedModule_units_iff (L : IntermediateField K Ω) (a : Ωˣ) :
     a ∈ fixedModule Ωˣ L.fixingSubgroup ↔ (a : Ω) ∈ L := by
@@ -182,7 +180,7 @@ def fixedModuleUnitsEquiv (L : IntermediateField K Ω) : fixedModule Ωˣ L.fixi
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem coe_fixedModuleUnitsEquiv (L : IntermediateField K Ω)
     (a : fixedModule Ωˣ L.fixingSubgroup) :
@@ -205,7 +203,7 @@ noncomputable def baseUnitsEquiv : fixedModule Ωˣ (⊤ : Subgroup G) ≃* Kˣ 
 
 omit [IsGalois K Ω] in
 /- English proof (translation)
-Use `conv_rhs => rw [← (IntermediateField.botEquiv K Ω).symm_apply_apply y]`. Rewrite using `[IntermediateField.botEquiv_symm]`. Both sides reduce to the same expression. Use the proof step `@[simp]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem algebraMap_botEquiv (y : (⊥ : IntermediateField K Ω)) :
     algebraMap K Ω (IntermediateField.botEquiv K Ω y) = (y : Ω) := by
@@ -215,7 +213,7 @@ theorem algebraMap_botEquiv (y : (⊥ : IntermediateField K Ω)) :
 
 @[simp]
 /- English proof (translation)
-Simplify using `only [baseUnitsEquiv, MulEquiv.trans_apply, Units.coe_mapEquiv]`. Conclude with `algebraMap_botEquiv _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem algebraMap_baseUnitsEquiv (a : fixedModule Ωˣ (⊤ : Subgroup G)) :
     algebraMap K Ω (baseUnitsEquiv a : Kˣ) = ((a : Ωˣ) : Ω) := by
@@ -223,7 +221,7 @@ theorem algebraMap_baseUnitsEquiv (a : fixedModule Ωˣ (⊤ : Subgroup G)) :
   exact algebraMap_botEquiv _
 
 /- English proof (translation)
-Rewrite using `[isDiscreteModule_iff]`. Introduce `a`. Establish `: FiniteDimensional K (IntermediateField.adjoin K {(a : Ω)})` using `IntermediateField.adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral _)`. Conclude with `⟨fixingOpenSubgroup (IntermediateField.adjoin K {(a : Ω)}), (mem_fixedModule_units_iff _ a).2 (IntermediateField.subset_adjoin K _ rfl)⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isDiscreteModule_units : IsDiscreteModule G Ωˣ := by
   rw [isDiscreteModule_iff]
@@ -257,9 +255,9 @@ theorem restrictEmbedding_apply (σ : G) (x : L) : restrictEmbedding L σ x = σ
 omit [IsGalois K Ω] in
 
 /- English proof (translation)
-Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx`. Establish `h' : σ x = τ x` using `AlgHom.congr_fun h ⟨x, hx⟩`. Rewrite using `[AlgEquiv.mul_apply, ← h', AlgEquiv.aut_inv, AlgEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Use extensionality with `x`. Establish `h'` using `h x x.2`. Rewrite `h'` using `[AlgEquiv.mul_apply, AlgEquiv.aut_inv, AlgEquiv.symm_apply_eq]`. Conclude with `h'.symm`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restrictEmbedding_eq_iff (σ τ : G) :
     restrictEmbedding L σ = restrictEmbedding L τ ↔ σ⁻¹ * τ ∈ L.fixingSubgroup := by
@@ -275,9 +273,9 @@ theorem restrictEmbedding_eq_iff (σ τ : G) :
     exact h'.symm
 
 /- English proof (translation)
-Introduce `τ`. Set `σ₀ : Ω →ₐ[K] Ω` to `τ.liftNormal Ω`. Use `⟨AlgEquiv.ofBijective σ₀ (Algebra.IsAlgebraic.algHom_bijective σ₀), ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Simplify using `only [restrictEmbedding_apply, AlgEquiv.coe_ofBijective]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `τ.liftNormal_commutes Ω x`.
+A detailed English derivation is pending.
 -/
 theorem restrictEmbedding_surjective : Function.Surjective (restrictEmbedding L) := by
   intro τ
@@ -317,9 +315,9 @@ theorem cosetEmbeddingEquiv_mk (σ : (⊤ : Subgroup G)) :
 variable [FiniteDimensional K L]
 
 /- English proof (translation)
-Establish `: Algebra.IsSeparable K L` using `Algebra.isSeparable_tower_bot_of_isSeparable K L Ω`. Set `_` to `Fintype.ofFinite ((⊤ : Subgroup G) ⧸ L.fixingSubgroup.subgroupOf ⊤)`. Set `_ : Fintype (L →ₐ[K] Ω)` to `Fintype.ofFinite _`. Establish `hsplit : ∀ x : L, ((minpoly K x).map (algebraMap K Ω)).Splits` using `fun x => by`. Rewrite using `[← minpoly.algebraMap_eq (algebraMap L Ω).injective x]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Normal.splits inferInstance _`. Rewrite using `[algebraMap_norm_eq_prod_embeddings_of_splits K L Ω hsplit, coe_norm, finprod_eq_prod_of_fintype, Units.coe_prod]`. Use `Fintype.prod_equiv (cosetEmbeddingEquiv L) _ _ fun q => ?_` and prove the remaining obligations. Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H σ => rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem coe_norm_top [(L.fixingSubgroup.subgroupOf ⊤).FiniteIndex]
     (a : fixedModule Ωˣ L.fixingSubgroup) :
@@ -339,7 +337,7 @@ theorem coe_norm_top [(L.fixingSubgroup.subgroupOf ⊤).FiniteIndex]
   | H σ => rfl
 
 /- English proof (translation)
-Use `ext`. Apply `(algebraMap K Ω).injective` to reduce the goal to its premises. Rewrite using `[algebraMap_baseUnitsEquiv, coe_norm_top, coe_normUnits]`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem baseUnitsEquiv_norm [(L.fixingSubgroup.subgroupOf ⊤).FiniteIndex]
     (a : fixedModule Ωˣ L.fixingSubgroup) :
@@ -360,13 +358,13 @@ variable (K' L' : Subgroup (Ω ≃ₐ[K] Ω)) {E F : IntermediateField K Ω} (hE
 include hK hL in
 
 /- English proof (translation)
-Substitute `hK hL` using the available equality. Use `IntermediateField.normal_iff_forall_map_le'.2 fun σ' => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `replace hx : ∀ τ ∈ F.fixingSubgroup, τ x = x := (mem_iff_forall_fixingSubgroup F x).1 hx`. Use `show σ' x ∈ F`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[mem_iff_forall_fixingSubgroup]`. Set `σ : E.fixingSubgroup` to `(IntermediateField.fixingSubgroupEquiv E).symm σ'`. Establish `hσ : ∀ y, (σ : Ω ≃ₐ[K] Ω) y = σ' y` using `fun _ => rfl`. Introduce `τ hτ`. Establish `hc : (σ : Ω ≃ₐ[K] Ω)⁻¹ * τ * σ ∈ F.fixingSubgroup`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτE : τ ∈ E.fixingSubgroup` using `IntermediateField.fixingSubgroup_antitone hEF hτ`. Use `(inferInstance : (F.fixingSubgroup.subgroupOf E.fixingSubgroup).Normal).conj_mem ⟨τ, hτE⟩ (by simpa [Subgroup.mem_subgroupOf] using hτ) σ⁻¹` as an intermediate fact. Simplify `this` using `[Subgroup.mem_subgroupOf, mul_assoc]`. Establish `h1` using `hx _ hc`. Simplify using `only [AlgEquiv.mul_apply] at h1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `τ (σ' x) = σ' x`. Establish `h2` using `congrArg (σ : Ω ≃ₐ[K] Ω) h1`. Rewrite `h2` using `[AlgEquiv.aut_inv, AlgEquiv.apply_symm_apply]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem normal_extendScalars [(L'.subgroupOf K').Normal] :
     Normal E (extendScalars hEF) := by
@@ -397,7 +395,7 @@ instance isSeparable_extendScalars : Algebra.IsSeparable E (extendScalars hEF) :
 omit [IsGalois K Ω] in
 
 /- English proof (translation)
-The claim follows from `have : FiniteDimensional K (extendScalars hEF) := inferInstanceAs (FiniteDimensional K F) Module.Finite.of_restrictScalars_finite K E (extendScalars hEF)`.
+A detailed English derivation is pending.
 -/
 theorem finiteDimensional_extendScalars [FiniteDimensional K F] :
     FiniteDimensional E (extendScalars hEF) :=
@@ -406,7 +404,7 @@ theorem finiteDimensional_extendScalars [FiniteDimensional K F] :
 
 include hL in
 /- English proof (translation)
-Rewrite using `[IntermediateField.mem_extendScalars, mem_iff_forall_fixingSubgroup, hL]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_extendScalars_iff_forall (x : Ω) : x ∈ extendScalars hEF ↔ ∀ σ ∈ L', σ x = x := by
   rw [IntermediateField.mem_extendScalars, mem_iff_forall_fixingSubgroup, hL]
@@ -420,7 +418,7 @@ noncomputable def restrictHom : K' →* (extendScalars hEF ≃ₐ[E] extendScala
 
 omit [IsGalois K Ω] in
 /- English proof (translation)
-The claim follows from `AlgEquiv.restrictNormal_commutes _ _ x`.
+A detailed English derivation is pending.
 -/
 theorem coe_restrictHom_apply (σ : K') (x : extendScalars hEF) :
     ((restrictHom K' hEF hK σ x : extendScalars hEF) : Ω) = (σ : Ω ≃ₐ[K] Ω) x :=
@@ -429,9 +427,9 @@ theorem coe_restrictHom_apply (σ : K') (x : extendScalars hEF) :
 omit [IsGalois K Ω] in
 include hL in
 /- English proof (translation)
-Use extensionality with `σ`. Rewrite using `[MonoidHom.mem_ker, Subgroup.mem_subgroupOf, ← hL, IntermediateField.mem_fixingSubgroup_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx`. Use `congrArg (fun τ : (extendScalars hEF ≃ₐ[E] extendScalars hEF) => ((τ ⟨x, hx⟩ : extendScalars hEF) : Ω)) h` as an intermediate fact.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `[coe_restrictHom_apply]`. Introduce `h`. Use extensionality with `x`. Rewrite using `[coe_restrictHom_apply]`. Conclude with `h x x.2`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_restrictHom : (restrictHom K' hEF hK).ker = L'.subgroupOf K' := by
   ext σ
@@ -448,7 +446,7 @@ theorem ker_restrictHom : (restrictHom K' hEF hK).ker = L'.subgroupOf K' := by
     exact h x x.2
 
 /- English proof (translation)
-Establish `: Normal E Ω` using `Normal.tower_top_of_normal K E Ω`. Use `(AlgEquiv.restrictNormalHom_surjective (F := E) (K₁ := extendScalars hEF) (E := Ω)).comp ?_` and prove the remaining obligations. Conclude with `(IntermediateField.fixingSubgroupEquiv E).surjective.comp (MulEquiv.subgroupCongr hK.symm).surjective`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem restrictHom_surjective : Function.Surjective (restrictHom K' hEF hK) := by
   have : Normal E Ω := Normal.tower_top_of_normal K E Ω
@@ -490,7 +488,7 @@ variable (K' L' : Subgroup (Ω ≃ₐ[K] Ω)) {E F : IntermediateField K Ω} (hE
 
 include hK in
 /- English proof (translation)
-Rewrite using `[mem_iff_forall_fixingSubgroup, hK]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_iff_forall_of_fixingSubgroup_eq (x : Ω) : x ∈ E ↔ ∀ σ ∈ K', σ x = x := by
   rw [mem_iff_forall_fixingSubgroup, hK]
@@ -511,9 +509,9 @@ theorem restrictEmbeddingRel_apply (σ : K') (x : extendScalars hEF) :
 omit [IsGalois K Ω] in
 include hL in
 /- English proof (translation)
-Rewrite using `[Subgroup.mem_subgroupOf, ← hL, IntermediateField.mem_fixingSubgroup_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx`. Establish `h' : (σ : Ω ≃ₐ[K] Ω) x = (τ : Ω ≃ₐ[K] Ω) x` using `AlgHom.congr_fun h ⟨x, hx⟩`. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv, AlgEquiv.mul_apply, ← h', AlgEquiv.aut_inv, AlgEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Use extensionality with `x`. Establish `h'` using `h x x.2`. Rewrite `h'` using `[Subgroup.coe_mul, Subgroup.coe_inv, AlgEquiv.mul_apply, AlgEquiv.aut_inv, AlgEquiv.symm_apply_eq]`. Conclude with `h'.symm`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restrictEmbeddingRel_eq_iff (σ τ : K') :
     restrictEmbeddingRel K' hEF hK σ = restrictEmbeddingRel K' hEF hK τ ↔
@@ -532,9 +530,9 @@ theorem restrictEmbeddingRel_eq_iff (σ τ : K') :
     exact h'.symm
 
 /- English proof (translation)
-Introduce `τ`. Establish `: Normal E Ω` using `Normal.tower_top_of_normal K E Ω`. Establish `: Algebra.IsAlgebraic E Ω` using `Algebra.IsAlgebraic.tower_top (K := K) E`. Set `σ₀ : Ω →ₐ[E] Ω` to `τ.liftNormal Ω`. Set `σ' : Ω ≃ₐ[E] Ω` to `AlgEquiv.ofBijective σ₀ (Algebra.IsAlgebraic.algHom_bijective σ₀)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `σ : E.fixingSubgroup` to `(IntermediateField.fixingSubgroupEquiv E).symm σ'`. Use `⟨⟨σ, hK ▸ σ.2⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Conclude with `τ.liftNormal_commutes Ω x`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem restrictEmbeddingRel_surjective : Function.Surjective (restrictEmbeddingRel K' hEF hK) := by
   intro τ
@@ -564,11 +562,11 @@ noncomputable def cosetEmbeddingEquivRel : K' ⧸ L'.subgroupOf K' ≃ (extendSc
 include hK in
 
 /- English proof (translation)
-Use `finiteDimensional_extendScalars hEF` as an intermediate fact. Establish `: Normal E Ω` using `Normal.tower_top_of_normal K E Ω`. Set `_` to `Fintype.ofFinite (K' ⧸ L'.subgroupOf K')`. Set `_ : Fintype (extendScalars hEF →ₐ[E] Ω)` to `Fintype.ofFinite _`. Establish `hsplit : ∀ x : extendScalars hEF, ((minpoly E x).map (algebraMap E Ω)).Splits` using `fun x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← minpoly.algebraMap_eq (algebraMap (extendScalars hEF) Ω).injective x]`. Conclude with `Normal.splits inferInstance _`. Rewrite using `[algebraMap_norm_eq_prod_embeddings_of_splits E (extendScalars hEF) Ω hsplit, coe_norm, finprod_eq_prod_of_fintype, Units.coe_prod]`. Use `Fintype.prod_equiv (cosetEmbeddingEquivRel K' L' hEF hK hL) _ _ fun q => ?_` and prove the remaining obligations. Proceed by induction on `q using QuotientGroup.induction_on with`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Consider the case `H σ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem coe_norm_eq_algebraMap_norm [FiniteDimensional K F] [(L'.subgroupOf K').FiniteIndex]
     (a : fixedModule Ωˣ L') :
@@ -591,7 +589,7 @@ theorem coe_norm_eq_algebraMap_norm [FiniteDimensional K F] [(L'.subgroupOf K').
   | H σ => rfl
 
 /- English proof (translation)
-Use `ext`. Express the relevant statement in the definitionally equal form `_ = algebraMap E Ω ((normUnits E (extendScalars hEF) _ : Eˣ) : E)`. Rewrite using `[coe_normUnits, ← coe_norm_eq_algebraMap_norm K' L' hEF hK hL a]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem unitsEquivOfForall_norm [FiniteDimensional K F] [(L'.subgroupOf K').FiniteIndex]
     (a : fixedModule Ωˣ L') :

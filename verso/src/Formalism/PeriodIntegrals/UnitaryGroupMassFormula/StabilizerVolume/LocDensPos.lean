@@ -14,33 +14,27 @@ open scoped TensorProduct ENNReal
 namespace LocPosW
 
 /- English proof (translation)
-Use `set g : X → ℝ := fun b => ∫ v, φ v ∂(fib b) with hg`. Take `⟨hint, hcont⟩` from `hfib.2.2 φ hφc hφs hφU`. Establish `hgc : ContinuousAt g b0` using `(hcont b0 (mem_univ _)).continuousAt univ_mem`. Assume the negation of the conclusion as `hneg`. Use `push Not at hneg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set η := δ * c.toReal with hηdef`. Establish `hη : 0 < η` using `mul_pos hδ (ENNReal.toReal_pos hc.ne' hc')`. Take `⟨N', hN', hN'fin⟩` from `hνfin`. Establish `hev : ∀ᶠ b in 𝓝 b0, g b < η` using `hgc.eventually (Iio_mem_nhds (lt_of_le_of_lt hneg hη))`. Take `⟨O, hOsub, hOo, hbO⟩` from `mem_nhds_iff.1 (inter_mem (inter_mem hN hN') hev)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hOm : MeasurableSet O` using `hOo.measurableSet`. Establish `hOpos : ν O ≠ 0` using `hνpos O hOo ⟨b0, hbO⟩`. Establish `hOfin : ν O ≠ ⊤` using `ne_top_of_le_ne_top hN'fin.ne (measure_mono fun b hb => (hOsub hb).1.2)`. Establish `hfO : f ⁻¹' (ι '' O) = f' ⁻¹' O`. Use extensionality with `v`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [mem_preimage, mem_image, hff, hι.eq_iff, exists_eq_right]`. Set `ψ : V → ℝ≥0∞` to `(f ⁻¹' (ι '' O)).indicator (fun v => ENNReal.ofReal (φ v))`. Establish `hψm : Measurable ψ`. Use `Measurable.indicator (ENNReal.measurable_ofReal.comp hφc.measurable) ?_` and prove the remaining obligations. Rewrite using `[hfO]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hf'.measurable hOm`. Establish `hdis` using `hfib.2.1 ψ hψm`. Establish `hin : ∀ b, ∫⁻ v, ψ v ∂(fib b) = O.indicator (fun b => ENNReal.ofReal (g b)) b`. Introduce `b`. Establish `hnull` using `hfib.1 b`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hb : b ∈ O`. Rewrite using `[indicator_of_mem hb]`. Establish `hae : ψ =ᵐ[fib b] fun v => ENNReal.ofReal (φ v)`. Use `ae_iff.2 (measure_mono_null (fun v hv => ?_) hnull)` and prove the remaining obligations. Introduce `hvin`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `hv` to reduce the goal to its premises. Establish `h1 : f v = ι b` using `hvin.1`. Establish `h2 : f' v = b` using `hι (by rw [← hff]; exact h1)`. Establish `h3 : v ∈ f ⁻¹' (ι '' O)` using `by rw [hfO]; show f' v ∈ O; rw [h2]; exact hb`. Conclude with `indicator_of_mem h3 _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[lintegral_congr_ae hae, ← ofReal_integral_eq_lintegral_ofReal (hint b (mem_univ b)) (ae_of_all _ hφ0)]`. Rewrite using `[indicator_of_notMem hb]`. Establish `hae : ψ =ᵐ[fib b] 0`. Use `ae_iff.2 (measure_mono_null (fun v hv => ?_) hnull)` and prove the remaining obligations. Introduce `hvin`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `hv` to reduce the goal to its premises. Establish `h1 : f v = ι b` using `hvin.1`. Establish `h2 : f' v = b` using `hι (by rw [← hff]; exact h1)`. Establish `h3 : v ∉ f ⁻¹' (ι '' O)` using `by rw [hfO]; show f' v ∉ O; rw [h2]; exact hb`. Conclude with `indicator_of_notMem h3 _`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses repeatedly using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[lintegral_congr_ae hae]`. Simplify using the standard rewrite rules. Rewrite `hdis` using `[hin]`. Rewrite `hdis` using `[lintegral_indicator hOm]`. Establish `hup : ∫⁻ b in O, ENNReal.ofReal (g b) ∂ν < ∫⁻ b in O, ENNReal.ofReal η ∂ν`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : ∫⁻ b in O, ENNReal.ofReal (g b) ∂ν ≤ ∫⁻ b in O, ENNReal.ofReal η ∂ν` using `setLIntegral_mono measurable_const fun b hb => ENNReal.ofReal_le_ofReal (hOsub hb).2.le`. Use `setLIntegral_strict_mono hOm hOpos measurable_const ?_ (ae_of_all _ fun b hb => ?_)` and prove the remaining obligations. Use `ne_top_of_le_ne_top ?_ hle` and prove the remaining obligations. Rewrite using `[setLIntegral_const]`. Conclude with `ENNReal.mul_ne_top ENNReal.ofReal_ne_top hOfin`.
-
-Conclude with `(ENNReal.ofReal_lt_ofReal_iff hη).2 (hOsub hb).2`. Rewrite `hup` using `[setLIntegral_const]`. Establish `hlow : ENNReal.ofReal η * ν O ≤ ∫⁻ v in U, ψ v ∂μ`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hηdef, ENNReal.ofReal_mul hδ.le, ENNReal.ofReal_toReal hc', mul_assoc]`.
-
-Use `_ ≤ ENNReal.ofReal δ * μ (f ⁻¹' (ι '' O) ∩ W) := mul_le_mul_right (hlb O (fun b hb => (hOsub hb).1.1) hOm) _`. Use `_ = ∫⁻ v in f ⁻¹' (ι '' O) ∩ W, ENNReal.ofReal δ ∂μ := (setLIntegral_const _ _).symm`. Use `_ ≤ ∫⁻ v in f ⁻¹' (ι '' O) ∩ W, ψ v ∂μ := setLIntegral_mono hψm fun v hv => by show ENNReal.ofReal δ ≤ (f ⁻¹' (ι '' O)).indicator (fun v => ENNReal.ofReal (φ v)) v`. Rewrite using `[indicator_of_mem hv.1]`. Conclude with `ENNReal.ofReal_le_ofReal (hWφ v hv.2)`.
-
-Use `_ ≤ ∫⁻ v in U, ψ v ∂μ := lintegral_mono_set (inter_subset_right.trans hWU)`. Rewrite `hlow` using `[hdis]`. Conclude with `lt_irrefl _ (hlow.trans_lt hup)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pos_of_lb {V X Y : Type} [TopologicalSpace V] [MeasurableSpace V] [BorelSpace V]
     [TopologicalSpace X] [MeasurableSpace X] [BorelSpace X]
@@ -129,7 +123,7 @@ theorem pos_of_lb {V X Y : Type} [TopologicalSpace V] [MeasurableSpace V] [Borel
   exact lt_irrefl _ (hlow.trans_lt hup)
 
 /- English proof (translation)
-Establish `hs : ∀ e : E, sigR R σ (inclR R e) = inclR R (σ e)` using `fun e => by`. Simplify using `[sigR, inclR, Algebra.TensorProduct.map_tmul]`. Use extensionality with `p q`. Simplify using `only [gramR, hR, gramE, hE, Formalism.UG.hform, Matrix.map_apply, ratTup, JR, map_sum, map_mul, hs]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem gramR_ratTup {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R]
     [Algebra F R] (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E)
@@ -154,17 +148,17 @@ def LBInf : Prop := InCtx fun F E _ _ _ _ _ σ M J a X0 hT =>
         c * νinf S ≤ μinf ((gramR (Ainf F) σ J) ⁻¹' (Subtype.val '' S) ∩ W)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ μinf hμ νinf hν fibInf hfib`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)`. Establish `hσ : ∀ x, σ (σ x) = x` using `sigma_invol σ hCM.2.2.2`. Use `hμ.1` as an intermediate fact. Use `hν.1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨t1, t2, t3, t4, t5, t6, t7⟩` from `(tensAll_holds F E σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet).1`. Establish `: BorelSpace (Ainf F ⊗[F] E)` using `⟨rfl⟩`. Establish `: BorelSpace (HermR (Ainf F) σ a)` using `⟨rfl⟩`. Establish `: LocallyCompactSpace (HermR (Ainf F) σ a)` using `t4.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `set X1 := ratTup (F := F) (Ainf F) X0 with hX1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX1U : X1 ∈ {X : Fin a → Fin M → Ainf F ⊗[F] E | LinearIndependent (Ainf F ⊗[F] E) X}` using `linIndep_of_isUnit_det (Ainf F) σ J X1 (by rw [gramR_ratTup]; exact isUnit_det_hermOf (Ainf F) σ _ hT hdet)`. Take `⟨K, hK, hxK, hKU⟩` from `exists_compact_subset t7 hX1U`. Take `⟨φ, hφ1, hφ0, hφc, hφr⟩` from `exists_continuous_one_zero_of_isCompact (isCompact_singleton (x := X1)) isOpen_interior.isClosed_compl (disjoint_singleton_left.2 fun h => h hxK)`. Establish `hsupp : Function.support φ ⊆ interior K` using `fun X hX => by`. Assume the negation of the conclusion as `h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hX (hφ0 h)`. Establish `hts : tsupport φ ⊆ {X : Fin a → Fin M → Ainf F ⊗[F] E | LinearIndependent (Ainf F ⊗[F] E) X}` using `(closure_mono hsupp).trans ((closure_minimal interior_subset hK.isClosed).trans hKU)`. Set `W : Set (Fin a → Fin M → Ainf F ⊗[F] E)` to `{X | (1 / 2 : ℝ) < φ X}`. Establish `hWo : IsOpen W` using `isOpen_lt continuous_const φ.continuous`. Establish `hX1W : X1 ∈ W` using `by show (1 / 2 : ℝ) < φ X1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Rewrite using `[hφ1 (mem_singleton X1)]`. Evaluate the numerical expressions. Establish `hWU : W ⊆ {X : Fin a → Fin M → Ainf F ⊗[F] E | LinearIndependent (Ainf F ⊗[F] E) X}` using `fun X hX => hts (subset_tsupport _ (lt_trans (by norm_num : (0 : ℝ) < 1 / 2) hX).ne')`. Take `⟨c, hc0, hctop, N, hN, hlb⟩` from `hL F E σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet μinf νinf hμ.1 hν.1 W hWo hX1W`. Establish `hpos` using `pos_of_lb (f' := gramH (Ainf F) σ hσ J hJ.1) Subtype.val_injective hfib (continuous_gramH (Ainf F) σ hσ J hJ.1) (fun _ => rfl) φ.continuous hφc hts (fun X => (hφr X).1) hWU (by norm_num : (0 : ℝ) < 1 / 2) (fun X hX => hX.le) hc0 hctop hN hlb (fun O hO hne => (hO.measure_pos νinf …`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun X => ((φ X : ℝ) : ℂ), Complex.continuous_ofReal.comp φ.continuous, hφc.comp_left Complex.ofReal_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_complex_ofReal]`. Conclude with `hpos.ne'` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem archPos_of_lb (hL : LBInf) : ArchPos := by
   intro F E _ _ _ _ _ σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ μinf hμ νinf hν fibInf hfib

@@ -12,13 +12,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open UpperTheory.Gal.TP.Sub
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, ← C_neg, X_add_C_scaleRoots, neg_mul, C_neg, ← sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem scaleRoots_X_sub_C' (a d : ℂ) : (X - C a : ℂ[X]).scaleRoots d = X - C (a * d) := by
   rw [sub_eq_add_neg, ← C_neg, X_add_C_scaleRoots, neg_mul, C_neg, ← sub_eq_add_neg]
 
 /- English proof (translation)
-Unfold `unrPol`. Proceed by induction on `S using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a S ih`. Simplify using `only [Multiset.map_cons, Multiset.prod_cons, mul_scaleRoots_of_noZeroDivisors, ih, scaleRoots_X_sub_C', mul_zpow]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 private theorem scaleRoots_unrPol (S : Multiset ℂ) (m : ℤ) (c : ℂ) :
     (unrPol S m).scaleRoots (c ^ (-m)) = unrPol (S.map (· * c)) m := by
@@ -30,25 +30,25 @@ private theorem scaleRoots_unrPol (S : Multiset ℂ) (m : ℤ) (c : ℂ) :
       scaleRoots_X_sub_C', mul_zpow]
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A w h x y`. Proceed by induction on `x using WD.ind with | _ n a => ?_`. Proceed by induction on `y using WD.ind with | _ m b => ?_`. Use `⟨?_, fun g => WD.charPol_lpSum _ _ g, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[WD.lpSum_mk, WD.unr_mk, WD.unr_mk]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Proceed by induction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Unfold `WDRep.Unr`. Simplify using `only [WDRep.sum]`. Introduce and unpack `⟨hN, hρ⟩`. Use `⟨?_, fun σ => ?_⟩` and prove the remaining obligations. Apply `LinearMap.ext` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `v`. Establish `hv` using `congrArg (fun f => (f (v, 0)).1) hN`. Simplify using `using hv`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hv` using `congrArg (fun f => (f (v, 0)).1) (hρ σ)`. Simplify `hv` using `[Representation.prod]`. Rewrite using `[WD.lpChar_mk, WD.unr_mk, WD.unr_mk, WD.unr_mk]`. Unfold `WDRep.Unr`. Simplify using `only [WDRep.tensor]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨ha, ha'⟩ ⟨hb, hb'⟩`. Use `⟨by simp [ha, hb], fun σ => ?_⟩` and prove the remaining obligations. Rewrite using `[Representation.tprod_apply, ha' σ, hb' σ]`. Simplify using the standard rewrite rules. Introduce `g S c hx hy`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hx`, `hy` using `[WD.charPol_mk]`. Rewrite using `[WD.lpChar_mk, WD.charPol_mk, WDRep.tensor_ρ]`. Establish `hm : m = 1`. Establish `hd` using `congrArg Polynomial.natDegree hy`. Rewrite `hd` using `[LinearMap.charpoly_natDegree]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `unrPol at hd`. Simplify using `using hd`. Substitute `hm` using the available equality. Establish `hb : b.ρ g = c ^ (-deg g) • (1 : Module.End ℂ (Fin 1 → ℂ))`. Establish `hct` using `LinearMap.aeval_self_charpoly (b.ρ g)`.
+Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hct` using `[hy]`. Unfold `unrPol at hct`. Simplify using `only [Multiset.map_singleton, Multiset.prod_singleton, map_sub, aeval_X, aeval_C] at hct`. Rewrite `hct` using `[sub_eq_zero]`. Rewrite using `[hct, Algebra.algebraMap_eq_smul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `ht : c ^ (-deg g) ≠ 0`. Introduce `ht0`. Establish `h0 : b.ρ g = 0`. Rewrite using `[hb, ht0, zero_smul]`. Establish `h1 : b.ρ (g * g⁻¹) = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_inv_cancel, map_one]`. Rewrite `h1` using `[map_mul, h0, zero_mul]`. Conclude with `zero_ne_one h1`. Rewrite using `[hb, TensorProduct.map_smul_right, GlobalTheory.CompanionTheory.RelOpsLeaf.charpoly_smul_eq_scaleRoots _ ht, GlobalTheory.CompanionTheory.RelOpsLeaf.charpoly_map_one (by simp), hx, scaleRoots_unrPol]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TP.Sub.wDFacts_holds :
     WDFacts := by

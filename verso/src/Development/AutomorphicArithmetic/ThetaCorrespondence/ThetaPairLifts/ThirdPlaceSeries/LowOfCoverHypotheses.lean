@@ -14,11 +14,11 @@ namespace GlobalTheory.CovTop.LowCover
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ}
 /- English proof (translation)
-Introduce `hS hD hE hG hR hM hK hGm hF hU`. Use `Closed.imp (((((((((hS.and hD).and hE).and hG).and hR).and hM).and hK).and hGm).and hF).and hU) ?_` and prove the remaining obligations. Introduce `eps Fm CH _ hh`. Take `⟨⟨⟨⟨⟨⟨⟨⟨⟨⟨CS, -, aS⟩, CD, -, aD⟩, _, -, aE⟩, _, -, aG⟩, _, -, aR⟩, _, -, aM⟩, _, -, aK⟩, _, -, aGm⟩, CF, hCF, aF⟩, CU, hCU, aU⟩` from `hh`. Use `⟨max CD (2 * (CF + CU) + 9), le_max_of_le_right (by linarith), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x0, h⟩` from `((((((((aS.and aD).and aE).and aG).and aR).and aM).and aK).and aGm).and aF).and aU`. Use `⟨x0, fun x hx hle ι p hp i => ?_⟩` and prove the remaining obligations. Take `⟨⟨⟨⟨⟨⟨⟨⟨⟨bS, bD⟩, bE⟩, bG⟩, bR⟩, bM⟩, bK⟩, bGm⟩, bF⟩, bU⟩` from `h x hx hle ι p hp`. Establish `hS'` using `bS i`. Establish `hE0 : 0 ≤ unitE p` using `by obtain ⟨a, b, -⟩ := hS'; linarith`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `(Nat.succ_le_of_lt i.isLt).eq_or_lt with heq | hlt` into its components or cases. Conclude with `lowAt_mono (bD i heq) (le_max_left _ _) hE0`. Take `⟨Y, hY⟩` from `bE i hlt`. Conclude with `lowAt_mono (lowAt_of_cover p i _ CS CF CU hCF hCU hS' Y (bG i hlt Y hY) (bR i hlt Y hY) (bM i hlt Y hY) (bK i hlt Y hY) (bGm i hlt Y hY) (bF i hlt Y hY) (bU i hlt Y hY)) (le_max_right _ _) hE0`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem low_of_cover_hypotheses : _root_.GlobalTheory.CovTop.SizeCondition → _root_.GlobalTheory.CovTop.LowDefectCondition → _root_.GlobalTheory.CovTop.DeepExistence → _root_.GlobalTheory.CovTop.DeepGoodness → _root_.GlobalTheory.CovTop.RingCondition → _root_.GlobalTheory.CovTop.MapsCondition → _root_.GlobalTheory.CovTop.CoverRank → _root_.GlobalTheory.CovTop.MinimalGenerator → _root_.GlobalTheory.CovTop.FlatnessCondition → _root_.GlobalTheory.CovTop.UniformLowerBound → _root_.GlobalTheory.CovTop.LiftLowBound := by
   intro hS hD hE hG hR hM hK hGm hF hU

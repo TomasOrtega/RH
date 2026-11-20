@@ -32,7 +32,7 @@ def gvec {Q : Type} [AddCommGroup Q] [Module S Q] (c : Fin m → Q) (w : GPm m a
   fun l => ∑ i, gcell x i l • c (w.1 i)
 
 /- English proof (translation)
-Unfold `gcell`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_gcell {S' : Type} [CommRing S'] (φ : S →+* S') (x : GVar m a k b → S) (i l : Fin m) :
     φ (gcell x i l) = gcell (φ ∘ x) i l := by
@@ -40,7 +40,7 @@ theorem map_gcell {S' : Type} [CommRing S'] (φ : S →+* S') (x : GVar m a k b 
   split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `only [gvec, map_sum, map_smulₛₗ, map_gcell]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_gvec {S' : Type} [CommRing S'] {φ : S →+* S'} {Q Q' : Type} [AddCommGroup Q] [Module S Q] [AddCommGroup Q']
     [Module S' Q'] (F : Q →ₛₗ[φ] Q') (c : Fin m → Q) (w : GPm m a b) (x : GVar m a k b → S) (l : Fin m) :
@@ -48,7 +48,7 @@ theorem map_gvec {S' : Type} [CommRing S'] {φ : S →+* S'} {Q Q' : Type} [AddC
   simp only [gvec, map_sum, map_smulₛₗ, map_gcell]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `r`. Simplify using `only [gvec, Function.comp_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_sum, map_mul, map_gcell]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem comp_gvec {S' : Type} [CommRing S'] (φ : S →+* S') {ι : Type} (c : Fin m → ι → S) (w : GPm m a b)
     (x : GVar m a k b → S) (l : Fin m) : φ ∘ gvec c w x l = gvec (fun i => φ ∘ c i) w (φ ∘ x) l := by
@@ -77,7 +77,7 @@ structure Cells {R : Type} [CommRing R] (ρ : R →+* S) {J : Type} (ξ : J → 
     ∀ j', ξ j' q = ∑ t, ρ (e t) * ∑ q', ρ (ℓ (jj t) q') * ξ j' q'
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by simp, fun _ r => ⟨MvPolynomial.C r, by simp⟩, fun _ _ _ _ ψ _ => ⟨ψ, 1, rfl, by simp⟩, fun _ => ⟨Unit, inferInstance, id, fun _ => 1, by simp⟩⟩`.
+Supply the required witnesses or components.
 -/
 example (R : Type) [CommRing R] : Cells (N := 0) (RingHom.id R) (fun _ : Unit => fun _ => 1) fun _ _ => 1 :=
   ⟨by simp, fun _ r => ⟨MvPolynomial.C r, by simp⟩, fun _ _ _ _ ψ _ => ⟨ψ, 1, rfl, by simp⟩,

@@ -6,15 +6,13 @@ open scoped NNReal ENNReal
 namespace GlobalTheory.ParabolicCoord
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ K _ _ _ _ _ _ _ _ T _ _ _ _ _ _ _ _ Q κ m δ μK μT μQ hQ hκ hm hδ _ _ _ q hq`. Use `haveI : LocallyCompactSpace Q := hQ.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : SecondCountableTopology Q := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI : SigmaCompactSpace Q := sigmaCompactSpace_of_locallyCompact_secondCountable`. Use `haveI : SigmaFinite μQ := inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : SFinite ((μT.withDensity fun t => ((δ t : ℝ≥0) : ℝ≥0∞)).prod μQ) := inferInstance`. Establish `hΦ : Measurable (fun p : K × (T × Q) => (p.2.2 : G) * (m p.2.1)⁻¹ * κ p.1)`. Establish `h1 : Measurable (fun p : K × (T × Q) => (p.2.2 : G))` using `continuous_subtype_val.measurable.comp (measurable_snd.snd)`. Establish `h2 : Measurable (fun p : K × (T × Q) => m p.2.1)` using `hm.continuous.measurable.comp (measurable_snd.fst)`. Establish `h3 : Measurable (fun p : K × (T × Q) => κ p.1)` using `hκ.measurable.comp measurable_fst`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(h1.mul h2.inv).mul h3`. Use `set q' : Q := ⟨q, hq⟩`. Establish `hL : Measurable (fun x : G => q * x)` using `measurable_const_mul q`. Establish `hLQ : Measurable (fun x : Q => q' * x)` using `measurable_const_mul q'`. Unfold `coordMeasure`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.map_map hL hΦ]`. Establish `hcomp : (fun x : G => q * x) ∘ (fun p : K × (T × Q) => (p.2.2 : G) * (m p.2.1)⁻¹ * κ p.1) = (fun p : K × (T × Q) => (p.2.2 : G) * (m p.2.1)⁻¹ * κ p.1) ∘ Prod.map id (Prod.map id (fun x : Q => q' * x))`. Use function extensionality and compare the values at `p`. Simplify using `[q', mul_assoc]`. Rewrite using `[hcomp, ← Measure.map_map hΦ (measurable_id.prodMap (measurable_id.prodMap hLQ))]`.
-
-Use `congr 1`. Rewrite using `[← Measure.map_prod_map _ _ measurable_id (measurable_id.prodMap hLQ), Measure.map_id, ← Measure.map_prod_map _ _ measurable_id hLQ, Measure.map_id, map_mul_left_eq_self]`.
+A detailed English derivation is pending.
 -/
 theorem coordMeasure_map_mul_left : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
     [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G]

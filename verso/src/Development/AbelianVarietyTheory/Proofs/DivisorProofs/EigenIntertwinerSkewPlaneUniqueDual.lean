@@ -17,9 +17,9 @@ namespace GlobalTheory.ThK.EvUniqInf
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Use `set u : AF F := LinearMap.inr F (Ainf F) (Af F) 1 with hu`. Establish `h0 : evI F u = 0` using `by show (InfiniteAdeleRing.ringEquiv_mixedSpace F) (0 : Ainf F) = 0`. Conclude with `map_zero _`. Establish `hzi : u * z i = 0`. Use `congrFun (hz u h0) i` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `h1 : evFin F v u = 1` using `by show evalV F v (1 : Af F) = 1`. Conclude with `map_one _`. Use `congrArg (evFin F v) hzi` as an intermediate fact. Rewrite `this` using `[map_mul, h1, one_mul, map_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem evFin_eq_zero_of_at (z : κ → AF F) (hz : At (evI F) z) (v : Pl F) (i : κ) : evFin F v (z i) = 0 := by
   set u : AF F := LinearMap.inr F (Ainf F) (Af F) 1 with hu
@@ -36,7 +36,7 @@ theorem evFin_eq_zero_of_at (z : κ → AF F) (hz : At (evI F) z) (v : Pl F) (i 
   rwa [map_mul, h1, one_mul, map_zero] at this
 
 /- English proof (translation)
-Use `⟨fun x z hz => ?_, GlobalTheory.TensUniq.pure_mem_schA g φ hSB hstd⟩` and prove the remaining obligations. Use `finprod_congr fun v => ?_` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.add_apply, map_add, evFin_eq_zero_of_at z hz v i, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem rest_pure (g : SInf F κ) (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ) (hSB : ∀ v, φ v ∈ SB _)
     (hstd : ∀ᶠ v in cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1) :
@@ -48,13 +48,11 @@ theorem rest_pure (g : SInf F κ) (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ) (
   rw [Pi.add_apply, map_add, evFin_eq_zero_of_at z hz v i, add_zero]
 
 /- English proof (translation)
-Use `SchwartzMap.ext fun y => ?_` and prove the remaining obligations. Set `x : κ → AF F` to `fun i => LinearMap.inl F (Ainf F) (Af F) ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (y i))`. Establish `hI : (fun i => evI F (x i)) = y`. Use function extensionality and compare the values at `i`. Use `show (InfiniteAdeleRing.ringEquiv_mixedSpace F) ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (y i)) = y i`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Conclude with `RingEquiv.apply_symm_apply _ _`. Establish `hP : (∏ᶠ v, Set.indicator {x : κ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} 1 (fun i => evFin F v (x i))) = (1 : ℂ)`. Use `finprod_eq_one_of_forall_eq_one fun v => ?_` and prove the remaining obligations. Establish `h0 : (fun i => evFin F v (x i)) = 0`. Use function extensionality and compare the values at `i`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `show evalV F v (0 : Af F) = 0`. Conclude with `map_zero _`. Rewrite using `[h0, Set.indicator_of_mem (by intro i; exact zero_mem _)]`. Both sides reduce to the same expression. Establish `e` using `congrFun h x`.
-
-Unfold `GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure at e`. Rewrite `e` using `[hI, hP, mul_one, mul_one]`. Conclude with `e`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_pure_std (g g' : SInf F κ)
     (h : pure g (fun v => Set.indicator {x : κ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} 1) =
@@ -84,19 +82,17 @@ end GlobalTheory.ThK.EvUniqInf
 open GlobalTheory.ThK.EvUniqInf in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d d₁ r s r' s' i₀ i₁ X W W₁ H' M M₁ _ _ _ hM _ hM₁ e hev ei ev _ hloc0 hloc`. Establish `hex : ∀ v : Pl F, ∃ p : (Fin n × Fin d → Fv F v) → ℂ, p ∈ SB _ ∧ ev v p = Set.indicator {x : Fin n × Fin d₁ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} 1 ∧ (M₁.vac v = Set.indicator {x : Fin n × Fin d₁ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} 1 → p = M.vac v)`. Introduce `v`. Distinguish the cases in `h : M₁.vac v = Set.indicator {x : Fin n × Fin d₁ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} 1`. Conclude with `⟨M.vac v, (hM.vac v).1, by rw [← h]; exact (hloc0 v).1, fun _ => rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Establish `hmem : Set.indicator {x : Fin n × Fin d₁ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} 1 ∈ (SB (Fin n × Fin d → Fv F v)).map (ev v)`. Rewrite using `[(hloc0 v).2]`. Conclude with `GlobalTheory.StdVacuum.indicator_mem_SB v`. Take `⟨p, hp, hpe⟩` from `Submodule.mem_map.1 hmem`. Conclude with `⟨p, hp, hpe, fun h' => absurd h' h⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `choose φ hφSB hφev hφvac using hex`. Establish `hcof : ∀ᶠ v in cofinite, φ v = M.vac v` using `by filter_upwards [hM₁.std] with v hv`. Conclude with `hφvac v hv`. Establish `hstd : ∀ᶠ v in cofinite, φ v = Set.indicator {x : Fin n × Fin d → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} 1` using `by filter_upwards [hcof, hM.std] with v h1 h2`. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hevφ : (fun v => ev v (φ v)) = fun v => Set.indicator {x : Fin n × Fin d₁ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} 1`. Use function extensionality and compare the values at `hφev`. Establish `hRest : ∀ g : SInf F (Fin n × Fin d), Rest (evI F) (⇑g) (fun x => ∏ᶠ v, φ v fun i => evFin F v (x i))` using `fun g => rest_pure g φ hφSB hstd`. Establish `hRest₁ : ∀ g : SInf F (Fin n × Fin d₁), Rest (evI F) (⇑g) (fun x => ∏ᶠ v, Set.indicator {x : Fin n × Fin d₁ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} 1 fun i => evFin F v (x i))` using `fun g => rest_pure g _ (fun v => GlobalTheory.StdVacuum.indicator_mem_SB v) (Filter.Eventually.of_forall fun _ => rfl)`. Establish `he : ∀ g : SInf F (Fin n × Fin d), e (pure g φ) = pure (ei g) (fun v => Set.indicator {x : Fin n × Fin d₁ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g`. Rewrite using `[hloc g φ hφSB hcof, hevφ]`. Use `⟨fun z _ f f₁ hA g₁ hA₁ => ?_, fun u hu _ f f₁ hA => ?_⟩` and prove the remaining obligations. Establish `h1` using `hev.Heisenberg₂ z (pure f φ) (hRest f).2`. Establish `h2 : M.co.rho B.ψ (incM F (1 : Matrix (Fin n) (Fin n) E) * z * (incM F H'.ι)ᵀ) (pure f φ) = pure f₁ φ` using `hA _ (hRest f)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[h2, he, he]`. Establish `h3 : M₁.co.rho B.ψ z (pure (ei f) (fun v => Set.indicator {x : Fin n × Fin d₁ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} 1)) = pure g₁ (fun v => Set.indicator {x : Fin n × Fin d₁ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} 1)` using `hA₁ _ (hRest₁ (ei f))`. Conclude with `eq_of_pure_std _ _ (h1.trans h3)`. Establish `h1` using `hev.inv u hu (pure f φ) (hRest f).2`. Establish `h2 : M.co.rho B.ψ u (pure f φ) = pure f₁ φ` using `hA _ (hRest f)`.
-
-Rewrite `h1` using `[h2, he, he]`. Conclude with `eq_of_pure_std _ _ h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ThK.EvUniq.infRel_of_isEv : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d d₁ r s r' s' i₀ i₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (M : Model σ X W)

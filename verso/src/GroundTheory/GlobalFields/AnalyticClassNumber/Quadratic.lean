@@ -22,9 +22,9 @@ section Two
 variable {G : Type*} [Group G] [Finite G]
 
 /- English proof (translation)
-Use `Fintype.ofFinite G` as an intermediate fact. Assume the negation of the conclusion as `h`. Establish `hcard : ({1, σ, τ} : Finset G).card = 3`. Rewrite using `[Finset.card_insert_of_notMem, Finset.card_pair h]`. Simplify using `[Ne.symm hσ, Ne.symm hτ]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hle` using `Finset.card_le_univ ({1, σ, τ} : Finset G)`. Rewrite `hle` using `[hcard, Fintype.card_eq_nat_card, hG]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem eq_of_ne_one_of_card_eq_two (hG : Nat.card G = 2) {σ τ : G} (hσ : σ ≠ 1) (hτ : τ ≠ 1) :
     σ = τ := by
@@ -41,14 +41,14 @@ theorem eq_of_ne_one_of_card_eq_two (hG : Nat.card G = 2) {σ τ : G} (hσ : σ 
 omit [Finite G] in
 
 /- English proof (translation)
-Establish `h` using `pow_card_eq_one' (G := G) (x := σ)`. Rewrite `h` using `[hG, pow_two]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mul_self_eq_one_of_card_eq_two (hG : Nat.card G = 2) (σ : G) : σ * σ = 1 := by
   have h := pow_card_eq_one' (G := G) (x := σ)
   rwa [hG, pow_two] at h
 
 /- English proof (translation)
-Establish `: Nontrivial G` using `Finite.one_lt_card_iff_nontrivial.1 (by omega)`. Conclude with `exists_ne 1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_ne_one_of_card_eq_two (hG : Nat.card G = 2) : ∃ σ : G, σ ≠ 1 := by
   have : Nontrivial G := Finite.one_lt_card_iff_nontrivial.1 (by omega)
@@ -70,7 +70,7 @@ def signChar (hG : Nat.card G = 2) : G →* ℂˣ where
     simp [mul_self_eq_one_of_card_eq_two hG, hσ]
 
 /- English proof (translation)
-Simplify using `[signChar, hσ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem signChar_apply_of_ne_one (hG : Nat.card G = 2) {σ : G} (hσ : σ ≠ 1) :
     signChar hG σ = -1 := by
@@ -78,9 +78,9 @@ theorem signChar_apply_of_ne_one (hG : Nat.card G = 2) {σ : G} (hσ : σ ≠ 1)
   simp [signChar, hσ]
 
 /- English proof (translation)
-Take `⟨σ, hσ⟩` from `exists_ne_one_of_card_eq_two hG`. Introduce `h`. Establish `h1` using `signChar_apply_of_ne_one hG hσ`. Rewrite `h1` using `[h, MonoidHom.one_apply]`. Establish `h2` using `congrArg (fun u : ℂˣ ↦ (u : ℂ)) h1`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Evaluate the numerical expressions using `at h2`.
+Evaluate the numerical expressions.
 -/
 theorem signChar_ne_one (hG : Nat.card G = 2) : signChar hG ≠ 1 := by
   obtain ⟨σ, hσ⟩ := exists_ne_one_of_card_eq_two hG
@@ -95,7 +95,7 @@ end Two
 variable (K : Type) [Field K] [NumberField K] [Algebra.IsQuadraticExtension ℚ K]
 
 /- English proof (translation)
-Rewrite using `[IsGalois.card_aut_eq_finrank, Algebra.IsQuadraticExtension.finrank_eq_two]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_gal : Nat.card Gal(K/ℚ) = 2 := by
   rw [IsGalois.card_aut_eq_finrank, Algebra.IsQuadraticExtension.finrank_eq_two]
@@ -104,19 +104,19 @@ def galChar : Gal(K/ℚ) →* ℂˣ :=
   signChar (card_gal K)
 
 /- English proof (translation)
-The claim follows from `signChar_apply_of_ne_one (card_gal K) hσ`.
+A detailed English derivation is pending.
 -/
 theorem galChar_apply_of_ne_one {σ : Gal(K/ℚ)} (hσ : σ ≠ 1) : galChar K σ = -1 :=
   signChar_apply_of_ne_one (card_gal K) hσ
 
 /- English proof (translation)
-The claim follows from `map_one _`.
+A detailed English derivation is pending.
 -/
 theorem galChar_one_apply : galChar K 1 = 1 :=
   map_one _
 
 /- English proof (translation)
-The claim follows from `signChar_ne_one (card_gal K)`.
+A detailed English derivation is pending.
 -/
 theorem galChar_ne_one : galChar K ≠ 1 :=
   signChar_ne_one (card_gal K)
@@ -125,13 +125,13 @@ def heckeChar : HeckeCharacter ℚ :=
   heckeCharacterOfChar (galChar K)
 
 /- English proof (translation)
-The claim follows from `isOfFinOrder_heckeCharacterOfChar _`.
+A detailed English derivation is pending.
 -/
 theorem isOfFinOrder_heckeChar : IsOfFinOrder (heckeChar K) :=
   isOfFinOrder_heckeCharacterOfChar _
 
 /- English proof (translation)
-The claim follows from `fun h ↦ galChar_ne_one K (eq_one_of_heckeCharacterOfChar_eq_one _ h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem heckeChar_ne_one : heckeChar K ≠ 1 := fun h ↦
   galChar_ne_one K (eq_one_of_heckeCharacterOfChar_eq_one _ h)
@@ -149,13 +149,13 @@ def kronecker : DirichletCharacter ℂ (level K) :=
   (kroneckerData K).2.1
 
 /- English proof (translation)
-The claim follows from `(kroneckerData K).2.2`.
+A detailed English derivation is pending.
 -/
 theorem isPrimitive_kronecker : (kronecker K).IsPrimitive :=
   (kroneckerData K).2.2
 
 /- English proof (translation)
-Establish `h` using `DirichletHecke.coe_finiteOrderEquiv_apply (kroneckerData K)`. Establish `h2 : DirichletHecke.finiteOrderEquiv (kroneckerData K) = ⟨heckeChar K, isOfFinOrder_heckeChar K⟩` using `Equiv.apply_symm_apply _ _`. Rewrite `h` using `[h2]`. Conclude with `h.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heckeCharacter_kronecker : DirichletHecke.heckeCharacter (kronecker K) = heckeChar K := by
   have h := DirichletHecke.coe_finiteOrderEquiv_apply (kroneckerData K)
@@ -166,9 +166,9 @@ theorem heckeCharacter_kronecker : DirichletHecke.heckeCharacter (kronecker K) =
   exact h.symm
 
 /- English proof (translation)
-Introduce `h`. Apply `heckeChar_ne_one K` to reduce the goal to its premises. Rewrite using `[← heckeCharacter_kronecker K, h]`. Use extensionality with `x`. Rewrite using `[DirichletHecke.coe_heckeCharacter_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `(MulChar.one_apply ((Units.isUnit _).map _)).trans ?_` and prove the remaining obligations. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 -/
 theorem kronecker_ne_one : kronecker K ≠ 1 := by
   intro h
@@ -180,7 +180,7 @@ theorem kronecker_ne_one : kronecker K ≠ 1 := by
   rfl
 
 /- English proof (translation)
-Rewrite using `[← LSeries_one_eq_riemannZeta hs, dedekindZeta]`. Use `LSeries_congr (fun {n} _ ↦ ?_) s` and prove the remaining obligations. Rewrite using `[Pi.one_apply, Nat.cast_eq_one, Nat.card_eq_one_iff_exists]`. Use `⟨⟨Ideal.span {(n : 𝓞 ℚ)}, DirichletHecke.absNorm_span_natCast n⟩, fun I ↦ ?_⟩` and prove the remaining obligations. Conclude with `Subtype.ext (DirichletHecke.eq_span_of_absNorm_eq I.2)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem dedekindZeta_rat {s : ℂ} (hs : 1 < s.re) : dedekindZeta ℚ s = riemannZeta s := by
   rw [← LSeries_one_eq_riemannZeta hs, dedekindZeta]
@@ -190,9 +190,9 @@ theorem dedekindZeta_rat {s : ℂ} (hs : 1 < s.re) : dedekindZeta ℚ s = rieman
   exact Subtype.ext (DirichletHecke.eq_span_of_absNorm_eq I.2)
 
 /- English proof (translation)
-Use `Fintype.ofFinite Gal(K/ℚ)` as an intermediate fact. Use function extensionality and compare the values at `σ`. Rewrite using `[GroundTheory.LocalField.character_leftRegular, Fintype.card_eq_nat_card, card_gal, Pi.add_apply, Pi.one_apply]`. Distinguish the cases in `hσ : σ = 1`. Substitute `hσ` using the available equality.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[if_pos rfl, galChar_one_apply]`. Evaluate the numerical expressions. Rewrite using `[if_neg hσ, galChar_apply_of_ne_one K hσ]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem character_leftRegular :
     (Representation.leftRegular ℂ Gal(K/ℚ)).character =
@@ -210,7 +210,7 @@ theorem character_leftRegular :
     norm_num
 
 /- English proof (translation)
-Use `Fintype.ofFinite Gal(K/ℚ)` as an intermediate fact. Rewrite using `[← Artin.artinL_leftRegular (K := ℚ) hs, character_leftRegular, artinL_add _ _ hs, artinL_one hs, artinL_eq_LFunction _ hs, dedekindZeta_rat hs, show heckeCharacterOfChar (galChar K) = DirichletHecke.heckeCharacter (kronecker K) from (heckeCharacter_kronecker K).symm, DirichletHe …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem dedekindZeta_eq_mul {s : ℂ} (hs : 1 < s.re) :
     dedekindZeta K s = riemannZeta s * DirichletCharacter.LFunction (kronecker K) s := by
@@ -222,9 +222,9 @@ theorem dedekindZeta_eq_mul {s : ℂ} (hs : 1 < s.re) :
     DirichletHecke.LFunction_heckeCharacter _ (isPrimitive_kronecker K) hs]
 
 /- English proof (translation)
-Establish `hU : IsOpen ({1}ᶜ : Set ℂ)` using `isOpen_compl_singleton`. Establish `hpc : IsPreconnected ({1}ᶜ : Set ℂ)` using `DirichletHecke.isPreconnected_compl_of_countable (Set.countable_singleton 1)`. Establish `hf : AnalyticOnNhd ℂ (continuedDedekindZeta K) {1}ᶜ` using `(differentiableOn_continuedDedekindZeta K).analyticOnNhd hU`. Establish `hg : AnalyticOnNhd ℂ (fun z ↦ riemannZeta z * DirichletCharacter.LFunction (kronecker K) z) {1}ᶜ` using `(DifferentiableOn.mul (fun z hz ↦ (differentiableAt_riemannZeta hz).differentiableWithinAt) (DirichletCharacter.differentiable_LFunction (kronecker_ne_one K)).differentiableOn).analyticOnNhd hU`. Use `hf.eqOn_of_preconnected_of_eventuallyEq hg hpc (show (2 : ℂ) ∈ ({1}ᶜ : Set ℂ) by norm_num) ?_ hs` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [(isOpen_lt continuous_const Complex.continuous_re).mem_nhds (show (1 : ℝ) < (2 : ℂ).re by norm_num)] with z hz`. Rewrite using `[continuedDedekindZeta_eq K hz, dedekindZeta_eq_mul K hz]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuedDedekindZeta_eq_mul {s : ℂ} (hs : s ≠ 1) :
     continuedDedekindZeta K s = riemannZeta s * DirichletCharacter.LFunction (kronecker K) s := by
@@ -245,9 +245,9 @@ theorem continuedDedekindZeta_eq_mul {s : ℂ} (hs : s ≠ 1) :
   rw [continuedDedekindZeta_eq K hz, dedekindZeta_eq_mul K hz]
 
 /- English proof (translation)
-Use `tendsto_nhds_unique ?_ (tendsto_sub_one_mul_continuedDedekindZeta K)` and prove the remaining obligations. Establish `hc` using `(DirichletCharacter.differentiable_LFunction (kronecker_ne_one K)).continuous.continuousAt (x := 1)`. Establish `h` using `riemannZeta_residue_one.mul (hc.tendsto.mono_left nhdsWithin_le_nhds)`. Rewrite `h` using `[one_mul]`. Use `h.congr' (eventually_nhdsWithin_of_forall fun s hs ↦ ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show _ = (s - 1) * continuedDedekindZeta K s`. Rewrite using `[continuedDedekindZeta_eq_mul K hs, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LFunction_kronecker_one :
     DirichletCharacter.LFunction (kronecker K) 1 = (dedekindZeta_residue K : ℂ) := by
@@ -261,7 +261,7 @@ theorem LFunction_kronecker_one :
   rw [continuedDedekindZeta_eq_mul K hs, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[LFunction_kronecker_one, Complex.ofReal_re, Complex.ofReal_im]`. Conclude with `⟨dedekindZeta_residue_pos K, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem LFunction_kronecker_one_pos :
     0 < (DirichletCharacter.LFunction (kronecker K) 1).re ∧
@@ -270,15 +270,15 @@ theorem LFunction_kronecker_one_pos :
   exact ⟨dedekindZeta_residue_pos K, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[card_add_two_mul_card_eq_rank, Algebra.IsQuadraticExtension.finrank_eq_two]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nrRealPlaces_add_two_mul : nrRealPlaces K + 2 * nrComplexPlaces K = 2 := by
   rw [card_add_two_mul_card_eq_rank, Algebra.IsQuadraticExtension.finrank_eq_two]
 
 /- English proof (translation)
-Establish `h2` using `nrRealPlaces_add_two_mul K`. Establish `hs` using `sign_discr K`. Rewrite `hs` using `[Int.sign_eq_neg_one_of_neg hd]`. Break down `(by omega : nrComplexPlaces K = 0 ∨ nrComplexPlaces K = 1) with h | h` into its components or cases. Rewrite `hs` using `[h, pow_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Evaluate the numerical expressions using `at hs`. Use linear arithmetic over natural numbers and integers.
+Evaluate the numerical expressions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem places_of_discr_neg (hd : discr K < 0) : nrRealPlaces K = 0 ∧ nrComplexPlaces K = 1 := by
   have h2 := nrRealPlaces_add_two_mul K
@@ -290,9 +290,9 @@ theorem places_of_discr_neg (hd : discr K < 0) : nrRealPlaces K = 0 ∧ nrComple
   · omega
 
 /- English proof (translation)
-Establish `h2` using `nrRealPlaces_add_two_mul K`. Establish `hs` using `sign_discr K`. Rewrite `hs` using `[Int.sign_eq_one_of_pos hd]`. Break down `(by omega : nrComplexPlaces K = 0 ∨ nrComplexPlaces K = 1) with h | h` into its components or cases. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `hs` using `[h, pow_one]`. Evaluate the numerical expressions using `at hs`.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem places_of_discr_pos (hd : 0 < discr K) : nrRealPlaces K = 2 ∧ nrComplexPlaces K = 0 := by
   have h2 := nrRealPlaces_add_two_mul K
@@ -304,9 +304,9 @@ theorem places_of_discr_pos (hd : 0 < discr K) : nrRealPlaces K = 2 ∧ nrComple
     norm_num at hs
 
 /- English proof (translation)
-Establish `hcard : Fintype.card (InfinitePlace F) = 1`. Rewrite using `[card_eq_nrRealPlaces_add_nrComplexPlaces, h]`. Establish `hrank : rank F = 0`. Rewrite using `[rank, hcard]`. Establish `: IsEmpty (Fin (rank F))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hrank]`. Use `infer_instance`. Establish `: IsEmpty {w : InfinitePlace F // w ≠ dirichletUnitTheorem.w₀}` using `⟨fun w ↦ w.2 (Fintype.card_le_one_iff.1 hcard.le _ _)⟩`. Rewrite using `[regulator_eq_det', Matrix.det_isEmpty, abs_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem regulator_eq_one_of_card_eq_one {F : Type*} [Field F] [NumberField F]
     (h : nrRealPlaces F + nrComplexPlaces F = 1) : regulator F = 1 := by
@@ -325,11 +325,9 @@ theorem regulator_eq_one_of_card_eq_one {F : Type*} [Field F] [NumberField F]
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Set `` to `Fintype.ofFinite (torsion F)`. Rewrite using `[torsionOrder, Nat.card_eq_fintype_card]`. Use `Finset.card_eq_two.2 ⟨1, ⟨-1, neg_one_mem_torsion⟩, by simp [← Subtype.coe_ne_coe], Finset.ext fun x ↦ ⟨fun _ ↦ ?_, fun _ ↦ Finset.mem_univ _⟩⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_insert, Finset.mem_singleton, ← Subtype.val_inj, ← Subtype.val_inj]`. Use `by_cases! hc : 2 < orderOf (x : (𝓞 F)ˣ)`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hc` using `[← orderOf_units, ← orderOf_submonoid]`. Combine the linear relations using `[IsPrimitiveRoot.nrRealPlaces_eq_zero_of_two_lt hc (IsPrimitiveRoot.orderOf (x.1 : F))]`. Use `interval_cases hi : orderOf (x : (𝓞 F)ˣ)`. Combine the linear relations using `[orderOf_pos_iff.2 ((CommGroup.mem_torsion x.1).1 x.2)]`. Conclude with `Or.intro_left _ (orderOf_eq_one_iff.1 hi)`.
-
-Rewrite `hi` using `[← orderOf_units, CharP.orderOf_eq_two_iff 0 (by decide)]`. Simplify using `[← Units.val_inj, ← Units.val_inj, Units.val_neg, Units.val_one, hi]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem torsionOrder_eq_two_of_nrRealPlaces_pos {F : Type*} [Field F] [NumberField F]
     (h : 0 < nrRealPlaces F) : torsionOrder F = 2 := by
@@ -349,9 +347,9 @@ theorem torsionOrder_eq_two_of_nrRealPlaces_pos {F : Type*} [Field F] [NumberFie
       simp [← Units.val_inj, ← Units.val_inj, Units.val_neg, Units.val_one, hi]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `places_of_discr_neg K hd`. Establish `hR : regulator K = 1` using `regulator_eq_one_of_card_eq_one (by omega)`. Rewrite using `[LFunction_kronecker_one, dedekindZeta_residue_def, h1, h2, hR]`. Establish `hd0 : ((Real.sqrt |(discr K : ℝ)| : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (Real.sqrt_pos.2 (abs_pos.2 (Int.cast_ne_zero.2 (discr_ne_zero K)))).ne'`. Establish `hw : (torsionOrder K : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (torsionOrder_ne_zero K)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hπ : (π : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 Real.pi_ne_zero`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 -/
 theorem classNumber_eq_of_discr_neg (hd : discr K < 0) :
     (classNumber K : ℂ) = torsionOrder K * Real.sqrt |(discr K : ℝ)| *
@@ -367,9 +365,9 @@ theorem classNumber_eq_of_discr_neg (hd : discr K < 0) :
   field_simp
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `places_of_discr_pos K hd`. Establish `hw : torsionOrder K = 2` using `torsionOrder_eq_two_of_nrRealPlaces_pos (by omega)`. Establish `hd' : (0 : ℝ) < discr K` using `Int.cast_pos.2 hd`. Rewrite using `[LFunction_kronecker_one, dedekindZeta_residue_def, h1, h2, hw, abs_of_pos hd']`. Establish `hd0 : ((Real.sqrt (discr K : ℝ) : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (Real.sqrt_pos.2 hd').ne'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 -/
 theorem classNumber_mul_regulator_eq_of_discr_pos (hd : 0 < discr K) :
     ((classNumber K * regulator K : ℝ) : ℂ) = Real.sqrt (discr K : ℝ) *

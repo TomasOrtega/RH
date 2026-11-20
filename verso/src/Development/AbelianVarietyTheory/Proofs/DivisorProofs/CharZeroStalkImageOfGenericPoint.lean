@@ -7,7 +7,7 @@ open AlgebraicGeometry CategoryTheory Limits
 namespace GlobalTheory.NormSheafDescent
 
 /- English proof (translation)
-Introduce `Y Z π _ hY hK`. Use `haveI : Nonempty (⊤ : Y.Opens) := ⟨⟨genericPoint Y, trivial⟩⟩`. Establish `hL : CharZero Y.functionField` using `charZero_of_injective_ringHom (f := (Y.germToFunctionField ⊤).hom) (Y.germToFunctionField_injective ⊤)`. Establish `h0 : CharZero (Z.presheaf.stalk (genPt π))` using `(π.stalkMap (genericPoint Y)).hom.charZero`. Conclude with `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem charZero_stalk_genPt : ∀ (Y Z : Scheme.{0}) (π : Y ⟶ Z) [IsIntegral Y], CharZero Γ(Y, ⊤) →
     ∀ (hK : IsField (Z.presheaf.stalk (GlobalTheory.NormSheafDescent.genPt π))),

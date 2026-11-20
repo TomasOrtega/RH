@@ -16,9 +16,9 @@ open GlobalTheory.Member
 namespace GlobalTheory.Member.CoreExist
 
 /- English proof (translation)
-Establish `hpZ : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.mp hp`. Use `haveI : (Ideal.span {(p : ℤ)}).IsPrime := (Ideal.span_singleton_prime hpZ.ne_zero).mpr hpZ`. Take `⟨P, hP, hc⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral_of_isDomain (S := 𝓞 K) (Ideal.span {(p : ℤ)}) (by rw [(RingHom.injective_iff_ker_eq_bot _).mp (algebraMap ℤ (𝓞 K)).injective_int]; exact bot_le)`. Establish `hm : ((p : ℕ) : 𝓞 K) ∈ P`. Establish `: (p : ℤ) ∈ P.comap (algebraMap ℤ (𝓞 K))` using `hc ▸ Ideal.mem_span_singleton_self _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[Ideal.mem_comap]`. Use `⟨⟨P, hP, fun h => ?_⟩, hm⟩` and prove the remaining obligations. Rewrite `hm` using `[h, Ideal.mem_bot]`. Conclude with `hp.ne_zero (by exact_mod_cast hm)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_prime_over (K : Type) [Field K] [NumberField K] {p : ℕ} (hp : p.Prime) :
     ∃ v : HeightOneSpectrum (𝓞 K), ((p : ℕ) : 𝓞 K) ∈ v.asIdeal := by
@@ -35,7 +35,7 @@ theorem exists_prime_over (K : Type) [Field K] [NumberField K] {p : ℕ} (hp : p
   exact hp.ne_zero (by exact_mod_cast hm)
 
 /- English proof (translation)
-Take `⟨Q, hP, hC, hpq, hM⟩` from `GlobalTheory.Member.ParExist.exists_par_pins_canon D hO hZ pb hg`. Take `⟨T, h₁, h₂, h₃, h₄, -⟩` from `GlobalTheory.T.hecke_character_family_conductor D Q hP hpq hV pb hg hM (fun _ _ => 1) (fun _ _ σ _ => ⟨⟨continuous_const, fun _ => rfl⟩, fun _ => rfl, fun _ _ => ⟨1, by simp, by simp⟩⟩)`. Conclude with `⟨T, h₁, h₂, h₄ ▸ hC, h₃⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_core_pb (D : D7) (hO : OFull D) (hZ : OZeta D) (hV : VolTieG D)
     (pb : Fin 2 → HeightOneSpectrum (𝓞 D.host.K))
@@ -47,7 +47,7 @@ theorem exists_core_pb (D : D7) (hO : OFull D) (hZ : OZeta D) (hV : VolTieG D)
   exact ⟨T, h₁, h₂, h₄ ▸ hC, h₃⟩
 
 /- English proof (translation)
-Introduce `D hO hZ hV`. Use `⟨?_, exists_core_pb D hO hZ hV⟩` and prove the remaining obligations. Use `choose pb hg using fun k => exists_prime_over D.host.K (D.host.g_prime k)`. Take `⟨T, h₁, h₂, h₃, -⟩` from `exists_core_pb D hO hZ hV pb hg`. Conclude with `⟨T, h₁, h₂, h₃⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_core : ∀ (D : D7), OFull D → OZeta D → VolTieG D → (∃ T : CoreJ D, LawsJ T ∧ LawsCore T.toCore ∧ T.Q.Canon) ∧ ∀ pb : Fin 2 → HeightOneSpectrum (𝓞 D.host.K), (∀ k, ((D.host.g k : ℕ) : 𝓞 D.host.K) ∈ (pb k).asIdeal) → ∃ T : CoreJ D, LawsJ T ∧ LawsCore T.toCore ∧ T.Q.Canon ∧ T.pb = pb := by
   intro D hO hZ hV

@@ -10,7 +10,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hli : LinearIndependent K ((Pi.basisFun K (Fin r)) ∘ Fin.castLE h)` using `(Pi.basisFun K (Fin r)).linearIndependent.comp _ (Fin.castLE_injective h)`. Conclude with `⟨_, (finrank_span_eq_card hli).trans (Fintype.card_fin i)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_submodule_finrank_eq_of_le {K : Type} [Field K] {r i : ℕ} (h : i ≤ r) :
     ∃ W : Submodule K (Fin r → K), Module.finrank K W = i := by
@@ -20,15 +20,13 @@ theorem exists_submodule_finrank_eq_of_le {K : Type} [Field K] {r i : ℕ} (h : 
   exact ⟨_, (finrank_span_eq_card hli).trans (Fintype.card_fin i)⟩
 
 /- English proof (translation)
-Introduce `r X d hd δ hδ`. Use `set s := {x : Frame X.Ψ r | ∀ τ : X.Ψ, (mat x τ).det ≠ 0} with hs`. Establish `hbdd : ∀ x ∈ s, ∀ i : ℕ, BddAbove ((fun W => d x W ^ (-δ)) '' {W : Submodule E (Fin r → E) | Module.finrank E W = i})`. Introduce `x hx i`. Take `⟨m, hm, hmW⟩` from `GlobalTheory.T.exists_pos_le_latticeHeight_at_frame r X d hd x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨m ^ (-δ), ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨W, -, rfl⟩`. Conclude with `Real.rpow_le_rpow_of_nonpos hm (hmW W) (by linarith)`. Use `⟨fun i x => sSup ((fun W => d x W ^ (-δ)) '' {W : Submodule E (Fin r → E) | Module.finrank E W = i}), ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi x hx`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨W, hW⟩` from `exists_submodule_finrank_eq_of_le (K := E) hi`. Conclude with `isLUB_csSup (Set.Nonempty.image _ (⟨W, hW⟩ : Set.Nonempty {W : Submodule E (Fin r → E) | Module.finrank E W = i})) (hbdd x hx i)`. Introduce `i hi x hx y hy`. Take `⟨W, hW⟩` from `exists_submodule_finrank_eq_of_le (K := E) hi`. Take `⟨_, ⟨V, hV, rfl⟩, hyV⟩` from `exists_lt_of_lt_csSup (Set.Nonempty.image _ (⟨W, hW⟩ : Set.Nonempty {W : Submodule E (Fin r → E) | Module.finrank E W = i})) hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpos : ∀ x' ∈ s, 0 < d x' V` using `fun x' hx' => by`. Take `⟨m, hm, hmW⟩` from `GlobalTheory.T.exists_pos_le_latticeHeight_at_frame r X d hd x' hx'`. Conclude with `hm.trans_le (hmW V)`. Establish `hcont : ContinuousOn (fun x' => d x' V ^ (-δ)) s` using `(GlobalTheory.T.latticeHeight_continuousOn_frames r X d hd V).rpow_const fun x' hx' => Or.inl (hpos x' hx').ne'`. Establish `hev : ∀ᶠ x' in 𝓝[s] x, y < d x' V ^ (-δ)` using `(hcont x hx).eventually (lt_mem_nhds hyV)`.
-
-Use `filter_upwards [hev, self_mem_nhdsWithin] with x' h1 h2`. Conclude with `h1.trans_le (le_csSup (hbdd x' h2 i) ⟨V, hV, rfl⟩)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_isLUB_height_rpow_lowerSemicontinuousOn : (∀ (r : ℕ) (X : Data E r) (d : Frame X.Ψ r → Submodule E (Fin r → E) → ℝ), (∀ x : Frame X.Ψ r, (∀ τ : X.Ψ, (mat x τ).det ≠ 0) → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (w : ι → Fin r → E), LinearIndependent E w → (∀ a, w a ∈ X.Λ) → d x (Submodule.span E (Set.range w)) = ((∏ τ : X.Ψ, ((((mat x τ)⁻¹ * (Matrix.of fun k a => τ.1 (w a k)))ᴴ * ((mat x τ)⁻¹ * (Matrix.of fun k a => τ.1 (w a k)))).det.re)) / (((Submodule.span (𝓞 E) (Set.range w)).toAddSubgroup.relIndex (X.Λ.toAddSubgroup ⊓ (Submodule.span E (Set.range w)).toAddSubgroup)) : ℝ))) → ∀ δ : ℝ, 0 < δ → ∃ α : ℕ → Frame X.Ψ r → ℝ, (∀ i ≤ r, ∀ x : Frame X.Ψ r, (∀ τ : X.Ψ, (mat x τ).det ≠ 0) → IsLUB ((fun W => d x W ^ (-δ)) '' {W | Module.finrank E W = i}) (α i x)) ∧ ∀ i ≤ r, LowerSemicontinuousOn (α i) {x : Frame X.Ψ r | (∀ τ : X.Ψ, (mat x τ).det ≠ 0)}) := by
   intro r X d hd δ hδ

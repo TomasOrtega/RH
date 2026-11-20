@@ -20,9 +20,9 @@ open TensorProduct in
 variable {L M : Type} [Field L] [AddCommGroup M] [Module L M] in
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `hu`. Use `(Set.finite_Iic (k - m).toNat).subset ?_` and prove the remaining obligations. Introduce `j hj`. Rewrite `hj` using `[Function.mem_support]`. Rewrite using `[Set.mem_Iic]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hj (by rw [hm _ (by omega), smul_zero])`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.GradedSeries.serMul_finite (f : PowerSeries L) {u : ℤ → M}
     (hu : _root_.GlobalTheory.IndefiniteRowSideFullHecke.GradedSeries.IsLaurent u) (k : ℤ) :
@@ -40,7 +40,7 @@ open TensorProduct in
 variable {L M : Type} [Field L] [AddCommGroup M] [Module L M] in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.GradedSeries.serMul`. Rewrite using `[finsum_eq_single _ 0 (fun j hj => by simp [PowerSeries.coeff_one, hj])]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.GradedSeries.serMul_one (u : ℤ → M) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.GradedSeries.serMul (1 : PowerSeries L) u = u := by
@@ -67,7 +67,7 @@ def shiftSer (a : ℤ) (F : Submodule L M) : Submodule L (ℤ → M) where
 def gradedSer (F : ℤ → Submodule L M) : Submodule L (ℤ → M) := ⨆ a : ℤ, shiftSer a (F a)
 
 /- English proof (translation)
-Use `⟨fun k hk => Pi.single_eq_of_ne (ne_of_lt hk) _, fun k => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : k = -a`. Substitute `h` using the available equality. Simplify using `using hd`. Simplify using `[Pi.single_eq_of_ne h]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 -/
 example (a : ℤ) (F : Submodule L M) (d : M) (hd : d ∈ F) :
     (Pi.single (-a) d : ℤ → M) ∈ shiftSer a F := by
@@ -126,7 +126,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (W : _root_.Formalism.BasicNotions.LocWach PD LL O v n) (T : _root_.Formalism.BasicNotions.LocLat G Qp LL O) in
 
 /- English proof (translation)
-Use `Submodule.subset_span ⟨1, W.levN T i ζ x, ⟨x, rfl⟩, ?_, (_root_.GlobalTheory.IndefiniteRowSideFullHecke.GradedSeries.serMul_one _).symm⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `W.levN_supp T i ζ x`. Conclude with `⟨m, hm⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.GradedSeries.levN_mem_Nlev (i : ZMod n) (ζ : LL) (x : ↥(W.N T)) :
     W.levN T i ζ x ∈ _root_.GlobalTheory.IndefiniteRowSideFullHecke.GradedSeries.Nlev W T i ζ := by

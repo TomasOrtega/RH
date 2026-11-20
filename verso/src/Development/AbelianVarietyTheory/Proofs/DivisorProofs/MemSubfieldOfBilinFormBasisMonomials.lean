@@ -3,11 +3,11 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h1 : (u : K) ^ m.natAbs ∈ k₀`. Rewrite `h` using `[Units.val_zpow_eq_zpow_val]`. Break down `Int.natAbs_eq m with h2 | h2` into its components or cases. Rewrite `h` using `[h2, zpow_natCast]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[h2, zpow_neg, zpow_natCast]`. Simplify using `using k₀.inv_mem h`. Establish `hint : IsIntegral k₀ (u : K)`. Apply `IsIntegral.of_pow (Int.natAbs_pos.mpr hm)` to reduce the goal to its premises. Conclude with `isIntegral_algebraMap (R := k₀) (x := ⟨_, h1⟩)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, hy⟩` from `minpoly.mem_range_of_degree_eq_one k₀ (u : K) (IsAlgClosed.degree_eq_one_of_irreducible k₀ (minpoly.irreducible hint))`. Rewrite using `[← hy]`. Conclude with `y.2`.
+A detailed English derivation is pending.
 -/
 theorem mem_subfield_of_zpow_mem {K : Type} [Field K] (k₀ : Subfield K) [IsAlgClosed k₀]
     (u : Kˣ) (m : ℤ) (hm : m ≠ 0) (h : ((u ^ m : Kˣ) : K) ∈ k₀) : (u : K) ∈ k₀ := by
@@ -42,16 +42,16 @@ def monomialExponents {I : Type} [Fintype I] {K : Type} [Field K] (k₀ : Subfie
       exact k₀.inv_mem ha }
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_monomialExponents {I : Type} [Fintype I] {K : Type} [Field K] (k₀ : Subfield K)
     (t : I → Kˣ) (v : I → ℤ) :
     v ∈ monomialExponents k₀ t ↔ ((∏ k, t k ^ v k : Kˣ) : K) ∈ k₀ := Iff.rfl
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[mem_monomialExponents]`. Apply `mem_subfield_of_zpow_mem k₀ _ m hm` to reduce the goal to its premises. Use `h using 2` and compare the differences between its conclusion and the goal. Rewrite using `[← Finset.prod_zpow]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← zpow_mul, Pi.smul_apply, smul_eq_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_monomialExponents_of_smul {I : Type} [Fintype I] {K : Type} [Field K]
     (k₀ : Subfield K) [IsAlgClosed k₀] (t : I → Kˣ) (v : I → ℤ) (m : ℤ) (hm : m ≠ 0)
@@ -64,21 +64,19 @@ theorem mem_monomialExponents_of_smul {I : Type} [Fintype I] {K : Type} [Field K
   rw [← zpow_mul, Pi.smul_apply, smul_eq_mul, mul_comm]
 
 /- English proof (translation)
-Introduce `X _ S I _ ε K _ k₀ hk n hn t h k`. Use `set P := monomialExponents k₀ t with hP`. Establish `hv : ∀ a b : X, (fun k => (ε k : LinearMap.BilinForm ℤ X) a b) ∈ P` using `fun a b => mem_monomialExponents_of_smul k₀ t _ n hn (h a b)`. Use `haveI : NoZeroSMulDivisors ℤ ((I → ℤ) ⧸ P) := by`. Use `⟨fun {c x} hx => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Take `⟨v, rfl⟩` from `P.mkQ_surjective x`. Distinguish the cases in `hc : c = 0`. Conclude with `Or.inl hc`. Use `right`. Rewrite `hx` using `[← map_smul]`.
+Prove the first alternative. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hx`, the goal using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `mem_monomialExponents_of_smul k₀ t v c hc hx`. Use `haveI : Module.Free ℤ ((I → ℤ) ⧸ P) := Module.free_of_finite_type_torsion_free'`. Establish `key : P.mkQ (Pi.single k 1) = 0`. Rewrite using `[← Module.forall_dual_apply_eq_zero_iff ℤ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Introduce `φ`. Establish `hz : ∑ j, φ (P.mkQ (Pi.single j 1)) • ε j = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `a b`. Establish `h0 : φ (P.mkQ (fun k => (ε k : LinearMap.BilinForm ℤ X) a b)) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero P).mpr (hv a b), map_zero]`. Establish `h1 : (fun k => (ε k : LinearMap.BilinForm ℤ X) a b) = ∑ j, (ε j : LinearMap.BilinForm ℤ X) a b • (Pi.single j 1 : I → ℤ)`. Use function extensionality and compare the values at `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite `h0` using `[h1, map_sum, map_sum]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Simplify using `only [map_smul, smul_eq_mul] at h0`. Simplify using `only [AddSubmonoidClass.coe_finset_sum, Submodule.coe_smul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, ZeroMemClass.coe_zero, LinearMap.zero_apply]`. Rewrite using `[← h0]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Conclude with `Fintype.linearIndependent_iff.mp ε.linearIndependent _ hz k`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite `key` using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, hP, mem_monomialExponents]`. Use `key using 2` and compare the differences between its conclusion and the goal. Rewrite using `[Finset.prod_eq_single k]`. Simplify using the standard rewrite rules. Introduce `j _ hj`.
-
-Simplify using `[Pi.single_apply, hj]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem mem_subfield_of_bilinForm_monomials :
     ∀ (X : Type) [AddCommGroup X] (S : Submodule ℤ (LinearMap.BilinForm ℤ X)) (I : Type) [Fintype I]

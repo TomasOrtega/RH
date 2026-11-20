@@ -8,16 +8,16 @@ namespace RootFieldNumerics.L3
 variable {Ψ : Type} [Fintype Ψ] {N : ℕ}
 
 /- English proof (translation)
-Simplify using `[permExp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem permExp_apply (σ : Ψ → Equiv.Perm (Fin N)) (x : Ψ × Fin N) :
     permExp σ x = N - 1 - ((σ x.1 x.2 : Fin N) : ℕ) := by
   simp [permExp]
 
 /- English proof (translation)
-Introduce `σ σ' h`. Use function extensionality and compare the values at `τ`. Use extensionality with `i`. Establish `h1` using `DFunLike.congr_fun h (τ, i)`. Rewrite `h1` using `[permExp_apply, permExp_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `(σ τ i).2`. Establish `h3` using `(σ' τ i).2`. Simplify using `only at h1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Simplify by unfolding definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem permExp_injective :
     Function.Injective (permExp : (Ψ → Equiv.Perm (Fin N)) → (Ψ × Fin N) →₀ ℕ) := by
@@ -32,7 +32,7 @@ theorem permExp_injective :
   omega
 
 /- English proof (translation)
-Rewrite using `[Finsupp.degree_eq_sum, Fintype.sum_prod_type]`. Simplify using `only [permExp_apply, Pi.one_apply, Equiv.Perm.one_apply]`. Rewrite using `[Finset.sum_const, Finset.card_univ, smul_eq_mul, dimFl, Fin.sum_univ_eq_sum_range (fun i => N - 1 - i) N, Finset.sum_range_reflect (fun i => i) N, Finset.sum_range_id]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem degree_permExp_one :
     (permExp (1 : Ψ → Equiv.Perm (Fin N))).degree = dimFl Ψ N := by
@@ -43,7 +43,7 @@ theorem degree_permExp_one :
     Finset.sum_range_id]
 
 /- English proof (translation)
-Unfold `degFl`. Rewrite using `[Finset.sum_eq_single (1 : Ψ → Equiv.Perm (Fin N))]`. Simplify using `[← mul_pow]`. Introduce `σ _ hσ`. Rewrite using `[coeff_monomial, if_neg (fun h => hσ (permExp_injective h).symm), mul_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -59,25 +59,25 @@ theorem degFl_monomial_one [DecidableEq Ψ] :
 end RootFieldNumerics.L3
 
 /- English proof (translation)
-Introduce `Ψ _ _ N j τ h1 hj`. Use `⟨⟨_, isHomogeneous_monomial _ RootFieldNumerics.L3.degree_permExp_one, RootFieldNumerics.L3.degFl_monomial_one⟩, ?_⟩` and prove the remaining obligations. Set `i0 : Fin N` to `⟨j - 1, by omega⟩`. Set `i1 : Fin N` to `⟨j, hj⟩`. Set `m : (Ψ × Fin N) →₀ ℕ` to `permExp (1 : Ψ → Equiv.Perm (Fin N)) - Finsupp.single (τ, i0) 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hm : Finsupp.single (τ, i0) 1 + m = permExp (1 : Ψ → Equiv.Perm (Fin N))`. Apply `add_tsub_cancel_of_le` to reduce the goal to its premises. Rewrite using `[Finsupp.single_le_iff, RootFieldNumerics.L3.permExp_apply]`. Simplify using `only [Pi.one_apply, Equiv.Perm.one_apply, i0]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `hdeg : m.degree = dimFl Ψ N - 1`. Rewrite using `[← RootFieldNumerics.L3.degree_permExp_one, ← hm, map_add, Finsupp.degree_single]`. Use linear arithmetic over natural numbers and integers. Establish `h01 : i0 ≠ i1`. Introduce `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [i0, i1] at this`. Use linear arithmetic over natural numbers and integers. Establish `hm0 : m (τ, i0) = N - 1 - j`. Simplify using `only [m, Finsupp.tsub_apply, RootFieldNumerics.L3.permExp_apply, Finsupp.single_eq_same, Pi.one_apply, Equiv.Perm.one_apply, i0]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Establish `hm1 : m (τ, i1) = N - 1 - j`. Establish `: (Finsupp.single (τ, i0) 1 : (Ψ × Fin N) →₀ ℕ) (τ, i1) = 0` using `Finsupp.single_eq_of_ne' (by simpa using h01)`. Simplify using `only [m, Finsupp.tsub_apply, RootFieldNumerics.L3.permExp_apply, this, Pi.one_apply, Equiv.Perm.one_apply, i1]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use `⟨monomial m ((-1 : ℝ) ^ dimFl Ψ N), isHomogeneous_monomial _ hdeg, ?_⟩` and prove the remaining obligations. Use `Eq.trans ?_ (RootFieldNumerics.L3.degFl_monomial_one (Ψ := Ψ) (N := N))` and prove the remaining obligations. Unfold `degFl`. Use `congr 1`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Rewrite using `[pkLow, Finset.sum_mul, coeff_sum, Finset.sum_eq_single i0]`. Rewrite using `[X_pow_eq_monomial, monomial_mul, one_mul, hm]`. Introduce `i hi hi0`. Rewrite using `[X_pow_eq_monomial, monomial_mul, coeff_monomial, if_neg]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Establish `hi1 : i ≠ i1`. Introduce `h'`. Rewrite `hi` using `[Finset.mem_filter, h']`. Simplify using `[i1] at hi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e0` using `DFunLike.congr_fun h (τ, i0)`. Establish `e1` using `DFunLike.congr_fun h (τ, i1)`. Rewrite `e0` using `[Finsupp.add_apply, Finsupp.single_eq_of_ne' (by simpa using hi0), hm0, RootFieldNumerics.L3.permExp_apply]`. Rewrite `e1` using `[Finsupp.add_apply, Finsupp.single_eq_of_ne' (by simpa using hi1), hm1, RootFieldNumerics.L3.permExp_apply]`. Simplify using `only at e0 e1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify by unfolding definitions.
 
-Establish `h2` using `(σ τ i0).2`. Establish `h3` using `(σ τ i1).2`. Conclude with `h01 ((σ τ).injective (Fin.ext (by omega)))`. Introduce `h`. Conclude with `absurd (by simp only [Finset.mem_filter, Finset.mem_univ, true_and, i0]; omega) h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem RootFieldNumerics.exists_degree_one_class : ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (j : ℕ) (τ : Ψ), 1 ≤ j → j < N → (∃ Q : RP Ψ N, Q.IsHomogeneous (dimFl Ψ N) ∧ degFl Q = 1) ∧ ∃ Q : RP Ψ N, Q.IsHomogeneous (dimFl Ψ N - 1) ∧ degFl (pkLow j τ 1 * Q) = 1 := by
   intro Ψ _ _ N j τ h1 hj

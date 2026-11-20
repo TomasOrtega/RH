@@ -32,9 +32,9 @@ private theorem blk_val' (x y : GL (Fin 2) R) :
     (blk x y).val = Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks x.val 0 0 y.val) := rfl
 
 /- English proof (translation)
-Take `⟨i, rfl⟩` from `finSumFinEquiv.surjective i`. Take `⟨j, rfl⟩` from `finSumFinEquiv.surjective j`. Simplify using `only [blk_val', Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply]`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Rewrite `hi` using `[vl]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Both sides reduce to the same expression. Rewrite `hj` using `[vr]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem blk_low (x y : GL (Fin 2) R) (i j : Fin (2 + 2)) (hi : 2 ≤ (i : ℕ)) (hj : (j : ℕ) < 2) :
     (blk x y).val i j = 0 := by
@@ -48,11 +48,11 @@ private theorem blk_low (x y : GL (Fin 2) R) (i j : Fin (2 + 2)) (hi : 2 ≤ (i 
   · rw [vr] at hj; omega
 
 /- English proof (translation)
-Introduce `i j hij`. Take `⟨i, rfl⟩` from `finSumFinEquiv.surjective i`. Take `⟨j, rfl⟩` from `finSumFinEquiv.surjective j`. Simplify using `only [blk_val', Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply]`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h : ((finSumFinEquiv (Sum.inl j) : Fin (2 + 2)) : ℕ) < (finSumFinEquiv (Sum.inl i) : Fin (2 + 2))` using `hij`. Rewrite `h` using `[vl, vl]`. Conclude with `hx h`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Both sides reduce to the same expression. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h : ((finSumFinEquiv (Sum.inr j) : Fin (2 + 2)) : ℕ) < (finSumFinEquiv (Sum.inr i) : Fin (2 + 2))` using `hij`. Rewrite `h` using `[vr, vr]`. Conclude with `hy (show (j : ℕ) < i by omega)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem blk_tri (x y : GL (Fin 2) R) (hx : x.val.IsUpperTriangular) (hy : y.val.IsUpperTriangular) :
     (blk x y).val.IsUpperTriangular := by
@@ -71,7 +71,7 @@ private theorem blk_tri (x y : GL (Fin 2) R) (hx : x.val.IsUpperTriangular) (hy 
     exact hy (show (j : ℕ) < i by omega)
 
 /- English proof (translation)
-Introduce `i j hij`. Establish `h : (j : ℕ) < i` using `hij`. Establish `hne : i ≠ j` using `fun e => by subst e; omega`. Simplify using `only [coe_unipGL, unipMatrix, Matrix.add_apply, blockEntry_apply, Matrix.one_apply_ne hne, zero_add]`. Rewrite using `[dif_neg (by omega)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem unip_tri (X : UPos (2 + 2) 2 → R) : (unipGL X).val.IsUpperTriangular := by
   intro i j hij
@@ -81,11 +81,11 @@ private theorem unip_tri (X : UPos (2 + 2) 2 → R) : (unipGL X).val.IsUpperTria
   rw [dif_neg (by omega)]
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨fun p => (A * blockEntry Z * B) p.1.1 p.1.2, ?_⟩`. Use extensionality with `i j`. Rewrite using `[blockEntry_apply]`. Use `split_ifs with h`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_apply, Finset.sum_mul]`. Use `Finset.sum_eq_zero fun b _ => Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Rewrite using `[blockEntry_apply]`. Use `split_ifs with h'`. Distinguish the cases in `hi : 2 ≤ (i : ℕ)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hA i a hi h'.1, zero_mul, zero_mul]`. Rewrite using `[hB b j h'.2 (by omega), mul_zero]`. Rewrite using `[mul_zero, zero_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sandwich {A B : Matrix (Fin (2 + 2)) (Fin (2 + 2)) R}
     (hA : ∀ i a : Fin (2 + 2), 2 ≤ (i : ℕ) → (a : ℕ) < 2 → A i a = 0)
@@ -106,9 +106,9 @@ private theorem sandwich {A B : Matrix (Fin (2 + 2)) (Fin (2 + 2)) R}
     · rw [mul_zero, zero_mul]
 
 /- English proof (translation)
-Take `⟨Y, hY⟩` from `sandwich (blk_low x y) (blk_low x⁻¹ y⁻¹) X`. Use `⟨Y, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_inv_eq_iff_eq_mul]`. Apply `Units.ext` to reduce the goal to its premises. Establish `e : (blk x y)⁻¹ = blk x⁻¹ y⁻¹` using `Units.ext rfl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `only [Units.val_mul, coe_unipGL, unipMatrix]`. Rewrite using `[← hY, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, ← Units.val_mul, mul_inv_cancel, Units.val_one, e]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem blk_unip (x y : GL (Fin 2) R) (X : UPos (2 + 2) 2 → R) :
     ∃ Y : UPos (2 + 2) 2 → R, blk x y * unipGL X = unipGL Y * blk x y := by
@@ -121,7 +121,7 @@ private theorem blk_unip (x y : GL (Fin 2) R) (X : UPos (2 + 2) 2 → R) :
   rw [← hY, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, ← Units.val_mul, mul_inv_cancel, Units.val_one, e]
 
 /- English proof (translation)
-Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(Continuous.matrix_fromBlocks (Units.continuous_val.comp continuous_fst) continuous_const continuous_const (Units.continuous_val.comp continuous_snd)).matrix_reindex _ _`. Conclude with `(Continuous.matrix_fromBlocks (Units.continuous_coe_inv.comp continuous_fst) continuous_const continuous_const (Units.continuous_coe_inv.comp continuous_snd)).matrix_reindex _ _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem blk_cont' [TopologicalSpace R] [IsTopologicalRing R] :
     Continuous fun p : GL (Fin 2) R × GL (Fin 2) R => blk p.1 p.2 := by
@@ -132,9 +132,9 @@ private theorem blk_cont' [TopologicalSpace R] [IsTopologicalRing R] :
       (Units.continuous_coe_inv.comp continuous_snd)).matrix_reindex _ _
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Take `⟨i, rfl⟩` from `finSumFinEquiv.surjective i`. Take `⟨j, rfl⟩` from `finSumFinEquiv.surjective j`. Simplify using `only [blk_val', Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, coe_diagUnits, Matrix.fromBlocks_diagonal, Matrix.diagonal_apply, EmbeddingLike.apply_eq_iff_eq]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `rcases i with i | i <;> simp only [Sum.elim_inl, Sum.elim_inr] <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem blk_diag (d : Fin (2 + 2) → Rˣ) :
     diagUnits (2 + 2) d = blk (diagUnits 2 fun i => d (Fin.castAdd 2 i)) (diagUnits 2 fun i => d (Fin.natAdd 2 i)) := by
@@ -149,25 +149,21 @@ private theorem blk_diag (d : Fin (2 + 2) → Rˣ) :
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `K _ _`. Take `⟨ω₄, hc₄, hb₄, t₄, ht₄, h₄⟩` from `exists_siegelSet (K := K) (2 + 2)`. Take `⟨ω₂, hc₂, hb₂, t₂, ht₂, h₂⟩` from `exists_siegelSet (K := K) 2`. Take `⟨-, -, C, hC, -, hCX⟩` from `volOne (K := K) (2 + 2) 2`. Take `⟨hlv, -, -, -, -, hmul, -, -, -, -, hK, hmax⟩` from `blkLaws (K := K)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hz : zt K 0 = 1`. Rewrite using `[zt, ← map_one (centralSection K 2)]`. Conclude with `congrArg _ (Subtype.ext Real.exp_zero)`. Establish `hlv0 : ∀ a b : G1 K 2, ((lv a b 0 : G1 K (2 + 2)) : AdelicGLn.AdelicGL K (2 + 2)) = blk (a : AdelicGLn.AdelicGL K 2) (b : AdelicGLn.AdelicGL K 2)` using `fun a b => by`. Rewrite using `[hlv, neg_zero, hz, mul_one, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `F : (UPos (2 + 2) 2 → 𝔸[K]) × AdelicGLn.AdelicGL K 2 × AdelicGLn.AdelicGL K 2 → AdelicGLn.AdelicGL K (2 + 2)` to `fun p => unipGL p.1 * blk p.2.1 p.2.2`. Establish `hF : Continuous F` using `(continuous_unipGL.comp continuous_fst).mul (blk_cont'.comp continuous_snd)`. Use `⟨ω₄ ∪ F '' (C ×ˢ ω₂ ×ˢ ω₂), min t₄ t₂, ⟨hc₄.union ((hC.prod (hc₂.prod hc₂)).image hF), ?_⟩, lt_min ht₄ ht₂, fun x => ?_, fun z => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ (h | ⟨p, ⟨-, h1, h2⟩, rfl⟩)`. Conclude with `hb₄ h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Subgroup.mul_mem _ (mem_adelicBorel.2 (unip_tri p.1)) (mem_adelicBorel.2 (blk_tri _ _ (mem_adelicBorel.1 (hb₂ h1)) (mem_adelicBorel.1 (hb₂ h2))))`. Take `⟨γ, b, hb, _, ⟨r, hr, hrt, rfl⟩, k, hk, e⟩` from `h₄ x`. Use `⟨⟨AdelicGLn.diagonal K _ γ, rationalGL_le_normOneGL ⟨γ, rfl⟩⟩, ⟨γ, rfl⟩, r, ⟨hr, b, Or.inl hb, k, hk, e⟩, fun i j hij => ?_⟩` and prove the remaining obligations. Conclude with `(mul_le_mul_of_nonneg_right (min_le_left _ _) (hr j).le).trans (hrt i j hij)`. Take `⟨X, m₁, m₂, s, k, hk, rfl⟩` from `iwa z`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨γ₁, b₁, hb₁, _, ⟨r₁, hr₁, hrt₁, rfl⟩, k₁, hk₁, e₁⟩` from `h₂ ((m₁ : AdelicGLn.AdelicGL K 2) * zt K s)`. Take `⟨γ₂, b₂, hb₂', _, ⟨r₂, hr₂, hrt₂, rfl⟩, k₂, hk₂, e₂⟩` from `h₂ ((m₂ : AdelicGLn.AdelicGL K 2) * zt K (-s))`. Set `g₁ : Gam K 2` to `⟨⟨AdelicGLn.diagonal K _ γ₁, rationalGL_le_normOneGL ⟨γ₁, rfl⟩⟩, ⟨γ₁, rfl⟩⟩`. Set `g₂ : Gam K 2` to `⟨⟨AdelicGLn.diagonal K _ γ₂, rationalGL_le_normOneGL ⟨γ₂, rfl⟩⟩, ⟨γ₂, rfl⟩⟩`. Take `⟨Y, hY⟩` from `blk_unip (AdelicGLn.diagonal K _ γ₁) (AdelicGLn.diagonal K _ γ₂) X`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨ξ, hξ⟩` from `hCX Y`. Establish `hρ : ∀ i : Fin (2 + 2), 0 < (Fin.append r₁ r₂ : Fin (2 + 2) → ℝ) i` using `fun i => by`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) i` and prove the remaining obligations. Rewrite using `[Fin.append_left]`. Conclude with `hr₁ i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Fin.append_right]`. Conclude with `hr₂ i`. Establish `hkk : blk k₁ k₂ ∈ (maxCompact : Subgroup (AdelicGLn.AdelicGL K (2 + 2)))`. Use `hK ⟨k₁, (hmax 2).2 k₁ hk₁⟩ hk₁ ⟨k₂, (hmax 2).2 k₂ hk₂⟩ hk₂` as an intermediate fact. Rewrite using `[← hlv0 ⟨k₁, (hmax 2).2 k₁ hk₁⟩ ⟨k₂, (hmax 2).2 k₂ hk₂⟩]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `this`. Establish `hk' : (k : AdelicGLn.AdelicGL K (2 + 2)) ∈ (maxCompact : Subgroup (AdelicGLn.AdelicGL K (2 + 2)))` using `hk`. Establish `hmem : F (ξ.1 + Y, b₁, b₂) ∈ ω₄ ∪ F '' (C ×ˢ ω₂ ×ˢ ω₂)` using `Or.inr (Set.mem_image_of_mem F ⟨hξ, hb₁, hb₂'⟩)`. Establish `hδ : nn ξ.1 * lv (g₁ : G1 K 2) (g₂ : G1 K 2) 0 ∈ PK K` using `((pkLaws (K := K)).2.1 _).2 ⟨ξ, g₁, g₂, rfl⟩`. Use `⟨nn ξ.1 * lv (g₁ : G1 K 2) (g₂ : G1 K 2) 0, hδ, Fin.append r₁ r₂, ⟨hρ, F (ξ.1 + Y, b₁, b₂), hmem, blk k₁ k₂ * (k : AdelicGLn.AdelicGL K (2 + 2)), Subgroup.mul_mem _ hkk hk', ?_⟩, ?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[blk_diag]`. Simplify using `only [Fin.append_left, Fin.append_right, F, Subgroup.coe_mul, hlv0, coe_unipOne, unipGL_add]`. Rewrite using `[hlv]`. Express the relevant statement in the definitionally equal form `unipGL ξ.1 * blk (AdelicGLn.diagonal K _ γ₁) (AdelicGLn.diagonal K _ γ₂) * _ = _`. Simplify using `only [← mul_assoc]`.
-
-Rewrite using `[mul_assoc (unipGL ξ.1) _ (unipGL X), hY, ← mul_assoc, mul_assoc (unipGL ξ.1 * unipGL Y), hmul, mul_assoc (unipGL ξ.1 * unipGL Y) (blk b₁ b₂), hmul, mul_assoc (unipGL ξ.1 * unipGL Y) (blk (b₁ * _) (b₂ * _)), hmul, ← e₁, ← e₂]`. Conclude with `(mul_le_mul_of_nonneg_right (min_le_right _ _) (hr₁ 1).le).trans (hrt₁ 0 1 rfl)`. Conclude with `(mul_le_mul_of_nonneg_right (min_le_right _ _) (hr₂ 1).le).trans (hrt₂ 0 1 rfl)`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.redEx :
     ∀ {K : Type} [Field K] [NumberField K], ∃ (ω : Set (AdelicGLn.AdelicGL K (2 + 2))) (t : ℝ), Red ω t := by

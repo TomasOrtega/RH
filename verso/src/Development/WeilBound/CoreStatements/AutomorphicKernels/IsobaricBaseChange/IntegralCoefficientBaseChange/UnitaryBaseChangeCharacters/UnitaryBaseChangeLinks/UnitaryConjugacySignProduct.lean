@@ -22,61 +22,61 @@ namespace GlobalTheory.UnitaryClasses
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_conj_GL_of_charpoly_eq_of_separable`.
+A detailed English derivation is pending.
 -/
 theorem conjGL : ∀ (K : Type) [Field K] (n : ℕ) (a b : GL (Fin n) K), a.val.charpoly = b.val.charpoly → a.val.charpoly.Separable → ∃ h : GL (Fin n) K, b = h⁻¹ * a * h := GlobalTheory.T.exists_conj_GL_of_charpoly_eq_of_separable
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_GL_charpoly_eq_of_mem_Ell`.
+A detailed English derivation is pending.
 -/
 theorem companionEll : ∀ (E : Type) [Field E] [NumberField E] (n : ℕ), ∀ P ∈ Ell E n, ∃ a : GL (Fin n) E, a.val.charpoly = P := GlobalTheory.T.exists_GL_charpoly_eq_of_mem_Ell
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_unitary_conj_iff_exists_centralizer_norm`.
+A detailed English derivation is pending.
 -/
 theorem unitConj : ∀ (K : Type) [Field K] (σ : K →+* K) (n : ℕ) (γ h : GL (Fin n) K), (∃ g ∈ UJ σ (1 : Matrix (Fin n) (Fin n) K), h⁻¹ * γ * h = g⁻¹ * γ * g) ↔ ∃ c : Matrix (Fin n) (Fin n) K, c * γ.val = γ.val * c ∧ cT σ c * c = (h.val * cT σ h.val)⁻¹ := GlobalTheory.T.exists_unitary_conj_iff_exists_centralizer_norm
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.nonsplit_place_norm_centraliser`.
+A detailed English derivation is pending.
 -/
 theorem normHasse : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (n : ℕ) (γ h : GL (Fin n) E), γ ∈ UE E n → γ.val.charpoly ∈ Ell E n → h⁻¹ * γ * h ∈ UE E n → (∀ w : Pl E, ¬ IsSplitAt w → ∃ c : Matrix (Fin n) (Fin n) (w.adicCompletion E), c * (GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) γ).val = (GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) γ).val * c ∧ cT (cj w) c * c = ((GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) h).val * cT (cj w) (GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) h).val)⁻¹) → ∃ c : Matrix (Fin n) (Fin n) E, c * γ.val = γ.val * c ∧ cT (IsCMField.complexConj E).toRingEquiv.toRingHom c * c = (h.val * cT (IsCMField.complexConj E).toRingEquiv.toRingHom h.val)⁻¹ := GlobalTheory.T.nonsplit_place_norm_centraliser
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.finprod_nonsplit_sign_totallyPositive_eq_one`.
+A detailed English derivation is pending.
 -/
 theorem signProd : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ S : Set (Pl E), IsSection S → ∀ d : E, d ≠ 0 → (∀ τ : E →+* ℂ, ∃ r : ℝ, 0 < r ∧ τ d = r) → ∏ᶠ w ∈ S, (if IsSplitAt w then (1 : ℂ) else (-1) ^ ordL (algebraMap E (w.adicCompletion E) d)) = 1 := GlobalTheory.T.finprod_nonsplit_sign_totallyPositive_eq_one
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.gram_det_hermitian_totally_positive`.
+A detailed English derivation is pending.
 -/
 theorem gramPos : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (V : Submodule E (Fin n → E)), (gramOn (IsCMField.complexConj E).toRingEquiv.toRingHom 1 V).det ≠ 0 ∧ ∀ τ : E →+* ℂ, ∃ r : ℝ, 0 < r ∧ τ (gramOn (IsCMField.complexConj E).toRingEquiv.toRingHom 1 V).det = r := GlobalTheory.T.gram_det_hermitian_totally_positive
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.sesquilinearDetOrdSignOnKernel_conj_GL`.
+A detailed English derivation is pending.
 -/
 theorem sgnConj : ∀ (K : Type) [Field K] [Valued K (WithZero (Multiplicative ℤ))] (σ : K →+* K), (∀ x, Valued.v (σ x) = Valued.v x) → ∀ (n : ℕ) (Q : K[X]) (a k : GL (Fin n) K), sgnOn σ 1 Q (k⁻¹ * a * k).val = sgnOn σ (cT σ (k⁻¹).val * (k⁻¹).val) Q a.val := GlobalTheory.T.sesquilinearDetOrdSignOnKernel_conj_GL
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.gramKernelSign_nonsplit_baseChange_eq`.
+A detailed English derivation is pending.
 -/
 theorem baseChangeSign : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (w : Pl E), ¬ IsSplitAt w → ∀ (n : ℕ) (H A : Matrix (Fin n) (Fin n) E), (-1 : ℂ) ^ ordL (gramOn (cj w) (H.map (algebraMap E (w.adicCompletion E))) (LinearMap.ker (Matrix.toLin' (A.map (algebraMap E (w.adicCompletion E)))))).det = (-1) ^ ordL (algebraMap E (w.adicCompletion E) (gramOn (IsCMField.complexConj E).toRingEquiv.toRingHom H (LinearMap.ker (Matrix.toLin' A))).det) := GlobalTheory.T.gramKernelSign_nonsplit_baseChange_eq
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.hermitian_local_data_almost_all`.
+A detailed English derivation is pending.
 -/
 theorem existForm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ S : Set (Pl E), IsSection S → ∀ (n : ℕ) (γ₀ : GL (Fin n) E), γ₀.val.charpoly ∈ Ell E n → ∀ H : ∀ w : Pl E, Matrix (Fin n) (Fin n) (w.adicCompletion E), (∀ w, ¬ IsSplitAt w → IsHerm (cj w) (H w) ∧ (H w).det ≠ 0 ∧ cT (cj w) (γ₀.val.map (algebraMap E (w.adicCompletion E))) * H w * γ₀.val.map (algebraMap E (w.adicCompletion E)) = H w) → (∀ᶠ w in cofinite, ¬ IsSplitAt w → ∃ k m : GL (Fin n) (w.adicCompletion E), k⁻¹ * GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) γ₀ * k ∈ GlobalTheory.LFun.KGL w n ∧ m ∈ GlobalTheory.LFun.KGL w n ∧ m.val = cT (cj w) k.val * H w * k.val) → (∀ P₁ : E[X], P₁.Monic → P₁ ∣ γ₀.val.charpoly → ∏ᶠ w ∈ S, (if IsSplitAt w then (1 : ℂ) else sgnOn (cj w) (H w) (atPl w P₁) (γ₀.val.map (algebraMap E (w.adicCompletion E)))) = 1) → ∃ H' : Matrix (Fin n) (Fin n) E, IsHerm (IsCMField.complexConj E).toRingEquiv.toRingHom H' ∧ cT (IsCMField.complexConj E).toRingEquiv.toRingHom γ₀.val * H' * γ₀.val = H' ∧ (∀ τ : E →+* ℂ, ∃ Q : Matrix (Fin n) (Fin n) ℂ, Q.det ≠ 0 ∧ H'.map τ = cT (starRingEnd ℂ) Q * Q) ∧ ∀ w, ¬ IsSplitAt w → ∃ c : GL (Fin n) (w.adicCompletion E), c.val * γ₀.val.map (algebraMap E (w.adicCompletion E)) = γ₀.val.map (algebraMap E (w.adicCompletion E)) * c.val ∧ H'.map (algebraMap E (w.adicCompletion E)) = cT (cj w) c.val * H w * c.val := GlobalTheory.T.hermitian_local_data_almost_all
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.landherr_standard_definite_hermitian_cmField`.
+A detailed English derivation is pending.
 -/
 theorem landherrStd : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (n : ℕ) (H : Matrix (Fin n) (Fin n) E), IsHerm (IsCMField.complexConj E).toRingEquiv.toRingHom H → (∀ τ : E →+* ℂ, ∃ Q : Matrix (Fin n) (Fin n) ℂ, Q.det ≠ 0 ∧ H.map τ = cT (starRingEnd ℂ) Q * Q) → (∀ w : Pl E, ¬ IsSplitAt w → ∃ g : Matrix (Fin n) (Fin n) (w.adicCompletion E), H.map (algebraMap E (w.adicCompletion E)) = cT (cj w) g * g) → ∃ h : GL (Fin n) E, H = cT (IsCMField.complexConj E).toRingEquiv.toRingHom h.val * h.val := GlobalTheory.T.landherr_standard_definite_hermitian_cmField
 
 /- English proof (translation)
-Take `⟨h, hh⟩` from `conjGL E n γ.1 γ'.1 (h1.trans h2.symm) (h1 ▸ hP.2.2.1)`. Establish `hγ' : h⁻¹ * γ.1 * h ∈ UE E n` using `hh ▸ γ'.2`. Take `⟨c, hc1, hc2⟩` from `normHasse E hU n γ.1 h γ.2 (h1 ▸ hP) hγ' (fun w hw => by`. Take `⟨g, hg⟩` from `hloc w (mem_S hS hw)`. Establish `hUL : UL n w = UJ (cj w) 1` using `by unfold UL; rw [if_neg hw]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `(unitConj _ (cj w) n _ _).1 ⟨g.1, hUL ▸ g.2, ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val hg` as an intermediate fact. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, locPt_val hU] at this`. Rewrite using `[← map_inv, ← map_mul, ← map_mul, ← hh]`. Conclude with `this)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg, hgg⟩` from `(unitConj E _ n γ.1 h).2 ⟨c, hc1, hc2⟩`. Conclude with `⟨⟨g, hg⟩, Subtype.ext (by simp only [Subgroup.coe_mul, Subgroup.coe_inv]; rw [hh, hgg])⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem part1 (hU : Unr E) {n : ℕ} {S : Set (Pl E)} (hS : IsSection S) {P : E[X]} (hP : P ∈ Ell E n) (γ γ' : UE E n)
     (h1 : γ.1.val.charpoly = P) (h2 : γ'.1.val.charpoly = P)
@@ -94,11 +94,11 @@ theorem part1 (hU : Unr E) {n : ℕ} {S : Set (Pl E)} (hS : IsSection S) {P : E[
   exact ⟨⟨g, hg⟩, Subtype.ext (by simp only [Subgroup.coe_mul, Subgroup.coe_inv]; rw [hh, hgg])⟩
 
 /- English proof (translation)
-Take `⟨hd0, hdpos⟩` from `gramPos E n (LinearMap.ker (Matrix.toLin' (aeval γ.1.val P₁)))`. Rewrite using `[← signProd E hU S hS _ hd0 hdpos]`. Apply `finprod_mem_congr rfl` to reduce the goal to its premises. Introduce `w _`. Distinguish the cases in `hw : IsSplitAt w`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hw]`. Unfold `kapSign`. Rewrite using `[if_pos hw]`. Rewrite using `[if_neg hw, kapSign_eq w hw, locPt_val hU]`. Unfold `sgnOn`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `hA` using `aeval_map_mat w γ.1.val P₁`. Use `baseChangeSign E hU w hw n 1 (aeval γ.1.val P₁)` as an intermediate fact. Rewrite `this` using `[Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[← this, ← hA]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem part2 (hU : Unr E) {n : ℕ} {S : Set (Pl E)} (hS : IsSection S) (γ : UE E n) (P₁ : E[X]) :
     ∏ᶠ w ∈ S, kapSign n w (atPl w P₁) (locPt w γ).1 = 1 := by
@@ -117,29 +117,25 @@ theorem part2 (hU : Unr E) {n : ℕ} {S : Set (Pl E)} (hS : IsSection S) (γ : U
     rfl
 
 /- English proof (translation)
-Take `⟨γ₀, hγ₀⟩` from `companionEll E n P hP`. Establish `hAcp : ∀ w : Pl E, (GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) γ₀).val.charpoly = atPl w P` using `fun w => by rw [← hγ₀]; exact Matrix.charpoly_map _ _`. Establish `hsep : ∀ w : Pl E, (atPl w P).Separable` using `fun w => hP.2.2.1.map`. Establish `hk : ∀ w : Pl E, ∃ k : GLw n w, (y w).1 = k⁻¹ * GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) γ₀ * k` using `fun w => conjGL _ n _ (y w).1 ((hAcp w).trans (hy w).symm) (hAcp w ▸ hsep w)`. Use `choose k hk using hk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinvol : ∀ w : Pl E, ∀ x, cj w (cj w x) = x` using `fun w => (GlobalTheory.ConjAtPlace.main E hU w).2.1`. Establish `hval : ∀ w : Pl E, ∀ x, Valued.v (cj w x) = Valued.v x` using `fun w => (GlobalTheory.ConjAtPlace.main E hU w).2.2.1`. Establish `hUL : ∀ w : Pl E, ¬ IsSplitAt w → UL n w = UJ (cj w) 1` using `fun w hw => by unfold UL; rw [if_neg hw]`. Establish `hyU : ∀ w : Pl E, ¬ IsSplitAt w → cT (cj w) (y w).1.val * 1 * (y w).1.val = 1` using `fun w hw => by`. Establish `h3 : ∀ z : GLw n w, z ∈ UL n w → cT (cj w) z.val * 1 * z.val = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z hz`. Unfold `UL at hz`. Rewrite `hz` using `[if_neg hw]`. Conclude with `hz`. Conclude with `h3 _ (y w).2`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨H', hH'h, hH'i, hH'p, hH'l⟩` from `existForm E hU S hS n γ₀ (hγ₀ ▸ hP) (fun w => cT (cj w) ((k w)⁻¹).val * ((k w)⁻¹).val) (fun w hw => ⟨herm_of _ (hinvol w) _, det_ne _ _, inv_of_unit _ (k w) (GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) γ₀) (hk w ▸ hyU w hw)⟩) (hK.mono fun w hw _ => ⟨k w, 1, by rw [ …`. Use `Eq.trans ?_ (hsg P₁ hm (hγ₀ ▸ hd))` and prove the remaining obligations. Apply `finprod_mem_congr rfl` to reduce the goal to its premises. Introduce `w _`. Distinguish the cases in `hw : IsSplitAt w`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos hw]`. Unfold `kapSign`. Rewrite using `[if_pos hw]`. Rewrite using `[if_neg hw, kapSign_eq w hw, hk w, sgnConj _ (cj w) (hval w)] rfl)`. Take `⟨h, hh⟩` from `landherrStd E hU n H' hH'h hH'p (fun w hw => by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨c, -, hc⟩` from `hH'l w hw`. Conclude with `⟨((k w)⁻¹).val * c.val, by rw [hc, cT_mul]; simp only [Matrix.mul_assoc]⟩)`. Establish `hγU : h * γ₀ * h⁻¹ ∈ UE E n` using `unit_of_form _ γ₀ h (by rw [← hh]; exact hH'i)`. Use `⟨⟨_, hγU⟩, ?_, fun w hwS => ?_⟩` and prove the remaining obligations. Use `show (h.val * γ₀.val * (h⁻¹).val).charpoly = P`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.coe_units_inv, ← hγ₀]`. Conclude with `Matrix.charpoly_units_conj h γ₀.val`. Distinguish the cases in `hw : IsSplitAt w`. Establish `hb : ((locPt w (⟨_, hγU⟩ : UE E n) : UL n w) : GLw n w).val.charpoly = (y w).1.val.charpoly`. Rewrite using `[locPt_val hU, hy w, ← hAcp w]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `show ((h * γ₀ * h⁻¹ : GL (Fin n) E).val.map _).charpoly = (γ₀.val.map _).charpoly`. Rewrite using `[Matrix.charpoly_map, Matrix.charpoly_map]`. Use `congr 1`. Use `show (h.val * γ₀.val * (h⁻¹).val).charpoly = _`. Rewrite using `[Matrix.coe_units_inv]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Matrix.charpoly_units_conj h γ₀.val`. Take `⟨h', hh'⟩` from `conjGL _ n (y w).1 _ hb.symm ((hy w) ▸ hsep w)`. Establish `hmem : h' ∈ UL n w` using `by unfold UL; rw [if_pos hw]; trivial`. Conclude with `⟨⟨h', hmem⟩, Subtype.ext (by simpa using hh')⟩`. Take `⟨c, hc1, hc2⟩` from `hH'l w hw`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hg : (k w)⁻¹ * c * (GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) h)⁻¹ ∈ UL n w`. Rewrite using `[hUL w hw]`. Use `unit_of_two _ (k w) c (GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) h) _ hc2 ?_` and prove the remaining obligations. Rewrite using `[hh, Matrix.map_mul, cT_map hU w hw]`. Both sides reduce to the same expression.
-
-Use `⟨⟨_, hg⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv]`. Rewrite using `[locPt_val hU, hk w]`. Establish `hcA : c * GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) γ₀ = GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) γ₀ * c` using `Units.ext hc1`. Establish `key : ∀ x : GLw n w, c⁻¹ * (GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) γ₀ * (c * x)) = GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) γ₀ * x` using `fun x => by`.
-
-Rewrite using `[← mul_assoc _ c x, ← hcA, mul_assoc, inv_mul_cancel_left]`. Use `show GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) (h * γ₀ * h⁻¹) = _`. Simplify using `only [map_mul, map_inv, _root_.mul_inv_rev, inv_inv, mul_assoc, mul_inv_cancel_left, inv_mul_cancel_left, key]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem part3 (hU : Unr E) {n : ℕ} {S : Set (Pl E)} (hS : IsSection S) {P : E[X]} (hP : P ∈ Ell E n)
     (y : ∀ w : Pl E, UL n w) (hy : ∀ w, (y w).1.val.charpoly = atPl w P) (hK : ∀ᶠ w in cofinite, y w ∈ KL n w)
@@ -211,7 +207,7 @@ theorem part3 (hU : Unr E) {n : ℕ} {S : Set (Pl E)} (hS : IsSection S) {P : E[
       simp only [map_mul, map_inv, _root_.mul_inv_rev, inv_inv, mul_assoc, mul_inv_cancel_left, inv_mul_cancel_left, key]
 
 /- English proof (translation)
-Introduce `E _ _ _ hU n _ S hS P hP`. Conclude with `⟨fun γ γ' h1 h2 hl => part1 hU hS hP γ γ' h1 h2 hl, fun γ _ P₁ _ _ => part2 hU hS γ P₁, fun y hy hK hsg => part3 hU hS hP y hy hK hsg⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ n : ℕ, 1 ≤ n → ∀ (S : Set (Pl E)), IsSection S → ∀ P ∈ Ell E n, (∀ γ γ' : UE E n, γ.1.val.charpoly = P → γ'.1.val.charpoly = P → (∀ w ∈ S, ∃ g : UL n w, locPt w γ' = g⁻¹ * locPt w γ * g) → ∃ g : UE E n, γ' = g⁻¹ * γ * g) ∧ (∀ γ : UE E n, γ.1.val.charpoly = P → ∀ P₁ : E[X], P₁.Monic → P₁ ∣ P → ∏ᶠ w ∈ S, kapSign n w (atPl w P₁) (locPt w γ).1 = 1) ∧ ∀ y : ∀ w : Pl E, UL n w, (∀ w, (y w).1.val.charpoly = atPl w P) → (∀ᶠ w in cofinite, y w ∈ KL n w) → (∀ P₁ : E[X], P₁.Monic → P₁ ∣ P → ∏ᶠ w ∈ S, kapSign n w (atPl w P₁) (y w).1 = 1) → ∃ γ : UE E n, γ.1.val.charpoly = P ∧ ∀ w ∈ S, ∃ g : UL n w, locPt w γ = g⁻¹ * y w * g := by
   intro E _ _ _ hU n _ S hS P hP

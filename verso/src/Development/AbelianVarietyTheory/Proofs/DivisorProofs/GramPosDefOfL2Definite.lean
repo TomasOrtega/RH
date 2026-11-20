@@ -7,13 +7,13 @@ open scoped ComplexOrder Matrix
 namespace GlobalTheory.HSAmp
 
 /- English proof (translation)
-Introduce `S Y _ ι _ _ μ v hF hinj`. Take `⟨hH, hl⟩` from `GlobalTheory.T.gram_isHermitian_l2_eq_double_sum S Y ι μ v hF`. Use `Matrix.posDef_iff_dotProduct_mulVec.2 ⟨hH, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨-, h0, heq⟩` from `hl (fun i => (starRingEnd ℂ) (x i))`. Establish `hform : star x ⬝ᵥ (gram μ v *ᵥ x) = ((l2 μ v (fun i => (starRingEnd ℂ) (x i)) : ℝ) : ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[heq]`. Simplify using `only [dotProduct, Matrix.mulVec, Finset.mul_sum, Pi.star_apply, Complex.star_def, Complex.conj_conj]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hform]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : l2 μ v (fun i => (starRingEnd ℂ) (x i)) ≠ 0`. Introduce `h`. Apply `hx` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `congrFun (hinj _ h) i` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `using this`. Conclude with `lt_of_le_of_ne h0 (Ne.symm hne)` after adjusting the coercions.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem gram_posDef : ∀ (S : Type) (Y : S → Type) [∀ σ, MeasurableSpace (Y σ)] (ι : Type) [Fintype ι] [DecidableEq ι]
     (μ : ∀ σ, Measure (Y σ)) (v : ∀ σ, Y σ → ι → ℂ), IsFam μ v → (∀ c : ι → ℂ, l2 μ v c = 0 → c = 0) →

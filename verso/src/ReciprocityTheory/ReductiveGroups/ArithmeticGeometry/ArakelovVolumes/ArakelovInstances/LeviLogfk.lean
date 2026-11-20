@@ -16,7 +16,7 @@ def Ck (X : Data E r) (b : Frame X.Ψ r) (z u : V (nd X)) (τ : X.Ψ) (k : Fin (
     Sa (Nat.le_of_lt_succ k.isLt) (Dsg X) (Yd X b z u τ) a
 
 /- English proof (translation)
-Unfold `fk`. Rewrite using `[fY_zero]`. Use `Finset.prod_ne_zero_iff.mpr fun a _ => ?_` and prove the remaining obligations. Simplify using `only [Dsg, sgn]`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fk_zero (τ : X.Ψ) (k : Fin (r + 1)) : fk X b z u τ k 0 ≠ 0 := by
   unfold fk
@@ -26,9 +26,9 @@ theorem fk_zero (τ : X.Ψ) (k : Fin (r + 1)) : fk X b z u τ k 0 ≠ 0 := by
   split_ifs <;> norm_num
 
 /- English proof (translation)
-Establish `h0 : fk X b z u τ k 0 ≠ 0` using `fk_zero τ k`. Establish `hc : ContDiff ℝ 2 (fk X b z u τ k)`. Unfold `fk fY Gz`. Simplify using `only [Matrix.det_apply', Matrix.submatrix_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.add_apply, Matrix.one_apply, Matrix.smul_apply, smul_eq_mul]`. Simplify using `only [← starRingEnd_apply, ← Complex.conjCLE_apply, ← Complex.reCLM_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `fun_prop`. Establish `hl : ContDiffAt ℝ 2 Real.log (fk X b z u τ k 0)` using `Real.contDiffAt_log.mpr h0`. Simplify using `only [Real.log_abs]`. Conclude with `hl.comp 0 hc.contDiffAt`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cd_logfk (τ : X.Ψ) (k : Fin (r + 1)) :
     ContDiffAt ℝ 2 (fun v => Real.log |fk X b z u τ k v|) 0 := by
@@ -44,26 +44,26 @@ theorem cd_logfk (τ : X.Ψ) (k : Fin (r + 1)) :
   exact hl.comp 0 hc.contDiffAt
 
 /- English proof (translation)
-The claim follows from `core_levi (Nat.le_of_lt_succ k.isLt) (Dsg X) (Yd X b z u τ) (Dsg_ne X)`.
+A detailed English derivation is pending.
 -/
 theorem levi_logfk (τ : X.Ψ) (k : Fin (r + 1)) :
     levi (fun v => Real.log |fk X b z u τ k v|) 0 (fun _ => 1) = Ck X b z u τ k :=
   core_levi (Nat.le_of_lt_succ k.isLt) (Dsg X) (Yd X b z u τ) (Dsg_ne X)
 
 /- English proof (translation)
-Establish `hcont : ∀ τ k, ContinuousAt (fk X b z u τ k) 0` using `fun τ k => (contDiff_fY _ _ _).continuous.continuousAt`. Establish `hev : ∀ᶠ v in 𝓝 (0 : Fin 1 → ℂ), ∀ τ k, fk X b z u τ k v ≠ 0`. Rewrite using `[Filter.eventually_all]`. Introduce `τ`. Rewrite using `[Filter.eventually_all]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `k`. Conclude with `(hcont τ k).eventually_ne (fk_zero τ k)`. Establish `hBne : ∀ τ (k : Fin (r + 1)), ‖((mat b τ)⁻¹.submatrix (Fin.castLE (Nat.le_of_lt_succ k.isLt)) (Fin.castLE (Nat.le_of_lt_succ k.isLt))).det‖ ^ 2 ≠ 0` using `fun τ k => pow_ne_zero 2 (norm_ne_zero_iff.2 (det_lead_ne _ (upper_inv _ (hb τ).1 (fun a c h => (hb τ).2 a c h)) (by rw [Matrix.det_nonsing_inv, Ring.inverse_eq_inv']; exact inv_ne_zero (hb τ).1) _))`. Establish `hterm : ∀ τ (i : Fin r), (fun v => (la τ i : ℝ) * ((cB X b τ i.succ + Real.log |fk X b z u τ i.succ v|) - (cB X b τ i.castSucc + Real.log |fk X b z u τ i.castSucc v|))) = fun v => ((la τ i : ℝ) * (cB X b τ i.succ - cB X b τ i.castSucc) + (la τ i : ℝ) * Real.log |fk X b z u τ i.su …`. Introduce `τ i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `v`. Expand and normalize the polynomial expressions, which then agree. Establish `hcdt : ∀ τ (i : Fin r), ContDiffAt ℝ 2 (fun v => (la τ i : ℝ) * ((cB X b τ i.succ + Real.log |fk X b z u τ i.succ v|) - (cB X b τ i.castSucc + Real.log |fk X b z u τ i.castSucc v|))) 0`. Introduce `τ i`. Rewrite using `[hterm]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(contDiffAt_const.add (contDiffAt_const.mul (cd_logfk τ _))).add (contDiffAt_const.mul (cd_logfk τ _))`. Establish `hEq : (fun v : Fin 1 → ℂ => -2 * Real.log (X.nfac la (cpt X x0 (z + lineL u v)))) =ᶠ[𝓝 0] fun v => ∑ τ, ∑ i : Fin r, (la τ i : ℝ) * ((cB X b τ i.succ + Real.log |fk X b z u τ i.succ v|) - (cB X b τ i.castSucc + Real.log |fk X b z u τ i.castSucc v|))` using `by filter_upwards [hev] with v hv`. Establish `hd : ∀ τ k, dmin X.Gm (cpt X x0 (z + lineL u v)) τ k ≠ 0` using `fun τ k => by`. Rewrite using `[lineL_apply]`. Introduce `h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `dmin_line_norm (u := u) hb hgram v τ k`. Rewrite `h1` using `[h0, norm_zero]`. Conclude with `mul_ne_zero (hBne τ k) (abs_ne_zero.2 (hv τ k)) h1.symm`. Rewrite using `[neg2log_nfac X la _ hd]`. Use `Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lineL_apply, dmin_line_norm (u := u) hb hgram v τ _, dmin_line_norm (u := u) hb hgram v τ _, Real.log_mul (hBne _ _) (abs_ne_zero.2 (hv _ _)), Real.log_mul (hBne _ _) (abs_ne_zero.2 (hv _ _))]`. Both sides reduce to the same expression. Rewrite using `[levi_congr hEq, levi_finset_sum _ _ _ _ (fun τ _ => ContDiffAt.sum fun i _ => hcdt τ i)]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[levi_finset_sum _ _ _ _ (fun i _ => hcdt τ i)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hterm, levi_add_smul _ (contDiffAt_const.add (contDiffAt_const.mul (cd_logfk τ _))) (cd_logfk τ _), levi_affine _ _ _ _ _ (cd_logfk τ _), levi_logfk, levi_logfk]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem line_levi (hb : b ∈ Bor X.Ψ r) (hgram : ∀ τ, gram τ.1 X.Gm (mat (rmul (cpt X x0 z) b) τ) =
       diagonal fun a : Fin r => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ)) (la : Wt X.Ψ r) :

@@ -14,7 +14,7 @@ noncomputable section
 namespace GlobalTheory.TInj
 
 /- English proof (translation)
-Simplify using `only [TF, jFK, jK, spMap, Over.mk_hom, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Use extensionality with `r`. Conclude with `hj r`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem spMap_comp_tf {R V : Type} [CommRing R] [IsDomain R] [CommRing V] [IsDomain V] (f : R →+* V) {F₀ F : Type}
     [Field F₀] [Algebra (FractionRing R) F₀] [Field F] [Algebra (FractionRing V) F] (j : F₀ →+* F) (hj : Ext f j) :
@@ -25,7 +25,7 @@ theorem spMap_comp_tf {R V : Type} [CommRing R] [IsDomain R] [CommRing V] [IsDom
   exact hj r
 
 /- English proof (translation)
-Take `⟨g₁, ⟨hb, -⟩, hp⟩` from `h`. Rewrite using `[← Category.assoc, hp.1, hb, Category.assoc, hg₀, ← Category.assoc, spMap_comp_tf f j hj, Category.assoc]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem tr_base {R V : Type} [CommRing R] [IsDomain R] [CommRing V] [IsDomain V] {f : R →+* V} {D₀ : DegPre R}
     {D : DegPre V} {hD : IsPullDeg f D₀ D} {F₀ F : Type} [Field F₀] [Algebra (FractionRing R) F₀] [Field F]
@@ -37,15 +37,15 @@ theorem tr_base {R V : Type} [CommRing R] [IsDomain R] [CommRing V] [IsDomain V]
   rw [← Category.assoc, hp.1, hb, Category.assoc, hg₀, ← Category.assoc, spMap_comp_tf f j hj, Category.assoc]
 
 /- English proof (translation)
-Introduce `o _ ζ n L hn R _ _ V _ _ J J' D₀ D₁ D₂ ω β hβ f₁ f₂ hD₁ hD₂ F₀ _ _ _ F _ _ j₁ j₂ b φ hj₁ hj₂ H l`. Establish `hc` using `IsGrpPullback.comp hβ L.cart`. Take `⟨b₀, hb₀⟩` from `GlobalTheory.SiegelPull.push_surjective hc (TF (R := R) F₀) (toUnit _ ≫ L.F.univ.lev l)`. Establish `hb₀' : b₀.left ≫ β ≫ L.β = (TF (R` using `R) F₀).hom ≫ spMap ω ≫ L.u ≫ (GlobalTheory.LowChart.powA L.F L.T.r).hom ≫ (L.F.univ.lev l).left := by`. Establish `e` using `congrArg (fun z => z.left) hb₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [pushHom, pushPt, MonoidHom.mk'_apply, Over.homMk_left, Over.comp_left] at e`. Rewrite using `[e]`. Simplify using the standard rewrite rules. Establish `hpow : b₀ ^ n = 1`. Apply `GlobalTheory.SiegelPull.push_injective hc` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_pow, hb₀, ← MonObj.comp_pow, L.F.univ.lev_tors, MonObj.comp_one, map_one]`. Take `⟨p₀, hp₀y, hp₀b⟩` from `GlobalTheory.TInj.exists_qk_zero_over R D₀.toPre D₀.tau_bimult F₀ n hn b₀ hpow`. Take `⟨p₁, p₂, h1y, htr1, h2y, htr2, hq⟩` from `H p₀`. Establish `hg₀ : p₀.g.b.left ≫ β ≫ L.β = (TF (R` using `R) F₀).hom ≫ (spMap ω ≫ L.u ≫ (GlobalTheory.LowChart.powA L.F L.T.r).hom ≫ (L.F.univ.lev l).left) := by rw [hp₀b, hb₀']`. Establish `hsp : ∀ f : R →+* V, spMap (f.comp ω) = spMap f ≫ spMap ω` using `fun f => by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression. Use `⟨p₁, p₂, by rw [h1y, hp₀y, map_zero], ?_, by rw [h2y, hp₀y, map_zero], ?_, hq⟩` and prove the remaining obligations. Establish `e` using `tr_base hj₁ htr1 _ _ hg₀`. Rewrite using `[hsp]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify `e` using `only [Category.assoc]`. Establish `e` using `tr_base hj₂ htr2 _ _ hg₀`. Rewrite using `[hsp]`. Simplify `e` using `only [Category.assoc]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_level_pairs : ∀ {o : Type} [CommRing o] {ζ : o} {n : ℕ} (L : LowBase ζ n), 1 ≤ n → ∀ (R : Type) [CommRing R] [IsDomain R] (V : Type) [CommRing V] [IsDomain V] (J : Ideal R) (J' : Ideal V) (D₀ : DegData R J) (D₁ D₂ : DegData V J') (ω : L.W →+* R) (β : D₀.toPre.P.A.left ⟶ L.T.B.left), IsGrpPullback D₀.toPre.P.A L.T.B (spMap ω) β → ∀ (f₁ f₂ : R →+* V) (hD₁ : IsPullDeg f₁ D₀.toPre D₁.toPre) (hD₂ : IsPullDeg f₂ D₀.toPre D₂.toPre) (F₀ : Type) [Field F₀] [IsAlgClosed F₀] [Algebra (FractionRing R) F₀] (F : Type) [Field F] [Algebra (FractionRing V) F] (j₁ j₂ : F₀ →+* F) (b : D₁.toPre.P.A ⟶ D₂.toPre.P.A) (φ : D₁.toPre.X ≃+ D₂.toPre.X), Ext f₁ j₁ → Ext f₂ j₂ → (∀ p₀ : QkPt D₀.toPre F₀ n, ∃ (p₁ : QkPt D₁.toPre F n) (p₂ : QkPt D₂.toPre F n), p₁.y = hD₁.xe.symm p₀.y ∧ Tr f₁ hD₁ j₁ p₀.g p₁.g ∧ p₂.y = hD₂.xe.symm p₀.y ∧ Tr f₂ hD₂ j₂ p₀.g p₂.g ∧ QImg b φ p₁ p₂) → (∀ l : Fin L.h ⊕ Fin L.h → ℤ, ∃ (p₁ : QkPt D₁.toPre F n) (p₂ : QkPt D₂.toPre F n), p₁.y = 0 ∧ p₁.g.b.left ≫ ((hD₁.e.hom.left ≫ pullback.fst D₀.toPre.P.A.hom (specOf f₁)) ≫ β) ≫ L.β = (TF (R := V) F).hom ≫ spMap (f₁.comp ω) ≫ L.u ≫ (GlobalTheory.LowChart.powA L.F L.T.r).hom ≫ (L.F.univ.lev l).left ∧ p₂.y = 0 ∧ p₂.g.b.left ≫ ((hD₂.e.hom.left ≫ pullback.fst D₀.toPre.P.A.hom (specOf f₂)) ≫ β) ≫ L.β = (TF (R := V) F).hom ≫ spMap (f₂.comp ω) ≫ L.u ≫ (GlobalTheory.LowChart.powA L.F L.T.r).hom ≫ (L.F.univ.lev l).left ∧ QImg b φ p₁ p₂) := by
   intro o _ ζ n L hn R _ _ V _ _ J J' D₀ D₁ D₂ ω β hβ f₁ f₂ hD₁ hD₂ F₀ _ _ _ F _ _ j₁ j₂ b φ hj₁ hj₂ H l

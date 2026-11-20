@@ -12,11 +12,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.FormalOrigin
 
 /- English proof (translation)
-Establish `hw : (η[G]).left ≫ G.hom = 𝟙 _` using `by simpa using Over.w (η[G])`. Establish `h1` using `Scheme.germ_stalkClosedPointTo (R := CommRingCat.of R) (η[G]).left ⊤ trivial`. Establish `h2` using `congrArg (fun q => q.hom ((G.hom.appLE ⊤ ⊤ (by simp)).hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r))) h1`. Use `h2.trans ?_` and prove the remaining obligations. Establish `key : (Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ G.hom.appLE ⊤ ⊤ (by simp) ≫ (η[G]).left.app ⊤ ≫ (Functor.mapIso (Spec (CommRingCat.of R)).presheaf (eqToIso (show (η[G]).left ⁻¹ᵁ ⊤ = ⊤ by simp)).op ≪≫ Scheme.ΓSpecIso (CommRingCat.of R)).hom = 𝟙 _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Scheme.Hom.app_eq_appLE]`. Use `erw [Scheme.Hom.appLE_comp_appLE_assoc]`. Simplify using `[hw]`. Rewrite using `[show Scheme.Hom.appLE (𝟙 (Sp R)) ⊤ ⊤ (by simp) = 𝟙 _ from (Scheme.Hom.appLE_eq_app (𝟙 (Sp R))).trans (Scheme.Hom.id_app ⊤)]`. Simplify using the standard rewrite rules.
-
-Conclude with `congrArg (fun q => q.hom r) key`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem evO_constO (R : Type) [CommRing R] [IsLocalRing R] (G : Over (Sp R)) [GrpObj G] (r : R) :
     evO G (constO G r) = r := by

@@ -29,7 +29,7 @@ def FinFixed (ρ : Representation ℂ G V) : Prop :=
 omit [IsTopologicalGroup G] [IsTopologicalGroup H] in
 
 /- English proof (translation)
-Introduce `K hK`. Use `h (K.map φ) (hφ _ hK)` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := fixed ρ (K.map φ)) fun v hv => mem_fix.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `mem_fix.1 hv x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem FinFixed.comp {ρ : Representation ℂ G V} (h : FinFixed ρ) (φ : H →* G) (hφ : IsOpenMap φ) :
     FinFixed (ρ.comp φ : Representation ℂ H V) := by
@@ -40,19 +40,17 @@ theorem FinFixed.comp {ρ : Representation ℂ G V} (h : FinFixed ρ) (φ : H �
   exact mem_fix.1 hv x hx
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `(hasFiniteLength_iff_wellFounded ρ).1 hl`. Establish `key : ∀ S : Subrepresentation ρ, FiniteDimensional ℂ (fixed S.toRepresentation K)`. Introduce `S`. Proceed by induction on `S using WellFoundedLT.induction with`. Consider the case `ind S ih`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Break down `subsingleton_or_nontrivial S.toSubmodule with h0 | h0` into its components or cases. Use `infer_instance`. Set `ι : S.toRepresentation.IntertwiningMap ρ` to `⟨S.toSubmodule.subtype, fun g => rfl⟩`. Establish `hι : Function.Injective ι` using `Subtype.val_injective`. Establish `hs : IsSmooth S.toRepresentation` using `(IsSubquotient.of_injective ι hι).isSmooth hρ`.
+Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : HasFiniteLength S.toRepresentation` using `IsFiniteLength.of_injective hl (f := Representation.IntertwiningMap.equivLinearMapAsModule _ _ ι) hι`. Take `⟨Y, _, _, τ, hτs, hτi, q, hq⟩` from `IrrQuot.exists_irreducible_smooth_quotient _ hs hf h0`. Establish `hfin` using `(hG Y τ hτs hτi).2 K hKo hKc`. Set `T : Subrepresentation ρ` to `GlobalTheory.JHMult.subMap ι q.ker`. Establish `hTS : T < S`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `lt_of_le_of_ne (by rintro _ ⟨v, -, rfl⟩; exact v.2) fun e => ?_` and prove the remaining obligations. Use `((GlobalTheory.CuspRep.isIrreducible_iff τ).1 hτi).1` as an intermediate fact. Take `⟨y, hy⟩` from `exists_ne (0 : Y)`. Take `⟨v, rfl⟩` from `hq y`. Establish `hv : (v : V) ∈ T.toSubmodule` using `by rw [e]; exact v.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, hwv⟩` from `hv`. Take `rfl : w = v` from `Subtype.ext hwv`. Conclude with `hy hw`. Establish `hT` using `ih T hTS`. Set `f : fixed S.toRepresentation K →ₗ[ℂ] fixed τ K` to `q.toLinearMap.restrict fun v hv => mem_fix.2 fun k hk => by show τ k (q v) = q v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← q.isIntertwining, mem_fix.1 hv k hk]`. Establish `hker : FiniteDimensional ℂ (LinearMap.ker f)`. Set `j : LinearMap.ker f →ₗ[ℂ] fixed T.toRepresentation K` to `{ toFun := fun v => ⟨⟨v.1.1.1, v.1.1, congrArg Subtype.val v.2, rfl⟩, mem_fix.2 fun k hk => Subtype.ext (congrArg (fun z : S.toSubmodule => (z : V)) (mem_fix.1 v.1.2 k hk))⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Conclude with `FiniteDimensional.of_injective j fun a b e => Subtype.ext (Subtype.ext (Subtype.ext (congrArg (fun z => z.1.1) e)))`. Conclude with `Module.Finite.of_exact (f := (LinearMap.ker f).subtype) (g := f.rangeRestrict) (by rw [LinearMap.exact_iff, LinearMap.ker_rangeRestrict, Submodule.range_subtype]) f.surjective_rangeRestrict`.
-
-Use `key ⊤` as an intermediate fact. Set `j : fixed ρ K →ₗ[ℂ] fixed (⊤ : Subrepresentation ρ).toRepresentation K` to `{ toFun := fun v => ⟨⟨v.1, trivial⟩, mem_fix.2 fun k hk => Subtype.ext (mem_fix.1 v.2 k hk)⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Conclude with `FiniteDimensional.of_injective j fun a b e => Subtype.ext (congrArg (fun z => z.1.1) e)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_fixed_of_hasFiniteLength
     (hG : ∀ (Y : Type) [AddCommGroup Y] [Module ℂ Y] (π : Representation ℂ G Y),
@@ -108,25 +106,23 @@ theorem finiteDimensional_fixed_of_hasFiniteLength
   exact FiniteDimensional.of_injective j fun a b e => Subtype.ext (congrArg (fun z => z.1.1) e)
 
 /- English proof (translation)
-Establish `wd : ∀ (p p' : P) (c c' : G), c ∈ K → c' ∈ K → (p : G) * c = p' * c' → σ p u = σ p' u`. Introduce `p p' c c' hc hc' h`. Establish `hm : ((p'⁻¹ * p : P) : G) ∈ K`. Establish `: ((p'⁻¹ * p : P) : G) = c' * c⁻¹`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[inv_mul_eq_iff_eq_mul, ← mul_assoc, ← h, mul_inv_cancel_right]`. Rewrite using `[this]`. Conclude with `mul_mem hc' (inv_mem hc)`. Establish `h2` using `hfix _ hm`. Rewrite `h2` using `[map_mul, Module.End.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Use `_ = σ p' u := by rw [h2]`. Set `F : G → W` to `fun g => if h : ∃ p : P, ∃ c ∈ K, g = (p : G) * c then σ h.choose u else 0`. Establish `hF : ∀ (p : P) (c : G), c ∈ K → F ((p : G) * c) = σ p u`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `p c hc`. Establish `h : ∃ p' : P, ∃ c' ∈ K, (p : G) * c = (p' : G) * c'` using `⟨p, c, hc, rfl⟩`. Simplify using `only [F, dif_pos h]`. Take `⟨c', hc', e⟩` from `h.choose_spec`. Conclude with `wd _ _ _ _ hc' hc e.symm`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hF0 : ∀ g, (¬ ∃ p : P, ∃ c ∈ K, g = (p : G) * c) → F g = 0` using `fun g h => by`. Simplify using `only [F, dif_neg h]`. Establish `hmem : F ∈ indSpace P σ`. Introduce `h g`. Distinguish the cases in `hg : ∃ p : P, ∃ c ∈ K, g = (p : G) * c`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨p, c, hc, rfl⟩` from `hg`. Rewrite using `[← mul_assoc, show (h : G) * p = ((h * p : P) : G) from rfl, hF _ _ hc, hF _ _ hc, map_mul, Module.End.mul_apply]`. Establish `: ¬ ∃ p : P, ∃ c ∈ K, (h : G) * g = (p : G) * c`. Introduce and unpack `⟨p, c, hc, e⟩`. Conclude with `hg ⟨h⁻¹ * p, c, hc, by rw [Subgroup.coe_mul, mul_assoc, ← e]; simp⟩`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hF0 _ hg, hF0 _ this, map_zero]`. Establish `hK : ∀ c ∈ K, ind P σ c ⟨F, hmem⟩ = ⟨F, hmem⟩`. Introduce `c hc`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show F (x * c) = F x`. Distinguish the cases in `hx : ∃ p : P, ∃ c' ∈ K, x = (p : G) * c'`. Take `⟨p, c', hc', rfl⟩` from `hx`. Rewrite using `[mul_assoc, hF _ _ (mul_mem hc' hc), hF _ _ hc']`. Establish `: ¬ ∃ p : P, ∃ c' ∈ K, x * c = (p : G) * c'`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce and unpack `⟨p, c', hc', e⟩`. Conclude with `hx ⟨p, c' * c⁻¹, mul_mem hc' (inv_mem hc), by rw [← mul_assoc, ← e, mul_inv_cancel_right]⟩`. Rewrite using `[hF0 _ hx, hF0 _ this]`. Use `⟨⟨⟨F, hmem⟩, mem_smoothPart_of_nhds (Filter.mem_of_superset (hKo.mem_nhds K.one_mem) hK)⟩, mem_fix.2 fun c hc => Subtype.ext (hK c hc), ?_⟩` and prove the remaining obligations. Use `show F 1 = u`.
-
-Use `hF 1 1 K.one_mem` as an intermediate fact. Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem exists_fixed_smInd_apply_one (P : Subgroup G) (σ : Representation ℂ P W) (K : Subgroup G)
     (hKo : IsOpen (K : Set G)) (u : W) (hfix : ∀ p : P, (p : G) ∈ K → σ p u = u) :
@@ -181,27 +177,25 @@ theorem exists_fixed_smInd_apply_one (P : Subgroup G) (σ : Representation ℂ P
   simpa using this
 
 /- English proof (translation)
-Take `⟨hnt, hinv⟩` from `(GlobalTheory.CuspRep.isIrreducible_iff τ).1 hirr`. Take `⟨x, hx0⟩` from `exists_ne (0 : V)`. Set `r : Representation ℂ H V` to `τ.comp (MonoidHom.inr G H)`. Establish `hc : Continuous (MonoidHom.inr G H)` using `continuous_const.prodMk continuous_id`. Establish `hc' : Continuous (MonoidHom.inl G H)` using `continuous_id.prodMk continuous_const`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρ : IsSmooth r` using `isSmooth_comp hs _ hc`. Set `Kc : Subgroup H` to `stab r x ⊓ C`. Establish `hKco : IsOpen (Kc : Set H)` using `(hρ x).inter hCo`. Establish `hKcc : IsCompact (Kc : Set H)` using `hCc.of_isClosed_subset (Subgroup.isClosed_of_isOpen _ hKco) fun k hk => hk.2`. Establish `hxKc : x ∈ fixed r Kc` using `mem_fix.2 fun k hk => hk.1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnull : nullPart r Kc = ⊥`. Break down `hinv (nullPart r Kc) (fun g y hy => by` into its components or cases. Take `⟨g, h⟩` from `g`. Rewrite using `[TensorFactor.apply_pair]`. Conclude with `nullPart_comm r Kc (τ (g, 1)) (fun h z => TensorFactor.commute_apply τ g h z) (nullPart_act r Kc h hy)) with h | h`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h`. Conclude with `absurd (eq_zero_of_mem_nullPart hρ hKcc hxKc (h ▸ Submodule.mem_top)) hx0`. Establish `h2 : ∀ Y : Submodule ℂ V, (∀ g, ∀ v ∈ Y, r g v ∈ Y) → Y ⊓ fixed r Kc = ⊥ → Y = ⊥` using `fun Y hY h => le_bot_iff.1 (hnull ▸ le_nullPart hρ hKcc Y hY h)`. Set `l : Representation ℂ G V` to `τ.comp (MonoidHom.inl G H)`. Set `L : Subgroup G` to `stab l x`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hLo : IsOpen (L : Set G)` using `isSmooth_comp hs _ hc' x`. Set `U : Submodule ℂ V` to `fixed l L`. Establish `hU : ∀ g, ∀ v ∈ U, r g v ∈ U` using `fun g v hv => mem_fix.2 fun k hk => by`. Express the relevant statement in the definitionally equal form `τ (k, 1) (τ (1, g) v) = τ (1, g) v`. Rewrite using `[TensorFactor.commute_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `congrArg _ (mem_fix.1 hv k hk)`. Establish `hU0 : U ≠ ⊥` using `(Submodule.ne_bot_iff _).2 ⟨x, mem_fix.2 fun k hk => hk, hx0⟩`. Establish `hfin : ∀ K' : Subgroup H, IsOpen (K' : Set H) → FiniteDimensional ℂ ↥(U ⊓ fixed r K')`. Introduce `K' hK'`. Use `hadm (L.prod K') (hLo.prod hK')` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Submodule.finiteDimensional_of_le (S₂ := fixed τ (L.prod K')) fun v hv => mem_fix.2 ?_` and prove the remaining obligations. Introduce and unpack `⟨g, h⟩ hk`. Rewrite using `[TensorFactor.apply_pair]`. Establish `e1 : τ (1, h) v = v` using `mem_fix.1 hv.2 h hk.2`. Rewrite using `[e1]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `mem_fix.1 hv.1 g hk.1`. Take `⟨π, ⟨f, hf0, hf⟩, hπ⟩` from `exists_irred hρ hKco h2 U hU hU0 hfin`. Establish `hS : ∀ T : π.ρ.IntertwiningMap π.ρ, ∃ c : ℂ, ∀ v, T v = c • v` using `fun T => by`. Take `⟨c, hc⟩` from `GlobalTheory.SchurAdm.schur_admissible H C hCo hCc π.V π.ρ π.irred hπ T.toLinearMap fun g v => T.isIntertwining _ _ g v`. Conclude with `⟨c, fun v => LinearMap.congr_fun hc v⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨X, _, _, σ, hσs, hσi, ⟨e⟩⟩` from `TensorFactor.exists_equiv_extTensor G H V π.V τ π.ρ hs hirr π.irred (EvalInj.lift_subtype_injective H V π.V r π.ρ π.irred hS) ⟨f, hf0, hf⟩`. Use `⟨⟨X, σ, hσs, hσi⟩, ⟨π.V, π.ρ, π.smooth, π.irred⟩, fun K hK => ?_, ⟨e⟩⟩` and prove the remaining obligations. Use `((GlobalTheory.CuspRep.isIrreducible_iff π.ρ).1 π.irred).1` as an intermediate fact. Take `⟨y, hy⟩` from `exists_ne (0 : π.V)`. Take `⟨φ, hφ⟩` from `Module.Projective.exists_dual_eq_one ℂ hy`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hadm (K.prod (stab π.ρ y)) (hK.prod (π.smooth y))` as an intermediate fact. Set `j : fixed σ K →ₗ[ℂ] fixed τ (K.prod (stab π.ρ y))` to `(e.symm.toLinearEquiv.toLinearMap ∘ₗ (TensorProduct.mk ℂ X π.V).flip y).restrict fun w hw => mem_fix.2 fun g hg => by show τ g (e.symm.toIntertwiningMap (w ⊗ₜ y)) = e.symm.toIntertwiningMap (w ⊗ₜ y)`. Establish `h3 : π.ρ g.2 y = y` using `hg.2`. Rewrite using `[← e.symm.toIntertwiningMap.isIntertwining, extTensor_tmul, mem_fix.1 hw _ hg.1, h3]`. Use `FiniteDimensional.of_injective j fun a b hab => Subtype.ext ?_` and prove the remaining obligations.
-
-Establish `h4 : (a : X) ⊗ₜ[ℂ] y = (b : X) ⊗ₜ[ℂ] y` using `e.symm.toLinearEquiv.injective (congrArg Subtype.val hab)`. Establish `h5` using `congrArg ((TensorProduct.rid ℂ X).toLinearMap ∘ₗ LinearMap.lTensor X φ) h4`. Simplify `h5` using `[hφ]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_extTensor (C : Subgroup H) (hCo : IsOpen (C : Set H)) (hCc : IsCompact (C : Set H))
     {τ : Representation ℂ (G × H) V} (hs : IsSmooth τ) (hirr : τ.IsIrreducible) (hadm : FinFixed τ) :
@@ -271,21 +265,19 @@ theorem exists_extTensor (C : Subgroup H) (hCo : IsOpen (C : Set H)) (hCc : IsCo
 end General
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `Γ _ _ _ _ V _ _ τ _ hirr _`. Take `⟨hnt, hinv⟩` from `(GlobalTheory.CuspRep.isIrreducible_iff τ).1 hirr`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hg : ∀ g : ∀ j, Γ j, g = 1` using `fun g => funext fun j => j.elim0`. Use `haveI : IsSimpleModule ℂ V := { eq_bot_or_eq_top := fun W => hinv W fun g v hv => by rw [hg g, map_one]; exact hv }`. Establish `h1 : Module.finrank ℂ V = 1` using `isSimpleModule_iff_finrank_eq_one.1 inferInstance`. Use `haveI : Module.Finite ℂ V := Module.finite_of_finrank_eq_succ h1`. Use `⟨fun j => j.elim0, (LinearEquiv.ofFinrankEq V ℂ (by simp [h1])).trans (PiTensorProduct.isEmptyEquiv (Fin 0)).symm, fun g v => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hg g, map_one, map_one]`. Both sides reduce to the same expression. Consider the case `succ n ih`. Introduce `Γ _ _ _ hC V _ _ τ hs hirr hadm`. Apply the tactic sequence `let φ : (∀ j : Fin n, Γ j.succ) × Γ 0 →* ∀ j, Γ j := { toFun := fun p => Fin.cons p.2 p.1 map_one' := funext fun j => by cases j using Fin.cases <;> rfl map_mul' := fun a b => funext fun j => by cases j using Fin.cases <;> rfl }`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Split into cases according to the possible forms of the given data.
 
-Set `ψ : (∀ j : Fin n, Γ j.succ) × Γ 0 ≃ₜ ∀ j, Γ j` to `{ toFun := φ invFun := fun g => (fun j => g j.succ, g 0) left_inv := fun _ => rfl right_inv := fun g => Fin.cons_self_tail g continuous_toFun := continuous_pi fun j => by`. Consider the cases of `j using Fin.cases with`. Consider the case `zero => exact continuous_snd`. Consider the case `succ i => exact (continuous_apply i).comp continuous_fst`. Use `continuous_invFun := (continuous_pi fun j => continuous_apply j.succ).prodMk (continuous_apply 0) }`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hCo, hCc⟩` from `hC 0`. Take `⟨σ, ρ, hσ, ⟨E⟩⟩` from `exists_extTensor C hCo hCc (isSmooth_comp hs φ ψ.continuous) ((MultiIrr.isIrreducible_iff_of_linearEquiv (ρ := τ.comp φ) φ ψ.surjective (LinearEquiv.refl ℂ V) fun _ _ => rfl).2 hirr) (hadm.comp φ ψ.isOpenMap)`. Take `⟨s', e', he'⟩` from `ih (fun j => Γ j.succ) (fun j => hC j.succ) σ.V σ.ρ σ.smooth σ.irr hσ`. Set `s : ∀ j, IrrRep (Γ j)` to `Fin.cons ρ s'`. Take `⟨c, hc⟩` from `GlobalTheory.OneFunctional.exists_piTensor_succ_equiv_map n fun j => (s j).V`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `d : σ.V ⊗[ℂ] ρ.V ≃ₗ[ℂ] ⨂[ℂ] j, (s j).V` to `(TensorProduct.congr e' (LinearEquiv.refl ℂ ρ.V)).trans c`. Establish `hd : ∀ g z, d (extTensor σ.ρ ρ.ρ g z) = piTensor (fun j => (s j).ρ) (φ g) (d z)`. Introduce `g z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul a b`. Rewrite using `[extTensor_tmul]`. Use `show c (e' (σ.ρ g.1 a) ⊗ₜ ρ.ρ g.2 b) = _`. Rewrite using `[he']`.
-
-Conclude with `(hc (fun j => (s j).ρ (φ g j)) (e' a) b).symm`. Use `⟨s, E.toLinearEquiv.trans d, fun g v => ?_⟩` and prove the remaining obligations. Take `⟨g, rfl⟩ : ∃ p, φ p = g` from `ψ.surjective g`. Conclude with `(congrArg d (E.toIntertwiningMap.isIntertwining _ _ g v)).trans (hd g _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_piTensor_fin : ∀ (n : ℕ) (Γ : Fin n → Type) [∀ j, Group (Γ j)] [∀ j, TopologicalSpace (Γ j)]
     [∀ j, IsTopologicalGroup (Γ j)],
@@ -348,15 +340,15 @@ theorem exists_piTensor_fin : ∀ (n : ℕ) (Γ : Fin n → Type) [∀ j, Group 
     exact (congrArg d (E.toIntertwiningMap.isIntertwining _ _ g v)).trans (hd g _)
 
 /- English proof (translation)
-Set `ε` to `Fintype.equivFin β`. Set `ψ : (∀ j, Γ j) ≃ₜ ∀ i, Γ (ε.symm i)` to `(Homeomorph.piCongrLeft (Y := Γ) ε.symm).symm`. Set `χ : (∀ j, Γ j) ≃* ∀ i, Γ (ε.symm i)` to `{ ψ.toEquiv with map_mul' := fun _ _ => rfl }`. Set `φ : (∀ i, Γ (ε.symm i)) →* ∀ j, Γ j` to `χ.symm.toMonoidHom`. Take `⟨s', e', he'⟩` from `exists_piTensor_fin _ (fun i => Γ (ε.symm i)) (fun i => hC _) V (τ.comp φ) (isSmooth_comp hs φ ψ.symm.continuous) ((MultiIrr.isIrreducible_iff_of_linearEquiv (ρ := τ.comp φ) φ χ.symm.surjective (LinearEquiv.refl ℂ V) fun _ _ => rfl).2 hirr) (hadm.comp φ ψ.symm.isOpenMap)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨s, rfl⟩` from `(Equiv.piCongrLeft' (fun j => IrrRep (Γ j)) ε).surjective s'`. Set `r` to `PiTensorProduct.reindex ℂ (fun j => (s j).V) ε`. Establish `hr : ∀ g z, r (piTensor (fun j => (s j).ρ) g z) = piTensor (fun i => (s (ε.symm i)).ρ) (χ g) (r z)`. Introduce `g z`. Proceed by induction on `z using PiTensorProduct.induction_on with`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `smul_tprod c x`. Simplify using `only [map_smul, r, piTensor_tprod, PiTensorProduct.reindex_tprod]`. Both sides reduce to the same expression. Use `⟨s, ⟨.mk (e'.trans r.symm) fun g => LinearMap.ext fun v => r.injective ?_⟩⟩` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `show r (r.symm (e' (τ g v))) = r (piTensor (fun j => (s j).ρ) g (r.symm (e' v)))`. Rewrite using `[hr]`. Use `(r.apply_symm_apply _).trans (Eq.trans ?_ (congrArg _ (r.apply_symm_apply (e' v)).symm))` and prove the remaining obligations. Establish `h1` using `he' (χ g) v`. Establish `h2 : φ (χ g) = g` using `χ.symm_apply_apply g`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[MonoidHom.comp_apply, h2]`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem exists_piTensor {β : Type} [Fintype β] (Γ : β → Type) [∀ j, Group (Γ j)] [∀ j, TopologicalSpace (Γ j)]
     [∀ j, IsTopologicalGroup (Γ j)]
@@ -392,13 +384,13 @@ theorem exists_piTensor {β : Type} [Fintype β] (Γ : β → Type) [∀ j, Grou
   exact h1
 
 /- English proof (translation)
-Use `letI : LinearOrder β := LinearOrder.lift' (Fintype.equivFin β) (Fintype.equivFin β).injective`. Introduce `K hK`. Set `e : (Σ j, c j) ≃ (Σ j, c j)` to `Equiv.refl _`. Take `⟨h1, -, h3, -⟩` from `hBZ k`. Establish `hl` using `h3 β _ c e τ.V τ.ρ τ.smooth (hasFiniteLength_of_isIrreducible τ.irr)`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ho : IsOpen (leviProj k e ⁻¹' ((K : Set (Levi k c)) ∩ (deltaHalf k c).ker))` using `(hK.inter (isSmoothChar_deltaHalf k)).preimage (ProdIrr.continuous_leviProj e)`. Take `⟨N, hN, hNS⟩` from `(mem_nhds_subtype _ _ _).1 (ho.mem_nhds (x := 1) (by`. Rewrite using `[Set.mem_preimage, map_one]`. Conclude with `⟨K.one_mem, one_mem _⟩))`. Take `⟨J, hJo, hJN, hJK, -⟩` from `exists_open_normalised_subgroup_subset k (Σ j, c j) N (by simpa using hN)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hJc : IsCompact (J : Set (GL (Σ j, c j) k))` using `SplitFlip.isCompact_KO.of_isClosed_subset (J.isClosed_of_isOpen hJo) hJK`. Establish `hfin` using `finiteDimensional_fixed_of_hasFiniteLength (h1 _) (isSmooth_parInd e τ.ρ) hl J hJo hJc`. Set `ev : fixed (parInd e τ.ρ) J →ₗ[ℂ] τ.V` to `{ toFun := fun f => f.1.1.1 1 map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Use `Submodule.finiteDimensional_of_le (S₂ := LinearMap.range ev) fun u hu => ?_` and prove the remaining obligations. Take `⟨f, hf, hf1⟩` from `exists_fixed_smInd_apply_one (parab k e) ((twist τ.ρ (deltaHalf k c)).comp (leviProj k e)) J hJo u fun p hp => by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨a, b⟩` from `hNS (hJN hp)`. Establish `b' : deltaHalf k c (leviProj k e p) = 1` using `b`. Use `show (deltaHalf k c (leviProj k e p) : ℂ) • τ.ρ (leviProj k e p) u = u`. Rewrite using `[b', mem_fix.1 hu _ a, Units.val_one, one_smul]`. Conclude with `⟨⟨f, hf⟩, hf1⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finFixed_levi (hBZ : GlobalTheory.Published.BernsteinZelevinskyFiniteness) (k : Type) [Field k] [ValuativeRel k]
     [TopologicalSpace k] [IsNonarchimedeanLocalField k] (β : Type) [Fintype β] (c : β → Type)
@@ -431,7 +423,7 @@ theorem finFixed_levi (hBZ : GlobalTheory.Published.BernsteinZelevinskyFinitenes
   exact ⟨⟨f, hf⟩, hf1⟩
 
 /- English proof (translation)
-Introduce `hBZ k _ _ _ _ β _ c _ _ τ`. Conclude with `exists_piTensor (fun j => GL (c j) k) (fun j => ⟨GlobalTheory.SplitWeil.KO k (c j), SplitFlip.isOpen_KO, SplitFlip.isCompact_KO⟩) τ.ρ τ.smooth τ.irr (finFixed_levi hBZ k β c τ)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_equiv_piTensor_levi : GlobalTheory.Published.BernsteinZelevinskyFiniteness → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (β : Type) [Fintype β] (c : β → Type) [∀ j, Fintype (c j)] [∀ j, DecidableEq (c j)] (τ : GlobalTheory.SmGL.IrrRep (GlobalTheory.SmGL.Levi k c)), ∃ s : ∀ j, GlobalTheory.SmGL.IrrRep (GL (c j) k), Nonempty (τ.ρ.Equiv (GlobalTheory.SmGL.piTensor fun j => (s j).ρ)) := by
   intro hBZ k _ _ _ _ β _ c _ _ τ

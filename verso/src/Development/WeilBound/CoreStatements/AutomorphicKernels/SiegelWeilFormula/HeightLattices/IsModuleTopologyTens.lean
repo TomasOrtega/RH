@@ -13,19 +13,19 @@ namespace PositivityTheory.SiegelWeilFormula.HeightDict
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isModuleTopology_tens (v : HeightOneSpectrum (𝓞 F)) :
     IsModuleTopology (v.adicCompletion F) (v.adicCompletion F ⊗[F] E) := ⟨rfl⟩
 
 /- English proof (translation)
-Use `set ω := RingOfIntegers.basis E`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Use `AddSubgroup.closure_induction (p := fun z _ => z ∈ (fun c : Module.Free.ChooseBasisIndex ℤ (𝓞 E) → v.adicCompletion F => ∑ j, c j ⊗ₜ[F] ((ω j : 𝓞 E) : E)) '' Set.pi Set.univ (fun _ => (v.adicCompletionIntegers F : Set (v.adicCompletion F)))) ?_ ?_ ?_ ?_ hz` and prove the remaining obligations.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨a, ha, o, rfl⟩`. Use `⟨fun j => (ω.repr o j) • a, fun j _ => zsmul_mem ha _, ?_⟩` and prove the remaining obligations. Establish `ho : (o : E) = ∑ j, (ω.repr o j) • ((ω j : 𝓞 E) : E)` using `by conv_lhs => rw [← ω.sum_repr o]`. Simplify using the standard rewrite rules. Simplify using `only`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ho, TensorProduct.tmul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[show a ⊗ₜ[F] ((ω.repr o j) • ((ω j : 𝓞 E) : E)) = (ω.repr o j) • (a ⊗ₜ[F] ((ω j : 𝓞 E) : E)) from map_zsmul (TensorProduct.mk F (v.adicCompletion F) E a) _ _, show ((ω.repr o j) • a) ⊗ₜ[F] ((ω j : 𝓞 E) : E) = (ω.repr o j) • (a ⊗ₜ[F] ((ω j : 𝓞 E) : E)) from map_zsmul ((TensorProd …`. Conclude with `⟨0, fun j _ => zero_mem _, by simp⟩`. Introduce and unpack `x y - - ⟨c, hc, rfl⟩ ⟨c', hc', rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨c + c', fun j _ => add_mem (hc j trivial) (hc' j trivial), by simp [TensorProduct.add_tmul, Finset.sum_add_distrib]⟩`. Introduce and unpack `x - ⟨c, hc, rfl⟩`. Conclude with `⟨-c, fun j _ => neg_mem (hc j trivial), by simp [TensorProduct.neg_tmul]⟩`. Introduce and unpack `⟨c, hc, rfl⟩`. Conclude with `AddSubgroup.sum_mem _ fun j _ => AddSubgroup.subset_closure ⟨c j, hc j trivial, ω j, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem OE_eq_image (v : HeightOneSpectrum (𝓞 F)) :
     (OE E v : Set (v.adicCompletion F ⊗[F] E)) =
@@ -61,11 +61,9 @@ theorem OE_eq_image (v : HeightOneSpectrum (𝓞 F)) :
     exact AddSubgroup.sum_mem _ fun j _ => AddSubgroup.subset_closure ⟨c j, hc j trivial, ω j, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[OE_eq_image]`. Use `haveI := isModuleTopology_tens (E := E) v`. Use `haveI : IsTopologicalRing (v.adicCompletion F ⊗[F] E) := GlobalTheory.Doubling.isTopologicalRing_tens`. Use `(isCompact_univ_pi fun _ => Formalism.L2.S.S7.AdeleLC.isCompact_integers v).image ?_` and prove the remaining obligations. Use `continuous_finset_sum _ fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : Continuous fun a : v.adicCompletion F => a ⊗ₜ[F] ((RingOfIntegers.basis E j : 𝓞 E) : E)`. Establish `: (fun a : v.adicCompletion F => a ⊗ₜ[F] ((RingOfIntegers.basis E j : 𝓞 E) : E)) = fun a => a • ((1 : v.adicCompletion F) ⊗ₜ[F] ((RingOfIntegers.basis E j : 𝓞 E) : E))`. Use function extensionality and compare the values at `a`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[this]`.
-
-Use `haveI : ContinuousSMul (v.adicCompletion F) (v.adicCompletion F ⊗[F] E) := IsModuleTopology.toContinuousSMul _ _`. Conclude with `(continuous_id (X := v.adicCompletion F)).smul (continuous_const (y := ((1 : v.adicCompletion F) ⊗ₜ[F] ((RingOfIntegers.basis E j : 𝓞 E) : E))))`. Conclude with `hc.comp (continuous_apply j)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem OE_isCompact (v : HeightOneSpectrum (𝓞 F)) : IsCompact (OE E v : Set (v.adicCompletion F ⊗[F] E)) := by
   rw [OE_eq_image]
@@ -84,13 +82,11 @@ theorem OE_isCompact (v : HeightOneSpectrum (𝓞 F)) : IsCompact (OE E v : Set 
   exact hc.comp (continuous_apply j)
 
 /- English proof (translation)
-Use `haveI := isModuleTopology_tens (E := E) v`. Use `haveI : IsTopologicalRing (v.adicCompletion F ⊗[F] E) := GlobalTheory.Doubling.isTopologicalRing_tens`. Take `⟨s, b, hb⟩` from `FiniteDimensional.exists_is_basis_integral (𝓞 F) F E`. Use `set B := Algebra.TensorProduct.basis (v.adicCompletion F) b`. Establish `hcont : Continuous B.equivFun` using `IsModuleTopology.continuous_of_linearMap B.equivFun.toLinearMap`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set U := B.equivFun ⁻¹' Set.pi Set.univ (fun _ => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) with hUdef`. Establish `hU : IsOpen U` using `(isOpen_set_pi Set.finite_univ fun _ _ => Formalism.L2.S.S7.AdeleLC.isOpen_integers v).preimage hcont`. Establish `hUO : U ⊆ OE E v`. Introduce `z hz`. Rewrite using `[← B.sum_equivFun z]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `AddSubgroup.sum_mem _ fun i _ => AddSubgroup.subset_closure ⟨B.equivFun z i, hz i trivial, ⟨b i, isIntegral_trans (R := ℤ) _ (hb i)⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Both sides reduce to the same expression. Establish `h0 : (0 : v.adicCompletion F ⊗[F] E) ∈ U`. Simplify using `only [hUdef, Set.mem_preimage, map_zero, Set.mem_pi, Set.mem_univ, Pi.zero_apply, SetLike.mem_coe, forall_const]`.
-
-Conclude with `fun _ => zero_mem _`. Conclude with `AddSubgroup.isOpen_of_mem_nhds (OE E v) (Filter.mem_of_superset (hU.mem_nhds h0) hUO)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem OE_isOpen (v : HeightOneSpectrum (𝓞 F)) : IsOpen (OE E v : Set (v.adicCompletion F ⊗[F] E)) := by
   haveI := isModuleTopology_tens (E := E) v
@@ -115,9 +111,9 @@ theorem OE_isOpen (v : HeightOneSpectrum (𝓞 F)) : IsOpen (OE E v : Set (v.adi
   exact AddSubgroup.isOpen_of_mem_nhds (OE E v) (Filter.mem_of_superset (hU.mem_nhds h0) hUO)
 
 /- English proof (translation)
-Establish `hs : (lat E v n : Set (Fin n → v.adicCompletion F ⊗[F] E)) = Set.pi Set.univ fun _ => (OE E v : Set _)`. Use extensionality with `y`. Simplify using `[lat, AddSubgroup.mem_pi]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hs]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isOpen_set_pi Set.finite_univ fun _ _ => OE_isOpen v`. Rewrite using `[hs]`. Conclude with `isCompact_univ_pi fun _ => OE_isCompact v`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lat_isCO (v : HeightOneSpectrum (𝓞 F)) (n : ℕ) : Gen.IsCO (lat E v n) := by
   have hs : (lat E v n : Set (Fin n → v.adicCompletion F ⊗[F] E)) = Set.pi Set.univ fun _ => (OE E v : Set _) := by

@@ -3,7 +3,7 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.HaarTransversals.PoincareSeri
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.QuotientIntegralBound.QuotientLIntegralLeMultiplicityLIntegral
 
 /- English proof (translation)
-The claim follows from `PI.PoincareSeriesFinite.UnitaryGroupMassFormula.poincareSeriesFinite G μ`.
+A detailed English derivation is pending.
 -/
 theorem poincareSeries_finite (G : Type*) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G] (μ : MeasureTheory.Measure G) [μ.IsHaarMeasure] : Formalism.L2.SG.PoincareSeriesSquareIntegrable.PoincareSeriesFinite G μ :=
   PI.PoincareSeriesFinite.UnitaryGroupMassFormula.poincareSeriesFinite G μ

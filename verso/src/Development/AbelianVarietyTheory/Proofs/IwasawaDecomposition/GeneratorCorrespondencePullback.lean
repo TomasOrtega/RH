@@ -17,7 +17,7 @@ abbrev trB (mu : D.X) : D.P.A ⟶ D.P.A := padd D.P.A (𝟙 _) (toUnit _ ≫ D.c
 
 omit [IsDomain R] in
 /- English proof (translation)
-Rewrite using `[padd, padd, ← Category.assoc, comp_lift]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_padd {T T' : Over (Spec (CommRingCat.of R))} (A : Over (Spec (CommRingCat.of R))) [GrpObj A]
     (x : T' ⟶ T) (a b : T ⟶ A) : x ≫ padd A a b = padd A (x ≫ a) (x ≫ b) := by
@@ -25,16 +25,14 @@ theorem comp_padd {T T' : Over (Spec (CommRingCat.of R))} (A : Over (Spec (CommR
 
 omit [IsDomain R] in
 /- English proof (translation)
-Rewrite using `[← Category.assoc, toUnit_unique (x ≫ toUnit Y) (toUnit T)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_toUnit {Y T W : Over (Spec (CommRingCat.of R))} (f : 𝟙_ _ ⟶ W) (x : T ⟶ Y) :
     x ≫ toUnit Y ≫ f = toUnit T ≫ f := by
   rw [← Category.assoc, toUnit_unique (x ≫ toUnit Y) (toUnit T)]
 
 /- English proof (translation)
-Use `fin_cases i`. Conclude with `congrArg (fun q : D.P.A ⟶ D.P.A => q.left) (lift_snd (toUnit D.P.A) (𝟙 D.P.A))`. Use `congrArg (fun q : D.P.A ⟶ D.P.A => q.left) (?_ : gB D ≫ padd D.P.A (snd _ _) (toUnit _ ≫ D.c β) = _)` and prove the remaining obligations. Rewrite using `[comp_padd, lift_snd, comp_toUnit]`. Conclude with `congrArg (fun q : D.P.A ⟶ D.P.A => q.left) (comp_toUnit (D.c β) (gB D))`.
-
-Conclude with `congrArg (fun q : D.P.A ⟶ D.P.A => q.left) (comp_toUnit (MonObj.one : 𝟙_ _ ⟶ D.P.A) (gB D))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gB_famφT (β : D.X) (i : Fin 4) : (gB D).left ≫ famφT D (𝟙_ _) β i = D.famφB β i := by
   fin_cases i
@@ -45,7 +43,7 @@ theorem gB_famφT (β : D.X) (i : Fin 4) : (gB D).left ≫ famφT D (𝟙_ _) β
   · exact congrArg (fun q : D.P.A ⟶ D.P.A => q.left) (comp_toUnit (MonObj.one : 𝟙_ _ ⟶ D.P.A) (gB D))
 
 /- English proof (translation)
-Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, trT, lift_fst, lift_fst]`. Conclude with `toUnit_unique _ _`. Rewrite using `[Category.assoc, Category.assoc, trT, lift_snd, lift_snd, Category.comp_id, comp_padd, lift_snd, ← Category.assoc, lift_fst, comp_toUnit]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gB_trT (mu : D.X) : gB D ≫ trT D (toUnit (𝟙_ _) ≫ D.c mu) = trB D mu ≫ gB D := by
   apply CartesianMonoidalCategory.hom_ext
@@ -55,14 +53,14 @@ theorem gB_trT (mu : D.X) : gB D ≫ trT D (toUnit (𝟙_ _) ≫ D.c mu) = trB D
       ← Category.assoc, lift_fst, comp_toUnit]
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, ← Over.comp_left, gB_trT, Over.comp_left, Category.assoc, gB_famφT]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gB_trT_famφT (mu α : D.X) (i : Fin 4) :
     (gB D).left ≫ (trT D (toUnit (𝟙_ _) ≫ D.c mu)).left ≫ famφT D (𝟙_ _) α i = (trB D mu).left ≫ D.famφB α i := by
   rw [← Category.assoc, ← Over.comp_left, gB_trT, Over.comp_left, Category.assoc, gB_famφT]
 
 /- English proof (translation)
-Introduce `U _ h`. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, deltaφT, DegPre.deltaε, gB_famφT, gB_trT_famφT, zpow_neg, Finset.prod_inv_distrib]`. Rewrite using `[mul_left_comm, mul_inv_cancel, _root_.mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem formEq (k : ℕ) (α mu : D.X) :
     FormEq (Sum.elim (fun i => (trB D mu).left ≫ D.famφB α i)
@@ -76,7 +74,7 @@ theorem formEq (k : ℕ) (α mu : D.X) :
 variable {F : Type} [Field F] [Algebra (FractionRing R) F]
 
 /- English proof (translation)
-Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, lift_fst, whiskerRight_fst]`. Conclude with `toUnit_unique _ _`. Rewrite using `[Category.assoc, lift_snd, whiskerRight_snd, Category.comp_id]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prB_gB : DegPre.prB D F ≫ gB D = toUnit (TF (R := R) F) ▷ D.P.A := by
   apply CartesianMonoidalCategory.hom_ext
@@ -85,19 +83,19 @@ theorem prB_gB : DegPre.prB D F ≫ gB D = toUnit (TF (R := R) F) ▷ D.P.A := b
   · rw [Category.assoc, lift_snd, whiskerRight_snd, Category.comp_id]
 
 /- English proof (translation)
-Rewrite using `[DegPre.trF, lift_snd, comp_padd, Category.comp_id, comp_toUnit]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trF_prB (mu : D.X) : DegPre.trF D F mu ≫ DegPre.prB D F = DegPre.prB D F ≫ trB D mu := by
   rw [DegPre.trF, lift_snd, comp_padd, Category.comp_id, comp_toUnit]
 
 /- English proof (translation)
-Introduce `R _ _ D k α mu u₀ a hu₀ hrel σ Φ hΦ`. Establish `hL` using `D.P.isLB`. Establish `hG : GlobalFnsSt` using `GlobalTheory.allSixLaws.1.globalFns`. Take `⟨t, ht⟩` from `exists_sec hL (formEq D k α mu) (pullMulSec σ (trB D mu).left (LB.pullGen D.P.L _ _ u₀ (gB D).left) (pullGen_isGen _ _ _ _ hu₀ _))`. Use `⟨a • (show SecAb D k (α + k • mu) from t), GlobalTheory.FieldBaseChange.sec_ext' hL fun y J hJ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨u, hu, hc⟩, -⟩` from `gen_fe (D := D) (F := FractionRing R) hG k mu α`. Establish `e₁` using `(secRel_iff hL _ _ _ _ _ _ _ _ _ u).1 (Φ.fe mu α u hu hc) _ (𝟙 _) y J hJ`. Establish `e₂` using `hrel u hu hc _ (𝟙 _) y J hJ`. Rewrite using `[e₁, e₂, hΦ, sval_pullAb _ _ _ _ hJ, sval_pullAb _ _ _ _ hJ, GlobalTheory.FieldBaseChange.sval_smul' hJ, ht _ _ y J hJ]`. Use `erw [sval_pullMulSec σ (trB D mu).left (LB.pullGen D.P.L _ _ u₀ (gB D).left) (pullGen_isGen _ _ _ _ hu₀ _) (𝟙 _ ≫ (DegPre.prB D (FractionRing R)).left) y hJ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[val_pull hJ, GlobalTheory.FieldBaseChange.gs_scal]`. Establish `m₁ : (𝟙 _ ≫ (DegPre.prB D (FractionRing R)).left) ≫ (trB D mu).left = (𝟙 _ ≫ (DegPre.trF D (FractionRing R) mu).left) ≫ (DegPre.prB D (FractionRing R)).left`. Rewrite using `[Category.id_comp, Category.id_comp, ← Over.comp_left, ← Over.comp_left, trF_prB]`. Establish `m₂ : (𝟙 _ ≫ (DegPre.prB D (FractionRing R)).left) ≫ (gB D).left = 𝟙 _ ≫ (toUnit (TF (R` using `R) (FractionRing R)) ▷ D.P.A).left := by`. Rewrite using `[Category.id_comp, Category.id_comp, ← Over.comp_left, prB_gB]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `m₃ : (𝟙 _ ≫ (DegPre.prB D (FractionRing R)).left) ≫ D.P.A.hom = 𝟙 _ ≫ (DegPre.BF D (FractionRing R)).hom`. Rewrite using `[Category.assoc, Over.w]`. Rewrite using `[m₁, m₂, m₃]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (k : ℕ) (α mu : D.X)
     (u₀ : LB.Gen (LB.LinComb D.P.L (deltaφT D (α + k • mu) α (toUnit (𝟙_ _) ≫ D.c mu)) (DegPre.deltaε k))) (a : R),

@@ -11,29 +11,27 @@ open GlobalTheory.BKGal.HatVal
 open scoped GlobalTheory.BKGal.HatVal
 
 /- English proof (translation)
-Introduce `l _ a e _ _ O K _ _ _ _ _ _ _ _ _ _ t ϖ ι _ _ η H D T R σ c hc`. Establish `hσM : E K l e ^ η • σ.1 ∈ D.Mext (invL l (S O K e))` using `D.smul_mem_Mext (le_trans (A_le_S l e) (le_away _ _)) σ.2`. Use `⟨fun j τ => ⟨E K l e ^ η * σ.1 τ j, mem_tot.1 hσM τ j⟩, fun j τ => rfl, ?_⟩` and prove the remaining obligations. Use `set ej : ι → Vec K a ι := fun j _ => Pi.single j 1 with hej`. Establish `hejM : ∀ j, ej j ∈ D.M` using `fun j => mem_tot.2 fun τ => mem_vecs.2 fun i => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hej]`. Break down `eq_or_ne i j with rfl | h` into its components or cases. Rewrite using `[Pi.single_eq_same]`. Conclude with `one_mem _`. Rewrite using `[Pi.single_eq_of_ne h]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `zero_mem _`. Establish `hL : ∀ j, E K l e ^ H • ej j ∈ D.L` using `fun j => D.lower _ (hejM j)`. Establish `hcol : ∀ j τ i, (D.mxInv τ *ᵥ (E K l e ^ H • ej j) τ) i = E K l e ^ H * D.mxInv τ i j`. Introduce `j τ i`. Simplify using `only [hej, Pi.smul_apply, Matrix.mulVec_smul, Matrix.mulVec_single_one, smul_eq_mul, Matrix.col_apply, Matrix.transpose_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hℓ : ∀ j i τ, E K l e ^ H * D.mxInv τ i j ∈ A O K` using `fun j i τ => by`. Rewrite using `[← hcol]`. Conclude with `D.mem_extc_iff.1 (mem_tot.1 (hL j) τ) i`. Use `set ℓ : ι → ι → ZMod a → A O K := fun j i τ => ⟨_, hℓ j i τ⟩ with hℓdef`. Establish `hcj : ∀ j, c j = fun i => ϖ.iTot t K (ℓ j i)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j`. Apply `inclL_injective t ϖ D.toPhiMod` to reduce the goal to its premises. Rewrite using `[hc j]`. Establish `hv : E K l e ^ H • ej j ∈ ME D.toPhiMod` using `mem_ME_of_mem_L (hL j)`. Establish `h1` using `toW_of_mx t ϖ D.toPhiMod ⟨_, hv⟩ (ℓ j) (fun τ => by`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : (fun i => ((ℓ j i τ : A O K) : K⟦X⟧)) = D.mxInv τ *ᵥ (E K l e ^ H • ej j) τ`. Use function extensionality and compare the values at `fun i => (hcol j τ i).symm`. Express the relevant statement in the definitionally equal form `(E K l e ^ H • ej j) τ = D.mx τ *ᵥ fun i => ((ℓ j i τ : A O K) : K⟦X⟧)`. Rewrite using `[h2, Matrix.mulVec_mulVec, D.mx_mul_mxInv, Matrix.one_mulVec])`. Rewrite `h1` using `[← inclL_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← h1]`. Use `ext1 i`. Rewrite using `[toW_apply, Pi.smul_apply, smul_eq_mul]`. Break down `eq_or_ne i j with rfl | h` into its components or cases. Establish `h3 : (fun τ => (⟨(E K l e ^ H • ej i) τ i, mem_tot.1 hv τ i⟩ : invE l e (A O K))) = fun τ => ⟨(((fun _ => EIn l e (A O K)) ^ H : ZMod a → A O K) τ : K⟦X⟧), le_away _ _ (((fun _ => EIn l e (A O K)) ^ H : ZMod a → A O K) τ).2⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `fun τ => Subtype.ext (by simp [hej, EIn])`. Rewrite using `[h3, ϖ.iW_of_mem t K]`. Simplify using `only [map_pow, ϖ.iTot_E t K, Pi.single_eq_same, mul_one]`. Establish `h3 : (fun τ => (⟨(E K l e ^ H • ej j) τ i, mem_tot.1 hv τ i⟩ : invE l e (A O K))) = 0`. Use function extensionality and compare the values at `fun τ => Subtype.ext (by simp [hej, Pi.single_eq_of_ne h])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h3, map_zero, Pi.single_eq_of_ne h, mul_zero]`. Establish `hB : ∀ f : ZMod a → A O K, toB l O (ϖ.iTot t K f) = ϖ.iB t K (fun τ => ⟨f τ, le_away _ _ (A_le_S l e (f τ).2)⟩)` using `fun f => by`. Rewrite using `[toB, AlgHom.comp_apply, ← ϖ.iC_of_mem t K, ← ϖ.iB_of_mem t K]`. Establish `hE : toB l O ((1 : O) ⊗ₜ[ℤ_[l]] ϖ.ev a (eis l a e) : OA l O) = toB l O (ϖ.iTot t K (fun _ => EIn l e _))` using `by rw [ϖ.iTot_E t K]`. Rewrite using `[← LinearEquiv.map_smul]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [← LinearEquiv.map_smul, ← map_sum]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, Finset.sum_apply, smul_eq_mul, toBcris_apply, hE, hcj, hB, ← map_pow, ← map_mul, ← map_sum]`. Use `congr 1`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `τ`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Pi.mul_apply, Pi.pow_apply, Finset.sum_apply, Subalgebra.coe_mul, Subalgebra.coe_pow, AddSubmonoidClass.coe_finsetSum, hℓdef]`. Express the relevant statement in the definitionally equal form `(E K l e) ^ (H + η) * (D.mxInv τ *ᵥ σ.1 τ) i = ∑ j, E K l e ^ η * σ.1 τ j * (E K l e ^ H * D.mxInv τ i j)`. Simplify using `only [Matrix.mulVec, dotProduct, Finset.mul_sum]`.
-
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.BKGal.HatVal.Epow_smul_jB_toBcris_eq_sum : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (O K : Type) [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] [TameDescentExponentData K l e a] (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) (ι : Type) [Fintype ι] [DecidableEq ι] (η H : ℕ) (D : BKDat O K l e a ι η H) (T : LocLat (Gl l) ℚ_[l] K O) (R : GalDat t ϖ (sQ l) D T) (σ : D.MMl) (c : ι → ι → OA l O), (∀ j, inclL t ϖ D.toPhiMod (c j) = inclO l O (((1 : O) ⊗ₜ[ℤ_[l]] ϖ.ev a (eis l a e) : OA l O) ^ H) • (Pi.single j 1 : ι → OW l O)) → ∃ s : ι → ZMod a → invL l (S O K e), (∀ j τ, (s j τ : K⟦X⟧) = E K l e ^ η * σ.1 τ j) ∧ toB l O ((1 : O) ⊗ₜ[ℤ_[l]] ϖ.ev a (eis l a e) : OA l O) ^ (H + η) • R.jB (toBcris t ϖ D.toPhiMod σ) = ∑ j, ϖ.iB t K (s j) • R.jB (fun i => toB l O (c j i)) := by
   intro l _ a e _ _ O K _ _ _ _ _ _ _ _ _ _ t ϖ ι _ _ η H D T R σ c hc

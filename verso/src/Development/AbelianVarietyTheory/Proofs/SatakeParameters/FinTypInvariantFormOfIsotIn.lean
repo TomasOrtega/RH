@@ -6,25 +6,21 @@ open Formalism.BasicNotions Formalism.L2 Formalism.L2.NG Formalism.AUTREP Formal
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `D n A _ _ ρ C B hlin hherm hpos _hstab hinv π hne`. Choose the witnesses or unpack the hypotheses as in `⟨Φ, ⟨hΦe, hΦC⟩, hΦne⟩ : ∃ Φ : π.S →ₗ[ℂ] A, (IsEqvA ρ π Φ ∧ LinearMap.range Φ ≤ C) ∧ LinearMap.range Φ ≠ ⊥ := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hne` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions.
 
-Unfold `isotIn`. Use `iSup_eq_bot.2 fun Φ => iSup_eq_bot.2 fun hΦ => hcon Φ hΦ` and prove the remaining obligations. Establish `hmemC : ∀ x : π.S, Φ x ∈ C` using `fun x => hΦC (LinearMap.mem_range_self Φ x)`. Set `S' : Submodule ℂ (GAf D.host.E n → ℂ)` to `(LinearMap.ker Φ).map π.S.subtype`. Establish `hS'le : S' ≤ π.S`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `f ⟨k, _, rfl⟩`. Conclude with `k.2`. Establish `hS'st : ∀ h, ∀ f ∈ S', rt D.host.E n h f ∈ S'`. Introduce and unpack `h f ⟨k, hk, rfl⟩`. Use `⟨⟨rt D.host.E n h k, π.stable h k k.2⟩, ?_, rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hk' : Φ k = 0` using `hk`. Use `show Φ _ = 0`. Rewrite using `[hΦe h k, hk', map_zero]`. Establish `hinj : ∀ x : π.S, Φ x = 0 → x = 0`. Introduce `x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `π.irr S' hS'le hS'st with h0 | hall` into its components or cases. Establish `: (x : GAf D.host.E n → ℂ) ∈ S'` using `⟨x, hx, rfl⟩`. Rewrite `this` using `[h0, Submodule.mem_bot]`. Conclude with `Subtype.ext this`. It suffices to derive a contradiction.
+It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Apply `hΦne` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Introduce and unpack `a ⟨y, rfl⟩`. Establish `: (y : GAf D.host.E n → ℂ) ∈ S'` using `by rw [hall]; exact y.2`. Take `⟨k, hk, hky⟩` from `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: k = y` using `Subtype.ext hky`. Substitute `this` using the available equality. Establish `hk' : Φ k = 0` using `hk`. Conclude with `(Submodule.mem_bot ℂ).2 hk'`. Use `⟨fun x y => B (Φ x) (Φ y), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y z c`. Simplify using `only [map_add, map_smul]`. Conclude with `hlin _ (hmemC x) _ (hmemC y) _ (hmemC z) c`. Introduce `x y`. Conclude with `hherm _ (hmemC x) _ (hmemC y)`.
-
-Introduce `x hx`. Conclude with `hpos _ (hmemC x) (fun h0 => hx (hinj x h0))`. Introduce `h x y x' y' hx hy`. Establish `ex : x' = ⟨rt D.host.E n h x, π.stable h x x.2⟩` using `Subtype.ext hx`. Establish `ey : y' = ⟨rt D.host.E n h y, π.stable h y y.2⟩` using `Subtype.ext hy`.
-
-Simplify using `only`. Rewrite using `[ex, ey, hΦe h x, hΦe h y]`. Conclude with `hinv h _ (hmemC x) _ (hmemC y)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finTyp_invariant_form_of_isotIn : ∀ (D : D7) (n : ℕ) (A : Type) [AddCommGroup A] [Module ℂ A] (ρ : GAf D.host.E n →* Module.End ℂ A) (C : Submodule ℂ A) (B : A → A → ℂ), (∀ x ∈ C, ∀ y ∈ C, ∀ z ∈ C, ∀ c : ℂ, B x (y + c • z) = B x y + c * B x z) → (∀ x ∈ C, ∀ y ∈ C, B x y = starRingEnd ℂ (B y x)) → (∀ x ∈ C, x ≠ 0 → 0 < (B x x).re) → (∀ h, ∀ x ∈ C, ρ h x ∈ C) → (∀ h, ∀ x ∈ C, ∀ y ∈ C, B (ρ h x) (ρ h y) = B x y) → ∀ π : FinTyp D.host.E n, isotIn (D := D) ρ C π ≠ ⊥ → ∃ B' : π.S → π.S → ℂ, (∀ x y z (c : ℂ), B' x (y + c • z) = B' x y + c * B' x z) ∧ (∀ x y, B' x y = starRingEnd ℂ (B' y x)) ∧ (∀ x, x ≠ 0 → 0 < (B' x x).re) ∧ ∀ h (x y x' y' : π.S), (x' : GAf D.host.E n → ℂ) = rt D.host.E n h x → (y' : GAf D.host.E n → ℂ) = rt D.host.E n h y → B' x' y' = B' x y := by
   intro D n A _ _ ρ C B hlin hherm hpos _hstab hinv π hne

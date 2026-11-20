@@ -14,27 +14,23 @@ open GlobalTheory GlobalTheory.CM GlobalTheory.LamF
 namespace GlobalTheory.LamF
 
 /- English proof (translation)
-Introduce `K _ _ A x φ hf p M hM c`. Take `⟨R, _, _, _, _, _, ρ, xR, φR, hg, hρ, hval, hfib, hdet, hw⟩` from `hM`. Use `letI : Algebra (𝓞 K) R := ρ.toAlgebra`. Use `haveI : IsScalarTower (𝓞 K) R K := IsScalarTower.of_algebraMap_eq' hρ.symm`. Use `haveI : IsLocalization p.asIdeal.primeCompl R := (range_eq_valuationRing_iff_isLocalization K p R).1 hval`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG : IsGrpPullback xR.P.A A.A (spMap (algebraMap (𝓞 K) R)) φR` using `hfib.1`. Establish `n : IsGrpPullback x.P.A A.A (spMap (algebraMap R K) ≫ spMap (algebraMap (𝓞 K) R)) φ` using `hf.2.1.congr (by rw [spMap_comp_spMap]; exact congrArg spMap hρ.symm) rfl`. Establish `w : φ ≫ A.A.hom = (x.P.A.hom ≫ spMap (algebraMap R K)) ≫ spMap (algebraMap (𝓞 K) R)` using `n.1.w.trans (Category.assoc _ _ _).symm`. Establish `e₁` using `hG.1.lift_fst _ _ w`. Establish `e₂` using `hG.1.lift_snd _ _ w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Generalize the expression as in `hG.1.lift _ _ w = ψ at e₁ e₂`. Establish `hψ : IsGrpPullback x.P.A xR.P.A (spMap (algebraMap R K)) ψ` using `hG.cancel (e₁ ▸ n) e₂`. Use `choose wK hwK hwK' using hw`. Establish `hb : IsLieBasis (fun k : Fin x.P.g => xR.v (k.cast hg.symm))`. Establish `key : ∀ (m : ℕ) (h : xR.P.g = m), IsLieBasis (fun k : Fin m => xR.v (k.cast h.symm))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact.
 
-Introduce `m h`. Substitute `h` using the available equality. Conclude with `xR.basis`. Conclude with `key _ hg`. Establish `hov : ∀ k, IsVecOver (algebraMap R K) ψ (xR.v (k.cast hg.symm)) (wK k)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `k`. Use `hG.1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, e₁, hwK' k, Category.assoc, points_sums_eq_products.2]`. Rewrite using `[Category.assoc, Category.assoc, e₂, Over.w (xR.v _), ← Category.assoc, Over.w (wK k)]`. Conclude with `(PolFibre.spMap_dual_hom _).symm`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨h1, h2⟩` from `GlobalTheory.T.lieLattice_localization_modelLieAlgebra K A (GenFib.mk x.P φ hf x.v x.basis) R p.asIdeal.primeCompl xR.P.A φR ψ _ wK M hG hψ e₁ hb fun i => ⟨hov i, hwK i⟩`. Establish `hU : IsUnit M.det` using `hdet.isUnit`. Prove the components needed by the constructor for the conclusion. Introduce `hc choose a ha using fun m => (hval _).2 (hc m)`. Take `⟨t, ht⟩` from `IsLocalization.exist_integer_multiples_of_finite p.asIdeal.primeCompl a`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `choose b hb' using ht`. Use `choose s hs hs' using h1`. Establish `hcM : c = ∑ i, Matrix.vecMul c M⁻¹ i • M i`. Rewrite using `[← Matrix.vecMul_eq_sum, Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ hU, Matrix.vecMul_one]`. Use `⟨(∏ i, s i) * t, Submonoid.mul_mem p.asIdeal.primeCompl (Submonoid.prod_mem _ fun i _ => hs i) t.2, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hcM, Finset.smul_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Establish `e : (t : 𝓞 K) • Matrix.vecMul c M⁻¹ i = algebraMap (𝓞 K) K (b i)`. Rewrite using `[← ha, IsScalarTower.algebraMap_apply (𝓞 K) R K, hb', Algebra.smul_def, Algebra.smul_def, map_mul, ← IsScalarTower.algebraMap_apply]`. Rewrite using `[mul_smul, ← smul_assoc (t : 𝓞 K), e, algebraMap_smul, ← Finset.prod_erase_mul _ _ (Finset.mem_univ i), mul_smul, smul_comm (s i)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.smul_mem _ _ (hs' i))`. Introduce and unpack `⟨s, hs, hc⟩ m`. Take `⟨a, ha⟩` from `h2 _ hc`. Establish `e : s • Matrix.vecMul c M⁻¹ = fun i => algebraMap R K (a i)`. Rewrite using `[← Matrix.smul_vecMul]`.
-
-Use `erw [ha]`. Rewrite using `[← Matrix.vecMul_eq_sum, Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ hU, Matrix.vecMul_one]`. Establish `e' : algebraMap (𝓞 K) K s * Matrix.vecMul c M⁻¹ m = algebraMap R K (a m)`. Rewrite using `[← Algebra.smul_def]`. Conclude with `congrFun e m`.
-
-Establish `h3` using `(hval _).1 ⟨a m, e'.symm⟩`. Rewrite `h3` using `[map_mul, (p.valuation_eq_one_iff_notMem (K := K)).2 hs, _root_.one_mul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isModelAt_integral_iff_mem_lieLat : ∀ (K : Type) [Field K] [NumberField K] (A : Out.PolAV (Sp (𝓞 K))) (x : KeyIn K) (φ : x.P.A.left ⟶ A.A.left) (hf : IsPolFibre (algebraMap (𝓞 K) K) A x.P φ) (p : HeightOneSpectrum (𝓞 K)) (M : Matrix (Fin x.P.g) (Fin x.P.g) K), IsModelAt A x φ p M → ∀ c : Fin x.P.g → K, (∀ m, p.valuation K (Matrix.vecMul c M⁻¹ m) ≤ 1) ↔ ∃ s : 𝓞 K, s ∉ p.asIdeal ∧ s • c ∈ (GenFib.mk x.P φ hf x.v x.basis : GenFib A).lieLat := by
   intro K _ _ A x φ hf p M hM c

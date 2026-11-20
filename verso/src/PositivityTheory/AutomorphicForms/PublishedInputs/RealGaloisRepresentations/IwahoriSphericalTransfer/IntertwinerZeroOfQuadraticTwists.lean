@@ -3,7 +3,7 @@ import Formalism.SharpRestriction.LevelLetterCocycles.DataN
 import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.IntertwinerZeroOfQuadraticTwists
 open Formalism.MainNotions.N
 /- English proof (citation)
-Apply `GlobalTheory.trace_eq_of_agree_on_index_two_of_no_twisted_intertwiner` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FGlobalInterpolation%2FIntertwinerZeroOfQuadraticTwists.lean&line=9#L9)
 -/

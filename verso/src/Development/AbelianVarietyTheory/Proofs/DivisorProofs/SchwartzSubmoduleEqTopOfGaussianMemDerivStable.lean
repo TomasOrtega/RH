@@ -13,19 +13,17 @@ open FourierTransform MeasureTheory Filter Topology
 namespace GlobalTheory.SchwartzGaussDense
 
 /- English proof (translation)
-Introduce `E _ _ _ _ _ N G hG hGN hD hL`. Take `⟨W, hWN, hGW, hLW, hFW⟩` from `GlobalTheory.T.exists_fourier_stable_submodule_containing_gaussian E N G hG hGN hD hL`. Take `⟨hLM, hFM⟩` from `GlobalTheory.T.topologicalClosure_stable_linearForm_mul_and_fourier E W hLW hFW`. Use `set M := W.topologicalClosure with hMdef`. Establish `hcl : IsClosed (M : Set (SchwartzMap E ℂ))` using `W.isClosed_topologicalClosure`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGM : G ∈ M` using `W.le_topologicalClosure hGW`. Establish `hgauss` using `GlobalTheory.T.mem_all_gaussianWidths_of_fourierStable_schwartz E M hcl hLM hFM G hG hGM`. Establish `key : ∀ (h f : SchwartzMap E ℂ), (∃ b : ℝ, 0 < b ∧ ∀ y, f y = Complex.exp (-((b * ‖y‖ ^ 2 : ℝ) : ℂ)) * h y) → f ∈ M`. Introduce and unpack `h f ⟨b, hb, hf⟩`. Establish `hsub : {u : SchwartzMap E ℂ | ∃ (c : ℝ) (s : ℂ), 0 < c ∧ ∀ y, u y = s * ∫ a, f a * Complex.exp (-((c * ‖y - a‖ ^ 2 : ℝ) : ℂ))} ⊆ (M : Set (SchwartzMap E ℂ))`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `u ⟨c, s, hc, hu⟩`. Distinguish the cases in `hs : s = 0`. Establish `: u = 0` using `by ext y; simp [hu y, hs]`. Rewrite using `[this]`. Conclude with `M.zero_mem`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hu' : ∀ y, (s⁻¹ • u) y = ∫ a, Complex.exp (-((b * ‖a‖ ^ 2 : ℝ) : ℂ)) * h a * Complex.exp (-((c * ‖y - a‖ ^ 2 : ℝ) : ℂ))`. Introduce `y`. Rewrite using `[SchwartzMap.smul_apply, hu y, smul_eq_mul, ← mul_assoc, inv_mul_cancel₀ hs, one_mul]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hf a]`. Establish `hmem` using `GlobalTheory.T.mem_of_closedSubmodule_gaussian_convolution E M hcl hLM b c hb hc (hgauss c hc) h (s⁻¹ • u) hu'`. Establish `: u = s • (s⁻¹ • u)` using `by rw [smul_smul, mul_inv_cancel₀ hs, one_smul]`. Rewrite using `[this]`. Conclude with `M.smul_mem s hmem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `closure_minimal hsub hcl (GlobalTheory.T.mem_closure_gaussian_convolutions E f)`. Establish `hall : ∀ h : SchwartzMap E ℂ, h ∈ M`. Introduce `h`. Conclude with `closure_minimal (fun f hf => key h f hf) hcl (GlobalTheory.T.mem_closure_wideGaussian_mul_schwartz E h)`. Establish `htop : N.topologicalClosure = ⊤`.
-
-Rewrite using `[eq_top_iff]`. Introduce `h _`. Conclude with `Submodule.topologicalClosure_mono hWN (hall h)`. Conclude with `(Submodule.dense_iff_topologicalClosure_eq_top).2 htop`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem dense_of_stdGaussian_mem : ∀ (E : Type) [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E]
     (N : Submodule ℂ (SchwartzMap E ℂ)) (G : SchwartzMap E ℂ),
@@ -68,11 +66,11 @@ theorem dense_of_stdGaussian_mem : ∀ (E : Type) [NormedAddCommGroup E] [InnerP
   exact (Submodule.dense_iff_topologicalClosure_eq_top).2 htop
 
 /- English proof (translation)
-Introduce `V _ _ _ N g Q c hc hQ hg hgN hD hL`. Take `⟨A, hA⟩` from `GlobalTheory.T.exists_euclidean_equiv_pi_mul_norm_sq_eq_re V Q c hc hQ`. Take `⟨N₂, hD₂, hL₂, hG₂, hdense⟩` from `GlobalTheory.T.schwartz_density_transport_linearEquiv_chirp V _ A Q N hA hD hL`. Apply `hdense` to reduce the goal to its premises. Set `G` to `GroundTheory.Global.gaussianSchwartz (EuclideanSpace ℝ (Fin (Module.finrank ℝ V)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression.
 
-Establish `hG : ∀ y, G y = Complex.exp (-((Real.pi * ‖y‖ ^ 2 : ℝ) : ℂ))`. Introduce `y`. Simplify using `only [G, GroundTheory.Global.gaussianSchwartz_apply, Complex.ofReal_exp]`. Use `congr 1`. Use `push_cast`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Conclude with `dense_of_stdGaussian_mem _ N₂ G hG (hG₂ g G hg hgN hG) hD₂ hL₂`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem dense_of_gaussian_mem : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] (N : Submodule ℂ (SchwartzMap V ℂ))
     (g : SchwartzMap V ℂ) (Q : V →L[ℝ] V →L[ℝ] ℂ) (c : ℝ), 0 < c → (∀ x, c * ‖x‖ ^ 2 ≤ (Q x x).re) →

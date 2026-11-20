@@ -13,19 +13,15 @@ set_option linter.overlappingInstances false
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr UpperTheory.V
 
 /- English proof (translation)
-Use `letI : Fintype k := Fintype.ofFinite k`. Use `set p := ringChar k with hpdef`. Use `haveI : CharP k p := ringChar.charP k`. Use `haveI : Fact p.Prime := ⟨CharP.char_is_prime k p⟩`. Take `⟨m, _, hcard⟩` from `FiniteField.card k p`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : CharP (PowerSeries K) p := charP_of_injective_ringHom φ.injective p`. Use `set f := φ a with hf`. Use `set c := PowerSeries.constantCoeff f with hc`. Use `set g := f - PowerSeries.C c with hg`. Establish `hfq : f ^ Fintype.card k = f`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hf, ← map_pow, FiniteField.pow_card]`. Establish `hcq : c ^ Fintype.card k = c`. Rewrite using `[hc, ← map_pow, hfq]`. Establish `hsplit : f = PowerSeries.C c + g` using `by rw [hg]; ring`. Establish `hgq : g ^ Fintype.card k = g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `hfq`. Rewrite `e` using `[hsplit, hcard, add_pow_char_pow, ← map_pow, ← hcard, hcq]`. Conclude with `add_left_cancel e`. Establish `hg0 : PowerSeries.constantCoeff g = 0`. Rewrite using `[hg, map_sub, PowerSeries.constantCoeff_C, hc, sub_self]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `hne`. Establish `hgne : g ≠ 0` using `fun h0 => hne (by rw [← sub_eq_zero]; exact h0)`. Establish `ho1 : 1 ≤ g.order` using `PowerSeries.one_le_order_iff_constCoeff_eq_zero.mpr hg0`. Establish `hotop : g.order ≠ ⊤` using `fun ht => hgne (PowerSeries.order_eq_top.mp ht)`. Take `⟨d, hd⟩` from `ENat.ne_top_iff_exists.mp hotop`.
-
-Establish `hq : 2 ≤ Fintype.card k` using `Fintype.one_lt_card`. Establish `e2` using `congrArg PowerSeries.order hgq`. Rewrite `e2` using `[PowerSeries.order_pow, ← hd, nsmul_eq_mul]`. Rewrite `ho1` using `[← hd]`. Establish `e3 : Fintype.card k * d = d` using `by exact_mod_cast e2`.
-
-Establish `e4 : 1 ≤ d` using `by exact_mod_cast ho1`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private theorem pe_const {k K : Type} [Field k] [Finite k] [Field K] (φ : k →+* PowerSeries K) (a : k) :
     φ a = PowerSeries.C (PowerSeries.constantCoeff (φ a)) := by
@@ -64,23 +60,17 @@ private theorem pe_const {k K : Type} [Field k] [Finite k] [Field K] (φ : k →
   nlinarith
 
 /- English proof (translation)
-Use `haveI : Nontrivial (R ⧸ p) := Ideal.Quotient.nontrivial_iff.mpr hp.ne_top`. Use `haveI : IsDomain (R ⧸ p) := (Ideal.Quotient.isDomain_iff_prime p).mpr hp`. Use `haveI hco : IsCO O' (R ⧸ p) := co_quot O' R (R ⧸ p) (Ideal.Quotient.mkₐ O' p) Ideal.Quotient.mk_surjective`. Use `haveI : IsNoetherianRing (R ⧸ p) := hco.toIsNoetherian`. Use `haveI : IsAdicComplete (maximalIdeal (R ⧸ p)) (R ⧸ p) := hco.complete`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : IsLocalHom (algebraMap O' (R ⧸ p)) := hco.isLocalHom`. Use `haveI : Finite (ResidueField (R ⧸ p)) := by`. Use `Finite.of_surjective (ResidueField.map (algebraMap O' (R ⧸ p))) ?_` and prove the remaining obligations. Introduce `y`. Take `⟨z, rfl⟩` from `residue_surjective y`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨a, ha⟩` from `hco.res_surj z`. Use `⟨residue O' a, ?_⟩` and prove the remaining obligations. Rewrite using `[ResidueField.map_residue, eq_comm]`. Conclude with `Ideal.Quotient.eq.mpr ha`. Use `haveI : CharP (R ⧸ p) l := by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Rewrite using `[CharP.charP_iff_prime_eq_zero (Fact.out)]`. Rewrite using `[← map_natCast (Ideal.Quotient.mk p), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hl`. Take `⟨k, _, _, f, hfi, hfl, _⟩` from `Pr.T.curveNorm l hd`. Set `g : O →+* R ⧸ p` to `(Ideal.Quotient.mk p).comp (algebraMap O R)`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hg : ∀ a ∈ maximalIdeal O, g a = 0` using `fun a ha => Ideal.Quotient.eq_zero_iff_mem.mpr (hm a ha)`. Set `ψ : ResidueField O →+* R ⧸ p` to `Ideal.Quotient.lift (maximalIdeal O) g hg`. Set `φ : ResidueField O →+* PowerSeries k` to `f.comp ψ`. Set `c : ResidueField O →+* k` to `PowerSeries.constantCoeff.comp φ`. Use `letI ak : Algebra (ResidueField O) k := c.toAlgebra`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `letI aO : Algebra O k := (c.comp (residue O)).toAlgebra`. Use `haveI tw : IsScalarTower O (ResidueField O) k := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Set `j : R →ₐ[O] PowerSeries k` to `{ toRingHom := f.comp (Ideal.Quotient.mk p) commutes' := by`. Introduce `a`. Rewrite using `[PowerSeries.algebraMap_apply]`.
-
-Express the relevant statement in the definitionally equal form `φ (residue O a) = PowerSeries.C (c (residue O a))`. Conclude with `pe_const φ (residue O a) }`. Use `⟨k, inferInstance, inferInstance, ak, aO, tw, j, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `z`. Express the relevant statement in the definitionally equal form `f (Ideal.Quotient.mk p z) = 0 ↔ z ∈ p`.
-
-Rewrite using `[map_eq_zero_iff f hfi, Ideal.Quotient.eq_zero_iff_mem]`. Use `⟨fun z hz => ?_⟩` and prove the remaining obligations. Establish `h1 : IsUnit (f (Ideal.Quotient.mk p z))` using `hz`. Establish `h2 : IsUnit (Ideal.Quotient.mk p z)` using `hfl.map_nonunit _ h1`. Use `haveI := IsLocalHom.of_surjective (Ideal.Quotient.mk p) Ideal.Quotient.mk_surjective`.
-
-Conclude with `IsLocalHom.map_nonunit _ h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem pe_curve (l : ℕ) [Fact l.Prime] (O O' R : Type) [CommRing O] [IsLocalRing O] [Finite (ResidueField O)]
     [CommRing O'] [IsLocalRing O'] [Finite (ResidueField O')] [CommRing R] [Algebra O' R] [IsCO O' R] [Algebra O R]
@@ -133,11 +123,11 @@ private theorem pe_curve (l : ℕ) [Fact l.Prime] (O O' R : Type) [CommRing O] [
     exact IsLocalHom.map_nonunit _ h2
 
 /- English proof (translation)
-Establish `hmax : RingHom.ker f = maximalIdeal B` using `by haveI : (RingHom.ker f).IsPrime := RingHom.ker_isPrime f haveI : Finite (B ⧸ RingHom.ker f) := Finite.of_injective _ (RingHom.kerLift_injective f)`. Establish `hM` using `Ideal.Quotient.maximal_of_isField _ (Finite.isField_of_domain (B ⧸ RingHom.ker f))`. Conclude with `IsLocalRing.eq_maximalIdeal hM`. Use extensionality with `b`. Take `⟨a, ha⟩` from `IsCO.res_surj (O := O) (R := B) b`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : f (b - algebraMap O B a) = 0`. Rewrite using `[← RingHom.mem_ker, hmax]`. Conclude with `ha`. Establish `h2 : res O B (b - algebraMap O B a) = 0` using `(res_eq_zero_iff O B _).mpr ha`. Rewrite `h1`, `h2` using `[map_sub, sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.comp_apply, h1, hf]`. Use `erw [h2]`. Rewrite using `[AlgHom.commutes, ← IsScalarTower.algebraMap_apply]`.
+A detailed English derivation is pending.
 -/
 private theorem pe_res {O B K : Type} [CommRing O] [IsLocalRing O] [CommRing B] [Algebra O B] [IsCO O B] [Field K]
     [Finite K] [Algebra (ResidueField O) K] [Algebra O K] [IsScalarTower O (ResidueField O) K] (f : B →+* K)
@@ -160,7 +150,7 @@ private theorem pe_res {O B K : Type} [CommRing O] [IsLocalRing O] [CommRing B] 
   rw [AlgHom.commutes, ← IsScalarTower.algebraMap_apply]
 
 /- English proof (translation)
-Use `CA.d_gext D D' fun g i _ _ => hf ?_` and prove the remaining obligations. Rewrite using `[← ((CA.d_gmap D).2.2.1 f _).2 i, ← ((CA.d_gmap D').2.2.1 f _).2 i, h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem pe_inj {n : ℕ} {A B G : Type} [CommRing A] [CommRing B] [Group G] (f : A →+* B)
     (hf : Function.Injective f) (D D' : W.GDet n A G) (h : D.map f = D'.map f) : D = D' := by
@@ -168,7 +158,7 @@ private theorem pe_inj {n : ℕ} {A B G : Type} [CommRing A] [CommRing B] [Group
   rw [← ((CA.d_gmap D).2.2.1 f _).2 i, ← ((CA.d_gmap D').2.2.1 f _).2 i, h]
 
 /- English proof (translation)
-Rewrite using `[Matrix.charpoly]`. Use `show Matrix.det _ = _`. Use `congr 1`. Simplify using `[W.GDet.repAlg, MonoidAlgebra.lift_single, Matrix.charmatrix, Matrix.smul_one_eq_diagonal]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem pe_chi {n : ℕ} {A G : Type} [CommRing A] [Group G] (ρ : G →* Matrix (Fin n) (Fin n) A) (g : G) :
     (W.GDet.ofRep ρ).chi (MonoidAlgebra.single g 1) = (ρ g).charpoly := by
@@ -178,11 +168,11 @@ private theorem pe_chi {n : ℕ} {A G : Type} [CommRing A] [Group G] (ρ : G →
   simp [W.GDet.repAlg, MonoidAlgebra.lift_single, Matrix.charmatrix, Matrix.smul_one_eq_diagonal]
 
 /- English proof (translation)
-Introduce `N`. Establish `h0 : maximalIdeal R ≤ Ideal.comap f (maximalIdeal R')` using `fun x hx => by`. Rewrite using `[Ideal.mem_comap, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `fun hu => (IsLocalRing.mem_maximalIdeal x).mp hx (isUnit_of_map_unit f x hu)`. Establish `hle : maximalIdeal R ^ N ≤ Ideal.comap f (maximalIdeal R' ^ N)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Rewrite using `[← Ideal.map_le_iff_le_comap, Ideal.map_pow]`. Conclude with `pow_le_pow_left' (Ideal.map_le_iff_le_comap.mpr h0) N`. Establish `e : (fun g => Ideal.Quotient.mk (maximalIdeal R' ^ N) (f (a g))) = (Ideal.quotientMap _ f hle) ∘ (fun g => Ideal.Quotient.mk (maximalIdeal R ^ N) (a g))`. Use function extensionality and compare the values at `g`. Simplify using `[Ideal.quotientMap_mk]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show IsLocallyConstant (fun g => Ideal.Quotient.mk (maximalIdeal R' ^ N) (f (a g)))`. Rewrite using `[e]`. Conclude with `(h N).comp _`.
+A detailed English derivation is pending.
 -/
 private theorem pe_cont {Γ R R' : Type} [TopologicalSpace Γ] [CommRing R] [IsLocalRing R] [CommRing R'] [IsLocalRing R']
     (f : R →+* R') [IsLocalHom f] {a : Γ → R} (h : AdicCont (maximalIdeal R) a) :
@@ -209,7 +199,7 @@ variable {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] [Algeb
   {A A' : Type} [CommRing A] [Algebra O A] [CommRing A'] [Algebra O A']
 
 /- English proof (translation)
-Use extensionality with `g i j`. Simplify using `[Pr.TwLink.tw, Pr.TwLink.κA]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem pe_tw_map (f : A →ₐ[O] A') (ρ : NRep F n A) :
     K.tw (ρ.map (f : A →+* A')) = (f : A →+* A').mapMatrix.toMonoidHom.comp (K.tw ρ) := by
@@ -217,7 +207,7 @@ private theorem pe_tw_map (f : A →ₐ[O] A') (ρ : NRep F n A) :
   simp [Pr.TwLink.tw, Pr.TwLink.κA]
 
 /- English proof (translation)
-Use extensionality with `g`. Simplify using `[Pr.TwLink.twψ, Pr.TwLink.κA]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem pe_twψ_map (f : A →ₐ[O] A') (ρ : NRep F n A) (v : G.Vl) (i : Fin n) :
     K.twψ (ρ.map (f : A →+* A')) v i = W.pushCh (f : A →+* A') (K.twψ ρ v i) := by
@@ -225,7 +215,7 @@ private theorem pe_twψ_map (f : A →ₐ[O] A') (ρ : NRep F n A) (v : G.Vl) (i
   simp [Pr.TwLink.twψ, Pr.TwLink.κA]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `h`. Use `⟨?_, fun v i => ?_⟩` and prove the remaining obligations. Rewrite using `[pe_tw_map K f ρ, ← (CA.d_gmap u.D).2.1 φ (f : A →+* A'), h1, (CA.d_gmap (W.GDet.ofRep (K.tw ρ))).2.2.2]`. Rewrite using `[pe_twψ_map K f ρ v i, ← h2 v i]`. Use extensionality with `g`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
 Both sides reduce to the same expression.
 -/
@@ -241,9 +231,9 @@ private theorem pe_maps {B : Type} [CommRing B] [Algebra O B] [IsCO O B] (u : W.
     rfl
 
 /- English proof (translation)
-Use `⟨pe_inj (f : A →+* A') hf _ _ ?_, fun v i => ?_⟩` and prove the remaining obligations. Rewrite using `[(CA.d_gmap u.D).2.1, h.1, (CA.d_gmap (W.GDet.ofRep (K.tw ρ))).2.2.2, pe_tw_map]`. Establish `h1` using `h.2 v i`. Rewrite `h1` using `[pe_twψ_map]`. Use extensionality with `g`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components.
 
-Conclude with `hf (congrArg Units.val (DFunLike.congr_fun h1 g))`.
+A detailed English derivation is pending.
 -/
 private theorem pe_maps_of {B : Type} [CommRing B] [Algebra O B] [IsCO O B] (u : W.Pair r B) (φ : B →+* A)
     (f : A →ₐ[O] A') (hf : Function.Injective f) (ρ : NRep F n A)
@@ -257,17 +247,17 @@ private theorem pe_maps_of {B : Type} [CommRing B] [Algebra O B] [IsCO O B] (u :
     exact hf (congrArg Units.val (DFunLike.congr_fun h1 g))
 
 /- English proof (translation)
-Introduce `g`. Establish `hk : (K.κA A) g * (K.κA A) (G.conj g) = (G.eps O A) g ^ (1 - (n : ℤ))`. Establish `h` using `congrArg (Units.map ((algebraMap O A : O →+* A) : O →* A)) (K.κ_conj g)`. Rewrite `h` using `[map_mul, map_zpow]`. Establish `e1 : ∀ x, K.κA A x = Units.map ((algebraMap O A : O →+* A) : O →* A) (K.κ x)` using `fun x => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : G.eps O A g = Units.map ((algebraMap O A : O →+* A) : O →* A) (G.eps O O g)`. Use `ext`. Simplify using `[W.GFrame.eps, W.pushCh]`. Rewrite using `[e1, e1, e2]`. Conclude with `h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hstar : ∀ h : F.G0, ρ.r (F.conj h) = Jmat A n * (ρ.r h⁻¹)ᵀ * Jmat A n`. Introduce `h`. Establish `h'` using `ρ.pol h⁻¹`. Simplify `h'` using `[Frame.star]`. Establish `hinv : ∀ h : F.G0, (ρ.r h)ᵀ * (ρ.r h⁻¹)ᵀ = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Rewrite using `[← Matrix.transpose_mul, ← map_mul, inv_mul_cancel, map_one, Matrix.transpose_one]`. Establish `hJ : ((Jgl A n : GL (Fin n) A) : Matrix (Fin n) (Fin n) A) = Jmat A n` using `rfl`. Use `show (K.tw ρ g)ᵀ * _ * K.tw ρ (G.conj g) = _`. Rewrite using `[hJ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pr.TwLink.tw, MonoidHom.coe_mk, OneHom.coe_mk]`. Rewrite using `[K.π_conj g, hstar, Matrix.transpose_smul, Matrix.smul_mul, Matrix.mul_smul, Matrix.smul_mul, smul_smul]`. Establish `hm : (ρ.r (K.π g))ᵀ * Jmat A n * (Jmat A n * (ρ.r (K.π g)⁻¹)ᵀ * Jmat A n) = Jmat A n`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = Jmat A n := by`. Rewrite using `[Jmat_mul_Jmat, Matrix.mul_one, hinv, Matrix.one_mul]`. Rewrite using `[hm]`. Use `congr 1`. Rewrite using `[mul_comm, ← Units.val_mul, hk]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pe_form (ρ : NRep F n A) : G.IsForm O n (K.tw ρ).toHomUnits (Jgl A n) := by
   intro g
@@ -303,11 +293,11 @@ private theorem pe_form (ρ : NRep F n A) : G.IsForm O n (K.tw ρ).toHomUnits (J
   rw [mul_comm, ← Units.val_mul, hk]
 
 /- English proof (translation)
-Take `⟨P, hP⟩` from `h`. Use `⟨P, fun s => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hP (K.lam v s)`. Establish `key : ((P * ((K.tw ρ).toHomUnits.comp (G.φ v)) s * P⁻¹ : GL (Fin n) A) : Matrix (Fin n) (Fin n) A) = ((K.κA A) (G.φ v s) : A) • ((P * (ρ.r.comp (F.loc0 (K.e v))).toHomUnits (K.lam v s) * P⁻¹ : GL (Fin n) A) : Matrix (Fin n) (Fin n) A)`. Simplify using `only [Units.val_mul, MonoidHom.comp_apply, MonoidHom.coe_toHomUnits]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pr.TwLink.tw, MonoidHom.coe_mk, OneHom.coe_mk, K.lam_loc]`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`. Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[key, Matrix.smul_apply, h1 i j hij, smul_zero]`. Rewrite using `[key, Matrix.smul_apply, h2 i]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Pr.TwLink.twψ, mul_comm]`. Apply the tactic sequence `try rfl`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem pe_flag (ρ : NRep F n A) (v : G.Vl)
     (h : W.HasFlag (ρ.r.comp (F.loc0 (K.e v))).toHomUnits (ρ.ψ (K.e v))) :
@@ -329,15 +319,13 @@ private theorem pe_flag (ρ : NRep F n A) (v : G.Vl)
     try rfl
 
 /- English proof (translation)
-Introduce `N`. Establish `hloc : maximalIdeal O ≤ Ideal.comap (algebraMap O A) (maximalIdeal A)`. Introduce `a ha`. Rewrite using `[Ideal.mem_comap, mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(mem_nonunits_iff.mp ((mem_maximalIdeal _).mp ha)) (isUnit_of_map_unit (algebraMap O A) a hu)`. Establish `hle : maximalIdeal O ^ N ≤ Ideal.comap (algebraMap O A) (maximalIdeal A ^ N)`. Rewrite using `[← Ideal.map_le_iff_le_comap, Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono (Ideal.map_le_iff_le_comap.mpr hloc) N`. Establish `hκ : IsLocallyConstant fun g : G.G₀ => Ideal.Quotient.mk (maximalIdeal A ^ N) (algebraMap O A (K.κ g : O))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `h'` using `(K.κ_cont N).comp (Ideal.quotientMap (maximalIdeal A ^ N) (algebraMap O A) hle)`. Use `h' using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Simplify using `[Ideal.quotientMap_mk]`. Establish `hr : IsLocallyConstant fun g : G.G₀ => Ideal.Quotient.mk (maximalIdeal A ^ N) (ρ.r (K.π g) i j)` using `(h i j N).comp_continuous K.π_cont`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `h2` using `IsLocallyConstant.comp₂ hκ hr (· * ·)`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Simplify using `[Pr.TwLink.tw, Pr.TwLink.κA, W.pushCh, map_mul]`. Rewrite using `[Algebra.smul_def, map_mul]`.
-
-Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem pe_tw_cont [IsLocalRing A] [IsLocalHom (algebraMap O A)] (ρ : NRep F n A)
     (h : ∀ i j, AdicCont (maximalIdeal A) fun g => ρ.r g i j) (i j : Fin n) :
@@ -368,25 +356,21 @@ private theorem pe_tw_cont [IsLocalRing A] [IsLocalHom (algebraMap O A)] (ρ : N
   rfl
 
 /- English proof (translation)
-Establish `hIu : g ∈ G.Iu u` using `(Subgroup.mem_inf.mp hg).1`. Establish `hker : ∀ i, r.chib i g = 1`. Introduce `i`. Establish `h'` using `(Subgroup.mem_inf.mp hg).2`. Conclude with `(Subgroup.mem_iInf.mp h' i)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hlm, hπ, hκ⟩` from `K.tame u g hIu`. Establish `hdiag : W.diagRep r.chib g = 1`. Simplify using `[W.diagRep, hker]`. Establish `hchi : Polynomial.map (PowerSeries.constantCoeff : PowerSeries k →+* k) (K.tw ρ g).charpoly = (Polynomial.X - 1) ^ n`. Establish `e` using `congrArg (fun D : W.GDet n k G.G₀ => D.chi (MonoidAlgebra.single g (1 : k))) h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s1 : MonoidAlgebra.mapRingHom G.G₀ (PowerSeries.constantCoeff : PowerSeries k →+* k) (MonoidAlgebra.single g 1) = MonoidAlgebra.single g 1` using `by simp`. Establish `s2 : MonoidAlgebra.mapRingHom G.G₀ (algebraMap (ResidueField O) k) (MonoidAlgebra.single g 1) = MonoidAlgebra.single g 1` using `by simp`. Establish `e1` using `((CA.d_gmap (W.GDet.ofRep (K.tw ρ))).2.2.1 (PowerSeries.constantCoeff : PowerSeries k →+* k) (MonoidAlgebra.single g 1)).1`. Establish `e2` using `((CA.d_gmap r.Dbar).2.2.1 (algebraMap (ResidueField O) k) (MonoidAlgebra.single g 1)).1`. Rewrite `e1` using `[s1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e2` using `[s2]`. Rewrite `e` using `[e1, e2]`. Simplify using `only [W.Resid.Dbar, pe_chi, hdiag, Matrix.charpoly_one, Fintype.card_fin, Polynomial.map_pow, Polynomial.map_sub, Polynomial.map_X, Polynomial.map_one] at e`. Conclude with `e`. Establish `hres : Polynomial.map (residue (PowerSeries k)) (K.tw ρ g).charpoly = (Polynomial.X - 1) ^ n`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : Polynomial.map (PowerSeries.constantCoeff : PowerSeries k →+* k) ((Polynomial.X - 1) ^ n : Polynomial (PowerSeries k)) = (Polynomial.X - 1) ^ n` using `by simp`. Establish `hz : ∀ a : PowerSeries k, PowerSeries.constantCoeff a = 0 → residue (PowerSeries k) a = 0`. Introduce `a ha`. Rewrite using `[residue_eq_zero_iff, mem_maximalIdeal, mem_nonunits_iff, PowerSeries.isUnit_iff_constantCoeff, ha]`. Conclude with `not_isUnit_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : Polynomial.map (PowerSeries.constantCoeff : PowerSeries k →+* k) ((K.tw ρ g).charpoly - (Polynomial.X - 1) ^ n) = 0`. Rewrite using `[Polynomial.map_sub, hchi, hq, sub_self]`. Establish `hd : Polynomial.map (residue (PowerSeries k)) ((K.tw ρ g).charpoly - (Polynomial.X - 1) ^ n) = 0`. Use extensionality with `i`. Rewrite using `[Polynomial.coeff_map, Polynomial.coeff_zero]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `hz` to reduce the goal to its premises. Establish `h3 : (Polynomial.map (PowerSeries.constantCoeff : PowerSeries k →+* k) ((K.tw ρ g).charpoly - (Polynomial.X - 1) ^ n)).coeff i = (0 : Polynomial k).coeff i`. Rewrite using `[h0]`. Rewrite `h3` using `[Polynomial.coeff_map, Polynomial.coeff_zero]`. Conclude with `h3`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `hd` using `[Polynomial.map_sub, sub_eq_zero]`. Rewrite using `[hd]`. Simplify using the standard rewrite rules. Use `haveI : CharP k l := charP_of_injective_algebraMap (algebraMap (ResidueField O) k).injective l`. Establish `hm : IsUnit ((m : ℕ) : PowerSeries k)`.
-
-Rewrite using `[PowerSeries.isUnit_iff_constantCoeff, map_natCast, isUnit_iff_ne_zero, Ne, CharP.cast_eq_zero_iff k l]`. Conclude with `hlm`. Establish `hpow : (K.tw ρ g) ^ m = 1`. Rewrite using `[← map_pow]`. Simplify using `[Pr.TwLink.tw, Pr.TwLink.κA, W.pushCh, hπ, hκ]`.
-
-Conclude with `Pr.T.unipTorsion (K.tw ρ g) _ n m (Matrix.charpoly_monic _) (Matrix.aeval_self_charpoly _) hres hm hpow`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem pe_ine {k : Type} [Field k] [Algebra (ResidueField O) k] [CharP (ResidueField O) l]
     [Algebra O (PowerSeries k)] (ρ : NRep F n (PowerSeries k))
@@ -450,33 +434,25 @@ private theorem pe_ine {k : Type} [Field k] [Algebra (ResidueField O) k] [CharP 
 end Tw
 
 /- English proof (translation)
-Use `haveI : Finite (ResidueField O) := IsCoef.fin (l := l)`. Establish `hl : ((l : ℕ) : L.R) ∈ p`. Establish `h1 : ((l : ℕ) : O) ∈ maximalIdeal O`. Rewrite using `[← IsLocalRing.residue_eq_zero_iff, map_natCast]`. Use `haveI := IsCoef.char (l := l) (O := O)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `CharP.cast_eq_zero _ l`. Establish `h2` using `hm _ h1`. Rewrite `h2` using `[map_natCast]`. Then use the resulting hypothesis. Use `haveI : Finite (ResidueField L.O') := IsCoef.fin (l := l)`. Take `⟨K, _, _, _, _, _, j, hjk, hjl⟩` from `pe_curve l O L.O' L.R p hp hd hl hm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hSu : T.S.u.map (T.S.A.val : T.S.A →+* T.S.R) = T.S.ρ` using `NRep.ext (by ext g i j; rfl) (by funext v i; ext g; rfl)`. Establish `h0 : T.B.u.Maps ((T.S.A.val : T.S.A →+* T.S.R).comp ((T.S.inc.comp Φ : T.B.B →ₐ[O] T.S.A) : T.B.B →+* T.S.A)) (W.GDet.ofRep (T.K.tw (T.S.u.map (T.S.A.val : T.S.A →+* T.S.R)))) (T.K.twψ (T.S.u.map (T.S.A.val : T.S.A →+* T.S.R)))`. Rewrite using `[hSu]`. Conclude with `hΦ`. Establish `h1` using `pe_maps_of T.K T.B.u _ T.S.A.val Subtype.val_injective T.S.u h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `pe_maps T.K T.B.u _ (j.comp L.ι) T.S.u h1`. Establish `hρ : T.S.u.map ((j.comp L.ι : T.S.A →ₐ[O] PowerSeries K) : T.S.A →+* PowerSeries K) = L.ρ.map (j : L.R →+* PowerSeries K)`. Rewrite using `[Space.Loc.ρ, NRep.map_map]`. Both sides reduce to the same expression. Rewrite `h2` using `[hρ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpt : T.B.u.Maps ((j.comp (T.phi Φ L) : T.B.B →ₐ[O] PowerSeries K) : T.B.B →+* PowerSeries K) (W.GDet.ofRep (T.K.tw (L.ρ.map (j : L.R →+* PowerSeries K)))) (T.K.twψ (L.ρ.map (j : L.R →+* PowerSeries K)))` using `h2`. Establish `hmat : W.mat (T.K.tw (L.ρ.map (j : L.R →+* PowerSeries K))).toHomUnits = T.K.tw (L.ρ.map (j : L.R →+* PowerSeries K))` using `MonoidHom.ext fun g => MonoidHom.coe_toHomUnits _ g`. Establish `hres` using `pe_res (O := O) (B := T.B.B) (K := K) ((PowerSeries.constantCoeff : PowerSeries K →+* K).comp ((j.comp (T.phi Φ L) : T.B.B →ₐ[O] PowerSeries K) : T.B.B →+* PowerSeries K)) (fun a => by show PowerSeries.constantCoeff ((j.comp (T.phi Φ L)) (algebraMap O T.B.B a)) = _`. Rewrite using `[AlgHom.commutes, PowerSeries.algebraMap_apply, PowerSeries.constantCoeff_C])`. Establish `hred : (W.GDet.ofRep (T.K.tw (L.ρ.map (j : L.R →+* PowerSeries K)))).map (PowerSeries.constantCoeff : PowerSeries K →+* K) = T.r.Dbar.map (algebraMap (ResidueField O) K)`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hpt.1, (CA.d_gmap _).2.1, hres, ← (CA.d_gmap _).2.1, T.B.u.red]`. Use `haveI : IsLocalHom (algebraMap O (PowerSeries K)) := ⟨fun a ha => by`. Assume the negation of the conclusion as `hna`. Establish `hr : algebraMap O (ResidueField O) a = 0` using `(IsLocalRing.residue_eq_zero_iff a).mpr ((IsLocalRing.mem_maximalIdeal a).mpr hna)`. Establish `h0 : algebraMap O K a = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsScalarTower.algebraMap_apply O (ResidueField O) K, hr, map_zero]`. Rewrite `ha` using `[PowerSeries.algebraMap_apply, h0, map_zero]`. Conclude with `not_isUnit_zero ha⟩`. Use `haveI : IsLocalHom (j : L.R →+* PowerSeries K) := ⟨fun a ha => hjl.map_nonunit a ha⟩`. Establish `hcont : ∀ i k, AdicCont (maximalIdeal (PowerSeries K)) fun g => (L.ρ.map (j : L.R →+* PowerSeries K)).r g i k` using `fun i k => pe_cont (j : L.R →+* PowerSeries K) ((loc_rho T.ok T.n23 T.S x L).1.1 i k)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨⟨K, (T.K.tw (L.ρ.map (j : L.R →+* PowerSeries K))).toHomUnits, ?_, Jgl _ n, ?_, pe_form T.K _, ?_, ?_, T.K.twψ (L.ρ.map (j : L.R →+* PowerSeries K)), ?_, ?_⟩, j, hjk, hjl, hmat, rfl, ?_⟩` and prove the remaining obligations. Introduce `a b`. Rewrite using `[hmat]`. Conclude with `pe_tw_cont T.K _ hcont a b`. Conclude with `Jmat_transpose n`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hmat]`. Conclude with `hred`. Introduce `u g hg haveI := IsCoef.char (l := l) (O := O)`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[MonoidHom.coe_toHomUnits]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pe_ine T.K _ hred u g hg`. Introduce `v i`. Rewrite using `[← hpt.2 v i]`. Use `MonoidHom.ext fun g => Units.ext ?_` and prove the remaining obligations. Use `show PowerSeries.constantCoeff _ = algebraMap (ResidueField O) K _`.
-
-Rewrite using `[← (T.B.u.psi v i).red g]`. Conclude with `RingHom.congr_fun hres _`. Introduce `v`. Establish `hf0` using `flag T.ok T.n23 T.S (PowerSeries K) ((j.comp L.ι : T.S.A →ₐ[O] PowerSeries K) : T.S.A →+* PowerSeries K) (T.K.e v)`. Rewrite `hf0` using `[hρ]`.
-
-Take `⟨g, hg⟩` from `pe_flag T.K _ v hf0`. Use `⟨Matrix.GeneralLinearGroup.map (algebraMap (PowerSeries K) (FractionRing (PowerSeries K))) g, fun s => ⟨fun a b hab => ?_, fun a => ?_⟩⟩` and prove the remaining obligations. Establish `e` using `(hg s).1 a b hab`. Rewrite using `[W.pushRep, MonoidHom.comp_apply, ← map_inv, ← map_mul, ← map_mul]`. Use `show (algebraMap (PowerSeries K) (FractionRing (PowerSeries K))) _ = 0`.
-
-Conclude with `(congrArg (algebraMap (PowerSeries K) (FractionRing (PowerSeries K))) e).trans (map_zero _)`. Establish `e` using `(hg s).2 a`. Rewrite using `[W.pushRep, MonoidHom.comp_apply, ← map_inv, ← map_mul, ← map_mul]`. Use `show (algebraMap (PowerSeries K) (FractionRing (PowerSeries K))) _ = (algebraMap (PowerSeries K) (FractionRing (PowerSeries K))) _`. Conclude with `congrArg (algebraMap (PowerSeries K) (FractionRing (PowerSeries K))) e`.
-
-Conclude with `⟨hpt.1.trans (congrArg _ hmat.symm), hpt.2⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pr.pointEx_of_le {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [IsCoef l O] [Algebra ℤ_[l] O] {F : Frame l (ResidueField O)} {n : ℕ} (T : Pr.Setup F n)
@@ -576,9 +552,9 @@ theorem UpperTheory.V.Pr.pointEx_of_le {l : ℕ} [Fact l.Prime] {O : Type} [Comm
   · exact ⟨hpt.1.trans (congrArg _ hmat.symm), hpt.2⟩
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ _ F n T Φ hΦ x L p hp hd hl`. Establish `h0` using `T.lne`. Use `UpperTheory.V.Pr.pointEx_of_le T Φ hΦ x L p hp hd fun a ha => ?_` and prove the remaining obligations. Use `haveI := hp`. Establish `h1 : (l : O) ∈ p.comap (algebraMap O L.R)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.mem_comap, map_natCast]`. Conclude with `hl`. Establish `h2 : (p.comap (algebraMap O L.R)).IsMaximal` using `IsPrime.to_maximal_ideal fun h => h0 (by rwa [h, Ideal.mem_bot] at h1)`. Rewrite `ha` using `[← eq_maximalIdeal h2]`. Conclude with `ha`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pr.pointEx :
     ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [UpperTheory.V.Fr.IsCoef l O] [Algebra ℤ_[l] O] (F : UpperTheory.V.Fr.Frame l (IsLocalRing.ResidueField O)) (n : ℕ) (T : UpperTheory.V.Pr.Setup F n), T.PointEx := by

@@ -1,11 +1,11 @@
 import Mathlib
 
 /- English proof (translation)
-Establish `hss : ∀ i, IsSemisimpleModule R (LinearMap.range (f i))` using `fun i => .range (f i)`. Establish `: IsSemisimpleModule R N` using `isSemisimpleModule_of_isSemisimpleModule_submodule' hss h`. Establish `hiso : IsIsotypicOfType R N S`. Apply `IsIsotypicOfType.of_isotypicComponent_eq_top` to reduce the goal to its premises. Rewrite using `[eq_top_iff, ← h]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `iSup_le fun i => ?_` and prove the remaining obligations. Break down `(f i).injective_or_eq_zero with hi | hi` into its components or cases. Conclude with `le_sSup ⟨(LinearEquiv.ofInjective (f i) hi).symm⟩`. Rewrite using `[hi, LinearMap.range_zero]`. Conclude with `bot_le`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨κ, ⟨e⟩⟩` from `hiso.linearEquiv_finsupp`. Establish `hne : e x ≠ 0` using `(LinearEquiv.map_ne_zero_iff e).mpr hx`. Take `⟨i, hi⟩` from `Finsupp.ne_iff.mp hne`. Conclude with `⟨(Finsupp.lapply i) ∘ₗ e.toLinearMap, by simpa using hi⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private lemma sepCore {R S N ι : Type} [Ring R] [AddCommGroup S] [Module R S] [IsSimpleModule R S]
     [AddCommGroup N] [Module R N] (f : ι → S →ₗ[R] N)
@@ -27,21 +27,19 @@ private lemma sepCore {R S N ι : Type} [Ring R] [AddCommGroup S] [Module R S] [
   exact ⟨(Finsupp.lapply i) ∘ₗ e.toLinearMap, by simpa using hi⟩
 
 /- English proof (translation)
-Introduce `H V M _ _ _ _ _ σ ρ hσ Y hY F hF hF0`. Establish `hinv : ∀ (g : H) {y : M}, y ∈ Y → ρ g y ∈ Y`. Introduce `g y hy`. Use `Submodule.iSup_induction _ (motive := fun y => ρ g y ∈ Y) (hY hy) ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨f, hf, hr⟩ x ⟨v, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← hf g v]`. Conclude with `hr ⟨_, rfl⟩`. Simplify using the standard rewrite rules. Introduce `a b ha hb`. Rewrite using `[map_add]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `Y.add_mem ha hb`. Set `Ys : Subrepresentation ρ` to `⟨Y, hinv⟩`. Set `τ : Representation ℂ H Y` to `Ys.toRepresentation`. Set `φ : { f : V →ₗ[ℂ] M // (∀ (g : H) (v : V), f (σ g v) = ρ g (f v)) ∧ LinearMap.range f ≤ Y } → Representation.IntertwiningMap σ τ` to `fun f => (f.1.codRestrict Y (fun v => f.2.2 ⟨v, rfl⟩)).intertwiningMap_of_isIntertwiningMap σ τ (fun g v => Subtype.ext (f.2.1 g v))`. Set `ψ` to `fun i => Representation.IntertwiningMap.equivLinearMapAsModule σ τ (φ i)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : IsSimpleModule (MonoidAlgebra ℂ H) σ.asModule := (Representation.irreducible_iff_isSimpleModule_asModule σ).mp hσ`. Establish `hall : ∀ y ∈ (⨆ (f : { f : V →ₗ[ℂ] M // (∀ (g : H) (v : V), f (σ g v) = ρ g (f v)) ∧ LinearMap.range f ≤ Y }), LinearMap.range f.1), ∃ hy : y ∈ Y, (show τ.asModule from (⟨y, hy⟩ : Y)) ∈ ⨆ i, LinearMap.range (ψ i)`. Introduce `y hy`. Use `Submodule.iSup_induction _ (motive := fun y => ∃ hy : y ∈ Y, (show τ.asModule from (⟨y, hy⟩ : Y)) ∈ ⨆ i, LinearMap.range (ψ i)) hy ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `f x ⟨v, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨f.2.2 ⟨v, rfl⟩, Submodule.mem_iSup_of_mem f ⟨v, rfl⟩⟩`. Conclude with `⟨Y.zero_mem, Submodule.zero_mem _⟩`. Introduce and unpack `a b ⟨ha, ha'⟩ ⟨hb, hb'⟩`. Conclude with `⟨Y.add_mem ha hb, Submodule.add_mem _ ha' hb'⟩`. Establish `htop : ⨆ i, LinearMap.range (ψ i) = ⊤`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[eq_top_iff]`. Introduce `x _`. Take `⟨_, hx⟩` from `hall (x : Y).1 (hY (x : Y).2)`. Conclude with `hx`. Take `⟨p, hp⟩` from `sepCore ψ htop (x := (show τ.asModule from (⟨F, hF⟩ : Y))) (fun h => hF0 (congrArg Subtype.val (show (⟨F, hF⟩ : Y) = 0 from h)))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `p'` to `(Representation.IntertwiningMap.equivLinearMapAsModule τ σ).symm p`. Take `⟨q, hq⟩` from `LinearMap.exists_extend p'.toLinearMap`. Establish `hqy : ∀ (y : M) (hy : y ∈ Y), q y = p' ⟨y, hy⟩` using `fun y hy => congrArg (fun l => l (⟨y, hy⟩ : Y)) hq`. Use `⟨q, fun g y hy => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hqy _ (hinv g hy), hqy _ hy]`.
-
-Conclude with `Representation.IntertwiningMap.isIntertwining τ σ p' g ⟨y, hy⟩`. Rewrite using `[hqy _ hF]`. Conclude with `hp`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.irreducible_projection_exists :
     ∀ {H V M : Type} [Group H] [AddCommGroup V] [Module ℂ V] [AddCommGroup M] [Module ℂ M]

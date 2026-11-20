@@ -7,7 +7,7 @@ open UpperTheory.Gal.Int.Geo.Pl
 open scoped Classical Topology
 
 /- English proof (translation)
-Establish `h : ((algebraMap (𝓞 E) (w.adicCompletionIntegers E) c : w.adicCompletionIntegers E) : w.adicCompletion E) = algebraMap E (w.adicCompletion E) (algebraMap (𝓞 E) E c)` using `rfl`. Rewrite using `[h]`. Use `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' (K := E) w (algebraMap (𝓞 E) E c)` as an intermediate fact. Rewrite `this` using `[HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma v_coe_algebraMap {E : Type} [Field E] [NumberField E] (w : Plc E) (c : 𝓞 E) :
     Valued.v ((algebraMap (𝓞 E) (w.adicCompletionIntegers E) c : w.adicCompletionIntegers E) : w.adicCompletion E)
@@ -20,11 +20,11 @@ private lemma v_coe_algebraMap {E : Type} [Field E] [NumberField E] (w : Plc E) 
   exact this
 
 /- English proof (translation)
-Take `⟨z, hz, rfl⟩` from `h`. Use `Submodule.span_induction (p := fun (z : w.adicCompletionIntegers E) _ => Valued.v (z : w.adicCompletion E) ≤ WithZero.exp (-(e : ℤ))) ?_ ?_ ?_ ?_ (show z ∈ Submodule.span _ _ from hz)` and prove the remaining obligations. Introduce and unpack `_ ⟨c, hc, rfl⟩`. Rewrite using `[v_coe_algebraMap]`. Conclude with `(HeightOneSpectrum.intValuation_le_pow_iff_mem w c e).2 hc`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `a b _ _ ha hb`. Use `Valuation.map_add_le (Valued.v) ha hb` as an intermediate fact. Simplify using `using this`. Introduce `a b _ hb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `ha : Valued.v (a : w.adicCompletion E) ≤ 1` using `a.2`. Simplify using `only [smul_eq_mul, MulMemClass.coe_mul, map_mul]`. Conclude with `mul_le_of_le_one_of_le ha hb`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma v_le_of_inId {E : Type} [Field E] [NumberField E] (w : Plc E) (e : ℕ)
     (y : w.adicCompletion E) (h : InId w (w.asIdeal ^ e) y) : Valued.v y ≤ WithZero.exp (-(e : ℤ)) := by
@@ -45,9 +45,9 @@ private lemma v_le_of_inId {E : Type} [Field E] [NumberField E] (w : Plc E) (e :
     exact mul_le_of_le_one_of_le ha hb
 
 /- English proof (translation)
-Establish `hI` using `((GlobalTheory.HenQ.Basic.mem_KGL_iff w g).1 hg).2`. Establish `e : (g⁻¹).val - 1 = -((g⁻¹).val * (g.val - 1))`. Rewrite using `[mul_sub, mul_one, Units.inv_mul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, Matrix.neg_apply, Valuation.map_neg, Matrix.mul_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Use `Valuation.map_sum_le _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_le_of_le_one_of_le (hI i j) (h j k)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma v_inv_sub_one_le {E : Type} [Field E] [NumberField E] {n : ℕ} (w : Plc E) (g : GLw n w)
     (hg : g ∈ KGL w n) (γ : WithZero (Multiplicative ℤ))
@@ -63,11 +63,11 @@ private lemma v_inv_sub_one_le {E : Type} [Field E] [NumberField E] {n : ℕ} (w
   exact mul_le_of_le_one_of_le (hI i j) (h j k)
 
 /- English proof (translation)
-Rewrite using `[← tendsto_sub_nhds_zero_iff, (Valued.hasBasis_nhds_zero _ _).tendsto_right_iff]`. Introduce `γ _`. Establish `hne : MonoidWithZeroHom.ValueGroup₀.embedding γ.1 ≠ 0` using `by simp`. Establish `hlt : WithZero.exp (-1 : ℤ) < 1`. Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions. Take `⟨m, hm⟩` from `exists_pow_lt₀ hlt (Units.mk0 _ hne)`. Use `filter_upwards [Filter.eventually_ge_atTop m] with e he`. Rewrite using `[Valuation.restrict_lt_iff_lt_embedding]`. Use `lt_of_le_of_lt ((h e).trans ?_) hm` and prove the remaining obligations.
+Evaluate the numerical expressions. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← WithZero.exp_nsmul, WithZero.exp_le_exp]`. Simplify using `using he`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private lemma tendsto_of_v_le {E : Type} [Field E] [NumberField E] (w : Plc E)
     (y : ℕ → w.adicCompletion E) (c : w.adicCompletion E)
@@ -86,7 +86,7 @@ private lemma tendsto_of_v_le {E : Type} [Field E] [NumberField E] (w : Plc E)
   simpa using he
 
 /- English proof (translation)
-Use `tendsto_pi_nhds.2 fun i => tendsto_pi_nhds.2 fun k => ?_` and prove the remaining obligations. Conclude with `tendsto_of_v_le w _ _ fun e => h e i k`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private lemma tendsto_mat_of_v_le {E : Type} [Field E] [NumberField E] {n : ℕ} (w : Plc E)
     (M : ℕ → Matrix (Fin n) (Fin n) (w.adicCompletion E))
@@ -96,13 +96,11 @@ private lemma tendsto_mat_of_v_le {E : Type} [Field E] [NumberField E] {n : ℕ}
   exact tendsto_of_v_le w _ _ fun e => h e i k
 
 /- English proof (translation)
-Introduce `E _ _ n w O hO h1`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Use `choose e' he g hgK hN hgO using hcon`. Establish `hv : ∀ (e : ℕ) i k, Valued.v (((g e).val - 1) i k) ≤ WithZero.exp (-(e : ℤ))`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `e i k`. Use `(v_le_of_inId w (e' e) _ (hN e i k)).trans ?_` and prove the remaining obligations. Rewrite using `[WithZero.exp_le_exp]`. Use `he e` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : Filter.Tendsto (fun e => (g e).val) Filter.atTop (𝓝 1)` using `tendsto_mat_of_v_le w _ hv`. Establish `hb : Filter.Tendsto (fun e => ((g e)⁻¹).val) Filter.atTop (𝓝 1)` using `tendsto_mat_of_v_le w _ fun e => v_inv_sub_one_le w (g e) (hgK e) _ (hv e)`. Establish `ht : Filter.Tendsto g Filter.atTop (𝓝 1)`. Rewrite using `[Units.isEmbedding_embedProduct.tendsto_nhds_iff]`. Conclude with `ha.prodMk_nhds ((MulOpposite.continuous_op.tendsto _).comp hb)`.
-
-Take `⟨e, hE⟩` from `(ht.eventually (hO.mem_nhds h1)).exists`. Conclude with `hgO e hE`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Int.Geo.Pl.nearNbhd_holds :
     UpperTheory.Gal.Int.Geo.Pl.NearNbhd := by

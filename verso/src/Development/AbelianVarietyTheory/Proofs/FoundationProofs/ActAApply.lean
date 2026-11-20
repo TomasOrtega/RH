@@ -21,9 +21,9 @@ theorem coe_sgO (D : D7) (r : 𝓞 D.host.E) : ((sgO D r : 𝓞 D.host.E) : D.ho
 abbrev XA (D : D7) (N N' : ℕ) : Type := Matrix (Fin N') (Fin N) (AE D)
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b`. Rewrite using `[TensorProduct.smul_tmul']`. Simplify using `[inc, Formalism.UG.inclE, Algebra.smul_def]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `add x y hx hy => rw [smul_add, mul_add, hx, hy]`.
+Treat this case separately.
 -/
 theorem smul_AE (D : D7) (r : 𝓞 D.host.E) (y : AE D) : r • y = inc D (r : D.host.E) * y := by
   induction y using TensorProduct.induction_on with
@@ -34,9 +34,9 @@ theorem smul_AE (D : D7) (r : 𝓞 D.host.E) (y : AE D) : r • y = inc D (r : D
   | add x y hx hy => rw [smul_add, mul_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `ht using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨c, hc, a, ha, s', hs', rfl⟩` from `hy`. Conclude with `AddSubgroup.subset_closure ⟨c, hc, a, ha, s * s', mul_mem hs hs', by ring⟩`. Consider the case `zero => simpa using zero_mem _`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [mul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [mul_neg]`. Conclude with `neg_mem hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ihE_mul (D : D7) (cc : Ideal (𝓞 D.host.K)) {s t : AE D} (hs : s ∈ OhE D) (ht : t ∈ IhE D cc) : s * t ∈ IhE D cc := by
   induction ht using AddSubgroup.closure_induction with
@@ -56,7 +56,7 @@ def latA (D : D7) (cc : Ideal (𝓞 D.host.K)) (N N' : ℕ) : Submodule (𝓞 D.
     exact ihE_mul D cc ((AdLattice.incl_mem_iff (F := ℚ) _).2 ⟨r, rfl⟩) (h i j)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_latA {D : D7} {cc : Ideal (𝓞 D.host.K)} {N N' : ℕ} {ζ : XA D N N'} :
     ζ ∈ latA D cc N N' ↔ ∀ i j, ζ i j ∈ IhE D cc := Iff.rfl
@@ -86,7 +86,7 @@ theorem actA_apply {D : D7} {N N' : ℕ} (g : GA D N) (g' : GA D N') (ζ : XA D 
       (((g : GL (Fin N) (AE D))⁻¹ : GL (Fin N) (AE D)) : Matrix (Fin N) (Fin N) (AE D)) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `only [Wd, U, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wd_add {D : D7} {T : Tor D} {N N' : ℕ} (x : VC D N N') (F G : VC D N N' → ℂ) :
     Wd D T x (F + G) = Wd D T x F + Wd D T x G := by
@@ -95,7 +95,7 @@ theorem wd_add {D : D7} {T : Tor D} {N N' : ℕ} (x : VC D N N') (F G : VC D N N
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `only [Wd, U, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wd_smul {D : D7} {T : Tor D} {N N' : ℕ} (x : VC D N N') (c : ℂ) (F : VC D N N' → ℂ) :
     Wd D T x (c • F) = c • Wd D T x F := by

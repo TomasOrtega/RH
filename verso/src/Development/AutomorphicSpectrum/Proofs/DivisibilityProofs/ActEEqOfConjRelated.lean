@@ -42,21 +42,21 @@ open GlobalTheory.EmbChart (atPlace evFin_atPlace)
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (AE cA incM UA Spc Model Rep mat UAt At Rest Acts tens piW)
 
 /- English proof (translation)
-Take `⟨K, hK, hx⟩` from `Formalism.IndefR.Eqv.G5.adl_cocompact (F := F)`. Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn h.1.continuousOn`. Establish `bd : ∀ x, ‖ψ x‖ ≤ C` using `fun x => by`. Take `⟨a, ha⟩` from `hx x`. Establish `e : ψ x = ψ (x - algebraMap F _ a)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: x = (x - algebraMap F _ a) + algebraMap F _ a` using `by ring`. Use `conv_lhs => rw [this, AddChar.map_add_eq_mul, h.2.1 a, mul_one]`. Rewrite using `[e]`. Conclude with `hC _ ha`. Establish `le1 : ∀ x, ‖ψ x‖ ≤ 1` using `fun x => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hlt`. Take `⟨m, hm⟩` from `pow_unbounded_of_one_lt C (not_le.1 hlt)`. Use `bd (m • x)` as an intermediate fact. Rewrite `this` using `[AddChar.map_nsmul_eq_pow, norm_pow]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : ∀ x, ‖ψ x‖ = 1` using `fun x => by`. Establish `e : ‖ψ x‖ * ‖ψ (-x)‖ = 1`. Rewrite using `[← norm_mul, ← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one, norm_one]`. Use polynomial arithmetic with `[le1 x, le1 (-x), norm_nonneg (ψ x), norm_nonneg (ψ (-x))]`. Use `⟨h.1, hn, h.2.1, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : ((Module.finrank ℚ F : ℕ) : ℝ) ≠ 0`. Conclude with `(Module.finrank_pos (R := ℚ) (M := F)).ne'` after adjusting the coercions. Establish `tr1 : Algebra.trace ℝ (mixedEmbedding.mixedSpace F) 1 = (Module.finrank ℚ F : ℝ)`. Use `trace_emb (F := F) 1` as an intermediate fact. Establish `e1 : Algebra.trace ℚ F 1 = (Module.finrank ℚ F : ℚ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Algebra.trace_algebraMap (S := F) (1 : ℚ)` as an intermediate fact. Simplify using `using this`. Rewrite `this` using `[map_one, e1]`. Simplify using `using this`. Use `⟨re F (((2 * (Module.finrank ℚ F : ℝ))⁻¹ : ℝ) • (1 : mixedEmbedding.mixedSpace F)), ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[psi_re h, map_smul, tr1, smul_eq_mul]`. Establish `: ((2 * (Module.finrank ℚ F : ℝ))⁻¹ * (Module.finrank ℚ F : ℝ)) = (2⁻¹ : ℝ)`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Establish `e : -(2 * (Real.pi : ℂ) * Complex.I) * 2⁻¹ = -(Real.pi * Complex.I)` using `by ring`. Rewrite using `[e, Complex.exp_neg, Complex.exp_pi_mul_I]`. Evaluate the numerical expressions.
+A detailed English derivation is pending.
 -/
 theorem isCharAF_of_isStd {F : Type} [Field F] [NumberField F] {ψ : AddChar (AF F) ℂ}
     (h : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ) : IsCharAF F ψ := by
@@ -119,7 +119,7 @@ variable {I : ((Fin n × Fin d → Fv F v) → ℂ) →ₗ[ℂ] (Matrix (Fin n) 
   {J : (Matrix (Fin n) (Fin d) (Fv F v) → ℂ) →ₗ[ℂ] ((Fin n × Fin d → Fv F v) → ℂ)}
 
 /- English proof (translation)
-The claim follows from `(hJ _ (sub_mem γ (hI φ h).1)).1`.
+A detailed English derivation is pending.
 -/
 theorem cj_mem (hI : ∀ φ ∈ GlobalTheory.WeilM.SB (Fin n × Fin d → Fv F v), I φ ∈ GlobalTheory.WeilM.SB (Matrix (Fin n) (Fin d) (Fv F v)) ∧ J (I φ) = φ)
     (hJ : ∀ f ∈ GlobalTheory.WeilM.SB (Matrix (Fin n) (Fin d) (Fv F v)), J f ∈ GlobalTheory.WeilM.SB (Fin n × Fin d → Fv F v) ∧ I (J f) = f)
@@ -127,7 +127,7 @@ theorem cj_mem (hI : ∀ φ ∈ GlobalTheory.WeilM.SB (Fin n × Fin d → Fv F v
   (hJ _ (sub_mem γ (hI φ h).1)).1
 
 /- English proof (translation)
-The claim follows from `congrFun (hJ _ (sub_mem γ (hI φ h).1)).2 Y`.
+A detailed English derivation is pending.
 -/
 theorem I_cj (hI : ∀ φ ∈ GlobalTheory.WeilM.SB (Fin n × Fin d → Fv F v), I φ ∈ GlobalTheory.WeilM.SB (Matrix (Fin n) (Fin d) (Fv F v)) ∧ J (I φ) = φ)
     (hJ : ∀ f ∈ GlobalTheory.WeilM.SB (Matrix (Fin n) (Fin d) (Fv F v)), J f ∈ GlobalTheory.WeilM.SB (Fin n × Fin d → Fv F v) ∧ I (J f) = f)
@@ -136,14 +136,14 @@ theorem I_cj (hI : ∀ φ ∈ GlobalTheory.WeilM.SB (Fin n × Fin d → Fv F v),
   congrFun (hJ _ (sub_mem γ (hI φ h).1)).2 Y
 
 /- English proof (translation)
-Rewrite using `[← (hI φ h).2, e, (hI φ' h').2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inj_I (hI : ∀ φ ∈ GlobalTheory.WeilM.SB (Fin n × Fin d → Fv F v), I φ ∈ GlobalTheory.WeilM.SB (Matrix (Fin n) (Fin d) (Fv F v)) ∧ J (I φ) = φ)
     {φ φ' : (Fin n × Fin d → Fv F v) → ℂ} (h : φ ∈ GlobalTheory.WeilM.SB _) (h' : φ' ∈ GlobalTheory.WeilM.SB _) (e : I φ = I φ') : φ = φ' := by
   rw [← (hI φ h).2, e, (hI φ' h').2]
 
 /- English proof (translation)
-The claim follows from `inj_I hI (cj_mem hI hJ _ (cj_mem hI hJ _ h)) h (funext fun Y => by rw [I_cj hI hJ _ (cj_mem hI hJ _ h), I_cj hI hJ _ h, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul])`.
+A detailed English derivation is pending.
 -/
 theorem cj_cj_inv (hI : ∀ φ ∈ GlobalTheory.WeilM.SB (Fin n × Fin d → Fv F v), I φ ∈ GlobalTheory.WeilM.SB (Matrix (Fin n) (Fin d) (Fv F v)) ∧ J (I φ) = φ)
     (hJ : ∀ f ∈ GlobalTheory.WeilM.SB (Matrix (Fin n) (Fin d) (Fv F v)), J f ∈ GlobalTheory.WeilM.SB (Fin n × Fin d → Fv F v) ∧ I (J f) = f)
@@ -152,9 +152,9 @@ theorem cj_cj_inv (hI : ∀ φ ∈ GlobalTheory.WeilM.SB (Fin n × Fin d → Fv 
     rw [I_cj hI hJ _ (cj_mem hI hJ _ h), I_cj hI hJ _ h, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul])
 
 /- English proof (translation)
-Establish `hfull : ∀ φ ∈ GlobalTheory.WeilM.SB (Fin n × Fin d → Fv F v), ∀ Y₀ Z Y, I (schr ψv (e (Y₀, Z)) φ) Y = ψv (-(⅟2 * trace (Y₀ * Zᵀ))) * (ψv (trace ((Y + Y₀) * Zᵀ)) * I φ (Y + Y₀))` using `fun φ hφ Y₀ Z Y => by`. Use `congrArg (fun f => I f Y) (GlobalTheory.WeilM.schr_schr ψv (e (Y₀, 0)) (e (0, Z)) φ)` as an intermediate fact. Simplify using `only [he, ← map_add, Prod.mk_add_mk, add_zero, zero_add, map_smul, Pi.smul_apply, smul_eq_mul, Matrix.zero_mul, trace_zero, sub_zero] at this`. Rewrite `this` using `[htr _ (schr_mem_SB hc _ hφ), hmod _ hφ]`. Rewrite using `[this, ← mul_assoc, ← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `inj_I hI (cj_mem hI hJ _ (schr_mem_SB hc _ h)) (schr_mem_SB hc _ (cj_mem hI hJ _ h)) (funext fun Y => ?_)` and prove the remaining obligations. Establish `t : ∀ A : Matrix (Fin n) (Fin d) (Fv F v), trace (γ.1 * A * ((γ⁻¹).1ᵀ * Z)ᵀ) = trace (A * Zᵀ)` using `fun A => by`. Rewrite using `[transpose_mul, transpose_transpose, Matrix.mul_assoc, trace_mul_comm, ← Matrix.mul_assoc, Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one]`. Rewrite using `[I_cj hI hJ _ (schr_mem_SB hc _ h), hfull _ h, hfull _ (cj_mem hI hJ _ h), I_cj hI hJ _ h, ← Matrix.mul_add, t, t]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem cj_comm (ψv : AddChar (Fv F v) ℂ) (hc : Continuous ψv)
     (e : (Matrix (Fin n) (Fin d) (Fv F v) × Matrix (Fin n) (Fin d) (Fv F v)) ≃ₗ[Fv F v] (Fin n × Fin d → Fv F v) × (Fin n × Fin d → Fv F v))
@@ -186,7 +186,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {v : HeightOneSpectrum (𝓞 F)} {n d : ℕ} {X : Spc F E n} {W : Spc F E d}
 
 /- English proof (translation)
-Introduce `x t` and use `h x _ ((at_iff _).2 (funext fun i => by show ep v * atPlace v (t i) = _ rw [ep_mul, evFin_atPlace]))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem indep_of {κ : Type} [Fintype κ] {r : (κ → AF F) → ℂ}
     (h : ∀ x z, At (evFin F v) z → r (x + z) = r x) : Indep v r := fun x t =>
@@ -195,7 +195,7 @@ theorem indep_of {κ : Type} [Fintype κ] {r : (κ → AF F) → ℂ}
     rw [ep_mul, evFin_atPlace]))
 
 /- English proof (translation)
-Introduce `r hr`. Establish `hw : ep v • M.co.e u = M.co.e u` using `by rw [← map_smul, hu]`. Use `show schr ψ (M.co.e u) _ = _`. Rewrite using `[schr_tens ψ _ _ (indep_of hr.1), offP_eq, sub_smul, hw, one_smul, sub_self, schr_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem acts_schr (M : Model σ X W) (ψ : AddChar (AF F) ℂ) {u : Matrix (Fin n) (Fin d) (AE F E)} (hu : ep v • u = u)
     (φ : (Fin n × Fin d → Fv F v) → ℂ) :
@@ -213,13 +213,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {v : HeightOneSpectrum (𝓞 F)} {n d : ℕ} {X : Spc F E n} {W : Spc F E d}
 
 /- English proof (translation)
-Establish `hU : (mat k)ᵀ * incM F X.J * (mat k).map (cA σ) = incM F X.J` using `k.2`. Establish `hP : g.1ᵀ * X.J.map t * (mat k).map (piW (t.comp σ)) = X.J.map t`. Use `congrArg (fun A => A.map (piW t)) hU` as an intermediate fact. Simplify using `only [Matrix.map_mul, transpose_map, incM_piW, map_cA_piW, hg] at this`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hP' : X.J.map t * (mat k).map (piW (t.comp σ)) = (g⁻¹).1ᵀ * X.J.map t`. Establish `h2 : (g⁻¹).1ᵀ * g.1ᵀ = 1` using `by rw [← transpose_mul, Units.mul_inv, transpose_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc g.1ᵀ, ← Matrix.mul_assoc, h2, Matrix.one_mul]`. Use `_ = _ := by rw [hP]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Use `show -(X.J.map t * (mat k * u).map (piW (t.comp σ)) * (W.J.map t)ᵀ) = (g⁻¹).1ᵀ * -(X.J.map t * u.map (piW (t.comp σ)) * (W.J.map t)ᵀ)`. Rewrite using `[Matrix.map_mul, ← Matrix.mul_assoc, hP', Matrix.mul_neg]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[inv_inv] show -(mat k * u).map (piW t) = g.1ᵀᵀ * _`.
-
-Rewrite using `[Matrix.map_mul, hg, transpose_transpose, Matrix.mul_neg]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coords_move (t : E →ₐ[F] Fv F v) (k : UA σ X.J) (g : GL (Fin n) (Fv F v))
     (hg : (mat k).map (piW t) = g.1) (u : Matrix (Fin n) (Fin d) (AE F E)) :
@@ -246,13 +244,13 @@ theorem coords_move (t : E →ₐ[F] Fv F v) (k : UA σ X.J) (g : GL (Fin n) (Fv
     rw [Matrix.map_mul, hg, transpose_transpose, Matrix.mul_neg]
 
 /- English proof (translation)
-Establish `hS` using `fun (γ : GL (Fin n) (Fv F v)) φ (h : φ ∈ GlobalTheory.WeilM.SB _) => cj_mem hI hJ γ h`. Establish `hk' : ep v • (mat k - 1) = mat k - 1` using `(at_iff _).1 hk`. Establish `e1 : ∀ u : Matrix (Fin n) (Fin d) (AE F E), actAB (cA σ) (k, (1 : UA σ W.J)) u = mat k * u` using `fun u => (congrArg _ transpose_one).trans (Matrix.mul_one _)`. Establish `hoff : ∀ u : Matrix (Fin n) (Fin d) (AE F E), (1 - ep v) • (mat k * u) = (1 - ep v) • u` using `fun u => by`. Establish `h0 : (1 - ep v) • (mat k - 1) = 0` using `by rw [sub_smul, one_smul, hk', sub_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: mat k * u = (mat k - 1) * u + u` using `by rw [Matrix.sub_mul, Matrix.one_mul, sub_add_cancel]`. Rewrite using `[this, smul_add, ← Matrix.smul_mul, h0, Matrix.zero_mul, zero_add]`. Take `⟨a, ha⟩` from `schur F ψ hψ hstd (lift v (cj I J (gT g)⁻¹) * om (k, 1)) (fun l hl => hom.adm _ _ (lift_adm (hS _) l hl)) fun w Φ hΦ => by`. Take `⟨u, rfl⟩` from `M.co.e.surjective w`. Establish `h1 : om (k, 1) (schr ψ (M.co.e u) Φ) = schr ψ (M.co.e (mat k * u)) (om (k, 1) Φ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hom.impl (k, 1) u Φ hΦ` as an intermediate fact. Rewrite `this` using `[e1]`. Then use the resulting hypothesis. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, h1]`. Use `lift_schr ψ ?_ (fun φ hφ => ?_) (hom.pres _ Φ hΦ)` and prove the remaining obligations. Rewrite using `[offP_eq, offP_eq, ← map_smul, ← map_smul, hoff]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨m1, m2⟩` from `coords_move (W := W) t k g hg u`. Rewrite using `[← key, ← key, m1, m2]`. Conclude with `cj_comm _ hc e he hI hJ htr hmod _ hφ _ _`. Use `⟨a, fun Φ hΦ => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_smul, ← ha Φ hΦ, Module.End.mul_apply, lift_lift (S'' := 1) (hS _) (fun φ h => cj_cj_inv hI hJ _ h) (hom.pres _ Φ hΦ), lift_one]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_scalar [IsTotallyReal F] (t : E →ₐ[F] Fv F v) (M : Model σ X W) (ψ : AddChar (AF F) ℂ)
     (hψ : IsCharAF F ψ) (hstd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ) (hc : Continuous (psv v ψ)) (om : Rep σ X W)

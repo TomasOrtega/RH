@@ -14,9 +14,9 @@ open Formalism.L2.SG.RealObj.InfCut
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D X u μ ν hμ hν`. Take `⟨hσ, h0, hc, hi⟩` from `hμ`. Take `⟨hσ', h0', hc', hi'⟩` from `hν`. Use `haveI := hσ`. Use `haveI := hσ'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hco : (ProductExactness.NinfG X u : Set X.B.I.Ginf) = X.NinfU u` using `ProductExactness.NinfG_coe X u`. Rewrite `hc`, `hi`, `hc'`, `hi'` using `[← hco]`. Take `⟨κ, -, -, hκ⟩` from `ProductExactness.PiM.uniq_on_closed (ProductExactness.NinfG X u) (ProductExactness.NinfG_closed X u) μ ν hc hc' hi hi' h0 h0'`. Conclude with `⟨κ, hκ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem haarUnique_holds : Formalism.L2.SG.Pf.LsNc5.HaarUnique := by
   intro D X u μ ν hμ hν

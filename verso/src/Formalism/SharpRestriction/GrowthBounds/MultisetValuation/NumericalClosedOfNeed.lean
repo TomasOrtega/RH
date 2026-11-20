@@ -10,7 +10,7 @@ variable {D : Formalism.BasicNotions.D7} {L : SizeData₂ D}
 
 open Classical in
 /- English proof (translation)
-Take `⟨hal, hal0, hcap, hcap0⟩` from `nc_ties X Y hT hL u w hg t0 ht0 j hj`. Conclude with `⟨nc_gU_eq X Y hT hL u w hg t0 ht0 K j, growth_exclusion_sum_eq X Y hT hL u w hg t0 ht0 K j, hal, hal0, hcap, hcap0, fun s _ e he => nc_excl X Y hT hL u w hg t0 ht0 s e he⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nc_loc (X : Formalism.MainNotions.G.Inst D L) (Y : Formalism.MainNotions.G.LatInst D) (K : Formalism.MainNotions.G.Consts) (hT : GatTies D)
     (hL : Formalism.MainNotions.G.LatTied hT X Y) (u : D.what₂.Word) (w : D.what₂.places.Pl)
@@ -34,7 +34,7 @@ def nc_Need2 (C₀ : ℝ) : Prop :=
           Formalism.MainNotions.G.Pr X K (Formalism.MainNotions.G.bL L) (D.what₂.places.resChar w) j t0
 
 /- English proof (translation)
-Introduce `D L X Y K h1 h2 h3 h4 h5 hT hL u w hg hlog t0 ht0 j hj`. Take `⟨hde, hpr⟩` from `h D L X Y K h1 h2 h3 h4 h5 hT hL u w hg hlog t0 ht0 j hj`. Conclude with `⟨nc_loc X Y K hT hL u w hg t0 ht0 j hj, hde, hpr⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nc_need_of (C₀ : ℝ) (h : nc_Need2 C₀) : nc_Need C₀ := by
   intro D L X Y K h1 h2 h3 h4 h5 hT hL u w hg hlog t0 ht0 j hj
@@ -42,7 +42,7 @@ theorem nc_need_of (C₀ : ℝ) (h : nc_Need2 C₀) : nc_Need C₀ := by
   exact ⟨nc_loc X Y K hT hL u w hg t0 ht0 j hj, hde, hpr⟩
 
 /- English proof (translation)
-The claim follows from `stmtNumE_of C₀ (nc_need_of C₀ h)`.
+A detailed English derivation is pending.
 -/
 theorem numerical_closed_of_need (C₀ : ℝ) (h : nc_Need2 C₀) : Formalism.MainNotions.FormalGroupSystem.NumericalComparisonUniform :=
   stmtNumE_of C₀ (nc_need_of C₀ h)

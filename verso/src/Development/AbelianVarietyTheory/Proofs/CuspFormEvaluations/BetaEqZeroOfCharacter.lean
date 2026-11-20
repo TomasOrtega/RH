@@ -51,30 +51,30 @@ theorem omegaCx_apply (a b : Fin g ⊕ Fin g → ℂ) :
     omegaCx g a b = ∑ i, (a (.inl i) * b (.inr i) - a (.inr i) * b (.inl i)) := rfl
 
 /- English proof (translation)
-Simplify using `[omegaCx_apply, dotProduct, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem omegaCx_eq_dot (a b : Fin g ⊕ Fin g → ℂ) :
     omegaCx g a b = (a ∘ Sum.inl) ⬝ᵥ (b ∘ Sum.inr) - (a ∘ Sum.inr) ⬝ᵥ (b ∘ Sum.inl) := by
   simp [omegaCx_apply, dotProduct, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `[omegaCx_eq_dot]`.
+Simplify using the standard rewrite rules.
 -/
 theorem omegaCx_elim (m n m' n' : Fin g → ℂ) :
     omegaCx g (Sum.elim m n) (Sum.elim m' n') = m ⬝ᵥ n' - n ⬝ᵥ m' := by
   simp [omegaCx_eq_dot]
 
 /- English proof (translation)
-Simplify using `[omegaCx_apply, omegaStd]`.
+Simplify using the standard rewrite rules.
 -/
 theorem omegaCx_intCast (a b : Fin g ⊕ Fin g → ℤ) :
     omegaCx g (fun i => (a i : ℂ)) (fun i => (b i : ℂ)) = (omegaStd a b : ℂ) := by
   simp [omegaCx_apply, omegaStd]
 
 /- English proof (translation)
-Use `LinearMap.BilinForm.ext_basis (Pi.basisFun ℂ _) fun i j => ?_` and prove the remaining obligations. Establish `e : ∀ i : Fin g ⊕ Fin g, Pi.basisFun ℂ (Fin g ⊕ Fin g) i = fun k => (((Pi.single i 1 : Fin g ⊕ Fin g → ℤ) k : ℤ) : ℂ)`. Introduce `i`. Use extensionality with `k`. Simplify using `[Pi.single_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, e, hB, omegaCx_intCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_omegaCx_of_intCast (B : LinearMap.BilinForm ℂ (Fin g ⊕ Fin g → ℂ))
     (hB : ∀ a b : Fin g ⊕ Fin g → ℤ,
@@ -104,7 +104,7 @@ theorem perProj_apply (τ : Matrix (Fin g) (Fin g) ℂ) (u : Fin g ⊕ Fin g →
     perProj τ u = u ∘ Sum.inl + τ *ᵥ (u ∘ Sum.inr) := rfl
 
 /- English proof (translation)
-Simplify using `[perProj_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem perProj_elim (τ : Matrix (Fin g) (Fin g) ℂ) (m n : Fin g → ℂ) :
     perProj τ (Sum.elim m n) = m + τ *ᵥ n := by
@@ -132,28 +132,28 @@ theorem secH_apply (τ : Matrix (Fin g) (Fin g) ℂ) (z : Fin g → ℂ) : secH 
     Sum.elim (-(τ.map star *ᵥ (((2 * I) • imC τ)⁻¹ *ᵥ z))) (((2 * I) • imC τ)⁻¹ *ᵥ z) := rfl
 
 /- English proof (translation)
-Rewrite using `[Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose, hA.eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dot_mulVec_symm {A : Matrix (Fin g) (Fin g) ℂ} (hA : A.IsSymm) (x y : Fin g → ℂ) :
     (A *ᵥ x) ⬝ᵥ y = x ⬝ᵥ (A *ᵥ y) := by
   rw [Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose, hA.eq]
 
 /- English proof (translation)
-Rewrite using `[perProj_apply, add_eq_zero_iff_eq_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem perProj_eq_zero_iff (τ : Matrix (Fin g) (Fin g) ℂ) (u : Fin g ⊕ Fin g → ℂ) :
     perProj τ u = 0 ↔ u ∘ Sum.inl = -(τ *ᵥ (u ∘ Sum.inr)) := by
   rw [perProj_apply, add_eq_zero_iff_eq_neg]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun z => by simp [secL_apply, perProj_elim], fun z w => by simp [secL_apply, omegaCx_elim]⟩`.
+Supply the required witnesses or components.
 -/
 theorem secL_isLagSection (τ : Matrix (Fin g) (Fin g) ℂ) :
     IsLagSection (omegaCx g) (perProj τ) (secL g) :=
   ⟨fun z => by simp [secL_apply, perProj_elim], fun z w => by simp [secL_apply, omegaCx_elim]⟩
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.sub_apply, imC, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul]`. Apply the tactic sequence `apply Complex.ext <;> simp; ring`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sub_map_star (τ : Matrix (Fin g) (Fin g) ℂ) : τ - τ.map star = (2 * I) • imC τ := by
   ext i j
@@ -161,7 +161,7 @@ theorem sub_map_star (τ : Matrix (Fin g) (Fin g) ℂ) : τ - τ.map star = (2 *
   apply Complex.ext <;> simp; ring
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun A : Matrix (Fin g) (Fin g) ℝ => A.map Complex.ofRealHom) (Matrix.mul_nonsing_inv _ hY)`. Simplify using `only [Matrix.map_mul] at h`. Rewrite `h` using `[Matrix.map_one _ (by simp) (by simp)]`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem imC_mul_inv {τ : Matrix (Fin g) (Fin g) ℂ} (hY : IsUnit (τ.map Complex.im).det) :
     imC τ * ((τ.map Complex.im)⁻¹).map (fun x : ℝ => (x : ℂ)) = 1 := by
@@ -172,14 +172,14 @@ theorem imC_mul_inv {τ : Matrix (Fin g) (Fin g) ℂ} (hY : IsUnit (τ.map Compl
   exact h
 
 /- English proof (translation)
-The claim follows from `Matrix.inv_eq_right_inv (imC_mul_inv hY)`.
+A detailed English derivation is pending.
 -/
 theorem imC_inv {τ : Matrix (Fin g) (Fin g) ℂ} (hY : IsUnit (τ.map Complex.im).det) :
     (imC τ)⁻¹ = ((τ.map Complex.im)⁻¹).map (fun x : ℝ => (x : ℂ)) :=
   Matrix.inv_eq_right_inv (imC_mul_inv hY)
 
 /- English proof (translation)
-Establish `h2 : (2 * I : ℂ) ≠ 0` using `by simp`. Rewrite using `[imC_inv hY, Matrix.smul_mul, Matrix.mul_smul, smul_smul, mul_inv_cancel₀ h2, one_smul, imC_mul_inv hY]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem two_I_imC_mul {τ : Matrix (Fin g) (Fin g) ℂ} (hY : IsUnit (τ.map Complex.im).det) :
     ((2 * I) • imC τ) * ((2 * I)⁻¹ • (imC τ)⁻¹) = 1 := by
@@ -188,28 +188,28 @@ theorem two_I_imC_mul {τ : Matrix (Fin g) (Fin g) ℂ} (hY : IsUnit (τ.map Com
     imC_mul_inv hY]
 
 /- English proof (translation)
-The claim follows from `Matrix.inv_eq_right_inv (two_I_imC_mul hY)`.
+A detailed English derivation is pending.
 -/
 theorem two_I_imC_inv {τ : Matrix (Fin g) (Fin g) ℂ} (hY : IsUnit (τ.map Complex.im).det) :
     ((2 * I) • imC τ)⁻¹ = (2 * I)⁻¹ • (imC τ)⁻¹ :=
   Matrix.inv_eq_right_inv (two_I_imC_mul hY)
 
 /- English proof (translation)
-Rewrite using `[two_I_imC_inv hY, two_I_imC_mul hY]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem two_I_imC_mul_inv {τ : Matrix (Fin g) (Fin g) ℂ} (hY : IsUnit (τ.map Complex.im).det) :
     ((2 * I) • imC τ) * ((2 * I) • imC τ)⁻¹ = 1 := by
   rw [two_I_imC_inv hY, two_I_imC_mul hY]
 
 /- English proof (translation)
-The claim follows from `mul_eq_one_comm.mp (two_I_imC_mul_inv hY)`.
+A detailed English derivation is pending.
 -/
 theorem two_I_imC_inv_mul {τ : Matrix (Fin g) (Fin g) ℂ} (hY : IsUnit (τ.map Complex.im).det) :
     ((2 * I) • imC τ)⁻¹ * ((2 * I) • imC τ) = 1 :=
   mul_eq_one_comm.mp (two_I_imC_mul_inv hY)
 
 /- English proof (translation)
-Rewrite using `[secH_apply, perProj_elim, neg_add_eq_sub, ← Matrix.sub_mulVec, sub_map_star, Matrix.mulVec_mulVec, two_I_imC_mul_inv hY, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem perProj_secH {τ : Matrix (Fin g) (Fin g) ℂ} (hY : IsUnit (τ.map Complex.im).det)
     (z : Fin g → ℂ) : perProj τ (secH τ z) = z := by
@@ -217,18 +217,18 @@ theorem perProj_secH {τ : Matrix (Fin g) (Fin g) ℂ} (hY : IsUnit (τ.map Comp
     Matrix.mulVec_mulVec, two_I_imC_mul_inv hY, Matrix.one_mulVec]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem star_mulVec_map (τ : Matrix (Fin g) (Fin g) ℂ) (n : Fin g → ℂ) :
     star (τ *ᵥ n) = τ.map star *ᵥ star n := by
   ext i; simp [Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Establish `key : perProj τ (star u) = 0 ↔ u ∘ Sum.inl = -(τ.map star *ᵥ (u ∘ Sum.inr))`. Rewrite using `[perProj_eq_zero_iff, ← star_inj, star_neg, star_mulVec_map]`. Establish `h1 : star ((star u) ∘ Sum.inl) = u ∘ (Sum.inl : Fin g → _)` using `by ext i; simp`. Establish `h2 : star ((star u) ∘ Sum.inr) = u ∘ (Sum.inr : Fin g → _)` using `by ext i; simp`. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩`. Simplify using `[secH_apply]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨((2 * I) • imC τ) *ᵥ (u ∘ Sum.inr), ?_⟩` and prove the remaining obligations. Rewrite using `[secH_apply, Matrix.mulVec_mulVec (u ∘ Sum.inr), two_I_imC_inv_mul hY, Matrix.one_mulVec, ← h]`. Apply the tactic sequence `ext (i | i) <;> rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mem_range_secH_iff {τ : Matrix (Fin g) (Fin g) ℂ} (hY : IsUnit (τ.map Complex.im).det)
     (u : Fin g ⊕ Fin g → ℂ) : u ∈ LinearMap.range (secH τ) ↔ perProj τ (star u) = 0 := by
@@ -247,7 +247,7 @@ theorem mem_range_secH_iff {τ : Matrix (Fin g) (Fin g) ℂ} (hY : IsUnit (τ.ma
     ext (i | i) <;> rfl
 
 /- English proof (translation)
-Take `⟨v, rfl⟩` from `(mem_range_secH_iff hY u).mpr hc`. Rewrite `hu` using `[perProj_secH hY]`. Rewrite using `[hu]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_secH_of_conj_mem_ker {τ : Matrix (Fin g) (Fin g) ℂ} (hY : IsUnit (τ.map Complex.im).det)
     {u : Fin g ⊕ Fin g → ℂ} {z : Fin g → ℂ} (hu : perProj τ u = z) (hc : perProj τ (star u) = 0) :
@@ -257,7 +257,7 @@ theorem eq_secH_of_conj_mem_ker {τ : Matrix (Fin g) (Fin g) ℂ} (hY : IsUnit (
   rw [hu]
 
 /- English proof (translation)
-Use `(eq_secH_of_conj_mem_ker hY ?_ ?_).symm` and prove the remaining obligations. Rewrite using `[hAB, perProj_secH hY]`. Rewrite using `[← hA, hAB, (mem_range_secH_iff hY _).mp ⟨z, rfl⟩, hB]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem secH_equivariant {τ : Matrix (Fin g) (Fin g) ℂ} (hY : IsUnit (τ.map Complex.im).det)
     (A : (Fin g ⊕ Fin g → ℂ) → (Fin g ⊕ Fin g → ℂ)) (B : (Fin g → ℂ) → (Fin g → ℂ)) (hB : B 0 = 0)
@@ -268,14 +268,14 @@ theorem secH_equivariant {τ : Matrix (Fin g) (Fin g) ℂ} (hY : IsUnit (τ.map 
   · rw [← hA, hAB, (mem_range_secH_iff hY _).mp ⟨z, rfl⟩, hB]
 
 /- English proof (translation)
-Simplify using `[omegaCx_eq_dot, secL_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem beta_secL (σ : (Fin g → ℂ) →ₗ[ℂ] (Fin g ⊕ Fin g → ℂ)) (z w : Fin g → ℂ) :
     beta (omegaCx g) σ (secL g) z w = -((σ z ∘ Sum.inr) ⬝ᵥ w) := by
   simp [omegaCx_eq_dot, secL_apply]
 
 /- English proof (translation)
-Establish `hs : (imC τ).IsSymm` using `(hτ.map _).map _`. Rewrite using `[beta_secL, secH_apply, Sum.elim_comp_inr, two_I_imC_inv hY, Matrix.smul_mulVec, smul_dotProduct, dot_mulVec_symm hs.inv, smul_eq_mul, neg_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem beta_secH_secL' {τ : Matrix (Fin g) (Fin g) ℂ} (hτ : τ.IsSymm)
     (hY : IsUnit (τ.map Complex.im).det) (z w : Fin g → ℂ) :
@@ -285,7 +285,7 @@ theorem beta_secH_secL' {τ : Matrix (Fin g) (Fin g) ℂ} (hτ : τ.IsSymm)
     smul_dotProduct, dot_mulVec_symm hs.inv, smul_eq_mul, neg_mul]
 
 /- English proof (translation)
-Rewrite using `[beta_secH_secL' hτ hY, imC_inv hY]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem beta_secH_secL {τ : Matrix (Fin g) (Fin g) ℂ} (hτ : τ.IsSymm)
     (hY : IsUnit (τ.map Complex.im).det) (z w : Fin g → ℂ) :

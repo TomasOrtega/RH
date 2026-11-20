@@ -22,7 +22,7 @@ section Local
 variable {Z : Scheme.{0}} [IsIntegral Z]
 
 /- English proof (translation)
-Use `Finset.prod_induction _ (UnitAt x) (fun a b ha hb => ha.mul hb) ⟨1, isUnit_one, map_one _⟩ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[div_eq_mul_inv]`. Use `UnitAt.mul ?_ (hs i).inv` and prove the remaining obligations. Take `⟨a, ha, e⟩` from `hu i`. Conclude with `⟨a ^ m, ha.pow m, by rw [map_pow, e]⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem unitAt_prod_div {x : Z} {k : ℕ} (m : ℕ) {u s : Fin k → Z.functionField} (hu : ∀ i, UnitAt x (u i))
     (hs : ∀ i, UnitAt x (s i)) : UnitAt x (∏ i, u i ^ m / s i) := by
@@ -33,9 +33,9 @@ theorem unitAt_prod_div {x : Z} {k : ℕ} (m : ℕ) {u s : Fin k → Z.functionF
   exact ⟨a ^ m, ha.pow m, by rw [map_pow, e]⟩
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `ha`. Take `⟨b, hb, rfl⟩` from `hb`. Establish `hinj : Function.Injective (algebraMap (Z.presheaf.stalk x) Z.functionField)` using `IsFractionRing.injective _ _`. Establish `key : ∀ c : Z.presheaf.stalk x, UnitAt x (algebraMap _ Z.functionField c) ↔ IsUnit c` using `fun c => ⟨fun ⟨_, h, e⟩ => hinj e ▸ h, fun h => ⟨c, h, rfl⟩⟩`. Rewrite using `[← map_pow, ← map_mul, key, key, IsUnit.mul_iff, isUnit_pow_iff hm.ne']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨⟨_, rfl⟩, fun h => h.1, fun h => ⟨h, hb⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem regAt_pow_mul {x : Z} {m : ℕ} (hm : 0 < m) {a b : Z.functionField} (ha : RegAt x a) (hb : UnitAt x b) :
     RegAt x (a ^ m * b) ∧ (UnitAt x (a ^ m * b) ↔ UnitAt x a) := by
@@ -48,17 +48,15 @@ theorem regAt_pow_mul {x : Z} {m : ℕ} (hm : 0 < m) {a b : Z.functionField} (ha
   exact ⟨⟨_, rfl⟩, fun h => h.1, fun h => ⟨h, hb⟩⟩
 
 /- English proof (translation)
-The claim follows from `(Base.valAt_zpow z ha).1`.
+A detailed English derivation is pending.
 -/
 theorem valAt_ne_zero {K : Type} [Field K] (z : Sp K ⟶ Z) {a : Z.functionField} (ha : UnitAt (below z) a) :
     valAt z a ≠ 0 := (Base.valAt_zpow z ha).1
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `ha`. Use `choose u' hu' eu using hu`. Use `choose s' hs' es using hs`. Establish `e {S : Type} [Field S] (ψ : Z.presheaf.stalk (below z) →+* S) : ψ a ^ m * ∏ i, ψ (u' i) ^ m / ψ (s' i) = ψ (a ^ m * ∏ i, u' i ^ m * ((hs' i).unit⁻¹ : _ˣ))`. Rewrite using `[map_mul, map_pow, map_prod]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, map_units_inv, div_eq_mul_inv, IsUnit.unit_spec]`. Simplify using `only [← eu, ← es]`. Rewrite using `[e]`.
-
-Simplify using `only [Base.valAt_stalk]`. Conclude with `(e _).symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem valAt_pow_mul {K : Type} [Field K] (z : Sp K ⟶ Z) {k : ℕ} (m : ℕ) {a : Z.functionField}
     {u s : Fin k → Z.functionField} (ha : RegAt (below z) a) (hu : ∀ i, UnitAt (below z) (u i))
@@ -81,7 +79,7 @@ theorem valAt_pow_mul {K : Type} [Field K] (z : Sp K ⟶ Z) {k : ℕ} (m : ℕ) 
 end Local
 
 /- English proof (translation)
-Use `Real.log_injOn_pos (Set.mem_Ioi.2 (by positivity)) (Set.mem_Ioi.2 (by positivity)) ?_` and prove the remaining obligations. Rewrite using `[Real.log_div (by positivity) hb.ne', Real.log_pow, Real.log_pow, Real.log_div hn.ne' hn'.ne', ← h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pow_div_eq {m : ℕ} {l a b n n' : ℝ} (ha : 0 < a) (hb : 0 < b) (hn : 0 < n) (hn' : 0 < n')
     (h1 : m * l = Real.log b) (h2 : l = Real.log a + Real.log n' - Real.log n) : a ^ m / b = (n / n') ^ m := by
@@ -90,9 +88,9 @@ theorem pow_div_eq {m : ℕ} {l a b n n' : ℝ} (ha : 0 < a) (hb : 0 < b) (hn : 
   ring
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp [h]`. Consider the case `succ k ih`. Rewrite using `[Fin.prod_univ_castSucc]`. Simplify using `only [Fin.val_castSucc, Fin.val_last]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[ih]`. Clear denominators, using `[h]` for the nonvanishing conditions.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem prod_div_succ (ν : ℕ → ℝ) (h : ∀ i, ν i ≠ 0) (k : ℕ) : ∏ i : Fin k, ν i / ν ((i : ℕ) + 1) = ν 0 / ν k := by
   induction k with
@@ -104,7 +102,7 @@ theorem prod_div_succ (ν : ℕ → ℝ) (h : ∀ i, ν i ≠ 0) (k : ℕ) : ∏
     field_simp [h]
 
 /- English proof (translation)
-Rewrite using `[minorAt_triChange H (T.map φ) (fun i j h => by rw [Matrix.map_apply, hT h, map_zero]) (fun i => by rw [Matrix.map_apply, hd]; exact (map_ne_zero φ).2 (d i).ne_zero) k hk τ, mul_pow, mul_div_assoc, ← Finset.prod_pow, ← Finset.prod_div_distrib]`. Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h` using `left_ne_zero_of_mul (hγ (Fin.castLE hk i))`. Rewrite using `[Matrix.map_apply, hd, map_mul, mul_pow, ← map_pow φ (γ _), mul_div_mul_left _ _ h]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem minor_pow_div {K L : Type} [Field K] [Field L] (φ : K →+* L) {g : ℕ} (H : Matrix (Fin (g + g)) (Fin g) L)
     (T : Matrix (Fin g) (Fin g) K) (d : Fin g → Kˣ) (hT : T.BlockTriangular id) (hd : ∀ i, T i i = d i) (m : ℕ)
@@ -121,33 +119,29 @@ theorem minor_pow_div {K L : Type} [Field K] [Field L] (φ : K →+* L) {g : ℕ
   rw [Matrix.map_apply, hd, map_mul, mul_pow, ← map_pow φ (γ _), mul_div_mul_left _ _ h]
 
 /- English proof (translation)
-Introduce `F _ _ Y C g A p _ V W _ U H d T hT hL hR hM x hx _`. Take `⟨hd, L, m, hm, hLN⟩` from `hL`. Establish `hc : ∀ i, ∃ c, x ∈ (L i).U c` using `fun i => by`. Establish `: x ∈ ⨆ c, (L i).U c` using `by rw [(hLN i).1.cover]; trivial`. Conclude with `TopologicalSpace.Opens.mem_iSup.1 this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `choose c hc using hc`. Use `choose r _ hru hrn using fun i => (hLN i).2`. Set `U₁ : V.X.Opens` to `U ⊓ Finset.univ.inf fun i => (L i).U (c i)`. Establish `hU₁ : ∀ i, U₁ ≤ (L i).U (c i)` using `fun i => inf_le_right.trans (Finset.inf_le (Finset.mem_univ i))`. Set `ρ : Fin g → V.G.functionField` to `fun i => r i fun _ => c i`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hs : ∀ z : V.G, V.j z ∈ U₁ → ∀ i, UnitAt z (V.φ (genAt (A i).D (V.π z) ^ m) * ρ i)` using `fun z hz i => by`. Use `hru i (fun _ => c i) z ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `z ∈ LB.wchart (L i) (fun _ : PUnit => V.j) fun _ => c i`. Establish `h1 : V.j z ∈ (L i).U (c i)` using `hU₁ i hz`. Simplify `h1` using `[LB.wchart]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hu : ∀ (z : V.G) i, UnitAt z (V.φ (genAt (A i).D (V.π z) * d (V.π z) i))` using `fun z i => V.unitAt_φ (hd i _)`. Establish `ha : ∀ z : V.G, V.j z ∈ U₁ → ∀ (k : ℕ) (hk : k ≤ g) (τ : Fin k → Fin (g + g)), RegAt z (minorAt (H * ((T (V.π z)).map V.φ)⁻¹) k hk τ)` using `fun z hz k hk τ => by`. Take `⟨B, hB⟩` from `CramerValues.exists_germ_matrix _ (hR z hz.1)`. Rewrite using `[hB, CramerValues.minorAt_map_ringHom]`. Conclude with `⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `f : ∀ k : ℕ, (Fin k → Fin (g + g)) → V.X.functionField` to `fun k τ => if hk : k ≤ g then (fnEquiv V).symm (minorAt H k hk τ ^ m / ∏ i : Fin k, ρ (Fin.castLE hk i)) else 0`. Establish `hf : ∀ z : V.G, V.j z ∈ U₁ → ∀ (k : ℕ) (hk : k ≤ g) (τ : Fin k → Fin (g + g)), fnEquiv V (f k τ) = minorAt (H * ((T (V.π z)).map V.φ)⁻¹) k hk τ ^ m * ∏ i : Fin k, V.φ (genAt (A (Fin.castLE hk i)).D (V.π z) * d (V.π z) (Fin.castLE hk i)) ^ m / (V.φ (genAt (A (Fin.castLE hk i)).D ( …` using `fun z hz k hk τ => by`. Simplify using `only [f, dif_pos hk, RingEquiv.apply_symm_apply]`. Conclude with `minor_pow_div V.φ H (T (V.π z)) (d (V.π z)) (hT _).1 (hT _).2 m (fun i => genAt (A i).D (V.π z)) ρ (fun i => (hs z hz i).ne_zero) k hk τ`. Establish `hreg : ∀ (k : ℕ) (hk : k ≤ g) (τ : Fin k → Fin (g + g)) (z : V.G), V.j z ∈ U₁ → RegAt (V.j z) (f k τ) ∧ (UnitAt (V.j z) (f k τ) ↔ UnitAt z (minorAt (H * ((T (V.π z)).map V.φ)⁻¹) k hk τ))` using `fun k hk τ z hz => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨h1, h2⟩` from `(fnEquiv_transport V).1 z (f k τ)`. Rewrite using `[← h1, ← h2, hf z hz k hk τ]`. Conclude with `regAt_pow_mul hm (ha z hz k hk τ) (unitAt_prod_div m (fun i => hu z _) fun i => hs z hz _)`. Use `⟨U₁, m, f, hm, inf_le_left, ⟨hx, ?_⟩, hreg, ?_⟩` and prove the remaining obligations. Establish `: ∀ s : Finset (Fin g), x ∈ s.inf fun i => (L i).U (c i)` using `fun s => by`.
+Proceed by induction. Treat this case separately. Treat this case separately. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => trivial`. Consider the case `insert a s _ ih => rw [Finset.inf_insert]`. Conclude with `⟨hc a, ih⟩`. Conclude with `this _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `v hv e y hy z yt hz hyt htop`. Establish `hb : below y.1 = V.π (below z)` using `by rw [← hz]; rfl`. Establish `hj : V.j (below z) ∈ U₁`. Establish `h1 : (z ≫ V.j) (IsLocalRing.closedPoint _) ∈ U₁`. Rewrite using `[← hyt]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `htop (Set.mem_univ ((spMap e.O.subtype) (IsLocalRing.closedPoint _)))`. Conclude with `h1`. Take `⟨hpos, hlg⟩` from `hM v hv e y hy z yt hz hyt (htop.trans ((Scheme.Hom.preimage_mono yt) inf_le_left))`. Establish `hall` using `((MinorQuot.colMinor_pos_and_quotient e.w (isNonarchimedean_w e) (valMat V H (T (below y.1)) z)).2 ((MinorQuot.colMinor_pos_and_quotient e.w (isNonarchimedean_w e) (valMat V H (T (below y.1)) z)).1.1 hpos)).1`. Introduce `k hk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `⟨hall _, fun τ => ?_⟩` and prove the remaining obligations. Use `set ν : ℕ → ℝ := fun n => colMinor e.w (valMat V H (T (below y.1)) z) (Finset.univ.filter fun l : Fin g => (l : ℕ) < n) with hν`. Establish `hν0 : ν 0 = 1` using `by simp [hν, colMinor_empty]`. Establish `hq : ∀ i : Fin g, e.w (valAt z (V.φ (genAt (A i).D (V.π (below z)) * d (V.π (below z)) i))) ^ m / e.w (valAt z (V.φ (genAt (A i).D (V.π (below z)) ^ m) * ρ i)) = (ν i / ν ((i : ℕ) + 1)) ^ m` using `fun i => by`. Establish `h1` using `hrn i v hv e y trivial z yt (fun _ => c i) hz hyt (htop.trans ((Scheme.Hom.preimage_mono yt) (hU₁ i)))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `hlg i`. Establish `e1 : Finset.Iic i = Finset.univ.filter fun l : Fin g => (l : ℕ) < (i : ℕ) + 1`. Use extensionality with `l`. Simplify using `[Nat.lt_succ_iff]`. Establish `e2 : Finset.Iio i = Finset.univ.filter fun l : Fin g => (l : ℕ) < (i : ℕ)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use extensionality with `l`. Simplify using the standard rewrite rules. Establish `e3 : valAt y.1 (genAt (A i).D (below y.1) * d (below y.1) i) = valAt z (V.φ (genAt (A i).D (V.π (below z)) * d (V.π (below z)) i))`. Rewrite using `[V.valAt_φ z (hd i _).regAt, hz, hb]`. Rewrite `h2` using `[e1, e2, e3]`.
-
-Use `beta_reduce at h1`. Rewrite `h1` using `[hb]`. Conclude with `pow_div_eq (e.w.pos (valAt_ne_zero z (hu _ i))) (e.w.pos (valAt_ne_zero z (hs _ hj i))) (hall _) (hall _) h1 h2`. Establish `hv1 : minorAt (valMat V H (T (below y.1)) z) k hk τ = valAt z (minorAt (H * ((T (V.π (below z))).map V.φ)⁻¹) k hk τ)`. Rewrite using `[((CramerValues.values_regular z).2.1 _ (hR _ hj.1) k hk τ).2, hb]`.
-
-Both sides reduce to the same expression. Rewrite using `[← (fnEquiv_transport V).2 z _ (hreg k hk τ _ hj).1, hf _ hj k hk τ, valAt_pow_mul z m (ha _ hj k hk τ) (fun i => hu _ _) (fun i => hs _ hj _), hv1, map_mul, map_pow, map_prod]`. Simplify using `only [map_div₀, map_pow e.w, hq, Fin.val_castLE]`. Rewrite using `[Finset.prod_pow, prod_div_succ ν (fun i => (hall _).ne') k, hν0, ← mul_pow, mul_one_div]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_maxFun : ∀ {F : Type} [Field F] [NumberField F] {Y : Var F} {C : CxSt F} {g : ℕ} (A : Fin g → Adl C Y) (p : ℕ), p.Prime → ∀ (V : Cover Y) (W : Y.X.Opens), genericPoint Y.X ∈ W → ∀ (U : V.X.Opens) (H : Matrix (Fin (g + g)) (Fin g) V.G.functionField) (d : Y.X → Fin g → Y.Fnˣ) (T : Y.X → Matrix (Fin g) (Fin g) Y.Fn), (∀ y, (T y).BlockTriangular id ∧ ∀ i, T y i i = (d y i : Y.Fn)) → LineBase V d A p → ChartReg V U H T → MinorNorm V W U H d T A p → ∀ x ∈ U, ¬ IsUnit (p : V.X.presheaf.stalk x) → ∃ (U₁ : V.X.Opens) (m : ℕ) (f : ∀ k : ℕ, (Fin k → Fin (g + g)) → V.X.functionField), 0 < m ∧ U₁ ≤ U ∧ x ∈ U₁ ∧ (∀ (k : ℕ) (hk : k ≤ g) (τ : Fin k → Fin (g + g)) (z : V.G), V.j z ∈ U₁ → RegAt (V.j z) (f k τ) ∧ (UnitAt (V.j z) (f k τ) ↔ UnitAt z (minorAt (H * ((T (V.π z)).map V.φ)⁻¹) k hk τ))) ∧ (AtTest V W p fun _ e y z yt => ⊤ ≤ yt ⁻¹ᵁ U₁ → ∀ (k : ℕ) (hk : k ≤ g), 0 < colMinor e.w (valMat V H (T (below y.1)) z) (Finset.univ.filter fun l : Fin g => (l : ℕ) < k) ∧ ∀ τ : Fin k → Fin (g + g), e.w (valAt (z ≫ V.j) (f k τ)) = (e.w (minorAt (valMat V H (T (below y.1)) z) k hk τ) / colMinor e.w (valMat V H (T (below y.1)) z) (Finset.univ.filter fun l : Fin g => (l : ℕ) < k)) ^ m) := by
   intro F _ _ Y C g A p _ V W _ U H d T hT hL hR hM x hx _

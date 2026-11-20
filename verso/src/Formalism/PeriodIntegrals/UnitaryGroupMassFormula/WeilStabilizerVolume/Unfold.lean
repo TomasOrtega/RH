@@ -20,7 +20,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
 
 /- English proof (translation)
-Use extensionality with `e`. Simplify using `[inclR, sigR]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem inclR_comp_sigma :
     (inclR (F := F) (AF F) : E →+* AF F ⊗[F] E).comp (σ : E →+* E) = (sigR (AF F) σ).comp (inclR (F := F) (AF F)) := by
@@ -37,13 +37,13 @@ def ratElA (g : GL (Fin M) E) (hg : g ∈ Formalism.UG.UJ (σ : E →+* E) J) : 
   (ratEl σ J g hg : HR (AF F) σ J)
 
 /- English proof (translation)
-The claim follows from `(ratEl σ J g hg).2`.
+A detailed English derivation is pending.
 -/
 theorem ratElA_mem (g : GL (Fin M) E) (hg : g ∈ Formalism.UG.UJ (σ : E →+* E) J) :
     ratElA σ J g hg ∈ GamA σ J := (ratEl σ J g hg).2
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Conclude with `(RingHom.map_mulVec (inclR (F := F) (AF F)) (g : Matrix (Fin M) (Fin M) E) (X i) j).symm`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem ratElA_smul (g : GL (Fin M) E) (hg : g ∈ Formalism.UG.UJ (σ : E →+* E) J) {a : ℕ}
     (X : Fin a → Fin M → E) :
@@ -63,7 +63,7 @@ instance nontrivAF : Nontrivial (AF F) := by
   | exact (Prod.nontrivial_left : Nontrivial (Ainf F × Af F))
 
 /- English proof (translation)
-Introduce `X X' h`. Use function extensionality and compare the values at `i j`. Conclude with `Algebra.TensorProduct.includeRight_injective (algebraMap F (AF F)).injective (congrFun (congrFun h i) j)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem ratTup_injective {a : ℕ} : Function.Injective (ratTup (F := F) (E := E) (M := M) (n := a) (AF F)) := by
   intro X X' h

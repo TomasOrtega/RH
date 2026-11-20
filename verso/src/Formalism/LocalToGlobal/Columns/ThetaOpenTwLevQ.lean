@@ -15,21 +15,21 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
   (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu))
 
 /- English proof (translation)
-Unfold `LocE.lamQB`. Use `set D : Matrix (Fin (R.N j - (R.k + j))) (Fin (R.N j - (R.k + j))) X.E := Matrix.of fun s t : Fin (R.N j - (R.k + j)) => Loc.atN ((y : Sp X.E (R.N j + cOf R j) →ₗ[X.E] Sp X.E (R.N j + cOf R j)) (Loc.eN X.E (R.N j + cOf R j) (R.k + j + t.1))) (R.k + j + s.1) with hD`. Establish `hent : ∀ s t : Fin (R.N j - (R.k + j)), IntAt P (D s t) ∧ redP P (D s t) = (1 : Matrix _ _ (𝓞 X.E ⧸ P.asIdeal)) s t`. Introduce `s t`. Establish `hs : R.k + j + s.1 < R.N j + cOf R j` using `by have := s.2; omega`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : R.k + j + t.1 < R.N j + cOf R j` using `by have := t.2; omega`. Establish `e1 : Loc.eN X.E (R.N j + cOf R j) (R.k + j + t.1) = Pi.single ⟨R.k + j + t.1, ht⟩ 1`. Use function extensionality and compare the values at `l`. Unfold `Loc.eN`. Rewrite using `[Pi.single_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Apply `propext` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `Fin.ext h`.
+Reduce the claim to the hypotheses of an applicable result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Rewrite using `[h]`. Establish `e2 : D s t = ((toGLm X.E (R.N j + cOf R j) y : GL (Fin (R.N j + cOf R j)) X.E) : Matrix (Fin (R.N j + cOf R j)) (Fin (R.N j + cOf R j)) X.E) ⟨R.k + j + s.1, hs⟩ ⟨R.k + j + t.1, ht⟩`. Rewrite using `[qsp_toGLm_apply, hD, Matrix.of_apply, e1]`. Unfold `Loc.atN`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[dif_pos hs]`. Both sides reduce to the same expression. Apply the tactic sequence `obtain ⟨h1, h2⟩ := qth_red_entry P (qOf P) hq0 hq hy ⟨R.k + j + s.1, hs⟩ ⟨R.k + j + t.1, ht⟩`. Rewrite using `[e2]`. Use `⟨h1, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[h2, Matrix.one_apply, Matrix.one_apply]`. Distinguish the cases in `hst : s = t`. Rewrite using `[if_pos (Fin.ext (by simp [hst])), if_pos hst, redP_one]`. Rewrite using `[if_neg (fun h => hst (Fin.ext (by have := congrArg Fin.val h; simp at this; omega))), if_neg hst, redP_zero]`. Establish `hdet : redP P D.det = 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[redP_det D fun s t => (hent s t).1]`. Establish `: D.map (redP P) = 1` using `Matrix.ext fun s t => (hent s t).2`. Rewrite using `[this, Matrix.det_one]`. Unfold `LocE.unitV`. Establish `hu : IsUnit (redP P D.det)` using `by rw [hdet]; exact isUnit_one`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[dif_pos hu]`. Establish `: hu.unit = 1` using `Units.ext (by rw [IsUnit.unit_spec, hdet]; rfl)`. Rewrite using `[this, map_one, Units.val_one, inv_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qth_lamQB_one {P : HeightOneSpectrum (𝓞 X.E)} (hq : ((qOf P : ℕ) : 𝓞 X.E) ∈ P.asIdeal) (hq0 : ((qOf P : ℕ) : X.E) ≠ 0) {j : ℕ}
     (ξ : (𝓞 X.E ⧸ P.asIdeal)ˣ →* X.Kˣ) (y : AutY X R j) (hy : QClose P (qOf P) y) :
@@ -74,9 +74,9 @@ theorem qth_lamQB_one {P : HeightOneSpectrum (𝓞 X.E)} (hq : ((qOf P : ℕ) : 
   rw [this, map_one, Units.val_one, inv_one]
 
 /- English proof (translation)
-Establish `hv0 : P.valuation X.E ((qOf P : ℕ) : X.E) ≠ 0` using `(map_ne_zero _).2 hq0`. Use `⟨(-(WithZero.log (P.valuation X.E ((qOf P : ℕ) : X.E)))).toNat, ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [← WithZero.exp_log hv0]`. Rewrite using `[WithZero.exp_le_exp]`. Use `Int.self_le_toNat (-(WithZero.log (P.valuation X.E ((qOf P : ℕ) : X.E))))` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem qth_exists_e (P : HeightOneSpectrum (𝓞 X.E)) (hq0 : ((qOf P : ℕ) : X.E) ≠ 0) :
     ∃ e : ℕ, WithZero.exp (-(e : ℤ)) ≤ P.valuation X.E ((qOf P : ℕ) : X.E) := by
@@ -91,27 +91,23 @@ open Classical in
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `P`. Set `P' : rowSG Pr sel mu` to `⟨P.1, Finset.mem_union_right _ P.2⟩`. Set `h : AutY X R j` to `hh P'`. Establish `hPg` using `hQg P.1 P.2`. Establish `hq` using `ciQ_mem P.1`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq0 : ((qOf P.1 : ℕ) : X.E) ≠ 0`. Rewrite using `[Nat.cast_ne_zero]`. Introduce `h0`. Conclude with `P.1.ne_bot ((Ideal.absNorm_eq_zero_iff).1 h0)`. Take `⟨a, ha⟩` from `qth_bound P.1 ((toGLm X.E (R.N j + cOf R j) h : GL (Fin (R.N j + cOf R j)) X.E) : Matrix (Fin (R.N j + cOf R j)) (Fin (R.N j + cOf R j)) X.E)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `qth_bound P.1 ((toGLm X.E (R.N j + cOf R j) h⁻¹ : GL (Fin (R.N j + cOf R j)) X.E) : Matrix (Fin (R.N j + cOf R j)) (Fin (R.N j + cOf R j)) X.E)`. Take `⟨e, he⟩` from `qth_exists_e P.1 hq0`. Use `⟨a + b + e + 1, by omega, fun g hg => ?_⟩` and prove the remaining obligations. Set `r : AutY X R j` to `twZrExt (c := cOf R j) g.1`. Establish `hr` using `qth_ext_close (c := cOf R j) P.1 g.1 _ hg`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrinv : r⁻¹ = twZrExt (c` using `cOf R j) (g⁻¹ : ↥(GLint X.E (R.N j) P.1)).1 := LinearEquiv.ext fun v => rfl`. Establish `hr'` using `qth_ext_close (c := cOf R j) P.1 (g⁻¹ : ↥(GLint X.E (R.N j) P.1)).1 _ (qth_princ_inv P.1 g hg)`. Establish `hy : QClose P.1 (qOf P.1) (h⁻¹ * r * h)` using `qth_conj_close P.1 (qOf P.1) h r a b _ e ha hb hr he (by omega)`. Establish `hy' : QClose P.1 (qOf P.1) (h⁻¹ * r * h)⁻¹`. Establish `e3 : (h⁻¹ * r * h)⁻¹ = h⁻¹ * r⁻¹ * h` using `by simp only [mul_inv_rev, inv_inv, mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e3, hrinv]`. Conclude with `qth_conj_close P.1 (qOf P.1) h _ a b _ e ha hb hr' he (by omega)`. Establish `hJ : h⁻¹ * r * h ∈ Jat (Pr` using `Pr) (R := R) cst.sharp j P.1 := by`. Rewrite using `[twJat_Q cst.sharp j hPg]`. Conclude with `qth_mem_JQ P.1 (qOf P.1) hq0 (R.k + j) _ hy hy'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hC : r ∈ Loc.Cbe (Jat (Pr` using `Pr) (R := R) cst.sharp j P.1) h := by`. Use `⟨zeroExtension_mem_R1 g.1, ?_⟩` and prove the remaining obligations. Use `show (MulAut.conj h⁻¹) r ∈ Jat (Pr := Pr) (R := R) cst.sharp j P.1`. Simplify `hJ` using `[MulAut.conj_apply]`. Establish `hmem : g.1 ∈ prCat (Pr` using `Pr) cst.sharp j P.1 h := ⟨r, hC, twZrExt_inX g.1⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Subgroup.mem_subgroupOf.2 hmem, ?_⟩` and prove the remaining obligations. Use `show twLam Ch sel mu cst j P' h ⟨g, Subgroup.mem_subgroupOf.2 hmem⟩ = 1`. Unfold `twLam`. Use `split_ifs with hok`. Apply `Units.ext show twChiVal Ch sel mu cst j P' h g.1 = 1` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[twChiVal_eq hok hC (twZrExt_inX g.1)]`. Establish `hstd : r ∈ stabL X.E (R.N j + cOf R j) (stdAt X.E (R.N j + cOf R j) P.1)` using `twZrExt_stab P.1 _ (fun v => ciMem_stdAt P.1 v) g.2`. Establish `hint : IntAt P.1 (Loc.n1Arg r)`. Unfold `Loc.n1Arg`. Use `ciIntAt_sum _ _ fun i _ => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `hv : r (Loc.eN X.E (R.N j + cOf R j) (R.N j + i + 1)) ∈ stdAt X.E (R.N j + cOf R j) P.1` using `(hstd _).2 (twZr_eN_mem P.1 _ _)`. Rewrite `hv` using `[ciMem_stdAt]`. Unfold `Loc.atN`. Use `split_ifs`. Conclude with `hv _`.
-
-Conclude with `ciIntAt_zero`. Unfold `chiInv`. Rewrite using `[hc.psi_int P' _ hint, inv_one, one_mul]`. Unfold `lamRow`. Rewrite using `[if_neg hPg]`.
-
-Conclude with `qth_lamQB_one hq hq0 _ _ hy`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem thetaOpen_twLevQ (hc : cst.Ok) (hQg : ∀ P ∈ QE sel (mu : Chr X.F X.E X.K), P ∉ Pr.vGs) (j : ℕ)
     (hh : rowSG Pr sel mu → AutY X R j) : ThetaOpen (twLevQ Ch sel mu cst j hh) := by
@@ -174,7 +170,7 @@ theorem thetaOpen_twLevQ (hc : cst.Ok) (hQg : ∀ P ∈ QE sel (mu : Chr X.F X.E
 open Classical in
 
 /- English proof (translation)
-Use `show ThetaOpen (if j = 0 then LevQFam.top X.E X.K (R.N j) _ else twLevQ Ch sel mu cst j ((twSt Ch sel mu cst m2 j).h b))`. Use `split_ifs`. Conclude with `thetaOpen_top _`. Conclude with `thetaOpen_twLevQ Ch sel mu cst hc hQg j _`.
+A detailed English derivation is pending.
 -/
 theorem thetaOpen_twIdx (hc : cst.Ok) (hQg : ∀ P ∈ QE sel (mu : Chr X.F X.E X.K), P ∉ Pr.vGs) (m2 j : ℕ)
     (b : (twIdx Ch sel mu cst m2).β j) : ThetaOpen ((twIdx Ch sel mu cst m2).levQ j b) := by

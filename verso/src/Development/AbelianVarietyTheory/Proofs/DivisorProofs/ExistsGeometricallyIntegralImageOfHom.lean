@@ -12,9 +12,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AV.AbVar
 
 /- English proof (translation)
-Use `⟨fun L _ y W a b hW => ?_⟩` and prove the remaining obligations. Establish `hy : Flat y`. Take `⟨φ, rfl⟩` from `Spec.map_surjective y`. Conclude with `(HasRingHomProperty.Spec_iff (P := @Flat)).2 (RingHom.Flat.of_isField (Field.toIsField K) _)`. Establish `: Flat a` using `MorphismProperty.of_isPullback hW.flip hy`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsReduced (pullback p a)` using `h.geometrically_isReduced y _ _ ((IsPullback.of_hasPullback p a).paste_vert hW)`. Conclude with `IsSchemeTheoreticallyDominant.isReduced (pullback.snd p a)`.
+A detailed English derivation is pending.
 -/
 theorem geometricallyReduced_of_schDominant_comp {K : Type} [Field K] {X Y : Scheme.{0}} (p : X ⟶ Y)
     (f : Y ⟶ Spec (.of K)) [IsSchemeTheoreticallyDominant p] [QuasiCompact p]
@@ -29,7 +29,7 @@ theorem geometricallyReduced_of_schDominant_comp {K : Type} [Field K] {X Y : Sch
   exact IsSchemeTheoreticallyDominant.isReduced (pullback.snd p a)
 
 /- English proof (translation)
-Use `⟨fun L _ y W a b hW => ?_⟩` and prove the remaining obligations. Establish `: IrreducibleSpace ↥(Limits.pullback p a)` using `h.geometrically_irreducibleSpace y _ _ ((IsPullback.of_hasPullback p a).paste_vert hW)`. Conclude with `Function.Surjective.irreducibleSpace (pullback.snd p a).continuous (pullback.snd p a).surjective`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem geometricallyIrreducible_of_surjective_comp {X Y Z : Scheme.{0}} (p : X ⟶ Y) (f : Y ⟶ Z) [Surjective p]
     [h : GeometricallyIrreducible (p ≫ f)] : GeometricallyIrreducible f := by
@@ -39,17 +39,15 @@ theorem geometricallyIrreducible_of_surjective_comp {X Y Z : Scheme.{0}} (p : X 
   exact Function.Surjective.irreducibleSpace (pullback.snd p a).continuous (pullback.snd p a).surjective
 
 /- English proof (translation)
-Introduce `K _ A B f`. Establish `hA` using `A.ab`. Establish `hB` using `B.ab`. Establish `: Smooth A.X.hom` using `hA.smooth`. Establish `: IsProper A.X.hom` using `hA.proper`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: GeometricallyConnected A.X.hom` using `hA.geomConnected`. Establish `: IsProper B.X.hom` using `hB.proper`. Establish `hw : f.hom.left ≫ B.X.hom = A.X.hom` using `Over.w f.hom`. Establish `: IsProper (f.hom.left ≫ B.X.hom)` using `by rw [hw]; infer_instance`. Establish `: IsProper f.hom.left` using `IsProper.of_comp f.hom.left B.X.hom`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsSchemeTheoreticallyDominant f.hom.left.toImage` using `GlobalTheory.isSchemeTheoreticallyDominant_toImage _`. Establish `hsurj : Surjective f.hom.left.toImage` using `⟨by`. Establish `h2 : IsClosed (Set.range f.hom.left.toImage)` using `f.hom.left.toImage.isClosedMap.isClosed_range`. Rewrite using `[← Set.range_eq_univ, ← h2.closure_eq]`. Conclude with `f.hom.left.toImage.denseRange.closure_range⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hwi : f.hom.left.toImage ≫ (f.hom.left.imageι ≫ B.X.hom) = A.X.hom`. Rewrite using `[Scheme.Hom.toImage_imageι_assoc, hw]`. Establish `: GeometricallyIntegral A.X.hom` using `GlobalTheory.geometricallyIntegral_of_smooth _`. Establish `: GeometricallyIntegral (f.hom.left.toImage ≫ (f.hom.left.imageι ≫ B.X.hom))`. Rewrite using `[hwi]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `infer_instance`. Use `geometricallyReduced_of_schDominant_comp f.hom.left.toImage (f.hom.left.imageι ≫ B.X.hom)` as an intermediate fact. Use `geometricallyIrreducible_of_surjective_comp f.hom.left.toImage (f.hom.left.imageι ≫ B.X.hom)` as an intermediate fact. Use `⟨Over.mk (f.hom.left.imageι ≫ B.X.hom), Over.homMk f.hom.left.toImage hwi, Over.homMk f.hom.left.imageι rfl, ?_, hsurj, ?_, ?_⟩` and prove the remaining obligations. Use `ext1`.
-
-Simplify using the standard rewrite rules. Conclude with `inferInstanceAs (IsClosedImmersion f.hom.left.imageι)`. Use `show GeometricallyIntegral (f.hom.left.imageι ≫ B.X.hom)`. Conclude with `GeometricallyIntegral.of_geometricallyReduced_of_geometricallyIrreducible _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_image_geometricallyIntegral :
     ∀ (K : Type) [Field K] (A B : AbVar K) (f : A ⟶ B), ∃ (Z : Over (Sp K)) (p : A.X ⟶ Z) (i : Z ⟶ B.X),

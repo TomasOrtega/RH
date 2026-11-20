@@ -6,7 +6,7 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.TmulSur
 open Formalism Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations TensorProduct UpperTheory.KN
 
 /- English proof (translation)
-Establish `: (twistM M θ g).map (algebraMap O LL) = ((θ g : Oˣ) : O) • (M g).map (algebraMap O LL)`. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `algebraMap O LL (((θ g : Oˣ) : O) * M g i j) = ((θ g : Oˣ) : O) • algebraMap O LL (M g i j)`. Rewrite using `[map_mul, Algebra.smul_def]`. Rewrite using `[this, Matrix.smul_mulVec]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem twisted_matrix_mulVec_base_change {G O LL : Type} [Group G] [CommRing O] [Field LL] [Algebra O LL] {n : ℕ}
     (M : G →* Matrix (Fin n) (Fin n) O) (θ : G →* Oˣ) (g : G) (v : Fin n → LL) :
@@ -18,47 +18,43 @@ private theorem twisted_matrix_mulVec_base_change {G O LL : Type} [Group G] [Com
   rw [this, Matrix.smul_mulVec]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem mulVec_smul_scalar {O LL : Type} [CommRing O] [Field LL] [Algebra O LL] {n : ℕ}
     (M : Matrix (Fin n) (Fin n) LL) (s : O) (v : Fin n → LL) : M.mulVec (s • v) = s • M.mulVec v := by
   rw [Matrix.mulVec_smul]
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qj4.tmul_surjective_rank_one x₀ h m`.
+A detailed English derivation is pending.
 -/
 private theorem tmul_surjective_rank_one {O T X : Type} [CommRing O] [AddCommGroup T] [Module O T] [AddCommGroup X] [Module O X]
     (x₀ : X) (h : ∀ x : X, ∃ c : O, x = c • x₀) (m : T ⊗[O] X) : ∃ t : T, t ⊗ₜ[O] x₀ = m :=
   _root_.UpperTheory.Reformulated.B.Qj4.tmul_surjective_rank_one x₀ h m
 
 /- English proof (translation)
-Introduce `G _ _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD LL _ _ _ _ O _ _ _ _ _ nn emb lam jT cT Xs n N θ χ p V _ _ _ _ ρ L X _ _ z iW e x₀ hχ hlam hfull hpres hiW hρ he hfix hx₀ b hb`. Substitute `hχ` using the available equality. Take `⟨a, x, E, Y, hfg, hst, hE, φ, hφ, hz⟩` from `hpres`. Use `haveI : Module.Finite O ↥Y := Module.Finite.iff_fg.mpr hfg`. Use `haveI : Module.Finite O ↥L.T := Module.Finite.iff_fg.mpr L.fg`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : Module.IsTorsionFree O (Fin n → LL) := Module.IsTorsionFree.trans_faithfulSMul O LL _`. Set `j : (↥Y × ↥L.T × O) →ₗ[O] ((Fin a ⊕ Bool) → Fin n → LL)` to `{ toFun := fun u => Sum.elim (fun k => (u.1 : Fin a → Fin n → LL) k + u.2.2 • E k) (fun c => cond c (iW (u.2.1 : V)) (u.2.2 • e)) map_add' := by`. Introduce `u v`. Use function extensionality and compare the values at `k`. Break down `k with k | _ | _` into its components or cases.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules.
 
-Simplify using `only [Sum.elim_inl, Prod.fst_add, Prod.snd_add, Submodule.coe_add, Pi.add_apply, add_smul]`. Normalize the expressions using the abelian group laws. Simplify using `[add_smul]`. Simplify using the standard rewrite rules. Use the proof step `map_smul' := by`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Introduce `c u`. Use function extensionality and compare the values at `k`. Break down `k with k | _ | _` into its components or cases. Simplify using `[mul_smul, smul_add]`. Simplify using `[mul_smul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `}`. Set `actA : G → (↥Y × ↥L.T × O) → (↥Y × ↥L.T × O)` to `fun g u => (((χ g : Oˣ) : O) • (⟨_, hst g u.1.1 u.1.2⟩ : ↥Y) + (u.2.2 * ((χ g : Oˣ) : O)) • (⟨_, hE g⟩ : ↥Y), actT L g u.2.1, ((χ g : Oˣ) : O) * u.2.2)`. Set `q0 : (↥Y × ↥L.T × O) →ₗ[O] ((↥L.T ⊗[O] X) × O)` to `LinearMap.prod (φ ∘ₗ LinearMap.fst O _ _ + (TensorProduct.mk O ↥L.T X).flip x₀ ∘ₗ LinearMap.fst O _ _ ∘ₗ LinearMap.snd O _ _) (LinearMap.snd O _ _ ∘ₗ LinearMap.snd O _ _)`. Establish `hq0 : ∀ u, q0 u = (φ u.1 + u.2.1 ⊗ₜ[O] x₀, u.2.2)` using `fun u => rfl`. Establish `hq0a : ∀ g u, q0 (actA g u) = tableLineDegreeTwo.actExt L X χ z g (q0 u)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g u`. Rewrite using `[hq0, hq0]`. Simplify using `only [actA, tableLineDegreeTwo.actExt, map_add, map_smul, hφ, ← hz, tableLineDegreeTwo.actTw, LinearMap.smul_apply, smul_smul, Units.mul_inv, one_smul, LinearMap.rTensor_tmul]`. Use `Prod.ext ?_ rfl` and prove the remaining obligations. Simplify using `only`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Normalize the expressions using the abelian group laws. Use `UpperTheory.KN.exists_admissible_lattice_matrix_of_period_data PD emb lam jT cT (fun k : Fin a ⊕ Bool => twistM (N (Sum.elim x (fun _ => p) k)) χ) j actA _ _ ((tableLineDegreeTwo.kerExt L X lam b).mkQ ∘ₗ q0) (lam ^ b) (fun k => hfull _) ?_ ?_ ?_ ?_ (pow_ne_zero _ hlam) (GlobalThe …` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce and unpack `⟨y, t, s⟩ h`. Establish `h1 : s • e = 0` using `congrFun h (Sum.inr false)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : iW (t : V) = 0` using `congrFun h (Sum.inr true)`. Establish `hs : s = 0` using `(smul_eq_zero.mp h1).resolve_right he`. Establish `ht : t = 0` using `Subtype.ext (hiW (h2.trans (map_zero iW).symm))`. Establish `hy : y = 0`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `k`. Establish `h3 : (y : Fin a → Fin n → LL) k + s • E k = 0` using `congrFun h (Sum.inl k)`. Rewrite `h3` using `[hs, zero_smul, add_zero]`. Conclude with `h3`. Rewrite using `[hs, ht, hy]`.
+Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Introduce and unpack `g ⟨y, t, s⟩`. Use function extensionality and compare the values at `k`. Unfold `actN`. Rewrite using `[twisted_matrix_mulVec_base_change]`.
+Separate the alternatives or extract the components of the hypothesis. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Express the relevant assertion in an equivalent form by its definition.
 
-Break down `k with k | _ | _` into its components or cases. Express the relevant statement in the definitionally equal form `((χ g : Oˣ) : O) • ((N (x k) g).map (algebraMap O LL)).mulVec ((y : Fin a → Fin n → LL) k) + (s * ((χ g : Oˣ) : O)) • (((N (x k) g).map (algebraMap O LL)).mulVec (E k) - E k) + (((χ g : Oˣ) : O) * s) • E k = ((χ g : Oˣ) : O) • ((N (x k) g).map (algebraMap O LL)).mulVec ((y : Fin …`. Rewrite using `[Matrix.mulVec_add, mulVec_smul_scalar, smul_add, smul_smul, mul_comm s, smul_sub]`. Normalize the expressions using the abelian group laws. Express the relevant statement in the definitionally equal form `(((χ g : Oˣ) : O) * s) • e = ((χ g : Oˣ) : O) • ((N p g).map (algebraMap O LL)).mulVec (s • e)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[mulVec_smul_scalar, hfix, smul_smul]`. Conclude with `hρ g (t : V)`. Use `(Submodule.mkQ_surjective _).comp ?_` and prove the remaining obligations. Introduce and unpack `⟨m, s⟩`. Take `⟨t, rfl⟩` from `tmul_surjective_rank_one x₀ hx₀ m`.
-
-Conclude with `⟨(0, t, s), by rw [hq0]; simp⟩`. Introduce `g u w hw`. Establish `hw' : q0 u - w ∈ tableLineDegreeTwo.kerExt L X lam b` using `(Submodule.Quotient.eq _).mp hw`. Establish `h` using `GlobalTheory.UseLoc.Cases.AdmW.actExtL_ker L X χ z lam b hb g hw'`. Rewrite `h` using `[Submodule.mem_comap, map_sub, GlobalTheory.UseLoc.Cases.AdmW.actExtL_apply, GlobalTheory.UseLoc.Cases.AdmW.actExtL_apply, ← hq0a]`.
-
-Conclude with `(Submodule.Quotient.eq _).mpr h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.UpperTheory.KN.exists_admissible_extension_latticeTensor :
     ∀ {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K]

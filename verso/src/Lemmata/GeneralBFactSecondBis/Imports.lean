@@ -5,19 +5,17 @@ import Formalism.GaloisIrreducibility.NoSolvableTransitive
 namespace Bl.general_b_fact_second_bis
 
 /- English proof (translation)
-Introduce `g hg c hc`. Establish `hp : 1 < g` using `hg.out.one_lt`. Use `set f : Polynomial (Formalism.CyclotomicNorms.Fbar g) := Polynomial.X ^ g - Polynomial.X with hf`. Establish `hf0 : f ≠ 0` using `FiniteField.X_pow_card_sub_X_ne_zero (Formalism.CyclotomicNorms.Fbar g) hp`. Establish `hroot : ∀ x : Formalism.CyclotomicNorms.Fbar g, x ^ g = x → x ∈ f.roots.toFinset`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Rewrite using `[Multiset.mem_toFinset, Polynomial.mem_roots hf0, Polynomial.IsRoot.def, hf, Polynomial.eval_sub, Polynomial.eval_pow, Polynomial.eval_X, hx, sub_self]`. Assume the negation of the conclusion as `hcn`. Establish `hinj : Function.Injective (algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g))` using `(algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g)).injective`. Use `set S : Finset (Formalism.CyclotomicNorms.Fbar g) := Finset.univ.image (algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g)) with hS`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hScard : S.card = g`. Rewrite using `[hS, Finset.card_image_of_injective _ hinj, Finset.card_univ, ZMod.card]`. Establish `hcS : c ∉ S`. Introduce `h`. Apply `hcn` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h` using `[hS, Finset.mem_image]`. Take `⟨a, -, ha⟩` from `h`. Conclude with `⟨a, ha⟩`. Establish `hsub : insert c S ⊆ f.roots.toFinset`. Introduce `x hx`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `hx` using `[Finset.mem_insert]`. Break down `hx with rfl | hx` into its components or cases. Conclude with `hroot x hc`. Rewrite `hx` using `[hS, Finset.mem_image]`. Take `⟨a, -, rfl⟩` from `hx`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `hroot` to reduce the goal to its premises. Rewrite using `[← map_pow, ZMod.pow_card]`. Establish `h1` using `Finset.card_le_card hsub`. Rewrite `h1` using `[Finset.card_insert_of_notMem hcS, hScard]`. Establish `h2 : f.roots.toFinset.card ≤ g` using `(Multiset.toFinset_card_le _).trans ((Polynomial.card_roots' f).trans (FiniteField.X_pow_card_sub_X_natDegree_eq (Formalism.CyclotomicNorms.Fbar g) hp).le)`.
-
-Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {g : Nat} [hg : Fact (Nat.Prime g)] (c : Formalism.CyclotomicNorms.Fbar g),

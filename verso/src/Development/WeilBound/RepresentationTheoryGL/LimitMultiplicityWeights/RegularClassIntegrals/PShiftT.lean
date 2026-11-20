@@ -12,15 +12,15 @@ def rho (S : ℂ → ℝ) (z : ℂ) : ℂ :=
   else if ‖z‖ < 1 then (((Real.sqrt (S (star z)⁻¹) : ℝ) : ℂ))⁻¹ else 1
 
 /- English proof (translation)
-Establish `hz : z ≠ 0` using `by rintro rfl; simp at h`. Establish `hw : w = (star z)⁻¹` using `eq_inv_of_mul_eq_one_right h`. Substitute `hw` using the available equality. Establish `hpos : 0 < ‖z‖` using `norm_pos_iff.mpr hz`. Establish `hn : ‖(star z)⁻¹‖ = ‖z‖⁻¹` using `by rw [norm_inv, norm_star]`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcc : (star (star z)⁻¹)⁻¹ = z` using `by rw [star_inv₀, star_star, inv_inv]`. Establish `e : ‖z‖ * ‖z‖⁻¹ = 1` using `mul_inv_cancel₀ hpos.ne'`. Establish `hipos : 0 < ‖z‖⁻¹` using `inv_pos.mpr hpos`. Break down `lt_trichotomy 1 ‖z‖ with h1 | h1 | h1` into its components or cases. Establish `h2 : ‖z‖⁻¹ < 1` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hs : (((Real.sqrt (S z)) : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr (Real.sqrt_pos.mpr (hS z)).ne'`. Simplify using `only [rho, hn, hcc]`. Rewrite using `[if_pos h1, if_neg (by linarith), if_pos h2, Complex.star_def, Complex.conj_ofReal]`. Conclude with `mul_inv_cancel₀ hs`. Establish `h2 : ‖z‖⁻¹ = 1` using `by rw [← h1, inv_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [rho, hn, hcc]`. Rewrite using `[if_neg (by linarith), if_neg (by linarith), if_neg (by linarith), if_neg (by linarith)]`. Simplify using the standard rewrite rules. Establish `h2 : 1 < ‖z‖⁻¹` using `by nlinarith`. Establish `hs : (((Real.sqrt (S (star z)⁻¹)) : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr (Real.sqrt_pos.mpr (hS _)).ne'`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [rho, hn, hcc]`. Rewrite using `[if_neg (by linarith), if_pos h1, if_pos h2, star_inv₀, Complex.star_def, Complex.conj_ofReal]`. Conclude with `inv_mul_cancel₀ hs`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma key (S : ℂ → ℝ) (hS : ∀ z, 0 < S z) (z w : ℂ) (h : star z * w = 1) :
     star (rho S z) * rho S w = 1 := by
@@ -56,17 +56,15 @@ namespace MainStatements.WeightKernel
 
 open MainStatements.WeightKernel.PShiftT in
 /- English proof (translation)
-Introduce `n J l hl hJ σ hσ`. Set `S : ℂ → ℝ` to `fun z => if h : ∃ i, l i = z then σ (Classical.choose h) else 1`. Establish `hSpos : ∀ z, 0 < S z`. Introduce `z`. Simplify using `only [S]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `split_ifs`. Conclude with `hσ _`. Conclude with `zero_lt_one`. Establish `hSl : ∀ i, S (l i) = σ i`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h : ∃ j, l j = l i` using `⟨i, rfl⟩`. Simplify using `only [S, dif_pos h]`. Rewrite using `[hl (Classical.choose_spec h)]`. Use `⟨fun i => rho S (l i), ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Establish `hij` using `congrFun (congrFun hJ i) j`. Simplify using `only [diagonal_conjTranspose, mul_diagonal, diagonal_mul, Pi.star_apply] at hij ⊢`. Distinguish the cases in `h0 : J i j = 0`. Simplify using `[h0]`. Establish `e1 : star (l i) * l j = 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `: (star (l i) * l j) * J i j = 1 * J i j` using `by rw [one_mul]; calc _ = star (l i) * J i j * l j := by ring _ = J i j := hij`. Conclude with `mul_right_cancel₀ h0 this`. Establish `e2 : star (rho S (l i)) * rho S (l j) = 1` using `key S hSpos _ _ e1`. Combine the equalities or inequalities in the displayed calculation. Introduce `i hi show ‖rho S (l i)‖ ^ 2 = σ i`.
-
-Rewrite using `[rho, if_pos hi, hSl, Complex.norm_real, Real.norm_of_nonneg (Real.sqrt_nonneg _), Real.sq_sqrt (hσ i).le]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shiftT : ShiftT := by
   intro n J l hl hJ σ hσ

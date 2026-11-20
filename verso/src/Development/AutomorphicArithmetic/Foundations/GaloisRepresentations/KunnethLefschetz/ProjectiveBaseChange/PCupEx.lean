@@ -6,7 +6,7 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC LateralTheory.Etal
 open scoped TensorProduct DirectSum
 
 /- English proof (translation)
-Introduce `hB l _ K M i j x y`. Conclude with `⟨LateralTheory.EtaleTrace.LRingPf.cupL l M.spc (Nat.cast_add i j).symm hB x y, fun k => LateralTheory.EtaleTrace.LRingPf.cupL_apply l M.spc (Nat.cast_add i j).symm hB x y k⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Gal.KunnethLefschetz.cupEx_holds :
     UpperTheory.Gal.KunnethLefschetz.CupEx := by

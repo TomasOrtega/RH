@@ -17,14 +17,14 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {v : AddValuation LL (WithTop ℚ)} {n : ℕ} [NeZero n] {W : LocWach PD LL O v n}
 
 /- English proof (translation)
-Introduce `τ i hτ` and use `hJ i τ hτ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem jumpsLet_of_previous_form {T : LocLat G Qp LL O} {M h : ZMod n → ℕ}
     (hJ : Formalism.MainNotions.LiftingTheory.JumpsLet W T M h) : Formalism.MainNotions.DeltaInvariantLattices.JumpsLet W T M h :=
   fun τ i hτ => hJ i τ hτ
 
 /- English proof (translation)
-Introduce `T hT`. Take `⟨M, h, hJ⟩` from `jumpsBdd_holds (W := W) hDR hK T hT`. Conclude with `⟨M, h, jumpsLet_of_previous_form hJ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem jumps_bounded_crystalline [Fintype (K →ₐ[Qp] LL)] (hDR : Formalism.MainNotions.TruncatedSeriesCountingBounds.DdREqDcris PD LL)
     (hK : Function.Bijective (algebraMap K₀ K)) :

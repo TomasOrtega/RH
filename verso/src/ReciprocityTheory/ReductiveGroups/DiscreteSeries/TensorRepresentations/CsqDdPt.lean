@@ -8,15 +8,13 @@ namespace ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ} {W : Type*} [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Establish `c1 : E j b * cp i a = cp i a * E j b` using `(hEC j b i a).1`. Establish `c2 : E a i * cm j b = cm j b * E a i` using `(hEC a i j b).2`. Establish `hcar : cm j b * cp i a = (if j = i ∧ b = a then 1 else 0) - cp i a * cm j b` using `eq_sub_of_add_eq (hC j b i a).2.2`. Establish `hgl : E a i * E j b = E j b * E a i + ((if i = j then E a b else 0) - (if b = a then E j i else 0))`. Rewrite using `[← hE a i j b]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Establish `step : E a i * cp i a * (E j b * cm j b) + E j b * cm j b * (E a i * cp i a) = E a i * E j b * (cp i a * cm j b) + E j b * E a i * (cm j b * cp i a)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[c1, c2]`. Use `noncomm_ring`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = _ := by noncomm_ring`. Rewrite using `[step, hgl, hcar]`. Apply the tactic sequence `rcases eq_or_ne i j with h1 | h1 <;> rcases eq_or_ne b a with h2 | h2`. Substitute `h1` using the available equality. Substitute `h2` using the available equality.
+Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Simplify using `only [eq_self_iff_true, and_self, if_true]`. Use `noncomm_ring`. Substitute `h1` using the available equality. Simplify using `only [eq_self_iff_true, if_true, h2, if_false, and_false]`. Use `noncomm_ring`.
-
-Substitute `h2` using the available equality. Simplify using `only [eq_self_iff_true, if_true, h1, Ne.symm h1, if_false, false_and]`. Use `noncomm_ring`. Simplify using `only [h1, h2, Ne.symm h1, if_false, and_false, false_and] noncomm_ring`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem csq_dd_pt {E cp cm : Fin n → Fin n → Module.End ℂ W} (hE : IsGlRep E) (hC : IsCAR cp cm)
     (hEC : CommutesCAR E cp cm) (i a j b : Fin n) :
@@ -50,25 +48,25 @@ theorem csq_dd_pt {E cp cm : Fin n → Fin n → Module.End ℂ W} (hE : IsGlRep
     noncomm_ring
 
 /- English proof (translation)
-Establish `e1 : dOp ε E cp * dOp' ε E cm = -∑ i ∈ plusIdx ε, ∑ a ∈ minusIdx ε, ∑ j ∈ plusIdx ε, ∑ b ∈ minusIdx ε, E a i * cp i a * (E j b * cm j b)`. Unfold `dOp dOp'`. Rewrite using `[mul_neg, Finset.sum_mul_sum, neg_inj]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Finset.sum_mul_sum]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_comm`. Establish `e2 : dOp' ε E cm * dOp ε E cp = -∑ i ∈ plusIdx ε, ∑ a ∈ minusIdx ε, ∑ j ∈ plusIdx ε, ∑ b ∈ minusIdx ε, E j b * cm j b * (E a i * cp i a)`. Unfold `dOp dOp'`. Rewrite using `[neg_mul, Finset.sum_mul_sum, neg_inj]`. Simplify using `only [Finset.sum_mul_sum]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hX : dOp ε E cp * dOp' ε E cm + dOp' ε E cm * dOp ε E cp = -(∑ i ∈ plusIdx ε, ∑ a ∈ minusIdx ε, ∑ j ∈ plusIdx ε, ∑ b ∈ minusIdx ε, (E a i * cp i a * (E j b * cm j b) + E j b * cm j b * (E a i * cp i a)))`. Rewrite using `[e1, e2]`. Simplify using `only [Finset.sum_add_distrib]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Establish `hA : ∑ i ∈ plusIdx ε, ∑ a ∈ minusIdx ε, ∑ j ∈ plusIdx ε, ∑ b ∈ minusIdx ε, (if i = j then E a b * (cp i a * cm j b) else 0) = ∑ a ∈ minusIdx ε, ∑ b ∈ minusIdx ε, ∑ i ∈ plusIdx ε, E a b * (cp i a * cm i b)`. Establish `h1 : ∀ i ∈ plusIdx ε, ∀ a, ∑ j ∈ plusIdx ε, ∑ b ∈ minusIdx ε, (if i = j then E a b * (cp i a * cm j b) else 0) = ∑ b ∈ minusIdx ε, E a b * (cp i a * cm i b)`. Introduce `i hi a`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_ite_eq, if_pos hi]`. Use `(Finset.sum_congr rfl fun i hi => Finset.sum_congr rfl fun a _ => h1 i hi a).trans ?_` and prove the remaining obligations. Conclude with `Finset.sum_comm.trans (Finset.sum_congr rfl fun a _ => Finset.sum_comm)`. Establish `hB : ∑ i ∈ plusIdx ε, ∑ a ∈ minusIdx ε, ∑ j ∈ plusIdx ε, ∑ b ∈ minusIdx ε, (if b = a then E j i * (cp i a * cm j b) else 0) = ∑ x ∈ plusIdx ε, ∑ y ∈ plusIdx ε, ∑ c ∈ minusIdx ε, E x y * (cp y c * cm x c)`. Establish `h1 : ∀ i, ∀ a ∈ minusIdx ε, ∑ j ∈ plusIdx ε, ∑ b ∈ minusIdx ε, (if b = a then E j i * (cp i a * cm j b) else 0) = ∑ j ∈ plusIdx ε, E j i * (cp i a * cm j a)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i a ha`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_ite_eq', if_pos ha]`. Use `(Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun a ha => h1 i a ha).trans ?_` and prove the remaining obligations. Conclude with `(Finset.sum_congr rfl fun i _ => Finset.sum_comm).trans Finset.sum_comm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hC' : ∑ i ∈ plusIdx ε, ∑ a ∈ minusIdx ε, ∑ j ∈ plusIdx ε, ∑ b ∈ minusIdx ε, (if b = a then (if j = i then E i a * E a i else 0) else 0) = ∑ i ∈ plusIdx ε, ∑ a ∈ minusIdx ε, E i a * E a i`. Use `Finset.sum_congr rfl fun i hi => Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl fun j _ => (by rw [Finset.sum_ite_eq', if_pos ha] : ∑ b ∈ minusIdx ε, (if b = a then (if j = i then E i a * E a i else 0) else 0) = (if j = i then E i a * E a i else 0))]`. Rewrite using `[Finset.sum_ite_eq', if_pos hi]`. Establish `hcross : crossT ε E cp cm = ∑ x ∈ plusIdx ε, ∑ y ∈ plusIdx ε, ∑ c ∈ minusIdx ε, E x y * (cp y c * cm x c) - ∑ a ∈ minusIdx ε, ∑ b ∈ minusIdx ε, ∑ i ∈ plusIdx ε, E a b * (cp i a * cm i b)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `crossT`. Rewrite using `[sub_eq_add_neg]`. Use `congrArg₂ (· + ·) ?_ ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun x hx => Finset.sum_congr rfl fun y hy => ?_` and prove the remaining obligations. Rewrite using `[csq_sgE_pp ε cp cm hy hx, Finset.mul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun b hb => ?_` and prove the remaining obligations. Rewrite using `[csq_sgE_mm ε cp cm hb ha, mul_neg, Finset.mul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hX]`. Simplify using `only [csq_dd_pt hE hC hEC, Finset.sum_add_distrib, Finset.sum_sub_distrib]`. Rewrite using `[hA, hB, hC', hcross]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem dd_add {E cp cm : Fin n → Fin n → Module.End ℂ W} (hE : IsGlRep E) (hC : IsCAR cp cm)
     (hEC : CommutesCAR E cp cm) (ε : Fin n → Bool) :
@@ -152,13 +150,13 @@ theorem dd_add {E cp cm : Fin n → Fin n → Module.End ℂ W} (hE : IsGlRep E)
   abel
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_filter_add_sum_filter_not univ (fun a => ε a = true)]`. Establish `hm : univ.filter (fun a => ¬ ε a = true) = minusIdx ε`. Use extensionality with `a`. Simplify using `[minusIdx]`. Rewrite using `[hm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg₂ (· + ·) ?_ ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Establish `ha' : ε a = true` using `(Finset.mem_filter.mp ha).2`. Use `Finset.sum_congr ?_ fun _ _ => rfl` and prove the remaining obligations. Use extensionality with `b`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Simplify using `[minusIdx, ha']`. Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Establish `ha' : ε a = false` using `(Finset.mem_filter.mp ha).2`. Use `Finset.sum_congr ?_ fun _ _ => rfl` and prove the remaining obligations. Use extensionality with `b`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Simplify using `[plusIdx, ha']`.
+Simplify using the standard rewrite rules.
 -/
 private theorem sum_sum_ne_eps_eq_plusIdx_minusIdx_add (ε : Fin n → Bool) {R : Type*} [AddCommMonoid R] (f : Fin n → Fin n → R) :
     ∑ a, ∑ b ∈ univ.filter (fun b => ¬ ε b = ε a), f a b =
@@ -178,27 +176,25 @@ private theorem sum_sum_ne_eps_eq_plusIdx_minusIdx_add (ε : Fin n → Bool) {R 
     ext b; simp [plusIdx, ha']
 
 /- English proof (translation)
-Establish `hsq : (dOp ε E cp + dOp' ε E cm) * (dOp ε E cp + dOp' ε E cm) = dOp ε E cp * dOp' ε E cm + dOp' ε E cm * dOp ε E cp`. Rewrite using `[add_mul, mul_add, mul_add, dOp_sq hE hC hEC, dOp'_sq hE hC hEC]`. Normalize the expressions using the abelian group laws. Establish `hs : ∑ a, ∑ b ∈ univ.filter (fun b => ¬ ε b = ε a), E a b * E b a = ∑ x ∈ plusIdx ε, ∑ y ∈ minusIdx ε, E x y * E y x + ∑ a ∈ minusIdx ε, ∑ b ∈ plusIdx ε, E a b * E b a` using `sum_sum_ne_eps_eq_plusIdx_minusIdx_add ε (fun a b => E a b * E b a)`. Establish `hoff : casimir E = casimirK ε E + (∑ x ∈ plusIdx ε, ∑ y ∈ minusIdx ε, E x y * E y x + ∑ a ∈ minusIdx ε, ∑ b ∈ plusIdx ε, E a b * E b a)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hs]`. Unfold `casimir casimirK`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun a _ => (Finset.sum_filter_add_sum_filter_not _ _ _).symm`. Establish `h1 : ∀ a i : Fin n, E a i * E i a = E i a * E a i + (E a a - E i i)`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a i`. Establish `h` using `hE a i i a`. Rewrite `h` using `[if_pos rfl, if_pos rfl]`. Rewrite using `[← h]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Establish `hcomm2 : ∑ a ∈ minusIdx ε, ∑ i ∈ plusIdx ε, E a i * E i a = ∑ x ∈ plusIdx ε, ∑ y ∈ minusIdx ε, E x y * E y x + (((plusIdx ε).card : ℂ) • ∑ a ∈ minusIdx ε, E a a - ((minusIdx ε).card : ℂ) • ∑ i ∈ plusIdx ε, E i i)`. Rewrite using `[show ∑ a ∈ minusIdx ε, ∑ i ∈ plusIdx ε, E a i * E i a = ∑ a ∈ minusIdx ε, ∑ i ∈ plusIdx ε, (E i a * E a i + (E a a - E i i)) from Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun i _ => h1 a i]`. Simplify using `only [Finset.sum_add_distrib, Finset.sum_sub_distrib]`. Use `congrArg₂ (· + ·) Finset.sum_comm (congrArg₂ (· - ·) ?_ ?_)` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_const, Nat.cast_smul_eq_nsmul]`. Rewrite using `[Finset.sum_comm, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_const, Nat.cast_smul_eq_nsmul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hrho : (2 : ℂ) • ∑ a, ((rhoHol ε a : ℝ) : ℂ) • E a a = ((minusIdx ε).card : ℂ) • ∑ i ∈ plusIdx ε, E i i - ((plusIdx ε).card : ℂ) • ∑ a ∈ minusIdx ε, E a a`. Rewrite using `[← Finset.sum_filter_add_sum_filter_not univ (fun a => ε a = true)]`. Establish `hm : univ.filter (fun a => ¬ ε a = true) = minusIdx ε`. Use extensionality with `a`. Simplify using `[minusIdx]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm]`. Establish `e1 : ∑ a ∈ univ.filter (fun a => ε a = true), ((rhoHol ε a : ℝ) : ℂ) • E a a = (((minusIdx ε).card : ℂ) / 2) • ∑ i ∈ plusIdx ε, E i i`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Establish `ha' : ε a = true` using `(Finset.mem_filter.mp ha).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show rhoHol ε a = ((minusIdx ε).card : ℝ) / 2 by simp [rhoHol, ha', qOf, minusIdx]]`. Use `push_cast`. Both sides reduce to the same expression. Establish `e2 : ∑ a ∈ minusIdx ε, ((rhoHol ε a : ℝ) : ℂ) • E a a = (-((plusIdx ε).card : ℂ) / 2) • ∑ a ∈ minusIdx ε, E a a`. Rewrite using `[Finset.smul_sum]`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Establish `ha' : ε a = false` using `(Finset.mem_filter.mp ha).2`. Rewrite using `[show rhoHol ε a = -((plusIdx ε).card : ℝ) / 2 by simp [rhoHol, ha', pOf, plusIdx]]`. Use `push_cast`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2, smul_add, smul_smul, smul_smul, sub_eq_add_neg, ← neg_smul]`. Conclude with `congrArg₂ (· + ·) (congrArg (· • _) (by ring)) (congrArg (· • _) (by ring))`. Rewrite using `[hsq, dd_add hE hC hEC, casimirK_diagE hEC, casimirK_sgE hC, hoff, hcomm2]`. Simplify using `only [diagE, smul_add, Finset.sum_add_distrib, smul_neg]`. Rewrite using `[hrho, two_smul ℂ (∑ x ∈ plusIdx ε, ∑ y ∈ minusIdx ε, E x y * E y x)]`.
-
-Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem two_D_sq {E cp cm : Fin n → Fin n → Module.End ℂ W} (hE : IsGlRep E) (hC : IsCAR cp cm)
     (hEC : CommutesCAR E cp cm) (ε : Fin n → Bool) :

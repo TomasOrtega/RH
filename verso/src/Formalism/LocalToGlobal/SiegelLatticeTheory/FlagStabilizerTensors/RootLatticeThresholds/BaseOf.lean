@@ -22,45 +22,43 @@ def Qc (v : InfinitePlace X.B.I.F) : Matrix (Fin X.B.I.n) (Fin (2 * D.R.rS + D.R
 def Qic (v : InfinitePlace X.B.I.F) : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin X.B.I.n) ℂ := Qics C (X.pl v)
 
 /- English proof (translation)
-Establish `hrd : D.host.rdE ≠ 0`. Unfold `Formalism.BasicNotions.Host.rdE`. Conclude with `(Real.rpow_pos_of_pos (abs_pos.mpr (by exact_mod_cast NumberField.discr_ne_zero (K := D.host.E))) _).ne'`. Establish `hc : cfS D ≠ 0`. Unfold `cfS`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `[Real.pi_ne_zero, (D.host.g_prime 0).ne_zero, (D.host.g_prime 1).ne_zero]`. Establish `hf : frS D ≠ 0`. Unfold `frS`. Simplify using `[Formalism.BasicNotions.Host.ka, Formalism.BasicNotions.Host.v, hrd, Real.pi_ne_zero]`. Establish `hμ : muT D ≠ 0`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `muT`. Conclude with `div_ne_zero hc hf`. Establish `hμf : muT D * frS D = cfS D`. Unfold `muT`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hμm : ∀ m : ℕ, muT D ^ m ≠ 0` using `fun m => pow_ne_zero m hμ`. Establish `hsm : ∀ m : ℕ, star (muT D) ^ m ≠ 0` using `fun m => pow_ne_zero m (star_ne_zero.mpr hμ)`. Establish `hTT : torS (muT D)⁻¹ D.R.k D.R.rS * torS (muT D) D.R.k D.R.rS = 1`. Unfold `torS`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Use `beta_reduce`. Use `split_ifs`. Rewrite using `[← mul_pow, inv_mul_cancel₀ hμ, one_pow]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← mul_inv, ← star_mul', ← mul_pow, inv_mul_cancel₀ hμ, one_pow, star_one, inv_one]`. Rewrite using `[mul_one]`. Establish `hTT' : torS (muT D) D.R.k D.R.rS * torS (muT D)⁻¹ D.R.k D.R.rS = 1`. Unfold `torS`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Use `beta_reduce`. Use `split_ifs`. Rewrite using `[← mul_pow, mul_inv_cancel₀ hμ, one_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_inv, ← star_mul', ← mul_pow, mul_inv_cancel₀ hμ, one_pow, star_one, inv_one]`. Rewrite using `[mul_one]`. Establish `hH : (torS (muT D) D.R.k D.R.rS)ᴴ * Hpk D.R.k D.R.rS * torS (muT D) D.R.k D.R.rS = Hpk D.R.k D.R.rS`. Use extensionality with `i j`. Unfold `torS`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_conjTranspose, Matrix.diagonal_mul]`. Simplify using `only [Pi.star_apply, Hpk]`. Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Apply the tactic sequence `split_ifs <;> first`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `(simp; done)`. Consider the case `(exfalso; omega)`. Consider the case `(have e : 2 * D.R.rS + D.R.k - (j : ℕ) = i := by omega`. Rewrite using `[e, mul_one, mul_inv_cancel₀ (star_ne_zero.mpr (hμm _))])`. Consider the case `(have e : 2 * D.R.rS + D.R.k - (i : ℕ) = j := by omega`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[e, mul_one]`. Apply the tactic sequence `first | rw [star_inv₀] | rw [star_inv']`. Rewrite using `[star_star, inv_mul_cancel₀ (hμm _)])`. Consider the case `(have e : 2 * D.R.rS + D.R.k - (j : ℕ) = i := by omega`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Simplify using `[hμm, hsm]`. Use the proof step `done)`. Consider the case `(have e : 2 * D.R.rS + D.R.k - (i : ℕ) = j := by omega`. Rewrite using `[e]`. Simplify using `[hμm, hsm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `done)`. Consider the case `(subst_vars; exfalso; omega)`. Consider the case `(subst_vars; simp; done)`. Consider the case `(simp_all; done)`. Establish `hTe : ∀ a : Fin D.R.rS, torS (muT D) D.R.k D.R.rS *ᵥ Pi.single (eI D.R.k D.R.rS a) 1 = muT D ^ (D.R.rS - (a : ℕ)) • Pi.single (eI D.R.k D.R.rS a) 1`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `a`. Use extensionality with `x`. Unfold `torS`. Rewrite using `[Matrix.mulVec_diagonal]`. Distinguish the cases in `hx : x = eI D.R.k D.R.rS a`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hx` using the available equality. Simplify using `[eI]`. Simplify using `[hx]`. Establish `hTf : ∀ a : Fin D.R.rS, torS (muT D) D.R.k D.R.rS *ᵥ Pi.single (esI D.R.k D.R.rS a) 1 = (star (muT D ^ (D.R.rS - (a : ℕ))))⁻¹ • Pi.single (esI D.R.k D.R.rS a) 1`. Introduce `a`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `x`. Unfold `torS`. Rewrite using `[Matrix.mulVec_diagonal]`. Distinguish the cases in `hx : x = esI D.R.k D.R.rS a`. Substitute `hx` using the available equality.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `ha` using `a.isLt`. Establish `e1 : ¬ (2 * D.R.rS + D.R.k - (a : ℕ) < D.R.rS)` using `by omega`. Establish `e2 : D.R.rS + D.R.k < 2 * D.R.rS + D.R.k - (a : ℕ)` using `by omega`. Establish `e3 : 2 * D.R.rS + D.R.k - (2 * D.R.rS + D.R.k - (a : ℕ)) = a` using `by omega`. Simplify using `[esI, e1, e2, e3]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[hx]`. Take `⟨h1, h2, h3, h4⟩` from `C.isT (X.pl v)`. Establish `hvv : vOf X (X.pl v) = v` using `by simp [vOf]`. Simplify using `only [hvv] at h3 h4`. Unfold `IsTranspC Qc Qic Qcs Qics`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_, ?_, fun a b hab => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (C.Qi _), h1, Matrix.one_mul, hTT]`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (torS _ _ _), hTT', Matrix.one_mul, h2]`. Establish `h3'` using `congrArg (· * torS (muT D) D.R.k D.R.rS) h3`. Simplify using `only [Matrix.mul_assoc] at h3'`.
-
-Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[h3', ← Matrix.mul_assoc, hH]`. Rewrite using `[← Matrix.mulVec_mulVec, hTe a, Matrix.mulVec_smul, (h4 a b hab).1, smul_smul, ← mul_pow, hμf]`. Rewrite using `[← Matrix.mulVec_mulVec, hTf a, Matrix.mulVec_smul, (h4 a b hab).2, smul_smul, ← mul_inv, ← star_mul', ← mul_pow, hμf]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transpC (v : InfinitePlace X.B.I.F) : IsTranspC X v (cfS D) D.R.k D.R.rS (Qc X C v) (Qic X C v) := by
   have hrd : D.host.rdE ≠ 0 := by
@@ -167,14 +165,14 @@ def zc (u : D.what₂.Word) (v : InfinitePlace X.B.I.F) : Fin (2 * D.R.rS + D.R.
   Qic X C v *ᵥ rv X.B.I v (X.zR u)
 
 /- English proof (translation)
-The claim follows from `zTr_of X (transpC X C v) u`.
+A detailed English derivation is pending.
 -/
 theorem zc_spec (u : D.what₂.Word) (v : InfinitePlace X.B.I.F) :
     inWb D.R.k D.R.rS (zc X C u v) ∧ Tz D.R.k D.R.rS (zc X C u v) = Tr D u :=
   zTr_of X (transpC X C v) u
 
 /- English proof (translation)
-Rewrite using `[(zc_spec X C u v).2]`. Unfold `Tr`. Conclude with `(D.mem u).A.T_prime.pos` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem zc_pos (u : D.what₂.Word) (v : InfinitePlace X.B.I.F) : 0 < Tz D.R.k D.R.rS (zc X C u v) := by
   rw [(zc_spec X C u v).2]
@@ -186,14 +184,14 @@ def πc (u : D.what₂.Word) (v : InfinitePlace X.B.I.F) (m : Matrix (Fin (2 * D
   X.piLoc u v (Formalism.L2.SG.RealObj.matQ (X.B.I.ε v) (X.wfr u v) (Qc X C v * m * Qic X C v))
 
 /- English proof (translation)
-The claim follows from `colsTypeTr_of X (Formalism.L2.SG.Pf.cfS_ne D) (transpC X C v) u`.
+A detailed English derivation is pending.
 -/
 theorem πc_type (u : D.what₂.Word) (v : InfinitePlace X.B.I.F) :
     IsHCTypeW D.R.k D.R.rS (zc X C u v) (fun i => ((D.hcW u (X.pl v)).u i : ℝ)) (πc X C u v) :=
   colsTypeTr_of X (Formalism.L2.SG.Pf.cfS_ne D) (transpC X C v) u
 
 /- English proof (translation)
-The claim follows from `Formalism.MainNotions.BridgeLemma₃.lbRepOfHC_proved D.R.k D.R.rS (zc X C u v) _ (X.Vloc u v) (πc X C u v) (zc_spec X C u v).1 (zc_pos X C u v) (πc_type X C u v)`.
+A detailed English derivation is pending.
 -/
 theorem πc_rep (u : D.what₂.Word) (v : InfinitePlace X.B.I.F) :
     IsCRepOn (UWset D.R.k D.R.rS (zc X C u v)) (πc X C u v) ∧
@@ -206,13 +204,13 @@ def μGc (v : InfinitePlace X.B.I.F) : Measure (Mt D.R.k D.R.rS) :=
   (Formalism.REAL.muG (X.B.I.ε v)).map (fun γ => Matrix.of.symm (Formalism.L2.SG.RealObj.trG (Qc X C v) (Qic X C v) γ))
 
 /- English proof (translation)
-The claim follows from `haarG_B (n_eq' X) (X.B.I.ε v) (transpC X C v).2.1 (transpC X C v).2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem μGc_haar (v : InfinitePlace X.B.I.F) : Formalism.FourierDecayAlt.B.IsHaarOn (Formalism.FourierDecayAlt.B.GV D.R.k D.R.rS) (μGc X C v) :=
   haarG_B (n_eq' X) (X.B.I.ε v) (transpC X C v).2.1 (transpC X C v).2.2.1
 
 /- English proof (translation)
-The claim follows from `Formalism.MainNotions.S.Inh.haar_probability_compact_subgroup _ (Formalism.MainNotions.S.Inh.one_mem_unitary_stabilizer_set _) (Formalism.MainNotions.S.Inh.unitary_stabilizer_mul_mem _) (fun a => Hpk D.R.k D.R.rS * aᴴ * Hpk D.R.k D.R.rS) ((continuous_const.matrix_mul continuous_i …`.
+A detailed English derivation is pending.
 -/
 theorem μW_exists (u : D.what₂.Word) (v : InfinitePlace X.B.I.F) :
     ∃ μ : Measure (Mt D.R.k D.R.rS), Formalism.MainNotions.S.IsHaarOn (UWset D.R.k D.R.rS (zc X C u v)) μ ∧ μ Set.univ = 1 :=
@@ -225,7 +223,7 @@ theorem μW_exists (u : D.what₂.Word) (v : InfinitePlace X.B.I.F) :
 def μWc (u : D.what₂.Word) (v : InfinitePlace X.B.I.F) : Measure (Mt D.R.k D.R.rS) := (μW_exists X C u v).choose
 
 /- English proof (translation)
-The claim follows from `sec_exists (k_pos D) _ _ (zc_pos X C u v) (zc_pos X C u' v) (let ⟨g, hg, _⟩ := πc_type X C u v; ⟨g, hg⟩) (let ⟨g, hg, _⟩ := πc_type X C u' v; ⟨g, hg⟩)`.
+A detailed English derivation is pending.
 -/
 theorem sec_c (u u' : D.what₂.Word) (v : InfinitePlace X.B.I.F) :
     ∃ μsec : ℂ → Matrix (Fin (D.R.k + 1)) (Fin (D.R.k + 1)) ℂ, IsSection D.R.k D.R.rS (zc X C u v) (zc X C u' v) μsec :=
@@ -276,12 +274,12 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar instCM
 variable {D : D7} (X : HidaSetting D) {θ : ℝ} (C : Choice X θ)
 
 /- English proof (translation)
-The claim follows from `(μW_exists X C u v).choose_spec.2`.
+A detailed English derivation is pending.
 -/
 theorem baseOf_μW1 (u u' : D.what₂.Word) (v : InfinitePlace X.B.I.F) : (baseOf X C u u' v).μW Set.univ = 1 := (μW_exists X C u v).choose_spec.2
 
 /- English proof (translation)
-The claim follows from `(μW_exists X C u' v).choose_spec.2`.
+A detailed English derivation is pending.
 -/
 theorem baseOf_μW'1 (u u' : D.what₂.Word) (v : InfinitePlace X.B.I.F) : (baseOf X C u u' v).μW' Set.univ = 1 := (μW_exists X C u' v).choose_spec.2
 
@@ -290,7 +288,7 @@ def towersOf (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.what₂.T
   Formalism.L2.SG.Pf.Built.towerOf (baseOf X C u u' (tauE X e j)) (baseOf_μW1 X C u u' _) (baseOf_μW'1 X C u u' _) rfl
 
 /- English proof (translation)
-The claim follows from `(Formalism.FourierDecayAlt.P.exists_level_tower _ _ _ _ (baseOf X C u u' (tauE X e j)) (baseOf_μW1 X C u u' _) (baseOf_μW'1 X C u u' _) rfl).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem towersOf_base (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (j : Fin (nfE D)) :
     (towersOf X C u u' e j).base = baseOf X C u u' (tauE X e j) :=
@@ -298,7 +296,7 @@ theorem towersOf_base (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.
     (baseOf_μW'1 X C u u' _) rfl).choose_spec.1
 
 /- English proof (translation)
-Rewrite using `[towersOf_base]`. Conclude with `⟨(zc_spec X C u _).2, (zc_spec X C u' _).2⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem Tz_towersOf_base_eq_T (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (j : Fin (nfE D)) :
     Tz D.R.k D.R.rS (towersOf X C u u' e j).base.z = ((D.mem u).A.T : ℝ) ∧
@@ -307,7 +305,7 @@ theorem Tz_towersOf_base_eq_T (u u' : D.what₂.Word) (e : InfinitePlace D.host.
   exact ⟨(zc_spec X C u _).2, (zc_spec X C u' _).2⟩
 
 /- English proof (translation)
-Substitute `h` using the available equality. Use extensionality with `x`. Both sides reduce to the same expression.
+Substitute using the available equality. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem cast_conj (u : D.what₂.Word) {w v : InfinitePlace X.B.I.F} (h : w = v)
     (m : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ) :
@@ -329,17 +327,13 @@ def carrierIn (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.what₂.
     top A₀
 
 /- English proof (translation)
-Introduce `v`. Establish `hw : tauE X e ((tauE X e).symm v) = v` using `Equiv.apply_symm_apply _ v`. Establish `hT` using `transpC X C v`. Use `⟨?_, ?_, ?_, fun m => ?_, fun m => ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `isTransp_cs (Formalism.L2.SG.Pf.torTie X) C (X.pl v)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h` using `[show vOf X (X.pl v) = v from X.pl.symm_apply_apply v]`. Then use the resulting hypothesis. Use `show (towersOf X C u u' e ((tauE X e).symm v)).base.z = zc X C u v`. Rewrite using `[towersOf_base]`. Use `show zc X C u (tauE X e ((tauE X e).symm v)) = zc X C u v`. Rewrite using `[hw]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show (towersOf X C u u' e ((tauE X e).symm v)).base.z' = zc X C u' v`. Rewrite using `[towersOf_base]`. Use `show zc X C u' (tauE X e ((tauE X e).symm v)) = zc X C u' v`. Rewrite using `[hw]`. Use `show (towersOf X C u u' e ((tauE X e).symm v)).base.π m = _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[towersOf_base]`. Conclude with `(cast_conj X C u (tauE_symm X e v) m).symm`. Use `show (towersOf X C u u' e ((tauE X e).symm v)).base.π' m = _`. Rewrite using `[towersOf_base]`. Conclude with `(cast_conj X C u' (tauE_symm X e v) m).symm`.
-
-Use `show (towersOf X C u u' e ((tauE X e).symm v)).base.μG = μGc X C v`. Rewrite using `[towersOf_base]`. Use `show μGc X C (tauE X e ((tauE X e).symm v)) = μGc X C v`. Rewrite using `[hw]`. Use `show ∃ μS : Measure (Formalism.REAL.UJ (X.B.I.ε v)), Formalism.L2.SG.RealObj.IsHaarLoc {γ | Formalism.L2.SG.RealObj.trG (Qc X C v) (Qic X C v) γ ∈ Sset D.R.k D.R.rS (towersOf X C u u' e ((tauE X e).symm v)).base.z} μS ∧ μS.map (fun γ => Matrix.of.symm (Formalism.L2.SG.RealObj.trG …`.
-
-Rewrite using `[towersOf_base]`. Use `show ∃ μS : Measure (Formalism.REAL.UJ (X.B.I.ε v)), Formalism.L2.SG.RealObj.IsHaarLoc {γ | Formalism.L2.SG.RealObj.trG (Qc X C v) (Qic X C v) γ ∈ Sset D.R.k D.R.rS (zc X C u (tauE X e ((tauE X e).symm v)))} μS ∧ μS.map (fun γ => Matrix.of.symm (Formalism.L2.SG.RealObj.trG (Qc X …`. Rewrite using `[hw]`. Conclude with `muS_loc (n_eq' X) (X.B.I.ε v) hT.1 hT.2.1 hT.2.2.1 (zc_spec X C u v).1 (zc_pos X C u v) (μW_exists X C u v).choose_spec.1 (μW_exists X C u v).choose_spec.2 (Formalism.FourierDecayAlt.P.Dx2.MN.haar D.R.rS)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fromX (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (he : PlaceTie X e)
     (hv : D.host.v = Formalism.FourierDecayAlt.S6.rd D.host.E / 2)

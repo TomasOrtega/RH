@@ -16,7 +16,7 @@ variable {K : Type} [Field K] [NumberField K] (D N : ℕ)
   (la : IsDedekindDomain.HeightOneSpectrum (𝓞 K))
 
 /- English proof (translation)
-Unfold `OpToKT`. Conclude with `IsLocalization.lift_comp _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem opToKT_comp : (OpToKT D N la).comp (algebraMap (OT K D N) (Op D N la)) =
     (algebraMap (KTp K D N) (KTf K D N)).comp (OTtoKT K D N) := by
@@ -24,23 +24,23 @@ theorem opToKT_comp : (OpToKT D N la).comp (algebraMap (OT K D N) (Op D N la)) =
   exact IsLocalization.lift_comp _
 
 /- English proof (translation)
-Conclude with `RingHom.congr_fun (opToKT_comp D N la) a`.
+A detailed English derivation is pending.
 -/
 theorem opToKT_alg (a : OT K D N) : OpToKT D N la (algebraMap (OT K D N) (Op D N la) a) =
     algebraMap (KTp K D N) (KTf K D N) (OTtoKT K D N a) := by
   exact RingHom.congr_fun (opToKT_comp D N la) a
 
 /- English proof (translation)
-Unfold `OTtoKT`. Conclude with `MvPolynomial.map_injective _ (IsFractionRing.injective (𝓞 K) K)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem oTtoKT_injective : Function.Injective (OTtoKT K D N) := by
   unfold OTtoKT
   exact MvPolynomial.map_injective _ (IsFractionRing.injective (𝓞 K) K)
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (laT D N la).primeCompl x`. Unfold `OpToKT at hx`. Rewrite `hx` using `[IsLocalization.lift_mk'_spec, mul_zero, RingHom.comp_apply]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : OTtoKT K D N a = 0` using `(injective_iff_map_eq_zero _).mp (IsFractionRing.injective (KTp K D N) (KTf K D N)) _ hx`. Establish `h3 : a = 0` using `(injective_iff_map_eq_zero _).mp (oTtoKT_injective D N) _ h2`. Substitute `h3` using the available equality. Conclude with `IsLocalization.mk'_zero _`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem opToKT_injective : Function.Injective (OpToKT D N la) := by
   rw [injective_iff_map_eq_zero]
@@ -55,29 +55,25 @@ theorem opToKT_injective : Function.Injective (OpToKT D N la) := by
   exact IsLocalization.mk'_zero _
 
 /- English proof (translation)
-Use `letI := (OpToKT D N la).toAlgebra`. Establish `hinj : Function.Injective (algebraMap (Op D N la) (KTf K D N))` using `opToKT_injective D N la`. Establish `hC : ∀ s : 𝓞 K, OTtoKT K D N (MvPolynomial.C s) = MvPolynomial.C (algebraMap (𝓞 K) K s)` using `fun s => MvPolynomial.map_C _ _`. Establish `hX : ∀ i, OTtoKT K D N (MvPolynomial.X i) = MvPolynomial.X i` using `fun i => MvPolynomial.map_X _ _`. Establish `hcl : ∀ p : KTp K D N, ∃ s : 𝓞 K, s ≠ 0 ∧ ∃ p' : OT K D N, OTtoKT K D N p' = MvPolynomial.C (algebraMap (𝓞 K) K s) * p`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `p`. Proceed by induction on `p using MvPolynomial.induction_on`. Use `next a =>`. Take `⟨x, y, hy, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 K) a`. Establish `hy' : algebraMap (𝓞 K) K y ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hy`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨y, nonZeroDivisors.ne_zero hy, MvPolynomial.C x, ?_⟩` and prove the remaining obligations. Rewrite using `[hC, ← MvPolynomial.C_mul]`. Use `congr 1`. Use `first`. Consider the case `(field_simp; done)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(rw [mul_div_assoc', mul_div_cancel_left₀ _ hy'])`. Consider the case `(field_simp; ring)`. Use `next p q hp hq =>`. Take `⟨s1, hs1, p1, hp1⟩` from `hp`. Take `⟨s2, hs2, q1, hq1⟩` from `hq`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `⟨s1 * s2, mul_ne_zero hs1 hs2, MvPolynomial.C s2 * p1 + MvPolynomial.C s1 * q1, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_mul, map_mul, hp1, hq1, hC, hC, map_mul (algebraMap (𝓞 K) K), MvPolynomial.C_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `next p i hp =>`. Take `⟨s, hs, p1, hp1⟩` from `hp`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨s, hs, p1 * MvPolynomial.X i, by rw [map_mul, hp1, hX, mul_assoc]⟩`. Establish `hCne : ∀ s : 𝓞 K, s ≠ 0 → algebraMap (KTp K D N) (KTf K D N) (MvPolynomial.C (algebraMap (𝓞 K) K s)) ≠ 0`. Introduce `s hs`. Rewrite using `[ne_eq, IsFractionRing.to_map_eq_zero_iff, MvPolynomial.C_eq_zero]`. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 K) K)).mpr hs`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hOp : ∀ a : OT K D N, algebraMap (Op D N la) (KTf K D N) (algebraMap (OT K D N) (Op D N la) a) = algebraMap (KTp K D N) (KTf K D N) (OTtoKT K D N a)` using `opToKT_alg D N la`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨y, hy⟩`. Conclude with `IsUnit.mk0 _ ((map_ne_zero_iff _ hinj).mpr (nonZeroDivisors.ne_zero hy))`. Introduce `z`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨p, q, hq, rfl⟩` from `IsFractionRing.div_surjective (A := KTp K D N) z`. Take `⟨sp, hsp, p', hp'⟩` from `hcl p`. Take `⟨sq, hsq, q', hq'⟩` from `hcl q`. Establish `hq0 : algebraMap (KTp K D N) (KTf K D N) q ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hq`. Establish `e1 : algebraMap (Op D N la) (KTf K D N) (algebraMap (OT K D N) (Op D N la) (p' * MvPolynomial.C sq)) = algebraMap (KTp K D N) (KTf K D N) (MvPolynomial.C (algebraMap (𝓞 K) K sp)) * algebraMap (KTp K D N) (KTf K D N) p * algebraMap (KTp K D N) (KTf K D N) (MvPolynomial.C (algebraM …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hOp, map_mul, hp', hC, map_mul, map_mul]`. Establish `e2 : algebraMap (Op D N la) (KTf K D N) (algebraMap (OT K D N) (Op D N la) (q' * MvPolynomial.C sp)) = algebraMap (KTp K D N) (KTf K D N) (MvPolynomial.C (algebraMap (𝓞 K) K sq)) * algebraMap (KTp K D N) (KTf K D N) q * algebraMap (KTp K D N) (KTf K D N) (MvPolynomial.C (algebraM …`. Rewrite using `[hOp, map_mul, hq', hC, map_mul, map_mul]`. Establish `hx2 : algebraMap (OT K D N) (Op D N la) (q' * MvPolynomial.C sp) ≠ 0` using `(map_ne_zero_iff _ hinj).mp (by`. Rewrite using `[e2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Conclude with `mul_ne_zero (mul_ne_zero (hCne sq hsq) hq0) (hCne sp hsp))`. Use `⟨⟨algebraMap (OT K D N) (Op D N la) (p' * MvPolynomial.C sq), ⟨_, mem_nonZeroDivisors_of_ne_zero hx2⟩⟩, ?_⟩` and prove the remaining obligations. Use `show _ * algebraMap (Op D N la) (KTf K D N) (algebraMap (OT K D N) (Op D N la) (q' * MvPolynomial.C sp)) = _`. Rewrite using `[e1, e2]`. Establish `h1` using `hCne sq hsq`.
-
-Establish `h2` using `hCne sp hsp`. Use `first`. Consider the case `(field_simp; done)`. Consider the case `(field_simp; ring)`. Consider the case `(rw [div_mul_eq_mul_div, div_eq_iff hq0]; ring)`.
-
-Introduce `x y hxy`. Conclude with `⟨1, by rw [hinj hxy]⟩`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem op_isFractionRing :
     letI := (OpToKT D N la).toAlgebra
@@ -160,35 +156,31 @@ theorem op_isFractionRing :
     exact ⟨1, by rw [hinj hxy]⟩
 
 /- English proof (translation)
-Establish `hdvd : la.asIdeal ∣ Ideal.span {ϖ}` using `Ideal.dvd_iff_le.mpr ((Ideal.span_singleton_le_iff_mem _).mpr hϖ)`. Take `⟨J, hJ⟩` from `hdvd`. Establish `hJla : ¬ J ≤ la.asIdeal`. Introduce `hle`. Apply `hϖ2` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hsub : Ideal.span {ϖ} ≤ la.asIdeal ^ 2`. Rewrite using `[hJ, sq]`. Conclude with `Ideal.mul_mono_right hle`. Conclude with `hsub (Ideal.mem_span_singleton_self ϖ)`. Take `⟨s, hsJ, hsla⟩` from `Set.not_subset.mp hJla`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ a ∈ la.asIdeal, ∃ b, s * a = ϖ * b`. Introduce `a ha`. Establish `hmem : s * a ∈ Ideal.span {ϖ}`. Rewrite using `[hJ, mul_comm s a]`. Conclude with `Ideal.mul_mem_mul ha hsJ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mem_span_singleton.mp hmem`. Establish `hsnot : MvPolynomial.C s ∉ laT D N la`. Unfold `laT`. Rewrite using `[MvPolynomial.mem_map_C_iff]`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `hsla` to reduce the goal to its premises. Simplify using `using h 0`. Establish `hsu : IsUnit (algebraMap (OT K D N) (Op D N la) (MvPolynomial.C s))` using `IsLocalization.map_units (Op D N la) (⟨MvPolynomial.C s, hsnot⟩ : (laT D N la).primeCompl)`. Establish `hsub : ∀ a ∈ la.asIdeal, algebraMap (OT K D N) (Op D N la) (MvPolynomial.C a) ∈ Ideal.span {algebraMap (OT K D N) (Op D N la) (MvPolynomial.C ϖ)}`. Introduce `a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨b, hb⟩` from `key a ha`. Take `⟨u, hu⟩` from `hsu`. Establish `e : algebraMap (OT K D N) (Op D N la) (MvPolynomial.C s) * algebraMap (OT K D N) (Op D N la) (MvPolynomial.C a) = algebraMap (OT K D N) (Op D N la) (MvPolynomial.C ϖ) * algebraMap (OT K D N) (Op D N la) (MvPolynomial.C b)`. Simplify using `only [← map_mul, hb]`. Rewrite `e` using `[← hu]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Ideal.mem_span_singleton.mpr ⟨algebraMap (OT K D N) (Op D N la) (MvPolynomial.C b) * ↑u⁻¹, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hm : IsLocalRing.maximalIdeal (Op D N la) = Ideal.span {algebraMap (OT K D N) (Op D N la) (MvPolynomial.C ϖ)}`. Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal]`. Apply `le_antisymm` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Ideal.map_le_iff_le_comap]`. Establish `hle : laT D N la ≤ Ideal.comap (algebraMap (OT K D N) (Op D N la)) (Ideal.span {algebraMap (OT K D N) (Op D N la) (MvPolynomial.C ϖ)})` using `by show Ideal.map (MvPolynomial.C : 𝓞 K →+* OT K D N) la.asIdeal ≤ _`. Use `Ideal.map_le_iff_le_comap.mpr ?_` and prove the remaining obligations. Introduce `a ha`. Conclude with `hsub a ha`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hle`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `Ideal.mem_map_of_mem _ (Ideal.mem_map_of_mem _ hϖ)`. Use `set x := algebraMap (OT K D N) (Op D N la) (MvPolynomial.C ϖ) with hxdef`. Establish `hx0 : x ≠ 0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hϖ0 : ϖ ≠ 0` using `fun h => hϖ2 (h ▸ Ideal.zero_mem _)`. Rewrite using `[hxdef]`. Use `(map_ne_zero_iff _ (IsLocalization.injective (Op D N la) (Ideal.primeCompl_le_nonZeroDivisors (laT D N la)))).mpr ?_` and prove the remaining obligations. Simplify using `using hϖ0`. Establish `hxm : x ∈ IsLocalRing.maximalIdeal (Op D N la)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hm]`. Conclude with `Ideal.mem_span_singleton_self x`. Establish `hxnu : ¬ IsUnit x` using `(IsLocalRing.mem_maximalIdeal x).mp hxm`. Use `⟨hxnu, ?_⟩` and prove the remaining obligations. Introduce `a b hab`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `ha : a ∈ IsLocalRing.maximalIdeal (Op D N la)` using `(IsLocalRing.mem_maximalIdeal a).mpr hcon.1`. Establish `hb : b ∈ IsLocalRing.maximalIdeal (Op D N la)` using `(IsLocalRing.mem_maximalIdeal b).mpr hcon.2`. Rewrite `ha`, `hb` using `[hm, Ideal.mem_span_singleton]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Supply the required witnesses or components.
 
-Take `⟨a', rfl⟩` from `ha`. Take `⟨b', rfl⟩` from `hb`. Apply `hxnu` to reduce the goal to its premises. Establish `h2 : x * (a' * (x * b')) = x * 1`. Rewrite using `[mul_one, ← mul_assoc]`.
-
-Conclude with `hab.symm`. Establish `h3 : a' * (x * b') = 1` using `mul_left_cancel₀ hx0 h2`. Establish `h4 : x * (b' * a') = 1`. Rewrite using `[← h3]`. Expand and normalize the polynomial expressions, which then agree.
-
-Conclude with `⟨⟨x, b' * a', h4, by rw [mul_comm]; exact h4⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem op_irreducible (ϖ : 𝓞 K) (hϖ : ϖ ∈ la.asIdeal) (hϖ2 : ϖ ∉ la.asIdeal ^ 2) :
     Irreducible (algebraMap (OT K D N) (Op D N la) (MvPolynomial.C ϖ)) := by
@@ -280,7 +272,7 @@ theorem op_irreducible (ϖ : 𝓞 K) (hϖ : ϖ ∈ la.asIdeal) (hϖ2 : ϖ ∉ la
   exact ⟨⟨x, b' * a', h4, by rw [mul_comm]; exact h4⟩, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[opToKT_alg, IsScalarTower.algebraMap_apply K (KTp K D N) (KTf K D N), MvPolynomial.algebraMap_eq]`. Use `congr 1`. Unfold `OTtoKT`. Rewrite using `[MvPolynomial.map_C]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem opToKT_C (ϖ : 𝓞 K) :
     OpToKT D N la (algebraMap (OT K D N) (Op D N la) (MvPolynomial.C ϖ)) =
@@ -304,7 +296,7 @@ namespace Data
 variable (d : Data K ι Ω WT A)
 
 /- English proof (translation)
-Unfold `Data.OpToS Data.KTtoS Data.OTtoS`. Rewrite using `[RingHom.comp_apply, NPA.opToKT_alg, IsFractionRing.lift_algebraMap]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem opToS_alg (h : d.S1) (la : IsDedekindDomain.HeightOneSpectrum (𝓞 K)) (c : ι)
     (x : OT K d.D d.N) :
@@ -314,15 +306,11 @@ theorem opToS_alg (h : d.S1) (la : IsDedekindDomain.HeightOneSpectrum (𝓞 K)) 
   rfl
 
 /- English proof (translation)
-Use `letI iF : Algebra (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := (d.KTtoS h c).toAlgebra`. Use `letI iO : Algebra (Op d.D d.N la) (KTf K d.D d.N) := (OpToKT d.D d.N la).toAlgebra`. Use `letI iOL : Algebra (Op d.D d.N la) (OmS (Ω c) d.D d.N) := (d.OpToS h la c).toAlgebra`. Use `haveI : IsScalarTower (Op d.D d.N la) (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Use `haveI : IsDiscreteValuationRing (Op d.D d.N la) := Op_isDVR d.D d.N la`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Use `haveI : IsFractionRing (Op d.D d.N la) (KTf K d.D d.N) := NPA.op_isFractionRing d.D d.N la`. Use `haveI : FiniteDimensional (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := (d.omS_finite hd h c).1`. Use `haveI : CharZero (KTf K d.D d.N) := charZero_of_injective_algebraMap (algebraMap K (KTf K d.D d.N)).injective`. Use `haveI : Algebra.IsSeparable (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := inferInstance`. Use `haveI : IsDedekindDomain (integralClosure (Op d.D d.N la) (OmS (Ω c) d.D d.N)) := integralClosure.isDedekindDomain (Op d.D d.N la) (KTf K d.D d.N) _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `haveI : IsFractionRing (integralClosure (Op d.D d.N la) (OmS (Ω c) d.D d.N)) (OmS (Ω c) d.D d.N) := integralClosure.isFractionRing_of_finite_extension (KTf K d.D d.N) _`. Take `⟨u, hu, hn⟩` from `ValPl.norm_eq_places (O := Op d.D d.N la) (F := KTf K d.D d.N) y hy (NPA.op_irreducible d.D d.N la ϖ hϖ hϖ2)`. Use `letI iT : Algebra (OT K d.D d.N) (OmS (Ω c) d.D d.N) := (d.OTtoS c).toAlgebra`. Use `haveI : IsScalarTower (OT K d.D d.N) (Op d.D d.N la) (OmS (Ω c) d.D d.N) := IsScalarTower.of_algebraMap_eq (fun x => (d.opToS_alg h la c x).symm)`. Establish `hpl : ValPl.PlacesOver (Op d.D d.N la) (OmS (Ω c) d.D d.N) = d.PlOver la c`.
-
-Use extensionality with `w`. Simplify using `only [ValPl.PlacesOver, Data.PlOver, Set.mem_setOf_eq]`. Rewrite using `[← ValPl.placesOver_iff_loc (R := OT K d.D d.N) (laT d.D d.N la) w]`. Both sides reduce to the same expression. Use `⟨u, hu, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hn, hpl]`. Rewrite using `[show algebraMap (Op d.D d.N la) (KTf K d.D d.N) (algebraMap (OT K d.D d.N) (Op d.D d.N la) (MvPolynomial.C ϖ)) = algebraMap K (KTf K d.D d.N) (ϖ : K) from NPA.opToKT_C d.D d.N la ϖ]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem norm_at_la_A (hd : d.AxH 𝒜) (h : d.S1) (c : ι) (la : IsDedekindDomain.HeightOneSpectrum (𝓞 K))
     (ϖ : 𝓞 K) (hϖ : ϖ ∈ la.asIdeal) (hϖ2 : ϖ ∉ la.asIdeal ^ 2)

@@ -28,7 +28,7 @@ open scoped TensorProduct
 namespace GlobalTheory.CompProport
 
 /- English proof (translation)
-Introduce `hP hS hT hL D T _ j hp _ hf _ Y e o hY`. Establish `hr : 1 ≤ (T.Q.Dw j).p + (T.Q.Dw j).q` using `by omega`. Take `⟨X, h1, h2, h3, h4⟩` from `hT.exists_model_charts hS hr Y.d.Xo₂ Y.d.c₂`. Take `⟨TF, hc⟩` from `exists_torFlag_charts hr X h1 h2 h3 h4`. Conclude with `proport_of_charts (GlobalTheory.T.stronger_published_hypotheses_imply hP) hP.q7 hL hY hf TF hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem proport_good :
     Hypotheses2 → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.SemiAbelianLieSeminegative → ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j : ℕ, 1 ≤ (T.Q.Dw j).p → 1 ≤ (T.Q.Dw j).q → 2 < Module.finrank ℚ D.host.E / 2 → InR D j → ∀ (Y : Deep T.toCore j) (e : ℕ) (o : ℝ), Y.Good e o → Proport Y.U ∧ ∀ Z, 0 < CompHt.vZero Y.U Z := by

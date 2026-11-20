@@ -21,7 +21,7 @@ def Kf {r : ℕ} (x : Fin r → Fin X.B.I.n → X.B.I.E) : Fin r → Fin X.B.I.n
   fun a j => ∑ i, star (x a i) * X.B.I.J i j
 
 /- English proof (translation)
-Simplify using `only [Kf, hE, Formalism.UG.hform, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Kf_apply {r : ℕ} (x : Fin r → Fin X.B.I.n → X.B.I.E) (a : Fin r) (y : Fin X.B.I.n → X.B.I.E) :
     ∑ j, Kf X x a j * y j = hE X.B.I.cm.sig X.B.I.J (x a) y := by
@@ -30,11 +30,11 @@ theorem Kf_apply {r : ℕ} (x : Fin r → Fin X.B.I.n → X.B.I.E) (a : Fin r) (
   rfl
 
 /- English proof (translation)
-Establish `hJ : ∀ i j, star (X.B.I.J j i) = X.B.I.J i j`. Introduce `i j`. Use `congrFun (congrFun X.B.I.J_herm i) j` as an intermediate fact. Simplify `this` using `[Formalism.UG.cT, starRingEnd_apply]`. Use `show (∑ i, ∑ j, star (x i) * X.B.I.J i j * y j) = star (∑ i, ∑ j, star (y i) * X.B.I.J i j * x j)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[star_sum, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[star_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[star_mul, star_mul, star_star, hJ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem hE_swap (x y : Fin X.B.I.n → X.B.I.E) :
     hE X.B.I.cm.sig X.B.I.J x y = star (hE X.B.I.cm.sig X.B.I.J y x) := by
@@ -51,13 +51,13 @@ theorem hE_swap (x y : Fin X.B.I.n → X.B.I.E) :
   ring
 
 /- English proof (translation)
-The claim follows from `MassDataLevelSSteps.FrameW.frameOf_isStd X u`.
+A detailed English derivation is pending.
 -/
 theorem std (u : D.what₂.Word) : (frameOf X u).IsStd X.B.I.cm.sig X.B.I.J (((D.mem u).A.T : ℕ) : X.B.I.F) :=
   MassDataLevelSSteps.FrameW.frameOf_isStd X u
 
 /- English proof (translation)
-Introduce `a b`. Rewrite using `[Kf_apply]`. Conclude with `(std X u).2.2.1 a b`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hKf_f (u : D.what₂.Word) : ∀ a b, ∑ j, Kf X X.eR a j * X.fR b j = if a = b then 1 else 0 := by
   intro a b
@@ -65,9 +65,9 @@ theorem hKf_f (u : D.what₂.Word) : ∀ a b, ∑ j, Kf X X.eR a j * X.fR b j = 
   exact (std X u).2.2.1 a b
 
 /- English proof (translation)
-Introduce `c b`. Rewrite using `[Kf_apply, hE_swap]`. Use `(std X u).2.2.1 b c` as an intermediate fact. Express the relevant statement in the definitionally equal form `hE _ _ (X.eR b) (X.fR c) = _ at this`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : c = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg (Ne.symm h), if_neg h, star_zero]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hK_e (u : D.what₂.Word) : ∀ c b, ∑ j, Kf X X.fR c j * X.eR b j = if c = b then 1 else 0 := by
   intro c b
@@ -80,7 +80,7 @@ theorem hK_e (u : D.what₂.Word) : ∀ c b, ∑ j, Kf X X.fR c j * X.eR b j = i
   · rw [if_neg (Ne.symm h), if_neg h, star_zero]
 
 /- English proof (translation)
-Introduce `a`. Rewrite using `[Kf_apply]`. Conclude with `(std X u).2.2.2.1 a`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_Kf_mul_zR_eq_zero (u : D.what₂.Word) : ∀ a, ∑ j, Kf X X.eR a j * X.zR u j = 0 := by
   intro a
@@ -88,7 +88,7 @@ theorem sum_Kf_mul_zR_eq_zero (u : D.what₂.Word) : ∀ a, ∑ j, Kf X X.eR a j
   exact (std X u).2.2.2.1 a
 
 /- English proof (translation)
-Use `show (Algebra.TensorProduct.map (AlgHom.id X.B.I.F (AF X.B.I.F)) X.B.I.cm.sig) ((1 : AF X.B.I.F) ⊗ₜ[X.B.I.F] x) = (1 : AF X.B.I.F) ⊗ₜ[X.B.I.F] (X.B.I.cm.sig x)`. Rewrite using `[Algebra.TensorProduct.map_tmul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sigR_inclR (x : X.B.I.E) :
     sigR (AF X.B.I.F) X.B.I.cm.sig (inclR (AF X.B.I.F) x) = inclR (AF X.B.I.F) (X.B.I.cm.sig x) := by
@@ -98,7 +98,7 @@ theorem sigR_inclR (x : X.B.I.E) :
   rfl
 
 /- English proof (translation)
-Simplify using `only [hR, Formalism.UG.hform, JR, Matrix.map_apply, ratV, sigR_inclR, map_sum, map_mul, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hR_ratV_left (x : Fin X.B.I.n → X.B.I.E) (y : Fin X.B.I.n → AF X.B.I.F ⊗[X.B.I.F] X.B.I.E) :
     hR (AF X.B.I.F) X.B.I.cm.sig X.B.I.J (ratV (F := X.B.I.F) (AF X.B.I.F) x) y =
@@ -108,7 +108,7 @@ theorem hR_ratV_left (x : Fin X.B.I.n → X.B.I.E) (y : Fin X.B.I.n → AF X.B.I
   rfl
 
 /- English proof (translation)
-Introduce `a b h`. Take `v` from `(inferInstance : Nonempty (InfinitePlace X.B.I.F)).some`. Apply `(X.B.I.φ v).injective` to reduce the goal to its premises. Rewrite using `[← thetaV_inclR X.B.I v a, ← thetaV_inclR X.B.I v b, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem inclR_injective : Function.Injective (inclR (F := X.B.I.F) (E := X.B.I.E) (AF X.B.I.F)) := by
   intro a b h
@@ -117,7 +117,7 @@ theorem inclR_injective : Function.Injective (inclR (F := X.B.I.F) (E := X.B.I.E
   rw [← thetaV_inclR X.B.I v a, ← thetaV_inclR X.B.I v b, h]
 
 /- English proof (translation)
-Simplify using `[Formalism.UG.sigR, Formalism.UG.inclE]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sigA_inclE (x : X.B.I.E) :
     Formalism.UG.sigR X.B.I.cm.sig (Af X.B.I.F) (Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F) x) =
@@ -125,7 +125,7 @@ theorem sigA_inclE (x : X.B.I.E) :
   simp [Formalism.UG.sigR, Formalism.UG.inclE]
 
 /- English proof (translation)
-Simplify using `only [hA, Formalism.UG.hform, Matrix.map_apply, incl, sigA_inclE, map_sum, map_mul, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hA_incl_left (x : Fin X.B.I.n → X.B.I.E) (y : Formalism.L2.SG.HidaSetting.VA X.B.I) :
     hA X.B.I (incl X.B.I x) y =
@@ -135,7 +135,7 @@ theorem hA_incl_left (x : Fin X.B.I.n → X.B.I.E) (y : Formalism.L2.SG.HidaSett
   rfl
 
 /- English proof (translation)
-The claim follows from `Algebra.TensorProduct.includeLeft_injective (R := X.B.I.F) (S := X.B.I.F) (MassDataMassesW.inj_Af X.B.I.F)`.
+A detailed English derivation is pending.
 -/
 theorem inclE_injective : Function.Injective (Formalism.UG.inclE (F := X.B.I.F) (E := X.B.I.E) (Af X.B.I.F)) :=
   Algebra.TensorProduct.includeLeft_injective (R := X.B.I.F) (S := X.B.I.F)

@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.FrameP
 open MeasureTheory ValuativeRel Matrix Topology GlobalTheory.SplitWeil GlobalTheory.RootEx GlobalTheory.StepData GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.GenericLevel.exists_isGenericLevel` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsGenericLevelOfFrame.lean&line=87#L87)
 -/

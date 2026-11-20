@@ -24,38 +24,38 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 def up (w : TanM x t.G) : epsR k ⟶ φ.G := (ReciprocityTheory.ChartRestriction.G.PullbackSections.push_surj hm (ReciprocityTheory.ChartRestriction.G.PullbackSections.tv w)).choose
 
 /- English proof (translation)
-The claim follows from `(ReciprocityTheory.ChartRestriction.G.PullbackSections.push_surj hm (ReciprocityTheory.ChartRestriction.G.PullbackSections.tv w)).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem push_up (w : TanM x t.G) : pushHom hm (epsR k) (up hm w) = ReciprocityTheory.ChartRestriction.G.PullbackSections.tv w :=
   (ReciprocityTheory.ChartRestriction.G.PullbackSections.push_surj hm (ReciprocityTheory.ChartRestriction.G.PullbackSections.tv w)).choose_spec
 
 /- English proof (translation)
-The claim follows from `congrArg (fun z => z.left) (push_up hm w)`.
+A detailed English derivation is pending.
 -/
 theorem up_left (w : TanM x t.G) : (up hm w).left ≫ m.F = (ReciprocityTheory.ChartRestriction.G.PullbackSections.tv w).left :=
   congrArg (fun z => z.left) (push_up hm w)
 
 /- English proof (translation)
-The claim follows from `ReciprocityTheory.ChartRestriction.G.PullbackSections.push_inj hm (by rw [map_mul, push_up, push_up, push_up, ReciprocityTheory.ChartRestriction.G.PullbackSections.tv_add])`.
+A detailed English derivation is pending.
 -/
 theorem up_add (w₁ w₂ : TanM x t.G) : up hm (w₁ + w₂) = up hm w₁ * up hm w₂ :=
   ReciprocityTheory.ChartRestriction.G.PullbackSections.push_inj hm (by rw [map_mul, push_up, push_up, push_up, ReciprocityTheory.ChartRestriction.G.PullbackSections.tv_add])
 
 /- English proof (translation)
-The claim follows from `ReciprocityTheory.ChartRestriction.G.PullbackSections.push_inj hm (by rw [ReciprocityTheory.ChartRestriction.G.PullbackSections.push_scK, push_up, push_up, ReciprocityTheory.ChartRestriction.G.PullbackSections.tv_smul])`.
+A detailed English derivation is pending.
 -/
 theorem up_smul (a : k) (w : TanM x t.G) : up hm (a • w) = ReciprocityTheory.ChartRestriction.G.PullbackSections.scK a (up hm w) :=
   ReciprocityTheory.ChartRestriction.G.PullbackSections.push_inj hm (by
     rw [ReciprocityTheory.ChartRestriction.G.PullbackSections.push_scK, push_up, push_up, ReciprocityTheory.ChartRestriction.G.PullbackSections.tv_smul])
 
 /- English proof (translation)
-The claim follows from `(ReciprocityTheory.ChartRestriction.G.PullbackSections.isTangent_iff hm _).2 (by rw [push_up]; exact ReciprocityTheory.ChartRestriction.G.PullbackSections.tv_mem w)`.
+A detailed English derivation is pending.
 -/
 theorem isTangent_up (w : TanM x t.G) : IsTangent (up hm w) :=
   (ReciprocityTheory.ChartRestriction.G.PullbackSections.isTangent_iff hm _).2 (by rw [push_up]; exact ReciprocityTheory.ChartRestriction.G.PullbackSections.tv_mem w)
 
 /- English proof (translation)
-Unfold `IsTangent at *`. Rewrite using `[Over.comp_left, ← Category.assoc, hp, ← Over.comp_left, IsMonHom.one_hom]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem isTangent_comp {G B : Over (Sp k)} [GrpObj G] [GrpObj B] (f : G ⟶ B) [IsMonHom f] {p : epsR k ⟶ G}
     (hp : IsTangent p) : IsTangent (p ≫ f) := by
@@ -68,20 +68,20 @@ def coord (w : TanM x t.G) : Fin n → k :=
   (hv.2 _ (isTangent_comp φ.q (isTangent_up hm w))).exists.choose
 
 /- English proof (translation)
-The claim follows from `(hv.2 _ (isTangent_comp φ.q (isTangent_up hm w))).exists.choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem coord_spec (w : TanM x t.G) : IsLieComb (coord hm hv w) v (up hm w ≫ φ.q) :=
   (hv.2 _ (isTangent_comp φ.q (isTangent_up hm w))).exists.choose_spec
 
 /- English proof (translation)
-The claim follows from `(hv.2 _ (isTangent_comp φ.q (isTangent_up hm w))).unique (coord_spec hm hv w) h`.
+A detailed English derivation is pending.
 -/
 theorem coord_eq {w : TanM x t.G} {c : Fin n → k} (h : IsLieComb c v (up hm w ≫ φ.q)) : coord hm hv w = c :=
   (hv.2 _ (isTangent_comp φ.q (isTangent_up hm w))).unique (coord_spec hm hv w) h
 
 include hv in
 /- English proof (translation)
-Conclude with `congrArg Additive.toMul ((GlobalTheory.LieComb.combHom hv.1).map_add c₁ c₂)`.
+A detailed English derivation is pending.
 -/
 theorem tanExp_add [IsCommMonObj φ.P.A] (c₁ c₂ : Fin n → k) :
     GlobalTheory.SqZero.tanExp v (c₁ + c₂) = GlobalTheory.SqZero.tanExp v c₁ * GlobalTheory.SqZero.tanExp v c₂ := by
@@ -108,9 +108,9 @@ def coordL : TanM x t.G →ₗ[k] (Fin n → k) where
     simpa using h2
 
 /- English proof (translation)
-Use `⟨2, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_two, Ideal.zero_eq_bot, eq_bot_iff]`. Use `Ideal.mul_le.2 fun a ha b hb => ?_` and prove the remaining obligations. Rewrite `ha`, `hb` using `[RingHom.mem_ker]`. Express the relevant statement in the definitionally equal form `a.fst = 0 at ha`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `b.fst = 0 at hb`. Rewrite using `[Ideal.mem_bot]`. Use `ext`. Simplify using `[ha]`. Simplify using `[ha, hb]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem ker_fst_isNilpotent :
     IsNilpotent (RingHom.ker (CommRingCat.ofHom (TrivSqZeroExt.fstHom k k k).toRingHom).hom) := by
@@ -126,9 +126,7 @@ theorem ker_fst_isNilpotent :
   · simp [ha, hb]
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.TangentLift.smooth_q φ`. Establish `h0 : η[φ.G].left ≫ φ.q.left = Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom k k k).toRingHom) ≫ b.left`. Rewrite using `[← Over.comp_left, IsMonHom.one_hom]`. Conclude with `hb.symm`. Take `⟨y, hy1, hy2⟩` from `GlobalTheory.TangentLift.exists_lift_of_isNilpotent φ.q.left (CommRingCat.ofHom (TrivSqZeroExt.fstHom k k k).toRingHom) (fun a => ⟨TrivSqZeroExt.inl a, rfl⟩) ker_fst_isNilpotent b.left η[φ.G].left h0 (η[φ.G].left (IsLocalRing.closedPoint k)) (fun p => congrArg η[φ.G].left (Subsin …`.
-
-Use `⟨Over.homMk y (by rw [← Over.w φ.q, ← Category.assoc, hy2, Over.w b]), hy1, ?_⟩` and prove the remaining obligations. Conclude with `Over.OverMorphism.ext hy2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_tangent_lift {b : epsR k ⟶ φ.P.A} (hb : IsTangent b) :
     ∃ w' : epsR k ⟶ φ.G, IsTangent w' ∧ w' ≫ φ.q = b := by
@@ -145,9 +143,9 @@ theorem exists_tangent_lift {b : epsR k ⟶ φ.P.A} (hb : IsTangent b) :
   exact Over.OverMorphism.ext hy2
 
 /- English proof (translation)
-Use `haveI : IsCommMonObj φ.P.A := φ.P.isAb.comm`. Introduce `c`. Take `⟨b, hb, -⟩` from `(GlobalTheory.LieComb.lieComb_algebra k φ.P.A n v hv.1).1 c`. Establish `hbt` using `(GlobalTheory.LieComb.lieComb_algebra k φ.P.A n v hv.1).2.1 c b hb`. Take `⟨w', hw't, hw'q⟩` from `exists_tangent_lift hbt`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `w : TanM x t.G` to `ReciprocityTheory.ChartRestriction.G.PullbackSections.mkT (pushHom hm (epsR k) w') ((ReciprocityTheory.ChartRestriction.G.PullbackSections.isTangent_iff hm w').1 hw't)`. Establish `hw : up hm w = w'` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.push_inj hm (by rw [push_up]; rfl)`. Use `⟨w, coord_eq hm hv ?_⟩` and prove the remaining obligations. Rewrite using `[hw, hw'q]`. Conclude with `hb`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coordL_surjective : Function.Surjective (coordL hm hv) := by
   haveI : IsCommMonObj φ.P.A := φ.P.isAb.comm
@@ -163,13 +161,13 @@ theorem coordL_surjective : Function.Surjective (coordL hm hv) := by
   exact hb
 
 /- English proof (translation)
-Introduce `w` and use `⟨up hm w, up_left hm w, coord_spec hm hv w⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem isAbMap_coordL : IsAbMap φ m v (coordL hm hv) := fun w =>
   ⟨up hm w, up_left hm w, coord_spec hm hv w⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H X t k _ _ x φ m hφ n v hv`. Conclude with `⟨coordL hφ.1 hv, coordL_surjective hφ.1 hv, isAbMap_coordL hφ.1 hv⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_abMap : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) (t : SAB H X) (k : Type) [Field k] [CharZero k] (x : Sp k ⟶ X) (φ : Fib k) (m : CubeMap φ.G t.G), FibAt t x φ m → ∀ (n : ℕ) (v : Fin n → (epsR k ⟶ φ.P.A)), IsLieBasis v → ∃ q : TanM x t.G →ₗ[k] (Fin n → k), Function.Surjective q ∧ IsAbMap φ m v q := by
   intro E _ _ _ H X t k _ _ x φ m hφ n v hv

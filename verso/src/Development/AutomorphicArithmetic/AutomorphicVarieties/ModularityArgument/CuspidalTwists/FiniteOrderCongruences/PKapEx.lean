@@ -14,7 +14,7 @@ namespace UpperTheory.V.Cu2
 namespace KapEx
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qk14.norm_eq_one h`.
+A detailed English derivation is pending.
 -/
 theorem norm_eq_one {l : ℕ} [Fact l.Prime] {x : Qbar l} (h : ‖x - 1‖ < 1) : ‖x‖ = 1 :=
   _root_.UpperTheory.Reformulated.B.Qk14.norm_eq_one h
@@ -39,14 +39,14 @@ def W (l : ℕ) [Fact l.Prime] : Subgroup (Qbar l)ˣ where
     exact ha
 
 /- English proof (translation)
-Use `show IsOpen {a : (Qbar l)ˣ | ‖(a : Qbar l) - 1‖ < 1}`. Conclude with `isOpen_lt (continuous_norm.comp (Units.continuous_val.sub continuous_const)) continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_kappaOpenNeighbourhood (l : ℕ) [Fact l.Prime] : IsOpen ((W l : Subgroup (Qbar l)ˣ) : Set (Qbar l)ˣ) := by
   show IsOpen {a : (Qbar l)ˣ | ‖(a : Qbar l) - 1‖ < 1}
   exact isOpen_lt (continuous_norm.comp (Units.continuous_val.sub continuous_const)) continuous_const
 
 /- English proof (translation)
-Unfold `Cong`. Rewrite using `[Units.val_one]`. Conclude with `hx`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cong_of_mem {l : ℕ} [Fact l.Prime] {x : (Qbar l)ˣ} (hx : x ∈ W l) : Cong x 1 := by
   unfold Cong
@@ -54,9 +54,7 @@ theorem cong_of_mem {l : ℕ} [Fact l.Prime] {x : (Qbar l)ˣ} (hx : x ∈ W l) :
   exact hx
 
 /- English proof (translation)
-Establish `hU : IsOpen (((W l).comap f : Subgroup Γ) : Set Γ)` using `(isOpen_kappaOpenNeighbourhood l).preimage hf`. Use `haveI := Subgroup.quotient_finite_of_isOpen _ hU`. Establish `hi : ((W l).comap f).index ≠ 0` using `Subgroup.index_ne_zero_of_finite`. Use `⟨((W l).comap f).index.factorial, Nat.factorial_pos _, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow]`.
-
-Conclude with `Subgroup.pow_mem_of_index_ne_zero_of_dvd hi g fun n h0 hn => Nat.dvd_factorial h0 hn`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_cong {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ]
     {l : ℕ} [Fact l.Prime] (f : Γ →* (Qbar l)ˣ) (hf : Continuous f) : ∃ d : ℕ, 0 < d ∧ ∀ g, f g ^ d ∈ W l := by
@@ -68,9 +66,9 @@ theorem exists_pow_cong {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologi
   exact Subgroup.pow_mem_of_index_ne_zero_of_dvd hi g fun n h0 hn => Nat.dvd_factorial h0 hn
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `hc`. Introduce `h`. Use `IsTotallyComplex.complexEmbedding_not_isReal (j.comp (algebraMap K Ω)) ?_` and prove the remaining obligations. Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `x`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use `hj (algebraMap K Ω x)` as an intermediate fact. Rewrite `this` using `[h x]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cc_notMem {Ω : Type} [Field Ω] [CharZero Ω] (K : Type) [Field K] [NumberField K] [Algebra K Ω] [IsTotallyComplex K]
     {c : G ℚ Ω} (hc : Sd.IsCC c) : c ∉ galOf ℚ K Ω := by

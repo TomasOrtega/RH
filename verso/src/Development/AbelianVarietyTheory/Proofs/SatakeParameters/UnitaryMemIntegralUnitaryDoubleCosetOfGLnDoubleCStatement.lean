@@ -8,7 +8,7 @@ open IsDedekindDomain NumberField Formalism.UG GlobalTheory.SelfDualGenus
 open scoped TensorProduct Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.UnitaryDoubleCoset.doubleCoset_unitary_of_GL` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FUnitaryMemIntegralUnitaryDoubleCosetOfGLnDoubleC.lean&line=243#L243)
 -/

@@ -16,13 +16,11 @@ open GlobalTheory GlobalTheory.Toroidal GlobalTheory.Cartier GlobalTheory.ProjVa
 namespace GlobalTheory.FlagSmooth
 
 /- English proof (translation)
-Introduce `K _ _ X T _ _ f q hl hs hq hN hb`. Establish `hqf` using `GlobalTheory.T.locallyQuasiFinite_of_unique_geom_points X T f hl hb`. Take `⟨U, hU, hiso⟩` from `GlobalTheory.T.exists_open_iso_of_bijective_geom K X T f q hl hqf hs hq hb`. Establish `hsurj : Surjective f`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `t`. Set `t' : Spec (.of (AlgebraicClosure (T.residueField t))) ⟶ T` to `Spec.map (CommRingCat.ofHom (algebraMap (T.residueField t) (AlgebraicClosure (T.residueField t)))) ≫ T.fromSpecResidueField t`. Take `⟨x, hx, -⟩` from `hb _ t'`. Take `⟨s⟩ : Nonempty (Spec (.of (AlgebraicClosure (T.residueField t))))` from `inferInstance`. Use `⟨x s, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (x ≫ f) s = t' s` using `by rw [hx]`. Rewrite `e` using `[Scheme.Hom.comp_apply]`. Rewrite using `[e]`. Conclude with `(Scheme.Hom.comp_apply _ _ _).trans (Scheme.fromSpecResidueField_apply t _)`. Establish `hoi` using `(GlobalTheory.isOpenImmersion_and_isIso_of_quasiFinite_of_birational f hN U hU).1`.
-
-Conclude with `(isIso_iff_isOpenImmersion_and_surjective f).2 ⟨hoi, hsurj⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIso_of_bijective_geomPts : ∀ (K : Type) [Field K] [CharZero K] (X T : Scheme.{0}) [IsIntegral X] [IsIntegral T] (f : X ⟶ T) (q : T ⟶ Spec (.of K)), LocallyOfFiniteType f → IsSeparated f → QuasiCompact f → (∀ t : T, IsIntegrallyClosed (T.presheaf.stalk t)) → (∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] (t : Spec (.of Ω) ⟶ T), ∃! x : Spec (.of Ω) ⟶ X, x ≫ f = t) → IsIso f := by
   intro K _ _ X T _ _ f q hl hs hq hN hb
@@ -45,13 +43,13 @@ theorem isIso_of_bijective_geomPts : ∀ (K : Type) [Field K] [CharZero K] (X T 
   exact (isIso_iff_isOpenImmersion_and_surjective f).2 ⟨hoi, hsurj⟩
 
 /- English proof (translation)
-Introduce `D A N j S κ s Φ k`. Establish `: IsZariskiLocalAtSource @Smooth` using `HasRingHomProperty.instIsZariskiLocalAtSource`. Use `choose W T h g hy hg hgl hT hN he hb using GlobalTheory.T.exists_normal_smooth_local_model D A N j S κ s Φ k`. Use `IsZariskiLocalAtSource.of_iSup_eq_top (P := @Smooth) W (top_le_iff.1 fun y _ => TopologicalSpace.Opens.mem_iSup.2 ⟨y, hy y⟩) fun y => ?_` and prove the remaining obligations. Use `hT y` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hg y` as an intermediate fact. Establish `: Nonempty (W y).toScheme` using `⟨⟨y, hy y⟩⟩`. Establish `: IsIntegral (W y).toScheme` using `inferInstance`. Establish `hc : h y ≫ g y ≫ genStr s.T.Z ≫ spMap κ.e.toRingHom = (W y).ι ≫ (Φ.C k).Y.str`. Rewrite using `[← (Φ.C k).π_str, ← Category.assoc, he y, Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: IsSeparated (h y ≫ g y ≫ genStr s.T.Z ≫ spMap κ.e.toRingHom)` using `by rw [hc]; infer_instance`. Establish `: LocallyOfFiniteType (h y ≫ g y ≫ genStr s.T.Z ≫ spMap κ.e.toRingHom)` using `by rw [hc]; infer_instance`. Establish `h1 : IsSeparated (h y)` using `IsSeparated.of_comp (h y) (g y ≫ genStr s.T.Z ≫ spMap κ.e.toRingHom)`. Establish `h2 : LocallyOfFiniteType (h y)` using `locallyOfFiniteType_of_comp (h y) (g y ≫ genStr s.T.Z ≫ spMap κ.e.toRingHom)`. Establish `: IsNoetherian (Φ.C k).Y.X` using `{}`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: TopologicalSpace.NoetherianSpace (W y).toScheme` using `TopologicalSpace.NoetherianSpace.set _`. Establish `h3 : QuasiCompact (h y)` using `quasiCompact_of_noetherianSpace_source _`. Use `isIso_of_bijective_geomPts _ _ _ (h y) (g y ≫ genStr s.T.Z ≫ spMap κ.e.toRingHom) h2 h1 h3 (hN y) (hb y)` as an intermediate fact. Rewrite using `[← he y]`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smooth_π : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (Φ : s.Flag) (k : s.Comp), Smooth (Φ.C k).π := by
   intro D A N j S κ s Φ k

@@ -13,13 +13,13 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.GodementH.Den
 
 /- English proof (translation)
-Establish `ha : v.valuation F y ≠ 0` using `(Valuation.ne_zero_iff _).2 hy`. Establish `hq : (1 : ℝ≥0) < (Ideal.absNorm v.asIdeal : ℝ≥0)` using `HeightOneSpectrum.one_lt_absNorm_nnreal v`. Establish `hnorm : ‖algebraMap F (Fv F v) y‖₊ = WithZeroMulInt.toNNReal (HeightOneSpectrum.absNorm_ne_zero v) (v.valuation F y)` using `NNReal.eq (FinitePlace.norm_embedding' v y)`. Take `⟨n, hn⟩ : ∃ n : ℤ, v.valuation F y = WithZero.exp n` from `⟨_, (WithZero.exp_log ha).symm⟩`. Establish `hval : WithZeroMulInt.toNNReal (HeightOneSpectrum.absNorm_ne_zero v) (WithZero.exp n) = (Ideal.absNorm v.asIdeal : ℝ≥0) ^ n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[WithZeroMulInt.toNNReal_neg_apply _ WithZero.exp_ne_zero]`. Simplify using `[WithZero.exp]`. Use `⟨n.toNat, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hn]`. Conclude with `WithZero.exp_le_exp.2 (Int.self_le_toNat n)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hnorm, hn, hval]`. Break down `le_total n 0 with h | h` into its components or cases. Rewrite using `[Int.toNat_of_nonpos h, pow_zero]`. Conclude with `max_eq_left (zpow_le_one_of_nonpos₀ hq.le h)`. Establish `h1 : (Ideal.absNorm v.asIdeal : ℝ≥0) ^ n = (Ideal.absNorm v.asIdeal : ℝ≥0) ^ n.toNat`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← zpow_natCast, Int.toNat_of_nonneg h]`. Rewrite using `[h1]`. Conclude with `max_eq_right (one_le_pow₀ hq.le)`.
+A detailed English derivation is pending.
 -/
 theorem local_exponent {F : Type} [Field F] [NumberField F] (v : Pl F) {y : F} (hy : y ≠ 0) :
     ∃ e : ℕ, v.valuation F y ≤ WithZero.exp (e : ℤ) ∧
@@ -47,11 +47,11 @@ theorem local_exponent {F : Type} [Field F] [NumberField F] (v : Pl F) {y : F} (
       exact max_eq_right (one_le_pow₀ hq.le)
 
 /- English proof (translation)
-Establish `h` using `(FinitePlace.hasFiniteMulSupport hy).comp_of_injective (FinitePlace.equivHeightOneSpectrum (K := F)).symm.injective`. Use `Set.Finite.subset h ?_` and prove the remaining obligations. Introduce `v hv`. Simplify using `only [Function.mem_mulSupport] at hv ⊢`. Introduce `h1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hv` to reduce the goal to its premises. Establish `h2 : ‖algebraMap F (Fv F v) y‖₊ = 1`. Apply `NNReal.eq` to reduce the goal to its premises. Establish `h3 : ‖FinitePlace.embedding v y‖ = 1`. Simplify `h1` using `[FinitePlace.equivHeightOneSpectrum_symm_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `h3`. Rewrite using `[h2, max_self]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_mulSupport {F : Type} [Field F] [NumberField F] {y : F} (hy : y ≠ 0) :
     (Function.mulSupport fun v : Pl F => max 1 ‖algebraMap F (Fv F v) y‖₊).Finite := by
@@ -70,21 +70,19 @@ theorem finite_mulSupport {F : Type} [Field F] [NumberField F] {y : F} (hy : y �
   rw [h2, max_self]
 
 /- English proof (translation)
-Distinguish the cases in `hy : y = 0`. Substitute `hy` using the available equality. Conclude with `⟨1, one_pos, by simp, by simpa using isIntegral_zero⟩`. Use `choose e he1 he2 using fun v : Pl F => local_exponent v hy`. Establish `hfin` using `finite_mulSupport hy`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set S : Finset (Pl F) := hfin.toFinset with hS`. Use `set b : Ideal (𝓞 F) := ∏ v ∈ S, v.asIdeal ^ e v with hb`. Establish `hb0 : b ≠ ⊥`. Rewrite using `[hb, ← Ideal.zero_eq_bot, Finset.prod_ne_zero_iff]`. Introduce `v _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_ne_zero _ v.ne_bot`. Establish `hm : 0 < Ideal.absNorm b` using `Nat.pos_of_ne_zero fun h => hb0 (Ideal.absNorm_eq_zero_iff.1 h)`. Use `⟨Ideal.absNorm b, hm, le_of_eq ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ (s := S) (by simp [hS])]`. Simplify using `only [he2]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[hb, map_prod, map_pow]`. Establish `key : ∀ v : Pl F, v.valuation F ((Ideal.absNorm b : F) * y) ≤ 1`. Introduce `v`. Establish `hmem : ((Ideal.absNorm b : ℕ) : 𝓞 F) ∈ v.asIdeal ^ e v`. Distinguish the cases in `hv : v ∈ S`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `Ideal.le_of_dvd (Finset.dvd_prod_of_mem _ hv) (Ideal.absNorm_mem b)`. Establish `h1 : max 1 ‖algebraMap F (Fv F v) y‖₊ = 1`. Simplify `hv` using `[hS]`. Establish `h0 : e v = 0`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hq : (1 : ℝ≥0) < (Ideal.absNorm v.asIdeal : ℝ≥0)` using `HeightOneSpectrum.one_lt_absNorm_nnreal v`. Use `one_lt_pow₀ hq hne` as an intermediate fact. Rewrite `this` using `[← he2 v, h1]`. Conclude with `lt_irrefl _ this`. Simplify using `[h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `h2` using `(v.intValuation_le_pow_iff_mem _ (e v)).2 hmem`. Establish `h3 : v.valuation F (Ideal.absNorm b : F) ≤ WithZero.exp (-(e v : ℤ))`. Establish `: (Ideal.absNorm b : F) = algebraMap (𝓞 F) F ((Ideal.absNorm b : ℕ) : 𝓞 F)` using `by simp`. Rewrite using `[this, HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `h2`.
-
-Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨c, hc⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one F _ key`. Rewrite using `[← hc]`. Conclude with `c.isIntegral_coe`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem denominator_le (F : Type) [Field F] [NumberField F] (y : F) :
     ∃ m : ℕ, 0 < m ∧ (m : ℝ≥0) ≤ ∏ᶠ v : Pl F, max 1 ‖algebraMap F (Fv F v) y‖₊ ∧

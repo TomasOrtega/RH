@@ -8,7 +8,7 @@ open Matrix
 variable {K : Type} [Field K] {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.one_mul, Matrix.mul_one, Matrix.smul_mul, Matrix.mul_smul, hQ, smul_smul, add_smul, smul_add]`. Use `module`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_rankOne (Q : Matrix ι ι K) (q a b : K) (hQ : Q * Q = q • Q) :
     (1 + a • Q) * (1 + b • Q) = 1 + (a + b + a * b * q) • Q := by
@@ -60,14 +60,14 @@ Both sides reduce to the same expression.
 theorem diagUnit_val (f : ι → K) (hf : ∀ a, f a ≠ 0) : (diagUnit f hf).val = diagonal f := rfl
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_add, Matrix.mul_one, Matrix.add_mul, h, Matrix.mul_smul, Matrix.smul_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_one_add (B Bi X : Matrix ι ι K) (h : B * Bi = 1) (y : K) :
     B * (1 + y • X) * Bi = 1 + y • (B * X * Bi) := by
   rw [Matrix.mul_add, Matrix.mul_one, Matrix.add_mul, h, Matrix.mul_smul, Matrix.smul_mul]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem conj_mul_conj (B Bi X Y : Matrix ι ι K) (h : Bi * B = 1) :
     (B * X * Bi) * (B * Y * Bi) = B * (X * Y) * Bi := by
@@ -75,19 +75,19 @@ theorem conj_mul_conj (B Bi X Y : Matrix ι ι K) (h : Bi * B = 1) :
     _ = B * (X * Y) * Bi := by rw [h, Matrix.mul_one]; simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[smul_single, smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem single_eq_smul (i j : ι) (x : K) : single i j x = x • single i j (1 : K) := by
   rw [smul_single, smul_eq_mul, mul_one]
 
 /- English proof (translation)
-Establish `hl' : l - 1 ≠ 0` using `sub_ne_zero.mpr hl`. Take `⟨g1, hg1, hv1⟩` from `hmem (y / (l - 1))`. Establish `hinv : s.val * (s⁻¹ : GL ι K).val = 1` using `s.mul_inv`. Establish `key : s * g1 * s⁻¹ = g1 * g` using `by ext1`. Simplify using `only [Units.val_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hv1, hgy]`. Establish `e1 : s.val * (1 + (y / (l - 1)) • P) * (s⁻¹ : GL ι K).val = 1 + (y / (l - 1) * l) • P`. Rewrite using `[Matrix.mul_add, Matrix.mul_one, Matrix.add_mul, hinv, Matrix.mul_smul, hsc, Matrix.smul_mul, Matrix.smul_mul, Matrix.mul_assoc, hinv, Matrix.mul_one, smul_smul]`. Rewrite using `[e1, mul_rankOne P 0 _ _ (by rw [hP, zero_smul])]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `e : (⟨s, hs⟩ * ⟨g1, hg1⟩ * (⟨s, hs⟩ : H)⁻¹ : H) = ⟨g1, hg1⟩ * ⟨g, hg⟩` using `Subtype.ext key`. Establish `h1 : χ ⟨g1, hg1⟩ = χ ⟨g1, hg1⟩ * χ ⟨g, hg⟩`. Combine the equalities or inequalities in the displayed calculation.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[mul_comm (χ ⟨s, hs⟩), mul_inv_cancel_right]`. Use `_ = χ (⟨s, hs⟩ * ⟨g1, hg1⟩ * (⟨s, hs⟩ : H)⁻¹) := by rw [map_mul, map_mul, map_inv]`. Use `_ = χ (⟨g1, hg1⟩ * ⟨g, hg⟩) := by rw [e]`. Use `_ = χ ⟨g1, hg1⟩ * χ ⟨g, hg⟩ := map_mul _ _ _`. Conclude with `(mul_eq_left.mp h1.symm)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_trivial_of_scaled {A : Type} [CommGroup A] (H : Subgroup (GL ι K)) (χ : H →* A)
     (P : Matrix ι ι K) (hP : P * P = 0)

@@ -24,12 +24,12 @@ def graft (Xg X₀ : DivX D) (iM : ∀ j (c : Xg.Comp j), (X₀.MjH j).V →ₗ[
 def Keeps (X X₀ : DivX D) : Prop := ∃ Xg iM hiM, X = graft Xg X₀ iM hiM
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨X, X.iMj, X.iMj_mem, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem Keeps.refl (X : DivX D) : Keeps X X := ⟨X, X.iMj, X.iMj_mem, rfl⟩
 
 /- English proof (translation)
-Take `⟨Zg, i, hi, rfl⟩` from `h'`. Take `⟨Yg, i', hi', rfl⟩` from `h`. Conclude with `⟨Yg, i', hi', rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Keeps.trans {X Y Z : DivX D} (h : Keeps X Y) (h' : Keeps Y Z) : Keeps X Z := by
   obtain ⟨Zg, i, hi, rfl⟩ := h'
@@ -37,20 +37,20 @@ theorem Keeps.trans {X Y Z : DivX D} (h : Keeps X Y) (h' : Keeps Y Z) : Keeps X 
   exact ⟨Yg, i', hi', rfl⟩
 
 /- English proof (translation)
-Take `⟨Yg, i', hi', rfl⟩` from `h`. Conclude with `⟨Y, Y.iMj, Y.iMj_mem, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Keeps.symm {X Y : DivX D} (h : Keeps X Y) : Keeps Y X := by
   obtain ⟨Yg, i', hi', rfl⟩ := h
   exact ⟨Y, Y.iMj, Y.iMj_mem, rfl⟩
 
 /- English proof (translation)
-Take `⟨_, _, _, rfl⟩` from `h`. Conclude with `⟨rfl, HEq.rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Keeps.mjH {X X₀ : DivX D} (h : Keeps X X₀) : X.MjH = X₀.MjH ∧ HEq X.jM X₀.jM := by
   obtain ⟨_, _, _, rfl⟩ := h; exact ⟨rfl, HEq.rfl⟩
 
 /- English proof (translation)
-Take `⟨_, _, _, rfl⟩` from `h`. Conclude with `⟨rfl, rfl, rfl, rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Keeps.num {X X₀ : DivX D} (h : Keeps X X₀) :
     X.kapR = X₀.kapR ∧ X.logLam = X₀.logLam ∧ X.Qp = X₀.Qp ∧ X.QPl = X₀.QPl ∧ HEq X.qv X₀.qv ∧ HEq X.nu X₀.nu ∧
@@ -61,7 +61,7 @@ def GeoOver (Q : DivX D → Prop) (X₀ : DivX D) : Prop :=
   ∃ (X : DivX D) (inK : X.Lev → ℕ → Prop), Keeps X X₀ ∧ GeoTiedP X inK ∧ Q X
 
 /- English proof (translation)
-The claim follows from `let ⟨X, k, a, b, c⟩ := g; ⟨X, k, a, b, h X c⟩`.
+A detailed English derivation is pending.
 -/
 theorem GeoOver.mono {Q Q' : DivX D → Prop} (h : ∀ X, Q X → Q' X) {X₀ : DivX D} (g : GeoOver Q X₀) : GeoOver Q' X₀ :=
   let ⟨X, k, a, b, c⟩ := g; ⟨X, k, a, b, h X c⟩

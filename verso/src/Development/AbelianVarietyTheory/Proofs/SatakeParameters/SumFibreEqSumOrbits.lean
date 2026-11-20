@@ -9,17 +9,15 @@ namespace GlobalTheory.GO
 open NumberField Formalism.L2.Col Formalism.BasicNotions Formalism.L2.DIV Formalism.L2.Forms
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_fiberwise (s := Finset.univ) (g := fun x : X => (Quotient.mk'' x : MulAction.orbitRel.Quotient H X)), Finset.smul_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Establish `hmem : ∀ x : X, (Quotient.mk'' x : MulAction.orbitRel.Quotient H X) = q ↔ x ∈ MulAction.orbit H q.out`. Introduce `x`. Use `conv_lhs => rw [← Quotient.out_eq' q]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Quotient.eq'']`. Conclude with `MulAction.orbitRel_apply`. Rewrite using `[Finset.sum_congr rfl (g := fun _ => F q.out) (by`. Introduce `x hx`. Take `⟨g, rfl⟩` from `(hmem x).1 (Finset.mem_filter.1 hx).2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Use symmetry to reverse the relation.
 
-Conclude with `hF g _), Finset.sum_const]`. Establish `hc : (Finset.univ.filter fun x : X => (Quotient.mk'' x : MulAction.orbitRel.Quotient H X) = q).card = Nat.card (MulAction.orbit H q.out)`. Use `symm`. Use `Nat.subtype_card _ fun x => ?_` and prove the remaining obligations. Rewrite using `[Finset.mem_filter, ← hmem]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hm : Nat.card (MulAction.orbit H q.out) * Nat.card (MulAction.stabilizer H q.out) = Nat.card H`. Rewrite using `[← Nat.card_prod]`. Conclude with `Nat.card_congr (MulAction.orbitProdStabilizerEquivGroup H q.out)`. Establish `h1 : (Nat.card (MulAction.stabilizer H q.out) : K) ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `h2 : (Nat.card H : K) ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`. Rewrite using `[hc, ← Nat.cast_smul_eq_nsmul K, smul_smul]`. Use `congr 1`. Establish `: (Nat.card (MulAction.orbit H q.out) : K) * Nat.card (MulAction.stabilizer H q.out) = Nat.card H`. Conclude with `congrArg (Nat.cast : ℕ → K) hm` after adjusting the coercions.
-
-Clear the denominators using the available nonvanishing facts. Rewrite using `[← this]`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_inv_eq_sum_orbits {K M H X : Type} [Field K] [CharZero K] [AddCommGroup M] [Module K M] [Group H] [Finite H]
     [MulAction H X] [Fintype X] [Fintype (MulAction.orbitRel.Quotient H X)] (F : X → M)
@@ -58,18 +56,18 @@ theorem sum_inv_eq_sum_orbits {K M H X : Type} [Field K] [CharZero K] [AddCommGr
   rw [← this]
 
 /- English proof (translation)
-The claim follows from `(Nat.card_congr (MulAction.stabilizerEquivStabilizer (g := g) (a := d) (b := g • d) rfl).toEquiv).symm`.
+A detailed English derivation is pending.
 -/
 theorem card_stabilizer_smul {G D : Type} [Group G] [MulAction G D] (g : G) (d : D) :
     Nat.card (MulAction.stabilizer G (g • d)) = Nat.card (MulAction.stabilizer G d) :=
   (Nat.card_congr (MulAction.stabilizerEquivStabilizer (g := g) (a := d) (b := g • d) rfl).toEquiv).symm
 
 /- English proof (translation)
-Set `_ : ∀ x : D₀, Fintype (MulAction.orbitRel.Quotient (MulAction.stabilizer G x) (fibre pr hpr x))` to `fun x => Fintype.ofFinite _`. Rewrite using `[← (orbitsFib pr hpr Quotient.out (fun c => Quotient.out_eq' c)).sum_comp, Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `hs c.out` as an intermediate fact. Rewrite using `[sum_inv_eq_sum_orbits (H := MulAction.stabilizer G c.out) (fun y : fibre pr hpr c.out => F y) (fun g y => hF (g : G) (y : D))]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Establish `h1 : (orbitsFib pr hpr Quotient.out (fun c => Quotient.out_eq' c)) ⟨c, q⟩ = (Quotient.mk'' ((q.out : fibre pr hpr c.out) : D) : MulAction.orbitRel.Quotient G D)` using `by conv_lhs => rw [← Quotient.out_eq' q]`. Both sides reduce to the same expression. Choose the witnesses or unpack the hypotheses as in `⟨g, hg⟩ : ∃ g : G, g • ((q.out : fibre pr hpr c.out) : D) = ((orbitsFib pr hpr Quotient.out (fun c => Quotient.out_eq' c)) ⟨c, q⟩).out := by`. Rewrite using `[h1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Quotient.exact' (Quotient.out_eq' (Quotient.mk'' ((q.out : fibre pr hpr c.out) : D) : MulAction.orbitRel.Quotient G D))`. Rewrite using `[← hg, hF, card_stabilizer_smul, fibre_card_stab]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_fibre_eq_sum_orbits {K M G D D₀ : Type} [Field K] [CharZero K] [AddCommGroup M] [Module K M] [Group G]
     [MulAction G D] [MulAction G D₀] (pr : D → D₀) (hpr : ∀ (g : G) (d : D), pr (g • d) = g • pr d)
@@ -113,11 +111,9 @@ def cplFibreEquiv (Y : Cpl S) (x : S.D) :
   right_inv _ := rfl
 
 /- English proof (translation)
-Use `h.fin_orb` as an intermediate fact. Establish `: ∀ x : S.D, Finite (fibre (G` using `S.G) (fun p : Y.Pts => p.1.1) (fun _ _ => rfl) x) := fun x =>`. Use `(Y.fin x).to_subtype` as an intermediate fact. Use the proof step `Finite.of_equiv _ (cplFibreEquiv Y x).symm`. Conclude with `Finite.of_equiv _ (orbitsFib (G := S.G) (fun p : Y.Pts => p.1.1) (fun _ _ => rfl) Quotient.out (fun c => Quotient.out_eq' c))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `fin_stab d := by`. Use `h.fin_stab d.1.1` as an intermediate fact. Establish `hle : MulAction.stabilizer S.G d ≤ MulAction.stabilizer S.G d.1.1` using `fun g hg => congrArg (fun p : Y.Pts => p.1.1) hg`. Conclude with `Finite.of_injective _ (Subgroup.inclusion_injective hle)`. Use `nab_smul g d := h.nab_smul g d.1.1`.
-
-Use `del_smul g d := h.del_smul g d.1.1`. Use `inv := h.inv`.
+A detailed English derivation is pending.
 -/
 theorem cplGSD_ok (Y : Cpl S) (h : S.Ok) : (cplGSD S Y).Ok where
   fin_orb := by
@@ -145,17 +141,15 @@ def cplKer2 (A : CplKer S₀ S S₁ Y) : ClsKer (cplGSD S Y) S₁ where
   equiv g g₁ d d₁ := A.equiv2 g g₁ d.1.1 d.1.2 d₁
 
 /- English proof (translation)
-Set `i1 : Fintype (MulAction.orbitRel.Quotient S.G S.D)` to `h.fintypeCl`. Set `i2 : Fintype (MulAction.orbitRel.Quotient S.G Y.Pts)` to `(cplGSD_ok Y h).fintypeCl`. Set `i3 : ∀ x : S.D, Fintype (fibre (G` to `S.G) (fun p : Y.Pts => p.1.1) (fun _ _ => rfl) x) := fun x =>`. Use `(Y.fin x).to_subtype` as an intermediate fact. Use `Finite.of_equiv _ (cplFibreEquiv Y x).symm` as an intermediate fact.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `Fintype.ofFinite _`. Establish `key` using `sum_fibre_eq_sum_orbits (K := K) (G := S.G) (fun p : Y.Pts => p.1.1) (fun _ _ => rfl) h.fin_stab (fun p : Y.Pts => (A.k2 p.1.1 p.1.2 d₁) ∘ₗ (A.k1 d₀ p.1.1 p.1.2)) (by`. Introduce `g p`. Establish `e1` using `A.equiv1 1 g d₀ p.1.1 p.1.2`. Establish `e2` using `A.equiv2 g 1 p.1.1 p.1.2 d₁`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e1` using `[one_smul, inv_one, map_one]`. Rewrite `e2` using `[one_smul, map_one]`. Use `show (A.k2 (g • p.1.1) (g • p.1.2) d₁) ∘ₗ (A.k1 d₀ (g • p.1.1) (g • p.1.2)) = _`. Rewrite using `[e1, e2]`. Use extensionality with `x`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.comp_apply, Module.End.one_apply]`. Rewrite using `[← Module.End.mul_apply (S.ρ g⁻¹), ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply])`. Simplify using `only [CSD.wt, ← Nat.card_eq_fintype_card]`. Use `Eq.trans ?_ key` and prove the remaining obligations. Use `show ∑ c : S.Cl, _ = _`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `only [CSD.wt, ← Nat.card_eq_fintype_card]`. Use `congr 1`. Set `_ : Fintype (Y.ys c.out)` to `(Y.fin c.out).fintype`. Use `(Finset.sum_subtype (p := fun y => y ∈ Y.ys c.out) (F := inferInstance) _ (fun y => (Y.fin _).mem_toFinset) _).trans ?_` and prove the remaining obligations.
-
-Conclude with `((cplFibreEquiv Y c.out).symm.sum_comp (fun y => (A.k2 y.1.1.1 y.1.1.2 d₁) ∘ₗ (A.k1 d₀ y.1.1.1 y.1.1.2)))`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cpl_comp_k (A : CplKer S₀ S S₁ Y) (h : S.Ok) (d₀ : S₀.D) (d₁ : S₁.D) :
     (A.comp h S.outSec).k d₀ d₁ =
@@ -193,9 +187,9 @@ theorem cpl_comp_k (A : CplKer S₀ S S₁ Y) (h : S.Ok) (d₀ : S₀.D) (d₁ :
     (fun y => (A.k2 y.1.1.1 y.1.1.2 d₁) ∘ₗ (A.k1 d₀ y.1.1.1 y.1.1.2)))
 
 /- English proof (translation)
-Use `⟨cplGSD_ok Y h, cplKer1 A, cplKer2 A, fun _ _ => rfl, fun _ _ => rfl, ?_⟩` and prove the remaining obligations. Use extensionality with `φ d₁`. Use `show (A.comp h S.outSec).appOf h₀ S₀.outSec φ d₁ = (cplKer2 A).appOf (cplGSD_ok Y h) (cplGSD S Y).outSec ((cplKer1 A).appOf h₀ S₀.outSec φ) d₁`. Unfold `ClsKer.appOf`. Simplify using `only [cpl_comp_k, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.comp_apply, map_sum, map_smul, Finset.smul_sum]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun q _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cpl_op_eq_comp {K : Type} [Field K] [NumberField K] [StarRing K] {S₀ S S₁ : GSD K} {Y : Cpl S}
     (A : CplKer S₀ S S₁ Y) (h₀ : S₀.Ok) (h : S.Ok) :

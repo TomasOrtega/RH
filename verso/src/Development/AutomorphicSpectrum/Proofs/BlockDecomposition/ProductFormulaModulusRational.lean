@@ -20,13 +20,13 @@ theorem pri_eq_diagonal (α : ℚˣ) : pri α = IdeleGroup.diagonal ℚ α := rf
 def nf (α : ℚˣ) (v : Pl) : ℝ := ‖((pri α : Jd) : 𝔸[ℚ]).2 v‖
 
 /- English proof (translation)
-The claim follows from `norm_pos_iff.2 (IdeleGroup.finite_ne_zero (pri α) v)`.
+A detailed English derivation is pending.
 -/
 theorem nf_pos (α : ℚˣ) (v : Pl) : 0 < nf α v :=
   norm_pos_iff.2 (IdeleGroup.finite_ne_zero (pri α) v)
 
 /- English proof (translation)
-Establish `h` using `GroundTheory.Automorphic.GodementSection.modulus_adicCompletion (K := ℚ) v (((Ad3.R.lc v (pri α)) : (Qv v)ˣ) : Qv v)`. Establish `h2 : ‖(((Ad3.R.lc v (pri α)) : (Qv v)ˣ) : Qv v)‖ = nf α v` using `rfl`. Rewrite `h` using `[h2]`. Unfold `mp`. Rewrite using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mp_eq (α : ℚˣ) (v : Pl) (s : ℂ) :
     mp (Ad3.R.lc v (pri α)) s = ((nf α v : ℝ) : ℂ) ^ s := by
@@ -38,20 +38,20 @@ theorem mp_eq (α : ℚˣ) (v : Pl) (s : ℂ) :
   rw [h]
 
 /- English proof (translation)
-Rewrite using `[pri_eq_diagonal, IdeleGroup.infiniteModule_diagonal]`. Simplify using `[Rat.infinitePlace_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem infinite_eq (α : ℚˣ) : IdeleGroup.infiniteModule (pri α) = |(α : ℝ)| := by
   rw [pri_eq_diagonal, IdeleGroup.infiniteModule_diagonal]
   simp [Rat.infinitePlace_apply]
 
 /- English proof (translation)
-The claim follows from `IdeleGroup.finite_mulSupport_norm (pri α)`.
+A detailed English derivation is pending.
 -/
 theorem finite_support (α : ℚˣ) : (Function.mulSupport (nf α)).Finite :=
   IdeleGroup.finite_mulSupport_norm (pri α)
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun r : {r : ℝ // 0 < r} => (r : ℝ)) (IdeleGroup.ideleModule_diagonal (K := ℚ) α)`. Simplify using `only [Positive.val_one] at h`. Rewrite `h` using `[IdeleGroup.ideleModule_apply, ← pri_eq_diagonal, infinite_eq, mul_comm]`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_mul_abs (α : ℚˣ) : (∏ᶠ v : Pl, nf α v) * |(α : ℝ)| = 1 := by
   have h := congrArg (fun r : {r : ℝ // 0 < r} => (r : ℝ)) (IdeleGroup.ideleModule_diagonal (K := ℚ) α)
@@ -60,7 +60,7 @@ theorem finite_mul_abs (α : ℚˣ) : (∏ᶠ v : Pl, nf α v) * |(α : ℝ)| = 
   exact h
 
 /- English proof (translation)
-Introduce `v hv h1`. Apply `hv` to reduce the goal to its premises. Establish `h1' : nf α v = 1` using `h1`. Simplify using `only [mp_eq, h1', Complex.ofReal_one, Complex.one_cpow]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem mulSupport_subset (α : ℚˣ) :
     (Function.mulSupport fun v : Pl => mp (Ad3.R.lc v (pri α)) (1 / 2)) ⊆
@@ -71,7 +71,7 @@ theorem mulSupport_subset (α : ℚˣ) :
   simp only [mp_eq, h1', Complex.ofReal_one, Complex.one_cpow]
 
 /- English proof (translation)
-Rewrite using `[mp_eq, Complex.ofReal_cpow (nf_pos α v).le]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem mp_half (α : ℚˣ) (v : Pl) :
     mp (Ad3.R.lc v (pri α)) (1 / 2) = ((nf α v ^ (1 / 2 : ℝ) : ℝ) : ℂ) := by
@@ -79,13 +79,13 @@ theorem mp_half (α : ℚˣ) (v : Pl) :
   norm_num
 
 /- English proof (translation)
-Introduce `α`. Use `⟨(finite_support α).subset (mulSupport_subset α), ?_⟩` and prove the remaining obligations. Establish `hfin` using `finite_support α`. Establish `hsub : (Function.mulSupport fun v : Pl => mp (Ad3.R.lc v (pri α)) (1 / 2)) ⊆ (hfin.toFinset : Set Pl)`. Rewrite using `[Set.Finite.coe_toFinset]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mulSupport_subset α`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ hsub]`. Establish `h1 : (∏ᶠ v : Pl, nf α v) = ∏ v ∈ hfin.toFinset, nf α v` using `finprod_eq_prod _ hfin`. Establish `hab` using `finite_mul_abs α`. Rewrite `hab` using `[h1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `habs : (0 : ℝ) ≤ |(α : ℝ)|` using `abs_nonneg _`. Establish `hP : (0 : ℝ) ≤ ∏ v ∈ hfin.toFinset, nf α v` using `Finset.prod_nonneg fun v _ => (nf_pos α v).le`. Establish `h2 : ((|(α : ℝ)| : ℝ) : ℂ) ^ (1 / 2 : ℂ) = ((|(α : ℝ)| ^ (1 / 2 : ℝ) : ℝ) : ℂ)`. Rewrite using `[Complex.ofReal_cpow habs]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Simplify using `only [mp_half]`. Rewrite using `[← Complex.ofReal_prod, ← Complex.ofReal_mul, Real.finsetProd_rpow _ _ (fun v _ => (nf_pos α v).le), ← Real.mul_rpow hP habs, hab, Real.one_rpow, Complex.ofReal_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem product_formula_half : ∀ α : ℚˣ,
     (Function.mulSupport fun v : Pl => mp (Ad3.R.lc v (pri α)) (1 / 2)).Finite ∧

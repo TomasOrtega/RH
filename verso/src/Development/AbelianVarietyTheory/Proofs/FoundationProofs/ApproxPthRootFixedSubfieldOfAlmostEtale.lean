@@ -9,23 +9,21 @@ open scoped NNReal
 namespace GlobalTheory.AlmostEt
 
 /- English proof (translation)
-Introduce `L _ v p hp hp0 hp1 G _ _ hinv N hN hsep hroot`. Use `haveI : Finite (G ⧸ N) := Subgroup.finite_quotient_of_finiteIndex`. Use `haveI : Fintype (G ⧸ N) := Fintype.ofFinite _`. Take `⟨θ, hθ1, hθ⟩` from `hroot`. Use `set θ₀ : ℝ≥0 := max θ (v (p : L)) with hθ₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hθ₀1 : θ₀ < 1` using `max_lt hθ1 hp1`. Take `⟨s, hs0, hs1⟩` from `exists_between hθ₀1`. Use `set r : ℝ≥0 := s ^ (((p + 1 : ℕ) : ℝ)⁻¹) with hr`. Establish `hrpow : r ^ (p + 1) = s` using `NNReal.rpow_inv_natCast_pow s (by omega)`. Establish `hr1 : r < 1` using `NNReal.rpow_lt_one hs1 (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hrs : θ₀ < r ^ (p + 1)` using `hrpow ▸ hs0`. Establish `hrpos : 0 < r ^ (p + 1)` using `lt_of_le_of_lt bot_le hrs`. Take `⟨n, a, b, c, hc, hrc⟩` from `hsep r hr1`. Use `⟨θ₀ / r ^ (p + 1), (div_lt_one hrpos).2 hrs, ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hx0 : x = 0`. Use `⟨0, zero_mem _, ?_⟩` and prove the remaining obligations. Simplify using `[hx0, hp.ne_zero]`. Take `⟨d, hdF, hd0, hdr, hd1⟩` from `GlobalTheory.T.exists_pth_power_scale_thin_shell L v p hp _ ⟨θ, hθ1, hθ⟩ hp0 hp1 r hr1 x hx0`. Establish `hdN : d ∈ Fix L N` using `fun σ => hdF ⟨σ.1, Subgroup.mem_top _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx'N : x * d ^ p ∈ Fix L N` using `mul_mem hx (pow_mem hdN p)`. Take `⟨w, hwN, hw⟩` from `GlobalTheory.T.pow_mul_approx_pow_of_almostEtaleSeparatingFamily L v p hp G hinv N θ hθ1.le hθ n a b c hc (x * d ^ p) hx'N hd1`. Establish `hc0 : c ≠ 0`. Introduce `h`. Rewrite `hrc` using `[h, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(not_lt.2 (bot_le : (⊥ : ℝ≥0) ≤ r)) hrc`. Use `⟨w / (c * d), div_mem hwN (mul_mem hc.c_mem hdN), ?_⟩` and prove the remaining obligations. Establish `key : x - (w / (c * d)) ^ p = (c ^ p * (x * d ^ p) - w ^ p) / (c ^ p * d ^ p)`. Establish `hD0 : c ^ p * d ^ p ≠ 0` using `mul_ne_zero (pow_ne_zero _ hc0) (pow_ne_zero _ hd0)`. Rewrite using `[eq_div_iff hD0, div_pow, mul_pow, sub_mul, div_mul_cancel₀ _ (mul_ne_zero (pow_ne_zero _ hc0) (pow_ne_zero _ hd0))]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hD : 0 < v (c ^ p * d ^ p)`. Rewrite using `[Valuation.pos_iff]`. Conclude with `mul_ne_zero (pow_ne_zero _ hc0) (pow_ne_zero _ hd0)`. Rewrite using `[key, map_div₀, div_le_iff₀ hD]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hvx : v (x * d ^ p) = v x * v d ^ p` using `by rw [map_mul, map_pow]`. Establish `hbig : r ^ (p + 1) ≤ v c ^ p * (v x * v d ^ p)`. Rewrite using `[pow_succ, ← hvx]`. Conclude with `mul_le_mul' (pow_le_pow_left₀ bot_le hrc.le p) hdr.le`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[map_mul, map_pow, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem approxRoot_fix_of_almostSep : ∀ (L : Type) [Field L] (v : Valuation L ℝ≥0) (p : ℕ),
     p.Prime → 0 < v (p : L) → v (p : L) < 1 → ∀ (G : Type) [Group G] [MulSemiringAction G L],

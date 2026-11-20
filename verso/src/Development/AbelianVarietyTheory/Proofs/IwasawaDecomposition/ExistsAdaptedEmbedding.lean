@@ -13,7 +13,7 @@ open GlobalTheory.FlagMod (ev tau tau_le spMap_ev ev_res ev_spMap le_preimage_in
 namespace GlobalTheory.DRFlag
 
 /- English proof (translation)
-Use `Module.Basis.eq_of_apply_eq fun i => ?_` and prove the remaining obligations. Rewrite using `[basAt, basPull_apply]`. Conclude with `tanPull_basAt b _ _ _ (by rw [tau, spMap_ev]) _ _ i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem basAt_basAt_tau {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {X : Scheme.{0}} {t : SAB H X} {S : Type} [CommRing S] {Z : Scheme.{0}} {π : Z ⟶ X} {U U' : Z.Opens}
@@ -26,11 +26,9 @@ theorem basAt_basAt_tau {E : Type} [Field E] [NumberField E] [IsCMField E] {H : 
   exact tanPull_basAt b _ _ _ (by rw [tau, spMap_ev]) _ _ i
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c V _ M X π ty A σ k hG ⟨D⟩`. Take `⟨Γ, a, B, aff, cover, le, N, hN⟩` from `GlobalTheory.T.exists_refined_cocycle_embedding V X (π ≫ M.s) hG.proj D.C`. Use `⟨{ C := D.C.refine a B aff cover le b := fun g => basAt (D.b (a g)) (tau (aff g)) (tau_le (aff g) (le g)) int := fun g K _ w hw u hu j hj => ?_ coord := fun g d S _ z hg hd v => ?_ }, N, hN⟩` and prove the remaining obligations. Use `D.int (a g) K w (le_preimage_mono (le g) hw) u hu j hj` as an intermediate fact. Rewrite `this` using `[← basAt_basAt_tau (aff g) (le g) (D.b (a g)) w hw]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Use `D.coord (a g) (a d) S z (le_preimage_mono (le g) hg) (le_preimage_mono (le d) hd) v` as an intermediate fact. Rewrite `this` using `[← D.C.refine_tr a B aff cover le g d z hg hd]`. Unfold `crd at this`. Rewrite `this` using `[← basAt_basAt_tau (aff g) (le g) (D.b (a g)) z hg, ← basAt_basAt_tau (aff d) (le d) (D.b (a d)) z hd]`.
-
-Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_adapted_emb : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (V : ValuationSubring c.F) [IsDiscreteValuationRing V] (M : Model Xo c V.subtype) (X : Scheme.{0}) (π : X ⟶ M.X) (ty : (E →+* ℂ) → Finset ℕ) (A : Atlas M π ty) (σ : E →+* ℂ) (k : ℕ), Geo M π → Nonempty (Adapted A σ k) → ∃ (D : Adapted A σ k) (N : ℕ), Nonempty (D.C.Emb N) := by
   intro E _ _ _ H Dw l Xo c V _ M X π ty A σ k hG ⟨D⟩

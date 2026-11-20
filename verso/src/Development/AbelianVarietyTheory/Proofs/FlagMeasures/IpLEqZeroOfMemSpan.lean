@@ -20,7 +20,7 @@ Both sides reduce to the same expression.
 theorem ipL_apply (X Y : Matrix (Fin n) (Fin n) ℂ) : ipL Y X = ((X * Yᴴ).trace).re := rfl
 
 /- English proof (translation)
-Rewrite using `[ipL_apply, ipL_apply]`. Establish `hswap : Y * Xᴴ = (X * Yᴴ)ᴴ`. Rewrite using `[conjTranspose_mul, conjTranspose_conjTranspose]`. Rewrite using `[hswap, trace_conjTranspose, Complex.star_def, Complex.conj_re]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ipL_comm (X Y : Matrix (Fin n) (Fin n) ℂ) : ipL Y X = ipL X Y := by
   rw [ipL_apply, ipL_apply]
@@ -30,7 +30,7 @@ theorem ipL_comm (X Y : Matrix (Fin n) (Fin n) ℂ) : ipL Y X = ipL X Y := by
   rw [hswap, trace_conjTranspose, Complex.star_def, Complex.conj_re]
 
 /- English proof (translation)
-Rewrite using `[Jm, diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `by_cases ha : ε a <;> simp [ha]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem Jm_sq_lemma : Jm ε * Jm ε = 1 := by
   rw [Jm, diagonal_mul_diagonal, ← diagonal_one]
@@ -39,7 +39,7 @@ private theorem Jm_sq_lemma : Jm ε * Jm ε = 1 := by
   by_cases ha : ε a <;> simp [ha]
 
 /- English proof (translation)
-Rewrite using `[Jm, diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `by_cases ha : ε a <;> simp [ha]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem Jm_conjTransposeFlagMeasures' : (Jm ε)ᴴ = Jm ε := by
   rw [Jm, diagonal_conjTranspose]
@@ -48,13 +48,13 @@ private theorem Jm_conjTransposeFlagMeasures' : (Jm ε)ᴴ = Jm ε := by
   by_cases ha : ε a <;> simp [ha]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mul_assoc, Jm_sq_lemma, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem Jm_mul_Jm_mulFlagMeasures (M : Matrix (Fin n) (Fin n) ℂ) : Jm ε * (Jm ε * M) = M := by
   rw [← Matrix.mul_assoc, Jm_sq_lemma, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `h0 : Yᴴ * Jm ε + Jm ε * Y = 0` using `h`. Establish `h1 : Yᴴ * Jm ε = -(Jm ε * Y)` using `eq_neg_of_add_eq_zero_left h0`. Rewrite using `[Matrix.mul_assoc, h1, Matrix.mul_neg, Jm_mul_Jm_mulFlagMeasures]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_eq_neg_of_inG {Y : Matrix (Fin n) (Fin n) ℂ} (h : inG ε Y) : Jm ε * Yᴴ * Jm ε = -Y := by
   have h0 : Yᴴ * Jm ε + Jm ε * Y = 0 := h
@@ -62,7 +62,7 @@ theorem inv_eq_neg_of_inG {Y : Matrix (Fin n) (Fin n) ℂ} (h : inG ε Y) : Jm �
   rw [Matrix.mul_assoc, h1, Matrix.mul_neg, Jm_mul_Jm_mulFlagMeasures]
 
 /- English proof (translation)
-Use `show (X - Jm ε * Xᴴ * Jm ε)ᴴ * Jm ε + Jm ε * (X - Jm ε * Xᴴ * Jm ε) = 0`. Simplify using `only [conjTranspose_sub, conjTranspose_mul, conjTranspose_conjTranspose, Jm_conjTransposeFlagMeasures', Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_assoc, Jm_sq_lemma, Jm_mul_Jm_mulFlagMeasures, Matrix.mul_one]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem inG_sub_inv (X : Matrix (Fin n) (Fin n) ℂ) : inG ε (X - Jm ε * Xᴴ * Jm ε) := by
   show (X - Jm ε * Xᴴ * Jm ε)ᴴ * Jm ε + Jm ε * (X - Jm ε * Xᴴ * Jm ε) = 0
@@ -71,11 +71,11 @@ theorem inG_sub_inv (X : Matrix (Fin n) (Fin n) ℂ) : inG ε (X - Jm ε * Xᴴ 
   abel
 
 /- English proof (translation)
-Establish `h0 : Yᴴ * Jm ε + Jm ε * Y = 0` using `h`. Establish `h1 : Jm ε * Y = -(Yᴴ * Jm ε)` using `eq_neg_of_add_eq_zero_right h0`. Establish `hY : Jm ε * Y * Jm ε = -Yᴴ`. Rewrite using `[h1, Matrix.neg_mul, Matrix.mul_assoc, Jm_sq_lemma, Matrix.mul_one]`. Establish `hstar : (Jm ε * Xᴴ * Jm ε)ᴴ = Jm ε * X * Jm ε`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, Jm_conjTransposeFlagMeasures', Matrix.mul_assoc]`. Establish `htr : (Y * (Jm ε * X * Jm ε)).trace = -(X * Yᴴ).trace`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = (Jm ε * (Y * (Jm ε * X))).trace := Matrix.trace_mul_comm _ _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `_ = (Jm ε * Y * Jm ε * X).trace := by simp only [Matrix.mul_assoc]`. Use `_ = (-Yᴴ * X).trace := by rw [hY]`. Use `_ = -(X * Yᴴ).trace := by rw [Matrix.neg_mul, Matrix.trace_neg, Matrix.trace_mul_comm]`. Rewrite using `[ipL_comm, ipL_apply, ipL_apply, hstar, htr, Complex.neg_re]`.
+A detailed English derivation is pending.
 -/
 theorem ipL_inv {Y : Matrix (Fin n) (Fin n) ℂ} (h : inG ε Y) (X : Matrix (Fin n) (Fin n) ℂ) :
     ipL Y (Jm ε * Xᴴ * Jm ε) = -ipL Y X := by
@@ -96,7 +96,7 @@ theorem ipL_inv {Y : Matrix (Fin n) (Fin n) ℂ} (h : inG ε Y) (X : Matrix (Fin
   rw [ipL_comm, ipL_apply, ipL_apply, hstar, htr, Complex.neg_re]
 
 /- English proof (translation)
-Rewrite using `[map_sub, ipL_inv h]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ipL_sub_inv {Y : Matrix (Fin n) (Fin n) ℂ} (h : inG ε Y) (X : Matrix (Fin n) (Fin n) ℂ) :
     ipL Y (X - Jm ε * Xᴴ * Jm ε) = 2 * ipL Y X := by
@@ -104,9 +104,9 @@ theorem ipL_sub_inv {Y : Matrix (Fin n) (Fin n) ℂ} (h : inG ε Y) (X : Matrix 
   ring
 
 /- English proof (translation)
-Establish `hg : (uMat g)ᴴ * Jm ε * uMat g = Jm ε` using `g.2`. Establish `key : Jm ε * (uMat g)ᴴ * Jm ε * uMat g = 1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hg, Jm_sq_lemma]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e : Jm ε * (uMat g - 1)ᴴ * Jm ε = Jm ε * (uMat g)ᴴ * Jm ε - 1`. Rewrite using `[conjTranspose_sub, conjTranspose_one, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Jm_sq_lemma]`. Rewrite using `[e, Matrix.sub_mul, Matrix.mul_sub, key, Matrix.mul_one, Matrix.one_mul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem add_inv_eq (g : UJ ε) :
     (uMat g - 1) + Jm ε * (uMat g - 1)ᴴ * Jm ε = -(Jm ε * (uMat g - 1)ᴴ * Jm ε * (uMat g - 1)) := by
@@ -124,9 +124,9 @@ theorem add_inv_eq (g : UJ ε) :
 variable {d : ℕ} {E : Fin d → Matrix (Fin n) (Fin n) ℂ}
 
 /- English proof (translation)
-Establish `hle : Submodule.span ℝ (E '' s) ≤ LinearMap.ker (ipL (E i))`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, hj, rfl⟩`. Establish `hji : j ≠ i` using `fun e => hi (e ▸ hj)`. Simplify using `[LinearMap.mem_ker, ipL_apply, hE, hji]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hle hX`.
+A detailed English derivation is pending.
 -/
 theorem ipL_eq_zero_of_mem_span
     (hE : ∀ i k, ((E i * (E k)ᴴ).trace).re = if i = k then 1 else 0) {s : Set (Fin d)} {i : Fin d}
@@ -139,7 +139,7 @@ theorem ipL_eq_zero_of_mem_span
   exact hle hX
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun ℝ).1 hX`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`. Simplify using `[map_sum, ipL_apply, hE]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem eq_sum_of_mem_span
     (hE : ∀ i k, ((E i * (E k)ᴴ).trace).re = if i = k then 1 else 0) {X : Matrix (Fin n) (Fin n) ℂ}
@@ -151,7 +151,7 @@ theorem eq_sum_of_mem_span
   simp [map_sum, ipL_apply, hE]
 
 /- English proof (translation)
-Establish `hZ : X - Jm ε * Xᴴ * Jm ε ∈ Submodule.span ℝ (E '' s)` using `hs _ ⟨B.sub_mem hX (hB X hX), inG_sub_inv X⟩`. Establish `h0` using `ipL_eq_zero_of_mem_span hE hi hZ`. Rewrite `h0` using `[ipL_sub_inv (hG i)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem ipL_eq_zero_of_mem
     (hE : ∀ i k, ((E i * (E k)ᴴ).trace).re = if i = k then 1 else 0) (hG : ∀ i, inG ε (E i))
@@ -165,27 +165,25 @@ theorem ipL_eq_zero_of_mem
   linarith
 
 /- English proof (translation)
-Establish `hGi : ∀ i, inG ε (E i)` using `fun i => ((hsp 0 (E i)).2 (Submodule.subset_span ⟨i, Nat.zero_le _, rfl⟩)).2`. Establish `eX` using `add_inv_eq g`. Establish `eY` using `add_inv_eq h`. Establish `hgX : uMat g - 1 ∈ A 0` using `hg`. Establish `hhY : uMat h - 1 ∈ A 0` using `hh`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `revert hc`. Generalize the expression as in `uMat g = G at eX eY hgX ⊢`. Generalize the expression as in `uMat h = H at eX eY hhY ⊢`. Proceed by induction on `c with`. Consider the case `zero`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `_`. Establish `h0` using `(A 0).sub_mem hgX hhY`. Rewrite `h0` using `[sub_sub_sub_cancel_right]`. Then use the resulting hypothesis. Consider the case `succ c ih`. Introduce `hc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hD : G - H ∈ A c` using `ih fun i hi => hc i (Nat.lt_succ_of_lt hi)`. Establish `hθD : Jm ε * (G - H)ᴴ * Jm ε ∈ A c` using `hinv c _ hD`. Establish `hDXY : G - H = (G - 1) - (H - 1)` using `(sub_sub_sub_cancel_right G H 1).symm`. Establish `hsym : (G - H) + Jm ε * (G - H)ᴴ * Jm ε ∈ A (c + 1)`. Establish `hθ : Jm ε * (G - H)ᴴ * Jm ε = Jm ε * (G - 1)ᴴ * Jm ε - Jm ε * (H - 1)ᴴ * Jm ε`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hDXY, conjTranspose_sub, Matrix.mul_sub, Matrix.sub_mul]`. Establish `hprod : (G - H) + Jm ε * (G - H)ᴴ * Jm ε = -(Jm ε * (G - 1)ᴴ * Jm ε * (G - H) + Jm ε * (G - H)ᴴ * Jm ε * (H - 1))`. Rewrite using `[hθ, hDXY, Matrix.mul_sub, Matrix.sub_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[eX, eY]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = _ := by abel`. Rewrite using `[hprod]`. Use `(A (c + 1)).neg_mem ((A (c + 1)).add_mem ?_ ?_)` and prove the remaining obligations. Conclude with `(hmul c _ hD _ (hinv 0 _ hgX)).2`. Conclude with `(hmul c _ hθD _ hhY).1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW : (G - H) - Jm ε * (G - H)ᴴ * Jm ε ∈ A (c + 1)`. Establish `hWc : (G - H) - Jm ε * (G - H)ᴴ * Jm ε ∈ A c` using `(A c).sub_mem hD hθD`. Establish `hWsp` using `(hsp c _).1 ⟨hWc, inG_sub_inv (G - H)⟩`. Establish `hWr : (G - H) - Jm ε * (G - H)ᴴ * Jm ε ∈ Submodule.span ℝ (Set.range E)` using `Submodule.span_mono (Set.image_subset_range _ _) hWsp`. Establish `hcoord : ∀ i, deg i < c + 1 → ipL (E i) ((G - H) - Jm ε * (G - H)ᴴ * Jm ε) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i hi`. Rewrite using `[ipL_sub_inv (hGi i), hDXY, map_sub, hc i hi, sub_self, mul_zero]`. Establish `hsum` using `eq_sum_of_mem_span hE hWr`. Establish `hspan : (G - H) - Jm ε * (G - H)ᴴ * Jm ε ∈ Submodule.span ℝ (E '' {i | c + 1 ≤ deg i})`. Rewrite using `[hsum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : c + 1 ≤ deg i`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, hi, rfl⟩)`. Rewrite using `[hcoord i (by omega), zero_smul]`. Conclude with `Submodule.zero_mem _`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Conclude with `((hsp (c + 1) _).2 hspan).1`. Establish `h2 : (2 : ℝ) • (G - H) ∈ A (c + 1)`. Establish `hs2` using `(A (c + 1)).add_mem hsym hW`. Use `hs2 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[two_smul]`.
-
-Normalize the expressions using the abelian group laws. Establish `h1` using `(A (c + 1)).smul_mem (1 / 2 : ℝ) h2`. Rewrite `h1` using `[smul_smul, show (1 / 2 : ℝ) * 2 = 1 by norm_num, one_smul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem sub_mem_of_coord_eq {A : ℕ → Submodule ℝ (Matrix (Fin n) (Fin n) ℂ)} {deg : Fin d → ℕ}
     (hmul : ∀ c, ∀ X ∈ A c, ∀ Y ∈ A 0, X * Y ∈ A (c + 1) ∧ Y * X ∈ A (c + 1))

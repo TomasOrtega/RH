@@ -27,7 +27,7 @@ def NLeft : Prop :=
     (Formalism.MainNotions.S.haarLie (Nset k r) κ).map (lmulM a) = Formalism.MainNotions.S.haarLie (Nset k r) κ
 
 /- English proof (translation)
-Use `Continuous.measurable (continuous_pi fun i => continuous_pi fun j => ?_)` and prove the remaining obligations. Simplify using `only [Formalism.QuantumDeterminants.conjM, Matrix.mul_apply, Matrix.of_apply]`. Conclude with `continuous_finset_sum _ fun l _ => (continuous_finset_sum _ fun n _ => by fun_prop).mul continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_meas (a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     Measurable (conjM (k := k) (r := r) a) := by
@@ -37,7 +37,7 @@ theorem conj_meas (a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     (continuous_finset_sum _ fun n _ => by fun_prop).mul continuous_const
 
 /- English proof (translation)
-Use `Continuous.measurable (continuous_pi fun i => continuous_pi fun j => ?_)` and prove the remaining obligations. Simplify using `only [Formalism.FourierDecayAlt.B.rmulF, Matrix.mul_apply, Matrix.of_apply]`. Conclude with `continuous_finset_sum _ fun l _ => by fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rmul_meas (a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     Measurable (Formalism.FourierDecayAlt.B.rmulF a : Mt k r → Mt k r) := by
@@ -46,7 +46,7 @@ theorem rmul_meas (a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
   exact continuous_finset_sum _ fun l _ => by fun_prop
 
 /- English proof (translation)
-Establish `: IsFiniteMeasure μW` using `⟨by rw [h1]; exact ENNReal.one_lt_top⟩`. Take `⟨μ0, h0⟩` from `Formalism.FourierDecayAlt.P.weyl_haar_exists k r z hz hT`. Take `⟨c, hc⟩` from `Formalism.FourierDecayAlt.P.haar_measure_unique_up_to_scalar k r (UWset k r z) μ0 μW (Formalism.FourierDecayAlt.P.weyl_subgroup_closed k r z) h0 hμ.2.2.1 hμ.2.2.2 (fun K _ => measure_lt_top _ _)`. Use `⟨hμ.2.2.1, hμ.2.2.2, fun a ha => ?_, fun K _ => measure_lt_top _ _, hμ.2.1⟩` and prove the remaining obligations. Rewrite using `[hc, Measure.map_smul, h0.right a ha]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isHaarOn_UWset_of_isHaarOn_of_univ_eq_one {z : Fin (2 * r + k + 1) → ℂ} {μW : Measure (Mt k r)} (hz : inWb k r z) (hT : 0 < Tz k r z)
     (hμ : Formalism.MainNotions.S.IsHaarOn (UWset k r z) μW) (h1 : μW Set.univ = 1) :
@@ -59,7 +59,7 @@ theorem isHaarOn_UWset_of_isHaarOn_of_univ_eq_one {z : Fin (2 * r + k + 1) → �
   rw [hc, Measure.map_smul, h0.right a ha]
 
 /- English proof (translation)
-Introduce `h hh` and use `⟨rmul_meas h, (isHaarOn_UWset_of_isHaarOn_of_univ_eq_one hz hT hμ h1).right h hh⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem measPresW_right {z : Fin (2 * r + k + 1) → ℂ} {μW : Measure (Mt k r)} (hz : inWb k r z)
     (hT : 0 < Tz k r z) (hμ : Formalism.MainNotions.S.IsHaarOn (UWset k r z) μW) (h1 : μW Set.univ = 1) :
@@ -67,7 +67,7 @@ theorem measPresW_right {z : Fin (2 * r + k + 1) → ℂ} {μW : Measure (Mt k r
   fun h hh => ⟨rmul_meas h, (isHaarOn_UWset_of_isHaarOn_of_univ_eq_one hz hT hμ h1).right h hh⟩
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.GrowthW.hsN`. Simplify using `only [Matrix.of_apply]`. Use `Real.continuous_sqrt.comp ?_` and prove the remaining obligations. Use `continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ?_` and prove the remaining obligations. Conclude with `Complex.continuous_normSq.comp ((continuous_apply j).comp (continuous_apply i))`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hsN_cont : Continuous (fun y : Mt k r => Formalism.MainNotions.GrowthW.hsN (Matrix.of y)) := by
   unfold Formalism.MainNotions.GrowthW.hsN
@@ -77,17 +77,15 @@ theorem hsN_cont : Continuous (fun y : Mt k r => Formalism.MainNotions.GrowthW.h
   exact Complex.continuous_normSq.comp ((continuous_apply j).comp (continuous_apply i))
 
 /- English proof (translation)
-Take `⟨C, D, hD, hCD⟩` from `Formalism.MainNotions.GrowthW.expUpper (2 * r + k + 1) (by omega)`. Take `⟨R, hR⟩` from `hK.exists_bound_of_continuousOn (hsN_cont (k := k) (r := r)).continuousOn`. Establish `hsub : (fun x : Formalism.MainNotions.S.lieE (Nset k r) => (fun i j => NormedSpace.exp (Formalism.MainNotions.S.unrealify (x : EuclideanSpace ℝ (Fin (2 * r + k + 1) × Fin (2 * r + k + 1) × Bool))) i j : Mt k r)) ⁻¹' K ⊆ Metric.closedBall 0 (|C| * R ^ D)`. Introduce `x hx`. Rewrite using `[Metric.mem_closedBall, dist_zero_right]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `set X : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ := Formalism.MainNotions.S.unrealify (x : EuclideanSpace ℝ (Fin (2 * r + k + 1) × Fin (2 * r + k + 1) × Bool)) with hXdef`. Establish `hX : Formalism.MainNotions.GrowthW.SUpper X` using `Formalism.MainNotions.GrowthW.lieNUpper k r X (PI.WUN.lieN_of_lieE _ x.2)`. Establish `h1` using `hCD X hX`. Establish `hx0 : ‖(x : EuclideanSpace ℝ (Fin (2 * r + k + 1) × Fin (2 * r + k + 1) × Bool))‖ ≤ Formalism.MainNotions.GrowthW.hsN X` using `Formalism.MainNotions.GrowthW.norm_le_hsN (k := k) (r := r) _`. Establish `hxx : ‖x‖ = ‖(x : EuclideanSpace ℝ (Fin (2 * r + k + 1) × Fin (2 * r + k + 1) × Bool))‖` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb0` using `hR _ hx`. Establish `he : Formalism.MainNotions.GrowthW.hsN (NormedSpace.exp X) ≤ R`. Establish `e1 : Formalism.MainNotions.GrowthW.hsN (NormedSpace.exp X) ≤ ‖Formalism.MainNotions.GrowthW.hsN (NormedSpace.exp X)‖`. Rewrite using `[Real.norm_eq_abs]`. Conclude with `le_abs_self _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `e1.trans hb0`. Establish `he0 : 0 ≤ Formalism.MainNotions.GrowthW.hsN (NormedSpace.exp X)` using `Formalism.MainNotions.GrowthW.hsN_nonneg _`. Establish `hX0 : 0 ≤ Formalism.MainNotions.GrowthW.hsN X` using `Formalism.MainNotions.GrowthW.hsN_nonneg _`. Establish `hp : Formalism.MainNotions.GrowthW.hsN (NormedSpace.exp X) ^ D ≤ R ^ D` using `Real.rpow_le_rpow he0 he hD.le`. Establish `hp0 : 0 ≤ Formalism.MainNotions.GrowthW.hsN (NormedSpace.exp X) ^ D` using `Real.rpow_nonneg he0 D`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc1 : C * Formalism.MainNotions.GrowthW.hsN (NormedSpace.exp X) ^ D ≤ |C| * Formalism.MainNotions.GrowthW.hsN (NormedSpace.exp X) ^ D` using `mul_le_mul_of_nonneg_right (le_abs_self C) hp0`. Establish `hc2 : |C| * Formalism.MainNotions.GrowthW.hsN (NormedSpace.exp X) ^ D ≤ |C| * R ^ D` using `mul_le_mul_of_nonneg_left hp (abs_nonneg C)`. Rewrite using `[hxx]`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `Formalism.MainNotions.S.haarLie`.
-
-Rewrite using `[Measure.smul_apply, Measure.map_apply (PI.WUN.continuous_expLie (Nset k r)).measurable hK.measurableSet, smul_eq_mul]`. Conclude with `ENNReal.mul_lt_top hκ.lt_top ((measure_mono hsub).trans_lt measure_closedBall_lt_top)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem haarLie_finite_compact (κ : ℝ≥0∞) (hκ : κ ≠ ⊤) (K : Set (Mt k r)) (hK : IsCompact K) :
     Formalism.MainNotions.S.haarLie (Nset k r) κ K < ⊤ := by
@@ -127,9 +125,9 @@ theorem haarLie_finite_compact (κ : ℝ≥0∞) (hκ : κ ≠ ⊤) (K : Set (Mt
   exact ENNReal.mul_lt_top hκ.lt_top ((measure_mono hsub).trans_lt measure_closedBall_lt_top)
 
 /- English proof (translation)
-Introduce `h`. Establish `h2 : Formalism.MainNotions.S.haarLie (Nset k r) κ Set.univ = 0` using `by rw [h]; simp`. Unfold `Formalism.MainNotions.S.haarLie at h2`. Rewrite `h2` using `[Measure.smul_apply, Measure.map_apply (PI.WUN.continuous_expLie (Nset k r)).measurable MeasurableSet.univ, Set.preimage_univ, smul_eq_mul, mul_eq_zero]`. Break down `h2 with h2 | h2` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `h0 h2`. Conclude with `(MeasureTheory.Measure.IsOpenPosMeasure.open_pos Set.univ isOpen_univ Set.univ_nonempty) h2`.
+A detailed English derivation is pending.
 -/
 theorem haarLie_ne_zero (κ : ℝ≥0∞) (h0 : κ ≠ 0) : Formalism.MainNotions.S.haarLie (Nset k r) κ ≠ 0 := by
   intro h
@@ -142,9 +140,9 @@ theorem haarLie_ne_zero (κ : ℝ≥0∞) (h0 : κ ≠ 0) : Formalism.MainNotion
   · exact (MeasureTheory.Measure.IsOpenPosMeasure.open_pos Set.univ isOpen_univ Set.univ_nonempty) h2
 
 /- English proof (translation)
-Establish `hconc : Formalism.MainNotions.S.haarLie (Nset k r) κ (Nset k r)ᶜ = 0` using `PI.WUN.muN_conc κ`. Establish `hleft` using `hL k r κ h0 hκ`. Establish `hfin` using `haarLie_finite_compact (k := k) (r := r) κ hκ`. Take `⟨μ0, hμ0⟩` from `Formalism.FourierDecayAlt.P.unipotent_haar_exists k r`. Take `⟨c, hc⟩` from `Formalism.FourierDecayAlt.P.haar_measure_unique_up_to_scalar k r (Nset k r) μ0 _ (Formalism.FourierDecayAlt.P.unipotent_radical_closed k r) hμ0 hconc hleft hfin`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨hconc, hleft, fun a ha => ?_, hfin, haarLie_ne_zero κ h0⟩` and prove the remaining obligations. Rewrite using `[hc, Measure.map_smul, hμ0.right a ha]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem haar_lie_measure_on_nilpotent (hL : NLeft) (κ : ℝ≥0∞) (h0 : κ ≠ 0) (hκ : κ ≠ ⊤) :
     Formalism.FourierDecayAlt.B.IsHaarOn (Nset k r) (Formalism.MainNotions.S.haarLie (Nset k r) κ) := by
@@ -158,9 +156,9 @@ theorem haar_lie_measure_on_nilpotent (hL : NLeft) (κ : ℝ≥0∞) (h0 : κ �
   rw [hc, Measure.map_smul, hμ0.right a ha]
 
 /- English proof (translation)
-Introduce `h hh m hm`. Establish `hdet : IsUnit h.det` using `PI.WUN.UH_det hh.1`. Establish `hhi : h⁻¹ ∈ UWset k r z` using `(Formalism.FourierDecayAlt.P.weyl_subgroup_closed k r z).inv_mem h hh`. Establish `hC : MeasurePreserving (conjM (k` using `k) (r := r) h⁻¹) μN μN := ⟨conj_meas h⁻¹, Formalism.FourierDecayAlt.P.b2_conjInvRaw_proof k r z _ hz hT hN h⁻¹ hhi⟩`. Establish `hR : MeasurePreserving (Formalism.FourierDecayAlt.B.rmulF m : Mt k r → Mt k r) μN μN` using `⟨rmul_meas m, hN.right m hm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (fun x : Mt k r => fun i j => (h⁻¹ * Matrix.of x * h * m) i j) = (Formalism.FourierDecayAlt.B.rmulF m : Mt k r → Mt k r) ∘ conjM (k` using `k) (r := r) h⁻¹ := by`. Use function extensionality and compare the values at `x`. Conclude with `(congrArg (fun t : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ => (fun i j => (h⁻¹ * Matrix.of x * t * m) i j : Mt k r)) (Matrix.nonsing_inv_nonsing_inv h hdet)).symm`. Rewrite using `[e]`. Conclude with `hR.comp hC`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measPresN_conj_of {z : Fin (2 * r + k + 1) → ℂ} {μN : Measure (Mt k r)}
     (hN : Formalism.FourierDecayAlt.B.IsHaarOn (Nset k r) μN) (hz : inWb k r z) (hT : 0 < Tz k r z) :
@@ -182,7 +180,7 @@ theorem measPresN_conj_of {z : Fin (2 * r + k + 1) → ℂ} {μN : Measure (Mt k
   exact hR.comp hC
 
 /- English proof (translation)
-Introduce `h hh`. Establish `hC : MeasurePreserving (conjM (k` using `k) (r := r) h) μN μN := ⟨conj_meas h, Formalism.FourierDecayAlt.P.b2_conjInvRaw_proof k r z _ hz hT hN h hh⟩`. Establish `hI : MeasurePreserving (Formalism.FourierDecayAlt.B2.invM (k` using `k) (r := r)) μN μN := ⟨PI.WBL.Cv.measurable_matInv, Formalism.FourierDecayAlt.P.haar_measure_inversion k r (Nset k r) _ (Formalism.FourierDecayAlt.P.unipotent_radical_closed k r) hN⟩`. Conclude with `hC.comp hI`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measPresN_inv_of {z : Fin (2 * r + k + 1) → ℂ} {μN : Measure (Mt k r)}
     (hN : Formalism.FourierDecayAlt.B.IsHaarOn (Nset k r) μN) (hz : inWb k r z) (hT : 0 < Tz k r z) :
@@ -197,9 +195,7 @@ theorem measPresN_inv_of {z : Fin (2 * r + k + 1) → ℂ} {μN : Measure (Mt k 
   exact hC.comp hI
 
 /- English proof (translation)
-Establish `hW' : Formalism.MainNotions.S.IsHaarOn (UWset k r z) μW` using `⟨hW.1, hW.2.1, hW.2.2.1, hW.2.2.2⟩`. Establish `hN' : Formalism.MainNotions.S.IsHaarOn (Nset k r) μN` using `⟨hN.1, hN.2.1, hN.2.2.1, hN.2.2.2⟩`. Establish `hWc` using `Formalism.MainNotions.BridgeLemma₃.hu_haarUp.1 k r z μW hz hT hW'`. Establish `hNc` using `Formalism.MainNotions.BridgeLemma₃.hu_haarUp.2 k r μN hN'`. Use `haveI : SigmaFinite μW := hW.1`.
-
-Use `haveI : SigmaFinite μN := hN.1`. Conclude with `PI.WBL.Cv.measF_of (fun h hh => ⟨rmul_meas h, hWc.right h hh⟩) ⟨PI.WBL.Cv.measurable_matInv, Formalism.FourierDecayAlt.P.haar_measure_inversion k r _ μW (Formalism.FourierDecayAlt.P.weyl_subgroup_closed k r z) hWc⟩ hW.2.2.1 hN.2.2.1 (measPresN_conj_of hNc hz hT) (measPresN_inv_of …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measF_side {z : Fin (2 * r + k + 1) → ℂ} {u : Fin k → ℝ} {Wp : Type} [NormedAddCommGroup Wp]
     [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]

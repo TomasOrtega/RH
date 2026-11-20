@@ -18,17 +18,15 @@ open GlobalTheory
 namespace GlobalTheory.NormKill
 
 /- English proof (translation)
-Introduce `E _ _ _ ε hε v hv x`. Establish `h2 : Module.finrank (maximalRealSubfield E) E = 2` using `Algebra.IsQuadraticExtension.finrank_eq_two _ _`. Establish `hnorm : Neutral.B1.localIdele (maximalRealSubfield E) v x ∈ GlobalTheory.QuadSymbol.normGroup (maximalRealSubfield E) E (AdeleRing (𝓞 (maximalRealSubfield E)) (maximalRealSubfield E))`. Rewrite using `[GlobalTheory.IdeleNormChar.mem_normGroup_iff_everywhereNorm]`. Use `⟨fun w => ?_, fun w => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Establish `hx : GlobalTheory.IdeleNormChar.finComp (Neutral.B1.localIdele (maximalRealSubfield E) w x) w = x` using `Units.ext (Neutral.B1.localIdele_snd_self _ w x)`. Rewrite using `[hx]`. Conclude with `GlobalTheory.LFun.mem_normGroup_of_isSplit h2 hv x`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : GlobalTheory.IdeleNormChar.finComp (Neutral.B1.localIdele (maximalRealSubfield E) v x) w = 1`. Apply `Units.ext` to reduce the goal to its premises. Use `show (Neutral.B1.finiteSingle (maximalRealSubfield E) v (x : v.adicCompletion _)) w = 1`. Conclude with `GlobalTheory.LFun.finSingle_ne hw _`. Rewrite using `[h1]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `one_mem _`. Establish `h1 : GlobalTheory.IdeleNormChar.infComp (Neutral.B1.localIdele (maximalRealSubfield E) v x) w = 1` using `Units.ext rfl`. Rewrite using `[h1]`. Conclude with `one_mem _`. Take `⟨z, hz⟩` from `hnorm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `y : (AdeleRing (𝓞 E) E)ˣ` to `Units.map (GlobalTheory.UnitaryHeckeBaseChange.adeleEquiv (GlobalTheory.GalOfCusp.isCMExt_real E)).toRingHom.toMonoidHom z`. Establish `hy : GlobalTheory.GalOfCusp.ideleNorm E y = Neutral.B1.localIdele (maximalRealSubfield E) v x`. Apply `Units.ext` to reduce the goal to its premises. Use `show Algebra.norm _ ((GlobalTheory.UnitaryHeckeBaseChange.adeleEquiv (GlobalTheory.GalOfCusp.isCMExt_real E)).symm ((GlobalTheory.UnitaryHeckeBaseChange.adeleEquiv (GlobalTheory.GalOfCusp.isCMExt_real E)) (z : _))) = _`. Rewrite using `[RingEquiv.symm_apply_apply]`.
-
-Conclude with `congrArg Units.val hz`. Establish `key : (GlobalTheory.GalOfCusp.compNorm E ε).1 y = (1 : Formalism.L2.Host.HChar E).1 y` using `congrArg (fun χ : Formalism.L2.Host.HChar E => χ.1 y) hε`. Rewrite `key` using `[GlobalTheory.GalOfCusp.compNorm_apply, hy]`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem loc_eq_one_of_compNorm_eq_one : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (ε : Formalism.L2.Host.HChar (maximalRealSubfield E)),
     compNorm E ε = 1 → ∀ v : HeightOneSpectrum (𝓞 (maximalRealSubfield E)), Formalism.MainNotions.SchurIrreducible.IsSplit (E := E) v →

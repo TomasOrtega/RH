@@ -8,7 +8,7 @@ namespace PositivityTheory.Tls2.Ming3.LawX
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `h` using `nabs_mul' k x⁻¹ x`. Rewrite `h` using `[inv_mul_cancel, show nabs k 1 = 1 by simp [nabs]]`. Conclude with `eq_inv_of_mul_eq_one_left h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nabs_inv (x : kˣ) : nabs k x⁻¹ = (nabs k x)⁻¹ := by
   have h := nabs_mul' k x⁻¹ x
@@ -16,9 +16,9 @@ theorem nabs_inv (x : kˣ) : nabs k x⁻¹ = (nabs k x)⁻¹ := by
   exact eq_inv_of_mul_eq_one_left h.symm
 
 /- English proof (translation)
-Rewrite using `[Real.inv_rpow hH.le, Real.rpow_neg hH.le, inv_inv]`. Establish `e1 : A ^ (-N / 2) = A ^ (N / 2) * A ^ (-N)`. Rewrite using `[← Real.rpow_add hA]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e2 : H ^ (r / 2) = H ^ (-r / 2) * H ^ r`. Rewrite using `[← Real.rpow_add hH]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -32,7 +32,7 @@ theorem inv_natPow_rpow_neg_half_even_eq_pow {A H : ℝ} (hA : 0 < A) (hH : 0 < 
   rw [e1, e2]; ring
 
 /- English proof (translation)
-Establish `: A ^ (-(r + t) / 2) * (A * D) ^ (r / 2) * (A ^ (t / 2) * D ^ (-r / 2)) = A ^ (-(r + t) / 2 + r / 2 + t / 2) * D ^ (r / 2 + -r / 2)`. Rewrite using `[Real.mul_rpow hA.le hD.le, Real.rpow_add hA, Real.rpow_add hA, Real.rpow_add hD]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, show -(r + t) / 2 + r / 2 + t / 2 = (0 : ℝ) by ring, show r / 2 + -r / 2 = (0 : ℝ) by ring]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rpow_product_eq_one {A D : ℝ} (hA : 0 < A) (hD : 0 < D) (r t : ℝ) :
     A ^ (-(r + t) / 2) * (A * D) ^ (r / 2) * (A ^ (t / 2) * D ^ (-r / 2)) = 1 := by
@@ -45,9 +45,9 @@ theorem rpow_product_eq_one {A D : ℝ} (hA : 0 < A) (hD : 0 < D) (r t : ℝ) :
 variable [MeasurableSpace k] [BorelSpace k]
 
 /- English proof (translation)
-Simplify using `only [om]`. Rewrite using `[integral_const_mul, hcov k ν hν N r h⁻¹ g Φ, map_inv, nabs_inv, Fintype.card_fin, Fintype.card_fin]`. Establish `hR` using `inv_natPow_rpow_neg_half_even_eq_pow (nabs_pos' k (Matrix.GeneralLinearGroup.det g)) (nabs_pos' k (Matrix.GeneralLinearGroup.det h)) (N : ℝ) (r : ℝ)`. Establish `hR'` using `congrArg (fun x : ℝ => (x : ℂ)) hR`. Use `set C : ℂ := (μ (Matrix.GeneralLinearGroup.det g) : ℂ) * ((μ (Matrix.GeneralLinearGroup.det h))⁻¹ : ℂˣ)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set I := ∫ x, Φ x ∂volM ν (Fin N) (Fin r)`. Simplify using `only [Complex.ofReal_mul] at hR' ⊢`. Take the linear combination `(C * I) * hR'`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem integral_om (hcov : CovSt) (ν : Measure k) (hν : IsUnitVol ν) {r N : ℕ} (μ : kˣ →* ℂˣ)
     (g : GL (Fin r) k) (h : GL (Fin N) k) (Φ : Matrix (Fin N) (Fin r) k → ℂ) :
@@ -72,31 +72,27 @@ namespace PositivityTheory.Tls2.Ming3
 
 open PositivityTheory.Tls2.Ming3.LawX in
 /- English proof (translation)
-Introduce `hball hcov k _ _ _ _ _ _ ν hν r t μ V _ _ W _ _ σ π B hEq ev hG p w`. Use `set a : GL (Fin r) k := leviProj k (two (stdSum (rfl : r + t = r + t))) p false with ha`. Use `set d : GL (Fin t) k := leviProj k (two (stdSum (rfl : r + t = r + t))) p true with hd`. Use `set e := GlobalTheory.GodementJacquet.eMat k r t with he`. Use `((hG _ _).1 ?_).symm` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c₀, hc₀⟩` from `(hG w (ev w)).2 rfl`. Establish `hfe : ((p : GL (Fin (r + t)) k)⁻¹ : GL (Fin (r + t)) k).val * e * a.val = e`. Rewrite using `[Matrix.mul_assoc, he, ha, ← GlobalTheory.GodementJacquet.parab_mul_eMat p, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`. Establish `hfc : Continuous fun y : Matrix (Fin (r + t)) (Fin r) k => ((p : GL (Fin (r + t)) k)⁻¹ : GL (Fin (r + t)) k).val * y * a.val` using `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`. Establish `he0 : e ∈ ballM c₀ e` using `fun i l => by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hU : (fun y : Matrix (Fin (r + t)) (Fin r) k => ((p : GL (Fin (r + t)) k)⁻¹ : GL (Fin (r + t)) k).val * y * a.val) ⁻¹' ballM c₀ e ∈ nhds e`. Use `hfc.continuousAt.preimage_mem_nhds ?_` and prove the remaining obligations. Rewrite using `[hfe]`. Conclude with `((hball k (r + t) r).1 c₀ e).1.mem_nhds he0`. Take `⟨c, -, hc⟩` from `(hball k (r + t) r).2.1 e _ hU`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨c, fun Φ' hΦ' => ?_⟩` and prove the remaining obligations. Take `⟨Φ, hΦdef⟩ : ∃ Φ : SB (Matrix (Fin (r + t)) (Fin r) k), Φ.1 = om μ a⁻¹ ((p : GL (Fin (r + t)) k)⁻¹) Φ'.1` from `⟨⟨_, om_mem_SB μ _ _ Φ'.2⟩, rfl⟩`. Establish `hΦΦ' : (Φ' : Matrix (Fin (r + t)) (Fin r) k → ℂ) = om μ a (p : GL (Fin (r + t)) k) Φ.1` using `by show Φ'.1 = _`. Rewrite using `[hΦdef, ← om_mul, mul_inv_cancel, mul_inv_cancel, om_one]`. Establish `hsupp : ∀ x, Φ.1 x ≠ 0 → x ∈ ballM c₀ e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `x hx`. Rewrite `hx` using `[hΦdef]`. Simplify using `only [om, inv_inv] at hx`. Establish `hy` using `hΦ' _ (right_ne_zero_of_mul hx)`. Establish `h2` using `hc hy`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Simplify using `only [Set.mem_preimage] at h2`. Establish `h3 : ((p : GL (Fin (r + t)) k)⁻¹ : GL (Fin (r + t)) k).val * ((p : GL (Fin (r + t)) k).val * x * (a⁻¹ : GL (Fin r) k).val) * a.val = x`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul, Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one]`. Rewrite `h2` using `[h3]`. Then use the resulting hypothesis. Establish `h1` using `hEq a (p : GL (Fin (r + t)) k) Φ Φ' hΦΦ' w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h1, hc₀ Φ hsupp, map_smul, smul_smul]`. Use `congr 1`. Use `show _ = (∫ x, Φ'.1 x ∂volM ν (Fin (r + t)) (Fin r)) * _`. Rewrite using `[show Φ'.1 = om μ a (p : GL (Fin (r + t)) k) Φ.1 from hΦΦ', integral_om hcov ν hν μ a _ Φ.1]`. Establish `hl : leviProj k (two (stdSum (rfl : r + t = r + t))) p = leviTwo k (Fin r) (Fin t) (a, d)`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Apply the tactic sequence `cases x <;> rfl`. Establish `hdet : Matrix.GeneralLinearGroup.det (p : GL (Fin (r + t)) k) = Matrix.GeneralLinearGroup.det a * Matrix.GeneralLinearGroup.det d`. Rewrite using `[det_parab, Fintype.prod_bool, mul_comm]`. Establish `e1 : (absPow k ((t : ℂ) / 2) (Matrix.GeneralLinearGroup.det a) : ℂ) = ((nabs k (Matrix.GeneralLinearGroup.det a) ^ ((t : ℝ) / 2) : ℝ) : ℂ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show ((t : ℂ) / 2) = (((t : ℝ) / 2 : ℝ) : ℂ) by simp]`. Conclude with `val_absPow_ofReal k _ _`. Establish `e2 : (absPow k (-(r : ℂ) / 2) (Matrix.GeneralLinearGroup.det d) : ℂ) = ((nabs k (Matrix.GeneralLinearGroup.det d) ^ (-(r : ℝ) / 2) : ℝ) : ℂ)`. Rewrite using `[show (-(r : ℂ) / 2) = ((-(r : ℝ) / 2 : ℝ) : ℂ) by simp]`. Conclude with `val_absPow_ofReal k _ _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hR` using `rpow_product_eq_one (nabs_pos' k (Matrix.GeneralLinearGroup.det a)) (nabs_pos' k (Matrix.GeneralLinearGroup.det d)) (r : ℝ) (t : ℝ)`. Establish `hR'` using `congrArg (fun x : ℝ => (x : ℂ)) hR`. Simplify using `only [Complex.ofReal_mul, Complex.ofReal_one] at hR'`. Establish `hn : (μ (Matrix.GeneralLinearGroup.det a) : ℂ) ≠ 0` using `Units.ne_zero _`. Establish `hn2 : (μ (Matrix.GeneralLinearGroup.det d) : ℂ) ≠ 0` using `Units.ne_zero _`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Rewrite using `[hl, deltaHalf_two]`. Simplify using `only [Units.val_mul, e1, e2, hdet, map_mul, nabs_mul', Fintype.card_fin, Nat.cast_add, Units.val_inv_eq_inv_val, mul_inv]`. Establish `hinv` using `mul_inv_cancel₀ hn`. Establish `hinv2` using `mul_inv_cancel₀ hn2`. Generalize the expression as in `(μ (Matrix.GeneralLinearGroup.det a) : ℂ) = a' at *`.
-
-Generalize the expression as in `(μ (Matrix.GeneralLinearGroup.det d) : ℂ) = d' at *`. Generalize the expression as in `∫ x, Φ.1 x ∂volM ν (Fin (r + t)) (Fin r) = I at *`. Use `set x1 : ℂ := ((nabs k (Matrix.GeneralLinearGroup.det a) ^ (-((r : ℝ) + (t : ℝ)) / 2) : ℝ) : ℂ)`. Use `set x2 : ℂ := (((nabs k (Matrix.GeneralLinearGroup.det a) * nabs k (Matrix.GeneralLinearGroup.det d)) ^ ((r : ℝ) / 2) : ℝ) : ℂ)`. Use `set x3 : ℂ := ((nabs k (Matrix.GeneralLinearGroup.det a) ^ ((t : ℝ) / 2) : ℝ) : ℂ)`.
-
-Use `set x4 : ℂ := ((nabs k (Matrix.GeneralLinearGroup.det d) ^ (-(r : ℝ) / 2) : ℝ) : ℂ)`. Take the linear combination `(-I) * hR' + (-I * x1 * x2 * x3 * x4 * d' * d'⁻¹) * hinv + (-I * x1 * x2 * x3 * x4) * hinv2`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem law : BallSt → CovSt → LawSt := by
   intro hball hcov k _ _ _ _ _ _ ν hν r t μ V _ _ W _ _ σ π B hEq ev hG p w

@@ -3,9 +3,9 @@ import Formalism.FrobeniusBaseCase.Statement
 namespace Formalism.BaseCaseIdentities
 
 /- English proof (translation)
-Introduce `l i hl`. Establish `h2 : (2:ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `hq : ((l:ℝ)^2 - 1) ≠ 0` using `by nlinarith`. Establish `h1 : ((l:ℝ) - 1) ≠ 0` using `by linarith`. Establish `hL : ((l:ℝ)^i) ≠ 0` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Unfold `gam rho`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Unfold `r1 del sg`.
+Prove the components needed by the constructor for the conclusion. Replace the relevant objects with their definitions. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions.
 
 Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -20,9 +20,9 @@ theorem id20_statement : Id20 := by
   · unfold r1 del sg; field_simp; ring
 
 /- English proof (translation)
-Introduce `l i hl`. Establish `h2 : (2:ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `hq : ((l:ℝ)^2 - 1) ≠ 0` using `by nlinarith`. Establish `h1 : ((l:ℝ) - 1) ≠ 0` using `by linarith`. Establish `hL : ((l:ℝ)^i) ≠ 0` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Lnum r1 r2 Enum rho`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem slopeSumIdentity_statement : SlopeSumIdentity := by
   intro l i hl
@@ -33,9 +33,9 @@ theorem slopeSumIdentity_statement : SlopeSumIdentity := by
   unfold Lnum r1 r2 Enum rho; field_simp; ring
 
 /- English proof (translation)
-Introduce `l i hl hi`. Take `⟨t, rfl⟩` from `hi`. Establish `h2 : (2:ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `hq : ((l:ℝ)^2 - 1) ≠ 0` using `by nlinarith`. Establish `hs : s0 (2 * t + 1) = t` using `by unfold s0; omega`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hs]`. Unfold `qnum Enum rho`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem geomSlopeIdentity_statement : GeomSlopeIdentity := by
   intro l i hl hi
@@ -47,7 +47,7 @@ theorem geomSlopeIdentity_statement : GeomSlopeIdentity := by
   unfold qnum Enum rho; field_simp; ring
 
 /- English proof (translation)
-Introduce `l hl`. Establish `h2 : (2:ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `hq : ((l:ℝ)^2 - 1) ≠ 0` using `by nlinarith`. Unfold `qnum rho`. Clear the denominators using the available nonvanishing facts.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Clear the denominators using the available nonvanishing facts.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -58,9 +58,9 @@ theorem sqMulIdentity_statement : SqMulIdentity := by
   unfold qnum rho; field_simp; ring
 
 /- English proof (translation)
-Introduce `l i hl hi`. Take `⟨t, rfl⟩` from `hi`. Establish `h2 : (2:ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `hl0 : (l:ℝ) ≠ 0` using `by linarith`. Establish `hs : Kn (2 * t + 1) = t + 1` using `by unfold Kn; omega`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hs]`. Unfold `qnum sg`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem identity_twenty_d : PowMulThreeEighthsIdentity := by
   intro l i hl hi
@@ -72,7 +72,7 @@ theorem identity_twenty_d : PowMulThreeEighthsIdentity := by
   unfold qnum sg; field_simp; ring
 
 /- English proof (translation)
-Establish `: 2 ≤ l ^ 2` using `by nlinarith`. Unfold `eNum`. Rewrite using `[Nat.geomSum_eq this]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem eNum_eq_sum {l : ℕ} (hl : 2 ≤ l) (s : ℕ) :
     eNum l s = ∑ j ∈ Finset.range s, (l ^ 2) ^ j := by
@@ -80,11 +80,11 @@ theorem eNum_eq_sum {l : ℕ} (hl : 2 ≤ l) (s : ℕ) :
   unfold eNum; rw [Nat.geomSum_eq this]
 
 /- English proof (translation)
-Introduce `l s hl`. Establish `hq : 2 ≤ l ^ 2` using `by nlinarith`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[eNum_eq_sum hl]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[eNum_eq_sum hl, eNum_eq_sum hl, Finset.sum_range_succ', Finset.mul_sum]`. Simplify using `only [pow_succ, pow_zero]`. Rewrite using `[add_comm]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eNum_eq_sum hl]`. Use `geom_sum_mul_add (l ^ 2 - 1) s` as an intermediate fact. Rewrite `this` using `[Nat.sub_add_cancel (by omega)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem identity_e : IdE := by
   intro l s hl
@@ -101,7 +101,7 @@ theorem identity_e : IdE := by
     rwa [Nat.sub_add_cancel (by omega)] at this
 
 /- English proof (translation)
-Establish `h2 : (3:ℝ) ≤ l` using `by exact_mod_cast hl`. Unfold `rho`. Establish `: (0:ℝ) < (l:ℝ)^2 - 1` using `by nlinarith`. Check the signs of the components of the expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem rho_pos {l : ℕ} (hl : 3 ≤ l) : 0 < rho l := by
   have h2 : (3:ℝ) ≤ l := by exact_mod_cast hl
@@ -110,7 +110,7 @@ theorem rho_pos {l : ℕ} (hl : 3 ≤ l) : 0 < rho l := by
   positivity
 
 /- English proof (translation)
-Establish `h2 : (3:ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `hq : ((l:ℝ)^2 - 1) ≠ 0` using `by nlinarith`. Unfold `rho`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Clear the denominators using the available nonvanishing facts.
 -/
 theorem rho_mul {l : ℕ} (hl : 3 ≤ l) : ((l:ℝ)^2 - 1) * rho l = 1 := by
   have h2 : (3:ℝ) ≤ l := by exact_mod_cast hl
@@ -118,13 +118,13 @@ theorem rho_mul {l : ℕ} (hl : 3 ≤ l) : ((l:ℝ)^2 - 1) * rho l = 1 := by
   unfold rho; field_simp
 
 /- English proof (translation)
-Establish `h2 : (3:ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `hr` using `rho_pos hl`. Establish `hm` using `rho_mul hl`. Proceed by induction on `j, hj using Nat.le_induction with`. Consider the case `base`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Establish `h3 : 0 ≤ ((l:ℝ)^3 - 1 - 3 * ((l:ℝ)^2 - 1)) * rho l`. Apply `mul_nonneg _ hr.le` to reduce the goal to its premises. Use polynomial arithmetic with `[mul_nonneg (sq_nonneg (l:ℝ)) (sub_nonneg.2 h2)]`. Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities.
 
-Consider the case `succ j hj ih`. Establish `h4 : (l:ℝ)^2 ≤ (l:ℝ)^j` using `pow_le_pow_right₀ (by linarith) (by omega)`. Establish `h5 : 0 ≤ ((l:ℝ)^j * ((l:ℝ) - 1) - ((l:ℝ)^2 - 1)) * rho l`. Apply `mul_nonneg _ hr.le` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `push_cast`. Rewrite using `[pow_succ]`. Use the polynomial consequences of the given equalities and inequalities.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem num_c {l : ℕ} (hl : 3 ≤ l) {j : ℕ} (hj : 3 ≤ j) :
     1 + rho l ≤ -((j:ℝ) - 1) + (l:ℝ)^j * rho l := by
@@ -148,11 +148,11 @@ theorem num_c {l : ℕ} (hl : 3 ≤ l) {j : ℕ} (hj : 3 ≤ j) :
     nlinarith
 
 /- English proof (translation)
-Establish `h2 : (3:ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `hr` using `rho_pos hl`. Proceed by induction on `j, hj using Nat.le_induction with`. Consider the case `base => push_cast`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Use the polynomial consequences of the given equalities and inequalities.
 
-Consider the case `succ j hj ih`. Establish `h4 : (1:ℝ) ≤ (l:ℝ)^j` using `one_le_pow₀ (by linarith)`. Establish `h5 : 1 ≤ (l:ℝ)^j * (((l:ℝ) - 1) * (1 + rho l))`. Establish `: 1 ≤ ((l:ℝ) - 1) * (1 + rho l)` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `push_cast`. Rewrite using `[pow_succ]`. Use the polynomial consequences of the given equalities and inequalities.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem num_d {l : ℕ} (hl : 3 ≤ l) {j : ℕ} (hj : 1 ≤ j) :
     1 + rho l ≤ -(j:ℝ) + (l:ℝ)^j * (1 + rho l) := by
@@ -170,7 +170,7 @@ theorem num_d {l : ℕ} (hl : 3 ≤ l) {j : ℕ} (hj : 1 ≤ j) :
     nlinarith
 
 /- English proof (translation)
-Use `num_d hl (j := j) (by omega)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem num_good {l : ℕ} (hl : 3 ≤ l) {j : ℕ} (hj : 2 ≤ j) :
     1 + rho l ≤ -((j:ℝ) - 1) + (l:ℝ)^j * (1 + rho l) := by

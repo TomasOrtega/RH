@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Trans
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
 /- English proof (translation)
-Use `⟨(Spec.preimage x).hom, ?_⟩` and prove the remaining obligations. Simplify using `[Spec.map_preimage]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private lemma exists_hom {R Ω : Type} [CommRing R] [Field Ω] (x : gp Ω ⟶ Spec (CommRingCat.of R)) :
     ∃ φ : R →+* Ω, x = Spec.map (CommRingCat.ofHom φ) := by
@@ -12,7 +12,7 @@ private lemma exists_hom {R Ω : Type} [CommRing R] [Field Ω] (x : gp Ω ⟶ Sp
   simp [Spec.map_preimage]
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private lemma map_comp' {R S Ω : Type} [CommRing R] [CommRing S] [CommRing Ω] (a : R →+* S) (φ : S →+* Ω) :
     Spec.map (CommRingCat.ofHom φ) ≫ Spec.map (CommRingCat.ofHom a) =
@@ -21,7 +21,7 @@ private lemma map_comp' {R S Ω : Type} [CommRing R] [CommRing S] [CommRing Ω] 
   rfl
 
 /- English proof (translation)
-Use `Spec.map_injective h` as an intermediate fact. Simplify using `using congrArg CommRingCat.Hom.hom this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma map_inj' {R S : Type} [CommRing R] [CommRing S] {f g : R →+* S}
     (h : Spec.map (CommRingCat.ofHom f) = Spec.map (CommRingCat.ofHom g)) : f = g := by
@@ -29,7 +29,7 @@ private lemma map_inj' {R S : Type} [CommRing R] [CommRing S] {f g : R →+* S}
   simpa using congrArg CommRingCat.Hom.hom this
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `only [pt]`. Use `show a ∈ (Ideal.comap f (IsLocalRing.closedPoint Ω).asIdeal) ↔ _`. Simplify using `[IsLocalRing.closedPoint, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma pt_map {R Ω : Type} [CommRing R] [Field Ω] (f : R →+* Ω) :
     (pt (Spec.map (CommRingCat.ofHom f))).asIdeal = RingHom.ker f := by
@@ -39,31 +39,29 @@ private lemma pt_map {R Ω : Type} [CommRing R] [Field Ω] (f : R →+* Ω) :
   simp [IsLocalRing.closedPoint, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]
 
 /- English proof (translation)
-Introduce `hsf hgt A B _ _ _ _ _ _`. Take `⟨L, _, _, _, _, _, _, hfin, hsp⟩` from `hsf A B`. Use `set C := integralClosure A L`. Establish `hinj : Function.Injective (algebraMap A C)`. Introduce `a b hab`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : algebraMap A L a = algebraMap A L b`. Use `congrArg (fun c : C => (c : L)) hab` as an intermediate fact. Simplify using `using this`. Rewrite `h1` using `[IsScalarTower.algebraMap_apply A (FractionRing A) L a, IsScalarTower.algebraMap_apply A (FractionRing A) L b]`. Conclude with `IsFractionRing.injective A (FractionRing A) ((algebraMap (FractionRing A) L).injective h1)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ {Ω : Type} [Field Ω] (φ : C →+* Ω), RingHom.ker (φ.comp (algebraMap A C)) = ⊥ → RingHom.ker φ = ⊥`. Introduce `Ω _ φ h`. Apply `Ideal.eq_bot_of_comap_eq_bot (R := A)` to reduce the goal to its premises. Rewrite using `[RingHom.comap_ker]`. Conclude with `h`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨Spec (CommRingCat.of C), Spec.map (CommRingCat.ofHom (algebraMap A C)), (B →ₐ[A] C), fun j => Spec.map (CommRingCat.ofHom (j : B →+* C)), fun j => (⟨RingHom.ker (j : B →+* C), RingHom.ker_isPrime _⟩ : PrimeSpectrum B), ?_, ?_, hfin, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `IsIntegralHom.SpecMap_iff.mpr (fun x => Algebra.IsIntegral.isIntegral x)`. Use `⟨fun p => ?_⟩` and prove the remaining obligations. Establish `hp : p.asIdeal.IsPrime` using `p.isPrime`. Take `⟨Q, -, hQ, hQc⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral (S := C) p.asIdeal ⊥ (by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.comap_bot_of_injective _ hinj]`. Conclude with `bot_le)`. Conclude with `⟨⟨Q, hQ⟩, PrimeSpectrum.ext hQc⟩`. Introduce `j`. Rewrite using `[map_comp']`.
+Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use `congr 2`. Conclude with `j.comp_algebraMap`. Introduce `Ω _ x x' hxx`. Take `⟨φ, rfl⟩` from `exists_hom x`. Take `⟨φ', rfl⟩` from `exists_hom x'`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using `only [map_comp'] at hxx`. Take `⟨g, hg⟩` from `hgt A L Ω φ φ' (map_inj' hxx)`. Set `e : (B →ₐ[A] C) ≃ (B →ₐ[A] C)` to `{ toFun := fun j => (g.symm : C →ₐ[A] C).comp j invFun := fun j => (g : C →ₐ[A] C).comp j left_inv := fun j => by`. Use extensionality with `b`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use `right_inv := fun j => by`. Use extensionality with `b`. Simplify using `}`. Use `⟨e, fun j => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Simplify using `only [map_comp']`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congr 2`. Use extensionality with `b`. Simplify using `[e, hg]`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Use extensionality with `b`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[e]`. Introduce `Ω _ x z hz hbot`. Take `⟨φ, rfl⟩` from `exists_hom x`. Take `⟨ζ, rfl⟩` from `exists_hom z`. Simplify using `only [map_comp'] at hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Rewrite `hbot` using `[map_comp', pt_map]`. Establish `hφ : Function.Injective φ` using `(RingHom.injective_iff_ker_eq_bot φ).mpr (key φ hbot)`. Establish `hiff : ∀ j : B →ₐ[A] C, Spec.map (CommRingCat.ofHom φ) ≫ Spec.map (CommRingCat.ofHom (j : B →+* C)) = Spec.map (CommRingCat.ofHom ζ) ↔ φ.comp (j : B →+* C) = ζ`. Introduce `j`. Rewrite using `[map_comp']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Conclude with `⟨map_inj', fun h => by rw [h]⟩`. Take `⟨j0, hj0, hu⟩` from `hsp Ω φ ζ ((RingHom.injective_iff_ker_eq_bot _).mpr hbot) (map_inj' hz)`. Use `⟨⟨j0, (hiff j0).2 hj0, fun j hj => hu j ((hiff j).1 hj)⟩, fun j hj => ?_⟩` and prove the remaining obligations. Rewrite `hj` using `[hiff]`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises.
-
-Rewrite using `[pt_map, ← hj]`. Use extensionality with `b`. Simplify using `[map_eq_zero_iff _ hφ]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TranscendenceTraces.splitCover_of :
     SplitField → GalTrans → SplitCover := by

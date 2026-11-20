@@ -25,7 +25,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {S : Type} [CommRing S] {x : Sp S ⟶ Xo.X} {t' : SAB H (Sp S)} (m : SABMap t' Xo.univ.t x)
 
 /- English proof (translation)
-Rewrite using `[ReciprocityTheory.ChartRestriction.G.Chart.one_left']`. Use `m.cm.e_comm` as an intermediate fact. Rewrite `this` using `[m.base]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_eq : η[t'.G].left ≫ m.φ = (1 : Over.mk x ⟶ Xo.univ.t.G).left := by
   rw [ReciprocityTheory.ChartRestriction.G.Chart.one_left']
@@ -34,13 +34,11 @@ theorem one_eq : η[t'.G].left ≫ m.φ = (1 : Over.mk x ⟶ Xo.univ.t.G).left :
   exact this
 
 /- English proof (translation)
-Establish `hw : w.left ≫ t'.G.hom = spMap (algebraMap S (DualNumber S))` using `Over.w w`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `m.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h.2.trans (one_eq m).symm`. Establish `a : η[t'.G].left ≫ t'.G.hom = 𝟙 _` using `Over.w η[t'.G]`. Rewrite using `[Category.assoc, hw, a, ← spMap_comp]`. Establish `: (TrivSqZeroExt.fstHom S S S).toRingHom.comp (algebraMap S (DualNumber S)) = RingHom.id S`. Use extensionality with `r`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`. Rewrite using `[this]`. Conclude with `Spec.map_id _`. Introduce `h`. Use `⟨by rw [Category.assoc, m.cart.1.w, ← Category.assoc, hw], ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← Category.assoc]`. Conclude with `(congrArg (· ≫ m.φ) h).trans (one_eq m)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tan_iff (w : epsR S ⟶ t'.G) : IsTanAt x (w.left ≫ m.φ) ↔ IsTangent w := by
   have hw : w.left ≫ t'.G.hom = spMap (algebraMap S (DualNumber S)) := Over.w w
@@ -60,7 +58,7 @@ theorem tan_iff (w : epsR S ⟶ t'.G) : IsTanAt x (w.left ≫ m.φ) ↔ IsTangen
     exact (congrArg (· ≫ m.φ) h).trans (one_eq m)
 
 /- English proof (translation)
-Rewrite using `[← spMap_comp]`. Use `congr 1`. Apply the tactic sequence `ext r <;> simp [epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem scale_over (s : S) : spMap (epsScaleR s) ≫ spMap (algebraMap S (DualNumber S)) =
     spMap (algebraMap S (DualNumber S)) := by
@@ -69,11 +67,11 @@ theorem scale_over (s : S) : spMap (epsScaleR s) ≫ spMap (algebraMap S (DualNu
   ext r <;> simp [epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Establish `hw : w.left ≫ t'.G.hom = spMap (algebraMap S (DualNumber S))` using `Over.w w`. Establish `e : (w.left ≫ m.φ) ≫ (Xo.univ.t.act.act a).left = (w ≫ t'.act.act a).left ≫ m.φ`. Rewrite using `[Over.comp_left, Category.assoc, Category.assoc, m.act]`. Rewrite using `[e]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Apply `m.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc]`. Conclude with `h`. Rewrite using `[Over.w, Category.assoc, hw, scale_over]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Introduce `h`. Rewrite using `[h, Category.assoc]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eig_iff (w : epsR S ⟶ t'.G) (a : 𝓞 E) (s : S) :
     (w.left ≫ m.φ) ≫ (Xo.univ.t.act.act a).left = spMap (epsMul s) ≫ w.left ≫ m.φ ↔
@@ -91,14 +89,14 @@ theorem eig_iff (w : epsR S ⟶ t'.G) (a : 𝓞 E) (s : S) :
     rw [h, Category.assoc]; rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Over.homMk (m.cart.1.lift v T.hom hv) (m.cart.1.lift_snd _ _ _), m.cart.1.lift_fst _ _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_lift {T : Over (Sp S)} (v : T.left ⟶ Xo.univ.t.G.left) (hv : v ≫ Xo.univ.t.G.hom = T.hom ≫ x) :
     ∃ w : T ⟶ t'.G, w.left ≫ m.φ = v :=
   ⟨Over.homMk (m.cart.1.lift v T.hom hv) (m.cart.1.lift_snd _ _ _), m.cart.1.lift_fst _ _ _⟩
 
 /- English proof (translation)
-Use `map_list_prod (pushHom m.cart (epsR S)) (List.ofFn u)` as an intermediate fact. Rewrite `this` using `[List.map_ofFn]`. Conclude with `congrArg (fun q => q.left) this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem push_prod {n : ℕ} (u : Fin n → (epsR S ⟶ t'.G)) :
     ((List.ofFn u).prod).left ≫ m.φ = ((List.ofFn fun i => pushHom m.cart (epsR S) (u i)).prod).left := by
@@ -107,13 +105,13 @@ theorem push_prod {n : ℕ} (u : Fin n → (epsR S ⟶ t'.G)) :
   exact congrArg (fun q => q.left) this
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, hw⟩ choose u' hu' using fun i => exists_lift m (T := epsR S) (u i).left (Over.w (u i))`. Establish `e : u = fun i => pushHom m.cart (epsR S) (u' i)` using `funext fun i => Over.OverMorphism.ext (hu' i).symm`. Use `⟨u', fun i => ?_, Over.OverMorphism.ext ?_⟩` and prove the remaining obligations. Apply `m.cart.1.hom_ext` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Category.assoc]`. Conclude with `(hu' i).trans (hu i)`. Establish `hv : (v i).left ≫ t'.G.hom = spMap (algebraMap S (DualNumber S))` using `Over.w (v i)`. Rewrite using `[Over.w, Category.assoc, hv, scale_over]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `m.cart.1.hom_ext` to reduce the goal to its premises. Rewrite `hw` using `[e]`. Conclude with `hw.symm.trans (push_prod m u').symm`. Rewrite using `[Over.w, Over.w]`. Introduce and unpack `⟨u, hu, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun i => pushHom m.cart (epsR S) (u i), fun i => ?_, (push_prod m u).symm⟩` and prove the remaining obligations. Use `show (u i).left ≫ m.φ = _`. Rewrite using `[hu, Category.assoc]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem comb_iff {n : ℕ} (v : Fin n → (epsR S ⟶ t'.G)) (cf : Fin n → S) (w : epsR S ⟶ t'.G) :
     IsCombAt x (fun i => (v i).left ≫ m.φ) cf (w.left ≫ m.φ) ↔ IsLieComb cf v w := by
@@ -140,19 +138,19 @@ end GlobalTheory.ArcQ.ExFr
 open GlobalTheory.ArcQ.ExFr in
 
 /- English proof (translation)
-Introduce `hL hL2 E _ _ _ H Dw l Xo c O _ β Y A _ _ _ _ b a χ W ρ e th hB hth hA S _ _ ι z hfl hz hs hρ`. Choose the witnesses or unpack the hypotheses as in `⟨t', ⟨m⟩⟩ : ∃ t' : SAB H (Sp S), Nonempty (SABMap t' Y.oF.t z) := by`. Take `⟨_, _, _, _, _, m, -⟩` from `sabPull Out.CubePf.cubePull z Y.oF.t`. Conclude with `⟨_, ⟨m⟩⟩`. Take `⟨m1, hm1⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ Y.m0.toSABMap m`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ Y.m m`. Establish `cancel : ∀ (p : Sp S ⟶ Y.X) (_ : p = spMap ι ≫ χ) (n : SABMap t' Y.t p), ∃ m' : SABMap t' W.t (spMap ι), n.φ = m'.φ ≫ W.m.φ`. Introduce `p hp n`. Substitute `hp` using the available equality. Conclude with `sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ W.m n`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Take `⟨m2, hm2⟩` from `cancel _ hz n`. Take `⟨u, hu1, hu2⟩` from `GlobalTheory.ArcQ.arcBasis_baseChange hL.globalFns E H Dw l Xo c O β Y A b a χ W ρ e hB S ι hfl t' m2`. Take `⟨⟨θ, hθ, -⟩, -⟩` from `GlobalTheory.existsUnique_thetaOf hL hL2 E H Dw l Xo c O β Y A b a χ W th hth`. Establish `hnz` using `fun g => (GlobalTheory.ThetaAllFibres.theta_nonzero_on_fibres hL hL2 E H Dw l Xo c O β Y A b a χ W th θ hth hθ hA g).2`. Take `⟨w2, g2, r2, -⟩` from `m2.lin`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨σ', hσ'⟩` from `sec_pull_down ((isGen_iff w2).1 g2) W.t.PP.isLB t'.PP.isLB θ`. Establish `hI2 : IsoMaps w2 σ' (thfPull W.t.PP.L m2.φ θ)` using `fun (i : PUnit → W.t.PP.L.ι) k => fn_ext fun y hy => (gs_res _ y _ hy _).trans ((gs_appLE m2.φ _ _ _ (𝟙 _) y hy.1 _).trans ((hσ' _ (𝟙 _) y (i PUnit.unit) k (mem_pull.1 hy.1) hy.2).trans (Eq.symm ((gs_mul _ y _ hy _ _).trans (congrArg₂ (· * ·) (gs_unit (𝟙 _) y _ hy _) (gs_res _ y …`. Establish `nz` using `GlobalTheory.SectionBaseChange.fibre_nonzero_of_pull t'.PP.isLB hσ' m2.cart.1 hnz`. Use `Xo.smooth` as an intermediate fact. Establish `hsm : Smooth Xo.s` using `SmoothOfRelativeDimension.smooth Dw.dim Xo.s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsLocallyNoetherian Xo.X` using `LocallyOfFiniteType.isLocallyNoetherian Xo.s`. Establish `hLB : LBIso t'.PP.L (Xo.univ.t.PP.L.pull m1.cm.F)`. Take `⟨w, hw, -⟩` from `m1.lin`. Conclude with `⟨w, hw⟩`. Establish `hgen` using `GlobalTheory.SectionBaseChange.generates hL.secBaseChange (GlobalTheory.Obj.toPolAV Xo.univ) m1.cart.1 t'.PP.isLB hLB σ' nz`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨s, w1, s1, r1, hI1, hg, hsgen⟩` from `frame_of_gen Xo _ t' m1 σ' hgen`. Establish `eig : ∀ (τ : E →+* ℂ) (w : epsR S ⟶ t'.G), IsEigAt c τ (w.left ≫ m1.φ) ↔ ∀ x : 𝓞 E, (w ≫ t'.act.act x).left = spMap (epsScaleR (ι (PowerSeries.C (R` using `A) (ρ τ x)))) ≫ w.left := fun τ w => forall_congr' fun x => by rw [← hρ]; exact eig_iff m1 w x _`. Use `⟨⟨z ≫ pullback.fst _ _, (Category.assoc _ _ _).trans hs, fun τ k => (u τ k).left ≫ m1.φ, fun τ k => (tan_iff m1 _).2 ((hu2 τ).1 k).1, fun τ k => (eig τ _).2 ((hu2 τ).1 k).2, fun τ w hw hw' => ?_, s, hsgen⟩, rfl, z, t', m1, m2, m.φ, hz, rfl, m.cart.1.w, hm1.symm, hn.symm.trans hm2 …` and prove the remaining obligations. Take `⟨w', rfl⟩` from `exists_lift m1 (T := epsR S) w hw.1`. Conclude with `(existsUnique_congr fun cf => comb_iff m1 (u τ) cf w').2 ((hu2 τ).2 w' ((tan_iff m1 w').1 hw) ((eig τ w').1 hw'))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨v, hv, hv'⟩` from `hu1 τ k`. Conclude with `⟨v, (u τ k).left, hv, rfl, hv', Over.w (u τ k)⟩`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ArcQ.exists_isArcFr : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (A : Type) [CommRing A] [IsDomain A] [IsLocalRing A] [IsNoetherianRing A] (b : O →+* A) (a : ArcIn Dw l β A b) (χ : Sp (PowerSeries A) ⟶ Y.X) (W : Wit Y a χ) (ρ : (E →+* ℂ) → (𝓞 E →+* A)) (e : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Out.GtPt a.D₀ (epsR A)) (th : a.D₀.P.L.Sec), ArcBasis W ρ e → ThNZ th → (IsField A ∨ PushInvertible Y.t.G Y.t.PP.L) → ∀ (S : Type) [CommRing S] [Algebra c.F S] (ι : PowerSeries A →+* S) (z : Sp S ⟶ Xo.XF c), (ι.comp (PowerSeries.C (R := A))).Flat → z ≫ Y.j = spMap ι ≫ χ → z ≫ pullback.fst _ _ ≫ Xo.s = sOf c S → (∀ τ x, algebraMap c.F S (embK c τ x) = ι (PowerSeries.C (R := A) (ρ τ x))) → ∃ y : FrPt Xo c S, y.x = z ≫ pullback.fst _ _ ∧ IsArcFr W e th ι y := by
   intro hL hL2 E _ _ _ H Dw l Xo c O _ β Y A _ _ _ _ b a χ W ρ e th hB hth hA S _ _ ι z hfl hz hs hρ

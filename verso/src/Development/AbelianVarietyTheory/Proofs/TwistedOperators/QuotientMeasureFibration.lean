@@ -10,9 +10,9 @@ noncomputable section
 namespace GlobalTheory.Orb.FubiniQuot
 
 /- English proof (translation)
-Take `⟨b, hb, h1⟩` from `exists_bruhat hA ds`. Establish `hm : ∀ x, Measurable fun t : TA => b (t * x)` using `fun x => hb.comp (measurable_subtype_coe.mul_const _)`. Establish `hlt : ∀ x, ∀ᵐ t : TA ∂ds, b (t * x) < ∞` using `fun x => ae_lt_top (hm x) (by simp [h1])`. Use `⟨fun x => (b x).toNNReal, hb.ennreal_toNNReal, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← h1 x]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lintegral_congr_ae ((hlt x).mono fun t ht => ENNReal.coe_toNNReal ht.ne)`.
+A detailed English derivation is pending.
 -/
 theorem exists_bruhat_nnreal {A : Type} [Group A] [TopologicalSpace A] [IsTopologicalGroup A]
     [SecondCountableTopology A] [LocallyCompactSpace A] [T2Space A] [MeasurableSpace A] [BorelSpace A]
@@ -33,27 +33,23 @@ variable {A B : Type} [Group A] [TopologicalSpace A] [IsTopologicalGroup A] [Sec
   [LocallyCompactSpace B] [T2Space B] [MeasurableSpace B] [BorelSpace B]
 
 /- English proof (translation)
-Use `haveI : LocallyCompactSpace TA := hA.locallyCompactSpace`. Use `haveI : LocallyCompactSpace TB := hB.locallyCompactSpace`. Establish `hUc : IsClosed (U : Set (A × B))`. Rewrite using `[show (U : Set (A × B)) = (TA : Set A) ×ˢ (TB : Set B) from Set.ext hU]`. Conclude with `hA.prod hB`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set dt := (ds.prod dr).map (prodSub hU) with hdt`. Use `haveI : dt.IsHaarMeasure := ContinuousMulEquiv.isHaarMeasure_map _ _`. Use `haveI : dt.IsMulRightInvariant := isMulRightInvariant_map (prodSub hU) _`. Take `⟨bA, mA, hA1⟩` from `exists_bruhat_nnreal hA ds`. Take `⟨bB, mB, hB1⟩` from `exists_bruhat_nnreal hB dr`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set β : A × B → ℝ≥0 := fun x => bA x.1 * bB x.2 with hβ`. Establish `mβ : Measurable β` using `(mA.comp measurable_fst).mul (mB.comp measurable_snd)`. Establish `hβ1 : ∀ x, ∫⁻ t : U, (β (t * x) : ℝ≥0∞) ∂dt = 1` using `fun x => by`. Rewrite using `[hdt, lintegral_map (f := fun t : U => (β (t * x) : ℝ≥0∞)) (mβ.coe_nnreal_ennreal.comp (measurable_subtype_coe.mul_const _)) (map_continuous _).measurable]`. Use `show ∫⁻ p : TA × TB, ((bA (p.1 * x.1) * bB (p.2 * x.2) : ℝ≥0) : ℝ≥0∞) ∂(ds.prod dr) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [ENNReal.coe_mul]`. Rewrite using `[lintegral_prod_mul (f := fun s : TA => (bA (s * x.1) : ℝ≥0∞)) (g := fun s : TB => (bB (s * x.2) : ℝ≥0∞)) (mA.coe_nnreal_ennreal.comp (measurable_subtype_coe.mul_const _)).aemeasurable (mB.coe_nnreal_ennreal.comp (measurable_subtype_coe.mul_const _)).aemeasurable, hA1, hB1, one_m …`. Establish `hν` using `(isQuotMeasure_quotMeas dt (da.prod db) hUc).eq_map (b := fun x => (β x : ℝ≥0∞)) mβ.coe_nnreal_ennreal hβ1`. Establish `hq : quotInt U dt (da.prod db) φ = ∫ x, β x • φ x ∂(da.prod db)`. Rewrite using `[quotInt, hν, integral_map measurable_mk.aemeasurable (hν ▸ hint.1), ← integral_withDensity_eq_integral_smul mβ]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hi.descend_mk]`. Establish `hF : Integrable (fun x => β x • φ x) (da.prod db)`. Establish `h2` using `hint`. Rewrite `h2` using `[hν]`. Use `replace h2 := h2.comp_measurable measurable_mk`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite `h2` using `[show descend U φ ∘ mk U = φ from hi.lift_descend, integrable_withDensity_iff_integrable_smul mβ]`. Then use the resulting hypothesis. Establish `hAr : ∀ a, ∫ s : TA, (bA (s * a) : ℝ) ∂ds = 1` using `fun a => by`. Establish `hm : Measurable fun s : TA => (bA (s * a) : ℝ≥0∞)` using `mA.coe_nnreal_ennreal.comp (measurable_subtype_coe.mul_const _)`. Use `integral_toReal (μ := ds) hm.aemeasurable (.of_forall fun _ => ENNReal.coe_lt_top)` as an intermediate fact. Rewrite `this` using `[hA1 a, ENNReal.toReal_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify `this` using `only [ENNReal.coe_toReal]`. Rewrite using `[hq, integral_prod_symm _ hF]`. Use `integral_eq_zero_of_ae ?_` and prove the remaining obligations. Use `filter_upwards [hF.prod_left_ae] with b hb`. Distinguish the cases in `hb0 : bB b = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[hβ, hb0]`. Establish `hG : Integrable (fun a => bA a • φ (a, b)) da`. Establish `hb0' : (bB b : ℝ) ≠ 0` using `by exact_mod_cast hb0`. Use `(hb.smul ((bB b : ℝ)⁻¹)).congr (.of_forall fun a => ?_)` and prove the remaining obligations. Simplify using `only [hβ, NNReal.smul_def, NNReal.coe_mul, smul_smul, Pi.smul_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm (bA a : ℝ), ← mul_assoc, inv_mul_cancel₀ hb0', one_mul]`. Establish `hw` using `(weil_integral (dt := ds) hA hG).2`. Establish `e1 : (fun a => ∫ s : TA, bA (s * a) • φ ((s : A) * a, b) ∂ds) = fun a => φ (a, b)` using `funext fun a => by`. Establish `hs : ∀ s : TA, φ ((s : A) * a, b) = φ (a, b)` using `fun s => by`. Simplify `hi ((s : A), 1) ((hU _).2 ⟨s.2, TB.one_mem⟩) (a, b)` using `only [Prod.mk_mul_mk, one_mul]`.
-
-Simplify using `only [hs, NNReal.smul_def]`. Rewrite using `[integral_smul_const, hAr a, one_smul]`. Rewrite `hw` using `[e1]`. Establish `e2 : ∫ a, β (a, b) • φ (a, b) ∂da = bB b • ∫ a, bA a • φ (a, b) ∂da`. Rewrite using `[NNReal.smul_def, ← integral_smul]`.
-
-Use `integral_congr_ae (.of_forall fun a => ?_)` and prove the remaining obligations. Simplify using `only [hβ, NNReal.smul_def, NNReal.coe_mul, smul_smul, mul_comm]`. Use `show ∫ a, β (a, b) • φ (a, b) ∂da = 0`. Rewrite using `[e2, ← hw.2, h0 b, smul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotInt_prod_eq_zero {TA : Subgroup A} {TB : Subgroup B} {U : Subgroup (A × B)}
     (hU : ∀ x, x ∈ U ↔ x.1 ∈ TA ∧ x.2 ∈ TB) (hA : IsClosed (TA : Set A)) (hB : IsClosed (TB : Set B))
@@ -128,31 +124,25 @@ theorem quotInt_prod_eq_zero {TA : Subgroup A} {TB : Subgroup B} {U : Subgroup (
 end Prod
 
 /- English proof (translation)
-Set `U : Subgroup (A × B)` to `T.comap (e : A × B →* H)`. Establish `hU : ∀ x, x ∈ U ↔ x.1 ∈ TA ∧ x.2 ∈ TB` using `fun x => hmem x.1 x.2`. Establish `h' : ∀ x, e x ∈ T ↔ x ∈ U` using `fun x => Iff.rfl`. Establish `hA : IsClosed (TA : Set A)`. Establish `: (TA : Set A) = (fun a => e (a, 1)) ⁻¹' (T : Set H)` using `Set.ext fun a => by simp [hmem]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `hT.preimage (by fun_prop)`. Establish `hB : IsClosed (TB : Set B)`. Establish `: (TB : Set B) = (fun b => e (1, b)) ⁻¹' (T : Set H)` using `Set.ext fun b => by simp [hmem]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hT.preimage (by fun_prop)`. Establish `hUc : IsClosed (U : Set (A × B))` using `hT.preimage e.continuous`. Use `haveI : LocallyCompactSpace TA := hA.locallyCompactSpace`. Use `haveI : LocallyCompactSpace TB := hB.locallyCompactSpace`. Use `haveI : LocallyCompactSpace T := hT.locallyCompactSpace`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hc : ∀ x y : T, x * y = y * x` using `fun x y => hcomm.is_comm.comm x y`. Establish `hcA : ∀ s s' : TA, s * s' = s' * s` using `fun s s' => by`. Use `congrArg Subtype.val (hc ⟨e ((s : A), 1), (hmem _ _).2 ⟨s.2, TB.one_mem⟩⟩ ⟨e ((s' : A), 1), (hmem _ _).2 ⟨s'.2, TB.one_mem⟩⟩)` as an intermediate fact. Simplify using `only [Subgroup.coe_mul, ← map_mul, Prod.mk_mul_mk, mul_one] at this`. Conclude with `Subtype.ext (congrArg Prod.fst (e.injective this))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hcB : ∀ s s' : TB, s * s' = s' * s` using `fun s s' => by`. Use `congrArg Subtype.val (hc ⟨e (1, (s : B)), (hmem _ _).2 ⟨TA.one_mem, s.2⟩⟩ ⟨e (1, (s' : B)), (hmem _ _).2 ⟨TA.one_mem, s'.2⟩⟩)` as an intermediate fact. Simplify using `only [Subgroup.coe_mul, ← map_mul, Prod.mk_mul_mk, mul_one] at this`. Conclude with `Subtype.ext (congrArg Prod.snd (e.injective this))`. Use `haveI : ds.IsMulRightInvariant := ⟨fun g => by`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[show (fun x : TA => x * g) = (fun x => g * x) from funext fun x => hcA x g]`. Conclude with `map_mul_left_eq_self ds g⟩`. Set `dr : Measure TB` to `Measure.haar`. Use `haveI : dr.IsMulRightInvariant := ⟨fun g => by`. Rewrite using `[show (fun x : TB => x * g) = (fun x => g * x) from funext fun x => hcB x g]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `map_mul_left_eq_self dr g⟩`. Use `haveI : dt.IsMulRightInvariant := ⟨fun g => by`. Rewrite using `[show (fun x : T => x * g) = (fun x => g * x) from funext fun x => hc x g]`. Conclude with `map_mul_left_eq_self dt g⟩`. Set `dtU : Measure U` to `(ds.prod dr).map (prodSub hU)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Use `haveI : dtU.IsHaarMeasure := ContinuousMulEquiv.isHaarMeasure_map _ _`. Use `haveI : dtU.IsMulRightInvariant := isMulRightInvariant_map (prodSub hU) _`. Set `dt' : Measure T` to `dtU.map (subEquiv e h')`. Use `haveI : dt'.IsHaarMeasure := ContinuousMulEquiv.isHaarMeasure_map _ _`. Use `haveI : dt'.IsMulRightInvariant := isMulRightInvariant_map (subEquiv e h') _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Set `db : Measure B` to `Measure.haar`. Set `dh' : Measure H` to `(da.prod db).map e`. Use `haveI : dh'.IsHaarMeasure := ContinuousMulEquiv.isHaarMeasure_map _ _`. Establish `hiU : LeftInv U (φ ∘ e)` using `fun γ hγ g => by`. Simplify using `only [Function.comp, map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hi _ hγ _`. Establish `ht` using `hasQuotInt_map (e := e) (h := h') (hT := hUc) (dt := dtU) (dh := da.prod db) hi (quotInt T dt' dh' φ)`. Establish `hk : Measure.haarScalarFactor dt dt' ≠ 0` using `fun h => NeZero.ne dt (by`. Rewrite using `[Measure.isMulLeftInvariant_eq_smul dt dt', h, zero_smul])`. Establish `hc0 : Measure.haarScalarFactor dh dh' ≠ 0` using `fun h => NeZero.ne dh (by`.
-
-Rewrite using `[Measure.isMulLeftInvariant_eq_smul dh dh', h, zero_smul])`. Take `⟨k, hk0, edt⟩ : ∃ k : ℝ≥0, k ≠ 0 ∧ dt = k • dt'` from `⟨_, hk, Measure.isMulLeftInvariant_eq_smul dt dt'⟩`. Take `⟨c, hc1, edh⟩ : ∃ c : ℝ≥0, c ≠ 0 ∧ dh = c • dh'` from `⟨_, hc0, Measure.isMulLeftInvariant_eq_smul dh dh'⟩`. Substitute `edt edh` using the available equality. Establish `e1 : quotMeas T (k • dt') (c • dh') = ((k⁻¹ * c : ℝ≥0) : ℝ≥0∞) • quotMeas T dt' dh'`.
-
-Rewrite using `[quotMeas_smul_right hT hk0, show c • dh' = (c : ℝ≥0∞) • dh' from rfl, quotMeas_smul_left hT, show ∀ (r : ℝ≥0) (μ : Measure (Quot T)), r • μ = (r : ℝ≥0∞) • μ from fun _ _ => rfl, smul_smul, ENNReal.coe_mul]`. Establish `hr0 : ((k⁻¹ * c : ℝ≥0) : ℝ≥0∞) ≠ 0` using `by simp [hk0, hc1]`. Rewrite `hint` using `[e1]`. Establish `hint'` using `(integrable_smul_measure hr0 ENNReal.coe_ne_top).1 hint`. Establish `hI` using `(ht.1.1 ⟨hint', rfl⟩).1`.
-
-Establish `h00` using `quotInt_prod_eq_zero hU hA hB da db ds dr (φ ∘ e) hiU hI h0`. Establish `hz : quotInt T dt' dh' φ = 0` using `ht.2.trans h00`. Rewrite using `[quotInt, e1, integral_smul_measure]`. Rewrite `hz` using `[quotInt]`. Rewrite using `[hz, smul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotInt_eq_zero_of_fiber (A : Type) [Group A] [TopologicalSpace A] [IsTopologicalGroup A]
     [SecondCountableTopology A] [LocallyCompactSpace A] [T2Space A] [MeasurableSpace A] [BorelSpace A] (B : Type)

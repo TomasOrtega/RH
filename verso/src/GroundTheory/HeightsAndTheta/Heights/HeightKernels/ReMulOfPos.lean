@@ -10,9 +10,9 @@ open scoped nonZeroDivisors ComplexOrder
 noncomputable section
 
 /- English proof (translation)
-Establish `he : ∀ j : Fin k, embVec σ (Pi.single j 1 : Fin k → K) = Pi.single j 1` using `fun j => by`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[embVec]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[embVec, hij]`. Use extensionality with `a b`. Simplify using `[gramAt, he, mulVec_single, single_dotProduct]`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gramAt_single {K : Type*} [Field K] {k : ℕ} (h : Matrix (Fin k) (Fin k) ℂ) (σ : K →+* ℂ) :
     gramAt h σ (fun j : Fin k => (Pi.single j 1 : Fin k → K)) = h := by
@@ -25,7 +25,7 @@ theorem gramAt_single {K : Type*} [Field K] {k : ℕ} (h : Matrix (Fin k) (Fin k
   simp [gramAt, he, mulVec_single, single_dotProduct]
 
 /- English proof (translation)
-Establish `h` using `(Complex.pos_iff.mp hx).2`. Rewrite using `[Complex.mul_re, show x.im = 0 by linarith]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem re_mul_of_pos {x : ℂ} (y : ℂ) (hx : 0 < x) : (x * y).re = x.re * y.re := by
   have h := (Complex.pos_iff.mp hx).2
@@ -33,21 +33,19 @@ theorem re_mul_of_pos {x : ℂ} (y : ℂ) (hx : 0 < x) : (x * y).re = x.re * y.r
   ring
 
 /- English proof (translation)
-Introduce `K _ _ n a d ha hd m k b c hli hmk`. Use `set B := sumBasis b c hli hmk`. Establish `hb : (fun i => B (Sum.inl i)) = b` using `funext fun i => by simp [B, sumBasis_apply]`. Establish `hc : coordProj B ∘ c = fun j : Fin k => (Pi.single j 1 : Fin k → K)` using `funext fun j => by`. Establish `: c j = B (Sum.inr j)` using `by simp [B, sumBasis_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.comp_apply, this, KLinesProjLattice.coordProj_basis_inr]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[quotLattice, Submodule.map_coe, LinearMap.coe_restrictScalars, Submodule.span_image, (LinesIdealLatticeFG.full K n a ha).2, Submodule.map_top, LinearMap.range_eq_top]`. Conclude with `KLinesQuotIndex.coordProj_surjective B`. Establish `hspan : Submodule.span K (Set.range fun j : Fin k => (Pi.single j 1 : Fin k → K)) = ⊤`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h : (Set.range fun j : Fin k => (Pi.single j 1 : Fin k → K)) = Set.range (Pi.basisFun K (Fin k))`. Use `congr 1`. Use function extensionality and compare the values at `j`. Conclude with `(Pi.basisFun_apply _ _ _).symm`. Rewrite using `[h]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `(Pi.basisFun K (Fin k)).span_eq`. Establish `hidx` using `LinesQuotIndex.full K n m k B (idealLattice a) c`. Rewrite `hidx` using `[hb, hc]`. Unfold `subDegree quotDegree`. Rewrite using `[hspan, Submodule.restrictScalars_top, inf_top_eq, hidx]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congr 2`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[gramAt_single]`. Use `set G := gramAt (diagMetric d σ) σ (Sum.elim b c)`. Establish `hG : G.PosDef` using `LinesGramPosDef.full K n _ σ _ _ (diagMetric_posDef hd σ) hli`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : G.toBlocks₁₁.PosDef` using `hG.submatrix Sum.inl_injective`. Establish `hS : (schurMetric d b c σ).PosDef` using `schurMetric_posDef hd hli σ`. Establish `hbb : gramAt (diagMetric d σ) σ b = G.toBlocks₁₁` using `rfl`. Establish `: Invertible G.toBlocks₁₁` using `hA.isUnit.invertible`. Establish `hdet : G.det = G.toBlocks₁₁.det * (schurMetric d b c σ).det` using `by conv_lhs => rw [← fromBlocks_toBlocks G]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[det_fromBlocks₁₁, invOf_eq_nonsing_inv]`. Both sides reduce to the same expression. Establish `hApos` using `hA.det_pos`. Establish `hSpos` using `hS.det_pos`. Rewrite using `[hbb, hdet, re_mul_of_pos _ hApos, Real.log_mul (Complex.pos_iff.mp hApos).1.ne' (Complex.pos_iff.mp hSpos).1.ne']`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem S6.QuotDegree.proof : S6.QuotDegree.Statement := by
   intro K _ _ n a d ha hd m k b c hli hmk

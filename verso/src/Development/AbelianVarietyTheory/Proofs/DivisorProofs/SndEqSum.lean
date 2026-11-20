@@ -3,17 +3,17 @@ import Mathlib
 namespace GlobalTheory.SecondComponentSum
 
 /- English proof (translation)
-Set `φ : A →+* K` to `(TrivSqZeroExt.fstHom K K K).toRingHom.comp θ`. Set `_ : Module A K` to `Module.compHom K φ`. Set `_ : Module k K` to `Module.compHom K (φ.comp (algebraMap k A))`. Establish `: IsScalarTower k A K` using `⟨fun c a x => by`. Express the relevant statement in the definitionally equal form `φ (c • a) * x = φ (algebraMap k A c) * (φ a * x)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Algebra.smul_def, map_mul, mul_assoc]⟩`. Establish `hsmul : ∀ (a : A) (x : K), a • x = TrivSqZeroExt.fst (θ a) * x` using `fun _ _ => rfl`. Establish `hsndmul : ∀ a b : A, TrivSqZeroExt.snd (θ (a * b)) = TrivSqZeroExt.fst (θ a) * TrivSqZeroExt.snd (θ b) + TrivSqZeroExt.snd (θ a) * TrivSqZeroExt.fst (θ b)`. Introduce `a b`. Rewrite using `[map_mul, TrivSqZeroExt.snd_mul, smul_eq_mul, op_smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Set `ℓ : A →ₗ[k] K` to `{ toFun := fun a => TrivSqZeroExt.snd (θ a) map_add' := fun a b => by`. Simplify using `only [map_add, TrivSqZeroExt.snd_add]`. Use the proof step `map_smul' := fun c a => by`. Express the relevant statement in the definitionally equal form `TrivSqZeroExt.snd (θ (c • a)) = φ (algebraMap k A c) * TrivSqZeroExt.snd (θ a)`. Rewrite using `[Algebra.smul_def, hsndmul, hθ, zero_mul, add_zero]`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `rfl }`. Set `d : Derivation k A K` to `Derivation.mk' ℓ fun a b => by`. Express the relevant statement in the definitionally equal form `TrivSqZeroExt.snd (θ (a * b)) = TrivSqZeroExt.fst (θ a) * TrivSqZeroExt.snd (θ b) + TrivSqZeroExt.fst (θ b) * TrivSqZeroExt.snd (θ a)`. Rewrite using `[hsndmul, mul_comm (TrivSqZeroExt.snd (θ a))]`. Establish `key` using `congrArg d.liftKaehlerDifferential (B.sum_repr (KaehlerDifferential.D k A s))`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[Derivation.liftKaehlerDifferential_comp_D, map_sum]`. Express the relevant statement in the definitionally equal form `d s = _`. Rewrite using `[← key]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smul, hB, Derivation.liftKaehlerDifferential_comp_D, hsmul, mul_comm]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem snd_eq_sum {k A : Type} [CommRing k] [CommRing A] [Algebra k A] {D : ℕ}
     (f : Fin D → A) (B : Module.Basis (Fin D) A Ω[A⁄k])

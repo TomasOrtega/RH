@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Ra
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N TensorProduct Module
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.bkACore_of_rationalDuality` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FBlochKatoAnnihilatorOfRationalLocalDuality.lean&line=118#L118)
 -/

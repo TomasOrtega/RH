@@ -8,7 +8,7 @@ open PowerSeries GlobalTheory.BK
 variable {K : Type} [NormedField K] [IsUltrametricDist K]
 
 /- English proof (translation)
-Simplify `hf) (by simpa using hg) n` using `using norm_coeff_mul_le (w := fun _ => 1) (fun _ => zero_le_one) (fun _ _ => by simp) ha hb (f := f) (g := g) (by simpa`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem norm_coeff_mul_le' {f g : K⟦X⟧} {a b : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b)
     (hf : ∀ n, ‖coeff n f‖ ≤ a) (hg : ∀ n, ‖coeff n g‖ ≤ b) (n : ℕ) :
@@ -18,7 +18,7 @@ theorem norm_coeff_mul_le' {f g : K⟦X⟧} {a b : ℝ} (ha : 0 ≤ a) (hb : 0 �
 
 omit [IsUltrametricDist K] in
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[map_add, coeff_mk, coeff_X_pow_mul', coeff_mk]`. Distinguish the cases in `h : n < n₀`. Rewrite using `[if_pos h, if_neg (not_le.2 h), add_zero]`. Rewrite using `[if_neg h, if_pos (not_lt.1 h), zero_add, Nat.sub_add_cancel (not_lt.1 h)]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_low_add_high (f : K⟦X⟧) (n₀ : ℕ) :
     f = (PowerSeries.mk fun n => if n < n₀ then coeff n f else 0) +
@@ -30,13 +30,13 @@ theorem eq_low_add_high (f : K⟦X⟧) (n₀ : ℕ) :
   · rw [if_neg h, if_pos (not_lt.1 h), zero_add, Nat.sub_add_cancel (not_lt.1 h)]
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `(equivA O K).surjective ⟨u, hu⟩`. Establish `hv' : PowerSeries.map (algebraMap O K) v = u`. Rewrite using `[← coe_equivA, hv]`. Establish `hc : algebraMap O K (constantCoeff v) = coeff 0 u`. Rewrite using `[← hv', coeff_map, coeff_zero_eq_constantCoeff_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : coeff 0 u ≠ 0`. Introduce `h`. Rewrite `h0` using `[h, norm_zero]`. Conclude with `zero_ne_one h0`. Take `⟨c, hc'⟩` from `(IsUnitBall.mem_range_iff (O := O) (coeff 0 u)⁻¹).2 (by rw [norm_inv, h0, inv_one])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hunit : IsUnit (constantCoeff v)`. Use `IsUnit.of_mul_eq_one c (IsUnitBall.inj (O := O) (K := K) ?_)` and prove the remaining obligations. Rewrite using `[map_mul, hc, hc', map_one, mul_inv_cancel₀ hne]`. Take `⟨w, hw⟩` from `(isUnit_iff_constantCoeff.2 hunit).exists_right_inv`. Use `⟨equivA O K w, (equivA O K w).2, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coe_equivA, ← hv', ← map_mul, hw, map_one]`.
+A detailed English derivation is pending.
 -/
 theorem exists_inv_mem_A {O : Type} [CommRing O] [Algebra O K] [IsUnitBall O K] {u : K⟦X⟧}
     (hu : u ∈ A O K) (h0 : ‖coeff 0 u‖ = 1) : ∃ w ∈ A O K, u * w = 1 := by
@@ -59,13 +59,11 @@ theorem exists_inv_mem_A {O : Type} [CommRing O] [Algebra O K] [IsUnitBall O K] 
   rw [coe_equivA, ← hv', ← map_mul, hw, map_one]
 
 /- English proof (translation)
-Establish `hfe` using `eq_low_add_high f n₀`. Use `set r : K⟦X⟧ := PowerSeries.mk fun n => if n < n₀ then coeff n f else 0 with hr`. Use `set fh : K⟦X⟧ := PowerSeries.mk fun n => coeff (n + n₀) f with hfh`. Establish `hq : ∀ n, ‖coeff n (w * fh)‖ ≤ t` using `fun n => by`. Use `norm_coeff_mul_le' zero_le_one ht hw (g := fh) (fun m => by rw [hfh, coeff_mk]; exact hf _) n` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis. Use `⟨w * fh, r, hq, fun i hi => ?_, fun i => ?_, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[hr, coeff_mk, if_neg (not_lt.2 hi)]`. Rewrite using `[hr, coeff_mk] split_ifs`. Conclude with `hf _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_zero]` and apply the resulting hypothesis. Establish `: f - w * fh * g - r = -(w * fh * p)`. Rewrite using `[hg]`. Take the linear combination `hfe - X ^ n₀ * fh * huw`. Rewrite using `[this, map_neg, norm_neg]`.
-
-Conclude with `norm_coeff_mul_le' ht hρ hq hp n`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step {g p u w : K⟦X⟧} {n₀ : ℕ} {ρ t : ℝ} (hρ : 0 ≤ ρ) (ht : 0 ≤ t)
     (hg : g = p + X ^ n₀ * u) (huw : u * w = 1) (hw : ∀ n, ‖coeff n w‖ ≤ 1)
@@ -92,11 +90,11 @@ theorem step {g p u w : K⟦X⟧} {n₀ : ℕ} {ρ t : ℝ} (hρ : 0 ≤ ρ) (ht
     exact norm_coeff_mul_le' ht hρ hq hp n
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => exact ⟨0, 0, by simp, by simp, by simp, by simpa using hf⟩`. Consider the case `succ k ih`. Take `⟨q, r, hq, hr0, hr, he⟩` from `ih`. Take `⟨q', r', hq', hr0', hr', he'⟩` from `step hρ (pow_nonneg hρ k) hg huw hw hp _ he`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h1 : ρ ^ k ≤ 1` using `pow_le_one₀ hρ hρ1`. Use `⟨q + q', r + r', fun n => ?_, fun i hi => ?_, fun n => ?_, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hq n) ((hq' n).trans h1))`. Rewrite using `[map_add, hr0 i hi, hr0' i hi, add_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hr n) ((hr' n).trans h1))`. Establish `: f - (q + q') * g - (r + r') = f - q * g - r - q' * g - r'` using `by ring`. Rewrite using `[this, pow_succ]`. Conclude with `he' n`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iterate {g p u w : K⟦X⟧} {n₀ : ℕ} {ρ : ℝ} (hρ : 0 ≤ ρ) (hρ1 : ρ ≤ 1)
     (hg : g = p + X ^ n₀ * u) (huw : u * w = 1) (hw : ∀ n, ‖coeff n w‖ ≤ 1)
@@ -120,11 +118,11 @@ theorem iterate {g p u w : K⟦X⟧} {n₀ : ℕ} {ρ : ℝ} (hρ : 0 ≤ ρ) (h
       exact he' n
 
 /- English proof (translation)
-Use `set ρ : NNReal := (Finset.range n₀).sup (fun i => ‖coeff i g‖₊) with hρ`. Establish `hρ1 : ρ < 1`. Rewrite using `[hρ, Finset.sup_lt_iff (by simp)]`. Introduce `i hi`. Conclude with `hlt i (Finset.mem_range.1 hi)` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hρ1' : (ρ : ℝ) < 1` using `by exact_mod_cast hρ1`. Take `⟨w, hw, huw⟩` from `exists_inv_mem_A (O := O) (u := PowerSeries.mk fun n => coeff (n + n₀) g) (fun n => by rw [coeff_mk]; exact hg _) (by rw [coeff_mk, zero_add, h1])`. Take `⟨k, hk⟩` from `exists_pow_lt_of_lt_one hδ hρ1'`. Take `⟨q, r, hq, hr0, hr, he⟩` from `iterate ρ.2 hρ1'.le (eq_low_add_high g n₀) huw hw (fun n => by`. Rewrite using `[coeff_mk]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `split_ifs with h`. Conclude with `Finset.le_sup (f := fun i => ‖coeff i g‖₊) (Finset.mem_range.2 h)` after adjusting the coercions. Rewrite using `[norm_zero]`. Conclude with `ρ.2) f hf k`. Conclude with `⟨q, hq, r, hr0, hr, fun n => (he n).trans hk.le⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_div_approx (O K : Type) [CommRing O] [NormedField K] [IsUltrametricDist K]
     [Algebra O K] [IsUnitBall O K] (g : K⟦X⟧) (hg : g ∈ A O K) (n₀ : ℕ)

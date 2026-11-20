@@ -35,9 +35,9 @@ open GlobalTheory.Grid (neg sgn ofSgn)
 open MvPolynomial
 
 /- English proof (translation)
-Establish `key : GlobalTheory.CompactHowe.substF (fun _ : ι => (1 : Matrix (Fin N) (Fin N) ℂ)) (fun _ : ι => (1 : Matrix (Fin n) (Fin n) ℂ)) = AlgHom.id ℂ (MvPolynomial (ι × Fin N × Fin n) ℂ)`. Use `algHom_ext fun p => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.CompactHowe.substF_X]`. Take `⟨τ, a, b⟩` from `p`. Rewrite using `[Finset.sum_eq_single a (fun x _ hx => Finset.sum_eq_zero fun y _ => by simp [Matrix.one_apply, hx]) (by simp), Finset.sum_eq_single b (fun y _ hy => by simp [Matrix.one_apply, hy]) (by simp)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Conclude with `congrArg (fun f => f P) key`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem substF_one {ι : Type} {N n : ℕ} (P : MvPolynomial (ι × Fin N × Fin n) ℂ) :
     GlobalTheory.CompactHowe.substF (fun _ : ι => (1 : Matrix (Fin N) (Fin N) ℂ)) (fun _ : ι => (1 : Matrix (Fin n) (Fin n) ℂ)) P = P := by
@@ -52,13 +52,13 @@ theorem substF_one {ι : Type} {N n : ℕ} (P : MvPolynomial (ι × Fin N × Fin
   exact congrArg (fun f => f P) key
 
 /- English proof (translation)
-The claim follows from `Matrix.mul_eq_one_comm_of_equiv (Equiv.refl _) |>.1 h`.
+A detailed English derivation is pending.
 -/
 theorem mul_conjT_of_unitary {n : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : Matrix.conjTranspose M * M = 1) :
     M * Matrix.conjTranspose M = 1 := Matrix.mul_eq_one_comm_of_equiv (Equiv.refl _) |>.1 h
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun N : Matrix (Fin n) (Fin n) ℂ => N.map (starRingEnd ℂ)) h`. Simplify using `only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)] at e`. Use `e using 2` and compare the differences between its conclusion and the goal. Use extensionality with `a b`. Simplify using `[Matrix.conjTranspose_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_conj_mul_conjT {n : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : M * Matrix.conjTranspose M = 1) :
     M.map (starRingEnd ℂ) * Matrix.conjTranspose (M.map (starRingEnd ℂ)) = 1 := by
@@ -76,7 +76,7 @@ open GlobalTheory.Grid (neg sgn ofSgn)
 open MvPolynomial
 
 /- English proof (translation)
-Rewrite using `[Matrix.inv_eq_left_inv h]`. Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, Matrix.transpose_apply, Matrix.conjTranspose_apply, RCLike.star_def, Complex.conj_conj]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem conj_invT_of_unitary' {n : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : Matrix.conjTranspose M * M = 1) :
     ((M⁻¹).transpose).map (starRingEnd ℂ) = M := by
@@ -85,9 +85,9 @@ theorem conj_invT_of_unitary' {n : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : Ma
   simp only [Matrix.map_apply, Matrix.transpose_apply, Matrix.conjTranspose_apply, RCLike.star_def, Complex.conj_conj]
 
 /- English proof (translation)
-Establish `h1` using `GlobalTheory.StdUnn.CartanMove.compAt_isom hθ V g τ`. Establish `hg : gramAt D V τ = 1`. Unfold `gramAt`. Rewrite using `[hV]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hg, Matrix.mul_one]`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem conjT_mul_compAt {D : D7} {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} (hV : V.gram = 1) (g : GA D V)
     (τ : D.what₂.Tau) :
@@ -101,15 +101,15 @@ theorem conjT_mul_compAt {D : D7} {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D
   exact h1
 
 /- English proof (translation)
-Establish `hI` using `hX.is`. Establish `hθ : IsInfFam W.θ` using `hI.isVac.2.inf`. Establish `hψ : IsStdChar D W.ψ (-1)` using `hI.isVac.1`. Establish `hom` using `hI.weil t`. Establish `hsA : ∀ τ, X.rA.s τ = 1` using `fun τ => (hX.std.2.2 τ).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsW : ∀ τ, X.rW.s τ = 1` using `fun τ => (hX.stdW.2.2 τ).1`. Establish `hBA : ∀ τ, X.rA.B τ = 1` using `fun τ => (hX.std.2.2 τ).2`. Establish `hBW : ∀ τ, X.rW.B τ = 1` using `fun τ => (hX.stdW.2.2 τ).2`. Establish `hf : IsThetaFunO W.ψ (neg A) WW X.vac` using `hI.isVac.2.theta`. Establish `hmt : Formalism.L2.Theta.mt (neg A) ((ofSgn true A).symm g) = Formalism.L2.Theta.mt A g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← GlobalTheory.Grid.mt_ofSgn, MulEquiv.apply_symm_apply]`. Use `set u : D.what₂.Tau → Matrix (Fin A.rank) (Fin A.rank) ℂ := fun τ => compAt W.θ τ (Formalism.L2.Theta.mt A g) with hu`. Use `set v : D.what₂.Tau → Matrix (Fin WW.rank) (Fin WW.rank) ℂ := fun τ => compAt W.θ τ (Formalism.L2.Theta.mt WW h) with hv`. Establish `hop` using `GlobalTheory.OrientedHeis.om_pureTensorO D W.ψ W.θ (neg A) WW _ _ ((X.ω t).toSgn true) hom hθ (fun τ => -X.rA.s τ) (fun τ => -X.rA.s τ) X.rA.B (fun τ => X.rA.B τ * u τ) X.rW.s X.rW.s X.rW.B (fun τ => X.rW.B τ * v τ) ((ofSgn true A).symm g) h (fun τ => by rw [hmt, hsA, Matrix.neg_ …`. Use `⟨hop.1, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hop.2]`. Establish `hf' : IsThetaFunO W.ψ (neg A) WW ((X.ω t).toSgn true ((ofSgn true A).symm g, h) X.vac)` using `hom.om_pres _ _ hf`. Establish `e1 : (fun τ => -X.rA.s τ) = fun _ => (-1 : Matrix (Fin A.rank) (Fin A.rank) ℂ)` using `funext fun τ => by rw [hsA]`. Establish `e2 : X.rW.s = fun _ => (1 : Matrix (Fin WW.rank) (Fin WW.rank) ℂ)` using `funext hsW`. Establish `key` using `GlobalTheory.FockNegSubst.pureTensorO_negSp_subst D W.ψ W.θ A WW hψ hθ X.rA.B u X.rW.B v _ hf' P`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hunit : ∀ τ, (((u τ)⁻¹).transpose).map (starRingEnd ℂ) = u τ` using `fun τ => conj_invT_of_unitary' (conjT_mul_compAt hθ hX.std.1 g τ)`. Rewrite `key` using `[funext hunit]`. Rewrite using `[e1, e2]`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem om_pureTensorO_vac {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW} (hX : IsBottomTri W i j X) (t : T) (g : GA D A)
@@ -162,11 +162,9 @@ open GlobalTheory.Grid (neg sgn ofSgn)
 open MvPolynomial
 
 /- English proof (translation)
-Take `⟨γ₀, h0⟩` from `GlobalTheory.Member.exists_isRat_of_mem_GQ V hγ`. Establish `key : compAt θ τ (Formalism.L2.Theta.mt V γ) a b = tauE D τ (γ₀.1 a b)`. Unfold `compAt Formalism.L2.Theta.mt`. Rewrite using `[h0]`. Conclude with `(hθ τ).1 _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Establish `h0 : IsAlgebraic ℚ (γ₀.1 a b)` using `Algebra.IsAlgebraic.isAlgebraic (R := ℚ) (γ₀.1 a b)`. Use `first`. Consider the case `exact h0.algHom (tauE D τ).toRatAlgHom`. Consider the case `exact IsAlgebraic.map (tauE D τ).toRatAlgHom h0`.
-
-Consider the case `exact (isAlgebraic_algHom_iff (tauE D τ).toRatAlgHom (tauE D τ).injective).2 h0`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isAlgebraic_compAt_of_mem_GQ {D : D7} {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} {γ : GA D V}
     (hγ : γ ∈ GQ V) (τ : D.what₂.Tau) (a b : Fin V.rank) :
@@ -184,7 +182,7 @@ theorem isAlgebraic_compAt_of_mem_GQ {D : D7} {θ : InfFam D} (hθ : IsInfFam θ
     | exact (isAlgebraic_algHom_iff (tauE D τ).toRatAlgHom (tauE D τ).injective).2 h0
 
 /- English proof (translation)
-Use `first`. Consider the case `exact h.algHom (starRingEnd ℂ).toRatAlgHom`. Consider the case `exact IsAlgebraic.map (starRingEnd ℂ).toRatAlgHom h`. Consider the case `exact (isAlgebraic_algHom_iff (starRingEnd ℂ).toRatAlgHom (starRingEnd ℂ).injective).2 h`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isAlgebraic_conj {z : ℂ} (h : IsAlgebraic ℚ z) : IsAlgebraic ℚ (starRingEnd ℂ z) := by
   first
@@ -193,23 +191,19 @@ theorem isAlgebraic_conj {z : ℂ} (h : IsAlgebraic ℚ z) : IsAlgebraic ℚ (st
     | exact (isAlgebraic_algHom_iff (starRingEnd ℂ).toRatAlgHom (starRingEnd ℂ).injective).2 h
 
 /- English proof (translation)
-Introduce `D T _ L μ₀ sc G W i j A A' WW X _ _ _ hX t γ hγ a _ γ' hγ' a' _ _ _ k`. Establish `hI` using `hX.is`. Establish `hθ : IsInfFam W.θ` using `hI.isVac.2.inf`. Establish `hom` using `hI.weil t`. Use `set u : D.what₂.Tau → Matrix (Fin A.rank) (Fin A.rank) ℂ := fun τ => compAt W.θ τ (Formalism.L2.Theta.mt A γ) with hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set hm : D.what₂.Tau → Matrix (Fin WW.rank) (Fin WW.rank) ℂ := fun τ => (compAt W.θ τ (Formalism.L2.Theta.mt WW γ')).map (starRingEnd ℂ) with hhm`. Use `set H : D.what₂.Tau → Matrix (Fin WW.rank) (Fin WW.rank) ℂ := fun τ => Matrix.conjTranspose (hm τ) with hH`. Use `set U : D.what₂.Tau → Matrix (Fin A.rank) (Fin A.rank) ℂ := fun τ => Matrix.conjTranspose (u τ) with hU`. Use `set Q := GlobalTheory.CompactHowe.substF H U (MvPolynomial.monomial k 1) with hQdef`. Establish `hHm : hm * H = fun _ => 1` using `funext fun τ => map_conj_mul_conjT (mul_conjT_of_unitary (conjT_mul_compAt hθ hX.stdW.1 γ' τ))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUm : u * U = fun _ => 1` using `funext fun τ => mul_conjT_of_unitary (conjT_mul_compAt hθ hX.std.1 γ τ)`. Establish `hQ : GlobalTheory.CompactHowe.substF hm u Q = MvPolynomial.monomial k 1`. Rewrite using `[hQdef, GlobalTheory.CompactHowe.substF_mul, hHm, hUm, substF_one]`. Establish `hact` using `om_pureTensorO_vac hX t γ γ' Q`. Establish `hjet : pureTensorO W.ψ W.θ (neg A) WW (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B (X.ω t (γ, γ') X.vac) (MvPolynomial.monomial k 1) 0 = pureTensorO W.ψ W.θ (neg A) WW (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B X.vac Q 0`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hQ]`. Express the relevant statement in the definitionally equal form `pureTensorO W.ψ W.θ (neg A) WW (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B ((X.ω t).toSgn true ((ofSgn true A).symm γ, γ') X.vac) _ 0 = _`. Rewrite using `[← hact.2]`. Conclude with `hom.om_aut _ (GlobalTheory.SquareComm.ofSgn_symm_mem_GQ true hγ) γ' hγ' _ hact.1`. Establish `hHalg : ∀ τ a b, IsAlgebraic ℚ (H τ a b)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ a b`. Establish `e : H τ a b = compAt W.θ τ (Formalism.L2.Theta.mt WW γ') b a`. Simplify using `[hH, hhm, Matrix.conjTranspose_apply]`. Rewrite using `[e]`. Conclude with `isAlgebraic_compAt_of_mem_GQ hθ hγ' τ b a`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hUalg : ∀ τ a b, IsAlgebraic ℚ (U τ a b)`. Introduce `τ a b`. Establish `e : U τ a b = starRingEnd ℂ (compAt W.θ τ (Formalism.L2.Theta.mt A γ) b a)`. Simplify using `[hU, hu, Matrix.conjTranspose_apply]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isAlgebraic_conj (isAlgebraic_compAt_of_mem_GQ hθ hγ τ b a)`. Set `e` to `Q.support.equivFin`. Use `⟨Q.support.card, fun p => MvPolynomial.coeff (e.symm p).1 Q, fun p => (e.symm p).1, fun p => ?_, fun p => ?_, ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.SubstCoeff.coeff_substF_monomial_continuous_algebraic k (e.symm p).1).2 H U hHalg hUalg`. Conclude with `GlobalTheory.CompactHowe.mapDomain_fst_eq_of_coeff_substF_ne_zero H U k (e.symm p).1 (MvPolynomial.mem_support_iff.1 (e.symm p).2)`.
-
-Rewrite using `[hjet]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[show MvPolynomial.monomial x (MvPolynomial.coeff x Q) = MvPolynomial.coeff x Q • MvPolynomial.monomial x 1 by`.
-
-Rewrite using `[MvPolynomial.smul_monomial, smul_eq_mul, mul_one], map_smul, Pi.smul_apply, smul_eq_mul]`. Use `_ = _ := by`. Rewrite using `[← Finset.sum_coe_sort]`. Conclude with `(Equiv.sum_comp e.symm (fun x : Q.support => MvPolynomial.coeff x.1 Q * pureTensorO W.ψ W.θ (neg A) WW (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B X.vac (MvPolynomial.monomial x.1 1) 0)).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jet_moved_vac_alg : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →

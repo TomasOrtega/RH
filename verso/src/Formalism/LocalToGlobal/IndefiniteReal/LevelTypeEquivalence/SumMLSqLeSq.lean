@@ -17,9 +17,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {S T : HSp D} {k : ℕ}
 
 /- English proof (translation)
-Take `⟨K, hK, hFK⟩` from `PHeisFC.FD_sub_compact T S`. Take `⟨M, hM⟩` from `hK.exists_bound_of_continuousOn hc.continuousOn`. Use `⟨M, fun x => ?_⟩` and prove the remaining obligations. Take `⟨g, hg, -⟩` from `PHeisFC.exU T S x`. Take `⟨γ, hγ⟩` from `g.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hgx : (g : WO S T) + x = ratW T S γ + x` using `by rw [← hγ]; rfl`. Rewrite using `[← norm_dH_rat hψu hf hs l γ x, ← hgx]`. Conclude with `hM _ (hFK hg)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dH_bdd {ψ : AddChar (AF D.host.F) ℂ} (hψu : ∀ a, ‖ψ a‖ = 1) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f)
     {L : (Fin k → ℝ) →+ WO S T} (hs : ∀ x, ContDiff ℝ ∞ (Gf ψ L f x)) {n : ℕ} (l : Fin n → Fin k)

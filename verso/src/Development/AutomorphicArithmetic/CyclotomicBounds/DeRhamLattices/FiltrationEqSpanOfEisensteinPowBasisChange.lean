@@ -1,25 +1,25 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `R W _ _ act hmul hone eD hbij F hF ι _ _ β h b m m' hm hh hF0 w`. Establish `hpow : ∀ (n : ℕ) (y : W), act (eD ^ n) y = (act eD)^[n] y`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Simplify using `[hone]`. Consider the case `succ n ih`. Introduce `y`. Rewrite using `[pow_succ, hmul, ih, Function.iterate_succ_apply]`. Establish `hFn : ∀ (n : ℕ) (y : W), F 0 y ↔ F n ((act eD)^[n] y)`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro y`. Simplify using the standard rewrite rules. Consider the case `succ n ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `y`. Rewrite using `[ih, hF, Function.iterate_succ_apply', Nat.cast_succ]`. Establish `hinj : Function.Injective (act (eD ^ β))`. Introduce `x y hxy`. Rewrite `hxy` using `[hpow, hpow]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(hbij.iterate β).1 hxy`. Establish `hexp : ∀ d : ι → R, ∑ i, act (d i) (h i) = act (eD ^ β) (∑ k, act (∑ i, d i * m i k) (b k))`. Introduce `d`. Simplify using `only [hh, map_sum, AddMonoidHom.finset_sum_apply, ← hmul]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl (fun k _ => Finset.sum_congr rfl (fun i _ => ?_))` and prove the remaining obligations. Conclude with `congrArg (fun r => act r (b k)) (by ring)`. Establish `hspan : ∀ y : W, (∃ d : ι → R, y = ∑ k, act (d k) (b k)) ↔ ∃ e : ι → R, y = ∑ k, act (∑ i, e i * m i k) (b k)`. Introduce `y`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨d, rfl⟩`. Use `⟨fun i => ∑ j, d j * m' j i, ?_⟩` and prove the remaining obligations. Establish `hc : ∀ k, ∑ i, (∑ j, d j * m' j i) * m i k = d k`. Introduce `k`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_apply, Finset.sum_mul, Finset.mul_sum, mul_assoc]`. Rewrite using `[Finset.sum_comm]`. Use `_ = d k := by simp [hm, Matrix.one_apply]`. Simplify using `only [hc]`. Introduce and unpack `⟨e, rfl⟩`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨fun k => ∑ i, e i * m i k, rfl⟩`. Take `⟨y, rfl⟩` from `(hbij.iterate β).2 w`. Rewrite using `[← hFn β y, hF0, hspan, ← hpow]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨e, he⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨e, by rw [hexp, he]⟩`. Introduce and unpack `⟨e, he⟩`. Conclude with `⟨e, hinj (by rw [he, hexp])⟩`.
+A detailed English derivation is pending.
 -/
 theorem _root_.UpperTheory.KN.filtration_eq_span_of_eisensteinPow_basisChange :
     ∀ (R W : Type) [CommRing R] [AddCommGroup W] (act : R →+ (W →+ W)), (∀ (r s : R) (w : W), act (r * s) w = act r (act s w)) → (∀ w : W, act 1 w = w) → ∀ (eD : R), Function.Bijective (act eD) → ∀ (F : ℤ → W → Prop), (∀ (y : W) (j : ℤ), F j y ↔ F (j + 1) (act eD y)) → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (β : ℕ) (h b : ι → W) (m m' : Matrix ι ι R), m' * m = 1 → (∀ i, h i = ∑ k, act (eD ^ β * m i k) (b k)) → (∀ v, F 0 v ↔ ∃ d : ι → R, v = ∑ k, act (d k) (b k)) → ∀ w, F (β : ℤ) w ↔ ∃ d : ι → R, w = ∑ i, act (d i) (h i) := by

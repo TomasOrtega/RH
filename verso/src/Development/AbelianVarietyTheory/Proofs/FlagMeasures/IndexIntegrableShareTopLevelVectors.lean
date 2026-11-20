@@ -17,85 +17,77 @@ namespace GlobalTheory.TopLevelShare
 open ValuativeRel MeasureTheory in
 open scoped Pointwise ENNReal Classical in
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ L r k S j β βJ d Λ hT hF`. Take `⟨-, hbe, hle, ⟨y₀, hy₀, hy₀l⟩, hJ⟩` from `hF`. Take `⟨-, -, hMsat, -⟩` from `_root_.GlobalTheory.HL.TermBasic.term_basic L r k S d Λ hT`. Take `⟨-, -, -, -, -, ⟨i, -, hq⟩, -, -, -, -, hlev⟩` from `_root_.GlobalTheory.HL.Defect.exponents_and_defect L r k S d Λ hT`. Establish `hth : S.th ≠ 0` using `(_root_.GlobalTheory.FrameBasic.main L r k S).2.2.2.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set A := S.refB (↑j + 1) Λ with hAdef`. Establish `hA : ∀ b : S.V × S.V, b ∈ A ↔ b.1 ∈ S.spanTo S.f (↑j + 1) ∧ b.2 ∈ S.spanTo S.f' (↑j + 1) ∧ ∃ y ∈ Λ, S.th • y = b.1 + b.2`. Introduce `b`. Simplify using `[hAdef, _root_.GlobalTheory.HL.Frames.refB, AddSubgroup.mem_prod, and_assoc]`. Establish `hlevC : ∀ y, S.levC d Λ y = S.lev (S.fr d Λ) (S.fr' d Λ) (S.th • y)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Simplify using `[_root_.GlobalTheory.HL.Frames.levC]`. Establish `hsat : ∀ y, y ∈ S.sat Λ ↔ y ∈ Λ ∧ y ∈ S.spanTo S.f (r + 1) ⊔ S.spanTo S.f' (r + 1)`. Introduce `y`. Use `show y ∈ Λ ⊓ S.ME.restrictScalars L.O ↔ _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Submodule.mem_inf, Submodule.restrictScalars_mem]`. Both sides reduce to the same expression. Establish `hbe' : S.be d Λ = (S.M d Λ).toAddSubgroup.relIndex (S.sat Λ).toAddSubgroup` using `rfl`. Establish `hq0 : S.q ≠ 0`. Establish `hirr` using `S.ϖ_irr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `show _root_.GlobalTheory.HL.resQ S.ϖ ≠ 0`. Unfold `_root_.GlobalTheory.HL.resQ`. Rewrite using `[← (IsDiscreteValuationRing.irreducible_iff_uniformizer _).1 hirr]`. Conclude with `(Nat.card_pos (α := IsLocalRing.ResidueField (ValuativeRel.valuation F).integer)).ne'`. Establish `hβ0 : β ≠ 0` using `by rw [← hbe, hq]; exact pow_ne_zero _ hq0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `set π : S.V × S.V → S.V := fun b => S.th⁻¹ • (b.1 + b.2) with hπdef`. Establish `hπsmul : ∀ b, S.th • π b = b.1 + b.2` using `fun b => smul_inv_smul₀ hth _`. Establish `hπadd : ∀ a b, π (a + b) = π a + π b`. Introduce `a b`. Simplify using `only [hπdef, Prod.fst_add, Prod.snd_add, ← smul_add, add_add_add_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hπsub : ∀ a b, π (a - b) = π a - π b`. Introduce `a b`. Simplify using `only [hπdef, Prod.fst_sub, Prod.snd_sub, ← smul_sub, sub_add_sub_comm]`. Establish `hπA : ∀ b ∈ A, π b ∈ S.sat Λ`. Introduce `b hb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h1, h2, y, hy, hyb⟩` from `(hA b).1 hb`. Establish `hjr : (↑j + 1 : ℕ) ≤ r + 1` using `by omega`. Rewrite using `[hsat]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hπdef]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only`. Rewrite using `[← hyb, inv_smul_smul₀ hth]`. Conclude with `hy`. Use `Submodule.smul_of_tower_mem _ _ (add_mem ?_ ?_)` and prove the remaining obligations. Conclude with `Submodule.mem_sup_left (_root_.GlobalTheory.HL.FrameOnto.spanTo_mono S S.f hjr h1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.mem_sup_right (_root_.GlobalTheory.HL.FrameOnto.spanTo_mono S S.f' hjr h2)`. Establish `hlevπ : ∀ b : S.V × S.V, S.lev (S.fr d Λ) (S.fr' d Λ) (b.1 + b.2) = S.levC d Λ (π b)`. Introduce `b`. Rewrite using `[hlevC, hπsmul]`. Establish `hinv : ∀ y ∈ S.sat Λ, ∀ m ∈ S.M d Λ, S.levC d Λ (y + m) = S.levC d Λ y`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce `y hy m hm`. Establish `key : ∀ n : ℕ, S.levC d Λ (y + m) ≤ n ↔ S.levC d Λ y ≤ n`. Introduce `n`. Rewrite using `[hlev _ (add_mem hy (hMsat hm)), hlev _ hy]`. Prove the components needed by the constructor for the conclusion.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨y₁, h₁, h₂⟩`. Conclude with `⟨y₁, h₁, by simpa [add_sub_right_comm] using sub_mem h₂ hm⟩`. Introduce and unpack `⟨y₁, h₁, h₂⟩`. Conclude with `⟨y₁, h₁, by simpa [add_sub_right_comm] using add_mem h₂ hm⟩`. Conclude with `le_antisymm ((key _).2 le_rfl) ((key _).1 le_rfl)`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Use `set B : AddSubgroup (S.V × S.V) := A ⊓ AddSubgroup.comap (AddMonoidHom.fst S.V S.V + AddMonoidHom.snd S.V S.V) ((S.M d Λ).toAddSubgroup.map (DistribMulAction.toAddMonoidHom S.V S.th)) with hBdef`. Establish `hB : ∀ b, b ∈ B ↔ b ∈ A ∧ π b ∈ S.M d Λ`. Introduce `b`. Rewrite using `[hBdef, AddSubgroup.mem_inf]`. Use `and_congr_right fun _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [AddSubgroup.mem_comap, AddSubgroup.mem_map, AddMonoidHom.add_apply, AddMonoidHom.coe_fst, AddMonoidHom.coe_snd, DistribMulAction.toAddMonoidHom_apply, Submodule.mem_toAddSubgroup]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, hm, hmb⟩`. Rewrite using `[hπdef]`. Simplify using `only`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hmb, inv_smul_smul₀ hth]`. Conclude with `hm`. Introduce `h`. Conclude with `⟨π b, h, hπsmul b⟩`. Establish `hsatΛ : ∀ y ∈ S.sat Λ, y ∈ Λ` using `fun y hy => ((hsat y).1 hy).1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hlift : ∀ y ∈ S.sat Λ, ∃ b ∈ A, y - π b ∈ S.M d Λ`. Introduce `y hy`. Take `⟨y₁, hy₁U, hyM⟩` from `(hlev y hy (↑j + 1)).1 (hle y hy)`. Establish `hy₁Λ : y₁ ∈ Λ` using `by simpa using sub_mem (hsatΛ y hy) (hsatΛ _ (hMsat hyM))`. Take `⟨u₁, hu₁, u₂, hu₂, hu⟩` from `Submodule.mem_sup.1 (Submodule.smul_of_tower_mem _ S.th hy₁U)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨(u₁, u₂), (hA _).2 ⟨hu₁, hu₂, y₁, hy₁Λ, hu.symm⟩, ?_⟩` and prove the remaining obligations. Establish `: π (u₁, u₂) = y₁`. Rewrite using `[hπdef]`. Simplify using `only`. Rewrite using `[hu, inv_smul_smul₀ hth]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[this]`. Conclude with `hyM`. Use `set K := (S.M d Λ).toAddSubgroup.addSubgroupOf (S.sat Λ).toAddSubgroup with hKdef`. Set `πA : A →+ (S.sat Λ).toAddSubgroup` to `{ toFun := fun b => ⟨π b, hπA b b.2⟩ map_zero' := Subtype.ext (by simp [hπdef]) map_add' := fun a b => Subtype.ext (hπadd a b) }`. Set `g : A →+ (S.sat Λ).toAddSubgroup ⧸ K` to `(QuotientAddGroup.mk' K).comp πA`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hg : ∀ a : A, g a = QuotientAddGroup.mk (⟨π a, hπA a a.2⟩ : (S.sat Λ).toAddSubgroup)` using `fun a => rfl`. Establish `hsurj : Function.Surjective g`. Introduce `c`. Take `⟨⟨y, hy⟩, rfl⟩` from `QuotientAddGroup.mk_surjective c`. Take `⟨b, hb, hbM⟩` from `hlift y hy`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨⟨b, hb⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hg, QuotientAddGroup.eq, hKdef, AddSubgroup.mem_addSubgroupOf]`. Simplify `hbM` using `[neg_add_eq_sub]`. Establish `hker : g.ker = B.addSubgroupOf A`. Use extensionality with `a`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[AddMonoidHom.mem_ker, AddSubgroup.mem_addSubgroupOf, hB, hg, QuotientAddGroup.eq_zero_iff, hKdef, AddSubgroup.mem_addSubgroupOf]`. Simplify using the standard rewrite rules. Establish `hidx : B.relIndex A = β`. Rewrite using `[← hbe, hbe', AddSubgroup.relIndex, AddSubgroup.relIndex, ← hker, AddSubgroup.index_ker, AddMonoidHom.range_eq_top.2 hsurj, AddSubgroup.card_top]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hidx0 : B.relIndex A ≠ 0` using `by rw [hidx]; exact hβ0`. Use `haveI : Finite (A ⧸ B.addSubgroupOf A) := Nat.finite_of_card_ne_zero hidx0`. Use `set φ := _root_.GlobalTheory.IdxInt.ind (fun b : S.V × S.V => b ∈ A ∧ S.lev (S.fr d Λ) (S.fr' d Λ) (b.1 + b.2) = ↑j + 1) with hφdef`. Establish `hφval : ∀ w, φ w = if w ∈ A ∧ S.lev (S.fr d Λ) (S.fr' d Λ) (w.1 + w.2) = ↑j + 1 then 1 else 0`. Introduce `w`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hφdef]`. Unfold `_root_.GlobalTheory.IdxInt.ind`. Reduce the equality to equality of the corresponding arguments. Establish `hφinv : ∀ w b : S.V × S.V, b ∈ B → φ (w + b) = φ w`. Introduce `w b hb`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨hbA, hbM⟩` from `(hB b).1 hb`. Establish `key : (w + b ∈ A ∧ S.lev (S.fr d Λ) (S.fr' d Λ) ((w + b).1 + (w + b).2) = ↑j + 1) ↔ (w ∈ A ∧ S.lev (S.fr d Λ) (S.fr' d Λ) (w.1 + w.2) = ↑j + 1)`. Distinguish the cases in `hw : w ∈ A`. Rewrite using `[hlevπ, hlevπ, hπadd, hinv _ (hπA w hw) _ hbM]`. Simplify using `[hw, add_mem hw hbA]`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hwb : w + b ∉ A` using `fun h => hw (by simpa using sub_mem h hbA)`. Simplify using `[hw, hwb]`. Simplify using `only [hφval, key]`. Establish `hsupp : Function.support φ ⊆ A`. Introduce `w hw`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `h`. Conclude with `hw (by rw [hφval, if_neg (fun hc => h hc.1)])`. Establish `hfin : ((fun w : S.V × S.V => (w : (S.V × S.V) ⧸ B)) '' Function.support φ).Finite`. Set `h : A ⧸ B.addSubgroupOf A →+ (S.V × S.V) ⧸ B` to `QuotientAddGroup.map (B.addSubgroupOf A) B A.subtype (fun x hx => hx)`. Use `(Set.finite_range h).subset ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `_ ⟨w, hw, rfl⟩`. Conclude with `⟨QuotientAddGroup.mk ⟨w, hsupp hw⟩, rfl⟩`. Establish `hfine : _root_.GlobalTheory.IdxInt.Fine A φ B` using `⟨inf_le_left, hidx0, hφinv, hfin⟩`. Use `set T : Set ((S.V × S.V) ⧸ B) := {c | Quotient.out c ∈ A ∧ S.lev (S.fr d Λ) (S.fr' d Λ) ((Quotient.out c).1 + (Quotient.out c).2) = ↑j + 1} with hTdef`. Establish `hTsub : T ⊆ (fun w : S.V × S.V => (w : (S.V × S.V) ⧸ B)) '' Function.support φ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Introduce `c hc`. Use `⟨Quotient.out c, ?_, QuotientAddGroup.out_eq' c⟩` and prove the remaining obligations. Simplify using `[Function.mem_support, hφval, hc.1, hc.2]`. Establish `hTfin : T.Finite` using `hfin.subset hTsub`. Establish `hsum : ∑ᶠ c : (S.V × S.V) ⧸ B, φ (Quotient.out c) = (T.ncard : ℂ)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[finsum_mem_def]`. Use `finsum_congr fun c => ?_` and prove the remaining obligations. Simplify using `only [hφval, Set.indicator, hTdef, Set.mem_setOf_eq]`. Use `_ = T.ncard := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hTfin, Finset.sum_const, nsmul_eq_mul, mul_one, Set.ncard_eq_toFinset_card T hTfin]`. Establish `hout : ∀ b : S.V × S.V, Quotient.out (b : (S.V × S.V) ⧸ B) - b ∈ B`. Introduce `b`. Establish `h` using `QuotientAddGroup.eq.1 (QuotientAddGroup.out_eq' (b : (S.V × S.V) ⧸ B))`. Rewrite `h` using `[neg_add_eq_sub, ← neg_sub]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using B.neg_mem h`. Use `set fC : (S.V × S.V) ⧸ B → Set S.V := fun c => {x | x - π (Quotient.out c) ∈ S.M d Λ} with hfCdef`. Establish `himage : fC '' T = {C | ∃ y ∈ S.sat Λ, S.levC d Λ y = ↑j + 1 ∧ C = {x | x - y ∈ S.M d Λ}}`. Use extensionality with `C`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce and unpack `⟨c, hc, rfl⟩`. Conclude with `⟨π (Quotient.out c), hπA _ hc.1, (hlevπ _).symm.trans hc.2, rfl⟩`. Introduce and unpack `⟨y, hy, hyl, rfl⟩`. Take `⟨b, hb, hbM⟩` from `hlift y hy`. Take `⟨h₁, h₂⟩` from `(hB _).1 (hout b)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hoA : Quotient.out (b : (S.V × S.V) ⧸ B) ∈ A` using `by simpa using add_mem h₁ hb`. Rewrite `h₂` using `[hπsub]`. Establish `hyo : y - π (Quotient.out (b : (S.V × S.V) ⧸ B)) ∈ S.M d Λ`. Use `sub_mem hbM h₂` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_right]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨(b : (S.V × S.V) ⧸ B), ⟨hoA, ?_⟩, ?_⟩` and prove the remaining obligations. Use `hinv _ (hπA _ hoA) _ hyo` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Rewrite using `[hlevπ, ← this, hyl]`. Use extensionality with `x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hfCdef, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `sub_mem hx hyo` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_right]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hx`. Use `add_mem hx hyo` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Establish `hinj : Set.InjOn fC T`. Introduce `c₁ hc₁ c₂ hc₂ heq`.
-
-Establish `hmem : π (Quotient.out c₁) ∈ fC c₁` using `by show π (Quotient.out c₁) - π (Quotient.out c₁) ∈ S.M d Λ`. Rewrite using `[sub_self]`. Conclude with `zero_mem _`. Rewrite `hmem` using `[heq]`. Establish `hB₁₂ : Quotient.out c₁ - Quotient.out c₂ ∈ B` using `(hB _).2 ⟨sub_mem hc₁.1 hc₂.1, by rw [hπsub]; exact hmem⟩`.
-
-Rewrite using `[← QuotientAddGroup.out_eq' c₁, ← QuotientAddGroup.out_eq' c₂, QuotientAddGroup.eq, neg_add_eq_sub, ← neg_sub]`. Conclude with `B.neg_mem hB₁₂`. Establish `hcount : T.ncard = βJ`. Rewrite using `[← hJ]`. Unfold `_root_.GlobalTheory.HL.Frames.nLev`.
-
-Rewrite using `[← himage, Set.ncard_image_of_injOn hinj]`. Establish `hTne : T.Nonempty`. Establish `: (fC '' T).Nonempty`. Rewrite using `[himage]`. Conclude with `⟨_, y₀, hy₀, hy₀l, rfl⟩`.
-
-Conclude with `Set.image_nonempty.1 this`. Use `⟨?_, Nat.one_le_iff_ne_zero.2 hβ0, ⟨B, hfine⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hcount]`. Conclude with `(Set.ncard_pos hTfin).2 hTne`. Rewrite using `[_root_.GlobalTheory.IdxInt.cint_eq_of_fine A B φ hfine, hsum, hcount, hidx]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.TopLevelShare.main : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : _root_.Formalism.MainNotions.S.Loc.LocE F E), ∀ (r k : ℕ) (S : _root_.GlobalTheory.HL.Frames L r k), ∀ (j : Fin r) (β βJ : ℕ) (d : S.Datum) (Λ : Submodule L.O S.V), S.IsTerm d Λ → S.InFF β (j + 1) βJ d Λ → 1 ≤ βJ ∧ 1 ≤ β ∧ _root_.GlobalTheory.IdxInt.Nice (S.refB (j + 1) Λ) (_root_.GlobalTheory.IdxInt.ind fun b : S.V × S.V => b ∈ S.refB (j + 1) Λ ∧ S.lev (S.fr d Λ) (S.fr' d Λ) (b.1 + b.2) = j + 1) ∧ _root_.GlobalTheory.IdxInt.cint (S.refB (j + 1) Λ) (_root_.GlobalTheory.IdxInt.ind fun b : S.V × S.V => b ∈ S.refB (j + 1) Λ ∧ S.lev (S.fr d Λ) (S.fr' d Λ) (b.1 + b.2) = j + 1) = (βJ : ℂ) / (β : ℂ) := by
   intro F _ _ _ _ _ E _ _ _ L r k S j β βJ d Λ hT hF

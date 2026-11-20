@@ -24,9 +24,9 @@ def ContInd : Prop := ∀ (P : Scheme.{0} → Prop), (∀ (X : Scheme.{0}) [IsAf
   ∀ (X : Scheme.{0}) [CompactSpace X] [QuasiSeparatedSpace X], P X
 
 /- English proof (translation)
-Introduce `h q J _ _ D c hc ha hcs hqs hu n i`. Take `⟨j0⟩` from `IsCofiltered.nonempty (C := J)`. Use `hcs j0` as an intermediate fact. Use `hqs j0` as an intermediate fact. Establish `key : PC (D.obj j0)` using `hI PC (fun X _ => hA h X) (fun X U V hU hV hUV pU pV pW => hS h hMV X U V hU hV hUV pU pV pW) (D.obj j0)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `key q D c hc ha hcs hqs hu j0 ⟨Iso.refl _⟩ n i`.
+A detailed English derivation is pending.
 -/
 theorem Cont_of (hMV : MV) (hA : ContAff) (hS : ContStep) (hI : ContInd) : Cont := by
   intro h q J _ _ D c hc ha hcs hqs hu n i

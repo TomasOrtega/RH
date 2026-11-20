@@ -13,13 +13,13 @@ open MeasureTheory GlobalTheory.CuspRep UpperTheory.ConvolutionTheory.BW UpperTh
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [zop, map_mul, MulMemClass.coe_mul]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem zop_mul (P Q : MvPolynomial ((E →+* ℂ) × Fin n) ℂ) : zop (P * Q) = zop P * zop Q := by
   simp only [zop, map_mul, MulMemClass.coe_mul]
 
 /- English proof (translation)
-Simplify using `[zop]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem zop_one : zop (1 : MvPolynomial ((E →+* ℂ) × Fin n) ℂ) = 1 := by
   simp [zop]
@@ -27,13 +27,11 @@ private theorem zop_one : zop (1 : MvPolynomial ((E →+* ℂ) × Fin n) ℂ) = 
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
 /- English proof (translation)
-Establish `hs : IsSelfAdjoint A` using `IsSelfAdjoint.of_nonneg hA`. Establish `hp : 0 < η / 2` using `half_pos hη`. Establish `hg : Continuous fun x : ℝ => (max x (η / 2))⁻¹` using `(continuous_id.max continuous_const).inv₀ fun x => (lt_of_lt_of_le hp (le_max_right _ _)).ne'`. Use `⟨cfc (fun x : ℝ => (max x (η / 2))⁻¹) A, ?_, ((Commute.refl A).cfc_real _).symm, ?_⟩` and prove the remaining obligations. Use `norm_cfc_le (𝕜 := ℝ) (by positivity) fun x _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : 0 < max x (η / 2)` using `lt_of_lt_of_le hp (le_max_right _ _)`. Rewrite using `[Real.norm_eq_abs, abs_of_pos (inv_pos.2 h2), show 2 / η = (η / 2)⁻¹ by rw [inv_div]]`. Conclude with `inv_anti₀ hp (le_max_right _ _)`. Establish `e : χ = fun x => x * (max x (η / 2))⁻¹ * χ x`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `le_or_gt x (η / 2) with h | h` into its components or cases. Simplify using `[h0 x h]`. Rewrite using `[max_eq_left h.le, mul_inv_cancel₀ (hp.trans h).ne', one_mul]`. Unfold `fcalc`. Use `conv_rhs => rw [e]`.
-
-Rewrite using `[cfc_mul (fun x : ℝ => x * (max x (η / 2))⁻¹) χ A (continuous_id.mul hg).continuousOn hχ.continuousOn, cfc_mul (fun x : ℝ => x) (fun x : ℝ => (max x (η / 2))⁻¹) A continuous_id.continuousOn hg.continuousOn, cfc_id' ℝ A]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem inv_op (A : H →L[ℂ] H) (hA : 0 ≤ A) (η : ℝ) (hη : 0 < η) (χ : ℝ → ℝ) (hχ : Continuous χ)
     (h0 : ∀ x ≤ η / 2, χ x = 0) :
@@ -59,7 +57,7 @@ private theorem inv_op (A : H →L[ℂ] H) (hA : 0 ≤ A) (η : ℝ) (hη : 0 < 
       cfc_id' ℝ A]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ', ContinuousLinearMap.mul_apply]`. Combine the equalities or inequalities in the displayed calculation.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 private theorem norm_pow_apply_le (T : H →L[ℂ] H) (c : ℝ) (hc : 0 ≤ c) (hT : ‖T‖ ≤ c) (k : ℕ) (v : H) :
     ‖(T ^ k) v‖ ≤ c ^ k * ‖v‖ := by
@@ -75,35 +73,33 @@ end SlopeTestRemainingChoices
 
 open MeasureTheory GlobalTheory.CuspRep GroundTheory.Automorphic UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.BW UpperTheory.ConvolutionTheory.C in
 /- English proof (translation)
-Introduce `E _ _ _ n μ _ 𝔞 η hn hη`. Take `⟨ρ, N, L, hL, hbd, hZ⟩` from `UpperTheory.ConvolutionTheory.BW.ampRep E n μ 𝔞 hn`. Take `⟨h0, -, -, -, hAZ, -, -⟩` from `UpperTheory.ConvolutionTheory.Tf.ampComm E n μ 𝔞 fun τ i => (UpperTheory.ConvolutionTheory.Dp.capZc E n τ).1 i`. Establish `uniq : ∀ v φ, Rep μ (𝔞.A v) φ → L v = φ` using `fun v φ h => (UpperTheory.ConvolutionTheory.BW.repOps E n μ hn _ _ (hL v).1).1 φ h`. Establish `hstep : ∀ x v, zop (MvPolynomial.X x) (L (𝔞.A v)) = L (𝔞.Z x v)` using `fun x v => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(uniq _ _ ?_).symm` and prove the remaining obligations. Establish `e : 𝔞.A (𝔞.Z x v) = 𝔞.Z x (𝔞.A v)` using `congrArg (fun T : LL μ →L[ℂ] LL μ => T v) (hAZ x).eq`. Rewrite using `[e]`. Conclude with `hZ x _`. Take `⟨D, hD0, hD⟩ : ∃ D : ℝ, 0 ≤ D ∧ ∀ x, ‖𝔞.Z x‖ ≤ D` from `⟨∑ x : (E →+* ℂ) × Fin n, ‖𝔞.Z x‖, Finset.sum_nonneg fun _ _ => norm_nonneg _, fun x => Finset.single_le_sum (f := fun x : (E →+* ℂ) × Fin n => ‖𝔞.Z x‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ x)⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpow : ∀ (k : ℕ) (α : ((E →+* ℂ) × Fin n) →₀ ℕ), α.degree = k → ∀ y : LL μ, ∃ w : LL μ, ‖w‖ ≤ D ^ k * ‖y‖ ∧ zop (MvPolynomial.monomial α 1) (L ((𝔞.A ^ k) y)) = L w`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `α hα y`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `rfl : α = 0` from `(Finsupp.degree_eq_zero_iff α).1 hα`. Use `⟨y, by simp, ?_⟩` and prove the remaining obligations. Establish `e : (MvPolynomial.monomial (0 : ((E →+* ℂ) × Fin n) →₀ ℕ) (1 : ℂ)) = 1` using `rfl`. Rewrite using `[e, zop_one]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `succ k ih`. Introduce `α hα y`. Establish `hne : α ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hα`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `Finsupp.support_nonempty_iff.2 hne`. Establish `hle : Finsupp.single x 1 ≤ α` using `Finsupp.single_le_iff.2 (Nat.one_le_iff_ne_zero.2 (Finsupp.mem_support_iff.1 hx))`. Take `⟨β, rfl⟩` from `exists_add_of_le hle`. Establish `hβ : β.degree = k`. Use `hα` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[map_add, Finsupp.degree_single]`. Use linear arithmetic over natural numbers and integers. Take `⟨w, hw, hzw⟩` from `ih β hβ (𝔞.Z x y)`. Use `⟨w, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_le_mul_of_nonneg_left ?_ (pow_nonneg hD0 _)` and prove the remaining obligations. Conclude with `((𝔞.Z x).le_opNorm y).trans (mul_le_mul_of_nonneg_right (hD x) (norm_nonneg _))`. Use `_ = D ^ (k + 1) * ‖y‖ := by ring`. Establish `e1 : (MvPolynomial.monomial (Finsupp.single x 1 + β) (1 : ℂ)) = MvPolynomial.monomial β 1 * MvPolynomial.X x`. Rewrite using `[MvPolynomial.X, MvPolynomial.monomial_mul, add_comm, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : (𝔞.A ^ (k + 1)) y = 𝔞.A ((𝔞.A ^ k) y)`. Rewrite using `[pow_succ', ContinuousLinearMap.mul_apply]`. Establish `e3 : 𝔞.Z x ((𝔞.A ^ k) y) = (𝔞.A ^ k) (𝔞.Z x y)` using `(congrArg (fun T : LL μ →L[ℂ] LL μ => T y) ((hAZ x).pow_left k).eq).symm`. Rewrite using `[e1, zop_mul, e2, Module.End.mul_apply, hstep, e3, hzw]`. Establish `hη2 : 0 ≤ 2 / η` using `by positivity`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨D * (2 / η), mul_nonneg hD0 hη2, fun χ hχ hχ0 u φ hrep => ?_⟩` and prove the remaining obligations. Take `⟨T, hT, hAT, hF⟩` from `inv_op 𝔞.A h0 η hη χ hχ hχ0`. Use `set v₀ : LL μ := fcalc χ 𝔞.A u with hv₀`. Establish `hv : (𝔞.A * T) v₀ = v₀` using `congrArg (fun S : LL μ →L[ℂ] LL μ => S u) hF`. Establish `hpw : ∀ k : ℕ, (𝔞.A ^ k) ((T ^ k) v₀) = v₀` using `fun k => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[← ContinuousLinearMap.mul_apply, ← hAT.mul_pow]`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ, ContinuousLinearMap.mul_apply, hv, ih]`. Establish `hφ : ∀ k : ℕ, L ((𝔞.A ^ k) ((T ^ (k + 1)) v₀)) = φ` using `fun k => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `uniq _ _ ?_` and prove the remaining obligations. Establish `e : 𝔞.A ((𝔞.A ^ k) ((T ^ (k + 1)) v₀)) = v₀`. Rewrite using `[← ContinuousLinearMap.mul_apply, ← pow_succ']`. Conclude with `hpw (k + 1)`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hrep`. Use `{ toUmg := hrep.umg, band := ⟨N, fun a => ?_⟩ }` and prove the remaining obligations. Take `⟨B, hB⟩` from `hbd a`. Use `⟨|B| * (2 / η) * ‖v₀‖, fun α g => ?_⟩` and prove the remaining obligations. Take `⟨w, hw, hzw⟩` from `hpow _ α rfl ((T ^ (α.degree + 1)) v₀)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← hφ α.degree, hzw]`. Establish `hy` using `norm_pow_apply_le T (2 / η) hη2 hT (α.degree + 1) v₀`. Establish `hh : 0 ≤ AutomorphicForm.height g ^ N` using `pow_nonneg (AutomorphicForm.height_pos g).le _`. Establish `hw2 : ‖w‖ ≤ (D * (2 / η)) ^ α.degree * (2 / η) * ‖v₀‖`. Combine the equalities or inequalities in the displayed calculation.
-
-Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_right ?_ hh` and prove the remaining obligations. Conclude with `(mul_le_mul_of_nonneg_right (le_abs_self B) (norm_nonneg w)).trans (mul_le_mul_of_nonneg_left hw2 (abs_nonneg B))`. Use `_ = |B| * (2 / η) * ‖v₀‖ * (D * (2 / η)) ^ α.degree * AutomorphicForm.height g ^ N := by ring`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.BW.bandRep :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E], UpperTheory.ConvolutionTheory.BW.BandRep E := by

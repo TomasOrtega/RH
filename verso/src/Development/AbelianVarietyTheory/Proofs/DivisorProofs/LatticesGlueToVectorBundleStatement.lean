@@ -7,7 +7,7 @@ open CategoryTheory Limits AlgebraicGeometry IsLocalRing TensorProduct
 open GlobalTheory GlobalTheory.QCoh GlobalTheory.Vert GlobalTheory.MixedLocalChains GlobalTheory.PerfdLat GlobalTheory.Published GlobalTheory.GroupBplus GlobalTheory.BplusDescent
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.BplusDescent.exists_finiteDimensional_isDescended` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLatticesGlueToVectorBundle.lean&line=21#L21)
 -/

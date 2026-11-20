@@ -6,29 +6,29 @@ open UpperTheory.ConvolutionTheory.RankTwoDescent
 open scoped ComplexOrder
 
 /- English proof (translation)
-Introduce `b hb0 hb1 hbs hent`. Take `⟨F, hF, hFb⟩` from `hent`. Assume the negation of the conclusion as `hinf`. Establish `hinf' : ({n | 1 ≤ b n} \ {0, 1} : Set ℕ).Infinite` using `Set.Infinite.diff hinf (Set.toFinite _)`. Take `⟨m, hm⟩` from `exists_nat_gt (F 0).re`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨S, hSsub, hScard⟩` from `hinf'.exists_subset_card_eq m`. Establish `hS0 : ∀ n ∈ S, n ≠ 0` using `fun n hn h => (hSsub hn).2 (by simp [h])`. Establish `hS1 : 1 ∉ S` using `fun hn => (hSsub hn).2 (by simp)`. Establish `hS2 : ∀ n ∈ S, 1 ≤ b n` using `fun n hn => (hSsub hn).1`. Set `a : ℕ → ℂ` to `fun n => if n ∈ S then 0 else b n`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `G : ℂ → ℂ` to `fun s => F s - ∑ n ∈ S, b n / (n : ℂ) ^ s`. Establish `hG : Differentiable ℂ G`. Use `hF.sub (Differentiable.fun_sum fun n hn => ?_)` and prove the remaining obligations. Establish `hn0 : (n : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr (hS0 n hn)`. Conclude with `(differentiable_const _).div (differentiable_id.const_cpow (Or.inl hn0)) fun s => by simp [Complex.cpow_eq_zero_iff, hn0]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum : ∀ s : ℂ, 4 < s.re → HasSum (LSeries.term a s) (LSeries b s - ∑ n ∈ S, b n / (n : ℂ) ^ s)`. Introduce `s hs`. Establish `h1 : HasSum (LSeries.term b s) (LSeries b s)` using `(hbs s hs).LSeriesHasSum`. Establish `h2 : HasSum (fun n => if n ∈ S then LSeries.term b s n else 0) (∑ n ∈ S, b n / (n : ℂ) ^ s)`. Establish `h3 : HasSum (fun n => if n ∈ S then LSeries.term b s n else 0) (∑ n ∈ S, if n ∈ S then LSeries.term b s n else 0)` using `hasSum_sum_of_ne_finset_zero (fun n hn => by simp [hn])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : (∑ n ∈ S, if n ∈ S then LSeries.term b s n else 0) = ∑ n ∈ S, b n / (n : ℂ) ^ s` using `Finset.sum_congr rfl fun n hn => by`. Simplify using `[hn, LSeries.term_of_ne_zero (hS0 n hn)]`. Rewrite `h3` using `[h5]`. Then use the resulting hypothesis. Establish `h6 : LSeries.term a s = fun n => LSeries.term b s n - if n ∈ S then LSeries.term b s n else 0`. Use function extensionality and compare the values at `n`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hn : n ∈ S`. Simplify using `[a, hn, LSeries.term_def]`. Simplify using `[a, hn, LSeries.term_def]`. Rewrite using `[h6]`. Conclude with `h1.sub h2`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ha0 : 0 ≤ a`. Introduce `n`. Distinguish the cases in `hn : n ∈ S`. Simplify using `[a, hn]`. Simplify `hb0 n` using `[a, hn]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `ha1 : 0 < a 1`. Simplify using `[a, hS1, hb1]`. Establish `habs : LSeries.abscissaOfAbsConv a ≤ (4 : ℝ)` using `LSeries.abscissaOfAbsConv_le_of_forall_lt_LSeriesSummable fun y hy => (hsum y (by simpa using hy)).summable`. Establish `hEq : {s : ℂ | (4 : ℝ) < s.re}.EqOn G (LSeries a)`. Introduce `s hs`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs' : (4 : ℝ) < s.re` using `hs`. Establish `h4 : (4 : ℝ) < s.re` using `hs'`. Establish `: LSeries a s = LSeries b s - ∑ n ∈ S, b n / (n : ℂ) ^ s` using `LSeriesHasSum.LSeries_eq (hsum s h4)`. Simplify using `only [G, hFb s h4]`. Conclude with `this.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hpos` using `LSeries.positive_of_differentiable_of_eqOn ha0 ha1 hG habs hEq 0`. Establish `hG0 : G ((0 : ℝ) : ℂ) = F 0 - ∑ n ∈ S, b n`. Simplify using `[G]`. Rewrite `hpos` using `[hG0]`. Establish `hre : (∑ n ∈ S, b n).re < (F 0).re`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `(Complex.lt_def.mp hpos).1` as an intermediate fact. Simplify using `using this`. Establish `hcard : (m : ℝ) ≤ (∑ n ∈ S, b n).re`. Rewrite using `[Complex.re_sum, ← hScard]`. Establish `: ∀ n ∈ S, (1 : ℝ) ≤ (b n).re` using `fun n hn => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `using (Complex.le_def.mp (hS2 n hn)).1`. Simplify using `using Finset.card_nsmul_le_sum S _ 1 this`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.RankTwoDescent.landau_of :
     Landau := by

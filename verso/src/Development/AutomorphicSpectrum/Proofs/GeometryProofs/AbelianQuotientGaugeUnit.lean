@@ -21,7 +21,7 @@ section Prod
 variable {U : Type} [CommGroup U]
 
 /- English proof (translation)
-Establish `e : ∏ I, h I ^ cε 2 I = ∏ I : Finset (Fin 2), h ⟨I⟩ ^ cε 2 ⟨I⟩` using `Fintype.prod_equiv Equiv.ulift _ _ (fun _ => rfl)`. Establish `u : (Finset.univ : Finset (Finset (Fin 2))) = {∅, {0}, {1}, {0, 1}}` using `by decide`. Rewrite using `[e, u, Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_singleton]`. Simplify using `[cε, _root_.mul_assoc, zpow_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prod_cube (h : ULift.{0} (Finset (Fin 2)) → U) :
     ∏ I, h I ^ cε 2 I = h ⟨∅⟩ * (h ⟨{0}⟩)⁻¹ * (h ⟨{1}⟩)⁻¹ * h ⟨{0, 1}⟩ := by
@@ -39,7 +39,7 @@ section Psum
 variable {S : Scheme.{0}} (G : Over S) [GrpObj G] [IsCommMonObj G] {T : Over S} (A B : T ⟶ G)
 
 /- English proof (translation)
-Establish `f : (List.finRange 2).filter (· ∈ (∅ : Finset (Fin 2))) = []` using `by decide`. Unfold `psum`. Rewrite using `[f]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem psum_nil : psum G ![A, B] ∅ = 1 := by
   have f : (List.finRange 2).filter (· ∈ (∅ : Finset (Fin 2))) = [] := by decide
@@ -48,7 +48,7 @@ theorem psum_nil : psum G ![A, B] ∅ = 1 := by
   rfl
 
 /- English proof (translation)
-Establish `f : (List.finRange 2).filter (· ∈ ({0} : Finset (Fin 2))) = [0]` using `by decide`. Unfold `psum`. Rewrite using `[f]`. Conclude with `_root_.mul_one A`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psum_fst : psum G ![A, B] {0} = A := by
   have f : (List.finRange 2).filter (· ∈ ({0} : Finset (Fin 2))) = [0] := by decide
@@ -57,7 +57,7 @@ theorem psum_fst : psum G ![A, B] {0} = A := by
   exact _root_.mul_one A
 
 /- English proof (translation)
-Establish `f : (List.finRange 2).filter (· ∈ ({1} : Finset (Fin 2))) = [1]` using `by decide`. Unfold `psum`. Rewrite using `[f]`. Conclude with `_root_.mul_one B`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psum_snd : psum G ![A, B] {1} = B := by
   have f : (List.finRange 2).filter (· ∈ ({1} : Finset (Fin 2))) = [1] := by decide
@@ -66,7 +66,7 @@ theorem psum_snd : psum G ![A, B] {1} = B := by
   exact _root_.mul_one B
 
 /- English proof (translation)
-Establish `f : (List.finRange 2).filter (· ∈ ({0, 1} : Finset (Fin 2))) = [0, 1]` using `by decide`. Unfold `psum`. Rewrite using `[f]`. Conclude with `congrArg (A * ·) (_root_.mul_one B)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psum_both : psum G ![A, B] {0, 1} = A * B := by
   have f : (List.finRange 2).filter (· ∈ ({0, 1} : Finset (Fin 2))) = [0, 1] := by decide
@@ -82,21 +82,21 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X : Sc
   {k : Type} [Field k] (x : Sp k ⟶ X)
 
 /- English proof (translation)
-Rewrite using `[Hom.one_def]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem one_left {S : Scheme.{0}} (G : Over S) [GrpObj G] (T : Over S) : (1 : T ⟶ G).left = T.hom ≫ η[G].left := by
   rw [Hom.one_def]
   simp
 
 /- English proof (translation)
-The claim follows from `congrArg (fun z => z.left) (map_one (pushHom (isGrpPullback_pullback t.G x) T))`.
+A detailed English derivation is pending.
 -/
 theorem one_fst (T : Over (Sp k)) :
     (1 : T ⟶ GF t x).left ≫ pullback.fst t.G.hom x = (1 : Over.mk (T.hom ≫ x) ⟶ t.G).left :=
   congrArg (fun z => z.left) (map_one (pushHom (isGrpPullback_pullback t.G x) T))
 
 /- English proof (translation)
-Apply `fib_ext` to reduce the goal to its premises. Establish `A : ((Over.pullback x).map c).left ≫ pullback.fst t.G.hom x = pullback.fst t.G.hom x ≫ c.left` using `pullback.lift_fst _ _ _`. Rewrite using `[Over.comp_left, Category.assoc, A, ← Category.assoc, one_fst, ← Over.comp_left, MonObj.one_comp]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem one_map {T : Over (Sp k)} (c : t.G ⟶ t.G) [IsMonHom c] :
     (1 : T ⟶ GF t x) ≫ (Over.pullback x).map c = 1 := by
@@ -106,9 +106,7 @@ theorem one_map {T : Over (Sp k)} (c : t.G ⟶ t.G) [IsMonHom c] :
   rw [Over.comp_left, Category.assoc, A, ← Category.assoc, one_fst, ← Over.comp_left, MonObj.one_comp]
 
 /- English proof (translation)
-Use `show (lift P R).left ≫ (sqPt t x (psum t.G ![fst t.G t.G, snd t.G t.G ≫ t.act.act (H.bar a)] I.down)).left = _`. Rewrite using `[sqPt_psum, ← Over.comp_left, comp_psum]`. Use `congrArg (fun z => (psum (GF t x) z I.down).left) (funext fun i => ?_)` and prove the remaining obligations. Use `fin_cases i`. Simplify using `[sqPt_fst]`.
-
-Simplify using `[sqPt_comp, sqPt_snd]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem adF_inl {T : Over (Sp k)} (P R : T ⟶ GF t x) (a : 𝓞 E) (I : ULift.{0} (Finset (Fin 2))) :
     (lift P R).left ≫ adF t x a (Sum.inl I) =
@@ -121,9 +119,7 @@ theorem adF_inl {T : Over (Sp k)} (P R : T ⟶ GF t x) (a : 𝓞 E) (I : ULift.{
   · simp [sqPt_comp, sqPt_snd]
 
 /- English proof (translation)
-Use `show (lift P R).left ≫ (sqPt t x (psum t.G ![fst t.G t.G ≫ t.act.act a, snd t.G t.G] I.down)).left = _`. Rewrite using `[sqPt_psum, ← Over.comp_left, comp_psum]`. Use `congrArg (fun z => (psum (GF t x) z I.down).left) (funext fun i => ?_)` and prove the remaining obligations. Use `fin_cases i`. Simplify using `[sqPt_comp, sqPt_fst]`.
-
-Simplify using `[sqPt_snd]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem adF_inr {T : Over (Sp k)} (P R : T ⟶ GF t x) (a : 𝓞 E) (I : ULift.{0} (Finset (Fin 2))) :
     (lift P R).left ≫ adF t x a (Sum.inr I) =
@@ -142,7 +138,7 @@ section Vals
 variable {X Y F Y' Z : Scheme.{0}} {L : LB X} {M : LB Y} {f : F ⟶ X} {g : F ⟶ Y}
 
 /- English proof (translation)
-Use `fn_ext (V := ⊤) fun z hz => ?_` and prove the remaining obligations. Establish `e : gs (𝟙 Z) z ⊤ (r.appTop.hom u.val) = gs (𝟙 Z ≫ r) z ⊤ u.val` using `gs_pull (𝟙 Z) r z ⊤ trivial u.val`. Rewrite using `[e, Category.id_comp, gs_unit r z ⊤ trivial, h z, gs_eq (𝟙 Z) z ⊤ trivial, map_one, map_one]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem appTop_eq_one (r : Z ⟶ Y') (u : Γ(Y', ⊤)ˣ) (h : ∀ z, gm r z ⊤ u = 1) : r.appTop.hom u.val = 1 := by
   refine fn_ext (V := ⊤) fun z hz => ?_
@@ -151,7 +147,7 @@ theorem appTop_eq_one (r : Z ⟶ Y') (u : Γ(Y', ⊤)ˣ) (h : ∀ z, gm r z ⊤ 
   rfl
 
 /- English proof (translation)
-The claim follows from `appTop_eq_one r u fun z => by choose JL hJL using fun χ : Z ⟶ X => exists_chart hL (χ z) choose JM hJM using fun χ : Z ⟶ Y => exists_chart hM (χ z) have e := hT Z r z JL JM hJL hJM rw [hc z JL hJL, hp, hb z JM hJM, _root_.mul_one, _root_.mul_one] at e exact e.symm`.
+A detailed English derivation is pending.
 -/
 theorem tr_one {K : Type} [Fintype K] (hL : L.IsLB) (hM : M.IsLB) {w : LB.Iso (L.pull f) (M.pull g)}
     {φ : K → (Y' ⟶ F)} {φL : K → (Y' ⟶ X)} {φM : K → (Y' ⟶ Y)} {ε : K → ℤ} {c : LB.Gen (LB.LinComb L φL ε)}
@@ -166,7 +162,7 @@ theorem tr_one {K : Type} [Fintype K] (hL : L.IsLB) (hM : M.IsLB) {w : LB.Iso (L
     exact e.symm
 
 /- English proof (translation)
-Rewrite using `[val_pull hJ, e, ← val_pull hJ, val_corr hJ h, val_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem val_pull_one {Y₀ Y₁ Y₂ : Scheme.{0}} {K : Type} [Fintype K] {φ : K → (Y₀ ⟶ X)} {ε : K → ℤ}
     (c : LB.Gen (LB.LinComb L φ ε)) (s : Y₁ ⟶ Y₀) (ρ : Y₂ ⟶ Y₀)
@@ -182,7 +178,7 @@ variable {U : Type} [CommGroup U] {S : Scheme.{0}} (G : Over S) [GrpObj G] [IsCo
   {F : Scheme.{0}}
 
 /- English proof (translation)
-Rewrite using `[prod_cube (fun I => W (psum G ![1, B] I.down).left)]`. Simplify using `only [psum_nil, psum_fst, psum_snd, psum_both, _root_.one_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem prod_left (W : (T.left ⟶ G.left) → U) (B : T ⟶ G) :
     ∏ I : ULift.{0} (Finset (Fin 2)), W (psum G ![1, B] I.down).left ^ cε 2 I = 1 := by
@@ -191,7 +187,7 @@ theorem prod_left (W : (T.left ⟶ G.left) → U) (B : T ⟶ G) :
   simp
 
 /- English proof (translation)
-Rewrite using `[prod_cube (fun I => W (psum G ![A, 1] I.down).left)]`. Simplify using `only [psum_nil, psum_fst, psum_snd, psum_both, _root_.mul_one]`. Simplify using `[mul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem prod_right (W : (T.left ⟶ G.left) → U) (A : T ⟶ G) :
     ∏ I : ULift.{0} (Finset (Fin 2)), W (psum G ![A, 1] I.down).left ^ cε 2 I = 1 := by
@@ -207,9 +203,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X : Sc
   {k : Type} [Field k] (x : Sp k ⟶ X)
 
 /- English proof (translation)
-Establish `e₀` using `adF_inl t x P R a`. Establish `e₁` using `adF_inr t x P R a`. Establish `A : ∏ I : ULift.{0} (Finset (Fin 2)), W ((lift P R).left ≫ adF t x a (Sum.inl I)) ^ cε 2 I = 1` using `(Finset.prod_congr rfl fun I _ => congrArg (fun z => W z ^ cε 2 I) (e₀ I)).trans h₀`. Establish `B : ∏ I : ULift.{0} (Finset (Fin 2)), W ((lift P R).left ≫ adF t x a (Sum.inr I)) ^ cε 2 I = 1` using `(Finset.prod_congr rfl fun I _ => congrArg (fun z => W z ^ cε 2 I) (e₁ I)).trans h₁`. Rewrite using `[Fintype.prod_sum_type]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Sum.elim_inl, Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib]`. Rewrite using `[A, B, inv_one, _root_.mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_ad {U : Type} [CommGroup U] {T : Over (Sp k)} (P R : T ⟶ GF t x) (a : 𝓞 E) (W : (T.left ⟶ (GF t x).left) → U)
     (h₀ : ∏ I : ULift.{0} (Finset (Fin 2)), W (psum (GF t x) ![P, R ≫ (Over.pullback x).map (t.act.act (H.bar a))] I.down).left ^ cε 2 I = 1)
@@ -226,7 +222,7 @@ theorem prod_ad {U : Type} [CommGroup U] {T : Over (Sp k)} (P R : T ⟶ GF t x) 
   rw [A, B, inv_one, _root_.mul_one]
 
 /- English proof (translation)
-Use `haveI := t.act.hom a`. Use `prod_ad t x 1 R a W (prod_left _ W _) ?_` and prove the remaining obligations. Rewrite using `[one_map]`. Conclude with `prod_left _ W _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjoint_product_first_axis {U : Type} [CommGroup U] {T : Over (Sp k)} (R : T ⟶ GF t x) (a : 𝓞 E)
     (W : (T.left ⟶ (GF t x).left) → U) :
@@ -237,7 +233,7 @@ theorem adjoint_product_first_axis {U : Type} [CommGroup U] {T : Over (Sp k)} (R
   exact prod_left _ W _
 
 /- English proof (translation)
-Use `haveI := t.act.hom (H.bar a)`. Use `prod_ad t x P 1 a W ?_ (prod_right _ W _)` and prove the remaining obligations. Rewrite using `[one_map]`. Conclude with `prod_right _ W _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjoint_product_second_axis {U : Type} [CommGroup U] {T : Over (Sp k)} (P : T ⟶ GF t x) (a : 𝓞 E)
     (W : (T.left ⟶ (GF t x).left) → U) :
@@ -248,21 +244,21 @@ theorem adjoint_product_second_axis {U : Type} [CommGroup U] {T : Over (Sp k)} (
   exact prod_right _ W _
 
 /- English proof (translation)
-Rewrite using `[ax0, ← Over.comp_left, comp_lift, Category.comp_id, MonObj.comp_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem left_first_axis_lift {T : Over (Sp k)} (P : T ⟶ GF t x) : P.left ≫ ax0 t x = (lift 1 P).left := by
   rw [ax0, ← Over.comp_left, comp_lift, Category.comp_id, MonObj.comp_one]
 
 /- English proof (translation)
-Rewrite using `[ax1, ← Over.comp_left, comp_lift, Category.comp_id, MonObj.comp_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem left_second_axis_lift {T : Over (Sp k)} (P : T ⟶ GF t x) : P.left ≫ ax1 t x = (lift P 1).left := by
   rw [ax1, ← Over.comp_left, comp_lift, Category.comp_id, MonObj.comp_one]
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Use `show ((lift P Q).left ≫ sqMap t x) ≫ (fst t.G t.G).left = (lift p q).left ≫ (fst t.G t.G).left`. Rewrite using `[sqMap, Category.assoc, ← Over.comp_left, ← Over.comp_left, lift_fst, lift_fst, ← hp]`. Use `show (lift P Q).left ≫ (fst (GF t x) (GF t x)).left ≫ pullback.fst t.G.hom x = _`. Rewrite using `[← Category.assoc, ← Over.comp_left, lift_fst]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show ((lift P Q).left ≫ sqMap t x) ≫ (snd t.G t.G).left = (lift p q).left ≫ (snd t.G t.G).left`. Rewrite using `[sqMap, Category.assoc, ← Over.comp_left, ← Over.comp_left, lift_snd, lift_snd, ← hq]`. Use `show (lift P Q).left ≫ (snd (GF t x) (GF t x)).left ≫ pullback.fst t.G.hom x = _`. Rewrite using `[← Category.assoc, ← Over.comp_left, lift_snd]`.
+A detailed English derivation is pending.
 -/
 theorem lift_sq {R : Type} [CommRing R] [Algebra k R] (P Q : overAt (𝟙 (Sp k)) R ⟶ GF t x) (p q : overAt x R ⟶ t.G)
     (hp : P.left ≫ pullback.fst t.G.hom x = p.left) (hq : Q.left ≫ pullback.fst t.G.hom x = q.left) :
@@ -278,14 +274,14 @@ theorem lift_sq {R : Type} [CommRing R] [Algebra k R] (P Q : overAt (𝟙 (Sp k)
     rw [← Category.assoc, ← Over.comp_left, lift_snd]
 
 /- English proof (translation)
-Rewrite using `[qq, ← Over.comp_left, comp_lift, lift_fst_assoc, lift_snd_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_qq {t : SAB H X} {x : Sp k ⟶ X} (Q : AbQuot t x) {T : Over (Sp k)} (P R : T ⟶ GF t x) :
     (lift P R).left ≫ qq Q = (lift (P ≫ Q.q) (R ≫ Q.q)).left := by
   rw [qq, ← Over.comp_left, comp_lift, lift_fst_assoc, lift_snd_assoc]
 
 /- English proof (translation)
-Rewrite using `[one_fst, one_left, one_left]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem one_fst' {R : Type} [CommRing R] [Algebra k R] :
     (1 : overAt (𝟙 (Sp k)) R ⟶ GF t x).left ≫ pullback.fst t.G.hom x = (1 : overAt x R ⟶ t.G).left := by
@@ -293,7 +289,7 @@ theorem one_fst' {R : Type} [CommRing R] [Algebra k R] :
   simp
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem fibPt_fst {R : Type} [CommRing R] [Algebra k R] (y : overAt x R ⟶ t.G) :
     (fibPt t x y).left ≫ pullback.fst t.G.hom x = y.left :=
@@ -306,11 +302,9 @@ section Main
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)]
 
 /- English proof (translation)
-Take `⟨hI, -, -, T⟩` from `GlobalTheory.T.formal_germ_jet_lift E H hs X t k p x d g xk (fun m => by rw [hx]; exact fibPt_fst t x (g.x m)) (fun m => by rw [hx]; exact (pullback.lift_snd _ _ _).trans (Category.comp_id _))`. Use `haveI := hI`. Take `⟨F, hF, h0, -⟩` from `@T ⊤ (fun m => le_rfl) ⟨⟨Classical.arbitrary _, trivial⟩⟩ (f - 1)`. Establish `hz : F = 0` using `Formalism.MainNotions.ModuliIntegralCharts.H1.GermFun.psJet_inj fun m => Formalism.MainNotions.ModuliIntegralCharts.H1.GermFun.toΓ_injective _ (by`. Establish `z : psJet m (0 : MvPowerSeries (Fin 1 × Fin d) k) = 0` using `by simp [psJet, psTrunc]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hF m, z, map_zero]`. Establish `e : ((xk m).appLE ⊤ ⊤ (le_rfl : (⊤ : (Sp (Jet k (Fin 1 × Fin d) m)).Opens) ≤ xk m ⁻¹ᵁ ⊤)).hom (f - 1) = (xk m).appTop.hom (f - 1)`. Simplify using `only [Scheme.Hom.appLE, homOfLE_refl, op_id, CategoryTheory.Functor.map_id, map_sub, map_one]`. Apply the tactic sequence `first | rfl | (erw [Category.comp_id]; rfl)`. Rewrite using `[e, map_sub, map_one, h m, sub_self])`.
-
-Conclude with `sub_eq_zero.1 (h0 hz)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_one_of_jets (hs : ∀ a : 𝓞 E, star a = H.bar a) {X : Scheme.{0}} (t : SAB H X) {k : Type} [Field k]
     [IsAlgClosed k] (p : ℕ) [Fact p.Prime] [CharP k p] (x : Sp k ⟶ X) {d : ℕ} (g : GermAt t x d)
@@ -334,11 +328,11 @@ theorem eq_one_of_jets (hs : ∀ a : 𝓞 E, star a = H.bar a) {X : Scheme.{0}} 
 end Main
 
 /- English proof (translation)
-Introduce `E _ _ _ H _ hs X t k _ _ p _ _ x Q d d' g gB w hw Qs hQ0 hQ a wL wB hL hB hR hRB u hT`. Use `haveI := Q.q_hom`. Establish `cL` using `GlobalTheory.T.adjoint_relation_generator_corr E H hs X t k x d g a wL hL hR`. Establish `cB` using `GlobalTheory.T.adjoint_relation_generator_corr E H hs (Sp k) Q.tB k (𝟙 (Sp k)) d' gB a wB hB hRB`. Establish `hLB` using `t.PP.isLB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMB` using `Q.tB.PP.isLB`. Prove the components needed by the constructor for the conclusion. Use `eq_one_of_jets H hs t p x g (fun m => (fibPt t x (g.x m)).left) (fun _ => rfl) _ fun m => ?_` and prove the remaining obligations. Establish `e` using `tr_one hLB hMB hT (lift 1 (fibPt t x (g.x m))).left (fun z JL hJ => val_pull_one wL (sqMap t x) (lift 1 (g.x m)).left (cL m).1 _ (𝟙 _) (by rw [lift_sq t x 1 _ 1 (g.x m) (one_fst' t x) (fibPt_fst t x _), Category.id_comp]) hJ) (fun z JM hJ => val_pull_one wB (qq Q) (lift 1 (gB.x m …`. Rewrite `e` using `[← left_first_axis_lift, Scheme.Hom.comp_appTop]`.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `e`. Use `eq_one_of_jets H hs t p x g (fun m => (fibPt t x (g.x m)).left) (fun _ => rfl) _ fun m => ?_` and prove the remaining obligations. Establish `e` using `tr_one hLB hMB hT (lift (fibPt t x (g.x m)) 1).left (fun z JL hJ => val_pull_one wL (sqMap t x) (lift (g.x m) 1).left (cL m).2 _ (𝟙 _) (by rw [lift_sq t x _ 1 (g.x m) 1 (fibPt_fst t x _) (one_fst' t x), Category.id_comp]) hJ) (fun z JM hJ => val_pull_one wB (qq Q) (lift (gB.x m) …`. Rewrite `e` using `[← left_second_axis_lift, Scheme.Hom.comp_appTop]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_one_on_axes : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ (X : Scheme.{0}) (t : SAB H X) (k : Type) [Field k] [IsAlgClosed k] (p : ℕ) [Fact p.Prime] [CharP k p] (x : Sp k ⟶ X) (Q : AbQuot t x) (d d' : ℕ) (g : GermAt t x d) (gB : GermAt Q.tB (𝟙 (Sp k)) d'), ∀ (w : LB.Iso (t.PP.L.pull (pullback.fst t.G.hom x)) (Q.tB.PP.L.pull Q.q.left)), w.IsGen → ∀ Qs : Fin d' → PS k 1 d, (∀ i, MvPowerSeries.constantCoeff (Qs i) = 0) → (∀ m, fibPt t x (g.x m) ≫ Q.q = homAt (𝟙 (Sp k)) (sub1 Qs m) ≫ gB.x m) → ∀ (a : 𝓞 E) (wL : AdTy t a) (wB : AdTy Q.tB a), wL.IsGen → wB.IsGen → AdRel t x d g.x g.B.A.act g.B.ad g.e a wL → AdRel Q.tB (𝟙 (Sp k)) d' gB.x gB.B.A.act gB.B.ad gB.e a wB → ∀ u : Γ((GF t x ⊗ GF t x).left, ⊤)ˣ, Tr w (adF t x a) (fun i => sqMap t x ≫ Sum.elim (cφG t ![fst t.G t.G, snd t.G t.G ≫ t.act.act (H.bar a)]) (cφG t ![fst t.G t.G ≫ t.act.act a, snd t.G t.G]) i) (fun i => qq Q ≫ Sum.elim (cφG Q.tB ![fst Q.tB.G Q.tB.G, snd Q.tB.G Q.tB.G ≫ Q.tB.act.act (H.bar a)]) (cφG Q.tB ![fst Q.tB.G Q.tB.G ≫ Q.tB.act.act a, snd Q.tB.G Q.tB.G]) i) (Sum.elim (cε 2) fun I => -cε 2 I) (LB.pullGen t.PP.L _ _ wL (sqMap t x)) (LB.pullGen Q.tB.PP.L _ _ wB (qq Q)) u → (ax0 t x).appTop.hom u.val = 1 ∧ (ax1 t x).appTop.hom u.val = 1 := by
   intro E _ _ _ H _ hs X t k _ _ p _ _ x Q d d' g gB w hw Qs hQ0 hQ a wL wB hL hB hR hRB u hT

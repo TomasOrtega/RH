@@ -10,11 +10,11 @@ open NumberField IsDedekindDomain Formalism.BasicNotions PI.Dv
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
 /- English proof (translation)
-Establish `hc0 : w.valuation K c ≠ 0` using `by simpa using hc`. Establish `hlc : WithZero.log (w.valuation K c) ≤ 0`. Rewrite using `[← WithZero.log_one]`. Conclude with `(WithZero.log_le_log hc0 one_ne_zero).2 hci`. Unfold `vAdd`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Simplify using `only [map_zero, WithZero.log_zero, neg_zero]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hx0 : w.valuation K x ≠ 0` using `by simpa using hx`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : w.valuation K x * (w.valuation K c) ^ d ≠ 0` using `mul_ne_zero hx0 (pow_ne_zero _ hc0)`. Use `(WithZero.log_le_log hp one_ne_zero).2 h` as an intermediate fact. Rewrite `this` using `[WithZero.log_mul hx0 (pow_ne_zero _ hc0), WithZero.log_pow, WithZero.log_one]`. Simplify using `only [nsmul_eq_mul] at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma neg_vAdd_le (w : HeightOneSpectrum (𝓞 K)) (x c : K) (hc : c ≠ 0)
     (hci : w.valuation K c ≤ 1) (d : ℕ) (h : w.valuation K x * (w.valuation K c) ^ d ≤ 1) :
@@ -36,11 +36,11 @@ lemma neg_vAdd_le (w : HeightOneSpectrum (𝓞 K)) (x c : K) (hc : c ≠ 0)
     linarith
 
 /- English proof (translation)
-Establish `key : w.valuation K (c • M).det ≤ 1`. Rewrite using `[Matrix.det_apply]`. Use `Valuation.map_sum_le _ (fun σ _ => ?_)` and prove the remaining obligations. Break down `Int.units_eq_one_or (Equiv.Perm.sign σ) with hs | hs` into its components or cases. Rewrite using `[hs, one_smul, map_prod]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_le_one' (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, smul_eq_mul, map_mul, mul_comm]`. Conclude with `hM _ _`. Rewrite using `[hs, Units.neg_smul, one_smul, Valuation.map_neg, map_prod]`. Use `Finset.prod_le_one' (fun i _ => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.smul_apply, smul_eq_mul, map_mul, mul_comm]`. Conclude with `hM _ _`. Rewrite `key` using `[Matrix.det_smul, Fintype.card_fin, map_mul, map_pow]`. Rewrite using `[mul_comm]` and apply the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 lemma val_det_le {d : ℕ} (w : HeightOneSpectrum (𝓞 K)) (M : Matrix (Fin d) (Fin d) K) (c : K)
     (hM : ∀ i j, w.valuation K (M i j) * w.valuation K c ≤ 1) :
@@ -61,7 +61,7 @@ lemma val_det_le {d : ℕ} (w : HeightOneSpectrum (𝓞 K)) (M : Matrix (Fin d) 
   rwa [mul_comm]
 
 /- English proof (translation)
-Use `le_antisymm (w.valuation_le_one s) ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Conclude with `hs ((w.valuation_lt_one_iff_mem s).1 (not_le.1 hlt))`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 lemma val_eq_one_of_not_mem (w : HeightOneSpectrum (𝓞 K)) (s : 𝓞 K) (hs : s ∉ w.asIdeal) :
     w.valuation K (algebraMap (𝓞 K) K s) = 1 := by
@@ -70,7 +70,7 @@ lemma val_eq_one_of_not_mem (w : HeightOneSpectrum (𝓞 K)) (s : 𝓞 K) (hs : 
   exact hs ((w.valuation_lt_one_iff_mem s).1 (not_le.1 hlt))
 
 /- English proof (translation)
-Take `⟨r, rfl⟩` from `hx`. Conclude with `w.valuation_le_one r`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 lemma val_le_one_of_mem_range (w : HeightOneSpectrum (𝓞 K)) (x : K)
     (hx : x ∈ Set.range (algebraMap (𝓞 K) K)) : w.valuation K x ≤ 1 := by
@@ -78,11 +78,11 @@ lemma val_le_one_of_mem_range (w : HeightOneSpectrum (𝓞 K)) (x : K)
   exact w.valuation_le_one r
 
 /- English proof (translation)
-Establish `h1` using `val_eq_one_of_not_mem w' s hs`. Establish `hv : vAdd w' (algebraMap (𝓞 K) K s) = 0`. Unfold `vAdd`. Rewrite using `[h1, WithZero.log_one, neg_zero]`. Rewrite `hv` using `[hww]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hne : star (algebraMap (𝓞 K) K s) ≠ 0`. Introduce `h0`. Establish `: algebraMap (𝓞 K) K s = 0` using `by simpa using congrArg star h0`. Rewrite `h1` using `[this, map_zero]`. Conclude with `zero_ne_one h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hv0 : w.valuation K (star (algebraMap (𝓞 K) K s)) ≠ 0` using `by simpa using hne`. Unfold `vAdd at hv`. Establish `: WithZero.log (w.valuation K (star (algebraMap (𝓞 K) K s))) = 0` using `by linarith`. Rewrite using `[← WithZero.exp_log hv0, this, WithZero.exp_zero]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma val_star_eq_one (w w' : HeightOneSpectrum (𝓞 K)) (hww : IsConjPlK w w') (s : 𝓞 K)
     (hs : s ∉ w'.asIdeal) : w.valuation K (star (algebraMap (𝓞 K) K s)) = 1 := by
@@ -101,7 +101,7 @@ lemma val_star_eq_one (w w' : HeightOneSpectrum (𝓞 K)) (hww : IsConjPlK w w')
   rw [← WithZero.exp_log hv0, this, WithZero.exp_zero]
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul K c x, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma h_smul_left {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
     (h : V →ₗ⋆[K] V →ₗ[K] K) (c : 𝓞 K) (x y : V) :
@@ -109,7 +109,7 @@ lemma h_smul_left {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [
   rw [← algebraMap_smul K c x, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply]
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul K c y, map_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma h_smul_right {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
     (h : V →ₗ⋆[K] V →ₗ[K] K) (c : 𝓞 K) (x y : V) :
@@ -117,29 +117,29 @@ lemma h_smul_right {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] 
   rw [← algebraMap_smul K c y, map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional K A.V := Module.Finite.of_basis A.b`. Establish `hidem : ∀ x ∈ LinearMap.range e, e x = x`. Introduce and unpack `x ⟨z, rfl⟩`. Express the relevant statement in the definitionally equal form `(e * e) z = e z`. Rewrite using `[hee]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `Θ : A.V →ₗ[K] (Fin d → K)` to `LinearMap.pi (fun i => (h (y i)).comp e)`. Establish `hsurj : LinearMap.range Θ = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨f, hf0, hle⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.2 hne)`. Set `a : Fin d → K` to `fun i => f (fun j => if i = j then 1 else 0)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hfa : ∀ v : Fin d → K, f v = ∑ i, a i * v i`. Introduce `v`. Use `conv_lhs => rw [pi_eq_sum_univ v]`. Simplify using `only [map_sum, map_smul, smul_eq_mul, a]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[mul_comm]`. Set `z : A.V` to `∑ i, star (a i) • y i`. Establish `hz : ∀ x, h z x = 0`. Introduce `x`. Establish `hze : z ∈ LinearMap.range e` using `Submodule.sum_mem _ (fun i _ => Submodule.smul_mem _ _ (hye i))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : h z x = h z (e x)`. Rewrite using `[← hH.2.2, hidem z hze]`. Establish `h2 : f (Θ x) = 0` using `hle ⟨x, rfl⟩`. Rewrite `h2` using `[hfa]`. Rewrite using `[h1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [z, map_sum, LinearMap.sum_apply, map_smulₛₗ, starRingEnd_apply, star_star, LinearMap.smul_apply, smul_eq_mul]`. Simplify `h2` using `[Θ]`. Establish `hz0 : z = 0` using `hH.2.1 z hz`. Establish `ha : ∀ i, a i = 0`. Introduce `i`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `(Fintype.linearIndependent_iff.1 hy) (fun i => star (a i)) hz0 i` as an intermediate fact. Simplify using `using this`. Apply `hf0` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hfa]`. Simplify using `[ha]`. Establish `hrn` using `LinearMap.finrank_range_add_finrank_ker Θ`. Rewrite `hrn` using `[hsurj, finrank_top, Module.finrank_fin_fun]`. Establish `hrn2` using `LinearMap.finrank_range_add_finrank_ker e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsup : U ⊔ LinearMap.ker e ≤ LinearMap.ker Θ`. Use `sup_le (fun u hu => ?_) (fun x hx => ?_)` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker]`. Use function extensionality and compare the values at `i`. Simplify using `[Θ, hidem u (hU hu), hyU i u hu]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite `hx`, the goal using `[LinearMap.mem_ker]`. Use function extensionality and compare the values at `i`. Simplify using `[Θ, hx]`. Establish `hinf : U ⊓ LinearMap.ker e = ⊥`. Rewrite using `[eq_bot_iff]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `u ⟨hu, hk⟩`. Establish `hk' : e u = 0` using `LinearMap.mem_ker.1 hk`. Rewrite using `[Submodule.mem_bot, ← hidem u (hU hu), hk']`. Establish `h3` using `Submodule.finrank_sup_add_finrank_inf_eq U (LinearMap.ker e)`. Rewrite `h3` using `[hinf, finrank_bot]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `h4` using `Submodule.finrank_mono hsup`. Unfold `dimE`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 lemma card_le_of_orth (A : HLat K) (e : Module.End K A.V) (h : A.V →ₗ⋆[K] A.V →ₗ[K] K)
     (hee : e * e = e) (hH : IsHermE A e h) (U : Submodule K A.V) (hU : U ≤ LinearMap.range e)
@@ -209,31 +209,29 @@ lemma card_le_of_orth (A : HLat K) (e : Module.End K A.V) (h : A.V →ₗ⋆[K] 
   omega
 
 /- English proof (translation)
-Take `⟨hG, hn, hee, hnL, -⟩` from `hP`. Take `⟨w', hww, d, y, hy, hloc, rfl⟩` from `hk`. Establish `hidem : ∀ x ∈ LinearMap.range e, e x = x`. Introduce and unpack `x ⟨z, rfl⟩`. Express the relevant statement in the definitionally equal form `(e * e) z = e z`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hee]`. Establish `hw : w ∈ ({w, w'} : Set (HeightOneSpectrum (𝓞 K)))` using `Or.inl rfl`. Establish `hw' : w' ∈ ({w, w'} : Set (HeightOneSpectrum (𝓞 K)))` using `Or.inr rfl`. Establish `hy_props : ∀ i, y i ∈ LinearMap.range e ∧ ∀ u ∈ U, h (y i) u = 0`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨s, hs, hL⟩` from `(hloc w hw).1 i`. Establish `hs0 : (algebraMap (𝓞 K) K s) ≠ 0`. Introduce `h0`. Establish `h00 : s = 0` using `IsFractionRing.injective (𝓞 K) K (by rw [h0, map_zero])`. Conclude with `hs (h00 ▸ w.asIdeal.zero_mem)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2, -⟩` from `hL`. Rewrite `h1`, `h2` using `[← algebraMap_smul K s (y i)]`. Use `⟨?_, fun u hu => ?_⟩` and prove the remaining obligations. Use `Submodule.smul_mem (LinearMap.range e) (algebraMap (𝓞 K) K s)⁻¹ h1` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hs0, one_smul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `h2 u hu` as an intermediate fact. Rewrite `this` using `[map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul]`. Break down `mul_eq_zero.1 this with h0 | h0` into its components or cases. Conclude with `absurd (by simpa using h0) hs0`. Conclude with `h0`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcard` using `card_le_of_orth A e h hee hH U hU y hy (fun i => (hy_props i).1) (fun i => (hy_props i).2)`. Establish `hnK : ((n : ℕ) : K) ≠ 0` using `by exact_mod_cast hn.ne'`. Establish `hnval : w.valuation K ((n : ℕ) : K) ≤ 1`. Use `w.valuation_le_one (K := K) (n : 𝓞 K)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hent : ∀ i j, w.valuation K (h (y i) (y j)) * w.valuation K ((n : ℕ) : K) ≤ 1`. Introduce `i j`. Take `⟨a, ha, hLa⟩` from `(hloc w' hw').1 i`. Take `⟨b, hb, hLb⟩` from `(hloc w hw).1 j`. Use `set v : A.V := ((n : ℕ) : 𝓞 K) • (b • y j) with hv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvint : ∀ m ∈ A.L, h v m ∈ Set.range (algebraMap (𝓞 K) K)`. Introduce `m hm`. Establish `hbe : b • y j ∈ LinearMap.range e` using `hLb.1`. Establish `h1 : h v m = h (b • y j) (((n : ℕ) : 𝓞 K) • e m)`. Rewrite using `[hv, h_smul_left, h_smul_right, ← hH.2.2, hidem _ hbe]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Rewrite using `[h1]`. Conclude with `hLb.2.2 _ ⟨hnL m hm, Submodule.smul_mem _ _ (LinearMap.mem_range_self e m)⟩`. Take `⟨t, ht, htv⟩` from `hD w v hvint`. Establish `htcut : t • v ∈ cutE A e A.L`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨htv, ?_⟩` and prove the remaining obligations. Use `show t • v ∈ LinearMap.range e`. Conclude with `Submodule.smul_of_tower_mem _ t (Submodule.smul_of_tower_mem _ _ hLb.1)`. Establish `hint` using `hLa.2.2 _ htcut`. Establish `heq : h (a • y i) (t • v) = star (algebraMap (𝓞 K) K a) * (algebraMap (𝓞 K) K t * (((n : ℕ) : K) * (algebraMap (𝓞 K) K b * h (y i) (y j))))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hv, h_smul_left, h_smul_right, h_smul_right, h_smul_right]`. Simplify using `only [map_natCast]`. Establish `hv1` using `val_le_one_of_mem_range w _ hint`. Rewrite `hv1` using `[heq, map_mul, map_mul, map_mul, map_mul, val_star_eq_one w w' hww a ha, val_eq_one_of_not_mem w t ht, val_eq_one_of_not_mem w b hb]`. Simplify `hv1` using `[mul_comm]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hdet` using `val_det_le w (Matrix.of fun i j => h (y i) (y j)) ((n : ℕ) : K) (by simpa using hent)`. Use `neg_vAdd_le w _ _ hnK hnval d hdet` as an intermediate fact. Establish `hvn : 0 ≤ vAdd w ((n : ℕ) : K)`. Unfold `vAdd`. Rewrite using `[neg_nonneg, ← WithZero.log_one]`.
-
-Conclude with `(WithZero.log_le_log (by simpa using hnK) one_ne_zero).2 hnval`. Establish `hd : (d : ℤ) ≤ (dimE A e : ℤ) - (Module.finrank K U : ℤ)` using `by omega`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem partA (A : HLat K) (e : Module.End K A.V) (n : ℕ) (h : A.V →ₗ⋆[K] A.V →ₗ[K] K)
     (hP : IsProj A e n) (hH : IsHermE A e h) (hD : ∀ w, DualInAt A h A.L w)
@@ -310,7 +308,7 @@ theorem partA (A : HLat K) (e : Module.End K A.V) (n : ℕ) (h : A.V →ₗ⋆[K
     _ ≤ _ := mul_le_mul_of_nonneg_right hd hvn
 
 /- English proof (translation)
-Introduce `φ hφ _ m hm`. Conclude with `hφ m hm.1`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem partC (A : HLat K) (e : Module.End K A.V) (U : Submodule K A.V) :
     ∀ φ ∈ A.dualL, (∀ u ∈ U, φ u = 0) →

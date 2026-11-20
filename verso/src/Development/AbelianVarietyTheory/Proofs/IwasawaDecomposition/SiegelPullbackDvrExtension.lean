@@ -15,29 +15,27 @@ noncomputable section
 namespace GlobalTheory.SiegLoc.PelUnif
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c g n R _ ω F S s j G _ e κ C π hω hS W _ _ I χ t m P hr`. Take `⟨mu, y, α, α₂, -, -, hμ, hy, hα, hsq, hlam, hφ⟩` from `hS`. Take `⟨⟨_, _⟩, _, _⟩` from `hω`. Use `letI : Algebra R c.F := ω.toAlgebra`. Take `⟨-, -, -, hpre, hfl, -, -⟩` from `GlobalTheory.genericPart_dense_proOpen R c.F C.X (Xo.XF c) C.s C.jQ C.flat C.proj C.jQ_open C.jQ_dense`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsPreimmersion C.j := hpre`. Use `haveI : Flat C.j := hfl`. Take `⟨y₀, hy₀⟩` from `HomExt.exists_lift_of_range_subset C.j (jK W ≫ χ) hr`. Use `P.U.gen_hom` as an intermediate fact. Establish `gpG : IsGrpPullback P.A.A t.G (jK W) (P.U.gen.inv.left ≫ pullback.fst t.G.hom (jK W))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsMonHom P.U.gen.symm.hom` using `by show IsMonHom P.U.gen.inv; infer_instance`. Conclude with `((ReciprocityTheory.ChartRestriction.G.Geo.Tor.isGrpPullback_of_iso P.U.gen.symm).comp (isGrpPullback_pullback t.G (jK W))).congr (Category.id_comp _) rfl`. Establish `hA` using `gpG.comp m.cart`. Set `ψ : P.A.A.left ⟶ C.t.G.left` to `(P.U.gen.inv.left ≫ pullback.fst t.G.hom (jK W)) ≫ m.φ`. Establish `hw : ψ ≫ C.t.G.hom = (P.A.A.hom ≫ y₀) ≫ (C.jQ ≫ pullback.fst _ _)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hA.1.w]`. Simplify using `only [Category.assoc]`. Rewrite using `[← hy₀]`. Both sides reduce to the same expression. Set `α₀ : P.A.A.left ⟶ C.oF.t.G.left` to `C.m.cart.1.lift ψ (P.A.A.hom ≫ y₀) hw`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hα₀ : α₀ ≫ C.m.φ = ψ` using `C.m.cart.1.lift_fst _ _ _`. Establish `hα₀' : α₀ ≫ C.oF.t.G.hom = P.A.A.hom ≫ y₀` using `C.m.cart.1.lift_snd _ _ _`. Establish `hB : IsGrpPullback P.A.A C.oF.t.G y₀ α₀` using `C.m.cart.cancel (hA.congr (hy₀.symm) hα₀.symm) hα₀'`. Establish `hB' : IsGrpPullback P.A.A F.univ.A (y₀ ≫ y) (α₀ ≫ α)` using `hB.comp hα`. Set `U` to `lift (pushPt hB.1.w (fst P.A.A P.A.A)) (pushPt hB.1.w (snd P.A.A P.A.A))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hU₁ : U.left ≫ (fst C.oF.t.G C.oF.t.G).left = (fst P.A.A P.A.A).left ≫ α₀`. Rewrite using `[← Over.comp_left]`. Conclude with `congrArg (fun z => z.left) (lift_fst (pushPt hB.1.w (fst P.A.A P.A.A)) (pushPt hB.1.w (snd P.A.A P.A.A)))`. Establish `hU₂ : U.left ≫ (snd C.oF.t.G C.oF.t.G).left = (snd P.A.A P.A.A).left ≫ α₀`. Rewrite using `[← Over.comp_left]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrArg (fun z => z.left) (lift_snd (pushPt hB.1.w (fst P.A.A P.A.A)) (pushPt hB.1.w (snd P.A.A P.A.A)))`. Establish `hsq' : Geo.Tor.IsSquare (α₀ ≫ α) (U.left ≫ α₂)` using `⟨by rw [Category.assoc, hsq.1, ← Category.assoc, hU₁, Category.assoc], by rw [Category.assoc, hsq.2, ← Category.assoc, hU₂, Category.assoc]⟩`. Establish `i₁ : P.U.gen.inv.left ≫ P.U.gen.hom.left = 𝟙 _`. Rewrite using `[← Over.comp_left, Iso.inv_hom_id, Over.id_left]`. Establish `i₀ : P.U.gen.hom.left ≫ P.U.gen.inv.left = 𝟙 _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Over.comp_left, Iso.hom_inv_id, Over.id_left]`. Establish `ext : LBIso (P.A.L.pull P.U.gen.hom.left) (t.PP.L.pull (pullback.fst t.G.hom (jK W)))` using `P.bundle ▸ P.U.ext`. Establish `h₁ : LBIso P.A.L (t.PP.L.pull (P.U.gen.inv.left ≫ pullback.fst t.G.hom (jK W)))` using `LBIso.chartPull (chartPullSec P.A.L P.U.gen.hom.left P.U.gen.inv.left i₁) (chartPullSame t.PP.L (fun _ : PUnit => P.U.gen.inv.left ≫ pullback.fst t.G.hom (jK W)) (fun _ => pullback.fst t.G.hom (jK W)) (fun _ => 1) P.U.gen.inv.left fun _ => rfl) ext`. Establish `hm : LBIso t.PP.L (C.t.PP.L.pull m.φ)`. Take `⟨w, hw, -⟩` from `m.lin`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨w, hw⟩`. Establish `hc : LBIso C.oF.t.PP.L (C.t.PP.L.pull C.m.φ)`. Take `⟨w, hw, -⟩` from `C.m.lin`. Conclude with `⟨w, hw⟩`. Establish `h₂ : LBIso (t.PP.L.pull (P.U.gen.inv.left ≫ pullback.fst t.G.hom (jK W))) (C.t.PP.L.pull ψ)` using `LBIso.chartPull (chartPullPull t.PP.L _) (chartPullSame C.t.PP.L (fun _ : PUnit => ψ) (fun _ => m.φ) (fun _ => 1) _ fun _ => rfl) hm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₃ : LBIso (C.oF.t.PP.L.pull α₀) (C.t.PP.L.pull ψ)` using `LBIso.chartPull (chartPullPull C.oF.t.PP.L α₀) (chartPullSame C.t.PP.L (fun _ : PUnit => ψ) (fun _ => C.m.φ) (fun _ => 1) α₀ fun _ => hα₀.symm) hc`. Establish `hL : LBIso P.A.L (C.oF.t.PP.L.pull α₀)` using `LBIso.trans P.A.isLB (pull_isLB C.t.PP.isLB _) (pull_isLB C.oF.t.PP.isLB _) (LBIso.trans P.A.isLB (pull_isLB t.PP.isLB _) (pull_isLB C.t.PP.isLB _) h₁ h₂) h₃.symm`. Establish `hΛ₁ : LBIso (abelian₂ P.A.A P.A.L) (abelian₂ P.A.A (C.oF.t.PP.L.pull α₀))` using `GlobalTheory.PelPrim.lbIso_linComb hL _ _`. Establish `hΛ₂ : LBIso (abelian₂ P.A.A (C.oF.t.PP.L.pull α₀)) (F.univ.P.pull (U.left ≫ α₂))` using `LBIso.chartPull (chartPullLinComb C.oF.t.PP.L α₀ _ _ _ U.left fun I => psum_push hB _ _ U (fun i => by fin_cases i`. Conclude with `Over.OverMorphism.ext (by rw [Over.comp_left]; exact hU₁.symm)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Over.OverMorphism.ext (by rw [Over.comp_left]; exact hU₂.symm)) I.down)`. Use the proof step `(chartPullSame F.univ.P (fun _ : PUnit => U.left ≫ α₂) (fun _ => α₂) (fun _ => 1) U.left fun _ => rfl) hlam`. Establish `hΛ : LBIso (abelian₂ P.A.A P.A.L) (F.univ.P.pull (U.left ≫ α₂))` using `LBIso.trans (LB.isLB_linComb P.A.isLB _ _) (LB.isLB_linComb (pull_isLB C.oF.t.PP.isLB _) _ _) (pull_isLB F.univ.isLB _) hΛ₁ hΛ₂`. Use `⟨m.φ ≫ mu, m.cart.comp hμ, y₀ ≫ y, α₀ ≫ α, U.left ≫ α₂, ?_, hB', hsq', hΛ, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hy, ← Category.assoc, hy₀, Category.assoc]`.
-
-Rewrite using `[Category.assoc, ← hφ, ← Category.assoc α₀, hα₀]`. Simplify using `only [ψ, Category.assoc]`. Rewrite using `[← Category.assoc P.U.gen.hom.left, i₀, Category.id_comp]`.
+A detailed English derivation is pending.
 -/
 theorem isUnifOf_pel : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H)
     (Xo : Moduli D l) (c : Coeff l) (g n : ℕ) (R : Type) [CommRing R] (ω : R →+* c.F) (F : SFam g n (zetaAway n))

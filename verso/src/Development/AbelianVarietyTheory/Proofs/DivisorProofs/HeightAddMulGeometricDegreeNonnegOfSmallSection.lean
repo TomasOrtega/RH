@@ -17,9 +17,9 @@ namespace GlobalTheory.HSNef
 variable {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k}
 
 /- English proof (translation)
-Simplify using `only [Weight.nsq]`. Use `erw [Weight.zpow_φ, Weight.zpow_φ]`. Rewrite using `[mul_assoc, ← Real.exp_add]`. Use `congr 2`. Simplify using `only [Weight.addFn]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem nsq_pow_addFn_const {σ : k →+* ℂ} {B : LB X} (φ : Weight p σ B) (c : ℝ) (m : ℕ)
     (s : (lbPow B m).ι → CxPts p σ → ℂ) (y : CxPts p σ) :
@@ -33,7 +33,7 @@ theorem nsq_pow_addFn_const {σ : k →+* ℂ} {B : LB X} (φ : Weight p σ B) (
   ring
 
 /- English proof (translation)
-Establish `hid {σ : k →+* ℂ} (y : CxPts p σ) : PtsOver.map (𝟙 X) (Category.id_comp p) _ y = y` using `Subtype.ext (Category.comp_id _)`. Use `HermLB.isometric_of_chart (fun c _ => c) (fun c y hy => Set.mem_iInter.2 fun _ => hy) (fun z c c' hc hc' => ?_) fun σ c y _ => ?_` and prove the remaining obligations. Use `Eq.trans ?_ (gm_pull_g L.B (𝟙 X) (𝟙 X) z (fun _ => c) (fun _ => c') (Set.mem_iInter.2 fun _ => hc) (Set.mem_iInter.2 fun _ => hc')).symm` and prove the remaining obligations. Rewrite using `[Category.comp_id]`. Conclude with `((L.φ σ).pull_φ (𝟙 X) (Category.id_comp p) (fun _ => c) y).trans (congrArg _ (hid y))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isometric_pull_id (L : HermLB p) : L.Isometric (L.pull (𝟙 X) (Category.id_comp p)) := by
   have hid {σ : k →+* ℂ} (y : CxPts p σ) : PtsOver.map (𝟙 X) (Category.id_comp p) _ y = y :=
@@ -46,7 +46,7 @@ theorem isometric_pull_id (L : HermLB p) : L.Isometric (L.pull (𝟙 X) (Categor
   · exact ((L.φ σ).pull_φ (𝟙 X) (Category.id_comp p) (fun _ => c) y).trans (congrArg _ (hid y))
 
 /- English proof (translation)
-Substitute `hq` using the available equality. Establish `e` using `H.recursion X (𝟙 X) hX.charZero D hD hX.dim_eq m r hr`. Simplify using `using e`.
+Substitute using the available equality. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem recursion_pull_id [IsLocallyNoetherian X] {D : ℕ} (hX : IsArithVar p D) (hD : 1 ≤ D) {L : HermLB p} {h : X → ℝ}
     (H : L.IsArithHeight h) (m : ℕ) {q : X ⟶ Sp k} (hq : 𝟙 X ≫ p = q)
@@ -63,31 +63,29 @@ end GlobalTheory.HSNef
 namespace GlobalTheory.HSNef
 
 /- English proof (translation)
-Introduce `HC k _ X _ p D hX hD C h hSP H hnn m u hm hu hex`. Take `⟨s, hs, hs0⟩` from `hex`. Use `hX.isLocallyNoetherian` as an intermediate fact. Use `hX.finite_emb` as an intermediate fact. Establish `hiso` using `isometric_pull_id C`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set C' := C.pull (𝟙 X) (Category.id_comp p) with hC'`. Set `s' : (C.pow m).B.Sec` to `s`. Establish `hg : genericPoint X ∈ nonzeroLocus s'` using `(sec_ne_zero_iff s').1 hs0`. Take `⟨r', hr', hdiv, hlog⟩` from `(hiso.pow m).exists_isRatSec (isRatSec_ratOfSec s' hg)`. Take `⟨hI, hrec⟩` from `recursion_pull_id hX hD H m (Category.id_comp p) r' hr'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsum : 0 ≤ ∑ᶠ z, (((C'.pow m).div hr').mult z : ℝ) * h z`. Use `finsum_nonneg fun z => ?_` and prove the remaining obligations. Rewrite using `[hdiv]`. Distinguish the cases in `hz : ((C.pow m).div (isRatSec_ratOfSec s' hg)).mult z = 0`. Simplify using `[hz]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `mul_nonneg (by exact_mod_cast mult_divOfSec_nonneg z) (hnn z fun e => CartierDiv.genericPoint_notMem_supp _ (e ▸ CartierDiv.mem_supp_of_mult_ne_zero hz))`. Establish `hneg (σ : k →+* ℂ) : (C.φ σ).chernPart D (-1) = 0` using `Weight.chernPart_neg_eq_zero (C.cInf σ) (hSP σ)`. Establish `hfin (σ : k →+* ℂ) : IsFiniteMeasure ((C.φ σ).chernPart D 1)`. Establish `hu1 : ∀ σ (y : CxPts p σ), CInfAt (fun _ : CxPts p σ => (1 : ℝ)) y` using `fun σ y => cInfAt_const 1 y`. Establish `hc1 : ∀ σ σ' : k →+* ℂ, (Weight.ofFun (fun _ : CxPts p σ => (1 : ℝ))).IsConj (Weight.ofFun (fun _ : CxPts p σ' => (1 : ℝ)))` using `fun _ _ _ _ _ _ _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Φ, hΦ⟩` from `((HC.arExists k X p D hX).2 (Option Unit) (fun o : Option Unit => o.elim (ArInt.fnB (fun σ (_ : CxPts p σ) => (1 : ℝ)) hu1 hc1) fun _ => C)).1`. Establish `h1` using `((HC.arMix.fnB HC.arExists hX hΦ (Pi.single () 1)).1 σ).1`. Rewrite `h1` using `[(isometric_comb_single (fun _ : Unit => C) ()).chernPart_eq σ D 1]`. Conclude with `(integrable_const_iff.1 (integrableOn_univ.1 h1)).resolve_left one_ne_zero`. Establish `hpt (σ : k →+* ℂ) : ∀ y ∈ offSupp p σ ((C'.pow m).div hr'), logNorm ((C'.pow m).φ σ) r' y ≤ m * u`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy`. Rewrite `hy` using `[hdiv]`. Rewrite using `[hlog σ hy]`. Establish `hy' : y ∈ ptsIn p σ (nonzeroLocus s')`. Use `hy` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[offSupp_divOfSec]`. Then use the resulting hypothesis. Rewrite using `[logNorm_ratOfSec _ hy']`. Establish `h1` using `hs σ y`. Express the relevant statement in the definitionally equal form `(((C.φ σ).addFn fun _ => 2 * u).pow m).nsq (secVal p σ s') y ≤ 1 at h1`. Rewrite `h1` using `[nsq_pow_addFn_const]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : ((C.φ σ).pow m).nsq (secVal p σ s') y ≤ Real.exp (m * (2 * u))`. Use `Real.exp_pos (m * (2 * u))` as an intermediate fact. Rewrite `h1` using `[Real.exp_neg]`. Rewrite `h1` using `[mul_inv_le_iff₀ (Real.exp_pos _), one_mul]`. Then use the resulting hypothesis. Establish `h0` using `((C.φ σ).pow m).nsq_nonneg (secVal p σ s') y`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : Real.log (((C.φ σ).pow m).nsq (secVal p σ s') y) ≤ m * (2 * u)`. Break down `h0.eq_or_lt with e | e` into its components or cases. Rewrite using `[← e, Real.log_zero]`. Check the signs of the components of the expression. Conclude with `(Real.log_le_iff_le_exp e).2 h2`.
+Check the signs of the components of the expression. Express the relevant assertion in an equivalent form by its definition. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Real.log (((C.φ σ).pow m).nsq (secVal p σ s') y) / 2 ≤ _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hA : C'.archInt (C'.pow m) D hr' ≤ m * u * gdeg C D`. Rewrite using `[HermLB.archInt, gdeg, chInt, mul_finsum]`. Use `finsum_le_finsum' (Set.toFinite _) (Set.toFinite _) fun σ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hS : MeasurableSet (offSupp p σ ((C'.pow m).div hr'))` using `(isOpen_offSupp _).measurableSet`. Establish `hint` using `hI σ`. Rewrite `hint` using `[← hiso.chernIntegrableOn_eq]`. Rewrite using `[← hiso.chernInt_eq]`. Use `haveI := hfin σ`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Weight.chernInt, hneg σ, Measure.restrict_zero, integral_zero_measure, sub_zero, setIntegral_const, smul_eq_mul, mul_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[setIntegral_const, smul_eq_mul]`. Use `_ ≤ ((C.φ σ).chernPart D 1).real Set.univ * (m * u) := mul_le_mul_of_nonneg_right (measureReal_mono (Set.subset_univ _) (measure_ne_top _ _)) (by positivity)`. Use `_ = m * u * ((C.φ σ).chernPart D 1).real Set.univ := by ring`.
-
-Establish `hmpos : (0 : ℝ) < m` using `by exact_mod_cast hm`. Establish `: 0 ≤ (m : ℝ) * (h (genericPoint X) + u * gdeg C D)`. Use `hrec` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Conclude with `nonneg_of_mul_nonneg_right this hmpos`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem height_add_mul_gdeg_nonneg_of_smallSec : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → 1 ≤ D → ∀ (C : HermLB p) (h : X → ℝ), C.SemiPos D → C.IsArithHeight h → (∀ z, z ≠ genericPoint X → 0 ≤ h z) → ∀ (m : ℕ) (u : ℝ), 0 < m → 0 ≤ u → (∃ s ∈ ((C.shift (fun _ => u) fun _ => rfl).pow m).smallSec, s ≠ 0) → 0 ≤ h (genericPoint X) + u * gdeg C D := by
   intro HC k _ X _ p D hX hD C h hSP H hnn m u hm hu hex

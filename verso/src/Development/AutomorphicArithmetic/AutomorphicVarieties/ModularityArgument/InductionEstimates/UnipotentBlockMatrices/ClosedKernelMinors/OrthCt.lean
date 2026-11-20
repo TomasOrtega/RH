@@ -14,11 +14,9 @@ open scoped ENNReal NumberField.AdeleRing InnerProductSpace ComplexConjugate
 open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial
 
 /- English proof (translation)
-Establish `h1 : ∫⁻ p, H p ∂α.prod (β.prod (γ.prod δ)) = 0`. Rewrite using `[lintegral_prod _ hH.aemeasurable, ← h0]`. Use `lintegral_congr fun a => ?_` and prove the remaining obligations. Establish `ha : Measurable fun q : B × C × D => H (a, q)` using `hH.comp measurable_prodMk_left`. Rewrite using `[lintegral_prod _ ha.aemeasurable]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `lintegral_congr fun b => ?_` and prove the remaining obligations. Establish `hb : Measurable fun q : C × D => H (a, b, q)` using `ha.comp measurable_prodMk_left`. Rewrite using `[lintegral_prod _ hb.aemeasurable]`. Rewrite `h1` using `[lintegral_eq_zero_iff hH]`. Use `filter_upwards [Measure.ae_ae_of_ae_prod h1] with a ha`.
-
-Use `filter_upwards [Measure.ae_ae_of_ae_prod ha] with b hb`. Use `filter_upwards [Measure.ae_ae_of_ae_prod hb] with c hc`. Conclude with `hc`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ae4 {A B C D : Type} [MeasurableSpace A] [MeasurableSpace B] [MeasurableSpace C] [MeasurableSpace D]
     (α : Measure A) (β : Measure B) (γ : Measure C) (δ : Measure D) [SFinite β] [SFinite γ] [SFinite δ]
@@ -40,7 +38,7 @@ private theorem ae4 {A B C D : Type} [MeasurableSpace A] [MeasurableSpace B] [Me
   exact hc
 
 /- English proof (translation)
-Rewrite using `[integral_prod _ hf]`. Use `integral_eq_zero_of_ae ?_` and prove the remaining obligations. Use `filter_upwards [h, hf.prod_right_ae] with a ha hi`. Conclude with `ha hi`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem int0 {A B : Type} [MeasurableSpace A] [MeasurableSpace B]
     {α : Measure A} {β : Measure B} [SFinite α] [SFinite β] {f : A × B → ℂ} (hf : Integrable f (α.prod β))
@@ -51,27 +49,17 @@ private theorem int0 {A B : Type} [MeasurableSpace A] [MeasurableSpace B]
   exact ha hi
 
 /- English proof (translation)
-Introduce `K _ _ μ _ F hFc hFP hFB hFD hFN v w hv hw`. Take `⟨-, -, -, hlv, -, -, -, -, -, -, -, hcpt⟩` from `blkLaws (K := K)`. Use `haveI : CompactSpace (KG K (2 + 2)) := isCompact_iff_compactSpace.mp (hcpt (2 + 2)).1`. Set `μ₂ : Measure (G1 K 2)` to `Measure.haar`. Set `κ : Measure (KG K (2 + 2))` to `Measure.haar`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use `haveI : SecondCountableTopology (G1 K 2) := inferInstance`. Use `haveI : SecondCountableTopology (G1 K (2 + 2)) := inferInstance`. Use `haveI : SecondCountableTopology (KG K (2 + 2)) := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI : BorelSpace (G1 K 2) := inferInstance`. Use `haveI : BorelSpace (KG K (2 + 2)) := Subtype.borelSpace _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : BorelSpace (ℝ × KG K (2 + 2)) := Prod.borelSpace`. Use `haveI : BorelSpace (G1 K 2 × ℝ × KG K (2 + 2)) := Prod.borelSpace`. Use `haveI : BorelSpace (G1 K 2 × G1 K 2 × ℝ × KG K (2 + 2)) := Prod.borelSpace`. Use `haveI : SFinite μ₂ := inferInstance`. Use `haveI : SFinite κ := inferInstance`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `haveI : SFinite (fd μ₂) := inferInstance`. Use `haveI : SFinite ((unipMeasure K (2 + 2) 2).restrict (unipFundamentalDomain K (2 + 2) 2)) := inferInstance`. Use `haveI : SFinite (κ.prod ((unipMeasure K (2 + 2) 2).restrict (unipFundamentalDomain K (2 + 2) 2))) := Measure.prod.instSFinite`. Use `haveI : SFinite ((volume : Measure ℝ).withDensity fun t => ENNReal.ofReal (Real.exp (-4 * t))) := inferInstance`. Use `haveI : SFinite (((volume : Measure ℝ).withDensity fun t => ENNReal.ofReal (Real.exp (-4 * t))).prod (κ.prod ((unipMeasure K (2 + 2) 2).restrict (unipFundamentalDomain K (2 + 2) 2)))) := Measure.prod.instSFinite`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : SFinite ((fd μ₂).prod (((volume : Measure ℝ).withDensity fun t => ENNReal.ofReal (Real.exp (-4 * t))).prod (κ.prod ((unipMeasure K (2 + 2) 2).restrict (unipFundamentalDomain K (2 + 2) 2))))) := Measure.prod.instSFinite`. Take `⟨⟨c, hc⟩, -⟩` from `unf μ μ₂ κ`. Take `⟨hint, heq, -⟩` from `master μ μ₂ κ c hc F hFc hFP hFB hFD v w hv`. Take `⟨c', hc', hiw⟩` from `iwaInt μ μ₂ κ`. Establish `hm : Measurable (constantTermL2 μ 2 w)` using `(stronglyMeasurable_ctFun 2 (Lp.stronglyMeasurable w)).measurable`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0` using `hiw (fun g => ‖constantTermL2 μ 2 w g‖ₑ) hm.enorm`. Establish `hL : ∫⁻ g, ‖constantTermL2 μ 2 w g‖ₑ ∂μ = 0`. Use `lintegral_eq_zero_of_ae_eq_zero ?_` and prove the remaining obligations. Use `filter_upwards [hw] with g hg`. Simplify using `[hg]`.
-
-Rewrite `h0` using `[hL, eq_comm, mul_eq_zero]`. Establish `h1` using `h0.resolve_left (ENNReal.ofReal_pos.mpr hc').ne'`. Simplify using `only [mul_assoc, CuspidalProjection.constantTermL2_unipotent_mul, lintegral_const] at h1`. Establish `hcont : Continuous fun p : G1 K 2 × G1 K 2 × ℝ × KG K (2 + 2) => lv p.1 p.2.1 p.2.2.1 * (p.2.2.2 : G1 K (2 + 2))` using `(hlv.comp (f := fun p : G1 K 2 × G1 K 2 × ℝ × KG K (2 + 2) => (p.1, p.2.1, p.2.2.1)) (by fun_prop)).mul (continuous_subtype_val.comp (by fun_prop))`. Establish `h2` using `ae4 μ₂ μ₂ volume κ (fun p : G1 K 2 × G1 K 2 × ℝ × KG K (2 + 2) => ‖constantTermL2 μ 2 w (lv p.1 p.2.1 p.2.2.1 * (p.2.2.2 : G1 K (2 + 2)))‖ₑ * (ENNReal.ofReal (Real.exp (-4 * p.2.2.1)) * unipMeasure K (2 + 2) 2 univ)) ((hm.comp hcont.measurable).enorm.mul (Measurable.mul_const (by …`.
-
-Establish `hU : unipMeasure K (2 + 2) 2 univ ≠ 0` using `NeZero.ne _`. Rewrite using `[heq]`. Use `mul_eq_zero_of_right _ ?_` and prove the remaining obligations. Unfold `parM at hint ⊢`. Use `int0 hint ?_` and prove the remaining obligations.
-
-Use `filter_upwards [ae_restrict_of_ae h2] with m₁ h3 hi₁`. Use `int0 hi₁ ?_` and prove the remaining obligations. Use `filter_upwards [ae_restrict_of_ae h3] with m₂ h4 hi₂`. Use `int0 hi₂ ?_` and prove the remaining obligations. Use `filter_upwards [(withDensity_absolutelyContinuous _ _).ae_le h4] with t h5 hi₃`.
-
-Use `int0 hi₃ ?_` and prove the remaining obligations. Use `filter_upwards [h5] with k h6 _`. Establish `h7 : constantTermL2 μ 2 w (lv m₁ m₂ t * (k : G1 K (2 + 2))) = 0`. Break down `mul_eq_zero.mp h6 with h | h` into its components or cases. Conclude with `enorm_eq_zero.mp h`.
-
-Conclude with `absurd h (mul_ne_zero (ENNReal.ofReal_pos.mpr (Real.exp_pos _)).ne' hU)`. Simplify using `only [pt, mul_assoc, hFN]`. Rewrite using `[integral_const_mul]`. Conclude with `mul_eq_zero_of_right _ h7`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.orthCt :
     ∀ {K : Type} [Field K] [NumberField K] (μ : Measure (G1 K (2 + 2))) [μ.IsHaarMeasure] (F : G1 K (2 + 2) → ℂ), Continuous F → (∀ γ ∈ PK K, ∀ g, F (γ * g) = F g) → InBand F → Decays F → (∀ X g, F (nn X * g) = F g) → ∀ v w : L2 μ, Reps μ v (th F) →

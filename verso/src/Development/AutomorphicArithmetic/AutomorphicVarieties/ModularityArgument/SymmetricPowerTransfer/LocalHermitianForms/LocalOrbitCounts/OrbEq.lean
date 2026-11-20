@@ -6,73 +6,65 @@ open QuadraticAlgebra UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc
 
 open Matrix in
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ Δ τ hLoc c d m _ δ ι P hM`. Establish `hmv : ∀ (a b : U3 Δ) (v : Fin 3 → Lsq K Δ), ((a * b : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)).mulVec v = (a : Matrix (Fin 3) (Fin 3) (Lsq K Δ)).mulVec ((b : Matrix (Fin 3) (Fin 3) (Lsq K Δ)).mulVec v)`. Introduce `a b v`. Rewrite using `[Submonoid.coe_mul, Matrix.mulVec_mulVec]`. Establish `hmv1 : ∀ v : Fin 3 → Lsq K Δ, ((1 : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)).mulVec v = v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `v`. Simplify using the standard rewrite rules. Establish `hinv : ∀ (a : U3 Δ) (v : Fin 3 → Lsq K Δ), ((a⁻¹ : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)).mulVec ((a : Matrix (Fin 3) (Fin 3) (Lsq K Δ)).mulVec v) = v`. Introduce `a v`. Rewrite using `[← hmv, inv_mul_cancel, hmv1]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hinv' : ∀ (a : U3 Δ) (v : Fin 3 → Lsq K Δ), (a : Matrix (Fin 3) (Fin 3) (Lsq K Δ)).mulVec (((a⁻¹ : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)).mulVec v) = v`. Introduce `a v`. Rewrite using `[← hmv, mul_inv_cancel, hmv1]`. Establish `hA : ∀ (A : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) (v : Fin 3 → Lsq K Δ), (∀ i j, IsInt O (A i j)) → (∀ i, IsInt O (v i)) → ∀ i, IsInt O (A.mulVec v i)`. Introduce `A v hA hv i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `IsIntegral.sum _ (fun j _ => (hA i j).mul (hv j))`. Establish `hKUint : ∀ k ∈ KU O Δ, ∀ v : Fin 3 → Lsq K Δ, (∀ i, IsInt O (v i)) → ∀ i, IsInt O ((k : Matrix (Fin 3) (Fin 3) (Lsq K Δ)).mulVec v i)`. Introduce `k hk v hv`. Establish `hk' : ∀ i j, IsInt O ((k : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) i j) ∧ IsInt O (star ((k : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) i j))` using `hk`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hA _ v (fun i j => (hk' i j).1) hv`. Establish `hKUof : ∀ h : U3 Δ, (∀ v : Fin 3 → Lsq K Δ, (∀ i, IsInt O (v i)) → ∀ i, IsInt O ((h : Matrix (Fin 3) (Fin 3) (Lsq K Δ)).mulVec v i)) → h ∈ KU O Δ`. Introduce `h H`. Establish `he : ∀ i j, IsInt O ((h : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) i j)`. Introduce `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs : ∀ k, IsInt O ((Pi.single j (1 : Lsq K Δ) : Fin 3 → Lsq K Δ) k)`. Introduce `k`. Break down `eq_or_ne k j with rfl | hkj` into its components or cases. Simplify using `using (isIntegral_one : IsIntegral O (1 : Lsq K Δ))`. Simplify `(isIntegral_zero : IsIntegral O (0 : Lsq K Δ))` using `[Pi.single_apply, hkj]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `H _ hs i` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_single_one]`. Conclude with `fun i j => ⟨he i j, OE.int_star hLoc (he i j)⟩`. Take `⟨L, hLm⟩ : ∃ L : U3 Δ → Set (Sp Δ τ), ∀ g x, x ∈ L g ↔ ∀ i, IsInt O (((g⁻¹ : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)).mulVec (P x) i)` from `⟨_, fun _ _ => Iff.rfl⟩`. Establish `LD : ∀ a b : U3 Δ, a⁻¹ * b ∈ KU O Δ → L b = L a`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Introduce `a b hk`. Use extensionality with `x`. Rewrite using `[hLm, hLm]`. Establish `hb : b = a * (a⁻¹ * b)` using `(mul_inv_cancel_left a b).symm`. Use `set k := a⁻¹ * b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hb, _root_.mul_inv_rev, hmv]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `hKUint k hk _ h` as an intermediate fact. Rewrite `this` using `[hinv']`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `hKUint _ (inv_mem hk) _ h`. Establish `Lsame : ∀ a b : U3 Δ, L a = L b → a⁻¹ * b ∈ KU O Δ`. Introduce `a b h`. Apply `hKUof` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `v hv`. Establish `hx : P.symm ((b : Matrix (Fin 3) (Fin 3) (Lsq K Δ)).mulVec v) ∈ L b`. Rewrite using `[hLm, LinearEquiv.apply_symm_apply, hinv]`. Conclude with `hv`. Rewrite `hx` using `[← h, hLm, LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[hmv]` and apply the resulting hypothesis. Establish `hstar : ∀ (g : U3 Δ) (v : Fin 3 → Lsq K Δ), ((theta Δ g : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)).mulVec v = star ((g : Matrix (Fin 3) (Fin 3) (Lsq K Δ)).mulVec (star v))`. Introduce `g v`. Use `show ((g : Matrix (Fin 3) (Fin 3) (Lsq K Δ)).map star).mulVec v = _`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[Matrix.mulVec, dotProduct, Matrix.map_apply, star_sum, star_mul']`. Establish `Gconv : ∀ g : U3 Δ, IsFix O c d m (L g) → g⁻¹ * δ * theta Δ g ∈ KU O Δ`. Introduce `g hF`. Apply `hKUof` to reduce the goal to its premises. Introduce `v hv`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hx : P.symm ((g : Matrix (Fin 3) (Fin 3) (Lsq K Δ)).mulVec (star v)) ∈ L g`. Rewrite using `[hLm, LinearEquiv.apply_symm_apply, hinv]`. Introduce `i`. Conclude with `OE.int_star hLoc (hv i)`. Establish `hsx : semi d (P.symm ((g : Matrix (Fin 3) (Fin 3) (Lsq K Δ)).mulVec (star v))) ∈ L g`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hF.stab]`. Conclude with `⟨_, hx, rfl⟩`. Rewrite `hsx` using `[hLm, hM.semi, LinearEquiv.apply_symm_apply, ← hstar]`. Rewrite using `[hmv, hmv]` and apply the resulting hypothesis. Establish `hkrel : ∀ g : U3 Δ, g⁻¹ * δ * theta Δ g ∈ KU O Δ ↔ IsFix O c d m (L g)`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Use `⟨fun h => ?_, Gconv g⟩` and prove the remaining obligations. Use `One.fixg O K Δ τ hLoc c d m δ ι P hM g h` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Conclude with `hLm g x`. Establish `torinv : ∀ (t : (Etau K τ)ˣ) (x : Sp Δ τ), tor Δ t (tor Δ t⁻¹ x) = x`. Introduce `t x`. Apply `P.injective` to reduce the goal to its premises. Rewrite using `[hM.tor, hM.tor, map_inv, hinv']`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `Ltor : ∀ (t : (Etau K τ)ˣ) (g : U3 Δ), L (ι t * g) = tor Δ t '' L g`. Introduce `t g`. Use extensionality with `x`. Rewrite using `[hLm]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `hx`. Use `⟨tor Δ t⁻¹ x, ?_, torinv t x⟩` and prove the remaining obligations. Rewrite using `[hLm, hM.tor, map_inv]`. Rewrite `hx` using `[_root_.mul_inv_rev, hmv]`. Then use the resulting hypothesis. Introduce and unpack `⟨y, hy, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hy` using `[hLm]`. Rewrite using `[_root_.mul_inv_rev, hmv, hM.tor, hinv]`. Conclude with `hy`. Establish `heq : ∀ (t : (Etau K τ)ˣ) (y : U3 Δ ⧸ KU O Δ), L (Quotient.out ((ι t) • y)) = tor Δ t '' L (Quotient.out y)`. Introduce `t y`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 
-Establish `hq : (QuotientGroup.mk (ι t * Quotient.out y) : U3 Δ ⧸ KU O Δ) = (ι t) • y` using `by conv_rhs => rw [← QuotientGroup.out_eq' y]`. Both sides reduce to the same expression. Establish `hq2 : (QuotientGroup.mk (ι t * Quotient.out y) : U3 Δ ⧸ KU O Δ) = QuotientGroup.mk (Quotient.out ((ι t) • y))`. Rewrite using `[QuotientGroup.out_eq', hq]`. Rewrite using `[LD _ _ (QuotientGroup.eq.mp hq2)]`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Ltor t (Quotient.out y)`. Unfold `uOrb lcount orb`. Use `@wTrans _ _ _ inferInstance (MulAction.compHom (U3 Δ ⧸ KU O Δ) ι) (torAct Δ τ) (Cint O τ) _ _ (fun y S => S = L (Quotient.out y)) ?_ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `t y beta_reduce split_ifs with h1 h2 h3`. Both sides reduce to the same expression.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Both sides reduce to the same expression. Both sides reduce to the same expression.
 
-Conclude with `absurd ((hkrel _).mpr ((isFix_tor c d m t _).mp ((congrArg (IsFix O c d m) (heq t y)).to_iff.mp ((hkrel _).mp h1)))) h2`. Conclude with `absurd ((hkrel _).mpr ((congrArg (IsFix O c d m) (heq t y)).to_iff.mpr ((isFix_tor c d m t _).mpr ((hkrel _).mp h3)))) h1`. Both sides reduce to the same expression. Introduce `t S split_ifs with h1 h2 h3`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `absurd ((isFix_tor c d m t S).mp h1) h2`. Conclude with `absurd ((isFix_tor c d m t S).mpr h3) h1`. Both sides reduce to the same expression. Introduce `t y S hR`. Substitute `hR` using the available equality.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(heq t y).symm`. Introduce `y S hR`. Substitute `hR` using the available equality. Use `beta_reduce`. Use `split_ifs with h1 h2 h3`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Both sides reduce to the same expression. Conclude with `absurd ((hkrel _).mp h1) h2`. Conclude with `absurd ((hkrel _).mpr h3) h1`. Both sides reduce to the same expression. Introduce `y _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `⟨_, rfl, fun S h => h⟩`. Introduce `S hS`. Establish `hF : IsFix O c d m S`. Assume the negation of the conclusion as `h`. Simplify using `[h] at hS`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨s, hs⟩` from `hF.fg`. Use `set M : Submodule O (Fin 3 → Lsq K Δ) := Submodule.map ((P : Sp Δ τ →ₗ[Lsq K Δ] (Fin 3 → Lsq K Δ)).restrictScalars O) (Submodule.span O (s : Set (Sp Δ τ))) with hMdef`. Establish `hmem : ∀ v, v ∈ M ↔ P.symm v ∈ S`. Introduce `v`. Rewrite using `[hs, hMdef, Submodule.mem_map, SetLike.mem_coe]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Simplify using `using hx`. Introduce `h`. Conclude with `⟨_, h, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hFG : M.FG` using `Submodule.FG.map _ (Submodule.fg_span (Finset.finite_toSet s))`. Take `⟨g, hg⟩` from `OE.ortho hLoc M hFG (by`. Introduce `w`. Rewrite using `[hmem, hF.dual]`. Prove the components needed by the constructor for the conclusion.
-
-Introduce `h u hu`. Use `h _ ((hmem u).mp hu)` as an intermediate fact. Rewrite `this` using `[hM.form, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Conclude with `this`. Introduce `h x hx`.
-
-Rewrite using `[hM.form, LinearEquiv.apply_symm_apply]`. Conclude with `h (P x) ((hmem _).mpr (by simpa using hx)))`. Establish `hSL : S = L g`. Use extensionality with `x`. Rewrite using `[hLm, ← hg, hmem, LinearEquiv.symm_apply_apply]`.
-
-Use `⟨QuotientGroup.mk g, ?_, ?_⟩` and prove the remaining obligations. Use `show S = L (Quotient.out (QuotientGroup.mk g : U3 Δ ⧸ KU O Δ))`. Rewrite using `[hSL]`. Conclude with `(LD _ _ (QuotientGroup.eq.mp (QuotientGroup.out_eq' (QuotientGroup.mk g : U3 Δ ⧸ KU O Δ)).symm)).symm`. Introduce `y hy`.
-
-Rewrite using `[← QuotientGroup.out_eq' y]`. Apply `QuotientGroup.eq.mpr` to reduce the goal to its premises. Apply `Lsame` to reduce the goal to its premises. Rewrite using `[← hSL]`. Conclude with `hy.symm`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Loc.orbEq : UpperTheory.V.Z.Sym.Loc.OrbEq := by
   intro O K _ _ _ _ _ Δ τ hLoc c d m _ δ ι P hM

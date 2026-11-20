@@ -11,7 +11,7 @@ set_option autoImplicit false
 namespace GlobalTheory.LineForm
 
 /- English proof (translation)
-Introduce `k _ X _ p D hX σ L M`. Use function extensionality and compare the values at `x`. Take `⟨⟨c, y⟩, hy⟩` from `x`. Use `show c1F hX σ (L.tens M) ⟨(c, y), hy⟩ = c1F hX σ L ⟨(c, y), hy⟩ + c1F hX σ M ⟨(c, y), hy⟩`. Rewrite using `[GlobalTheory.ChernTop.c1F_eq_matForm_hessL hX _ hy, GlobalTheory.ChernTop.c1F_eq_matForm_hessL hX _ hy, GlobalTheory.ChernTop.c1F_eq_matForm_hessL hX _ hy, GlobalTheory.ChernTop.hessL_tens L M hy, map_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem c1F_tens : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ) (hX : IsRegVar p D) (σ : k →+* ℂ),
     ∀ L M : HermLB p, c1F hX σ (L.tens M) = c1F hX σ L + c1F hX σ M := by

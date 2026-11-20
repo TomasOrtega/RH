@@ -7,7 +7,7 @@ open NumberField GlobalTheory.CuspRep GlobalTheory.JSW GlobalTheory.JSW.MirCinf 
 open scoped FourierTransform ContDiff
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.JSW.MirCinf.smoothMatInf_affine_eq_integral_secKInf` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSmoothingAffineFamilyEqIntegralKernel.lean&line=27#L27)
 -/

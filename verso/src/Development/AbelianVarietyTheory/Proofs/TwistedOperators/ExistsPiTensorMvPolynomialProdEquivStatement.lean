@@ -5,7 +5,7 @@ open MvPolynomial GlobalTheory.IndefiniteRowSideFullHecke.MinorOrderedEntries Gl
 open scoped TensorProduct DirectSum
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.PolyTensor.exists_piTensor_equiv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsPiTensorMvPolynomialProdEquiv.lean&line=34#L34)
 -/

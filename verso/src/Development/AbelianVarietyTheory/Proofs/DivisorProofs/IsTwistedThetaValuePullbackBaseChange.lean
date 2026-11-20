@@ -15,7 +15,7 @@ noncomputable section
 namespace GlobalTheory.UPoinc.USum
 
 /- English proof (translation)
-Rewrite using `[← Over.comp_left, ← Over.comp_left, ptSecT, ptSecT, lift_whiskerRight, comp_lift, Category.id_comp, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ptSecT_comp_whisker {B : Scheme.{0}} {A : Over B} [GrpObj A] {T T' : Over B} (c : T' ⟶ T) (y : T ⟶ A) :
     (ptSecT A (c ≫ y)).left ≫ (c ▷ A).left = c.left ≫ (ptSecT A y).left := by
@@ -23,13 +23,13 @@ theorem ptSecT_comp_whisker {B : Scheme.{0}} {A : Over B} [GrpObj A] {T T' : Ove
     Category.comp_id]
 
 /- English proof (translation)
-Introduce and unpack `⟨α, U, hα, hU, H⟩`. Take `⟨α', hα', vα⟩` from `GlobalTheory.VVRank.exists_gen_pullTo (φ' := ![(snd T' P.A).left, (snd T' P.A ^ m).left]) α hα (c ▷ P.A).left (fun k => by fin_cases k`. Conclude with `GlobalTheory.VVRank.whisker_snd_left P.A c`. Express the relevant statement in the definitionally equal form `(c ▷ P.A).left ≫ (snd T P.A ^ m).left = (snd T' P.A ^ m).left`. Rewrite using `[← Over.comp_left, MonObj.comp_pow, whiskerRight_snd])`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨U', hU', vU⟩` from `GlobalTheory.SymLiftGlobal.exists_symLift_pull_val P.isLB c hU`. Use `⟨α', U', hα', hU', fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Establish `eq₁ : (c ≫ x) * (c ≫ h) = c ≫ (x * h)` using `(MonObj.comp_mul _ _ _).symm`. Establish `q` using `H Z (r ≫ c.left) z J hJ`. Establish `g : gs r z ⊤ (c.left.appTop.hom v) = gs (r ≫ c.left) z ⊤ v` using `gs_pull r c.left z ⊤ trivial v`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `w : ∀ (y : T ⟶ P.A) {W : Scheme.{0}} (k : (T ⊗ P.A).left ⟶ W), (ptSecT P.A (c ≫ y)).left ≫ (c ▷ P.A).left ≫ k = c.left ≫ (ptSecT P.A y).left ≫ k` using `fun y W k => by`. Rewrite using `[← Category.assoc, ptSecT_comp_whisker, Category.assoc]`. Establish `eq₃ : (c ≫ (x * h)) ^ m = c ≫ (x * h) ^ m` using `(MonObj.comp_pow _ _ _).symm`. Rewrite using `[g, vα _ _ z J hJ, vα _ _ z J hJ, vU _ _ z J hJ, eq₁, eq₃]`. Simplify using `only [Category.assoc, ptSecT_comp_whisker, comp_whiskerRight, Over.comp_left, w]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `q` using `only [Category.assoc]`.
+A detailed English derivation is pending.
 -/
 theorem isTwVal_pull {B : Scheme.{0}} (P : PolAV B) (N m : ℕ) {T₀ T : Over B} (θ : LB.Sec (LPow P.A P.L 1 T₀))
     {z₀ : T₀ ⟶ P.A} (τ : LB.Gen (LB.LinComb P.L (Y := T₀.left) (K := Fin 1) (fun _ => z₀.left) (fun _ => 1)))

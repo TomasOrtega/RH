@@ -8,27 +8,27 @@ open NumberField IsDedekindDomain GlobalTheory.CMVal GlobalTheory.LatVal Polynom
 namespace GlobalTheory.LadicDenom
 
 /- English proof (translation)
-Establish `h : (n : ℂ_[l]) = algebraMap ℚ_[l] ℂ_[l] (n : ℚ_[l])` using `by simp`. Rewrite using `[h, norm_algebraMap']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_natCast_padicComplex (l : ℕ) [Fact l.Prime] (n : ℕ) : ‖(n : ℂ_[l])‖ = ‖(n : ℚ_[l])‖ := by
   have h : (n : ℂ_[l]) = algebraMap ℚ_[l] ℂ_[l] (n : ℚ_[l]) := by simp
   rw [h, norm_algebraMap']
 
 /- English proof (translation)
-Establish `h : (q : ℂ_[l]) = algebraMap ℚ_[l] ℂ_[l] (q : ℚ_[l])` using `by simp`. Rewrite using `[h, norm_algebraMap']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_ratCast_padicComplex (l : ℕ) [Fact l.Prime] (q : ℚ) : ‖(q : ℂ_[l])‖ = ‖(q : ℚ_[l])‖ := by
   have h : (q : ℂ_[l]) = algebraMap ℚ_[l] ℂ_[l] (q : ℚ_[l]) := by simp
   rw [h, norm_algebraMap']
 
 /- English proof (translation)
-Rewrite using `[norm_natCast_padicComplex, Padic.norm_p]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_prime_padicComplex (l : ℕ) [Fact l.Prime] : ‖(l : ℂ_[l])‖ = (l : ℝ)⁻¹ := by
   rw [norm_natCast_padicComplex, Padic.norm_p]
 
 /- English proof (translation)
-Establish `h : x ∈ (NormedField.valuation (K` using `C)).integer := (Valuation.integer.integers (NormedField.valuation (K := C))).mem_of_integral hx.tower_top`. Rewrite `h` using `[Valuation.mem_integer_iff, NormedField.valuation_apply]`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_isIntegral {C : Type} [NormedField C] [IsUltrametricDist C] {x : C} (hx : IsIntegral ℤ x) :
     ‖x‖ ≤ 1 := by
@@ -38,13 +38,11 @@ theorem norm_le_one_of_isIntegral {C : Type} [NormedField C] [IsUltrametricDist 
   exact_mod_cast h
 
 /- English proof (translation)
-Introduce `hd`. Establish `hnum : ‖(q.num : ℚ_[l])‖ = 1`. Establish `hc : l.Coprime q.num.natAbs` using `(Nat.Prime.coprime_iff_not_dvd hl.out).2 fun hn => hl.out.one_lt.ne' (Nat.eq_one_of_dvd_coprimes q.reduced hn hd)`. Break down `Int.natAbs_eq q.num with e | e` into its components or cases. Rewrite using `[e, Int.cast_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Padic.norm_natCast_eq_one_iff.2 hc`. Rewrite using `[e, Int.cast_neg, Int.cast_natCast, norm_neg]`. Conclude with `Padic.norm_natCast_eq_one_iff.2 hc`. Establish `hden : ‖(q.den : ℚ_[l])‖ < 1`. Use `lt_of_le_of_ne ?_ fun e => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Padic.norm_int_le_one (q.den : ℤ)` after adjusting the coercions. Use `Padic.norm_natCast_eq_one_iff.1 e` as an intermediate fact. Conclude with `hl.out.one_lt.ne' (Nat.Coprime.eq_one_of_dvd this hd)`. Establish `e : (q : ℚ_[l]) * (q.den : ℚ_[l]) = q.num` using `by exact_mod_cast Rat.mul_den_eq_num q`. Establish `e2` using `congrArg norm e`.
-
-Rewrite `e2` using `[norm_mul, hnum]`. Establish `: ‖(q : ℚ_[l])‖ * ‖(q.den : ℚ_[l])‖ < 1` using `(mul_le_of_le_one_left (norm_nonneg _) h).trans_lt hden`. Conclude with `this.ne e2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem not_dvd_den_of_norm_le_one (l : ℕ) [hl : Fact l.Prime] (q : ℚ) (h : ‖(q : ℚ_[l])‖ ≤ 1) : ¬ l ∣ q.den := by
   intro hd
@@ -69,11 +67,9 @@ theorem not_dvd_den_of_norm_le_one (l : ℕ) [hl : Fact l.Prime] (q : ℚ) (h : 
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Use `haveI : Algebra.IsAlgebraic ℚ (algebraicClosure ℚ ℂ) := algebraicClosure.isAlgebraic ℚ ℂ`. Establish `hα : IsIntegral ℚ α` using `(Algebra.IsAlgebraic.isAlgebraic α).isIntegral`. Set `φ` to `(algHomAdjoinIntegralEquiv ℚ hα).symm ⟨β, hβ⟩`. Use `letI : Algebra ℚ⟮α⟯ ℂ_[l] := φ.toRingHom.toAlgebra`. Use `haveI : Algebra.IsAlgebraic ℚ⟮α⟯ (algebraicClosure ℚ ℂ) := Algebra.IsAlgebraic.tower_top (K := ℚ) _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ψ : algebraicClosure ℚ ℂ →ₐ[ℚ⟮α⟯] ℂ_[l]` to `IsAlgClosed.lift`. Establish `e : ψ α = β`. Establish `h1` using `ψ.commutes (AdjoinSimple.gen ℚ α)`. Rewrite `h1` using `[AdjoinSimple.algebraMap_gen]`. Rewrite using `[h1]`.
-
-Conclude with `algHomAdjoinIntegralEquiv_symm_apply_gen ℚ hα ⟨β, hβ⟩`. Rewrite using `[← e]`. Conclude with `h ψ.toRingHom`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_root_le_one (l : ℕ) [Fact l.Prime] (α : algebraicClosure ℚ ℂ)
     (h : ∀ lam : algebraicClosure ℚ ℂ →+* ℂ_[l], ‖lam α‖ ≤ 1) (β : ℂ_[l]) (hβ : β ∈ (minpoly ℚ α).aroots ℂ_[l]) :
@@ -93,15 +89,13 @@ theorem norm_root_le_one (l : ℕ) [Fact l.Prime] (α : algebraicClosure ℚ ℂ
   exact h ψ.toRingHom
 
 /- English proof (translation)
-Use `haveI : Algebra.IsAlgebraic ℚ (algebraicClosure ℚ ℂ) := algebraicClosure.isAlgebraic ℚ ℂ`. Establish `hα : IsIntegral ℚ α` using `(Algebra.IsAlgebraic.isAlgebraic α).isIntegral`. Use `set P := (minpoly ℚ α).map (algebraMap ℚ ℂ_[l]) with hP`. Set `S` to `(NormedField.valuation (K := ℂ_[l])).integer`. Establish `memS : ∀ z : ℂ_[l], z ∈ S ↔ ‖z‖ ≤ 1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `z`. Rewrite using `[Valuation.mem_integer_iff, NormedField.valuation_apply]`. Conclude with `Iff.rfl` after adjusting the coercions. Establish `hmon : P.Monic` using `(minpoly.monic hα).map _`. Establish `hroots : ∀ β ∈ P.roots, β ∈ S` using `fun β hβ => (memS β).2 (norm_root_le_one l α h β hβ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : (((minpoly ℚ α).coeff i : ℚ) : ℂ_[l]) = P.coeff i`. Rewrite using `[hP, coeff_map, eq_ratCast]`. Rewrite using `[hc, ← memS]`. Distinguish the cases in `hi : i ≤ P.natDegree`. Rewrite using `[coeff_eq_esymm_roots_of_card IsAlgClosed.card_roots_eq_natDegree hi, hmon.leadingCoeff, one_mul]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `S.mul_mem (S.pow_mem (S.neg_mem S.one_mem) _) ?_` and prove the remaining obligations. Unfold `Multiset.esymm`. Use `S.multiset_sum_mem _ fun z hz => ?_` and prove the remaining obligations. Take `⟨t, ht, rfl⟩` from `Multiset.mem_map.1 hz`. Conclude with `S.multiset_prod_mem _ fun w hw => hroots w (Multiset.mem_of_le (Multiset.mem_powersetCard.1 ht).1 hw)`.
-
-Rewrite using `[coeff_eq_zero_of_natDegree_lt (not_le.1 hi)]`. Conclude with `S.zero_mem`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_norm_le_one (l : ℕ) [Fact l.Prime] (α : algebraicClosure ℚ ℂ)
     (h : ∀ lam : algebraicClosure ℚ ℂ →+* ℂ_[l], ‖lam α‖ ≤ 1) (i : ℕ) :
@@ -130,21 +124,19 @@ theorem coeff_norm_le_one (l : ℕ) [Fact l.Prime] (α : algebraicClosure ℚ �
     exact S.zero_mem
 
 /- English proof (translation)
-Use `haveI : Algebra.IsAlgebraic ℚ (algebraicClosure ℚ ℂ) := algebraicClosure.isAlgebraic ℚ ℂ`. Establish `hα : IsIntegral ℚ α` using `(Algebra.IsAlgebraic.isAlgebraic α).isIntegral`. Use `set p := minpoly ℚ α with hp`. Establish `hmon : p.Monic` using `minpoly.monic hα`. Establish `hden : ∀ i, ¬ l ∣ (p.coeff i).den` using `fun i => not_dvd_den_of_norm_le_one l _ (by rw [← norm_ratCast_padicComplex]; exact coeff_norm_le_one l α h i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set D : ℕ := ∏ i ∈ Finset.range p.natDegree, (p.coeff i).den with hD`. Establish `hDc : D.Coprime l` using `Nat.Coprime.prod_left fun i _ => ((Nat.Prime.coprime_iff_not_dvd hl.out).2 (hden i)).symm`. Use `⟨D, hDc, ?_⟩` and prove the remaining obligations. Use `set q := p.scaleRoots (D : ℚ) with hq`. Establish `hql : q ∈ lifts (Int.castRingHom ℚ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[lifts_iff_coeff_lifts]`. Introduce `n`. Rewrite using `[hq, coeff_scaleRoots]`. Break down `lt_trichotomy n p.natDegree with hn | hn | hn` into its components or cases. Take `⟨e, he⟩ : (p.coeff n).den ∣ D` from `Finset.dvd_prod_of_mem _ (Finset.mem_range.2 hn)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take `⟨k, hk⟩ : ∃ k, p.natDegree - n = k + 1` from `⟨p.natDegree - n - 1, by omega⟩`. Establish `h1 : p.coeff n * ((p.coeff n).den : ℚ) = (p.coeff n).num` using `Rat.mul_den_eq_num _`. Use `⟨(p.coeff n).num * e * D ^ k, ?_⟩` and prove the remaining obligations. Simplify using `only [eq_intCast, Int.cast_mul, Int.cast_pow, Int.cast_natCast]`. Rewrite using `[hk, pow_succ, ← h1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : (D : ℚ) = (p.coeff n).den * e` using `by exact_mod_cast he`. Rewrite using `[h2]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨1, ?_⟩` and prove the remaining obligations. Rewrite using `[hn, hmon.coeff_natDegree, Nat.sub_self, pow_zero, mul_one, map_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[coeff_eq_zero_of_natDegree_lt hn, zero_mul, map_zero]`. Establish `hqm : q.Monic`. Rewrite using `[Monic, hq, leadingCoeff_scaleRoots]`. Conclude with `hmon`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Take `⟨Q, hQ, -, hQm⟩` from `lifts_and_natDegree_eq_and_monic hql hqm`. Establish `hroot : aeval ((D : algebraicClosure ℚ ℂ) * α) q = 0`. Use `scaleRoots_aeval_eq_zero (r := (D : ℚ)) (minpoly.aeval ℚ α)` as an intermediate fact. Simplify using `using this`. Establish `hint : IsIntegral ℤ ((D : algebraicClosure ℚ ℂ) * α)`.
-
-Use `⟨Q, hQm, ?_⟩` and prove the remaining obligations. Rewrite using `[← aeval_def, ← aeval_map_algebraMap ℚ, algebraMap_int_eq, hQ]`. Conclude with `hroot`. Use `map_isIntegral_int (algebraicClosure ℚ ℂ).val.toRingHom hint` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem intAt_of_forall_norm_le_one (l : ℕ) [hl : Fact l.Prime] (α : algebraicClosure ℚ ℂ)
     (h : ∀ lam : algebraicClosure ℚ ℂ →+* ℂ_[l], ‖lam α‖ ≤ 1) : IntAt l (α : ℂ) := by
@@ -191,31 +183,27 @@ theorem intAt_of_forall_norm_le_one (l : ℕ) [hl : Fact l.Prime] (α : algebrai
   simpa using this
 
 /- English proof (translation)
-Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast hl.out.one_lt`. Establish `hl0 : (0 : ℝ) < l` using `by linarith`. Use `haveI : Algebra.IsAlgebraic ℚ (algebraicClosure ℚ ℂ) := algebraicClosure.isAlgebraic ℚ ℂ`. Prove the components needed by the constructor for the conclusion. Introduce `hv lam`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hN, hi⟩` from `hv ⌈r⌉ 1 one_pos (by simpa using Int.le_ceil r)`. Establish `hN0 : N ≠ 0`. Introduce and unpack `rfl`. Rewrite `hN` using `[Nat.coprime_zero_left]`. Conclude with `hl.out.one_lt.ne' hN`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : x ∈ algebraicClosure ℚ ℂ`. Establish `h1 : (N : ℂ) * ((l : ℂ) ^ ⌈r⌉ * x ^ 1) ∈ algebraicClosure ℚ ℂ` using `mem_algebraicClosure_iff.2 (hi.tower_top (A := ℚ)).isAlgebraic`. Establish `h2 : ((N : ℂ) * (l : ℂ) ^ ⌈r⌉) ≠ 0` using `mul_ne_zero (Nat.cast_ne_zero.2 hN0) (zpow_ne_zero _ (Nat.cast_ne_zero.2 hl.out.ne_zero))`. Establish `h3 : x = ((N : ℂ) * ((l : ℂ) ^ ⌈r⌉ * x ^ 1)) * ((N : ℂ) * (l : ℂ) ^ ⌈r⌉)⁻¹`. Rewrite using `[pow_one, ← mul_assoc, mul_right_comm, mul_inv_cancel₀ h2, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h3]`. Conclude with `mul_mem h1 (inv_mem (mul_mem (IntermediateField.natCast_mem _ _) (zpow_mem (IntermediateField.natCast_mem _ _) _)))`. Use `⟨hmem, ?_⟩` and prove the remaining obligations. Use `set t := ‖lam ⟨x, hmem⟩‖ with ht`. Establish `key : ∀ (m : ℤ) (n : ℕ), 0 < n → r ≤ (m : ℝ) / n → t ^ n ≤ (l : ℝ) ^ m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `m n hn hmn`. Take `⟨N, hN, hi⟩` from `hv m n hn hmn`. Use `set β : algebraicClosure ℚ ℂ := (N : algebraicClosure ℚ ℂ) * ((l : algebraicClosure ℚ ℂ) ^ m * ⟨x, hmem⟩ ^ n)`. Establish `hiβ : IsIntegral ℤ β`. Use `(isIntegral_algHom_iff ((algebraicClosure ℚ ℂ).val.restrictScalars ℤ) Subtype.val_injective).1 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : ((algebraicClosure ℚ ℂ).val.restrictScalars ℤ) β = (N : ℂ) * ((l : ℂ) ^ m * x ^ n)` using `Complex.ext rfl rfl`. Rewrite using `[e]`. Conclude with `hi`. Establish `h1` using `norm_le_one_of_isIntegral (map_isIntegral_int lam hiβ)`. Simplify using `only [β, map_mul, map_pow, map_zpow₀, map_natCast, norm_mul, norm_pow, norm_zpow] at h1`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `h1` using `[norm_natCast_padicComplex, Padic.norm_natCast_eq_one_iff.2 hN.symm, norm_prime_padicComplex, one_mul, inv_zpow', zpow_neg, inv_mul_le_iff₀ (zpow_pos hl0 m), mul_one]`. Conclude with `h1`. Assume the negation of the conclusion as `hgt`. Rewrite `hgt` using `[not_le]`. Establish `htp : 0 < t` using `(Real.rpow_pos_of_pos hl0 r).trans hgt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : r < Real.logb l t` using `(Real.lt_logb_iff_rpow_lt hl1 htp).2 hgt`. Take `⟨q, hq1, hq2⟩` from `exists_rat_btwn hr`. Establish `hq3 : (l : ℝ) ^ (q : ℝ) < t` using `(Real.lt_logb_iff_rpow_lt hl1 htp).1 hq2`. Establish `hqe : (q : ℝ) = (q.num : ℝ) / (q.den : ℕ)` using `by exact_mod_cast (Rat.num_div_den q).symm`. Establish `hk` using `key q.num q.den q.den_pos (by rw [← hqe]; exact hq1.le)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `h4 : ((l : ℝ) ^ (q : ℝ)) ^ q.den < t ^ q.den` using `pow_lt_pow_left₀ hq3 (Real.rpow_nonneg hl0.le _) q.den_pos.ne'`. Establish `h5 : ((l : ℝ) ^ (q : ℝ)) ^ q.den = (l : ℝ) ^ q.num`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hl0.le, ← Real.rpow_intCast, hqe, div_mul_cancel₀ _ (Nat.cast_ne_zero.2 q.den_pos.ne')]`. Rewrite `h4` using `[h5]`. Conclude with `absurd hk (not_le.2 h4)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `h`. Set `lam₀ : algebraicClosure ℚ ℂ →+* ℂ_[l]` to `(IsAlgClosed.lift : algebraicClosure ℚ ℂ →ₐ[ℚ] ℂ_[l]).toRingHom`. Take `⟨hmem, -⟩` from `h lam₀`. Introduce `m n hn hmn`. Establish `hmn' : r * n ≤ m` using `by rwa [le_div_iff₀ (Nat.cast_pos.2 hn)] at hmn`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb : ∀ lam : algebraicClosure ℚ ℂ →+* ℂ_[l], ‖lam ((l : algebraicClosure ℚ ℂ) ^ m * ⟨x, hmem⟩ ^ n)‖ ≤ 1`. Introduce `lam`. Take `⟨h', hle⟩` from `h lam`. Rewrite using `[map_mul, map_zpow₀, map_pow, map_natCast, norm_mul, norm_zpow, norm_pow, norm_prime_padicComplex, inv_zpow', zpow_neg]`. Establish `h2 : ‖lam ⟨x, hmem⟩‖ ^ n ≤ (l : ℝ) ^ m`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[inv_mul_le_iff₀ (zpow_pos hl0 m), mul_one]`. Conclude with `h2`. Use `intAt_of_forall_norm_le_one l _ hb` as an intermediate fact. Establish `e : (((l : algebraicClosure ℚ ℂ) ^ m * ⟨x, hmem⟩ ^ n : algebraicClosure ℚ ℂ) : ℂ) = (l : ℂ) ^ m * x ^ n` using `Complex.ext rfl rfl`.
-
-Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem valGe_iff_forall_sz (l : ℕ) [hl : Fact l.Prime] (r : ℝ) (x : ℂ) :
     GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.ValGe_vp l r x ↔ ∀ lam : algebraicClosure ℚ ℂ →+* ℂ_[l], Sz l lam r x := by

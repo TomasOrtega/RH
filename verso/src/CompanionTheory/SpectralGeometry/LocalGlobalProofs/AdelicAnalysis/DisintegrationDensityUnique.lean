@@ -16,7 +16,7 @@ variable {V X Y : Type}
   {fib : X → Measure V}
 
 /- English proof (translation)
-Establish `h1 : ∀ᵐ v ∂(fib b), v ∈ f ⁻¹' {ι b} ∩ g ⁻¹' B`. Rewrite using `[ae_iff]`. Conclude with `h.1 b`. Use `filter_upwards [h1] with v hv`. Conclude with `hι ((hf v).symm.trans hv.1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma ae_eq_point (hι : Function.Injective ι) (hf : ∀ v, f v = ι (g v))
     (h : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsFibreFamily μ f ι (g ⁻¹' B) ν B fib) (b : X) :
@@ -27,13 +27,13 @@ lemma ae_eq_point (hι : Function.Injective ι) (hf : ∀ v, f v = ι (g v))
   exact hι ((hf v).symm.trans hv.1)
 
 /- English proof (translation)
-Establish `hSm : MeasurableSet S` using `hS.isClosed.measurableSet`. Establish `hgS : MeasurableSet (g ⁻¹' S)` using `hg.measurable hSm`. Establish `key` using `h.2.1 ((g ⁻¹' S).indicator u) (hu.indicator hgS)`. Establish `hpt : ∀ b, ∫⁻ v, (g ⁻¹' S).indicator u v ∂(fib b) = S.indicator (fun b => ∫⁻ v, u v ∂(fib b)) b`. Introduce `b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hb : b ∈ S`. Rewrite using `[Set.indicator_of_mem hb]`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_eq_point hι hf h b] with v hv`. Conclude with `Set.indicator_of_mem (show v ∈ g ⁻¹' S by simpa [hv] using hb) u`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Set.indicator_of_notMem hb]`. Establish `: (fun v => (g ⁻¹' S).indicator u v) =ᵐ[fib b] fun _ => 0` using `by filter_upwards [ae_eq_point hι hf h b] with v hv`. Conclude with `Set.indicator_of_notMem (show v ∉ g ⁻¹' S by simpa [hv] using hb) u`. Rewrite using `[lintegral_congr_ae this]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses repeatedly using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `key` using `[hpt]`. Rewrite `key` using `[lintegral_indicator hSm, setLIntegral_indicator hgS]`. Establish `hsub : g ⁻¹' S ∩ g ⁻¹' B = g ⁻¹' S` using `Set.inter_eq_left.mpr (Set.preimage_mono hSB)`. Rewrite `key` using `[hsub]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 lemma lintegral_preimage (hι : Function.Injective ι) (hf : ∀ v, f v = ι (g v))
     (hg : Continuous g)
@@ -63,9 +63,9 @@ lemma lintegral_preimage (hι : Function.Injective ι) (hf : ∀ v, f v = ι (g 
   rwa [hsub] at key
 
 /- English proof (translation)
-Establish `hSm : MeasurableSet S` using `hS.isClosed.measurableSet`. Establish `hcont` using `(h.2.2 u hc hs hsupp).2`. Establish `hm : AEStronglyMeasurable (fun b => ∫ v, u v ∂(fib b)) (ν.restrict S)` using `(hcont.mono hSB).aestronglyMeasurable hSm`. Rewrite using `[integral_eq_lintegral_of_nonneg_ae (Filter.Eventually.of_forall h0) hc.aestronglyMeasurable, integral_eq_lintegral_of_nonneg_ae (Filter.Eventually.of_forall fun b => integral_nonneg h0) hm, lintegral_preimage hι hf hg h hS hSB (hc.measurable.ennreal_ofReal)]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `lintegral_congr fun b => ?_` and prove the remaining obligations. Use `haveI := hfin b`. Conclude with `(ofReal_integral_eq_lintegral_ofReal (hc.integrable_of_hasCompactSupport hs) (Filter.Eventually.of_forall h0)).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma integral_preimage_nonneg [IsLocallyFiniteMeasure ν] [IsLocallyFiniteMeasure μ]
     (hfin : ∀ b, IsLocallyFiniteMeasure (fib b))
@@ -90,19 +90,17 @@ lemma integral_preimage_nonneg [IsLocallyFiniteMeasure ν] [IsLocallyFiniteMeasu
     (Filter.Eventually.of_forall h0)).symm
 
 /- English proof (translation)
-Use `set p : V → ℝ := fun v => max (u v) 0 with hp`. Use `set q : V → ℝ := fun v => max (-u v) 0 with hq`. Establish `hpc : Continuous p` using `hc.max continuous_const`. Establish `hqc : Continuous q` using `hc.neg.max continuous_const`. Establish `hps : Function.support p ⊆ Function.support u`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `v hv hv0`. Conclude with `hv (by simp [hp, show u v = 0 from hv0])`. Establish `hqs : Function.support q ⊆ Function.support u`. Introduce `v hv hv0`. Conclude with `hv (by simp [hq, show u v = 0 from hv0])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpK : HasCompactSupport p` using `hs.mono hps`. Establish `hqK : HasCompactSupport q` using `hs.mono hqs`. Establish `hpt : tsupport p ⊆ g ⁻¹' B` using `(closure_mono hps).trans hsupp`. Establish `hqt : tsupport q ⊆ g ⁻¹' B` using `(closure_mono hqs).trans hsupp`. Establish `hsplit : ∀ v, u v = p v - q v` using `fun v => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hp, hq]`. Break down `le_total (u v) 0 with h1 | h1` into its components or cases. Rewrite using `[max_eq_right h1, max_eq_left (by linarith)]; ring`. Rewrite using `[max_eq_left h1, max_eq_right (by linarith)]; ring`. Establish `hP` using `integral_preimage_nonneg hfin hι hf hg h hS hSB hpc hpK hpt (fun v => le_max_right _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ` using `integral_preimage_nonneg hfin hι hf hg h hS hSB hqc hqK hqt (fun v => le_max_right _ _)`. Establish `hIp : Integrable p μ` using `hpc.integrable_of_hasCompactSupport hpK`. Establish `hIq : Integrable q μ` using `hqc.integrable_of_hasCompactSupport hqK`. Establish `hGp : IntegrableOn (fun b => ∫ v, p v ∂(fib b)) S ν` using `((h.2.2 p hpc hpK hpt).2.mono hSB).integrableOn_compact hS`. Establish `hGq : IntegrableOn (fun b => ∫ v, q v ∂(fib b)) S ν` using `((h.2.2 q hqc hqK hqt).2.mono hSB).integrableOn_compact hS`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hb : ∀ b, ∫ v, u v ∂(fib b) = ∫ v, p v ∂(fib b) - ∫ v, q v ∂(fib b)` using `fun b => by haveI := hfin b`. Repeatedly rewrite using `[hsplit]`. Conclude with `integral_sub (hpc.integrable_of_hasCompactSupport hpK) (hqc.integrable_of_hasCompactSupport hqK)`. Repeatedly rewrite using `[hb]`. Rewrite using `[integral_sub hGp hGq, ← hP, ← hQ, ← integral_sub hIp.integrableOn hIq.integrableOn]`.
-
-Repeatedly rewrite using `[hsplit]`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 lemma integral_preimage_real [IsLocallyFiniteMeasure ν] [IsLocallyFiniteMeasure μ]
     (hfin : ∀ b, IsLocallyFiniteMeasure (fib b))
@@ -150,7 +148,7 @@ lemma integral_preimage_real [IsLocallyFiniteMeasure ν] [IsLocallyFiniteMeasure
   simp_rw [hsplit]
 
 /- English proof (translation)
-Use `haveI := hfin b`. Conclude with `(integral_re_add_im (𝕜 := ℂ) (hc.integrable_of_hasCompactSupport hs)).symm`.
+A detailed English derivation is pending.
 -/
 lemma integral_fib_eq (hfin : ∀ b, IsLocallyFiniteMeasure (fib b)) {ψ : V → ℂ}
     (hc : Continuous ψ) (hs : HasCompactSupport ψ) (b : X) :
@@ -160,7 +158,7 @@ lemma integral_fib_eq (hfin : ∀ b, IsLocallyFiniteMeasure (fib b)) {ψ : V →
   exact (integral_re_add_im (𝕜 := ℂ) (hc.integrable_of_hasCompactSupport hs)).symm
 
 /- English proof (translation)
-Establish `hsub : Function.support (fun v => (ψ v).re) ⊆ Function.support ψ`. Introduce `v hv hv0`. Conclude with `hv (by simp [show ψ v = 0 from hv0])`. Conclude with `⟨Complex.continuous_re.comp hc, hs.mono hsub, (closure_mono hsub).trans hsupp⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma re_facts {ψ : V → ℂ} (hc : Continuous ψ) (hs : HasCompactSupport ψ)
     {U : Set V} (hsupp : tsupport ψ ⊆ U) :
@@ -172,7 +170,7 @@ lemma re_facts {ψ : V → ℂ} (hc : Continuous ψ) (hs : HasCompactSupport ψ)
   exact ⟨Complex.continuous_re.comp hc, hs.mono hsub, (closure_mono hsub).trans hsupp⟩
 
 /- English proof (translation)
-Establish `hsub : Function.support (fun v => (ψ v).im) ⊆ Function.support ψ`. Introduce `v hv hv0`. Conclude with `hv (by simp [show ψ v = 0 from hv0])`. Conclude with `⟨Complex.continuous_im.comp hc, hs.mono hsub, (closure_mono hsub).trans hsupp⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma im_facts {ψ : V → ℂ} (hc : Continuous ψ) (hs : HasCompactSupport ψ)
     {U : Set V} (hsupp : tsupport ψ ⊆ U) :
@@ -184,9 +182,9 @@ lemma im_facts {ψ : V → ℂ} (hc : Continuous ψ) (hs : HasCompactSupport ψ)
   exact ⟨Complex.continuous_im.comp hc, hs.mono hsub, (closure_mono hsub).trans hsupp⟩
 
 /- English proof (translation)
-Take `⟨r1, r2, r3⟩` from `re_facts hc hs hsupp`. Take `⟨i1, i2, i3⟩` from `im_facts hc hs hsupp`. Establish `hre` using `(h.2.2 _ r1 r2 r3).2`. Establish `him` using `(h.2.2 _ i1 i2 i3).2`. Repeatedly rewrite using `[integral_fib_eq hfin hc hs]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Conclude with `(Complex.continuous_ofReal.comp_continuousOn hre).add ((Complex.continuous_ofReal.comp_continuousOn him).mul continuousOn_const)`.
+A detailed English derivation is pending.
 -/
 lemma continuousOn_fib (hfin : ∀ b, IsLocallyFiniteMeasure (fib b))
     (h : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsFibreFamily μ f ι (g ⁻¹' B) ν B fib)
@@ -202,13 +200,13 @@ lemma continuousOn_fib (hfin : ∀ b, IsLocallyFiniteMeasure (fib b))
     ((Complex.continuous_ofReal.comp_continuousOn him).mul continuousOn_const)
 
 /- English proof (translation)
-Take `⟨r1, r2, r3⟩` from `re_facts hc hs hsupp`. Take `⟨i1, i2, i3⟩` from `im_facts hc hs hsupp`. Establish `hR` using `integral_preimage_real hfin hι hf hg h hS hSB r1 r2 r3`. Establish `hI` using `integral_preimage_real hfin hι hf hg h hS hSB i1 i2 i3`. Establish `hIv : IntegrableOn ψ (g ⁻¹' S) μ` using `(hc.integrable_of_hasCompactSupport hs).integrableOn`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hIb : IntegrableOn (fun b => ∫ v, ψ v ∂(fib b)) S ν` using `((continuousOn_fib hfin h hc hs hsupp).mono hSB).integrableOn_compact hS`. Establish `hfre : ∀ b, ∫ v, (ψ v).re ∂(fib b) = (∫ v, ψ v ∂(fib b)).re` using `fun b => by haveI := hfin b`. Conclude with `integral_re (𝕜 := ℂ) (hc.integrable_of_hasCompactSupport hs)`. Establish `hfim : ∀ b, ∫ v, (ψ v).im ∂(fib b) = (∫ v, ψ v ∂(fib b)).im` using `fun b => by haveI := hfin b`. Conclude with `integral_im (𝕜 := ℂ) (hc.integrable_of_hasCompactSupport hs)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `Complex.ext` to reduce the goal to its premises. Establish `e1 : ∫ v in g ⁻¹' S, (ψ v).re ∂μ = (∫ v in g ⁻¹' S, ψ v ∂μ).re` using `integral_re (𝕜 := ℂ) hIv`. Establish `e2 : ∫ b in S, (∫ v, ψ v ∂(fib b)).re ∂ν = (∫ b in S, ∫ v, ψ v ∂(fib b) ∂ν).re` using `integral_re (𝕜 := ℂ) hIb`. Rewrite using `[← e1, ← e2, hR]`. Repeatedly rewrite using `[hfre]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : ∫ v in g ⁻¹' S, (ψ v).im ∂μ = (∫ v in g ⁻¹' S, ψ v ∂μ).im` using `integral_im (𝕜 := ℂ) hIv`. Establish `e2 : ∫ b in S, (∫ v, ψ v ∂(fib b)).im ∂ν = (∫ b in S, ∫ v, ψ v ∂(fib b) ∂ν).im` using `integral_im (𝕜 := ℂ) hIb`. Rewrite using `[← e1, ← e2, hI]`. Repeatedly rewrite using `[hfim]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 lemma integral_preimage_complex [IsLocallyFiniteMeasure ν] [IsLocallyFiniteMeasure μ]
     (hfin : ∀ b, IsLocallyFiniteMeasure (fib b))
@@ -245,11 +243,9 @@ lemma integral_preimage_complex [IsLocallyFiniteMeasure ν] [IsLocallyFiniteMeas
     simp_rw [hfim]
 
 /- English proof (translation)
-Take `⟨χ, h1, -, hsupp, -⟩` from `exists_continuousMap_one_of_isCompact_subset_isOpen hK hB hKB`. Use `⟨fun v => (χ (g v) : ℂ) * φ v, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Complex.continuous_ofReal.comp (χ.continuous.comp hg)).mul hc`. Conclude with `hs.mono (fun v hv hv0 => hv (by simp [show φ v = 0 from hv0]))`. Establish `hsub : Function.support (fun v => (χ (g v) : ℂ) * φ v) ⊆ g ⁻¹' tsupport χ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `v hv`. Apply `subset_tsupport` to reduce the goal to its premises. Introduce `h0`. Conclude with `hv (by simp [show χ (g v) = 0 from h0])`. Conclude with `(closure_minimal hsub ((isClosed_tsupport _).preimage hg)).trans (Set.preimage_mono hsupp)`.
-
-Introduce `v hv`. Establish `: χ (g v) = 1` using `h1 hv`. Simplify using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma exists_cutoff (hg : Continuous g) (hB : IsOpen B) {K : Set X} (hK : IsCompact K)
     (hKB : K ⊆ B) {φ : V → ℂ} (hc : Continuous φ) (hs : HasCompactSupport φ) :
@@ -271,17 +267,15 @@ lemma exists_cutoff (hg : Continuous g) (hB : IsOpen B) {K : Set X} (hK : IsComp
     simp [this]
 
 /- English proof (translation)
-Introduce `V X Y _ _ _ _ _ _ _ _ _ _ _ _ μ ν _ _ _ f g ι hι hg hf B hB fib h φ hc hs`. Establish `hfin` using `(GlobalTheory.T.fibre_family_locallyFinite_measurable_bdd_on_compact V X Y μ ν f g ι hι hg hf B hB fib h).1`. Establish `hcongr : ∀ {ψ : V → ℂ} {K : Set X}, (∀ v, g v ∈ K → ψ v = φ v) → ∀ b ∈ K, ∫ v, ψ v ∂(fib b) = ∫ v, φ v ∂(fib b)`. Introduce `ψ K hψ b hb`. Use `integral_congr_ae ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [ae_eq_point hι hf h b] with v hv`. Conclude with `hψ v (hv ▸ hb)`. Use `⟨⟨?_, ?_⟩, fun b => ?_⟩` and prove the remaining obligations. Introduce `b₀ hb₀`. Take `⟨K, hKn, hKB, hK⟩` from `local_compact_nhds (hB.mem_nhds hb₀)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ψ, c1, c2, c3, c4⟩` from `exists_cutoff hg hB hK hKB hc hs`. Establish `hat : ContinuousAt (fun b => ∫ v, ψ v ∂(fib b)) b₀` using `(continuousOn_fib hfin h c1 c2 c3).continuousAt (hB.mem_nhds hb₀)`. Use `(hat.congr ?_).continuousWithinAt` and prove the remaining obligations. Use `filter_upwards [hKn] with b hb`. Conclude with `hcongr c4 b hb`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Introduce `S hS hSB`. Establish `hpre : f ⁻¹' (ι '' S) = g ⁻¹' S`. Use extensionality with `v`. Simplify using `only [Set.mem_preimage, Set.mem_image, hf]`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨x, hx, hxv⟩`. Conclude with `hι hxv ▸ hx`. Conclude with `fun hv => ⟨g v, hv, rfl⟩`. Establish `hSm : MeasurableSet S` using `hS.isClosed.measurableSet`. Take `⟨ψ, c1, c2, c3, c4⟩` from `exists_cutoff hg hB hS hSB hc hs`.
-
-Rewrite using `[hpre]`. Combine the equalities or inequalities in the displayed calculation. Use `haveI := hfin b`. Conclude with `hc.integrable_of_hasCompactSupport hs`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem isContDensityOn_fibreIntegral : ∀ (V X Y : Type) [TopologicalSpace V]
     [LocallyCompactSpace V] [SecondCountableTopology V] [T2Space V] [MeasurableSpace V]

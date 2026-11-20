@@ -13,7 +13,7 @@ open NumberField Matrix in
 open scoped ENNReal Classical in
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.Mass.perp`. Simplify using `[Submodule.mem_iInf, LinearMap.mem_ker]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.Mass.StabSplit.mem_perp (h : V →ₗ⋆[K] V →ₗ[K] K)
     (U : Submodule K V) (v : V) :
@@ -31,7 +31,7 @@ open NumberField Matrix in
 open scoped ENNReal Classical in
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] in
 /- English proof (translation)
-Rewrite `hx` using `[← hg, _root_.GlobalTheory.Mass.StabSplit.smul_eq_map]`. Take `⟨u, hu, hux⟩` from `Submodule.mem_map.1 hx`. Conclude with `⟨u, hu, hux⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private lemma exists_preimage_mem_of_isom_smul_eq {h : V →ₗ⋆[K] V →ₗ[K] K} {g : _root_.Formalism.HermitianLatticesTheory.isom h}
     {U : Submodule K V} (hg : g • U = U) {x : V} (hx : x ∈ U) : ∃ u ∈ U, g.1 u = x := by
@@ -43,7 +43,7 @@ open NumberField Matrix in
 open scoped ENNReal Classical in
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] in
 /- English proof (translation)
-Rewrite using `[← hg, _root_.GlobalTheory.Mass.StabSplit.smul_eq_map]`. Conclude with `Submodule.mem_map_of_mem hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma isom_apply_mem_of_smul_eq {h : V →ₗ⋆[K] V →ₗ[K] K} {g : _root_.Formalism.HermitianLatticesTheory.isom h}
     {U : Submodule K V} (hg : g • U = U) {x : V} (hx : x ∈ U) : g.1 x ∈ U := by
@@ -55,13 +55,13 @@ open scoped ENNReal Classical in
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] in
 
 /- English proof (translation)
-Use extensionality with `v`. Rewrite using `[_root_.GlobalTheory.Mass.StabSplit.smul_eq_map, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, rfl⟩`. Rewrite `hw`, the goal using `[_root_.GlobalTheory.Mass.StabSplit.mem_perp]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `x hx`. Take `⟨u, hu, rfl⟩` from `exists_preimage_mem_of_isom_smul_eq hg hx`. Establish `hiso : h (g.1 u) (g.1 w) = h u w` using `g.2 u w`. Simplify using `only [LinearEquiv.coe_coe] at hiso ⊢`. Rewrite using `[hiso]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hw u hu`. Introduce `hv`. Use `⟨g.1.symm v, ?_, by simp⟩` and prove the remaining obligations. Rewrite `hv`, the goal using `[_root_.GlobalTheory.Mass.StabSplit.mem_perp]`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hiso : h (g.1 x) (g.1 (g.1.symm v)) = h x (g.1.symm v)` using `g.2 x (g.1.symm v)`. Rewrite using `[← hiso, LinearEquiv.apply_symm_apply]`. Conclude with `hv _ (isom_apply_mem_of_smul_eq hg hx)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Mass.StabSplit.smul_perp (h : V →ₗ⋆[K] V →ₗ[K] K) (g : _root_.Formalism.HermitianLatticesTheory.isom h)
     (U : Submodule K V) (hg : g • U = U) :
@@ -99,9 +99,9 @@ open NumberField Matrix in
 open scoped ENNReal Classical in
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] in
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨y, hy, hyx⟩ : ∃ y ∈ L, g.1 y = (x : V)` from `hx`. Take `⟨u, hu, hux⟩` from `exists_preimage_mem_of_isom_smul_eq hg x.2`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `huy : u = y` using `g.1.injective (hux.trans hyx.symm)`. Substitute `huy` using the available equality. Conclude with `⟨⟨u, hu⟩, hy, Subtype.ext hux⟩`. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨(y : V), hy, rfl⟩`.
+Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.Mass.StabSplit.latIn_smul {R : Type} [CommRing R] [Algebra R K] [Module R V]
     [IsScalarTower R K V] (h : V →ₗ⋆[K] V →ₗ[K] K) (U : Submodule K V) (g : _root_.Formalism.HermitianLatticesTheory.isom h)
@@ -130,7 +130,7 @@ open NumberField Matrix in
 open scoped ENNReal Classical in
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] in
 /- English proof (translation)
-Take `⟨τ⟩` from `(inferInstance : Nonempty (K →+* ℂ))`. Establish `hpos` using `hpd τ x hx`. Introduce `hzero`. Rewrite `hpos` using `[hzero, map_zero, Complex.zero_re]`. Conclude with `lt_irrefl 0 hpos`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma apply_self_ne_zero_of_PD_of_numberField [NumberField K] {h : V →ₗ⋆[K] V →ₗ[K] K}
     (hpd : _root_.GlobalTheory.Mass.PD h) {x : V} (hx : x ≠ 0) : h x x ≠ 0 := by
@@ -144,7 +144,7 @@ open NumberField Matrix in
 open scoped ENNReal Classical in
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] in
 /- English proof (translation)
-Rewrite using `[Submodule.disjoint_def]`. Introduce `x hxU hxW`. Assume the negation of the conclusion as `hx`. Conclude with `apply_self_ne_zero_of_PD_of_numberField hpd hx ((_root_.GlobalTheory.Mass.StabSplit.mem_perp h U x).1 hxW x hxU)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 private lemma disjoint_perp_of_PD [NumberField K]
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hpd : _root_.GlobalTheory.Mass.PD h) (U : Submodule K V) :
@@ -159,13 +159,13 @@ open NumberField Matrix in
 open scoped ENNReal Classical in
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] in
 /- English proof (translation)
-Use `set b := Module.finBasis K U`. Set `F : V →ₗ[K] (Fin (Module.finrank K U) → K)` to `LinearMap.pi fun i => h (b i : V)`. Establish `hker : LinearMap.ker F = _root_.GlobalTheory.Mass.perp h U`. Use extensionality with `v`. Rewrite using `[LinearMap.mem_ker, _root_.GlobalTheory.Mass.StabSplit.mem_perp]`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hv x hx`. Establish `hzero : (h.flip v).comp U.subtype = 0` using `b.ext fun i => by`. Simplify `congrFun hv i` using `[F]`. Simplify using `using LinearMap.congr_fun hzero ⟨x, hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hv`. Use function extensionality and compare the values at `i`. Simplify `hv (b i : V) (b i).2` using `[F]`. Establish `hrn` using `LinearMap.finrank_range_add_finrank_ker F`. Establish `hle : Module.finrank K (LinearMap.range F) ≤ Module.finrank K U`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using Submodule.finrank_le (LinearMap.range F)`. Rewrite `hrn` using `[hker]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private lemma finrank_le_finrank_add_finrank_perp [FiniteDimensional K V]
     (h : V →ₗ⋆[K] V →ₗ[K] K) (U : Submodule K V) :
@@ -194,9 +194,9 @@ open NumberField Matrix in
 open scoped ENNReal Classical in
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] in
 /- English proof (translation)
-Establish `hdisj` using `disjoint_perp_of_PD hpd U`. Use `⟨hdisj, codisjoint_iff.2 ?_⟩` and prove the remaining obligations. Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises. Establish `hsum` using `Submodule.finrank_sup_add_finrank_inf_eq U (_root_.GlobalTheory.Mass.perp h U)`. Rewrite `hsum` using `[disjoint_iff.1 hdisj, finrank_bot]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hle` using `finrank_le_finrank_add_finrank_perp h U`. Establish `hle'` using `Submodule.finrank_le (U ⊔ _root_.GlobalTheory.Mass.perp h U)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 private lemma isCompl_perp_of_PD [NumberField K] [FiniteDimensional K V]
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hpd : _root_.GlobalTheory.Mass.PD h) (U : Submodule K V) :
@@ -214,7 +214,7 @@ open NumberField Matrix in
 open scoped ENNReal Classical in
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] in
 /- English proof (translation)
-Establish `h1 : h u w' = 0` using `(_root_.GlobalTheory.Mass.StabSplit.mem_perp h U w').1 hw' u hu`. Establish `h2 : h w u' = 0`. Rewrite using `[← hs.eq u' w, (_root_.GlobalTheory.Mass.StabSplit.mem_perp h U w).1 hw u' hu', map_zero]`. Simplify using `only [map_add, LinearMap.add_apply, h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma apply_add_add_of_mem_perp {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm)
     {U : Submodule K V} {u u' w w' : V} (hu' : u' ∈ U) (hu : u ∈ U)
@@ -232,29 +232,25 @@ open NumberField Matrix in
 open scoped ENNReal Classical in
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ _ _ _ h _ hs hpd U`. Use `set W := _root_.GlobalTheory.Mass.perp h U with hW`. Establish `hc : IsCompl U W` using `isCompl_perp_of_PD hpd U`. Establish `hinj : Function.Injective (_root_.GlobalTheory.Mass.StabSplit.resHom h U)`. Introduce `γ δ hγδ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `eU : ∀ u ∈ U, γ.1.1 u = δ.1.1 u` using `fun u hu => by`. Use `congrArg (fun p => ((p.1.1 ⟨u, hu⟩ : U) : V)) hγδ` as an intermediate fact. Conclude with `this`. Establish `eW : ∀ w ∈ W, γ.1.1 w = δ.1.1 w` using `fun w hw => by`. Use `congrArg (fun p => ((p.2.1 ⟨w, hw⟩ : W) : V)) hγδ` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `this`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `LinearEquiv.ext` to reduce the goal to its premises. Introduce `v`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hv : v ∈ U ⊔ W` using `by rw [hc.sup_eq_top]; exact Submodule.mem_top`. Take `⟨u, hu, w, hw, rfl⟩` from `Submodule.mem_sup.1 hv`. Rewrite using `[map_add, map_add, eU u hu, eW w hw]`. Establish `hsurj : Function.Surjective (_root_.GlobalTheory.Mass.StabSplit.resHom h U)`. Introduce and unpack `⟨a, c⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `e` to `Submodule.prodEquivOfIsCompl U W hc`. Set `g : V ≃ₗ[K] V` to `e.symm.trans ((LinearEquiv.prodCongr a.1 c.1).trans e)`. Establish `gU : ∀ u : U, g u = ((a.1 u : U) : V)` using `fun u => by`. Simplify using `[g, e, Submodule.prodEquivOfIsCompl_symm_apply_left]`. Establish `gW : ∀ w : W, g w = ((c.1 w : W) : V)` using `fun w => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[g, e, Submodule.prodEquivOfIsCompl_symm_apply_right]`. Establish `gsum : ∀ (u : U) (w : W), g ((u : V) + w) = ((a.1 u : U) : V) + (c.1 w : W)`. Introduce `u w`. Rewrite using `[map_add, gU, gW]`. Establish `hiso : g ∈ _root_.Formalism.HermitianLatticesTheory.isom h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `x y`. Take `⟨⟨u, w⟩, rfl⟩` from `e.surjective x`. Take `⟨⟨u', w'⟩, rfl⟩` from `e.surjective y`. Simplify using `only [e, Submodule.coe_prodEquivOfIsCompl']`. Rewrite using `[gsum, gsum, apply_add_add_of_mem_perp hs (a.1 u').2 (a.1 u).2 (c.1 w).2 (c.1 w').2, apply_add_add_of_mem_perp hs u'.2 u.2 w.2 w'.2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ha : h (a.1 u : V) (a.1 u' : V) = h u u'`. Conclude with `a.2 u u'`. Establish `hc' : h (c.1 w : V) (c.1 w' : V) = h w w'`. Conclude with `c.2 w w'`. Rewrite using `[ha, hc']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hstab : (⟨g, hiso⟩ : _root_.Formalism.HermitianLatticesTheory.isom h) • U = U`. Rewrite using `[_root_.GlobalTheory.Mass.StabSplit.smul_eq_map]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.map_le_iff_le_comap]`. Introduce `u hu`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `show g u ∈ U`. Rewrite using `[show u = ((⟨u, hu⟩ : U) : V) from rfl, gU]`. Conclude with `(a.1 _).2`. Introduce `u hu`. Use `⟨((a.1.symm ⟨u, hu⟩ : U) : V), (a.1.symm ⟨u, hu⟩).2, ?_⟩` and prove the remaining obligations.
-
-Use `show g _ = u`. Rewrite using `[gU, LinearEquiv.apply_symm_apply]`. Conclude with `⟨⟨⟨g, hiso⟩, hstab⟩, Prod.ext (Subtype.ext (LinearEquiv.ext fun u => Subtype.ext (gU u))) (Subtype.ext (LinearEquiv.ext fun w => Subtype.ext (gW w)))⟩`. Use `⟨MulEquiv.ofBijective (_root_.GlobalTheory.Mass.StabSplit.resHom h U) ⟨hinj, hsurj⟩, fun γ L => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `_root_.GlobalTheory.Mass.StabSplit.latIn_smul h U γ.1 γ.2 L`.
-
-Conclude with `_root_.GlobalTheory.Mass.StabSplit.latIn_smul h W γ.1 (_root_.GlobalTheory.Mass.StabSplit.smul_perp h γ.1 U γ.2) L`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Mass.StabSplit.main : ∀ (K V : Type) [Field K] [NumberField K]
     [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V]

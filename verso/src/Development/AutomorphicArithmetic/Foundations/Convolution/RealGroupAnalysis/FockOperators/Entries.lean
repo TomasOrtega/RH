@@ -10,15 +10,15 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Fo
 open scoped Classical
 
 /- English proof (translation)
-Set `pw : A F →+* ℝ` to `(Pi.evalRingHom (fun _ : InfinitePlace F => ℝ) w).comp (TR.pInf F)`. Establish `hO : ∀ i j, pw ((k.1 * k.1ᵀ) i j) = pw ((1 : Matrix (Fin 2) (Fin 2) (A F)) i j)` using `fun i j => congrFun (congrArg (TR.infEq F).symm (hk i j)) w`. Establish `h00` using `hO 0 0`. Establish `h01` using `hO 0 1`. Establish `hd : pw (k 0 0) * pw (k 1 1) - pw (k 0 1) * pw (k 1 0) = 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `k.det_coe`. Rewrite `h` using `[Matrix.det_fin_two]`. Use `congrArg pw h` as an intermediate fact. Simplify using `using this`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_two, Matrix.transpose_apply, map_add, map_mul] at h00 h01`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.one_apply_eq, map_one] at h00`. Simplify using `only [Matrix.one_apply_ne (zero_ne_one : (0 : Fin 2) ≠ 1), map_zero] at h01`. Express the relevant statement in the definitionally equal form `pw (k 0 0) * pw (k 0 0) + pw (k 0 1) * pw (k 0 1) = 1 at h00`. Establish `hc : pw (k 1 0) = -pw (k 0 1)`. Take the linear combination `(-pw (k 1 0)) * h00 + pw (k 0 0) * h01 - pw (k 0 1) * hd`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `he : pw (k 1 1) = pw (k 0 0)`. Take the linear combination `(-pw (k 1 1)) * h00 + pw (k 0 1) * h01 + pw (k 0 0) * hd`. Prove the components needed by the constructor for the conclusion. Express the relevant statement in the definitionally equal form `((pw (k 1 0) : ℝ) : ℂ) = -((pw (k 0 1) : ℝ) : ℂ)`. Rewrite using `[hc]`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Prove the components needed by the constructor for the conclusion. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `((pw (k 1 1) : ℝ) : ℂ) = ((pw (k 0 0) : ℝ) : ℂ)`. Rewrite using `[he]`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem entries {F : Type} [Field F] [NumberField F] [IsTotallyReal F] (k : G1 F) (hk : InfOrth k)
     (w : InfinitePlace F) : cw w (k 1 0) = -cw w (k 0 1) ∧ cw w (k 1 1) = cw w (k 0 0) := by
@@ -47,9 +47,9 @@ private theorem entries {F : Type} [Field F] [NumberField F] [IsTotallyReal F] (
     rw [he]
 
 /- English proof (translation)
-Establish `e1` using `congrArg (fun T : Module.End ℂ (S4 F) => T φ) (Heisenberg₂ F E D W O k w i).1`. Establish `e2` using `congrArg (fun T : Module.End ℂ (S4 F) => T φ) (Heisenberg₂ F E D W O k w j).2`. Simplify using `only [Module.End.mul_apply, LinearMap.add_apply, LinearMap.smul_apply, map_add, map_smul] at e1 e2`. Rewrite using `[e1, e2, hc, he, h1, h2]`. Simplify using `only [map_smul, smul_add, smul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `: s * (-cw w (k 0 1) * s) = cw w (k 0 1)` using `by linear_combination (-cw w (k 0 1)) * hs`. Rewrite using `[this, add_comm]`. Use `congr 1`. Rewrite using `[mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 private theorem step {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (O : Ops F) (k : G1 F)
@@ -68,9 +68,9 @@ private theorem step {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
   rw [mul_comm]
 
 /- English proof (translation)
-Establish `hI` using `Complex.I_mul_I`. Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_⟩ <;>`. Apply the tactic sequence `simp only [Ops.p, kap, cc, Matrix.cons_val, LinearMap.smul_apply, smul_smul] <;>`. Use `congr 1`. Take the linear combination `(-2 * (Real.pi : ℂ)) * hI`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-2 * (Real.pi : ℂ)) * hI`. Take the linear combination `(-4 * (Real.pi : ℂ)) * hI`. Take the linear combination `(4 * (Real.pi : ℂ) * cw w (rt δ)) * hI`.
+Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem scal {F : Type} [Field F] [NumberField F] [IsTotallyReal F] (δ : F) (O : Ops F)
     (w : InfinitePlace F) (f : S4 F) :
@@ -88,13 +88,11 @@ private theorem scal {F : Type} [Field F] [NumberField F] [IsTotallyReal F] (δ 
   · linear_combination (4 * (Real.pi : ℂ) * cw w (rt δ)) * hI
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D W k hk φ hφ`. Take `⟨O⟩` from `opsEx F`. Establish `hv` using `vacAnn F D.δ O φ hφ`. Use `annVac F D.δ O (W.Om k φ) fun w i => ?_` and prove the remaining obligations. Take `⟨hc, he⟩` from `entries k hk w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hI : Complex.I * Complex.I = -1` using `Complex.I_mul_I`. Establish `hJ : (-Complex.I) * (-Complex.I) = -1` using `by rw [neg_mul_neg, hI]`. Take `⟨s0, s1, s2, s3⟩` from `scal D.δ O w φ`. Take `⟨t0, t1, t2, t3⟩` from `scal D.δ O w (W.Om k φ)`. Establish `v0` using `(hv w 0).trans s0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `v1` using `(hv w 1).trans s1`. Establish `v2` using `(hv w 2).trans s2`. Establish `v3` using `(hv w 3).trans s3`. Use `fin_cases i`. Conclude with `(step D W O k w 0 1 _ hI hc he φ v0 v1).trans t0.symm`.
-
-Conclude with `(step D W O k w 1 0 _ hI hc he φ v1 v0).trans t1.symm`. Conclude with `(step D W O k w 2 2 _ hJ hc he φ v2 v2).trans t2.symm`. Conclude with `(step D W O k w 3 3 _ hJ hc he φ v3 v3).trans t3.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Fo.vacOm :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (k : G1 F), InfOrth k → ∀ φ ∈ Vac D.δ, W.Om k φ ∈ Vac D.δ := by

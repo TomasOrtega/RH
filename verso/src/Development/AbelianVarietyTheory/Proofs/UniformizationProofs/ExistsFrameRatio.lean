@@ -19,7 +19,7 @@ variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F
 
 omit [IsDomain R] in
 /- English proof (translation)
-The claim follows from `Subsingleton.elim (α := PrimeSpectrum F) z z'`.
+A detailed English derivation is pending.
 -/
 theorem pt_eq (z z' : (TF (R := R) F).left) : z = z' :=
   Subsingleton.elim (α := PrimeSpectrum F) z z'
@@ -29,14 +29,14 @@ def cstH (z : (TF (R := R) F).left) : F →+* (TF (R := R) F).left.presheaf.stal
 
 omit [IsDomain R] in
 /- English proof (translation)
-The claim follows from `gs_eq (𝟙 _) z ⊤ trivial _`.
+A detailed English derivation is pending.
 -/
 theorem cst_eq (z : (TF (R := R) F).left) (x : F) : cst F z x = cstH z x :=
   gs_eq (𝟙 _) z ⊤ trivial _
 
 omit [IsDomain R] in
 /- English proof (translation)
-Introduce `a`. Take `⟨U, hU, s, rfl⟩` from `(TF (R := R) F).left.presheaf.germ_exist a`. Take `rfl : U = ⊤` from `eq_top_iff.2 fun y _ => pt_eq z y ▸ hU`. Take `⟨x, hx⟩` from `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of F)).inv).2 s`. Conclude with `⟨x, congrArg ((TF (R := R) F).left.presheaf.germ ⊤ z trivial).hom hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cstH_surj (z : (TF (R := R) F).left) : Function.Surjective (cstH (R := R) z) := by
   intro a
@@ -47,19 +47,19 @@ theorem cstH_surj (z : (TF (R := R) F).left) : Function.Surjective (cstH (R := R
 
 omit [IsDomain R] in
 /- English proof (translation)
-The claim follows from `(cstH (R := R) z).injective`.
+A detailed English derivation is pending.
 -/
 theorem cstH_inj (z : (TF (R := R) F).left) : Function.Injective (cstH (R := R) z) :=
   (cstH (R := R) z).injective
 
 omit [IsDomain R] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum F)⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_pt : Nonempty (TF (R := R) F).left := ⟨(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum F)⟩
 
 /- English proof (translation)
-Use `choose I hI using fun χ : Z ⟶ X => exists_chart hL (χ z)`. Conclude with `⟨I, hI⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_good' {X Z : Scheme.{0}} {L : LB X} (hL : L.IsLB) (z : Z) : ∃ J, Good L z J := by
   choose I hI using fun χ : Z ⟶ X => exists_chart hL (χ z)
@@ -69,7 +69,7 @@ def trU {X Z : Scheme.{0}} (L : LB X) (z : Z) (J J' : (Z ⟶ X) → L.ι) (ψ : 
   gm ψ z (L.U (J ψ) ⊓ L.U (J' ψ)) (L.g (J ψ) (J' ψ))
 
 /- English proof (translation)
-The claim follows from `gen_trans ht r z (hJ.mem φ r) (hJ'.mem φ r)`.
+A detailed English derivation is pending.
 -/
 theorem val_tr {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     {t : LB.Gen (LB.LinComb L φ ε)} (ht : t.IsGen) (r : Z ⟶ Y) {z : Z} {J J'} (hJ : Good L z J) (hJ' : Good L z J') :
@@ -77,7 +77,7 @@ theorem val_tr {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K �
   gen_trans ht r z (hJ.mem φ r) (hJ'.mem φ r)
 
 /- English proof (translation)
-The claim follows from `sec_trans s r z (hJ.mem φ r) (hJ'.mem φ r)`.
+A detailed English derivation is pending.
 -/
 theorem sval_tr {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (s : LB.Sec (LB.LinComb L φ ε)) (r : Z ⟶ Y) {z : Z} {J J'} (hJ : Good L z J) (hJ' : Good L z J') :
@@ -85,9 +85,9 @@ theorem sval_tr {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K �
   sec_trans s r z (hJ.mem φ r) (hJ'.mem φ r)
 
 /- English proof (translation)
-Take `⟨J, hJ⟩` from `exists_good' hL y₀`. Set `j₀ : K → L.ι` to `fun k => J (𝟙 Y ≫ φ k)`. Establish `h₀ : ∀ y : Y, (𝟙 Y : Y ⟶ Y) y ∈ LB.wchart L φ j₀` using `fun y => by`. Rewrite using `[hY y]`. Conclude with `hJ.mem φ (𝟙 Y)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `le : ∀ j, LB.wchart L φ j ≤ LB.wchart L φ j ⊓ LB.wchart L φ j₀` using `fun j y hy => ⟨hy, h₀ y⟩`. Use `⟨⟨fun j => res (le j) ((LB.LinComb L φ ε).g j j₀)⟩, fun j j' => unit_ext fun y hy => ?_⟩` and prove the remaining obligations. Establish `v : ∀ j, y ∈ LB.wchart L φ j → gm (𝟙 Y) y (LB.wchart L φ j) (res (le j) ((LB.LinComb L φ ε).g j j₀)) = trF φ ε (𝟙 Y) y j j₀` using `fun j hj => (gm_res (𝟙 Y) y (le j) hj _).trans (gm_linComb L φ ε (𝟙 Y) y j j₀ hj (h₀ y))`. Use `((gm_res (𝟙 Y) y _ hy _).trans (v j hy.1)).trans (Eq.trans ?_ ((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_linComb L φ ε (𝟙 Y) y j j' hy.1 hy.2) ((gm_res (𝟙 Y) y _ hy _).trans (v j' hy.2)))).symm)` and prove the remaining obligations. Conclude with `(trF_trans hL φ ε (𝟙 Y) y hy.1 hy.2 (h₀ y)).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_gen_pt {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) (y₀ : Y) (hY : ∀ y : Y, y = y₀) {K : Type} [Fintype K]
     (φ : K → (Y ⟶ X)) (ε : K → ℤ) : ∃ t : LB.Gen (LB.LinComb L φ ε), t.IsGen := by
@@ -105,7 +105,7 @@ theorem exists_gen_pt {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) (y₀ : Y) (hY
   exact (trF_trans hL φ ε (𝟙 Y) y hy.1 hy.2 (h₀ y)).symm
 
 /- English proof (translation)
-Rewrite using `[Fin.prod_univ_two]`. Use `show h (1 : TF (R := R) F ⟶ D.P.A).left ^ (k : ℤ) * h b.left ^ (-(k : ℤ)) = _`. Rewrite using `[zpow_neg, zpow_natCast, zpow_natCast]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_line (k : ℕ) (b : TF (R := R) F ⟶ D.P.A) {U : Type} [CommGroup U]
     (h : ((TF (R := R) F).left ⟶ D.P.A.left) → U) :
@@ -115,7 +115,7 @@ theorem prod_line (k : ℕ) (b : TF (R := R) F ⟶ D.P.A) {U : Type} [CommGroup 
   rw [zpow_neg, zpow_natCast, zpow_natCast]
 
 /- English proof (translation)
-Take `⟨z⟩` from `exists_pt (R := R) (F := F)`. Take `⟨J, hJ⟩` from `exists_good' D.P.isLB z`. Establish `e` using `(hx z J hJ).trans (hy z J hJ).symm`. Rewrite `e` using `[← Units.val_pow_eq_pow_val, Units.mul_left_inj, cst_eq, cst_eq]`. Conclude with `cstH_inj z e`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCoef_unique {k : ℕ} {g : GtPtF D F} {w : Frm D F k g.b} {χ : D.X} {s} {x y : F}
     (hx : IsCoef k g w χ s x) (hy : IsCoef k g w χ s y) : x = y := by
@@ -126,22 +126,22 @@ theorem isCoef_unique {k : ℕ} {g : GtPtF D F} {w : Frm D F k g.b} {χ : D.X} {
   exact cstH_inj z e
 
 /- English proof (translation)
-The claim follows from `isCoef_unique (Classical.epsilon_spec (p := IsCoef k g w χ (s.s χ)) ⟨x, hx⟩) hx`.
+A detailed English derivation is pending.
 -/
 theorem coef_eq {k : ℕ} {g : GtPtF D F} {w : Frm D F k g.b} {χ : D.X} {s : Fam D F k} {x : F}
     (hx : IsCoef k g w χ (s.s χ) x) : coef s g w χ = x :=
   isCoef_unique (Classical.epsilon_spec (p := IsCoef k g w χ (s.s χ)) ⟨x, hx⟩) hx
 
 /- English proof (translation)
-Take `⟨z⟩` from `exists_pt (R := R) (F := F)`. Take `⟨J', hJ'⟩` from `exists_good' D.P.isLB z`. Take `⟨x, hx⟩` from `cstH_surj z (sval s (lift (𝟙 (TF (R := R) F)) g.b).left z J' * (val (g.s χ) (𝟙 _) z J').val * (val w (𝟙 _) z J').val * ((rigV D (TF (R := R) F).hom z J' ^ k)⁻¹).val)`. Use `⟨x, fun z' J hJ => ?_⟩` and prove the remaining obligations. Take `rfl` from `pt_eq z z'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `a₁` using `sval_tr s (lift (𝟙 (TF (R := R) F)) g.b).left hJ hJ'`. Establish `a₂` using `val_tr (g.isGen χ) (𝟙 _) hJ hJ'`. Establish `a₃` using `val_tr hw (𝟙 _) hJ hJ'`. Establish `a₄ : rigV D (TF (R` using `R) F).hom z J = trU D.P.L z J J' (1 : TF (R := R) F ⟶ D.P.A).left * rigV D (TF (R := R) F).hom z J' := by`. Use `(val_tr (L := D.P.L) (φ := fun _ : PUnit => eSec D.P.A) (ε := fun _ => 1) D.rig_gen (TF (R := R) F).hom hJ hJ').trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fintype.prod_unique, zpow_one]`. Both sides reduce to the same expression. Rewrite `a₁` using `[prod_fam D F (lift (𝟙 (TF (R := R) F)) g.b) χ k (trU D.P.L z J J'), lift_snd]`. Simplify using `only [Category.id_comp] at a₂ a₃`. Rewrite `a₂` using `[prod_gt g.b χ (trU D.P.L z J J')]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `a₃` using `[prod_line k g.b (trU D.P.L z J J')]`. Rewrite using `[cst_eq, hx, a₁, a₂, a₃, a₄, ← Units.val_pow_eq_pow_val, mul_comm (Units.val _) (sval _ _ _ _)]`. Simplify using `only [_root_.mul_assoc, ← Units.val_mul]`. Use `congr 2`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_pow]`. Use `module`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_isCoef {k : ℕ} (g : GtPtF D F) {w : Frm D F k g.b} (hw : w.IsGen) (χ : D.X) (s) :
     ∃ x, IsCoef k g w χ s x := by
@@ -171,14 +171,14 @@ theorem exists_isCoef {k : ℕ} (g : GtPtF D F) {w : Frm D F k g.b} (hw : w.IsGe
   module
 
 /- English proof (translation)
-The claim follows from `Classical.epsilon_spec (p := IsCoef k g w χ (s.s χ)) (exists_isCoef g hw χ _)`.
+A detailed English derivation is pending.
 -/
 theorem isCoef_coef {k : ℕ} (g : GtPtF D F) {w : Frm D F k g.b} (hw : w.IsGen) (χ : D.X) (s : Fam D F k) :
     IsCoef k g w χ (s.s χ) (coef s g w χ) :=
   Classical.epsilon_spec (p := IsCoef k g w χ (s.s χ)) (exists_isCoef g hw χ _)
 
 /- English proof (translation)
-Establish `hm` using `hJ.mem (DegPre.famφ D F χ) (lift (𝟙 (TF (R := R) F)) b).left`. Use `(gs_add _ z _ hm _ _).trans (congrArg₂ (· + ·) ((gs_mul _ z _ hm _ _).trans (congrArg₂ (· * ·) ?_ rfl)) rfl)` and prove the remaining obligations. Use `(gs_res _ z le_top hm _).trans ((gs_pull _ (fst (TF (R := R) F) D.P.A).left z ⊤ trivial _).trans ?_)` and prove the remaining obligations. Rewrite using `[← Over.comp_left, lift_fst]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sval_lin {k : ℕ} (b : TF (R := R) F ⟶ D.P.A) (s s' : Fam D F k) (c : F) (χ : D.X) {z : (TF (R := R) F).left} {J}
     (hJ : Good D.P.L z J) : sval ((c • s + s').s χ) (lift (𝟙 (TF (R := R) F)) b).left z J =
@@ -190,11 +190,11 @@ theorem sval_lin {k : ℕ} (b : TF (R := R) F ⟶ D.P.A) (s s' : Fam D F k) (c :
   rw [← Over.comp_left, lift_fst]; rfl
 
 /- English proof (translation)
-Take `⟨z⟩` from `exists_pt (R := R) (F := F)`. Take `⟨J', hJ'⟩` from `exists_good' D.P.isLB z`. Take `⟨c, hc⟩` from `cstH_surj z (val w' (𝟙 _) z J' * (val w (𝟙 _) z J')⁻¹).val`. Use `⟨c, fun h => ?_, fun z' J hJ => ?_⟩` and prove the remaining obligations. Rewrite `hc` using `[h, map_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Units.ne_zero _ hc.symm`. Take `rfl` from `pt_eq z z'`. Rewrite using `[cst_eq, hc, val_tr hw (𝟙 _) hJ hJ', val_tr hw' (𝟙 _) hJ hJ', ← Units.val_mul]`. Use `congr 1`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem exists_frame_ratio {k : ℕ} {b : TF (R := R) F ⟶ D.P.A} {w w' : Frm D F k b} (hw : w.IsGen) (hw' : w'.IsGen) :
     ∃ c : F, c ≠ 0 ∧ ∀ z J, Good D.P.L z J → (val w' (𝟙 _) z J).val = cst F z c * (val w (𝟙 _) z J).val := by
@@ -212,19 +212,19 @@ theorem exists_frame_ratio {k : ℕ} {b : TF (R := R) F ⟶ D.P.A} {w w' : Frm D
     abel
 
 /- English proof (translation)
-Introduce `R _ _ D F _ _ k g`. Take `⟨z₀⟩` from `exists_pt (R := R) (F := F)`. Use `⟨exists_gen_pt D.P.isLB z₀ (fun y => pt_eq y z₀) _ _, fun hb => ?_, fun w hw => ⟨fun χ s => ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨w, hw, hv⟩` from `exists_gen D.P.isLB (φ' := DegPre.lineφ D F g.b) (ε' := DegPre.lineε k) (fun U _ h => by rw [prod_line, hb, mul_inv_cancel]; exact Fintype.prod_empty _) (LB.oneGen D.P.L (Y := (TF (R := R) F).left)) (fun i j => (map_one _).trans ((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one …`. Conclude with `⟨w, hw, fun z J hJ => (hv _ _ z J hJ).trans (val_one _)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨x, hx⟩` from `exists_isCoef g hw χ s`. Conclude with `⟨x, hx, fun y hy => isCoef_unique hy hx⟩`. Introduce `s s' c χ`. Use `coef_eq fun z J hJ => ?_` and prove the remaining obligations. Establish `a` using `isCoef_coef g hw χ s z J hJ`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `a'` using `isCoef_coef g hw χ s' z J hJ`. Rewrite using `[sval_lin g.b s s' c χ hJ]`. Simplify using `only [cst_eq, map_add, map_mul] at a a' ⊢`. Take the linear combination `cstH z c * a + a'`. Introduce `w' hw'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c, hc, hv⟩` from `exists_frame_ratio hw hw'`. Use `⟨c, hc, hv, fun s χ => coef_eq fun z J hJ => ?_⟩` and prove the remaining obligations. Establish `a` using `isCoef_coef g hw χ s z J hJ`. Rewrite using `[hv z J hJ]`. Simplify using `only [cst_eq, map_mul] at a ⊢`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take the linear combination `cstH z c * a`. Introduce `t g₀ g' w' ht hadd hv s χ`. Take `⟨hb, hs⟩` from `(isAdd_iff _ _ _).1 hadd`. Use `coef_eq fun z J hJ => ?_` and prove the remaining obligations. Establish `C : IsCub (th D (T` using `TF (R := R) F) z J) := isCub_cubV D.cub hJ`.
+Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `a` using `isCoef_coef g hw χ s z J hJ`. Establish `e` using `hs χ z J hJ`. Rewrite `hb` using `[ht.1, _root_.mul_one]`. Establish `e₀ : th D z J (cP D _ χ) g.b g₀.b = 1` using `by rw [ht.1, C.face₃]`. Rewrite `e` using `[e₀, _root_.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e₁ : lift (𝟙 (TF (R` using `R) F)) g'.b = lift (𝟙 (TF (R := R) F)) g.b := by rw [hb]`. Rewrite using `[hv z J hJ, e, e₁, Units.val_mul, ht.2 χ z J hJ]`. Simplify using `only [cst_eq, map_mul] at a ⊢`. Take the linear combination `cstH z (t (Multiplicative.ofAdd χ)).val * a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem coef_basic : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (F : Type) [Field F] [Algebra (FractionRing R) F] (k : ℕ) (g : GtPtF D F), (∃ w : Frm D F k g.b, w.IsGen) ∧ (g.b = 1 → ∃ w : Frm D F k g.b, FrmOne w) ∧ ∀ w : Frm D F k g.b, w.IsGen → (∀ χ s, ∃! x, IsCoef k g w χ s x) ∧ (∀ (s s' : Fam D F k) (c : F) χ, coef (c • s + s') g w χ = c * coef s g w χ + coef s' g w χ) ∧ (∀ w' : Frm D F k g.b, w'.IsGen → ∃ c : F, c ≠ 0 ∧ (∀ z J, Good D.P.L z J → (val w' (𝟙 _) z J).val = cst F z c * (val w (𝟙 _) z J).val) ∧ ∀ (s : Fam D F k) χ, coef s g w' χ = c * coef s g w χ) ∧ ∀ (t : Multiplicative D.X →* Fˣ) (g₀ g' : GtPtF D F) (w' : Frm D F k g'.b), IsTor t g₀ → g.IsAdd g₀ g' → (∀ z J, Good D.P.L z J → val w' (𝟙 _) z J = val w (𝟙 _) z J) → ∀ (s : Fam D F k) χ, coef s g' w' χ = (t (Multiplicative.ofAdd χ)).val * coef s g w χ := by
   intro R _ _ D F _ _ k g

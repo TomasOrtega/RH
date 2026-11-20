@@ -8,29 +8,27 @@ open scoped TensorProduct Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `A K _ _ _ σ hσ β Y k z m a lam s hβ hY haY hk hkz hzY H`. Establish `shmul : ∀ x y : A, (σ (x * y)).unop = (σ y).unop * (σ x).unop` using `fun x y => by`. Rewrite using `[map_mul, MulOpposite.unop_mul]`. Establish `shinv : ∀ u : Aˣ, (σ ((u⁻¹ : Aˣ) : A)).unop * (σ (u : A)).unop = 1` using `fun u => by`. Rewrite using `[← shmul, Units.mul_inv, map_one, MulOpposite.unop_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `shinv' : ∀ u : Aˣ, (σ (u : A)).unop * (σ ((u⁻¹ : Aˣ) : A)).unop = 1` using `fun u => by`. Rewrite using `[← shmul, Units.inv_mul, map_one, MulOpposite.unop_one]`. Establish `shc : ∀ (u : Aˣ) (x : A), (σ (u : A)).unop * ((σ ((u⁻¹ : Aˣ) : A)).unop * x) = x`. Introduce `u x`. Rewrite using `[← mul_assoc, shinv', one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hτY : (β : A) * (σ (Y : A)).unop * ((β⁻¹ : Aˣ) : A) = algebraMap K A s * ((Y⁻¹ : Aˣ) : A)`. Establish `h` using `congrArg (fun x => ((Y⁻¹ : Aˣ) : A) * x * ((β⁻¹ : Aˣ) : A)) hY`. Simplify using `only [mul_assoc, Units.inv_mul_cancel_left, Units.mul_inv, mul_one] at h`. Rewrite using `[mul_assoc, h]`. Conclude with `(Algebra.commutes _ _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hτ : ∀ w : A, Commute w Y → Commute ((β : A) * (σ w).unop * ((β⁻¹ : Aˣ) : A)) Y`. Introduce `w hw`. Establish `hsh : Commute (σ w).unop (σ (Y : A)).unop` using `by show _ = _`. Rewrite using `[← shmul, ← shmul, hw.eq]`. Establish `hc : Commute ((β : A) * (σ w).unop * ((β⁻¹ : Aˣ) : A)) ((β : A) * (σ (Y : A)).unop * ((β⁻¹ : Aˣ) : A))` using `by show _ = _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_assoc, Units.inv_mul_cancel_left]`. Rewrite using `[← mul_assoc (σ w).unop, hsh.eq, mul_assoc]`. Rewrite `hc` using `[hτY]`. Establish `h2` using `(Algebra.commute_algebraMap_right ((s⁻¹ : Kˣ) : K) _).mul_right hc`. Rewrite `h2` using `[← mul_assoc (algebraMap K A ((s⁻¹ : Kˣ) : K)), ← map_mul, Units.inv_mul, map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Commute.units_inv_right_iff.mp h2`. Establish `e : a * (β : A) = ((k⁻¹ : Aˣ) : A) * ((k : A) * (a * β) * (σ (k : A)).unop) * (σ ((k⁻¹ : Aˣ) : A)).unop`. Simplify using `only [mul_assoc, shinv', shc, mul_one, Units.inv_mul_cancel_left]`. Rewrite `e` using `[hk, ← Algebra.commutes (lam : K), hkz, Units.val_mul, shmul]`. Establish `ha : a = algebraMap K A lam * ((z : A) * ((m : A) * (σ (m : A)).unop) * (σ (z : A)).unop * ((β⁻¹ : Aˣ) : A))`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hbi : (σ ((β⁻¹ : Aˣ) : A)).unop = ((β⁻¹ : Aˣ) : A)`. Establish `h` using `shinv β`. Rewrite `h` using `[hβ]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[mul_assoc, Units.mul_inv, mul_one]`. Use `_ = _ := by rw [h, one_mul]`. Set `mu : Aˣ` to `⟨(σ (m : A)).unop, (σ ((m⁻¹ : Aˣ) : A)).unop, shinv' m, shinv m⟩`. Set `m' : Aˣ` to `m * mu * β⁻¹`. Establish `hm' : (m' : A) = m * (σ (m : A)).unop * ((β⁻¹ : Aˣ) : A)` using `rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hm'c : (m' : A) = ((z⁻¹ : Aˣ) : A) * (algebraMap K A ((lam⁻¹ : Kˣ) : K) * a) * ((β : A) * (σ ((z⁻¹ : Aˣ) : A)).unop * ((β⁻¹ : Aˣ) : A))`. Rewrite using `[hm', ha, ← mul_assoc (algebraMap K A ((lam⁻¹ : Kˣ) : K)), ← map_mul, Units.inv_mul, map_one, one_mul]`. Simplify using `only [mul_assoc, Units.inv_mul_cancel_left, shc]`. Establish `hmY : Commute (m' : A) Y`. Rewrite using `[hm'c]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `((hzY.units_inv_left).mul_left ((Algebra.commute_algebraMap_left _ _).mul_left haY)).mul_left (hτ _ hzY.units_inv_left)`. Establish `hmτ : (β : A) * (σ (m' : A)).unop * ((β⁻¹ : Aˣ) : A) = m'`. Rewrite using `[hm', shmul, shmul, hσ, hbi]`. Simplify using `only [mul_assoc, Units.mul_inv_cancel_left]`. Take `⟨v, hvY, hv⟩` from `H m' hm' hmY hmτ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h3 : (m : A) * (σ (m : A)).unop * ((β⁻¹ : Aˣ) : A) = v * β * (σ (v : A)).unop * ((β⁻¹ : Aˣ) : A)`. Rewrite using `[← hm', hv]`. Simplify using `only [mul_assoc]`. Establish `hmm` using `(Units.mul_left_inj β⁻¹).mp h3`. Use `⟨z * v, by rw [Units.val_mul]; exact hzY.mul_left hvY, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Units.val_mul, shmul, ha, hmm]`. Simplify using `only [mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem twisted_norm_local_step : ∀ {A K : Type} [Ring A] [CommRing K] [Algebra K A] (σ : A →+* Aᵐᵒᵖ), (∀ x, (σ (σ x).unop).unop = x) →
     ∀ (β Y k z m : Aˣ) (a : A) (lam s : Kˣ), (σ (β : A)).unop = β →

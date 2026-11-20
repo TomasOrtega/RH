@@ -52,11 +52,11 @@ def EqVolSD : Prop :=
       IsOrth X x → IsOrth X' x' → IsFundSet X x FF → IsFundSet X' x' FF' → muF X x FF = muF X' x' FF'
 
 /- English proof (translation)
-Introduce `E _ _ _ _ r X X' L L' 𝔞 hΨ hp hr hp0 hpr hL₁ hL₂ hSD h𝔞 hN hO hO'`. Take `⟨P, hP, hPG⟩` from `(GlobalTheory.selfDual_lattices_one_genus X.Gm_herm X'.Gm_herm X.Gm_det X'.Gm_det hL₁ hL₂ hSD).2.2 hL hH (X.Ψ : Set (E →+* ℂ)) (fun τ => by`. Distinguish the cases in `h : τ ∈ X.Ψ`. Conclude with `Or.inl h`. Conclude with `Or.inr (by_contra fun h' => h ((X.cmType τ).2 h')))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative.
 
-Use the proof step `(fun τ hτ => ⟨X.p0, X.signature ⟨τ, hτ⟩, hp ▸ X'.signature ⟨τ, hΨ ▸ hτ⟩⟩)`. Set `a : GL (Fin r) E` to `Matrix.GeneralLinearGroup.mkOfDetNeZero P hP`. Establish `ha : (a : Matrix (Fin r) (Fin r) E)ᵀ * X.Gm * (a : Matrix (Fin r) (Fin r) E).map (ccH E) = X'.Gm` using `hPG.symm`. Take `⟨aL', haL', hmap, t1, t2⟩` from `h2 E r X.Gm X'.Gm a L' ha hL₂`. Establish `hSD' : SDPair X.Gm aL' X.Gm L`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hSD with ⟨s, s'⟩ | ⟨ξ, e1, e2, s, s'⟩` into its components or cases. Conclude with `Or.inl ⟨t1 s', s⟩`. Conclude with `Or.inr ⟨ξ, e1, e2, t2 ξ s', s⟩`. Establish `hg` using `h3 E r X.Gm L aL' hL₁ haL' ((GlobalTheory.selfDual_lattices_one_genus X.Gm_herm X.Gm_herm X.Gm_det X.Gm_det haL' hL₁ hSD').2.1 rfl)`. Conclude with `h0 E r X X' a L L' aL' 𝔞 hΨ hp ha (h1 E r X hr hp0 hpr) hL₁ hL₂ haL' hmap hg h𝔞 hN hO hO'`.
+Prove the first alternative. Prove the second alternative. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eqVolSD_of (hL : GlobalTheory.Published.Landherr) (hH : GlobalTheory.Published.HasseNormSt) (h0 : EqVolFD) (h1 : Isotropic)
     (h2 : DualTransport) (h3 : LocalToAdelic) : EqVolSD := by

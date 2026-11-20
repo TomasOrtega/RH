@@ -23,7 +23,7 @@ Both sides reduce to the same expression.
 theorem cechOpen_def (s : Finset ι) : cechOpen V U s = V ⊓ ⨅ i ∈ s, U i := rfl
 
 /- English proof (translation)
-Rewrite using `[cechOpen, Finset.inf_eq_iInf]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cechOpen_eq_inf (s : Finset ι) : cechOpen V U s = V ⊓ s.inf U := by
   rw [cechOpen, Finset.inf_eq_iInf]
@@ -31,7 +31,7 @@ theorem cechOpen_eq_inf (s : Finset ι) : cechOpen V U s = V ⊓ s.inf U := by
 variable {V U} in
 
 /- English proof (translation)
-Simplify using `[cechOpen]`.
+Simplify using the standard rewrite rules.
 -/
 theorem le_cechOpen_iff {W : Opens T} {s : Finset ι} :
     W ≤ cechOpen V U s ↔ W ≤ V ∧ ∀ i ∈ s, W ≤ U i := by
@@ -40,7 +40,7 @@ theorem le_cechOpen_iff {W : Opens T} {s : Finset ι} :
 variable {V U} in
 
 /- English proof (translation)
-Rewrite using `[cechOpen_eq_inf, Opens.mem_inf]`. Use `and_congr Iff.rfl ?_` and prove the remaining obligations. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s _ ih => simp [ih]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem mem_cechOpen {x : T} {s : Finset ι} :
     x ∈ cechOpen V U s ↔ x ∈ V ∧ ∀ i ∈ s, x ∈ U i := by
@@ -52,49 +52,49 @@ theorem mem_cechOpen {x : T} {s : Finset ι} :
   | insert a s _ ih => simp [ih]
 
 /- English proof (translation)
-The claim follows from `inf_le_left`.
+A detailed English derivation is pending.
 -/
 theorem cechOpen_le (s : Finset ι) : cechOpen V U s ≤ V := inf_le_left
 
 /- English proof (translation)
-The claim follows from `(le_cechOpen_iff.1 le_rfl).2 i h`.
+A detailed English derivation is pending.
 -/
 theorem cechOpen_le_of_mem {s : Finset ι} {i : ι} (h : i ∈ s) : cechOpen V U s ≤ U i :=
   (le_cechOpen_iff.1 le_rfl).2 i h
 
 /- English proof (translation)
-The claim follows from `le_cechOpen_iff.2 ⟨cechOpen_le V U t, fun _ hi => cechOpen_le_of_mem V U (h hi)⟩ @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem cechOpen_anti {s t : Finset ι} (h : s ⊆ t) : cechOpen V U t ≤ cechOpen V U s :=
   le_cechOpen_iff.2 ⟨cechOpen_le V U t, fun _ hi => cechOpen_le_of_mem V U (h hi)⟩
 
 @[simp]
 /- English proof (translation)
-Simplify using `[cechOpen]`. Use the proof step `@[simp]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cechOpen_empty : cechOpen V U ∅ = V := by simp [cechOpen]
 
 @[simp]
 /- English proof (translation)
-Simplify using `[cechOpen]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cechOpen_singleton (i : ι) : cechOpen V U {i} = V ⊓ U i := by simp [cechOpen]
 
 /- English proof (translation)
-Rewrite using `[cechOpen, cechOpen, Finset.iInf_insert, inf_left_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cechOpen_insert [DecidableEq ι] (i : ι) (s : Finset ι) :
     cechOpen V U (insert i s) = U i ⊓ cechOpen V U s := by
   rw [cechOpen, cechOpen, Finset.iInf_insert, inf_left_comm]
 
 /- English proof (translation)
-Rewrite using `[cechOpen_insert, cechOpen_singleton, inf_left_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cechOpen_pair [DecidableEq ι] (i j : ι) : cechOpen V U {i, j} = V ⊓ (U i ⊓ U j) := by
   rw [cechOpen_insert, cechOpen_singleton, inf_left_comm]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [SetLike.mem_coe, mem_cechOpen, Opens.mem_inf, Finset.mem_union, or_imp, forall_and]`. The claim follows by propositional logic.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. The claim follows by propositional logic.
 -/
 theorem cechOpen_union [DecidableEq ι] (s t : Finset ι) :
     cechOpen V U (s ∪ t) = cechOpen V U s ⊓ cechOpen V U t := by
@@ -103,14 +103,14 @@ theorem cechOpen_union [DecidableEq ι] (s t : Finset ι) :
   tauto
 
 /- English proof (translation)
-The claim follows from `top_inf_eq _`.
+A detailed English derivation is pending.
 -/
 theorem cechOpen_top (s : Finset ι) : cechOpen ⊤ U s = ⨅ i ∈ s, U i := top_inf_eq _
 
 variable {V U} in
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `hs`. Conclude with `inf_eq_right.2 ((biInf_le U hi).trans (h i))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cechOpen_of_nonempty (h : ∀ i, U i ≤ V) {s : Finset ι} (hs : s.Nonempty) :
     cechOpen V U s = ⨅ i ∈ s, U i := by
@@ -120,7 +120,7 @@ theorem cechOpen_of_nonempty (h : ∀ i, U i ≤ V) {s : Finset ι} (hs : s.None
 variable {V U} in
 
 /- English proof (translation)
-The claim follows from `le_cechOpen_iff.2 ⟨(cechOpen_le _ _ s).trans hV, fun i hi => (cechOpen_le_of_mem _ _ hi).trans (hU i)⟩`.
+A detailed English derivation is pending.
 -/
 theorem cechOpen_mono {V' : Opens T} {U' : ι → Opens T} (hV : V' ≤ V) (hU : ∀ i, U' i ≤ U i)
     (s : Finset ι) : cechOpen V' U' s ≤ cechOpen V U s :=
@@ -128,7 +128,7 @@ theorem cechOpen_mono {V' : Opens T} {U' : ι → Opens T} (hV : V' ≤ V) (hU :
     fun i hi => (cechOpen_le_of_mem _ _ hi).trans (hU i)⟩
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [SetLike.mem_coe, mem_cechOpen, Opens.mem_inf]`. Conclude with `and_congr_right fun h => by simp [h]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cechOpen_inf_family (s : Finset ι) :
     cechOpen V (fun i => V ⊓ U i) s = cechOpen V U s := by
@@ -137,13 +137,13 @@ theorem cechOpen_inf_family (s : Finset ι) :
   exact and_congr_right fun h => by simp [h]
 
 /- English proof (translation)
-The claim follows from `inf_assoc _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem cechOpen_inf_left (W : Opens T) (s : Finset ι) :
     cechOpen (W ⊓ V) U s = W ⊓ cechOpen V U s := inf_assoc _ _ _
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[mem_cechOpen]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cechOpen_map (e : κ ↪ ι) (s : Finset κ) :
     cechOpen V U (s.map e) = cechOpen V (fun k => U (e k)) s := by
@@ -151,7 +151,7 @@ theorem cechOpen_map (e : κ ↪ ι) (s : Finset κ) :
   simp [mem_cechOpen]
 
 /- English proof (translation)
-Rewrite using `[cechOpen_insert, cechOpen_map, inf_comm V, cechOpen_inf_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cechOpen_insert_map [DecidableEq ι] (e : κ ↪ ι) (i : ι) (s : Finset κ) :
     cechOpen V U (insert i (s.map e)) = cechOpen (V ⊓ U i) (fun k => U (e k)) s := by
@@ -160,7 +160,7 @@ theorem cechOpen_insert_map [DecidableEq ι] (e : κ ↪ ι) (i : ι) (s : Finse
 variable {V U} in
 
 /- English proof (translation)
-Simplify using `only [cechOpen_empty, cechOpen_singleton, ← inf_iSup_eq]`. Conclude with `le_inf le_rfl h`. Use the proof step `@[simps obj]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cechOpen_empty_le_iSup (h : V ≤ ⨆ i, U i) :
     cechOpen V U ∅ ≤ ⨆ i, cechOpen V U {i} := by
@@ -186,7 +186,7 @@ variable (P : (Opens T)ᵒᵖ ⥤ ModuleCat.{v} R) {Q Q' : (Opens T)ᵒᵖ ⥤ M
 
 @[simp]
 /- English proof (translation)
-Establish `: (homOfLE h).op = 𝟙 (op W)` using `rfl`. Simplify using `[presheafRes, this]`. Use the proof step `@[simp]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem presheafRes_self {W : Opens T} (h : W ≤ W) (x : P.obj (op W)) : presheafRes P h x = x := by
   have : (homOfLE h).op = 𝟙 (op W) := rfl
@@ -194,7 +194,7 @@ theorem presheafRes_self {W : Opens T} (h : W ≤ W) (x : P.obj (op W)) : preshe
 
 @[simp]
 /- English proof (translation)
-Establish `: (homOfLE (h'.trans h)).op = (homOfLE h).op ≫ (homOfLE h').op` using `rfl`. Simplify using `only [presheafRes, this, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem presheafRes_presheafRes {W W' W'' : Opens T} (h : W' ≤ W) (h' : W'' ≤ W')
     (x : P.obj (op W)) : presheafRes P h' (presheafRes P h x) = presheafRes P (h'.trans h) x := by
@@ -202,7 +202,7 @@ theorem presheafRes_presheafRes {W W' W'' : Opens T} (h : W' ≤ W) (h' : W'' �
   simp only [presheafRes, this, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply]
 
 /- English proof (translation)
-The claim follows from `Function.bijective_iff_has_inverse.2 ⟨presheafRes P h', fun x => by simp, fun x => by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem presheafRes_bijective {W W' : Opens T} (h : W' ≤ W) (h' : W ≤ W') :
     Function.Bijective (presheafRes P h) :=
@@ -216,7 +216,7 @@ def presheafCongr {W W' : Opens T} (h : W = W') : P.obj (op W) ≃ₗ[R] P.obj (
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem presheafCongr_apply {W W' : Opens T} (h : W = W') (x : P.obj (op W)) :
     presheafCongr P h x = presheafRes P h.ge x := rfl
@@ -231,7 +231,7 @@ theorem presheafCongr_symm_apply {W W' : Opens T} (h : W = W') (x : P.obj (op W'
 variable {P} in
 
 /- English proof (translation)
-The claim follows from `congr(($(φ.naturality (homOfLE h).op)).hom x)`.
+A detailed English derivation is pending.
 -/
 theorem app_presheafRes (φ : P ⟶ Q) {W W' : Opens T} (h : W' ≤ W) (x : P.obj (op W)) :
     (φ.app (op W')).hom (presheafRes P h x) = presheafRes Q h ((φ.app (op W)).hom x) :=
@@ -297,7 +297,7 @@ theorem presheafCubeRes_app (h : ∀ s, cechOpen V' U' s ≤ cechOpen V U s) (s 
     ((presheafCubeRes P h).app s).hom = presheafRes P (h s) := rfl
 
 /- English proof (translation)
-The claim follows from `NatTrans.ext (funext fun s => ModuleCat.hom_ext (LinearMap.ext (presheafRes_self P (h s)))) @[reassoc]`.
+A detailed English derivation is pending.
 -/
 theorem presheafCubeRes_self (h : ∀ s, cechOpen V U s ≤ cechOpen V U s) :
     presheafCubeRes P h = 𝟙 _ :=
@@ -305,7 +305,7 @@ theorem presheafCubeRes_self (h : ∀ s, cechOpen V U s ≤ cechOpen V U s) :
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `NatTrans.ext (funext fun s => ModuleCat.hom_ext (LinearMap.ext (presheafRes_presheafRes P (h s) (h' s))))`.
+A detailed English derivation is pending.
 -/
 theorem presheafCubeRes_comp (h : ∀ s, cechOpen V' U' s ≤ cechOpen V U s)
     (h' : ∀ s, cechOpen V'' U'' s ≤ cechOpen V' U' s) :
@@ -317,7 +317,7 @@ variable {P} in
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `NatTrans.ext (funext fun s => (φ.naturality (homOfLE (h s)).op).symm)`.
+A detailed English derivation is pending.
 -/
 theorem presheafCubeRes_naturality (φ : P ⟶ Q) (h : ∀ s, cechOpen V' U' s ≤ cechOpen V U s) :
     presheafCubeMap V U φ ≫ presheafCubeRes Q h = presheafCubeRes P h ≫ presheafCubeMap V' U' φ :=
@@ -367,7 +367,7 @@ theorem presheafCubeLowerFaceIso_hom_app (s : Finset κ) :
       presheafRes P (cechOpen_map V U e.toEmbedding s).ge := rfl
 
 /- English proof (translation)
-The claim follows from `rfl @[reassoc]`.
+A detailed English derivation is pending.
 -/
 theorem presheafCubeUpperFaceIso_hom_app (s : Finset κ) :
     ((presheafCubeUpperFaceIso P V U e i).hom.app s).hom =
@@ -375,7 +375,7 @@ theorem presheafCubeUpperFaceIso_hom_app (s : Finset κ) :
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `NatTrans.ext (funext fun s => ModuleCat.hom_ext (LinearMap.ext fun x => (presheafRes_presheafRes P _ _ x).trans (presheafRes_presheafRes P _ (cechOpen_mono inf_le_left (fun _ => le_rfl) s) x).symm))`.
+A detailed English derivation is pending.
 -/
 theorem faceMap_presheafCube :
     Cube.faceMap e i (presheafCube P V U) ≫ (presheafCubeUpperFaceIso P V U e i).hom =
@@ -392,13 +392,13 @@ def presheafCech : CochainComplex (ModuleCat.{v} R) ℕ := cechComplex (presheaf
 def presheafCechH (n : ℕ) : ModuleCat.{v} R := (presheafCech P V U).homology n
 
 /- English proof (translation)
-The claim follows from `isZero_cechComplex_X _ h`.
+A detailed English derivation is pending.
 -/
 theorem isZero_presheafCech_X [Fintype ι] {n : ℕ} (h : Fintype.card ι ≤ n) :
     IsZero ((presheafCech P V U).X n) := isZero_cechComplex_X _ h
 
 /- English proof (translation)
-The claim follows from `isZero_cechComplex_homology _ h`.
+A detailed English derivation is pending.
 -/
 theorem isZero_presheafCechH [Fintype ι] {n : ℕ} (h : Fintype.card ι ≤ n) :
     IsZero (presheafCechH P V U n) := isZero_cechComplex_homology _ h
@@ -406,7 +406,7 @@ theorem isZero_presheafCechH [Fintype ι] {n : ℕ} (h : Fintype.card ι ≤ n) 
 variable {V U} in
 
 /- English proof (translation)
-The claim follows from `isIso_cechComplexMap _ fun s hs => presheafRes_bijective P (h s) (h' s hs)`.
+A detailed English derivation is pending.
 -/
 theorem isIso_cechComplexMap_presheafCubeRes {V' : Opens T} {U' : ι → Opens T}
     (h : ∀ s, cechOpen V' U' s ≤ cechOpen V U s)
@@ -447,7 +447,7 @@ theorem presheafCechAug_apply (x : P.obj (op V)) (s : {s : Finset ι // s.card =
 omit [LinearOrder ι] in
 
 /- English proof (translation)
-The claim follows from `funext fun _ => presheafRes_presheafRes P _ _ x @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem aug_presheafCubeEmptyEquiv (x : P.obj (op V)) :
     Cube.aug (presheafCube P V U) (presheafCubeEmptyEquiv P V U x) = presheafCechAug P V U x :=
@@ -455,7 +455,7 @@ theorem aug_presheafCubeEmptyEquiv (x : P.obj (op V)) :
 
 @[simp]
 /- English proof (translation)
-Rewrite using `[← aug_presheafCubeEmptyEquiv, Cube.d_aug]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem d_presheafCechAug (x : P.obj (op V)) :
     Cube.d (presheafCube P V U) 1 (presheafCechAug P V U x) = 0 := by
@@ -465,7 +465,7 @@ def presheafToCechH : P.obj (op V) →ₗ[R] presheafCechH P V U 0 :=
   (cechAugHomology (presheafCube P V U)).hom ∘ₗ (presheafCubeEmptyEquiv P V U).toLinearMap
 
 /- English proof (translation)
-The claim follows from `(cechAugHomology_apply _ _).trans (congrArg _ (Subtype.ext (aug_presheafCubeEmptyEquiv P V U x)))`.
+A detailed English derivation is pending.
 -/
 theorem presheafToCechH_apply (x : P.obj (op V)) :
     presheafToCechH P V U x =
@@ -476,7 +476,7 @@ theorem presheafToCechH_apply (x : P.obj (op V)) :
 variable {P} in
 
 /- English proof (translation)
-Rewrite using `[presheafToCechH_apply, presheafToCechH_apply]`. Conclude with `homologyMap_cechClass _ 0 _ _ (funext fun _ => app_presheafRes φ _ x)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homologyMap_presheafToCechH (φ : P ⟶ Q) (x : P.obj (op V)) :
     (HomologicalComplex.homologyMap (cechComplexMap (presheafCubeMap V U φ)) 0).hom
@@ -487,7 +487,7 @@ theorem homologyMap_presheafToCechH (φ : P ⟶ Q) (x : P.obj (op V)) :
 variable {V U} in
 
 /- English proof (translation)
-Rewrite using `[presheafToCechH_apply, presheafToCechH_apply]`. Conclude with `homologyMap_cechClass _ 0 _ _ (funext fun s => (presheafRes_presheafRes P _ _ x).trans (presheafRes_presheafRes P hV (cechOpen_le V' U' s.1) x).symm)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homologyMap_res_presheafToCechH {V' : Opens T} {U' : ι → Opens T}
     (h : ∀ s, cechOpen V' U' s ≤ cechOpen V U s) (hV : V' ≤ V) (x : P.obj (op V)) :
@@ -499,9 +499,9 @@ theorem homologyMap_res_presheafToCechH {V' : Opens T} {U' : ι → Opens T}
       (presheafRes_presheafRes P hV (cechOpen_le V' U' s.1) x).symm)
 
 /- English proof (translation)
-Use `wlog hij : i < j generalizing i j`. Break down `(not_lt.1 hij).eq_or_lt with rfl | h` into its components or cases. Both sides reduce to the same expression. Conclude with `(this j i hj hi h).symm`. Establish `hW : W ≤ cechOpen V U {i, j}` using `(le_inf hi hj).trans (cechOpen_union V U {i} {j}).ge`.
+Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `(Cube.d_one_apply_pair _ x hij).symm.trans (congrFun hx _)`. Establish `h'` using `congrArg (presheafRes P hW) (sub_eq_zero.1 h)`. Conclude with `(presheafRes_presheafRes P _ hW _).symm.trans (h'.symm.trans (presheafRes_presheafRes P _ hW _))`.
+A detailed English derivation is pending.
 -/
 theorem presheafRes_eq_of_d_eq_zero (x : Cube.Term (presheafCube P V U) 1)
     (hx : Cube.d (presheafCube P V U) 1 x = 0) (i j : ι) {W : Opens T}
@@ -530,7 +530,7 @@ variable {T : TopCat.{w}} {ι : Type} {R : Type u} [Ring R]
 include hP hc
 
 /- English proof (translation)
-Introduce `x y h` and use `TopCat.Sheaf.eq_of_locally_eq' (C := ModuleCat.{w} R) ⟨P, hP⟩ (fun i => cechOpen V U {i}) V (fun i => homOfLE (cechOpen_le V U {i})) ((cechOpen_empty V U).ge.trans (cechOpen_empty_le_iSup hc)) x y fun i => congrFun h ⟨{i}, Finset.card_singleton i⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem presheafCechAug_injective : Function.Injective (presheafCechAug P V U) := fun x y h =>
   TopCat.Sheaf.eq_of_locally_eq' (C := ModuleCat.{w} R) ⟨P, hP⟩ (fun i => cechOpen V U {i}) V
@@ -541,7 +541,7 @@ theorem presheafCechAug_injective : Function.Injective (presheafCechAug P V U) :
 variable [LinearOrder ι]
 
 /- English proof (translation)
-Introduce `x`. Use `⟨fun hx => ?_, by rintro ⟨y, rfl⟩; exact d_presheafCechAug P V U y⟩` and prove the remaining obligations. Take `⟨y, hy, -⟩` from `TopCat.Sheaf.existsUnique_gluing' (C := ModuleCat.{w} R) ⟨P, hP⟩ (fun i => cechOpen V U {i}) V (fun i => homOfLE (cechOpen_le V U {i})) ((cechOpen_empty V U).ge.trans (cechOpen_empty_le_iSup hc)) (fun i => x ⟨{i}, Finset.card_singleton i⟩) fun i j => presheafRes_eq_of_d_eq_zero P …`. Conclude with `⟨y, (Cube.termOneEquiv _).symm.injective (funext hy)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem presheafCechAug_exact :
     Function.Exact (presheafCechAug P V U) (Cube.d (presheafCube P V U) 1) := by
@@ -555,9 +555,9 @@ theorem presheafCechAug_exact :
   exact ⟨y, (Cube.termOneEquiv _).symm.injective (funext hy)⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `x y h`. Rewrite `h` using `[presheafToCechH_apply, presheafToCechH_apply]`. Conclude with `presheafCechAug_injective hP hc (congrArg Subtype.val ((cechClass_zero_bijective _).1 h))`. Introduce `z`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨x, hx⟩, rfl⟩` from `cechClass_surjective (presheafCube P V U) 0 z`. Take `⟨y, rfl⟩` from `(presheafCechAug_exact hP hc x).1 hx`. Conclude with `⟨y, presheafToCechH_apply P V U y⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem presheafToCechH_bijective : Function.Bijective (presheafToCechH P V U) := by
   constructor
@@ -571,7 +571,7 @@ theorem presheafToCechH_bijective : Function.Bijective (presheafToCechH P V U) :
     exact ⟨y, presheafToCechH_apply P V U y⟩
 
 /- English proof (translation)
-Rewrite using `[ConcreteCategory.isIso_iff_bijective]`. Conclude with `(Function.Bijective.of_comp_iff _ (presheafCubeEmptyEquiv P V U).bijective).1 (presheafToCechH_bijective hP hc)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIso_cechAugHomology_presheafCube : IsIso (cechAugHomology (presheafCube P V U)) := by
   rw [ConcreteCategory.isIso_iff_bijective]
@@ -579,7 +579,7 @@ theorem isIso_cechAugHomology_presheafCube : IsIso (cechAugHomology (presheafCub
     (presheafToCechH_bijective hP hc)
 
 /- English proof (translation)
-The claim follows from `(isIso_cechAugHomology_iff _).1 (isIso_cechAugHomology_presheafCube hP hc)`.
+A detailed English derivation is pending.
 -/
 theorem presheafCube_exactAt_zero_one :
     (cubeComplex (presheafCube P V U)).ExactAt 0 ∧ (cubeComplex (presheafCube P V U)).ExactAt 1 :=
@@ -634,7 +634,7 @@ variable {P} in
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simps]`.
+A detailed English derivation is pending.
 -/
 theorem cechAbCubeMap_app_apply (φ : P ⟶ Q) (s : Finset ι) (x : P.obj (op (cechOpen V U s))) :
     ((cechAbCubeMap V U φ).app s).hom x = φ.app (op (cechOpen V U s)) x := rfl
@@ -662,7 +662,7 @@ theorem cechAb_X (p : ℕ) : (cechAb P V U).X p =
     ModuleCat.of ℤ (∀ s : {s : Finset ι // s.card = p + 1}, P.obj (op (cechOpen V U s.1))) := rfl
 
 /- English proof (translation)
-The claim follows from `cechComplex_d _ p`.
+A detailed English derivation is pending.
 -/
 theorem cechAb_d (p : ℕ) :
     (cechAb P V U).d p (p + 1) = ModuleCat.ofHom (Cube.d (cechAbCube P V U) (p + 1)) :=
@@ -699,7 +699,7 @@ instance cechAbHFunctor_additive (n : ℕ) : (cechAbHFunctor.{w, v} V U n).Addit
 
 @[simp]
 /- English proof (translation)
-The claim follows from `(cechAbHFunctor V U n).map_id P`.
+A detailed English derivation is pending.
 -/
 theorem cechAbHMap_id (n : ℕ) : cechAbHMap V U (𝟙 P) n = 𝟙 _ := (cechAbHFunctor V U n).map_id P
 
@@ -707,7 +707,7 @@ variable {P} in
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `(cechAbHFunctor V U n).map_comp φ ψ`.
+A detailed English derivation is pending.
 -/
 theorem cechAbHMap_comp (φ : P ⟶ Q) (ψ : Q ⟶ Q') (n : ℕ) :
     cechAbHMap V U (φ ≫ ψ) n = cechAbHMap V U φ n ≫ cechAbHMap V U ψ n :=
@@ -716,14 +716,14 @@ theorem cechAbHMap_comp (φ : P ⟶ Q) (ψ : Q ⟶ Q') (n : ℕ) :
 variable {P} in
 
 /- English proof (translation)
-The claim follows from `(cechAbHFunctor V U n).map_add`.
+A detailed English derivation is pending.
 -/
 theorem cechAbHMap_add (φ ψ : P ⟶ Q) (n : ℕ) :
     cechAbHMap V U (φ + ψ) n = cechAbHMap V U φ n + cechAbHMap V U ψ n :=
   (cechAbHFunctor V U n).map_add
 
 /- English proof (translation)
-The claim follows from `cechFunctor_shortExact (S.map (cechAbCubeFunctor V U)) fun s hs => ModuleCat.shortComplex_shortExact _ (h s hs).2.1 (h s hs).1 (h s hs).2.2`.
+A detailed English derivation is pending.
 -/
 theorem cechAbFunctor_shortExact (S : ShortComplex ((Opens T)ᵒᵖ ⥤ AddCommGrpCat.{v}))
     (h : ∀ s : Finset ι, s.Nonempty →
@@ -735,19 +735,19 @@ theorem cechAbFunctor_shortExact (S : ShortComplex ((Opens T)ᵒᵖ ⥤ AddCommG
     ModuleCat.shortComplex_shortExact _ (h s hs).2.1 (h s hs).1 (h s hs).2.2
 
 /- English proof (translation)
-The claim follows from `isZero_cechComplex_X _ h`.
+A detailed English derivation is pending.
 -/
 theorem isZero_cechAb_X [Fintype ι] {n : ℕ} (h : Fintype.card ι ≤ n) :
     IsZero ((cechAb P V U).X n) := isZero_cechComplex_X _ h
 
 /- English proof (translation)
-The claim follows from `isZero_cechComplex_homology _ h`.
+A detailed English derivation is pending.
 -/
 theorem isZero_cechAbH [Fintype ι] {n : ℕ} (h : Fintype.card ι ≤ n) :
     IsZero (cechAbH P V U n) := isZero_cechComplex_homology _ h
 
 /- English proof (translation)
-The claim follows from `ModuleCat.isZero_iff_subsingleton.1 (isZero_cechAbH P V U h)`.
+A detailed English derivation is pending.
 -/
 theorem subsingleton_cechAbH [Fintype ι] {n : ℕ} (h : Fintype.card ι ≤ n) :
     Subsingleton (cechAbH P V U n) := ModuleCat.isZero_iff_subsingleton.1 (isZero_cechAbH P V U h)
@@ -762,7 +762,7 @@ def toCechAbH : P.obj (op V) →ₗ[ℤ] cechAbH P V U 0 := presheafToCechH (P �
 variable {P} in
 
 /- English proof (translation)
-The claim follows from `homologyMap_presheafToCechH V U (Functor.whiskerRight φ abToIntModule) x`.
+A detailed English derivation is pending.
 -/
 theorem cechAbHMap_toCechAbH (φ : P ⟶ Q) (x : P.obj (op V)) :
     (cechAbHMap V U φ 0).hom (toCechAbH P V U x) = toCechAbH Q V U (φ.app (op V) x) :=
@@ -776,7 +776,7 @@ variable {T : TopCat.{w}} {ι : Type} {P Q : (Opens T)ᵒᵖ ⥤ AddCommGrpCat.{
   {V : Opens T} {U : ι → Opens T}
 
 /- English proof (translation)
-The claim follows from `(TopCat.Presheaf.isSheaf_iff_isSheafUniqueGluing (C := ModuleCat.{w} ℤ) (X := T) (P ⋙ abToIntModule)).2 ((TopCat.Presheaf.isSheaf_iff_isSheafUniqueGluing (C := AddCommGrpCat.{w}) (X := T) P).1 hP)`.
+A detailed English derivation is pending.
 -/
 theorem isSheaf_comp_abToIntModule (hP : Presheaf.IsSheaf (Opens.grothendieckTopology T) P) :
     Presheaf.IsSheaf (Opens.grothendieckTopology T) (P ⋙ abToIntModule) :=
@@ -787,7 +787,7 @@ theorem isSheaf_comp_abToIntModule (hP : Presheaf.IsSheaf (Opens.grothendieckTop
 variable [LinearOrder ι]
 
 /- English proof (translation)
-The claim follows from `presheafCube_exactAt_zero_one (isSheaf_comp_abToIntModule hP) hc`.
+A detailed English derivation is pending.
 -/
 theorem cechAbCube_exactAt_zero_one (hP : Presheaf.IsSheaf (Opens.grothendieckTopology T) P)
     (hc : V ≤ ⨆ i, U i) :
@@ -807,7 +807,7 @@ theorem cechAbHZeroEquiv_symm_apply (hP : Presheaf.IsSheaf (Opens.grothendieckTo
     (cechAbHZeroEquiv hP hc).symm x = toCechAbH P V U x := rfl
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `(cechAbHZeroEquiv hP hc).symm.surjective x`. Rewrite using `[LinearEquiv.apply_symm_apply, cechAbHZeroEquiv_symm_apply, cechAbHMap_toCechAbH, ← cechAbHZeroEquiv_symm_apply hQ hc, LinearEquiv.apply_symm_apply]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem cechAbHZeroEquiv_map (hP : Presheaf.IsSheaf (Opens.grothendieckTopology T) P)
     (hQ : Presheaf.IsSheaf (Opens.grothendieckTopology T) Q) (hc : V ≤ ⨆ i, U i) (φ : P ⟶ Q)

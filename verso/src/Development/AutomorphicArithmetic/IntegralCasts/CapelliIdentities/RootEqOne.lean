@@ -5,9 +5,9 @@ import Mathlib
     fun (l : ℕ) [Fact (Nat.Prime l)] ↦ PadicAlgCl l
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `e : η ^ (n + 1) - 1 = (η ^ n - 1) * (η - 1) + ((η ^ n - 1) + (η - 1))` using `by ring`. Rewrite using `[e]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt ?_ ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_left (norm_nonneg _) ih h.le`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt ih h)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma UpperTheory.Reformulated.B.Qe14.pow_close {K : Type*} [NormedField K] [IsUltrametricDist K]
     {η : K} (h : ‖η - 1‖ < 1) (n : ℕ) : ‖η ^ n - 1‖ < 1 := by
@@ -22,9 +22,9 @@ private lemma UpperTheory.Reformulated.B.Qe14.pow_close {K : Type*} [NormedField
     · exact (IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt ih h)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `e : ∑ i ∈ Finset.range (n + 1), η ^ i - ((n + 1 : ℕ) : K) = (∑ i ∈ Finset.range n, η ^ i - (n : K)) + (η ^ n - 1)`. Rewrite using `[Finset.sum_range_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt ih (UpperTheory.Reformulated.B.Qe14.pow_close h n))`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma UpperTheory.Reformulated.B.Qe14.sum_close {K : Type*} [NormedField K] [IsUltrametricDist K]
     {η : K} (h : ‖η - 1‖ < 1) (n : ℕ) : ‖∑ i ∈ Finset.range n, η ^ i - (n : K)‖ < 1 := by
@@ -39,11 +39,11 @@ private lemma UpperTheory.Reformulated.B.Qe14.sum_close {K : Type*} [NormedField
       (max_lt ih (UpperTheory.Reformulated.B.Qe14.pow_close h n))
 
 /- English proof (translation)
-Introduce `v inst m hm η hη h`. Assume the negation of the conclusion as `hne`. Establish `h1 : (∑ i ∈ Finset.range m, η ^ i) * (η - 1) = 0`. Rewrite using `[geom_sum_mul, hη, sub_self]`. Establish `h2 : ∑ i ∈ Finset.range m, η ^ i = 0` using `(mul_eq_zero.mp h1).resolve_right (sub_ne_zero.mpr hne)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `UpperTheory.Reformulated.B.Qe14.sum_close h m`. Rewrite `h3` using `[h2, zero_sub, norm_neg]`. Establish `h4 : ((m : ℕ) : PadicAlgCl v) = algebraMap ℚ_[v] (PadicAlgCl v) (m : ℚ_[v])`. Simplify using the standard rewrite rules. Establish `h5 : ‖((m : ℕ) : PadicAlgCl v)‖ = ‖(m : ℚ_[v])‖`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[h4]`. Conclude with `PadicAlgCl.norm_extends v _`. Rewrite `h3` using `[h5, Padic.norm_natCast_lt_one_iff]`. Conclude with `hm h3`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qe14.root_eq_one :
     ∀ {v : ℕ} [inst : Fact (Nat.Prime v)] {m : ℕ},

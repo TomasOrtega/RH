@@ -6,15 +6,15 @@ open GlobalTheory.UnitLemma Polynomial
 namespace GlobalTheory.UnitLemma
 
 /- English proof (translation)
-Introduce `K B a r φ c hφ hker hint k`. Establish `hK : (intUnits K.O B.A).subgroupOf B.T = φ.ker`. Use extensionality with `t`. Rewrite using `[MonoidHom.mem_ker, Subgroup.mem_subgroupOf, hker]`. Unfold `InvAlg.rho`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[hK]`. Set `e` to `QuotientGroup.quotientKerEquivOfSurjective φ hφ`. Establish `he : ∀ q : B.T ⧸ φ.ker, e q = φ (Quotient.out q)`. Introduce `q`. Use `conv_lhs => rw [← QuotientGroup.out_eq' q]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `h1 : Nat.card {q : B.T ⧸ φ.ker // IsIntegral K.O ((((Quotient.out q : B.T) : B.Aˣ)⁻¹ : B.Aˣ) * algebraMap K.O B.A a ^ k : B.A)} = Nat.card {v : Fin r → ℤ // ∀ i, v i ∈ Set.Icc (-((k * c i : ℕ) : ℤ)) ((k * c i : ℕ) : ℤ)}`. Apply `Nat.card_congr` to reduce the goal to its premises. Use `(e.toEquiv.trans Multiplicative.toAdd).subtypeEquiv ?_` and prove the remaining obligations. Introduce `q`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [MulEquiv.toEquiv_eq_coe, Equiv.trans_apply, MulEquiv.coe_toEquiv, he, Set.mem_Icc, ← abs_le]`. Conclude with `hint _ k`. Rewrite using `[h1, Nat.card_congr (Equiv.subtypePiEquivPi), Nat.card_pi]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h2 : Nat.card (Set.Icc (-((k * c i : ℕ) : ℤ)) ((k * c i : ℕ) : ℤ)) = 2 * k * c i + 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[Nat.card_eq_card_toFinset, Set.toFinset_Icc, Int.card_Icc, show 2 * k * c i = 2 * (k * c i) by ring]`. Use linear arithmetic over natural numbers and integers. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem rho_pow_eq_card_box : ∀ (K : UQ) (B : InvAlg K) (a : K.O) (r : ℕ) (φ : B.T →* Multiplicative (Fin r → ℤ)) (c : Fin r → ℕ), Function.Surjective φ → (∀ t : B.T, φ t = 1 ↔ (t : B.Aˣ) ∈ intUnits K.O B.A) → (∀ (t : B.T) (k : ℕ), IsIntegral K.O ((((t : B.Aˣ)⁻¹ : B.Aˣ) : B.A) * algebraMap K.O B.A a ^ k) ↔ ∀ i, |Multiplicative.toAdd (φ t) i| ≤ ((k * c i : ℕ) : ℤ)) → ∀ k : ℕ, B.rho (algebraMap K.O B.A a ^ k) = ∏ i, (2 * k * c i + 1) := by
   intro K B a r φ c hφ hker hint k

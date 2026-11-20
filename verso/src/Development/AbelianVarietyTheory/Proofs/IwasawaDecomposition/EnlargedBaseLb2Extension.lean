@@ -56,52 +56,50 @@ def movePl {D : D7} {I : Type} {L : Formalism.IndefR.Links.LevCh D I} (P : Place
     rwa [map_natCast] at this
 
 /- English proof (translation)
-Simplify using `only [movePl, Function.update_self]`.
+Simplify using the standard rewrite rules.
 -/
 theorem movePl_w {D : D7} {I : Type} {L : Formalism.IndefR.Links.LevCh D I} (P : Places L) (h4 v u hv hS hu hs) :
     (movePl P h4 v u hv hS hu hs).w v = u := by
   simp only [movePl, Function.update_self]
 
 /- English proof (translation)
-Take `⟨a1, a2, a3, nOm, ninstOm, nalgOm, nplOm, nPlG⟩` from `h.gal`. Take `⟨xcc, xTw, xl, fixedFieldTransport_baseIntegerRing_heq, fixedFieldTransport_baseIntegerCommRing_heq, fixedFieldTransport_baseIntegerAlgebra_heq, fixedFieldTransport_baseIntegerTopology_heq, xO, xcrO, xalgO, xOk, xcrOk, xalgOk, xzk, xpD, xchi1, xSig, xfinSig, xjS, xside, xrhoS, fi …` from `h.set`. Establish `b1` using `h.sp`. Establish `b2` using `h.Tau`. Establish `b3` using `h.instTau`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b4` using `h.eTau`. Establish `b5` using `h.hc`. Consider the cases of `D'`. Simplify using `only at a1 a2 a3 b1 b2 b3 b4 b5 nOm ninstOm nalgOm nplOm nPlG xcc xTw xl fixedFieldTransport_baseIntegerRing_heq fixedFieldTransport_baseIntegerCommRing_heq fixedFieldTransport_baseIntegerAlgebra_heq fixedFieldTransport_baseIntegerTopology_heq xO xcrO xalgO xOk xcrOk xalgOk xzk x …`. Substitute `a1` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Simplify by unfolding definitions. Substitute using the available equality.
 
-Substitute `a2` using the available equality. Substitute `a3` using the available equality. Substitute `b1` using the available equality. Use `rename Rows.Data _ => rows'`. Consider the cases of `rows'`.
+Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Split into cases according to the possible forms of the given data. Simplify by unfolding definitions.
 
-Simplify using `only at b2 b3 b4 b5`. Substitute `b2` using the available equality. Substitute `b3` using the available equality. Substitute `b4` using the available equality. Substitute `b5` using the available equality.
+Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Split into cases according to the possible forms of the given data.
 
-Use `rename NData _ _ _ => N'`. Consider the cases of `N'`. Simplify using `only at nOm ninstOm nalgOm nplOm nPlG`. Substitute `nOm` using the available equality. Substitute `ninstOm` using the available equality.
+Simplify by unfolding definitions. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality.
 
-Substitute `nalgOm` using the available equality. Substitute `nplOm` using the available equality. Substitute `nPlG` using the available equality. Use `rename NTw _ _ _ _ _ => X'`. Consider the cases of `X'`.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. Simplify by unfolding definitions. Substitute using the available equality. Substitute using the available equality.
 
-Simplify using `only at xcc xTw xl fixedFieldTransport_baseIntegerRing_heq fixedFieldTransport_baseIntegerCommRing_heq fixedFieldTransport_baseIntegerAlgebra_heq fixedFieldTransport_baseIntegerTopology_heq xO xcrO xalgO xOk xcrOk xalgOk xzk xpD xchi1 xSig xfinSig xjS xside xrhoS fixedFieldTransp …`. Substitute `xcc` using the available equality. Substitute `xTw` using the available equality. Substitute `xl` using the available equality. Substitute `fixedFieldTransport_baseIntegerRing_heq` using the available equality.
+Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality.
 
-Substitute `fixedFieldTransport_baseIntegerCommRing_heq` using the available equality. Substitute `fixedFieldTransport_baseIntegerAlgebra_heq` using the available equality. Substitute `fixedFieldTransport_baseIntegerTopology_heq` using the available equality. Substitute `xO` using the available equality. Substitute `xcrO` using the available equality.
+Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality.
 
-Substitute `xalgO` using the available equality. Substitute `xOk` using the available equality. Substitute `xcrOk` using the available equality. Substitute `xalgOk` using the available equality. Substitute `xzk` using the available equality.
+Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality.
 
-Substitute `xpD` using the available equality. Substitute `xchi1` using the available equality. Substitute `xSig` using the available equality. Substitute `xfinSig` using the available equality. Substitute `xjS` using the available equality.
+Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality.
 
-Substitute `xside` using the available equality. Substitute `xrhoS` using the available equality. Substitute `fixedFieldTransport_initialPlaceSet_heq` using the available equality. Substitute `xhEig` using the available equality. Substitute `xLam` using the available equality.
+Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality.
 
-Substitute `xsideL` using the available equality. Substitute `xRCG` using the available equality. Substitute `xgrpRCG` using the available equality. Substitute `xfinRCG` using the available equality. Substitute `xart` using the available equality.
+Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality.
 
-Substitute `xth` using the available equality. Substitute `hj` using the available equality. Substitute `hs` using the available equality. Substitute `hX` using the available equality. Take `⟨G, hF, hT⟩` from `hp`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmu` using `eq_of_heq hmu`. Establish `hd` using `eq_of_heq hd`. Establish `hd'` using `eq_of_heq hd'`. Establish `h0` using `G.ch.basePlace_not_mem_chiGridBadPlaces`. Take `⟨P₀⟩` from `hP fun k e => h0 ((S1_mem_OmF D).2 (by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e' : q0 D = D.host.g k` using `e`. Use `G.pl.basePlace_over_qZero` as an intermediate fact. Rewrite `this` using `[e']`. Use `fin_cases k`. Conclude with `Or.inl this`.
+Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `Or.inr (Or.inl this)))`. Establish `hm : G.pl.v0 ∈ G.pl.S0` using `G.pl.mem_S0_of_sum_eq.2 (Or.inl rfl)`. Set `P : Places Lc'` to `movePl P₀ h4 G.pl.v0 (G.pl.w G.pl.v0) G.pl.basePlace_over_qZero h0 (G.pl.under_w hm) ((G.pl.w_split G.pl.v0 hm))`. Establish `hw : P.w P.v0 = G.pl.w G.pl.v0` using `movePl_w ..`. Take `⟨h1, h2⟩` from `(GlobalTheory.ChiGrid.StairConj.conj_AA_and_stA _).2 I' Lc' P ⟨1, CF, b⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨V⟩` from `GlobalTheory.ChiGridModel.nonempty_vertices _ I' Lc' _ _ (GlobalTheory.ChiGrid.colY_isV _ I' Lc' μ0 hL 0 (Nat.zero_le _)).sd h1 h2`. Set `X : Chars P 1` to `⟨G.ch.chiH, (G.ch.chi), (G.ch.chi_eq), (G.ch.triv), (G.ch.inf), (G.ch.unr), (G.ch.lev1), (G.ch.wild), (G.ch.lev0)⟩`. Use `⟨⟨P, X, V⟩, ⟨fun i a c v hv => ?_, fun v hv => ?_⟩, fun i hi => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `hF.values i a c v hv`. Conclude with `⟨e.symm y, by rw [← h.embLL0_eq, e.apply_symm_apply]; exact hy⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨z, hz⟩` from `hF.roots v hv`. Conclude with `⟨e.symm z, hz.map_of_injective (f := e.symm) e.symm.injective⟩`. Take `⟨t0, j, t1, t2⟩` from `hT i ((h.inW1 i i HEq.rfl).2 hi)`. Establish `hl : ∀ l a c, (lamOf (⟨P, X, V⟩ : GridData Lc' ⟨1, CF, b⟩)).lam0 l a c = (lamOf G).lam0 l a c` using `fun l a c => by`. Express the relevant statement in the definitionally equal form `Lc'.C.mu0 a * (if l = D.host.pde then Lc'.C.del' else Lc'.C.del) * _ = _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hmu, hd, hd']`. Both sides reduce to the same expression. Establish `hw' : (lamOf (⟨P, X, V⟩ : GridData Lc' ⟨1, CF, b⟩)).w0 = (lamOf G).w0` using `hw`. Use `⟨by rw [hw']; exact t0, j, fun x => ?_, ?_⟩` and prove the remaining obligations. Conclude with `(congrArg j (h.embLL0_eq x).symm).trans ((t1 (e x)).trans (congrArg _ (eq_of_heq (h.emb0 i i HEq.rfl x))))`.
-
-Simplify using `only [GlobalTheory.LamTie.IsLam, BlochKatoReduction.Gen.SOk, hl, hw']`. Conclude with `t2`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem listPin_copy {D D' : D7} {ι : D.what₂.LL →+* D'.what₂.LL} {e : ↥D'.LL0 ≃+* ↥D.LL0} (h : CopyTw D D' ι e)
     (hj : HEq D.ntw.jL D'.ntw.jL) (hs : HEq D.ntw.s2 D'.ntw.s2) (hX : HEq D.ntw.Xv D'.ntw.Xv) {I I' : Type}
@@ -169,17 +167,15 @@ theorem listPin_copy {D D' : D7} {ι : D.what₂.LL →+* D'.what₂.LL} {e : �
       exact t2
 
 /- English proof (translation)
-Introduce `t PP hP hq`. Establish `hprime` using `(GlobalTheory.ChiGrid.leastSplitAuxiliaryPrimeThetaChain_spec (w.st Z).toD7).1`. Establish `two : ∀ p : ℕ, p.Prime → ((p : ℕ) : 𝓞 B.host.E) ∈ PP.asIdeal → q0 (w.st Z).toD7 = p` using `fun p hp hm => by`. Assume the negation of the conclusion as `hne`. Establish `hc : IsCoprime ((q0 (w.st Z).toD7 : ℕ) : 𝓞 B.host.E) ((p : ℕ) : 𝓞 B.host.E)` using `Nat.Coprime.cast ((Nat.coprime_primes hprime hp).2 hne)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Take `⟨a, b, hab⟩` from `hc`. Conclude with `PP.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hab ▸ Ideal.add_mem _ (Ideal.mul_mem_left _ _ hq) (Ideal.mul_mem_left _ _ hm)))`. Establish `hd : f.del.UnrAt PP` using `f.isDel.unr PP fun h => (GlobalTheory.ChiGrid.leastSplitAuxiliaryPrime_ne_typePrimes (w.st Z).toD7).1 (two _ B.host.pde_prime h)`. Establish `hd' : f.del'.UnrAt PP` using `f.isDel'.unr PP fun h => (GlobalTheory.ChiGrid.leastSplitAuxiliaryPrime_ne_typePrimes (w.st Z).toD7).2 (two _ B.host.pde'_prime h)`. Establish `hps : ∀ v, (T.psi v).UnrAt PP` using `fun v => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hn`. Take `⟨-, h1, -, h2⟩` from `(T.psi_tw v).2.2.2 PP hn`. Establish `hmem` using `Ideal.absNorm_mem PP.asIdeal`. Establish `e` using `two _ h1 hmem`. Conclude with `h2 (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl e.symm))))))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(z.lev.is.Q_ram t PP).2 (Or.inl hP) ?_` and prove the remaining obligations. Rewrite using `[z.lev.xiH t]`. Establish `hm : w.I.xi (GlobalTheory.Mem.R3.ixOf w.I _ t) ∈ T.set f` using `w.xi_range ▸ ⟨_, rfl⟩`. Break down `hm with (h | h | h) | ⟨v, h⟩` into its components or cases. Rewrite using `[h]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 
-Introduce `x _`. Both sides reduce to the same expression. Conclude with `h ▸ hd`. Conclude with `(h : _ = _) ▸ hd'`. Rewrite using `[← h]`.
-
-Unfold `TwDat.xiTw`. Use `split_ifs`. Conclude with `HChar.UnrAt.mul hd' (hps v)`. Conclude with `HChar.UnrAt.mul hd (hps v)`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem twistPlaces_not_over_leastSplitAuxiliaryPrime {B : Base} {f : Top.Fr B.toPre} {T : TwDat B} (w : ColW B f T) (Z : w.Lt) {hX : B.fields.Ok} {Wt : Set B.places.Pl}
     (z : Dat (w.st Z) w.I hX T Wt) : ∀ t, ∀ PP ∈ z.R.toRealDat.toLevCh.Q t,
@@ -214,14 +210,14 @@ theorem twistPlaces_not_over_leastSplitAuxiliaryPrime {B : Base} {f : Top.Fr B.t
     · exact HChar.UnrAt.mul hd (hps v)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Consider the cases of `hf`. Conclude with `⟨HEq.rfl, HEq.rfl, HEq.rfl⟩`.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. Supply the required witnesses or components.
 -/
 theorem fr_heq {A A' : Pre} (h : A' = A) {f : Top.Fr A} {f' : Top.Fr A'} (hf : HEq f' f) :
     HEq f'.mu0 f.mu0 ∧ HEq f'.del f.del ∧ HEq f'.del' f.del' := by
   subst h; cases hf; exact ⟨HEq.rfl, HEq.rfl, HEq.rfl⟩
 
 /- English proof (translation)
-Rewrite using `[(GlobalTheory.HeightCounting.Up.ListModel.lev_at_state x).1]`. Take `⟨h1, h2, h3⟩` from `fr_heq rfl (heq_of_eq w.C_eq)`. Conclude with `⟨(h1), (h2), (h3)⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem lev_fr {K : Ctx} {B : Base} {f : Top.Fr B.toPre} {T : TwDat B} {w : ColW B f T} {P : Pre2 K w} (x : St P) :
     HEq x.m.z.R.toRealDat.toLevCh.C.mu0 f.mu0 ∧ HEq x.m.z.R.toRealDat.toLevCh.C.del f.del ∧
@@ -231,7 +227,7 @@ theorem lev_fr {K : Ctx} {B : Base} {f : Top.Fr B.toPre} {T : TwDat B} {w : ColW
   exact ⟨(h1), (h2), (h3)⟩
 
 /- English proof (translation)
-Substitute `hD` using the available equality. Conclude with `listPin_copy h.cp h.jL h.s2 h.Xv hL hmu hd hd' hP h4 hp`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem listPin_copyN {D D' : D7} {N : TwNew D'} {ι : D.what₂.LL →+* D'.what₂.LL} {e : ↥D'.LL0 ≃+* ↥D.LL0} (h : CopyN D N ι e)
     {D'' : D7} (hD : D'' = N.toD7) {I I' : Type}
@@ -244,9 +240,9 @@ theorem listPin_copyN {D D' : D7} {N : TwNew D'} {ι : D.what₂.LL →+* D'.wha
   exact listPin_copy h.cp h.jL h.s2 h.Xv hL hmu hd hd' hP h4 hp
 
 /- English proof (translation)
-Introduce `_ _ hL K B' f' T' w' _ _ _ B f T w hE hf _ _ _ _ _ P x _ P' _ x' _ _ N ι e hc x'' _ ho _ _ _ _ _ _ _ _ cDep hp`. Establish `hD : Dof x'' = N.toD7`. Unfold `Dof`. Rewrite using `[ho]`. Conclude with `dof_oTw x' N`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨a1, a2, a3⟩` from `lev_fr x`. Take `⟨b1, b2, b3⟩` from `lev_fr x''`. Take `⟨c1, c2, c3⟩` from `fr_heq hE.1 hf`. Conclude with `listPin_copyN hc hD x''.m.z.lev.is (b1.trans (c1.trans a1.symm)) (b2.trans (c2.trans a2.symm)) (b3.trans (c3.trans a3.symm)) (fun h3 => (GlobalTheory.HeightCounting.Up.ListModel.nonempty_grid w' x''.o.Z x''.m.z ⟨1, cDep, K.s.b⟩ h3).map fun G => G.pl) (twistPlaces_not_over_leastSp …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem listSt_carry : PrN → SerN → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) {K : Ctx} {B' : Base} {f' : Top.Fr B'.toPre} {T' : TwDat B'} {w' : ColW B' f' T'}, KPx B' f' → Forced K B' T' → Start K B' f' T' w' → ∀ (B : Base) (f : Top.Fr B.toPre) (T : TwDat B) (w : ColW B f T), Enl B B' → HEq f' f → Start K B f T w → HEq w'.px w.px → HEq w'.I.sel w.I.sel → HEq w'.I.J w.I.J → HEq w'.δ w.δ → ∀ (P : Pre2 K w) (x : St P) (lb : StrictHenselianAcyclic hL x) (P' : Pre2 K w'), Ext P.z P'.z → ∀ (x' : St P') (l' : LI hL x'), SameGal (Dof x) (Dof x') → ∀ (N : TwNew (Dof x')) (ι : (Dof x).what₂.LL →+* (Dof x').what₂.LL) (e : ↥(Dof x').LL0 ≃+* ↥(Dof x).LL0), CopyN (Dof x) N ι e → ∀ (x'' : St P') (l'' : LI hL x''), x''.o = oTw x' N → HEq x''.m.z.R.toRealDat.toLevCh (GlobalTheory.Mem.R3.Tr.levCh (a := x'.o.Z) (oTw x' N).Z x'.m.z.R.toRealDat.toLevCh) → HEq l''.a.A.row (N.row l'.a.A.row) → HEq l''.Pq l'.Pq → HEq l''.rat.S (N.rat l'.rat.S) → HEq l''.rat.In.Sb l'.rat.In.Sb → HEq l''.rat.In.hL l'.rat.In.hL → HEq l''.rat.In.eig l'.rat.In.eig → HEq l''.rat.In.θ l'.rat.In.θ → ∀ cDep : ℝ, ListSt cDep x → ListSt cDep x'' := by
   intro _ _ hL K B' f' T' w' _ _ _ B f T w hE hf _ _ _ _ _ P x _ P' _ x' _ _ N ι e hc x'' _ ho _ _ _ _ _ _ _ _ cDep hp

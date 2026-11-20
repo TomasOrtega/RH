@@ -16,38 +16,38 @@ def blk {n : ℕ} (P : Matrix (Fin n) (Fin n) ℂ) (col row : Fin n → ℂ) (e 
   fun i j => Fin.lastCases (Fin.lastCases e row j) (fun i' => Fin.lastCases (col i') (fun j' => P i' j') j) i
 
 /- English proof (translation)
-Simplify using `[blk]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem blk_cc {n : ℕ} (P : Matrix (Fin n) (Fin n) ℂ) (col row : Fin n → ℂ) (e : ℂ) (i j : Fin n) :
     blk P col row e i.castSucc j.castSucc = P i j := by simp [blk]
 
 /- English proof (translation)
-Simplify using `[blk]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem blk_cl {n : ℕ} (P : Matrix (Fin n) (Fin n) ℂ) (col row : Fin n → ℂ) (e : ℂ) (i : Fin n) :
     blk P col row e i.castSucc (Fin.last n) = col i := by simp [blk]
 
 /- English proof (translation)
-Simplify using `[blk]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem blk_lc {n : ℕ} (P : Matrix (Fin n) (Fin n) ℂ) (col row : Fin n → ℂ) (e : ℂ) (j : Fin n) :
     blk P col row e (Fin.last n) j.castSucc = row j := by simp [blk]
 
 /- English proof (translation)
-Simplify using `[blk]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem blk_ll {n : ℕ} (P : Matrix (Fin n) (Fin n) ℂ) (col row : Fin n → ℂ) (e : ℂ) :
     blk P col row e (Fin.last n) (Fin.last n) = e := by simp [blk]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_isLowerTriangular L (fun i j hij => h.1 i j hij)]`. Simplify using `[h.2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_lowUni {n : ℕ} {L : Matrix (Fin n) (Fin n) ℂ} (h : LowUni L) : L.det = 1 := by
   rw [Matrix.det_of_isLowerTriangular L (fun i j hij => h.1 i j hij)]
   simp [h.2]
 
 /- English proof (translation)
-The claim follows from `| 0, g, _ => ⟨1, g, ⟨fun i => i.elim0, fun i => i.elim0⟩, fun i => i.elim0, by simp⟩ | n + 1, g, hg => by set A : Matrix (Fin n) (Fin n) ℂ := g.submatrix Fin.castSucc Fin.castSucc with hA have hAk : ∀ k (hk : k < n), (A.submatrix (Fin.castLE hk.le) (Fin.castLE hk.le)).det ≠ 0 := …`.
+A detailed English derivation is pending.
 -/
 theorem exists_LU : ∀ (n : ℕ) (g : Matrix (Fin n) (Fin n) ℂ),
     (∀ k (hk : k < n), (g.submatrix (Fin.castLE hk.le) (Fin.castLE hk.le)).det ≠ 0) →

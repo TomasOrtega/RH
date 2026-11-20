@@ -17,7 +17,7 @@ def cobZ (ρ : Representation O G M) (v : M) : coZ1s ρ :=
     rw [map_mul, map_sub, Module.End.mul_apply]; abel⟩
 
 /- English proof (translation)
-Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `LinearMap.mem_range_self (coD0 ρ) v`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma mkQ_cobZ (ρ : Representation O G M) (v : M) :
     (Submodule.mkQ ((coB1 ρ).comap (coZ1s ρ).subtype) (cobZ ρ v) : H1z ρ) = 0 := by
@@ -25,7 +25,7 @@ lemma mkQ_cobZ (ρ : Representation O G M) (v : M) :
   exact LinearMap.mem_range_self (coD0 ρ) v
 
 /- English proof (translation)
-Establish `hz : z = cobZ ρ v` using `Subtype.ext (funext h)`. Rewrite using `[hz]`. Conclude with `mkQ_cobZ ρ v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma mkQ_eq_zero_of (ρ : Representation O G M) (z : coZ1s ρ) (v : M)
     (h : ∀ g, (z : G → M) g = ρ g v - v) :
@@ -40,7 +40,7 @@ section Y
 variable {A T' G : Type*} [Ring A] [CommRing T'] [Algebra T' A] [Group G]
 
 /- English proof (translation)
-Use `show ((((χ g)⁻¹ : T'ˣ) : T') • r g - 1) * E = _`. Rewrite using `[sub_mul, sub_mul, smul_sub, one_mul, smul_mul_assoc, Algebra.smul_def (((χ g)⁻¹ : T'ˣ) : T') (algebraMap T' A ((χ g : T'ˣ) : T') * E), ← mul_assoc, ← map_mul, Units.inv_mul, map_one, one_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma ycoc_eq (r : G →* A) (χ : G →* T'ˣ) (E : A) (g : G) :
     ycoc r χ E g =
@@ -51,7 +51,7 @@ lemma ycoc_eq (r : G →* A) (χ : G →* T'ˣ) (E : A) (g : G) :
     ← map_mul, Units.inv_mul, map_one, one_mul]
 
 /- English proof (translation)
-Unfold `yGen`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Use `Submodule.zero_mem _ using 1` and compare the differences between its conclusion and the goal. Conclude with `Prod.ext (Subtype.ext h) (smul_zero _)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 lemma smul_yGen_eq_zero (r : G →* A) (χ : G →* T'ˣ) (E e₁ : A) (δ : T') {ι : Type*} [DecidableEq ι]
     (D : ι → Subgroup G) (j : ι → ℕ) (Kc : ∀ l, Fin (j l) → G → A) (k0 : ι → G → A) (a : A) (g : G)
@@ -64,18 +64,18 @@ lemma smul_yGen_eq_zero (r : G →* A) (χ : G →* T'ˣ) (E e₁ : A) (δ : T')
 end Y
 
 /- English proof (translation)
-Introduce `A T' G _ _ _ _ r χ E γ ζ h hζ`. Rewrite using `[ycoc_eq, mul_smul_comm, hζ, ← mul_assoc, h, zero_mul, smul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem qAlg : StatQAlg := by
   intro A T' G _ _ _ _ r χ E γ ζ h hζ
   rw [ycoc_eq, mul_smul_comm, hζ, ← mul_assoc, h, zero_mul, smul_zero]
 
 /- English proof (translation)
-Introduce `O _ A T' G _ _ _ _ M _ _ _ _ r χ E e₁ δ ι _ D j Kc k0 he hE hk φ l`. Take `⟨_, hsig, _, hy⟩` from `rel A T' G M r χ E e₁ δ ι D j Kc k0 φ l`. Establish `hs : ∀ a, φ (sigGen r χ E e₁ δ D j Kc k0 l a) = 0` using `fun a => by rw [← hsig a, he]`. Use `show Submodule.Quotient.mk (restrictCocycles1 (uRep O (M := M) r χ) (D l) (colPsi (O := O) (M := M) r χ E e₁ δ D j Kc k0 φ)) = (0 : H1z (resRep (uRep O (M := M) r χ) (D l)))`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show ((restrictCocycles1 (uRep O (M := M) r χ) (D l) (colPsi (O := O) (M := M) r χ E e₁ δ D j Kc k0 φ) : coZ1s (resRep (uRep O (M := M) r χ) (D l))) : D l → M) ∈ LinearMap.range (coD0 (resRep (uRep O (M := M) r χ) (D l)))`. Rewrite using `[LinearMap.mem_range]`. Use `⟨-φ (nuGen r χ E e₁ δ D j Kc k0 l), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Use `show uElt r χ (g : G) • -φ (nuGen r χ E e₁ δ D j Kc k0 l) - -φ (nuGen r χ E e₁ δ D j Kc k0 l) = φ (yGen r χ E e₁ δ D j Kc k0 (g : G))`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨a0, ha0⟩` from `hk l g`. Establish `h` using `hy g g.2`. Simplify using `only [hs, smul_zero, Finset.sum_const_zero, zero_add, ha0, mul_smul, hE] at h`. Rewrite using `[eq_neg_of_add_eq_zero_left h, smul_neg]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem colChiC : StatColChiC := by
   intro O _ A T' G _ _ _ _ M _ _ _ _ r χ E e₁ δ ι _ D j Kc k0 he hE hk φ l
@@ -100,15 +100,13 @@ theorem colChiC : StatColChiC := by
   abel
 
 /- English proof (translation)
-Introduce `O _ A T' G _ _ _ _ M _ _ _ _ r χ E e₁ δ δO ι _ D j Kc k0 ℓ e' u hu he hE hδ hk φ l`. Take `⟨hnu, hsig, _, hy⟩` from `rel A T' G M r χ E e₁ δ ι D j Kc k0 φ l`. Establish `hs : ∀ a, φ (sigGen r χ E e₁ δ D j Kc k0 l a) = 0` using `fun a => by rw [← hsig a, he]`. Establish `h2 : ∀ g ∈ D l, φ (yGen r χ E e₁ δ D j Kc k0 g) = (δO * δO * (ℓ : O) ^ e' l * u l g) • φ (sigmaZeroColumnGenerator r χ E e₁ δ D j Kc k0 l)`. Introduce `g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `hy g hg`. Simplify using `only [hs, smul_zero, Finset.sum_const_zero, zero_add, hu, sub_self, add_zero, hk l g hg, hδ] at h`. Rewrite using `[h, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Use `⟨by rw [← hE]; exact hnu, h2, fun I hI => ?_⟩` and prove the remaining obligations. Apply `LinearMap.mem_ker.mpr` to reduce the goal to its premises. Use `show Submodule.Quotient.mk (restrictCocycles1 (resRep (uRep O (M := M) r χ) (D l)) I (restrictCocycles1 (uRep O (M := M) r χ) (D l) (colPsi (O := O) (M := M) r χ E e₁ δ D j Kc k0 φ))) = (0 : H1z (resRep (resRep (uRep O (M := M) r χ) (D l)) I))`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Establish `hz : restrictCocycles1 (resRep (uRep O (M` using `M) r χ) (D l)) I (restrictCocycles1 (uRep O (M := M) r χ) (D l) (colPsi (O := O) (M := M) r χ E e₁ δ D j Kc k0 φ)) = 0 := by`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Use `show φ (yGen r χ E e₁ δ D j Kc k0 ((g : D l) : G)) = 0`. Rewrite using `[h2 _ (g : D l).2, hI g g.2, mul_zero, zero_smul]`. Rewrite using `[hz]`.
-
-Conclude with `Submodule.zero_mem _`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colChiOne : StatColChiOne := by
   intro O _ A T' G _ _ _ _ M _ _ _ _ r χ E e₁ δ δO ι _ D j Kc k0 ℓ e' u hu he hE hδ hk φ l
@@ -139,13 +137,13 @@ theorem colChiOne : StatColChiOne := by
   exact Submodule.zero_mem _
 
 /- English proof (translation)
-Introduce `O _ A T' G _ _ _ _ M _ _ _ _ r χ E e₁ δ ι _ D j Kc k0 I hI`. Establish `hy : ∀ g ∈ I, ycoc r χ E g = 0`. Introduce `g hg`. Take `⟨h1, h2⟩` from `hI g hg`. Use `show ((((χ g)⁻¹ : T'ˣ) : T') • r g - 1) * E = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2, inv_one, Units.val_one, one_smul, sub_self, zero_mul]`. Use `⟨hy, fun φ => ?_⟩` and prove the remaining obligations. Apply `LinearMap.mem_ker.mpr` to reduce the goal to its premises. Use `show Submodule.Quotient.mk (restrictCocycles1 (uRep O (M := M) r χ) I (colPsi (O := O) (M := M) r χ E e₁ δ D j Kc k0 φ)) = (0 : H1z (resRep (uRep O (M := M) r χ) I))`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hz : restrictCocycles1 (uRep O (M` using `M) r χ) I (colPsi (O := O) (M := M) r χ E e₁ δ D j Kc k0 φ) = 0 := by`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Use `show φ (yGen r χ E e₁ δ D j Kc k0 (g : G)) = 0`. Establish `h0` using `smul_yGen_eq_zero r χ E e₁ δ D j Kc k0 (1 : A) (g : G) (by rw [one_mul]; exact hy g g.2)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h0` using `[one_smul]`. Rewrite using `[h0, map_zero]`. Rewrite using `[hz]`. Conclude with `Submodule.zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem unrOutside : StatUnrOutside := by
   intro O _ A T' G _ _ _ _ M _ _ _ _ r χ E e₁ δ ι _ D j Kc k0 I hI
@@ -172,13 +170,11 @@ theorem unrOutside : StatUnrOutside := by
   exact Submodule.zero_mem _
 
 /- English proof (translation)
-Introduce `O _ A T' G _ _ _ _ M _ _ _ _ r χ E e₁ δ ι _ D j Kc k0 I hI φ`. Establish `hy0 : ∀ g ∈ I, φ (yGen r χ E e₁ δ D j Kc k0 g) = 0`. Introduce `g hg`. Take `⟨a, ha, hinj⟩` from `hI g hg`. Apply `hinj` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← map_smul, smul_yGen_eq_zero r χ E e₁ δ D j Kc k0 a g (by rw [ycoc_eq, mul_smul_comm, ha, smul_zero]), map_zero]`. Use `⟨hy0, ?_⟩` and prove the remaining obligations. Apply `LinearMap.mem_ker.mpr` to reduce the goal to its premises. Use `show Submodule.Quotient.mk (restrictCocycles1 (uRep O (M := M) r χ) I (colPsi (O := O) (M := M) r χ E e₁ δ D j Kc k0 φ)) = (0 : H1z (resRep (uRep O (M := M) r χ) I))`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hz : restrictCocycles1 (uRep O (M` using `M) r χ) I (colPsi (O := O) (M := M) r χ E e₁ δ D j Kc k0 φ) = 0 := by`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Use `show φ (yGen r χ E e₁ δ D j Kc k0 (g : G)) = 0`. Conclude with `hy0 g g.2`.
-
-Rewrite using `[hz]`. Conclude with `Submodule.zero_mem _`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unrS : StatUnrS := by
   intro O _ A T' G _ _ _ _ M _ _ _ _ r χ E e₁ δ ι _ D j Kc k0 I hI φ

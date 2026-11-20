@@ -17,7 +17,7 @@ def paT : EuclideanSpace ℂ (Fin (Fintype.card ι)) ≃ₗᵢ[ℂ] EuclideanSpa
   LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (Fintype.equivFin ι).symm
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `simp [paT, LinearIsometryEquiv.piLpCongrLeft_apply, Equiv.piCongrLeft'_apply]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem paT_apply (z : EuclideanSpace ℂ (Fin (Fintype.card ι))) (i : ι) :
     paT z i = z (Fintype.equivFin ι i) := by
@@ -26,13 +26,13 @@ theorem paT_apply (z : EuclideanSpace ℂ (Fin (Fintype.card ι))) (i : ι) :
   | simp [paT, LinearIsometryEquiv.piLpCongrLeft_apply, Equiv.piCongrLeft'_apply]
 
 /- English proof (translation)
-Conclude with `FPw.Hf_eq_inner v w`.
+A detailed English derivation is pending.
 -/
 theorem Hf_eq_inner (v w : EuclideanSpace ℂ ι) : Hf v w = inner ℂ w v := by
   exact FPw.Hf_eq_inner v w
 
 /- English proof (translation)
-Simplify using `only [paMono, paPF, MvPolynomial.eval_monomial, one_mul, Finsupp.prod_equivMapDomain, PiLp.smul_apply, paT_apply, Complex.real_smul, mul_pow]`. Rewrite using `[Finsupp.prod, Finsupp.prod, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem paMono_smul_paT (α : ι →₀ ℕ) (t : ℝ) (z : EuclideanSpace ℂ (Fin (Fintype.card ι))) :
     paMono α (t • paT z) = (t : ℂ) ^ α.degree *
@@ -43,13 +43,11 @@ theorem paMono_smul_paT (α : ι →₀ ℕ) (t : ℝ) (z : EuclideanSpace ℂ (
   rfl
 
 /- English proof (translation)
-Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨α, hα, rfl⟩` from `hx`. Establish `hfun : (fun z => paMono α (t • paT z)) = ((t : ℂ) ^ α.degree) • paMono (ι` using `Fin (Fintype.card ι)) (Finsupp.equivMapDomain (Fintype.equivFin ι) α) :=`. Use function extensionality and compare the values at `fun z => by rw [Pi.smul_apply, smul_eq_mul, paMono_smul_paT]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hfun]`. Use `(paPoly _).smul_mem _ ?_` and prove the remaining obligations. Establish `hd : (Finsupp.equivMapDomain (Fintype.equivFin ι) α).sum (fun _ e => e) ≤ c`. Rewrite using `[Finsupp.sum_equivMapDomain]`. Conclude with `(Finset.mem_filter.1 (Finset.mem_coe.1 hα)).2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `paPF_mem_paPoly (p := MvPolynomial.monomial _ 1) ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.totalDegree_monomial _ one_ne_zero]`. Conclude with `hd`. Consider the case `zero => exact (paPoly _).zero_mem`. Consider the case `add x y _ _ hx hy => exact (paPoly _).add_mem hx hy`.
-
-Consider the case `smul a x _ hx => exact (paPoly _).smul_mem a hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem comp_smul_paT_mem_paPoly {c : ℕ} (t : ℝ) {F : EuclideanSpace ℂ ι → ℂ} (hF : F ∈ paPoly c) :
     (fun z => F (t • paT z)) ∈ paPoly (ι := Fin (Fintype.card ι)) c := by
@@ -72,7 +70,7 @@ theorem comp_smul_paT_mem_paPoly {c : ℕ} (t : ℝ) {F : EuclideanSpace ℂ ι 
   | smul a x _ hx => exact (paPoly _).smul_mem a hx
 
 /- English proof (translation)
-Take `⟨p, hp, hpe⟩` from `paPoly_exists (comp_smul_paT_mem_paPoly t hF)`. Conclude with `⟨p, hp, fun z => congrFun hpe z⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem paIsPoly {c : ℕ} (t : ℝ) {F : EuclideanSpace ℂ ι → ℂ} (hF : F ∈ paPoly c) :
     IsPolyLE c (fun z => F (t • paT z)) := by
@@ -89,17 +87,17 @@ Both sides reduce to the same expression.
 theorem paTR_apply (z : EuclideanSpace ℂ (Fin (Fintype.card ι))) : paTR z = paT z := rfl
 
 /- English proof (translation)
-Use `set s : ℝ := Real.sqrt (q * Real.pi) with hs`. Establish `hq0 : (0 : ℝ) < q` using `by exact_mod_cast hq`. Establish `hs0 : 0 < s` using `Real.sqrt_pos.2 (by positivity)`. Establish `hs2 : s ^ 2 = q * Real.pi` using `Real.sq_sqrt (by positivity)`. Set `g : EuclideanSpace ℂ ι → ℂ` to `fun w => H (s⁻¹ • w) * (starRingEnd ℂ) (K (s⁻¹ • w)) * (Real.exp (-‖w‖ ^ 2) : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1 : (∫ z : EuclideanSpace ℂ (Fin (Fintype.card ι)), H (s⁻¹ • paT z) * (starRingEnd ℂ) (K (s⁻¹ • paT z)) * (Real.exp (-‖z‖ ^ 2) : ℂ)) = ∫ w, g w`. Rewrite using `[← (paTR (ι := ι)).measurePreserving.integral_comp (paTR (ι := ι)).toHomeomorph.measurableEmbedding g]`. Use `congr 1`. Use extensionality with `z`. Simplify using `only [g, paTR_apply, LinearIsometryEquiv.norm_map]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hd : Module.finrank ℝ (EuclideanSpace ℂ ι) = 2 * Fintype.card ι`. Rewrite using `[← Module.finrank_mul_finrank ℝ ℂ, Complex.finrank_real_complex, finrank_euclideanSpace]`. Establish `h2 : ∫ w, g w = (s ^ (2 * Fintype.card ι) : ℝ) • paIP q H K`. Establish `h3` using `MeasureTheory.Measure.integral_comp_smul (volume : Measure (EuclideanSpace ℂ ι)) g s`. Rewrite `h3` using `[hd]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hg : (fun x => g (s • x)) = fun v => H v * (starRingEnd ℂ) (K v) * (paW q v : ℂ)`. Use extensionality with `v`. Simplify using `only [g, paW]`. Rewrite using `[smul_smul, inv_mul_cancel₀ hs0.ne', one_smul, norm_smul, Real.norm_eq_abs, abs_of_pos hs0, mul_pow, hs2]`. Simplify using `only [neg_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[hg, abs_of_pos (by positivity)]`. Unfold `paIP`. Rewrite using `[h3, smul_smul, mul_inv_cancel₀ (by positivity), one_smul]`. Unfold `fockIP`. Rewrite using `[h1, h2, pow_mul, hs2, Complex.real_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpi : (Real.pi : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 Real.pi_ne_zero`. Use `push_cast`. Rewrite using `[mul_pow]`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem paFock_cv {q : ℕ} (hq : 1 ≤ q) (H K : EuclideanSpace ℂ ι → ℂ) :
     fockIP (fun z => H ((Real.sqrt (q * Real.pi))⁻¹ • paT z))
@@ -142,25 +140,23 @@ theorem paFock_cv {q : ℕ} (hq : 1 ≤ q) (H K : EuclideanSpace ℂ ι → ℂ)
   field_simp
 
 /- English proof (translation)
-Use `set s : ℝ := Real.sqrt (q * Real.pi) with hs`. Establish `hq0 : (0 : ℝ) < q` using `by exact_mod_cast hq`. Establish `hs0 : 0 < s` using `Real.sqrt_pos.2 (by positivity)`. Establish `hs2 : s ^ 2 = q * Real.pi` using `Real.sq_sqrt (by positivity)`. Establish `hsC : (s : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hs0.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqpi : (q : ℂ) * (Real.pi : ℂ) = (s : ℂ) ^ 2`. Rewrite using `[← Complex.ofReal_natCast, ← Complex.ofReal_mul, ← hs2]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `set a' : EuclideanSpace ℂ (Fin (Fintype.card ι)) := s • (paT (ι := ι)).symm a with ha'`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hna : ‖a'‖ = s * ‖a‖`. Rewrite using `[ha', norm_smul, Real.norm_eq_abs, abs_of_pos hs0, LinearIsometryEquiv.norm_map]`. Establish `hT : paT (s • (paT (ι` using `ι)).symm a) = s • a := by`. Rewrite using `[← paTR_apply, map_smul, paTR_apply, LinearIsometryEquiv.apply_symm_apply]`. Establish `hU : (fun z => paU q a F (s⁻¹ • paT z)) = fockU a' (fun z => F (s⁻¹ • paT z))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Replace the relevant objects with their definitions.
 
-Use extensionality with `z`. Unfold `paU fockU`. Use `congr 1`. Use `congr 1`. Rewrite using `[hna, show (∑ i, z i * (starRingEnd ℂ) (a' i)) = Hf z a' from rfl, Hf_eq_inner, Hf_eq_inner, Hf_eq_inner, ← Complex.coe_smul s⁻¹ (paT z), inner_smul_right, ha', ← Complex.coe_smul s, inner_smul_left, inner_self_eq_norm_sq_to_K, ← (paT (ι := ι)).inner_map_map, LinearIsometryEquiv. …`.
+Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [Complex.conj_ofReal]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Use `first`. Consider the case `rfl`.
+Clear the denominators using the available nonvanishing facts. Treat this case separately. Treat this case separately. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Consider the case `ring`. Use `congr 1`. Rewrite using `[map_sub, hT, smul_sub, smul_smul, inv_mul_cancel₀ hs0.ne', one_smul]`. Establish `hF'` using `paIsPoly s⁻¹ hF`. Establish `hG'` using `paIsPoly s⁻¹ hG`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hB` using `fockU_coeff_le a' _ _ hF' hG'`. Rewrite `hB` using `[← hU, paFock_cv hq, paFock_cv hq, paFock_cv hq]`. Establish `hqn : (0 : ℝ) < (q : ℝ) ^ Fintype.card ι` using `by positivity`. Establish `hre : ∀ H : EuclideanSpace ℂ ι → ℂ, Real.sqrt ((q : ℂ) ^ Fintype.card ι * paIP q H H).re = Real.sqrt ((q : ℝ) ^ Fintype.card ι) * paN q H`. Introduce `H`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← Complex.ofReal_natCast, ← Complex.ofReal_pow, Complex.re_ofReal_mul, Real.sqrt_mul hqn.le]`. Both sides reduce to the same expression. Rewrite `hB` using `[hre, hre, norm_mul, norm_pow, Complex.norm_natCast, hna]`. Establish `hsq : Real.sqrt ((q : ℝ) ^ Fintype.card ι) * Real.sqrt ((q : ℝ) ^ Fintype.card ι) = (q : ℝ) ^ Fintype.card ι` using `Real.mul_self_sqrt hqn.le`. Establish `hexp : Real.exp (-(s * ‖a‖) ^ 2 / 16) = Real.exp (-(q * Real.pi) * ‖a‖ ^ 2 / 16)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[mul_pow, hs2]`. Put the polynomial expressions in normal form. Rewrite `hB` using `[hexp]`. Establish `hB' : (q : ℝ) ^ Fintype.card ι * ‖paIP q (paU q a F) G‖ ≤ (q : ℝ) ^ Fintype.card ι * (2 ^ (1 + 3 * ((Fintype.card ι : ℝ) + c) / 2) * Real.exp (-(q * Real.pi) * ‖a‖ ^ 2 / 16) * paN q F * paN q G)`. Combine the equalities or inequalities in the displayed calculation.
-
-Take the linear combination `(2 ^ (1 + 3 * ((Fintype.card ι : ℝ) + c) / 2) * Real.exp (-(q * Real.pi) * ‖a‖ ^ 2 / 16) * paN q F * paN q G) * hsq`. Conclude with `le_of_mul_le_mul_left hB' hqn`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem polynomial_translate_innerProduct_bound {q c : ℕ} (hq : 1 ≤ q) (a : EuclideanSpace ℂ ι) {F G : EuclideanSpace ℂ ι → ℂ}
     (hF : F ∈ paPoly c) (hG : G ∈ paPoly c) :
@@ -227,7 +223,7 @@ theorem polynomial_translate_innerProduct_bound {q c : ℕ} (hq : 1 ≤ q) (a : 
   exact le_of_mul_le_mul_left hB' hqn
 
 /- English proof (translation)
-Conclude with `FPw.paTail hP hA Y hq hR0 hlat hR`.
+A detailed English derivation is pending.
 -/
 theorem paTail (hP : Ext.PackingCount) (hA : Ext.GaussianTailBound) (Y : GT ι) {q : ℕ} {R0 : ℝ}
     (hq : 1 ≤ q) (hR0 : 0 < R0)
@@ -241,7 +237,7 @@ theorem paTail (hP : Ext.PackingCount) (hA : Ext.GaussianTailBound) (Y : GT ι) 
   exact FPw.paTail hP hA Y hq hR0 hlat hR
 
 /- English proof (translation)
-Use `show ContDiff ℂ (⊤ : ℕ∞) (fun v : EuclideanSpace ℂ ι => ∑ i, v i * (starRingEnd ℂ) (a i))`. Conclude with `ContDiff.sum fun i _ => (EuclideanSpace.proj i : EuclideanSpace ℂ ι →L[ℂ] ℂ).contDiff.mul contDiff_const`.
+A detailed English derivation is pending.
 -/
 theorem paHf_contDiff (a : EuclideanSpace ℂ ι) :
     ContDiff ℂ (⊤ : ℕ∞) (fun v : EuclideanSpace ℂ ι => Hf v a) := by
@@ -250,7 +246,7 @@ theorem paHf_contDiff (a : EuclideanSpace ℂ ι) :
     (EuclideanSpace.proj i : EuclideanSpace ℂ ι →L[ℂ] ℂ).contDiff.mul contDiff_const
 
 /- English proof (translation)
-Take `⟨p, -, rfl⟩` from `paPoly_exists hF`. Unfold `paU`. Use `ContDiff.mul ?_ ((paPF_contDiff p).comp (contDiff_id.sub contDiff_const))` and prove the remaining obligations. Conclude with `Complex.contDiff_exp.comp ((contDiff_const.mul (paHf_contDiff a)).sub contDiff_const)`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem paU_contDiff {q c : ℕ} (a : EuclideanSpace ℂ ι) {F : EuclideanSpace ℂ ι → ℂ}
     (hF : F ∈ paPoly c) : ContDiff ℂ (⊤ : ℕ∞) (paU q a F) := by
@@ -260,21 +256,21 @@ theorem paU_contDiff {q c : ℕ} (a : EuclideanSpace ℂ ι) {F : EuclideanSpace
   exact Complex.contDiff_exp.comp ((contDiff_const.mul (paHf_contDiff a)).sub contDiff_const)
 
 /- English proof (translation)
-Conclude with `FPw.paD_add α h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem paD_add (α : ι →₀ ℕ) {H1 H2 : EuclideanSpace ℂ ι → ℂ} (h1 : ContDiff ℂ (⊤ : ℕ∞) H1)
     (h2 : ContDiff ℂ (⊤ : ℕ∞) H2) : paD α (H1 + H2) = paD α H1 + paD α H2 := by
   exact FPw.paD_add α h1 h2
 
 /- English proof (translation)
-Conclude with `FPw.paD_smul α a h`.
+A detailed English derivation is pending.
 -/
 theorem paD_smul (α : ι →₀ ℕ) (a : ℂ) {H : EuclideanSpace ℂ ι → ℂ}
     (h : ContDiff ℂ (⊤ : ℕ∞) H) : paD α (a • H) = a * paD α H := by
   exact FPw.paD_smul α a h
 
 /- English proof (translation)
-Conclude with `FPw.gaussianInner_jet' hq a hF hG`.
+A detailed English derivation is pending.
 -/
 theorem gaussianInner_jet {q c : ℕ} (hq : 1 ≤ q) (a : EuclideanSpace ℂ ι) {F G : EuclideanSpace ℂ ι → ℂ}
     (hF : F ∈ paPoly c) (hG : G ∈ paPoly c) :
@@ -282,7 +278,7 @@ theorem gaussianInner_jet {q c : ℕ} (hq : 1 ≤ q) (a : EuclideanSpace ℂ ι)
   exact FPw.gaussianInner_jet' hq a hF hG
 
 /- English proof (translation)
-Conclude with `FPw.paUnfold_w hP hA Y hq hR0 hC hlat hR hF`.
+A detailed English derivation is pending.
 -/
 theorem paUnfold (hP : Ext.PackingCount) (hA : Ext.GaussianTailBound) (Y : GT ι) {q c : ℕ} {R0 : ℝ}
     (hq : 1 ≤ q) (hR0 : 0 < R0)
@@ -295,7 +291,7 @@ theorem paUnfold (hP : Ext.PackingCount) (hA : Ext.GaussianTailBound) (Y : GT ι
   exact FPw.paUnfold_w hP hA Y hq hR0 hC hlat hR hF
 
 /- English proof (translation)
-Conclude with `FPw.gaussianInner_theta' hP hA Y hq hR0 hlat hR hF hG`.
+A detailed English derivation is pending.
 -/
 theorem paTh_IP (hP : Ext.PackingCount) (hA : Ext.GaussianTailBound) (Y : GT ι) {q c : ℕ} {R0 : ℝ}
     (hq : 1 ≤ q) (hR0 : 0 < R0)
@@ -306,13 +302,13 @@ theorem paTh_IP (hP : Ext.PackingCount) (hA : Ext.GaussianTailBound) (Y : GT ι)
   exact FPw.gaussianInner_theta' hP hA Y hq hR0 hlat hR hF hG
 
 /- English proof (translation)
-The claim follows from `paPF_contDiff _`.
+A detailed English derivation is pending.
 -/
 theorem paMono_contDiff (β : ι →₀ ℕ) : ContDiff ℂ (⊤ : ℕ∞) (paMono (ι := ι) β) :=
   paPF_contDiff _
 
 /- English proof (translation)
-Establish `h` using `ContDiff.sum (𝕜 := ℂ) (n := ((⊤ : ℕ∞) : WithTop ℕ∞)) (s := s) (f := fun β v => f β * paMono (ι := ι) β v) fun β _ => contDiff_const.mul (paMono_contDiff β)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `v`. Simplify using `[Finset.sum_apply]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem pa_cd_sum (s : Finset (ι →₀ ℕ)) (f : (ι →₀ ℕ) → ℂ) :
     ContDiff ℂ (⊤ : ℕ∞) (∑ β ∈ s, f β • paMono (ι := ι) β) := by
@@ -323,13 +319,13 @@ theorem pa_cd_sum (s : Finset (ι →₀ ℕ)) (f : (ι →₀ ℕ) → ℂ) :
   simp [Finset.sum_apply]
 
 /- English proof (translation)
-The claim follows from `(paMono_contDiff β).const_smul a`.
+A detailed English derivation is pending.
 -/
 theorem pa_cd_smul (a : ℂ) (β : ι →₀ ℕ) : ContDiff ℂ (⊤ : ℕ∞) (a • paMono (ι := ι) β) :=
   (paMono_contDiff β).const_smul a
 
 /- English proof (translation)
-Use `Finset.induction_on s (by simp [FPw.paD_zero]) ?_` and prove the remaining obligations. Introduce `b s hb ih`. Rewrite using `[Finset.sum_insert hb, FPw.paD_add α (pa_cd_smul _ _) (pa_cd_sum _ _), FPw.paD_smul α _ (paMono_contDiff _), ih, Finset.sum_insert hb]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 private theorem paD_sum_smul_paMono (α : ι →₀ ℕ) (s : Finset (ι →₀ ℕ)) (f : (ι →₀ ℕ) → ℂ) :
     paD α (∑ β ∈ s, f β • paMono (ι := ι) β) = ∑ β ∈ s, f β * paD α (paMono β) := by
@@ -339,9 +335,9 @@ private theorem paD_sum_smul_paMono (α : ι →₀ ℕ) (s : Finset (ι →₀ 
     FPw.paD_smul α _ (paMono_contDiff _), ih, Finset.sum_insert hb]
 
 /- English proof (translation)
-Use `show paD α (∑ β ∈ paS c, (paD β H / paFact β) • paMono β) = _`. Rewrite using `[paD_sum_smul_paMono, Finset.sum_eq_single α]`. Establish `hf : (paFact α : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (Finset.prod_ne_zero_iff.2 fun i _ => Nat.factorial_ne_zero _)`. Rewrite using `[paD_mono, if_pos rfl, div_mul_cancel₀ _ hf]`. Introduce `β _ hβ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[paD_mono, if_neg (Ne.symm hβ), mul_zero]`. Introduce `h`. Conclude with `absurd hα h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem paD_jet (c : ℕ) (H : EuclideanSpace ℂ ι → ℂ) {α : ι →₀ ℕ} (hα : α ∈ paS c) :
     paD α (paJet c H) = paD α H := by
@@ -356,9 +352,9 @@ theorem paD_jet (c : ℕ) (H : EuclideanSpace ℂ ι → ℂ) {α : ι →₀ �
     exact absurd hα h
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [paIP]`. Consider the case `insert b s hb ih`. Take `⟨hb', hs'⟩` from `Finset.insert_subset_iff.1 hs`. Establish `hm : ∀ β ∈ paS c, paMono (ι` using `ι) β ∈ paPoly c := fun β h => Submodule.subset_span ⟨β, Finset.mem_coe.2 h, rfl⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_insert hb, gaussianInner_add_left hq ((paPoly c).smul_mem _ (hm b hb')) (Submodule.sum_mem _ fun β h => (paPoly c).smul_mem _ (hm β (hs' h))) hG, gaussianInner_smul_left, ih hs', Finset.sum_insert hb]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem paIP_sum_smul_paMono_left {q c : ℕ} (hq : 1 ≤ q) {G : EuclideanSpace ℂ ι → ℂ}
     (hG : G ∈ paPoly c) (f : (ι →₀ ℕ) → ℂ) (s : Finset (ι →₀ ℕ)) (hs : s ⊆ paS c) :
@@ -374,7 +370,7 @@ private theorem paIP_sum_smul_paMono_left {q c : ℕ} (hq : 1 ≤ q) {G : Euclid
       gaussianInner_smul_left, ih hs', Finset.sum_insert hb]
 
 /- English proof (translation)
-Conclude with `paIP_sum_smul_paMono_left hq hG _ _ subset_rfl`.
+A detailed English derivation is pending.
 -/
 theorem gaussianInner_jet_eq_sum {q c : ℕ} (hq : 1 ≤ q) (H : EuclideanSpace ℂ ι → ℂ) {G : EuclideanSpace ℂ ι → ℂ}
     (hG : G ∈ paPoly c) :
@@ -382,17 +378,17 @@ theorem gaussianInner_jet_eq_sum {q c : ℕ} (hq : 1 ≤ q) (H : EuclideanSpace 
   exact paIP_sum_smul_paMono_left hq hG _ _ subset_rfl
 
 /- English proof (translation)
-Establish `hl2 : Real.log 2 < 0.7` using `lt_trans Real.log_two_lt_d9 (by norm_num)`. Establish `hy : 0 ≤ 1 + 3 * ((g : ℝ) + c) / 2` using `by positivity`. Establish `e1 : (2 : ℝ) ^ (1 + 3 * ((g : ℝ) + c) / 2) = Real.exp (Real.log 2 * (1 + 3 * ((g : ℝ) + c) / 2))` using `Real.rpow_def_of_pos (by norm_num) _`. Establish `e9 : (9 : ℝ) ^ g ≤ Real.exp (2.3 * g)`. Rewrite using `[mul_comm, Real.exp_nat_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `pow_le_pow_left₀ (by norm_num) ?_ g` and prove the remaining obligations. Establish `h1` using `Real.exp_one_gt_d9`. Establish `h2` using `Real.add_one_le_exp (0.3 : ℝ)`. Establish `h3 : Real.exp 2.3 = Real.exp 1 * Real.exp 1 * Real.exp 0.3`. Rewrite using `[← Real.exp_add, ← Real.exp_add]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions. Rewrite using `[h3]`. Use the polynomial consequences of the given equalities and inequalities. Establish `e2 : (2 : ℝ) = Real.exp (Real.log 2)` using `(Real.exp_log (by norm_num)).symm`. Establish `key : (2 : ℝ) ^ (1 + 3 * ((g : ℝ) + c) / 2) * (2 * 9 ^ g * Real.exp (-R0 ^ 2 / 16)) ≤ Real.exp (Real.log 2 * (1 + 3 * ((g : ℝ) + c) / 2) + (Real.log 2 + (2.3 * g + -R0 ^ 2 / 16)))`.
+Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Real.exp_add, Real.exp_add, Real.exp_add, e1, ← mul_assoc (Real.exp (Real.log 2))]`. Use `mul_le_mul_of_nonneg_left ?_ (Real.exp_pos _).le` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_right ?_ (Real.exp_pos _).le` and prove the remaining obligations. Conclude with `mul_le_mul (le_of_eq e2) e9 (by positivity) (Real.exp_pos _).le`. Use `key.trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hhalf : Real.exp (-Real.log 2) = 1 / 2`. Rewrite using `[Real.exp_neg, Real.exp_log (by norm_num)]`. Evaluate the numerical expressions. Rewrite using `[← hhalf]`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hm : Real.log 2 * (1 + 3 * ((g : ℝ) + c) / 2) ≤ 0.7 * (1 + 3 * ((g : ℝ) + c) / 2)` using `mul_le_mul_of_nonneg_right hl2.le hy`. Establish `hg0 : (0 : ℝ) ≤ g` using `Nat.cast_nonneg g`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem paNum (g : ℕ) (c R0 : ℝ) (hc : 0 ≤ c) (h270 : 270 ≤ R0 ^ 2)
     (h90 : 90 * ((g : ℝ) + c) ≤ R0 ^ 2) :

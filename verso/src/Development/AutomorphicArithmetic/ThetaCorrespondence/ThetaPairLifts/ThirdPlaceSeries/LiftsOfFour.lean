@@ -30,9 +30,9 @@ section Weights
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (Dw : Datum H)
 end Weights
 /- English proof (translation)
-Use `(((h₁.and h₂).and h₃).and h₄).imp fun Fm CH _ h' => ?_` and prove the remaining obligations. Take `⟨⟨⟨⟨_, -, a1⟩, _, -, a2⟩, _, -, a3⟩, _, -, a4⟩` from `h'`. Take `⟨x0, h'⟩` from `((a1.and a2).and a3).and a4`. Use `⟨0, le_rfl, x0, fun x hx hle ι p hp i => ?_⟩` and prove the remaining obligations. Take `⟨⟨⟨b1, b2⟩, b3⟩, b4⟩` from `h' x hx hle ι p hp`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `h Fm x hx ι p i _ _ _ _ _ (b1 i) (b2 i) (b3 i) (b4 i)`.
+A detailed English derivation is pending.
 -/
 theorem lifts_of_four_quantitative_conditions {Q₁ Q₂ Q₃ Q₄ R : ∀ {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (ι : Fm.Ix x) (p : Pt Fm x hx ι)
       (_i : Fin (Fm.D x ι).R.m) (_PP _C : ℝ), Prop}

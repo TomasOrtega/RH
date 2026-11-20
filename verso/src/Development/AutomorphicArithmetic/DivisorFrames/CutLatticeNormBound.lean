@@ -8,29 +8,25 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.RootFrame
 
 /- English proof (translation)
-Establish `hπp : 0 < ‖π‖` using `norm_pos_iff.2 hπ0`. Establish `key : ∀ v, ‖π‖ ^ 2 * ‖L v‖ ≤ 1 → (Λ v ↔ ∀ k, ‖P v k‖ ≤ ‖δ‖)`. Introduce `v hv`. Establish `h1 : ∀ k, ‖P v k - Q v k‖ ≤ ‖δ‖` using `fun k => by`. Use `(hPQ v k).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hΛ]`. Use `forall_congr' fun k => ⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Establish `: P v k = (P v k - Q v k) + Q v k` using `by ring`. Rewrite using `[this]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (h1 k) h)`. Establish `: Q v k = -(P v k - Q v k) + P v k` using `by ring`. Rewrite using `[this]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (by rw [norm_neg]; exact h1 k) h)`. Establish `hb' : ∀ v, Λ v → ‖π‖ * ‖L v‖ ≤ 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `v hv`. Rewrite using `[← le_div_iff₀' hπp, pi_norm_le_iff_of_nonneg (by positivity)]`. Introduce `j`. Rewrite using `[le_div_iff₀' hπp, ← norm_mul]`. Conclude with `hb v hv j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Distinguish the cases in `hv : ‖π‖ ^ 2 * ‖L v‖ ≤ 1`. Conclude with `key v hv`. Establish `hv'` using `not_le.1 hv`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hb' v h` as an intermediate fact. It suffices to derive a contradiction. Establish `h2 : ‖π‖ ^ 2 * ‖L v‖ = ‖π‖ * (‖π‖ * ‖L v‖)` using `by ring`. Establish `h3 : ‖π‖ * (‖π‖ * ‖L v‖) ≤ ‖π‖ * 1` using `by gcongr`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. It suffices to derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `h`. It suffices to derive a contradiction. Establish `hne : Nonempty (Fin g)`. Assume the negation of the conclusion as `hh`. Use `haveI := not_nonempty_iff.1 hh`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hv'` using `[Subsingleton.elim (L v) 0]`. Simplify using `at hv'`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨j, hj⟩` from `Finite.exists_max (fun j => ‖L v j‖)`. Establish `hj' : ‖L v‖ = ‖L v j‖` using `le_antisymm ((pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 hj) (norm_le_pi_norm _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : ‖(π ^ 2 * L v j)⁻¹‖ = (‖π‖ ^ 2 * ‖L v‖)⁻¹`. Rewrite using `[norm_inv, norm_mul, norm_pow, hj']`. Establish `hc1 : ‖(π ^ 2 * L v j)⁻¹‖ ≤ 1`. Rewrite using `[hc]`. Conclude with `inv_le_one_of_one_le₀ hv'.le`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hn : ‖π‖ ^ 2 * ‖L ((π ^ 2 * L v j)⁻¹ • v)‖ = 1`. Establish `: L ((π ^ 2 * L v j)⁻¹ • v) = (π ^ 2 * L v j)⁻¹ • L v` using `funext fun k => hL _ _ _`. Rewrite using `[this, norm_smul, hc, mul_left_comm]`. Conclude with `inv_mul_cancel₀ (by linarith)`. Establish `hm` using `(key _ hn.le).2 (fun k => by`.
-
-Rewrite using `[hP, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `hb' _ hm` as an intermediate fact. Establish `h2 : ‖π‖ ^ 2 * ‖L ((π ^ 2 * L v j)⁻¹ • v)‖ = ‖π‖ * (‖π‖ * ‖L ((π ^ 2 * L v j)⁻¹ • v)‖)` using `by ring`. Establish `h3 : ‖π‖ * (‖π‖ * ‖L ((π ^ 2 * L v j)⁻¹ • v)‖) ≤ ‖π‖ * 1` using `by gcongr`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem core {K V : Type} [NormedField K] [IsUltrametricDist K] [SMul K V] {N g : ℕ}
     (P Q : V → Fin N → K) (L : V → Fin g → K) (Λ : V → Prop) (π δ : K) (ε : ℝ)
@@ -100,7 +96,7 @@ private theorem core {K V : Type} [NormedField K] [IsUltrametricDist K] [SMul K 
     linarith
 
 /- English proof (translation)
-Simplify using `[pr]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem pr_smul {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     (Dw : Datum H) {K : Type} [CommRing K] (c : K) (y : K ⊗[ℤ] Dw.La) (a : Dw.La) :
@@ -108,7 +104,7 @@ private theorem pr_smul {E : Type} [Field E] [NumberField E] [IsCMField E] {H : 
   simp [pr]
 
 /- English proof (translation)
-Use `conv_lhs => rw [pi_eq_sum_univ' v]`. Simplify using `only [pr, map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem pr_sum {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     (Dw : Datum H) {K : Type} [CommRing K] {g : ℕ} (b : (Fin g → K) →ₗ[K] K ⊗[ℤ] Dw.La) (v : Fin g → K) (a : Dw.La) :
@@ -118,7 +114,7 @@ private theorem pr_sum {E : Type} [Field E] [NumberField E] [IsCMField E] {H : R
   exact Finset.sum_congr rfl fun j _ => mul_comm _ _
 
 /- English proof (translation)
-Introduce `o` and use `by rw [map_smul, hy o, smul_comm]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem eig_smul {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     (Dw : Datum H) {K : Type} [CommRing K] (σ : 𝓞 E →+* K) (c : K) (y : K ⊗[ℤ] Dw.La) (hy : IsEigL Dw σ y) :
@@ -126,37 +122,35 @@ private theorem eig_smul {E : Type} [Field E] [NumberField E] [IsCMField E] {H :
   rw [map_smul, hy o, smul_comm]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw p _ n g h b Λ ⟨h1, h2, h3, _⟩ σ M N r a T δ A ⟨hT, hC⟩ hδ0 hδ1 hn hA hE`. Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast (Fact.out : p.Prime).one_lt`. Establish `hp0 : (0 : ℝ) < p` using `by linarith`. Establish `hpn : ‖(p : ℂ_[p])‖ = (p : ℝ)⁻¹`. Use `PadicComplex.norm_extends' (p := p) (p : ℚ_[p])` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hpz : (p : ℂ_[p]) ≠ 0`. Rewrite using `[← norm_pos_iff, hpn]`. Check the signs of the components of the expression. Establish `hpl : ‖(p : ℂ_[p])‖ < 1` using `by rw [hpn]; exact inv_lt_one_of_one_lt₀ hp1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Establish `hδp : 0 < ‖δ‖` using `norm_pos_iff.2 hδ0`. Establish `hε : (p : ℝ)⁻¹ ^ n ≤ ‖(p : ℂ_[p])‖ ^ 2 * ‖δ‖`. Rewrite using `[hpn, inv_pow, inv_pow, inv_mul_eq_div, le_div_iff₀ (by positivity), inv_mul_le_iff₀ (by positivity)]`. Conclude with `hn`. Establish `hL : ∀ (c : ℂ_[p]) (cf : Fin r → ℂ_[p]), ∑ i, (c • cf) i • A i = c • ∑ i, cf i • A i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c cf`. Simplify using `[Finset.smul_sum, mul_smul]`. Establish `hEv : ∀ cf : Fin r → ℂ_[p], IsEigL Dw σ (b (∑ i, cf i • A i))`. Introduce `cf o`. Simplify using `only [map_sum, map_smul, hE _ o, Finset.smul_sum]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun i _ => smul_comm _ _ _`. Establish `hPv : ∀ (cf : Fin r → ℂ_[p]) k, (covMat T (fun m => h (a m)) A *ᵥ cf) k = ∑ m, T k m * ∑ j, h (a m) j * (∑ i, cf i • A i) j`. Introduce `cf k`. Simplify using `only [covMat, Matrix.mulVec, dotProduct, Matrix.of_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => by ring`. Establish `hPQ : ∀ (cf : Fin r → ℂ_[p]) k, ‖(covMat T (fun m => h (a m)) A *ᵥ cf) k - ∑ m, T k m * pr Dw (b (∑ i, cf i • A i)) (a m)‖ ≤ (p : ℝ)⁻¹ ^ n * ‖∑ i, cf i • A i‖`. Introduce `cf k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hPv, ← Finset.sum_sub_distrib]`. Generalize the expression as in `∑ i, cf i • A i = v`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity) fun m _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_sub, norm_mul, pr_sum, ← Finset.sum_sub_distrib]`. Use `(mul_le_of_le_one_left (norm_nonneg _) (hT k m)).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity) fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← sub_mul, norm_mul]`. Conclude with `mul_le_mul (h1 _ _) (norm_le_pi_norm _ _) (norm_nonneg _) (by positivity)`. Establish `hΛ : ∀ cf : Fin r → ℂ_[p], ∑ i, cf i • A i ∈ Λ ↔ ∀ k, ‖∑ m, T k m * pr Dw (b (∑ i, cf i • A i)) (a m)‖ ≤ ‖δ‖`. Introduce `cf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hC _ (eig_smul Dw σ δ⁻¹ _ (hEv cf))` as an intermediate fact. Simplify using `only [pr_smul, mul_inv_cancel_left₀ hδ0] at this`. Rewrite using `[h2, ← this]`. Use `forall_congr' fun k => ?_` and prove the remaining obligations. Simplify using `only [mul_left_comm _ δ⁻¹, ← Finset.mul_sum, norm_mul, norm_inv]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[inv_mul_le_iff₀ hδp, _root_.mul_one]`. Establish `H2` using `core (fun cf : Fin r → ℂ_[p] => covMat T (fun m => h (a m)) A *ᵥ cf) (fun cf k => ∑ m, T k m * pr Dw (b (∑ i, cf i • A i)) (a m)) (fun cf => ∑ i, cf i • A i) (fun cf => ∑ i, cf i • A i ∈ Λ) p δ _ hpz hpl (by positivity) hε (fun c v k => by simp [Matrix.mulVec_smul]) (fun c v k => …`. Use `⟨fun cf hcf => ?_, H2, fun cf hcf => ?_⟩` and prove the remaining obligations. Establish `hv : ∑ i, cf i • A i = 0`. Use function extensionality and compare the values at `j`.
+Apply function extensionality and compare values at an arbitrary argument. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hj`. Establish `hm` using `(H2 (((p : ℂ_[p]) ^ 2 * (∑ i, cf i • A i) j)⁻¹ • cf)).2 (fun k => by`. Simplify using `[Matrix.mulVec_smul, hcf])`. Use `h3 _ hm j` as an intermediate fact. Rewrite `this` using `[hL, Pi.smul_apply, smul_eq_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hj' : (∑ i, cf i • A i) j ≠ 0` using `hj`. Establish `e : (p : ℂ_[p]) * ((((p : ℂ_[p]) ^ 2 * (∑ i, cf i • A i) j)⁻¹ * (∑ i, cf i • A i) j)) = (p : ℂ_[p])⁻¹`. Clear the denominators using the available nonvanishing facts. Rewrite `this` using `[e, norm_inv, hpn, inv_inv]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i`. Conclude with `Fintype.linearIndependent_iff.1 hA cf hv i`. Establish `hm` using `(H2 (δ • cf)).2 (fun k => by`. Simplify using `only [Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul, norm_mul]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (hcf k))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [hL] at hm`. Establish `hb : ∀ k, ‖δ * p * (∑ i, cf i • A i) k‖ ≤ 1` using `fun k => by`. Use `h3 _ hm k` as an intermediate fact. Rewrite `this` using `[Pi.smul_apply, smul_eq_mul, ← _root_.mul_assoc, mul_comm _ δ]`. Then use the resulting hypothesis. Use `⟨hb, fun o => ?_, fun k => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(h2 _).1 hm o` as an intermediate fact. Rewrite `this` using `[map_smul, pr_smul]`. Then use the resulting hypothesis. Use `(hPQ cf k).trans_lt ?_` and prove the remaining obligations. Establish `hpp : 0 < ‖δ * p‖` using `norm_pos_iff.2 (mul_ne_zero hδ0 hpz)`. Establish `hb' : ‖δ * p‖ * ‖∑ i, cf i • A i‖ ≤ 1`.
-
-Rewrite using `[← le_div_iff₀' hpp, pi_norm_le_iff_of_nonneg (by positivity)]`. Introduce `j`. Rewrite using `[le_div_iff₀' hpp, ← norm_mul]`. Conclude with `hb j`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.cut_lattice_norm_bound :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (p : ℕ) [Fact p.Prime] (n g : ℕ) (h : Dw.La → Fin g → ℂ_[p]) (b : (Fin g → ℂ_[p]) →ₗ[ℂ_[p]] ℂ_[p] ⊗[ℤ] Dw.La) (Λ : Set (Fin g → ℂ_[p])), PtData Dw p n h b Λ → ∀ (σ : 𝓞 E →+* ℂ_[p]) (M N r : ℕ) (a : Fin M → Dw.La) (T : Fin N → Fin M → ℂ_[p]) (δ : ℂ_[p]) (A : Fin r → Fin g → ℂ_[p]), CutL Dw σ a T δ → δ ≠ 0 → ‖δ‖ ≤ 1 → (p : ℝ) ^ 2 ≤ (p : ℝ) ^ n * ‖δ‖ → LinearIndependent ℂ_[p] A → (∀ i, IsEigL Dw σ (b (A i))) → (∀ cf, covMat T (fun m => h (a m)) A *ᵥ cf = 0 → cf = 0) ∧ (∀ cf : Fin r → ℂ_[p], ∑ i, cf i • A i ∈ Λ ↔ ∀ k, ‖(covMat T (fun m => h (a m)) A *ᵥ cf) k‖ ≤ ‖δ‖) ∧ ∀ cf : Fin r → ℂ_[p], (∀ k, ‖(covMat T (fun m => h (a m)) A *ᵥ cf) k‖ ≤ 1) → (∀ k, ‖δ * p * (∑ i, cf i • A i) k‖ ≤ 1) ∧ (∀ o, ‖δ * pr Dw (b (∑ i, cf i • A i)) o‖ ≤ 1) ∧ ∀ k, ‖(covMat T (fun m => h (a m)) A *ᵥ cf) k - ∑ m, T k m * pr Dw (b (∑ i, cf i • A i)) (a m)‖ < 1 := by

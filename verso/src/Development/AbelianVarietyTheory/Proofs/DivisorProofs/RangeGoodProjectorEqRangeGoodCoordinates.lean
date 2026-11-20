@@ -9,7 +9,7 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hE : LinearMap.range (S.lvlE r P ψ).mulVecLin = LinearMap.range (S.gaMat r (lvlIdem P ψ)).mulVecLin` using `(image_idempotent_spec K _ _).2`. Establish `hV : LinearMap.range (S.V0E r X P ψ).mulVecLin = LinearMap.range (S.gaMat r (goodAt X P ψ)).mulVecLin` using `(image_idempotent_spec K _ _).2`. Establish `hm : S.gaMat r (goodAt X P ψ) = S.gaMat r (idemOf X) * S.gaMat r (lvlIdem P ψ)` using `(group_action_matrix_hom K S G r).2 _ _`. Unfold `CSD.lvlOp`. Rewrite using `[Matrix.mulVecLin_mul, Matrix.mulVecLin_mul, Matrix.mulVecLin_mul, LinearMap.range_comp, LinearMap.range_comp, hE, hV, hm, Matrix.mulVecLin_mul, LinearMap.range_comp, Submodule.map_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem range_lvlOp_idemOf_eq_range_lvlPr_mul_V0E {K : Type} [Field K] [NumberField K] [StarRing K] (S : CSD K)
     {G : Type} [Group G] [Fintype G] (r : Representation K G S.Forms) (X : Finset (G → K)) (P : Subgroup G)
@@ -27,7 +27,7 @@ theorem range_lvlOp_idemOf_eq_range_lvlPr_mul_V0E {K : Type} [Field K] [NumberFi
     hE, hV, hm, Matrix.mulVecLin_mul, LinearMap.range_comp, Submodule.map_comp]
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T m A s _ P ψ t`. Conclude with `range_lvlOp_idemOf_eq_range_lvlPr_mul_V0E (A.fam.R t).S (A.fam.R t).r A.X P ψ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem range_goodProjector_eq_range_goodCoordinates : ∀ (D : D7) {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {m : ℕ}
     (A : FamIn D.what₂.LL G Pl0 T m) (s : ℕ), A.fam.Ok s → ∀ (P : Subgroup G) (ψ : P →* D.what₂.LLˣ) (t : T),

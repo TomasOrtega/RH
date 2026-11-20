@@ -11,9 +11,9 @@ namespace GlobalTheory.CompanionTheory.AdelicThetaSeries.Hd
 variable {k : Type} [Field k] [NumberField k] {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Unfold `thetaC`. Establish `hv : ∀ ξ : ι → k, ((scalC (IdeleGroup.diagonal k δ * a) : GL ι 𝔸[k]) : Matrix ι ι 𝔸[k]) *ᵥ ratV ξ = ((scalC a : GL ι 𝔸[k]) : Matrix ι ι 𝔸[k]) *ᵥ ratV (δ • ξ)`. Introduce `ξ`. Use function extensionality and compare the values at `i`. Simplify using `[scalC, ratV, Matrix.mulVec, dotProduct, Matrix.diagonal_apply, IdeleGroup.diagonal, Units.smul_def, mul_comm, mul_left_comm]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Repeatedly rewrite using `[hv]`. Conclude with `(MulAction.toPerm δ).tsum_eq (fun ξ => F (((scalC a : GL ι 𝔸[k]) : Matrix ι ι 𝔸[k]) *ᵥ ratV ξ))`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaC_scalC_diagonal_mul (F : (ι → 𝔸[k]) → ℂ) (δ : kˣ) (a : IdeleGroup k) :
     thetaC F (scalC (diagonal k δ * a)) = thetaC F (scalC a) := by
@@ -32,7 +32,7 @@ noncomputable def thetaCIntegrand (w : InfinitePlace k) (F : (ι → 𝔸[k]) �
   thetaC F (scalC (moduleSection w t * (u : IdeleGroup k))) * (ω.toIdele (u : IdeleGroup k) : ℂ)
 
 /- English proof (translation)
-Unfold `thetaCIntegrand`. Establish `hc : ((u * diagonalToNormOne k ξ : normOneSubgroup k) : IdeleGroup k) = IdeleGroup.diagonal k ξ * (u : IdeleGroup k)`. Rewrite using `[Subgroup.coe_mul, mul_comm]`. Both sides reduce to the same expression. Rewrite using `[hc, ← mul_assoc, mul_comm (moduleSection w t), mul_assoc, thetaC_scalC_diagonal_mul, map_mul, HeckeCharacter.toIdele_diagonal, one_mul]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem thetaCIntegrand_mul_diagonalToNormOne (w : InfinitePlace k) (F : (ι → 𝔸[k]) → ℂ)
     (ω : HeckeCharacter k) (t : {r : ℝ // 0 < r}) (ξ : kˣ) (u : normOneSubgroup k) :
@@ -46,11 +46,11 @@ theorem thetaCIntegrand_mul_diagonalToNormOne (w : InfinitePlace k) (F : (ι →
     HeckeCharacter.toIdele_diagonal, one_mul]
 
 /- English proof (translation)
-Unfold `thetaCIntegrand`. Rewrite using `[EpsteinRankN.Hd.thetaC_scalC_eq hF]`. Establish `e1 : (moduleSection w t⁻¹ * (u : IdeleGroup k))⁻¹ = moduleSection w t * ((u⁻¹ : normOneSubgroup k) : IdeleGroup k)`. Rewrite using `[map_inv, mul_inv, inv_inv, Subgroup.coe_inv, mul_comm]`. Establish `e2 : ideleModule k (moduleSection w t⁻¹ * (u : IdeleGroup k)) = t⁻¹`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul, ideleModule_moduleSection, MonoidHom.mem_ker.mp u.2, mul_one]`. Establish `e3 : (((ω⁻¹).toIdele ((u⁻¹ : normOneSubgroup k) : IdeleGroup k) : ℂ)) = ((ω.toIdele (u : IdeleGroup k) : ℂ))`. Establish `h : ∀ x, (ω⁻¹) x = (ω x)⁻¹` using `fun x => rfl`. Simplify using `[HeckeCharacter.toIdele, h]`. Rewrite using `[e1, e2, e3]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e4 : ((t⁻¹ : {r : ℝ // 0 < r}) : ℝ) = (t : ℝ)⁻¹` using `by simp`. Rewrite using `[e4]`. Use `push_cast`. Rewrite using `[inv_pow, inv_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem thetaCIntegrand_inv (w : InfinitePlace k) {F : (ι → 𝔸[k]) → ℂ}
     (hF : F ∈ schwartzBruhatPi k ι) (ω : HeckeCharacter k) (t : {r : ℝ // 0 < r})
@@ -76,15 +76,13 @@ theorem thetaCIntegrand_inv (w : InfinitePlace k) {F : (ι → 𝔸[k]) → ℂ}
   ring
 
 /- English proof (translation)
-Establish `hD` using `isFundamentalDomain_normOneFundamentalDomain k (normOneMeasure k)`. Establish `hDinv : IsFundamentalDomain (↥(diagonalNormOne k).op) ((fun x => x⁻¹) ⁻¹' normOneFundamentalDomain k) (normOneMeasure k)`. Use `hD.preimage_of_equiv (Measure.measurePreserving_inv (normOneMeasure k)).quasiMeasurePreserving inv_involutive.bijective (fun g x => ?_)` and prove the remaining obligations. Use `show (g⁻¹ • x)⁻¹ = g • x⁻¹`. Rewrite using `[Subgroup.smul_def, Subgroup.smul_def, MulOpposite.smul_eq_mul_unop, MulOpposite.smul_eq_mul_unop, Subgroup.coe_inv, MulOpposite.unop_inv, _root_.mul_inv_rev, inv_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_comm _ _`. Establish `hinvar : ∀ (g : ↥(diagonalNormOne k).op) (x : normOneSubgroup k), thetaCIntegrand w (adelicFourierPi k F) ω⁻¹ t (g • x) = thetaCIntegrand w (adelicFourierPi k F) ω⁻¹ t x`. Introduce `g x`. Establish `hm : MulOpposite.unop (g : (normOneSubgroup k)ᵐᵒᵖ) ∈ diagonalNormOne k` using `g.2`. Take `⟨ξ, hξ⟩` from `MonoidHom.mem_range.mp (Subgroup.mem_subgroupOf.mp hm)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hg : MulOpposite.unop (g : (normOneSubgroup k)ᵐᵒᵖ) = diagonalToNormOne k ξ` using `Subtype.ext hξ.symm`. Rewrite using `[Subgroup.smul_def, MulOpposite.smul_eq_mul_unop, hg, thetaCIntegrand_mul_diagonalToNormOne]`. Establish `hms` using `measurableSet_normOneFundamentalDomain (K := k)`. Establish `step1 : thetaCInt w F ω t⁻¹ = ((t : ℝ) : ℂ) ^ Fintype.card ι * ∫ u in normOneFundamentalDomain k, thetaCIntegrand w (adelicFourierPi k F) ω⁻¹ t u⁻¹ ∂normOneMeasure k` using `by show ∫ u in normOneFundamentalDomain k, thetaCIntegrand w F ω t⁻¹ u ∂normOneMeasure k = _`. Rewrite using `[← integral_const_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `setIntegral_congr_fun hms (fun u _ => ?_)` and prove the remaining obligations. Conclude with `thetaCIntegrand_inv w hF ω t u`. Establish `step2 : ∫ u in normOneFundamentalDomain k, thetaCIntegrand w (adelicFourierPi k F) ω⁻¹ t u⁻¹ ∂normOneMeasure k = ∫ u in (fun x => x⁻¹) ⁻¹' normOneFundamentalDomain k, thetaCIntegrand w (adelicFourierPi k F) ω⁻¹ t u ∂normOneMeasure k`. Rewrite using `[← integral_indicator hms, ← integral_indicator (hms.preimage measurable_inv), ← integral_inv_eq_self (fun u => ((fun x => x⁻¹) ⁻¹' normOneFundamentalDomain k).indicator (thetaCIntegrand w (adelicFourierPi k F) ω⁻¹ t) u) (normOneMeasure k)]`. Use `congr 1`.
-
-Rewrite using `[step1, step2, hDinv.setIntegral_eq hD hinvar]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem theta_integral_functional_equation (w : InfinitePlace k) {F : (ι → 𝔸[k]) → ℂ}
     (hF : F ∈ schwartzBruhatPi k ι) (ω : HeckeCharacter k) (t : {r : ℝ // 0 < r}) :
@@ -130,7 +128,7 @@ theorem theta_integral_functional_equation (w : InfinitePlace k) {F : (ι → �
   rfl
 
 /- English proof (translation)
-The claim follows from `fun w _ hF ω t ↦ theta_integral_functional_equation w hF ω t`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem thetaCInt_inv : ∀ {k : Type} [Field k] [NumberField k], ∀ {ι : Type} [Fintype ι]
     [DecidableEq ι], ∀ (w : InfinitePlace k) {F : (ι → 𝔸[k]) → ℂ} (hF : F ∈ schwartzBruhatPi k ι)

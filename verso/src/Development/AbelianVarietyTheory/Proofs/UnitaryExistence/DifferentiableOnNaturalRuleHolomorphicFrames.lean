@@ -54,17 +54,15 @@ def holSub (B : Set V) (k : V → (A →ₐ[K] CAt σ)) : Subalgebra K A where
     exact differentiableOn_const _
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_holSub {B : Set V} {k : V → (A →ₐ[K] CAt σ)} {t : A} :
     t ∈ holSub B k ↔ DifferentiableOn ℂ (fun b => toC (k b t)) B := Iff.rfl
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[mem_holSub]`. Establish `key : ∀ b, toC (k b d) * toC (k b x) = 1` using `fun b => by`. Rewrite using `[← toC_mul, ← map_mul, h, map_one, toC_one]`. Establish `hne : ∀ b, toC (k b x) ≠ 0` using `fun b hb => by`. Establish `h1` using `key b`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[hb, mul_zero]`. Conclude with `zero_ne_one h1`. Establish `heq : (fun b => toC (k b d)) = fun b => (toC (k b x))⁻¹`. Use function extensionality and compare the values at `fun b => eq_inv_of_mul_eq_one_left (key b)`. Rewrite using `[heq]`.
-
-Conclude with `hx.inv fun b _ => hne b`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_mem_holSub {B : Set V} {k : V → (A →ₐ[K] CAt σ)} {d x : A} (hx : x ∈ holSub B k)
     (h : d * x = 1) : d ∈ holSub B k := by
@@ -81,7 +79,7 @@ theorem inv_mem_holSub {B : Set V} {k : V → (A →ₐ[K] CAt σ)} {d x : A} (h
   exact hx.inv fun b _ => hne b
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply]`. Use `sum_mem fun e _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def]`. Conclude with `zsmul_mem (prod_mem fun i _ => h _ _) _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_mem {n : ℕ} (A' : Subalgebra K A) (X : Matrix (Fin n) (Fin n) A) (h : ∀ i j, X i j ∈ A') :
     X.det ∈ A' := by
@@ -91,9 +89,7 @@ theorem det_mem {n : ℕ} (A' : Subalgebra K A) (X : Matrix (Fin n) (Fin n) A) (
   exact zsmul_mem (prod_mem fun i _ => h _ _) _
 
 /- English proof (translation)
-Establish `hW` using `(GlobalTheory.T.framedModuli_algebraicLaws_chart_weight_integrality hS E H Dw l Xo c).2.2.1`. Unfold `sec secW at hf`. Take `⟨hn, -⟩` from `hf`. Unfold `evR evalAt`. Use `split_ifs with hT`.
-
-Conclude with `hW f hn S _ q _ κ _ u x hT.choose_spec.choose_spec.choose_spec h`. Conclude with `absurd ⟨q, κ, u, h⟩ hT`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem evR_eq_of_frMap {E : Type} [Field E] [NumberField E] [IsCMField E]
     {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
@@ -111,27 +107,23 @@ private theorem evR_eq_of_frMap {E : Type} [Field E] [NumberField E] [IsCMField 
 end Ring
 
 /- English proof (translation)
-Introduce `hS E _ _ _ H Dw l Xo c σ V _ _ B p y₀ ψ z y G a hzy hψ hG ha w n f hf`. Take `⟨A, π, X, s, u, hU⟩` from `GlobalTheory.T.exists_universalFrame_testRing hS E H Dw l Xo c p y₀`. Take `⟨hFR, u₀, hπ, hch⟩` from `hU`. Establish `hk : ∀ b ∈ B, ∃ kk : A.R →ₐ[c.F] CAt σ, kk.comp π = ψ b ∧ (∀ τ, (X τ).map kk = G b τ) ∧ kk (s : A.R) = a b`. Introduce `b hb`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨-, hc⟩` from `hzy b hb`. Take `⟨hex, huniq⟩` from `GlobalTheory.Frames.frChg_exists_unique E H Dw l Xo c (CAt σ) (z b) (y b)`. Take `⟨g, a', hdet, hc'⟩` from `hex hc.1`. Take `⟨hg, ha'⟩` from `huniq _ _ _ _ hc hc'`. Take `⟨kk, ⟨h1, h2, h3⟩, -⟩` from `hFR.2 (CAt σ) (ψ b) g a' hdet`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨kk, h1, fun τ => (h2 τ).trans (congrFun hg τ).symm, h3.trans ha'.symm⟩`. Break down `B.eq_empty_or_nonempty with hB | ⟨b₀, hb₀⟩` into its components or cases. Rewrite using `[hB]`. Conclude with `differentiableOn_empty`. Establish `: Nonempty (A.R →ₐ[c.F] CAt σ)` using `⟨(hk b₀ hb₀).choose⟩`.
+Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose! kk hkk using hk`. Establish `hX : ∀ τ i j, X τ i j ∈ holSub B kk`. Introduce `τ i j`. Rewrite using `[mem_holSub]`. Use `(hG τ i j).congr fun b hb => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `show toC (kk b (X τ i j)) = toC (G b τ i j)`. Rewrite using `[← (hkk b hb).2.1 τ]`. Both sides reduce to the same expression. Establish `hs : (s : A.R) ∈ holSub B kk`. Rewrite using `[mem_holSub]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `ha.congr fun b hb => ?_` and prove the remaining obligations. Use `show toC (kk b (s : A.R)) = toC (a b)`. Rewrite using `[(hkk b hb).2.2]`. Establish `hA'` using `GlobalTheory.T.universalFrameRing_subalgebra_eq_top c.F (E →+* ℂ) (fun τ => Dw.mult τ) p.R A.R π X s hFR (holSub B kk) (fun t => by`. Rewrite using `[mem_holSub]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `(hψ t).congr fun b hb => ?_` and prove the remaining obligations. Use `show toC (kk b (π t)) = toC (ψ b t)`. Rewrite using `[← (hkk b hb).1]`. Use the proof step `rfl)`. Use `hX hs (inv_mem_holSub hs (Units.inv_mul s))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(fun τ => by`. Take `⟨v, hv⟩` from `hFR.1 τ`. Apply the tactic sequence `refine ⟨((v⁻¹ : (A.R)ˣ) : A.R), inv_mem_holSub (det_mem _ (X τ) (hX τ)) ?_, ?_⟩ <;>`. Rewrite using `[← hv]`. Conclude with `Units.inv_mul v)`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `he : f A u ∈ holSub B kk`. Rewrite using `[hA']`. Conclude with `Algebra.mem_top`. Rewrite `he` using `[mem_holSub]`. Use `he.congr fun b hb => ?_` and prove the remaining obligations.
-
-Use `show toC (evR Xo c f (y b)) = toC (kk b (f A u))`. Use `congr 1`. Apply `evR_eq_of_frMap hS hf A (kk b) u (y b)` to reduce the goal to its premises. Take `⟨hm, hc⟩` from `hzy b hb`. Establish `hb1 : FrMap (kk b) u₀ (z b)` using `((GlobalTheory.framedPoint_baseChange_laws E H Dw l Xo c).2.1 p.R A.R (CAt σ) π (kk b) y₀ u₀ (z b) hπ).2 (by rw [(hkk b hb).1]; exact hm)`.
-
-Apply `(GlobalTheory.Frames.ChgBC.frChg_baseChange E H Dw l Xo c A.R (CAt σ) (kk b) u₀ u (z b) (y b) X s hch hb1).2` to reduce the goal to its premises. Establish `e1 : (fun τ => (X τ).map (kk b)) = G b` using `funext (hkk b hb).2.1`. Rewrite using `[e1, (hkk b hb).2.2]`. Conclude with `hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem differentiableOn_evR : Out.SecBaseChangeSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (V : Type) [NormedAddCommGroup V] [NormedSpace ℂ V] (B : Set V) (p : TRing c.F) (y₀ : FrPt Xo c p.R) (ψ : V → (p.R →ₐ[c.F] CAt σ)) (z y : V → FrPt Xo c (CAt σ)) (G : V → (∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) (CAt σ))) (a : V → CAt σ), (∀ b ∈ B, FrMap (ψ b) y₀ (z b) ∧ FrChg (G b) (a b) (z b) (y b)) → (∀ t, DifferentiableOn ℂ (fun b => toC (ψ b t)) B) → (∀ τ i j, DifferentiableOn ℂ (fun b => toC (G b τ i j)) B) → DifferentiableOn ℂ (fun b => toC (a b)) B → ∀ w n, ∀ f ∈ sec Xo c w n, DifferentiableOn ℂ (fun b => toC (evR Xo c f (y b))) B := by
   intro hS E _ _ _ H Dw l Xo c σ V _ _ B p y₀ ψ z y G a hzy hψ hG ha w n f hf

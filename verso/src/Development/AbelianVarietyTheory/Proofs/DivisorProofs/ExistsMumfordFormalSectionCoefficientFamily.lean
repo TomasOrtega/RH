@@ -14,29 +14,29 @@ open GlobalTheory.Mum GlobalTheory.TwFam
 namespace GlobalTheory.MumCoef
 
 /- English proof (translation)
-Simplify using `only [shift, map_add, smul_add]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem shift_add' {X : Type} [AddCommGroup X] (h h' : X →+ X) (n j : ℤ) (a b : X) :
     shift h h' n j (a + b) = shift h h' n j a + shift h h' n j b := by
   simp only [shift, map_add, smul_add]; abel
 
 /- English proof (translation)
-Simplify using `[shift]`.
+Simplify using the standard rewrite rules.
 -/
 theorem shift_zero' {X : Type} [AddCommGroup X] (h h' : X →+ X) (n j : ℤ) :
     shift h h' n j 0 = 0 := by
   simp [shift]
 
 /- English proof (translation)
-Introduce `R _ _ _ hB D a a' h h' hE N hN hP σ₀`. Take `⟨s₀, s, hrel, hsmall, hvan, hσ⟩` from `GlobalTheory.T.exists_terms_mumfordFormalSection_translates R hB D a a' h h' hE N hN hP σ₀`. Take `⟨F, hsum, hFs⟩` from `GlobalTheory.T.exists_adicSum_twistedSectionFamily_tendsToZero R hB D a (N : ℤ) (-1) D.toPre.X (shift h h' (N : ℤ) (-1)) s hsmall`. Establish `hw0 : shift h h' (N : ℤ) (-1) (0 : D.toPre.X) = 0` using `shift_zero' h h' _ _`. Establish `hfe : TFE h h' F`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `GlobalTheory.T.twistedFunctionalEquation_of_adicSum_termwise R hB D a a' h h' hE (N : ℤ) (-1) D.toPre.X (shift h h' (N : ℤ) (-1)) s F (fun mu => Equiv.addRight mu) hsmall hsum ?_ ?_` and prove the remaining obligations. Introduce `mu i`. Conclude with `shift_add' h h' _ _ i mu`. Introduce `mu i`. Conclude with `GlobalTheory.T.twistedRelation_cocycle_in_translation R hB D a a' h h' hE (N : ℤ) (-1) i mu 0 _ _ s₀ (s i) (s (i + mu)) (zero_add _).symm (shift_add' h h' _ _ i mu) (hrel i) (hrel (i + mu))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hv0 : ∀ i ∉ ({0} : Finset D.toPre.X), Van (maximalIdeal R) (s i) 0` using `fun i hi => hvan i (by simpa using hi)`. Use `⟨F, hFs, hfe, ?_, ?_⟩` and prove the remaining obligations. Introduce `β hβ Z x z J hJ`. Rewrite using `[hsum 0 {0} hv0 β Z x z J hJ]`. Establish `: ({0} : Finset D.toPre.X).filter (fun i => shift h h' (N : ℤ) (-1) i = β) = ∅`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.filter_singleton, hw0, if_neg (Ne.symm hβ)]`. Rewrite using `[this, Finset.sum_empty]`. Introduce `Z x z J hJ`. Rewrite using `[hsum 0 {0} hv0 0 Z x z J hJ]`. Establish `: ({0} : Finset D.toPre.X).filter (fun i => shift h h' (N : ℤ) (-1) i = 0) = {0}`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.filter_singleton, hw0, if_pos rfl]`. Rewrite using `[this, Finset.sum_singleton]`. Conclude with `hσ Z _ z J hJ`.
+A detailed English derivation is pending.
 -/
 theorem coef : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) → ∀ (D : DegData R (maximalIdeal R)), ∀ (a a' : D.toPre.P.A ⟶ D.toPre.P.A) (h h' : D.toPre.X →+ D.toPre.X), EndData D.toPre a a' h h' → ∀ N : ℕ, 1 ≤ N → GlobalTheory.MumMult.PosN D a h h' N → ∀ (σ₀ : LB.Sec (LB.LinComb D.toPre.P.L (K := Fin 2) ![𝟙 D.toPre.P.A.left, a.left] ![(N : ℤ), -1])), ∃ g : ∀ β, SecT D.toPre a N (-1) β, Small (maximalIdeal R) (w := id) g ∧ TFE h h' g ∧ (∀ β, β ≠ 0 → Van (maximalIdeal R) (g β) 0) ∧ ∀ (Z : Scheme.{0}) (x : Z ⟶ (thickObj R (maximalIdeal R) 0 D.toPre.P.A).left) (z : Z) (J), Good D.toPre.P.L z J → sval (g 0) (x ≫ pullback.fst D.toPre.P.A.hom (thick R (maximalIdeal R) 0)) z J = sval σ₀ (x ≫ pullback.fst D.toPre.P.A.hom (thick R (maximalIdeal R) 0)) z J := by
   classical

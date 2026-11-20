@@ -24,7 +24,7 @@ variable {n l : ℕ}
 def gen (j : Fin n) : Q k d n := ⟨pt k d j, CZ.pt j⟩
 
 /- English proof (translation)
-Introduce `j i`. Conclude with `(b j).2 i`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem czQ (b : Fin n → Q k d l) : CZ (fun j => (b j).1) := by
   intro j i
@@ -33,7 +33,7 @@ theorem czQ (b : Fin n → Q k d l) : CZ (fun j => (b j).1) := by
 def sb (b : Fin n → Q k d l) : PS k n d →+* PS k l d := evHom (czQ b)
 
 /- English proof (translation)
-Unfold `sb`. Conclude with `evHom_apply (czQ b) f`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem sb_apply (b : Fin n → Q k d l) (f : PS k n d) : sb b f = ev (fun j => (b j).1) f := by
   unfold sb
@@ -46,7 +46,7 @@ def sq (b : Fin n → Q k d l) : Q k d n →+ Q k d l where
   map_add' _ _ := Subtype.ext (funext fun _ => map_add _ _ _)
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `show sb b (X (j, i)) = (b j).1 i`. Rewrite using `[sb_apply]`. Conclude with `ev_X (czQ b) j i`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 @[simp] theorem sq_gen (b : Fin n → Q k d l) (j : Fin n) : sq b (gen j) = b j := by
   apply Subtype.ext
@@ -56,9 +56,9 @@ Apply `Subtype.ext` to reduce the goal to its premises. Use function extensional
   exact ev_X (czQ b) j i
 
 /- English proof (translation)
-Simplify using `only [sb_apply]`. Rewrite using `[ev_ev (czQ b) (czQ a)]`. Use `congr 1`. Use function extensionality and compare the values at `j i`. Use `show ev (fun j => (b j).1) ((a j).1 i) = sb b ((a j).1 i)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sb_apply]`.
+A detailed English derivation is pending.
 -/
 theorem sb_sb {m : ℕ} (b : Fin n → Q k d l) (a : Fin m → Q k d n) (f : PS k m d) :
     sb b (sb a f) = sb (fun j => sq b (a j)) f := by
@@ -70,7 +70,7 @@ theorem sb_sb {m : ℕ} (b : Fin n → Q k d l) (a : Fin m → Q k d n) (f : PS 
   rw [sb_apply]
 
 /- English proof (translation)
-Rewrite using `[sb_apply]`. Conclude with `ev_pt f`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sb_gen (f : PS k n d) : sb gen f = f := by
   rw [sb_apply]
@@ -81,7 +81,7 @@ def E2 (f : PS k 2 d) (u v : Q k d n) : PS k n d := sb ![u, v] f
 def E3 (f : PS k 3 d) (u v w : Q k d n) : PS k n d := sb ![u, v, w] f
 
 /- English proof (translation)
-Use `show sb b (sb ![u, v] f) = sb ![sq b u, sq b v] f`. Establish `h : (fun j => sq b (![u, v] j)) = ![sq b u, sq b v]`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `fin_cases j <;> rfl`. Rewrite using `[sb_sb, h]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 @[simp] theorem formalPointSubstitutionSeries_valueAtTwoPoints (b : Fin n → Q k d l) (f : PS k 2 d) (u v : Q k d n) : sb b (E2 f u v) = E2 f (sq b u) (sq b v) := by
   show sb b (sb ![u, v] f) = sb ![sq b u, sq b v] f
@@ -91,7 +91,7 @@ Use `show sb b (sb ![u, v] f) = sb ![sq b u, sq b v] f`. Establish `h : (fun j =
   rw [sb_sb, h]
 
 /- English proof (translation)
-Use `show sb b (sb ![u, v, w] f) = sb ![sq b u, sq b v, sq b w] f`. Establish `h : (fun j => sq b (![u, v, w] j)) = ![sq b u, sq b v, sq b w]`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `fin_cases j <;> rfl`. Rewrite using `[sb_sb, h]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 @[simp] theorem formalPointSubstitutionSeries_valueAtThreePoints (b : Fin n → Q k d l) (f : PS k 3 d) (u v w : Q k d n) :
     sb b (E3 f u v w) = E3 f (sq b u) (sq b v) (sq b w) := by
@@ -102,7 +102,7 @@ Use `show sb b (sb ![u, v, w] f) = sb ![sq b u, sq b v, sq b w] f`. Establish `h
   rw [sb_sb, h]
 
 /- English proof (translation)
-Use `show sb ![gen 0, gen 1] f = f`. Establish `h : (![gen 0, gen 1] : Fin 2 → Q k d 2) = gen`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `fin_cases j <;> rfl`. Rewrite using `[h, sb_gen]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formalSeriesValueAtTwoPoints_genericPoints (f : PS k 2 d) : E2 f (gen 0) (gen 1) = f := by
   show sb ![gen 0, gen 1] f = f
@@ -112,7 +112,7 @@ theorem formalSeriesValueAtTwoPoints_genericPoints (f : PS k 2 d) : E2 f (gen 0)
   rw [h, sb_gen]
 
 /- English proof (translation)
-Use `show sb ![gen 0, gen 1, gen 2] f = f`. Establish `h : (![gen 0, gen 1, gen 2] : Fin 3 → Q k d 3) = gen`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `fin_cases j <;> rfl`. Rewrite using `[h, sb_gen]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formalSeriesValueAtThreePoints_genericPoints (f : PS k 3 d) : E3 f (gen 0) (gen 1) (gen 2) = f := by
   show sb ![gen 0, gen 1, gen 2] f = f
@@ -124,9 +124,9 @@ theorem formalSeriesValueAtThreePoints_genericPoints (f : PS k 3 d) : E3 f (gen 
 def ac (A : Q k d 1) (u : Q k d n) : Q k d n := sq ![u] A
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `show sb b (sb ![u] (A.1 i)) = sb ![sq b u] (A.1 i)`. Establish `h : (fun j => sq b (![u] j)) = ![sq b u]`. Use function extensionality and compare the values at `j`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 
-Use `fin_cases j`. Both sides reduce to the same expression. Rewrite using `[sb_sb, h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 @[simp] theorem sq_ac (b : Fin n → Q k d l) (A : Q k d 1) (u : Q k d n) : sq b (ac A u) = ac A (sq b u) := by
   apply Subtype.ext
@@ -139,7 +139,7 @@ Use `fin_cases j`. Both sides reduce to the same expression. Rewrite using `[sb_
   rw [sb_sb, h]
 
 /- English proof (translation)
-Use `show sb ![u, v] f = _`. Rewrite using `[sb_apply]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `fin_cases j <;> rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem formalSeriesValueAtTwoPoints_eq_ev (f : PS k 2 d) (u v : Q k d n) : E2 f u v = ev ![u.1, v.1] f := by
   show sb ![u, v] f = _
@@ -149,7 +149,7 @@ theorem formalSeriesValueAtTwoPoints_eq_ev (f : PS k 2 d) (u v : Q k d n) : E2 f
   fin_cases j <;> rfl
 
 /- English proof (translation)
-Use `show sb ![u, v, w] f = _`. Rewrite using `[sb_apply]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `fin_cases j <;> rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem formalSeriesValueAtThreePoints_eq_ev (f : PS k 3 d) (u v w : Q k d n) : E3 f u v w = ev ![u.1, v.1, w.1] f := by
   show sb ![u, v, w] f = _
@@ -159,9 +159,9 @@ theorem formalSeriesValueAtThreePoints_eq_ev (f : PS k 3 d) (u v w : Q k d n) : 
   fin_cases j <;> rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `show sb ![u] (A.1 i) = ev ![u.1] (A.1 i)`. Rewrite using `[sb_apply]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 
-Use `fin_cases j`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem ac_val (A : Q k d 1) (u : Q k d n) : (ac A u).1 = comp1 A.1 u.1 := by
   funext i
@@ -175,9 +175,9 @@ theorem ac_val (A : Q k d 1) (u : Q k d n) : (ac A u).1 = comp1 A.1 u.1 := by
 def op (F : Q k d 2) (u v : Q k d n) : Q k d n := sq ![u, v] F
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `show sb ![u, v] (F.1 i) = ev ![u.1, v.1] (F.1 i)`. Rewrite using `[sb_apply]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `fin_cases j <;> rfl`.
+A detailed English derivation is pending.
 -/
 theorem op_val (F : Q k d 2) (u v : Q k d n) : (op F u v).1 = addOf F.1 u.1 v.1 := by
   funext i
@@ -188,9 +188,9 @@ theorem op_val (F : Q k d 2) (u v : Q k d n) : (op F u v).1 = addOf F.1 u.1 v.1 
   fin_cases j <;> rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `show sb b (sb ![u, v] (F.1 i)) = sb ![sq b u, sq b v] (F.1 i)`. Establish `h : (fun j => sq b (![u, v] j)) = ![sq b u, sq b v]`. Use function extensionality and compare the values at `j`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `fin_cases j <;> rfl`. Rewrite using `[sb_sb, h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sq_op (b : Fin n → Q k d l) (F : Q k d 2) (u v : Q k d n) : sq b (op F u v) = op F (sq b u) (sq b v) := by
   apply Subtype.ext
@@ -207,9 +207,9 @@ Both sides reduce to the same expression.
 theorem gen_val (j : Fin n) : (gen j : Q k d n).1 = pt k d j := rfl
 
 /- English proof (translation)
-Use extensionality with `e`. Establish `h1` using `h (Finsupp.degree e)`. Rewrite `h1` using `[Ideal.Quotient.eq, MvPolynomial.mem_pow_idealOfVars_iff']`. Establish `h2` using `h1 e (Nat.lt_succ_self _)`. Rewrite `h2` using `[MvPolynomial.coeff_sub, coeff_truncTotal _ (Nat.lt_succ_self _), coeff_truncTotal _ (Nat.lt_succ_self _), sub_eq_zero]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem ext_of_trunc {R σ : Type} [CommRing R] [Finite σ] {f g : MvPowerSeries σ R}
     (h : ∀ m : ℕ, Ideal.Quotient.mk (MvPolynomial.idealOfVars σ R ^ (m + 1)) (truncTotal (m + 1) f) =

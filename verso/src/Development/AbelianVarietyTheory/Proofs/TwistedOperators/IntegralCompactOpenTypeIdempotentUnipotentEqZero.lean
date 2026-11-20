@@ -10,7 +10,7 @@ noncomputable section
 namespace GlobalTheory.TypeIdemAverage
 
 /- English proof (translation)
-Distinguish the cases in `hF : Integrable F ν`. Establish `h1 : ∫ u, ∑ i, F (n i * u) ∂ν = ∑ i, ∫ u, F (n i * u) ∂ν` using `integral_finsetSum _ fun i _ => hF.comp_mul_left (n i)`. Simplify using `only [h, integral_zero, integral_mul_left_eq_self, Finset.sum_const, Finset.card_univ, nsmul_eq_mul] at h1`. Conclude with `(mul_eq_zero.1 h1.symm).resolve_left (by exact_mod_cast Fintype.card_ne_zero)`. Conclude with `integral_undef hF`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_eq_zero_of_sum_translate {N ι : Type} [Group N] [MeasurableSpace N] [MeasurableMul N]
     (ν : Measure N) [ν.IsMulLeftInvariant] [Fintype ι] [Nonempty ι] (n : ι → N) (F : N → ℂ)
@@ -24,9 +24,9 @@ theorem integral_eq_zero_of_sum_translate {N ι : Type} [Group N] [MeasurableSpa
   · exact integral_undef hF
 
 /- English proof (translation)
-Distinguish the cases in `hg : g ∈ K`. Take `⟨g, rfl⟩ : ∃ g' : K, (g' : G) = g` from `⟨⟨g, hg⟩, rfl⟩`. Establish `h0` using `GlobalTheory.NoFixedCharSum.noFixedSum Q W τ H hH 1 (red g)`. Simplify using `only [← Subgroup.coe_mul, GlobalTheory.Orb.typeIdem_coe, map_mul red, hκ]`. Rewrite using `[← Finset.mul_sum, ← map_sum]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [one_mul] at h0`. Establish `h1 : ∑ v : H, τ.character ((v : Q) * red g) = 0` using `h0`. Rewrite using `[h1, map_zero, mul_zero]`. Use `Finset.sum_eq_zero fun v _ => GlobalTheory.Orb.typeIdem_of_notMem μ red τ ?_` and prove the remaining obligations. Rewrite using `[K.mul_mem_cancel_left (κ v).2]` and apply the resulting hypothesis.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem sum_typeIdem_translate {G Q W : Type} [Group G] [MeasurableSpace G] (μ : Measure G) [Group Q]
     [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W] {K : Subgroup G} (red : K →* Q)
@@ -44,9 +44,9 @@ theorem sum_typeIdem_translate {G Q W : Type} [Group G] [MeasurableSpace G] (μ 
     rwa [K.mul_mem_cancel_left (κ v).2]
 
 /- English proof (translation)
-Set `_ : Fintype H` to `Fintype.ofFinite H`. Use `choose n hnN hnK hred using hx`. Use `integral_eq_zero_of_sum_translate ν (fun v : H => (⟨n v v.2, hnN v v.2⟩ : N)) (fun u : N => idemGL k μ τ (x * u * w)) fun u => ?_` and prove the remaining obligations. Establish `h` using `sum_typeIdem_translate μ (GlobalTheory.LocGL.redK k (Fin r)) τ H hH (fun v => ⟨x * n v v.2 * x⁻¹, hnK v v.2⟩) (fun v => hred v v.2) (x * u * w)`. Use `Eq.trans (Finset.sum_congr rfl fun v _ => ?_) h` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [idemGL, Subgroup.coe_mul, mul_assoc, inv_mul_cancel_left]`.
+A detailed English derivation is pending.
 -/
 theorem integral_idemGL_eq_zero (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {r : ℕ}

@@ -9,11 +9,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Unfold.RowFrame
 
 /- English proof (translation)
-Establish `hI0 : ddS D ≠ 0`. Unfold `ddS`. Rewrite using `[Ne, FractionalIdeal.coeIdeal_eq_zero]`. Rewrite using `[Ideal.map_eq_bot_iff_of_injective]`. Conclude with `differentIdeal_ne_bot`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `FaithfulSMul.algebraMap_injective _ _`. Establish `hI1 : ddS D ≤ 1` using `FractionalIdeal.coeIdeal_le_one`. Establish `hJ0 : ddS D ^ n ≠ 0` using `pow_ne_zero _ hI0`. Establish `hJ1 : ddS D ^ n ≤ 1` using `pow_le_one' hI1 n`. Rewrite using `[zpow_neg, zpow_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h1 : (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) ≤ (ddS D ^ n)⁻¹`. Combine the equalities or inequalities in the displayed calculation. Conclude with `h1 ((FractionalIdeal.mem_one_iff _).2 ⟨1, map_one _⟩)`.
+A detailed English derivation is pending.
 -/
 theorem one_mem_ddS_zpow (D : D7) (n : ℕ) :
     (1 : D.host.E) ∈ (ddS D ^ (-(n : ℤ)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) := by
@@ -35,13 +35,11 @@ theorem one_mem_ddS_zpow (D : D7) (n : ℕ) :
   exact h1 ((FractionalIdeal.mem_one_iff _).2 ⟨1, map_one _⟩)
 
 /- English proof (translation)
-Introduce and unpack `⟨-, ⟨-, -, hlift, -⟩, hX⟩ a`. Use `Fin.lastCases ?_ (fun i => ?_) a` and prove the remaining obligations. Establish `e : frame (lf D F0) (Fin.last D.R.rS) = (lf D F0).fl.z` using `by simp [frame, FlagG.fvec]`. Rewrite using `[e]`. Conclude with `hlift.1`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : frame (lf D F0) i.castSucc = F0.e i` using `by simp [frame, FlagG.fvec]`. Rewrite using `[e]`. Establish `hmem : F0.e i ∈ XS D F0`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨i, 1, ?_, (one_smul _ _).symm⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hk : (-((D.R.rS : ℤ) - ((i : ℕ) : ℤ))) = -(((D.R.rS - (i : ℕ) : ℕ)) : ℤ)`. Rewrite using `[Nat.cast_sub i.isLt.le]`. Rewrite using `[hk]`. Conclude with `one_mem_ddS_zpow D _`. Rewrite `hmem` using `[← hX]`.
-
-Conclude with `hmem.1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_mem (D : D7) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (Λ : LV D) :
     IsRowLat D F0 Λ → ∀ a, frame (lf D F0) a ∈ Λ := by

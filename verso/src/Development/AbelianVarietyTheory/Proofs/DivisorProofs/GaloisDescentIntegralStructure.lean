@@ -21,7 +21,7 @@ noncomputable def restrictFun (σ : K' →+* K')
   Classical.choose (h x)
 
 /- English proof (translation)
-The claim follows from `(Classical.choose_spec (h x)).symm`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_restrictFun (σ : K' →+* K')
     (h : ∀ x : W, ∃ y : W, σ (algebraMap W K' x) = algebraMap W K' y) (x : W) :
@@ -37,7 +37,7 @@ noncomputable def restrictHom (hinj : Function.Injective (algebraMap W K')) (σ 
   map_add' x y := hinj (by simp only [algebraMap_restrictFun, map_add])
 
 /- English proof (translation)
-The claim follows from `(algebraMap_restrictFun σ h x).symm`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_restrictHom (hinj : Function.Injective (algebraMap W K')) (σ : K' →+* K')
     (h : ∀ x : W, ∃ y : W, σ (algebraMap W K' x) = algebraMap W K' y) (x : W) :
@@ -45,21 +45,19 @@ theorem algebraMap_restrictHom (hinj : Function.Injective (algebraMap W K')) (σ
   (algebraMap_restrictFun σ h x).symm
 
 /- English proof (translation)
-Introduce `R K W K' _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ σ hσ A _ _ hA G _ hG e he`. Establish `hinj : Function.Injective (algebraMap W K')` using `IsFractionRing.injective W K'`. Set `τ : W →+* W` to `restrictHom hinj (σ : K' →+* K') hσ`. Establish `hτ : ∀ x : W, σ (algebraMap W K' x) = algebraMap W K' (τ x)` using `algebraMap_restrictHom hinj (σ : K' →+* K') hσ`. Establish `hsq : spMap (σ : K' →+* K') ≫ spMap (algebraMap W K') = spMap (algebraMap W K') ≫ spMap τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `x`. Simplify using `using hτ x`. Establish `hK : spMap (algebraMap K K') = spMap (σ : K' →+* K') ≫ spMap (algebraMap K K')`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[← Spec.map_comp]`. Use `congr 1`. Use extensionality with `x`. Conclude with `(σ.commutes x).symm`. Set `s` to `pullback.map A.hom (spMap (algebraMap K K')) A.hom (spMap (algebraMap K K')) (𝟙 _) (spMap (σ : K' →+* K')) (𝟙 _) (by simp) (by rw [Category.comp_id, ← Spec.map_comp]; congr 1; ext x; exact (σ.commutes x).symm)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hs1 : s ≫ pullback.fst A.hom (spMap (algebraMap K K')) = pullback.fst A.hom (spMap (algebraMap K K'))` using `(pullback.lift_fst _ _ _).trans (Category.comp_id _)`. Establish `hs2 : s ≫ pullback.snd A.hom (spMap (algebraMap K K')) = pullback.snd A.hom (spMap (algebraMap K K')) ≫ spMap (σ : K' →+* K')` using `pullback.lift_snd _ _ _`. Establish `hA1` using `isGrpPullback_pullback A (spMap (algebraMap K K'))`. Establish `hAs : IsGrpPullback ((Over.pullback (spMap (algebraMap K K'))).obj A) ((Over.pullback (spMap (algebraMap K K'))).obj A) (spMap (σ : K' →+* K')) s` using `IsGrpPullback.cancel hA1 (hA1.congr hK hs1.symm) hs2`. Use `haveI : IsMonHom e.hom := he`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he1` using `isGrpPullback_of_iso e`. Use `haveI : IsMonHom e.symm.hom := inferInstanceAs (IsMonHom e.inv)`. Establish `he2` using `isGrpPullback_of_iso e.symm`. Establish `hG1` using `isGrpPullback_pullback G (spMap (algebraMap W K'))`. Establish `h1` using `(((he1.comp hAs).comp he2).comp hG1).congr (by rw [Category.id_comp, Category.comp_id, hsq]) rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hGτ` using `isGrpPullback_pullback G (spMap τ)`. Establish `hGτK` using `isGrpPullback_pullback ((Over.pullback (spMap τ)).obj G) (spMap (algebraMap W K'))`. Take `⟨e', he', he'φ⟩` from `grpPullback_iso h1 (hGτK.comp hGτ)`. Take `⟨F, hF, -⟩` from `GlobalTheory.AbHomExtDvr.existsUnique_hom_extension_abelian_dvr W K' G ((Over.pullback (spMap τ)).obj G) hG (isAbelianScheme_pullback_obj _ G hG) e'.hom he'`. Use `⟨τ, F.left ≫ pullback.fst G.hom (spMap τ), hτ, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc]`. Conclude with `congrArg (· ≫ spMap τ) (Over.w F)`. Establish `hFl : ((Over.pullback (spMap (algebraMap W K'))).map F).left ≫ pullback.fst ((Over.pullback (spMap τ)).obj G).hom (spMap (algebraMap W K')) = pullback.fst G.hom (spMap (algebraMap W K')) ≫ F.left` using `pullback.lift_fst _ _ _`. Rewrite `hFl` using `[hF]`. Rewrite using `[← Category.assoc, ← hFl, Category.assoc, he'φ]`.
-
-Simplify using `only [Category.assoc, Iso.symm_hom]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_semilinear_twist : ∀ (R K W K' : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [Field K] [Algebra R K] [IsFractionRing R K] [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field K'] [Algebra W K'] [IsFractionRing W K'] [Algebra R W] [Algebra K K'] [Algebra R K'] [IsScalarTower R W K'] [IsScalarTower R K K'] (σ : K' ≃ₐ[K] K'), (∀ x : W, ∃ y : W, σ (algebraMap W K' x) = algebraMap W K' y) → ∀ (A : Over (Sp K)) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → ∀ (G : Over (Sp W)) [GrpObj G], IsAbelianScheme G → ∀ e : (Over.pullback (spMap (algebraMap W K'))).obj G ≅ (Over.pullback (spMap (algebraMap K K'))).obj A, IsMonHom e.hom → ∃ (τ : W →+* W) (φ : G.left ⟶ G.left), (∀ x : W, σ (algebraMap W K' x) = algebraMap W K' (τ x)) ∧ φ ≫ G.hom = G.hom ≫ spMap τ ∧ pullback.fst G.hom (spMap (algebraMap W K')) ≫ φ = (e.hom.left ≫ pullback.map A.hom (spMap (algebraMap K K')) A.hom (spMap (algebraMap K K')) (𝟙 _) (spMap (σ : K' →+* K')) (𝟙 _) (by simp) (by rw [Category.comp_id, ← Spec.map_comp]; congr 1; ext x; exact (σ.commutes x).symm) ≫ e.inv.left) ≫ pullback.fst G.hom (spMap (algebraMap W K')) := by
   intro R K W K' _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ σ hσ A _ _ hA G _ hG e he

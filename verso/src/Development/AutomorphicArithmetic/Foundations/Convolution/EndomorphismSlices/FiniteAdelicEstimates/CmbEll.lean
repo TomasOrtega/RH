@@ -7,7 +7,7 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.EndomorphismSli
 
 open UpperTheory.Zero.ConvolutionTheory.EB in
 /- English proof (translation)
-The claim follows from `cmbEll_of cmbTest seenFam positionTest lefL ffAlg`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Zero.ConvolutionTheory.EB.cmbEll :
     UpperTheory.Zero.ConvolutionTheory.EB.CmbEll := cmbEll_of cmbTest seenFam positionTest lefL ffAlg

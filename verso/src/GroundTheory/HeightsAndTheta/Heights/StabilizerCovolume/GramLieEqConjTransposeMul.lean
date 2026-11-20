@@ -16,7 +16,7 @@ variable {Em : Type} [Field Em] [NumberField Em] [IsCMField Em] {Ψ : Type} [Fin
 
 omit [NumberField Em] [IsCMField Em] in
 /- English proof (translation)
-Use extensionality with `x`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem conj_comp_conj_comp (σ : Em →+* ℂ) : (starRingEnd ℂ).comp ((starRingEnd ℂ).comp σ) = σ := by
   ext x
@@ -62,30 +62,30 @@ Both sides reduce to the same expression.
 include A in
 
 /- English proof (translation)
-Rewrite using `[← NumberField.Embeddings.card Em ℂ, ← Fintype.card_congr A.embEquiv, Fintype.card_sum]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem finrank_eq_two_mul_card_cm : Module.finrank ℚ Em = 2 * Fintype.card Ψ := by
   rw [← NumberField.Embeddings.card Em ℂ, ← Fintype.card_congr A.embEquiv, Fintype.card_sum]
   ring
 
 /- English proof (translation)
-Use `set X := P⁻¹ *ᵥ fun b => A.emb τ (x b) with hXdef`. Use `set Y := P⁻¹ *ᵥ fun b => A.emb τ (y b) with hYdef`. Establish `hdet : IsUnit P.det`. Establish `h1` using `congrArg Matrix.det hP`. Rewrite `h1` using `[Matrix.det_mul, Matrix.det_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hS : (signMat N j).det ≠ 0`. Rewrite using `[signMat, Matrix.det_diagonal]`. Apply the tactic sequence `exact Finset.prod_ne_zero_iff.2 fun a _ => by split_ifs <;> norm_num`. Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[h0, mul_zero]`. Conclude with `hS h1.symm`. Establish `hx : (fun b => A.emb τ (x b)) = P *ᵥ X`. Rewrite using `[hXdef, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hdet, Matrix.one_mulVec]`. Establish `hy : (fun b => A.emb τ (y b)) = P *ᵥ Y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hYdef, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hdet, Matrix.one_mulVec]`. Establish `hτ0 : A.emb τ (hermForm Em A.H x y) = star (fun b => A.emb τ (x b)) ⬝ᵥ (A.H.map (A.emb τ) *ᵥ fun b => A.emb τ (y b))`. Simplify using `[hermForm, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc, map_sum, map_mul]`. Establish `hτ : A.emb τ (hermForm Em A.H x y) = star X ⬝ᵥ (signMat N j *ᵥ Y)`. Rewrite using `[hτ0, hx, hy, ← hP, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec (star X) Pᴴ, Matrix.star_mulVec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hτ' : ∑ a, conj (X a) * ((if (a : ℕ) < j then (1 : ℂ) else -1) * Y a) = 0`. Establish `h0` using `hτ.symm`. Rewrite `h0` using `[hxy, map_zero]`. Simplify `h0` using `[signMat, dotProduct, Matrix.mulVec_diagonal]`. Establish `hsplit : ∑ a, conj (X a) * Y a = ∑ a ∈ Finset.univ.filter (fun a : Fin N => ¬ (a : ℕ) < j), 2 * (conj (X a) * Y a)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_filter]`. Establish `: ∑ a, conj (X a) * Y a = ∑ a, conj (X a) * Y a - ∑ a, conj (X a) * ((if (a : ℕ) < j then (1 : ℂ) else -1) * Y a)`. Rewrite using `[hτ', sub_zero]`. Rewrite using `[this, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Apply the tactic sequence `split_ifs <;> ring`. Rewrite using `[hsplit, Finset.mul_sum]`. Use `symm`. Use `Finset.sum_bij (fun c _ => tailIdx hj c) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `c _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[tailIdx]`. Introduce `c₁ _ c₂ _ h`. Simplify using `only [tailIdx, Fin.mk.injEq] at h`. Conclude with `Fin.ext (by omega)`. Introduce `a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, not_lt] at ha`. Conclude with `⟨⟨a - j, by omega⟩, Finset.mem_univ _, Fin.ext (by simp [tailIdx]; omega)⟩`. Introduce `c _`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem sum_coord_of_iso (hj : j ≤ N) {P : Matrix (Fin N) (Fin N) ℂ} (τ : Ψ)
     (hP : Pᴴ * A.H.map (A.emb τ) * P = signMat N j) {x y : Fin N → Em}
@@ -143,9 +143,9 @@ theorem sum_coord_of_iso (hj : j ≤ N) {P : Matrix (Fin N) (Fin N) ℂ} (τ : �
     rfl
 
 /- English proof (translation)
-Rewrite using `[A.sum_coord_of_iso hj τ hP hxy]`. Establish `hr : (Real.sqrt (2 * ‖A.emb τ A.ξ‖) : ℂ) * (Real.sqrt (2 * ‖A.emb τ A.ξ‖) : ℂ) = ((2 * ‖A.emb τ A.ξ‖ : ℝ) : ℂ)`. Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt (by positivity)]`. Establish `hs : ∑ c, conj (A.lieComp hj P τ x c) * A.lieComp hj P τ y c = ((2 * ‖A.emb τ A.ξ‖ : ℝ) : ℂ) * ∑ c : Fin (N - j), conj ((P⁻¹ *ᵥ fun b => A.emb τ (x b)) (tailIdx hj c)) * (P⁻¹ *ᵥ fun b => A.emb τ (y b)) (tailIdx hj c)`. Rewrite using `[Finset.mul_sum, ← hr]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `only [lieComp, map_mul, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hs, Complex.re_ofReal_mul]`. Simplify using `only [Complex.mul_re, Complex.re_ofNat, Complex.im_ofNat, zero_mul, sub_zero]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -172,7 +172,7 @@ theorem hodge_term_of_iso (hj : j ≤ N) {P : Matrix (Fin N) (Fin N) ℂ} (τ : 
   ring
 
 /- English proof (translation)
-Establish `h : (fun a => A.emb τ ((ω • v) a)) = A.emb τ (ω : Em) • fun a => A.emb τ (v a)`. Use extensionality with `a`. Simplify using `[Algebra.smul_def]`. Unfold `lieComp`. Rewrite using `[h, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -187,7 +187,7 @@ theorem lieComp_smul (hj : j ≤ N) (P : Matrix (Fin N) (Fin N) ℂ) (τ : Ψ) (
   ring
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[gramLie, Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gramLie_eq_conjTranspose_mul (hj : j ≤ N) (P : Matrix (Fin N) (Fin N) ℂ) (τ : Ψ) {ρ : ℕ}
     (v : Fin ρ → Fin N → Em) :
@@ -197,7 +197,7 @@ theorem gramLie_eq_conjTranspose_mul (hj : j ≤ N) (P : Matrix (Fin N) (Fin N) 
   simp [gramLie, Matrix.mul_apply]
 
 /- English proof (translation)
-Rewrite using `[A.gramLie_eq_conjTranspose_mul hj P τ v]`. Conclude with `(Matrix.posSemidef_conjTranspose_mul_self _).det_nonneg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_gramLie_nonneg (hj : j ≤ N) (P : Matrix (Fin N) (Fin N) ℂ) (τ : Ψ) {ρ : ℕ}
     (v : Fin ρ → Fin N → Em) : 0 ≤ (A.gramLie hj P τ v).det := by
@@ -205,7 +205,7 @@ theorem det_gramLie_nonneg (hj : j ≤ N) (P : Matrix (Fin N) (Fin N) ℂ) (τ :
   exact (Matrix.posSemidef_conjTranspose_mul_self _).det_nonneg
 
 /- English proof (translation)
-Establish `h` using `Complex.nonneg_iff.1 (A.det_gramLie_nonneg hj P τ v)`. Conclude with `⟨Complex.ext (by simp) (by simp [← h.2]), h.1⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem det_gramLie_eq_re (hj : j ≤ N) (P : Matrix (Fin N) (Fin N) ℂ) (τ : Ψ) {ρ : ℕ}
     (v : Fin ρ → Fin N → Em) :
@@ -224,7 +224,7 @@ variable {II : IntersectionSystem} {Ψ : Type} [Fintype Ψ] {K : Type} [Fintype 
   (D : FullerData II Ψ K ι Ω E Em)
 
 /- English proof (translation)
-Unfold `hodgeInner`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Conclude with `D.herm.hodge_term_of_iso _ τ (D.per_witt z hz τ) (hI x hx y hy)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hodgeInner_of_iso {z : (Σ k, ι k) → ℂ} (hz : z ∈ D.Xo) {I : Submodule (𝓞 Em) (Fin D.N → Em)}
     (hI : D.herm.IsIso I) {x y : Fin D.N → Em} (hx : x ∈ I) (hy : y ∈ I) :
@@ -235,7 +235,7 @@ theorem hodgeInner_of_iso {z : (Σ k, ι k) → ℂ} (hz : z ∈ D.Xo) {I : Subm
   exact D.herm.hodge_term_of_iso _ τ (D.per_witt z hz τ) (hI x hx y hy)
 
 /- English proof (translation)
-Establish `h : ∀ τ, (fun b => D.herm.emb τ (v b) + D.herm.emb τ (v' b)) = (fun b => D.herm.emb τ (v b)) + fun b => D.herm.emb τ (v' b)`. Introduce `τ`. Both sides reduce to the same expression. Simplify using `only [hodgeInner, Pi.add_apply, map_add, h, Matrix.mulVec_add, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib, Complex.add_re, mul_add]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 -/
 theorem hodgeInner_add_left (z : (Σ k, ι k) → ℂ) (v v' w : Fin D.N → Em) :
     D.hodgeInner z (v + v') w = D.hodgeInner z v w + D.hodgeInner z v' w := by
@@ -246,7 +246,7 @@ theorem hodgeInner_add_left (z : (Σ k, ι k) → ℂ) (v v' w : Fin D.N → Em)
     Finset.sum_add_distrib, Complex.add_re, mul_add]
 
 /- English proof (translation)
-Establish `h : ∀ τ, (fun b => D.herm.emb τ (w b) + D.herm.emb τ (w' b)) = (fun b => D.herm.emb τ (w b)) + fun b => D.herm.emb τ (w' b)`. Introduce `τ`. Both sides reduce to the same expression. Simplify using `only [hodgeInner, Pi.add_apply, map_add, h, Matrix.mulVec_add, Pi.add_apply, mul_add, Finset.sum_add_distrib, Complex.add_re]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 -/
 theorem hodgeInner_add_right (z : (Σ k, ι k) → ℂ) (v w w' : Fin D.N → Em) :
     D.hodgeInner z v (w + w') = D.hodgeInner z v w + D.hodgeInner z v w' := by

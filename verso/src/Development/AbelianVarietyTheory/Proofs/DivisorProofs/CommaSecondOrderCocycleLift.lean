@@ -12,53 +12,49 @@ noncomputable section
 namespace GlobalTheory.CechDR
 
 /- English proof (translation)
-Introduce `R _ C _ C' _ F G hO hκ hl h2 he hs c'`. Take `⟨c', rfl⟩` from `Hyp2.mk_surjective _ c'`. Take `⟨h0, hh⟩` from `hO (H2.mk _ ⟨c'.1.1, (mem_cechDeRhamTotalCocyclesTwo_iff.1 c'.2).1⟩)`. Take `⟨z, rfl⟩` from `H2.mk_surjective F h0`. Rewrite `hh` using `[CoefMap.pullCohomologyTwo_class, H2.mk_eq_mk]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨y', hy'⟩` from `hh`. Set `z' : ∀ (t t' t'' : C') (_ : t ⟶ t') (_ : t' ⟶ t''), F.obj (G.obj t'')` to `c'.1.1`. Set `a' : ∀ (t t' : C') (_ : t ⟶ t'), Ω[F.obj (G.obj t')⁄R]` to `c'.1.2.1`. Set `η' : ∀ t : C', Om R (F.obj (G.obj t)) 2` to `c'.1.2.2`. Set `y : ∀ (t t' : C') (_ : t ⟶ t'), F.obj (G.obj t')` to `y'`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hz : ∀ ⦃t t' t'' : C'⦄ (a : t ⟶ t') (b : t' ⟶ t''), z.1 _ _ _ (G.map a) (G.map b) = z' t t' t'' a b + (mp F (G.map b) (y t t' a) - y t t'' (a ≫ b) + y t' t'' b)`. Introduce `t t' t'' a b`. Establish `e` using `congrFun (congrFun (congrFun (congrFun (congrFun hy' t) t') t'') a) b`. Express the relevant statement in the definitionally equal form `mp F (G.map b) (y t t' a) - y t t'' (a ≫ b) + y t' t'' b = z.1 _ _ _ (G.map a) (G.map b) - z' t t' t'' a b at e`. Rewrite using `[e]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Set `a2 : ∀ (t t' : C') (_ : t ⟶ t'), Ω[F.obj (G.obj t')⁄R]` to `fun t t' a ↦ a' t t' a - D R _ (y t t' a)`. Establish `ha2 : ∀ ⦃t t' t'' : C'⦄ (a : t ⟶ t') (b : t' ⟶ t''), a2 t t'' (a ≫ b) = p1 F (G.map b) (a2 t t' a) + a2 t' t'' b + D R _ (z.1 _ _ _ (G.map a) (G.map b))`. Introduce `t t' t'' a b`. Establish `e : a' t t'' (a ≫ b) = p1 F (G.map b) (a' t t' a) + a' t' t'' b + D R _ (z' t t' t'' a b)` using `cechDeRhamTotalCocyclesTwo.one c' a b`.
+Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [a2]`. Rewrite using `[e, hz, map_sub, p1_D]`. Simplify using `only [map_add, map_sub]`. Normalize the expressions using the abelian group laws. Take `⟨a₀, ha₀⟩` from `hκ (fun T T' T'' φ ψ ↦ -D R _ (z.1 T T' T'' φ ψ)) (by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result.
 
-Introduce `T T' T'' T''' φ ψ χ`. Establish `e` using `z.2 φ ψ χ`. Simplify using `only [p1_D, map_neg]`. Rewrite using `[← neg_add, ← neg_add, ← map_add, ← map_add, e]) a2 (by`. Introduce `t t' t'' a b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `beta_reduce`. Rewrite using `[ha2]`. Use the proof step `abel)`. Establish `ha₀' : ∀ ⦃T T' T'' : C⦄ (φ : T ⟶ T') (ψ : T' ⟶ T''), a₀ T T'' (φ ≫ ψ) = p1 F ψ (a₀ T T' φ) + a₀ T' T'' ψ + D R _ (z.1 T T' T'' φ ψ)`. Introduce `T T' T'' φ ψ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `e` using `ha₀ φ ψ`. Use `beta_reduce at e`. Take the linear combination `(norm := abel1) e`. Take `⟨β, hβ, θ', hθ'⟩` from `hl (fun t t' a ↦ a₀ _ _ (G.map a) - a2 t t' a) (by`. Introduce `t t' t'' a b`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Use `beta_reduce`. Rewrite using `[G.map_comp, ha2, ha₀']`. Simplify using `only [a2, map_sub]`. Use the proof step `abel)`. Set `a : A1 F` to `fun T T' φ ↦ a₀ T T' φ - β T T' φ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `ha : ∀ ⦃T T' T'' : C⦄ (φ : T ⟶ T') (ψ : T' ⟶ T''), a T T'' (φ ≫ ψ) = p1 F ψ (a T T' φ) + a T' T'' ψ + D R _ (z.1 T T' T'' φ ψ)`. Introduce `T T' T'' φ ψ`. Simplify using `only [a]`. Rewrite using `[ha₀', hβ, map_sub]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `haG : ∀ ⦃t t' : C'⦄ (b : t ⟶ t'), a _ _ (G.map b) = a2 t t' b - (θ' t' - p1 F (G.map b) (θ' t))`. Introduce `t t' b`. Establish `e` using `hθ' b`. Use `beta_reduce at e`. Simplify using `only [a]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take the linear combination `(norm := abel1) -e`. Set `η3 : ∀ t : C', Om R (F.obj (G.obj t)) 2` to `fun t ↦ η' t - dOne R _ (θ' t)`. Establish `hη3 : ∀ ⦃t t' : C'⦄ (b : t ⟶ t'), dOne R _ (a _ _ (G.map b)) = η3 t' - pOm F 2 (G.map b) (η3 t)`. Introduce `t t' b`. Establish `e : η' t' = pOm F 2 (G.map b) (η' t) + dOne R _ (a' t t' b)` using `cechDeRhamTotalCocyclesTwo.two c' b`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [η3]`. Rewrite using `[haG, e]`. Simplify using `only [a2, map_sub, dOne_D, pOm_dOne]`. Normalize the expressions using the abelian group laws. Take `⟨η₀, hη₀⟩` from `h2 (fun T T' φ ↦ dOne R _ (a T T' φ)) (by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `T T' T'' φ ψ`. Use `beta_reduce`. Rewrite using `[ha, map_add, map_add, dOne_D, pOm_dOne, add_zero]) η3 hη3`. Take `⟨ε, hε, hεG⟩` from `he (fun t ↦ η3 t - η₀ (G.obj t)) (by`. Introduce `t t' b`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `beta_reduce`. Establish `e1` using `hη3 b`. Establish `e2` using `hη₀ (G.map b)`. Use `beta_reduce at e2`. Rewrite using `[map_sub]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Take the linear combination `(norm := abel1) e2 - e1)`. Set `η : W0 F 2` to `fun T ↦ η₀ T + ε T`. Establish `hη : ∀ ⦃T T' : C⦄ (φ : T ⟶ T'), η T' = pOm F 2 φ (η T) + dOne R _ (a T T' φ)`. Introduce `T T' φ`. Establish `e` using `hη₀ φ`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Use `beta_reduce at e`. Simplify using `only [η]`. Rewrite using `[hε φ, e, map_add]`. Normalize the expressions using the abelian group laws. Establish `hηG : ∀ t, η (G.obj t) = η3 t`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Introduce `t`. Simplify using `only [η]`. Rewrite using `[hεG t]`. Normalize the expressions using the abelian group laws. Establish `hclosed : ∀ T, dTwo R _ (η T) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `T`. Use `hs T _ fun t u ↦ ?_` and prove the remaining obligations. Establish `e : pOm F 2 u (η T) = η3 t - dOne R _ (a _ _ u)`. Rewrite using `[← hηG, hη u]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e3 : dTwo R _ (η' t) = 0` using `cechDeRhamTotalCocyclesTwo.closed c' t`. Rewrite using `[pOm_dTwo, e]`. Simplify using `only [η3, map_sub, dTwo_dOne, e3, sub_zero]`. Set `c : cechDeRhamTotalCocyclesTwo F` to `⟨(z.1, a, η), mem_cechDeRhamTotalCocyclesTwo_iff.2 ⟨z.2, ha, hη, hclosed⟩⟩`. Use `⟨Hyp2.mk F c, ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Rewrite using `[pullHyp2_mk, Hyp2.mk_eq_mk]`. Use `⟨(y, fun t ↦ -θ' t), Tot2.ext (fun t t' t'' b b' ↦ ?_) (fun t t' b ↦ ?_) fun t ↦ ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `mp F (G.map b') (y t t' b) - y t t'' (b ≫ b') + y t' t'' b' = z.1 _ _ _ (G.map b) (G.map b') - z' t t' t'' b b'`. Rewrite using `[hz]`. Expand and normalize the polynomial expressions, which then agree.
+Normalize the expressions using the abelian group laws. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `-θ' t' - p1 F (G.map b) (-θ' t) - D R _ (y t t' b) = q1 (CoefMap.restrict F G) t' (a _ _ (G.map b)) - c'.1.2.1 t t' b`. Establish `e4 : q1 (CoefMap.restrict F G) t' (a _ _ (G.map b)) = a2 t t' b - (θ' t' - p1 F (G.map b) (θ' t))` using `(cechDeRhamCoefMapOneForms_restrictAlongFunctor F G t' _).trans (haG b)`. Rewrite using `[e4]`. Express the relevant statement in the definitionally equal form `-θ' t' - p1 F (G.map b) (-θ' t) - D R _ (y t t' b) = a2 t t' b - (θ' t' - p1 F (G.map b) (θ' t)) - a' t t' b`. Simplify using `only [a2, map_neg]`.
-
-Normalize the expressions using the abelian group laws. Express the relevant statement in the definitionally equal form `dOne R _ (-θ' t) = qOm (CoefMap.restrict F G) 2 t (η (G.obj t)) - c'.1.2.2 t`. Establish `e5 : qOm (CoefMap.restrict F G) 2 t (η (G.obj t)) = η3 t` using `(qOm_restrict F G t _).trans (hηG t)`. Rewrite using `[e5]`. Express the relevant statement in the definitionally equal form `dOne R _ (-θ' t) = η3 t - η' t`.
-
-Simplify using `only [η3, map_neg]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem pullHyp2_restrict_surjective : ∀ {R : Type} [CommRing R] {C : Type} [Category.{0} C] {C' : Type} [Category.{0} C'] (F : C ⥤ CommAlgCat.{0} R) (G : C' ⥤ C), Function.Surjective (CoefMap.restrict F G).pull2 → (∀ κ : A2 F, (∀ ⦃T T' T'' T''' : C⦄ (φ : T ⟶ T') (ψ : T' ⟶ T'') (χ : T'' ⟶ T'''), p1 F χ (κ T T' T'' φ ψ) + κ T T'' T''' (φ ≫ ψ) χ = κ T T' T''' φ (ψ ≫ χ) + κ T' T'' T''' ψ χ) → ∀ β' : ∀ t t', (t ⟶ t') → Ω[F.obj (G.obj t')⁄R], (∀ ⦃t t' t'' : C'⦄ (a : t ⟶ t') (b : t' ⟶ t''), κ _ _ _ (G.map a) (G.map b) = p1 F (G.map b) (β' t t' a) - β' t t'' (a ≫ b) + β' t' t'' b) → ∃ β : A1 F, ∀ ⦃T T' T'' : C⦄ (φ : T ⟶ T') (ψ : T' ⟶ T''), κ T T' T'' φ ψ = p1 F ψ (β T T' φ) - β T T'' (φ ≫ ψ) + β T' T'' ψ) → (∀ β' : ∀ t t', (t ⟶ t') → Ω[F.obj (G.obj t')⁄R], (∀ ⦃t t' t'' : C'⦄ (a : t ⟶ t') (b : t' ⟶ t''), β' t t'' (a ≫ b) = p1 F (G.map b) (β' t t' a) + β' t' t'' b) → ∃ β : A1 F, (∀ ⦃T T' T'' : C⦄ (φ : T ⟶ T') (ψ : T' ⟶ T''), β T T'' (φ ≫ ψ) = p1 F ψ (β T T' φ) + β T' T'' ψ) ∧ ∃ θ' : ∀ t, Ω[F.obj (G.obj t)⁄R], ∀ ⦃t t' : C'⦄ (a : t ⟶ t'), β _ _ (G.map a) - β' t t' a = θ' t' - p1 F (G.map a) (θ' t)) → (∀ κ : W1 F 2, (∀ ⦃T T' T'' : C⦄ (φ : T ⟶ T') (ψ : T' ⟶ T''), κ T T'' (φ ≫ ψ) = pOm F 2 ψ (κ T T' φ) + κ T' T'' ψ) → ∀ θ' : ∀ t, Om R (F.obj (G.obj t)) 2, (∀ ⦃t t' : C'⦄ (a : t ⟶ t'), κ _ _ (G.map a) = θ' t' - pOm F 2 (G.map a) (θ' t)) → ∃ θ : W0 F 2, ∀ ⦃T T' : C⦄ (φ : T ⟶ T'), κ T T' φ = θ T' - pOm F 2 φ (θ T)) → (∀ η' : ∀ t, Om R (F.obj (G.obj t)) 2, (∀ ⦃t t' : C'⦄ (a : t ⟶ t'), η' t' = pOm F 2 (G.map a) (η' t)) → ∃ η : W0 F 2, (∀ ⦃T T' : C⦄ (φ : T ⟶ T'), η T' = pOm F 2 φ (η T)) ∧ ∀ t, η (G.obj t) = η' t) → (∀ (T : C) (x : Om R (F.obj T) 3), (∀ t (u : T ⟶ G.obj t), pOm F 3 u x = 0) → x = 0) → Function.Surjective (pullHyp2 (CoefMap.restrict F G)) := by
   intro R _ C _ C' _ F G hO hκ hl h2 he hs c'

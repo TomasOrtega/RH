@@ -14,17 +14,15 @@ open Formalism.InvariantFactorPaths.G7 (UnrOK IsLawOfLog cob)
 namespace GlobalTheory.KerStd.HypCoord
 
 /- English proof (translation)
-Introduce `D p _ lam σ hσ hcl N N' L L' P P' hP hP' r b hb w a b₀ i`. Take `⟨h2, hq, -⟩` from `GlobalTheory.InertCompare.ne_of_inert D p hcl`. Take `⟨ρ, hρ⟩` from `exists_ringHom_rhoK D lam σ hσ hcl w`. Use `set τ := tauPl D w with hτ`. Establish `hρK : rhoK D lam w = fun y => ρ y` using `funext fun y => (hρ y).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρC : ∀ y, ((ρ y : MaximalUnramifiedExtension p) : ℂ_[p]) = GlobalTheory.KerStd.UnitaryMat.rho D lam τ y` using `fun y => by`. Rewrite using `[(hρ y).2, GlobalTheory.KerStd.UnitaryMat.tauEmb_eq]`. Establish `hPW : LocBasisW D (GlobalTheory.KerStd.UnitaryMat.rho D lam τ) L (P τ)`. Rewrite using `[← GlobalTheory.KerStd.UnitaryMat.tauEmb_eq]`. Conclude with `hP.1 τ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hP'W : LocBasisW D (GlobalTheory.KerStd.UnitaryMat.rho D lam τ) L' (P' τ)`. Rewrite using `[← GlobalTheory.KerStd.UnitaryMat.tauEmb_eq]`. Conclude with `hP'.1 τ`. Establish `hdet : IsUnit (P' τ).det` using `isUnit_iff_ne_zero.2 hP'W.1`. Establish `hQ : (P' τ)⁻¹ * P' τ = 1` using `Matrix.nonsing_inv_mul _ hdet`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hinv : ((P' τ).map (fun y => ρ y))⁻¹ = ((P' τ)⁻¹).map (fun y => ρ y)`. Use `Matrix.inv_eq_left_inv ?_` and prove the remaining obligations. Rewrite using `[show ((P' τ)⁻¹).map (fun y => ρ y) = ((P' τ)⁻¹).map ρ from rfl, show (P' τ).map (fun y => ρ y) = (P' τ).map ρ from rfl, ← Matrix.map_mul, hQ, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hp1 : ‖(p : ℂ_[p])‖ < 1`. Rewrite using `[GlobalTheory.PadicPlaceBound.norm_prime_padicComplex]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : p.Prime).one_lt)`. Establish `hint` using `GlobalTheory.KerStd.UnitaryMat.intIn_of_locBasis hp1 (fun x hx => GlobalTheory.EigenGenerator.norm_padicEmbedding_le_one_of_mem_inverseHalfDifferent D h2 hq _ hx) hQ hPW hP'W hb i b₀ a`. Establish `e : hK D lam P P' b w a b₀ i = ρ (((P' τ)⁻¹ * b i * P τ) b₀ a)`. Unfold `hK`. Rewrite using `[← hτ, hρK, hinv]`.
-
-Simplify using `only [Matrix.mul_apply, Matrix.map_apply, map_sum, map_mul, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `show ‖((hK D lam P P' b w a b₀ i : MaximalUnramifiedExtension p) : ℂ_[p])‖ ≤ 1`. Rewrite using `[e, hρC]`. Conclude with `hint`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_hK_le_one : ∀ (D : D7) (p : ℕ) [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) (σ : MaximalUnramifiedExtension p →+* MaximalUnramifiedExtension p), UnrOK (MaximalUnramifiedExtension p) p σ → (IsResidueClassZero D p ∨ IsSg D p) → ∀ (N N' : ℕ) (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)) (P : D.what₂.Tau → Matrix (Fin N) (Fin N) D.host.E) (P' : D.what₂.Tau → Matrix (Fin N') (Fin N') D.host.E), StdBases D lam L P → StdBases D lam L' P' → ∀ (r : ℕ) (b : Fin r → Matrix (Fin N') (Fin N) D.host.E), LocBasis D p (YYl D L L') b → ∀ w a b₀ i, ‖hK D lam P P' b w a b₀ i‖ ≤ 1 := by
   intro D p _ lam σ hσ hcl N N' L L' P P' hP hP' r b hb w a b₀ i

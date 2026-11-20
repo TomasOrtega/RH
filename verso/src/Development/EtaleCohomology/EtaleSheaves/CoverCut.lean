@@ -22,9 +22,9 @@ def ProEqv : Prop := Hyp → ∀ (q : ℕ) (i : ℤ) (A : Type) [CommRing A] [Is
   PB q i g
 
 /- English proof (translation)
-Introduce `H q i A _ _ hq P _ _ p hZ`. Take `⟨Y, k, hk, hs, hY⟩` from `hB (P := P)`. Establish `: CompactSpace Y` using `QuasiCompact.compactSpace_of_compactSpace k`. Establish `: QuasiSeparatedSpace Y` using `quasiSeparatedSpace_of_quasiSeparated k`. Use `⟨Y, k, hk, hs, hP H q i A hq (k ≫ p) fun y => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨J, _, _, D, c, ι, hc, hA, hint⟩` from `hY y`. Use `⟨J, inferInstance, inferInstance, D, c, ι, hc, fun j => ?_⟩` and prove the remaining obligations. Use `hZ c.pt ((c.π.app j ≫ ι j) ≫ k) (hint j) hA` as an intermediate fact. Simplify `this` using `only [Category.assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem goal_of (hB : Build) (hP : ProEqv) : Cover := by
   intro H q i A _ _ hq P _ _ p hZ

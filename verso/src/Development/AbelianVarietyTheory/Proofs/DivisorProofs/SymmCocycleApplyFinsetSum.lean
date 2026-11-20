@@ -6,9 +6,9 @@ open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv G
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h1` using `hc (a + b) c e`. Establish `h2` using `hc a b c`. Establish `h3` using `hc (a + c) b e`. Establish `h4` using `hc a c b`. Rewrite `h3` using `[add_right_comm a c b]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h4` using `[add_comm c b, hs c b]`. Rewrite using `[← sub_eq_zero]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem symmCocycle_swap {A B : Type} [AddCommGroup A] [AddCommGroup B] (γ : A → A → B)
     (hs : ∀ x y, γ x y = γ y x) (hc : ∀ x y z, γ y z - γ (x + y) z + γ x (y + z) - γ x y = 0)
@@ -28,13 +28,13 @@ theorem symmCocycle_swap {A B : Type} [AddCommGroup A] [AddCommGroup B] (γ : A 
     _ = 0 := by rw [h1, h2, h3, h4]; simp
 
 /- English proof (translation)
-Introduce `A B _ _ γ hs hc h0 d`. Proceed by induction on `d with`. Consider the case `zero => intro x y`. Simplify using `[h0]`. Consider the case `succ d ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `x y`. Establish `ih'` using `ih (fun j => x (Fin.castSucc j)) (fun j => y (Fin.castSucc j))`. Simplify using `only [Finset.sum_filter] at ih' ⊢`. Simplify using `only [Fin.sum_univ_castSucc, Fin.castSucc_lt_castSucc_iff, Fin.castSucc_lt_last, if_true, lt_irrefl, if_false, add_zero] at ih' ⊢`. Establish `hl : ∀ i : Fin d, ¬ (Fin.last d < i.castSucc)` using `fun i => not_lt.mpr (Fin.castSucc_lt_last i).le`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hl, if_false, add_zero] at ih' ⊢`. Establish `k` using `symmCocycle_swap γ hs hc (∑ m : Fin d, x m.castSucc) (x (Fin.last d)) (∑ m : Fin d, y m.castSucc) (y (Fin.last d))`. Rewrite `k` using `[ih']`. Rewrite using `[Finset.sum_add_distrib]`. Rewrite `k`, the goal using `[← sub_eq_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← k]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem symmCocycle_sum : ∀ (A B : Type) [AddCommGroup A] [AddCommGroup B] (γ : A → A → B), (∀ x y, γ x y = γ y x) → (∀ x y z, γ y z - γ (x + y) z + γ x (y + z) - γ x y = 0) → γ 0 0 = 0 → ∀ (d : ℕ) (x y : Fin d → A), γ (∑ m, x m) (∑ m, y m) = ∑ m, γ (x m) (y m) + ((∑ m, γ (∑ j ∈ Finset.univ.filter (· < m), (x j + y j)) (x m + y m)) - (∑ m, γ (∑ j ∈ Finset.univ.filter (· < m), x j) (x m)) - ∑ m, γ (∑ j ∈ Finset.univ.filter (· < m), y j) (y m)) := by
   intro A B _ _ γ hs hc h0 d

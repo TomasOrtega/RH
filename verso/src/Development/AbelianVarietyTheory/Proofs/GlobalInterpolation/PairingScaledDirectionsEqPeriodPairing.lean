@@ -6,17 +6,17 @@ open NumberField Formalism.BasicNotions Classical Formalism.MainNotions Formalis
 namespace GlobalTheory.MomFin
 
 /- English proof (translation)
-Introduce `D cc δ δ₀ B N N' g S e p _ lam Ω r b y a hq _ _ hb`. Establish `hphi : ∀ z : D.host.E, D.host.φ₀ z ∈ Qbar` using `fun z => by`. Establish `hx : IsAlgebraic ℚ z` using `Algebra.IsAlgebraic.isAlgebraic z`. Conclude with `(mem_algebraicClosure_iff).2 (hx.algHom D.host.φ₀.toRatAlgHom)`. Establish `hlin : ∀ (c : ℂ) (z w : Fin g → ℂ), JMB.beta S.d S.Hm (c • z) w = c * JMB.beta S.d S.Hm z w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c z w`. Simplify using `only [JMB.beta, JMB.hf, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations. Use `set n := Ideal.absNorm cc`. Establish `key : ∀ i, JMB.lamA lam (JMB.beta S.d S.Hm ((δ₀ / δ) • e (δ • embV D B.tor y)) (e (δ • embV D B.tor (b i)))) = (lamC lam (δ / δ₀))⁻¹ * ((n : ℂ_[p]))⁻¹ * lamC lam (D.host.φ₀ ((hYY D y (b i) : D.host.K) : D.host.E))`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Rewrite using `[hlin, hb]`. Use `set z := D.host.φ₀ ((hYY D y (b i) : D.host.K) : D.host.E)`. Establish `hz` using `hphi ((hYY D y (b i) : D.host.K) : D.host.E)`. Establish `heq : δ₀ / δ * (z / (n : ℂ)) = (((⟨δ / δ₀, hq⟩ : Qbar)⁻¹ * ((n : Qbar))⁻¹ * ⟨z, hz⟩ : Qbar) : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : (((n : Qbar)) : ℂ) = (n : ℂ)` using `by norm_cast`. Simplify using `only [IntermediateField.coe_mul, IntermediateField.coe_inv, hc]`. Rewrite using `[inv_div]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmem : δ₀ / δ * (z / (n : ℂ)) ∈ Qbar` using `by rw [heq]; exact SetLike.coe_mem _`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `JMB.lamA lamC`. Rewrite using `[dif_pos hmem, dif_pos hq, dif_pos hz]`. Establish `: (⟨δ₀ / δ * (z / (n : ℂ)), hmem⟩ : Qbar) = (⟨δ / δ₀, hq⟩ : Qbar)⁻¹ * ((n : Qbar))⁻¹ * ⟨z, hz⟩` using `Subtype.ext heq`. Rewrite using `[this, map_mul, map_mul, map_inv₀, map_inv₀, map_natCast]`. Unfold `JMB.pairD pairN`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [key]`. Establish `hzc : ∀ i, JMB.zc (a i) = zc (a i)` using `fun i => rfl`. Simplify using `only [hzc, mul_inv, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => by ring` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pairing_scaled : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ δ₀ : ℂ) (B : Base D cc δ) (N N' : ℕ) (g : ℕ) (S : JMB.Setup g) (e : VC D N N' ≃L[ℂ] (Fin g → ℂ)) (p : ℕ) [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) (Ω : ℂ_[p]) (r : ℕ) (b : Fin r → Matrix (Fin N') (Fin N) D.host.E) (y : Matrix (Fin N') (Fin N) D.host.E) (a : Fin r → ℤ_[p]), δ / δ₀ ∈ Qbar → δ / δ₀ ≠ 0 → Nat.Coprime (Ideal.absNorm cc) p → (∀ x y : Matrix (Fin N') (Fin N) D.host.E, JMB.beta S.d S.Hm (e (δ • embV D B.tor x)) (e (δ • embV D B.tor y)) = D.host.φ₀ ((hYY D x y : D.host.K) : D.host.E) / (Ideal.absNorm cc : ℂ)) → JMB.pairD lam Ω S.d S.Hm (fun i => e (δ • embV D B.tor (b i))) ((δ₀ / δ) • e (δ • embV D B.tor y)) a = pairN D lam (Ω * (Ideal.absNorm cc : ℂ_[p]) * lamC lam (δ / δ₀)) b y a := by
   intro D cc δ δ₀ B N N' g S e p _ lam Ω r b y a hq _ _ hb

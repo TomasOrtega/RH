@@ -16,13 +16,11 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace PositivityTheory.SiegelWeilFormula.Tauto
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 /- English proof (translation)
-Establish `hc` using `_root_.PositivityTheory.SiegelWeilFormula.Tauto.cpt_k hS d`. Use `haveI := hc.cnt`. Use `haveI := d.ok.haar`. Establish `hom : ∀ x, ∀ Ψ ∈ d.sch, d.om x Ψ ∈ d.sch` using `fun x Ψ hΨ => d.ok.dbl.weil.2.1.pres x Ψ hΨ`. Establish `hcomm : ∀ Φ ∈ d.sch, ∀ x g, d.om x (d.S g Φ) = d.S g (d.om x Φ)` using `fun Φ hΦ => (hT F E σ d Φ hΦ).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨Λ, hΛ, hΛv⟩` from `_root_.PositivityTheory.SiegelWeilFormula.Tauto.exists_meanAdm_k hS hP hT d`. Use `⟨fd_ne d.ok.dom, (hc.fin d.μ d.D d.ok.haar d.ok.dom).ne, fun Φ hΦ => ⟨fun x => ?_, ?_, fun γ hγ x => ?_⟩⟩` and prove the remaining obligations. Simplify using `only [hcomm Φ hΦ]`. Conclude with `_root_.PositivityTheory.SiegelWeilFormula.Tauto.intOn_S_k hS hP hT d (hom x Φ hΦ)`. Establish `e : d.I Φ = fun x => Λ (d.om x Φ)` using `funext fun x => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hΛv _ (hom x Φ hΦ)]`. Use `show PositivityTheory.SiegelWeilFormula.thetaMean d.om d.S d.μ d.D Φ x = _`. Rewrite using `[PositivityTheory.SiegelWeilFormula.thetaMean, setAverage_eq]`. Simplify using `only [hcomm Φ hΦ]`. Rewrite using `[e]`.
-
-Conclude with `d.ok.dbl.weil.2.1.cont Λ hΛ Φ hΦ`. Use `show PositivityTheory.SiegelWeilFormula.thetaMean d.om d.S d.μ d.D Φ (γ * x) = PositivityTheory.SiegelWeilFormula.thetaMean d.om d.S d.μ d.D Φ x`. Simplify using `only [PositivityTheory.SiegelWeilFormula.thetaMean, map_mul, Module.End.mul_apply]`. Use `congrArg (fun f : UA σ d.A.J → ℂ => ⨍ g in d.D, f g ∂d.μ) (funext fun g => ?_)` and prove the remaining obligations. Conclude with `_root_.PositivityTheory.SiegelWeilFormula.Tauto.thetaSum_rational_invariant d γ hγ _ (hom x _ (d.ok.dbl.lin.pres g Φ hΦ))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem thetaAuto_at_k (hS : GlobalTheory.Published.SiegelSetUnitary) (hP : _root_.PositivityTheory.SiegelWeilFormula.TPar_k) (hT : _root_.PositivityTheory.SiegelWeilFormula.TTheta_k) (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) :
     d.μ d.D ≠ 0 ∧ d.μ d.D ≠ ⊤ ∧ ∀ Φ ∈ d.sch,
@@ -49,7 +47,7 @@ theorem thetaAuto_at_k (hS : GlobalTheory.Published.SiegelSetUnitary) (hP : _roo
     refine congrArg (fun f : UA σ d.A.J → ℂ => ⨍ g in d.D, f g ∂d.μ) (funext fun g => ?_)
     exact _root_.PositivityTheory.SiegelWeilFormula.Tauto.thetaSum_rational_invariant d γ hγ _ (hom x _ (d.ok.dbl.lin.pres g Φ hΦ))
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ d` and use `_root_.PositivityTheory.SiegelWeilFormula.Tauto.thetaAuto_at_k hS hP hT d`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem thetaAuto_k (hS : GlobalTheory.Published.SiegelSetUnitary) (hP : _root_.PositivityTheory.SiegelWeilFormula.TPar_k) (hT : _root_.PositivityTheory.SiegelWeilFormula.TTheta_k) : _root_.PositivityTheory.SiegelWeilFormula.ThetaAuto_k :=
   fun _ _ _ _ _ _ _ _ d => _root_.PositivityTheory.SiegelWeilFormula.Tauto.thetaAuto_at_k hS hP hT d

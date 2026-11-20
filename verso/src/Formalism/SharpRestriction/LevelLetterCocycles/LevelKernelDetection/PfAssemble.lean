@@ -44,7 +44,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 namespace Assemble
 
 /- English proof (translation)
-Take `⟨⟨o, y⟩, h⟩` from `IsLocalization.surj (nonZeroDivisors O) a`. Conclude with `⟨y, o, IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors y.2, by rw [mul_comm]; exact h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem frac_of [IsDomain O] [IsFractionRing O LL] (a : LL) :
     ∃ y o : O, algebraMap O LL y ≠ 0 ∧ algebraMap O LL y * a = algebraMap O LL o := by
@@ -52,7 +52,7 @@ theorem frac_of [IsDomain O] [IsFractionRing O LL] (a : LL) :
   exact ⟨y, o, IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors y.2, by rw [mul_comm]; exact h⟩
 
 /- English proof (translation)
-Take `⟨w, hw, h⟩` from `π₀₁_eq hR`. Conclude with `⟨hw.unit, by rw [(baseIdOf hR).ι_X, IsUnit.unit_spec]; exact h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem firstGeometricCondition_of_properties (hR : Ring9 W) :
     ∃ w : (PowerSeries O)ˣ, (baseIdOf hR).ι PowerSeries.X = (w : PowerSeries O) * PowerSeries.X ^ (PD.p - 1) := by
@@ -62,7 +62,7 @@ theorem firstGeometricCondition_of_properties (hR : Ring9 W) :
 end Assemble
 
 /- English proof (translation)
-The claim follows from `delta_holds hR uZ ιZ c lev_Γ hω valRing gamInv := gamInv_holds uZ ιZ T c gamRho := gamRho_holds hR uZ ιZ c lev_Γ hgamK huZ kap := kap_holds C ell Λ κ hP5 hT hJl hs1 hR m hm hκ expSemi := expSemi_holds Lb hR T c levN_eq locInv := locInv_holds Lb C κ (delta_holds hR uZ ιZ c lev_Γ h …`.
+A detailed English derivation is pending.
 -/
 theorem lvHyp_holds (Lb : LevB W) (hR : Ring9 W) (uZ : ℤ_[PD.p]ˣ) (ιZ : ℤ_[PD.p] →+* O) {T : LocLat G Qp LL O}
     (C : Coord W (baseIdOf hR) T) (c : ZMod n) (ell : ℕ) (Λ κ : PowerSeries O) {r : ℕ} (e : Fin r → C.V)
@@ -102,7 +102,7 @@ theorem lvHyp_holds (Lb : LevB W) (hR : Ring9 W) (uZ : ℤ_[PD.p]ˣ) (ιZ : ℤ_
   rhoC := rhoC_holds hR c
 
 /- English proof (translation)
-Establish `R` using `ringSteps_of Hy ((baseIdOf hR).Bs.ff' ell j M g) kind b η ϖ hϖ (by omega) hℓm n0 hn0 hroot (Assemble.firstGeometricCondition_of_properties hR) G2 hφ hρζ huZv hutie hom'`. Establish `hp0 : (PD.p : LL) ≠ 0` using `Nat.cast_ne_zero.2 PD.hp.ne_zero`. Establish `hP5' : ∀ i, (latOf C).P5M i m` using `fun i => LvLoc.latOf_P5M_of_p5_of_le C (hP5 T Mj hj hT hJl) hs1 hR m hm i`. Conclude with `{ k1b := R.1 k1c := fun s hs => (R.2.2.1 s hs).1 k1d := fun s hs => (R.2.2.1 s hs).2 unitsAt := R.2.2.2.1 compl := R.2.2.2.2 filt := filt_holds ell hfin jumps := hjumps mem := hmem locReg := locReg_holds Hy j M g η kind b m hκ R.1 R.2.2.2.1 hP5' levN_eq levB_φ lev_φ hp0 hs1 hP4 p …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem levSteps_of_jumps [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O]
     [CharZero LL] [IsFractionRing O LL]
@@ -175,7 +175,7 @@ theorem levSteps_of_jumps [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComple
       lamSpan := lamSpan_holds hP3 hP9 hBasis hBasis_e rfl }
 
 /- English proof (translation)
-The claim follows from `levSteps_of_jumps Hy ϖ j M g G₀ Sz η _ _ levN_eq levB_φ lev_φ levB_Γ hs1 hP4 hP3 hP9 hP5 hT hJl hfin hϖ hℓm n0 hn0 hroot G2 hφ hρζ huZv hutie hom' hl huZ m hm hκ hBasis hBasis_e hmem hpa1b (jumps_holds hK c ell G₀ Sz η ty hJ)`.
+A detailed English derivation is pending.
 -/
 theorem levSteps_holds [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O]
     [CharZero LL] [IsFractionRing O LL]
@@ -228,7 +228,7 @@ theorem levSteps_holds [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete 
   levSteps_of_jumps Hy ϖ j M g G₀ Sz η _ _ levN_eq levB_φ lev_φ levB_Γ hs1 hP4 hP3 hP9 hP5 hT hJl hfin hϖ hℓm n0 hn0 hroot G2 hφ hρζ huZv hutie hom' hl huZ m hm hκ hBasis hBasis_e hmem hpa1b (jumps_holds hK c ell G₀ Sz η ty hJ)
 
 /- English proof (translation)
-The claim follows from `levSteps_of_jumps Hy ϖ j M g G₀ Sz η _ _ levN_eq levB_φ lev_φ levB_Γ hs1 hP4 hP3 hP9 hP5 hT hJl hfin hϖ hℓm n0 hn0 hroot G2 hφ hρζ huZv hutie hom' hl huZ m hm hκ hBasis hBasis_e hmem hpa1b (jumps_holds_quot hK hQuot F hc₀ hc hon c ell G₀ Sz η ty hJ)`.
+A detailed English derivation is pending.
 -/
 theorem levSteps_holds_quot [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O]
     [CharZero LL] [IsFractionRing O LL]
@@ -286,7 +286,7 @@ theorem levSteps_holds_quot [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComp
     (jumps_holds_quot hK hQuot F hc₀ hc hon c ell G₀ Sz η ty hJ)
 
 /- English proof (translation)
-The claim follows from `locComm_holds hC Hy₁ Hy₂ Mh j M g η kind b levN_eq (kapUnit_holds Hy₁ j M g η kind b m₁ hκ₁ hk1b₁ hUnits₁) (kapUnit_holds Hy₂ j M g η kind b m₂ hκ₂ hk1b₂ hUnits₂) loclComm := loclComm_holds hC Hy₁ Hy₂ Mh j M g η kind b e₁ e₂ P rfl rfl he₁ he₂ hP mapFl := mapFl_holds Hy₁ Hy₂ Mh j …`.
+A detailed English derivation is pending.
 -/
 theorem mapSteps_holds {T₁ T₂ : LocLat G Qp LL O} {C₁ : Coord W (baseIdOf hR) T₁} {C₂ : Coord W (baseIdOf hR) T₂}
     {F : LatHom T₁.L T₂.L} {c : ZMod n} {ell : ℕ} {H : ℕ → ℕ} {κ₁ κ₂ : PowerSeries O} {r₁ r₂ : ℕ}
@@ -320,7 +320,7 @@ theorem mapSteps_holds {T₁ T₂ : LocLat G Qp LL O} {C₁ : Coord W (baseIdOf 
   prLIs := prLIs_holds hC e₁ e₂ P he₂ hP
 
 /- English proof (translation)
-The claim follows from `mapHyp_holds hR uZ ιZ F c`.
+A detailed English derivation is pending.
 -/
 theorem mapHyp_of (hR : Ring9 W) (uZ : ℤ_[PD.p]ˣ) (ιZ : ℤ_[PD.p] →+* O) {T₁ T₂ : LocLat G Qp LL O}
     (F : LatHom T₁.L T₂.L) (c : ZMod n) : MapHyp hR uZ ιZ F c :=
@@ -329,13 +329,13 @@ theorem mapHyp_of (hR : Ring9 W) (uZ : ℤ_[PD.p]ˣ) (ιZ : ℤ_[PD.p] →+* O) 
 namespace Assemble
 
 /- English proof (translation)
-The claim follows from `(AlgEquiv.ofBijective (Algebra.ofId K₀ K) hKb).toLinearEquiv.finrank_eq.symm.trans (Module.finrank_self K₀)`.
+A detailed English derivation is pending.
 -/
 theorem finrank_one (hKb : Function.Bijective (algebraMap K₀ K)) : Module.finrank K₀ K = 1 :=
   (AlgEquiv.ofBijective (Algebra.ofId K₀ K) hKb).toLinearEquiv.finrank_eq.symm.trans (Module.finrank_self K₀)
 
 /- English proof (translation)
-Rewrite `hℓm` using `[(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ, Ideal.mem_span_singleton]`. Take `⟨u, hu⟩` from `hℓm`. Conclude with `⟨1, u, by rw [pow_one, hu]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pow_unif [IsDomain O] [IsDiscreteValuationRing O] {ϖ : O} (hϖ : Irreducible ϖ)
     (hℓm : ((PD.p : ℕ) : O) ∈ IsLocalRing.maximalIdeal O) :
@@ -345,7 +345,7 @@ theorem pow_unif [IsDomain O] [IsDiscreteValuationRing O] {ϖ : O} (hϖ : Irredu
   exact ⟨1, u, by rw [pow_one, hu]⟩
 
 /- English proof (translation)
-Introduce `h`. Establish `h2 : ((PD.p : ℕ) : LL) = 0` using `by rw [← map_natCast (algebraMap O LL), h, map_zero]`. Conclude with `PD.hp.ne_zero (Nat.cast_eq_zero.1 h2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem p_ne_zero [CharZero LL] : ((PD.p : ℕ) : O) ≠ 0 := by
   intro h
@@ -353,7 +353,7 @@ theorem p_ne_zero [CharZero LL] : ((PD.p : ℕ) : O) ≠ 0 := by
   exact PD.hp.ne_zero (Nat.cast_eq_zero.1 h2)
 
 /- English proof (translation)
-Take `⟨Mj, hj, h⟩` from `jumps_bounded_crystalline (W := W) hDR hKb T hc`. Conclude with `⟨Mj, hj, Finset.univ.sup Mj, h, fun i => Finset.le_sup (Finset.mem_univ i)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem jumps_bound [Fintype (K →ₐ[Qp] LL)] (hDR : Formalism.MainNotions.TruncatedSeriesCountingBounds.DdREqDcris PD LL)
     (hKb : Function.Bijective (algebraMap K₀ K)) {T : LocLat G Qp LL O} (hc : CrysLat PD T) :
@@ -364,7 +364,7 @@ theorem jumps_bound [Fintype (K →ₐ[Qp] LL)] (hDR : Formalism.MainNotions.Tru
 end Assemble
 
 /- English proof (translation)
-The claim follows from `lvHyp_holds Lb hR uZ ιZ C c ell Λ κ e lev_Γ levB_Γ levN_eq (W.gamK_eq_one hs1 (by omega)) hs1 hP5 hT hJl valRing (hv_holds W valRing.2.2) (hω_holds (card_DelF hs1 (by omega) (Assemble.finrank_one hKb) h9) valRing.1 ιZ) (huZ_holds hutie valRing.2.2) m hm hκ`.
+A detailed English derivation is pending.
 -/
 theorem lvHyp_holds' (Lb : LevB W) (hR : Ring9 W) (uZ : ℤ_[PD.p]ˣ) (ιZ : ℤ_[PD.p] →+* O) {T : LocLat G Qp LL O}
     (C : Coord W (baseIdOf hR) T) (c : ZMod n) (ell : ℕ) (Λ κ : PowerSeries O) {r : ℕ} (e : Fin r → C.V)
@@ -394,11 +394,11 @@ theorem lvHyp_holds' (Lb : LevB W) (hR : Ring9 W) (uZ : ℤ_[PD.p]ˣ) (ιZ : ℤ
     (huZ_holds hutie valRing.2.2) m hm hκ
 
 /- English proof (translation)
-Establish `hℓ2 : PD.p ≠ 2` using `by omega`. Establish `hK1` using `Assemble.finrank_one hKb`. Establish `hmod : Formalism.MainNotions.DeltaInvariantLattices.wachModuleOverLetters W T W.π₀` using `((h9 hs1 hℓ2).2.2 hK1).2`. Establish `R` using `ringSteps_of Hy ((baseIdOf hR).Bs.ff' ell j M g) kind b η ϖ hϖ hℓ2 hℓm n hn hroot (Assemble.firstGeometricCondition_of_properties hR) G2 hφ hρζ huZv hutie hom'`. Establish `hfin : FiniteDimensional LL ↥(Dcris PD T.ρ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hc.1` as an intermediate fact. Conclude with `lvFil_fin_of_isCrys PD T.ρ hc.2.2.2`. Establish `hP5' : ∀ i, (latOf C).P5M i m` using `fun i => LvLoc.latOf_P5M_of_p5_of_le C (hP5 T Mj Hj hc.2.2.2 hJl) hs1 hR m hm i`. Establish `he : ∀ k, e k ∈ (latOf C).N (c - (ell : ZMod n))` using `fun k => by`. Rewrite using `[← hBasis_e k]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hBasis k).2`. Establish `hmem` using `mem_holds hP4L hSat hc.2.2.2 (levN_eq T) hmod hP3 (free_of (baseIdOf_inj hR) (baseIdOf_full hR) hmod C c) hroot hn m hκ R.1 R.2.2.2.1 (filt_holds ell hfin) ϖ R.2.2.2.2 (Assemble.pow_unif hϖ hℓm) Hy ((baseIdOf hR).Bs.ff' ell j M g) kind b η`. Establish `hpa1b` using `lvData_localizesConst_of_crystalline Hy j M g η kind b m e hκ he rfl R.1 R.2.2.2.1 hP5' levN_eq levB_φ lev_φ levB_Γ cmp_eq hc.2.2.2 hs1 hℓ2 hP4 hR hj h3g`. Conclude with `levSteps_of_jumps Hy ϖ j M g G₀ Sz η kind b levN_eq levB_φ lev_φ levB_Γ hs1 hP4 hP3 hmod hP5 hc.2.2.2 hJl hfin hϖ hℓm n hn hroot G2 hφ hρζ huZv hutie hom' hl (huZ_holds hutie hv_int) m hm hκ hBasis hBasis_e hmem hpa1b hjumps`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem levSteps_of_jumps' [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O]
     [CharZero LL] [IsFractionRing O LL]
@@ -467,7 +467,7 @@ theorem levSteps_of_jumps' [IsDomain O] [IsDiscreteValuationRing O] [IsAdicCompl
     hBasis hBasis_e hmem hpa1b hjumps
 
 /- English proof (translation)
-The claim follows from `levSteps_of_jumps' Hy ϖ j M g G₀ Sz η _ _ levN_eq levB_φ lev_φ levB_Γ cmp_eq hs1 hP4 hP4L hSat hP3 h9 hP5 hc hJl hv_int hKb hϖ hℓm hn hroot G2 hφ hρζ huZv hutie hom' hl m hm hκ hBasis hBasis_e hj h3g (jumps_holds hKb.2 c ell G₀ Sz η ty hJ)`.
+A detailed English derivation is pending.
 -/
 theorem levSteps_holds' [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O]
     [CharZero LL] [IsFractionRing O LL]
@@ -517,7 +517,7 @@ theorem levSteps_holds' [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete
   levSteps_of_jumps' Hy ϖ j M g G₀ Sz η _ _ levN_eq levB_φ lev_φ levB_Γ cmp_eq hs1 hP4 hP4L hSat hP3 h9 hP5 hc hJl hv_int hKb hϖ hℓm hn hroot G2 hφ hρζ huZv hutie hom' hl m hm hκ hBasis hBasis_e hj h3g (jumps_holds hKb.2 c ell G₀ Sz η ty hJ)
 
 /- English proof (translation)
-The claim follows from `levSteps_of_jumps' Hy ϖ j M g G₀ Sz η _ _ levN_eq levB_φ lev_φ levB_Γ cmp_eq hs1 hP4 hP4L hSat hP3 h9 hP5 hc hJl hv_int hKb hϖ hℓm hn hroot G2 hφ hρζ huZv hutie hom' hl m hm hκ hBasis hBasis_e hj h3g (jumps_holds_quot hKb.2 hQuot F hc₀ hc hon c ell G₀ Sz η ty hJ)`.
+A detailed English derivation is pending.
 -/
 theorem levSteps_holds_quot' [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O]
     [CharZero LL] [IsFractionRing O LL]
@@ -571,13 +571,11 @@ theorem levSteps_holds_quot' [IsDomain O] [IsDiscreteValuationRing O] [IsAdicCom
     (jumps_holds_quot hKb.2 hQuot F hc₀ hc hon c ell G₀ Sz η ty hJ)
 
 /- English proof (translation)
-Take `⟨Mj₁, hj₁, m₁, hJl₁, hm₁⟩` from `Assemble.jumps_bound (W := W) hDR hKb hc₁`. Take `⟨Mj₂, hj₂, m₂, hJl₂, hm₂⟩` from `Assemble.jumps_bound (W := W) hDR hKb hc₂`. Establish `hT₁` using `hc₁.2.2.2`. Establish `hT₂` using `hc₂.2.2.2`. Establish `Hy₁` using `lvHyp_holds' Lb hR uZ ιZ C₁ c ell (Formalism.ExponentWindows.abelian₂ (baseIdOf hR).Bs.p H ell) (Formalism.ExponentWindows.abelian₂ (baseIdOf hR).Bs.p H ell * ∏ s ∈ Finset.range ell, (baseIdOf hR).Bs.p s ^ m₁) e₁ lev_Γ levB_Γ levN_eq hs1 hP5 (hP9 T₁ hT₁) hT₁ hJl₁ valRing hKb hl h …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `Hy₂` using `lvHyp_holds' Lb hR uZ ιZ C₂ c ell (Formalism.ExponentWindows.abelian₂ (baseIdOf hR).Bs.p H ell) (Formalism.ExponentWindows.abelian₂ (baseIdOf hR).Bs.p H ell * ∏ s ∈ Finset.range ell, (baseIdOf hR).Bs.p s ^ m₂) e₂ lev_Γ levB_Γ levN_eq hs1 hP5 (hP9 T₂ hT₂) hT₂ hJl₂ valRing hKb hl h …`. Establish `ls₁` using `levSteps_holds' Hy₁ ϖ j M g G₀ Sz η ty levN_eq (levB_φ T₁ hT₁) lev_φ levB_Γ (cmp_eq T₁ hT₁) hs1 (hP4 T₁ hT₁) hP4L hSat (hP3 T₁ hT₁) (hP9 T₁ hT₁) hP5 hc₁ hJl₁ valRing.2.2 hKb hϖ hℓm hn hroot G2 hφ hρζ huZv hutie hom' hl m₁ hm₁ rfl hBasis₁ hBasis_e₁ hj h3g hJ`. Establish `ls₂` using `levSteps_holds_quot' Hy₂ ϖ j M g G₀ Sz η ty levN_eq (levB_φ T₂ hT₂) lev_φ levB_Γ (cmp_eq T₂ hT₂) hs1 (hP4 T₂ hT₂) hP4L hSat (hP3 T₂ hT₂) (hP9 T₂ hT₂) hP5 hc₂ hJl₂ valRing.2.2 hKb hϖ hℓm hn hroot G2 hφ hρζ huZv hutie hom' hl m₂ hm₂ rfl hBasis₂ hBasis_e₂ hj h3g hQuot F hc₁ hon hJ`. Establish `he₁ : ∀ k, e₁ k ∈ (latOf C₁).N (c - (ell : ZMod n))` using `fun k => by`. Rewrite using `[← hBasis_e₁ k]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hBasis₁ k).2`. Establish `he₂ : ∀ k, e₂ k ∈ (latOf C₂).N (c - (ell : ZMod n))` using `fun k => by`. Rewrite using `[← hBasis_e₂ k]`. Conclude with `(hBasis₂ k).2`. Establish `ms` using `mapSteps_holds hC e₁ e₂ Hy₁ Hy₂ (mapHyp_of hR uZ ιZ F c) j M g η _ _ P levN_eq ls₁.k1b ls₁.unitsAt ls₂.k1b ls₂.unitsAt m₁ m₂ rfl rfl he₁ he₂ hP`.
-
-Conclude with `arc_of_steps hC Hy₁ Hy₂ (mapHyp_of hR uZ ιZ F c) ϖ j M g G₀ Sz η _ _ e₁ e₂ P ls₁ ls₂ ms`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finalArc_holds [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O]
     [CharZero LL] [IsFractionRing O LL] [Fintype (K →ₐ[Qp] LL)]
@@ -664,7 +662,7 @@ theorem finalArc_holds [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete 
   exact arc_of_steps hC Hy₁ Hy₂ (mapHyp_of hR uZ ιZ F c) ϖ j M g G₀ Sz η _ _ e₁ e₂ P ls₁ ls₂ ms
 
 /- English proof (translation)
-The claim follows from `coordSteps_of hR e (coeffStep_holds hR) (splitStep_holds inferInstance (hOnil_of (Assemble.p_ne_zero (LL := LL))) hs1 (by omega) hP9 hLem3 (jumps_bounded_crystalline hDR hKb)) (unitStep_holds hUnitGen hCrysOne)`.
+A detailed English derivation is pending.
 -/
 theorem coordSteps_holds [IsDomain O] [IsDiscreteValuationRing O] [CharZero LL]
     [Fintype (K →ₐ[Qp] LL)] (hR : Ring9 W) {e : W.DD W.one}

@@ -65,18 +65,18 @@ instance liesOver_subfieldPlace (x : Gal(L/K)) :
   ⟨rfl⟩
 
 /- English proof (translation)
-The claim follows from `Ideal.LiesOver.tower_bot (x • w.asIdeal) _ v.asIdeal`.
+A detailed English derivation is pending.
 -/
 theorem subfieldPlace_liesOver [w.asIdeal.LiesOver v.asIdeal] (x : Gal(L/K)) :
     (subfieldPlace H w x).asIdeal.LiesOver v.asIdeal :=
   Ideal.LiesOver.tower_bot (x • w.asIdeal) _ v.asIdeal
 
 /- English proof (translation)
-Rewrite using `[DoubleCoset.eq, HeightOneSpectrum.ext_iff, asIdeal_subfieldPlace, asIdeal_subfieldPlace]`. Prove the components needed by the constructor for the conclusion. Introduce `hxy`. Establish `: (y • w.asIdeal).LiesOver ((x • w.asIdeal).under (𝓞 (fixedField H)))` using `⟨hxy⟩`. Take `⟨h, hh⟩` from `Ideal.exists_smul_eq_of_isGaloisGroup ((x • w.asIdeal).under (𝓞 (fixedField H))) (x • w.asIdeal) (y • w.asIdeal) H`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hh' : (h : Gal(L/K)) • x • w.asIdeal = y • w.asIdeal` using `hh`. Use `⟨h, h.2, (y⁻¹ * h * x)⁻¹, Subgroup.inv_mem _ ?_, by group⟩` and prove the remaining obligations. Rewrite using `[MulAction.mem_stabilizer_iff, mul_smul, mul_smul, hh', inv_smul_smul]`. Introduce and unpack `⟨h, hh, d, hd, rfl⟩`. Rewrite using `[mul_smul, mul_smul, MulAction.mem_stabilizer_iff.1 hd, show h • x • w.asIdeal = (⟨h, hh⟩ : H) • (x • w.asIdeal) from rfl]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Ideal.under_smul (𝓞 (fixedField H)) (x • w.asIdeal) (⟨h, hh⟩ : H)).symm`.
+A detailed English derivation is pending.
 -/
 theorem subfieldPlace_eq_iff (x y : Gal(L/K)) :
     subfieldPlace H w x = subfieldPlace H w y ↔
@@ -97,7 +97,7 @@ theorem subfieldPlace_eq_iff (x y : Gal(L/K)) :
     exact (Ideal.under_smul (𝓞 (fixedField H)) (x • w.asIdeal) (⟨h, hh⟩ : H)).symm
 
 /- English proof (translation)
-Take `⟨Q, hQmax, hQ⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 L) u.asIdeal`. Establish `: Q.LiesOver v.asIdeal` using `Ideal.LiesOver.trans Q u.asIdeal v.asIdeal`. Take `⟨x, hx⟩` from `Ideal.exists_smul_eq_of_isGaloisGroup v.asIdeal w.asIdeal Q Gal(L/K)`. Use `⟨x, HeightOneSpectrum.ext ?_⟩` and prove the remaining obligations. Rewrite using `[asIdeal_subfieldPlace, hx, ← hQ.over]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_subfieldPlace_eq [w.asIdeal.LiesOver v.asIdeal]
     (u : HeightOneSpectrum (𝓞 (fixedField H))) [u.asIdeal.LiesOver v.asIdeal] :
@@ -134,7 +134,7 @@ theorem subfieldPlaceEquiv_mk [w.asIdeal.LiesOver v.asIdeal] (x : Gal(L/K)) :
 omit [NumberField K] [NumberField L] [IsGalois K L] in
 
 /- English proof (translation)
-Use extensionality with `h`. Rewrite using `[Subgroup.mem_subgroupOf, mem_conj_smul_iff, MulAction.mem_stabilizer_iff, MulAction.mem_stabilizer_iff, mul_smul, mul_smul]`. Express the relevant statement in the definitionally equal form `(h : Gal(L/K)) • x • P = x • P ↔ x⁻¹ • (h : Gal(L/K)) • x • P = P`. Rewrite using `[inv_smul_eq_iff]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem stabilizer_smul_eq (x : Gal(L/K)) (P : Ideal (𝓞 L)) :
     MulAction.stabilizer H (x • P) =
@@ -148,7 +148,7 @@ theorem stabilizer_smul_eq (x : Gal(L/K)) (P : Ideal (𝓞 L)) :
 omit [NumberField K] [NumberField L] [IsGalois K L] in
 
 /- English proof (translation)
-Use extensionality with `h`. Rewrite using `[Subgroup.mem_subgroupOf, mem_conj_smul_iff, ← Ideal.coe_mem_inertia, mem_inertia_smul_iff]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem inertia_smul_eq (x : Gal(L/K)) (P : Ideal (𝓞 L)) :
     (x • P).inertia H =

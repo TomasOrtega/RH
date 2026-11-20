@@ -14,7 +14,7 @@ section Complex
 variable {R : Type u} [Ring R] (K : CochainComplex (ModuleCat.{u} R) ℕ)
 
 /- English proof (translation)
-Establish `h` using `homologyπ_eq_zero_iff K z`. Rewrite `h` using `[CochainComplex.prev_nat_succ]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homologyπ_succ_eq_zero_iff (n : ℕ) (z : K.cycles (n + 1)) :
     (K.homologyπ (n + 1)).hom z = 0 ↔
@@ -24,7 +24,7 @@ theorem homologyπ_succ_eq_zero_iff (n : ℕ) (z : K.cycles (n + 1)) :
   exact h
 
 /- English proof (translation)
-Use `exists_iCycles_eq K x ?_` and prove the remaining obligations. Rewrite using `[CochainComplex.next]`. Conclude with `hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_iCycles_eq_of_d_eq_zero (n : ℕ) (x : K.X n) (hx : (K.d n (n + 1)).hom x = 0) :
     ∃ z : K.cycles n, (K.iCycles n).hom z = x := by
@@ -33,13 +33,13 @@ theorem exists_iCycles_eq_of_d_eq_zero (n : ℕ) (x : K.X n) (hx : (K.d n (n + 1
   exact hx
 
 /- English proof (translation)
-The claim follows from `(ModuleCat.epi_iff_surjective _).1 inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem homologyπ_surjective (n : ℕ) : Function.Surjective (K.homologyπ n).hom :=
   (ModuleCat.epi_iff_surjective _).1 inferInstance
 
 /- English proof (translation)
-The claim follows from `(ModuleCat.mono_iff_injective _).1 inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem iCycles_injective (n : ℕ) : Function.Injective (K.iCycles n).hom :=
   (ModuleCat.mono_iff_injective _).1 inferInstance
@@ -55,7 +55,7 @@ variable (A : Rep.{u} k G) [IsDiscreteRep A]
 omit [IsTopologicalGroup G] in
 
 /- English proof (translation)
-Establish `h : w = fun _ => w Fin.elim0` using `funext fun x => congrArg w (Subsingleton.elim _ _)`. Rewrite using `[h]`. Conclude with `IsLocallyConstant.const _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_cochain_zero (w : (Fin 0 → G) → A) : IsLocallyConstant w := by
   have h : w = fun _ => w Fin.elim0 := funext fun x => congrArg w (Subsingleton.elim _ _)
@@ -63,9 +63,9 @@ theorem isLocallyConstant_cochain_zero (w : (Fin 0 → G) → A) : IsLocallyCons
   exact IsLocallyConstant.const _
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `h hh`. Take `⟨z, rfl⟩` from `homologyπ_surjective (cochainsComplex A) 1 h`. Establish `hh' : (HomologicalComplex.homologyMap (cochainsComplexι A) 1).hom (((cochainsComplex A).homologyπ 1).hom z) = 0` using `hh`. Rewrite `hh'` using `[homologyMap_homologyπ_apply]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨w, hw⟩` from `(homologyπ_succ_eq_zero_iff _ 0 _).1 hh'`. Rewrite `hw` using `[iCycles_cyclesMap_apply]`. Use `(homologyπ_succ_eq_zero_iff (cochainsComplex A) 0 z).2 ⟨⟨w, isLocallyConstant_cochain_zero A w⟩, ?_⟩` and prove the remaining obligations. Conclude with `(ModuleCat.mono_iff_injective ((cochainsComplexι A).f 1)).1 inferInstance ((hom_f_d_apply (cochainsComplexι A) 0 1 _).trans hw)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cohomologyToGroupCohomology_one_injective :
     Function.Injective (cohomologyToGroupCohomology A 1).hom := by
@@ -99,11 +99,11 @@ noncomputable def invariantsIncl :
     exact (x.2 n).symm⟩
 
 /- English proof (translation)
-Set `B` to `Rep.res (1 : PUnit.{u + 1} →* G ⧸ N) (A.quotientToInvariants N)`. Establish `hfac : cochainsMapAlong (QuotientGroup.mk' N) (continuous_quotientGroup_mk' N) (Rep.ofHom (A.ρ.quotientToInvariants_lift N)) ≫ cochainsMapAlong N.subtype (continuous_subgroup_subtype N) (𝟙 _) = cochainsMapAlong (A` using `A.quotientToInvariants N) (B := B) 1 continuous_const (𝟙 _) ≫ cochainsMapAlong (A := B) 1 continuous_const (invariantsIncl A N) := by`. Use extensionality with `m x : 3`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `h`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Express the relevant statement in the definitionally equal form `(((x : locallyConstantCochains (A.quotientToInvariants N) m).1 fun i => ((h i : G) : G ⧸ N)) : A) = (((x : locallyConstantCochains (A.quotientToInvariants N) m).1 fun _ => 1) : A)`. Use `congr 2`. Conclude with `congrArg _ (funext fun i => (QuotientGroup.eq_one_iff _).2 (h i).2)`. Establish `hB : IsZero (cohomology B (n + 1))` using `(isZero_groupCohomology_succ_of_subsingleton B n).of_iso (cohomologyIsoGroupCohomology B (n + 1))`. Express the relevant statement in the definitionally equal form `HomologicalComplex.homologyMap _ (n + 1) ≫ HomologicalComplex.homologyMap _ (n + 1) = 0`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← HomologicalComplex.homologyMap_comp, hfac, HomologicalComplex.homologyMap_comp]`. Establish `h0` using `hB.eq_of_tgt (HomologicalComplex.homologyMap (cochainsMapAlong (A := A.quotientToInvariants N) (B := B) 1 continuous_const (𝟙 _)) (n + 1)) 0`. Rewrite using `[h0]`. Conclude with `Limits.zero_comp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cohomologyInfl_comp_cohomologyRes (n : ℕ) :
     cohomologyInfl A N (n + 1) ≫ cohomologyRes A N (n + 1) = 0 := by
@@ -131,7 +131,7 @@ theorem cohomologyInfl_comp_cohomologyRes (n : ℕ) :
   exact Limits.zero_comp
 
 /- English proof (translation)
-Use `congrArg (fun φ => ModuleCat.Hom.hom φ y) (cohomologyInfl_comp_cohomologyToGroupCohomology A N n)` as an intermediate fact. Simplify using `only [ModuleCat.hom_comp, LinearMap.comp_apply] at this`. Conclude with `this.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_cohomologyToGroupCohomology_apply (n : ℕ)
     (y : cohomology (A.quotientToInvariants N) n) :
@@ -144,7 +144,7 @@ theorem map_cohomologyToGroupCohomology_apply (n : ℕ)
   exact this.symm
 
 /- English proof (translation)
-Use `congrArg (fun φ => ModuleCat.Hom.hom φ h) (cohomologyRes_comp_cohomologyToGroupCohomology A N n)` as an intermediate fact. Simplify using `only [ModuleCat.hom_comp, LinearMap.comp_apply] at this`. Conclude with `this.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_subtype_cohomologyToGroupCohomology_apply (n : ℕ) (h : cohomology A n) :
     (groupCohomology.map N.subtype (𝟙 _) n).hom ((cohomologyToGroupCohomology A n).hom h) =
@@ -155,7 +155,7 @@ theorem map_subtype_cohomologyToGroupCohomology_apply (n : ℕ) (h : cohomology 
   exact this.symm
 
 /- English proof (translation)
-Introduce `y y' hyy'`. Establish `hinj : Function.Injective (H1InfRes A N).f.hom` using `(ModuleCat.mono_iff_injective _).1 inferInstance`. Conclude with `cohomologyToGroupCohomology_one_injective _ (hinj ((map_cohomologyToGroupCohomology_apply A N 1 y).trans ((congrArg _ hyy').trans (map_cohomologyToGroupCohomology_apply A N 1 y').symm)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cohomologyInfl_one_injective : Function.Injective (cohomologyInfl A N 1).hom := by
   intro y y' hyy'
@@ -168,7 +168,7 @@ theorem cohomologyInfl_one_injective : Function.Injective (cohomologyInfl A N 1)
 omit [IsTopologicalGroup G] in
 
 /- English proof (translation)
-Introduce `S` and use `hq.isOpen_preimage.mp (hf S)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_of_comp_isQuotientMap {X Y Z : Type*} [TopologicalSpace X]
     [TopologicalSpace Y] {q : X → Y} (hq : Topology.IsQuotientMap q) {f : Y → Z}
@@ -176,21 +176,21 @@ theorem isLocallyConstant_of_comp_isQuotientMap {X Y Z : Type*} [TopologicalSpac
   hq.isOpen_preimage.mp (hf S)
 
 /- English proof (translation)
-Establish `hg : (groupCohomology.map N.subtype (𝟙 _) 1).hom ((cohomologyToGroupCohomology A 1).hom h) = 0`. Rewrite using `[map_subtype_cohomologyToGroupCohomology_apply, hres, map_zero]`. Establish `hker : (cohomologyToGroupCohomology A 1).hom h ∈ LinearMap.ker (H1InfRes A N).g.hom` using `hg`. Rewrite `hker` using `[← (H1InfRes_exact A N).moduleCat_range_eq_ker]`. Take `⟨y', hy'⟩` from `hker`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨Y, rfl⟩` from `homologyπ_surjective (inhomogeneousCochains (A.quotientToInvariants N)) 1 y'`. Take `⟨z, rfl⟩` from `homologyπ_surjective (cochainsComplex A) 1 h`. Establish `hy0` using `hy'`. Express the relevant statement in the definitionally equal form `(HomologicalComplex.homologyMap (groupCohomology.cochainsMap (QuotientGroup.mk' N) (Rep.ofHom (A.ρ.quotientToInvariants_lift N))) 1).hom (((inhomogeneousCochains (A.quotientToInvariants N)).homologyπ 1).hom Y) = (HomologicalComplex.homologyMap (cochainsComplexι A) 1).hom (((cocha …`. Rewrite `hy'` using `[homologyMap_homologyπ_apply, homologyMap_homologyπ_apply, ← sub_eq_zero, ← map_sub]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨w, hw⟩` from `(homologyπ_succ_eq_zero_iff _ 0 _).1 hy'`. Rewrite `hw` using `[map_sub, iCycles_cyclesMap_apply, iCycles_cyclesMap_apply]`. Set `Yc` to `((inhomogeneousCochains (A.quotientToInvariants N)).iCycles 1).hom Y`. Set `w' : locallyConstantCochains A 0` to `⟨w, isLocallyConstant_cochain_zero A w⟩`. Set `D : locallyConstantCochains A 1` to `((cochainsComplex A).d 0 1).hom w'`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Z : locallyConstantCochains A 1` to `((cochainsComplex A).iCycles 1).hom z`. Establish `hD : ((cochainsComplexι A).f 1).hom D = (inhomogeneousCochains A).d 0 1 w` using `hom_f_d_apply (cochainsComplexι A) 0 1 w'`. Establish `hF : IsLocallyConstant (((groupCohomology.cochainsMap (QuotientGroup.mk' N) (Rep.ofHom (A.ρ.quotientToInvariants_lift N))).f 1).hom Yc : (Fin 1 → G) → A)`. Rewrite using `[sub_eq_iff_eq_add.mp hw.symm, ← hD]`. Conclude with `D.2.add Z.2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `q : (Fin 1 → G) → (Fin 1 → G ⧸ N)` to `Pi.map fun _ => QuotientGroup.mk`. Establish `hq : Topology.IsQuotientMap q` using `(IsOpenQuotientMap.piMap fun _ => QuotientGroup.isOpenQuotientMap_mk).isQuotientMap`. Establish `hYq : IsLocallyConstant ((Yc : (Fin 1 → G ⧸ N) → _) ∘ q)` using `IsLocallyConstant.desc _ Subtype.val hF Subtype.val_injective`. Establish `hY : IsLocallyConstant (Yc : (Fin 1 → G ⧸ N) → _)` using `isLocallyConstant_of_comp_isQuotientMap hq hYq`. Set `Ylc : locallyConstantCochains (A.quotientToInvariants N) 1` to `⟨Yc, hY⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hd : ((cochainsComplex (A.quotientToInvariants N)).d 1 (1 + 1)).hom Ylc = 0`. Apply `(ModuleCat.mono_iff_injective ((cochainsComplexι (A.quotientToInvariants N)).f 2)).1 inferInstance` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `(hom_f_d_apply (cochainsComplexι (A.quotientToInvariants N)) 1 2 Ylc).trans (iCycles_d_apply _ 1 2 Y)`. Take `⟨zY, hzY⟩` from `exists_iCycles_eq_of_d_eq_zero (cochainsComplex (A.quotientToInvariants N)) 1 Ylc hd`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨((cochainsComplex (A.quotientToInvariants N)).homologyπ 1).hom zY, ?_⟩` and prove the remaining obligations. Apply `cohomologyToGroupCohomology_one_injective A` to reduce the goal to its premises. Use `(map_cohomologyToGroupCohomology_apply A N 1 _).symm.trans ?_` and prove the remaining obligations. Establish `hcyc : (HomologicalComplex.cyclesMap (cochainsComplexι (A.quotientToInvariants N)) 1).hom zY = Y`. Apply `iCycles_injective` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[iCycles_cyclesMap_apply, hzY]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `(groupCohomology.map (QuotientGroup.mk' N) (Rep.ofHom (A.ρ.quotientToInvariants_lift N)) 1).hom ((HomologicalComplex.homologyMap (cochainsComplexι (A.quotientToInvariants N)) 1).hom (((cochainsComplex (A.quotientToInvariants N)).homologyπ 1).hom zY)) = _`. Rewrite using `[homologyMap_homologyπ_apply, hcyc]`. Conclude with `hy0`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cohomologyInfl_one_eq (h : cohomology A 1)
     (hres : (cohomologyRes A N 1).hom h = 0) : ∃ y, (cohomologyInfl A N 1).hom y = h := by

@@ -66,7 +66,7 @@ def vacB : WO (spW₁ G i j) (spX G i j) → ℂ :=
     fun y => ρ.vX i j (GlobalTheory.RouteSeesaw.adjM (spW₁ G i j) (negSp (spV₁ G i j)) y)
 
 /- English proof (translation)
-Unfold `datumA`. Use `erw [Finsupp.sum_single_index (by exact zero_smul ℂ _), one_smul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem datumA_vac (t : T) : datumA W (t := t) (i := i) (j := j) (Finsupp.single (((), ρ.vX i (j + 1)), ρ.vT (i + 1) j) 1) = vacA ρ i j := by
   unfold datumA
@@ -74,7 +74,7 @@ theorem datumA_vac (t : T) : datumA W (t := t) (i := i) (j := j) (Finsupp.single
   rfl
 
 /- English proof (translation)
-Unfold `datumB`. Use `erw [Finsupp.sum_single_index (by exact zero_smul ℂ _), one_smul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem datumB_vac (t : T) : datumB W (t := t) (i := i) (j := j) (Finsupp.single (((), ρ.vT i j), ρ.vX i j) 1) = vacB ρ i j := by
   unfold datumB

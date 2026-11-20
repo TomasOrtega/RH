@@ -13,11 +13,11 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo
 noncomputable section
 
 /- English proof (translation)
-Introduce `K _ ι _ P b hP hb hbW`. Take `⟨hF, hNF⟩` from `hN K ι P hP`. Set `_` to `hF.toField`. Use `hNF` as an intermediate fact. Take `⟨hfree, hfin, hrank⟩` from `hO K ι P hP`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `b' : regRing P` to `⟨b, hbW⟩`. Establish `hb' : b' ≠ 0` using `fun h => hb (congrArg Subtype.val h)`. Take `⟨hfs, hsum⟩` from `hL K ι P b' hP hb'`. Use `⟨hfs, hsum.trans ?_⟩` and prove the remaining obligations. Establish `hI` using `(ReciprocityTheory.ChartRestriction.G.AI.index_thm (funField P) (regRing P) hfree hfin (hrank hF) b' hb').2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hI.trans (finsum_eq_sum_of_fintype _).symm`.
+A detailed English derivation is pending.
 -/
 theorem RegularityFormula.proof (hN : RegularityFunctionFieldNumber.Statement) (hO : RegularityOrder.Statement)
     (hL : RegularityLocal.Statement) : RegularityFormula.Statement := by

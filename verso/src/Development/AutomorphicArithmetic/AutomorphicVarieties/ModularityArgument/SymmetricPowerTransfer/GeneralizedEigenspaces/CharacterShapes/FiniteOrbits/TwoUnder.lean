@@ -10,9 +10,9 @@ open UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc UpperTheory.V.Z.Sym.Glob UpperT
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Use `⟨fun p => if h : ∃ w, ∃ hw : w ∈ S, f w = p then h.choose_spec.choose_spec ▸ g _ h.choose_spec.choose else d p, ?_⟩` and prove the remaining obligations. Introduce `w hw`. Establish `key : ∀ (w' : W) (hw' : w' ∈ S) (he : f w' = f w), (he ▸ g w' hw' : X (f w)) = g w hw`. Introduce `w' hw' he`. Take `rfl` from `inj hw' hw he`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Establish `hex : ∃ w', ∃ hw' : w' ∈ S, f w' = f w` using `⟨w, hw, rfl⟩`. Simplify using `only [dif_pos hex]`. Conclude with `key _ _ _`.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exSec {W P : Type} {X : P → Type} (f : W → P) (S : Set W) (inj : Set.InjOn f S)
     (g : ∀ w, w ∈ S → X (f w)) (d : ∀ p, X p) : ∃ b : ∀ p, X p, ∀ w (h : w ∈ S), b (f w) = g w h := by
@@ -30,9 +30,9 @@ private theorem exSec {W P : Type} {X : P → Type} (f : W → P) (S : Set W) (i
 variable {L : Type} [Field L] [NumberField L] [IsCMField L]
 
 /- English proof (translation)
-Use `haveI := v.isMaximal`. Take `⟨P, hPm, hP⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 L) v.asIdeal`. Establish `hne : P ≠ ⊥` using `fun h => v.ne_bot (by`. Rewrite using `[hP.over, h]`. Conclude with `Ideal.comap_bot_of_injective _ (FaithfulSMul.algebraMap_injective (𝓞 (Lp L)) (𝓞 L)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨⟨P, hPm.isPrime, hne⟩, HeightOneSpectrum.ext (by`. Rewrite using `[HeightOneSpectrum.under_asIdeal]`. Conclude with `hP.over.symm)⟩`.
+A detailed English derivation is pending.
 -/
 private theorem exOver (v : Pl (Lp L)) : ∃ w : Plc L, un w = v := by
   haveI := v.isMaximal
@@ -45,15 +45,15 @@ private theorem exOver (v : Pl (Lp L)) : ∃ w : Plc L, un w = v := by
     exact hP.over.symm)⟩
 
 /- English proof (translation)
-Establish `hu : ¬ IsUnit (2 : 𝓞 L)` using `fun h => by`. Take `⟨u, hu⟩` from `h.exists_right_inv`. Establish `e : ((u : 𝓞 L) : L) = algebraMap ℚ L (1 / 2)`. Establish `e1 : (2 : L) * ((u : 𝓞 L) : L) = 1`. Use `congrArg (algebraMap (𝓞 L) L) hu` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_mul, map_ofNat, map_one]`. Then use the resulting hypothesis. Rewrite using `[map_div₀, map_one, map_ofNat]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `e1`. Establish `hi : IsIntegral ℤ (algebraMap ℚ L (1 / 2))` using `e ▸ u.2`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hi' : IsIntegral ℤ (1 / 2 : ℚ)` using `(isIntegral_algebraMap_iff (algebraMap ℚ L).injective).1 hi`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hi'`. Establish `h2 : (2 : ℚ) * (y : ℚ) = 1`. Rewrite using `[show (y : ℚ) = 1 / 2 from hy]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Establish `h3 : (2 : ℤ) * y = 1` using `by exact_mod_cast h2`. Use linear arithmetic over natural numbers and integers. Take `⟨P, hPm, hP⟩` from `exists_max_ideal_of_mem_nonunits hu`. Establish `hne : P ≠ ⊥` using `fun h => by`. Rewrite `hP` using `[h, Ideal.mem_bot]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `two_ne_zero hP`. Conclude with `⟨⟨P, hPm.isPrime, hne⟩, hP⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exTwo : ∃ w : Plc L, (2 : 𝓞 L) ∈ w.asIdeal := by
   have hu : ¬ IsUnit (2 : 𝓞 L) := fun h => by
@@ -79,7 +79,7 @@ private theorem exTwo : ∃ w : Plc L, (2 : 𝓞 L) ∈ w.asIdeal := by
   exact ⟨⟨P, hPm.isPrime, hne⟩, hP⟩
 
 /- English proof (translation)
-Rewrite `h` using `[HeightOneSpectrum.under_asIdeal, Ideal.under_def, Ideal.mem_comap, map_ofNat]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem two_under (w : Plc L) (h : (2 : 𝓞 (Lp L)) ∈ (un w).asIdeal) : (2 : 𝓞 L) ∈ w.asIdeal := by
   rw [HeightOneSpectrum.under_asIdeal, Ideal.under_def, Ideal.mem_comap, map_ofNat] at h
@@ -92,21 +92,19 @@ private def pullLev {B : Bridge L} {w : Plc L} (T : B.toRingBr.Split w) (V : Lev
   H_le := fun x hx => (T.Uo x).1 (V.H_le hx)
 
 /- English proof (translation)
-Introduce `L _ _ _ B hB T S VL hP h2`. Establish `hinj : Set.InjOn (fun w : Plc L => un w) (S : Set (Plc L))` using `hP.inj`. Use `⟨?_, fun a => ?_⟩` and prove the remaining obligations. Take `⟨sf, hsf⟩` from `exSec (X := fun v : Pl (Lp L) => Kv v) (fun w : Plc L => un w) (S : Set (Plc L)) hinj (fun w hw => (T w (hP.split w hw)).s) (fun _ => 0)`. Take `⟨Vf, hVf⟩` from `exSec (X := fun v : Pl (Lp L) => Lev (Kv v)) (fun w : Plc L => un w) (S : Set (Plc L)) hinj (fun w hw => pullLev (T w (hP.split w hw)) (VL w)) (fun _ => Lev.iw _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨χ, hχ⟩` from `hB.chi`. Establish `hs : ∀ v ∈ S.image (fun w : Plc L => un w), sf v * sf v = cv v B.Δ`. Introduce `v hv`. Take `⟨w, hw, rfl⟩` from `Finset.mem_image.1 hv`. Rewrite using `[hsf w hw]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(T w (hP.split w hw)).hs`. Set `A : SD B.Δ` to `{ Sg := S.image (fun w : Plc L => un w) s := sf hs := hs V := Vf Ry := fun v => (finFacts _ (Vf v)).2.2.2.2.1.choose χ := χ }`. Establish `hoff : ∀ v ∉ A.Sg, (2 : 𝓞 (Lp L)) ∉ v.asIdeal`. Introduce `v hv h`. Take `⟨w, rfl⟩` from `exOver v`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w', hw', he⟩` from `h2 w (two_under w h)`. Conclude with `hv (Finset.mem_image.2 ⟨w', hw', he⟩)`. Use `⟨A, ⟨inferInstance, B.neg, ?_, ?_, ?_, ?_⟩, ⟨hP, ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `exTwo (L := L)`. Take `⟨w', hw', -⟩` from `h2 w hw`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `⟨_, Finset.mem_image_of_mem _ hw'⟩`. Conclude with `fun v hv => B.loc v (hoff v hv)`. Introduce `v`. Distinguish the cases in `hv : v ∈ A.Sg`. Conclude with `hχ v (Or.inr ⟨sf v, (hs v hv).symm⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `hχ v (Or.inl (hoff v hv))`. Conclude with `fun v _ => (finFacts _ (Vf v)).2.2.2.2.1.choose_spec`. Introduce `v`. Simplify using `[A]`. Introduce `w hw h`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hsf w hw`. Introduce `w hw show (Vf (un w)).c = _`. Rewrite using `[hVf w hw]`. Both sides reduce to the same expression. Introduce `w hw h x show _ ↔ x ∈ (Vf (un w)).H`.
-
-Rewrite using `[hVf w hw]`. Both sides reduce to the same expression. Take `⟨b, hb⟩` from `exSec (X := fun v : Pl (Lp L) => (Kv v)ˣ →* ℂˣ) (fun w : Plc L => un w) (S : Set (Plc L)) hinj (fun w hw => (a w).comp (iu T w (hP.split w hw))) (fun _ => 1)`. Conclude with `⟨b, fun w hw h => hb w hw⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.So.fitEx :
     UpperTheory.V.Z.Sym.So.FitEx := by

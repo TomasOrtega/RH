@@ -53,7 +53,7 @@ def ThetaM (ψ : AddChar (AF D.host.F) ℂ) (G : Gm D n) (H : Gm D m) (f : Mx D 
     ∀ w, ContDiff ℝ ∞ fun t => f (w + L t)
 
 /- English proof (translation)
-The claim follows from `funext fun _ => propext ⟨fun h => ⟨h.1, h.2, h.3, h.4⟩, fun h => ⟨h.1, h.2.1, h.2.2.1, h.2.2.2⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem theta_eq (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) : IsThetaFunO ψ S T = ThetaM ψ S.gram T.gram :=
   funext fun _ => propext ⟨fun h => ⟨h.1, h.2, h.3, h.4⟩, fun h => ⟨h.1, h.2.1, h.2.2.1, h.2.2.2⟩⟩
@@ -82,7 +82,7 @@ structure WeilM (ψ : AddChar (AF D.host.F) ℂ) (G : Gm D n) (H : Gm D m) (thf 
       ∀ f, thf f → ℓ (om (g, h) f) = (r : ℂ) * (splitFacO χS χT x y : ℂ) * ℓ f
 
 /- English proof (translation)
-Rewrite using `[← theta_eq]`. Conclude with `⟨fun h => ⟨h.1, h.2, h.3, h.4, h.5, h.6, h.7, h.8, h.9, h.10, h.11⟩, fun h => ⟨h.1, h.2, h.3, h.4, h.5, h.6, h.7, h.8, h.9, h.10, h.11⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem weil_iff (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : GlobalTheory.Grid.WRep S T) :
     IsWeilDatumO ψ S T χS χT om ↔ WeilM ψ S.gram T.gram (ThetaM ψ S.gram T.gram) χS χT om := by
@@ -97,7 +97,7 @@ def VacM (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (G : Gm D n) (H : Gm D
     (latM G LS LT fun _ => True) f
 
 /- English proof (translation)
-Unfold `IsVacO VacM`. Rewrite using `[theta_eq]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem vac_iff (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (sS sT LS LT f) :
     IsVacO ψ θ S T sS sT LS LT f ↔ VacM ψ θ S.gram T.gram sS sT LS LT f := by
@@ -106,9 +106,9 @@ theorem vac_iff (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (
   rfl
 
 /- English proof (translation)
-Use extensionality with `g`. Establish `e : JR (F` using `D.host.F) (AF D.host.F) (-G) = -JR (F := D.host.F) (AF D.host.F) G := by`. Use extensionality with `i j`. Simplify using `[JR]`. Use `show Formalism.UG.cT _ _ * JR (F := D.host.F) (AF D.host.F) (-G) * _ = JR (F := D.host.F) (AF D.host.F) (-G) ↔ Formalism.UG.cT _ _ * JR (F := D.host.F) (AF D.host.F) G * _ = JR (F := D.host.F) (AF D.host.F) G`.
+By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Matrix.mul_neg, Matrix.neg_mul, neg_inj]`.
+A detailed English derivation is pending.
 -/
 theorem hr_neg (G : Gm D n) : HR (AF D.host.F) D.sp.cm.sig (-G) = HR (AF D.host.F) D.sp.cm.sig G := by
   ext g
@@ -126,7 +126,7 @@ def ofNeg (G : Gm D n) : UM (-G) ≃* UM G where
   map_mul' _ _ := rfl
 
 /- English proof (translation)
-The claim follows from `weil_iff ψ (GlobalTheory.Grid.neg S) T χS χT _`.
+A detailed English derivation is pending.
 -/
 theorem weil_true_iff (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : GlobalTheory.Grid.WRep S T) :
     GlobalTheory.Grid.IsWeil ψ true S T χS χT om ↔ WeilM ψ (-S.gram) T.gram (ThetaM ψ (-S.gram) T.gram) χS χT
@@ -270,13 +270,13 @@ def IsConst (c : T → ℂ) : Prop :=
 end TriM
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem const_iff {T : Type} {A A' WW : HSp D} (X : Tri T A A' WW) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (c : T → ℂ) :
     X.IsConst ψ θ c ↔ (triTo X).IsConst ψ θ c := Iff.rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨h.rank, h.rigA, h.rigA', h.rigW, fun t => (weil_true_iff ψ A WW _ _ _).1 (h.weil t), fun t => (weil_iff ψ A' WW _ _ _).1 (h.weil' t), (vac_iff ψ θ (GlobalTheory.Grid.neg A) WW _ _ _ _ _).1 h.isVac, (vac_iff ψ θ A' WW _ _ _ _ _).1 h.isVac', h.idem, h.expo, h.fst, h.snd, …`.
+Supply the required witnesses or components.
 -/
 theorem is_iff {T : Type} {A A' WW : HSp D} (X : Tri T A A' WW) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D)
     (α β : T → ((AE D)ˣ →* Circle)) (νH : T → Formalism.L2.Host.HChar D.host.E) (S : T → Finset (Formalism.L2.DIV.Pl D.host.E)) :
@@ -289,7 +289,7 @@ theorem is_iff {T : Type} {A A' WW : HSp D} (X : Tri T A A' WW) (ψ : AddChar (A
       (vac_iff ψ θ A' WW _ _ _ _ _).2 h.isVac', h.idem, h.expo, h.fst, h.snd, h.meas, h.meas'⟩⟩
 
 /- English proof (translation)
-Substitute `h1 h2 h3` using the available equality. Take `rfl : G = G₁` from `s1.1.trans e1.symm`. Take `rfl : G' = G₁'` from `s2.1.trans e2.symm`. Take `rfl : H = H₁` from `s3.1.trans e3.symm`. Conclude with `⟨X, s1, s2, s3, hX, fun _ h => h⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem move {T : Type} {a a' d b b' k : ℕ} {G : Gm D a} {G' : Gm D a'} {H : Gm D d} (X : TriM T G G' H)
     (G₁ : Gm D b) (G₁' : Gm D b') (H₁ : Gm D k) (h1 : a = b) (h2 : a' = b') (h3 : d = k) (e1 : G₁ = 1) (e2 : G₁' = 1)
@@ -305,9 +305,9 @@ theorem move {T : Type} {a a' d b b' k : ℕ} {G : Gm D a} {G' : Gm D a'} {H : G
   exact ⟨X, s1, s2, s3, hX, fun _ h => h⟩
 
 /- English proof (translation)
-Introduce `D T L sc G W i j A A' WW X B B' WW₁ Y hX hY`. Establish `h1 : A.rank = B.rank` using `hX.rank.trans hY.rank.symm`. Establish `h2 : A'.rank = B'.rank` using `hX.rank'.trans hY.rank'.symm`. Establish `h3 : WW.rank = WW₁.rank` using `hX.is.rank.symm.trans (by rw [h1, h2]; exact hY.is.rank)`. Take `⟨X₁, s1, s2, s3, hi, hc⟩` from `move (triTo X) B.gram B'.gram WW₁.gram h1 h2 h3 hY.std.1 hY.std'.1 hY.stdW.1 hX.std hX.std' hX.stdW W.ψ W.θ _ _ _ _ ((is_iff X _ _ _ _ _ _).1 hX.is)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨triOf X₁, ⟨hY.rank, hY.rank', s1, s2, s3, (is_iff (triOf X₁) _ _ _ _ _ _).2 hi⟩, fun c h => (const_iff X _ _ c).2 (hc c ((const_iff (triOf X₁) _ _ c).1 h))⟩`.
+Supply the required witnesses or components.
 -/
 theorem bottom_transport : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) (i j : Fin D.R.m)
     (A A' WW : HSp D) (X : Tri T A A' WW) (B B' WW₁ : HSp D) (Y : Tri T B B' WW₁),

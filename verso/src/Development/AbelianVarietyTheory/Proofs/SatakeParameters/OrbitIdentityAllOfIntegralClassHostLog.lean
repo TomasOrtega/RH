@@ -25,13 +25,11 @@ open MvPowerSeries
 open Formalism.DworkPowerSeriesWeights (Integral mvExp entLog ZV)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨r, hr⟩, s⟩ ⟨⟨r', hr'⟩, s'⟩ h`. Simplify using `only at h`. Establish `h1 : ∃ e : ℕ, posPl D p r e = OrbitPlaces.orbMap D p r s` using `⟨s.val, rfl⟩`. Establish `h2 : ∃ e : ℕ, posPl D p r' e = OrbitPlaces.orbMap D p r s` using `⟨s'.val, h.symm⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨r0, -, huniq⟩` from `hR (OrbitPlaces.orbMap D p r s)`. Establish `hrr : r = r'` using `(huniq r ⟨hr, h1⟩).trans (huniq r' ⟨hr', h2⟩).symm`. Substitute `hrr` using the available equality. Establish `hs : s = s'` using `PI.OrbJet.OrbW.orbMap_inj D p r h`. Substitute `hs` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Both sides reduce to the same expression. Introduce `z`. Take `⟨r, ⟨hr, e, he⟩, -⟩` from `hR z`. Use `⟨(⟨r, hr⟩, (e : ZMod (nP D p))), ?_⟩` and prove the remaining obligations. Use `show OrbitPlaces.orbMap D p r (e : ZMod (nP D p)) = z`.
-
-Conclude with `(PI.OrbJet.OrbW.posPl_eq_orbMap D p r e).symm.trans he`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem orb_bijective (D : D7) (p : ℕ) (R : Finset (OrbitPlaces.Pl D)) (hR : OrbitPlaces.IsReps D p R) :
     Function.Bijective (fun x : R × ZMod (nP D p) => OrbitPlaces.orbMap D p x.1 x.2) := by
@@ -53,11 +51,11 @@ theorem orb_bijective (D : D7) (p : ℕ) (R : Finset (OrbitPlaces.Pl D)) (hR : O
     exact (PI.OrbJet.OrbW.posPl_eq_orbMap D p r e).symm.trans he
 
 /- English proof (translation)
-Take `⟨s, a', b⟩` from `y`. Establish `hY : HasSubst (fun s' : ZMod (nP D p) => (X (s', a', b) : MvPowerSeries (ZV (nP D p) M N') ℂ_[p]))` using `hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _`. Establish `hπ : HasSubst (fun y' : ZV (nP D p) M N' => (X (OrbitPlaces.orbMap D p (κ y'.2.1).1 y'.1, (κ y'.2.1).2, y'.2.2) : MvPowerSeries (OrbitPlaces.Pl D × Fin N × Fin N') ℂ_[p]))` using `hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _`. Establish `hY2 : HasSubst (fun s' : ZMod (nP D p) => (X (s', (κ a').2, b) : MvPowerSeries (ZV (nP D p) N N') ℂ_[p]))` using `hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _`. Establish `hP : HasSubst (X ∘ ⇑(PI.OrbJet.AU.pE D p (κ a').1 (Fin N × Fin N')) : ZMod (nP D p) × Fin N × Fin N' → MvPowerSeries (OrbitPlaces.Pl D × Fin N × Fin N') ℂ_[p])` using `hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE` using `PI.OrbJet.AU.rename_jet D p (β := Fin N × Fin N') (κ a').1 (s, (κ a').2, b)`. Rewrite `hE` using `[Formalism.MainNotions.DIV.Bridge.OneLetterJetKernel.jetLogG_eq_entLog p (nP D p) N N' (s, (κ a').2, b), GlobalTheory.KerStd.CofactorConverse.entLog_eq_letLog, MvPowerSeries.rename_eq_subst, subst_comp_subst_apply hY2 hP]`. Use `show _ = PI.OrbJet.logPl D p (PI.OrbJet.AU.pE D p (κ a').1 (Fin N × Fin N') (s, (κ a').2, b))`. Rewrite using `[← hE, GlobalTheory.KerStd.CofactorConverse.entLog_eq_letLog, subst_comp_subst_apply hY hπ]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `s'`. Rewrite using `[subst_X hπ, subst_X hP]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem subst_entLog_orb (D : D7) (p : ℕ) [Fact p.Prime] {M N N' : ℕ} (κ : Fin M → OrbitPlaces.Pl D × Fin N)
     (y : ZV (nP D p) M N') :
@@ -87,11 +85,11 @@ theorem subst_entLog_orb (D : D7) (p : ℕ) [Fact p.Prime] {M N N' : ℕ} (κ : 
   rfl
 
 /- English proof (translation)
-Set `e : σ ↪ τ` to `⟨φ, hφ⟩`. Establish `h : subst (fun x => (X (φ x) : MvPowerSeries τ K)) U = rename e U`. Rewrite using `[rename_eq_subst]`. Both sides reduce to the same expression. Introduce `n`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h]`. Distinguish the cases in `hn : ∃ m, Finsupp.embDomain e m = n`. Take `⟨m, rfl⟩` from `hn`. Rewrite using `[coeff_embDomain_rename]`. Conclude with `hU m`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coeff_rename_eq_zero]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨m, hm⟩`. Conclude with `hn ⟨m, by rw [Finsupp.embDomain_eq_mapDomain]; exact hm⟩`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem integral_subst_X_of_injective {K : Type} [NormedField K] {σ τ : Type} [Finite σ] (φ : σ → τ)
     (hφ : Function.Injective φ) {U : MvPowerSeries σ K} (hU : Integral U) :
@@ -112,9 +110,9 @@ theorem integral_subst_X_of_injective {K : Type} [NormedField K] {σ τ : Type} 
       exact hn ⟨m, by rw [Finsupp.embDomain_eq_mapDomain]; exact hm⟩
 
 /- English proof (translation)
-Establish `hρ : HasSubst (fun x : Bool × (R × ι) × Fin N × Fin N' => (X (x.1, x.2.1.2, eA.symm (x.2.1.1, x.2.2.1), x.2.2.2) : MvPowerSeries (Bool × ι × Fin M × Fin N') K))` using `hasSubst_of_constantCoeff_zero fun x => constantCoeff_X _`. Unfold `Formalism.L2.Th1.D.sumE`. Rewrite using `[← coe_substAlgHom hρ, map_sum]`. Set `E : (R × ι) × Fin N × Fin N' ≃ ι × Fin M × Fin N'` to `{ toFun := fun e => (e.1.2, eA.symm (e.1.1, e.2.1), e.2.2) invFun := fun e => (((eA e.2.1).1, e.1), (eA e.2.1).2, e.2.2) left_inv := fun ⟨⟨r, k⟩, a, b⟩ => by simp right_inv := fun ⟨k, a, b⟩ => by simp }`. Use `Fintype.sum_equiv E _ _ fun e => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[coe_substAlgHom, subst_comp_subst_apply (hasSubst_of_constantCoeff_zero fun a => constantCoeff_X _) hρ]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Rewrite using `[subst_X hρ]`. Apply the tactic sequence `split_ifs <;> rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sumE_reindex {K : Type} [Field K] {R ι : Type} [Fintype R] [Fintype ι] {M N N' : ℕ} (eA : Fin M ≃ R × Fin N)
     (be : MvPowerSeries (Fin 2) K) :
@@ -139,43 +137,41 @@ theorem sumE_reindex {K : Type} [Field K] {R ι : Type} [Fintype R] [Fintype ι]
   split_ifs <;> rfl
 
 /- English proof (translation)
-Introduce `D p _ g2 g3 s2 ε σ F hC hO om oms ζ hB R hR N N' r f f' hH Θ hΘ ep Th hTh`. Take `⟨h5, hg2, hg3, hε, hth, hσ, hF, hN⟩` from `hC`. Establish `hBd` using `hB`. Take `⟨-, -, hF1, hF2, hOw, hTr, hζ⟩` from `hB`. Establish `hI` using `(HostLog.iff_phSum p g2 g3 s2 ε Θ).1 hΘ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨U0, Φ, hU0, hΦ0, hsim, hEq⟩` from `Formalism.L2.Th1.Top.HypShape_of Formalism.L2.Th1.Top.CalcC_proof p h5 g2 g3 ε s2 hg2 hg3 hε hth σ hσ F hF hN N N' (R × Fin (nP D p / 2)) (Fin r) f f' hH _ hI`. Set `M` to `Fintype.card R * N`. Set `eA : Fin M ≃ R × Fin N` to `finProdFinEquiv.symm.trans ((Fintype.equivFin R).symm.prodCongr (Equiv.refl _))`. Set `rv : Bool × (R × Fin (nP D p / 2)) × Fin N × Fin N' → Bool × Fin (nP D p / 2) × Fin M × Fin N'` to `fun x => (x.1, x.2.1.2, eA.symm (x.2.1.1, x.2.2.1), x.2.2.2)`. Establish `hrv : Function.Injective rv`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce and unpack `⟨c, ⟨a1, k⟩, a2, b⟩ ⟨c', ⟨a1', k'⟩, a2', b'⟩ h`. Simplify using `only [rv, Prod.mk.injEq] at h`. Take `⟨h1, h2, h3, h4⟩` from `h`. Establish `h3'` using `congrArg eA h3`. Simplify using `only [Equiv.apply_symm_apply, Prod.mk.injEq] at h3'`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, h2, h3'.1, h3'.2, h4]`. Set `ρs : Bool × (R × Fin (nP D p / 2)) × Fin N × Fin N' → MvPowerSeries (Bool × Fin (nP D p / 2) × Fin M × Fin N') ℂ_[p]` to `fun x => X (rv x)`. Establish `hρs : HasSubst ρs` using `hasSubst_of_constantCoeff_zero fun x => constantCoeff_X _`. Establish `hU0' : Integral (subst ρs U0)` using `integral_subst_X_of_injective rv hrv hU0`. Establish `hΦ0' : constantCoeff (subst ρs Φ) = 0` using `constantCoeff_subst_eq_zero hρs (fun x => constantCoeff_X _) hΦ0`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsE` using `sumE_reindex (ι := Fin (nP D p / 2)) (N' := N') eA (map (MaximalUnramifiedExtension p).subtype (cob F (phFF p g2 g3 s2 ε)))`. Establish `hρe : ρs = fun x : Bool × (R × Fin (nP D p / 2)) × Fin N × Fin N' => (X (x.1, x.2.1.2, eA.symm (x.2.1.1, x.2.2.1), x.2.2.2) : MvPowerSeries (Bool × Fin (nP D p / 2) × Fin M × Fin N') ℂ_[p])` using `rfl`. Rewrite `hsE` using `[← hρe]`. Establish `hsim' : Formalism.InvariantFactorPaths.G7.Simeq (subst ρs Φ) (Formalism.L2.Th1.D.sumE (ι` using `Fin (nP D p / 2)) (N0 := M) (N1 := N') (map (MaximalUnramifiedExtension p).subtype (cob F (phFF p g2 g3 s2 ε)))) := by`. Rewrite using `[← hsE]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← subst_sub hρs]`. Conclude with `constantCoeff_subst_eq_zero hρs (fun x => constantCoeff_X _) hsim.1`. Rewrite using `[← subst_sub hρs, ← Formalism.InvariantFactorPaths.G7.LogarithmEquivalence.subst_mvExp' hρs hsim.1]`. Conclude with `integral_subst_X_of_injective rv hrv hsim.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hU, hUeq⟩` from `Formalism.L2.Th1.D.b0 (MaximalUnramifiedExtension p) ℂ_[p] p (nP D p) M N' σ (MaximalUnramifiedExtension p).subtype hσ (fun a => rfl) hO.two hO.even F hF _ hF1 hF2 (Fin (nP D p / 2)) om oms hOw hTr ζ hζ (subst ρs U0) (subst ρs Φ) hU0' hΦ0' hsim'`. Take `⟨g, hg0, hg1, hg2⟩` from `Formalism.DworkPowerSeriesWeights.generalized_log_inverse.{0, 0} ℂ_[p] p (Fact.out) (ZV (nP D p) M N') (fun y => (y.1 - 2, y.2.1, y.2.2))`. Establish `hent` using `(Formalism.DworkPowerSeriesWeights.logarithm_weight_comparison.{0} ℂ_[p] p (nP D p) M N').2.1`. Establish `hgE : ∀ y, subst g (entLog (K` using `ℂ_[p]) p y) = X y := fun y => by rw [hent]; exact hg1 y`. Establish `hfun : entLog (K` using `ℂ_[p]) (d := nP D p) (N0 := M) (N1 := N') p = Formalism.DworkPowerSeriesWeights.genLog p (fun y : ZV (nP D p) M N' => (y.1 - 2, y.2.1, y.2.2)) := funext hent`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hEg : ∀ y, subst (entLog (K` using `ℂ_[p]) (d := nP D p) (N0 := M) (N1 := N') p) (g y) = X y := fun y => by`. Rewrite using `[hfun]`. Conclude with `hg2 y`. Establish `hZ` using `hUeq g hg0 hgE`. Establish `hR1 : mvExp (-subst ρs Φ) * subst ρs U0 = subst ρs (Formalism.L2.Th1.Top.inHyp p f f' (subst (fun i : Fin r => (Formalism.InvariantFactorPaths.G7.at1 i (Formalism.InvariantFactorPaths.G7.lgF ℂ_[p] p) : MvPowerSeries (Fin r) ℂ_[p])) Θ))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[hEq, subst_mul hρs, Formalism.InvariantFactorPaths.G7.LogarithmEquivalence.subst_mvExp' hρs (by rw [map_neg, hΦ0, neg_zero]), Formalism.L2.Th1.D.BiextensionSums.subst_neg' hρs]`. Set `πv : ZV (nP D p) M N' → OrbitPlaces.Pl D × Fin N × Fin N'` to `fun y => (OrbitPlaces.orbMap D p (eA y.2.1).1 y.1, (eA y.2.1).2, y.2.2)`. Establish `hπv : Function.Injective πv`. Introduce and unpack `⟨s, a, b⟩ ⟨s', a', b'⟩ h`. Simplify using `only [πv, Prod.mk.injEq] at h`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨h1, h2, h3⟩` from `h`. Establish `hb` using `(orb_bijective D p R hR).1 (a₁ := ((eA a).1, s)) (a₂ := ((eA a').1, s')) h1`. Simplify using `only [Prod.mk.injEq] at hb`. Establish `ha : eA a = eA a'` using `Prod.ext hb.1 h2`. Rewrite using `[hb.2, eA.injective ha, h3]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `πs : ZV (nP D p) M N' → MvPowerSeries (OrbitPlaces.Pl D × Fin N × Fin N') ℂ_[p]` to `fun y => X (πv y)`. Establish `hπs : HasSubst πs` using `hasSubst_of_constantCoeff_zero fun x => constantCoeff_X _`. Establish `hgs : HasSubst g` using `hasSubst_of_constantCoeff_zero hg0`. Establish `hbe0 : constantCoeff (beOf p (nP D p) σ (cob F (phFF p g2 g3 s2 ε)) om oms ζ) = 0` using `Formalism.MainNotions.DIV.Bridge.OneLetterJetKernel.constant_coeff_zero_of_vanishing_alt p (nP D p) (GlobalTheory.KerStd.bHyps_of_beStd p (nP D p) _ h5 hO.two hO.even ⟨σ, F, _, om, oms, ζ, hBd, rfl⟩).2.2.1`. Establish `hπe : πs = fun y : ZV (nP D p) M N' => (X (OrbitPlaces.orbMap D p (eA y.2.1).1 y.1, (eA y.2.1).2, y.2.2) : MvPowerSeries (OrbitPlaces.Pl D × Fin N × Fin N') ℂ_[p])` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hc` using `GlobalTheory.T.orbitPlaces_thetaSeries_subst_orbMap_eq D p h5 σ om oms R eA f f' Θ`. Rewrite `hc` using `[← hρe, ← hπe]`. Establish `hA` using `congrArg (subst πs) hZ`. Rewrite `hA` using `[hR1, hc]`. Rewrite `hA` using `[Formalism.DworkPowerSeriesWeights.thetaZ, subst_mul hπs]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hlin : subst (Formalism.DworkPowerSeriesWeights.linSub Formalism.DworkPowerSeriesWeights.idM) (subst g U) = subst g U`. Establish `: (Formalism.DworkPowerSeriesWeights.linSub Formalism.DworkPowerSeriesWeights.idM : ZV (nP D p) M N' → MvPowerSeries (ZV (nP D p) M N') ℂ_[p]) = X`. Use function extensionality and compare the values at `fun x => Formalism.DworkPowerSeriesWeights.OrbMul.linSub_idM x`. Rewrite using `[this, subst_self]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hA` using `[hlin, subst_comp_subst_apply hgs hπs]`. Establish `hexp` using `GlobalTheory.T.expFactor_allOrbits_eq_prod_orbits D p R (N' := N') eA (beOf p (nP D p) σ (cob F (phFF p g2 g3 s2 ε)) om oms ζ) hbe0`. Rewrite `hexp` using `[← hπe]`. Rewrite `hA` using `[show (MvPowerSeries.map (MaximalUnramifiedExtension p).subtype (Formalism.L2.Th1.D.beMean p σ (cob F (phFF p g2 g3 s2 ε)) om oms ζ)) = beOf p (nP D p) σ (cob F (phFF p g2 g3 s2 ε)) om oms ζ from rfl]`. Rewrite `hA` using `[hexp]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hlog : HasSubst (OrbitPlaces.logPl D p (β` using `Fin N × Fin N')) := hasSubst_of_constantCoeff_zero (PI.OrbJet.AU.cc_log D p)`. Use `⟨subst πs U, integral_subst_X_of_injective πv hπv hU, ?_⟩` and prove the remaining obligations. Establish `hCX : HasSubst (fun v : OrbitPlaces.Pl D × Fin N × Fin N' => (C ep * X v : MvPowerSeries (OrbitPlaces.Pl D × Fin N × Fin N') ℂ_[p]))` using `hasSubst_of_constantCoeff_zero fun v => by simp`. Establish `h1 : subst (fun v : OrbitPlaces.Pl D × Fin N × Fin N' => C ep * OrbitPlaces.logPl D p v) Th =`. Substitute `(OrbitPlaces.logPl D p (β := Fin N × Fin N')) (subst (fun v : OrbitPlaces.Pl D × Fin N × Fin N' => (C ep * X v : MvPowerSeries (OrbitPlaces.Pl D × Fin N × Fin N') ℂ_[p])) Th) := by` using the available equality.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[subst_comp_subst_apply hCX hlog]`. Use `congr 1`. Use function extensionality and compare the values at `v`. Rewrite using `[subst_mul hlog, subst_C, subst_X hlog]`. Rewrite using `[h1, hTh, hA, subst_mul hlog]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `hπg : HasSubst (fun y => subst πs (g y))` using `hasSubst_of_constantCoeff_zero fun y => constantCoeff_subst_eq_zero hπs (fun x => constantCoeff_X _) (hg0 y)`. Rewrite using `[subst_comp_subst_apply hπg hlog]`. Use `congr 1`. Use function extensionality and compare the values at `y`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hlgE : HasSubst (entLog (K` using `ℂ_[p]) (d := nP D p) (N0 := M) (N1 := N') p) := by`. Conclude with `hasSubst_of_constantCoeff_zero fun v => by`. Rewrite using `[← Formalism.MainNotions.DIV.Bridge.OneLetterJetKernel.jetLogG_eq_entLog]`. Conclude with `Formalism.MainNotions.DIV.Bridge.OneLetterJetKernel.cc_jetLogG p (nP D p) v`. Rewrite using `[subst_comp_subst_apply hπs hlog]`.
-
-Establish `e : (fun y' => subst (OrbitPlaces.logPl D p (β` using `Fin N × Fin N')) (πs y')) = fun y' => subst πs (entLog (K := ℂ_[p]) p y') := by`. Use function extensionality and compare the values at `y'`. Rewrite using `[subst_X hlog]`. Conclude with `(subst_entLog_orb D p (N' := N') (fun a => ((eA a).1, (eA a).2)) y').symm`. Rewrite using `[e, ← subst_comp_subst_apply hlgE hπs, hEg, subst_X hπs]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbitIdentity_all_of_integralClass_hostLog : ∀ (D : D7) (p : ℕ) [Fact p.Prime] (g2 g3 s2 ε : MaximalUnramifiedExtension p) (σ : MaximalUnramifiedExtension p →+* MaximalUnramifiedExtension p) (F : MvPowerSeries (Fin 2) (MaximalUnramifiedExtension p)), CurveData p g2 g3 s2 ε σ F → OrbitPlaces.OrbOK D p → ∀ (om oms : Fin (nP D p / 2) → MaximalUnramifiedExtension p) (ζ : MaximalUnramifiedExtension p), BeData p (nP D p) σ F (cob F (phFF p g2 g3 s2 ε)) om oms ζ → ∀ (R : Finset (OrbitPlaces.Pl D)), OrbitPlaces.IsReps D p R → ∀ (N N' r : ℕ) (f f' : (R × Fin (nP D p / 2)) × Fin N × Fin N' → Fin r → MaximalUnramifiedExtension p), HypPair σ f f' → ∀ (Θ : MvPowerSeries (Fin r) ℂ_[p]), HostLog p g2 g3 s2 ε Θ → ∀ (ep : ℂ_[p]) (Th : MvPowerSeries (OrbitPlaces.Pl D × Fin N × Fin N') ℂ_[p]), (MvPowerSeries.subst (fun v : OrbitPlaces.Pl D × Fin N × Fin N' => (MvPowerSeries.C ep * MvPowerSeries.X v : MvPowerSeries (OrbitPlaces.Pl D × Fin N × Fin N') ℂ_[p])) Th : MvPowerSeries (OrbitPlaces.Pl D × Fin N × Fin N') ℂ_[p]) = MvPowerSeries.subst (hypZ D p σ om oms R f f') Θ → OrbitPlaces.ThetaExpansionAllPlaces D p R ep (fun _ => -1) (fun _ => beOf p (nP D p) σ (cob F (phFF p g2 g3 s2 ε)) om oms ζ) Th := by
   intro D p _ g2 g3 s2 ε σ F hC hO om oms ζ hB R hR N N' r f f' hH Θ hΘ ep Th hTh

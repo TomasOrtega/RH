@@ -18,11 +18,11 @@ variable {V V' : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
   [NormedAddCommGroup V'] [InnerProductSpace ℂ V']
 
 /- English proof (translation)
-Establish `hEF : ∀ F : V' →L[ℂ] V, (B.toContinuousLinearEquiv.arrowCongr A.toContinuousLinearEquiv) F = (A.toContinuousLinearEquiv : V →L[ℂ] V).comp (F.comp (B.symm.toContinuousLinearEquiv : V' →L[ℂ] V'))`. Introduce `F`. Use extensionality with `ξ`. Simplify using `[ContinuousLinearEquiv.arrowCongr_apply]`. Establish `hmap : ∀ f : G → (V' →L[ℂ] V), ∫ x, f x ∂(μ.map fun x => s * x) = ∫ x, f (s * x) ∂μ` using `fun f => (MeasurableEquiv.mulLeft s).measurableEmbedding.integral_map f`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hpt : ∀ x, Formalism.L2.SG.TermOp.rk1 (Ph (s * x)) (Ph' ((s * γ * s'⁻¹)⁻¹ * (s * x))) = (a * conj b) • (B.toContinuousLinearEquiv.arrowCongr A.toContinuousLinearEquiv) (Formalism.L2.SG.TermOp.rk1 (Ph x) (Ph' (γ⁻¹ * x)))`. Introduce `x`. Establish `h1 : (s * γ * s'⁻¹)⁻¹ * (s * x) = s' * (γ⁻¹ * x)` using `by group`. Rewrite using `[h1, hA, hB, hEF, Formalism.L2.SG.RealObj.InfCut.rank_one_smul_isometry]`. Unfold `Formalism.L2.SG.TermOp.OO`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[Measure.restrict_univ, Measure.restrict_univ, hmap]`. Repeatedly rewrite using `[hpt]`. Rewrite using `[integral_smul, ContinuousLinearEquiv.integral_comp_comm, hEF]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem oo_map_mulLeft {G : Type*} [Group G] [MeasurableSpace G] [MeasurableMul G] (μ : Measure G)
     [CompleteSpace V] (Ph : G → V) (Ph' : G → V') (γ s s' : G) (a b : ℂ)
@@ -107,23 +107,21 @@ def PhaseTieC : Prop :=
         Formalism.L2.SG.PairVal.phaseAt s.1.toTerm (Formalism.L2.SG.PairVal.ptOf s.1.toTerm)
 
 /- English proof (translation)
-Use `haveI := FiniteDimensional.complete ℂ (X.Vpi u)`. Use `haveI := FiniteDimensional.complete ℂ (X.Vpi u')`. Introduce `R ρ s hs`. Take `⟨⟨γ0, hγ0⟩, g, hg, g', hg', hpt⟩` from `h3 R ρ s hs`. Take `⟨w0, hw0⟩` from `h1 R ρ s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hex : ∃ w, s.1.toTerm.atPt w ∧ s.1.toTerm.relevant` using `⟨w0, hw0, hs⟩`. Establish `hptOf : Formalism.L2.SG.PairVal.ptOf s.1.toTerm = w0`. Establish `e : Formalism.L2.SG.PairVal.ptOf s.1.toTerm = hex.choose`. Unfold `Formalism.L2.SG.PairVal.ptOf`. Rewrite using `[dif_pos hex]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `h2 _ _ _ hex.choose_spec.1 hw0`. Establish `hex1 : ∃ w, s.1.toTerm.atPt w` using `⟨w0, hw0⟩`. Establish `hc : Formalism.L2.SG.PairVal.cTerm vR s.1.toTerm = Formalism.L2.SG.PairVal.phaseAt s.1.toTerm (Formalism.L2.SG.PairVal.ptOf s.1.toTerm) * (vR s.1.toTerm : ℂ)`. Unfold `Formalism.L2.SG.PairVal.cTerm`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos hex1]`. Unfold `Formalism.L2.SG.PairVal.cAt`. Rewrite using `[hptOf, h2 _ _ _ hex1.choose_spec hw0]`. Establish `hexF : ∃ p : X.B.I.Ginf × X.B.I.Ginf, Formalism.L2.SG.RealObj.IsDFrameX X u u' 1 i0 i0' (Formalism.L2.SG.RealObj.gamW X u u' (Formalism.L2.SG.PairVal.ptOf s.1.toTerm)) p.1 p.2`. Take `⟨h, h', hh⟩` from `h4 one_pos _ ⟨γ0, hγ0⟩ (h4' R ρ s hs)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨(h, h'), hh⟩`. Establish `hS` using `Formalism.L2.SG.RealObj.InfCut.hsetU_sub X u hexF.choose_spec.1`. Establish `hS'` using `Formalism.L2.SG.RealObj.InfCut.hsetU_sub X u' hexF.choose_spec.2.1`. Establish `hV : Formalism.L2.SG.RealObj.unscaledOperatorAtPointRepresentative X u u' 1 i0 i0' νq (Formalism.L2.SG.PairVal.ptOf s.1.toTerm) = ((Formalism.L2.SG.RealObj.InfCut.piIso X u hexF.choose.1 hS).symm.toContinuousLinearEquiv : X.Vpi u →L[ℂ] X.Vpi u).comp ((Formalism.L2.SG.TermOp.OO (ν …`. Rewrite using `[Formalism.L2.SG.RealObj.InfCut.piIso_symm, Formalism.L2.SG.RealObj.InfCut.piIso_coe]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.L2.SG.RealObj.unscaledOperatorAtPointRepresentative`. Rewrite using `[if_pos ⟨γ0, hγ0⟩]`. Unfold `Formalism.L2.SG.RealObj.unscaledFrameConjugatedOperator`. Rewrite using `[dif_pos hexF]`. Use `⟨(Formalism.L2.SG.RealObj.InfCut.piIso X u hexF.choose.1 hS).trans (Formalism.L2.SG.RealObj.InfCut.piIso X u g hg), (Formalism.L2.SG.RealObj.InfCut.piIso X u' hexF.choose.2 hS').trans (Formalism.L2.SG.RealObj.InfCut.piIso X u' g' hg'), ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hA : ∀ x, X.Wu u (g * x) = X.psiInfU u g • Formalism.L2.SG.RealObj.InfCut.piIso X u g hg (X.Wu u x)`. Introduce `x`. Rewrite using `[Formalism.L2.SG.RealObj.InfCut.piIso_apply]`. Conclude with `(X.Wu_spec u).1 g hg x`. Establish `hB : ∀ x, X.Wu u' (g' * x) = X.psiInfU u' g' • Formalism.L2.SG.RealObj.InfCut.piIso X u' g' hg' (X.Wu u' x)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x`. Rewrite using `[Formalism.L2.SG.RealObj.InfCut.piIso_apply]`. Conclude with `(X.Wu_spec u').1 g' hg' x`. Establish `hO` using `ClassFrameNormal.oo_map_mulLeft (νq (Formalism.L2.SG.RealObj.gamW X u u' (Formalism.L2.SG.PairVal.ptOf s.1.toTerm))) (X.Wu u) (X.Wu u') (Formalism.L2.SG.RealObj.gamW X u u' (Formalism.L2.SG.PairVal.ptOf s.1.toTerm)) g g' (X.psiInfU u g) (X.psiInfU u' g') _ _ hA hB`. Establish `hph` using `h6 R ρ s hs g hg g' hg' hpt`.
-
-Unfold `chiOO frameVal`. Rewrite using `[h5 R ρ s hs g hg g' hg' hpt, hc, hV, hpt, hO, ← hph]`. Use extensionality with `ξ`. Simplify using `[smul_smul, LinearIsometryEquiv.trans_apply]`. Apply the tactic sequence `try ring_nf`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem normalFormC_of (h1 : LiftAtSomeC X Y u u' κ)
     (h2 : Formalism.L2.SG.PairVal.CellPtUnique D u u' (X.Fu u) (Y.what₂ u))

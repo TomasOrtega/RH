@@ -6,23 +6,21 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hA : A.BlockTriangular id` using `fun i j h => hlow i j h`. Establish `hdet : A.det = 1`. Rewrite using `[Matrix.det_of_upperTriangular hA]`. Simplify using `[hdiag]`. Use `haveI : Invertible A := Matrix.invertibleOfIsUnitDet A (by rw [hdet]; exact isUnit_one)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hB : (A⁻¹).BlockTriangular id` using `Matrix.blockTriangular_inv_of_blockTriangular hA`. Establish `hlowB : ∀ x y : Fin n, y < x → A⁻¹ x y = 0` using `fun x y h => hB h`. Establish `hmul : A * A⁻¹ = 1` using `Matrix.mul_nonsing_inv A (by rw [hdet]; exact isUnit_one)`. Establish `hdiagB : ∀ x, A⁻¹ x x = 1`. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `congrFun (congrFun hmul x) x`. Rewrite `h` using `[Matrix.mul_apply, Matrix.one_apply_eq, Finset.sum_eq_single x]`. Simplify `h` using `[hdiag]`. Introduce `j _ hj`. Break down `lt_or_gt_of_ne hj with hj | hj` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hlow x j hj, zero_mul]`. Rewrite using `[hlowB j x hj, mul_zero]`. Simplify using the standard rewrite rules. Use `⟨hlowB, hdiagB, ?_⟩` and prove the remaining obligations. Introduce `x y hxy`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hxy' : x < y`. Rewrite using `[Fin.lt_def]`. Use linear arithmetic over natural numbers and integers. Establish `h` using `congrFun (congrFun hmul x) y`. Rewrite `h` using `[Matrix.mul_apply, Matrix.one_apply_ne (ne_of_lt hxy'), Finset.sum_eq_add (x) (y) (ne_of_lt hxy')]`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hdiag x, hdiagB y, one_mul, mul_one]`. Conclude with `eq_neg_of_add_eq_zero_left h`. Introduce `j _ hj`. Break down `lt_trichotomy j x with h1 | h1 | h1` into its components or cases. Rewrite using `[hlow x j h1, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd h1 hj.1`. Establish `: y < j`. Break down `lt_trichotomy j y with h2 | h2 | h2` into its components or cases. It suffices to derive a contradiction. Rewrite `h1`, `h2` using `[Fin.lt_def]`.
+It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `absurd h2 hj.2`. Conclude with `h2`. Rewrite using `[hlowB j y this, mul_zero]`. Simplify using the standard rewrite rules.
-
-Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inv_upperUnitriangular (k : Type) [Field k] (n : ℕ) (A : Matrix (Fin n) (Fin n) k)
     (hlow : ∀ x y : Fin n, y < x → A x y = 0) (hdiag : ∀ x, A x x = 1) :

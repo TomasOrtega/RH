@@ -11,11 +11,11 @@ open scoped TensorProduct ENNReal NNReal Matrix
 namespace GlobalTheory.CompanionTheory.SW.EulerZero
 
 /- English proof (translation)
-Establish `hev : ∀ᶠ v in Filter.cofinite, |a v - 1| < 1` using `h.tendsto_cofinite_zero.eventually (gt_mem_nhds one_pos)`. Establish `hfin : {v | ¬ |a v - 1| < 1}.Finite` using `Filter.eventually_cofinite.1 hev`. Use `⟨S₀ ∪ hfin.toFinset, Finset.subset_union_left, ?_⟩` and prove the remaining obligations. Establish `hs : Summable (fun v : {v // v ∉ S₀ ∪ hfin.toFinset} => |a v.1 - 1|)` using `h.comp_injective Subtype.val_injective`. Use `(AbsTprod.abs_tprod _ (fun v : {v // v ∉ S₀ ∪ hfin.toFinset} => a v.1) hs).2.2.1 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨v, hv⟩`. Establish `hv' : |a v - 1| < 1`. Assume the negation of the conclusion as `hc`. Conclude with `hv (Finset.mem_union_right _ (hfin.mem_toFinset.2 hc))`. Use `(abs_lt.1 hv').1` as an intermediate fact.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `show 0 < a v`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem exists_tail_pos {ι : Type} {a : ι → ℝ} (h : Summable (fun v => |a v - 1|)) (S₀ : Finset ι) :
     ∃ S : Finset ι, S₀ ⊆ S ∧ 0 < ∏' v : {v // v ∉ S}, a v.1 := by
@@ -36,9 +36,7 @@ theorem exists_tail_pos {ι : Type} {a : ι → ℝ} (h : Summable (fun v => |a 
   linarith
 
 /- English proof (translation)
-Use `haveI : Countable (𝓞 F) := by haveI : Countable F := (Module.finBasis ℚ F).equivFun.injective.countable`. Conclude with `RingOfIntegers.coe_injective.countable`. Use `haveI : Countable (Ideal (𝓞 F)) := by`. Use `Function.Surjective.countable (f := fun s : Finset (𝓞 F) => Ideal.span (s : Set (𝓞 F))) ?_` and prove the remaining obligations. Introduce `I`.
-
-Conclude with `(IsNoetherian.noetherian I : I.FG)`. Conclude with `Function.Injective.countable (f := fun la : HeightOneSpectrum (𝓞 F) => la.asIdeal) fun a b h => HeightOneSpectrum.ext h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem countable_places (F : Type) [Field F] [NumberField F] :
     Countable (HeightOneSpectrum (𝓞 F)) := by
@@ -56,9 +54,9 @@ theorem countable_places (F : Type) [Field F] [NumberField F] :
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨-, -, S₀, hS₀⟩` from `h`. Use `⟨S₀, fun S hS => ?_⟩` and prove the remaining obligations. Establish `key` using `hS₀ S hS (fun _ => 1) (fun _ _ => 1) measurable_const (fun _ => measurable_const)`. Establish `hp : pureL b S (fun _ => 1) (fun _ _ => 1) = (intOff (n` using `n) (M := M) b S).indicator 1 := by`. Use function extensionality and compare the values at `X`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[pureL, Set.indicator]`. Rewrite `key` using `[hp, lintegral_indicator_one (hmeas S)]`. Simplify using `using key`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_measure_intOff {d M n : ℕ} {b : Module.Basis (Fin d) F E}
     {I : Measure (Fin n → Fin M → AF F ⊗[F] E)} {c : ℝ≥0}
@@ -83,25 +81,23 @@ end GlobalTheory.CompanionTheory.SW.EulerZero
 open GlobalTheory.CompanionTheory.SW.EulerZero in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ d b n M I c minf m`. Take `⟨-, -, -, -, hopen, hcof, -⟩` from `GlobalTheory.T.adelic_tuple_projections F E σ hσ d b n M`. Take `⟨⟨hlc, hsc, ht2⟩, -⟩` from `GlobalTheory.T.adeles_locally_compact_second_countable F`. Take `⟨-, -, -, -, -, -, -, hborel, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hσ (AF F)`. Use `haveI := hborel n M`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmeas : ∀ S, MeasurableSet (intOff (n` using `n) (M := M) b S) := fun S => (hopen S).measurableSet`. Use `⟨fun h hI => ?_, fun h hz => ?_, fun hfin hsum hz => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hcon push_neg at hcon`. Take `⟨hc, hminf, hm⟩` from `hcon`. Take `⟨S₀, hS₀⟩` from `exists_measure_intOff h hmeas`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨S, hS, hpos⟩` from `exists_tail_pos h.2.1 S₀`. Establish `key` using `hS₀ S hS`. Rewrite `key` using `[hI]`. Establish `h1 : (c : ℝ≥0∞) ≠ 0` using `by exact_mod_cast hc`. Establish `h2 : minf Set.univ ≠ 0` using `by simpa using hminf`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ∏ v ∈ S, m v Set.univ ≠ 0` using `Finset.prod_ne_zero_iff.2 fun v _ => by simpa using hm v`. Establish `h4 : ENNReal.ofReal (∏' v : {v // v ∉ S}, (m v.1 (latV b v.1)).toReal) ≠ 0`. Simplify using `using hpos`. Conclude with `(mul_ne_zero (mul_ne_zero h1 (mul_ne_zero h2 h3)) h4) (by simpa using key.symm)`. Take `⟨S₀, hS₀⟩` from `exists_measure_intOff h hmeas classical`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Choose the witnesses or unpack the hypotheses as in `⟨S₁, hS₁, hzero⟩ : ∃ S₁ : Finset (HeightOneSpectrum (𝓞 F)), S₀ ⊆ S₁ ∧ ∀ S, S₁ ⊆ S → minf Set.univ * ∏ v ∈ S, m v Set.univ = 0 := by`. Break down `hz with hz | ⟨v, hv⟩` into its components or cases. Conclude with `⟨S₀, subset_rfl, fun S _ => by simp [hz]⟩`. Use `⟨insert v S₀, Finset.subset_insert _ _, fun S hS => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.prod_eq_zero (hS (Finset.mem_insert_self v S₀)) (by simp [hv]), mul_zero]`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI := countable_places F`. Establish `hcover : (Set.univ : Set (Fin n → Fin M → AF F ⊗[F] E)) ⊆ ⋃ T : Finset (HeightOneSpectrum (𝓞 F)), intOff b (S₁ ∪ T)`. Introduce `X _`. Establish `hT` using `Filter.eventually_cofinite.1 (hcof (projFin X))`. Use `Set.mem_iUnion.2 ⟨hT.toFinset, fun v hv => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hc`. Conclude with `hv (Finset.mem_union_right _ (hT.mem_toFinset.2 hc))`. Establish `hnull : I Set.univ = 0`. Use `measure_mono_null hcover (measure_iUnion_null fun T => ?_)` and prove the remaining obligations. Rewrite using `[hS₀ _ (hS₁.trans Finset.subset_union_left), hzero _ Finset.subset_union_left]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using the standard rewrite rules. Conclude with `Measure.measure_univ_eq_zero.1 hnull`. Use `⟨hfin, hsum, ?_⟩ classical` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨S₀, hS₀⟩ : ∃ S₀ : Finset (HeightOneSpectrum (𝓞 F)), minf = 0 ∨ ∃ v ∈ S₀, m v = 0 := by`. Break down `hz with hz | ⟨v, hv⟩` into its components or cases.
+Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Conclude with `⟨∅, Or.inl hz⟩`. Conclude with `⟨{v}, Or.inr ⟨v, by simp, hv⟩⟩`. Use `⟨S₀, fun S hS φinf φ _ _ => ?_⟩` and prove the remaining obligations. Break down `hS₀ with hz | ⟨v, hv, hmv⟩` into its components or cases. Simplify using `[hz]`.
-
-Rewrite using `[Finset.prod_eq_zero (hS hv) (by simp [hmv])]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.SW.EulerZero.euler_zero : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (n M : ℕ) (I : Measure (Fin n → Fin M → AF F ⊗[F] E)) (c : ℝ≥0) (minf : Measure (Fin n → Fin M → Ainf F ⊗[F] E)) (m : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fin n → Fin M → Fv F v ⊗[F] E)), (IsEulerProd b I c minf m → I = 0 → c = 0 ∨ minf = 0 ∨ ∃ v, m v = 0) ∧ (IsEulerProd b I c minf m → (minf = 0 ∨ ∃ v, m v = 0) → I = 0) ∧ ((∀ v, m v (latV b v) < ⊤) → Summable (fun v => |(m v (latV b v)).toReal - 1|) → (minf = 0 ∨ ∃ v, m v = 0) → IsEulerProd b 0 c minf m) := by
   intro F E _ _ _ _ _ σ hσ d b n M I c minf m

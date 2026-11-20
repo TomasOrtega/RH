@@ -7,18 +7,18 @@ noncomputable section
 namespace Formalism.L2.FormalSeriesBounds
 
 /- English proof (translation)
-Introduce `C _ _ V d I _ κ _ X _ hBi ζ hζ n hn γ δ c hγ hδ hc hN` and use `SelfConjGauge.hInt_core V X hBi ζ hζ n hn γ δ c hγ hδ hc hN`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem r1sHInt_holds : IntegralUnitFamilies :=
   fun C _ _ V d I _ κ _ X _ hBi ζ hζ n hn γ δ c hγ hδ hc hN => SelfConjGauge.hInt_core V X hBi ζ hζ n hn γ δ c hγ hδ hc hN
 
 /- English proof (translation)
-The claim follows from `r1sHResc`.
+A detailed English derivation is pending.
 -/
 theorem r1sHResc_holds : GaugeRescalingSymmetry := r1sHResc
 
 /- English proof (translation)
-The claim follows from `coeffIdentity_selfConj_of_four_open hHL r1sHResc_holds r1sHInt_holds hGe`.
+A detailed English derivation is pending.
 -/
 theorem coeffIdentity_selfConj_of_two (hHL : GaugeLeadingTermLinear) (hGe : GenericPointUnitCongruence) : CoefficientIdentitySelfConjugate :=
   coeffIdentity_selfConj_of_four_open hHL r1sHResc_holds r1sHInt_holds hGe

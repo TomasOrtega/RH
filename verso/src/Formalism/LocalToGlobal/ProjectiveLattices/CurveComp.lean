@@ -43,7 +43,7 @@ def rzMap : Rp X la N →ₐ[Kp X la N] RZ X la N Ω :=
   Algebra.TensorProduct.map (AlgHom.id _ _) (Algebra.TensorProduct.map (AlgHom.id _ _) gF)
 
 /- English proof (translation)
-Use `show Algebra.TensorProduct.map (AlgHom.id _ _) (Algebra.TensorProduct.map (AlgHom.id _ _) gF) ((1 : Kp X la N) ⊗ₜ[X.Kl la] ((1 : X.Kl la) ⊗ₜ[B.KO] F)) = _`. Rewrite using `[Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.map_tmul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma rzMap_emb (F : X.Forms) :
     rzMap X la N Ω gF (emb X la N F) = (1 : Kp X la N) ⊗ₜ ((1 : X.Kl la) ⊗ₜ gF F) := by
@@ -60,7 +60,7 @@ def lwZ : Lw X la w →+* RZs X la N Ω gF w :=
   Localization.awayMap (rzMap X la N Ω gF).toRingHom (Formalism.MainNotions.Gaps.EtaleWeightGaps.sec X la w 0)
 
 /- English proof (translation)
-Use `show (Localization.awayMap (rzMap X la N Ω gF).toRingHom (Formalism.MainNotions.Gaps.EtaleWeightGaps.sec X la w 0)) (algebraMap (Rp X la N) (Localization.Away (Formalism.MainNotions.Gaps.EtaleWeightGaps.sec X la w 0)) r) = _`. Conclude with `IsLocalization.map_eq _ _`.
+A detailed English derivation is pending.
 -/
 lemma lwZ_alg (r : Rp X la N) :
     lwZ X la N Ω gF w (algebraMap (Rp X la N) (Lw X la w) r) =
@@ -92,7 +92,7 @@ def formsEvR : AddMonoidAlgebra (T.R j) (Deg D j) →ₐ[T.Q.c.F] Om Z :=
   AddMonoidAlgebra.liftNCAlgHom (evCAlg hG hT Z) 1 (fun _ _ => Commute.all _ _)
 
 /- English proof (translation)
-Use `show AddMonoidAlgebra.liftNC (((evCAlg hG hT Z : T.R j →+* Om Z)) : T.R j →+ Om Z) ((1 : Multiplicative (Deg D j) →* Om Z) : Multiplicative (Deg D j) → Om Z) (AddMonoidAlgebra.single d f) = _`. Rewrite using `[AddMonoidAlgebra.liftNC_single]`. Simplify using `[evCAlg_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma formsEvR_single (d : Deg D j) (f : T.R j) :
     formsEvR j hG hT Z (AddMonoidAlgebra.single d f) = evC hG Z f := by

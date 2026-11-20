@@ -23,7 +23,7 @@ variable {V : Type*} [AddCommGroup V] [Module ℂ V]
 def Good (p : ℕ) (Lt : AddSubgroup V) (T : V →ₗ[ℂ] V) (x : V) : Prop := ∃ k : ℕ, ¬ p ∣ k ∧ (k : ℂ) • T x ∈ Lt
 
 /- English proof (translation)
-Establish `e : ((r * k : ℕ) : ℂ) • v = r • ((k : ℂ) • v)`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ r, smul_smul, Nat.cast_mul]`. Rewrite using `[e]`. Conclude with `Lt.nsmul_mem h r`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_smul_mem (Lt : AddSubgroup V) {k : ℕ} {v : V} (h : (k : ℂ) • v ∈ Lt) (r : ℕ) : ((r * k : ℕ) : ℂ) • v ∈ Lt := by
   have e : ((r * k : ℕ) : ℂ) • v = r • ((k : ℂ) • v) := by
@@ -32,15 +32,15 @@ theorem mul_smul_mem (Lt : AddSubgroup V) {k : ℕ} {v : V} (h : (k : ℂ) • v
   exact Lt.nsmul_mem h r
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, hp.one_lt.ne' ∘ Nat.dvd_one.1, by rw [map_zero, smul_zero]; exact Lt.zero_mem⟩`.
+Supply the required witnesses or components.
 -/
 theorem good_zero {p : ℕ} (hp : p.Prime) (Lt : AddSubgroup V) (T : V →ₗ[ℂ] V) : Good p Lt T 0 :=
   ⟨1, hp.one_lt.ne' ∘ Nat.dvd_one.1, by rw [map_zero, smul_zero]; exact Lt.zero_mem⟩
 
 /- English proof (translation)
-Take `⟨k, hk, h1⟩` from `hx`. Take `⟨l, hl, h2⟩` from `hy`. Use `⟨l * k, fun h => (hp.dvd_mul.1 h).elim hl hk, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, smul_add]`. Use `Lt.add_mem (mul_smul_mem Lt h1 l) ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_comm]`. Conclude with `mul_smul_mem Lt h2 k`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_add {p : ℕ} (hp : p.Prime) (Lt : AddSubgroup V) (T : V →ₗ[ℂ] V) {x y : V} (hx : Good p Lt T x) (hy : Good p Lt T y) :
     Good p Lt T (x + y) := by
@@ -53,7 +53,7 @@ theorem good_add {p : ℕ} (hp : p.Prime) (Lt : AddSubgroup V) (T : V →ₗ[ℂ
   exact mul_smul_mem Lt h2 k
 
 /- English proof (translation)
-Take `⟨k, hk, h1⟩` from `hx`. Use `⟨k, hk, ?_⟩` and prove the remaining obligations. Rewrite using `[map_neg, smul_neg]`. Conclude with `Lt.neg_mem h1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_neg {p : ℕ} (Lt : AddSubgroup V) (T : V →ₗ[ℂ] V) {x : V} (hx : Good p Lt T x) : Good p Lt T (-x) := by
   obtain ⟨k, hk, h1⟩ := hx
@@ -62,17 +62,13 @@ theorem good_neg {p : ℕ} (Lt : AddSubgroup V) (T : V →ₗ[ℂ] V) {x : V} (h
   exact Lt.neg_mem h1
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `hfin.fg_top`. Establish `hT' : ∀ x : Lt, ∃ k : ℕ, ¬ p ∣ k ∧ (k : ℂ) • T (x : V) ∈ Lt` using `fun x => hT x x.2`. Use `choose kf hk1 hk2 using hT'`. Use `⟨∏ s ∈ S, kf s, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a, _, ha⟩` from `(hp.prime.dvd_finsetProd_iff _).1 h`. Conclude with `hk1 a ha`. Introduce `x hx`. Establish `hmem : (⟨x, hx⟩ : Lt) ∈ Submodule.span ℤ (S : Set Lt)` using `by rw [hS]; trivial`. Establish `key : ∀ y : Lt, y ∈ Submodule.span ℤ (S : Set Lt) → ((∏ s ∈ S, kf s : ℕ) : ℂ) • T (y : V) ∈ Lt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨r, hr⟩` from `Finset.dvd_prod_of_mem kf hy`. Rewrite using `[hr, mul_comm]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Conclude with `mul_smul_mem Lt (hk2 y) r`. Consider the case `zero => simp only [ZeroMemClass.coe_zero, map_zero, smul_zero]`. Conclude with `Lt.zero_mem`. Consider the case `add y z _ _ h1 h2`. Simplify using `only [AddSubgroup.coe_add, map_add, smul_add]`.
-
-Conclude with `Lt.add_mem h1 h2`. Consider the case `smul n y _ h1`. Establish `e : ((n • y : Lt) : V) = n • (y : V)` using `rfl`. Rewrite using `[e, map_zsmul, smul_comm]`. Conclude with `Lt.zsmul_mem h1 n`.
-
-Conclude with `key _ hmem`.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_unif {p : ℕ} (hp : p.Prime) (Lt : AddSubgroup V) [hfin : Module.Finite ℤ Lt] (T : V →ₗ[ℂ] V)
     (hT : ∀ x ∈ Lt, Good p Lt T x) : ∃ k : ℕ, ¬ p ∣ k ∧ ∀ x ∈ Lt, (k : ℂ) • T x ∈ Lt := by
@@ -109,15 +105,15 @@ section Det
 variable {m : Type} [Fintype m] [DecidableEq m]
 
 /- English proof (translation)
-Simplify using `[stdLat, AddSubgroup.mem_pi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_std (L : PeriodPair) (x : m → ℂ) : x ∈ stdLat L m ↔ ∀ i, x i ∈ L.lattice := by
   simp [stdLat, AddSubgroup.mem_pi]
 
 /- English proof (translation)
-Use `isIntegral_of_smul_mem_submodule L.lattice ?_ (Module.Finite.iff_fg.1 inferInstance) c h` and prove the remaining obligations. Introduce `h0`. Establish `h1 : L.ω₁ ∈ L.lattice` using `L.ω₁_mem_lattice`. Rewrite `h1` using `[h0, Submodule.mem_bot]`. Establish `h2` using `L.indep.ne_zero 0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h2 (by simpa using h1)`.
+A detailed English derivation is pending.
 -/
 theorem int_of_stab (L : PeriodPair) (c : ℂ) (h : ∀ ω ∈ L.lattice, c * ω ∈ L.lattice) : IsIntegral ℤ c := by
   refine isIntegral_of_smul_mem_submodule L.lattice ?_ (Module.Finite.iff_fg.1 inferInstance) c h
@@ -128,19 +124,19 @@ theorem int_of_stab (L : PeriodPair) (c : ℂ) (h : ∀ ω ∈ L.lattice, c * ω
   exact h2 (by simpa using h1)
 
 /- English proof (translation)
-Establish `: Module.Finite ℤ (stdLat L m)` using `Formalism.L2.Th1.H.stdLat_finite L m`. Take `⟨k, hk, hkT⟩` from `good_unif hp (stdLat L m) T hT`. Establish `hA : ∀ i j, LinearMap.toMatrix' T i j = T (Pi.single j 1) i`. Introduce `i j`. Rewrite using `[LinearMap.toMatrix'_apply]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hent : ∀ i j, IsIntegral ℤ (((k : ℂ) • LinearMap.toMatrix' T) i j)`. Introduce `i j`. Apply `int_of_stab L` to reduce the goal to its premises. Introduce `ω hω`. Establish `h1 : (Pi.single j ω : m → ℂ) ∈ stdLat L m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[mem_std]`. Introduce `i'`. Distinguish the cases in `h : i' = j`. Substitute `h` using the available equality. Simplify using `using hω`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Pi.single_eq_of_ne h]`. Conclude with `L.lattice.zero_mem`. Establish `h2` using `(mem_std L _).1 (hkT _ h1) i`. Establish `e : (Pi.single j ω : m → ℂ) = ω • (Pi.single j 1 : m → ℂ)`. Use function extensionality and compare the values at `i'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : i' = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne h]`. Rewrite `h2` using `[e, map_smul]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul] at h2`. Rewrite using `[Matrix.smul_apply, hA, smul_eq_mul]`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Use `⟨k ^ Fintype.card m, fun h => hk (hp.dvd_of_dvd_pow h), ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h3` using `IsIntegral.det hent`. Rewrite `h3` using `[Matrix.det_smul, LinearMap.det_toMatrix']`. Rewrite using `[Nat.cast_pow]`. Conclude with `h3`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_det {p : ℕ} (hp : p.Prime) (L : PeriodPair) (T : (m → ℂ) →ₗ[ℂ] (m → ℂ))
     (hT : ∀ x ∈ stdLat L m, Good p (stdLat L m) T x) : ∃ k : ℕ, ¬ p ∣ k ∧ IsIntegral ℤ ((k : ℂ) * LinearMap.det T) := by
@@ -197,7 +193,7 @@ def extC (f : (Ix D → D.host.K) →ₗ[D.host.K] (Ix D → D.host.K)) : (Ix D 
   Matrix.toLin' ((LinearMap.toMatrix' f).map (fK D))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `h` using `RingHom.map_mulVec (fK D) (LinearMap.toMatrix' f) v i`. Rewrite `h` using `[LinearMap.toMatrix'_mulVec]`. Conclude with `h.symm`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extC_vec (f : (Ix D → D.host.K) →ₗ[D.host.K] (Ix D → D.host.K)) (v : Ix D → D.host.K) :
     extC D f (vec D v) = vec D (f v) := by
@@ -207,7 +203,7 @@ theorem extC_vec (f : (Ix D → D.host.K) →ₗ[D.host.K] (Ix D → D.host.K)) 
   exact h.symm
 
 /- English proof (translation)
-Unfold `extC`. Rewrite using `[LinearMap.det_toLin', ← LinearMap.det_toMatrix' f, RingHom.map_det]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem det_extC (f : (Ix D → D.host.K) →ₗ[D.host.K] (Ix D → D.host.K)) :
     LinearMap.det (extC D f) = fK D (LinearMap.det f) := by
@@ -216,14 +212,14 @@ theorem det_extC (f : (Ix D → D.host.K) →ₗ[D.host.K] (Ix D → D.host.K)) 
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `[vec]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem vec_natsmul (s : ℕ) (v : Ix D → D.host.K) : vec D (s • v) = (s : ℂ) • vec D v := by
   funext w
   simp [vec]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[vec]`. Simplify using `[vec, Pi.single_eq_of_ne h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem single_eq (j : Ix D) (ω : ℂ) : (Pi.single j ω : Ix D → ℂ) = ω • vec D (Pi.single j 1) := by
   funext i
@@ -238,22 +234,20 @@ section Cmp
 variable {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ)
 
 /- English proof (translation)
-The claim follows from `B.gC_spec y`.
+A detailed English derivation is pending.
 -/
 theorem gaussCoord_embedding_fourfold (y : Fin 4 → D.host.E) : B.gC (emb4 D y) = vec D (B.γ₀.g y) := B.gC_spec y
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite using `[← Finset.univ_sum_single x]`. Use `Finset.sum_induction _ _ (fun a b => good_add hp.out _ _) (good_zero hp.out _ _) ?_` and prove the remaining obligations. Introduce `j _`. Establish `hω : x j ∈ TaylorLogMetric.lamOf D cc δ` using `(SO.mem_iff B _).1 ((mem_std B.L x).1 hx j)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨s, hs, hmem⟩` from `hγ.2 (Pi.single j 1) (by`. Introduce `w`. Distinguish the cases in `h : w = j`. Substitute `h; exact ⟨1, by simp⟩` using the available equality. Conclude with `⟨0, by simp [Pi.single_eq_of_ne h]⟩)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components.
 
-Use `set y : Fin 4 → D.host.E := fun a => (s : D.host.E) * γ.g.symm (Pi.single j 1) a with hy`. Establish `hy' : y = s • γ.g.symm (Pi.single j 1)`. Use function extensionality and compare the values at `a`. Rewrite using `[hy, Pi.smul_apply, nsmul_eq_mul]`. Establish `e1 : (s : ℂ) • extC D ((B.γ₀.g.symm.trans γ.g).symm : (Ix D → D.host.K) →ₗ[D.host.K] (Ix D → D.host.K)) (Pi.single j (x j)) = B.gC (x j • emb4 D y)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[single_eq, map_smul, map_smul, extC_vec, gaussCoord_embedding_fourfold, hy', map_nsmul, vec_natsmul, smul_comm]`. Both sides reduce to the same expression. Establish `hz : B.gC (x j • emb4 D y) ∈ B.latA` using `⟨x j • emb4 D y, SO.gen_mem hω hmem, rfl⟩`. Establish `hz2 : u (B.gC (x j • emb4 D y)) ∈ imgLat (u : (Ix D → ℂ) →ₗ[ℂ] (Ix D → ℂ)) B.latA` using `⟨_, hz, rfl⟩`. Establish `hz3` using `PI.UnitaryGroupMassFormula.UnitDetRoot.nsmul_relIdx_mem (stdLat B.L (Ix D)) _ hz2`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨relIdx (stdLat B.L (Ix D)) (imgLat (u : (Ix D → ℂ) →ₗ[ℂ] (Ix D → ℂ)) B.latA) * s, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Break down `hp.out.dvd_mul.1 h with h | h` into its components or cases. Conclude with `h2 h`. Conclude with `hp.out.one_lt.ne' (Nat.dvd_one.1 (hs ▸ Nat.dvd_gcd h dvd_rfl))`.
-
-Rewrite `hz3` using `[← e1, map_smul, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul]`. Rewrite using `[Nat.cast_mul]`. Conclude with `hz3`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_stdLat_comp_extC (p : ℕ) [hp : Fact p.Prime] (γ : IsoK D) (hγ : γ.AtP p)
     (u : (Ix D → ℂ) ≃ₗ[ℂ] (Ix D → ℂ))
@@ -291,17 +285,17 @@ theorem good_stdLat_comp_extC (p : ℕ) [hp : Fact p.Prime] (γ : IsoK D) (hγ :
     exact hz3
 
 /- English proof (translation)
-Introduce `z hz`. Establish `hz'` using `SO.fourth_power_le_closure_embeddings (TaylorLogMetric.lamOf D cc δ) hz`. Use `clear hz`. Proceed by induction on `hz' using AddSubgroup.closure_induction with`. Consider the case `mem z h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, y, hy, rfl⟩` from `h`. Take `⟨s, hs, hr⟩` from `hγ.1 y hy`. Use `⟨s, fun h => hp.out.one_lt.ne' (Nat.dvd_one.1 (hs ▸ Nat.dvd_gcd h dvd_rfl)), ?_⟩` and prove the remaining obligations. Establish `e : (extC D ((B.γ₀.g.symm.trans γ.g) : (Ix D → D.host.K) →ₗ[D.host.K] (Ix D → D.host.K)) ∘ₗ (B.gC : (Ix D → ℂ) →ₗ[ℂ] (Ix D → ℂ))) (w • emb4 D y) = w • vec D (γ.g y)` using `by show extC D _ (B.gC (w • emb4 D y)) = _`. Rewrite using `[map_smul, map_smul, gaussCoord_embedding_fourfold, extC_vec]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Simplify using the standard rewrite rules. Rewrite using `[e, mem_std]`. Introduce `i`. Take `⟨o, ho⟩` from `hr i`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `SO.lam_mul o hw`. Rewrite using `[SO.mem_iff]`. Establish `e2 : D.host.φ₀ (((o : D.host.K) : D.host.E)) = (s : ℂ) * fK D (γ.g y i)`. Establish `: fK D (algebraMap (𝓞 D.host.K) D.host.K o) = fK D ((s : D.host.K) * γ.g y i)` using `by rw [ho]`. Rewrite `this` using `[map_mul, map_natCast]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Rewrite `h1` using `[e2]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, vec]`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => exact good_zero hp.out _ _`. Consider the case `add a b _ _ h1 h2 => exact good_add hp.out _ _ h1 h2`. Consider the case `neg a _ h1 => exact good_neg _ _ h1`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem good_lat (p : ℕ) [hp : Fact p.Prime] (γ : IsoK D) (hγ : γ.AtP p) :
     ∀ z ∈ pow4 B.lamM, Good p (stdLat B.L (Ix D))
@@ -338,11 +332,11 @@ theorem good_lat (p : ℕ) [hp : Fact p.Prime] (γ : IsoK D) (hγ : γ.AtP p) :
   | neg a _ h1 => exact good_neg _ _ h1
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hM : dualLat (Formalism.L2.Th1.H.stdH B.L (Ix D)) (imgLat (u : (Ix D → ℂ) →ₗ[ℂ] (Ix D → ℂ)) B.latA) = imgLat (u : (Ix D → ℂ) →ₗ[ℂ] (Ix D → ℂ)) B.latA` using `SO.selfDual_img _ _ u hiso _ hsd`. Establish `hL : dualLat (Formalism.L2.Th1.H.stdH B.L (Ix D)) (stdLat B.L (Ix D)) = stdLat B.L (Ix D)` using `Formalism.L2.Th1.H.stdSelfDual B.L (Ix D)`. Establish `hx' : x ∈ dualLat (Formalism.L2.Th1.H.stdH B.L (Ix D)) (stdLat B.L (Ix D))` using `by rw [hL]; exact hx`. Establish `key : ((relIdx (stdLat B.L (Ix D)) (imgLat (u : (Ix D → ℂ) →ₗ[ℂ] (Ix D → ℂ)) B.latA) : ℕ) : ℂ) • x ∈ dualLat (Formalism.L2.Th1.H.stdH B.L (Ix D)) (imgLat (u : (Ix D → ℂ) →ₗ[ℂ] (Ix D → ℂ)) B.latA)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y hy`. Establish `h1` using `PI.UnitaryGroupMassFormula.UnitDetRoot.nsmul_relIdx_mem (stdLat B.L (Ix D)) _ hy`. Rewrite `h1` using `[← Nat.cast_smul_eq_nsmul ℂ]`. Take `⟨n, hn⟩` from `hx' _ h1`. Use `⟨n, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hn]`. Simplify using `[altE, relIdx, LinearMap.map_smulₛₗ]`. Rewrite `key` using `[hM]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem relIdx_smul_mem_imgLat_of_mem_stdLat (hsd : IsSelfDual (Formalism.L2.Th1.H.stdH B.L (Ix D)) B.latA)
     (u : (Ix D → ℂ) ≃ₗ[ℂ] (Ix D → ℂ))
@@ -368,11 +362,11 @@ theorem relIdx_smul_mem_imgLat_of_mem_stdLat (hsd : IsSelfDual (Formalism.L2.Th1
   rwa [hM] at key
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨z, ⟨z', hz', hzz⟩, hzx⟩` from `relIdx_smul_mem_imgLat_of_mem_stdLat B hsd u hiso x hx`. Take `⟨s, hs, hmem⟩` from `good_lat B p γ hγ z' hz'`. Establish `e1 : B.gC z' = z` using `hzz`. Establish `e2 : u z = ((relIdx (stdLat B.L (Ix D)) (imgLat (u : (Ix D → ℂ) →ₗ[ℂ] (Ix D → ℂ)) B.latA) : ℕ) : ℂ) • x` using `hzx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : z = ((relIdx (stdLat B.L (Ix D)) (imgLat (u : (Ix D → ℂ) →ₗ[ℂ] (Ix D → ℂ)) B.latA) : ℕ) : ℂ) • u.symm x`. Rewrite using `[← map_smul, ← e2, LinearEquiv.symm_apply_apply]`. Use `⟨s * relIdx (stdLat B.L (Ix D)) (imgLat (u : (Ix D → ℂ) →ₗ[ℂ] (Ix D → ℂ)) B.latA), fun h => (hp.out.dvd_mul.1 h).elim hs h2, ?_⟩` and prove the remaining obligations. Establish `e4 : (extC D ((B.γ₀.g.symm.trans γ.g) : (Ix D → D.host.K) →ₗ[D.host.K] (Ix D → D.host.K)) ∘ₗ (B.gC : (Ix D → ℂ) →ₗ[ℂ] (Ix D → ℂ))) z' = extC D ((B.γ₀.g.symm.trans γ.g) : (Ix D → D.host.K) →ₗ[D.host.K] (Ix D → D.host.K)) z`. Rewrite using `[← e1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite `hmem` using `[e4, e3, map_smul, smul_smul, ← Nat.cast_mul]`. Conclude with `hmem`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_alt_ter (hsd : IsSelfDual (Formalism.L2.Th1.H.stdH B.L (Ix D)) B.latA) (p : ℕ) [hp : Fact p.Prime] (γ : IsoK D) (hγ : γ.AtP p)
     (u : (Ix D → ℂ) ≃ₗ[ℂ] (Ix D → ℂ))
@@ -396,21 +390,17 @@ theorem good_alt_ter (hsd : IsSelfDual (Formalism.L2.Th1.H.stdH B.L (Ix D)) B.la
   exact hmem
 
 /- English proof (translation)
-Take `⟨k₁, hk₁, hi₁⟩` from `int_det hp.out B.L _ (good_stdLat_comp_extC B p γ hγ u h2)`. Take `⟨k₂, hk₂, hi₂⟩` from `int_det hp.out B.L _ (good_alt_ter B hsd p γ hγ u hiso h2)`. Rewrite `hi₁`, `hi₂` using `[LinearMap.det_comp, det_extC]`. Use `set f := B.γ₀.g.symm.trans γ.g with hf`. Use `set X := fK D (LinearMap.det (f : (Ix D → D.host.K) →ₗ[D.host.K] (Ix D → D.host.K))) with hX`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set X' := fK D (LinearMap.det (f.symm : (Ix D → D.host.K) →ₗ[D.host.K] (Ix D → D.host.K))) with hX'`. Use `set U := LinearMap.det (u : (Ix D → ℂ) →ₗ[ℂ] (Ix D → ℂ)) with hU`. Use `set U' := LinearMap.det (u.symm : (Ix D → ℂ) →ₗ[ℂ] (Ix D → ℂ)) with hU'`. Establish `hXX : X * X' = 1` using `by rw [hX, hX', ← map_mul, LinearEquiv.det_mul_det_symm, map_one]`. Establish `hUU : U * U' = 1` using `LinearEquiv.det_mul_det_symm u`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinv : (U * X')⁻¹ = X * U'`. Apply `inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `hne : U * X' ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: U * X' * (X * U') = 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite `this` using `[h0, zero_mul]`. Conclude with `zero_ne_one this`. Establish `hunit : PI.UnitaryGroupMassFormula.UnitDetRoot.IsLUnit p (U * X')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hne, k₁ * k₂, fun h => (hp.out.dvd_mul.1 h).elim hk₁ hk₂, ?_, ?_⟩` and prove the remaining obligations. Establish `: ((k₁ * k₂ : ℕ) : ℂ) * (U * X') = (k₂ : ℂ) * ((k₁ : ℂ) * (U * X'))` using `by push_cast; ring`. Rewrite using `[this]`. Conclude with `(isIntegral_algebraMap (R := ℤ) (A := ℂ) (x := (k₂ : ℤ))).mul hi₁ |> fun h => by simpa using h`. Rewrite using `[hinv]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: ((k₁ * k₂ : ℕ) : ℂ) * (X * U') = (k₁ : ℂ) * ((k₂ : ℂ) * (X * U'))` using `by push_cast; ring`. Rewrite using `[this]`. Conclude with `(isIntegral_algebraMap (R := ℤ) (A := ℂ) (x := (k₁ : ℤ))).mul hi₂ |> fun h => by simpa using h`. Establish `h1` using `PI.UnitaryGroupMassFormula.UnitDetRoot.normOne p ι _ hunit`. Rewrite `h1` using `[map_mul, norm_mul]`.
-
-Establish `h3 : ‖ι X‖ * ‖ι X'‖ = 1` using `by rw [← norm_mul, ← map_mul, hXX, map_one, norm_one]`. Establish `h4 : ‖ι X'‖ ≠ 0`. Introduce `h0`. Rewrite `h3` using `[h0, mul_zero]`. Conclude with `zero_ne_one h3`.
-
-Establish `h5 : ‖ι U‖ = ‖ι X‖` using `mul_right_cancel₀ h4 (h1.trans h3.symm)`. Conclude with `h5`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem det_compare (hsd : IsSelfDual (Formalism.L2.Th1.H.stdH B.L (Fin 4 × D.what₂.Tau)) B.latA) (p : ℕ) [hp : Fact p.Prime] (ι : ℂ ≃+* ℂ_[p])
     (γ : IsoK D) (hγ : γ.AtP p)

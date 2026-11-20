@@ -10,13 +10,13 @@ noncomputable section
 variable {K : Type*} [Field K] [NumberField K] (L : Type*) [Field L] [NumberField L] [Algebra K L]
 
 /- English proof (translation)
-The claim follows from `(IsFractionRing.finrank_eq (𝓞 K) K (𝓞 L) L).symm`.
+A detailed English derivation is pending.
 -/
 theorem finrank_integers : Module.finrank (𝓞 K) (𝓞 L) = Module.finrank K L :=
   (IsFractionRing.finrank_eq (𝓞 K) K (𝓞 L) L).symm
 
 /- English proof (translation)
-Rewrite using `[← Nat.card_congr (Algebra.TensorProduct.quotIdealMapEquivTensorQuot (𝓞 L) I).toEquiv, ← Submodule.cardQuot_apply, ← Submodule.cardQuot_apply, ← Ideal.absNorm_apply, ← Ideal.absNorm_apply, Ideal.absNorm_algebraMap, finrank_integers]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_tensor_quotient (I : Ideal (𝓞 K)) :
     Nat.card (𝓞 L ⊗[𝓞 K] (𝓞 K ⧸ I)) = Nat.card (𝓞 K ⧸ I) ^ Module.finrank K L := by
@@ -25,19 +25,17 @@ theorem card_tensor_quotient (I : Ideal (𝓞 K)) :
     ← Ideal.absNorm_apply, Ideal.absNorm_algebraMap, finrank_integers]
 
 /- English proof (translation)
-Proceed by induction on `hn : Nat.card Q using Nat.strong_induction_on generalizing Q with`. Consider the case `_ n ih`. Substitute `hn` using the available equality. Break down `subsingleton_or_nontrivial Q with hQ | hQ` into its components or cases. Establish `h0 : ∀ z : 𝓞 L ⊗[𝓞 K] Q, z = 0` using `fun z ↦ by`.
+Proceed by induction. Treat this case separately. Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rfl`. Consider the case `tmul b q => rw [Subsingleton.elim q 0, tmul_zero]`. Consider the case `add a b ha hb => rw [ha, hb, add_zero]`. Establish `: Subsingleton (𝓞 L ⊗[𝓞 K] Q)` using `⟨fun x y ↦ by rw [h0 x, h0 y]⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[Nat.card_of_subsingleton (0 : 𝓞 L ⊗[𝓞 K] Q), Nat.card_of_subsingleton (0 : Q), one_pow]`. Take `⟨x, hx⟩` from `exists_ne (0 : Q)`. Use `set C : Submodule (𝓞 K) Q := Submodule.span (𝓞 K) {x}`. Establish `: Finite (Q ⧸ C)` using `Finite.of_surjective _ (Submodule.mkQ_surjective C)`. Establish `hCQ : Nat.card Q = Nat.card (Q ⧸ C) * Nat.card C` using `AddSubgroup.card_eq_card_quotient_mul_card_addSubgroup C.toAddSubgroup`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC1 : 1 < Nat.card C`. Establish `: Nontrivial C` using `⟨⟨⟨x, Submodule.mem_span_singleton_self x⟩, 0, fun h ↦ hx (congrArg Subtype.val h)⟩⟩`. Conclude with `Finite.one_lt_card`. Establish `hlt : Nat.card (Q ⧸ C) < Nat.card Q`. Establish `: 0 < Nat.card (Q ⧸ C)` using `Nat.card_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hCQ]`. Conclude with `lt_mul_of_one_lt_right this hC1`. Establish `hquot` using `ih _ hlt (Q ⧸ C) rfl`. Establish `hcyc : Nat.card (𝓞 L ⊗[𝓞 K] C) = Nat.card C ^ Module.finrank K L`. Establish `e` using `Ideal.quotTorsionOfEquivSpanSingleton (𝓞 K) Q x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Nat.card_congr e.toEquiv, ← card_tensor_quotient L, Nat.card_congr (LinearEquiv.lTensor (𝓞 L) e).toEquiv]`. Use `set f : 𝓞 L ⊗[𝓞 K] C →ₗ[𝓞 K] 𝓞 L ⊗[𝓞 K] Q := LinearMap.lTensor (𝓞 L) C.subtype`. Establish `hf : Function.Injective f` using `Module.Flat.lTensor_preserves_injective_linearMap C.subtype C.injective_subtype`. Establish `h1 : Nat.card (𝓞 L ⊗[𝓞 K] Q) = Nat.card ((𝓞 L ⊗[𝓞 K] Q) ⧸ LinearMap.range f) * Nat.card (LinearMap.range f)` using `AddSubgroup.card_eq_card_quotient_mul_card_addSubgroup (LinearMap.range f).toAddSubgroup`. Establish `h2 : Nat.card (LinearMap.range f) = Nat.card (𝓞 L ⊗[𝓞 K] C)` using `Nat.card_congr (LinearEquiv.ofInjective f hf).toEquiv.symm`.
-
-Establish `h3 : Nat.card ((𝓞 L ⊗[𝓞 K] Q) ⧸ LinearMap.range f) = Nat.card (𝓞 L ⊗[𝓞 K] (Q ⧸ C))` using `Nat.card_congr (TensorProduct.tensorQuotientEquiv (𝓞 L) C).toEquiv.symm`. Rewrite using `[h1, h2, h3, hquot, hcyc, hCQ, mul_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_tensor_integers (Q : Type*) [AddCommGroup Q] [Module (𝓞 K) Q] [Finite Q] :
     Nat.card (𝓞 L ⊗[𝓞 K] Q) = Nat.card Q ^ Module.finrank K L := by
@@ -82,9 +80,7 @@ theorem card_tensor_integers (Q : Type*) [AddCommGroup Q] [Module (𝓞 K) Q] [F
   rw [h1, h2, h3, hquot, hcyc, hCQ, mul_pow]
 
 /- English proof (translation)
-Set `_ : Algebra K ℂ` to `σ.toAlgebra`. Rewrite using `[← AlgHom.natCard_of_splits K L ℂ (fun _ ↦ IsAlgClosed.splits _)]`. Conclude with `Nat.card_congr { toFun := fun τ ↦ (⟨τ.1, fun a ↦ RingHom.congr_fun τ.2 a⟩ : L →ₐ[K] ℂ) invFun := fun g ↦ ⟨g.toRingHom, by`. Use extensionality with `a`. Conclude with `g.commutes a⟩`.
-
-Use `left_inv := fun τ ↦ rfl`. Use `right_inv := fun g ↦ rfl }`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem card_extensions (σ : K →+* ℂ) :
     Nat.card {τ : L →+* ℂ // τ.comp (algebraMap K L) = σ} = Module.finrank K L := by
@@ -99,7 +95,7 @@ theorem card_extensions (σ : K →+* ℂ) :
       right_inv := fun g ↦ rfl }
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_fiberwise Finset.univ (fun τ : L →+* ℂ ↦ τ.comp (algebraMap K L)), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun σ _ ↦ ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl (fun τ hτ ↦ by rw [(Finset.mem_filter.mp hτ).2]), Finset.sum_const, nsmul_eq_mul, ← card_extensions L σ, Nat.card_eq_fintype_card, Fintype.card_subtype]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_comp_algebraMap (f : (K →+* ℂ) → ℝ) :
     ∑ τ : L →+* ℂ, f (τ.comp (algebraMap K L)) = Module.finrank K L * ∑ σ : K →+* ℂ, f σ := by

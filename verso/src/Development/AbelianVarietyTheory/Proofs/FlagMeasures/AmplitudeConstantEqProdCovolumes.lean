@@ -13,9 +13,9 @@ noncomputable section
 namespace GlobalTheory.AmplitudeConst
 
 /- English proof (translation)
-Rewrite using `[← Complex.ofReal_inv, ← Complex.ofReal_mul, Complex.normSq_ofReal]`. Establish `hs : 0 ≤ l / d * d' / l'` using `by positivity`. Establish `e : (l / d)⁻¹ * Real.sqrt (l / d * d' / l') * ((l / d)⁻¹ * Real.sqrt (l / d * d' / l')) = (l / d)⁻¹ * (l / d)⁻¹ * (Real.sqrt (l / d * d' / l') * Real.sqrt (l / d * d' / l'))` using `by ring`. Rewrite using `[e, Real.mul_self_sqrt hs]`. Break down `hd.eq_or_lt with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
+Substitute using the available equality. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem normSq_inv_mul_sqrt (l d l' d' : ℝ) (hl : 0 < l) (hl' : 0 < l') (hd : 0 ≤ d) (hd' : 0 ≤ d') :
     Complex.normSq ((((l / d : ℝ) : ℂ))⁻¹ * ((Real.sqrt (l / d * d' / l') : ℝ) : ℂ)) = d / l * (d' / l') := by
@@ -29,7 +29,7 @@ theorem normSq_inv_mul_sqrt (l d l' d' : ℝ) (hl : 0 < l) (hl' : 0 < l') (hd : 
   · field_simp
 
 /- English proof (translation)
-Rewrite using `[mul_pow, inv_pow, Real.sq_sqrt (by positivity), mul_inv, inv_div, inv_div]`. Establish `eV : V = M * H / L` using `by field_simp; linarith`. Establish `eV' : V' = M' * H' / L'` using `by field_simp; linarith`. Substitute `eV eV'` using the available equality. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Clear the denominators using the available nonvanishing facts.
 -/
 theorem const_eq (P P' L L' K M H M' H' V V' : ℝ) (hK : 0 < K) (hM : 0 < M) (hH : 0 < H) (hM' : 0 < M')
     (hH' : 0 < H') (hL : 0 < L) (hL' : 0 < L') (hV : L * V = M * H) (hV' : L' * V' = M' * H')
@@ -42,7 +42,7 @@ theorem const_eq (P P' L L' K M H M' H' V V' : ℝ) (hK : 0 < K) (hM : 0 < M) (h
   field_simp
 
 /- English proof (translation)
-Rewrite using `[Formalism.L2.SG.Pf.finrank_Vpi, Nat.cast_prod]`. Conclude with `Fintype.prod_equiv X.pl.symm _ _ fun τ => rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_finrank_loc {D : D7} (X : HidaSetting D) (u : D.what₂.Word) :
     ∏ τ : D.what₂.Tau, (Module.finrank ℂ (X.Vloc u (vOf X τ)) : ℝ) = (Module.finrank ℂ (X.Vpi u) : ℝ) := by
@@ -50,13 +50,13 @@ theorem prod_finrank_loc {D : D7} (X : HidaSetting D) (u : D.what₂.Word) :
   exact Fintype.prod_equiv X.pl.symm _ _ fun τ => rfl
 
 /- English proof (translation)
-Introduce `D X Y hF θ C hB u u' hθ hG`. Establish `hK0 : 0 ≤ X.volK2` using `ENNReal.toReal_nonneg`. Establish `hv` using `hF.volPos u`. Establish `hv'` using `hF.volPos u'`. Establish `hN : 0 < X.volK2 * (X.muN u (Y.FN u)).toReal` using `hv.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN' : 0 < X.volK2 * (X.muN u' (Y.FN u')).toReal` using `hv'.1`. Establish `hK : 0 < X.volK2` using `pos_of_mul_pos_left hN ENNReal.toReal_nonneg`. Establish `hNu : 0 < (X.muN u (Y.FN u)).toReal` using `pos_of_mul_pos_right hN hK0`. Establish `hNu' : 0 < (X.muN u' (Y.FN u')).toReal` using `pos_of_mul_pos_right hN' hK0`. Establish `hHu : 0 < (X.muH u Set.univ).toReal` using `hv.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hHu' : 0 < (X.muH u' Set.univ).toReal` using `hv'.2`. Take `⟨hl, hp⟩` from `GlobalTheory.T.product_l2_positive D X Y θ C hB u hθ hG hNu hHu`. Take `⟨hl', hp'⟩` from `GlobalTheory.T.product_l2_positive D X Y θ C hB u' hθ hG hNu' hHu'`. Establish `hτ : ∀ τ, Complex.normSq ((((cOf hB u τ : ℝ) : ℂ))⁻¹ * sclOf hB u u' τ) = (Module.finrank ℂ (X.Vloc u (vOf X τ)) : ℝ) / (l2SG (C.nuS u τ) (phiOf hB u τ)).toReal * ((Module.finrank ℂ (X.Vloc u' (vOf X τ)) : ℝ) / (l2SG (C.nuS u' τ) (phiOf hB u' τ)).toReal)`. Introduce `τ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `sclOf cOf`. Conclude with `normSq_inv_mul_sqrt _ _ _ _ (hl τ) (hl' τ) (Nat.cast_nonneg _) (Nat.cast_nonneg _)`. Rewrite using `[Finset.prod_congr rfl fun τ _ => hτ τ, Finset.prod_mul_distrib, Finset.prod_div_distrib, Finset.prod_div_distrib, prod_finrank_loc, prod_finrank_loc]`. Unfold `Formalism.L2.SG.TermOp.scl Formalism.L2.SG.PoincareInHH.PoincareSetting.c0X`. Conclude with `const_eq _ _ _ _ _ _ _ _ _ _ _ hK hNu hHu hNu' hHu' (Finset.prod_pos fun τ _ => hl τ) (Finset.prod_pos fun τ _ => hl' τ) hp hp' (Nat.cast_nonneg _) (Nat.cast_nonneg _)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem prod_normSq_eq : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (hF : FinX Y) (θ : ℝ) (C : Choice X θ) (hB : WuBessel C) (u u' : D.what₂.Word), 0 < θ → Formalism.L2.SG.ConcreteSettingExists.GapHyp D → ∏ τ, Complex.normSq ((((cOf hB u τ : ℝ) : ℂ))⁻¹ * sclOf hB u u' τ) = (Formalism.L2.SG.TermOp.scl (Y.FN u) (Y.FN u') (X := X) (u := u) (u' := u') * X.volK2) ^ 2 * ((Measure.pi (fun _ : D.what₂.Tau => muNB D θ) ((fun (x : X.B.I.Ginf) (τ : D.what₂.Tau) => (Matrix.of.symm (Formalism.L2.SG.RealObj.trG (C.Q τ) (C.Qi τ) (x (vOf X τ))) : Formalism.QuantumDeterminants.Mt D.R.k D.R.rS)) '' Y.FN u)).toReal * (Measure.pi (fun _ : D.what₂.Tau => muNB D θ) ((fun (x : X.B.I.Ginf) (τ : D.what₂.Tau) => (Matrix.of.symm (Formalism.L2.SG.RealObj.trG (C.Q τ) (C.Qi τ) (x (vOf X τ))) : Formalism.QuantumDeterminants.Mt D.R.k D.R.rS)) '' Y.FN u')).toReal) := by
   intro D X Y hF θ C hB u u' hθ hG

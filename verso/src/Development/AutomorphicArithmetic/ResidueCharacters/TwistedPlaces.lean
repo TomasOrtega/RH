@@ -63,7 +63,7 @@ def nuL (D : D7) (l : ℕ) : ℝ :=
   else 0
 
 /- English proof (translation)
-Unfold `nuL`. Use `split_ifs`. Conclude with `Nat.cast_nonneg _`. Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem nuL_nonneg (D : D7) (l : ℕ) : 0 ≤ nuL D l := by
   unfold nuL; split_ifs
@@ -80,13 +80,13 @@ def TwPl (D : D7) (w : D.what₂.places.Pl) : Prop := D.what₂.muAt w ≠ D.wha
 def TwLoc (D : D7) (i : D.nd.Loc) : Prop := TwPl D (D.nd.w i)
 
 /- English proof (translation)
-The claim follows from `(D.what₂.muAt_or w).resolve_left h`.
+A detailed English derivation is pending.
 -/
 theorem TwPl.muAt_eq {D : D7} {w : D.what₂.places.Pl} (h : TwPl D w) : D.what₂.muAt w = D.what₂.muTw w :=
   (D.what₂.muAt_or w).resolve_left h
 
 /- English proof (translation)
-Unfold `TwLoc`. Rewrite using `[((D.nd.locs_mem j w i).1 hi).2]`. Conclude with `h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem TwPl.twLoc {D : D7} {w : D.what₂.places.Pl} (h : TwPl D w) {j : ℕ} {i : D.nd.Loc}
     (hi : i ∈ D.nd.locs j w) : TwLoc D i := by
@@ -116,7 +116,7 @@ def twAt (L : SizeData₂ D) (l : ℕ) : Finset D.what₂.places.Pl :=
 
 open Classical in
 /- English proof (translation)
-Unfold `twAt TwPl`. Conclude with `Finset.mem_filter`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem mem_twAt {L : SizeData₂ D} {l : ℕ} {w : D.what₂.places.Pl} :
     w ∈ twAt L l ↔ w ∈ L.supp ∧ TwPl D w ∧ D.what₂.places.resChar w = l := by
@@ -255,15 +255,15 @@ def AdmT (P : ParameterChoice' D L) : Prop :=
 end admitted
 
 /- English proof (translation)
-Establish `hl : (D.what₂.places.resChar w).Prime` using `D.what₂.places.resChar_prime w`. Establish `hl0 : ((D.what₂.places.resChar w : ℕ) : D.what₂.LL) ≠ 0` using `by exact_mod_cast hl.ne_zero`. Establish `h1` using `D.what₂.places.val_resChar w`. Rewrite `h1` using `[D.val_eq w _ hl0]`. Establish `h2 : vAdd (D.plEq w) ((D.what₂.places.resChar w : ℕ) : D.what₂.LL) = (D.what₂.places.ramIdx w : ℤ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h1` after adjusting the coercions. Establish `h3 : 0 < vAdd (D.plEq w) ((D.what₂.places.resChar w : ℕ) : D.what₂.LL)`. Rewrite using `[h2]`. Conclude with `D.what₂.places.ramIdx_pos w` after adjusting the coercions. Establish `hc : ((D.what₂.places.resChar w : ℕ) : D.what₂.LL) = algebraMap (𝓞 D.what₂.LL) D.what₂.LL ((D.what₂.places.resChar w : ℕ) : 𝓞 D.what₂.LL)` using `by simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h4 : (D.plEq w).valuation D.what₂.LL (algebraMap (𝓞 D.what₂.LL) D.what₂.LL ((D.what₂.places.resChar w : ℕ) : 𝓞 D.what₂.LL)) < 1`. Break down `lt_or_eq_of_le ((D.plEq w).valuation_le_one (K := D.what₂.LL) ((D.what₂.places.resChar w : ℕ) : 𝓞 D.what₂.LL)) with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction. Unfold `vAdd at h3`.
+It suffices to derive a contradiction. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h3` using `[hc, h]`. Simplify using `at h3`. Establish `h5 : ((D.what₂.places.resChar w : ℕ) : 𝓞 D.what₂.LL) ∈ (D.plEq w).asIdeal` using `((D.plEq w).valuation_lt_one_iff_mem _).1 h4`. Establish `: Fact (D.what₂.places.resChar w).Prime` using `⟨hl⟩`. Establish `hmax` using `Int.ideal_span_isMaximal_of_prime (D.what₂.places.resChar w)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Reduce the claim to the hypotheses of an applicable result.
 
-Use `(D.plEq w).isPrime` as an intermediate fact. Prove the components needed by the constructor for the conclusion. Apply `hmax.eq_of_le (Ideal.IsPrime.under ℤ (D.plEq w).asIdeal).ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.span_singleton_le_iff_mem, Ideal.under_def, Ideal.mem_comap]`. Simplify using `using h5`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem liesOver_resChar (D : D7) (w : D.what₂.places.Pl) :
     (D.plEq w).asIdeal.LiesOver (Ideal.span {((D.what₂.places.resChar w : ℕ) : ℤ)}) := by
@@ -297,21 +297,19 @@ theorem liesOver_resChar (D : D7) (w : D.what₂.places.Pl) :
   simpa using h5
 
 /- English proof (translation)
-Introduce `l hl`. Establish `: Fact l.Prime` using `⟨hl⟩`. Establish `hmax` using `Int.ideal_span_isMaximal_of_prime l`. Establish `hsum` using `Ideal.sum_ramification_inertia_eq_finrank (Ideal.span {(l : ℤ)}) (𝓞 D.what₂.LL)`. Rewrite `hsum` using `[RingOfIntegers.rank]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hsum' : ∑ q ∈ ((Ideal.span {(l : ℤ)}).primesOver (𝓞 D.what₂.LL)).toFinset, q.ramificationIdx ℤ * q.inertiaDeg ℤ = Module.finrank ℚ D.what₂.LL`. Rewrite using `[← hsum]`. Conclude with `(Finset.sum_set_coe (f := fun q : Ideal (𝓞 D.what₂.LL) => q.ramificationIdx ℤ * q.inertiaDeg ℤ) _).symm`. Establish `hn : (0 : ℝ) < (Module.finrank ℚ D.what₂.LL : ℝ)` using `by exact_mod_cast Module.finrank_pos`. Establish `hlog : 0 ≤ Real.log (l : ℝ)` using `Real.log_natCast_nonneg l`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set G : Ideal (𝓞 D.what₂.LL) → ℝ := fun q => Real.log l * ((q.ramificationIdx ℤ * q.inertiaDeg ℤ : ℕ) : ℝ) / (Module.finrank ℚ D.what₂.LL : ℝ) with hG`. Use `set S := twAt L l with hS`. Establish `hterm : ∀ w ∈ S, SizeData₂.lwP w * (D.what₂.places.ramIdx w : ℝ) = G (D.plEq w).asIdeal`. Introduce `w hw`. Establish `hwl : D.what₂.places.resChar w = l` using `(mem_twAt.1 hw).2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(D.plEq w).isPrime` as an intermediate fact. Establish `: (D.plEq w).asIdeal.LiesOver (Ideal.span {(l : ℤ)})` using `hwl ▸ liesOver_resChar D w`. Establish `hN` using `Ideal.pow_inertiaDeg l (D.plEq w).asIdeal`. Simplify using `only [hG, SizeData₂.lwP, lw, D.ram_eq w, eWL, ← hN]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[Real.log_pow]`. Expand and normalize the polynomial expressions, which then agree. Establish `hinj : Set.InjOn (fun w => (D.plEq w).asIdeal) (S : Set D.what₂.places.Pl)`. Introduce `a _ b _ hab`. Conclude with `D.plEq.injective (HeightOneSpectrum.ext hab)`.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum_of_subset_of_nonneg` to reduce the goal to its premises. Introduce `q hq`. Take `⟨w, hw, rfl⟩` from `Finset.mem_image.1 hq`. Establish `hwl : D.what₂.places.resChar w = l` using `(mem_twAt.1 hw).2.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[Set.mem_toFinset]`. Conclude with `⟨(D.plEq w).isPrime, hwl ▸ liesOver_resChar D w⟩`. Introduce `q _ _`. Simplify using `only [hG]`. Check the signs of the components of the expression.
-
-Use `_ = Real.log l := by`. Simplify using `only [hG]`. Rewrite using `[← Finset.sum_div, ← Finset.mul_sum, ← Nat.cast_sum, hsum']`. Clear the denominators using the available nonvanishing facts.
+Check the signs of the components of the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem admissibleMeanCondition_holds (L : SizeData₂ D) : TwistedWeightMeanBound L := by
   classical

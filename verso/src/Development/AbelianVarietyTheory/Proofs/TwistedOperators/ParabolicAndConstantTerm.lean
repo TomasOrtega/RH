@@ -24,7 +24,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {J : Matrix (Fin n) (Fin n) E}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [starFn, tensor, map_mul, map_prod, map_inv]`. Use `congr 1`. Conclude with `MonoidHom.map_finprod_of_injective (starRingEnd ℂ).toMonoidHom (starRingEnd ℂ).injective _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem starFn_tensor (fa : ∀ w, GArch σ J w → ℂ) (ff : ∀ v, GLoc σ J v → ℂ) :
     starFn (tensor σ J fa ff) = tensor σ J (fun w => starFn (fa w)) (fun v => starFn (ff v)) := by
@@ -34,7 +34,7 @@ theorem starFn_tensor (fa : ∀ w, GArch σ J w → ℂ) (ff : ∀ v, GLoc σ J 
   exact MonoidHom.map_finprod_of_injective (starRingEnd ℂ).toMonoidHom (starRingEnd ℂ).injective _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Distinguish the cases in `hg : g ∈ stabLoc σ J L v`. Simplify using `[starFn, unitLoc, hg, Set.indicator_of_mem, inv_mem hg]`. Establish `: g⁻¹ ∉ stabLoc σ J L v` using `fun h => hg (by simpa using inv_mem h)`. Simplify using `[starFn, unitLoc, hg, this]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem starFn_unitLoc (L : Submodule (𝓞 E) (Fin n → E)) (v : HeightOneSpectrum (𝓞 F)) :
     starFn (unitLoc σ J L v) = unitLoc σ J L v := by
@@ -45,7 +45,7 @@ theorem starFn_unitLoc (L : Submodule (𝓞 E) (Fin n → E)) (v : HeightOneSpec
     simp [starFn, unitLoc, hg, this]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun v => starFn_mem_SB (h.1 v), h.2.mono fun v hv => by simp only [hv, starFn_unitLoc]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isFinFamily_starFn {L : Submodule (𝓞 E) (Fin n → E)} {ff : ∀ v, GLoc σ J v → ℂ}
     (h : IsFinFamily σ J L ff) : IsFinFamily σ J L (fun v => starFn (ff v)) :=
@@ -54,16 +54,16 @@ theorem isFinFamily_starFn {L : Submodule (𝓞 E) (Fin n → E)} {ff : ∀ v, G
 end Star
 
 /- English proof (translation)
-The claim follows from `let ⟨g, hg⟩ := h'; ⟨g, fun p hp => hg p (h hp)⟩`.
+A detailed English derivation is pending.
 -/
 theorem inConjParabolic_mono {k : Type} [Field k] {r : ℕ} {H H' : Subgroup (GL (Fin r) k)} (h : H ≤ H') {a : ℕ}
     (h' : InConjParabolic H' a) : InConjParabolic H a :=
   let ⟨g, hg⟩ := h'; ⟨g, fun p hp => hg p (h hp)⟩
 
 /- English proof (translation)
-Introduce `D V hodd T 𝔉 hP`. Set `i : Fin (𝔉.k + 1)` to `⟨1, Nat.succ_lt_succ hP⟩`. Establish `hi : i ≠ 0` using `Fin.ne_of_val_ne one_ne_zero`. Establish `hW` using `𝔉.isIsotropic hi`. Take `⟨h0, h2⟩` from `GlobalTheory.T.totallyIsotropic_dim_bounds_oddRank D V hodd _ hW`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨_, h0, h2, fun v => ?_⟩` and prove the remaining obligations. Establish `hle : parAt 𝔉 (T.frame v) ≤ (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.parab D.sp.cm V (Fv D.host.F v.1) (𝔉.X i)).map ((T.frame v).equiv : GLoc D.sp.cm.sig V.gram v.1 →* GL (Fin V.rank) (Fv D.host.F v.1))` using `Subgroup.map_mono (𝔉.par_le_parab _ _ i)`. Take `⟨h3, h4⟩` from `GlobalTheory.T.isotropicStabilizer_splitPlace_inConjParabolics D V v.1 (T.frame v) _ hW`. Conclude with `⟨inConjParabolic_mono hle h3, inConjParabolic_mono hle h4⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem parabolicAtSplitPlaces : ParabolicAtSplitPlaces := by
   intro D V hodd T 𝔉 hP
@@ -79,13 +79,13 @@ theorem parabolicAtSplitPlaces : ParabolicAtSplitPlaces := by
   exact ⟨inConjParabolic_mono hle h3, inConjParabolic_mono hle h4⟩
 
 /- English proof (translation)
-Introduce `D V hodd S M T hH U μa _ μf _ f hf 𝔉 hP`. Take `⟨a, ha0, ha2, hpar⟩` from `parabolicAtSplitPlaces D V hodd T 𝔉 hP`. Take `⟨v, hv⟩` from `hH a ha0 (by omega)`. Take `⟨fa, ff, hfa, hff, rfl⟩` from `hf`. Take `⟨h, hh, e⟩` from `hff.2.1 v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hA : ∀ w, fa w ∈ CcArch D.sp.cm.sig V.gram w` using `hfa.mem`. Establish `hF` using `hff.isFinFamily`. Establish `he` using `(T.frame v).idem_mem (μf v.1) (T.τ v)`. Prove the components needed by the constructor for the conclusion. Use `GlobalTheory.T.unipotentIntegrals_pureTensor_vanish_of_local D V 𝔉 fa ff hA hF v.1 fun ν _ x y => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(GlobalTheory.T.typeIdempotent_unipotentIntegral_vanish_splitPlace D V T v a ha0 (by omega) hv 𝔉 (hpar v).1 (μf v.1) _ (conv_mem_SB he hh) (ff v.1) (Or.inr e) ν x y).2`. Rewrite using `[starFn_tensor]`. Use `GlobalTheory.T.unipotentIntegrals_pureTensor_vanish_of_local D V 𝔉 _ _ (fun w => starFn_mem_ccArch (hA w)) (isFinFamily_starFn hF) v.1 fun ν _ x y => ?_` and prove the remaining obligations. Establish `e' : starFn (ff v.1) = GlobalTheory.AutomorphicL2Unitary.conv (μf v.1) ((T.frame v).idem (μf v.1) (T.τ v)) (GlobalTheory.AutomorphicL2Unitary.conv (μf v.1) (starFn h) ((T.frame v).idem (μf v.1) (T.τ v)))`. Rewrite using `[e, starFn_conv, starFn_conv]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [TypeData.idem, SplitAt.starFn_idem]`. Conclude with `(GlobalTheory.T.typeIdempotent_unipotentIntegral_vanish_splitPlace D V T v a ha0 (by omega) hv 𝔉 (hpar v).1 (μf v.1) _ (conv_mem_SB (starFn_mem_SB hh) he) _ (Or.inl e') ν x y).2`.
+A detailed English derivation is pending.
 -/
 theorem testFnConstTermVanish : TestFnConstTermVanish := by
   intro D V hodd S M T hH U μa _ μf _ f hf 𝔉 hP
@@ -110,7 +110,7 @@ theorem testFnConstTermVanish : TestFnConstTermVanish := by
       (Or.inl e') ν x y).2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨parabolicAtSplitPlaces, testFnConstTermVanish⟩`.
+Supply the required witnesses or components.
 -/
 theorem parabolicAndConstTerm : ParabolicAndConstTerm := ⟨parabolicAtSplitPlaces, testFnConstTermVanish⟩
 

@@ -22,7 +22,7 @@ section MultAbs
 variable {G : Type*} [Group G]
 
 /- English proof (translation)
-Unfold `FoldBound.mult`. Use `iSup_mono fun y => ?_` and prove the remaining obligations. Conclude with `ENat.toENNReal_le.2 (Set.encard_le_encard fun γ hγ => h hγ)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mult_mono (Γ : Subgroup G) {Ω Ω' : Set G} (h : Ω ⊆ Ω') (x : G) :
     FoldBound.mult Γ Ω x ≤ FoldBound.mult Γ Ω' x := by
@@ -31,9 +31,9 @@ theorem mult_mono (Γ : Subgroup G) {Ω Ω' : Set G} (h : Ω ⊆ Ω') (x : G) :
   exact ENat.toENNReal_le.2 (Set.encard_le_encard fun γ hγ => h hγ)
 
 /- English proof (translation)
-Unfold `FoldBound.mult`. Use `iSup_le fun y => ?_` and prove the remaining obligations. Establish `e : ({γ : Γ | x⁻¹ * ((γ : G) * y) ∈ Ω ∪ Ω'} : Set Γ) = {γ : Γ | x⁻¹ * ((γ : G) * y) ∈ Ω} ∪ {γ : Γ | x⁻¹ * ((γ : G) * y) ∈ Ω'}`. Use extensionality with `γ`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Use `le_trans (ENat.toENNReal_le.2 (Set.encard_union_le _ _)) ?_` and prove the remaining obligations. Rewrite using `[ENat.toENNReal_add]`. Conclude with `add_le_add (le_iSup (fun y => ((({γ : Γ | x⁻¹ * ((γ : G) * y) ∈ Ω} : Set Γ).encard : ℕ∞) : ℝ≥0∞)) y) (le_iSup (fun y => ((({γ : Γ | x⁻¹ * ((γ : G) * y) ∈ Ω'} : Set Γ).encard : ℕ∞) : ℝ≥0∞)) y)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mult_union (Γ : Subgroup G) (Ω Ω' : Set G) (x : G) :
     FoldBound.mult Γ (Ω ∪ Ω') x ≤ FoldBound.mult Γ Ω x + FoldBound.mult Γ Ω' x := by
@@ -49,9 +49,9 @@ theorem mult_union (Γ : Subgroup G) (Ω Ω' : Set G) (x : G) :
     (le_iSup (fun y => ((({γ : Γ | x⁻¹ * ((γ : G) * y) ∈ Ω'} : Set Γ).encard : ℕ∞) : ℝ≥0∞)) y)
 
 /- English proof (translation)
-Proceed by induction on `A using Finset.induction_on with`. Consider the case `empty`. Unfold `FoldBound.mult`. Simplify using the standard rewrite rules. Consider the case `insert a A ha ih`.
+Proceed by induction. Treat this case separately. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[Finset.set_biUnion_insert, Finset.sum_insert ha]`. Conclude with `(mult_union Γ _ _ x).trans (add_le_add le_rfl ih)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mult_biUnion {ι : Type*} (Γ : Subgroup G) (A : Finset ι) (Ω : ι → Set G) (x : G) :
     FoldBound.mult Γ (⋃ i ∈ A, Ω i) x ≤ ∑ i ∈ A, FoldBound.mult Γ (Ω i) x := by
@@ -64,9 +64,9 @@ theorem mult_biUnion {ι : Type*} (Γ : Subgroup G) (A : Finset ι) (Ω : ι →
     exact (mult_union Γ _ _ x).trans (add_le_add le_rfl ih)
 
 /- English proof (translation)
-Unfold `FoldBound.mult`. Establish `e : ∀ y : G, ({γ : Γ | x⁻¹ * ((γ : G) * y) ∈ (fun w => w * a) ⁻¹' Ω} : Set Γ) = {γ : Γ | x⁻¹ * ((γ : G) * (y * a)) ∈ Ω}`. Introduce `y`. Use extensionality with `γ`. Simplify using `[mul_assoc]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [e]`. Conclude with `(Equiv.mulRight a).iSup_comp (g := fun y => ((({γ : Γ | x⁻¹ * ((γ : G) * y) ∈ Ω} : Set Γ).encard : ℕ∞) : ℝ≥0∞))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mult_rtrans (Γ : Subgroup G) (Ω : Set G) (a x : G) :
     FoldBound.mult Γ ((fun w => w * a) ⁻¹' Ω) x = FoldBound.mult Γ Ω x := by
@@ -78,11 +78,11 @@ theorem mult_rtrans (Γ : Subgroup G) (Ω : Set G) (a x : G) :
   exact (Equiv.mulRight a).iSup_comp (g := fun y => ((({γ : Γ | x⁻¹ * ((γ : G) * y) ∈ Ω} : Set Γ).encard : ℕ∞) : ℝ≥0∞))
 
 /- English proof (translation)
-Unfold `FoldBound.mult`. Use `iSup_congr fun y => ?_` and prove the remaining obligations. Establish `: ({δ : Γ | (γ * x)⁻¹ * ((δ : G) * y) ∈ Ω} : Set Γ) = (fun δ : Γ => (⟨γ, hγ⟩ : Γ) * δ) '' {δ : Γ | x⁻¹ * ((δ : G) * y) ∈ Ω}`. Use extensionality with `δ`. Simplify using `only [Set.mem_setOf_eq, Set.mem_image]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨(⟨γ, hγ⟩ : Γ)⁻¹ * δ, ?_, by simp⟩` and prove the remaining obligations. Simplify `h` using `[mul_assoc]`. Introduce and unpack `⟨δ', h, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
-Simplify `h` using `[mul_assoc]`. Rewrite using `[this, (mul_right_injective (⟨γ, hγ⟩ : Γ)).encard_image]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem mult_left (Γ : Subgroup G) (Ω : Set G) (γ : G) (hγ : γ ∈ Γ) (x : G) :
     FoldBound.mult Γ Ω (γ * x) = FoldBound.mult Γ Ω x := by
@@ -111,13 +111,13 @@ def normI (g : I.Ginf) : ℝ := ∏ v, WuDecay.opn (uMat (g v))
 def nilradicalExponent : ℝ := 4 * (I.n : ℝ) ^ 2 * Real.sqrt (2 * ((Finset.univ.sup fun v => I.qAt v : ℕ) : ℝ))
 
 /- English proof (translation)
-The claim follows from `Finset.prod_nonneg fun _ _ => norm_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem normI_nonneg (g : I.Ginf) : 0 ≤ normI I g :=
   Finset.prod_nonneg fun _ _ => norm_nonneg _
 
 /- English proof (translation)
-Unfold `nilradicalExponent`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem exponentN1_nonneg : 0 ≤ nilradicalExponent I := by unfold nilradicalExponent; positivity
 
@@ -148,7 +148,7 @@ Both sides reduce to the same expression.
 theorem N1_eq_exponentN1 {D : D7} (X : HidaSetting D) : WuDecay.N1 X = nilradicalExponent X.B.I := rfl
 
 /- English proof (translation)
-Establish `h1` using `X.n_eq`. Establish `h2` using `Formalism.BasicNotions.Ranks.r_eq (R := D.R)`. Establish `h3` using `D.R.two_le_m`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem n_pos {D : D7} (X : HidaSetting D) : 1 ≤ X.B.I.n := by
   have h1 := X.n_eq
@@ -157,30 +157,28 @@ theorem n_pos {D : D7} (X : HidaSetting D) : 1 ≤ X.B.I.n := by
   omega
 
 /- English proof (translation)
-Establish `: 0 < I.f` using `Module.finrank_pos`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem f_pos (I : AutInst) : 0 < (I.f : ℝ) := by
   have : 0 < I.f := Module.finrank_pos
   exact_mod_cast this
 
 /- English proof (translation)
-Introduce `Ω CC hΩ hCC`. Establish `hn` using `n_pos X`. Take `⟨hcont, hpos⟩` from `hR X.B.I hn`. Establish `hMB` using `Count.multBound_of_latCount X.B.I hL hT`. Take `⟨r, K', A, hr, hK', hcov⟩` from `hO Ω hΩ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Break down `CC.eq_empty_or_nonempty with hE | hne` into its components or cases. Conclude with `⟨0, fun c hc => by simp [hE] at hc⟩`. Take `⟨c0, hc0, hmin⟩` from `hCC.exists_isMinOn hne hcont.continuousOn`. Use `set k : ℕ := 4 * X.B.I.n ^ 2 * X.B.I.f with hk`. Use `set m := LitS.Size.tau1 X.B.I c0 with hm_def`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : 0 < m` using `(hpos c0).1`. Establish `hCOm : 0 ≤ Count.COm X.B.I r` using `by unfold Count.COm; positivity`. Use `⟨(A.card : ℝ) * Count.COm X.B.I r / m ^ k, fun c hc g => ?_⟩` and prove the remaining obligations. Use `set x := c * ((g, 1) : X.B.I.GA) with hx_def`. Establish `hx : 0 < LitS.Size.tau1 X.B.I x` using `(hpos x).1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hmult : FoldBound.mult (Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I) Ω x ≤ (A.card : ℝ≥0∞) * ENNReal.ofReal (Count.COm X.B.I r / LitS.Size.tau1 X.B.I x ^ k)`. Use `(mult_mono _ hcov x).trans ((mult_biUnion _ A _ x).trans ?_)` and prove the remaining obligations. Rewrite using `[← nsmul_eq_mul]`. Use `Finset.sum_le_card_nsmul A _ _ fun a _ => ?_` and prove the remaining obligations. Rewrite using `[mult_rtrans]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hMB r hr K' hK' x hx`. Use `hmult.trans ?_` and prove the remaining obligations. Use `set N := normI X.B.I g with hN`. Establish `hN0 : 0 ≤ N` using `normI_nonneg _ g`. Use `set P := N ^ ((1 : ℝ) / (X.B.I.f : ℝ)) with hP`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hτ : m ≤ LitS.Size.tau1 X.B.I x * P` using `(hmin hc).trans (hTT hn c g)`. Establish `hPk : P ^ k = N ^ ((4 * X.B.I.n ^ 2 : ℕ) : ℝ)`. Rewrite using `[hP, ← Real.rpow_natCast, ← Real.rpow_mul hN0]`. Use `congr 1`. Establish `hf` using `f_pos X.B.I`.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hk]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `hkey : 1 / LitS.Size.tau1 X.B.I x ^ k ≤ P ^ k / m ^ k`. Rewrite using `[div_le_div_iff₀ (pow_pos hx k) (pow_pos hm k), one_mul, ← mul_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `pow_le_pow_left₀ hm.le (by rw [mul_comm]; exact hτ) k`. Establish `hreal : (A.card : ℝ) * (Count.COm X.B.I r / LitS.Size.tau1 X.B.I x ^ k) ≤ (A.card : ℝ) * Count.COm X.B.I r / m ^ k * WuDecay.normInf X g ^ WuDecay.N1 X`. Rewrite using `[normInf_eq, N1_eq_exponentN1, ← hN]`. Establish `h1 : Count.COm X.B.I r / LitS.Size.tau1 X.B.I x ^ k ≤ Count.COm X.B.I r * (P ^ k / m ^ k)`. Rewrite using `[div_eq_mul_one_div]`.
-
-Conclude with `mul_le_mul_of_nonneg_left hkey hCOm`. Establish `h2 : P ^ k ≤ N ^ nilradicalExponent X.B.I` using `hPk ▸ hNP hn g`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← ENNReal.ofReal_natCast, ← ENNReal.ofReal_mul (Nat.cast_nonneg _)]`. Conclude with `ENNReal.ofReal_le_ofReal hreal`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem multPoly_of {D : D7} (X : HidaSetting D) (hL : Count.LatCount X.B.I) (hT : Formalism.MainNotions.LeviCoordinates.DistTri)
     (hR : LitS.ReductionTau) (hTT : TauTrans X.B.I) (hNP : NormPow X.B.I) (hO : OmCover X.B.I) :
@@ -270,7 +268,7 @@ section SGrp
 variable {D : D7} (X : HidaSetting D) (u : D.what₂.Word)
 
 /- English proof (translation)
-Introduce `v`. Establish `e : uMat ((1 : X.B.I.Ginf) v) = 1` using `by simp [uMat]`. Rewrite using `[e]`. Apply the tactic sequence `refine ⟨fun a => ?_, ?_⟩ <;> simp [Submodule.zero_mem]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem one_mem_sinf : (1 : X.B.I.Ginf) ∈ X.SinfU u := by
   intro v
@@ -279,14 +277,14 @@ theorem one_mem_sinf : (1 : X.B.I.Ginf) ∈ X.SinfU u := by
   refine ⟨fun a => ?_, ?_⟩ <;> simp [Submodule.zero_mem]
 
 /- English proof (translation)
-Establish `e : X.B.I.fmat 1 = 1` using `by simp [AutInst.fmat]`. Apply the tactic sequence `refine ⟨fun a => ?_, ?_⟩ <;> simp [e, Submodule.zero_mem]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem one_mem_sfin : (1 : X.B.I.Gf) ∈ SfinU X u := by
   have e : X.B.I.fmat 1 = 1 := by simp [AutInst.fmat]
   refine ⟨fun a => ?_, ?_⟩ <;> simp [e, Submodule.zero_mem]
 
 /- English proof (translation)
-Establish `: y ∈ ((Subgroup.closure {y : X.B.I.GA | y.1 ∈ X.SinfU u ∧ y.2 ∈ SfinU X u} : Subgroup X.B.I.GA) : Set X.B.I.GA)` using `hy`. Rewrite `this` using `[hS]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_sset_of_closure (hS : SGroup X u) {y : X.B.I.GA}
     (hy : y ∈ Subgroup.closure {y : X.B.I.GA | y.1 ∈ X.SinfU u ∧ y.2 ∈ SfinU X u}) :
@@ -297,7 +295,7 @@ theorem mem_sset_of_closure (hS : SGroup X u) {y : X.B.I.GA}
   exact this
 
 /- English proof (translation)
-Establish `h` using `mem_sset_of_closure X u hS (Subgroup.mul_mem _ (Subgroup.subset_closure (show ((s, 1) : X.B.I.GA).1 ∈ X.SinfU u ∧ ((s, 1) : X.B.I.GA).2 ∈ SfinU X u from ⟨hs, one_mem_sfin X u⟩)) (Subgroup.subset_closure (show ((t, 1) : X.B.I.GA).1 ∈ X.SinfU u ∧ ((t, 1) : X.B.I.GA).2 ∈ SfinU X u f …`. Simplify using `using h.1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sinf_mul (hS : SGroup X u) {s t : X.B.I.Ginf} (hs : s ∈ X.SinfU u) (ht : t ∈ X.SinfU u) :
     s * t ∈ X.SinfU u := by
@@ -309,7 +307,7 @@ theorem sinf_mul (hS : SGroup X u) {s t : X.B.I.Ginf} (hs : s ∈ X.SinfU u) (ht
   simpa using h.1
 
 /- English proof (translation)
-Establish `h` using `mem_sset_of_closure X u hS (Subgroup.inv_mem _ (Subgroup.subset_closure (show ((s, 1) : X.B.I.GA).1 ∈ X.SinfU u ∧ ((s, 1) : X.B.I.GA).2 ∈ SfinU X u from ⟨hs, one_mem_sfin X u⟩)))`. Simplify using `using h.1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sinf_inv (hS : SGroup X u) {s : X.B.I.Ginf} (hs : s ∈ X.SinfU u) : s⁻¹ ∈ X.SinfU u := by
   have h := mem_sset_of_closure X u hS (Subgroup.inv_mem _
@@ -318,7 +316,7 @@ theorem sinf_inv (hS : SGroup X u) {s : X.B.I.Ginf} (hs : s ∈ X.SinfU u) : s�
   simpa using h.1
 
 /- English proof (translation)
-Establish `h` using `mem_sset_of_closure X u hS (Subgroup.mul_mem _ (Subgroup.subset_closure (show ((1, s) : X.B.I.GA).1 ∈ X.SinfU u ∧ ((1, s) : X.B.I.GA).2 ∈ SfinU X u from ⟨one_mem_sinf X u, hs⟩)) (Subgroup.subset_closure (show ((1, t) : X.B.I.GA).1 ∈ X.SinfU u ∧ ((1, t) : X.B.I.GA).2 ∈ SfinU X u f …`. Simplify using `using h.2`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sfin_mul (hS : SGroup X u) {s t : X.B.I.Gf} (hs : s ∈ SfinU X u) (ht : t ∈ SfinU X u) :
     s * t ∈ SfinU X u := by
@@ -330,21 +328,19 @@ theorem sfin_mul (hS : SGroup X u) {s t : X.B.I.Gf} (hs : s ∈ SfinU X u) (ht :
   simpa using h.2
 
 /- English proof (translation)
-The claim follows from `mem_sset_of_closure X u hS (Subgroup.mem_inf.1 hσ).2`.
+A detailed English derivation is pending.
 -/
 theorem srat_mem (hS : SGroup X u) {σ : X.B.I.GA} (hσ : σ ∈ Srat X u) :
     σ.1 ∈ X.SinfU u ∧ σ.2 ∈ SfinU X u :=
   mem_sset_of_closure X u hS (Subgroup.mem_inf.1 hσ).2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hn.1, hn.2.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem nfin_sfin {n : X.B.I.Gf} (hn : n ∈ X.NfinU u) : n ∈ SfinU X u := ⟨hn.1, hn.2.1⟩
 
 /- English proof (translation)
-Establish `hfix : ∀ y ∈ fixSet X u, X.B.I.fmat (h : X.B.I.Gf) *ᵥ incl X.B.I y = incl X.B.I y` using `h.2`. Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, hfix _ (Or.inl (Or.inl ⟨a, rfl⟩)), sub_self]`. Conclude with `Submodule.zero_mem _`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, hfix _ (Or.inr rfl), sub_self]`.
-
-Conclude with `Submodule.zero_mem _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hfin_sfin (h : Hfin X u) : (h : X.B.I.Gf) ∈ SfinU X u := by
   have hfix : ∀ y ∈ fixSet X u, X.B.I.fmat (h : X.B.I.Gf) *ᵥ incl X.B.I y = incl X.B.I y := h.2
@@ -355,12 +351,12 @@ theorem hfin_sfin (h : Hfin X u) : (h : X.B.I.Gf) ∈ SfinU X u := by
     exact Submodule.zero_mem _
 
 /- English proof (translation)
-Introduce `v` and use `(hs v).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ninf_sinf {s : X.B.I.Ginf} (hs : s ∈ X.NinfU u) : s ∈ X.SinfU u := fun v => (hs v).1
 
 /- English proof (translation)
-Unfold `WuDecay.nuInf`. Set `e : X.SinfU u ≃ X.SinfU u` to `{ toFun := fun t => ⟨(t : X.B.I.Ginf) * s, sinf_mul X u hS t.2 hs⟩ invFun := fun t => ⟨(t : X.B.I.Ginf) * s⁻¹, sinf_mul X u hS t.2 (sinf_inv X u hS hs)⟩ left_inv := fun t => by ext; simp right_inv := fun t => by ext; simp }`. Use `conv_rhs => rw [← e.iInf_comp]`. Use `iInf_congr fun t => ?_` and prove the remaining obligations. Simplify using `[e, mul_assoc]`.
+Replace the relevant objects with their definitions. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nuInf_left (hS : SGroup X u) {s : X.B.I.Ginf} (hs : s ∈ X.SinfU u) (x : X.B.I.Ginf) :
     WuDecay.nuInf X u (s * x) = WuDecay.nuInf X u x := by
@@ -377,7 +373,7 @@ theorem nuInf_left (hS : SGroup X u) {s : X.B.I.Ginf} (hs : s ∈ X.SinfU u) (x 
 end SGrp
 
 /- English proof (translation)
-Use `haveI : MeasurableConstSMul Γ G := ⟨fun c => measurable_const_mul (c : G)⟩`. Rewrite using `[h.lintegral_eq_tsum'' Ψ]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem setLIntegral_le_of_cover {G : Type*} [Group G] [MeasurableSpace G] [MeasurableMul G] {μ : Measure G}
     [μ.IsMulLeftInvariant] (Γ : Subgroup G) [Countable Γ] {s : Set G} (h : IsFundamentalDomain Γ s μ)
@@ -396,12 +392,12 @@ variable {D : D7} (X : HidaSetting D) (u : D.what₂.Word)
 def wt (x : X.B.I.Ginf) : ℝ≥0∞ := ENNReal.ofReal (WuDecay.nuInf X u x ^ WuDecay.N1 X) * ‖X.Wu u x‖ₑ
 
 /- English proof (translation)
-The claim follows from `ENNReal.mul_ne_top ENNReal.ofReal_ne_top enorm_ne_top`.
+A detailed English derivation is pending.
 -/
 theorem wt_ne_top (x : X.B.I.Ginf) : wt X u x ≠ ⊤ := ENNReal.mul_ne_top ENNReal.ofReal_ne_top enorm_ne_top
 
 /- English proof (translation)
-Unfold `wt`. Rewrite using `[nuInf_left X u hSG hs, ← ofReal_norm, ← ofReal_norm, hWI _ hs]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem wt_left (hSG : SGroup X u) (hWI : WuNormInv X u) {s : X.B.I.Ginf} (hs : s ∈ X.SinfU u)
     (x : X.B.I.Ginf) : wt X u (s * x) = wt X u x := by
@@ -409,9 +405,7 @@ theorem wt_left (hSG : SGroup X u) (hWI : WuNormInv X u) {s : X.B.I.Ginf} (hs : 
   rw [nuInf_left X u hSG hs, ← ofReal_norm, ← ofReal_norm, hWI _ hs]
 
 /- English proof (translation)
-Use `Measurable.mul (ENNReal.measurable_ofReal.comp (hWM.1.pow_const _)) ?_` and prove the remaining obligations. Establish `e : (fun x => ‖X.Wu u x‖ₑ) = fun x => ENNReal.ofReal ‖X.Wu u x‖`. Use function extensionality and compare the values at `x`. Conclude with `(ofReal_norm _).symm`. Rewrite using `[e]`.
-
-Conclude with `ENNReal.measurable_ofReal.comp hWM.2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wt_meas (hWM : WeightMeas X u) : Measurable (wt X u) := by
   refine Measurable.mul (ENNReal.measurable_ofReal.comp (hWM.1.pow_const _)) ?_
@@ -420,7 +414,7 @@ theorem wt_meas (hWM : WeightMeas X u) : Measurable (wt X u) := by
   rw [e]; exact ENNReal.measurable_ofReal.comp hWM.2
 
 /- English proof (translation)
-Establish `h` using `(hWD u).2`. Unfold `WuDecay.WuWeighted at h`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 theorem wt_int (hWD : WuDecay.WuDecay X) : ∫⁻ x, wt X u x ∂(X.nuQ u) < ⊤ := by
   have h := (hWD u).2
@@ -431,11 +425,11 @@ theorem wt_int (hWD : WuDecay.WuDecay X) : ∫⁻ x, wt X u x ∂(X.nuQ u) < ⊤
     _ < ⊤ := h
 
 /- English proof (translation)
-Use `haveI := (X.muN_haar u).1`. Use `haveI := (X.muH_haar u).1`. Rewrite using `[ae_iff]`. Use `measure_mono_null (t := (X.NinfU u)ᶜ ×ˢ Set.univ ∪ Set.univ ×ˢ ((Hinf X u : Set X.B.I.Ginf))ᶜ) ?_ ?_` and prove the remaining obligations. Introduce `p hp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [Set.mem_ofPred_eq, not_and_or] at hp`. Break down `hp with hp | hp` into its components or cases. Conclude with `Or.inl ⟨hp, trivial⟩`. Conclude with `Or.inr ⟨trivial, hp⟩`. Use `measure_union_null ?_ ?_` and prove the remaining obligations.
+Prove the first alternative. Prove the second alternative. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.prod_prod, show (X.muN u) (X.NinfU u)ᶜ = 0 from (X.muN_haar u).2.2.1, zero_mul]`. Rewrite using `[Measure.prod_prod, show (X.muH u) ((Hinf X u : Set X.B.I.Ginf))ᶜ = 0 from (X.muH_haar u).2.2.1, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem ae_NH : ∀ᵐ p ∂((X.muN u).prod (X.muH u)), p.1 ∈ X.NinfU u ∧ p.2 ∈ (Hinf X u : Set X.B.I.Ginf) := by
   haveI := (X.muN_haar u).1
@@ -453,9 +447,9 @@ theorem ae_NH : ∀ᵐ p ∂((X.muN u).prod (X.muH u)), p.1 ∈ X.NinfU u ∧ p.
         mul_zero]
 
 /- English proof (translation)
-Establish `hweil` using `X.nuQ_weil u (fun x => wt X u x * a x) ((wt_meas X u hWM).mul ha)`. Rewrite using `[hweil, ← lintegral_mul_const' _ _ hB]`. Use `lintegral_mono fun x => ?_` and prove the remaining obligations. Use `(lintegral_map_le (fun s => wt X u (s * x) * a (s * x)) (fun p : X.B.I.Ginf × X.B.I.Ginf => p.1 * p.2)).trans ?_` and prove the remaining obligations. Establish `hae2 : ∀ᵐ p ∂((X.muN u).prod (X.muH u)), wt X u (p.1 * p.2 * x) * a (p.1 * p.2 * x) = wt X u x * a (p.1 * p.2 * x)` using `by filter_upwards [ae_NH X u] with p hp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hs : p.1 * p.2 ∈ X.SinfU u` using `sinf_mul X u hSG (ninf_sinf X u hp.1) (hinf_le_sinf X u p.2 hp.2)`. Rewrite using `[wt_left X u hSG hWI hs]`. Rewrite using `[lintegral_congr_ae hae2, lintegral_const_mul' _ _ (wt_ne_top X u x)]`. Conclude with `mul_le_mul' le_rfl (hBint x)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weil_bound (hSG : SGroup X u) (hWI : WuNormInv X u) (hWM : WeightMeas X u)
     (a : X.B.I.Ginf → ℝ≥0∞) (ha : Measurable a) (B : ℝ≥0∞) (hB : B ≠ ⊤)
@@ -476,9 +470,9 @@ theorem weil_bound (hSG : SGroup X u) (hWI : WuNormInv X u) (hWM : WeightMeas X 
 end Weight
 
 /- English proof (translation)
-Establish `hfin : ∀ x, K0 * (wt X u x * a x) ≠ ⊤` using `fun x => ENNReal.mul_ne_top hK0 (ENNReal.mul_ne_top (wt_ne_top X u x) (ne_top_of_le_ne_top ENNReal.one_ne_top (ha1 x)))`. Unfold `AutInst.muA`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun x => ?_` and prove the remaining obligations. Rewrite using `[lintegral_const_mul' _ _ (hfin x)]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul' le_rfl (lintegral_indicator_one_le Cf)`. Use `_ = K0 * (∫⁻ x, wt X u x * a x ∂(Formalism.L2.SG.ProjRows.muInf X.B.I)) * X.B.μf Cf := by`. Rewrite using `[lintegral_mul_const' _ _ hμf, lintegral_const_mul' _ _ hK0]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_bound {D : D7} (X : HidaSetting D) (u : D.what₂.Word) (K0 : ℝ≥0∞) (hK0 : K0 ≠ ⊤)
     (a : X.B.I.Ginf → ℝ≥0∞) (ha1 : ∀ x, a x ≤ 1) (Cf : Set X.B.I.Gf) (hμf : X.B.μf Cf ≠ ⊤) :
@@ -498,51 +492,45 @@ theorem prod_bound {D : D7} (X : HidaSetting D) (u : D.what₂.Word) (K0 : ℝ�
         rw [lintegral_mul_const' _ _ hμf, lintegral_const_mul' _ _ hK0]
 
 /- English proof (translation)
-Introduce `hMP hWD hPW T Ω hΩ Fs hFs`. Establish `hn` using `n_pos X`. Take `⟨CS, hCS, hdec⟩` from `hSC`. Take `⟨CC, hCCd⟩ : ∃ CC : Set X.B.I.GA, CC = (fun p : X.B.I.GA × X.B.I.Gf => p.1 * ((1, X.xu u * p.2) : X.B.I.GA)) '' (CS ×ˢ X.K2)` from `⟨_, rfl⟩`. Establish `hCC : IsCompact CC` using `hCCd ▸ (hCS.prod hKT.2).image (by fun_prop)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨C, hC⟩` from `hMP Ω CC hΩ hCC`. Take `⟨M, hM⟩` from `hCB T`. Take `⟨N1, hN1d⟩ : ∃ N1 : ℝ, N1 = WuDecay.N1 X` from `⟨_, rfl⟩`. Establish `hN1 : 0 ≤ N1` using `hN1d ▸ exponentN1_nonneg X.B.I`. Take `⟨a, B, ha, ha1, hB, hBint, hsec⟩` from `hSec (Prod.fst '' CS) (hCS.image continuous_fst)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨Cf, hCfd⟩ : ∃ Cf : Set X.B.I.Gf, Cf = (fun p : X.B.I.GA × X.B.I.Gf => p.1.2 * X.xu u * p.2) '' (CS ×ˢ X.K2)` from `⟨_, rfl⟩`. Establish `hCfc : IsCompact Cf` using `hCfd ▸ (hCS.prod hKT.2).image (by fun_prop)`. Establish `hCfo : IsOpen Cf`. Establish `e : Cf = ⋃ c ∈ CS, (fun z => (c.2 * X.xu u)⁻¹ * z) ⁻¹' X.K2`. Rewrite using `[hCfd]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨c, k⟩, ⟨hc, hk⟩, rfl⟩`. Use `Set.mem_iUnion₂.2 ⟨c, hc, ?_⟩` and prove the remaining obligations. Use `show (c.2 * X.xu u)⁻¹ * (c.2 * X.xu u * k) ∈ X.K2`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[← mul_assoc, inv_mul_cancel, one_mul]` and apply the resulting hypothesis. Introduce `hz`. Take `⟨c, hc, hk⟩` from `Set.mem_iUnion₂.1 hz`. Use `⟨(c, (c.2 * X.xu u)⁻¹ * z), ⟨hc, hk⟩, ?_⟩` and prove the remaining obligations. Use `show c.2 * X.xu u * ((c.2 * X.xu u)⁻¹ * z) = z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc, mul_inv_cancel, one_mul]`. Rewrite using `[e]`. Conclude with `isOpen_biUnion fun c _ => hKT.1.preimage (continuous_const_mul _)`. Establish `hμf : X.B.μf Cf < ⊤` using `hCfc.measure_lt_top`. Take `⟨K0, hK0d⟩ : ∃ K0 : ℝ≥0∞, K0 = ENNReal.ofReal (max C 0 * 2 ^ N1 * max M 0)` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hΨm : Measurable fun y : X.B.I.GA => K0 * (wt X u y.1 * a y.1) * Cf.indicator 1 y.2` using `Measurable.mul (Measurable.const_mul (((wt_meas X u hWM).mul ha).comp measurable_fst) _) ((measurable_one.indicator hCfo.measurableSet).comp measurable_snd)`. Establish `hA : ∀ y : X.B.I.GA, FoldBound.mult (Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I) Ω y * ‖Ph X u hK T y‖ₑ ≤ ∑' γ : Srat X u, K0 * (wt X u ((γ : X.B.I.GA) * y).1 * a ((γ : X.B.I.GA) * y).1) * Cf.indicator 1 ((γ : X.B.I.GA) * y).2`. Introduce `y`. Distinguish the cases in `hex : ∃ n h k, IsDec X u y.2 n h k`. Use `swap`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Cut.ph_eq_zero X u hK T y hex]`. Simplify using the standard rewrite rules. Take `⟨n, h, k, hnN, hkK, hy2⟩` from `hex`. Establish `hsf : n * (h : X.B.I.Gf) ∈ SfinU X u` using `sfin_mul X u hSG (nfin_sfin X u hnN) (hfin_sfin X u h)`. Establish `hdecomp : ∀ (t : X.B.I.Ginf) (σ c : X.B.I.GA), σ * c = ((t⁻¹, n * (h : X.B.I.Gf)) : X.B.I.GA) → y = σ * (c * ((1, X.xu u * k) : X.B.I.GA) * ((t * y.1, 1) : X.B.I.GA))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `t σ c hσc`. Rewrite using `[← mul_assoc, ← mul_assoc, hσc]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show y.1 = t⁻¹ * 1 * (t * y.1)`. Rewrite using `[mul_one, inv_mul_cancel_left]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `show y.2 = n * (h : X.B.I.Gf) * (X.xu u * k) * 1`. Rewrite using `[hy2, mul_one, mul_assoc (n * (h : X.B.I.Gf))]`. Establish `hPh : ‖Ph X u hK T y‖ ≤ max M 0 * ‖X.Wu u y.1‖`. Rewrite using `[Cut.ph_eq X u hK hPW T y n h k ⟨hnN, hkK, hy2⟩]`. Unfold `phVal`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[norm_mul, norm_mul, hK.2.2.2.2 k hkK, mul_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[one_mul]`. Conclude with `mul_le_mul_of_nonneg_right (le_max_left _ _) (norm_nonneg _)`. Take `⟨ν0, hν0⟩ : ∃ ν0 : ℝ, ν0 = WuDecay.nuInf X u y.1` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : Nonempty (X.SinfU u) := ⟨⟨1, one_mem_sinf X u⟩⟩`. Establish `hν1 : 1 ≤ ν0` using `hν0 ▸ le_ciInf fun t => hNG hn _`. Take `⟨t, ht⟩ : ∃ t : X.SinfU u, WuDecay.normInf X ((t : X.B.I.Ginf) * y.1) < ν0 + 1` from `exists_lt_of_ciInf_lt (by`. Establish `h' : WuDecay.nuInf X u y.1 < ν0 + 1` using `by rw [← hν0]; linarith`. Conclude with `h')`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨σ, hσ, c, hc, hdc⟩` from `hdec (((t : X.B.I.Ginf)⁻¹, n * (h : X.B.I.Gf)) : X.B.I.GA) (sinf_inv X u hSG t.2) hsf`. Establish `hmy : FoldBound.mult (Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I) Ω y ≤ ENNReal.ofReal (max C 0 * 2 ^ N1 * ν0 ^ N1)`. Rewrite using `[hdecomp t σ c hdc.symm, mult_left _ Ω σ (Subgroup.mem_inf.1 hσ).1]`. Establish `hcc : c * ((1, X.xu u * k) : X.B.I.GA) ∈ CC` using `hCCd ▸ ⟨(c, k), ⟨hc, hkK⟩, rfl⟩`. Use `(hC _ hcc _).trans (ENNReal.ofReal_le_ofReal ?_)` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hN1d]`. Establish `h0 : 0 ≤ WuDecay.normInf X ((t : X.B.I.Ginf) * y.1)` using `normI_nonneg _ _`. Establish `h1 : WuDecay.normInf X ((t : X.B.I.Ginf) * y.1) ^ N1 ≤ (2 * ν0) ^ N1` using `Real.rpow_le_rpow h0 (by linarith) hN1`. Rewrite `h1` using `[Real.mul_rpow (by norm_num) (by linarith)]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hmain : FoldBound.mult (Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I) Ω y * ‖Ph X u hK T y‖ₑ ≤ K0 * wt X u y.1`. Establish `hPe : ‖Ph X u hK T y‖ₑ ≤ ENNReal.ofReal (max M 0) * ‖X.Wu u y.1‖ₑ`. Rewrite using `[← ofReal_norm, ← ofReal_norm, ← ENNReal.ofReal_mul (le_max_right _ _)]`. Conclude with `ENNReal.ofReal_le_ofReal hPh`. Establish `hC2 : 0 ≤ max C 0 * 2 ^ N1` using `mul_nonneg (le_max_right _ _) (Real.rpow_nonneg (by norm_num) _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hK0d, wt, ← hN1d, ← hν0, ENNReal.ofReal_mul hC2, ENNReal.ofReal_mul hC2]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨t', ht', hat⟩` from `hsec y.1`. Take `⟨σ', hσ', c', hc', hdc'⟩` from `hdec ((t'⁻¹, n * (h : X.B.I.Gf)) : X.B.I.GA) (sinf_inv X u hSG ht') hsf`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc'1 : c'.1 ∈ X.SinfU u`. Establish `e1 : c' = σ'⁻¹ * ((t'⁻¹, n * (h : X.B.I.Gf)) : X.B.I.GA)`. Rewrite using `[hdc', ← mul_assoc, inv_mul_cancel, one_mul]`. Rewrite using `[e1]`. Conclude with `sinf_mul X u hSG (sinf_inv X u hSG (srat_mem X u hSG hσ').1) (sinf_inv X u hSG ht')`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hz : σ'⁻¹ * y = c' * ((1, X.xu u * k) : X.B.I.GA) * ((t' * y.1, 1) : X.B.I.GA)`. Establish `e` using `hdecomp t' σ' c' hdc'.symm`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← e]`. Use `_ = _ := by rw [← mul_assoc, inv_mul_cancel, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hS1 : c'.1 * t' ∈ X.SinfU u` using `sinf_mul X u hSG hc'1 ht'`. Establish `hz1 : (σ'⁻¹ * y).1 = c'.1 * t' * y.1`. Rewrite using `[hz]`. Use `show c'.1 * 1 * (t' * y.1) = c'.1 * t' * y.1`. Rewrite using `[mul_one, mul_assoc]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hz2 : (σ'⁻¹ * y).2 ∈ Cf`. Rewrite using `[hz, hCfd]`. Use `⟨(c', k), ⟨hc', hkK⟩, ?_⟩` and prove the remaining obligations. Use `show c'.2 * X.xu u * k = c'.2 * (X.xu u * k) * 1`. Rewrite using `[mul_one, mul_assoc]`.
-
-Establish `hterm : K0 * (wt X u (σ'⁻¹ * y).1 * a (σ'⁻¹ * y).1) * Cf.indicator 1 (σ'⁻¹ * y).2 = K0 * wt X u y.1`. Rewrite using `[hz1, wt_left X u hSG hWI hS1, hat c'.1 ⟨c', hc', rfl⟩ hc'1, Set.indicator_of_mem hz2, mul_one, Pi.one_apply, mul_one]`. Combine the equalities or inequalities in the displayed calculation. Use `haveI : (X.B.I.muA X.B.μf).IsMulLeftInvariant := (Cut.muA_isHaar' X.B.I X.B.μf).toIsMulLeftInvariant`. Use `haveI : Countable (Srat X u) := by`.
-
-Establish `h1 : ((Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I : Subgroup X.B.I.GA) : Set X.B.I.GA).Countable` using `Set.countable_coe_iff.1 (Formalism.MainNotions.LeviCoordinates.rr_GF_countable X.B.I)`. Conclude with `(h1.mono fun x hx => (Subgroup.mem_inf.1 hx).1).to_subtype`. Unfold `PoincareSeriesSquareIntegrable.multiplicityLIntegral`. Use `lt_of_le_of_lt (setLIntegral_le_of_cover (Srat X u) hFs _ _ hΨm hA) ?_` and prove the remaining obligations. Establish `hK0 : K0 ≠ ⊤` using `hK0d ▸ ENNReal.ofReal_ne_top`.
-
-Use `lt_of_le_of_lt (prod_bound X u K0 hK0 a ha1 Cf hμf.ne) ?_` and prove the remaining obligations. Use `lt_of_le_of_lt (mul_le_mul' (mul_le_mul' le_rfl (weil_bound X u hSG hWI hWM a ha B hB.ne hBint)) le_rfl) ?_` and prove the remaining obligations. Conclude with `ENNReal.mul_lt_top (ENNReal.mul_lt_top hK0.lt_top (ENNReal.mul_lt_top (wt_int X u hWD) hB)) hμf`.
+A detailed English derivation is pending.
 -/
 theorem iUnfold_of {D : D7} (X : HidaSetting D) (u : D.what₂.Word) (hK : X.LevelSubgroupCharacter)
     (hSG : SGroup X u) (hSC : SCompact X u) (hKT : LevelSubgroupCompactOpen X) (hPU : PsiUnit X u) (hCB : ColBound X u hK)
@@ -699,9 +687,9 @@ theorem iUnfold_of {D : D7} (X : HidaSetting D) (u : D.what₂.Word) (hK : X.Lev
 section Close
 
 /- English proof (translation)
-Unfold `psiR`. Rewrite using `[Complex.norm_exp]`. Establish `him : ((∑ a, (rootCoord ε e f z g a + star (rootCoord ε e f z g a))) / (gg : ℂ)).im = 0`. Simplify using `[Complex.div_im, Complex.im_sum, Complex.star_def]`. Establish `hre : (2 * (Real.pi : ℂ) * Complex.I * ((∑ a, (rootCoord ε e f z g a + star (rootCoord ε e f z g a))) / (gg : ℂ))).re = 0`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Complex.mul_re, him]`. Simplify using the standard rewrite rules. Rewrite using `[hre, Real.exp_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem psiR_norm {n r : ℕ} (ε : Fin n → Bool) (gg : ℕ) (e f : Fin r → Fin n → ℂ) (z : Fin n → ℂ)
     (g : Matrix (Fin n) (Fin n) ℂ) : ‖psiR ε gg e f z g‖ = 1 := by
@@ -718,11 +706,11 @@ theorem psiR_norm {n r : ℕ} (ε : Fin n → Bool) (gg : ℕ) (e f : Fin r → 
 variable {D : D7} (X : HidaSetting D) (u : D.what₂.Word)
 
 /- English proof (translation)
-Introduce `s hs x`. Establish `h1` using `(X.Wu_spec u).1 s hs x`. Rewrite using `[h1, norm_smul]`. Establish `hp : ‖psiInf X.B.I X.B.g (fun a => crdOf X.B.I X.ιE X.bas (X.eX a)) (fun a => crdOf X.B.I X.ιE X.bas (X.fY a)) (crdOf X.B.I X.ιE X.bas (X.zu u)) s‖ = 1`. Unfold `psiInf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[norm_prod]`. Conclude with `Finset.prod_eq_one fun v _ => psiR_norm _ _ _ _ _ _`. Rewrite using `[hp, one_mul]`. Establish `hu` using `(X.piU_rep u).2.2.1 s hs (X.Wu u x) (X.Wu u x)`. Establish `h2 : ‖X.piU u s (X.Wu u x)‖ ^ 2 = ‖X.Wu u x‖ ^ 2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[@norm_sq_eq_re_inner ℂ, @norm_sq_eq_re_inner ℂ, hu]`. Conclude with `(pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).1 h2`.
+A detailed English derivation is pending.
 -/
 theorem wuNormInv_holds : WuNormInv X u := by
   intro s hs x
@@ -740,7 +728,7 @@ theorem wuNormInv_holds : WuNormInv X u := by
   exact (pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).1 h2
 
 /- English proof (translation)
-Unfold `WuDecay.normInf`. Use `continuous_finset_prod _ fun v _ => ?_` and prove the remaining obligations. Unfold `WuDecay.opn`. Establish `hlin : Continuous fun M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ => Matrix.toEuclideanCLM (𝕜` using `ℂ) M := LinearMap.continuous_of_finiteDimensional ((Matrix.toEuclideanCLM (𝕜 := ℂ) (n := Fin X.B.I.n)).toAlgEquiv.toLinearMap)`. Conclude with `continuous_norm.comp (hlin.comp ((Units.continuous_val.comp continuous_subtype_val).comp (continuous_apply v)))`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem normInf_continuous : Continuous (WuDecay.normInf X) := by
   unfold WuDecay.normInf
@@ -752,9 +740,9 @@ theorem normInf_continuous : Continuous (WuDecay.normInf X) := by
   exact continuous_norm.comp (hlin.comp ((Units.continuous_val.comp continuous_subtype_val).comp (continuous_apply v)))
 
 /- English proof (translation)
-Use `⟨?_, (X.Wu_spec u).2.2.1.norm.measurable⟩` and prove the remaining obligations. Use `UpperSemicontinuous.measurable ?_` and prove the remaining obligations. Unfold `WuDecay.nuInf`. Use `upperSemicontinuous_ciInf (fun x => ⟨0, ?_⟩) fun t => ((normInf_continuous X).comp (continuous_const.mul continuous_id)).upperSemicontinuous` and prove the remaining obligations. Introduce and unpack `_ ⟨t, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `normI_nonneg _ _`.
+A detailed English derivation is pending.
 -/
 theorem weightMeas_holds : WeightMeas X u := by
   refine ⟨?_, (X.Wu_spec u).2.2.1.norm.measurable⟩
@@ -766,7 +754,7 @@ theorem weightMeas_holds : WeightMeas X u := by
   exact normI_nonneg _ _
 
 /- English proof (translation)
-Establish `hc` using `Cut.level_subgroup_isClopen X (Formalism.L2.SG.Closed.level_subgroup_is_group X) (Formalism.L2.SG.Closed.level_subgroup_properties X)`. Conclude with `⟨hc.isOpen, (Formalism.L2.SG.Closed.AutKCompact_holds X.B.I).of_isClosed_subset hc.isClosed (Formalism.L2.SG.Closed.level_subgroup_properties X).2.1⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem level_subgroup_compact_open : LevelSubgroupCompactOpen X := by
   have hc := Cut.level_subgroup_isClopen X (Formalism.L2.SG.Closed.level_subgroup_is_group X) (Formalism.L2.SG.Closed.level_subgroup_properties X)
@@ -774,13 +762,13 @@ theorem level_subgroup_compact_open : LevelSubgroupCompactOpen X := by
     (Formalism.L2.SG.Closed.level_subgroup_properties X).2.1⟩
 
 /- English proof (translation)
-The claim follows from `multPoly_of X (Formalism.L2.SG.Closed.LatCount_holds X.B.I) Formalism.L2.SG.Closed.DistTri_holds reduction_theory hTT hNP hO`.
+A detailed English derivation is pending.
 -/
 theorem multPoly_holds_of (hTT : TauTrans X.B.I) (hNP : NormPow X.B.I) (hO : OmCover X.B.I) : Cut.MultPoly X :=
   multPoly_of X (Formalism.L2.SG.Closed.LatCount_holds X.B.I) Formalism.L2.SG.Closed.DistTri_holds reduction_theory hTT hNP hO
 
 /- English proof (translation)
-The claim follows from `iUnfold_of X u hK (Cut.sGroup_holds X u) hSC (level_subgroup_compact_open X) hPU hCB (wuNormInv_holds X u) (weightMeas_holds X u) hSec hNG`.
+A detailed English derivation is pending.
 -/
 theorem iUnfold_holds_of (hK : X.LevelSubgroupCharacter) (hSC : SCompact X u) (hPU : PsiUnit X u) (hCB : ColBound X u hK)
     (hSec : SinfSection X u) (hNG : NormGeOne X.B.I) : Cut.IUnfold X u hK :=
@@ -792,15 +780,15 @@ end Close
 section Norms
 
 /- English proof (translation)
-Establish `hA : (uMat g)ᴴ * Formalism.REAL.Jm ε * uMat g = Formalism.REAL.Jm ε` using `g.2`. Use `haveI : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩`. Take `⟨T, hT⟩ : ∃ T, T = Matrix.toEuclideanCLM (𝕜` from `ℂ) (uMat g) := ⟨_, rfl⟩`. Take `⟨J, hJ⟩ : ∃ J, J = Matrix.toEuclideanCLM (𝕜` from `ℂ) (Formalism.REAL.Jm ε) := ⟨_, rfl⟩`. Establish `hTJ : star T * J * T = J`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hT, hJ, ← map_star, ← map_mul, ← map_mul, Matrix.star_eq_conjTranspose, hA]`. Establish `hJJ : star J * J = 1`. Rewrite using `[hJ, ← map_star, ← map_mul, Matrix.star_eq_conjTranspose, Formalism.REAL.Jm_conjTranspose, Formalism.REAL.Jm_mul_self, map_one]`. Establish `hJs : star J = J`. Rewrite using `[hJ, ← map_star, Matrix.star_eq_conjTranspose, Formalism.REAL.Jm_conjTranspose]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hJn : ‖J‖ = 1`. Establish `h` using `CStarRing.norm_star_mul_self (x := J)`. Rewrite `h` using `[hJJ, norm_one]`. Use polynomial arithmetic with `[norm_nonneg J]`. Establish `hL : J * star T * J * T = 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h1 : (1 : ℝ) ≤ ‖T‖ * ‖T‖`. Combine the equalities or inequalities in the displayed calculation. Unfold `WuDecay.opn`. Rewrite using `[← hT]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[norm_nonneg T]`.
+A detailed English derivation is pending.
 -/
 theorem opn_ge_one {n : ℕ} (hn : 1 ≤ n) (ε : Fin n → Bool) (g : Formalism.REAL.UJ ε) :
     1 ≤ WuDecay.opn (uMat g) := by
@@ -834,13 +822,13 @@ theorem opn_ge_one {n : ℕ} (hn : 1 ≤ n) (ε : Fin n → Bool) (g : Formalism
   nlinarith [norm_nonneg T]
 
 /- English proof (translation)
-Establish `hJ1 : Formalism.REAL.Jm ε = 1`. Unfold `Formalism.REAL.Jm`. Rewrite using `[← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[hε a]`. Establish `hA : (uMat g)ᴴ * uMat g = 1`. Establish `h : (uMat g)ᴴ * Formalism.REAL.Jm ε * uMat g = Formalism.REAL.Jm ε` using `g.2`. Rewrite `h` using `[hJ1, Matrix.mul_one]`. Then use the resulting hypothesis. Use `haveI : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Take `⟨T, hT⟩ : ∃ T, T = Matrix.toEuclideanCLM (𝕜` from `ℂ) (uMat g) := ⟨_, rfl⟩`. Establish `hTT : star T * T = 1`. Rewrite using `[hT, ← map_star, ← map_mul, Matrix.star_eq_conjTranspose, hA, map_one]`. Establish `h` using `CStarRing.norm_star_mul_self (x := T)`. Rewrite `h` using `[hTT, norm_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `WuDecay.opn`. Rewrite using `[← hT]`. Use polynomial arithmetic with `[norm_nonneg T]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem opn_eq_one_of_definite {n : ℕ} (hn : 1 ≤ n) (ε : Fin n → Bool) (hε : ∀ a, ε a = true)
     (g : Formalism.REAL.UJ ε) : WuDecay.opn (uMat g) = 1 := by
@@ -864,7 +852,7 @@ theorem opn_eq_one_of_definite {n : ℕ} (hn : 1 ≤ n) (ε : Fin n → Bool) (h
   nlinarith [norm_nonneg T]
 
 /- English proof (translation)
-Introduce `hn g`. Unfold `normI`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 theorem normGeOne_holds (I : AutInst) : NormGeOne I := by
   intro hn g
@@ -874,15 +862,15 @@ theorem normGeOne_holds (I : AutInst) : NormGeOne I := by
         Finset.prod_le_prod (fun _ _ => zero_le_one) fun v _ => opn_ge_one hn (I.ε v) (g v)
 
 /- English proof (translation)
-Introduce `hn g`. Distinguish the cases in `hq : ∃ v, 1 ≤ I.qAt v`. Take `⟨v, hv⟩` from `hq`. Use `Real.rpow_le_rpow_of_exponent_le (normGeOne_holds I hn g) ?_` and prove the remaining obligations. Establish `hq0 : (1 : ℝ) ≤ ((Finset.univ.sup fun v => I.qAt v : ℕ) : ℝ)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hv.trans (Finset.le_sup (f := fun v => I.qAt v) (Finset.mem_univ v))` after adjusting the coercions. Establish `hs : (1 : ℝ) ≤ Real.sqrt (2 * ((Finset.univ.sup fun v => I.qAt v : ℕ) : ℝ))`. Rewrite using `[Real.one_le_sqrt]`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `nilradicalExponent`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Establish `h4 : (0 : ℝ) ≤ 4 * (I.n : ℝ) ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Use `push_neg at hq`. Establish `h1 : normI I g = 1`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `normI`. Use `Finset.prod_eq_one fun v _ => opn_eq_one_of_definite hn (I.ε v) (fun a => ?_) (g v)` and prove the remaining obligations. Establish `h0 : I.qAt v = 0` using `by have := hq v; omega`. Unfold `AutInst.qAt at h0`. Rewrite `h0` using `[Finset.card_eq_zero, Finset.filter_eq_empty_iff]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `h0 (Finset.mem_univ a)` as an intermediate fact. Simplify using `using this`. Rewrite using `[h1, Real.one_rpow, Real.one_rpow]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normPow_holds (I : AutInst) : NormPow I := by
   intro hn g
@@ -915,13 +903,13 @@ section Close2
 variable {D : D7} (X : HidaSetting D) (u : D.what₂.Word)
 
 /- English proof (translation)
-The claim follows from `multPoly_holds_of X hTT (normPow_holds X.B.I) hO`.
+A detailed English derivation is pending.
 -/
 theorem multPoly_holds_of' (hTT : TauTrans X.B.I) (hO : OmCover X.B.I) : Cut.MultPoly X :=
   multPoly_holds_of X hTT (normPow_holds X.B.I) hO
 
 /- English proof (translation)
-The claim follows from `iUnfold_holds_of X u hK hSC hPU hCB hSec (normGeOne_holds X.B.I)`.
+A detailed English derivation is pending.
 -/
 theorem iUnfold_holds_of' (hK : X.LevelSubgroupCharacter) (hSC : SCompact X u) (hPU : PsiUnit X u) (hCB : ColBound X u hK)
     (hSec : SinfSection X u) : Cut.IUnfold X u hK :=
@@ -934,7 +922,7 @@ section TauT
 open LitS.Size
 
 /- English proof (translation)
-Establish `h` using `(Matrix.toEuclideanCLM (𝕜 := ℂ) M).le_opNorm (WithLp.toLp 2 w)`. Rewrite `h` using `[Matrix.toEuclideanCLM_toLp]`. Establish `h2` using `pow_le_pow_left₀ (norm_nonneg _) h 2`. Rewrite `h2` using `[mul_pow, EuclideanSpace.norm_sq_eq, EuclideanSpace.norm_sq_eq]`. Simplify `h2` using `[WuDecay.opn]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sum_sq_mulVec_le {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (w : Fin n → ℂ) :
     ∑ i, ‖(M *ᵥ w) i‖ ^ 2 ≤ WuDecay.opn M ^ 2 * ∑ i, ‖w i‖ ^ 2 := by
@@ -947,17 +935,17 @@ theorem sum_sq_mulVec_le {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (w : Fin n �
 variable (I : AutInst)
 
 /- English proof (translation)
-Establish `h5` using `Tau.t5`. Establish `hcm : ∀ v, Tau.cmat I x' v s.b = Y v * Tau.cmat I x v s.b`. Introduce `v`. Use extensionality with `i a`. Simplify using `[Tau.cmat, hY, Matrix.mul_apply, Matrix.mulVec, dotProduct]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hdet : ∀ v, (gramV I x' v s.b).det.re ≤ c v ^ s.j * (gramV I x v s.b).det.re`. Introduce `v`. Establish `h` using `(h5 I.n s.j (Y v) (Tau.cmat I x v s.b) 0 (c v) le_rfl fun w => ⟨by rw [zero_mul]; positivity, hb v w⟩).2`. Rewrite using `[Tau.gramV_eq, Tau.gramV_eq, hcm]`. Conclude with `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hP0 : 0 ≤ ∏ v, c v` using `Finset.prod_nonneg fun v _ => le_trans zero_le_one (hc v)`. Establish `hprod : (∏ v, (gramV I x' v s.b).det.re) ≤ (∏ v, c v) ^ s.j * ∏ v, (gramV I x v s.b).det.re`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_pow]`. Establish `hht : ht I (Tau.subOfEq I hlat s) ≤ (∏ v, c v) ^ s.j * ht I s`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `ht`. Rewrite using `[← mul_div_assoc]`. Conclude with `div_le_div_of_nonneg_right hprod (Nat.cast_nonneg _)`. Establish `hf : 0 < (I.f : ℝ)` using `f_pos I`. Establish `hj : 0 < (s.j : ℝ)` using `by exact_mod_cast s.j_pos`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : 0 ≤ (1 : ℝ) / (2 * (I.f : ℝ) * (s.j : ℝ))` using `by positivity`. Establish `hje : (s.j : ℝ) * ((1 : ℝ) / (2 * (I.f : ℝ) * (s.j : ℝ))) = (1 : ℝ) / (2 * (I.f : ℝ))`. Clear the denominators using the available nonvanishing facts. Unfold `size`. Express the relevant statement in the definitionally equal form `ht I (Tau.subOfEq I hlat s) ^ ((1 : ℝ) / (2 * (I.f : ℝ) * (s.j : ℝ))) ≤ _`.
+Clear the denominators using the available nonvanishing facts. Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.mul_rpow (pow_nonneg hP0 _) (Tau.ht_nonneg I h5 s), Real.rpow_natCast]`. Use `_ = (∏ v, c v) ^ ((1 : ℝ) / (2 * (I.f : ℝ))) * ht I s ^ ((1 : ℝ) / (2 * (I.f : ℝ) * (s.j : ℝ))) := by`. Rewrite using `[← Real.rpow_mul hP0, hje]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem size_subOfEq_le_pl {x x' : I.GA} (hlat : latSet I x' = latSet I x)
     (Y : InfinitePlace I.F → Matrix (Fin I.n) (Fin I.n) ℂ)
@@ -1002,25 +990,23 @@ theorem size_subOfEq_le_pl {x x' : I.GA} (hlat : latSet I x' = latSet I x)
         rw [← Real.rpow_mul hP0, hje]
 
 /- English proof (translation)
-Introduce `hn x g`. Use `set x' := x * ((g, 1) : I.GA) with hx'`. Establish `hlat : latSet I x = latSet I x'`. Establish `h2 : x'.2 = x.2` using `by rw [hx']; exact mul_one x.2`. Unfold `latSet`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Establish `hY : ∀ v u, coordV I x v u = uMat (g v) *ᵥ coordV I x' v u` using `fun v u => Tau.coordV_mul' I x g 1 v u`. Establish `hc : ∀ v, 1 ≤ WuDecay.opn (uMat (g v)) ^ 2` using `fun v => one_le_pow₀ (opn_ge_one hn (I.ε v) (g v))`. Establish `hb : ∀ v (w : Fin I.n → ℂ), ∑ i, ‖(uMat (g v) *ᵥ w) i‖ ^ 2 ≤ WuDecay.opn (uMat (g v)) ^ 2 * ∑ i, ‖w i‖ ^ 2` using `fun v w => sum_sq_mulVec_le _ w`. Establish `hN1` using `normGeOne_holds I hn g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN0 : 0 ≤ normI I g` using `le_trans zero_le_one hN1`. Use `set P := normI I g ^ ((1 : ℝ) / (I.f : ℝ)) with hP`. Establish `hf : 0 < (I.f : ℝ)` using `f_pos I`. Establish `hP1 : 1 ≤ P` using `Real.one_le_rpow hN1 (by positivity)`. Establish `hprodc : (∏ v, WuDecay.opn (uMat (g v)) ^ 2) ^ ((1 : ℝ) / (2 * (I.f : ℝ))) = P`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Finset.prod_pow, hP]`. Express the relevant statement in the definitionally equal form `(normI I g ^ 2) ^ ((1 : ℝ) / (2 * (I.f : ℝ))) = _`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hN0]`. Use `congr 1`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Establish `hsz : ∀ s' : Sub I x', size I (Tau.subOfEq I hlat s') ≤ P * size I s'` using `fun s' => by`. Use `size_subOfEq_le_pl I hlat (fun v => uMat (g v)) hY _ hc hb s'` as an intermediate fact. Rewrite `this` using `[hprodc]`. Then use the resulting hypothesis. Establish `hne' : Nonempty (Sub I x')`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `hE`. Rewrite `hE` using `[not_nonempty_iff]`. Establish `hpos` using `((reduction_theory I hn).2 x').1`. Unfold `LitS.Size.tau1 at hpos`. Rewrite `hpos` using `[Real.iInf_of_isEmpty]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Evaluate the numerical expressions using `at hpos`. Establish `hbdd : BddBelow (Set.range fun s : Sub I x => size I s)` using `⟨0, by rintro _ ⟨s, rfl⟩; exact Tau.size_nonneg I Tau.t5 s⟩`. Establish `hinf : (⨅ s : Sub I x, size I s) ≤ P * ⨅ s' : Sub I x', size I s'`. Establish `hPpos : 0 < P` using `lt_of_lt_of_le zero_lt_one hP1`. Rewrite using `[← div_le_iff₀' hPpos]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `le_ciInf fun s' => ?_` and prove the remaining obligations. Rewrite using `[div_le_iff₀' hPpos]`. Conclude with `(ciInf_le hbdd _).trans (hsz s')`. Unfold `LitS.Size.tau1`. Use `set a := ⨅ s' : Sub I x', size I s'`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Break down `le_total a (1 / 2) with h | h` into its components or cases. Rewrite using `[min_eq_right h, mul_comm]`. Conclude with `min_le_right _ _`. Rewrite using `[min_eq_left h]`.
-
-Conclude with `(min_le_left _ _).trans (by nlinarith)`.
+A detailed English derivation is pending.
 -/
 theorem tauTrans_holds : TauTrans I := by
   intro hn x g
@@ -1077,7 +1063,7 @@ theorem tauTrans_holds : TauTrans I := by
 end TauT
 
 /- English proof (translation)
-The claim follows from `multPoly_holds_of' X (tauTrans_holds X.B.I) hO`.
+A detailed English derivation is pending.
 -/
 theorem multPoly_holds_of'' {D : D7} (X : HidaSetting D) (hO : OmCover X.B.I) : Cut.MultPoly X :=
   multPoly_holds_of' X (tauTrans_holds X.B.I) hO

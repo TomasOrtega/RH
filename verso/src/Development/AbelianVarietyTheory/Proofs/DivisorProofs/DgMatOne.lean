@@ -19,7 +19,7 @@ def dgMat {R : Type} [CommRing R] {a b n : ℕ} (h : a + b = n) (A : Matrix (Fin
   reindex (blkEq h) (blkEq h) (fromBlocks A 0 0 D)
 
 /- English proof (translation)
-Simplify using `only [dgMat, reindex_apply, submatrix_mul_equiv, fromBlocks_multiply]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem dgMat_mul {R : Type} [CommRing R] {a b n : ℕ} (h : a + b = n) (A A' : Matrix (Fin a) (Fin a) R)
     (D D' : Matrix (Fin b) (Fin b) R) : dgMat h A D * dgMat h A' D' = dgMat h (A * A') (D * D') := by
@@ -27,7 +27,7 @@ theorem dgMat_mul {R : Type} [CommRing R] {a b n : ℕ} (h : a + b = n) (A A' : 
   simp
 
 /- English proof (translation)
-Rewrite using `[dgMat, fromBlocks_one, reindex_apply, submatrix_one_equiv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dgMat_one {R : Type} [CommRing R] {a b n : ℕ} (h : a + b = n) :
     dgMat h (1 : Matrix (Fin a) (Fin a) R) (1 : Matrix (Fin b) (Fin b) R) = 1 := by
@@ -55,9 +55,9 @@ def lev₂ {a b n : ℕ} (h : a + b = n) (w : Pl E) (N : Subgroup (GLw n w)) (μ
   GlobalTheory.LFun.KGL w b ⊓ N.comap ((dgM h w).comp (MonoidHom.inr _ _)) ⊓ μ.ker.comap GeneralLinearGroup.det
 
 /- English proof (translation)
-Establish `hu : IsUnit (reindex (blkEq h) (blkEq h) (fromBlocks m.1.val (m.1.val * X) 0 m.2.val))`. Rewrite using `[isUnit_iff_isUnit_det, det_reindex_self, det_fromBlocks_zero₂₁]`. Conclude with `(m.1.isUnit.map detMonoidHom).mul (m.2.isUnit.map detMonoidHom)`. Unfold `blk`. Simplify using `only`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos hu]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem blk_val {n a b : ℕ} (h : a + b = n) (w : Pl E) (m : GLw a w × GLw b w)
     (X : Matrix (Fin a) (Fin b) (w.adicCompletion E)) :

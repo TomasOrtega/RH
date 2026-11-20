@@ -10,11 +10,11 @@ namespace Formalism.FourierDecayAlt.P.FrameIntegralJacobian
 open Formalism.FourierDecayAlt.PairingProductCorollary
 
 /- English proof (translation)
-Unfold `FactorsPositive`. Use `⟨fun D h0 h1 => ?_, fun d h1 h2 => ?_, fun D h0 h1 => div_neg_of_pos_of_neg h0 (by linarith)⟩` and prove the remaining obligations. Simplify using `only [div_pos_iff, lt_abs]`. Prove the components needed by the constructor for the conclusion. Apply the tactic sequence `rintro ⟨⟨ha, hb⟩ | ⟨ha, hb⟩, ⟨hc, hd⟩ | ⟨hc, hd⟩⟩ <;> first | (left; linarith) | (right; linarith) | (exfalso; linarith)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce and unpack `(h | h)`. Conclude with `⟨Or.inl ⟨by linarith, by linarith⟩, Or.inl ⟨by linarith, by linarith⟩⟩`. Conclude with `⟨Or.inr ⟨by linarith, by linarith⟩, Or.inr ⟨by linarith, by linarith⟩⟩`. Simplify using `only [div_pos_iff]`. Prove the components needed by the constructor for the conclusion.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Apply the tactic sequence `rintro ⟨⟨ha, hb⟩ | ⟨ha, hb⟩, ⟨hc, hd⟩ | ⟨hc, hd⟩⟩ <;> first | (left; linarith) | (right; linarith) | (exfalso; linarith)`. Introduce and unpack `(h | h)`. Conclude with `⟨Or.inr ⟨by linarith, by linarith⟩, Or.inr ⟨by linarith, by linarith⟩⟩`. Conclude with `⟨Or.inl ⟨by linarith, by linarith⟩, Or.inl ⟨by linarith, by linarith⟩⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem factorsPositive_ok : FactorsPositive := by
   unfold FactorsPositive
@@ -35,9 +35,9 @@ theorem factorsPositive_ok : FactorsPositive := by
       · exact ⟨Or.inl ⟨by linarith, by linarith⟩, Or.inl ⟨by linarith, by linarith⟩⟩
 
 /- English proof (translation)
-Unfold `CutRoom`. Introduce `r α β h`. Use `⟨by ring, fun k hk => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `: (0:ℝ) ≤ k` using `Nat.cast_nonneg k`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hk' : ((k:ℝ) + 1) ≤ 6 * ((r:ℝ) + 1) ^ 2`. Conclude with `(show k + 1 ≤ 6 * (r + 1) ^ 2 from hk)` after adjusting the coercions. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem cutRoom_ok : CutRoom := by
   unfold CutRoom
@@ -50,9 +50,9 @@ theorem cutRoom_ok : CutRoom := by
     linarith
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Establish `hx : 0 ≤ 1 - x` using `by linarith`. Establish `hm` using `mul_le_mul_of_nonneg_right ih hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[pow_succ]`. Use `push_cast`. Use polynomial arithmetic with `[mul_nonneg (Nat.cast_nonneg k : (0:ℝ) ≤ k) (mul_nonneg h0 h0)]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities.
 -/
 private lemma bern_lemma (x : ℝ) (h0 : 0 ≤ x) (h1 : x ≤ 1) (n : ℕ) :
     1 - (n : ℝ) * x ≤ (1 - x) ^ n := by
@@ -66,15 +66,15 @@ private lemma bern_lemma (x : ℝ) (h0 : 0 ≤ x) (h1 : x ≤ 1) (n : ℕ) :
     nlinarith [mul_nonneg (Nat.cast_nonneg k : (0:ℝ) ≤ k) (mul_nonneg h0 h0)]
 
 /- English proof (translation)
-Unfold `WeightLower`. Introduce `N m f hN hm hf`. Establish `hN4 : (4:ℝ) ≤ N` using `by exact_mod_cast hN`. Establish `hN0 : (N:ℝ) ≠ 0` using `by positivity`. Establish `hxN2 : 1 / (N:ℝ) ^ 2 * (N:ℝ) ^ 2 = 1` using `by field_simp`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx0 : 0 ≤ 1 / (N:ℝ) ^ 2` using `by positivity`. Establish `hNx : (N:ℝ) * (1 / (N:ℝ) ^ 2) ≤ 1 / 4`. Use polynomial arithmetic with `[mul_nonneg (mul_nonneg hx0 (by linarith : (0:ℝ) ≤ N)) (by linarith : (0:ℝ) ≤ (N:ℝ) - 4)]`. Establish `hx1 : 1 / (N:ℝ) ^ 2 ≤ 1`. Use polynomial arithmetic with `[mul_nonneg hx0 (by linarith : (0:ℝ) ≤ (N:ℝ) - 4)]`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `ht0 : 0 ≤ 1 - 1 / (N:ℝ) ^ 2` using `by linarith`. Establish `ht1 : 1 - 1 / (N:ℝ) ^ 2 ≤ 1` using `by linarith`. Establish `hprod : ∏ _i : Fin m, (1 - 1 / (N:ℝ) ^ 2) ≤ ∏ i, f i` using `Finset.prod_le_prod (fun i _ => ht0) (fun i _ => hf i)`. Rewrite `hprod` using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Establish `hpow : (1 - 1 / (N:ℝ) ^ 2) ^ N ≤ (1 - 1 / (N:ℝ) ^ 2) ^ m` using `pow_le_pow_of_le_one ht0 ht1 hm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hbern` using `bern_lemma (1 / (N:ℝ) ^ 2) hx0 hx1 N`. Establish `hexp : Real.exp (-(1 / 2)) ≤ 3 / 4`. Establish `e1` using `Real.add_one_le_exp (1 / 2 : ℝ)`. Establish `e2 : Real.exp (-(1 / 2)) * Real.exp (1 / 2) = 1`. Rewrite using `[← Real.exp_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `e3` using `Real.exp_pos (-(1 / 2))`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem weightLower_ok : WeightLower := by
   unfold WeightLower
@@ -104,9 +104,9 @@ theorem weightLower_ok : WeightLower := by
   linarith
 
 /- English proof (translation)
-Unfold `BlockPhase`. Introduce `s x`. Establish `hI : Complex.I ≠ 0` using `Complex.I_ne_zero`. Establish `h1 : Complex.I ^ ((s:ℤ) - 1 - 2 * x) = Complex.I ^ ((s:ℤ) - 1) * ((Complex.I ^ 2) ^ x)⁻¹`. Rewrite using `[sub_eq_add_neg ((s:ℤ) - 1), zpow_add₀ hI, zpow_neg, ← pow_mul]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `norm_cast`. Rewrite using `[h1, Complex.I_sq, mul_assoc, inv_mul_cancel₀ (pow_ne_zero x (by norm_num : (-1:ℂ) ≠ 0)), mul_one]`.
+Put the expressions in a common number system so they can be compared. Rewrite the conclusion using the stated equalities.
 -/
 theorem blockPhase_ok : BlockPhase := by
   unfold BlockPhase
@@ -118,11 +118,11 @@ theorem blockPhase_ok : BlockPhase := by
   rw [h1, Complex.I_sq, mul_assoc, inv_mul_cancel₀ (pow_ne_zero x (by norm_num : (-1:ℂ) ≠ 0)), mul_one]
 
 /- English proof (translation)
-Unfold `StdFramePhase`. Introduce `ka a b ha hb`. Take `⟨a', rfl⟩ : ∃ a', a = a' + 1` from `⟨a - 1, by omega⟩`. Take `⟨b', rfl⟩ : ∃ b', b = b' + 1` from `⟨b - 1, by omega⟩`. Establish `hab : a' + 1 + (b' + 1) - 2 = b' + a'` using `by omega`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hconj : starRingEnd ℂ (Complex.I * ka) = Complex.I⁻¹ * ka`. Rewrite using `[map_mul, Complex.conj_I, Complex.conj_ofReal, Complex.inv_I]`. Establish `hz : Complex.I ^ (((b' + 1 : ℕ) : ℤ) - ((a' + 1 : ℕ) : ℤ)) = Complex.I ^ b' / Complex.I ^ a'`. Rewrite using `[show (((b' + 1 : ℕ) : ℤ) - ((a' + 1 : ℕ) : ℤ)) = (b' : ℤ) - (a' : ℤ) by push_cast; ring, zpow_sub₀ Complex.I_ne_zero, zpow_natCast, zpow_natCast]`. Simplify using `only [Nat.add_sub_cancel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hab, hconj, mul_pow, mul_pow, inv_pow, pow_add, hz]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem stdFramePhase_ok : StdFramePhase := by
   unfold StdFramePhase
@@ -140,7 +140,7 @@ theorem stdFramePhase_ok : StdFramePhase := by
   ring
 
 /- English proof (translation)
-Unfold `RealFrameEntry`. Introduce `rd r a b i s hrd`. Use `⟨?_, fun h => by omega⟩` and prove the remaining obligations. Rewrite using `[← zpow_add₀ hrd.ne']`. Use `congr 1`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -153,13 +153,13 @@ theorem realFrameEntry_ok : RealFrameEntry := by
   ring
 
 /- English proof (translation)
-Unfold `GaExponent`. Use `⟨fun ka l M hM => ?_, fun r k hk => ?_⟩` and prove the remaining obligations. Rewrite using `[← pow_mul]`. Use `congr 1`. Take `⟨M', rfl⟩ : ∃ M', M = M' + 2` from `⟨M - 2, by omega⟩`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result.
 
-Break down `Nat.eq_zero_or_pos l with hl | hl` into its components or cases. Substitute `hl` using the available equality. Simplify using the standard rewrite rules. Take `⟨l', rfl⟩ : ∃ l', l = l' + 1` from `⟨l - 1, by omega⟩`. Establish `h1 : 2 * (l' + 1) - 2 = 2 * l'` using `by omega`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : 2 * (M' + 2 - 2) + 2 = 2 * (M' + 1)` using `by omega`. Establish `h3 : l' + 1 - 1 = l'` using `by omega`. Establish `h4 : M' + 2 - 1 = M' + 1` using `by omega`. Rewrite using `[h1, h2, h3, h4]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨k', rfl⟩ : ∃ k', k = k' + 1` from `⟨k - 1, by omega⟩`. Establish `h1 : k' + 1 - 1 = k'` using `by omega`. Establish `h2 : k' + 1 + 1 - 1 = k' + 1` using `by omega`. Rewrite using `[h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gaExponent_ok : GaExponent := by
   unfold GaExponent
@@ -184,9 +184,9 @@ theorem gaExponent_ok : GaExponent := by
     ring
 
 /- English proof (translation)
-Unfold `RealCharacter`. Introduce `g rd x hg hrd`. Establish `hg' : (g:ℂ) ≠ 0` using `by exact_mod_cast hg.ne'`. Establish `hrd' : (rd:ℂ) ≠ 0` using `by exact_mod_cast hrd.ne'`. Use `congr 1`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[map_mul, Complex.conj_ofReal]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try ring`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem realCharacter_ok : RealCharacter := by
   unfold RealCharacter
@@ -200,11 +200,11 @@ theorem realCharacter_ok : RealCharacter := by
   try ring
 
 /- English proof (translation)
-Unfold `PlacesCombine`. Introduce `ι _ _ K abelian₂ o N S hL hS h`. Establish `hpos : 0 < ∏ v ∈ univ.filter (fun v => abelian₂ v < o v), o v ^ K`. Apply `Finset.prod_pos` to reduce the goal to its premises. Introduce `v hv`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hv' : abelian₂ v < o v` using `(Finset.mem_filter.mp hv).2`. Conclude with `pow_pos (lt_of_le_of_lt (hL v) hv') K`. Establish `hprod : ∏ v, minFac (abelian₂ v) (o v) K = (∏ v ∈ univ.filter (fun v => abelian₂ v < o v), abelian₂ v ^ K) / (∏ v ∈ univ.filter (fun v => abelian₂ v < o v), o v ^ K)`. Simplify using `only [minFac, div_pow]`. Rewrite using `[Finset.prod_ite, Finset.prod_const_one, mul_one, Finset.prod_div_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hprod, div_mul_eq_mul_div, le_div_iff₀ hpos, mul_comm N]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem placesCombine_ok : PlacesCombine := by
   unfold PlacesCombine
@@ -223,13 +223,13 @@ theorem placesCombine_ok : PlacesCombine := by
   exact h
 
 /- English proof (translation)
-Unfold `CorAConstWave`. Use `⟨fun n ell Qw BBs BB hell hn hQ0 hQ hB0 hB => ?_, fun Qw BBs BB hQ0 hQ hB0 hB => ?_⟩` and prove the remaining obligations. Establish `h2 : Real.exp (1 / 2) = Real.exp (1 / 4) ^ 2`. Rewrite using `[sq, ← Real.exp_add]`. Evaluate the numerical expressions.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Establish `hs : Real.sqrt Qw ≤ Real.exp (1 / 4)`. Combine the equalities or inequalities in the displayed calculation. Establish `h4 : 0 ≤ 4 / ell` using `div_nonneg (by norm_num) hell.le`. Establish `hP : 0 ≤ (1 / 2 : ℝ) * (4 / ell) ^ n` using `mul_nonneg (by norm_num) (pow_nonneg h4 n)`. Establish `hm : Real.sqrt Qw * BBs ≤ Real.exp (1 / 4) * BB` using `mul_le_mul hs hB hB0 (Real.exp_pos _).le`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h2 : Real.exp 2 = Real.exp 1 ^ 2`. Rewrite using `[sq, ← Real.exp_add]`. Evaluate the numerical expressions. Establish `hs : Real.sqrt Qw ≤ Real.exp 1`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `mul_le_mul hs hB hB0 (Real.exp_pos _).le`.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem corAConstWave_ok : CorAConstWave := by
   unfold CorAConstWave
@@ -255,9 +255,9 @@ theorem corAConstWave_ok : CorAConstWave := by
     exact mul_le_mul hs hB hB0 (Real.exp_pos _).le
 
 /- English proof (translation)
-Unfold `WeightedKernelPSD`. Introduce `H _ Kn n hK hn`. Establish `hst : ∀ h : H, star (((Real.sqrt (n h) : ℝ)) : ℂ) = ((Real.sqrt (n h) : ℝ) : ℂ)` using `fun h => Complex.conj_ofReal _`. Establish `hB` using `hK.conjTranspose_mul_mul_same (Matrix.diagonal fun h => ((Real.sqrt (n h) : ℝ) : ℂ))`. Use `hB using 1` and compare the differences between its conclusion and the goal.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use extensionality with `i j`. Simplify using `only [Matrix.mul_diagonal, Matrix.diagonal_conjTranspose, Matrix.diagonal_mul, Pi.star_apply, hst, Matrix.of_apply, Complex.ofReal_mul]`. Apply the tactic sequence `try ring`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem weightedKernelPSD_ok : WeightedKernelPSD := by
   unfold WeightedKernelPSD
@@ -273,9 +273,9 @@ theorem weightedKernelPSD_ok : WeightedKernelPSD := by
   try ring
 
 /- English proof (translation)
-Unfold `ScaleBeta`. Introduce `ka Pp q r hka hq hP`. Establish `hk0 : ka ≠ 0` using `hka.ne'`. Establish `e1 : Pp / (ka ^ (4 * r) * q) = Pp / q / (ka ^ (2 * r)) ^ 2`. Rewrite using `[← pow_mul, div_div, mul_comm q, show 2 * r * 2 = 4 * r by ring]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `e2 : ka ^ (-(1 + 2 * r : ℤ)) = (ka * ka ^ (2 * r))⁻¹`. Rewrite using `[zpow_neg, ← pow_succ', show (1 + 2 * (r:ℤ)) = ((2 * r + 1 : ℕ) : ℤ) by push_cast; ring, zpow_natCast]`. Rewrite using `[e1, Real.sqrt_div (div_nonneg hP hq.le), Real.sqrt_sq (pow_nonneg hka.le (2 * r)), e2, mul_inv, ← mul_assoc, ← mul_assoc, mul_inv_cancel₀ hk0, one_mul, div_eq_inv_mul]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem scaleBeta_ok : ScaleBeta := by
   unfold ScaleBeta
@@ -290,11 +290,11 @@ theorem scaleBeta_ok : ScaleBeta := by
     ← mul_assoc, ← mul_assoc, mul_inv_cancel₀ hk0, one_mul, div_eq_inv_mul]
 
 /- English proof (translation)
-Unfold `FrameIntegral`. Introduce `ka de Cst ph pht Rt R hka hde hph hRt hR`. Establish `hk0 : ka ≠ 0` using `hka.ne'`. Establish `hcv : ∫ x : ℂ, pht (ka • x) = |(ka ^ 2)⁻¹| • ∫ x : ℂ, pht x`. Establish `h` using `MeasureTheory.Measure.integral_comp_smul (μ := (MeasureTheory.volume : MeasureTheory.Measure ℂ)) pht ka`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[Complex.finrank_real_complex]`. Conclude with `h`. Establish `hfun : ∀ c : ℂ, ph c * (de : ℂ) = (Cst * ka ^ 2 : ℝ) • pht (ka • c)`. Introduce `c`. Rewrite using `[hph c, Complex.real_smul, Complex.real_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[hfun]`. Rewrite using `[MeasureTheory.integral_smul, hcv, smul_smul, hRt, hR, abs_of_pos (inv_pos.mpr (pow_pos hka 2)), Complex.real_smul, mul_assoc Cst, mul_inv_cancel₀ (pow_ne_zero 2 hk0), mul_one]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frameIntegral_ok : FrameIntegral := by
   unfold FrameIntegral
@@ -315,13 +315,13 @@ theorem frameIntegral_ok : FrameIntegral := by
     Complex.real_smul, mul_assoc Cst, mul_inv_cancel₀ (pow_ne_zero 2 hk0), mul_one]
 
 /- English proof (translation)
-Unfold `FrameJacobian`. Introduce `ka m g hka`. Establish `hk0 : ka ≠ 0` using `hka.ne'`. Establish `hk0c : (ka : ℂ) ≠ 0` using `by exact_mod_cast hk0`. Establish `hcv : ∫ x : ℂ, ((‖ka • x‖ ^ (2 * m) : ℝ) : ℂ) * g (ka • x) = |(ka ^ 2)⁻¹| • ∫ x : ℂ, ((‖x‖ ^ (2 * m) : ℝ) : ℂ) * g x`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `MeasureTheory.Measure.integral_comp_smul (μ := (MeasureTheory.volume : MeasureTheory.Measure ℂ)) (fun z : ℂ => ((‖z‖ ^ (2 * m) : ℝ) : ℂ) * g z) ka`. Rewrite `h` using `[Complex.finrank_real_complex]`. Conclude with `h`. Establish `hpt : ∀ c : ℂ, ((‖c‖ ^ (2 * m) : ℝ) : ℂ) * g ((ka : ℂ) * c) = ((ka ^ (2 * m))⁻¹ : ℝ) • (((‖ka • c‖ ^ (2 * m) : ℝ) : ℂ) * g (ka • c))`. Introduce `c`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_smul, Real.norm_eq_abs, abs_of_pos hka, mul_pow, Complex.real_smul, Complex.real_smul]`. Use `push_cast`. Rewrite using `[← mul_assoc, ← mul_assoc, inv_mul_cancel₀ (pow_ne_zero _ hk0c), one_mul]`. Establish `hreal : ka ^ (2 * m + 2) * ((ka ^ (2 * m))⁻¹ * (ka ^ 2)⁻¹) = 1`. Rewrite using `[pow_add, mul_mul_mul_comm, mul_inv_cancel₀ (pow_ne_zero _ hk0), mul_inv_cancel₀ (pow_ne_zero _ hk0), one_mul]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[hpt]`. Rewrite using `[MeasureTheory.integral_smul, hcv, smul_smul, abs_of_pos (inv_pos.mpr (pow_pos hka 2)), Complex.real_smul, ← mul_assoc, ← Complex.ofReal_mul, hreal, Complex.ofReal_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frameJacobian_ok : FrameJacobian := by
   unfold FrameJacobian
@@ -351,59 +351,59 @@ theorem frameJacobian_ok : FrameJacobian := by
 end Formalism.FourierDecayAlt.P.FrameIntegralJacobian
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.FrameIntegralJacobian.factorsPositive_ok`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.local_factors_positive : Formalism.FourierDecayAlt.PairingProductCorollary.FactorsPositive := Formalism.FourierDecayAlt.P.FrameIntegralJacobian.factorsPositive_ok
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.FrameIntegralJacobian.cutRoom_ok`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.truncation_room_estimate : Formalism.FourierDecayAlt.PairingProductCorollary.CutRoom := Formalism.FourierDecayAlt.P.FrameIntegralJacobian.cutRoom_ok
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.FrameIntegralJacobian.weightLower_ok`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.weight_lower_bound : Formalism.FourierDecayAlt.PairingProductCorollary.WeightLower := Formalism.FourierDecayAlt.P.FrameIntegralJacobian.weightLower_ok
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.FrameIntegralJacobian.blockPhase_ok`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.block_phase_identity : Formalism.FourierDecayAlt.PairingProductCorollary.BlockPhase := Formalism.FourierDecayAlt.P.FrameIntegralJacobian.blockPhase_ok
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.FrameIntegralJacobian.stdFramePhase_ok`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.standard_frame_phase_alt : Formalism.FourierDecayAlt.PairingProductCorollary.StdFramePhase := Formalism.FourierDecayAlt.P.FrameIntegralJacobian.stdFramePhase_ok
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.FrameIntegralJacobian.realFrameEntry_ok`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.real_frame_entry_alt : Formalism.FourierDecayAlt.PairingProductCorollary.RealFrameEntry := Formalism.FourierDecayAlt.P.FrameIntegralJacobian.realFrameEntry_ok
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.FrameIntegralJacobian.gaExponent_ok`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.gamma_exponent_formula : Formalism.FourierDecayAlt.PairingProductCorollary.GaExponent := Formalism.FourierDecayAlt.P.FrameIntegralJacobian.gaExponent_ok
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.FrameIntegralJacobian.realCharacter_ok`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.real_character_identity : Formalism.FourierDecayAlt.PairingProductCorollary.RealCharacter := Formalism.FourierDecayAlt.P.FrameIntegralJacobian.realCharacter_ok
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.FrameIntegralJacobian.placesCombine_ok`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.local_places_combine : Formalism.FourierDecayAlt.PairingProductCorollary.PlacesCombine := Formalism.FourierDecayAlt.P.FrameIntegralJacobian.placesCombine_ok
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.FrameIntegralJacobian.corAConstWave_ok`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.constant_wave_corollary : Formalism.FourierDecayAlt.PairingProductCorollary.CorAConstWave := Formalism.FourierDecayAlt.P.FrameIntegralJacobian.corAConstWave_ok
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.FrameIntegralJacobian.weightedKernelPSD_ok`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.weighted_kernel_posSemidef : Formalism.FourierDecayAlt.PairingProductCorollary.WeightedKernelPSD := Formalism.FourierDecayAlt.P.FrameIntegralJacobian.weightedKernelPSD_ok
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.FrameIntegralJacobian.scaleBeta_ok`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.scaling_beta_identity : Formalism.FourierDecayAlt.PairingProductCorollary.ScaleBeta := Formalism.FourierDecayAlt.P.FrameIntegralJacobian.scaleBeta_ok
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.FrameIntegralJacobian.frameIntegral_ok`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.frame_integral_formula_alt : Formalism.FourierDecayAlt.PairingProductCorollary.FrameIntegral := Formalism.FourierDecayAlt.P.FrameIntegralJacobian.frameIntegral_ok
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.FrameIntegralJacobian.frameJacobian_ok`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.frame_jacobian_formula : Formalism.FourierDecayAlt.PairingProductCorollary.FrameJacobian := Formalism.FourierDecayAlt.P.FrameIntegralJacobian.frameJacobian_ok
 

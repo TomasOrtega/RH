@@ -12,9 +12,7 @@ namespace GlobalTheory.HalfSeparate
 open GlobalTheory.IdemModTwo
 
 /- English proof (translation)
-Establish `h1 : (∑ k, incA D (W.gram⁻¹ p k) * incA D (W.gram k i)) = incA D ((W.gram⁻¹ * W.gram) p i)`. Rewrite using `[Matrix.mul_apply, map_sum (incA D)]`. Conclude with `Finset.sum_congr rfl fun k _ => ((incA D).map_mul _ _).symm`. Rewrite using `[h1, Matrix.nonsing_inv_mul _ (GlobalTheory.LatVac.gram_det_isUnit W), Matrix.one_apply]`. Use `split_ifs`.
-
-Conclude with `map_one _`. Conclude with `map_zero _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_incA_inv_mul {D : D7} (W : HSp D) (p i : Fin W.rank) :
     ∑ k, incA D (W.gram⁻¹ p k) * incA D (W.gram k i) = if p = i then 1 else 0 := by
@@ -29,15 +27,13 @@ theorem sum_incA_inv_mul {D : D7} (W : HSp D) (p i : Fin W.rank) :
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Set `a : Mx D W.rank r` to `Matrix.of fun k j => if j = q then incA D (star (W.gram⁻¹ p k)) * incA D (star D.host.xi0⁻¹) * fj D (singleV D.host.F v c) * e else 0`. Establish `hca : ∀ k, cA D (a k q) = incA D D.host.xi0⁻¹ * fj D (singleV D.host.F v c) * cA D e * incA D (W.gram⁻¹ p k)`. Introduce `k`. Use `show cA D (if q = q then _ else 0) = _`. Rewrite using `[if_pos rfl, map_mul, map_mul, map_mul, GlobalTheory.DualPairCheck.cA_incA, GlobalTheory.DualPairCheck.cA_incA, star_star, star_star, cA_fj]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨a, fun k j => ?_, fun t => ?_⟩` and prove the remaining obligations. Use `show e * a k j = a k j`. Simplify using `only [a, Matrix.of_apply]`. Use `split_ifs`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_left_comm, he.1]`. Rewrite using `[mul_zero]`. Establish `hG` using `sum_incA_inv_mul W p`. Unfold `halfPair`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single q (fun j _ hj => Finset.sum_eq_zero fun k _ => by`. Rewrite using `[show a k j = 0 from if_neg hj, map_zero, zero_mul, zero_mul]) (fun h => absurd (Finset.mem_univ q) h)]`. Rewrite using `[← hG i, Finset.mul_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [hca]; ring`. Use `_ = incA D D.host.xi0⁻¹ * fj D (singleV D.host.F v c) * cA D e * t p q := by`.
-
-Rewrite using `[Finset.sum_eq_single p (fun i _ hi => by rw [if_neg (Ne.symm hi), mul_zero, zero_mul]) (fun h => absurd (Finset.mem_univ p) h), if_pos rfl, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pair_entry {D : D7} {v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers D.host.F)}
     {e : AE D} (he : SplitAt D v e) (W : HSp D) {r : ℕ} (p : Fin W.rank) (q : Fin r) (c : Fv D.host.F v) :
@@ -79,39 +75,33 @@ open GlobalTheory.IdemModTwo
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D ψ hψ W r e hε U hU`. Take `⟨v, he⟩` from `(isSplitIdem_iff e).1 hε`. Establish `he'` using `he.conj`. Establish `: IsModuleTopology (AF D.host.F) (AE D)` using `⟨rfl⟩`. Establish `: IsTopologicalRing (AE D)` using `IsModuleTopology.isTopologicalRing (AF D.host.F) (AE D)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ProperSpace (Fv D.host.F v)` using `GlobalTheory.AdelicUnitaryTop.properSpace_adicCompletion D.host.F v`. Set `sg : Fv D.host.F v →+ Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F` to `AddMonoidHom.ofMapSub (singleV D.host.F v) (singleV_sub D v)`. Set `ι : Fv D.host.F v →+ AF D.host.F` to `AddMonoidHom.mk' (fun y => pairA D.host.F 0 (sg y)) fun a b => by`. Rewrite using `[map_add]`. Conclude with `Prod.ext (add_zero _).symm rfl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hι : Continuous ι` using `Continuous.prodMk continuous_const (GlobalTheory.SplitAnnihilator.continuous_singleV D.host.F v)`. Establish `hψc : Continuous fun x => ψ (ι x)` using `hψ.1.1.comp hι`. Choose the witnesses or unpack the hypotheses as in `⟨ε0, hε0, hψε⟩ : ∃ ε > 0, ∀ x : Fv D.host.F v, ‖x‖ < ε → ψ (ι x) = 1 := by`. Take `⟨δ, hδ, h⟩` from `Metric.continuousAt_iff.1 (hψc.continuousAt (x := 0)) (1 / 2) (by norm_num)`. Use `⟨δ, hδ, fun x hx => GlobalTheory.ThetaStalk.eq_one_of_pow_near fun n => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `h (x := n • x) (by` as an intermediate fact. Rewrite using `[dist_zero_right]`. Conclude with `(IsUltrametricDist.norm_nsmul_le x n).trans_lt hx)`. Rewrite `this` using `[map_zero, AddChar.map_zero_eq_one, dist_eq_norm, map_nsmul, AddChar.map_nsmul_eq_pow]`. Then use the resulting hypothesis. Take `⟨y1, hy1⟩ : ∃ y, ψ (ι y) ≠ 1` from `GlobalTheory.StdCharLocal.psiV_ne_one D ψ hψ v`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `G` to `Fin W.rank × Fin r → Fv D.host.F v`. Set `J : G →+ Mx D W.rank r` to `AddMonoidHom.mk' (fun y => Matrix.of fun i k => fj D (sg (y (i, k))) * cA D e) fun a b => by`. Use extensionality with `i k`. Simplify using `only [G, Matrix.of_apply, Matrix.add_apply, Pi.add_apply, map_add, add_mul]`. Establish `hJ : Continuous J` using `continuous_matrix fun i k => ((IsModuleTopology.continuous_of_linearMap (Algebra.linearMap (AF D.host.F) (AE D))).comp (hι.comp (continuous_apply (i, k)))).mul continuous_const`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hJh : ∀ y, J y ∈ halfMx (cA D e) W.rank r` using `fun y i k => by show cA D e * (_ * cA D e) = _ * cA D e`. Rewrite using `[mul_left_comm, he'.1]`. Set `J' : G →+ halfMx (cA D e) W.rank r` to `J.codRestrict (halfMx (cA D e) W.rank r) hJh`. Establish `hJ' : Continuous J'` using `hJ.subtype_mk _`. Establish `hJs : Function.Surjective J'` using `fun u => by choose y hy using fun p : Fin W.rank × Fin r => he'.exists_scalar ((u : Mx D W.rank r) p.1 p.2)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨y, Subtype.ext (Matrix.ext fun i k => (hy (i, k)).symm.trans (u.2 i k))⟩`. Establish `: T2Space (halfMx (cA D e) W.rank r)` using `t2Space_halfAdelicMatrixAddSubgroup (cA D e) W.rank r`. Establish `: LocallyCompactSpace (halfMx (cA D e) W.rank r)` using `lcHalf (cA D e) W.rank r`. Establish `: R1Space (halfMx (cA D e) W.rank r)` using `T2Space.r1Space`. Establish `: BaireSpace (halfMx (cA D e) W.rank r)` using `BaireSpace.of_t2Space_locallyCompactSpace`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hopen : IsOpenMap J'` using `AddMonoidHom.isOpenMap_of_sigmaCompact J' hJs hJ'`. Take `⟨ρ, hρ, hball⟩` from `Metric.isOpen_iff.1 (hU.preimage hJ') 0 (by show J' 0 ∈ U`. Rewrite using `[map_zero]`. Conclude with `U.zero_mem)`. Establish `hR : 0 ≤ ‖y1‖ / ρ` using `div_nonneg (norm_nonneg _) hρ.le`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `LG : AddSubgroup G` to `{ carrier := {y | ∀ p, ∀ c : Fv D.host.F v, ‖c‖ ≤ ‖y1‖ / ρ → ψ (ι (c * y p)) = 1} add_mem' := fun {a b} ha hb p c hc => by`. Rewrite using `[Pi.add_apply, mul_add, map_add, AddChar.map_add_eq_mul, ha p c hc, hb p c hc, one_mul]`. Use the proof step `zero_mem' := fun p c _ => by rw [Pi.zero_apply, mul_zero, map_zero, AddChar.map_zero_eq_one]`. Use the proof step `neg_mem' := fun {a} ha p c hc => by`. Establish `h` using `ψ.map_add_eq_mul (ι (c * (-a) p)) (ι (c * a p))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h` using `[← map_add, Pi.neg_apply, mul_neg, neg_add_cancel, map_zero, AddChar.map_zero_eq_one, ha p c hc, mul_one]`. Rewrite using `[Pi.neg_apply, mul_neg]`. Conclude with `h.symm }`. Establish `hLGopen : IsOpen (LG : Set G)`. Use `AddSubgroup.isOpen_of_mem_nhds LG (g := 0) (Metric.mem_nhds_iff.2 ⟨ε0 / (‖y1‖ / ρ + 1), by positivity, fun y hy p c hc => hψε _ ?_⟩)` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hy' : ‖y‖ < ε0 / (‖y1‖ / ρ + 1)` using `mem_ball_zero_iff.1 hy`. Rewrite `hy'` using `[lt_div_iff₀ (by positivity)]`. Combine the equalities or inequalities in the displayed calculation. Establish `hLGsmall : ∀ y ∈ LG, ‖y‖ < ρ` using `fun y hy => (pi_norm_lt_iff hρ).2 fun p => by`. Assume the negation of the conclusion as `hn`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `push_neg at hn`. Establish `hp : 0 < ‖y p‖` using `hρ.trans_le hn`. Establish `h` using `hy p (y1 / y p) (by rw [norm_div]; exact div_le_div_of_nonneg_left (norm_nonneg _) hρ hn)`. Rewrite `h` using `[div_mul_cancel₀ _ (norm_pos_iff.1 hp)]`. Conclude with `hy1 h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨LG.map J', by rw [AddSubgroup.coe_map]; exact hopen _ hLGopen, ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[AddSubgroup.map_le_iff_le_comap]`. Introduce `y hy`. Conclude with `hball (mem_ball_zero_iff.2 (hLGsmall y hy))`. Take `⟨y, rfl⟩` from `hJs x`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy : ¬ ∀ p, ∀ c : Fv D.host.F v, ‖c‖ ≤ ‖y1‖ / ρ → ψ (ι (c * y p)) = 1` using `fun h => hx (AddSubgroup.mem_map_of_mem _ h)`. Use `push_neg at hy`. Take `⟨p, c, hc, hne⟩` from `hy`. Apply the tactic sequence `obtain ⟨a, ha, hpair⟩ := exists_pair_entry he W p.1 p.2 c`. Establish `key : ∀ y', ψ (halfSympl W a (J y')) = ψ (ι (c * y' p))` using `fun y' => by`.
-
-Use `congr 1`. Establish `h1 : incA D D.host.xi0 * incA D D.host.xi0⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel₀ (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D), map_one]`. Establish `h2 : incA D D.host.xi0 * halfPair W a (J y') = fj D (singleV D.host.F v c) * cA D e * (fj D (singleV D.host.F v (y' p)) * cA D e)`. Rewrite using `[hpair]`.
-
-Use `show incA D D.host.xi0 * (incA D D.host.xi0⁻¹ * fj D (singleV D.host.F v c) * cA D e * (fj D (singleV D.host.F v (y' p)) * cA D e)) = _`. Take the linear combination `(fj D (singleV D.host.F v c) * cA D e * (fj D (singleV D.host.F v (y' p)) * cA D e)) * h1`. Rewrite using `[halfSympl, h2]`. Conclude with `GlobalTheory.SplitAnnihilator.trace_split he' c (y' p)`. Use `⟨⟨a, ha⟩, fun l hl => ?_, (key y).trans_ne hne⟩` and prove the remaining obligations.
-
-Take `⟨y', hy', rfl⟩` from `AddSubgroup.mem_map.1 hl`. Conclude with `(key y').trans (hy' p c hc)`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_open_separated : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (W : HSp D) (r : ℕ) (e : AE D), IsSplitIdem D e → ∀ U : AddSubgroup (halfMx (cA D e) W.rank r), IsOpen (U : Set (halfMx (cA D e) W.rank r)) → ∃ L : AddSubgroup (halfMx (cA D e) W.rank r), IsOpen (L : Set (halfMx (cA D e) W.rank r)) ∧ L ≤ U ∧ ∀ x, x ∉ L → ∃ a : halfMx e W.rank r, (∀ l ∈ L, ψ (halfSympl W (a : Mx D W.rank r) (l : Mx D W.rank r)) = 1) ∧ ψ (halfSympl W (a : Mx D W.rank r) (x : Mx D W.rank r)) ≠ 1 := by
   intro D ψ hψ W r e hε U hU

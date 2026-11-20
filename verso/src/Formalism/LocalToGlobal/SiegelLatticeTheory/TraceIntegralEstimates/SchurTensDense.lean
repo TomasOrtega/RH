@@ -21,7 +21,7 @@ variable {K : Type} [TopologicalSpace K] [MeasurableSpace K] [OpensMeasurableSpa
 def coeff (σs : K → (Hs →L[ℂ] Hs)) (a b : Hs) (x : K) : ℂ := ⟪b, σs x a⟫_ℂ
 
 /- English proof (translation)
-Use `show Continuous fun x => ⟪b, σs x a⟫_ℂ`. Conclude with `continuous_const.inner (hstr a)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_coeff (hstr : ∀ a : Hs, Continuous (fun x => σs x a)) (a b : Hs) :
     Continuous (coeff σs a b) := by
@@ -29,13 +29,13 @@ theorem continuous_coeff (hstr : ∀ a : Hs, Continuous (fun x => σs x a)) (a b
   exact continuous_const.inner (hstr a)
 
 /- English proof (translation)
-Rewrite using `[norm_mul, Complex.norm_conj, sq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_sq_of_mul_conj (z : ℂ) : ‖z * conj z‖ = ‖z‖ ^ 2 := by
   rw [norm_mul, Complex.norm_conj, sq]
 
 /- English proof (translation)
-Take `⟨hi, -⟩` from `h`. Conclude with `hi.norm.congr (ae_of_all _ fun x => norm_sq_of_mul_conj (coeff σs a b x))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem integrable_norm_sq_coeff_of_SP {a b : Hs} (h : SP m σs D a b a b) :
     Integrable (fun x => ‖coeff σs a b x‖ ^ 2) m := by
@@ -43,7 +43,7 @@ private theorem integrable_norm_sq_coeff_of_SP {a b : Hs} (h : SP m σs D a b a 
   exact hi.norm.congr (ae_of_all _ fun x => norm_sq_of_mul_conj (coeff σs a b x))
 
 /- English proof (translation)
-Rewrite using `[ofReal_integral_eq_lintegral_ofReal (integrable_norm_sq_coeff_of_SP h) (ae_of_all _ fun x => sq_nonneg _)]`. Conclude with `lintegral_congr fun x => enorm_sq_eq _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lintegral_enorm_sq_coeff_eq_ofReal_of_SP {a b : Hs} (h : SP m σs D a b a b) :
     ∫⁻ x, ‖coeff σs a b x‖ₑ ^ 2 ∂m = ENNReal.ofReal (∫ x, ‖coeff σs a b x‖ ^ 2 ∂m) := by
@@ -52,7 +52,7 @@ private theorem lintegral_enorm_sq_coeff_eq_ofReal_of_SP {a b : Hs} (h : SP m σ
   exact lintegral_congr fun x => enorm_sq_eq _
 
 /- English proof (translation)
-The claim follows from `memLp_two_of_lintegral (continuous_coeff hstr a b).aestronglyMeasurable (by rw [lintegral_enorm_sq_coeff_eq_ofReal_of_SP h]; exact ENNReal.ofReal_lt_top)`.
+A detailed English derivation is pending.
 -/
 theorem memLp_of_diag (hstr : ∀ a : Hs, Continuous (fun x => σs x a)) {a b : Hs} (h : SP m σs D a b a b) :
     MemLp (coeff σs a b) 2 m :=
@@ -60,17 +60,17 @@ theorem memLp_of_diag (hstr : ∀ a : Hs, Continuous (fun x => σs x a)) {a b : 
     (by rw [lintegral_enorm_sq_coeff_eq_ofReal_of_SP h]; exact ENNReal.ofReal_lt_top)
 
 /- English proof (translation)
-Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem mul_conj_eq_ofReal_norm_sq_complex (z : ℂ) : z * conj z = ((‖z‖ ^ 2 : ℝ) : ℂ) := by
   rw [Complex.mul_conj, Complex.normSq_eq_norm_sq]
 
 /- English proof (translation)
-Take `⟨-, h2⟩` from `h`. Establish `e1 : (fun x => ⟪b, σs x a⟫_ℂ * conj ⟪b, σs x a⟫_ℂ) = fun x => ((‖coeff σs a b x‖ ^ 2 : ℝ) : ℂ)`. Use function extensionality and compare the values at `fun x => mul_conj_eq_ofReal_norm_sq_complex _`. Rewrite `h2` using `[e1]`. Rewrite `h2` using `[integral_complex_ofReal]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K]`. Establish `h3 : ((∫ x, ‖coeff σs a b x‖ ^ 2 ∂m : ℝ) : ℂ) = ((‖a‖ ^ 2 * ‖b‖ ^ 2 / D : ℝ) : ℂ)`. Rewrite using `[h2]`. Simplify using `only [Complex.ofReal_div, Complex.ofReal_mul, Complex.ofReal_pow]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Conclude with `Complex.ofReal_injective h3`.
+A detailed English derivation is pending.
 -/
 private theorem integral_norm_sq_coeff_eq_of_SP {a b : Hs} (h : SP m σs D a b a b) :
     ∫ x, ‖coeff σs a b x‖ ^ 2 ∂m = ‖a‖ ^ 2 * ‖b‖ ^ 2 / D := by
@@ -88,34 +88,34 @@ private theorem integral_norm_sq_coeff_eq_of_SP {a b : Hs} (h : SP m σs D a b a
   exact Complex.ofReal_injective h3
 
 /- English proof (translation)
-Rewrite using `[lintegral_enorm_sq_coeff_eq_ofReal_of_SP h, integral_norm_sq_coeff_eq_of_SP h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lintegral_of_diag (hstr : ∀ a : Hs, Continuous (fun x => σs x a)) {a b : Hs} (h : SP m σs D a b a b) :
     ∫⁻ x, ‖coeff σs a b x‖ₑ ^ 2 ∂m = ENNReal.ofReal (‖a‖ ^ 2 * ‖b‖ ^ 2 / D) := by
   rw [lintegral_enorm_sq_coeff_eq_ofReal_of_SP h, integral_norm_sq_coeff_eq_of_SP h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [coeff, map_sub, inner_sub_right]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem coeff_sub_a (a₁ a₂ b : Hs) : (fun x => coeff σs a₁ b x - coeff σs a₂ b x) = coeff σs (a₁ - a₂) b := by
   funext x
   simp only [coeff, map_sub, inner_sub_right]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [coeff, inner_sub_left]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem coeff_sub_b (a b₁ b₂ : Hs) : (fun x => coeff σs a b₁ x - coeff σs a b₂ x) = coeff σs a (b₁ - b₂) := by
   funext x
   simp only [coeff, inner_sub_left]
 
 /- English proof (translation)
-Break down `eq_or_ne ε ⊤ with hte | hne` into its components or cases. Conclude with `⟨1, one_pos, fun _ _ _ => by rw [hte]; exact le_top⟩`. Establish `he : 0 < ε.toReal` using `ENNReal.toReal_pos hε.ne' hne`. Establish `hc1 : (0 : ℝ) < c + 1` using `by linarith`. Use `⟨min 1 (ε.toReal * D / (c + 1)), lt_min one_pos (div_pos (mul_pos he hD) hc1), fun t ht0 htδ => ?_⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← ENNReal.ofReal_toReal hne]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `h1 : t < 1` using `lt_of_lt_of_le htδ (min_le_left _ _)`. Establish `h2 : t < ε.toReal * D / (c + 1)` using `lt_of_lt_of_le htδ (min_le_right _ _)`. Establish `h4 : t * (c + 1) ≤ ε.toReal * D`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : t * (c + 1) < ε.toReal * D / (c + 1) * (c + 1)` using `mul_lt_mul_of_pos_right h2 hc1`. Rewrite `h5` using `[div_mul_cancel₀ _ hc1.ne']`. Conclude with `h5.le`. Establish `h3 : t ^ 2 ≤ t` using `by nlinarith`. Establish `h6 : t ^ 2 * c ≤ t * c` using `mul_le_mul_of_nonneg_right h3 hc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h7 : t ^ 2 * c ≤ ε.toReal * D` using `by nlinarith`. Establish `h8 : t ^ 2 * c / D ≤ ε.toReal * D / D`. Conclude with `div_le_div_of_nonneg_right h7 hD.le`. Rewrite `h8` using `[mul_div_cancel_right₀ _ hD.ne']`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem small_of_close (c : ℝ) (hc : 0 ≤ c) (hD : 0 < D) (ε : ℝ≥0∞) (hε : 0 < ε) :
     ∃ δ : ℝ, 0 < δ ∧ ∀ t : ℝ, 0 ≤ t → t < δ → ENNReal.ofReal (t ^ 2 * c / D) ≤ ε := by
@@ -141,17 +141,15 @@ theorem small_of_close (c : ℝ) (hc : 0 ≤ c) (hD : 0 < D) (ε : ℝ≥0∞) (
   rwa [mul_div_cancel_right₀ _ hD.ne'] at h8
 
 /- English proof (translation)
-Take `⟨u, hu_mem, hu⟩` from `mem_closure_iff_seq_limit.1 (hdense a)`. Establish `hf2 : ∀ n, MemLp (coeff σs (u n) b) 2 m` using `fun n => memLp_of_diag hstr (hdiag _ (hu_mem n))`. Establish `hFm : AEStronglyMeasurable (coeff σs a b) m` using `(continuous_coeff hstr a b).aestronglyMeasurable`. Establish `hpt : ∀ x, Tendsto (fun n => coeff σs (u n) b x) atTop (𝓝 (coeff σs a b x))`. Introduce `x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hσ : Tendsto (fun n => σs x (u n)) atTop (𝓝 (σs x a))` using `((σs x).continuous.tendsto a).comp hu`. Use `show Tendsto (fun n => ⟪b, σs x (u n)⟫_ℂ) atTop (𝓝 ⟪b, σs x a⟫_ℂ)`. Conclude with `tendsto_const_nhds.inner hσ`. Establish `hC : ∀ ε : ℝ≥0∞, 0 < ε → ∃ N, ∀ n ≥ N, ∀ k ≥ N, ∫⁻ x, ‖coeff σs (u k) b x - coeff σs (u n) b x‖ₑ ^ 2 ∂m ≤ ε`. Introduce `ε hε`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨δ, hδ, hsmall⟩` from `small_of_close (‖b‖ ^ 2) (sq_nonneg _) hD ε hε`. Take `⟨N, hN⟩` from `Metric.cauchySeq_iff.1 hu.cauchySeq δ hδ`. Use `⟨N, fun n hn k hk => ?_⟩` and prove the remaining obligations. Establish `hsub : ∀ x, coeff σs (u k) b x - coeff σs (u n) b x = coeff σs (u k - u n) b x` using `fun x => congrFun (coeff_sub_a (σs := σs) (u k) (u n) b) x`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : Tendsto (fun n => ∫ x, coeff σs (u n) b x * conj (coeff σs a' b' x) ∂m) atTop (𝓝 (⟪a', a⟫_ℂ * ⟪b, b'⟫_ℂ / (D : ℂ)))`. Establish `e : (fun n => ∫ x, coeff σs (u n) b x * conj (coeff σs a' b' x) ∂m) = fun n => ⟪a', u n⟫_ℂ * ⟪b, b'⟫_ℂ / (D : ℂ)`. Use function extensionality and compare the values at `n`. Take `⟨-, he⟩` from `hA _ (hu_mem n)`. Conclude with `he`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e]`. Establish `hin : Tendsto (fun n => ⟪a', u n⟫_ℂ) atTop (𝓝 ⟪a', a⟫_ℂ)`. Conclude with `tendsto_const_nhds.inner hu`. Conclude with `(hin.mul_const _).div_const _`. Take `⟨hM, hI, hE⟩` from `limit_memLp_and_integral_eq (fun n => coeff σs (u n) b) (coeff σs a b) (coeff σs a' b') hf2 hFm hg hpt hC hL`.
-
-Conclude with `⟨And.intro hI hE, hM⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem SP_of_dense_a (hstr : ∀ a : Hs, Continuous (fun x => σs x a)) (hD : 0 < D) (Sp : Submodule ℂ Hs)
     (hdense : Dense (Sp : Set Hs)) (b a' b' : Hs) (hA : ∀ a₀ ∈ Sp, SP m σs D a₀ b a' b')
@@ -196,17 +194,15 @@ theorem SP_of_dense_a (hstr : ∀ a : Hs, Continuous (fun x => σs x a)) (hD : 0
   exact ⟨And.intro hI hE, hM⟩
 
 /- English proof (translation)
-Take `⟨u, hu_mem, hu⟩` from `mem_closure_iff_seq_limit.1 (hdense b)`. Establish `hf2 : ∀ n, MemLp (coeff σs a (u n)) 2 m` using `fun n => memLp_of_diag hstr (hdiag _ (hu_mem n))`. Establish `hFm : AEStronglyMeasurable (coeff σs a b) m` using `(continuous_coeff hstr a b).aestronglyMeasurable`. Establish `hpt : ∀ x, Tendsto (fun n => coeff σs a (u n) x) atTop (𝓝 (coeff σs a b x))`. Introduce `x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show Tendsto (fun n => ⟪u n, σs x a⟫_ℂ) atTop (𝓝 ⟪b, σs x a⟫_ℂ)`. Conclude with `hu.inner tendsto_const_nhds`. Establish `hC : ∀ ε : ℝ≥0∞, 0 < ε → ∃ N, ∀ n ≥ N, ∀ k ≥ N, ∫⁻ x, ‖coeff σs a (u k) x - coeff σs a (u n) x‖ₑ ^ 2 ∂m ≤ ε`. Introduce `ε hε`. Take `⟨δ, hδ, hsmall⟩` from `small_of_close (‖a‖ ^ 2) (sq_nonneg _) hD ε hε`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨N, hN⟩` from `Metric.cauchySeq_iff.1 hu.cauchySeq δ hδ`. Use `⟨N, fun n hn k hk => ?_⟩` and prove the remaining obligations. Establish `hsub : ∀ x, coeff σs a (u k) x - coeff σs a (u n) x = coeff σs a (u k - u n) x` using `fun x => congrFun (coeff_sub_b (σs := σs) a (u k) (u n)) x`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_of_diag hstr (hdiag _ (Sp.sub_mem (hu_mem k) (hu_mem n))), mul_comm (‖a‖ ^ 2)]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_ ≤ ε := hsmall _ (norm_nonneg _) (by rw [← dist_eq_norm]; exact hN k hk n hn)`. Establish `hL : Tendsto (fun n => ∫ x, coeff σs a (u n) x * conj (coeff σs a' b' x) ∂m) atTop (𝓝 (⟪a', a⟫_ℂ * ⟪b, b'⟫_ℂ / (D : ℂ)))`. Establish `e : (fun n => ∫ x, coeff σs a (u n) x * conj (coeff σs a' b' x) ∂m) = fun n => ⟪a', a⟫_ℂ * ⟪u n, b'⟫_ℂ / (D : ℂ)`. Use function extensionality and compare the values at `n`. Take `⟨-, he⟩` from `hB _ (hu_mem n)`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `he`. Rewrite using `[e]`. Establish `hin : Tendsto (fun n => ⟪u n, b'⟫_ℂ) atTop (𝓝 ⟪b, b'⟫_ℂ)`. Conclude with `hu.inner tendsto_const_nhds`. Conclude with `(hin.const_mul _).div_const _`.
-
-Take `⟨hM, hI, hE⟩` from `limit_memLp_and_integral_eq (fun n => coeff σs a (u n)) (coeff σs a b) (coeff σs a' b') hf2 hFm hg hpt hC hL`. Conclude with `⟨And.intro hI hE, hM⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem SP_of_dense_b (hstr : ∀ a : Hs, Continuous (fun x => σs x a)) (hD : 0 < D) (Sp : Submodule ℂ Hs)
     (hdense : Dense (Sp : Set Hs)) (a a' b' : Hs) (hB : ∀ b₀ ∈ Sp, SP m σs D a b₀ a' b')
@@ -251,11 +247,9 @@ theorem SP_of_dense_b (hstr : ∀ a : Hs, Continuous (fun x => σs x a)) (hD : 0
   exact ⟨And.intro hI hE, hM⟩
 
 /- English proof (translation)
-Establish `h1 : ∀ b ∈ Sp, ∀ a' ∈ Sp, ∀ b' ∈ Sp, ∀ a : Hs, SP m σs D a b a' b' ∧ MemLp (coeff σs a b) 2 m`. Introduce `b hb a' ha' b' hb' a`. Conclude with `SP_of_dense_a hstr hD Sp hdense b a' b' (fun a₀ h₀ => hSp a₀ h₀ b hb a' ha' b' hb') (fun c hc => hSp c hc b hb c hc b hb) (memLp_of_diag hstr (hSp a' ha' b' hb' a' ha' b' hb')) a`. Establish `h2 : ∀ b ∈ Sp, ∀ b' ∈ Sp, ∀ a a' : Hs, SP m σs D a b a' b'`. Introduce `b hb b' hb' a a'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `SP_of_dense_a hstr hD Sp hdense b' a b (fun a₀ h₀ => SP_swap (h1 b hb a₀ h₀ b' hb' a).1) (fun c hc => hSp c hc b' hb' c hc b' hb') (h1 b hb b' hb' b' hb' a).2 a'`. Conclude with `SP_swap h.1`. Establish `h3 : ∀ b' ∈ Sp, ∀ a a' b : Hs, SP m σs D a b a' b' ∧ MemLp (coeff σs a b) 2 m`. Introduce `b' hb' a a' b`. Conclude with `SP_of_dense_b hstr hD Sp hdense a a' b' (fun b₀ h₀ => h2 b₀ h₀ b' hb' a a') (fun c hc => h2 c hc c hc a a) (h1 b' hb' b' hb' b' hb' a').2 b`.
-
-Use `⟨hD, fun a b a' b' => ?_⟩` and prove the remaining obligations. Establish `h4` using `SP_of_dense_b hstr hD Sp hdense a' a b (fun b₀ h₀ => SP_swap (h3 b₀ h₀ a a' b).1) (fun c hc => h2 c hc c hc a' a') (h3 0 Sp.zero_mem a a b).2 b'`. Conclude with `SP_swap h4.1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isSchur_of_dense (hstr : ∀ a : Hs, Continuous (fun x => σs x a)) (hD : 0 < D) (Sp : Submodule ℂ Hs)
     (hdense : Dense (Sp : Set Hs)) (hSp : ∀ a ∈ Sp, ∀ b ∈ Sp, ∀ a' ∈ Sp, ∀ b' ∈ Sp, SP m σs D a b a' b') :
@@ -298,11 +292,9 @@ variable {ι : Type} [Fintype ι] {G : ι → Type} [∀ v, Group (G v)] [∀ v,
   {σ : ∀ v, G v → (H v →L[ℂ] H v)} {σs' : (∀ v, G v) → (Hs' →L[ℂ] Hs')} {tens : (∀ v, H v) → Hs'}
 
 /- English proof (translation)
-Establish `hU` using `isUnitRep_tens hσ h`. Take `⟨-, -, -, hcont⟩` from `hU`. Establish `hh` using `h`. Take `⟨-, -, hdense⟩` from `hh`. Establish `hD : 0 < ∏ v, d v` using `Finset.prod_pos fun v _ => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hd, -⟩` from `hS v`. Conclude with `hd`. Establish `hE : ∀ a ∈ Set.range tens, ∀ b ∈ Set.range tens, ∀ a' ∈ Set.range tens, ∀ b' ∈ Set.range tens, SP (Measure.pi μ) σs' (∏ v, d v) a b a' b'`. Introduce and unpack `_ ⟨α, rfl⟩ _ ⟨β, rfl⟩ _ ⟨α', rfl⟩ _ ⟨β', rfl⟩`. Conclude with `SP_pure μ d hS h α β α' β'`.
-
-Conclude with `isSchur_of_dense hcont hD (Submodule.span ℂ (Set.range tens)) hdense (SP_span hE)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isSchur_tens [OpensMeasurableSpace (∀ v, G v)] (μ : ∀ v, Measure (G v)) [∀ v, SigmaFinite (μ v)]
     (d : ι → ℝ) (hσ : ∀ v, IsUnitRep (σ v)) (hS : ∀ v, IsSchur (μ v) (σ v) (d v)) (h : IsTensAbs σ σs' tens) :

@@ -26,43 +26,37 @@ noncomputable section
 namespace GlobalTheory.FilCx
 
 /- English proof (translation)
-Introduce `hPC hADR E _ _ _ I _ φ hφ c hc 𝔠 L X U α _ hα`. Take `⟨ε, hpc⟩` from `hPC`. Use `set g := Module.finrank ℚ (FR E) with hg`. Establish `hLB : (X.diag U.c).IsLB` using `ReciprocityTheory.ChartRestriction.G.DVR.linComb_isLB _ (X.isLB U.c) _ _`. Take `⟨P, hspan, hdim, hlie, hend, -⟩` from `hpc X.A g X.ab X.dim (X.diag U.c) hLB U.u`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `clear hpc`. Establish `hLE : LieExact X.A` using `(hADR.2.1 ℂ X.A g X.ab X.dim).1`. Take `⟨Q, hQker, hQP, hFdim⟩` from `GlobalTheory.T.hodge_projection_from_lattice (HdR X.A) g U.u.Λ P (Fil X.A) hspan hdim U.u.full (GlobalTheory.T.lattice_combination_in_hodge_filtration X.A X.ab _ g U.u P hLE hlie)`. Set `M : orderC c → (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)` to `fun a ↦ LinearMap.pi fun j ↦ (φ (U.e j) (a : E)) • LinearMap.proj j`. Establish `hM : ∀ a w, M a w = fun j ↦ φ (U.e j) (a : E) * w j` using `fun a w ↦ by ext j; simp [M]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hMΛ : ∀ (a : orderC c) (x : U.u.Λ), (fun j ↦ φ (U.e j) (a : E) * (x : Fin g → ℂ) j) ∈ U.u.Λ`. Introduce `a x`. Rewrite using `[← U.u.ker, hα a, (U.u.ker x).2 x.2]`. Simplify using the standard rewrite rules. Establish `hT : ∀ (a : orderC c) (x y : U.u.Λ), (y : Fin g → ℂ) = (fun j ↦ φ (U.e j) (a : E) * (x : Fin g → ℂ) j) → push (dp0 ℂ) (𝟙 _) (α a) (P x) = P y`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a x y hy`. Conclude with `hend (α a) (M a) (fun w ↦ by rw [hM]; exact hα a w) x y (by rw [hy, hM])`. Establish `hbar : ∀ σ : E →+* ℂ, GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.bar σ = ComplexEmbedding.conjugate σ` using `fun σ ↦ by`. Use extensionality with `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.bar, ComplexEmbedding.conjugate_coe_eq, IsCMField.complexEmbedding_complexConj]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hnreal : ∀ σ : E →+* ℂ, ¬ ComplexEmbedding.IsReal σ` using `fun σ h ↦ (NumberField.InfinitePlace.isComplex_mk_iff (φ := σ)).1 (NumberField.IsTotallyComplex.isComplex _) h`. Establish `hsep : ∀ (i : I) (j : Fin g), ∃ a : orderC c, φ (U.e j) (a : E) ≠ GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.bar (φ i) (a : E)`. Introduce `i j`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `GlobalTheory.CMExtend.ringHom_ext_orderC hc _ _ h`. Rewrite `h1` using `[hbar]`. Take `⟨k, -, hk⟩` from `hφ (φ (U.e j))`. Establish `e1` using `hk (U.e j) (Or.inl rfl)`. Establish `e2` using `hk i (Or.inr h1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[e1, ← e2]`. Conclude with `hnreal _ h1.symm`. Establish `hinj : Function.Injective fun (i : I) (a : orderC c) ↦ GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.bar (φ i) (a : E)`. Introduce `i i' h`. Establish `h1` using `GlobalTheory.CMExtend.ringHom_ext_orderC hc _ _ (fun a ↦ congrFun h a)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Rewrite `h1` using `[hbar, hbar]`. Establish `h2 : φ i = φ i'`. Use extensionality with `x`. Simplify `congrArg (starRingEnd ℂ) (RingHom.congr_fun h1 x)` using `[ComplexEmbedding.conjugate_coe_eq]`. Take `⟨k, -, hk⟩` from `hφ (φ i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hk i (Or.inl rfl)).trans (hk i' (Or.inl h2)).symm`. Establish `hcomm : ∀ a b : orderC c, Commute (push (dp0 ℂ) (𝟙 _) (α a)) (push (dp0 ℂ) (𝟙 _) (α b))`. Introduce `a b`. Use `LinearMap.ext_on_range hspan fun x ↦ ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[hT b x ⟨_, hMΛ b x⟩ rfl, hT a x ⟨_, hMΛ a x⟩ rfl, hT a _ ⟨_, hMΛ a ⟨_, hMΛ b x⟩⟩ rfl, hT b _ ⟨_, hMΛ b ⟨_, hMΛ a x⟩⟩ rfl]`. Use `congr 1`. Use extensionality with `j`. Simplify using `only`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hpos : 0 < g` using `Module.finrank_pos`. Use `haveI : FiniteDimensional ℂ (HdR X.A) := Module.finite_of_finrank_pos (by rw [hdim]; omega)`. Establish `hEdim : Module.finrank ℂ (HdR X.A) = Module.finrank ℚ E`. Rewrite using `[hdim, ← Module.finrank_mul_finrank ℚ (maximalRealSubfield E) E, Algebra.IsQuadraticExtension.finrank_eq_two (maximalRealSubfield E) E, mul_comm]`. Set `Φ : E →+* (Fin g → ℂ)` to `Pi.ringHom fun j ↦ φ (U.e j)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `L' : AddSubgroup E` to `AddSubgroup.comap Φ.toAddMonoidHom U.u.Λ.toAddSubgroup`. Set `jL : L' →+ U.u.Λ` to `{ toFun := fun x ↦ ⟨Φ x, x.2⟩ map_zero' := by ext; simp map_add' := fun x y ↦ by ext; simp }`. Establish `hone : ∀ i, 1 ≤ Module.finrank ℂ (⨅ a : orderC c, Module.End.eigenspace (push (dp0 ℂ) (𝟙 _) (α a)) (GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.bar (φ i) a) : Submodule ℂ (HdR X.A))`. Introduce `i`. Use `le_of_eq (GlobalTheory.T.cm_representation_eigen_decomposition E (orderC c) (GlobalTheory.CMExtend.exists_natMul_mem_orderC hc) L' ?_ (HdR X.A) (P.comp jL) ?_ hEdim (fun a ↦ push (dp0 ℂ) (𝟙 _) (α a)) ?_ (GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.bar (φ …` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `a ha x hx show Φ (a * x) ∈ U.u.Λ`. Establish `e : Φ (a * x) = fun j ↦ φ (U.e j) a * (Φ x) j` using `by rw [map_mul]; rfl`. Rewrite using `[e]`. Conclude with `hMΛ ⟨a, ha⟩ ⟨Φ x, hx⟩`. Use `eq_top_mono (Submodule.span_mono ?_) hspan` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨y, rfl⟩`. Take `⟨x, -, hx⟩` from `(U.lat y).1 y.2`. Establish `hxy : Φ x = y`. Rewrite using `[hx]`. Use function extensionality and compare the values at `j`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates.defCoord, Pi.zero_apply, zero_mul, add_zero]`. Both sides reduce to the same expression. Establish `hmem : x ∈ L'` using `by show Φ x ∈ U.u.Λ`. Rewrite using `[hxy]`. Conclude with `y.2`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨x, hmem⟩, ?_⟩` and prove the remaining obligations. Use `show P (jL ⟨x, hmem⟩) = P y`. Use `congr 1`. Conclude with `Subtype.ext hxy`. Introduce `a x y hy`.
-
-Use `hT a (jL x) (jL y) ?_` and prove the remaining obligations. Use `show Φ y = fun j ↦ φ (U.e j) a * (Φ x) j`. Rewrite using `[hy, map_mul]`. Both sides reduce to the same expression. Establish `hle : (⨆ i, ⨅ a : orderC c, Module.End.eigenspace (push (dp0 ℂ) (𝟙 _) (α a)) (GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.bar (φ i) a)) ≤ Fil X.A`.
-
-Use `iSup_le fun i ↦ ?_` and prove the remaining obligations. Rewrite using `[← hQker]`. Conclude with `GlobalTheory.T.hodge_projection_eigenvalue_compat (HdR X.A) g U.u.Λ P hspan Q hQP (orderC c) (fun a ↦ push (dp0 ℂ) (𝟙 _) (α a)) (fun a j ↦ φ (U.e j) (a : E)) hMΛ hT (fun a ↦ GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.bar (φ i) a) (fun j ↦ hsep i j)`. Establish `hge` using `GlobalTheory.T.card_le_finrank_sup_eigenspaces (HdR X.A) (orderC c) (fun a ↦ push (dp0 ℂ) (𝟙 _) (α a)) hcomm I _ hinj hone`. Establish `hcard : Fintype.card I = g` using `by rw [Fintype.card_congr U.e.symm, Fintype.card_fin]`.
-
-Conclude with `(Submodule.eq_of_le_of_finrank_le hle (by rw [hFdim, ← hcard]; exact hge)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fil_eq_iSup_eigenspace_bar : GlobalTheory.Published.PeriodComparison → GlobalTheory.Published.AbelianDeRham →
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (φ : I → E →+* ℂ), IsCMType φ →

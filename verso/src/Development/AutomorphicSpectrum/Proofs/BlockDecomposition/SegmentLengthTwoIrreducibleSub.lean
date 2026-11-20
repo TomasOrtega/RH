@@ -21,11 +21,9 @@ namespace GlobalTheory.CompanionTheory.SegTwo
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Introduce `hb`. Take `⟨T, f, hf⟩` from `h`. Use `haveI := Model.nontrivial_of_isIrreducible hτ`. Take `⟨w, hw⟩` from `exists_ne (0 : Y)`. Take `⟨t, rfl⟩` from `hf w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hV : ∀ v : V, v = 0` using `fun v => by`. Establish `h1 : v ∈ (⊤ : Subrepresentation P).toSubmodule` using `trivial`. Rewrite `h1` using `[← hb]`. Conclude with `h1`. Take `⟨u, hu⟩` from `Submodule.Quotient.mk_surjective _ t.1`.
-
-Establish `h0 : t = 0` using `Subtype.ext (by rw [← hu, hV u]; rfl)`. Conclude with `hw (by rw [h0, map_zero])`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bot_ne_top_of_isSubquotient {s N : ℕ} {d : Fin s → ℕ} (e : (Σ a, Fin (d a)) ≃ Fin N) {V Y : Type}
     [AddCommGroup V] [Module ℂ V] [AddCommGroup Y] [Module ℂ Y] {P : Representation ℂ (GL (Fin N) k) V}
@@ -47,9 +45,9 @@ theorem bot_ne_top_of_isSubquotient {s N : ℕ} {d : Fin s → ℕ} (e : (Σ a, 
 abbrev clx {n : ℕ} (c : Fin 2 → IrrCl (GL (Fin n) k)) : Fin 2 → IrrGL k := fun a => ⟨n, c a⟩
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.T.jacquet_multiplicity_cuspidal_product hA (clx c) _ hd hy hc fun a => hc _]`. Establish `: {e : Fin 2 ≃ Fin 2 | ∀ a, clx c (σ a) = clx c (e a)} = {σ}`. Use extensionality with `e`. Simplify using `only [Set.mem_setOf_eq, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `fun h => (Equiv.ext fun a => hinj (h a)).symm`. Introduce and unpack `rfl a`. Both sides reduce to the same expression. Rewrite using `[this, Set.ncard_singleton]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem jm_perm (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {n N : ℕ} (c : Fin 2 → IrrCl (GL (Fin n) k))
     (hc : ∀ a, (clx c a).IsCusp) (hinj : Function.Injective (clx c)) (σ : Equiv.Perm (Fin 2))
@@ -67,7 +65,7 @@ theorem jm_perm (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {n N : ℕ
   simp
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.SmGL.nontrivial_of_irreducible hS`. Take `⟨v, hv⟩` from `exists_ne (0 : S.toSubmodule)`. Establish `h1` using `GlobalTheory.CompanionTheory.FrobJm.frobMap_ne_zero e (incl S) ⟨v, fun h => hv (incl_injective S (h.trans (map_zero (incl S)).symm))⟩`. Conclude with `⟨_, GlobalTheory.CompanionTheory.FrobJm.surjective_of_ne_zero hρ _ h1⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_surjective_jac {α n : Type} {m : α → Type} [Fintype α] [LinearOrder α] [∀ a, Fintype (m a)]
     [∀ a, DecidableEq (m a)] [Fintype n] [DecidableEq n] {W : Type} [AddCommGroup W] [Module ℂ W]
@@ -83,13 +81,13 @@ theorem exists_surjective_jac {α n : Type} {m : α → Type} [Fintype α] [Line
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hy : ∑ a, (clx c ((Fin.revPerm : Equiv.Perm (Fin 2)) a)).1 = N` using `hd`. Establish `hP : IsSmooth (prodIrr (clx c) hd)` using `isSmooth_prodIrr _ hd`. Establish `h₀` using `GlobalTheory.CompanionTheory.FrobJm.piTensor_rep_isIrreducible hA (clx c)`. Establish `h₁` using `GlobalTheory.CompanionTheory.FrobJm.piTensor_rep_isIrreducible hA fun a => clx c ((Fin.revPerm : Equiv.Perm (Fin 2)) a)`. Establish `m₀ : jm (clx c) hd (prodIrr (clx c) hd) = 1` using `jm_perm hA c hc hinj 1 hd hd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m₁` using `jm_perm hA c hc hinj Fin.revPerm hy hd`. Use `exists_unique_sub (stdBlocks (fun a => (clx c a).1) hd) hP (GlobalTheory.CompanionTheory.ProdFL.hasFiniteLength_prodIrr hA _ hd) (bot_ne_top_of_isSubquotient _ h₀ (jhMult_ne_zero_iff.1 (ne_of_eq_of_ne m₀ one_ne_zero))) hred h₀ h₁ m₀.le m₁.le ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `Y _ _ τ hτ hs`. Conclude with `cell_cases (GlobalTheory.CompanionTheory.GeoLink.geometricLemma k).1 (n := n) hn (X := fun a => (c a).rep.V) (fun a => (c a).rep.ρ) (fun a => (c a).rep.smooth) (fun a => (hc a).2) _ h₀ h₁ hτ hs`. Conclude with `fun S hS => exists_surjective_jac (stdBlocks (fun a => (clx c a).1) hd) h₀ S hS`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `U _ _ Q hs hi hsub`. Take `⟨e', he, h1⟩` from `GlobalTheory.T.irreducible_subquotient_cuspidal_permutation hA _ hd hc Q hs hi hsub`. Break down `GlobalTheory.CompanionTheory.SegFine2.perm_two e' with rfl | rfl` into its components or cases. Conclude with `Or.inl (jhMult_ne_zero_iff.1 (ENat.one_le_iff_ne_zero.1 h1))`. Conclude with `Or.inr (jhMult_ne_zero_iff.1 (ENat.one_le_iff_ne_zero.1 h1))`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `S hS`. Conclude with `(GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness k).2.1 _ _ _ _ _ _ ((IsSubquotient.of_injective (incl S) (incl_injective S)).isSmooth hP) (hasFiniteLength_of_isIrreducible hS)`.
+A detailed English derivation is pending.
 -/
 theorem two_cusp (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {n N : ℕ} (hn : 0 < n)
     (c : Fin 2 → IrrCl (GL (Fin n) k)) (hc : ∀ a, (clx c a).IsCusp) (hinj : Function.Injective (clx c))
@@ -123,9 +121,9 @@ theorem two_cusp (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {n N : �
       ((IsSubquotient.of_injective (incl S) (incl_injective S)).isSmooth hP) (hasFiniteLength_of_isIrreducible hS)
 
 /- English proof (translation)
-Establish `he : GlobalTheory.Published.consecBlocks 2 d = stdBlocks (fun a => (clx c a).1) hd`. Use `Equiv.ext ?_` and prove the remaining obligations. Introduce and unpack `⟨a, j⟩`. Use `Fin.ext ?_` and prove the remaining obligations. Use `(GlobalTheory.Published.consecBlocks_val _ _ a j).trans (Eq.trans ?_ (stdBlocks_val (fun a => (clx c a).1) hd a j).symm)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[mul_comm, add_comm]`. Rewrite `H`, the goal using `[he]`. Set `Φ : (multiProd (stdBlocks (fun a => (clx c a).1) hd) τ).Equiv (prodIrr (clx c) hd)` to `multiProdEquiv _ E`. Conclude with `GlobalTheory.CompanionTheory.SegFine2.exists_sub_of_equiv (stdBlocks (fun a => (clx c a).1) hd) Φ.symm (piTensorEquiv E).symm (two_cusp hA hd0 c hc hinj hd fun h => H (GlobalTheory.Parabolic.isIrreducible_of_equiv Φ.symm h))`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem concl_of_classes (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {d : ℕ} (hd0 : 0 < d)
     {V : Type} [AddCommGroup V] [Module ℂ V] (τ : Fin 2 → Representation ℂ (GL (Fin d) k) V)
@@ -147,9 +145,9 @@ theorem concl_of_classes (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {
     (two_cusp hA hd0 c hc hinj hd fun h => H (GlobalTheory.Parabolic.isIrreducible_of_equiv Φ.symm h))
 
 /- English proof (translation)
-Introduce `H k _ _ _ _ d hd0 σ hc`. Establish `hA` using `PositivityTheory.Tls2.BZGL.irreducibleAdmissibleGL_top`. Set `Δ : Segment k` to `⟨d, hd0, σ.cl, ⟨σ, rfl, hc⟩, 2, two_pos⟩`. Set `c : Fin 2 → IrrCl (GL (Fin d) k)` to `fun a => (Δ.term a).2`. Establish `hd : ∑ a, (clx c a).1 = 2 * d` using `Δ.sum_term_fst`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `concl_of_classes hA hd0 (segTerm σ.ρ 2) c (fun a => Δ.isCusp_term a) (GlobalTheory.CompanionTheory.SegTerm.term_injective hA Δ) hd (fun a => (twistEquiv (equivRep σ) _).trans (Δ.first.twEquiv _ (isSmoothChar_absPow _))) (H k d hd0 σ hc)`.
+A detailed English derivation is pending.
 -/
 theorem segment_two : (∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (d : ℕ), 0 < d →
     ∀ σ : IrrRep (GL (Fin d) k), IsCuspidal σ.ρ →

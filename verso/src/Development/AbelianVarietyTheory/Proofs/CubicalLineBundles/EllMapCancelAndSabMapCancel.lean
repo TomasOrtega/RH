@@ -12,7 +12,7 @@ noncomputable section
 namespace GlobalTheory.CM.Factor
 
 /- English proof (translation)
-Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [Chart.dualMapR]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dualMapR_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R →+* R') (f' : R' →+* R'') :
     Chart.dualMapR (f'.comp f) = (Chart.dualMapR f').comp (Chart.dualMapR f) := by
@@ -20,13 +20,13 @@ theorem dualMapR_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''
   ext <;> simp [Chart.dualMapR]
 
 /- English proof (translation)
-Take `⟨hω, ⟨hg, hp, hL⟩, hv, ha⟩` from `h`. Take `⟨kω, ⟨kg, kp, kL⟩, kv, ka⟩` from `k`. Rewrite `kp` using `[← spMap_comp_spMap]`. Establish `w : ψ ≫ C.P.A.hom = (C''.P.A.hom ≫ spMap f') ≫ spMap f` using `by rw [kp.1.w, Category.assoc]`. Take `⟨l, h₁, h₂⟩ : ∃ l : C''.P.A.left ⟶ C'.P.A.left, l ≫ φ = ψ ∧ l ≫ C'.P.A.hom = C''.P.A.hom ≫ spMap f'` from `⟨hp.1.lift _ _ w, hp.1.lift_fst _ _ w, hp.1.lift_snd _ _ w⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Substitute `h₁` using the available equality. Use `⟨l, ⟨hω ▸ kω, ⟨kg.trans hg.symm, hp.cancel kp h₂, ?_⟩, ?_, fun a => ?_⟩, rfl⟩` and prove the remaining obligations. Establish `e : LBIso (C.P.L.pull (l ≫ φ)) (C'.P.L.pull l)` using `LBIso.chartPull (chartPullSame C.P.L _ _ _ l fun _ => rfl) (chartPullPull C'.P.L l l rfl) hL`. Conclude with `LBIso.trans (pull_isLB C'.P.isLB _) (pull_isLB C.P.isLB _) C''.P.isLB e.symm kL`. Unfold `IsVecOver at hv kv ⊢`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hp.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, kv, Category.assoc, hv, dualMapR_comp, ← spMap_comp_spMap, Category.assoc]`. Rewrite using `[Category.assoc, h₂, ← Category.assoc, Over.w C''.v, Category.assoc, Over.w C'.v]`. Use `(spMap_comp_spMap _ _).trans (Eq.trans ?_ (spMap_comp_spMap _ _).symm)` and prove the remaining obligations. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `ext a <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`. Apply `hp.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, ka, Category.assoc, Category.assoc, ha]`. Rewrite using `[Category.assoc, h₂, ← Category.assoc, Over.w, Category.assoc, Over.w, h₂]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ellMap_cancel {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {R R' R'' : Type} [CommRing R]
     [CommRing R'] [CommRing R''] {f : R →+* R'} {f' : R' →+* R''} {ω : R} {ω' : R'} {ω'' : R''} {C : Ell H R ω}
@@ -56,7 +56,7 @@ theorem ellMap_cancel {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Ho
     · rw [Category.assoc, h₂, ← Category.assoc, Over.w, Category.assoc, Over.w, h₂]
 
 /- English proof (translation)
-Introduce `E _ _ _ H R R' R'' _ _ _ f f'`. Use `⟨fun _ _ _ _ _ _ _ _ h k => ellMap_cancel h k, fun S y y' t t' t'' m n e => ?_⟩` and prove the remaining obligations. Substitute `e` using the available equality. Take `⟨m', h⟩` from `ObjMaps.exists_sab_cancel m n`. Conclude with `⟨m', h.symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ellMap_cancel_and_sabMap_cancel : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R R' R'' : Type) [CommRing R] [CommRing R'] [CommRing R''] (f : R →+* R') (f' : R' →+* R''),
   (∀ (ω : R) (ω' : R') (ω'' : R'') (C : Ell H R ω) (C' : Ell H R' ω') (C'' : Ell H R'' ω'') (φ : C'.P.A.left ⟶ C.P.A.left) (ψ : C''.P.A.left ⟶ C.P.A.left), EllMap C' C f φ → EllMap C'' C (f'.comp f) ψ → ∃ φ' : C''.P.A.left ⟶ C'.P.A.left, EllMap C'' C' f' φ' ∧ φ' ≫ φ = ψ) ∧

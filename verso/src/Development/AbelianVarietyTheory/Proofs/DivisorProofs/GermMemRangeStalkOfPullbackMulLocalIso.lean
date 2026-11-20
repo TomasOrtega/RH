@@ -18,23 +18,23 @@ set_option autoImplicit false
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k _ Y X _ _ p σ U _ _ L P N C J g s hrel x hbij hJ i hi _`. Take `⟨t, ha, hb, hc⟩` from `C.cover x`. Establish `hjx : σ x ∈ L.U (C.b t PUnit.unit)` using `mem_pull.1 hb`. Establish `hξx : genericPoint X ⤳ x` using `(genericPoint_spec X).specializes trivial`. Establish `hne : Nonempty (σ ⁻¹ᵁ U)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨⟨y, hy⟩⟩` from `‹Nonempty U›`. Take `⟨z, -⟩` from `(σ ∣_ U).surjective ⟨y, hy⟩`. Conclude with `⟨z⟩`. Establish `hξU : genericPoint X ∈ σ ⁻¹ᵁ U` using `genericPoint_mem_opens _`. Establish `hσξη : σ (genericPoint X) ⤳ genericPoint Y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨z, hz⟩` from `(σ ∣_ U).surjective ⟨genericPoint Y, genericPoint_mem_opens U⟩`. Establish `e : σ z.1 = genericPoint Y` using `(morphismRestrict_base_coe σ U z).symm.trans (congrArg Subtype.val hz)`. Rewrite using `[← e]`. Conclude with `σ.base.hom.map_specializes ((genericPoint_spec X).specializes trivial)`. Establish `hσξ : σ (genericPoint X) ∈ U ⊓ L.U (C.b t PUnit.unit)` using `⟨hξU, (σ.base.hom.map_specializes hξx).mem_open (L.U _).isOpen hjx⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `haξ` using `hξx.mem_open (P.U (C.a t)).isOpen ha`. Establish `hbξ` using `hξx.mem_open ((L.pull σ).U (C.b t)).isOpen hb`. Establish `hcξ` using `hξx.mem_open (N.U (C.c t)).isOpen hc`. Establish `e1` using `congrArg (H0.germ (C.c t) (genericPoint X) hξU hcξ) hrel`. Rewrite `e1` using `[C.germ_mul _ _ t _ hξU haξ hbξ hcξ, H0.germ_restr, H0.germ_restr, H0.germ_pull]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hsp (B : LB X) (f : H0 (σ ≫ p) B ⊤) (a : B.ι) (hx : x ∈ B.U a) (hξ : genericPoint X ∈ B.U a) : H0.germ a (genericPoint X) (memTop _) hξ f = X.presheaf.stalkSpecializes hξx (H0.germ a x (memTop x) hx f)`. Rewrite using `[H0.germ_apply, H0.germ_apply]`. Conclude with `(X.presheaf.germ_stalkSpecializes_apply _ hξx _).symm`. Establish `hJu` using `hJ (C.a t) ha`. Take `⟨h, hh⟩` from `hbij.2 (H0.germ (C.c t) x (memTop x) hc g * ↑hJu.unit⁻¹)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Nonempty (L.U (C.b t PUnit.unit))` using `⟨⟨σ x, hjx⟩⟩`. Use `nonempty_inf_of_isIntegral U (L.U (C.b t PUnit.unit))` as an intermediate fact. Use `germToFunctionField_mem_range_stalk_of_secOn (LB.coord_mem s) hi hjx ⟨h, ?_⟩` and prove the remaining obligations. Set `φ : Y.functionField →+* X.presheaf.stalk (genericPoint X)` to `(σ.stalkMap (genericPoint X)).hom.comp (Y.presheaf.stalkSpecializes hσξη).hom`. Use `φ.injective ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `eA : φ (algebraMap _ _ h) = X.presheaf.stalkSpecializes hξx (σ.stalkMap x h)`. Express the relevant statement in the definitionally equal form `(σ.stalkMap _).hom ((Y.presheaf.stalkSpecializes ((genericPoint_spec Y).specializes trivial) ≫ Y.presheaf.stalkSpecializes hσξη).hom h) = _`. Rewrite using `[TopCat.Presheaf.stalkSpecializes_comp]`. Conclude with `Scheme.Hom.stalkSpecializes_stalkMap_apply σ _ _ hξx h`. Establish `eB : φ (Y.germToFunctionField _ (LB.coord s (C.b t PUnit.unit))) = (σ.stalkMap (genericPoint X)).hom (H0.germ (C.b t PUnit.unit) (σ (genericPoint X)) hσξ.1 hσξ.2 s)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Express the relevant statement in the definitionally equal form `(σ.stalkMap _).hom (Y.presheaf.stalkSpecializes hσξη (Y.presheaf.germ _ (genericPoint Y) _ (LB.coord s _))) = _`. Rewrite using `[Y.presheaf.germ_stalkSpecializes_apply _ hσξη]`. Both sides reduce to the same expression. Rewrite using `[eA, eB, hh]`. Rewrite `e1` using `[hsp P J (C.a t) ha haξ, hsp N g (C.c t) hc hcξ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : IsUnit (X.presheaf.stalkSpecializes hξx (H0.germ (C.a t) x (memTop x) ha J))` using `hJu.map _`. Apply `hu.mul_left_cancel` to reduce the goal to its premises. Rewrite using `[e1, ← map_mul]`. Conclude with `congrArg _ (by rw [mul_left_comm, hJu.mul_val_inv, mul_one])`.
+A detailed English derivation is pending.
 -/
 theorem germToFunctionField_mem_range_stalk_of_mul_pull : ∀ (k : Type) [CommRing k] (Y X : Scheme.{0}) [IsIntegral Y] [IsIntegral X]
     (p : Y ⟶ Sp k) (σ : X ⟶ Y) (U : Y.Opens) [IsIso (σ ∣_ U)] [Nonempty U] (L : LB Y) (P N : LB X)

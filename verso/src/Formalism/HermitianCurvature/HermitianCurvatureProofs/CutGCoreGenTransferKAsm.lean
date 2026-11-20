@@ -17,7 +17,7 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Simplify using `only [B.hsVec, PiLp.inner_apply, PiLp.toLp_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hs_expand (A C : Wq →L[ℂ] Wp) :
     inner ℂ (B.hsVec A) (B.hsVec C) =
@@ -25,11 +25,11 @@ theorem hs_expand (A C : Wq →L[ℂ] Wp) :
   simp only [B.hsVec, PiLp.inner_apply, PiLp.toLp_apply]
 
 /- English proof (translation)
-Rewrite using `[hs_expand, hs_expand]`. Use `set b := stdOrthonormalBasis ℂ Wq`. Establish `hQe : ∀ i, Q (b i) = ∑ j, inner ℂ (b j) (Q (b i)) • b j` using `fun i => (b.sum_repr' _).symm`. Simplify using `only [ContinuousLinearMap.comp_apply]`. Use `conv_lhs => arg 2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i`. Rewrite using `[hQe i, map_sum, inner_sum]`. Use `conv_rhs => arg 2`. Use extensionality with `j`. Rewrite using `[hQe j, map_sum, sum_inner]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_smul, inner_smul_right, inner_smul_left]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[inner_conj_symm, hQ]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hs_comp_right (A C : Wq →L[ℂ] Wp) (Q : Wq →L[ℂ] Wq) (hQ : ∀ v w, inner ℂ (Q v) w = inner ℂ v (Q w)) :
     inner ℂ (B.hsVec A) (B.hsVec (C.comp Q)) = inner ℂ (B.hsVec (A.comp Q)) (B.hsVec C) := by
@@ -46,7 +46,7 @@ theorem hs_comp_right (A C : Wq →L[ℂ] Wp) (Q : Wq →L[ℂ] Wq) (hQ : ∀ v 
   rw [inner_conj_symm, hQ]
 
 /- English proof (translation)
-Simplify using `only [hs_expand, ContinuousLinearMap.comp_apply, ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply, map_sum, map_smul, inner_sum, inner_smul_right, Finset.mul_sum]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hs_comp_sum {ι : Type} [Fintype ι] (A C : Wq →L[ℂ] Wp) (Q : ι → (Wq →L[ℂ] Wq)) (f : ι → ℂ) :
     inner ℂ (B.hsVec A) (B.hsVec (C.comp (∑ σ, f σ • Q σ))) =
@@ -56,7 +56,7 @@ theorem hs_comp_sum {ι : Type} [Fintype ι] (A C : Wq →L[ℂ] Wp) (Q : ι →
   exact Finset.sum_comm
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `[ContinuousLinearMap.sum_apply, map_sum]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem comp_sum_eq {ι : Type} [Fintype ι] (C : Wq →L[ℂ] Wp) (Q : ι → (Wq →L[ℂ] Wq)) :
     C.comp (∑ σ, Q σ) = ∑ σ, C.comp (Q σ) := by
@@ -66,45 +66,41 @@ theorem comp_sum_eq {ι : Type} [Fintype ι] (C : Wq →L[ℂ] Wp) (Q : ι → (
 end hs
 
 /- English proof (translation)
-Introduce `hPt hLine Wp Wq _ _ _ _ _ _ P Bs X d hH`. Take `⟨Qr, hQ⟩` from `hPt Wp Wq P Bs X d hH`. Establish `hQQ` using `hQ.1`. Establish `hQ1` using `hQ.2.1`. Establish `hQs` using `hQ.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQk` using `hQ.2.2.2`. Establish `hpl : Q.IsPlace P Bs.z Bs.z' Bs.π Bs.π'` using `hH.1`. Establish `hcs : CSec P.k P.r Bs.z Bs.z' Bs.μsec` using `hH.2.2.1`. Establish `hTz : Tz P.k P.r Bs.z * Tz P.k P.r Bs.z' = P.TT`. Rewrite using `[hpl.2.2.2.1, hpl.2.2.2.2.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `set ζ0 : ℂ := ((Real.sqrt P.TT + 1 : ℝ) : ℂ) with hζ0def`. Establish `hTT : 0 < P.TT` using `mul_pos hpl.1.T_pos hpl.1.T'_pos`. Establish `hζ0 : P.TT < Complex.normSq ζ0`. Rewrite using `[hζ0def, Complex.normSq_ofReal]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs` using `Real.sq_sqrt hTT.le`. Use polynomial arithmetic with `[Real.sqrt_nonneg P.TT]`. Establish `hFib : ∀ ζ : ℂ, P.TT < Complex.normSq ζ → NF.Fib P.k P.r Bs.z Bs.z' Bs.μsec Bs.π Bs.π' ζ = NF.Fib P.k P.r Bs.z Bs.z' Bs.μsec Bs.π Bs.π' ζ0`. Introduce `ζ hζ`. Establish `hS : NF.Stab P.k P.r Bs.z Bs.z' Bs.μsec ζ = NF.Stab P.k P.r Bs.z Bs.z' Bs.μsec ζ0` using `hcs.2 ζ ζ0 (by rw [hTz]; exact hζ) (by rw [hTz]; exact hζ0)`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `NF.Fib`. Rewrite using `[hS]`. Use `choose E hEF hEQ hE1 hEu using fun ρ => hLine Wp Wq P Bs X d hH Qr hQ ζ0 hζ0 ρ`. Establish `hRB : NF.RadBase P.k P.r Bs.z Bs.z' Bs.μsec Bs.π Bs.π'` using `⟨hpl.1.k_pos, hpl.2.1, hpl.2.2.1, by rw [hpl.2.2.2.1]; exact hpl.1.T_pos, by rw [hpl.2.2.2.2.1]; exact hpl.1.T'_pos, Bs.sec, hpl.2.2.2.2.2.1.2.1, hpl.2.2.2.2.2.2.2.1, hpl.2.2.2.2.2.1.2.2.1, hpl.2.2.2.2.2.2.2.2.1⟩`. Establish `hcomp : ∀ Z ∈ NF.Fib P.k P.r Bs.z Bs.z' Bs.μsec Bs.π Bs.π' ζ0, ∀ ρ, Z.comp (Qr ρ) ∈ NF.Fib P.k P.r Bs.z Bs.z' Bs.μsec Bs.π Bs.π' ζ0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Introduce `Z hZ ρ`. Set `φ : (Fin P.r → ℂ) × ℂ → (Wq →L[ℂ] Wp)` to `(NF.QR P.k P.r Bs.z Bs.z').indicator fun _ => Z`. Establish `hφ : φ ∈ NF.RadSec P.k P.r Bs.z Bs.z' Bs.μsec Bs.π Bs.π'`. Use `⟨(contDiffOn_const (c := Z)).congr fun x hx => ?_, fun x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Simplify using `[φ, Set.indicator_of_mem hx]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [φ, Set.indicator_of_mem hx]`. Rewrite using `[hFib x.2 (by rw [← hTz]; exact hx.2)]; exact hZ`. Simplify using `[φ, Set.indicator_of_notMem hx]`. Take `⟨Φ, hΦ, hrad⟩` from `Formalism.FourierDecayAlt.P.radical_reduction_surjective Wp Wq P.k P.r Bs.z Bs.z' Bs.μsec Bs.π Bs.π' hRB φ hφ`. Set `c0 : Fin P.r → ℂ` to `fun _ => 1`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc0 : c0 ∈ OmX P.r` using `fun _ => one_ne_zero`. Establish `hq0 : ((c0, ζ0) : (Fin P.r → ℂ) × ℂ) ∈ NF.QR P.k P.r Bs.z Bs.z'` using `⟨hc0, by rw [hTz]; exact hζ0⟩`. Establish `hval : Φ c0 (NF.muZ P.k P.r Bs.μsec ζ0) = Z`. Establish `h` using `congrFun hrad (c0, ζ0)`. Simplify using `only [NF.radR, Set.indicator_of_mem hq0, φ] at h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `h`. Set `q0 : MA.Qp P.r P.TT` to `⟨(c0, ζ0), ⟨hc0, hζ0⟩⟩`. Set `f : M.Ty P → ℂ` to `fun σ => if σ = ρ then 1 else 0`. Establish `hk` using `hQk f ⟨Φ, hΦ⟩ q0`. Establish `hsum : (∑ σ, f σ • Qr σ) = Qr ρ`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[f, Finset.sum_ite_eq']`. Rewrite `hk` using `[hsum]`. Establish `hmem` using `Formalism.FourierDecayAlt.P.radical_reduction_mem Wp Wq P.k P.r Bs.z Bs.z' Bs.μsec Bs.π Bs.π' hRB _ ((d.κ f).1 ⟨Φ, hΦ⟩).2`. Establish `h2` using `hmem.2.1 (c0, ζ0) hq0`. Simplify using `only [NF.radR, Set.indicator_of_mem hq0] at h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hk' : (((d.κ f).1 ⟨Φ, hΦ⟩ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c0 (NF.muZ P.k P.r Bs.μsec ζ0) = Z.comp (Qr ρ)`. Rewrite using `[← hval]`. Conclude with `hk`. Rewrite `h2` using `[hk']`. Conclude with `h2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use `⟨fun ρ _ => E ρ, ⟨fun ρ => contDiffOn_const, fun ζ hζ => ⟨fun ρ => ?_, fun ρ ρ' => ?_, fun Z hZ => ?_⟩⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hFib ζ hζ]`. Conclude with `hEF ρ`. Use `split_ifs with h`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hE1 ρ`. Combine the equalities or inequalities in the displayed calculation. Establish `h0 : (E ρ).comp (Qr ρ') = 0`. Rewrite using `[← hEQ ρ, ContinuousLinearMap.comp_assoc, hQQ ρ ρ', if_neg h, ContinuousLinearMap.comp_zero]`. Rewrite using `[h0, VLem.hsV_zero, inner_zero_left]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hZ0 : Z ∈ NF.Fib P.k P.r Bs.z Bs.z' Bs.μsec Bs.π Bs.π' ζ0` using `by rw [← hFib ζ hζ]; exact hZ`. Establish `hdec : Z = ∑ ρ, Z.comp (Qr ρ)`. Rewrite using `[← comp_sum_eq, hQ1]`. Both sides reduce to the same expression. Use `conv_lhs => rw [hdec]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Establish `hfix : (Z.comp (Qr ρ)).comp (Qr ρ) = Z.comp (Qr ρ)`. Rewrite using `[ContinuousLinearMap.comp_assoc, hQQ ρ ρ, if_pos rfl]`. Rewrite using `[hEu ρ _ (hcomp Z hZ0 ρ) hfix, hs_comp_right _ _ _ (hQs ρ), hEQ ρ]`. Introduce `f Φ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Use function extensionality and compare the values at `ρ`. Establish `hraw : rawR P Bs.μsec (fun ρ _ => E ρ) (((d.κ f).1 Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) ρ = f ρ • rawR P Bs.μsec (fun ρ _ => E ρ) (Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) ρ`. Use function extensionality and compare the values at `q`. Simplify using `only [rawR, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hQk f Φ q, hs_comp_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hterm : ∀ σ, f σ * inner ℂ (B.hsVec (E ρ)) (B.hsVec (((Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) q.1.1 (NF.muZ P.k P.r Bs.μsec q.1.2)).comp (Qr σ))) = if σ = ρ then f ρ * inner ℂ (B.hsVec (E ρ)) (B.hsVec ((Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) q.1.1 (NF.muZ P.k P.r Bs.μsec q.1.2))) else 0`. Introduce `σ`. Rewrite using `[hs_comp_right _ _ _ (hQs σ)]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hEQ σ]`. Establish `h0 : (E ρ).comp (Qr σ) = 0`. Rewrite using `[← hEQ ρ, ContinuousLinearMap.comp_assoc, hQQ ρ σ, if_neg (Ne.symm h), ContinuousLinearMap.comp_zero]`. Rewrite using `[h0, VLem.hsV_zero, inner_zero_left, mul_zero]`. Simplify using `only [hterm, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
-
-Expand and normalize the polynomial expressions, which then agree. Use `show MA.toSm P (rawR P Bs.μsec (fun ρ _ => E ρ) (((d.κ f).1 Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) ρ) = _`. Rewrite using `[hraw, VLem.toSm_smul]`. Establish `hkap : MA.kap P (MA.DQ P) f = Matrix.diagonal fun σ => algebraMap ℂ (MA.DQ P).Pr (f σ)` using `rfl`. Rewrite using `[hkap, VLem.actA_diag]`.
-
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem gauge_kappa_of_point_line : GTKapOfCut := by
   intro hPt hLine Wp Wq _ _ _ _ _ _ P Bs X d hH

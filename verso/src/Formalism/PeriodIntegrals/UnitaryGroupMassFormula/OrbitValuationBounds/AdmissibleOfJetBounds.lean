@@ -11,7 +11,7 @@ namespace PI.OrbBoundFW
 variable {D : D7} {L : SizeData₂ D}
 
 /- English proof (translation)
-Take `⟨U, hU, hT⟩` from `h0`. Conclude with `⟨ep, hep, be, ⟨sg, hsg, U, hU, hT⟩, h1, h2, h3, h4⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem admissible_of_jet_bounds {E : Ent D} {p : ℕ} [Fact p.Prime] (h : OrbOK D p) (u : D.what₂.Word) (i : ℕ) (z : Pl D)
     (Th : MvPowerSeries (ZMod (nP D p) × Fin (D.R.N i) × Fin (D.R.N (i + 1))) ℂ_[p])
@@ -23,7 +23,7 @@ theorem admissible_of_jet_bounds {E : Ent D} {p : ℕ} [Fact p.Prime] (h : OrbOK
   exact ⟨ep, hep, be, ⟨sg, hsg, U, hU, hT⟩, h1, h2, h3, h4⟩
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.product_zeroth_first_parts.KvalGe at hK ⊢`. Introduce `I m`. Use `(hK I m).trans ?_` and prove the remaining obligations. Establish `hl : (1 : ℝ) ≤ (l : ℝ)` using `by exact_mod_cast (Fact.out : l.Prime).one_lt.le`. Conclude with `Real.rpow_le_rpow_of_exponent_le hl (neg_le_neg hB)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem kvalGe_mono {Lt : Type} [Fintype Lt] [DecidableEq Lt] {N0 N1 l : ℕ} [Fact l.Prime]
     {nu : Lt → YoungDiagram} {Th : MvPowerSeries (Lt × Fin N0 × Fin N1) ℂ_[l]} {B B' : ℝ}

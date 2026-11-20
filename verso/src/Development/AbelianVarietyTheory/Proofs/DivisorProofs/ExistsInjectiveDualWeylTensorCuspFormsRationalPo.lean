@@ -21,7 +21,7 @@ open CategoryTheory NumberField IsDedekindDomain Module Formalism.BasicNotions F
 open scoped Matrix Classical
 
 /- English proof (translation)
-Use `⟨⟨hP, ?_⟩, fun ξ hξ => absurd hξ (GlobalTheory.PoincareSeriesCompare.not_isIso_of_definite X (Or.inl hp) ξ)⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `(GlobalTheory.DefiniteFrames.isCompact_ortho X (Or.inl hp)).bddAbove_image ((continuousOn_pnorm X la hP.1.continuousOn).mono fun x hx => PIW.FdPA.orthonormal_domain r X x hx)`. Use `⟨C, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[← FrameDegreeData.pnorm_rmul X la P hP.2.1 x hx _ (FrameDegreeData.bOf_mem X hx)]`. Conclude with `hC ⟨_, FrameDegreeData.ortho_bOf X hx, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_SS_of_isSec {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r) (hp : X.p0 = 0)
     {la : Wt X.Ψ r} {P : Frame X.Ψ r → ℂ} (hP : X.IsSec la P) : P ∈ X.SS la := by
@@ -33,7 +33,7 @@ theorem mem_SS_of_isSec {E : Type} [Field E] [NumberField E] [IsCMField E] {r : 
   exact hC ⟨_, FrameDegreeData.ortho_bOf X hx, rfl⟩
 
 /- English proof (translation)
-Simplify using `only [tval, map_sum, map_mul, map_prod]`. Use `Finset.sum_congr rfl fun I _ => congrArg _ (Finset.prod_congr rfl fun t _ => ?_)` and prove the remaining obligations. Rewrite using `[← GlobalTheory.DualWeyl.evalAt_map, MvPolynomial.map_map, RingHom.ext_int (φ.comp (Int.castRingHom S)) (Int.castRingHom S')]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem tval_map {T : Type} [Fintype T] [DecidableEq T] {N : T → ℕ} (la : ∀ t, Fin (N t) → ℕ) {S S' : Type} [CommRing S]
     [CommRing S'] (φ : S →+* S') (x : TIdx la → S) (y : ∀ t, Matrix (Fin (N t)) (Fin (N t)) S) :
@@ -51,7 +51,7 @@ def rdVal (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (x : TIdx (part Dw a) →
 variable {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} {Z : Comp Xo c} {y₀ : FrPt Xo c c.F}
 
 /- English proof (translation)
-Establish `h` using `tval_map (part Dw a) φ.toRingHom (fun I => algebraMap c.F S (x I)) Y`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, AlgHom.commutes] at h`. Rewrite using `[rdVal, rdVal, map_mul, map_pow, h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_rdVal (x : TIdx (part Dw a) → c.F) {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T]
     (φ : S →ₐ[c.F] T) (Y : Mats Dw S) (s : S) : φ (rdVal a n x Y s) = rdVal a n x (fun τ => (Y τ).map φ) (φ s) := by
@@ -60,13 +60,13 @@ theorem map_rdVal (x : TIdx (part Dw a) → c.F) {S T : Type} [CommRing S] [Alge
   rw [rdVal, rdVal, map_mul, map_pow, h]
 
 /- English proof (translation)
-Use `⟨hs, fun S _ _ z y Y s hY hsu hz hy => ?_⟩` and prove the remaining obligations. Take `⟨A, _, _, π, X, u, hft, hred, hF⟩` from `GlobalTheory.exists_frameRing_reduced (K := c.F) (fun τ => Dw.mult τ) c.F`. Take `⟨q, ⟨e⟩⟩` from `(GlobalTheory.reduced_finiteType_iff_testRing c.F).1 A hft hred`. Take `⟨hX, hU⟩` from `GlobalTheory.FrameRing_of_algEquiv _ π X u hF e.symm`. Generalize the expression as in `(fun τ => (X τ).map e.symm) = X' at hX hU`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `Units.map (e.symm : A →* q.R) u = u' at hU`. Take `⟨k, ⟨-, hk2, hk3⟩, -⟩` from `hU S (Algebra.ofId c.F S) Y hsu.unit hY`. Take `⟨w₀, hw₀⟩` from `exists_bc (Algebra.ofId c.F q.R) y₀`. Take `⟨w, hw, -⟩` from `existsUnique_frChg E H Dw l Xo c q.R w₀ (fun τ => (X' τ)ᵀ) u' fun τ => by`. Rewrite using `[Matrix.det_transpose]`.
+Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hX τ`. Establish `hm : FrMap k w y`. Use `(ChgBC.frChg_baseChange E H Dw l Xo c q.R S k w₀ w z y _ _ hw (frMap_of_comp (Subsingleton.elim _ _) hw₀ hz)).2 ?_` and prove the remaining obligations. Simplify using `only [Matrix.transpose_map, hk2, hk3]`. Conclude with `hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[evR_of_frMap_test hf hm, h q w₀ w X' u' hX hw₀ hw, map_rdVal, funext hk2, hk3]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem reads_of_test {x : TIdx (part Dw a) → c.F} {f : Rul Xo c}
     (hf : IsNatural (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) f) (hs : f ∈ suppOn Z)
@@ -92,9 +92,9 @@ theorem reads_of_test {x : TIdx (part Dw a) → c.F} {f : Rul Xo c}
   rfl
 
 /- English proof (translation)
-Set `π` to `Ideal.Quotient.mkₐ c.F (Ideal.span {1 - idemAt Z y})`. Establish `hπ : π (idemAt Z y) = 1`. Rewrite using `[← map_one π]`. Conclude with `(Ideal.Quotient.eq.2 (Ideal.mem_span_singleton_self _)).symm`. Take `⟨w, hw⟩` from `exists_bc π y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `exists_bc (Algebra.ofId c.F (S ⧸ Ideal.span {1 - idemAt Z y})) y₀`. Establish `hwZ : LiesOn Z w` using `(idemAt_eq_one_iff Z w).1 ((CompSplitPfB.cspB_idem_map _ _ π y.x_over w.x_over hw.1).symm.trans hπ)`. Take `⟨g, s, hg, hc⟩` from `(frChg_exists_unique E H Dw l Xo c _ z w).1 ((hy₀ _ w hwZ).trans hz.1.symm)`. Conclude with `⟨w, z, fun τ => (g τ)ᵀ, s, fun τ => by rw [Matrix.det_transpose]; exact hg τ, s.isUnit, hw, hz, hc⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_chg
     (hy₀ : ∀ (S : Type) [CommRing S] [Algebra c.F S] (y : FrPt Xo c S), LiesOn Z y →
@@ -114,7 +114,7 @@ theorem exists_chg
   exact ⟨w, z, fun τ => (g τ)ᵀ, s, fun τ => by rw [Matrix.det_transpose]; exact hg τ, s.isUnit, hw, hz, hc⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p y`. Take `⟨w, z, Y, s, hY, hs, hw, hz, hc⟩` from `exists_chg hy₀ y`. Use `eq_of_mk_eq (e := idemAt Z y) (CompSplitPfB.cspB_idem_idem _ _ _ _) (congrFun (congrFun ((mem_suppOn_iff_idem_mul_of_natural hf.1 Z).1 h.1) p) y) (congrFun (congrFun ((mem_suppOn_iff_idem_mul_of_natural hg.1 Z).1 h'.1) p) y) ?_` and prove the remaining obligations. Conclude with `(evR_of_frMap_test hf.1 hw).symm.trans (((h.2 _ z w Y s hY hs hz hc).trans (h'.2 _ z w Y s hY hs hz hc).symm).trans (evR_of_frMap_test hg.1 hw))`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem eq_of_reads
     (hy₀ : ∀ (S : Type) [CommRing S] [Algebra c.F S] (y : FrPt Xo c S), LiesOn Z y →
@@ -135,13 +135,13 @@ def IsRd (Z : Comp Xo c) (y₀ : FrPt Xo c c.F) (a : (E →+* ℂ) × ℕ → �
       φ t = rdVal a n x Y s
 
 /- English proof (translation)
-Establish `he : IsIdempotentElem (idemAt Z y)` using `CompSplitPfB.cspB_idem_idem _ _ _ _`. Take `⟨w, z, Y, s, -, -, hw, hz, hc⟩` from `exists_chg hy₀ y`. Set `π` to `Ideal.Quotient.mkₐ c.F (Ideal.span {1 - idemAt Z y})`. Establish `hπ : π (idemAt Z y) = 1`. Rewrite using `[← map_one π]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Ideal.Quotient.eq.2 (Ideal.mem_span_singleton_self _)).symm`. Take `⟨t, ht⟩` from `Ideal.Quotient.mkₐ_surjective c.F _ (rdVal a n x Y s)`. Establish `k : idemAt Z y * (idemAt Z y * t) = idemAt Z y * t` using `by rw [← mul_assoc, he.eq]`. Establish `ht₁ : π (idemAt Z y * t) = rdVal a n x Y s` using `by rw [map_mul, hπ, one_mul]; exact ht`. Use `⟨idemAt Z y * t, ⟨k, fun T _ _ φ w' z' Y' s' hw' hz' hc' => ?_⟩, fun t' ht' => eq_of_mk_eq he ht'.1 k ((ht'.2 _ π w z Y s hw hz hc).trans ht₁.symm)⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : φ (idemAt Z y) = 1` using `(CompSplitPfB.cspB_idem_map _ _ φ y.x_over w'.x_over hw'.1).trans ((CompSplitPfB.cspB_idem_congr _ _ z'.x_over w'.x_over hc'.1).trans ((idemAt_eq_one_iff Z z').2 (liesOn_frMap hz' h₀)))`. Set `ψ` to `Ideal.Quotient.liftₐ (Ideal.span {1 - idemAt Z y}) φ fun b hb => by`. Take `⟨b', rfl⟩` from `Ideal.mem_span_singleton'.1 hb`. Rewrite using `[map_mul, map_sub, h1, map_one, sub_self, mul_zero]`. Establish `hψ : ψ.comp π = φ` using `Ideal.Quotient.liftₐ_comp _ _ _`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c₁` using `(ChgBC.frChg_baseChange E H Dw l Xo c _ T ψ z w z' w' _ s hc (frMap_of_comp (Subsingleton.elim _ _) hz hz')).1 (frMap_of_comp hψ hw hw')`. Take `⟨e₁, e₂⟩` from `(frChg_exists_unique E H Dw l Xo c T z' w').2 _ _ _ _ hc' c₁`. Establish `e₃ : Y' = fun τ => (Y τ).map ψ` using `funext fun τ => Matrix.transpose_injective (congrFun e₁ τ)`. Rewrite using `[e₂, e₃, ← hψ, AlgHom.comp_apply, ht₁, map_rdVal]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem existsUnique_isRd (h₀ : LiesOn Z y₀)
     (hy₀ : ∀ (S : Type) [CommRing S] [Algebra c.F S] (y : FrPt Xo c S), LiesOn Z y →
@@ -172,15 +172,13 @@ theorem existsUnique_isRd (h₀ : LiesOn Z y₀)
   rw [e₂, e₃, ← hψ, AlgHom.comp_apply, ht₁, map_rdVal]
 
 /- English proof (translation)
-Use `choose f hf hu using fun (p : TRing c.F) (y : FrPt Xo c p.R) => existsUnique_isRd (n := n) h₀ hy₀ x y`. Establish `hm : f ∈ sec Xo c a n`. Use `⟨fun p q φ y z h => (hu q z _ ⟨?_, fun T _ _ ψ w z' Y s hw hz hc => ?_⟩).symm, fun p t y y' h => (hu p y' _ ⟨?_, fun T _ _ ψ w' z' Y s hw hz hc => ?_⟩).symm⟩` and prove the remaining obligations. Rewrite using `[idemAt, ← CompSplitPfB.cspB_idem_map _ _ φ y.x_over z.x_over h.1, ← map_mul]`. Conclude with `congrArg φ (hf p y).1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(hf p y).2 T (ψ.comp φ) w z' Y s (ReciprocityTheory.ChartRestriction.G.PullbackSections.frMap_trans _ _ h hw) hz hc`. Rewrite using `[mul_left_comm, idemAt, CompSplitPfB.cspB_idem_congr _ _ y.x_over y'.x_over h.1]`. Conclude with `congrArg _ (hf p y).1`. Take `⟨k, k0, k1, hk⟩` from `((frBor_calculus E H Dw l Xo c _ y y' y').1 t).1 h`. Take `⟨w, hw₀⟩` from `exists_bc ψ y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `c₁` using `(ChgBC.frChg_baseChange E H Dw l Xo c _ T ψ y y' w w' k _ hk hw₀).1 hw`. Take `⟨g, u, -, c₀⟩` from `(frChg_exists_unique E H Dw l Xo c T z' w).1 (c₁.1.symm.trans hc.1)`. Establish `c₂` using `(frChg_refl_and_comp E H Dw l Xo c T z' w w').2 _ _ _ _ c₀ c₁`. Take `⟨e₁, e₂⟩` from `(frChg_exists_unique E H Dw l Xo c T z' w').2 _ _ _ _ hc c₂`. Establish `e₃ : Y = fun τ => (g τ)ᵀ * ((k τ).map ψ)ᵀ` using `funext fun τ => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.transpose_mul, ← congrFun e₁ τ, Matrix.transpose_transpose]`. Rewrite using `[map_mul, (hf p y).2 T ψ w z' (fun τ => (g τ)ᵀ) u hw₀ hz c₀, e₂, e₃, rdVal, rdVal, GlobalTheory.DefPt.tval_mul_triangular _ _ _ _ _ _ _ fun τ i j hij => by show ψ (k τ j i) = 0`. Rewrite using `[k0 τ j i hij, map_zero]]`. Simplify using `only [wchar, Fintype.prod_option, Fintype.prod_sigma, ex, map_mul, map_prod, map_pow, diagChar, part, Matrix.transpose_apply, Matrix.map_apply, k1, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `⟨f, hm, reads_of_test hm.1 ((mem_suppOn_iff_idem_mul_of_natural hm.1 Z).2 (funext fun p => funext fun y => (hf p y).1)) fun p z y Y s _ hz hc => ?_⟩` and prove the remaining obligations. Conclude with `(hf p y).2 _ (AlgHom.id c.F _) y z Y s (frMap_unique_refl_iff E H Dw l Xo c _ _ (AlgHom.id c.F _) y).2.1 hz hc`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_reads (h₀ : LiesOn Z y₀)
     (hy₀ : ∀ (S : Type) [CommRing S] [Algebra c.F S] (y : FrPt Xo c S), LiesOn Z y →
@@ -215,15 +213,15 @@ theorem exists_reads (h₀ : LiesOn Z y₀)
   exact (hf p y).2 _ (AlgHom.id c.F _) y z Y s (frMap_unique_refl_iff E H Dw l Xo c _ _ (AlgHom.id c.F _) y).2.1 hz hc
 
 /- English proof (translation)
-Take `⟨G, hG, -⟩` from `GlobalTheory.LamT.FieldPoly.exists_isFrPoly_isHomogeneous E H Dw l Xo c c.F y₀ a n f hf`. Take `⟨x, hx⟩` from `GlobalTheory.T.exists_tensor_value_of_triangular_law _ Dw.mult (part Dw a) c.F G fun y b hy hb => by`. Establish `h` using `GlobalTheory.LamT.evalFr_mul_tri hf hG inferInstance (AlgHom.id c.F c.F) y b (fun τ => (hy τ).isUnit) (fun τ => by`. Rewrite using `[Matrix.det_of_upperTriangular (hb τ).1]`. Conclude with `(Finset.prod_ne_zero_iff.2 fun i _ => (hb τ).2 i).isUnit)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `(fun τ i j hij => (hb τ).1 hij) fun τ i => ((hb τ).2 i).isUnit`. Establish `h2 : MvPolynomial.map (AlgHom.id c.F c.F).toRingHom G = G` using `MvPolynomial.map_id G`. Rewrite `h` using `[h2]`. Conclude with `h`. Use `⟨x, reads_of_test hf.1 hs fun p z y Y s hY hz hc => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hred : IsReduced p.R` using `(Ideal.isRadical_iff_quotient_reduced _).1 p.rad`. Establish `hg : ∀ τ, IsUnit ((Y τ)ᵀ).det` using `fun τ => by rw [Matrix.det_transpose]; exact hY τ`. Take `⟨z₁, h₁, -⟩` from `existsUnique_frChg E H Dw l Xo c _ z _ 1 hg`. Take `⟨z₂, h₂, -⟩` from `existsUnique_frChg E H Dw l Xo c _ z₁ (fun _ => 1) s (fun _ => by simp)`. Establish `h₃` using `(frChg_refl_and_comp E H Dw l Xo c _ z z₁ z₂).2 _ _ _ _ h₁ h₂`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Simplify using `only [Units.val_one, mul_one, one_mul] at h₁ h₃`. Take `rfl : z₂ = y` from `(existsUnique_frChg E H Dw l Xo c _ z _ s hg).unique h₃ hc`. Set `t : Ix Dw → (p.R)ˣ` to `fun i => match i with`. Consider the case `none => s`. Consider the case `some _ => 1`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `GlobalTheory.LamT.evR_frChg_tri hred hf t (fun _ => 1) (fun τ i j hij => Matrix.one_apply_ne hij.ne) (fun τ i => Matrix.one_apply_eq i) h₂`. Rewrite `e` using `[hG _ _ z z₁ Y hY hz h₁, hx, evR_of_frMap_test hf.1 (frMap_unique_refl_iff E H Dw l Xo c _ _ (AlgHom.id c.F _) z₂).2.1]`. Use `e.trans ?_` and prove the remaining obligations. Simplify using `only [wchar, Fintype.prod_option, Fintype.prod_sigma, ex, t, Units.val_one, one_pow, Finset.prod_const_one, mul_one]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_coord {f : Rul Xo c} (hf : f ∈ sec Xo c a n) (hs : f ∈ suppOn Z) : ∃ x, Reads Z y₀ a n x f := by
   obtain ⟨G, hG, -⟩ := GlobalTheory.LamT.FieldPoly.exists_isFrPoly_isHomogeneous E H Dw l Xo c c.F y₀ a n f hf
@@ -257,7 +255,7 @@ theorem exists_coord {f : Rul Xo c} (hf : f ∈ sec Xo c a n) (hs : f ∈ suppOn
   rfl
 
 /- English proof (translation)
-Use `⟨add_mem h.1 h'.1, fun S _ _ z y Y s hY hs hz hc => ?_⟩` and prove the remaining obligations. Use `(evalAt_add (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) f g y).trans ((congrArg₂ (· + ·) (h.2 S z y Y s hY hs hz hc) (h'.2 S z y Y s hY hs hz hc)).trans ?_)` and prove the remaining obligations. Simplify using `only [tval, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib, mul_add]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem reads_add {x x' : TIdx (part Dw a) → c.F} {f g : Rul Xo c} (h : Reads Z y₀ a n x f) (h' : Reads Z y₀ a n x' g) :
     Reads Z y₀ a n (x + x') (f + g) := by
@@ -267,7 +265,7 @@ theorem reads_add {x x' : TIdx (part Dw a) → c.F} {f g : Rul Xo c} (h : Reads 
   simp only [tval, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib, mul_add]
 
 /- English proof (translation)
-Use `⟨Submodule.smul_mem _ b h.1, fun S _ _ z y Y s hY hs hz hc => ?_⟩` and prove the remaining obligations. Use `(evalAt_smul (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) b f y).trans ((congrArg (algebraMap c.F S b * ·) (h.2 S z y Y s hY hs hz hc)).trans ?_)` and prove the remaining obligations. Simplify using `only [tval, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun I _ => by ring`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem reads_smul (b : c.F) {x : TIdx (part Dw a) → c.F} {f : Rul Xo c} (h : Reads Z y₀ a n x f) :
     Reads Z y₀ a n (b • x) (b • f) := by
@@ -278,9 +276,9 @@ theorem reads_smul (b : c.F) {x : TIdx (part Dw a) → c.F} {f : Rul Xo c} (h : 
   exact Finset.sum_congr rfl fun I _ => by ring
 
 /- English proof (translation)
-Use `GlobalTheory.CoordVanish.eq_zero_of_tval_invertible _ _ _ c.F x fun Y hY => ?_` and prove the remaining obligations. Take `⟨z, hz⟩` from `exists_bc (Algebra.ofId c.F c.F) y₀`. Take `⟨y, hy, -⟩` from `existsUnique_frChg E H Dw l Xo c c.F z (fun τ => (Y τ)ᵀ) 1 fun τ => by`. Rewrite using `[Matrix.det_transpose]`. Conclude with `(hY τ).isUnit`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `(h.2 c.F z y Y 1 (fun τ => (hY τ).isUnit) isUnit_one hz hy).symm.trans (evalAt_zero _ _ y)`. Simplify using `using e`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_reads {x : TIdx (part Dw a) → c.F} (h : Reads Z y₀ a n x 0) : x = 0 := by
   refine GlobalTheory.CoordVanish.eq_zero_of_tval_invertible _ _ _ c.F x fun Y hY => ?_
@@ -291,7 +289,7 @@ theorem eq_zero_of_reads {x : TIdx (part Dw a) → c.F} (h : Reads Z y₀ a n x 
   simpa using e
 
 /- English proof (translation)
-The claim follows from `(mem_cusp Xo c U a n f).2 ⟨hf, fun σ hσ => holCusp_mem_holSub _ _ fun k => mem_SS_of_isSec _ (((hU σ hσ).2.1 k).1.trans hq) ((hU σ hσ).2.2.2.2.1 a n hd f hf k)⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_cusp_of_sec {r : ℕ} {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} (hq : Dw.q = 0)
     (hU : ∀ σ, GoodEmb c σ → IsUnf (U σ)) (hd : Dom a n) {f : Rul Xo c} (hf : f ∈ sec Xo c a n) :
@@ -300,11 +298,11 @@ theorem mem_cusp_of_sec {r : ℕ} {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} (h
     mem_SS_of_isSec _ (((hU σ hσ).2.1 k).1.trans hq) ((hU σ hσ).2.2.2.2.1 a n hd f hf k)⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c r U ξ a n hD hd Z P`. Use `choose F hF hR using fun x : TIdx (part Dw a) → c.F => exists_reads (n := n) P.on P.only x`. Set `φ : (TIdx (part Dw a) → c.F) →ₗ[c.F] Rul Xo c` to `{ toFun := F map_add' := fun x x' => eq_of_reads P.only (hF _) (add_mem (hF x) (hF x')) (hR _) (reads_add (hR x) (hR x')) map_smul' := fun b x => eq_of_reads P.only (hF _) (Submodule.smul_mem _ b (hF x)) (hR _) (reads_smul b (hR x)) }`. Use `⟨φ, (injective_iff_map_eq_zero φ).2 fun x hx => eq_zero_of_reads (n := n) ((show F x = 0 from hx) ▸ hR x), ?_, hR⟩` and prove the remaining obligations. Use extensionality with `f`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cuspOn, cuspW_wtZ]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨mem_cusp_of_sec hD.q hD.unf hd (hF x), (hR x).1⟩`. Introduce and unpack `⟨h1, h2⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hf` using `cusp_le_sec Xo c U a n h1`. Take `⟨x, hx⟩` from `exists_coord (y₀ := P.y₀) hf h2`. Conclude with `⟨x, eq_of_reads P.only (hF x) hf (hR x) hx⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_linearMap_reads : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (ξ : ℝ) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), DefCase U ξ → Dom a n → ∀ (Z : Comp Xo c) (P : PtData Z), ∃ φ : (TIdx (part Dw a) → c.F) →ₗ[c.F] Rul Xo c, Function.Injective φ ∧ LinearMap.range φ = cuspOn U Z (wtZ a n) ∧ ∀ x, Reads Z P.y₀ a n x (φ x) := by
   intro E _ _ _ H Dw l Xo c r U ξ a n hD hd Z P

@@ -82,7 +82,7 @@ variable {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module �
 abbrev pb (Λ : AddSubgroup W) : AddSubgroup V := Λ.comap e.toLinearMap.toAddMonoidHom
 
 /- English proof (translation)
-Unfold `relIdx`. Rewrite using `[AddSubgroup.relIndex_comap, AddSubgroup.map_comap_eq_self_of_surjective]`. Conclude with `e.surjective`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIdx_pb (Λ₁ Λ₂ : AddSubgroup W) : relIdx (pb e Λ₁) (pb e Λ₂) = relIdx Λ₁ Λ₂ := by
   unfold relIdx
@@ -94,20 +94,20 @@ variable (H : Sesq V) (H' : Sesq W) (hH : ∀ x y, H x y = H' (e x) (e y))
 include hH
 
 /- English proof (translation)
-Simplify using `only [opU, map_add, hH]`.
+Simplify using the standard rewrite rules.
 -/
 theorem opU_pb (x z : V) (F : W → ℂ) : opU H x (fun v => F (e v)) z = opU H' (e x) F (e z) := by
   simp only [opU, map_add, hH]
 
 /- English proof (translation)
-Introduce `x y` and use `by rw [hH, hH]; exact h _ _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem herm_pb (h : IsHerm H') : IsHerm H := fun x y => by rw [hH, hH]; exact h _ _
 
 /- English proof (translation)
-Use `⟨fun x hx => by rw [hα x hx]; exact h.1 _ hx, fun x hx y hy => ?_⟩` and prove the remaining obligations. Establish `hx' : e x ∈ Λ` using `hx`. Establish `hy' : e y ∈ Λ` using `hy`. Establish `hxy : e (x + y) ∈ Λ` using `by rw [map_add]; exact Λ.add_mem hx' hy'`. Rewrite using `[hα _ hxy, hα x hx', hα y hy', map_add, h.2 _ hx' _ hy']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [altE, hH]`.
+Simplify using the standard rewrite rules.
 -/
 theorem semi_pb {Λ : AddSubgroup W} {α : V → ℂ} {α' : W → ℂ} (hα : ∀ x, e x ∈ Λ → α x = α' (e x))
     (h : IsSemiChar H' Λ α') : IsSemiChar H (pb e Λ) α := by
@@ -119,7 +119,7 @@ theorem semi_pb {Λ : AddSubgroup W} {α : V → ℂ} {α' : W → ℂ} (hα : �
   simp only [altE, hH]
 
 /- English proof (translation)
-Introduce `x hx z`. Establish `hx' : e x ∈ Λ` using `hx`. Rewrite using `[opU_pb e H H' hH, hα x hx']`. Conclude with `h _ hx' _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixed_pb {Λ : AddSubgroup W} {α : V → ℂ} {α' : W → ℂ} (hα : ∀ x, e x ∈ Λ → α x = α' (e x)) {F : W → ℂ}
     (h : F ∈ fixedBy H' α' Λ) : (fun v => F (e v)) ∈ fixedBy H α (pb e Λ) := by
@@ -129,13 +129,13 @@ theorem fixed_pb {Λ : AddSubgroup W} {α : V → ℂ} {α' : W → ℂ} (hα : 
   exact h _ hx' _
 
 /- English proof (translation)
-Unfold `IsSelfDual at h ⊢`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx show e x ∈ Λ`. Rewrite using `[← h]`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `y' hy'`. Take `⟨m, hm⟩` from `hx (e.symm y') (show e (e.symm y') ∈ Λ by simpa using hy')`. Use `⟨m, ?_⟩` and prove the remaining obligations. Simplify `hm` using `[altE, hH]`. Introduce `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx' : e x ∈ dualLat H' Λ`. Rewrite using `[h]`. Conclude with `hx`. Introduce `y hy`. Take `⟨m, hm⟩` from `hx' (e y) hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨m, ?_⟩` and prove the remaining obligations. Simplify `hm` using `[altE, hH]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem selfDual_pb {Λ : AddSubgroup W} (h : IsSelfDual H' Λ) : IsSelfDual H (pb e Λ) := by
   unfold IsSelfDual at h ⊢
@@ -158,13 +158,11 @@ theorem selfDual_pb {Λ : AddSubgroup W} (h : IsSelfDual H' Λ) : IsSelfDual H (
     simpa [altE, hH] using hm
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `Finset.mem_map.1 hx`. Use `show e (e.symm y) ∈ Λ₂`. Rewrite using `[e.apply_symm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hS.1 y hy`. Introduce `x hx y hy hxy`. Take `⟨x', hx', rfl⟩` from `Finset.mem_map.1 hx`. Take `⟨y', hy', rfl⟩` from `Finset.mem_map.1 hy`. Establish `: e (e.symm x' - e.symm y') ∈ Λ₁` using `hxy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[map_sub, e.apply_symm_apply, e.apply_symm_apply]`. Rewrite using `[hS.2.1 x' hx' y' hy' this]`. Introduce `y hy`. Take `⟨x, hx, hxy⟩` from `hS.2.2 (e y) hy`. Use `⟨e.symm x, Finset.mem_map.2 ⟨x, hx, rfl⟩, ?_⟩` and prove the remaining obligations.
-
-Use `show e (y - e.symm x) ∈ Λ₁`. Rewrite using `[map_sub, e.apply_symm_apply]` and apply the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem reps_pb {Λ₁ Λ₂ : AddSubgroup W} {S : Finset W} (hS : IsReps Λ₁ Λ₂ S) :
     IsReps (pb e Λ₁) (pb e Λ₂) (S.map e.symm.toEquiv.toEmbedding) := by
@@ -187,9 +185,9 @@ theorem reps_pb {Λ₁ Λ₂ : AddSubgroup W} {S : Finset W} (hS : IsReps Λ₁ 
     rwa [map_sub, e.apply_symm_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Take `⟨⟨S, hSr⟩, -⟩` from `cosetRepsExist W Λ₁ Λ₂ hidx`. Rewrite using `[InterReps_of semicharacterHom W H' hH' Λ₁ Λ₂ α' hS F hF S hSr (e z), InterReps_of semicharacterHom V H (herm_pb e H H' hH hH') _ _ α (semi_pb e H H' hH hα₂ hS) _ (fixed_pb e H H' hH hα₁ hF) _ (reps_pb e H H' hH hSr) z, relIdx_pb]`. Use `congr 1`. Simplify using `only [sumU, Finset.sum_map]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Establish `hx2 : e (e.symm x) ∈ Λ₂` using `by rw [e.apply_symm_apply]; exact hSr.1 x hx`. Use `show α (e.symm x) * opU H (e.symm x) (fun v => F (e v)) z = _`. Rewrite using `[opU_pb e H H' hH, hα₂ _ hx2, e.apply_symm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inter_pb (hH' : IsHerm H') (Λ₁ Λ₂ : AddSubgroup W) (α : V → ℂ) (α' : W → ℂ)
     (hα₁ : ∀ x, e x ∈ Λ₁ → α x = α' (e x)) (hα₂ : ∀ x, e x ∈ Λ₂ → α x = α' (e x))
@@ -216,7 +214,7 @@ variable {V W : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [FiniteDimensio
 
 include hH in
 /- English proof (translation)
-Use `⟨?_, fixed_pb e H H' hH hα h.2⟩` and prove the remaining obligations. Establish `h1 : AnalyticOnNhd ℂ (LinearMap.toContinuousLinearMap e.toLinearMap) Set.univ` using `(LinearMap.toContinuousLinearMap e.toLinearMap).analyticOnNhd _`. Conclude with `h.1.comp h1 (fun _ _ => Set.mem_univ _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem th_pb {Λ : AddSubgroup W} {α : V → ℂ} {α' : W → ℂ} (hα : ∀ x, e x ∈ Λ → α x = α' (e x)) {F : W → ℂ}
     (h : F ∈ Th H' α' Λ) : (fun v => F (e v)) ∈ Th H α (pb e Λ) := by
@@ -228,11 +226,11 @@ theorem th_pb {Λ : AddSubgroup W} {α : V → ℂ} {α' : W → ℂ} (hα : ∀
 end GenTh
 
 /- English proof (translation)
-Introduce `hd`. Establish `h0' : Nat.card (Λ₂ ⧸ Λ₁.addSubgroupOf Λ₂) ≠ 0` using `h0`. Establish `hd' : p ∣ Nat.card (Λ₂ ⧸ Λ₁.addSubgroupOf Λ₂)` using `hd`. Establish `: Finite (Λ₂ ⧸ Λ₁.addSubgroupOf Λ₂)` using `Nat.finite_of_card_ne_zero h0'`. Take `⟨q, hq⟩` from `exists_prime_addOrderOf_dvd_card' p hd'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hsq : s • q = 0`. Proceed by induction on `q using QuotientAddGroup.induction_on with | H a => ?_`. Rewrite using `[← QuotientAddGroup.mk_nsmul, QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf, AddSubgroup.coe_nsmul]`. Conclude with `hk _ a.2`. Establish `h1 : p ∣ s` using `hq ▸ addOrderOf_dvd_of_nsmul_eq_zero hsq`.
+Establish an intermediate fact. Proceed by induction. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : p ∣ Nat.gcd s p` using `Nat.dvd_gcd h1 dvd_rfl`. Rewrite `h2` using `[hs]`. Conclude with `(Fact.out : p.Prime).one_lt.ne' (Nat.dvd_one.1 h2)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_dvd_relIdx {V : Type*} [AddCommGroup V] (Λ₁ Λ₂ : AddSubgroup V) (p s : ℕ) [Fact p.Prime] (hs : Nat.Coprime s p)
     (h0 : relIdx Λ₁ Λ₂ ≠ 0) (hk : ∀ x ∈ Λ₂, s • x ∈ Λ₁) : ¬ p ∣ relIdx Λ₁ Λ₂ := by
@@ -255,9 +253,9 @@ section LaS
 variable {D : Car} {N N' : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `hA using Submodule.span_induction with`. Consider the case `mem A hA => exact Submodule.subset_span (h A hA)`. Consider the case `zero => rw [smul_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add A A' _ _ h1 h2 => rw [smul_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.add_mem _ h1 h2`. Consider the case `smul r A _ h1 => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ _ h1`.
+A detailed English derivation is pending.
 -/
 theorem homL_nsmul (s : ℕ) {L₁ L₂ : Submodule (𝓞 D.host.E) (Fin N → D.host.E)} {L₁' L₂' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)}
     (h : ∀ A : Matrix (Fin N') (Fin N) D.host.E, (∀ x ∈ L₂, A.mulVec x ∈ L₂') → ∀ x ∈ L₁, (s • A).mulVec x ∈ L₁')
@@ -269,9 +267,9 @@ theorem homL_nsmul (s : ℕ) {L₁ L₂ : Submodule (𝓞 D.host.E) (Fin N → D
   | smul r A _ h1 => rw [smul_comm]; exact Submodule.smul_mem _ _ h1
 
 /- English proof (translation)
-Proceed by induction on `hA using Submodule.span_induction with`. Consider the case `mem A hA`. Take `⟨a, ha, A', hA', rfl⟩` from `hA`. Conclude with `Submodule.subset_span ⟨a, ha, s • A', homL_nsmul s h hA', smul_comm _ _ _⟩`. Consider the case `zero => rw [smul_zero]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.zero_mem _`. Consider the case `add A A' _ _ h1 h2 => rw [smul_add]`. Conclude with `Submodule.add_mem _ h1 h2`. Consider the case `smul r A _ h1 => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ _ h1`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem YYl_nsmul (s : ℕ) {L₁ L₂ : Submodule (𝓞 D.host.E) (Fin N → D.host.E)} {L₁' L₂' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)}
     (h : ∀ A : Matrix (Fin N') (Fin N) D.host.E, (∀ x ∈ L₂, A.mulVec x ∈ L₂') → ∀ x ∈ L₁, (s • A).mulVec x ∈ L₁')
@@ -285,11 +283,11 @@ theorem YYl_nsmul (s : ℕ) {L₁ L₂ : Submodule (𝓞 D.host.E) (Fin N → D.
   | smul r A _ h1 => rw [smul_comm]; exact Submodule.smul_mem _ _ h1
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨w, hw, A, hA, rfl⟩` from `hz`. Use `AddSubgroup.subset_closure ⟨w, hw, s • A, YYl_nsmul s h hA, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_comm]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `τ i j`. Use `show s • Formalism.L2.Ker.Cd.TaylorLogMetric.embT D τ (A i j) = Formalism.L2.Ker.Cd.TaylorLogMetric.embT D τ (s • A i j)`. Rewrite using `[map_nsmul]`. Consider the case `zero => rw [smul_zero]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add x y _ _ h1 h2 => rw [smul_add]`. Conclude with `add_mem h1 h2`. Consider the case `neg x _ h1 => rw [smul_neg]`. Conclude with `neg_mem h1`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem La_nsmul (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (s : ℕ) {L₁ L₂ : Submodule (𝓞 D.host.E) (Fin N → D.host.E)}
     {L₁' L₂' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)}
@@ -309,7 +307,7 @@ theorem La_nsmul (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (s : ℕ) {L₁ L₂ : 
   | neg x _ h1 => rw [smul_neg]; exact neg_mem h1
 
 /- English proof (translation)
-Use `La_nsmul cc δ s (fun A hA x hx => ?_) hz` and prove the remaining obligations. Establish `h1` using `hA _ (h x hx)`. Rewrite `h1` using `[Matrix.mulVec_smul, Nat.cast_smul_eq_nsmul]`. Rewrite using `[Matrix.smul_mulVec]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem La_left (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (s : ℕ) {L₁ L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)}
     (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)) (h : ∀ x ∈ L₁, (s : D.host.E) • x ∈ L)
@@ -320,7 +318,7 @@ theorem La_left (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (s : ℕ) {L₁ L : Subm
   rwa [Matrix.smul_mulVec]
 
 /- English proof (translation)
-Use `La_nsmul cc δ s (fun A hA x hx => ?_) hz` and prove the remaining obligations. Establish `h1` using `h _ (hA x hx)`. Rewrite `h1` using `[Nat.cast_smul_eq_nsmul]`. Rewrite using `[Matrix.smul_mulVec]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem La_right (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (s : ℕ) (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E))
     {L₁' L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)} (h : ∀ x ∈ L', (s : D.host.E) • x ∈ L₁')
@@ -337,11 +335,11 @@ section Flat
 variable {D : Car} {X : Fields} (s : Seam D X) {a b : ℕ}
 
 /- English proof (translation)
-Rewrite using `[formV_apply]`. Use `show (∑ i, ∑ j, x i * hSc X.Tau a b A⁻¹ i j * conj (y j)) = _`. Simplify using `only [hSc, Matrix.diagonal_apply, mul_ite, mul_zero, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[Fintype.sum_prod_type, ← Equiv.sum_comp s.iT.symm, Finset.sum_div]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fintype.sum_prod_type, Finset.sum_div]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_div]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `show x (s.iT.symm τ, i, j) * ((A⁻¹ : ℝ) : ℂ) * conj (y (s.iT.symm τ, i, j)) = x (s.iT.symm τ, i, j) * conj (y (s.iT.symm τ, i, j)) / (A : ℂ)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Complex.ofReal_inv, div_eq_mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem form_flat (A : ℝ) (x y : DVar X.Tau a b → ℂ) :
     matH (hSc X.Tau a b A⁻¹) x y = formV A D.what₂.Tau a b (s.flatV a b x) (s.flatV a b y) := by
@@ -360,16 +358,16 @@ theorem form_flat (A : ℝ) (x y : DVar X.Tau a b → ℂ) :
   ring
 
 /- English proof (translation)
-Simplify using `only [alphaQ, Formalism.L2.Th1.H.qOf, form_flat s]`.
+Simplify using the standard rewrite rules.
 -/
 theorem alpha_flat (c A : ℝ) (x : DVar X.Tau a b → ℂ) :
     alphaQ c (matH (hSc X.Tau a b A⁻¹)) x = alphaQ c (formV A D.what₂.Tau a b) (s.flatV a b x) := by
   simp only [alphaQ, Formalism.L2.Th1.H.qOf, form_flat s]
 
 /- English proof (translation)
-Use extensionality with `w w'`. Simplify using `only [hPow, hOne, hSc, Matrix.smul_apply, Matrix.one_apply, Matrix.diagonal_apply, smul_eq_mul]`. Distinguish the cases in `h1 : w = w'`. Substitute `h1` using the available equality. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg h1]`. Distinguish the cases in `h2 : w.2 = w'.2`. Establish `h3 : w.1 ≠ w'.1` using `fun h => h1 (Prod.ext h h2)`. Simplify using `[h2, h3]`. Simplify using `[h2]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem hPow_hOne (L : PeriodPair) :
     hPow (Fin b × Fin a) (hOne L X.Tau) = hSc X.Tau a b (Formalism.L2.Th1.F.area L)⁻¹ := by
@@ -392,7 +390,7 @@ def lamM' : AddSubgroup (X.Tau → ℂ) :=
 def thM' : (X.Tau → ℂ) → ℂ := fun z => B.thMM fun τ => z (s.iT.symm τ)
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `hQ a b L L' hA _ hx`. Rewrite using `[alpha_flat s]`. Conclude with `(al_eq D B.tor _ m hm).symm`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem al_flat (hQ : B.QIntAll) {L : Submodule (𝓞 D.host.E) (Fin a → D.host.E)} {L' : Submodule (𝓞 D.host.E) (Fin b → D.host.E)}
     (hA : Formalism.L2.Ker.Cd.TaylorLogMetric.admitted D a b L L') (x : DVar X.Tau a b → ℂ) (hx : s.flatV a b x ∈ Formalism.L2.Ker.Cd.TaylorLogMetric.La D B.tor L L') :
@@ -402,7 +400,7 @@ theorem al_flat (hQ : B.QIntAll) {L : Submodule (𝓞 D.host.E) (Fin a → D.hos
   exact (al_eq D B.tor _ m hm).symm
 
 /- English proof (translation)
-Use extensionality with `z`. Use `show (∀ i : Fin b × Fin a, (fun τ => z (s.iT.symm τ, i)) ∈ B.lamM) ↔ s.flatV a b z ∈ Formalism.L2.Ker.Cd.TaylorLogMetric.La D B.tor _ _`. Rewrite using `[show Formalism.L2.Ker.Cd.TaylorLogMetric.La D B.tor (Formalism.L2.Ker.Cd.StandardLatticesGL3.stdL D a) (Formalism.L2.Ker.Cd.StandardLatticesGL3.stdL D b) = powLat B.lamM a b from B.lat0OK a b]`. Use `show _ ↔ ∀ i j, (fun τ => z (s.iT.symm τ, i, j)) ∈ B.lamM`. Conclude with `Prod.forall`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latPow_eq : latPow (Fin b × Fin a) (lamM' s B) = s.laF B.tor (Formalism.L2.Ker.Cd.StandardLatticesGL3.stdL D a) (Formalism.L2.Ker.Cd.StandardLatticesGL3.stdL D b) := by
   ext z
@@ -412,7 +410,7 @@ theorem latPow_eq : latPow (Fin b × Fin a) (lamM' s B) = s.laF B.tor (Formalism
   exact Prod.forall
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Use `show ∏ i : Fin b × Fin a, B.thMM (fun τ => z (s.iT.symm τ, i)) = ∏ i : Fin b, ∏ j : Fin a, B.thMM fun τ => z (s.iT.symm τ, i, j)`. Rewrite using `[Fintype.prod_prod_type]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fnPow_eq : fnPow (Fin b × Fin a) (thM' s B) = fun z => B.thZero a b (s.flatV a b z) := by
   funext z
@@ -420,23 +418,19 @@ theorem fnPow_eq : fnPow (Fin b × Fin a) (thM' s B) = fun z => B.thZero a b (s.
   rw [Fintype.prod_prod_type]
 
 /- English proof (translation)
-Establish `h0 : δ ≠ 0` using `Formalism.L2.Ker.Cd.IntegralLatticeDensity.delta_nonzero_link D cc hcc δ hδ`. Establish `hStd` using `B.stdOK hcc hδ`. Establish `hLA` using `B.latAll hcc hδ h0`. Establish `hQ : B.QIntAll` using `Formalism.L2.Ker.Cd.IntegralLatticeDensity.rational_integrality_link D cc hcc δ hδ B`. Establish `hAr : TaylorLogMetric.area (Formalism.L2.Ker.Cd.TaylorLogMetric.lamOf D cc δ) = Formalism.L2.Th1.F.area B.L` using `B.areaOK`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf` using `form_flat s (a := a) (b := b) (TaylorLogMetric.area (Formalism.L2.Ker.Cd.TaylorLogMetric.lamOf D cc δ))`. Establish `hHerm'` using `formV_herm (TaylorLogMetric.area (Formalism.L2.Ker.Cd.TaylorLogMetric.lamOf D cc δ)) D.what₂.Tau a b`. Establish `hHerm` using `herm_pb (s.flatV a b) _ _ hf hHerm'`. Establish `A0` using `Formalism.L2.Ker.Cd.Base.first_coordinate_admissible hA`. Establish `A1` using `Formalism.L2.Ker.Cd.Base.isAdmissible_flagPair_of_unitriangular_left_automorphism hA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sd : ∀ L L', Formalism.L2.Ker.Cd.TaylorLogMetric.admitted D a b L L' → IsSelfDual (matH (hSc X.Tau a b (TaylorLogMetric.area (Formalism.L2.Ker.Cd.TaylorLogMetric.lamOf D cc δ))⁻¹)) (s.laF B.tor L L')` using `fun L L' h => selfDual_pb (s.flatV a b) _ _ hf (hLA.1 a b L L' h).1`. Establish `idx : ∀ L₁ L₁' L₂ L₂', Formalism.L2.Ker.Cd.TaylorLogMetric.admitted D a b L₁ L₁' → Formalism.L2.Ker.Cd.TaylorLogMetric.admitted D a b L₂ L₂' → relIdx (s.laF B.tor L₁ L₁') (s.laF B.tor L₂ L₂') ≠ 0`. Introduce `L₁ L₁' L₂ L₂' h₁ h₂`. Use `show relIdx (pb (s.flatV a b) _) (pb (s.flatV a b) _) ≠ 0`. Rewrite using `[relIdx_pb]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hLA.2 a b _ _ _ _ h₁ h₂).1`. Establish `l0` using `hP a₀ b₀ c₀ D.host.d ha hd lam hlam hcm X.Tau (hOne B.L X.Tau) (lamM' s B) hSDM hStM _ hThM p ι hMM (Fin b × Fin a)`. Rewrite `l0` using `[hPow_hOne, latPow_eq, fnPow_eq, ← hAr]`. Establish `t0` using `th_pb (s.flatV a b) _ _ hf (al_flat s B hQ A0) (B.thZeroMem hStd a b)`. Establish `e1` using `inter_pb (s.flatV a b) _ _ hf hHerm' _ _ _ _ (al_flat s B hQ A0) (al_flat s B hQ A1) (hLA.1 a b _ _ A1).2 (hLA.2 a b _ _ _ _ A0 A1).1 (B.thZero a b) (B.thZeroMem hStd a b).2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `n1 : ¬ p ∣ relIdx (s.laF B.tor (Formalism.L2.Ker.Cd.StandardLatticesGL3.stdL D a) (Formalism.L2.Ker.Cd.StandardLatticesGL3.stdL D b)) (s.laF B.tor L (Formalism.L2.Ker.Cd.StandardLatticesGL3.stdL D b))`. Take `⟨s₁, hs₁, h₁, -⟩` from `hL`. Use `show ¬ p ∣ relIdx (pb (s.flatV a b) _) (pb (s.flatV a b) _)`. Rewrite using `[relIdx_pb]`. Conclude with `not_dvd_relIdx _ _ p s₁ hs₁ (hLA.2 a b _ _ _ _ A0 A1).1 fun x hx => La_left cc δ s₁ _ h₁ hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `l1` using `hI a₀ b₀ c₀ D.host.d ha hd lam hlam hcm (DVar X.Tau a b) _ _ _ hHerm hPD (hLat _ _ A0) (hLat _ _ A1) (sd _ _ A0) (sd _ _ A1) (hSt _ _ A0) (hSt _ _ A1) _ t0 p ι (idx _ _ _ _ A0 A1) (idx _ _ _ _ A1 A0) n1 l0`. Establish `l1' : LocNorm a₀ b₀ D.host.d ha hd lam hlam (hSc X.Tau a b (TaylorLogMetric.area (Formalism.L2.Ker.Cd.TaylorLogMetric.lamOf D cc δ))⁻¹) (s.laF B.tor L (Formalism.L2.Ker.Cd.StandardLatticesGL3.stdL D b)) (fun z => B.thHalf a b L (s.flatV a b z)) p ι`. Use `l1` as an intermediate fact. Use `erw [e1] at this`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `t1` using `th_pb (s.flatV a b) _ _ hf (al_flat s B hQ A1) (B.thHalf_mem hStd hLA hA)`. Establish `e2` using `inter_pb (s.flatV a b) _ _ hf hHerm' _ _ _ _ (al_flat s B hQ A1) (al_flat s B hQ hA) (hLA.1 a b _ _ hA).2 (hLA.2 a b _ _ _ _ A1 hA).1 (B.thHalf a b L) (B.thHalf_mem hStd hLA hA).2`. Establish `n2 : ¬ p ∣ relIdx (s.laF B.tor L (Formalism.L2.Ker.Cd.StandardLatticesGL3.stdL D b)) (s.laF B.tor L L')`. Take `⟨s₂, hs₂, -, h₂⟩` from `hL'`. Use `show ¬ p ∣ relIdx (pb (s.flatV a b) _) (pb (s.flatV a b) _)`.
-
-Rewrite using `[relIdx_pb]`. Conclude with `not_dvd_relIdx _ _ p s₂ hs₂ (hLA.2 a b _ _ _ _ A1 hA).1 fun x hx => La_right cc δ s₂ _ h₂ hx`. Establish `l2` using `hI a₀ b₀ c₀ D.host.d ha hd lam hlam hcm (DVar X.Tau a b) _ _ _ hHerm hPD (hLat _ _ A1) (hLat _ _ hA) (sd _ _ A1) (sd _ _ hA) (hSt _ _ A1) (hSt _ _ hA) _ t1 p ι (idx _ _ _ _ A1 hA) (idx _ _ _ _ hA A1) n2 l1'`. Establish `l2' : LocNorm a₀ b₀ D.host.d ha hd lam hlam (hSc X.Tau a b (TaylorLogMetric.area (Formalism.L2.Ker.Cd.TaylorLogMetric.lamOf D cc δ))⁻¹) (s.laF B.tor L L') (fun z => B.thMoved a b L L' (s.flatV a b z)) p ι`. Use `l2` as an intermediate fact.
-
-Use `erw [e2] at this`. Conclude with `this`. Conclude with `hS a₀ b₀ D.host.d ha hd lam hlam (DVar X.Tau a b) _ _ _ p ι _ hχ l2'`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem locNorm_thF_of (hS : LocNormScale) (hP : LocNormPow) (hI : LocNormInter) (χ : Formalism.L2.Ker.Cd.TaylorLogMetric.IdE D → ℂ)
     (a₀ : ℕ) (b₀ c₀ : ℤ) (ha : 0 < a₀) (hd : 0 < D.host.d) (lam : ℂ) (hlam : lam ≠ 0) (p : ℕ) [Fact p.Prime] (ι : ℂ ≃+* ℂ_[p])
@@ -517,7 +511,7 @@ theorem thF_ambOf (χ : Formalism.L2.Ker.Cd.TaylorLogMetric.IdE D → ℂ) (cD :
     Formalism.L2.AlgTh.thF (ambOf s B χ cD) N N' = fun z => B.eNat χ a b (s.lat N) (s.lat N') (s.flatV a b z) := rfl
 
 /- English proof (translation)
-Rewrite using `[hT D X s cc δ B χ cD a b N N' hok, thF_ambOf]`. Conclude with `locNorm_thF_of s B hS hP hI χ a₀ b₀ c₀ ha hd lam hlam p ι hcc hδ hcm hSDM hStM hThM hMM hPD hLat hSt hA hN hN' hχ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locNorm_ambOf_of (hT : LamTie) (hS : LocNormScale) (hP : LocNormPow) (hI : LocNormInter) (χ : Formalism.L2.Ker.Cd.TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ)
     (a₀ : ℕ) (b₀ c₀ : ℤ) (ha : 0 < a₀) (hd : 0 < D.host.d) (lam : ℂ) (hlam : lam ≠ 0) (p : ℕ) [Fact p.Prime] (ι : ℂ ≃+* ℂ_[p])

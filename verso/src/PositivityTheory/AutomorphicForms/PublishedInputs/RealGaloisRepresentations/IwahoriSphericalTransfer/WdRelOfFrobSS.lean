@@ -13,9 +13,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.WdResGen
 
 /- English proof (translation)
-Take `⟨L₁, r₁, hm₁, hV₁, e₁⟩` from `wdAt_of_isPstAt ι B h hj (r := r) ⟨L₂, r₂, hm₂, hV₂⟩`. Establish `h₁ : L₁.1 ≤ (supExt L₁ L₂).1` using `le_sup_left`. Establish `h₂ : L₂.1 ≤ (supExt L₁ L₂).1` using `le_sup_right`. Establish `e : mapRep (IntermediateField.inclusion h₁).toRingHom r₁ = mapRep (IntermediateField.inclusion h₂).toRingHom r₂`. Use extensionality with `g i j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `congrArg (fun f : ↥(Dec (F := E) A) →* GL (Fin a) (Om l) => (f g : Matrix (Fin a) (Fin a) (Om l)) i j) (hm₁.2.trans hm₂.2.symm)`. Rewrite using `[e₁, BridgeParam.wdPst_enlarge P ι B h hj h₁ r₁ hV₁, BridgeParam.wdPst_enlarge P ι B h hj h₂ r₂ hV₂, e]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem wdAt_of_model {l : ℕ} [Fact l.Prime] (P : LocPrime l) (ι : Om l ≃+* ℂ)
     {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
@@ -36,9 +36,9 @@ private theorem wdAt_of_model {l : ℕ} [Fact l.Prime] (P : LocPrime l) (ι : Om
   rw [e₁, BridgeParam.wdPst_enlarge P ι B h hj h₁ r₁ hV₁, BridgeParam.wdPst_enlarge P ι B h hj h₂ r₂ hV₂, e]
 
 /- English proof (translation)
-Set `e` to `(Module.finBasis ℂ V).equivFun`. Use `⟨_, a.transport e, b.transport e, WD.sound (a.iso_transport e).symm, WD.sound (b.iso_transport e).symm, ?_, fun σ σ' hσ => ?_⟩` and prove the remaining obligations. Use `show e.conjAlgEquiv ℂ a.N = e.conjAlgEquiv ℂ b.N`. Rewrite using `[ha.1, hb.1]`. Use `show e.conjAlgEquiv ℂ (a.ρ σ) = e.conjAlgEquiv ℂ (b.ρ σ')`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hρ σ σ' hσ`. Establish `h2` using `hb.2 σ'`. Rewrite `h2` using `[← h1]`. Rewrite using `[(Module.End.isNilpotent_isSemisimple_unique (ha.2 σ).2 (a.semisimple σ) h2.2 (b.semisimple σ') ((ha.2 σ).1.symm.sub_left (Commute.refl _)) (h2.1.symm.sub_left (Commute.refl _)) (by simp)).2]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem wdRel_of_frobSS {E Ω E' Ω' : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     [Field E'] [NumberField E'] [Field Ω'] [Algebra E' Ω'] [IsAlgClosure E' Ω']
@@ -67,19 +67,17 @@ open GlobalTheory.WdResGen in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ K _ _ _ _ _ _ l _ P A O _ _ _ Bw Bw' hK hJ hL n r hr ι v w h h' hj hj' i hP`. Take `⟨Kw, j, j_E, j_dense, e, e_cont, e_symm_cont, e_comm, LL, LL_split, eO, eO_alg, eO_cont, eO_symm_cont⟩` from `Bw'`. Simplify using `only at hK hJ hL`. Substitute `hK hJ hL` using the available equality. Use `set Bw' : LocBridge l K Ω (Dec (F := K) A) O := ⟨Bw.Kw, Bw.j, j_E, j_dense, e, e_cont, e_symm_cont, e_comm, Bw.LL, LL_split, eO, eO_alg, eO_cont, eO_symm_cont⟩ with hB`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Take `⟨L, r', hm, hV⟩` from `hr`. Establish `key : ∀ (g : ↥(Dec (F` using `K) A)) (x : Ω), ((Bw.e.symm (e g) : ↥(Dec (F := F) A)) : G F Ω) x = (g : G K Ω) x := fun g x => Bw.j.injective (by rw [← Bw.e_comm, MulEquiv.apply_symm_apply, e_comm])`. Set `r'' : ↥(Dec (F` to `K) A) →* GL (Fin n) ↥L.1 := r'.comp (e.trans Bw.e.symm).toMonoidHom`. Establish `hm' : IsModel Bw' ((r.comp (res F Ω K)).comp (Dec (F` using `K) A).subtype) L r'' := by`. Use `⟨hm.1, MonoidHom.ext fun g => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `DFunLike.congr_fun hm.2 (Bw.e.symm (e g))`. Use `h1.trans (congrArg r (AlgEquiv.ext (key g)))` and prove the remaining obligations. Establish `hrep : Bw'.repE L r'' = Bw.repE L r'`. Use `MonoidHom.ext fun g => ?_` and prove the remaining obligations. Establish `h1 : r'' (e.symm g) = r' (Bw.e.symm g)` using `by simp [r'']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrArg (fun m : GL (Fin n) ↥L.1 => Matrix.toLin' (m : Matrix (Fin n) (Fin n) ↥L.1)) h1`. Establish `hV' : IsPst P (Bw'.repE L r'')` using `by rw [hrep]; exact hV`. Rewrite using `[wdAt_of_model _ ι Bw h hj _ L r' hm hV, wdAt_of_model _ ι Bw' h' hj' _ L r'' hm' hV', hrep]`. Generalize the expression as in `Bw.repE L r' = ρ at hV ⊢`. Use `haveI := hV.finite`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[wdPst_of_isPst ι Bw h hj hV, wdPst_of_isPst ι Bw' h' hj' hV]`. Take `⟨c, hc, hdeg, hq, -⟩` from `GlobalTheory.T.place_over_transport_ring_iso F Ω A v h K Ω A w h' _ _ i hP`. Use `wdRel_of_frobSS _ (BridgeParam.isFrobSS_wdRep P ι Bw h hj ρ) (BridgeParam.isFrobSS_wdRep P ι Bw' h' hj' ρ) fun σ σ' hσ => ?_` and prove the remaining obligations. Establish `h1 : weilToGK Bw h σ = weilToGK Bw' h' σ'`. Establish `h2 : Subgroup.inclusion (Weil_le_Dec h) σ = Bw.e.symm (e (Subgroup.inclusion (Weil_le_Dec h') σ'))` using `Subtype.ext (AlgEquiv.ext fun x => (hσ x).trans (key (Subgroup.inclusion (Weil_le_Dec h') σ') x).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(congrArg Bw.e h2).trans (Bw.e.apply_symm_apply _)`. Establish `h3 : alpha l σ = alpha l σ'`. Rewrite using `[alpha, alpha, ← (hc σ σ').1 hσ, hdeg, resDeg, resDeg, hq]`. Establish `h4 : weilD Bw h P ρ σ = weilD Bw' h' P ρ σ'` using `(weilD_apply Bw h P ρ σ).trans ((congrArg₂ (fun (g : ↥(GK Bw.Kw)) (m : ℤ) => actD P ρ g * ((phiU P ρ ^ (-m) : (Module.End ↥L.1 ↥(Dpst P ρ))ˣ) : Module.End ↥L.1 ↥(Dpst P ρ))) h1 h3).trans (weilD_apply Bw' h' P ρ σ').symm)`. Use `wd_ext _ ι ρ fun x => ?_` and prove the remaining obligations.
-
-Conclude with `(wdRho_mk P ι Bw h hj ρ σ x).trans ((congrArg (wdMk P ι ρ) (LinearMap.congr_fun h4 x)).trans (wdRho_mk P ι Bw' h' hj' ρ σ' x).symm)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.RealGal.wdRelRes_gen : ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (K : Type) [Field K] [NumberField K] [Algebra F K] [Algebra K Ω] [IsScalarTower F K Ω] [IsAlgClosure K Ω] (l : ℕ) [Fact l.Prime] (P : LocPrime l) (A : ValuationSubring Ω) (O : Type) [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l F Ω (Dec (F := F) A) O) (Bw' : LocBridge l K Ω (Dec (F := K) A) O), Bw'.Kw = Bw.Kw → Bw'.j = Bw.j → Bw'.LL = Bw.LL → ∀ (a : ℕ) (r : G F Ω →* GL (Fin a) (Qbar l)), IsPstAt P Bw (r.comp (Dec (F := F) A).subtype) → ∀ (ι : Qbar l ≃+* ℂ) (v : HeightOneSpectrum (𝓞 F)) (w : HeightOneSpectrum (𝓞 K)) (h : IsPlaceOver A v) (h' : IsPlaceOver A w) (hj : GlobalTheory.Pst.Induces Bw) (hj' : GlobalTheory.Pst.Induces Bw') (i : v.adicCompletion F ≃+* w.adicCompletion K), PlaceIso A v A w (RingEquiv.refl Ω) (algebraMap F K) i → WDRel (RingEquiv.refl Ω) (wdAt P ι Bw h hj (r.comp (Dec (F := F) A).subtype)) (wdAt P ι Bw' h' hj' ((r.comp (res F Ω K)).comp (Dec (F := K) A).subtype)) := by
   intro F Ω _ _ _ _ _ K _ _ _ _ _ _ l _ P A O _ _ _ Bw Bw' hK hJ hL n r hr ι v w h h' hj hj' i hP

@@ -18,22 +18,22 @@ def tensorToProd (X Y : Type) [TopologicalSpace X] [TopologicalSpace Y] :
     SB X ⊗[ℂ] SB Y →ₗ[ℂ] SB (X × Y) := TensorProduct.lift (prodSBBil X Y)
 
 /- English proof (translation)
-Simplify using `[tensorToProd, prodSBBil]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tensorToProd_tmul {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] (f : SB X) (g : SB Y) :
     tensorToProd X Y (f ⊗ₜ g) = prodSB f g := by
   simp [tensorToProd, prodSBBil]
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `t ht`. Set `b` to `Module.Free.chooseBasis ℂ (SB X)`. Use `set c := TensorProduct.equivFinsuppOfBasisLeft b t with hc`. Establish `ht' : t = c.sum fun i n => b i ⊗ₜ n`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, ← TensorProduct.equivFinsuppOfBasisLeft_symm_apply, LinearEquiv.symm_apply_apply]`. Establish `hm : ∀ x y, ∑ i ∈ c.support, (b i).1 x * (c i).1 y = 0`. Introduce `x y`. Use `congrArg (fun F : SB (X × Y) => F.1 (x, y)) ht` as an intermediate fact. Simplify using `only [ht', Finsupp.sum, map_sum, tensorToProd_tmul] at this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[Submodule.coe_sum, Finset.sum_apply]`. Establish `hzero : c = 0`. Use extensionality with `i y`. Distinguish the cases in `hi : i ∈ c.support`. Establish `hli` using `(linearIndependent_iff'.mp b.linearIndependent) c.support (fun i => (c i).1 y) (by`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, ZeroMemClass.coe_zero, Pi.zero_apply]`. Rewrite using `[← hm x y]`. Conclude with `Finset.sum_congr rfl (fun j _ => mul_comm _ _)) i hi`. Simplify using `using hli`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Finsupp.notMem_support_iff.mp hi]`. Rewrite using `[ht', hzero]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tensorToProd_injective (X Y : Type) [TopologicalSpace X] [TopologicalSpace Y] :
     Function.Injective (tensorToProd X Y) := by
@@ -67,11 +67,11 @@ end GlobalTheory.LocFlat.CFac
 namespace GlobalTheory.LocFlat.CFac
 
 /- English proof (translation)
-Introduce `X Y _ _ M _ _ B`. Set `m` to `tensorToProd X Y`. Set `e` to `LinearEquiv.ofInjective m (tensorToProd_injective X Y)`. Set `l₀ : LinearMap.range m →ₗ[ℂ] M` to `(TensorProduct.lift B).comp e.symm.toLinearMap`. Take `⟨l, hl⟩` from `LinearMap.exists_extend l₀`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use `⟨l, fun f g => ?_⟩` and prove the remaining obligations. Establish `hmem : prodSB f g = ((e (f ⊗ₜ g) : LinearMap.range m) : SB (X × Y))`. Simplify using `[e, LinearEquiv.ofInjective_apply, m, tensorToProd_tmul]`. Use `LinearMap.congr_fun hl (e (f ⊗ₜ g))` as an intermediate fact. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, Submodule.coe_subtype, l₀, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply, TensorProduct.lift.tmul] at this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hmem, this]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_linear_of_bilinear_prodSB : ∀ (X Y : Type) [TopologicalSpace X] [TopologicalSpace Y] (M : Type) [AddCommGroup M] [Module ℂ M] (B : SB X →ₗ[ℂ] SB Y →ₗ[ℂ] M), ∃ l : SB (X × Y) →ₗ[ℂ] M, ∀ f g, l (prodSB f g) = B f g := by
   intro X Y _ _ M _ _ B

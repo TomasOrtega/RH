@@ -18,7 +18,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m}
   {mu : Tup X.F X.E X.K S} {cst : LocCst X (rowSG Pr sel mu)}
 
 /- English proof (translation)
-Take `⟨hk0, hr0, hN0, ht0⟩` from `ranks_frame_inequalities R hB.hm (j := i) (by omega)`. Take `⟨hk1, -, hN1, -⟩` from `ranks_frame_inequalities R hB.hm (j := i + 1) (by omega)`. Conclude with `⟨ciQ_mem P.1, ciQ_notMem_sq hB.hX hB.hPr hP, by omega, hk0, hk1, hr0, ht0, by rw [Nat.add_sub_cancel]; exact hN0.symm, hN1.symm⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem clX_phiHyp {m2 : ℕ} (hB : OcbBase Ch sel mu cst m2) {i : ℕ} (hi : i < m2) (P : rowSG Pr sel mu) (hP : P.1 ∈ Pr.vGs) :
     PhiGSLawHyp P.1 (qOf P.1) R.k R.rS R.r R.t (i + 1) (cOf R i) (R.N i) (cOf R (i + 1)) (R.N (i + 1)) := by
@@ -28,7 +28,7 @@ theorem clX_phiHyp {m2 : ℕ} (hB : OcbBase Ch sel mu cst m2) {i : ℕ} (hi : i 
     hN1.symm⟩
 
 /- English proof (translation)
-Introduce `_ hi P hP` and use `clPf_phiGSLaw (clX_phiHyp hB hi P hP) _ _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem clX_phiLaw_steps {m2 : ℕ} (hB : OcbBase Ch sel mu cst m2) :
     ∀ i, i < m2 → ∀ P : rowSG Pr sel mu, P.1 ∈ Pr.vGs → PhiGSLaw P.1 (qOf P.1) (psi0P Ch P.1) (chiP Ch P.1) R.k R.rS R.r R.t (i + 1)

@@ -13,15 +13,15 @@ namespace GlobalTheory.RightRegProps
 open GlobalTheory.RightRegFund in
 
 /- English proof (translation)
-Introduce `I μf _ _ fund hfund R hR`. Take `⟨hT, hL, hS, -⟩` from `GlobalTheory.CongTop.adelic_topology I`. Take `⟨Γ, hΓ, hc, -, hfd⟩` from `GlobalTheory.RatDiscrete.rational_points I`. Take `⟨hl, hrt, -⟩` from `GlobalTheory.AdelicUnimod.adelic_unimodular I μf`. Establish `hD` using `hfd μf fund hfund`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: BorelSpace I.GA` using `inferInstance`. Establish `: (I.muA μf).IsMulLeftInvariant` using `⟨hl⟩`. Establish `: (I.muA μf).IsMulRightInvariant` using `⟨hrt⟩`. Establish `: IsFiniteMeasureOnCompacts (I.muA μf)`. Unfold `AutInst.muA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `infer_instance`. Establish `hr : ∀ y, ∃ γ : Γ, I.rep fund y = (γ : I.GA) * y ∧ I.rep fund y ∈ fund`. Introduce `y`. Establish `h` using `hfund.2.1 y`. Establish `e : I.rep fund y = h.choose * y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `AutInst.rep`. Conclude with `dif_pos h`. Establish `hm : h.choose ∈ (Γ : Set I.GA)`. Establish `k` using `h.choose_spec.1`. Generalize the expression as in `h.choose = z at k ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[hΓ]`. Conclude with `k`. Conclude with `⟨⟨h.choose, hm⟩, e, e ▸ h.choose_spec.2⟩`. Conclude with `⟨GlobalTheory.RightRegFund.map_one hD hfund.1 hr hR, GlobalTheory.RightRegFund.map_mul hD hfund.1 hr hR, GlobalTheory.RightRegFund.norm_map hD hfund.1 hr hR, GlobalTheory.RightRegFund.continuous_map hD hfund.1 hr hR⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rightReg_unitary_mul_continuous : ∀ (I : AutInst) (μf : Measure I.Gf) [μf.IsHaarMeasure] [SigmaFinite μf] (fund : Set I.GA), I.IsFundDom (I.muA μf) fund → ∀ R : I.GA → (I.L2 μf fund →L[ℂ] I.L2 μf fund), I.IsRightReg μf fund R → R 1 = ContinuousLinearMap.id ℂ _ ∧ (∀ x y, R (x * y) = (R x).comp (R y)) ∧ (∀ x F, ‖R x F‖ = ‖F‖) ∧ ∀ F, Continuous fun x => R x F := by
   intro I μf _ _ fund hfund R hR

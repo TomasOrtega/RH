@@ -15,11 +15,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeR
 namespace GlobalTheory.Mem.DefSpaces
 
 /- English proof (translation)
-Use `(GlobalTheory.Mem.Top.evG_of_ev GlobalTheory.Mem.StdSize.vstd_size_ev).imp fun K _ _ _ _ hK => GlobalTheory.Mem.Top.GroupRetwisting.lg_all K fun B f _ hO _ T w Z j hj1 hj2 => ?_` and prove the remaining obligations. Take `⟨hV, -⟩` from `hK (w.st Z) hO`. Establish `hm : (w.st Z).toD7.R.m = (w.D Z).R.m` using `rfl`. Establish `hp` using `GlobalTheory.RepsObj.isPosDef_of_vStd (D := (w.st Z).toD7) ⟨j - 1, by omega⟩ (hV ⟨j - 1, by omega⟩)`. Express the relevant statement in the definitionally equal form `((w.st Z).toD7.sp.V j).IsDefinite`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `τ`. Use `left`. Establish `e : j - 1 + 1 = j` using `by omega`. Use `hp τ` as an intermediate fact. Simplify using `only [Formalism.IndefR.Links.Vc, e] at this`.
-
-Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem v_isDefinite : EvLgG fun K B f _ => KPx B f → ∀ (T : TwDat B) (w : ColW B f T) (Z : w.Lt), ∀ j, 1 ≤ j → j ≤ (w.D Z).R.m → ((w.D Z).sp.V j).IsDefinite := by
   refine (GlobalTheory.Mem.Top.evG_of_ev GlobalTheory.Mem.StdSize.vstd_size_ev).imp fun K _ _ _ _ hK =>

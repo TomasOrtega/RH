@@ -15,23 +15,19 @@ namespace GlobalTheory.PairStep
 open CategoryTheory AlgebraicGeometry TopologicalSpace in
 set_option autoImplicit false in
 /- English proof (translation)
-Take `⟨U, hzU, a, rfl⟩` from `hreg.exists_fnOf`. Take `⟨V, hV, hzV, hVU⟩` from `(Opens.isBasis_iff_nbhd.mp X.isBasis_affineOpens) hzU`. Establish `hV' : IsAffineOpen V` using `hV`. Establish `hgV : genericPoint X ∈ V` using `((genericPoint_spec X).mem_open_set_iff V.isOpen).mpr ⟨z, trivial, hzV⟩`. Rewrite `hf`, `hnu`, the goal using `[← _root_.GlobalTheory.Cartier.fnOf_resG hVU hgV a]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Generalize the expression as in `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.resG X hVU a = b at hf hnu ⊢`. Use `haveI : IsNoetherianRing Γ(X, V) := IsLocallyNoetherian.component_noetherian ⟨V, hV⟩`. Use `haveI : Nonempty V := ⟨⟨z, hzV⟩⟩`. Establish `hmem : ∀ q : PrimeSpectrum Γ(X, V), hV'.fromSpec q ∈ V` using `fun q => by`. Establish `: hV'.fromSpec q ∈ Set.range hV'.fromSpec` using `Set.mem_range_self q`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[hV'.range_fromSpec]`. Then use the resulting hypothesis. Establish `key : ∀ q : PrimeSpectrum Γ(X, V), _root_.GlobalTheory.Cartier.UnitAt (hV'.fromSpec q) (_root_.GlobalTheory.Cartier.fnOf V hgV b) ↔ b ∉ q.asIdeal`. Introduce `q`. Rewrite using `[_root_.GlobalTheory.Cartier.unitAt_fnOf_iff (hmem q) hgV b]`. Establish `: hV'.fromSpec q ∈ X.basicOpen b ↔ q ∈ PrimeSpectrum.basicOpen b`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← hV'.fromSpec_preimage_basicOpen]`. Both sides reduce to the same expression. Rewrite using `[this, PrimeSpectrum.mem_basicOpen]`. Use `set p := hV'.primeIdealOf ⟨z, hzV⟩`. Establish `hpz : hV'.fromSpec p = z` using `hV'.fromSpec_primeIdealOf ⟨z, hzV⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Establish `hbp : b ∈ p.asIdeal`. Assume the negation of the conclusion as `h`. Conclude with `hnu (hpz ▸ (key p).mpr h)`. Take `⟨P, hPmin, hPp⟩` from `Ideal.exists_minimalPrimes_le ((Ideal.span_singleton_le_iff_mem _).mpr hbp)`. Use `haveI hPprime : P.IsPrime := hPmin.1.1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `set q : PrimeSpectrum Γ(X, V) := ⟨P, hPprime⟩`. Establish `hbP : b ∈ P` using `(Ideal.span_singleton_le_iff_mem _).mp hPmin.1.2`. Use `⟨hV'.fromSpec q, ?_, ?_, fun h => (key q).mp h hbP⟩` and prove the remaining obligations. Rewrite using `[← hpz]`. Conclude with `((PrimeSpectrum.le_iff_specializes q p).mp hPp).map hV'.fromSpec.continuous`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `letI := X.presheaf.algebra_section_stalk ⟨hV'.fromSpec q, hmem q⟩ haveI hloc := hV'.isLocalization_stalk' q (hmem q)`. Establish `hdim : ringKrullDim (X.presheaf.stalk (hV'.fromSpec q)) = (P.height : WithBot ℕ∞)` using `@IsLocalization.AtPrime.ringKrullDim_eq_height _ _ q.asIdeal q.2 _ _ _ hloc`. Rewrite `hdim` using `[ringKrullDim_stalk_eq_coheight]`. Use `haveI : (Ideal.span {b}).IsPrincipal := ⟨⟨b, rfl⟩⟩`. Establish `hle : P.height ≤ 1` using `Ideal.height_le_one_of_isPrincipal_of_mem_minimalPrimes _ P hPmin`.
-
-Establish `hne : P.height ≠ 0`. Rewrite using `[Ne, Ideal.height_eq_zero_iff]`. Introduce `hmin`. Establish `hbot : P ≤ ⊥` using `hmin.2 ⟨Ideal.isPrime_bot, bot_le⟩ bot_le`. Establish `hb0 : b = 0` using `(Submodule.eq_bot_iff _).mp (le_bot_iff.mp hbot) b hbP`.
-
-Conclude with `hf (by rw [hb0, map_zero])`. Establish `h1 : P.height = 1` using `le_antisymm hle (ENat.one_le_iff_ne_zero.mpr hne)`. Rewrite `hdim` using `[h1]`. Conclude with `hdim` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma exists_coheight_one_generalization_not_unitAt {X : Scheme.{0}} [IsIntegral X]
     [IsLocallyNoetherian X] {z : X} {f : X.functionField} (hf : f ≠ 0)
@@ -91,21 +87,19 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace in
 set_option autoImplicit false in
 
 /- English proof (translation)
-Introduce `X _ _ D m z hD hm`. Establish `hm' : (m : ℚ) ≠ 0` using `by exact_mod_cast hm.ne'`. Take `⟨g, hg⟩` from `D.exists_isEqn z`. Take `⟨U, hzU, hU⟩` from `hg.exists_nhds`. Establish `hgen : ∀ w : X, w ⤳ z → D.IsEqn w g` using `fun w hwz => hU w (hwz.mem_open U.isOpen hzU)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `_root_.GlobalTheory.PairStep.Off _root_.GlobalTheory.Discrepancy.qWeil`. Simplify using `only [div_eq_zero_iff, hm', or_false, Int.cast_eq_zero]`. Rewrite using `[hg.mem_supp_iff, not_not]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hnu`. Establish `hreg` using `(_root_.GlobalTheory.Cartier.CartierDiv.eff_iff.mp hD) z g hg`. Take `⟨w, hwz, hw1, hwnu⟩` from `exists_coheight_one_generalization_not_unitAt (Units.ne_zero g) hreg hnu`. Establish `hmult` using `h w hwz`. Rewrite `hmult` using `[(hgen w hwz).mult_eq]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a, ha⟩` from `_root_.GlobalTheory.Discrepancy.regAt_of_specializes hwz hreg`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Conclude with `Units.ne_zero g (by rw [← ha, map_zero])`. Rewrite `hmult` using `[← ha, _root_.GlobalTheory.Cartier.ord_algebraMap hw1 ha0]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hdim : ringKrullDim (X.presheaf.stalk w) = 1`. Rewrite using `[ringKrullDim_stalk_eq_coheight, hw1]`. Both sides reduce to the same expression. Use `haveI : Ring.KrullDimLE 1 (X.presheaf.stalk w) := by`. Rewrite using `[Ring.krullDimLE_iff, hdim]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `le_rfl` after adjusting the coercions. Establish `hfin` using `isFiniteLength_quotient_span_singleton (X.presheaf.stalk w) (mem_nonZeroDivisors_of_ne_zero ha0)`. Establish `htop` using `Module.length_ne_top_iff.mpr hfin`. Establish `hzero : Module.length (X.presheaf.stalk w) (X.presheaf.stalk w ⧸ Ideal.span {a}) ≠ 0`. Rewrite using `[Ne, Module.length_eq_zero_iff, Ideal.Quotient.subsingleton_iff, Ideal.span_singleton_eq_top]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun hunit => hwnu ⟨a, hunit, ha⟩`. Establish `: (Module.length (X.presheaf.stalk w) (X.presheaf.stalk w ⧸ Ideal.span {a})).toNat ≠ 0`. Rewrite using `[Ne, ENat.toNat_eq_zero]`. The claim follows by propositional logic. Conclude with `this (by exact_mod_cast hmult)`.
-
-Introduce `hunit w hwz`. Rewrite using `[(hgen w hwz).mult_eq]`. Take `⟨V, hzV, hV⟩` from `hunit.exists_nhds`. Conclude with `(hV w (hwz.mem_open V.isOpen hzV)).ord_eq_zero`.
+The claim follows by propositional logic. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.PairStep.off_qWeil_iff_notMem_supp : ∀ (X : Scheme.{0}) [IsIntegral X]
     [IsLocallyNoetherian X] (D₀ : _root_.GlobalTheory.Cartier.CartierDiv X) (m : ℕ) (z : X),

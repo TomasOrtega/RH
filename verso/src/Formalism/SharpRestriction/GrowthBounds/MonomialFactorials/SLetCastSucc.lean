@@ -31,33 +31,33 @@ def dLvl (j : Fin G.T.t → ℕ) (jp : ℕ) (a : Fin (N + 1)) : ℕ :=
     (if Fin.last N = a then G.B - jp else 0)
 
 /- English proof (translation)
-Simplify using `[zLet]`.
+Simplify using the standard rewrite rules.
 -/
 theorem zLet_castSucc (i : Fin G.T.t) : zLet G (Fin.castSucc i) = M.finPos N (G.T.pos i) := by
   simp [zLet]
 
 /- English proof (translation)
-Simplify using `[zLet]`.
+Simplify using the standard rewrite rules.
 -/
 theorem zLet_last : zLet G (Fin.last G.T.t) = Fin.castSucc G.uPos := by
   simp [zLet]
 
 /- English proof (translation)
-Simplify using `[sLet]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sLet_castSucc (i : Fin G.T.t) : sLet G (Fin.castSucc i) = M.finPos N (G.T.pos i + 1) := by
   simp [sLet]
 
 /- English proof (translation)
-Simplify using `[sLet]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sLet_last : sLet G (Fin.last G.T.t) = Fin.last N := by
   simp [sLet]
 
 /- English proof (translation)
-Unfold `M.BlockData.Ehat`. Apply `IsWeightedHomogeneous.add` to reduce the goal to its premises. Use `(isWeightedHomogeneous_X ℚ_[p] (wL (r := r) G a) (M.scalZ N r G.T.t (Fin.castSucc i))).mul (isWeightedHomogeneous_X ℚ_[p] (wL (r := r) G a) (M.scalS N r G.T.t (Fin.castSucc i))) using 1` and compare the differences between its conclusion and the goal. Simplify using `[wL, M.scalZ, M.scalS, zLet_castSucc, sLet_castSucc]`. Apply `IsWeightedHomogeneous.sum` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `c _`. Use `(isWeightedHomogeneous_X ℚ_[p] (wL (r := r) G a) (Sum.inl (M.finPos N (G.T.pos i), c) : M.BVar N r G.T.t)).mul (isWeightedHomogeneous_X ℚ_[p] (wL (r := r) G a) (Sum.inl (M.finPos N (G.T.pos i + 1), c) : M.BVar N r G.T.t)) using 1` and compare the differences between its conclusion and the goal. Simplify using `[wL]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 -/
 theorem hom_Ehat (a : Fin (N + 1)) (i : Fin G.T.t) :
     IsWeightedHomogeneous (wL (r := r) G a) (G.Ehat p (r := r) i)
@@ -74,9 +74,9 @@ theorem hom_Ehat (a : Fin (N + 1)) (i : Fin G.T.t) :
     simp [wL]
 
 /- English proof (translation)
-Unfold `M.BlockData.Eplus`. Apply `IsWeightedHomogeneous.add` to reduce the goal to its premises. Use `(isWeightedHomogeneous_X ℚ_[p] (wL (r := r) G a) (M.scalZ N r G.T.t (Fin.last G.T.t))).mul (isWeightedHomogeneous_X ℚ_[p] (wL (r := r) G a) (M.scalS N r G.T.t (Fin.last G.T.t))) using 1` and compare the differences between its conclusion and the goal. Simplify using `[wL, M.scalZ, M.scalS, zLet_last, sLet_last]`. Apply `IsWeightedHomogeneous.sum` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `c _`. Use `(isWeightedHomogeneous_X ℚ_[p] (wL (r := r) G a) (Sum.inl (Fin.castSucc G.uPos, c) : M.BVar N r G.T.t)).mul (isWeightedHomogeneous_X ℚ_[p] (wL (r := r) G a) (M.xiVar N r G.T.t c)) using 1` and compare the differences between its conclusion and the goal. Simplify using `[wL, M.xiVar]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 -/
 theorem hom_Eplus (a : Fin (N + 1)) :
     IsWeightedHomogeneous (wL (r := r) G a) (G.Eplus p (r := r))
@@ -93,11 +93,11 @@ theorem hom_Eplus (a : Fin (N + 1)) :
     simp [wL, M.xiVar]
 
 /- English proof (translation)
-Establish `hsupp : ∀ m ∈ y.support, M.MultiDeg LL m` using `fun m hm => hy hm`. Rewrite using `[y.as_sum, map_sum]`. Apply `IsWeightedHomogeneous.sum` to reduce the goal to its premises. Introduce `m hm`. Rewrite using `[rename_monomial]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `isWeightedHomogeneous_monomial` to reduce the goal to its premises. Rewrite using `[Finsupp.weight_apply, Finsupp.sum_mapDomain_index (fun _ => by simp) (fun _ _ _ => add_smul _ _ _), Finsupp.sum_fintype _ _ (fun _ => by simp)]`. Unfold `chDeg`. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hsupp m hm i]`. Simplify using `only [M.chainEmb, wL]`. Apply the tactic sequence `by_cases h : Fin.castSucc i = a <;> simp [h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hom_chain (a : Fin (N + 1)) (LL : M.Letters N) (y : MvPolynomial (Fin N × Fin r) ℚ_[p])
     (hy : y ∈ M.Pol p r LL) :
@@ -119,13 +119,13 @@ theorem hom_chain (a : Fin (N + 1)) (LL : M.Letters N) (y : MvPolynomial (Fin N 
   by_cases h : Fin.castSucc i = a <;> simp [h]
 
 /- English proof (translation)
-Introduce `μ hμ`. Take `⟨hv, hb⟩` from `hg.1 (mem_support_iff.mpr hμ)`. Establish `hw : ∀ v, μ v * wL (r` using `r) G a v = μ v * (if Fin.last N = a then 1 else 0) := by`. Introduce `v`. Distinguish the cases in `h0 : μ v = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Simplify using `[h0]`. Take `⟨c, rfl⟩` from `hv v (Finsupp.mem_support_iff.mpr h0)`. Both sides reduce to the same expression. Establish `hsum : ∑ v, μ v = ∑ c, μ (M.xiVar N r G.T.t c)`. Rewrite using `[← Finset.sum_image (s := Finset.univ) (g := M.xiVar N r G.T.t) (by intro c _ c' _ h; simpa [M.xiVar] using h)]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `symm`. Apply `Finset.sum_subset (Finset.subset_univ _)` to reduce the goal to its premises. Introduce `v _ hv'`. Assume the negation of the conclusion as `h0`. Take `⟨c, rfl⟩` from `hv v (Finsupp.mem_support_iff.mpr h0)`.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `hv' (Finset.mem_image_of_mem _ (Finset.mem_univ c))`. Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (fun _ => by simp)]`. Simplify using `only [smul_eq_mul, hw, ← Finset.sum_mul, hsum, hb]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem hom_xi (a : Fin (N + 1)) (b : ℕ) (g : MvPolynomial (M.BVar N r G.T.t) ℚ_[p])
     (hg : g ∈ M.XiPolZ p N r G.T.t b) :
@@ -152,9 +152,9 @@ theorem hom_xi (a : Fin (N + 1)) (b : ℕ) (g : MvPolynomial (M.BVar N r G.T.t) 
   split_ifs <;> simp
 
 /- English proof (translation)
-Take `⟨y, hy, g, hg, rfl⟩` from `hx`. Establish `hX : ∀ i, IsWeightedHomogeneous (wL (r` using `r) G a) (X (M.scalZ N r G.T.t (Fin.castSucc i)) : MvPolynomial (M.BVar N r G.T.t) ℚ_[p]) (if M.finPos N (G.T.pos i) = a then 1 else 0) := by`. Introduce `i`. Use `isWeightedHomogeneous_X ℚ_[p] (wL (r := r) G a) (M.scalZ N r G.T.t (Fin.castSucc i)) using 1` and compare the differences between its conclusion and the goal. Simplify using `[wL, M.scalZ, zLet_castSucc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
-Establish `hXP : IsWeightedHomogeneous (wL (r` using `r) G a) (X (M.scalZ N r G.T.t (Fin.last G.T.t)) : MvPolynomial (M.BVar N r G.T.t) ℚ_[p]) (if Fin.castSucc G.uPos = a then 1 else 0) := by`. Use `isWeightedHomogeneous_X ℚ_[p] (wL (r := r) G a) (M.scalZ N r G.T.t (Fin.last G.T.t)) using 1` and compare the differences between its conclusion and the goal. Simplify using `[wL, M.scalZ, zLet_last]`. Unfold `dLvl`. Conclude with `(((((IsWeightedHomogeneous.prod _ _ _ (fun i _ => (hom_Ehat p G a i).pow (j i))).mul ((hom_Eplus p G a).pow jp)).mul (IsWeightedHomogeneous.prod _ _ _ (fun i _ => (hX i).pow (G.T.z i)))).mul (hXP.pow G.zPlus)).mul (hom_chain p G a _ y hy.2.1)).mul (hom_xi p G a _ g hg)`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem hom_gens (a : Fin (N + 1)) (j : Fin G.T.t → ℕ) (jp : ℕ) (x : MvPolynomial (M.BVar N r G.T.t) ℚ_[p])
     (hx : x ∈ G.gens p (r := r) j jp) : IsWeightedHomogeneous (wL (r := r) G a) x (dLvl G j jp a) := by
@@ -174,11 +174,11 @@ theorem hom_gens (a : Fin (N + 1)) (j : Fin G.T.t → ℕ) (jp : ℕ) (x : MvPol
     (hXP.pow G.zPlus)).mul (hom_chain p G a _ y hy.2.1)).mul (hom_xi p G a _ g hg)
 
 /- English proof (translation)
-Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx`. Simplify using `only [Set.mem_iUnion] at hx`. Take `⟨j, jp, hlev, hx⟩` from `hx`. Introduce `μ hμ`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨j, jp, hlev, fun a => hom_gens p G a j jp x hx (mem_support_iff.mp hμ)⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Introduce `μ hμ`. Break down `Finset.mem_union.mp (support_add hμ) with h | h` into its components or cases.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hx μ h`. Conclude with `hy μ h`. Consider the case `smul c x _ hx`. Introduce `μ hμ`. Conclude with `hx μ (support_smul hμ)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem SSZ_support (z : MvPolynomial (M.BVar N r G.T.t) ℚ_[p]) (hz : z ∈ G.SSZ p (r := r)) :
     ∀ μ ∈ z.support, ∃ (j : Fin G.T.t → ℕ) (jp : ℕ), G.LevelOK j jp ∧

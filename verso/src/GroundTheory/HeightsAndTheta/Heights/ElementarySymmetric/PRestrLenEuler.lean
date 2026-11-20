@@ -23,9 +23,9 @@ namespace RestrLenEuler
 variable {k : Type u} [Field k] {Ω : Type w} [Field Ω] [Algebra k Ω] {N : ℕ} {x : Fin (N + 1) → Ω}
 
 /- English proof (translation)
-Distinguish the cases in `h : Module.Finite k M`. Rewrite using `[Module.length_eq_finrank]`. Both sides reduce to the same expression. Rewrite using `[Module.finrank_of_not_finite h, Module.length_eq_rank]`. Establish `: Cardinal.aleph0 ≤ Module.rank k M`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hlt`. Conclude with `h (Module.rank_lt_aleph0_iff.mp (not_le.mp hlt))`. Rewrite using `[Cardinal.toENat_eq_top.mpr this]`. Both sides reduce to the same expression.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem length_toNat_eq_finrank (M : Type w) [AddCommGroup M] [Module k M] :
     (Module.length k M).toNat = Module.finrank k M := by
@@ -39,9 +39,9 @@ theorem length_toNat_eq_finrank (M : Type w) [AddCommGroup M] [Module k M] :
     rfl
 
 /- English proof (translation)
-Take `⟨M, -, hM⟩` from `Extension.full k Ω N x Ω F hF`. Take `⟨c₀, hc₀⟩` from `TildeVanish.proof SerreVanish.full k Ω N x Ω M`. Establish `h0 : M.tildeSys 0 = F.toSubSystem` using `SubSystem.ext_sub fun I => hM I`. Use `⟨c₀, fun i hi c hc => ?_⟩` and prove the remaining obligations. Rewrite using `[← h0, ← SurjectiveClosed.tildeSys_eq_twist]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hc₀ i hi c hc`.
+A detailed English derivation is pending.
 -/
 theorem vanish_of_fg (F : SubFamily k x Ω) (hF : ∀ I, (F.sub I).FG) :
     ∃ c₀ : ℤ, ∀ i : ℕ, 1 ≤ i → ∀ c : ℤ, c₀ ≤ c → Subsingleton ((F.toSubSystem.twist (twistSys k x c)).H i) := by
@@ -61,11 +61,11 @@ def incl (F₁ F₂ : SubSystem k x Ω) (h21 : ∀ I, F₂.sub I ≤ F₁.sub I)
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hdd` using `CechDSq.full (N + 1) (support x) k (fun I : Chart x => F₁.sub I) F₁.res (fun _ _ _ _ _ => LinearMap.ext fun _ => rfl)`. Establish `L` using `Cech.longExact (R := k) (U := support x) (A := fun I : Chart x => F₂.sub I) (B := fun I : Chart x => F₁.sub I) (C := fun I : Chart x => F₁.sub I ⧸ SubSystem.quotSub F₁ F₂ I) (ρA := F₂.res) (ρB := F₁.res) (ρC := SubSystem.quotRes F₁ F₂) (dA := fun _ => ⊤) (dB := fun _ => ⊤) (dC := …`. Take `⟨-, hex⟩` from `L`. Take `⟨hg, δ, hgδ, -⟩` from `hex i`. Establish `hB : Subsingleton (Cech.Hdeg (fun I : Chart x => F₁.sub I) (fun _ => (⊤ : Submodule k _)) F₁.res i)` using `haveI : Subsingleton (Cech.H (fun I : Chart x => F₁.sub I) F₁.res i) := h1 (SnapperQuotientAdditivity.hdegTopEquiv _ _ i).toEquiv.subsingleton`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hA : Subsingleton (Cech.Hdeg (fun I : Chart x => F₂.sub I) (fun _ => (⊤ : Submodule k _)) F₂.res (i + 1))` using `haveI : Subsingleton (Cech.H (fun I : Chart x => F₂.sub I) F₂.res (i + 1)) := h2 (SnapperQuotientAdditivity.hdegTopEquiv _ _ (i + 1)).toEquiv.subsingleton`. Establish `hC : Subsingleton (Cech.Hdeg (fun I : Chart x => F₁.sub I ⧸ SubSystem.quotSub F₁ F₂ I) (fun _ => (⊤ : Submodule k _)) (SubSystem.quotRes F₁ F₂) i)`. Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Establish `hz : ∀ y : Cech.Hdeg (fun I : Chart x => F₁.sub I ⧸ SubSystem.quotSub F₁ F₂ I) (fun _ => (⊤ : Submodule k _)) (SubSystem.quotRes F₁ F₂) i, y = 0`. Introduce `y`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨b, hb⟩` from `(hgδ y).mp (Subsingleton.elim _ _)`. Rewrite using `[← hb, Subsingleton.elim b 0, map_zero]`. Rewrite using `[hz a, hz b]`. Conclude with `(SnapperQuotientAdditivity.hdegTopEquiv _ _ i).symm.toEquiv.subsingleton`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotH_subsingleton (F₁ F₂ : SubSystem k x Ω) (h21 : ∀ I, F₂.sub I ≤ F₁.sub I) (i : ℕ)
     (h1 : Subsingleton (F₁.H i)) (h2 : Subsingleton (F₂.H (i + 1))) :
@@ -109,21 +109,19 @@ end RestrLenEuler
 open RestrLenEuler in
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ N x qq hqq _ t L n`. Use `set Ls : Fin t → SubSystem k x Ω := fun j => (L j).toSubSystem with hLs`. Set `Q : LineBundle k x` to `twistPowsBundle (twistBundle k x 0) t L n`. Establish `hQ : Q.toSubSystem = (twistSys k x 0).twistPows t Ls n` using `twistPowsBundle_toSubSystem (twistBundle k x 0) t L n`. Take `⟨G, hG, hGfg⟩` from `IdealTwistFamily.proof k Ω N x Q qq hqq`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a₁, ha₁⟩` from `vanish_of_fg Q.toSubFamily Q.fg`. Take `⟨a₂, ha₂⟩` from `vanish_of_fg G hGfg`. Take `⟨a₃, ha₃⟩` from `SurjectiveClosed.proof Extension.full IdealTwistFamily.proof (TildeVanish.proof SerreVanish.full) k Ω N x Q qq hqq`. Use `Filter.eventually_atTop.mpr ⟨max a₁ (max a₂ a₃), fun c hc => ?_⟩` and prove the remaining obligations. Establish `hc₁ : a₁ ≤ c` using `le_of_max_le_left hc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc₂ : a₂ ≤ c` using `le_of_max_le_left (le_of_max_le_right hc)`. Establish `hc₃ : a₃ ≤ c` using `le_of_max_le_right (le_of_max_le_right hc)`. Use `set F₁ := ((twistSys k x 0).twistPows t Ls n).twist (twistSys k x c) with hF₁`. Establish `hF₁Q : F₁ = Q.toSubSystem.twist (twistSys k x c)` using `by rw [hQ]`. Establish `hF₂ : (((twistSys k x 0).twist (idealSys x qq)).twistPows t Ls n).twist (twistSys k x c) = F₁.twist (idealSys x qq)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[twistPows_twist_comm, SurjectiveClosed.twist_twist_comm]`. Establish `hF₂G : F₁.twist (idealSys x qq) = G.toSubSystem.twist (twistSys k x c)`. Rewrite using `[hG, hF₁Q, SurjectiveClosed.twist_twist_comm]`. Establish `h21 : ∀ I, (F₁.twist (idealSys x qq)).sub I ≤ F₁.sub I` using `SurjectiveClosed.twist_idealSys_le F₁ qq`. Establish `hvan : ∀ i, 1 ≤ i → Subsingleton (SubSystem.quotH F₁ (F₁.twist (idealSys x qq)) i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i hi`. Use `quotH_subsingleton F₁ _ h21 i ?_ ?_` and prove the remaining obligations. Rewrite using `[hF₁Q]`. Conclude with `ha₁ i hi c hc₁`. Rewrite using `[hF₂G]; exact ha₂ (i + 1) (by omega) c hc₂`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `hlift` using `ha₃ c hc₃`. Rewrite `hlift` using `[← hF₁Q]`. Unfold `pieceChar restrLen`. Rewrite using `[hF₂, QuotientH0Length.length_secs_eq _ _ hlift, length_toNat_eq_finrank, eulerCharQuot, Finset.sum_eq_single 0]`. Simplify using `only [pow_zero, one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Introduce `i _ hi`. Use `hvan i (Nat.one_le_iff_ne_zero.mpr hi)` as an intermediate fact. Rewrite using `[Module.finrank_zero_of_subsingleton]`. Simplify using the standard rewrite rules.
-
-Introduce `h`. Conclude with `absurd (Finset.mem_range.mpr (Nat.succ_pos N)) h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem RestrLenEuler.proof : RestrLenEuler.Statement.{u, w} := by
   intro k _ Ω _ _ N x qq hqq _ t L n

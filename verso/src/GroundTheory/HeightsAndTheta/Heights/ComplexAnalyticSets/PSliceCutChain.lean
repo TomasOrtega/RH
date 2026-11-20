@@ -21,11 +21,11 @@ noncomputable section
 namespace SliceCutChain
 
 /- English proof (translation)
-Establish `hQ : ContDiffAt ℝ 2 (fun t : ℝ => t ^ 2 / 2) (ψ y)` using `((contDiff_id.pow 2).div_const 2).contDiffAt`. Establish `hd1 : deriv (fun t : ℝ => t ^ 2 / 2) = fun t => t`. Use function extensionality and compare the values at `t`. Rewrite using `[((hasDerivAt_pow 2 t).div_const 2).deriv]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Establish `key` using `HessCCompPluri.fderiv_fderiv_comp_apply hρ hψ`. Establish `keyQ` using `HessCCompPluri.fderiv_fderiv_comp_apply hQ hψ`. Simplify using `only [hd1, deriv_id'', one_mul] at keyQ`. Use extensionality with `i j`. Simplify using `only [hessC, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [key, keyQ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hessC_comp {D : ℕ} (ρ : ℝ → ℝ) (ψ : (Fin D → ℂ) → ℝ) (y : Fin D → ℂ)
     (hρ : ContDiffAt ℝ 2 ρ (ψ y)) (hψ : ContDiffAt ℝ 2 ψ y) :
@@ -48,7 +48,7 @@ theorem hessC_comp {D : ℕ} (ρ : ℝ → ℝ) (ψ : (Fin D → ℂ) → ℝ) (
   ring
 
 /- English proof (translation)
-Rewrite using `[maDens_cons_eq, maDens_cons_eq, maDens_cons_eq, hessC_comp ρ ψ y hρ hψ, mdisc_cons_smul_add, Complex.add_re, Complex.re_ofReal_mul, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem maDens_cons_comp {D : ℕ} (ρ : ℝ → ℝ) (ψ : (Fin (D + 1) → ℂ) → ℝ)
     (Φ : Fin D → (Fin (D + 1) → ℂ) → ℝ) (y : Fin (D + 1) → ℂ)
@@ -62,7 +62,7 @@ theorem maDens_cons_comp {D : ℕ} (ρ : ℝ → ℝ) (ψ : (Fin (D + 1) → ℂ
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `r`. Establish `h1 : HasDerivAt (fun r : ℝ => 2 - r / ((k : ℝ) + 1)) (-(1 / ((k : ℝ) + 1))) r` using `((hasDerivAt_id r).div_const ((k : ℝ) + 1)).const_sub 2`. Establish `h2 : HasDerivAt (fun r : ℝ => g (2 - r / ((k : ℝ) + 1))) (deriv g (2 - r / ((k : ℝ) + 1)) * (-(1 / ((k : ℝ) + 1)))) r` using `(hg _).hasDerivAt.comp r h1`. Rewrite using `[h2.deriv]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem deriv_comp_cut (g : ℝ → ℝ) (hg : Differentiable ℝ g) (k : ℕ) :
     deriv (fun r : ℝ => g (2 - r / ((k : ℝ) + 1))) =
@@ -77,9 +77,9 @@ theorem deriv_comp_cut (g : ℝ → ℝ) (hg : Differentiable ℝ g) (k : ℕ) :
   ring
 
 /- English proof (translation)
-Establish `hsm : ContDiff ℝ ∞ Real.smoothTransition` using `Real.smoothTransition.contDiff`. Take `⟨hd0, h1⟩` from `contDiff_infty_iff_deriv.1 hsm`. Establish `hd1 : Differentiable ℝ (deriv Real.smoothTransition)` using `h1.differentiable (by simp)`. Use `⟨congrFun (deriv_comp_cut _ hd0 k) r, ?_⟩` and prove the remaining obligations. Rewrite using `[deriv_comp_cut _ hd0 k]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hdiff : DifferentiableAt ℝ (fun r : ℝ => deriv Real.smoothTransition (2 - r / ((k : ℝ) + 1))) r` using `(hd1 _).comp r ((differentiableAt_id.div_const _).const_sub 2)`. Rewrite using `[deriv_const_mul _ hdiff, congrFun (deriv_comp_cut _ hd1 k) r]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem deriv_cut (k : ℕ) (r : ℝ) :
     deriv (fun r : ℝ => Real.smoothTransition (2 - r / ((k : ℝ) + 1))) r =
@@ -97,11 +97,11 @@ theorem deriv_cut (k : ℕ) (r : ℝ) :
   ring
 
 /- English proof (translation)
-Use `set ψ : (Fin (e + 1) → ℂ) → ℝ := fun w => Real.log (h.dualNorm (s w)) with hψdef`. Establish `hT : ContDiffAt ℝ 2 (fun x : Fin n → ℂ => Real.log (h.dualNorm x)) (s y)` using `((contDiffOn_log_dualNorm h).contDiffAt (isOpen_compl_singleton.mem_nhds hx0)).of_le (WithTop.coe_le_coe.mpr le_top)`. Establish `hψ : ContDiffAt ℝ 2 ψ y` using `hT.comp y hs`. Establish `hρ : ContDiffAt ℝ 2 (fun r : ℝ => Real.smoothTransition (2 - r / ((k : ℝ) + 1))) (ψ y)` using `(Real.smoothTransition.contDiff.comp (contDiff_const.sub (contDiff_id.div_const _))).contDiffAt`. Establish `key` using `maDens_cons_comp (fun r : ℝ => Real.smoothTransition (2 - r / ((k : ℝ) + 1))) ψ (fun _ : Fin e => ψ) y hρ hψ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hd1, hd2⟩` from `deriv_cut k (ψ y)`. Rewrite `key` using `[hd1, hd2]`. Establish `e1 : (fun i => (vecCons (sliceCut h k) fun _ x => Real.log (h.dualNorm x) : Fin (e + 1) → (Fin n → ℂ) → ℝ) i ∘ s) = Fin.cons (fun w => Real.smoothTransition (2 - ψ w / ((k : ℝ) + 1))) (fun _ : Fin e => ψ)` using `vecCons_comp _ _ s`. Establish `e0 : (fun i => (fun _ x => Real.log (h.dualNorm x) : Fin (e + 1) → (Fin n → ℂ) → ℝ) i ∘ s) = Fin.cons ψ (fun _ : Fin e => ψ)`. Use function extensionality and compare the values at `i`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Conclude with `Fin.cases rfl (fun _ => rfl) i`. Establish `e2 : (fun i => (vecCons (fun x => Real.log (h.dualNorm x) ^ 2 / 2) fun _ x => Real.log (h.dualNorm x) : Fin (e + 1) → (Fin n → ℂ) → ℝ) i ∘ s) = Fin.cons (fun w => ψ w ^ 2 / 2) (fun _ : Fin e => ψ)` using `vecCons_comp _ _ s`. Rewrite using `[e1, e0, e2, key]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sheet_identity {n e : ℕ} (h : HermNorm n) (k : ℕ) (s : (Fin (e + 1) → ℂ) → Fin n → ℂ)
     (y : Fin (e + 1) → ℂ) (hx0 : s y ≠ 0) (hs : ContDiffAt ℝ 2 s y) :
@@ -141,9 +141,9 @@ theorem sheet_identity {n e : ℕ} (h : HermNorm n) (k : ℕ) (s : (Fin (e + 1) 
   rw [e1, e0, e2, key]
 
 /- English proof (translation)
-Unfold `sheetSum`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hfin, finsum_mem_eq_finite_toFinset_sum _ hfin, finsum_mem_eq_finite_toFinset_sum _ hfin, finsum_mem_eq_finite_toFinset_sum _ hfin, finsum_mem_eq_finite_toFinset_sum _ hfin, ← Finset.sum_sub_distrib, ← Finset.sum_sub_distrib, Finset.mul_sum, F …`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[Set.Finite.mem_toFinset]`. Use `split_ifs with hs`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `h x hx _ hs.choose_spec`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem sheetSum_combo {n d : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin d) (Fin n) ℂ}
     {y : Fin d → ℂ} (hfin : (fibre J A y).Finite) (c₁ c₂ : ℝ)
@@ -165,7 +165,7 @@ theorem sheetSum_combo {n d : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : M
   · ring
 
 /- English proof (translation)
-The claim follows from `|chartDens J A w φ y| ≤ chartAbsDens J A v₁ φ y + M * chartAbsDens J A v₂ φ y := by classical refine (abs_chartDens_le J A w φ y).trans ?_ unfold chartAbsDens sheetSum rw [finsum_mem_eq_finite_toFinset_sum _ (hfin y), finsum_mem_eq_finite_toFinset_sum _ (hfin y), finsum_mem_eq_fi …`.
+A detailed English derivation is pending.
 -/
 theorem abs_chartDens_le_add {n d : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin d) (Fin n) ℂ}
     (hfin : ∀ y, (fibre J A y).Finite) (w v₁ v₂ : (Fin n → ℂ) → ℝ) (φ : Fin d → (Fin n → ℂ) → ℝ) (M : ℝ)
@@ -186,7 +186,7 @@ theorem abs_chartDens_le_add {n d : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)} 
   · simp
 
 /- English proof (translation)
-The claim follows from `(h₁.add (h₂.const_mul M)).mono' hm.aestronglyMeasurable (Eventually.of_forall fun y => by simpa [Real.norm_eq_abs] using hle y)`.
+A detailed English derivation is pending.
 -/
 theorem integrable_of_dom {n d : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin d) (Fin n) ℂ}
     {w v₁ v₂ : (Fin n → ℂ) → ℝ} {φ : Fin d → (Fin n → ℂ) → ℝ} {M : ℝ}
@@ -198,7 +198,7 @@ theorem integrable_of_dom {n d : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)} {A 
     (Eventually.of_forall fun y => by simpa [Real.norm_eq_abs] using hle y)
 
 /- English proof (translation)
-The claim follows from `|(p x - q x) * r x * m| ≤ |p x * r x * m| + M * |B.indicator q x * m| := by by_cases hb : band x · rw [Set.indicator_of_mem (hB hb)] have e : (p x - q x) * r x * m = p x * r x * m - r x * (q x * m) := by ring rw [e] refine (abs_sub _ _).trans (add_le_add le_rfl ?_) rw [abs_mul] e …`.
+A detailed English derivation is pending.
 -/
 theorem term_dom {X : Type*} (B : Set X) (band : X → Prop) (p q r : X → ℝ) (M m : ℝ) (x : X)
     (h0 : ¬ band x → r x = 0) (hB : band x → x ∈ B) (hr : band x → |r x| ≤ M) (hM : 0 ≤ M) :
@@ -214,7 +214,7 @@ theorem term_dom {X : Type*} (B : Set X) (band : X → Prop) (p q r : X → ℝ)
     positivity
 
 /- English proof (translation)
-Establish `i1 : Integrable (fun y => c₁ * r₁ y)` using `h₁.const_mul c₁`. Establish `i23 : Integrable (fun y => c₂ * (r₂ y - r₃ y))` using `(h₂.sub h₃).const_mul c₂`. Rewrite using `[← integral_sub ha hb, integral_sub h₂ h₃ |>.symm, ← integral_const_mul, ← integral_const_mul, ← integral_add i1 i23]`. Conclude with `congrArg (fun f : (Fin d → ℂ) → ℝ => ∫ y, f y) (funext hpt)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_combo {d : ℕ} {a b r₁ r₂ r₃ : (Fin d → ℂ) → ℝ} (ha : Integrable a) (hb : Integrable b)
     (h₁ : Integrable r₁) (h₂ : Integrable r₂) (h₃ : Integrable r₃) (c₁ c₂ : ℝ)
@@ -229,55 +229,49 @@ theorem integral_combo {d : ℕ} {a b r₁ r₂ r₃ : (Fin d → ℂ) → ℝ} 
 end SliceCutChain
 
 /- English proof (translation)
-Introduce `n e h J F u ℓ k hJ hF hu hℓ`. Take `⟨hI, hdim, hsl⟩` from `SliceIdeal.proof n (e + 1) J F ℓ hJ hF hℓ`. Establish `huI` using `hsl u hu`. Use `set I := J ⊔ Ideal.span {linForm ℓ - 1} with hIdef`. Unfold `varInt`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Use `split_ifs with hA`. Use `swap`. Simplify using the standard rewrite rules. Unfold `chartInt`. Use `set A := hA.choose with hAdef`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hAf : IsFiniteProjection I A` using `hA.choose_spec`. Establish `hfin : ∀ y, (fibre I A y).Finite` using `fun y => (FibreBound.proof n (e + 1) I A hI hdim hAf y).2.1`. Establish `hne : ∀ x ∈ zeroSet I, x ≠ 0`. Introduce `x hx h0`. Use `hx _ (Ideal.mem_sup_right (Ideal.mem_span_singleton_self (linForm ℓ - 1)))` as an intermediate fact.
+Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `h0` using the available equality. Simplify using `[linForm] at this`. Establish `hTs : SmoothNear (zeroSet I) (fun x => Real.log (h.dualNorm x))` using `⟨{0}ᶜ, isOpen_compl_singleton, fun x hx => hne x hx, contDiffOn_log_dualNorm h⟩`. Establish `hT2s : SmoothNear (zeroSet I) (fun x => Real.log (h.dualNorm x) ^ 2 / 2)` using `⟨{0}ᶜ, isOpen_compl_singleton, fun x hx => hne x hx, ((contDiffOn_log_dualNorm h).pow 2).div_const 2⟩`. Establish `hω : ∀ i : Fin (e + 1), SmoothNear (zeroSet I) ((fun _ x => Real.log (h.dualNorm x) : Fin (e + 1) → (Fin n → ℂ) → ℝ) i)` using `fun _ => hTs`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hcons : ∀ f : (Fin n → ℂ) → ℝ, SmoothNear (zeroSet I) f → ∀ i, SmoothNear (zeroSet I) ((vecCons f fun _ x => Real.log (h.dualNorm x) : Fin (e + 1) → (Fin n → ℂ) → ℝ) i)`. Introduce `f hf i`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `using hf`. Simplify using `using hTs`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦ1` using `hcons _ (smoothNear_of_contDiff (SliceCut.contDiff h k))`. Establish `hΦ2` using `hcons _ hT2s`. Establish `hTc : ContinuousOn (fun x => Real.log (h.dualNorm x)) (zeroSet I)` using `(contDiffOn_log_dualNorm h).continuousOn.mono fun x hx => hne x hx`. Establish `hTm : Measurable (fun x : Fin n → ℂ => Real.log (h.dualNorm x))` using `Real.measurable_log.comp (SliceCut.continuous_dualNorm h).measurable`. Establish `hLm : Measurable (fun x : Fin n → ℂ => Real.log ‖linEval u x‖)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `Real.measurable_log.comp (Continuous.measurable ?_)` and prove the remaining obligations. Unfold `linEval`. Use `fun_prop`. Establish `hsm : ContDiff ℝ ∞ Real.smoothTransition` using `Real.smoothTransition.contDiff`. Take `⟨-, hτ1⟩` from `contDiff_infty_iff_deriv.1 hsm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨-, hτ2⟩` from `contDiff_infty_iff_deriv.1 hτ1`. Establish `hτ1c` using `hτ1.continuous`. Establish `hτ2c` using `hτ2.continuous`. Take `⟨Cτ, hCτ0, hCτ⟩` from `smoothTransition_deriv_bound`. Establish `hd0 : ∀ r, r ∉ Set.Icc (0 : ℝ) 1 → deriv Real.smoothTransition r = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r hr`. Take `⟨c, hc⟩` from `smoothTransition_eventually_const hr`. Rewrite using `[hc.deriv_eq, deriv_const]`. Establish `hd1 : ∀ r, r ∉ Set.Icc (0 : ℝ) 1 → deriv (deriv Real.smoothTransition) r = 0`. Introduce `r hr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hev : deriv Real.smoothTransition =ᶠ[𝓝 r] fun _ => (0 : ℝ)` using `by filter_upwards [isClosed_Icc.isOpen_compl.mem_nhds hr] with r' hr'`. Conclude with `hd0 r' hr'`. Rewrite using `[hev.deriv_eq, deriv_const]`. Establish `ham : Measurable (fun x : Fin n → ℂ => 2 - Real.log (h.dualNorm x) / ((k : ℝ) + 1))` using `measurable_const.sub (hTm.div_const _)`. Establish `hacont : ContinuousOn (fun x : Fin n → ℂ => 2 - Real.log (h.dualNorm x) / ((k : ℝ) + 1)) (zeroSet I)` using `continuousOn_const.sub (hTc.div_const _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set E := Real.exp (2 * ((k : ℝ) + 1)) with hE`. Take `⟨R, hR⟩` from `(SliceCut.isCompact_sublevel h E).isBounded.subset_closedBall 0`. Establish `hband : ∀ x, 2 - Real.log (h.dualNorm x) / ((k : ℝ) + 1) ∈ Set.Icc (0 : ℝ) 1 → h.dualNorm x ≤ E ∧ |Real.log (h.dualNorm x)| ≤ 2 * ((k : ℝ) + 1)`. Introduce `x hx`. Establish `hk : (0 : ℝ) < (k : ℝ) + 1` using `by positivity`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨h0, h1⟩` from `hx`. Establish `ht1 : (k : ℝ) + 1 ≤ Real.log (h.dualNorm x)`. Establish `: 1 ≤ Real.log (h.dualNorm x) / ((k : ℝ) + 1)` using `by linarith`. Rewrite `this` using `[le_div_iff₀ hk, one_mul]`. Then use the resulting hypothesis. Establish `ht2 : Real.log (h.dualNorm x) ≤ 2 * ((k : ℝ) + 1)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `: Real.log (h.dualNorm x) / ((k : ℝ) + 1) ≤ 2` using `by linarith`. Rewrite `this` using `[div_le_iff₀ hk]`. Then use the resulting hypothesis. Establish `hpos : 0 < h.dualNorm x`. Assume the negation of the conclusion as `hn`. Establish `h00 : h.dualNorm x = 0` using `le_antisymm (not_lt.mp hn) (Real.sqrt_nonneg _)`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite `ht1` using `[h00, Real.log_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `⟨(Real.log_le_iff_le_exp hpos).mp ht2, abs_le.mpr ⟨by linarith, ht2⟩⟩`. Establish `hcs : ∀ W : (Fin n → ℂ) → ℝ, (∀ x, 2 - Real.log (h.dualNorm x) / ((k : ℝ) + 1) ∉ Set.Icc (0 : ℝ) 1 → W x = 0) → HasCompactSupport W` using `fun W hW => HasCompactSupport.intro (SliceCut.isCompact_sublevel h E) fun x hx => hW x fun hb => hx (hband x hb).1`. Establish `hfk0 : ∀ x, E < h.dualNorm x → sliceCut h k x = 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x hx`. Unfold `sliceCut`. Use `Real.smoothTransition.zero_of_nonpos ?_` and prove the remaining obligations. Establish `hpos : 0 < h.dualNorm x` using `(Real.exp_pos _).trans hx`. Establish `hlog : 2 * ((k : ℝ) + 1) < Real.log (h.dualNorm x)`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Real.lt_log_iff_exp_lt hpos]`. Conclude with `hx`. Establish `hk : (0 : ℝ) < (k : ℝ) + 1` using `by positivity`. Rewrite using `[sub_nonpos, le_div_iff₀ hk]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Substitute using the available equality. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hsheet : ∀ y, ∀ x ∈ fibre I A y, ∀ s, IsSheetAt I A x s → A *ᵥ x = y ∧ s y = x ∧ x ≠ 0 ∧ ContDiffAt ℝ 2 s y`. Introduce `y x hx s hs`. Take `⟨hxz, hxy⟩` from `hx`. Establish `han` using `CutOffBoundaryBound.analyticAt_of_isSheetAt hs`. Take `⟨U, -, -, -, hsx, -⟩` from `hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Substitute `hxy` using the available equality. Conclude with `⟨rfl, hsx, hne x hxz, han.contDiffAt.restrict_scalars ℝ⟩`. Establish `hvan : ∀ y, ∀ x ∈ fibre I A y, ∀ s, IsSheetAt I A x s → x ∉ Metric.closedBall (0 : Fin n → ℂ) R → maDens (fun i => (vecCons (sliceCut h k) fun _ x => Real.log (h.dualNorm x) : Fin (e + 1) → (Fin n → ℂ) → ℝ) i ∘ s) y = 0`. Introduce `y x hx s hs hxR`. Take `⟨-, hsx, -, hsd⟩` from `hsheet y x hx s hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hxE : E < h.dualNorm x`. Assume the negation of the conclusion as `hc`. Conclude with `hxR (hR (not_lt.mp hc))`. Establish `hcont : ContinuousAt (fun w => h.dualNorm (s w)) y` using `(SliceCut.continuous_dualNorm h).continuousAt.comp hsd.continuousAt`. Establish `hO : ∀ᶠ w in 𝓝 y, E < h.dualNorm (s w)` using `hcont.tendsto.eventually (lt_mem_nhds (show E < h.dualNorm (s y) by rw [hsx]; exact hxE))`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[vecCons_comp]`. Use `CutOffBoundaryBound.maDens_cons_eq_zero _ _ y ?_` and prove the remaining obligations. Use `filter_upwards [hO] with w hw`. Conclude with `hfk0 (s w) hw`. Use `SliceCutChain.integral_combo ?_ ?_ ?_ ?_ ?_ _ _ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Conclude with `CutOffBoundaryBound.integrable_chartDens hM hI hdim hAf hTc hΦ1 (Or.inr ⟨0, by simpa using SliceCut.hasCompactSupport h k⟩)`. Use `SliceCutChain.integrable_of_dom (M := 1) (SheetSumMeasurable.proof n (e + 1) I A _ _ hI hdim hAf hLm hΦ1).1 (hM n (e + 1) I A _ _ hI hdim hAf hTc hΦ1 (Or.inr ⟨0, by simpa using SliceCut.hasCompactSupport h k⟩)) (hLI n (e + 1) I A u _ R hI hdim hAf huI hΦ1) (SliceCutChain.abs_char …` and prove the remaining obligations. Distinguish the cases in `hxR : x ∈ Metric.closedBall (0 : Fin n → ℂ) R`. Rewrite using `[Set.indicator_of_mem hxR, one_mul]`. Conclude with `le_add_of_nonneg_left (abs_nonneg _)`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hvan y x hx s hs hxR]`. Simplify using the standard rewrite rules. Use `SliceCutChain.integrable_of_dom (M := Cτ) (SheetSumMeasurable.proof n (e + 1) I A _ _ hI hdim hAf ((hTm.sub hLm).mul (hτ1c.measurable.comp ham)) hω).1 (hM n (e + 1) I A (fun x => Real.log (h.dualNorm x) * deriv Real.smoothTransition (2 - Real.log (h.dualNorm x) / ((k : ℝ) + 1))) …` and prove the remaining obligations. Use `SliceCutChain.integrable_of_dom (M := Cτ) (SheetSumMeasurable.proof n (e + 1) I A _ _ hI hdim hAf ((hTm.sub hLm).mul (hτ2c.measurable.comp ham)) hΦ2).1 (hM n (e + 1) I A (fun x => Real.log (h.dualNorm x) * deriv (deriv Real.smoothTransition) (2 - Real.log (h.dualNorm x) / ((k : ℝ …` and prove the remaining obligations. Use `SliceCutChain.integrable_of_dom (M := Cτ * (2 * ((k : ℝ) + 1))) (SheetSumMeasurable.proof n (e + 1) I A _ _ hI hdim hAf (((hTm.sub hLm).mul (hτ2c.measurable.comp ham)).mul hTm) hω).1 (hM n (e + 1) I A (fun x => Real.log (h.dualNorm x) * (deriv (deriv Real.smoothTransition) (2 - R …` and prove the remaining obligations.
-
-Establish `H` using `SliceCutChain.term_dom (Metric.closedBall 0 R) (fun x => 2 - Real.log (h.dualNorm x) / ((k : ℝ) + 1) ∈ Set.Icc (0 : ℝ) 1) (fun x => Real.log (h.dualNorm x)) (fun x => Real.log ‖linEval u x‖) (fun x => deriv (deriv Real.smoothTransition) (2 - Real.log (h.dualNorm x) / ((k : ℝ) + 1 …`. Rewrite using `[abs_mul]`. Conclude with `mul_le_mul (hCτ _).2 (hband x hb).2 (abs_nonneg _) hCτ0)`. Use the proof step `(by positivity)`. Use `H using 2` and compare the differences between its conclusion and the goal.
-
-Expand and normalize the polynomial expressions, which then agree. Introduce `y`. Unfold `chartDens`. Use `SliceCutChain.sheetSum_combo (hfin y) _ _ _ _ _ _ _ fun x hx s hs => ?_` and prove the remaining obligations. Take `⟨-, hsx, hx0, hsd⟩` from `hsheet y x hx s hs`.
-
-Establish `key` using `SliceCutChain.sheet_identity h k s y (by rw [hsx]; exact hx0) hsd`. Rewrite `key` using `[hsx]`. Use `beta_reduce`. Rewrite using `[key]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem SliceCutChain.proof (hM : ChartMassCompact.Statement) (hLI : LogIntegrable.Statement) :
     SliceCutChain.Statement := by

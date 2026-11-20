@@ -20,14 +20,14 @@ section Group
 variable {D G : Type} [Group D] [Group G]
 
 /- English proof (translation)
-Simplify using `only [twConj, map_mul]`. Use `group`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem twConj_mul' (θ : Monoid.End G) (a b δ : G) :
     twConj θ (a * b) δ = twConj θ b (twConj θ a δ) := by
   simp only [twConj, map_mul]; group
 
 /- English proof (translation)
-Simplify using `[twConj, hθ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem twConj_map' (ι : D →* G) (θD : Monoid.End D) (θ : Monoid.End G)
     (hθ : ∀ d, θ (ι d) = ι (θD d)) (g δ : D) :
@@ -35,7 +35,7 @@ theorem twConj_map' (ι : D →* G) (θD : Monoid.End D) (θ : Monoid.End G)
   simp [twConj, hθ]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, by simp [twConj]⟩ symm := by rintro a b ⟨g, rfl⟩ exact ⟨g⁻¹, by simp only [twConj, map_inv]; group⟩ trans := by rintro a b c ⟨g, rfl⟩ ⟨h, rfl⟩ exact ⟨g * h, (twConj_mul' θ g h a).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem twConjugate_equivalence (θ : Monoid.End D) : Equivalence (TwConjugate θ) where
   refl δ := ⟨1, by simp [twConj]⟩
@@ -47,28 +47,26 @@ theorem twConjugate_equivalence (θ : Monoid.End D) : Equivalence (TwConjugate �
     exact ⟨g * h, (twConj_mul' θ g h a).symm⟩
 
 /- English proof (translation)
-The claim follows from `(twConjugate_equivalence θ).quot_mk_eq_iff a b`.
+A detailed English derivation is pending.
 -/
 theorem cl_eq_iff (θ : Monoid.End D) (a b : D) :
     Quot.mk (TwConjugate θ) a = Quot.mk (TwConjugate θ) b ↔ TwConjugate θ a b :=
   (twConjugate_equivalence θ).quot_mk_eq_iff a b
 
 /- English proof (translation)
-Establish `hρ : ∀ q : ι.range ⧸ ((twCent θD δ).map ι).subgroupOf ι.range, ∃ ρ : D, ι ρ = ((q.out : ι.range) : G)⁻¹` using `fun q => by`. Take `⟨r, hr⟩` from `(q.out : ι.range).2`. Conclude with `⟨r⁻¹, by rw [map_inv, hr]⟩`. Use `choose ρ hρ using hρ`. Set `b : (ι.range ⧸ ((twCent θD δ).map ι).subgroupOf ι.range) → {d : D // TwConjugate θD δ d}` to `fun q => ⟨twConj θD (ρ q) δ, ρ q, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hb : Function.Bijective b`. Prove the components needed by the constructor for the conclusion. Introduce `q q' h`. Establish `h1 : twConj θD (ρ q) δ = twConj θD (ρ q') δ` using `congrArg Subtype.val h`. Establish `h2 : ρ q * (ρ q')⁻¹ ∈ twCent θD δ`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `twConj θD (ρ q * (ρ q')⁻¹) δ = δ`. Rewrite using `[twConj_mul', h1, ← twConj_mul']`. Simplify using `[twConj]`. Rewrite using `[← QuotientGroup.out_eq' q, ← QuotientGroup.out_eq' q', QuotientGroup.eq]`. Rewrite using `[Subgroup.mem_subgroupOf]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, h2, ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, map_inv, hρ, inv_inv, Subgroup.coe_mul, InvMemClass.coe_inv]`. Introduce and unpack `⟨d, g, rfl⟩`. Set `γ : ι.range` to `⟨ι g⁻¹, g⁻¹, rfl⟩`. Set `q : ι.range ⧸ ((twCent θD δ).map ι).subgroupOf ι.range` to `QuotientGroup.mk γ`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨q, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `twConj θD (ρ q) δ = twConj θD g δ`. Establish `h1 : γ⁻¹ * q.out ∈ ((twCent θD δ).map ι).subgroupOf ι.range`. Rewrite using `[← QuotientGroup.eq]`. Conclude with `(QuotientGroup.out_eq' q).symm`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h1` using `[Subgroup.mem_subgroupOf]`. Take `⟨t, ht, hte⟩` from `h1`. Establish `h2 : ρ q = t⁻¹ * g`. Apply `hι` to reduce the goal to its premises. Rewrite using `[hρ q, map_mul, map_inv, hte]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[γ]`. Rewrite using `[h2, twConj_mul']`. Use `congr 1`. Use `(twCent θD δ).inv_mem ht` as an intermediate fact. Conclude with `this`.
-
-Use `⟨Equiv.ofBijective b hb, fun q => ⟨ρ q, hρ q, rfl⟩⟩` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_class_equiv (ι : D →* G) (hι : Function.Injective ι) (θD : Monoid.End D) (δ : D) :
     ∃ e : (ι.range ⧸ ((twCent θD δ).map ι).subgroupOf ι.range) ≃ {d : D // TwConjugate θD δ d},
@@ -123,9 +121,9 @@ def hh (S : Set G) (θ : Monoid.End G) (ι : D →* G) (φ : G → ℂ) (x : G) 
   S.indicator (1 : G → ℂ) x * φ (twConj θ x (ι d))
 
 /- English proof (translation)
-Establish `h1 : S.indicator (1 : G → ℂ) (ι g * x) = S.indicator (1 : G → ℂ) x`. Distinguish the cases in `hx : x ∈ S`. Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem ((hSinv g x).2 hx)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem (fun h => hx ((hSinv g x).1 h))]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hh, hh, h1, twConj_mul', twConj_map' ι θD θ hθ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hh_shift {S : Set G} {θ : Monoid.End G} {ι : D →* G} {θD : Monoid.End D}
     (hθ : ∀ d, θ (ι d) = ι (θD d)) (hSinv : ∀ g x, ι g * x ∈ S ↔ x ∈ S) (φ : G → ℂ)
@@ -144,16 +142,16 @@ def twEquiv (θD : Monoid.End D) (g : D) : D ≃ D where
   right_inv d := by rw [← twConj_mul']; simp [twConj]
 
 /- English proof (translation)
-Simplify using `[hh, Set.indicator_of_notMem hx]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hh_of_notMem {S : Set G} {θ : Monoid.End G} {ι : D →* G} {φ : G → ℂ} {x : G} (hx : x ∉ S)
     (d : D) : hh S θ ι φ x d = 0 := by
   simp [hh, Set.indicator_of_notMem hx]
 
 /- English proof (translation)
-Rewrite using `[← ofReal_norm]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ S`. Simplify `hM _` using `[hh, Set.indicator_of_mem hx]`. Rewrite using `[hh_of_notMem hx]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using (norm_nonneg _).trans (hM 1)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem enorm_hh_le {S : Set G} {θ : Monoid.End G} {ι : D →* G} {φ : G → ℂ} {M : ℝ}
     (hM : ∀ g, ‖φ g‖ ≤ M) (x : G) (d : D) : ‖hh S θ ι φ x d‖ₑ ≤ ENNReal.ofReal M := by
@@ -164,7 +162,7 @@ theorem enorm_hh_le {S : Set G} {θ : Monoid.End G} {ι : D →* G} {φ : G → 
   · rw [hh_of_notMem hx]; simpa using (norm_nonneg _).trans (hM 1)
 
 /- English proof (translation)
-Take `⟨a, ⟨g, rfl⟩, c, hc, rfl⟩` from `Set.mem_mul.1 (hSC hx)`. Conclude with `⟨g, c, hc, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_of_mem {S C : Set G} {ι : D →* G} (hSC : S ⊆ (ι.range : Set G) * C) {x : G}
     (hx : x ∈ S) : ∃ g : D, ∃ c ∈ C, x = ι g * c := by
@@ -172,9 +170,7 @@ theorem exists_of_mem {S C : Set G} {ι : D →* G} (hSC : S ⊆ (ι.range : Set
   exact ⟨g, c, hc, rfl⟩
 
 /- English proof (translation)
-Use `haveI : Countable ι.range := (Set.countable_range ι).to_subtype`. Rewrite using `[hF.measure_eq_tsum C]`. Use `le_trans (measure_mono ?_) (measure_iUnion_le _)` and prove the remaining obligations. Introduce and unpack `x ⟨hx, hxF⟩`. Take `⟨a, ha, c, hc, rfl⟩` from `Set.mem_mul.1 (hSC hx)`.
-
-Conclude with `Set.mem_iUnion.2 ⟨⟨a, ha⟩, ⟨c, hc, rfl⟩, hxF⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem measure_inter_le [MeasurableSpace G] [MeasurableMul G] [Countable D] {ι : D →* G}
     {μ : Measure G} [μ.IsMulLeftInvariant] {F S C : Set G}
@@ -194,45 +190,39 @@ section Main
 variable {D G : Type} [Group D] [Countable D] [Group G] [MeasurableSpace G] [MeasurableMul G]
 
 /- English proof (translation)
-Use `set h := hh S θ ι φ with hdef`. Use `set P : Finset D := hfin.toFinset with hP`. Set `cl : D → Quot (TwConjugate θD)` to `Quot.mk _`. Set `T : Finset (Quot (TwConjugate θD))` to `P.image cl`. Establish `hmemP : ∀ c ∈ C, ∀ d, h c d ≠ 0 → d ∈ P` using `fun c hc d hd => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `hfin.mem_toFinset.2 ⟨c, hc, fun h0 => hd ?_⟩` and prove the remaining obligations. Simplify using `[hdef, hh, h0]`. Establish `hshift : ∀ g x d, h (ι g * x) d = h x (twConj θD g d)` using `fun g x d => hh_shift hθ hSinv φ g x d`. Establish `hsupp : ∀ x, (Function.support (h x)).Finite` using `fun x => by`. Distinguish the cases in `hx : x ∈ S`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨g, c, hc, rfl⟩` from `exists_of_mem hSC hx`. Use `(P.finite_toSet.preimage (twEquiv θD g).injective.injOn).subset fun d hd => ?_` and prove the remaining obligations. Use `hmemP c hc _ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `h c (twConj θD g d) ≠ 0`. Rewrite using `[← hshift]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `hd`. Establish `: Function.support (h x) = ∅`. Use extensionality with `d`. Simplify using `[hdef, hh_of_notMem hx]`. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Set.finite_empty`. Use `set B : ℝ≥0∞ := P.card * ENNReal.ofReal M with hB`. Establish `hbd : ∀ x, ∑' d, ‖h x d‖ₑ ≤ S.indicator (fun _ => B) x` using `fun x => by`. Distinguish the cases in `hx : x ∈ S`. Rewrite using `[Set.indicator_of_mem hx]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g, c, hc, rfl⟩` from `exists_of_mem hSC hx`. Establish `e1 : ∑' d, ‖h (ι g * c) d‖ₑ = ∑' d, ‖h c d‖ₑ`. Repeatedly rewrite using `[hshift]`. Conclude with `(twEquiv θD g).tsum_eq fun d => ‖h c d‖ₑ`. Rewrite using `[e1, tsum_eq_sum (s := P) fun d hd => by`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[enorm_eq_zero]`. Assume the negation of the conclusion as `h0`. Conclude with `hd (hmemP c hc d h0)]`. Use `(Finset.sum_le_card_nsmul _ _ _ fun d _ => enorm_hh_le hM c d).trans ?_` and prove the remaining obligations. Simplify using `[hB]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Simplify using `[hdef, hh_of_notMem hx, Set.indicator_of_notMem hx]`. Establish `hBfin : B ≠ ∞` using `ENNReal.mul_ne_top (ENNReal.natCast_ne_top _) ENNReal.ofReal_ne_top`. Establish `hA : ∫⁻ x in F, ∑' d, ‖h x d‖ₑ ∂μ < ∞`. Use `lt_of_le_of_lt (lintegral_mono hbd) ?_` and prove the remaining obligations. Rewrite using `[lintegral_indicator hS, setLIntegral_const, Measure.restrict_apply hS]`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ENNReal.mul_lt_top hBfin.lt_top ((measure_inter_le hF hSC).trans_lt hC.lt_top)`. Establish `hzero : ∀ c ∉ T, ∀ d, cl d = c → ∀ x, h x d = 0` using `fun c hc d hd x => by`. Distinguish the cases in `hx : x ∈ S`. Take `⟨g, c', hc', rfl⟩` from `exists_of_mem hSC hx`. Assume the negation of the conclusion as `h0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h0` using `[hshift]`. Use `hc (Finset.mem_image.2 ⟨_, hmemP c' hc' _ h0, ?_⟩)` and prove the remaining obligations. Rewrite using `[← hd]`. Conclude with `((cl_eq_iff θD d _).2 ⟨g, rfl⟩).symm`. Conclude with `hh_of_notMem hx d`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Set `gc : Quot (TwConjugate θD) → G → ℂ` to `fun c x => ∑' d : {d : D // cl d = c}, h x d`. Establish `hmeas : ∀ d, Measurable fun x => h x d` using `fun d => (measurable_one.indicator hS).mul (hφm d)`. Establish `hint : ∀ c, IntegrableOn (gc c) F μ` using `fun c => by`. Use `⟨AEStronglyMeasurable.tsum fun d => (hmeas d).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Use `lt_of_le_of_lt (lintegral_mono fun x => ?_) hA` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `enorm_tsum_le_tsum_enorm.trans (ENNReal.tsum_comp_le_tsum_of_injective Subtype.val_injective fun d => ‖h x d‖ₑ)`. Establish `hclass : ∀ c, Tm (Quot.out c) = ∫ x in F, gc c x ∂μ` using `fun c => by`. Take `⟨e, he⟩` from `exists_class_equiv ι hι θD (Quot.out c)`. Set `e'` to `e.trans (Equiv.subtypeEquivRight (p := TwConjugate θD (Quot.out c)) (q := fun d => cl d = c) fun d => by`. Rewrite using `[← cl_eq_iff θD]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `cl (Quot.out c) = cl d ↔ _`. Establish `: cl (Quot.out c) = c` using `Quot.out_eq c`. Rewrite using `[this, eq_comm])`. Establish `hq : ∀ x q, h (((q.out : ι.range) : G)⁻¹ * x) (Quot.out c) = h x (e' q : D)` using `fun x q => by`. Take `⟨ρ, hρ, hρe⟩` from `he q`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[← hρ, hshift, ← hρe]`. Both sides reduce to the same expression. Establish `h1 : ∀ x, ∑' q : ι.range ⧸ ((twCent θD (Quot.out c)).map ι).subgroupOf ι.range, ‖h (((q.out : ι.range) : G)⁻¹ * x) (Quot.out c)‖ₑ = ∑' d : {d : D // cl d = c}, ‖h x d‖ₑ` using `fun x => by`. Repeatedly rewrite using `[hq]`. Conclude with `e'.tsum_eq fun d => ‖h x d‖ₑ`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h2 : ∀ x, ∑' q : ι.range ⧸ ((twCent θD (Quot.out c)).map ι).subgroupOf ι.range, h (((q.out : ι.range) : G)⁻¹ * x) (Quot.out c) = gc c x` using `fun x => by`. Repeatedly rewrite using `[hq]`. Conclude with `e'.tsum_eq fun d => h x d`. Establish `h3` using `habs (Quot.out c) (by`. Repeatedly rewrite using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(lt_of_le_of_lt (lintegral_mono fun x => ?_) hA).ne` and prove the remaining obligations. Conclude with `ENNReal.tsum_comp_le_tsum_of_injective Subtype.val_injective fun d => ‖h x d‖ₑ)`. Rewrite using `[h3]`. Repeatedly rewrite using `[h2]`. Establish `hpt : ∀ x, S.indicator (1 : G → ℂ) x * ∑ᶠ d, φ (twConj θ x (ι d)) = ∑ c ∈ T, gc c x` using `fun x => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e0 : S.indicator (1 : G → ℂ) x * ∑ᶠ d, φ (twConj θ x (ι d)) = ∑ᶠ d, h x d`. Distinguish the cases in `hx : x ∈ S`. Simplify using `[hdef, hh, Set.indicator_of_mem hx]`. Simplify using `[hdef, hh, Set.indicator_of_notMem hx]`. Establish `hs : Summable (h x)` using `summable_of_finite_support (hsupp x)`.
-
-Establish `hs' : Summable fun p => h x (Equiv.sigmaFiberEquiv cl p)` using `(Equiv.sigmaFiberEquiv cl).summable_iff.2 hs`. Establish `e1 : ∑' d, h x d = ∑' p, h x (Equiv.sigmaFiberEquiv cl p)` using `((Equiv.sigmaFiberEquiv cl).tsum_eq (h x)).symm`. Establish `e00 : ∑' d, h x d = ∑ᶠ d, h x d` using `tsum_eq_finsum (hsupp x)`. Rewrite using `[e0, ← e00, e1, Summable.tsum_sigma' (f := fun p => h x (Equiv.sigmaFiberEquiv cl p)) (fun c => hs'.sigma_factor c) hs']`. Establish `e2 : ∑' c, gc c x = ∑ c ∈ T, gc c x` using `tsum_eq_sum fun c hc => (tsum_congr fun d : {d : D // cl d = c} => hzero c hc d.1 d.2 x).trans tsum_zero`.
-
-Conclude with `e2`. Use `⟨T.finite_toSet.subset fun c hc => ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hcT`. Conclude with `hc (hT0 _ fun x => hzero c hcT _ (Quot.out_eq c) x)`. Repeatedly rewrite using `[hpt]`.
-
-Rewrite using `[integral_finset_sum T fun c _ => hint c, finsum_eq_sum_of_support_subset (s := T)]`. Conclude with `Finset.sum_congr rfl fun c _ => (hclass c).symm`. Introduce `c hc`. Assume the negation of the conclusion as `hcT`. Conclude with `hc (hT0 _ fun x => hzero c hcT _ (Quot.out_eq c) x)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem abstract_unfold
     (ι : D →* G) (hι : Function.Injective ι) (θD : Monoid.End D) (θ : Monoid.End G)
@@ -373,9 +363,7 @@ section Top
 variable {E : Type} [Field E] [NumberField E] {n : ℕ}
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.AdelicFourierUniq.secondCountable_inf E`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_finiteAdele E`. Use `haveI : SecondCountableTopology (Ad E) := inferInstanceAs (SecondCountableTopology (InfiniteAdeleRing E × FiniteAdeleRing (𝓞 E) E))`. Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) (Ad E)) := inferInstanceAs (SecondCountableTopology (Fin n → Fin n → Ad E))`. Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) (Ad E))ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology`.
-
-Conclude with `Units.isEmbedding_embedProduct.secondCountableTopology`.
+A detailed English derivation is pending.
 -/
 theorem secondCountable_GA : SecondCountableTopology (GA E n) := by
   haveI := GlobalTheory.AdelicFourierUniq.secondCountable_inf E
@@ -389,15 +377,13 @@ theorem secondCountable_GA : SecondCountableTopology (GA E n) := by
   exact Units.isEmbedding_embedProduct.secondCountableTopology
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Automorphic.AdelicGLn.locallyCompactSpace E n`.
+A detailed English derivation is pending.
 -/
 theorem locallyCompact_GA : LocallyCompactSpace (GA E n) :=
   GroundTheory.Automorphic.AdelicGLn.locallyCompactSpace E n
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.AdelicFourierUniq.t2Space_infiniteAdeleRing_of_numberField E`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField E`. Use `haveI : T2Space (Ad E) := inferInstanceAs (T2Space (InfiniteAdeleRing E × FiniteAdeleRing (𝓞 E) E))`. Use `haveI : T2Space (Matrix (Fin n) (Fin n) (Ad E)) := inferInstanceAs (T2Space (Fin n → Fin n → Ad E))`. Use `haveI : T2Space (Matrix (Fin n) (Fin n) (Ad E))ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isEmbedding.t2Space`.
-
-Conclude with `Units.isEmbedding_embedProduct.t2Space`.
+A detailed English derivation is pending.
 -/
 theorem t2Space_adelicGL_cmField : T2Space (GA E n) := by
   haveI := GlobalTheory.AdelicFourierUniq.t2Space_infiniteAdeleRing_of_numberField E
@@ -411,7 +397,7 @@ theorem t2Space_adelicGL_cmField : T2Space (GA E n) := by
   exact Units.isEmbedding_embedProduct.t2Space
 
 /- English proof (translation)
-Use `haveI : Countable E := (Module.finBasis ℚ E).equivFun.injective.countable`. Use `haveI : Countable (Matrix (Fin n) (Fin n) E) := inferInstanceAs (Countable (Fin n → Fin n → E))`. Conclude with `Units.val_injective.countable`.
+A detailed English derivation is pending.
 -/
 theorem countable_GL : Countable (GL (Fin n) E) := by
   haveI : Countable E := (Module.finBasis ℚ E).equivFun.injective.countable
@@ -421,15 +407,13 @@ theorem countable_GL : Countable (GL (Fin n) E) := by
 end Top
 
 /- English proof (translation)
-Introduce `E _ _ _ n _ _ μ _ F τ φ hF hφ`. Use `haveI := secondCountable_GA (E := E) (n := n)`. Use `haveI := locallyCompact_GA (E := E) (n := n)`. Use `haveI := t2Space_adelicGL_cmField (E := E) (n := n)`. Use `haveI := countable_GL (E := E) (n := n)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Countable (ratGL E n).range := (Set.countable_range (ratGL E n)).to_subtype`. Take `⟨hcl, hinv, C, hCc, hSC⟩` from `hM E n τ`. Take `⟨M, hMb⟩` from `hφ.supp.exists_bound_of_continuous hφ.cont`. Establish `hθ : ∀ d, thetaA E n (ratGL E n d) = ratGL E n (thetaE E n d)` using `fun d => (GlobalTheory.CompanionTheory.OnlyStab.ratGL_thetaE d).symm`. Establish `hcont : ∀ d, Continuous fun x => φ (twConj (thetaA E n) x (ratGL E n d))` using `fun d => hφ.cont.comp ((continuous_inv.mul continuous_const).mul GlobalTheory.CompanionTheory.KerTwFin.continuous_thetaA)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hHm : ∀ δ, Measurable fun x => hh (cutSet E n τ) (thetaA E n) (ratGL E n) φ x δ` using `fun δ => (measurable_one.indicator hcl.measurableSet).mul (hcont δ).measurable`. Establish `hinvH : ∀ δ, ∀ h ∈ ratCent δ, ∀ x, hh (cutSet E n τ) (thetaA E n) (ratGL E n) φ (h * x) δ = hh (cutSet E n τ) (thetaA E n) (ratGL E n) φ x δ`. Introduce and unpack `δ _ ⟨t, ht, rfl⟩ x`. Rewrite using `[hh_shift hθ hinv φ t x δ]`. Establish `: twConj (thetaE E n) t δ = δ` using `ht`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Use `abstract_unfold (ratGL E n) GlobalTheory.CompanionTheory.KerTwFin.injective_ratGL (thetaE E n) (thetaA E n) hθ μ hF hcl.measurableSet hinv hCc.measure_lt_top.ne hSC φ M hMb (fun d => (hcont d).measurable) (GlobalTheory.CompanionTheory.KerTwFin.finite_twConj_of_isTest hφ hCc) (fun …` and prove the remaining obligations. Introduce `δ h0`. Establish `: (fun x => chiT τ x * φ (twConj (thetaA E n) x (ratGL E n δ))) = fun _ => 0` using `funext h0`. Simplify using `only [cutTerm, this]`.
-
-Simplify using `[quotIntegral]`. Introduce `δ hfin haveI : DiscreteTopology (ratCent δ) := DiscreteTopology.of_subset (s := ((ratGL E n).range : Set (GA E n))) GlobalTheory.CompanionTheory.KerTwFin.discreteTopology_range (fun _ ⟨t, _, e⟩ => ⟨t, e⟩)`. Conclude with `GlobalTheory.CompanionTheory.QuotUnfold.quotIntegral_unfold (Γ := (ratGL E n).range) (Γ₀ := ratCent δ) (fun _ ⟨t, _, e⟩ => ⟨t, e⟩) hF (hHm δ) (hinvH δ) hfin`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem unfold_of_mahler (hM : Mahler) : Unfold := by
   intro E _ _ _ n _ _ μ _ F τ φ hF hφ
@@ -468,7 +452,7 @@ theorem unfold_of_mahler (hM : Mahler) : Unfold := by
       (fun _ ⟨t, _, e⟩ => ⟨t, e⟩) hF (hHm δ) (hinvH δ) hfin
 
 /- English proof (translation)
-Introduce `_ hM _` and use `unfold_of_mahler hM`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unfold_of_absUnfold_mahler_kerFin : PositivityTheory.Rg.BcB.D4.AbsUnfold → Mahler → PositivityTheory.Rg.BcB.D4.KerFin → Unfold :=
   fun _ hM _ => unfold_of_mahler hM

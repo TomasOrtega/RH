@@ -42,18 +42,16 @@ def sec : Fin 2 → Γ(Q, ⊤) := ![-X' 1, X' 0]
 def quotMap : E ⟶ Q := sectionsHom sec
 
 /- English proof (translation)
-The claim follows from `sec_ext fun i => by rfl`.
+A detailed English derivation is pending.
 -/
 theorem resM_X' (j : Fin 2) : resM Q (le_top : chart ℤ 1 j ≤ ⊤) (X' j) = LB.chartSec (O1_isLB ℤ 1) j :=
   sec_ext fun i => by
     rfl
 
 /- English proof (translation)
-Establish `e : resM Q (le_refl (chart ℤ 1 j)) (LB.chartSec (O1_isLB ℤ 1) j) = resM Q (le_top : chart ℤ 1 j ≤ ⊤) (X' j)` using `(resM_self _ _).trans (resM_X' j).symm`. Rewrite using `[e]`. Use `fin_cases j`. Conclude with `Submodule.subset_span ⟨1, rfl⟩`. Establish `h : resM Q (le_top : chart ℤ 1 1 ≤ ⊤) (sec 0) ∈ Submodule.span Γ(PSpace ℤ 1, chart ℤ 1 1) (Set.range fun i => resM Q (le_top : chart ℤ 1 1 ≤ ⊤) (sec i))` using `Submodule.subset_span ⟨0, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : resM Q (le_top : chart ℤ 1 1 ≤ ⊤) (X' 1) = -resM Q (le_top : chart ℤ 1 1 ≤ ⊤) (sec 0)`. Rewrite using `[← map_neg]`. Conclude with `congrArg _ (neg_neg _).symm`. Express the relevant statement in the definitionally equal form `resM Q (le_top : chart ℤ 1 1 ≤ ⊤) (X' 1) ∈ Submodule.span Γ(PSpace ℤ 1, chart ℤ 1 1) (Set.range fun i => resM Q (le_top : chart ℤ 1 1 ≤ ⊤) (sec i))`. Rewrite using `[e]`.
-
-Conclude with `Submodule.neg_mem _ h`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chartSec_mem_span (j : Fin 2) : resM Q (le_refl (chart ℤ 1 j)) (LB.chartSec (O1_isLB ℤ 1) j) ∈
     Submodule.span Γ(PSpace ℤ 1, chart ℤ 1 j)
@@ -89,7 +87,7 @@ abbrev K : (PSpace ℤ 1).Modules := kernel quotMap
 abbrev seq : ShortComplex (PSpace ℤ 1).Modules := .mk (kernel.ι quotMap) quotMap (kernel.condition _)
 
 /- English proof (translation)
-The claim follows from `have : Mono seq.f := equalizer.ι_mono have : Epi seq.g := inferInstanceAs (Epi quotMap) { exact := ShortComplex.exact_kernel _ }`.
+A detailed English derivation is pending.
 -/
 theorem seq_shortExact : seq.ShortExact :=
   have : Mono seq.f := equalizer.ι_mono
@@ -97,7 +95,7 @@ theorem seq_shortExact : seq.ShortExact :=
   { exact := ShortComplex.exact_kernel _ }
 
 /- English proof (translation)
-The claim follows from `isVB_X₁_of_shortExact _ seq 1 1 seq_shortExact (isVB_freeModule_fin _ 2) (isVB_toMod (O1_isLB ℤ 1))`.
+A detailed English derivation is pending.
 -/
 theorem isVB_seq₁ : IsVB seq.X₁ 1 :=
   isVB_X₁_of_shortExact _ seq 1 1 seq_shortExact (isVB_freeModule_fin _ 2) (isVB_toMod (O1_isLB ℤ 1))
@@ -110,7 +108,7 @@ abbrev e (a : Fin 2) : Γ(E, ⊤) := freeFrame _ (Fin 2) a
 abbrev eV (V : (PSpace ℤ 1).Opens) (a : Fin 2) : Γ(E, V) := resM E le_top (e a)
 
 /- English proof (translation)
-Rewrite using `[app_resM]`. Conclude with `congrArg _ (sectionsHom_app_freeBasis sec a)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotMap_eV (V : (PSpace ℤ 1).Opens) (a : Fin 2) :
     quotMap.app V (eV V a) = resM Q le_top (sec a) := by
@@ -118,14 +116,14 @@ theorem quotMap_eV (V : (PSpace ℤ 1).Opens) (a : Fin 2) :
   exact congrArg _ (sectionsHom_app_freeBasis sec a)
 
 /- English proof (translation)
-The claim follows from `((LB.chartEquiv (O1_isLB ℤ 1) j h).symm_apply_apply _).symm`.
+A detailed English derivation is pending.
 -/
 theorem resM_X'_eq (j a : Fin 2) {V : (PSpace ℤ 1).Opens} (h : V ≤ chart ℤ 1 j) :
     resM Q le_top (X' a) = ratioOn V j h a • resM Q h (LB.chartSec (O1_isLB ℤ 1) j) :=
   ((LB.chartEquiv (O1_isLB ℤ 1) j h).symm_apply_apply _).symm
 
 /- English proof (translation)
-Use `(LB.chartEquiv (O1_isLB ℤ 1) j h).symm.injective (a₁ := c) (a₂ := 0) (hc.trans (map_zero _).symm)` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_smul_chartSec (j : Fin 2) {V : (PSpace ℤ 1).Opens} (h : V ≤ chart ℤ 1 j) (c : Γ(PSpace ℤ 1, V))
     (hc : c • resM Q h (LB.chartSec (O1_isLB ℤ 1) j) = 0) : c = 0 := by
@@ -135,7 +133,7 @@ theorem eq_zero_of_smul_chartSec (j : Fin 2) {V : (PSpace ℤ 1).Opens} (h : V �
 def v (j : Fin 2) : Γ(E, chart ℤ 1 j) := ratio ℤ 1 j 0 • eV _ 0 + ratio ℤ 1 j 1 • eV _ 1
 
 /- English proof (translation)
-Establish `h` using `((isFrame_freeFrame (PSpace ℤ 1) (Fin 2)).basis (le_top : V ≤ ⊤)).sum_repr t`. Rewrite `h` using `[Fin.sum_univ_two, IsFrame.basis_apply, IsFrame.basis_apply]`. Conclude with `⟨_, _, h.symm⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_comb {V : (PSpace ℤ 1).Opens} (t : Γ(E, V)) : ∃ c₀ c₁ : Γ(PSpace ℤ 1, V), t = c₀ • eV V 0 + c₁ • eV V 1 := by
   have h := ((isFrame_freeFrame (PSpace ℤ 1) (Fin 2)).basis (le_top : V ≤ ⊤)).sum_repr t
@@ -143,7 +141,7 @@ theorem exists_comb {V : (PSpace ℤ 1).Opens} (t : Γ(E, V)) : ∃ c₀ c₁ : 
   exact ⟨_, _, h.symm⟩
 
 /- English proof (translation)
-Establish `hi` using `((isFrame_freeFrame (PSpace ℤ 1) (Fin 2)) V le_top).1`. Use `@hi ![c₀, c₁] ![d₀, d₁] (by` as an intermediate fact. Simplify `h)` using `[Fintype.linearCombination_apply, Fin.sum_univ_two]`. Conclude with `⟨congrFun this 0, congrFun this 1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 -/
 theorem comb_injective {V : (PSpace ℤ 1).Opens} {c₀ c₁ d₀ d₁ : Γ(PSpace ℤ 1, V)}
     (h : c₀ • eV V 0 + c₁ • eV V 1 = d₀ • eV V 0 + d₁ • eV V 1) : c₀ = d₀ ∧ c₁ = d₁ := by
@@ -153,9 +151,9 @@ theorem comb_injective {V : (PSpace ℤ 1).Opens} {c₀ c₁ d₀ d₁ : Γ(PSpa
   exact ⟨congrFun this 0, congrFun this 1⟩
 
 /- English proof (translation)
-Establish `e₀ : quotMap.app V (eV V 0) = -(ratioOn V j h 1 • resM Q h (LB.chartSec (O1_isLB ℤ 1) j))`. Rewrite using `[quotMap_eV, ← resM_X'_eq j 1 h, ← map_neg]`. Both sides reduce to the same expression. Establish `e₁ : quotMap.app V (eV V 1) = ratioOn V j h 0 • resM Q h (LB.chartSec (O1_isLB ℤ 1) j)`. Rewrite using `[quotMap_eV, ← resM_X'_eq j 0 h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[map_add, Scheme.Modules.Hom.app_smul, Scheme.Modules.Hom.app_smul, e₀, e₁, sub_smul, mul_smul, mul_smul, smul_neg, sub_eq_add_neg, add_comm]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem quotMap_comb (j : Fin 2) {V : (PSpace ℤ 1).Opens} (h : V ≤ chart ℤ 1 j) (c₀ c₁ : Γ(PSpace ℤ 1, V)) :
     quotMap.app V (c₀ • eV V 0 + c₁ • eV V 1) =
@@ -170,7 +168,7 @@ theorem quotMap_comb (j : Fin 2) {V : (PSpace ℤ 1).Opens} (h : V ≤ chart ℤ
     smul_neg, sub_eq_add_neg, add_comm]
 
 /- English proof (translation)
-Rewrite using `[v, quotMap_comb j le_rfl]`. Rewrite using `[mul_comm, sub_self, zero_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem quotMap_v (j : Fin 2) : quotMap.app _ (v j) = 0 := by
   rw [v, quotMap_comb j le_rfl]
@@ -179,13 +177,13 @@ theorem quotMap_v (j : Fin 2) : quotMap.app _ (v j) = 0 := by
 def s (j : Fin 2) : Γ(K, chart ℤ 1 j) := ((exact_kernel_ι_app quotMap _ (v j)).1 (quotMap_v j)).choose
 
 /- English proof (translation)
-The claim follows from `((exact_kernel_ι_app quotMap _ (v j)).1 (quotMap_v j)).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem map_s (j : Fin 2) : (kernel.ι quotMap).app _ (s j) = v j :=
   ((exact_kernel_ι_app quotMap _ (v j)).1 (quotMap_v j)).choose_spec
 
 /- English proof (translation)
-Rewrite using `[v, map_add, resM_smul, resM_smul, resM_resM, resM_resM]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem resM_v (j : Fin 2) {V : (PSpace ℤ 1).Opens} (h : V ≤ chart ℤ 1 j) :
     resM E h (v j) = ratioOn V j h 0 • eV V 0 + ratioOn V j h 1 • eV V 1 := by
@@ -193,7 +191,7 @@ theorem resM_v (j : Fin 2) {V : (PSpace ℤ 1).Opens} (h : V ≤ chart ℤ 1 j) 
   rfl
 
 /- English proof (translation)
-Use `(Scheme.Modules.Hom.app_smul _ _ _).trans ((congrArg (c • ·) ((app_resM _ _ _).trans ((congrArg (resM E h) (map_s j)).trans (resM_v j h)))).trans ?_)` and prove the remaining obligations. Rewrite using `[smul_add, mul_smul, mul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem kernel_ι_app_smul_resM_s (j : Fin 2) {V : (PSpace ℤ 1).Opens} (h : V ≤ chart ℤ 1 j) (c : Γ(PSpace ℤ 1, V)) :
     (kernel.ι quotMap).app V (c • resM K h (s j)) = (c * ratioOn V j h 0) • eV V 0 + (c * ratioOn V j h 1) • eV V 1 := by
@@ -202,7 +200,7 @@ theorem kernel_ι_app_smul_resM_s (j : Fin 2) {V : (PSpace ℤ 1).Opens} (h : V 
   rw [smul_add, mul_smul, mul_smul]
 
 /- English proof (translation)
-Introduce `V h` and use `by have hm : Mono (kernel.ι quotMap) := equalizer.ι_mono refine ⟨(injective_iff_map_eq_zero _).2 fun c hc => ?_, fun t => ?_⟩ · have h₁ : c 0 • resM K h (s j) = 0 := by simpa [Fintype.linearCombination_apply] using hc have h₂ := kernel_ι_app_smul_resM_s j h (c 0) rw [h₁, map_zero …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isFrame_const_s (j : Fin 2) : IsFrame fun _ : Fin 1 => s j := fun V h => by
   have hm : Mono (kernel.ι quotMap) := equalizer.ι_mono
@@ -237,9 +235,7 @@ theorem isFrame_const_s (j : Fin 2) : IsFrame fun _ : Fin 1 => s j := fun V h =>
 def t : ∀ j : Fin 2, Γ(E, chart ℤ 1 j) := Fin.cons (eV _ 1) (Fin.cons (-eV _ 0) finZeroElim)
 
 /- English proof (translation)
-Apply the tactic sequence `rcases (by fin_cases j <;> simp : j = 0 ∨ j = 1) with rfl | rfl`. Conclude with `(quotMap_eV _ 1).trans (resM_X' 0)`. Use `(map_neg _ _).trans ((congrArg (- ·) (quotMap_eV _ 0)).trans ?_)` and prove the remaining obligations. Use `Eq.trans ?_ (resM_X' 1)` and prove the remaining obligations. Rewrite using `[← map_neg]`.
-
-Conclude with `congrArg _ (neg_neg _)`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotMap_app_t_eq_chartSec (j : Fin 2) : quotMap.app _ (t j) = LB.chartSec (O1_isLB ℤ 1) j := by
   rcases (by fin_cases j <;> simp : j = 0 ∨ j = 1) with rfl | rfl
@@ -258,14 +254,14 @@ def grIso₁ {X : Scheme.{0}} (S : ShortComplex X.Modules) (hS : S.ShortExact) (
   (colimit.isColimit _).coconePointUniqueUpToIso hS.gIsCokernel
 
 /- English proof (translation)
-The claim follows from `(colimit.isColimit _).comp_coconePointUniqueUpToIso_hom seq_shortExact.gIsCokernel WalkingParallelPair.one`.
+A detailed English derivation is pending.
 -/
 theorem π_grIso₁ : flag.π 1 ≫ (grIso₁ seq seq_shortExact isVB_seq₁ (isVB_freeModule_fin _ 2)
     (isVB_toMod (O1_isLB ℤ 1))).hom = quotMap :=
   (colimit.isColimit _).comp_coconePointUniqueUpToIso_hom seq_shortExact.gIsCokernel WalkingParallelPair.one
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `cokernel.π (0 : (0 : (PSpace ℤ 1).Modules) ⟶ K) ≫ cokernelZeroIsoTarget.hom = 𝟙 K`. Simplify using `[cokernelZeroIsoTarget]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem π_grIso₀ : flag.π 0 ≫ (grIso₀ seq seq_shortExact isVB_seq₁ (isVB_freeModule_fin _ 2)
     (isVB_toMod (O1_isLB ℤ 1))).hom = 𝟙 K :=
@@ -290,7 +286,7 @@ def adapt₁ (j : Fin 2) : VBExt.AdaptedChart (VMetric.stepSeq flag 1) 1 1 where
     exact this
 
 /- English proof (translation)
-Introduce `V _` and use `by have : Subsingleton Γ(F, V) := ⟨fun a b => by have : Mono (0 : F ⟶ F) := hF.mono _ refine injective_app_of_mono (0 : F ⟶ F) V ?_ simp⟩ exact ⟨Function.injective_of_subsingleton _, fun b => ⟨0, Subsingleton.elim _ _⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isFrame_zero {X : Scheme.{0}} {F : X.Modules} (hF : IsZero F) {U : X.Opens} (e : Fin 0 → Γ(F, U)) : IsFrame e := fun V _ => by
   have : Subsingleton Γ(F, V) := ⟨fun a b => by
@@ -324,15 +320,15 @@ abbrev metE (σ : ℤ →+* ℂ) : Met (PSpace.str ℤ 1) σ E 2 := stdH.h.met �
 abbrev cE : Chart E 2 := ⟨⊤, _, isFrame_freeFrame (PSpace ℤ 1) (Fin 2)⟩
 
 /- English proof (translation)
-The claim follows from `Met.ofFrame_G _ _ (fun _ => Matrix.PosDef.one) y`.
+A detailed English derivation is pending.
 -/
 theorem metE_G (y : CxPts (PSpace.str ℤ 1) σ) : (metE σ).G cE y = 1 :=
   Met.ofFrame_G _ _ (fun _ => Matrix.PosDef.one) y
 
 /- English proof (translation)
-Establish `hc : y ∈ ptsIn (PSpace.str ℤ 1) σ cE.U` using `mem_ptsIn_top`. Establish `he (a b : Fin 2) : cE.crd _ σ (eV V b) y a = (Pi.single b 1 : Fin 2 → ℂ) a` using `congrFun ((cE.crd_resM _ le_top hy).trans (cE.crd_frame hc b)) a`. Rewrite using `[(metE σ).form_eq _ hc _ _ hy, metE_G]`. Establish `e₀` using `funext fun a => he a 0`. Establish `e₁` using `funext fun a => he a 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Chart.crd_add, Chart.crd_smul, e₀, e₁]`. Simplify using `[form_eq_sum, Fin.sum_univ_two, Matrix.one_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem form_comb {V : (PSpace ℤ 1).Opens} (c₀ c₁ d₀ d₁ : Γ(PSpace ℤ 1, V)) {y : CxPts (PSpace.str ℤ 1) σ}
     (hy : y ∈ ptsIn (PSpace.str ℤ 1) σ V) :
@@ -348,7 +344,7 @@ theorem form_comb {V : (PSpace ℤ 1).Opens} (c₀ c₁ d₀ d₁ : Γ(PSpace �
   simp [form_eq_sum, Fin.sum_univ_two, Matrix.one_apply]
 
 /- English proof (translation)
-The claim follows from `Met.form_restrict (metE σ) (flag.isSubbundle (Fin.succ 1)) (flag.isVB (Fin.succ 1)) a b hy`.
+A detailed English derivation is pending.
 -/
 theorem form_stepMet₁ {V : (PSpace ℤ 1).Opens} (a b : Γ(E, V)) {y : CxPts (PSpace.str ℤ 1) σ}
     (hy : y ∈ ptsIn (PSpace.str ℤ 1) σ V) :
@@ -356,7 +352,7 @@ theorem form_stepMet₁ {V : (PSpace ℤ 1).Opens} (a b : Γ(E, V)) {y : CxPts (
   Met.form_restrict (metE σ) (flag.isSubbundle (Fin.succ 1)) (flag.isVB (Fin.succ 1)) a b hy
 
 /- English proof (translation)
-The claim follows from `Met.form_restrict (metE σ) (flag.isSubbundle (Fin.succ 0)) (flag.isVB (Fin.succ 0)) a b hy`.
+A detailed English derivation is pending.
 -/
 theorem form_stepMet₀ {V : (PSpace ℤ 1).Opens} (a b : Γ(K, V)) {y : CxPts (PSpace.str ℤ 1) σ}
     (hy : y ∈ ptsIn (PSpace.str ℤ 1) σ V) :
@@ -371,28 +367,28 @@ def ipVT (j : Fin 2) (y : CxPts (PSpace.str ℤ 1) σ) : ℂ :=
   (![ev _ σ _ (ratio ℤ 1 0 1) y, -ev _ σ _ (ratio ℤ 1 1 0) y] : Fin 2 → ℂ) j
 
 /- English proof (translation)
-Rewrite using `[zero_smul, one_smul, zero_add]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem t_zero : t 0 = (0 : Γ(PSpace ℤ 1, chart ℤ 1 0)) • eV _ 0 + (1 : Γ(PSpace ℤ 1, chart ℤ 1 0)) • eV _ 1 := by
   rw [zero_smul, one_smul, zero_add]
   rfl
 
 /- English proof (translation)
-Rewrite using `[zero_smul, neg_one_smul, add_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem t_one : t 1 = (-1 : Γ(PSpace ℤ 1, chart ℤ 1 1)) • eV _ 0 + (0 : Γ(PSpace ℤ 1, chart ℤ 1 1)) • eV _ 1 := by
   rw [zero_smul, neg_one_smul, add_zero]
   rfl
 
 /- English proof (translation)
-The claim follows from `form_comb _ _ _ _ hy`.
+A detailed English derivation is pending.
 -/
 theorem form_v_v (j : Fin 2) {y : CxPts (PSpace.str ℤ 1) σ} (hy : y ∈ ptsIn (PSpace.str ℤ 1) σ (chart ℤ 1 j)) :
     (metE σ).form (v j) (v j) y = nsqV j y :=
   form_comb _ _ _ _ hy
 
 /- English proof (translation)
-Apply the tactic sequence `rcases (by fin_cases j <;> simp : j = 0 ∨ j = 1) with rfl | rfl`. Rewrite using `[t_zero, form_comb _ _ _ _ hy]`. Simplify using `[ev_eq hy]`. Rewrite using `[t_one, form_comb _ _ _ _ hy]`. Simplify using `[ev_eq hy]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tautological_lift_norm_one (j : Fin 2) {y : CxPts (PSpace.str ℤ 1) σ} (hy : y ∈ ptsIn (PSpace.str ℤ 1) σ (chart ℤ 1 j)) :
     (metE σ).form (t j) (t j) y = 1 := by
@@ -403,9 +399,9 @@ theorem tautological_lift_norm_one (j : Fin 2) {y : CxPts (PSpace.str ℤ 1) σ}
     simp [ev_eq hy]
 
 /- English proof (translation)
-Apply the tactic sequence `rcases (by fin_cases j <;> simp : j = 0 ∨ j = 1) with rfl | rfl`. Rewrite using `[t_zero, v, form_comb _ _ _ _ hy]`. Simplify using `[ev_eq hy, ipVT]`. Rewrite using `[t_one, v, form_comb _ _ _ _ hy]`. Establish `r₁ : ratio ℤ 1 1 1 = 1` using `ratioOn_self`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[ev_eq hy, ipVT, r₁]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tautological_inner_product_lift (j : Fin 2) {y : CxPts (PSpace.str ℤ 1) σ} (hy : y ∈ ptsIn (PSpace.str ℤ 1) σ (chart ℤ 1 j)) :
     (metE σ).form (v j) (t j) y = ipVT j y := by
@@ -417,9 +413,9 @@ theorem tautological_inner_product_lift (j : Fin 2) {y : CxPts (PSpace.str ℤ 1
     simp [ev_eq hy, ipVT, r₁]
 
 /- English proof (translation)
-Establish `e : (kernel.ι quotMap).app _ (s j) = v j` using `map_s j`. Use extensionality with `(a | a) (b | b)`. Conclude with `(form_stepMet₁ ((kernel.ι quotMap).app _ (s j)) ((kernel.ι quotMap).app _ (s j)) hy).trans (e ▸ form_v_v j hy)`. Conclude with `(form_stepMet₁ ((kernel.ι quotMap).app _ (s j)) (t j) hy).trans (e ▸ tautological_inner_product_lift j hy)`. Use `(form_stepMet₁ (t j) ((kernel.ι quotMap).app _ (s j)) hy).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e, ← Met.conj_form, tautological_inner_product_lift j hy]`. Both sides reduce to the same expression. Use `(form_stepMet₁ (t j) (t j) hy).trans ((tautological_lift_norm_one j hy).trans ?_)` and prove the remaining obligations. Rewrite using `[Subsingleton.elim a b]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gram_adapt₁ (j : Fin 2) {y : CxPts (PSpace.str ℤ 1) σ} (hy : y ∈ ptsIn (PSpace.str ℤ 1) σ (chart ℤ 1 j)) :
     ((stdH.h.stepMet flag 1).met σ).gram (adapt₁ j).frame y =
@@ -438,7 +434,7 @@ theorem gram_adapt₁ (j : Fin 2) {y : CxPts (PSpace.str ℤ 1) σ} (hy : y ∈ 
     simp
 
 /- English proof (translation)
-The claim follows from `(form_stepMet₀ (s j) (s j) hy).trans (map_s j ▸ form_v_v j hy)`.
+A detailed English derivation is pending.
 -/
 theorem gram_adapt₀ (j : Fin 2) {y : CxPts (PSpace.str ℤ 1) σ} (hy : y ∈ ptsIn (PSpace.str ℤ 1) σ (chart ℤ 1 j))
     (a b : Fin 1) : ((stdH.h.stepMet flag 0).met σ).gram (adapt₀ j).frame y (.inr a) (.inr b) = nsqV j y :=

@@ -6,7 +6,7 @@ open NumberField IsDedekindDomain Formalism.L2.Host Formalism.ConjugateSelfDual 
 open UpperTheory.Gal.UnramifiedFromSplittingCriterion
 
 /- English proof (translation)
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast, ← hN]`. Unfold `Formalism.ConjugateSelfDual.normV`. Simplify using `using card_nsmul_eq_zero' (G := 𝓞 F ⧸ u.asIdeal) (x := 1)`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem natCast_mem_asIdeal_of_normV_eq {F : Type} [Field F] [NumberField F] (u : HeightOneSpectrum (𝓞 F)) (p : ℕ)
     (hN : normV u = p) : ((p : 𝓞 F)) ∈ u.asIdeal := by
@@ -15,7 +15,7 @@ private theorem natCast_mem_asIdeal_of_normV_eq {F : Type} [Field F] [NumberFiel
   simpa using card_nsmul_eq_zero' (G := 𝓞 F ⧸ u.asIdeal) (x := 1)
 
 /- English proof (translation)
-Establish `h1 : A.valuation y ^ n = 1` using `by rw [← map_pow, h, map_one]`. Conclude with `(pow_le_one_iff hn.ne').mp h1.le`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem valuation_le_one_of_pow_eq_one' {Ω : Type} [Field Ω] (A : ValuationSubring Ω) (y : Ω) (n : ℕ) (hn : 0 < n)
     (h : y ^ n = 1) : A.valuation y ≤ 1 := by
@@ -23,13 +23,11 @@ private theorem valuation_le_one_of_pow_eq_one' {Ω : Type} [Field Ω] (A : Valu
   exact (pow_le_one_iff hn.ne').mp h1.le
 
 /- English proof (translation)
-Introduce `hvn`. Establish `hc : Nat.Coprime p n` using `(Nat.Prime.coprime_iff_not_dvd hp).mpr hpn`. Establish `hb : ((Nat.gcd p n : ℤ)) = p * Nat.gcdA p n + n * Nat.gcdB p n` using `Nat.gcd_eq_gcd_ab p n`. Rewrite `hb` using `[hc.gcd_eq_one]`. Establish `hb' : (1 : Ω) = (p : Ω) * (Nat.gcdA p n : Ω) + (n : Ω) * (Nat.gcdB p n : Ω)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrArg (fun z : ℤ => (z : Ω)) hb` after adjusting the coercions. Establish `hA : ∀ z : ℤ, A.valuation (z : Ω) ≤ 1` using `fun z => (A.valuation_le_one_iff _).mpr (intCast_mem A z)`. Establish `h1 : A.valuation ((p : Ω) * (Nat.gcdA p n : Ω)) < 1`. Rewrite using `[map_mul]`. Conclude with `mul_lt_one_of_lt_of_le hvp (hA _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : A.valuation ((n : Ω) * (Nat.gcdB p n : Ω)) < 1`. Rewrite using `[map_mul]`. Conclude with `mul_lt_one_of_lt_of_le hvn (hA _)`. Establish `h3` using `Valuation.map_add_lt A.valuation h1 h2`. Rewrite `h3` using `[← hb', map_one]`.
-
-Conclude with `lt_irrefl _ h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem not_valuation_natCast_lt_one_of_prime_not_dvd {Ω : Type} [Field Ω] (A : ValuationSubring Ω) (p n : ℕ) (hp : Nat.Prime p)
     (hpn : ¬ p ∣ n) (hvp : A.valuation (p : Ω) < 1) : ¬ A.valuation (n : Ω) < 1 := by
@@ -50,13 +48,13 @@ private theorem not_valuation_natCast_lt_one_of_prime_not_dvd {Ω : Type} [Field
 
 open Polynomial in
 /- English proof (translation)
-Use `set f := ZMod.castHom (dvd_refl p) K`. Establish `hcard : Fintype.card (ZMod p) = p` using `ZMod.card p`. Establish `hroots : (X ^ p - X : (ZMod p)[X]).roots = Finset.univ.val`. Use `FiniteField.roots_X_pow_card_sub_X (ZMod p)` as an intermediate fact. Rewrite `this` using `[hcard]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hmon : (X ^ p - X : (ZMod p)[X]).Monic`. Apply `Polynomial.monic_X_pow_sub` to reduce the goal to its premises. Rewrite using `[degree_X]`. Conclude with `hp.out.one_lt` after adjusting the coercions. Establish `hdeg : (X ^ p - X : (ZMod p)[X]).roots.card = (X ^ p - X : (ZMod p)[X]).natDegree`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hroots, FiniteField.X_pow_card_sub_X_natDegree_eq _ hp.out.one_lt]`. Simplify using `[hcard]`. Establish `hprod` using `Polynomial.prod_multiset_X_sub_C_of_monic_of_roots_card_eq hmon hdeg`. Establish `hev` using `congrArg (fun P => (P.map f).eval z) hprod`. Simplify using `only [Polynomial.map_multiset_prod, Multiset.map_map, Function.comp_def, Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C, Polynomial.map_pow, eval_multiset_prod, eval_sub, eval_X, eval_C, eval_pow, hz, sub_self] at hev`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨w, -, hw0⟩` from `Multiset.mem_map.mp (Multiset.prod_eq_zero_iff.mp hev)`. Conclude with `⟨w, (sub_eq_zero.mp hw0).symm⟩`.
+A detailed English derivation is pending.
 -/
 private theorem exists_zmod_castHom_eq_of_pow_char_eq_self {K : Type} [Field K] (p : ℕ) [hp : Fact p.Prime] [CharP K p] (z : K)
     (hz : z ^ p = z) : ∃ k : ZMod p, (ZMod.castHom (dvd_refl p) K) k = z := by
@@ -80,27 +78,23 @@ private theorem exists_zmod_castHom_eq_of_pow_char_eq_self {K : Type} [Field K] 
   exact ⟨w, (sub_eq_zero.mp hw0).symm⟩
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ A u hu p hp hN y n hn hfix`. Take `⟨σ, hσD, hσ⟩` from `exists_isFrob hu`. Establish `hfy : σ y = y` using `hfix σ hσD`. Establish `hvp : A.valuation (p : Ω) < 1`. Establish `h` using `(hu (p : 𝓞 F)).mpr (natCast_mem_asIdeal_of_normV_eq u p hN)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using h`. Use `⟨fun m hm => ?_, fun hprim hpn => ?_⟩` and prove the remaining obligations. Establish `hvy : A.valuation y ≤ 1`. Establish `h1 : A.valuation y ^ n ≤ 1`. Rewrite using `[← map_pow, hm]`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `valuation_natCast_le_one A m`. Conclude with `(pow_le_one_iff hn.ne').mp h1`. Establish `hyA : y ∈ A` using `(A.valuation_le_one_iff y).mp hvy`. Use `set yA : A := ⟨y, hyA⟩`. Use `set r := IsLocalRing.residue A`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hp0 : ((p : IsLocalRing.ResidueField A)) = 0`. Rewrite using `[← map_natCast r, IsLocalRing.residue_eq_zero_iff, ValuationSubring.valuation_lt_one_iff]`. Simplify using `using hvp`. Establish `hch : ringChar (IsLocalRing.ResidueField A) = p` using `(hp.eq_one_or_self_of_dvd _ (ringChar.dvd hp0)).resolve_left (CharP.ringChar_ne_one)`. Use `haveI := ringChar.of_eq hch`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Fact p.Prime := ⟨hp⟩`. Establish `hlt` using `hσ y hvy`. Rewrite `hlt` using `[hfy, hN]`. Establish `hry : r yA ^ p = r yA`. Establish `h0 : r (yA - yA ^ p) = 0`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[IsLocalRing.residue_eq_zero_iff, ValuationSubring.valuation_lt_one_iff]`. Simplify using `using hlt`. Rewrite `h0` using `[map_sub, map_pow, sub_eq_zero]`. Conclude with `h0.symm`. Take `⟨k, hk⟩` from `exists_zmod_castHom_eq_of_pow_char_eq_self p (r yA) hry`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hyn : yA ^ n = (m : A)`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `using hm`. Establish `hkm : (ZMod.castHom (dvd_refl p) (IsLocalRing.ResidueField A)) (k ^ n) = (ZMod.castHom (dvd_refl p) (IsLocalRing.ResidueField A)) (m : ZMod p)`. Rewrite using `[map_pow, hk, ← map_pow, hyn, map_natCast, map_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨k, (ZMod.castHom (dvd_refl p) (IsLocalRing.ResidueField A)).injective hkm⟩`. Establish `hyn : y ^ n = 1` using `hprim.pow_eq_one`. Establish `hvy` using `valuation_le_one_of_pow_eq_one' A y n hn hyn`. Establish `hlt` using `hσ y hvy`. Rewrite `hlt` using `[hfy, hN]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvn` using `not_valuation_natCast_lt_one_of_prime_not_dvd A p n hp hpn hvp`. Establish `hyp : y = y ^ p`. Use `eq_of_pow_eq_one A hvn hyn ?_ hlt` and prove the remaining obligations. Rewrite using `[← pow_mul, mul_comm, pow_mul, hyn, one_pow]`. Establish `hy0 : y ≠ 0` using `hprim.ne_zero hn.ne'`.
-
-Establish `hp1 : y ^ (p - 1) = 1`. Establish `h2 : y ^ (p - 1) * y = 1 * y`. Rewrite using `[one_mul, ← pow_succ, Nat.sub_add_cancel hp.one_le]`. Conclude with `hyp.symm`. Conclude with `mul_right_cancel₀ hy0 h2`.
-
-Conclude with `hprim.dvd_of_pow_eq_one _ hp1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.UnramifiedFromSplittingCriterion.rootMod :
     RootMod := by

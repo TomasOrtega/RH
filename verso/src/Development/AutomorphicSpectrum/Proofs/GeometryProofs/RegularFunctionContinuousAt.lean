@@ -16,7 +16,7 @@ section Frac
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X}
 
 /- English proof (translation)
-Set `: Algebra Γ(X, U) (X.presheaf.stalk p)` to `(X.presheaf.germ U p hp).hom.toAlgebra`. Use `hU.isLocalization_stalk ⟨p, hp⟩` as an intermediate fact. Take `⟨⟨f, g⟩, h⟩` from `IsLocalization.surj (hU.primeIdealOf ⟨p, hp⟩).asIdeal.primeCompl (S := X.presheaf.stalk p) s`. Conclude with `⟨f, g, IsLocalization.map_units (X.presheaf.stalk p) g, h⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem stalk_frac {U : X.Opens} (hU : IsAffineOpen U) {p : X} (hp : p ∈ U) (s : X.presheaf.stalk p) :
     ∃ f g : Γ(X, U), IsUnit (X.presheaf.germ U p hp g) ∧
@@ -28,7 +28,7 @@ theorem stalk_frac {U : X.Opens} (hU : IsAffineOpen U) {p : X} (hp : p ∈ U) (s
   exact ⟨f, g, IsLocalization.map_units (X.presheaf.stalk p) g, h⟩
 
 /- English proof (translation)
-Establish `hg : genPt ξ ∈ U` using `p.2.mem_open U.2 hp`. Establish `key : ∀ r : Cpt ξ, ∀ hr : r.1 ∈ U, genMap ξ r (X.presheaf.germ U r.1 hr f) = (Scheme.stalkClosedPointTo ξ).hom (X.presheaf.germ U (genPt ξ) hg f)`. Introduce `r hr`. Conclude with `congrArg (Scheme.stalkClosedPointTo ξ).hom (TopCat.Presheaf.germ_stalkSpecializes_apply X.presheaf hr r.2 f)`. Rewrite using `[key p hp, key q hq]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genMap_germ_indep {U : X.Opens} {p q : Cpt ξ} (hp : p.1 ∈ U) (hq : q.1 ∈ U) (f : Γ(X, U)) :
     genMap ξ p (X.presheaf.germ U p.1 hp f) = genMap ξ q (X.presheaf.germ U q.1 hq f) := by
@@ -41,13 +41,13 @@ theorem genMap_germ_indep {U : X.Opens} {p q : Cpt ξ} (hp : p.1 ∈ U) (hq : q.
   rw [key p hp, key q hq]
 
 /- English proof (translation)
-Take `⟨U, hU, hmem⟩` from `hT.affine c hp.1`. Establish `hpU : p.1 ∈ U` using `(hmem p.1).2 ⟨p.2, hp⟩`. Take `⟨s, rfl⟩` from `ha`. Take `⟨f, g, hg, e⟩` from `stalk_frac hU hpU s`. Establish `hA : ∀ f : Γ(X, U), ∃ P : MvPolynomial κ ℤ, MvPolynomial.aeval (fun j => x j / x c) P = genMap ξ p (X.presheaf.germ U p.1 hpU f)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `f`. Establish `hm : genMap ξ p (X.presheaf.germ U p.1 hpU f) ∈ Algebra.adjoin ℤ (Set.range fun j => x j / x c)`. Use `(hT.ring c hp.1 _).2 fun q hq => ?_` and prove the remaining obligations. Establish `hqU : q.1 ∈ U` using `(hmem q.1).2 ⟨q.2, hq⟩`. Rewrite using `[genMap_germ_indep hpU hqU]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨_, rfl⟩`. Rewrite `hm` using `[Algebra.adjoin_range_eq_range_aeval]`. Take `⟨P, hP⟩` from `hm`. Conclude with `⟨P, hP⟩`. Take `⟨P, hP⟩` from `hA f`.
+Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨Q, hQ⟩` from `hA g`. Use `⟨P, Q, X.presheaf.germ U p.1 hpU g, hg, hQ.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[hP, hQ, ← map_mul, e]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_frac {κ : Type} {x : κ → Ω} {c : κ} (hT : CoordTie ℤ ξ x) {p : Cpt ξ} (hp : InChart ξ x c p) {a : Ω}
     (ha : a ∈ regAt ξ p) :
@@ -82,13 +82,13 @@ section Values
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} {z : Sp ℂ ⟶ X}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hz, (n : X.presheaf.stalk (centre z)), map_intCast _ n, map_intCast _ n⟩`.
+Supply the required witnesses or components.
 -/
 theorem val_intCast (hz : genPt ξ ⤳ centre z) (n : ℤ) : ValAt ξ z (n : Ω) (n : ℂ) :=
   ⟨hz, (n : X.presheaf.stalk (centre z)), map_intCast _ n, map_intCast _ n⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using val_one hz`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.prod_insert hi, Finset.prod_insert hi]`. Conclude with `val_mul (h i (Finset.mem_insert_self i s)) (ih fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_finsetProd (hz : genPt ξ ⤳ centre z) {I : Type} (s : Finset I) (a : I → Ω) (r : I → ℂ)
     (h : ∀ i ∈ s, ValAt ξ z (a i) (r i)) : ValAt ξ z (∏ i ∈ s, a i) (∏ i ∈ s, r i) := by
@@ -106,9 +106,9 @@ def ratioAt (c : (k : K) → J k) (w : (Σ k, J k) → ℂ) (c' : (k : K) → J 
   ∏ k, w ⟨k, c' k⟩ / w ⟨k, c k⟩
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_div_distrib]`. Use `val_finsetProd hz _ _ _ fun k _ => ?_` and prove the remaining obligations. Take `⟨-, h2⟩` from `hw.2 k (c k) (isUnit_iff_ne_zero.2 (hc k))`. Take `⟨r, hr, e⟩` from `h2 (c' k)`. Rewrite using `[e, mul_div_cancel_right₀ _ (hc k)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hr`.
+A detailed English derivation is pending.
 -/
 theorem val_ratio {w : (Σ k, J k) → ℂ} {c : (k : K) → J k} (hz : genPt ξ ⤳ centre z) (hw : CoordsAt ξ y z w)
     (hc : ∀ k, w ⟨k, c k⟩ ≠ 0) (c' : (k : K) → J k) :
@@ -121,7 +121,7 @@ theorem val_ratio {w : (Σ k, J k) → ℂ} {c : (k : K) → J k} (hz : genPt ξ
   exact hr
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C n => simpa using val_intCast hz n`. Consider the case `add p q hp hq => simpa only [map_add] using val_add hp hq`. Consider the case `mul_X p i hp`. Simplify `val_mul hp (val_ratio hz hw hc i)` using `only [map_mul, MvPolynomial.aeval_X]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem val_ratioPoly {w : (Σ k, J k) → ℂ} {c : (k : K) → J k} (hz : genPt ξ ⤳ centre z)
     (hw : CoordsAt ξ y z w) (hc : ∀ k, w ⟨k, c k⟩ ≠ 0) (P : MvPolynomial ((k : K) → J k) ℤ) :
@@ -134,7 +134,7 @@ theorem val_ratioPoly {w : (Σ k, J k) → ℂ} {c : (k : K) → J k} (hz : genP
     simpa only [map_mul, MvPolynomial.aeval_X] using val_mul hp (val_ratio hz hw hc i)
 
 /- English proof (translation)
-The claim follows from `tendsto_finset_prod _ fun k _ => ((continuous_apply _).continuousAt).div ((continuous_apply _).continuousAt) (hc k)`.
+A detailed English derivation is pending.
 -/
 theorem continuousAt_ratioAt {w₀ : (Σ k, J k) → ℂ} {c : (k : K) → J k} (hc : ∀ k, w₀ ⟨k, c k⟩ ≠ 0)
     (c' : (k : K) → J k) : ContinuousAt (fun w => ratioAt c w c') w₀ :=
@@ -142,9 +142,9 @@ theorem continuousAt_ratioAt {w₀ : (Σ k, J k) → ℂ} {c : (k : K) → J k} 
     ((continuous_apply _).continuousAt).div ((continuous_apply _).continuousAt) (hc k)
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C n => simpa using continuousAt_const`. Consider the case `add p q hp hq`. Simplify using `only [map_add]`. Conclude with `hp.add hq`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `mul_X p i hp`. Simplify using `only [map_mul, MvPolynomial.aeval_X]`. Conclude with `hp.mul (continuousAt_ratioAt hc i)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuousAt_ratioPoly {w₀ : (Σ k, J k) → ℂ} {c : (k : K) → J k} (hc : ∀ k, w₀ ⟨k, c k⟩ ≠ 0)
     (P : MvPolynomial ((k : K) → J k) ℤ) :
@@ -161,15 +161,13 @@ theorem continuousAt_ratioPoly {w₀ : (Σ k, J k) → ℂ} {c : (k : K) → J k
 end Values
 
 /- English proof (translation)
-Introduce `X Ω _ ξ K _ J _ y hall hT z₀ w₀ h₀ a hw ha`. Use `choose c hc using hw.1`. Establish `hc' : ∀ k, w₀ ⟨k, c k⟩ ≠ 0` using `fun k => (hc k).ne_zero`. Establish `hch` using `in_chart h₀ hw hc'`. Take `⟨P, Q, t, ht, hQ, hPQ⟩` from `exists_frac hT hch ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hvQ` using `val_ratioPoly (hall _) hw hc' Q`. Establish `hvt : ValAt ξ z₀ (MvPolynomial.aeval (fun c' : (k : K) → J k => (∏ k, y ⟨k, c' k⟩) / ∏ k, y ⟨k, c k⟩) Q) ((Scheme.stalkClosedPointTo z₀).hom t)` using `⟨h₀, t, hQ, rfl⟩`. Establish `hne : MvPolynomial.aeval (ratioAt c w₀) Q ≠ 0`. Rewrite using `[val_unique hT.gen hvQ hvt]`. Conclude with `(ht.map (Scheme.stalkClosedPointTo z₀).hom).ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hQa : MvPolynomial.aeval (fun c' : (k : K) → J k => (∏ k, y ⟨k, c' k⟩) / ∏ k, y ⟨k, c k⟩) Q ≠ (0 : Ω)`. Rewrite using `[← hQ]`. Conclude with `(ht.map (genMap ξ _)).ne_zero`. Establish `haeq : a = MvPolynomial.aeval (fun c' : (k : K) → J k => (∏ k, y ⟨k, c' k⟩) / ∏ k, y ⟨k, c k⟩) P * (MvPolynomial.aeval (fun c' : (k : K) → J k => (∏ k, y ⟨k, c' k⟩) / ∏ k, y ⟨k, c k⟩) Q)⁻¹`. Rewrite using `[← hPQ, mul_inv_cancel_right₀ hQa]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `⟨fun w => MvPolynomial.aeval (ratioAt c w) P / MvPolynomial.aeval (ratioAt c w) Q, (continuousAt_ratioPoly hc' P).div (continuousAt_ratioPoly hc' Q) hne, {w | (∀ k, w ⟨k, c k⟩ ≠ 0) ∧ MvPolynomial.aeval (ratioAt c w) Q ≠ 0}, ?_, ?_⟩` and prove the remaining obligations. Establish `e1 : ∀ᶠ w : (Σ k, J k) → ℂ in 𝓝 w₀, ∀ k, w ⟨k, c k⟩ ≠ 0` using `eventually_all.2 fun k => ((continuous_apply _).continuousAt).eventually_ne (hc' k)`. Conclude with `e1.and ((continuousAt_ratioPoly hc' Q).eventually_ne hne)`. Introduce and unpack `z w ⟨h1, h2⟩ hwz`. Rewrite using `[haeq]`.
-
-Use `show ValAt ξ z _ (_ / _)`. Rewrite using `[div_eq_mul_inv]`. Conclude with `val_mul (val_ratioPoly (hall _) hwz h1 P) (val_inv₀ h2 (val_ratioPoly (hall _) hwz h1 Q))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_near : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (K : Type) [Fintype K] (J : K → Type)
     [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω),

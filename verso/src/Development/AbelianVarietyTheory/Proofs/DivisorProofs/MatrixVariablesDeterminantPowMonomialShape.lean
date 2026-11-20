@@ -12,7 +12,7 @@ noncomputable def detZ (i : ℕ) : MvPolynomial (Σ _ : Fin i, Fin i) ℤ :=
     (MvPolynomial.X ⟨b, a⟩ : MvPolynomial (Σ _ : Fin i, Fin i) ℤ))
 
 /- English proof (translation)
-Rewrite using `[map_pow, detZ, RingHom.map_det]`. Unfold `detPow`. Use `congr 2`. Use extensionality with `a b`. Simplify using `[RingHom.mapMatrix_apply]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem detPow_eq_map (C : Type) [Field C] (i c : ℕ) :
     detPow C i c = MvPolynomial.map (Int.castRingHom C) (detZ i ^ c) := by
@@ -23,7 +23,7 @@ theorem detPow_eq_map (C : Type) [Field C] (i c : ℕ) :
   simp [RingHom.mapMatrix_apply]
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp)]`. Simplify using `[smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem weight_eq_sum {i : ℕ} (w : (Σ _ : Fin i, Fin i) → ℕ) (α : (Σ _ : Fin i, Fin i) →₀ ℕ) :
     Finsupp.weight w α = ∑ x, α x * w x := by
@@ -31,9 +31,9 @@ theorem weight_eq_sum {i : ℕ} (w : (Σ _ : Fin i, Fin i) → ℕ) (α : (Σ _ 
   simp [smul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply']`. Use `MvPolynomial.IsWeightedHomogeneous.sum _ _ _ fun σ _ => ?_` and prove the remaining obligations. Establish `hp` using `MvPolynomial.IsWeightedHomogeneous.prod (R := R) (w := w) Finset.univ (fun j => (MvPolynomial.X ⟨j, σ j⟩ : MvPolynomial (Σ _ : Fin i, Fin i) R)) (fun j => w ⟨j, σ j⟩) (fun j _ => MvPolynomial.isWeightedHomogeneous_X R w _)`. Rewrite `hp` using `[hw σ]`. Establish `hc : ((Equiv.Perm.sign σ : ℤ) : MvPolynomial (Σ _ : Fin i, Fin i) R) = MvPolynomial.C ((Equiv.Perm.sign σ : ℤ) : R)` using `by simp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Matrix.of_apply]`. Rewrite using `[hc]`. Simplify using `using hp.C_mul ((Equiv.Perm.sign σ : ℤ) : R)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem det_wh {R : Type} [CommRing R] {i : ℕ} (w : (Σ _ : Fin i, Fin i) → ℕ)
     (hw : ∀ σ : Equiv.Perm (Fin i), ∑ j, w ⟨j, σ j⟩ = 1) :
@@ -52,7 +52,7 @@ theorem det_wh {R : Type} [CommRing R] {i : ℕ} (w : (Σ _ : Fin i, Fin i) → 
   simpa using hp.C_mul ((Equiv.Perm.sign σ : ℤ) : R)
 
 /- English proof (translation)
-Establish `h` using `(det_wh (R := C) w hw).pow c`. Rewrite using `[← weight_eq_sum]`. Use `h (MvPolynomial.mem_support_iff.1 hα)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sum_of_mem_support {C : Type} [Field C] {i c : ℕ} (w : (Σ _ : Fin i, Fin i) → ℕ)
     (hw : ∀ σ : Equiv.Perm (Fin i), ∑ j, w ⟨j, σ j⟩ = 1) (α) (hα : α ∈ (detPow C i c).support) :
@@ -63,19 +63,19 @@ theorem sum_of_mem_support {C : Type} [Field C] {i c : ℕ} (w : (Σ _ : Fin i, 
   simpa using this
 
 /- English proof (translation)
-Introduce `C _ _ i c`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `(GlobalTheory.LeadingMinors.isHomogeneous_det_X (k := C) (fun a b : Fin i => (⟨b, a⟩ : Σ _ : Fin i, Fin i))).pow c` as an intermediate fact. Simplify `this` using `[Fintype.card_fin, detPow]`. Introduce `α`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨(detZ i ^ c).coeff α, by rw [detPow_eq_map, MvPolynomial.coeff_map]; simp⟩`. Set `f : Fin i → (Σ _ : Fin i, Fin i)` to `fun a => ⟨a, a⟩`. Establish `hf : Function.Injective f` using `fun x y h => congrArg Sigma.fst h`. Establish `h1 : (∑ a : Fin i, Finsupp.single (⟨a, a⟩ : Σ _ : Fin i, Fin i) c) = Finsupp.mapDomain f (∑ a : Fin i, Finsupp.single a c)`. Express the relevant statement in the definitionally equal form `_ = Finsupp.mapDomain.addMonoidHom f _`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `[map_sum, f]`. Establish `h2 : MvPolynomial.killCompl hf (detPow C i c) = MvPolynomial.monomial (∑ a : Fin i, Finsupp.single a c) 1`. Unfold `detPow`. Rewrite using `[map_pow, GlobalTheory.LeadingMinors.killCompl_det_X (k := C) hf (fun a b : Fin i => (⟨b, a⟩ : Σ _ : Fin i, Fin i)) id (fun a => rfl), MvPolynomial.monomial_pow, one_pow]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Finset.smul_sum]`. Simplify using the standard rewrite rules. Introduce and unpack `a b hab ⟨x, hx⟩`. Take `⟨h1, h2⟩` from `Sigma.mk.inj_iff.1 hx`. Conclude with `hab ((eq_of_heq h2).symm.trans h1)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, ← MvPolynomial.coeff_killCompl hf, h2, MvPolynomial.coeff_monomial, if_pos rfl]`. Introduce `α hα`. Prove the components needed by the constructor for the conclusion. Introduce `a`. Establish `h` using `sum_of_mem_support (C := C) (c := c) (fun x => if x.2 = a then 1 else 0) (fun σ => by`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Equiv.sum_comp σ.symm]`. Use the proof step `simp) α hα`. Rewrite `h` using `[Fintype.sum_sigma]`. Simplify using `using h`. Introduce `b`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `sum_of_mem_support (C := C) (c := c) (fun x => if x.1 = b then 1 else 0) (fun σ => by simp) α hα`. Rewrite `h` using `[Fintype.sum_sigma]`. Simplify using `using h`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem detPow_shape : ∀ (C : Type) [Field C] [CharZero C] (i c : ℕ),
     (detPow C i c).IsHomogeneous (i * c) ∧ (∀ α, ∃ n : ℤ, (detPow C i c).coeff α = n) ∧

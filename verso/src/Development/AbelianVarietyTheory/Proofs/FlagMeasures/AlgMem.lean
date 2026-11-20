@@ -14,20 +14,18 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 
 /- English proof (translation)
-Rewrite using `[L.O_def]`. Conclude with `isIntegral_algebraMap (R := 𝒪[F]) (A := E) (x := a)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem alg_mem (L : LocE F E) (a : 𝒪[F]) : algebraMap F E (a : F) ∈ L.O := by
   rw [L.O_def]
   exact isIntegral_algebraMap (R := 𝒪[F]) (A := E) (x := a)
 
 /- English proof (translation)
-Use `haveI : Module.Finite F E := Module.finite_of_finrank_pos (by rw [L.rank]; norm_num)`. Establish `h1 : IsAlgebraic F e` using `Algebra.IsAlgebraic.isAlgebraic e`. Establish `h2 : IsAlgebraic 𝒪[F] e` using `(IsFractionRing.isAlgebraic_iff 𝒪[F] F E).2 h1`. Take `⟨c, hc0, hc⟩` from `h2.exists_integral_multiple`. Take `⟨k, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hc0 hϖ`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `h3 : c • e ∈ L.O` using `(L.O_def _).2 hc`. Establish `h4` using `L.O.mul_mem (alg_mem L ((u⁻¹ : (𝒪[F])ˣ) : 𝒪[F])) h3`. Establish `h5 : ϖ ^ k = ((u⁻¹ : (𝒪[F])ˣ) : 𝒪[F]) * c`. Rewrite using `[hu, ← mul_assoc, Units.inv_mul, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h6 : (ϖ : F) ^ k = (((u⁻¹ : (𝒪[F])ˣ) : 𝒪[F]) : F) * (c : F)`. Conclude with `congrArg (fun x : 𝒪[F] => (x : F)) h5` after adjusting the coercions. Establish `h7 : c • e = algebraMap F E (c : F) * e`. Rewrite using `[← Algebra.smul_def]`. Both sides reduce to the same expression.
-
-Rewrite using `[h6, map_mul, mul_assoc, ← h7]`. Conclude with `h4`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_mul_mem [IsNonarchimedeanLocalField F] (L : LocE F E) {ϖ : 𝒪[F]}
     (hϖ : Irreducible ϖ) (e : E) : ∃ k : ℕ, algebraMap F E ((ϖ : F) ^ k) * e ∈ L.O := by
@@ -49,17 +47,17 @@ theorem exists_pow_mul_mem [IsNonarchimedeanLocalField F] (L : LocE F E) {ϖ : �
   exact h4
 
 /- English proof (translation)
-Establish `hO : ∀ (x : E), x ∈ L.O → ∀ w ∈ Λ, x • w ∈ Λ` using `fun x hx w hw => Λ.smul_mem (⟨x, hx⟩ : L.O) hw`. Establish `hp : ∀ k : ℕ, algebraMap F E ((ϖ : F) ^ k) ∈ L.O` using `fun k => by`. Rewrite using `[map_pow]`. Conclude with `L.O.pow_mem (alg_mem L ϖ) k`. Establish `hv : v ∈ Submodule.span E (Λ : Set (Fin n → E))` using `by rw [hΛ.2]; trivial`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction.
 
-Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨0, hO _ (hp 0) _ hx⟩`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha⟩` from `hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `hy`. Use `⟨a + b, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `Λ.add_mem ?_ ?_` and prove the remaining obligations. Use `hO _ (hp b) _ ha` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[smul_smul, ← map_mul, ← pow_add, add_comm b a]`. Then use the resulting hypothesis. Use `hO _ (hp a) _ hb` as an intermediate fact. Rewrite `this` using `[smul_smul, ← map_mul, ← pow_add]`. Then use the resulting hypothesis. Consider the case `smul e x _ hx`. Take `⟨a, ha⟩` from `hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `exists_pow_mul_mem L hϖ e`. Use `⟨a + b, ?_⟩` and prove the remaining obligations. Use `hO _ hb _ ha` as an intermediate fact. Establish `h : algebraMap F E ((ϖ : F) ^ (a + b)) • e • x = (algebraMap F E ((ϖ : F) ^ b) * e) • algebraMap F E ((ϖ : F) ^ a) • x`. Rewrite using `[smul_smul, smul_smul, pow_add, map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`. Conclude with `this`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_smul_mem [IsNonarchimedeanLocalField F] [CharZero F] (L : LocE F E)
     {ϖ : 𝒪[F]} (hϖ : Irreducible ϖ) {n : ℕ} {Λ : Submodule L.O (Fin n → E)}

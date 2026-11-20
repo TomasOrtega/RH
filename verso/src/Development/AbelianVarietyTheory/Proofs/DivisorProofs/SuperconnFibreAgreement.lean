@@ -22,7 +22,7 @@ open GlobalTheory.TorsionForm.Pullback
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g n : ℕ}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.superconnection_base_function_leibniz τ h β u ψ r P hψ hr`.
+A detailed English derivation is pending.
 -/
 theorem L1 (τ : E → Matrix (Fin g) (Fin g) ℂ) (h : Pt E g → ℝ) (β : Fin n → E) (u : ℝ)
     (ψ : E → ℂ) (r : Pt E g → Ext (n + n + g)) (P : Pt E g) (hψ : DifferentiableAt ℝ ψ P.1)
@@ -32,7 +32,7 @@ theorem L1 (τ : E → Matrix (Fin g) (Fin g) ℂ) (h : Pt E g → ℝ) (β : Fi
   GlobalTheory.T.superconnection_base_function_leibniz τ h β u ψ r P hψ hr
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.superconnection_wedge_anticommute τ h β u k r P hk hr`.
+A detailed English derivation is pending.
 -/
 theorem L2 (τ : E → Matrix (Fin g) (Fin g) ℂ) (h : Pt E g → ℝ) (β : Fin n → E) (u : ℝ)
     (k : Fin (n + n + g)) (r : Pt E g → Ext (n + n + g)) (P : Pt E g) (hk : ∀ a, k ≠ dzb n a)
@@ -41,7 +41,7 @@ theorem L2 (τ : E → Matrix (Fin g) (Fin g) ℂ) (h : Pt E g → ℝ) (β : Fi
   GlobalTheory.T.superconnection_wedge_anticommute τ h β u k r P hk hr
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.base_differential_dual_basis_cancel β ψ b w hψ`.
+A detailed English derivation is pending.
 -/
 theorem L3 (β : Fin n → E) (ψ : E → ℂ) (b : E) (w : Ext (n + n + g)) (hψ : ContDiff ℝ 2 ψ) :
     ∑ i, (dBase β (fun b' => d10 ψ b' (β i)) b (wedge (dt g i) w) +
@@ -49,7 +49,7 @@ theorem L3 (β : Fin n → E) (ψ : E → ℂ) (b : E) (w : Ext (n + n + g)) (h�
   GlobalTheory.T.base_differential_dual_basis_cancel β ψ b w hψ
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.smooth_vanishing_local_product_decomposition B r hB hr b hb h0 z`.
+A detailed English derivation is pending.
 -/
 theorem L4 [FiniteDimensional ℂ E] {m : ℕ}
     (B : Set E) (r : Pt E g → Ext m) (hB : IsOpen B) (hr : ContDiffOn ℝ ∞ r (cov B g))
@@ -60,21 +60,21 @@ theorem L4 [FiniteDimensional ℂ E] {m : ℕ}
   GlobalTheory.T.smooth_vanishing_local_product_decomposition B r hB hr b hb h0 z
 
 /- English proof (translation)
-The claim follows from `hB.prod isOpen_univ`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_cov {B : Set E} (hB : IsOpen B) : IsOpen (cov B g) := hB.prod isOpen_univ
 
 /- English proof (translation)
-Simplify using `[superconn, nablaE, dbarV, dbarAdj, pointDifference, d10, d01, connForm_zero, wedge_zero, contr_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem superconn_zero (τ : E → Matrix (Fin g) (Fin g) ℂ) (h : Pt E g → ℝ) (β : Fin n → E)
     (u : ℝ) (P : Pt E g) : superconn τ h β u (fun _ => (0 : Ext (n + n + g))) P = 0 := by
   simp [superconn, nablaE, dbarV, dbarAdj, pointDifference, d10, d01, connForm_zero, wedge_zero, contr_zero]
 
 /- English proof (translation)
-Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simpa using superconn_zero τ h β u P`. Consider the case `insert a t ha ih`. Simplify using `only [Finset.sum_insert ha]`. Establish `hd : DifferentiableAt ℝ (fun Q => ∑ k ∈ t, F k Q) P` using `DifferentiableAt.fun_sum fun k hk => hF k (Finset.mem_insert_of_mem hk)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e` using `superconn_add τ h β u (hF a (Finset.mem_insert_self a t)) hd`. Use `beta_reduce at e`. Rewrite using `[e, ih fun k hk => hF k (Finset.mem_insert_of_mem hk)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem superconn_sum (τ : E → Matrix (Fin g) (Fin g) ℂ) (h : Pt E g → ℝ) (β : Fin n → E)
     (u : ℝ) {ι : Type} (t : Finset ι) (F : ι → Pt E g → Ext (n + n + g)) (P : Pt E g)
@@ -92,9 +92,9 @@ theorem superconn_sum (τ : E → Matrix (Fin g) (Fin g) ℂ) (h : Pt E g → �
     rw [e, ih fun k hk => hF k (Finset.mem_insert_of_mem hk)]
 
 /- English proof (translation)
-Unfold `wedge`. Use `differentiableAt_pi.2 fun S => ?_` and prove the remaining obligations. Distinguish the cases in `hk : k ∈ S`. Simplify using `only [hk, if_true]`. Conclude with `(differentiableAt_pi.1 hr _).const_mul _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hk, if_false]`. Conclude with `differentiableAt_const _`.
+A detailed English derivation is pending.
 -/
 theorem differentiableAt_wedge {m : ℕ} (k : Fin m) {r : Pt E g → Ext m} {P : Pt E g}
     (hr : DifferentiableAt ℝ r P) : DifferentiableAt ℝ (fun Q => wedge k (r Q)) P := by
@@ -107,7 +107,7 @@ theorem differentiableAt_wedge {m : ℕ} (k : Fin m) {r : Pt E g → Ext m} {P :
     exact differentiableAt_const _
 
 /- English proof (translation)
-Establish `hf : ContDiff ℝ ∞ (fderiv ℝ ψ)` using `hψ.fderiv_right (by simp)`. Simplify using `only [d10]`. Conclude with `((hf.clm_apply contDiff_const).sub ((contDiff_const (𝕜 := ℝ) (c := Complex.I)).smul (hf.clm_apply contDiff_const))).const_smul _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiff_d10 (ψ : E → ℂ) (hψ : ContDiff ℝ ∞ ψ) (v : E) :
     ContDiff ℝ ∞ (fun b => d10 ψ b v) := by
@@ -116,7 +116,7 @@ theorem contDiff_d10 (ψ : E → ℂ) (hψ : ContDiff ℝ ∞ ψ) (v : E) :
   exact ((hf.clm_apply contDiff_const).sub ((contDiff_const (𝕜 := ℝ) (c := Complex.I)).smul (hf.clm_apply contDiff_const))).const_smul _
 
 /- English proof (translation)
-Establish `hf : ContDiff ℝ ∞ (fderiv ℝ ψ)` using `hψ.fderiv_right (by simp)`. Simplify using `only [d01]`. Conclude with `((hf.clm_apply contDiff_const).add ((contDiff_const (𝕜 := ℝ) (c := Complex.I)).smul (hf.clm_apply contDiff_const))).const_smul _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiff_d01 (ψ : E → ℂ) (hψ : ContDiff ℝ ∞ ψ) (v : E) :
     ContDiff ℝ ∞ (fun b => d01 ψ b v) := by
@@ -125,7 +125,7 @@ theorem contDiff_d01 (ψ : E → ℂ) (hψ : ContDiff ℝ ∞ ψ) (v : E) :
   exact ((hf.clm_apply contDiff_const).add ((contDiff_const (𝕜 := ℝ) (c := Complex.I)).smul (hf.clm_apply contDiff_const))).const_smul _
 
 /- English proof (translation)
-The claim follows from `(hψ.comp P differentiableAt_fst).smul hr`.
+A detailed English derivation is pending.
 -/
 theorem differentiableAt_smul_base {ψ : E → ℂ} {r : Pt E g → Ext (n + n + g)} {P : Pt E g}
     (hψ : DifferentiableAt ℝ ψ P.1) (hr : DifferentiableAt ℝ r P) :
@@ -133,15 +133,15 @@ theorem differentiableAt_smul_base {ψ : E → ℂ} {r : Pt E g → Ext (n + n +
   (hψ.comp P differentiableAt_fst).smul hr
 
 /- English proof (translation)
-Establish `c1 : ∀ j, DifferentiableAt ℝ (fun b => d10 ψ b (β j)) P.1` using `fun j => (contDiff_d10 ψ hψ (β j)).differentiable (by simp) _`. Establish `c2 : ∀ j, DifferentiableAt ℝ (fun b => d01 ψ b (β j)) P.1` using `fun j => (contDiff_d01 ψ hψ (β j)).differentiable (by simp) _`. Establish `w1 : ∀ j, DifferentiableAt ℝ (fun Q => wedge (dt g j) (r Q)) P` using `fun j => differentiableAt_wedge _ hr`. Establish `w2 : ∀ j, DifferentiableAt ℝ (fun Q => wedge (dtb g j) (r Q)) P` using `fun j => differentiableAt_wedge _ hr`. Establish `hdt : ∀ j a, dt g j ≠ dzb n a` using `fun j a e => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg Fin.val e` as an intermediate fact. Simplify using `[dt, dzb] at this`. Use linear arithmetic over natural numbers and integers. Establish `hdtb : ∀ j a, dtb g j ≠ dzb n a` using `fun j a e => by`. Use `congrArg Fin.val e` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[dtb, dzb] at this`. Use linear arithmetic over natural numbers and integers. Establish `e0` using `superconn_sum τ h β u Finset.univ (fun j Q => d10 ψ Q.1 (β j) • wedge (dt g j) (r Q) + d01 ψ Q.1 (β j) • wedge (dtb g j) (r Q)) P (fun j _ => (differentiableAt_smul_base (c1 j) (w1 j)).add (differentiableAt_smul_base (c2 j) (w2 j)))`. Rewrite using `[show (fun Q => dBase β ψ Q.1 (r Q)) = fun Q => ∑ j, (d10 ψ Q.1 (β j) • wedge (dt g j) (r Q) + d01 ψ Q.1 (β j) • wedge (dtb g j) (r Q)) from rfl, e0, dBase_apply β ψ P.1]`. Establish `e1 : ∀ j, superconn τ h β u (fun Q => d10 ψ Q.1 (β j) • wedge (dt g j) (r Q) + d01 ψ Q.1 (β j) • wedge (dtb g j) (r Q)) P = (d10 ψ P.1 (β j) • -wedge (dt g j) (superconn τ h β u r P) + dBase β (fun b' => d10 ψ b' (β j)) P.1 (wedge (dt g j) (r P))) + (d01 ψ P.1 (β j) • -wedge (dtb …`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `j`. Establish `e` using `superconn_add τ h β u (differentiableAt_smul_base (c1 j) (w1 j)) (differentiableAt_smul_base (c2 j) (w2 j))`. Use `beta_reduce at e`. Rewrite using `[e, L1 τ h β u _ _ P (c1 j) (w1 j), L1 τ h β u _ _ P (c2 j) (w2 j), L2 τ h β u _ r P (hdt j) hr, L2 τ h β u _ r P (hdtb j) hr]`. Simplify using `only [e1, smul_neg, Finset.sum_add_distrib, Finset.sum_neg_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem superconn_dBase {B : Set E} (τ : E → Matrix (Fin g) (Fin g) ℂ) (h : Pt E g → ℝ)
     (β : Fin n → E) (u : ℝ) (ψ : E → ℂ) (r : Pt E g → Ext (n + n + g)) (P : Pt E g)
@@ -183,11 +183,11 @@ theorem superconn_dBase {B : Set E} (τ : E → Matrix (Fin g) (Fin g) ℂ) (h :
   abel
 
 /- English proof (translation)
-Establish `hO : IsOpen (cov B g)` using `isOpen_cov hτ.1`. Establish `dr : ∀ Q ∈ cov B g, DifferentiableAt ℝ r Q` using `fun Q hQ => (hr.contDiffAt (hO.mem_nhds hQ)).differentiableAt (by simp)`. Establish `hBr : ContDiffOn ℝ ∞ (superconn τ h β u r) (cov B g)` using `GlobalTheory.T.contDiffOn_superconn_of_period B τ h β u r hτ hh hpos hr`. Establish `dBr : DifferentiableAt ℝ (superconn τ h β u r) P` using `(hBr.contDiffAt (hO.mem_nhds hP)).differentiableAt (by simp)`. Establish `dψ : ∀ b, DifferentiableAt ℝ ψ b` using `fun b => hψ.differentiable (by simp) b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : superconn τ h β u (fun Q => ψ Q.1 • r Q) =ᶠ[𝓝 P] fun Q => ψ Q.1 • superconn τ h β u r Q + dBase β ψ Q.1 (r Q)` using `by filter_upwards [hO.mem_nhds hP] with Q hQ`. Conclude with `L1 τ h β u ψ r Q (dψ _) (dr Q hQ)`. Establish `dD : DifferentiableAt ℝ (fun Q => dBase β ψ Q.1 (r Q)) P`. Simplify using `only [dBase_apply]`. Conclude with `DifferentiableAt.fun_sum fun j _ => (differentiableAt_smul_base (((contDiff_d10 ψ hψ (β j)).differentiable (by simp)) _) (differentiableAt_wedge (dt g j) (dr P hP))).add (differentiableAt_smul_base (((contDiff_d01 ψ hψ (β j)).differentiable (by simp)) _) (differentiableAt_wedge ( …`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2` using `superconn_add τ h β u (differentiableAt_smul_base (dψ P.1) dBr) dD`. Use `beta_reduce at e2`. Rewrite using `[superconn_congr τ h β u e1, e2, L1 τ h β u ψ _ P (dψ _) dBr, superconn_dBase (B := B) τ h β u ψ r P hψ (dr P hP), L3 β ψ P.1 (r P) (hψ.of_le (WithTop.coe_le_coe.2 (le_top : (2 : ℕ∞) ≤ ⊤)))]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem superconn_sq_smul_base {B : Set E} [FiniteDimensional ℂ E] (τ : E → Matrix (Fin g) (Fin g) ℂ)
     (h : Pt E g → ℝ) (β : Fin n → E) (u : ℝ) (ψ : E → ℂ) (r : Pt E g → Ext (n + n + g))
@@ -220,17 +220,15 @@ theorem superconn_sq_smul_base {B : Set E} [FiniteDimensional ℂ E] (τ : E →
   abel
 
 /- English proof (translation)
-Use `set P : Pt E g := (b, z) with hPdef`. Establish `hO : IsOpen (cov B g)` using `isOpen_cov hτ.1`. Establish `hP : P ∈ cov B g` using `⟨hb, trivial⟩`. Use `set r : Pt E g → Ext (n + n + g) := fun Q => s Q - s' Q with hrdef`. Establish `hr : ContDiffOn ℝ ∞ r (cov B g)` using `hs.sub hs'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `dAt : ∀ {f : Pt E g → Ext (n + n + g)}, ContDiffOn ℝ ∞ f (cov B g) → ∀ Q ∈ cov B g, DifferentiableAt ℝ f Q` using `fun hf Q hQ => (hf.contDiffAt (hO.mem_nhds hQ)).differentiableAt (by simp)`. Establish `sm : ∀ {f : Pt E g → Ext (n + n + g)}, ContDiffOn ℝ ∞ f (cov B g) → ContDiffOn ℝ ∞ (superconn τ h β u f) (cov B g)` using `fun hf => GlobalTheory.T.contDiffOn_superconn_of_period B τ h β u _ hτ hh hpos hf`. Establish `hsplit : s = fun Q => s' Q + r Q` using `by funext Q; simp [hrdef]`. Establish `eB : superconn τ h β u s =ᶠ[𝓝 P] fun Q => superconn τ h β u s' Q + superconn τ h β u r Q` using `by filter_upwards [hO.mem_nhds hP] with Q hQ`. Rewrite using `[hsplit]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `superconn_add τ h β u (dAt hs' Q hQ) (dAt hr Q hQ)`. Establish `e2` using `superconn_add τ h β u (P := P) (dAt (sm hs') P hP) (dAt (sm hr) P hP)`. Use `beta_reduce at e2`. Rewrite using `[superconn_congr τ h β u eB, e2]`. It suffices to establish `H : superconn τ h β u (superconn τ h β u r) P = 0 by rw [H, add_zero]`.
+Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨N, ψ, q, hψ, hψb, hq, hrq⟩` from `L4 B r hτ.1 hr b hb (fun z => by simp [hrdef, hss]) z`. Establish `eBr : superconn τ h β u r =ᶠ[𝓝 P] superconn τ h β u (fun Q => ∑ k, ψ k Q.1 • q k Q)` using `by filter_upwards [hrq.eventuallyEq_nhds] with Q hQ`. Conclude with `superconn_congr τ h β u hQ`. Establish `dk : ∀ k Q, DifferentiableAt ℝ (fun Q => ψ k Q.1 • q k Q) Q` using `fun k Q => differentiableAt_smul_base ((hψ k).differentiable (by simp) _) ((hq k).differentiable (by simp) _)`. Establish `eS : superconn τ h β u (fun Q => ∑ k, ψ k Q.1 • q k Q) = fun Q => ∑ k, superconn τ h β u (fun Q => ψ k Q.1 • q k Q) Q`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `Q`. Conclude with `superconn_sum τ h β u Finset.univ (fun k Q => ψ k Q.1 • q k Q) Q fun k _ => dk k Q`. Establish `ck : ∀ k, ContDiff ℝ ∞ (fun Q : Pt E g => ψ k Q.1 • q k Q)` using `fun k => ((hψ k).comp contDiff_fst).smul (hq k)`. Rewrite using `[superconn_congr τ h β u eBr, eS, superconn_sum τ h β u Finset.univ (fun k => superconn τ h β u (fun Q => ψ k Q.1 • q k Q)) P fun k _ => dAt (sm (ck k).contDiffOn) P hP]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[superconn_sq_smul_base τ h β u (ψ k) (q k) hτ hh hpos (hψ k) (hq k).contDiffOn hP]`. Simplify using `[hPdef, hψb k]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem main {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E] {g n : ℕ} (B : Set E) (τ : E → Matrix (Fin g) (Fin g) ℂ) (h : Pt E g → ℝ) (β : Fin n → E) (u : ℝ) (s s' : Pt E g → Ext (n + n + g)) (hτ : IsPeriodMap B τ) (hh : ContDiffOn ℝ ∞ h (cov B g)) (hpos : ∀ P ∈ cov B g, 0 < h P) (hs : ContDiffOn ℝ ∞ s (cov B g)) (hs' : ContDiffOn ℝ ∞ s' (cov B g)) (b : E) (hb : b ∈ B) (hss : ∀ z, s (b, z) = s' (b, z)) (z : Fin g → ℂ) : superconn τ h β u (superconn τ h β u s) (b, z) = superconn τ h β u (superconn τ h β u s') (b, z) := by
   set P : Pt E g := (b, z) with hPdef

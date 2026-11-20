@@ -8,11 +8,11 @@ open Polynomial CategoryTheory
 namespace GlobalTheory.DualLabel
 
 /- English proof (translation)
-Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty => simp [reverse]`. Consider the case `cons a s ih`. Rewrite `hs` using `[Multiset.mem_cons, not_or]`. Establish `ha : a ≠ 0` using `fun h => hs.1 h.symm`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hX : (X : K[X]).reverse = 1` using `by simp [reverse]`. Establish `e : (X - C a : K[X]).reverse = C (-a) * (X - C a⁻¹)`. Rewrite using `[sub_eq_add_neg, ← C_neg, reverse_add_C, natDegree_X, hX, mul_sub, ← C_mul, neg_mul, mul_inv_cancel₀ ha]`. Simplify using `[add_comm]`. Establish `hm : (s.map fun x => X - C x).prod ≠ 0` using `(monic_multiset_prod_of_monic _ _ fun x _ => monic_X_sub_C x).ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Multiset.map_cons, Multiset.prod_cons, reverse_mul_of_domain, e, roots_mul, roots_C_mul _ (neg_ne_zero.2 ha), roots_X_sub_C, ih hs.2, Multiset.map_cons, Multiset.singleton_add]`. Conclude with `mul_ne_zero (mul_ne_zero (C_ne_zero.2 (neg_ne_zero.2 ha)) (X_sub_C_ne_zero _)) (by rwa [Ne, reverse_eq_zero])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem roots_reverse_prod {K : Type} [Field K] (s : Multiset K) (hs : (0 : K) ∉ s) :
     ((s.map fun x => X - C x).prod.reverse).roots = s.map (·⁻¹) := by
@@ -34,7 +34,7 @@ theorem roots_reverse_prod {K : Type} [Field K] (s : Multiset K) (hs : (0 : K) �
       (by rwa [Ne, reverse_eq_zero])
 
 /- English proof (translation)
-Rewrite using `[Monic, leadingCoeff_mul, leadingCoeff_C, reverse_leadingCoeff, trailingCoeff_eq_coeff_zero h0, inv_mul_cancel₀ h0]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem monic_normRev {K : Type} [Field K] {f : K[X]} (h0 : f.coeff 0 ≠ 0) :
     (C (f.coeff 0)⁻¹ * f.reverse).Monic := by
@@ -42,9 +42,9 @@ theorem monic_normRev {K : Type} [Field K] {f : K[X]} (h0 : f.coeff 0 ≠ 0) :
     inv_mul_cancel₀ h0]
 
 /- English proof (translation)
-Establish `hz : (0 : AlgebraicClosure K) ∉ Formalism.IrreducibleCountingLemmas.TYPES.rootsBar K f` using `fun h => by`. Rewrite `h` using `[Formalism.IrreducibleCountingLemmas.TYPES.rootsBar, mem_roots (hm.map _).ne_zero, IsRoot, ← coeff_zero_eq_eval_zero, coeff_map]`. Conclude with `h0 ((map_eq_zero _).1 h)`. Establish `e : f.reverse.map (algebraMap K (AlgebraicClosure K)) = (f.map (algebraMap K (AlgebraicClosure K))).reverse`. Rewrite using `[reverse, reverse, reflect_map, natDegree_map]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hf` using `(IsAlgClosed.splits (f.map (algebraMap K (AlgebraicClosure K)))).eq_prod_roots_of_monic (hm.map _)`. Rewrite using `[Formalism.IrreducibleCountingLemmas.TYPES.rootsBar, Polynomial.map_mul, map_C, roots_C_mul _ (by simpa using h0), e, hf]`. Conclude with `roots_reverse_prod _ hz`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rootsBar_normRev {K : Type} [Field K] {f : K[X]} (hm : f.Monic) (h0 : f.coeff 0 ≠ 0) :
     Formalism.IrreducibleCountingLemmas.TYPES.rootsBar K (C (f.coeff 0)⁻¹ * f.reverse) =
@@ -60,7 +60,7 @@ theorem rootsBar_normRev {K : Type} [Field K] {f : K[X]} (hm : f.Monic) (h0 : f.
   exact roots_reverse_prod _ hz
 
 /- English proof (translation)
-Apply `map_injective (algebraMap K (AlgebraicClosure K)) (algebraMap K (AlgebraicClosure K)).injective` to reduce the goal to its premises. Rewrite using `[(IsAlgClosed.splits (f.map (algebraMap K (AlgebraicClosure K)))).eq_prod_roots_of_monic (hf.map _), (IsAlgClosed.splits (g.map (algebraMap K (AlgebraicClosure K)))).eq_prod_roots_of_monic (hg.map _)]`. Conclude with `congrArg (fun s => (s.map fun a => X - C a).prod) h`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_rootsBar_eq {K : Type} [Field K] {f g : K[X]} (hf : f.Monic) (hg : g.Monic)
     (h : Formalism.IrreducibleCountingLemmas.TYPES.rootsBar K f = Formalism.IrreducibleCountingLemmas.TYPES.rootsBar K g) : f = g := by
@@ -70,9 +70,9 @@ theorem eq_of_rootsBar_eq {K : Type} [Field K] {f g : K[X]} (hf : f.Monic) (hg :
   exact congrArg (fun s => (s.map fun a => X - C a).prod) h
 
 /- English proof (translation)
-Introduce `K _ _ _ C O hO d τ τ' hd hs hc hs' hc' htr`. Establish `h` using `hO.2 d τ τ' hd hs hc hs' hc' htr`. Take `⟨hm, hi, hX, -⟩` from `O.lab_spec d τ hd hs hc`. Establish `h0` using `Formalism.L2.NT.coeff_zero_ne_of_monic_irr hm hi hX`. Use `eq_of_rootsBar_eq (O.lab_spec d τ' hd hs' hc').1 (monic_normRev h0) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h, rootsBar_normRev hm h0]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lab_dual : ∀ {K : Type} [Field K] [Fintype K] [DecidableEq K] {C : Formalism.IrreducibleCountingLemmas.TYPES.LabelConv K}
     (O : Formalism.IrreducibleCountingLemmas.TYPES.LabelMap K C), Formalism.IrreducibleCountingLemmas.TYPES.LabelMapEquivariant O →

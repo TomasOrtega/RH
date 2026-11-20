@@ -15,17 +15,17 @@ noncomputable section
 namespace GlobalTheory.BKLim.GalAdapted
 
 /- English proof (translation)
-Introduce `l _ K bk C d ρ H g w hw`. Establish `hinj : Function.Injective (algebraMap (Per.BdRp l) (Per.BdR l))` using `(BdRField.bdR_isField l).2.1`. Take `⟨u, hu, -⟩` from `AdaptedHodge.xi_unit_fil C (bk.ev bk.E) bk.span_ev`. Establish `hΞ : IsUnit (algebraMap (Per.BdRp l) (Per.BdR l) (aDp l (bk.ev bk.E)))` using `hu ▸ u.isUnit`. Establish `hξ : Per.σD (g : GQ l) (algebraMap (Per.BdRp l) (Per.BdR l) (aDp l (bk.ev bk.E))) = algebraMap (Per.BdRp l) (Per.BdR l) (aDp l (bk.ev bk.E)) * algebraMap (Per.BdRp l) (Per.BdR l) (aDp l w)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ActLaws.σD_alg, ActLaws.σDp_aDp, hw, map_mul, map_mul]`. Establish `hmap : ∀ z : ℤ_[l], C.o (zOm l z) = aDp l (Per.zA l z)` using `fun z => C.o_sec.z z`. Establish `hinv` using `H.inv g g.2`. Use extensionality with `i j`. Apply `hinj` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result.
 
-Use `(hΞ.pow (H.p j)).mul_left_cancel ?_` and prove the remaining obligations. Establish `hσ : ∀ k, (algebraMap (Per.BdRp l) (Per.BdR l) (aDp l (bk.ev bk.E)) * algebraMap (Per.BdRp l) (Per.BdR l) (aDp l w)) ^ H.q * Per.σD (g : GQ l) (H.Q k j) = (algebraMap (Per.BdRp l) (Per.BdR l) (aDp l (bk.ev bk.E)) * algebraMap (Per.BdRp l) (Per.BdR l) (aDp l w)) ^ H.p j * algebraM …`. Introduce `k`. Use `congrArg (Per.σD (g : GQ l)) (H.Q_eq k j)` as an intermediate fact. Rewrite `this` using `[map_mul, map_pow, hξ, ActLaws.σD_alg, map_mul, map_pow, ActLaws.σDp_aDp, hw, map_mul, map_mul, map_pow, map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this]`. Establish `hI : ∑ k, algebraMap (Per.BdRp l) (Per.BdR l) (aDp l (Per.zA l (ρ g i k))) * Per.σD (g : GQ l) (H.Q k j) = H.Q i j`. Use `congrFun (congrFun hinv i) j` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, hmap]`. Rewrite using `[Matrix.mul_diagonal, Matrix.smul_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_apply, Matrix.smul_apply, smul_eq_mul, Matrix.map_apply, RingHom.comp_apply, map_mul, map_sum, map_pow]`. Establish `e1 : algebraMap (Per.BdRp l) (Per.BdR l) (aDp l (bk.ev bk.E)) ^ H.p j * (algebraMap (Per.BdRp l) (Per.BdR l) (aDp l w) ^ H.q * algebraMap (Per.BdRp l) (Per.BdR l) (H.V i j)) = algebraMap (Per.BdRp l) (Per.BdR l) (aDp l w) ^ H.q * (algebraMap (Per.BdRp l) (Per.BdR l) (aDp l (bk.ev …`. Rewrite using `[H.Q_eq i j, map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, ← hI]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Take the linear combination `-(algebraMap (Per.BdRp l) (Per.BdR l) (aDp l (Per.zA l (ρ g i k)))) * hσ k`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem gal_V : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (C : Core l) (d : ℕ) (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l]) (H : Hodge C (bk.ev bk.E) (fun g => (ρ g).map (zOm l)) K) (g : ↥(GK K)) (w : Ainf l), Per.σA (g : GQ l) (bk.ev bk.E) = bk.ev bk.E * w → (ρ g).map ((aDp l).comp (Per.zA l)) * H.V.map (Per.σDp (g : GQ l)) * Matrix.diagonal (fun j => aDp l w ^ H.p j) = aDp l w ^ H.q • H.V := by
   intro l _ K bk C d ρ H g w hw

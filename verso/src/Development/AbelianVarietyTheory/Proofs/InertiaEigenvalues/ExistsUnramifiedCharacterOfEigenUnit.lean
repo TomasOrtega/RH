@@ -9,7 +9,7 @@ open Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hfix : (g : GQ l) ((a : Om l)) = (a : Om l)` using `(IntermediateField.mem_fixingSubgroup_iff _ _).1 g.2 (a : Om l) a.2.1`. Conclude with `P.actQ_Kur (g : GQ l) (IntermediateField.inclusion (inf_le_right : K0 K ≤ MaximalUnramifiedExtension l) a) (IntermediateField.inclusion (inf_le_right : K0 K ≤ MaximalUnramifiedExtension l) a) hfix`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem absoluteGalois_fixes_unramified_in_crystalline {l : ℕ} [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (g : ↥(GK K))
     (a : ↥(K0 K)) : P.actQ (g : GQ l) (algebraMap ↥(K0 K) P.R.B a) = algebraMap ↥(K0 K) P.R.B a := by
@@ -19,15 +19,13 @@ theorem absoluteGalois_fixes_unramified_in_crystalline {l : ℕ} [Fact l.Prime] 
     (IntermediateField.inclusion (inf_le_right : K0 K ≤ MaximalUnramifiedExtension l) a) hfix
 
 /- English proof (translation)
-Introduce `l _ P K x hx h`. Break down `subsingleton_or_nontrivial P.R.B with hB | hB` into its components or cases. Conclude with `⟨1, fun g => Subsingleton.elim _ _⟩`. Establish `hinj : Function.Injective (algebraMap ↥(K0 K) P.R.B)` using `(algebraMap ↥(K0 K) P.R.B).injective`. Establish `hcan : ∀ a b : ↥(K0 K), algebraMap ↥(K0 K) P.R.B a * x = algebraMap ↥(K0 K) P.R.B b * x → a = b` using `fun a b e => hinj (hx.mul_left_injective e)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `f : ↥(GK K) → ↥(K0 K)` to `fun g : ↥(GK K) => Classical.choose (h g)`. Establish `hf : ∀ g : ↥(GK K), P.actQ (g : GQ l) x = algebraMap ↥(K0 K) P.R.B (f g) * x` using `fun g => Classical.choose_spec (h g)`. Set `F : ↥(GK K) →* ↥(K0 K)` to `{ toFun := f map_one' := by`. Apply `hcan` to reduce the goal to its premises. Rewrite using `[← hf, map_one, one_mul, OneMemClass.coe_one, map_one, AlgEquiv.one_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `map_mul' := by`. Introduce `g g'`. Apply `hcan` to reduce the goal to its premises. Rewrite using `[← hf]`. Establish `e1 : P.actQ ((g * g' : ↥(GK K)) : GQ l) x = P.actQ (g : GQ l) (P.actQ (g' : GQ l) x)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.coe_mul, map_mul, AlgEquiv.mul_apply]`. Rewrite using `[e1, hf g', map_mul, absoluteGalois_fixes_unramified_in_crystalline, hf g, map_mul]`. Use `ring }`. Use `⟨F.toHomUnits, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.coe_toHomUnits]`.
-
-Conclude with `hf g`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ltChar_hom : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (x : P.R.B), IsUnit x → (∀ g : ↥(GK K), ∃ a : ↥(K0 K), P.actQ (g : GQ l) x = algebraMap ↥(K0 K) P.R.B a * x) → ∃ c : ↥(GK K) →* (↥(K0 K))ˣ, ∀ g : ↥(GK K), P.actQ (g : GQ l) x = algebraMap ↥(K0 K) P.R.B ((c g : (↥(K0 K))ˣ) : ↥(K0 K)) * x := by
   intro l _ P K x hx h

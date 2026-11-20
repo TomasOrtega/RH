@@ -7,7 +7,7 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj Gl
 namespace GlobalTheory.LamF
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨inferInstance, _, isKroneckerChar_quadraticChar hd, by`. Rewrite using `[GlobalTheory.CM.logOm, Complex.sub_re, Complex.ofReal_re]⟩`.
+Substitute using the available equality. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_kronecker_logOm_re (E : Type) [Field E] [NumberField E] {d d' : ℕ} (h : d' = d) [Fact d.Prime]
     [NeZero d] (hd : d % 4 = 3) :
@@ -20,11 +20,11 @@ theorem exists_kronecker_logOm_re (E : Type) [Field E] [NumberField E] {d d' : �
     rw [GlobalTheory.CM.logOm, Complex.sub_re, Complex.ofReal_re]⟩
 
 /- English proof (translation)
-Introduce `D Q hp large₂`. Use `haveI : Fact D.host.d.Prime := ⟨D.host.hyp.2.1⟩`. Use `haveI : NeZero D.host.d := ⟨D.host.hyp.2.1.ne_zero⟩`. Establish `hd : D.host.d % 4 = 3`. Use `Q.H.d_mod` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `this` using `[hp.1]`. Use linear arithmetic over natural numbers and integers. Take `⟨i, χ, hχ, e⟩` from `exists_kronecker_logOm_re D.host.E hp.1 hd`. Use `⟨i, χ, hχ, e.trans ?_⟩` and prove the remaining obligations. Establish `hv : 2 * Real.pi / rootDiscr D.host.E = Real.pi / D.host.v`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Formalism.BasicNotions.Host.v, Formalism.BasicNotions.Host.rdE, rootDiscr_def, Int.cast_abs, one_div, div_div_eq_mul_div, mul_comm]`. Rewrite using `[hv, SizeData₂.logOm, large₂.logDerivative_at_one_eq]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_kronecker_logOm_eq : ∀ (D : D7) (Q : Par D), Q.PinHost → ∀ large₂ : SizeData₂ D,
     ∃ (_ : NeZero Q.H.d) (χ : DirichletCharacter ℂ Q.H.d),

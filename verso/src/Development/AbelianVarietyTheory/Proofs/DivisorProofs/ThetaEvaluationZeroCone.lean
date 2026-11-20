@@ -16,7 +16,7 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 
 /- English proof (translation)
-The claim follows from `Matrix.map_one _ (map_zero _) (map_one _)`.
+A detailed English derivation is pending.
 -/
 theorem incM_one {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ) :
     incM F (1 : Matrix (Fin n) (Fin n) E) = 1 :=
@@ -25,22 +25,22 @@ theorem incM_one {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-The claim follows from `(hM.vac v).1`.
+A detailed English derivation is pending.
 -/
 theorem vac_mem_SB {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W} (hM : M.IsGood B.ψ) (v : Pl F) :
     M.vac v ∈ SB _ :=
   (hM.vac v).1
 
 /- English proof (translation)
-Establish `heis₁ : ∀ u, ∀ Φ ∈ schA F (Fin n × Fin d), e₁ (M.co.rho B.ψ u Φ) = Ma.co.rho B.ψ u (e₁ Φ)`. Introduce `u Φ hΦ`. Use `h₁.Heisenberg₂ u Φ hΦ` as an intermediate fact. Rewrite `this` using `[incM_one, incM_one, Matrix.transpose_one, Matrix.one_mul, Matrix.mul_one]`. Then use the resulting hypothesis. Use `⟨fun Φ hΦ => h₂.maps _ (h₁.maps Φ hΦ), fun z Φ hΦ => ?_, fun u hu Φ hΦ => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[heis₁ _ Φ hΦ, h₂.Heisenberg₂ z _ (h₁.maps Φ hΦ)]`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[heis₁ _ Φ hΦ, h₂.inv u hu _ (h₁.maps Φ hΦ)]`. Take `⟨ei₂, ev₂, hne, hv₂, hl₂⟩` from `h₂.loc`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨ei₂.comp ei₁, fun v => (ev₂ v).comp (ev₁ v), ?_, fun v => ⟨?_, ?_⟩, fun f φ hφ hc => ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Use `ext1 g`. Take `⟨g', rfl⟩` from `hs g`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Conclude with `congrArg (fun T : SInf F (Fin n × Fin d) →L[ℂ] SInf F (Fin n₁ × Fin d₁) => T g') h0`. Simplify using `[(hv₁ v).1, (hv₂ v).1]`. Rewrite using `[Submodule.map_comp, (hv₁ v).2, (hv₂ v).2]`. Establish `hφ' : ∀ v, ev₁ v (φ v) ∈ SB _` using `fun v => by`. Rewrite using `[← (hv₁ v).2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Submodule.mem_map_of_mem (hφ v)`. Establish `hc' : ∀ᶠ v in cofinite, ev₁ v (φ v) = Ma.vac v` using `by filter_upwards [hc] with v hv; rw [hv, (hv₁ v).1]`. Simplify using `only [LinearMap.comp_apply, ContinuousLinearMap.comp_apply]`. Rewrite using `[hl₁ f φ hφ hc, hl₂ _ _ hφ' hc']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isEv_comp {B : Base F E} {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {X₁ : Spc F E n₁} {W₁ : Spc F E d₁}
     {M Ma : Model σ X W} {M₁ : Model σ X₁ W₁} {ι : Matrix (Fin n) (Fin n₁) E} {ι' : Matrix (Fin d) (Fin d₁) E}
@@ -76,21 +76,19 @@ theorem isEv_comp {B : Base F E} {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc 
       rw [hl₁ f φ hφ hc, hl₂ _ _ hφ' hc']
 
 /- English proof (translation)
-Unfold `PolData`. Rewrite using `[Submodule.map_span]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨Φ, ⟨f, hf, φ, hφ, hc, rfl⟩, rfl⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨ei f, ?_, fun v => ev v (φ v), fun v => ?_, ?_, hl f φ hφ hc⟩` and prove the remaining obligations. Rewrite using `[← hP]`. Conclude with `Submodule.mem_map_of_mem (f := (ei : SInf F (Fin n × Fin d) →ₗ[ℂ] SInf F (Fin n₁ × Fin d₁))) hf`. Rewrite using `[← (hv v).2]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.mem_map_of_mem (hφ v)`. Use `filter_upwards [hc] with v hv'`. Rewrite using `[hv', (hv v).1]`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨g, hg, φ', hφ', hc', rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hg` using `[← hP]`. Take `⟨f, hf, rfl⟩` from `hg`. Establish `hpre : ∀ v, ∃ p, p ∈ SB (Fin n × Fin d → Fv F v) ∧ ev v p = φ' v` using `fun v => by`. Use `hφ' v` as an intermediate fact. Rewrite `this` using `[← (hv v).2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Conclude with `this`. Set `φ : ∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ` to `fun v => if φ' v = M₁.vac v then M.vac v else (hpre v).choose`. Establish `hφ : ∀ v, φ v ∈ SB _` using `fun v => by`. Distinguish the cases in `h : φ' v = M₁.vac v`. Simplify using `only [φ, if_pos h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Conclude with `hM v`. Simplify using `only [φ, if_neg h]`. Conclude with `(hpre v).choose_spec.1`. Establish `hev : (fun v => ev v (φ v)) = φ'` using `funext fun v => by`. Distinguish the cases in `h : φ' v = M₁.vac v`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [φ, if_pos h]`. Rewrite using `[(hv v).1, h]`. Simplify using `only [φ, if_neg h]`. Conclude with `(hpre v).choose_spec.2`. Establish `hc : ∀ᶠ v in cofinite, φ v = M.vac v` using `by filter_upwards [hc'] with v h; simp only [φ, if_pos h]`.
-
-Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨pure f φ, ⟨f, hf, φ, hφ, hc, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hl f φ hφ hc, hev]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem polData_map (B : Base F E) {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {X₁ : Spc F E n₁} {W₁ : Spc F E d₁}
     (M : Model σ X W) (M₁ : Model σ X₁ W₁) (hM : ∀ v, M.vac v ∈ SB _) (e : Fn F n d →ₗ[ℂ] Fn F n₁ d₁)
@@ -136,9 +134,9 @@ theorem polData_map (B : Base F E) {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Sp
     rfl
 
 /- English proof (translation)
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨c • x, N.smul_mem c hx, by rw [map_smul, h x hx]⟩`. Introduce and unpack `⟨x, hx, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨c⁻¹ • x, N.smul_mem _ hx, ?_⟩` and prove the remaining obligations. Rewrite using `[h _ (N.smul_mem _ hx), map_smul, smul_smul, mul_inv_cancel₀ hc, one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_eq_of_smul {A C : Type} [AddCommGroup A] [Module ℂ A] [AddCommGroup C] [Module ℂ C] {N : Submodule ℂ A}
     {e e₀ : A →ₗ[ℂ] C} {c : ℂ} (hc : c ≠ 0) (h : ∀ x ∈ N, e x = c • e₀ x) : N.map e = N.map e₀ := by
@@ -151,15 +149,15 @@ theorem map_eq_of_smul {A C : Type} [AddCommGroup A] [Module ℂ A] [AddCommGrou
     rw [h _ (N.smul_mem _ hx), map_smul, smul_smul, mul_inv_cancel₀ hc, one_smul]
 
 /- English proof (translation)
-Introduce `hK`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₁ X₁ W₁ H' i₀ i₁ M₁ hX hH hM₁`. Substitute `X₁` using the available equality. Take `⟨Ma, e₂, hMa, h₂, ei₂, ev₂, hP₂, hv₂, hl₂⟩` from `GlobalTheory.T.exists_adapted_model_skew_plane hK F E σ B n d d₁ r s r' s' i₀ i₁ X W W₁ H' M M₁ hP.base hP.herm hP.skew hP.good hH hM₁`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Take `⟨e₁, h₁, ei₁, ev₁, hs₁, hP₁, hv₁, hl₁⟩` from `GlobalTheory.T.exists_eigen_intertwiner_models hK F E σ B n d r s r' s' X W M Ma hP.base hP.herm hP.skew hP.good hMa`. Establish `hE` using `isEv_comp h₁ ei₁ ev₁ hs₁ hv₁ hl₁ h₂`. Establish `hmap : (PolData B M).map (e₂ ∘ₗ e₁) = PolData B M₁`. Rewrite using `[Submodule.map_comp, polData_map B M Ma (vac_mem_SB hP.good) e₁ ei₁ ev₁ hP₁ hv₁ hl₁, polData_map B Ma M₁ (vac_mem_SB hMa) e₂ ei₂ ev₂ hP₂ hv₂ hl₂]`. Use `⟨⟨_, hE⟩, fun e he => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, hc, hce⟩` from `GlobalTheory.T.eigen_intertwiner_skew_plane_unique hK F E σ B n d d₁ r s r' s' i₀ i₁ X W W₁ H' M M₁ hP.base hP.herm hP.skew hP.good hH hM₁ _ e hE he`. Rewrite using `[← hmap]`. Conclude with `map_eq_of_smul hc hce`. Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP n₁ d₁ X₁ W₁ H H' i₀ i₁ j₀ j₁ M₁ hH hH' hM₁`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨Ma, e₂, hMa, h₂⟩` from `GlobalTheory.T.exists_adapted_model_two_planes hK F E σ B n d n₁ d₁ r s r' s' i₀ i₁ j₀ j₁ X W X₁ W₁ H H' M M₁ hP.base hP.herm hP.skew hP.good hH hH' hM₁`. Take `⟨e₁, h₁, ei₁, ev₁, hs₁, -, hv₁, hl₁⟩` from `GlobalTheory.T.exists_eigen_intertwiner_models hK F E σ B n d r s r' s' X W M Ma hP.base hP.herm hP.skew hP.good hMa`. Conclude with `⟨_, isEv_comp h₁ ei₁ ev₁ hs₁ hv₁ hl₁ h₂⟩`. Take `⟨Ma, e₂, hMa, h₂⟩` from `GlobalTheory.T.eigen_intertwiner_two_planes hK F E σ B n d n₁ d₁ r s r' s' i₀ i₁ j₀ j₁ X W X₁ W₁ H H' M M₁ hP.base hP.herm hP.skew hP.good hH hH' hM₁`. Take `⟨e₁, h₁, ei₁, ev₁, hs₁, -, hv₁, hl₁⟩` from `GlobalTheory.T.exists_eigen_intertwiner_models hK F E σ B n d r s r' s' X W M Ma hP.base hP.herm hP.skew hP.good hMa`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨_, isEv_comp h₁ ei₁ ev₁ hs₁ hv₁ hl₁ h₂⟩`.
+A detailed English derivation is pending.
 -/
 theorem evZero_evCone : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.ThK.EvZero ∧ GlobalTheory.ThK.EvCone := by
   intro hK

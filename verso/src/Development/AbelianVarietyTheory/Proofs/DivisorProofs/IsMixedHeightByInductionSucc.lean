@@ -27,22 +27,22 @@ def extend (m : ℕ) (T : ∀ d : ℕ, (Fin d → HermLB p) → X → ℝ) (V : 
   fun d L x => if h : d = m + 1 then V (fun a => L (Fin.cast h.symm a)) x else T d L x
 
 /- English proof (translation)
-The claim follows from `dif_neg h`.
+A detailed English derivation is pending.
 -/
 theorem extend_of_ne {m : ℕ} {T : ∀ d : ℕ, (Fin d → HermLB p) → X → ℝ} {V : (Fin (m + 1) → HermLB p) → X → ℝ}
     {d : ℕ} (h : d ≠ m + 1) (L : Fin d → HermLB p) (x : X) : extend m T V d L x = T d L x := dif_neg h
 
 /- English proof (translation)
-Simplify using `[extend]`.
+Simplify using the standard rewrite rules.
 -/
 theorem extend_self {m : ℕ} {T : ∀ d : ℕ, (Fin d → HermLB p) → X → ℝ} {V : (Fin (m + 1) → HermLB p) → X → ℝ}
     (L : Fin (m + 1) → HermLB p) (x : X) : extend m T V (m + 1) L x = V L x := by
   simp [extend]
 
 /- English proof (translation)
-Unfold `recVal`. Use `congr 1`. Use `finsum_congr fun z => ?_` and prove the remaining obligations. Distinguish the cases in `hz : (M.div hr).mult z = 0`. Simplify using `[hz]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Rewrite using `[H z (CartierDiv.coheight_eq_one_of_mult_ne_zero hz)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem recVal_congr {Y : Scheme.{0}} [IsIntegral Y] [IsLocallyNoetherian Y] {q : Y ⟶ Sp k} {e : ℕ} {h h' : Y → ℝ}
     (H : ∀ z, Order.coheight z = 1 → h z = h' z) (L : Fin e → HermLB q) (M : HermLB q)
@@ -55,7 +55,7 @@ theorem recVal_congr {Y : Scheme.{0}} [IsIntegral Y] [IsLocallyNoetherian Y] {q 
   · rw [H z (CartierDiv.coheight_eq_one_of_mult_ne_zero hz)]
 
 /- English proof (translation)
-Introduce `(c c' : A.ι × B.ι) h` and use `by have h₁ : genericPoint Z ∈ A.U c.1 ⊓ A.U c'.1 := ⟨h.1.1, h.2.1⟩ have h₂ : genericPoint Z ∈ B.U c.2 ⊓ B.U c'.2 := ⟨h.1.2, h.2.2⟩ have e : fnOf _ h ((CechPic.tens A B).g c c' : Γ(Z, _)) = fnOf _ h₁ (A.g c.1 c'.1 : Γ(Z, _)) * fnOf _ h₂ (B.g c.2 c'.2 : Γ(Z, _)) := by change fnOf _ …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isRatSec_tens_mul {Z : Scheme.{0}} [IsIntegral Z] {A B : LB Z} {r : A.ι → Z.functionFieldˣ}
     {s : B.ι → Z.functionFieldˣ} (hr : IsRatSec A r) (hs : IsRatSec B s) :
@@ -70,39 +70,35 @@ theorem isRatSec_tens_mul {Z : Scheme.{0}} [IsIntegral Z] {A B : LB Z} {r : A.ι
   ring
 
 /- English proof (translation)
-Introduce `hI hR m hm k _ X p hp`. Use `haveI : IsNoetherian X := hp.isNoetherian`. Take `⟨T, hT⟩` from `hm k X p hp`. Use `choose v hv using GlobalTheory.T.mixedHeightRecursiveValue_well_defined hI hR m hm k X p hp T hT`. Establish `hD` using `GlobalTheory.T.hasPointClosureDim_basic_projArithAmbient k X p hp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdimi : ∀ (Y : Scheme.{0}) [IsIntegral Y] (i : Y ⟶ X) [IsClosedImmersion i] (d : ℕ), topologicalKrullDim Y = (d : ℕ) → HasDim (i (genericPoint Y)) d` using `fun Y _ i _ d h => (hD.2.2.2.2.1 Y i (genericPoint Y) d).2 ((hD.2.2.2.2.2 Y d).2 h)`. Establish `hcd : ∀ x : X, HasDim x (m + 1) → topologicalKrullDim (clo x) = ((m + 1 : ℕ) : WithBot ℕ∞)` using `fun x hx => (hD.2.2.2.2.2 (clo x) (m + 1)).1 ((hD.2.2.2.2.1 (clo x) (cloι x) (genericPoint (clo x)) (m + 1)).1 (by rw [cloι_genericPoint]; exact hx))`. Establish `E : ∀ (x : X) (hx : HasDim x (m + 1)) (M : HermLB p) (L : Fin m → HermLB p) (M' : HermLB (cloι x ≫ p)) (L' : Fin m → HermLB (cloι x ≫ p)), (M.pull (cloι x) rfl).Isometric M' → (∀ a, ((L a).pull (cloι x) rfl).Isometric (L' a)) → ∀ (r : M'.B.ι → (clo x).functionFieldˣ) (hr : IsRatS …`. Introduce `x hx M L M' L' hM hL r hr TY hTY`. Rewrite using `[hv x hx M L (clo x) (cloι x ≫ p) (cloι x) rfl (cloι_genericPoint x) M' L' hM hL r hr]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `recVal_congr (fun z hz => ?_) L' M' hr` and prove the remaining obligations. Establish `hz' : HasDim z m` using `((GlobalTheory.T.coheight_one_iff_pointClosure_dim_projArith k (clo x) (cloι x ≫ p) (hp.sub _) m (hcd x hx)).1 z).1 hz`. Conclude with `GlobalTheory.T.mixedHeight_unique_restrict_closedSubscheme k X (clo x) p (cloι x ≫ p) hp (cloι x) rfl m m T TY hT hTY m le_rfl le_rfl L L' hL z hz'`. Set `V : (Fin (m + 1) → HermLB p) → X → ℝ` to `fun L x => if hx : HasDim x (m + 1) then v x hx (L 0) (Fin.tail L) else 0`. Establish `hV : ∀ (L : Fin (m + 1) → HermLB p) (x : X) (hx : HasDim x (m + 1)), extend m T V (m + 1) L x = v x hx (L 0) (Fin.tail L)` using `fun L x hx => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[extend_self]`. Conclude with `dif_pos hx`. Establish `hsym : ∀ (x : X) (hx : HasDim x (m + 1)) (L : Fin (m + 1) → HermLB p) (e : Equiv.Perm (Fin (m + 1))), v x hx (L (e 0)) (Fin.tail fun a => L (e a)) = v x hx (L 0) (Fin.tail L)`. Introduce `x hx L e`. Take `⟨TY, hTY⟩` from `hm k (clo x) (cloι x ≫ p) (hp.sub (cloι x))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hq : IsAmb (cloι x ≫ p)` using `hp.sub (cloι x)`. Establish `hdx` using `hcd x hx`. Set `F : (Fin (m + 1) → HermLB p) → ℝ` to `fun L => v x hx (L 0) (Fin.tail L)`. Express the relevant statement in the definitionally equal form `F (fun a => L (e a)) = F L`. Break down `m with _ | n` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `: (fun a => L (e a)) = L` using `funext fun a => congrArg L (@Subsingleton.elim (Fin 1) _ _ _)`. Rewrite using `[this]`. Use `GlobalTheory.T.perm_invariant_of_cons_swap_and_tail (HermLB p) n F (fun a L τ => ?_) (fun a b L => ?_) L e` and prove the remaining obligations. Simplify using `only [F, Fin.cons_zero, Fin.tail_cons]`. Take `⟨ra, hra⟩` from `Cartier.exists_isRatSec (a.pull (cloι x) rfl).isLB`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[E x hx a (fun i => L (τ i)) (a.pull (cloι x) rfl) (fun i => (L (τ i)).pull (cloι x) rfl) (HermLB.Isometric.refl _) (fun _ => HermLB.Isometric.refl _) ra hra TY hTY, E x hx a L (a.pull (cloι x) rfl) (fun i => (L i).pull (cloι x) rfl) (HermLB.Isometric.refl _) (fun _ => HermLB.Iso …`. Conclude with `(GlobalTheory.T.mixedHeight_inductive_rhs_symm_isometry_invariant hI k (clo x) (cloι x ≫ p) hq (n + 1) hdx TY hTY _ ra hra).2.1 (fun i => (L i).pull (cloι x) rfl) τ`. Simplify using `only [F, Fin.cons_zero, Fin.tail_cons]`. Take `⟨ra, hra⟩` from `Cartier.exists_isRatSec (a.pull (cloι x) rfl).isLB`. Take `⟨rb, hrb⟩` from `Cartier.exists_isRatSec (b.pull (cloι x) rfl).isLB`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `iso : ∀ (c : HermLB p) (j : Fin (n + 1)), ((Fin.cons c L : Fin (n + 1) → HermLB p) j).pull (cloι x) rfl |>.Isometric ((Fin.cons (c.pull (cloι x) rfl) (fun i => (L i).pull (cloι x) rfl) : Fin (n + 1) → HermLB (cloι x ≫ p)) j)`. Introduce `c j`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) j <;> simp only [Fin.cons_zero, Fin.cons_succ] <;> exact HermLB.Isometric.refl _`. Rewrite using `[E x hx a _ (a.pull (cloι x) rfl) _ (HermLB.Isometric.refl _) (iso b) ra hra TY hTY, E x hx b _ (b.pull (cloι x) rfl) _ (HermLB.Isometric.refl _) (iso a) rb hrb TY hTY]`. Conclude with `GlobalTheory.T.mixedHeightInduction_symmetric_firstTwo hI hR k (clo x) (cloι x ≫ p) hq n hdx TY hTY _ _ _ ra hra rb hrb`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨extend m T V, ⟨?_, ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `d L M x hd hx hLM`. Distinguish the cases in `h : d = m + 1`. Substitute `h` using the available equality. Rewrite using `[hV _ _ hx, hV _ _ hx]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Take `⟨TY, hTY⟩` from `hm k (clo x) (cloι x ≫ p) (hp.sub (cloι x))`. Take `⟨r, hr⟩` from `Cartier.exists_isRatSec ((L 0).pull (cloι x) rfl).isLB`. Rewrite using `[E x hx (L 0) (Fin.tail L) ((L 0).pull (cloι x) rfl) (fun a => (Fin.tail L a).pull (cloι x) rfl) (HermLB.Isometric.refl _) (fun _ => HermLB.Isometric.refl _) r hr TY hTY, E x hx (M 0) (Fin.tail M) ((L 0).pull (cloι x) rfl) (fun a => (Fin.tail L a).pull (cloι x) rfl) ((hLM 0).symm …`. Rewrite using `[extend_of_ne h, extend_of_ne h]`. Conclude with `hT.iso d L M x (by omega) hx hLM`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `d L e x hd hx`. Distinguish the cases in `h : d = m + 1`. Substitute `h` using the available equality. Rewrite using `[hV _ _ hx, hV _ _ hx]`. Conclude with `hsym x hx L e`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[extend_of_ne h, extend_of_ne h]`. Conclude with `hT.symm d L e x (by omega) hx`. Introduce `d A B L x hd hx`. Distinguish the cases in `h : d + 1 = m + 1`. Take `rfl : d = m` from `by omega`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hV _ _ hx, hV _ _ hx, hV _ _ hx]`. Simplify using `only [Fin.cons_zero, Fin.tail_cons]`. Take `⟨TY, hTY⟩` from `hm k (clo x) (cloι x ≫ p) (hp.sub (cloι x))`. Take `⟨ra, hra⟩` from `Cartier.exists_isRatSec (A.pull (cloι x) rfl).isLB`. Take `⟨rb, hrb⟩` from `Cartier.exists_isRatSec (B.pull (cloι x) rfl).isLB`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `ht` using `isRatSec_tens_mul hra hrb`. Rewrite using `[E x hx (A.tens B) L ((A.pull (cloι x) rfl).tens (B.pull (cloι x) rfl)) (fun a => (L a).pull (cloι x) rfl) (HermLB.isometric_pull_tens A B _ _) (fun _ => HermLB.Isometric.refl _) _ ht TY hTY, E x hx A L (A.pull (cloι x) rfl) (fun a => (L a).pull (cloι x) rfl) (HermLB.Isometric.re …`. Conclude with `GlobalTheory.T.inductiveArakelovFormula_rhs_tensor_additive hI k (clo x) (cloι x ≫ p) (hp.sub _) d (hcd x hx) _ _ _ _ ra hra rb hrb _ ht fun _ _ _ _ => rfl`. Rewrite using `[extend_of_ne h, extend_of_ne h, extend_of_ne h]`. Conclude with `hT.add d A B L x (by omega) hx`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `L x hx`. Rewrite using `[extend_of_ne (by omega)]`. Conclude with `hT.zero L x hx`. Introduce `Y _ _ q i _ hi e he hdim M L M' L' hM hL r hr`. Establish `hfun : (fun z => extend m T V e L (i z)) = fun z => T e L (i z)`.
-
-Use function extensionality and compare the values at `fun z => extend_of_ne (by omega) L (i z)`. Rewrite using `[hfun]`. Distinguish the cases in `h : e + 1 = m + 1`. Take `rfl : e = m` from `by omega`. Establish `hx` using `hdimi Y i (e + 1) hdim`.
-
-Rewrite using `[hV _ _ hx]`. Simplify using `only [Fin.cons_zero, Fin.tail_cons]`. Conclude with `hv _ hx M L Y q i hi rfl M' L' hM hL r hr`. Rewrite using `[extend_of_ne h]`. Conclude with `hT.recur Y q i hi e (by omega) hdim M L M' L' hM hL r hr`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMix_succ : ArchInteg → ArchRecip → ∀ m : ℕ, (∀ (k : Type) [CommRing k] (Y : Scheme.{0}) (q : Y ⟶ Sp k), IsAmb q → ∃ T, IsMix q m T) → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k), IsAmb p → ∃ T, IsMix p (m + 1) T := by
   intro hI hR m hm k _ X p hp

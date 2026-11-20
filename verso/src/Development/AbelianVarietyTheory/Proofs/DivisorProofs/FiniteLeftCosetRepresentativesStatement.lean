@@ -6,7 +6,7 @@ open Matrix NumberField GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMi
 open scoped TensorProduct Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.orbFin_KHT_cmd) | (exact GlobalTheory.orbFin_KHT_cmd) | (intros; apply GlobalTheory.orbFin_KHT_cmd <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.finite_left_coset_representatives : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (r : ℕ), 0 < r → ∀ s : Gr G r, ∃ S : Finset (Gr G r), ∀ k ∈ KHT p G.m G.n r G.Fw, ∃ s' ∈ S, ∃ k' ∈ KHT p G.m G.n r G.Fw, k * s = s' * k' := by
   first | (exact @GlobalTheory.orbFin_KHT_cmd) | (exact GlobalTheory.orbFin_KHT_cmd) | (intros; apply GlobalTheory.orbFin_KHT_cmd <;> assumption)

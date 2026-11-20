@@ -7,13 +7,13 @@ open NumberField IsDedekindDomain Neutral.B1 ReciprocityTheory.Neutral.Bridge.HC
 namespace GlobalTheory.NormCompat
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ K _ _ _ art artK ha haK ρ hρ B _ χ v w hwv hχ`. Take `⟨A, hAw⟩` from `exists_isPlaceOver (F := K) Ω w`. Take `⟨hAv, -, hine, hfrob⟩` from `GlobalTheory.T.frobenius_restrictScalars_pow_mod_inertia E Ω K v w hwv A hAw`. Establish `hI : ∀ ι ∈ Ine (F` using `E) A, χ (toAb E Ω ι) = 1 := by`. Introduce `ι hι`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨u, hu, e⟩` from `(ha.ine v A hAv (toAb E Ω ι)).mpr ⟨ι, hι, rfl⟩`. Rewrite using `[← e]`. Conclude with `hχ u hu`. Use `⟨fun x hx => ?_, fun x ϖ hx hϖ => ?_⟩` and prove the remaining obligations. Take `⟨ι, hι, e⟩` from `(haK.ine w A hAw _).mp ⟨x, hx, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e, hρ]`. Conclude with `hI _ (hine ι hι)`. Take `⟨σ, hσ, e⟩` from `(haK.frob w A hAw _).mp ⟨x, hx, rfl⟩`. Take `⟨φ, hφ, e'⟩` from `(ha.frob v A hAv _).mp ⟨ϖ, hϖ, rfl⟩`. Establish `hm` using `hI _ (hfrob σ φ hσ hφ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hr : (σ⁻¹).restrictScalars E = (σ.restrictScalars E)⁻¹` using `AlgEquiv.ext fun _ => rfl`. Rewrite using `[← e, hρ, ← e', hr, map_inv, map_inv, map_inv, map_inv, inv_pow]`. Rewrite `hm` using `[map_mul, map_mul, map_inv, map_inv, map_pow, map_pow]`. Rewrite using `[inv_inj]`. Conclude with `mul_inv_eq_one.mp hm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_artin_restrict : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (K : IntermediateField E Ω) [FiniteDimensional E K] [NumberField K] [IsAlgClosure K Ω] (art : Ideles E →* Gab E Ω) (artK : Ideles K →* Gab K Ω), IsGlobalArtin art → IsGlobalArtin artK → ∀ (ρ : Gab K Ω →* Gab E Ω), (∀ τ : G K Ω, ρ (toAb K Ω τ) = toAb E Ω (τ.restrictScalars E)) → ∀ (B : Type) [CommGroup B] (χ : Gab E Ω →* B) (v : HeightOneSpectrum (𝓞 E)) (w : HeightOneSpectrum (𝓞 K)), w.asIdeal.comap (algebraMap (𝓞 E) (𝓞 K)) = v.asIdeal → (∀ x, IsUnitAt v x → χ (art (localIdele E v x)) = 1) → (∀ x, IsUnitAt w x → χ (ρ (artK (localIdele K w x))) = 1) ∧ ∀ x ϖ, IsUnifAt w x → IsUnifAt v ϖ → χ (ρ (artK (localIdele K w x))) = χ (art (localIdele E v ϖ)) ^ w.asIdeal.inertiaDeg (𝓞 E) := by
   intro E Ω _ _ _ _ _ K _ _ _ art artK ha haK ρ hρ B _ χ v w hwv hχ

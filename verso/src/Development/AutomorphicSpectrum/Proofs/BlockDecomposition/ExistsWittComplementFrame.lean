@@ -11,13 +11,13 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.CFin
 
 /- English proof (translation)
-Set `b` to `Module.finBasis K S`. Set `Z : Matrix (Fin n) (Fin (Module.finrank K S)) K` to `Matrix.of fun i k => (b k : Fin n → K) i`. Establish `hZ : ∀ w, Z *ᵥ w = ((∑ k, w k • b k : S) : Fin n → K)`. Introduce `w`. Use extensionality with `i`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Simplify using `[Z, Matrix.mulVec, dotProduct, mul_comm, Submodule.coe_sum, Finset.sum_apply]`. Set `L : (Fin n → K) →ₗ[K] S` to `P.mulVecLin.codRestrict S hP`. Set `c : (Fin n → K) →ₗ[K] (Fin (Module.finrank K S) → K)` to `b.equivFun.toLinearMap ∘ₗ L`. Use `⟨_, Z, LinearMap.toMatrix' c, fun w => by rw [hZ]; exact Subtype.property _, ?_, ?_⟩` and prove the remaining obligations. Apply `Matrix.mulVec_injective` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `v`. Rewrite using `[← Matrix.mulVec_mulVec, LinearMap.toMatrix'_mulVec, hZ]`. Establish `: (∑ k, c v k • b k : S) = L v` using `b.sum_equivFun (L v)`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `w w' h`. Rewrite `h` using `[hZ, hZ]`. Establish `h'` using `Subtype.coe_injective h`. Rewrite `h'` using `[← b.equivFun_symm_apply, ← b.equivFun_symm_apply]`. Conclude with `b.equivFun.symm.injective h'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coords {K : Type} [Field K] {n : ℕ} (S : Submodule K (Fin n → K)) (P : Matrix (Fin n) (Fin n) K)
     (hP : ∀ v, P *ᵥ v ∈ S) :
@@ -46,25 +46,25 @@ theorem exists_coords {K : Type} [Field K] {n : ℕ} (S : Submodule K (Fin n →
     exact b.equivFun.symm.injective h'
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ n J hJ r X Y hW`. Establish `hc : cT (σ : E →+* E) J = J` using `Matrix.ext fun i j => hJ.1 i j`. Establish `hcc : cT (σ : E →+* E) (cT (σ : E →+* E) X) = X` using `Matrix.ext fun i j => sigma_sigma hσ _`. Take `⟨A, hA⟩ : ∃ A, A = cT (σ : E →+* E) X * J` from `⟨_, rfl⟩`. Take `⟨B, hB⟩ : ∃ B, B = cT (σ : E →+* E) Y * J` from `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hAX : A * X = 0` using `hA ▸ hW.xx`. Establish `hBY : B * Y = 0` using `hB ▸ hW.yy`. Establish `hAY : A * Y = 1` using `hA ▸ hW.xy`. Establish `hBX : B * X = 1`. Establish `h` using `congrArg (cT (σ : E →+* E)) hW.xy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[Formalism.UG.cT_mul, Formalism.UG.cT_mul, hc, hcc, Formalism.UG.cT_one, ← Matrix.mul_assoc]`. Rewrite using `[hB, h]`. Take `⟨P, hPd⟩ : ∃ P : Matrix (Fin n) (Fin n) E, P = 1 - X * B - Y * A` from `⟨_, rfl⟩`. Establish `hAP : A * P = 0`. Rewrite using `[hPd, Matrix.mul_sub, Matrix.mul_sub, Matrix.mul_one, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hAX, hAY, Matrix.zero_mul, Matrix.one_mul, sub_zero, sub_self]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hBP : B * P = 0`. Rewrite using `[hPd, Matrix.mul_sub, Matrix.mul_sub, Matrix.mul_one, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hBX, hBY, Matrix.zero_mul, Matrix.one_mul, sub_zero, sub_self]`. Establish `hPX : P * X = 0`. Rewrite using `[hPd, Matrix.sub_mul, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc, Matrix.mul_assoc, hBX, hAX, Matrix.mul_one, Matrix.mul_zero, sub_zero, sub_self]`. Establish `hPY : P * Y = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hPd, Matrix.sub_mul, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc, Matrix.mul_assoc, hBY, hAY, Matrix.mul_one, Matrix.mul_zero, sub_zero, sub_self]`. Take `⟨m, Z, C, hS, hZC, hinj⟩` from `exists_coords (LinearMap.ker A.mulVecLin ⊓ LinearMap.ker B.mulVecLin) P (fun v => by`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `[Matrix.mulVec_mulVec, hAP]`. Simplify using `[Matrix.mulVec_mulVec, hBP])`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hAZ : A * Z = 0`. Apply `Matrix.mulVec_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `w`. Rewrite using `[← Matrix.mulVec_mulVec, Matrix.zero_mulVec]`. Simplify using `using (hS w).1`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hBZ : B * Z = 0`. Apply `Matrix.mulVec_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `w`. Rewrite using `[← Matrix.mulVec_mulVec, Matrix.zero_mulVec]`. Simplify using `using (hS w).2`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hcan : ∀ {ι : Type} (M M' : Matrix (Fin m) ι E), Z * M = Z * M' → M = M'`. Introduce `ι M M' h`. Use extensionality with `i j`. Conclude with `congrFun (hinj (a₁ := fun i => M i j) (a₂ := fun i => M' i j) (funext fun a => congrFun (congrFun h a) j)) i`. Establish `hPZ : P * Z = Z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hPd, Matrix.sub_mul, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc, Matrix.mul_assoc, hBZ, hAZ, Matrix.mul_zero, Matrix.mul_zero, sub_zero, sub_zero]`. Establish `hCZ : C * Z = 1` using `hcan _ _ (by rw [← Matrix.mul_assoc, hZC, hPZ, Matrix.mul_one])`. Establish `hCX : C * X = 0` using `hcan _ _ (by rw [← Matrix.mul_assoc, hZC, hPX, Matrix.mul_zero])`. Establish `hCY : C * Y = 0` using `hcan _ _ (by rw [← Matrix.mul_assoc, hZC, hPY, Matrix.mul_zero])`. Use `⟨m, Z, Matrix.fromRows B (Matrix.fromRows C A), hA ▸ hAZ, hB ▸ hBZ, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[frm, Matrix.fromRows_mul_fromCols, Matrix.mul_fromCols, Matrix.fromRows_mul, Matrix.fromRows_mul_fromCols, hBX, hBZ, hBY, hCX, hAX, hCZ, hCY, hAZ, hAY]`. Apply the tactic sequence `ext (i | i | i) (j | j | j) <;> simp [Matrix.one_apply]`. Rewrite using `[frm, Matrix.fromCols_mul_fromRows, Matrix.fromCols_mul_fromRows, hZC, hPd]`. Normalize the expressions using the abelian group laws.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem exists_witt_basis : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ) (X Y : Matrix (Fin n) (Fin r) E), IsWittFrame σ J X Y → ∃ (m : ℕ) (Z : Matrix (Fin n) (Fin m) E) (Qi : Matrix (Idx r m) (Fin n) E), cT (σ : E →+* E) X * J * Z = 0 ∧ cT (σ : E →+* E) Y * J * Z = 0 ∧ Qi * frm X Z Y = 1 ∧ frm X Z Y * Qi = 1 := by
   intro F E _ _ _ _ _ σ hσ n J hJ r X Y hW

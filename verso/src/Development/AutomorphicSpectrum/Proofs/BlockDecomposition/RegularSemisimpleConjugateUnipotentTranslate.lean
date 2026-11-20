@@ -56,9 +56,9 @@ variable {A B : Submodule E M}
 def Stabs (A B : Submodule E M) (f : Module.End E M) : Prop := (∀ x ∈ A, f x ∈ A) ∧ ∀ x ∈ B, f x ∈ B
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `hS`. Take `⟨k1, k2, k3⟩` from `hT`. Use `⟨fun x hx => ?_, fun x hx => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, k1 x hx, map_zero]`. Rewrite using `[Module.End.mul_apply, h1 _ (k2 x hx)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Conclude with `hAB (h2 _ (k3 x))`.
+A detailed English derivation is pending.
 -/
 theorem mul_mem_strictUp (hAB : A ≤ B) {S T : Module.End E M} (hS : S ∈ strictUp A B) (hT : T ∈ strictUp A B) :
     S * T ∈ strictUp A B := by
@@ -70,7 +70,7 @@ theorem mul_mem_strictUp (hAB : A ≤ B) {S T : Module.End E M} (hS : S ∈ stri
   · exact hAB (h2 _ (k3 x))
 
 /- English proof (translation)
-Take `⟨k1, k2, k3⟩` from `hT`. Use `⟨fun x hx => ?_, fun x hx => hf.1 _ (k2 x hx), fun x => hf.2 _ (k3 x)⟩` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, k1 x hx, map_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem Stabs.mul_left {f T : Module.End E M} (hf : Stabs A B f) (hT : T ∈ strictUp A B) :
     f * T ∈ strictUp A B := by
@@ -79,7 +79,7 @@ theorem Stabs.mul_left {f T : Module.End E M} (hf : Stabs A B f) (hT : T ∈ str
   rw [Module.End.mul_apply, k1 x hx, map_zero]
 
 /- English proof (translation)
-Take `⟨k1, k2, k3⟩` from `hT`. Conclude with `⟨fun x hx => k1 _ (hf.1 x hx), fun x hx => k2 _ (hf.2 x hx), fun x => k3 _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Stabs.mul_right {f T : Module.End E M} (hf : Stabs A B f) (hT : T ∈ strictUp A B) :
     T * f ∈ strictUp A B := by
@@ -87,7 +87,7 @@ theorem Stabs.mul_right {f T : Module.End E M} (hf : Stabs A B f) (hT : T ∈ st
   exact ⟨fun x hx => k1 _ (hf.1 x hx), fun x hx => k2 _ (hf.2 x hx), fun x => k3 _⟩
 
 /- English proof (translation)
-Use `⟨fun x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.add_apply, hd.1 x hx, add_zero]`. Conclude with `hf.1 x hx`. Rewrite using `[LinearMap.add_apply]`. Conclude with `add_mem (hf.2 x hx) (hAB (hd.2.1 x hx))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Stabs.add_strictUp (hAB : A ≤ B) {f d : Module.End E M} (hf : Stabs A B f) (hd : d ∈ strictUp A B) :
     Stabs A B (f + d) := by
@@ -96,17 +96,17 @@ theorem Stabs.add_strictUp (hAB : A ≤ B) {f d : Module.End E M} (hf : Stabs A 
   · rw [LinearMap.add_apply]; exact add_mem (hf.2 x hx) (hAB (hd.2.1 x hx))
 
 /- English proof (translation)
-Establish `hf' : Stabs A B f'` using `by simpa using hf.add_strictUp hAB hd`. Proceed by induction on `r using Polynomial.induction_on with`. Consider the case `C a`. Use `⟨⟨fun x hx => ?_, fun x hx => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[aeval_C, Module.algebraMap_end_apply]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ hx`. Rewrite using `[aeval_C, Module.algebraMap_end_apply]`. Conclude with `Submodule.smul_mem _ _ hx`. Simplify using `[zero_mem]`. Consider the case `add p q hp hq`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨fun x hx => ?_, fun x hx => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, LinearMap.add_apply]`. Conclude with `add_mem (hp.1.1 x hx) (hq.1.1 x hx)`. Rewrite using `[map_add, LinearMap.add_apply]`. Conclude with `add_mem (hp.1.2 x hx) (hq.1.2 x hx)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Normalize the expressions using the abelian group laws.
 
-Use `add_mem hp.2 hq.2` as an intermediate fact. Rewrite using `[map_add, map_add]`. Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Consider the case `monomial k a ih`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨ih1, ih2⟩` from `ih`. Establish `e : ∀ g : Module.End E M, Polynomial.aeval g (C a * X ^ (k + 1)) = Polynomial.aeval g (C a * X ^ k) * g` using `fun g => by`. Rewrite using `[pow_succ, ← mul_assoc, map_mul _ (C a * X ^ k) X, aeval_X]`. Rewrite using `[e, e]`. Use `⟨⟨fun x hx => ih1.1 _ (hf.1 x hx), fun x hx => ih1.2 _ (hf.2 x hx)⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `h1` using `hf'.mul_right ih2`. Establish `h2` using `ih1.mul_left hd`. Use `add_mem h1 h2` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `noncomm_ring`.
+A detailed English derivation is pending.
 -/
 theorem Stabs.aeval {f f' : Module.End E M} (hAB : A ≤ B) (hf : Stabs A B f) (hd : f' - f ∈ strictUp A B) (r : E[X]) :
     Stabs A B (Polynomial.aeval f r) ∧ Polynomial.aeval f' r - Polynomial.aeval f r ∈ strictUp A B := by
@@ -138,9 +138,9 @@ theorem Stabs.aeval {f f' : Module.End E M} (hAB : A ≤ B) (hf : Stabs A B f) (
     noncomm_ring
 
 /- English proof (translation)
-Proceed by induction on `r using Polynomial.induction_on with`. Consider the case `C a => rw [aeval_C, aeval_C]`. Conclude with `(Algebra.commutes a T).symm`. Consider the case `add p q hp hq => simp only [map_add, mul_add, add_mul, hp, hq]`. Consider the case `monomial k a ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `e : ∀ g : Module.End E M, Polynomial.aeval g (C a * X ^ (k + 1)) = Polynomial.aeval g (C a * X ^ k) * g` using `fun g => by`. Rewrite using `[pow_succ, ← mul_assoc, map_mul _ (C a * X ^ k) X, aeval_X]`. Rewrite using `[e, e, ← mul_assoc, ih, mul_assoc, h, mul_assoc]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_intertwine {f f' T : Module.End E M} (h : T * f = f' * T) (r : E[X]) :
     T * Polynomial.aeval f r = Polynomial.aeval f' r * T := by
@@ -155,15 +155,15 @@ theorem aeval_intertwine {f f' T : Module.End E M} (h : T * f = f' * T) (r : E[X
 variable [FiniteDimensional E M]
 
 /- English proof (translation)
-Take `⟨p, hp1, hp2⟩` from `GlobalTheory.CompanionTheory.LeviConj.exists_poly_proj f hs A hf.1`. Take `⟨q, hq1, hq2⟩` from `GlobalTheory.CompanionTheory.LeviConj.exists_poly_proj f hs B hf.2`. Establish `hpi` using `aeval_intertwine h p`. Establish `hqi` using `aeval_intertwine h q`. Establish `k1 : ∀ z, T z ∈ A → T z = 0` using `fun z hz => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (Polynomial.aeval f' p) (T z) = T z`. Use `(Stabs.aeval hAB hf hd p).2.1 _ hz` as an intermediate fact. Rewrite `this` using `[LinearMap.sub_apply, hp2 _ hz, sub_eq_zero]`. Conclude with `this`. Establish `e2` using `congrArg (fun U : Module.End E M => U z) hpi`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Module.End.mul_apply] at e2`. Rewrite `e2` using `[e1, hT.1 _ (hp1 z)]`. Conclude with `e2.symm`. Establish `k2 : ∀ z, T z ∈ A` using `fun z => by`. Establish `hz` using `hT.2.2 z`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1` using `(Stabs.aeval hAB hf hd q).2.2.1 _ hz`. Rewrite `e1` using `[LinearMap.sub_apply, hq2 _ hz]`. Establish `e2` using `congrArg (fun U : Module.End E M => U z) hqi`. Simplify using `only [Module.End.mul_apply] at e2`. Rewrite `e1` using `[← e2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `e3` using `sub_mem (hT.2.1 _ (hq1 z)) e1`. Simplify using `using e3`. Use extensionality with `z`. Simplify using `using k1 z (k2 z)`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_intertwine (hAB : A ≤ B) {f f' T : Module.End E M} (hs : (LinearMap.charpoly f).Separable)
     (hf : Stabs A B f) (hd : f' - f ∈ strictUp A B) (hT : T ∈ strictUp A B) (h : T * f = f' * T) : T = 0 := by
@@ -195,11 +195,11 @@ theorem eq_zero_of_intertwine (hAB : A ≤ B) {f f' T : Module.End E M} (hs : (L
   simpa using k1 z (k2 z)
 
 /- English proof (translation)
-Establish `hf' : Stabs A B f'` using `by simpa using hf.add_strictUp hAB hd`. Set `Φ : strictUp A B →ₗ[E] strictUp A B` to `{ toFun := fun T => ⟨T.1 * f - f' * T.1, sub_mem (hf.mul_right T.2) (hf'.mul_left T.2)⟩ map_add' := fun S T => Subtype.ext (by simp only [Submodule.coe_add, add_mul, mul_add]; abel) map_smul' := fun c T => Subtype.ext (by simp [smul_sub]) }`. Establish `hinj : Function.Injective Φ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `T hT`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : T.1 * f - f' * T.1 = 0` using `congrArg Subtype.val hT`. Conclude with `Subtype.ext (eq_zero_of_intertwine hAB hs hf hd T.2 (sub_eq_zero.1 h1))`. Take `⟨T, hT⟩` from `(LinearMap.injective_iff_surjective.1 hinj) ⟨_, hd⟩`. Establish `h1 : T.1 * f - f' * T.1 = f' - f` using `congrArg Subtype.val hT`. Use `⟨T.1, T.2, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_mul, mul_add, one_mul, mul_one]`. Rewrite `h1` using `[sub_eq_iff_eq_add]`. Rewrite using `[h1]`. Normalize the expressions using the abelian group laws.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem exists_intertwiner (hAB : A ≤ B) {f f' : Module.End E M} (hs : (LinearMap.charpoly f).Separable)
     (hf : Stabs A B f) (hd : f' - f ∈ strictUp A B) :
@@ -230,11 +230,11 @@ open GlobalTheory.Cusp.WeightCommute
 variable {D : D7} {V : HSp D}
 
 /- English proof (translation)
-Use `set g := LinearMap.toMatrix V.frame V.frame X with hg`. Establish `hu : IsUnit V.gram.det` using `GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.gram_det_isUnit V`. Use `⟨Matrix.toLin V.frame V.frame (V.gram⁻¹ * gᴴ * V.gram), fun x y => ?_⟩` and prove the remaining obligations. Establish `h1 : V.frame.equivFun (X x) = g *ᵥ V.frame.equivFun x`. Simplify using `only [Module.Basis.equivFun_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg, LinearMap.toMatrix_mulVec_repr]`. Establish `h2 : V.frame.equivFun (Matrix.toLin V.frame V.frame (V.gram⁻¹ * gᴴ * V.gram) y) = (V.gram⁻¹ * gᴴ * V.gram) *ᵥ V.frame.equivFun y`. Simplify using `only [Module.Basis.equivFun_apply]`. Rewrite using `[Matrix.repr_toLin]`. Rewrite using `[GlobalTheory.ChiGrid.SumDual.hT_eq, GlobalTheory.ChiGrid.SumDual.hT_eq, h1, h2, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_adjoint (X : Module.End D.host.E V.V) :
     ∃ Y : Module.End D.host.E V.V, ∀ x y, V.hT (X x) y = V.hT x (Y y) := by
@@ -254,48 +254,40 @@ theorem exists_adjoint (X : Module.End D.host.E V.V) :
   rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[← ratAct_mul', mul_inv_cancel, ratAct_one']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ratAct_inv_right (γ : GF V) (x : V.V) :
     GlobalTheory.Cusp.ratAct D.sp.cm V γ (GlobalTheory.Cusp.ratAct D.sp.cm V γ⁻¹ x) = x := by
   rw [← ratAct_mul', mul_inv_cancel, ratAct_one']
 
 /- English proof (translation)
-Use `set A := W with hA`. Use `set B := GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.perp V W with hB`. Establish `hAB : A ≤ B` using `hW.2`. Establish `hBA : GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.perp V B = A` using `GlobalTheory.SplitFlag.perp_perp W`. Establish `memB : ∀ {y}, y ∈ B ↔ ∀ x ∈ A, V.hT x y = 0` using `GlobalTheory.Cusp.WittIdx.mem_perp'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `memA : ∀ {y}, y ∈ A ↔ ∀ x ∈ B, V.hT x y = 0` using `fun {y} => by`. Rewrite using `[← GlobalTheory.Cusp.WittIdx.mem_perp', hBA]`. Use `set u : Module.End D.host.E V.V := GlobalTheory.Cusp.ratAct D.sp.cm V δ with hu`. Use `set n : Module.End D.host.E V.V := GlobalTheory.Cusp.ratAct D.sp.cm V ν with hn`. Use `set u' : Module.End D.host.E V.V := GlobalTheory.Cusp.ratAct D.sp.cm V (δ * ν) with hu'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu'n : u' = u * n` using `LinearMap.ext fun x => ratAct_mul' δ ν x`. Establish `par : ∀ γ ∈ (IsoFlag.single hW).parRat D.sp.cm, ∀ x ∈ A, GlobalTheory.Cusp.ratAct D.sp.cm V γ x ∈ A` using `fun γ hγ x hx => IsoFlag.mem_parRat.1 hγ 1 x hx`. Establish `uA : ∀ x ∈ A, u x ∈ A` using `par δ hδ`. Establish `uiA` using `par δ⁻¹ (inv_mem hδ)`. Establish `uB : ∀ x ∈ B, u x ∈ B` using `fun x hx => memB.2 fun a ha => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← ratAct_inv_right δ a, hu, hT_ratAct]`. Conclude with `memB.1 hx _ (uiA a ha)`. Establish `hf : Stabs A B u` using `⟨uA, uB⟩`. Take `⟨ν1, ν2⟩` from `IsoFlag.mem_unipRat.1 hν`. Establish `nA : ∀ x ∈ A, n x = x` using `fun x hx => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `ν1 (0 : Fin 1) x hx` as an intermediate fact. Conclude with `sub_eq_zero.1 ((Submodule.mem_bot _).1 this)`. Establish `nB : ∀ x ∈ B, n x - x ∈ A` using `ν2`. Establish `nV : ∀ x, n x - x ∈ B` using `fun x => memB.2 fun a ha => by`. Rewrite using `[map_sub]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `e : V.hT a (n x) = V.hT a x` using `by conv_lhs => rw [← nA a ha]`. Conclude with `hT_ratAct ν a x`. Rewrite using `[e, sub_self]`. Establish `hn1 : n - 1 ∈ strictUp A B` using `⟨fun x hx => by simp [nA x hx], fun x hx => nB x hx, fun x => nV x⟩`. Establish `hd : u' - u ∈ strictUp A B`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hf.mul_left hn1` as an intermediate fact. Rewrite `this` using `[mul_sub, mul_one, ← hu'n]`. Then use the resulting hypothesis. Establish `hs : (LinearMap.charpoly u).Separable`. Rewrite using `[← LinearMap.charpoly_toMatrix u V.frame, hu, GlobalTheory.Cusp.ratAct, LinearMap.toMatrix_toLin]`. Conclude with `hreg`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨T, hT, he⟩` from `exists_intertwiner hAB hs hf hd`. Take `⟨Y, hY⟩` from `exists_adjoint (1 + T)`. Establish `hTR : ∀ x y, V.hT (T x) y = V.hT x ((Y - 1) y)` using `fun x y => by`. Use `hY x y` as an intermediate fact. Simplify using `only [LinearMap.add_apply, Module.End.one_apply, map_add, LinearMap.sub_apply, map_sub] at this ⊢`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← this]`. Normalize the expressions using the abelian group laws. Establish `hR : Y - 1 ∈ strictUp A B`. Use `⟨fun a ha => ?_, fun b hb => ?_, fun x => ?_⟩` and prove the remaining obligations. Use `V.nondeg.2 _ fun x => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hTR]`. Conclude with `memA.1 ha _ (hT.2.2 x)`. Conclude with `memA.2 fun x hx => by`. Rewrite using `[← hTR]`. Conclude with `memB.1 hb _ (hT.2.1 x hx)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `memB.2 fun a ha => by`. Rewrite using `[← hTR, hT.1 a ha]`. Simplify using the standard rewrite rules. Establish `hYu : Y * u' = u * Y` using `by ext1 y`. Rewrite using `[← sub_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `V.nondeg.2 _ fun x => ?_` and prove the remaining obligations. Rewrite using `[map_sub, sub_eq_zero, Module.End.mul_apply, Module.End.mul_apply, ← hY]`. Establish `e1 : (1 + T) x = u' ((1 + T) (GlobalTheory.Cusp.ratAct D.sp.cm V δ⁻¹ x))`. Use `congrArg (fun U : Module.End D.host.E V.V => U (GlobalTheory.Cusp.ratAct D.sp.cm V δ⁻¹ x)) he` as an intermediate fact. Simplify using `only [Module.End.mul_apply] at this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← this, hu, ratAct_inv_right]`. Rewrite using `[e1, hu', hT_ratAct]`. Use `conv_rhs => rw [← ratAct_inv_right δ x]`. Rewrite using `[hu, hT_ratAct, hY]`. Establish `hZ : Y * (1 + T) - 1 = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmem : Y * (1 + T) - 1 ∈ strictUp A B`. Establish `e : Y * (1 + T) - 1 = (Y - 1) + T + (Y - 1) * T` using `by noncomm_ring`. Rewrite using `[e]`. Conclude with `add_mem (add_mem hR hT) (mul_mem_strictUp hAB hR hT)`. Use `eq_zero_of_intertwine hAB hs hf (f' := u) (by simp [zero_mem]) hmem ?_` and prove the remaining obligations.
-
-Rewrite using `[sub_mul, mul_sub, one_mul, mul_one, mul_assoc, he, ← mul_assoc, hYu, mul_assoc]`. Establish `hZ' : Y * (1 + T) = 1` using `sub_eq_zero.1 hZ`. Establish `hiso : ∀ x y, V.hT ((1 + T) x) ((1 + T) y) = V.hT x y` using `fun x y => by`. Rewrite using `[hY, ← Module.End.mul_apply, hZ', Module.End.one_apply]`. Use `set gm := LinearMap.toMatrix V.frame V.frame (1 + T) with hgm`.
-
-Use `set gy := LinearMap.toMatrix V.frame V.frame Y with hgy`. Establish `m1 : gy * gm = 1`. Rewrite using `[hgm, hgy, ← LinearMap.toMatrix_mul, hZ', LinearMap.toMatrix_one]`. Establish `m2 : gm * gy = 1` using `mul_eq_one_comm.mp m1`. Establish `hU : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) gm * V.gram * gm = V.gram` using `GlobalTheory.ChiGrid.SumDual.gram_isom V V (1 + T) hiso`.
-
-Set `g : GF V` to `⟨⟨gm, gy, m2, m1⟩, hU⟩`. Use `⟨g, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_inv_eq_iff_eq_mul]`. Use `Subtype.ext (Units.ext ?_)` and prove the remaining obligations. Use `show gm * δ.1.1 = (δ * ν).1.1 * gm`.
-
-Apply `(Matrix.toLin V.frame V.frame).injective` to reduce the goal to its premises. Rewrite using `[Matrix.toLin_mul V.frame V.frame V.frame, Matrix.toLin_mul V.frame V.frame V.frame, hgm, Matrix.toLin_toMatrix]`. Conclude with `he`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_of_isotropic {W : Submodule D.host.E V.V} (hW : GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.IsIsotropic V W) (δ : GF V)
     (hreg : IsRegSS δ.1.1) (hδ : δ ∈ (IsoFlag.single hW).parRat D.sp.cm) (ν : GF V)
@@ -395,7 +387,7 @@ theorem conj_of_isotropic {W : Submodule D.host.E V.V} (hW : GlobalTheory.Indefi
 end Unitary
 
 /- English proof (translation)
-Introduce `_ _ _ _ hC δ hreg hδ ν hν` and use `conj_of_isotropic _ δ hreg hδ ν hν`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem conj_translate : ∀ (D : D7) (V : HSp D) (r : ℕ) (C : Matrix (Fin V.rank) (Fin r) D.host.E) (hC : IsIsoFrame V C)
     (δ : GF V), IsRegSS δ.1.1 → δ ∈ (frameFlag hC).parRat D.sp.cm → ∀ ν ∈ (frameFlag hC).unipRat D.sp.cm,

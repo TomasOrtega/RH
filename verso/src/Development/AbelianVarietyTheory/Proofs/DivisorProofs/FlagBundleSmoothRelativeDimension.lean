@@ -15,13 +15,11 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 namespace GlobalTheory.FlagSmooth
 
 /- English proof (translation)
-Introduce `B Y π ι _ E r fl hE hfl`. Use `haveI : IsZariskiLocalAtTarget (@SmoothOfRelativeDimension (∑ a, r a * (r a - 1) / 2)) := HasRingHomProperty.instIsZariskiLocalAtTarget _`. Use `choose U hU hfree using GlobalTheory.T.vector_bundle_locally_free B ι E r hE`. Establish `hcov : TopologicalSpace.IsOpenCover U` using `eq_top_iff.2 fun x _ => TopologicalSpace.Opens.mem_iSup.2 ⟨x, hU x⟩`. Use `IsZariskiLocalAtTarget.of_openCover (B.openCoverOfIsOpenCover U hcov) fun b => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `SmoothOfRelativeDimension _ (Limits.pullback.snd π (U b).ι)`. Establish `h1` using `GlobalTheory.T.flag_bundle_base_change B Y (U b) π ι E r fl hfl (U b).ι`. Take `⟨Y0, π0, fl0, h0, hs⟩` from `GlobalTheory.T.free_flag_bundle_smooth_relative_dim (U b) ι r`. Take `⟨fl0', h0'⟩` from `GlobalTheory.T.flag_bundle_transport_iso (U b) Y0 π0 ι _ (fun a => (Scheme.Modules.pullback (U b).ι).obj (E a)) r fl0 h0 (fun a => ⟨(hfree b a).some.symm⟩)`. Take `⟨e, he⟩` from `GlobalTheory.T.flag_bundle_family_unique_iso (U b) Y0 _ π0 (Limits.pullback.snd π (U b).ι) ι _ r fl0' _ h0' h1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e' : Limits.pullback.snd π (U b).ι = e.inv ≫ π0` using `by rw [← he, Iso.inv_hom_id_assoc]`. Rewrite using `[e']`. Use `first`. Consider the case `exact (@MorphismProperty.cancel_left_of_respectsIso _ _ _ (HasRingHomProperty.respectsIso _) _ _ _ _ _).2 hs`. Consider the case `exact (@MorphismProperty.cancel_left_of_respectsIso _ _ _ (IsZariskiLocalAtTarget.toRespectsIso) _ _ _ _ _).2 hs`.
-
-Consider the case `(haveI : SmoothOfRelativeDimension 0 e.inv := inferInstance`. Simplify using `using (inferInstance : SmoothOfRelativeDimension (0 + ∑ a, r a * (r a - 1) / 2) (e.inv ≫ π0)))`.
+Treat this case separately. Treat this case separately. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem smooth_of_isFlagBundle : ∀ (B Y : Scheme.{0}) (π : Y ⟶ B) (ι : Type) [Fintype ι] (E : ι → B.Modules)
     (r : ι → ℕ) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a)), (∀ a, GlobalTheory.VB.IsVB (E a) (r a)) →

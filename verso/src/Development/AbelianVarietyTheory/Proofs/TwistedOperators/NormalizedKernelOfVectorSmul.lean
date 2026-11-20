@@ -11,9 +11,9 @@ noncomputable section
 namespace GlobalTheory.TopZeroInv
 
 /- English proof (translation)
-Introduce `D T L sc G W U S p c f x y`. Unfold `GlobalTheory.TopZeroInv.kkVec fockComp`. Establish `hT : jetTab W S.N.frC p (c • f) (x * S.N.u _) (y * S.N.u _) = c • jetTab W S.N.frC p f (x * S.N.u _) (y * S.N.u _)`. Use function extensionality and compare the values at `k`. Simplify using `only [jetTab, kerFin, fockIn, GlobalTheory.FiniteFock.pureTensorO_smul, Pi.smul_apply, smul_eq_mul, GlobalTheory.ChiGrid.GridData.Weil.ker, thetaKO, map_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `h` using `(GlobalTheory.JetIdentity.jetOpL (K := ℂ) (wt G p.small) (wt G p.big) (nuEnd G p)).map_smul c (jetTab W S.N.frC p f (x * S.N.u _) (y * S.N.u _))`. Simplify using `only [GlobalTheory.JetIdentity.jetOpL, LinearMap.coe_mk, AddHom.coe_mk, RingHom.id_apply] at h`. Rewrite using `[hT, h, smul_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem kkVec_smul : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
     (S : GridChoice W U) (p : Pair T) (c : ℂ) (f : WO (G.pS p) (G.pT p) → ℂ) (x : FinPt G p.small) (y : FinPt G p.big),

@@ -17,11 +17,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CompanionTheory.FJE
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, i5, -⟩` from `lattice_Mx D ρ p`. Establish `: BorelSpace (Mx D ρ p)` using `⟨rfl⟩`. Establish `: Countable (ratMx D ρ p)` using `TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Establish `hμ` using `m.hμ`. Use `hμ.1` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `e : Matrix (Fin ρ) (Fin p) D.host.E ≃ ratMx D ρ p` to `Equiv.ofBijective (fun ξ => ⟨rat ξ, rat_mem ξ⟩) ⟨fun a b h => rat_injective (congrArg Subtype.val h), fun g => by`. Take `⟨ξ, hξ⟩` from `mem_ratMx.1 g.2`. Conclude with `⟨ξ, Subtype.ext hξ⟩⟩`. Establish `h1 : ∀ y, ∑' ξ : Matrix (Fin ρ) (Fin p) D.host.E, P (GlobalTheory.CompanionTheory.FJE.rt ξ + y) = ∑' g : ratMx D ρ p, P (g +ᵥ y)` using `fun y => e.tsum_eq fun g => P (g +ᵥ y)`. Simplify using `only [h1]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hμ.2.1.integral_eq_tsum'' P hP]`. Use `(integral_tsum (ι := ratMx D ρ p) (f := fun g y => P (g +ᵥ y)) (fun g => ?_) ?_).symm` and prove the remaining obligations. Conclude with `((hP.comp_add_left (g : Mx D ρ p)).aestronglyMeasurable).restrict`. Rewrite using `[← hμ.2.1.lintegral_eq_tsum'' fun x => ‖P x‖ₑ]`. Conclude with `hP.2.ne`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_fold {D : D7} {ρ p : ℕ} (m : Meas D ρ p) (P : Mx D ρ p → ℂ) (hP : Integrable P m.μ) :
     ∫ y, P y ∂m.μ = ∫ y in m.𝓕, ∑' ξ : Matrix (Fin ρ) (Fin p) D.host.E, P (GlobalTheory.CompanionTheory.FJE.rt ξ + y) ∂m.μ := by

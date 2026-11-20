@@ -4,7 +4,7 @@ open NumberField IsDedekindDomain NumberField.mixedEmbedding Complex Classical
 open scoped TensorProduct ContDiff nonZeroDivisors
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.InfAdeleMixed.exists_equiv_mixedSpace` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FAdelicLatticeProofs%2FExistsInfiniteAdeleTensorEquivMixedSpace.lean&line=31#L31)
 -/

@@ -20,13 +20,13 @@ noncomputable section
 namespace GlobalTheory.FinFockLin
 
 /- English proof (translation)
-Introduce `D ψ θ hψ hθ ε M X A B`. Establish `hsm : ∀ (c : ℂ) f, IsFinF ψ θ ε A B f → IsFinF ψ θ ε A B (c • f)`. Introduce `c f hf`. Use `⟨GlobalTheory.OrientedHeis.theta_smul c hf.1, fun τ z => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.FockIndep.annih_smul hψ hθ τ _ z c hf.1, hf.2 τ z, smul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hadd : ∀ f g, IsFinF ψ θ ε A B f → IsFinF ψ θ ε A B g → IsFinF ψ θ ε A B (f + g)`. Introduce `f g hf hg`. Use `⟨GlobalTheory.OrientedHeis.theta_add hf.1 hg.1, fun τ z => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.FockIndep.annih_add hψ hθ τ _ z hf.1 hg.1, hf.2 τ z, hg.2 τ z, add_zero]`. Establish `h0 : IsFinF ψ θ ε A B 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨GlobalTheory.OrientedHeis.theta_zero, fun τ z => ?_⟩` and prove the remaining obligations. Establish `h` using `GlobalTheory.FockIndep.annih_smul hψ hθ τ (cplxO ((frSgn ε A).cart τ) (B.cart τ)) z 0 (GlobalTheory.OrientedHeis.theta_zero (ψ := ψ) (S := sgn ε M) (T := X))`. Simplify `h` using `only [zero_smul]`. Use `⟨h0, hadd, hsm, fun f g P hf hg => ?_, fun c f P hf => ?_⟩` and prove the remaining obligations. Establish `h` using `GlobalTheory.FockFiniteHeis.pureTensorO_lin ψ θ (sgn ε M) X hψ hθ (frSgn ε A).cart A.onb B.cart B.onb 1 hf.1 hg.1 P`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h` using `[one_smul, one_smul]`. Conclude with `h`. Establish `h` using `GlobalTheory.FockFiniteHeis.pureTensorO_lin ψ θ (sgn ε M) X hψ hθ (frSgn ε A).cart A.onb B.cart B.onb c hf.1 h0.1 P`. Rewrite `h` using `[add_zero, GlobalTheory.FockFiniteHeis.pureTensorO_zero ψ θ _ _ hψ hθ, add_zero]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finF_lin : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
   ∀ (ε : Bool) (M X : HSp D) (A : Fr M) (B : Fr X),

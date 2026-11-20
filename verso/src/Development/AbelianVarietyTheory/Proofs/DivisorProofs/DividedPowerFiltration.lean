@@ -22,7 +22,7 @@ variable {B : Type} [CommRing B] {J : Ideal B} in
 variable (δ : DividedPowers J) in
 
 /- English proof (translation)
-Use `Ideal.span_mono ?_` and prove the remaining obligations. Introduce and unpack `x ⟨l, hl, hs, rfl⟩`. Conclude with `⟨l, hl, h.trans hs, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.Cris.ExpBij.dpFil_anti {m n : ℕ} (h : m ≤ n) :
     _root_.GlobalTheory.Cris.ExpBij.dpFil δ n ≤ _root_.GlobalTheory.Cris.ExpBij.dpFil δ m := by
@@ -36,7 +36,7 @@ variable {B : Type} [CommRing B] {J : Ideal B} in
 variable (δ : DividedPowers J) in
 
 /- English proof (translation)
-Establish `h1 : (1 : B) ∈ _root_.GlobalTheory.Cris.ExpBij.dpFil δ 0` using `Ideal.subset_span ⟨[], by simp, by simp, by simp⟩`. Simplify using `using Ideal.mul_mem_left _ a h1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem _root_.GlobalTheory.Cris.ExpBij.mem_dpFil_zero (a : B) : a ∈ _root_.GlobalTheory.Cris.ExpBij.dpFil δ 0 := by
   have h1 : (1 : B) ∈ _root_.GlobalTheory.Cris.ExpBij.dpFil δ 0 :=
@@ -49,11 +49,11 @@ variable {B : Type} [CommRing B] {J : Ideal B} in
 variable (δ : DividedPowers J) in
 
 /- English proof (translation)
-Establish `key : _root_.GlobalTheory.Cris.ExpBij.dpFil δ m * _root_.GlobalTheory.Cris.ExpBij.dpFil δ n ≤ _root_.GlobalTheory.Cris.ExpBij.dpFil δ (m + n)`. Unfold `_root_.GlobalTheory.Cris.ExpBij.dpFil`. Rewrite using `[Ideal.span_mul_span']`. Use `Ideal.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, ⟨l₁, hl₁, hs₁, rfl⟩, y, ⟨l₂, hl₂, hs₂, rfl⟩, rfl⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨l₁ ++ l₂, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `p hp`. Break down `List.mem_append.1 hp with hp | hp` into its components or cases. Use `exacts [hl₁ p hp, hl₂ p hp]`. Simplify using `only [List.map_append, List.sum_append]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `[List.map_append, List.prod_append]`. Conclude with `key (Ideal.mul_mem_mul ha hb)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Cris.ExpBij.mul_mem_dpFil {m n : ℕ} {a b : B} (ha : a ∈ _root_.GlobalTheory.Cris.ExpBij.dpFil δ m)
     (hb : b ∈ _root_.GlobalTheory.Cris.ExpBij.dpFil δ n) :
@@ -79,7 +79,7 @@ variable {B : Type} [CommRing B] {J : Ideal B} in
 variable (δ : DividedPowers J) in
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using _root_.GlobalTheory.Cris.ExpBij.mem_dpFil_zero δ (1 : B)`. Consider the case `succ n ih`. Rewrite using `[pow_succ, Nat.succ_mul]`. Conclude with `_root_.GlobalTheory.Cris.ExpBij.mul_mem_dpFil δ ih ha`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Cris.ExpBij.pow_mem_dpFil {m : ℕ} {a : B} (ha : a ∈ _root_.GlobalTheory.Cris.ExpBij.dpFil δ m)
     (n : ℕ) : a ^ n ∈ _root_.GlobalTheory.Cris.ExpBij.dpFil δ (n * m) := by
@@ -95,18 +95,18 @@ variable {B : Type} [CommRing B] {J : Ideal B} in
 variable (δ : DividedPowers J) in
 
 /- English proof (translation)
-The claim follows from `Ideal.subset_span ⟨[(n, a)], by simpa using ha, by simp, by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Cris.ExpBij.dpow_mem_dpFil {a : B} (ha : a ∈ J) (n : ℕ) :
     δ.dpow n a ∈ _root_.GlobalTheory.Cris.ExpBij.dpFil δ n :=
   Ideal.subset_span ⟨[(n, a)], by simpa using ha, by simp, by simp⟩
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp at h1`. Consider the case `cons p l ih`. Establish `hp : p.2 ∈ J` using `hl p (by simp)`. Establish `hl' : ∀ q ∈ l, q.2 ∈ J` using `fun q hq ↦ hl q (by simp [hq])`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [List.map_cons, List.sum_cons, List.prod_cons] at h1 ⊢`. Distinguish the cases in `h0 : p.1 = 0`. Rewrite using `[h0, δ.dpow_zero hp, one_mul, zero_add]`. Conclude with `ih hl' (by omega)`. Establish `hm` using `δ.dpow_mem h0 hp`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨J.mul_mem_right _ hm, fun n ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[δ.dpow_mul_right hm, δ.dpow_comp h0 hp, mul_add]`. Conclude with `mul_mem_dpFil δ (Ideal.mul_mem_left _ _ (dpow_mem_dpFil δ hp _)) (pow_mem_dpFil δ (Ideal.subset_span ⟨l, hl', le_rfl, rfl⟩) n)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_widePullback_of_iteratedLine (l : List (ℕ × B)) (hl : ∀ p ∈ l, p.2 ∈ J) (h1 : 1 ≤ (l.map Prod.fst).sum) :
     (l.map fun p ↦ δ.dpow p.1 p.2).prod ∈ J ∧
@@ -132,11 +132,11 @@ variable {B : Type} [CommRing B] {J : Ideal B} in
 variable (δ : DividedPowers J) in
 
 /- English proof (translation)
-Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `x ⟨l, hl, hs, rfl⟩`. Establish `hex : ∃ p ∈ l, p.1 ≠ 0`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hzero : (l.map Prod.fst).sum = 0`. Use `List.sum_eq_zero fun x hx => ?_` and prove the remaining obligations. Take `⟨p, hp, rfl⟩` from `List.mem_map.1 hx`. Conclude with `h p hp`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp, hp0⟩` from `hex`. Take `⟨c, hc⟩` from `List.dvd_prod (List.mem_map.2 ⟨p, hp, rfl⟩ : δ.dpow p.1 p.2 ∈ l.map fun p ↦ δ.dpow p.1 p.2)`. Rewrite using `[SetLike.mem_coe, hc]`. Conclude with `J.mul_mem_right _ (δ.dpow_mem hp0 (hl p hp))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Cris.ExpBij.dpFil_le {m : ℕ} (hm : 1 ≤ m) : _root_.GlobalTheory.Cris.ExpBij.dpFil δ m ≤ J := by
   refine Ideal.span_le.2 ?_
@@ -161,7 +161,7 @@ variable {B : Type} [CommRing B] {J : Ideal B} in
 variable (δ : DividedPowers J) in
 
 /- English proof (translation)
-Establish `h` using `_root_.GlobalTheory.Cris.ExpBij.dpow_mem_dpFil δ ha 1`. Rewrite `h` using `[δ.dpow_one ha]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem _root_.GlobalTheory.Cris.ExpBij.mem_dpFil_one {a : B} (ha : a ∈ J) : a ∈ _root_.GlobalTheory.Cris.ExpBij.dpFil δ 1 := by
   have h := _root_.GlobalTheory.Cris.ExpBij.dpow_mem_dpFil δ ha 1
@@ -173,25 +173,21 @@ variable {B : Type} [CommRing B] {J : Ideal B} in
 variable (δ : DividedPowers J) in
 
 /- English proof (translation)
-Establish `hgen : ∀ l : List (ℕ × B), (∀ p ∈ l, p.2 ∈ J) → ∀ n, δ.dpow n (l.map fun p ↦ δ.dpow p.1 p.2).prod ∈ _root_.GlobalTheory.Cris.ExpBij.dpFil δ (n * (l.map Prod.fst).sum)`. Introduce `l`. Proceed by induction on `l with`. Consider the case `nil`. Introduce `_ n`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [List.map_nil, List.sum_nil, mul_zero]`. Conclude with `_root_.GlobalTheory.Cris.ExpBij.mem_dpFil_zero δ _`. Consider the case `cons p l ih`. Introduce `hl n`. Establish `hp : p.2 ∈ J` using `hl p List.mem_cons_self`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl' : ∀ q ∈ l, q.2 ∈ J` using `fun q hq => hl q (List.mem_cons_of_mem _ hq)`. Simplify using `only [List.map_cons, List.prod_cons, List.sum_cons]`. Distinguish the cases in `hk : p.1 = 0`. Rewrite using `[hk, δ.dpow_zero hp, one_mul, zero_add]`. Conclude with `ih hl' n`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_comm (δ.dpow p.1 p.2), δ.dpow_mul (δ.dpow_mem hk hp), δ.dpow_comp hk hp]`. Establish `hy : (l.map fun q ↦ δ.dpow q.1 q.2).prod ∈ _root_.GlobalTheory.Cris.ExpBij.dpFil δ (l.map Prod.fst).sum` using `Ideal.subset_span ⟨l, hl', le_rfl, rfl⟩`. Establish `h1` using `_root_.GlobalTheory.Cris.ExpBij.pow_mem_dpFil δ hy n`. Establish `h2 : (↑(n.uniformBell p.1) : B) * δ.dpow (n * p.1) p.2 ∈ _root_.GlobalTheory.Cris.ExpBij.dpFil δ (n * p.1)` using `Ideal.mul_mem_left _ _ (_root_.GlobalTheory.Cris.ExpBij.dpow_mem_dpFil δ hp _)`. Establish `h3` using `_root_.GlobalTheory.Cris.ExpBij.mul_mem_dpFil δ h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show n * (p.1 + (l.map Prod.fst).sum) = n * (l.map Prod.fst).sum + n * p.1 by ring]`. Conclude with `h3`. Establish `hJ : ∀ x ∈ _root_.GlobalTheory.Cris.ExpBij.dpFil δ m, x ∈ J` using `fun x hx => _root_.GlobalTheory.Cris.ExpBij.dpFil_le δ hm hx`. Use `revert n`. Unfold `_root_.GlobalTheory.Cris.ExpBij.dpFil at ha`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨l, hl, hs, rfl⟩` from `hx`. Introduce `n`. Conclude with `_root_.GlobalTheory.Cris.ExpBij.dpFil_anti δ (Nat.mul_le_mul_left n hs) (hgen l hl n)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero`. Introduce `n`. Break down `n with _ | n` into its components or cases. Rewrite using `[zero_mul]`. Conclude with `_root_.GlobalTheory.Cris.ExpBij.mem_dpFil_zero δ _`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[δ.dpow_eval_zero (Nat.succ_ne_zero n)]`. Conclude with `zero_mem _`. Consider the case `add x y hx hy ihx ihy`. Introduce `n`. Rewrite using `[δ.dpow_add (hJ x hx) (hJ y hy)]`.
-
-Use `Ideal.sum_mem _ fun k hk => ?_` and prove the remaining obligations. Establish `hsum` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hk`. Rewrite using `[← hsum, add_mul]`. Conclude with `_root_.GlobalTheory.Cris.ExpBij.mul_mem_dpFil δ (ihx k.1) (ihy k.2)`. Consider the case `smul b x hx ihx`.
-
-Introduce `n`. Rewrite using `[smul_eq_mul, δ.dpow_mul (hJ x hx)]`. Conclude with `Ideal.mul_mem_left _ _ (ihx n)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Cris.ExpBij.dpow_mem_dpFil_mul {m : ℕ} (hm : 1 ≤ m) {a : B}
     (ha : a ∈ _root_.GlobalTheory.Cris.ExpBij.dpFil δ m) (n : ℕ) :
@@ -255,7 +251,7 @@ theorem _root_.GlobalTheory.Cris.ExpBij.dpow_mem_dpFil_mul {m : ℕ} (hm : 1 ≤
 variable {δ}
 
 /- English proof (translation)
-Take `⟨N, h⟩` from `h`. Use `⟨N, Ideal.span_eq_bot.2 ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨l, h1, h2, rfl⟩`. Conclude with `h l h1 h2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_dpFil_eq_bot (h : IsNilDP δ) : ∃ N, dpFil δ N = ⊥ := by
   obtain ⟨N, h⟩ := h
@@ -270,35 +266,33 @@ variable (δ : DividedPowers J) in
 variable {δ} in
 
 /- English proof (translation)
-Introduce `B _ J δ hδ`. Take `⟨N, hN⟩` from `id hδ`. Establish `hbot : _root_.GlobalTheory.Cris.ExpBij.dpFil δ N = ⊥`. Use `le_bot_iff.1 (Ideal.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `x ⟨l, hl, hs, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Simplify using `only [SetLike.mem_coe, Submodule.mem_bot]`. Conclude with `hN l hl hs`. Establish `hvan : ∀ a ∈ J, ∀ n, N ≤ n → δ.dpow n a = 0` using `fun a ha n hn => by`. Simplify `ha) (by simpa using hn)` using `using hN [(n, a)] (by simpa`. Establish `hexp : ∀ a ∈ J, _root_.GlobalTheory.Cris.dpExp δ a = ∑ n ∈ Finset.range (N + 2), δ.dpow n a` using `fun a ha => _root_.GlobalTheory.Cris.dpExp_eq_sum_range_of_vanish δ a (N + 2) fun n hn => hvan a ha n (by omega)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkey : ∀ k, 1 ≤ k → ∀ c ∈ _root_.GlobalTheory.Cris.ExpBij.dpFil δ k, _root_.GlobalTheory.Cris.dpExp δ c - 1 - c ∈ _root_.GlobalTheory.Cris.ExpBij.dpFil δ (k + 1)`. Introduce `k hk c hc`. Establish `hcJ` using `_root_.GlobalTheory.Cris.ExpBij.dpFil_le δ hk hc`. Rewrite using `[hexp c hcJ, Finset.sum_range_succ', Finset.sum_range_succ', δ.dpow_zero hcJ]`. Establish `h1 : δ.dpow (0 + 1) c = c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zero_add]`. Conclude with `δ.dpow_one hcJ`. Rewrite using `[h1, show ∀ s : B, s + c + 1 - 1 - c = s from fun s => by ring]`. Use `Ideal.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Conclude with `_root_.GlobalTheory.Cris.ExpBij.dpFil_anti δ (by nlinarith) (_root_.GlobalTheory.Cris.ExpBij.dpow_mem_dpFil_mul δ hk hc (i + 1 + 1))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hJ1 : ∀ x ∈ J, x ∈ _root_.GlobalTheory.Cris.ExpBij.dpFil δ 1` using `fun x hx => _root_.GlobalTheory.Cris.ExpBij.mem_dpFil_one δ hx`. Establish `hmaps : ∀ a ∈ J, _root_.GlobalTheory.Cris.dpExp δ a - 1 ∈ J`. Introduce `a ha`. Establish `h2` using `_root_.GlobalTheory.Cris.ExpBij.dpFil_le δ (by norm_num) (hkey 1 le_rfl a (hJ1 a ha))`. Establish `h3` using `J.add_mem h2 ha`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h3` using `[sub_add_cancel]`. Then use the resulting hypothesis. Use `⟨fun a ha => hmaps a ha, ?_, ?_⟩` and prove the remaining obligations. Introduce `a ha b hb hab`. Establish `hzero : ∀ c ∈ J, _root_.GlobalTheory.Cris.dpExp δ c = 1 → c = 0`. Introduce `c hc h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hall : ∀ k, 1 ≤ k → c ∈ _root_.GlobalTheory.Cris.ExpBij.dpFil δ k`. Introduce `k hk`. Proceed by induction on `k, hk using Nat.le_induction with`. Consider the case `base => exact hJ1 c hc`. Consider the case `succ k hk ih`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h` using `neg_mem (hkey k hk c ih)`. Rewrite `h` using `[h1]`. Simplify using `using h`. Establish `hc'` using `_root_.GlobalTheory.Cris.ExpBij.dpFil_anti δ (Nat.le_succ N) (hall (N + 1) (by omega))`. Rewrite `hc'` using `[hbot]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(Submodule.mem_bot _).1 hc'`. Establish `hsum : _root_.GlobalTheory.Cris.dpExp δ (b + -a) = 1`. Rewrite using `[hδ.dpExp_add_eq_mul hb (J.neg_mem ha), ← hab, ← hδ.dpExp_add_eq_mul ha (J.neg_mem ha), add_neg_cancel, _root_.GlobalTheory.Cris.dpExp_zero]`. Conclude with `(add_neg_eq_zero.1 (hzero (b + -a) (J.add_mem hb (J.neg_mem ha)) hsum)).symm`. Introduce `u hu`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `hu' : u - 1 ∈ J` using `hu`. Establish `happrox : ∀ k, 1 ≤ k → ∃ a ∈ J, _root_.GlobalTheory.Cris.dpExp δ a - u ∈ _root_.GlobalTheory.Cris.ExpBij.dpFil δ k`. Introduce `k hk`. Proceed by induction on `k, hk using Nat.le_induction with`. Consider the case `base`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `⟨0, J.zero_mem, ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.GlobalTheory.Cris.dpExp_zero]`. Apply `hJ1` to reduce the goal to its premises. Establish `h` using `J.neg_mem hu'`. Rewrite `h` using `[neg_sub]`. Then use the resulting hypothesis.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Consider the case `succ k hk ih`. Take `⟨a, ha, hd⟩` from `ih`. Take `⟨d, hd_eq⟩ : ∃ d, d = _root_.GlobalTheory.Cris.dpExp δ a - u` from `⟨_, rfl⟩`. Rewrite `hd` using `[← hd_eq]`. Establish `hdJ : d ∈ J` using `_root_.GlobalTheory.Cris.ExpBij.dpFil_le δ hk hd`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨a + -d, J.add_mem ha (J.neg_mem hdJ), ?_⟩` and prove the remaining obligations. Establish `hr` using `hkey k hk (-d) (neg_mem hd)`. Rewrite using `[hδ.dpExp_add_eq_mul ha (J.neg_mem hdJ)]`. Establish `hid : _root_.GlobalTheory.Cris.dpExp δ a * _root_.GlobalTheory.Cris.dpExp δ (-d) - u = -((_root_.GlobalTheory.Cris.dpExp δ a - 1) * d) + _root_.GlobalTheory.Cris.dpExp δ a * (_root_.GlobalTheory.Cris.dpExp δ (-d) - 1 - -d)`. Rewrite using `[hd_eq]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hid]`. Use `Ideal.add_mem _ (neg_mem ?_) (Ideal.mul_mem_left _ _ hr)` and prove the remaining obligations. Establish `h` using `_root_.GlobalTheory.Cris.ExpBij.mul_mem_dpFil δ (hJ1 _ (hmaps a ha)) hd`. Rewrite `h` using `[show 1 + k = k + 1 from add_comm 1 k]`. Then use the resulting hypothesis.
-
-Take `⟨a, ha, h⟩` from `happrox (N + 1) (by omega)`. Establish `h'` using `_root_.GlobalTheory.Cris.ExpBij.dpFil_anti δ (Nat.le_succ N) h`. Rewrite `h'` using `[hbot, Submodule.mem_bot, sub_eq_zero]`. Conclude with `⟨a, ha, h'⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Cris.ExpBij.dpExp_bijOn : ∀ (B : Type) [CommRing B] (J : Ideal B) (δ : DividedPowers J),
     _root_.GlobalTheory.Cris.IsNilDP δ → Set.BijOn (_root_.GlobalTheory.Cris.dpExp δ) (J : Set B) {u | u - 1 ∈ J} := by

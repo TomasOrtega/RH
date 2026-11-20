@@ -12,7 +12,7 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Y hO`. Conclude with `GlobalTheory.HodgeCech.lbIso_detOm_det Y hO (GlobalTheory.T.modelSemiAbelian_relDim_cotangent_vectorBundle E H Dw l Xo c Y).2`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.UMin.lbIso_detOm_hodge : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H)
     (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)),

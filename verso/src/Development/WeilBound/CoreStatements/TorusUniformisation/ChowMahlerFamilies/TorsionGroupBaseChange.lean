@@ -10,7 +10,7 @@ open GlobalTheory.CompanionTheory.Ar.Num.FamEx GlobalTheory.CompanionTheory.Ar.B
 namespace PositivityTheory.Xgn.TorsionGroupBaseChange
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `: g = g'` using `Over.OverMorphism.ext hg`. Rewrite using `[this]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_congr {S Y : Scheme.{0}} {G : Over S} [GrpObj G] {f f' : Y ⟶ S} (h : f = f') (N : ℕ)
     (g : Over.mk f ⟶ G) (g' : Over.mk f' ⟶ G) (hg : g.left = g'.left) : g ^ N = 1 ↔ g' ^ N = 1 := by
@@ -19,7 +19,7 @@ theorem pow_congr {S Y : Scheme.{0}} {G : Over S} [GrpObj G] {f f' : Y ⟶ S} (h
   rw [this]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `h1 : u = u'` using `Over.OverMorphism.ext hu`. Establish `h2 : v = v'` using `Over.OverMorphism.ext hv`. Rewrite using `[h1, h2]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_congr {S Y : Scheme.{0}} {G : Over S} [GrpObj G] {f f' : Y ⟶ S} (h : f = f')
     (u v : Over.mk f ⟶ G) (u' v' : Over.mk f' ⟶ G) (hu : u.left = u'.left) (hv : v.left = v'.left) :
@@ -33,11 +33,11 @@ def Kill {S Y : Scheme.{0}} (G : Over S) [GrpObj G] (N : ℕ) (g : Y ⟶ G.left)
   (Over.homMk g rfl : Over.mk (g ≫ G.hom) ⟶ G) ^ N = 1
 
 /- English proof (translation)
-Unfold `Kill`. Prove the components needed by the constructor for the conclusion. Introduce `hk`. Set `Y' : Over (Spec (CommRingCat.of R))` to `Over.mk b`. Set `g₀ : Over.mk (Y'.hom ≫ x) ⟶ G` to `Over.homMk g hg`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hk' : g₀ ^ N = 1` using `(pow_congr hg.symm N g₀ (Over.homMk g rfl) rfl).2 hk`. Take `⟨y, hy⟩` from `(h.kernel Y' g₀).1 hk'`. Conclude with `⟨y.left, Over.w y, by simpa [g₀] using hy⟩`. Introduce and unpack `⟨y, hy1, hy2⟩`. Set `Y' : Over (Spec (CommRingCat.of R))` to `Over.mk b`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Set `g₀ : Over.mk (Y'.hom ≫ x) ⟶ G` to `Over.homMk g hg`. Establish `hk' : g₀ ^ N = 1` using `(h.kernel Y' g₀).2 ⟨Over.homMk y hy1, by simpa [g₀] using hy2⟩`. Conclude with `(pow_congr hg.symm N g₀ (Over.homMk g rfl) rfl).1 hk'`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem kernel' {R : Type} [CommRing R] [IsDomain R] {T : Type} [CommGroup T] {Γ : QFGroup R T}
     {S : Scheme.{0}} {G : Over S} [GrpObj G] {x : Spec (CommRingCat.of R) ⟶ S} {N : ℕ}
@@ -60,7 +60,7 @@ theorem kernel' {R : Type} [CommRing R] [IsDomain R] {T : Type} [CommGroup T] {�
     exact (pow_congr hg.symm N g₀ (Over.homMk g rfl) rfl).1 hk'
 
 /- English proof (translation)
-Set `Y' : Over (Spec (CommRingCat.of R))` to `Over.mk (z ≫ Γ.G.hom)`. Use `h.inj Y' (Over.homMk y h1) (Over.homMk z rfl) (by simpa using h2)` as an intermediate fact. Simplify using `using congrArg Over.Hom.left this`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem inj' {R : Type} [CommRing R] [IsDomain R] {T : Type} [CommGroup T] {Γ : QFGroup R T}
     {S : Scheme.{0}} {G : Over S} [GrpObj G] {x : Spec (CommRingCat.of R) ⟶ S} {N : ℕ}
@@ -74,23 +74,23 @@ end PositivityTheory.Xgn.TorsionGroupBaseChange
 
 open PositivityTheory.Xgn.TorsionGroupBaseChange in
 /- English proof (translation)
-Introduce `R R' _ _ _ _ _ T _ Γ Γ' S G _ x x' hx N i i' h h' a ha hpt`. Establish `hKi' : Kill G N i'` using `(kernel' h' Γ'.G.hom i' h'.isOver).2 ⟨𝟙 _, by simp, by simp⟩`. Establish `hi'x : i' ≫ G.hom = (Γ'.G.hom ≫ Spec.map (CommRingCat.ofHom (algebraMap R R'))) ≫ x`. Rewrite using `[Category.assoc, hx]`. Conclude with `h'.isOver`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨F, hF1, hF2⟩` from `(kernel' h _ i' hi'x).1 hKi'`. Use `⟨F, hF2, ?_⟩` and prove the remaining obligations. Establish `lift : ∀ {Z : Scheme.{0}} (u : Z ⟶ Γ.G.left) (v : Z ⟶ Spec (CommRingCat.of R')), u ≫ Γ.G.hom = v ≫ Spec.map (CommRingCat.ofHom (algebraMap R R')) → ∃ l : Z ⟶ Γ'.G.left, l ≫ F = u ∧ l ≫ Γ'.G.hom = v`. Introduce `Z u v huv`. Establish `hk : Kill G N (u ≫ i)` using `(kernel' h (u ≫ Γ.G.hom) (u ≫ i) (by simp only [Category.assoc, h.isOver])).2 ⟨u, rfl, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : (u ≫ i) ≫ G.hom = v ≫ x'`. Rewrite using `[Category.assoc, h.isOver, ← Category.assoc, huv, Category.assoc, hx]`. Take `⟨l, hl1, hl2⟩` from `(kernel' h' v (u ≫ i) hg).1 hk`. Use `⟨l, inj' h _ _ ?_ ?_, hl1⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hF1, ← Category.assoc, hl1, huv]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, hF2, hl2]`. Establish `uniq : ∀ {Z : Scheme.{0}} (l₁ l₂ : Z ⟶ Γ'.G.left), l₁ ≫ F = l₂ ≫ F → l₁ ≫ Γ'.G.hom = l₂ ≫ Γ'.G.hom → l₁ = l₂`. Introduce `Z l₁ l₂ e1 e2`. Use `inj' h' _ _ e2 ?_` and prove the remaining obligations. Rewrite using `[← hF2, ← Category.assoc, e1, Category.assoc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `IsPullback.of_isLimit (PullbackCone.IsLimit.mk hF1 (fun s => Classical.choose (lift s.fst s.snd s.condition)) (fun s => (Classical.choose_spec (lift s.fst s.snd s.condition)).1) (fun s => (Classical.choose_spec (lift s.fst s.snd s.condition)).2) (fun s m h1 h2 => uniq _ _ ?_ ?_))` and prove the remaining obligations. Rewrite using `[h1, (Classical.choose_spec (lift s.fst s.snd s.condition)).1]`. Rewrite using `[h2, (Classical.choose_spec (lift s.fst s.snd s.condition)).2]`. Introduce `S' u v u₀ v₀ hu hv`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `inj' h` to reduce the goal to its premises. Simplify using `only [Category.assoc, hF1, Over.w, Over.w_assoc, Over.mk_hom]`. Set `U₀ : Over.mk ((Over.mk (S'.hom ≫ Spec.map (CommRingCat.ofHom (algebraMap R R')))).hom ≫ x) ⟶ G` to `Over.homMk (u₀.left ≫ i) (by simp [h.isOver])`. Set `V₀ : Over.mk ((Over.mk (S'.hom ≫ Spec.map (CommRingCat.ofHom (algebraMap R R')))).hom ≫ x) ⟶ G` to `Over.homMk (v₀.left ≫ i) (by simp [h.isOver])`. Set `U₁ : Over.mk (S'.hom ≫ x') ⟶ G` to `Over.homMk (u.left ≫ i') (by simp [h'.isOver])`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `V₁ : Over.mk (S'.hom ≫ x') ⟶ G` to `Over.homMk (v.left ≫ i') (by simp [h'.isOver])`. Establish `e0` using `h.mul (Over.mk (S'.hom ≫ Spec.map (CommRingCat.ofHom (algebraMap R R')))) u₀ v₀ U₀ V₀ rfl rfl`. Establish `e1` using `h'.mul S' u v U₁ V₁ rfl rfl`. Establish `e2 : (U₀ * V₀).left = (U₁ * V₁).left` using `mul_congr (by simp [hx]) U₀ V₀ U₁ V₁ (by simp [U₀, U₁, hu, hF2]) (by simp [V₀, V₁, hv, hF2])`. Rewrite using `[← e0, e2, e1, Category.assoc, hF2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨FractionRing R, inferInstance, algebraMap R (FractionRing R), RingHom.id _, a, fun t => (Γ.pt t).left, fun _ _ e => e, RingHom.id_comp _, ha, fun t => ?_, fun t => ?_, fun t => ?_⟩` and prove the remaining obligations. Conclude with `Over.w (Γ.pt t)`. Simplify using the standard rewrite rules. Apply `inj' h` to reduce the goal to its premises. Simplify using `only [Category.assoc, Over.w, hF1, Over.w_assoc, Over.mk_hom]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, ha]`. Simplify using `only [Category.assoc, hF2]`. Conclude with `hpt t`.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.torsion_group_base_change : ∀ (R R' : Type) [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] [Algebra R R'] (T : Type) [CommGroup T] (Γ : QFGroup R T) (Γ' : QFGroup R' T) (S : Scheme.{0}) (G : Over S) [GrpObj G] (x : Spec (CommRingCat.of R) ⟶ S) (x' : Spec (CommRingCat.of R') ⟶ S), Spec.map (CommRingCat.ofHom (algebraMap R R')) ≫ x = x' → ∀ (N : ℕ) (i : Γ.G.left ⟶ G.left) (i' : Γ'.G.left ⟶ G.left), Γ.IsTorsionAlong G x N i → Γ'.IsTorsionAlong G x' N i' → ∀ (a : FractionRing R →+* FractionRing R'), a.comp (algebraMap R (FractionRing R)) = (algebraMap R' (FractionRing R')).comp (algebraMap R R') → (∀ t, Spec.map (CommRingCat.ofHom a) ≫ (Γ.pt t).left ≫ i = (Γ'.pt t).left ≫ i') → ∃ F : Γ'.G.left ⟶ Γ.G.left, F ≫ i = i' ∧ Γ'.IsBaseChange Γ (algebraMap R R') F := by
   intro R R' _ _ _ _ _ T _ Γ Γ' S G _ x x' hx N i i' h h' a ha hpt

@@ -7,9 +7,9 @@ namespace GroundTheory.Heights₂.Heights
 open MvPolynomial
 
 /- English proof (translation)
-Introduce `F _ n k I g g' hg hg'`. Establish `h1 : g ∣ g'` using `(hg.2 g').mp ((hg'.2 g').mpr dvd_rfl)`. Establish `h2 : g' ∣ g` using `(hg'.2 g).mp ((hg.2 g).mpr dvd_rfl)`. Take `⟨u, hu⟩` from `associated_of_dvd_dvd h1 h2`. Take `⟨c, hc, hcu⟩` from `(isUnit_iff_eq_C_of_isReduced (P := (u : MvPolynomial (Fin k × Fin n) F))).mp u.isUnit`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨c, hc.ne_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[← hu, hcu, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem ChowFormAssoc.proof : ChowFormAssoc.Statement := by
   intro F _ n k I g g' hg hg'

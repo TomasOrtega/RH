@@ -14,13 +14,13 @@ variable {T T' : F} {TT : M.R} {Zh₁ Zh₂ : Matrix (Fin (r + 1)) (Fin (r + 1))
 variable (h₁ : GHyp M g T T' TT Zh₁ Z₁ Zσ₁) (h₂ : GHyp M g T T' TT Zh₂ Z₂ Zσ₂)
 
 /- English proof (translation)
-Introduce `c l l₂ hl`. Establish `key : ∀ x, th1 hs h₁ h₂ θ x = (splitH hs h₂ (θ ((splitH hs h₁).symm (x, 0)))).1` using `fun x => rfl`. Use `set v := (splitH hs h₁).symm (mk1 hs Z₁ TT l, 0) with hv`. Establish `hv1 : splitH hs h₁ v = ((l : DD1 hs Z₁ TT), ((0 : Fin (r + 1) → M.R) : DD1 hs Zσ₁ TT))`. Rewrite using `[hv, AddEquiv.apply_symm_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hav` using `splitH_smul hs h₁ (dgO g c) v l 0 hv1`. Rewrite `hav` using `[firstCoeff_diagonal, secondCoeff_diagonal, smul_zero]`. Establish `hθv : splitH hs h₂ (θ v) = ((l₂ : DD1 hs Z₂ TT), ((0 : Fin (r + 1) → M.R) : DD1 hs Zσ₂ TT))`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← key]`. Conclude with `hl`. Rewrite using `[lin_split1 hs h₁ h₂ θ (mk1 hs Z₁ TT l)]`. Both sides reduce to the same expression. Establish `h2` using `splitH_smul hs h₂ (dgO g c) (θ v) l₂ 0 hθv`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[firstCoeff_diagonal, secondCoeff_diagonal, smul_zero]`. Establish `hs1 : (splitH hs h₁).symm (mk1 hs Z₁ TT (dgR hs c • l), 0) = dgO g c • v`. Rewrite using `[AddEquiv.symm_apply_eq, hav]`. Both sides reduce to the same expression. Rewrite using `[key, hs1, LinearEquiv.map_smul, h2]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linear_firstIsoComponent (θ : DG g Zh₁ T T' ≃ₗ[M.L.O] DG g Zh₂ T T') : OLin hs (th1 hs h₁ h₂ θ) := by
   intro c l l₂ hl
@@ -45,13 +45,13 @@ theorem linear_firstIsoComponent (θ : DG g Zh₁ T T' ≃ₗ[M.L.O] DG g Zh₂ 
   rw [key, hs1, LinearEquiv.map_smul, h2]
 
 /- English proof (translation)
-Introduce `c l l₂ hl`. Establish `key : ∀ y, th2 hs h₁ h₂ θ y = (splitH hs h₂ (θ ((splitH hs h₁).symm (0, y)))).2` using `fun y => rfl`. Use `set v := (splitH hs h₁).symm (0, mk1 hs Zσ₁ TT l) with hv`. Establish `hv1 : splitH hs h₁ v = (((0 : Fin (r + 1) → M.R) : DD1 hs Z₁ TT), (l : DD1 hs Zσ₁ TT))`. Rewrite using `[hv, AddEquiv.apply_symm_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hav` using `splitH_smul hs h₁ (dgO g c) v 0 l hv1`. Rewrite `hav` using `[firstCoeff_diagonal, secondCoeff_diagonal, smul_zero]`. Establish `hθv : splitH hs h₂ (θ v) = (((0 : Fin (r + 1) → M.R) : DD1 hs Z₂ TT), (l₂ : DD1 hs Zσ₂ TT))`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lin_split2 hs h₁ h₂ θ (mk1 hs Zσ₁ TT l)]`. Both sides reduce to the same expression. Rewrite using `[← key]`. Conclude with `hl`. Establish `h2` using `splitH_smul hs h₂ (dgO g c) (θ v) 0 l₂ hθv`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[firstCoeff_diagonal, secondCoeff_diagonal, smul_zero]`. Establish `hs1 : (splitH hs h₁).symm (0, mk1 hs Zσ₁ TT (dgR hs c • l)) = dgO g c • v`. Rewrite using `[AddEquiv.symm_apply_eq, hav]`. Both sides reduce to the same expression. Rewrite using `[key, hs1, LinearEquiv.map_smul, h2]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linear_secondIsoComponent (θ : DG g Zh₁ T T' ≃ₗ[M.L.O] DG g Zh₂ T T') : OLin hs (th2 hs h₁ h₂ θ) := by
   intro c l l₂ hl
@@ -76,11 +76,11 @@ theorem linear_secondIsoComponent (θ : DG g Zh₁ T T' ≃ₗ[M.L.O] DG g Zh₂
   rw [key, hs1, LinearEquiv.map_smul, h2]
 
 /- English proof (translation)
-Take `⟨l, w, hlw⟩` from `splitH_split hs h₁ v`. Take `⟨l₂, hl₂⟩` from `QuotientAddGroup.mk_surjective (θ₁ (l : DD1 hs Z₁ TT))`. Take `⟨w₂, hw₂⟩` from `QuotientAddGroup.mk_surjective (θ₂ (w : DD1 hs Zσ₁ TT))`. Establish `e1` using `o₁ (c1 g a) l l₂ hl₂.symm`. Establish `e2` using `o₂ (c2 g a) w w₂ hw₂.symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : splitH hs h₂ (thetaOf hs h₁ h₂ θ₁ θ₂ v) = ((l₂ : DD1 hs Z₂ TT), (w₂ : DD1 hs Zσ₂ TT))`. Simplify using `only [thetaOf, AddEquiv.trans_apply, AddEquiv.apply_symm_apply, hlw]`. Conclude with `Prod.ext hl₂.symm hw₂.symm`. Establish `hau` using `splitH_smul hs h₂ a _ l₂ w₂ hu`. Apply `(splitH hs h₂).injective` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hau]`. Simplify using `only [thetaOf, AddEquiv.trans_apply, AddEquiv.apply_symm_apply, splitH_smul hs h₁ a v l w hlw]`. Conclude with `Prod.ext e1 e2`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem thetaOf_smul (θ₁ : DD1 hs Z₁ TT ≃+ DD1 hs Z₂ TT) (θ₂ : DD1 hs Zσ₁ TT ≃+ DD1 hs Zσ₂ TT)
     (o₁ : OLin hs θ₁) (o₂ : OLin hs θ₂) (a : M.L.O) (v : DG g Zh₁ T T') :
@@ -109,7 +109,7 @@ def linOf (θ₁ : DD1 hs Z₁ TT ≃+ DD1 hs Z₂ TT) (θ₂ : DD1 hs Zσ₁ TT
   right_inv := (thetaOf hs h₁ h₂ θ₁ θ₂).apply_symm_apply
 
 /- English proof (translation)
-Use extensionality with `x`. Use `show (splitH hs h₂ (thetaOf hs h₁ h₂ θ₁ θ₂ ((splitH hs h₁).symm (x, 0)))).1 = θ₁ x`. Simplify using `only [thetaOf, AddEquiv.trans_apply, AddEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem firstIsoComponent_linearOf (θ₁ : DD1 hs Z₁ TT ≃+ DD1 hs Z₂ TT) (θ₂ : DD1 hs Zσ₁ TT ≃+ DD1 hs Zσ₂ TT)
     (o₁ : OLin hs θ₁) (o₂ : OLin hs θ₂) : th1 hs h₁ h₂ (linOf hs h₁ h₂ θ₁ θ₂ o₁ o₂) = θ₁ := by
@@ -119,7 +119,7 @@ theorem firstIsoComponent_linearOf (θ₁ : DD1 hs Z₁ TT ≃+ DD1 hs Z₂ TT) 
   rfl
 
 /- English proof (translation)
-Use extensionality with `x`. Use `show (splitH hs h₂ (thetaOf hs h₁ h₂ θ₁ θ₂ ((splitH hs h₁).symm (0, x)))).2 = θ₂ x`. Simplify using `only [thetaOf, AddEquiv.trans_apply, AddEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem secondIsoComponent_linearOf (θ₁ : DD1 hs Z₁ TT ≃+ DD1 hs Z₂ TT) (θ₂ : DD1 hs Zσ₁ TT ≃+ DD1 hs Zσ₂ TT)
     (o₁ : OLin hs θ₁) (o₂ : OLin hs θ₂) : th2 hs h₁ h₂ (linOf hs h₁ h₂ θ₁ θ₂ o₁ o₂) = θ₂ := by
@@ -129,9 +129,9 @@ theorem secondIsoComponent_linearOf (θ₁ : DD1 hs Z₁ TT ≃+ DD1 hs Z₂ TT)
   rfl
 
 /- English proof (translation)
-Introduce `F _ _ _ E _ _ _ _ M g hs r T T' TT Zh₁ Zh₂ Z₁ Z₂ Zσ₁ Zσ₂ h₁ h₂ hK`. Establish `cond : ∀ (θ₁ : DD1 hs Z₁ TT ≃+ DD1 hs Z₂ TT) (θ₂ : DD1 hs Zσ₁ TT ≃+ DD1 hs Zσ₂ TT) (o₁ : OLin hs θ₁) (o₂ : OLin hs θ₂), linOf hs h₁ h₂ θ₁ θ₂ o₁ o₂ ∈ ThetaGC M.L.O (↑M.L.cj) ((algebraMap F E) ↑g.q) ((algebraMap F E) (↑g.q)⁻¹) Zh₁ Zh₂ ((algebraMap F E) T) ((algebraMap F E) T') ↔ Ma …`. Introduce `θ₁ θ₂ o₁ o₂`. Establish `e` using `and_congr (hF F E M g hs r T T' TT Zh₁ Zh₂ Z₁ Z₂ Zσ₁ Zσ₂ h₁ h₂ θ₁ θ₂) (hG F E M g hs r T T' TT Zh₁ Zh₂ Z₁ Z₂ Zσ₁ Zσ₂ h₁ h₂ hK θ₁ θ₂ o₁ o₂)`. Conclude with `e.trans ⟨fun ⟨a, b, c⟩ => ⟨b, c, a⟩, fun ⟨b, c, a⟩ => ⟨a, b, c⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `back : ∀ θ : DG g Zh₁ T T' ≃ₗ[M.L.O] DG g Zh₂ T T', linOf hs h₁ h₂ (th1 hs h₁ h₂ θ) (th2 hs h₁ h₂ θ) (linear_firstIsoComponent hs h₁ h₂ θ) (linear_secondIsoComponent hs h₁ h₂ θ) = θ` using `fun θ => LinearEquiv.ext fun v => (theta_eq hs h₁ h₂ θ v).symm`. Use `Nat.card_congr { toFun := fun θ => ⟨(th1 hs h₁ h₂ θ.1, th2 hs h₁ h₂ θ.1), linear_firstIsoComponent hs h₁ h₂ θ.1, linear_secondIsoComponent hs h₁ h₂ θ.1, (cond _ _ (linear_firstIsoComponent hs h₁ h₂ θ.1) (linear_secondIsoComponent hs h₁ h₂ θ.1)).1 ((back θ.1).symm ▸ θ.2)⟩ invFun : …` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem stepSplit_of (hG : GamSplitP) (hF : FormSplitP) : StepSplit := by
   intro F _ _ _ E _ _ _ _ M g hs r T T' TT Zh₁ Zh₂ Z₁ Z₂ Zσ₁ Zσ₂ h₁ h₂ hK

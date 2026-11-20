@@ -20,7 +20,7 @@ def homog (d : ∀ k, ι k) (N : ℕ) (g : MvPolynomial (Σ k, ι k) ℚ) : MvPo
   ∑ m ∈ g.support, monomial m (coeff m g) * ∏ k, X ⟨k, d k⟩ ^ (N - blockDeg m k)
 
 /- English proof (translation)
-Use `le_trans ?_ (le_totalDegree hm)` and prove the remaining obligations. Rewrite using `[Finsupp.sum_fintype _ _ (fun _ ↦ rfl), Fintype.sum_sigma]`. Conclude with `Finset.single_le_sum (f := fun k ↦ ∑ i, m ⟨k, i⟩) (fun _ _ ↦ Nat.zero_le _) (Finset.mem_univ k)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blockDeg_le_totalDegree {R : Type*} [CommSemiring R] {g : MvPolynomial (Σ k, ι k) R}
     {m : (Σ k, ι k) →₀ ℕ} (hm : m ∈ g.support) (k : K) : blockDeg m k ≤ g.totalDegree := by
@@ -29,13 +29,11 @@ theorem blockDeg_le_totalDegree {R : Type*} [CommSemiring R] {g : MvPolynomial (
   exact Finset.single_le_sum (f := fun k ↦ ∑ i, m ⟨k, i⟩) (fun _ _ ↦ Nat.zero_le _) (Finset.mem_univ k)
 
 /- English proof (translation)
-Use `conv_rhs => rw [g.as_sum]`. Rewrite using `[homog, eval₂_sum, eval₂_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm ↦ ?_` and prove the remaining obligations. Rewrite using `[eval₂_mul, eval₂_monomial, eval₂_monomial, eval₂_prod]`. Simplify using `only [eval₂_pow, eval₂_X, Finsupp.prod_fintype _ _ (fun _ ↦ pow_zero _)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : ∏ p, (w p / w ⟨p.1, d p.1⟩) ^ m p = (∏ p, w p ^ m p) / ∏ k, w ⟨k, d k⟩ ^ blockDeg m k`. Simplify using `only [div_pow, Finset.prod_div_distrib, blockDeg]`. Use `congr 1`. Rewrite using `[Fintype.prod_sigma]`. Conclude with `Finset.prod_congr rfl fun k _ ↦ Finset.prod_pow_eq_pow_sum (s := Finset.univ) (f := fun i ↦ m ⟨k, i⟩) (a := w ⟨k, d k⟩)`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ∏ k, w ⟨k, d k⟩ ^ N = (∏ k, w ⟨k, d k⟩ ^ (N - blockDeg m k)) * ∏ k, w ⟨k, d k⟩ ^ blockDeg m k`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun k _ ↦ by rw [← pow_add, Nat.sub_add_cancel (hN m hm k)]`. Establish `h3 : ∏ k, w ⟨k, d k⟩ ^ blockDeg m k ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ ↦ pow_ne_zero _ (hw k)`. Rewrite using `[h1, h2]`.
-
-Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem eval₂_homog {L : Type*} [Field L] (f : ℚ →+* L) (d : ∀ k, ι k) (N : ℕ)
     (g : MvPolynomial (Σ k, ι k) ℚ) (hN : ∀ m ∈ g.support, ∀ k, blockDeg m k ≤ N)
@@ -63,15 +61,15 @@ theorem eval₂_homog {L : Type*} [Field L] (f : ℚ →+* L) (d : ∀ k, ι k) 
   field_simp
 
 /- English proof (translation)
-The claim follows from `IntermediateField.subset_adjoin _ _ ⟨p, q, h, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem ratio_mem (y : (Σ k, ι k) → Ω) {p q : Σ k, ι k} (h : p.1 = q.1) : y p / y q ∈ blockFnField y :=
   IntermediateField.subset_adjoin _ _ ⟨p, q, h, rfl⟩
 
 /- English proof (translation)
-Use `le_antisymm (IntermediateField.adjoin_le_iff.mpr ?_) (IntermediateField.adjoin_le_iff.mpr ?_)` and prove the remaining obligations. Introduce and unpack `t ⟨p, q, hpq, rfl⟩`. Establish `e : y p / y q = (y p / y ⟨p.1, d p.1⟩) / (y q / y ⟨q.1, d q.1⟩)`. Rewrite using `[hpq, div_div_div_cancel_right₀ (hd q.1)]`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `div_mem (IntermediateField.subset_adjoin _ _ ⟨p, rfl⟩) (IntermediateField.subset_adjoin _ _ ⟨q, rfl⟩)`. Introduce and unpack `t ⟨p, rfl⟩`. Conclude with `ratio_mem y rfl`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem blockFnField_eq (y : (Σ k, ι k) → Ω) (d : ∀ k, ι k) (hd : ∀ k, y ⟨k, d k⟩ ≠ 0) :
     blockFnField y =
@@ -90,9 +88,9 @@ def ratioF (y : (Σ k, ι k) → Ω) (d : ∀ k, ι k) (p : Σ k, ι k) : blockF
   ⟨y p / y ⟨p.1, d p.1⟩, ratio_mem y rfl⟩
 
 /- English proof (translation)
-Rewrite `hf` using `[mCoordIdeal, RingHom.mem_ker, mConeMap, aeval_def]`. Establish `h2` using `congrArg (MvPolynomial.eval fun k ↦ (y ⟨k, d k⟩)⁻¹) hf`. Rewrite `h2` using `[eval₂_comp_left, map_zero]`. Use `h2 using 2` and compare the differences between its conclusion and the goal. Conclude with `RingHom.ext_int _ _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `p`. Simplify using `[div_eq_mul_inv]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eval₂_ratio_eq_zero {y : (Σ k, ι k) → Ω} (d : ∀ k, ι k) {f : MRing ι} (hf : f ∈ mCoordIdeal y) :
     eval₂ (Int.castRingHom Ω) (fun p ↦ y p / y ⟨p.1, d p.1⟩) f = 0 := by
@@ -105,7 +103,7 @@ theorem eval₂_ratio_eq_zero {y : (Σ k, ι k) → Ω} (d : ∀ k, ι k) {f : M
     simp [div_eq_mul_inv]
 
 /- English proof (translation)
-Apply `(algebraMap (blockFnField y) Ω).injective` to reduce the goal to its premises. Rewrite using `[map_zero, eval₂_comp_left]`. Use `eval₂_ratio_eq_zero d hf using 2` and compare the differences between its conclusion and the goal. Conclude with `RingHom.ext_int _ _`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eval₂_ratioF_eq_zero {y : (Σ k, ι k) → Ω} (d : ∀ k, ι k) {f : MRing ι} (hf : f ∈ mCoordIdeal y) :
     eval₂ (Int.castRingHom _) (ratioF y d) f = 0 := by
@@ -119,7 +117,7 @@ def ptOf (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (φ : blockFnField y →ₐ
   fun p ↦ φ (ratioF y c p)
 
 /- English proof (translation)
-Establish `: ratioF y c ⟨k, c k⟩ = 1` using `Subtype.ext (div_self (hc k))`. Rewrite using `[ptOf, this, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ptOf_chart {y : (Σ k, ι k) → Ω} {c : ∀ k, ι k} (hc : ∀ k, y ⟨k, c k⟩ ≠ 0)
     (φ : blockFnField y →ₐ[ℚ] ℂ) (k : K) : ptOf y c φ ⟨k, c k⟩ = 1 := by
@@ -127,9 +125,9 @@ theorem ptOf_chart {y : (Σ k, ι k) → Ω} {c : ∀ k, ι k} (hc : ∀ k, y �
   rw [ptOf, this, map_one]
 
 /- English proof (translation)
-Use `⟨fun k ↦ ⟨c k, by rw [ptOf_chart hc]; exact one_ne_zero⟩, fun f hf ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[eval_map]`. Use `congrArg (φ : blockFnField y →+* ℂ) (eval₂_ratioF_eq_zero c hf)` as an intermediate fact. Rewrite `this` using `[map_zero, eval₂_comp_left]`. Use `this using 2` and compare the differences between its conclusion and the goal.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Conclude with `RingHom.ext_int _ _`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ptOf_mem {y : (Σ k, ι k) → Ω} {c : ∀ k, ι k} (hc : ∀ k, y ⟨k, c k⟩ ≠ 0)
     (φ : blockFnField y →ₐ[ℚ] ℂ) : ptOf y c φ ∈ mcPts (mCoordIdeal y) := by
@@ -142,9 +140,9 @@ theorem ptOf_mem {y : (Σ k, ι k) → Ω} {c : ∀ k, ι k} (hc : ∀ k, y ⟨k
   · rfl
 
 /- English proof (translation)
-Use `⟨fun z ↦ ⟨1, fun _ ↦ one_ne_zero, by funext p; simp⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `z z' ⟨c, hc, h⟩`. Use `⟨c⁻¹, fun k ↦ inv_ne_zero (hc k), funext fun p ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[h]`. Simplify using `[inv_mul_cancel_left₀ (hc p.1)]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce and unpack `z z' z'' ⟨c, hc, h⟩ ⟨c', hc', h'⟩`. Use `⟨c' * c, fun k ↦ mul_ne_zero (hc' k) (hc k), funext fun p ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[h', h]`. Simplify using `[mul_assoc]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem scale_equivalence (W : Ideal (MRing ι)) :
     Equivalence (fun z z' : mcPts W ↦ ∃ c : K → ℂ, (∀ k, c k ≠ 0) ∧
@@ -160,17 +158,17 @@ theorem scale_equivalence (W : Ideal (MRing ι)) :
     simp [mul_assoc]
 
 /- English proof (translation)
-Establish `hN : ∀ m ∈ g.support, ∀ k, blockDeg m k ≤ g.totalDegree` using `fun m hm k ↦ blockDeg_le_totalDegree hm k`. Establish `hG : homog d g.totalDegree g ∈ RingHom.ker (coneMapQ y)`. Rewrite using `[RingHom.mem_ker]`. Set `j` to `algebraMap (MvPolynomial K Ω) (FractionRing (MvPolynomial K Ω))`. Establish `hj : Function.Injective j` using `IsFractionRing.injective _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Apply `hj` to reduce the goal to its premises. Establish `hw : ∀ k, (j ∘ fun p : Σ k, ι k ↦ C (y p) * X p.1) ⟨k, d k⟩ ≠ 0` using `fun k ↦ (map_ne_zero_iff j hj).mpr (mul_ne_zero (C_ne_zero.mpr (hyd k)) (X_ne_zero _))`. Rewrite using `[map_zero, coneMapQ, aeval_def, eval₂_comp_left, eval₂_homog _ d _ g hN _ hw]`. Apply `mul_eq_zero_of_right` to reduce the goal to its premises. Establish `e : (fun p : Σ k, ι k ↦ (j ∘ fun p : Σ k, ι k ↦ C (y p) * X p.1) p / (j ∘ fun p : Σ k, ι k ↦ C (y p) * X p.1) ⟨p.1, d p.1⟩) = (j.comp C) ∘ fun p ↦ y p / y ⟨p.1, d p.1⟩`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `p`. Establish `hX : j (X p.1) ≠ 0` using `(map_ne_zero_iff j hj).mpr (X_ne_zero _)`. Simplify using `only [Function.comp_apply, map_mul, RingHom.coe_comp]`. Rewrite using `[mul_div_mul_right _ _ hX, ← RingHom.comp_apply, ← RingHom.comp_apply, ← RingHom.comp_apply, map_div₀]`. Rewrite using `[e, show j.comp (algebraMap ℚ (MvPolynomial K Ω)) = (j.comp C).comp (algebraMap ℚ Ω) from RingHom.ext_rat _ _, ← eval₂_comp_left, ← aeval_def, hg0, map_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hGz : aeval z (homog d g.totalDegree g) = 0`. Rewrite `hG` using `[ker_coneMapQ hP]`. Establish `hle : ReciprocityTheory.AnForm.R.extQ (mCoordIdeal y) ≤ RingHom.ker (aeval z : MvPolynomial (Σ k, ι k) ℚ →ₐ[ℚ] ℂ)`. Use `Ideal.map_le_iff_le_comap.mpr fun f hf ↦ ?_` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, ← algebraMap_int_eq, aeval_map_algebraMap, aeval_def]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hz.2 f hf` as an intermediate fact. Rewrite `this` using `[eval_map]`. Use `this using 2` and compare the differences between its conclusion and the goal. Conclude with `RingHom.ext_int _ _`. Conclude with `hle hG`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hGz` using `[aeval_def, eval₂_homog _ d _ g hN _ hd]`. Rewrite using `[aeval_def]`. Conclude with `(mul_eq_zero.mp hGz).resolve_left (Finset.prod_ne_zero_iff.mpr fun k _ ↦ pow_ne_zero _ (hd k))`.
+A detailed English derivation is pending.
 -/
 theorem aeval_pt_eq_zero {y : (Σ k, ι k) → Ω} (hP : IsArithVar (mCoordIdeal y) 1) (d : ∀ k, ι k)
     (hyd : ∀ k, y ⟨k, d k⟩ ≠ 0) {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts (mCoordIdeal y))
@@ -216,21 +214,19 @@ theorem aeval_pt_eq_zero {y : (Σ k, ι k) → Ω} (hP : IsArithVar (mCoordIdeal
   exact (mul_eq_zero.mp hGz).resolve_left (Finset.prod_ne_zero_iff.mpr fun k _ ↦ pow_ne_zero _ (hd k))
 
 /- English proof (translation)
-Establish `halg` using `isAlgebraic_blockFnField hP`. Use `choose d hd using hz.1`. Establish `hyd : ∀ k, y ⟨k, d k⟩ ≠ 0` using `fun k h ↦ hd k (by simpa using hz.2 _ (X_mem_of_eq_zero h))`. Set `ev : MvPolynomial (Σ k, ι k) ℚ →ₐ[ℚ] blockFnField y` to `aeval (ratioF y d)`. Establish `hval : ∀ g, ((ev g : blockFnField y) : Ω) = aeval (fun p ↦ y p / y ⟨p.1, d p.1⟩) g` using `fun g ↦ comp_aeval_apply (f := ratioF y d) (blockFnField y).val g`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsurj : Function.Surjective ev`. Introduce `x`. Establish `hx : (x : Ω) ∈ Algebra.adjoin ℚ (Set.range fun p ↦ y p / y ⟨p.1, d p.1⟩)`. Rewrite using `[← IntermediateField.adjoin_toSubalgebra_of_isAlgebraic, ← blockFnField_eq y d hyd]`. Conclude with `x.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `IntermediateField.isAlgebraic_iff.mp (halg.isAlgebraic (ratioF y d p))`. Rewrite `hx` using `[Algebra.adjoin_range_eq_range_aeval]`. Take `⟨g, hg⟩` from `hx`. Conclude with `⟨g, Subtype.ext ((hval g).trans hg)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hker : ∀ g ∈ RingHom.ker ev, aeval (fun p ↦ z p / z ⟨p.1, d p.1⟩) g = 0` using `fun g hg ↦ aeval_pt_eq_zero hP d hyd hz hd (by rw [← hval, RingHom.mem_ker.mp hg]; rfl)`. Set `φ : blockFnField y →ₐ[ℚ] ℂ` to `(Ideal.Quotient.liftₐ (RingHom.ker ev) (aeval fun p ↦ z p / z ⟨p.1, d p.1⟩) hker).comp (Ideal.quotientKerAlgEquivOfSurjective hsurj).symm.toAlgHom`. Establish `hφ : ∀ g, φ (ev g) = aeval (fun p ↦ z p / z ⟨p.1, d p.1⟩) g` using `fun g ↦ by`. Establish `: (Ideal.quotientKerAlgEquivOfSurjective hsurj).symm (ev g) = Ideal.Quotient.mk _ g`. Rewrite using `[AlgEquiv.symm_apply_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `(Ideal.Quotient.liftₐ (RingHom.ker ev) _ hker) ((Ideal.quotientKerAlgEquivOfSurjective hsurj).symm (ev g)) = _`. Rewrite using `[this]`. Both sides reduce to the same expression. Establish `hpt : ∀ p, ptOf y c φ p = z p / z ⟨p.1, c p.1⟩` using `fun p ↦ by`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Establish `e : ratioF y c p = ev (X p) / ev (X ⟨p.1, c p.1⟩)`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [ev, aeval_X, ratioF, IntermediateField.coe_div]`. Conclude with `(div_div_div_cancel_right₀ (hyd p.1) _ _).symm`. Rewrite using `[ptOf, e, map_div₀, hφ, hφ, aeval_X, aeval_X]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `div_div_div_cancel_right₀ (hd p.1) _ _`. Establish `hzc : ∀ k, z ⟨k, c k⟩ ≠ 0` using `fun k h ↦ by`. Use `ptOf_chart hc φ k` as an intermediate fact. Rewrite `this` using `[hpt, h, div_zero]`. Conclude with `zero_ne_one this`.
-
-Conclude with `⟨φ, funext fun p ↦ by rw [hpt, div_eq_inv_mul], hzc⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_ptOf {y : (Σ k, ι k) → Ω} (hP : IsArithVar (mCoordIdeal y) 1) {c : ∀ k, ι k}
     (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts (mCoordIdeal y)) :
@@ -279,13 +275,13 @@ theorem exists_ptOf {y : (Σ k, ι k) → Ω} (hP : IsArithVar (mCoordIdeal y) 1
   exact ⟨φ, funext fun p ↦ by rw [hpt, div_eq_inv_mul], hzc⟩
 
 /- English proof (translation)
-Use `choose c hc0 using hP.2.1.2.2`. Establish `hc : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k h ↦ hc0 k (X_mem_of_eq_zero h)`. Unfold `degC`. Use `(Nat.card_eq_of_bijective (fun φ ↦ Quot.mk _ ⟨ptOf y c φ, ptOf_mem hc φ⟩) ⟨fun φ ψ h ↦ ?_, fun w ↦ ?_⟩).symm` and prove the remaining obligations. Take `⟨s, -, hs⟩` from `(Equivalence.eqvGen_iff (scale_equivalence (mCoordIdeal y))).mp (Quot.eqvGen_exact h)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hs1 : ∀ k, s k = 1` using `fun k ↦ by`. Use `congrFun hs ⟨k, c k⟩` as an intermediate fact. Simplify using `only [ptOf_chart hc, mul_one] at this`. Conclude with `this.symm`. Establish `hpt : ptOf y c ψ = ptOf y c φ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `p`. Use `congrFun hs p` as an intermediate fact. Simplify using `only [hs1, one_mul] at this`. Conclude with `this`. Use `IntermediateField.algHom_ext_of_eq_adjoin ℚ (blockFnField_eq y c hc) ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `congrFun hpt.symm p`. Take `⟨⟨z, hz⟩, rfl⟩` from `Quot.exists_rep w`. Take `⟨φ, hφ, hzc⟩` from `exists_ptOf hP hc hz`. Conclude with `⟨φ, (Quot.sound ⟨fun k ↦ (z ⟨k, c k⟩)⁻¹, fun k ↦ inv_ne_zero (hzc k), hφ⟩).symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem degC_eq {y : (Σ k, ι k) → Ω} (hP : IsArithVar (mCoordIdeal y) 1) :
     degC (mCoordIdeal y) = Nat.card (blockFnField y →ₐ[ℚ] ℂ) := by
@@ -315,7 +311,7 @@ theorem degC_eq {y : (Σ k, ι k) → Ω} (hP : IsArithVar (mCoordIdeal y) 1) :
 end CoordCurveDegree
 
 /- English proof (translation)
-The claim follows from `fun _ _ _ _ _ _ _ _ hP ↦ CoordCurveDegree.degC_eq hP`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem CoordCurveDegree.full : CoordCurveDegree.Statement :=
   fun _ _ _ _ _ _ _ _ hP ↦ CoordCurveDegree.degC_eq hP

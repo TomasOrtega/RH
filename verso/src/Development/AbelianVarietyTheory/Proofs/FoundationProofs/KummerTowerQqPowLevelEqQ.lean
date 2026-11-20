@@ -41,94 +41,94 @@ def DualData (B C : Subalgebra (O0 p) Ω) {ι : Type} [Fintype ι] (u v : ι →
   ∑ k, u k * v k = p
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_FixI {G : Subgroup (Gal p Ω)} {x : Ω} :
     x ∈ FixI G ↔ IsInt p x ∧ ∀ g ∈ G, g x = x := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_Gn {T : Tower p Ω} {n : ℕ} {g : Gal p Ω} :
     g ∈ Gn T n ↔ g (T.ζ n) = T.ζ n ∧ g (T.qq n) = T.qq n := Iff.rfl
 
 /- English proof (translation)
-Simplify using `only [Hinf, Subgroup.mem_iInf, mem_Gn]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_Hinf {T : Tower p Ω} {g : Gal p Ω} :
     g ∈ Hinf T ↔ ∀ n, g (T.ζ n) = T.ζ n ∧ g (T.qq n) = T.qq n := by
   simp only [Hinf, Subgroup.mem_iInf, mem_Gn]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_Hfix {T : Tower p Ω} {r : Ω} {g : Gal p Ω} :
     g ∈ Hfix T r ↔ g ∈ Hinf T ∧ g r = r := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `IsIntegral.add hx hy`.
+A detailed English derivation is pending.
 -/
 theorem int_add {x y : Ω} (hx : IsInt p x) (hy : IsInt p y) : IsInt p (x + y) := IsIntegral.add hx hy
 /- English proof (translation)
-The claim follows from `IsIntegral.sub hx hy`.
+A detailed English derivation is pending.
 -/
 theorem int_sub {x y : Ω} (hx : IsInt p x) (hy : IsInt p y) : IsInt p (x - y) := IsIntegral.sub hx hy
 /- English proof (translation)
-The claim follows from `IsIntegral.mul hx hy`.
+A detailed English derivation is pending.
 -/
 theorem int_mul {x y : Ω} (hx : IsInt p x) (hy : IsInt p y) : IsInt p (x * y) := IsIntegral.mul hx hy
 /- English proof (translation)
-The claim follows from `IsIntegral.neg hx`.
+A detailed English derivation is pending.
 -/
 theorem int_neg {x : Ω} (hx : IsInt p x) : IsInt p (-x) := IsIntegral.neg hx
 /- English proof (translation)
-The claim follows from `IsIntegral.pow hx k`.
+A detailed English derivation is pending.
 -/
 theorem int_pow {x : Ω} (hx : IsInt p x) (k : ℕ) : IsInt p (x ^ k) := IsIntegral.pow hx k
 /- English proof (translation)
-The claim follows from `isIntegral_algebraMap`.
+A detailed English derivation is pending.
 -/
 theorem int_alg (c : O0 p) : IsInt p (algebraMap (O0 p) Ω c) := isIntegral_algebraMap
 /- English proof (translation)
-The claim follows from `isIntegral_zero`.
+A detailed English derivation is pending.
 -/
 theorem int_zero : IsInt p (0 : Ω) := isIntegral_zero
 /- English proof (translation)
-The claim follows from `isIntegral_one`.
+A detailed English derivation is pending.
 -/
 theorem int_one : IsInt p (1 : Ω) := isIntegral_one
 /- English proof (translation)
-Simplify using `using (int_alg (k : O0 p) : IsInt p (algebraMap (O0 p) Ω _))`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem int_nat (k : ℕ) : IsInt p (k : Ω) := by
   simpa using (int_alg (k : O0 p) : IsInt p (algebraMap (O0 p) Ω _))
 /- English proof (translation)
-Simplify using `using (int_alg (k : O0 p) : IsInt p (algebraMap (O0 p) Ω _))`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem int_int (k : ℤ) : IsInt p (k : Ω) := by
   simpa using (int_alg (k : O0 p) : IsInt p (algebraMap (O0 p) Ω _))
 /- English proof (translation)
-The claim follows from `IsIntegral.sum f h`.
+A detailed English derivation is pending.
 -/
 theorem int_sum {ι : Type*} (s : Finset ι) (f : ι → Ω) (h : ∀ i ∈ s, IsInt p (f i)) :
     IsInt p (∑ i ∈ s, f i) := IsIntegral.sum f h
 /- English proof (translation)
-The claim follows from `h ▸ hx`.
+A detailed English derivation is pending.
 -/
 theorem int_congr {x y : Ω} (hx : IsInt p x) (h : y = x) : IsInt p y := h ▸ hx
 /- English proof (translation)
-The claim follows from `IsIntegral.map (g : Ω →ₐ[O0 p] Ω) hx`.
+A detailed English derivation is pending.
 -/
 theorem int_gal (g : Gal p Ω) {x : Ω} (hx : IsInt p x) : IsInt p (g x) :=
   IsIntegral.map (g : Ω →ₐ[O0 p] Ω) hx
 /- English proof (translation)
-The claim follows from `IsIntegral.of_pow hk hx`.
+A detailed English derivation is pending.
 -/
 theorem int_of_pow {x : Ω} {k : ℕ} (hk : 0 < k) (hx : IsInt p (x ^ k)) : IsInt p x :=
   IsIntegral.of_pow hk hx
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih => rw [pow_succ', pow_mul, ← add_assoc, T.ζpow, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem zeta_pow (T : Tower p Ω) (n j : ℕ) : T.ζ (n + j) ^ (p ^ j) = T.ζ n := by
   induction j with
@@ -136,7 +136,7 @@ theorem zeta_pow (T : Tower p Ω) (n j : ℕ) : T.ζ (n + j) ^ (p ^ j) = T.ζ n 
   | succ j ih => rw [pow_succ', pow_mul, ← add_assoc, T.ζpow, ih]
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih => rw [pow_succ', pow_mul, ← add_assoc, T.qpow, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem qq_pow (T : Tower p Ω) (n j : ℕ) : T.qq (n + j) ^ (p ^ j) = T.qq n := by
   induction j with
@@ -144,49 +144,49 @@ theorem qq_pow (T : Tower p Ω) (n j : ℕ) : T.qq (n + j) ^ (p ^ j) = T.qq n :=
   | succ j ih => rw [pow_succ', pow_mul, ← add_assoc, T.qpow, ih]
 
 /- English proof (translation)
-The claim follows from `pow_pos (Fact.out : p.Prime).pos n`.
+A detailed English derivation is pending.
 -/
 theorem ppow_pos (n : ℕ) : 0 < p ^ n := pow_pos (Fact.out : p.Prime).pos n
 
 /- English proof (translation)
-The claim follows from `int_of_pow (ppow_pos n) (by rw [(T.prim n).pow_eq_one]; exact int_one)`.
+A detailed English derivation is pending.
 -/
 theorem int_zeta (T : Tower p Ω) (n : ℕ) : IsInt p (T.ζ n) :=
   int_of_pow (ppow_pos n) (by rw [(T.prim n).pow_eq_one]; exact int_one)
 
 /- English proof (translation)
-The claim follows from `(T.prim n).ne_zero (ppow_pos n).ne'`.
+A detailed English derivation is pending.
 -/
 theorem zeta_ne (T : Tower p Ω) (n : ℕ) : T.ζ n ≠ 0 := (T.prim n).ne_zero (ppow_pos n).ne'
 
 /- English proof (translation)
-The claim follows from `int_of_pow (ppow_pos n) (by rw [inv_pow, (T.prim n).pow_eq_one, inv_one]; exact int_one)`.
+A detailed English derivation is pending.
 -/
 theorem int_zeta_inv (T : Tower p Ω) (n : ℕ) : IsInt p (T.ζ n)⁻¹ :=
   int_of_pow (ppow_pos n) (by rw [inv_pow, (T.prim n).pow_eq_one, inv_one]; exact int_one)
 
 /- English proof (translation)
-Use `qq_pow T 0 n` as an intermediate fact. Rewrite `this` using `[zero_add, T.q0]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem kummerTower_qq_pow_level_eq_q (T : Tower p Ω) (n : ℕ) : T.qq n ^ (p ^ n) = algebraMap (O0 p) Ω (qO p) := by
   have := qq_pow T 0 n
   rwa [zero_add, T.q0] at this
 
 /- English proof (translation)
-Use `IsUnit.map _ (IsUnit.of_mul_eq_one (HahnSeries.single (-1 : ℤ) (1 : ℤ_[p])) ?_)` and prove the remaining obligations. Rewrite using `[HahnSeries.single_mul_single]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isUnit_qO : IsUnit (qO p) := by
   refine IsUnit.map _ (IsUnit.of_mul_eq_one (HahnSeries.single (-1 : ℤ) (1 : ℤ_[p])) ?_)
   rw [HahnSeries.single_mul_single]; simp
 
 /- English proof (translation)
-The claim follows from `int_of_pow (ppow_pos n) (by rw [kummerTower_qq_pow_level_eq_q]; exact int_alg _)`.
+A detailed English derivation is pending.
 -/
 theorem int_qq (T : Tower p Ω) (n : ℕ) : IsInt p (T.qq n) :=
   int_of_pow (ppow_pos n) (by rw [kummerTower_qq_pow_level_eq_q]; exact int_alg _)
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `kummerTower_qq_pow_level_eq_q T n`. Rewrite `h1` using `[h, zero_pow (ppow_pos (p := p) n).ne']`. Conclude with `((isUnit_qO (p := p)).map (algebraMap (O0 p) Ω)).ne_zero h1.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qq_ne (T : Tower p Ω) (n : ℕ) : T.qq n ≠ 0 := by
   intro h
@@ -195,7 +195,7 @@ theorem qq_ne (T : Tower p Ω) (n : ℕ) : T.qq n ≠ 0 := by
   exact ((isUnit_qO (p := p)).map (algebraMap (O0 p) Ω)).ne_zero h1.symm
 
 /- English proof (translation)
-Use `int_of_pow (ppow_pos (p := p) n) ?_` and prove the remaining obligations. Take `⟨w, hw⟩` from `(isUnit_qO (p := p))`. Rewrite using `[inv_pow, kummerTower_qq_pow_level_eq_q, ← hw]`. Use `int_congr (int_alg (↑w⁻¹ : O0 p)) ?_` and prove the remaining obligations. Conclude with `inv_eq_of_mul_eq_one_right (by rw [← map_mul]; simp)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem int_qq_inv (T : Tower p Ω) (n : ℕ) : IsInt p (T.qq n)⁻¹ := by
   refine int_of_pow (ppow_pos (p := p) n) ?_
@@ -205,9 +205,7 @@ theorem int_qq_inv (T : Tower p Ω) (n : ℕ) : IsInt p (T.qq n)⁻¹ := by
   exact inv_eq_of_mul_eq_one_right (by rw [← map_mul]; simp)
 
 /- English proof (translation)
-Establish `: Lev T m ≤ integralClosure (O0 p) Ω`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `x (rfl | rfl)`. Conclude with `int_zeta T m`. Conclude with `int_qq T m`.
-
-Conclude with `fun x hx => this hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem Lev_int (T : Tower p Ω) (m : ℕ) : ∀ x ∈ Lev T m, IsInt p x := by
   have : Lev T m ≤ integralClosure (O0 p) Ω := by
@@ -218,21 +216,21 @@ theorem Lev_int (T : Tower p Ω) (m : ℕ) : ∀ x ∈ Lev T m, IsInt p x := by
   exact fun x hx => this hx
 
 /- English proof (translation)
-The claim follows from `Algebra.subset_adjoin (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem zeta_mem_Lev (T : Tower p Ω) (m : ℕ) : T.ζ m ∈ Lev T m :=
   Algebra.subset_adjoin (by simp)
 
 /- English proof (translation)
-The claim follows from `Algebra.subset_adjoin (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem qq_mem_Lev (T : Tower p Ω) (m : ℕ) : T.qq m ∈ Lev T m :=
   Algebra.subset_adjoin (by simp)
 
 /- English proof (translation)
-Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_le h`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `x (rfl | rfl)`. Rewrite using `[← zeta_pow T m j]`. Conclude with `pow_mem (zeta_mem_Lev T _) _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← qq_pow T m j]`. Conclude with `pow_mem (qq_mem_Lev T _) _`.
+A detailed English derivation is pending.
 -/
 theorem Lev_mono (T : Tower p Ω) {m m' : ℕ} (h : m ≤ m') : Lev T m ≤ Lev T m' := by
   obtain ⟨j, rfl⟩ := Nat.exists_eq_add_of_le h
@@ -242,7 +240,7 @@ theorem Lev_mono (T : Tower p Ω) {m m' : ℕ} (h : m ≤ m') : Lev T m ≤ Lev 
   · rw [← qq_pow T m j]; exact pow_mem (qq_mem_Lev T _) _
 
 /- English proof (translation)
-Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `x (rfl | rfl)`. Conclude with `⟨int_zeta T m, fun g hg => (hG hg).1⟩`. Conclude with `⟨int_qq T m, fun g hg => (hG hg).2⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem Lev_le_FixI (T : Tower p Ω) (m : ℕ) {G : Subgroup (Gal p Ω)} (hG : G ≤ Gn T m) :
     Lev T m ≤ FixI G := by
@@ -252,33 +250,33 @@ theorem Lev_le_FixI (T : Tower p Ω) (m : ℕ) {G : Subgroup (Gal p Ω)} (hG : G
   · exact ⟨int_qq T m, fun g hg => (hG hg).2⟩
 
 /- English proof (translation)
-The claim follows from `iInf_le _ m`.
+A detailed English derivation is pending.
 -/
 theorem Hinf_le (T : Tower p Ω) (m : ℕ) : Hinf T ≤ Gn T m := iInf_le _ m
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun x hx y hy => h.1 x (hS hx) y (hS hy), fun x hx y hy => h.2.1 x (hS hx) y (hS hy), h.2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsDer.mono {S S' : Subalgebra (O0 p) Ω} {D : Ω → Ω} (h : IsDer S D) (hS : S' ≤ S) :
     IsDer S' D :=
   ⟨fun x hx y hy => h.1 x (hS hx) y (hS hy), fun x hx y hy => h.2.1 x (hS hx) y (hS hy), h.2.2⟩
 
 /- English proof (translation)
-Simplify using `using h.2.2 0`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IsDer.zero {S : Subalgebra (O0 p) Ω} {D : Ω → Ω} (h : IsDer S D) : IsInt p (D 0) := by
   simpa using h.2.2 0
 
 /- English proof (translation)
-Simplify using `using h.2.2 1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IsDer.one {S : Subalgebra (O0 p) Ω} {D : Ω → Ω} (h : IsDer S D) : IsInt p (D 1) := by
   simpa using h.2.2 1
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using h.zero`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Establish `h1` using `h.1 (f a) (hf a (by simp)) (∑ i ∈ s, f i) (sum_mem fun i hi => hf i (by simp [hi]))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `int_congr (int_add h1 (ih fun i hi => hf i (by simp [hi]))) (by ring)`.
+A detailed English derivation is pending.
 -/
 theorem IsDer.sum {S : Subalgebra (O0 p) Ω} {D : Ω → Ω} (h : IsDer S D) {ι : Type*}
     (s : Finset ι) (f : ι → Ω) (hf : ∀ i ∈ s, f i ∈ S) :
@@ -293,9 +291,9 @@ theorem IsDer.sum {S : Subalgebra (O0 p) Ω} {D : Ω → Ω} (h : IsDer S D) {ι
     exact int_congr (int_add h1 (ih fun i hi => hf i (by simp [hi]))) (by ring)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa using int_zero`. Consider the case `succ k ih`. Establish `h1` using `h.2.1 x hx (x ^ (k + 1)) (pow_mem hx _)`. Use `int_congr (int_add h1 (int_mul (hS x hx) ih)) ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← pow_succ']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem IsDer.pow {S : Subalgebra (O0 p) Ω} {D : Ω → Ω} (h : IsDer S D)
     (hS : ∀ x ∈ S, IsInt p x) {x : Ω} (hx : x ∈ S) (k : ℕ) :
@@ -308,7 +306,7 @@ theorem IsDer.pow {S : Subalgebra (O0 p) Ω} {D : Ω → Ω} (h : IsDer S D)
     rw [← pow_succ']; push_cast; ring
 
 /- English proof (translation)
-Break down `k with _ | k` into its components or cases. Simplify using `using int_mul (hS x hx) h.one`. Conclude with `int_congr (int_mul (hS x hx) (h.pow hS hx k)) (by ring)`.
+Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem IsDer.pow' {S : Subalgebra (O0 p) Ω} {D : Ω → Ω} (h : IsDer S D)
     (hS : ∀ x ∈ S, IsInt p x) {x : Ω} (hx : x ∈ S) (k : ℕ) :
@@ -318,7 +316,7 @@ theorem IsDer.pow' {S : Subalgebra (O0 p) Ω} {D : Ω → Ω} (h : IsDer S D)
   · exact int_congr (int_mul (hS x hx) (h.pow hS hx k)) (by ring)
 
 /- English proof (translation)
-The claim follows from `int_congr (int_add (h.2.1 _ (S.algebraMap_mem c) x hx) (int_mul (hS x hx) (h.2.2 c))) (by ring)`.
+A detailed English derivation is pending.
 -/
 theorem IsDer.alg_mul {S : Subalgebra (O0 p) Ω} {D : Ω → Ω} (h : IsDer S D)
     (hS : ∀ x ∈ S, IsInt p x) (c : O0 p) {x : Ω} (hx : x ∈ S) :
@@ -326,7 +324,7 @@ theorem IsDer.alg_mul {S : Subalgebra (O0 p) Ω} {D : Ω → Ω} (h : IsDer S D)
   int_congr (int_add (h.2.1 _ (S.algebraMap_mem c) x hx) (int_mul (hS x hx) (h.2.2 c))) (by ring)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun x hx y hy => int_congr (int_sub (h.1 x hx y hy) (h'.1 x hx y hy)) (by ring), fun x hx y hy => int_congr (int_sub (h.2.1 x hx y hy) (h'.2.1 x hx y hy)) (by ring), fun c => int_sub (h.2.2 c) (h'.2.2 c)⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsDer.sub {S : Subalgebra (O0 p) Ω} {D D' : Ω → Ω} (h : IsDer S D) (h' : IsDer S D') :
     IsDer S (fun x => D x - D' x) :=
@@ -335,7 +333,7 @@ theorem IsDer.sub {S : Subalgebra (O0 p) Ω} {D D' : Ω → Ω} (h : IsDer S D) 
    fun c => int_sub (h.2.2 c) (h'.2.2 c)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun x hx y hy => int_congr (int_mul hc (h.1 x hx y hy)) (by ring), fun x hx y hy => int_congr (int_mul hc (h.2.1 x hx y hy)) (by ring), fun a => int_mul hc (h.2.2 a)⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsDer.smul {S : Subalgebra (O0 p) Ω} {D : Ω → Ω} (h : IsDer S D) {c : Ω}
     (hc : IsInt p c) : IsDer S (fun x => c * D x) :=
@@ -344,9 +342,9 @@ theorem IsDer.smul {S : Subalgebra (O0 p) Ω} {D : Ω → Ω} (h : IsDer S D) {c
    fun a => int_mul hc (h.2.2 a)⟩
 
 /- English proof (translation)
-Use `⟨fun x hx y hy => ?_, fun x hx y hy => ?_, fun c => ?_⟩` and prove the remaining obligations. Use `int_congr (int_gal g.symm (h.1 _ (hg x hx) _ (hg y hy))) ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Use `int_congr (int_gal g.symm (h.2.1 _ (hg x hx) _ (hg y hy))) ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `int_gal g.symm ?_` and prove the remaining obligations. Rewrite using `[g.commutes]`. Conclude with `h.2.2 c`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsDer.conj {S : Subalgebra (O0 p) Ω} {D : Ω → Ω} (h : IsDer S D) (g : Gal p Ω)
     (hg : ∀ x ∈ S, g x ∈ S) : IsDer S (fun x => g.symm (D (g x))) := by
@@ -359,9 +357,9 @@ theorem IsDer.conj {S : Subalgebra (O0 p) Ω} {D : Ω → Ω} (h : IsDer S D) (g
     rw [g.commutes]; exact h.2.2 c
 
 /- English proof (translation)
-Establish `hle : Algebra.adjoin (O0 p) t ≤ S` using `Algebra.adjoin_le ht`. Introduce `x hx`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact h0 x hx`. Consider the case `algebraMap c => exact h.2.2 c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy ihx ihy`. Conclude with `int_congr (int_add (h.1 x (hle hx) y (hle hy)) (int_add ihx ihy)) (by ring)`. Consider the case `mul x y hx hy ihx ihy`. Conclude with `int_congr (int_add (h.2.1 x (hle hx) y (hle hy)) (int_add (int_mul (hS x (hle hx)) ihy) (int_mul (hS y (hle hy)) ihx))) (by ring)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem IsDer.adjoin {S : Subalgebra (O0 p) Ω} {D : Ω → Ω} (h : IsDer S D)
     (hS : ∀ x ∈ S, IsInt p x) {t : Set Ω} (ht : t ⊆ S) (h0 : ∀ x ∈ t, IsInt p (D x)) :

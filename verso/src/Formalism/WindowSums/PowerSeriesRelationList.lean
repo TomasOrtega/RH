@@ -11,31 +11,31 @@ import Formalism.WindowSums.StatementRelay
 namespace Formalism.WindowSums
 
 /- English proof (translation)
-The claim follows from `pow_mem_ideal_of_le`.
+A detailed English derivation is pending.
 -/
 theorem arc_C2Lower : PowMemIdealOfLe := pow_mem_ideal_of_le
 /- English proof (translation)
-The claim follows from `valuation_zpow_sub_one`.
+A detailed English derivation is pending.
 -/
 theorem arc_ZpowVal : ZpowVal := valuation_zpow_sub_one
 /- English proof (translation)
-The claim follows from `valProd_of valuation_zpow_sub_one`.
+A detailed English derivation is pending.
 -/
 theorem arc_ValProd : ValProd := valProd_of valuation_zpow_sub_one
 /- English proof (translation)
-The claim follows from `killerVal_of valuation_zpow_sub_one`.
+A detailed English derivation is pending.
 -/
 theorem arc_KillerVal : KillerVal := killerVal_of valuation_zpow_sub_one
 /- English proof (translation)
-The claim follows from `annihilatorPoly_kills`.
+A detailed English derivation is pending.
 -/
 theorem arc_KillerKills : KillerKills := annihilatorPoly_kills
 /- English proof (translation)
-The claim follows from `sum_padicValInt_le`.
+A detailed English derivation is pending.
 -/
 theorem arc_WindowSum : WindowSum := sum_padicValInt_le
 /- English proof (translation)
-The claim follows from `lagrange_annihilation`.
+A detailed English derivation is pending.
 -/
 theorem arc_Lagrange : Lagrange := lagrange_annihilation
 

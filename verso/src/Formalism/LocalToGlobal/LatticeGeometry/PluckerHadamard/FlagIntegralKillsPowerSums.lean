@@ -274,7 +274,7 @@ def LowerBoundOnShimura : Prop :=
 end Assembly
 
 /- English proof (translation)
-Establish `h` using `P.three_q_le i hi`. Establish `hm` using `D.R.two_le_m`. Rewrite using `[hN, hj]`. Unfold `Ranks.sigW Ranks.r at *`. Simplify using `only at *`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
 Use linear arithmetic over natural numbers and integers.
 -/

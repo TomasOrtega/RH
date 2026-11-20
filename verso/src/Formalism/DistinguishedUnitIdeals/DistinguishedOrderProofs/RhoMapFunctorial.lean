@@ -17,7 +17,7 @@ section basic
 variable {O : Type} [CommRing O] {V : Type} [AddCommGroup V] [Module (PowerSeries O) V]
 
 /- English proof (translation)
-Use `show v ∈ S.map (LinearMap.lsmul (PowerSeries O) V a) ↔ _`. Rewrite using `[Submodule.mem_map]`. Simplify using `only [LinearMap.lsmul_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_sm {a : PowerSeries O} {S : Submodule (PowerSeries O) V} {v : V} :
     v ∈ sm a S ↔ ∃ u ∈ S, a • u = v := by
@@ -26,14 +26,14 @@ theorem mem_sm {a : PowerSeries O} {S : Submodule (PowerSeries O) V} {v : V} :
   simp only [LinearMap.lsmul_apply]
 
 /- English proof (translation)
-The claim follows from `mem_sm.2 ⟨u, hu, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem smul_mem_sm (a : PowerSeries O) {S : Submodule (PowerSeries O) V} {u : V} (hu : u ∈ S) :
     a • u ∈ sm a S :=
   mem_sm.2 ⟨u, hu, rfl⟩
 
 /- English proof (translation)
-Introduce `v hv`. Take `⟨u, hu, rfl⟩` from `mem_sm.1 hv`. Conclude with `S.smul_mem a hu`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sm_le (a : PowerSeries O) (S : Submodule (PowerSeries O) V) : sm a S ≤ S := by
   intro v hv
@@ -41,7 +41,7 @@ theorem sm_le (a : PowerSeries O) (S : Submodule (PowerSeries O) V) : sm a S ≤
   exact S.smul_mem a hu
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 h`. Conclude with `mem_sm.2 ⟨c • u, S.smul_mem c hu, by rw [smul_smul, mul_comm]⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sm_of_span {a b : PowerSeries O} (h : b ∈ Ideal.span {a})
     {S : Submodule (PowerSeries O) V} {u : V} (hu : u ∈ S) : b • u ∈ sm a S := by
@@ -49,7 +49,7 @@ theorem sm_of_span {a b : PowerSeries O} (h : b ∈ Ideal.span {a})
   exact mem_sm.2 ⟨c • u, S.smul_mem c hu, by rw [smul_smul, mul_comm]⟩
 
 /- English proof (translation)
-Use `first`. Consider the case `rw [show (C m : PowerSeries O) = m • (1 : PowerSeries O) from (by rw [PowerSeries.smul_eq_C_mul, mul_one]), map_smul, map_one]`. Consider the case `exact f.commutes m`. Consider the case `simpa using f.commutes m`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem alg_C (f : PowerSeries O →ₐ[O] PowerSeries O) (m : O) : f (C m) = C m := by
   first
@@ -59,15 +59,15 @@ theorem alg_C (f : PowerSeries O →ₐ[O] PowerSeries O) (m : O) : f (C m) = C 
     | simpa using f.commutes m
 
 /- English proof (translation)
-The claim follows from `Function.iterate_fixed (alg_C f m) k`.
+A detailed English derivation is pending.
 -/
 theorem it_C (f : PowerSeries O →ₐ[O] PowerSeries O) (k : ℕ) (m : O) : (⇑f)^[k] (C m) = C m :=
   Function.iterate_fixed (alg_C f m) k
 
 /- English proof (translation)
-Use `first`. Consider the case `exact iterate_map_pow f k a M`. Consider the case `(induction k generalizing a with`. Consider the case `zero => rfl`. Consider the case `succ k ih`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.iterate_succ_apply, Function.iterate_succ_apply, map_pow, ih])`.
+A detailed English derivation is pending.
 -/
 theorem it_pow (f : PowerSeries O →ₐ[O] PowerSeries O) (k : ℕ) (a : PowerSeries O) (M : ℕ) :
     (⇑f)^[k] (a ^ M) = ((⇑f)^[k] a) ^ M := by
@@ -79,7 +79,7 @@ theorem it_pow (f : PowerSeries O →ₐ[O] PowerSeries O) (k : ℕ) (a : PowerS
           rw [Function.iterate_succ_apply, Function.iterate_succ_apply, map_pow, ih])
 
 /- English proof (translation)
-Simplify using `only [Base.lc, map_pow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lc_pow (B : Base O) (K : ℕ) : B.lc ^ K = C ((B.ℓ : O) ^ K) := by
   simp only [Base.lc, map_pow]
@@ -102,7 +102,7 @@ Both sides reduce to the same expression.
 private theorem phiIt_zero_lemma_2 (i : ZMod n) (v : V) : L.phiIt i 0 v = v := rfl
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih => rw [phiIt_succ_lemma, ih, map_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem phiIt_zero (i : ZMod n) (k : ℕ) : L.phiIt i k 0 = 0 := by
   induction k with
@@ -110,7 +110,7 @@ theorem phiIt_zero (i : ZMod n) (k : ℕ) : L.phiIt i k 0 = 0 := by
   | succ k ih => rw [phiIt_succ_lemma, ih, map_zero]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih => simp only [phiIt_succ_lemma, ih, map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem phiIt_add (i : ZMod n) (k : ℕ) (u v : V) :
     L.phiIt i k (u + v) = L.phiIt i k u + L.phiIt i k v := by
@@ -119,7 +119,7 @@ theorem phiIt_add (i : ZMod n) (k : ℕ) (u v : V) :
   | succ k ih => simp only [phiIt_succ_lemma, ih, map_add]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih => simp only [phiIt_succ_lemma, ih, map_sub]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem phiIt_sub (i : ZMod n) (k : ℕ) (u v : V) :
     L.phiIt i k (u - v) = L.phiIt i k u - L.phiIt i k v := by
@@ -128,7 +128,7 @@ theorem phiIt_sub (i : ZMod n) (k : ℕ) (u v : V) :
   | succ k ih => simp only [phiIt_succ_lemma, ih, map_sub]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih => simp only [phiIt_succ_lemma, ih, L.φ_semi, Function.iterate_succ_apply']`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem phiIt_smul (i : ZMod n) (k : ℕ) (a : PowerSeries O) (v : V) :
     L.phiIt i k (a • v) = ((⇑B.φ)^[k] a) • L.phiIt i k v := by
@@ -137,41 +137,41 @@ theorem phiIt_smul (i : ZMod n) (k : ℕ) (a : PowerSeries O) (v : V) :
   | succ k ih => simp only [phiIt_succ_lemma, ih, L.φ_semi, Function.iterate_succ_apply']
 
 /- English proof (translation)
-Rewrite using `[phiIt_smul, it_C]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem phiIt_C (i : ZMod n) (k : ℕ) (m : O) (v : V) :
     L.phiIt i k (C m • v) = C m • L.phiIt i k v := by
   rw [phiIt_smul, it_C]
 
 /- English proof (translation)
-Rewrite using `[lc_pow, phiIt_C]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem phiIt_lc (i : ZMod n) (k K : ℕ) (v : V) :
     L.phiIt i k (B.lc ^ K • v) = B.lc ^ K • L.phiIt i k v := by
   rw [lc_pow, phiIt_C]
 
 /- English proof (translation)
-Rewrite using `[L.γ_semi, alg_C]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem γ_C (i : ZMod n) (m : O) (v : V) : L.γ i (C m • v) = C m • L.γ i v := by
   rw [L.γ_semi, alg_C]
 
 /- English proof (translation)
-Rewrite using `[L.φ_semi, alg_C]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem φ_C (i : ZMod n) (m : O) (v : V) : L.φ i (C m • v) = C m • L.φ i v := by
   rw [L.φ_semi, alg_C]
 
 /- English proof (translation)
-Rewrite using `[lc_pow, γ_C]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem γ_lc (i : ZMod n) (K : ℕ) (v : V) : L.γ i (B.lc ^ K • v) = B.lc ^ K • L.γ i v := by
   rw [lc_pow, γ_C]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp only [phiIt_zero_lemma_2, Nat.cast_zero, add_zero]`. Consider the case `succ k ih`. Rewrite using `[phiIt_succ_lemma, phiIt_succ_lemma, ← L.comm]`. Establish `hk : i + ((k + 1 : ℕ) : ZMod n) - 1 = i + (k : ZMod n)` using `by push_cast; ring`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hk, ih]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem γ_phiIt (i : ZMod n) (k : ℕ) (v : V) :
     L.γ (i + (k : ZMod n)) (L.phiIt i k v) = L.phiIt i k (L.γ i v) := by
@@ -183,14 +183,14 @@ theorem γ_phiIt (i : ZMod n) (k : ℕ) (v : V) :
     rw [hk, ih]
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span (Set.mem_image_of_mem (L.phiIt i k) hv)`.
+A detailed English derivation is pending.
 -/
 theorem phiIt_mem_pull {i : ZMod n} (k : ℕ) {v : V} (hv : v ∈ L.N i) :
     L.phiIt i k v ∈ L.pull i k :=
   Submodule.subset_span (Set.mem_image_of_mem (L.phiIt i k) hv)
 
 /- English proof (translation)
-Take `⟨u, hu, rfl⟩` from `mem_sm.1 hv`. Rewrite using `[phiIt_smul]`. Conclude with `smul_mem_sm _ (phiIt_mem_pull L k hu)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiIt_sm {i : ZMod n} (k : ℕ) {a : PowerSeries O} {v : V} (hv : v ∈ sm a (L.N i)) :
     L.phiIt i k v ∈ sm ((⇑B.φ)^[k] a) (L.pull i k) := by
@@ -199,7 +199,7 @@ theorem phiIt_sm {i : ZMod n} (k : ℕ) {a : PowerSeries O} {v : V} (hv : v ∈ 
   exact smul_mem_sm _ (phiIt_mem_pull L k hu)
 
 /- English proof (translation)
-Establish `h` using `(L.N i).add_mem (sm_le X (L.N i) (h1 i v hv)) hv`. Rewrite `h` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem γ_N (h1 : ∀ i, ∀ v ∈ L.N i, L.γ i v - v ∈ sm X (L.N i)) {i : ZMod n} {v : V}
     (hv : v ∈ L.N i) : L.γ i v ∈ L.N i := by
@@ -207,13 +207,9 @@ theorem γ_N (h1 : ∀ i, ∀ v ∈ L.N i, L.γ i v - v ∈ sm X (L.N i)) {i : Z
   rwa [sub_add_cancel] at h
 
 /- English proof (translation)
-Set `P : Submodule (PowerSeries O) V` to `{ carrier := {x | L.γ (i + (k : ZMod n)) x ∈ L.pull i k} add_mem' := fun {x y} hx hy => by show L.γ (i + (k : ZMod n)) (x + y) ∈ L.pull i k`. Rewrite using `[map_add]`. Conclude with `add_mem hx hy`. Use the proof step `zero_mem' := by show L.γ (i + (k : ZMod n)) 0 ∈ L.pull i k`. Rewrite using `[map_zero]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `zero_mem _`. Use the proof step `smul_mem' := fun a {x} hx => by show L.γ (i + (k : ZMod n)) (a • x) ∈ L.pull i k`. Rewrite using `[L.γ_semi]`. Conclude with `Submodule.smul_mem _ _ hx }`. Establish `hle : L.pull i k ≤ P`.
-
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Use `show L.γ (i + (k : ZMod n)) (L.phiIt i k u) ∈ L.pull i k`. Rewrite using `[γ_phiIt]`. Conclude with `phiIt_mem_pull L k (γ_N L h1 hu)`.
-
-Conclude with `hle hv`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem γ_pull (h1 : ∀ i, ∀ v ∈ L.N i, L.γ i v - v ∈ sm X (L.N i)) {i : ZMod n} {k : ℕ} {v : V}
     (hv : v ∈ L.pull i k) : L.γ (i + (k : ZMod n)) v ∈ L.pull i k := by
@@ -240,7 +236,7 @@ theorem γ_pull (h1 : ∀ i, ∀ v ∈ L.N i, L.γ i v - v ∈ sm X (L.N i)) {i 
   exact hle hv
 
 /- English proof (translation)
-Take `⟨u, hu, rfl⟩` from `mem_sm.1 hv`. Rewrite using `[L.γ_semi]`. Conclude with `sm_of_span ha (hS u hu)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem γ_sm {a : PowerSeries O} (ha : B.γ a ∈ Ideal.span {a}) {i : ZMod n}
     {S : Submodule (PowerSeries O) V} (hS : ∀ v ∈ S, L.γ i v ∈ S) {v : V} (hv : v ∈ sm a S) :
@@ -250,7 +246,7 @@ theorem γ_sm {a : PowerSeries O} (ha : B.γ a ∈ Ideal.span {a}) {i : ZMod n}
   exact sm_of_span ha (hS u hu)
 
 /- English proof (translation)
-Rewrite using `[map_pow]`. Conclude with `Ideal.mem_span_singleton.2 (pow_dvd_pow_of_dvd (Ideal.mem_span_singleton.1 ha) M)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem γ_pow_span {a : PowerSeries O} (ha : B.γ a ∈ Ideal.span {a}) (M : ℕ) :
     B.γ (a ^ M) ∈ Ideal.span {a ^ M} := by
@@ -258,7 +254,7 @@ theorem γ_pow_span {a : PowerSeries O} (ha : B.γ a ∈ Ideal.span {a}) (M : �
   exact Ideal.mem_span_singleton.2 (pow_dvd_pow_of_dvd (Ideal.mem_span_singleton.1 ha) M)
 
 /- English proof (translation)
-Take `⟨u, hu, rfl⟩` from `mem_sm.1 hv`. Rewrite using `[phiIt_smul, it_pow]`. Conclude with `sm_of_span h3 (phiIt_mem_pull L j hu)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiIt_XM {j M g : ℕ} (h3 : ((⇑B.φ)^[j] X) ^ M ∈ Ideal.span {B.ff j M g}) {c : ZMod n}
     {v : V} (hv : v ∈ sm (X ^ M) (L.N c)) : L.phiIt c j v ∈ sm (B.ff j M g) (L.pull c j) := by
@@ -267,9 +263,9 @@ theorem phiIt_XM {j M g : ℕ} (h3 : ((⇑B.φ)^[j] X) ^ M ∈ Ideal.span {B.ff 
   exact sm_of_span h3 (phiIt_mem_pull L j hu)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [Lat.dγ]`. Distinguish the cases in `h : i = k`. Substitute `h` using the available equality. Simplify using `only [Pi.single_eq_same]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.single_eq_of_ne h, map_zero, sub_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dγ_single (k : ZMod n) (r : V) :
     L.dγ (Pi.single k r) = Pi.single k (L.γ k r - r) := by
@@ -281,7 +277,7 @@ theorem dγ_single (k : ZMod n) (r : V) :
   · simp only [Pi.single_eq_of_ne h, map_zero, sub_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [Lat.dφ, Lat.dγ, map_sub, L.comm]`. Normalize the expressions using the abelian group laws.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem dφ_dγ (m : ZMod n → V) : L.dφ (L.dγ m) = L.dγ (L.dφ m) := by
   funext i
@@ -289,7 +285,7 @@ theorem dφ_dγ (m : ZMod n → V) : L.dφ (L.dγ m) = L.dγ (L.dφ m) := by
   abel
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [Lat.dγ, map_sub, Pi.sub_apply]`. Normalize the expressions using the abelian group laws.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem dγ_sub (a b : ZMod n → V) : L.dγ (a - b) = L.dγ a - L.dγ b := by
   funext i
@@ -297,7 +293,7 @@ theorem dγ_sub (a b : ZMod n → V) : L.dγ (a - b) = L.dγ a - L.dγ b := by
   abel
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [Lat.dφ, map_sub, Pi.sub_apply]`. Normalize the expressions using the abelian group laws.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem dφ_sub (a b : ZMod n → V) : L.dφ (a - b) = L.dφ a - L.dφ b := by
   funext i
@@ -305,14 +301,14 @@ theorem dφ_sub (a b : ZMod n → V) : L.dφ (a - b) = L.dφ a - L.dφ b := by
   abel
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [Lat.dγ, Pi.smul_apply, γ_C, smul_sub]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem dγ_C (m : O) (a : ZMod n → V) : L.dγ (C m • a) = C m • L.dγ a := by
   funext i
   simp only [Lat.dγ, Pi.smul_apply, γ_C, smul_sub]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [Lat.dφ, Pi.smul_apply, φ_C, smul_sub]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem dφ_C (m : O) (a : ZMod n → V) : L.dφ (C m • a) = C m • L.dφ a := by
   funext i
@@ -321,11 +317,9 @@ theorem dφ_C (m : O) (a : ZMod n → V) : L.dφ (C m • a) = C m • L.dφ a :
 variable {L}
 
 /- English proof (translation)
-Take `⟨hp₁, K₁, v₁, hv₁, hg₁, ht₁⟩` from `h₁`. Take `⟨hp₂, K₂, v₂, hv₂, hg₂, ht₂⟩` from `h₂`. Use `⟨Submodule.sub_mem _ hp₁ hp₂, K₁ + K₂, B.lc ^ K₂ • v₁ - B.lc ^ K₁ • v₂, Submodule.sub_mem _ (Submodule.smul_mem _ _ hv₁) (Submodule.smul_mem _ _ hv₂), ?_, ?_⟩` and prove the remaining obligations. Establish `e : L.γ c (B.lc ^ K₂ • v₁ - B.lc ^ K₁ • v₂) - (B.lc ^ K₂ • v₁ - B.lc ^ K₁ • v₂) - B.lc ^ (K₁ + K₂) • (z₁ - z₂) = B.lc ^ K₂ • (L.γ c v₁ - v₁ - B.lc ^ K₁ • z₁) - B.lc ^ K₁ • (L.γ c v₂ - v₂ - B.lc ^ K₂ • z₂)`. Rewrite using `[map_sub, γ_lc, γ_lc, pow_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `modx`. Rewrite using `[e]`. Conclude with `Submodule.sub_mem _ (Submodule.smul_mem _ _ hg₁) (Submodule.smul_mem _ _ hg₂)`. Establish `e : B.lc ^ (K₁ + K₂) • (τ₁ - τ₂) - B.lc ^ sig • L.phiIt c j (B.lc ^ K₂ • v₁ - B.lc ^ K₁ • v₂) = B.lc ^ K₂ • (B.lc ^ K₁ • τ₁ - B.lc ^ sig • L.phiIt c j v₁) - B.lc ^ K₁ • (B.lc ^ K₂ • τ₂ - B.lc ^ sig • L.phiIt c j v₂)`. Rewrite using `[phiIt_sub, phiIt_lc, phiIt_lc, pow_add]`.
-
-Use `modx`. Rewrite using `[e]`. Conclude with `Submodule.sub_mem _ (Submodule.smul_mem _ _ ht₁) (Submodule.smul_mem _ _ ht₂)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTr_sub {c : ZMod n} {j M g sig : ℕ} {z₁ z₂ τ₁ τ₂ : V}
     (h₁ : L.IsTr c j M g sig z₁ τ₁) (h₂ : L.IsTr c j M g sig z₂ τ₂) :
@@ -352,11 +346,9 @@ theorem isTr_sub {c : ZMod n} {j M g sig : ℕ} {z₁ z₂ τ₁ τ₂ : V}
     exact Submodule.sub_mem _ (Submodule.smul_mem _ _ ht₁) (Submodule.smul_mem _ _ ht₂)
 
 /- English proof (translation)
-Take `⟨hτ, K, v, hv, hz, hf⟩` from `h`. Use `⟨Submodule.smul_mem _ _ hτ, K, C m • v, Submodule.smul_mem _ _ hv, ?_, ?_⟩` and prove the remaining obligations. Establish `e : (L.γ c (C m • v) - C m • v) - B.lc ^ K • (C m • z) = C m • ((L.γ c v - v) - B.lc ^ K • z)`. Rewrite using `[γ_C]`. Use `modx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ hz`. Establish `e : B.lc ^ K • (C m • τ) - B.lc ^ sig • L.phiIt c j (C m • v) = C m • (B.lc ^ K • τ - B.lc ^ sig • L.phiIt c j v)`. Rewrite using `[phiIt_C]`. Use `modx`.
-
-Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ hf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTr_C {c : ZMod n} {j M g sig : ℕ} {z τ : V} (m : O)
     (h : L.IsTr c j M g sig z τ) : L.IsTr c j M g sig (C m • z) (C m • τ) := by
@@ -376,7 +368,7 @@ theorem isTr_C {c : ZMod n} {j M g sig : ℕ} {z τ : V} (m : O)
     exact Submodule.smul_mem _ _ hf
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨Submodule.smul_mem _ _ (phiIt_mem_pull _ j (sm_le X _ hu)), 0, u, hu, ?_, ?_⟩ <;>`. Simplify using `only [pow_zero, one_smul, sub_self, zero_mem]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem isTr_self {c : ZMod n} (j M g sig : ℕ) {u : V} (hu : u ∈ sm X (L.N c)) :
     L.IsTr c j M g sig (L.γ c u - u) (B.lc ^ sig • L.phiIt c j u) := by
@@ -384,11 +376,9 @@ theorem isTr_self {c : ZMod n} (j M g sig : ℕ) {u : V} (hu : u ∈ sm X (L.N c
     simp only [pow_zero, one_smul, sub_self, zero_mem]
 
 /- English proof (translation)
-Take `⟨hτ, K, v, hv, hz, hf⟩` from `h`. Rewrite `hz` using `[smul_zero, sub_zero]`. Take `⟨K', hK'⟩` from `h6 v hv hz`. Establish `h1 : L.phiIt c j (B.lc ^ K' • v) ∈ sm (B.ff j M g) (L.pull c j)` using `phiIt_XM L h3 hK'`. Rewrite `h1` using `[phiIt_lc]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `h7 (K' + K) τ hτ ?_` and prove the remaining obligations. Establish `e : B.lc ^ (K' + K) • τ = B.lc ^ K' • (B.lc ^ K • τ - B.lc ^ sig • L.phiIt c j v) + B.lc ^ sig • (B.lc ^ K' • L.phiIt c j v)`. Rewrite using `[pow_add]`. Use `modx`. Rewrite using `[e]`.
-
-Conclude with `add_mem (Submodule.smul_mem _ _ hf) (Submodule.smul_mem _ _ h1)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTr_zero {c : ZMod n} {j M g sig : ℕ} {τ : V}
     (h3 : ((⇑B.φ)^[j] X) ^ M ∈ Ideal.span {B.ff j M g})
@@ -412,11 +402,11 @@ theorem isTr_zero {c : ZMod n} {j M g sig : ℕ} {τ : V}
   exact add_mem (Submodule.smul_mem _ _ hf) (Submodule.smul_mem _ _ h1)
 
 /- English proof (translation)
-Take `⟨hτ, K, v, hv, hz, hf⟩` from `h`. Establish `hw' : L.γ c w - w ∈ sm X (L.N c)` using `hw`. Establish `e1 : L.γ (c + (j : ZMod n)) (B.lc ^ sig • L.phiIt c j w - τ) - (B.lc ^ sig • L.phiIt c j w - τ) = B.lc ^ sig • L.phiIt c j (L.γ c w - w) - (L.γ (c + (j : ZMod n)) τ - τ)`. Simplify using `only [map_sub, γ_lc, γ_phiIt, phiIt_sub]`. Use `modx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Establish `hP : B.lc ^ sig • L.phiIt c j (L.γ c w - w) - (L.γ (c + (j : ZMod n)) τ - τ) ∈ L.pull c j` using `sub_mem (Submodule.smul_mem _ _ (phiIt_mem_pull L j (sm_le X _ hw'))) (sub_mem (γ_pull L h1 hτ) hτ)`. Use `h7 K _ hP ?_` and prove the remaining obligations. Establish `hA : L.γ (c + (j : ZMod n)) (B.lc ^ K • τ - B.lc ^ sig • L.phiIt c j v) ∈ sm (B.ff j M g) (L.pull c j)` using `γ_sm L hB.2.1 (fun x hx => γ_pull L h1 hx) hf`. Establish `hZ` using `phiIt_XM L hB.2.2 hz`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : B.lc ^ K • (B.lc ^ sig • L.phiIt c j (L.γ c w - w) - (L.γ (c + (j : ZMod n)) τ - τ)) = -(B.lc ^ sig • L.phiIt c j (L.γ c v - v - B.lc ^ K • (L.γ c w - w))) - (L.γ (c + (j : ZMod n)) (B.lc ^ K • τ - B.lc ^ sig • L.phiIt c j v) - (B.lc ^ K • τ - B.lc ^ sig • L.phiIt c j v))`. Simplify using `only [phiIt_sub, phiIt_lc, map_sub, γ_lc, γ_phiIt]`. Use `modx`. Rewrite using `[e2]`. Conclude with `sub_mem (neg_mem (Submodule.smul_mem _ _ hZ)) (sub_mem hA hf)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem γR_mem {c : ZMod n} {j M g sig : ℕ} {w τ : V} (hB : B.Good j M g)
     (h1 : ∀ i, ∀ v ∈ L.N i, L.γ i v - v ∈ sm X (L.N i))
@@ -453,11 +443,11 @@ theorem γR_mem {c : ZMod n} {j M g sig : ℕ} {w τ : V} (hB : B.Good j M g)
   exact sub_mem (neg_mem (Submodule.smul_mem _ _ hZ)) (sub_mem hA hf)
 
 /- English proof (translation)
-Take `⟨m, ⟨hm, hmy⟩, -⟩` from `h3 y hy`. Use `⟨m, hmy.symm, ?_⟩` and prove the remaining obligations. Establish `hγ : ∀ i, L.dγ m i ∈ sm (X ^ M) (L.N i)`. Introduce `i`. Use `show L.γ i (m i) - m i ∈ _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `sub_mem (γ_sm L (γ_pow_span hX M) (fun v hv => γ_N L h1 hv) (hm i)) (hm i)`. Establish `hc' : L.dγ y = L.dφ z` using `hc`. Establish `h0 : ∀ i, (0 : ZMod n → V) i ∈ sm (X ^ M) (L.N i)` using `fun i => zero_mem _`. Take `⟨u, -, hu⟩` from `h3 0 h0`. Establish `e1 : z - L.dγ m = u` using `hu _ ⟨fun i => sub_mem (hz i) (hγ i), by rw [dφ_sub, dφ_dγ, hmy, hc', sub_self]⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2 : (0 : ZMod n → V) = u` using `hu _ ⟨h0, by funext i; simp only [Lat.dφ, Pi.zero_apply, map_zero, sub_zero]⟩`. Rewrite `e1` using `[← e2, sub_eq_zero]`. Conclude with `e1`.
+A detailed English derivation is pending.
 -/
 theorem cobound_of_small {M : ℕ} (hX : B.γ X ∈ Ideal.span {(X : PowerSeries O)})
     (h1 : ∀ i, ∀ v ∈ L.N i, L.γ i v - v ∈ sm X (L.N i))
@@ -490,7 +480,7 @@ variable {O : Type} [CommRing O] {B : Base O} {n : ℕ} {V V' : Type} [AddCommGr
   {L : Lat B n V} {L' : Lat B n V'} (h : LatHom L L')
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih => rw [phiIt_succ_lemma, phiIt_succ_lemma, h.φ_comm, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem hom_phiIt (i : ZMod n) (k : ℕ) (v : V) : h.f (L.phiIt i k v) = L'.phiIt i k (h.f v) := by
   induction k with
@@ -498,9 +488,7 @@ theorem hom_phiIt (i : ZMod n) (k : ℕ) (v : V) : h.f (L.phiIt i k v) = L'.phiI
   | succ k ih => rw [phiIt_succ_lemma, phiIt_succ_lemma, h.φ_comm, ih]
 
 /- English proof (translation)
-Establish `hle : L.pull i k ≤ (L'.pull i k).comap h.f`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Use `show h.f (L.phiIt i k u) ∈ L'.pull i k`. Rewrite using `[hom_phiIt]`.
-
-Conclude with `phiIt_mem_pull L' k (h.map_N i u hu)`. Conclude with `hle hv`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hom_pull {i : ZMod n} {k : ℕ} {v : V} (hv : v ∈ L.pull i k) : h.f v ∈ L'.pull i k := by
   have hle : L.pull i k ≤ (L'.pull i k).comap h.f := by
@@ -512,7 +500,7 @@ theorem hom_pull {i : ZMod n} {k : ℕ} {v : V} (hv : v ∈ L.pull i k) : h.f v 
   exact hle hv
 
 /- English proof (translation)
-Take `⟨u, hu, rfl⟩` from `mem_sm.1 hv`. Rewrite using `[map_smul]`. Conclude with `smul_mem_sm a (hS u hu)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hom_sm {a : PowerSeries O} {S : Submodule (PowerSeries O) V}
     {S' : Submodule (PowerSeries O) V'} (hS : ∀ v ∈ S, h.f v ∈ S') {v : V} (hv : v ∈ sm a S) :
@@ -522,9 +510,9 @@ theorem hom_sm {a : PowerSeries O} {S : Submodule (PowerSeries O) V}
   exact smul_mem_sm a (hS u hu)
 
 /- English proof (translation)
-Take `⟨hτ, K, v, hv, hz, hf⟩` from `ht`. Use `⟨hom_pull h hτ, K, h.f v, hom_sm h (fun u hu => h.map_N c u hu) hv, ?_, ?_⟩` and prove the remaining obligations. Use `hom_sm h (fun u hu => h.map_N c u hu) hz` as an intermediate fact. Simplify `this` using `only [map_sub, map_smul, h.γ_comm]`. Use `hom_sm h (fun u hu => hom_pull h hu) hf` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `only [map_sub, map_smul, hom_phiIt]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hom_isTr {c : ZMod n} {j M g sig : ℕ} {z τ : V} (ht : L.IsTr c j M g sig z τ) :
     L'.IsTr c j M g sig (h.f z) (h.f τ) := by
@@ -542,13 +530,13 @@ end IdempotentNormalFormsRhoFacts
 open IdempotentNormalFormsRhoFacts
 
 /- English proof (translation)
-Unfold `RhoFun`. Introduce `O _ B n _ j M g sig V V' _ _ _ _ L L' h c w y z hr`. Take `⟨τ, hτ, hy, hc, hz⟩` from `hr`. Use `⟨h.f τ, ?_, ?_, ?_, fun i => hom_sm h (fun u hu => h.map_N i u hu) (hz i)⟩` and prove the remaining obligations. Use `hom_isTr h hτ` as an intermediate fact.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `this` using `only [map_sub, h.γ_comm]`. Use function extensionality and compare the values at `i`. Rewrite using `[hy]`. Distinguish the cases in `hi : i = c + (j : ZMod n)`. Substitute `hi` using the available equality.
+Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [Pi.single_eq_same, map_sub, map_smul, hom_phiIt]`. Simplify using `only [Pi.single_eq_of_ne hi, map_zero]`. Establish `hc' : L.dγ y = L.dφ z` using `hc show L'.dγ _ = L'.dφ _`. Use function extensionality and compare the values at `i`. Establish `e` using `congrArg h.f (congrFun hc' i)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify `e` using `only [Lat.dγ, Lat.dφ, map_sub, h.γ_comm, h.φ_comm]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem rho_map_functorial : RhoFun := by
   unfold RhoFun
@@ -570,13 +558,13 @@ theorem rho_map_functorial : RhoFun := by
     simpa only [Lat.dγ, Lat.dφ, map_sub, h.γ_comm, h.φ_comm] using e
 
 /- English proof (translation)
-Unfold `RhoExists`. Introduce `O _ B n _ Cu j M g sig V _ _ L hB hL c hc w hw`. Take `⟨h1, h2, h3, h4, h5, h6, h7, h8⟩` from `hL`. Establish `hw' : L.γ c w - w ∈ sm X (L.N c)` using `hw`. Take `⟨τ, hτ⟩` from `h5 c hc _ hw'`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hR` using `γR_mem hB h1 (h7 c hc) hw hτ`. Establish `ht : ∀ i, L.dγ (Pi.single (c + (j : ZMod n)) (B.lc ^ sig • L.phiIt c j w - τ)) i ∈ sm (X ^ M) (L.N i)`. Introduce `i`. Rewrite using `[dγ_single]`. Distinguish the cases in `hi : i = c + (j : ZMod n)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hi` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `h4 c hc hR`. Rewrite using `[Pi.single_eq_of_ne hi]`. Conclude with `zero_mem _`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨z, ⟨hz, hzt⟩, -⟩` from `h3 _ ht`. Conclude with `⟨Pi.single (c + (j : ZMod n)) (B.lc ^ sig • L.phiIt c j w - τ), z, τ, hτ, rfl, hzt.symm, hz⟩`.
+A detailed English derivation is pending.
 -/
 theorem rho_map_exists : RhoExists := by
   unfold RhoExists
@@ -600,19 +588,17 @@ theorem rho_map_exists : RhoExists := by
     hzt.symm, hz⟩
 
 /- English proof (translation)
-Unfold `RhoLin`. Introduce `O _ B n _ Cu j M g sig V _ _ L hB hL c hc m w w' y z y' z' hr hr' hu`. Take `⟨h1, h2, h3, h4, h5, h6, h7, h8⟩` from `hL`. Take `⟨τ, hτ, hy, hcy, hz⟩` from `hr`. Take `⟨τ', hτ', hy', hcy', hz'⟩` from `hr'`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hT` using `isTr_sub (isTr_self j M g sig hu) (isTr_sub hτ' (isTr_C m hτ))`. Establish `e0 : L.γ c (w' - C m • w) - (w' - C m • w) - ((L.γ c w' - w') - C m • (L.γ c w - w)) = 0`. Simplify using `only [map_sub, γ_C]`. Use `modx`. Rewrite `hT` using `[e0]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hmem` using `isTr_zero hB.2.2 (h6 c hc) (h7 c hc) hT`. Establish `hR : (B.lc ^ sig • L.phiIt c j w' - τ') - C m • (B.lc ^ sig • L.phiIt c j w - τ) ∈ sm (X ^ M) (L.N (c + (j : ZMod n)))`. Establish `e : (B.lc ^ sig • L.phiIt c j w' - τ') - C m • (B.lc ^ sig • L.phiIt c j w - τ) = B.lc ^ sig • L.phiIt c j (w' - C m • w) - (τ' - C m • τ)`. Simplify using `only [phiIt_sub, phiIt_C]`. Use `modx`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[e]`. Conclude with `h4 c hc hmem`. Apply `cobound_of_small hB.1 h1 h2 h3` to reduce the goal to its premises. Establish `a : L.dγ y = L.dφ z` using `hcy`. Establish `a' : L.dγ y' = L.dφ z'` using `hcy'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show L.dγ (y' - C m • y) = L.dφ (z' - C m • z)`. Rewrite using `[dγ_sub, dγ_C, dφ_sub, dφ_C, a, a']`. Introduce `i`. Rewrite using `[hy, hy']`. Distinguish the cases in `hi : i = c + (j : ZMod n)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `hi` using the available equality. Simplify using `only [Pi.sub_apply, Pi.smul_apply, Pi.single_eq_same]`. Conclude with `hR`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, Pi.single_eq_of_ne hi, smul_zero, sub_zero]`. Conclude with `zero_mem _`.
-
-Introduce `i`. Conclude with `sub_mem (hz' i) (Submodule.smul_mem _ _ (hz i))`.
+A detailed English derivation is pending.
 -/
 theorem rho_map_linear : RhoLin := by
   unfold RhoLin
@@ -654,19 +640,17 @@ theorem rho_map_linear : RhoLin := by
 namespace IdempotentNormalFormsRhoFacts
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5, h6, h7, h8⟩` from `hL`. Take `⟨τ₁, hτ₁, hy₁, hc₁, hz₁⟩` from `hr₁`. Take `⟨τ₂, hτ₂, hy₂, hc₂, hz₂⟩` from `hr₂`. Take `⟨τ₃, hτ₃, hy₃, hc₃, hz₃⟩` from `hr₃`. Establish `hT` using `isTr_sub (isTr_self j M g sig hu) (isTr_sub (isTr_sub hτ₃ hτ₁) hτ₂)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e0 : L.γ c (w₃ - w₁ - w₂) - (w₃ - w₁ - w₂) - ((L.γ c w₃ - w₃) - (L.γ c w₁ - w₁) - (L.γ c w₂ - w₂)) = 0`. Simplify using `only [map_sub]`. Normalize the expressions using the abelian group laws. Rewrite `hT` using `[e0]`. Establish `hmem` using `isTr_zero hB.2.2 (h6 c hc) (h7 c hc) hT`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hR : (B.lc ^ sig • L.phiIt c j w₃ - τ₃) - (B.lc ^ sig • L.phiIt c j w₁ - τ₁) - (B.lc ^ sig • L.phiIt c j w₂ - τ₂) ∈ sm (X ^ M) (L.N (c + (j : ZMod n)))`. Establish `e : (B.lc ^ sig • L.phiIt c j w₃ - τ₃) - (B.lc ^ sig • L.phiIt c j w₁ - τ₁) - (B.lc ^ sig • L.phiIt c j w₂ - τ₂) = B.lc ^ sig • L.phiIt c j (w₃ - w₁ - w₂) - (τ₃ - τ₁ - τ₂)`. Simplify using `only [phiIt_sub]`. Use `modx`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `h4 c hc hmem`. Apply `cobound_of_small hB.1 h1 h2 h3` to reduce the goal to its premises. Establish `a₁ : L.dγ y₁ = L.dφ z₁` using `hc₁`. Establish `a₂ : L.dγ y₂ = L.dφ z₂` using `hc₂`. Establish `a₃ : L.dγ y₃ = L.dφ z₃` using `hc₃`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show L.dγ (y₃ - y₁ - y₂) = L.dφ (z₃ - z₁ - z₂)`. Rewrite using `[dγ_sub, dγ_sub, dφ_sub, dφ_sub, a₁, a₂, a₃]`. Introduce `i`. Rewrite using `[hy₁, hy₂, hy₃]`. Distinguish the cases in `hi : i = c + (j : ZMod n)`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Substitute `hi` using the available equality. Simplify using `only [Pi.sub_apply, Pi.single_eq_same]`. Conclude with `hR`. Simplify using `only [Pi.sub_apply, Pi.single_eq_of_ne hi, sub_zero]`. Conclude with `zero_mem _`.
-
-Introduce `i`. Conclude with `sub_mem (sub_mem (hz₃ i) (hz₁ i)) (hz₂ i)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem rho_add {O : Type} [CommRing O] {B : Base O} {n : ℕ} {Cu : Cuts n} {j M g sig : ℕ}
     {V : Type} [AddCommGroup V] [Module (PowerSeries O) V] {L : Lat B n V}

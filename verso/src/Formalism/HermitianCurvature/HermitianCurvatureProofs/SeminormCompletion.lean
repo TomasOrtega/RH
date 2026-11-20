@@ -9,9 +9,9 @@ noncomputable section
 namespace Formalism.FourierDecayAlt.P.Ux8
 
 /- English proof (translation)
-Introduce `hmem`. Simplify using `only [G.detSet, Set.mem_image] at hmem`. Take `⟨D, hDK, hD0⟩` from `hmem`. Establish `hne` using `(hD n).2`. Break down `mul_eq_zero.mp hD0 with h1 | h1` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hne h1`. Conclude with `h0 (by rw [← h1]; exact hDK)`.
+A detailed English derivation is pending.
 -/
 theorem zero_notMem_detSet (hD : G.DetMatch) (n : ℕ) (Kc : Set ℂ) (h0 : (0:ℂ) ∉ Kc) : (0:ℂ) ∉ G.detSet n Kc := by
   intro hmem
@@ -23,7 +23,7 @@ theorem zero_notMem_detSet (hD : G.DetMatch) (n : ℕ) (Kc : Set ℂ) (h0 : (0:�
   · exact h0 (by rw [← h1]; exact hDK)
 
 /- English proof (translation)
-Take `⟨_, hb⟩` from `h`. Establish `h1` using `hb 0 (Nat.zero_le _) 0`. Rewrite `h1` using `[norm_zero, add_zero, Real.one_rpow, mul_one]`. Conclude with `le_trans (norm_nonneg _) h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem nonneg_of_decayAll {N : ℕ} {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
     {q : ℕ} {e : ℕ → ℝ} {K : ℝ} {Φ0 : G.Mat N → V} (h : DecayAll q e K Φ0) : 0 ≤ K := by
@@ -33,15 +33,15 @@ private theorem nonneg_of_decayAll {N : ℕ} {V : Type} [NormedAddCommGroup V] [
   exact le_trans (norm_nonneg _) h1
 
 /- English proof (translation)
-Introduce `hG hD hTC hDB`. Take `⟨C₁, C₂, hGR⟩` from `hG`. Use `⟨C₁, C₂, ?_⟩` and prove the remaining obligations. Introduce `p m β hβ σ d hd e A hA he Kc hKc h0`. Take `⟨Cst₁, hC₁⟩` from `hTC p (m + 1 + 1) β σ d hd (by omega) (C₂ * (m + 2) ^ 2) e (fun i hi => (he i hi).2)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨Cst₂, hC₂⟩` from `hGR m β hβ Kc hKc h0`. Use `⟨Cst₂ * Cst₁, ?_⟩` and prove the remaining obligations. Introduce `V _ _ _ Φ0 K hΦ t c ht hc`. Establish `hT` using `(hC₁ V Φ0 K hΦ).2`. Establish `hK : 0 ≤ Cst₁ * K` using `nonneg_of_decayAll hT`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA0 : 0 ≤ A` using `le_trans (by positivity) hA`. Establish `hDB' : G.DerivBound (C₂ * (m + 2) ^ 2) (G.detSet (m + 1) Kc) (fun Z => Cst₁ * K * min 1 (‖Z‖ ^ (-A))) (PhiTop β σ d Φ0)`. Use `hDB (m + 1 + 1) (C₂ * (m + 2) ^ 2) V (PhiTop β σ d Φ0) A (Cst₁ * K) (G.detSet (m + 1) Kc) (by omega) hA0 hK (zero_notMem_detSet hD (m + 1) Kc h0) ?_` and prove the remaining obligations. Introduce `Z _`. Take `⟨hcd, hb⟩` from `hT`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨hcd.contDiffAt, fun q hq => ?_⟩` and prove the remaining obligations. Establish `h1` using `hb q hq Z`. Establish `hZ : (1 : ℝ) ≤ 1 + ‖Z‖` using `le_add_of_nonneg_right (norm_nonneg _)`. Establish `hexp : (1 + ‖Z‖) ^ (-(e q / (5 * ((p + (m + 1 + 1) : ℕ) : ℝ)))) ≤ (1 + ‖Z‖) ^ (-A)` using `Real.rpow_le_rpow_of_exponent_le hZ (neg_le_neg (he q hq).1)`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hfin` using `hC₂ V (PhiTop β σ d Φ0) A (Cst₁ * K) (C₂ * (m + 2) ^ 2) hA le_rfl hDB' t c ht hc`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem useGermTopOfParts : UseGermTopOfParts := by
   intro hG hD hTC hDB
@@ -73,7 +73,7 @@ theorem useGermTopOfParts : UseGermTopOfParts := by
     _ = Cst₂ * Cst₁ * K * ‖t‖ := by ring
 
 /- English proof (translation)
-Establish `h1 : (1 : B.Mat k r) ∈ B.GV k r` using `by show (1 : B.Mat k r)ᴴ * _ * 1 = _`. Simplify using the standard rewrite rules. Take `⟨_, h2⟩` from `hf`. Establish `h` using `h2 [] [] (by simp) (by simp) (by simp) 1 h1`. Conclude with `le_trans (mul_nonneg (Real.rpow_nonneg (by unfold B.gN; exact Real.sqrt_nonneg _) _) (norm_nonneg _)) h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem nonneg_of_CCle_mat {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {A : ℝ} {m : ℕ}
     {f : B.Mat k r → E} {c : ℝ} (hf : B.CCle A m f c) : 0 ≤ c := by
@@ -85,21 +85,19 @@ private theorem nonneg_of_CCle_mat {k r : ℕ} {E : Type} [NormedAddCommGroup E]
   exact le_trans (mul_nonneg (Real.rpow_nonneg (by unfold B.gN; exact Real.sqrt_nonneg _) _) (norm_nonneg _)) h
 
 /- English proof (translation)
-Introduce `hG hD hC hDB hPM hSM`. Take `⟨C₁, C₂, hGR⟩` from `hG`. Take `⟨Cc, hCc⟩` from `hC C₁ C₂`. Use `⟨C₂, Cc, ?_⟩` and prove the remaining obligations. Introduce `k p m ρ Wp Wq _ _ _ _ _ _ ι _ U hU A₀ hA₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨_, twice_smooth_le_first, hAB, C, hCf⟩` from `hCc k p (m + 1 + 1) ρ Wp Wq ι U hU A₀ hA₀`. Use `⟨hAB, ?_⟩` and prove the remaining obligations. Introduce `Kc hKc h0`. Take `⟨_, hβ, _⟩` from `hSM`. Take `⟨Cst, hCst⟩` from `hGR m betaU hβ Kc hKc h0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨R, hR⟩` from `hKc.isBounded.exists_norm_le`. Use `⟨max R 0 ^ (Mlev k ρ - 2) * Cst * max C 0, ?_⟩` and prove the remaining obligations. Introduce `f c hf V _ _ _ M`. Establish `hc0 : 0 ≤ c` using `nonneg_of_CCle_mat hf`. Take `⟨Φ, hev, hbd⟩` from `hCf f c hf V M`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨Φ, hev, ?_⟩` and prove the remaining obligations. Introduce `t D ht hD'`. Establish `hA' : (C₁ : ℝ) * ((m : ℝ) + 2) ^ 2 ≤ U.a C₂ A₀`. Establish `e : ((m + 1 + 1 : ℕ) : ℝ) = (m : ℝ) + 2` using `by push_cast; ring`. Rewrite `twice_smooth_le_first` using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `twice_smooth_le_first`. Establish `hA0 : 0 ≤ U.a C₂ A₀` using `le_trans (by positivity) hA'`. Establish `hK0 : 0 ≤ max C 0 * c` using `mul_nonneg (le_max_right _ _) hc0`. Establish `hDB' : G.DerivBound (C₂ * (m + 1 + 1) ^ 2) (G.detSet (m + 1) Kc) (fun Z => max C 0 * c * min 1 (‖Z‖ ^ (-(U.a C₂ A₀)))) Φ`. Use `hDB (m + 1 + 1) (C₂ * (m + 1 + 1) ^ 2) V Φ (U.a C₂ A₀) (max C 0 * c) (G.detSet (m + 1) Kc) (by omega) hA0 hK0 (zero_notMem_detSet hD (m + 1) Kc h0) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Z hZ`. Take `⟨hcd, hb⟩` from `hbd Z hZ`. Use `⟨hcd, fun q hq => le_trans (hb q hq) ?_⟩` and prove the remaining obligations. Establish `hr : 0 ≤ (1 + ‖Z‖) ^ (-(U.a C₂ A₀))` using `by positivity`. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (le_max_left _ _) hc0) hr`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : 2 ≤ Mlev k ρ` using `by unfold Mlev; omega`. Establish `hDR : ‖D‖ ≤ max R 0` using `le_trans (hR D hD') (le_max_left R 0)`. Establish `hpow : ‖D‖ ^ (Mlev k ρ - 2) ≤ max R 0 ^ (Mlev k ρ - 2)` using `by gcongr`. Establish `hrem` using `hCst V Φ (U.a C₂ A₀) (max C 0 * c) (C₂ * (m + 1 + 1) ^ 2) hA' (le_of_eq (by ring)) hDB' t (D / t ^ (m + 1)) ht (by rw [div_mul_cancel₀ _ (pow_ne_zero _ ht)]; exact hD')`. Rewrite using `[hPM m (Mlev k ρ) betaU t D V Φ h2 ht, norm_smul, Complex.norm_real, Real.norm_of_nonneg (by positivity)]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem useGermOfParts : UseGermOfParts := by
   intro hG hD hC hDB hPM hSM
@@ -146,7 +144,7 @@ theorem useGermOfParts : UseGermOfParts := by
     _ = max R 0 ^ (Mlev k ρ - 2) * Cst * max C 0 * c * ‖t‖ := by ring
 
 /- English proof (translation)
-Establish `h1 : (1 : B.Mat k r) ∈ B.GV k r` using `by show (1 : B.Mat k r)ᴴ * _ * 1 = _`. Simplify using the standard rewrite rules. Take `⟨_, h2⟩` from `hf`. Establish `h` using `h2 [] [] (by simp) (by simp) (by simp) 1 h1`. Conclude with `le_trans (mul_nonneg (Real.rpow_nonneg (by unfold B.gN; exact Real.sqrt_nonneg _) _) (norm_nonneg _)) h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cc_nonneg {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {A : ℝ} {m : ℕ}
     {f : B.Mat k r → E} {c : ℝ} (hf : B.CCle A m f c) : 0 ≤ c := by
@@ -158,7 +156,7 @@ theorem cc_nonneg {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ
   exact le_trans (mul_nonneg (Real.rpow_nonneg (by unfold B.gN; exact Real.sqrt_nonneg _) _) (norm_nonneg _)) h
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `h`. Conclude with `⟨h1, h2, fun u v hu hv hl g hg => le_trans (h3 u v hu hv hl g hg) hB⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem star_mono_bound {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {k j ρ : ℕ}
     {F₁ : B.Mat k (j + ρ) → E} {A₁ : ℝ} {Q : ℕ} {B₁ B₂ : ℝ} {K : Set ℝ}
@@ -167,19 +165,19 @@ private theorem star_mono_bound {E : Type} [NormedAddCommGroup E] [NormedSpace �
   exact ⟨h1, h2, fun u v hu hv hl g hg => le_trans (h3 u v hu hv hl g hg) hB⟩
 
 /- English proof (translation)
-Introduce `hTU hCU1 hSP hBud hTh hPS`. Introduce `C₁ C₂`. Use `⟨16 * ((C₁ : ℝ) + 1) + 20, ?_⟩` and prove the remaining obligations. Introduce `k p s ρ Wp Wq _ _ _ _ _ _ ι _ U hOk A₀ hA₀`. Establish `hOk2` using `hOk`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨hd, hs1, _, _, hDD, hχ, hχε, _, _, ho, hκ, hAB, hmm, hn3, hC2⟩` from `hOk`. Establish `hC1 : (0 : ℝ) ≤ C₁` using `Nat.cast_nonneg _`. Establish `hle : C₂ * s ^ 2 ≤ C₂ * (p + s + ρ + 1) ^ 2` using `Nat.mul_le_mul_left C₂ (Nat.pow_le_pow_left (by omega) 2)`. Take `⟨hb1, _, _, _, hb5⟩` from `hBud (p + s + ρ) (C₂ * s ^ 2) U.mmB U.o (U.κ + (p + s) * U.o) U.As (16 * ((C₁ : ℝ) + 1) + 20) A₀ (by omega) ((Nat.add_le_add_right hle 1).trans hC2) hmm ho hκ (by linarith) hA₀`. Establish `hAeq : A₀ - ((U.κ + (p + s) * U.o : ℕ) : ℝ) - 2 * (((p + s + ρ : ℕ) : ℝ) + 1) * ((C₂ * s ^ 2 + 1 + U.mmB + U.o : ℕ) : ℝ) = A₀ - (U.κ : ℝ) - ((p + s : ℕ) : ℝ) * (U.o : ℝ) - 2 * (((p + s + ρ : ℕ) : ℝ) + 1) * (((C₂ * s ^ 2 + 1 + U.mmB) + U.o : ℕ) : ℝ)` using `by push_cast; ring`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc16 : (16 * ((C₁ : ℝ) + 1) + 20 - 20) / 16 = (C₁ : ℝ) + 1` using `by ring`. Rewrite `hb5` using `[hAeq, hc16]`. Take `⟨ht1, ht2, ht3⟩` from `hTh (p + s + ρ) (2 * (p + s + ρ) + k + 1) s U.As C₁ ((C₁ : ℝ) + 1) U.AB (by omega) (by omega) hn3 hAB (by linarith) (by linarith)`. Use `⟨hb5, le_trans ht3 hb5, le_trans ht2 hb5, ?_⟩` and prove the remaining obligations. Take `⟨_, hχc, hχ0⟩` from `id hχ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hKc : IsCompact ((fun w : ℂ => ‖w‖) '' tsupport U.χ)` using `(hχc : IsCompact (tsupport U.χ)).image continuous_norm`. Establish `hK0 : (fun w : ℂ => ‖w‖) '' tsupport U.χ ⊆ Set.Ioi 0`. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Conclude with `norm_pos_iff.2 (fun h => hχ0 (h ▸ hw))`. Use `choose Ci hCi using fun i => hCU1 k (p + s) ρ Wp Wq U.z U.z' U.o U.κ (U.Θ i) U.χ U.χε U.ε (hDD i) hχ hχε (C₂ * s ^ 2 + 1 + U.mmB) (3 * U.As) A₀ hb1`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨CT, hCT⟩` from `hTU k p s ρ U.σ U.d hd hs1 _ hKc hK0 (C₂ * s ^ 2) U.mmB (C₂ * s ^ 2 + 1 + U.mmB) _ le_rfl (lt_of_lt_of_le ht1 hb5)`. Use `⟨CT * (∑ i, |Ci i|), ?_⟩` and prove the remaining obligations. Introduce `f c hf V _ _ _ M`. Establish `hc0 : 0 ≤ c` using `cc_nonneg hf`. Establish `hB : ∀ i, Ci i * c ≤ (∑ j, |Ci j|) * c` using `fun i => mul_le_mul_of_nonneg_right ((le_abs_self _).trans (Finset.single_le_sum (fun j _ => abs_nonneg (Ci j)) (Finset.mem_univ i))) hc0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hstar` using `hSP k (p + s) ρ ι (Wq →L[ℂ] Wp) (U.F1 f) _ _ _ _ (mul_nonneg (Finset.sum_nonneg fun i _ => abs_nonneg (Ci i)) hc0) (fun i => star_mono_bound (hCi i f c hf) (hB i))`. Take `⟨_, _, hmain⟩` from `hCT U.z U.z' (ι → (Wq →L[ℂ] Wp)) (U.F1 f) _ hstar`. Take `⟨Φ, hev, hbd⟩` from `hmain U.S V M (fun Z hZ γ hγ hγS => hPS k p s ρ Wp Wq ι U C₂ hOk2 f Z hZ γ hγ hγS)`. Use `⟨Φ, hev, fun Z hZ => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hbd Z hZ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨h1, fun q hq => ?_⟩` and prove the remaining obligations. Establish `h3` using `h2 q hq`. Rewrite `h3` using `[← mul_assoc]`. Conclude with `h3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem corollary_u2_of_parts_holds : GermExpansionHypothesisFromComponents := by
   intro hTU hCU1 hSP hBud hTh hPS
@@ -232,23 +230,23 @@ theorem corollary_u2_of_parts_holds : GermExpansionHypothesisFromComponents := b
   exact h3
 
 /- English proof (translation)
-Introduce `hC2 hEx _ hSem hComp hDBD hDBC`. Introduce `C₁ C₂`. Take `⟨Cc, hCc⟩` from `hC2 C₁ C₂`. Use `⟨Cc, ?_⟩` and prove the remaining obligations. Introduce `k p s ρ Wp Wq _ _ _ _ _ _ ι _ U hOk A₀ hA₀`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨h1, h2, h3, C, hC⟩` from `hCc k p s ρ Wp Wq ι U hOk A₀ hA₀`. Take `⟨_, hs1, _⟩` from `hOk`. Use `⟨h1, h2, h3, max C 0, ?_⟩` and prove the remaining obligations. Introduce `bet Cp hCp hPos hLB hcong f c hf`. Establish `hc0 : 0 ≤ c` using `cc_nonneg hf`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `ha0 : 0 ≤ U.a C₂ A₀` using `le_trans (by positivity) h2`. Take `⟨V, indexVFirst, indexVSecond, hVc, ⟨M⟩⟩` from `hEx k ρ (ι → (Wq →L[ℂ] Wp)) (U.a C₂ A₀) U.mmB U.S`. Take `⟨Φ, hev, hbd⟩` from `hC f c hf V M`. Take `⟨pn, hpn, hpC⟩` from `hSem k ρ (ι → (Wq →L[ℂ] Wp)) bet (U.a C₂ A₀) U.AB Cp U.mmB U.S h3 hCp hPos hLB V M`. Take `⟨V', indexWFirst, indexWSecond, hW, T, hT, _⟩` from `hComp V pn Cp hpC`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hTn : ‖T‖ ≤ Cp` using `ContinuousLinearMap.opNorm_le_bound T hCp (fun v => by rw [hT]; exact hpC v)`. Use `⟨V', indexWFirst, indexWSecond, hW, fun Z => T (Φ Z), ?_, ?_⟩` and prove the remaining obligations. Introduce `J w hJ`. Establish `hv : ∀ g ∈ B.GV k ρ, M.ev (∑ Z ∈ J, w Z • Φ Z) g = (∑ Z ∈ J, w Z • U.Phi f Z) g`. Introduce `g hg`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_sum, Finset.sum_apply, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun Z hZ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Pi.smul_apply, Pi.smul_apply, hev Z (hJ Z hZ) g hg]`. Establish `hb` using `hcong _ _ _ _ hv hv`. Establish `hsum : (∑ Z ∈ J, w Z • T (Φ Z)) = T (∑ Z ∈ J, w Z • Φ Z)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_sum]`. Simplify using `only [map_smul]`. Use `show ‖∑ Z ∈ J, w Z • T (Φ Z)‖ ^ 2 = _`. Rewrite using `[hsum, hT, hpn, hb]`. Introduce `Kd hKd`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hD1 : G.DerivBound (C₂ * s ^ 2) Kd (fun Z => max C 0 * c * min 1 (‖Z‖ ^ (-(U.a C₂ A₀)))) Φ`. Use `hDBD s (C₂ * s ^ 2) V Φ (U.a C₂ A₀) (max C 0 * c) Kd hs1 ha0 (mul_nonneg (le_max_right _ _) hc0) hKd ?_` and prove the remaining obligations. Introduce `Z hZ`. Take `⟨hcd, hb⟩` from `hbd Z hZ`. Use `⟨hcd, fun q hq => le_trans (hb q hq) ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (le_max_left _ _) hc0) (by positivity)`. Establish `hD2` using `hDBC s (C₂ * s ^ 2) V V' T Φ Kd _ hD1`. Introduce `Z hZ`. Take `⟨hcd, hb⟩` from `hD2 Z hZ`. Use `⟨hcd, fun j hj => le_trans (hb j hj) ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hm : 0 ≤ max C 0 * c * min 1 (‖Z‖ ^ (-(U.a C₂ A₀)))` using `mul_nonneg (mul_nonneg (le_max_right _ _) hc0) (le_min zero_le_one (Real.rpow_nonneg (norm_nonneg _) _))`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem useDerivBoundOfParts : UseDerivBoundOfParts := by
   intro hC2 hEx _ hSem hComp hDBD hDBC
@@ -299,13 +297,13 @@ theorem useDerivBoundOfParts : UseDerivBoundOfParts := by
       _ = max C 0 * Cp * c * min 1 (‖Z‖ ^ (-(U.a C₂ A₀))) := by ring
 
 /- English proof (translation)
-Take `⟨C₁, C₂, hGR⟩` from `hG`. Take `⟨Cc, hCc⟩` from `hU C₁ C₂`. Use `⟨C₂, Cc, ?_⟩` and prove the remaining obligations. Introduce `k p m ρ Wp Wq _ _ _ _ _ _ ι _ U hOk A₀ hA₀ Kc hKc h0`. Take `⟨_, twice_smooth_le_first, _, C, hC⟩` from `hCc k p (m + 1 + 1) ρ Wp Wq ι U hOk A₀ hA₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨_, hβ, _⟩` from `hS`. Take `⟨Cst, hCst⟩` from `hGR m betaU hβ Kc hKc h0`. Use `⟨Cst * C, ?_⟩` and prove the remaining obligations. Introduce `bet Cp hCp hPos hLB hcong f c hf`. Take `⟨V', i1, i2, hcomp, Φ', hnorm, hDBd⟩` from `hC bet Cp hCp hPos hLB hcong f c hf`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨V', i1, i2, hcomp, Φ', hnorm, ?_⟩` and prove the remaining obligations. Introduce `t c' ht hc'`. Establish `hA' : (C₁ : ℝ) * ((m : ℝ) + 2) ^ 2 ≤ U.a C₂ A₀`. Establish `e : ((m + 1 + 1 : ℕ) : ℝ) = (m : ℝ) + 2` using `by push_cast; ring`. Rewrite `twice_smooth_le_first` using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `twice_smooth_le_first`. Establish `hfin` using `hCst V' Φ' (U.a C₂ A₀) (C * Cp * c) (C₂ * (m + 1 + 1) ^ 2) hA' (le_of_eq (by ring)) (hDBd _ (zero_notMem_detSet hD (m + 1) Kc h0)) t c' ht hc'`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem germ_in_form (hG : G.GermRate) (hD : G.DetMatch) (hU : UseDerivBound) (hS : ScaleMatch) :
     ∃ (C₂ : ℕ) (Cc : ℝ),
@@ -346,20 +344,20 @@ theorem germ_in_form (hG : G.GermRate) (hD : G.DetMatch) (hU : UseDerivBound) (h
     _ = Cst * C * Cp * c * ‖t‖ := by ring
 
 /- English proof (translation)
-Introduce `hG hD hU hS`. Conclude with `germ_in_form hG hD hU hS`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem germInFormOfParts : GermInFormOfParts := by
   intro hG hD hU hS
   exact germ_in_form hG hD hU hS
 
 /- English proof (translation)
-Use `letI : NormedAddCommGroup (B.Mat k r) := Matrix.frobeniusNormedAddCommGroup`. Establish `hH : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Establish `hne : Hpk k r ≠ 0`. Introduce `h0`. Establish `h00` using `congrFun (congrFun h0 ⟨r, by omega⟩) ⟨r, by omega⟩`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[Hpk] at h00`. Apply the tactic sequence `try (split_ifs at h00 <;> norm_num at h00)`. Establish `h1 : ‖Hpk k r‖ ≤ ‖g‖ ^ 2 * ‖Hpk k r‖`. Combine the equalities or inequalities in the displayed calculation. Establish `hpos : 0 < ‖Hpk k r‖` using `norm_pos_iff.2 hne`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h2 : 1 ≤ ‖g‖ ^ 2` using `by nlinarith`. Establish `h3 : 1 ≤ ‖g‖` using `by nlinarith [norm_nonneg g]`. Establish `h4 : B.gN g = ‖g‖`. Unfold `B.gN`. Rewrite using `[Matrix.frobenius_norm_def, Real.sqrt_eq_rpow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.normSq_eq_norm_sq, Real.rpow_two]`. Rewrite using `[h4]`. Conclude with `h3`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem one_le_gN_of_mem_GV {k r : ℕ} (g : B.Mat k r) (hg : g ∈ B.GV k r) : 1 ≤ B.gN g := by
   letI : NormedAddCommGroup (B.Mat k r) := Matrix.frobeniusNormedAddCommGroup
@@ -388,7 +386,7 @@ private theorem one_le_gN_of_mem_GV {k r : ℕ} (g : B.Mat k r) (hg : g ∈ B.GV
   exact h3
 
 /- English proof (translation)
-Introduce `k ρ E _ _ a AB c mm F hAB hF`. Take `⟨hck, hb⟩` from `hF`. Use `⟨hck, fun u v hu hv hl g hg => le_trans ?_ (hb u v hu hv hl g hg)⟩` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (Real.rpow_le_rpow_of_exponent_le (one_le_gN_of_mem_GV g hg) hAB) (norm_nonneg _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ccMono : CCMono := by
   intro k ρ E _ _ a AB c mm F hAB hF
@@ -397,13 +395,13 @@ theorem ccMono : CCMono := by
   exact mul_le_mul_of_nonneg_right (Real.rpow_le_rpow_of_exponent_le (one_le_gN_of_mem_GV g hg) hAB) (norm_nonneg _)
 
 /- English proof (translation)
-Establish `hd` using `discrim_le_zero h`. Unfold `discrim at hd`. Establish `h1` using `Real.sq_sqrt hv`. Establish `h2` using `Real.sq_sqrt hw`. Establish `ha` using `Real.sqrt_nonneg Qv`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb` using `Real.sqrt_nonneg Qw`. Establish `hs : 0 ≤ Real.sqrt Qv + Real.sqrt Qw` using `add_nonneg ha hb`. Establish `e : (2 * (Real.sqrt Qv * Real.sqrt Qw)) ^ 2 = 4 * Qw * Qv`. Rewrite using `[mul_pow, mul_pow, h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hR : R ≤ 2 * (Real.sqrt Qv * Real.sqrt Qw)`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `hp : 0 ≤ 2 * (Real.sqrt Qv * Real.sqrt Qw)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Real.sqrt_sq hs]`. Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities.
+Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private theorem sqrt_add_le_sqrt_add_sqrt_of_quadratic_nonneg {Qv Qw R : ℝ} (hv : 0 ≤ Qv) (hw : 0 ≤ Qw)
     (h : ∀ t : ℝ, 0 ≤ Qw * (t * t) + R * t + Qv) : Real.sqrt (Qv + R + Qw) ≤ Real.sqrt Qv + Real.sqrt Qw := by
@@ -426,21 +424,21 @@ private theorem sqrt_add_le_sqrt_add_sqrt_of_quadratic_nonneg {Qv Qw R : ℝ} (h
   nlinarith
 
 /- English proof (translation)
-Introduce `k ρ E _ _ bet a AB Cp mmB S hAB hCp hPos hLB V _ _ M`. Take `⟨hSes, hPP⟩` from `hPos`. Take `⟨hadd1, hadd2, hsm1, hsm2⟩` from `hSes`. Establish `hC : ∀ v, CCS a mmB S (M.ev v)` using `fun v => ⟨⟨‖v‖, M.mem v⟩, M.off v⟩`. Establish `hQ0 : ∀ v, 0 ≤ (bet (M.ev v) (M.ev v)).re` using `fun v => (hPP _ (hC v)).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ v w : V, ∀ t : ℝ, (bet (M.ev (v + (t : ℂ) • w)) (M.ev (v + (t : ℂ) • w))).re = (bet (M.ev v) (M.ev v)).re + t * (bet (M.ev v) (M.ev w) + bet (M.ev w) (M.ev v)).re + t * t * (bet (M.ev w) (M.ev w)).re`. Introduce `v w t`. Establish `hx` using `hC v`. Establish `hy` using `hC w`. Establish `hcy : CCS a mmB S ((t : ℂ) • M.ev w)` using `by rw [← map_smul]; exact hC _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : CCS a mmB S (M.ev v + (t : ℂ) • M.ev w)` using `by rw [← map_smul, ← map_add]; exact hC _`. Establish `e1 : bet (M.ev v + (t : ℂ) • M.ev w) (M.ev v + (t : ℂ) • M.ev w) = bet (M.ev v) (M.ev v) + (t : ℂ) * bet (M.ev v) (M.ev w) + (t : ℂ) * bet (M.ev w) (M.ev v) + (t : ℂ) * ((t : ℂ) * bet (M.ev w) (M.ev w))`. Rewrite using `[hadd1 _ _ _ hx hcy hs, hadd2 _ _ _ hx hx hcy, hadd2 _ _ _ hcy hx hcy, hsm2 _ _ _ hx hy, hsm1 _ _ _ hy hx, hsm1 _ _ _ hy hcy, hsm2 _ _ _ hy hy, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_add, map_smul, e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Complex.add_re, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `disc : ∀ v w : V, ∀ t : ℝ, 0 ≤ (bet (M.ev w) (M.ev w)).re * (t * t) + (bet (M.ev v) (M.ev w) + bet (M.ev w) (M.ev v)).re * t + (bet (M.ev v) (M.ev v)).re`. Introduce `v w t`. Establish `h` using `hQ0 (v + (t : ℂ) • w)`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[key v w t]`. Use polynomial arithmetic with `[h]`. Use `⟨Seminorm.of (fun v => Real.sqrt (bet (M.ev v) (M.ev v)).re) ?_ ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `v w show Real.sqrt (bet (M.ev (v + w)) (M.ev (v + w))).re ≤ Real.sqrt (bet (M.ev v) (M.ev v)).re + Real.sqrt (bet (M.ev w) (M.ev w)).re`. Establish `h1` using `key v w 1`.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [Complex.ofReal_one, one_smul, one_mul] at h1`. Rewrite using `[h1]`. Conclude with `sqrt_add_le_sqrt_add_sqrt_of_quadratic_nonneg (hQ0 v) (hQ0 w) (disc v w)`. Introduce `c v show Real.sqrt (bet (M.ev (c • v)) (M.ev (c • v))).re = ‖c‖ * Real.sqrt (bet (M.ev v) (M.ev v)).re`. Establish `hx` using `hC v`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcx : CCS a mmB S (c • M.ev v)` using `by rw [← map_smul]; exact hC _`. Rewrite using `[map_smul, hsm1 _ _ _ hx hcx, hsm2 _ _ _ hx hx, ← mul_assoc, Complex.mul_conj, Complex.re_ofReal_mul, Real.sqrt_mul (Complex.normSq_nonneg c), Complex.normSq_eq_norm_sq, Real.sqrt_sq (norm_nonneg c)]`. Introduce `v show Real.sqrt (bet (M.ev v) (M.ev v)).re ^ 2 = _`. Conclude with `Real.sq_sqrt (hQ0 v)`. Introduce `v show Real.sqrt (bet (M.ev v) (M.ev v)).re ≤ Cp * ‖v‖`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcc : B.CCle AB mmB (M.ev v) ‖v‖` using `ccMono k ρ E a AB ‖v‖ mmB (M.ev v) hAB (M.mem v)`. Establish `hb` using `hLB (M.ev v) ‖v‖ hcc (M.off v)`. Establish `hre : (bet (M.ev v) (M.ev v)).re ≤ (Cp * ‖v‖) ^ 2` using `le_trans (Complex.re_le_norm _) hb`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem seminormOfForm : SeminormOfForm := by
   intro k ρ E _ _ bet a AB Cp mmB S hAB hCp hPos hLB V _ _ M
@@ -510,11 +508,9 @@ noncomputable instance : NormedSpace ℂ (SW p) where
 end
 
 /- English proof (translation)
-Introduce `V _ _ p Cp hp`. Set `L : V →ₗ[ℂ] SW p` to `{ toFun := fun v => (v : SW p) map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `hL : ∀ v, ‖L v‖ = p v` using `fun _ => rfl`. Set `Lc : V →L[ℂ] SW p` to `L.mkContinuous Cp (fun v => by rw [hL]; exact hp v)`. Use `⟨UniformSpace.Completion (SW p), inferInstance, inferInstance, inferInstance, UniformSpace.Completion.toComplL.comp Lc, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `v show ‖((Lc v : SW p) : UniformSpace.Completion (SW p))‖ = p v`. Rewrite using `[UniformSpace.Completion.norm_coe]`. Conclude with `hL v`. Establish `hs : Function.Surjective (Lc : V → SW p)` using `fun v => ⟨v, rfl⟩`. Rewrite using `[ContinuousLinearMap.coe_comp', UniformSpace.Completion.coe_toComplL]`.
-
-Conclude with `UniformSpace.Completion.denseRange_coe.comp hs.denseRange (UniformSpace.Completion.continuous_coe _)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem seminormCompletion : SeminormCompletion := by
   intro V _ _ p Cp hp
@@ -536,13 +532,13 @@ theorem seminormCompletion : SeminormCompletion := by
       (UniformSpace.Completion.continuous_coe _)
 
 /- English proof (translation)
-Introduce `hTop hBud`. Take `⟨C₁, C₂, hT⟩` from `hTop`. Use `⟨C₂, fun Ca => ?_⟩` and prove the remaining obligations. Take `⟨Cc, hCc⟩` from `hBud C₁ C₂ Ca`. Use `⟨Cc, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `p m β hβ σ d hd n As A A₀ hn hAs hA₀ hA Kc hKc h0`. Establish `hkey : ∀ i : ℕ, i ≤ C₂ * (m + 2) ^ 2 → (C₁ : ℝ) * ((m : ℝ) + 2) ^ 2 + 2 * (((p + m + 1 : ℕ) : ℝ) + 1) ^ 2 < (A - (Ca : ℝ) * ((n : ℝ) ^ 2 + ((p + m + 1 : ℕ) : ℝ) ^ 3 + ((p + m + 1 : ℕ) : ℝ) * (i : ℝ))) / (5 * (((p + m + 1 : ℕ) : ℝ) + 1))`. Introduce `i hi`. Establish `hb` using `hCc (p + m + 1) n (m + 2) As i A A₀ hn (by omega) (by omega) hAs (Nat.le_succ_of_le hi) hA₀ hA`. Establish `hr : (0 : ℝ) ≤ (Ca : ℝ) * ((p + m + 1 : ℕ) : ℝ) ^ 2` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Move the coercions through the operations in `at hb hr ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Use `hT p m β hβ σ d hd _ ((C₁ : ℝ) * ((m : ℝ) + 2) ^ 2) le_rfl ?_ Kc hKc h0` and prove the remaining obligations. Introduce `i hi`. Establish `hk` using `hkey i hi`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hpos : (0 : ℝ) ≤ 2 * (((p + m + 1 : ℕ) : ℝ) + 1) ^ 2` using `by positivity`. Establish `hC : (0 : ℝ) ≤ (C₁ : ℝ) * ((m : ℝ) + 2) ^ 2` using `by positivity`. Establish `he : ((p + (m + 1 + 1) : ℕ) : ℝ) = ((p + m + 1 : ℕ) : ℝ) + 1` using `by push_cast; ring`. Rewrite using `[he]`. Conclude with `⟨by linarith, by linarith⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem useGermTopCountOfParts : UseGermTopCountOfParts := by
   intro hTop hBud
@@ -577,9 +573,7 @@ section pi
 variable {k r : ℕ} {ι E : Type} [Fintype ι] [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Use `choose U f' hU hgU hcd heq using fun i => h i g₀ hg₀`. Use `⟨⋂ i, U i, fun g i => f' i g, isOpen_iInter_of_finite hU, Set.mem_iInter.2 hgU, ?_, ?_⟩` and prove the remaining obligations. Conclude with `contDiffOn_pi.2 fun i => (hcd i).mono (Set.iInter_subset _ i)`. Introduce `g hg hgV`.
-
-Use function extensionality and compare the values at `i`. Conclude with `heq i g (Set.mem_iInter.1 hg i) hgV`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 lemma CkOn_pi {m : ℕ∞} {F : B.Mat k r → ι → E} (h : ∀ i, B.CkOn m (B.GV k r) (fun g => F g i)) :
     B.CkOn m (B.GV k r) F := by
@@ -592,7 +586,7 @@ lemma CkOn_pi {m : ℕ∞} {F : B.Mat k r → ι → E} (h : ∀ i, B.CkOn m (B.
     exact heq i g (Set.mem_iInter.1 hg i) hgV
 
 /- English proof (translation)
-Establish `h` using `CkOn_diff hx hF hg hg`. Establish `h2` using `(hasDerivAt_pi.mp h) i`. Rewrite using `[Dx_eq x (fun g => F g i) g]`. Conclude with `h2.deriv.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma Dx_pi {x : Bool × B.Mat k r} (hx : inLie k r x.2) {F : B.Mat k r → ι → E} (hF : B.CkOn 1 (B.GV k r) F)
     (g : B.Mat k r) (hg : g ∈ B.GV k r) (i : ι) : Dx x F g i = Dx x (fun g => F g i) g := by
@@ -602,11 +596,11 @@ lemma Dx_pi {x : Bool × B.Mat k r} (hx : inLie k r x.2) {F : B.Mat k r → ι �
   exact h2.deriv.symm
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => intro g _ i`. Both sides reduce to the same expression. Consider the case `cons x w ih`. Introduce `g hg i`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hw' : ∀ y ∈ w, inLie k r y.2` using `fun y hy => hw y (by simp [hy])`. Establish `hle : ((w.length : ℕ) : ℕ∞) ≤ ((x :: w).length : ℕ)` using `by simp`. Establish `e : (((x :: w).length : ℕ) : ℕ∞) = 1 + w.length` using `by simp [add_comm]`. Establish `h1 : B.CkOn 1 (B.GV k r) (Dw w F)` using `CkOn_Dw hw' (by rw [← e]; exact hF)`. Use `show Dx x (Dw w F) g i = Dx x (Dw w fun g => F g i) g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Dx_pi (hw x (by simp)) h1 g hg i]`. Conclude with `Dx_congr (hw x (by simp)) (fun g hg => ih hw' (sCkOn_mono hle hF) g hg i) g hg`.
+A detailed English derivation is pending.
 -/
 lemma Dw_pi {w : List (Bool × B.Mat k r)} (hw : ∀ x ∈ w, inLie k r x.2) {F : B.Mat k r → ι → E}
     (hF : B.CkOn w.length (B.GV k r) F) : ∀ g ∈ B.GV k r, ∀ i, Dw w F g i = Dw w (fun g => F g i) g := by
@@ -625,13 +619,13 @@ lemma Dw_pi {w : List (Bool × B.Mat k r)} (hw : ∀ x ∈ w, inLie k r x.2) {F 
 end pi
 
 /- English proof (translation)
-Introduce `k j ρ ι E _ _ _ F₁ A₁ B₁ Q K hB h`. Establish `hC : B.CkOn (Q:ℕ∞) (B.GV k (j+ρ)) F₁` using `CkOn_pi fun i => (h i).1`. Use `⟨hC, ?_, ?_⟩` and prove the remaining obligations. Introduce `g hg hne`. Take `⟨i, hi⟩` from `Function.ne_iff.mp hne`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `(h i).2.1 g hg hi`. Introduce `u v hu hv hl g hg`. Establish `hw : ∀ x ∈ wL u ++ wR v, inLie k (j+ρ) x.2`. Introduce `x hx`. Simplify using `only [wL, wR, List.mem_append, List.mem_map] at hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hx with ⟨X, hX, rfl⟩ | ⟨X, hX, rfl⟩` into its components or cases. Conclude with `(hu X hX).1.1`. Conclude with `(hv X hX).1.1`. Establish `hlen : (wL u ++ wR v).length ≤ Q` using `by simpa [wL, wR] using hl`. Establish `hpos : 0 < gN g ^ A₁` using `Real.rpow_pos_of_pos (gN_pos hg) _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← le_div_iff₀' hpos]`. Apply `(pi_norm_le_iff_of_nonneg (div_nonneg hB hpos.le)).mpr` to reduce the goal to its premises. Introduce `i`. Rewrite using `[le_div_iff₀' hpos, dLR_eq, Dw_pi hw (sCkOn_mono (by exact_mod_cast hlen) hC) g hg i, ← dLR_eq]`. Conclude with `(h i).2.2 u v hu hv hl g hg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem starPi : StarPi := by
   intro k j ρ ι E _ _ _ F₁ A₁ B₁ Q K hB h
@@ -656,7 +650,7 @@ theorem starPi : StarPi := by
     exact (h i).2.2 u v hu hv hl g hg
 
 /- English proof (translation)
-Unfold `Zhat herm`. Conclude with `continuous_const.dotProduct (continuous_const.matrix_mulVec (continuous_id.matrix_mulVec continuous_const))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma cont_Zhat (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (a b : Fin (r + 1)) :
     Continuous fun g : B.Mat k r => Zhat k r z z' g a b := by
@@ -664,7 +658,7 @@ lemma cont_Zhat (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (a b : Fin (r +
   exact continuous_const.dotProduct (continuous_const.matrix_mulVec (continuous_id.matrix_mulVec continuous_const))
 
 /- English proof (translation)
-Unfold `Dmin`. Conclude with `((continuous_matrix fun a b => cont_Zhat k r z z' a b).matrix_submatrix _ _).matrix_det`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma cont_Dmin (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (l : Fin (r + 2)) :
     Continuous fun g : B.Mat k r => Dmin k r z z' g l := by
@@ -672,7 +666,7 @@ lemma cont_Dmin (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (l : Fin (r + 2
   exact ((continuous_matrix fun a b => cont_Zhat k r z z' a b).matrix_submatrix _ _).matrix_det
 
 /- English proof (translation)
-Establish `h1` using `Complex.continuous_normSq.comp (cont_Dmin k r z z' (Fin.last (r + 1)))`. Establish `h2` using `Complex.continuous_normSq.comp (cont_Dmin k r z z' ⟨r, by omega⟩)`. Unfold `Gf`. Conclude with `h1.sub (continuous_const.mul h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma cont_Gf (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) : Continuous (Gf k r z z') := by
   have h1 := Complex.continuous_normSq.comp (cont_Dmin k r z z' (Fin.last (r + 1)))
@@ -681,7 +675,7 @@ lemma cont_Gf (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) : Continuous (Gf 
   exact h1.sub (continuous_const.mul h2)
 
 /- English proof (translation)
-Establish `h : Continuous (fun g : B.Mat k (j + ρ) => Zh k j ρ g)` using `continuous_matrix fun a b => by`. Unfold `Zh`. Conclude with `continuous_id.matrix_elem _ _`. Conclude with `h.matrix_det`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma cont_DjU (k j ρ : ℕ) : Continuous (DjU k j ρ) := by
   have h : Continuous (fun g : B.Mat k (j + ρ) => Zh k j ρ g) :=
@@ -691,9 +685,9 @@ lemma cont_DjU (k j ρ : ℕ) : Continuous (DjU k j ρ) := by
   exact h.matrix_det
 
 /- English proof (translation)
-Use `letI : SeminormedRing (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpSemiNormedRing`. Use `letI : NormedRing (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℂ (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedAlgebra`. Use `letI : NormedAlgebra ℚ (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedAlgebra`. Establish `hcs : CompleteSpace (Matrix (Fin n) (Fin n) ℂ)` using `FiniteDimensional.complete ℂ _`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Conclude with `(@NormedSpace.exp_continuous _ _ _ hcs).comp (Complex.continuous_ofReal.smul continuous_const)`.
+A detailed English derivation is pending.
 -/
 private theorem continuous_exp_real_smul_matrix {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) :
     Continuous fun t : ℝ => NormedSpace.exp ((t : ℂ) • X) := by
@@ -705,11 +699,9 @@ private theorem continuous_exp_real_smul_matrix {n : ℕ} (X : Matrix (Fin n) (F
   exact (@NormedSpace.exp_continuous _ _ _ hcs).comp (Complex.continuous_ofReal.smul continuous_const)
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => exact h`. Consider the case `cons X w ih`. Introduce `g hg`. Establish `hc : ContinuousAt (fun t : ℝ => g * NormedSpace.exp ((t : ℂ) • X)) 0` using `(continuous_const.mul (continuous_exp_real_smul_matrix X)).continuousAt`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hmem : (fun t : ℝ => g * NormedSpace.exp ((t : ℂ) • X)) ⁻¹' O ∈ nhds (0 : ℝ)` using `hc.preimage_mem_nhds (by simpa using hO.mem_nhds hg)`. Establish `hev : (fun t : ℝ => B.Rw w f (g * NormedSpace.exp ((t : ℂ) • X))) =ᶠ[nhds 0] fun _ => 0` using `by filter_upwards [hmem] with t ht`. Conclude with `ih _ ht`. Use `show deriv (fun t : ℝ => B.Rw w f (g * NormedSpace.exp ((t : ℂ) • X))) 0 = 0`. Rewrite using `[hev.deriv_eq]`.
-
-Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma Rw_vanish {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {O : Set (B.Mat k r)} (hO : IsOpen O)
     {f : B.Mat k r → E} (h : ∀ g ∈ O, f g = 0) (w : List (B.Mat k r)) : ∀ g ∈ O, B.Rw w f g = 0 := by
@@ -729,23 +721,21 @@ lemma Rw_vanish {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E
     simp
 
 /- English proof (translation)
-Introduce `hGf _ hZh`. Introduce `k p s ρ Wp Wq _ _ _ _ _ ι _ U C₂ hOk f Z _ γ _ hγS`. Take `⟨_, _, hz, hz', _, hχ, hχε, _, hsupp, _⟩` from `hOk`. Take `⟨_, _, hχ0⟩` from `hχ`. Take `⟨_, _, hχε0⟩` from `hχε`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hlow : Gf k ρ (lowV k (p + s) ρ U.z) (lowV k (p + s) ρ U.z') γ < U.ε'` using `not_le.mp (fun h => hγS h)`. Set `O : Set (B.Mat k (p + s + ρ))` to `{g | DjU k (p + s) ρ g ∉ tsupport U.χ} ∪ {g | Gf k (p + s + ρ) U.z U.z' g < U.ε}`. Establish `hO : IsOpen O` using `((isClosed_tsupport U.χ).isOpen_compl.preimage (cont_DjU k (p + s) ρ)).union (isOpen_Iio.preimage (cont_Gf k (p + s + ρ) U.z U.z'))`. Establish `hOz : ∀ g ∈ O, cutDG k (p + s) ρ U.z U.z' U.χ U.χε f g = 0`. Introduce `g hg`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `hg with hg | hg` into its components or cases. Establish `h0 : U.χ (DjU k (p + s) ρ g) = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hg (subset_tsupport _ hne)`. Use `show (U.χ (DjU k (p + s) ρ g) * ((U.χε (Gf k (p + s + ρ) U.z U.z' g) : ℝ) : ℂ)) • f g = 0`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0, zero_mul, zero_smul]`. Use `show (U.χ (DjU k (p + s) ρ g) * ((U.χε (Gf k (p + s + ρ) U.z U.z' g) : ℝ) : ℂ)) • f g = 0`. Rewrite using `[hχε0 _ hg, Complex.ofReal_zero, mul_zero, zero_smul]`. Establish `hzero : ∀ ξ, U.F1 f (gaXi k ρ U.σ U.d ξ Z γ) = 0`. Introduce `ξ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hg₀O : gaXi k ρ U.σ U.d ξ Z γ ∈ O`. Distinguish the cases in `hw : DjU k (p + s) ρ (gaXi k ρ U.σ U.d ξ Z γ) ∈ tsupport U.χ`. Use `Or.inr ?_` and prove the remaining obligations. Establish `hdet : DjU k (p + s) ρ (gaXi k ρ U.σ U.d ξ Z γ) = (ZjH U.σ U.d ξ.2 Z).det` using `by show (Zh k (p + s) ρ ((Rn k (p + s) ρ ξ.1.1)⁻¹ * mMap k (p + s) ρ (ZjH U.σ U.d ξ.2 Z) γ * Rn k (p + s) ρ ξ.1.2)).det = _`. Rewrite using `[hZh k (p + s) ρ ξ.1.1 ξ.1.2 (ZjH U.σ U.d ξ.2 Z) γ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `show Gf k (p + s + ρ) U.z U.z' ((Rn k (p + s) ρ ξ.1.1)⁻¹ * mMap k (p + s) ρ (ZjH U.σ U.d ξ.2 Z) γ * Rn k (p + s) ρ ξ.1.2) < U.ε`. Rewrite using `[hGf k (p + s) ρ U.z U.z' hz hz' ξ.1.1 ξ.1.2 (ZjH U.σ U.d ξ.2 Z) γ]`. Rewrite `hw` using `[hdet]`. Establish `hne : (ZjH U.σ U.d ξ.2 Z).det ≠ 0` using `fun h => hχ0 (h ▸ hw)`. Establish `hN : 0 < Complex.normSq (ZjH U.σ U.d ξ.2 Z).det` using `Complex.normSq_pos.2 hne`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Prove the first alternative.
 
-Establish `hs` using `hsupp _ hw`. Rewrite `hs` using `[← Complex.normSq_eq_norm_sq]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `Or.inl hw`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `show B.opApply (U.Θ i) (cutDG k (p + s) ρ U.z U.z' U.χ U.χε f) (gaXi k ρ U.σ U.d ξ Z γ) = 0`. Unfold `B.opApply`. Apply `List.sum_eq_zero` to reduce the goal to its premises. Introduce `y hy`. Take `⟨T, _, rfl⟩` from `List.mem_map.1 hy`.
-
-Rewrite using `[Rw_vanish hO hOz T.word _ hg₀O, map_zero]`. Use `show ∫ ξ, psiStar k ρ U.σ U.z U.z' ξ • U.F1 f (gaXi k ρ U.σ U.d ξ Z γ) ∂(muXi k p s ρ U.σ) = 0`. Simplify using `only [hzero, smul_zero, MeasureTheory.integral_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem phiSuppGOfParts : PhiSuppGOfParts := by
   intro hGf _ hZh
@@ -807,47 +797,47 @@ end Formalism.FourierDecayAlt.P.Ux8
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-The claim follows from `Ux8.ccMono`.
+A detailed English derivation is pending.
 -/
 theorem compactly_supported_monotone : Formalism.FourierDecayAlt.U.CCMono := Ux8.ccMono
 /- English proof (translation)
-The claim follows from `Ux8.seminormOfForm`.
+A detailed English derivation is pending.
 -/
 theorem seminorm_of_form : Formalism.FourierDecayAlt.U.SeminormOfForm := Ux8.seminormOfForm
 /- English proof (translation)
-The claim follows from `Ux8.seminormCompletion`.
+A detailed English derivation is pending.
 -/
 theorem seminorm_completion : Formalism.FourierDecayAlt.U.SeminormCompletion := Ux8.seminormCompletion
 /- English proof (translation)
-The claim follows from `Ux8.starPi`.
+A detailed English derivation is pending.
 -/
 theorem star_projection : Formalism.FourierDecayAlt.U.StarPi := Ux8.starPi
 /- English proof (translation)
-The claim follows from `Ux8.phiSuppGOfParts`.
+A detailed English derivation is pending.
 -/
 theorem phi_support_level_of_parts : Formalism.FourierDecayAlt.U.PhiSuppGOfParts := Ux8.phiSuppGOfParts
 /- English proof (translation)
-The claim follows from `Ux8.corollary_u2_of_parts_holds`.
+A detailed English derivation is pending.
 -/
 theorem corollary_u2_of_parts : Formalism.FourierDecayAlt.U.GermExpansionHypothesisFromComponents := Ux8.corollary_u2_of_parts_holds
 /- English proof (translation)
-The claim follows from `Ux8.useDerivBoundOfParts`.
+A detailed English derivation is pending.
 -/
 theorem derivative_bound_use_of_parts : Formalism.FourierDecayAlt.U.UseDerivBoundOfParts := Ux8.useDerivBoundOfParts
 /- English proof (translation)
-The claim follows from `Ux8.useGermOfParts`.
+A detailed English derivation is pending.
 -/
 theorem germ_expansion_of_parts : Formalism.FourierDecayAlt.U.UseGermOfParts := Ux8.useGermOfParts
 /- English proof (translation)
-The claim follows from `Ux8.useGermTopOfParts`.
+A detailed English derivation is pending.
 -/
 theorem germ_top_level_of_parts : Formalism.FourierDecayAlt.U.UseGermTopOfParts := Ux8.useGermTopOfParts
 /- English proof (translation)
-The claim follows from `Ux8.useGermTopCountOfParts`.
+A detailed English derivation is pending.
 -/
 theorem germ_top_count_of_parts : Formalism.FourierDecayAlt.U.UseGermTopCountOfParts := Ux8.useGermTopCountOfParts
 /- English proof (translation)
-The claim follows from `Ux8.germInFormOfParts`.
+A detailed English derivation is pending.
 -/
 theorem germ_in_form_of_parts : Formalism.FourierDecayAlt.U.GermInFormOfParts := Ux8.germInFormOfParts
 

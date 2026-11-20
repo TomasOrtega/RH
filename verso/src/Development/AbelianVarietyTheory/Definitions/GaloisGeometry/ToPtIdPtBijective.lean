@@ -39,18 +39,18 @@ theorem resHom_apply (σ : k →+* k') {B B' : CommAlgCat.{0} k'} (f : B ⟶ B')
     (resHom σ f).hom b = f.hom b := rfl
 
 /- English proof (translation)
-The claim follows from `Spec.map_comp _ _`.
+A detailed English derivation is pending.
 -/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := Spec.map_comp _ _
 
 /- English proof (translation)
-The claim follows from `Spec.map_id _`.
+A detailed English derivation is pending.
 -/
 theorem spMap_id' (A : Type) [CommRing A] : spMap (RingHom.id A) = 𝟙 _ := Spec.map_id _
 
 /- English proof (translation)
-The claim follows from `congrArg CommRingCat.Hom.hom (Spec.map_injective h)`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_spMap_eq {A B : Type} [CommRing A] [CommRing B] {f g : A →+* B} (h : spMap f = spMap g) :
     f = g := congrArg CommRingCat.Hom.hom (Spec.map_injective h)
@@ -80,7 +80,7 @@ instance : Category.{0} (AffPt s) where
   assoc _ _ _ := Subtype.ext (Category.assoc _ _ _)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext h`.
+A detailed English derivation is pending.
 -/
 @[ext] theorem hom_ext {T T' : AffPt s} {φ ψ : T ⟶ T'} (h : φ.1 = ψ.1) : φ = ψ := Subtype.ext h
 
@@ -111,7 +111,7 @@ def ptCoef : CoefMap σ (OPt s) F where
   smul _ _ _ := rfl
 
 /- English proof (translation)
-Take `rfl : x = x'` from `funext e`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem pull_ptCoef_congr {x' : ∀ T : C, Sp (F.obj T) ⟶ X}
     (hx' : ∀ T, x' T ≫ s = spMap ((algebraMap k' (F.obj T)).comp σ))
@@ -141,7 +141,7 @@ section Pull
 variable {s : X ⟶ Sp k} {s' : X' ⟶ Sp k'} {s'' : X'' ⟶ Sp k''} {σ : k →+* k'} {τ : k' →+* k''}
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, h, ← Category.assoc, T.w, spMap_comp']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_w {φ : X' ⟶ X} (h : φ ≫ s = s' ≫ spMap σ) (T : AffPt s') :
     (T.x ≫ φ) ≫ s = spMap ((algebraMap k' T.B).comp σ) := by
@@ -155,7 +155,7 @@ def HdR.pullSemi {φ : X' ⟶ X} (h : φ ≫ s = s' ≫ spMap σ) (n : ℕ) : Hd
   Hyp.pull (pullCoef h) n
 
 /- English proof (translation)
-Rewrite using `[hf, spMap_id', Category.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem over_id {s' : X' ⟶ Sp k} {f : X' ⟶ X} (hf : f ≫ s = s') : f ≫ s = s' ≫ spMap (RingHom.id k) := by
   rw [hf, spMap_id', Category.comp_id]
@@ -180,7 +180,7 @@ theorem ptCoef_comp {φ : X' ⟶ X} {ψ : X'' ⟶ X'} (h : φ ≫ s = s' ≫ spM
     ptCoef (F := OPt s'') (fun T ↦ (T.x ≫ ψ) ≫ φ) hx hc = (pullCoef h).comp (pullCoef h') := rfl
 
 /- English proof (translation)
-Use `(LinearMap.congr_fun (pull_ptCoef_congr (F := OPt s) (σ := RingHom.id k) (fun T ↦ T.x ≫ 𝟙 X) (comp_w (over_id (Category.id_comp s))) (fun _ _ a ↦ (Category.assoc _ _ _).symm.trans (congrArg (· ≫ 𝟙 X) a.2)) (x' := fun T ↦ T.x) (fun T ↦ T.w) (fun _ _ a ↦ a.2) (fun T ↦ Category.comp …` and prove the remaining obligations. Conclude with `(congrArg (fun m ↦ Hyp.pull m n c) ptCoef_self).trans (Hyp.pull_id c)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem HdR.pull_id (n : ℕ) (c : HdR s n) : HdR.pull (f := 𝟙 X) (Category.id_comp s) n c = c := by
   refine (LinearMap.congr_fun (pull_ptCoef_congr (F := OPt s) (σ := RingHom.id k)
@@ -190,9 +190,7 @@ theorem HdR.pull_id (n : ℕ) (c : HdR s n) : HdR.pull (f := 𝟙 X) (Category.i
   exact (congrArg (fun m ↦ Hyp.pull m n c) ptCoef_self).trans (Hyp.pull_id c)
 
 /- English proof (translation)
-Establish `hx : ∀ T : AffPt s'', ((T.x ≫ ψ) ≫ φ) ≫ s = spMap ((algebraMap k'' T.B).comp (τ.comp σ))` using `fun T ↦ (Category.assoc _ _ _).trans (comp_w h'' T)`. Establish `hc : ∀ ⦃T T' : AffPt s''⦄ (a : T ⟶ T'), spMap (mp (OPt s'') a : (OPt s'').obj T →+* (OPt s'').obj T') ≫ (T.x ≫ ψ) ≫ φ = (T'.x ≫ ψ) ≫ φ` using `fun _ _ a ↦ by`. Simplify using `only [← Category.assoc]`. Conclude with `congrArg (fun y ↦ (y ≫ ψ) ≫ φ) a.2`. Use `(LinearMap.congr_fun (pull_ptCoef_congr (F := OPt s'') (σ := τ.comp σ) (fun T ↦ T.x ≫ ψ ≫ φ) (comp_w h'') (fun _ _ a ↦ (Category.assoc _ _ _).symm.trans (congrArg (· ≫ ψ ≫ φ) a.2)) (x' := fun T ↦ (T.x ≫ ψ) ≫ φ) hx hc (fun T ↦ (Category.assoc _ _ _).symm) n) c).trans ?_` and prove the remaining obligations.
-
-Conclude with `(congrArg (fun m ↦ Hyp.pull m n c) (ptCoef_comp h h' hx hc)).trans (Hyp.pull_comp (pullCoef h) (pullCoef h') c)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem HdR.pullSemi_comp {φ : X' ⟶ X} {ψ : X'' ⟶ X'} (h : φ ≫ s = s' ≫ spMap σ)
     (h' : ψ ≫ s' = s'' ≫ spMap τ) (h'' : (ψ ≫ φ) ≫ s = s'' ≫ spMap (τ.comp σ)) (n : ℕ) (c : HdR s n) :
@@ -212,7 +210,7 @@ theorem HdR.pullSemi_comp {φ : X' ⟶ X} {ψ : X'' ⟶ X'} (h : φ ≫ s = s' �
     (Hyp.pull_comp (pullCoef h) (pullCoef h') c)
 
 /- English proof (translation)
-The claim follows from `HdR.pullSemi_comp (over_id hf) (over_id hg) _ n c`.
+A detailed English derivation is pending.
 -/
 theorem HdR.pull_comp {s' : X' ⟶ Sp k} {s'' : X'' ⟶ Sp k} {f : X' ⟶ X} {g : X'' ⟶ X'}
     (hf : f ≫ s = s') (hg : g ≫ s' = s'') (n : ℕ) (c : HdR s n) :
@@ -220,14 +218,14 @@ theorem HdR.pull_comp {s' : X' ⟶ Sp k} {s'' : X'' ⟶ Sp k} {f : X' ⟶ X} {g 
   HdR.pullSemi_comp (over_id hf) (over_id hg) _ n c
 
 /- English proof (translation)
-The claim follows from `Hyp.pull_mem_fil (pullCoef h) hc`.
+A detailed English derivation is pending.
 -/
 theorem HdR.pullSemi_mem_fil {φ : X' ⟶ X} (h : φ ≫ s = s' ≫ spMap σ) {p n : ℕ} {c : HdR s n}
     (hc : c ∈ HdR.fil s p n) : HdR.pullSemi h n c ∈ HdR.fil s' p n :=
   Hyp.pull_mem_fil (pullCoef h) hc
 
 /- English proof (translation)
-The claim follows from `HdR.pullSemi_mem_fil (over_id hf) hc`.
+A detailed English derivation is pending.
 -/
 theorem HdR.pull_mem_fil {s' : X' ⟶ Sp k} {f : X' ⟶ X} (hf : f ≫ s = s') {p n : ℕ} {c : HdR s n}
     (hc : c ∈ HdR.fil s p n) : HdR.pull hf n c ∈ HdR.fil s' p n :=
@@ -237,7 +235,7 @@ def HdRF.pullSemi {φ : X' ⟶ X} (h : φ ≫ s = s' ≫ spMap σ) (p n : ℕ) :
   HypF.pull (pullCoef h) p n
 
 /- English proof (translation)
-The claim follows from `HypF.toHyp_pull (pullCoef h) c`.
+A detailed English derivation is pending.
 -/
 theorem HdRF.toHdR_pullSemi {φ : X' ⟶ X} (h : φ ≫ s = s' ≫ spMap σ) {p n : ℕ} (c : HdRF s p n) :
     HdRF.toHdR s' p n (HdRF.pullSemi h p n c) = HdR.pullSemi h n (HdRF.toHdR s p n c) :=
@@ -256,7 +254,7 @@ def affCoef : CoefMap (RingHom.id k) (OPt s) (OAff s) :=
 def HdR.toAff (n : ℕ) : HdR s n →ₗ[k] Hyp (OAff s) n := Hyp.pull (affCoef s) n
 
 /- English proof (translation)
-The claim follows from `Hyp.pull_mem_fil (affCoef s) hc`.
+A detailed English derivation is pending.
 -/
 theorem HdR.toAff_mem_fil {p n : ℕ} {c : HdR s n} (hc : c ∈ HdR.fil s p n) :
     HdR.toAff s n c ∈ Hyp.fil (OAff s) p n :=
@@ -269,17 +267,17 @@ section Fil
 variable (s : X ⟶ Sp k)
 
 /- English proof (translation)
-The claim follows from `Hyp.fil_zero _ n`.
+A detailed English derivation is pending.
 -/
 theorem HdR.fil_zero (n : ℕ) : HdR.fil s 0 n = ⊤ := Hyp.fil_zero _ n
 
 /- English proof (translation)
-The claim follows from `Hyp.fil_eq_bot _ (Nat.lt_succ_self n)`.
+A detailed English derivation is pending.
 -/
 theorem HdR.fil_succ (n : ℕ) : HdR.fil s (n + 1) n = ⊥ := Hyp.fil_eq_bot _ (Nat.lt_succ_self n)
 
 /- English proof (translation)
-The claim follows from `Hyp.fil_anti _ h n`.
+A detailed English derivation is pending.
 -/
 theorem HdR.fil_anti {p p' : ℕ} (h : p ≤ p') (n : ℕ) : HdR.fil s p' n ≤ HdR.fil s p n :=
   Hyp.fil_anti _ h n
@@ -303,12 +301,12 @@ def toPt (T : AffPt (algStr k B)) : B →ₐ[k] T.B :=
       exact congrArg (fun g : k →+* T.B ↦ g r) (eq_of_spMap_eq e) }
 
 /- English proof (translation)
-The claim follows from `Spec.map_preimage T.x`.
+A detailed English derivation is pending.
 -/
 theorem spMap_toPt (T : AffPt (algStr k B)) : spMap (toPt T : B →+* T.B) = T.x := Spec.map_preimage T.x
 
 /- English proof (translation)
-Establish `e : spMap (((φ.1.hom : T.B →+* T'.B)).comp (toPt T : B →+* T.B)) = spMap (toPt T' : B →+* T'.B)`. Rewrite using `[spMap_comp', spMap_toPt, spMap_toPt]`. Conclude with `φ.2`. Conclude with `congrArg (fun g : B →+* T'.B ↦ g b) (eq_of_spMap_eq e)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toPt_comp ⦃T T' : AffPt (algStr k B)⦄ (φ : T ⟶ T') (b : B) :
     mp (OPt (algStr k B)) φ (toPt T b) = toPt T' b := by
@@ -322,7 +320,7 @@ def idPt_isInitial : Limits.IsInitial (idPt k B) :=
       (((Category.comp_id _).symm.trans φ.2).trans (spMap_toPt T).symm))))
 
 /- English proof (translation)
-Establish `e : spMap (toPt (idPt k B) : B →+* (idPt k B).B) = spMap (RingHom.id B)` using `(spMap_toPt _).trans (spMap_id' B).symm`. Conclude with `congrArg (fun g : B →+* B ↦ g b) (@eq_of_spMap_eq B (idPt k B).B _ _ (toPt (idPt k B)) (RingHom.id B) e)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem toPt_idPt (b : B) : toPt (idPt k B) b = b := by
   have e : spMap (toPt (idPt k B) : B →+* (idPt k B).B) = spMap (RingHom.id B) :=
@@ -330,7 +328,7 @@ theorem toPt_idPt (b : B) : toPt (idPt k B) b = b := by
   exact congrArg (fun g : B →+* B ↦ g b) (@eq_of_spMap_eq B (idPt k B).B _ _ (toPt (idPt k B)) (RingHom.id B) e)
 
 /- English proof (translation)
-The claim follows from `Function.bijective_iff_has_inverse.2 ⟨fun b ↦ b, fun b ↦ toPt_idPt b, fun b ↦ toPt_idPt b⟩`.
+A detailed English derivation is pending.
 -/
 theorem toPt_idPt_bijective : Function.Bijective (toPt (idPt k B)) :=
   Function.bijective_iff_has_inverse.2 ⟨fun b ↦ b, fun b ↦ toPt_idPt b, fun b ↦ toPt_idPt b⟩
@@ -340,7 +338,7 @@ def HdR.ofForm (n : ℕ) : LinearMap.ker (dOm k B n) →ₗ[k] HdR (algStr k B) 
     (fun _ _ φ b ↦ toPt_comp φ b) n
 
 /- English proof (translation)
-The claim follows from `coneCl_mem_fil (R := k) (B := B) (C := AffPt (algStr k B)) (F := OPt (algStr k B)) (fun T ↦ toPt T) (fun _ _ φ b ↦ toPt_comp φ b) ω`.
+A detailed English derivation is pending.
 -/
 theorem HdR.ofForm_mem_fil {n : ℕ} (ω : LinearMap.ker (dOm k B n)) :
     HdR.ofForm n ω ∈ HdR.fil (algStr k B) n n :=
@@ -348,7 +346,7 @@ theorem HdR.ofForm_mem_fil {n : ℕ} (ω : LinearMap.ker (dOm k B n)) :
     (fun _ _ φ b ↦ toPt_comp φ b) ω
 
 /- English proof (translation)
-The claim follows from `coneCl_eq_zero_iff (R := k) (B := B) (C := AffPt (algStr k B)) (F := OPt (algStr k B)) (fun T ↦ toPt T) (fun _ _ φ b ↦ toPt_comp φ b) (T₀ := idPt k B) toPt_idPt_bijective ω`.
+A detailed English derivation is pending.
 -/
 theorem HdR.ofForm_eq_zero_iff {n : ℕ} (ω : LinearMap.ker (dOm k B (n + 1))) :
     HdR.ofForm (n + 1) ω = 0 ↔ ∃ η, dOm k B n η = ω.1 :=
@@ -362,9 +360,9 @@ def HdR.affZeroEquiv : LinearMap.ker (dOm k B 0) ≃ₗ[k] HdR (algStr k B) 0 :=
 variable (k) in
 
 /- English proof (translation)
-Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[coe_dOm, coe_eq_algebraMap_zeroEquiv x, dDR_algebraMap]`. Establish `: D k k (exteriorPower.zeroEquiv k Ω[k⁄k] x) = 0`. Rewrite using `[← Algebra.algebraMap_self_apply (exteriorPower.zeroEquiv k Ω[k⁄k] x)]`. Conclude with `(D k k).map_algebraMap _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, map_zero]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem dOm_zero_self (x : Om k k 0) : dOm k k 0 x = 0 := by
   refine Subtype.ext ?_
@@ -390,11 +388,11 @@ def tdtForm : LinearMap.ker (dOm k k[X] 1) :=
 open Polynomial in
 
 /- English proof (translation)
-Rewrite using `[Ne, HdR.ofForm_eq_zero_iff]`. Introduce and unpack `⟨η, hη⟩`. Establish `e1` using `congrArg Subtype.val hη`. Rewrite `e1` using `[coe_dOm, coe_eq_algebraMap_zeroEquiv η, dDR_algebraMap]`. Establish `e2` using `ExteriorAlgebra.ι_inj k[X] _ _ |>.1 e1`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `f3` using `congrArg (polynomialEquiv k) e2`. Simplify using `only [Derivation.coeFn_coe, map_smul, polynomialEquiv_D, derivative_X, smul_eq_mul, mul_one] at f3`. Use `congrArg (coeff · 1) f3` as an intermediate fact. Simplify using `only [coeff_derivative, coeff_X_one] at this`. Establish `hc` using `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `hc` using `[show ((1 : ℕ) : k) + 1 = 2 by norm_num, h2, mul_zero]`. Conclude with `zero_ne_one hc`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HdR.ofForm_tdt_ne_zero [Nontrivial k] (h2 : (2 : k) = 0) : HdR.ofForm 1 (tdtForm k) ≠ 0 := by
   rw [Ne, HdR.ofForm_eq_zero_iff]
@@ -414,22 +412,22 @@ theorem HdR.ofForm_tdt_ne_zero [Nontrivial k] (h2 : (2 : k) = 0) : HdR.ofForm 1 
 end Affine
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example (s : X ⟶ Sp k) : Module k (HdR s 5) := inferInstance
 
 /- English proof (translation)
-The claim follows from `HdR.fil_succ s 1`.
+A detailed English derivation is pending.
 -/
 example (s : X ⟶ Sp k) : HdR.fil s 2 1 = ⊥ := HdR.fil_succ s 1
 
 /- English proof (translation)
-The claim follows from `(HdR.pointEquiv ℤ).symm.toEquiv.nontrivial`.
+A detailed English derivation is pending.
 -/
 example : Nontrivial (HdR (algStr ℤ ℤ) 0) := (HdR.pointEquiv ℤ).symm.toEquiv.nontrivial
 
 /- English proof (translation)
-The claim follows from `fun h ↦ HdR.ofForm_tdt_ne_zero (k := ZMod 2) rfl ((Submodule.mem_bot _).1 (h ▸ HdR.ofForm_mem_fil (tdtForm (ZMod 2))))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : HdR.fil (algStr (ZMod 2) (Polynomial (ZMod 2))) 1 1 ≠ ⊥ := fun h ↦
   HdR.ofForm_tdt_ne_zero (k := ZMod 2) rfl

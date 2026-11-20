@@ -8,9 +8,9 @@ namespace GlobalTheory.WeakApprox
 variable {L : Type} [Field L] [NumberField L]
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `IsDedekindDomain.exists_forall_sub_mem_ideal (s := S) (fun v : HeightOneSpectrum (𝓞 L) => v.asIdeal) (fun v => multiplicity v.asIdeal (Ideal.span {t v}) + 1) (fun v _ => v.prime) (fun v _ w _ hvw h => hvw (HeightOneSpectrum.ext h)) (fun v => t v)`. Use `⟨y, fun v hv => ?_⟩` and prove the remaining obligations. Establish `h1` using `(v.intValuation_le_pow_iff_mem _ _).2 (hy v hv)`. Establish `h2` using `v.intValuation_eq_exp_neg_multiplicity (ht v hv)`. Establish `e1 : ((y : L) - (t v : L)) = algebraMap (𝓞 L) L (y - t v)` using `by simp`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : ((t v : L)) = algebraMap (𝓞 L) L (t v)` using `rfl`. Rewrite using `[e1, e2, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.valuation_of_algebraMap, h2, ← WithZero.exp_add]`. Use `h1.trans (le_of_eq ?_)` and prove the remaining obligations. Use `congr 1`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -35,7 +35,7 @@ theorem exists_int_approx (S : Finset (HeightOneSpectrum (𝓞 L))) (t : HeightO
   ring
 
 /- English proof (translation)
-Rewrite using `[HeightOneSpectrum.algebraMap_adicCompletion]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma valued_algebraMap_adicCompletion_eq_valuation (K : Type) [Field K] [NumberField K] (P : HeightOneSpectrum (𝓞 K)) (a : K) :
     Valued.v (algebraMap K (P.adicCompletion K) a) = P.valuation K a := by
@@ -43,7 +43,7 @@ private lemma valued_algebraMap_adicCompletion_eq_valuation (K : Type) [Field K]
   simp
 
 /- English proof (translation)
-Establish `h : WithZero.exp (-1 : ℤ) < 1`. Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions. Simplify using `using mul_lt_mul_of_pos_right h (zero_lt_iff.2 hx)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma exp_neg_one_mul_lt_of_ne_zero {x : WithZero (Multiplicative ℤ)} (hx : x ≠ 0) : WithZero.exp (-1 : ℤ) * x < x := by
   have h : WithZero.exp (-1 : ℤ) < 1 := by
@@ -51,33 +51,29 @@ private lemma exp_neg_one_mul_lt_of_ne_zero {x : WithZero (Multiplicative ℤ)} 
   simpa using mul_lt_mul_of_pos_right h (zero_lt_iff.2 hx)
 
 /- English proof (translation)
-Introduce `L _ _ R z hz`. Establish `happ : ∀ P, ∃ a : L, P ∈ R → Valued.v (z P - algebraMap L (P.adicCompletion L) a) < WithZero.exp (-1 : ℤ) * Valued.v (z P)`. Introduce `P`. Distinguish the cases in `hP : P ∈ R`. Take `⟨π, hπ⟩` from `P.valuation_exists_uniformizer L`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `hπ0 : π ≠ 0`. Introduce `h`. Rewrite `hπ` using `[h, map_zero]`. Conclude with `WithZero.exp_ne_zero hπ.symm`. Establish `hc : algebraMap L (P.adicCompletion L) π * z P ≠ 0` using `mul_ne_zero ((map_ne_zero _).2 hπ0) (hz P hP)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `GlobalTheory.adicCompletion_exists_approx_lt L P (z P) _ hc`. Use `⟨a, fun _ => ?_⟩` and prove the remaining obligations. Rewrite `ha` using `[map_mul, valued_algebraMap_adicCompletion_eq_valuation, hπ]`. Then use the resulting hypothesis. Conclude with `⟨0, fun h => absurd h hP⟩`. Use `choose a ha using happ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨d, hd⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors (𝓞 L)) R a`. Establish `hint : ∀ P, ∃ r : 𝓞 L, P ∈ R → algebraMap (𝓞 L) L r = (d : 𝓞 L) • a P`. Introduce `P`. Distinguish the cases in `hP : P ∈ R`. Take `⟨r, hr⟩` from `hd P hP`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨r, fun _ => hr⟩`. Conclude with `⟨0, fun h => absurd h hP⟩`. Use `choose t ht using hint`. Use `set D : L := algebraMap (𝓞 L) L d with hDdef`. Establish `hD : D ≠ 0` using `(map_ne_zero_iff (algebraMap (𝓞 L) L) (IsFractionRing.injective (𝓞 L) L)).2 (nonZeroDivisors.coe_ne_zero d)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `htP : ∀ P ∈ R, algebraMap (𝓞 L) L (t P) = D * a P` using `fun P hP => by`. Rewrite using `[ht P hP, Algebra.smul_def]`. Establish `ha0 : ∀ P ∈ R, a P ≠ 0`. Introduce `P hP h`. Establish `h'` using `ha P hP`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h'` using `[h, map_zero, sub_zero]`. Conclude with `lt_irrefl _ (h'.trans (exp_neg_one_mul_lt_of_ne_zero ((Valuation.ne_zero_iff _).2 (hz P hP))))`. Establish `ht0 : ∀ P ∈ R, t P ≠ 0`. Introduce `P hP h`. Establish `h'` using `htP P hP`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Rewrite `h'` using `[h, map_zero]`. Conclude with `mul_ne_zero hD (ha0 P hP) h'.symm`. Take `⟨y, hy⟩` from `exists_int_approx (L := L) R t ht0`. Establish `hy' : ∀ P ∈ R, P.valuation L (algebraMap (𝓞 L) L y - algebraMap (𝓞 L) L (t P)) ≤ WithZero.exp (-1 : ℤ) * P.valuation L (algebraMap (𝓞 L) L (t P))` using `hy`. Break down `R.eq_empty_or_nonempty with hR | ⟨P0, hP0⟩` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨1, by simp [hR]⟩`. Establish `hy0 : algebraMap (𝓞 L) L y ≠ 0`. Introduce `h`. Establish `h'` using `hy' P0 hP0`. Rewrite `h'` using `[h, zero_sub, Valuation.map_neg]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hv : P0.valuation L (algebraMap (𝓞 L) L (t P0)) ≠ 0` using `(Valuation.ne_zero_iff _).2 ((map_ne_zero_iff _ (IsFractionRing.injective (𝓞 L) L)).2 (ht0 P0 hP0))`. Conclude with `lt_irrefl _ (h'.trans_lt (exp_neg_one_mul_lt_of_ne_zero hv))`. Use `⟨Units.mk0 (algebraMap (𝓞 L) L y / D) (div_ne_zero hy0 hD), fun P hP => ?_⟩` and prove the remaining obligations. Simplify using `only [Units.val_mk0]`. Establish `hA` using `ha P hP`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `hza : Valued.v (algebraMap L (P.adicCompletion L) (a P)) = Valued.v (z P)`. Apply `Valuation.map_eq_of_sub_lt` to reduce the goal to its premises. Rewrite using `[Valuation.map_sub_swap]`. Conclude with `hA.trans (exp_neg_one_mul_lt_of_ne_zero ((Valuation.ne_zero_iff _).2 (hz P hP)))`. Establish `hsplit : z P - algebraMap L (P.adicCompletion L) (algebraMap (𝓞 L) L y / D) = (z P - algebraMap L _ (a P)) + algebraMap L _ (a P - algebraMap (𝓞 L) L y / D)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[map_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsplit]`. Use `Valuation.map_add_le _ hA.le ?_` and prove the remaining obligations. Rewrite using `[valued_algebraMap_adicCompletion_eq_valuation, ← hza, valued_algebraMap_adicCompletion_eq_valuation]`.
-
-Establish `e : a P - algebraMap (𝓞 L) L y / D = (algebraMap (𝓞 L) L (t P) - algebraMap (𝓞 L) L y) / D`. Rewrite using `[htP P hP]`. Clear the denominators using the available nonvanishing facts. Establish `hDv : P.valuation L D ≠ 0` using `(Valuation.ne_zero_iff _).2 hD`. Rewrite using `[e, map_div₀, Valuation.map_sub_swap, div_le_iff₀ (zero_lt_iff.2 hDv)]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_units_approx :
     ∀ (L : Type) [Field L] [NumberField L] (R : Finset (HeightOneSpectrum (𝓞 L)))

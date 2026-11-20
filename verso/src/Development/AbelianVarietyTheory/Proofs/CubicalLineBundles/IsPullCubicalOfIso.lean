@@ -16,7 +16,7 @@ section Charts
 variable {X Y : Scheme.{0}} {M : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
 
 /- English proof (translation)
-Take `⟨J, hJ⟩` from `GlobalTheory.DegPull.exists_good' hM z`. Rewrite using `[gen_trans hu r z hq (hJ.mem φ r), gen_trans hu' r z hq (hJ.mem φ r), mul_left_comm]`. Conclude with `congrArg _ (h J hJ)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_of_val (hM : M.IsLB) {u u' : LB.Gen (LB.LinComb M φ ε)} (hu : u.IsGen) (hu' : u'.IsGen)
     {Z : Scheme.{0}} (r : Z ⟶ Y) (z : Z) (α : (Z.presheaf.stalk z)ˣ)
@@ -34,11 +34,11 @@ variable {S S' : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {G' : Over
 omit [IsCommMonObj G] [IsCommMonObj G'] in
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `h`. Take `⟨ρ, hρ, H⟩` from `GlobalTheory.DegPull.exists_pmaps ((isGen_iff w).1 hw) L.isLB L'.isLB (K := PUnit) (φ' := fun _ => eSec G') (φ := fun _ => eSec G) (ε := fun _ => 1) f (fun _ => he) L.rig L.rigGen`. Take `⟨a, ha⟩` from `GlobalTheory.AbPackage.exists_unit_ratio L'.isLB (φ := fun _ : PUnit => eSec G') (ε := fun _ => 1) hρ L'.rigGen`. Set `b : Γ(G'.left, ⊤)ˣ` to `pullU G'.hom ⊤ a`. Use `⟨GlobalTheory.UU.scaleGen b w, (isGen_iff _).1 (GlobalTheory.UU.scaleGen_isGen b hw), fun Z r z p q hp hq => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs : eSec G' ≫ G'.hom = 𝟙 _` using `Over.w η[G']`. Establish `e : gw (GlobalTheory.UU.scaleGen b w) (r ≫ eSec G') z (p PUnit.unit) (q PUnit.unit) = gm r z ⊤ a * gw w (r ≫ eSec G') z (p PUnit.unit) (q PUnit.unit)`. Establish `hm : (r ≫ eSec G') z ∈ (L.L.pull F).U (fun _ => p PUnit.unit) ⊓ L'.L.U (q PUnit.unit)` using `⟨mem_pull.2 (hp PUnit.unit), hq PUnit.unit⟩`. Use `(map_mul _ _ _).trans (congrArg₂ (· * ·) ((gm_res _ z le_top hm b).trans ((gm_pull (r ≫ eSec G') G'.hom z ⊤ trivial a).trans ?_)) rfl)` and prove the remaining obligations. Rewrite using `[Category.assoc, hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (fun g => gm g z ⊤ a) (Category.comp_id r)`. Establish `e₂` using `chart_of_val L'.isLB (φ := fun _ : PUnit => eSec G') (ε := fun _ => 1) hρ L'.rigGen r z _ (ha Z r z) q (Set.mem_iInter.2 hq)`. Use `(H Z r z p q hp hq).trans ((congrArg (_ * ·) e₂).trans ?_)` and prove the remaining obligations. Rewrite using `[Fintype.prod_unique, Fintype.prod_unique, zpow_one, zpow_one, ← _root_.mul_assoc]`. Conclude with `congrArg (· * _) ((mul_comm _ _).trans e.symm)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rigidified (he : eSec G' ≫ F = f ≫ eSec G) (L : RigLB G) (L' : RigLB G')
     (h : LBIso L'.L (L.L.pull F)) : ∃ w : LB.Iso L'.L (L.L.pull F), PGen w ∧
@@ -66,11 +66,11 @@ theorem exists_rigidified (he : eSec G' ≫ F = f ≫ eSec G) (L : RigLB G) (L' 
   exact congrArg (· * _) ((mul_comm _ _).trans e.symm)
 
 /- English proof (translation)
-Establish `hψ : ∀ I : thK, thφ G' (x3 G') I ≫ F = (cubeMapOf gp).F3 ≫ thφ G (x3 G) I` using `fun I => (cubeMapOf gp).psum_comm I.down`. Take `⟨J, hJ⟩` from `GlobalTheory.DegPull.exists_good' L.isLB y`. Establish `q : ∀ a : T ⟶ G', (lift a (lift a a)).left ≫ (cubeMapOf gp).F3 = (lift (pushHom gp T a) (lift (pushHom gp T a) (pushHom gp T a))).left` using `fun a => hom_ext_triple _ fun i => by`. Rewrite using `[Category.assoc, cubeMap_comp_proj_three, ← Category.assoc, ← Over.comp_left, ← Over.comp_left]`. Apply the tactic sequence `fin_cases i <;> simp [x3] <;> rfl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `e` using `GlobalTheory.DegPull.pmaps_val hψ H (lift (1 : T ⟶ G') (lift 1 1)).left y hJ hJ'`. Rewrite `e` using `[q, map_one]`. Establish `p` using `prod_cub (1 : T ⟶ G') 1 1 (fun q => gw w q y (J (q ≫ F)) (J' q))`. Rewrite `p` using `[_root_.mul_one, _root_.mul_one]`. Establish `e'` using `((isCub_cubV c (T := Over.mk (T.hom ≫ f)) hJ).face 1 1).symm.trans (e.trans (congrArg₂ (· * ·) p rfl))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `alg : ∀ {U : Type} [CommGroup U] (a v : U), 1 = a * a⁻¹ * a⁻¹ * a⁻¹ * a * a * a * a⁻¹ * v → v = 1` using `fun a v h => by simpa using h.symm`. Conclude with `alg _ _ e'`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem val_origin (gp : IsGrpPullback G' G f F) {L : RigLB G} {L' : RigLB G'} (c : CubicalStr G L)
     {w : LB.Iso L'.L (L.L.pull F)} {t : LB.Gen (LB.LinComb L'.L (thφ G' (x3 G')) thε)}
@@ -94,9 +94,9 @@ theorem val_origin (gp : IsGrpPullback G' G f F) {L : RigLB G} {L' : RigLB G'} (
   exact alg _ _ e'
 
 /- English proof (translation)
-Establish `hψ : ∀ I : thK, thφ G' (x3 G') I ≫ F = (cubeMapOf gp).F3 ≫ thφ G (x3 G) I` using `fun I => (cubeMapOf gp).psum_comm I.down`. Take `⟨t, ht, H⟩` from `GlobalTheory.DegPull.exists_pmaps hw L.isLB L'.isLB (ε := thε) (cubeMapOf gp).F3 hψ c.t c.isGen`. Establish `key` using `gen_unique L'.isLB (φ := thφ G' (x3 G')) (ε := thε) (G3 G').hom (lift (1 : 𝟙_ (Over S') ⟶ G') (lift 1 1)).left (Over.w _) (GlobalTheory.UU.surjective_cube hG hA) ht c'.isGen (fun y J' hJ' => (val_origin gp c H (𝟙_ (Over S')) y J' hJ').trans ((isCub_cubV c' hJ').face 1 1).symm)`. Introduce `Z r z p q hp hq`. Establish `e` using `(chart_of_val L'.isLB (φ := thφ G' (x3 G')) (ε := thε) ht c'.isGen r z 1 (fun J hJ => (key Z r z J hJ).trans (_root_.one_mul _).symm) q (Set.mem_iInter.2 hq)).trans (_root_.one_mul _)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(H Z r z p q hp hq).trans (congrArg₂ (· * ·) rfl e)`.
+A detailed English derivation is pending.
 -/
 theorem pmaps_cube (hG : Out.GlobalFnsSt) (hA : IsAbelianScheme G') (gp : IsGrpPullback G' G f F) {L : RigLB G}
     {L' : RigLB G'} (c : CubicalStr G L) (c' : CubicalStr G' L') {w : LB.Iso L'.L (L.L.pull F)} (hw : PGen w) :
@@ -113,7 +113,7 @@ theorem pmaps_cube (hG : Out.GlobalFnsSt) (hA : IsAbelianScheme G') (gp : IsGrpP
   exact (H Z r z p q hp hq).trans (congrArg₂ (· * ·) rfl e)
 
 /- English proof (translation)
-Take `⟨w, hw, hr⟩` from `exists_rigidified (cubeMapOf gp).e_comm L L' h`. Conclude with `(isPullCubical_iff _ c c').2 ⟨w, hw, hr, pmaps_cube hG hA gp c c' hw⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isPullCubical_of_iso (hG : Out.GlobalFnsSt) (hA : IsAbelianScheme G') (gp : IsGrpPullback G' G f F)
     {L : RigLB G} {L' : RigLB G'} (c : CubicalStr G L) (c' : CubicalStr G' L') (h : LBIso L'.L (L.L.pull F)) :
@@ -122,7 +122,7 @@ theorem isPullCubical_of_iso (hG : Out.GlobalFnsSt) (hA : IsAbelianScheme G') (g
   exact (isPullCubical_iff _ c c').2 ⟨w, hw, hr, pmaps_cube hG hA gp c c' hw⟩
 
 /- English proof (translation)
-Introduce `hG E _ _ _ H S S' f t' t φ hA gp hact h`. Conclude with `⟨⟨cubeMapOf gp, gp, rfl, hact, isPullCubical_of_iso hG hA gp t.cub t'.cub h⟩, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_tripleMap : Out.GlobalFnsSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (S S' : Scheme.{0}) (f : S' ⟶ S) (t' : SAB H S') (t : SAB H S) (φ : t'.G.left ⟶ t.G.left), IsAbelianScheme t'.G → IsGrpPullback t'.G t.G f φ → (∀ a, (t'.act.act a).left ≫ φ = φ ≫ (t.act.act a).left) → LBIso t'.PP.L (t.PP.L.pull φ) → ∃ m : SABMap t' t f, m.φ = φ := by
   intro hG E _ _ _ H S S' f t' t φ hA gp hact h

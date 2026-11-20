@@ -4,7 +4,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.BorderMinorRotation.Ski
 namespace PI
 
 /- English proof (translation)
-Substitute `hk` using the available equality. Establish `hf : f = g` using `funext fun i => by simpa using hfg i`. Substitute `hf` using the available equality. Use function extensionality and compare the values at `i`. Simplify using `[bS]`.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem snoc_comp_cast_eq_bS_of_eq {n k t : ℕ} (hk : k = t) (h : t + 1 = k + 1) (f : Fin k → Fin n)
     (g : Fin t → Fin n) (es : Fin n) (hfg : ∀ i : Fin k, f i = g (Fin.cast hk i)) :
@@ -16,29 +16,27 @@ private theorem snoc_comp_cast_eq_bS_of_eq {n k t : ℕ} (hk : k = t) (h : t + 1
   simp [bS]
 
 /- English proof (translation)
-Introduce `A _ _ n m E e es v hG hB u w`. Take `⟨t, rfl⟩ : ∃ t, m = t + 1` from `⟨m - 1, by have := w.pos; omega⟩`. Establish `hexp` using `hLC A n (t + 1) E (bE e (bS v es) ∘ w.castSucc.succ.succAbove) (bS v es) (u - 1)`. Establish `hb1 : bS v es ∘ Fin.castSucc = v`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[bS]`. Establish `hb2 : bS v es (Fin.last (t + 1)) = es` using `by simp [bS]`. Rewrite `hexp` using `[Fin.sum_univ_succ, Fin.sum_univ_castSucc]`. Use `beta_reduce at hexp`. Rewrite `hexp` using `[hb1, hb2, Fin.succ_last, hX A n t E e es v hG hB u w, UnitaryGroupMassFormula.QmBorderFull.Four.mid_comp]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Nat.succ_eq_add_one] at hexp`. Establish `e1 : bE e (bS (v ∘ w.succAbove) es) ∘ Fin.succ = bS (v ∘ w.succAbove) es`. Use function extensionality and compare the values at `i`. Simplify using `[bE]`. Establish `e2 : bE e (bS (v ∘ w.succAbove) es) 0 = e` using `by simp [bE]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : bE e (bS (v ∘ w.succAbove) es) (Fin.last (t + 1)) = es`. Rewrite using `[← Fin.succ_last]`. Simplify using `[bE, bS]`. Establish `hees : e ≠ es` using `hB.2.1`. Rewrite `hexp` using `[Fin.succAbove_zero, e1, e2, e3, UnitaryGroupMassFormula.QmBorderFull.bL_last, UnitaryGroupMassFormula.QmBorderFull.Four.Tm_of_ne E _ hees, UnitaryGroupMassFormula.QmBorderFull.Four.rowPart hLR E hG e (v ∘ w.succAbove) v (fun x => hB.2.2.1 x) (u - 1)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `g1 : bE e (bS v es) ∘ Fin.succ = bS v es`. Use function extensionality and compare the values at `i`. Simplify using `[bE]`. Establish `g2 : bE e (bS v es) 0 = e` using `by simp [bE]`. Establish `hsk : ∀ i : Fin (t + 1), (v ∘ skip1 i : Fin t → Fin n) = v ∘ i.succAbove`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Use function extensionality and compare the values at `j`. Conclude with `congrArg v (hS1 t i j)`. Establish `hu1 : u - 1 - 1 = u - 2` using `by ring`. Establish `hu2 : u - 1 - ((t + 1 : ℕ) : ℂ) = u - ((t + 1 : ℕ) : ℂ) - 1` using `by ring`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[UnitaryGroupMassFormula.QmBorderFull.Four.mid_val (t := t + 1) e es v w, g2, UnitaryGroupMassFormula.QmBorderFull.Four.Tm_of_ne E u (hB.2.2.1 w), UnitaryGroupMassFormula.QmBorderFull.Four.mid_comp, g1, hexp]`. Rewrite using `[hu1, hu2]`. Simplify using `only [hsk, Fin.val_succ, Fin.coe_castSucc, Fin.val_zero, Fin.val_last]`. Rewrite using `[snoc_comp_cast_eq_bS_of_eq (k := t + 1 - 1) (t := t) rfl _ (v ∘ w.succAbove) (v ∘ w.succAbove) es (fun _ => rfl)]`. Establish `hT : ∀ x : Fin (t + 1), E e (v x) * Formalism.REAL.Tm E (u - ↑(t + 1) - 1) es es = Formalism.REAL.Tm E (u - ↑(t + 1) - 1) es es * E e (v x)` using `fun x => (UnitaryGroupMassFormula.QmBorderFull.tm_comm_E E hG _ es e (v x) hees.symm (hB.2.2.2 x)).symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `clear hexp hb1 hb2 e1 e2 e3 g1 g2 hu1 hu2 hX hLC hLR hS1 hsk`. Simplify using `only [UnitaryGroupMassFormula.QmBorderFull.Four.zmul, mul_smul_comm, smul_mul_assoc, smul_add, smul_smul, mul_add, Finset.mul_sum, Finset.smul_sum, Finset.sum_mul, mul_ite, mul_zero, smul_ite, smul_zero, mul_assoc, hT]`. Establish `k1 : ((-1 : ℤ) ^ (t + 1 + 0) * (-1) ^ ((w : ℕ) + 1)) = (-1) ^ ((w : ℕ) + 1 + (t + 1))` using `by ring`. Establish `k2 : ∀ a b : ℤ, a * (b * ((-1) ^ (w : ℕ) * (-1) ^ ((w : ℕ) + 1))) = -(a * b)`. Introduce `a b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Establish `hw : ((-1 : ℤ) ^ (w : ℕ)) * (-1) ^ ((w : ℕ) + 1) = -1`. Rewrite using `[pow_succ, ← mul_assoc, ← pow_add, ← two_mul, pow_mul]`. Evaluate the numerical expressions. Rewrite using `[hw]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `k3 : ∀ x : ℕ, (-1 : ℤ) ^ x * ((-1) ^ (t + 1 + (t + 1)) * (-1) ^ ((w : ℕ) + 1)) = -(-1) ^ ((w : ℕ) + x)`. Introduce `x`. Establish `: ((-1 : ℤ) ^ (t + 1 + (t + 1))) = 1`. Rewrite using `[← two_mul, pow_mul]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Establish `kite : ∀ (c : Prop) [Decidable c] (X : A), (if c then -X else 0) = -(if c then X else 0)`. Introduce `c _ X`. Apply the tactic sequence `split_ifs <;> simp`.
-
-Simplify using `only [k1, k2, k3, neg_smul, kite, Finset.sum_neg_distrib]`. Normalize the expressions using the abelian group laws.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 private theorem bfMid_of_expLastCol_expLastRow_skipSucc_bfCross (hLC : ExpLastCol) (hLR : ExpLastRow) (hS1 : SkipSucc)
     (hX : UnitaryGroupMassFormula.QmBorderFull.BFCross) : UnitaryGroupMassFormula.QmBorderFull.BFMid := by
@@ -107,7 +105,7 @@ private theorem bfMid_of_expLastCol_expLastRow_skipSucc_bfCross (hLC : ExpLastCo
   abel
 
 /- English proof (translation)
-Take `⟨hE, hS⟩` from `hES`. Take `⟨hFC, hLC⟩` from `hCol`. Take `⟨hFR, hLR⟩` from `hRow`. Take `⟨hS1, hS2⟩` from `hSkip`. Conclude with `UnitaryGroupMassFormula.QmBorderFull.borderFull_of hFC hS (bfMid_of_expLastCol_expLastRow_skipSucc_bfCross hLC hLR hS1 (UnitaryGroupMassFormula.QmBorderFull.Four.bfCross_of ⟨hFR, hLR⟩ ⟨hS1, hS2⟩))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem qmBorderFull_of (hES : PI.QmBorderES) (hCol : PI.QmColExp) (hRow : PI.QmRowExp) (hSkip : PI.QmSkip) :
     PI.QmBorderFull := by

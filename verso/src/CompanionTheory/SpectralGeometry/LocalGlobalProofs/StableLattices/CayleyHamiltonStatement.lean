@@ -14,14 +14,14 @@ section General
 variable {A : Type*} [Ring A] [Algebra ℂ A]
 
 /- English proof (translation)
-The claim follows from `eval₂_mul_noncomm (RingHom.id A) t h`.
+A detailed English derivation is pending.
 -/
 theorem eval_mul_of_commute (p q : A[X]) (t : A) (h : ∀ k, Commute (q.coeff k) t) :
     (p * q).eval t = p.eval t * q.eval t :=
   eval₂_mul_noncomm (RingHom.id A) t h
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ, eval_mul_of_commute _ _ _ h, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem eval_pow_of_commute (q : A[X]) (t : A) (h : ∀ k, Commute (q.coeff k) t) (k : ℕ) :
     (q ^ k).eval t = q.eval t ^ k := by
@@ -30,19 +30,19 @@ theorem eval_pow_of_commute (q : A[X]) (t : A) (h : ∀ k, Commute (q.coeff k) t
   | succ k ih => rw [pow_succ, eval_mul_of_commute _ _ _ h, ih, pow_succ]
 
 /- English proof (translation)
-The claim follows from `(Algebra.commutes y a).symm`.
+A detailed English derivation is pending.
 -/
 theorem commute_alg (a : A) (y : ℂ) : Commute a (algebraMap ℂ A y) := (Algebra.commutes y a).symm
 
 /- English proof (translation)
-The claim follows from `eval_mul_of_commute _ _ _ fun _ => commute_alg _ y`.
+A detailed English derivation is pending.
 -/
 theorem eval_mul_alg (p q : A[X]) (y : ℂ) :
     (p * q).eval (algebraMap ℂ A y) = p.eval (algebraMap ℂ A y) * q.eval (algebraMap ℂ A y) :=
   eval_mul_of_commute _ _ _ fun _ => commute_alg _ y
 
 /- English proof (translation)
-Rewrite using `[coeff_add, coeff_X, coeff_C]`. Apply the tactic sequence `split_ifs <;> simp [h]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem commute_coeff_X_add_C (a t : A) (h : Commute a t) (k : ℕ) :
     Commute ((X + C a : A[X]).coeff k) t := by
@@ -50,13 +50,13 @@ theorem commute_coeff_X_add_C (a t : A) (h : Commute a t) (k : ℕ) :
   split_ifs <;> simp [h]
 
 /- English proof (translation)
-Use extensionality with `k`. Rewrite using `[coeff_zero]`. Use `(Module.forall_dual_apply_eq_zero_iff ℂ _).1 fun φ => ?_` and prove the remaining obligations. Set `r : ℂ[X]` to `∑ i ∈ R.support, monomial i (φ (R.coeff i))`. Establish `hr : ∀ y, r.eval y = 0`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `y`. Establish `hy` using `congrArg φ (h y)`. Rewrite `hy` using `[eval_eq_sum, sum_def, map_sum, map_zero]`. Rewrite using `[← hy]`. Simplify using `only [r, eval_finsetSum, eval_monomial]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← map_pow, ← Algebra.commutes, ← Algebra.smul_def, map_smul, smul_eq_mul, mul_comm]`. Establish `h0 : r = 0` using `Polynomial.funext (by simpa using hr)`. Establish `hc : r.coeff k = φ (R.coeff k)`. Simplify using `only [r, finsetSum_coeff, coeff_monomial, Finset.sum_ite_eq', mem_support_iff]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `by_cases hk : R.coeff k = 0 <;> simp [hk]`. Rewrite using `[← hc, h0, coeff_zero]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_zero_of_eval (R : A[X]) (h : ∀ y : ℂ, R.eval (algebraMap ℂ A y) = 0) : R = 0 := by
   ext k
@@ -80,18 +80,18 @@ theorem eq_zero_of_eval (R : A[X]) (h : ∀ y : ℂ, R.eval (algebraMap ℂ A y)
 def PolF (f : ℂ → A) : Prop := ∃ p : A[X], ∀ y : ℂ, p.eval (algebraMap ℂ A y) = f y
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨C a, fun _ => eval_C⟩`.
+Supply the required witnesses or components.
 -/
 theorem polF_const (a : A) : PolF fun _ : ℂ => a := ⟨C a, fun _ => eval_C⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨X + C (algebraMap ℂ A c), fun y => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem polF_alg (c : ℂ) : PolF fun y : ℂ => algebraMap ℂ A (y + c) :=
   ⟨X + C (algebraMap ℂ A c), fun y => by simp⟩
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `hf`. Take `⟨q, hq⟩` from `hg`. Conclude with `⟨p + q, fun y => by rw [eval_add, hp, hq]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem PolF.add {f g : ℂ → A} (hf : PolF f) (hg : PolF g) : PolF fun y => f y + g y := by
   obtain ⟨p, hp⟩ := hf
@@ -99,7 +99,7 @@ theorem PolF.add {f g : ℂ → A} (hf : PolF f) (hg : PolF g) : PolF fun y => f
   exact ⟨p + q, fun y => by rw [eval_add, hp, hq]⟩
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `hf`. Take `⟨q, hq⟩` from `hg`. Conclude with `⟨p * q, fun y => by rw [eval_mul_alg, hp, hq]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem PolF.mul {f g : ℂ → A} (hf : PolF f) (hg : PolF g) : PolF fun y => f y * g y := by
   obtain ⟨p, hp⟩ := hf
@@ -107,7 +107,7 @@ theorem PolF.mul {f g : ℂ → A} (hf : PolF f) (hg : PolF g) : PolF fun y => f
   exact ⟨p * q, fun y => by rw [eval_mul_alg, hp, hq]⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using polF_const (0 : A)`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.sum_insert ha]`. Conclude with `(h a).add ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem polF_sum {ι : Type*} (s : Finset ι) (f : ι → ℂ → A) (h : ∀ i, PolF (f i)) :
     PolF fun y => ∑ i ∈ s, f i y := by
@@ -119,7 +119,7 @@ theorem polF_sum {ι : Type*} (s : Finset ι) (f : ι → ℂ → A) (h : ∀ i,
     exact (h a).add ih
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simpa using polF_const (1 : A)`. Consider the case `succ m ih`. Simplify using `only [List.ofFn_succ, List.prod_cons]`. Conclude with `(h 0).mul (ih _ fun i => h i.succ)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem polF_ofFn {m : ℕ} (f : Fin m → ℂ → A) (h : ∀ i, PolF (f i)) :
     PolF fun y => (List.ofFn fun i => f i y).prod := by
@@ -130,9 +130,7 @@ theorem polF_ofFn {m : ℕ} (f : Fin m → ℂ → A) (h : ∀ i, PolF (f i)) :
     exact (h 0).mul (ih _ fun i => h i.succ)
 
 /- English proof (translation)
-Unfold `Tm`. Distinguish the cases in `hab : a = b`. Simplify using `only [hab, if_true]`. Conclude with `(polF_alg c).add (polF_const _)`. Simplify using `only [hab, if_false]`.
-
-Conclude with `(polF_const _).add (polF_const _)`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem polF_Tm {n : ℕ} (E : Fin n → Fin n → A) (c : ℂ) (a b : Fin n) :
     PolF fun y : ℂ => Tm E (y + c) a b := by
@@ -144,7 +142,7 @@ theorem polF_Tm {n : ℕ} (E : Fin n → Fin n → A) (c : ℂ) (a b : Fin n) :
     exact (polF_const _).add (polF_const _)
 
 /- English proof (translation)
-Unfold `qdet qminor`. Use `polF_sum _ _ fun σ => (polF_const _).mul ?_` and prove the remaining obligations. Establish `h` using `polF_ofFn (fun k : Fin n => fun y : ℂ => Tm E (y + (c - (k : ℂ))) (id (σ k)) (id k)) fun k => polF_Tm E _ _ _`. Simplify `h` using `only [add_sub_assoc]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem polF_qdet {n : ℕ} (E : Fin n → Fin n → A) (c : ℂ) : PolF fun y : ℂ => qdet E (y + c) := by
   unfold qdet qminor
@@ -154,7 +152,7 @@ theorem polF_qdet {n : ℕ} (E : Fin n → Fin n → A) (c : ℂ) : PolF fun y :
   simpa only [add_sub_assoc] using h
 
 /- English proof (translation)
-Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => simp only [Polynomial.map_add, eval_add, hp, hq, map_add]`. Consider the case `monomial k a => simp only [map_monomial, eval_monomial, map_mul, map_pow]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem eval_map_hom {B : Type*} [Ring B] (f : A →+* B) (p : A[X]) (x : A) :
     (p.map f).eval (f x) = f (p.eval x) := by
@@ -163,7 +161,7 @@ theorem eval_map_hom {B : Type*} [Ring B] (f : A →+* B) (p : A[X]) (x : A) :
   | monomial k a => simp only [map_monomial, eval_monomial, map_mul, map_pow]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Simplify using `only [List.ofFn_succ, List.prod_cons]`. Rewrite using `[ih, smul_mul_smul_comm, pow_succ']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_smul_ofFn {m : ℕ} (s : ℂ) (f : Fin m → A) :
     (List.ofFn fun i => s • f i).prod = s ^ m • (List.ofFn f).prod := by
@@ -189,7 +187,7 @@ def liftL (V : Type) [AddCommGroup V] [Module ℂ V] (I : Type) :
     simp [Module.algebraMap_end_apply]
 
 /- English proof (translation)
-Use `LinearMap.ext fun f => funext fun b => ?_` and prove the remaining obligations. Establish `hc : ∀ (a : Fin n) (x : M.V), qdet M.E u (M.E a b x) = M.E a b (qdet M.E u x)` using `fun a x => LinearMap.congr_fun (qDetCentral _ n M.E M.gl u a b) x`. Use `show (qdet M.E u) (om M f b) = ∑ a, M.E a b (qdet M.E u (f a))`. Rewrite using `[om_apply, map_sum]`. Simplify using `only [hc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem commute_qdet_om (M : GMod n) (u : ℂ) : Commute ((qdet M.E u).compLeft (Fin n)) (om M) := by
   refine LinearMap.ext fun f => funext fun b => ?_
@@ -200,9 +198,7 @@ theorem commute_qdet_om (M : GMod n) (u : ℂ) : Commute ((qdet M.E u).compLeft 
   simp only [hc]
 
 /- English proof (translation)
-Establish `h0 : p * C (om M) - C (om M) * p = 0` using `eq_zero_of_eval _ fun y => by`. Rewrite using `[eval_sub, eval_mul_alg, eval_mul_alg, eval_C, sub_eq_zero]`. Conclude with `h y`. Establish `hk` using `congrArg (fun r => r.coeff k) h0`. Simplify using `only [coeff_sub, coeff_mul_C, coeff_C_mul, coeff_zero, sub_eq_zero] at hk`.
-
-Conclude with `hk`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem commute_coeff_om (M : GMod n) (p : (Module.End ℂ (Fin n → M.V))[X])
     (h : ∀ y : ℂ, Commute (p.eval (algebraMap ℂ _ y)) (om M)) (k : ℕ) : Commute (p.coeff k) (om M) := by
@@ -214,15 +210,15 @@ theorem commute_coeff_om (M : GMod n) (p : (Module.End ℂ (Fin n → M.V))[X])
   exact hk
 
 /- English proof (translation)
-Take `⟨pT, hT⟩` from `polF_qdet (tensE M) c`. Establish `hR : pT * (X + C (algebraMap ℂ _ c + om M)) - pC * (X + C (algebraMap ℂ _ (c + 1) + om M)) = 0` using `eq_zero_of_eval _ fun y => by`. Rewrite using `[eval_sub, eval_mul_alg, eval_mul_alg, hT, hC, sub_eq_zero]`. Simplify using `only [eval_add, eval_X, eval_C]`. Establish `h` using `H n M (y + c)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e1 : algebraMap ℂ (Module.End ℂ (Fin n → M.V)) y + (algebraMap ℂ _ c + om M) = (y + c) • (1 : Module.End ℂ (Fin n → M.V)) + om M`. Rewrite using `[← add_assoc, ← map_add, Algebra.algebraMap_eq_smul_one]`. Establish `e2 : algebraMap ℂ (Module.End ℂ (Fin n → M.V)) y + (algebraMap ℂ _ (c + 1) + om M) = (y + c + 1) • (1 : Module.End ℂ (Fin n → M.V)) + om M`. Rewrite using `[← add_assoc, ← map_add, Algebra.algebraMap_eq_smul_one, add_assoc]`. Rewrite using `[e1, e2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Establish `hom : Commute (om M) (-om M - algebraMap ℂ _ c)` using `((Commute.refl _).neg_right).sub_right (Algebra.commutes c _).symm`. Establish `hd : ∀ d : ℂ, Commute (algebraMap ℂ (Module.End ℂ (Fin n → M.V)) d + om M) (-om M - algebraMap ℂ _ c)` using `fun d => Commute.add_left (show Commute _ _ from Algebra.commutes d _) hom`. Establish `ht` using `congrArg (eval (-om M - algebraMap ℂ _ c)) hR`. Rewrite `ht` using `[eval_sub, eval_mul_of_commute _ _ _ (commute_coeff_X_add_C _ _ (hd c)), eval_mul_of_commute _ _ _ (commute_coeff_X_add_C _ _ (hd (c + 1)))]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [eval_add, eval_X, eval_C, eval_zero] at ht`. Establish `a1 : -om M - algebraMap ℂ _ c + (algebraMap ℂ _ c + om M) = 0` using `by abel`. Establish `a2 : -om M - algebraMap ℂ _ c + (algebraMap ℂ _ (c + 1) + om M) = 1`. Rewrite using `[map_add, map_one]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ht` using `[a1, a2]`. Simplify using `using ht.symm`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem root (H : QdetTens) (M : GMod n) (c : ℂ) (pC : (Module.End ℂ (Fin n → M.V))[X])
     (hC : ∀ y : ℂ, pC.eval (algebraMap ℂ _ y) = (qdet M.E (y + c)).compLeft (Fin n)) :
@@ -256,7 +252,7 @@ theorem root (H : QdetTens) (M : GMod n) (c : ℂ) (pC : (Module.End ℂ (Fin n 
   simpa using ht.symm
 
 /- English proof (translation)
-Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, sub_smul, neg_one_smul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem neg_sub_algebra_map_smul_identity {A : Type*} [Ring A] [Algebra ℂ A] (w : A) (x c : ℂ) :
     -w - algebraMap ℂ A c + algebraMap ℂ A x = (-1 : ℂ) • (w - (x - c) • (1 : A)) := by
@@ -264,27 +260,27 @@ theorem neg_sub_algebra_map_smul_identity {A : Type*} [Ring A] [Algebra ℂ A] (
   abel
 
 /- English proof (translation)
-Introduce `n M χ hM`. Take `⟨k, hk⟩` from `hM`. Take `⟨pB, hB⟩` from `polF_qdet M.E (cn n)`. Set `L` to `liftL M.V (Fin n)`. Set `pC` to `pB.map (L : Module.End ℂ M.V →+* Module.End ℂ (Fin n → M.V))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hC : ∀ y : ℂ, pC.eval (algebraMap ℂ _ y) = (qdet M.E (y + cn n)).compLeft (Fin n)` using `fun y => by`. Establish `h` using `eval_map_hom (L : Module.End ℂ M.V →+* Module.End ℂ (Fin n → M.V)) pB (algebraMap ℂ _ y)`. Establish `hL : (L : Module.End ℂ M.V →+* Module.End ℂ (Fin n → M.V)) (algebraMap ℂ _ y) = algebraMap ℂ _ y` using `L.commutes y`. Rewrite `h` using `[hL, hB]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hroot` using `root H M (cn n) pC hC`. Set `Q0 : ℂ[X]` to `(List.ofFn fun i => X + C (χ i)).prod`. Set `Q : (Module.End ℂ (Fin n → M.V))[X]` to `Q0.map (algebraMap ℂ _)`. Establish `hQ : ∀ x, Q.eval x = (List.ofFn fun i => x + algebraMap ℂ _ (χ i)).prod`. Introduce `x`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eval_map_algebraMap, map_list_prod]`. Simplify using `[List.map_ofFn, Function.comp_def]`. Establish `hQy : ∀ y : ℂ, Q.eval (algebraMap ℂ _ y) = Formalism.QuantumDeterminants.capP χ y • (1 : Module.End ℂ (Fin n → M.V))`. Introduce `y`. Rewrite using `[hQ]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [← map_add]`. Rewrite using `[← Algebra.algebraMap_eq_smul_one]`. Establish `h` using `map_list_prod (algebraMap ℂ (Module.End ℂ (Fin n → M.V))) (List.ofFn fun i => y + χ i)`. Rewrite `h` using `[List.map_ofFn]`. Simplify using `only [Function.comp_def] at h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h, List.prod_ofFn]`. Both sides reduce to the same expression. Establish `hDy : ∀ y : ℂ, (pC - Q).eval (algebraMap ℂ _ y) = L (qdet M.E (y + cn n) - Formalism.QuantumDeterminants.capP χ y • (1 : Module.End ℂ M.V))`. Introduce `y`. Rewrite using `[eval_sub, hC, hQy, map_sub, map_smul, map_one]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hDk : (pC - Q) ^ k = 0` using `eq_zero_of_eval _ fun y => by`. Rewrite using `[eval_pow_of_commute _ _ (fun j => commute_alg _ y), hDy, ← map_pow]`. Establish `h` using `hk y`. Establish `h' : (qdet M.E (y + cn n) - Formalism.QuantumDeterminants.capP χ y • (1 : Module.End ℂ M.V)) ^ k = 0` using `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h', map_zero]`. Establish `hCom : ∀ j, Commute ((pC - Q).coeff j) (-om M - algebraMap ℂ _ (cn n))`. Introduce `j`. Establish `h1 : Commute (pC.coeff j) (om M)` using `commute_coeff_om M pC (fun y => by rw [hC]; exact commute_qdet_om M _) j`. Establish `h2 : Commute (pC.coeff j) (-om M - algebraMap ℂ _ (cn n))` using `h1.neg_right.sub_right (commute_alg _ _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ∀ z, Commute (algebraMap ℂ (Module.End ℂ (Fin n → M.V)) (Q0.coeff j)) z` using `fun z => Algebra.commutes _ z`. Rewrite using `[coeff_sub]`. Use `h2.sub_left ?_` and prove the remaining obligations. Simplify using `only [Q, coeff_map]`. Conclude with `h3 _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hz` using `congrArg (eval (-om M - algebraMap ℂ _ (cn n))) hDk`. Rewrite `hz` using `[eval_pow_of_commute _ _ hCom, eval_zero, eval_sub, hroot, hQ, zero_sub]`. Establish `hf : (fun i => -om M - algebraMap ℂ _ (cn n) + algebraMap ℂ _ (χ i)) = fun i => (-1 : ℂ) • (om M - (χ i - cn n) • (1 : Module.End ℂ (Fin n → M.V)))`. Use function extensionality and compare the values at `i`. Rewrite using `[neg_sub_algebra_map_smul_identity]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `hz` using `[hf, prod_smul_ofFn, ← neg_smul, _root_.smul_pow]`. Conclude with `⟨k, (smul_eq_zero.1 hz).resolve_left (pow_ne_zero _ (neg_ne_zero.2 (pow_ne_zero _ (by norm_num))))⟩`.
+A detailed English derivation is pending.
 -/
 theorem cayleyHam_of (H : QdetTens) : CayleyHam := by
   intro n M χ hM
@@ -348,7 +344,7 @@ theorem cayleyHam_of (H : QdetTens) : CayleyHam := by
     (pow_ne_zero _ (neg_ne_zero.2 (pow_ne_zero _ (by norm_num))))⟩
 
 /- English proof (translation)
-The claim follows from `cayleyHam_of GlobalTheory.T.QuantumDeterminantTensor`.
+A detailed English derivation is pending.
 -/
 theorem cayleyHam : CayleyHam := cayleyHam_of GlobalTheory.T.QuantumDeterminantTensor
 

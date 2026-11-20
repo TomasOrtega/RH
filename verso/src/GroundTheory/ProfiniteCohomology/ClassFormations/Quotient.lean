@@ -11,25 +11,23 @@ universe u
 namespace QZ
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `hn hP x hx`. Break down `eq_or_ne n 1 with rfl | h1` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `hx` using `[one_smul]`. Rewrite using `[hx]`. Conclude with `H.zero_mem`. Use `set p := n.minFac with hp_def`. Establish `hp : p.Prime` using `Nat.minFac_prime h1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, m, hpm, hnm⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hn p hp.ne_one`. Establish `hm0 : m ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hnm`. Conclude with `hn hnm`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Establish `ha : 0 < a`. Break down `Nat.eq_zero_or_pos a with rfl | ha` into its components or cases. Simplify using `only [pow_zero, one_mul] at hnm`. Conclude with `absurd (hnm ▸ Nat.minFac_dvd n) hpm`. Conclude with `ha`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcop : Nat.Coprime (p ^ a) m` using `Nat.Coprime.pow_left _ ((Nat.Prime.coprime_iff_not_dvd hp).2 hpm)`. Establish `hbez` using `Nat.gcd_eq_gcd_ab (p ^ a) m`. Rewrite `hbez` using `[hcop.gcd_eq_one]`. Establish `hx' : x = ((p ^ a : ℕ) * Nat.gcdA (p ^ a) m : ℤ) • x + ((m : ℕ) * Nat.gcdB (p ^ a) m : ℤ) • x`. Rewrite using `[← add_smul, ← hbez]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[hx']`. Use `H.add_mem ?_ ?_` and prove the remaining obligations. Establish `hmn : m < n`. Rewrite using `[hnm]`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `Nat.mul_lt_mul_of_pos_right _ (Nat.pos_of_ne_zero hm0)` to reduce the goal to its premises. Conclude with `Nat.one_lt_pow ha.ne' hp.one_lt`. Use `ih m hmn hm0 (fun q hq => hP q (hnm ▸ Dvd.dvd.mul_left hq _)) _ ?_` and prove the remaining obligations. Rewrite using `[← natCast_zsmul, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: ((m : ℤ) * ((p ^ a : ℕ) * Nat.gcdA (p ^ a) m : ℤ)) = (Nat.gcdA (p ^ a) m) * (n : ℤ)`. Rewrite using `[hnm]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, ← smul_smul, natCast_zsmul, hx, smul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpP : (⟨p, hp⟩ : Nat.Primes) ∈ P` using `hP ⟨p, hp⟩ (Nat.minFac_dvd n)`. Use `hH _ hpP _ ⟨a, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(p : ℕ) ^ a • _ = 0`. Rewrite using `[← natCast_zsmul, smul_smul]`. Establish `: ((p ^ a : ℕ) : ℤ) * ((m : ℕ) * Nat.gcdB (p ^ a) m : ℤ) = (Nat.gcdB (p ^ a) m) * (n : ℤ)`.
-
-Rewrite using `[hnm]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `this`, the goal using `[Nat.cast_pow]`. Rewrite using `[this, ← smul_smul, natCast_zsmul, hx, smul_zero]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_nsmul_eq_zero (P : Set Nat.Primes) (H : AddSubgroup QZ)
     (hH : ∀ p ∈ P, ∀ x ∈ AddCommMonoid.primaryComponent QZ (p : ℕ), x ∈ H) :
@@ -108,13 +106,13 @@ def quotPreimage (S : Subgroup (U ⧸ V.subgroupOf U)) : Subgroup G :=
 variable {U V}
 
 /- English proof (translation)
-The claim follows from `Subgroup.map_subtype_le _`.
+A detailed English derivation is pending.
 -/
 theorem quotPreimage_le (S : Subgroup (U ⧸ V.subgroupOf U)) : quotPreimage U V S ≤ U :=
   Subgroup.map_subtype_le _
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `hx`. Introduce `h`. Conclude with `⟨⟨g, hg⟩, h, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_quotPreimage {S : Subgroup (U ⧸ V.subgroupOf U)} {g : G} (hg : g ∈ U) :
     g ∈ quotPreimage U V S ↔ ((⟨g, hg⟩ : U) : U ⧸ V.subgroupOf U) ∈ S := by
@@ -125,7 +123,7 @@ theorem mem_quotPreimage {S : Subgroup (U ⧸ V.subgroupOf U)} {g : G} (hg : g �
     exact ⟨⟨g, hg⟩, h, rfl⟩
 
 /- English proof (translation)
-Introduce `v hv`. Rewrite using `[mem_quotPreimage (hVU hv), (QuotientGroup.eq_one_iff _).2 (by exact hv)]`. Conclude with `S.one_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_quotPreimage (hVU : V ≤ U) (S : Subgroup (U ⧸ V.subgroupOf U)) :
     V ≤ quotPreimage U V S := by
@@ -148,7 +146,7 @@ theorem coe_quotPreimageHom_apply (S : Subgroup (U ⧸ V.subgroupOf U)) (w : quo
   rfl
 
 /- English proof (translation)
-Introduce and unpack `⟨s, hs⟩`. Take `⟨x, rfl⟩` from `QuotientGroup.mk_surjective s`. Conclude with `⟨⟨x.1, (mem_quotPreimage x.2).2 hs⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem quotPreimageHom_surjective (S : Subgroup (U ⧸ V.subgroupOf U)) :
     Function.Surjective (quotPreimageHom S) := by
@@ -157,7 +155,7 @@ theorem quotPreimageHom_surjective (S : Subgroup (U ⧸ V.subgroupOf U)) :
   exact ⟨⟨x.1, (mem_quotPreimage x.2).2 hs⟩, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[← Subtype.coe_inj, coe_quotPreimageHom_apply, Subgroup.coe_one, QuotientGroup.eq_one_iff]`. Conclude with `Iff.rfl`.
+Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem quotPreimageHom_eq_one_iff (S : Subgroup (U ⧸ V.subgroupOf U)) (w : quotPreimage U V S) :
     quotPreimageHom S w = 1 ↔ (w : G) ∈ V := by
@@ -165,7 +163,7 @@ theorem quotPreimageHom_eq_one_iff (S : Subgroup (U ⧸ V.subgroupOf U)) (w : qu
   exact Iff.rfl
 
 /- English proof (translation)
-Use extensionality with `w`. Rewrite using `[MonoidHom.mem_ker, quotPreimageHom_eq_one_iff]`. Conclude with `Iff.rfl`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem quotPreimageHom_ker (S : Subgroup (U ⧸ V.subgroupOf U)) :
     (quotPreimageHom S).ker = V.subgroupOf (quotPreimage U V S) := by
@@ -174,7 +172,7 @@ theorem quotPreimageHom_ker (S : Subgroup (U ⧸ V.subgroupOf U)) :
   exact Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[← quotPreimageHom_ker]`. Conclude with `MonoidHom.normal_ker _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normal_subgroupOf_quotPreimage (S : Subgroup (U ⧸ V.subgroupOf U)) :
     (V.subgroupOf (quotPreimage U V S)).Normal := by
@@ -193,7 +191,7 @@ noncomputable def quotPreimageEquiv (S : Subgroup (U ⧸ V.subgroupOf U)) :
       exact ⟨w, rfl⟩⟩
 
 /- English proof (translation)
-Rewrite using `[Subgroup.relIndex, Subgroup.index_eq_card]`. Conclude with `Nat.card_congr (quotPreimageEquiv S).toEquiv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_quotPreimage (S : Subgroup (U ⧸ V.subgroupOf U)) :
     V.relIndex (quotPreimage U V S) = Nat.card S := by
@@ -205,7 +203,7 @@ variable [TopologicalSpace G] [IsTopologicalGroup G]
 omit [IsTopologicalGroup G] in
 
 /- English proof (translation)
-The claim follows from `(QuotientGroup.continuous_mk.comp (continuous_subgroup_inclusion (quotPreimage_le S))).subtype_mk _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_quotPreimageHom (S : Subgroup (U ⧸ V.subgroupOf U)) :
     Continuous (quotPreimageHom S) :=
@@ -215,7 +213,7 @@ theorem continuous_quotPreimageHom (S : Subgroup (U ⧸ V.subgroupOf U)) :
 omit [IsTopologicalGroup G] in
 
 /- English proof (translation)
-Conclude with `(QuotientGroup.isQuotientMap_mk _).continuous_iff.2 (continuous_quotPreimageHom S)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_quotPreimageEquiv (S : Subgroup (U ⧸ V.subgroupOf U)) :
     Continuous (quotPreimageEquiv S).toMonoidHom := by
@@ -223,7 +221,7 @@ theorem continuous_quotPreimageEquiv (S : Subgroup (U ⧸ V.subgroupOf U)) :
 
 omit [IsTopologicalGroup G] in
 /- English proof (translation)
-The claim follows from `hV.preimage continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_subgroupOf {V : Subgroup G} (hV : IsOpen (V : Set G)) (W : Subgroup G) :
     IsOpen (V.subgroupOf W : Set W) :=
@@ -232,14 +230,14 @@ theorem isOpen_subgroupOf {V : Subgroup G} (hV : IsOpen (V : Set G)) (W : Subgro
 omit [(V.subgroupOf U).Normal] in
 
 /- English proof (translation)
-The claim follows from `QuotientGroup.discreteTopology (isOpen_subgroupOf hV U)`.
+A detailed English derivation is pending.
 -/
 theorem discreteTopology_quot (hV : IsOpen (V : Set G)) :
     DiscreteTopology (U ⧸ V.subgroupOf U) :=
   QuotientGroup.discreteTopology (isOpen_subgroupOf hV U)
 
 /- English proof (translation)
-Use `discreteTopology_quot (U := U) hV` as an intermediate fact. Conclude with `continuous_of_discreteTopology`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_quotPreimageEquiv_symm (hV : IsOpen (V : Set G))
     (S : Subgroup (U ⧸ V.subgroupOf U)) :
@@ -271,7 +269,7 @@ noncomputable def cohomologyInflQuot (S : Subgroup (U ⧸ V.subgroupOf U)) (n : 
 
 @[reassoc]
 /- English proof (translation)
-Establish `: IsDiscreteRep (Rep.of (Rep.res U.subtype C).ρ)` using `isDiscreteRep_res_subtype C U`. Rewrite using `[cohomologyRes, cohomologyInflQuot, ← cohomologyMapAlong_comp, cohomologyInfl, cohomologyResLE, ← cohomologyMapAlong_comp]`. Conclude with `cohomologyMapAlong_congr _ _ _ _ (by ext; rfl) (fun _ => rfl) n`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cohomologyRes_comp_cohomologyInflQuot (S : Subgroup (U ⧸ V.subgroupOf U)) (n : ℕ) :
     cohomologyRes ((Rep.res U.subtype C).quotientToInvariants (V.subgroupOf U)) S n ≫
@@ -298,7 +296,7 @@ noncomputable def quotPreimageInvHom (hVU : V ≤ U) (S : Subgroup (U ⧸ V.subg
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] [IsDiscreteRep C] in
 /- English proof (translation)
-Use `⟨fun a b h => ?_, fun c => ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use `congrArg Subtype.val h` as an intermediate fact. Conclude with `this`. Use `⟨⟨c.1, fun n => c.2 ⟨⟨n.1.1, le_quotPreimage hVU S n.2⟩, n.2⟩⟩, rfl⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem quotPreimageInvHom_bijective (hVU : V ≤ U) (S : Subgroup (U ⧸ V.subgroupOf U)) :
     Function.Bijective (quotPreimageInvHom C hVU S).hom := by
@@ -309,7 +307,7 @@ theorem quotPreimageInvHom_bijective (hVU : V ≤ U) (S : Subgroup (U ⧸ V.subg
   refine ⟨⟨c.1, fun n => c.2 ⟨⟨n.1.1, le_quotPreimage hVU S n.2⟩, n.2⟩⟩, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[cohomologyInfl, ← cohomologyMapAlong_comp, cohomologyInflQuot]`. Conclude with `cohomologyMapAlong_congr _ _ _ _ (by ext; rfl) (fun _ => rfl) n`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cohomologyInflQuot_eq (hVU : V ≤ U) (S : Subgroup (U ⧸ V.subgroupOf U)) (n : ℕ) :
     cohomologyInflQuot C S n =
@@ -321,7 +319,7 @@ theorem cohomologyInflQuot_eq (hVU : V ≤ U) (S : Subgroup (U ⧸ V.subgroupOf 
   exact cohomologyMapAlong_congr _ _ _ _ (by ext; rfl) (fun _ => rfl) n
 
 /- English proof (translation)
-The claim follows from `isIso_cohomologyMapAlong_of_mulEquiv _ _ (continuous_quotPreimageEquiv_symm hV S) _ (quotPreimageInvHom_bijective C hVU S) n`.
+A detailed English derivation is pending.
 -/
 theorem isIso_cohomologyMapAlong_quotPreimageEquiv (hV : IsOpen (V : Set G)) (hVU : V ≤ U)
     (S : Subgroup (U ⧸ V.subgroupOf U)) (n : ℕ) :

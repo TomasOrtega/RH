@@ -18,7 +18,7 @@ variable {R R' R'' : Type} [CommRing R] [Algebra F R] [CommRing R'] [Algebra F R
 abbrev fE (f : R →ₐ[F] R') : R ⊗[F] E →ₐ[F] R' ⊗[F] E := Algebra.TensorProduct.map f (AlgHom.id F E)
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [fE]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem fE_comp (f : R →ₐ[F] R') (g : R' →ₐ[F] R'') (x : R ⊗[F] E) :
     fE (E := E) g (fE f x) = fE (g.comp f) x := by
@@ -28,15 +28,15 @@ theorem fE_comp (f : R →ₐ[F] R') (g : R' →ₐ[F] R'') (x : R ⊗[F] E) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Simplify using `[fE, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fE_inclR (f : R →ₐ[F] R') (e : E) : fE f (inclR R e) = inclR R' e := by
   simp [fE, inclR]
 
 /- English proof (translation)
-Establish `h1` using `GlobalTheory.CompanionTheory.SiegelND.Coef.Lim.trace_map (AlgHom.id F R) bs x`. Establish `h2` using `GlobalTheory.CompanionTheory.SiegelND.Coef.Lim.trace_map f bs x`. Establish `h3 : Algebra.TensorProduct.map (AlgHom.id F R) (AlgHom.id F E) x = x`. Rewrite using `[Algebra.TensorProduct.map_id]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `h1` using `[h3]`. Rewrite using `[fE, h2, h1, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, AlgHom.commutes]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem trace_fE {d : ℕ} (bs : Module.Basis (Fin d) F E) (f : R →ₐ[F] R') (x : R ⊗[F] E) :
     f (Algebra.trace R (R ⊗[F] E) x) = Algebra.trace R' (R' ⊗[F] E) (fE f x) := by
@@ -51,13 +51,13 @@ theorem trace_fE {d : ℕ} (bs : Module.Basis (Fin d) F E) (f : R →ₐ[F] R') 
   rfl
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.SiegelND.Coef.sigR_map f σ x`.
+A detailed English derivation is pending.
 -/
 theorem sigR_fE (σ : E →ₐ[F] E) (f : R →ₐ[F] R') (x : R ⊗[F] E) : sigR R' σ (fE f x) = fE f (sigR R σ x) :=
   GlobalTheory.CompanionTheory.SiegelND.Coef.sigR_map f σ x
 
 /- English proof (translation)
-Simplify using `only [trPair, map_mul, AlgHom.commutes]`. Rewrite using `[trace_fE bs]`. Simplify using `[map_sum, map_mul, Matrix.map_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem trPair_fE {d : ℕ} (bs : Module.Basis (Fin d) F E) (f : R →ₐ[F] R') {m : ℕ}
     (A B : Matrix (Fin m) (Fin m) (R ⊗[F] E)) :
@@ -67,7 +67,7 @@ theorem trPair_fE {d : ℕ} (bs : Module.Basis (Fin d) F E) (f : R →ₐ[F] R')
   simp [map_sum, map_mul, Matrix.map_apply]
 
 /- English proof (translation)
-Use extensionality with `a c`. Simplify using `only [Matrix.map_apply, gramR, hR, hform, JR, Matrix.map_apply, map_sum, map_mul, sigR_fE, fE_inclR]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gramR_fE (σ : E →ₐ[F] E) (f : R →ₐ[F] R') {M m : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (Y : Fin m → Fin M → R ⊗[F] E) :
@@ -76,7 +76,7 @@ theorem gramR_fE (σ : E →ₐ[F] E) (f : R →ₐ[F] R') {M m : ℕ} (J : Matr
   simp only [Matrix.map_apply, gramR, hR, hform, JR, Matrix.map_apply, map_sum, map_mul, sigR_fE, fE_inclR]
 
 /- English proof (translation)
-Rewrite using `[trPair_fE bs, gramR_fE]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trPair_gram_fE {d : ℕ} (bs : Module.Basis (Fin d) F E) (σ : E →ₐ[F] E) (f : R →ₐ[F] R') {M m : ℕ}
     (J : Matrix (Fin M) (Fin M) E) (B : Matrix (Fin m) (Fin m) (R ⊗[F] E)) (Y : Fin m → Fin M → R ⊗[F] E) :
@@ -84,7 +84,7 @@ theorem trPair_gram_fE {d : ℕ} (bs : Module.Basis (Fin d) F E) (σ : E →ₐ[
   rw [trPair_fE bs, gramR_fE]
 
 /- English proof (translation)
-Rewrite using `[trPair_fE bs]`. Use `congr 1`. Use extensionality with `a c`. Simplify using `[Matrix.map_apply, fE_inclR]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem trPair_T_fE {d : ℕ} (bs : Module.Basis (Fin d) F E) (f : R →ₐ[F] R') {m : ℕ}
     (T : Matrix (Fin m) (Fin m) E) (B : Matrix (Fin m) (Fin m) (R ⊗[F] E)) :
@@ -104,7 +104,7 @@ theorem hermInf_val (σ : E →ₐ[F] E) {n : ℕ} (b : HermR (AF F) σ n) :
   rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [hermV, hermFin, GlobalTheory.CompanionTheory.SiegelND.Coef.hermMap, matV, Matrix.map_apply]`. Conclude with `fE_comp (sndA F) (evalV F v) _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hermV_val (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) {n : ℕ} (b : HermR (AF F) σ n) :
     ((hermV σ v (hermFin σ b) : HermR (Fv F v) σ n) : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) =
@@ -114,7 +114,7 @@ theorem hermV_val (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) {n : ℕ
   exact fE_comp (sndA F) (evalV F v) _
 
 /- English proof (translation)
-Rewrite using `[hermV_val]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hermV_val' (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) {n : ℕ} (b : HermR (AF F) σ n) :
     ((hermV σ v (hermFin σ b) : HermR (Fv F v) σ n) : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) =
@@ -122,7 +122,7 @@ theorem hermV_val' (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) {n : �
   rw [hermV_val]; rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a i`. Conclude with `fE_comp (sndA F) (evalV F v) _`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem projV_projFin {M n : ℕ} (v : HeightOneSpectrum (𝓞 F)) (X : Fin n → Fin M → AF F ⊗[F] E) :
     projV v (projFin X) = fun a i => fE ((evalV F v).comp (sndA F)) (X a i) := by

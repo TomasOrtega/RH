@@ -13,7 +13,7 @@ def uns {T : Scheme.{0}} {R : Type} [CommRing R] (h : R →+* Γ(T, ⊤)) : T �
   ΓSpec.adjunction.homEquiv T (op (CommRingCat.of R)) (CommRingCat.ofHom h).op
 
 /- English proof (translation)
-Establish `e` using `(ΓSpec.adjunction.homEquiv T (op (CommRingCat.of R))).symm_apply_apply (CommRingCat.ofHom h).op`. Simplify using `only [gam, uns]`. Use `erw [e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gam_uns {T : Scheme.{0}} {R : Type} [CommRing R] (h : R →+* Γ(T, ⊤)) : gam (uns h) = h := by
   have e := (ΓSpec.adjunction.homEquiv T (op (CommRingCat.of R))).symm_apply_apply (CommRingCat.ofHom h).op
@@ -22,7 +22,7 @@ theorem gam_uns {T : Scheme.{0}} {R : Type} [CommRing R] (h : R →+* Γ(T, ⊤)
   rfl
 
 /- English proof (translation)
-Apply `(ΓSpec.adjunction.homEquiv T (op (CommRingCat.of R))).symm.injective` to reduce the goal to its premises. Apply `Opposite.unop_injective` to reduce the goal to its premises. Conclude with `CommRingCat.hom_ext h`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem gam_inj {T : Scheme.{0}} {R : Type} [CommRing R] {x y : T ⟶ Spec (CommRingCat.of R)}
     (h : gam x = gam y) : x = y := by
@@ -31,7 +31,7 @@ theorem gam_inj {T : Scheme.{0}} {R : Type} [CommRing R] {x y : T ⟶ Spec (Comm
   exact CommRingCat.hom_ext h
 
 /- English proof (translation)
-Use `ΓSpec.adjunction.homEquiv_naturality_right_symm x (CommRingCat.ofHom f).op` as an intermediate fact. Simplify using `only [gam]`. Use `erw [this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gam_comp {T : Scheme.{0}} {R S : Type} [CommRing R] [CommRing S] (f : R →+* S)
     (x : T ⟶ Spec (CommRingCat.of S)) : gam (x ≫ Spec.map (CommRingCat.ofHom f)) = (gam x).comp f := by
@@ -55,21 +55,19 @@ theorem cone_app_some {A A' B : Type} [CommRing A] [CommRing A'] [CommRing B] (�
     ((coneOf φ χ l hl).π.app (some i)).app (op T) x = x ≫ Spec.map (CommRingCat.ofHom (l i)) := rfl
 
 /- English proof (translation)
-Introduce `A A' B _ _ _ φ χ n l hl hcop`. Use `⟨evaluationJointlyReflectsLimits _ fun k => ?_⟩` and prove the remaining obligations. Take `⟨T⟩` from `k`. Set `F` to `WidePullbackShape.wideCospan (yoneda.obj (Spec (CommRingCat.of A))) (fun _ : Fin (n + 1) => yoneda.obj (Spec (CommRingCat.of A'))) (fun _ => yoneda.map (Spec.map (CommRingCat.ofHom φ)))`. Establish `key : ∀ (s : Cone (F ⋙ (evaluation _ _).obj (op T))) (p : s.pt), ∀ i, (gam (s.π.app (some i) p)).comp φ = gam (s.π.app none p)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `s p i`. Establish `h : (s.π.app none p : T ⟶ Spec (CommRingCat.of A)) = (s.π.app (some i) p : T ⟶ Spec (CommRingCat.of A')) ≫ Spec.map (CommRingCat.ofHom φ)` using `(types_congr_hom (s.w (WidePullbackShape.Hom.term i)) p).symm`. Rewrite using `[h]`. Conclude with `(gam_comp φ _).symm`. Use `IsLimit.mk (fun s => TypeCat.ofHom fun p => uns (hcop Γ(T, ⊤) (fun i => gam (s.π.app (some i) p)) (gam (s.π.app none p)) (key s p)).exists.choose) ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s j`. Use extensionality with `p`. Establish `hs` using `(hcop Γ(T, ⊤) (fun i => gam (s.π.app (some i) p)) (gam (s.π.app none p)) (key s p)).exists.choose_spec`. Break down `j with _ | i` into its components or cases. Apply `gam_inj` to reduce the goal to its premises.
+By extensionality, compare the relevant components. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `gam (uns _ ≫ Spec.map (CommRingCat.ofHom χ)) = _`. Rewrite using `[gam_comp, gam_uns, hs.2]`. Both sides reduce to the same expression. Apply `gam_inj` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `gam (uns _ ≫ Spec.map (CommRingCat.ofHom (l i))) = _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gam_comp, gam_uns, hs.1 i]`. Both sides reduce to the same expression. Introduce `s m hm`. Use extensionality with `p`. Establish `H` using `hcop Γ(T, ⊤) (fun i => gam (s.π.app (some i) p)) (gam (s.π.app none p)) (key s p)`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(m p : T ⟶ Spec (CommRingCat.of B)) = uns _`. Apply `gam_inj` to reduce the goal to its premises. Rewrite using `[gam_uns]`. Use `H.unique ⟨fun i => ?_, ?_⟩ H.exists.choose_spec` and prove the remaining obligations. Establish `e : (s.π.app (some i) p : T ⟶ Spec (CommRingCat.of A')) = (m p : T ⟶ Spec (CommRingCat.of B)) ≫ Spec.map (CommRingCat.ofHom (l i))` using `(types_congr_hom (hm (some i)) p).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `_ = gam (s.π.app (some i) p)`. Rewrite using `[e]`. Conclude with `(gam_comp _ _).symm`. Establish `e : (s.π.app none p : T ⟶ Spec (CommRingCat.of A)) = (m p : T ⟶ Spec (CommRingCat.of B)) ≫ Spec.map (CommRingCat.ofHom χ)` using `(types_congr_hom (hm none) p).symm`. Rewrite using `[e]`.
-
-Conclude with `(gam_comp _ _).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SpecLim_of : SpecLim := by
   intro A A' B _ _ _ φ χ n l hl hcop

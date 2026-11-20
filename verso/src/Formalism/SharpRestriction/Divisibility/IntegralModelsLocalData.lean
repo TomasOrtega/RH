@@ -130,7 +130,7 @@ def FamilyPacketImplication : Prop := AdmFx Fm XF → familyPoincareExtensionAnd
 def InClass (𝒪 : ObjClass) : Prop := ∀ x hx (i : Fm.Ix x), 𝒪 (XF x hx i)
 
 /- English proof (translation)
-Introduce `a x hx i` and use `h _ _ _ (hO x hx i) (a x hx i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem familyPacket_of_uniformPacket {𝒪 : ObjClass} (h : UniformExportStatement 𝒪) (hO : InClass Fm XF 𝒪) : FamilyPacketImplication Fm XF :=
   fun a x hx i => h _ _ _ (hO x hx i) (a x hx i)
@@ -141,7 +141,7 @@ def ClosedAbsoluteShare (𝒞 : Formalism.MainNotions.FamClass) (𝒪 : ObjClass
   Formalism.MainNotions.Closed 𝒞 (fun Fm _ => ∀ XF : ProvF Fm, InClass Fm XF 𝒪 → FamilyPacketImplication Fm XF)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm _ _ _ XF hO => familyPacket_of_uniformPacket Fm XF h hO⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem closed_absolute_share_of_uniform_export {𝒪 : ObjClass} (h : UniformExportStatement 𝒪) (𝒞 : Formalism.MainNotions.FamClass) : ClosedAbsoluteShare 𝒞 𝒪 :=
   ⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩,
@@ -158,12 +158,12 @@ def OrbitValuationBound : Prop := ∀ x (i : Fm.Ix x), aux₃ (Fm.D x i) (Fm.X x
 def KudlaFamilyStatement : Prop := AdmF Fm XF → OrbitValuationBound Fm XF
 
 /- English proof (translation)
-Introduce `x _ i` and use `h x i`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem AdmFx_of_AdmF (h : AdmF Fm XF) : AdmFx Fm (fun x _ i => XF x i) := fun x _ i => h x i
 
 /- English proof (translation)
-Introduce `x _ i` and use `h x i`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem familyConclusion_of_pointwise (h : OrbitValuationBound Fm XF) : familyPoincareExtensionAndPointBounds Fm (fun x _ i => XF x i) := fun x _ i => h x i
 

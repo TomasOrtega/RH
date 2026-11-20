@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsFinSetSplitPlaces
 open NumberField GlobalTheory.CMVal
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.cmType_trace_im_coeff` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCmTypeTraceImaginaryPart.lean&line=8#L8)
 -/

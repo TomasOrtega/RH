@@ -7,9 +7,9 @@ open Polynomial
 namespace PositivityTheory.Rg.Sw.LVs.TC
 
 /- English proof (translation)
-Establish `h : (fun i => Y i 0 + z • Y i 1 + z ^ 2 • Y i 2) = fun i => ∑ w : Fin 3, z ^ (w : ℕ) • Y i w`. Use function extensionality and compare the values at `i`. Simplify using `[Fin.sum_univ_three]`. Rewrite using `[h, ContinuousMultilinearMap.map_sum]`. Use `Finset.sum_congr (by simp) fun f _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ContinuousMultilinearMap.map_smul_univ, Finset.prod_pow_eq_pow_sum, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ml_expand {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V] {k : ℕ}
     (A : ContinuousMultilinearMap ℂ (fun _ : Fin k => V) ℂ) (Y : Fin k → Fin 3 → V) (z : ℂ) :
@@ -22,11 +22,9 @@ theorem ml_expand {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V] {k : �
   rw [ContinuousMultilinearMap.map_smul_univ, Finset.prod_pow_eq_pow_sum, smul_eq_mul]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Take `⟨i, hi⟩` from `hne`. Establish `hle : ∀ x, (f x : ℕ) ≤ 2` using `fun x => by omega`. Establish `hlt : (f i : ℕ) < 2`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Nat.lt_or_ge (f i : ℕ) 2 with h' | h'` into its components or cases. Conclude with `h'`. Conclude with `absurd (Fin.ext (by simp; omega)) hi`. Establish `: ∑ x, (f x : ℕ) < ∑ _x : Fin k, 2` using `Finset.sum_lt_sum (fun x _ => hle x) ⟨i, Finset.mem_univ _, hlt⟩`. Simplify using `at this`.
-
-Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem sum_eq_top {k : ℕ} (f : Fin k → Fin 3) (h : ∑ i, (f i : ℕ) = 2 * k) : ∀ i, f i = 2 := by
   by_contra hne
@@ -43,15 +41,15 @@ theorem sum_eq_top {k : ℕ} (f : Fin k → Fin 3) (h : ∑ i, (f i : ℕ) = 2 *
   omega
 
 /- English proof (translation)
-Establish `hinj : Function.Injective fun m : ℕ => Complex.exp (2 * ((1 : ℝ) / (m + 2) : ℝ) * Complex.I)`. Introduce `a b hab`. Establish `hre` using `congrArg Complex.re hab`. Simplify using `only at hre`. Establish `e1 : ∀ x : ℝ, (Complex.exp (2 * (x : ℂ) * Complex.I)).re = Real.cos (2 * x)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `x`. Rewrite using `[show 2 * (x : ℂ) * Complex.I = ((2 * x : ℝ) : ℂ) * Complex.I by push_cast; ring, Complex.exp_ofReal_mul_I_re]`. Rewrite `hre` using `[e1, e1]`. Establish `ha : 2 * ((1 : ℝ) / (a + 2)) ∈ Set.Icc 0 Real.pi`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Check the signs of the components of the expression. Establish `: (2 : ℝ) * (1 / (a + 2)) ≤ 1`. Rewrite using `[mul_one_div, div_le_one (by positivity)]; linarith [(Nat.cast_nonneg a : (0 : ℝ) ≤ a)]`. Combine the linear relations using `[Real.pi_gt_three]`. Establish `hb : 2 * ((1 : ℝ) / (b + 2)) ∈ Set.Icc 0 Real.pi`.
+Check the signs of the components of the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Check the signs of the components of the expression. Establish `: (2 : ℝ) * (1 / (b + 2)) ≤ 1`. Rewrite using `[mul_one_div, div_le_one (by positivity)]; linarith [(Nat.cast_nonneg b : (0 : ℝ) ≤ b)]`. Combine the linear relations using `[Real.pi_gt_three]`.
+Prove the components needed by the constructor for the conclusion. Check the signs of the components of the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `Real.injOn_cos ha hb hre` as an intermediate fact. Establish `h2 : (1 : ℝ) / (a + 2) = 1 / (b + 2)` using `by linarith`. Rewrite `h2` using `[div_eq_div_iff (by positivity) (by positivity)]`. Conclude with `(by linarith : (a : ℝ) = b)` after adjusting the coercions. Use `Set.infinite_of_injective_forall_mem hinj fun m => ⟨_, rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem infinite_circle : Set.Infinite (Set.range fun θ : ℝ => Complex.exp (2 * θ * Complex.I)) := by
   have hinj : Function.Injective fun m : ℕ => Complex.exp (2 * ((1 : ℝ) / (m + 2) : ℝ) * Complex.I) := by
@@ -81,17 +79,17 @@ theorem infinite_circle : Set.Infinite (Set.range fun θ : ℝ => Complex.exp (2
   refine Set.infinite_of_injective_forall_mem hinj fun m => ⟨_, rfl⟩
 
 /- English proof (translation)
-Use `set Q : ℂ[X] := ∑ σ, C (sg σ) * ∑ f : Fin k → Fin 3, C (A (fun i => Y σ i (f i))) * X ^ (∑ i, (f i : ℕ)) with hQ`. Establish `heval : ∀ z : ℂ, Q.eval z = ∑ σ, sg σ * A (fun i => Y σ i 0 + z • Y σ i 1 + z ^ 2 • Y σ i 2)`. Introduce `z`. Simplify using `only [hQ, eval_finsetSum, eval_mul, eval_C, eval_pow, eval_X]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ml_expand]`. Use `congr 1`. Use `Finset.sum_congr rfl fun f _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hQ0 : Q = 0`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Polynomial.eq_zero_of_infinite_isRoot` to reduce the goal to its premises. Use `Set.Infinite.mono ?_ infinite_circle` and prove the remaining obligations. Introduce and unpack `_ ⟨θ, rfl⟩`. Simplify using `only [Set.mem_ofPred_eq, IsRoot.def, heval, h θ]`. Establish `hc` using `congrArg (fun p : ℂ[X] => p.coeff (2 * k)) hQ0`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hQ, finsetSum_coeff, coeff_C_mul, coeff_X_pow, coeff_zero] at hc`. Rewrite using `[← hc]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[Finset.sum_eq_single (fun _ => 2)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.isValue, Fin.val_two, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul]`. Rewrite using `[if_pos (by ring), mul_one]`. Introduce `f _ hf`. Rewrite using `[if_neg, mul_zero]`. Introduce `h2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `hf (funext (sum_eq_top f h2.symm))`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem top_vanish {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V] {k : ℕ} {ι : Type*} [Fintype ι]
     (A : ContinuousMultilinearMap ℂ (fun _ : Fin k => V) ℂ) (sg : ι → ℂ) (Y : ι → Fin k → Fin 3 → V)

@@ -9,21 +9,19 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.CompanionTheory.ParabBlock
 
 /- English proof (translation)
-Introduce `E _ _ _ n a b h w p`. Take `⟨m, hm⟩ : ∃ m, m = (leviTwo (w.adicCompletion E) (Fin a) (Fin b)).symm (leviProj (w.adicCompletion E) (two (stdSum h)) p)` from `⟨_, rfl⟩`. Establish `h1 : ∀ i j, (m.1 : Matrix _ _ (w.adicCompletion E)) i j = ((p : GLw n w) : Matrix _ _ (w.adicCompletion E)) (stdSum h (Sum.inl i)) (stdSum h (Sum.inl j))`. Introduce `i j`. Rewrite using `[hm]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h2 : ∀ i j, (m.2 : Matrix _ _ (w.adicCompletion E)) i j = ((p : GLw n w) : Matrix _ _ (w.adicCompletion E)) (stdSum h (Sum.inr i)) (stdSum h (Sum.inr j))`. Introduce `i j`. Rewrite using `[hm]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h0 : ∀ (i : Fin b) (j : Fin a), ((p : GLw n w) : Matrix _ _ (w.adicCompletion E)) (stdSum h (Sum.inr i)) (stdSum h (Sum.inl j)) = 0`. Introduce `i j`. Conclude with `mem_parab_iff.1 p.2 true false i j (by decide)`. Rewrite using `[← hm]`. Set `B : Matrix (Fin a) (Fin b) (w.adicCompletion E)` to `fun i j => ((p : GLw n w) : Matrix _ _ (w.adicCompletion E)) (stdSum h (Sum.inl i)) (stdSum h (Sum.inr j))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(m.1⁻¹).val * B, ?_⟩` and prove the remaining obligations. Establish `hM : Matrix.reindex (finSumFinEquiv.trans (finCongr h)) (finSumFinEquiv.trans (finCongr h)) (Matrix.fromBlocks m.1.val (m.1.val * ((m.1⁻¹).val * B)) 0 m.2.val) = ((p : GLw n w) : Matrix _ _ (w.adicCompletion E))`. Establish `hc : m.1.val * ((m.1⁻¹).val * B) = B`. Rewrite using `[← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul]`. Rewrite using `[hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Take `⟨i, rfl⟩` from `(stdSum h).surjective i`. Take `⟨j, rfl⟩` from `(stdSum h).surjective j`. Establish `hs : finSumFinEquiv.trans (finCongr h) = stdSum h` using `rfl`. Rewrite using `[hs]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, Equiv.symm_apply_apply]`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Conclude with `h1 i j`. Both sides reduce to the same expression. Conclude with `(h0 i j).symm`.
+Apply the first step, then apply the next step to every resulting obligation. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `h2 i j`. Establish `hU : IsUnit (Matrix.reindex (finSumFinEquiv.trans (finCongr h)) (finSumFinEquiv.trans (finCongr h)) (Matrix.fromBlocks m.1.val (m.1.val * ((m.1⁻¹).val * B)) 0 m.2.val))`. Rewrite using `[hM]`. Conclude with `(p : GLw n w).isUnit`. Unfold `GlobalTheory.BCT.blk`.
-
-Simplify using `only`. Rewrite using `[dif_pos hU]`. Conclude with `Units.ext (by rw [IsUnit.unit_spec, hM])`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem parab_eq_blk : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n a b : ℕ) (h : a + b = n) (w : Pl E) (p : parab (w.adicCompletion E) (two (stdSum h))), ∃ X, (p : GLw n w) = GlobalTheory.BCT.blk h w ((leviTwo (w.adicCompletion E) (Fin a) (Fin b)).symm (leviProj (w.adicCompletion E) (two (stdSum h)) p)) X := by
   intro E _ _ _ n a b h w p

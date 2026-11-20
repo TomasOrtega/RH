@@ -21,9 +21,9 @@ theorem restrOpen_source' (ψ : OpenPartialHomeomorph X (Fin e → ℂ)) {V : Se
 
 omit [T2Space X] [CompactSpace X] in
 /- English proof (translation)
-Introduce `j`. Take `⟨h1, h2⟩` from `hψ j`. Use `⟨h1.mono ?_, h2.mono ?_⟩` and prove the remaining obligations. Introduce and unpack `y ⟨hy1, hy2⟩`. Establish `h' : (A.chart j).symm y ∈ ψ.source ∩ V` using `hy2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `⟨hy1, h'.1⟩`. Introduce and unpack `y ⟨hy1, hy2⟩`. Establish `h' : y ∈ ψ.target ∩ ψ.symm ⁻¹' V` using `hy1`. Conclude with `⟨h'.1, hy2⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isCompatChart_restrOpen {A : FinHolAtlas e X} {ψ : OpenPartialHomeomorph X (Fin e → ℂ)}
     (hψ : IsCompatChart A ψ) {V : Set X} (hV : IsOpen V) : IsCompatChart A (ψ.restrOpen V hV) := by
@@ -38,19 +38,17 @@ theorem isCompatChart_restrOpen {A : FinHolAtlas e X} {ψ : OpenPartialHomeomorp
     exact ⟨h'.1, hy2⟩
 
 /- English proof (translation)
-Take `⟨ψ, hψ, hx, hψL, σ, -, hWψ, u, hu, hu0, hsu⟩` from `hSNC x`. Establish `hsu' : ∀ y ∈ ψ.source, s x y = u y * ∏ k, (σ k).elim 1 (fun i => ψ y i ^ m k)`. Introduce `y hy`. Rewrite using `[hsu y hy]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases σ k with _ | i <;> rfl`. Take `⟨V, hVdef⟩ : ∃ V : Set X, V = ψ.source ∩ (⋂ k, (Φ k).U x) ∩ ⋂ k, (if x ∈ W k then Set.univ else (W k)ᶜ)` from `⟨_, rfl⟩`. Establish `hVo : IsOpen V`. Rewrite using `[hVdef]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(ψ.open_source.inter (isOpen_iInter_of_finite fun k => (Φ k).isOpen_U x)).inter (isOpen_iInter_of_finite fun k => ?_)` and prove the remaining obligations. Use `split_ifs`. Conclude with `isOpen_univ`. Conclude with `(sncClosed A L s m W hSNC k).isOpen_compl`. Establish `hxV : x ∈ V`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hVdef]`. Use `⟨⟨hx, Set.mem_iInter.2 fun k => (Φ k).mem_U x⟩, Set.mem_iInter.2 fun k => ?_⟩` and prove the remaining obligations. Use `split_ifs with h`. Conclude with `Set.mem_univ _`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `⟨ψ.restrOpen V hVo, isCompatChart_restrOpen hψ hVo, ?_, fun v hv hvV => ?_⟩` and prove the remaining obligations. Rewrite using `[restrOpen_source']`. Conclude with `⟨hx, hxV⟩`. Establish `hvV' : tsupport v ⊆ V` using `hvV.trans (by rw [restrOpen_source']; exact Set.inter_subset_right)`. Use `pl_good A L s m W B hL hs hSNC hB Φ hΦ x ψ hψ hψL σ hWψ u hu hu0 hsu' hVo (fun p hp => by rw [hVdef] at hp; exact hp.1.1) (fun k p hp => by rw [hVdef] at hp; exact Set.mem_iInter.1 hp.1.2 k) (fun k hk => ?_) hv hvV'` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use extensionality with `p`. Simplify using `only [Set.mem_inter_iff, Set.mem_empty_iff_false, iff_false, not_and]`. Introduce `hp hpW`. Rewrite `hp` using `[hVdef]`. Use `Set.mem_iInter.1 hp.2 k` as an intermediate fact.
-
-Rewrite `this` using `[if_neg hk]`. Conclude with `this hpW`.
+A detailed English derivation is pending.
 -/
 theorem pl_exists_chart (A : FinHolAtlas (e + 1) X) (L : LocPot X) (s : X → X → ℂ) {r : ℕ}
     (m : Fin r → ℕ) (W : Fin r → Set X) (B : ∀ k, FinHolAtlas e (W k)) (hL : IsPotential A L)
@@ -100,23 +98,21 @@ theorem pl_exists_chart (A : FinHolAtlas (e + 1) X) (L : LocPot X) (s : X → X 
     exact this hpW
 
 /- English proof (translation)
-Introduce `e X _ _ _ A L s r m W B hL hs hSNC hB v hv Φ hΦ`. Use `choose ψ hψ hxψ hpl using fun x => pl_exists_chart A L s m W B hL hs hSNC hB Φ hΦ x`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun x => (ψ x).source) (fun x => (ψ x).open_source) (fun x _ => Set.mem_iUnion.2 ⟨x, hxψ x⟩)`. Establish `hcov : ∀ y, ∃ i, y ∈ (ψ (t.equivFin.symm i : X)).source`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hxt, hy⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ y))`. Conclude with `⟨t.equivFin ⟨x, hxt⟩, by simpa using hy⟩`. Take `⟨AC, hAC, -, hAC2⟩` from `atlasOfCompat A (fun i => ψ (t.equivFin.symm i : X)) (fun i => hψ _) hcov`. Take `⟨P⟩` from `existsPartition AC`. Take `⟨f, hf⟩ : ∃ f : Fin AC.n → X → ℝ, f = fun j p => P.χ j p * v p` from `⟨_, rfl⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfs : ∀ j, A.Smooth (f j)`. Introduce `j`. Establish `h1 : A.Smooth (P.χ j)` using `smoothOn_of_compatible ⟨hAC.2, hAC.1⟩ isOpen_univ (P.smooth j)`. Rewrite using `[hf]`. Conclude with `smoothOn_mul h1 hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfpl : ∀ j, mInt A (Fin.cons (LocPot.ofFun (f j)) Φ) (logNormSec L s) = ∑ k, (m k : ℝ) * mInt (B k) (fun i => (Φ i).pullback Subtype.val continuous_subtype_val) (f j ∘ Subtype.val) - mInt A (Fin.cons L Φ) (f j)`. Introduce `j`. Take `⟨i, hi⟩` from `hAC2 j`. Use `hpl (t.equivFin.symm i : X) (f j) (hfs j) ?_` and prove the remaining obligations. Establish `h2` using `P.tsupport_subset j`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[hi]`. Rewrite using `[hf]`. Conclude with `tsupport_mul_subset_left.trans h2`. Establish `hvsum : v = fun p => ∑ j ∈ Finset.univ, f j p`. Use function extensionality and compare the values at `p`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hf]`. Simplify using `only [← Finset.sum_mul, P.sum_eq_one, one_mul]`. Establish `hpot : ∀ i, IsPotential A ((Fin.cons L Φ : Fin (e + 1) → LocPot X) i)`. Introduce `i`. Use `Fin.cases ?_ (fun k => ?_) i` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hL`. Conclude with `hΦ k`. Establish `: ∀ k, CompactSpace (W k)` using `fun k => isCompact_iff_compactSpace.1 (sncClosed A L s m W hSNC k).isCompact`. Establish `hΦB : ∀ k i, IsPotential (B k) ((Φ i).pullback Subtype.val continuous_subtype_val)` using `fun k i => isPotentialPullback A (B k) Subtype.val (hB k) (Φ i) (hΦ i)`. Establish `hc : ∀ j, Continuous (f j)` using `fun j => smooth_continuous (hfs j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hk : ∀ k, mInt (B k) (fun i => (Φ i).pullback Subtype.val continuous_subtype_val) ((fun p => ∑ j ∈ Finset.univ, f j p) ∘ Subtype.val) = ∑ j, mInt (B k) (fun i => (Φ i).pullback Subtype.val continuous_subtype_val) (f j ∘ Subtype.val)` using `fun k => mInt_sum_cont (B k) _ (hΦB k) Finset.univ (fun j => f j ∘ Subtype.val) (fun j => (hc j).comp continuous_subtype_val)`. Rewrite using `[hvsum, lhs_sum A L s (fun Φ' hΦ' => logNormIntegrable A L s m W hL hs hSNC Φ' hΦ') Φ hΦ Finset.univ f hfs, mInt_sum_cont A (Fin.cons L Φ) hpot Finset.univ f hc, Finset.sum_congr rfl fun j _ => hfpl j, Finset.sum_sub_distrib]`. Use `congr 1`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[hk k, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pl_global : PoincareLelongStatement := by
   intro e X _ _ _ A L s r m W B hL hs hSNC hB v hv Φ hΦ

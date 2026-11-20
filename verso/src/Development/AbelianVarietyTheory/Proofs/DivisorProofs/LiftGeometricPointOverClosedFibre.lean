@@ -17,29 +17,25 @@ open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `R _ _ _ hAdm M G' _ _ hG E P' b X a hb ha hab hX x hx hxc Ω _ _ ξ s hξ hs`. Establish `hxr : ∀ w, ξ w = x` using `fun w => by`. Establish `: ξ w ∈ Set.range ξ` using `⟨w, rfl⟩`. Rewrite `this` using `[hξ]`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hfo : ∀ h : E.H.toScheme, PSpace.str R E.N (E.f h) = M.π (G'.hom (E.H.ι h))` using `fun h => by`. Rewrite using `[← Scheme.Hom.comp_apply, E.f_over]`. Both sides reduce to the same expression. Establish `hcl : ∀ h : E.H.toScheme, E.f h ∈ Set.range (ξ ≫ b) → M.π (G'.hom (E.H.ι h)) = closedPoint R`. Introduce and unpack `h ⟨w, hw⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hfo, ← hw, ← Scheme.Hom.comp_apply, Category.assoc, Scheme.Hom.comp_apply, hxr]`. Conclude with `hxc`. Take `⟨z, hz⟩` from `ha.surj x`. Establish `hzx : E.f (X.ι z) = b x`. Rewrite using `[← hz, ← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, hab]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hrng : E.f (X.ι z) ∈ Set.range (ξ ≫ b)`. Set `w : Sp Ω` to `Nonempty.some inferInstance`. Conclude with `⟨w, by rw [Scheme.Hom.comp_apply, hxr, hzx]⟩`. Establish `hg : ∃ g : E.H.toScheme, M.π (G'.hom (E.H.ι g)) = closedPoint R ∧ E.f g ∈ Set.range (ξ ≫ b)` using `⟨X.ι z, hcl _ hrng, hrng⟩`. Establish `hs' : (ξ ≫ b) ≫ PSpace.str R E.N = s ≫ M.π` using `by rw [Category.assoc]; exact hs`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨Ω', _, io, q, hq1, hq2⟩` from `GlobalTheory.T.exists_lift_after_field_extension R M.S M.π G' E Ω (ξ ≫ b) s hs' hg`. Set `φ : E.H.toScheme ⟶ pullback M.π (PSpace.str R E.N)` to `pullback.lift (E.H.ι ≫ G'.hom) E.f (by rw [E.f_over, Category.assoc])`. Use `haveI : Smooth G'.hom := hG.smooth`. Establish `hφ : LocallyOfFiniteType φ`. Establish `: LocallyOfFiniteType (φ ≫ pullback.fst _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[pullback.lift_fst]`. Use `infer_instance`. Conclude with `HasRingHomProperty.of_comp (fun _ _ => RingHom.FiniteType.of_comp_finiteType) this`. Take `⟨p₀, hp₀⟩` from `GlobalTheory.T.exists_rational_point_of_point_over_field_extension _ _ φ hφ Ω (pullback.lift s (ξ ≫ b) hs'.symm) Ω' io q (by`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [φ, Category.assoc, pullback.lift_fst]`. Conclude with `hq2`. Simplify using `only [φ, Category.assoc, pullback.lift_snd]`. Conclude with `hq1)`. Establish `hp1 : p₀ ≫ E.f = ξ ≫ b`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `congrArg (· ≫ pullback.snd M.π (PSpace.str R E.N)) hp₀` as an intermediate fact. Simplify using `only [φ, Category.assoc] at this`. Rewrite `this` using `[pullback.lift_snd, pullback.lift_snd]`. Then use the resulting hypothesis. Establish `hp2 : p₀ ≫ E.H.ι ≫ G'.hom = s`. Use `congrArg (· ≫ pullback.fst M.π (PSpace.str R E.N)) hp₀` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [φ, Category.assoc] at this`. Rewrite `this` using `[pullback.lift_fst, pullback.lift_fst, ← Category.assoc]`. Then use the resulting hypothesis. Establish `hU : ∀ h : E.H.toScheme, E.f h ∈ Set.range (ξ ≫ b) → h ∈ X` using `fun h hh => hX h (hcl h hh)`. Establish `hpX : Set.range p₀ ⊆ Set.range X.ι`. Introduce and unpack `_ ⟨w, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Scheme.Opens.range_ι]`. Use `hU _ ⟨w, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, hp1]`. Set `p : Sp Ω ⟶ X.toScheme` to `IsOpenImmersion.lift X.ι p₀ hpX`. Establish `hpι : p ≫ X.ι = p₀` using `IsOpenImmersion.lift_fac _ _ _`.
-
-Use `haveI : IsNoetherianRing R := hAdm.1`. Establish `c4` using `GlobalTheory.T.geometricFibre_projEmbedding_fixedGroup_connected R M.S M.π (by have := M.proper; infer_instance) G' hG.smooth E (GlobalTheory.T.connectedSpace_closedFibre_modification_fieldExtension R hAdm M) Ω (ξ ≫ b) hg`. Establish `c3` using `GlobalTheory.T.connectedSpace_pullback_restrict_open_containing_fibre _ _ _ X E.f (ξ ≫ b) hU c4`. Establish `c2` using `GlobalTheory.T.connectedSpace_pullback_of_comp_of_surjective _ _ _ _ a b (X.ι ≫ E.f) (ξ ≫ b) hab ha c3`. Use `⟨p, GlobalTheory.T.eq_of_comp_eq_of_connectedSpace_pullback' _ _ b hb Ω (ξ ≫ b) (p ≫ a) ξ ?_ rfl c2, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Category.assoc, hab, ← Category.assoc, hpι, hp1]`. Rewrite using `[← Category.assoc, hpι, hp2]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mum.Emb.lift_closedPoint : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) → ∀ (M : Modif R) (G' : Over M.S) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ E : Emb M.π G', ∀ (P' : Scheme.{0}) (b : P' ⟶ PSpace R E.N) (X : E.H.toScheme.Opens) (a : X.toScheme ⟶ P'), LocallyQuasiFinite b → Surjective a → a ≫ b = X.ι ≫ E.f → (∀ z : E.H.toScheme, M.π (G'.hom (E.H.ι z)) = closedPoint R → z ∈ X) → ∀ x : P', IsClosed ({x} : Set P') → (b ≫ PSpace.str R E.N) x = closedPoint R → ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] (ξ : Sp Ω ⟶ P') (s : Sp Ω ⟶ M.S), Set.range ξ = {x} → ξ ≫ b ≫ PSpace.str R E.N = s ≫ M.π → ∃ p : Sp Ω ⟶ X.toScheme, p ≫ a = ξ ∧ p ≫ X.ι ≫ E.H.ι ≫ G'.hom = s := by
   intro R _ _ _ hAdm M G' _ _ hG E P' b X a hb ha hab hX x hx hxc Ω _ _ ξ s hξ hs

@@ -8,15 +8,15 @@ open scoped InnerProductSpace
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h1 : ∀ x ∈ S, ∀ y ∈ Submodule.span ℂ T, MemLp (fun g => ⟪x, σ g y⟫_ℂ) q μ`. Introduce `x hx y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => exact h x hx y hy`. Consider the case `zero => simpa using (MemLp.zero : MemLp (fun _ : G => (0 : ℂ)) q μ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add y z _ _ hy hz`. Use `hy.add hz` as an intermediate fact. Simplify using `only [map_add, ContinuousLinearMap.add_apply, inner_add_right]`. Conclude with `this`. Consider the case `smul c y _ hy`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Use `hy.const_mul c` as an intermediate fact. Simplify `this` using `[map_smul, inner_smul_right]`. Introduce `x hx y hy`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact h1 x hx y hy`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simpa using (MemLp.zero : MemLp (fun _ : G => (0 : ℂ)) q μ)`. Consider the case `add x z _ _ hx hz`. Use `hx.add hz` as an intermediate fact. Simplify using `only [inner_add_left]`. Conclude with `this`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `smul c x _ hx`. Use `hx.const_mul ((starRingEnd ℂ) c)` as an intermediate fact. Simplify using `only [inner_smul_left]`. Conclude with `this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem memLp_matrixCoeff_span
     {G : Type} [Group G] [TopologicalSpace G] [MeasurableSpace G] [OpensMeasurableSpace G]
@@ -50,11 +50,11 @@ theorem memLp_matrixCoeff_span
     exact this
 
 /- English proof (translation)
-Establish `hp0 : ENNReal.ofReal p ≠ 0`. Rewrite using `[Ne, ENNReal.ofReal_eq_zero, not_le]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpt : ENNReal.ofReal p ≠ ⊤` using `ENNReal.ofReal_ne_top`. Establish `hpr : (ENNReal.ofReal p).toReal = p` using `ENNReal.toReal_ofReal (by linarith)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmeas : ∀ x y : V, AEStronglyMeasurable (fun g => ⟪x, σ g y⟫_ℂ) μ` using `fun x y => (continuous_const.inner (hσ.continuous_apply y)).aestronglyMeasurable`. Establish `key : ∀ x y : V, Integrable (fun g => ‖⟪x, σ g y⟫_ℂ‖ ^ p) μ ↔ MemLp (fun g => ⟪x, σ g y⟫_ℂ) (ENNReal.ofReal p) μ`. Introduce `x y`. Use `integrable_norm_rpow_iff (hmeas x y) hp0 hpt` as an intermediate fact. Rewrite `this` using `[hpr]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Introduce `x hx y hy`. Rewrite using `[key]`. Conclude with `memLp_matrixCoeff_span μ σ _ S T (fun x hx y hy => (key x y).1 (h x hx y hy)) x hx y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_norm_rpow_matrixCoeff_span
     {G : Type} [Group G] [TopologicalSpace G] [MeasurableSpace G] [OpensMeasurableSpace G]
@@ -80,7 +80,7 @@ theorem integrable_norm_rpow_matrixCoeff_span
   exact memLp_matrixCoeff_span μ σ _ S T (fun x hx y hy => (key x y).1 (h x hx y hy)) x hx y hy
 
 /- English proof (translation)
-The claim follows from `@integrable_norm_rpow_matrixCoeff_span`.
+A detailed English derivation is pending.
 -/
 example : ∀ {G : Type} [Group G] [TopologicalSpace G] [MeasurableSpace G] [OpensMeasurableSpace G] (μ : Measure G) {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [CompleteSpace V] (σ : G →* (V →L[ℂ] V)), IsUnitaryRep σ → ∀ (p : ℝ), 1 ≤ p → ∀ (S T : Set V), (∀ x ∈ S, ∀ y ∈ T, Integrable (fun g => ‖⟪x, σ g y⟫_ℂ‖ ^ p) μ) → ∀ x ∈ Submodule.span ℂ S, ∀ y ∈ Submodule.span ℂ T, Integrable (fun g => ‖⟪x, σ g y⟫_ℂ‖ ^ p) μ := @integrable_norm_rpow_matrixCoeff_span
 

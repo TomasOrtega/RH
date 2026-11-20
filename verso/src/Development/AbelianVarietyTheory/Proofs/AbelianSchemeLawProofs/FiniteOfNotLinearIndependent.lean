@@ -17,7 +17,7 @@ section Poly
 variable {σ R A : Type} [CommRing R] [CommRing A]
 
 /- English proof (translation)
-Simplify using `only [MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_eq, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Rewrite using `[hF.degree_eq_sum_deg_support hd]`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eval₂Hom_mul_of_isHomogeneous (c : R →+* A) (u : A) (x : σ → A) {F : MvPolynomial σ R} {t : ℕ}
     (hF : F.IsHomogeneous t) :
@@ -29,9 +29,9 @@ theorem eval₂Hom_mul_of_isHomogeneous (c : R →+* A) (u : A) (x : σ → A) {
   ring
 
 /- English proof (translation)
-Use `⟨∑ d ∈ Finset.range (p.totalDegree + 1), MvPolynomial.homogeneousComponent d p * MvPolynomial.X i ^ (t - d), ?_, ?_⟩` and prove the remaining obligations. Use `MvPolynomial.IsHomogeneous.sum _ _ _ fun d hd => ?_` and prove the remaining obligations. Establish `h` using `(MvPolynomial.homogeneousComponent_isHomogeneous d p).mul (MvPolynomial.isHomogeneous_X_pow (R := R) i (t - d))`. Establish `hd'` using `Finset.mem_range.1 hd`. Rewrite `h` using `[show d + (t - d) = t by omega]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `conv_rhs => rw [← MvPolynomial.sum_homogeneousComponent p]`. Simplify using `only [map_sum, map_mul, map_pow, MvPolynomial.eval₂Hom_X', hi, one_pow, _root_.mul_one]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_isHomogeneous_eval₂Hom_eq (c : R →+* A) (x : σ → A) (i : σ) (hi : x i = 1)
     (p : MvPolynomial σ R) {t : ℕ} (hp : p.totalDegree ≤ t) :
@@ -54,7 +54,7 @@ section Sections
 variable {X : Scheme.{0}}
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.map_eval₂Hom]`. Use `congr 2`. Conclude with `RingHom.ext fun r => rs_cst f h r`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem rs_eval₂Hom {R σ : Type} [CommRing R] (f : X ⟶ Spec (CommRingCat.of R)) {U V : X.Opens} (h : V ≤ U)
     (x : σ → Γ(X, U)) (F : MvPolynomial σ R) :
@@ -78,11 +78,11 @@ def polySec {R σ : Type} [CommRing R] (f : X ⟶ Spec (CommRingCat.of R)) {H : 
     rw [zpow_natCast, Units.val_pow_eq_pow_val]
 
 /- English proof (translation)
-Establish `h₀ : σ.f k₀ = 0` using `map_injective_of_isIntegral X (homOfLE hW) (h.trans (map_zero _).symm)`. Distinguish the cases in `hk : M.U k = ⊥`. Establish `: Subsingleton Γ(X, M.U k)`. Rewrite using `[hk]`. Use `infer_instance`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Subsingleton.elim _ _`. Establish `hne : Nonempty (M.U k ⊓ M.U k₀ : X.Opens)`. Take `⟨x, hx⟩` from `(TopologicalSpace.Opens.ne_bot_iff_nonempty _).1 hk`. Take `⟨y⟩` from `‹Nonempty W›`. Take `⟨z, hz⟩` from `nonempty_preirreducible_inter (M.U k).isOpen (M.U k₀).isOpen ⟨x, hx⟩ ⟨y.1, hW y.2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `⟨⟨z, hz⟩⟩`. Apply `map_injective_of_isIntegral X (homOfLE (inf_le_left : M.U k ⊓ M.U k₀ ≤ M.U k))` to reduce the goal to its premises. Use `(σ.compat k k₀).trans ?_` and prove the remaining obligations. Rewrite using `[h₀, map_zero, map_zero, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sec_eq_zero [IsIntegral X] {M : LB X} (σ : LB.Sec M) {k₀ : M.ι} {W : X.Opens} (hW : W ≤ M.U k₀)
     [Nonempty W] (h : rs X hW (σ.f k₀) = 0) (k : M.ι) : σ.f k = 0 := by
@@ -115,35 +115,29 @@ end Sections
 section Growth
 
 /- English proof (translation)
-Take `⟨x⟩ : Nonempty X` from `inferInstance`. Establish `hx : x ∈ ⨆ i, nonzeroLocus (s i)` using `by rw [hs.1]; trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`. Take `⟨k₀, hk₀⟩` from `TopologicalSpace.Opens.mem_iSup.1 hi`. Take `⟨hD, r, hr, hrs⟩` from `hs.2 i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `W : X.Opens` to `X.basicOpen ((s i).f k₀)`. Establish `hWD : W ≤ nonzeroLocus (s i)` using `le_iSup (fun k => X.basicOpen ((s i).f k)) k₀`. Establish `hWU : W ≤ H.U k₀` using `X.basicOpen_le _`. Use `haveI : Nonempty W := ⟨⟨x, hk₀⟩⟩`. Use `haveI : Nonempty (nonzeroLocus (s i)) := ⟨⟨x, hi⟩⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Take `⟨u, hu⟩ : IsUnit (rs X hWU ((s i).f k₀))` from `X.toRingedSpace.isUnit_res_basicOpen _`. Use `letI : Algebra K Γ(X, nonzeroLocus (s i)) := (cst f _).toAlgebra`. Use `letI : Algebra K Γ(X, W) := (cst f _).toAlgebra`. Set `ρ : Γ(X, nonzeroLocus (s i)) →ₐ[K] Γ(X, W)` to `{ rs X hWD with commutes' := fun c => rs_cst f hWD c }`. Establish `hρ : Function.Injective ρ` using `map_injective_of_isIntegral X (homOfLE hWD)`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsr : ∀ j, rs X hWU ((s j).f k₀) = u.val * rs X hWD (r j)` using `fun j => by`. Establish `h` using `congrArg (rs X (le_inf hWD hWU)) (hr j k₀)`. Rewrite `h` using `[map_mul, rs_rs, rs_rs, rs_rs, ← hu]`. Conclude with `h.trans (mul_comm _ _)`. Establish `hri : r i = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `hρ` to reduce the goal to its premises. Establish `h` using `hsr i`. Rewrite `h` using `[← hu]`. Rewrite using `[map_one]`. Conclude with `(Units.mul_right_inj u).1 (h.symm.trans (_root_.mul_one _).symm)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Establish `key : ∀ (t : ℕ) (F : MvPolynomial (Fin (m + 1)) K), F.IsHomogeneous t → rs X hWU (MvPolynomial.eval₂Hom (cst f (H.U k₀)) (fun j => (s j).f k₀) F) * (u⁻¹).val ^ t = ρ (MvPolynomial.aeval r F)` using `fun t F hF => by`. Rewrite using `[rs_eval₂Hom, funext hsr, eval₂Hom_mul_of_isHomogeneous _ _ _ hF, ← rs_eval₂Hom, mul_right_comm, ← mul_pow, Units.mul_inv, one_pow, _root_.one_mul]`. Both sides reduce to the same expression. Set `Φ : ∀ t : ℕ, V t →ₗ[K] Γ(X, W)` to `fun t => { toFun := fun a => rs X hWU ((ev t a).f k₀) * (u⁻¹).val ^ t map_add' := fun a b => by`. Rewrite using `[hadd]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg (· * _) (map_add (rs X hWU) _ _)).trans (add_mul _ _ _)`. Use the proof step `map_smul' := fun c a => by`. Rewrite using `[hsmul, map_mul, rs_cst, _root_.mul_assoc]`. Use `rfl }`. Establish `hΦ : ∀ t, Function.Injective (Φ t)` using `fun t => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `a ha`. Establish `h : rs X hWU ((ev t a).f k₀) = 0` using `((u⁻¹.isUnit.pow t).mul_left_eq_zero).1 ha`. Conclude with `hinj t a (sec_eq_zero (M := pw H t) (ev t a) (k₀ := k₀) hWU h)`. Set `P : ℕ → Submodule K Γ(X, nonzeroLocus (s i))` to `fun t => (MvPolynomial.restrictTotalDegree (Fin (m + 1)) K t).map (MvPolynomial.aeval r : MvPolynomial (Fin (m + 1)) K →ₐ[K] Γ(X, nonzeroLocus (s i))).toLinearMap`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hP : ∀ t, Module.finrank K ((P t).map ρ.toLinearMap) = Module.finrank K (P t)` using `fun t => (Submodule.equivMapOfInjective ρ.toLinearMap hρ (P t)).finrank_eq.symm`. Establish `hV : ∀ t, Module.finrank K (LinearMap.range (Φ t)) = Module.finrank K (V t)` using `fun t => LinearMap.finrank_range_of_inj (hΦ t)`. Establish `hle : ∀ t, (P t).map ρ.toLinearMap ≤ LinearMap.range (Φ t)`. Introduce and unpack `t _ ⟨_, ⟨p, hp, rfl⟩, rfl⟩`. Take `⟨F, hF, hFp⟩` from `exists_isHomogeneous_eval₂Hom_eq (cst f _) r i hri p ((MvPolynomial.mem_restrictTotalDegree _ _ _).1 hp)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `hsurj t (polySec f s hF)`. Use `⟨a, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `rs X hWU ((ev t a).f k₀) * (u⁻¹).val ^ t = _`. Rewrite using `[ha]`. Conclude with `(key t F hF).trans (congrArg ρ hFp)`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hge : ∀ t, t₀ ≤ t → LinearMap.range (Φ t) ≤ (P t).map ρ.toLinearMap`. Introduce and unpack `t ht _ ⟨a, rfl⟩`. Take `⟨F, hF, hFa⟩` from `hgen t ht (ev t a)`. Use `⟨_, ⟨F, (MvPolynomial.mem_restrictTotalDegree _ _ _).2 hF.totalDegree_le, rfl⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = rs X hWU ((ev t a).f k₀) * (u⁻¹).val ^ t`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hFa]`. Conclude with `(key t F hF).symm`. Establish `htd : Algebra.trdeg K Γ(X, nonzeroLocus (s i)) = g`. Use `htr Γ(X, nonzeroLocus (s i)) hD.fromSpec inferInstance ?_` and prove the remaining obligations. Establish `h` using `IsAffineOpen.SpecMap_appLE_fromSpec f (isAffineOpen_top _) hD le_top`.
-
-Rewrite `h` using `[IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv, ← Spec.map_comp]`. Conclude with `h.symm`. Take `⟨c, C, hc, hcC⟩` from `hGK Γ(X, nonzeroLocus (s i)) r hrs htd`. Use `⟨c, C + ∑ t ∈ Finset.range t₀, Module.finrank K (V t), hc, fun t ht => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `(hcC t ht).1.trans (Nat.mul_le_mul_left _ ?_)` and prove the remaining obligations.
-
-Conclude with `(hP t).symm.trans_le ((Submodule.finrank_mono (hle t)).trans (hV t).le)`. Distinguish the cases in `h : t₀ ≤ t`. Use `le_trans ?_ ((hcC t ht).2.trans (Nat.mul_le_mul_right _ (Nat.le_add_right _ _)))` and prove the remaining obligations. Rewrite using `[← hV, le_antisymm (hge t h) (hle t)]`. Conclude with `(hP t).le`.
-
-Establish `h₁ : Module.finrank K (V t) ≤ ∑ t ∈ Finset.range t₀, Module.finrank K (V t)` using `Finset.single_le_sum (f := fun t => Module.finrank K (V t)) (fun _ _ => Nat.zero_le _) (Finset.mem_range.2 (not_le.1 h))`. Conclude with `h₁.trans ((Nat.le_add_left _ C).trans (Nat.le_mul_of_pos_right _ (Nat.pow_pos ht)))`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem growth_of_veryAmpleBy {K : Type} [Field K] {X : Scheme.{0}} [IsIntegral X]
     (f : X ⟶ Spec (CommRingCat.of K)) {H : LB X} {m : ℕ} (s : Fin (m + 1) → LB.Sec H) (hs : VeryAmpleBy f H s)
@@ -258,7 +252,7 @@ end Growth
 section Modules
 
 /- English proof (translation)
-Use `letI := hR.toField`. Use `haveI : Module.Free R V := Module.Free.of_divisionRing R V`. Assume the negation of the conclusion as `hV`. Take `⟨b, hb⟩` from `exists_linearIndependent_of_le_rank (R := R) (M := V) (n := n) ((Cardinal.natCast_lt_aleph0 (n := n)).le.trans (not_lt.1 fun hlt => hV (Module.rank_lt_aleph0_iff.1 hlt)))`. Conclude with `h b hb`.
+Equip the data with the indicated structure. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem finite_of_not_linearIndependent {R V : Type} [CommRing R] (hR : IsField R) [AddCommGroup V] [Module R V]
     (n : ℕ) (h : ∀ b : Fin n → V, ¬ LinearIndependent R b) : Module.Finite R V := by
@@ -270,7 +264,7 @@ theorem finite_of_not_linearIndependent {R V : Type} [CommRing R] (hR : IsField 
   exact h b hb
 
 /- English proof (translation)
-Use `letI := Module.compHom V e.toRingHom`. Conclude with `congrArg Cardinal.toNat (rank_eq_of_equiv_equiv e (AddEquiv.refl V) e.bijective fun _ _ => rfl)`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem finrank_compHom {K R V : Type} [CommRing K] [CommRing R] (e : K ≃+* R) [AddCommGroup V] [Module R V] :
     letI := Module.compHom V e.toRingHom
@@ -279,7 +273,7 @@ theorem finrank_compHom {K R V : Type} [CommRing K] [CommRing R] (e : K ≃+* R)
   exact congrArg Cardinal.toNat (rank_eq_of_equiv_equiv e (AddEquiv.refl V) e.bijective fun _ _ => rfl)
 
 /- English proof (translation)
-Use `letI := Module.compHom V e.toRingHom`. Use `haveI : RingHomSurjective (e.symm : R →+* K) := ⟨e.symm.surjective⟩`. Set `φ : V →ₛₗ[(e.symm : R →+* K)] V` to `{ toFun := id map_add' := fun _ _ => rfl map_smul' := fun c v => congrArg (· • v) (e.apply_symm_apply c).symm }`. Conclude with `Module.Finite.of_surjective φ Function.surjective_id`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem finite_compHom {K R V : Type} [CommRing K] [CommRing R] (e : K ≃+* R) [AddCommGroup V] [Module R V]
     [Module.Finite R V] :
@@ -298,15 +292,13 @@ end Modules
 section Abelian
 
 /- English proof (translation)
-Set `T : Over (Spec (CommRingCat.of K))` to `baseOver (Spec (CommRingCat.of K))`. Take `⟨n, hn⟩` from `hfin (LB.LinComb P.L (K := PUnit) (fun _ => 𝟙 P.A.left) (fun _ => a)) (LB.isLB_linComb P.isLB _ _)`. Use `finite_of_not_linearIndependent (isField_of_isIntegral_of_subsingleton (Spec (CommRingCat.of K))) n fun b hb => ?_` and prove the remaining obligations. Set `ρ : P.A ⟶ T ⊗ P.A` to `lift (Over.homMk P.A.hom (Category.comp_id _)) (𝟙 _)`. Establish `ρ₂ : ρ.left ≫ (snd T P.A).left = 𝟙 _` using `congrArg (fun q => q.left) (lift_snd _ _ : ρ ≫ _ = _)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `ρ₁ : ρ.left ≫ (fst T P.A).left = P.A.hom` using `congrArg (fun q => q.left) (lift_fst _ _ : ρ ≫ _ = _)`. Establish `ρ₃ : (snd T P.A).left ≫ ρ.left = 𝟙 _`. Apply `pullback.hom_ext` to reduce the goal to its premises. Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) ρ₁).trans (pullback.condition.symm.trans ((Category.comp_id _).trans (Category.id_comp _).symm)))`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) ρ₂).trans ((Category.comp_id _).trans (Category.id_comp _).symm))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : IsIso ρ.left := ⟨_, ρ₂, ρ₃⟩`. Take `⟨c, hc, ha⟩` from `hn fun i => PowSec.down P.L (snd T P.A).left ρ.left ρ₂ a (SecM.toSec P.A (b i))`. Establish `h0 : ∑ i, (show Γ(T.left, ⊤) from c i) • b i = 0`. Use `Subtype.ext (funext fun j => ?_)` and prove the remaining obligations. Take `⟨k, rfl⟩ : ∃ k, j = fun _ => k` from `⟨j 0, funext fun q => by rw [Subsingleton.elim q 0]⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `PowSec.appLE_injective ρ.left _ _ (PowSec.chart_eq P.L (snd T P.A).left ρ.left ρ₂ (fun _ => k)) ?_` and prove the remaining obligations. Use `Eq.trans ?_ ((ha (fun _ => k)).trans (map_zero _).symm)` and prove the remaining obligations. Rewrite using `[Submodule.coe_sum]`. Use `(congrArg _ (Finset.sum_apply _ _ _)).trans ?_` and prove the remaining obligations. Use `(map_sum (ρ.left.appLE _ _ (PowSec.chart_eq P.L (snd T P.A).left ρ.left ρ₂ (fun _ => k)).le).hom _ _).trans (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations.
-
-Use `(map_mul _ (liftHom P.A _ (c i)) ((b i).1 fun _ => k)).trans (congrArg₂ (· * ·) ?_ rfl)` and prove the remaining obligations. Establish `h1` using `(Scheme.Hom.appLE_comp_appLE ρ.left (fst T P.A).left ⊤ _ _ (fun _ _ => trivial) (PowSec.chart_eq P.L (snd T P.A).left ρ.left ρ₂ (fun _ => k)).le).trans (PowSec.appLE_congr ρ₁ ⊤ _ _ (fun _ _ => trivial))`. Conclude with `congrArg (fun φ => φ.hom (c i)) h1`. Conclude with `hc (funext fun i => Fintype.linearIndependent_iff.1 hb _ h0 i)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_secM {K : Type} [Field K] (P : PolAV (Spec (CommRingCat.of K)))
     (hfin : ∀ M : LB P.A.left, M.IsLB → ∃ n : ℕ, ∀ s : Fin n → LB.Sec M,
@@ -349,21 +341,21 @@ theorem finite_secM {K : Type} [Field K] (P : PolAV (Spec (CommRingCat.of K)))
 variable {X Y : Scheme.{0}} (L : LB X) (π : Y ⟶ X)
 
 /- English proof (translation)
-Introduce `_ hy` and use `Set.mem_iInter.2 fun _ => Set.mem_iInter.1 hy PUnit.unit`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem wchart_le_one (j : PUnit → L.ι) :
     LB.wchart L (fun _ : PUnit => π) j ≤ LB.wchart L (fun _ : Fin 1 => π) (fun _ => j PUnit.unit) :=
   fun _ hy => Set.mem_iInter.2 fun _ => Set.mem_iInter.1 hy PUnit.unit
 
 /- English proof (translation)
-Introduce `_ hy` and use `Set.mem_iInter.2 fun _ => Set.mem_iInter.1 hy 0`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem wchart_le_unit (j : Fin 1 → L.ι) :
     LB.wchart L (fun _ : Fin 1 => π) j ≤ LB.wchart L (fun _ : PUnit => π) (fun _ => j 0) :=
   fun _ hy => Set.mem_iInter.2 fun _ => Set.mem_iInter.1 hy 0
 
 /- English proof (translation)
-Rewrite using `[LB.res_lcg, LB.lcg_pull, Fintype.prod_unique, ← zpow_mul, Nat.cast_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lcg_pow_pow (N t : ℕ) (j j' : PUnit → L.ι) :
     (LB.lcg L (K := PUnit) (fun _ => π) (fun _ => 1) j j' ^ (N : ℤ)) ^ (t : ℤ) =
@@ -372,7 +364,7 @@ theorem lcg_pow_pow (N t : ℕ) (j j' : PUnit → L.ι) :
   rw [LB.res_lcg, LB.lcg_pull, Fintype.prod_unique, ← zpow_mul, Nat.cast_mul]
 
 /- English proof (translation)
-Rewrite using `[map_zpow, map_zpow, LB.lcg_pull, LB.res_res, LB.lcg, Fintype.prod_unique, ← zpow_mul, Nat.cast_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lcg_mul (N t : ℕ) (j j' : Fin 1 → L.ι) :
     LB.lcg L (K := Fin 1) (fun _ => π) (fun _ => ((N * t : ℕ) : ℤ)) j j' =
@@ -395,17 +387,15 @@ def ofPw (N t : ℕ) (σ : LB.Sec (pw (pw (L.pull π) N) t)) :
 end Abelian
 
 /- English proof (translation)
-Introduce `hGI hProj hFin hGen hGK hTr K _ _ P`. Establish `hfin` using `finite_secM P (hFin K P)`. Use `⟨fun j => hfin j, ?_⟩` and prove the remaining obligations. Set `T : Over (Spec (CommRingCat.of K))` to `baseOver (Spec (CommRingCat.of K))`. Set `π : (T ⊗ P.A).left ⟶ P.A.left` to `(snd T P.A).left`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `f : (T ⊗ P.A).left ⟶ Spec (CommRingCat.of K)` to `(fst T P.A).left`. Establish `hpb : IsPullback π f P.A.hom (𝟙 _)` using `(IsPullback.of_hasPullback T.hom P.A.hom).flip`. Take `⟨N, hN, m, s, hH, hs⟩` from `hProj _ P K (𝟙 _) _ π f hpb`. Take `⟨t₀, ht₀⟩` from `hGen K _ f _ m s hH hs`. Establish `hgi` using `hGI _ _ P.A.hom P.isAb.smooth P.isAb.geomConnected`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : IsIntegral (T ⊗ P.A).left := GeometricallyIntegral.geometrically_isIntegral _ _ _ hpb`. Establish `hsm : SmoothOfRelativeDimension P.g f` using `(smoothOfRelativeDimension_isStableUnderBaseChange P.g).of_isPullback hpb P.smoothDim`. Set `e : K ≃+* Γ(T.left, ⊤)` to `(Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv.symm`. Set `V : ℕ → Type` to `fun t => SecM P.A P.L ((N * t : ℕ) : ℤ) T`. Use `letI : ∀ t, Module K (V t) := fun t => Module.compHom (V t) e.toRingHom`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `haveI : ∀ t, Module.Finite K (V t) := fun t => finite_compHom e`. Establish `hrk : ∀ t, Module.finrank K (V t) = Module.finrank Γ(T.left, ⊤) (V t)` using `fun t => finrank_compHom e`. Take `⟨c, C, hc, hcC⟩` from `growth_of_veryAmpleBy f s hs P.g t₀ ht₀ (fun B _ _ _ r => hGK K B _ _ r) (hTr K _ f P.g hsm) V (fun t v => toPw P.L π N t (SecM.toSec P.A v)) (fun t a b k => map_add (rs _ (wchart_le_one P.L π k)) _ _) (fun t c a k => (map_mul (rs _ (wchart_le_one P.L π k)) (cst f _ c) _).trans ( …`. Use `Subtype.ext (funext fun j => ?_)` and prove the remaining obligations. Take `⟨k, rfl⟩ : ∃ k, j = fun _ => k` from `⟨j 0, funext fun q => by rw [Subsingleton.elim q 0]⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `congrArg (rs _ (wchart_le_unit P.L π (fun _ => k))) (ha fun _ => k)`. Conclude with `((rs_rs _ _ _).trans (rs_self _ _)).symm.trans (h.trans (map_zero _)))`. Use the proof step `(fun t σ => ⟨SecM.ofSec P.A (ofPw P.L π N t σ), fun k => (rs_rs _ _ _).trans (rs_self _ _)⟩)`. Use `⟨N, c, C, hN, hc, fun t ht => ?_⟩` and prove the remaining obligations. Establish `h` using `hcC t ht`.
-
-Rewrite `h` using `[hrk]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secM_finite_and_growth :
     (∀ (X S : Scheme.{0}) (f : X ⟶ S), Smooth f → GeometricallyConnected f → GeometricallyIntegral f) → (∀ (S : Scheme.{0}) (P : PolAV S) (R : Type) [CommRing R] (t : Spec (CommRingCat.of R) ⟶ S) (X : Scheme.{0}) (π : X ⟶ P.A.left) (f : X ⟶ Spec (CommRingCat.of R)), IsPullback π f P.A.hom t → ∃ N : ℕ, 1 ≤ N ∧ ∃ (m : ℕ) (s : Fin (m + 1) → LB.Sec (pw (P.L.pull π) N)), (pw (P.L.pull π) N).IsLB ∧ VeryAmpleBy f (pw (P.L.pull π) N) s) → (∀ (K : Type) [Field K] [IsAlgClosed K] (P : PolAV (Spec (CommRingCat.of K))) (M : LB P.A.left), M.IsLB → ∃ n : ℕ, ∀ s : Fin n → LB.Sec M, ∃ c : Fin n → Γ(Spec (CommRingCat.of K), ⊤), c ≠ 0 ∧ ∀ i, ∑ k, (P.A.hom.appLE ⊤ (M.U i) le_top).hom (c k) * (s k).f i = 0) → (∀ (R : Type) [CommRing R] (X : Scheme.{0}) (f : X ⟶ Spec (CommRingCat.of R)) [IsNoetherianRing R] (H : LB X) (m : ℕ) (s : Fin (m + 1) → LB.Sec H), H.IsLB → VeryAmpleBy f H s → ∃ t₀ : ℕ, ∀ t : ℕ, t₀ ≤ t → ∀ σ : LB.Sec (pw H t), ∃ F : MvPolynomial (Fin (m + 1)) R, F.IsHomogeneous t ∧ ∀ k : H.ι, σ.f k = MvPolynomial.eval₂Hom (cst f (H.U k)) (fun j => (s j).f k) F) → (∀ (K B : Type) [Field K] [CommRing B] [IsDomain B] [Algebra K B] (m g : ℕ) (r : Fin m → B), Function.Surjective (MvPolynomial.aeval r : MvPolynomial (Fin m) K →ₐ[K] B) → Algebra.trdeg K B = g → ∃ c C : ℕ, 1 ≤ c ∧ ∀ t : ℕ, 1 ≤ t → t ^ g ≤ c * Module.finrank K ((MvPolynomial.restrictTotalDegree (Fin m) K t).map (MvPolynomial.aeval r : MvPolynomial (Fin m) K →ₐ[K] B).toLinearMap) ∧ Module.finrank K ((MvPolynomial.restrictTotalDegree (Fin m) K t).map (MvPolynomial.aeval r : MvPolynomial (Fin m) K →ₐ[K] B).toLinearMap) ≤ C * t ^ g) → (∀ (K : Type) [Field K] (X : Scheme.{0}) [IsIntegral X] (f : X ⟶ Spec (CommRingCat.of K)) (g : ℕ), SmoothOfRelativeDimension g f → ∀ (B : Type) [CommRing B] [Nontrivial B] [Algebra K B] (j : Spec (CommRingCat.of B) ⟶ X), IsOpenImmersion j → j ≫ f = Spec.map (CommRingCat.ofHom (algebraMap K B)) → Algebra.trdeg K B = g) → ∀ (K : Type) [Field K] [IsAlgClosed K] (P : PolAV (Spec (CommRingCat.of K))), (∀ j : ℕ, Module.Finite Γ((baseOver (Spec (CommRingCat.of K))).left, ⊤) (SecM P.A P.L (j : ℤ) (baseOver (Spec (CommRingCat.of K))))) ∧ ∃ N c C : ℕ, 1 ≤ N ∧ 1 ≤ c ∧ ∀ t : ℕ, 1 ≤ t → t ^ P.g ≤ c * Module.finrank Γ((baseOver (Spec (CommRingCat.of K))).left, ⊤) (SecM P.A P.L ((N * t : ℕ) : ℤ) (baseOver (Spec (CommRingCat.of K)))) ∧ Module.finrank Γ((baseOver (Spec (CommRingCat.of K))).left, ⊤) (SecM P.A P.L ((N * t : ℕ) : ℤ) (baseOver (Spec (CommRingCat.of K)))) ≤ C * t ^ P.g := by

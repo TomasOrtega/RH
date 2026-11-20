@@ -6,39 +6,33 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.H UpperTh
 open scoped Classical
 
 /- English proof (translation)
-Introduce `G _ _ _ _ hL a ha N hN`. Establish `hlc : IsLocallyConstant a` using `(GroundTheory.LocalField.mem_schwartzBruhat.1 ha).1`. Establish `hcs : HasCompactSupport a` using `(GroundTheory.LocalField.mem_schwartzBruhat.1 ha).2`. Establish `hK : IsCompact (tsupport a)` using `hcs`. Establish `hS : IsOpen {p : G × G | a (p.1 * p.2) = a p.1}`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `p hp`. Establish `hev` using `(IsLocallyConstant.iff_eventually_eq a).1 hlc`. Establish `e1 : ∀ᶠ q : G × G in 𝓝 p, a (q.1 * q.2) = a (p.1 * p.2)` using `((continuous_fst.mul continuous_snd).tendsto p).eventually (hev (p.1 * p.2))`. Establish `e2 : ∀ᶠ q : G × G in 𝓝 p, a q.1 = a p.1` using `(continuous_fst.tendsto p).eventually (hev p.1)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [e1, e2] with q h1 h2`. Use `show a (q.1 * q.2) = a q.1`. Rewrite using `[h1, h2]`. Conclude with `hp`. Take `⟨W1, W0, -, hW0, hKW, h1W, hWS⟩` from `generalized_tube_lemma hK (isCompact_singleton (x := (1 : G))) hS (by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality.
 
-Introduce and unpack `⟨x, u⟩ ⟨-, hu⟩`. Establish `hu' : u = 1` using `hu`. Substitute `hu'` using the available equality. Use `show a (x * 1) = a x`. Rewrite using `[mul_one])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN' : N ∩ W0 ∈ 𝓝 (1 : G)` using `Filter.inter_mem hN (hW0.mem_nhds (h1W rfl))`. Take `⟨U, hUo, hUc, hUN⟩` from `hL _ hN'`. Establish `hinv0 : ∀ x ∈ tsupport a, ∀ u ∈ U, a (x * u) = a x` using `fun x hx u hu => hWS (Set.mk_mem_prod (hKW hx) (hUN hu).2)`. Establish `hinv : ∀ x, ∀ u ∈ U, a (x * u) = a x`. Introduce `x u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `hx : x ∈ tsupport a`. Conclude with `hinv0 x hx u hu`. Distinguish the cases in `hxu : x * u ∈ tsupport a`. Establish `h` using `hinv0 _ hxu u⁻¹ (U.inv_mem hu)`. Rewrite `h` using `[mul_inv_cancel_right]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h.symm`. Rewrite using `[image_eq_zero_of_notMem_tsupport hxu, image_eq_zero_of_notMem_tsupport hx]`. Take `⟨t, -, ht⟩` from `hK.elim_nhds_subcover (fun x => {y : G | x⁻¹ * y ∈ U}) (by`. Introduce `x _`. Establish `ho : IsOpen {y : G | x⁻¹ * y ∈ U}` using `hUo.preimage (continuous_const.mul continuous_id)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ho.mem_nhds ?_` and prove the remaining obligations. Use `show x⁻¹ * x ∈ U`. Rewrite using `[inv_mul_cancel]`. Conclude with `U.one_mem)`. Set `r : G → G` to `fun x => Quotient.out (QuotientGroup.mk x : G ⧸ U)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hr : ∀ x, (r x)⁻¹ * x ∈ U` using `fun x => QuotientGroup.eq.1 (QuotientGroup.out_eq' _)`. Establish `h1 : ∀ y ∈ U, ind U y = 1` using `fun y hy => by simp [ind, hy]`. Establish `h0 : ∀ y, y ∉ U → ind U y = 0` using `fun y hy => by simp [ind, hy]`. Use `⟨U, t.image r, a, hUo, hUc, fun x hx => (hUN hx).1, ?_⟩` and prove the remaining obligations. Introduce `x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `huniq : ∀ g ∈ t.image r, ∀ g' ∈ t.image r, g⁻¹ * x ∈ U → g'⁻¹ * x ∈ U → g' = g`. Introduce `g hg g' hg' hgx hgx'`. Take `⟨y, -, rfl⟩` from `Finset.mem_image.1 hg`. Take `⟨y', -, rfl⟩` from `Finset.mem_image.1 hg'`. Establish `e : (QuotientGroup.mk y : G ⧸ U) = QuotientGroup.mk y'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `a1 : (QuotientGroup.mk (r y) : G ⧸ U) = QuotientGroup.mk x` using `QuotientGroup.eq.2 hgx`. Establish `a2 : (QuotientGroup.mk (r y') : G ⧸ U) = QuotientGroup.mk x` using `QuotientGroup.eq.2 hgx'`. Establish `b1 : (QuotientGroup.mk (r y) : G ⧸ U) = QuotientGroup.mk y` using `QuotientGroup.out_eq' _`. Establish `b2 : (QuotientGroup.mk (r y') : G ⧸ U) = QuotientGroup.mk y'` using `QuotientGroup.out_eq' _`. Rewrite using `[← b1, ← b2, a1, a2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show Quotient.out (QuotientGroup.mk y' : G ⧸ U) = Quotient.out (QuotientGroup.mk y : G ⧸ U)`. Rewrite using `[e]`. Distinguish the cases in `h : ∃ g ∈ t.image r, g⁻¹ * x ∈ U`. Take `⟨g, hg, hgx⟩` from `h`. Rewrite using `[Finset.sum_eq_single g, h1 _ hgx, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `e` using `hinv g _ hgx`. Rewrite `e` using `[mul_inv_cancel_left]`. Conclude with `e`. Introduce `b hb hne`. Rewrite using `[h0, mul_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `hbx`. Conclude with `hne (huniq g hg b hb hgx hbx)`. Introduce `hn`. Conclude with `absurd hg hn`. Establish `hx0 : a x = 0`.
-
-Assume the negation of the conclusion as `hne`. Establish `hxs : x ∈ tsupport a` using `subset_tsupport _ hne`. Take `⟨y, hy, hxy⟩` from `Set.mem_iUnion₂.1 (ht hxs)`. Use `h ⟨r y, Finset.mem_image_of_mem r hy, ?_⟩` and prove the remaining obligations. Establish `e : (r y)⁻¹ * x = ((r y)⁻¹ * y) * (y⁻¹ * x)` using `by group`.
-
-Rewrite using `[e]`. Conclude with `U.mul_mem (hr y) hxy`. Rewrite using `[hx0]`. Use `symm`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
-
-Introduce `g hg`. Rewrite using `[h0 _ (fun hgx => h ⟨g, hg, hgx⟩), mul_zero]`.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.I.cosetSpan :
     ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G], Lgrp G → ∀ a ∈ SB G, ∀ N ∈ 𝓝 (1 : G),

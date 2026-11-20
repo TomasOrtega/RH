@@ -14,21 +14,21 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Fo
 open scoped Classical
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D W M π O Λ hΛ hL hE τ u f hf φ hφ`. Take `⟨hXX, hDD, hDX, he, hfo, hh⟩` from `weylX F E D W O τ`. Take `⟨c1, c2, c3⟩` from `capelli (Module.End ℂ (S4 F)) (O.X D τ) (O.DX D τ) (O.dE D τ) (O.X D τ 0 1 * O.X D τ 1 0 - O.X D τ 0 0 * O.X D τ 1 1) (O.DX D τ 0 1 * O.DX D τ 1 0 - O.DX D τ 0 0 * O.DX D τ 1 1) (O.h (pl F τ)) hXX hDD hDX (fun _ _ => rfl) rfl rfl hh`. Generalize the expression as in `O.X D τ 0 1 * O.X D τ 1 0 - O.X D τ 0 0 * O.X D τ 1 1 = q at he c1 c3`. Generalize the expression as in `O.DX D τ 0 1 * O.DX D τ 1 0 - O.DX D τ 0 0 * O.DX D τ 1 1 = Δ at hfo c1 c3`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Establish `hcc : cc ≠ 0`. Simplify using `[cc, Real.pi_ne_zero]`. Establish `hk : cc * -cc⁻¹ = -1`. Rewrite using `[mul_neg, mul_inv_cancel₀ hcc]`. Establish `k' : -cc⁻¹ * cc = -1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[neg_mul, inv_mul_cancel₀ hcc]`. Establish `hef : O.e D.δ (pl F τ) * O.f D.δ (pl F τ) = -(q * Δ)`. Rewrite using `[he, hfo, smul_mul_smul_comm, hk, neg_smul, one_smul]`. Establish `hfe : O.f D.δ (pl F τ) * O.e D.δ (pl F τ) = -(Δ * q)`. Rewrite using `[he, hfo, smul_mul_smul_comm, k', neg_smul, one_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hP : Formalism.REAL.GlRel (Eop (a` using `2) τ) := by`. Introduce `i j k l`. Establish `h` using `congrArg (Cm.uC E 2) (Cm.glRel_genC (a := 2) τ i j k l)`. Simplify `h` using `only [map_sub, map_mul, Cm.uC_genC, apply_ite (Cm.uC E 2), map_zero]`. Establish `hst : ∀ i j, ∀ v ∈ π.V, TR.Eop (pl F τ) i j v ∈ π.V` using `fun i j v hv => π.stable (.lie _) v hv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hfock` using `fun s hs => fockOps F E D O s hs`. Establish `hme : ∀ v ∈ π.V, ∀ s ∈ Fock D.δ, Λ v (O.e D.δ (pl F τ) s) = -Λ (TR.Eop (pl F τ) 0 1 v) s`. Introduce `v hv s hs`. Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Λ v (O.e D.δ (pl F τ) s)).1 g = -(Λ (TR.Eop (pl F τ) 0 1 v) s).1 g`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hΛ v hv _ ((hfock s hs).2.2.1 _), hΛ _ (hst 0 1 v hv) s hs]`. Conclude with `hE v hv s hs _ g`. Establish `hmf : ∀ v ∈ π.V, ∀ s ∈ Fock D.δ, Λ v (O.f D.δ (pl F τ) s) = -Λ (TR.Eop (pl F τ) 1 0 v) s`. Introduce `v hv s hs`. Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(Λ v (O.f D.δ (pl F τ) s)).1 g = -(Λ (TR.Eop (pl F τ) 1 0 v) s).1 g`. Rewrite using `[hΛ v hv _ ((hfock s hs).2.2.2.1 _), hΛ _ (hst 1 0 v hv) s hs]`. Conclude with `moveF F E D W M π O hE v hv s hs _ g`. Establish `h1 : O.e D.δ (pl F τ) * O.f D.δ (pl F τ) - O.f D.δ (pl F τ) * O.e D.δ (pl F τ) = O.h (pl F τ)`. Rewrite using `[hef, hfe, ← c1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Establish `h3 : (O.dE D τ 0 0 - O.dE D τ 1 1) * (O.dE D τ 0 0 - O.dE D τ 1 1) + 2 * (O.dE D τ 0 1 * O.dE D τ 1 0 + O.dE D τ 1 0 * O.dE D τ 0 1) = O.h (pl F τ) * O.h (pl F τ) + 2 * (O.e D.δ (pl F τ) * O.f D.δ (pl F τ) + O.f D.δ (pl F τ) * O.e D.δ (pl F τ))`. Rewrite using `[c3, hef, hfe]`. Use `noncomm_ring`. Conclude with `capAbs (TR.Sm F 2) (S4 F) (Sm E 2) π.V (Fock D.δ) Λ (TR.Eop (pl F τ)) (Eop τ) (O.dE D τ) (O.e D.δ (pl F τ)) (O.f D.δ (pl F τ)) (O.h (pl F τ)) (TR.glRel_Eop _) hP hst (fun i j s hs => (hfock s hs).2.2.2.2.2.1 τ i j) (fun s hs => (hfock s hs).2.2.1 _) (fun s hs => (hfock s hs).2.2. …`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Fo.capLam :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2) (O : Ops F) (Λ : TR.Sm F 2 →ₗ[ℂ] S4 F →ₗ[ℂ] Sm E 2), (∀ f ∈ π.V, ∀ φ ∈ Fock D.δ, (Λ f φ).1 = lift W M f.1 φ) → LieLift O W M π → MoveE O W M π →

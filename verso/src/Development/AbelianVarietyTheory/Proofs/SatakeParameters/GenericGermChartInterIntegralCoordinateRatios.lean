@@ -13,14 +13,14 @@ attribute [local instance] MvPolynomial.gradedAlgebra
 variable {d : ℕ}
 
 /- English proof (translation)
-Rewrite using `[ratioSec, GlobalTheory.ProjFrac.awayToSection_mk]`. Conclude with `GlobalTheory.ProjFrac.frac_eq (by ring)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratioSec_eq_ratio (i j : Fin (d + 1)) : ratioSec d i j = GlobalTheory.ProjSpace.ratio ℂ d i j := by
   rw [ratioSec, GlobalTheory.ProjFrac.awayToSection_mk]
   exact GlobalTheory.ProjFrac.frac_eq (by ring)
 
 /- English proof (translation)
-Rewrite using `[ratioSec_eq_ratio]`. Conclude with `GlobalTheory.ProjSpace.basicOpen_ratioOn`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem basicOpen_ratioSec (a i : Fin (d + 1)) :
     (PSpace ℂ d).basicOpen (ratioSec d a i) = chart d a ⊓ chart d i := by
@@ -30,7 +30,7 @@ theorem basicOpen_ratioSec (a i : Fin (d + 1)) :
 variable {Z : Scheme.{0}} [IsIntegral Z]
 
 /- English proof (translation)
-Rewrite using `[← Scheme.preimage_basicOpen]`. Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => rw [Finset.prod_empty, Scheme.basicOpen_of_isUnit _ isUnit_one, Finset.inf_empty, inf_top_eq]`. Consider the case `insert j T hj ih`. Rewrite using `[Finset.prod_insert hj, Scheme.basicOpen_mul, Scheme.Hom.preimage_inf, ih, basicOpen_ratioSec, Scheme.Hom.preimage_inf, Finset.inf_insert, inf_inf_inf_comm, inf_idem]`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem basicOpen_prod (φ : Z ⟶ PSpace ℂ d) (a : Fin (d + 1)) (T : Finset (Fin (d + 1))) :
     Z.basicOpen (φ.app (chart d a) (∏ i ∈ T, ratioSec d a i)) =
@@ -43,16 +43,16 @@ theorem basicOpen_prod (φ : Z ⟶ PSpace ℂ d) (a : Fin (d + 1)) (T : Finset (
       Scheme.Hom.preimage_inf, Finset.inf_insert, inf_inf_inf_comm, inf_idem]
 
 /- English proof (translation)
-Rewrite using `[rat, dif_pos ha]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rat_eq (φ : Z ⟶ PSpace ℂ d) (a j : Fin (d + 1)) (ha : genericPoint Z ∈ φ ⁻¹ᵁ chart d a) :
     rat φ a j = Z.presheaf.germ (φ ⁻¹ᵁ chart d a) (genericPoint Z) ha (φ.app (chart d a) (ratioSec d a j)) := by
   rw [rat, dif_pos ha]
 
 /- English proof (translation)
-Substitute `hinst hφ` using the available equality. Rewrite using `[GlobalTheory.ProjSpace.algebraMap_sections_eq]`. Simplify using `only [Scheme.Hom.appLE, ffAlg, RingHom.algebraMap_toAlgebra, CommRingCat.hom_comp, RingHom.comp_apply, Scheme.Hom.comp_appTop]`. Generalize the expression as in `(CommRingCat.Hom.hom (Scheme.Hom.app (PSpace.str ℂ d) ⊤)) ((CommRingCat.Hom.hom (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv) c) = w`. Establish `e` using `ConcreteCategory.congr_hom (φ.naturality (homOfLE (le_top : chart d a ≤ ⊤)).op) w`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Simplify using `only [ConcreteCategory.comp_apply] at e`. Use `erw [e, TopCat.Presheaf.germ_res_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem germ_const (p : Z ⟶ Sp ℂ) [inst : Algebra ℂ Z.functionField] (hinst : inst = ffAlg p)
     (φ : Z ⟶ PSpace ℂ d) (hφ : φ ≫ PSpace.str ℂ d = p) (a : Fin (d + 1))
@@ -71,9 +71,9 @@ theorem germ_const (p : Z ⟶ Sp ℂ) [inst : Algebra ℂ Z.functionField] (hins
   rfl
 
 /- English proof (translation)
-Take `⟨q, rfl⟩` from `GlobalTheory.ProjSpace.aeval_ratio_surjective ℂ d a t`. Proceed by induction on `q using MvPolynomial.induction_on with`. Consider the case `C c => rw [aeval_C, germ_const p hinst φ hφ a ha c]`. Conclude with `Subalgebra.algebraMap_mem _ c`. Consider the case `add q r hq hr => rw [map_add, map_add, map_add]`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `add_mem hq hr`. Consider the case `mul_X q j hq`. Rewrite using `[map_mul, map_mul, map_mul, aeval_X, ← ratioSec_eq_ratio, ← rat_eq φ a j ha]`. Conclude with `mul_mem hq (Algebra.subset_adjoin ⟨j, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem germ_mem_adjoin (p : Z ⟶ Sp ℂ) [inst : Algebra ℂ Z.functionField] (hinst : inst = ffAlg p)
     (φ : Z ⟶ PSpace ℂ d) (hφ : φ ≫ PSpace.str ℂ d = p) (a : Fin (d + 1))
@@ -89,7 +89,7 @@ theorem germ_mem_adjoin (p : Z ⟶ Sp ℂ) [inst : Algebra ℂ Z.functionField] 
     exact mul_mem hq (Algebra.subset_adjoin ⟨j, rfl⟩)
 
 /- English proof (translation)
-Rewrite using `[map_div₀]`. Conclude with `(rat_overlap d Z φ 0 a j h0 ha).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rat_eq_crd [Algebra ℂ Z.functionField] (φ : Z ⟶ PSpace ℂ d) (a j : Fin (d + 1))
     (h0 : genericPoint Z ∈ φ ⁻¹ᵁ chart d 0) (ha : genericPoint Z ∈ φ ⁻¹ᵁ chart d a) :
@@ -102,25 +102,23 @@ end GlobalTheory.PD.XCover.Integ
 open GlobalTheory.PD.XCover.Integ in
 
 /- English proof (translation)
-Introduce `d Z _ p _ inst hinst φ _ hφ hgen I hI h f`. Take `⟨a, ha⟩` from `hI`. Establish `hV : IsAffineOpen (chart d a)` using `GlobalTheory.ProjSpace.isAffineOpen_chart ℂ d a`. Establish `hU : IsAffineOpen (φ ⁻¹ᵁ chart d a)` using `hV.preimage φ`. Establish `hsub : Algebra.adjoin ℂ (Set.range (rat φ a)) ≤ (rA ℂ (crd φ) I).map (IsScalarTower.toAlgHom ℂ (fld φ) Z.functionField)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Algebra.adjoin_le_iff]`. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `⟨crd φ j / crd φ a, Algebra.subset_adjoin ⟨a, ha, j, rfl⟩, (rat_eq_crd φ a j (hgen 0) (hgen a)).symm⟩`. Establish `hint : ∀ y : Γ(Z, φ ⁻¹ᵁ chart d a), IsIntegral (rA ℂ (crd φ) I) ((Z.presheaf.germ _ (genericPoint Z) (hgen a)).hom y)`. Introduce `y`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨P, hPm, hP⟩` from `IsIntegralHom.isIntegral_app φ _ hV y`. Use `set G := (Z.presheaf.germ _ (genericPoint Z) (hgen a)).hom`. Establish `hlift : P.map (G.comp (φ.app (chart d a)).hom) ∈ Polynomial.lifts (algebraMap (rA ℂ (crd φ) I) Z.functionField)`. Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`. Introduce `n`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.coeff_map]`. Take `⟨x, hx, hxy⟩` from `hsub (germ_mem_adjoin p hinst φ hφ a (hgen a) (P.coeff n))`. Conclude with `⟨⟨x, hx⟩, hxy⟩`. Take `⟨q, hq, -, hqm⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic hlift (hPm.map _)`. Use `⟨q, hqm, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Polynomial.eval_map, hq, Polynomial.eval_map, ← Polynomial.hom_eval₂, hP, map_zero]`. Use `set s := φ.app (chart d a) (∏ i ∈ I, ratioSec d a i) with hs`. Establish `hbo : Z.basicOpen s = I.inf fun i => φ ⁻¹ᵁ chart d i`. Rewrite using `[hs, basicOpen_prod]`. Conclude with `inf_eq_right.2 (Finset.inf_le (f := fun i => φ ⁻¹ᵁ chart d i) ha)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hgs : (Z.presheaf.germ _ (genericPoint Z) (hgen a)).hom s = ∏ i ∈ I, rat φ a i`. Rewrite using `[hs, map_prod, map_prod]`. Conclude with `Finset.prod_congr rfl fun i _ => (rat_eq φ a i (hgen a)).symm`. Establish `hinv : (∏ i ∈ I, rat φ a i)⁻¹ = algebraMap (fld φ) Z.functionField (∏ i ∈ I, crd φ a / crd φ i)`. Rewrite using `[map_prod, ← Finset.prod_inv_distrib]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the argument to an intermediate assertion.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[rat_eq_crd φ a i (hgen 0) (hgen a), ← map_inv₀, inv_div]`. Establish `hne : (∏ i ∈ I, rat φ a i) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => (rat_overlap d Z φ a i i (hgen a) (hgen i)).1`. It suffices to establish `H : ∀ (W : Z.Opens) (hW : W = Z.basicOpen s) (h : genericPoint Z ∈ W) (f : Γ(Z, W)), (Z.presheaf.germ _ (genericPoint Z) h).hom f ∈ rB ℂ Z.functionField (crd φ) I from H _ hbo.symm h f`. Introduce and unpack `W rfl h f`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := hU.isLocalization_basicOpen s`. Take `⟨⟨y, _, n, rfl⟩, e⟩` from `IsLocalization.surj (Submonoid.powers s) f`. Simplify using `only at e`. Establish `hres : ∀ z : Γ(Z, φ ⁻¹ᵁ chart d a), (Z.presheaf.germ _ (genericPoint Z) h).hom (algebraMap Γ(Z, φ ⁻¹ᵁ chart d a) Γ(Z, Z.basicOpen s) z) = (Z.presheaf.germ _ (genericPoint Z) (hgen a)).hom z` using `fun z => Z.presheaf.germ_res_apply (homOfLE (Z.basicOpen_le s)) _ h z`. Establish `e'` using `congrArg (Z.presheaf.germ _ (genericPoint Z) h).hom e`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e'` using `[map_mul, hres, hres, map_pow, hgs]`. Establish `hf : (Z.presheaf.germ _ (genericPoint Z) h).hom f = (Z.presheaf.germ _ (genericPoint Z) (hgen a)).hom y * ((∏ i ∈ I, rat φ a i)⁻¹) ^ n`. Rewrite using `[inv_pow, ← e', mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ hne), mul_one]`. Establish `hr : (∏ i ∈ I, crd φ a / crd φ i) ∈ rA ℂ (crd φ) I` using `prod_mem fun i hi => Algebra.subset_adjoin ⟨i, hi, a, rfl⟩`. Establish `hA : IsIntegral (rA ℂ (crd φ) I) (algebraMap (fld φ) Z.functionField (∏ i ∈ I, crd φ a / crd φ i))` using `isIntegral_algebraMap (R := rA ℂ (crd φ) I) (A := Z.functionField) (x := ⟨_, hr⟩)`.
-
-Rewrite using `[hf, hinv]`. Conclude with `(Subalgebra.mem_restrictScalars ℂ).2 ((hint y).mul (hA.pow n))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.PD.XCover.germ_mem_rB : ∀ (d : ℕ) (Z : Scheme.{0}) [IsIntegral Z] (p : Z ⟶ Sp ℂ) [SmoothOfRelativeDimension d p] [inst : Algebra ℂ Z.functionField], inst = ffAlg p → ∀ (φ : Z ⟶ PSpace ℂ d) [IsFinite φ], φ ≫ PSpace.str ℂ d = p → (∀ i, genericPoint Z ∈ φ ⁻¹ᵁ chart d i) → ∀ (I : Finset (Fin (d + 1))), I.Nonempty → ∀ (h : genericPoint Z ∈ I.inf fun i => φ ⁻¹ᵁ chart d i) (f : Γ(Z, I.inf fun i => φ ⁻¹ᵁ chart d i)), (Z.presheaf.germ _ (genericPoint Z) h).hom f ∈ rB ℂ Z.functionField (crd φ) I := by
   intro d Z _ p _ inst hinst φ _ hφ hgen I hI h f

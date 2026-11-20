@@ -13,7 +13,7 @@ open Formalism.FourierDecayAlt.P.CutMP Formalism.FourierDecayAlt.P.CutMP.JA Form
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Formalism.FourierDecayAlt.P.JFxI.hsVecL 0 = 0`. Conclude with `map_zero _`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem hsVec_zero' {V W : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [NormedAddCommGroup W]
     [InnerProductSpace ℂ W] [FiniteDimensional ℂ W] : B.hsVec (0 : W →L[ℂ] V) = 0 := by
@@ -21,61 +21,55 @@ theorem hsVec_zero' {V W : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V
   exact map_zero _
 
 /- English proof (translation)
-Introduce `Cc E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v e hFr X Y F F' hX hY hF hF' hae`. Establish `hplace : Q.IsPlace (D.parOf S v) (T v).base.z (T v).base.z' (T v).base.π (T v).base.π'` using `(hB.1.2.2.2.1.2 v).2.2.2.1`. Use `set Db := (T v).base with hDb`. Establish `hT : Tz S.G.k S.G.r Db.z = S.T` using `hplace.2.2.2.1`. Establish `hT' : Tz S.G.k S.G.r Db.z' = S.T'` using `hplace.2.2.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTT : Tz S.G.k S.G.r Db.z * Tz S.G.k S.G.r Db.z' = (D.parOf S v).TT` using `by rw [hT, hT']; rfl`. Use `set Qs := MA.Qset (D.parOf S v).r (D.parOf S v).TT with hQs`. Establish `hQm : MeasurableSet Qs` using `(MA.Qset_open _ _).measurableSet`. Use `set W : (Fin S.G.r → ℂ) × ℂ → ℝ := bcWeight S.G.k S.G.r (Tz S.G.k S.G.r Db.z) (Tz S.G.k S.G.r Db.z') with hWdef`. Establish `hW0 : ∀ x, 0 ≤ W x` using `fun x => Formalism.FourierDecayAlt.P.JCTx2.bcWeight_nonneg' _ _ x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hW : ∀ x ∈ Qs, W x = Formalism.FourierDecayAlt.P.MAx2.Adj.dR x * MA.wq S.G.k x (D.parOf S v).TT`. Introduce `x hx`. Establish `hle : Tz S.G.k S.G.r Db.z * Tz S.G.k S.G.r Db.z' ≤ Complex.normSq x.2`. Rewrite using `[hTT]`. Conclude with `le_of_lt hx.2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[hWdef]`. Unfold `bcWeight`. Rewrite using `[if_pos hle]`. Unfold `Formalism.FourierDecayAlt.P.MAx2.Adj.dR MA.wq`. Rewrite using `[hTT, ← mul_assoc, ← Finset.prod_mul_distrib]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congr 1`. Use `Finset.prod_congr rfl fun l _ => ?_` and prove the remaining obligations. Establish `hM : 2 ≤ MA.Mdim S.G.k S.G.r l`. Use `l.isLt` as an intermediate fact. Simplify using `only [MA.Mdim]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `hn : Complex.normSq (x.1 l) ≠ 0` using `(Complex.normSq_pos.2 (hx.1 l)).ne'`. Establish `e1 : Formalism.QuantumDeterminants.Mdim S.G.k S.G.r l = MA.Mdim S.G.k S.G.r l` using `rfl`. Rewrite using `[e1, pow_mul, Complex.sq_norm, show MA.Mdim S.G.k S.G.r l - 1 = (MA.Mdim S.G.k S.G.r l - 2) + 1 by omega, pow_succ]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Establish `hval : ∀ J ∈ Q.FFl S.G.k S.G.r Db.z Db.z' Db.π Db.π' 0 (OmP S T v), ∀ ρ, ((trJ S T v e J ρ : MA.SmQ (D.parOf S v).r (D.parOf S v).TT) : MA.Qp (D.parOf S v).r (D.parOf S v).TT → ℂ) = fun q => ((Real.sqrt (MA.wq S.G.k q.1 (D.parOf S v).TT) : ℝ) : ℂ) * inner ℂ (B.hsVec (e ρ q.1.2)) …` using `fun J hJ ρ => toSm_val_of_mem (D.parOf S v) (trace_smoothness E Wp Wq S T v hplace e hFr J hJ ρ)`. Establish `hR : ∀ ρ, MA.ip0 (trJ S T v e X ρ) (trJ S T v e Y ρ) = ∫ x in Qs, ((W x : ℝ) : ℂ) * (inner ℂ (B.hsVec (e ρ x.2)) (B.hsVec (X (B.gq Db x))) * conj (inner ℂ (B.hsVec (e ρ x.2)) (B.hsVec (Y (B.gq Db x)))))`. Introduce `ρ`. Unfold `MA.ip0`. Rewrite using `[Formalism.FourierDecayAlt.P.MAx2.Adj.integral_base_measure]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : ∀ x, x ∉ Qs → ((Formalism.FourierDecayAlt.P.MAx2.Adj.dR x : ℝ) : ℂ) * MA.ext (r` using `(D.parOf S v).r) (TT := (D.parOf S v).TT) (fun q : MA.Qp (D.parOf S v).r (D.parOf S v).TT => ((trJ S T v e X ρ : MA.SmQ (D.parOf S v).r (D.parOf S v).TT) : MA.Qp (D.parOf S v).r (D.parOf S v).TT → ℂ) q * conj (((trJ S T v e Y ρ : MA.SmQ (D.parOf S v).r (D.parOf S v).TT) : MA.Qp ( …`. Introduce `x hx`. Rewrite using `[Formalism.FourierDecayAlt.P.MAx2.Adj.ext_out _ hx, mul_zero]`. Rewrite using `[← setIntegral_eq_integral_of_forall_compl_eq_zero hz]`. Use `setIntegral_congr_fun hQm fun x hx => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [MA.ext, hval X hX, hval Y hY]`. Rewrite using `[dif_pos (show x ∈ MA.Qset S.G.r (D.parOf S v).TT from hx)]`. Rewrite using `[hW x hx, map_mul, Complex.conj_ofReal]`. Establish `hw` using `wq_pos (k := S.G.k) hx`. Establish `hs : ((Real.sqrt (MA.wq S.G.k x (D.parOf S v).TT) : ℝ) : ℂ) * ((Real.sqrt (MA.wq S.G.k x (D.parOf S v).TT) : ℝ) : ℂ) = ((MA.wq S.G.k x (D.parOf S v).TT : ℝ) : ℂ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt hw.le]`. Use `push_cast`. Take the linear combination `((Formalism.FourierDecayAlt.P.MAx2.Adj.dR x : ℝ) : ℂ) * inner ℂ (B.hsVec (e ρ x.2)) (B.hsVec (X (B.gq Db x))) * conj (inner ℂ (B.hsVec (e ρ x.2)) (B.hsVec (Y (B.gq Db x)))) * hs`. Establish `hcont : ∀ J ∈ Q.FFl S.G.k S.G.r Db.z Db.z' Db.π Db.π' 0 (OmP S T v), ContinuousOn (fun x => B.hsVec (J (B.gq Db x))) Qs` using `fun J hJ => hsVec_contDiff.continuous.comp_continuousOn (jgq_contDiffOn S T v hplace hJ).continuousOn`. Establish `heC : ∀ ρ, ContinuousOn (fun x : MA.E S.G.r => B.hsVec (e ρ x.2)) Qs` using `fun ρ => hsVec_contDiff.continuous.comp_continuousOn ((hFr.1 ρ).continuousOn.comp continuous_snd.continuousOn fun x hx => hx.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hXc : ContinuousOn (fun x => X (B.gq Db x)) Qs` using `(jgq_contDiffOn S T v hplace hX).continuousOn`. Use `set O : Set ((Fin S.G.r → ℂ) × ℂ) := Qs ∩ (fun x => X (B.gq Db x)) ⁻¹' {0}ᶜ with hO`. Establish `hOo : IsOpen O` using `hXc.isOpen_inter_preimage (MA.Qset_open _ _) isOpen_compl_singleton`. Establish `hOm : MeasurableSet O` using `hOo.measurableSet`. Establish `hOQ : O ⊆ Qs` using `Set.inter_subset_left`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, -, ⟨C, hB1⟩, -⟩` from `Formalism.FourierDecayAlt.P.b_any_of_xi S.G.k S.G.r (Wp (S.pl v)) (Wq (S.pl v)) Db (B.AB S.G.k S.G.r) le_rfl`. Establish `h54 : ∀ G : GFn S v, B.InCC (B.AB S.G.k S.G.r) 5 G → ∃ c, B.CCle (B.AB S.G.k S.G.r) 4 G c`. Introduce and unpack `G ⟨c, hck, hb⟩`. Conclude with `⟨c, Formalism.FourierDecayAlt.P.B5.ckOn_mono (by norm_num) hck, fun u w hu hw hl g hg => hb u w hu hw (by omega) g hg⟩`. Take `⟨c₁, hc₁⟩` from `h54 F hF`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c₂, hc₂⟩` from `h54 F' hF'`. Take `⟨hN, hN', -⟩` from `hB1 F F' c₁ c₂ hF hF' hc₁ hc₂`. Unfold `B.normSq jNormSq at hN hN'`. Establish `hU : ∀ (Z G : GFn S v), Z ∈ Q.FFl S.G.k S.G.r Db.z Db.z' Db.π Db.π' 0 (OmP S T v) → (∫⁻ p, ENNReal.ofReal (W p * ‖B.hsVec (B.JF Db G (B.gq Db p))‖ ^ 2)) ≠ ⊤ → (∀ᵐ x ∂(volume : Measure ((Fin S.G.r → ℂ) × ℂ)), x ∈ O → Z (B.gq Db x) = B.JF Db G (B.gq Db x)) → IntegrableOn (fun x => …`. Introduce `Z G hZ hNG hZG`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨((Formalism.FourierDecayAlt.P.B7.measurable_bcWeight _ _).aestronglyMeasurable).mul ((((hcont Z hZ).mono hOQ).norm.pow 2).aestronglyMeasurable hOm), ?_⟩` and prove the remaining obligations. Use `(hasFiniteIntegral_iff_ofReal (ae_of_all _ fun x => mul_nonneg (hW0 x) (sq_nonneg _))).2 ?_` and prove the remaining obligations. Use `lt_of_le_of_lt ?_ (lt_top_iff_ne_top.2 hNG)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `setLIntegral_congr_fun_ae hOm ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `filter_upwards [hZG] with x hx hxO`. Rewrite using `[hx hxO]`. Use `_ ≤ ∫⁻ x, ENNReal.ofReal (W x * ‖B.hsVec (B.JF Db G (B.gq Db x))‖ ^ 2) := setLIntegral_le_lintegral O _`. Establish `hUX` using `hU X F hX hN (by filter_upwards [hae] with x hx hxO; exact (hx (hOQ hxO)).1)`. Establish `hUY` using `hU Y F' hY hN' (by filter_upwards [hae] with x hx hxO; exact (hx (hOQ hxO)).2 hxO.2)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hInt : ∀ ρ, IntegrableOn (fun x => ((W x : ℝ) : ℂ) * (inner ℂ (B.hsVec (e ρ x.2)) (B.hsVec (X (B.gq Db x))) * conj (inner ℂ (B.hsVec (e ρ x.2)) (B.hsVec (Y (B.gq Db x)))))) O`. Introduce `ρ`. Use `Integrable.mono' (hUX.add hUY) ?_ ?_` and prove the remaining obligations. Conclude with `((Complex.measurable_ofReal.comp (Formalism.FourierDecayAlt.P.B7.measurable_bcWeight _ _)).aestronglyMeasurable).mul (((((heC ρ).inner (hcont X hX)).mul ((heC ρ).inner (hcont Y hY)).star).mono hOQ).aestronglyMeasurable hOm)`. Use `ae_restrict_of_forall_mem hOm fun x hxO => ?_` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx` using `hOQ hxO`. Establish `he1 : ‖B.hsVec (e ρ x.2)‖ ≤ 1`. Establish `h1 : inner ℂ (B.hsVec (e ρ x.2)) (B.hsVec (e ρ x.2)) = (1 : ℂ)`. Simplify using `using (hFr.2 x.2 hx.2).2.1 ρ ρ`. Rewrite `h1` using `[inner_self_eq_norm_sq_to_K]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2' : ((‖B.hsVec (e ρ x.2)‖ ^ 2 : ℝ) : ℂ) = ((1 : ℝ) : ℂ)`. Rewrite using `[Complex.ofReal_pow, Complex.ofReal_one]`. Conclude with `h1`. Establish `h2 : ‖B.hsVec (e ρ x.2)‖ ^ 2 = 1` using `Complex.ofReal_injective h2'`. Use polynomial arithmetic with `[norm_nonneg (B.hsVec (e ρ x.2))]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ha : ∀ J : Q.Mx S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v)), ‖inner ℂ (B.hsVec (e ρ x.2)) (B.hsVec (J (B.gq Db x)))‖ ≤ ‖B.hsVec (J (B.gq Db x))‖` using `fun J => (norm_inner_le_norm _ _).trans (by nlinarith [norm_nonneg (B.hsVec (J (B.gq Db x)))])`. Establish `hn1` using `ha X`. Establish `hn2` using `ha Y`. Rewrite using `[norm_mul, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (hW0 x), RCLike.norm_conj]`. Establish `hp : ‖inner ℂ (B.hsVec (e ρ x.2)) (B.hsVec (X (B.gq Db x)))‖ * ‖inner ℂ (B.hsVec (e ρ x.2)) (B.hsVec (Y (B.gq Db x)))‖ ≤ ‖B.hsVec (X (B.gq Db x))‖ ^ 2 + ‖B.hsVec (Y (B.gq Db x))‖ ^ 2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use polynomial arithmetic with `[norm_nonneg (inner ℂ (B.hsVec (e ρ x.2)) (B.hsVec (X (B.gq Db x)))), norm_nonneg (inner ℂ (B.hsVec (e ρ x.2)) (B.hsVec (Y (B.gq Db x)))), norm_nonneg (B.hsVec (X (B.gq Db x))), norm_nonneg (B.hsVec (Y (B.gq Db x))), sq_nonneg (‖B.hsVec (X (B.gq Db x))‖ - ‖B.hsVec (Y (B.gq Db x)) …`. Combine the equalities or inequalities in the displayed calculation. Establish `hQO : ∀ ρ, (∫ x in Qs, ((W x : ℝ) : ℂ) * (inner ℂ (B.hsVec (e ρ x.2)) (B.hsVec (X (B.gq Db x))) * conj (inner ℂ (B.hsVec (e ρ x.2)) (B.hsVec (Y (B.gq Db x)))))) = ∫ x in O, ((W x : ℝ) : ℂ) * (inner ℂ (B.hsVec (e ρ x.2)) (B.hsVec (X (B.gq Db x))) * conj (inner ℂ (B.hsVec (e ρ x.2) …`. Introduce `ρ`. Use `setIntegral_eq_of_subset_of_forall_sdiff_eq_zero hQm hOQ fun x hx => ?_` and prove the remaining obligations.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hX0 : X (B.gq Db x) = 0`. Assume the negation of the conclusion as `h`. Conclude with `hx.2 ⟨hx.1, h⟩`. Rewrite using `[hX0, hsVec_zero', inner_zero_right, zero_mul, mul_zero]`. Unfold `MA.ipA`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Repeatedly rewrite using `[hR]`. Rewrite using `[Finset.sum_congr rfl fun ρ _ => hQO ρ]`. Rewrite using `[← integral_finsetSum _ (fun ρ _ => hInt ρ)]`. Unfold `B.beta betaBig`. Establish `hae2 : ∀ᵐ x ∂(volume : Measure ((Fin S.G.r → ℂ) × ℂ)), x ∉ O → ((W x : ℝ) : ℂ) * inner ℂ (B.hsVec (B.JF Db F' (bigCell S.G.k S.G.r x.1 (Db.μsec x.2)))) (B.hsVec (B.JF Db F (bigCell S.G.k S.G.r x.1 (Db.μsec x.2)))) = 0` using `by filter_upwards [Formalism.FourierDecayAlt.P.B7.ae_mem_good_set_or_weight_zero Db, hae] with x hx hxe hxO`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hxQ : x ∈ Qs`. Establish `hX0 : X (B.gq Db x) = 0`. Assume the negation of the conclusion as `h`. Conclude with `hxO ⟨hxQ, h⟩`. Establish `hJ0 : B.JF Db F (B.gq Db x) = 0` using `by rw [← (hxe hxQ).1]; exact hX0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `((W x : ℝ) : ℂ) * inner ℂ (B.hsVec (B.JF Db F' (B.gq Db x))) (B.hsVec (B.JF Db F (B.gq Db x))) = 0`. Rewrite using `[hJ0, hsVec_zero', inner_zero_right, mul_zero]`. Break down `hx with hx | hx` into its components or cases. It suffices to derive a contradiction. Apply `hxQ` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hx.1, ?_⟩` and prove the remaining obligations. Establish `h2` using `hx.2`. Rewrite `h2` using `[hTT]`. Conclude with `h2`. Rewrite using `[show W x = 0 from hx]`.
-
-Simplify using the standard rewrite rules. Rewrite using `[← setIntegral_eq_integral_of_ae_compl_eq_zero hae2]`. Use `setIntegral_congr_ae hOm ?_` and prove the remaining obligations. Use `filter_upwards [hae] with x hxe hxO`. Rewrite using `[← Finset.mul_sum]`.
-
-Use `congr 1`. Establish `hXF` using `(hxe (hOQ hxO)).1`. Establish `hYF` using `(hxe (hOQ hxO)).2 hxO.2`. Establish `hXf` using `(hFr.2 x.2 (hOQ hxO).2).2.2 (X (B.gq Db x)) (fibre_membership_holds E Wp Wq S T v hplace X hX x (hOQ hxO))`. Rewrite using `[← parseval (fun ρ => e ρ x.2) (X (B.gq Db x)) (Y (B.gq Db x)) hXf, hXF, hYF]`.
-
-Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem group_action_pairing_holds : GAPair := by
   intro Cc E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v e hFr X Y F F' hX hY hF hF' hae

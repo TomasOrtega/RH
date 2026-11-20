@@ -9,11 +9,11 @@ namespace GlobalTheory.CompanionTheory.Ar.Fl
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Establish `hne : (differentIdeal ℤ (𝓞 E) : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) ≠ 0`. Rewrite using `[coeIdeal_differentIdeal ℤ ℚ]`. Conclude with `inv_ne_zero (FractionalIdeal.dual_ne_zero ℤ ℚ (@one_ne_zero (FractionalIdeal (nonZeroDivisors (𝓞 E)) E) _ _ _))`. Establish `hinv : z ∈ (differentIdeal ℤ (𝓞 E) : FractionalIdeal (nonZeroDivisors (𝓞 E)) E)⁻¹`. Rewrite using `[FractionalIdeal.mem_inv_iff hne]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Take `⟨δ, hδ, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 hy`. Take `⟨b, hb⟩` from `hz δ hδ`. Rewrite using `[FractionalIdeal.mem_one_iff]`. Conclude with `⟨b, by rw [mul_comm]; exact hb.symm⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hinv` using `[coeIdeal_differentIdeal ℤ ℚ, inv_inv]`. Rewrite `hinv` using `[FractionalIdeal.mem_dual (@one_ne_zero (FractionalIdeal (nonZeroDivisors (𝓞 E)) E) _ _ _)]`. Take `⟨n, hn⟩` from `hinv (c : E) ((FractionalIdeal.mem_one_iff _).2 ⟨c, rfl⟩)`. Conclude with `⟨n, by rw [← Algebra.traceForm_apply, ← hn]; simp⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem trace_integral_of_codifferent {z : E} (hz : ∀ δ ∈ differentIdeal ℤ (𝓞 E), ∃ b : 𝓞 E, (δ : E) * z = b) (c : 𝓞 E) :
     ∃ n : ℤ, (n : ℚ) = Algebra.trace ℚ E (z * (c : E)) := by
@@ -33,13 +33,13 @@ theorem trace_integral_of_codifferent {z : E} (hz : ∀ δ ∈ differentIdeal �
   exact ⟨n, by rw [← Algebra.traceForm_apply, ← hn]; simp⟩
 
 /- English proof (translation)
-Use `⟨fun y hy => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Apply `D.unimod.1` to reduce the goal to its premises. Use extensionality with `x`. Establish `h1` using `trace_mul_sesq_eq_form D 1 x y`. Rewrite `h1` using `[hy x, mul_zero, map_zero, one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_zero, LinearMap.zero_apply, Datum_EF_antisymm, neg_eq_zero]`. Conclude with `h1.symm` after adjusting the coercions. Use `choose n hn using fun x => trace_integral_of_codifferent (hf · · x) 1`. Establish `hadd : ∀ x x', n (x + x') = n x + n x'`. Introduce `x x'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hn (x + x')` as an intermediate fact. Rewrite `this` using `[map_add, add_mul, map_add, ← hn x, ← hn x']`. Conclude with `this` after adjusting the coercions. Set `φ : D.La →+ ℤ` to `AddMonoidHom.mk' n hadd`. Take `⟨w, hw⟩` from `D.unimod.2 φ.toIntLinearMap`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨-w, fun x => eq_of_trace_pairing_eq fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[trace_mul_sesq_eq_form, map_neg, Datum_EF_antisymm, neg_neg]`. Establish `hwx : D.EF w (c • x) = n (c • x)` using `by rw [hw]; rfl`. Rewrite using `[hwx, hn, map_smul]`. Simplify using `[Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sesq_unimodular (D : Datum H) :
     (∀ y, (∀ x, sesq D x y = 0) → y = 0) ∧ ∀ f : D.La →ₗ[𝓞 E] E,
@@ -70,7 +70,7 @@ end GlobalTheory.CompanionTheory.Ar.Fl
 namespace PositivityTheory.Xgf
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ D` and use `GlobalTheory.CompanionTheory.Ar.Fl.sesq_unimodular D`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sesq_unimodular_dual : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H), (∀ y, (∀ x, sesq D x y = 0) → y = 0) ∧ ∀ f : D.La →ₗ[𝓞 E] E, (∀ δ ∈ differentIdeal ℤ (𝓞 E), ∀ x, ∃ b : 𝓞 E, (δ : E) * f x = b) → ∃ y, ∀ x, f x = sesq D x y :=
   fun _ _ _ _ _ D => GlobalTheory.CompanionTheory.Ar.Fl.sesq_unimodular D

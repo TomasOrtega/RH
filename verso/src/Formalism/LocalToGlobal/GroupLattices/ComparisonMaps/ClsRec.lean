@@ -25,7 +25,7 @@ def clsR (i : compL L p) (Lt : Fin nV → Submodule W (Fin (m + 1) → Qq)) : C.
 
 include hH in
 /- English proof (translation)
-Establish `h1` using `(Nat.card_congr (fixEquiv hS r lam0 dom hk I ψ hdet hH i y hy (gOf Lt))).trans (card_stabU _)`. Rewrite `h1` using `[← gOf_spec Lt h]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stab_card1 (i : compL L p) (y : GL (Fin R.k) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (hy : y = (repP L p i).1)
     (Lt : Fin nV → Submodule W (Fin (m + 1) → Qq)) (h : ∀ v, IsLattice W (Lt v)) :
@@ -38,7 +38,7 @@ theorem stab_card1 (i : compL L p) (y : GL (Fin R.k) (E ⊗[F] FiniteAdeleRing (
 
 include hH hdet in
 /- English proof (translation)
-Rewrite `hfix` using `[level_action_lattice_eq]`. Establish `h1` using `(fix_iff hk I hdet hH i (gOf Lt) γ.1).2 ⟨hy ▸ γ.2, by rw [← gOf_spec Lt h]; exact hfix⟩`. Conclude with `Subtype.ext (hT _ _ h1)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem trivStab1 (hT : TrivStabU L) (i : compL L p) (y : GL (Fin R.k) (E ⊗[F] FiniteAdeleRing (𝓞 F) F))
     (hy : y = (repP L p i).1) (γ : gamC sp.cm.sig sp.gram0 (Formalism.L2.Herm.awayFrom₂ L p) y)
@@ -53,7 +53,7 @@ set_option maxHeartbeats 2000000 in
 include hH in
 
 /- English proof (translation)
-The claim follows from `clsOf_inj.eq_iff.trans (clsC_iff hS r lam0 dom hk I ψ e hdet hH i i' Lt Lt' h h')`.
+A detailed English derivation is pending.
 -/
 theorem clsR_iff (i i' : (gatOfLevelP L hS nV r lam0 dom hk I ψ e).comp)
     (Lt Lt' : (gatOfLevelP L hS nV r lam0 dom hk I ψ e).P.Tup)
@@ -67,7 +67,7 @@ theorem clsR_iff (i i' : (gatOfLevelP L hS nV r lam0 dom hk I ψ e).comp)
 include hH in
 
 /- English proof (translation)
-Take `⟨c', rfl⟩` from `clsOf_surj (L := L) c`. Take `⟨i, Lt, h1, h2⟩` from `clsC_surj hS r lam0 dom hk I ψ e hdet hH c'`. Conclude with `⟨i, Lt, h1, congrArg (clsOf L) h2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem clsR_surj (c : C.cls 0) :
     ∃ (i : (gatOfLevelP L hS nV r lam0 dom hk I ψ e).comp) (Lt : (gatOfLevelP L hS nV r lam0 dom hk I ψ e).P.Tup),
@@ -80,7 +80,7 @@ set_option maxHeartbeats 2000000 in
 include hH in
 
 /- English proof (translation)
-The claim follows from `stab_card1 hS r lam0 dom hk I ψ hdet hH i _ rfl Lt h`.
+A detailed English derivation is pending.
 -/
 theorem stab_card (i : (gatOfLevelP L hS nV r lam0 dom hk I ψ e).comp)
     (Lt : (gatOfLevelP L hS nV r lam0 dom hk I ψ e).P.Tup)
@@ -93,7 +93,7 @@ set_option maxHeartbeats 2000000 in
 include hH hdet in
 
 /- English proof (translation)
-Introduce `i γ Lt h hfix` and use `trivStab1 hS r lam0 dom hk I ψ hdet hH hT i _ rfl γ Lt h hfix`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem trivStab (hT : TrivStabU L) : (gatOfLevelP L hS nV r lam0 dom hk I ψ e).TrivStab :=
   fun i γ Lt h hfix => trivStab1 hS r lam0 dom hk I ψ hdet hH hT i _ rfl γ Lt h hfix

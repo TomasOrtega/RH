@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ExistsP
 namespace GlobalTheory
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qg1.exists_pow_mem_of_mul_mem_pow`.
+A detailed English derivation is pending.
 -/
 theorem exists_pow_mem_of_mul_mem_pow :
     ∀ {A : Type} [CommRing A] [IsNoetherianRing A] (m : Ideal A) (δ : A),

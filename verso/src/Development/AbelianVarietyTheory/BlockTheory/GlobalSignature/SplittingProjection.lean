@@ -43,11 +43,9 @@ abbrev locLat {n : Type} [Fintype n] [DecidableEq n] (v : HeightOneSpectrum (�
   latS (F := F) (v.adicCompletion F) (intV E v) Λ
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => Ideal.subset_span h⟩` and prove the remaining obligations. Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Subring.coe_add, map_add]`. Conclude with `lt_of_le_of_lt (Valuation.map_add _ _ _) (max_lt hx hy)`. Consider the case `smul c x _ hx`. Establish `hc : Valued.v (prP φ c) ≤ 1` using `((hφ.2.2 c).1 c.2).1`. Rewrite using `[smul_eq_mul, Subring.coe_mul, map_mul, map_mul]`.
-
-Conclude with `mul_lt_one_of_nonneg_of_lt_one_right hc zero_le' hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_primeOf_prP {σ : E →ₐ[F] E} (hφ : IsSplitting σ v φ) (a : intV E v) :
     a ∈ primeOf (prP φ) ↔ Valued.v (prP φ a) < 1 := by
@@ -64,7 +62,7 @@ theorem mem_primeOf_prP {σ : E →ₐ[F] E} (hφ : IsSplitting σ v φ) (a : in
     exact mul_lt_one_of_nonneg_of_lt_one_right hc zero_le' hx
 
 /- English proof (translation)
-Rewrite using `[Ideal.ne_top_iff_one, mem_primeOf_prP φ hφ]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem primeOf_prP_ne_top {σ : E →ₐ[F] E} (hφ : IsSplitting σ v φ) : primeOf (prP φ) ≠ ⊤ := by
   rw [Ideal.ne_top_iff_one, mem_primeOf_prP φ hφ]

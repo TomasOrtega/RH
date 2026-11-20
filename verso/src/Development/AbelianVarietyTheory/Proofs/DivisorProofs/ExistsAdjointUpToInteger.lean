@@ -20,15 +20,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AV.AbVar
 
 /- English proof (translation)
-Introduce `K _ A B c d hc f`. Take `⟨A', P, ⟨hP, -⟩, hdim⟩` from `GlobalTheory.T.abelianVariety_exists_dual_pair K A`. Take `⟨φ, hφ, hiso⟩` from `GlobalTheory.T.exists_hom_to_dual_of_mumfordClass K A A' P hP hdim c`. Take `⟨n, v, hn, -, -, hvφ⟩` from `exists_quasiInverse_isogeny K A A' φ (hiso hc)`. Establish `hadd : ∀ (Y : Over (Sp K)) (a a' : Y ⟶ A.X) (t : Y ⟶ B.X), CechPic.pull (lift (a * a') t).left (AbVar.lam d (fst A.X B.X ≫ f.hom) (snd A.X B.X)) = CechPic.pull (lift a t).left (AbVar.lam d (fst A.X B.X ≫ f.hom) (snd A.X B.X)) + CechPic.pull (lift a' t).left (AbVar.lam d (fst A.X …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `Y a a' t`. Simplify using `only [lam_eq, CechPic.pull_lam, lift_fst_assoc, lift_snd, MonObj.mul_comp]`. Simplify using `only [← lam_eq]`. Conclude with `GlobalTheory.T.abelianVarietyMumfordClass_mul_left K B d Y _ _ t`. Establish `hzero : CechPic.pull (lift (𝟙 A.X) (1 : A.X ⟶ B.X)).left (AbVar.lam d (fst A.X B.X ≫ f.hom) (snd A.X B.X)) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lam_eq, CechPic.pull_lam, lift_snd, CechPic.lam_one_right]`. Take `⟨ψ, hψ, -⟩` from `GlobalTheory.T.biadditiveClass_eq_poincarePullback_unique_hom K A A' B P hP _ hadd hzero`. Establish `hpow : ∀ (Y : Over (Sp K)) (a : Y ⟶ A.X) (b : Y ⟶ A'.X) (m : ℕ), AbDual.evc hP.isLB a (b ^ m) = m • AbDual.evc hP.isLB a b`. Introduce `Y a b m`. Proceed by induction on `m with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => rw [pow_zero, zero_smul, AbDual.evc_one_right hP.isLB hP.zero a]`. Consider the case `succ m ih => rw [pow_succ, GlobalTheory.T.poincareClass_additive_in_dual_variable K A A' P hP Y a, ih, succ_nsmul]`. Use `⟨n, ψ ≫ v, hn, ?_⟩` and prove the remaining obligations. Establish `e1` using `congrArg (CechPic.pull (lift (fst A.X B.X) (snd A.X B.X ≫ (ψ ≫ v).hom)).left) hφ`. Rewrite `e1` using `[lam_eq, CechPic.pull_lam, AbDual.pull_evc, lift_fst, lift_snd_assoc, lift_snd, ← lam_eq]`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `IsAdj`. Rewrite using `[e1]`. Simplify using `only [comp_hom, Category.assoc]`. Rewrite using `[← comp_hom v φ, hvφ, nsmul_hom, id_hom, MonObj.comp_pow, MonObj.comp_pow, Category.comp_id, hpow, ← hψ, natCast_zsmul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isAdj : ∀ (K : Type) [Field K] (A B : AbVar K) (c : Pic A.X.left) (d : Pic B.X.left),
     IsAmpleCls c → ∀ f : A ⟶ B, ∃ (n : ℕ) (h : B ⟶ A), 0 < n ∧ IsAdj c d f n h := by

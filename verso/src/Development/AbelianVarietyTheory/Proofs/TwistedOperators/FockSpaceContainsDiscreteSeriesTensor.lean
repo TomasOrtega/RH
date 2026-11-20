@@ -26,11 +26,11 @@ namespace GlobalTheory.FockTensor
 open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible MeasureTheory
 
 /- English proof (translation)
-Set `L : H →ₗ[ℂ] H` to `{ toFun := f map_add' := fun x y => ext_inner_right ℂ fun z => by simp [hsa, inner_add_left] map_smul' := fun c x => ext_inner_right ℂ fun z => by rw [hsa, inner_smul_left, RingHom.id_apply, inner_smul_left, hsa] }`. Use `⟨L.mkContinuous 1 fun x => ?_, fun x => rfl⟩` and prove the remaining obligations. Use `show ‖f x‖ ≤ 1 * ‖x‖`. Establish `h1 : ‖f x‖ ^ 2 ≤ ‖x‖ * ‖f x‖`. Establish `h2 : inner ℂ (f x) (f x) = inner ℂ x (f x)` using `by rw [hsa, hid]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `norm_inner_le_norm (𝕜 := ℂ) x (f x)`. Rewrite `h3` using `[← h2, inner_self_eq_norm_sq_to_K]`. Simplify using `using h3`. Break down `(norm_nonneg (f x)).eq_or_lt with h | h` into its components or cases. Rewrite using `[← h]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Check the signs of the components of the expression. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem exists_clm_of_selfAdjoint {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (f : H → H) (hsa : ∀ x y, inner ℂ (f x) y = inner ℂ x (f y)) (hid : ∀ x, f (f x) = f x) :
@@ -51,7 +51,7 @@ theorem exists_clm_of_selfAdjoint {H : Type} [NormedAddCommGroup H] [InnerProduc
   · nlinarith
 
 /- English proof (translation)
-Simplify using `only [hwSub, wtSub, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply] at hx ⊢`. Use `⟨fun c => ?_, fun c d h => ?_⟩` and prove the remaining obligations. Rewrite using `[← hf, ← map_smul, ← map_sub, hx.1 c, map_zero]`. Rewrite using `[← hf, hx.2 c d h, map_zero]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_mem_hwSub {p q : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W]
     [Module ℂ W] {a : Mat p q →ₗ[ℂ] Module.End ℂ V} {b : Mat p q →ₗ[ℂ] Module.End ℂ W}
@@ -64,7 +64,7 @@ theorem map_mem_hwSub {p q : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [
   · rw [← hf, hx.2 c d h, map_zero]
 
 /- English proof (translation)
-Simplify using `[casimir, LinearMap.sum_apply, map_sum, hf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_casimir {p q : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W]
     [Module ℂ W] {a : Mat p q →ₗ[ℂ] Module.End ℂ V} {b : Mat p q →ₗ[ℂ] Module.End ℂ W}
@@ -73,7 +73,7 @@ theorem map_casimir {p q : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [Ad
   simp [casimir, LinearMap.sum_apply, map_sum, hf]
 
 /- English proof (translation)
-Take `⟨v, hv, -⟩` from `finrank_eq_one_iff'.1 h`. Conclude with `⟨v, fun h0 => hv (Subtype.ext h0), v.2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isHW {p q : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     {a : Mat p q →ₗ[ℂ] Module.End ℂ V} {μ : Ix p q → ℚ}
@@ -82,9 +82,9 @@ theorem exists_isHW {p q : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
   exact ⟨v, fun h0 => hv (Subtype.ext h0), v.2⟩
 
 /- English proof (translation)
-Take `⟨v, hv, hv'⟩` from `exists_isHW h`. Establish `h0 : D.ι v ≠ 0` using `fun h0 => hv (D.ι_inj (by simpa using h0))`. Establish `h1 : ‖D.ι v‖ ≠ 0` using `norm_ne_zero_iff.2 h0`. Use `⟨((‖D.ι v‖⁻¹ : ℝ) : ℂ) • v, ⟨smul_ne_zero (by simpa using h0) hv, Submodule.smul_mem _ _ hv'⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, norm_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[h1]`.
+Simplify using the standard rewrite rules.
 -/
 theorem exists_unitHW {p q : ℕ} {T : GrpData p q} (D : DSRep T) {μ : Ix p q → ℚ}
     (h : Module.finrank ℂ ↥(hwSub D.HK.act μ) = 1) : ∃ v, UnitHW D μ v := by
@@ -111,7 +111,7 @@ variable {p q r s : ℕ} {T0 : GrpData (p * r + q * s) (p * s + q * r)} {T1 : Gr
   cont x := (F.cont x).comp (hF.comp (continuous_const.prodMk continuous_id))
 
 /- English proof (translation)
-Rewrite using `[← ContinuousLinearMap.mul_apply, ← ContinuousLinearMap.mul_apply, ← map_mul, ← map_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fock_comm (F : FockData T0 T1 T2) (g : T1.G) (h : T2.G) (x : F.H) :
     F.π (1, h) (F.π (g, 1) x) = F.π (g, 1) (F.π (1, h) x) := by
@@ -119,7 +119,7 @@ theorem fock_comm (F : FockData T0 T1 T2) (g : T1.G) (h : T2.G) (x : F.H) :
   simp
 
 /- English proof (translation)
-Use `(LinearIsometry.mk (F.π (1, h)).toLinearMap (fun x => F.isom _ x)).integral_comp_comm (μ := T1.haar) (fun g => e g • F.π (g, 1) x)` as an intermediate fact. Unfold `opE`. Use `this.symm.trans (integral_congr_ae (Filter.Eventually.of_forall fun g => ?_))` and prove the remaining obligations. Use `show F.π (1, h) (e g • F.π (g, 1) x) = _`. Rewrite using `[map_smul, fock_comm]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem opE_comm (F : FockData T0 T1 T2) (e : T1.G → ℂ) (h : T2.G) (x : F.H) :
     F.π (1, h) (opE T1 (fun g => F.π (g, 1)) e x) = opE T1 (fun g => F.π (g, 1)) e (F.π (1, h) x) := by
@@ -138,9 +138,9 @@ theorem opE_comm (F : FockData T0 T1 T2) (e : T1.G → ℂ) (h : T2.G) (x : F.H)
   wts P := ((GlobalTheory.T.fock_polynomials_locallyFinite_rationalWeights p q r s).2 P).2
 
 /- English proof (translation)
-Use `set Z : Matrix (Ln p q r s) (Ln p q r s) ℂ := Matrix.kroneckerMapBilinear (LinearMap.mul ℂ ℂ) (1 : Mat p q) Y with hZ`. Establish `hact : fockAct2 p q r s Y = omAct p q r s Z` using `rfl`. Use `⟨(2 : ℝ) ^ ((Q.totalDegree : ℝ) / 2 + 1) * ‖F.ι Q‖, 4 * (∑ l, ∑ l', ‖Z l l'‖) + 1, by positivity, by positivity, fun k => ?_⟩` and prove the remaining obligations. Establish `h` using `(GlobalTheory.T.fockAction_pow_analyticVector_norm_le p q r s F.H F.ι (GlobalTheory.FockAlg.isFockIsometry_of_fockData F) Z Q.totalDegree k Q le_rfl).2`. Rewrite using `[hact]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `h.trans ?_` and prove the remaining obligations. Establish `h2 : (4 * ∑ l, ∑ l', ‖Z l l'‖) ^ k ≤ (4 * (∑ l, ∑ l', ‖Z l l'‖) + 1) ^ k` using `pow_le_pow_left₀ (by positivity) (by linarith) k`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem fock_bound₂ (F : FockData T0 T1 T2) (Y : Mat r s) (Q : Pol p q r s) :
     ∃ C ρ : ℝ, 0 ≤ C ∧ 0 < ρ ∧ ∀ k : ℕ,
@@ -161,11 +161,11 @@ theorem fock_bound₂ (F : FockData T0 T1 T2) (Y : Mat r s) (Q : Pol p q r s) :
     _ ≤ _ := by gcongr
 
 /- English proof (translation)
-Use `ext_inner_right ℂ fun z => ?_` and prove the remaining obligations. Take `⟨io, hio1, hio2⟩` from `hio z`. Establish `hd : ∀ Y ∈ upq p q, ∀ y, HasDerivAt (fun t : ℝ => (fockU₁ F hF).π (T1.expt (t • Y)) ((io.toLinearMap ∘ₗ D.ι) y)) ((io.toLinearMap ∘ₗ D.ι) (D.HK.act Y y)) 0`. Introduce `Y hY y`. Establish `h2` using `(io.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (D.der Y hY y)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `HasDerivAt.congr_of_eventuallyEq h2 (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Conclude with `(congrArg (fun L => L (D.ι y)) (hio1 (T1.expt (u • Y)))).symm`. Establish `h` using `(GlobalTheory.T.derived_actions_adjoint_casimir_symmetric p q T1 (fockU₁ F hF) _ _ (fockAct1 p q r s) D.HK.act F.ι _ (GlobalTheory.T.fock_derived_actions_tensor_members p q r s T0 T1 T2 F).2.1 hd).2 Q v`. Simplify using `only [LinearMap.comp_apply, ContinuousLinearMap.coe_coe, hχ, map_smul, hio2] at h`. Rewrite using `[hsa, inner_smul_left, hsa]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `h.trans ?_` and prove the remaining obligations. Rewrite using `[inner_smul_right]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem proj_casimir₁ (F : FockData T0 T1 T2) (hF : Continuous F.emb) (D : DSRep T1) (v : D.HK.V)
     (χ : ℚ) (hχ : casimir D.HK.act v = (χ : ℂ) • v) (P : F.H →L[ℂ] F.H)
@@ -188,37 +188,33 @@ theorem proj_casimir₁ (F : FockData T0 T1 T2) (hF : Continuous F.emb) (D : DSR
   rw [inner_smul_right]; simp
 
 /- English proof (translation)
-Set `E : (polMod₂ p q r s).V →ₗ[ℂ] (fockU₂ F hF).H` to `P.toLinearMap ∘ₗ F.ι`. Establish `hE : ∀ Y ∈ upq r s, ∀ Q, HasDerivAt (fun t : ℝ => (fockU₂ F hF).π (T2.expt (t • Y)) (E Q)) (E (fockAct2 p q r s Y Q)) 0`. Introduce `Y hY Q`. Establish `h2` using `(P.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) ((GlobalTheory.T.fock_derived_actions_tensor_members p q r s T0 T1 T2 F).2.2 Y hY Q)`. Conclude with `HasDerivAt.congr_of_eventuallyEq h2 (Filter.Eventually.of_forall fun u => hcomm _ _)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hadjE` using `(GlobalTheory.T.derived_actions_adjoint_casimir_symmetric r s T2 (fockU₂ F hF) _ _ _ _ E E hE hE).1`. Take `⟨A, f, Eb, hfs, hEb, hEf, hf⟩` from `GlobalTheory.T.exists_unitary_module_quotient_of_invariant_inner r s (polMod₂ p q r s) F.H E hadjE`. Establish `hu : IsHW A.M.act (blattner lam') (f Φ)`. Use `⟨fun h => h0 ?_, map_mem_hwSub f hf hΦ⟩` and prove the remaining obligations. Use `hEf Φ` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[h, map_zero]`. Conclude with `this.symm`. Establish `hcu : casimir A.M.act (f Φ) = (((normSq lam' - rhoSq (r + s) : ℚ)) : ℂ) • f Φ`. Apply `hEb` to reduce the goal to its premises. Rewrite using `[← map_casimir f hf, map_smul, hEf, hEf]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hcasΦ`. Take `⟨v', hv'⟩` from `exists_isHW hone`. Take `⟨⟨M, ip, hi1, hi2, hi3⟩, hB⟩` from `GlobalTheory.T.exists_unitary_harishChandra_discreteSeries r s T2 D'`. Simplify using `only at hB`. Substitute `hB` using the available equality.
+Simplify by unfolding definitions. Substitute using the available equality. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨e, -, hev, he⟩` from `GlobalTheory.T.exists_injective_intertwiner_of_lowest_type h7 h8 r s lam' hpar hgap A ⟨D'.HK, ip, hi1, hi2, hi3⟩ (f Φ) v' hu hv' hcu (hcas v') hirr`. Set `E₂ : D'.HK.V →ₗ[ℂ] (fockU₂ F hF).H` to `Eb ∘ₗ e`. Establish `hE₂v : E₂ v' = P (F.ι Φ)` using `by show Eb (e v') = _`. Rewrite using `[hev, hEf]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hpow : ∀ (Y : Mat r s) (y : D'.HK.V) (Q : Pol p q r s), e y = f Q → ∀ k : ℕ, e ((D'.HK.act Y ^ k) y) = f ((fockAct2 p q r s Y ^ k) Q)`. Introduce `Y y Q h k`. Proceed by induction on `k with`. Consider the case `zero => simpa using h`. Consider the case `succ k ih`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pow_succ', pow_succ', Module.End.mul_apply, Module.End.mul_apply]`. Conclude with `(he _ _).trans ((congrArg _ ih).trans (hf _ _).symm)`. Establish `hE₂ : ∀ Y ∈ upq r s, ∀ y, HasDerivAt (fun t : ℝ => (fockU₂ F hF).π (T2.expt (t • Y)) (E₂ y)) (E₂ (D'.HK.act Y y)) 0`. Introduce `Y hY y`. Take `⟨Q, hQ⟩` from `hfs (e y)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : E₂ y = E Q` using `by show Eb (e y) = _`. Rewrite using `[← hQ, hEf]`. Establish `h2 : E₂ (D'.HK.act Y y) = E (fockAct2 p q r s Y Q)`. Use `hpow Y y Q hQ.symm 1` as an intermediate fact. Rewrite `this` using `[pow_one, pow_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(congrArg Eb this).trans (hEf _)`. Rewrite using `[h1, h2]`. Conclude with `hE Y hY Q`. Take `⟨c, hc⟩` from `GlobalTheory.T.exists_norm_eq_mul_of_finrank_hwSub_eq_one r s D'.HK (blattner lam') D'.U.H F.H D'.ι E₂ hirr hone D'.ι_inj (GlobalTheory.T.derived_actions_adjoint_casimir_symmetric r s T2 D'.U _ _ _ _ D'.ι D'.ι D'.der D'.der).1 (GlobalTheory.T.derived_actions_adjoint_casimir_symme …`. Establish `hc0 : 0 < c`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `hc v'`. Establish `h2 : 0 < ‖E₂ v'‖` using `by rw [hE₂v]; exact norm_pos_iff.2 h0`. Rewrite `h2` using `[h1]`. Assume the negation of the conclusion as `hc0`. Conclude with `absurd h2 (not_lt.2 (mul_nonpos_of_nonpos_of_nonneg (not_lt.1 hc0) (norm_nonneg _)))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbd : ∀ Y ∈ upq r s, ∀ y, ∃ C ρ : ℝ, 0 ≤ C ∧ 0 < ρ ∧ ∀ k : ℕ, ‖D'.ι ((D'.HK.act Y ^ k) y)‖ ≤ C * ρ ^ k * (k.factorial : ℝ)`. Introduce `Y _ y`. Take `⟨Q, hQ⟩` from `hfs (e y)`. Take `⟨C, ρ, hC, hρ, hb⟩` from `fock_bound₂ F Y Q`. Use `⟨c⁻¹ * ‖P‖ * C, ρ, by positivity, hρ, fun k => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h2 : E₂ ((D'.HK.act Y ^ k) y) = P (F.ι ((fockAct2 p q r s Y ^ k) Q))` using `(congrArg Eb (hpow Y y Q hQ.symm k)).trans (hEf _)`. Establish `h3` using `hc ((D'.HK.act Y ^ k) y)`. Rewrite `h3` using `[h2]`. Establish `h4` using `(P.le_opNorm _).trans (mul_le_mul_of_nonneg_left (hb k) (norm_nonneg P))`. Rewrite `h4` using `[h3]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hden` using `GlobalTheory.T.dense_range_finite_vectors_discrete_series r s hrs T2 D' hirr.1 hbd`. Take `⟨j, hj1, hj2⟩` from `GlobalTheory.T.exists_isometry_intertwiner_of_derived_action r s hrs T2 D' (fockU₂ F hF) (((c⁻¹ : ℝ) : ℂ) • E₂) hden (fun y => by`. Rewrite using `[LinearMap.smul_apply, norm_smul, hc, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (inv_pos.2 hc0)]`. Use the proof step `field_simp)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun Y hY y => by`. Simplify using `only [LinearMap.smul_apply, map_smul]`. Conclude with `(hE₂ Y hY y).const_smul ((c⁻¹ : ℝ) : ℂ))`. Use `hbd`. Use `⟨j, hj2, fun y => ?_, D'.ι ((c : ℂ) • v'), ?_⟩` and prove the remaining obligations.
-
-Use `DenseRange.induction_on (p := fun y => P (j y) = j y) hden y (isClosed_eq (P.continuous.comp j.continuous) j.continuous) fun y => ?_` and prove the remaining obligations. Take `⟨Q, hQ⟩` from `hfs (e y)`. Establish `h1 : E₂ y = P (F.ι Q)` using `by show Eb (e y) = _`. Rewrite using `[← hQ, hEf]`. Both sides reduce to the same expression.
-
-Rewrite using `[hj1, LinearMap.smul_apply, h1, map_smul, hPP]`. Rewrite using `[hj1, LinearMap.smul_apply, map_smul, hE₂v, smul_smul, ← Complex.ofReal_mul, inv_mul_cancel₀ hc0.ne', Complex.ofReal_one, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_embedding₂ (F : FockData T0 T1 T2) (hF : Continuous F.emb) (hrs : 1 ≤ r + s)
     (h7 : admQ7) (h8 : admQ8) (D' : DSRep T2) (lam' : Ix r s → ℚ) (hpar : IsParam lam')
@@ -327,21 +323,19 @@ theorem exists_embedding₂ (F : FockData T0 T1 T2) (hF : Continuous F.emb) (hrs
       inv_mul_cancel₀ hc0.ne', Complex.ofReal_one, one_smul]
 
 /- English proof (translation)
-Introduce `Φ hΦ`. Use `set F := X.fock p q r s`. Use `set D := X.ds p q lam`. Use `set D' := X.ds r s lam'`. Establish `hF` using `(GlobalTheory.T.fock_derived_actions_tensor_members p q r s _ _ _ F).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hone, hcas, -⟩` from `hD1 p q lam hpar`. Take `⟨hone', hcas', -⟩` from `hD1 r s lam' hpar'`. Take `⟨v, hv⟩` from `exists_unitHW D hone`. Establish `hint` using `(hD3 p q lam hpar _ hgap le_rfl v hv).1`. Take `⟨hsa, hPP, hio⟩` from `(GlobalTheory.T.projector_of_integrable_discreteSeries_coefficient p q _ D v hv.2 hint).2 (fockU₁ F hF)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hm1 : mcoef D v 1 = 1`. Simplify using `[mcoef, inner_self_eq_norm_sq_to_K, hv.2]`. Establish `hid : ∀ x, opE (X.grp p q) (fockU₁ F hF).π (eFun D v) (opE (X.grp p q) (fockU₁ F hF).π (eFun D v) x) = opE (X.grp p q) (fockU₁ F hF).π (eFun D v) x` using `fun x => by`. Use `hPP 1 x` as an intermediate fact. Rewrite `this` using `[map_one, hm1, one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨P, hP⟩` from `exists_clm_of_selfAdjoint _ hsa hid`. Simplify using `only [← hP] at hsa hPP hio hid`. Establish `h0 : P (F.ι Φ) ≠ 0`. Rewrite using `[hP]`. Conclude with `norm_pos_iff.1 (h1.2 Φ v hΦ hv).2.2.1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hio' : ∀ z, ∃ io : D.U.H →L[ℂ] F.H, IsHomG D (fockU₁ F hF) io ∧ io (D.ι v) = P z` using `fun z => by`. Take `⟨io, h, h', -⟩` from `hio (P z) (hid z)`. Conclude with `⟨io, h, h'⟩`. Establish `hirr : IrrGK D'.HK` using `(((h5 r s hrs).1 D'.U ⟨D'.nontriv, D'.irred⟩).2.2 D'.HK D'.ι ⟨D'.ι_inj, D'.ι_range, D'.der⟩).2`. Take `⟨j, hj1, hj2, y₀, hy₀⟩` from `exists_embedding₂ F hF hrs h7 h8 D' lam' hpar' hgap' hone' hcas' hirr P (fun h x => by rw [hP, hP]; exact opE_comm F _ h x) hid Φ hΦ.2.2.1.2 h0 (by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.T.fockModel_dualPair_casimir_apply, map_sub, map_sub, map_smul, map_smul, proj_casimir₁ F hF D v _ (hcas v) P hsa hio', ← sub_smul, hnum]`. Use `push_cast`. Use the proof step `rfl)`. Take `⟨Tm, hT1, hT2, hT3, hT4⟩` from `GlobalTheory.T.exists_isometric_tensor_embedding_intertwining p q _ D (fockU₁ F hF) v hv.2 D'.U.H j (fun g y y' => by`. Establish `e1` using `hsa (j y) ((fockU₁ F hF).π g (P (j y')))`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e1` using `[hPP, inner_smul_right, hj2, hj2, j.inner_map_map]`. Conclude with `e1)`. Use the proof step `(fun y => by rw [← hj2]; exact hio' _)`. Use `⟨Tm, hT1, fun g h x y => ?_, D.ι v, y₀, ?_⟩` and prove the remaining obligations. Rewrite using `[← hT3, ← hT4 (F.π (1, h)) (D'.U.π h) (fun g z => fock_comm F g h z) (fun y => (hj1 h y).symm)] show _ = F.π (g, 1) (F.π (1, h) _)`.
-
-Rewrite using `[← ContinuousLinearMap.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one, one_mul]`. Rewrite using `[hT2, hy₀, ← hid, hsa]`. Conclude with `inner_self_ne_zero.2 h0`.
+A detailed English derivation is pending.
 -/
 theorem arii_of (X : ProvA) (hD1 : DiscreteSeriesBlattner X) (hD3 : DiscreteSeriesHighestVector X) (h5 : admQ5 X) (h7 : admQ7)
     (h8 : admQ8) (lam : Ix p q → ℚ) (lam' : Ix r s → ℚ) (hrs : 1 ≤ r + s) (hpar : IsParam lam)
@@ -398,17 +392,15 @@ theorem arii_of (X : ProvA) (hD1 : DiscreteSeriesBlattner X) (hD3 : DiscreteSeri
     exact inner_self_ne_zero.2 h0
 
 /- English proof (translation)
-Introduce `X _ _ hD1 hD2 h5 h6 h7 h8 h1`. Establish `hD3` using `GlobalTheory.T.discreteSeries_integrableCoefficient_projector X hD2 h6`. Use `⟨fun t al be ga de h => ?_, fun t al be ga de h => ?_⟩` and prove the remaining obligations. Take `⟨hA, -, hG2, hG3⟩` from `id h`. Take `⟨⟨hp1, hp2, -⟩, -⟩` from `GlobalTheory.T.lowestKTypes_jointHarmonicShape t al be ga de hA`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hn : al.length + be.length + (ga.length + de.length) = al.length + be.length + ga.length + de.length` using `by omega`. Establish `hM : al.length + de.length + t + (ga.length + be.length) = al.length + be.length + ga.length + de.length + t` using `by omega`. Use `arii_of X hD1 hD3 h5 h7 h8 _ _ (by have := hA.1; omega) hp1 hp2 ?_ ?_ ?_ (h1.1 t al be ga de h)` and prove the remaining obligations. Rewrite using `[rangeOfSeventhSum, hn]`. Conclude with `hG3`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hM]`. Conclude with `hG2`. Rewrite using `[hn, hM, (GlobalTheory.T.casimir_number_identity_dualPair t al be ga de hA).1]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hA, -, hG2, hG3⟩` from `id h`. Take `⟨⟨hp1, -, hp2⟩, -⟩` from `GlobalTheory.T.lowestKTypes_jointHarmonicShape t al be ga de hA`. Establish `hn : al.length + be.length + (ga.length + de.length) = al.length + be.length + ga.length + de.length` using `by omega`. Establish `hM : al.length + de.length + (ga.length + be.length + t) = al.length + be.length + ga.length + de.length + t` using `by omega`. Use `arii_of X hD1 hD3 h5 h7 h8 _ _ (by have := hA.1; omega) hp1 hp2 ?_ ?_ ?_ (h1.2 t al be ga de h)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rangeOfSeventhSum, hn]`. Conclude with `hG3`. Rewrite using `[hM]`. Conclude with `hG2`. Rewrite using `[hn, hM, (GlobalTheory.T.casimir_number_identity_dualPair t al be ga de hA).2, (GlobalTheory.T.casimir_number_identity_dualPair t al be ga de hA).1] push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem fock_contains_tensor : ∀ X : ProvA, admH1 X → admH2 X → DiscreteSeriesBlattner X → DiscreteSeriesPositivity X → admQ5 X →
     CoverHaarIntegration X → admQ7 → admQ8 → ArchimedeanRallisFirst X → ArchimedeanRallisSecond X := by

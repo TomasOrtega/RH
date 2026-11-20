@@ -11,7 +11,7 @@ namespace UpperTheory.Gal.W2.SameEigenvalues
 variable {p : ℕ} [Fact p.Prime] {G : HTGroup p} {v : InfinitePlace G.F} {β : G.Cˣ}
 
 /- English proof (translation)
-Rewrite using `[map_mul, Units.val_mul, ← Matrix.mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem toV_mul (y y' : GlobalTheory.LKCx.grp G β) (z : Fin G.n → ℂ) :
     ((GlobalTheory.LKCx.toV G v β (y * y') : GL (Fin G.n) ℂ) : Matrix (Fin G.n) (Fin G.n) ℂ) *ᵥ z =
@@ -20,7 +20,7 @@ private theorem toV_mul (y y' : GlobalTheory.LKCx.grp G β) (z : Fin G.n → ℂ
   rw [map_mul, Units.val_mul, ← Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem toV_inv_cancel (y : GlobalTheory.LKCx.grp G β) (z : Fin G.n → ℂ) :
     (GlobalTheory.LKCx.toV G v β y⁻¹ : Matrix (Fin G.n) (Fin G.n) ℂ) *ᵥ
@@ -29,7 +29,7 @@ private theorem toV_inv_cancel (y : GlobalTheory.LKCx.grp G β) (z : Fin G.n →
     Matrix.one_mulVec]
 
 /- English proof (translation)
-Take `⟨y, k, c, hk1, hk2, hc, h1, h2⟩` from `h`. Use `⟨y⁻¹, k⁻¹, c⁻¹, inv_mem hk1, inv_mem hk2, inv_ne_zero hc, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h1, map_inv, map_inv, ← Prod.inv_mk] group`. Rewrite using `[h2, Matrix.mulVec_smul, toV_inv_cancel, smul_smul, inv_mul_cancel₀ hc, one_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem same_symm {x : (AfP p ⊗[ℚ] G.C)ˣ} {t : (AfP p)ˣ} {hx : Triv G (AfP p) β x t}
     {Kf : Subgroup G.GAf} {K' : Subgroup (Gr G 1)} {a b : GlobalTheory.LKCx.Dat G v β}
@@ -41,9 +41,9 @@ private theorem same_symm {x : (AfP p ⊗[ℚ] G.C)ˣ} {t : (AfP p)ˣ} {hx : Tri
   · rw [h2, Matrix.mulVec_smul, toV_inv_cancel, smul_smul, inv_mul_cancel₀ hc, one_smul]
 
 /- English proof (translation)
-Take `⟨y, k, c, hk1, hk2, hc, h1, h2⟩` from `h`. Take `⟨y', k', c', hk1', hk2', hc', h1', h2'⟩` from `h'`. Use `⟨y' * y, k * k', c' * c, mul_mem hk1 hk1', mul_mem hk2 hk2', mul_ne_zero hc' hc, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h1', h1, map_mul, map_mul]`. Simplify using `only [← Prod.mk_mul_mk, _root_.mul_assoc]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h2', h2, Matrix.mulVec_smul, toV_mul, smul_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem same_trans {x : (AfP p ⊗[ℚ] G.C)ˣ} {t : (AfP p)ˣ} {hx : Triv G (AfP p) β x t}
     {Kf : Subgroup G.GAf} {K' : Subgroup (Gr G 1)} {a b d : GlobalTheory.LKCx.Dat G v β}
@@ -57,7 +57,7 @@ private theorem same_trans {x : (AfP p ⊗[ℚ] G.C)ˣ} {t : (AfP p)ˣ} {hx : Tr
   · rw [h2', h2, Matrix.mulVec_smul, toV_mul, smul_smul]
 
 /- English proof (translation)
-Set `e : C ≃ₐ[F] C` to `{ toFun := fun w => (u : C) * w * ((u⁻¹ : Cˣ) : C) invFun := fun w => ((u⁻¹ : Cˣ) : C) * w * (u : C) left_inv := fun w => by simp [_root_.mul_assoc] right_inv := fun w => by simp [_root_.mul_assoc] map_mul' := fun w w' => by simp [_root_.mul_assoc] map_add' := fun w w' => by simp …`. Rewrite using `[← Algebra.commutes, _root_.mul_assoc, Units.mul_inv, _root_.mul_one] }`. Conclude with `minpoly.algEquiv_eq e x`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem minpoly_conj {F C : Type} [Field F] [Ring C] [Algebra F C] (u : Cˣ) (x : C) :
     minpoly F ((u : C) * x * ((u⁻¹ : Cˣ) : C)) = minpoly F x := by
@@ -74,7 +74,7 @@ private theorem minpoly_conj {F C : Type} [Field F] [Ring C] [Algebra F C] (u : 
   exact minpoly.algEquiv_eq e x
 
 /- English proof (translation)
-Introduce `h`. Use `z.2` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem posV_ne (z : GlobalTheory.LKCx.PosV G v β) : z.1 ≠ 0 := by
   intro h
@@ -83,7 +83,7 @@ private theorem posV_ne (z : GlobalTheory.LKCx.PosV G v β) : z.1 ≠ 0 := by
   simp at this
 
 /- English proof (translation)
-Establish `hf : GlobalTheory.LKCx.FixL G v β y z` using `⟨e, h⟩`. Unfold `GlobalTheory.RootSumWeights.eigL`. Rewrite using `[dif_pos hf]`. Establish `hs` using `hf.choose_spec`. Conclude with `smul_left_injective ℂ hz (hs.symm.trans h)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem eigL_eq {y : GlobalTheory.LKCx.grp G β} {z : Fin G.n → ℂ} {e : ℂ} (hz : z ≠ 0)
     (h : (GlobalTheory.LKCx.toV G v β y : Matrix (Fin G.n) (Fin G.n) ℂ) *ᵥ z = e • z) :
@@ -95,9 +95,9 @@ private theorem eigL_eq {y : GlobalTheory.LKCx.grp G β} {z : Fin G.n → ℂ} {
   exact smul_left_injective ℂ hz (hs.symm.trans h)
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_smul, toV_mul, toV_mul, toV_inv_cancel, smul_comm e c, ← Matrix.mulVec_smul _ e z]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h'` using `smul_right_injective (Fin G.n → ℂ) hc h`. Establish `h''` using `congrArg (fun w => (GlobalTheory.LKCx.toV G v β y₀⁻¹ : Matrix (Fin G.n) (Fin G.n) ℂ) *ᵥ w) h'`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `h''` using `only [toV_inv_cancel]`. Introduce `h`. Rewrite using `[h]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 private theorem conj_eig (y₀ y : GlobalTheory.LKCx.grp G β) (c e : ℂ) (hc : c ≠ 0) (z : Fin G.n → ℂ) :
     (GlobalTheory.LKCx.toV G v β (y₀ * y * y₀⁻¹) : Matrix (Fin G.n) (Fin G.n) ℂ) *ᵥ
@@ -118,21 +118,19 @@ end UpperTheory.Gal.W2.SameEigenvalues
 
 open UpperTheory.Gal.W2.SameEigenvalues in
 /- English proof (translation)
-Introduce `p _ G v c B K S hS a a' hq`. Establish `hE` using `Quot.eqvGen_exact hq`. Establish `hsame` using `(Equivalence.eqvGen_iff ⟨fun _ => GlobalTheory.LKCx.same_refl _ _ _ _ _ _ _ _ _, fun h => same_symm h, fun h h' => same_trans h h'⟩).mp hE`. Take `⟨y₀, k, d, hk1, hk2, hd, h1, h2⟩` from `hsame`. Use `⟨(MulAut.conj y₀).toEquiv, by simp, fun y => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hA : a'.1.1 = B.toAf y₀ * a.1.1 * k.1` using `congrArg Prod.fst h1`. Establish `hP : a'.1.2 = GlobalTheory.LKCx.toP1 G B.β y₀ * a.1.2 * k.2` using `congrArg Prod.snd h1`. Establish `hV : a'.2.1 = d • ((GlobalTheory.LKCx.toV G v B.β y₀ : Matrix (Fin G.n) (Fin G.n) ℂ) *ᵥ a.2.1)` using `h2`. Establish `hFix : GlobalTheory.LKCx.FixL G v B.β (y₀ * y * y₀⁻¹) a'.2.1 ↔ GlobalTheory.LKCx.FixL G v B.β y a.2.1`. Unfold `GlobalTheory.LKCx.FixL`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hV]`. Conclude with `exists_congr fun e => conj_eig y₀ y d e hd a.2.1`. Establish `hAf : a'.1.1⁻¹ * B.toAf (y₀ * y * y₀⁻¹) * a'.1.1 ∈ S ↔ a.1.1⁻¹ * B.toAf y * a.1.1 ∈ S`. Rewrite using `[hA, map_mul, map_mul, map_inv]`. Establish `: (B.toAf y₀ * a.1.1 * k.1)⁻¹ * (B.toAf y₀ * B.toAf y * (B.toAf y₀)⁻¹) * (B.toAf y₀ * a.1.1 * k.1) = k.1⁻¹ * (a.1.1⁻¹ * B.toAf y * a.1.1) * k.1` using `by group`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `hS k.1 hk1 _`. Establish `hP1 : a'.1.2⁻¹ * GlobalTheory.LKCx.toP1 G B.β (y₀ * y * y₀⁻¹) * a'.1.2 ∈ KHT p G.m G.n 1 G.Fw ↔ a.1.2⁻¹ * GlobalTheory.LKCx.toP1 G B.β y * a.1.2 ∈ KHT p G.m G.n 1 G.Fw`. Rewrite using `[hP, map_mul, map_mul, map_inv]`. Establish `: (GlobalTheory.LKCx.toP1 G B.β y₀ * a.1.2 * k.2)⁻¹ * (GlobalTheory.LKCx.toP1 G B.β y₀ * GlobalTheory.LKCx.toP1 G B.β y * (GlobalTheory.LKCx.toP1 G B.β y₀)⁻¹) * (GlobalTheory.LKCx.toP1 G B.β y₀ * a.1.2 * k.2) = k.2⁻¹ * (a.1.2⁻¹ * GlobalTheory.LKCx.toP1 G B.β y * a.1.2) * k.2` using `by group`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[this]`. Prove the components needed by the constructor for the conclusion. Introduce `hm`. Establish `h3` using `mul_mem (mul_mem hk2 hm) (inv_mem hk2)`. Simplify `h3` using `[_root_.mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hm`. Conclude with `mul_mem (mul_mem (inv_mem hk2) hm) hk2`. Establish `hSees : Sees B S a' (y₀ * y * y₀⁻¹) ↔ Sees B S a y` using `and_congr hFix (and_congr hAf hP1)`. Use `⟨hSees.symm, fun hs => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `show minpoly G.F (((y₀ * y * y₀⁻¹ : GlobalTheory.LKCx.grp G B.β) : G.Cˣ × ℚˣ).1 : G.C) = _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, Prod.fst_mul, Prod.fst_inv, Units.val_mul]`. Conclude with `minpoly_conj _ _`. Take `⟨e, he⟩` from `hs.1`. Rewrite using `[eigL_eq (posV_ne a.2) he]`. Apply `eigL_eq (posV_ne a'.2)` to reduce the goal to its premises.
-
-Rewrite using `[hV]`. Conclude with `(conj_eig y₀ y d e hd a.2.1).mpr he`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.eigSame_of :
     UpperTheory.Gal.W2.EigSame := by

@@ -7,25 +7,23 @@ open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible
 namespace GlobalTheory.AnalyticVec
 
 /- English proof (translation)
-Establish `hd : ∀ w s, HasDerivAt (fun r : ℝ => U r (ι w)) (U s (ι (a w))) s`. Introduce `w s`. Establish `e : (fun r : ℝ => U r (ι w)) = fun r => U s (U (r - s) (ι w))`. Use function extensionality and compare the values at `r`. Establish `hr : r = s + (r - s)` using `by ring`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `conv_lhs => rw [hr]`. Rewrite using `[hadd, ContinuousLinearMap.mul_apply]`. Rewrite using `[e]`. Establish `hs : HasDerivAt (fun r : ℝ => r - s) 1 s` using `(hasDerivAt_id s).sub_const s`. Establish `hz : HasDerivAt (fun r : ℝ => U r (ι w)) (ι (a w)) ((fun r : ℝ => r - s) s)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hder w`. Establish `h2 : HasDerivAt ((fun r : ℝ => U r (ι w)) ∘ (fun r : ℝ => r - s)) ((1 : ℝ) • ι (a w)) s` using `HasDerivAt.scomp s hz hs`. Rewrite `h2` using `[one_smul]`. Conclude with `(U s).hasFDerivAt.comp_hasDerivAt s h2`. Establish `hit : ∀ n w, deriv^[n] (fun r : ℝ => L (U r (ι w))) = fun r => L (U r (ι (a^[n] w)))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro w`. Both sides reduce to the same expression. Consider the case `succ n ih`.
+Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `w`. Rewrite using `[Function.iterate_succ_apply]`. Establish `hD : deriv (fun r : ℝ => L (U r (ι w))) = fun r => L (U r (ι (a w)))`. Use function extensionality and compare the values at `r`. Conclude with `(L.hasFDerivAt.comp_hasDerivAt r (hd w r)).deriv`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hD, ih (a w), Function.iterate_succ_apply]`. Establish `hf : AnalyticOnNhd ℝ (fun r : ℝ => L (U r (ι v))) Set.univ` using `fun r _ => (L.analyticAt _).comp (han v r (Set.mem_univ r))`. Take `⟨p, hp⟩` from `hf 0 (Set.mem_univ 0)`. Establish `hc : ∀ n, p.coeff n = 0`. Introduce `n`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨ρ, hpr⟩` from `hp`. Establish `h1` using `hpr.factorial_smul 1 n`. Rewrite `h1` using `[← iteratedDeriv_eq_iteratedFDeriv, iteratedDeriv_eq_iterate, hit n v]`. Simplify using `only at h1`. Rewrite `h1` using `[h0, ContinuousLinearMap.one_apply, hL]`.
+Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ((n.factorial : ℝ)) • p.coeff n = 0`. Rewrite using `[Nat.cast_smul_eq_nsmul ℝ]`. Conclude with `h1`. Conclude with `(smul_eq_zero.mp h2).resolve_left (by exact_mod_cast n.factorial_ne_zero)`. Establish `hp0 : p = 0`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `n y`. Rewrite using `[p.apply_eq_prod_smul_coeff, hc n, smul_zero]`. Both sides reduce to the same expression. Rewrite `hp` using `[hp0]`. Establish `hev : (fun r : ℝ => L (U r (ι v))) =ᶠ[nhds 0] 0` using `HasFPowerSeriesAt.eventually_eq_zero hp`.
-
-Use `hf.eqOn_zero_of_preconnected_of_eventuallyEq_zero isPreconnected_univ (Set.mem_univ 0) hev (Set.mem_univ t)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem map_flow_eq_zero {V E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [NormedAddCommGroup F] [NormedSpace ℝ F] [CompleteSpace F]
@@ -84,13 +82,13 @@ theorem map_flow_eq_zero {V E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ
   simpa using this
 
 /- English proof (translation)
-Introduce `x y`. Set `U : ℝ → (π₁.H × π₂.H) →L[ℝ] (π₁.H × π₂.H)` to `fun s => ((π₁.π (T.expt (s • Y))).restrictScalars ℝ).prodMap ((π₂.π (T.expt (s • Y))).restrictScalars ℝ)`. Set `L : (π₁.H × π₂.H) →L[ℝ] ℂ` to `(((innerSL ℂ (j₁ x)).comp (π₁.π h)).restrictScalars ℝ).comp (ContinuousLinearMap.fst ℝ _ _) - (((innerSL ℂ (j₂ x)).comp (π₂.π h)).restrictScalars ℝ).comp (ContinuousLinearMap.snd ℝ _ _)`. Establish `key` using `map_flow_eq_zero (fun v => (j₁ v, j₂ v)) (M.act Y) U ?_ ?_ ?_ ?_ L ?_ y t`. Establish `e : L (U t (j₁ y, j₂ y)) = inner ℂ (j₁ x) (π₁.π (h * T.expt (t • Y)) (j₁ y)) - inner ℂ (j₂ x) (π₂.π (h * T.expt (t • Y)) (j₂ y))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[L, U, map_mul]`. Rewrite `key` using `[e, sub_eq_zero]`. Conclude with `key`. Use `ContinuousLinearMap.ext fun z => ?_` and prove the remaining obligations. Simplify using `[U, T.expt_zero]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s r`. Use `ContinuousLinearMap.ext fun z => ?_` and prove the remaining obligations. Simplify using `[U, T.expt_add Y hY, map_mul]`. Both sides reduce to the same expression. Introduce `v`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hd1 v).prodMk (hd2 v)`. Introduce `v`. Conclude with `(ha1 v).prod (ha2 v)`. Introduce `v`. Simplify using `[L, hh]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem eventually_abs_le_half_add_of_doubling_bounds {p q : ℕ} (T : GrpData p q) (π₁ π₂ : URep T) (M : GKMod p q)
     (j₁ : M.V →ₗ[ℂ] π₁.H) (j₂ : M.V →ₗ[ℂ] π₂.H) (Y : Mat p q) (hY : Y ∈ upq p q)
@@ -127,19 +125,17 @@ private theorem eventually_abs_le_half_add_of_doubling_bounds {p q : ℕ} (T : G
     simp [L, hh]
 
 /- English proof (translation)
-Introduce `p q T hT π₁ π₂ M j₁ j₂ hd1 hd2 ha1 ha2 hiso`. Set `Q : T.G → Prop` to `fun h => ∀ x y, inner ℂ (j₁ x) (π₁.π h (j₁ y)) = inner ℂ (j₂ x) (π₂.π h (j₂ y))`. Set `S : Subgroup T.G` to `{ carrier := {g | ∀ h, Q h ↔ Q (h * g)} mul_mem' := fun {a b} ha hb h => (ha h).trans (by rw [hb (h * a), mul_assoc]) one_mem' := fun h => by rw [mul_one] inv_mem' := fun {g} hg h => by`. Establish `e` using `hg (h * g⁻¹)`. Rewrite `e` using `[inv_mul_cancel_right]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `e.symm }`. Establish `hle : Subgroup.closure (T.expt '' upq p q) ≤ S`. Rewrite using `[Subgroup.closure_le]`. Introduce and unpack `_ ⟨Y, hY, rfl⟩ h`. Establish `e : T.expt Y * T.expt ((-1 : ℝ) • Y) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `T.expt_add Y hY 1 (-1)`. Rewrite `e1` using `[one_smul, show (1 : ℝ) + -1 = 0 by norm_num, zero_smul, T.expt_zero]`. Conclude with `e1.symm`. Prove the components needed by the constructor for the conclusion. Introduce `hh`.
+Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `eventually_abs_le_half_add_of_doubling_bounds T π₁ π₂ M j₁ j₂ Y hY (hd1 Y hY) (hd2 Y hY) (ha1 Y hY) (ha2 Y hY) h hh 1`. Rewrite `h2` using `[one_smul]`. Conclude with `h2`. Introduce `hh`. Establish `h2` using `eventually_abs_le_half_add_of_doubling_bounds T π₁ π₂ M j₁ j₂ Y hY (hd1 Y hY) (hd2 Y hY) (ha1 Y hY) (ha2 Y hY) (h * T.expt Y) hh (-1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h2` using `[mul_assoc, e, mul_one]`. Conclude with `h2`. Establish `q1 : Q 1`. Introduce `x y`. Rewrite using `[map_one, map_one, ContinuousLinearMap.one_apply, ContinuousLinearMap.one_apply]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hiso x y`. Introduce `g`. Establish `hg : g ∈ S` using `hle (by rw [hT]; exact Subgroup.mem_top g)`. Establish `q2` using `(hg 1).mp q1`. Rewrite `q2` using `[one_mul]`.
-
-Conclude with `q2`.
+A detailed English derivation is pending.
 -/
 theorem inner_apply_eq_of_analytic : ∀ (p q : ℕ) (T : GrpData p q), Subgroup.closure (T.expt '' upq p q) = ⊤ → ∀ (π₁ π₂ : URep T) (M : GKMod p q) (j₁ : M.V →ₗ[ℂ] π₁.H) (j₂ : M.V →ₗ[ℂ] π₂.H), (∀ Y ∈ upq p q, ∀ x, HasDerivAt (fun t : ℝ => π₁.π (T.expt (t • Y)) (j₁ x)) (j₁ (M.act Y x)) 0) → (∀ Y ∈ upq p q, ∀ x, HasDerivAt (fun t : ℝ => π₂.π (T.expt (t • Y)) (j₂ x)) (j₂ (M.act Y x)) 0) → (∀ Y ∈ upq p q, ∀ x, AnalyticOnNhd ℝ (fun t : ℝ => π₁.π (T.expt (t • Y)) (j₁ x)) Set.univ) → (∀ Y ∈ upq p q, ∀ x, AnalyticOnNhd ℝ (fun t : ℝ => π₂.π (T.expt (t • Y)) (j₂ x)) Set.univ) → (∀ x y, inner ℂ (j₁ x) (j₁ y) = inner ℂ (j₂ x) (j₂ y)) → ∀ g x y, inner ℂ (j₁ x) (π₁.π g (j₁ y)) = inner ℂ (j₂ x) (π₂.π g (j₂ y)) := by
   intro p q T hT π₁ π₂ M j₁ j₂ hd1 hd2 ha1 ha2 hiso

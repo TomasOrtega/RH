@@ -17,17 +17,17 @@ set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c σ r U h1 hσ hU g e F ik φ hEF hP`. Take `⟨hr, hX, hcov, hfib, -⟩` from `hU`. Use `⟨fun k k' hk => ?_, fun i => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `dom_nonempty (U.X k)`. Take `⟨x₀, hx₀⟩` from `dom_nonempty (U.X k')`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨P, -, hper, hpt, hder⟩` from `hP k ⟨x, hx⟩`. Take `⟨P₀, hP₀, hper₀, -⟩` from `hP k' ⟨x₀, hx₀⟩`. Establish `hP'` using `fun y => (hP k' y).imp fun _ h => (⟨h.1, h.2.2.1, h.2.2.2⟩ : _ ∧ _ ∧ _)`. Establish `hEF'` using `hEF k'`. Generalize the expression as in `φ k' = ψ at hP₀ hP' hEF'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Use `clear hP hEF φ`. Generalize the expression as in `ik k' = n at *`. Substitute `hk` using the available equality. Take `⟨x', hx', hPx⟩` from `exists_frame (c := c) (σ := σ) hσ h1 hr e (U.X k') (hX k').1 (hX k').2 _ (F.sig _).1 (F.sig _).2 ψ hEF' x₀ hx₀ P₀ hP₀ hper₀ P hper`. Take `⟨P', hP', hpt', hder'⟩` from `hP' ⟨x', hx'⟩`.
+Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `rfl : P = P' := by`. Use extensionality with `a j`. Conclude with `(hPx a j).trans (hP' a j).symm`. Establish `hbor` using `frBor_of_eq (U.un k ⟨x, hx⟩) (U.un k' ⟨x', hx'⟩) (hpt'.trans hpt.symm) fun τ i => ((GlobalTheory.isDerivAt0_ex_isTanAt E H D l Xo _ g _ F _ P hper).2.1 _).unique (hder' τ i) (hder τ i)`. Take `⟨γ, -, b, -, h⟩` from `(hfib k k' _ _).1 hbor`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg Sigma.fst h).symm`. Establish `hty : IsTypeFn H (F.Di i).p (F.Di i).q (fun j => relab c σ (e j).1)`. Rewrite using `[(F.sig i).1, (F.sig i).2]`. Conclude with `(GlobalTheory.Relab.relab_good E H l c σ hσ).2.2.2 D g e`. Take `⟨-, P, hPi⟩` from `GlobalTheory.PeriodExists.period_of_isTypeFn H (F.Di i) g _ hty`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `_ : Algebra c.F ℂ` to `σ.toAlgebra`. Take `⟨y, hy⟩` from `Formalism.L2.Pj.exists_frPt_local (Xo := Xo) (c := c) (L := ℂ) GlobalTheory.firstFiveLaws.2.1.secTwist (F.u i P) ((F.over_σ i P hPi).trans rfl)`. Take `⟨k, x, t, hb⟩` from `hcov y`. Take `⟨Pm, -, hPm, hx, -⟩` from `hP k x`. Conclude with `⟨k, F.disj _ _ Pm P hPm hPi (hx.symm.trans (hb.1.symm.trans hy))⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ik_bijective : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Unf Xo c σ r), 1 ≤ r → GoodEmb c σ → IsUnf U → ∀ (g : ℕ) (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)) (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) (fun j => relab c σ (e j).1)) (ik : U.Comp → Fin F.n) (φ : ∀ k, (F.Di (ik k)).La ≃ₗ[𝓞 E] (U.X k).Λ), (∀ k a b, (((F.Di (ik k)).EF a b : ℤ) : ℚ) = Algebra.trace ℚ E (-(U.X k).ξ0 * herm (U.X k).Gm (φ k a : Fin r → E) (φ k b))) → (∀ k (x : (U.X k).dom), ∃ Pm : (F.Di (ik k)).La →+ (Fin g → ℂ), (∀ a j, Pm a j = perFr (U.X k) x.1 (φ k a : Fin r → E) (relab c σ (e j).1) (e j).2) ∧ IsPeriod (F.Di (ik k)) (fun j => relab c σ (e j).1) Pm ∧ (U.un k x).x = F.u (ik k) Pm ∧ ∀ τ (i : Fin (Dw.mult τ)), IsDerivAt0 (fun z => (F.ex (ik k) Pm z).left) (Pi.single (e.symm ⟨τ, i⟩) 1) ((U.un k x).u τ i)) → Function.Bijective ik := by
   intro E _ _ _ H D l Xo c σ r U h1 hσ hU g e F ik φ hEF hP

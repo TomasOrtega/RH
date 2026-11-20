@@ -17,7 +17,7 @@ open GlobalTheory GlobalTheory.AbLaw TopologicalSpace
 namespace GlobalTheory.ProperFinite
 
 /- English proof (translation)
-The claim follows from `finite_coh_of_forall_modification f (fun Z _ ι _ => GlobalTheory.ChowLemma.exists_isProjOver_isIso_morphismRestrict R Z (ι ≫ f)) F p`.
+A detailed English derivation is pending.
 -/
 theorem finite_coh_of_isProper {R : Type} [CommRing R] [IsNoetherianRing R] {X : Scheme.{0}} (f : X ⟶ Sp R)
     [IsProper f] (F : X.Modules) [QCoh.IsFiniteQC F] (p : ℕ) :
@@ -25,11 +25,9 @@ theorem finite_coh_of_isProper {R : Type} [CommRing R] [IsNoetherianRing R] {X :
   finite_coh_of_forall_modification f (fun Z _ ι _ => GlobalTheory.ChowLemma.exists_isProjOver_isIso_morphismRestrict R Z (ι ≫ f)) F p
 
 /- English proof (translation)
-Set `` to `algebraΓOfHom f`. Establish `: CompactSpace Y` using `QuasiCompact.compactSpace_of_compactSpace f`. Use `isAffineHom_diagonal_of_isSeparated f` as an intermediate fact. Take `⟨m, D, hD, hc⟩` from `exists_fin_affine_cover (X := Y) (V := ⊤) isCompact_univ`. Establish `hD'` using `isAffineOpen_finset_biInf hD`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Twist.isFiniteQC_twist (F := structureModule Y) hM` as an intermediate fact. Take `⟨K, φ, -, h2, -, h4, -, -, h7⟩` from `GlobalTheory.exists_finite_projective_complex_quasiIso.{0, 0} (cechLB f M D) m (fun p hp => isZero_cechLB_X f M _ (by rw [Fintype.card_fin]; exact hp.le)) (flat_cechLB_X f hM hD') (fun n => by`. Take `⟨e⟩` from `FieldChangeInter.nonempty_coh_equiv f hM hc hD' n`. Use `finite_coh_of_isProper f (twist (structureModule Y) M) n` as an intermediate fact. Conclude with `Module.Finite.equiv e.symm)`.
-
-Conclude with `perf_of_projective_model R Y f M (Fin m) _ K φ hM hc hD' ⟨fun p => ⟨h2 p, h4 p⟩, h7⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nonempty_perf_of_isProper {R : Type} [CommRing R] [IsNoetherianRing R] {Y : Scheme.{0}} (f : Y ⟶ Sp R)
     [IsProper f] [Flat f] {M : LB Y} (hM : M.IsLB) : Nonempty (Perf f M) := by
@@ -51,15 +49,15 @@ theorem nonempty_perf_of_isProper {R : Type} [CommRing R] [IsNoetherianRing R] {
 open FibreLift in
 
 /- English proof (translation)
-Take `⟨P⟩` from `nonempty_perf_of_isProper f hM`. Take `⟨r, n, B, hr, hB, hu⟩` from `exists_matrix_basis_ker_of_exact_at_point R K g _ _ _ P.D₀ P.D₁ P.comp (P.exact K g Y₀ π f₀ h hH)`. Take `⟨E, hE⟩` from `P.sec K g Y₀ π f₀ h`. Take `⟨v₀, hv₀⟩` from `E.surjective (SecOnR.topEquiv f₀ _ x₀)`. Take `⟨z, hz, -⟩` from `hu K g hr.isUnit v₀.1 v₀.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, w, hc, hw⟩` from `exists_common_denominator g hg z`. Establish `hv : g ∘ B.mulVec w = g c • v₀.1`. Rewrite using `[← hz, ← Matrix.mulVec_smul, ← hw]`. Conclude with `funext fun j => RingHom.map_mulVec g _ _ j`. Take `⟨s, hs⟩` from `exists_sec_of_ker P (B.mulVec w) (by rw [Matrix.mulVec_mulVec, hB, Matrix.zero_mulVec])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c, (SecOnR.topEquiv f M).symm s, hc, (SecOnR.topEquiv f₀ _).injective ?_⟩` and prove the remaining obligations. Use `Seesaw.sec_ext _ _ (fun i => π ⁻¹ᵁ P.W i) (fun i _ => P.ch i) (fun i => le_pull M π (P.le i)) (fun y => Seesaw.exists_mem P (π y)) fun i => ?_` and prove the remaining obligations. Establish `e₁` using `Seesaw.loc_comp P h (B.mulVec w) i`. Rewrite `e₁` using `[hv, Seesaw.loc_smul, ← hs]`. Establish `e₂ : Seesaw.loc P π f₀ v₀.1 i = _` using `(hE v₀ i).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e₁` using `[e₂, hv₀]`. Use `Eq.trans ?_ ((rs_topEquiv_smul f₀ _ (g c) x₀ _ _).trans e₁).symm` and prove the remaining obligations. Use `(rs_rs _ _ _).trans ?_` and prove the remaining obligations. Use `(congrArg (rs Y₀ _) (SecOn.coord_pullLE π le_top _ _)).trans ?_` and prove the remaining obligations. Use `(GlobalTheory.LB.resG_appLE π _ _ _).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(GlobalTheory.LB.appLE_resG π inf_le_right _ (s.f (P.ch i))).trans ?_` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.appLE_eq_app]`. Conclude with `(GlobalTheory.LB.appLE_resG π (P.le i) le_rfl _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pull_eq_smul {R : Type} [CommRing R] [IsNoetherianRing R] {Y : Scheme.{0}} (f : Y ⟶ Sp R)
     [IsProper f] [Flat f] {M : LB Y} (hM : M.IsLB) {K : Type} [Field K] (g : R →+* K)
@@ -97,15 +95,13 @@ theorem exists_pull_eq_smul {R : Type} [CommRing R] [IsNoetherianRing R] {Y : Sc
 open AmpleNear in
 
 /- English proof (translation)
-Establish `h` using `IsPullback.of_hasPullback B.hom (spMap g)`. Take `⟨d, hd, h0, hv⟩` from `exists_pw_h1Zero K _ _ (LB.isLB_pull hL _) hA`. Establish `hv' : FirstCohomologyVanishes ((pw L d).pull (pullback.fst B.hom (spMap g))) ∧ ∃ (n : ℕ) (s : Fin (n + 1) → LB.Sec ((pw L d).pull (pullback.fst B.hom (spMap g)))), ⨆ i, nonzeroLocus (s i) = ⊤ ∧ ∀ i, IsAffineOpen (nonzeroLocus (s i))`. Rewrite using `[pw_pull]`. Take `⟨n, s, hs⟩` from `hv`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨h0, n, s, hs.1, fun i => (hs.2 i).1⟩`. Take `⟨h1, n, s₀, hs₀, hs₀'⟩` from `hv'`. Use `choose c x hc hx using fun i => exists_pull_eq_smul B.hom (isLB_pw hL d) g hg h h1 ((SecOnR.topEquiv _ _).symm (s₀ i))`. Establish `e` using `fun i => preimage_nonzeroLocus_of_pull_eq h.w (pw L d) (x i) _ (hc i) (hx i)`. Simplify using `only [LinearEquiv.apply_symm_apply] at e`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr, hr'⟩` from `exists_affine_loci_near B.hom (pw L d) (isLB_pw hL d) (fun i => SecOnR.topEquiv B.hom _ (x i)) g _ _ h (by simpa only [e] using hs₀) (by simpa only [e] using hs₀')`. Use `⟨r, hr, ?_⟩` and prove the remaining obligations. Set `j` to `Scheme.Opens.ι (X := Sp R) (PrimeSpectrum.basicOpen r)`. Establish `: IsAffine (Scheme.Opens.toScheme (X` using `Sp R) (PrimeSpectrum.basicOpen r)) := IsAffineOpen.Spec_basicOpen (R := CommRingCat.of R) r`. Establish `hv : ∃ s : Fin (n + 1) → LB.Sec (pw (L.pull (pullback.fst B.hom j)) d), ⨆ i, nonzeroLocus (s i) = ⊤ ∧ ∀ i, IsAffineOpen (nonzeroLocus (s i))`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← pw_pull]`. Use `⟨fun i => secPull (SecOnR.topEquiv B.hom _ (x i)) _, ?_⟩` and prove the remaining obligations. Simplify using `only [nonzeroLocus_secPull]`. Conclude with `hr' _ _ _ (IsPullback.of_hasPullback B.hom j)`. Take `⟨s, hs, hs'⟩` from `hv`.
-
-Establish `: IsProper ((Over.pullback j).obj B).hom` using `inferInstanceAs (IsProper (pullback.snd B.hom j))`. Conclude with `relAmple_of_affine_loci ((Over.pullback j).obj B) _ (LB.isLB_pull hL _) hd s hs hs'`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem relAmple_near_fibre {R : Type} [CommRing R] [IsNoetherianRing R] (B : Over (Sp R)) [IsProper B.hom]
     [Flat B.hom] {L : LB B.left} (hL : L.IsLB) {K : Type} [Field K] (g : R →+* K)
@@ -147,15 +143,15 @@ theorem relAmple_near_fibre {R : Type} [CommRing R] [IsNoetherianRing R] (B : Ov
 open FibreAmple in
 
 /- English proof (translation)
-Use `AmpleLocal.relAmple_of_locally S A M hM inferInstance inferInstance fun s => ?_` and prove the remaining obligations. Take `⟨V, hV, hs, -⟩` from `exists_isAffineOpen_mem_and_subset (X := S) (U := ⊤) (x := s) trivial`. Establish `: IsNoetherianRing Γ(S, V)` using `IsLocallyNoetherian.component_noetherian ⟨V, hV⟩`. Set `t : Sp Γ(S, V) ⟶ S` to `hV.fromSpec`. Take `⟨p, hp⟩ : s ∈ Set.range t` from `by rw [hV.range_fromSpec]; exact hs`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `hB` using `IsPullback.of_hasPullback A.hom t`. Establish `hL` using `pull_isLB hM (pullback.fst A.hom t)`. Use `p.isPrime` as an intermediate fact. Set `g` to `algebraMap Γ(S, V) p.asIdeal.ResidueField`. Set `i` to `algebraMap p.asIdeal.ResidueField (AlgebraicClosure p.asIdeal.ResidueField)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `: IsProper (Over.mk (pullback.snd A.hom t)).hom` using `inferInstanceAs (IsProper (pullback.snd A.hom t))`. Establish `: Flat (Over.mk (pullback.snd A.hom t)).hom` using `inferInstanceAs (Flat (pullback.snd A.hom t))`. Establish `: IsProper (Over.mk (pullback.snd A.hom (spMap i ≫ spMap g ≫ t))).hom` using `inferInstanceAs (IsProper (pullback.snd A.hom _))`. Take `⟨r, hr, hA⟩` from `relAmple_near_fibre (Over.mk (pullback.snd A.hom t)) hL g (residueField_fraction p.asIdeal) (relAmple_of_fieldExtension hM i ((IsPullback.of_hasPullback (pullback.snd A.hom t) (spMap g)).paste_horiz hB) (IsPullback.of_hasPullback A.hom _) (pull_isLB hL _) (lbIso_pull_pull hM _ _) …`. Set `D : (Sp Γ(S, V)).Opens` to `PrimeSpectrum.basicOpen r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hD : p ∈ D` using `fun h => hr (Ideal.algebraMap_residueField_eq_zero.2 h)`. Establish `hrange : Set.range (t ''ᵁ D).ι ⊆ Set.range (D.ι ≫ t)`. Introduce and unpack `_ ⟨⟨_, x, hx, rfl⟩, rfl⟩`. Conclude with `⟨⟨x, hx⟩, rfl⟩`. Use `⟨t ''ᵁ D, ⟨p, hD, hp⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `relAmple_of_factor hM ((IsPullback.of_hasPullback (pullback.snd A.hom t) D.ι).paste_horiz hB) (isPullback_morphismRestrict A.hom (t ''ᵁ D)).flip (IsOpenImmersion.lift (D.ι ≫ t) _ hrange) (IsOpenImmersion.lift_fac _ _ _) (pull_isLB hL _) (lbIso_pull_pull hM _ _) hA`.
+A detailed English derivation is pending.
 -/
 theorem relAmple_of_geometricFibres {S : Scheme.{0}} [IsLocallyNoetherian S] (A : Over S) [IsProper A.hom]
     [Flat A.hom] {M : LB A.left} (hM : M.IsLB)
@@ -193,9 +189,9 @@ theorem relAmple_of_geometricFibres {S : Scheme.{0}} [IsLocallyNoetherian S] (A 
 end GlobalTheory.ProperFinite
 
 /- English proof (translation)
-Introduce `S P hS`. Use `P.isAb.proper` as an intermediate fact. Use `P.isAb.smooth` as an intermediate fact. Use `(isProper_and_exists_isAmpleLB_of_isProjOver hS).1` as an intermediate fact. Establish `: IsLocallyNoetherian S` using `LocallyOfFiniteType.isLocallyNoetherian (ShFam.Pad.toSpZ S)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨M, hM, e⟩` from `CechPic.cls_surj (CechPic.pull (lift (𝟙 P.A) (𝟙 P.A)).left P.c)`. Establish `hA` using `ProperFinite.relAmple_of_geometricFibres P.A hM (DiagonalAmple.isAmpleLB_geometricFibre P hM e)`. Use `DiagonalAmple.isProjOver_of_locally P.A hM (fun y => ?_) hS` and prove the remaining obligations. Take `⟨V, hV, hy, -⟩` from `exists_isAffineOpen_mem_and_subset (X := S) (U := ⊤) (x := y) trivial`. Conclude with `⟨V, hV, hy, isAmpleLB_of_relAmple P.A hM hA V hV⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.PPAS.isProjOver_of_isProjOver_base : ∀ (S : Scheme.{0}) (P : GlobalTheory.PPAS S),
     IsProjOver (GlobalTheory.ShFam.Pad.toSpZ S) → IsProjOver (GlobalTheory.ShFam.Pad.toSpZ P.A.left) := by

@@ -20,7 +20,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l} {Y : Model Xo c (RingHom.id c.F)} {S : Type} [CommRing S]
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem step_congr {Z : Scheme.{0}} {π : Z ⟶ Y.X} (F : Frames Y π) {z z' : Sp S ⟶ Z} (e : z = z')
     {x : Sp S ⟶ Y.X} (hx : z ≫ π = x) (hx' : z' ≫ π = x) (σ : E →+* ℂ) (i : ℕ) :
@@ -28,9 +28,9 @@ theorem step_congr {Z : Scheme.{0}} {π : Z ⟶ Y.X} (F : Frames Y π) {z z' : S
   subst e; rfl
 
 /- English proof (translation)
-Establish `: IsIso (spMap (RingHom.id c.F))` using `by show IsIso (Spec.map (𝟙 _)) infer_instance`. Set `r` to `pullback.fst (π ≫ Y.s) (spMap (RingHom.id c.F))`. Use `(r.surjective.denseRange.dense_image r.continuous h).mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, ⟨x, hx⟩, rfl⟩`. Use `⟨x, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Model.j, Scheme.Hom.comp_apply, hx, ← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, FlagMod.genMap, pullback.lift_fst]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dense_interior {Z : Scheme.{0}} (π : Z ⟶ Y.X) (h : Dense (genMap π ⁻¹' Set.range Y.jQ)) :
     Dense ((π ⁻¹ᵁ LogKS.interior Y : Z.Opens) : Set Z) := by
@@ -45,7 +45,7 @@ theorem dense_interior {Z : Scheme.{0}} (π : Z ⟶ Y.X) (h : Dense (genMap π �
     pullback.lift_fst]
 
 /- English proof (translation)
-Establish `ex : ∀ σ, ∃ b : Matrix (Fin (Dw.mult σ)) (Fin (Dw.mult σ)) S, b.BlockTriangular id ∧ (∀ i, IsUnit (b i i)) ∧ ∀ i, frVec Y Q rfl σ i = ∑ j, b j i • X.F.vecAt k z hk hx σ j` using `fun σ => exists_tri_of_eq (X.F.linearIndependent_vecAt k z hk hx σ) fun i => (h σ i).trans (X.F.step_eq k z hk hx σ i)`. Use `choose U hU hu hv using ex`. Conclude with `GlobalTheory.T.carries_framedPoint_of_unitTriangular_chart E H Dw l Xo c c.F (RingHom.id c.F) Y X.YY X.π X.F X.top S Q z k hk hx U hU hu hv`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lies_of_step [Algebra c.F S] (X : FlagCover Y) (z : Sp S ⟶ X.YY) (Q : FrPt Xo c S) (k : X.F.J)
     (hk : ⊤ ≤ z ⁻¹ᵁ X.F.U k) (hx : z ≫ X.π = frX Q ≫ Y.j)
@@ -57,7 +57,7 @@ theorem lies_of_step [Algebra c.F S] (X : FlagCover Y) (z : Sp S ⟶ X.YY) (Q : 
   exact GlobalTheory.T.carries_framedPoint_of_unitTriangular_chart E H Dw l Xo c c.F (RingHom.id c.F) Y X.YY X.π X.F X.top S Q z k hk hx U hU hu hv
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `h σ i`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem step_eq_of_rfl {Z : Scheme.{0}} {π : Z ⟶ Y.X} (F : Frames Y π) {z z' : Sp S ⟶ Z} (hx' : z' ≫ π = z ≫ π)
     (h : ∀ σ i, F.step z' hx' σ i = F.step z rfl σ i) {x : Sp S ⟶ Y.X} (e : z ≫ π = x) (e' : z' ≫ π = x)
@@ -66,9 +66,9 @@ theorem step_eq_of_rfl {Z : Scheme.{0}} {π : Z ⟶ Y.X} (F : Frames Y π) {z z'
   exact h σ i
 
 /- English proof (translation)
-Take `⟨_, y, hy, hx⟩` from `exists_y _ hi`. Take `⟨k, hk⟩` from `exists_chart_of_isLocalRing X.F.cover z`. Take `⟨k', hk'⟩` from `exists_chart_of_isLocalRing X.F.cover z'`. Take `⟨Q, hQ⟩` from `X.top.exists_chartFr hy hx k hk`. Establish `hl : X.F.Lies z Q` using `hQ.lies`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : z ≫ X.π = frX Q ≫ Y.j` using `hl.1`. Establish `e' : z' ≫ X.π = frX Q ≫ Y.j` using `hx'.trans e`. Establish `hl' : X.F.Lies z' Q` using `lies_of_step X z' Q k' hk' e' fun σ i => (hl.initSpan_eq hk e rfl σ i).trans (step_eq_of_rfl X.F hx' h e e' σ i).symm`. Conclude with `(X.rep S Q).unique hl' hl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_of_step [IsLocalRing S] (X : FlagCover Y) (z z' : Sp S ⟶ X.YY) (hx' : z' ≫ X.π = z ≫ X.π)
     (hi : ⊤ ≤ (z ≫ X.π) ⁻¹ᵁ LogKS.interior Y) (h : ∀ σ i, X.F.step z' hx' σ i = X.F.step z rfl σ i) : z' = z := by
@@ -89,7 +89,7 @@ variable {p : Proj (RingHom.id c.F)} {A : Atlas Y p} {Z : Scheme.{0}} {π : Z �
   (ht : FlagCellFrameChangeTriangular hZ)
 
 /- English proof (translation)
-Substitute `hx` using the available equality. Conclude with `h.2 σ i`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem Rel.step_eq {X : FlagCover Y} {z : Sp S ⟶ X.YY} {z' : Sp S ⟶ Z} (h : Rel hZ ht X z z') {x : Sp S ⟶ Y.X}
     (hx : z ≫ X.π = x) (hx' : z' ≫ π = x) (σ : E →+* ℂ) (i : ℕ) :
@@ -100,25 +100,23 @@ theorem Rel.step_eq {X : FlagCover Y} {z : Sp S ⟶ X.YY} {z' : Sp S ⟶ Z} (h :
 include hZ in
 
 /- English proof (translation)
-Establish `ht` using `GlobalTheory.T.flagCellFrameChangeTriangular_of_cells E H Dw l Xo c Y p A Z π g κ hZ`. Establish `hT` using `GlobalTheory.T.flagCellFrames_lastStep_eigenmodules E H Dw l Xo c Y p A Z π g κ hZ ht`. Establish `hu` using `GlobalTheory.T.flagBundle_points_eq_of_same_steps_localRing E H Dw l Xo c Y p A Z π g κ hZ ht`. Take `⟨h, hR⟩` from `exists_glue (fun S _ _ z z' => Rel hZ ht M.toFlagCover z z') (fun S _ _ t z z' h h' => hu S z z' _ h.1 h'.1 fun σ i => (h.2 σ i).trans (h'.2 σ i).symm) (exists_local hZ ht M.toFlagCover)`. Establish `hπ : h ≫ π = M.π` using `hom_ext_local fun S _ _ t => (Category.assoc _ _ _).symm.trans (hR S t).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `two : ∀ (S : Type) [CommRing S] [IsLocalRing S] (z z' : Sp S ⟶ M.YY), z' ≫ h = z ≫ h → ∃ hx : z' ≫ M.π = z ≫ M.π, ∀ σ i, M.F.step z' hx σ i = M.F.step z rfl σ i` using `fun S _ _ z z' e => by`. Establish `hx : z' ≫ M.π = z ≫ M.π` using `by rw [← hπ, ← Category.assoc, e, Category.assoc]`. Use `⟨hx, fun σ i => ?_⟩` and prove the remaining obligations. Rewrite using `[← (hR S z').step_eq hZ ht hx ((hR S z').1.trans hx), ← (hR S z).step_eq hZ ht rfl (hR S z).1]`. Conclude with `step_congr _ e _ _ σ i`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨h, ?_, hπ⟩` and prove the remaining obligations. Use `hZ.proper` as an intermediate fact. Establish `: IsProper (h ≫ π)` using `hπ ▸ M.proper`. Establish `: IsProper h` using `IsProper.of_comp h π`. Establish `: LocallyQuasiFinite h` using `GlobalTheory.locallyQuasiFinite_of_finite_geometric_points h fun Ω _ _ y => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `isEmpty_or_nonempty {x : Spec (.of Ω) ⟶ M.YY // x ≫ h = y} with h0 | ⟨⟨z, hz⟩⟩` into its components or cases. Use `infer_instance`. Conclude with `((M.fin Ω z).subset fun z' (hz' : z' ≫ h = y) => two Ω z z' (hz'.trans hz.symm)).to_subtype`. Establish `: IsProper Y.s` using `projProper _ _ _ Y.proj`. Establish `: IsLocallyNoetherian Z` using `LocallyOfFiniteType.isLocallyNoetherian (π ≫ Y.s)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: IsReduced M.YY` using `isReduced_flag M.toFlagCover`. Use `isIso_of_normal h hZ.normal (π ⁻¹ᵁ LogKS.interior Y) (dense_interior π (GlobalTheory.T.dense_flagBundle_preimage_moduli E H Dw l Xo c Y p A Z π g κ hZ)) ?_ (fun W a a' ha e => ?_) fun w hw => ?_` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_preimage, hπ]`. Conclude with `dense_interior M.π M.dense`. Use `hom_ext_local fun S _ _ t => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hx, hs⟩` from `two S (t ≫ a) (t ≫ a') (by rw [Category.assoc, Category.assoc, e])`. Use `(eq_of_step M.toFlagCover _ _ hx (fun q _ => ?_) hs).symm` and prove the remaining obligations. Use `ha (t q)` as an intermediate fact. Rewrite using `[← hπ]`. Conclude with `this`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Set `K : Type` to `Z.residueField w`. Set `t : Sp K ⟶ Z` to `Z.fromSpecResidueField w`. Establish `hi : ⊤ ≤ (t ≫ π) ⁻¹ᵁ LogKS.interior Y` using `fun q _ => by`. Establish `e : t q = w` using `Scheme.fromSpecResidueField_apply w q`. Express the relevant statement in the definitionally equal form `π (t q) ∈ LogKS.interior Y`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `hw`. Take `⟨_, y, hy, hx⟩` from `exists_y _ hi`. Take `⟨k', hk'⟩` from `exists_chart_of_isLocalRing (cellFrames hZ ht).cover t`. Take `⟨Q, hQ⟩` from `hT.exists_chartFr hy hx k' hk'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hl'` using `hQ.lies`. Establish `hl` using `M.lies_ptY Q`. Take `⟨k, hk⟩` from `exists_chart_of_isLocalRing M.F.cover (M.ptY Q)`. Establish `e : M.ptY Q ≫ h = t` using `hu K _ _ _ ((hR K _).1.trans hl.1) hl'.1 fun σ i => by`. Rewrite using `[(hR K _).step_eq hZ ht hl.1, ← hl.initSpan_eq hk hl.1 rfl, hl'.initSpan_eq hk' hl'.1 rfl]`.
-
-Set `q : Sp K` to `IsLocalRing.closedPoint K`. Use `⟨M.ptY Q q, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, e]`. Conclude with `Scheme.fromSpecResidueField_apply w _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_iso (M : FlagModel Y) : ∃ h : M.YY ⟶ Z, IsIso h ∧ h ≫ π = M.π := by
   have ht := GlobalTheory.T.flagCellFrameChangeTriangular_of_cells E H Dw l Xo c Y p A Z π g κ hZ
@@ -180,7 +178,7 @@ end DifferentiableLines.FlagIso
 open CategoryTheory AlgebraicGeometry NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD Formalism.L2.Pj
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Y p A M' g κ hκ hZ _ M`. Conclude with `DifferentiableLines.FlagIso.exists_iso hZ M`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem DifferentiableLines.flag_model_projective_embedding_alt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)) (p : GlobalTheory.FlagMod.LowRank.Proj (RingHom.id c.F)) (A : GlobalTheory.FlagMod.FieldFlag.Atlas Y p) (M' : GlobalTheory.FlagMod.FlagModel Y) (g : ∀ en : GlobalTheory.FlagEmb.En Dw.mult, M'.YY ⟶ PSpace c.F (GlobalTheory.FlagEmb.plN A.N en.1)) (κ : ∀ b, GlobalTheory.FlagEmb.Pm Dw.mult → (Sp (GlobalTheory.FlagEmb.CR Dw.mult (A.V b)) ⟶ M'.YY)), (∀ b w, IsOpenImmersion (κ b w)) → GlobalTheory.FlagMod.FieldFlag.Cells A M'.π g κ → SmoothOfRelativeDimension Dw.dim Y.s → ∀ M : GlobalTheory.FlagMod.FlagModel Y, ∃ h : M.YY ⟶ M'.YY, IsIso h ∧ h ≫ M'.π = M.π := by
   intro E _ _ _ H Dw l Xo c Y p A M' g κ hκ hZ _ M

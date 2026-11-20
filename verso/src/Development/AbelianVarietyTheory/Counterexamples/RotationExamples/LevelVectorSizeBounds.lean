@@ -12,9 +12,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h1` using `(h.1 τ).2.2.2 i`. Establish `h2` using `(D.hc τ).gap_be i`. Establish `h3 : (5 : ℚ) ≤ D.R.t`. Use `D.R.rank_add_five_le` as an intermediate fact. Conclude with `(by omega : 5 ≤ D.R.t)` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : (4 : ℚ) ≤ (D.hc τ).e i - (D.hc τ).b i` using `by linarith`. Establish `h5 : (4 : ℝ) ≤ (((D.hc τ).e i : ℚ) : ℝ) - (((D.hc τ).b i : ℚ) : ℝ)` using `by exact_mod_cast h4`. Use `(abs_le.1 h1).1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem four_le_of_sizes (i : Fin D.R.m) (b : ℝ) (h : Sizes D i b) (τ : D.what₂.Tau) : 4 ≤ b := by
   have h1 := (h.1 τ).2.2.2 i
@@ -28,7 +28,7 @@ theorem four_le_of_sizes (i : Fin D.R.m) (b : ℝ) (h : Sizes D i b) (τ : D.wha
   linarith
 
 /- English proof (translation)
-Unfold `Formalism.LatticeIndexTer.hookProd`. Use `Finset.prod_pos fun x hx => ?_` and prove the remaining obligations. Establish `hx' : (x.1, x.2) ∈ μ` using `hx`. Establish `a` using `YoungDiagram.mem_iff_lt_rowLen.1 hx'`. Establish `b` using `YoungDiagram.mem_iff_lt_colLen.1 hx'`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -41,7 +41,7 @@ theorem hookProd_pos (μ : YoungDiagram) : 0 < Formalism.LatticeIndexTer.hookPro
   omega
 
 /- English proof (translation)
-Use `h _ ?_` and prove the remaining obligations. Use `show Valued.v (((k : E)) : P.adicCompletion E) = 1`. Rewrite using `[HeightOneSpectrum.valuedAdicCompletion_eq_valuation', hk]`. Use `(P.valuation_eq_one_iff_notMem (K := E) (r := a)).2 ha` as an intermediate fact. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem locK_eq_one {E : Type} [Field E] [NumberField E] {χ : Formalism.L2.Host.HChar E} {P : HeightOneSpectrum (𝓞 E)}
     (h : χ.UnrAt P) (a : 𝓞 E) (k : Eˣ) (hk : (k : E) = a) (ha : a ∉ P.asIdeal) : χ.locK P k = 1 := by
@@ -52,7 +52,7 @@ theorem locK_eq_one {E : Type} [Field E] [NumberField E] {χ : Formalism.L2.Host
   exact this
 
 /- English proof (translation)
-Establish `hc : IsCoprime (q : 𝓞 E) (p : 𝓞 E)` using `Nat.Coprime.cast ((Nat.coprime_primes hq hp).2 hne)`. Take `⟨x, y, hxy⟩` from `hc`. Conclude with `P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hxy ▸ P.asIdeal.add_mem (P.asIdeal.mul_mem_left _ h2) (P.asIdeal.mul_mem_left _ h1)))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem not_both {E : Type} [Field E] [NumberField E] {P : HeightOneSpectrum (𝓞 E)} {p q : ℕ} (hp : p.Prime) (hq : q.Prime)
     (hne : q ≠ p) (h1 : (p : 𝓞 E) ∈ P.asIdeal) (h2 : (q : 𝓞 E) ∈ P.asIdeal) : False := by
@@ -61,7 +61,7 @@ theorem not_both {E : Type} [Field E] [NumberField E] {P : HeightOneSpectrum (�
   exact P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hxy ▸ P.asIdeal.add_mem (P.asIdeal.mul_mem_left _ h2) (P.asIdeal.mul_mem_left _ h1)))
 
 /- English proof (translation)
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast, ← h]`. Use `card_nsmul_eq_zero' (G := kP P) (x := 1)` as an intermediate fact. Rewrite `this` using `[nsmul_one]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem q_mem {P : Pl D.host.E} {q : ℕ} (h : Nat.card (kP P) = q) : (q : 𝓞 D.host.E) ∈ P.asIdeal := by
   rw [← Ideal.Quotient.eq_zero_iff_mem, map_natCast, ← h]
@@ -72,9 +72,9 @@ variable {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks)
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `(h.lev.Pg PP).1 hP`. Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `h1` using `R.C.P.pb_over k`. Rewrite `h1` using `[← hk]`. Establish `h2 : algebraMap (𝓞 D.host.K) (𝓞 D.host.E) (D.host.g k : ℕ) ∈ PP.asIdeal` using `h1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using h2`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem g_mem {F : Face D A} (h : R.Char F) {PP : Pl D.host.E} (hP : PP ∈ R.Pg) : ∃ k, ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal := by
   obtain ⟨k, hk⟩ := (h.lev.Pg PP).1 hP
@@ -87,19 +87,17 @@ theorem g_mem {F : Face D A} (h : R.Char F) {PP : Pl D.host.E} (hP : PP ∈ R.Pg
 open Classical in
 
 /- English proof (translation)
-Use `⟨_, _, isGalConj_refl _ _, isGalConj_refl _ _, ⟨(h.thP.ωP i t).hecS, ?_⟩, h.lev.eta, ?_⟩` and prove the remaining obligations. Introduce `P e he k x hx`. Establish `a` using `(h.lev.mu0 i).2 P e he k x hx`. Establish `b` using `(h.lev.xi t).2 P e he k x hx`. Use `show (((R.mu0 ((i : ℕ) + 1) x * R.xi t x : Circle)) : ℂ) = (((R.C.mu0 i).locK P k * (R.xiH t).locK P k : ℂˣ) : ℂ)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Circle.coe_mul, a, b, Units.val_mul]`. Introduce `PP hPP a k u hk hu`. Establish `ha : a ∉ PP.asIdeal` using `fun ha => u.ne_zero (hu.trans (Ideal.Quotient.eq_zero_iff_mem.2 ha))`. Use `show _ = (R.C.mu0 i).locK PP k * (R.xiH t).locK PP k`. Distinguish the cases in `hg : PP ∈ R.Pg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨l, hl⟩` from `g_mem R h hg`. Establish `hun : (R.xiH t).UnrAt PP`. Assume the negation of the conclusion as `hn`. Break down `(h.lev.Q_ram t PP).1 hn with hq | ⟨PP', hq, hc⟩` into its components or cases. Take `⟨⟨q, hq1, hq2, -, hq4⟩, -⟩` from `h.lev.Q_pl t PP hq`.
+Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `not_both (D.host.g_prime l) hq1 (hq4 l) hl (q_mem hq2)`. Take `⟨⟨q, hq1, hq2, -, hq4⟩, -⟩` from `h.lev.Q_pl t PP' hq`. Take `⟨c', hc1, hc2⟩` from `hc _ (q_mem hq2)`. Establish `: c' = (q : 𝓞 D.host.E)`. Apply `NumberField.RingOfIntegers.coe_injective` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_natCast]`. Establish `h3 : (c' : D.host.E) = (q : D.host.E)` using `by simpa using hc2`. Conclude with `h3`. Conclude with `not_both (D.host.g_prime l) hq1 (hq4 l) hl (this ▸ hc1)`. Simplify using `only [if_pos hg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[locK_eq_one hun a k hk ha, mul_one]`. Conclude with `h.lev.chi i PP hg a k u hk hu`. Establish `hq : PP ∈ R.Q t` using `hPP.resolve_left hg`. Take `⟨⟨q, hq1, hq2, -, hq4⟩, -⟩` from `h.lev.Q_pl t PP hq`. Establish `hun : (R.C.mu0 i).UnrAt PP` using `(R.C.isMu0 i).unr PP fun l hl => not_both (D.host.g_prime l) hq1 (hq4 l) hl (q_mem hq2)`.
-
-Simplify using `only [if_neg hg]`. Rewrite using `[locK_eq_one hun a k hk ha, one_mul]`. Conclude with `h.lev.xiR t PP hq a k u hk hu`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isConjChars_base {F : Face D A} (h : R.Char F) (i : Fin D.R.m) (t : T) :
     IsConjChars R i t (RingEquiv.refl ℂ) (R.toLevCh.mu t ((i : ℕ) + 1)) R.eta
@@ -140,9 +138,9 @@ theorem isConjChars_base {F : Face D A} (h : R.Char F) (i : Fin D.R.m) (t : T) :
       exact h.lev.xiR t PP hq a k u hk hu
 
 /- English proof (translation)
-Use `⟨fun _ => ⊥, fun _ => 1, ?_⟩` and prove the remaining obligations. Establish `key : ∀ (H : Subgroup (G0 R.Pg D.R.r)) (c : H →* ℂˣ), H = ⊥ → R.triv = ⟨H, c⟩`. Introduce and unpack `H c rfl`. Establish `: c = 1` using `by ext x; rw [Subsingleton.elim x 1]; simp`. Substitute `this` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality.
 
-Both sides reduce to the same expression. Conclude with `key _ _ (Subgroup.pi_bot)`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isLocal_triv : IsLocalLevel (D := D) R.triv := by
   refine ⟨fun _ => ⊥, fun _ => 1, ?_⟩
@@ -165,9 +163,9 @@ theorem grp_triv (i : Fin D.R.m) (t : T) (m) :
     grpOf (Vc D i) (R.βV i) (datV i R.Pg (R.Q t) R.triv m) = (levEnv _ (R.βV i) (R.datVt i t)).J := rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Establish `hg : g ∈ blockTri (κ` using `κ) (n := n) (blk2 n) := by`. Introduce `a b hab`. Simplify using `[blk2] at hab`. Unfold `upperLeftBlock at h`.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite `h` using `[extendOne_of_mem _ hg]`. Establish `h2` using `congrArg (fun x : GL (Fin n) κ => (x : Matrix (Fin n) (Fin n) κ)) h`. Use extensionality with `a b`. Conclude with `congrFun (congrFun h2 a) b`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem eq_one_of_full_upper_block_eq_one {κ : Type} [CommRing κ] {n r : ℕ} (hr : r ≤ n) (e : n = r) (g : GL (Fin n) κ) (h : upperLeftBlock hr g = 1) : g = 1 := by
   subst e
@@ -181,15 +179,13 @@ theorem eq_one_of_full_upper_block_eq_one {κ : Type} [CommRing κ] {n r : ℕ} 
   exact congrFun (congrFun h2 a) b
 
 /- English proof (translation)
-Establish `hrk : (Wc D i).rank = D.R.r` using `D.sp.W_rank _ (Nat.le_add_left _ _) i.2`. Establish `key : ∀ g : ∀ PP : ↥R.Pg, GL (Fin (Wc D i).rank) (kP PP.1), (fun PP => upperLeftBlock (r_le_rank_Wc i) (g PP)) ∈ (⊥ : Subgroup (G0 R.Pg D.R.r)) → ∀ PP, g PP = 1` using `fun g hg PP => eq_one_of_full_upper_block_eq_one _ hrk _ (congrFun (Subgroup.mem_bot.1 hg) PP)`. Unfold `Datum.omegaG Datum.omegaK`. Use `split_ifs with h1 h2 h2`. Establish `hg` using `key _ h1.2.choose_spec.2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (R.datWp i R.triv).s = 0` using `rfl`. Establish `e2 : ∀ x, (R.datWp i R.triv).P.chi x = 1` using `fun _ => rfl`. Rewrite using `[e2]`. Simplify using `only [e1, Finset.range_zero, Finset.prod_empty, Finset.prod_const_one, Units.val_one, one_mul]`. Use `Finset.prod_eq_one fun PP _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg PP]`. Simplify using the standard rewrite rules. It suffices to derive a contradiction. Use `h2 fun PP hP => ⟨h1.1 PP hP, ?_⟩` and prove the remaining obligations. Take `⟨g, g1, -, g3⟩` from `h1.2`.
+Simplify using the standard rewrite rules. It suffices to derive a contradiction. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. It suffices to derive a contradiction.
 
-Conclude with `(g1 ⟨PP, hP⟩).symm.trans (congrArg Units.val (key g g3 ⟨PP, hP⟩))`. It suffices to derive a contradiction. Use `h1 ⟨fun PP hP => (h2 PP hP).1, fun _ => 1, fun PP => (h2 PP.1 PP.2).2.symm, fun _ => Subgroup.one_mem _, ?_⟩` and prove the remaining obligations. Establish `: (fun PP : ↥R.Pg => upperLeftBlock (r_le_rank_Wc i) (1 : GL (Fin (Wc D i).rank) (kP PP.1))) = 1`. Use function extensionality and compare the values at `PP`.
-
-Conclude with `blockDiagonalExtendByOnePrimeField_one _ _`. Conclude with `this ▸ Subgroup.one_mem _`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem omegaG_triv (i : Fin D.R.m) (m) (y : ∀ PP : Pl D.host.E, Matrix (Fin (Vc D i).rank) (Fin (Wc D i).rank) (kP PP)) :
     Datum.omegaG (R.datWp i R.triv) m y = Datum.omegaK R.Pg y := by
@@ -220,13 +216,11 @@ theorem omegaG_triv (i : Fin D.R.m) (m) (y : ∀ PP : Pl D.host.E, Matrix (Fin (
 open Classical in
 
 /- English proof (translation)
-Establish `h1` using `h.thP.vP i t`. Unfold `Datum.IsThPVecOf at h1`. Unfold `IsLevelVec`. Establish `hQ : ∀ y : ∀ PP : Pl D.host.E, Matrix (Fin (Vc D i).rank) (Fin (Wc D i).rank) (kP PP), Datum.omegaQ (R.Q t) (Wc D i).rank (fun PP => if PP ∈ R.Pg then (R.chi ((i : ℕ) + 1) PP)⁻¹ else R.xiR t PP) (-1) y = Datum.omegaQ (R.Q t) (Wc D i).rank (R.xiR t) (-1) y`. Introduce `y`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `Datum.omegaQ`. Use `split_ifs with hy`. Use `Finset.prod_congr rfl fun PP _ => ?_` and prove the remaining obligations. Establish `hn : PP.1 ∉ R.Pg` using `fun hg => by`. Take `⟨l, hl⟩` from `g_mem R h hg`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨q, hq1, hq2, -, hq4⟩, -⟩` from `h.lev.Q_pl t PP.1 PP.2`. Conclude with `not_both (D.host.g_prime l) hq1 (hq4 l) hl (q_mem hq2)`. Simplify using `only [if_neg hn]`. Both sides reduce to the same expression. Simplify using `only [omegaG_triv, hQ]`.
-
-Conclude with `h1`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isLevelVec_base {F : Face D A} (h : R.Char F) (i : Fin D.R.m) (t : T) :
     IsLevelVec R.ψ R.θ (Vc D i) (Wc D i) (cart (R.MW i (sg0 D A))) (R.ΛV i) (R.ΛW i) (R.βV i) (R.βW i) (R.datWp i R.triv) (R.Q t)
@@ -251,7 +245,7 @@ theorem isLevelVec_base {F : Face D A} (h : R.Char F) (i : Fin D.R.m) (t : T) :
   exact h1
 
 /- English proof (translation)
-Unfold `levFn`. Use `congr 1`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun PP hP => Finset.prod_congr rfl fun c _ => by dsimp only; rw [h1 _ PP hP]`. Conclude with `Finset.prod_congr rfl fun PP hP => by dsimp only; rw [h2 PP hP]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem levFn_congr {n : ℕ} (β : GL (Fin n) (Lev.EAf D)) (r : ℕ) (hr : r ≤ n) (t s : ℕ) (Pg Q : Finset (Pl D.host.E))
     (P : LevelP Pg r ℂ) (cg cg' : ℕ → ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (xq xq' : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ)
@@ -266,9 +260,9 @@ theorem levFn_congr {n : ℕ} (β : GL (Fin n) (Lev.EAf D)) (r : ℕ) (hr : r �
 open Classical in
 
 /- English proof (translation)
-Use `ext1 x`. Use `levFn_congr (R.βV i) D.R.r (r_le_V i) D.R.t 1 R.Pg (R.Q t) R.triv (fun _ PP => if PP ∈ R.Pg then (R.chi ((i : ℕ) + 1) PP)⁻¹ else R.xiR t PP) (fun _ PP => (R.chi ((i : ℕ) + 1) PP)⁻¹) (fun PP => if PP ∈ R.Pg then (R.chi ((i : ℕ) + 1) PP)⁻¹ else R.xiR t PP) (R.xiR t) ?_ ?_ _` and prove the remaining obligations. Introduce `c PP hP`. Simplify using `only [if_pos hP]`. Introduce `PP hP`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hn : PP ∉ R.Pg` using `fun hg => by`. Take `⟨l, hl⟩` from `g_mem R h hg`. Take `⟨⟨q, hq1, hq2, -, hq4⟩, -⟩` from `h.lev.Q_pl t PP hP`. Conclude with `not_both (D.host.g_prime l) hq1 (hq4 l) hl (q_mem hq2)`. Simplify using `only [if_neg hn]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chr_base {F : Face D A} (h : R.Char F) (i : Fin D.R.m) (t : T) :
     chrOf (Vc D i) (R.βV i) (datV i R.Pg (R.Q t) R.triv
@@ -288,9 +282,9 @@ theorem chr_base {F : Face D A} (h : R.Char F) (i : Fin D.R.m) (t : T) :
 
 include R in
 /- English proof (translation)
-Establish `hl : ∀ ρ, lab (sg0 D A) ρ = ρ` using `fun ρ => by`. Rewrite using `[show sg0 D A = D.what₂.embLL from sgAt_mk _ R.hv0]`. Conclude with `GlobalTheory.IndefiniteRowSideFullHecke.LiftFormsMainTerm.lab_base ρ`. Unfold `deltaAtEmb RealDat.Delta`. Apply the tactic sequence `congr 1 <;> funext ρ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions.
 
-Unfold `aPlAt`. Rewrite using `[hl]`. Unfold `aMiAt`. Rewrite using `[hl]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem delta_base (i : Fin D.R.m) : deltaAtEmb D i (sg0 D A) = RealDat.Delta i := by
   have hl : ∀ ρ, lab (sg0 D A) ρ = ρ := fun ρ => by
@@ -301,9 +295,9 @@ theorem delta_base (i : Fin D.R.m) : deltaAtEmb D i (sg0 D A) = RealDat.Delta i 
   · unfold aMiAt; rw [hl]
 
 /- English proof (translation)
-Establish `hσ : IsEmbOverK D (sg0 D A) (RingEquiv.refl ℂ)`. Rewrite using `[show sg0 D A = D.what₂.embLL from sgAt_mk _ R.hv0]`. Conclude with `isEmbOverK_base`. Establish `key` using `hA h i b hb t ht _ _ hσ R.triv (isLocal_triv R) _ _ _ (isConjChars_base R h i t) (R.ωP i t) (h.thP.ωP i t) (onb (R.MW i (sg0 D A))) (fun ρ => GlobalTheory.IndefiniteRowSideFullHecke.LiftFormsMainTerm.isONBasis_onb _ ρ _ (h.models.order i ρ)) _ _ (isLevelVec_base R h i t) (h.thP.p …`. Take `⟨⟨th, hth⟩, h2⟩` from `key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨th, hth, h2 th hth⟩`.
+A detailed English derivation is pending.
 -/
 theorem apply_base {F : Face D A} (hA : AdelicLiftScalar R F) (h : R.Char F) (i : Fin D.R.m) (b : ℝ) (hb : Sizes D i b) (t : T)
     (ht : PrimeToHost R t) :

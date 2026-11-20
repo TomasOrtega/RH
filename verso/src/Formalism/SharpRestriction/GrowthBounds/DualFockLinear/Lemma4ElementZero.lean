@@ -9,9 +9,9 @@ namespace Formalism.MainNotions.TestSideCounting
 open Formalism.MainNotions.G Formalism.GradedWeylDivisibility Formalism.MainNotions.SourceCleaning Formalism.MainNotions.Pf14
 
 /- English proof (translation)
-Substitute `hk` using the available equality. Take `⟨n, obd, xi, dd, mon, -, -, -, -, h5, rfl⟩` from `hs`. Establish `hren : rename (castVK (n'` using `n') (rfl : r + K = r + K)) (monPh O K p Fr mon xi) = monPh O K p Fr mon xi := by`. Establish `: (castVK (n'` using `n') (rfl : r + K = r + K)) = id := by`. Use function extensionality and compare the values at `v`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Both sides reduce to the same expression. Rewrite using `[this, rename_id_apply]`. Rewrite using `[hren]`. Introduce `mm hmm`. Conclude with `h5 mm (support_map_subset _ _ hmm)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lemma4_element_normal_degree {p n' r : ℕ} [NeZero n'] {K : ℕ} [NeZero r] [NeZero K] {O : Type} [CommRing O] [IsDomain O]
     {Fr : Frames n' r} {N₁ G' cP : ℕ} {deg : Fin n' → ℕ} {Y : ℝ} {k : ℕ} (hk : k = r + K) {o : ℕ}
@@ -29,11 +29,11 @@ theorem lemma4_element_normal_degree {p n' r : ℕ} [NeZero n'] {K : ℕ} [NeZer
   exact h5 mm (support_map_subset _ _ hmm)
 
 /- English proof (translation)
-Use `⟨0, fun _ _ => 0, fun i => i.elim0, fun _ _ => 0, 0, fun i => i.elim0, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `j _ x _ _`. Establish `: 0 ≤ levDeg p Fr deg j x`. Unfold `levDeg`. Check the signs of the components of the expression.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `j x _ _ c`. Simplify using `using Nat.pow_pos hp`. Introduce `v hv`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `at hv`. Introduce `mm hmm`. Simplify using `[monPh] at hmm`. Simplify using `[monPh]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem lemma4_element_zero {p n' r : ℕ} (hp : 0 < p) [NeZero n'] {K : ℕ} [NeZero r] [NeZero K] {O : Type} [CommRing O] [IsDomain O]
     (Fr : Frames n' r) (N₁ G' cP : ℕ) (deg : Fin n' → ℕ) (Y : ℝ) {k : ℕ} (hk : k = r + K) (o : ℕ) :
@@ -85,17 +85,17 @@ def NDAt (c0 : ℕ) (bT : ℝ) (g : Matrix (Fin (m + 1)) (Fin (m + 1)) (WF p n')
 variable {p n' ι σ w r TT lam0}
 
 /- English proof (translation)
-Take `⟨DX, hDX, hN⟩` from `hN`. Take `⟨tF, htF, hD⟩` from `hD`. Use `⟨tF, DX, htF, hDX, fun F1 h1 h2 h3 => ?_⟩` and prove the remaining obligations. Take `⟨nq, o, sig, hs, hv⟩` from `hN F1 h1 h2 h3`. Use `⟨nq, fun q => if o q ≤ tF then o q else 0, fun q => if o q ≤ tF then sig q else 0, fun q => ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hq : o q ≤ tF`. Simplify using `only [if_pos hq]`. Conclude with `⟨hq, (hs q).1, (hs q).2⟩`. Simplify using `only [if_neg hq]`. Conclude with `⟨Nat.zero_le _, Submodule.zero_mem _, lemma4_element_zero (Fact.out : p.Prime).pos Fr N₁ G' cP _ Y hk 0⟩`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Establish `e1 : fock (subst p n' O w n' r g (F1 : MvPolynomial (TV n' (m + 1)) (KK O))) (∑ q, if o q ≤ tF then sig q else 0) = fock (subst p n' O w n' r g (F1 : MvPolynomial (TV n' (m + 1)) (KK O))) (∑ q, sig q)`. Unfold `fock`. Use `Finset.sum_congr rfl fun mm hmm => ?_` and prove the remaining obligations. Use `congr 2`. Rewrite using `[coeff_sum, coeff_sum]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Distinguish the cases in `hq : o q ≤ tF`. Rewrite using `[if_pos hq]`. Rewrite using `[if_neg hq, coeff_zero]`. Assume the negation of the conclusion as `hne`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h4 : mm ∈ (sig q).support` using `mem_support_iff.2 (Ne.symm hne)`. Establish `h5` using `lemma4_element_normal_degree hk (hs q).2 mm h4`. Establish `h6` using `hD _ h1 mm hmm`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hv`.
+A detailed English derivation is pending.
 -/
 theorem xiAt_of {K : ℕ} [NeZero r] [NeZero K] {hk : m + 1 = r + K} {Fr : Frames n' r} {N₁ G' : ℕ} {Y : ℝ}
     {c0 cP κ : ℕ} {bT bD : ℝ} {e : Edge W Qq (m + 1)} {g : Matrix (Fin (m + 1)) (Fin (m + 1)) (WF p n')} {nb : ℕ}
@@ -211,9 +211,9 @@ def RestND (CLa : ℝ) : Prop :=
   ∃ Ct0 C₁ : ℝ, 0 < Ct0 ∧ 0 < C₁ ∧ ∀ C : ℝ, C₁ ≤ C → NDStep C Ct0 CLa
 
 /- English proof (translation)
-Introduce `hA h14b`. Take `⟨CDf, C₂, h1, hC2, hN⟩` from `hN hA h14b`. Take `⟨Ct0, C₃, h0, hC3, hD⟩` from `hD`. Use `⟨Ct0, CDf, max C₂ C₃, h0, h1, lt_of_lt_of_le hC2 (le_max_left _ _), ?_⟩` and prove the remaining obligations. Introduce `C hCC p W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w n' m r _ _ TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar hSet H φ hφ K _ _ hk hrk F hFr E' hE' nb B hB hli hc e he htgt hm g hhm hg hbasis`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `letI : Algebra (WF p n') O := algOfIdent j φ`. Introduce `FsB hFsB Θ hΘ`. Conclude with `xiAt_of (hN C (le_trans (le_max_left _ _) hCC) p W Qq O Kf ι σ j w n' m r TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar hSet H φ hφ K hk hrk F hFr E' hE' nb B hB hli hc e he htgt hm g hhm hg hbasis FsB hFsB Θ hΘ) (hD C (le_trans (le_max_right _ _) hCC) p W Qq O Kf ι σ j w n' m r …`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem restXi_of (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg CH CE C6 C18 : ℝ)
     (hN : RestXiN D CLa Ck Crk Cdeg CH CE C6 C18) (hD : RestND CLa) : RestXi D CLa Ck Crk Cdeg CH CE C6 C18 := by

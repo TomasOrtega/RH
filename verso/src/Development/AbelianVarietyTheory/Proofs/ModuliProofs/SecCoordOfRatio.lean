@@ -18,13 +18,13 @@ namespace GlobalTheory.TUniq
 open GlobalTheory.SegreCoord ReciprocityTheory.ChartRestriction.G.Out
 
 /- English proof (translation)
-Establish `hs : ∀ y : Sp B, y = p` using `fun y => Subsingleton.elim (α := PrimeSpectrum B) _ _`. Take `⟨u, hu⟩` from `loc_of_secCoord H p j hj`. Distinguish the cases in `hv : Ideal.span (Set.range v) = ⊤`. Use `secCoord_of_loc hv fun y l hl => ?_` and prove the remaining obligations. Take `rfl` from `hs y`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨gm x' y _ (M'.g l j') * (c * u), fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[gs_sec (th' i) x' y hl hj', h, hu, Units.val_mul, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h0 : ∀ i, v i = 0` using `fun i => by`. Assume the negation of the conclusion as `hi`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hv (Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span ⟨i, rfl⟩) (IsUnit.mk0 _ hi))`. Take `⟨w, hw⟩` from `exists_secCoord (th := th') hM' (x := x') (k := j') fun y => by rw [hs y]; exact hj'`. Take `⟨u', hu'⟩` from `loc_of_secCoord hw p j' hj'`. Establish `: w = v` using `funext fun i => ev_ext fun y => by`. Take `rfl` from `hs y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hu' i` as an intermediate fact. Rewrite `this` using `[h, hu, h0, map_zero, zero_mul, mul_zero]`. Rewrite using `[h0, map_zero]`. Conclude with `(Units.mul_left_eq_zero _).1 this.symm`. Conclude with `this ▸ hw`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secCoord_of_ratio {X X' : Scheme.{0}} {M : LB X} {M' : LB X'} (hM' : M'.IsLB) {σ : Type} {th : σ → M.Sec}
     {th' : σ → M'.Sec} {B : Type} [Field B] {x : Sp B ⟶ X} {x' : Sp B ⟶ X'} (p : Sp B) {j : M.ι} {j' : M'.ι}
@@ -56,7 +56,7 @@ variable {o : Type} [CommRing o] {g N' : ℕ} {J : Type} {b : TBase o (N' ^ 2)} 
   {s' : S' ⟶ Sp o}
 
 /- English proof (translation)
-The claim follows from `secCoord_of_ratio (LB.isLB_linComb hL' _ _) p (hI.mem (fun _ : Fin 1 => (snd T A).left) x) (hI'.mem (fun _ : Fin 1 => (snd T' A').left) x') c h H`.
+A detailed English derivation is pending.
 -/
 theorem secCoord_of_sv {A : Over S} [GrpObj A] {A' : Over S'} [GrpObj A'] {L : LB A.left} {L' : LB A'.left}
     (hL' : L'.IsLB) {a a' : ℤ} {T : Over S} {T' : Over S'} {σ : Type} {th : σ → LB.Sec (LPow A L a T)}
@@ -69,9 +69,9 @@ theorem secCoord_of_sv {A : Over S} [GrpObj A] {A' : Over S'} [GrpObj A'] {L : L
     (hI'.mem (fun _ : Fin 1 => (snd T' A').left) x') c h H
 
 /- English proof (translation)
-Use `t.ab.comm` as an intermediate fact. Establish `cm : ∀ x y : Out.baseOver S ⟶ t.A, Commute x y` using `fun x y => _root_.mul_comm x y`. Use `List.prod_induction (fun y => y ^ (N' ^ 2) = 1) (fun x y hx hy => ?_) (one_pow _) fun y hy => ?_` and prove the remaining obligations. Rewrite using `[(cm x y).mul_pow, hx, hy, _root_.mul_one]`. Take `⟨i, rfl⟩` from `(List.mem_ofFn' _ _).1 hy`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← pow_mul, Nat.mul_comm, pow_mul, t.torsion, one_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lab_pow (t : TObj g (N' ^ 2) J b s) (a : Ix g (N' ^ 2)) : t.lab a ^ (N' ^ 2) = 1 := by
   have := t.ab.comm
@@ -82,9 +82,9 @@ theorem lab_pow (t : TObj g (N' ^ 2) J b s) (a : Ix g (N' ^ 2)) : t.lab a ^ (N' 
     rw [← pow_mul, Nat.mul_comm, pow_mul, t.torsion, one_pow]
 
 /- English proof (translation)
-Establish `hτ : f ≫ (baseOver S).hom = (baseOver S').hom ≫ f` using `(Category.comp_id _).trans (Category.id_comp _).symm`. Use `(ThetaPtMove.over_iff h.1 (T := baseOver S') (T₀ := baseOver S) f hτ _ _).2 ?_` and prove the remaining obligations. Simplify using `only [TObj.lab, linComb, map_list_prod, List.map_ofFn]`. Use `congr 2`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Function.comp_apply, map_pow]`. Use `congr 1`. Conclude with `(ThetaPtMove.over_iff h.1 (T := baseOver S') (T₀ := baseOver S) f hτ _ _).1 (h.2.2.1 i).symm`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem MapBy.lab {u : TObj g (N' ^ 2) J b s'} {t : TObj g (N' ^ 2) J b s} {f : S' ⟶ S} {φ : u.A.left ⟶ t.A.left}
     (h : MapBy u t f φ) (a : Ix g (N' ^ 2)) : f ≫ (t.lab a).left = (u.lab a).left ≫ φ := by
@@ -98,15 +98,15 @@ theorem MapBy.lab {u : TObj g (N' ^ 2) J b s'} {t : TObj g (N' ^ 2) J b s} {f : 
   exact (ThetaPtMove.over_iff h.1 (T := baseOver S') (T₀ := baseOver S) f hτ _ _).1 (h.2.2.1 i).symm
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `h.2.1`. Establish `hp` using `h.1`. Establish `hL₀` using `t.isLB`. Establish `hL₁` using `u.isLB`. Use `u.ab.comm` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨th₀, s₀, α₀, U₀, h₁, h₂, h₄, h₅, h₆⟩` from `H`. Take `⟨th, hth⟩` from `ThetaPtMove.exists_secRel hp τ hτ hw hL₀ hL₁ th₀`. Take `⟨s₁, hs⟩` from `ThetaPtMove.exists_secRel hp τ hτ hw hL₀ hL₁ s₀`. Use `choose σ hσ using fun i => ThetaPtMove.exists_secRel hp τ hτ hw hL₀ hL₁ (σ₀ i)`. Take `⟨α, hα, vα⟩` from `ThetaPtMove.exists_genThrough₂ hp τ hτ hw hL₀ hL₁ (ThetaPtMove.psi_pow hp τ hτ m) α₀ h₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx : ∀ a, τ ≫ ((Over.homMk T₀.hom (by simp) : T₀ ⟶ Out.baseOver S) ≫ t.lab a).left = ((Over.homMk T.hom (by simp) : T ⟶ Out.baseOver S') ≫ u.lab a).left ≫ φ` using `fun a => by show τ ≫ T₀.hom ≫ _ = (T.hom ≫ _) ≫ φ`. Rewrite using `[← Category.assoc, hτ, Category.assoc, h.lab, Category.assoc]`. Establish `hk : ∀ a, (((Over.homMk T.hom (by simp) : T ⟶ Out.baseOver S') ≫ u.lab a) ^ ((N' / m) ^ 2)) ^ (m ^ 2) = 1` using `fun a => by`. Rewrite using `[← pow_mul, ← mul_pow, Nat.div_mul_cancel hm, ← MonObj.comp_pow, lab_pow, MonObj.comp_one]`. Use `choose U hU hU' using fun i => ThetaPtMove.symLift_move hp τ hτ hw hL₀ hL₁ (ThetaPtMove.over_pow hp τ hτ (hx i) _) (hk i) (h₅ i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hg : IsGenSec t.A t.L 1 (VVRank.pullS t.A 1 (𝟙 T₀) th₀)` using `ThetaCoord.isGenSec_pullS hL₀ _ (𝟙 T₀) (Category.comp_id _) h₁`. Use `⟨σ, ⟨th, s₁, α, U, ThetaPtMove.isGenSec_move hp τ hτ hw hL₀ hL₁ τ (𝟙 T₀) (Category.comp_id _) hth hg, hα, ThetaPtMove.isTwistPull_move hp τ hτ hL₀ hL₁ (ThetaPtMove.psi_pow hp τ hτ m) hα vα hth hs h₄, hU, fun i => hU' i _ _ _ _ hs (hσ i) (h₆ i)⟩, fun B _ y y₀ e₁ e₂ v => ?_⟩` and prove the remaining obligations. Take `rfl : y₀ = y ≫ ThetaPtMove.psi hp τ hτ` from `ThetaPtMove.psi_ext (by rw [e₁, Category.assoc, ThetaPtMove.psi_fst']) (by rw [e₂, Category.assoc, ThetaPtMove.psi_snd'])`. Set `p : Sp B` to `(default : PrimeSpectrum B)`. Take `⟨I, hI⟩` from `ConstFam.exists_good' hL₀ p`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨I', hI'⟩` from `ConstFam.exists_good' hL₁ p`. Conclude with `⟨secCoord_of_sv hL₀ p hI' hI _ fun i => hσ i _ y p I I' hI hI', secCoord_of_sv hL₁ p hI hI' _ fun i => (Units.eq_inv_mul_iff_mul_eq _).2 (hσ i _ y p I I' hI hI').symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem emb_move {u : TObj g (N' ^ 2) J b s'} {t : TObj g (N' ^ 2) J b s} {f : S' ⟶ S} {φ : u.A.left ⟶ t.A.left}
     (h : MapBy u t f φ) {m : ℕ} (hm : m ∣ N') {T : Over S'} {T₀ : Over S} (τ : T.left ⟶ T₀.left) [IsIso τ]
@@ -147,15 +147,15 @@ theorem emb_move {u : TObj g (N' ^ 2) J b s'} {t : TObj g (N' ^ 2) J b s} {f : S
     secCoord_of_sv hL₁ p hI hI' _ fun i => (Units.eq_inv_mul_iff_mul_eq _).2 (hσ i _ y p I I' hI hI').symm⟩
 
 /- English proof (translation)
-Take `⟨th, s₁, α, U, h₁, h₂, h₄, h₅, h₆⟩` from `H`. Take `⟨th', s₁', α', U', h₁', h₂', h₄', h₅', h₆'⟩` from `H'`. Establish `hL` using `t.isLB`. Take `⟨c, hc⟩` from `ThetaCoord.exists_unit_of_isGenSec h₁' h₁`. Set `p : Sp B` to `(default : PrimeSpectrum B)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨I, hI⟩` from `ConstFam.exists_good' hL p`. Use `secCoord_of_sv hL p hI hI (val α' y p I * (val α y p I)⁻¹ * gm (y ≫ (fst T t.A).left) p ⊤ c) (fun a => ?_) h` and prove the remaining obligations. Establish `e₀ : (U' a).pt = (U a).pt` using `(h₅' a).pt_eq.trans (h₅ a).pt_eq.symm`. Establish `e₁` using `val_corr hI (SymLiftOdd.symLift_unique hG t.ab hL hm.pow _ _ (h₅' a) (h₅ a)) y`. Establish `f₁ : (y ≫ (translT t.A (U a).pt).left) ≫ (fst T t.A).left = y ≫ (fst T t.A).left`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, ← Over.comp_left, translT, lift_fst]`. Establish `f₂ : ((y ≫ (translT t.A (U a).pt).left) ≫ (mulT t.A T m).left) ≫ (fst T t.A).left = y ≫ (fst T t.A).left`. Rewrite using `[Category.assoc, ← Over.comp_left, mulT, lift_fst, f₁]`. Establish `e₂` using `CommPairing.val_div_eq hL (fst T t.A).left (CommPairing.surj_fst hG t.ab T) h₂' h₂ _ _ f₁ p I hI`. Establish `e₃` using `ThetaAct.sv_smul (c : Γ(T.left, ⊤)) (SecM.ofSec t.A th) ((y ≫ (translT t.A (U a).pt).left) ≫ (mulT t.A T m).left) p hI`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e₃` using `[← hc, f₂, gs_unit _ _ ⊤ trivial]`. Rewrite using `[VVRank.sv_of_isTwistPull t.A (h₆ a) y p hI, VVRank.sv_of_isTwistPull t.A (h₆' a) y p hI, VVRank.sv_of_isTwistPull t.A h₄ _ p hI, VVRank.sv_of_isTwistPull t.A h₄' _ p hI, ← e₂]`. Use `erw [e₁]`. Rewrite using `[e₀]`. Rewrite using `[show VVRank.sv t.A th' _ p I = _ * VVRank.sv t.A th _ p I from e₃]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Units.val_mul]`. Establish `key : ∀ {Q : Type} [CommRing Q] (a a' : Qˣ) (x y z : Q), x * (a' * (y * z)) = a' * ↑a⁻¹ * y * (x * (a * z))` using `fun a a' x y z => by linear_combination (-(x * a' * y * z)) * a.inv_mul`. Conclude with `key _ _ _ _ _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem emb_unique (hG : GlobalFnsSt) (t : TObj g (N' ^ 2) J b s) {m : ℕ} (hm : Odd m) {T : Over S}
     [Subsingleton T.left] {σ σ'} (H : t.Emb m T σ) (H' : t.Emb m T σ') {B : Type} [Field B]

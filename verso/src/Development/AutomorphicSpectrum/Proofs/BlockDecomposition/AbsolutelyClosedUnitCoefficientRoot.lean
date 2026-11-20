@@ -8,13 +8,11 @@ namespace GlobalTheory.CompanionTheory.UnitRoot
 open Polynomial
 
 /- English proof (translation)
-Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty => intro k hk`. Simplify using `at hk`. Consider the case `cons a s ih`. Introduce `k hk`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ha : a ∈ m` using `h a (Multiset.mem_cons_self a s)`. Establish `ih'` using `ih fun b hb => h b (Multiset.mem_cons_of_mem hb)`. Rewrite using `[Multiset.map_cons, Multiset.prod_cons, sub_mul]`. Rewrite `hk` using `[Multiset.card_cons]`. Consider the cases of `k with`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero`. Simplify using `only [coeff_sub, coeff_X_mul_zero, coeff_C_mul, zero_sub]`. Conclude with `m.neg_mem (m.mul_mem_right _ ha)`. Consider the case `succ k`. Simplify using `only [coeff_sub, coeff_X_mul, coeff_C_mul]`.
-
-Conclude with `m.sub_mem (ih' k (by omega)) (m.mul_mem_right _ ha)`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coeff_prod_mem {S : Type} [CommRing S] (m : Ideal S) (s : Multiset S)
     (h : ∀ b ∈ s, b ∈ m) :
@@ -36,21 +34,19 @@ theorem coeff_prod_mem {S : Type} [CommRing S] (m : Ideal S) (s : Multiset S)
       exact m.sub_mem (ih' k (by omega)) (m.mul_mem_right _ ha)
 
 /- English proof (translation)
-Introduce `S _ hA hL Q i h0 hi hu`. Break down `subsingleton_or_nontrivial S with hs | hn` into its components or cases. Conclude with `⟨0, Subsingleton.elim _ _⟩`. Use `haveI : IsLocalRing S := IsLocalRing.of_isUnit_or_isUnit_of_isUnit_add hL`. Establish `htd : Q.natTrailingDegree = 0` using `Nat.le_zero.mp (natTrailingDegree_le_of_ne_zero (by rw [h0]; exact one_ne_zero))`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmon : Q.reverse.Monic`. Rewrite using `[Monic, reverse_leadingCoeff, trailingCoeff, htd, h0]`. Establish `hdeg : Q.reverse.natDegree = Q.natDegree`. Rewrite using `[reverse_natDegree, htd]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hid : i ≤ Q.natDegree` using `le_natDegree_of_ne_zero hu.ne_zero`. Take `⟨s, hs⟩` from `GlobalTheory.T.absolutely_closed_polynomial_splits hA _ hmon`. Establish `hcard : Multiset.card s = Q.natDegree`. Rewrite using `[← hdeg, hs, natDegree_multiset_prod_X_sub_C_eq_card]`. Establish `hcoeff : Q.reverse.coeff (Q.natDegree - i) = Q.coeff i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coeff_reverse, revAt_le (Nat.sub_le _ _)]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Distinguish the cases in `hex : ∃ b ∈ s, IsUnit b`. Take `⟨b, hbs, hb⟩` from `hex`.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hroot : Q.reverse.eval b = 0`. Establish `hdvd : (X : S[X]) - C b ∣ Q.reverse`. Rewrite using `[hs]`. Conclude with `Multiset.dvd_prod (Multiset.mem_map_of_mem _ hbs)`. Conclude with `dvd_iff_isRoot.mp hdvd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure.
 
-Take `⟨u, rfl⟩` from `hb`. Use `⟨((u⁻¹ : Sˣ) : S), ?_⟩` and prove the remaining obligations. Use `letI : Invertible ((u⁻¹ : Sˣ) : S) := (u⁻¹).invertible`. Establish `key` using `eval₂_reverse_mul_pow (RingHom.id S) ((u⁻¹ : Sˣ) : S) Q`. Establish `hinv : ⅟((u⁻¹ : Sˣ) : S) = (u : S)` using `by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Rewrite `key` using `[hinv, eval₂_id, eval₂_id, hroot, zero_mul]`. Conclude with `key.symm`. It suffices to derive a contradiction. Establish `hall : ∀ b ∈ s, b ∈ IsLocalRing.maximalIdeal S` using `fun b hb => (IsLocalRing.mem_maximalIdeal b).mpr fun hbu => hex ⟨b, hb, hbu⟩`. Establish `hmem` using `coeff_prod_mem (IsLocalRing.maximalIdeal S) s hall (Q.natDegree - i) (by omega)`.
-
-Rewrite `hmem` using `[← hs, hcoeff]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).mp hmem hu`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_root : ∀ {S : Type} [CommRing S] , Aic S →
     (∀ a b : S, IsUnit (a + b) → IsUnit a ∨ IsUnit b) →

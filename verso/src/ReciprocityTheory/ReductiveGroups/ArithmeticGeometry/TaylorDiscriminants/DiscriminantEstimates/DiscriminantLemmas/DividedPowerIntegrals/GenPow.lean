@@ -8,9 +8,9 @@ section
 variable {K I J : Type} [CommRing K] [Fintype I] [Fintype J]
 
 /- English proof (translation)
-Establish `hc : ∀ (c d : I ⊕ J) (n : I ⊕ J), pderiv c (Pi.single (M` using `fun _ => MvPolynomial (I ⊕ J) K) d 1 n) = 0 := by`. Introduce `c d n`. Rewrite using `[Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Proceed by induction on `p using MvPolynomial.induction_on with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Proceed by induction.
 
-Consider the case `C x => simp`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p n hp`. Simplify using `only [Derivation.leibniz, pderiv_X, smul_eq_mul, map_add, hc, hp, mul_zero, zero_add]`. Expand and normalize the polynomial expressions, which then agree.
+Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pderiv_comm (a b : I ⊕ J) (p : MvPolynomial (I ⊕ J) K) :
     pderiv a (pderiv b p) = pderiv b (pderiv a p) := by
@@ -31,14 +31,14 @@ noncomputable abbrev pd (a : I ⊕ J) : Module.End K (MvPolynomial (I ⊕ J) K) 
   (pderiv a).toLinearMap
 
 /- English proof (translation)
-Simplify using `[gdelta]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem gdelta_apply' (κ : I → J → K) (R : MvPolynomial (I ⊕ J) K) :
     gdelta κ R = ∑ i, ∑ j, κ i j • pderiv (Sum.inl i) (pderiv (Sum.inr j) R) := by
   simp [gdelta]
 
 /- English proof (translation)
-Use `LinearMap.ext fun R => ?_` and prove the remaining obligations. Use `show gdelta κ (pderiv c R) = pderiv c (gdelta κ R)`. Simplify using `only [gdelta_apply', map_sum, map_smul, Derivation.map_smul]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[pderiv_comm c (Sum.inl i), pderiv_comm c (Sum.inr j)]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem commute_gdelta_pd (κ : I → J → K) (c : I ⊕ J) : Commute (gdelta κ) (pd c) := by
   refine LinearMap.ext fun R => ?_
@@ -48,28 +48,28 @@ theorem commute_gdelta_pd (κ : I → J → K) (c : I ⊕ J) : Commute (gdelta �
   rw [pderiv_comm c (Sum.inl i), pderiv_comm c (Sum.inr j)]
 
 /- English proof (translation)
-Simplify using `[dL]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem dL_apply' (κ : I → J → K) (i : I) (R : MvPolynomial (I ⊕ J) K) :
     dL κ i R = ∑ j, κ i j • pderiv (Sum.inr j) R := by
   simp [dL]
 
 /- English proof (translation)
-Simplify using `[dR]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem dR_apply' (κ : I → J → K) (j : J) (R : MvPolynomial (I ⊕ J) K) :
     dR κ j R = ∑ i, κ i j • pderiv (Sum.inl i) R := by
   simp [dR]
 
 /- English proof (translation)
-The claim follows from `LinearMap.congr_fun (commute_gdelta_pd κ c).eq S`.
+A detailed English derivation is pending.
 -/
 private theorem gdelta_pderiv_comm (κ : I → J → K) (c : I ⊕ J) (S : MvPolynomial (I ⊕ J) K) :
     gdelta κ (pderiv c S) = pderiv c (gdelta κ S) :=
   LinearMap.congr_fun (commute_gdelta_pd κ c).eq S
 
 /- English proof (translation)
-Use `LinearMap.ext fun S => ?_` and prove the remaining obligations. Use `show gdelta κ (dL κ i S) = dL κ i (gdelta κ S)`. Rewrite using `[dL_apply', dL_apply', map_sum]`. Simplify using `only [map_smul, gdelta_pderiv_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem commute_gdelta_dL (κ : I → J → K) (i : I) : Commute (gdelta κ) (dL κ i) := by
   refine LinearMap.ext fun S => ?_
@@ -78,7 +78,7 @@ theorem commute_gdelta_dL (κ : I → J → K) (i : I) : Commute (gdelta κ) (dL
   simp only [map_smul, gdelta_pderiv_comm]
 
 /- English proof (translation)
-Use `LinearMap.ext fun S => ?_` and prove the remaining obligations. Use `show gdelta κ (dR κ j S) = dR κ j (gdelta κ S)`. Rewrite using `[dR_apply', dR_apply', map_sum]`. Simplify using `only [map_smul, gdelta_pderiv_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem commute_gdelta_dR (κ : I → J → K) (j : J) : Commute (gdelta κ) (dR κ j) := by
   refine LinearMap.ext fun S => ?_
@@ -87,19 +87,19 @@ theorem commute_gdelta_dR (κ : I → J → K) (j : J) : Commute (gdelta κ) (dR
   simp only [map_smul, gdelta_pderiv_comm]
 
 /- English proof (translation)
-The claim follows from `LinearMap.congr_fun (commute_gdelta_dL κ i).eq S`.
+A detailed English derivation is pending.
 -/
 theorem gdelta_dL_apply (κ : I → J → K) (i : I) (S : MvPolynomial (I ⊕ J) K) :
     gdelta κ (dL κ i S) = dL κ i (gdelta κ S) := LinearMap.congr_fun (commute_gdelta_dL κ i).eq S
 
 /- English proof (translation)
-The claim follows from `LinearMap.congr_fun (commute_gdelta_dR κ j).eq S`.
+A detailed English derivation is pending.
 -/
 theorem gdelta_dR_apply (κ : I → J → K) (j : J) (S : MvPolynomial (I ⊕ J) K) :
     gdelta κ (dR κ j S) = dR κ j (gdelta κ S) := LinearMap.congr_fun (commute_gdelta_dR κ j).eq S
 
 /- English proof (translation)
-Rewrite using `[pow_succ']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gdelta_pow_succ_apply (κ : I → J → K) (m : ℕ) (S : MvPolynomial (I ⊕ J) K) :
     (gdelta κ ^ (m + 1)) S = gdelta κ ((gdelta κ ^ m) S) := by
@@ -107,34 +107,34 @@ theorem gdelta_pow_succ_apply (κ : I → J → K) (m : ℕ) (S : MvPolynomial (
   rfl
 
 /- English proof (translation)
-Conclude with `gdelta_apply' κ R`.
+A detailed English derivation is pending.
 -/
 theorem gdelta_apply (κ : I → J → K) (R : MvPolynomial (I ⊕ J) K) :
     gdelta κ R = ∑ i, ∑ j, κ i j • pderiv (Sum.inl i) (pderiv (Sum.inr j) R) := by
   exact gdelta_apply' κ R
 
 /- English proof (translation)
-Conclude with `dL_apply' κ i R`.
+A detailed English derivation is pending.
 -/
 theorem dL_apply (κ : I → J → K) (i : I) (R : MvPolynomial (I ⊕ J) K) :
     dL κ i R = ∑ j, κ i j • pderiv (Sum.inr j) R := by
   exact dL_apply' κ i R
 
 /- English proof (translation)
-Conclude with `dR_apply' κ j R`.
+A detailed English derivation is pending.
 -/
 theorem dR_apply (κ : I → J → K) (j : J) (R : MvPolynomial (I ⊕ J) K) :
     dR κ j R = ∑ i, κ i j • pderiv (Sum.inl i) R := by
   exact dR_apply' κ j R
 
 /- English proof (translation)
-Establish `h1 : ∀ j, pderiv (Sum.inr j) (X (Sum.inl i) * R) = X (Sum.inl i) * pderiv (Sum.inr j) R`. Introduce `j`. Rewrite using `[Derivation.leibniz, pderiv_X_of_ne Sum.inl_ne_inr, smul_zero, add_zero, smul_eq_mul]`. Establish `h2 : ∀ (i' : I) (S : MvPolynomial (I ⊕ J) K), pderiv (Sum.inl i') (X (Sum.inl i) * S) = X (Sum.inl i) * pderiv (Sum.inl i') S + if i' = i then S else 0`. Introduce `i' S`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Derivation.leibniz]`. Simplify using `only [smul_eq_mul]`. Distinguish the cases in `h : i' = i`. Substitute `h` using the available equality. Rewrite using `[pderiv_X_self, mul_one, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pderiv_X_of_ne (fun e => h (Sum.inl_injective e).symm), mul_zero, add_zero, if_neg h, add_zero]`. Establish `hΔ : ∀ S : MvPolynomial (I ⊕ J) K, gdelta κ S = ∑ j, ∑ i', κ i' j • pderiv (Sum.inl i') (pderiv (Sum.inr j) S)`. Introduce `S`. Rewrite using `[gdelta_apply, Finset.sum_comm]`. Rewrite using `[hΔ, hΔ, dL_apply, Finset.mul_sum, ← Finset.sum_add_distrib]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[h1, Finset.mul_sum]`. Simplify using `only [h2, smul_add, Finset.sum_add_distrib, mul_smul_comm, smul_ite, smul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gdelta_X_inl (κ : I → J → K) (i : I) (R : MvPolynomial (I ⊕ J) K) :
     gdelta κ (X (Sum.inl i) * R) = X (Sum.inl i) * gdelta κ R + dL κ i R := by
@@ -162,13 +162,13 @@ theorem gdelta_X_inl (κ : I → J → K) (i : I) (R : MvPolynomial (I ⊕ J) K)
     Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Establish `h1 : ∀ (i' : I) (S : MvPolynomial (I ⊕ J) K), pderiv (Sum.inl i') (X (Sum.inr j) * S) = X (Sum.inr j) * pderiv (Sum.inl i') S`. Introduce `i' S`. Rewrite using `[Derivation.leibniz, pderiv_X_of_ne Sum.inr_ne_inl, smul_zero, add_zero, smul_eq_mul]`. Establish `h2 : ∀ (j' : J) (S : MvPolynomial (I ⊕ J) K), pderiv (Sum.inr j') (X (Sum.inr j) * S) = X (Sum.inr j) * pderiv (Sum.inr j') S + if j' = j then S else 0`. Introduce `j' S`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Derivation.leibniz]`. Simplify using `only [smul_eq_mul]`. Distinguish the cases in `h : j' = j`. Substitute `h` using the available equality. Rewrite using `[pderiv_X_self, mul_one, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pderiv_X_of_ne (fun e => h (Sum.inr_injective e).symm), mul_zero, add_zero, if_neg h, add_zero]`. Establish `h3 : ∀ (i' : I) (j' : J), pderiv (Sum.inl i') (pderiv (Sum.inr j') (X (Sum.inr j) * R)) = X (Sum.inr j) * pderiv (Sum.inl i') (pderiv (Sum.inr j') R) + if j' = j then pderiv (Sum.inl i') R else 0`. Introduce `i' j'`. Rewrite using `[h2, map_add, h1]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[gdelta_apply, gdelta_apply, dR_apply, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i' _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Simplify using `only [h3, smul_add, Finset.sum_add_distrib, mul_smul_comm, smul_ite, smul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gdelta_X_inr (κ : I → J → K) (j : J) (R : MvPolynomial (I ⊕ J) K) :
     gdelta κ (X (Sum.inr j) * R) = X (Sum.inr j) * gdelta κ R + dR κ j R := by
@@ -201,9 +201,9 @@ theorem gdelta_X_inr (κ : I → J → K) (j : J) (R : MvPolynomial (I ⊕ J) K)
 end
 
 /- English proof (translation)
-Unfold `PowXL`. Introduce `K I J _ _ _ κ i R n`. Proceed by induction on `n with`. Consider the case `zero => simp [gdelta_X_inl]`. Consider the case `succ n ih`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[gdelta_pow_succ_apply κ (n + 1), ih, map_add, map_nsmul, gdelta_X_inl, gdelta_dL_apply, ← gdelta_pow_succ_apply, ← gdelta_pow_succ_apply, add_assoc, ← succ_nsmul']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem powXL_holds : PowXL := by
   unfold PowXL
@@ -215,9 +215,9 @@ theorem powXL_holds : PowXL := by
       ← gdelta_pow_succ_apply, ← gdelta_pow_succ_apply, add_assoc, ← succ_nsmul']
 
 /- English proof (translation)
-Unfold `PowXR`. Introduce `K I J _ _ _ κ j R n`. Proceed by induction on `n with`. Consider the case `zero => simp [gdelta_X_inr]`. Consider the case `succ n ih`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[gdelta_pow_succ_apply κ (n + 1), ih, map_add, map_nsmul, gdelta_X_inr, gdelta_dR_apply, ← gdelta_pow_succ_apply, ← gdelta_pow_succ_apply, add_assoc, ← succ_nsmul']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem powXR_holds : PowXR := by
   unfold PowXR

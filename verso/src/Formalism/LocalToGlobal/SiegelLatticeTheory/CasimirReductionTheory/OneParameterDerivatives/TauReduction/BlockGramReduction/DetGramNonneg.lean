@@ -17,7 +17,7 @@ def cmat (x : I.GA) (v : InfinitePlace I.F) {j : ℕ} (b : Fin j → Fin I.n →
   Matrix.of fun i a => coordV I x v (b a) i
 
 /- English proof (translation)
-Use extensionality with `a c`. Simplify using `[gramV, cmat, Matrix.mul_apply, Matrix.conjTranspose_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gramV_eq (x : I.GA) (v : InfinitePlace I.F) {j : ℕ} (b : Fin j → Fin I.n → I.E) :
     gramV I x v b = (cmat I x v b)ᴴ * cmat I x v b := by
@@ -35,7 +35,7 @@ def subOfEq {x x' : I.GA} (h : latSet I x' = latSet I x) (s : Sub I x) : Sub I x
   B_span := s.B_span
 
 /- English proof (translation)
-Rewrite using `[gramV_eq]`. Use `open scoped ComplexOrder in`. Conclude with `(Complex.nonneg_iff.mp (Matrix.posSemidef_conjTranspose_mul_self _).det_nonneg).1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_gram_nonneg (h5 : GramDistortionBound) (x : I.GA) (v : InfinitePlace I.F) {j : ℕ} (hj : 1 ≤ j)
     (b : Fin j → Fin I.n → I.E) : 0 ≤ (gramV I x v b).det.re := by
@@ -44,33 +44,31 @@ theorem det_gram_nonneg (h5 : GramDistortionBound) (x : I.GA) (v : InfinitePlace
   exact (Complex.nonneg_iff.mp (Matrix.posSemidef_conjTranspose_mul_self _).det_nonneg).1
 
 /- English proof (translation)
-Unfold `ht`. Conclude with `div_nonneg (Finset.prod_nonneg fun v _ => det_gram_nonneg I h5 x v s.j_pos s.b) (Nat.cast_nonneg _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ht_nonneg (h5 : GramDistortionBound) {x : I.GA} (s : Sub I x) : 0 ≤ ht I s := by
   unfold ht
   exact div_nonneg (Finset.prod_nonneg fun v _ => det_gram_nonneg I h5 x v s.j_pos s.b) (Nat.cast_nonneg _)
 
 /- English proof (translation)
-Unfold `Size.size`. Conclude with `Real.rpow_nonneg (ht_nonneg I h5 s) _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem size_nonneg (h5 : GramDistortionBound) {x : I.GA} (s : Sub I x) : 0 ≤ size I s := by
   unfold Size.size
   exact Real.rpow_nonneg (ht_nonneg I h5 s) _
 
 /- English proof (translation)
-Establish `hc0 : 0 ≤ c` using `le_trans zero_le_one hc`. Establish `hcm : ∀ v, cmat I x' v s.b = Y v * cmat I x v s.b`. Introduce `v`. Use extensionality with `i a`. Simplify using `[cmat, hY, Matrix.mulVec, Matrix.mul_apply, dotProduct]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hdet : ∀ v, (gramV I x' v s.b).det.re ≤ c ^ s.j * (gramV I x v s.b).det.re`. Introduce `v`. Rewrite using `[gramV_eq, gramV_eq, hcm]`. Use `(h5 I.n s.j (Y v) (cmat I x v s.b) 0 c le_rfl (fun w => ⟨?_, hb v w⟩)).2` and prove the remaining obligations. Rewrite using `[zero_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_nonneg fun _ _ => sq_nonneg _`. Establish `hht : ht I (subOfEq I hlat s) ≤ (c ^ s.j) ^ Fintype.card (InfinitePlace I.F) * ht I s`. Unfold `ht`. Rewrite using `[mul_div_assoc']`. Use `div_le_div_of_nonneg_right ?_ (Nat.cast_nonneg _)` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ]`. Establish `he : 0 ≤ 1 / (2 * (I.f : ℝ) * (s.j : ℝ))` using `by positivity`. Establish `hexp : ((s.j * Fintype.card (InfinitePlace I.F) : ℕ) : ℝ) * (1 / (2 * (I.f : ℝ) * (s.j : ℝ))) ≤ (Fintype.card (InfinitePlace I.F) : ℝ)`. Establish `hj : (1 : ℝ) ≤ s.j` using `by exact_mod_cast s.j_pos`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Nat.eq_zero_or_pos I.f with hf | hf` into its components or cases. Simplify using `[hf]`. Establish `hf' : (1 : ℝ) ≤ I.f` using `by exact_mod_cast hf`. Rewrite using `[Nat.cast_mul, mul_one_div, div_le_iff₀ (by positivity)]`. Establish `hP : (0 : ℝ) ≤ Fintype.card (InfinitePlace I.F)` using `Nat.cast_nonneg _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[mul_nonneg (mul_nonneg hP (by linarith : (0 : ℝ) ≤ s.j)) (by linarith : (0 : ℝ) ≤ 2 * (I.f : ℝ) - 1)]`. Unfold `Size.size`. Use `show ht I (subOfEq I hlat s) ^ (1 / (2 * (I.f : ℝ) * (s.j : ℝ))) ≤ _`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_right ?_ (Real.rpow_nonneg (ht_nonneg I h5 s) _)` and prove the remaining obligations.
-
-Rewrite using `[← pow_mul, ← Real.rpow_natCast, ← Real.rpow_mul hc0, ← Real.rpow_natCast c]`. Conclude with `Real.rpow_le_rpow_of_exponent_le hc hexp`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem size_subOfEq_le (h5 : GramDistortionBound) {x x' : I.GA} (hlat : latSet I x' = latSet I x)
     (Y : InfinitePlace I.F → Matrix (Fin I.n) (Fin I.n) ℂ)

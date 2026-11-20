@@ -113,30 +113,30 @@ section Witnesses
 variable (K : Type u) [Field K] [NumberField K]
 
 /- English proof (translation)
-The claim follows from `(HermitianBundle.standard K 2).sub (standardFlag K 1)`.
+A detailed English derivation is pending.
 -/
 example : HermitianBundle K := (HermitianBundle.standard K 2).sub (standardFlag K 1)
 /- English proof (translation)
-The claim follows from `(HermitianBundle.standard K 2).quot (standardFlag K 1) (standardFlag_saturated 1)`.
+A detailed English derivation is pending.
 -/
 example : HermitianBundle K :=
   (HermitianBundle.standard K 2).quot (standardFlag K 1) (standardFlag_saturated 1)
 /- English proof (translation)
-The claim follows from `(HermitianBundle.standard ℚ 2).quot (standardFlag ℚ 1) (standardFlag_saturated 1)`.
+A detailed English derivation is pending.
 -/
 example : HermitianBundle ℚ := (HermitianBundle.standard ℚ 2).quot (standardFlag ℚ 1)
   (standardFlag_saturated 1)
 /- English proof (translation)
-The claim follows from `(HermitianBundle.standard GaussianField 2).quot (standardFlag GaussianField 1) (standardFlag_saturated 1)`.
+A detailed English derivation is pending.
 -/
 example : HermitianBundle GaussianField := (HermitianBundle.standard GaussianField 2).quot
   (standardFlag GaussianField 1) (standardFlag_saturated 1)
 /- English proof (translation)
-The claim follows from `(HermitianBundle.standard ℚ 2).baseChange GaussianField`.
+A detailed English derivation is pending.
 -/
 example : HermitianBundle GaussianField := (HermitianBundle.standard ℚ 2).baseChange GaussianField
 /- English proof (translation)
-The claim follows from `(HermitianNorms.standard GaussianField 2).bundle (FullLattice.standard GaussianField 2)`.
+A detailed English derivation is pending.
 -/
 example : HermitianBundle GaussianField :=
   (HermitianNorms.standard GaussianField 2).bundle (FullLattice.standard GaussianField 2)
@@ -145,7 +145,7 @@ def doubled : Submodule (𝓞 K) (HermitianBundle.standard K 2).carrier :=
   LinearMap.range ((2 : 𝓞 K) • LinearMap.id)
 
 /- English proof (translation)
-The claim follows from `LinearMap.finrank_range_of_inj (by intro x y hxy simp only [LinearMap.smul_apply, LinearMap.id_apply] at hxy exact smul_right_injective (Fin 2 → 𝓞 K) (two_ne_zero (α := 𝓞 K)) hxy)`.
+A detailed English derivation is pending.
 -/
 theorem Sublattice.witness :
     Module.finrank (𝓞 K) (doubled K) =
@@ -156,16 +156,16 @@ theorem Sublattice.witness :
     exact smul_right_injective (Fin 2 → 𝓞 K) (two_ne_zero (α := 𝓞 K)) hxy)
 
 /- English proof (translation)
-The claim follows from `Sublattice.witness ℚ`.
+A detailed English derivation is pending.
 -/
 example := Sublattice.witness ℚ
 /- English proof (translation)
-The claim follows from `Sublattice.witness GaussianField`.
+A detailed English derivation is pending.
 -/
 example := Sublattice.witness GaussianField
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun v ↦ localLattice_isLocalLattice v _, Set.finite_empty.subset fun _ hv ↦ hv rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem LatticeOfLocalisations.witness :
     (∀ v, IsLocalLattice v (localLattice v (FullLattice.standard K 2).carrier)) ∧
@@ -174,16 +174,16 @@ theorem LatticeOfLocalisations.witness :
   ⟨fun v ↦ localLattice_isLocalLattice v _, Set.finite_empty.subset fun _ hv ↦ hv rfl⟩
 
 /- English proof (translation)
-The claim follows from `LatticeOfLocalisations.witness ℚ`.
+A detailed English derivation is pending.
 -/
 example := LatticeOfLocalisations.witness ℚ
 /- English proof (translation)
-The claim follows from `LatticeOfLocalisations.witness GaussianField`.
+A detailed English derivation is pending.
 -/
 example := LatticeOfLocalisations.witness GaussianField
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨swapAt_finite v₀, localLattice_swapAt v₀⟩`.
+Supply the required witnesses or components.
 -/
 theorem LocalChange.witness (v₀ : HeightOneSpectrum (𝓞 K)) :
     {v | swapAt v₀ v ≠ 1}.Finite ∧
@@ -192,20 +192,20 @@ theorem LocalChange.witness (v₀ : HeightOneSpectrum (𝓞 K)) :
   ⟨swapAt_finite v₀, localLattice_swapAt v₀⟩
 
 /- English proof (translation)
-The claim follows from `LocalChange.witness ℚ (nonempty_heightOneSpectrum (K := ℚ)).some`.
+A detailed English derivation is pending.
 -/
 example := LocalChange.witness ℚ (nonempty_heightOneSpectrum (K := ℚ)).some
 /- English proof (translation)
-The claim follows from `LocalChange.witness GaussianField (nonempty_heightOneSpectrum (K := GaussianField)).some`.
+A detailed English derivation is pending.
 -/
 example := LocalChange.witness GaussianField (nonempty_heightOneSpectrum (K := GaussianField)).some
 
 variable {K} in
 
 /- English proof (translation)
-Establish `h1` using `norm_sq_eq_re_inner (𝕜 := ℂ) (FibreSpace.equiv (h.scale c hc) σ x)`. Establish `h2` using `norm_sq_eq_re_inner (𝕜 := ℂ) (FibreSpace.equiv h σ x)`. Establish `h3 : ‖FibreSpace.equiv (h.scale c hc) σ x‖ ^ 2 = (c * ‖FibreSpace.equiv h σ x‖) ^ 2`. Rewrite using `[h1, mul_pow, h2]`. Conclude with `Complex.re_ofReal_mul _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Real.sqrt_sq (norm_nonneg (FibreSpace.equiv (h.scale c hc) σ x)), h3, Real.sqrt_sq (by positivity)]`.
+A detailed English derivation is pending.
 -/
 theorem norm_scale {E : Type*} [AddCommGroup E] [Module (𝓞 K) E] [Module.Finite (𝓞 K) E]
     [Module.Projective (𝓞 K) E] (h : HermitianMetric K E) (c : ℝ) (hc : 0 < c) (σ : K →+* ℂ)
@@ -220,7 +220,7 @@ theorem norm_scale {E : Type*} [AddCommGroup E] [Module (𝓞 K) E] [Module.Fini
     Real.sqrt_sq (by positivity)]
 
 /- English proof (translation)
-The claim follows from `(norm_scale _ 2 two_pos σ x).le`.
+A detailed English derivation is pending.
 -/
 theorem NormComparison.witness (σ : K →+* ℂ) (x : Fibre σ (HermitianBundle.standard K 2).carrier) :
     ‖FibreSpace.equiv ((HermitianBundle.standard K 2).metric.scale 2 two_pos) σ x‖ ≤
@@ -228,16 +228,16 @@ theorem NormComparison.witness (σ : K →+* ℂ) (x : Fibre σ (HermitianBundle
   (norm_scale _ 2 two_pos σ x).le
 
 /- English proof (translation)
-The claim follows from `NormComparison.witness ℚ`.
+A detailed English derivation is pending.
 -/
 example := NormComparison.witness ℚ
 /- English proof (translation)
-The claim follows from `NormComparison.witness GaussianField`.
+A detailed English derivation is pending.
 -/
 example := NormComparison.witness GaussianField
 
 /- English proof (translation)
-Use `⟨fun σ x ↦ ?_, fun σ ↦ ⟨_, stdOrthonormalBasis ℂ _, fun _ ↦ 2, fun i ↦ ?_⟩⟩` and prove the remaining obligations. Rewrite using `[norm_scale, LinearMap.smul_apply, LinearMap.id_apply, map_smul, norm_smul, Complex.norm_two]`. Rewrite using `[LinearMap.smul_apply, LinearMap.id_apply, map_smul, LinearEquiv.apply_symm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem DiagonalChange.witness :
     (∀ (σ : K →+* ℂ) (x : Fibre σ (HermitianBundle.standard K 2).carrier),
@@ -255,26 +255,26 @@ theorem DiagonalChange.witness :
   · rw [LinearMap.smul_apply, LinearMap.id_apply, map_smul, LinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-The claim follows from `DiagonalChange.witness ℚ`.
+A detailed English derivation is pending.
 -/
 example := DiagonalChange.witness ℚ
 /- English proof (translation)
-The claim follows from `DiagonalChange.witness GaussianField`.
+A detailed English derivation is pending.
 -/
 example := DiagonalChange.witness GaussianField
 
 /- English proof (translation)
-The claim follows from `standardFlag_saturated 1`.
+A detailed English derivation is pending.
 -/
 theorem ExactSequence.witness : (HermitianBundle.standard K 2).Saturated (standardFlag K 1) :=
   standardFlag_saturated 1
 
 /- English proof (translation)
-The claim follows from `ExactSequence.witness ℚ`.
+A detailed English derivation is pending.
 -/
 example := ExactSequence.witness ℚ
 /- English proof (translation)
-The claim follows from `ExactSequence.witness GaussianField`.
+A detailed English derivation is pending.
 -/
 example := ExactSequence.witness GaussianField
 
@@ -282,7 +282,7 @@ def flagChain : Fin 3 → Submodule (𝓞 K) (HermitianBundle.standard K 2).carr
   fun i ↦ standardFlag K i.rev
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, fun _ _ hij ↦ standardFlag_monotone (Fin.rev_le_rev.mpr hij), fun _ ↦ standardFlag_saturated _⟩`.
+Supply the required witnesses or components.
 -/
 theorem ChainSum.witness :
     flagChain K 0 = ⊤ ∧ Antitone (flagChain K) ∧
@@ -291,31 +291,31 @@ theorem ChainSum.witness :
     fun _ ↦ standardFlag_saturated _⟩
 
 /- English proof (translation)
-The claim follows from `ChainSum.witness ℚ`.
+A detailed English derivation is pending.
 -/
 example := ChainSum.witness ℚ
 /- English proof (translation)
-The claim follows from `ChainSum.witness GaussianField`.
+A detailed English derivation is pending.
 -/
 example := ChainSum.witness GaussianField
 
 def stdVec : Fin 2 → (HermitianBundle.standard K 2).carrier := fun i ↦ Pi.single i 1
 
 /- English proof (translation)
-The claim follows from `funext fun i ↦ (Pi.basisFun_apply (𝓞 K) (Fin 2) i).symm`.
+A detailed English derivation is pending.
 -/
 theorem stdVec_eq : stdVec K = ⇑(Pi.basisFun (𝓞 K) (Fin 2)) :=
   funext fun i ↦ (Pi.basisFun_apply (𝓞 K) (Fin 2) i).symm
 
 /- English proof (translation)
-Rewrite using `[stdVec_eq]`. Conclude with `(Pi.basisFun (𝓞 K) (Fin 2)).linearIndependent`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stdVec_linearIndependent : LinearIndependent (𝓞 K) (stdVec K) := by
   rw [stdVec_eq]
   exact (Pi.basisFun (𝓞 K) (Fin 2)).linearIndependent
 
 /- English proof (translation)
-Rewrite using `[Fintype.card_fin]`. Conclude with `(Module.finrank_fin_fun (𝓞 K)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stdVec_card :
     Fintype.card (Fin 2) = Module.finrank (𝓞 K) (HermitianBundle.standard K 2).carrier := by
@@ -323,7 +323,7 @@ theorem stdVec_card :
   exact (Module.finrank_fin_fun (𝓞 K)).symm
 
 /- English proof (translation)
-Rewrite using `[finrank_span_eq_card (stdVec_linearIndependent K)]`. Conclude with `stdVec_card K`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stdVec_span :
     Module.finrank (𝓞 K) (Submodule.span (𝓞 K) (Set.range (stdVec K))) =
@@ -332,7 +332,7 @@ theorem stdVec_span :
   exact stdVec_card K
 
 /- English proof (translation)
-Establish `h` using `norm_fibreVec_sq (HermitianMetric.standard K (Fin 2)) σ (Pi.single i 1)`. Rewrite `h` using `[HermitianMetric.standard_inner_single, Complex.one_re]`. Rewrite using `[HermitianBundle.normAt, ← Real.sqrt_sq (norm_nonneg _)]`. Conclude with `(congrArg Real.sqrt h).trans Real.sqrt_one`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normAt_stdVec (σ : K →+* ℂ) (i : Fin 2) :
     (HermitianBundle.standard K 2).normAt σ (stdVec K i) = 1 := by
@@ -342,7 +342,7 @@ theorem normAt_stdVec (σ : K →+* ℂ) (i : Fin 2) :
   exact (congrArg Real.sqrt h).trans Real.sqrt_one
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨stdVec_linearIndependent K, stdVec_card K, fun i σ ↦ (normAt_stdVec K σ i).le⟩`.
+Supply the required witnesses or components.
 -/
 theorem Hadamard.witness :
     LinearIndependent (𝓞 K) (stdVec K) ∧
@@ -351,16 +351,16 @@ theorem Hadamard.witness :
   ⟨stdVec_linearIndependent K, stdVec_card K, fun i σ ↦ (normAt_stdVec K σ i).le⟩
 
 /- English proof (translation)
-The claim follows from `Hadamard.witness ℚ`.
+A detailed English derivation is pending.
 -/
 example := Hadamard.witness ℚ
 /- English proof (translation)
-The claim follows from `Hadamard.witness GaussianField`.
+A detailed English derivation is pending.
 -/
 example := Hadamard.witness GaussianField
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨standardFlag_saturated 1, stdVec_span K, fun i σ ↦ (normAt_stdVec K σ i).le⟩`.
+Supply the required witnesses or components.
 -/
 theorem HadamardQuotient.witness :
     (HermitianBundle.standard K 2).Saturated (standardFlag K 1) ∧
@@ -370,16 +370,16 @@ theorem HadamardQuotient.witness :
   ⟨standardFlag_saturated 1, stdVec_span K, fun i σ ↦ (normAt_stdVec K σ i).le⟩
 
 /- English proof (translation)
-The claim follows from `HadamardQuotient.witness ℚ`.
+A detailed English derivation is pending.
 -/
 example := HadamardQuotient.witness ℚ
 /- English proof (translation)
-The claim follows from `HadamardQuotient.witness GaussianField`.
+A detailed English derivation is pending.
 -/
 example := HadamardQuotient.witness GaussianField
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨stdVec_linearIndependent K, stdVec_card K⟩`.
+Supply the required witnesses or components.
 -/
 theorem HadamardMean.witness :
     LinearIndependent (𝓞 K) (stdVec K) ∧
@@ -387,16 +387,16 @@ theorem HadamardMean.witness :
   ⟨stdVec_linearIndependent K, stdVec_card K⟩
 
 /- English proof (translation)
-The claim follows from `HadamardMean.witness ℚ`.
+A detailed English derivation is pending.
 -/
 example := HadamardMean.witness ℚ
 /- English proof (translation)
-The claim follows from `HadamardMean.witness GaussianField`.
+A detailed English derivation is pending.
 -/
 example := HadamardMean.witness GaussianField
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨standardFlag_saturated 1, stdVec_span K⟩`.
+Supply the required witnesses or components.
 -/
 theorem HadamardMeanQuotient.witness :
     (HermitianBundle.standard K 2).Saturated (standardFlag K 1) ∧
@@ -405,16 +405,16 @@ theorem HadamardMeanQuotient.witness :
   ⟨standardFlag_saturated 1, stdVec_span K⟩
 
 /- English proof (translation)
-The claim follows from `HadamardMeanQuotient.witness ℚ`.
+A detailed English derivation is pending.
 -/
 example := HadamardMeanQuotient.witness ℚ
 /- English proof (translation)
-The claim follows from `HadamardMeanQuotient.witness GaussianField`.
+A detailed English derivation is pending.
 -/
 example := HadamardMeanQuotient.witness GaussianField
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : Algebra ℚ GaussianField := inferInstance
 

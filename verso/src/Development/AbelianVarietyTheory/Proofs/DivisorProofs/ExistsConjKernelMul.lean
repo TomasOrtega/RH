@@ -12,21 +12,19 @@ namespace GlobalTheory.CMModel
 open GlobalTheory.ConjPoint PeriodPair in
 
 /- English proof (translation)
-Introduce `p F L t hp h4 h3 hD σ hσ`. Establish `h₂ : L.g₂ = σ L.g₂` using `(hσ _ hD.g₂_mem).symm`. Establish `h₃ : L.g₃ = σ L.g₃` using `(hσ _ hD.g₃_mem).symm`. Take `⟨s, -, hc⟩` from `exists_conjEquiv h₂ h₃`. Take `⟨t', ht'⟩` from `latticePoint_surjective L (s (latticePoint L t))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hct : IsConj L L σ t t'` using `(hc _ _).2 ht'.symm`. Establish `ht'n : t' ∉ L.lattice`. Break down `hct with h | h` into its components or cases. Conclude with `(hD.notMem h.1).elim`. Conclude with `h.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsq : (σ (sqrtNegNat p)) ^ 2 = (sqrtNegNat p) ^ 2`. Rewrite using `[← map_pow, sqrtNegNat_sq, map_neg, map_natCast]`. Establish `hm` using `IsConj.mul h₂ h₃ hD.mul hct`. Establish `hker : σ (sqrtNegNat p) * t' ∈ L.lattice`. Break down `hm with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `h.2`. Conclude with `(h.1 hD.ker).elim`. Establish `hker' : sqrtNegNat p * t' ∈ L.lattice`. Break down `sq_eq_sq_iff_eq_or_eq_neg.mp hsq with e | e` into its components or cases. Rewrite `hker` using `[e]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hker` using `[e, neg_mul]`. Simplify using `using neg_mem hker`. Take `⟨-, hz, -⟩` from `GlobalTheory.T.sqrtNegPrime_kernel_cyclic p F L t hp h4 h3 hD`. Take `⟨c, hcp, hcl⟩` from `hz t' hker'`. Use `⟨c, fun hdvd => ?_, fun k => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc0 : c = 0` using `Nat.eq_zero_of_dvd_of_lt hdvd hcp`. Substitute `hc0` using the available equality. Conclude with `ht'n (by simpa using hcl)`. Establish `hk` using `IsConj.mul h₂ h₃ (α := (k : ℂ)) (fun l hl => by rw [← nsmul_eq_mul]; exact nsmul_mem hl k) hct`. Rewrite `hk` using `[map_natCast]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : IsConj L L σ 0 ((k : ℂ) * ((c : ℂ) * t) - (k : ℂ) * t')` using `by left`. Use `⟨zero_mem _, ?_⟩` and prove the remaining obligations. Establish `: (k : ℂ) * ((c : ℂ) * t) - (k : ℂ) * t' = -((k : ℂ) * (t' - (c : ℂ) * t))` using `by ring`. Rewrite using `[this, ← nsmul_eq_mul]`. Conclude with `neg_mem (nsmul_mem hcl k)`.
-
-Use `IsConj.add h₂ h₃ hk h0` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_conj_kernel_mul : ∀ (p : ℕ) (F : IntermediateField ℚ ℂ) (L : PeriodPair) (t : ℂ), p.Prime → p % 4 = 3 → 3 < p → Datum p F L t → ∀ σ : ℂ ≃+* ℂ, (∀ x ∈ F, σ x = x) → ∃ c : ℕ, ¬ p ∣ c ∧ ∀ k : ℕ, GlobalTheory.ConjPoint.IsConj L L σ ((k : ℂ) * t) ((k : ℂ) * ((c : ℂ) * t)) := by
   intro p F L t hp h4 h3 hD σ hσ

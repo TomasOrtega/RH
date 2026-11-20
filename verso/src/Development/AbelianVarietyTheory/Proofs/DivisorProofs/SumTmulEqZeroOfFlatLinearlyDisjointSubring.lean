@@ -10,27 +10,27 @@ open scoped TensorProduct
 namespace GlobalTheory.Desc
 
 /- English proof (translation)
-Establish `hθ' : ∀ b : R, θ (algebraMap R F b) = c (algebraMap R R₁ b)` using `fun b => RingHom.congr_fun hθ b`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro u r _`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `succ n ih`. Introduce `u r h`. Distinguish the cases in `hind : ∀ b : Fin (n+1) → R, ∑ i, algebraMap R F (b i) * u i = 0 → b = 0`. Establish `hr` using `hL (n+1) u hind r (by rw [← h]; exact Finset.sum_congr rfl fun i _ => mul_comm _ _)`. Substitute `hr` using the available equality.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Use `push_neg at hind`. Take `⟨b, hb, hb0⟩` from `hind`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, b j ≠ 0 := by`. Assume the negation of the conclusion as `hc`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `push_neg at hc`. Conclude with `hb0 (funext hc)`. Establish `hdj : algebraMap R F (b j) ≠ 0`. Introduce `h0`. Apply `hj` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Apply `hc₀` to reduce the goal to its premises. Rewrite using `[h0, map_zero]`. Take `⟨w, hw⟩ : ∃ w : Fin n → F, ∀ i, w i = u (j.succAbove i) / algebraMap R F (b j)` from `⟨_, fun _ => rfl⟩`. Establish `hrel : algebraMap R F (b j) * u j + ∑ i : Fin n, algebraMap R F (b (j.succAbove i)) * u (j.succAbove i) = 0`. Rewrite using `[← Fin.sum_univ_succAbove (fun i => algebraMap R F (b i) * u i) j]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hb`. Establish `hu : ∀ i, u (j.succAbove i) = b j • w i`. Introduce `i`. Rewrite using `[Algebra.smul_def, hw i]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : ∑ i : Fin n, algebraMap R F (b (j.succAbove i)) * w i = - u j`. Establish `: ∑ i : Fin n, algebraMap R F (b (j.succAbove i)) * w i = (∑ i : Fin n, algebraMap R F (b (j.succAbove i)) * u (j.succAbove i)) / algebraMap R F (b j)`. Rewrite using `[Finset.sum_div]; exact Finset.sum_congr rfl fun i _ => by rw [hw i]; ring`. Rewrite using `[this, eq_neg_of_add_eq_zero_right hrel]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `huj : u j = - ∑ i : Fin n, b (j.succAbove i) • w i`. Simplify using `only [Algebra.smul_def]`. Rewrite using `[hsum, neg_neg]`. Establish `key : ∑ i, u i ⊗ₜ[R] r i = ∑ i : Fin n, w i ⊗ₜ[R] (b j • r (j.succAbove i) - b (j.succAbove i) • r j)`. Rewrite using `[Fin.sum_univ_succAbove _ j]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [TensorProduct.tmul_sub, Finset.sum_sub_distrib, ← TensorProduct.smul_tmul, ← hu]`. Rewrite using `[huj, TensorProduct.neg_tmul, TensorProduct.sum_tmul]`. Normalize the expressions using the abelian group laws. Rewrite using `[key]`. Apply `ih` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e1 : ∀ i, θ (w i) * c (b j • r (j.succAbove i) - b (j.succAbove i) • r j) = θ (u (j.succAbove i)) * c (r (j.succAbove i)) - c (r j) * θ (algebraMap R F (b (j.succAbove i)) * w i)`. Introduce `i`. Rewrite using `[hu i]`. Simplify using `only [Algebra.smul_def, map_sub, map_mul, hθ']`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[Finset.sum_congr rfl (fun i _ => e1 i), Finset.sum_sub_distrib, ← Finset.mul_sum, ← map_sum, hsum, map_neg]`. Establish `h'` using `h`. Rewrite `h'` using `[Fin.sum_univ_succAbove _ j]`. Take the linear combination `h'`.
+A detailed English derivation is pending.
 -/
 theorem tmul_sum_eq_zero_of_linDisj {R R₁ F K : Type} [CommRing R] [CommRing R₁] [Field F] [Field K] [Algebra R R₁]
     [Algebra R F] (c : R₁ →+* K) (θ : F →+* K) (hc₀ : Function.Injective (algebraMap R F))
@@ -84,9 +84,9 @@ theorem tmul_sum_eq_zero_of_linDisj {R R₁ F K : Type} [CommRing R] [CommRing R
       linear_combination h'
 
 /- English proof (translation)
-Introduce `R R₁ A F K _ _ _ _ _ _ _ hflat c₀ e c θ hc₀ he hec hθ hL n a r h`. Use `letI : Algebra R F := c₀.toAlgebra`. Set `eA : A →ₐ[R] F` to `{ e with commutes' := fun x => RingHom.congr_fun hec x }`. Establish `hinj` using `Module.Flat.rTensor_preserves_injective_linearMap (M := R₁) eA.toLinearMap he`. Apply `hinj` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_sum, map_zero]`. Simplify using `only [LinearMap.rTensor_tmul]`. Conclude with `tmul_sum_eq_zero_of_linDisj (R := R) c θ hc₀ hθ hL n (fun i => e (a i)) r h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tmul_sum_eq_zero_of_flat_linDisj : ∀ (R R₁ A F K : Type) [CommRing R] [CommRing R₁] [CommRing A] [Field F] [Field K] [Algebra R A] [Algebra R R₁], Module.Flat R R₁ → ∀ (c₀ : R →+* F) (e : A →+* F) (c : R₁ →+* K) (θ : F →+* K), Function.Injective c₀ → Function.Injective e → e.comp (algebraMap R A) = c₀ → θ.comp c₀ = c.comp (algebraMap R R₁) → LinDisj c₀ c θ → ∀ (n : ℕ) (a : Fin n → A) (r : Fin n → R₁), ∑ i, θ (e (a i)) * c (r i) = 0 → ∑ i, a i ⊗ₜ[R] r i = 0 := by
   intro R R₁ A F K _ _ _ _ _ _ _ hflat c₀ e c θ hc₀ he hec hθ hL n a r h

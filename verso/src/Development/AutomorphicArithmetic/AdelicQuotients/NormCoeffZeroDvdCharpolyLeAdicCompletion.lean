@@ -7,9 +7,9 @@ open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Loc PositivityTheory.Rg.
 open scoped NumberField.AdeleRing
 
 /- English proof (translation)
-Apply `Polynomial.funext` to reduce the goal to its premises. Introduce `x`. Take `⟨y, rfl⟩ : ∃ y, x = c * y` from `⟨c⁻¹ * x, by rw [← mul_assoc, mul_inv_cancel₀ hc, one_mul]⟩`. Rewrite using `[Polynomial.scaleRoots_eval_mul, Matrix.charpoly_natDegree_eq_dim, Matrix.eval_charpoly, Matrix.eval_charpoly, ← Matrix.det_smul, smul_sub]`. Use `congr 2`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `a b`. Simplify using `only [Matrix.smul_apply, Matrix.scalar_apply, Matrix.diagonal_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem charpoly_scale {K : Type} [Field K] [Infinite K] {n : ℕ}
     (M : Matrix (Fin n) (Fin n) K) {c : K} (hc : c ≠ 0) :
@@ -25,11 +25,9 @@ private theorem charpoly_scale {K : Type} [Field K] [Infinite K] {n : ℕ}
   split_ifs <;> simp
 
 /- English proof (translation)
-Set `N' : Matrix (Fin n) (Fin n) O` to `fun i j => ⟨N i j, hN i j⟩`. Establish `hmap : N'.map (algebraMap O K) = N`. Use extensionality with `i j`. Both sides reduce to the same expression. Establish `hd' : q ∣ (N'.charpoly).map (algebraMap O K)`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.charpoly_map, hmap]`. Conclude with `hd`. Take `⟨g, hg⟩` from `IsIntegrallyClosed.eq_map_mul_C_of_dvd K (Matrix.charpoly_monic N') hd'`. Rewrite `hg` using `[hq.leadingCoeff, map_one, mul_one]`. Rewrite using `[← hg, coeff_map]`.
-
-Conclude with `(g.coeff 0).2`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coeff_zero_mem {K : Type} [Field K] (O : ValuationSubring K) {n : ℕ}
     (N : Matrix (Fin n) (Fin n) K) (hN : ∀ i j, N i j ∈ O) (q : K[X]) (hq : q.Monic)
@@ -47,21 +45,21 @@ private theorem coeff_zero_mem {K : Type} [Field K] (O : ValuationSubring K) {n 
   exact (g.coeff 0).2
 
 /- English proof (translation)
-Introduce `E _ _ w n M R hR hM p hp hd`. Use `haveI : Infinite (w.adicCompletion E) := Infinite.of_injective _ (algebraMap E (w.adicCompletion E)).injective`. Set `S : Finset (w.adicCompletion E)` to `insert 1 (Finset.univ.image fun ij : Fin n × Fin n => M ij.1 ij.2)`. Take `⟨c, hcS, hcmax⟩` from `Finset.exists_max_image S (fun x => ‖x‖) ⟨1, Finset.mem_insert_self _ _⟩`. Establish `hc1 : 1 ≤ ‖c‖`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hcmax 1 (Finset.mem_insert_self _ _)` as an intermediate fact. Simplify using `using this`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hc1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcR : ‖c‖ ≤ R`. Break down `Finset.mem_insert.1 hcS with rfl | h` into its components or cases. Simplify using `using hR`. Take `⟨ij, -, rfl⟩` from `Finset.mem_image.1 h`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hM _ _`. Establish `hent : ∀ i j, ‖M i j‖ ≤ ‖c‖` using `fun i j => hcmax _ (Finset.mem_insert_of_mem (Finset.mem_image.2 ⟨(i, j), Finset.mem_univ _, rfl⟩))`. Establish `hinv : c⁻¹ ≠ 0` using `inv_ne_zero hc0`. Establish `hint : ∀ x : w.adicCompletion E, ‖x‖ ≤ 1 → x ∈ w.adicCompletionIntegers E` using `fun x hx => (HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 E) E w).2 (Valued.toNormedField.norm_le_one_iff.1 hx)`. Establish `hint' : ∀ x : w.adicCompletion E, x ∈ w.adicCompletionIntegers E → ‖x‖ ≤ 1` using `fun x hx => Valued.toNormedField.norm_le_one_iff.2 ((HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 E) E w).1 hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hN : ∀ i j, (c⁻¹ • M) i j ∈ w.adicCompletionIntegers E`. Introduce `i j`. Apply `hint` to reduce the goal to its premises. Rewrite using `[Matrix.smul_apply, smul_eq_mul, norm_mul, norm_inv]`. Conclude with `inv_mul_le_one_of_le₀ (hent i j) (norm_nonneg _)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hq : (p.scaleRoots c⁻¹).Monic` using `(Polynomial.monic_scaleRoots_iff _).2 hp`. Establish `hdq : p.scaleRoots c⁻¹ ∣ (c⁻¹ • M).charpoly`. Rewrite using `[charpoly_scale M hinv]`. Take `⟨r, hr⟩` from `hd`. Rewrite using `[hr, Polynomial.mul_scaleRoots_of_noZeroDivisors]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `dvd_mul_right _ _`. Establish `hmem` using `hint' _ (coeff_zero_mem _ _ hN _ hq hdq)`. Rewrite `hmem` using `[Polynomial.coeff_scaleRoots, Nat.sub_zero, norm_mul, norm_pow, norm_inv, inv_pow]`. Establish `hcpos : 0 < ‖c‖ ^ p.natDegree` using `by positivity`. Establish `h1 : ‖p.coeff 0‖ ≤ ‖c‖ ^ p.natDegree`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `hmem` using `[← div_eq_mul_inv, div_le_one hcpos]`. Then use the resulting hypothesis. Establish `hdeg : p.natDegree ≤ n`. Use `Polynomial.natDegree_le_of_dvd hd (Matrix.charpoly_monic M).ne_zero` as an intermediate fact. Simplify `this` using `[Matrix.charpoly_natDegree_eq_dim]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.norm_coeff_zero_dvd_charpoly_le_adicCompletion :
     ∀ (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (n : ℕ) (M : Matrix (Fin n) (Fin n) (w.adicCompletion E)) (R : ℝ), 1 ≤ R →

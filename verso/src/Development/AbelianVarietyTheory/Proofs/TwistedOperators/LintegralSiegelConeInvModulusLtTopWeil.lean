@@ -6,9 +6,9 @@ open scoped ENNReal
 namespace GlobalTheory.SiegelSet.ConeConv
 
 /- English proof (translation)
-Rewrite using `[lintegral_indicator measurableSet_Ici, setLIntegral_congr Ioi_ae_eq_Ici.symm]`. Establish `hlt : p - 1 < -1` using `by linarith`. Rewrite using `[← ofReal_integral_eq_lintegral_ofReal (integrableOn_Ioi_rpow_of_lt hlt hb) ((ae_restrict_iff' measurableSet_Ioi).2 (Filter.Eventually.of_forall fun x (hx : b < x) => Real.rpow_nonneg (le_of_lt (lt_trans hb hx)) _)), integral_Ioi_rpow_of_lt hlt hb]`. Use `congr 1`. Establish `: p - 1 + 1 = p` using `by ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[this, div_neg, neg_div]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lintegral_Ici_rpow {b p : ℝ} (hb : 0 < b) (hp : p < 0) :
     ∫⁻ x, (Set.Ici b).indicator (fun x => ENNReal.ofReal (x ^ (p - 1))) x = ENNReal.ofReal (b ^ p / (-p)) := by
@@ -22,13 +22,13 @@ theorem lintegral_Ici_rpow {b p : ℝ} (hb : 0 < b) (hp : p < 0) :
   rw [this, div_neg, neg_div]
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.SiegelSet.cone, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hpos, hstep, hlast⟩`. Use `⟨⟨by simpa using hpos 0, by simpa using hstep 0 1 (by simp)⟩, fun i => by simpa using hpos i.succ, fun i j hij => by simpa using hstep i.succ j.succ (by simp [hij]), fun i hi => by simpa using hlast i.succ (by simp; omega)⟩` and prove the remaining obligations. Introduce and unpack `⟨⟨h0, h01⟩, hpos, hstep, hlast⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨fun i => Fin.cases (by simpa using h0) (fun i => by simpa using hpos i) i, fun i j hij => ?_, fun i hi => ?_⟩` and prove the remaining obligations. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => simp at hij`. Consider the case `succ j`. Proceed by induction on `i using Fin.cases with`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero`. Establish `: j = 0` using `Fin.ext (by simpa using hij)`. Substitute `this` using the available equality. Simplify using `using h01`. Consider the case `succ i => simpa using hstep i j (by simpa using hij)`.
+Treat this case separately. Establish an intermediate fact. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Proceed by induction on `i using Fin.cases with`. Consider the case `zero => simp at hi`. Consider the case `succ i => simpa using hlast i (by simpa using hi)`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem mem_cone_cons {m : ℕ} {c x : ℝ} (y : Fin (m + 1) → ℝ) :
     (Fin.cons x y : Fin (m + 2) → ℝ) ∈ GlobalTheory.SiegelSet.cone (m + 2) c ↔
@@ -55,9 +55,9 @@ theorem mem_cone_cons {m : ℕ} {c x : ℝ} (y : Fin (m + 1) → ℝ) :
       | succ i => simpa using hlast i (by simpa using hi)
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.SiegelSet.cone, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, _, hlast⟩`. Conclude with `hlast 0 rfl`. Introduce `h`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun _ => lt_of_lt_of_le hc h, fun i j hij => ?_, fun _ _ => h⟩` and prove the remaining obligations. Conclude with `absurd hij (by omega)`.
+A detailed English derivation is pending.
 -/
 theorem mem_cone_one {c x : ℝ} (hc : 0 < c) :
     (fun _ => x : Fin 1 → ℝ) ∈ GlobalTheory.SiegelSet.cone 1 c ↔ c ≤ x := by
@@ -70,35 +70,31 @@ theorem mem_cone_one {c x : ℝ} (hc : 0 < c) :
     exact absurd hij (by omega)
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `a ha`. Establish `ha0 : a 0 < 0` using `by simpa using ha 0 le_rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `∫⁻ t : Fin 1 → ℝ, (GlobalTheory.SiegelSet.cone 1 c).indicator (fun t => ∏ i : Fin 1, ENNReal.ofReal (t i ^ (a i.val - 1))) t < ⊤`. Establish `key` using `(MeasurePreserving.symm _ (volume_preserving_funUnique (Fin 1) ℝ)).lintegral_comp_emb (MeasurableEquiv.funUnique (Fin 1) ℝ).symm.measurableEmbedding (fun t : Fin 1 → ℝ => (GlobalTheory.SiegelSet.cone 1 c).indicator (fun t => ∏ i : Fin 1, ENNReal.ofReal (t i ^ (a i.val - 1))) t)`. Use `lt_of_eq_of_lt key.symm ?_` and prove the remaining obligations. Establish `: ∀ x : ℝ, (GlobalTheory.SiegelSet.cone 1 c).indicator (fun t => ∏ i : Fin 1, ENNReal.ofReal (t i ^ (a i.val - 1))) ((MeasurableEquiv.funUnique (Fin 1) ℝ).symm x) = (Set.Ici c).indicator (fun x => ENNReal.ofReal (x ^ (a 0 - 1))) x`. Introduce `x`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx : (MeasurableEquiv.funUnique (Fin 1) ℝ).symm x = fun _ => x`. Use function extensionality and compare the values at `i`. Simplify using `[MeasurableEquiv.funUnique_symm_apply]`. Rewrite using `[hx]`. Distinguish the cases in `h : c ≤ x`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Set.indicator_of_mem ((mem_cone_one hc).2 h), Set.indicator_of_mem (Set.mem_Ici.2 h)]`. Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_notMem (fun h' => h ((mem_cone_one hc).1 h')), Set.indicator_of_notMem (fun h' => h (Set.mem_Ici.1 h'))]`. Repeatedly rewrite using `[this]`. Rewrite using `[lintegral_Ici_rpow hc ha0]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ENNReal.ofReal_lt_top`. Consider the case `succ m ih`. Introduce `a ha`. Establish `ha0 : a 0 < 0` using `by simpa using ha 0 (Nat.zero_le _)`. Use `set a' : ℕ → ℝ := fun i => if i = 0 then a 0 + a 1 else a (i + 1) with ha'`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsum : ∀ k ≤ m, ∑ i ∈ Finset.range (k + 1), a' i < 0`. Introduce `k hk`. Establish `h` using `ha (k + 1) (by omega)`. Rewrite `h` using `[Finset.sum_range_succ', Finset.sum_range_succ']`. Rewrite using `[Finset.sum_range_succ']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `only [ha', if_pos, Nat.add_eq_zero_iff, one_ne_zero, and_false, if_false] at *`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set K : ℝ≥0∞ := ENNReal.ofReal (c ^ a 0 / (-a 0))`. Use `set e := MeasurableEquiv.piFinSuccAbove (fun _ : Fin (m + 2) => ℝ) 0`. Rewrite using `[← (MeasurePreserving.symm _ (volume_preserving_piFinSuccAbove (fun _ : Fin (m + 2) => ℝ) 0)).lintegral_comp_emb e.symm.measurableEmbedding, Measure.volume_eq_prod, ← lintegral_prod_swap]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `lt_of_le_of_lt (lintegral_prod_le _) ?_` and prove the remaining obligations. Establish `hpt : ∀ y : Fin (m + 1) → ℝ, ∫⁻ x, (GlobalTheory.SiegelSet.cone (m + 1 + 1) c).indicator (fun t => ∏ i : Fin (m + 1 + 1), ENNReal.ofReal (t i ^ (a i.val - 1))) (e.symm (Prod.swap (y, x))) ≤ K * (GlobalTheory.SiegelSet.cone (m + 1) c).indicator (fun t => ∏ i : Fin (m + 1), ENNReal …`. Introduce `y`. Establish `he : ∀ x, e.symm (Prod.swap (y, x)) = Fin.cons x y`. Apply the tactic sequence `intro x; simp [e, MeasurableEquiv.piFinSuccAbove_symm_apply, Fin.insertNth_zero'] <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion repeatedly using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Repeatedly rewrite using `[he]`. Distinguish the cases in `hy : y ∈ GlobalTheory.SiegelSet.cone (m + 1) c`. Establish `hy0 : 0 < y 0` using `hy.1 0`. Establish `hb : 0 < c * y 0` using `mul_pos hc hy0`. Use `set T : ℝ≥0∞ := ∏ i : Fin (m + 1), ENNReal.ofReal (y i ^ (a (i.val + 1) - 1))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hfun : ∀ x, (GlobalTheory.SiegelSet.cone (m + 1 + 1) c).indicator (fun t => ∏ i : Fin (m + 1 + 1), ENNReal.ofReal (t i ^ (a i.val - 1))) (Fin.cons x y) = (Set.Ici (c * y 0)).indicator (fun x => ENNReal.ofReal (x ^ (a 0 - 1))) x * T`. Introduce `x`. Distinguish the cases in `hx : c * y 0 ≤ x`. Rewrite using `[Set.indicator_of_mem ((mem_cone_cons y).2 ⟨⟨lt_of_lt_of_le hb hx, hx⟩, hy⟩), Set.indicator_of_mem (Set.mem_Ici.2 hx), Fin.prod_univ_succ]`. Simplify using `[T, Fin.val_succ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_notMem (fun h' => hx ((mem_cone_cons y).1 h').1.2), Set.indicator_of_notMem (fun h' => hx (Set.mem_Ici.1 h')), zero_mul]`. Repeatedly rewrite using `[hfun]`. Rewrite using `[lintegral_mul_const' _ _ (ENNReal.prod_ne_top fun _ _ => ENNReal.ofReal_ne_top), lintegral_Ici_rpow hb ha0, Set.indicator_of_mem hy]`. Apply `le_of_eq` to reduce the goal to its premises. Rewrite using `[Fin.prod_univ_succ, Fin.prod_univ_succ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hrest : ∏ j : Fin m, ENNReal.ofReal (y j.succ ^ (a (j.succ.val + 1) - 1)) = ∏ j : Fin m, ENNReal.ofReal (y j.succ ^ (a' j.succ.val - 1))` using `Finset.prod_congr rfl fun j _ => by simp [ha', Fin.val_succ]`. Establish `h1 : 0 ≤ (c * y 0) ^ a 0 / (-a 0)` using `div_nonneg (Real.rpow_nonneg hb.le _) (by linarith)`. Establish `h2 : 0 ≤ c ^ a 0 / (-a 0)` using `div_nonneg (Real.rpow_nonneg hc.le _) (by linarith)`. Establish `h0 : ENNReal.ofReal ((c * y 0) ^ a 0 / (-a 0)) * ENNReal.ofReal (y 0 ^ (a ((0 : Fin (m + 1)).val + 1) - 1)) = K * ENNReal.ofReal (y 0 ^ (a' (0 : Fin (m + 1)).val - 1))`. Simplify using `only [K, ha', Fin.val_zero, zero_add, if_true]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ENNReal.ofReal_mul h1, ← ENNReal.ofReal_mul h2]`. Use `congr 1`. Rewrite using `[Real.mul_rpow hc.le hy0.le, show a 0 + a 1 - 1 = (a 1 - 1) + a 0 by ring, Real.rpow_add hy0]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hrest, ← mul_assoc, ← mul_assoc, h0]`.
-
-Establish `hz : ∀ x, (GlobalTheory.SiegelSet.cone (m + 1 + 1) c).indicator (fun t => ∏ i : Fin (m + 1 + 1), ENNReal.ofReal (t i ^ (a i.val - 1))) (Fin.cons x y) = 0` using `fun x => Set.indicator_of_notMem (fun h' => hy ((mem_cone_cons y).1 h').2) _`. Repeatedly rewrite using `[hz, lintegral_zero]`. Conclude with `bot_le`. Use `lt_of_le_of_lt (lintegral_mono hpt) ?_` and prove the remaining obligations. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`.
-
-Conclude with `ENNReal.mul_lt_top ENNReal.ofReal_lt_top (ih a' hsum)`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_cone_lt_top {c : ℝ} (hc : 0 < c) : ∀ (m : ℕ) (a : ℕ → ℝ),
     (∀ k ≤ m, ∑ i ∈ Finset.range (k + 1), a i < 0) →
@@ -197,7 +193,7 @@ theorem lintegral_cone_lt_top {c : ℝ} (hc : 0 < c) : ∀ (m : ℕ) (a : ℕ �
     exact ENNReal.mul_lt_top ENNReal.ofReal_lt_top (ih a' hsum)
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.SiegelSet.cone, Set.setOf_and, Set.setOf_forall]`. Conclude with `(MeasurableSet.iInter fun i => measurableSet_lt measurable_const (measurable_pi_apply i)).inter ((MeasurableSet.iInter fun i => MeasurableSet.iInter fun j => MeasurableSet.iInter fun _ => measurableSet_le (measurable_const.mul (measurable_pi_apply j)) (measurable_pi_apply i)).int …`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem measurableSet_cone (r : ℕ) (c : ℝ) : MeasurableSet (GlobalTheory.SiegelSet.cone r c) := by
   simp only [GlobalTheory.SiegelSet.cone, Set.setOf_and, Set.setOf_forall]
@@ -211,25 +207,23 @@ end GlobalTheory.SiegelSet.ConeConv
 open GlobalTheory.SiegelSet.ConeConv in
 
 /- English proof (translation)
-Introduce `F _ _ n r d c hc hd`. Establish `hf : (0 : ℝ) < (Module.finrank ℚ F : ℝ)` using `by exact_mod_cast Module.finrank_pos`. Consider the cases of `r with`. Consider the case `zero`. Simplify using `only [GlobalTheory.SiegelSet.modulus, Finset.univ_eq_empty, Finset.prod_empty, mul_one, inv_one, ENNReal.ofReal_one, lintegral_const, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules.
 
-Rewrite using `[Measure.restrict_apply MeasurableSet.univ]`. Express the relevant statement in the definitionally equal form `Measure.pi (fun _ : Fin 0 => (volume : Measure ℝ)) _ < ⊤`. Rewrite using `[Measure.pi_of_empty]`. Simplify using `only [Set.univ_inter]`. Conclude with `measure_lt_top _ _`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `succ m => set f := Module.finrank ℚ F with hfdef set a : ℕ → ℝ := fun i => (f : ℝ) * d - 2 * f * ((n : ℝ) - 2 * i - 1) with hadef`. Establish `closed : ∀ k : ℕ, ∑ i ∈ Finset.range (k + 1), a i = f * (k + 1) * (d - 2 * n + 2 * (k + 1))`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => rw [Finset.sum_range_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [hadef]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Consider the case `succ k ih => rw [Finset.sum_range_succ, ih]`. Simplify using `only [hadef]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hsum : ∀ k ≤ m, ∑ i ∈ Finset.range (k + 1), a i < 0`. Introduce `k hk`. Rewrite using `[closed]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : d + 2 * (k + 1) < 2 * n` using `by omega`. Establish `h2 : (d : ℝ) + 2 * (k + 1) < 2 * n` using `by exact_mod_cast h1`. Conclude with `mul_neg_of_pos_of_neg (mul_pos hf (by positivity)) (by linarith)`. Establish `hmeas` using `measurableSet_cone (m + 1) c`. Rewrite using `[setLIntegral_congr_fun hmeas (g := fun t => ∏ i : Fin (m + 1), ENNReal.ofReal (t i ^ (a i.val - 1))) ?_, ← lintegral_indicator hmeas]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `lintegral_cone_lt_top hc m a hsum`. Introduce `t ht`. Establish `hpos : ∀ i, 0 < t i` using `ht.1`. Simplify using `only`. Rewrite using `[← ENNReal.ofReal_mul (Finset.prod_nonneg fun i _ => pow_nonneg (hpos i).le _), ← ENNReal.ofReal_prod_of_nonneg (fun i _ => Real.rpow_nonneg (hpos i).le _)]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Unfold `GlobalTheory.SiegelSet.modulus`. Rewrite using `[← hfdef]`. Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hti` using `hpos i`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_intCast, show a i.val - 1 = ((f * d : ℕ) : ℝ) - ((2 * (f : ℤ) * ((n : ℤ) - 2 * (i.val : ℤ) - 1) : ℤ) : ℝ) - 1 by`. Simplify using `only [hadef]`. Use `push_cast`. Use the proof step `ring,`.
-
-Use the proof step `Real.rpow_sub hti, Real.rpow_sub hti, Real.rpow_one]`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SiegelSet.lintegral_cone_modulus_lt_top : ∀ (F : Type) [Field F] [NumberField F] (n r d : ℕ) {c : ℝ}, 0 < c →
     d < 2 * (n - r) → ∫⁻ t in GlobalTheory.SiegelSet.cone r c, ENNReal.ofReal (∏ i, t i ^ (Module.finrank ℚ F * d)) *

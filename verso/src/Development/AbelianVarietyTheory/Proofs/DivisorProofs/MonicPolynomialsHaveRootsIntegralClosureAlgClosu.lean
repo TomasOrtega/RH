@@ -8,11 +8,11 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `D _ _ p hp hd`. Establish `hmap : (p.map (algebraMap (integralClosure D (AlgebraicClosure (FractionRing D))) (AlgebraicClosure (FractionRing D)))).natDegree = p.natDegree` using `hp.natDegree_map _`. Establish `hdeg : (p.map (algebraMap (integralClosure D (AlgebraicClosure (FractionRing D))) (AlgebraicClosure (FractionRing D)))).degree ≠ 0`. Rewrite using `[Polynomial.degree_eq_natDegree (hp.map _).ne_zero, hmap]`. Conclude with `hd.ne'` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr⟩` from `IsAlgClosed.exists_root _ hdeg`. Establish `hrDp : IsIntegral (integralClosure D (AlgebraicClosure (FractionRing D))) r` using `⟨p, hp, by rwa [Polynomial.eval₂_eq_eval_map]⟩`. Establish `hrD : IsIntegral D r` using `isIntegral_trans r hrDp`. Use `⟨⟨r, hrD⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.val_injective` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `key` using `Polynomial.eval₂_at_apply (p := p) (algebraMap (integralClosure D (AlgebraicClosure (FractionRing D))) (AlgebraicClosure (FractionRing D))) ⟨r, hrD⟩`. Rewrite `key` using `[← Polynomial.eval_map]`. Establish `hr' : (p.map (algebraMap (integralClosure D (AlgebraicClosure (FractionRing D))) (AlgebraicClosure (FractionRing D)))).eval r = 0` using `hr`. Conclude with `key.symm.trans hr'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem aic_integralClosure_algebraicClosure :
     ∀ (D : Type) [CommRing D] [IsDomain D], AIC (integralClosure D (AlgebraicClosure (FractionRing D))) := by

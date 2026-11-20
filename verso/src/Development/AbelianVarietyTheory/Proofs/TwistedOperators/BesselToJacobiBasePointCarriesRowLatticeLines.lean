@@ -22,20 +22,20 @@ open GlobalTheory.RowShape GlobalTheory.RowChain GlobalTheory.StairCols
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts}
 
 /- English proof (translation)
-Rewrite using `[tiltSc, if_pos hj, if_pos hp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tiltSc_odd {j : ℕ} (hj : Odd j) (p : Fin (D.R.m - 1 - j)) (hp : 2 * p.1 < D.R.m - 1 - j) :
     tiltSc D j p = (D.host.xi0 ^ p.1)⁻¹ := by
   rw [tiltSc, if_pos hj, if_pos hp]
 
 /- English proof (translation)
-Rewrite using `[tiltSc, if_neg hj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tiltSc_even {j : ℕ} (hj : ¬ Odd j) (p : Fin (D.R.m - 1 - j)) : tiltSc D j p = 1 := by
   rw [tiltSc, if_neg hj]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [GlobalTheory.FinPl.colMul, HypDec.jX, besDecAt, diagDec, rowBes, besDec, HermitianOrthogonalExtensionData.iso, rat, Matrix.map_apply, Matrix.mul_diagonal, Matrix.submatrix_apply, lam, id_eq, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem besCol_eq (G : GridData L sc) (j σ : ℕ) (hj : j + 2 * σ + 2 = D.R.m) (i : Fin σ) (a : AE D) :
     GlobalTheory.FinPl.colMul (besDecAt G j σ hj).jX i a =
@@ -53,17 +53,17 @@ theorem jacCol_eq (G : GridData L sc) (j σ : ℕ) (hj : j + 2 * σ + 2 = D.R.m)
       fun k => a * incA D ((G.rowDec (j + 1) (by omega)).a k (Fin.castLE (by omega) i)) := rfl
 
 /- English proof (translation)
-Introduce `i a ha`. Establish `hjm : j < D.R.m` using `by omega`. Establish `hjm' : j + 1 < D.R.m` using `by omega`. Take `⟨k, hk⟩` from `D.R.m_even`. Establish `hev : ¬ Odd j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Nat.not_odd_iff_even]; exact ⟨k - σ - 1, by omega⟩`. Establish `hod : Odd (j + 1)` using `⟨k - σ - 1, by omega⟩`. Rewrite using `[besCol_eq G j σ hj i a, jacCol_eq G j σ hj i a]`. Establish `l1 : rowN G j = (G.rowDec j hjm).lat (G.Λ (.top j)) (rowId D j)` using `dif_pos hjm`. Establish `l2 : rowN G (j + 1) = (G.rowDec (j + 1) hjm').lat (G.Λ (.top (j + 1))) (rowId D (j + 1))` using `dif_pos hjm'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpr : (Fin.castLE (by omega : σ ≤ D.R.m - 1 - j) i).rev ≠ Fin.castLE (by omega) i` using `fun e => by`. Use `congrArg Fin.val e` as an intermediate fact. Simplify using `only [Fin.val_rev, Fin.val_castLE] at this`. Use linear arithmetic over natural numbers and integers. Establish `hqr : (Fin.castLE (by omega : σ ≤ D.R.m - 1 - (j + 1)) i).rev ≠ Fin.castLE (by omega) i` using `fun e => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `congrArg Fin.val e` as an intermediate fact. Simplify using `only [Fin.val_rev, Fin.val_castLE] at this`. Use linear arithmetic over natural numbers and integers. Rewrite using `[GlobalTheory.FinPl.latV, l1, col_mem_iff (G.rowDec j hjm) _ hpr _ _ 1 {1} (fun x hx => by rw [Set.mem_singleton_iff.1 hx]; exact FractionalIdeal.one_mem_one _) (fun x hx => by`. Take `⟨o, rfl⟩` from `(FractionalIdeal.mem_one_iff _).1 hx`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨1, rfl, o, (one_mul _).symm⟩) v]`. Rewrite using `[GlobalTheory.FinPl.latA, l2, col_mem_iff (G.rowDec (j + 1) hjm') _ hqr _ _ D.host.AA {a | a ∈ D.host.AA} (fun x hx => hx) (fun x hx => ⟨x, hx, 1, by simp⟩) v]`. Establish `e3 : D.host.AA * rowId D (j + 1) (Fin.castLE (by omega) i) = FractionalIdeal.spanSingleton _ (D.host.xi0 ^ i.1)⁻¹ * (1 * rowId D j (Fin.castLE (by omega) i))`. Rewrite using `[rowId, rowId, tiltSc_even hev, tiltSc_odd hod _ (by simp only [Fin.val_castLE]; omega), FractionalIdeal.spanSingleton_one, one_mul, one_mul, stairId, stairId]`. Simplify using `only [Fin.val_castLE]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1 : D.R.m - 1 - j - i.1 = (D.R.m - 1 - (j + 1) - i.1) + 1` using `by omega`. Rewrite using `[h1, pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e3, GlobalTheory.StairLine.mem_idV_inv_mul (pow_ne_zero _ (GlobalTheory.Unf.Inhab.cmHost_imaginaryGenerator_ne_zero D)), mul_comm a]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem cols (G : GridData L sc) (j σ : ℕ) (hj : j + 2 * σ + 2 = D.R.m) (v : GlobalTheory.FinPl.Pl D) :
     GlobalTheory.FinPl.ColsAt (besDecAt G j σ hj) (xZero (rowJac G (j + 1) (by omega) σ (by omega)))
@@ -104,7 +104,7 @@ theorem cols (G : GridData L sc) (j σ : ℕ) (hj : j + 2 * σ + 2 = D.R.m) (v :
   rw [e3, GlobalTheory.StairLine.mem_idV_inv_mul (pow_ne_zero _ (GlobalTheory.Unf.Inhab.cmHost_imaginaryGenerator_ne_zero D)), mul_comm a]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, fun _ _ _ => ⟨0, fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ch _ _ => fun j σ hj v => cols ch.G j σ hj v⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem colsAt_bf : Big fun {D} {Γ} _ _ {Pl0 T} {A} {Ks} _ _ _ {R} ch => ∀ j σ (hj : j + 2 * σ + 2 = D.R.m) v,
     GlobalTheory.FinPl.ColsAt (besDecAt ch.G j σ hj) (xZero (rowJac ch.G (j + 1) (by omega) σ (by omega)))

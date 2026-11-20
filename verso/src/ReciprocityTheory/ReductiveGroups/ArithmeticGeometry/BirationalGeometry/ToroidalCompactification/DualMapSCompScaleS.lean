@@ -12,7 +12,7 @@ namespace ReciprocityTheory.ChartRestriction.G.Chart
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-The claim follows from `AlgHom.ext fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem toAlgHom_restrict {S : Type} [CommRing S] (R : Type) [CommRing R] [Algebra S R] (A A' : Type) [CommRing A]
     [Algebra S A] [Algebra R A] [IsScalarTower S R A] [CommRing A'] [Algebra S A'] [Algebra R A'] [IsScalarTower S R A']
@@ -30,9 +30,9 @@ variable {S : Type} [CommRing S] {G : Over (Spec (CommRingCat.of S))} [GrpObj G]
 
 include C in
 /- English proof (translation)
-Take `⟨h', hh', rfl⟩` from `tanS_chart C hy'`. Establish `hh'' : IsTanAt ((IsScalarTower.toAlgHom (Localization.Away s) A A').comp (epsA C A)) h'`. Introduce `b`. Rewrite using `[hh' b]`. Use `show algebraMap (Localization.Away s) A' (eps C b) = algebraMap A A' (algebraMap (Localization.Away s) A (eps C b))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `IsScalarTower.algebraMap_apply _ _ _ _`. Take `⟨m, hm, h, hh, he⟩` from `tan_lift (epsA C A) M h' hh''`. Use `⟨m, hm, pushR G (pt C h), chart_tanS C h hh, ?_⟩` and prove the remaining obligations. Rewrite using `[← toAlgHom_restrict (Localization.Away s) A A', chart_map, he, chart_scale]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tanS_lift {y' : sp (R₀ := S) (DualNumber A') ⟶ G} (hy' : TanS y') :
     ∃ m ∈ M, ∃ y : sp (R₀ := S) (DualNumber A) ⟶ G, TanS y ∧
@@ -50,7 +50,7 @@ theorem tanS_lift {y' : sp (R₀ := S) (DualNumber A') ⟶ G} (hy' : TanS y') :
 
 include C in
 /- English proof (translation)
-Take `⟨g₁, t₁, rfl⟩` from `tanS_chart C h₁`. Take `⟨g₂, t₂, rfl⟩` from `tanS_chart C h₂`. Rewrite `he` using `[← toAlgHom_restrict (Localization.Away s) A A', chart_map, chart_map]`. Take `⟨m, hm, hc⟩` from `tan_uniq (epsA C A) M g₁ g₂ t₁ t₂ (chart_inj C he)`. Conclude with `⟨m, hm, by rw [chart_scale, chart_scale, hc]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem tanS_uniq {y₁ y₂ : sp (R₀ := S) (DualNumber A) ⟶ G} (h₁ : TanS y₁) (h₂ : TanS y₂)
     (he : spMap (dualMapS (IsScalarTower.toAlgHom S A A')) ≫ y₁ = spMap (dualMapS (IsScalarTower.toAlgHom S A A')) ≫ y₂) :
@@ -69,42 +69,42 @@ section Scale
 variable {S : Type} [CommRing S]
 
 /- English proof (translation)
-Simplify using `[dualMapS, Bl.ThirdBlockLemmaB.goal1, TrivSqZeroExt.lift_def]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem dualMapS_fst' {A A' : Type} [CommRing A] [Algebra S A] [CommRing A'] [Algebra S A']
     (j : A →ₐ[S] A') (y : DualNumber A) : (dualMapS j y).fst = j y.fst := by
   simp [dualMapS, Bl.ThirdBlockLemmaB.goal1, TrivSqZeroExt.lift_def]
 
 /- English proof (translation)
-Simplify using `[dualMapS, Bl.ThirdBlockLemmaB.goal1, TrivSqZeroExt.lift_def]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem dualMapS_snd' {A A' : Type} [CommRing A] [Algebra S A] [CommRing A'] [Algebra S A']
     (j : A →ₐ[S] A') (y : DualNumber A) : (dualMapS j y).snd = j y.snd := by
   simp [dualMapS, Bl.ThirdBlockLemmaB.goal1, TrivSqZeroExt.lift_def]
 
 /- English proof (translation)
-Simplify using `[scaleS]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem scaleS_fst' {A : Type} [CommRing A] [Algebra S A] (c : A) (y : DualNumber A) :
     (scaleS (S := S) c y).fst = y.fst := by
   simp [scaleS]
 
 /- English proof (translation)
-Simplify using `[scaleS]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem scaleS_snd' {A : Type} [CommRing A] [Algebra S A] (c : A) (y : DualNumber A) :
     (scaleS (S := S) c y).snd = c * y.snd := by
   simp [scaleS]
 
 /- English proof (translation)
-Apply the tactic sequence `refine AlgHom.ext fun x => TrivSqZeroExt.ext ?_ ?_ <;> simp [scaleS] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem scaleS_comp {A : Type} [CommRing A] [Algebra S A] (a b : A) :
     (scaleS (S := S) a).comp (scaleS b) = scaleS (a * b) := by
   refine AlgHom.ext fun x => TrivSqZeroExt.ext ?_ ?_ <;> simp [scaleS] <;> ring
 
 /- English proof (translation)
-Use `AlgHom.ext fun x => TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, dualMapS_fst', scaleS_fst', scaleS_fst', dualMapS_fst']`. Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, dualMapS_snd', scaleS_snd', scaleS_snd', dualMapS_snd', map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem dualMapS_comp_scaleS {A A' : Type} [CommRing A] [Algebra S A] [CommRing A'] [Algebra S A'] (j : A →ₐ[S] A')
     (c : A) : (dualMapS j).comp (scaleS c) = (scaleS (j c)).comp (dualMapS j) := by
@@ -115,7 +115,7 @@ theorem dualMapS_comp_scaleS {A A' : Type} [CommRing A] [Algebra S A] [CommRing 
       dualMapS_snd', map_mul]
 
 /- English proof (translation)
-Use `AlgHom.ext fun x => TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Rewrite using `[AlgHom.comp_apply, dualMapS_fst', dualMapS_fst', dualMapS_fst', AlgHom.comp_apply]`. Rewrite using `[AlgHom.comp_apply, dualMapS_snd', dualMapS_snd', dualMapS_snd', AlgHom.comp_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem dualMapS_comp {A A' A'' : Type} [CommRing A] [Algebra S A] [CommRing A'] [Algebra S A'] [CommRing A'']
     [Algebra S A''] (j : A →ₐ[S] A') (j' : A' →ₐ[S] A'') : (dualMapS j').comp (dualMapS j) = dualMapS (j'.comp j) := by
@@ -124,7 +124,7 @@ theorem dualMapS_comp {A A' A'' : Type} [CommRing A] [Algebra S A] [CommRing A']
   · rw [AlgHom.comp_apply, dualMapS_snd', dualMapS_snd', dualMapS_snd', AlgHom.comp_apply]
 
 /- English proof (translation)
-Apply the tactic sequence `refine AlgHom.ext fun x => TrivSqZeroExt.ext ?_ ?_ <;> simp [scaleS]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem scaleS_one {A : Type} [CommRing A] [Algebra S A] : scaleS (S := S) (1 : A) = AlgHom.id S _ := by
   refine AlgHom.ext fun x => TrivSqZeroExt.ext ?_ ?_ <;> simp [scaleS]
@@ -132,7 +132,7 @@ theorem scaleS_one {A : Type} [CommRing A] [Algebra S A] : scaleS (S := S) (1 : 
 variable {G : Over (Spec (CommRingCat.of S))} [GrpObj G]
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, ← Category.assoc, spMap_comp, spMap_comp, dualMapS_comp_scaleS]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem res_scale {A A' : Type} [CommRing A] [Algebra S A] [CommRing A'] [Algebra S A'] (j : A →ₐ[S] A') (c : A)
     (y : sp (R₀ := S) (DualNumber A) ⟶ G) :
@@ -140,14 +140,14 @@ theorem res_scale {A A' : Type} [CommRing A] [Algebra S A] [CommRing A'] [Algebr
   rw [← Category.assoc, ← Category.assoc, spMap_comp, spMap_comp, dualMapS_comp_scaleS]
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, spMap_comp, scaleS_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem scale_scale {A : Type} [CommRing A] [Algebra S A] (a b : A) (y : sp (R₀ := S) (DualNumber A) ⟶ G) :
     spMap (scaleS (S := S) a) ≫ spMap (scaleS b) ≫ y = spMap (scaleS (a * b)) ≫ y := by
   rw [← Category.assoc, spMap_comp, scaleS_comp]
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, spMap_comp, dualMapS_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem res_res {A A' A'' : Type} [CommRing A] [Algebra S A] [CommRing A'] [Algebra S A'] [CommRing A'']
     [Algebra S A''] (j : A →ₐ[S] A') (j' : A' →ₐ[S] A'') (y : sp (R₀ := S) (DualNumber A) ⟶ G) :
@@ -165,7 +165,7 @@ abbrev Qv (s t : S) : Type := Localization.Away (algebraMap S (Localization.Away
 abbrev qL (s t : S) : Localization.Away s →ₐ[S] Qv s t := IsScalarTower.toAlgHom S _ _
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply S (Localization.Away s) (Qv s t)]`. Conclude with `IsLocalization.Away.algebraMap_isUnit _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_qv (s t : S) : IsUnit (algebraMap S (Qv s t) t) := by
   rw [IsScalarTower.algebraMap_apply S (Localization.Away s) (Qv s t)]
@@ -176,32 +176,30 @@ def qR (s t : S) : Localization.Away t →ₐ[S] Qv s t :=
     commutes' := fun r => IsLocalization.Away.lift_eq t (isUnit_qv s t) r }
 
 /- English proof (translation)
-Apply the tactic sequence `refine RingHom.ext fun a => TrivSqZeroExt.ext ?_ ?_ <;> simp [dualMapR]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dualMapR_comp {A A' A'' : Type} [CommRing A] [CommRing A'] [CommRing A''] (f : A →+* A') (g : A' →+* A'') :
     dualMapR (g.comp f) = (dualMapR g).comp (dualMapR f) := by
   refine RingHom.ext fun a => TrivSqZeroExt.ext ?_ ?_ <;> simp [dualMapR]
 
 /- English proof (translation)
-Use `glue_tan s hs w hw ?_` and prove the remaining obligations. Introduce `k l T α β hαβ`. Establish `hin : ∀ x : S, α (TrivSqZeroExt.inl (algebraMap S (Localization.Away (s k)) x)) = β (TrivSqZeroExt.inl (algebraMap S (Localization.Away (s l)) x))`. Introduce `x`. Establish `h1` using `RingHom.congr_fun hαβ (TrivSqZeroExt.inl x)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `h1` using `[dAway, dualMapR]`. Establish `heps : α (TrivSqZeroExt.inr 1) = β (TrivSqZeroExt.inr 1)`. Establish `h1` using `RingHom.congr_fun hαβ (TrivSqZeroExt.inr 1)`. Simplify `h1` using `[dAway, dualMapR]`. Establish `hu : IsUnit (α (TrivSqZeroExt.inl (algebraMap S (Localization.Away (s k)) (s l))))`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[hin]`. Conclude with `(IsLocalization.Away.algebraMap_isUnit (s l)).map (β.comp (TrivSqZeroExt.inlHom _ _))`. Take `⟨g0, hg0⟩ : ∃ g0 : Qv (s k) (s l) →+* T, ∀ a, g0 (algebraMap (Localization.Away (s k)) (Qv (s k) (s l)) a) = α (TrivSqZeroExt.inl a)` from `⟨IsLocalization.Away.lift _ (g := α.comp (TrivSqZeroExt.inlHom _ _)) hu, fun a => IsLocalization.Away.lift_eq _ (g := α.comp (TrivSqZeroExt.inlHom _ _)) hu a⟩`. Establish `he2 : α (TrivSqZeroExt.inr 1) * α (TrivSqZeroExt.inr 1) = 0`. Rewrite using `[← map_mul]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Take `⟨gm, hgm⟩ : ∃ gm : DualNumber (Qv (s k) (s l)) →+* T, ∀ x, gm x = g0 x.fst + g0 x.snd * α (TrivSqZeroExt.inr 1)` from `⟨{ toFun := fun x => g0 x.fst + g0 x.snd * α (TrivSqZeroExt.inr 1) map_one' := by simp map_mul' := fun x y => by`. Simplify using `only [TrivSqZeroExt.fst_mul, TrivSqZeroExt.snd_mul, smul_eq_mul, op_smul_eq_mul, map_add, map_mul]`. Take the linear combination `(-(g0 x.snd * g0 y.snd)) * he2`. Use the proof step `map_zero' := by simp`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use the proof step `map_add' := fun x y => by`. Simplify using `only [TrivSqZeroExt.fst_add, TrivSqZeroExt.snd_add, map_add]`. Use `ring }, fun _ => rfl⟩`. Establish `hdec : ∀ {R : Type} [CommRing R] (x : DualNumber R), x = TrivSqZeroExt.inl x.fst + TrivSqZeroExt.inl x.snd * TrivSqZeroExt.inr 1`. Introduce `R _ x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply the tactic sequence `ext <;> simp`. Establish `hR : g0.comp (qR (s k) (s l)).toRingHom = β.comp (TrivSqZeroExt.inlHom _ _)`. Apply `IsLocalization.ringHom_ext (Submonoid.powers (s l))` to reduce the goal to its premises. Use extensionality with `x`. Use `show g0 (qR (s k) (s l) (algebraMap S _ x)) = β (TrivSqZeroExt.inl (algebraMap S _ x))`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[AlgHom.commutes, IsScalarTower.algebraMap_apply S (Localization.Away (s k)) (Qv (s k) (s l)), hg0, hin]`. Establish `hR' : ∀ a, g0 (qR (s k) (s l) a) = β (TrivSqZeroExt.inl a)` using `fun a => RingHom.congr_fun hR a`. Establish `hα : α = gm.comp (dualMapS (qL (s k) (s l))).toRingHom`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, hgm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `conv_lhs => rw [hdec x]`. Rewrite using `[map_add, map_mul]`. Simplify using `[dualMapS_fst', dualMapS_snd', hg0]`. Establish `hβ : β = gm.comp (dualMapS (qR (s k) (s l))).toRingHom`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[RingHom.comp_apply, hgm]`. Use `conv_lhs => rw [hdec x]`. Rewrite using `[map_add, map_mul]`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, dualMapS_fst', dualMapS_snd', hR', heps]`. Establish `hk` using `congrArg (fun f => f.left) (hQ k l)`.
-
-Simplify using `only [Over.comp_left, spMap, Over.homMk_left] at hk`. Rewrite using `[hα, hβ, CommRingCat.ofHom_comp, CommRingCat.ofHom_comp, Spec.map_comp, Spec.map_comp, Category.assoc, Category.assoc, hk]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glue_tan' {n : ℕ} (s : Fin n → S) (hs : Ideal.span (Set.range s) = ⊤)
     (w : ∀ k, sp (R₀ := S) (DualNumber (Localization.Away (s k))) ⟶ G) (hw : ∀ k, TanS (w k))
@@ -270,11 +268,11 @@ theorem glue_tan' {n : ℕ} (s : Fin n → S) (hs : Ideal.span (Set.range s) = �
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Establish `hs' : Ideal.span (Set.range (fun k => (TrivSqZeroExt.inl (s k) : DualNumber S))) = ⊤`. Use `congrArg (Ideal.map (TrivSqZeroExt.inlHom S S)) hs` as an intermediate fact. Rewrite `this` using `[Ideal.map_span, Ideal.map_top, ← Set.range_comp]`. Conclude with `this`. Set `𝒰` to `(Scheme.affineOpenCoverOfSpanRangeEqTop (R := CommRingCat.of (DualNumber S)) _ hs').openCover`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `Scheme.Cover.hom_ext 𝒰 _ _ fun (k : Fin n) => ?_` and prove the remaining obligations. Establish `e : 𝒰.f k = Spec.map (CommRingCat.ofHom (toL (s k))) ≫ Spec.map (CommRingCat.ofHom (dAway (s k)))` using `by show Spec.map (CommRingCat.ofHom (algebraMap (DualNumber S) (Ld (s k)))) = _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, ← toL_comp]`. Rewrite using `[e, Category.assoc, Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `congrArg (fun q => Over.Hom.left q) (h k)`.
+A detailed English derivation is pending.
 -/
 theorem tan_ext_cover {n : ℕ} (s : Fin n → S) (hs : Ideal.span (Set.range s) = ⊤)
     {v₁ v₂ : sp (R₀ := S) (DualNumber S) ⟶ G}

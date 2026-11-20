@@ -3,7 +3,7 @@ import Development.WeilBound.RepresentationTheoryGL.UnitaryDualProof.CentralProd
 namespace PositivityTheory.RgUd.Prod.CSel
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.RgUd.Prod.CS.centralSub k`.
+A detailed English derivation is pending.
 -/
 theorem centralSub (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] :
     CentralSub k := PositivityTheory.RgUd.Prod.CS.centralSub k

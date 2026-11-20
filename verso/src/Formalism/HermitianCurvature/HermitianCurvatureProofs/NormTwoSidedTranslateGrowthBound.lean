@@ -14,9 +14,9 @@ open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.ThreeDimData
 variable {k r : ℕ}
 
 /- English proof (translation)
-Establish `hxi` using `(MatrixMultiplicationContinuity.uh_inv hx).1`. Establish `hM : x⁻¹ * A * y ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)` using `DDSmoothness.uh_mul (DDSmoothness.uh_mul hxi hA) hy`. Establish `h1 : 1 ≤ B.gN (x⁻¹ * A * y)` using `((hNI k r).2 _ hM).2`. Establish `hAp : 0 ≤ B.gN A ^ (-b)` using `Real.rpow_nonneg (Real.sqrt_nonneg _) _`. Establish `hxy : 0 ≤ (B.gN x * B.gN y) ^ b` using `Real.rpow_nonneg (mul_nonneg (Real.sqrt_nonneg _) (Real.sqrt_nonneg _)) _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Real.enorm_eq_ofReal hAp, ← ENNReal.ofReal_mul (mul_nonneg (abs_nonneg _) hxy), ← ofReal_norm]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_two_sided_translate_growth_bound (hNI : NormInv) {e0 : Mx k r → ℂ} {C0 a b : ℝ}
     (hb0e : ∀ y ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r), ‖e0 y‖ ≤ C0 * B.gN y ^ (-a))
@@ -40,11 +40,9 @@ theorem norm_two_sided_translate_growth_bound (hNI : NormInv) {e0 : Mx k r → �
     _ = |C0| * (B.gN x * B.gN y) ^ b * B.gN A ^ (-b) := by ring
 
 /- English proof (translation)
-Unfold `abelian₂`. Rewrite using `[← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Apply `lintegral_mono_ae` to reduce the goal to its premises. Use `filter_upwards [hp] with p hpp`. Rewrite using `[← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `lintegral_mono_ae` to reduce the goal to its premises. Use `filter_upwards [hq] with q hqq`. Establish `hQi` using `(MatrixMultiplicationContinuity.uh_inv hqq).1`. Establish `hA : (Matrix.of p.1 * Matrix.of p.2) * γ * (Matrix.of q.1 * Matrix.of q.2)⁻¹ ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)` using `DDSmoothness.uh_mul (DDSmoothness.uh_mul hpp hγ) hQi`. Establish `e : (Matrix.of x)⁻¹ * (Matrix.of p.1 * Matrix.of p.2) * γ * (Matrix.of q.1 * Matrix.of q.2)⁻¹ * Matrix.of y = (Matrix.of x)⁻¹ * ((Matrix.of p.1 * Matrix.of p.2) * γ * (Matrix.of q.1 * Matrix.of q.2)⁻¹) * Matrix.of y` using `by simp only [Matrix.mul_assoc]`.
-
-Rewrite using `[e]`. Conclude with `norm_two_sided_translate_growth_bound hNI hb0e hb0 hba hx hA hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lam_bound (hNI : NormInv) {e0 : Mx k r → ℂ} {C0 a b : ℝ}
     (hb0e : ∀ y ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r), ‖e0 y‖ ≤ C0 * B.gN y ^ (-a))
@@ -73,7 +71,7 @@ theorem lam_bound (hNI : NormInv) {e0 : Mx k r → ℂ} {C0 a b : ℝ}
   exact norm_two_sided_translate_growth_bound hNI hb0e hb0 hba hx hA hy
 
 /- English proof (translation)
-Unfold `Lam1`. Rewrite using `[← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Apply `lintegral_mono_ae` to reduce the goal to its premises. Use `filter_upwards [hp] with p hpp`. Conclude with `norm_two_sided_translate_growth_bound hNI hb0e hb0 hba hx hpp hy`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem lambda_integral_bound (hNI : NormInv) {e0 : Mx k r → ℂ} {C0 a b : ℝ}
     (hb0e : ∀ y ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r), ‖e0 y‖ ≤ C0 * B.gN y ^ (-a))

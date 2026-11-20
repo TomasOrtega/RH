@@ -63,9 +63,9 @@ def eN (n : ℕ) : Cn F n →ₗ[R] Cn F n := ((PInfty (X := simpX F)).f n).unop
 def hN (n : ℕ) : Cn F (n + 1) →ₗ[R] Cn F n := ((homotopyPInftyToId (simpX F)).hom n (n + 1)).unop.hom
 
 /- English proof (translation)
-Rewrite using `[AlternatingFaceMapComplex.obj_d_eq]`. Simplify using `only [unop_sum, unop_zsmul, ModuleCat.hom_sum, ModuleCat.hom_zsmul]`. Unfold `dn`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Int.cast_smul_eq_zsmul R]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Rewrite using `[← cosK_map_δ F n i]`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem d_unop (n : ℕ) :
     ((AlternatingFaceMapComplex.obj (simpX F)).d (n + 1) n).unop.hom = dn F n := by
@@ -79,13 +79,13 @@ theorem d_unop (n : ℕ) :
   rfl
 
 /- English proof (translation)
-Conclude with `congrArg (fun f => f.unop.hom) (PInfty_f_idem (X := simpX F) n)`.
+A detailed English derivation is pending.
 -/
 theorem eN_idem (n : ℕ) : eN F n ∘ₗ eN F n = eN F n := by
   exact congrArg (fun f => f.unop.hom) (PInfty_f_idem (X := simpX F) n)
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun f => f.unop.hom) ((PInfty (X := simpX F)).comm (n + 1) n)`. Rewrite using `[← d_unop]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eN_comm (n : ℕ) : eN F (n + 1) ∘ₗ dn F n = dn F n ∘ₗ eN F n := by
   have h := congrArg (fun f => f.unop.hom) ((PInfty (X := simpX F)).comm (n + 1) n)
@@ -93,9 +93,7 @@ theorem eN_comm (n : ℕ) : eN F (n + 1) ∘ₗ dn F n = dn F n ∘ₗ eN F n :=
   exact h
 
 /- English proof (translation)
-Establish `h` using `(homotopyPInftyToId (simpX F)).comm 0`. Rewrite `h` using `[Homotopy.dNext_zero_chainComplex, Homotopy.prevD_chainComplex, zero_add]`. Establish `key : eN F 0 = hN F 0 ∘ₗ dn F 0 + LinearMap.id`. Rewrite using `[← d_unop]`. Conclude with `congrArg (fun f => f.unop.hom) h`.
-
-Conclude with `key.trans (add_comm _ _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eN_zero : eN F 0 = LinearMap.id + hN F 0 ∘ₗ dn F 0 := by
   have h := (homotopyPInftyToId (simpX F)).comm 0
@@ -106,9 +104,9 @@ theorem eN_zero : eN F 0 = LinearMap.id + hN F 0 ∘ₗ dn F 0 := by
   exact key.trans (add_comm _ _)
 
 /- English proof (translation)
-Establish `h` using `(homotopyPInftyToId (simpX F)).comm (n + 1)`. Rewrite `h` using `[Homotopy.dNext_succ_chainComplex, Homotopy.prevD_chainComplex]`. Establish `key : eN F (n + 1) = dn F n ∘ₗ hN F n + hN F (n + 1) ∘ₗ dn F (n + 1) + LinearMap.id`. Rewrite using `[← d_unop, ← d_unop]`. Conclude with `congrArg (fun f => f.unop.hom) h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem eN_succ (n : ℕ) :
     eN F (n + 1) = LinearMap.id + dn F n ∘ₗ hN F n + hN F (n + 1) ∘ₗ dn F (n + 1) := by
@@ -121,7 +119,7 @@ theorem eN_succ (n : ℕ) :
   abel
 
 /- English proof (translation)
-Unfold `eN`. Express the relevant statement in the definitionally equal form `((simpX F).σ i ≫ (PInfty (X := simpX F)).f (n + 1)).unop.hom = 0`. Rewrite using `[σ_comp_PInfty]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cosMap_σ_eN (n : ℕ) (i : Fin (n + 1)) :
     cosMap F (SimplexCategory.σ i) ∘ₗ eN F (n + 1) = 0 := by
@@ -137,11 +135,9 @@ section Vanish
 variable {R : Type} [CommRing R] {P : Type} [PartialOrder P]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Simplify using `only [not_exists] at hne`. Establish `hanti : StrictAnti fun k : Fin (n + 2) => (c.obj k).unop`. Rewrite using `[Fin.strictAnti_iff_succ_lt]`. Introduce `i`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hle : (c.obj i.succ).unop ≤ (c.obj i.castSucc).unop` using `leOfHom (c.map (homOfLE (show i.castSucc < i.succ from Fin.castSucc_lt_succ).le)).unop`. Conclude with `lt_of_le_of_ne hle fun heq => hne i (Opposite.unop_injective heq).symm`. Use `haveI := Fintype.ofFinite P`. Establish `hcard` using `Fintype.card_le_of_injective _ hanti.injective`. Rewrite `hcard` using `[Fintype.card_fin, ← Nat.card_eq_fintype_card]`.
-
-Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_stutter [Finite P] (n : ℕ) (hn : Nat.card P < n + 1) (c : Fin (n + 2) ⥤ Pᵒᵖ) :
     ∃ i : Fin (n + 1), c.obj i.castSucc = c.obj i.succ := by
@@ -159,7 +155,7 @@ theorem exists_stutter [Finite P] (n : ℕ) (hn : Nat.card P < n + 1) (c : Fin (
   omega
 
 /- English proof (translation)
-Substitute `h` using the available equality. Substitute `hT` using the available equality. Establish `hφ : φ = 𝟙 _` using `Quiver.Hom.unop_inj (Subsingleton.elim _ _)`. Rewrite `h0` using `[hφ, mp_id]`. Conclude with `h0`.
+Substitute using the available equality. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zero_of_degenerate (F : Pᵒᵖ ⥤ CommAlgCat.{0} R) {m : ℕ} (g : Cn F m) {c₁ c₂ : Fin (m + 1) ⥤ Pᵒᵖ}
     (h : c₁ = c₂) {T : Pᵒᵖ} (φ : c₁.obj (Fin.last m) ⟶ T) (hT : c₂.obj (Fin.last m) = T)
@@ -171,13 +167,11 @@ theorem zero_of_degenerate (F : Pᵒᵖ ⥤ CommAlgCat.{0} R) {m : ℕ} (g : Cn 
   exact h0
 
 /- English proof (translation)
-Use `LinearMap.ext fun f => funext fun c => ?_` and prove the remaining obligations. Use `show eN F (n + 1) f c = 0`. Take `⟨i, hi⟩` from `exists_stutter n hn c`. Establish `h0` using `congrFun (LinearMap.congr_fun (cosMap_σ_eN F n i) f) ((SimplexCategory.δ i.castSucc).toOrderHom.monotone.functor ⋙ c)`. Rewrite `h0` using `[LinearMap.comp_apply, cosMap_apply, LinearMap.zero_apply, Pi.zero_apply]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hlast : (SimplexCategory.δ i.castSucc).toOrderHom (Fin.last n) = Fin.last (n + 1)` using `by show i.castSucc.succAbove (Fin.last n) = Fin.last (n + 1)`. Rewrite using `[Fin.succAbove_of_le_castSucc _ _ (Fin.castSucc_le_castSucc_iff.mpr (Fin.le_last i))]`. Conclude with `Fin.succ_last n`. Establish `hfun : (SimplexCategory.σ i).toOrderHom.monotone.functor ⋙ ((SimplexCategory.δ i.castSucc).toOrderHom.monotone.functor ⋙ c) = c` using `by fapply CategoryTheory.Functor.ext`. Introduce `k show c.obj (i.castSucc.succAbove (i.predAbove k)) = c.obj k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hk : k = i.castSucc`. Substitute `hk` using the available equality. Rewrite using `[Fin.predAbove_castSucc_self, Fin.succAbove_castSucc_self]`. Conclude with `hi.symm`. Rewrite using `[Fin.succAbove_predAbove hk]`.
-
-Introduce `_ _ _`. Conclude with `Quiver.Hom.unop_inj (Subsingleton.elim _ _)`. Conclude with `zero_of_degenerate F (eN F (n + 1) f) hfun _ (congrArg c.obj hlast.symm) h0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem eN_vanish [Finite P] (F : Pᵒᵖ ⥤ CommAlgCat.{0} R) (n : ℕ) (hn : Nat.card P < n + 1) :
     eN F (n + 1) = 0 := by
@@ -208,7 +202,7 @@ theorem eN_vanish [Finite P] (F : Pᵒᵖ ⥤ CommAlgCat.{0} R) (n : ℕ) (hn : 
 end Vanish
 
 /- English proof (translation)
-Use `⟨eN F, hN F, Nat.card P, eN_idem F, eN_comm F, eN_zero F, eN_succ F, fun n hn => ?_⟩` and prove the remaining obligations. Consider the cases of `n with`. Consider the case `zero => exact absurd hn (Nat.not_lt_zero _)`. Consider the case `succ m => exact eN_vanish F m hn`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem exists_normalisation {R : Type} [CommRing R] (P : Type) [SemilatticeInf P] [Finite P] (F : Pᵒᵖ ⥤ CommAlgCat.{0} R) :
     ∃ (e : ∀ n, Cn F n →ₗ[R] Cn F n) (h : ∀ n, Cn F (n + 1) →ₗ[R] Cn F n) (B : ℕ),

@@ -12,7 +12,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.StepData GlobalTheory.SplitWeil
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.LevProd.phi_mem_KO_of_not_twAt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FTrueGeometryLatticeFinal.lean&line=186#L186)
 -/

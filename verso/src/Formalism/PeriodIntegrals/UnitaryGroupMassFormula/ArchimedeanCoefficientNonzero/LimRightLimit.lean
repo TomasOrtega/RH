@@ -12,7 +12,7 @@ open Formalism.FourierDecayAlt.B Formalism.QuantumDeterminants Formalism.MainNot
 variable {k r : ℕ}
 
 /- English proof (translation)
-Apply `image_eq_zero_of_notMem_tsupport` to reduce the goal to its premises. Introduce `hm`. Use `D.χ_supp hm` as an intermediate fact. Simplify using `only [Set.mem_Ioo] at this`. Combine the linear relations using `[this.1]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem lim_chi_zero {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (D : RealPlaceData k r Wp Wq) {t : ℝ} (ht : t ≤ 0) : D.χ t = 0 := by
@@ -23,7 +23,7 @@ theorem lim_chi_zero {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   linarith [this.1]
 
 /- English proof (translation)
-The claim follows from `IsCompact.of_isClosed_subset isCompact_Icc (isClosed_tsupport _) (D.χ_supp.trans Set.Ioo_subset_Icc_self)`.
+A detailed English derivation is pending.
 -/
 theorem lim_chi_hcs {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (D : RealPlaceData k r Wp Wq) : HasCompactSupport D.χ :=
@@ -31,9 +31,9 @@ theorem lim_chi_hcs {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
     (D.χ_supp.trans Set.Ioo_subset_Icc_self)
 
 /- English proof (translation)
-Set `I : Wp →ₗᵢ[ℂ] Wp` to `⟨(π H).toLinearMap, hu H hH⟩`. Establish `h1 : π H (π H⁻¹ ξ) = ξ` using `BesselUnitaryEquiv.rep_inv hπ hH hHi (Matrix.mul_nonsing_inv _ hHu) ξ`. Establish `h2` using `I.inner_map_map (π H⁻¹ ξ) ξ`. Express the relevant statement in the definitionally equal form `⟪π H (π H⁻¹ ξ), π H ξ⟫_ℂ = _ at h2`. Rewrite `h2` using `[h1]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2.symm`.
+A detailed English derivation is pending.
 -/
 theorem lim_pi_inner {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] {U : Set (Mat k r)}
     {π : Mat k r → (Wp →L[ℂ] Wp)} (hπ : IsCRepOn U π) (hu : ∀ h ∈ U, ∀ v, ‖π h v‖ = ‖v‖)
@@ -47,14 +47,14 @@ theorem lim_pi_inner {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ 
   exact h2.symm
 
 /- English proof (translation)
-Rewrite using `[Matrix.nonsing_inv_nonsing_inv _ hu, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lim_conj_mul {H M : Mat k r} (hu : IsUnit H.det) : H * (H⁻¹ * M * H⁻¹⁻¹) = M * H := by
   rw [Matrix.nonsing_inv_nonsing_inv _ hu, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu,
     Matrix.one_mul]
 
 /- English proof (translation)
-Unfold `psi`. Rewrite using `[(Formalism.QuantumDeterminants.unitary_weyl_normal_holds k r z hz _ (Formalism.QuantumDeterminants.WeylGroupFacts.uw_inv hH) M hM).2]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lim_psi_conj {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {H M : Mat k r} (hH : H ∈ UWset k r z)
     (hM : M ∈ Nset k r) :
@@ -64,9 +64,9 @@ theorem lim_psi_conj {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {H M : 
   rfl
 
 /- English proof (translation)
-Take `⟨h, m⟩` from `x`. Establish `hu` using `Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh hh.1`. Establish `hi` using `Formalism.QuantumDeterminants.WeylGroupFacts.uw_inv hh`. Establish `eM : Matrix.of h * Matrix.of (conjM (Matrix.of h)⁻¹ m) = Matrix.of m * Matrix.of h` using `lim_conj_mul (M := Matrix.of m) hu`. Establish `eψ : psi k r D.z cStd (Matrix.of (conjM (Matrix.of h)⁻¹ m)) = Complex.exp (Complex.I * ((lam k r D.z (Matrix.of m) : ℝ) : ℂ))` using `lim_psi_conj D.z_mem hh hm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eπ` using `lim_pi_inner D.π_rep D.π_unitary hh hi hu ξ`. Simplify using `only [Formalism.FourierDecayAlt.ThreeDimData.beInt, Lf]`. Rewrite using `[eM, eψ, ContinuousLinearMap.smul_apply, inner_smul_right, star_mul', star_mul', star_star, Complex.star_def, inner_conj_symm, inner_conj_symm, eπ]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lim_left_pt {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (D : RealPlaceData k r Wp Wq)
@@ -89,11 +89,11 @@ theorem lim_left_pt {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   ring
 
 /- English proof (translation)
-Take `⟨h, m⟩` from `x`. Establish `hu` using `Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh hh.1`. Establish `eM : Matrix.of h * Matrix.of (conjM (Matrix.of h)⁻¹ m) = Matrix.of m * Matrix.of h` using `lim_conj_mul (M := Matrix.of m) hu`. Establish `eψ : psi k r D.z' cStd (Matrix.of (conjM (Matrix.of h)⁻¹ m)) = Complex.exp (Complex.I * ((lam k r D.z' (Matrix.of m) : ℝ) : ℂ))` using `lim_psi_conj D.z'_mem hh hm`. Establish `es : ∀ a : ℝ, star (Complex.exp (Complex.I * (a : ℂ))) = Complex.exp (Complex.I * ((-a : ℝ) : ℂ))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a`. Rewrite using `[Complex.star_def, ← Complex.exp_conj, map_mul, Complex.conj_I, Complex.conj_ofReal]`. Use `push_cast`. Put the polynomial expressions in normal form. Simplify using `only [Formalism.FourierDecayAlt.ThreeDimData.beInt, Rf]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Simplify by unfolding definitions.
 
-Rewrite using `[eM, eψ, es, ContinuousLinearMap.smul_apply, inner_smul_right]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lim_right_pt {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] (D : RealPlaceData k r Wp Wq)
@@ -118,15 +118,13 @@ theorem lim_right_pt {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   ring
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ _ _ D ε lm H _ _ _ σ hHC hDS v ξ hv hI`. Use `haveI := lim_sf D.haarW`. Use `haveI := lim_sf D.haarN`. Use `set f : Mt k r × Mt k r → ℂ := fun p => star ⟪ξ, Formalism.FourierDecayAlt.ThreeDimData.beInt D.z cStd D.π σ v v p ξ⟫_ℂ with hf`. Set `L : (Wp →L[ℂ] Wp) →L[ℂ] ℂ` to `(innerSL ℂ ξ).comp (ContinuousLinearMap.apply ℂ Wp ξ)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLi : Integrable (fun p => L (Formalism.FourierDecayAlt.ThreeDimData.beInt D.z cStd D.π σ v v p)) (D.μW.prod D.μN)` using `L.integrable_comp hI`. Establish `hfi : Integrable f (D.μW.prod D.μN)` using `(Complex.conjCLE.toContinuousLinearMap).integrable_comp hLi`. Establish `hfint : ∫ p, f p ∂(D.μW.prod D.μN) = star ⟪ξ, Formalism.FourierDecayAlt.ThreeDimData.be D.z cStd D.π σ D.μW D.μN v v ξ⟫_ℂ`. Establish `h1 : ∫ p, f p ∂(D.μW.prod D.μN) = (starRingEnd ℂ) (∫ p, L (Formalism.FourierDecayAlt.ThreeDimData.beInt D.z cStd D.π σ v v p) ∂(D.μW.prod D.μN))` using `integral_conj`. Rewrite using `[h1, L.integral_comp_comm hI]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hCI` using `Formalism.FourierDecayAlt.P.conjugation_invariance_every_setting k r Wp Wq D`. Establish `hC : ∀ h : Mt k r, Matrix.of h ∈ UWset k r D.z → D.μN.map (conjM (Matrix.of h)⁻¹) = D.μN` using `fun h hh => hCI _ (Or.inl (Formalism.QuantumDeterminants.WeylGroupFacts.uw_inv hh))`. Establish `q1 : ∀ᵐ x ∂(D.μW.prod D.μN), Matrix.of x.1 ∈ UWset k r D.z` using `Measure.quasiMeasurePreserving_fst.ae (ae_iff.2 D.haarW.conc)`. Establish `q2 : ∀ᵐ x ∂(D.μW.prod D.μN), Matrix.of x.2 ∈ Nset k r` using `Measure.quasiMeasurePreserving_snd.ae (ae_iff.2 D.haarN.conc)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfg : ∀ᵐ x ∂(D.μW.prod D.μN), f (x.1, conjM (Matrix.of x.1)⁻¹ x.2) = Lf D σ v ξ x * Complex.exp (Complex.I * ((lam k r D.z (Matrix.of x.2) : ℝ) : ℂ))` using `by filter_upwards [q1, q2] with x hh hm`. Conclude with `lim_left_pt D σ v ξ x hh hm`. Take `⟨hLi2, hLint⟩` from `lim_conj_transfer D.μW D.μN (UWset k r D.z) (ae_iff.2 D.haarW.conc) hC f _ hfi hfg`. Establish `hJ` using `Formalism.FourierDecayAlt.P.dilation_jacobian_every_setting k r Wp Wq D`. Establish `hΛ : ∀ t : ℝ, 0 < t → ∀ n ∈ {n : Mt k r | Matrix.of n ∈ Nset k r}, (fun n : Mt k r => lam k r D.z (Matrix.of n)) (conjM (aDil k r t) n) = t * (fun n : Mt k r => lam k r D.z (Matrix.of n)) n` using `fun t ht n hn => (Formalism.FourierDecayAlt.P.dilation_unipotent_measure k r D.z t ht.ne' D.z_mem (Matrix.of n) hn).2.2`.
-
-Establish `key` using `lim_dil_fubini D.μW D.μN hJ D.χ D.χ_smooth.continuous (lim_chi_hcs D) (fun t ht => lim_chi_zero D ht) D.χ_int {n : Mt k r | Matrix.of n ∈ Nset k r} (ae_iff.2 D.haarN.conc) (fun n : Mt k r => lam k r D.z (Matrix.of n)) hΛ (Lf D σ v ξ) hLi2`. Rewrite using `[← hfint, ← hLint]`. Conclude with `key`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lim_leftLimit : LeftLimit := by
   intro k r Wp Wq _ _ _ _ _ _ D ε lm H _ _ _ σ hHC hDS v ξ hv hI
@@ -169,15 +167,13 @@ theorem lim_leftLimit : LeftLimit := by
   exact key
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ _ _ D ε lm H _ _ _ σ hHC hDS v' ξ' hv' hI`. Use `haveI := lim_sf D.haarW'`. Use `haveI := lim_sf D.haarN`. Use `set f : Mt k r × Mt k r → ℂ := fun p => ⟪ξ', Formalism.FourierDecayAlt.ThreeDimData.beInt D.z' cStd D.π' σ v' v' p ξ'⟫_ℂ with hf`. Set `L : (Wq →L[ℂ] Wq) →L[ℂ] ℂ` to `(innerSL ℂ ξ').comp (ContinuousLinearMap.apply ℂ Wq ξ')`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfi : Integrable f (D.μW'.prod D.μN)` using `L.integrable_comp hI`. Establish `hfint : ∫ p, f p ∂(D.μW'.prod D.μN) = ⟪ξ', Formalism.FourierDecayAlt.ThreeDimData.be D.z' cStd D.π' σ D.μW' D.μN v' v' ξ'⟫_ℂ` using `L.integral_comp_comm hI`. Establish `hCI` using `Formalism.FourierDecayAlt.P.conjugation_invariance_every_setting k r Wp Wq D`. Establish `hC : ∀ h : Mt k r, Matrix.of h ∈ UWset k r D.z' → D.μN.map (conjM (Matrix.of h)⁻¹) = D.μN` using `fun h hh => hCI _ (Or.inr (Formalism.QuantumDeterminants.WeylGroupFacts.uw_inv hh))`. Establish `q1 : ∀ᵐ x ∂(D.μW'.prod D.μN), Matrix.of x.1 ∈ UWset k r D.z'` using `Measure.quasiMeasurePreserving_fst.ae (ae_iff.2 D.haarW'.conc)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `q2 : ∀ᵐ x ∂(D.μW'.prod D.μN), Matrix.of x.2 ∈ Nset k r` using `Measure.quasiMeasurePreserving_snd.ae (ae_iff.2 D.haarN.conc)`. Establish `hfg : ∀ᵐ x ∂(D.μW'.prod D.μN), f (x.1, conjM (Matrix.of x.1)⁻¹ x.2) = Rf D σ v' ξ' x * Complex.exp (Complex.I * ((-lam k r D.z' (Matrix.of x.2) : ℝ) : ℂ))` using `by filter_upwards [q1, q2] with x hh hm`. Conclude with `lim_right_pt D σ v' ξ' x hh hm`. Take `⟨hLi2, hLint⟩` from `lim_conj_transfer D.μW' D.μN (UWset k r D.z') (ae_iff.2 D.haarW'.conc) hC f _ hfi hfg`. Establish `hJ` using `Formalism.FourierDecayAlt.P.dilation_jacobian_every_setting k r Wp Wq D`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hΛ : ∀ t : ℝ, 0 < t → ∀ n ∈ {n : Mt k r | Matrix.of n ∈ Nset k r}, (fun n : Mt k r => -lam k r D.z' (Matrix.of n)) (conjM (aDil k r t) n) = t * (fun n : Mt k r => -lam k r D.z' (Matrix.of n)) n`. Introduce `t ht n hn`. Use `(Formalism.FourierDecayAlt.P.dilation_unipotent_measure k r D.z' t ht.ne' D.z'_mem (Matrix.of n) hn).2.2` as an intermediate fact. Use `show -lam k r D.z' (aDil k r t * Matrix.of n * (aDil k r t)⁻¹) = t * -lam k r D.z' (Matrix.of n)`. Rewrite using `[this]`.
-
-Expand and normalize the polynomial expressions, which then agree. Establish `key` using `lim_dil_fubini D.μW' D.μN hJ D.χ D.χ_smooth.continuous (lim_chi_hcs D) (fun t ht => lim_chi_zero D ht) D.χ_int {n : Mt k r | Matrix.of n ∈ Nset k r} (ae_iff.2 D.haarN.conc) (fun n : Mt k r => -lam k r D.z' (Matrix.of n)) hΛ (Rf D σ v' ξ') hLi2`. Rewrite using `[← hfint, ← hLint]`. Conclude with `key`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lim_rightLimit : RightLimit := by
   intro k r Wp Wq _ _ _ _ _ _ D ε lm H _ _ _ σ hHC hDS v' ξ' hv' hI

@@ -13,9 +13,9 @@ section Alg
 variable {R : Type} [CommRing R] [IsDomain R]
 
 /- English proof (translation)
-Establish `h1 : ∏ j ∈ Finset.range m, φ (j + 1) ^ (m - j) = ∏ j ∈ Finset.range (m + 1), φ (j + 1) ^ (m - j)`. Rewrite using `[Finset.prod_range_succ]`. Simplify using the standard rewrite rules. Rewrite using `[h1, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun j hj => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hj' : j ≤ m` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hj)`. Rewrite using `[← pow_succ]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 -/
 theorem tri_succ (φ : ℕ → R) (m : ℕ) :
     ∏ j ∈ Finset.range (m + 1), φ (j + 1) ^ (m + 1 - j) =
@@ -31,11 +31,11 @@ theorem tri_succ (φ : ℕ → R) (m : ℕ) :
   omega
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro _`. Simplify using the standard rewrite rules. Consider the case `succ m ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `hm`. Establish `h1` using `ih (by omega)`. Establish `h2` using `hrec m hm`. Establish `h3` using `hne m (by omega)`. Apply `mul_right_cancel₀ h3` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Finset.prod_range_succ]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem ratio (g φ : ℕ → R) (k : ℕ) (hne : ∀ j, j ≤ k → g j ≠ 0)
     (hrec : ∀ j, j + 1 ≤ k → g (j + 2) * g j = φ (j + 1) * g (j + 1) ^ 2) :
@@ -55,11 +55,11 @@ theorem ratio (g φ : ℕ → R) (k : ℕ) (hne : ∀ j, j ≤ k → g j ≠ 0)
       _ = _ := by rw [h1]; ring
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro _`. Simplify using the standard rewrite rules. Consider the case `succ m ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `hm`. Establish `h1` using `ih (by omega)`. Establish `h2` using `ratio g φ k hne hrec (m + 1) hm`. Rewrite using `[tri_succ]`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← h0, h2]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by rw [h1]; ring`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem closed (g φ : ℕ → R) (e x : R) (k : ℕ) (h0 : g 0 = e * x) (hne : ∀ j, j ≤ k → g j ≠ 0)
     (hrec : ∀ j, j + 1 ≤ k → g (j + 2) * g j = φ (j + 1) * g (j + 1) ^ 2) :
@@ -82,7 +82,7 @@ theorem closed (g φ : ℕ → R) (e x : R) (k : ℕ) (h0 : g 0 = e * x) (hne : 
 end Alg
 
 /- English proof (translation)
-Consider the cases of `P with`. Consider the case `zero => exact absurd rfl hP`. Consider the case `some x y h => rfl`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem scaled_x_eq_off_origin {K : Type} [Field K] (W : WeierstrassCurve K) (P : W.toAffine.Point) (hP : P ≠ 0) :
     x2 W P = X ^ 2 * xT W P := by
@@ -91,23 +91,23 @@ theorem scaled_x_eq_off_origin {K : Type} [Field K] (W : WeierstrassCurve K) (P 
   | some x y h => rfl
 
 /- English proof (translation)
-The claim follows from `Equiv.sum_comp (Equiv.addRight Q) M`.
+A detailed English derivation is pending.
 -/
 theorem sum_add {A : Type} [AddCommGroup A] [Fintype A] (M : A → ℝ) (Q : A) :
     ∑ P, M (P + Q) = ∑ P, M P :=
   Equiv.sum_comp (Equiv.addRight Q) M
 
 /- English proof (translation)
-The claim follows from `Equiv.sum_comp (Equiv.subRight Q) M`.
+A detailed English derivation is pending.
 -/
 theorem sum_sub {A : Type} [AddCommGroup A] [Fintype A] (M : A → ℝ) (Q : A) :
     ∑ P, M (P - Q) = ∑ P, M P :=
   Equiv.sum_comp (Equiv.subRight Q) M
 
 /- English proof (translation)
-Use `Fintype.ofFinite A` as an intermediate fact. Establish `hs : ∑ P : A, (M₀ (P + Q) + M₀ (P - Q) - 2 * M₀ P) = ∑ _P : A, 2 * c` using `Finset.sum_congr rfl fun P _ => h P`. Rewrite `hs` using `[Finset.sum_sub_distrib, Finset.sum_add_distrib, sum_add, sum_sub, ← Finset.mul_sum, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Establish `hc : (Fintype.card A : ℝ) ≠ 0`. Establish `: 0 < Fintype.card A` using `Fintype.card_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this.ne'` after adjusting the coercions. Establish `: (Fintype.card A : ℝ) * (2 * c) = 0` using `by rw [← hs]; ring`. Break down `mul_eq_zero.mp this with h' | h'` into its components or cases. Conclude with `absurd h' hc`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sum_zero {A : Type} [AddCommGroup A] [Finite A] (M₀ : A → ℝ) (Q : A) (c : ℝ)
     (h : ∀ P : A, M₀ (P + Q) + M₀ (P - Q) - 2 * M₀ P = 2 * c) : c = 0 := by
@@ -127,19 +127,19 @@ theorem sum_zero {A : Type} [AddCommGroup A] [Finite A] (M₀ : A → ℝ) (Q : 
 end Power
 
 /- English proof (translation)
-Introduce `K _ _ W T _ π G hG ε h0 t k hk`. Take `⟨hG1, hG2, hG3⟩` from `hG`. Establish `hε : ε ≠ 0`. Take `⟨ε', hn, he⟩` from `hG1 0 (map_zero π)`. Establish `h1 : coeff 1 (C ε * X : K⟦X⟧) = coeff 1 (C ε' * X : K⟦X⟧)` using `by rw [← h0, ← he]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [coeff_C_mul, coeff_one_X, mul_one] at h1`. Introduce `h`. Rewrite `hn` using `[← h1, h, norm_zero]`. Conclude with `zero_ne_one hn`. Establish `hX : (X : K⟦X⟧) ≠ 0` using `X_ne_zero`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : ∀ j, j ≤ k → G (j • t) ≠ 0`. Introduce `j hj`. Break down `Nat.eq_zero_or_pos j with rfl | hpos` into its components or cases. Rewrite using `[zero_smul, h0]`. Conclude with `mul_ne_zero (by simpa using hε) hX`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h`. Apply `hG2 (j • t) (hk j hpos hj)` to reduce the goal to its premises. Rewrite using `[h, map_zero]`. Establish `hrec : ∀ j, j + 1 ≤ k → G ((j + 2) • t) * G (j • t) = (C (constantCoeff (G t) ^ 2) * (C (px W (π t)) - xT W (π ((j + 1) • t)))) * G ((j + 1) • t) ^ 2`. Introduce `j hj`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : π t ≠ 0`. Use `hk 1 le_rfl (by omega)` as an intermediate fact. Rewrite `this` using `[one_smul]`. Then use the resulting hypothesis. Establish `h` using `hG3 ((j + 1) • t) t ht`. Rewrite `h` using `[Power.scaled_x_eq_off_origin W _ (hk (j + 1) (by omega) hj)]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (j + 1) • t + t = (j + 2) • t` using `by rw [← succ_nsmul]`. Establish `e2 : (j + 1) • t - t = j • t` using `by rw [succ_nsmul]; abel`. Rewrite `h` using `[e1, e2]`. Apply `mul_left_cancel₀ (pow_ne_zero 2 hX)` to reduce the goal to its premises. Rewrite using `[h]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h` using `Power.closed (fun j => G (j • t)) (fun j => C (constantCoeff (G t) ^ 2) * (C (px W (π t)) - xT W (π (j • t)))) (C ε) X k (by simpa using h0) hne hrec k le_rfl`. Simplify using `using h`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem translate_power : TransPower := by
   intro K _ _ W T _ π G hG ε h0 t k hk
@@ -180,22 +180,22 @@ theorem translate_power : TransPower := by
   simpa using h
 
 /- English proof (translation)
-Introduce `A _ _ M h Q hQ`. Conclude with `Power.sum_zero M Q (M Q) fun P => h P Q hQ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem parallelogram_sum : ParSum := by
   intro A _ _ M h Q hQ
   exact Power.sum_zero M Q (M Q) fun P => h P Q hQ
 
 /- English proof (translation)
-Introduce `A _ _ M₀ m h`. Establish `hm : ∀ Q : A, Q ≠ 0 → m Q = 0` using `fun Q hQ => Power.sum_zero M₀ Q (m Q) fun P => h P Q hQ`. Use `⟨hm, ?_⟩` and prove the remaining obligations. Establish `hpar : ∀ P Q : A, M₀ (P + Q) + M₀ (P - Q) = 2 * M₀ P`. Introduce `P Q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hQ : Q = 0`. Substitute `hQ` using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Use `h P Q hQ` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite `this` using `[hm Q hQ]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `Fintype.ofFinite A` as an intermediate fact. Take `⟨P₀, -, hmax⟩` from `Finset.exists_max_image (Finset.univ : Finset A) M₀ ⟨0, Finset.mem_univ 0⟩`. Establish `hconst : ∀ R : A, M₀ R = M₀ P₀`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `R`. Establish `h1` using `hpar P₀ (R - P₀)`. Establish `h2` using `hmax (P₀ + (R - P₀)) (Finset.mem_univ _)`. Establish `h3` using `hmax (P₀ - (R - P₀)) (Finset.mem_univ _)`. Establish `e : P₀ + (R - P₀) = R` using `by abel`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1`, `h2` using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `P`. Rewrite using `[hconst P, hconst 0]`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem parallelogram_sum_two : ParSumTwo := by
   intro A _ _ M₀ m h

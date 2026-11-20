@@ -10,9 +10,9 @@ namespace GlobalTheory.TeichAt
 open Formalism.L2.NT GlobalTheory.ParRay
 
 /- English proof (translation)
-Establish `hpos` using `(isOfFinOrder_fbar hx).orderOf_pos`. Use `set n := orderOf x with hn`. Use `(Nat.Coprime.symm ((Nat.Prime.coprime_iff_not_dvd hg.out).2 ?_))` and prove the remaining obligations. Introduce `hdvd`. Establish `hm : g ^ n.factorization g * (n / g ^ n.factorization g) = n` using `Nat.ordProj_mul_ordCompl_eq_self n g`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : x ^ (g ^ n.factorization g * (n / g ^ n.factorization g)) = 1` using `by rw [hm, hn, pow_orderOf_eq_one]`. Establish `h2 : x ^ (n / g ^ n.factorization g) = 1` using `pow_eq_one_of_charP g x _ _ h1`. Establish `h3 : n ∣ n / g ^ n.factorization g` using `orderOf_dvd_of_pow_eq_one h2`. Conclude with `Nat.not_dvd_ordCompl hg.out hpos.ne' (hdvd.trans h3)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem orderOf_coprime {g : ℕ} [hg : Fact g.Prime] {x : Formalism.CyclotomicNorms.Fbar g} (hx : x ≠ 0) : (orderOf x).Coprime g := by
   have hpos := (isOfFinOrder_fbar hx).orderOf_pos
@@ -26,9 +26,9 @@ theorem orderOf_coprime {g : ℕ} [hg : Fact g.Prime] {x : Formalism.CyclotomicN
   exact Nat.not_dvd_ordCompl hg.out hpos.ne' (hdvd.trans h3)
 
 /- English proof (translation)
-Establish `h : t 0 * t 0 = t 0` using `by rw [← map_mul, mul_zero]`. Assume the negation of the conclusion as `h0`. Establish `h1 : t 0 = 1` using `(mul_eq_left₀ h0).1 h`. Take `⟨x, hx⟩` from `Infinite.exists_notMem_finset ({0, 1} : Finset (Formalism.CyclotomicNorms.Fbar g))`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton, not_or] at hx`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Apply `hx.2` to reduce the goal to its premises. Use `ht x 1 hx.1 one_ne_zero ?_` and prove the remaining obligations. Establish `: t x = t x * t 0` using `by rw [h1, mul_one]`. Rewrite using `[this, ← map_mul, mul_zero, h1, map_one]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_zero_of_inj {Ω : Type} [Field Ω] {g : ℕ} [Fact g.Prime] (t : Formalism.CyclotomicNorms.Fbar g →* Ω)
     (ht : ∀ x y : Formalism.CyclotomicNorms.Fbar g, x ≠ 0 → y ≠ 0 → t x = t y → x = y) : t 0 = 0 := by
@@ -44,25 +44,23 @@ theorem map_zero_of_inj {Ω : Type} [Field Ω] {g : ℕ} [Fact g.Prime] (t : For
   rw [this, ← map_mul, mul_zero, h1, map_one]
 
 /- English proof (translation)
-Introduce `g _ A κ t ht`. Use `set s := redHom A κ t with hs_def`. Establish `hs : ∀ x, s x = redThrough A κ (t x)` using `fun x => rfl`. Establish `ht0 : t 0 = 0` using `map_zero_of_inj t ht`. Establish `hs0 : s 0 = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs, ht0]`. Unfold `redThrough`. Rewrite using `[dif_pos (zero_mem A)]`. Establish `: (⟨0, zero_mem A⟩ : A) = 0` using `rfl`. Rewrite using `[this, map_zero, map_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsne : ∀ x, x ≠ 0 → s x ≠ 0`. Introduce `x hx h0`. Establish `hpos` using `(isOfFinOrder_fbar hx).orderOf_pos`. Establish `: s x ^ orderOf x = 1` using `by rw [← map_pow, pow_orderOf_eq_one, map_one]`. Rewrite `this` using `[h0, zero_pow hpos.ne']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `zero_ne_one this`. Establish `hinj : Function.Injective s`. Introduce `x y h`. Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Break down `eq_or_ne y 0 with rfl | hy` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Separate the alternatives or extract the components of the hypothesis.
 
-Both sides reduce to the same expression. Conclude with `absurd (h.symm.trans hs0) (hsne y hy)`. Break down `eq_or_ne y 0 with rfl | hy` into its components or cases. Conclude with `absurd (h.trans hs0) (hsne x hx)`. Conclude with `redHom_inj A κ t ht x y hx hy (orderOf_coprime hx) (orderOf_coprime hy) h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hsurj : Function.Surjective s`. Introduce `y`. Break down `eq_or_ne y 0 with rfl | hy` into its components or cases. Conclude with `⟨0, hs0⟩`. Establish `hn` using `(isOfFinOrder_fbar hy).orderOf_pos`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `set n := orderOf y`. Establish `hmem : ∀ z : Formalism.CyclotomicNorms.Fbar g, z ∈ nthRootsFinset n (1 : Formalism.CyclotomicNorms.Fbar g) ↔ z ^ n = 1` using `fun z => mem_nthRootsFinset hn 1`. Take `⟨a, -, ha⟩` from `Finset.surj_on_of_inj_on_of_card_le (s := nthRootsFinset n (1 : Formalism.CyclotomicNorms.Fbar g)) (t := nthRootsFinset n (1 : Formalism.CyclotomicNorms.Fbar g)) (fun a _ => s a) (fun a ha => (hmem _).2 (by rw [← map_pow, (hmem a).1 ha, map_one])) (fun a₁ a₂ _ _ h => hinj h) le_r …`. Conclude with `⟨a, ha.symm⟩`. Set `e : Formalism.CyclotomicNorms.Fbar g ≃* Formalism.CyclotomicNorms.Fbar g` to `MulEquiv.ofBijective s ⟨hinj, hsurj⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : ∀ x, e x = s x` using `fun x => rfl`. Use `⟨t.comp e.symm.toMonoidHom, ?_, ?_⟩` and prove the remaining obligations. Introduce `x`. Use `⟨mem_of_monoidHom A t _, ?_⟩` and prove the remaining obligations. Establish `h1 : s (e.symm x) = x` using `by rw [← he, MulEquiv.apply_symm_apply]`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hs (e.symm x)`. Unfold `redThrough at h2`. Rewrite `h2` using `[dif_pos (mem_of_monoidHom A t _)]`. Conclude with `h2.symm.trans h1`. Introduce `x y hx hy h`.
-
-Establish `hx' : e.symm x ≠ 0` using `fun h0 => hx (by rw [← e.apply_symm_apply x, h0, he, hs0])`. Establish `hy' : e.symm y ≠ 0` using `fun h0 => hy (by rw [← e.apply_symm_apply y, h0, he, hs0])`. Conclude with `e.symm.injective (ht _ _ hx' hy' h)`.
+A detailed English derivation is pending.
 -/
 theorem exists_teich_reindex : ∀ (g : ℕ) [Fact g.Prime] (A : ValuationSubring ℂ)
     (κ : IsLocalRing.ResidueField A ≃+* Formalism.CyclotomicNorms.Fbar g) (t : Formalism.CyclotomicNorms.Fbar g →* ℂ),

@@ -10,7 +10,7 @@ namespace GlobalTheory.Et.Model
 variable {k : Type} [Field k] (Ω : Type) [Field Ω] [Algebra k Ω]
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, galMap_fst, geomMap, pullback.lift_fst, ← Category.assoc, galMap_fst]`. Rewrite using `[Category.assoc, Category.assoc, galMap_snd, geomMap, pullback.lift_snd, pullback.lift_snd_assoc, galMap_snd]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem galMap_geomMap {X Y : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of k)) (q : Y ⟶ Spec (CommRingCat.of k))
     (u : X ⟶ Y) (hu : u ≫ q = p) (σ : Ω ≃ₐ[k] Ω) :
@@ -22,7 +22,7 @@ theorem galMap_geomMap {X Y : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of k)) (q
 variable (R : Type) [CommRing R] [TopologicalSpace R] [IsTopologicalRing R]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `pull R n (galMap Ω p σ) (pull R n (geomMap Ω p u hu) x) = pull R n (geomMap Ω p u hu) (pull R n (galMap Ω q σ) x)`. Rewrite using `[← LinearMap.comp_apply, ← LinearMap.comp_apply, ← pull_comp, ← pull_comp, galMap_geomMap]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem gal_pull {X Y : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of k)) (q : Y ⟶ Spec (CommRingCat.of k))
     (u : X ⟶ Y) (hu : u ≫ q = p) (σ : Ω ≃ₐ[k] Ω) (n : ℕ) (x : H R n (geom Ω q)) :
@@ -32,9 +32,7 @@ theorem gal_pull {X Y : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of k)) (q : Y �
   rw [← LinearMap.comp_apply, ← LinearMap.comp_apply, ← pull_comp, ← pull_comp, galMap_geomMap]
 
 /- English proof (translation)
-Use `haveI : ReflectsLimitsOfSize.{0, 1} (forget (ModuleCat.{1} (ULift.{1} R))) := reflectsLimitsOfSize_shrink.{1, 0, 0, 1} _`. Apply `Presheaf.isSheaf_of_isSheaf_comp _ _ (forget (ModuleCat.{1} (ULift.{1} R)))` to reduce the goal to its premises. Establish `h` using `(isSheaf_fpqcTopology_continuousMapPresheaf.{0} R).of_le Scheme.proetaleTopology_le_fpqcTopology`. Establish `e : coefPre R ⋙ forget (ModuleCat.{1} (ULift.{1} R)) = continuousMapPresheaf.{0} R ⋙ uliftFunctor.{1}` using `rfl`. Rewrite using `[e]`.
-
-Conclude with `Presheaf.isSheaf_comp_of_isSheaf _ _ _ h`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coefPre_isSheaf : Presheaf.IsSheaf Scheme.proetaleTopology.{0} (coefPre R) := by
   haveI : ReflectsLimitsOfSize.{0, 1} (forget (ModuleCat.{1} (ULift.{1} R))) :=
@@ -60,17 +58,17 @@ def cohomZeroEquivContinuous (X : Scheme.{0}) : H R 0 X ≃ C(X, R) :=
   Abelian.Ext.homEquiv₀.trans (homEquiv R X)
 
 /- English proof (translation)
-The claim follows from `(cohomZeroEquivContinuous R X).nontrivial`.
+A detailed English derivation is pending.
 -/
 theorem cohomZero_nontrivial (X : Scheme.{0}) [Nonempty X] [Nontrivial R] : Nontrivial (H R 0 X) :=
   (cohomZeroEquivContinuous R X).nontrivial
 
 /- English proof (translation)
-The claim follows from `cohomZero_nontrivial _ _`.
+A detailed English derivation is pending.
 -/
 example : Nontrivial (H ℤ_[3] 0 (Spec (CommRingCat.of ℚ))) := cohomZero_nontrivial _ _
 /- English proof (translation)
-Use `haveI : Fact (1 < 5) := ⟨by norm_num⟩`. Conclude with `cohomZero_nontrivial _ _`.
+A detailed English derivation is pending.
 -/
 example : Nontrivial (H (ZMod 5) 0 (Spec (CommRingCat.of ℚ))) := by
   haveI : Fact (1 < 5) := ⟨by norm_num⟩

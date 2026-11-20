@@ -18,9 +18,9 @@ noncomputable def br (δ : A) (e a b : K) : A :=
   algebraMap K A ((a + b) / 2) + algebraMap K A ((a - b) / (2 * e)) * δ
 
 /- English proof (translation)
-Establish `e1 : (a * a' + b * b') / 2 = (a + b) / 2 * ((a' + b') / 2) + (a - b) / (2 * e) * ((a' - b') / (2 * e)) * e ^ 2`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : (a * a' - b * b') / (2 * e) = (a + b) / 2 * ((a' - b') / (2 * e)) + (a - b) / (2 * e) * ((a' + b') / 2)`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Expand and normalize the polynomial expressions, which then agree. Unfold `br`. Rewrite using `[e1, e2]`. Simplify using `only [map_add, map_mul]`. Take the linear combination `(algebraMap K A ((a - b) / (2 * e)) * algebraMap K A ((a' - b') / (2 * e))) * hδ`.
+Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem br_mul (δ : A) (e : K) (h2 : (2 : K) ≠ 0) (he : e ≠ 0)
     (hδ : δ * δ = algebraMap K A (e ^ 2)) (a b a' b' : K) :
@@ -40,7 +40,7 @@ theorem br_mul (δ : A) (e : K) (h2 : (2 : K) ≠ 0) (he : e ≠ 0)
     algebraMap K A ((a' - b') / (2 * e))) * hδ
 
 /- English proof (translation)
-Establish `e1 : (t + t) / 2 = t` using `by field_simp; ring`. Simplify using `[br, e1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem br_diag (δ : A) (e : K) (h2 : (2 : K) ≠ 0) (t : K) :
     br δ e t t = algebraMap K A t := by
@@ -48,7 +48,7 @@ theorem br_diag (δ : A) (e : K) (h2 : (2 : K) ≠ 0) (t : K) :
   simp [br, e1]
 
 /- English proof (translation)
-Establish `e1 : (b + a) / 2 = (a + b) / 2` using `by rw [add_comm]`. Establish `e2 : (b - a) / (2 * e) = -((a - b) / (2 * e))` using `by rw [← neg_div, neg_sub]`. Unfold `br`. Rewrite using `[e1, e2]`. Simplify using `only [map_add, map_mul, hτa, hτδ, map_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -62,7 +62,7 @@ theorem br_swap (δ : A) (e : K) (τ : A →+* A) (hτa : ∀ c, τ (algebraMap 
   ring
 
 /- English proof (translation)
-Establish `e1 : (p + q * e + (p - q * e)) / 2 = p` using `by field_simp; ring`. Establish `e2 : (p + q * e - (p - q * e)) / (2 * e) = q` using `by field_simp; ring`. Rewrite using `[br, e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem br_of (δ : A) (e : K) (h2 : (2 : K) ≠ 0) (he : e ≠ 0) (p q : K) :
     br δ e (p + q * e) (p - q * e) = algebraMap K A p + algebraMap K A q * δ := by
@@ -71,16 +71,16 @@ theorem br_of (δ : A) (e : K) (h2 : (2 : K) ≠ 0) (he : e ≠ 0) (p q : K) :
   rw [br, e1, e2]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.SW.GoodRing.coord_two B hB0 _ _`.
+A detailed English derivation is pending.
 -/
 theorem br_repr (B : Module.Basis (Fin 2) K A) (hB0 : B 0 = 1) (e a b : K) :
     B.repr (br (B 1) e a b) 0 = (a + b) / 2 ∧ B.repr (br (B 1) e a b) 1 = (a - b) / (2 * e) :=
   GlobalTheory.CompanionTheory.SW.GoodRing.coord_two B hB0 _ _
 
 /- English proof (translation)
-Establish `h0` using `(br_repr B hB0 e a b).1`. Establish `h1` using `(br_repr B hB0 e a b).2`. Rewrite `h0` using `[h, (br_repr B hB0 e a' b').1]`. Rewrite `h1` using `[h, (br_repr B hB0 e a' b').2]`. Clear denominators, using `at h0 h1` for the nonvanishing conditions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Conclude with `⟨mul_left_cancel₀ h2 (by linear_combination -h0 - h1), mul_left_cancel₀ h2 (by linear_combination -h0 + h1)⟩`.
+Supply the required witnesses or components.
 -/
 theorem br_inj (B : Module.Basis (Fin 2) K A) (hB0 : B 0 = 1) (e : K) (h2 : (2 : K) ≠ 0)
     (he : e ≠ 0) {a b a' b' : K} (h : br (B 1) e a b = br (B 1) e a' b') : a = a' ∧ b = b' := by
@@ -93,7 +93,7 @@ theorem br_inj (B : Module.Basis (Fin 2) K A) (hB0 : B 0 = 1) (e : K) (h2 : (2 :
     mul_left_cancel₀ h2 (by linear_combination -h0 + h1)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, _, by rw [br_of _ _ h2 he]; exact GlobalTheory.CompanionTheory.SW.GoodRing.eq_coord B hB0 y, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_br (B : Module.Basis (Fin 2) K A) (hB0 : B 0 = 1) (e : K) (h2 : (2 : K) ≠ 0)
     (he : e ≠ 0) (y : A) : ∃ a b : K, y = br (B 1) e a b ∧
@@ -101,13 +101,13 @@ theorem exists_br (B : Module.Basis (Fin 2) K A) (hB0 : B 0 = 1) (e : K) (h2 : (
   ⟨_, _, by rw [br_of _ _ h2 he]; exact GlobalTheory.CompanionTheory.SW.GoodRing.eq_coord B hB0 y, rfl, rfl⟩
 
 /- English proof (translation)
-Take `⟨h0, h1⟩` from `br_repr B hB0 e a b`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `m0` using `h 0`. Establish `m1` using `h 1`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `m0` using `[h0]`. Rewrite `m1` using `[h1]`. Establish `ea : a = (a + b) / 2 + (a - b) / (2 * e) * e` using `by field_simp; ring`. Establish `eb : b = (a + b) / 2 - (a - b) / (2 * e) * e` using `by field_simp; ring`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ea]`. Conclude with `Rs.add_mem m0 (Rs.mul_mem m1 heR)`. Rewrite using `[eb]`. Conclude with `Rs.sub_mem m0 (Rs.mul_mem m1 heR)`. Introduce and unpack `⟨ha, hb⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Fin.forall_fin_two.2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h0, div_eq_mul_inv]`. Conclude with `Rs.mul_mem (Rs.add_mem ha hb) h2R`. Rewrite using `[h1, div_eq_mul_inv, mul_inv]`. Conclude with `Rs.mul_mem (Rs.sub_mem ha hb) (Rs.mul_mem h2R heR')`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem br_mem_iff (Rs : Subring K) (B : Module.Basis (Fin 2) K A) (hB0 : B 0 = 1) (e : K)
     (h2 : (2 : K) ≠ 0) (he : e ≠ 0) (heR : e ∈ Rs) (heR' : e⁻¹ ∈ Rs) (h2R : (2 : K)⁻¹ ∈ Rs)
@@ -131,11 +131,11 @@ theorem br_mem_iff (Rs : Subring K) (B : Module.Basis (Fin 2) K A) (hB0 : B 0 = 
       exact Rs.mul_mem (Rs.sub_mem ha hb) (Rs.mul_mem h2R heR')
 
 /- English proof (translation)
-Establish `key : ∀ (k : ℕ) (c : K), c ∈ Rs → ϖ ^ (k + 1) * c = 1 → False`. Introduce `k c hc h`. Apply `hϖ'` to reduce the goal to its premises. Establish `e : ϖ ^ k * c = ϖ⁻¹` using `eq_inv_of_mul_eq_one_left (by rw [← h]; ring)`. Rewrite using `[← e]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Rs.mul_mem (Rs.pow_mem hϖR k) hc`. Break down `lt_trichotomy i j with hl | hl | hl` into its components or cases. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_lt hl`. Conclude with `(key k a ha (mul_left_cancel₀ (pow_ne_zero i hϖ0) (by`. Take the linear combination `-h))).elim`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Take a linear combination of the given relations to obtain the conclusion.
 
-Conclude with `hl`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_lt hl`. Conclude with `(key k a' ha' (mul_left_cancel₀ (pow_ne_zero j hϖ0) (by`. Take the linear combination `a' * h + ϖ ^ j * haa))).elim`.
+A detailed English derivation is pending.
 -/
 theorem pow_eq_of_unit (Rs : Subring K) (ϖ : K) (hϖ0 : ϖ ≠ 0) (hϖR : ϖ ∈ Rs) (hϖ' : ϖ⁻¹ ∉ Rs)
     {i j : ℕ} {a a' : K} (ha : a ∈ Rs) (ha' : a' ∈ Rs) (haa : a * a' = 1)
@@ -156,29 +156,27 @@ theorem pow_eq_of_unit (Rs : Subring K) (ϖ : K) (hϖ0 : ϖ ≠ 0) (hϖR : ϖ �
       linear_combination a' * h + ϖ ^ j * haa))).elim
 
 /- English proof (translation)
-Establish `hmul` using `br_mul (B 1) e h2 he hδ`. Establish `hone : br (B 1) e (1 : K) 1 = 1` using `by rw [br_diag _ _ h2, map_one]`. Establish `hzero : br (B 1) e (0 : K) 0 = 0` using `by rw [br_diag _ _ h2, map_zero]`. Establish `hinj : ∀ {a b a' b' : K}, br (B 1) e a b = br (B 1) e a' b' → a = a' ∧ b = b'` using `fun h => br_inj B hB0 e h2 he h`. Establish `hmem : ∀ a b : K, br (B 1) e a b ∈ S ↔ a ∈ Rs ∧ b ∈ Rs` using `fun a b => (hS _).trans (br_mem_iff Rs B hB0 e h2 he heR heR' h2R a b)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hall : ∀ y : A, ∃ a b : K, y = br (B 1) e a b` using `fun y => by`. Take `⟨a, b, h, -, -⟩` from `exists_br B hB0 e h2 he y`. Conclude with `⟨a, b, h⟩`. Use `⟨fun hf => ?_, fun i => br (B 1) e (ϖ ^ i.1) (ϖ ^ i.2), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hne : br (B 1) e (1 : K) 0 ≠ 0` using `fun h => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h` using `[← hzero]`. Conclude with `one_ne_zero (hinj h).1`. Establish `hne' : br (B 1) e (0 : K) 1 ≠ 0` using `fun h => by`. Rewrite `h` using `[← hzero]`. Conclude with `one_ne_zero (hinj h).2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w, hw⟩` from `hf.mul_inv_cancel hne`. Establish `h0 : br (B 1) e (1 : K) 0 * br (B 1) e (0 : K) 1 = 0`. Rewrite using `[hmul, mul_zero, zero_mul, hzero]`. Apply `hne'` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hw, one_mul]`. Use `_ = (br (B 1) e (1 : K) 0 * br (B 1) e (0 : K) 1) * w := by ring`. Use `_ = 0 := by rw [h0, zero_mul]`. Introduce `i`. Use `⟨IsUnit.of_mul_eq_one (br (B 1) e ((ϖ ^ i.1)⁻¹) ((ϖ ^ i.2)⁻¹)) ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hmul, mul_inv_cancel₀ (pow_ne_zero _ hϖ0), mul_inv_cancel₀ (pow_ne_zero _ hϖ0), hone]`. Conclude with `(hmem _ _).2 ⟨Rs.pow_mem hϖR _, Rs.pow_mem hϖR _⟩`. Introduce `i show _ = τ (br (B 1) e (ϖ ^ i.1) (ϖ ^ i.2)) * br (B 1) e (ϖ ^ i.1) (ϖ ^ i.2)`. Rewrite using `[br_swap _ _ τ hτa hτδ, hmul, ← br_diag (B 1) e h2, pow_add, mul_comm (ϖ ^ i.2)]`. Introduce `x hx hxu`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a, b, rfl⟩` from `hall x`. Take `⟨ha, hb⟩` from `(hmem a b).1 hx`. Take `⟨w, hw⟩` from `hxu.exists_right_inv`. Take `⟨a', b', rfl⟩` from `hall w`. Rewrite `hw` using `[hmul, ← hone]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2'⟩` from `hinj hw`. Establish `ha0 : a ≠ 0` using `left_ne_zero_of_mul_eq_one h1`. Establish `hb0 : b ≠ 0` using `left_ne_zero_of_mul_eq_one h2'`. Take `⟨u₁, i₁, hu₁, hu₁', rfl⟩` from `hfac a ha ha0`. Take `⟨u₂, i₂, hu₂, hu₂', rfl⟩` from `hfac b hb hb0`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hu₁0 : u₁ ≠ 0` using `left_ne_zero_of_mul ha0`. Establish `hu₂0 : u₂ ≠ 0` using `left_ne_zero_of_mul hb0`. Use `⟨(i₁, i₂), br (B 1) e u₁ u₂, (hmem _ _).2 ⟨hu₁, hu₂⟩, br (B 1) e u₁⁻¹ u₂⁻¹, (hmem _ _).2 ⟨hu₁', hu₂'⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hmul, mul_inv_cancel₀ hu₁0, mul_inv_cancel₀ hu₂0, hone]`. Use `show _ = br (B 1) e (ϖ ^ i₁) (ϖ ^ i₂) * br (B 1) e u₁ u₂`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hmul, mul_comm u₁, mul_comm u₂]`. Introduce `i j u hu u' hu' huu h`. Take `⟨a, b, rfl⟩` from `hall u`. Take `⟨a', b', rfl⟩` from `hall u'`. Take `⟨ha, hb⟩` from `(hmem a b).1 hu`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨ha', hb'⟩` from `(hmem a' b').1 hu'`. Rewrite `huu` using `[hmul, ← hone]`. Take `⟨h1, h2'⟩` from `hinj huu`. Establish `h' : br (B 1) e (ϖ ^ i.1) (ϖ ^ i.2) = br (B 1) e (ϖ ^ j.1 * a) (ϖ ^ j.2 * b)`. Rewrite using `[← hmul]`.
-
-Conclude with `h`. Take `⟨e1, e2⟩` from `hinj h'`. Conclude with `Prod.ext (pow_eq_of_unit Rs ϖ hϖ0 hϖR hϖ' ha ha' h1 e1) (pow_eq_of_unit Rs ϖ hϖ0 hϖR hϖ' hb hb' h2' e2)`.
+A detailed English derivation is pending.
 -/
 theorem abs_main (Rs : Subring K) (τ : A →+* A) (B : Module.Basis (Fin 2) K A) (hB0 : B 0 = 1)
     (e : K) (h2 : (2 : K) ≠ 0) (he : e ≠ 0) (hδ : B 1 * B 1 = algebraMap K A (e ^ 2))
@@ -261,7 +259,7 @@ section Place
 open GlobalTheory.CompanionTheory.SW.GoodRing
 
 /- English proof (translation)
-Simplify using `[sigR, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sigR_incl {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] (σ : E →ₐ[F] E)
     (v : HeightOneSpectrum (𝓞 F)) (x : E) :
@@ -271,29 +269,25 @@ theorem sigR_incl {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
 end Place
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ _ d b b₂ D hb0 hσ1 hD v hD1 h21 hBC hCB`. Use `set K := Fv F v with hK`. Use `set B := Algebra.TensorProduct.basis K b₂ with hB`. Use `set C := Algebra.TensorProduct.basis K b with hC`. Introduce `e he`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `Rs : Subring K` to `(v.adicCompletionIntegers F).toSubring`. Establish `hB0 : B 0 = 1`. Rewrite using `[hB, Algebra.TensorProduct.basis_apply, hb0]`. Both sides reduce to the same expression. Establish `hB1 : B 1 = inclR K (b₂ 1)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hB, Algebra.TensorProduct.basis_apply]`. Both sides reduce to the same expression. Establish `hBD : B 1 * B 1 = algebraMap K (K ⊗[F] E) (algebraMap F K D)`. Rewrite using `[hB1, ← map_mul, hD]`. Use `show (1 : Fv F v) ⊗ₜ[F] algebraMap F E D = (algebraMap F (Fv F v) D) ⊗ₜ[F] (1 : E)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.tmul_smul, TensorProduct.smul_tmul']`. Establish `hDR : algebraMap F K D ∈ Rs` using `hD1.le`. Take `⟨O', hOC, hOB'⟩` from `GlobalTheory.CompanionTheory.SW.GoodRing.exists_subring Rs B C (algebraMap F K D) hB0 hBD hDR (fun k j => by`. Use `hBC k j` as an intermediate fact. Rewrite using `[show inclR K (b k) = C k by rw [hC, Algebra.TensorProduct.basis_apply]; rfl] at this)` and apply the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `(fun j k => by`. Use `hCB j k` as an intermediate fact. Rewrite using `[show inclR K (b₂ j) = B j by rw [hB, Algebra.TensorProduct.basis_apply]; rfl] at this)` and apply the resulting hypothesis. Establish `hS : ∀ y, y ∈ intK b v ↔ ∀ j, B.repr y j ∈ Rs` using `fun y => Iff.trans (Iff.rfl) ((hOC y).symm.trans (hOB' y))`. Establish `hve : Valued.v e = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Valued.v e ^ 2 = 1` using `by rw [← map_pow, he, hD1]`. Conclude with `(pow_eq_one_iff.1 h1).resolve_right two_ne_zero`. Establish `he0 : e ≠ 0` using `fun h => by`. Rewrite `hve` using `[h, map_zero]`. Conclude with `zero_ne_one hve`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hv2 : Valued.v (2 : K) = 1` using `by simpa [map_ofNat] using h21`. Establish `h20 : (2 : K) ≠ 0` using `fun h => by`. Rewrite `hv2` using `[h, map_zero]`. Conclude with `zero_ne_one hv2`. Establish `heR : e ∈ Rs` using `hve.le`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heR' : e⁻¹ ∈ Rs` using `by show Valued.v e⁻¹ ≤ 1`. Rewrite using `[map_inv₀, hve, inv_one]`. Establish `h2R : (2 : K)⁻¹ ∈ Rs` using `by show Valued.v (2 : K)⁻¹ ≤ 1`. Rewrite using `[map_inv₀, hv2, inv_one]`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible (v.adicCompletionIntegers F)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hϖ0 : (ϖ : K) ≠ 0` using `fun h => hϖ.ne_zero (Subtype.ext h)`. Establish `hϖ' : (ϖ : K)⁻¹ ∉ Rs` using `fun h => hϖ.not_isUnit (IsUnit.of_mul_eq_one (⟨(ϖ : K)⁻¹, h⟩ : v.adicCompletionIntegers F) (Subtype.ext (mul_inv_cancel₀ hϖ0)))`. Establish `hfac : ∀ a ∈ Rs, a ≠ 0 → ∃ (u : K) (n : ℕ), u ∈ Rs ∧ u⁻¹ ∈ Rs ∧ a = u * (ϖ : K) ^ n`. Introduce `a ha ha0`. Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible (x := (⟨a, ha⟩ : v.adicCompletionIntegers F)) (fun h => ha0 (congrArg Subtype.val h)) hϖ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨((u : v.adicCompletionIntegers F) : K), n, (u : v.adicCompletionIntegers F).2, ?_, ?_⟩` and prove the remaining obligations. Establish `e1 : ((u : v.adicCompletionIntegers F) : K)⁻¹ = (((u⁻¹ : (v.adicCompletionIntegers F)ˣ) : v.adicCompletionIntegers F) : K)`. Conclude with `inv_eq_of_mul_eq_one_right (congrArg Subtype.val u.mul_inv)`. Rewrite using `[e1]`. Conclude with `(((u⁻¹ : (v.adicCompletionIntegers F)ˣ) : v.adicCompletionIntegers F)).2`.
-
-Conclude with `congrArg Subtype.val hu`. Take `⟨hnf, c, c1, c2, c3, c4⟩` from `abs_main Rs (sigR K σ) B hB0 e h20 he0 (by rw [he]; exact hBD) (fun t => GlobalTheory.CompanionTheory.SW.GoodRing.sigR_algebraMap σ v t) (by rw [hB1, sigR_incl, hσ1, map_neg]) heR heR' h2R (ϖ : K) hϖ0 ϖ.2 hϖ' hfac (intK b v) hS`. Use `⟨hnf, c, c1, fun i => ⟨(ϖ : K) ^ (i.1 + i.2), c2 i, ?_⟩, c3, c4⟩` and prove the remaining obligations. Establish `hn` using `GroundTheory.Global.normalizedAbv_of_irreducible v hϖ`. Rewrite `hn` using `[GroundTheory.Global.normalizedAbv_apply]`.
-
-Rewrite using `[norm_pow, hn, inv_pow]`. Simplify using `[qv]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem split_content : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (b₂ : Module.Basis (Fin 2) F E) (D : F), b₂ 0 = 1 → σ (b₂ 1) = -b₂ 1 → b₂ 1 * b₂ 1 = algebraMap F E D → ∀ v : HeightOneSpectrum (𝓞 F), Valued.v (algebraMap F (Fv F v) D) = 1 → Valued.v (algebraMap F (Fv F v) 2) = 1 → (∀ k j, (Algebra.TensorProduct.basis (Fv F v) b₂).repr (inclR (Fv F v) (b k)) j ∈ v.adicCompletionIntegers F) → (∀ j k, (Algebra.TensorProduct.basis (Fv F v) b).repr (inclR (Fv F v) (b₂ j)) k ∈ v.adicCompletionIntegers F) → ∀ e : Fv F v, e ^ 2 = algebraMap F (Fv F v) D → ¬ IsField (Fv F v ⊗[F] E) ∧ ∃ c : ℕ × ℕ → Fv F v ⊗[F] E, (∀ i, IsUnit (c i) ∧ c i ∈ intK b v) ∧ (∀ i, ∃ t : Fv F v, algebraMap (Fv F v) (Fv F v ⊗[F] E) t = sigR (Fv F v) σ (c i) * c i ∧ ‖t‖ = ((qv v : ℝ) ^ (i.1 + i.2))⁻¹) ∧ (∀ x ∈ intK b v, IsUnit x → ∃ i, ∃ u ∈ intK b v, ∃ u' ∈ intK b v, u * u' = 1 ∧ x = c i * u) ∧ (∀ i j, ∀ u ∈ intK b v, ∀ u' ∈ intK b v, u * u' = 1 → c i = c j * u → i = j) := by
   intro F E _ _ _ _ _ σ _ d b b₂ D hb0 hσ1 hD v hD1 h21 hBC hCB

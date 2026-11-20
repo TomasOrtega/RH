@@ -17,7 +17,7 @@ def fil (P : Submodule ℂ S) (D : ι → S →ₗ[ℂ] S) : ℕ → Submodule �
   | m + 1 => fil P D m ⊔ ⨆ i, (fil P D m).map (D i)
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => exact (inferInstance : FiniteDimensional ℂ P)`. Consider the case `succ m ih => exact (inferInstance : FiniteDimensional ℂ ↥(fil P D m ⊔ ⨆ i, (fil P D m).map (D i)))`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem fil_fin [Finite ι] (P : Submodule ℂ S) [FiniteDimensional ℂ P] (D : ι → S →ₗ[ℂ] S) (m : ℕ) :
     FiniteDimensional ℂ (fil P D m) := by
@@ -26,12 +26,12 @@ theorem fil_fin [Finite ι] (P : Submodule ℂ S) [FiniteDimensional ℂ P] (D :
   | succ m ih => exact (inferInstance : FiniteDimensional ℂ ↥(fil P D m ⊔ ⨆ i, (fil P D m).map (D i)))
 
 /- English proof (translation)
-The claim follows from `monotone_nat_of_le_succ fun _ => le_sup_left`.
+A detailed English derivation is pending.
 -/
 theorem fil_mono (P : Submodule ℂ S) (D : ι → S →ₗ[ℂ] S) : Monotone (fil P D) := monotone_nat_of_le_succ fun _ => le_sup_left
 
 /- English proof (translation)
-Use `(Submodule.span_le.2 ?_ : _ ≤ fil P D (m + 1)) hg` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `Submodule.mem_sup_right (Submodule.mem_iSup_of_mem i ⟨f, hf, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem fil_step (P : Submodule ℂ S) (D : ι → S →ₗ[ℂ] S) {m : ℕ} {f g : S} (hf : f ∈ fil P D m)
     (hg : g ∈ Submodule.span ℂ (Set.range fun i => D i f)) : g ∈ fil P D (m + 1) := by
@@ -40,9 +40,9 @@ theorem fil_step (P : Submodule ℂ S) (D : ι → S →ₗ[ℂ] S) {m : ℕ} {f
   exact Submodule.mem_sup_right (Submodule.mem_iSup_of_mem i ⟨f, hf, rfl⟩)
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => exact h0`. Consider the case `succ m ih`. Use `sup_le (fun f hf => Submodule.mem_sup_left (ih hf)) (iSup_le fun i => ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `fil_step P D (ih hf) (h i f)`.
+A detailed English derivation is pending.
 -/
 theorem fil_stab (P : Submodule ℂ S) (D : ι → S →ₗ[ℂ] S) (A : S →ₗ[ℂ] S) (h0 : ∀ f ∈ P, A f ∈ P)
     (h : ∀ i f, A (D i f) ∈ Submodule.span ℂ (Set.range fun j => D j (A f))) (m : ℕ) : fil P D m ≤ (fil P D m).comap A := by
@@ -86,9 +86,9 @@ def evD (f : 𝓢(V, ℂ)) (x : V) : V × V →ₗ[ℝ] ℂ where
     ring
 
 /- English proof (translation)
-Establish `: dopL lam w f = ∑ i, (b.repr w i : ℂ) • dopL lam (b i) f`. Use extensionality with `x`. Establish `h` using `congrArg (evD lam f x) (b.sum_repr w).symm`. Rewrite `h` using `[map_sum]`. Rewrite using `[SchwartzMap.sum_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `h.trans (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[map_smul]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dopL_mem {ι : Type} [Fintype ι] (b : Module.Basis ι ℝ (V × V)) (w : V × V) (f : 𝓢(V, ℂ)) :
     dopL lam w f ∈ Submodule.span ℂ (Set.range fun i => dopL lam (b i) f) := by
@@ -107,18 +107,18 @@ def vacs (S : Set ((V × V) × V × V)) : Submodule ℂ 𝓢(V, ℂ) :=
   ⨅ γ ∈ S, LinearMap.ker (dopL lam γ.2 - Complex.I • dopL lam γ.1)
 
 /- English proof (translation)
-Simplify using `only [vacs, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_vacs {S : Set ((V × V) × V × V)} {f : 𝓢(V, ℂ)} :
     f ∈ vacs lam S ↔ ∀ γ ∈ S, dopL lam γ.2 f = Complex.I • dopL lam γ.1 f := by
   simp only [vacs, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, sub_eq_zero]
 
 /- English proof (translation)
-Establish `hd : ∀ t : ℝ, HasDerivAt (fun t : ℝ => f (t • x) * Complex.exp (-((t : ℂ) ^ 2 * c / 2))) 0 t` using `fun t => by`. Establish `h1 : HasDerivAt (fun t : ℝ => f (t • x)) (fderiv ℝ f (t • x) x) t` using `(f.hasFDerivAt (t • x)).comp_hasDerivAt t (by simpa using (hasDerivAt_id t).smul_const x)`. Establish `h2 : HasDerivAt (fun t : ℝ => -((t : ℂ) ^ 2 * c / 2)) (-(t * c)) t`. Use `((((hasDerivAt_id t).ofReal_comp).fun_pow 2).mul_const c).div_const 2 |>.fun_neg` as an intermediate fact. Use `this.congr_deriv ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Use `(h1.fun_mul h2.cexp).congr_deriv ?_` and prove the remaining obligations. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `is_const_of_deriv_eq_zero (fun t => (hd t).differentiableAt) (fun t => (hd t).deriv) 1 0` as an intermediate fact. Simplify `this` using `[h0]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ray_zero (f : 𝓢(V, ℂ)) (x : V) (c : ℂ) (h : ∀ t : ℝ, fderiv ℝ f (t • x) x = t * c * f (t • x)) (h0 : f 0 = 0) : f x = 0 := by
   have hd : ∀ t : ℝ, HasDerivAt (fun t : ℝ => f (t • x) * Complex.exp (-((t : ℂ) ^ 2 * c / 2))) 0 t := fun t => by
@@ -136,25 +136,25 @@ theorem ray_zero (f : 𝓢(V, ℂ)) (x : V) (c : ℂ) (h : ∀ t : ℝ, fderiv �
   simpa [h0] using this
 
 /- English proof (translation)
-Set `Γ` to `Submodule.span ℝ S`. Establish `hΓ : ∀ f ∈ vacs lam S, ∀ x, ∀ γ ∈ Γ, evD lam f x γ.2 = Complex.I * evD lam f x γ.1` using `fun f hf x γ hγ => by`. Proceed by induction on `hγ using Submodule.span_induction with`. Consider the case `mem γ h => exact DFunLike.congr_fun ((mem_vacs lam).1 hf γ h) x`. Consider the case `zero => simp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb => rw [Prod.fst_add, Prod.snd_add, map_add, map_add, ha, hb, mul_add]`. Consider the case `smul c a _ ha => rw [Prod.smul_fst, Prod.smul_snd, map_smul, map_smul, ha, mul_smul_comm]`. Establish `key : ∀ f ∈ vacs lam S, f 0 = 0 → f = 0` using `fun f hf h0 => by`. Set `π : Γ →ₗ[ℝ] V × V` to `((LinearMap.fst ℝ V V).prodMap (LinearMap.fst ℝ V V)) ∘ₗ Γ.subtype`. Distinguish the cases in `hπ : Function.Injective π`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Introduce a local definition for the expression. Consider separately whether the proposition holds or fails.
 
-Establish `h1` using `LinearMap.finrank_le_finrank_of_injective hπ`. Establish `h2` using `LinearMap.finrank_le_finrank_of_surjective (f := LinearMap.fst ℝ (V × V) (V × V) ∘ₗ Γ.subtype) fun p => by`. Take `⟨γ, h, e⟩` from `hS p`. Conclude with `⟨⟨γ, Submodule.subset_span h⟩, e⟩`. Establish `hs` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (le_antisymm h1 h2)).1 hπ`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use extensionality with `x`. Take `⟨⟨⟨⟨a, b⟩, a', b'⟩, hγ⟩, e⟩` from `hs (0, x)`. Take `⟨rfl, rfl⟩ : a = 0 ∧ a' = x` from `Prod.ext_iff.1 e`. Use `ray_zero f a' (2 * Real.pi * Complex.I * (lam b' a' - Complex.I * lam b a')) (fun t => ?_) h0` and prove the remaining obligations. Use `hΓ f hf (t • a') _ hγ` as an intermediate fact.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [evD, LinearMap.coe_mk, AddHom.coe_mk, dopL_apply, dop_apply, map_zero, map_smul, smul_eq_mul] at this`. Move the coercions through the operations in `at this`. Take the linear combination `this`. Take `⟨⟨⟨⟨a, b⟩, a', b'⟩, hγ⟩, e, hne⟩` from `(Submodule.ne_bot_iff _).1 fun h => hπ (LinearMap.ker_eq_bot.1 h)`. Take `⟨rfl, rfl⟩ : a = 0 ∧ a' = 0` from `Prod.ext_iff.1 e`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hz : ∀ x, f x ≠ 0 → lam b x = 0 ∧ lam b' x = 0` using `fun x hx => by`. Use `hΓ f hf x _ hγ` as an intermediate fact. Simplify using `only [evD, LinearMap.coe_mk, AddHom.coe_mk, dopL_apply, dop_apply, map_zero] at this`. Establish `h3 : (2 * Real.pi * Complex.I) * f x * (lam b' x - Complex.I * lam b x) = 0` using `by linear_combination -this`. Establish `h4` using `(mul_eq_zero.1 h3).resolve_left (mul_ne_zero (by simp [Real.pi_ne_zero]) hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5` using `congrArg Complex.re h4`. Establish `h6` using `congrArg Complex.im h4`. Simplify using `at h5 h6`. Conclude with `⟨h6, h5⟩`. Assume the negation of the conclusion as `hf0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Assume the negation of the conclusion and derive a contradiction.
 
-Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, f x ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `hf0 (SchwartzMap.ext hc)`. Establish `hk : ∀ c, (∀ x, f x ≠ 0 → lam c x = 0) → c = 0` using `fun c hc => by`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ht : LinearMap.ker (lam c).toLinearMap = ⊤` using `Submodule.eq_top_of_nonempty_interior' _ ⟨x, mem_interior.2 ⟨{y | f y ≠ 0}, hc, isOpen_ne_fun f.continuous continuous_const, hx⟩⟩`. Use `hl ?_` and prove the remaining obligations. Rewrite using `[map_zero]`. Use extensionality with `y`. Conclude with `(ht ▸ Submodule.mem_top : y ∈ LinearMap.ker (lam c).toLinearMap)`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `rfl` from `hk b fun x hx => (hz x hx).1`. Take `rfl` from `hk b' fun x hx => (hz x hx).2`. Conclude with `hne rfl`. Set `ev : vacs lam S →ₗ[ℂ] ℂ` to `{ toFun := fun f => f.1 0, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Conclude with `FiniteDimensional.of_injective ev ((injective_iff_map_eq_zero ev).2 fun f h => Subtype.ext (key f.1 f.2 h))`.
+A detailed English derivation is pending.
 -/
 theorem vacs_fin [FiniteDimensional ℝ V] (hl : Function.Injective lam) (S : Set ((V × V) × V × V)) (hS : ∀ p, ∃ γ ∈ S, γ.1 = p) :
     FiniteDimensional ℂ (vacs lam S) := by
@@ -211,11 +211,11 @@ theorem vacs_fin [FiniteDimensional ℝ V] (hl : Function.Injective lam) (S : Se
   exact FiniteDimensional.of_injective ev ((injective_iff_map_eq_zero ev).2 fun f h => Subtype.ext (key f.1 f.2 h))
 
 /- English proof (translation)
-Take `⟨s, -, hs⟩` from `hC.elim_nhds_subcover (fun y => {y' | y' - y ∈ U}) fun y _ => (continuous_id.sub continuous_const).continuousAt.preimage_mem_nhds (by simpa using hU)`. Set `ev : N →ₗ[ℂ] (s → P.map c)` to `{ toFun := fun Ψ y => ⟨fun x => Ψ.1 (pt x y), by`. Take `⟨f, hf, e⟩` from `h1 _ Ψ.2 y`. Conclude with `⟨f, hf, funext fun x => (e x).symm⟩⟩`. Use the proof step `map_add' := fun _ _ => rfl`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `map_smul' := fun _ _ => rfl }`. Use `FiniteDimensional.of_injective ev ((injective_iff_map_eq_zero ev).2 fun Ψ h => Subtype.ext (funext fun z => ?_))` and prove the remaining obligations. Take `⟨x, y, rfl⟩` from `hpt z`. Distinguish the cases in `hy : y ∈ C`. Take `⟨y₀, h₀, hy₀⟩` from `Set.mem_iUnion₂.1 (hs hy)`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `h3 _ Ψ.2 x y₀ _ hy₀` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Rewrite using `[this]`. Conclude with `congrFun (congrArg Subtype.val (congrFun h ⟨y₀, h₀⟩)) x`. Conclude with `h2 _ Ψ.2 x y hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem level_fin {X Y Z S : Type} [AddCommGroup Y] [TopologicalSpace Y] [IsTopologicalAddGroup Y] [AddCommGroup S] [Module ℂ S]
     (pt : X → Y → Z) (hpt : ∀ z, ∃ x y, z = pt x y) (c : S →ₗ[ℂ] (X → ℂ)) (P : Submodule ℂ S) [FiniteDimensional ℂ P] {C U : Set Y}

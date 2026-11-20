@@ -34,7 +34,7 @@ def tH (ht : ∀ m n (i : Fin (n + 1) → U.ι) (θ : Fin (m + 1) → Fin (n + 1
     exact Finset.sum_congr rfl fun k _ => by rw [Pi.smul_apply, Pi.smul_apply, map_zsmul, key k]
 
 /- English proof (translation)
-Use `⟨fun x y h => funext fun i => (t n i).injective (congrFun h i), fun y => ⟨fun i => (t n i).symm (y i), ?_⟩⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Conclude with `(t n i).apply_symm_apply (y i)`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem tH_bij (ht) (n : ℕ) : Function.Bijective ((tH q U a t ht).f n) := by
   refine ⟨fun x y h => funext fun i => (t n i).injective (congrFun h i), fun y => ⟨fun i => (t n i).symm (y i), ?_⟩⟩
@@ -44,24 +44,24 @@ theorem tH_bij (ht) (n : ℕ) : Function.Bijective ((tH q U a t ht).f n) := by
 end
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cls_congr0 {R : Type} [CommRing R] (L : Cx.{0} R) (n : ℕ) (x y : L.X n) (hx : L.d n x = 0) (hy : L.d n y = 0)
     (h : x = y) : L.cls x hx = L.cls y hy := by
   subst h; rfl
 
 /- English proof (translation)
-Introduce `K _ _`. Take `⟨e1, he1⟩` from `GlobalTheory.T.cech_hodge_degeneration_natural K`. Take `⟨t, htr, htp⟩` from `GlobalTheory.CompanionTheory.OmGlobTerm.AssemblyHe1.term K`. Set `φ : ∀ {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) [Smooth q] (U : Cov q) (a : ℕ), Cx.Hom (cechH (Fk q U a) (Vk q U a) a).cx (formCos q U.U a).cx (RingHom.id K)` to `fun q _ U a => tH q U a (t q U a) fun m n i θ x => htr q U a m n i θ x`. Use `⟨fun q _ U a j => (e1 q U a j).trans (LinearEquiv.ofBijective ((φ q U a).mapH j) (P.mapH_bij (φ q U a) (fun n => tH_bij q U a (t q U a) (fun m n i θ x => htr q U a m n i θ x) n) j)), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `X Y q p _ _ u hu U W τ hτ a j c h0 h1`. Take `⟨hG, hτ'⟩` from `GlobalTheory.T.pullback_cover_star_compat q p u hu U W τ hτ a`. Set `c₀ : (cechH (Fk p W a) (Vk p W a) a).X j` to `fun i => (t p W a j i).symm (c i)`. Establish `hc₀ : (φ p W a).f j c₀ = c` using `funext fun i => (t p W a j i).apply_symm_apply (c i)`. Establish `h0' : (cechH (Fk p W a) (Vk p W a) a).cx.d j c₀ = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(tH_bij p W a (t p W a) (fun m n i θ x => htr p W a m n i θ x) (j + 1)).1 ?_` and prove the remaining obligations. Rewrite using `[map_zero, ← (φ p W a).comm, hc₀, h0]`. Set `c₁ : (cechH (Fk q U a) (Vk q U a) a).X j` to `fun i => (morU (morU (pullM u hu a) (U := KC p W a) (U' := KC q U a) hG) (U := capT (Vk p W a) (τ ∘ i)) (U' := capT (Vk q U a) i) fun T hT k => hτ' (i k) T (hT k)).pull a (c₀ (τ ∘ i))`. Establish `hc₁ : (φ q U a).f j c₁ = fun i => formRes q (hτ j i) a (formPull hu (capO W.U (τ ∘ i)) a (c (τ ∘ i)))`. Use function extensionality and compare the values at `i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `(htp q p u hu U W τ hτ a hG j i (fun T hT k => hτ' (i k) T (hT k)) (c₀ (τ ∘ i))).trans ?_` and prove the remaining obligations. Conclude with `congrArg _ (congrArg _ ((t p W a j (τ ∘ i)).apply_symm_apply (c (τ ∘ i))))`. Establish `h1' : (cechH (Fk q U a) (Vk q U a) a).cx.d j c₁ = 0`. Use `(tH_bij q U a (t q U a) (fun m n i θ x => htr q U a m n i θ x) (j + 1)).1 ?_` and prove the remaining obligations. Rewrite using `[map_zero, ← (φ q U a).comm, hc₁, h1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key` using `he1 q p u hu U W τ a hG hτ' j c₀ h0' h1'`. Establish `eY : (LinearEquiv.ofBijective ((φ p W a).mapH j) (P.mapH_bij (φ p W a) (fun n => tH_bij p W a (t p W a) (fun m n i θ x => htr p W a m n i θ x) n) j)).symm ((formCos p W.U a).cx.cls c h0) = (cechH (Fk p W a) (Vk p W a) a).cx.cls c₀ h0'`. Rewrite using `[LinearEquiv.symm_apply_eq, LinearEquiv.ofBijective_apply, P.mapH_cls (φ p W a) j c₀ h0' (by rw [hc₀]; exact h0)]`. Conclude with `cls_congr0 _ j _ _ _ _ hc₀.symm`. Establish `eX : (LinearEquiv.ofBijective ((φ q U a).mapH j) (P.mapH_bij (φ q U a) (fun n => tH_bij q U a (t q U a) (fun m n i θ x => htr q U a m n i θ x) n) j)).symm ((formCos q U.U a).cx.cls _ h1) = (cechH (Fk q U a) (Vk q U a) a).cx.cls c₁ h1'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearEquiv.symm_apply_eq, LinearEquiv.ofBijective_apply, P.mapH_cls (φ q U a) j c₁ h1' (by rw [hc₁]; exact h1)]`. Conclude with `cls_congr0 _ j _ _ _ _ hc₁.symm`. Rewrite using `[LinearEquiv.symm_trans_apply, LinearEquiv.symm_trans_apply, eY, eX]`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem glob_iso : ∀ (K : Type) [Field K] [CharZero K],
     ∃ e : ∀ {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) [Smooth q] (U : Cov q) (a j : ℕ),

@@ -17,11 +17,11 @@ variable {B : Base} {f : Top.Fr B.toPre} {T : TwDat B} {w : ColW B f T} {hX : B.
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Take `@⟨Xg, tr, core, al, alg_eq, R, cG, geo, pins, lev, idG, good, mu, l1, l2⟩` from `z`. Simplify using `only at h1 h2 h3 h4 ⊢`. Substitute `h1 h2` using the available equality. Take `rfl : core = coreJ (a` from `Z) Z' z₀.core := eq_of_heq h3`. Establish `e : al = (by with_unfolding_all exact ((alg (a` using `Z) Z' z₀.alg) :)) := by`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Algebra.algebra_ext _ _ fun y => B.embLL.injective ?_` and prove the remaining obligations. Conclude with `(alg_eq y).trans ((by with_unfolding_all exact ((z₀.alg_eq ((by with_unfolding_all exact (y :)))).symm :)))`. Substitute `e` using the available equality. Take `rfl : R = cpR (a` from `Z) Z' z₀ := eq_of_heq (h4.trans ((by with_unfolding_all exact ((HEq.refl (cpR (a := Z) Z' z₀)) :))))`. Use `⟨(by with_unfolding_all exact ((geoHalf (a := Z) Z' (iK := z₀.alg) z₀.geo) :)), (by with_unfolding_all exact ((inGeo_tr (a := Z) Z' (iK := z₀.alg) hg) :)), ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `B' f' T' w' Z'' hX' Wt' z' e`. Conclude with `{ H := (by with_unfolding_all exact (e.H :)) l := (by with_unfolding_all exact (e.l :)) c := (by with_unfolding_all exact (e.c :)) Dw := (by with_unfolding_all exact (e.Dw :)) Xo := (by with_unfolding_all exact (e.Xo :)) U := (by with_unfolding_all exact (e.U :)) V := (by with_un …`. Introduce `B' f' T' w' Z'' hX' Wt' z' e`. Conclude with `{ H := (by with_unfolding_all exact (e.H :)) l := (by with_unfolding_all exact (e.l :)) c := (by with_unfolding_all exact (e.c :)) Dw := (by with_unfolding_all exact (e.Dw :)) Xo := (by with_unfolding_all exact (e.Xo :)) U := (by with_unfolding_all exact (e.U :)) V := (by with_un …`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem geo_copy {Z Z' : w.Lt} (z₀ : Dat (w.st Z) w.I hX T Wt) (z : Dat (w.st Z') w.I hX T Wt) (h1 : z.Xg = z₀.Xg)
     (h2 : z.tr = z₀.tr) (h3 : HEq z.core (coreJ (a := Z) Z' z₀.core)) (h4 : HEq z.R (real3 (a := Z) Z' (iK := z₀.alg) z₀.R))
@@ -119,7 +119,7 @@ end GlobalTheory.HeightCounting.SerMove.ReGeo
 namespace GlobalTheory.HeightCounting.SerMove
 
 /- English proof (translation)
-Introduce `K B B' f f' T T' w w' P P' e x x'`. Take `⟨g, hg, hL, -⟩` from `ReGeo.geo_copy (Z := P.Z₀) (Z' := x.o.Z) P.z x.m.z x.m.Xg x.m.tr ((by with_unfolding_all exact (x.copy.core :))) ((by with_unfolding_all exact (x.copy.R :))) P.inGeo`. Take `⟨g', hg', -, hR⟩` from `ReGeo.geo_copy (Z := P'.Z₀) (Z' := x'.o.Z) P'.z x'.m.z x'.m.Xg x'.m.tr ((by with_unfolding_all exact (x'.copy.core :))) ((by with_unfolding_all exact (x'.copy.R :))) P'.inGeo`. Conclude with `⟨g, g', hg, hg', hR _ (hL _ e.extN)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_geo_extN : ∀ {K : Ctx} {B B' : Base} {f : Top.Fr B.toPre} {f' : Top.Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} {w : ColW B f T} {w' : ColW B' f' T'} {P : Pre2 K w} {P' : Pre2 K w'}, Ext P.z P'.z → ∀ (x : St P) (x' : St P'), ∃ (g : Geo x) (g' : Geo x'), GlobalTheory.RealGeo.InGeo g ∧ GlobalTheory.RealGeo.InGeo g' ∧ ExtN (datAt x g) (datAt x' g') := by
   intro K B B' f f' T T' w w' P P' e x x'

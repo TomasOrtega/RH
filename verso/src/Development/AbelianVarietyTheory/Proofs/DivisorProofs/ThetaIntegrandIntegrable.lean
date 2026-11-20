@@ -13,17 +13,17 @@ namespace GlobalTheory.ThetaIntegrand
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `hx : x = β * (β⁻¹ * x * β) * β⁻¹` using `by group`. Generalize the expression as in `β⁻¹ * x * β = m at h1 h2 h3 hx`. Establish `hi : Function.Injective fun A : Matrix (Fin n) (Fin n) (Formalism.L2.Herm.intAf F E) => A.map (Formalism.L2.Herm.intAf F E).subtype` using `Matrix.map_injective Subtype.val_injective`. Set `y : GL (Fin n) (Formalism.L2.Herm.intAf F E)` to `⟨Matrix.of fun i j => ⟨_, h1 i j⟩, Matrix.of fun i j => ⟨_, h2 i j⟩, hi (by`. Simplify using `only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Conclude with `m.mul_inv),`. Use `hi (by`. Simplify using `only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `m.inv_mul)⟩`. Establish `hy : frGL β y = x`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `: intGL F E n y = m` using `Units.ext rfl`. Rewrite using `[hx, ← this]`. Both sides reduce to the same expression. Use `⟨⟨y, hy⟩, fun PP hP => ?_⟩` and prove the remaining obligations. Rewrite using `[← hy, redFn_frGL]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Take `⟨z, hz, e⟩` from `h3 PP hP i j`. Establish `e1 : y.1 i j = (1 : Matrix (Fin n) (Fin n) (Formalism.L2.Herm.intAf F E)) i j + (Ideal.absNorm PP.asIdeal : ℕ) * ⟨z, hz⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `: (((1 : Matrix (Fin n) (Fin n) (Formalism.L2.Herm.intAf F E)) i j : Formalism.L2.Herm.intAf F E) : E ⊗[F] Formalism.L2.Herm.Af F) = (1 : Matrix (Fin n) (Fin n) _) i j`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Apply the tactic sequence `simp only [Matrix.one_apply]; split_ifs <;> rfl`. Rewrite using `[Subring.coe_add, Subring.coe_mul, Subring.coe_natCast, this, ← e, add_sub_cancel]`. Both sides reduce to the same expression. Establish `e2 : ((Ideal.absNorm PP.asIdeal : ℕ) : kP PP) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk PP.asIdeal)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.absNorm_mem _)`. Express the relevant statement in the definitionally equal form `resS F PP (y.1 i j) = (1 : Matrix (Fin n) (Fin n) (kP PP)) i j`. Rewrite using `[e1, map_add, map_mul, map_natCast, e2, zero_mul, add_zero]`. Apply the tactic sequence `simp only [Matrix.one_apply]; split_ifs <;> simp`.
+A detailed English derivation is pending.
 -/
 theorem mem_princ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     (β x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (T : Finset (Pl E))
@@ -68,25 +68,21 @@ theorem mem_princ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField 
   simp only [Matrix.one_apply]; split_ifs <;> simp
 
 /- English proof (translation)
-Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ _ _`. Use `haveI : IsModuleTopology (Af F) (Af F ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (Af F ⊗[F] E) := IsModuleTopology.isTopologicalRing (Af F) _`. Establish `ho` using `(GlobalTheory.Mass.intTens_open_compact F E).1`. Use `set s := GlobalTheory.Mass.swapTens F E (Af F)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `β' : GL (Fin n) (Af F ⊗[F] E)` to `Formalism.UG.bc (s.symm : _ →+* _) β`. Establish `hβ : Formalism.UG.bc (s : _ →+* _) β' = β` using `Units.ext (Matrix.ext fun i j => s.apply_symm_apply _)`. Set `m : X → GL (Fin n) (Af F ⊗[F] E)` to `fun κ => β'⁻¹ * φ κ * β'`. Establish `hm : Continuous m` using `(continuous_const.mul hf).mul continuous_const`. Establish `hm1 : m x₀ = 1` using `by simp only [m, h₀, mul_one, inv_mul_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hs : ∀ κ, β⁻¹ * Formalism.UG.bc (s : _ →+* _) (φ κ) * β = Formalism.UG.bc (s : _ →+* _) (m κ)` using `fun κ => by`. Simplify using `only [m, map_mul, map_inv, hβ]`. Establish `hone : ∀ i j, (1 : Matrix (Fin n) (Fin n) (Af F ⊗[F] E)) i j ∈ GlobalTheory.Mass.intTens F E` using `fun i j => by`. Simplify using `only [Matrix.one_apply]`. Use `split_ifs`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `exacts [one_mem _, zero_mem _]`. Establish `e1 : ∀ᶠ κ in 𝓝 x₀, ∀ i j, (m κ).1 i j ∈ GlobalTheory.Mass.intTens F E`. Simplify using `only [Filter.eventually_all]`. Introduce `i j`. Conclude with `(ho.preimage ((Units.continuous_val.comp hm).matrix_elem i j)).mem_nhds (show (m x₀).1 i j ∈ _ by rw [hm1]; exact hone i j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e2 : ∀ᶠ κ in 𝓝 x₀, ∀ i j, (m κ)⁻¹.1 i j ∈ GlobalTheory.Mass.intTens F E`. Simplify using `only [Filter.eventually_all]`. Introduce `i j`. Conclude with `(ho.preimage ((Units.continuous_coe_inv.comp hm).matrix_elem i j)).mem_nhds (show (m x₀)⁻¹.1 i j ∈ _ by rw [hm1, inv_one]; exact hone i j)`. Establish `e3 : ∀ᶠ κ in 𝓝 x₀, ∀ PP ∈ T, ∀ i j, algebraMap F _ ((Ideal.absNorm PP.asIdeal : ℕ) : F)⁻¹ * ((m κ).1 i j - (1 : Matrix (Fin n) (Fin n) _) i j) ∈ GlobalTheory.Mass.intTens F E`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Filter.eventually_all_finset]`. Simplify using `only [Filter.eventually_all]`. Introduce `PP _ i j`. Establish `hc : Continuous fun κ => algebraMap F (Af F ⊗[F] E) ((Ideal.absNorm PP.asIdeal : ℕ) : F)⁻¹ * ((m κ).1 i j - (1 : Matrix (Fin n) (Fin n) (Af F ⊗[F] E)) i j)` using `continuous_const.mul (((Units.continuous_val.comp hm).matrix_elem i j).sub continuous_const)`. Use `(ho.preimage hc).mem_nhds ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Set.mem_preimage, hm1, Units.val_one, sub_self, mul_zero]`. Conclude with `(GlobalTheory.Mass.intTens F E).zero_mem`. Use `filter_upwards [e1, e2, e3] with κ h1 h2 h3`. Use `mem_princ β _ T ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[hs]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h1`. Rewrite using `[hs, ← map_inv]`. Conclude with `h2`. Introduce `PP hP i j`. Use `⟨_, h3 PP hP i j, ?_⟩` and prove the remaining obligations.
-
-Establish `hN : ((Ideal.absNorm PP.asIdeal : ℕ) : F) ≠ 0` using `Nat.cast_ne_zero.2 fun h0 => PP.ne_bot (Ideal.absNorm_eq_zero_iff.1 h0)`. Establish `e : (m κ).1 i j - (1 : Matrix (Fin n) (Fin n) _) i j = (Ideal.absNorm PP.asIdeal : ℕ) * (algebraMap F _ ((Ideal.absNorm PP.asIdeal : ℕ) : F)⁻¹ * ((m κ).1 i j - (1 : Matrix (Fin n) (Fin n) _) i j))`. Rewrite using `[← mul_assoc, ← map_natCast (algebraMap F (Af F ⊗[F] E)), ← map_mul, mul_inv_cancel₀ hN, map_one, one_mul]`. Use `congrArg s e` as an intermediate fact. Rewrite `this` using `[map_mul, map_natCast, map_sub]`.
-
-Rewrite using `[hs]`. Use `Eq.trans ?_ this` and prove the remaining obligations. Use `congr 1`. Apply the tactic sequence `simp only [Matrix.one_apply]; split_ifs <;> simp`.
+Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem eventually_princ_mat {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     (β : GL (Fin n) (E ⊗[F] Af F)) (T : Finset (Pl E)) {X : Type} [TopologicalSpace X] {x₀ : X}
@@ -154,9 +150,9 @@ theorem eventually_princ_mat {F E : Type} [Field F] [NumberField F] [Field E] [N
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨π, hπ, -⟩` from `GlobalTheory.Mass.existsUnique_isFinProj D.sp.cm.sig V.gram`. Establish `hf : Continuous (finHom V)` using `(continuous_subtype_val.comp hπ.continuous).congr fun κ => hπ κ`. Use `filter_upwards [eventually_princ_mat β T hf (map_one _)] with κ h`. Use `⟨?_, h⟩` and prove the remaining obligations. Use `(GlobalTheory.Mass.swapPts (Af D.host.F) D.sp.cm.sig V.gram (π κ)).2` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[GlobalTheory.Mass.coe_swapPts, hπ κ]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem eventually_princ (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (T : Finset (Pl D.host.E)) :
     ∀ᶠ κ in 𝓝 (1 : GA D V), finE V κ ∈ UA D.sp.cm V.gram ∧ finE V κ ∈ St β ∧ ∀ PP ∈ T, redFn β PP (finE V κ) = 1 := by
@@ -169,11 +165,11 @@ theorem eventually_princ (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (T : Fin
   rwa [GlobalTheory.Mass.coe_swapPts, hπ κ] at this
 
 /- English proof (translation)
-Establish `h1 : rTup β L x = 1`. Use function extensionality and compare the values at `PP`. Use `show upperLeftBlock L.hr (redFn β PP.1 x) = 1`. Rewrite using `[hg PP.1 PP.2]`. Conclude with `blockDiagonalExtendByOnePrimeField_one _ _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `levFn`. Rewrite using `[h1, blockDiagonalExtendByOnePrimeField_one, one_mul, Finset.prod_eq_one, Finset.prod_eq_one, one_mul]`. Introduce `PP hP`. Rewrite using `[hq PP hP, dBlk, blockDiagonalExtendByOnePrimeField_one, map_one]`. Introduce `PP hP`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_eq_one fun c _ => ?_` and prove the remaining obligations. Rewrite using `[hg PP hP, dBlk, blockDiagonalExtendByOnePrimeField_one, map_one]`.
+A detailed English derivation is pending.
 -/
 theorem levFn_eq_one {n : ℕ} (β x : GL (Fin n) (Lev.EAf D)) (L : LevDat D.host.E ℂ n)
     (hg : ∀ PP ∈ L.Pg, redFn β PP x = 1) (hq : ∀ PP ∈ L.Q, redFn β PP x = 1) : levFn β L x = 1 := by
@@ -195,7 +191,7 @@ variable {G H W : Type} [Group G] [Group H] [NormedAddCommGroup W] [InnerProduct
   (ρ : G →* Module.End ℂ W) {J : Subgroup H} {χ : J →* ℂˣ} {f : H → W}
 
 /- English proof (translation)
-Establish `h` using `hf ⟨γ, hγ⟩ (π g) 1`. Rewrite `h` using `[map_one, Units.val_one, one_smul, OneMemClass.coe_one, mul_one]`. Establish `h' : f (π (γ * g)) = ρ γ (f (π g))` using `by rw [map_mul]; exact h`. Rewrite using `[h', ← Module.End.mul_apply, ← map_mul, _root_.mul_inv_rev, inv_mul_cancel_right]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem form_invariant (hf : f ∈ Bridge.AdForms (π.comp Γ.subtype) (ρ.comp Γ.subtype) J χ) {γ : G} (hγ : γ ∈ Γ) (g : G) :
     ρ (γ * g)⁻¹ (f (π (γ * g))) = ρ g⁻¹ (f (π g)) := by
@@ -205,11 +201,11 @@ theorem form_invariant (hf : f ∈ Bridge.AdForms (π.comp Γ.subtype) (ρ.comp 
   rw [h', ← Module.End.mul_apply, ← map_mul, _root_.mul_inv_rev, inv_mul_cancel_right]
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.2 fun g => ?_` and prove the remaining obligations. Establish `h0 : Continuous fun h : G => ρ h⁻¹ (f (π g))` using `(hρ _).comp continuous_inv`. Use `h0.continuousAt.congr ?_` and prove the remaining obligations. Establish `ht : Filter.Tendsto (fun h : G => g⁻¹ * h) (𝓝 g) (𝓝 1)`. Simplify using `using (continuous_const_mul g⁻¹).tendsto g`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `filter_upwards [ht.eventually hJ] with h hh`. Take `⟨hk, h5⟩` from `hh`. Establish `h4` using `hf 1 (π g) ⟨_, hk⟩`. Rewrite `h4` using `[h5, map_one, map_one, Units.val_one, one_smul, one_mul, ← map_mul, mul_inv_cancel_left]`. Rewrite using `[h4]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem form_continuous [TopologicalSpace G] [IsTopologicalGroup G] (hρ : ∀ x, Continuous fun g => ρ g x)
     (hJ : ∀ᶠ κ in 𝓝 (1 : G), ∃ h : π κ ∈ J, χ ⟨_, h⟩ = 1)
@@ -229,7 +225,7 @@ theorem form_continuous [TopologicalSpace G] [IsTopologicalGroup G] (hρ : ∀ x
 end Generic
 
 /- English proof (translation)
-Use `filter_upwards [eventually_princ V β (L.Pg ∪ L.Q)] with κ hh`. Take `⟨h1, h2, h3⟩` from `hh`. Establish `hk : finE V κ ∈ lev D.sp.cm V.gram β (flag1L L)` using `Kg_le_lev (D := flag1L L) (T := L.Pg ∪ L.Q) Finset.subset_union_left Finset.subset_union_right ⟨⟨h1, h2⟩, Subgroup.mem_iInf.2 fun PP => Subgroup.mem_iInf.2 fun hP => mem_princAt.2 ⟨h2, h3 PP hP⟩⟩`. Conclude with `⟨hk, levFn_eq_one β (finE V κ) (flag1L L) (fun PP hP => h3 PP (Finset.mem_union_left _ hP)) fun PP hP => h3 PP (Finset.mem_union_right _ hP)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eventually_level (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank) :
     ∀ᶠ κ in 𝓝 (1 : GA D V), ∃ h : (finHom V).rangeRestrict κ ∈ (levEnv V β L).J, (levEnv V β L).χ ⟨_, h⟩ = 1 := by
@@ -243,14 +239,14 @@ theorem eventually_level (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : Lev
     fun PP hP => h3 PP (Finset.mem_union_right _ hP)⟩
 
 /- English proof (translation)
-Introduce `_ hγ g` and use `form_invariant (finHom V).rangeRestrict (GQ V) c.ρ hf hγ g`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ext_invariant {V : HSp D} (c : CoefA V) {J : Subgroup (Bridge.Gf V)} {χ : J →* ℂˣ} {f : Bridge.Gf V → c.W}
     (hf : f ∈ Bridge.AdForms (Bridge.ratF V) c.coef.ρ J χ) : ∀ γ ∈ GQ V, ∀ g, c.ext f (γ * g) = c.ext f g :=
   fun _ hγ g => form_invariant (finHom V).rangeRestrict (GQ V) c.ρ hf hγ g
 
 /- English proof (translation)
-Use `haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩`. Use `haveI : Module.Finite D.host.F D.host.E := Module.Finite.of_restrictScalars_finite ℚ _ _`. Use `haveI : IsTopologicalRing (AE D) := IsModuleTopology.isTopologicalRing (AF D.host.F) _`. Use `haveI : IsTopologicalGroup (GA D V) := inferInstanceAs (IsTopologicalGroup (HR (AF D.host.F) D.sp.cm.sig V.gram))`. Conclude with `form_continuous (finHom V).rangeRestrict (GQ V) c.ρ hc.2.2.1 (eventually_level V β L) hf`.
+A detailed English derivation is pending.
 -/
 theorem ext_continuous {V : HSp D} (c : CoefA V) (hc : c.Is) (β : GL (Fin V.rank) (Lev.EAf D))
     (L : LevDat D.host.E ℂ V.rank) {f : Bridge.Gf V → c.W}
@@ -262,7 +258,7 @@ theorem ext_continuous {V : HSp D} (c : CoefA V) (hc : c.Is) (β : GL (Fin V.ran
   exact form_continuous (finHom V).rangeRestrict (GQ V) c.ρ hc.2.2.1 (eventually_level V β L) hf
 
 /- English proof (translation)
-Establish `hpos : ∀ τ, (gramAt D S τ).PosDef` using `fun τ => by`. Use `hs (tauE D τ)` as an intermediate fact. Rewrite `this` using `[hp]`. Conclude with `GlobalTheory.DefiniteQuotient.posDef_of_signature this`. Conclude with `GlobalTheory.DefiniteQuotient.integrableOn_theta D ψ hom.std S T χS χT om hom hpos c.W (pt ∘ₗ io) (fun w => hpt _) _ (ext_continuous c hc β L hf) (ext_invariant c hf) μ 𝓕 hμ.1.1 hμ.2 g`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrableOn_form {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle}
     {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} (hom : IsWeilDatumO ψ S T χS χT om) (hs : S.SigOK)
@@ -280,9 +276,9 @@ theorem integrableOn_form {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χ
     (fun w => hpt _) _ (ext_continuous c hc β L hf) (ext_invariant c hf) μ 𝓕 hμ.1.1 hμ.2 g
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R hR i t f hf e g`. Take `⟨x, hf⟩` from `hf`. Establish `hx : (R.HV i t).e x ∈ Bridge.AdForms (Bridge.ratF (Vc D i)) (R.cV i).coef.ρ (levEnv _ (R.βV i) (R.datVt i t)).J (levEnv _ (R.βV i) (R.datVt i t)).χ` using `(hR.HV i t).2.1.le (LinearMap.mem_range_self _ x)`. Establish `hf' : f = (R.cV i).ext ((R.HV i t).e x)` using `hf.symm`. Establish `key` using `integrableOn_form (hR.ωP i t) (D.sp.V_sig _) (hR.vpos i) (R.cV i) (hR.cV i) (R.βV i) (R.datVt i t) hx (pureTensorO R.ψ R.θ (Vc D i) (Wc D i) (fun _ => 1) (cart (R.MW i (sg0 D A))) (R.BV i) (onb (R.MW i (sg0 D A))) (R.vP i t)) (hR.pt_theta i t) (R.ioP i e) (hR.νV i t) g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `key` using `[← hf']`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaIntegrandIntegrable : GlobalTheory.IndefiniteRowSideFullHecke.PinnedIntegrability.ThetaIntegrandIntegrable := by
   intro D G _ _ Pl0 T A Ks _ _ _ R hR i t f hf e g

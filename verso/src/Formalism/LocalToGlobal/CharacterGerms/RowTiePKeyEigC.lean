@@ -14,7 +14,7 @@ open RowTiePE0 RowTiePKey RowTiePProj GmExArith
 variable {C : Type} [Field C] {V : VF C} {O : Type} [CommRing O] {n d : ℕ} (K : KeyData C V O n d)
 
 /- English proof (translation)
-The claim follows from `hT C V hc n d hd (Acl K) (fun _ ha _ hb => add_mem K ha hb) (fun _ ha => neg_mem K ha) (fun _ ha _ hb => mul_mem K ha hb) (fun _ ha _ hb => comm_mem K ha hb) (fun _ ha => int_mem K ha) (fun _ _ hs h => closed_mem K hs h) (fun _ ha => star_mem K ha) B hB`.
+A detailed English derivation is pending.
 -/
 theorem teich_acl (hT : TeichSt)
     (hc : ∀ s : ℕ → C, (∀ n : ℕ, V.Ge n (s (n + 1) - s n)) → ∃ x, ∀ n : ℕ, V.Ge n (x - s n)) (hd : d ≠ 0)
@@ -25,31 +25,29 @@ theorem teich_acl (hT : TeichSt)
     (fun _ _ hs h => closed_mem K hs h) (fun _ ha => star_mem K ha) B hB
 
 /- English proof (translation)
-Distinguish the cases in `hw0 : w = 0`. Conclude with `⟨0, by rw [hw0, Matrix.mulVec_zero, smul_zero]⟩`. Establish `ht : ∀ b : {b // b ∈ Acl K}, ∃ τ : Matrix (Fin n) (Fin n) C, τ ∈ Acl K ∧ τ ^ V.l ^ d = τ ∧ ((V.l : C)⁻¹) • (b.1 - τ) ∈ Acl K`. Introduce `b`. Take `⟨τ, h1, h2, h3⟩` from `teich_acl K hT hc hd b.2`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨τ, h1, h2, h3⟩`. Use `choose tf htf using ht`. Set `nx : {b // b ∈ Acl K} → {b // b ∈ Acl K}` to `fun b => ⟨((V.l : C)⁻¹) • (b.1 - tf b), (htf b).2.2⟩`. Set `bs : ℕ → {b // b ∈ Acl K}` to `fun k => nx^[k] ⟨B, hB⟩`. Establish `hl0 : (V.l : C) ≠ 0` using `V.l_ne_zero`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrel : ∀ k, (bs k).1 = tf (bs k) + (V.l : C) • (bs (k + 1)).1`. Introduce `k`. Use `show (bs k).1 = tf (bs k) + (V.l : C) • (nx^[k + 1] ⟨B, hB⟩).1`. Rewrite using `[Function.iterate_succ_apply']`. Use `show (bs k).1 = tf (bs k) + (V.l : C) • (((V.l : C)⁻¹) • ((bs k).1 - tf (bs k)))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Rewrite using `[smul_smul, mul_inv_cancel₀ hl0, one_smul]`. Normalize the expressions using the abelian group laws. Establish `hcs : ∀ k, ∃ c : C, Matrix.mulVec (tf (bs k)) w = c • w` using `fun k => hw _ (htf _).1 (htf _).2.1`. Use `choose cs hcs using hcs`. Establish `hcsi : ∀ k, V.Ge 0 (cs k)` using `fun k => eig_int (tf (bs k)) (int_mem K (htf _).1) w hw0 (cs k) (hcs k)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Set `σs : ℕ → C` to `fun K' => ∑ k ∈ Finset.range K', (V.l : C) ^ k * cs k`. Establish `hid : ∀ K', Matrix.mulVec B w = σs K' • w + ((V.l : C) ^ K') • Matrix.mulVec (bs K').1 w`. Introduce `K'`. Proceed by induction on `K' with`. Consider the case `zero => simp [σs, bs]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Consider the case `succ K' ih`. Rewrite using `[ih, hrel K', Matrix.add_mulVec, Matrix.smul_mulVec, hcs K', smul_add, smul_smul, smul_smul, ← add_assoc, ← add_smul, ← pow_succ]`. Simplify using `only [σs, Finset.sum_range_succ]`. Establish `hcau : ∀ N : ℕ, ∃ n0 : ℕ, ∀ m ≥ n0, V.Ge N (σs (m + 1) - σs m)`. Introduce `N`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨N, fun m hm => ?_⟩` and prove the remaining obligations. Simplify using `only [σs, Finset.sum_range_succ, add_sub_cancel_left]`. Use `(RowTiePKeyEig.ge_lpow (V := V) m).mul (hcsi m)` as an intermediate fact. Use `this.mono ?_` and prove the remaining obligations. Establish `: (N : ℝ) ≤ m` using `by exact_mod_cast hm`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨σ, hσ⟩` from `exists_tends hc hcau`. Use `⟨σ, funext fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`. Use `RowTiePE0.eq_zero_of_ge_all (V := V) fun r => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `choose Kj hKj using fun j => exists_ge (V := V) (w j)`. Use `set W0 : ℝ := -∑ j, |Kj j| with hW0`. Establish `hW : ∀ j, V.Ge W0 (w j)` using `fun j => (hKj j).mono (by`. Establish `h1 : |Kj j| ≤ ∑ j', |Kj j'|` using `Finset.single_le_sum (f := fun j' => |Kj j'|) (fun _ _ => abs_nonneg _) (Finset.mem_univ j)`. Establish `h2` using `neg_abs_le (Kj j)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `linarith)`. Take `⟨n0, h0⟩` from `hσ (r - W0)`. Take `⟨N, hN⟩` from `exists_nat_ge (r - W0)`. Use `set K' := max n0 N`. Establish `e` using `congrFun (hid K') i`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul] at e`. Rewrite using `[e, Pi.smul_apply, smul_eq_mul]`. Establish `e2 : σs K' * w i + (V.l : C) ^ K' * Matrix.mulVec (bs K').1 w i - σ * w i = -((σ - σs K') * w i) + (V.l : C) ^ K' * Matrix.mulVec (bs K').1 w i` using `by ring`. Rewrite using `[e2]`. Use `VF.Ge.add ?_ ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `((h0 K' (le_max_left _ _)).mul (hW i)).neg` as an intermediate fact. Simplify using `using this`. Establish `hv : V.Ge W0 (Matrix.mulVec (bs K').1 w i)`. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `VF.Ge.sum fun j _ => (int_mem K (bs K').2 i j).mul_int (hW j)`.
-
-Use `(RowTiePKeyEig.ge_lpow (V := V) K').mul hv` as an intermediate fact. Use `this.mono ?_` and prove the remaining obligations. Establish `: (N : ℝ) ≤ K'` using `by exact_mod_cast le_max_right n0 N`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem scal (hT : TeichSt)
     (hc : ∀ s : ℕ → C, (∀ n : ℕ, V.Ge n (s (n + 1) - s n)) → ∃ x, ∀ n : ℕ, V.Ge n (x - s n)) (hd : d ≠ 0)

@@ -46,9 +46,9 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) {SG' : F
 open ComplexOrder in
 
 /- English proof (translation)
-Establish `hpd` using `roundPk_gram_pos (X := X) W.sgTrue (fun d : DecoSet X.E (R.N R.m - 1) ∅ SG' => d.1.N) σ₀`. Establish `e : (ptEv W ΛM σ₀ hσ).gram = Matrix.of fun i j : VVIdx W.sgTrue => σ₀ ((roundPk X W.sgTrue fun d : DecoSet X.E (R.N R.m - 1) ∅ SG' => d.1.N).pair (bVV X.K W.sgTrue i) (bVV X.K W.sgTrue j))`. Use extensionality with `i j`. Simplify using `only [GSD.Ev.gram, Matrix.of_apply]`. Conclude with `(ptEv W ΛM σ₀ hσ).ip_ev _ _`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `isUnit_iff_ne_zero.2 hpd.det_pos.ne'`.
+A detailed English derivation is pending.
 -/
 theorem ptEv_gram_unit (σ₀ : X.K →+* ℂ) (hσ : ∀ x : X.K, σ₀ (star x) = starRingEnd ℂ (σ₀ x)) :
     IsUnit (ptEv W ΛM σ₀ hσ).gram.det := by
@@ -63,7 +63,7 @@ theorem ptEv_gram_unit (σ₀ : X.K →+* ℂ) (hσ : ∀ x : X.K, σ₀ (star x
   exact isUnit_iff_ne_zero.2 hpd.det_pos.ne'
 
 /- English proof (translation)
-The claim follows from `periodC_eq_ipCl hX σ₀ hσ hM (ptEv_gram_unit W ΛM σ₀ hσ) w z`.
+A detailed English derivation is pending.
 -/
 theorem periodC_eq_ipCl' (hX : X.Ok) (σ₀ : X.K →+* ℂ) (hσ : ∀ x : X.K, σ₀ (star x) = starRingEnd ℂ (σ₀ x)) (hM : (rowGSD W ΛM).Ok)
     (w : (ptGSD W ΛM).Cl → (ptEv W ΛM σ₀ hσ).Y → ℂ) (z : Fin ((rowGSD W ΛM).hDim hM) → ℂ) :

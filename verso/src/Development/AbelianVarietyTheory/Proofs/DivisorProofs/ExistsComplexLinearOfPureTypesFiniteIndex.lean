@@ -10,27 +10,27 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.CompRat
 
 /- English proof (translation)
-Introduce `E _ _ _ H D D' g ty P P' hP hP' Φ N hN hsp h₁ h₂`. Take `⟨r, hr⟩` from `exists_real_extension_of_lattice P hP.2.1 hP.2.2.1 hP.2.2.2.1 (P'.comp Φ.toLinearMap.toAddMonoidHom)`. Establish `hr' : ∀ a, r (P a) = P' (Φ a)` using `hr`. Establish `hd : (0 : ℝ) < H.d` using `Nat.cast_pos.2 H.d_prime.pos`. Establish `hre : H.rt0.re = 0 ∧ H.rt0.im ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₁` using `congrArg Complex.re H.sqrt_neg_disc_sq`. Establish `e₂` using `congrArg Complex.im H.sqrt_neg_disc_sq`. Simplify using `[pow_two] at e₁ e₂`. Establish `him : H.rt0.im ≠ 0` using `fun h => by`. Rewrite `e₁` using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use polynomial arithmetic with `[mul_self_nonneg H.rt0.re]`. Use `⟨?_, him⟩` and prove the remaining obligations. Establish `: H.rt0.re * H.rt0.im = 0` using `by linarith`. Conclude with `(mul_eq_zero.1 this).resolve_right him`. Establish `hρ : H.rt0 = (H.rt0.im : ℂ) * Complex.I`.
+Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `apply Complex.ext <;> simp [hre.1]`. Establish `key : ∀ (ρ : ℂ) (a : D.La), a ∈ lat hP ρ → Φ a ∈ lat hP' ρ → r (ρ • P a) = ρ • r (P a)`. Introduce `ρ a ha ha'`. Rewrite using `[← period_rt_smul hP ha, hr', hr', map_smul, period_rt_smul hP' ha']`. Establish `hPN : ∀ a, r (H.rt0 • P (N • a)) = H.rt0 • r (P (N • a))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Take `⟨x, hx, y, hy, hxy⟩` from `Submodule.mem_sup.1 (hsp a)`. Rewrite using `[← hxy]`. Establish `k₁` using `key _ x hx (h₁ x hx)`. Establish `k₂` using `key _ y hy (h₂ y hy)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `k₂` using `[neg_smul, neg_smul, map_neg, neg_inj]`. Rewrite using `[map_add, smul_add, map_add, map_add, smul_add, k₁, k₂]`. Establish `hNc : (N : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`. Establish `hP0 : ∀ a, r (H.rt0 • P a) = H.rt0 • r (P a)`. Introduce `a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `hPN a`. Rewrite `h` using `[map_nsmul, smul_comm H.rt0 N, map_nsmul, map_nsmul, smul_comm H.rt0 N, ← Nat.cast_smul_eq_nsmul ℂ, ← Nat.cast_smul_eq_nsmul ℂ]`. Conclude with `smul_right_injective _ hNc h`. Establish `h0 : ∀ v, r (H.rt0 • v) = H.rt0 • r v`. Introduce `v`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction.
 
-Establish `hv : v ∈ Submodule.span ℝ (Set.range P)` using `by rw [hP.2.2.2.1]; trivial`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨a, rfl⟩ := hx`. Conclude with `hP0 a`. Consider the case `zero => simp`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `add x y _ _ hx hy => rw [smul_add, map_add, map_add, smul_add, hx, hy]`. Consider the case `smul c x _ hx => rw [smul_comm, r.map_smul, r.map_smul, hx, smul_comm]`. Establish `hI : ∀ v, r (Complex.I • v) = Complex.I • r v`. Introduce `v`. Use `h0 v` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[hρ, mul_smul, mul_smul, Complex.coe_smul, Complex.coe_smul, map_smul]`. Conclude with `smul_right_injective _ hre.2 this`. Set `L : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)` to `{ toFun := r map_add' := r.map_add map_smul' := fun c v => by`. Rewrite using `[RingHom.id_apply, ← Complex.re_add_im c, add_smul, add_smul, mul_smul, mul_smul, Complex.coe_smul, Complex.coe_smul, Complex.coe_smul, Complex.coe_smul, map_add, map_smul, map_smul, hI] }`. Establish `hsurj : Function.Surjective L` using `by show Function.Surjective r`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Rewrite using `[← LinearMap.range_eq_top, ← top_le_iff, ← hP'.2.2.2.1, Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `⟨P (Φ.symm a), by rw [hr', Φ.apply_symm_apply]⟩`. Conclude with `⟨LinearEquiv.ofBijective L ⟨LinearMap.injective_iff_surjective.2 hsurj, hsurj⟩, fun a => (hr' a).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_complex_linear_of_pure_types_of_index : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D D' : Datum H) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (P : D.La →+ (Fin g → ℂ)) (P' : D'.La →+ (Fin g → ℂ)) (hP : IsPeriod D ty P) (hP' : IsPeriod D' ty P') (Φ : D.La ≃ₗ[𝓞 E] D'.La) (N : ℕ), 0 < N → (∀ v : D.La, N • v ∈ lat hP H.rt0 ⊔ lat hP (-H.rt0)) → (∀ a ∈ lat hP H.rt0, Φ a ∈ lat hP' H.rt0) → (∀ a ∈ lat hP (-H.rt0), Φ a ∈ lat hP' (-H.rt0)) → ∃ L : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ), ∀ a, P' (Φ a) = L (P a) := by
   intro E _ _ _ H D D' g ty P P' hP hP' Φ N hN hsp h₁ h₂

@@ -28,7 +28,7 @@ def Kset {n : ℕ} (ε : Fin n → Bool) : Set (Matrix (Fin n) (Fin n) ℂ) :=
 def hs {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) : ℝ := ∑ i, ∑ j, ‖g i j‖ ^ 2
 
 /- English proof (translation)
-Unfold `Jm`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma Jm_mul_self {n : ℕ} (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
   unfold Jm
@@ -38,7 +38,7 @@ lemma Jm_mul_self {n : ℕ} (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
   split_ifs <;> norm_num
 
 /- English proof (translation)
-Unfold `Jm`. Rewrite using `[Matrix.diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `by_cases h : ε a <;> simp [h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma Jm_conjTranspose {n : ℕ} (ε : Fin n → Bool) : (Jm ε)ᴴ = Jm ε := by
   unfold Jm
@@ -94,7 +94,7 @@ def coeMatrixAlt {n : ℕ} (ε : Fin n → Bool) : UJ ε → Matrix (Fin n) (Fin
   fun g => ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 lemma coeMatrix_left_inv {n : ℕ} (ε : Fin n → Bool) (g : Matrix (Fin n) (Fin n) ℂ) (hg : inUJ ε g) :
     (Jm ε * gᴴ * Jm ε) * g = 1 := by
@@ -102,19 +102,19 @@ lemma coeMatrix_left_inv {n : ℕ} (ε : Fin n → Bool) (g : Matrix (Fin n) (Fi
     _ = 1 := by rw [hg, Jm_mul_self]
 
 /- English proof (translation)
-The claim follows from `Units.inv_eq_of_mul_eq_one_left (coeMatrix_left_inv ε _ g.2)`.
+A detailed English derivation is pending.
 -/
 lemma coeMatrix_inv_eq {n : ℕ} (ε : Fin n → Bool) (g : UJ ε) :
     (((g : (Matrix (Fin n) (Fin n) ℂ)ˣ)⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)
       = Jm ε * (coeMatrixAlt ε g)ᴴ * Jm ε := Units.inv_eq_of_mul_eq_one_left (coeMatrix_left_inv ε _ g.2)
 
 /- English proof (translation)
-The claim follows from `Units.continuous_val.comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 lemma continuous_coeMatrix {n : ℕ} (ε : Fin n → Bool) : Continuous (coeMatrixAlt ε) := Units.continuous_val.comp continuous_subtype_val
 
 /- English proof (translation)
-Conclude with `isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id) continuous_const`.
+A detailed English derivation is pending.
 -/
 lemma isClosed_pseudoUnitary {n : ℕ} (ε : Fin n → Bool) :
     IsClosed {g : Matrix (Fin n) (Fin n) ℂ | inUJ ε g} := by
@@ -122,9 +122,9 @@ lemma isClosed_pseudoUnitary {n : ℕ} (ε : Fin n → Bool) :
     continuous_const
 
 /- English proof (translation)
-Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, rfl⟩`. Conclude with `h.2`. Introduce `hg`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨⟨⟨g, Jm ε * gᴴ * Jm ε, mul_eq_one_comm.1 (coeMatrix_left_inv ε g hg), coeMatrix_left_inv ε g hg⟩, hg⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 lemma range_coeMatrix {n : ℕ} (ε : Fin n → Bool) :
     Set.range (coeMatrixAlt ε) = {g | inUJ ε g} := by
@@ -136,9 +136,9 @@ lemma range_coeMatrix {n : ℕ} (ε : Fin n → Bool) :
     exact ⟨⟨⟨g, Jm ε * gᴴ * Jm ε, mul_eq_one_comm.1 (coeMatrix_left_inv ε g hg), coeMatrix_left_inv ε g hg⟩, hg⟩, rfl⟩
 
 /- English proof (translation)
-Establish `hc : Continuous (fun m : Matrix (Fin n) (Fin n) ℂ => (m, MulOpposite.op (Jm ε * mᴴ * Jm ε)))` using `continuous_id.prodMk (MulOpposite.continuous_op.comp ((continuous_const.matrix_mul continuous_id.matrix_conjTranspose).matrix_mul continuous_const))`. Use `IsInducing.of_comp (continuous_coeMatrix ε) hc ?_` and prove the remaining obligations. Establish `e : (fun m : Matrix (Fin n) (Fin n) ℂ => (m, MulOpposite.op (Jm ε * mᴴ * Jm ε))) ∘ coeMatrixAlt ε = Units.embedProduct _ ∘ Subtype.val` using `funext fun g => by`. Simplify using `only [Function.comp_apply, Units.embedProduct_apply, ← coeMatrix_inv_eq]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[e]`. Conclude with `Units.isInducing_embedProduct.comp IsInducing.subtypeVal`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma isInducing_coeMatrix {n : ℕ} (ε : Fin n → Bool) : IsInducing (coeMatrixAlt ε) := by
   have hc : Continuous (fun m : Matrix (Fin n) (Fin n) ℂ => (m, MulOpposite.op (Jm ε * mᴴ * Jm ε))) :=
@@ -153,16 +153,16 @@ lemma isInducing_coeMatrix {n : ℕ} (ε : Fin n → Bool) : IsInducing (coeMatr
   exact Units.isInducing_embedProduct.comp IsInducing.subtypeVal
 
 /- English proof (translation)
-Introduce `a b h`. Conclude with `Subtype.ext (Units.ext h)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma injective_coeMatrix {n : ℕ} (ε : Fin n → Bool) : Function.Injective (coeMatrixAlt ε) := by
   intro a b h
   exact Subtype.ext (Units.ext h)
 
 /- English proof (translation)
-Introduce `n ε`. Use `⟨⟨⟨isInducing_coeMatrix ε, injective_coeMatrix ε⟩, ?_⟩, range_coeMatrix ε⟩` and prove the remaining obligations. Establish `h` using `range_coeMatrix ε`. Unfold `coeMatrixAlt at h`. Rewrite using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isClosed_pseudoUnitary ε`.
+A detailed English derivation is pending.
 -/
 theorem isClosedEmbeddingMatrix : UJEmb := by
   intro n ε
@@ -173,7 +173,7 @@ theorem isClosedEmbeddingMatrix : UJEmb := by
   exact isClosed_pseudoUnitary ε
 
 /- English proof (translation)
-Introduce `n ε`. Use `haveI : LocallyCompactSpace (Matrix (Fin n) (Fin n) ℂ) := inferInstanceAs (LocallyCompactSpace (Fin n → Fin n → ℂ))`. Conclude with `(h n ε).1.locallyCompactSpace`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem uJLocCompact_of (h : UJEmb) : UJLocCompact := by
   intro n ε
@@ -199,7 +199,7 @@ instance instIsHaarMuG (n : ℕ) (ε : Fin n → Bool) : (muG ε).IsHaarMeasure 
   unfold muG; infer_instance
 
 /- English proof (translation)
-Use `⟨Submonoid.mul_mem _ hg.1 hh.1, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, hh.2, ← Matrix.mul_assoc, hg.2, Matrix.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma Kset_mul {n : ℕ} (ε : Fin n → Bool) {g h : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Kset ε)
     (hh : h ∈ Kset ε) : g * h ∈ Kset ε := by
@@ -207,7 +207,7 @@ lemma Kset_mul {n : ℕ} (ε : Fin n → Bool) {g h : Matrix (Fin n) (Fin n) ℂ
   rw [Matrix.mul_assoc, hh.2, ← Matrix.mul_assoc, hg.2, Matrix.mul_assoc]
 
 /- English proof (translation)
-Use `⟨Unitary.star_mem hg.1, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg Matrix.conjTranspose hg.2`. Rewrite `h` using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Jm_conjTranspose]`. Rewrite using `[Matrix.star_eq_conjTranspose]`. Conclude with `h.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma Kset_star {n : ℕ} (ε : Fin n → Bool) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Kset ε) :
     star g ∈ Kset ε := by
@@ -240,7 +240,7 @@ def KG {n : ℕ} (ε : Fin n → Bool) : Subgroup (UJ ε) where
     exact Kset_star ε hg
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 lemma mem_KG {n : ℕ} (ε : Fin n → Bool) (g : UJ ε) : g ∈ KG ε ↔ toM g ∈ Kset ε := Iff.rfl
 

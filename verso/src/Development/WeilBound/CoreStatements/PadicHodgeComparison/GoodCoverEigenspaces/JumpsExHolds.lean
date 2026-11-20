@@ -10,9 +10,9 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibl
 namespace PositivityTheory.AutomorphicGaloisHodgeTate.G8
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ l _ P AI hT Gw O _ _ _ Bw d r hc τ LL' τ' hτ`. Take `⟨T⟩` from `hT`. Take `⟨L, r₁, hm, hcr⟩` from `hc`. Use `L.2` as an intermediate fact. Establish `hd : Bw.IsdRE P L r₁`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Module.finrank ↥L.1 ↥(DdR (P.PD Bw.Kw) (Bw.repE L r₁)) = Module.finrank ℚ_[l] ↥Bw.Kw.1 * Module.finrank ↥L.1 (Fin d → ↥L.1)` using `(GlobalTheory.Per.CrisDR.isDR_of_isCrys l P AI T Bw.Kw L (Fin d → ↥L.1) (Bw.repE L r₁) hcr).1`. Rewrite using `[LocBridge.IsdRE, h2, Module.finrank_fin_fun]`. Set `τL : ↥Bw.Kw.1 →ₐ[ℚ_[l]] ↥L.1` to `(IntermediateField.inclusion hm.1).comp ((LL'.1.val.comp τ').codRestrict Bw.LL.1.toSubalgebra fun x => Bw.LL_split _ x)`. Establish `hτL : GlobalTheory.Pst.IsInduced Bw τ τL` using `fun x => hτ x`. Conclude with `GlobalTheory.Pst.IsModel.exists_isJumpsAt P hm hd hτL`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem jumpsEx_holds : JumpsEx := by
   intro E Ω _ _ _ _ _ l _ P AI hT Gw O _ _ _ Bw d r hc τ LL' τ' hτ

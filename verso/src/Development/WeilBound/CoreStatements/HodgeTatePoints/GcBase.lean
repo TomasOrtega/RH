@@ -6,19 +6,19 @@ open Module NumberField GlobalTheory.CompanionTheory.Ar.HT TensorProduct
 namespace PositivityTheory.HtPt.Gc
 
 /- English proof (translation)
-Use `⟨fun x => ?_, fun y => ?_, fun {x₁ x₂} h => ⟨1, by rw [one_smul, one_smul]; exact Subtype.ext h⟩⟩` and prove the remaining obligations. Establish `hx : algebraMap A K (x : A) ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors x.2`. Rewrite using `[Module.End.isUnit_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `v w hvw`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h' : (x : A) • v = (x : A) • w`. Simplify `hvw` using `[Module.algebraMap_end_apply]`. Rewrite `h'` using `[← algebraMap_smul K (x : A) v, ← algebraMap_smul K (x : A) w]`. Conclude with `smul_right_injective Ω hx h'`. Introduce `v`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(algebraMap A K (x : A))⁻¹ • v, ?_⟩` and prove the remaining obligations. Rewrite using `[Module.algebraMap_end_apply, ← algebraMap_smul K (x : A), smul_smul, mul_inv_cancel₀ hx, one_smul]`. Establish `hy : y ∈ Submodule.span K (M : Set Ω)` using `hM ▸ Submodule.mem_top`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz => exact ⟨(⟨z, hz⟩, 1), by simp⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => exact ⟨(0, 1), by simp⟩`. Consider the case `add y₁ y₂ _ _ h₁ h₂`. Take `⟨⟨m₁, s₁⟩, e₁⟩` from `h₁`. Take `⟨⟨m₂, s₂⟩, e₂⟩` from `h₂`. Use `⟨((s₂ : A) • m₁ + (s₁ : A) • m₂, s₁ * s₂), ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e₁' : (s₁ : A) • y₁ = (m₁ : Ω)` using `e₁`. Establish `e₂' : (s₂ : A) • y₂ = (m₂ : Ω)` using `e₂`. Simplify using `only [map_add, map_smul, Submodule.subtype_apply, ← e₁', ← e₂', Submonoid.smul_def, Submonoid.coe_mul]`. Rewrite using `[smul_add, mul_smul, mul_comm, mul_smul, smul_comm (s₂ : A) (s₁ : A) y₁, smul_comm (s₂ : A) (s₁ : A) y₂]`. Consider the case `smul c z _ h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨m, s⟩, e⟩` from `h`. Take `⟨⟨a, b⟩, hab⟩` from `IsLocalization.surj (nonZeroDivisors A) c`. Simplify using `only at hab`. Establish `e' : (s : A) • z = (m : Ω)` using `e`. Establish `hb : (b : A) • (c • z) = a • z`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← algebraMap_smul K (b : A), smul_smul, mul_comm _ c, hab, algebraMap_smul]`. Use `⟨(a • m, b * s), ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, Submodule.subtype_apply, ← e', Submonoid.smul_def, Submonoid.coe_mul, mul_comm, mul_smul, hb]`. Conclude with `smul_comm _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocalizedModule_subtype {A K : Type} [CommRing A] [IsDomain A] [Field K] [Algebra A K]
     [IsFractionRing A K] {Ω : Type} [AddCommGroup Ω] [Module K Ω] [Module A Ω]
@@ -65,7 +65,7 @@ theorem isLocalizedModule_subtype {A K : Type} [CommRing A] [IsDomain A] [Field 
       exact smul_comm _ _ _
 
 /- English proof (translation)
-Use `haveI := isLocalizedModule_subtype M hM`. Rewrite using `[IsFractionRing.finrank_right_eq A K Ω]`. Conclude with `IsLocalizedModule.finrank_eq (nonZeroDivisors A) M.subtype le_rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_lattice {A K : Type} [CommRing A] [IsDomain A] [Field K] [Algebra A K]
     [IsFractionRing A K] {Ω : Type} [AddCommGroup Ω] [Module K Ω] [Module A Ω]
@@ -76,7 +76,7 @@ theorem finrank_lattice {A K : Type} [CommRing A] [IsDomain A] [Field K] [Algebr
   exact IsLocalizedModule.finrank_eq (nonZeroDivisors A) M.subtype le_rfl
 
 /- English proof (translation)
-Unfold `Module.rankAtStalk`. Rewrite using `[IsLocalization.finrank_eq (Localization.AtPrime q.asIdeal) q.asIdeal.primeCompl q.asIdeal.primeCompl_le_nonZeroDivisors]`. Conclude with `IsLocalizedModule.finrank_eq q.asIdeal.primeCompl (LocalizedModule.mkLinearMap q.asIdeal.primeCompl P) q.asIdeal.primeCompl_le_nonZeroDivisors`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem rankAtStalk_eq_finrank' {R : Type} [CommRing R] [IsDomain R] {P : Type} [AddCommGroup P]
     [Module R P] (q : PrimeSpectrum R) : Module.rankAtStalk P q = Module.finrank R P := by
@@ -87,25 +87,21 @@ private theorem rankAtStalk_eq_finrank' {R : Type} [CommRing R] [IsDomain R] {P 
     (LocalizedModule.mkLinearMap q.asIdeal.primeCompl P) q.asIdeal.primeCompl_le_nonZeroDivisors
 
 /- English proof (translation)
-Introduce `A K _ _ _ _ _ Ω _ _ _ _ M C _ v O _ _ hv _ Ω' _ _ _ _ L ι hM hproj hL hspan hdim`. Use `haveI : IsDomain O := hv.hom_inj.isDomain`. Use `haveI : ValuationRing O := ValuationRing.of_integers v hv`. Use `haveI : IsFractionRing O C := hv.isFractionRing`. Use `haveI : Module.Finite A M := Module.Finite.iff_fg.mpr hM.1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : Module.Finite O L := Module.Finite.iff_fg.mpr hL.1`. Use `haveI : Module.Flat O L := by`. Rewrite using `[Module.Flat.flat_iff_torsion_eq_bot_of_isBezout, eq_bot_iff]`. Introduce and unpack `x ⟨a, ha⟩`. Rewrite using `[Submodule.mem_bot]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Establish `ha' : (a : O) • (x : Ω') = 0`. Use `congrArg Subtype.val ha` as an intermediate fact. Simplify `this` using `[Submonoid.smul_def]`. Rewrite `ha'` using `[← algebraMap_smul C (a : O)]`. Establish `hne : algebraMap O C (a : O) ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors a.2`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `Subtype.ext ((smul_eq_zero.mp ha').resolve_left hne)`. Use `letI : Module A Ω' := Module.compHom Ω' (algebraMap A O)`. Use `haveI : IsScalarTower A O Ω' := ⟨fun a o x => by rw [Algebra.smul_def, mul_smul]; rfl⟩`. Set `ι' : M →ₗ[A] Ω'` to `{ toFun := ι, map_add' := map_add ι map_smul' := fun a x => by rw [LinearMap.map_smulₛₗ]; rfl }`. Set `j : O ⊗[A] M →ₗ[O] Ω'` to `ι'.liftBaseChange O`.
+Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `hj : ∀ x, j (1 ⊗ₜ x) = ι x` using `fun x => by show (1 : O) • ι x = ι x`. Conclude with `one_smul _ _`. Establish `hrange : LinearMap.range j = L`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨t, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul o x => show o • ι x ∈ L`. Conclude with `L.smul_mem o (hspan ▸ Submodule.subset_span ⟨x, rfl⟩)`. Consider the case `add t₁ t₂ h₁ h₂ => rw [map_add]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `L.add_mem h₁ h₂`. Rewrite using `[← hspan, Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨1 ⊗ₜ x, hj x⟩`. Use `⟨j, ?_, hrange, hj⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `j' : O ⊗[A] M →ₗ[O] L` to `j.codRestrict L (fun t => hrange ▸ LinearMap.mem_range_self j t)`. Establish `hsurj : Function.Surjective j'`. Introduce and unpack `⟨y, hy⟩`. Rewrite `hy` using `[← hrange]`. Take `⟨t, rfl⟩` from `hy`.
-
-Conclude with `⟨t, rfl⟩`. Establish `hbij : Function.Bijective j'`. Apply `Module.bijective_of_surjective_of_rankAtStalk_eq hsurj` to reduce the goal to its premises. Introduce `m _`. Rewrite using `[Module.rankAtStalk_baseChange, rankAtStalk_eq_finrank', rankAtStalk_eq_finrank', ← finrank_lattice M hM.2, hdim, finrank_lattice L hL.2]`.
-
-Introduce `t₁ t₂ h`. Conclude with `hbij.1 (Subtype.ext h)`.
+A detailed English derivation is pending.
 -/
 theorem bc_iso : ∀ (A K : Type) [CommRing A] [IsDomain A] [Field K] [Algebra A K] [IsFractionRing A K] (Ω : Type) [AddCommGroup Ω] [Module K Ω] [Module A Ω] [IsScalarTower A K Ω] (M : Submodule A Ω) (C : Type) [Field C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] (hv : v.Integers O) [Algebra A O] (Ω' : Type) [AddCommGroup Ω'] [Module C Ω'] [Module O Ω'] [IsScalarTower O C Ω'] (L : Submodule O Ω') (ι : M →ₛₗ[algebraMap A O] Ω'), M.IsLattice K → Module.Projective A M → L.IsLattice C → Submodule.span O (Set.range ι) = L → Module.finrank K Ω = Module.finrank C Ω' → ∃ j : O ⊗[A] M →ₗ[O] Ω', Function.Injective j ∧ LinearMap.range j = L ∧ ∀ x, j (1 ⊗ₜ x) = ι x := by
   intro A K _ _ _ _ _ Ω _ _ _ _ M C _ v O _ _ hv _ Ω' _ _ _ _ L ι hM hproj hL hspan hdim

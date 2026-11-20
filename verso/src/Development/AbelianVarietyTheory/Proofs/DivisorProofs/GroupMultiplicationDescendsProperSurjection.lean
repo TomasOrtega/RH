@@ -18,13 +18,13 @@ def ptOf {T : Over X} (a : T.left ⟶ G'.left) (ha : a ≫ G'.hom = T.hom ≫ f)
   Over.homMk (pullback.lift a T.hom ha) (pullback.lift_snd _ _ _)
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem ptOf_fst {T : Over X} (a : T.left ⟶ G'.left) (ha : a ≫ G'.hom = T.hom ≫ f) :
     (ptOf G' f a ha).left ≫ pullback.fst G'.hom f = a := pullback.lift_fst _ _ _
 
 /- English proof (translation)
-Set `U : Over.mk (T.hom ≫ f) ⟶ G' ⊗ G'` to `Over.homMk w hw`. Establish `e` using `(isGrpPullback_pullback G' f).2 T (ptOf G' f _ h₁) (ptOf G' f _ h₂) (U ≫ fst G' G') (U ≫ snd G' G') (ptOf_fst G' f _ h₁).symm (ptOf_fst G' f _ h₂).symm`. Rewrite using `[← e, ← MonObj.comp_mul, Hom.mul_def, lift_fst_snd, Category.id_comp]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ptOf_mul [GrpObj G'] {T : Over X} (w : T.left ⟶ (G' ⊗ G').left) (hw : w ≫ (G' ⊗ G').hom = T.hom ≫ f)
     (h₁ : (w ≫ (fst G' G').left) ≫ G'.hom = T.hom ≫ f) (h₂ : (w ≫ (snd G' G').left) ≫ G'.hom = T.hom ≫ f) :
@@ -38,35 +38,33 @@ theorem ptOf_mul [GrpObj G'] {T : Over X} (w : T.left ⟶ (G' ⊗ G').left) (hw 
 end Pt
 
 /- English proof (translation)
-Introduce `R _ _ _ _ S π hprop hsurj hint G' _ G β hsm hβ φ hφ hdat`. Use `haveI := hsm`. Use `haveI : Smooth (G ⊗ G).hom := inferInstanceAs (Smooth (pullback.fst G.hom G.hom ≫ G.hom))`. Establish `hflat : Flat (G ⊗ G).hom` using `inferInstance`. Set `Z' : Over (Sp R)` to `Over.mk ((G' ⊗ G').hom ≫ π)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Set `u : Z' ⟶ G` to `Over.homMk ((fst G' G').left ≫ β) (by show ((fst G' G').left ≫ β) ≫ G.hom = (G' ⊗ G').hom ≫ π`. Rewrite using `[Category.assoc, hβ.w, ← Category.assoc, Over.w])`. Set `v : Z' ⟶ G` to `Over.homMk ((snd G' G').left ≫ β) (by show ((snd G' G').left ≫ β) ≫ G.hom = (G' ⊗ G').hom ≫ π`. Rewrite using `[Category.assoc, hβ.w, ← Category.assoc, Over.w])`. Set `p : (G' ⊗ G').left ⟶ (G ⊗ G).left` to `(lift u v).left`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hp1 : p ≫ (fst G G).left = (fst G' G').left ≫ β` using `by show (lift u v ≫ fst G G).left = _`. Rewrite using `[lift_fst]`. Both sides reduce to the same expression. Establish `hp2 : p ≫ (snd G G).left = (snd G' G').left ≫ β` using `by show (lift u v ≫ snd G G).left = _`. Rewrite using `[lift_snd]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hA : IsPullback (fst G' G').left (snd G' G').left G'.hom G'.hom` using `IsPullback.of_hasPullback _ _`. Establish `hB : IsPullback (fst G G).left (snd G G).left G.hom G.hom` using `IsPullback.of_hasPullback _ _`. Establish `htop : IsPullback p (snd G' G').left (snd G G).left β`. Use `IsPullback.of_right (h₁₂ := (fst G G).left) (h₂₂ := G.hom) ?_ hp2 hB` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hp1, hβ.w]`. Conclude with `hA.paste_horiz hβ`. Establish `hpb : IsPullback p (G' ⊗ G').hom (G ⊗ G).hom π`. Establish `h` using `htop.paste_vert hβ`. Rewrite `h` using `[Over.w (snd G' G'), Over.w (snd G G)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hepi : ∀ {W : Scheme.{0}} (a b : (G ⊗ G).left ⟶ W), p ≫ a = p ≫ b → a = b`. Introduce `W a b hab`. Take `⟨c, -, hc⟩` from `GlobalTheory.T.exists_descent_of_equalised_proper_cover_normal R S _ _ W π _ p _ hprop hsurj hint hflat hpb (p ≫ a) (by rw [← Category.assoc, pullback.condition, Category.assoc])`. Conclude with `(hc a rfl).trans (hc b hab.symm).symm`. Establish `heq : pullback.fst p p ≫ μ[G'].left ≫ β = pullback.snd p p ≫ μ[G'].left ≫ β` using `by set f₁ := pullback.fst p p set f₂ := pullback.snd p p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hf : f₁ ≫ p = f₂ ≫ p` using `pullback.condition`. Establish `hs : (f₁ ≫ (G' ⊗ G').hom) ≫ π = (f₂ ≫ (G' ⊗ G').hom) ≫ π`. Rewrite using `[Category.assoc, Category.assoc, ← hpb.w, ← Category.assoc, hf, Category.assoc]`. Set `σ` to `pullback.lift _ _ hs`. Set `T₀ : Over (pullback π π)` to `Over.mk σ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hw₁ : f₁ ≫ (G' ⊗ G').hom = T₀.hom ≫ pullback.fst π π` using `(pullback.lift_fst _ _ hs).symm`. Establish `hw₂ : f₂ ≫ (G' ⊗ G').hom = T₀.hom ≫ pullback.snd π π` using `(pullback.lift_snd _ _ hs).symm`. Establish `htr : ∀ (a₁ a₂ : T₀.left ⟶ G'.left) (h₁ : a₁ ≫ G'.hom = T₀.hom ≫ pullback.fst π π) (h₂ : a₂ ≫ G'.hom = T₀.hom ≫ pullback.snd π π), a₁ ≫ β = a₂ ≫ β → ptOf G' (pullback.fst π π) a₁ h₁ ≫ φ.hom = ptOf G' (pullback.snd π π) a₂ h₂`. Introduce `a₁ a₂ h₁ h₂ hb`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `pullback.hom_ext` to reduce the goal to its premises. Apply `hβ.hom_ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, Category.assoc, Category.assoc, ← hdat, ← Category.assoc, ptOf_fst, ptOf_fst, hb]`. Rewrite using `[Category.assoc, pullback.condition, ptOf_fst, h₂, ← Category.assoc]`. Conclude with `congrArg (· ≫ pullback.snd π π) (Over.w (ptOf G' (pullback.fst π π) a₁ h₁ ≫ φ.hom))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Over.w (ptOf G' (pullback.fst π π) a₁ h₁ ≫ φ.hom)).trans (Over.w (ptOf G' (pullback.snd π π) a₂ h₂)).symm`. Establish `hb₁ : (f₁ ≫ (fst G' G').left) ≫ β = (f₂ ≫ (fst G' G').left) ≫ β`. Rewrite using `[Category.assoc, Category.assoc, ← hp1, ← Category.assoc, hf, Category.assoc]`. Establish `hb₂ : (f₁ ≫ (snd G' G').left) ≫ β = (f₂ ≫ (snd G' G').left) ≫ β`. Rewrite using `[Category.assoc, Category.assoc, ← hp2, ← Category.assoc, hf, Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k₁ : (f₁ ≫ (fst G' G').left) ≫ G'.hom = T₀.hom ≫ pullback.fst π π` using `by rw [Category.assoc, Over.w, hw₁]`. Establish `k₂ : (f₁ ≫ (snd G' G').left) ≫ G'.hom = T₀.hom ≫ pullback.fst π π` using `by rw [Category.assoc, Over.w, hw₁]`. Establish `l₁ : (f₂ ≫ (fst G' G').left) ≫ G'.hom = T₀.hom ≫ pullback.snd π π` using `by rw [Category.assoc, Over.w, hw₂]`. Establish `l₂ : (f₂ ≫ (snd G' G').left) ≫ G'.hom = T₀.hom ≫ pullback.snd π π` using `by rw [Category.assoc, Over.w, hw₂]`. Establish `e₁` using `ptOf_mul G' (pullback.fst π π) (T := T₀) f₁ hw₁ k₁ k₂`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e₂` using `ptOf_mul G' (pullback.snd π π) (T := T₀) f₂ hw₂ l₁ l₂`. Establish `hAB : (ptOf G' (pullback.fst π π) (T` using `T₀) _ k₁ * ptOf G' (pullback.fst π π) (T := T₀) _ k₂) ≫ φ.hom = ptOf G' (pullback.snd π π) (T := T₀) _ l₁ * ptOf G' (pullback.snd π π) (T := T₀) _ l₂ := by`. Use `((IsMonHom.monoidHom φ.hom T₀).map_mul _ _).trans ?_` and prove the remaining obligations. Use `show (ptOf G' (pullback.fst π π) (T := T₀) _ k₁ ≫ φ.hom) * (ptOf G' (pullback.fst π π) (T := T₀) _ k₂ ≫ φ.hom) = _`. Rewrite using `[htr _ _ k₁ l₁ hb₁, htr _ _ k₂ l₂ hb₂]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc f₁, ← e₁, ← Category.assoc f₂, ← e₂, ← hAB, Over.comp_left]`. Simplify using `only [Category.assoc]`. Rewrite using `[hdat]`. Take `⟨h₀, hh₀, -⟩` from `GlobalTheory.T.exists_descent_of_equalised_proper_cover_normal R S _ _ _ π _ p _ hprop hsurj hint hflat hpb (μ[G'].left ≫ β) heq`. Establish `hover : h₀ ≫ G.hom = (G ⊗ G).hom`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `hepi` to reduce the goal to its premises. Rewrite using `[← Category.assoc, hh₀, Category.assoc, hβ.w, ← Category.assoc, Over.w μ[G'], hpb.w]`. Use `⟨Over.homMk h₀ hover, fun T x y x₀ y₀ hx hy => ?_⟩` and prove the remaining obligations. Establish `hl : (lift x₀ y₀).left = (lift x y).left ≫ p`. Apply `hB.hom_ext` to reduce the goal to its premises.
-
-Rewrite using `[Category.assoc, hp1, ← Category.assoc, ← Over.comp_left, ← Over.comp_left, lift_fst, lift_fst, hx]`. Rewrite using `[Category.assoc, hp2, ← Category.assoc, ← Over.comp_left, ← Over.comp_left, lift_snd, lift_snd, hy]`. Rewrite using `[Over.comp_left, hl]`. Express the relevant statement in the definitionally equal form `((lift x y).left ≫ p) ≫ h₀ = _`. Rewrite using `[Category.assoc, hh₀, Hom.mul_def, Over.comp_left, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_descends : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R] (S : Scheme.{0}) (π : S ⟶ Sp R), IsProper π → Surjective π → IsIntegral S → ∀ (G' : Over S) [GrpObj G'] (G : Over (Sp R)) (β : G'.left ⟶ G.left), Smooth G.hom → IsPullback β G'.hom G.hom π → ∀ φ : (Over.pullback (pullback.fst π π)).obj G' ≅ (Over.pullback (pullback.snd π π)).obj G', IsMonHom φ.hom → pullback.fst G'.hom (pullback.fst π π) ≫ β = φ.hom.left ≫ pullback.fst G'.hom (pullback.snd π π) ≫ β → ∃ m : G ⊗ G ⟶ G, ∀ (T : Over S) (x y : T ⟶ G') (x₀ y₀ : Over.mk (T.hom ≫ π) ⟶ G), x₀.left = x.left ≫ β → y₀.left = y.left ≫ β → (lift x₀ y₀ ≫ m).left = (x * y).left ≫ β := by
   intro R _ _ _ _ S π hprop hsurj hint G' _ G β hsm hβ φ hφ hdat

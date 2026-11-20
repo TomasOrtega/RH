@@ -19,9 +19,9 @@ variable {G : Type} [Group G] {LL O : Type} [Field LL] [CommRing O] [Algebra O L
   {V : Type} [AddCommGroup V] [Module LL V] [Module O V] [IsScalarTower O LL V] {ρ : Representation LL G V}
 
 /- English proof (translation)
-Use `⟨{ (π.asModuleEquiv.trans (e.trans π'.asModuleEquiv.symm)).toAddEquiv with map_smul' := ?_ }⟩` and prove the remaining obligations. Introduce `r x`. Apply `π'.asModuleEquiv.injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `e (π.asModuleEquiv (r • x)) = π'.asModuleEquiv (r • (π'.asModuleEquiv.symm (e (π.asModuleEquiv x))))`. Rewrite using `[Representation.asModuleEquiv_map_smul, Representation.asModuleEquiv_map_smul, LinearEquiv.apply_symm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `r using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, LinearMap.add_apply, ha, hb]`. Consider the case `single g a => simp [he]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem asModule_equiv {M N : Type} [AddCommGroup M] [Module O M] [AddCommGroup N] [Module O N]
     (π : Representation O G M) (π' : Representation O G N) (e : M ≃ₗ[O] N) (he : ∀ g x, e (π g x) = π' g (e x)) :
@@ -37,9 +37,9 @@ theorem asModule_equiv {M N : Type} [AddCommGroup M] [Module O M] [AddCommGroup 
   | single g a => simp [he]
 
 /- English proof (translation)
-Use `SameFactors.trans (reduction_sameSS_of_lattices ρ L' L lam hl) ?_` and prove the remaining obligations. Take `⟨s, -, h1, h2, -⟩` from `reduction_sameSS_of_lattices ρ L L lam hl`. Set `e : QuotSMulTop lam ↥L.T ≃ₗ[O] M` to `(Submodule.quotEquivOfEq _ _ hk.symm).trans (q.quotKerEquivOfSurjective hs)`. Take `⟨f⟩` from `asModule_equiv (modRep (latRep L) lam) π e (fun g x => by`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hq g x)`. Conclude with `SameFactors.of_equiv (isFiniteLength_iff_exists_compositionSeries.mpr ⟨s, h1, h2⟩) f`.
+A detailed English derivation is pending.
 -/
 theorem sameSS_of_surj [IsDomain O] [IsDiscreteValuationRing O] [IsFractionRing O LL] {lam : O}
     (hl : Irreducible lam) (L L' : Lattice (O := O) ρ) {M : Type} [AddCommGroup M] [Module O M]
@@ -92,7 +92,7 @@ def sumEmb (T : LocLat G Qp LL O) (t : ℕ) : (↥T.L.T × (Fin t → O)) →ₗ
 
 omit [IsTopologicalRing LL] in
 /- English proof (translation)
-Introduce and unpack `⟨x, a⟩ ⟨y, b⟩ h`. Conclude with `Prod.ext (Subtype.ext (congrArg Prod.fst h)) (funext fun i => hinj (congrFun (congrArg Prod.snd h) i))`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem sumEmb_inj (hinj : Function.Injective (algebraMap O LL)) (T : LocLat G Qp LL O) (t : ℕ) :
     Function.Injective (sumEmb T t) := by
@@ -137,9 +137,9 @@ def sumLat (hinj : Function.Injective (algebraMap O LL)) (T : LocLat G Qp LL O) 
         split_ifs <;> simp }
 
 /- English proof (translation)
-Set `e` to `LinearEquiv.ofInjective _ (sumEmb_inj hinj T t)`. Use `⟨e.symm, fun g x => ?_⟩` and prove the remaining obligations. Take `⟨⟨y, a⟩, rfl⟩` from `e.surjective x`. Use `e.symm_apply_eq.mpr ?_` and prove the remaining obligations. Use `erw [e.symm_apply_apply]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subtype.ext (Prod.ext rfl (funext fun c => ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap O LL (θ c g) • algebraMap O LL (a c) = algebraMap O LL (θ c g * a c)`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sumLat_equiv (hinj : Function.Injective (algebraMap O LL)) (T : LocLat G Qp LL O) (θ : ℕ → G →* Oˣ)
     (hθ : ∀ c, Continuous fun g => algebraMap O LL (θ c g)) (t : ℕ) :
@@ -166,7 +166,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] [TopologicalSpace LL] [IsTopologicalRing LL] {n : ℕ} (emb : ZMod n → (K₀ →ₐ[Qp] LL))
 
 /- English proof (translation)
-Unfold `block`. Rewrite using `[Nat.cast_succ, ← add_assoc, ← Finset.insert_Ico_right_eq_Ico_add_one (by omega), Finset.insert_val_of_notMem (by simp), ← Multiset.singleton_add, add_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem block_succ (w : ℤ) (t : ℕ) : block w (t + 1) = block w t + {w + t} := by
   unfold block
@@ -174,11 +174,11 @@ theorem block_succ (w : ℤ) (t : ℕ) : block w (t + 1) = block w t + {w + t} :
     Finset.insert_val_of_notMem (by simp), ← Multiset.singleton_add, add_comm]
 
 /- English proof (translation)
-Proceed by induction on `t with`. Consider the case `zero`. Establish `h` using `hsum T (charLat Qp hinj (θ 0) (hθ 0).1) (sumLat hinj T θ (fun c => (hθ c).1) 1) U _ ((LinearEquiv.refl LL T.V).prodCongr (LinearEquiv.funUnique (Fin 1) LL LL)) (fun _ _ => rfl) hT (hθ 0).2`. Use `h using 3 with i` and compare the differences between its conclusion and the goal. Rewrite using `[block_succ]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[block]`. Consider the case `succ t ih`. Set `e : (T.V × (Fin (t + 1 + 1) → LL)) ≃ₗ[LL] ((T.V × (Fin (t + 1) → LL)) × LL)` to `{ toFun := fun x => ((x.1, fun c => x.2 c.castSucc), x.2 (Fin.last _)) invFun := fun x => (x.1.1, Fin.snoc (α := fun _ => LL) x.1.2 x.2) map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl left_inv := fun x => Prod.ext rfl (Fin.snoc_init_self x.2) right_inv := fun x => by simp …`. Establish `h` using `hsum (sumLat hinj T θ (fun c => (hθ c).1) (t + 1)) (charLat Qp hinj (θ (t + 1)) (hθ (t + 1)).1) (sumLat hinj T θ (fun c => (hθ c).1) (t + 1 + 1)) _ _ e (fun _ _ => rfl) ih (hθ (t + 1)).2`. Use `h using 2 with i` and compare the differences between its conclusion and the goal.
+Simplify using the standard rewrite rules. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[block_succ (w i) (t + 1), add_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem crys_sumLat
     (hsum : ∀ (T T' T'' : LocLat G Qp LL O) (U U' : ZMod n → Multiset ℤ) (e : T''.V ≃ₗ[LL] (T.V × T'.V)),
@@ -209,9 +209,9 @@ theorem crys_sumLat
     rw [block_succ (w i) (t + 1), add_assoc]
 
 /- English proof (translation)
-Use `⟨(hχ.1.mul hθ.1).congr fun g => by simp, ?_⟩` and prove the remaining obligations. Establish `h` using `(htw (charLat Qp hinj χ hχ.1) _ θ b hχ.2 hθ).1`. Establish `h2 : twistRep (charRep (chiLL LL χ)) (chiLL LL θ) = charRep (chiLL LL (χ * θ))`. Use `MonoidHom.ext fun g => LinearMap.ext fun x => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap O LL (θ g) • algebraMap O LL (χ g) • x = algebraMap O LL ((χ * θ) g) • x`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `[mul_assoc, mul_left_comm]`. Rewrite using `[← h2]`. Simplify using `only [Multiset.map_singleton] at h`. Conclude with `h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem crysChar_mul
     (htw : ∀ (T : LocLat G Qp LL O) (U : ZMod n → Multiset ℤ) (θ : G →* Oˣ) (a : ZMod n → ℤ),
@@ -233,19 +233,17 @@ theorem crysChar_mul
 variable [IsDomain O] [IsDiscreteValuationRing O] [IsFractionRing O LL] (Γ : GalData G Qp LL O)
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `sumLat_equiv hinj Γ.T₀ θ hθ t`. Set `q : (↥Γ.T₀.L.T × (Fin t → O)) →ₗ[O] (QuotSMulTop Γ.lam ↥Γ.T₀.L.T × (Fin t → QuotSMulTop Γ.lam O))` to `(Submodule.mkQ _).prodMap ((Submodule.mkQ (Γ.lam • (⊤ : Submodule O O))).compLeft (Fin t))`. Establish `hz : ∀ {M : Type} [AddCommGroup M] [Module O M] (x : M), (Submodule.Quotient.mk x : QuotSMulTop Γ.lam M) = 0 ↔ ∃ y, Γ.lam • y = x`. Introduce `M _ _ x`. Rewrite using `[Submodule.Quotient.mk_eq_zero, Submodule.mem_smul_pointwise_iff_exists]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `sameSS_of_surj hl (sumLat hinj Γ.T₀ θ hθ t).L L' _ (q ∘ₗ e.toLinearMap) ?_ ?_ ?_` and prove the remaining obligations. Use `Function.Surjective.comp (g := q) ?_ e.surjective` and prove the remaining obligations. Introduce and unpack `⟨x, a⟩`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `choose b hb using fun c => Submodule.Quotient.mk_surjective _ (a c)`. Conclude with `⟨(x, b), Prod.ext rfl (funext hb)⟩`. Use extensionality with `x`. Rewrite using `[Submodule.mem_smul_pointwise_iff_exists, LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion.
+Supply the required witnesses or components. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Take `⟨y, hy⟩` from `(hz _).mp (congrArg Prod.fst h)`. Use `choose b hb using fun c => (hz _).mp (congrFun (congrArg Prod.snd h) c)`. Use `⟨e.symm (y, b), trivial, e.injective ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, e.apply_symm_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Prod.ext hy (funext hb)`. Introduce and unpack `⟨y, -, rfl⟩`. Rewrite using `[map_smul]`. Conclude with `Prod.ext ((hz _).mpr ⟨_, rfl⟩) (funext fun c => (hz _).mpr ⟨_, rfl⟩)`. Introduce `g x`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `q (e _) = Γ.refRep t g (q (e x))`. Rewrite using `[he]`. Use `Prod.ext rfl (funext fun c => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Submodule.Quotient.mk ((θ c g : O) * (e x).2 c) : QuotSMulTop Γ.lam O) = Submodule.Quotient.mk ((Γ.chi (c + 1) g : O) • (e x).2 c)`. Rewrite using `[← sub_eq_zero, ← Submodule.Quotient.mk_sub, hz]`.
-
-Take `⟨d, hd⟩` from `hc c g`. Conclude with `⟨d * (e x).2 c, by rw [smul_eq_mul, smul_eq_mul, ← sub_mul, hd, mul_assoc]⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sameSS_sumLat (hl : Irreducible Γ.lam) (hinj : Function.Injective (algebraMap O LL)) (θ : ℕ → G →* Oˣ)
     (hθ : ∀ c, Continuous fun g => algebraMap O LL (θ c g)) (t : ℕ)
@@ -290,9 +288,7 @@ theorem sameSS_sumLat (hl : Irreducible Γ.lam) (hinj : Function.Injective (alge
 omit [IsTopologicalRing LL] in
 
 /- English proof (translation)
-Use `⟨‹_›, 1, T, hT.sumFull, kerLattice T.L π q hq hc hM, q, ?_, hs, hq, fun x => ⟨fun h => ⟨x, h, rfl⟩, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, -, rfl⟩`. Conclude with `x.2`. Introduce and unpack `⟨y, hy, h⟩`. Take `rfl : y = x` from `Subtype.ext h`.
-
-Conclude with `hy`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem admissible_quotient_of_fullRepresentation {t : ℕ} {Ut : ZMod n → Multiset ℤ} {T : LocLat G Qp LL O} (hT : Full PD emb Γ t Ut T)
     {M : Type} [AddCommGroup M] [Module O M] [Finite M] (π : Representation O G M) (q : ↥T.L.T →ₗ[O] M)
@@ -306,21 +302,21 @@ theorem admissible_quotient_of_fullRepresentation {t : ℕ} {Ut : ZMod n → Mul
     exact hy
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap O LL)` using `IsFractionRing.injective O LL`. Establish `h1 : ∀ c : ℕ, IsCrysChar PD emb (Γ.chi (c + 1)) (fun i => D.w i + c)`. Introduce `c`. Proceed by induction on `c with`. Consider the case `zero => simpa using hG.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ c ih`. Rewrite using `[GalData.chi_succ]`. Use `crysChar_mul PD emb htw hinj ih (htw _ _ _ _ hG.2.1 hε).2` as an intermediate fact. Simplify `this` using `[add_assoc]`. Establish `h2 : ∀ c : ℕ, IsCrysChar PD emb (Γ.chi (c + 1) * μ) (fun i => D.w i + c)` using `fun c => by`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using crysChar_mul PD emb htw hinj (h1 c) hμ`. Take `⟨t, ht⟩ : ∃ t, D.t = t + 1` from `⟨D.t - 1, by have := D.one_le_letterBlockLength; omega⟩`. Establish `hF : Full PD emb Γ D.t D.Ut (sumLat hinj Γ.T₀ (fun c => Γ.chi (c + 1) * μ) (fun c => (h2 c).1) (t + 1))`. Use `⟨?_, fun L => ?_⟩` and prove the remaining obligations. Use `crys_sumLat PD emb hsum hinj Γ.T₀ D.U hG.2.1 D.w _ h2 t` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `this using 2 with i` and compare the differences between its conclusion and the goal. Rewrite using `[TopData.Ut, TopData.B, ht]`. Rewrite using `[ht]`. Use `sameSS_sumLat Γ hl hinj _ _ _ (fun c g => ?_) L` and prove the remaining obligations. Establish `: ((Γ.chi (c + 1) * μ) g : O) - Γ.chi (c + 1) g = Γ.chi (c + 1) g * (μ g - 1)`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[mul_sub]`. Rewrite using `[this]`. Conclude with `(hμ1 g).mul_left _`. Take `⟨e, he⟩` from `sumLat_equiv hinj Γ.T₀ (fun c => Γ.chi (c + 1) * μ) (fun c => (h2 c).1) (t + 1)`. Set `q : (↥Γ.T₀.L.T × (Fin (t + 1) → O)) →ₗ[O] (O ⧸ Ideal.span {c})` to `(Submodule.mkQ _) ∘ₗ (LinearMap.proj 0) ∘ₗ LinearMap.snd O _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `admissible_quotient_of_fullRepresentation PD emb Γ hF _ (q ∘ₗ e.toLinearMap) ?_ ?_ hc ?_` and prove the remaining obligations. Use `Function.Surjective.comp (g := q) ?_ e.surjective` and prove the remaining obligations. Introduce `x`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Conclude with `⟨(0, fun _ => x), rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g x`. Express the relevant statement in the definitionally equal form `q (e _) = scalRep _ (Γ.χ₁ * μ) g (q (e x))`. Rewrite using `[he, ← GalData.chi_one]`. Both sides reduce to the same expression. Introduce `m`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective m`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _))`.
+A detailed English derivation is pending.
 -/
 theorem admissible_crystallineCharacterQuotient {r : ℕ} (D : TopData n r) (hl : Irreducible Γ.lam) (hG : IsTopGal PD emb D Γ)
     (hsum : ∀ (T T' T'' : LocLat G Qp LL O) (U U' : ZMod n → Multiset ℤ) (e : T''.V ≃ₗ[LL] (T.V × T'.V)),
@@ -380,11 +376,11 @@ variable {O G : Type} [CommRing O] [Group G]
   {Ad : ∀ (M : Type) [AddCommGroup M] [Module O M], Representation O G M → Prop}
 
 /- English proof (translation)
-Set `R : Submodule O (M' × M)` to `LinearMap.range (f.prod q)`. Establish `hR : ∀ g, R ≤ R.comap ((π'.prod π) g)`. Introduce and unpack `g _ ⟨x, rfl⟩`. Take `⟨y, h1, h2⟩` from `hs g x`. Conclude with `⟨y, Prod.ext h1 h2⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `h.quot (π := (π'.prod π).subrepresentation R hR) (LinearMap.snd O _ _ ∘ₗ R.subtype) (fun _ _ => rfl) ?_ (h.sub (LinearMap.fst O _ _ ∘ₗ R.subtype) (fun _ _ => rfl) ?_ h')` and prove the remaining obligations. Introduce `m`. Take `⟨x, rfl⟩` from `hq m`. Conclude with `⟨⟨_, x, rfl⟩, rfl⟩`. Rewrite using `[injective_iff_map_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨_, x, rfl⟩ hx`. Conclude with `Subtype.ext (Prod.ext hx (hk x hx))`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem subquot (h : ClosedClass Ad) {M M' N : Type} [AddCommGroup M] [Module O M] [AddCommGroup M'] [Module O M']
     [AddCommGroup N] [Module O N] (π : Representation O G M) (π' : Representation O G M') (f : N →ₗ[O] M')
@@ -405,19 +401,19 @@ theorem subquot (h : ClosedClass Ad) {M M' N : Type} [AddCommGroup M] [Module O 
     exact Subtype.ext (Prod.ext hx (hk x hx))
 
 /- English proof (translation)
-Set `f : (M × O × O) →ₗ[O] (M × (O ⧸ Ideal.span {c ^ 2}) × (O ⧸ Ideal.span {c ^ 2}))` to `LinearMap.id.prodMap ((Submodule.mkQ _ ∘ₗ (c • LinearMap.fst O O O - LinearMap.snd O O O)).prod (Submodule.mkQ _ ∘ₗ LinearMap.snd O O O))`. Set `q : (M × O × O) →ₗ[O] (M × (O ⧸ Ideal.span {b}))` to `(LinearMap.id.coprod (LinearMap.toSpanSingleton O M ξ ∘ₗ LinearMap.fst O O O)).prod (Submodule.mkQ _ ∘ₗ LinearMap.snd O O O ∘ₗ LinearMap.snd O M _)`. Establish `hf : ∀ x s y, f (x, s, y) = (x, Ideal.Quotient.mk _ (c * s - y), Ideal.Quotient.mk _ y)` using `fun _ _ _ => rfl`. Establish `hq : ∀ x s y, q (x, s, y) = (x + s • ξ, Ideal.Quotient.mk _ y)` using `fun _ _ _ => rfl`. Use `subquot h _ _ f q ?_ ?_ ?_ (h.prod h1 (h.prod h2 h3))` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `g ⟨x, s, y⟩`. Use `⟨((χ g : O) • x, χ g * (s + y * w g), χ g * μ g * y), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hf, hf]`. Use `Prod.ext ?_ (Prod.ext ?_ rfl)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(χ g : O) • x = (χ g : O) • π g x`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hπ]`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ _ = Ideal.Quotient.mk _ (((χ * 1) g : O) * (c * s - y))`. Use `congr 1`. Rewrite using `[mul_one, hw]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hq, hq, twistRep_apply, extRep_apply, hπ, hz]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `only [Prod.smul_fst, smul_add, smul_smul, mul_add, add_smul, add_assoc]`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ _ = Ideal.Quotient.mk _ ((χ g : O) * y)`. Rewrite using `[Ideal.Quotient.eq, Ideal.mem_span_singleton, hw]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hbc.trans ⟨χ g * w g * y, by ring⟩`. Introduce and unpack `⟨x, s, y⟩ h0`. Rewrite `h0` using `[hf]`. Establish `e1 : x = 0` using `congrArg Prod.fst h0`. Establish `e2` using `Ideal.mem_span_singleton.mp (Ideal.Quotient.eq_zero_iff_mem.mp (congrArg (fun p => p.2.1) h0))`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3` using `Ideal.mem_span_singleton.mp (Ideal.Quotient.eq_zero_iff_mem.mp (congrArg (fun p => p.2.2) h0))`. Establish `e4 : c * c ∣ c * s` using `by simpa [sq] using e2.add e3`. Take `⟨d, hd⟩` from `hbc.trans ((mul_dvd_mul_iff_left hc).mp e4)`. Rewrite using `[hq, e1, hd, mul_smul, hb, add_zero]`. Use `Prod.ext rfl (Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_span_singleton.mpr ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `(hbc.trans (dvd_pow_self c two_ne_zero)).trans e3`. Introduce and unpack `⟨x, y⟩`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Conclude with `⟨(x, 0, y), by rw [hq, zero_smul, add_zero]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ext_mem [IsDomain O] [TopologicalSpace G] (h : ClosedClass Ad) {M : Type} [AddCommGroup M] [Module O M]
     (π : Representation O G M) (hπ : ∀ g m, π g m = m) {b c : O} (hb : ∀ m : M, b • m = 0) (hbc : b ∣ c) (hc : c ≠ 0)
@@ -470,15 +466,15 @@ section Char
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Establish `hr : Filter.Tendsto (fun x : ℕ => ((l : ℤ_[l]) ^ a) ^ x) Filter.atTop (nhds 0)`. Apply `tendsto_pow_atTop_nhds_zero_of_norm_lt_one` to reduce the goal to its premises. Rewrite using `[norm_pow]`. Conclude with `pow_lt_one₀ (norm_nonneg _) (by`. Rewrite using `[PadicInt.norm_p]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : l.Prime).one_lt)) (by omega)`. Set `κ : AddChar ℤ_[l] ℤ_[l]` to `PadicInt.addChar_of_value_at_one _ hr`. Establish `hκ : Continuous κ` using `PadicInt.continuous_addChar_of_value_at_one hr`. Establish `h1 : κ 1 = 1 + (l : ℤ_[l]) ^ a` using `PadicInt.addChar_of_value_at_one_def hr`. Establish `hd : ∀ x, (l : ℤ_[l]) ^ a ∣ κ x - 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x`. Use `PadicInt.denseRange_natCast.induction_on x ?_ fun m => ?_` and prove the remaining obligations. Repeatedly rewrite using `[← Ideal.mem_span_singleton, ← PadicInt.norm_le_pow_iff_mem_span_pow]`. Conclude with `isClosed_le (hκ.sub continuous_const).norm continuous_const`. Rewrite using `[← nsmul_one m, AddChar.map_nsmul_eq_pow, h1]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using sub_dvd_pow_sub_pow (1 + (l : ℤ_[l]) ^ a) 1 m`. Use `choose w hw using hd`. Establish `h0 : (l : ℤ_[l]) ^ a ≠ 0` using `pow_ne_zero _ (by exact_mod_cast (Fact.out : l.Prime).ne_zero)`. Use `⟨κ.toMonoidHom, fun x => w x.toAdd, hκ, fun x => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hw, add_sub_cancel]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Apply `mul_left_cancel₀ h0` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `_ * w 1 = _`. Rewrite using `[← hw, h1]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_char (a : ℕ) (ha : 1 ≤ a) : ∃ (κ : Multiplicative ℤ_[l] →* ℤ_[l]) (w : Multiplicative ℤ_[l] → ℤ_[l]),
     Continuous κ ∧ (∀ x, κ x = 1 + (l : ℤ_[l]) ^ a * w x) ∧ w (Multiplicative.ofAdd 1) = 1 := by
@@ -507,25 +503,23 @@ theorem exists_char (a : ℕ) (ha : 1 ≤ a) : ∃ (κ : Multiplicative ℤ_[l] 
     rw [← hw, h1]; ring
 
 /- English proof (translation)
-Take `⟨κ, w, hκ, hw, hw1⟩` from `exists_char (l := l) a ha`. Establish `h0 : (l : ℤ_[l]) ^ a ≠ 0` using `pow_ne_zero _ (by exact_mod_cast (Fact.out : l.Prime).ne_zero)`. Establish `hcong : ∀ x y : ℤ_[l], (l : ℤ_[l]) ^ a ∣ x - y → algebraMap ℤ_[l] O x • z F = algebraMap ℤ_[l] O y • z F`. Introduce and unpack `x y ⟨d, hd⟩`. Rewrite using `[← sub_eq_zero, ← sub_smul, ← map_sub, hd, map_mul, map_pow, map_natCast, mul_smul, hM]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Use `⟨((algebraMap ℤ_[l] O : ℤ_[l] →* O).comp (κ.comp ν)).toHomUnits, fun g => algebraMap ℤ_[l] O (w (ν g)), hcont.comp (hκ.comp hν), fun σ hσ => Units.ext ?_, fun g => ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap ℤ_[l] O (κ (ν σ)) = 1`. Rewrite using `[hI σ hσ, map_one, map_one]`. Express the relevant statement in the definitionally equal form `algebraMap ℤ_[l] O (κ (ν g)) = _`. Rewrite using `[hw]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hf : IsLocallyConstant fun g => algebraMap ℤ_[l] O (w (ν g)) • z F`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `g`. Establish `h1 : ∀ᶠ h in nhds g, κ (ν h) ∈ Metric.ball (κ (ν g)) ((l : ℝ) ^ (-((a + a : ℕ) : ℤ)))` using `(hκ.comp hν).continuousAt.eventually (Metric.ball_mem_nhds _ (zpow_pos (by exact_mod_cast (Fact.out : l.Prime).pos) _))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `h1.mono fun h hh => hcong _ _ ?_` and prove the remaining obligations. Establish `h2` using `(mem_ball_iff_norm.mp hh).le`. Rewrite `h2` using `[PadicInt.norm_le_pow_iff_mem_span_pow, Ideal.mem_span_singleton, hw, hw, pow_add, add_sub_add_left_eq_sub, ← mul_sub]`. Conclude with `(mul_dvd_mul_iff_left h0).mp h2`. Set `z₁ : G →* Multiplicative M` to `MonoidHom.mk' (fun g => Multiplicative.ofAdd (z g)) fun g h => congrArg _ (hm g h)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `z₂ : G →* Multiplicative M` to `MonoidHom.mk' (fun g => Multiplicative.ofAdd (algebraMap ℤ_[l] O (w (ν g)) • z F)) fun g h => by`. Rewrite using `[← ofAdd_add, ← add_smul, ← map_add]`. Use `congrArg _ (hcong _ _ ⟨w (ν g) * w (ν h), mul_left_cancel₀ h0 ?_⟩)` and prove the remaining obligations. Use `map_mul κ (ν g) (ν h)` as an intermediate fact. Rewrite `this` using `[← map_mul, hw, hw, hw]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `this`. Establish `hle : (Subgroup.closure (insert F (I : Set G))).topologicalClosure ≤ z₁.eqLocus z₂`. Use `Subgroup.topologicalClosure_minimal _ ?_ ?_` and prove the remaining obligations. Rewrite using `[Subgroup.closure_le]`. Introduce and unpack `g (rfl | hg)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Multiplicative.ofAdd (z g) = Multiplicative.ofAdd (algebraMap ℤ_[l] O (w (ν g)) • z g)`. Rewrite using `[hF, hw1, map_one, one_smul]`. Establish `: z₂ g = z₂ 1`. Express the relevant statement in the definitionally equal form `Multiplicative.ofAdd (algebraMap ℤ_[l] O (w (ν g)) • z F) = Multiplicative.ofAdd (algebraMap ℤ_[l] O (w (ν 1)) • z F)`. Rewrite using `[hI g hg, map_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `z₁ g = z₂ g`. Rewrite using `[this, map_one]`. Conclude with `hzI g hg`. Use `((hz.prodMk hf).comp fun p => p.1 = p.2).isClosed_fiber True` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `g`. Simplify using `only [Function.comp, eq_iff_iff, iff_true, Set.mem_ofPred_eq]`. Both sides reduce to the same expression. Introduce `g`. Rewrite `hle` using `[hG]`.
-
-Conclude with `hle (Subgroup.mem_top g)`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mu {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (I : Subgroup G) (F : G)
     (ν : G →* Multiplicative ℤ_[l]) (hν : Continuous ν) (hI : ∀ σ ∈ I, ν σ = 1) (hF : ν F = Multiplicative.ofAdd 1)
@@ -602,15 +596,13 @@ variable {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] [IsT
     (Γ : GalData G Qp LL O) [Algebra ℤ_[l] O]
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨z, rfl, hz⟩`. Take `⟨a, ha1, ha⟩` from `GlobalTheory.AdmClasses.exists_pow_smul_eq_zero hl X`. Establish `hp : Γ.lam ∣ ((l : ℕ) : O)`. Rewrite using `[← Ideal.mem_span_singleton, ← hl.maximalIdeal_eq]`. Conclude with `hu`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpa` using `pow_dvd_pow_of_dvd hp a`. Establish `h0 : ((l : ℕ) : O) ^ a ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero)`. Establish `hM : ∀ m : O ⊗[O] X, ((l : ℕ) : O) ^ a • m = 0`. Introduce `m`. Take `⟨d, hd⟩` from `hpa`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hd, mul_smul, smul_tensor_eq_zero ha]`. Take `⟨F, ν, hν, hI, hF, hG'⟩` from `hgen`. Take `⟨μ, w, hμ, hμI, hw, hzw⟩` from `exists_mu I F ν hν hI hF hG' a ha1 hcont hM _ z.2.1.1 (GlobalTheory.IndefiniteRowSideFullHecke.AdmissibleCharUnramified.cocycle_add Γ X z) hz`. Establish `hf : Finite (O ⧸ Ideal.span {(((l : ℕ) : O) ^ a) ^ 2})`. Rewrite using `[← pow_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hfin _`. Establish `key : ∀ μ : G →* Oˣ, (Continuous fun g => algebraMap O LL (μ g)) → (∀ σ ∈ I, μ σ = 1) → (∀ g, Γ.lam ∣ (μ g : O) - 1) → Admissible PD emb Γ D.t D.Ut (scalRep (O ⧸ Ideal.span {(((l : ℕ) : O) ^ a) ^ 2}) (Γ.χ₁ * μ))` using `fun μ h1 h2 h3 => admissible_crystallineCharacterQuotient PD emb Γ D hl hG hsum htw hε μ (hun μ h1 h2) h3 (pow_ne_zero 2 h0)`. Use `⟨a, ha, ha1, z, rfl, ?_⟩` and prove the remaining obligations. Use `ext_mem hcl _ (GlobalTheory.IndefiniteRowSideFullHecke.AdmissibleCharUnramified.twCoef_chi_one Γ X) _ hpa h0 z _ μ w hw _ hzw ?_ (key 1 (continuous_const (y := algebraMap O LL 1)) (fun _ _ => rfl) fun g => ⟨0, by simp⟩) (key μ hμ hμI fun g => ?_)` and prove the remaining obligations. Rewrite using `[twist_twCoef]`.
-
-Conclude with `hX`. Rewrite using `[hw, add_sub_cancel_left]`. Conclude with `((dvd_pow_self _ (by omega)).trans hpa).mul_right _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unr_subset (hR : IsTopologicalRing LL) (hO : IsDomain O) (hD : IsDiscreteValuationRing O)
     (hFr : IsFractionRing O LL) (hch : CharZero O) (hu : ¬ IsUnit ((l : ℕ) : O))
@@ -664,7 +656,7 @@ theorem unr_subset (hR : IsTopologicalRing LL) (hO : IsDomain O) (hD : IsDiscret
 end Main
 
 /- English proof (translation)
-Establish `h1 : Continuous fun x : ℤ_[l] => algebraMap ℚ_[l] (PadicAlgCl l) (x : ℚ_[l])` using `(continuous_algebraMap ℚ_[l] (PadicAlgCl l)).comp continuous_subtype_val`. Conclude with `continuous_induced_rng.mpr h1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_padicInt {l : ℕ} [Fact l.Prime] (LL : FinExt l) :
     Continuous fun x : ℤ_[l] => algebraMap ↥(OL LL) ↥LL.1 (algebraMap ℤ_[l] ↥(OL LL) x) := by
@@ -673,7 +665,7 @@ theorem continuous_padicInt {l : ℕ} [Fact l.Prime] (LL : FinExt l) :
   exact continuous_induced_rng.mpr h1
 
 /- English proof (translation)
-Introduce `l _ P S hX hC hA _ X _ _ _`. Take `⟨⟨⟨hO, hD, hFr⟩, -, -, hR, -⟩, hfin⟩` from `GlobalTheory.LocalIntegers.good_integers l S.LL`. Conclude with `unr_subset (P.PD S.K) S.emb S.Γ hR hO hD hFr inferInstance (GlobalTheory.AdmClasses.not_isUnit_integers l S.LL) hfin (continuous_padicInt S.LL) (IK S.K) (GlobalTheory.UnramGen.exists_gen_degree S.K) S.D S.hyp.1.2.2.2.2.2 S.hyp.2.1 hX.1 hX.2.1 hX.2.2.1 hX.2.2.2 ⟨fun f hf => ((hC _ …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem unramified_admissible : ∀ {l : ℕ} [Fact l.Prime] {P : LocPrime l} (S : TopSit P),
     S.CrysCalc → S.Closed → S.StdAdm → S.Lem0 (S.Γ.Wchi 1) → S.UnrAdm := by

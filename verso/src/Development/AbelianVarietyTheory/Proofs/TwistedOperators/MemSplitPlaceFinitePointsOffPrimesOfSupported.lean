@@ -25,43 +25,41 @@ open GlobalTheory.IdemModTwo GlobalTheory.SplitIdem
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D V Q s hs`. Take `⟨g, hg⟩` from `s`. Set `P : GA D V → Prop` to `fun x => ∃ h : x ∈ GfC V, (⟨x, h⟩ : GfC V) ∈ splitOff V Q`. Establish `h1 : P 1` using `⟨Subgroup.one_mem _, Subgroup.one_mem _⟩`. Establish `hmul : ∀ x y, P x → P y → P (x * y)` using `fun x y ⟨hx, mx⟩ ⟨hy, my⟩ => ⟨Subgroup.mul_mem _ hx hy, Subgroup.mul_mem _ mx my⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective (algebraMap (AF D.host.F) (Formalism.L2.Theta.AE D))` using `Algebra.TensorProduct.includeLeft_injective (S := D.host.F) (algebraMap D.host.F D.host.E).injective`. Take `⟨e₀, he1, he2, he3, he4⟩` from `hs`. Establish `heS : e₀ = GlobalTheory.LocalApprox.indA D.host.F he2.toFinset`. Use `GlobalTheory.LocalApprox.af_ext _ fun w => ?_` and prove the remaining obligations. Distinguish the cases in `hw : w ∈ he2.toFinset`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[GlobalTheory.LocalApprox.evalV_indA_of_mem _ hw]`. Establish `hne : evalV D.host.F w e₀ ≠ 0` using `he2.mem_toFinset.1 hw`. Establish `h` using `congrArg (evalV D.host.F w) he1`. Rewrite `h` using `[map_mul]`. Conclude with `mul_left_cancel₀ hne (h.trans (mul_one _).symm)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.LocalApprox.evalV_indA_of_notMem _ hw]`. Assume the negation of the conclusion as `h`. Conclude with `hw (he2.mem_toFinset.2 h)`. Establish `hsupp : ∀ i j, GlobalTheory.LocalApprox.idemE D he2.toFinset * (Formalism.L2.Theta.mt V g - 1) i j = (Formalism.L2.Theta.mt V g - 1) i j`. Introduce `i j`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e0 : GlobalTheory.LocalApprox.idemE D he2.toFinset = fj D e₀` using `(congrArg (fj D) heS).symm`. Rewrite using `[e0]`. Use `GlobalTheory.UnitarySplit.parts_inj D _ _ ?_ ?_` and prove the remaining obligations. Establish `h5 : infPart D ((Formalism.L2.Theta.mt V g - 1) i j) = 0`. Establish `h6 : (Formalism.L2.Theta.mt V g).map (infPart D) = 1` using `congrArg Units.val (show infHom V g = 1 from hg)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h7` using `congrFun (congrFun h6 i) j`. Rewrite using `[Matrix.sub_apply, RingHom.map_sub, sub_eq_zero]`. Use `h7.trans ?_` and prove the remaining obligations. Distinguish the cases in `e : i = j`. Substitute `e` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.one_apply_eq, Matrix.one_apply_eq, RingHom.map_one]`. Rewrite using `[Matrix.one_apply_ne e, Matrix.one_apply_ne e, RingHom.map_zero]`. Rewrite using `[RingHom.map_mul, h5, mul_zero]`. Establish `h5 : finPart D ((Formalism.L2.Theta.mt V g - 1) i j) = ((finHom V g).1 - 1) i j`. Rewrite using `[Matrix.sub_apply, Matrix.sub_apply, RingHom.map_sub]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails.
 
-Use `congr 1`. Distinguish the cases in `e : i = j`. Substitute `e` using the available equality. Rewrite using `[Matrix.one_apply_eq, Matrix.one_apply_eq, RingHom.map_one]`. Rewrite using `[Matrix.one_apply_ne e, Matrix.one_apply_ne e, RingHom.map_zero]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[RingHom.map_mul, h5]`. Conclude with `congrFun (congrFun he4 i) j`. Establish `hgS : GlobalTheory.LocalApprox.cutAt V g he2.toFinset = g`. Use `GlobalTheory.IdemSupport.mt_inj V ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.LocalApprox.mt_cutAt]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use extensionality with `i j`. Establish `h` using `hsupp i j`. Rewrite `h` using `[Matrix.sub_apply]`. Rewrite using `[Matrix.add_apply, Matrix.smul_apply, Matrix.smul_apply, smul_eq_mul, smul_eq_mul]`. Take the linear combination `h`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hpl : ∀ v, pl D v = GlobalTheory.LocalApprox.idemE D {v}` using `fun v => by show fj D _ = fj D _`. Use `congr 1`. Use `GlobalTheory.LocalApprox.af_ext _ fun w => ?_` and prove the remaining obligations. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[evalV_singleV_same, GlobalTheory.LocalApprox.evalV_indA_of_mem _ (Finset.mem_singleton_self _)]`. Rewrite using `[evalV_singleV_ne _ v _ hw, GlobalTheory.LocalApprox.evalV_indA_of_notMem _ (Finset.notMem_singleton.2 hw)]`. Establish `hv : ∀ v ∈ he2.toFinset, P (GlobalTheory.LocalApprox.cutAt V g {v})`. Introduce `v hvS`. Establish `hv'` using `he3 v (he2.mem_toFinset.1 hvS)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨e, he⟩` from `_root_.GlobalTheory.MovedSplit.exists_splitAt D v hv'.1`. Use `⟨GlobalTheory.LocalApprox.cutAt_mem_GfC V g {v}, Subgroup.subset_closure ⟨e, (isSplitIdem_iff e).2 ⟨v, he⟩, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `q hq v' ε' hε' heq`. Establish `hε : ε' = pairA D.host.F 0 (GlobalTheory.LocalApprox.indA D.host.F {v})` using `hinj (heq.symm.trans ((he.2.2).trans (hpl v)))`. Take `⟨α, hα, hα1, hα0⟩` from `hε'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hαv : α = GlobalTheory.LocalApprox.indA D.host.F {v}` using `congrArg Prod.snd (hα.symm.trans hε)`. Establish `hvv : v' = v`. Assume the negation of the conclusion as `hne`. Use `hα0 v (Ne.symm hne)` as an intermediate fact. Rewrite `this` using `[hαv, GlobalTheory.LocalApprox.evalV_indA_of_mem _ (Finset.mem_singleton_self _)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `one_ne_zero this`. Substitute `hvv` using the available equality. Introduce `hqm`. Use `hv'.2 ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `Finset.dvd_prod_of_mem (fun q : ℕ => q) hq`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hk' : ((∏ q ∈ Q, q : ℕ) : 𝓞 D.host.F) = (q : 𝓞 D.host.F) * (k : 𝓞 D.host.F)`. Rewrite using `[hk, Nat.cast_mul]`. Rewrite using `[hk']`. Conclude with `Ideal.mul_mem_right _ _ hqm`. Introduce `i j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Rewrite using `[he.2.2, hpl v]`. Conclude with `GlobalTheory.LocalApprox.cutAt_supp V g {v} i j`. Establish `key : ∀ t : Finset (IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.F)), t ⊆ he2.toFinset → P (GlobalTheory.LocalApprox.cutAt V g t)`. Introduce `t`. Proceed by induction on `t using Finset.cons_induction with`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Consider the case `empty => intro _`. Rewrite using `[GlobalTheory.LocalApprox.cutAt_empty]`. Conclude with `h1`. Consider the case `cons v t h ih`. Introduce `hsub`.
-
-Rewrite using `[GlobalTheory.LocalApprox.cutAt_cons]`. Conclude with `hmul _ _ (hv v (hsub (Finset.mem_cons_self _ _))) (ih ((Finset.subset_cons h).trans hsub))`. Take `⟨_, hm⟩` from `hgS ▸ key _ subset_rfl`. Conclude with `hm`.
+A detailed English derivation is pending.
 -/
 theorem mem_splitOff_of_suppSplit : ∀ {D : D7} (V : HSp D) (Q : Finset ℕ) (s : GfC V),
     GlobalTheory.UnRep.SuppSplit (GlobalTheory.Member.cF D) (∏ q ∈ Q, q) (finHom V s.1).1 → s ∈ GlobalTheory.MovedKappaEx.splitOff V Q := by

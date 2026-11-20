@@ -21,27 +21,27 @@ noncomputable section
 namespace GlobalTheory.FibreAbDim
 
 /- English proof (translation)
-Take `⟨ρ, hρ⟩` from `GlobalTheory.HeckePoint.exists_ptsEquiv h (epsR R) (spMap (algebraMap R (DualNumber R)) ≫ x) rfl`. Take `⟨σ, hσ⟩` from `GlobalTheory.HeckePoint.exists_ptsEquiv h (𝟙_ (Over (Sp R))) x (Category.id_comp _)`. Establish `h1 : η[G'].left ≫ φ = (1 : Over.mk x ⟶ t.G).left`. Use `hσ 1` as an intermediate fact. Rewrite `this` using `[map_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this]`. Use `congr 2`. Establish `tan : ∀ w : epsR R ⟶ G', IsTangent w ↔ IsTanAtG t x (ρ w).left`. Introduce `w`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hw`. Use `⟨Over.w (ρ w), ?_⟩` and prove the remaining obligations. Rewrite using `[hρ, ← Category.assoc, hw, h1]`. Introduce `hw`. Apply `h.1.hom_ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Category.assoc, ← hρ, hw.2, h1]`. Rewrite using `[Category.assoc, Over.w w, Over.w η[G']] show spMap _ ≫ spMap _ = 𝟙 _`. Unfold `spMap`. Rewrite using `[← Spec.map_comp, ← Spec.map_id]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Set `v' : Fin n → (epsR R ⟶ G')` to `fun a => ρ.symm (Over.homMk (v a) (hv a).1)`. Establish `hv' : ∀ a, (v' a).left ≫ φ = v a` using `fun a => by`. Rewrite using `[← hρ]`. Simplify using `[v']`. Establish `comb : ∀ (c : Fin n → R) (w : epsR R ⟶ G'), IsLieComb c v' w ↔ IsCombAtG t x v c (ρ w).left`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `c w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Use `⟨fun i => ρ (u i), fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hρ, hu, Category.assoc, hv']`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[map_list_prod, List.map_ofFn]`. Both sides reduce to the same expression. Introduce and unpack `⟨u, hu, e⟩`. Use `⟨fun i => ρ.symm (u i), fun i => ?_, ?_⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Apply `h.1.hom_ext` to reduce the goal to its premises. Rewrite using `[← hρ, MulEquiv.apply_symm_apply, hu, Category.assoc, hv']`. Both sides reduce to the same expression. Rewrite using `[Category.assoc, Over.w, Over.w] show spMap _ = spMap _ ≫ spMap _`. Unfold `spMap`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[← Spec.map_comp]`. Use `congr 1`. Apply the tactic sequence `ext a <;> simp [epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]`. Apply `ρ.injective` to reduce the goal to its premises. Rewrite using `[map_list_prod, List.map_ofFn]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `(Over.OverMorphism.ext ?_)` and prove the remaining obligations. Rewrite using `[← e]`. Use `congr 3`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `⟨v', fun a => (tan _).2 ?_, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[hρ, hv']`. Conclude with `hv a`. Simplify `hb _ ((tan w).1 hw)` using `only [comb]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_isLieBasis_of_frame {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X : Scheme.{0}}
     (t : SAB H X) {R : Type} [CommRing R] (x : Sp R ⟶ X) {G' : Over (Sp R)} [GrpObj G'] {φ : G'.left ⟶ t.G.left}
@@ -107,15 +107,13 @@ theorem exists_isLieBasis_of_frame {E : Type} [Field E] [NumberField E] [IsCMFie
   · simpa only [comb] using hb _ ((tan w).1 hw)
 
 /- English proof (translation)
-Introduce `E _ _ _ H X t hp U n v hv hb m hm A _ j hj`. Establish `hG` using `GlobalTheory.HeckePoint.isAbelianScheme_of_proper t hp`. Establish `hA` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hG hj`. Use `⟨hA, ?_⟩` and prove the remaining obligations. Establish `h₀` using `isGrpPullback_pullback t.G (chart U)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hG'` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hG h₀`. Take `⟨v', hv'⟩` from `exists_isLieBasis_of_frame t (chart U) h₀ v hv hb`. Establish `w : j ≫ t.G.hom = (A.hom ≫ spMap (Ideal.Quotient.mk m)) ≫ chart U`. Rewrite using `[hj.1.w, Category.assoc]`. Establish `h₁` using `IsGrpPullback.cancel h₀ (hj.congr rfl (h₀.1.lift_fst _ _ w).symm) (h₀.1.lift_snd _ _ w)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hG'.comm` as an intermediate fact. Use `hA.comm` as an intermediate fact. Use `hG.comm` as an intermediate fact. Take `⟨v₁, hv₁, -⟩` from `GlobalTheory.exists_isLieBasis_baseChange _ _ _ _ A _ h₁ hG'.smooth n v' hv'`. Establish `: IsLocalRing (Γ(X, U.1) ⧸ m)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `letI := Ideal.Quotient.field m`. Use `infer_instance`. Take `⟨g, hg⟩` from `GlobalTheory.AbelianDim.exists_relDim _ A hA`. Take `⟨v₂, hv₂⟩` from `GlobalTheory.KeyPow.exists_isLieBasis A hg`. Rewrite using `[GlobalTheory.KeyFramePoint.card_eq_of_isLieBasis hj hv₁ hv₂]`.
-
-Conclude with `hg`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAbelianScheme_and_relDim : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Scheme.{0}) (t : SAB H X), IsProper t.G.hom → ∀ (U : X.affineOpens) (n : ℕ) (v : Fin n → (Sp (DualNumber Γ(X, U.1)) ⟶ t.G.left)), (∀ a, IsTanAtG t (chart U) (v a)) → (∀ w, IsTanAtG t (chart U) w → ∃! cf : Fin n → Γ(X, U.1), IsCombAtG t (chart U) v cf w) → ∀ (m : Ideal Γ(X, U.1)), m.IsMaximal → ∀ (A : Over (Sp (Γ(X, U.1) ⧸ m))) [GrpObj A] (j : A.left ⟶ t.G.left), IsGrpPullback A t.G (spMap (Ideal.Quotient.mk m) ≫ chart U) j → IsAbelianScheme A ∧ SmoothOfRelativeDimension n A.hom := by
   intro E _ _ _ H X t hp U n v hv hb m hm A _ j hj

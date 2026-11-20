@@ -23,7 +23,7 @@ section Generic
 variable {Y : Scheme.{0}} {p : Y ⟶ Sp k} {σ : k →+* ℂ} {y : CxPts p σ}
 
 /- English proof (translation)
-Use `⟨W, Unit, inferInstance, fun _ => u.val, fun v => Real.log (‖v ()‖ ^ 2), {v | v () ≠ 0}, hy, isOpen_ne_fun (continuous_apply ()) continuous_const, ev_ne_zero hy u.isUnit, ?_, Filter.EventuallyEq.rfl⟩` and prove the remaining obligations. Use `ContDiffOn.log ((contDiff_norm_sq ℝ).comp (contDiff_apply ℝ ℂ ())).contDiffOn ?_` and prove the remaining obligations. Introduce `v hv`. Conclude with `pow_ne_zero 2 (norm_ne_zero_iff.mpr hv)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cInfAt_logSq_ev {W : Y.Opens} (u : Γ(Y, W)ˣ) (hy : y ∈ ptsIn p σ W) :
     CInfAt (fun z => Real.log (‖ev p σ W u.val z‖ ^ 2)) y := by
@@ -35,7 +35,7 @@ theorem cInfAt_logSq_ev {W : Y.Opens} (u : Γ(Y, W)ˣ) (hy : y ∈ ptsIn p σ W)
   exact pow_ne_zero 2 (norm_ne_zero_iff.mpr hv)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using cInfAt_const (0 : ℝ) y`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.sum_insert ha]`. Conclude with `(hf a (Finset.mem_insert_self a s)).add (ih fun i hi => hf i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cInfAt_sum {ι : Type} (s : Finset ι) {f : ι → CxPts p σ → ℝ} (hf : ∀ i ∈ s, CInfAt (f i) y) :
     CInfAt (fun z => ∑ i ∈ s, f i z) y := by
@@ -53,13 +53,13 @@ section Transport
 variable {X : Scheme.{0}} {p : X ⟶ Sp k}
 
 /- English proof (translation)
-Establish `hV : y ∈ ptsIn p σ ((L.B.div A).U (a, b) ⊓ (L.B.div A).U (a', b))`. Simplify using `only [LB.div, mem_ptsIn, TopologicalSpace.Opens.mem_inf] at ha ha' hb ⊢`. The claim follows by propositional logic. Establish `hg` using `congrArg (y.logSq _) (hw (a, b) (a', b))`. Rewrite `hg` using `[logSq_res _ hV, logSq_mul hV, logSq_res _ hV]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. The claim follows by propositional logic. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [LB.div] at hg hV`. Rewrite `hg` using `[logSq_mul hV, logSq_inv hV, logSq_res _ hV, logSq_res _ hV]`. Establish `hbb : y.logSq (A.U b ⊓ A.U b) (A.g b b) = 0`. Establish `h0` using `congrArg (y.logSq _) (hA.g_self b)`. Rewrite `h0` using `[logSq_res _ (by simp only [mem_ptsIn, TopologicalSpace.Opens.mem_inf] at hb ⊢; tauto), logSq_one (by simp only [mem_ptsIn, TopologicalSpace.Opens.mem_inf] at hb ⊢; tauto)]`.
+Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h0`. Establish `ht` using `(L.φ σ).trans a a' y ha ha'`. Establish `hl : Real.log (‖gv p σ L.B a a' y‖ ^ 2) = y.logSq (L.B.U a ⊓ L.B.U a') (L.B.g a a')` using `rfl`. Rewrite `ht` using `[hl]`. Rewrite `hg` using `[hbb]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 private theorem phi_sub_logSq_eq_of_mem_overlap (A : LB X) (hA : A.IsLB) (L : HermLB p) (w : A.Iso L.B)
     (hw : LB.Gen.IsGen w) (σ : k →+* ℂ) (a a' : L.B.ι) (b : A.ι) (y : CxPts p σ)
@@ -85,11 +85,11 @@ private theorem phi_sub_logSq_eq_of_mem_overlap (A : LB X) (hA : A.IsLB) (L : He
   linarith
 
 /- English proof (translation)
-Establish `hV : y ∈ ptsIn p σ ((L.B.div A).U (a, b) ⊓ (L.B.div A).U (a, b'))`. Simplify using `only [LB.div, mem_ptsIn, TopologicalSpace.Opens.mem_inf] at ha hb hb' ⊢`. The claim follows by propositional logic. Establish `hg` using `congrArg (y.logSq _) (hw (a, b) (a, b'))`. Rewrite `hg` using `[logSq_res _ hV, logSq_mul hV, logSq_res _ hV]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. The claim follows by propositional logic. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [LB.div] at hg hV`. Rewrite `hg` using `[logSq_mul hV, logSq_inv hV, logSq_res _ hV, logSq_res _ hV]`. Establish `haa : y.logSq (L.B.U a ⊓ L.B.U a) (L.B.g a a) = 0`. Establish `h0` using `congrArg (y.logSq _) (L.isLB.g_self a)`. Rewrite `h0` using `[logSq_res _ (by simp only [mem_ptsIn, TopologicalSpace.Opens.mem_inf] at ha ⊢; tauto), logSq_one (by simp only [mem_ptsIn, TopologicalSpace.Opens.mem_inf] at ha ⊢; tauto)]`.
+Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h0`. Rewrite `hg` using `[haa]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem logSq_inf_eq_add_logSq_transition (A : LB X) (L : HermLB p) (w : A.Iso L.B)
     (hw : LB.Gen.IsGen w) (σ : k →+* ℂ) (a : L.B.ι) (b b' : A.ι) (y : CxPts p σ)
@@ -112,23 +112,21 @@ private theorem logSq_inf_eq_add_logSq_transition (A : LB X) (L : HermLB p) (w :
   linarith
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `hL`. Establish `hcov : ∀ (σ : k →+* ℂ) (y : CxPts p σ), ∃ a, y ∈ ptsIn p σ (L.B.U a)`. Introduce `σ y`. Establish `h : ∀ x : X, ∃ a, x ∈ L.B.U a`. Introduce `x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx : x ∈ (⨆ i, L.B.U i)`. Rewrite using `[L.isLB.cover]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `TopologicalSpace.Opens.mem_iSup.mp hx`. Conclude with `(h _).imp fun a ha => mem_ptsIn.mpr ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `F : ∀ σ : k →+* ℂ, A.ι → CxPts p σ → ℝ` to `fun σ b y => (L.φ σ).φ (hcov σ y).choose y - y.logSq (L.B.U (hcov σ y).choose ⊓ A.U b) (w.s ((hcov σ y).choose, b))`. Establish `hF : ∀ (σ : k →+* ℂ) (b : A.ι) (y : CxPts p σ) (a : L.B.ι), y ∈ ptsIn p σ (L.B.U a) → y ∈ ptsIn p σ (A.U b) → F σ b y = (L.φ σ).φ a y - y.logSq (L.B.U a ⊓ A.U b) (w.s (a, b))` using `fun σ b y a ha hb => phi_sub_logSq_eq_of_mem_overlap A hA L w hw σ _ a b y (hcov σ y).choose_spec ha hb`. Establish `htr : ∀ (σ : k →+* ℂ) (i j : A.ι), ∀ y ∈ ptsIn p σ (A.U i), y ∈ ptsIn p σ (A.U j) → F σ j y = F σ i y - Real.log (‖gv p σ A i j y‖ ^ 2)`. Introduce `σ i j y hi hj`. Take `⟨a, ha⟩` from `hcov σ y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hF σ j y a ha hj, hF σ i y a ha hi]`. Establish `h2` using `logSq_inf_eq_add_logSq_transition A L w hw σ a i j y ha hi hj`. Establish `hl : Real.log (‖gv p σ A i j y‖ ^ 2) = y.logSq (A.U i ⊓ A.U j) (A.g i j)` using `rfl`. Rewrite using `[hl]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `χ : ∀ σ : k →+* ℂ, Weight p σ A` to `fun σ => ⟨hA, F σ, htr σ⟩`. Establish `hc : ∀ σ, (χ σ).IsCInf`. Introduce `σ b y hb`. Take `⟨a, ha⟩` from `hcov σ y`. Establish `hS : ptsIn p σ (L.B.U a) ∩ ptsIn p σ (A.U b) ∈ 𝓝 y` using `((isOpen_ptsIn _).inter (isOpen_ptsIn _)).mem_nhds ⟨ha, hb⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `cInfAt_logSq_ev (W := L.B.U a ⊓ A.U b) (w.s (a, b)) (mem_ptsIn_inf.mpr ⟨ha, hb⟩)`. Establish `h1 : CInfAt (fun z => (L.φ σ).φ a z - z.logSq (L.B.U a ⊓ A.U b) (w.s (a, b))) y` using `((L.cInf σ a y ha).add h2.neg).congr (Filter.Eventually.of_forall fun z => sub_eq_add_neg _ _)`. Conclude with `h1.congr (Filter.mem_of_superset hS fun z hz => hF σ b z a hz.1 hz.2)`. Establish `hj : ∀ σ σ', (χ σ).IsConj (χ σ')`. Introduce `σ σ' b y y' hyy' hb`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `hcov σ y`. Establish `ha'` using `(mem_ptsIn_iff_of_conj hyy').mpr ha`. Establish `hb'` using `(mem_ptsIn_iff_of_conj hyy').mpr hb`. Use `show F σ' b y' = F σ b y`. Rewrite using `[hF σ' b y' a ha' hb', hF σ b y a ha hb, L.conj σ σ' a y y' hyy' ha]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Unfold `CxPts.logSq`. Rewrite using `[ev_conj hyy' (mem_ptsIn_inf.mpr ⟨ha, hb⟩), Complex.norm_conj]`. Use `⟨χ, hc, hj, w, hw, ?_⟩` and prove the remaining obligations. Introduce `σ a b y ha hb`.
-
-Establish `h3` using `hF σ b y a ha hb`. Use `show (L.φ σ).φ a y = F σ b y + y.logSq (L.B.U a ⊓ A.U b) (w.s (a, b))`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_transport (A : LB X) (hA : A.IsLB) (L : HermLB p) (hL : LBIso A L.B) :
     ∃ (χ : ∀ σ : k →+* ℂ, Weight p σ A) (hc : ∀ σ, (χ σ).IsCInf) (hj : ∀ σ σ', (χ σ).IsConj (χ σ')),
@@ -191,7 +189,7 @@ section Glue
 variable {P X : Scheme.{0}} {q : P ⟶ Sp k} {p : X ⟶ Sp k}
 
 /- English proof (translation)
-Establish `h1` using `(mem_ptsIn_preimage (m := PtsOver.map i hi (spMap σ)) (fun z => rfl)).mpr h`. Rewrite `h1`, the goal using `[mem_ptsIn]`. Simplify using `only [LB.pull, LB.LinComb]`. Rewrite using `[← SetLike.mem_coe]`. Simplify `h1` using `[LB.wchart]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_ptsIn_pull (i : X ⟶ P) (hi : i ≫ q = p) {σ : k →+* ℂ} (B : LB P) (c : B.ι) (x : CxPts p σ)
     (h : PtsOver.map i hi (spMap σ) x ∈ ptsIn q σ (B.U c)) : x ∈ ptsIn p σ ((B.pull i).U fun _ => c) := by
@@ -202,7 +200,7 @@ theorem mem_ptsIn_pull (i : X ⟶ P) (hi : i ≫ q = p) {σ : k →+* ℂ} (B : 
   simpa [LB.wchart] using h1
 
 /- English proof (translation)
-The claim follows from `(gv_linComb (m := fun _ => PtsOver.map i hi (spMap σ) x) (fun _ => rfl) h h').trans (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem gv_pull (i : X ⟶ P) (hi : i ≫ q = p) {σ : k →+* ℂ} (B : LB P) (c c' : B.ι) (x : CxPts p σ)
     (h : x ∈ ptsIn p σ ((B.pull i).U fun _ => c)) (h' : x ∈ ptsIn p σ ((B.pull i).U fun _ => c')) :
@@ -210,7 +208,7 @@ theorem gv_pull (i : X ⟶ P) (hi : i ≫ q = p) {σ : k →+* ℂ} (B : LB P) (
   (gv_linComb (m := fun _ => PtsOver.map i hi (spMap σ) x) (fun _ => rfl) h h').trans (by simp)
 
 /- English proof (translation)
-Establish `h0` using `congrArg (z.logSq _) (hB.cocycle c₁ c₂ c₃)`. Rewrite `h0` using `[logSq_mul (by simp only [mem_ptsIn, TopologicalSpace.Opens.mem_inf] at h₁ h₂ h₃ ⊢; tauto), logSq_res _ (by simp only [mem_ptsIn, TopologicalSpace.Opens.mem_inf] at h₁ h₂ h₃ ⊢; tauto), logSq_res _ (by simp only [mem_ptsIn, TopologicalSpace.Opens.mem_inf] at h₁ h₂ h₃ ⊢; tauto), lo …`. Conclude with `h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem logSq_cocycle {Y : Scheme.{0}} {r : Y ⟶ Sp k} {σ : k →+* ℂ} (B : LB Y)
     (hB : B.IsLB) (c₁ c₂ c₃ : B.ι) (z : CxPts r σ) (h₁ : z ∈ ptsIn r σ (B.U c₁))
@@ -225,35 +223,31 @@ private theorem logSq_cocycle {Y : Scheme.{0}} {r : Y ⟶ Sp k} {σ : k →+* �
   exact h0
 
 /- English proof (translation)
-Use `haveI : CompactSpace (CxPts q σ) := compactSpace σ hP.isProjOver`. Use `haveI : T2Space (CxPts q σ) := t2Space_cxPts_of_isProjOver σ hP.isProjOver`. Take `⟨R⟩` from `hs σ`. Use `set m := PtsOver.map i hi (spMap σ) with hm`. Establish `hmc : IsClosed (range m)` using `(PtsOver.isClosedEmbedding_map i hi (spMap σ)).isClosed_range`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hcov : ∀ y : CxPts q σ, ∃ c, y ∈ ptsIn q σ (B.U c)`. Introduce `y`. Establish `h : ∀ x : P, ∃ c, x ∈ B.U c`. Introduce `x`. Establish `hx : x ∈ (⨆ c, B.U c)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Establish an intermediate fact.
 
-Rewrite using `[hB.cover]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `TopologicalSpace.Opens.mem_iSup.mp hx`. Conclude with `(h _).imp fun c hc => mem_ptsIn.mpr hc`. Establish `loc : ∀ y : CxPts q σ, ∃ (c : B.ι) (V : Set (CxPts q σ)) (θ : CxPts q σ → ℝ), IsOpen V ∧ y ∈ V ∧ V ⊆ ptsIn q σ (B.U c) ∧ (∀ z ∈ V, CInfAt θ z) ∧ ∀ x : CxPts p σ, m x ∈ V → θ (m x) = χ.φ (fun _ => c) x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `y`. Take `⟨c, hc⟩` from `hcov y`. Distinguish the cases in `hy : y ∈ range m`. Take `⟨x₀, rfl⟩` from `hy`. Establish `hx₀` using `mem_ptsIn_pull i hi B c x₀ hc`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨V, θ, hV, hV₀, hθ, heq⟩` from `exists_local_ext i hi (χ.φ fun _ => c) x₀ (hχ (fun _ => c) x₀ hx₀)`. Conclude with `⟨c, V ∩ ptsIn q σ (B.U c), θ, hV.inter (isOpen_ptsIn _), ⟨hV₀, hc⟩, inter_subset_right, fun z hz => hθ z hz.1, fun x hx => heq x hx.1⟩`. Use `⟨c, (range m)ᶜ ∩ ptsIn q σ (B.U c), fun _ => 0, hmc.isOpen_compl.inter (isOpen_ptsIn _), ⟨hy, hc⟩, inter_subset_right, fun z _ => cInfAt_const 0 z, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Conclude with `absurd (mem_range_self x) hx.1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `choose cc V θ hVo hyV hVsub hθ hθx using loc`. Take `⟨n, a, ρ, hρs, hρ0, hρsupp, hρ1⟩` from `exists_partition R V hVo (fun y => ⟨y, hyV y⟩)`. Establish `hzero : ∀ t z, ρ t z ≠ 0 → z ∈ V (a t)` using `fun t z h0 => hρsupp t (subset_tsupport _ (Function.mem_support.mpr h0))`. Set `Ψ : B.ι → CxPts q σ → ℝ` to `fun c z => ∑ t : Fin n, ρ t z * (θ (a t) z - z.logSq (B.U (cc (a t)) ⊓ B.U c) (B.g (cc (a t)) c))`. Establish `htr : ∀ (c c' : B.ι), ∀ z ∈ ptsIn q σ (B.U c), z ∈ ptsIn q σ (B.U c') → Ψ c' z = Ψ c z - Real.log (‖gv q σ B c c' z‖ ^ 2)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `c c' z hz hz'`. Establish `key : ∀ t : Fin n, ρ t z * (θ (a t) z - z.logSq (B.U (cc (a t)) ⊓ B.U c') (B.g (cc (a t)) c')) = ρ t z * (θ (a t) z - z.logSq (B.U (cc (a t)) ⊓ B.U c) (B.g (cc (a t)) c)) - ρ t z * z.logSq (B.U c ⊓ B.U c') (B.g c c')`. Introduce `t`. Distinguish the cases in `h0 : ρ t z = 0`. Simplify using `[h0]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hzc` using `hVsub (a t) (hzero t z h0)`. Establish `h3` using `logSq_cocycle B hB (cc (a t)) c c' z hzc hz hz'`. Rewrite using `[← h3]`. Expand and normalize the polynomial expressions, which then agree. Establish `hl : Real.log (‖gv q σ B c c' z‖ ^ 2) = z.logSq (B.U c ⊓ B.U c') (B.g c c')` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `show ∑ t : Fin n, _ = ∑ t : Fin n, _ - _`. Rewrite using `[Finset.sum_congr rfl (fun t _ => key t), Finset.sum_sub_distrib, ← Finset.sum_mul, hρ1, one_mul, hl]`. Use `⟨⟨hB, Ψ, htr⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `c z hz show CInfAt (fun w => ∑ t : Fin n, ρ t w * (θ (a t) w - w.logSq (B.U (cc (a t)) ⊓ B.U c) (B.g (cc (a t)) c))) z`. Apply `cInfAt_sum` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `t _`. Distinguish the cases in `hzV : z ∈ V (a t)`. Establish `hzc` using `hVsub (a t) hzV`. Establish `h2` using `cInfAt_logSq_ev (W := B.U (cc (a t)) ⊓ B.U c) (B.g (cc (a t)) c) (mem_ptsIn_inf.mpr ⟨hzc, hz⟩)`. Establish `h1 : CInfAt (fun w => θ (a t) w - w.logSq (B.U (cc (a t)) ⊓ B.U c) (B.g (cc (a t)) c)) z` using `((hθ (a t) z hzV).add h2.neg).congr (Filter.Eventually.of_forall fun w => sub_eq_add_neg _ _)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `cInfAt_mul (hρs t z) h1`. Establish `hns : z ∉ tsupport (ρ t)` using `fun h => hzV (hρsupp t h)`. Establish `hev` using `(notMem_tsupport_iff_eventuallyEq.mp hns)`. Use `(cInfAt_const 0 z).congr ?_` and prove the remaining obligations. Use `filter_upwards [hev] with w hw`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.zero_apply] at hw`. Simplify using `[hw]`. Introduce `c x hx show ∑ t : Fin n, ρ t (m x) * (θ (a t) (m x) - CxPts.logSq (m x) (B.U (cc (a t)) ⊓ B.U c) (B.g (cc (a t)) c)) = χ.φ (fun _ => c) x`. Establish `key : ∀ t : Fin n, ρ t (m x) * (θ (a t) (m x) - CxPts.logSq (m x) (B.U (cc (a t)) ⊓ B.U c) (B.g (cc (a t)) c)) = ρ t (m x) * χ.φ (fun _ => c) x`. Introduce `t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `h0 : ρ t (m x) = 0`. Simplify using `[h0]`. Establish `hzV` using `hzero t (m x) h0`. Establish `hzc` using `hVsub (a t) hzV`. Rewrite using `[hθx (a t) x hzV]`.
-
-Establish `hxa` using `mem_ptsIn_pull i hi B (cc (a t)) x hzc`. Establish `hxc` using `mem_ptsIn_pull i hi B c x hx`. Establish `htrχ` using `χ.trans (fun _ => cc (a t)) (fun _ => c) x hxa hxc`. Rewrite `htrχ` using `[gv_pull i hi B (cc (a t)) c x hxa hxc]`. Establish `hl : Real.log (‖gv q σ B (cc (a t)) c (PtsOver.map i hi (spMap σ) x)‖ ^ 2) = CxPts.logSq (m x) (B.U (cc (a t)) ⊓ B.U c) (B.g (cc (a t)) c)` using `rfl`.
-
-Rewrite `htrχ` using `[hl]`. Rewrite using `[htrχ]`. Rewrite using `[Finset.sum_congr rfl (fun t _ => key t), ← Finset.sum_mul, hρ1, one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_weight_ext_sigma (i : X ⟶ P) [IsClosedImmersion i] (hi : i ≫ q = p) {N : ℕ} (hP : IsArithVar q N)
     (hs : GenSmooth q N) (B : LB P) (hB : B.IsLB) (σ : k →+* ℂ) (χ : Weight p σ (B.pull i)) (hχ : χ.IsCInf) :
@@ -357,15 +351,15 @@ section Conj
 variable {P X : Scheme.{0}} {q : P ⟶ Sp k} {p : X ⟶ Sp k}
 
 /- English proof (translation)
-Take `⟨W, ι, hι, g, F, O, hyW, hO, hmem, hF, hev⟩` from `h`. Establish `hy' : y ∈ ptsIn q σ W` using `(mem_ptsIn_iff_of_conj (y := y) (y' := conjPts q rfl y) rfl).mp hyW`. Establish `evrel : ∀ z ∈ ptsIn q σ W, ∀ a, ev q ((starRingEnd ℂ).comp σ) W (g a) (conjPts q rfl z) = starRingEnd ℂ (ev q σ W (g a) z)` using `fun z hz a => ev_conj rfl hz (g a)`. Establish `hc1 : ContDiff ℝ ∞ (fun z : ℂ => starRingEnd ℂ z)`. Establish `h0` using `Complex.conjCLE.contDiff (n := ∞)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h0 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z`. Simplify using the standard rewrite rules. Set `c : (ι → ℂ) → (ι → ℂ)` to `fun v a => starRingEnd ℂ (v a)`. Establish `hc : ContDiff ℝ ∞ c` using `contDiff_pi.mpr fun a => hc1.comp (contDiff_apply ℝ ℂ a)`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨W, ι, hι, g, fun v => F (c v), c ⁻¹' O, hy', hO.preimage hc.continuous, ?_, hF.comp hc.contDiffOn (mapsTo_preimage c O), ?_⟩` and prove the remaining obligations. Use `show (fun a => starRingEnd ℂ (ev q σ W (g a) y)) ∈ O`. Establish `he : (fun a => starRingEnd ℂ (ev q σ W (g a) y)) = fun a => ev q ((starRingEnd ℂ).comp σ) W (g a) (conjPts q rfl y)`. Use function extensionality and compare the values at `fun a => (evrel y hy' a).symm`. Rewrite using `[he]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hmem`. Establish `h1` using `hev.comp_tendsto ((conjPts q rfl).continuous.tendsto y)`. Establish `h2 : ptsIn q σ W ∈ 𝓝 y` using `(isOpen_ptsIn W).mem_nhds hy'`. Use `filter_upwards [h1, h2] with z hz hzW`. Simplify using `only [Function.comp] at hz`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hz]`. Use `show F _ = F _`. Use `congr 1`. Use function extensionality and compare the values at `a`. Conclude with `evrel z hzW a`.
+A detailed English derivation is pending.
 -/
 theorem cInfAt_conj {σ : k →+* ℂ} {f : CxPts q ((starRingEnd ℂ).comp σ) → ℝ} {y : CxPts q σ}
     (h : CInfAt f (conjPts q rfl y)) : CInfAt (fun z => f (conjPts q rfl z)) y := by
@@ -399,25 +393,21 @@ theorem cInfAt_conj {σ : k →+* ℂ} {f : CxPts q ((starRingEnd ℂ).comp σ) 
     exact evrel z hzW a
 
 /- English proof (translation)
-Use `choose ψ0 hψ0c hψ0e using fun σ => exists_weight_ext_sigma i hi hP hs B hB σ (χ σ) (hχ σ)`. Establish `hcongr : ∀ (c : B.ι) (σ1 σ2 : k →+* ℂ), σ1 = σ2 → ∀ (z1 : CxPts q σ1) (z2 : CxPts q σ2), (z1 : Sp ℂ ⟶ P) = z2 → (ψ0 σ1).φ c z1 = (ψ0 σ2).φ c z2`. Introduce `c σ1 σ2 h z1 z2 hz`. Substitute `h` using the available equality. Rewrite using `[Subtype.ext hz]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hLconj : ∀ (σ : k →+* ℂ) (c c' : B.ι) (y : CxPts q σ), y ∈ ptsIn q σ (B.U c ⊓ B.U c') → Real.log (‖gv q ((starRingEnd ℂ).comp σ) B c c' (conjPts q rfl y)‖ ^ 2) = Real.log (‖gv q σ B c c' y‖ ^ 2)`. Introduce `σ c c' y hy`. Unfold `CxPts.gv`. Rewrite using `[ev_conj rfl hy, Complex.norm_conj]`. Set `Ψ : ∀ σ : k →+* ℂ, B.ι → CxPts q σ → ℝ` to `fun σ c y => ((ψ0 σ).φ c y + (ψ0 ((starRingEnd ℂ).comp σ)).φ c (conjPts q rfl y)) / 2`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `htr : ∀ (σ : k →+* ℂ) (c c' : B.ι), ∀ y ∈ ptsIn q σ (B.U c), y ∈ ptsIn q σ (B.U c') → Ψ σ c' y = Ψ σ c y - Real.log (‖gv q σ B c c' y‖ ^ 2)`. Introduce `σ c c' y hc hc'`. Establish `hc2` using `(mem_ptsIn_iff_of_conj (y := y) (y' := conjPts q rfl y) rfl).mpr hc`. Establish `hc2'` using `(mem_ptsIn_iff_of_conj (y := y) (y' := conjPts q rfl y) rfl).mpr hc'`. Establish `e1` using `(ψ0 σ).trans c c' y hc hc'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `(ψ0 ((starRingEnd ℂ).comp σ)).trans c c' _ hc2 hc2'`. Rewrite `e2` using `[hLconj σ c c' y (mem_ptsIn_inf.mpr ⟨hc, hc'⟩)]`. Use `show (_ + _) / 2 = (_ + _) / 2 - _`. Rewrite using `[e1, e2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun σ => ⟨hB, Ψ σ, htr σ⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `σ c y hy`. Establish `hy2` using `(mem_ptsIn_iff_of_conj (y := y) (y' := conjPts q rfl y) rfl).mpr hy`. Establish `h1` using `hψ0c σ c y hy`. Establish `h2` using `cInfAt_conj (f := (ψ0 ((starRingEnd ℂ).comp σ)).φ c) (hψ0c _ c _ hy2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `h1.comp₂ h2 (G := fun v => (v.1 + v.2) / 2) (by fun_prop)`. Introduce `σ σ' c y y' hyy' hy`. Establish `hσ` using `eq_conj_of_conj hyy'`. Substitute `hσ` using the available equality. Establish `hy' : y' = conjPts q rfl y` using `Subtype.ext hyy'`.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Substitute `hy'` using the available equality. Use `show ((ψ0 _).φ c (conjPts q rfl y) + (ψ0 _).φ c (conjPts q rfl (conjPts q rfl y))) / 2 = ((ψ0 σ).φ c y + (ψ0 _).φ c (conjPts q rfl y)) / 2`. Rewrite using `[hcongr c ((starRingEnd ℂ).comp ((starRingEnd ℂ).comp σ)) σ (RingHom.ext fun x => by simp) (conjPts q rfl (conjPts q rfl y)) y ((conjHomeomorph P).left_inv _)]`. Expand and normalize the polynomial expressions, which then agree. Introduce `σ c x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hxp` using `mem_ptsIn_pull i hi B c x hx`. Establish `hmx : conjPts q rfl (PtsOver.map i hi (spMap σ) x) = PtsOver.map i hi (spMap ((starRingEnd ℂ).comp σ)) (conjPts p rfl x)`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show spMap (starRingEnd ℂ) ≫ ((x : Sp ℂ ⟶ X) ≫ i) = (spMap (starRingEnd ℂ) ≫ (x : Sp ℂ ⟶ X)) ≫ i`. Conclude with `(Category.assoc _ _ _).symm`.
-
-Establish `hx2 : PtsOver.map i hi (spMap ((starRingEnd ℂ).comp σ)) (conjPts p rfl x) ∈ ptsIn q ((starRingEnd ℂ).comp σ) (B.U c)`. Rewrite using `[← hmx]`. Conclude with `(mem_ptsIn_iff_of_conj rfl).mpr hx`. Use `show ((ψ0 σ).φ c (PtsOver.map i hi (spMap σ) x) + (ψ0 _).φ c (conjPts q rfl (PtsOver.map i hi (spMap σ) x))) / 2 = (χ σ).φ (fun _ => c) x`. Rewrite using `[hψ0e σ c x hx, hmx, hψ0e _ c (conjPts p rfl x) hx2, hχc σ _ (fun _ => c) x (conjPts p rfl x) rfl hxp]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_weight_ext (i : X ⟶ P) [IsClosedImmersion i] (hi : i ≫ q = p) {N : ℕ} (hP : IsArithVar q N)
     (hs : GenSmooth q N) (B : LB P) (hB : B.IsLB) (χ : ∀ σ : k →+* ℂ, Weight p σ (B.pull i))

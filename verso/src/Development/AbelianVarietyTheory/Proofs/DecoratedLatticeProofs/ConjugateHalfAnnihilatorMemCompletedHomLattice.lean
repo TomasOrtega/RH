@@ -15,7 +15,7 @@ namespace GlobalTheory.SplitVacAnnih
 open GlobalTheory.FinPl.FrameLat
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_vecMulVec, Matrix.vecMulVec_mul, Matrix.vecMul_vecMul, Matrix.vecMul_vecMul, hS, Matrix.mul_one, Matrix.mul_vecMulVec, Matrix.trace_vecMulVec, dotProduct_comm, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc A, ← Matrix.mul_assoc G, hAG, Matrix.one_ …`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_rankOne {k m n Y Y' : Type} [Field k] [Fintype m] [DecidableEq m] [Fintype n] [Fintype Y] [Fintype Y']
     (A G : Matrix m m k) (hAG : G * A = 1) (N : Matrix m n k) (B : Matrix n n k) (βT : Matrix n Y k) (βS : Matrix m Y' k)
@@ -28,9 +28,9 @@ theorem trace_rankOne {k m n Y Y' : Type} [Field k] [Fintype m] [DecidableEq m] 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Distinguish the cases in `h0 : b = 0`. Rewrite using `[h0]`. Conclude with `zero_mem _`. Establish `h1` using `(h b).1 fun t ht => by`. Use `hb (t / b) (by` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Valuation.mem_integer_iff, map_div₀]`. Conclude with `div_le_one_of_le₀ ht zero_le)`. Rewrite `this` using `[div_mul_cancel₀ _ h0]`. Then use the resulting hypothesis. Rewrite using `[Valuation.mem_integer_iff]`. Simplify using `using h1`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem int_of_char {ψk : AddChar k Circle} (h : HasConductor ψk 1) {b : k} (hb : ∀ a ∈ 𝒪[k], ψk (a * b) = 1) :
     b ∈ 𝒪[k] := by
@@ -45,29 +45,25 @@ theorem int_of_char {ψk : AddChar k Circle} (h : HasConductor ψk 1) {b : k} (h
   simpa using h1
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ q hU Y Y' _ _ _ _ S T FS FT LS LT hS hT hFS hFT ψ ψk _ hχ hc y hy hann`. Establish `hce : cA D q.e ∈ GlobalTheory.FinPl.intAt D (· = q.v)`. Rewrite using `[← sec_one q]`. Conclude with `⟨csec_mem_idAt 1, (cA_int_iff _).2 (sec_mem_intAt q 1 (one_mem _)).2⟩`. Establish `hcs : ∀ a : AE D, cA D (q.sec (q.pr (cA D a))) = cA D q.e * a` using `fun a => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[q.sec_pr, RingHom.map_mul, GlobalTheory.LocSympl.conj_conj]`. Establish `hgram : ∀ (V : HSp D) i j, q.pr (cA D (incA D (V.gram i j))) = (V.gram.map (q.pr.comp (incA D))) j i` using `fun V i j => by rw [cA_incA, GlobalTheory.LatVac.gram_star]; rfl`. Rewrite using `[GlobalTheory.FinPl.LatMem.mem_latO_iff D S T LS LT hS hT, hU.2 T LT]`. Use `⟨fun i j => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[← hy i j]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_right _ _ hce.1`. Use `set N : Matrix (Fin S.rank) (Fin T.rank) k := Matrix.of fun b c => q.pr (cA D (y c b)) with hN`. Use `set x' : Fin S.rank → k := fun j => q.pr (cA D (x j)) with hx'`. Establish `hyN : y = N.transpose.map fun a => cA D ((ofSplit q).ι a)`. Use extensionality with `i j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Conclude with `((hcs _).trans (hy i j)).symm`. Establish `hx1 : (fun j => cA D (q.sec (x' j))) ∈ GlobalTheory.FinPl.latV S LS (· = q.v)`. Use `smul_mem hS hx hce` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hcs _`. Establish `hyx : (y : Matrix _ _ (AE D)) *ᵥ x = fun i => cA D (q.sec ((x' ᵥ* N) i))`. Use function extensionality and compare the values at `i`. Establish `: (x' ᵥ* N) i = q.pr (cA D (((y : Matrix _ _ (AE D)) *ᵥ x) i))`. Simplify using `only [Matrix.vecMul, Matrix.mulVec, dotProduct, map_sum, RingHom.map_mul, hN, hx', Matrix.of_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Rewrite using `[this, hcs]`. Simplify using `only [Matrix.mulVec, dotProduct, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [← mul_assoc, hy i j]`. Use `show (y : Matrix _ _ (AE D)) *ᵥ x ∈ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[hyx, csec_mem_iff hT]`. Introduce `u hu`. Establish `huc : FT.β *ᵥ (FT.γ *ᵥ u) = u` using `by rw [Matrix.mulVec_mulVec, FT.βγ, Matrix.one_mulVec]`. Establish `hcint : ∀ i, (FT.γ *ᵥ u) i ∈ 𝒪[k]` using `(hFT _).2 (by rw [huc]; exact hu)`. Use `set f := q.pr.comp (incA D) with hf`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hrow : ∀ s, ((x' ᵥ* S.gram.map f) ᵥ* FS.β) s ∈ 𝒪[k]` using `fun s => by`. Establish `h1` using `(csec_mem_iff hS x').1 hx1 _ ((hFS (Pi.single s 1)).1 fun i => by`. Distinguish the cases in `h : i = s`. Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `one_mem _`. Rewrite using `[Pi.single_eq_of_ne h]`. Conclude with `zero_mem _)`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [hgram, Matrix.mulVec_single_one, Matrix.vecMul, dotProduct, Finset.sum_mul, Matrix.col, Matrix.transpose_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`. Use `int_of_char hc fun a ha => ?_` and prove the remaining obligations. Establish `h2` using `hann (vecMulVec (a • (FT.γ *ᵥ u)) ((x' ᵥ* S.gram.map f) ᵥ* FS.β)) fun r s => mul_mem (mul_mem ha (hcint r)) (hrow s)`. Establish `hA : S.gram.map f * (S.gram⁻¹).map f = 1`. Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv _ (GlobalTheory.LatVac.gram_det_isUnit S), Matrix.map_one _ (map_zero f) (map_one f)]`.
-
-Rewrite `h2` using `[GlobalTheory.LocSympl.psi_sympl_up _ FS FT ψ ψk hχ, hyN, GlobalTheory.LocSympl.pi_hO_up]`. Establish `h3` using `trace_rankOne _ _ hA N (T.gram.map f) FT.β FS.β FS.γ FS.βγ (a • (FT.γ *ᵥ u)) x'`. Rewrite `h3` using `[Matrix.mulVec_smul, huc, Matrix.mulVec_smul, dotProduct_smul, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec]`. Establish `h4 : ∑ i, ∑ j, u i * q.pr (cA D (incA D (T.gram i j))) * (x' ᵥ* N) j = (x' ᵥ* N) ⬝ᵥ T.gram.map f *ᵥ u`. Rewrite using `[Finset.sum_comm]`.
-
-Simplify using `only [hgram, Matrix.mulVec, dotProduct, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`. Rewrite using `[h4, ← smul_eq_mul, ← h3]`. Conclude with `Circle.ext h2`.
+A detailed English derivation is pending.
 -/
 theorem annihilator_mem_latO : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : GlobalTheory.FinPl.SplitPt D k), q.UnitAA → ∀ (Y Y' : Type) [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] (S T : HSp D) (FS : Frame k S.rank Y') (FT : Frame k T.rank Y) (LS : GlobalTheory.FinPl.Lat S) (LT : GlobalTheory.FinPl.Lat T), IsSelfDualC S LS → IsSelfDualC T LT → (∀ y : Y' → k, (∀ i, y i ∈ 𝒪[k]) ↔ (fun i => q.sec ((FS.β *ᵥ y) i)) ∈ GlobalTheory.FinPl.latV S LS (· = q.v)) → (∀ y : Y → k, (∀ i, y i ∈ 𝒪[k]) ↔ (fun i => q.sec ((FT.β *ᵥ y) i)) ∈ GlobalTheory.FinPl.latV T LT (· = q.v)) → ∀ (ψ : AddChar (AF D.host.F) ℂ) (ψk : AddChar k Circle), IsStdChar D ψ (-1) → (ofSplit q).IsChar ψ ψk → HasConductor ψk 1 → ∀ y : WO S T, IsHalf (cA D q.e) y → (∀ x : Matrix Y Y' k, (∀ r s, x r s ∈ 𝒪[k]) → ψ (symplO S T ((ofSplit q).up FS FT x) y) = 1) → y ∈ latO S T (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E)) (· = q.v) := by
   intro D k _ _ _ _ q hU Y Y' _ _ _ _ S T FS FT LS LT hS hT hFS hFT ψ ψk _ hχ hc y hy hann

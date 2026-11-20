@@ -13,15 +13,13 @@ variable {p : ℕ} {O Kf : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationR
   (P : Places p O Kf) (α : Type) {LL : Type} [Field LL] (e : LL →+* Kf) (Mi : Submodule O (FnP P α))
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `(hlat x).2 (Submodule.subset_span hx)`. Use `hd.symm.le.trans ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Take `⟨x, rfl⟩` from `phi.surjective y`. Establish `hx : x ∈ Submodule.span A S` using `(hlat x).1 hy`. Use `show (phi x).1 ∈ _`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Use `clear hy`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem z hz => exact Submodule.subset_span ⟨z, hz, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Consider the case `add y z _ _ h1 h2 => rw [map_add]`. Conclude with `Submodule.add_mem _ h1 h2`. Consider the case `smul a y _ h1`. Take `⟨o, ho⟩` from `hA a.1 a.2`. Establish `: (phi (a • y)).1 = o • (phi y).1`.
-
-Rewrite using `[Subring.smul_def, map_smul]`. Use `show e a.1 • (phi y).1 = _`. Rewrite using `[← ho, algebraMap_smul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_image_eq {V : Type} [AddCommGroup V] [Module LL V] (A : Subring LL)
     (hA : ∀ a ∈ A, e a ∈ Set.range (algebraMap O Kf)) (phi : V ≃ₗ[LL] FormsLL P α e Mi) (S : Set V)
@@ -80,7 +78,7 @@ def UpData.cmpS (X : UpData c Tw u w h Lv) (j : ℕ) :
   if hj : j + 1 ≤ D.R.m then X.cmpI j hj else 0
 
 /- English proof (translation)
-Unfold `UpData.cmpS`. Rewrite using `[dif_pos hj]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem UpData.cmpS_apply (X : UpData c Tw u w h Lv) (j : ℕ) (hj : j + 1 ≤ D.R.m)
     (x : ((Tw.fm u (D.what₂.muAt w)).lat (j + 1)).V) : X.cmpS j x = (X.phi j hj x).1 := by
@@ -98,7 +96,7 @@ def DescUp (c : LatCmp D) (u : D.what₂.Word) (w : D.what₂.places.Pl)
   ∀ j, j + 1 ≤ D.R.m → MRatSpan (Fl.Pj (j + 1)) (Lv.comp (j + 1)) (c.embW u w h) (Lv.Int (j + 1))
 
 /- English proof (translation)
-Establish `h0 : (X.up.cmpS j : ((Tw.fm u (D.what₂.muAt w)).lat (j + 1)).V → Lv.Fm (j + 1)) = fun x => (X.phi j hj x).1`. Use function extensionality and compare the values at `fun x => X.cmpS_apply j hj x`. Rewrite using `[h0]`. Conclude with `span_image_eq (Fl.Pj (j + 1)) (Lv.comp (j + 1)) (c.embW u w h) (Lv.Int (j + 1)) (intW D.what₂.places w) (fun a ha => (c.embW_int u w h a).1 ha) (X.phi j hj) _ (X.lat j hj) (hd j hj)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpData.intS (X : UpData c Tw u w h Lv) (hd : DescUp c u w h Lv) (j : ℕ) (hj : j + 1 ≤ D.R.m) :
     Submodule.span (D.gat u w h).O

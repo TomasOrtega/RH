@@ -363,11 +363,11 @@ def MExists : Prop :=
       (mk A L P Rf Xu Bu Pi Mu Wb Mb).MeasTie hb
 
 /- English proof (translation)
-Introduce `hG`. Take `⟨A⟩` from `h1`. Take `⟨L⟩` from `h2`. Take `⟨P⟩` from `h3 A`. Take `⟨Rf⟩` from `h4 A L`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Xu⟩` from `h5 A L Rf`. Take `⟨Bu⟩` from `h6 hC hG A L P Rf`. Take `⟨Pi⟩` from `h7 A L`. Take `⟨Mu⟩` from `h8 A L`. Take `⟨Wb, hW⟩` from `h9 hG A L P Rf Xu Bu Pi Mu`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Mb, hb, hM⟩` from `h10 A L P Rf Xu Bu Pi Mu Wb`. Conclude with `⟨mk A L P Rf Xu Bu Pi Mu Wb Mb, hb, hM, hW Mb, Bu.ph_int⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem settingExists_of_steps (hC : CoefWeightedLoc) (h1 : InstExists D) (h2 : LatExists D) (h3 : PsiExists D)
     (h4 : RefExists D) (h5 : XuExists D) (h6 : BunExists D) (h7 : PiExists D) (h8 : MuExists D)
@@ -464,14 +464,14 @@ def GapBigOfGapHyp (D : D7) : Prop :=
 def WFromLoc (D : D7) : Prop := BesselNVGap → CoefWeightedLoc → WlocExists → GapBigOfGapHyp D → WExists D
 
 /- English proof (translation)
-The claim follows from `hF hB hC hW hG`.
+A detailed English derivation is pending.
 -/
 theorem wExists_of_loc (D : D7) (hF : WFromLoc D) (hB : BesselNVGap) (hC : CoefWeightedLoc) (hW : WlocExists)
     (hG : GapBigOfGapHyp D) : WExists D :=
   hF hB hC hW hG
 
 /- English proof (translation)
-The claim follows from `settingExists_of_steps D hC h1 h2 h3 h4 h5 h6 h7 h8 (wExists_of_loc D hF hB hC hW hG) h10`.
+A detailed English derivation is pending.
 -/
 theorem settingExists_of_inputs (D : D7) (hB : BesselNVGap) (hC : CoefWeightedLoc) (hW : WlocExists)
     (hG : GapBigOfGapHyp D) (hF : WFromLoc D) (h1 : InstExists D) (h2 : LatExists D) (h3 : PsiExists D)

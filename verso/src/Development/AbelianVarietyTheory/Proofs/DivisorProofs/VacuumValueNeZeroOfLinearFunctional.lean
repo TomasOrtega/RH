@@ -49,19 +49,19 @@ theorem sandwich_apply {k : Type} [Field k] [TopologicalSpace k] [IsTopologicalR
     (C : GL (Fin d) k) (Y : Matrix (Fin n) (Fin d) k) : sandwich A C Y = A.val * Y * C.val := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hf.1.comp_continuous T.continuous, hf.2.comp_homeomorph T⟩`.
+Supply the required witnesses or components.
 -/
 theorem comp_homeo_mem_SB {Z : Type} [TopologicalSpace Z] (T : Z ≃ₜ Z) {f : Z → ℂ} (hf : f ∈ GlobalTheory.WeilM.SB Z) :
     f ∘ T ∈ GlobalTheory.WeilM.SB Z := ⟨hf.1.comp_continuous T.continuous, hf.2.comp_homeomorph T⟩
 
 /- English proof (translation)
-Establish `hco : ∀ u : Matrix (Fin n) (Fin d) (AE F E), sandwich bt c (-((1 : GL (Fin n) (Fv F v)).1ᵀ * Y.J.map t * u.map (piW (t.comp σ)) * (Wd.J.map t)ᵀ * (1 : GL (Fin d) (Fv F v)).1)) = -(b.1ᵀ * Y.J.map t * u.map (piW (t.comp σ)) * (Wd.J.map t)ᵀ * c.1)` using `fun u => by`. Rewrite using `[sandwich_apply, hbt]`. Simplify using `only [Units.val_one, Matrix.transpose_one, Matrix.one_mul, Matrix.mul_one, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc]`. Establish `hadd : ∀ Z Z' : Matrix (Fin n) (Fin d) (Fv F v), sandwich bt c (Z + Z') = sandwich bt c Z + sandwich bt c Z'` using `fun Z Z' => by`. Simplify using `only [sandwich_apply, Matrix.mul_add, Matrix.add_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hb : Set.BijOn (LinearMap.funLeft ℂ ℂ (sandwich bt c)) (GlobalTheory.WeilM.SB (Matrix (Fin n) (Fin d) (Fv F v)) : Set _) (GlobalTheory.WeilM.SB (Matrix (Fin n) (Fin d) (Fv F v)) : Set _)`. Use `⟨fun f hf => comp_homeo_mem_SB _ hf, fun f _ f' _ e => ?_, fun f hf => ⟨f ∘ (sandwich bt c).symm, comp_homeo_mem_SB _ hf, ?_⟩⟩` and prove the remaining obligations. Use function extensionality and compare the values at `Z`. Use `congrFun e ((sandwich bt c).symm Z)` as an intermediate fact. Simplify `this` using `[LinearMap.funLeft_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use function extensionality and compare the values at `Z`. Simplify using `[LinearMap.funLeft_apply]`. Use `⟨hb.comp h.bij, fun u hu h0 φ hφ φ₁ hφ₁ ha Z => ?_, fun u hu h0 φ hφ φ₁ hφ₁ ha x hx hx0 => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearMap.funLeft_apply]`. Rewrite using `[hadd, hco]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h.trans u hu h0 φ hφ φ₁ hφ₁ ha _`. Simplify using `only [LinearMap.comp_apply, LinearMap.funLeft_apply]`. Rewrite using `[hco]`. Conclude with `h.mult u hu h0 φ hφ φ₁ hφ₁ ha x hx hx0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLinBar_std {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d : ℕ} {Y : Spc F E n} {Wd : Spc F E d} (M : Model σ Y Wd)
@@ -96,15 +96,13 @@ theorem isLinBar_std {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
     exact h.mult u hu h0 φ hφ φ₁ hφ₁ ha x hx hx0
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ B a a' G X om om' hT ι hι`. Use `haveI := hT.geo.hV'.lat`. Use `haveI := hT.geo.hW.lat`. Take `⟨b', hb'⟩` from `exists_isSplitBasis B.τ₁ G.V'.L hT.base.cm`. Take `⟨c, hc⟩` from `exists_isSplitBasis B.τ₁ G.W.L hT.base.cm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨b₁, -, ι', hι', hvac'⟩` from `GlobalTheory.SplitBarVac.linBar_vac_indicator hP F E σ B _ _ _ _ _ _ _ om' _ _ _ _ (GlobalTheory.ThK.Inhab.pairV' hT) B.v₁ B.τ₁ b' c hb' hc`. Set `Q : GL (Fin a') (Fv F B.v₁)` to `Matrix.GeneralLinearGroup.mkOfDetNeZero b₁.valᵀ (by`. Rewrite using `[Matrix.det_transpose]`. Conclude with `b₁.isUnit.map Matrix.detMonoidHom |>.ne_zero)`. Establish `h₁` using `isLinBar_std G.M' B.ψ B.τ₁ b₁ Q rfl c ι' hι'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨l, hl⟩` from `GlobalTheory.LinModelUniq.linBar_unique F E σ B a a' G X om om' hT _ ι h₁ hι`. Establish `hv` using `hT.geo.hM'.vac B.v₁`. Establish `e` using `hl _ hv.1`. Establish `hl0 : l ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `e` using `[zero_smul]`. Conclude with `hv.2.1 (hι.bij.injOn hv.1 (Submodule.zero_mem _) (e.trans (map_zero ι).symm))`. Rewrite using `[e]`. Simplify using `only [Pi.smul_apply, LinearMap.comp_apply, LinearMap.funLeft_apply, smul_eq_mul]`. Rewrite using `[hvac', sandwich_apply, Matrix.mul_zero, Matrix.zero_mul, Set.indicator_of_mem (by intro i j; exact zero_mem _)]`.
-
-Simplify using `using hl0`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem linBar_vac_zero_ne : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),

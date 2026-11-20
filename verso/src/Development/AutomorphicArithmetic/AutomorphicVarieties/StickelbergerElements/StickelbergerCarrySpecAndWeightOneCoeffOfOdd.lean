@@ -3,19 +3,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.StickelbergerEleme
 open Finset UpperTheory.V.Bern UpperTheory.V.Stk
 
 /- English proof (translation)
-Introduce `M a _ hcop b`. Establish `hM : (M : ℤ) ∣ (a : ℤ) * ((yCl a b).val : ℤ) - (b.val : ℤ)`. Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Use `push_cast`. Rewrite using `[ZMod.natCast_zmod_val, ZMod.natCast_zmod_val, yCl, ← mul_assoc, ZMod.coe_mul_inv_eq_one a hcop, one_mul, sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (a : ℤ) * ((yCl a b).val : ℤ) = (b.val : ℤ) + (M : ℤ) * jv M a b`. Rewrite using `[jv, Int.mul_ediv_cancel' hM]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨h1, fun hodd => ?_⟩` and prove the remaining obligations. Establish `hMq : (M : ℚ) ≠ 0` using `by exact_mod_cast NeZero.ne M`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1q : (a : ℚ) * ((yCl a b).val : ℚ) = (b.val : ℚ) + (M : ℚ) * (jv M a b : ℚ)`. Conclude with `h1` after adjusting the coercions. Take `⟨t, ht⟩` from `hodd`. Establish `hE : (Eone M a b : ℚ) = (t : ℚ) - (jv M a b : ℚ)`. Rewrite using `[Eone]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (((a : ℤ) - 1) / 2) = t` using `by omega`. Rewrite using `[this]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[hE, Eva, Ev, Ev, bcoef, bcoef, Polynomial.bernoulli_one]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C, Nat.cast_one, sub_self, zpow_zero, one_mul, div_one, pow_one]`. Establish `ha : (a : ℚ) ≠ 0`. Rewrite using `[ht]`. Use `push_cast`. Check the signs of the components of the expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Establish `hy : ((yCl a b).val : ℚ) = ((b.val : ℚ) + (M : ℚ) * (jv M a b : ℚ)) / (a : ℚ)`. Clear the denominators using the available nonvanishing facts. Combine the linear relations using `[h1q]`. Rewrite using `[hy]`. Establish `hta : (a : ℚ) = 2 * t + 1` using `by exact_mod_cast ht`.
+Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[hta]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem UpperTheory.V.Stk.stickelbergerCarry_spec_and_weightOne_coeff_of_odd :
     ∀ (M a : ℕ) [NeZero M], a.Coprime M → ∀ b : ZMod M,

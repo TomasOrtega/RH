@@ -19,9 +19,9 @@ variable {n : ℕ} [MeasurableSpace (G n)] {μ : Measure (G n)}
 variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
 
 /- English proof (translation)
-Establish `hm : TendstoInMeasure μ (fun k => (cls μ (K k) : G n → V)) atTop y` using `tendstoInMeasure_of_tendsto_Lp hy`. Take `⟨ns, hns0, hns⟩` from `hm.exists_seq_tendsto_ae`. Establish `hc : ∀ᵐ g ∂μ, ∀ k, (cls μ (K k) : G n → V) g = K k (g : G n).val` using `ae_all_iff.2 fun k => by`. Establish `e : cls μ (K k) = (hK k).toLp _` using `dif_pos (hK k)`. Rewrite using `[e]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hK k).coeFn_toLp`. Use `filter_upwards [hns, hc] with g h1 h2`. Simplify using `only [h2] at h1`. Conclude with `tendsto_nhds_unique h1 ((hp g).comp (StrictMono.tendsto_atTop hns0))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ae_eq_of_tendsto {K : ℕ → Mat n → V} {L : Mat n → V} {y : Lp V 2 μ}
     (hK : ∀ k, MemLp (fun g : G n => K k g.val) 2 μ)
@@ -43,21 +43,19 @@ theorem ae_eq_of_tendsto {K : ℕ → Mat n → V} {L : Mat n → V} {y : Lp V 2
 end Limit
 
 /- English proof (translation)
-Introduce `n _ _ μ _ V _ _ _ hS a ha hC`. Take `⟨S, C, hb'⟩` from `GlobalTheory.CompanionTheory.CurveJ.sup_bound hS n μ`. Establish `hb` using `hb' V`. Establish `hs : ∀ k w, Sob μ (Rw w (a k))` using `fun k w => GlobalTheory.CompanionTheory.SobOpsPf.sob_Rw w (ha k)`. Establish `hU : ∀ w, UniformCauchySeqOn (fun k => Rw w (a k)) atTop (GLs n)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w`. Establish `hT : Tendsto (fun p : ℕ × ℕ => C * ∑ w' ∈ S, dist (cls μ (Rw w' (Rw w (a p.1)))) (cls μ (Rw w' (Rw w (a p.2))))) (atTop ×ˢ atTop) (𝓝 0)`. Establish `e0 : (C * ∑ w' ∈ S, (0 : ℝ)) = 0` using `by simp`. Rewrite using `[← e0]`. Use `Tendsto.const_mul C (tendsto_finset_sum _ fun w' _ => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `hC (w' ++ w)`. Simplify using `only [← GlobalTheory.CompanionTheory.CurveJ.Rw_append] at h1`. Rewrite using `[prod_atTop_atTop_eq]`. Conclude with `cauchySeq_iff_tendsto_dist_atTop_0.1 h1`. Introduce `u hu`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨ε, hε, hεu⟩` from `Metric.mem_uniformity_dist.1 hu`. Use `filter_upwards [hT.eventually (gt_mem_nhds hε)] with p hp x hx`. Use `hεu ?_` and prove the remaining obligations. Establish `b` using `GlobalTheory.CompanionTheory.CurveJ.bound3 hb (hs p.1 w) (hs p.2 w) (hs p.2 w) 0 hx`. Simplify using `only [zero_smul, sub_zero, ← dist_eq_norm] at b`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `lt_of_le_of_lt b hp`. Take `⟨Gf, hG, hsm, hR⟩` from `GlobalTheory.T.uniform_limit_right_derivatives n V a (fun k => (ha k).1) hU`. Establish `hy : ∀ w, ∃ y : Lp V 2 μ, Tendsto (fun k => cls μ (Rw w (a k))) atTop (𝓝 y)` using `fun w => cauchySeq_tendsto_of_complete (hC w)`. Use `choose y hy using hy`. Establish `hae : ∀ w, y w =ᵐ[μ] fun g : G n => Rw w (Gf []) g.val`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `w`. Establish `h` using `ae_eq_of_tendsto (fun k => (hs k w).2 []) (K := fun k => Rw w (a k)) (L := Gf w) (hy w) (fun g => (hG w).tendsto_at (GlobalTheory.CompanionTheory.SobOpsPf.val_mem g))`. Use `filter_upwards [h] with g hg`. Rewrite using `[hg, hR w _ (GlobalTheory.CompanionTheory.SobOpsPf.val_mem g)]`. Establish `hM : ∀ w, MemLp (fun g : G n => Rw w (Gf []) g.val) 2 μ` using `fun w => (Lp.memLp (y w)).ae_eq (hae w)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hcl : ∀ w, cls μ (Rw w (Gf [])) = y w`. Introduce `w`. Rewrite using `[GlobalTheory.CompanionTheory.CurveJ.cls_of (hM w)]`. Conclude with `Lp.ext ((hM w).coeFn_toLp.trans (hae w).symm)`. Use `⟨Gf [], ⟨hsm, hM⟩, fun w => ?_, fun g hg => (hG []).tendsto_at hg⟩` and prove the remaining obligations.
-
-Rewrite using `[hcl w]`. Conclude with `hy w`.
+A detailed English derivation is pending.
 -/
 theorem sob_complete : ∀ (n : ℕ) [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure] (V : Type)
     [NormedAddCommGroup V] [InnerProductSpace ℂ V] [CompleteSpace V], SobG →

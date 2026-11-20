@@ -6,23 +6,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Conne
 open IsLocalRing UpperTheory.V.AlgebraTools.Conn
 
 /- English proof (translation)
-Introduce `A R _ _ _ J u v b c hreg hbc hu hv l`. Establish `hl : ∀ x ∈ J.map (algebraMap A R), ∀ r : R, l (r * x) ∈ J`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨j, hj, rfl⟩` from `hx`. Introduce `r`. Rewrite using `[mul_comm, ← Algebra.smul_def, map_smul, smul_eq_mul]`. Conclude with `J.mul_mem_right _ hj`. Consider the case `zero => intro r`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy => intro r`. Rewrite using `[mul_add, map_add]`. Conclude with `J.add_mem (hx r) (hy r)`. Consider the case `smul s x _ hx => intro r`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[smul_eq_mul, ← mul_assoc]`. Conclude with `hx _`. Establish `key : ∀ (y y' : A) (β γ β' γ' : R), β ∈ b → γ ∈ c → β' ∈ b → γ' ∈ c → algebraMap A R y = β + γ → algebraMap A R y' = β' + γ' → y' * l β - y * l β' ∈ J`. Introduce `y y' β γ β' γ' hβ hγ hβ' hγ' hy hy'`. Establish `h1 : algebraMap A R y' * β - algebraMap A R y * β' ∈ J.map (algebraMap A R)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `hbc` to reduce the goal to its premises. Establish `e : algebraMap A R y' * β - algebraMap A R y * β' = β * γ' - β' * γ`. Rewrite using `[hy, hy']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Conclude with `Ideal.sub_mem _ (Ideal.mul_mem_mul hβ hγ') (Ideal.mul_mem_mul hβ' hγ)`. Establish `h2` using `hl _ h1 1`. Rewrite `h2` using `[one_mul, map_sub, ← Algebra.smul_def, ← Algebra.smul_def, map_smul, map_smul, smul_eq_mul, smul_eq_mul]`. Then use the resulting hypothesis. Take `⟨βu, hβu, γu, hγu, hu'⟩` from `Submodule.mem_sup.mp hu`. Take `⟨βv, hβv, γv, hγv, hv'⟩` from `Submodule.mem_sup.mp hv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `k` using `key u v βu γu βv γv hβu hγu hβv hγv hu'.symm hv'.symm`. Establish `hm : v * l βu ∈ J ⊔ Ideal.span {u}`. Establish `e : v * l βu = (v * l βu - u * l βv) + u * l βv` using `by ring`. Rewrite using `[e]`. Conclude with `Ideal.add_mem _ (Ideal.mem_sup_left k) (Ideal.mem_sup_right (Ideal.mem_span_singleton'.mpr ⟨l βv, mul_comm _ _⟩))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨j, hj, s, hs, hjs⟩` from `Submodule.mem_sup.mp (hreg.2 _ hm)`. Take `⟨a, rfl⟩` from `Ideal.mem_span_singleton'.mp hs`. Use `⟨a, fun y β γ hβ hγ hy => hreg.1 _ ?_⟩` and prove the remaining obligations. Establish `k2` using `key y u β γ βu γu hβ hγ hβu hγu hy hu'.symm`. Establish `e : u * (l β - y * a) = (u * l β - y * l βu) + y * j`.
-
-Rewrite using `[← hjs]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `J.add_mem k2 (J.mul_mem_left _ hj)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.Conn.level :
     ∀ {A R : Type} [CommRing A] [CommRing R] [Algebra A R] (J : Ideal A) (u v : A) (b c : Ideal R), Reg2 J u v → b * c ≤ J.map (algebraMap A R) →

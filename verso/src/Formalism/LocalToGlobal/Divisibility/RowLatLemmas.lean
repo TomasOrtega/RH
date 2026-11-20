@@ -30,64 +30,64 @@ variable {B ℓ} {Z : Submodule K B.S.Forms} {v0 : InfinitePlace K} (hv0 : IsCon
 include hv0 h hX
 
 /- English proof (translation)
-The claim follows from `(good_part_hermitian_spec K v0 hv0 B.S h.hrat h.hpos G B.r h.actRat ℓ.X hX ℓ.P ℓ.ψ).1 i j`.
+A detailed English derivation is pending.
 -/
 theorem vE_rat (i j) : B.vE ℓ i j ∈ cmMax K :=
   (good_part_hermitian_spec K v0 hv0 B.S h.hrat h.hpos G B.r h.actRat ℓ.X hX ℓ.P ℓ.ψ).1 i j
 
 /- English proof (translation)
-The claim follows from `(good_part_hermitian_spec K v0 hv0 B.S h.hrat h.hpos G B.r h.actRat ℓ.X hX ℓ.P ℓ.ψ).2.1 i j`.
+A detailed English derivation is pending.
 -/
 theorem HV_rat (i j) : B.HV ℓ i j ∈ cmMax K :=
   (good_part_hermitian_spec K v0 hv0 B.S h.hrat h.hpos G B.r h.actRat ℓ.X hX ℓ.P ℓ.ψ).2.1 i j
 
 /- English proof (translation)
-The claim follows from `(good_part_hermitian_spec K v0 hv0 B.S h.hrat h.hpos G B.r h.actRat ℓ.X hX ℓ.P ℓ.ψ).2.2 v`.
+A detailed English derivation is pending.
 -/
 theorem HV_pos (v : InfinitePlace K) : ((B.HV ℓ).map v.embedding).PosDef :=
   (good_part_hermitian_spec K v0 hv0 B.S h.hrat h.hpos G B.r h.actRat ℓ.X hX ℓ.P ℓ.ψ).2.2 v
 
 /- English proof (translation)
-The claim follows from `(local_bounds_first K v0 hv0 B.S s h.good (h.hpos v0) G B.r h.act ℓ.X hX ℓ.P ℓ.ψ).1`.
+A detailed English derivation is pending.
 -/
 theorem nab_lat : Submodule.IsLattice K B.S.nabLat :=
   (local_bounds_first K v0 hv0 B.S s h.good (h.hpos v0) G B.r h.act ℓ.X hX ℓ.P ℓ.ψ).1
 
 /- English proof (translation)
-The claim follows from `(local_bounds_first K v0 hv0 B.S s h.good (h.hpos v0) G B.r h.act ℓ.X hX ℓ.P ℓ.ψ).2.1`.
+A detailed English derivation is pending.
 -/
 theorem Mt_lat : Submodule.IsLattice K (B.Mt ℓ) :=
   (local_bounds_first K v0 hv0 B.S s h.good (h.hpos v0) G B.r h.act ℓ.X hX ℓ.P ℓ.ψ).2.1
 
 /- English proof (translation)
-The claim follows from `(local_bounds_first K v0 hv0 B.S s h.good (h.hpos v0) G B.r h.act ℓ.X hX ℓ.P ℓ.ψ).2.2`.
+A detailed English derivation is pending.
 -/
 theorem Mt_dual : ∀ x ∈ Formalism.HermitianLatticesTheory.dual (hform (B.HV ℓ)) (B.Mt ℓ),
     ((Fintype.card G * s : ℕ) : 𝓞 K) • x ∈ B.Mt ℓ :=
   (local_bounds_first K v0 hv0 B.S s h.good (h.hpos v0) G B.r h.act ℓ.X hX ℓ.P ℓ.ψ).2.2
 
 /- English proof (translation)
-The claim follows from `(level_operator_integral K v0 hv0 B.S (h.hpos v0) G B.r h.act ℓ.X hX ℓ.P ℓ.ψ).1`.
+A detailed English derivation is pending.
 -/
 theorem vPr_orth : IsOrthProj B.S.H (B.vE ℓ) (B.vPr ℓ) :=
   (level_operator_integral K v0 hv0 B.S (h.hpos v0) G B.r h.act ℓ.X hX ℓ.P ℓ.ψ).1
 
 /- English proof (translation)
-The claim follows from `(orthogonal_projection_exists K v0 hv0 _ _ (B.HV ℓ) (HV_pos hv0 h hX v0) (B.zE ℓ Z) (subspace_image_spec K _ (B.Z0 ℓ Z)).1).2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem Pq_orth : IsOrthProj (B.HV ℓ) (B.zE ℓ Z) (B.Pq ℓ Z) :=
   (orthogonal_projection_exists K v0 hv0 _ _ (B.HV ℓ) (HV_pos hv0 h hX v0) (B.zE ℓ Z)
     (subspace_image_spec K _ (B.Z0 ℓ Z)).1).2.2.2.1
 
 /- English proof (translation)
-The claim follows from `(orthogonal_projection_exists K v0 hv0 _ _ (B.HV ℓ) (HV_pos hv0 h hX v0) (B.zE ℓ Z) (subspace_image_spec K _ (B.Z0 ℓ Z)).1).2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem HZ_det : IsUnit (B.HZ ℓ Z).det :=
   (orthogonal_projection_exists K v0 hv0 _ _ (B.HV ℓ) (HV_pos hv0 h hX v0) (B.zE ℓ Z)
     (subspace_image_spec K _ (B.Z0 ℓ Z)).1).2.2.1
 
 /- English proof (translation)
-Introduce `y`. Use `⟨(B.zE ℓ Z).mulVec y, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, (Pq_orth hv0 h hX).1, Matrix.one_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem Pq_surj : Function.Surjective (B.Pq ℓ Z).mulVec := by
   intro y
@@ -95,25 +95,25 @@ theorem Pq_surj : Function.Surjective (B.Pq ℓ Z).mulVec := by
   rw [Matrix.mulVec_mulVec, (Pq_orth hv0 h hX).1, Matrix.one_mulVec]
 
 /- English proof (translation)
-The claim follows from `quotFrameIsQuot K _ _ (B.HV ℓ) (HV_pos hv0 h hX) (B.Pq ℓ Z) (Pq_surj hv0 h hX)`.
+A detailed English derivation is pending.
 -/
 theorem XQ_quot : IsQuotMetric (B.Pq ℓ Z) (B.HV ℓ) (B.XQ ℓ Z) :=
   quotFrameIsQuot K _ _ (B.HV ℓ) (HV_pos hv0 h hX) (B.Pq ℓ Z) (Pq_surj hv0 h hX)
 
 /- English proof (translation)
-The claim follows from `GluingInclusion.matLat_lattice' (B.Pq ℓ Z) (Pq_surj hv0 h hX) (B.Mt ℓ) (Mt_lat hv0 h hX)`.
+A detailed English derivation is pending.
 -/
 theorem Lam_lat : Submodule.IsLattice K (B.abelian₂ ℓ Z) :=
   GluingInclusion.matLat_lattice' (B.Pq ℓ Z) (Pq_surj hv0 h hX) (B.Mt ℓ) (Mt_lat hv0 h hX)
 
 /- English proof (translation)
-The claim follows from `quotFrameHermAt K v0 hv0 _ _ (B.HV ℓ) (HV_pos hv0 h hX) (B.zE ℓ Z) (B.Pq ℓ Z) (Pq_orth hv0 h hX)`.
+A detailed English derivation is pending.
 -/
 theorem XQ_herm : IsHermAt v0 (B.HZ ℓ Z) (B.XQ ℓ Z) :=
   quotFrameHermAt K v0 hv0 _ _ (B.HV ℓ) (HV_pos hv0 h hX) (B.zE ℓ Z) (B.Pq ℓ Z) (Pq_orth hv0 h hX)
 
 /- English proof (translation)
-Establish `hE : ∀ i a, B.zE ℓ Z i a ∈ cmMax K` using `fun i a => subE_rat (B.Z0 ℓ Z) hr i a`. Establish `e : B.XQ ℓ Z = restrFrame (B.zE ℓ Z) (B.HV ℓ)` using `quotEqRestrRat K (cmMax K) (isCMSub_cmMax' K) _ _ (B.HV ℓ) (HV_pos hv0 h hX) (B.zE ℓ Z) (B.Pq ℓ Z) hE (Pq_orth hv0 h hX)`. Rewrite using `[e]`. Conclude with `(restrFrameRatHerm K (cmMax K) (isCMSub_cmMax' K) (fun a ha => star_mem_cmMax ha) _ _ (B.HV ℓ) (HV_rat hv0 h hX) (HV_pos hv0 h hX) (B.zE ℓ Z) (subspace_image_spec K _ (B.Z0 ℓ Z)).1 hE).1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem XQ_rat (hr : SubHasRatBasis (B.Z0 ℓ Z)) : IsRatHerm (cmMax K) (B.HZ ℓ Z) (B.XQ ℓ Z) := by
   have hE : ∀ i a, B.zE ℓ Z i a ∈ cmMax K := fun i a => subE_rat (B.Z0 ℓ Z) hr i a
@@ -125,17 +125,17 @@ theorem XQ_rat (hr : SubHasRatBasis (B.Z0 ℓ Z)) : IsRatHerm (cmMax K) (B.HZ �
     (HV_rat hv0 h hX) (HV_pos hv0 h hX) (B.zE ℓ Z) (subspace_image_spec K _ (B.Z0 ℓ Z)).1 hE).1
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `Pq_orth hv0 h hX`. Establish `hrange` using `(subspace_image_spec K _ (B.Z0 ℓ Z)).2`. Use extensionality with `x`. Rewrite using `[LinearMap.mem_ker, Matrix.mulVecLin_apply]`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hx z hz`. Establish `hz' : z ∈ LinearMap.range (B.zE ℓ Z).mulVecLin` using `by rw [show B.zE ℓ Z = subE (B.Z0 ℓ Z) from rfl, hrange]; exact hz`. Take `⟨a, rfl⟩` from `hz'`. Establish `h3` using `congrArg (fun M => star a ⬝ᵥ M.mulVec x) h2`. Simplify using `only [Matrix.zero_mulVec, dotProduct_zero] at h3`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h3` using `[Matrix.mul_sub, Matrix.mul_one, Matrix.sub_mulVec, ← Matrix.mulVec_mulVec _ _ (B.zE ℓ Z * B.Pq ℓ Z), ← Matrix.mulVec_mulVec x (B.zE ℓ Z), hx, Matrix.mulVec_zero, Matrix.mulVec_zero, sub_zero]`. Rewrite using `[Matrix.mulVecLin_apply, RationalHermitianForm.hform_eq_dot, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec]`. Conclude with `h3`. Introduce `hx`. Establish `h4 : ((B.zE ℓ Z)ᴴ * B.HV ℓ).mulVec x = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `a`. Use `hx ((B.zE ℓ Z).mulVec (Pi.single a 1)) (by` as an intermediate fact. Rewrite using `[← hrange]`. Conclude with `⟨_, rfl⟩)`. Rewrite `this` using `[RationalHermitianForm.hform_eq_dot, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e : star (Pi.single a (1 : K) : Fin (B.dZ ℓ Z) → K) = Pi.single a 1`. Use extensionality with `i`. Distinguish the cases in `hi : i = a`. Substitute `hi` using the available equality. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_eq_of_ne hi]`. Rewrite `this` using `[e, single_one_dotProduct]`. Conclude with `this`. Use `show (((B.zE ℓ Z)ᴴ * B.HV ℓ * B.zE ℓ Z)⁻¹ * ((B.zE ℓ Z)ᴴ * B.HV ℓ)).mulVec x = 0`. Rewrite using `[← Matrix.mulVec_mulVec, h4, Matrix.mulVec_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_Pq : LinearMap.ker (B.Pq ℓ Z).mulVecLin = B.U ℓ Z := by
   obtain ⟨h1, h2⟩ := Pq_orth hv0 h hX
@@ -171,9 +171,9 @@ theorem ker_Pq : LinearMap.ker (B.Pq ℓ Z).mulVecLin = B.U ℓ Z := by
     rw [← Matrix.mulVec_mulVec, h4, Matrix.mulVec_zero]
 
 /- English proof (translation)
-Establish `h1` using `good_part_spec K B.S G B.r ℓ.X hX ℓ.P ℓ.ψ`. Establish `h2` using `level_part_spec K B.S G B.r ℓ.P ℓ.ψ`. Establish `h3` using `(image_idempotent_spec K B.S.dim (B.S.gaMat B.r (lvlIdem ℓ.P ℓ.ψ))).2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show B.vE ℓ = B.S.V0E B.r ℓ.X ℓ.P ℓ.ψ from rfl, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inf_le_right`. Use `_ = LinearMap.range (B.S.lvlE B.r ℓ.P ℓ.ψ).mulVecLin := by rw [← h2, ← h3]; rfl`.
+A detailed English derivation is pending.
 -/
 theorem range_vE_le : LinearMap.range (B.vE ℓ).mulVecLin ≤
     LinearMap.range (B.S.lvlE B.r ℓ.P ℓ.ψ).mulVecLin := by
@@ -185,9 +185,9 @@ theorem range_vE_le : LinearMap.range (B.vE ℓ).mulVecLin ≤
     _ = LinearMap.range (B.S.lvlE B.r ℓ.P ℓ.ψ).mulVecLin := by rw [← h2, ← h3]; rfl
 
 /- English proof (translation)
-Introduce `y`. Take `⟨u, hu⟩` from `range_vE_le hv0 h hX (⟨(B.zE ℓ Z).mulVec y, rfl⟩ : (B.vE ℓ).mulVecLin ((B.zE ℓ Z).mulVec y) ∈ LinearMap.range (B.vE ℓ).mulVecLin)`. Use `⟨u, ?_⟩` and prove the remaining obligations. Rewrite `hu` using `[Matrix.mulVecLin_apply, Matrix.mulVecLin_apply]`. Unfold `lPr`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[← Matrix.mulVec_mulVec, hu, ← Matrix.mulVec_mulVec, Matrix.mulVec_mulVec _ (B.vPr ℓ), (vPr_orth hv0 h hX).1, Matrix.one_mulVec, Matrix.mulVec_mulVec, (Pq_orth hv0 h hX).1, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lPr_surj : Function.Surjective (B.lPr ℓ Z).mulVec := by
   intro y
@@ -201,14 +201,14 @@ theorem lPr_surj : Function.Surjective (B.lPr ℓ Z).mulVec := by
     Matrix.one_mulVec]
 
 /- English proof (translation)
-The claim follows from `exponent_index_lattice.cut_isLattice _ (image_idempotent_spec K B.S.dim (B.S.gaMat B.r (lvlIdem ℓ.P ℓ.ψ))).1 _ (nab_lat (ℓ := ℓ) hv0 h hX)`.
+A detailed English derivation is pending.
 -/
 theorem lvlNab_lat : Submodule.IsLattice K (B.S.lvlNab B.r ℓ.P ℓ.ψ) :=
   exponent_index_lattice.cut_isLattice _ (image_idempotent_spec K B.S.dim (B.S.gaMat B.r (lvlIdem ℓ.P ℓ.ψ))).1 _
     (nab_lat (ℓ := ℓ) hv0 h hX)
 
 /- English proof (translation)
-The claim follows from `GluingInclusion.matLat_lattice' (B.lPr ℓ Z) (lPr_surj hv0 h hX) _ (lvlNab_lat hv0 h hX)`.
+A detailed English derivation is pending.
 -/
 theorem Tl_lat : Submodule.IsLattice K (B.Tl ℓ Z) :=
   GluingInclusion.matLat_lattice' (B.lPr ℓ Z) (lPr_surj hv0 h hX) _ (lvlNab_lat hv0 h hX)
@@ -225,9 +225,9 @@ variable {K V W I : Type} [Field K] [AddCommGroup V] [Module K V] [AddCommGroup 
   {op : I → Module.End K V}
 
 /- English proof (translation)
-Introduce `i`. Establish `hle : (⨆ j, ⨆ (_ : j ≠ i), (A j).comap f) ≤ (⨆ j, ⨆ (_ : j ≠ i), A j).comap f` using `iSup₂_le fun j hj => Submodule.comap_mono (le_iSup₂_of_le j hj le_rfl)`. Use `Disjoint.mono_right hle ?_` and prove the remaining obligations. Rewrite using `[Submodule.disjoint_def]`. Introduce `x hx1 hx2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : f x = 0` using `(Submodule.disjoint_def.mp (hA i)) (f x) hx1 hx2`. Conclude with `hf (h0.trans (map_zero f).symm)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem iSupIndep_comap {ι : Type} (f : W →ₗ[K] V) (hf : Function.Injective f) {A : ι → Submodule K V}
     (hA : iSupIndep A) : iSupIndep fun i => (A i).comap f := by
@@ -241,7 +241,7 @@ theorem iSupIndep_comap {ι : Type} (f : W →ₗ[K] V) (hf : Function.Injective
   exact hf (h0.trans (map_zero f).symm)
 
 /- English proof (translation)
-Introduce `i`. Establish `hle : (⨆ j, ⨆ (_ : j ≠ i), eigSum op (C j)) ≤ eigSum op fun x => ∃ j, j ≠ i ∧ C j x` using `iSup₂_le fun j hj => eigSum_mono fun x hx => ⟨j, hj, hx⟩`. Conclude with `(disjoint_eigSum hc fun x hx ⟨j, hj, hx'⟩ => hex i j hj.symm x hx hx').mono_right hle`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem iSupIndep_eigSum [FiniteDimensional K V] (hc : PairComm op) {ι : Type} (C : ι → (I → K) → Prop)
     (hex : ∀ i j, i ≠ j → ∀ x, C i x → ¬ C j x) : iSupIndep fun i => eigSum op (C i) := by
@@ -251,11 +251,9 @@ theorem iSupIndep_eigSum [FiniteDimensional K V] (hc : PairComm op) {ι : Type} 
   exact (disjoint_eigSum hc fun x hx ⟨j, hj, hx'⟩ => hex i j hj.symm x hx hx').mono_right hle
 
 /- English proof (translation)
-Establish `hle : (eigSum op fun x => ∃ i, C i x) ≤ LinearMap.ker ((∑ i, eigProj hc hs (C i)) - LinearMap.id)`. Use `iSup₂_le fun x hx u hu => ?_` and prove the remaining obligations. Take `⟨i0, hi0⟩` from `hx`. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.sum_apply, LinearMap.id_apply, Finset.sum_eq_single i0, eigProj_apply_of_mem hc hs (eigAt_le_eigSum hi0 hu), sub_self]`. Introduce `j _ hj`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `eigProj_apply_of_mem_not hc hs (eigAt_le_eigSum (C := fun x => ¬ C j x) (hex i0 j hj.symm x hi0) hu)`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i0) h`. Use `hle hv` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.sum_apply, LinearMap.id_apply, sub_eq_zero]`.
-
-Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_eigProj [FiniteDimensional K V] (hc : PairComm op) (hs : SplitOver op) {ι : Type} [Fintype ι]
     (C : ι → (I → K) → Prop) (hex : ∀ i j, i ≠ j → ∀ x, C i x → ¬ C j x) {v : V}
@@ -276,17 +274,15 @@ theorem sum_eigProj [FiniteDimensional K V] (hc : PairComm op) (hs : SplitOver o
   exact this
 
 /- English proof (translation)
-Set `opA : I → Module.End K A` to `fun i => (op i).restrict (hA i)`. Establish `hcA : PairComm opA`. Introduce `i j`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `a`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `congrArg (fun f : Module.End K V => f a.1) (hc i j).eq`. Establish `hsA : SplitOver opA` using `fun i => Module.End.genEigenspace_restrict_eq_top (hA i) (hs i)`. Establish `htop` using `iSup_eigAt_eq_top hcA hsA`. Establish `key : ∀ a : A, eigProj hc hs C a.1 ∈ A`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Establish `ha : a ∈ ⨆ x, eigAt opA x` using `by rw [htop]; exact Submodule.mem_top`. Proceed by induction on `ha using Submodule.iSup_induction' with`. Consider the case `mem x a ha`. Establish `h1 : a.1 ∈ eigAt op x`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `ha`, the goal using `[eigAt, Submodule.mem_iInf]`. Introduce `i`. Establish `h2` using `ha i`. Rewrite `h2` using `[Module.End.maxGenEigenspace, Module.End.genEigenspace_restrict]`. Conclude with `h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hx : C x`. Rewrite using `[eigProj_apply_of_mem hc hs (eigAt_le_eigSum hx h1)]`. Conclude with `a.2`. Rewrite using `[eigProj_apply_of_mem_not hc hs (eigAt_le_eigSum (C := fun x => ¬ C x) hx h1)]`. Conclude with `A.zero_mem`.
-
-Consider the case `zero => simp`. Consider the case `add a b _ _ iha ihb`. Rewrite using `[Submodule.coe_add, map_add]`. Conclude with `A.add_mem iha ihb`. Conclude with `key ⟨v, hv⟩`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eigProj_mem_of_stable [FiniteDimensional K V] (hc : PairComm op) (hs : SplitOver op)
     (C : (I → K) → Prop) {A : Submodule K V} (hA : ∀ i, A ≤ A.comap (op i)) {v : V} (hv : v ∈ A) :
@@ -331,7 +327,7 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] (S : CSD K)
   {G : Type} [Group G] [Fintype G] (r : Representation K G S.Forms)
 
 /- English proof (translation)
-Unfold `CSD.gaMat CSD.gaOp CSD.actMat`. Rewrite using `[map_sum]`. Simplify using `only [map_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gaMat_eq_toMatrix (a : MonoidAlgebra K G) :
     S.gaMat r a = LinearMap.toMatrix S.basis S.basis (S.gaOp r a) := by
@@ -340,7 +336,7 @@ theorem gaMat_eq_toMatrix (a : MonoidAlgebra K G) :
   simp only [map_smul]
 
 /- English proof (translation)
-Rewrite using `[gaMat_eq_toMatrix]`. Simplify using `only [Basis.equivFun_apply, LinearMap.toMatrix_mulVec_repr]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gaMat_mulVec_equivFun (a : MonoidAlgebra K G) (φ : S.Forms) :
     (S.gaMat r a).mulVec (S.basis.equivFun φ) = S.basis.equivFun (S.gaOp r a φ) := by
@@ -361,7 +357,7 @@ theorem toF_apply (y : Fin (B.dZ ℓ Z) → K) :
     B.toF ℓ Z y = B.S.basis.equivFun.symm ((B.vE ℓ).mulVec ((B.zE ℓ Z).mulVec y)) := rfl
 
 /- English proof (translation)
-Establish `h1 : Function.Injective (B.vE ℓ).mulVec` using `(subspace_image_spec K _ _).1`. Establish `h2 : Function.Injective (B.zE ℓ Z).mulVec` using `(subspace_image_spec K _ _).1`. Introduce `a b hab`. Rewrite `hab` using `[toF_apply, toF_apply]`. Conclude with `h2 (h1 (B.S.basis.equivFun.symm.injective hab))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toF_injective : Function.Injective (B.toF ℓ Z) := by
   have h1 : Function.Injective (B.vE ℓ).mulVec := (subspace_image_spec K _ _).1
@@ -371,9 +367,9 @@ theorem toF_injective : Function.Injective (B.toF ℓ Z) := by
   exact h2 (h1 (B.S.basis.equivFun.symm.injective hab))
 
 /- English proof (translation)
-Unfold `coord`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify using `using hy`. Introduce `hx`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨_, hx, B.S.basis.equivFun.apply_symm_apply x⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_coord (W : Submodule K B.S.Forms) (x : Fin B.S.dim → K) :
     x ∈ B.coord W ↔ B.S.basis.equivFun.symm x ∈ W := by
@@ -385,7 +381,7 @@ theorem mem_coord (W : Submodule K B.S.Forms) (x : Fin B.S.dim → K) :
     exact ⟨_, hx, B.S.basis.equivFun.apply_symm_apply x⟩
 
 /- English proof (translation)
-Unfold `inV0`. Rewrite using `[Submodule.mem_comap, Matrix.mulVecLin_apply, mem_coord]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_goodPart_iff (W : Submodule K B.S.Forms) (u : Fin (B.nV ℓ) → K) :
     u ∈ B.inV0 ℓ W ↔ B.S.basis.equivFun.symm ((B.vE ℓ).mulVec u) ∈ W := by
@@ -393,14 +389,14 @@ theorem mem_goodPart_iff (W : Submodule K B.S.Forms) (u : Fin (B.nV ℓ) → K) 
   rw [Submodule.mem_comap, Matrix.mulVecLin_apply, mem_coord]
 
 /- English proof (translation)
-Use extensionality with `y`. Simplify using `only [part, Submodule.mem_comap, Matrix.mulVecLin_apply, mem_goodPart_iff, toF_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem part_eq_comap (Sg : Pl0 → K[X]) : B.part ℓ Z Sg = (B.partF Sg).comap (B.toF ℓ Z) := by
   ext y
   simp only [part, Submodule.mem_comap, Matrix.mulVecLin_apply, mem_goodPart_iff, toF_apply]
 
 /- English proof (translation)
-Unfold `zE`. Rewrite using `[subE_mulVec]`. Conclude with `Submodule.coe_mem _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zE_mem (y : Fin (B.dZ ℓ Z) → K) : (B.zE ℓ Z).mulVec y ∈ B.Z0 ℓ Z := by
   unfold zE
@@ -408,7 +404,7 @@ theorem zE_mem (y : Fin (B.dZ ℓ Z) → K) : (B.zE ℓ Z).mulVec y ∈ B.Z0 ℓ
   exact Submodule.coe_mem _
 
 /- English proof (translation)
-Establish `h` using `(subspace_image_spec K (B.nV ℓ) (B.Z0 ℓ Z)).2`. Rewrite `hu` using `[← h]`. Take `⟨y, hy⟩` from `LinearMap.mem_range.mp hu`. Conclude with `⟨y, hy⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_zE {u : Fin (B.nV ℓ) → K} (hu : u ∈ B.Z0 ℓ Z) : ∃ y, (B.zE ℓ Z).mulVec y = u := by
   have h := (subspace_image_spec K (B.nV ℓ) (B.Z0 ℓ Z)).2
@@ -417,7 +413,7 @@ theorem exists_zE {u : Fin (B.nV ℓ) → K} (hu : u ∈ B.Z0 ℓ Z) : ∃ y, (B
   exact ⟨y, hy⟩
 
 /- English proof (translation)
-Unfold `Col.blockPoly`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `c _ h`. Establish `h0` using `congrArg (Polynomial.eval 0) h`. Simplify using `at h0`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem blockPoly_ne_zero (ν : K) (q t : ℕ) : Col.blockPoly ν q t ≠ 0 := by
   unfold Col.blockPoly
@@ -427,7 +423,7 @@ theorem blockPoly_ne_zero (ν : K) (q t : ℕ) : Col.blockPoly ν q t ≠ 0 := b
   simp at h0
 
 /- English proof (translation)
-Unfold `blockProd`. Use `List.prod_ne_zero ?_` and prove the remaining obligations. Introduce `h0`. Take `⟨ν, _, hν⟩` from `List.mem_map.mp h0`. Conclude with `blockPoly_ne_zero _ _ _ hν`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem blockProd_ne_zero (P : B.Pl) : B.blockProd P ≠ 0 := by
   unfold blockProd
@@ -437,7 +433,7 @@ theorem blockProd_ne_zero (P : B.Pl) : B.blockProd P ≠ 0 := by
   exact blockPoly_ne_zero _ _ _ hν
 
 /- English proof (translation)
-Introduce `P`. Rewrite using `[hx P]`. Conclude with `dvd_mul_left _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HasRes.hasBlocks {Sg : Pl0 → K[X]} {x : B.Pl × ℕ → K} (hx : B.HasRes Sg x) :
     Col.HasBlocks B.n B.q B.t B.bl x := by
@@ -446,9 +442,9 @@ theorem HasRes.hasBlocks {Sg : Pl0 → K[X]} {x : B.Pl × ℕ → K} (hx : B.Has
   exact dvd_mul_left _ _
 
 /- English proof (translation)
-Take `⟨P, hP⟩` from `hne`. Introduce `hx'`. Apply `hP` to reduce the goal to its premises. Establish `h1` using `hx P`. Establish `h2` using `hx' P`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_right_cancel₀ (B.blockProd_ne_zero P) (h1.symm.trans h2)`.
+A detailed English derivation is pending.
 -/
 theorem HasRes.excl {Sg Sg' : Pl0 → K[X]} (hne : ∃ P : B.Pl, Sg (B.pl P) ≠ Sg' (B.pl P))
     (x : B.Pl × ℕ → K) (hx : B.HasRes Sg x) : ¬ B.HasRes Sg' x := by
@@ -460,9 +456,9 @@ theorem HasRes.excl {Sg Sg' : Pl0 → K[X]} (hne : ∃ P : B.Pl, Sg (B.pl P) ≠
   exact mul_right_cancel₀ (B.blockProd_ne_zero P) (h1.symm.trans h2)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Apply `h` to reduce the goal to its premises. Unfold `partF Col.eigSum`. Use `le_antisymm (iSup₂_le fun x hx => ?_) bot_le` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h0` using `hne x hx`. Simplify using `only [Col.Occurs, ne_eq, not_not] at h0`. Conclude with `h0.le`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_of_partF_ne_bot {Sg : Pl0 → K[X]} (h : B.partF Sg ≠ ⊥) :
     ∃ x, B.HasRes Sg x ∧ Col.Occurs B.op x := by
@@ -476,9 +472,9 @@ theorem exists_of_partF_ne_bot {Sg : Pl0 → K[X]} (h : B.partF Sg ≠ ⊥) :
   exact h0.le
 
 /- English proof (translation)
-Establish `h1 : Function.Injective (B.vE ℓ).mulVec` using `(subspace_image_spec K _ _).1`. Use extensionality with `u`. Rewrite using `[mem_goodPart_iff, Submodule.mem_bot, Submodule.mem_bot, LinearEquiv.map_eq_zero_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h1 (h.trans (Matrix.mulVec_zero _).symm)`. Introduce and unpack `rfl`. Conclude with `Matrix.mulVec_zero _`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem good_part_coordinates_bot : B.inV0 ℓ ⊥ = ⊥ := by
   have h1 : Function.Injective (B.vE ℓ).mulVec := (subspace_image_spec K _ _).1
@@ -491,15 +487,13 @@ theorem good_part_coordinates_bot : B.inV0 ℓ ⊥ = ⊥ := by
     exact Matrix.mulVec_zero _
 
 /- English proof (translation)
-Take `⟨F, hF⟩` from `Col.exists_finset_occurs hc`. Establish `hex : ∀ Sg ∈ B.resSet X, ∃ x, B.HasRes Sg x ∧ Col.Occurs B.op x`. Introduce `Sg hSg`. Use `B.exists_of_partF_ne_bot fun h0 => hSg.2 ?_` and prove the remaining obligations. Rewrite using `[h0, good_part_coordinates_bot]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Set `f : (Pl0 → K[X]) → (B.Pl × ℕ → K)` to `fun Sg => if h : Sg ∈ B.resSet X then (hex Sg h).choose else 0`. Establish `hf : ∀ Sg (h : Sg ∈ B.resSet X), B.HasRes Sg (f Sg) ∧ Col.Occurs B.op (f Sg)`. Introduce `Sg h`. Simplify using `only [f, dif_pos h]`. Conclude with `(hex Sg h).choose_spec`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Set.Finite.of_injOn (f := f) (t := (F : Set (B.Pl × ℕ → K))) ?_ ?_ F.finite_toSet` and prove the remaining obligations. Introduce `Sg h`. Conclude with `Finset.mem_coe.2 ((hF _).1 (hf Sg h).2)`. Introduce `Sg h Sg' h' e`. Use function extensionality and compare the values at `P0`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hP : P0 ∈ Set.range B.pl`. Take `⟨P, rfl⟩` from `hP`. Establish `h1` using `(hf Sg h).1 P`. Establish `h2` using `(hf Sg' h').1 P`. Rewrite `h1` using `[e]`.
-
-Conclude with `mul_right_cancel₀ (B.blockProd_ne_zero P) (h1.symm.trans h2)`. Rewrite using `[h.1 P0 hP, h'.1 P0 hP]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resSet_finite (hc : Col.PairComm B.op) (X : Finset (G → K)) : (B.resSet X).Finite := by
   classical
@@ -528,7 +522,7 @@ theorem resSet_finite (hc : Col.PairComm B.op) (X : Finset (G → K)) : (B.resSe
     · rw [h.1 P0 hP, h'.1 P0 hP]
 
 /- English proof (translation)
-Unfold `ixFin`. Rewrite using `[dif_pos (B.resSet_finite hc X)]`. Conclude with `Set.Finite.mem_toFinset _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_ixFin (hc : Col.PairComm B.op) (X : Finset (G → K)) (Sg : Pl0 → K[X]) :
     Sg ∈ B.ixFin X ↔ Sg ∈ B.resSet X := by
@@ -537,7 +531,7 @@ theorem mem_ixFin (hc : Col.PairComm B.op) (X : Finset (G → K)) (Sg : Pl0 → 
   exact Set.Finite.mem_toFinset _
 
 /- English proof (translation)
-Simplify using `only [part_eq_comap]`. Conclude with `iSupIndep_comap (B.toF ℓ Z) (B.toF_injective ℓ Z) (iSupIndep_eigSum hc (fun i => B.HasRes (Sg i)) fun i j hij x hx => HasRes.excl B (hsep i j hij) x hx)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem part_indep (hc : Col.PairComm B.op) {ι : Type} (Sg : ι → Pl0 → K[X])
     (hsep : ∀ i j, i ≠ j → ∃ P : B.Pl, Sg i (B.pl P) ≠ Sg j (B.pl P)) :
@@ -547,25 +541,21 @@ theorem part_indep (hc : Col.PairComm B.op) {ι : Type} (Sg : ι → Pl0 → K[X
     (iSupIndep_eigSum hc (fun i => B.HasRes (Sg i)) fun i j hij x hx => HasRes.excl B (hsep i j hij) x hx)
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce `y _`. Use `set a := goodAt ℓ.X ℓ.P ℓ.ψ with ha`. Establish `hidem : a * a = a` using `(good_at_spec K v0 hv0 G ℓ.X hX ℓ.P ℓ.ψ).idem`. Establish `hmul` using `(group_action_matrix_hom K B.S G B.r).2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrange : LinearMap.range (B.vE ℓ).mulVecLin = LinearMap.range (B.S.gaMat B.r a).mulVecLin` using `(image_idempotent_spec K B.S.dim (B.S.gaMat B.r a)).2`. Use `set φ := B.toF ℓ Z y with hφ`. Establish `hex : ∀ i j, i ≠ j → ∀ x, B.HasRes (Sg i) x → ¬ B.HasRes (Sg j) x` using `fun i j hij x hx => HasRes.excl B (hsep i j hij) x hx`. Establish `h1 : φ ∈ Col.eigSum B.op fun x => ∃ i, B.HasRes (Sg i) x` using `(B.mem_goodPart_iff ℓ _ _).1 (hsame (B.zE_mem ℓ Z y))`. Establish `hAφ : B.S.gaOp B.r a φ = φ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `B.S.basis.equivFun.injective` to reduce the goal to its premises. Rewrite using `[← CSD.gaMat_mulVec_equivFun, hφ, toF_apply, LinearEquiv.apply_symm_apply]`. Take `⟨z, hz⟩ : (B.vE ℓ).mulVecLin ((B.zE ℓ Z).mulVec y) ∈ LinearMap.range (B.S.gaMat B.r a).mulVecLin` from `by rw [← hrange]; exact ⟨_, rfl⟩`. Rewrite `hz` using `[Matrix.mulVecLin_apply, Matrix.mulVecLin_apply]`. Rewrite using `[← hz, Matrix.mulVec_mulVec, ← hmul, hidem]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcomm : ∀ k, Commute (B.op k) (B.S.gaOp B.r a)`. Introduce `k`. Unfold `CSD.gaOp`. Conclude with `Commute.sum_right _ _ _ fun t _ => (h.opG k t).smul_right _`. Establish `key : ∀ i, ∃ yi, B.toF ℓ Z yi = Col.eigProj h.comm h.split (B.HasRes (Sg i)) φ`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i`. Use `set ψ := Col.eigProj h.comm h.split (B.HasRes (Sg i)) φ with hψ`. Establish `hψA : B.S.gaOp B.r a ψ = ψ`. Use `(Col.commute_eigProj h.comm h.split (B.HasRes (Sg i)) hcomm).eq` as an intermediate fact. Establish `h2` using `congrArg (fun f : Module.End K B.S.Forms => f φ) this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Module.End.mul_apply] at h2`. Rewrite using `[hψ, ← h2, hAφ]`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : B.S.basis.equivFun ψ ∈ LinearMap.range (B.vE ℓ).mulVecLin := by`. Rewrite using `[hrange]`. Conclude with `⟨B.S.basis.equivFun ψ, by`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVecLin_apply, CSD.gaMat_mulVec_equivFun, hψA]⟩`. Rewrite `hu` using `[Matrix.mulVecLin_apply]`. Establish `hu0 : u ∈ B.Z0 ℓ Z`. Rewrite using `[Z0, mem_goodPart_iff, hu, LinearEquiv.symm_apply_apply]`. Conclude with `eigProj_mem_of_stable h.comm h.split _ hZ ((B.mem_goodPart_iff ℓ _ _).1 (B.zE_mem ℓ Z y))`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨yi, hyi⟩` from `B.exists_zE ℓ Z hu0`. Conclude with `⟨yi, by rw [toF_apply, hyi, hu, LinearEquiv.symm_apply_apply]⟩`. Use `choose yy hyy using key`. Establish `hsum : y = ∑ i, yy i`. Apply `B.toF_injective ℓ Z` to reduce the goal to its premises.
-
-Rewrite using `[map_sum, Finset.sum_congr rfl fun i _ => hyy i]`. Conclude with `(sum_eigProj h.comm h.split _ hex h1).symm`. Rewrite using `[hsum]`. Use `Submodule.sum_mem _ fun i _ => Submodule.mem_iSup_of_mem i ?_` and prove the remaining obligations. Rewrite using `[part_eq_comap, Submodule.mem_comap, hyy i]`.
-
-Conclude with `Col.eigProj_apply_mem h.comm h.split _ φ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem part_top {v0 : InfinitePlace K} (hv0 : IsConjAt v0) {s : ℕ} (h : B.Ok s)
     (hX : ∀ χ ∈ ℓ.X, IsAbsIrrChar χ) (hZ : ∀ i, Z ≤ Z.comap (B.op i)) {ι : Type} [Fintype ι]
@@ -625,7 +615,7 @@ theorem part_top {v0 : InfinitePlace K} (hv0 : IsConjAt v0) {s : ℕ} (h : B.Ok 
   exact Col.eigProj_apply_mem h.comm h.split _ φ
 
 /- English proof (translation)
-Establish `h` using `(group_action_matrix_hom K B.S G B.r).2 a b`. Rewrite `h` using `[CSD.gaMat_eq_toMatrix, CSD.gaMat_eq_toMatrix, CSD.gaMat_eq_toMatrix, ← LinearMap.toMatrix_mul]`. Establish `h2` using `(LinearMap.toMatrix B.S.basis B.S.basis).injective h`. Rewrite using `[h2]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gaOp_mul (a b : MonoidAlgebra K G) (φ : B.S.Forms) :
     B.S.gaOp B.r (a * b) φ = B.S.gaOp B.r a (B.S.gaOp B.r b φ) := by
@@ -636,9 +626,9 @@ theorem gaOp_mul (a b : MonoidAlgebra K G) (φ : B.S.Forms) :
   rfl
 
 /- English proof (translation)
-Establish `hr` using `(subspace_image_spec K _ (LinearMap.range (B.S.gaMat B.r (goodAt ℓ.X ℓ.P ℓ.ψ)).mulVecLin)).2`. Establish `hmem : (B.vE ℓ).mulVec u ∈ LinearMap.range (B.S.gaMat B.r (goodAt ℓ.X ℓ.P ℓ.ψ)).mulVecLin`. Rewrite using `[← hr]`. Conclude with `LinearMap.mem_range_self _ u`. Take `⟨w, hw⟩` from `LinearMap.mem_range.mp hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `B.S.basis.equivFun.injective` to reduce the goal to its premises. Rewrite using `[← CSD.gaMat_mulVec_equivFun, LinearEquiv.apply_symm_apply, ← hw, Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, ← (group_action_matrix_hom K B.S G B.r).2, hidem]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gaOp_fix (hidem : goodAt ℓ.X ℓ.P ℓ.ψ * goodAt ℓ.X ℓ.P ℓ.ψ = goodAt ℓ.X ℓ.P ℓ.ψ)
     (u : Fin (B.nV ℓ) → K) :
@@ -654,9 +644,9 @@ theorem gaOp_fix (hidem : goodAt ℓ.X ℓ.P ℓ.ψ * goodAt ℓ.X ℓ.P ℓ.ψ 
     Matrix.mulVec_mulVec, ← (group_action_matrix_hom K B.S G B.r).2, hidem]
 
 /- English proof (translation)
-Establish `hr` using `(subspace_image_spec K _ (LinearMap.range (B.S.gaMat B.r (goodAt ℓ.X ℓ.P ℓ.ψ)).mulVecLin)).2`. Establish `hmem : B.S.basis.equivFun φ ∈ LinearMap.range (B.S.gaMat B.r (goodAt ℓ.X ℓ.P ℓ.ψ)).mulVecLin`. Rewrite using `[← h, ← CSD.gaMat_mulVec_equivFun]`. Conclude with `LinearMap.mem_range_self _ _`. Rewrite `hmem` using `[← hr]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu⟩` from `LinearMap.mem_range.mp hmem`. Use `⟨u, ?_⟩` and prove the remaining obligations. Rewrite using `[show (B.vE ℓ).mulVec u = B.S.basis.equivFun φ from hu]`. Conclude with `B.S.basis.equivFun.symm_apply_apply φ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_vE_of_fix {φ : B.S.Forms} (h : B.S.gaOp B.r (goodAt ℓ.X ℓ.P ℓ.ψ) φ = φ) :
     ∃ u, B.S.basis.equivFun.symm ((B.vE ℓ).mulVec u) = φ := by
@@ -671,31 +661,27 @@ theorem exists_vE_of_fix {φ : B.S.Forms} (h : B.S.gaOp B.r (goodAt ℓ.X ℓ.P 
   exact B.S.basis.equivFun.symm_apply_apply φ
 
 /- English proof (translation)
-Introduce `u hu`. Rewrite using `[mem_goodPart_iff]`. Use `set φ := B.S.basis.equivFun.symm ((B.vE ℓ).mulVec u) with hφ`. Establish `hφZ : φ ∈ B.ZH` using `(B.mem_goodPart_iff ℓ _ _).1 hu`. Use `set a := goodAt ℓ.X ℓ.P ℓ.ψ with ha`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set a0 := goodAt ℓ.X (⊥ : Subgroup G) 1 with ha0`. Establish `hidem : a * a = a` using `(good_at_spec K v0 hv0 G ℓ.X hX ℓ.P ℓ.ψ).idem`. Establish `ha0a : a0 * a = a`. Rewrite using `[ha0, ha, goodAt, goodAt, level_idempotent_bot K G 1, mul_one, ← mul_assoc, idemOf_mul_self ℓ.X hX]`. Establish `hAφ : B.S.gaOp B.r a φ = φ` using `B.gaOp_fix ℓ hidem u`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hA0φ : B.S.gaOp B.r a0 φ = φ` using `by conv_lhs => rw [← hAφ]`. Rewrite using `[← gaOp_mul, ha0a, hAφ]`. Establish `hcomm : ∀ k, Commute (B.op k) (B.S.gaOp B.r a0)`. Introduce `k`. Unfold `CSD.gaOp`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `Commute.sum_right _ _ _ fun t _ => (h.opG k t).smul_right _`. Take `⟨F, hF⟩` from `Col.exists_finset_occurs h.comm`. Set `HB : (B.Pl × ℕ → K) → Prop` to `Col.HasBlocks B.n B.q B.t B.bl`. Set `ι` to `{x // x ∈ F.filter HB}`. Set `C : ι → (B.Pl × ℕ → K) → Prop` to `fun i x => x = i.1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hex : ∀ i j : ι, i ≠ j → ∀ x, C i x → ¬ C j x` using `fun i j hij x hx hx' => hij (Subtype.ext (hx.symm.trans hx'))`. Establish `h1 : φ ∈ Col.eigSum B.op fun x => ∃ i, C i x`. Establish `e : Col.eigSum B.op HB = Col.eigSum B.op fun x => ∃ i, C i x` using `Col.eigSum_congr fun x hx => ⟨fun hb => ⟨⟨x, Finset.mem_filter.2 ⟨(hF x).1 hx, hb⟩⟩, rfl⟩, fun ⟨i, hi⟩ => hi ▸ (Finset.mem_filter.1 i.2).2⟩`. Rewrite using `[← e]`. Conclude with `hφZ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← sum_eigProj h.comm h.split C hex h1]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Use `set ψ' := Col.eigProj h.comm h.split (C i) φ with hψ'`. Distinguish the cases in `h0 : ψ' = 0`. Rewrite using `[h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _`. Establish `hmem : ψ' ∈ Col.eigAt B.op i.1`. Establish `h2 : Col.eigSum B.op (C i) ≤ Col.eigAt B.op i.1` using `iSup₂_le fun x hx => by rw [hx]`. Conclude with `h2 (Col.eigProj_apply_mem h.comm h.split _ φ)`. Establish `hψA : B.S.gaOp B.r a0 ψ' = ψ'`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (fun f : Module.End K B.S.Forms => f φ) (Col.commute_eigProj h.comm h.split (C i) hcomm).eq`. Simplify using `only [Module.End.mul_apply] at h2`. Rewrite using `[hψ', ← h2, hA0φ]`. Establish `hb : HB i.1` using `(Finset.mem_filter.1 i.2).2`. Use `choose c hc using hb`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Set `Sg : Pl0 → K[X]` to `fun P0 => if hP : ∃ P, B.pl P = P0 then c hP.choose else 1`. Establish `hSg : ∀ P, Sg (B.pl P) = c P`. Introduce `P`. Establish `hP : ∃ P', B.pl P' = B.pl P` using `⟨P, rfl⟩`. Simplify using `only [Sg, dif_pos hP]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h.pl_inj hP.choose_spec]`. Establish `hres : B.HasRes Sg i.1`. Introduce `P`. Rewrite using `[hSg P, mul_comm]`. Conclude with `hc P`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Col.eigAt_le_eigSum (C := fun x => ∃ Sg ∈ B.ixFin ℓ.X, B.HasRes Sg x) ⟨Sg, ?_, hres⟩ hmem` and prove the remaining obligations. Rewrite using `[B.mem_ixFin h.comm]`. Use `⟨fun P0 hP0 => ?_, ?_⟩` and prove the remaining obligations. Establish `hP : ¬ ∃ P, B.pl P = P0` using `fun ⟨P, hP⟩ => hP0 ⟨P, hP⟩`. Simplify using `only [Sg, dif_neg hP]`.
-
-Take `⟨u0, hu0⟩` from `B.exists_vE_of_fix (Lvl.full ℓ.X) hψA`. Introduce `hbot`. Establish `hu0mem : u0 ∈ B.inV0 (Lvl.full ℓ.X) (B.partF Sg)`. Rewrite using `[mem_goodPart_iff, hu0]`. Conclude with `Col.eigAt_le_eigSum (C := B.HasRes Sg) hres hmem`.
-
-Rewrite `hu0mem` using `[hbot, Submodule.mem_bot]`. Apply `h0` to reduce the goal to its premises. Rewrite using `[← hu0, hu0mem, Matrix.mulVec_zero, map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sameTypes_self {v0 : InfinitePlace K} (hv0 : IsConjAt v0) {s : ℕ} (h : B.Ok s)
     (hX : ∀ χ ∈ ℓ.X, IsAbsIrrChar χ) :
@@ -776,14 +762,14 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] 
   (B : BlockDat K G Pl0) (ℓ : Lvl K G)
 
 /- English proof (translation)
-Unfold `inV0 coord`. Conclude with `Submodule.comap_mono (Submodule.map_mono hW)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem good_part_coordinates_mono {W W' : Submodule K B.S.Forms} (hW : W ≤ W') : B.inV0 ℓ W ≤ B.inV0 ℓ W' := by
   unfold inV0 coord
   exact Submodule.comap_mono (Submodule.map_mono hW)
 
 /- English proof (translation)
-Unfold `opMat`. Simplify using `only [Basis.equivFun_apply, LinearMap.toMatrix_mulVec_repr]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem equivFun_op (i : B.Pl × ℕ) (f : B.S.Forms) :
     B.S.basis.equivFun (B.op i f) = (B.opMat i).mulVec (B.S.basis.equivFun f) := by
@@ -791,7 +777,7 @@ theorem equivFun_op (i : B.Pl × ℕ) (f : B.S.Forms) :
   simp only [Basis.equivFun_apply, LinearMap.toMatrix_mulVec_repr]
 
 /- English proof (translation)
-Unfold `CSD.actMat`. Simplify using `only [Basis.equivFun_apply, LinearMap.toMatrix_mulVec_repr]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem equivFun_act (g : G) (f : B.S.Forms) :
     B.S.basis.equivFun (B.r g f) = (B.S.actMat B.r g).mulVec (B.S.basis.equivFun f) := by
@@ -799,9 +785,9 @@ theorem equivFun_act (g : G) (f : B.S.Forms) :
   simp only [Basis.equivFun_apply, LinearMap.toMatrix_mulVec_repr]
 
 /- English proof (translation)
-Unfold `CSD.gaMat`. Rewrite using `[Finset.sum_eq_single g]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[hb, Ne.symm hb]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ g) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem gaMat_single (g : G) : B.S.gaMat B.r (MonoidAlgebra.single g 1) = B.S.actMat B.r g := by
   unfold CSD.gaMat
@@ -813,9 +799,9 @@ theorem gaMat_single (g : G) : B.S.gaMat B.r (MonoidAlgebra.single g 1) = B.S.ac
     exact absurd (Finset.mem_univ g) h
 
 /- English proof (translation)
-Establish `hidem` using `(good_at_spec K v0 hv0 G X hX (⊥ : Subgroup G) 1).idem`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ψ, rfl⟩`. Rewrite using `[← gaOp_mul, hidem]`. Introduce `h`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨φ, h⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_goodF {v0 : InfinitePlace K} (hv0 : IsConjAt v0) {X : Finset (G → K)} (hX : ∀ χ ∈ X, IsAbsIrrChar χ)
     (φ : B.S.Forms) : φ ∈ B.goodF X ↔ B.S.gaOp B.r (goodAt X (⊥ : Subgroup G) 1) φ = φ := by
@@ -827,9 +813,9 @@ theorem mem_goodF {v0 : InfinitePlace K} (hv0 : IsConjAt v0) {X : Finset (G → 
     exact ⟨φ, h⟩
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce `u _`. Rewrite using `[mem_goodPart_iff, B.mem_goodF hv0 hX]`. Establish `hidem : goodAt ℓ.X ℓ.P ℓ.ψ * goodAt ℓ.X ℓ.P ℓ.ψ = goodAt ℓ.X ℓ.P ℓ.ψ` using `(good_at_spec K v0 hv0 G ℓ.X hX ℓ.P ℓ.ψ).idem`. Establish `ha0a : goodAt ℓ.X (⊥ : Subgroup G) 1 * goodAt ℓ.X ℓ.P ℓ.ψ = goodAt ℓ.X ℓ.P ℓ.ψ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[goodAt, goodAt, level_idempotent_bot K G 1, mul_one, ← mul_assoc, idemOf_mul_self ℓ.X hX]`. Establish `hAφ` using `B.gaOp_fix ℓ hidem u`. Use `conv_lhs => rw [← hAφ]`. Rewrite using `[← gaOp_mul, ha0a, hAφ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_part_coordinates_good_eq_top {v0 : InfinitePlace K} (hv0 : IsConjAt v0) (hX : ∀ χ ∈ ℓ.X, IsAbsIrrChar χ) :
     B.inV0 ℓ (B.goodF ℓ.X) = ⊤ := by
@@ -845,13 +831,11 @@ theorem good_part_coordinates_good_eq_top {v0 : InfinitePlace K} (hv0 : IsConjAt
   rw [← gaOp_mul, ha0a, hAφ]
 
 /- English proof (translation)
-Use `set a := goodAt X (⊥ : Subgroup G) 1 with ha`. Establish `hcomm : ∀ k, Commute (B.op k) (B.S.gaOp B.r a)`. Introduce `k`. Unfold `CSD.gaOp`. Conclude with `Commute.sum_right _ _ _ fun t _ => (h.opG k t).smul_right _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `⟨fun i φ hφ => ?_, fun g φ hφ => ?_⟩` and prove the remaining obligations. Rewrite `*` using `[Submodule.mem_comap, B.mem_goodF hv0 hX]`. Use `congrArg (fun f : Module.End K B.S.Forms => f φ) (hcomm i).eq` as an intermediate fact. Simplify using `only [Module.End.mul_apply] at this`. Rewrite using `[← this, hφ]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `*` using `[Submodule.mem_comap, B.mem_goodF hv0 hX]`. Establish `hc : MonoidAlgebra.single g (1 : K) * a = a * MonoidAlgebra.single g 1`. Rewrite using `[ha, goodAt, level_idempotent_bot K G 1]`. Simplify using `only [mul_one]`. Conclude with `idemOf_central X hX _`.
-
-Apply `B.S.basis.equivFun.injective` to reduce the goal to its premises. Rewrite using `[← CSD.gaMat_mulVec_equivFun, equivFun_act, Matrix.mulVec_mulVec, ← gaMat_single, ← (group_action_matrix_hom K B.S G B.r).2, ← hc, (group_action_matrix_hom K B.S G B.r).2, gaMat_single, ← Matrix.mulVec_mulVec, CSD.gaMat_mulVec_equivFun, hφ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goodF_stable {v0 : InfinitePlace K} (hv0 : IsConjAt v0) {s : ℕ} (h : B.Ok s) {X : Finset (G → K)}
     (hX : ∀ χ ∈ X, IsAbsIrrChar χ) : B.ZStable (B.goodF X) := by
@@ -876,11 +860,11 @@ theorem goodF_stable {v0 : InfinitePlace K} (hv0 : IsConjAt v0) {s : ℕ} (h : B
       ← Matrix.mulVec_mulVec, CSD.gaMat_mulVec_equivFun, hφ]
 
 /- English proof (translation)
-Unfold `ixFin at h h'`. Use `split_ifs at h h' with hf`. Rewrite `h`, `h'` using `[Set.Finite.mem_toFinset]`. Simplify using `only [resSet, Set.mem_setOf_eq] at h h'`. Assume the negation of the conclusion as `hall`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Use `push_neg at hall`. Apply `hne` to reduce the goal to its premises. Use function extensionality and compare the values at `P0`. Distinguish the cases in `hP : P0 ∈ Set.range B.pl`. Take `⟨P, rfl⟩` from `hP`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hall P`. Rewrite using `[h.1 P0 hP, h'.1 P0 hP]`. Simplify using `at h`.
+A detailed English derivation is pending.
 -/
 theorem sep_of_mem_ixFin {X : Finset (G → K)} {Sg Sg' : Pl0 → K[X]} (h : Sg ∈ B.ixFin X)
     (h' : Sg' ∈ B.ixFin X) (hne : Sg ≠ Sg') : ∃ P : B.Pl, Sg (B.pl P) ≠ Sg' (B.pl P) := by
@@ -906,7 +890,7 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] 
   {Pl0 T J : Type} [Fintype J] (F : DefFam K G Pl0 T J)
 
 /- English proof (translation)
-Unfold `IsType`. Conclude with `⟨fun ⟨Sg, hS, h⟩ => ⟨⟨Sg, hS⟩, h⟩, fun ⟨p, h⟩ => ⟨p.1, p.2, h⟩⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem isType_iff (B : BlockDat K G Pl0) (f : (Pl0 → K[X]) → Pl0 → K[X]) (x : B.Pl × ℕ → K) :
     F.IsType B f x ↔ ∃ p : ↥((F.R F.μ0).ixFin F.X), B.HasRes (f p.1) x := by
@@ -916,25 +900,25 @@ theorem isType_iff (B : BlockDat K G Pl0) (f : (Pl0 → K[X]) → Pl0 → K[X]) 
 variable {F}
 
 /- English proof (translation)
-The claim follows from `Submodule.map_le_iff_le_comap.mp (hst.1 t (Sum.inl i))`.
+A detailed English derivation is pending.
 -/
 theorem stable_rows {Zs : DefSub F.amb} (hst : Zs.Stable) (t : T) (i : (F.R t).Pl × ℕ) :
     Zs.Z t ≤ (Zs.Z t).comap ((F.R t).op i) := Submodule.map_le_iff_le_comap.mp (hst.1 t (Sum.inl i))
 
 /- English proof (translation)
-The claim follows from `Submodule.map_le_iff_le_comap.mp (hst.2 j t (Sum.inl i))`.
+A detailed English derivation is pending.
 -/
 theorem stable_lifts {Zs : DefSub F.amb} (hst : Zs.Stable) (j : J) (t : T) (i : (F.L j t).Pl × ℕ) :
     Zs.Zl j t ≤ (Zs.Zl j t).comap ((F.L j t).op i) := Submodule.map_le_iff_le_comap.mp (hst.2 j t (Sum.inl i))
 
 /- English proof (translation)
-Conclude with `(hin.1 t).trans inf_le_left`.
+A detailed English derivation is pending.
 -/
 theorem inBlock_rows {Zs : DefSub F.amb} (hin : Zs.InBlock) (t : T) : Zs.Z t ≤ (F.R t).ZH := by
   exact (hin.1 t).trans inf_le_left
 
 /- English proof (translation)
-Conclude with `(hin.2 j t).trans inf_le_left`.
+A detailed English derivation is pending.
 -/
 theorem inBlock_lifts {Zs : DefSub F.amb} (hin : Zs.InBlock) (j : J) (t : T) : Zs.Zl j t ≤ (F.L j t).ZH := by
   exact (hin.2 j t).trans inf_le_left
@@ -942,7 +926,7 @@ theorem inBlock_lifts {Zs : DefSub F.amb} (hin : Zs.InBlock) (j : J) (t : T) : Z
 variable (F)
 
 /- English proof (translation)
-The claim follows from `((F.R F.μ0).good_part_coordinates_mono _ (inBlock_rows hin F.μ0)).trans ((F.R F.μ0).sameTypes_self (F.lvl P ψ) h.conj (h.what₂ F.μ0) h.irr)`.
+A detailed English derivation is pending.
 -/
 theorem sameTypes_base {s : ℕ} (h : F.Ok s) (P : Subgroup G) (ψ : P →* Kˣ) {Zs : DefSub F.amb}
     (hin : Zs.InBlock) :
@@ -952,7 +936,7 @@ theorem sameTypes_base {s : ℕ} (h : F.Ok s) (P : Subgroup G) (ψ : P →* Kˣ)
     ((F.R F.μ0).sameTypes_self (F.lvl P ψ) h.conj (h.what₂ F.μ0) h.irr)
 
 /- English proof (translation)
-The claim follows from `isCMSub_cmMax' K conj := h.conj HV_rat t := BlockDat.HV_rat (ℓ := F.lvl P ψ) h.conj (h.what₂ t) h.irr HV_pos t := BlockDat.HV_pos (ℓ := F.lvl P ψ) h.conj (h.what₂ t) h.irr Mt_lat t := BlockDat.Mt_lat (ℓ := F.lvl P ψ) h.conj (h.what₂ t) h.irr Pq_surj t := BlockDat.Pq_surj (ℓ := F. …`.
+A detailed English derivation is pending.
 -/
 theorem side_WF {s : ℕ} (h : F.Ok s) (P : Subgroup G) (ψ : P →* Kˣ) (Zs : DefSub F.amb) (hst : Zs.Stable)
     (hin : Zs.InBlock) (hsep : F.TypesSep) : (F.side P ψ Zs).WF where
@@ -976,13 +960,13 @@ theorem side_WF {s : ℕ} (h : F.Ok s) (P : Subgroup G) (ψ : P →* Kˣ) (Zs : 
     (fun p : F.base.Ix => F.tr j p.1) fun p p' hpp => hsep p.1 p.2 p'.1 p'.2 (fun e => hpp (Subtype.ext e)) j
 
 /- English proof (translation)
-The claim follows from `hrow`.
+A detailed English derivation is pending.
 -/
 theorem side_Pos (P : Subgroup G) (ψ : P →* Kˣ) (Zs : DefSub F.amb) (hrow : F.RowsExist P ψ Zs) :
     (F.side P ψ Zs).Pos := hrow
 
 /- English proof (translation)
-Unfold `DefSide.Proviso`. Introduce `j`. Conclude with `BlockDat.XQ_rat (B := F.L j F.μ0) (ℓ := F.lvlA P ψ) (Z := Zs.Zl j F.μ0) h.conj (h.lifts j F.μ0) h.irr (hrat j)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem side_Proviso {s : ℕ} (h : F.Ok s) (P : Subgroup G) (ψ : P →* Kˣ) (Zs : DefSub F.amb)
     (hrat : F.LiftRat P ψ Zs) : (F.side P ψ Zs).Proviso := by
@@ -991,7 +975,7 @@ theorem side_Proviso {s : ℕ} (h : F.Ok s) (P : Subgroup G) (ψ : P →* Kˣ) (
   exact BlockDat.XQ_rat (B := F.L j F.μ0) (ℓ := F.lvlA P ψ) (Z := Zs.Zl j F.μ0) h.conj (h.lifts j F.μ0) h.irr (hrat j)
 
 /- English proof (translation)
-Introduce `j` and use `(F.L j F.μ0).part_top (F.lvlA P ψ) (Zs.Zl j F.μ0) h.conj (h.lifts j F.μ0) h.irr (stable_lifts hst j F.μ0) (fun p : F.base.Ix => F.tr j p.1) (fun p p' hpp => hsep p.1 p.2 p'.1 p'.2 (fun e => hpp (Subtype.ext e)) j) ((hsame j).trans ((F.L j F.μ0).good_part_coordinates_mono _ (Col.e …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem side_Types {s : ℕ} (h : F.Ok s) (P : Subgroup G) (ψ : P →* Kˣ) (Zs : DefSub F.amb) (hst : Zs.Stable)
     (hsep : F.TypesSep) (hsame : F.SameTypes P ψ Zs) : (F.side P ψ Zs).Types :=
@@ -1008,7 +992,7 @@ section Side
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : DefBase K} {Df : DefSide Bs}
 
 /- English proof (translation)
-Establish `hex` using `semilocal_basis_exists K D L hL w`. Unfold `locBasisOf`. Rewrite using `[dif_pos hex]`. Conclude with `hex.choose_spec`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locBasisOf_spec {D : ℕ} (L : Submodule (𝓞 K) (Fin D → K)) (hL : Submodule.IsLattice K L)
     (w : HeightOneSpectrum (𝓞 K)) : IsLocBasis L w (locBasisOf L w) := by
@@ -1018,15 +1002,15 @@ theorem locBasisOf_spec {D : ℕ} (L : Submodule (𝓞 K) (Fin D → K)) (hL : S
   exact hex.choose_spec
 
 /- English proof (translation)
-The claim follows from `locBasisOf_spec _ (hW.Lam_lat t) w`.
+A detailed English derivation is pending.
 -/
 theorem ebOf_spec (hW : Df.WF) (t : Bs.Tup) (w : HeightOneSpectrum (𝓞 K)) :
     IsLocBasis (Df.abelian₂ t) w (ebOf Df t w) := locBasisOf_spec _ (hW.Lam_lat t) w
 
 /- English proof (translation)
-Use `lattice_gluing K S.D (matLat (S.ι Bs.μ0) (Df.abelian₂ Bs.μ0)) (fun w => matLat (S.ι (S.μ w)) (Df.abelian₂ (S.μ w))) (GluingInclusion.matLat_lattice' _ (hι _) _ (hW.Lam_lat _)) (fun w => GluingInclusion.matLat_lattice' _ (hι _) _ (hW.Lam_lat _)) ?_` and prove the remaining obligations. Use `S.Tw.finite_toSet.subset fun w hw => ?_` and prove the remaining obligations. Rewrite using `[Finset.mem_coe, hH0.2 w]`. Introduce `e`. Apply `hw` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (matLat (S.ι (S.μ w)) (Df.abelian₂ (S.μ w))) = _`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem RR_spec (hW : Df.WF) (S : IndefData Df) (hH0 : S.H0) (hι : ∀ t, Function.Surjective (S.ι t).mulVec) :
     Submodule.IsLattice K S.RR ∧ ∀ w : HeightOneSpectrum (𝓞 K),
@@ -1044,17 +1028,17 @@ theorem RR_spec (hW : Df.WF) (S : IndefData Df) (hH0 : S.H0) (hι : ∀ t, Funct
   rw [e]
 
 /- English proof (translation)
-Establish `hc : ∀ p, IsCompl (Df.Qp t p) (⨆ (p' : Bs.Ix) (_ : p' ≠ p), Df.Qp t p')`. Introduce `p`. Use `⟨hi p, ?_⟩` and prove the remaining obligations. Rewrite using `[codisjoint_iff, ← iSup_split_single (Df.Qp t) p, ht]`. Establish `hp : ∀ p, partPr Df t p = LinearMap.toMatrix' ((Df.Qp t p).subtype ∘ₗ Submodule.projectionOnto _ _ (hc p))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `p`. Unfold `partPr`. Rewrite using `[dif_pos (hc p)]`. Repeatedly rewrite using `[hp, ← map_sum]`. Rewrite using `[← LinearMap.toMatrix'_id]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Establish `hx : x ∈ ⨆ p, Df.Qp t p` using `by rw [ht]; exact Submodule.mem_top`. Proceed by induction on `hx using Submodule.iSup_induction' with`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `mem q y hy`. Rewrite using `[LinearMap.sum_apply, Finset.sum_eq_single q, LinearMap.id_apply]`. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply]`. Rewrite using `[Submodule.projectionOnto_apply_left (hc q) ⟨y, hy⟩]`. Introduce `p _ hpq`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply]`. Rewrite using `[(Submodule.projectionOnto_apply_eq_zero_iff (hc p)).2 (Submodule.mem_iSup_of_mem q (Submodule.mem_iSup_of_mem (Ne.symm hpq) hy))]`. Both sides reduce to the same expression. Introduce `hq`. Conclude with `absurd (Finset.mem_univ q) hq`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add a b _ _ iha ihb => rw [map_add, iha, ihb, map_add]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem sum_partPr (t : Bs.Tup) (hi : iSupIndep (Df.Qp t)) (ht : (⨆ p, Df.Qp t p) = ⊤) :
     ∑ p, partPr Df t p = 1 := by
@@ -1090,13 +1074,11 @@ theorem sum_partPr (t : Bs.Tup) (hi : iSupIndep (Df.Qp t)) (ht : (⨆ p, Df.Qp t
   | add a b _ _ iha ihb => rw [map_add, iha, ihb, map_add]
 
 /- English proof (translation)
-Establish `hsum : ∑ p, partPr Df Bs.μ0 p = 1` using `sum_partPr Bs.μ0 hW.Qp_indep hW.Qp_top`. Establish `hX : ∀ v, IsUnit (Df.XQ Bs.μ0 v).det` using `fun v => (hW.XQ_quot Bs.μ0 v).1`. Establish `ht : ∀ (p : Bs.Ix) (v : InfinitePlace K), 0 < κ v * ∏ j, lam j p v` using `fun p v => mul_pos (hκ v) (Finset.prod_pos fun j _ => hlam j p v)`. Establish `hwf` using `weightFrameSpec K _ Bs.Ix (partPr Df Bs.μ0) (fun p v => κ v * ∏ j, lam j p v) (Df.XQ Bs.μ0) hX ht hsum`. Establish `hS` using `spliceFrameSpec K _ Bs.v0 Y (pushFrame 1 (weightFrame (partPr Df Bs.μ0) (fun p v => κ v * ∏ j, lam j p v) (Df.XQ Bs.μ0)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpush : ∀ v, pushFrame (1 : Matrix (Fin (Df.dQ Bs.μ0)) (Fin (Df.dQ Bs.μ0)) K) (weightFrame (partPr Df Bs.μ0) (fun p v => κ v * ∏ j, lam j p v) (Df.XQ Bs.μ0)) v = weightFrame (partPr Df Bs.μ0) (fun p v => κ v * ∏ j, lam j p v) (Df.XQ Bs.μ0) v`. Introduce `v`. Rewrite using `[pushFrame, map_one', Matrix.one_mul]`. Use `⟨fun v => ?_, hS.1, fun v hv x y => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hv : v = Bs.v0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `hv` using the available equality. Rewrite using `[rowXE, rowFrame, hS.1]`. Conclude with `hY`. Rewrite using `[rowXE, rowFrame, hS.2 v hv, hpush]`. Conclude with `(hwf v).1`.
-
-Rewrite using `[majAt_congr_frame (rowXE Df Y κ lam) _ v ((hS.2 v hv).trans (hpush v))]`. Conclude with `(hwf v).2.2 x y`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowXE_spec (hW : Df.WF) (Y : Matrix (Fin (Df.dQ Bs.μ0)) (Fin (Df.dQ Bs.μ0)) ℂ) (hY : IsUnit Y.det)
     (κ : InfinitePlace K → ℝ) (hκ : ∀ v, 0 < κ v) (lam : Bs.J → Bs.Ix → InfinitePlace K → ℝ)
@@ -1137,9 +1119,9 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] 
   {Pl0 T J : Type} [Fintype J] (F : DefFam K G Pl0 T J)
 
 /- English proof (translation)
-Establish `hl : 0 < Fintype.card G * s` using `Nat.mul_pos Fintype.card_pos (h.what₂ t).good.s_pos`. Establish `hlat` using `BlockDat.Lam_lat (ℓ := F.lvl P ψ) (Z := Zs.Z t) h.conj (h.what₂ t) h.irr`. Use `reduction_lemma_first K (cmMax K) (isCMSub_cmMax' K) F.v0 h.conj _ _ ((F.R t).HV (F.lvl P ψ)) (BlockDat.HV_rat (ℓ := F.lvl P ψ) h.conj (h.what₂ t) h.irr) (BlockDat.HV_pos (ℓ := F.lvl P ψ) h.conj (h.what₂ t) h.irr) ((F.R t).Pq (F.lvl P ψ) (Zs.Z t)) (BlockDat.Pq_surj (ℓ := F.lvl P …` as an intermediate fact. Introduce `x hx`. Rewrite using `[pow_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `BlockDat.Mt_dual (ℓ := F.lvl P ψ) h.conj (h.what₂ t) h.irr x hx)`. Use `w (ebOf (F.side P ψ Zs) t w) (locBasisOf_spec _ hlat w)`. Rewrite `this` using `[Nat.cast_one, one_mul]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GmOf_le [IsTotallyComplex K] {s : ℕ} (h : F.Ok s) (P : Subgroup G) (ψ : P →* Kˣ) (Zs : DefSub F.amb)
     (t : T) (w : HeightOneSpectrum (𝓞 K)) :
@@ -1169,7 +1151,7 @@ namespace Formalism.L2.DIV.Test
 open Formalism.DivisionValues Formalism.L2.Indef Formalism.L2.Col Formalism.L2.NCov
 
 /- English proof (translation)
-Use `show ∀ σ : ℚ →+* ℂ, σ (star a) = starRingEnd ℂ (σ a)`. Introduce `σ`. Use `first`. Consider the case `rw [star_trivial, eq_ratCast σ a, map_ratCast]`. Consider the case `simp [eq_ratCast σ a]`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mem_cmMax_rat (a : ℚ) : a ∈ cmMax ℚ := by
   show ∀ σ : ℚ →+* ℂ, σ (star a) = starRingEnd ℂ (σ a)
@@ -1204,7 +1186,7 @@ def tF : DefFam ℚ G3 Unit Unit Unit where
   tr := fun _ => id
 
 /- English proof (translation)
-Unfold `eigAt`. Rewrite using `[iInf_eq_top]`. Introduce `i`. Conclude with `maxGen_smul_one (x0 i)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem tB_eigAt : eigAt tB.op x0 = ⊤ := by
   unfold eigAt
@@ -1213,7 +1195,7 @@ theorem tB_eigAt : eigAt tB.op x0 = ⊤ := by
   exact maxGen_smul_one (x0 i)
 
 /- English proof (translation)
-Introduce `P`. Simplify using `only [heckePoly, heckePolyOf, BlockDat.blockProd, blockPoly, tB, x0, Finset.sum_range_succ, Finset.sum_range_zero, Finset.prod_range_succ, Finset.prod_range_zero, List.map_cons, List.map_nil, List.prod_cons, List.prod_nil]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem tB_hasRes : tB.HasRes (fun _ => 1) x0 := by
   intro P
@@ -1224,7 +1206,7 @@ theorem tB_hasRes : tB.HasRes (fun _ => 1) x0 := by
   ring
 
 /- English proof (translation)
-Use `eq_top_iff.mpr ?_` and prove the remaining obligations. Rewrite using `[← tB_eigAt]`. Conclude with `eigAt_le_eigSum tB_hasRes`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tB_partF : tB.partF (fun _ => 1) = ⊤ := by
   refine eq_top_iff.mpr ?_
@@ -1232,7 +1214,7 @@ theorem tB_partF : tB.partF (fun _ => 1) = ⊤ := by
   exact eigAt_le_eigSum tB_hasRes
 
 /- English proof (translation)
-Use `eq_top_iff.mpr ?_` and prove the remaining obligations. Rewrite using `[← tB_eigAt]`. Conclude with `eigAt_le_eigSum (BlockDat.HasRes.hasBlocks tB tB_hasRes)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tB_ZH : tB.ZH = ⊤ := by
   refine eq_top_iff.mpr ?_
@@ -1240,7 +1222,7 @@ theorem tB_ZH : tB.ZH = ⊤ := by
   exact eigAt_le_eigSum (BlockDat.HasRes.hasBlocks tB tB_hasRes)
 
 /- English proof (translation)
-Use `eq_top_iff.mpr fun u _ => ?_` and prove the remaining obligations. Rewrite using `[BlockDat.mem_goodPart_iff]`. Conclude with `Submodule.mem_top`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem example_good_coordinates_top (ℓ : Lvl ℚ G3) : tB.inV0 ℓ ⊤ = ⊤ := by
   refine eq_top_iff.mpr fun u _ => ?_
@@ -1248,7 +1230,7 @@ theorem example_good_coordinates_top (ℓ : Lvl ℚ G3) : tB.inV0 ℓ ⊤ = ⊤ 
   exact Submodule.mem_top
 
 /- English proof (translation)
-Take `⟨x, hx, hocc⟩` from `tB.exists_of_partF_ne_bot h`. Establish `hxx : x = x0` using `funext fun i => eq_of_occurs_of_le (op := tB.op) hocc ((maxGen_smul_one (V := tB.S.Forms) (x0 i)).symm ▸ le_top)`. Substitute `hxx` using the available equality. Use function extensionality and compare the values at `P`. Conclude with `mul_right_cancel₀ (tB.blockProd_ne_zero P) (((hx P).symm.trans (tB_hasRes P)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem tB_res_eq {Sg : Unit → ℚ[X]} (h : tB.partF Sg ≠ ⊥) : Sg = fun _ => 1 := by
   obtain ⟨x, hx, hocc⟩ := tB.exists_of_partF_ne_bot h
@@ -1259,11 +1241,11 @@ theorem tB_res_eq {Sg : Unit → ℚ[X]} (h : tB.partF Sg ≠ ⊥) : Sg = fun _ 
   exact mul_right_cancel₀ (tB.blockProd_ne_zero P) (((hx P).symm.trans (tB_hasRes P)))
 
 /- English proof (translation)
-Use extensionality with `Sg`. Rewrite using `[Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `tB_res_eq fun h0 => h.2 ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h0, BlockDat.good_part_coordinates_bot]`. Introduce and unpack `rfl`. Use `⟨fun _ _ => rfl, ?_⟩` and prove the remaining obligations. Use `show tB.inV0 _ (tB.partF fun _ => 1) ≠ ⊥`. Rewrite using `[tB_partF, example_good_coordinates_top]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpos : 0 < tB.nV (Lvl.full tX)` using `reg_V0dim_pos_lvl ℚ G3 ⊥`. Establish `: Nonempty (Fin (tB.nV (Lvl.full tX)))` using `⟨⟨0, hpos⟩⟩`. Conclude with `top_ne_bot`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tB_resSet : tB.resSet tX = {fun _ => 1} := by
   ext Sg
@@ -1281,7 +1263,7 @@ theorem tB_resSet : tB.resSet tX = {fun _ => 1} := by
     exact top_ne_bot
 
 /- English proof (translation)
-Establish `hfin : (tB.resSet tX).Finite`. Rewrite using `[tB_resSet]`. Conclude with `Set.finite_singleton _`. Unfold `BlockDat.ixFin`. Rewrite using `[dif_pos hfin, Set.Finite.mem_toFinset, tB_resSet, Set.mem_singleton_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tB_mem_ixFin (Sg : Unit → ℚ[X]) : Sg ∈ tB.ixFin tX ↔ Sg = fun _ => 1 := by
   have hfin : (tB.resSet tX).Finite := by
@@ -1290,7 +1272,7 @@ theorem tB_mem_ixFin (Sg : Unit → ℚ[X]) : Sg ∈ tB.ixFin tX ↔ Sg = fun _ 
   rw [dif_pos hfin, Set.Finite.mem_toFinset, tB_resSet, Set.mem_singleton_iff]
 
 /- English proof (translation)
-The claim follows from `reg_good ℚ G3 hrat _ _ := mem_cmMax_rat _ hpos v := reg_H_posDef ℚ G3 v (rat_isConjAt v) act := regAct_good ℚ G3 actRat _ _ _ := mem_cmMax_rat _ comm i j := by apply LinearMap.ext intro v show x0 i • (x0 j • v) = x0 j • (x0 i • v) exact smul_comm _ _ _ split i := top_unique (le_i …`.
+A detailed English derivation is pending.
 -/
 theorem tB_ok : tB.Ok 1 where
   good := reg_good ℚ G3
@@ -1317,7 +1299,7 @@ theorem tB_ok : tB.Ok 1 where
   pl_inj := Function.injective_id
 
 /- English proof (translation)
-Introduce `χ hχ`. Rewrite using `[show χ = fun _ => (1 : ℚ) from Finset.mem_singleton.1 hχ]`. Conclude with `isAbsIrrChar_one ℚ G3`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tX_irr : ∀ χ ∈ tX, IsAbsIrrChar χ := by
   intro χ hχ
@@ -1325,7 +1307,7 @@ theorem tX_irr : ∀ χ ∈ tX, IsAbsIrrChar χ := by
   exact isAbsIrrChar_one ℚ G3
 
 /- English proof (translation)
-The claim follows from `rat_isConjAt _ tup_fin := inferInstance irr := tX_irr what₂ _ := tB_ok lifts _ _ := tB_ok`.
+A detailed English derivation is pending.
 -/
 theorem tF_ok : tF.Ok 1 where
   conj := rat_isConjAt _
@@ -1337,9 +1319,9 @@ theorem tF_ok : tF.Ok 1 where
 def tZs : DefSub tF.amb := ⟨fun _ => tB.goodF tX, fun _ _ => tB.goodF tX⟩
 
 /- English proof (translation)
-Establish `hs` using `tB.goodF_stable tF_ok.conj tB_ok tX_irr`. Unfold `DefSub.Stable`. Use `⟨fun t i => ?_, fun j t i => ?_⟩` and prove the remaining obligations. Break down `i with i | g` into its components or cases. Conclude with `Submodule.map_le_iff_le_comap.mpr (hs.1 i)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Submodule.map_le_iff_le_comap.mpr (hs.2 g)`. Break down `i with i | g` into its components or cases. Conclude with `Submodule.map_le_iff_le_comap.mpr (hs.1 i)`. Conclude with `Submodule.map_le_iff_le_comap.mpr (hs.2 g)`.
+A detailed English derivation is pending.
 -/
 theorem tZs_stable : tZs.Stable := by
   have hs := tB.goodF_stable tF_ok.conj tB_ok tX_irr
@@ -1353,9 +1335,7 @@ theorem tZs_stable : tZs.Stable := by
     · exact Submodule.map_le_iff_le_comap.mpr (hs.2 g)
 
 /- English proof (translation)
-Unfold `DefSub.InBlock`. Use `⟨fun t => ?_, fun j t => ?_⟩` and prove the remaining obligations. Use `show tB.goodF tX ≤ tB.ZH ⊓ tB.goodF tX`. Rewrite using `[tB_ZH]`. Conclude with `le_inf le_top le_rfl`.
-
-Use `show tB.goodF tX ≤ tB.ZH ⊓ tB.goodF tX`. Rewrite using `[tB_ZH]`. Conclude with `le_inf le_top le_rfl`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tZs_inBlock : tZs.InBlock := by
   unfold DefSub.InBlock
@@ -1368,13 +1348,13 @@ theorem tZs_inBlock : tZs.InBlock := by
     exact le_inf le_top le_rfl
 
 /- English proof (translation)
-Conclude with `tB.good_part_coordinates_good_eq_top (tF.lvl P 1) tF_ok.conj tX_irr`.
+A detailed English derivation is pending.
 -/
 theorem example_invariant_good_top (P : Subgroup G3) : tB.Z0 (tF.lvl P 1) (tB.goodF tX) = ⊤ := by
   exact tB.good_part_coordinates_good_eq_top (tF.lvl P 1) tF_ok.conj tX_irr
 
 /- English proof (translation)
-Use `show 0 < subDim (tB.Z0 (tF.lvl P 1) (tB.goodF tX))`. Rewrite using `[example_invariant_good_top]`. Unfold `subDim`. Rewrite using `[finrank_top, finrank_fin_fun]`. Conclude with `reg_V0dim_pos_lvl ℚ G3 P`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tF_rows (P : Subgroup G3) : tF.RowsExist P 1 tZs := by
   show 0 < subDim (tB.Z0 (tF.lvl P 1) (tB.goodF tX))
@@ -1384,9 +1364,9 @@ theorem tF_rows (P : Subgroup G3) : tF.RowsExist P 1 tZs := by
   exact reg_V0dim_pos_lvl ℚ G3 P
 
 /- English proof (translation)
-Use `eq_top_iff.mpr ?_` and prove the remaining obligations. Rewrite using `[← tB_eigAt]`. Establish `hx : tF.IsType tB f x0`. Unfold `DefFam.IsType`. Use `⟨fun _ => 1, (tB_mem_ixFin _).mpr rfl, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hf]`. Conclude with `tB_hasRes`. Conclude with `eigAt_le_eigSum hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tF_isType (f : (Unit → ℚ[X]) → Unit → ℚ[X]) (hf : f (fun _ => 1) = fun _ => 1) :
     eigSum tB.op (tF.IsType tB f) = ⊤ := by
@@ -1400,9 +1380,7 @@ theorem tF_isType (f : (Unit → ℚ[X]) → Unit → ℚ[X]) (hf : f (fun _ => 
   exact eigAt_le_eigSum hx
 
 /- English proof (translation)
-Introduce `j`. Establish `h1` using `tF_isType (tF.tr j) rfl`. Establish `h2` using `example_good_coordinates_top (tF.lvlA P 1)`. Use `show tB.Z0 _ _ ≤ tB.inV0 _ (eigSum tB.op (tF.IsType tB (tF.tr j)))`. Rewrite using `[h1, h2]`.
-
-Conclude with `le_top`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tF_same (P : Subgroup G3) : tF.SameTypes P 1 tZs := by
   intro j
@@ -1413,9 +1391,9 @@ theorem tF_same (P : Subgroup G3) : tF.SameTypes P 1 tZs := by
   exact le_top
 
 /- English proof (translation)
-Use `first`. Consider the case `(unfold DefFam.TypesSep`. Introduce `Sg hSg Sg' hSg' hne j`. Conclude with `absurd (((tB_mem_ixFin Sg).mp hSg).trans ((tB_mem_ixFin Sg').mp hSg').symm) hne)`. Consider the case `(intro Sg hSg Sg' hSg' hne j`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. It suffices to derive a contradiction. Treat this case separately.
 
-It suffices to derive a contradiction. Conclude with `hne (((tB_mem_ixFin Sg).mp hSg).trans ((tB_mem_ixFin Sg').mp hSg').symm))`. Consider the case `(intro Sg hSg Sg' hSg' hne`. Conclude with `absurd (((tB_mem_ixFin Sg).mp hSg).trans ((tB_mem_ixFin Sg').mp hSg').symm) hne)`.
+A detailed English derivation is pending.
 -/
 theorem tF_sep : tF.TypesSep := by
   first
@@ -1429,13 +1407,13 @@ theorem tF_sep : tF.TypesSep := by
        exact absurd (((tB_mem_ixFin Sg).mp hSg).trans ((tB_mem_ixFin Sg').mp hSg').symm) hne)
 
 /- English proof (translation)
-Introduce `_` and use `⟨finBasis ℚ _, fun _ _ => mem_cmMax_rat _⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem tF_rat (P : Subgroup G3) : tF.LiftRat P 1 tZs :=
   fun _ => ⟨finBasis ℚ _, fun _ _ => mem_cmMax_rat _⟩
 
 /- English proof (translation)
-Conclude with `⟨tF.side_WF tF_ok P 1 tZs tZs_stable tZs_inBlock tF_sep, tF.side_Pos P 1 tZs (tF_rows P), tF.side_Proviso tF_ok P 1 tZs (tF_rat P), tF.side_Types tF_ok P 1 tZs tZs_stable tF_sep (tF_same P)⟩`.
+Supply the required witnesses or components.
 -/
 theorem tF_WF (P : Subgroup G3) :
     (tF.side P 1 tZs).WF ∧ (tF.side P 1 tZs).Pos ∧ (tF.side P 1 tZs).Proviso ∧ (tF.side P 1 tZs).Types := by

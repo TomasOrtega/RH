@@ -98,14 +98,14 @@ structure GalAct {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain
     bc.hom.left ≫ pullback.fst G'.hom (specOf (Gal.hom σ)) = act σ ∧ IsPullUnif (Gal.hom σ) h bc U' U' ∧ PullOver hD h
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 example {R R' : Type} [CommRing R] [CommRing R'] {ρ : R →+* R'} (σ τ : Gal ρ) :
     spMap (Gal.hom (σ * τ)) = spMap (Gal.hom σ) ≫ spMap (Gal.hom τ) := by
   rw [← Spec.map_comp]; rfl
 
 /- English proof (translation)
-Use `⟨⟨starRingAut, fun r => by simp⟩, 1, fun h => ?_⟩` and prove the remaining obligations. Establish `h₁ : (starRingEnd ℂ) Complex.I = Complex.I` using `congrArg (fun σ : Gal (algebraMap ℝ ℂ) => σ.1 Complex.I) h`. Establish `h₂` using `congrArg Complex.im h₁`. Evaluate the numerical expressions using `at h₂`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Evaluate the numerical expressions.
 -/
 example : Nontrivial (Gal (algebraMap ℝ ℂ)) := by
   refine ⟨⟨starRingAut, fun r => by simp⟩, 1, fun h => ?_⟩
@@ -114,9 +114,9 @@ example : Nontrivial (Gal (algebraMap ℝ ℂ)) := by
   norm_num at h₂
 
 /- English proof (translation)
-Introduce and unpack `⟨-, h⟩`. Take `⟨n, hn⟩` from `h (1 / 2) (fun σ _ => by simp)`. Establish `h₁ : ((2 * n : ℤ) : ℚ) = ((1 : ℤ) : ℚ)`. Establish `: (n : ℚ) = 1 / 2` using `hn`. Use `push_cast`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[this]`. Evaluate the numerical expressions. Establish `h₂ : 2 * n = 1` using `by exact_mod_cast h₁`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 example : ¬ IsGal (Int.castRingHom ℚ) := by
   rintro ⟨-, h⟩
@@ -129,19 +129,17 @@ example : ¬ IsGal (Int.castRingHom ℚ) := by
   omega
 
 /- English proof (translation)
-Set `N : Near π ((Over.pullback π).obj G)` to `{ U := G smooth := inferInstance separated := inferInstance quasiCompact := inferInstance u := 𝟙 _ isOpen := inferInstanceAs (IsOpenImmersion (𝟙 (pullback G.hom π))) u_over := Category.id_comp _ all := fun g _ => ⟨g, rfl⟩ }`. Establish `pt : ∀ {T : Scheme.{0}} (s : T ⟶ S) (a : T ⟶ G.left) (x : T ⟶ pullback G.hom π), N.Pt s a x ↔ x ≫ pullback.fst _ _ = a ∧ x ≫ pullback.snd _ _ = s` using `fun s a x => ⟨fun ⟨x₀, h₁, h₂, h₃⟩ => by`. Take `rfl : x₀ = x` from `(Category.comp_id _).symm.trans h₃`. Conclude with `⟨h₁, h₂⟩, fun ⟨h₁, h₂⟩ => ⟨x, h₁, h₂, Category.comp_id _⟩⟩`. Use `⟨N, rfl, ⟨⊤, (⊤ : (G ⊗ G).left.Opens).ι ≫ μ[G].left, fun _ _ => trivial, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Category.assoc _ _ _).trans (congrArg (_ ≫ ·) (Over.w μ[G]))`. Introduce `T v s x y hx hy`. Take `⟨hx, hx'⟩` from `(pt _ _ _).1 hx`. Take `⟨hy, -⟩` from `(pt _ _ _).1 hy`. Use `(pt _ _ _).2 ⟨?_, Over.w (x * y)⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hw : (v ≫ (⊤ : (G ⊗ G).left.Opens).ι) ≫ (G ⊗ G).hom = s ≫ π`. Rewrite using `[← Over.w (fst G G), ← hx', Category.assoc x.left, ← pullback.condition, ← Category.assoc x.left]`. Use `erw [hx]`. Conclude with `(Category.assoc _ _ _).trans ((Category.assoc _ _ _).trans (congrArg (v ≫ ·) (Category.assoc _ _ _))).symm`. Set `p : Over.mk (s ≫ π) ⟶ G ⊗ G` to `Over.homMk (v ≫ (⊤ : (G ⊗ G).left.Opens).ι) hw`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(isGrpPullback_pullback G π).2 (Over.mk s) x y (p ≫ fst G G) (p ≫ snd G G) ((Category.assoc _ _ _).trans hx.symm) ((Category.assoc _ _ _).trans hy.symm)` as an intermediate fact. Use `erw [← this]`. Rewrite using `[Hom.mul_def, ← comp_lift, lift_fst_snd, Category.comp_id]`. Conclude with `Category.assoc _ _ _`. Establish `p₁` using `(isGrpPullback_pullback ((Over.pullback π).obj G) (pullback.fst π π)).comp (isGrpPullback_pullback G π)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `p₂` using `(isGrpPullback_pullback ((Over.pullback π).obj G) (pullback.snd π π)).comp (isGrpPullback_pullback G π)`. Take `⟨φ, hφ, e⟩` from `grpPullback_iso p₁ (p₂.congr pullback.condition.symm rfl)`. Use `⟨φ, hφ, fun T a x hx => ?_⟩` and prove the remaining obligations. Take `⟨hx, -⟩` from `(pt _ _ _).1 hx`. Use `(pt _ _ _).2 ⟨?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hx]`. Simplify using `only [Category.assoc]`. Conclude with `congrArg (x ≫ ·) e`. Simplify using `only [Category.assoc]`. Use `congrArg (x ≫ ·) ?_` and prove the remaining obligations.
-
-Use `(congrArg (φ.hom.left ≫ ·) pullback.condition).trans ?_` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).symm.trans (congrArg (· ≫ _) (Over.w φ.hom))`.
+A detailed English derivation is pending.
 -/
 example {R : Type} [CommRing R] [IsLocalRing R] {S : Scheme.{0}} (π : S ⟶ Sp R) (G : Over (Sp R)) [GrpObj G]
     [Smooth G.hom] [IsSeparated G.hom] [QuasiCompact G.hom] :

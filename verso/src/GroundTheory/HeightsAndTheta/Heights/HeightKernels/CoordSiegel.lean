@@ -11,13 +11,13 @@ namespace KCoord
 variable {m n : Type*} [Fintype m] [Fintype n]
 
 /- English proof (translation)
-Use `PosDef.of_dotProduct_mulVec_pos (hA.1.fromBlocks (by simp) hD.1) fun x hx => ?_` and prove the remaining obligations. Establish `hsplit : star x ⬝ᵥ (fromBlocks A 0 0 D *ᵥ x) = star (x ∘ Sum.inl) ⬝ᵥ (A *ᵥ (x ∘ Sum.inl)) + star (x ∘ Sum.inr) ⬝ᵥ (D *ᵥ (x ∘ Sum.inr))`. Simplify using `[fromBlocks_mulVec, dotProduct, Fintype.sum_sum_type]`. Rewrite using `[hsplit]`. Establish `h1` using `hA.posSemidef.dotProduct_mulVec_nonneg (x ∘ Sum.inl)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `hD.posSemidef.dotProduct_mulVec_nonneg (x ∘ Sum.inr)`. Distinguish the cases in `hl : x ∘ Sum.inl = 0`. Establish `hr : x ∘ Sum.inr ≠ 0`. Introduce `hr`. Apply `hx` to reduce the goal to its premises.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `i`. Consider the cases of `i with`. Consider the case `inl i => exact congrFun hl i`. Consider the case `inr i => exact congrFun hr i`. Use `hD.dotProduct_mulVec_pos hr` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `hA.dotProduct_mulVec_pos hl` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem posDef_fromBlocks_diag {A : Matrix m m ℝ} {D : Matrix n n ℝ} (hA : A.PosDef)
     (hD : D.PosDef) : (fromBlocks A 0 0 D).PosDef := by
@@ -54,7 +54,7 @@ noncomputable def diagInv (Y : Matrix (Fin g) (Fin g) ℝ) : Matrix (Fin g ⊕ F
   fromBlocks Y⁻¹ 0 0 Y
 
 /- English proof (translation)
-Establish `hXt : Xᵀ = X` using `hX`. Simplify using `[siegelGram, unip, diagInv, fromBlocks_transpose, fromBlocks_multiply, hXt, add_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem siegelGram_eq (X Y : Matrix (Fin g) (Fin g) ℝ) (hX : X.IsSymm) :
     siegelGram X Y = (unip X)ᵀ * diagInv Y * unip X := by
@@ -62,7 +62,7 @@ theorem siegelGram_eq (X Y : Matrix (Fin g) (Fin g) ℝ) (hX : X.IsSymm) :
   simp [siegelGram, unip, diagInv, fromBlocks_transpose, fromBlocks_multiply, hXt, add_comm]
 
 /- English proof (translation)
-Establish `hXt : Xᵀ = X` using `hX`. Rewrite using `[SymplecticGroup.mem_iff]`. Simplify using `[unip, Matrix.J, fromBlocks_transpose, fromBlocks_multiply, hXt]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem unip_mem (X : Matrix (Fin g) (Fin g) ℝ) (hX : X.IsSymm) :
     unip X ∈ symplecticGroup (Fin g) ℝ := by
@@ -71,9 +71,9 @@ theorem unip_mem (X : Matrix (Fin g) (Fin g) ℝ) (hX : X.IsSymm) :
   simp [unip, Matrix.J, fromBlocks_transpose, fromBlocks_multiply, hXt]
 
 /- English proof (translation)
-Establish `hdet : IsUnit Y.det` using `(Matrix.isUnit_iff_isUnit_det Y).1 hY.isUnit`. Establish `hYt : Yᵀ = Y`. Use `hY.1` as an intermediate fact. Rewrite `this` using `[Matrix.IsHermitian, Matrix.conjTranspose_eq_transpose_of_trivial]`. Then use the resulting hypothesis. Establish `hYit : Y⁻¹ᵀ = Y⁻¹` using `by rw [Matrix.transpose_nonsing_inv, hYt]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[SymplecticGroup.mem_iff]`. Simplify using `[diagInv, Matrix.J, fromBlocks_transpose, fromBlocks_multiply, hYt, hYit, Matrix.nonsing_inv_mul _ hdet, Matrix.mul_nonsing_inv _ hdet]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem diagInv_mem (Y : Matrix (Fin g) (Fin g) ℝ) (hY : Y.PosDef) :
     diagInv Y ∈ symplecticGroup (Fin g) ℝ := by
@@ -87,16 +87,16 @@ theorem diagInv_mem (Y : Matrix (Fin g) (Fin g) ℝ) (hY : Y.PosDef) :
     Matrix.nonsing_inv_mul _ hdet, Matrix.mul_nonsing_inv _ hdet]
 
 /- English proof (translation)
-Rewrite using `[Matrix.isUnit_iff_isUnit_det]`. Simplify using `[unip]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem unip_isUnit (X : Matrix (Fin g) (Fin g) ℝ) : IsUnit (unip X) := by
   rw [Matrix.isUnit_iff_isUnit_det]
   simp [unip]
 
 /- English proof (translation)
-Rewrite using `[siegelGram_eq X Y hX]`. Use `⟨Submonoid.mul_mem _ (Submonoid.mul_mem _ (SymplecticGroup.transpose_mem (unip_mem X hX)) (diagInv_mem Y hY)) (unip_mem X hX), ?_⟩` and prove the remaining obligations. Establish `hD : (diagInv Y).PosDef` using `posDef_fromBlocks_diag hY.inv hY`. Establish `hinj : Function.Injective (unip X).mulVec` using `Matrix.mulVec_injective_iff_isUnit.mpr (unip_isUnit X)`. Use `hD.conjTranspose_mul_mul_same hinj` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.conjTranspose_eq_transpose_of_trivial]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem siegelGram_mem_posDef (X Y : Matrix (Fin g) (Fin g) ℝ) (hX : X.IsSymm) (hY : Y.PosDef) :
     siegelGram X Y ∈ symplecticGroup (Fin g) ℝ ∧ (siegelGram X Y).PosDef := by
@@ -114,31 +114,29 @@ end KCoord
 namespace KCoord
 
 /- English proof (translation)
-Establish `hGt : Gᵀ = G`. Use `hG.1` as an intermediate fact. Rewrite `this` using `[Matrix.IsHermitian, Matrix.conjTranspose_eq_transpose_of_trivial]`. Then use the resulting hypothesis. Establish `hS'` using `hS`. Rewrite `hS'` using `[SymplecticGroup.mem_iff, hGt]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hGb` using `Matrix.fromBlocks_toBlocks G`. Use `set A := G.toBlocks₁₁ with hAdef`. Use `set B := G.toBlocks₁₂ with hBdef`. Use `set C := G.toBlocks₂₁ with hCdef`. Use `set D := G.toBlocks₂₂ with hDdef`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hGt'` using `hGt`. Rewrite `hS'`, `hGt'` using `[← hGb]`. Simplify using `only [fromBlocks_transpose, Matrix.J, fromBlocks_multiply] at hS' hGt'`. Take `⟨e1, e2, -, -⟩` from `Matrix.fromBlocks_inj.mp hS'`. Take `⟨t1, -, t3, -⟩` from `Matrix.fromBlocks_inj.mp hGt'`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Simplify using `at e1 e2`. Establish `hBA : B * A = A * C`. Use `e1` as an intermediate fact. Rewrite `this` using `[add_neg_eq_zero]`. Then use the resulting hypothesis. Establish `hAD : A * D = 1 + B * B`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Establish `h1 : A * D = B * B - (B * B + -(A * D))` using `by abel`. Rewrite using `[h1, e2]`. Normalize the expressions using the abelian group laws. Establish `hA : A.PosDef` using `hG.submatrix Sum.inl_injective`. Establish `hAdet : IsUnit A.det` using `(Matrix.isUnit_iff_isUnit_det A).1 hA.isUnit`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAiA : A⁻¹ * A = 1` using `Matrix.nonsing_inv_mul A hAdet`. Establish `hAAi : A * A⁻¹ = 1` using `Matrix.mul_nonsing_inv A hAdet`. Establish `hAit : A⁻¹ᵀ = A⁻¹` using `by rw [Matrix.transpose_nonsing_inv, t1]`. Establish `hCt : Bᵀ = C` using `t3`. Establish `k : A⁻¹ * B = C * A⁻¹`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hX : (A⁻¹ * B).IsSymm` using `by show (A⁻¹ * B)ᵀ = A⁻¹ * B`. Rewrite using `[Matrix.transpose_mul, hAit, hCt, k]`. Establish `hY : (A⁻¹).PosDef` using `hA.inv`. Establish `hYinv : (A⁻¹)⁻¹ = A` using `Matrix.nonsing_inv_nonsing_inv A hAdet`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(A⁻¹ * B, A⁻¹), ⟨hX, hY, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show G = siegelGram (A⁻¹ * B) A⁻¹`. Rewrite using `[siegelGram, hYinv]`. Use `conv_lhs => rw [← hGb]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← Matrix.mul_assoc, hAAi, Matrix.one_mul]`. Rewrite using `[k, Matrix.mul_assoc, hAiA, Matrix.mul_one]`. Establish `hD : D = A⁻¹ * (1 + B * B)`. Rewrite using `[← hAD, ← Matrix.mul_assoc, hAiA, Matrix.one_mul]`. Rewrite using `[hD, k, Matrix.mul_add, Matrix.mul_one]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congr 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hAAi, Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = C * A⁻¹ * A * A⁻¹ * B := by rw [← k]; simp only [Matrix.mul_assoc]`. Use `_ = C * A⁻¹ * A * (A⁻¹ * B) := by simp only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = C * A⁻¹ * A * (C * A⁻¹) := by rw [k]`. Introduce and unpack `⟨X', Y'⟩ ⟨hX', hY', hG'⟩`. Establish `hY'det : IsUnit Y'.det` using `(Matrix.isUnit_iff_isUnit_det Y').1 hY'.isUnit`. Establish `h11 : A = Y'⁻¹`. Rewrite using `[hAdef, hG']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[siegelGram]`. Establish `h12 : B = Y'⁻¹ * X'`. Rewrite using `[hBdef, hG']`. Simplify using `[siegelGram]`. Establish `hYY : Y' = A⁻¹`.
-
-Rewrite using `[h11, Matrix.nonsing_inv_nonsing_inv Y' hY'det]`. Establish `hXX : X' = A⁻¹ * B`. Rewrite using `[h12, ← hYY, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv Y' hY'det, Matrix.one_mul]`. Simplify using `only [Prod.mk.injEq]`. Conclude with `⟨hXX, hYY⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem existsUnique_siegelGram (G : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℝ)
     (hS : G ∈ symplecticGroup (Fin g) ℝ) (hG : G.PosDef) :
@@ -214,7 +212,7 @@ theorem existsUnique_siegelGram (G : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) 
 end KCoord
 
 /- English proof (translation)
-Introduce `_` and use `⟨fun X Y hX hY => KCoord.siegelGram_mem_posDef X Y hX hY, fun G hS hG => KCoord.existsUnique_siegelGram G hS hG⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem SiegelCoordinates.intersectionNumber_baseChange : SiegelCoordinates.Statement := fun _ =>
   ⟨fun X Y hX hY => KCoord.siegelGram_mem_posDef X Y hX hY,

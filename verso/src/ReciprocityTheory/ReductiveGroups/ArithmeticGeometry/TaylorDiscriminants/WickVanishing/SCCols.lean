@@ -11,7 +11,7 @@ open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ
 namespace ReciprocityTheory.ChartRestriction.G.TB.SCPf
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact UpperTheory.Reformulated.B.Qk22.prod_mem_pow .. | (apply UpperTheory.Reformulated.B.Qk22.prod_mem_pow <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qk22.prod_mem_pow <;> assumption) | (apply @UpperTheory.Reformulated.B.Qk22.prod_mem_pow <;> assumption) …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem prod_mem_pow {R k : Type} [CommRing R] [CommRing k] [Algebra R k] (J : Submodule R k) {β : Type}
     (t : Finset β) (x : β → k) (e : β → ℕ) (hx : ∀ b ∈ t, x b ∈ J ^ e b) :
@@ -19,11 +19,11 @@ theorem prod_mem_pow {R k : Type} [CommRing R] [CommRing k] [Algebra R k] (J : S
   first | exact UpperTheory.Reformulated.B.Qk22.prod_mem_pow .. | (apply UpperTheory.Reformulated.B.Qk22.prod_mem_pow <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qk22.prod_mem_pow <;> assumption) | (apply @UpperTheory.Reformulated.B.Qk22.prod_mem_pow <;> assumption) | (intros; apply @UpperTheory.Reformulated.B.Qk22.prod_mem_pow <;> assumption) | (apply @UpperTheory.Reformulated.B.Qk22.prod_mem_pow <;> first | assumption | infer_instance)
 
 /- English proof (translation)
-Introduce `R _ d O _ _ k _ _ _ hRQ J hJ1 B h hcg w0 hw0 m ι π _ _ _ c s ξh ψ hH hψ h11 h21 h12 n P hPint e he f hf`. Use `Submodule.sum_mem _ fun mo hmo => ?_` and prove the remaining obligations. Take `⟨r, hr⟩` from `hPint mo`. Rewrite using `[← hr, ← Algebra.smul_def]`. Use `Submodule.smul_mem _ r (pow_le_pow_right' (Submodule.one_le.mpr hJ1) (he mo hmo) (prod_mem_pow J _ _ _ fun b _ => ?_))` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hSC R d O k hRQ J hJ1 B h hcg w0 hw0 m ι π c s ξh ψ hH hψ h11 h21 h12 _ ?_ _ ?_ (f b) (hf b)` and prove the remaining obligations. Introduce `n'`. Rewrite using `[MvPolynomial.coeff_monomial]`. Use `split_ifs`. Conclude with `⟨1, map_one _⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨0, map_zero _⟩`. Introduce `n' hn'`. Rewrite using `[Finset.mem_singleton.mp (MvPolynomial.support_monomial_subset hn')]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scCols_of (hSC : SCSt) : SCColsSt := by
   classical
@@ -43,7 +43,7 @@ theorem scCols_of (hSC : SCSt) : SCColsSt := by
     rw [Finset.mem_singleton.mp (MvPolynomial.support_monomial_subset hn')]
 
 /- English proof (translation)
-The claim follows from `scCols_of (sc_of hN1 hN2 hN3)`.
+A detailed English derivation is pending.
 -/
 theorem scaled_connection_columns (hN1 : ConnectionIntegrality) (hN2 : ConnectionCommutator) (hN3 : ConnectionKillsSeries) : SCColsSt :=
   scCols_of (sc_of hN1 hN2 hN3)

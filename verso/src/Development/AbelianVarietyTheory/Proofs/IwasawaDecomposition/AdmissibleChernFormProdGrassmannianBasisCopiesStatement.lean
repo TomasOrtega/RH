@@ -7,7 +7,7 @@ open Classical
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.GrassTopProd.adm_apply_prod_ren_eq_ite_mul_pointPoly` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FAdmissibleChernFormProdGrassmannianBasisCopies.lean&line=27#L27)
 -/

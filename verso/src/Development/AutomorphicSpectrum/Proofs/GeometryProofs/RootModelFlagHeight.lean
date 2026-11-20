@@ -27,7 +27,7 @@ section Values
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {R R' : Type} [CommRing R] [IsLocalRing R] [CommRing R'] [IsLocalRing R']
 
 /- English proof (translation)
-Establish `h` using `(IsLocalRing.specializes_closedPoint (Spec.map (CommRingCat.ofHom ψ) (IsLocalRing.closedPoint R'))).map z.continuous`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem centre_comp_specializes (ψ : R →+* R') (z : Spec (CommRingCat.of R) ⟶ X) :
     centre (Spec.map (CommRingCat.ofHom ψ) ≫ z) ⤳ centre z := by
@@ -38,7 +38,7 @@ theorem centre_comp_specializes (ψ : R →+* R') (z : Spec (CommRingCat.of R) �
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[← cancel_mono (X.fromSpecStalk (centre z)), Spec.map_comp, Spec.map_comp, Category.assoc, Category.assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk]`. Conclude with `(Scheme.Spec_stalkClosedPointTo_fromSpecStalk _).trans (congrArg (Spec.map (CommRingCat.ofHom ψ) ≫ ·) (Scheme.Spec_stalkClosedPointTo_fromSpecStalk z).symm)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stalkSpecializes_comp_stalkClosedPointTo (ψ : R →+* R') (z : Spec (CommRingCat.of R) ⟶ X) :
     X.presheaf.stalkSpecializes (centre_comp_specializes ψ z) ≫
@@ -51,9 +51,7 @@ theorem stalkSpecializes_comp_stalkClosedPointTo (ψ : R →+* R') (z : Spec (Co
     (congrArg (Spec.map (CommRingCat.ofHom ψ) ≫ ·) (Scheme.Spec_stalkClosedPointTo_fromSpecStalk z).symm)
 
 /- English proof (translation)
-Take `⟨h1, s, rfl, rfl⟩` from `h`. Use `⟨h', (X.presheaf.stalkSpecializes (centre_comp_specializes ψ z)).hom s, ?_, ?_⟩` and prove the remaining obligations. Establish `e` using `TopCat.Presheaf.stalkSpecializes_comp X.presheaf h' (centre_comp_specializes ψ z)`. Establish `e2` using `congrArg (fun q => (q ≫ Scheme.stalkClosedPointTo ξ).hom s) e`. Conclude with `e2`.
-
-Conclude with `congrArg (fun q => q.hom s) (stalkSpecializes_comp_stalkClosedPointTo ψ z)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem valAt_comp {ξ : Spec (CommRingCat.of Ω) ⟶ X} (ψ : R →+* R') {z : Spec (CommRingCat.of R) ⟶ X} {a : Ω} {r : R}
     (h : ValAt ξ z a r) (h' : genPt ξ ⤳ centre (Spec.map (CommRingCat.ofHom ψ) ≫ z)) :
@@ -66,9 +64,9 @@ theorem valAt_comp {ξ : Spec (CommRingCat.of Ω) ⟶ X} (ψ : R →+* R') {z : 
   · exact congrArg (fun q => q.hom s) (stalkSpecializes_comp_stalkClosedPointTo ψ z)
 
 /- English proof (translation)
-Use `⟨fun k => (h.1 k).imp fun c hc => hc.map ψ, fun k c hc => ?_⟩` and prove the remaining obligations. Establish `hc' : IsUnit (w ⟨k, c⟩)`. Rewrite `hc`, the goal using `[isUnit_iff_ne_zero]`. Conclude with `fun h0 => hc (by simp [h0])`. Use `⟨(h.2 k c hc').1, fun i => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨r, hr, e⟩` from `(h.2 k c hc').2 i`. Conclude with `⟨ψ r, valAt_comp ψ hr (hall _), by simp only [e, map_mul]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem coordsAt_comp {ξ : Spec (CommRingCat.of Ω) ⟶ X} (hall : ∀ q : X, genPt ξ ⤳ q) {K : Type} {J : K → Type}
     {y : (Σ k, J k) → Ω} {L L' : Type} [Field L] [Field L'] (ψ : L →+* L') {z : Spec (CommRingCat.of L) ⟶ X}
@@ -85,7 +83,7 @@ theorem coordsAt_comp {ξ : Spec (CommRingCat.of Ω) ⟶ X} (hall : ∀ q : X, g
 end Values
 
 /- English proof (translation)
-Establish `h1 : 0 ≤ Real.log (2 + C + t)` using `Real.log_nonneg (by linarith)`. Establish `h2 : Real.log (2 + C + t) ≤ Real.log (2 + C' + t)` using `Real.log_le_log (by linarith) (by linarith)`. Establish `h3` using `mul_le_mul h h2 h1 (h0.trans h)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem logBound_mono {C C' t : ℝ} (h0 : 0 ≤ C) (h : C ≤ C') (ht : 0 ≤ t) :
     C * Real.log (2 + C + t) + C ≤ C' * Real.log (2 + C' + t) + C' := by
@@ -95,17 +93,15 @@ theorem logBound_mono {C C' t : ℝ} (h0 : 0 ≤ C) (h : C ≤ C') (ht : 0 ≤ t
   linarith
 
 /- English proof (translation)
-Introduce `h1 h2 h3 h4 h5 E _ _ _ H D l Xo c Y S _ R 𝔐 Fl e hpq hroot`. Take `⟨h, horth⟩` from `GlobalTheory.T.exists_orthogonal_lie_metric E H D l Xo c Y S R.Ω R.K R.ι R.y 𝔐`. Take `⟨C₁, hC₁, hslope⟩` from `GlobalTheory.T.hodge_cpt_lie_metric_bound h1 h2 h3 h4 h5 E H D l Xo c Y S R.Ω R.K R.ι R.y 𝔐 h hpq`. Establish `hdeg : (fun r => (R.x 1 r).a) = R.xdeg` using `funext fun r => R.x_deg 1 r`. Take `⟨C₂, hht⟩` from `GlobalTheory.T.flag_line_degree_formula E H D l Xo c Y S R.Ω R.K R.ι R.y 𝔐 Fl h (R.x 1) e (R.x_smooth 1) (hdeg.symm ▸ hroot)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hch : CharZero R.Ω` using `(RingHom.charZero_iff 𝔐.cst.injective).1 inferInstance`. Use `⟨max C₁ C₂, hC₁.trans (le_max_left _ _), fun L _ _ w hw => ?_⟩` and prove the remaining obligations. Take `⟨z₀, hz₀⟩` from `GlobalTheory.T.number_field_point_integral_model 𝔐.X R.Ω R.K R.ι R.y 𝔐.ξ hch 𝔐.all 𝔐.tie L w hw`. Take `⟨L', _, _, ε, hs⟩` from `hslope L z₀`. Establish `hsm : Smooth 𝔐.t.G.hom` using `𝔐.t.semi.smooth`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨B, MB, hB⟩` from `GlobalTheory.T.lie_metric_hermitian_bundle 𝔐.X R.Ω R.K R.ι R.y 𝔐.ξ 𝔐.t.G 𝔐.Li 𝔐.M h L' (spMap (RingOfIntegers.mapRingHom ε) ≫ z₀)`. Take `⟨A, hA, hW⟩` from `GlobalTheory.T.orthogonal_metric_flag_degree E H D l Xo c Y S R.Ω R.K R.ι R.y 𝔐 Fl h horth L' _ B MB hB`. Establish `hpt : spMap (algebraMap (𝓞 L') L') ≫ spMap (RingOfIntegers.mapRingHom ε) ≫ z₀ = spMap ε ≫ spMap (algebraMap (𝓞 L) L) ≫ z₀`. Rewrite using `[← Category.assoc, ← Category.assoc, ← Spec.map_comp, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hz : CoordsAt 𝔐.ξ R.y (spMap (algebraMap (𝓞 L') L') ≫ spMap (RingOfIntegers.mapRingHom ε) ≫ z₀) fun p => ε (w p)`. Rewrite using `[hpt]`. Conclude with `coordsAt_comp 𝔐.all ε hz₀`. Establish `hext : ∀ r, Ht.lineHt (R.x 1 r) L' (fun p => ε (w p)) = Ht.lineHt (R.x 1 r) L w` using `fun r => by`. Simplify using `using GlobalTheory.T.line_height_invariant_scaling R.K R.ι (R.x 1 r) L L' ε w (fun _ => 1) hw.1 fun _ => one_ne_zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨ha, hb⟩` from `hht L' _ _ hz B MB A hB hW`. Use `⟨L', inferInstance, inferInstance, ε, B, A, hA, fun τ i => ?_, fun τ i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hext]`. Conclude with `(ha τ i).trans (le_max_right _ _)`. Rewrite using `[← hext]`.
-
-Conclude with `(hb τ i).trans (le_max_right _ _)`. Conclude with `(hs B MB hB).trans (EReal.coe_le_coe_iff.2 (logBound_mono hC₁ (le_max_left _ _) (le_max_right _ _)))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibreInput : N1ab → PartI → Geo.ResK.ResKStatement → GlobalTheory.Published.SemiAbelianHomExtension → SlopeBoundSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S : Finset ℕ) [Fintype (CMType H)] (R : Top.RootModel (CMType H) (D.p + D.q)) (𝔐 : HodgeCpt Y S R.y) (Fl : 𝔐.Flag) (e : CMType H × Fin (D.p + D.q) → R.Ω), 1 ≤ D.p + D.q → Fl.RootLines R.xdeg e → Ht.FibreInput R := by
   intro h1 h2 h3 h4 h5 E _ _ _ H D l Xo c Y S _ R 𝔐 Fl e hpq hroot

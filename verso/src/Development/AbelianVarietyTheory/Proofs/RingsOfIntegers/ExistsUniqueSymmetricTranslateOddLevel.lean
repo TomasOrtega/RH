@@ -22,9 +22,9 @@ namespace GlobalTheory.SymMove
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left} {T : Over S} {k : ℤ}
 
 /- English proof (translation)
-Establish `hc` using `SymLiftOdd.symLift_unique hG hA hL hn θ θ' h h'`. Establish `e : θ.pt = θ'.pt` using `h.pt_eq.trans h'.pt_eq.symm`. Establish `key : ∀ j, t.f j = t'.f j` using `sec_ext_val hL (φ := fun _ : Fin 1 => (snd T A).left) (ε := fun _ => k) (s := t) (s' := t') fun y J hJ => (twist_val a (𝟙 _) y hJ).trans (Eq.trans (congrArg₂ (· * ·) (congrArg Units.val (val_corr hJ hc (𝟙 _))) (by rw [e])) (twist_val a' (𝟙 _) y hJ).symm)`. Take `⟨f₁, p₁⟩` from `t`. Take `⟨f₂, p₂⟩` from `t'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : f₁ = f₂` from `funext key`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem act_unique (hG : GlobalFnsSt) (hA : IsAbelianScheme A) (hL : L.IsLB) {n : ℕ} (hn : Odd n) {x : T ⟶ A}
     {θ θ' : ThetaGrp A L k T} (h : SymLift A L k n x θ) (h' : SymLift A L k n x θ')
@@ -41,9 +41,9 @@ theorem act_unique (hG : GlobalFnsSt) (hA : IsAbelianScheme A) (hL : L.IsLB) {n 
   rfl
 
 /- English proof (translation)
-Take `⟨o, ho, vo⟩` from `ThetaCoord.exists_symLift_one hL hν n`. Use `⟨o, ho, VVRank.isTwistPull_of_sv A hL o.isGen fun z J hJ => ?_⟩` and prove the remaining obligations. Establish `e : translT A (1 : T ⟶ A) = 𝟙 _`. Rewrite using `[translT, ThetaAct.translPt_one, lift_fst_snd]`. Express the relevant statement in the definitionally equal form `_ = (CommPairing.tval o (𝟙 _) z J).val * _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[vo _ _ z J hJ, ho.pt_eq, e, Units.val_one, _root_.one_mul, Over.id_left]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_one (hL : L.IsLB) {ν : LB.Gen (negLB A L k T)} (hν : ν.IsGen) (n : ℕ) (s : LB.Sec (LPow A L k T)) :
     ∃ θ : ThetaGrp A L k T, SymLift A L k n 1 θ ∧ IsActOf A L k θ s s := by
@@ -60,11 +60,11 @@ end GlobalTheory.SymMove
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo S _ x k hk b hb F`. Establish `hLaw : Laws` using `firstFiveLaws.1`. Use `UnivPol.isLocallyNoetherian Xo` as an intermediate fact. Establish `hA : IsAbelianScheme Xo.univ.t.G` using `(UnivPol.pol Xo).isAb`. Establish `hL : Xo.univ.t.PP.L.IsLB` using `(UnivPol.pol Xo).isLB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨U, hU⟩ : ∃ U : ThetaGrp Xo.univ.t.G Xo.univ.t.PP.L (k : ℤ) (ptO Xo x), SymLift Xo.univ.t.G Xo.univ.t.PP.L (k : ℤ) k b U` from `exists_symLift_global hLaw Xo.X (UnivPol.pol Xo) k hk (UnivPol.isUnit_natCast Xo _ hk.pos) _ b hb`. Take `⟨F', hF', -⟩` from `existsUnique_isTwistPull _ _ _ hL _ (translT _ U.pt) (translPt _ U.pt) (lift_snd _ _) k k U.φ U.isGen F`. Take `⟨ν, hν, -⟩` from `hU.sym`. Use `⟨⟨F', ⟨hb, U, hU, hF'⟩, fun F'' h => ?_⟩, one_pow k, SymMove.exists_one hL hν k F⟩` and prove the remaining obligations. Take `⟨-, U', hU', a⟩` from `h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `SymMove.act_unique hLaw.globalFns hA hL hk hU' hU a hF'`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_moves : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (S : Type) [CommRing S] (x : Sp S ⟶ Xo.X) (k : ℕ), Odd k → ∀ (b : (ptO Xo x ⟶ Xo.univ.t.G)), b ^ k = 1 → ∀ F : SecN Xo x k, (∃! F' : SecN Xo x k, Moves Xo b F F') ∧ Moves Xo 1 F F := by
   intro E _ _ _ H Dw l Xo S _ x k hk b hb F

@@ -12,9 +12,9 @@ open PC
 namespace PC
 
 /- English proof (translation)
-Establish `h : ∀ t, ∃ w : Fin m → ℂ, t ∈ V → y t = ∑ i, w i • x i t` using `fun t => by`. Distinguish the cases in `ht : t ∈ V`. Take `⟨w, hw⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).1 (hm t ht)`. Conclude with `⟨w, fun _ => hw.symm⟩`. Conclude with `⟨0, fun h => absurd h ht⟩`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Use `choose w hw using h`. Establish `hd` using `GlobalTheory.T.holomorphic_coefficients_in_frame n m g V x y w hV (fun i => (hx i).differentiableOn) hy hli hw`. Conclude with `⟨w, fun i => GlobalTheory.SCV.analyticOnNhd_of_differentiableOn hV (differentiableOn_pi.1 hd i), hw⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem coeff_an {n m g : ℕ} {V : Set (Fin n → ℂ)} (hV : IsOpen V) (x : Fin m → (Fin n → ℂ) → Fin g → ℂ)
     (y : (Fin n → ℂ) → Fin g → ℂ) (hx : ∀ i, AnalyticOnNhd ℂ (x i) V) (hy : DifferentiableOn ℂ y V)
@@ -32,41 +32,35 @@ theorem coeff_an {n m g : ℕ} {V : Set (Fin n → ℂ)} (hV : IsOpen V) (x : Fi
 end PC
 
 /- English proof (translation)
-Introduce `E _ _ _ Ψ _ g n p q Λ _ _ V R σ x x' hV hR hσ ⟨hxa, hxa', hfr⟩`. Break down `V.eq_empty_or_nonempty with rfl | ⟨t₀, ht₀⟩` into its components or cases. Conclude with `⟨0, 0, 0, fun _ _ _ _ h => h.elim, fun _ _ _ _ h => h.elim, fun _ h => h.elim⟩`. Use `(R t₀).free` as an intermediate fact. Use `(R t₀).fin` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `b : Module.Basis (Fin (2 * g)) ℤ Λ` to `Module.finBasisOfFinrankEq ℤ Λ (R t₀).rank`. Establish `hrk : ∀ t ∈ V, ∀ τ, Module.finrank ℂ (eigSp (R t).B (σ τ)) = p ∧ Module.finrank ℂ (eigSp (R t).B ((starRingEnd ℂ).comp (σ τ))) = q` using `fun t ht τ => by`. Take `⟨⟨h1, h2⟩, h3, h4⟩` from `hfr t ht τ`. Rewrite using `[← h2, ← h4, finrank_span_eq_card h1, finrank_span_eq_card h3]`. Simplify using the standard rewrite rules.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `choose e he heo hes using fun τ => exists_onb (R t₀) _ (hrk t₀ ht₀ τ).1`. Use `choose e' he' heo' hes' using fun τ => exists_onb (R t₀) _ (hrk t₀ ht₀ τ).2`. Set `u : Ψ → Fin (p + q) → Fin g → ℂ` to `fun τ a => if h : (a : ℕ) < q then 0 else e τ ⟨a - q, by have := a.2; omega⟩`. Set `u' : Ψ → Fin (p + q) → Fin g → ℂ` to `fun τ a => if h : (a : ℕ) < q then e' τ ⟨a, h⟩ else 0`. Establish `hu : ∀ τ a, u τ a ∈ eigSp (R t₀).B (σ τ)` using `fun τ a => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [u]`. Use `split_ifs`. Use `exacts [Submodule.zero_mem _, he _ _]`. Establish `hu' : ∀ τ a, u' τ a ∈ eigSp (R t₀).B ((starRingEnd ℂ).comp (σ τ))` using `fun τ a => by`. Simplify using `only [u']`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Use `exacts [he' _ _, Submodule.zero_mem _]`. Use `choose η hη hη' using fun τ a => exists_pair b (R t₀) (u τ a) (u' τ a)`. Establish `hact : ∀ τ a r, act b r (η τ a) = σ τ r • η τ a` using `fun τ a r => by`. Use `ext_pair b (R t₀) ?_ ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pc_act, map_smul, hη, mem_eig.1 (hu τ a)]`. Rewrite using `[star_act, Pc_act, star_smul, map_smul, hη', mem_eig.1 (hu' τ a)]`. Both sides reduce to the same expression. Establish `hPd : ∀ ξ, DifferentiableOn ℂ (fun t => Pc b (R t) ξ) V` using `fun ξ => by`. Simplify using `only [Pc_apply]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `DifferentiableOn.fun_sum fun k _ => (hR.2 (b k)).fun_const_smul (ξ k)`. Use `choose m hma hm using fun τ a => coeff_an hV (x τ) (fun t => Pc b (R t) (η τ a)) (hxa τ) (hPd _) (fun t ht => (hfr t ht τ).1.1) fun t ht => by`. Rewrite using `[(hfr t ht τ).1.2]`. Conclude with `mem_eig.2 fun r => by rw [← Pc_act, hact, map_smul]`. Use `choose m' hma' hm' using fun τ a => coeff_an hV (x' τ) (fun t => Pc b (R t) (star (η τ a))) (hxa' τ) (hPd _) (fun t ht => (hfr t ht τ).2.1) fun t ht => by`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[(hfr t ht τ).2.2]`. Conclude with `mem_eig.2 fun r => by`. Rewrite using `[← Pc_act, ← star_act, hact, star_smul, map_smul]`. Both sides reduce to the same expression. Establish `hspan : Submodule.span ℂ (Set.range (Sum.elim (fun a : Ψ × Fin (p + q) => u a.1 a.2) fun a : Ψ × Fin (p + q) => u' a.1 a.2)) = ⊤`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `mem_of_eig (R t₀).B hσ _ (fun τ z hz => ?_) fun τ z hz => ?_` and prove the remaining obligations. Take `⟨α, rfl⟩` from `hes τ z hz`. Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨.inl (τ, ⟨q + i, by have := i.2; omega⟩), ?_⟩)` and prove the remaining obligations. Simplify using `[u]`. Take `⟨α, rfl⟩` from `hes' τ z hz`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨.inr (τ, ⟨i, by have := i.2; omega⟩), ?_⟩)` and prove the remaining obligations. Simplify using `[u']`. Establish `hcc : ∀ a : Λ, ∃ c : Ψ → Fin (p + q) → ℂ, io b a = ∑ τ, ∑ k, (c τ k • η τ k + star (c τ k) • star (η τ k))` using `fun a => by`. Take `⟨α, hα⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).1 (hspan ▸ Submodule.mem_top (x := (R t₀).P a))`. Set `c : Ψ → Fin (p + q) → ℂ` to `fun τ k => if (k : ℕ) < q then star (α (.inr (τ, k))) else α (.inl (τ, k))`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : Pc b (R t₀) (io b a) = Pc b (R t₀) (∑ τ, ∑ k, (c τ k • η τ k + star (c τ k) • star (η τ k)))`. Rewrite using `[Pc_io, ← hα, Fintype.sum_sum_type, ← Finset.sum_add_distrib, Fintype.sum_prod_type]`. Simplify using `only [map_sum, map_add, map_smul, hη, hη', Sum.elim_inl, Sum.elim_inr]`. Use `Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : (k : ℕ) < q <;> simp [u, u', c, h]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `⟨c, ext_pair b (R t₀) h1 ?_⟩` and prove the remaining obligations. Rewrite using `[star_io, h1]`. Simplify using `only [star_sum, star_add, star_smul, star_star, add_comm]`. Use `choose cc hcc using hcc`. Use `⟨fun τ t => Matrix.of fun i a => m τ a t i, fun τ t => Matrix.of fun i a => m' τ a t i, fun τ a => cc a τ, fun τ i a => hma τ a i, fun τ i a => hma' τ a i, fun t ht => ⟨fun τ => ?_, fun a => ?_, ?_⟩⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `a a'`. Establish `h1` using `psi_eq b (R t) (η τ a) (η τ a')`. Rewrite `h1` using `[hR.1 t ht t₀ ht₀, ← psi_eq b (R t₀), hη, hη, hη', hη', hm τ a t ht, hm τ a' t ht, hm' τ a t ht, hm' τ a' t ht, ip_sum, ip_sum]`. Establish `h2 : (R t₀).ip (u τ a) (u τ a') - (R t₀).ip (u' τ a') (u' τ a) = diagonal (fun a => (sigForm (p + q) p a : ℂ)) a a'`. Establish `ha` using `a.2`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ha'` using `a'.2`. Apply the tactic sequence `by_cases h : (a : ℕ) < q <;> by_cases h' : (a' : ℕ) < q <;>`. Apply the tactic sequence `simp only [u, u', h, h', dif_pos, dif_neg, not_false_eq_true, ip_zero_left, ip_zero_right, heo, heo', diagonal_apply, sigForm, Nat.add_sub_cancel_left, Fin.ext_iff, if_true, if_false] <;> split_ifs <;> first | omega | simp`. Rewrite using `[← h2, ← h1]`. Simplify using `only [Matrix.sub_apply, Matrix.mul_apply, conjTranspose_apply, transpose_apply, map_apply, of_apply, RiemLat.gram, Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by rw [Complex.star_def]; ring`. Rewrite using `[← Pc_io b, hcc a]`.
-
-Simplify using `only [map_sum, map_add, map_smul, fun τ k => hm τ k t ht, fun τ k => hm' τ k t ht, Finset.sum_add_distrib]`. Simplify using `only [Finset.smul_sum, smul_smul, mulVec, dotProduct, of_apply, Finset.sum_smul, Pi.star_apply]`. Apply the tactic sequence `congr 1 <;> refine Finset.sum_congr rfl fun τ _ => ?_ <;> rw [Finset.sum_comm] <;> simp only [mul_comm]`. Establish `hs : Submodule.span ℂ (Set.range (Sum.elim (fun a : Ψ × Fin p => x a.1 a.2 t) fun a : Ψ × Fin q => x' a.1 a.2 t)) = ⊤`. Use `mem_of_eig (R t).B hσ _ (fun τ => ?_) fun τ => ?_` and prove the remaining obligations.
-
-Rewrite using `[← (hfr t ht τ).1.2]`. Conclude with `Submodule.span_mono (by rintro _ ⟨i, rfl⟩; exact ⟨.inl (τ, i), rfl⟩)`. Rewrite using `[← (hfr t ht τ).2.2]`. Conclude with `Submodule.span_mono (by rintro _ ⟨i, rfl⟩; exact ⟨.inr (τ, i), rfl⟩)`. Use `⟨linearIndependent_of_top_le_span_of_card_eq_finrank hs.ge ?_, hs⟩` and prove the remaining obligations.
-
-Establish `hg` using `GlobalTheory.T.genus_eq_card_mul_signature E Ψ g q p (R t).B σ hσ (hrk t ht)`. Simplify using `only [Fintype.card_sum, Fintype.card_prod, Fintype.card_fin, Module.finrank_fin_fun]`. Rewrite using `[hg]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem perCoord : PerCoord := by
   intro E _ _ _ Ψ _ g n p q Λ _ _ V R σ x x' hV hR hσ ⟨hxa, hxa', hfr⟩

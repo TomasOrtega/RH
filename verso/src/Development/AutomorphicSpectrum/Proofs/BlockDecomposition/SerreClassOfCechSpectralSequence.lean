@@ -69,9 +69,9 @@ section Serre
 variable {R : Type} [CommRing R] (𝒮 : Serre.{w} R)
 
 /- English proof (translation)
-Use `𝒮.mid PUnit.{w + 1} M N 0 f ?_ (𝒮.zero _ inferInstance) hN` and prove the remaining obligations. Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `⟨0, hf (by simpa using hx.symm) ⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce and unpack `⟨y, rfl⟩`. Simplify using the standard rewrite rules.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 theorem serre_of_injective {M N : Type w} [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N]
     (f : M →ₗ[R] N) (hf : Function.Injective f) (hN : 𝒮.P N) : 𝒮.P M := by
@@ -84,9 +84,9 @@ theorem serre_of_injective {M N : Type w} [AddCommGroup M] [Module R M] [AddComm
     simp
 
 /- English proof (translation)
-Use `𝒮.mid M N PUnit.{w + 1} f 0 ?_ hM (𝒮.zero _ inferInstance)` and prove the remaining obligations. Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `_`. Conclude with `hf x`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem serre_of_surjective {M N : Type w} [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N]
     (f : M →ₗ[R] N) (hf : Function.Surjective f) (hM : 𝒮.P M) : 𝒮.P N := by
@@ -99,20 +99,18 @@ theorem serre_of_surjective {M N : Type w} [AddCommGroup M] [Module R M] [AddCom
     rfl
 
 /- English proof (translation)
-The claim follows from `serre_of_surjective 𝒮 e.toLinearMap e.surjective hM`.
+A detailed English derivation is pending.
 -/
 theorem serre_of_equiv {M N : Type w} [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N]
     (e : M ≃ₗ[R] N) (hM : 𝒮.P M) : 𝒮.P N :=
   serre_of_surjective 𝒮 e.toLinearMap e.surjective hM
 
 /- English proof (translation)
-Use `set B' : Submodule R (LinearMap.range c) := B.comap (LinearMap.range c).subtype with hB'`. Establish `h1 : 𝒮.P B'`. Use `serre_of_injective 𝒮 (f := (((LinearMap.range c).subtype.comp B'.subtype).codRestrict B fun x => x.2)) ?_ hB` and prove the remaining obligations. Introduce `x y h`. Establish `h' : ((x.1 : LinearMap.range c) : H) = y.1` using `congrArg (fun t : B => (t : H)) h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Subtype.ext (Subtype.ext h')`. Establish `h2 : 𝒮.P (Z ⧸ LinearMap.ker ψ)` using `serre_of_injective 𝒮 ((LinearMap.ker ψ).liftQ ψ le_rfl) (LinearMap.ker_eq_bot.1 (Submodule.ker_liftQ_eq_bot _ _ _ le_rfl)) hE`. Establish `h3 : 𝒮.P (LinearMap.range c ⧸ B')`. Use `serre_of_surjective 𝒮 ((LinearMap.ker ψ).liftQ (B'.mkQ.comp c.rangeRestrict) ?_) ?_ h2` and prove the remaining obligations. Introduce `z hz`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [LinearMap.mem_ker, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `hk z hz`. Introduce `x`. Take `⟨y, rfl⟩` from `Submodule.mkQ_surjective _ x`. Take `⟨z, hz⟩` from `c.surjective_rangeRestrict y`.
-
-Conclude with `⟨Submodule.Quotient.mk z, by simp [hz]⟩`. Use `𝒮.mid B' _ _ B'.subtype B'.mkQ ?_ h1 h3` and prove the remaining obligations. Conclude with `LinearMap.exact_subtype_mkQ B'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem serre_step {Z H E : Type w} [AddCommGroup Z] [Module R Z] [AddCommGroup H] [Module R H] [AddCommGroup E] [Module R E]
     (c : Z →ₗ[R] H) (ψ : Z →ₗ[R] E) (B : Submodule R H) (hk : ∀ z, ψ z = 0 → c z ∈ B)
@@ -164,21 +162,19 @@ end Filt
 section Pieces
 
 /- English proof (translation)
-Introduce `R _ A I B φ hb q`. Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Take `⟨a, ha, rfl⟩` from `(P.cls_surj A q).1 x`. Take `⟨b, hb', rfl⟩` from `(P.cls_surj A q).1 y`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hz : ∀ i, (B i).d q ((φ i).f q a) = 0` using `fun i => by rw [(φ i).comm, ha, map_zero]`. Establish `hz' : ∀ i, (B i).d q ((φ i).f q b) = 0` using `fun i => by rw [(φ i).comm, hb', map_zero]`. Establish `hi : ∀ i, (φ i).f q a - (φ i).f q b ∈ (B i).B q`. Introduce `i`. Use `congrFun hxy i` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only at this`. Rewrite `this` using `[P.mapH_cls _ q a ha (hz i), P.mapH_cls _ q b hb' (hz' i)]`. Conclude with `((P.cls_surj (B i) q).2.2.1 _ _ _ _).1 this`. Use `((P.cls_surj A q).2.2.1 _ _ _ _).2 ?_` and prove the remaining obligations. Consider the cases of `q with`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `zero => show _ ∈ (⊥ : Submodule R _)`. Rewrite using `[Submodule.mem_bot, sub_eq_zero]`. Use `(hb 0).1 (funext fun i => ?_)` and prove the remaining obligations. Conclude with `sub_eq_zero.1 ((Submodule.mem_bot R).1 (hi i))`. Consider the case `succ q => choose w hw using hi`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨w', hw'⟩` from `(hb q).2 w`. Use `⟨w', ?_⟩` and prove the remaining obligations. Use `(hb (q + 1)).1 (funext fun i => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← (φ i).comm, map_sub, show (φ i).f q w' = w i from congrFun hw' i, hw i]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `y choose a ha hy using fun i => (P.cls_surj (B i) q).1 (y i)`. Take `⟨z, hz⟩` from `(hb q).2 a`. Establish `hzi : ∀ i, (φ i).f q z = a i` using `fun i => congrFun hz i`. Establish `hdz : A.d q z = 0`. Use `(hb (q + 1)).1 (funext fun i => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[← (φ i).comm, hzi, ha, map_zero]`. Use `⟨A.cls z hdz, funext fun i => ?_⟩` and prove the remaining obligations. Establish `h2 : (B i).d q ((φ i).f q z) = 0` using `by rw [hzi, ha]`. Simplify using `only`.
-
-Rewrite using `[P.mapH_cls _ q z hdz h2, hy i]`. Conclude with `((P.cls_surj (B i) q).2.2.1 _ _ _ _).2 (by rw [hzi, sub_self]; exact Submodule.zero_mem _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pi_H_bij : ∀ {R : Type} [CommRing R] {A : Cx.{w} R} {I : Type} (B : I → Cx.{w} R) (φ : ∀ i, Cx.Hom A (B i) (RingHom.id R)), (∀ q, Function.Bijective (fun (x : A.X q) i => (φ i).f q x)) → ∀ q, Function.Bijective (fun (x : A.H q) i => (φ i).mapH q x) := by
   intro R _ A I B φ hb q
@@ -223,11 +219,11 @@ theorem pi_H_bij : ∀ {R : Type} [CommRing R] {A : Cx.{w} R} {I : Type} (B : I 
     exact ((P.cls_surj (B i) q).2.2.1 _ _ _ _).2 (by rw [hzi, sub_self]; exact Submodule.zero_mem _)
 
 /- English proof (translation)
-Introduce `R _ C _ F n`. Set `E : C ⥤ Type` to `(Functor.const C).obj PUnit.{1}`. Set `G : C ⥤ E.Elements` to `{ obj := fun T => ⟨T, PUnit.unit⟩ map := fun φ => ⟨φ, rfl⟩ }`. Set `m : CH.Mor F (CH.elF E F) (RingHom.id R)` to `CH.Mor.restrict F (CategoryOfElements.π E)`. Establish `hb : ∀ k, Function.Bijective (m.hom.f k)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `k`. Prove the components needed by the constructor for the conclusion. Introduce `x y h`. Use function extensionality and compare the values at `c`. Conclude with `congrFun h (c ⋙ G)`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Conclude with `⟨fun c => y (c ⋙ G), funext fun s => rfl⟩`. Conclude with `⟨LinearEquiv.ofBijective (m.hom.mapH n) (P.mapH_bij m.hom hb n)⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem const_H : ∀ {R : Type} [CommRing R] {C : Type u} [Category.{v} C] (F : C ⥤ ModuleCat.{w} R) (n : ℕ), Nonempty (CH.H F n ≃ₗ[R] CH.H (CH.elF ((Functor.const C).obj PUnit.{1}) F) n) := by
   intro R _ C _ F n
@@ -247,9 +243,9 @@ theorem const_H : ∀ {R : Type} [CommRing R] {C : Type u} [Category.{v} C] (F :
   exact ⟨LinearEquiv.ofBijective (m.hom.mapH n) (P.mapH_bij m.hom hb n)⟩
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `Submodule.mkQ_surjective _ x`. Establish `e : ψ.mapZ q z = ∑ k, c k • (φ k).mapZ q z`. Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[AddSubmonoidClass.coe_finsetSum]`. Conclude with `h z.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Submodule.mkQ _ (ψ.mapZ q z) = ∑ k, c k • Submodule.mkQ _ ((φ k).mapZ q z)`. Rewrite using `[e, map_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => map_zsmul _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mapH_sum {R : Type} [CommRing R] {A B : Cx.{w} R} {κ : Type} [Fintype κ] (ψ : Cx.Hom A B (RingHom.id R))
     (φ : κ → Cx.Hom A B (RingHom.id R)) (c : κ → ℤ) (q : ℕ)
@@ -265,9 +261,9 @@ theorem mapH_sum {R : Type} [CommRing R] {A B : Cx.{w} R} {κ : Type} [Fintype �
   exact Finset.sum_congr rfl fun k _ => map_zsmul _ _ _
 
 /- English proof (translation)
-Introduce `R _ C _ ι U hU F p q x`. Use function extensionality and compare the values at `i`. Establish `h1` using `mapH_sum (colMap (dbl U hU F) p) (fun k : Fin (p + 2) => (CH.elMor (CH.cechMap (idxπ U hU) k.succAbove) F).hom) (fun k => (-1 : ℤ) ^ (k : ℕ)) q (fun a => Cos.d_apply ((CH.cechCos (idxπ U hU) F).cos q) p a) x`. Rewrite using `[h1, map_sum, Cos.d_apply, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_zsmul]`. Take `⟨z, rfl⟩` from `Submodule.mkQ_surjective _ x`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem col_comm : ∀ {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {ι : Type} (U : ι → ObjectProperty C) (hU : ∀ α, Cosieve (U α)) (F : C ⥤ ModuleCat.{w} R) (p q : ℕ) (x : ((dbl U hU F).col p).H q), (cechH F U q).d p (fun i => (tupM U hU F i).pull q x) = fun i => (tupM U hU F i).pull q ((colMap (dbl U hU F) p).mapH q x) := by
   intro R _ C _ ι U hU F p q x
@@ -292,7 +288,7 @@ def tupI (s : ComposableArrows (CH.cech (idxπ U hU) p).Elements q) : Fin (p + 1
   fun a => ((s.obj 0).2.1 a).1
 
 /- English proof (translation)
-The claim follows from `congrArg (fun z : (CH.cech (idxπ U hU) p).obj (s.obj k).1 => (z.1 a).1) (s.map (homOfLE (Fin.zero_le k))).2`.
+A detailed English derivation is pending.
 -/
 theorem tupI_val (s : ComposableArrows (CH.cech (idxπ U hU) p).Elements q) (k : Fin (q + 1)) (a : Fin (p + 1)) :
     tupI U hU s a = ((s.obj k).2.1 a).1 :=
@@ -304,7 +300,7 @@ def tupL (s : ComposableArrows (CH.cech (idxπ U hU) p).Elements q) :
     hU _ (s.map (homOfLE (Fin.zero_le k))).1 ((s.obj 0).2.1 a).2
 
 /- English proof (translation)
-The claim follows from `ExtensionDiagram.mk_congr F f (s ⋙ CategoryOfElements.π _) (y := fun k => ((tupL U hU s ⋙ tupF U hU (tupI U hU s)).obj k).2) (y' := fun k => (s.obj k).2) (fun φ => ((tupL U hU s ⋙ tupF U hU (tupI U hU s)).map φ).2) (fun φ => (s.map φ).2) (funext fun k => Subtype.ext (funext fun a …`.
+A detailed English derivation is pending.
 -/
 theorem tup_eval (f : CH.Cn (CH.elF (CH.cech (idxπ U hU) p) F) q)
     (s : ComposableArrows (CH.cech (idxπ U hU) p).Elements q) :
@@ -315,9 +311,9 @@ theorem tup_eval (f : CH.Cn (CH.elF (CH.cech (idxπ U hU) p) F) q)
     (funext fun k => Subtype.ext (funext fun a => Subtype.ext (tupI_val U hU s k a)))
 
 /- English proof (translation)
-Introduce `R _ C _ ι U hU F p q`. Prove the components needed by the constructor for the conclusion. Introduce `x y h`. Use function extensionality and compare the values at `s`. Establish `h1` using `congrFun (congrFun h (tupI U hU s)) (tupL U hU s)`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Conclude with `(tup_eval U hU F x s).symm.trans (Eq.trans h1 (tup_eval U hU F y s))`. Introduce `y`. Conclude with `⟨fun s => y (tupI U hU s) (tupL U hU s), funext fun i => funext fun c => rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem tup_bij : ∀ {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {ι : Type} (U : ι → ObjectProperty C) (hU : ∀ α, Cosieve (U α)) (F : C ⥤ ModuleCat.{w} R) (p q : ℕ), Function.Bijective (fun (x : CH.Cn (CH.elF (CH.cech (idxπ U hU) p) F) q) (i : Fin (p + 1) → ι) => (tupM U hU F i).pullC q x) := by
   intro R _ C _ ι U hU F p q
@@ -336,9 +332,9 @@ section Lead
 variable {R : Type} [CommRing R] (K : DCx.{w} R) {n : ℕ}
 
 /- English proof (translation)
-Establish `h1` using `congrFun (congrFun hD a) (q + 1)`. Rewrite `h1` using `[DCx.D_apply]`. Establish `h2 : K.Dh x a (q + 1) = 0`. Consider the cases of `a with`. Consider the case `zero => rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `succ a => show K.dh a (q + 1) (x a (q + 1)) = 0`. Rewrite using `[h0 a _ (by omega), map_zero]`. Rewrite `h1` using `[h2, zero_add]`. Conclude with `Auxfb.zsm_cancel a _ h1`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dv_lead (x : ∀ p q, K.X p q) (hD : K.D x = 0) (a q : ℕ) (h0 : ∀ p q, p < a → x p q = 0) :
     K.dv a q (x a q) = 0 := by
@@ -354,11 +350,9 @@ theorem dv_lead (x : ∀ p q, K.X p q) (hD : K.D x = 0) (a q : ℕ) (h0 : ∀ p 
   exact Auxfb.zsm_cancel a _ h1
 
 /- English proof (translation)
-Establish `h1` using `congrFun (congrFun hD (a + 1)) q`. Rewrite `h1` using `[DCx.D_apply]`. Consider the cases of `q with`. Consider the case `zero => show _ ∈ (⊥ : Submodule R _)`. Rewrite using `[Submodule.mem_bot]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify `h1` using `[DCx.Dh, DCx.Dv]`. Consider the case `succ q`. Use `⟨-((-1 : ℤ) ^ (a + 1) • x (a + 1) q), ?_⟩` and prove the remaining obligations. Use `show K.dv (a + 1) q _ = _`. Rewrite using `[map_neg, map_zsmul]`.
-
-Conclude with `(eq_neg_of_add_eq_zero_left h1).symm`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dh_lead (x : ∀ p q, K.X p q) (hD : K.D x = 0) (a q : ℕ) : K.dh a q (x a q) ∈ (K.col (a + 1)).B q := by
   have h1 := congrFun (congrFun hD (a + 1)) q
@@ -375,7 +369,7 @@ theorem dh_lead (x : ∀ p q, K.X p q) (hD : K.D x = 0) (a q : ℕ) : K.dh a q (
     exact (eq_neg_of_add_eq_zero_left h1).symm
 
 /- English proof (translation)
-The claim follows from `congrArg Subtype.val (LinearMap.mem_ker.1 z.2)`.
+A detailed English derivation is pending.
 -/
 theorem D_zero (z : K.tot.Z n) : K.D z.1.1 = 0 := congrArg Subtype.val (LinearMap.mem_ker.1 z.2)
 
@@ -394,9 +388,9 @@ Both sides reduce to the same expression.
 theorem leadC_eq (a q : ℕ) (z : Zf K n a) (h) : leadC K a q z = (K.col a).cls (z.1.1.1 a q) h := rfl
 
 /- English proof (translation)
-Establish `hv : (K.col a).d q (z.1.1.1 a q) = 0` using `dv_lead K z.1.1.1 (D_zero K z.1) a q z.2`. Establish `hb : (K.col (a + 1)).d q ((colMap K a).f q (z.1.1.1 a q)) = 0`. Rewrite using `[(colMap K a).comm, hv, map_zero]`. Express the relevant statement in the definitionally equal form `(colMap K a).mapH q (leadC K a q z) = 0`. Rewrite using `[leadC_eq K a q z hv, P.mapH_cls _ q _ hv hb, (P.cls_surj _ q).2.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `dh_lead K z.1.1.1 (D_zero K z.1) a q`.
+A detailed English derivation is pending.
 -/
 theorem leadC_mem (a q : ℕ) (z : Zf K n a) : leadC K a q z ∈ (colH K q).Z a := by
   have hv : (K.col a).d q (z.1.1.1 a q) = 0 := dv_lead K z.1.1.1 (D_zero K z.1) a q z.2
@@ -415,13 +409,13 @@ Both sides reduce to the same expression.
 theorem leadE_eq (a q : ℕ) (z : Zf K n a) : leadE K a q z = (colH K q).cls (leadC K a q z) (leadC_mem K a q z) := rfl
 
 /- English proof (translation)
-Establish `hDW : K.D W ∈ K.T n` using `Auxfb.Dmem' K n W hs`. Establish `hT : z.1.1.1 - K.D W ∈ K.T n` using `Submodule.sub_mem _ z.1.1.2 hDW`. Establish `hc : K.tot.d n ⟨_, hT⟩ = 0` using `Subtype.ext (by`. Express the relevant statement in the definitionally equal form `K.D (z.1.1.1 - K.D W) = 0`. Rewrite using `[map_sub, K.DD, D_zero K z.1, sub_zero])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨⟨⟨_, hT⟩, hc⟩, hW⟩, ?_⟩` and prove the remaining obligations. Use `((P.cls_surj K.tot n).2.2.1 _ _ hc z.1.2).2 ?_` and prove the remaining obligations. Establish `e : z.1.1.1 - K.D W - z.1.1.1 = K.D (-W)` using `by rw [map_neg]; abel`. Consider the cases of `n with`. Consider the case `zero`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Establish `hW0 : W = 0` using `funext fun p => funext fun q => hs p q (by omega)`. Use `show _ ∈ (⊥ : Submodule R _)`. Rewrite using `[Submodule.mem_bot]`. Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `z.1.1.1 - K.D W - z.1.1.1 = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hW0]`. Simplify using the standard rewrite rules. Consider the case `succ m`. Establish `hWT : -W ∈ K.T m` using `Submodule.neg_mem _ fun p q h => hs p q (by omega)`. Conclude with `⟨⟨_, hWT⟩, Subtype.ext e.symm⟩`.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lower {a : ℕ} (z : Zf K n a) (W : ∀ p q, K.X p q) (hs : ∀ p q, p + q + 1 ≠ n → W p q = 0)
     (hW : ∀ p r, p < a + 1 → (z.1.1.1 - K.D W) p r = 0) : clsZ K n a z ∈ Ff K n (a + 1) := by
@@ -446,9 +440,9 @@ theorem lower {a : ℕ} (z : Zf K n a) (W : ∀ p q, K.X p q) (hs : ∀ p q, p +
     exact ⟨⟨_, hWT⟩, Subtype.ext e.symm⟩
 
 /- English proof (translation)
-Introduce `p r hp`. Rewrite using `[Pi.sub_apply, Pi.sub_apply, hW p r hp]`. Distinguish the cases in `h : p = a ∧ r = q`. Take `⟨rfl, rfl⟩` from `h`. Rewrite using `[K.sgl_self, sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[K.sgl_ne _ (by omega), sub_zero]`. Distinguish the cases in `hpa : p < a`. Conclude with `h0 p r hpa`. Conclude with `hT p r (by omega)`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem lower_fin (x : ∀ p q, K.X p q) (hT : x ∈ K.T n) {a q : ℕ} (haq : a + q = n) (h0 : ∀ p q, p < a → x p q = 0)
     (W : ∀ p q, K.X p q) (hW : ∀ p r, p < a + 1 → K.D W p r = K.sgl a q (x a q) p r) :
@@ -464,13 +458,13 @@ theorem lower_fin (x : ∀ p q, K.X p q) (hT : x ∈ K.T n) {a q : ℕ} (haq : a
     · exact hT p r (by omega)
 
 /- English proof (translation)
-Consider the cases of `q with`. Consider the case `zero`. Establish `h1 : x a 0 = v₁` using `sub_eq_zero.1 ((Submodule.mem_bot R).1 hv)`. Conclude with `⟨W₁, hs, lower_fin K x hT haq h0 W₁ fun p r _ => by rw [hW₁, h1]⟩`. Consider the case `succ q`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨u, hu⟩` from `hv`. Establish `hu' : K.dv a q u = x a (q + 1) - v₁` using `hu`. Use `⟨W₁ + (-1 : ℤ) ^ a • K.sgl a q u, fun p r h => ?_, lower_fin K x hT haq h0 _ fun p r hp => ?_⟩` and prove the remaining obligations. Use `show W₁ p r + (-1 : ℤ) ^ a • K.sgl a q u p r = 0`. Rewrite using `[hs p r h, K.sgl_ne u (by omega)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hsq : ((-1 : ℤ) ^ a * (-1) ^ a) = 1` using `by rw [← mul_pow]; simp`. Rewrite using `[map_add, map_zsmul, K.D_sgl, hW₁, hu', smul_add, smul_smul, hsq, one_smul, map_sub]`. Simplify using `only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply]`. Rewrite using `[K.sgl_ne (K.dh a q u) (Or.inl (by omega) : p ≠ a + 1 ∨ r ≠ q)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem lower_vert (x : ∀ p q, K.X p q) (hT : x ∈ K.T n) {a q : ℕ} (haq : a + q = n) (h0 : ∀ p q, p < a → x p q = 0)
     (v₁ : K.X a q) (W₁ : ∀ p q, K.X p q) (hs : ∀ p q, p + q + 1 ≠ n → W₁ p q = 0) (hW₁ : K.D W₁ = K.sgl a q v₁)
@@ -494,17 +488,17 @@ theorem lower_vert (x : ∀ p q, K.X p q) (hT : x ∈ K.T n) {a q : ℕ} (haq : 
       simp
 
 /- English proof (translation)
-Introduce `R _ K n a q haq`. Use `⟨leadE K a q, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hv : (K.col a).d q (z.1.1.1 a q) = 0` using `dv_lead K z.1.1.1 (D_zero K z.1) a q z.2`. Establish `hB : leadC K a q z ∈ (colH K q).B a` using `((P.cls_surj (colH K q) a).2.1 _ _).1 ((leadE_eq K a q z).symm.trans hz)`. Establish `hx : z.1.1.1 ∈ K.T n` using `z.1.1.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : ∀ p q, p < a → z.1.1.1 p q = 0` using `z.2`. It suffices to establish `h : ∃ (v₁ : K.X a q) (W₁ : ∀ p q, K.X p q), (∀ p q, p + q + 1 ≠ n → W₁ p q = 0) ∧ K.D W₁ = K.sgl a q v₁ ∧ z.1.1.1 a q - v₁ ∈ (K.col a).B q by`. Take `⟨v₁, W₁, hs, hW₁, hd⟩` from `h`. Take `⟨W, hW, hl⟩` from `lower_vert K _ hx haq h0 v₁ W₁ hs hW₁ hd`. Conclude with `lower K z W hW hl`.
+Establish an intermediate fact. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `a with`. Consider the case `zero`. Use `⟨0, 0, fun _ _ _ => rfl, by simp, ?_⟩` and prove the remaining obligations. Establish `h1 : leadC K 0 q z = 0` using `(Submodule.mem_bot R).1 hB`. Rewrite `h1` using `[leadC_eq K 0 q z hv, (P.cls_surj _ q).2.1]`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h1`. Consider the case `succ a`. Take `⟨c, hc⟩` from `hB`. Take `⟨y, hy, rfl⟩` from `(P.cls_surj (K.col a) q).1 c`. Establish `hb : (K.col (a + 1)).d q ((colMap K a).f q y) = 0`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(colMap K a).comm, hy, map_zero]`. Establish `h2 : (colMap K a).mapH q ((K.col a).cls y hy) = leadC K (a + 1) q z` using `hc`. Rewrite `h2` using `[P.mapH_cls _ q y hy hb, leadC_eq K (a + 1) q z hv]`. Establish `h3` using `((P.cls_surj (K.col (a + 1)) q).2.2.1 _ _ hv hb).1 h2.symm`. Use `⟨K.dh a q y, K.sgl a q y, fun p r h => K.sgl_ne y (by omega), ?_, h3⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[K.D_sgl, show K.dv a q y = 0 from hy, map_zero, smul_zero, add_zero]`.
+A detailed English derivation is pending.
 -/
 theorem psi_exists : ∀ {R : Type} [CommRing R] (K : DCx.{w} R) (n a q : ℕ), a + q = n → ∃ ψ : Zf K n a →ₗ[R] (colH K q).H a, ∀ z, ψ z = 0 → clsZ K n a z ∈ Ff K n (a + 1) := by
   intro R _ K n a q haq
@@ -543,9 +537,9 @@ section Main
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Establish `h0 : ∀ z : Zf K n (n + 1), z = 0`. Introduce `z`. Use `Subtype.ext (Subtype.ext (Subtype.ext (funext fun p => funext fun q => ?_)))` and prove the remaining obligations. Distinguish the cases in `hp : p < n + 1`. Conclude with `z.2 p q hp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `z.1.1.2 p q (by omega)`. Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Take `⟨x, a, rfl⟩` from `x`. Take `⟨y, b, rfl⟩` from `y`. Rewrite using `[h0 a, h0 b]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Ff_top_subsingleton (K : DCx.{w} R) (n : ℕ) : Subsingleton (Ff K n (n + 1)) := by
   have h0 : ∀ z : Zf K n (n + 1), z = 0 := by
@@ -560,11 +554,9 @@ theorem Ff_top_subsingleton (K : DCx.{w} R) (n : ℕ) : Subsingleton (Ff K n (n 
   rw [h0 a, h0 b]
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `a ha`. Take `rfl : a = n + 1` from `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `𝒮.zero _ (Ff_top_subsingleton K n)`. Consider the case `succ k ih`. Introduce `a ha`. Take `⟨q, hq⟩ : ∃ q, a + q = n` from `⟨n - a, by omega⟩`. Take `⟨ψ, hψ⟩` from `psi_exists K n a q hq`.
-
-Conclude with `serre_step 𝒮 (clsZ K n a) ψ (Ff K n (a + 1)) hψ (ih (a + 1) (by omega)) (h a q hq)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem serre_Ff (𝒮 : Serre.{w} R) (K : DCx.{w} R) (n : ℕ)
     (h : ∀ p q, p + q = n → 𝒮.P ((colH K q).H p)) : ∀ k a, a + k = n + 1 → 𝒮.P (Ff K n a) := by
@@ -581,7 +573,7 @@ theorem serre_Ff (𝒮 : Serre.{w} R) (K : DCx.{w} R) (n : ℕ)
     exact serre_step 𝒮 (clsZ K n a) ψ (Ff K n (a + 1)) hψ (ih (a + 1) (by omega)) (h a q hq)
 
 /- English proof (translation)
-Use `serre_of_surjective 𝒮 (Ff K n 0).subtype ?_ (serre_Ff 𝒮 K n h (n + 1) 0 (by omega))` and prove the remaining obligations. Introduce `x`. Take `⟨z, rfl⟩` from `Submodule.mkQ_surjective _ x`. Conclude with `⟨⟨_, ⟨z, fun p q hp => absurd hp (Nat.not_lt_zero p)⟩, rfl⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem serre_tot (𝒮 : Serre.{w} R) (K : DCx.{w} R) (n : ℕ)
     (h : ∀ p q, p + q = n → 𝒮.P ((colH K q).H p)) : 𝒮.P (K.tot.H n) := by
@@ -598,7 +590,7 @@ def colCmp (U : ι → ObjectProperty C) (hU : ∀ α, Cosieve (U α)) (F : C �
   comm p x := col_comm U hU F p q x
 
 /- English proof (translation)
-The claim follows from `pi_H_bij (fun i : Fin (p + 1) → ι => CH.cx ((capT U i).ι ⋙ F)) (fun i => (tupM U hU F i).hom) (fun q => tup_bij U hU F p q) q`.
+A detailed English derivation is pending.
 -/
 theorem colCmp_bij (U : ι → ObjectProperty C) (hU : ∀ α, Cosieve (U α)) (F : C ⥤ ModuleCat.{w} R) (p q : ℕ) :
     Function.Bijective ((colCmp U hU F q).f p) :=
@@ -608,11 +600,11 @@ theorem colCmp_bij (U : ι → ObjectProperty C) (hU : ∀ α, Cosieve (U α)) (
 end Main
 
 /- English proof (translation)
-Introduce `R _ C _ F ι U hU hc 𝒮 n h`. Establish `hs : ∀ T, Function.Surjective ((idxπ U hU).app T)`. Introduce `T x`. Take `⟨α, hα⟩` from `hc T`. Conclude with `⟨⟨α, hα⟩, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `htot : 𝒮.P ((dbl U hU F).tot.H n)`. Use `serre_tot 𝒮 _ n fun p q hpq => ?_` and prove the remaining obligations. Establish `hb` using `P.mapH_bij (colCmp U hU F q) (fun p => colCmp_bij U hU F p q) p`. Conclude with `serre_of_equiv 𝒮 (LinearEquiv.ofBijective _ hb).symm (h p q hpq)`. Establish `hb` using `P.cech_desc (idxπ U hU) F hs n`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨e⟩` from `const_H F n`. Conclude with `serre_of_equiv 𝒮 (e.trans (LinearEquiv.ofBijective _ hb)).symm htot`.
+A detailed English derivation is pending.
 -/
 theorem serre_cech : ∀ {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] (F : C ⥤ ModuleCat.{0} R) {ι : Type}
     (U : ι → ObjectProperty C) (hU : ∀ α, Cosieve (U α)) (hc : ∀ T, ∃ α, U α T) (𝒮 : Serre.{1} R) (n : ℕ),

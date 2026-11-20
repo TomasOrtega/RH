@@ -9,17 +9,15 @@ open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv G
 namespace GlobalTheory.QLog
 
 /- English proof (translation)
-Introduce `p _ O E _ _ _ hF G d c f s y hQL hs hy`. Take `⟨hf0, -, hcob⟩` from `hQL`. Use `choose bκ _ hbκ using hcob`. Use `set κ : MvPowerSeries (Fin d ⊕ Fin d) O := fun α => bκ α with hκdef`. Establish `hκ : map (algebraMap O E) κ = cob1 (up E c.μ) f`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `α`. Rewrite using `[coeff_map, hbκ α]`. Both sides reduce to the same expression. Take `⟨hcoc, hκ0, hdef⟩` from `GlobalTheory.T.integral_coboundary_representative_cocycle_rules O E d c.μ c.isLaw hF.inj f κ hκ`. Establish `hrel` using `(hdef p s hs).1`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hμ0` using `c.isLaw.const`. Establish `hneg : cob1 c.μ (-s) = -cob1 c.μ s`. Rewrite using `[← neg_one_smul O s, formalCoboundary_smul hμ0, neg_one_smul]`. Take `⟨t, ht0, htd⟩` from `GlobalTheory.T.formalGroupCocycle_coboundary_mod_prime p O G d c κ (-s) (-y) (hκ0 hf0) hcoc (fun α => by`. Rewrite using `[hneg, hrel, show -((p : O) • κ - pull2 (nmul c.μ p) κ) - pull2 (nmul c.μ p) κ = -((p : O) • κ) by ring, map_neg, coeff_smul]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(Dvd.intro _ rfl).neg_right)`. Use the proof step `(by rw [map_neg, hy, smul_neg])`. Use `⟨t, ht0, fun α => ⟨coeff α (κ - cob1 c.μ t), Ideal.mem_span_singleton.2 (htd α), ?_⟩⟩` and prove the remaining obligations. Establish `hup0 : ∀ i, constantCoeff (up E c.μ i) = 0` using `fun i => by`. Rewrite using `[up, ← coeff_zero_eq_constantCoeff_apply, coeff_map, coeff_zero_eq_constantCoeff_apply, hμ0, map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hadd` using `formalCoboundary_add hup0 (f - map (algebraMap O E) t) (map (algebraMap O E) t)`. Rewrite `hadd` using `[sub_add_cancel]`. Establish `hmap` using `(GlobalTheory.T.map_coboundary_swap_pullback_commute O d c.μ hμ0 E (algebraMap O E)).1 t`. Establish `hsub : cob1 (up E c.μ) (f - map (algebraMap O E) t) = map (algebraMap O E) (κ - cob1 c.μ t)`. Rewrite using `[map_sub, hmap, hκ]`.
-
-Conclude with `eq_sub_of_add_eq hadd.symm`. Rewrite using `[hsub, coeff_map]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_int_cob_dvd_of_defect_ev :
     ∀ (p : ℕ) [Fact p.Prime] (O E : Type) [CommRing O] [CommRing E] [Algebra O E], IsFrame p E (RingHom.id O) → ∀ (G : PDivGroup p O) (d : ℕ) (c : QLog.Chart G d), ∀ (f : MvPowerSeries (Fin d) E) (s : MvPowerSeries (Fin d) O) (y : G.A 1), QL c.μ ⊤ f → map (algebraMap O E) s = defect c.μ p f → c.ev 1 s = (p : O) • y → ∃ t : MvPowerSeries (Fin d) O, constantCoeff t = 0 ∧ In (Ideal.span {(p : O)}) (cob1 (up E c.μ) (f - map (algebraMap O E) t)) := by

@@ -37,9 +37,9 @@ theorem coeff_expMv {K : Type} [Field K] {σ : Type} (f : MvPowerSeries σ K) (�
       ∑ n ∈ Finset.range ((α.sum fun _ k => k) + 1), coeff α (f ^ n) / (n.factorial : K) := rfl
 
 /- English proof (translation)
-Use `⟨by simp, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[sub_self, coeff_expMv]`. Use `W.sum_mem fun k _ => ?_` and prove the remaining obligations. Break down `k with _ | k` into its components or cases. Rewrite using `[pow_zero, Nat.factorial_zero, Nat.cast_one, div_one, MvPowerSeries.coeff_one] split_ifs`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `W.one_mem`. Conclude with `W.zero_mem`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem simeqW_refl {K : Type} [Field K] (W : Subring K) {σ : Type} (f : MvPowerSeries σ K) :
     SimeqW W f f := by
@@ -55,7 +55,7 @@ theorem simeqW_refl {K : Type} [Field K] (W : Subring K) {σ : Type} (f : MvPowe
   · simp
 
 /- English proof (translation)
-Substitute `hf hg` using the available equality. Conclude with `h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem simeqW_of_eq {K : Type} [Field K] {W : Subring K} {σ : Type} {f g f' g' : MvPowerSeries σ K}
     (h : SimeqW W f g) (hf : f = f') (hg : g = g') : SimeqW W f' g' := by
@@ -63,13 +63,11 @@ theorem simeqW_of_eq {K : Type} [Field K] {W : Subring K} {σ : Type} {f g f' g'
   exact h
 
 /- English proof (translation)
-Introduce `K _ _ W g S hex hl hph hSD hDI κ ι ι' _ _ _ b b' b'' hb hb' hb'' hD hbb hb'b`. Establish `hmem : ∀ e k, Sum.elim b b' e k ∈ S`. Introduce and unpack `(e | e) k`. Conclude with `hb e k`. Conclude with `hb' e k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA` using `hSD κ (ι ⊕ ι) ι' (Sum.elim b b') b'' hmem hb''`. Establish `hR0 : g.sdR (Sum.elim b b') b'' = 0`. Apply `h2 K g hex hl hph κ (ι ⊕ ι) ι' (Sum.elim b b') b''` to reduce the goal to its premises. Introduce and unpack `(e | e) f`. Conclude with `hbb e f`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hb'b e f`. Establish `hB` using `h4 K W g hex hl κ ι ι' b b' (hDI κ ι b b' hb hb' hD)`. Establish `hC` using `h3 K W _ _ _ _ _ hA hB`. Establish `hE` using `h3 K W _ _ _ _ _ hC (simeqW_refl W (g.PhV b'' (fun f => (X (Sum.inr f) : MvPowerSeries ((ι ⊕ ι) ⊕ ι') K))))`. Use `simeqW_of_eq hE ?_ ?_` and prove the remaining obligations.
-
-Unfold `Dat.sdL`. Normalize the expressions using the abelian group laws. Rewrite using `[hR0, zero_add]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem target_of (h2 : S2) (h3 : S3) (h4 : S4) : Target := by
   intro K _ _ W g S hex hl hph hSD hDI κ ι ι' _ _ _ b b' b'' hb hb' hb'' hD hbb hb'b

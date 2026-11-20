@@ -8,11 +8,11 @@ open WittVector Ideal Polynomial
 namespace ReciprocityTheory.PGsh
 
 /- English proof (translation)
-Establish `hu : ∀ n, IsUnit (Perfection.coeff R p n x)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => exact h`. Consider the case `succ n ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `h2 : Perfection.coeff R p (n + 1) x ^ p = Perfection.coeff R p n x` using `Perfection.coeff_pow_p' x n`. Rewrite `ih` using `[← h2]`. Conclude with `(isUnit_pow_iff hp.out.ne_zero).mp ih`. Establish `h3 : ∀ n, (hu (n + 1)).unit ^ p = (hu n).unit` using `fun n => Units.ext (by simpa using Perfection.coeff_pow_p' x n)`. Set `y : Perfection R p` to `⟨fun n => ((hu n).unit⁻¹ : Rˣ), fun n => by show (((hu (n + 1)).unit⁻¹ : Rˣ) : R) ^ p = (((hu n).unit⁻¹ : Rˣ) : R)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Units.val_pow_eq_pow_val, inv_pow, h3]⟩`. Use `isUnit_iff_exists_inv.mpr ⟨y, Perfection.ext fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_one]`. Conclude with `(hu n).mul_val_inv`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma perfection_isUnit {p : ℕ} [hp : Fact p.Prime] {R : Type*} [CommRing R] [CharP R p]
     (x : Perfection R p) (h : IsUnit (Perfection.coeff R p 0 x)) : IsUnit x := by
@@ -35,7 +35,7 @@ private lemma perfection_isUnit {p : ℕ} [hp : Fact p.Prime] {R : Type*} [CommR
   exact (hu n).mul_val_inv
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `h`. Conclude with `⟨WittVector.mkUnit (p := p) (a := u) (A := c) (by rw [hu]; rfl), rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private lemma witt_isUnit {p : ℕ} [hp : Fact p.Prime] {R : Type*} [CommRing R] [CharP R p]
     [PerfectRing R p] (c : WittVector p R) (h : IsUnit (constantCoeff c)) : IsUnit c := by
@@ -43,9 +43,9 @@ private lemma witt_isUnit {p : ℕ} [hp : Fact p.Prime] {R : Type*} [CommRing R]
   exact ⟨WittVector.mkUnit (p := p) (a := u) (A := c) (by rw [hu]; rfl), rfl⟩
 
 /- English proof (translation)
-Establish `hX : ((Polynomial.X : (ZMod p)[X]) - 1) ^ (p - 1) = ∑ i ∈ Finset.range p, (Polynomial.X : (ZMod p)[X]) ^ i`. Establish `hne : (Polynomial.X : (ZMod p)[X]) - 1 ≠ 0`. Simplify using `using Polynomial.X_sub_C_ne_zero (1 : ZMod p)`. Apply `mul_left_cancel₀ hne` to reduce the goal to its premises. Rewrite using `[← pow_succ', Nat.sub_add_cancel hp.out.one_lt.le, sub_pow_char, one_pow, mul_comm, geom_sum_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `congrArg (Polynomial.eval₂ (ZMod.castHom (dvd_refl p) R) x) hX`. Simplify `h` using `[Polynomial.eval₂_finset_sum, Polynomial.eval₂_pow, Polynomial.eval₂_sub, Polynomial.eval₂_X, Polynomial.eval₂_one]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma sub_one_pow_pred {p : ℕ} [hp : Fact p.Prime] {R : Type*} [CommRing R] [CharP R p]
     (x : R) : (x - 1) ^ (p - 1) = ∑ i ∈ Finset.range p, x ^ i := by
@@ -61,9 +61,9 @@ private lemma sub_one_pow_pred {p : ℕ} [hp : Fact p.Prime] {R : Type*} [CommRi
     Polynomial.eval₂_X, Polynomial.eval₂_one] using h
 
 /- English proof (translation)
-Take `⟨i, -, hi⟩ : ∃ i < p, β ^ i = α` from `by first`. Consider the case `exact hβ.eq_pow_of_pow_eq_one hα.pow_eq_one`. Consider the case `exact hβ.eq_pow_of_pow_eq_one hα.pow_eq_one hp.out.pos`. Establish `hvb : v β = 1`. Establish `h : v β ^ p = 1` using `by rw [← map_pow, hβ.pow_eq_one, map_one]`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(pow_eq_one_iff_of_nonneg (by positivity) hp.out.ne_zero).mp h`. Rewrite using `[← hi, ← geom_sum_mul, map_mul]`. Establish `hs : v (∑ k ∈ Finset.range i, β ^ k) ≤ 1` using `v.map_sum_le fun k _ => by rw [map_pow, hvb, one_pow]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private lemma val_sub_one_le {C : Type*} [Field C] (v : Valuation C NNReal) {p : ℕ}
     [hp : Fact p.Prime] {α β : C} (hα : IsPrimitiveRoot α p) (hβ : IsPrimitiveRoot β p) :
@@ -83,11 +83,11 @@ private lemma val_sub_one_le {C : Type*} [Field C] (v : Valuation C NNReal) {p :
     _ = v (β - 1) := one_mul _
 
 /- English proof (translation)
-Establish `hcyc` using `Polynomial.cyclotomic_eq_prod_X_sub_primitiveRoots hz`. Establish `h1` using `Polynomial.eval_one_cyclotomic_prime (R := C) (p := p)`. Rewrite `h1` using `[hcyc, Polynomial.eval_prod]`. Simplify using `only [Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C] at h1`. Rewrite using `[← h1, map_prod]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `heq : ∀ μ ∈ primitiveRoots p C, v (1 - μ) = v (z - 1)`. Introduce `μ hμ`. Establish `hμ'` using `(mem_primitiveRoots hp.out.pos).mp hμ`. Rewrite using `[← Valuation.map_neg, neg_sub]`. Conclude with `le_antisymm (val_sub_one_le v hμ' hz) (val_sub_one_le v hz hμ')`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_congr rfl heq, Finset.prod_const, hz.card_primitiveRoots, Nat.totient_prime hp.out]`.
+A detailed English derivation is pending.
 -/
 private lemma val_prim_root {C : Type*} [Field C] (v : Valuation C NNReal) {p : ℕ}
     [hp : Fact p.Prime] {z : C} (hz : IsPrimitiveRoot z p) :
@@ -111,9 +111,9 @@ variable {p : ℕ} [hp : Fact p.Prime] {C : Type} [Field C] {v : Valuation C NNR
   [IsAdicComplete (span {(p : O)}) O]
 
 /- English proof (translation)
-Establish `h1` using `PreTilt.mk_untilt_eq_coeff_zero (x - 1)`. Establish `h2` using `PreTilt.mk_untilt_eq_coeff_zero x`. Establish `h3 : Ideal.Quotient.mk (span {(p : O)}) ((x - 1).untilt - (x.untilt - 1)) = 0`. Rewrite using `[map_sub, h1, map_sub (Ideal.Quotient.mk _), map_one, h2, map_sub, map_one, sub_self]`. Rewrite `h3` using `[Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨t, ht⟩` from `h3`. Conclude with `⟨t, by linear_combination -ht⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private lemma untilt_sub_one (x : PreTilt O p) :
     ∃ t : O, (x - 1).untilt = x.untilt - 1 + p * t := by
@@ -126,9 +126,9 @@ private lemma untilt_sub_one (x : PreTilt O p) :
   exact ⟨t, by linear_combination -ht⟩
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `untilt_sub_one x`. Rewrite using `[ht, map_add, map_sub, map_one]`. Establish `hpt : v (algebraMap O C ((p : O) * t)) ≤ v (p : C)`. Rewrite using `[map_mul, map_natCast, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Conclude with `Valuation.map_add_eq_of_lt_left v (lt_of_le_of_lt hpt hlt)`.
+A detailed English derivation is pending.
 -/
 private lemma val_untilt_sub_one (hv : v.Integers O) (x : PreTilt O p)
     (hlt : v (p : C) < v (algebraMap O C x.untilt - 1)) :
@@ -142,9 +142,9 @@ private lemma val_untilt_sub_one (hv : v.Integers O) (x : PreTilt O p)
   exact Valuation.map_add_eq_of_lt_left v (lt_of_le_of_lt hpt hlt)
 
 /- English proof (translation)
-Establish `h1 : v (p : C) ≤ 1`. Establish `h` using `hv.map_le_one (p : O)`. Rewrite `h` using `[map_natCast]`. Then use the resulting hypothesis. Use `lt_of_le_of_ne h1 fun heq => ?_` and prove the remaining obligations. Establish `hp0 : (p : C) ≠ 0` using `fun h0 => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `heq` using `[h0, map_zero]`. Conclude with `zero_ne_one heq`. Establish `hu` using `hv.isUnit_of_one (x := (p : O)) (by rw [map_natCast]; exact isUnit_iff_ne_zero.mpr hp0) (by rw [map_natCast]; exact heq)`. Conclude with `(Fact.out : ¬IsUnit (p : O)) hu`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma val_p_lt_one (hv : v.Integers O) : v (p : C) < 1 := by
   have h1 : v (p : C) ≤ 1 := by
@@ -159,35 +159,31 @@ private lemma val_p_lt_one (hv : v.Integers O) : v (p : C) < 1 := by
   exact (Fact.out : ¬IsUnit (p : O)) hu
 
 /- English proof (translation)
-Establish `hpl : v (p : C) < 1` using `val_p_lt_one hv`. Use `haveI : IsDomain O := hv.hom_inj.isDomain (algebraMap O C)`. Establish `hpow : ∀ (x : PreTilt O p) (n : ℕ), (x ^ n).untilt = x.untilt ^ n`. Introduce `x n`. Use `first`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately.
 
-Consider the case `exact PreTilt.untilt_pow x n`. Consider the case `exact map_pow _ x n`. Consider the case `simp [PreTilt.untilt_pow]`. Break down `hp.out.eq_two_or_odd' with h2 | hodd` into its components or cases. Substitute `h2 set e' := (frobeniusEquiv (PreTilt O 2) 2).symm e with he'` using the available equality.
+Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Treat this case separately.
 
-Establish `hep : e' ^ 2 = e` using `by first`. Consider the case `exact frobeniusEquiv_symm_pow_p 2 e`. Consider the case `(have h3 := frobenius_apply_frobeniusEquiv_symm (PreTilt O 2) 2 e`. Rewrite using `[frobenius_def] at h3)` and apply the resulting hypothesis. Consider the case `simp [he']`.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : (e' - 1) ^ 2 = e - 1` using `by rw [sub_pow_char, one_pow, hep]`. Establish `hm1 : e.untilt = -1` using `hζ.eq_neg_one_of_two_right`. Establish `h2ne : (2 : C) ≠ 0`. Introduce `h0`. Apply `hζ.ne_one (by norm_num)` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hm1]`. Establish `h5 : algebraMap O C (2 : O) = 0` using `by rw [map_ofNat]; exact h0`. Establish `h6 : (2 : O) = 0` using `hv.hom_inj (h5.trans (map_zero _).symm)`. Take the linear combination `-h6`. Use `set z := algebraMap O C e'.untilt with hz`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz2 : z ^ 2 = -1` using `by rw [hz, ← map_pow, ← hpow, hep, hm1, map_neg, map_one]`. Establish `hvz : v z = 1`. Establish `h7 : v z ^ 2 = 1` using `by rw [← map_pow, hz2, Valuation.map_neg, map_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (by positivity) two_ne_zero).mp h7`. Establish `hzz : (z - 1) ^ 2 = -2 * z` using `by linear_combination hz2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx2 : v (z - 1) ^ 2 = v (2 : C)`. Rewrite using `[← map_pow, hzz, map_mul, hvz, mul_one, Valuation.map_neg]`. Establish `hx0 : v (z - 1) ≠ 0`. Introduce `h0`. Rewrite `hx2` using `[h0]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `((Valuation.ne_zero_iff v).mpr h2ne) (by rw [← hx2]; simp)`. Rewrite `hpl` using `[Nat.cast_ofNat]`. Establish `hxl : v (z - 1) < 1`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Establish `h9 : 1 ≤ v (z - 1) ^ 2` using `one_le_pow₀ hc`. Rewrite `h9` using `[hx2]`. Conclude with `absurd hpl (not_lt.mpr h9)`. Establish `hlt : v ((2 : ℕ) : C) < v (algebraMap O C e'.untilt - 1)`. Rewrite using `[Nat.cast_ofNat, ← hx2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `first`. Consider the case `exact pow_lt_self_of_lt_one₀ (pos_iff_ne_zero.mpr hx0) hxl one_lt_two`. Consider the case `exact pow_lt_self_of_lt_one (pos_iff_ne_zero.mpr hx0) hxl one_lt_two`. Establish `hval` using `val_untilt_sub_one hv e' hlt`. Rewrite using `[← hsub, hpow, map_pow, map_pow, hval, hx2]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hx` using `val_prim_root v (hζ.map_of_injective hv.hom_inj)`. Establish `hne : algebraMap O C e.untilt - 1 ≠ 0`. Introduce `h0`. Apply `hζ.ne_one hp.out.one_lt` to reduce the goal to its premises.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Apply `hv.hom_inj` to reduce the goal to its premises. Rewrite using `[map_one]`. Conclude with `sub_eq_zero.mp h0`. Establish `hx0 : v (algebraMap O C e.untilt - 1) ≠ 0` using `(Valuation.ne_zero_iff v).mpr hne`. Establish `hxl : v (algebraMap O C e.untilt - 1) < 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `h9 : 1 ≤ v (algebraMap O C e.untilt - 1) ^ (p - 1)` using `one_le_pow₀ hc`. Rewrite `h9` using `[hx]`. Conclude with `absurd hpl (not_lt.mpr h9)`.
-
-Establish `hp3 : 1 < p - 1`. Establish `h10` using `hp.out.two_le`. Take `⟨k, hk⟩` from `hodd`. Use linear arithmetic over natural numbers and integers. Establish `hlt : v (p : C) < v (algebraMap O C e.untilt - 1)`.
-
-Rewrite using `[← hx]`. Use `first`. Consider the case `exact pow_lt_self_of_lt_one₀ (pos_iff_ne_zero.mpr hx0) hxl hp3`. Consider the case `exact pow_lt_self_of_lt_one (pos_iff_ne_zero.mpr hx0) hxl hp3`. Rewrite using `[val_untilt_sub_one hv e hlt, hx]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma val_untilt_e_sub_one (hv : v.Integers O) (e : PreTilt O p)
     (hζ : IsPrimitiveRoot e.untilt p) :
@@ -273,41 +269,35 @@ private lemma val_untilt_e_sub_one (hv : v.Integers O) (e : PreTilt O p)
 end Ainf
 
 /- English proof (translation)
-Introduce `ε hv hζ`. Use `haveI : IsDomain O := hv.hom_inj.isDomain (algebraMap O C)`. Use `set e := (frobeniusEquiv (PreTilt O p) p).symm ε with he`. Establish `hep : e ^ p = ε` using `by first`. Consider the case `exact frobeniusEquiv_symm_pow_p p ε`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Consider the case `(have h3 := frobenius_apply_frobeniusEquiv_symm (PreTilt O p) p ε`. Rewrite using `[frobenius_def] at h3)` and apply the resulting hypothesis. Consider the case `simp [he]`. Establish `hT : ∀ x : PreTilt O p, fontaineTheta O p (teichmuller p x) = x.untilt`. Introduce `x`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately.
 
-Use `first`. Consider the case `exact fontaineTheta_teichmuller x`. Consider the case `exact fontaineTheta_teichmuller O p x`. Consider the case `simp [fontaineTheta]`. Establish `h1 : teichmuller p ε - 1 = (∑ i ∈ Finset.range p, teichmuller p e ^ i) * (teichmuller p e - 1)`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[geom_sum_mul, ← map_pow, hep]`. Establish `h2 : fontaineTheta O p (teichmuller p e - 1) = e.untilt - 1`. Rewrite using `[map_sub, map_one, hT]`. Establish `hne : algebraMap O C (e.untilt - 1) ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `hζ.ne_one hp.out.one_lt` to reduce the goal to its premises. Establish `h4` using `hv.hom_inj (h0.trans (map_zero _).symm)`. Conclude with `sub_eq_zero.mp h4`. Establish `h3 : v (algebraMap O C (fontaineTheta O p (teichmuller p e - 1))) ^ (p - 1) = v (p : C)`. Rewrite using `[h2, map_sub, map_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `val_prim_root v (hζ.map_of_injective hv.hom_inj)`. Use `⟨h1, h2, h3, fun pflat hpf => ?_⟩` and prove the remaining obligations. Take `⟨hK1, -, -⟩` from `hK pflat hpf`. Establish `hvp : v (p : C) ≠ 0`. Rewrite using `[← h3, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `pow_ne_zero _ ((Valuation.ne_zero_iff v).mpr hne)`. Establish `hxi : (∑ i ∈ Finset.range p, teichmuller p e ^ i) ∈ RingHom.ker (fontaineTheta O p)`. Rewrite using `[RingHom.mem_ker, map_sum]`. Simplify using `only [map_pow, hT]`. Conclude with `hζ.geom_sum_eq_zero hp.out.one_lt`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite `hxi` using `[hK1]`. Take `⟨a, ha⟩` from `Ideal.mem_span_singleton'.mp hxi`. Establish `hmul : ∀ x y : PreTilt O p, (x * y).untilt = x.untilt * y.untilt`. Introduce `x y`. Use `first`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact PreTilt.untilt_mul x y`. Consider the case `exact map_mul _ x y`. Consider the case `simp [PreTilt.untilt_mul]`. Establish `hpow : ∀ (x : PreTilt O p) (n : ℕ), (x ^ n).untilt = x.untilt ^ n`. Introduce `x n`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `first`. Consider the case `exact PreTilt.untilt_pow x n`. Consider the case `exact map_pow _ x n`. Consider the case `simp [PreTilt.untilt_pow]`. Establish `hone : (1 : PreTilt O p).untilt = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h5` using `hpow (1 : PreTilt O p) 0`. Rewrite `h5` using `[pow_zero, pow_zero]`. Then use the resulting hypothesis. Establish `hct : ∀ x : PreTilt O p, WittVector.constantCoeff (teichmuller p x) = x` using `fun x => WittVector.teichmuller_coeff_zero p x`. Establish `hc` using `congrArg WittVector.constantCoeff ha`. Rewrite `hc` using `[map_mul, map_sub, map_natCast, CharP.cast_eq_zero, zero_sub, hct, map_sum]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_pow, hct] at hc`. Establish `hc2 : WittVector.constantCoeff a * ((-1) * pflat) = (e - 1) ^ (p - 1)`. Rewrite using `[sub_one_pow_pred, ← hc]`. Expand and normalize the polynomial expressions, which then agree. Establish `hw` using `congrArg (fun x : PreTilt O p => v (algebraMap O C x.untilt)) hc2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [hmul, hpow, map_mul, map_pow] at hw`. Rewrite `hw` using `[val_untilt_e_sub_one hv e hζ, hpf, map_natCast]`. Establish `hm1 : v (algebraMap O C ((-1 : PreTilt O p).untilt)) = 1`. Establish `h5 : ((-1 : PreTilt O p).untilt) ^ 2 = 1`. Rewrite using `[← hpow, neg_one_sq, hone]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h6 : v (algebraMap O C ((-1 : PreTilt O p).untilt)) ^ 2 = 1`. Rewrite using `[← map_pow, ← map_pow, h5, map_one, map_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (by positivity) two_ne_zero).mp h6`. Rewrite `hw` using `[hm1, one_mul]`. Establish `hX : v (algebraMap O C (WittVector.constantCoeff a).untilt) = 1`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h7 : v (algebraMap O C (WittVector.constantCoeff a).untilt) * v (p : C) = 1 * v (p : C)`. Rewrite using `[one_mul]`. Conclude with `hw`. Conclude with `mul_right_cancel₀ hvp h7`. Establish `hU : IsUnit (WittVector.constantCoeff a).untilt`.
-
-Use `hv.isUnit_of_one (isUnit_iff_ne_zero.mpr fun h0 => ?_) hX` and prove the remaining obligations. Rewrite `hX` using `[h0, map_zero]`. Conclude with `zero_ne_one hX`. Establish `hunit : IsUnit a`. Apply `witt_isUnit` to reduce the goal to its premises.
-
-Apply `perfection_isUnit` to reduce the goal to its premises. Establish `h8` using `PreTilt.mk_untilt_eq_coeff_zero (WittVector.constantCoeff a)`. Establish `h9 : IsUnit (PreTilt.coeff 0 (WittVector.constantCoeff a))`. Rewrite using `[← h8]`. Conclude with `hU.map _`.
-
-Conclude with `h9`. Use `⟨?_, hunit.unit, by rw [IsUnit.unit_spec, ha]⟩` and prove the remaining obligations. Rewrite using `[hK1, ← ha, Ideal.span_singleton_mul_left_unit hunit]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xiNu (p : ℕ) [hp : Fact p.Prime] (C : Type) [Field C] (v : Valuation C NNReal)
     (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)]

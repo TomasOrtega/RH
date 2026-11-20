@@ -77,9 +77,9 @@ def SpreadSt : Prop :=
     FromTest (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) y
 
 /- English proof (translation)
-Introduce `T io O _ β Y yt z h1 h2 G m`. Take `⟨PP', cub, sym, adj, prim, m2, -⟩` from `sabPull hC (spMap (algebraMap T.V T.Fr)) G`. Take `⟨n, -⟩` from `sabComp pullCubComp E H _ _ _ Y.t G _ yt _ m m2`. Rewrite `n` using `[← h1]`. Establish `n' : SABMap _ Y.t (z ≫ (Y.jQ ≫ pullback.fst _ _))` using `n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨m1, -⟩` from `sabCancel pullCubCancel E H _ _ _ Y.t Y.oF.t _ _ z Y.m n'`. Take `⟨n2, -⟩` from `sabComp pullCubComp E H _ _ _ Xo.univ.t Y.oF.t _ _ z Y.m0.toSABMap m1`. Conclude with `⟨_, n2, m2, trivial⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem genFibre (hC : ReciprocityTheory.ChartRestriction.G.Out.CubePullSt) : GenFibreSt Xo c := by
   intro T io O _ β Y yt z h1 h2 G m
@@ -94,17 +94,15 @@ theorem genFibre (hC : ReciprocityTheory.ChartRestriction.G.Out.CubePullSt) : Ge
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `e : ∀ (X : Scheme.{0}) (U : X.Opens) (h : U ≤ (𝟙 X) ⁻¹ᵁ U) (v : Γ(X, U)), (Scheme.Hom.appLE (𝟙 X) U U h).hom v = v`. Introduce `X U h v`. Simplify using `[Scheme.Hom.appLE]`. Use `first`. Consider the case `(erw [Category.id_comp, CategoryTheory.Functor.map_id]; rfl)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Consider the case `(erw [Category.id_comp, CategoryTheory.Functor.map_id]; simp; done)`. Consider the case `(erw [CategoryTheory.Functor.map_id]; simp; done)`. Establish `key : ∀ {S : Type} [CommRing S] (x : Sp S ⟶ Xo.X) (s s0 : LB.Sec (PPx x)) (a : S), (∀ i, s.f i = scal x a i * s0.f i) → ∀ (i : Fin 1 → Xo.univ.t.PP.L.ι) (h : (PPx x).U i ≤ (𝟙 (Gx x)) ⁻¹ᵁ (PPx x).U i), (Scheme.Hom.appLE (𝟙 (Gx x)) _ _ h).hom (scal x a i * s0.f i) = s.f i`. Introduce `S _ x s s0 a ha i h`. Rewrite using `[ha i]`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `e _ _ _ _`. Introduce `T io O _ β Y hP yt z h1 h2`. Use `letI := io.toAlgebra`. Introduce `y₀ hy₀`. Take `⟨x0, hx0, u0, tan0, eig0, basis0, s0, gen0⟩` from `y₀`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality.
 
-Simplify using `only at hy₀`. Substitute `hy₀` using the available equality. Take `⟨PP', cub, sym, adj, prim, mG, -⟩` from `sabPull hC yt Y.t`. Take `⟨t', m1, m2, -⟩` from `hG T io O β Y yt z h1 h2 _ mG`. Take `⟨ub, u, ⟨hub1, hub2, hub3, hub4⟩, hu1, hu2, hu3, hu4⟩` from `hL T io _ t' _ m1 m2 hx0 u0 tan0 eig0 basis0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨θ, s, hθ1, hθ2, hs, a, ha⟩` from `hT T io O β Y hP yt z h1 h2 _ mG t' m1 m2 s0 gen0`. Use `choose cf hcf1 hcf2 hcf3 using hu4`. Set `y : FrPt Xo c T.Fr` to `{ x := _, x_over := hx0, u := u, tan := hu1, eig := hu2, basis := hu3, s := s, gen := hs }`. Use `⟨⟨y, hS T.Fr y, _, t', m1, m2, ⟨ub, hub1, hub2, hub3, hub4⟩, θ, hθ1, hθ2⟩, fun k => match k with | none => a | some p => (hcf1 p.1 p.2).unit, rfl, ?_, 𝟙 _, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `τ i`.
-
-Conclude with `⟨cf τ i, (hcf1 τ i).unit_spec.symm, hcf2 τ i, hcf3 τ i⟩`. Conclude with `Category.id_comp _`. Conclude with `Category.id_comp _`. Conclude with `key _ s s0 _ ha`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem intFrames_of (hC : ReciprocityTheory.ChartRestriction.G.Out.CubePullSt) (hG : GenFibreSt Xo c) (hL : LieFreeSt Xo c)
     (hT : ThetaFrameSt Xo c) (hS : SpreadSt Xo c) : IntFramesSt Xo c := by
@@ -147,7 +145,7 @@ theorem intFrames_of (hC : ReciprocityTheory.ChartRestriction.G.Out.CubePullSt) 
   · exact key _ s s0 _ ha
 
 /- English proof (translation)
-The claim follows from `intFrames_of Xo c hC (genFibre Xo c hC) hL hT hS`.
+A detailed English derivation is pending.
 -/
 theorem intFrames (hC : ReciprocityTheory.ChartRestriction.G.Out.CubePullSt) (hL : LieFreeSt Xo c) (hT : ThetaFrameSt Xo c)
     (hS : SpreadSt Xo c) : IntFramesSt Xo c :=

@@ -21,7 +21,7 @@ instance LocalizeBundle.exTower : @IsScalarTower ℤ LocalizeBundle.exO Localize
   IsScalarTower.of_algebraMap_eq' (RingHom.ext_int _ _)
 
 /- English proof (translation)
-The claim follows from `h ℤ (Ideal.span {(2 : ℤ)}) LocalizeBundle.exO LocalizeBundle.exΩ 1 ![1, 1] (Kleiman.twistBundle ℤ ![1, 1] 1)`.
+A detailed English derivation is pending.
 -/
 example (h : LocalizeBundle.Statement) :=
   h ℤ (Ideal.span {(2 : ℤ)}) LocalizeBundle.exO LocalizeBundle.exΩ 1 ![1, 1]

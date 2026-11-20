@@ -16,7 +16,7 @@ section Transport
 variable {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Take `⟨v, hv, h0⟩` from `(Submodule.ne_bot_iff _).1 hπ`. Use `(Submodule.ne_bot_iff _).2 ⟨φ v, GlobalTheory.Parabolic.mem_fixed.2 fun u hu => ?_, fun h1 => h0 ?_⟩` and prove the remaining obligations. Conclude with `(φ.toIntertwiningMap.isIntertwining _ _ u v).symm.trans (congrArg φ (GlobalTheory.Parabolic.mem_fixed.1 hv u hu))`. Conclude with `φ.toLinearEquiv.injective (h1.trans (map_zero _).symm)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem fixed_ne_bot_of_equiv {π : Representation ℂ G V} {σ : Representation ℂ G W} (φ : π.Equiv σ) {K : Subgroup G}
     (hπ : fixed π K ≠ ⊥) : fixed σ K ≠ ⊥ := by
@@ -35,17 +35,17 @@ def toIrrRep {n : ℕ} (π : Irr (w.adicCompletion E) n) : IrrRep (GL (Fin n) (w
   ⟨π.V, π.π, π.smooth, π.irr⟩
 
 /- English proof (translation)
-Take `⟨a, ha, ε, -, H⟩` from `H`. Establish `hc : ∀ (χ : (w.adicCompletion E)ˣ →* ℂˣ) (c : Irr (w.adicCompletion E) 1), Nonempty (c.π.Equiv (detRep (Fin 1) χ)) → ∃ hχ : IsSmoothChar χ, cls (toIrrRep c) = .ofChar χ hχ`. Introduce and unpack `χ c ⟨φ⟩`. Establish `h1 : IsSmoothChar (detChar (Fin 1) χ)` using `(isSmooth_ofChar_iff _).1 ((IsSubquotient.of_surjective φ.toIntertwiningMap φ.toLinearEquiv.surjective).isSmooth c.smooth)`. Establish `h2 : Continuous (Matrix.GeneralLinearGroup.scalar (R` using `w.adicCompletion E) (Fin 1)) := Units.continuous_map (continuous_matrix fun i j => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Subsingleton.elim i j]`. Simplify using `using continuous_id')`. Establish `h3 : (detChar (Fin 1) χ).comp (Matrix.GeneralLinearGroup.scalar (Fin 1)) = χ`. Use `MonoidHom.ext fun z => congrArg χ ?_` and prove the remaining obligations. Use `ext`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.GeneralLinearGroup.scalar]`. Conclude with `⟨h3 ▸ h1.comp _ h2, congrArg (Sigma.mk 1) (IrrRep.cl_eq_iff.2 ⟨φ⟩)⟩`. Use `⟨fun n π => H.dim _, fun n π π' => H.eq_iff _ _, fun r t σ τ π hπ => H.prod r t _ _ _ hπ, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `t χ c τ h1 h2`. Take `⟨hχ, e⟩` from `hc χ c h1`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e, (H.eq_iff (toIrrRep τ) (IrrRep.det (Fin t) χ hχ)).2 h2, H.det, sumList, List.foldr_map, speh]`. Simplify using `[List.foldr_map, ← List.map_eq_flatMap]`. Introduce `n χ c π π' h1 h2`. Take `⟨hχ, e⟩` from `hc χ c h1`. Rewrite using `[e, ← H.twist]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg rc ((IrrGL.of_eq_of.2 h2).trans (IrrGL.tw_of π.π π.smooth π.irr χ hχ).symm)`. Introduce `n π`. Rewrite using `[← H.sph]`. Conclude with `⟨fixed_ne_bot_of_equiv (equivRep (toIrrRep π)).symm, fixed_ne_bot_of_equiv (equivRep (toIrrRep π))⟩`. Introduce `n π α hα`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `φ` using `equivRep (toIrrRep π)`. Rewrite using `[H.sat (cls (toIrrRep π)) α ⟨IrrRep.irr _, fixed_ne_bot_of_equiv φ hα.2.1, (IsSubquotient.of_surjective φ.toIntertwiningMap φ.toLinearEquiv.surjective).trans hα.2.2⟩, WD.frobEig_diag]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsRec.recLaws {rc : IrrGL (w.adicCompletion E) → WD h} (H : IsRec h rc) :
     RecLaws fun _ (π : Irr (w.adicCompletion E) _) => rc (cls (toIrrRep π)) := by
@@ -80,7 +80,7 @@ theorem IsRec.recLaws {rc : IrrGL (w.adicCompletion E) → WD h} (H : IsRec h rc
       (IsSubquotient.of_surjective φ.toIntertwiningMap φ.toLinearEquiv.surjective).trans hα.2.2⟩, WD.frobEig_diag]
 
 /- English proof (translation)
-The claim follows from `let ⟨_, hrc, _⟩ := H.1 E Ω A w h ⟨_, hrc.recLaws⟩`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Published.LocalLanglandsGL.exists_recLaws (H : GlobalTheory.Published.LocalLanglandsGL) (h : IsPlaceOver A w) :
     ∃ rc : ∀ n, Irr (w.adicCompletion E) n → WD h, RecLaws rc :=

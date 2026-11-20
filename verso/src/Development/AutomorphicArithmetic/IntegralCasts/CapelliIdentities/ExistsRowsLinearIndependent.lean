@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `K _ r c _ _ P k hk`. Take `⟨κ, a, ha, hspan, hli⟩` from `exists_linearIndependent' K P.row`. Use `haveI : Finite κ := Finite.of_injective a ha`. Use `haveI : Fintype κ := Fintype.ofFinite κ`. Establish `hcard : Fintype.card (Fin k) ≤ Fintype.card κ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Fintype.card_fin, ← finrank_span_eq_card hli, hspan, ← Matrix.rank_eq_finrank_span_row]`. Conclude with `hk`. Take `⟨e⟩` from `Function.Embedding.nonempty_of_card_le hcard`. Conclude with `⟨fun p ↦ a (e p), hli.comp e e.injective⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qm10.exists_rows_linearIndependent.{u, u_1, u_2} :
     ∀ {K : Type u_1} [inst : Field K] {r : Type u} {c : Type u_2} [Fintype r] [inst_2 : Fintype c]

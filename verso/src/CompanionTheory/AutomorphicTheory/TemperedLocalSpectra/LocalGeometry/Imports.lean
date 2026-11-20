@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Ge
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.JacquetOfInducedFiltration
 
 /- English proof (translation)
-Introduce `k _ _ _ _` and use `GlobalTheory.CompanionTheory.GeoAssembly.jacquetOfInducedFiltration k`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem CompanionTheory.Geo.geometricLemmaFiltration : GlobalTheory.Published.GeometricLemmaFiltration :=
   fun k _ _ _ _ => GlobalTheory.CompanionTheory.GeoAssembly.jacquetOfInducedFiltration k

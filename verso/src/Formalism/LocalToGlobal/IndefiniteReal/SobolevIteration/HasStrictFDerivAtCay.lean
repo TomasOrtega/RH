@@ -16,7 +16,7 @@ variable {n : ℕ}
 def cay (g : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ := (1 + 1) * Ring.inverse (g + 1) * (g - 1)
 
 /- English proof (translation)
-Use `⟨⟨1 + 1, (1 / 2 : ℂ) • 1, ?_, ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[add_mul, one_mul, ← add_smul]`. Evaluate the numerical expressions. Rewrite using `[mul_add, mul_one, ← add_smul]`. Evaluate the numerical expressions.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem isUnit_two : IsUnit (1 + 1 : Matrix (Fin n) (Fin n) ℂ) := by
   refine ⟨⟨1 + 1, (1 / 2 : ℂ) • 1, ?_, ?_⟩, rfl⟩
@@ -26,7 +26,7 @@ theorem isUnit_two : IsUnit (1 + 1 : Matrix (Fin n) (Fin n) ℂ) := by
     norm_num
 
 /- English proof (translation)
-Unfold `cay`. Establish `h1 : Ring.inverse (g + 1) * (g + 1) = 1` using `Ring.inverse_mul_cancel _ hg`. Establish `h2 : g - 1 = (g + 1) - (1 + 1)` using `by abel`. Rewrite using `[h2, mul_sub, mul_assoc (1 + 1) (Ring.inverse (g + 1)) (g + 1), h1, mul_one]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem cay_eq (g : Matrix (Fin n) (Fin n) ℂ) (hg : IsUnit (g + 1)) :
     cay g = (1 + 1) - (1 + 1) * Ring.inverse (g + 1) * (1 + 1) := by
@@ -36,9 +36,9 @@ theorem cay_eq (g : Matrix (Fin n) (Fin n) ℂ) (hg : IsUnit (g + 1)) :
   rw [h2, mul_sub, mul_assoc (1 + 1) (Ring.inverse (g + 1)) (g + 1), h1, mul_one]
 
 /- English proof (translation)
-Rewrite `h` using `[cay_eq a ha, cay_eq b hb]`. Establish `h2` using `sub_right_inj.1 h`. Establish `h3 : Ring.inverse (a + 1) = Ring.inverse (b + 1)` using `isUnit_two.mul_left_cancel (isUnit_two.mul_right_cancel h2)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h3, mul_assoc (a + 1) (Ring.inverse (b + 1)) (b + 1)]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = b := by rw [Ring.mul_inverse_cancel _ ha, one_mul]; abel`.
+A detailed English derivation is pending.
 -/
 theorem cay_inj {a b : Matrix (Fin n) (Fin n) ℂ} (ha : IsUnit (a + 1)) (hb : IsUnit (b + 1))
     (h : cay a = cay b) : a = b := by
@@ -53,13 +53,13 @@ theorem cay_inj {a b : Matrix (Fin n) (Fin n) ℂ} (ha : IsUnit (a + 1)) (hb : I
     _ = b := by rw [Ring.mul_inverse_cancel _ ha, one_mul]; abel
 
 /- English proof (translation)
-Establish `h : gᴴ * G * g = G` using `hg`. Establish `hcomm : (g - 1) * (g + 1) = (g + 1) * (g - 1)` using `by noncomm_ring`. Establish `hR : Ring.inverse (g + 1) * (g + 1) = 1` using `Ring.inverse_mul_cancel _ hu`. Establish `hcT : cay g * (g + 1) = (1 + 1) * (g - 1)`. Unfold `cay`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[mul_assoc ((1 + 1) * Ring.inverse (g + 1)) (g - 1) (g + 1), hcomm, ← mul_assoc ((1 + 1) * Ring.inverse (g + 1)) (g + 1) (g - 1), mul_assoc (1 + 1) (Ring.inverse (g + 1)) (g + 1), hR, mul_one]`. Establish `hTH : (g + 1)ᴴ * (cay g)ᴴ = ((1 + 1) * (g - 1))ᴴ`. Rewrite using `[← Matrix.conjTranspose_mul, hcT]`. Establish `key : (g + 1)ᴴ * ((cay g)ᴴ * G + G * cay g) * (g + 1) = 0`. Establish `e : (g + 1)ᴴ * ((cay g)ᴴ * G + G * cay g) * (g + 1) = ((g + 1)ᴴ * (cay g)ᴴ) * G * (g + 1) + (g + 1)ᴴ * G * (cay g * (g + 1))` using `by noncomm_ring`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, hTH, hcT]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_add, Matrix.conjTranspose_sub, Matrix.conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation. Establish `hTu : IsUnit (g + 1)ᴴ` using `hu.star`. Use `show (cay g)ᴴ * G + G * cay g = 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k2 : (g + 1)ᴴ * ((cay g)ᴴ * G + G * cay g) = (g + 1)ᴴ * 0` using `hu.mul_right_cancel (by rw [key, mul_zero, zero_mul])`. Conclude with `hTu.mul_left_cancel k2`.
+A detailed English derivation is pending.
 -/
 theorem cay_mem (G g : Matrix (Fin n) (Fin n) ℂ) (hg : g ∈ Formalism.QuantumDeterminants.UH G) (hu : IsUnit (g + 1)) :
     cay g ∈ lieG G := by
@@ -88,11 +88,11 @@ theorem cay_mem (G g : Matrix (Fin n) (Fin n) ℂ) (hg : g ∈ Formalism.Quantum
   exact hTu.mul_left_cancel k2
 
 /- English proof (translation)
-Establish `hT : HasStrictFDerivAt (fun g : Matrix (Fin n) (Fin n) ℂ => g + 1) (ContinuousLinearMap.id ℝ (Matrix (Fin n) (Fin n) ℂ)) 1` using `(hasStrictFDerivAt_id (𝕜 := ℝ) (1 : Matrix (Fin n) (Fin n) ℂ)).add_const 1`. Establish `hI` using `(hasStrictFDerivAt_ringInverse (𝕜 := ℝ) (isUnit_two (n := n)).unit).comp (1 : Matrix (Fin n) (Fin n) ℂ) hT`. Establish `ha` using `hI.const_mul (1 + 1 : Matrix (Fin n) (Fin n) ℂ)`. Establish `hb : HasStrictFDerivAt (fun g : Matrix (Fin n) (Fin n) ℂ => g - 1) (ContinuousLinearMap.id ℝ (Matrix (Fin n) (Fin n) ℂ)) 1` using `(hasStrictFDerivAt_id (𝕜 := ℝ) (1 : Matrix (Fin n) (Fin n) ℂ)).sub_const 1`. Establish `hm` using `ha.mul' hb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show HasStrictFDerivAt (fun g : Matrix (Fin n) (Fin n) ℂ => (1 + 1) * Ring.inverse (g + 1) * (g - 1)) _ _`. Use `hm.congr_fderiv ?_` and prove the remaining obligations. Use `ContinuousLinearMap.ext fun h => ?_` and prove the remaining obligations. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.smulRight_apply, ContinuousLinearMap.id_apply, ContinuousLinearMap.one_apply, sub_self, smul_zero, add_zero, smul_eq_mul, Function.comp_apply]`. Rewrite using `[Ring.mul_inverse_cancel _ isUnit_two]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `first`. Consider the case `exact one_mul h`. Consider the case `erw [ContinuousLinearMap.smul_apply, ContinuousLinearMap.one_apply, ContinuousLinearMap.id_apply, smul_eq_mul, one_mul]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem hasStrictFDerivAt_cay :
     HasStrictFDerivAt (cay : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ)

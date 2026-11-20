@@ -367,7 +367,7 @@ def Stmt : Prop :=
     AdmissiblePrimesWithConstant D c₁ ∧ IrreducibleGoodBaseChange D ∧ ProjectorProperties D ∧ LengthDroppingInequality D ∧ PsdProjectorDiscarding
 
 /- English proof (translation)
-The claim follows from `h.1.two_le`.
+A detailed English derivation is pending.
 -/
 example (g : ℕ) (h : Admissible D g) : 2 ≤ g := h.1.two_le
 

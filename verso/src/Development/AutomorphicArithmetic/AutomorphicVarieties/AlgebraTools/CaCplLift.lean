@@ -5,27 +5,25 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.CaCpl
 open IsLocalRing UpperTheory.V.AlgebraTools
 
 /- English proof (translation)
-Establish `hP` using `h.isPrime`. Use `choose A S hS hAS using h.dense n`. Establish `wd : ∀ (b : B) (a s a' s' : R), s ∉ p → s' ∉ p → algebraMap R B s * b - algebraMap R B a ∈ maximalIdeal B ^ n → algebraMap R B s' * b - algebraMap R B a' ∈ maximalIdeal B ^ n → g s * g a' = g s' * g a`. Introduce `b a s a' s' _ hs' h1 h2`. Establish `hm : algebraMap R B (s * a' - s' * a) ∈ maximalIdeal B ^ n`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hid : algebraMap R B (s * a' - s' * a) = algebraMap R B s' * (algebraMap R B s * b - algebraMap R B a) - algebraMap R B s * (algebraMap R B s' * b - algebraMap R B a')`. Simplify using `only [map_sub, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hid]`. Conclude with `Ideal.sub_mem _ (Ideal.mul_mem_left _ _ h1) (Ideal.mul_mem_left _ _ h2)`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨t, ht, hta⟩` from `h.strict n _ hm`. Establish `h0` using `hz _ hta`. Rewrite `h0` using `[map_mul, (hu t ht).mul_right_eq_zero, map_sub, map_mul, map_mul, sub_eq_zero]`. Conclude with `h0`. Set `F : B → D` to `fun b => ↑(hu _ (hS b)).unit⁻¹ * g (A b)`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hF0 : ∀ b, g (S b) * F b = g (A b)`. Introduce `b`. Simplify using `only [F, ← mul_assoc, IsUnit.mul_val_inv, one_mul]`. Establish `spec : ∀ (b : B) (a s : R), s ∉ p → algebraMap R B s * b - algebraMap R B a ∈ maximalIdeal B ^ n → g s * F b = g a`. Introduce `b a s hs hb`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `(hu _ (hS b)).mul_left_cancel` to reduce the goal to its premises. Rewrite using `[← mul_assoc, mul_comm (g (S b)), mul_assoc, hF0, wd b (A b) (S b) a s (hS b) hs (hAS b) hb]`. Establish `eq_of : ∀ (b : B) (y : D) (a s : R), s ∉ p → algebraMap R B s * b - algebraMap R B a ∈ maximalIdeal B ^ n → g a = g s * y → F b = y`. Introduce `b y a s hs hb hy`. Conclude with `(hu s hs).mul_left_cancel ((spec b a s hs hb).trans hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hprod : ∀ x y : B, S x * S y ∉ p` using `fun x y hm => (hP.mem_or_mem hm).elim (hS x) (hS y)`. Use `⟨{ toFun := F, map_one' := ?_, map_mul' := ?_, map_zero' := ?_, map_add' := ?_ }, spec⟩` and prove the remaining obligations. Use `eq_of 1 1 1 1 ?_ ?_ (by simp)` and prove the remaining obligations. Introduce `h1`. Conclude with `hP.ne_top ((Ideal.eq_top_iff_one _).2 h1)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `x y`. Use `eq_of (x * y) _ (A x * A y) (S x * S y) (hprod x y) ?_ ?_` and prove the remaining obligations. Establish `hid : algebraMap R B (S x * S y) * (x * y) - algebraMap R B (A x * A y) = algebraMap R B (S x) * x * (algebraMap R B (S y) * y - algebraMap R B (A y)) + algebraMap R B (A y) * (algebraMap R B (S x) * x - algebraMap R B (A x))`. Simplify using `only [map_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hid]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ (hAS y)) (Ideal.mul_mem_left _ _ (hAS x))`. Use `show g (A x * A y) = g (S x * S y) * (F x * F y)`. Rewrite using `[map_mul, map_mul, ← hF0 x, ← hF0 y]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Use `eq_of 0 0 0 1 ?_ ?_ (by simp)` and prove the remaining obligations. Introduce `h1`. Conclude with `hP.ne_top ((Ideal.eq_top_iff_one _).2 h1)`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `x y`. Use `eq_of (x + y) _ (S y * A x + S x * A y) (S x * S y) (hprod x y) ?_ ?_` and prove the remaining obligations. Establish `hid : algebraMap R B (S x * S y) * (x + y) - algebraMap R B (S y * A x + S x * A y) = algebraMap R B (S y) * (algebraMap R B (S x) * x - algebraMap R B (A x)) + algebraMap R B (S x) * (algebraMap R B (S y) * y - algebraMap R B (A y))`. Simplify using `only [map_mul, map_add]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[hid]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ (hAS x)) (Ideal.mul_mem_left _ _ (hAS y))`. Use `show g (S y * A x + S x * A y) = g (S x * S y) * (F x + F y)`. Rewrite using `[map_add, map_mul, map_mul, map_mul, ← hF0 x, ← hF0 y]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 private theorem level_map {R : Type} [CommRing R] {p : Ideal R} {B : Type} [CommRing B]
     [IsLocalRing B] [Algebra R B] (h : IsCplAt R p B) (n : ℕ) {D : Type} [CommRing D]
@@ -99,31 +97,27 @@ private theorem level_map {R : Type} [CommRing R] {p : Ideal R} {B : Type} [Comm
       ring
 
 /- English proof (translation)
-Introduce `R _ p B _ _ _ hB C _ _ _ φ hφ`. Establish `hpI : ∀ n, ∀ a ∈ p ^ n, φ a ∈ maximalIdeal C ^ n`. Introduce `n a ha`. Establish `hle : Ideal.map φ p ≤ maximalIdeal C`. Rewrite using `[← hφ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.map_comap_le`. Establish `hmap : Ideal.map φ (p ^ n) ≤ maximalIdeal C ^ n`. Rewrite using `[Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono hle n`. Conclude with `hmap (Ideal.mem_map_of_mem φ ha)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hunit : ∀ s, s ∉ p → IsUnit (φ s)`. Introduce `s hs`. Assume the negation of the conclusion as `hn`. Apply `hs` to reduce the goal to its premises. Rewrite using `[← hφ, Ideal.mem_comap]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(IsLocalRing.mem_maximalIdeal _).2 hn`. Set `g : ∀ n, R →+* C ⧸ maximalIdeal C ^ n` to `fun n => (Ideal.Quotient.mk (maximalIdeal C ^ n)).comp φ`. Establish `hu : ∀ n s, s ∉ p → IsUnit (g n s)` using `fun n s hs => (hunit s hs).map (Ideal.Quotient.mk (maximalIdeal C ^ n))`. Establish `hz : ∀ n a, a ∈ p ^ n → g n a = 0` using `fun n a ha => Ideal.Quotient.eq_zero_iff_mem.2 (hpI n a ha)`. Use `choose f hf using fun n => level_map hB n (g n) (hu n) (hz n)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `lvl : ∀ n (k : B → C ⧸ maximalIdeal C ^ n), (∀ (b : B) (a s : R), s ∉ p → algebraMap R B s * b - algebraMap R B a ∈ maximalIdeal B ^ n → g n s * k b = g n a) → ∀ b, k b = f n b`. Introduce `n k hk b`. Take `⟨a, s, hs, hb⟩` from `hB.dense n b`. Conclude with `(hu n s hs).mul_left_cancel ((hk b a s hs hb).trans (hf n b a s hs hb).symm)`. Establish `compat : ∀ {m n : ℕ} (hle : m ≤ n), (Ideal.Quotient.factorPow (maximalIdeal C) hle).comp (f n) = f m`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `m n hle`. Use extensionality with `b`. Take `⟨a, s, hs, hb⟩` from `hB.dense n b`. Establish `hbm : algebraMap R B s * b - algebraMap R B a ∈ maximalIdeal B ^ m` using `Ideal.pow_le_pow_right hle hb`. Apply `(hu m s hs).mul_left_cancel` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `show g m s * Ideal.Quotient.factorPow (maximalIdeal C) hle (f n b) = g m s * f m b`. Rewrite using `[hf m b a s hs hbm]`. Establish `hc` using `congrArg (Ideal.Quotient.factorPow (maximalIdeal C) hle) (hf n b a s hs hb)`. Rewrite `hc` using `[map_mul]`. Establish `hg : ∀ x, Ideal.Quotient.factorPow (maximalIdeal C) hle (g n x) = g m x`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x`. Simplify using `[g]`. Rewrite `hc` using `[hg, hg]`. Conclude with `hc`. Establish `h1p : (1 : R) ∉ p` using `fun h1 => hB.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hmk : ∀ n b, Ideal.Quotient.mk (maximalIdeal C ^ n) (IsAdicComplete.liftRingHom (maximalIdeal C) f compat b) = f n b` using `fun n b => IsAdicComplete.mk_liftRingHom (maximalIdeal C) f compat n b`. Use `⟨IsAdicComplete.liftRingHom (maximalIdeal C) f compat, ?_, ?_⟩` and prove the remaining obligations. Apply `DFunLike.coe_injective` to reduce the goal to its premises. Apply `IsHausdorff.funext' (maximalIdeal C)` to reduce the goal to its premises. Introduce `n r`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Rewrite using `[RingHom.comp_apply, hmk]`. Apply `(hu n 1 h1p).mul_left_cancel` to reduce the goal to its premises. Rewrite using `[hf n (algebraMap R B r) r 1 h1p (by simp), map_one, one_mul]`. Both sides reduce to the same expression. Introduce `ψ' hψ'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `IsAdicComplete.eq_liftRingHom (maximalIdeal C) f compat ψ'` to reduce the goal to its premises. Introduce `n`. Use extensionality with `b`. Rewrite using `[RingHom.comp_apply]`. Use `lvl n (fun b => Ideal.Quotient.mk (maximalIdeal C ^ n) (ψ' b)) ?_ b` and prove the remaining obligations.
-
-Introduce `b a s hs hb`. Establish `hmap : Ideal.map ψ' (maximalIdeal B ^ n) ≤ maximalIdeal C ^ n`. Rewrite using `[← IsCplAt.map_pow_eq R p B hB n, Ideal.map_map, hψ', Ideal.map_le_iff_le_comap]`. Introduce `c hc`. Conclude with `hpI n c hc`.
-
-Establish `h0` using `Ideal.Quotient.eq_zero_iff_mem.2 (hmap (Ideal.mem_map_of_mem _ hb))`. Establish `e : ∀ x, ψ' (algebraMap R B x) = φ x` using `fun x => by rw [← RingHom.comp_apply, hψ']`. Rewrite `h0` using `[map_sub, map_mul, e, e, map_sub, map_mul, sub_eq_zero]`. Conclude with `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.IsCplAt.existsUnique_lift :
     ∀ (R : Type) [CommRing R] (p : Ideal R) (B : Type) [CommRing B] [IsLocalRing B] [Algebra R B], IsCplAt R p B →

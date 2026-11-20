@@ -8,13 +8,13 @@ namespace GlobalTheory.MemLoc.XiHaus
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-The claim follows from `PreTilt.isDomain ℂ_[l] Valued.v (Per.OC l) (PadicComplexInt.integers l) l`.
+A detailed English derivation is pending.
 -/
 theorem isDomain_Fl : IsDomain (Per.Fl l) :=
   PreTilt.isDomain ℂ_[l] Valued.v (Per.OC l) (PadicComplexInt.integers l) l
 
 /- English proof (translation)
-Proceed by induction on `k generalizing x with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ, pow_mul, map_pow, PreTilt.coeff_pow_p, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_pow_pow (x : Per.Fl l) (k : ℕ) :
     PreTilt.coeff k (x ^ l ^ k) = PreTilt.coeff 0 x := by
@@ -24,7 +24,7 @@ theorem coeff_pow_pow (x : Per.Fl l) (k : ℕ) :
     rw [pow_succ, pow_mul, map_pow, PreTilt.coeff_pow_p, ih]
 
 /- English proof (translation)
-Rewrite using `[← WittVector.constantCoeff_apply, xi, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem xi_coeff_zero (e : Per.Fl l) :
     (xi e).coeff 0 = ∑ i ∈ Finset.range l, ((frobeniusEquiv (Per.Fl l) l).symm e) ^ i := by
@@ -39,7 +39,7 @@ theorem root_pow (e : Per.Fl l) : ((frobeniusEquiv (Per.Fl l) l).symm e) ^ l = e
   simp
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `geom_sum_mul ((frobeniusEquiv (Per.Fl l) l).symm e) l`. Rewrite `h1` using `[← xi_coeff_zero, h, zero_mul, root_pow, eq_comm, sub_eq_zero]`. Conclude with `he.2 (by rw [h1, map_one, map_one])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xi_coeff_zero_ne {e : Per.Fl l} (he : IsEps e) : (xi e).coeff 0 ≠ 0 := by
   intro h
@@ -48,11 +48,11 @@ theorem xi_coeff_zero_ne {e : Per.Fl l} (he : IsEps e) : (xi e).coeff 0 ≠ 0 :=
   exact he.2 (by rw [h1, map_one, map_one])
 
 /- English proof (translation)
-Use `set u := (frobeniusEquiv (Per.Fl l) l).symm e with hu`. Establish `hy : (u - 1) ∣ (xi e).coeff 0`. Rewrite using `[xi_coeff_zero, ← hu]`. Establish `: ∑ i ∈ Finset.range l, u ^ i = ∑ i ∈ Finset.range l, (u ^ i - 1 ^ i)`. Simplify using `[Finset.sum_sub_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Finset.dvd_sum fun i _ => sub_dvd_pow_sub_pow u 1 i`. Establish `h0 : PreTilt.coeff 0 ((u - 1) ^ l) = 0`. Rewrite using `[sub_pow_char, hu, root_pow, one_pow, map_sub, ← PreTilt.mk_untilt_eq_coeff_zero, he.1, map_one, map_one, sub_self]`. Use `Perfection.ext fun k => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨c, hc⟩` from `(pow_dvd_pow_of_dvd hy (l * l ^ k)).trans (hb _)`. Express the relevant statement in the definitionally equal form `PreTilt.coeff k b = PreTilt.coeff k 0`. Rewrite using `[hc, map_mul, pow_mul, coeff_pow_pow, h0, zero_mul, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_dvd {e : Per.Fl l} (he : IsEps e) (b : Per.Fl l)
     (hb : ∀ n : ℕ, ((xi e).coeff 0) ^ n ∣ b) : b = 0 := by
@@ -72,9 +72,9 @@ theorem eq_zero_of_dvd {e : Per.Fl l} (he : IsEps e) (b : Per.Fl l)
   rw [hc, map_mul, pow_mul, coeff_pow_pow, h0, zero_mul, map_zero]
 
 /- English proof (translation)
-Use `isDomain_Fl (l := l)` as an intermediate fact. Take `⟨c, hc⟩` from `h`. Establish `h1` using `congrArg WittVector.constantCoeff hc`. Rewrite `h1` using `[map_mul, map_mul, map_natCast, CharP.cast_eq_zero, zero_mul, map_pow, WittVector.constantCoeff_apply, WittVector.constantCoeff_apply]`. Establish `h2 : c.coeff 0 = 0` using `(mul_eq_zero.1 h1.symm).resolve_left (pow_ne_zero _ (xi_coeff_zero_ne he))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨d, rfl⟩` from `Ideal.mem_span_singleton.1 ((WittVector.mem_span_p_iff_coeff_zero_eq_zero c).2 h2)`. Use `⟨d, mul_left_cancel₀ (WittVector.p_nonzero l (Per.Fl l)) ?_⟩` and prove the remaining obligations. Rewrite using `[hc]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem xi_sat {e : Per.Fl l} (he : IsEps e) (n : ℕ) (a : Per.Ainf l)
     (h : xi e ^ n ∣ (l : Per.Ainf l) * a) : xi e ^ n ∣ a := by
@@ -96,13 +96,11 @@ namespace GlobalTheory.MemLoc
 open XiHaus in
 
 /- English proof (translation)
-Establish `key : ∀ (k : ℕ) (a : Per.Ainf l), (∀ n : ℕ, xi e ^ n ∣ a) → (l : Per.Ainf l) ^ k ∣ a`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro a _`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `succ k ih`. Introduce `a ha`. Establish `h0 : a.coeff 0 = 0` using `eq_zero_of_dvd he _ fun n => by`. Use `map_dvd WittVector.constantCoeff (ha n)` as an intermediate fact. Rewrite `this` using `[map_pow, WittVector.constantCoeff_apply, WittVector.constantCoeff_apply]`. Then use the resulting hypothesis.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨d, rfl⟩` from `Ideal.mem_span_singleton.1 ((WittVector.mem_span_p_iff_coeff_zero_eq_zero a).2 h0)`. Rewrite using `[pow_succ']`. Conclude with `mul_dvd_mul_left _ (ih d fun n => xi_sat he n d (ha n))`. Use `IsHausdorff.haus (I := Ideal.span {(l : Per.Ainf l)}) inferInstance a fun k => ?_` and prove the remaining obligations. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
-
-Conclude with `key k a ha`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_xi_pow_dvd (l : ℕ) [Fact l.Prime] (e : Per.Fl l) (he : IsEps e)
     (a : Per.Ainf l) (ha : ∀ n : ℕ, xi e ^ n ∣ a) : a = 0 := by

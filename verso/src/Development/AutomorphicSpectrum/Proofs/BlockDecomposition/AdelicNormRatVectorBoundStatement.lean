@@ -8,7 +8,7 @@ open NumberField IsDedekindDomain MeasureTheory Matrix Filter Topology GroundThe
 open scoped NumberField.AdeleRing
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.MajHeight.adelicNorm_ratVec_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FAdelicNormRatVectorBound.lean&line=58#L58)
 -/

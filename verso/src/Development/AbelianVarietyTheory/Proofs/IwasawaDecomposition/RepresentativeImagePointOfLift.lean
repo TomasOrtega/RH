@@ -19,7 +19,7 @@ noncomputable section
 namespace GlobalTheory.Mem.Col2.LevLiftPt
 
 /- English proof (translation)
-Establish `hg0 : IsPtOf hc g (ChTwRead.noFr p)` using `⟨hg.uni, hg.lat, hg.f, hg.be, fun P => absurd P.2 (Finset.notMem_empty _)⟩`. Establish `H` using `LevRead.isPtOf_mul (Q := ∅) (fun P => Finset.notMem_empty P) hg0 hm h1 h2 hT hh (fun P => absurd P.2 (Finset.notMem_empty _))`. Use `⟨H.uni, H.lat, H.f, H.be, fun P i j => ?_⟩` and prove the remaining obligations. Rewrite using `[hfr P i j]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isPtOf_mul_fr {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [StarRing E]
     {hc : CMData F E} {n : ℕ} {ST SG Q : Finset (HeightOneSpectrum (𝓞 E))} {g m : GL (Fin n) (AfE F E)}
@@ -41,21 +41,21 @@ theorem isPtOf_mul_fr {F E : Type} [Field F] [NumberField F] [Field E] [NumberFi
   rfl
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.supported_unitary_adelic_integral_with_inverse`.
+A detailed English derivation is pending.
 -/
 theorem int_of_split : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [StarRing E] (hc : CMData F E) {n : ℕ} (u : GL (Fin n) (AfE F E)), u ∈ Formalism.L2.Herm.UstdAf hc n → ∀ (v : HeightOneSpectrum (𝓞 F)) (P : HeightOneSpectrum (𝓞 E)), Formalism.L2.Col.IsOver v P → (∀ v', v' ≠ v → bc (prV (E := E) v') u = 1) → ∀ g ∈ Formalism.L2.Col.GLint E n P, (∀ r s, adAt F P ((u : Matrix (Fin n) (Fin n) (AfE F E)) r s) = algebraMap E (P.adicCompletion E) (LinearMap.toMatrix' g.toLinearMap r s)) → ∀ i j, (u : Matrix (Fin n) (Fin n) (AfE F E)) i j ∈ RInt F E ∧ ((u⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) i j ∈ RInt F E :=
   GlobalTheory.T.supported_unitary_adelic_integral_with_inverse
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.levelPrime_primes_not_over_bad_prime_place`.
+A detailed English derivation is pending.
 -/
 theorem vT_notOver : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ (a : I.ι) (P : SBof I a) (v : HeightOneSpectrum (𝓞 B.host.F)), Formalism.L2.Col.IsOver v P.1 → ∀ (u : B.Word), ∀ P' ∈ (B.primes X).vT u, ¬ Formalism.L2.Col.IsOver v P' :=
   GlobalTheory.T.levelPrime_primes_not_over_bad_prime_place
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ n P g hg A hA m hm r s`. Establish `h` using `ReadBad.isRed_ratA (F := F) hg hA r s`. Establish `e : adAt F P (((GlobalTheory.TwU.ratA F (toGLm E n g) : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) r s) = algebraMap E (P.adicCompletion E) (LinearMap.toMatrix' g.toLinearMap r s)` using `by show adAt F P (Formalism.UG.inclE (F := F) (FiniteAdeleRing (𝓞 F) F) _) = _`. Rewrite using `[adAt_inclE]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `show HasRes P _ _`. Rewrite using `[hm r s, ← e]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isRed_of_red : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [StarRing E] {n : ℕ} (P : HeightOneSpectrum (𝓞 E)), ∀ g ∈ Formalism.L2.Col.GLint E n P, ∀ (A : Matrix (Fin n) (Fin n) (𝓞 E ⧸ P.asIdeal)), (∀ y ∈ Formalism.L2.Col.stdAt E n P, redV P (g y) = A.mulVec (redV P y)) → ∀ (m : GL (Fin n) (AfE F E)), (∀ r s, adAt F P ((m : Matrix (Fin n) (Fin n) (AfE F E)) r s) = algebraMap E (P.adicCompletion E) (LinearMap.toMatrix' g.toLinearMap r s)) → LevRead.IsRed P m A := by
   intro F E _ _ _ _ _ _ n P g hg A hA m hm r s
@@ -70,9 +70,9 @@ theorem isRed_of_red : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [Num
   exact h
 
 /- English proof (translation)
-Establish `hne : Q.under (𝓞 F) ≠ v`. Introduce and unpack `rfl`. Conclude with `hQ rfl`. Use `ChTwRead.adAt_congr_prV Q ?_` and prove the remaining obligations. Establish `h1` using `congrArg (fun g : GL (Fin n) (E ⊗[F] (Q.under (𝓞 F)).adicCompletion F) => g.val i j) (hoff _ hne)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (fun g : GL (Fin n) (E ⊗[F] (Q.under (𝓞 F)).adicCompletion F) => g.val i j) (map_one (bc (prV (E := E) (Q.under (𝓞 F)))) : bc (prV (E := E) (Q.under (𝓞 F))) (1 : GL (Fin n) (AfE F E)) = 1)`. Conclude with `h1.trans h2.symm`.
+A detailed English derivation is pending.
 -/
 theorem adAt_of_off {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [StarRing E] {n : ℕ}
     {u : GL (Fin n) (AfE F E)} {v : HeightOneSpectrum (𝓞 F)} (hoff : ∀ v', v' ≠ v → bc (prV (E := E) v') u = 1)
@@ -89,29 +89,27 @@ theorem adAt_of_off {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
   exact h1.trans h2.symm
 
 /- English proof (translation)
-Use `set m := kk⁻¹ * x * kk with hm`. Establish `hmU : m ∈ Formalism.L2.Herm.UstdAf hc n` using `mul_mem (mul_mem (inv_mem hk) hx) hk`. Establish `hmoff : ∀ v', v' ≠ v → bc (prV (E` using `E) v') m = 1 := fun v' hv' => by`. Rewrite using `[hm, map_mul, map_mul, map_inv, hxoff v' hv', mul_one, inv_mul_cancel]`. Establish `hmioff : ∀ v', v' ≠ v → bc (prV (E` using `E) v') m⁻¹ = 1 := fun v' hv' => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_inv, hmoff v' hv', inv_one]`. Establish `hInt` using `int_of_split hc m hmU v P hv hmoff g' hg' hpt`. Establish `e : g0 * m = g0 * m⁻¹⁻¹` using `by rw [inv_inv]`. Rewrite using `[e]`. Use `isPtOf_mul_fr hp (inv_mem hmU) (fun r s => (hInt r s).2) (fun r s => by rw [inv_inv]; exact (hInt r s).1) ?_ ?_ c ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `P' hP' r s`. Conclude with `adAt_of_off hmioff (hST P' hP') r s`. Introduce `w`. Distinguish the cases in `hw : w.1 = P`. Take `⟨w, hwm⟩` from `w`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Simplify using `only at hw`. Substitute `hw` using the available equality. Establish `hC` using `isRed_of_red w g' hg' _ (hG hwm) m hpt`. Take `⟨Bm, hB⟩` from `LevRead.exists_isRed (x := m⁻¹) (P := w) (fun r s => (mem_rInt_iff F E _).1 (hInt r s).2 w) (fun r s => by rw [inv_inv]; exact (mem_rInt_iff F E _).1 (hInt r s).1 w)`. Establish `h1` using `hC.mul hB`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[mul_inv_cancel]`. Establish `h2` using `h1.unique LevRead.isRed_one`. Establish `h3 : (h ⟨w, hwm⟩)⁻¹ * Bm = 1` using `Units.ext (by rw [Units.val_mul]; exact h2)`. Rewrite `h3` using `[inv_mul_eq_one]`. Rewrite using `[h3]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hB`. Establish `hwnot : ¬ Formalism.L2.Col.IsOver v w.1` using `fun h' => hw (hover w.1 (Or.inl w.2) h')`. Establish `hC1` using `isRed_of_red (F := F) w.1 1 (one_mem _) _ (hGo w hw) (1 : GL (Fin n) (AfE F E)) (fun r s => by`. Rewrite using `[show LinearMap.toMatrix' (1 : Sp E n ≃ₗ[E] Sp E n).toLinearMap = 1 from LinearMap.toMatrix'_id]`. Simplify using `only [Units.val_one, Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `split_ifs <;> simp)`. Establish `h2` using `hC1.unique LevRead.isRed_one`. Establish `h3 : (h w)⁻¹ = 1` using `Units.ext h2`. Rewrite `h3` using `[inv_eq_one]`. Rewrite using `[h3]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r s`. Rewrite using `[adAt_of_off hmioff hwnot r s]`. Conclude with `LevRead.isRed_one r s`. Introduce `P'' r s`. Rewrite using `[inv_inv, Units.val_mul, Matrix.mul_apply, map_sum]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Distinguish the cases in `hPP : P''.1 = P`. Take `⟨P'', hPm⟩` from `P''`. Simplify using `only at hPP`. Substitute `hPP` using the available equality. Rewrite using `[← hQ hPm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[map_mul, hp.fr ⟨P'', hPm⟩ r, hpt, ← map_mul]`. Rewrite using `[← map_sum]`. Use `congr 1`. Rewrite using `[LinearEquiv.mul_apply]`. Use `conv_rhs => rw [pi_eq_sum_univ (g' (Pi.single s 1)), map_sum]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Simplify using `only [map_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, LinearMap.toMatrix'_apply, LinearEquiv.coe_coe]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Use `congr 2`. Conclude with `congrArg (fun y => p.fr ⟨P'', hPm⟩ y r) (by funext j; simp [Pi.single_apply, eq_comm])`.
-
-Establish `hPnot : ¬ Formalism.L2.Col.IsOver v P''.1` using `fun h' => hPP (hover P''.1 (Or.inr P''.2) h')`. Rewrite using `[← hQo P'' hPP, mul_one]`. Repeatedly rewrite using `[map_mul, adAt_of_off hmoff hPnot]`. Simplify using `only [Units.val_one, Matrix.one_apply, apply_ite (adAt F P''.1), map_one, map_zero, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Conclude with `hp.fr P'' r s`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem core {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [StarRing E]
     (hc : CMData F E) {n : ℕ} {ST SG Q : Finset (HeightOneSpectrum (𝓞 E))} {g0 x kk : GL (Fin n) (AfE F E)}
@@ -194,32 +192,28 @@ theorem core {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [A
       exact hp.fr P'' r s
 
 /- English proof (translation)
-Use `group`.
+A detailed English derivation is pending.
 -/
 theorem mul_conj {G : Type} [Group G] (y x k : G) : y * k * (k⁻¹ * x * k) = y * x * k := by group
 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `B X I hOk hPins l Z u a i hi bad Ch chOf K k hR c kk hkk P v hv x hx hxoff g' hg' hpt κ' hK hLP hLo`. Establish `hseam : GlobalTheory.TwU.seamP (sm I l Z) P.1 = P.1`. Use extensionality with `y`. Conclude with `GlobalTheory.TwU.mem_seamP (sm I l Z) P.1 y`. Rewrite `hv`, `hpt` using `[hseam]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨hLev, hdisj, -⟩` from `GlobalTheory.Mem.LevTwist.levOk_twists B X I hOk`. Establish `hd : Disjoint (B.primes X).vGs (I.Q a)` using `Finset.disjoint_of_subset_right (ColIn.Q_subset_SQ I a) hdisj`. Establish `hp` using `IsPtOf.of_extTo (ColIn.Q_subset_SQ I a) hd (hR.pt c)`. Rewrite `hp` using `[← hkk]`. Take `⟨pk, hpk, -⟩` from `hR.k_std (chOf c)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hk : kk ∈ UAd B.sp.cm (B.R.N i)` using `hkk ▸ hpk.uni`. Establish `hg1 : gramN (I.rec7 l Z) i hi = 1` using `((GlobalTheory.Mem.Col2.TC.spaces_in_coordinates I hOk hPins l Z).2.2.2 i hi).1`. Establish `hxU : x ∈ UAd B.sp.cm (B.R.N i)`. Establish `e : UPts (sigD (I.rec7 l Z)) (gramN (I.rec7 l Z) i hi) (FiniteAdeleRing (𝓞 (I.rec7 l Z).host.F) (I.rec7 l Z).host.F) = UAd B.sp.cm (B.R.N i)` using `by rw [hg1]; rfl`. Conclude with `e ▸ hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hγ : κ'.1 = 1`. Establish `h1 : toGLm B.fields.E (B.R.N i) κ'.1.1 = toGLm B.fields.E (B.R.N i) 1`. Rewrite using `[map_one]`. Conclude with `hK.1`. Conclude with `Subtype.ext ((toGLm B.fields.E (B.R.N i)).injective h1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hq : ((I.stp u a i).act c.1 κ' ((I.stp u a i).rep c)).1.1 = ((1, fun w => (κ'.2.1.1 w), κ'.2.2.1) : UF B.fields.E (B.R.N i) × GLG B.fields.E (B.R.N i) (B.primes X).vGs × GLQ B.fields.E (B.R.N i) (I.Q a)) • ((I.stp u a i).rep c).1.1` using `by show FrmG.incl _ _ κ' • _ = _`. Rewrite using `[← hγ]`. Both sides reduce to the same expression. Establish `hPu : P.1 ∈ uSG (B.primes X).vGs I.SQ`. Establish `h` using `P.2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 
-Simplify using `only [uSG, Finset.mem_union] at h ⊢`. Break down `h with h | h` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr (ColIn.Q_subset_SQ I a h)`. Establish `hS : ∀ w, w ∈ (B.primes X).vGs ∨ w ∈ I.Q a → w ∈ SBof I a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w hw`. Use `show w ∈ uSG _ _`. Simplify using `only [uSG, Finset.mem_union]`. Conclude with `hw`. Establish `key` using `core B.sp.cm hp hxU hk v P.1 hv hxoff g' hg' hpt (vT_notOver I hOk a P v hv u) (fun w hw hwv => by`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hw' : w ∈ uSG (B.primes X).vGs I.SQ`. Simplify using `only [uSG, Finset.mem_union]`. Break down `hw with h | h` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr (ColIn.Q_subset_SQ I a h)`.
-
-Break down `rll_over_cases B.sp.cm hv hwv with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd (h ▸ hw') (hLev.split P.1 hPu))`. Use the proof step `(fun w => κ'.2.1.1 w) κ'.2.2.1 hLP.2.1`. Use the proof step `(fun w hw => (hLo ⟨w.1, hS w.1 (Or.inl w.2)⟩ (fun e => hw (congrArg Subtype.val e))).2.1 w.2)`.
-
-Use the proof step `hLP.2.2`. Use the proof step `(fun P'' hP'' => (hLo ⟨P''.1, hS P''.1 (Or.inr P''.2)⟩ (fun e => hP'' (congrArg Subtype.val e))).2.2 P''.2)`. Establish `e` using `mul_conj (G := GA B (B.R.N i)) ((K (chOf c)).y ⟨c, rfl⟩).1 x kk`. Rewrite using `[hq]`. Conclude with `e ▸ key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pt_of_lift : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) (i : ℕ) (hi : i ≤ B.R.m) (bad : Set (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))) (Ch : Type) (chOf : (I.stp u a i).Cl → Ch) (K : Charts I l Z u a i hi bad chOf) (k : Ch → GA B (B.R.N i)), ReadsAt I l Z K k → ∀ (c : (I.stp u a i).Cl) (kk : GL (Fin ((I.rec7 l Z).R.N i)) (TensorProduct (I.rec7 l Z).host.F (I.rec7 l Z).host.E (FiniteAdeleRing (𝓞 (I.rec7 l Z).host.F) (I.rec7 l Z).host.F))), kk = k (chOf c) → ∀ (P : SBof I a) (v : HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F)), Formalism.L2.Col.IsOver v (GlobalTheory.TwU.seamP (sm I l Z) P.1) → ∀ x ∈ UPts (sigD (I.rec7 l Z)) (gramN (I.rec7 l Z) i hi) (FiniteAdeleRing (𝓞 (I.rec7 l Z).host.F) (I.rec7 l Z).host.F), (∀ v', v' ≠ v → bc (prV (E := (I.rec7 l Z).host.E) v') x = 1) → ∀ g' ∈ Formalism.L2.Col.GLint B.fields.E (B.R.N i) P.1, (∀ r s, adAt (I.rec7 l Z).host.F (GlobalTheory.TwU.seamP (sm I l Z) P.1) ((kk⁻¹ * x * kk).1 r s) = algebraMap (I.rec7 l Z).host.E ((GlobalTheory.TwU.seamP (sm I l Z) P.1).adicCompletion (I.rec7 l Z).host.E) ((GlobalTheory.TwU.seamGL (sm I l Z) g').1 r s)) → ∀ κ' : (I.stp u a i).G c.1, Keeps I κ' ((I.stp u a i).rep c) → LiftsInv I κ' P g' → (∀ P', P' ≠ P → LiftsInv I κ' P' 1) → PtOf (((K (chOf c)).y ⟨c, rfl⟩).1 * x * kk) (((I.stp u a i).act c.1 κ' ((I.stp u a i).rep c)).1.1) := by
   intro B X I hOk hPins l Z u a i hi bad Ch chOf K k hR c kk hkk P v hv x hx hxoff g' hg' hpt κ' hK hLP hLo

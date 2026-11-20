@@ -12,7 +12,7 @@ namespace GroundTheory.Heights₂.Heights.Model
 open AlgebraicGeometry
 
 /- English proof (translation)
-The claim follows from `DominatingDVR.proof (KrullAkizuki.proof (KrullAkizukiQuotientLength.proof TorsionFreeQuotientLength.proof)) BlowUpChart.proof`.
+A detailed English derivation is pending.
 -/
 theorem DominatingDVR.closed : DominatingDVR.Statement :=
   DominatingDVR.proof
@@ -20,11 +20,11 @@ theorem DominatingDVR.closed : DominatingDVR.Statement :=
     BlowUpChart.proof
 
 /- English proof (translation)
-Introduce `hF`. Establish `hgen : genericPoint Z ⤳ z` using `(genericPoint_spec Z).specializes trivial`. Establish `hmem : genericPoint Z ∈ Set.range (Z.fromSpecStalk z)`. Rewrite using `[Scheme.range_fromSpecStalk]`. Conclude with `hgen`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `hmem`. Establish `hmax : IsLocalRing.maximalIdeal (Z.presheaf.stalk z) = ⊥` using `(IsLocalRing.isField_iff_maximalIdeal_eq.mp hF)`. Establish `hyc : y = IsLocalRing.closedPoint (Z.presheaf.stalk z)`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Apply `le_antisymm` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `IsLocalRing.le_maximalIdeal y.isPrime.ne_top`. Conclude with `hmax.le.trans bot_le`. Apply `hz` to reduce the goal to its premises. Rewrite using `[← hy, hyc, Scheme.fromSpecStalk_closedPoint]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_isField_stalk_of_ne_genericPoint (Z : Scheme.{0}) [IsIntegral Z] (z : Z)
     (hz : z ≠ genericPoint Z) : ¬ IsField (Z.presheaf.stalk z) := by
@@ -44,7 +44,7 @@ theorem not_isField_stalk_of_ne_genericPoint (Z : Scheme.{0}) [IsIntegral Z] (z 
   rw [← hy, hyc, Scheme.fromSpecStalk_closedPoint]
 
 /- English proof (translation)
-Introduce `Z _ _ z hz`. Conclude with `DominatingDVR.closed (Z.presheaf.stalk z) (not_isField_stalk_of_ne_genericPoint Z z hz) Z.functionField`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem DominatingDVRScheme.proof : DominatingDVRScheme.Statement := by
   intro Z _ _ z hz

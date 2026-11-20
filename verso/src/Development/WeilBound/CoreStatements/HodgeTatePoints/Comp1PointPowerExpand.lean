@@ -16,7 +16,7 @@ section Alg
 variable {k : Type} [CommRing k]
 
 /- English proof (translation)
-Establish `: (jetAug : Jet k κ m →ₐ[k] k) (Ideal.Quotient.mk _ P) = MvPolynomial.aeval (fun _ => (0 : k)) P` using `rfl`. Rewrite using `[this, MvPolynomial.aeval_zero']`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem aug_mk {κ : Type} (m : ℕ) (P : MvPolynomial κ k) :
     (jetAug : Jet k κ m →ₐ[k] k) (Ideal.Quotient.mk _ P) = MvPolynomial.constantCoeff P := by
@@ -25,7 +25,7 @@ theorem aug_mk {κ : Type} (m : ℕ) (P : MvPolynomial κ k) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[jetSubstP, jetMap_mk, MvPolynomial.aeval_X]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem substP_X {κ κ' : Type} (m : ℕ) (φ : κ → MvPolynomial κ' k) (i : κ) :
     jetSubstP m φ (Ideal.Quotient.mk _ (MvPolynomial.X i)) =
@@ -33,25 +33,23 @@ theorem substP_X {κ κ' : Type} (m : ℕ) (φ : κ → MvPolynomial κ' k) (i :
   rw [jetSubstP, jetMap_mk, MvPolynomial.aeval_X]
 
 /- English proof (translation)
-Use extensionality with `e`. Establish `hR : MvPolynomial.coeff e (∑ j, MvPolynomial.C (MvPowerSeries.coeff (Finsupp.single j 1) V) * MvPolynomial.X j ^ p : MvPolynomial σ k) = ∑ j, if Finsupp.single j p = e then MvPowerSeries.coeff (Finsupp.single j 1) V else 0`. Rewrite using `[MvPolynomial.coeff_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_C_mul, MvPolynomial.coeff_X_pow]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[hR]`. Distinguish the cases in `hs : ∃ j, Finsupp.single j p = e`. Take `⟨j, rfl⟩` from `hs`. Rewrite using `[GermFun.coeff_psTrunc _ _ _ (by simp), Finset.sum_eq_single j, if_pos rfl]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `: Finsupp.single j p = p • Finsupp.single j 1` using `by simp`. Rewrite using `[this, MvPowerSeries.coeff_expand_smul]`. Introduce `b _ hb`. Rewrite using `[if_neg]`. Introduce `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hb ((Finsupp.single_left_inj hp).1 h)`. Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_eq_zero fun j _ => if_neg fun h => hs ⟨j, h⟩]`. Distinguish the cases in `hd : e.degree ≤ p`. Rewrite using `[GermFun.coeff_psTrunc _ _ _ hd]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hdv : ∀ i, p ∣ e i`. Use `choose c hc using hdv`. Set `e' : σ →₀ ℕ` to `Finsupp.equivFunOnFinite.symm c`. Establish `he : e = p • e'` using `by ext i; simp [e', hc]`. Establish `hdeg : e'.degree ≤ 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `hd` using `[he, map_nsmul, smul_eq_mul]`. Assume the negation of the conclusion as `hh`. Establish `: p * 2 ≤ p * e'.degree` using `Nat.mul_le_mul_left _ (by omega)`. Use linear arithmetic over natural numbers and integers. Rewrite using `[he, MvPowerSeries.coeff_expand_smul]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `Nat.le_one_iff_eq_zero_or_eq_one.1 hdeg with h0 | h1` into its components or cases. Rewrite using `[(Finsupp.degree_eq_zero_iff _).1 h0]`. Simplify using `using hV`. It suffices to derive a contradiction. Establish `h1' : e' ∈ {d : σ →₀ ℕ | d.degree = 1}` using `h1`.
+Simplify to obtain the desired conclusion from the available facts. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h1'` using `[← Finsupp.range_single_one]`. Take `⟨j, hj⟩` from `h1'`. Conclude with `hs ⟨j, by rw [he, ← hj]; simp⟩`. Use `push Not at hdv`. Take `⟨i, hi⟩` from `hdv`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `MvPowerSeries.coeff_expand_of_not_dvd _ _ _ hi`. Rewrite using `[psTrunc, MvPolynomial.coeff_sum]`. Use `Finset.sum_eq_zero fun b hb => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_monomial, if_neg]`. Introduce and unpack `rfl`.
-
-Apply `hd` to reduce the goal to its premises. Use `(Finset.mem_filter.1 hb).2` as an intermediate fact. Simplify `this` using `[Finsupp.degree_apply, Finsupp.sum]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem psTrunc_expand {σ : Type} [Fintype σ] [DecidableEq σ] (p : ℕ) (hp : p ≠ 0) (V : MvPowerSeries σ k)
     (hV : MvPowerSeries.constantCoeff V = 0) :
@@ -109,7 +107,7 @@ theorem psTrunc_expand {σ : Type} [Fintype σ] [DecidableEq σ] (p : ℕ) (hp :
       simpa [Finsupp.degree_apply, Finsupp.sum] using this
 
 /- English proof (translation)
-Establish `: (fun q : Fin 1 × Fin d => (![ptPow k d p (0 : Fin 1)] : Fin 1 → Germ.Pt k 1 d) q.1 q.2) = fun q => MvPowerSeries.X q ^ p`. Use function extensionality and compare the values at `⟨a, b⟩`. Take `rfl : a = 0` from `Subsingleton.elim _ _`. Both sides reduce to the same expression. Rewrite using `[Germ.comp1, Germ.ev, this, MvPowerSeries.expand, MvPowerSeries.substAlgHom_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp1_point_power_expand {d : ℕ} (p : ℕ) (hp : p ≠ 0) (V : Germ.Pt k 1 d) (i : Fin d) :
     Germ.comp1 V (ptPow k d p (0 : Fin 1)) i = MvPowerSeries.expand p hp (V i) := by
@@ -130,7 +128,7 @@ theorem trTo_mk {κ : Type} {m n : ℕ} (h : n ≤ m) (P : MvPolynomial κ k) :
     trTo k κ h (Ideal.Quotient.mk _ P) = Ideal.Quotient.mk _ P := rfl
 
 /- English proof (translation)
-Rewrite `h` using `[aug_mk]`. Simplify `sub_const_mem_orig P` using `[h]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_orig_of_aug {κ : Type} {m : ℕ} {P : MvPolynomial κ k}
     (h : (jetAug : Jet k κ m →ₐ[k] k) (Ideal.Quotient.mk _ P) = 0) : P ∈ orig k κ := by
@@ -138,9 +136,7 @@ theorem mem_orig_of_aug {κ : Type} {m : ℕ} {P : MvPolynomial κ k}
   simpa [h] using sub_const_mem_orig P
 
 /- English proof (translation)
-Use `choose P hP using fun q => Ideal.Quotient.mk_surjective (χ (Ideal.Quotient.mk _ (MvPolynomial.X q)))`. Establish `hm : ∀ q, P q ∈ orig k κ'` using `fun q => mem_orig_of_aug (by rw [hP]; exact hχ q)`. Use `⟨jetMap P hm, fun q => ?_, jet_hom_ext fun q => ?_⟩` and prove the remaining obligations. Rewrite using `[jetMap_mk, MvPolynomial.aeval_X, aug_mk, ← aug_mk m, hP]`. Conclude with `hχ q`.
-
-Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, trTo_mk, jetMap_mk, MvPolynomial.aeval_X, ← hP, trTo_mk]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_low {κ κ' : Type} {m n : ℕ} (h : n ≤ m) (χ : Jet k κ m →ₐ[k] Jet k κ' m)
     (hχ : ∀ q, (jetAug : Jet k κ' m →ₐ[k] k) (χ (Ideal.Quotient.mk _ (MvPolynomial.X q))) = 0) :
@@ -155,9 +151,9 @@ theorem exists_low {κ κ' : Type} {m n : ℕ} (h : n ≤ m) (χ : Jet k κ m �
   · rw [AlgHom.comp_apply, AlgHom.comp_apply, trTo_mk, jetMap_mk, MvPolynomial.aeval_X, ← hP, trTo_mk]
 
 /- English proof (translation)
-Use `haveI : CharP (MvPolynomial κ k) p := inferInstance`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Rewrite `h` using `[trTo_mk, trTo_mk, Ideal.Quotient.eq]`. Rewrite using `[← map_pow, ← map_pow, Ideal.Quotient.eq, ← sub_pow_char]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Ideal.pow_mem_pow h p` as an intermediate fact. Rewrite `this` using `[← pow_mul]`. Conclude with `Ideal.pow_le_pow_right (by omega) this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_eq_of_first {k : Type} [Field k] (p : ℕ) [Fact p.Prime] [CharP k p] (hp : 1 ≤ p) {κ : Type}
     (a b : Jet k κ p) (h : trTo k κ hp a = trTo k κ hp b) : a ^ p = b ^ p := by
@@ -178,9 +174,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} [StarRi
   {t : SAB H X0}
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Use `t.act.add 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Simplify using `using this`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ n ih => rw [Nat.cast_succ, t.act.add, ih, t.act.one, pow_succ]`.
+Treat this case separately.
 -/
 theorem act_nat (t : SAB H X0) (n : ℕ) : t.act.act (n : 𝓞 E) = (𝟙 t.G) ^ n := by
   induction n with
@@ -191,7 +187,7 @@ theorem act_nat (t : SAB H X0) (n : ℕ) : t.act.act (n : 𝓞 E) = (𝟙 t.G) ^
   | succ n ih => rw [Nat.cast_succ, t.act.add, ih, t.act.one, pow_succ]
 
 /- English proof (translation)
-Rewrite using `[act_nat, MonObj.comp_pow, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_eq_act {T : Over X0} (y : T ⟶ t.G) (n : ℕ) : y ^ n = y ≫ t.act.act (n : 𝓞 E) := by
   rw [act_nat, MonObj.comp_pow, Category.comp_id]
@@ -199,9 +195,9 @@ theorem pow_eq_act {T : Over X0} (y : T ⟶ t.G) (n : ℕ) : y ^ n = y ≫ t.act
 variable {S : Type} [CommRing S] {x : Sp S ⟶ X0} {d : ℕ} (g : GermAt t x d)
 
 /- English proof (translation)
-Proceed by induction on `m, h using Nat.le_induction with`. Consider the case `base`. Establish `: trTo S (Fin 1 × Fin d) (le_refl n) = AlgHom.id S _` using `jet_hom_ext fun _ => rfl`. Rewrite using `[this, homAt_id, Category.id_comp]`. Consider the case `succ m h ih`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Establish `: trTo S (Fin 1 × Fin d) (h.trans (Nat.le_succ m)) = (trTo S (Fin 1 × Fin d) h).comp jetTrunc` using `jet_hom_ext fun _ => rfl`. Rewrite using `[this, ← homAt_comp, Category.assoc, g.chart.trunc, ih]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem x_trTo {m n : ℕ} (h : n ≤ m) : homAt x (trTo S (Fin 1 × Fin d) h) ≫ g.x m = g.x n := by
   induction m, h using Nat.le_induction with
@@ -214,7 +210,7 @@ theorem x_trTo {m n : ℕ} (h : n ≤ m) : homAt x (trTo S (Fin 1 × Fin d) h) �
     rw [this, ← homAt_comp, Category.assoc, g.chart.trunc, ih]
 
 /- English proof (translation)
-Establish `: χ = (Algebra.ofId S A).comp jetAug` using `jet_hom_ext fun q => by`. Rewrite using `[hχ, AlgHom.comp_apply, aug_mk]`. Simplify using the standard rewrite rules. Rewrite using `[this, ← homAt_comp, Category.assoc, g.chart.zero, MonObj.comp_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem x_zero {A : Type} [CommRing A] [Algebra S A] {m : ℕ} (χ : Jet S (Fin 1 × Fin d) m →ₐ[S] A)
     (hχ : ∀ q, χ (Ideal.Quotient.mk _ (MvPolynomial.X q)) = 0) : homAt x χ ≫ g.x m = 1 := by
@@ -224,9 +220,9 @@ theorem x_zero {A : Type} [CommRing A] [Algebra S A] {m : ℕ} (χ : Jet S (Fin 
   rw [this, ← homAt_comp, Category.assoc, g.chart.zero, MonObj.comp_one]
 
 /- English proof (translation)
-Take `⟨V, hc, hV, hl⟩` from `hV`. Use `⟨χ.comp (jetSubstP p fun q : Fin 1 × Fin d => psTrunc p (g.B.A.act (p : 𝓞 E) q.2)), ?_, fun q => ?_⟩` and prove the remaining obligations. Rewrite using `[pow_eq_act, Category.assoc, g.chart.act, ← Category.assoc, homAt_comp]`. Rewrite using `[AlgHom.comp_apply, substP_X, hV, comp1_point_power_expand p hp, psTrunc_expand p hp _ (hc _), ← hl]`. Simplify using `only [map_sum, map_mul, map_pow, MvPolynomial.constantCoeff_X, zero_pow hp, mul_zero, Finset.sum_const_zero, map_zero, sub_zero, Fintype.sum_prod_type, Finset.univ_unique, Finset.sum_singleton]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `χ.commutes _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem pow_coord {A : Type} [CommRing A] [Algebra S A] (p : ℕ) (hp : p ≠ 0)
     (hV : ∃ V : Germ.Pt S 1 d, (∀ i, MvPowerSeries.constantCoeff (V i) = 0) ∧

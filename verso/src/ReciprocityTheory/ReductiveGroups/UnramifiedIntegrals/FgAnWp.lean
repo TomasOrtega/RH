@@ -9,14 +9,14 @@ open PowerSeries Formalism.G Formalism.LT Formalism.L2.Th1.CM
 open Formalism.L2.Th1
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [A.shortW, WeierstrassCurve.map, map_ofNat]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem shortW_map (l : ℕ) [Fact l.Prime] (g2 g3 : ℂ) (ι : ℂ ≃+* ℂ_[l]) :
     A.shortW (ι g2) (ι g3) = (A.shortW g2 g3).map (ι : ℂ →+* ℂ_[l]) := by
   ext <;> simp [A.shortW, WeierstrassCurve.map, map_ofNat]
 
 /- English proof (translation)
-Establish `h1` using `F.curveBridge (A.shortW L.g₂ L.g₃) L (A.shortInv ℂ _ _).2.1 (A.shortInv ℂ _ _).2.2.1`. Establish `h2` using `(A.zMap ℂ ℂ_[l] (ι : ℂ →+* ℂ_[l]) (A.shortW L.g₂ L.g₃)).2.2.1`. Rewrite using `[← h1, h2, shortW_map]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem wp_bridge (l : ℕ) [Fact l.Prime] (L : PeriodPair) (ι : ℂ ≃+* ℂ_[l]) :
     A.wpReg (A.shortW (ι L.g₂) (ι L.g₃)) = PowerSeries.map (ι : ℂ →+* ℂ_[l]) (F.pSeries L) := by

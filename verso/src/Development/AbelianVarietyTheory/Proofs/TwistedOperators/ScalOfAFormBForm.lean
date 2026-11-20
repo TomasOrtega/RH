@@ -13,7 +13,7 @@ namespace GlobalTheory.LiftRows
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Take `⟨_, _, hL⟩` from `h`. Conclude with `hL.2.1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private lemma pos_of_isLval {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type}
     {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
@@ -22,7 +22,7 @@ private lemma pos_of_isLval {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : T
   exact hL.2.1
 
 /- English proof (translation)
-Distinguish the cases in `hp : p`. Conclude with `k₂ (f hp)`. Conclude with `k₁ hp`.
+Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 private lemma galE_fst_snd_eq_one_of_mem_stabilizer_of_jacobiSym_eq_one {p q r : Prop} (f : p → q) (k₁ : ¬p → r) (k₂ : q → r) : r := by
   by_cases hp : p
@@ -30,17 +30,17 @@ private lemma galE_fst_snd_eq_one_of_mem_stabilizer_of_jacobiSym_eq_one {p q r :
   · exact k₁ hp
 
 /- English proof (translation)
-Take `⟨a, ha, hA⟩` from `hA`. Take `⟨κ₀, hκ₀, hB⟩` from `hB`. Establish `hPa : 0 < ∏ i, a i` using `Finset.prod_pos fun i _ => ha i`. Establish `hA' : ∀ i t c, ∃ l : ℝ, 0 < l ∧ (∀ x ∈ GlobalTheory.Hk3.Wcc R SF i c, R.thG i t (LinearMap.adjoint (R.thG i t) x) = ((l : ℝ) : ℂ) • x) ∧ ((∃ z, IsLval R i t c z ∧ l = a i * z) ∨ ∀ x ∈ GlobalTheory.Hk3.Wcc R SF i c, x = 0)`. Introduce `i t c`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `galE_fst_snd_eq_one_of_mem_stabilizer_of_jacobiSym_eq_one (hA i t c) (fun h => ?_) (fun hq => ?_)` and prove the remaining obligations. Establish `h0 : ∀ x ∈ GlobalTheory.Hk3.Wcc R SF i c, x = 0`. Introduce `x hx`. Assume the negation of the conclusion as `hne`. Conclude with `h fun hb => hne (by rw [hb] at hx; exact (Submodule.mem_bot _).mp hx)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨1, one_pos, fun x hx => ?_, Or.inr h0⟩` and prove the remaining obligations. Rewrite using `[h0 x hx]`. Simplify using `only [map_zero, smul_zero]`. Take `⟨z, hz, hx⟩` from `hq`. Conclude with `⟨a i * z, mul_pos (ha i) (pos_of_isLval hz), hx, Or.inl ⟨z, hz, rfl⟩⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose lam hlpos hlW hlz using hA'`. Use `⟨lam, κ₀ / (∏ i, a i), div_pos hκ₀ hPa, hlpos, hlW, ?_⟩` and prove the remaining obligations. Introduce `t c x hx`. Use `galE_fst_snd_eq_one_of_mem_stabilizer_of_jacobiSym_eq_one (hM c) (fun h => ?_) (fun hW => ?_)` and prove the remaining obligations. Establish `hx0 : x = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hne`. Conclude with `h fun hb => hne (by rw [hb] at hx; exact (Submodule.mem_bot _).mp hx)`. Rewrite using `[hx0]`. Simplify using `only [map_zero, smul_zero]`. Establish `hz' : ∀ i, ∃ z, IsLval R i t c z ∧ lam i t c = a i * z` using `fun i => (hlz i t c).resolve_right fun h0 => hW i ((Submodule.eq_bot_iff _).mpr h0)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `choose z hz hlz' using hz'`. Establish `key : κ₀ / (∏ i, a i) * ∏ i, lam i t c = κ₀ * ∏ i, z i`. Rewrite using `[Finset.prod_congr rfl fun i _ => hlz' i, Finset.prod_mul_distrib, ← mul_assoc, div_mul_cancel₀ κ₀ hPa.ne']`. Rewrite using `[key]`. Conclude with `hB t c z hz x hx`.
+A detailed English derivation is pending.
 -/
 theorem scal_of_aForm_bForm {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (SF)

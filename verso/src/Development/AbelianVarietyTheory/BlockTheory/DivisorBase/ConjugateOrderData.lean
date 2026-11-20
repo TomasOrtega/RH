@@ -36,7 +36,7 @@ def cNum_vp (𝔣 : Ideal (OF E)) (l : ℕ) (P : HeightOneSpectrum (𝓞 E)) : �
   if ∃ v : HeightOneSpectrum (OF E), v.asIdeal ∣ 𝔣 ∧ (l : OF E) ∈ v.asIdeal then (condExp 𝔣 l : ℚ) else diffExp_vp l P
 
 /- English proof (translation)
-Use `(Set.Finite.image _ ?_).bddAbove` and prove the remaining obligations. Establish `h : Ideal.span {(l : OF E)} ≠ 0`. Simplify `hl` using `[Ideal.span_singleton_eq_bot]`. Use `(Ideal.finite_factors h).subset fun v hv => ?_` and prove the remaining obligations. Simplify `hv` using `[Ideal.dvd_span_singleton]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem condExp_bdd (𝔣 : Ideal (OF E)) {l : ℕ} (hl : l ≠ 0) :
     BddAbove (expIn 𝔣 '' {v : HeightOneSpectrum (OF E) | (l : OF E) ∈ v.asIdeal}) := by
@@ -218,11 +218,11 @@ Evaluate the decidable proposition.
 example : lPrime 2 = 2 ^ lPrimeExp 2 ∧ lPrime 7 = 7 ^ lPrimeExp 7 := by decide
 
 /- English proof (translation)
-Establish `h0 : (l : K) ≠ 0`. Rewrite using `[← map_natCast (algebraMap O K)]`. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective O K)).2 (Nat.cast_ne_zero.2 hl)`. Establish `h1 : (IsDiscreteValuationRing.maximalIdeal O).valuation K (l : K) < 1`. Rewrite using `[← map_natCast (algebraMap O K), HeightOneSpectrum.valuation_lt_one_iff_mem]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h`. Establish `h2 : (IsDiscreteValuationRing.maximalIdeal O).valuation K (l : K) ≠ 0` using `by simpa using h0`. Establish `h3 : ord_vw O (l : K) ≠ 0`. Unfold `ord_vw`. Introduce `h4`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `WithZero.exp_log h2` as an intermediate fact. Rewrite `this` using `[neg_eq_zero.1 h4, WithZero.exp_zero]`. Conclude with `h1.ne this.symm`. Rewrite using `[val_vp, if_neg h0, div_self (by exact_mod_cast h3)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 example (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] {K : Type} [Field K] [Algebra O K]
     [IsFractionRing O K] (l : ℕ) (hl : l ≠ 0) (h : (l : O) ∈ IsLocalRing.maximalIdeal O) : val_vp O l (l : K) = 1 := by

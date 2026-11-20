@@ -27,19 +27,19 @@ section Lift
 variable {S : Scheme.{0}} {A B T : Over S} [GrpObj A] [GrpObj B]
 
 /- English proof (translation)
-Apply the tactic sequence `ext1 <;> simp only [MonObj.mul_comp, lift_fst, lift_snd]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lift_mul_lift' (x x' : T ⟶ A) (y y' : T ⟶ B) : lift x y * lift x' y' = lift (x * x') (y * y') := by
   ext1 <;> simp only [MonObj.mul_comp, lift_fst, lift_snd]
 
 /- English proof (translation)
-Apply the tactic sequence `ext1 <;> simp only [MonObj.pow_comp, lift_fst, lift_snd]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lift_pow_eq (x : T ⟶ A) (y : T ⟶ B) (m : ℕ) : lift x y ^ m = lift (x ^ m) (y ^ m) := by
   ext1 <;> simp only [MonObj.pow_comp, lift_fst, lift_snd]
 
 /- English proof (translation)
-Apply the tactic sequence `ext1 <;> simp only [MonObj.one_comp, lift_fst, lift_snd]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lift_one_one : (1 : T ⟶ A ⊗ B) = lift (1 : T ⟶ A) (1 : T ⟶ B) := by
   ext1 <;> simp only [MonObj.one_comp, lift_fst, lift_snd]
@@ -47,7 +47,7 @@ theorem lift_one_one : (1 : T ⟶ A ⊗ B) = lift (1 : T ⟶ A) (1 : T ⟶ B) :=
 end Lift
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => rw [pow_zero]`. Conclude with `inferInstanceAs (IsMonHom (toUnit A ≫ η[A]))`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `inferInstanceAs (IsMonHom (lift ((𝟙 A) ^ n) (𝟙 A) ≫ μ[A]))`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isMonHom_id_pow {S : Scheme.{0}} (A : Over S) [GrpObj A] [IsCommMonObj A] (m : ℕ) :
     IsMonHom ((𝟙 A) ^ m : A ⟶ A) := by
@@ -56,19 +56,19 @@ theorem isMonHom_id_pow {S : Scheme.{0}} (A : Over S) [GrpObj A] [IsCommMonObj A
   | succ n ih => rw [pow_succ]; exact inferInstanceAs (IsMonHom (lift ((𝟙 A) ^ n) (𝟙 A) ≫ μ[A]))
 
 /- English proof (translation)
-Establish `hAA : IsAbelianScheme (G2 A)` using `AbelianSchemeGerms.isAbelianScheme_tensor A A hA hA`. Establish `z₁ : ∀ z : T ⟶ A, DiagPairing.pc hP 1 z = 0` using `fun z => by`. Take `⟨t, ht⟩` from `h₁`. Establish `e` using `(cls_eq_zero_iff (pull_isLB hP _)).2 ⟨t, ht⟩`. Rewrite `e` using `[cls_pull hP]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `q : lift (1 : T ⟶ A) z = z ≫ lift (1 : A ⟶ A) (𝟙 A)`. Rewrite using `[comp_lift, MonObj.comp_one, Category.comp_id]`. Unfold `DiagPairing.pc`. Rewrite using `[q, Over.comp_left, pull_comp, e, map_zero]`. Establish `z₂ : ∀ z : T ⟶ A, DiagPairing.pc hP z 1 = 0` using `fun z => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨t, ht⟩` from `h₂`. Establish `e` using `(cls_eq_zero_iff (pull_isLB hP _)).2 ⟨t, ht⟩`. Rewrite `e` using `[cls_pull hP]`. Establish `q : lift z (1 : T ⟶ A) = z ≫ lift (𝟙 A) (1 : A ⟶ A)`. Rewrite using `[comp_lift, MonObj.comp_one, Category.comp_id]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `DiagPairing.pc`. Rewrite using `[q, Over.comp_left, pull_comp, e, map_zero]`. Establish `h` using `GlobalTheory.CubeTop.cubeTheorem S (G2 A) hAA P hP T (lift 1 y) (lift 1 y') (lift x 1)`. Establish `hl` using `LB.isLB_linComb hP (fun k : Fin 8 ↦ (![lift 1 y * lift 1 y' * lift x 1, lift 1 y * lift 1 y', lift 1 y * lift x 1, lift 1 y' * lift x 1, lift 1 y, lift 1 y', lift x 1, 1] k).left) ![1, -1, -1, -1, 1, 1, 1, -1]`. Establish `e` using `(cls_eq_zero_iff hl).2 h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[cls_linComb hP _ _ hl, Fin.sum_univ_eight]`. Simplify using `only [Matrix.cons_val, Matrix.cons_val_zero, Matrix.cons_val_one, one_smul, neg_smul] at e`. Simplify using `only [lift_mul_lift', _root_.mul_one, _root_.one_mul, ← lift_one_one] at e`. Establish `o : (1 : T ⟶ G2 A) = lift (1 : T ⟶ A) 1` using `lift_one_one`. Rewrite `e` using `[o]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `a1` using `z₁ (y * y')`. Establish `a2` using `z₁ y`. Establish `a3` using `z₁ y'`. Establish `a4` using `z₂ x`. Establish `a5` using `z₁ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `DiagPairing.pc at a1 a2 a3 a4 a5 ⊢`. Rewrite `e` using `[a1, a2, a3, a4, a5]`. Rewrite using `[← sub_eq_zero, ← e]`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem pc_mul_right {S : Scheme.{0}} (A : Over S) [GrpObj A] [IsCommMonObj A] (hA : IsAbelianScheme A)
     {P : LB (G2 A).left} (hP : P.IsLB)
@@ -113,9 +113,9 @@ theorem pc_mul_right {S : Scheme.{0}} (A : Over S) [GrpObj A] [IsCommMonObj A] (
   abel
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => exact absurd hj (lt_irrefl 0)`. Consider the case `succ j ih`. Break down `Nat.eq_zero_or_pos j with rfl | hj'` into its components or cases. Simplify using `using h`.
+Proceed by induction. Treat this case separately. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[pow_succ x j, pow_succ c j]`. Conclude with `DiagPairing.weilIs_mul_left hG hA hL (ih hj') h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weilIs_pow_pos {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A] (hG : Out.GlobalFnsSt)
     (hA : IsAbelianScheme A) {L : LB A.left} (hL : L.IsLB) {k : ℤ} {T : Over S} {x y : T ⟶ A}
@@ -130,21 +130,19 @@ theorem weilIs_pow_pos {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A]
       exact DiagPairing.weilIs_mul_left hG hA hL (ih hj') h
 
 /- English proof (translation)
-Introduce `S A _ _ hA P hP h₁ h₂ κ _ _ y N m hN hm hNm a b ha hb c hc`. Establish `hG : Out.GlobalFnsSt` using `GlobalTheory.globalFns_holds`. Establish `hAA : IsAbelianScheme (G2 A)` using `AbelianSchemeGerms.isAbelianScheme_tensor A A hA hA`. Establish `hB'` using `pc_mul_right A hA hP h₁ h₂`. Use `haveI := isMonHom_id_pow A m`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `ψ : G2 A ⟶ G2 A` to `lift (fst A A) (snd A A ≫ (𝟙 A) ^ m)`. Establish `e : ∀ {T : Over S} (u v : T ⟶ A), lift u v ≫ ψ = lift u (v ^ m)` using `fun u v => by`. Simplify using `only [ψ, comp_lift, ← Category.assoc, MonObj.comp_pow, Category.comp_id, lift_fst, lift_snd]`. Establish `hψ' : ψ = lift (fst A A) (snd A A ^ m)`. Rewrite using `[← e (fst A A) (snd A A), lift_fst_snd, Category.id_comp]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hL : (lbPow P m).IsLB` using `LB.isLB_linComb hP _ _`. Establish `hiso : LBIso (lbPow P m) (P.pull ψ.left)`. Use `(cls_eq_iff hL (pull_isLB hP _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_lbPow hP, cls_pull hP, hψ']`. Establish `e'` using `DiagPairing.pc_pow_right hP hB' (fst A A) (snd A A) m`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `DiagPairing.pc at e'`. Rewrite using `[e', lift_fst_snd]`. Conclude with `congrArg (m • ·) (pull_id _).symm`. Establish `hNκ : (N : κ) ≠ 0`. Rewrite `hNm` using `[Nat.cast_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `left_ne_zero_of_mul hNm`. Establish `hx : (lift (a ^ m) 1 : Over.mk y ⟶ G2 A) ^ N = 1`. Rewrite using `[lift_pow_eq, ← pow_mul, mul_comm m N, ha, one_pow, lift_one_one]`. Establish `hy : (lift 1 (b ^ m) : Over.mk y ⟶ G2 A) ^ N = 1`. Rewrite using `[lift_pow_eq, ← pow_mul, mul_comm m N, hb, one_pow, lift_one_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c₀, h₀⟩` from `GlobalTheory.WeilGeomPt.exists_weilIs_geomPt S (G2 A) P hAA hP κ y N hN hNκ _ _ hx hy`. Establish `h₀' : Out.WeilIs (G2 A) P (N : ℤ) (lift (a ^ m) 1 ≫ ψ) (lift 1 b ≫ ψ) c₀`. Rewrite using `[e, e, one_pow]`. Conclude with `h₀`. Establish `h₁' : Out.WeilIs (G2 A) P ((N : ℤ) * (m : ℕ)) (lift (a ^ m) 1) (lift 1 b) c₀` using `GlobalTheory.WeilIsogeny.weilIs_pull_hom hG hAA hP hP ψ hiso h₀'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h₂' : Out.WeilIs (G2 A) P ((N * m : ℕ) : ℤ) (lift (a ^ m) 1) (lift 1 b) (c ^ m)`. Use `weilIs_pow_pos hG hAA hP hc hm` as an intermediate fact. Rewrite `this` using `[lift_pow_eq, one_pow]`. Then use the resulting hypothesis. Establish `hc₀ : c₀ = c ^ m` using `GlobalTheory.CommutatorPairing.weilIs_unique hG hAA hP (by rw [Nat.cast_mul]; exact h₁') h₂'`. Rewrite using `[← hc₀]`.
-
-Conclude with `h₀`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weilIs_levelChange : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → ∀ (P : LB (G2 A).left), P.IsLB → (∃ t : (P.pull (lift (1 : A ⟶ A) (𝟙 A)).left).Gen, t.IsGen) → (∃ t : (P.pull (lift (𝟙 A) (1 : A ⟶ A)).left).Gen, t.IsGen) → ∀ (κ : Type) [Field κ] [IsAlgClosed κ] (y : Sp κ ⟶ S) (N m : ℕ), 0 < N → 0 < m → ((N * m : ℕ) : κ) ≠ 0 → ∀ (a b : Over.mk y ⟶ A), a ^ (N * m) = 1 → b ^ (N * m) = 1 → ∀ (c : (Γ((Over.mk y).left, ⊤))ˣ), Out.WeilIs (G2 A) P ((N * m : ℕ) : ℤ) (lift a 1) (lift 1 b) c → Out.WeilIs (G2 A) P N (lift (a ^ m) 1) (lift 1 (b ^ m)) (c ^ m) := by
   intro S A _ _ hA P hP h₁ h₂ κ _ _ y N m hN hm hNm a b ha hb c hc

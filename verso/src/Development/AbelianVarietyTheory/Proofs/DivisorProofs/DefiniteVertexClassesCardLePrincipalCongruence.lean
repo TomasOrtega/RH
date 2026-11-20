@@ -16,19 +16,17 @@ namespace GlobalTheory.FrameTransport
 open GlobalTheory.FrameTransport in
 
 /- English proof (translation)
-Take `⟨uf, huf_def⟩ : ∃ uf, uf = finG V u` from `⟨_, rfl⟩`. Rewrite `hu` using `[← huf_def]`. Establish `hufU : uf ∈ UA D.sp.cm V.gram` using `by rw [huf_def]; exact GlobalTheory.LevSplit.finE_mem_UA V u.1`. Establish `lift : ∀ h : StandardLatticesGL3.GA D V.rank, ∃ g : GfC V, finG V g = frConj fr h.1 * uf⁻¹` using `fun h => GlobalTheory.T.exists_realTrivial_point_finiteAdelicHom_eq V _ (mul_mem (GlobalTheory.T.frameConj_standardUnitary_mem_unitaryFiniteAdelic V fr hfr h) (inv_mem hufU))`. Use `choose φ hφ using lift`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC : ∀ c ∈ GlobalTheory.FunObj.StdDatum.congLev D 𝔪 V.rank, uf * frConj fr c.1 * uf⁻¹ ∈ K`. Set `ρ : StandardLatticesGL3.GA D V.rank →* GL (Fin V.rank) (Lev.EAf D)` to `(MulAut.conj uf).toMonoidHom.comp ((frConj fr).comp (StandardLatticesGL3.GA D V.rank).subtype)`. Establish `hle : GlobalTheory.FunObj.StdDatum.congLev D 𝔪 V.rank ≤ K.comap ρ`. Use `(Subgroup.closure_le _).2 fun k hk => ?_` and prove the remaining obligations. Establish `hU : uf * frConj fr k.1 * uf⁻¹ ∈ UA D.sp.cm V.gram` using `mul_mem (mul_mem hufU (GlobalTheory.T.frameConj_standardUnitary_mem_unitaryFiniteAdelic V fr hfr k)) (inv_mem hufU)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hK (GlobalTheory.T.frameConjugate_principalCongruence_mem_latticeCongruence V fr uf Λ hu 𝔪 k hk.1 hk.2 hU)`. Introduce `c hc`. Conclude with `hle hc`. Use `⟨fun q => DoubleCoset.mk (ratFin V) (K.comap (finG V)) (φ (Quotient.out q)), ?_⟩` and prove the remaining obligations. Introduce `p`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, rfl⟩ : ∃ x, DoubleCoset.mk (ratFin V) (K.comap (finG V)) x = p` from `⟨Quotient.out p, DoubleCoset.out_eq' _ _ p⟩`. Take `⟨h, hh⟩` from `GlobalTheory.T.exists_standardUnitary_frameConj_eq V fr hfr (finG V x * uf) (mul_mem (GlobalTheory.LevSplit.finE_mem_UA V x.1) hufU)`. Use `⟨DoubleCoset.mk (GlobalTheory.NormSum.ratG D V.rank) (GlobalTheory.FunObj.StdDatum.congLev D 𝔪 V.rank) h, ?_⟩` and prove the remaining obligations. Use `show DoubleCoset.mk (ratFin V) (K.comap (finG V)) (φ (Quotient.out (DoubleCoset.mk (GlobalTheory.NormSum.ratG D V.rank) (GlobalTheory.FunObj.StdDatum.congLev D 𝔪 V.rank) h))) = _`. Take `⟨γ, hγ, c, hc, e⟩` from `(DoubleCoset.eq _ _ _ _).1 (DoubleCoset.out_eq' (GlobalTheory.NormSum.ratG D V.rank) (GlobalTheory.FunObj.StdDatum.congLev D 𝔪 V.rank) (DoubleCoset.mk (GlobalTheory.NormSum.ratG D V.rank) (GlobalTheory.FunObj.StdDatum.congLev D 𝔪 V.rank) h))`.
+Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Generalize the expression as in `Quotient.out (DoubleCoset.mk (GlobalTheory.NormSum.ratG D V.rank) (GlobalTheory.FunObj.StdDatum.congLev D 𝔪 V.rank) h) = h' at e ⊢`. Take `⟨q, hq, hqe⟩` from `GlobalTheory.T.frameConj_standardRational_mem_unitaryRational V fr hfr γ hγ`. Take `⟨k, hk⟩` from `GlobalTheory.T.exists_realTrivial_point_finiteAdelicHom_eq V (uf * frConj fr c.1 * uf⁻¹) (mul_mem (mul_mem hufU (GlobalTheory.T.frameConj_standardUnitary_mem_unitaryFiniteAdelic V fr hfr c)) (inv_mem hufU))`. Use `(DoubleCoset.eq _ _ _ _).2 ⟨q, hq, k, ?_, ?_⟩` and prove the remaining obligations. Use `show finG V k ∈ K`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk]`. Conclude with `hC c hc`. Apply `finG_injective V` to reduce the goal to its premises. Establish `e1 : finG V x = frConj fr h.1 * uf⁻¹` using `by rw [hh]; group`. Establish `e2 : frConj fr h.1 = frConj fr γ.1 * frConj fr h'.1 * frConj fr c.1`.
-
-Rewrite using `[e]`. Simplify using `only [Subgroup.coe_mul, map_mul]`. Establish `e3` using `hφ h'`. Simplify using `only [map_mul, hqe, e3, hk, e1, e2]`. Use `group`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_surj_cls {D : D7} (V : HSp D) (fr : GL (Fin V.rank) D.host.E)
     (hfr : Formalism.UG.cT (↑D.sp.cm.sig) (fr : Matrix (Fin V.rank) (Fin V.rank) D.host.E) * V.gram *
@@ -81,11 +79,9 @@ theorem exists_surj_cls {D : D7} (V : HSp D) (fr : GL (Fin V.rank) D.host.E)
     group
 
 /- English proof (translation)
-Introduce `D T L sc G U hS X hX 𝔪 h𝔪 K hK`. Take `⟨f, hf⟩` from `exists_surj_cls (G.V X) (hS.fr X) (hS.fr_on X hX) (hS.u X) (G.Λ X) (hS.u_lat X hX) 𝔪 K hK`. Take `⟨-, hI, hJ⟩` from `GlobalTheory.NormSum.cls_finite_card_le D (G.V X).rank`. Take `⟨hne, hle⟩` from `GlobalTheory.congLev_relIndex_le D 𝔪 h𝔪 (G.V X).rank`. Take `⟨hfin, hcard⟩` from `hJ _ (GlobalTheory.FunObj.StdDatum.congLev_le 𝔪 _) hne`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `Nat.card_le_card_of_surjective f hf`. Establish `hI' : (Nat.card (GlobalTheory.NormSum.Cls D (G.V X).rank (GlobalTheory.NormSum.intG D (G.V X).rank)) : ℝ) ≤ hBd D (G.V X).rank` using `hI`. Combine the equalities or inequalities in the displayed calculation. Conclude with `h1` after adjusting the coercions. Use `_ ≤ (Nat.card (GlobalTheory.NormSum.Cls D (G.V X).rank (GlobalTheory.NormSum.intG D (G.V X).rank)) : ℝ) * ((GlobalTheory.FunObj.StdDatum.congLev D 𝔪 (G.V X).rank).relIndex (GlobalTheory.NormSum.intG D (G.V X).rank) : ℝ) := by`.
-
-Conclude with `hcard` after adjusting the coercions. Use `_ ≤ hBd D (G.V X).rank * (Ideal.absNorm 𝔪 : ℝ) ^ ((G.V X).rank ^ 2) := by`. Apply `mul_le_mul hI' (by exact_mod_cast hle) (by positivity)` to reduce the goal to its premises. Conclude with `le_trans (Nat.cast_nonneg _) hI'`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem finCl_card_le : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) {U : Set T}, Std G U → ∀ X : Node, DefNode D.R.m X → ∀ 𝔪 : Ideal (𝓞 D.host.E), 𝔪 ≠ ⊥ → ∀ K : Subgroup (GL (Fin (G.V X).rank) (Lev.EAf D)), congLev D.sp.cm (G.V X).gram (G.Λ X) 𝔪 ≤ K → (Nat.card (FinCl (G.V X) K) : ℝ) ≤ hBd D (G.V X).rank * (Ideal.absNorm 𝔪 : ℝ) ^ ((G.V X).rank ^ 2) := by
   intro D T L sc G U hS X hX 𝔪 h𝔪 K hK

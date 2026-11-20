@@ -10,15 +10,15 @@ open GlobalTheory.CuspRep GlobalTheory.UnitaryBC PositivityTheory.Rg.BcB Positiv
 namespace GlobalTheory.CompanionTheory.PairDom
 
 /- English proof (translation)
-Establish `hmp : ∀ z : X × Y, MeasurePreserving (z * ·) (μ.prod ν) (μ.prod ν)` using `fun z => measurePreserving_mul_left (μ.prod ν) z`. Use `IsFundamentalDomain.mk'' (hF.nullMeasurableSet.prod hG.nullMeasurableSet) ?_ ?_ (fun γ => (hmp γ).quasiMeasurePreserving)` and prove the remaining obligations. Use `filter_upwards [Measure.quasiMeasurePreserving_fst.ae hF.ae_covers, Measure.quasiMeasurePreserving_snd.ae hG.ae_covers] with z h1 h2`. Take `⟨⟨_, a, rfl⟩, ha⟩` from `h1`. Take `⟨⟨_, b, rfl⟩, hb⟩` from `h2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨⟨(f a, g b), (a, b), rfl⟩, ha, hb⟩`. Introduce and unpack `⟨_, ⟨a, b⟩, rfl⟩ hγ`. Distinguish the cases in `ha : f a = 1`. Establish `hb : (⟨g b, b, rfl⟩ : g.range) ≠ 1`. Introduce `h`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hγ` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `Prod.ext ha (congrArg Subtype.val h)`. Establish `h3` using `(Measure.quasiMeasurePreserving_snd (μ := μ) (ν := ν)).preimage_null (hG.aedisjoint hb)`. Use `measure_mono_null ?_ h3` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `z ⟨⟨w, hw, rfl⟩, hz⟩`. Conclude with `⟨⟨w.2, hw.2, rfl⟩, ⟨_, hz.2, one_smul _ _⟩⟩`. Establish `ha' : (⟨f a, a, rfl⟩ : f.range) ≠ 1`. Introduce `h`. Conclude with `ha (congrArg Subtype.val h)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `h3` using `(Measure.quasiMeasurePreserving_fst (μ := μ) (ν := ν)).preimage_null (hF.aedisjoint ha')`. Use `measure_mono_null ?_ h3` and prove the remaining obligations. Introduce and unpack `z ⟨⟨w, hw, rfl⟩, hz⟩`. Conclude with `⟨⟨w.1, hw.1, rfl⟩, ⟨_, hz.1, one_smul _ _⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isFundamentalDomain_range_prodMap {A B X Y : Type} [Group A] [Group B] [Group X] [Group Y]
     [TopologicalSpace X] [TopologicalSpace Y] [IsTopologicalGroup X] [IsTopologicalGroup Y]
@@ -56,7 +56,7 @@ theorem isFundamentalDomain_range_prodMap {A B X Y : Type} [Group A] [Group B] [
       exact ⟨⟨w.1, hw.1, rfl⟩, ⟨_, hz.1, one_smul _ _⟩⟩
 
 /- English proof (translation)
-Substitute `e` using the available equality. Use `haveI : SigmaFinite μ₁ := sigmaFinite_of_locallyFinite`. Use `haveI : SigmaFinite μ₂ := sigmaFinite_of_locallyFinite`. Conclude with `⟨μ₁.prod μ₂, ⟨inferInstance, inferInstance, inferInstance, inferInstance⟩, hF, fun _ => rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_measure_of_eq {X Y : Type} [Group X] [Group Y] [TopologicalSpace X] [TopologicalSpace Y]
     [IsTopologicalGroup X] [IsTopologicalGroup Y] [LocallyCompactSpace X] [LocallyCompactSpace Y]
@@ -77,9 +77,7 @@ theorem exists_measure_of_eq {X Y : Type} [Group X] [Group Y] [TopologicalSpace 
   exact ⟨μ₁.prod μ₂, ⟨inferInstance, inferInstance, inferInstance, inferInstance⟩, hF, fun _ => rfl⟩
 
 /- English proof (translation)
-Take `⟨ν, h1, h2⟩` from `GlobalTheory.CompanionTheory.AdelicHaar.exists_haar_rightInvariant E a`. Establish `e : m = CuspidalL2GL.measurableSpace_GA E a` using `hm.measurable_eq`. Substitute `e` using the available equality. Use `haveI := CuspidalL2GL.t2Space_GA E a`. Use `haveI := CuspidalL2GL.locallyCompactSpace_GA E a`.
-
-Use `haveI := CuspidalL2GL.secondCountableTopology_GA E a`. Rewrite using `[Measure.isMulLeftInvariant_eq_smul μ ν]`. Use `infer_instance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMulRightInvariant_GA (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ)
     [m : MeasurableSpace (GA E a)] [hm : BorelSpace (GA E a)] (μ : Measure (GA E a)) [μ.IsHaarMeasure] :
@@ -94,11 +92,7 @@ theorem isMulRightInvariant_GA (E : Type) [Field E] [NumberField E] [IsTotallyCo
   infer_instance
 
 /- English proof (translation)
-Introduce `_ E _ _ _ a b _ _ _ _ μ₁ _ μ₂ _ F₁ F₂ h₁ h₂`. Use `haveI := CuspidalL2GL.locallyCompactSpace_GA E a`. Use `haveI := CuspidalL2GL.locallyCompactSpace_GA E b`. Use `haveI := CuspidalL2GL.secondCountableTopology_GA E a`. Use `haveI := CuspidalL2GL.secondCountableTopology_GA E b`.
-
-Use `haveI := isMulRightInvariant_GA E a μ₁`. Use `haveI := isMulRightInvariant_GA E b μ₂`. Use `haveI : SigmaFinite μ₁ := sigmaFinite_of_locallyFinite`. Use `haveI : SigmaFinite μ₂ := sigmaFinite_of_locallyFinite`. Take `⟨μ, hh, hf, hi⟩` from `exists_measure_of_eq μ₁ μ₂ (ratH E a b) (F₁ ×ˢ F₂) (isFundamentalDomain_range_prodMap μ₁ μ₂ (ratGL E a) (ratGL E b) F₁ F₂ h₁ h₂) (borelH E a b) Prod.borelSpace.measurable_eq`.
-
-Conclude with `⟨⟨μ, hh, F₁ ×ˢ F₂, hf⟩, rfl, fun f => hi f⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem prodDom : RatProper → ProdDom := by
   intro _ E _ _ _ a b _ _ _ _ μ₁ _ μ₂ _ F₁ F₂ h₁ h₂

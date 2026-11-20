@@ -12,7 +12,7 @@ noncomputable section
 namespace GlobalTheory.LocM.LatNorm
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.appLE, IsAffineOpen.fromSpec_app_self, Category.assoc, ← Functor.map_comp]`. Use `Category.comp_id _` and compare the differences between its conclusion and the goal. Conclude with `(Spec Γ(X, U)).presheaf.map_id _`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem fromSpec_appLE_top' {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) (h : ⊤ ≤ hU.fromSpec ⁻¹ᵁ U) :
     hU.fromSpec.appLE U ⊤ h = (Scheme.ΓSpecIso Γ(X, U)).inv := by
@@ -21,9 +21,9 @@ theorem fromSpec_appLE_top' {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U)
   exact (Spec Γ(X, U)).presheaf.map_id _
 
 /- English proof (translation)
-Establish `e₀ : ⊤ ≤ hU.fromSpec ⁻¹ᵁ U` using `hU.fromSpec_preimage_self.ge`. Establish `e₁ : ⊤ ≤ spMap φ ⁻¹ᵁ (⊤ : (Sp Γ(X, U)).Opens)` using `le_top`. Establish `e : ((spMap φ ≫ hU.fromSpec) ≫ g).appLE O ⊤ h = g.appLE O U hle ≫ hU.fromSpec.appLE U ⊤ e₀ ≫ (spMap φ).appLE ⊤ ⊤ e₁`. Rewrite using `[Scheme.Hom.appLE_comp_appLE, Scheme.Hom.appLE_comp_appLE]`. Establish `h1 : (spMap φ).appLE ⊤ ⊤ e₁ = (spMap φ).appTop` using `Scheme.Hom.appLE_eq_app _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, fromSpec_appLE_top', h1]`. Use `congrArg (fun f => f.hom ((Scheme.ΓSpecIso Γ(X, U)).inv (g.appLE O U hle s))) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom φ))` as an intermediate fact. Simplify using `only [CommRingCat.comp_apply] at this ⊢`. Use `this.trans ?_` and prove the remaining obligations. Conclude with `congrArg φ (Iso.inv_hom_id_apply (Scheme.ΓSpecIso Γ(X, U)) _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem val_appLE {X Y : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) {k : Type} [CommRing k]
     (φ : Γ(X, U) →+* k) (g : X ⟶ Y) {O : Y.Opens} (hle : U ≤ g ⁻¹ᵁ O)
@@ -48,7 +48,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}
 
 /- English proof (translation)
-Rewrite using `[app_resM, tanEv_resM]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tanEv_incl_res {B : Mdl Y i₀} (L : Lat B) {k : Type} [CommRing k] {x : Sp k ⟶ B.X}
     {v : Sp (DualNumber k) ⟶ B.t.G.left} (hv : IsTanAtG B.t x v) {V O : B.X.Opens} (hOV : O ≤ V)
@@ -57,9 +57,9 @@ theorem tanEv_incl_res {B : Mdl Y i₀} (L : Lat B) {k : Type} [CommRing k] {x :
   rw [app_resM, tanEv_resM]
 
 /- English proof (translation)
-Set `f : Γ(B.om, O) →+ k` to `AddMonoidHom.mk' (tanEv B.t hv hO) (tanEv_add B.t hv hO)`. Establish `e : tanEv B.t hv hO (L.N.incl.app O (∑ i, c i • s i)) = f (L.N.incl.app O (∑ i, c i • s i))` using `rfl`. Rewrite using `[e, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Scheme.Modules.Hom.app_smul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `tanEv_smul B.t hv hO _ _`.
+A detailed English derivation is pending.
 -/
 theorem tanEv_incl_sum {B : Mdl Y i₀} (L : Lat B) {k : Type} [CommRing k] {x : Sp k ⟶ B.X}
     {v : Sp (DualNumber k) ⟶ B.t.G.left} (hv : IsTanAtG B.t x v) {O : B.X.Opens} (hO : ⊤ ≤ x ⁻¹ᵁ O) {n : ℕ}
@@ -74,27 +74,25 @@ theorem tanEv_incl_sum {B : Mdl Y i₀} (L : Lat B) {k : Type} [CommRing k] {x :
   exact tanEv_smul B.t hv hO _ _
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw Xo p W hp hW Y i₀ Z B L σ r hr g hg hH V n m hm x hx`. Take `⟨-, g', hg', hS⟩` from `hH`. Simplify using `only at g' hg' hS`. Take `rfl` from `GlobalTheory.LocM.MapUniq.isMap_unique E H Dw Xo p W Y i₀ hp hW Z B g' g hg' hg`. Take `⟨U', hU', V', n', m', a', hxU', hU'V', hm', hcl⟩` from `hS x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hxO : g' x ∈ V ⊓ V'` using `⟨hx, hU'V' hxU'⟩`. Use `haveI : Nontrivial Γ(B.X, V ⊓ V') := (B.X.presheaf.germ (V ⊓ V') (g' x) hxO).hom.domain_nontrivial`. Set `b` to `hm.basis (inf_le_left : V ⊓ V' ≤ V)`. Set `b'` to `hm'.basis (inf_le_right : V ⊓ V' ≤ V')`. Take `rfl : n = n'` from `by simpa using Fintype.card_congr (b.indexEquiv b')`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hU, hxU, hUle⟩` from `GlobalTheory.QCoh.exists_affine_mem_le (U := U' ⊓ g' ⁻¹ᵁ (V ⊓ V')) x ⟨hxU', hxO⟩`. Establish `hUU' : U ≤ U'` using `hUle.trans inf_le_left`. Establish `hUO : U ≤ g' ⁻¹ᵁ (V ⊓ V')` using `hUle.trans inf_le_right`. Establish `hUV : U ≤ g' ⁻¹ᵁ V` using `hUO.trans (g'.preimage_mono inf_le_left)`. Set `gU : Γ(B.X, V ⊓ V') →+* Γ(Z.X, U)` to `(g'.appLE (V ⊓ V') U hUO).hom`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `T` to `b.toMatrix b'`. Set `S` to `b'.toMatrix b`. Set `Mu : GL (Fin n) Γ(Z.X, U)` to `⟨(T.map gU).transpose, (S.map gU).transpose, by rw [← Matrix.transpose_mul, ← Matrix.map_mul, Module.Basis.toMatrix_mul_toMatrix_flip, Matrix.map_one _ gU.map_zero gU.map_one, Matrix.transpose_one], by rw [← Matrix.transpose_mul, ← Matrix.map_mul, Module.Basis.toMatrix_mul_toMatr …`. Set `a : GL (Fin n) Γ(Z.X, U)` to `Matrix.GeneralLinearGroup.map (GlobalTheory.LocM.StepFrame.resR hUU') a' * Mu`. Use `⟨U, hU, a, hxU, hUV, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k _ φ v hv h hin j hj`. Establish `ept : spMap (φ.comp (GlobalTheory.LocM.StepFrame.resR hUU')) ≫ hU'.fromSpec = spMap φ ≫ hU.fromSpec`. Establish `sc : spMap (φ.comp (GlobalTheory.LocM.StepFrame.resR hUU')) = spMap φ ≫ spMap (GlobalTheory.LocM.StepFrame.resR hUU')`. Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]`. Rewrite using `[sc, Category.assoc, GlobalTheory.LocM.StepFrame.spMap_resR hU' hU hUU']`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key` using `hcl k (φ.comp (GlobalTheory.LocM.StepFrame.resR hUU')) v`. Rewrite `key` using `[ept]`. Establish `hfU : ⊤ ≤ (spMap φ ≫ hU.fromSpec) ⁻¹ᵁ U`. Rewrite using `[Scheme.Hom.comp_preimage, hU.fromSpec_preimage_self]`. Conclude with `le_rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hO : ⊤ ≤ ((spMap φ ≫ hU.fromSpec) ≫ g') ⁻¹ᵁ (V ⊓ V')`. Rewrite using `[Scheme.Hom.comp_preimage]`. Conclude with `hfU.trans ((spMap φ ≫ hU.fromSpec).preimage_mono hUO)`. Establish `hV' : ⊤ ≤ ((spMap φ ≫ hU.fromSpec) ≫ g') ⁻¹ᵁ V'` using `hO.trans (Scheme.Hom.preimage_mono _ inf_le_right)`. Establish `k0` using `key hv hV' hin j hj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : ∀ l, b l = resM _ (inf_le_left : V ⊓ V' ≤ V) (m l)` using `fun l => hm.basis_apply _ _`. Establish `hb' : ∀ l, b' l = resM _ (inf_le_right : V ⊓ V' ≤ V') (m' l)` using `fun l => hm'.basis_apply _ _`. Establish `e₁ : ∀ l, tanEv B.t hv h (L.N.incl.app V (m l)) = tanEv B.t hv hO (L.N.incl.app (V ⊓ V') (b l))` using `fun l => by`. Rewrite using `[hb]`. Conclude with `tanEv_incl_res L hv inf_le_left h hO (m l)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e₂ : ∀ l', tanEv B.t hv hV' (L.N.incl.app V' (m' l')) = ∑ i, φ (gU (T i l')) * tanEv B.t hv hO (L.N.incl.app (V ⊓ V') (b i))` using `fun l' => by`. Rewrite using `[tanEv_incl_res L hv inf_le_right hV' hO (m' l'), ← hb', ← b.sum_toMatrix_smul_self b' l', tanEv_incl_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[val_appLE hU φ g' hUO]`. Establish `e₃ : ∀ l, φ (a j l) = ∑ l', φ (GlobalTheory.LocM.StepFrame.resR hUU' (a' j l')) * φ (gU (T l l'))` using `fun l => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `ea : (a : Matrix (Fin n) (Fin n) Γ(Z.X, U)) = (Matrix.GeneralLinearGroup.map (GlobalTheory.LocM.StepFrame.resR hUU') a' : Matrix (Fin n) (Fin n) Γ(Z.X, U)) * (Mu : Matrix (Fin n) (Fin n) Γ(Z.X, U))` using `Units.val_mul _ _`. Rewrite using `[ea, Matrix.mul_apply, map_sum]`. Use `Finset.sum_congr rfl fun l' _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Both sides reduce to the same expression.
-
-Simplify using `only [e₂, RingHom.comp_apply] at k0`. Simplify using `only [e₁, e₃, Finset.sum_mul, Finset.mul_sum, mul_assoc] at k0 ⊢`. Rewrite using `[Finset.sum_comm]`. Conclude with `k0`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stepAt_of_frame : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (Xo : ∀ l : Level H, Moduli Dw l) (p : ℕ) (W : ValuationSubring ℂ), p.Prime → (p : ℂ) ∈ W.nonunits → ∀ (Y : LocalSystem Xo p W) (i₀ : Idx H p) (Z B : Mdl Y i₀) (L : Lat B) (σ : E →+* ℂ) (r : ℕ) (hr : r ≤ Dw.mult σ) (g : Z.X ⟶ B.X), IsMap Z B g → Step.Holds ⟨B, L, σ, r, hr⟩ Z → ∀ (V : B.X.Opens) (n : ℕ) (m : Fin n → Γ(L.N.toMod, V)), GlobalTheory.VB.IsFrame m → ∀ x : Z.X, g x ∈ V → ∃ (U : Z.X.Opens) (hU : IsAffineOpen U) (a : GL (Fin n) Γ(Z.X, U)), x ∈ U ∧ U ≤ g ⁻¹ᵁ V ∧ LatCover.StepAt Z B g L σ r hU m a := by
   intro E _ _ _ H Dw Xo p W hp hW Y i₀ Z B L σ r hr g hg hH V n m hm x hx

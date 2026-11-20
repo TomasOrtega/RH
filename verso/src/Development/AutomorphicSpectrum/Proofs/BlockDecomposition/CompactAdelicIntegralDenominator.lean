@@ -7,7 +7,7 @@ open NumberField GlobalTheory.CuspRep
 namespace GlobalTheory.CompanionTheory.AdeleDen
 
 /- English proof (translation)
-Rewrite `ha`, the goal using `[PI.AdCpctDenWork.mem_intAd]`. Introduce `v`. Rewrite using `[PI.AdCpctDenWork.natCast_mul_apply]`. Conclude with `mul_mem (PI.AdCpctDenWork.natCast_mem_int v m) (ha v)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem natCast_mul_mem_intAd {F : Type} [Field F] [NumberField F] (m : ℕ)
     {a : IsDedekindDomain.FiniteAdeleRing (𝓞 F) F} (ha : a ∈ PI.AdCpctDenWork.intAd F) :
@@ -18,19 +18,17 @@ private theorem natCast_mul_mem_intAd {F : Type} [Field F] [NumberField F] (m : 
   exact mul_mem (PI.AdCpctDenWork.natCast_mem_int v m) (ha v)
 
 /- English proof (translation)
-Introduce `E _ _ Q hQ`. Set `U : ℕ → Set (IsDedekindDomain.FiniteAdeleRing (𝓞 E) E)` to `fun N => {a | ((N.factorial : ℕ) : IsDedekindDomain.FiniteAdeleRing (𝓞 E) E) * a ∈ PI.AdCpctDenWork.intAd E}`. Establish `hUo : ∀ N, IsOpen (U N)` using `fun N => (continuous_const.mul continuous_id).isOpen_preimage _ PI.AdCpctDenWork.isOpen_intAd`. Establish `hUc : Q ⊆ ⋃ N, U N`. Introduce `a _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨m, hm, hma⟩` from `PI.AdCpctDenWork.exists_nat_adele a`. Use `Set.mem_iUnion.2 ⟨m, ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `Nat.dvd_factorial hm le_rfl`. Use `show ((m.factorial : ℕ) : IsDedekindDomain.FiniteAdeleRing (𝓞 E) E) * a ∈ PI.AdCpctDenWork.intAd E`. Rewrite using `[hk, Nat.cast_mul, mul_comm (m : IsDedekindDomain.FiniteAdeleRing (𝓞 E) E), mul_assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `natCast_mul_mem_intAd k hma`. Establish `hUd : Directed (· ⊆ ·) U`. Use `Monotone.directed_le ?_` and prove the remaining obligations. Introduce `N M hNM a ha`. Take `⟨k, hk⟩` from `Nat.factorial_dvd_factorial hNM`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `show ((M.factorial : ℕ) : IsDedekindDomain.FiniteAdeleRing (𝓞 E) E) * a ∈ PI.AdCpctDenWork.intAd E`. Rewrite using `[hk, Nat.cast_mul, mul_comm ((N.factorial : ℕ) : IsDedekindDomain.FiniteAdeleRing (𝓞 E) E), mul_assoc]`. Conclude with `natCast_mul_mem_intAd k ha`. Take `⟨N, hN⟩` from `hQ.elim_directed_cover U hUo hUc hUd`. Use `⟨N.factorial, Nat.factorial_ne_zero N, fun x hx => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hmem` using `hN hx`. Establish `hint : ∀ v : IsDedekindDomain.HeightOneSpectrum (𝓞 E), IsDedekindDomain.HeightOneSpectrum.valuation E v ((N.factorial : E) * x) ≤ 1`. Introduce `v`. Establish `h1 : algebraMap E (IsDedekindDomain.FiniteAdeleRing (𝓞 E) E) ((N.factorial : E) * x) ∈ PI.AdCpctDenWork.intAd E`. Rewrite using `[map_mul, map_natCast]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `hmem`. Establish `h2` using `(PI.AdCpctDenWork.mem_intAd _).1 h1 v`. Rewrite `h2` using `[IsDedekindDomain.FiniteAdeleRing.algebraMap_apply, IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers, IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Conclude with `h2`. Take `⟨r, hr⟩` from `IsDedekindDomain.HeightOneSpectrum.mem_integers_of_valuation_le_one E _ hint`.
-
-Conclude with `⟨r, by rw [NumberField.RingOfIntegers.coe_eq_algebraMap, hr]⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_common_denominator :
     ∀ (E : Type) [Field E] [NumberField E] (Q : Set (Af E)), IsCompact Q →

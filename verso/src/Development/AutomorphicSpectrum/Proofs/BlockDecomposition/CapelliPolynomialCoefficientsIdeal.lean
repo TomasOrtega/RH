@@ -16,9 +16,9 @@ def preserving (I : Submodule ℂ V) : Subalgebra ℂ (Module.End ℂ V) where
     exact I.smul_mem r hF
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro F hF`. Simplify using `using hF`. Consider the case `succ n ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `F hF`. Rewrite using `[pow_succ', Module.End.mul_apply]`. Conclude with `hD _ (ih F hF)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma pow_apply_mem (D : Module.End ℂ V) (Wn : Submodule ℂ V) (hD : ∀ F ∈ Wn, D F ∈ Wn) :
     ∀ n : ℕ, ∀ F ∈ Wn, (D ^ n) F ∈ Wn := by
@@ -31,11 +31,11 @@ lemma pow_apply_mem (D : Module.End ℂ V) (Wn : Submodule ℂ V) (hD : ∀ F �
     exact hD _ (ih F hF)
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro F _`. Simplify using the standard rewrite rules. Consider the case `succ n ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `F hF`. Establish `h1` using `hβ _ (ih F hF)`. Establish `h2` using `hDβ _ (pow_apply_mem D Wn hD n F hF)`. Establish `: (β ^ (n + 1)) F - (D ^ (n + 1)) F = β ((β ^ n) F - (D ^ n) F) - (D ((D ^ n) F) - β ((D ^ n) F))`. Rewrite using `[pow_succ', pow_succ', Module.End.mul_apply, Module.End.mul_apply, map_sub]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Conclude with `I.sub_mem h1 h2`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma pow_sub_pow_mem (β D : Module.End ℂ V) (Wn I : Submodule ℂ V)
     (hβ : ∀ F ∈ I, β F ∈ I) (hD : ∀ F ∈ Wn, D F ∈ Wn) (hDβ : ∀ F ∈ Wn, D F - β F ∈ I) :
@@ -55,11 +55,11 @@ lemma pow_sub_pow_mem (β D : Module.End ℂ V) (Wn I : Submodule ℂ V)
     exact I.sub_mem h1 h2
 
 /- English proof (translation)
-Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq`. Introduce `F hF`. Use `I.add_mem (hp F hF) (hq F hF)` as an intermediate fact. Simplify using `only [map_add, LinearMap.add_apply]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Consider the case `monomial n c`. Introduce `F hF`. Simplify using `only [aeval_monomial, Module.End.mul_apply, Module.algebraMap_end_apply]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Normalize the expressions using the abelian group laws. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[← smul_sub]`. Conclude with `I.smul_mem c (pow_sub_pow_mem β D Wn I hβ hD hDβ n F hF)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma aeval_sub_aeval_mem (β D : Module.End ℂ V) (Wn I : Submodule ℂ V)
     (hβ : ∀ F ∈ I, β F ∈ I) (hD : ∀ F ∈ Wn, D F ∈ Wn) (hDβ : ∀ F ∈ Wn, D F - β F ∈ I)
@@ -78,7 +78,7 @@ lemma aeval_sub_aeval_mem (β D : Module.End ℂ V) (Wn I : Submodule ℂ V)
     exact I.smul_mem c (pow_sub_pow_mem β D Wn I hβ hD hDβ n F hF)
 
 /- English proof (translation)
-Rewrite using `[Polynomial.eval_eq_sum_range]`. Conclude with `(integralClosure ℂ A).sum_mem fun i _ => (integralClosure ℂ A).mul_mem (h i) ((integralClosure ℂ A).pow_mem hx _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma isIntegral_eval {A : Type} [CommRing A] [Algebra ℂ A] (P : A[X])
     (h : ∀ k, IsIntegral ℂ (P.coeff k)) (x : A) (hx : IsIntegral ℂ x) :
@@ -95,23 +95,23 @@ noncomputable def sumPoly {A : Type} [CommRing A] (c : ℕ → A) (n : ℕ) : A[
   ∑ k ∈ Finset.range (n + 1), C (c k) * X ^ k
 
 /- English proof (translation)
-Simplify using `[sumPoly, eval_finset_sum]`.
+Simplify using the standard rewrite rules.
 -/
 lemma sumPoly_eval {A : Type} [CommRing A] (c : ℕ → A) (n : ℕ) (x : A) :
     (sumPoly c n).eval x = ∑ k ∈ Finset.range (n + 1), c k * x ^ k := by
   simp [sumPoly, eval_finset_sum]
 
 /- English proof (translation)
-Simplify using `[sumPoly, finset_sum_coeff, coeff_C_mul_X_pow]`.
+Simplify using the standard rewrite rules.
 -/
 lemma sumPoly_coeff {A : Type} [CommRing A] (c : ℕ → A) (n m : ℕ) :
     (sumPoly c n).coeff m = if m < n + 1 then c m else 0 := by
   simp [sumPoly, finset_sum_coeff, coeff_C_mul_X_pow]
 
 /- English proof (translation)
-Apply `Polynomial.monic_of_natDegree_le_of_coeff_eq_one n` to reduce the goal to its premises. Apply `Polynomial.natDegree_sum_le_of_forall_le` to reduce the goal to its premises. Introduce `k hk`. Conclude with `(natDegree_C_mul_X_pow_le _ _).trans (Nat.lt_succ_iff.mp (Finset.mem_range.mp hk))`. Rewrite using `[sumPoly_coeff]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`.
+A detailed English derivation is pending.
 -/
 lemma sumPoly_monic {A : Type} [CommRing A] (c : ℕ → A) (n : ℕ) (h : c n = 1) :
     (sumPoly c n).Monic := by
@@ -122,37 +122,33 @@ lemma sumPoly_monic {A : Type} [CommRing A] (c : ℕ → A) (n : ℕ) (h : c n =
   · rw [sumPoly_coeff]; simp [h]
 
 /- English proof (translation)
-Introduce `V _ _ D R S Wn I W₀ c₁ c₂ n₁ n₂ a b hRR hRS hSS hD hRI hSI hDβ ha1 haspan hRform hb1 hbspan hSform hW0 hp`. Set `s : Set (Module.End ℂ V)` to `Set.range R ∪ Set.range S`. Establish `hcomm : ∀ x ∈ s, ∀ y ∈ s, x * y = y * x`. Introduce and unpack `x (⟨u, rfl⟩ | ⟨u, rfl⟩) y (⟨v, rfl⟩ | ⟨v, rfl⟩)`. Conclude with `(hRR u v).eq`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Equip the data with the indicated structure.
 
-Conclude with `(hRS u v).eq`. Conclude with `(hRS v u).eq.symm`. Conclude with `(hSS u v).eq`. Use `letI : CommRing (Algebra.adjoin ℂ s) := Algebra.adjoinCommRingOfComm ℂ hcomm`. Establish `hpres : Algebra.adjoin ℂ s ≤ preserving I`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Algebra.adjoin_le_iff]`. Introduce and unpack `x (⟨u, rfl⟩ | ⟨u, rfl⟩)`. Conclude with `hRI u`. Conclude with `hSI u`. Set `Y : Ideal (Algebra.adjoin ℂ s)` to `{ carrier := {x | ∀ F ∈ W₀, (x : Module.End ℂ V) F ∈ I} add_mem' := fun {x y} hx hy F hF => by`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using I.add_mem (hx F hF) (hy F hF)`. Use the proof step `zero_mem' := fun F _ => by simp`. Use the proof step `smul_mem' := fun c x hx F hF => by show ((c * x : Algebra.adjoin ℂ s) : Module.End ℂ V) F ∈ I`. Rewrite using `[Subalgebra.coe_mul, Module.End.mul_apply]`. Conclude with `hpres c.2 _ (hx F hF) }`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `π` to `Ideal.Quotient.mkₐ ℂ Y`. Establish `hRmem : ∀ u, R u ∈ Algebra.adjoin ℂ s` using `fun u => Algebra.subset_adjoin (Or.inl ⟨u, rfl⟩)`. Establish `hSmem : ∀ u, S u ∈ Algebra.adjoin ℂ s` using `fun u => Algebra.subset_adjoin (Or.inr ⟨u, rfl⟩)`. Establish `hamem : ∀ k, a k ∈ Algebra.adjoin ℂ s` using `fun k => (Submodule.span_le (p := Subalgebra.toSubmodule (Algebra.adjoin ℂ s))).mpr (by rintro x ⟨u, rfl⟩; exact hRmem u) (haspan k)`. Establish `hbmem : ∀ k, b k ∈ Algebra.adjoin ℂ s` using `fun k => (Submodule.span_le (p := Subalgebra.toSubmodule (Algebra.adjoin ℂ s))).mpr (by rintro x ⟨u, rfl⟩; exact hSmem u) (hbspan k)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Set `P : (Algebra.adjoin ℂ s ⧸ Y)[X]` to `sumPoly (fun k => π ⟨a k, hamem k⟩) n₁`. Set `Q : (Algebra.adjoin ℂ s ⧸ Y)[X]` to `sumPoly (fun k => π ⟨b k, hbmem k⟩) n₂`. Establish `hPm : P.Monic` using `sumPoly_monic _ _ (by`. Establish `: (⟨a n₁, hamem n₁⟩ : Algebra.adjoin ℂ s) = 1` using `Subtype.ext ha1`. Simplify using `only [this, map_one])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hQm : Q.Monic` using `sumPoly_monic _ _ (by`. Establish `: (⟨b n₂, hbmem n₂⟩ : Algebra.adjoin ℂ s) = 1` using `Subtype.ext hb1`. Simplify using `only [this, map_one])`. Establish `hPev : ∀ t : ℂ, P.eval (algebraMap ℂ _ t) = π ⟨R t, hRmem t⟩`. Introduce `t`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: (⟨R t, hRmem t⟩ : Algebra.adjoin ℂ s) = ∑ k ∈ Finset.range (n₁ + 1), t ^ k • (⟨a k, hamem k⟩ : Algebra.adjoin ℂ s)`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[hRform t]`. Rewrite using `[this, map_sum, sumPoly_eval]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, Algebra.smul_def, map_pow, mul_comm]`. Establish `hQev : ∀ t : ℂ, Q.eval (algebraMap ℂ _ t) = π ⟨S t, hSmem t⟩`. Introduce `t`. Establish `: (⟨S t, hSmem t⟩ : Algebra.adjoin ℂ s) = ∑ k ∈ Finset.range (n₂ + 1), t ^ k • (⟨b k, hbmem k⟩ : Algebra.adjoin ℂ s)`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[hSform t]`. Rewrite using `[this, map_sum, sumPoly_eval]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Algebra.smul_def, map_pow, mul_comm]`. Establish `hβ : ∀ u : ℂ, IsIntegral ℂ (P.eval (algebraMap ℂ _ (u + c₁)) * Q.eval (algebraMap ℂ _ (u + c₂)))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `u`. Rewrite using `[hPev, hQev, ← map_mul]`. Take `⟨p, hpm, hp0⟩` from `hp u`. Use `⟨p, hpm, ?_⟩` and prove the remaining obligations. Rewrite using `[← Polynomial.aeval_def, Polynomial.aeval_algHom_apply, Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq_zero_iff_mem]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `F hF`. Rewrite using `[Polynomial.aeval_subalgebra_coe]`. Establish `key` using `aeval_sub_aeval_mem (R (u + c₁) * S (u + c₂)) (D u) Wn I (hpres (mul_mem (hRmem _) (hSmem _))) (hD u) (fun F hF => by rw [(hRS _ _).eq]; exact hDβ u F hF) p F (hW0 hF)`. Rewrite `key` using `[hp0 F hF, sub_zero]`. Conclude with `key`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hcoef` using `GlobalTheory.T.monic_factor_coefficients_integral (Algebra.adjoin ℂ s ⧸ Y) P Q c₁ c₂ hPm hQm hβ`. Use `⟨fun u => ?_, fun u => ?_⟩` and prove the remaining obligations. Establish `hint : IsIntegral ℂ (π ⟨R u, hRmem u⟩)`. Rewrite using `[← hPev]`. Conclude with `isIntegral_eval P (fun k => (hcoef k).1) _ isIntegral_algebraMap`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨q, hqm, hq0⟩` from `hint`. Use `⟨q, hqm, fun F hF => ?_⟩` and prove the remaining obligations. Rewrite `hq0` using `[← Polynomial.aeval_def, Polynomial.aeval_algHom_apply, Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq_zero_iff_mem]`. Use `hq0 F hF` as an intermediate fact. Rewrite `this` using `[Polynomial.aeval_subalgebra_coe]`. Then use the resulting hypothesis.
-
-Establish `hint : IsIntegral ℂ (π ⟨S u, hSmem u⟩)`. Rewrite using `[← hQev]`. Conclude with `isIntegral_eval Q (fun k => (hcoef k).2) _ isIntegral_algebraMap`. Take `⟨q, hqm, hq0⟩` from `hint`. Use `⟨q, hqm, fun F hF => ?_⟩` and prove the remaining obligations.
-
-Rewrite `hq0` using `[← Polynomial.aeval_def, Polynomial.aeval_algHom_apply, Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq_zero_iff_mem]`. Use `hq0 F hF` as an intermediate fact. Rewrite `this` using `[Polynomial.aeval_subalgebra_coe]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem monic_relations_to_blocks : ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (D R S : ℂ → Module.End ℂ V) (Wn I : Submodule ℂ V) (W₀ : Set V) (c₁ c₂ : ℂ) (n₁ n₂ : ℕ) (a b : ℕ → Module.End ℂ V), (∀ u v, Commute (R u) (R v)) → (∀ u v, Commute (R u) (S v)) → (∀ u v, Commute (S u) (S v)) → (∀ u, ∀ F ∈ Wn, D u F ∈ Wn) → (∀ u, ∀ F ∈ I, R u F ∈ I) → (∀ u, ∀ F ∈ I, S u F ∈ I) → (∀ u, ∀ F ∈ Wn, D u F - S (u + c₂) (R (u + c₁) F) ∈ I) → a n₁ = 1 → (∀ k, a k ∈ Submodule.span ℂ (Set.range R)) → (∀ u : ℂ, R u = ∑ k ∈ Finset.range (n₁ + 1), u ^ k • a k) → b n₂ = 1 → (∀ k, b k ∈ Submodule.span ℂ (Set.range S)) → (∀ u : ℂ, S u = ∑ k ∈ Finset.range (n₂ + 1), u ^ k • b k) → W₀ ⊆ Wn → (∀ u, ∃ p : Polynomial ℂ, p.Monic ∧ ∀ F ∈ W₀, Polynomial.aeval (D u) p F = 0) → (∀ u, ∃ q : Polynomial ℂ, q.Monic ∧ ∀ F ∈ W₀, Polynomial.aeval (R u) q F ∈ I) ∧ ∀ u, ∃ q : Polynomial ℂ, q.Monic ∧ ∀ F ∈ W₀, Polynomial.aeval (S u) q F ∈ I := by
   intro V _ _ D R S Wn I W₀ c₁ c₂ n₁ n₂ a b hRR hRS hSS hD hRI hSI hDβ ha1 haspan hRform hb1

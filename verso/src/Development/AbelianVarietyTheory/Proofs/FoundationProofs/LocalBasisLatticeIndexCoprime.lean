@@ -7,15 +7,13 @@ open scoped BigOperators
 namespace GlobalTheory.NormSum.LocIndex
 
 /- English proof (translation)
-Establish `hq : ∀ x : G ⧸ H, ∃ s : ℕ, Nat.Coprime s p ∧ s • x = 0`. Introduce `x`. Take `⟨z, rfl⟩` from `QuotientAddGroup.mk_surjective x`. Take `⟨s, hs, hz⟩` from `h z`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← QuotientAddGroup.mk_nsmul, QuotientAddGroup.eq_zero_iff]`. Conclude with `hz`. Establish `htor : AddMonoid.IsTorsion (G ⧸ H)`. Introduce `x`. Take `⟨s, hs, hx⟩` from `hq x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `isOfFinAddOrder_iff_nsmul_eq_zero.2 ⟨s, Nat.pos_of_ne_zero ?_, hx⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hp.one_lt.ne' (by simpa using hs)`. Use `haveI : Finite (G ⧸ H) := AddCommGroup.finite_of_fg_torsion _ htor`. Use `haveI := Fact.mk hp`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Nat.coprime_comm, Nat.Prime.coprime_iff_not_dvd hp]`. Introduce `hd`. Take `⟨x, hx⟩` from `exists_prime_addOrderOf_dvd_card' (G := G ⧸ H) p hd`. Take `⟨s, hs, hs0⟩` from `hq x`. Establish `: p ∣ s` using `hx ▸ addOrderOf_dvd_of_nsmul_eq_zero hs0`.
-
-Conclude with `(Nat.Prime.coprime_iff_not_dvd hp).1 hs.symm this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem index_coprime_of_multiples {G : Type*} [AddCommGroup G] [AddGroup.FG G] (H : AddSubgroup G) (p : ℕ)
     (hp : p.Prime) (h : ∀ z : G, ∃ s : ℕ, Nat.Coprime s p ∧ s • z ∈ H) : Nat.Coprime H.index p := by
@@ -42,11 +40,11 @@ theorem index_coprime_of_multiples {G : Type*} [AddCommGroup G] [AddGroup.FG G] 
   exact (Nat.Prime.coprime_iff_not_dvd hp).1 hs.symm this
 
 /- English proof (translation)
-Unfold `lamOf at hw`. Proceed by induction on `hw using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨c, hc, rfl⟩` from `hx`. Use `AddSubgroup.subset_closure ⟨c * a, cc.mul_mem_right a hc, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_assoc, ← map_mul]`. Use `congr 2`. Consider the case `zero => rw [zero_mul]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [add_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [neg_mul]`. Conclude with `neg_mem hx`.
+A detailed English derivation is pending.
 -/
 theorem mul_mem_lamOf (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (a : 𝓞 D.host.K) {w : ℂ}
     (hw : w ∈ lamOf D cc δ) : w * D.host.φ₀ ((a : D.host.K) : D.host.E) ∈ lamOf D cc δ := by
@@ -62,17 +60,17 @@ theorem mul_mem_lamOf (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (a : 𝓞
   | neg x _ hx => rw [neg_mul]; exact neg_mem hx
 
 /- English proof (translation)
-Unfold `La at hz`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨w, hw, A, hA, rfl⟩` from `hx`. Take `⟨s, hs, c, hc⟩` from `hb.2.2 A hA`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Establish `key : s • w • embV D (tor0 D cc δ) A = ∑ i, (w * D.host.φ₀ ((c i : D.host.K) : D.host.E)) • embV D (tor0 D cc δ) (b i)`. Use function extensionality and compare the values at `τ i j`. Establish `h1` using `congrArg (fun M => embT D τ (M i j)) hc`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, map_mul, map_natCast, Matrix.sum_apply, map_sum] at h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hD.1 τ] at h1`. Simplify using `only [Pi.smul_apply, Finset.sum_apply, embV, tor0, smul_eq_mul, nsmul_eq_mul]`. Rewrite using `[mul_left_comm, h1, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Rewrite using `[key]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `sum_mem fun i _ => AddSubgroup.subset_closure ⟨_, mul_mem_lamOf D cc δ (c i) hw, i, rfl⟩`. Consider the case `zero => exact ⟨1, Nat.coprime_one_left p, by rw [smul_zero]; exact zero_mem _⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨s, hs, hx⟩` from `hx`. Take `⟨t, ht, hy⟩` from `hy`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨s * t, Nat.Coprime.mul_left hs ht, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`. Conclude with `nsmul_mem hx t`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[mul_smul]`. Conclude with `nsmul_mem hy s`. Consider the case `neg x _ hx`. Take `⟨s, hs, hx⟩` from `hx`. Conclude with `⟨s, hs, by rw [smul_neg]; exact neg_mem hx⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_multiple_mem (D : D7) (hD : admG1 D) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) {N N' r : ℕ}
     (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E))
@@ -110,7 +108,7 @@ theorem exists_multiple_mem (D : D7) (hD : admG1 D) (cc : Ideal (𝓞 D.host.K))
     exact ⟨s, hs, by rw [smul_neg]; exact neg_mem hx⟩
 
 /- English proof (translation)
-Introduce `D hD cc δ N N' r L L' b p hp hfg hb`. Use `haveI : AddGroup.FG (La D (tor0 D cc δ) L L') := (AddGroup.fg_iff_addSubgroup_fg _).2 hfg`. Use `index_coprime_of_multiples _ p hp fun z => ?_` and prove the remaining obligations. Take `⟨s, hs, hz⟩` from `exists_multiple_mem D hD cc δ L L' b p hb z.1 z.2`. Conclude with `⟨s, hs, AddSubgroup.mem_addSubgroupOf.2 hz⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem index_coprime : ∀ (D : D7), admG1 D → ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (N N' r : ℕ) (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)) (b : Fin r → Matrix (Fin N') (Fin N) D.host.E) (p : ℕ), p.Prime → (La D (tor0 D cc δ) L L').FG → LocBasis D p (YYl D L L') b → Nat.Coprime (((LaB D (tor0 D cc δ) b).addSubgroupOf (La D (tor0 D cc δ) L L')).index) p := by
   intro D hD cc δ N N' r L L' b p hp hfg hb

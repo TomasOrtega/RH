@@ -4,7 +4,7 @@ import Development.AutomorphicSpectrum.Proofs.GlobalProofs.SiegelSetUnitary
 namespace PositivityTheory.Rg.Sw.Glob
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.WTC.weilThetaConvergence_of_core GlobalTheory.CompanionTheory.SiegelRed.siegelCore`.
+A detailed English derivation is pending.
 -/
 theorem wtc : GlobalTheory.Published.WeilThetaConvergence := GlobalTheory.CompanionTheory.WTC.weilThetaConvergence_of_core GlobalTheory.CompanionTheory.SiegelRed.siegelCore
 

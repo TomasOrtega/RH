@@ -20,14 +20,14 @@ namespace GlobalTheory.CompanionTheory.ColumnSplitting.InvU
 variable {D : D7} {n t : ℕ} {B W : HSp D}
 
 /- English proof (translation)
-Simplify using `only [ac, mm, mt_mul, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ac_mul (V : HSp D) {a b : ℕ} (g h : GA D V) (z : Mx D V.rank a × Mx D V.rank b) :
     ac V (g * h) z = ac V g (ac V h z) := by
   simp only [ac, mm, mt_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Take `⟨g1, g2⟩` from `top_pair (D := D) V.rank a b`. Establish `o1 : OpensMeasurableSpace (Mx D V.rank a × Mx D V.rank b)` using `g1.opensMeasurable`. Establish `hc : Continuous (ac V g : Mx D V.rank a × Mx D V.rank b → Mx D V.rank a × Mx D V.rank b)` using `(continuous_ac V).comp (continuous_const.prodMk continuous_id)`. Conclude with `hc.measurable`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurable_ac (V : HSp D) {a b : ℕ} (g : GA D V) :
     Measurable (ac V g : Mx D V.rank a × Mx D V.rank b → Mx D V.rank a × Mx D V.rank b) := by
@@ -38,7 +38,7 @@ theorem measurable_ac (V : HSp D) {a b : ℕ} (g : GA D V) :
   exact hc.measurable
 
 /- English proof (translation)
-The claim follows from `Measure.map_apply (measurable_zp d hn x₀) hA`.
+A detailed English derivation is pending.
 -/
 theorem rho_apply {d : HypDec B W t} (hn : W.rank + t = n) (I : IkD d n) (μ : Measure (Mx D W.rank t))
     (x₀ : Matrix (Fin W.rank) (Fin W.rank) D.host.E)
@@ -51,13 +51,13 @@ def sA {d : HypDec B W t} (hn : W.rank + t = n) (I : IkD d n) (μ : Measure (Mx 
   rho hn I μ x₀ {z | ac B x⁻¹ z ∈ A}
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `top_par (D := D) n t W`. Take `⟨g1, g2⟩` from `top_pair (D := D) B.rank W.rank t`. Take `⟨-, k2, -, -, k5, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D B`. Establish `hB : BorelSpace (GA D B)` using `⟨rfl⟩`. Establish `o0 : OpensMeasurableSpace (Par D n t W)` using `h1.opensMeasurable`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `oB : OpensMeasurableSpace (GA D B)` using `hB.opensMeasurable`. Establish `e1 : SecondCountableTopologyEither (GA D B) (Par D n t W)` using `⟨Or.inr h2⟩`. Establish `o1 : OpensMeasurableSpace (GA D B × Par D n t W)` using `Prod.opensMeasurableSpace`. Use `sigmaFinite_parameter_product_measure I μ hμ` as an intermediate fact. Establish `hc : Continuous fun p : GA D B × Par D n t W => ac B p.1⁻¹ (zp d hn x₀ p.2)` using `(continuous_ac B).comp ((continuous_fst.inv).prodMk ((continuous_zp d hn x₀).comp continuous_snd))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : MeasurableSet {p : GA D B × Par D n t W | ac B p.1⁻¹ (zp d hn x₀ p.2) ∈ A}` using `hc.measurable hA`. Establish `key` using `measurable_measure_prodMk_left (ν := Q0 I μ) hS`. Establish `e : sA hn I μ x₀ A = fun x => Q0 I μ (Prod.mk x ⁻¹' {p : GA D B × Par D n t W | ac B p.1⁻¹ (zp d hn x₀ p.2) ∈ A})`. Use function extensionality and compare the values at `x`. Conclude with `rho_apply hn I μ x₀ (measurable_ac B x⁻¹ hA)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem measurable_sA {d : HypDec B W t} (hn : W.rank + t = n) (I : IkD d n) (μ : Measure (Mx D W.rank t))
     (hμ : μ.IsAddHaarMeasure) (x₀ : Matrix (Fin W.rank) (Fin W.rank) D.host.E)
@@ -82,11 +82,11 @@ theorem measurable_sA {d : HypDec B W t} (hn : W.rank + t = n) (I : IkD d n) (μ
   exact key
 
 /- English proof (translation)
-Establish `hA' : MeasurableSet {z | ac B x⁻¹ z ∈ A}` using `measurable_ac B x⁻¹ hA`. Establish `h1` using `congrArg (fun ν : Measure _ => ν {z | ac B x⁻¹ z ∈ A}) (hL D n t B W d hn I μ hμ x₀ q⁻¹)`. Use `beta_reduce at h1`. Rewrite `h1` using `[Measure.map_apply (measurable_ac B _) hA']`. Establish `e : sA hn I μ x₀ A (q * x) = rho hn I μ x₀ (ac B ((q⁻¹ : GlobalTheory.RegSW.stab d) : GA D B) ⁻¹' {z | ac B x⁻¹ z ∈ A})`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `sA`. Use `congr 1`. Use extensionality with `z`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage, ← ac_mul, mul_inv_rev, Subgroup.coe_inv]`. Rewrite using `[e, h1, map_inv, inv_inv]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem sA_stab (hL : Law) {d : HypDec B W t} (hn : W.rank + t = n) (I : IkD d n) (μ : Measure (Mx D W.rank t))
     (hμ : μ.IsAddHaarMeasure) (x₀ : Matrix (Fin W.rank) (Fin W.rank) D.host.E)
@@ -105,7 +105,7 @@ theorem sA_stab (hL : Law) {d : HypDec B W t} (hn : W.rank + t = n) (I : IkD d n
   rfl
 
 /- English proof (translation)
-Use `sigmaFinite_parameter_product_measure I μ hμ` as an intermediate fact. Unfold `nuT`. Rewrite using `[Measure.map_apply (measurable_pi hn I x₀) hA, Measure.prod_apply (measurable_pi hn I x₀ hA)]`. Use `lintegral_congr fun k => ?_` and prove the remaining obligations. Conclude with `(rho_apply hn I μ x₀ (measurable_ac B (k : GA D B)⁻¹ hA)).symm`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem nuT_apply {d : HypDec B W t} (hn : W.rank + t = n) (I : IkD d n) (μ : Measure (Mx D W.rank t))
     (hμ : μ.IsAddHaarMeasure) (x₀ : Matrix (Fin W.rank) (Fin W.rank) D.host.E)
@@ -118,11 +118,11 @@ theorem nuT_apply {d : HypDec B W t} (hn : W.rank + t = n) (I : IkD d n) (μ : M
   exact (rho_apply hn I μ x₀ (measurable_ac B (k : GA D B)⁻¹ hA)).symm
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(nuT hn I μ x₀).map (ac B h) = nuT hn I μ x₀`. Use `Measure.ext fun A hA => ?_` and prove the remaining obligations. Establish `hA' : MeasurableSet (ac B h ⁻¹' A)` using `measurable_ac B h hA`. Rewrite using `[Measure.map_apply (measurable_ac B h) hA, nuT_apply hn I μ hμ x₀ hA', nuT_apply hn I μ hμ x₀ hA]`. Establish `key` using `hQ D t B W d I.l I.good I.νK I.haarK (sA hn I μ x₀ A) (measurable_sA hn I μ hμ x₀ hA) (fun q x => sA_stab hL hn I μ hμ x₀ hA q x) h⁻¹`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← key]`. Use `lintegral_congr fun k => ?_` and prove the remaining obligations. Unfold `sA`. Use `congr 1`. Use extensionality with `z`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage, ← ac_mul, mul_inv_rev, inv_inv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nuT_map_ac (hQ : QK) (hL : Law) (D : D7) (n t : ℕ) (B W : HSp D) (d : HypDec B W t) (hn : W.rank + t = n)
     (I : IkD d n) (μ : Measure (Mx D W.rank t)) (hμ : μ.IsAddHaarMeasure) (x₀) (h : GA D B) :

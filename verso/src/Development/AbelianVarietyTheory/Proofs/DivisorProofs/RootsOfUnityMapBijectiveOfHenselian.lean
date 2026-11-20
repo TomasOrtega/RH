@@ -10,13 +10,11 @@ open scoped CategoryTheory.Obj TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hx : w - 1 ∈ IsLocalRing.maximalIdeal R`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `h`. Use `h.map φ` as an intermediate fact. Rewrite `this` using `[map_sub, hφ, map_one, sub_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `not_isUnit_zero this`. Establish `hres : IsLocalRing.residue R w = 1`. Rewrite using `[← sub_eq_zero, ← map_one (IsLocalRing.residue R), ← map_sub, IsLocalRing.residue_eq_zero_iff]`. Conclude with `hx`. Establish `hS : IsUnit (∑ i ∈ Finset.range n, w ^ i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, map_sum]`. Simplify using `only [map_pow, hres, one_pow, Finset.sum_const, Finset.card_range, nsmul_eq_mul, _root_.mul_one]`. Use `(IsLocalRing.residue_ne_zero_iff_isUnit (n : R)).2 hn` as an intermediate fact. Simplify using `using this`. Establish `h0 : (∑ i ∈ Finset.range n, w ^ i) * (w - 1) = 0`.
-
-Rewrite using `[geom_sum_mul, hw, sub_self]`. Conclude with `sub_eq_zero.1 (hS.mul_right_eq_zero.1 h0)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rootOfUnity_eq_one_of_map_eq_one {R K : Type} [CommRing R] [IsLocalRing R] [CommRing K]
     [Nontrivial K] (φ : R →+* K) (n : ℕ) (hn : IsUnit (n : R)) (w : R) (hw : w ^ n = 1)
@@ -40,9 +38,9 @@ theorem rootOfUnity_eq_one_of_map_eq_one {R K : Type} [CommRing R] [IsLocalRing 
   exact sub_eq_zero.1 (hS.mul_right_eq_zero.1 h0)
 
 /- English proof (translation)
-Establish `hφ : φ (u : R) = φ (v : R)`. Use `congrArg (fun x : Kˣ => (x : K)) huv` as an intermediate fact. Simplify using `using this`. Establish `hw : ((u * v⁻¹ : Rˣ) : R) = 1`. Apply `rootOfUnity_eq_one_of_map_eq_one φ n hn` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← Units.val_pow_eq_pow_val, mul_pow, hu, inv_pow, hv, inv_one, _root_.mul_one, Units.val_one]`. Rewrite using `[Units.val_mul, map_mul, hφ, ← map_mul, Units.mul_inv, map_one]`. Conclude with `mul_inv_eq_one.1 (Units.ext hw)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem units_rootOfUnity_map_injective {R K : Type} [CommRing R] [IsLocalRing R] [CommRing K]
     [Nontrivial K] (φ : R →+* K) (n : ℕ) (hn : IsUnit (n : R)) (u v : Rˣ) (hu : u ^ n = 1)
@@ -57,13 +55,13 @@ theorem units_rootOfUnity_map_injective {R K : Type} [CommRing R] [IsLocalRing R
   exact mul_inv_eq_one.1 (Units.ext hw)
 
 /- English proof (translation)
-Take `⟨a₀, rfl⟩` from `IsLocalRing.residue_surjective z`. Establish `hm : (Polynomial.X ^ n - 1 : Polynomial R).Monic`. Simplify using `using Polynomial.monic_X_pow_sub_C (1 : R) hn0.ne'`. Establish `ha₀ : IsUnit a₀`. Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Rewrite `hz` using `[h, zero_pow hn0.ne']`. Conclude with `zero_ne_one hz`. Take `⟨a, ha, hd⟩` from `HenselianLocalRing.is_henselian (Polynomial.X ^ n - 1) hm a₀ (by`. Rewrite using `[← IsLocalRing.residue_eq_zero_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hz]) (by`. Simplify using `[Polynomial.derivative_X_pow]`. Conclude with `⟨hn, ha₀.pow _⟩)`. Use `⟨a, ?_, ?_⟩` and prove the remaining obligations. Simplify `ha` using `[sub_eq_zero]`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff]`. Conclude with `hd`.
+A detailed English derivation is pending.
 -/
 theorem exists_rootOfUnity_lift {R : Type} [CommRing R] [HenselianLocalRing R] (n : ℕ)
     (hn0 : 0 < n) (hn : IsUnit (n : R)) (z : IsLocalRing.ResidueField R) (hz : z ^ n = 1) :
@@ -91,23 +89,21 @@ end GlobalTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R _ _ _ K _ φ n hn0 hn`. Use `⟨fun u v hu hv huv => units_rootOfUnity_map_injective φ n hn u v hu hv huv, ?_⟩` and prove the remaining obligations. Use `haveI : NeZero n := ⟨hn0.ne'⟩`. Use `set ρ := IsLocalRing.residue R`. Use `haveI : NeZero (n : IsLocalRing.ResidueField R) := ⟨by simpa [ρ] using (IsLocalRing.residue_ne_zero_iff_isUnit (n : R)).2 hn⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `f` to `restrictRootsOfUnity φ n`. Set `g` to `restrictRootsOfUnity ρ n`. Establish `hf : ∀ x : rootsOfUnity n R, ((f x : Kˣ) : K) = φ ((x : Rˣ) : R)` using `fun x => by`. Simplify using `[f]`. Establish `hg : ∀ x : rootsOfUnity n R, ((g x : (IsLocalRing.ResidueField R)ˣ) : IsLocalRing.ResidueField R) = ρ ((x : Rˣ) : R)` using `fun x => by simp [g]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `ginj : Function.Injective g`. Introduce `x y hxy`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `units_rootOfUnity_map_injective ρ n hn _ _ ((mem_rootsOfUnity _ _).1 x.2) ((mem_rootsOfUnity _ _).1 y.2)` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `congrArg (fun w : rootsOfUnity n (IsLocalRing.ResidueField R) => ((w : (IsLocalRing.ResidueField R)ˣ) : IsLocalRing.ResidueField R)) hxy` as an intermediate fact. Simplify `this` using `[hg]`. Establish `gsurj : Function.Surjective g`. Introduce `ζ`. Take `⟨a, ha, hρ⟩` from `exists_rootOfUnity_lift n hn0 hn ((ζ : (IsLocalRing.ResidueField R)ˣ) : IsLocalRing.ResidueField R) (by rw [← Units.val_pow_eq_pow_val, (mem_rootsOfUnity _ _).1 ζ.2, Units.val_one])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨⟨Units.ofPowEqOne a n ha hn0.ne', (mem_rootsOfUnity _ _).2 (Units.ext (by simp [ha]))⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hg]`. Simplify using `using hρ`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcardR : Nat.card (rootsOfUnity n R) = n`. Rewrite using `[Nat.card_eq_of_bijective g ⟨ginj, gsurj⟩, HasEnoughRootsOfUnity.natCard_rootsOfUnity]`. Establish `finj : Function.Injective f`. Introduce `x y hxy`. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `units_rootOfUnity_map_injective φ n hn _ _ ((mem_rootsOfUnity _ _).1 x.2) ((mem_rootsOfUnity _ _).1 y.2)` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use `congrArg (fun w : rootsOfUnity n K => ((w : Kˣ) : K)) hxy` as an intermediate fact. Simplify `this` using `[hf]`. Establish `fbij : Function.Bijective f` using `finj.bijective_of_nat_card_le (by rw [hcardR]; exact card_rootsOfUnity K n)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `z hz`. Take `⟨x, hx⟩` from `fbij.2 ⟨z, (mem_rootsOfUnity _ _).2 hz⟩`. Use `⟨x, (mem_rootsOfUnity _ _).1 x.2, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Use `congrArg (fun w : rootsOfUnity n K => ((w : Kˣ) : K)) hx` as an intermediate fact.
-
-Simplify `this` using `[hf]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem rootsOfUnity_map_bijective_of_henselian : ∀ (R : Type) [CommRing R] [HenselianLocalRing R]
     [IsAlgClosed (IsLocalRing.ResidueField R)] (K : Type) [Field K] (φ : R →+* K) (n : ℕ), 0 < n →

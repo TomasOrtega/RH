@@ -21,7 +21,7 @@ open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 namespace GlobalTheory.SmallDatum
 
 /- English proof (translation)
-Introduce `D T L sc G μ₀ hL W B ρ t i j M hM Θ Θ' hΘ g₁ e Bs Γ X om om' h hTr hv`. Take `⟨ΦB, hD, m, f, φ, φ₀, hΦ, hSB, hvac, hv₁, h0, hne, L₁, L₂, θ, hθ, hfix, huniq⟩` from `GlobalTheory.T.exists_gridDatum_pureTensor_vacuaAE hL W B ρ t i j M hM Θ Θ' hΘ g₁ e Bs Γ X om om' h hTr hv`. Take `⟨ι, P, Λ, c, hι, hY⟩` from `GlobalTheory.T.latticeVacuum_eq_smul_indicator_splitPlace Bs Γ X om om' hTr L₁ L₂ θ hθ φ₀ h0 hne hfix huniq`. Conclude with `⟨ΦB, hD, m, f, φ, φ₀, hΦ, hSB, hvac, hv₁, ι, P, Λ, c, hι, hY⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_datum_pure_linBar : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) (B : Frames G)
     (ρ : RealMatch W) (t : T) (i j : Fin D.R.m) (M : Vol G) (hM : M.Is t) (Θ : TotT G (routeBig t i j))

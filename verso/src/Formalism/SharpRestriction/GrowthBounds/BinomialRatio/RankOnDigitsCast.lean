@@ -7,15 +7,13 @@ namespace Formalism.MainNotions.ColumnSystems.Pf
 open Formalism.MainNotions.G
 
 /- English proof (translation)
-The claim follows from `AddMonoidHom.map_finsum_of_injective (Nat.castAddMonoidHom ℚ) Nat.cast_injective f`.
+A detailed English derivation is pending.
 -/
 theorem cast_finsum {α : Sort*} (f : α → ℕ) : ((∑ᶠ a, f a : ℕ) : ℚ) = ∑ᶠ a, (f a : ℚ) :=
   AddMonoidHom.map_finsum_of_injective (Nat.castAddMonoidHom ℚ) Nat.cast_injective f
 
 /- English proof (translation)
-Unfold `segTies`. Simplify using `only`. Use `split_ifs with h`. Use `(uTop S ⟨k, h⟩).2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
-
-Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. Simplify by unfolding definitions. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem segTies_J_le {s r : ℕ} (p : ℕ) (S : SegData s) (b : SegBlock s r) (k : Fin (segTies p S b).q) :
     (segTies p S b).J k ≤ 2 * s + 1 := by
@@ -27,11 +25,11 @@ theorem segTies_J_le {s r : ℕ} (p : ℕ) (S : SegData s) (b : SegBlock s r) (k
   · exact le_rfl
 
 /- English proof (translation)
-Establish `h1` using `hB O (2 * s + 1) r (blockData p S aTop aPlus m b)`. Establish `h2 : blockRank O p r S aTop aPlus m b = Module.finrank (KK O) (Submodule.span (KK O) (((blockData p S aTop aPlus m b).SSZ O (r` using `r) : Submodule O (MvPolynomial (BVar (2 * s + 1) r (blockData p S aTop aPlus m b).T.t) (KK O))) : Set (MvPolynomial (BVar (2 * s + 1) r (blockData p S aTop aPlus m b).T.t) (KK O)))) := rfl`. Rewrite using `[h2, h1, cast_finsum]`. Simplify using `only`. Use `finsum_congr fun x => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hx : (blockData p S aTop aPlus m b).LevelOK x.1 x.2`. Rewrite using `[if_pos hx, if_pos hx]`. Use `push_cast`. Use `congr 1`. Conclude with `hY p O Sd (2 * s + 1) r _ _ _ _ (fun k => segTies_J_le p S b k)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hx, if_neg hx]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blockRank_cast (hB : BlockRankAt) (hY : DimYAt) (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] (Sd : UniformizedDVR p O) {s r : ℕ} [NeZero r] (S : SegData s) (aTop : Fin s → ℕ)
@@ -60,9 +58,9 @@ theorem blockRank_cast (hB : BlockRankAt) (hY : DimYAt) (p : ℕ) [Fact p.Prime]
     simp
 
 /- English proof (translation)
-Unfold `rankOnDigits chainCount`. Rewrite using `[cast_finsum]`. Use `finsum_congr fun b => ?_` and prove the remaining obligations. Distinguish the cases in `hb : Kept X.p X.m (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) b ∧ b.rz = rz ∧ b.ry = ry`. Rewrite using `[if_pos hb, if_pos hb]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `blockRank_cast hB hY X.p O Sd _ _ _ m b`. Rewrite using `[if_neg hb, if_neg hb]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rankOnDigits_cast (hB : BlockRankAt) (hY : DimYAt) (C0 CE1 CE2 : ℝ) (X : Loc) [NeZero X.m] [Fact X.p.Prime]
     (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Sd : UniformizedDVR X.p O)
@@ -79,9 +77,9 @@ theorem rankOnDigits_cast (hB : BlockRankAt) (hY : DimYAt) (C0 CE1 CE2 : ℝ) (X
     simp
 
 /- English proof (translation)
-Use `TransportedAlt.mono ?_ hC` and prove the remaining obligations. Introduce `C0 CYb Cde Ck CD Cb CE1 CE2 _ Cc h X _ W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ jO w hS hH hc j m hm rz ry hd`. Establish `hD1 : D1num X` using `⟨hS.1.prime, hS.1.five_le, hS.1.two_le, hS.1.even⟩`. Use `haveI : Fact X.p.Prime := ⟨hS.1.prime⟩`. Establish `h1` using `h X hD1 hH hc j m hm rz ry hd`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[← rankOnDigits_cast hB hY C0 CE1 CE2 X O (dvrOfStd hS) j m rz ry]`. Conclude with `h1` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem restUp_of (hB : BlockRankAt) (hY : DimYAt) (_hCZ : CharZeroAt) (hC : RestCountUp) : RestUp := by
   refine TransportedAlt.mono ?_ hC
@@ -93,9 +91,9 @@ theorem restUp_of (hB : BlockRankAt) (hY : DimYAt) (_hCZ : CharZeroAt) (hC : Res
   exact_mod_cast h1
 
 /- English proof (translation)
-Use `TransportedAlt.mono ?_ hC` and prove the remaining obligations. Introduce `C0 CYb Cde Ck CD Cb CE1 CE2 _ Cc h X _ W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ jO w hS hH hc j m hm hm2 rz ry hd`. Establish `hD1 : D1num X` using `⟨hS.1.prime, hS.1.five_le, hS.1.two_le, hS.1.even⟩`. Use `haveI : Fact X.p.Prime := ⟨hS.1.prime⟩`. Establish `h1` using `h X hD1 hH hc j m hm hm2 rz ry hd`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[← rankOnDigits_cast hB hY C0 CE1 CE2 X O (dvrOfStd hS) j m rz ry]`. Simplify using `using h1`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem restLow_of (hB : BlockRankAt) (hY : DimYAt) (_hCZ : CharZeroAt) (hC : RestCountLow) : RestLow := by
   refine TransportedAlt.mono ?_ hC

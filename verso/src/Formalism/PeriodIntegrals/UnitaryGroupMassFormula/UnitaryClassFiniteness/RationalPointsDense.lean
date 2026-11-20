@@ -12,7 +12,7 @@ open PI.UJClassFin
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {M : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = l`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem single_tmul (l : Fin M) (a : Af F) (t : E) :
     Pi.single l (a ⊗ₜ[F] t) = fun i => a ⊗ₜ[F] ((Pi.single l t : Fin M → E) i) := by
@@ -23,7 +23,7 @@ theorem single_tmul (l : Fin M) (a : Af F) (t : E) :
   · simp [Pi.single_apply, h]
 
 /- English proof (translation)
-Use `first`. Consider the case `(rw [Nat.cast_smul_eq_nsmul, TensorProduct.tmul_smul])`. Consider the case `(induction N with`. Consider the case `zero => simp`. Consider the case `succ n ih => simp [succ_nsmul, ih, add_smul, TensorProduct.tmul_add])`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem nsmul_tmul_F (N : ℕ) (a : Af F) (e : E) : N • (a ⊗ₜ[F] e) = a ⊗ₜ[F] ((N : F) • e) := by
   first
@@ -33,7 +33,7 @@ theorem nsmul_tmul_F (N : ℕ) (a : Af F) (e : E) : N • (a ⊗ₜ[F] e) = a �
       | succ n ih => simp [succ_nsmul, ih, add_smul, TensorProduct.tmul_add])
 
 /- English proof (translation)
-Use function extensionality and compare the values at `l`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mulVec_single' (g : Matrix (Fin M) (Fin M) (Af F ⊗[F] E)) (j : Fin M) (x : Af F ⊗[F] E) :
     g.mulVec (Pi.single j x) = fun l => g l j * x := by
@@ -41,13 +41,13 @@ theorem mulVec_single' (g : Matrix (Fin M) (Fin M) (Af F ⊗[F] E)) (j : Fin M) 
   simp [Matrix.mulVec, dotProduct, Pi.single_apply]
 
 /- English proof (translation)
-Unfold `latHat at hy ⊢`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨a', ha', x, hx, rfl⟩` from `hy`. Apply `AddSubgroup.subset_closure` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hmul : a * a' ∈ intAf F`. Unfold `intAf at ha ha' ⊢`. Introduce `v`. Rewrite using `[map_mul]`. Conclude with `mul_mem (ha v) (ha' v)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a * a', hmul, x, hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `[Pi.smul_apply, Algebra.TensorProduct.tmul_mul_tmul]`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add y1 y2 _ _ h1 h2 => rw [smul_add]`. Conclude with `add_mem h1 h2`. Consider the case `neg y _ h => rw [smul_neg]`. Conclude with `neg_mem h`.
+A detailed English derivation is pending.
 -/
 theorem latHat_smul (L : Set (Fin M → E)) {a : Af F} (ha : a ∈ intAf F) {y : Fin M → Af F ⊗[F] E}
     (hy : y ∈ latHat F E L) : (a ⊗ₜ[F] (1 : E)) • y ∈ latHat F E L := by
@@ -69,13 +69,9 @@ theorem latHat_smul (L : Set (Fin M → E)) {a : Af F} (ha : a ∈ intAf F) {y :
   | neg y _ h => rw [smul_neg]; exact neg_mem h
 
 /- English proof (translation)
-Set `S' : AddSubgroup (Af F ⊗[F] E)` to `{ carrier := {q | Pi.single l (k • q) ∈ latHat F E L} add_mem' := fun {a b} ha hb => by show Pi.single l (k • (a + b)) ∈ latHat F E L`. Rewrite using `[smul_add, Pi.single_add]`. Conclude with `add_mem ha hb`. Use the proof step `zero_mem' := by show Pi.single l (k • (0 : Af F ⊗[F] E)) ∈ latHat F E L`. Rewrite using `[smul_zero, Pi.single_zero]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `zero_mem _`. Use the proof step `neg_mem' := fun {a} ha => by show Pi.single l (k • (-a)) ∈ latHat F E L`. Rewrite using `[smul_neg, Pi.single_neg]`. Conclude with `neg_mem ha }`. Establish `hsub : {r : Af F ⊗[F] E | ∃ a ∈ intAf F, ∃ e : E, IsIntegral ℤ e ∧ r = a ⊗ₜ[F] e} ⊆ (S' : Set _)`.
-
-Introduce and unpack `r ⟨a, ha, e, he, rfl⟩`. Use `show Pi.single l (k • (a ⊗ₜ[F] e)) ∈ latHat F E L`. Rewrite using `[nsmul_tmul_F, single_tmul]`. Unfold `latHat`. Conclude with `AddSubgroup.subset_closure ⟨a, ha, Pi.single l ((k : F) • e), hk l e he, rfl⟩`.
-
-Conclude with `(AddSubgroup.closure_le S').mpr hsub hp`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem single_mem (L : Set (Fin M → E)) {k : ℕ}
     (hk : ∀ i, ∀ e : E, IsIntegral ℤ e → Pi.single i ((k : F) • e) ∈ L)
@@ -104,33 +100,27 @@ theorem single_mem (L : Set (Fin M → E)) {k : ℕ}
   exact (AddSubgroup.closure_le S').mpr hsub hp
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ M J L _h4 h5 h y`. Take `⟨k, hk, hkL⟩` from `low_nat L h5`. Use `set g' := finMat σ J h⁻¹ with hg'`. Establish `hden : ∃ m : ℕ, 0 < m ∧ ∀ l j, m • g' l j ∈ Oh F E` using `by choose mf hmf hmO using fun p : Fin M × Fin M => den (g' p.1 p.2)`. Use `⟨∏ p, mf p, Finset.prod_pos (fun p _ => hmf p), fun l j => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hq⟩` from `Finset.dvd_prod_of_mem mf (Finset.mem_univ (l, j))`. Rewrite using `[hq, mul_comm, mul_smul]`. Conclude with `AddSubgroup.nsmul_mem _ (hmO (l, j)) _`. Take `⟨m, hm, hmO⟩` from `hden`. Establish `K1 : ∀ o ∈ Oh F E, ∀ j, g'.mulVec (Pi.single j ((k * m) • o)) ∈ latHat F E L`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `o ho j`. Rewrite using `[mulVec_single']`. Establish `: (fun l => g' l j * ((k * m) • o)) = ∑ l, Pi.single l (k • ((m • g' l j) * o))`. Rewrite using `[Finset.univ_sum_single (fun l => k • ((m • g' l j) * o))]`. Use function extensionality and compare the values at `l`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_smul_comm, smul_mul_assoc, smul_smul]`. Rewrite using `[this]`. Conclude with `AddSubgroup.sum_mem _ (fun l _ => single_mem L hkL (Oh_mul (hmO l j) ho) l)`. Establish `SL : ∀ p ∈ Oh F E, ∀ j, Pi.single j ((k * m) • p) ∈ latHat F E (abelian₂ σ J L h)`. Introduce `p hp j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `hp using AddSubgroup.closure_induction with`. Consider the case `mem p hp`. Take `⟨a, ha, e, he, rfl⟩` from `hp`. Rewrite using `[nsmul_tmul_F, single_tmul]`. Use `AddSubgroup.subset_closure ⟨a, ha, _, ?_, rfl⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `show g'.mulVec (vinc (Pi.single j (((k * m : ℕ) : F) • e))) ∈ latHat F E L`. Establish `hv : vinc (F` using `F) (Pi.single j (((k * m : ℕ) : F) • e)) = Pi.single j ((k * m) • ((1 : Af F) ⊗ₜ[F] e)) := by`. Rewrite using `[nsmul_tmul_F, single_tmul]`. Both sides reduce to the same expression. Rewrite using `[hv]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `K1 _ (tmul_mem_Oh intAf_one he) j`. Consider the case `zero => rw [smul_zero, Pi.single_zero]`. Conclude with `zero_mem _`. Consider the case `add p q _ _ h1 h2 => rw [smul_add, Pi.single_add]`. Conclude with `add_mem h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Consider the case `neg p _ h1 => rw [smul_neg, Pi.single_neg]`. Conclude with `neg_mem h1`. Prove the components needed by the constructor for the conclusion. Introduce `hy choose e o ho hyo using fun j => approx (F := F) (k * m) (Nat.mul_pos hk hm) (y j)`. Establish `hyw : y = vinc (F` using `F) e + ∑ j, Pi.single j ((k * m) • o j) := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.univ_sum_single (fun j => (k * m) • o j)]`. Use function extensionality and compare the values at `j`. Conclude with `hyo j`. Establish `hwsum : g'.mulVec (∑ j, Pi.single j ((k * m) • o j)) ∈ latHat F E L`. Rewrite using `[Matrix.mulVec_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `AddSubgroup.sum_mem _ (fun j _ => K1 _ (ho j) j)`. Establish `he : e ∈ abelian₂ σ J L h` using `by show g'.mulVec (vinc e) ∈ latHat F E L`. Establish `: vinc (F` using `F) e = y - ∑ j, Pi.single j ((k * m) • o j) := by conv_rhs => rw [hyw]`. Normalize the expressions using the abelian group laws. Rewrite using `[this, Matrix.mulVec_sub]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Conclude with `sub_mem hy hwsum`. Rewrite using `[hyw]`. Use `add_mem (AddSubgroup.subset_closure ⟨1, intAf_one, e, he, rfl⟩) ?_` and prove the remaining obligations. Conclude with `AddSubgroup.sum_mem _ (fun j _ => SL _ (ho j) j)`. Introduce `hy`.
-
-Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, x, hx, rfl⟩` from `hy`. Establish `hx' : g'.mulVec (vinc x) ∈ latHat F E L` using `hx`. Establish `: (fun i => a ⊗ₜ[F] x i) = (a ⊗ₜ[F] (1 : E)) • vinc (F` using `F) x := by`.
-
-Use function extensionality and compare the values at `i`. Simplify using `[vinc, inclR, Algebra.TensorProduct.tmul_mul_tmul]`. Rewrite using `[this, Matrix.mulVec_smul]`. Conclude with `latHat_smul L ha hx'`. Consider the case `zero => rw [Matrix.mulVec_zero]`.
-
-Conclude with `zero_mem _`. Consider the case `add y z _ _ h1 h2 => rw [Matrix.mulVec_add]`. Conclude with `add_mem h1 h2`. Consider the case `neg y _ h1 => rw [Matrix.mulVec_neg]`. Conclude with `neg_mem h1`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem rational_points_dense : RatDense := by
   intro F E _ _ _ _ _ σ M J L _h4 h5 h y

@@ -17,7 +17,7 @@ def cand (ε : Fin m → Bool) (r : Fin m → ℕ) : Finset (Fin m × Fin n × B
     Finsupp.equivFunOnFinite.symm).filter (fun t => (∀ k ∈ t.support, inF1 ε k) ∧ rdeg ε t = r)
 
 /- English proof (translation)
-Take `⟨a, i, b⟩` from `k`. Simplify using `only [inF1] at hk`. Substitute `hk` using the available equality. Unfold `rdeg`. Conclude with `Finset.single_le_sum (f := fun i' => t (a, i', !ε a)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem le_rdeg (ε : Fin m → Bool) (t : Fin m × Fin n × Bool →₀ ℕ) (k) (hk : inF1 ε k) : t k ≤ rdeg ε t k.1 := by
   obtain ⟨a, i, b⟩ := k
@@ -27,11 +27,11 @@ theorem le_rdeg (ε : Fin m → Bool) (t : Fin m × Fin n × Bool →₀ ℕ) (k
   exact Finset.single_le_sum (f := fun i' => t (a, i', !ε a)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)
 
 /- English proof (translation)
-Unfold `cand`. Rewrite using `[Finset.mem_filter]`. Use `⟨fun h => h.2, fun h => ⟨?_, h⟩⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_image]`. Use `⟨⇑t, ?_, by simp⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fintype.mem_piFinset]`. Introduce `k`. Rewrite using `[Finset.mem_range, Nat.lt_succ_iff]`. Distinguish the cases in `hk : inF1 ε k`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Chain the equalities or inequalities of the calculation.
 
-Establish `: t k = 0`. Assume the negation of the conclusion as `h0`. Conclude with `hk (h.1 k (Finsupp.mem_support_iff.mpr h0))`. Rewrite using `[this]`. Conclude with `Nat.zero_le _`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_cand (ε : Fin m → Bool) (r : Fin m → ℕ) (t : Fin m × Fin n × Bool →₀ ℕ) :
     t ∈ cand ε r ↔ (∀ k ∈ t.support, inF1 ε k) ∧ rdeg ε t = r := by
@@ -60,7 +60,7 @@ def Bop (ε : Fin m → Bool) (c : ℝ) (Λ : PX m n →ₗ[ℂ] ℂ) : Module.E
   (MvPolynomial.basisMonomials (Fin m × Fin n × Bool) ℂ).constr ℂ (Bm ε c Λ)
 
 /- English proof (translation)
-Use `(MvPolynomial.basisMonomials (Fin m × Fin n × Bool) ℂ).constr_basis ℂ (Bm ε c Λ) s` as an intermediate fact. Rewrite `this` using `[MvPolynomial.coe_basisMonomials]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem Bop_mono (ε : Fin m → Bool) (c : ℝ) (Λ : PX m n →ₗ[ℂ] ℂ) (s : Fin m × Fin n × Bool →₀ ℕ) :
     Bop ε c Λ (monomial s 1) = Bm ε c Λ s := by
@@ -68,7 +68,7 @@ theorem Bop_mono (ε : Fin m → Bool) (c : ℝ) (Λ : PX m n →ₗ[ℂ] ℂ) (
   rwa [MvPolynomial.coe_basisMonomials] at this
 
 /- English proof (translation)
-Use `conv_lhs => rw [p.as_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[smul_monomial, smul_eq_mul, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem as_sum' (p : PX m n) : p = ∑ s ∈ p.support, p.coeff s • monomial s (1 : ℂ) := by
   conv_lhs => rw [p.as_sum]
@@ -76,9 +76,9 @@ theorem as_sum' (p : PX m n) : p = ∑ s ∈ p.support, p.coeff s • monomial s
   rw [smul_monomial, smul_eq_mul, mul_one]
 
 /- English proof (translation)
-Rewrite using `[mem_first_family_iff]`. Introduce `s hs`. Establish `: s = t`. Assume the negation of the conclusion as `h; exact (MvPolynomial.mem_support_iff.mp hs) (by rw [coeff_monomial, if_neg (Ne.symm h)])`. Substitute `this` using the available equality.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Substitute using the available equality.
 
-Conclude with `ht`.
+A detailed English derivation is pending.
 -/
 theorem monomial_mem_first_family (ε : Fin m → Bool) {t : Fin m × Fin n × Bool →₀ ℕ} (ht : ∀ k ∈ t.support, inF1 ε k) (d : ℂ) :
     (monomial t d : PX m n) ∈ F1 ε := by
@@ -89,9 +89,9 @@ theorem monomial_mem_first_family (ε : Fin m → Bool) {t : Fin m × Fin n × B
   subst this; exact ht
 
 /- English proof (translation)
-Rewrite using `[mem_second_family_iff]`. Introduce `s hs`. Establish `: s = t`. Assume the negation of the conclusion as `h; exact (MvPolynomial.mem_support_iff.mp hs) (by rw [coeff_monomial, if_neg (Ne.symm h)])`. Substitute `this` using the available equality.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Substitute using the available equality.
 
-Conclude with `ht`.
+A detailed English derivation is pending.
 -/
 theorem monomial_mem_second_family (ε : Fin m → Bool) {t : Fin m × Fin n × Bool →₀ ℕ} (ht : ∀ k ∈ t.support, ¬ inF1 ε k) (d : ℂ) :
     (monomial t d : PX m n) ∈ F2 ε := by
@@ -102,7 +102,7 @@ theorem monomial_mem_second_family (ε : Fin m → Bool) {t : Fin m × Fin n × 
   subst this; exact ht
 
 /- English proof (translation)
-Unfold `Bm`. Use `split_ifs`. Conclude with `Submodule.sum_mem _ fun t ht => Submodule.smul_mem _ _ (monomial_mem_first_family ε ((mem_cand ε _ t).mp ht).1 1)`. Conclude with `Submodule.zero_mem _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem representing_monomial_mem_first_family (ε : Fin m → Bool) (c : ℝ) (Λ : PX m n →ₗ[ℂ] ℂ) (s) : Bm ε c Λ s ∈ F1 ε := by
   unfold Bm
@@ -111,20 +111,20 @@ theorem representing_monomial_mem_first_family (ε : Fin m → Bool) (c : ℝ) (
   · exact Submodule.zero_mem _
 
 /- English proof (translation)
-Rewrite using `[as_sum' p, map_sum]`. Conclude with `Submodule.sum_mem _ fun s _ => by rw [map_smul, Bop_mono]; exact Submodule.smul_mem _ _ (representing_monomial_mem_first_family ε c Λ s)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem representing_operator_mem_first_family (ε : Fin m → Bool) (c : ℝ) (Λ : PX m n →ₗ[ℂ] ℂ) (p : PX m n) : Bop ε c Λ p ∈ F1 ε := by
   rw [as_sum' p, map_sum]
   exact Submodule.sum_mem _ fun s _ => by rw [map_smul, Bop_mono]; exact Submodule.smul_mem _ _ (representing_monomial_mem_first_family ε c Λ s)
 
 /- English proof (translation)
-Use extensionality with `k`. Simplify using `[Finsupp.mapDomain_equiv_apply, pE_symm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mapDomain_pE_pE (u : Fin m × Fin n × Bool →₀ ℕ) : (u.mapDomain pE).mapDomain pE = u := by
   ext k; simp [Finsupp.mapDomain_equiv_apply, pE_symm]
 
 /- English proof (translation)
-Introduce `k hk`. Rewrite `hk` using `[Finsupp.mem_support_iff, Finsupp.mapDomain_equiv_apply, pE_symm]`. Use `hu (pE k) (Finsupp.mem_support_iff.mpr hk)` as an intermediate fact. Rewrite `this` using `[first_family_partner_iff, not_not]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem partner_support_first_family (ε : Fin m → Bool) {u : Fin m × Fin n × Bool →₀ ℕ} (hu : ∀ k ∈ u.support, ¬ inF1 ε k) :
     ∀ k ∈ (u.mapDomain pE).support, inF1 ε k := by
@@ -134,7 +134,7 @@ theorem partner_support_first_family (ε : Fin m → Bool) {u : Fin m × Fin n �
   rwa [first_family_partner_iff, not_not] at this
 
 /- English proof (translation)
-Introduce `k hk`. Rewrite `hk` using `[Finsupp.mem_support_iff, Finsupp.mapDomain_equiv_apply, pE_symm]`. Use `hu (pE k) (Finsupp.mem_support_iff.mpr hk)` as an intermediate fact. Rewrite `this` using `[first_family_partner_iff]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem partner_support_second_family (ε : Fin m → Bool) {u : Fin m × Fin n × Bool →₀ ℕ} (hu : ∀ k ∈ u.support, inF1 ε k) :
     ∀ k ∈ (u.mapDomain pE).support, ¬ inF1 ε k := by
@@ -144,11 +144,11 @@ theorem partner_support_second_family (ε : Fin m → Bool) {u : Fin m × Fin n 
   rwa [first_family_partner_iff] at this
 
 /- English proof (translation)
-Unfold `Bm`. Rewrite using `[if_pos hs, Finset.sum_mul, contr_sum]`. Repeatedly rewrite using `[smul_mul_assoc, contr_smul]`. Establish `e : ∀ t ∈ cand ε (rdeg ε s), contr c (monomial t 1 * monomial u 1) = if t = u.mapDomain pE then (wt c t : ℂ) else 0` using `fun t ht => by`. Rewrite using `[contr_mono ε c ((mem_cand ε _ t).mp ht).1 hu]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_congr rfl fun t ht => by rw [e t ht]]`. Simplify using `only [mul_ite, mul_zero]`. Rewrite using `[Finset.sum_ite_eq']`. Use `split_ifs with hmem`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mapDomain_pE_pE, div_mul_cancel₀]`. Conclude with `(wt_pos hc _).ne'` after adjusting the coercions. Use `centre ε c Λ hΛ hs hu fun h => hmem ?_` and prove the remaining obligations. Rewrite using `[mem_cand]`. Conclude with `⟨partner_support_first_family ε hu, h.symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem key_mono (ε : Fin m → Bool) {c : ℝ} (hc : 0 < c) (Λ : PX m n →ₗ[ℂ] ℂ) (hΛ : ∀ a b p, Λ (Dop ε c a b p) = 0)
     {s u : Fin m × Fin n × Bool →₀ ℕ} (hs : ∀ k ∈ s.support, inF1 ε k) (hu : ∀ k ∈ u.support, ¬ inF1 ε k) :
@@ -169,9 +169,7 @@ theorem key_mono (ε : Fin m → Bool) {c : ℝ} (hc : 0 < c) (Λ : PX m n →�
     rw [mem_cand]; exact ⟨partner_support_first_family ε hu, h.symm⟩
 
 /- English proof (translation)
-Use `conv_lhs => rw [as_sum' f, as_sum' g, Finset.sum_mul_sum, map_sum]`. Use `conv_rhs => rw [as_sum' f, map_sum, as_sum' g, Finset.sum_mul_sum, contr_sum]`. Use `Finset.sum_congr rfl fun s hs => ?_` and prove the remaining obligations. Rewrite using `[map_sum, contr_sum]`. Use `Finset.sum_congr rfl fun u hu => ?_` and prove the remaining obligations.
-
-Rewrite using `[map_smul, Bop_mono, smul_mul_smul_comm, map_smul, smul_mul_smul_comm, contr_smul, key_mono ε hc Λ hΛ ((mem_first_family_iff ε f).mp hf s hs) ((mem_second_family_iff ε g).mp hg u hu), smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem functional_representation_by_contraction (ε : Fin m → Bool) {c : ℝ} (hc : 0 < c) (Λ : PX m n →ₗ[ℂ] ℂ) (hΛ : ∀ a b p, Λ (Dop ε c a b p) = 0)
     {f g : PX m n} (hf : f ∈ F1 ε) (hg : g ∈ F2 ε) : Λ (f * g) = contr c (Bop ε c Λ f * g) := by

@@ -20,20 +20,20 @@ variable {K : Type*} [Field K] [NumberField K] {n : ℕ}
   {V : HeightOneSpectrum (𝓞 K) → Type*} [∀ v, AddCommGroup (V v)] [∀ v, Module ℂ (V v)]
 
 /- English proof (translation)
-The claim follows from `map_inv (archComp K n) g`.
+A detailed English derivation is pending.
 -/
 theorem archComp_inv (g : AdelicGLn.AdelicGL K n) : archComp K n g⁻¹ = (archComp K n g)⁻¹ :=
   map_inv (archComp K n) g
 
 /- English proof (translation)
-The claim follows from `map_inv (localComp n v) g`.
+A detailed English derivation is pending.
 -/
 theorem localComp_inv (v : HeightOneSpectrum (𝓞 K)) (g : AdelicGLn.AdelicGL K n) :
     localComp n v g⁻¹ = (localComp n v g)⁻¹ :=
   map_inv (localComp n v) g
 
 /- English proof (translation)
-Rewrite using `[hf, archComp_inv]`. Repeatedly rewrite using `[localComp_inv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem inv_factorization {f : AdelicGLn.AdelicGL K n → ℂ}
     (π : ∀ v, Representation ℂ (GL (Fin n) (v.adicCompletion K)) (V v)) (ξ : ∀ v, V v)
@@ -55,7 +55,7 @@ section Pair
 variable {K : Type*} [Field K] [NumberField K] {n : ℕ}
 
 /- English proof (translation)
-Introduce `Ψ hΨ`. Take `⟨σ₀, Λ, Λ', _, _, hZ, _, _⟩` from `GJGlobal.globalZeta_entire_functionalEquation hn μ ν h₁ h₂ hA hΨ`. Conclude with `⟨σ₀, fun s hs ↦ (hZ s hs).1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem integrable_zetaIntegrand_coeff (hn : 2 ≤ n) (μ : Measure (Reduction.normOneGL K n))
     [μ.IsHaarMeasure] (ν : Measure (AdelicGLn.AdelicGL K n)) [ν.IsHaarMeasure]
@@ -70,7 +70,7 @@ theorem integrable_zetaIntegrand_coeff (hn : 2 ≤ n) (μ : Measure (Reduction.n
   exact ⟨σ₀, fun s hs ↦ (hZ s hs).1⟩
 
 /- English proof (translation)
-Establish `h2` using `GJMatrix.adelicMatrixFourier_mem (GJMatrix.adelicMatrixFourier_mem hΨ)`. Rewrite using `[GJMatrix.adelicMatrixFourier_adelicMatrixFourier h2, GJMatrix.adelicMatrixFourier_adelicMatrixFourier hΨ]`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem adelicMatrixFourier_four {Ψ : Matrix (Fin n) (Fin n) 𝔸[K] → ℂ}
     (hΨ : Ψ ∈ GJMatrix.matrixSchwartzBruhat K n) :
@@ -82,9 +82,9 @@ theorem adelicMatrixFourier_four {Ψ : Matrix (Fin n) (Fin n) 𝔸[K] → ℂ}
   simp
 
 /- English proof (translation)
-Introduce `Ψ hΨ`. Establish `h3` using `GJMatrix.adelicMatrixFourier_mem (GJMatrix.adelicMatrixFourier_mem (GJMatrix.adelicMatrixFourier_mem hΨ))`. Take `⟨σ₀, Λ, Λ', _, _, _, hZ', _⟩` from `GJGlobal.globalZeta_entire_functionalEquation hn μ ν h₁ h₂ hA h3`. Use `⟨σ₀, fun s hs ↦ ?_⟩` and prove the remaining obligations. Use `(hZ' s hs).1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[adelicMatrixFourier_four hΨ]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem integrable_zetaIntegrand_coeff_inv (hn : 2 ≤ n) (μ : Measure (Reduction.normOneGL K n))
     [μ.IsHaarMeasure] (ν : Measure (AdelicGLn.AdelicGL K n)) [ν.IsHaarMeasure]
@@ -115,27 +115,25 @@ def dualPartialL (S : Finset (HeightOneSpectrum (𝓞 K))) {V : HeightOneSpectru
     LFunction (F := (v : HeightOneSpectrum (𝓞 K)).adicCompletion K) (contragredient (π v)) s
 
 /- English proof (translation)
-Establish `hn0 : 0 < n` using `by omega`. Establish `: NeZero n` using `⟨by omega⟩`. Use `set ν : Measure (AdelicGLn.AdelicGL K n) := Measure.haar`. Establish `hfc : Continuous (GJGlobal.matrixCoeff μ φ₁ φ₂)` using `continuous_globalMatrixCoeff hn0 μ h₁ h₂ hA`. Take `⟨σp, hp⟩` from `exists_sphericalIntegrable ν hfc (integrable_zetaIntegrand_coeff hn μ ν h₁ h₂ hA) S π ξ ℓ hξ hsph fi hf hf0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g₀, hg₀⟩` from `hf0`. Take `⟨σd, hd⟩` from `exists_sphericalIntegrable ν (hfc.comp continuous_inv) (integrable_zetaIntegrand_coeff_inv hn μ ν h₁ h₂ hA) S (fun v ↦ Representation.dual (π v)) ℓ (fun v ↦ Module.Dual.eval ℂ (V v) (ξ v)) hℓs (fun v hv ↦ ⟨hℓK v hv, (hsph v hv).2⟩) (fun x ↦ fi x⁻¹) (inv_factorization π ξ ℓ fi hf) …`. Use `⟨max σp σd, fun s hs ↦ ?_⟩` and prove the remaining obligations. Take `⟨hpi, hpm⟩` from `hp s (lt_of_le_of_lt (le_max_left _ _) hs)`. Take `⟨hdi, hdm⟩` from `hd s (lt_of_le_of_lt (le_max_right _ _) hs)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hZp : ∀ v ∉ S, zetaIntegral (localHaar n v) (integralIndicator (v.adicCompletion K) n) (Parabolic.matrixCoeff (F` using `v.adicCompletion K) (π v) (ξ v) (ℓ v)) s = LFunction (F := v.adicCompletion K) (π v) s := by`. Introduce `v hv`. Use `hirr v hv` as an intermediate fact. Take `⟨-, heq⟩` from `zetaIntegral_sphericalCoeff_of_integrable (localHaar n v) (hz v hv) (hsph v hv).1 (hsph v hv).2 (hpi v hv)`. Establish `hK : fixedVectors (π v) (integralGL (v.adicCompletion K) n) ≠ ⊥`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `hmem` using `(hsph v hv).1`. Rewrite `hmem` using `[h, Submodule.mem_bot]`. Use `(hsph v hv).2` as an intermediate fact. Rewrite `this` using `[hmem, map_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_ne_one this`. Rewrite using `[heq, measureReal_def, localHaar_integralGL, ENNReal.toReal_one, Complex.ofReal_one, one_mul, LFunction_eq_prod_of_isSatakeParameter (hadm v hv) hK (localHaar n v) (hz v hv) s]`. Establish `hZd : ∀ v ∉ S, zetaIntegral (localHaar n v) (integralIndicator (v.adicCompletion K) n) (fun g ↦ Parabolic.matrixCoeff (F` using `v.adicCompletion K) (π v) (ξ v) (ℓ v) g⁻¹) s = LFunction (F := v.adicCompletion K) (contragredient (π v)) s := by`. Introduce `v hv`. Use `hirr v hv` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[zetaIntegral_inv_sphericalCoeff_of_integrable (π v) (hadm v hv) (localHaar n v) (hℓK v hv) (hsph v hv).2 (hdi v hv), measureReal_def, localHaar_integralGL, ENNReal.toReal_one, Complex.ofReal_one, one_mul]`. Establish `hbp : ∀ v ∉ S, (∀ i, ‖(z v i : ℂ) * qs (v.adicCompletion K) s‖ < 1) ∧ ∀ t : ℂ, LFunction (F` using `v.adicCompletion K) (π v) t = ∏ i, (1 - (z v i : ℂ) * qs (v.adicCompletion K) t)⁻¹ := by`. Introduce `v hv`. Use `hirr v hv` as an intermediate fact. Take `⟨hw, -⟩` from `zetaIntegral_sphericalCoeff_of_integrable (localHaar n v) (hz v hv) (hsph v hv).1 (hsph v hv).2 (hpi v hv)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hK : fixedVectors (π v) (integralGL (v.adicCompletion K) n) ≠ ⊥`. Introduce `h`. Establish `hmem` using `(hsph v hv).1`. Rewrite `hmem` using `[h, Submodule.mem_bot]`. Use `(hsph v hv).2` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `this` using `[hmem, map_zero]`. Conclude with `zero_ne_one this`. Conclude with `⟨hw, fun t ↦ LFunction_eq_prod_of_isSatakeParameter (hadm v hv) hK (localHaar n v) (hz v hv) t⟩`. Establish `hbd : ∀ v ∉ S, ∃ z' : Fin n → ℂˣ, (∀ i, ‖(z' i : ℂ) * qs (v.adicCompletion K) s‖ < 1) ∧ ∀ t : ℂ, LFunction (F` using `v.adicCompletion K) (contragredient (π v)) t = ∏ i, (1 - (z' i : ℂ) * qs (v.adicCompletion K) t)⁻¹ := by`. Introduce `v hv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `hirr v hv` as an intermediate fact. Take `⟨z', -, hw, hL, -⟩` from `zetaIntegral_inv_sphericalCoeff_of_integrable' (π v) (hadm v hv) (localHaar n v) (hℓK v hv) (hsph v hv).2 (hdi v hv)`. Conclude with `⟨z', hw, hL⟩`. Use `⟨hZp, ?_, hZd, ?_, hbp, hbd⟩` and prove the remaining obligations. Establish `h` using `hpm.hasProd`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `heq : (fun v : {v : HeightOneSpectrum (𝓞 K) // v ∉ S} ↦ zetaIntegral (localHaar n (v : HeightOneSpectrum (𝓞 K))) (integralIndicator ((v : HeightOneSpectrum (𝓞 K)).adicCompletion K) n) (Parabolic.matrixCoeff (F` using `(v : HeightOneSpectrum (𝓞 K)).adicCompletion K) (π v) (ξ v) (ℓ v)) s) = fun v : {v : HeightOneSpectrum (𝓞 K) // v ∉ S} ↦ LFunction (F := (v : HeightOneSpectrum (𝓞 K)).adicCompletion K) (π v) s :=`. Use function extensionality and compare the values at `fun v ↦ hZp v.1 v.2`. Rewrite `h` using `[heq]`. Conclude with `h`. Establish `h` using `hdm.hasProd`.
-
-Establish `heq : (fun v : {v : HeightOneSpectrum (𝓞 K) // v ∉ S} ↦ zetaIntegral (localHaar n (v : HeightOneSpectrum (𝓞 K))) (integralIndicator ((v : HeightOneSpectrum (𝓞 K)).adicCompletion K) n) (Parabolic.matrixCoeff (F` using `(v : HeightOneSpectrum (𝓞 K)).adicCompletion K) (Representation.dual (π v)) (ℓ v) (Module.Dual.eval ℂ (V v) (ξ v))) s) = fun v : {v : HeightOneSpectrum (𝓞 K) // v ∉ S} ↦ LFunction (F := (v : HeightOneSpectrum (𝓞 K)).adicCompletion K) (contragredient (π v)) s :=`. Use function extensionality and compare the values at `fun v ↦ hZd v.1 v.2`. Rewrite `h` using `[heq]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unramified (hn : 2 ≤ n) (μ : Measure (Reduction.normOneGL K n))
     [μ.IsHaarMeasure] {φ₁ φ₂ : AdelicGLn.AdelicGL K n → ℂ} (h₁ : φ₁ ∈ AutomorphicForm.cuspForms K n)
@@ -270,7 +268,7 @@ section Helpers
 variable {K : Type*} [Field K] [NumberField K] {n : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [GJGlobal.zetaIntegrand, Pi.smul_apply, smul_eq_mul, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem zetaIntegrand_smul (c : ℂ) (Φ : Matrix (Fin n) (Fin n) 𝔸[K] → ℂ)
     (f : AdelicGLn.AdelicGL K n → ℂ) (s : ℂ) :
@@ -279,15 +277,15 @@ theorem zetaIntegrand_smul (c : ℂ) (Φ : Matrix (Fin n) (Fin n) 𝔸[K] → �
   simp only [GJGlobal.zetaIntegrand, Pi.smul_apply, smul_eq_mul, mul_assoc]
 
 /- English proof (translation)
-Use `set c₀ := ∏ᶠ v : HeightOneSpectrum (𝓞 K), Parabolic.matrixCoeff (F := v.adicCompletion K) (π v) (ξ v) (ℓ v) (localComp n v g₀) with hc₀`. Establish `hsupp : (Function.mulSupport fun v : HeightOneSpectrum (𝓞 K) ↦ Parabolic.matrixCoeff (F` using `v.adicCompletion K) (π v) (ξ v) (ℓ v) (localComp n v g₀)).Finite := by`. Use `((finite_setOf_not_mem g₀).union S.finite_toSet).subset fun v hv ↦ ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Simplify using `only [mem_union, Finset.mem_coe, not_or] at hc`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hK : localComp n v g₀ ∈ integralGL (v.adicCompletion K) n`. Assume the negation of the conclusion as `h`. Conclude with `hc.1 h`. Apply `hv` to reduce the goal to its premises. Use `show ℓ v (π v (localComp n v g₀) (ξ v)) = 1`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[(hsph v hc.2).1 _ hK, (hsph v hc.2).2]`. Rewrite `hg₀` using `[hf g₀]`. Establish `hfi0 : fi (archComp K n g₀) ≠ 0` using `left_ne_zero_of_mul hg₀`. Establish `hc₀0 : c₀ ≠ 0` using `right_ne_zero_of_mul hg₀`. Use `⟨?_, hfi0, fun v h ↦ hc₀0 (finprod_eq_zero _ v h hsupp)⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `key : ∀ x, fi x = f ((AdelicGLn.prodEquiv K n).symm (x, finComp K n g₀)) / c₀`. Introduce `x`. Establish `: f ((AdelicGLn.prodEquiv K n).symm (x, finComp K n g₀)) = fi x * c₀`. Rewrite using `[hf, archComp_prodEquiv_symm]`. Repeatedly rewrite using `[localComp_prodEquiv_symm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Rewrite using `[this, mul_div_cancel_right₀ _ hc₀0]`. Establish `hc : Continuous fun x ↦ f ((AdelicGLn.prodEquiv K n).symm (x, finComp K n g₀)) / c₀` using `(hfc.comp ((AdelicGLn.prodEquiv K n).symm.continuous.comp (continuous_id.prodMk continuous_const))).div_const c₀`. Conclude with `hc.congr fun x ↦ (key x).symm`.
+A detailed English derivation is pending.
 -/
 theorem factor_nonvanishing {f : AdelicGLn.AdelicGL K n → ℂ} (hfc : Continuous f)
     (S : Finset (HeightOneSpectrum (𝓞 K)))
@@ -342,19 +340,17 @@ end Arch
 section NonVanishing
 
 /- English proof (translation)
-Use `set a : ι → ℂ := fun v ↦ ∏ i, (1 + -w v i) - 1 with ha`. Establish `hbnd : ∀ v, ‖a v‖ ≤ Real.exp (∑ i, ‖w v i‖) - 1` using `fun v ↦ by`. Use `Finset.norm_prod_one_add_sub_one_le Finset.univ (fun i ↦ -w v i)` as an intermediate fact. Simplify `this` using `[norm_neg]`. Establish `hsum : Summable a`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Summable.of_norm_bounded_eventually ((hb.mul_left (m : ℝ)).mul_left 2) ?_` and prove the remaining obligations. Establish `hev : ∀ᶠ v in Filter.cofinite, (m : ℝ) * b v ≤ 1`. Establish `: Tendsto (fun v ↦ (m : ℝ) * b v) Filter.cofinite (𝓝 0)`. Simplify using `using hb.tendsto_cofinite_zero.const_mul (m : ℝ)`. Conclude with `this.eventually (ge_mem_nhds one_pos)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `filter_upwards [hev] with v hv`. Establish `hS : ∑ i, ‖w v i‖ ≤ m * b v`. Combine the equalities or inequalities in the displayed calculation. Establish `hS0 : 0 ≤ ∑ i, ‖w v i‖` using `Finset.sum_nonneg fun i _ ↦ norm_nonneg _`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `hM' : HasProd (fun v ↦ ∏ i, (1 - w v i)) (∏' v, (1 + a v))`. Use `(Complex.multipliable_one_add_of_summable hsum).hasProd` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `v`. Simplify using `[ha, sub_eq_add_neg]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : ∀ v i, (1 - w v i) ≠ 0` using `fun v i h ↦ by`. Establish `h1 : w v i = 1` using `by linear_combination -h`. Use `hw1 v i` as an intermediate fact. Rewrite `this` using `[h1, norm_one]`. Conclude with `lt_irrefl _ this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hP.mul hM'`. Establish `h2 : (fun v ↦ L v * ∏ i, (1 - w v i)) = fun _ ↦ (1 : ℂ)`. Use function extensionality and compare the values at `v`. Rewrite using `[hL v, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_eq_one fun i _ ↦ inv_mul_cancel₀ (hne v i)`.
-
-Rewrite `h1` using `[h2]`. Introduce `hP0`. Use `h1.unique hasProd_one` as an intermediate fact. Rewrite `this` using `[hP0, zero_mul]`. Conclude with `zero_ne_one this`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ne_zero_of_hasProd_inv_prod {ι : Type*} {m : ℕ} {L : ι → ℂ} {P : ℂ} (hP : HasProd L P)
     (w : ι → Fin m → ℂ) (hL : ∀ v, L v = ∏ i, (1 - w v i)⁻¹) {b : ι → ℝ} (hb : Summable b)
@@ -402,7 +398,7 @@ theorem ne_zero_of_hasProd_inv_prod {ι : Type*} {m : ℕ} {L : ι → ℂ} {P :
 variable {K : Type*} [Field K] [NumberField K] {n : ℕ}
 
 /- English proof (translation)
-Establish `h` using `GroundTheory.Global.summable_absNorm_rpow_inv (K := K) (σ := 2) (by norm_num)`. Establish `hinj : Function.Injective fun v : {v : HeightOneSpectrum (𝓞 K) // v ∉ S} ↦ (v : HeightOneSpectrum (𝓞 K)).asIdeal` using `fun a b h ↦ Subtype.ext (HeightOneSpectrum.ext h)`. Use `(h.comp_injective hinj).congr fun v ↦ ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, GroundTheory.Global.residueCard_adicCompletion]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem summable_residueCard_inv_sq (S : Finset (HeightOneSpectrum (𝓞 K))) :
     Summable fun v : {v : HeightOneSpectrum (𝓞 K) // v ∉ S} ↦
@@ -415,13 +411,11 @@ theorem summable_residueCard_inv_sq (S : Finset (HeightOneSpectrum (𝓞 K))) :
   simp only [Function.comp_apply, GroundTheory.Global.residueCard_adicCompletion]
 
 /- English proof (translation)
-Use `set q : ℝ := (LocalField.residueCard F : ℝ) with hq`. Establish `hq1 : 1 < q`. Rewrite using `[hq]`. Conclude with `LocalField.one_lt_residueCard (K := F)` after adjusting the coercions. Establish `hq0 : 0 < q` using `by linarith`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hnorm : ∀ u : ℂ, ‖qs F u‖ = q ^ (-u.re)` using `fun u ↦ by`. Rewrite using `[qs, show ((LocalField.residueCard F : ℕ) : ℂ) = ((q : ℝ) : ℂ) by rw [hq]; push_cast; rfl, Complex.norm_cpow_eq_rpow_re_of_pos hq0, Complex.neg_re]`. Rewrite `h`, the goal using `[norm_mul, hnorm]`. Establish `hsplit : q ^ (-t.re) = q ^ (-s₀.re) * q ^ (-(t.re - s₀.re))`. Rewrite using `[← Real.rpow_add hq0]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Establish an intermediate fact.
 
-Put the polynomial expressions in normal form. Establish `hle : q ^ (-(t.re - s₀.re)) ≤ q ^ (-2 : ℝ)` using `Real.rpow_le_rpow_of_exponent_le hq1.le (by linarith)`. Rewrite `*` using `[hsplit, ← mul_assoc, Real.rpow_neg hq0.le 2]`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul h.le hle (by positivity) zero_le_one` and prove the remaining obligations.
-
-Use `_ = (q ^ (2 : ℝ))⁻¹ := one_mul _`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem norm_mul_qs_le {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] (c : ℂ) {s₀ t : ℂ} (h : ‖c * qs F s₀‖ < 1) (ht : s₀.re + 2 ≤ t.re) :
@@ -446,7 +440,7 @@ theorem norm_mul_qs_le {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace 
     _ = (q ^ (2 : ℝ))⁻¹ := one_mul _
 
 /- English proof (translation)
-Establish `hq1 : (1 : ℝ) < LocalField.residueCard F` using `by exact_mod_cast LocalField.one_lt_residueCard (K := F)`. Conclude with `inv_lt_one_of_one_lt₀ (Real.one_lt_rpow hq1 two_pos)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem residueCard_inv_sq_lt_one (F : Type*) [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] : ((LocalField.residueCard F : ℝ) ^ (2 : ℝ))⁻¹ < 1 := by
@@ -460,7 +454,7 @@ section FE
 variable {K : Type*} [Field K] [NumberField K] {n : ℕ}
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `localMatrixFourier_tensor_hyps S Φ hS h0`. Use `⟨fun v hv ↦ h1 v (Finset.mem_union_left _ hv), fun v hv ↦ h2 v ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_union, not_or]`. Conclude with `⟨hv, fun h ↦ hv (hRS h)⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem tensor_hyps_fourier {S : Finset (HeightOneSpectrum (𝓞 K))} (hRS : ramifiedPlaces K ⊆ S)
     {Φ : ∀ v : HeightOneSpectrum (𝓞 K), Matrix (Fin n) (Fin n) (v.adicCompletion K) → ℂ}

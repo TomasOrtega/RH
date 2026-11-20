@@ -18,15 +18,15 @@ def zpHom (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Algebra (O0 p) Ω] : 
   (algebraMap (O0 p) Ω).comp ((algebraMap (Lau p) (O0 p)).comp HahnSeries.C)
 
 /- English proof (translation)
-Simplify using `[zp, zpHom, HahnSeries.C_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem zp_eq (z : ℤ_[p]) : zp Ω z = zpHom p Ω z := by
   simp [zp, zpHom, HahnSeries.C_apply]
 
 /- English proof (translation)
-Establish `hpn : ((p : ℤ) ^ n) ≠ 0` using `pow_ne_zero _ (by exact_mod_cast (Fact.out : p.Prime).ne_zero)`. Rewrite using `[h.sub (HahnSeries.C z) (HahnSeries.C z), zp, HahnSeries.C_apply]`. Introduce `i`. Distinguish the cases in `hi : i = 0`. Simplify using `[hi, HahnSeries.C_apply, HahnSeries.coeff_single]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Establish `: (p : ℤ) ^ n * i ≠ 0` using `mul_ne_zero hpn hi`. Simplify using `[hi, this, HahnSeries.C_apply, HahnSeries.coeff_single]`. Introduce `r hr`. Establish `: r ≠ 0` using `by rintro rfl; exact hr (dvd_zero _)`. Simplify using `[this, HahnSeries.C_apply, HahnSeries.coeff_single]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem psi_C {T : GlobalTheory.K5.Tower p Ω} {n : ℕ} {ψ : O0 p →+* Ω} (h : IsReb T n ψ) (z : ℤ_[p]) :
     ψ (algebraMap (Lau p) (O0 p) (HahnSeries.C z)) = zp Ω z := by
@@ -42,9 +42,9 @@ theorem psi_C {T : GlobalTheory.K5.Tower p Ω} {n : ℕ} {ψ : O0 p →+* Ω} (h
     simp [this, HahnSeries.C_apply, HahnSeries.coeff_single]
 
 /- English proof (translation)
-Establish `hq : IsIntegral (O0 p) (T.qq n)`. Use `IsIntegral.of_pow (pow_pos (Fact.out : p.Prime).pos n) ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.K5.Basic.qq_pow]`. Conclude with `isIntegral_algebraMap`. Establish `hm : ψ y ∈ ψ.range` using `⟨y, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hm` using `[h.rng, Subalgebra.mem_toSubring]`. Conclude with `adjoin_le_integralClosure hq hm`.
+A detailed English derivation is pending.
 -/
 theorem psi_int {T : GlobalTheory.K5.Tower p Ω} {n : ℕ} {ψ : O0 p →+* Ω} (h : IsReb T n ψ) (y : O0 p) :
     IsInt p (ψ y) := by
@@ -56,9 +56,9 @@ theorem psi_int {T : GlobalTheory.K5.Tower p Ω} {n : ℕ} {ψ : O0 p →+* Ω} 
   exact adjoin_le_integralClosure hq hm
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.K5.Basic.natCast_pow_dvd_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Simplify `h 0` using `[HahnSeries.C_apply, HahnSeries.coeff_single]`. Introduce `h m`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hm : m = 0`. Simplify `h` using `[hm, HahnSeries.C_apply, HahnSeries.coeff_single]`. Simplify using `[hm, HahnSeries.C_apply, HahnSeries.coeff_single]`.
+Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 -/
 theorem dvd_C_iff (k : ℕ) (z : ℤ_[p]) : (p : Lau p) ^ k ∣ HahnSeries.C z ↔ (p : ℤ_[p]) ^ k ∣ z := by
   rw [GlobalTheory.K5.Basic.natCast_pow_dvd_iff]
@@ -74,11 +74,11 @@ section Val
 variable (v : Valuation Ω ℝ≥0)
 
 /- English proof (translation)
-Establish `hpk : (p : Ω) ^ k ≠ 0`. Introduce `h`. Use `congrArg v h` as an intermediate fact. Rewrite `this` using `[map_pow, map_zero]`. Conclude with `(pow_pos hp0 k).ne' this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, e⟩`. Rewrite `e` using `[sub_zero]`. Rewrite using `[e, map_mul, map_pow]`. Conclude with `mul_le_of_le_one_right zero_le' ((hv z).2 hz)`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hy`. Use `⟨y / (p : Ω) ^ k, (hv _).1 ?_, by rw [sub_zero]; field_simp⟩` and prove the remaining obligations. Rewrite using `[map_div₀, map_pow]`. Conclude with `div_le_one_of_le₀ hy zero_le'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cong_iff (hv : ∀ x, v x ≤ 1 ↔ IsInt p x) (hp0 : 0 < v (p : Ω)) (k : ℕ) (y : Ω) :
     Cong p k y 0 ↔ v y ≤ v (p : Ω) ^ k := by
@@ -101,7 +101,7 @@ def S (ψ : O0 p →+* Ω) {E F : ℕ} (π : Ω) (κ : Fin F → Ω) (b : Fin F 
   ∑ j, ∑ s : Fin E, κ j * π ^ (s : ℕ) * ψ (algebraMap (Lau p) (O0 p) (b j s))
 
 /- English proof (translation)
-Simplify using `only [S, map_mul, map_pow, map_natCast, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun s _ => by ring` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem S_mul (ψ : O0 p →+* Ω) {E F : ℕ} (π : Ω) (κ : Fin F → Ω) (m : ℕ) (b : Fin F → Fin E → Lau p) :
     S ψ π κ (fun j s => (p : Lau p) ^ m * b j s) = (p : Ω) ^ m * S ψ π κ b := by
@@ -109,7 +109,7 @@ theorem S_mul (ψ : O0 p →+* Ω) {E F : ℕ} (π : Ω) (κ : Fin F → Ω) (m 
   refine Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun s _ => by ring
 
 /- English proof (translation)
-Use `v.map_sum_le fun j _ => v.map_sum_le fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, map_pow]`. Conclude with `mul_le_one' (mul_le_one' (hκ j) (pow_le_one' hπ _)) (hψ _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem S_le_one (ψ : O0 p →+* Ω) {E F : ℕ} (π : Ω) (κ : Fin F → Ω) (hπ : v π ≤ 1) (hκ : ∀ j, v (κ j) ≤ 1)
     (hψ : ∀ y, v (ψ y) ≤ 1) (b : Fin F → Fin E → Lau p) : v (S ψ π κ b) ≤ 1 := by
@@ -118,15 +118,15 @@ theorem S_le_one (ψ : O0 p →+* Ω) {E F : ℕ} (π : Ω) (κ : Fin F → Ω) 
   exact mul_le_one' (mul_le_one' (hκ j) (pow_le_one' hπ _)) (hψ _)
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro b`. Simplify using `using S_le_one v ψ π κ hπ hκ hψ b`. Consider the case `succ k ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `b`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1 : ∀ j s, (p : Lau p) ∣ b j s` using `K1 b (h.trans (pow_le_of_le_one zero_le' hp1.le (Nat.succ_ne_zero k)))`. Use `choose b' hb' using h1`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : b = fun j s => (p : Lau p) ^ 1 * b' j s`. Use function extensionality and compare the values at `j s`. Rewrite using `[pow_one]`. Conclude with `hb' j s`. Rewrite `h` using `[hb, S_mul, map_mul, map_pow, pow_one, pow_succ']`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : v (S ψ π κ b') ≤ v (p : Ω) ^ k` using `le_of_mul_le_mul_left h hp0`. Introduce `j s`. Rewrite using `[hb' j s, pow_succ']`. Conclude with `mul_dvd_mul_left _ ((ih b').1 h2 j s)`. Introduce `h choose b' hb' using h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hb : b = fun j s => (p : Lau p) ^ (k + 1) * b' j s`. Use function extensionality and compare the values at `j s`. Conclude with `hb' j s`. Rewrite using `[hb, S_mul, map_mul, map_pow]`. Conclude with `mul_le_of_le_one_right zero_le' (S_le_one v ψ π κ hπ hκ hψ b')`.
+A detailed English derivation is pending.
 -/
 theorem key_k (hp0 : 0 < v (p : Ω)) (hp1 : v (p : Ω) < 1) (ψ : O0 p →+* Ω) {E F : ℕ} (π : Ω) (κ : Fin F → Ω)
     (hπ : v π ≤ 1) (hκ : ∀ j, v (κ j) ≤ 1) (hψ : ∀ y, v (ψ y) ≤ 1)
@@ -165,33 +165,29 @@ end
 open GlobalTheory.Glue.EvInj in
 
 /- English proof (translation)
-Introduce `p _ Ω _ _ hC T n ψ hψ k c x x' hEv`. Take `⟨v, hv, -, hp0, hp1⟩` from `GlobalTheory.K5.exists_valuation_isInt p Ω hC`. Take `⟨d, e, a, he, hc, hx, -⟩` from `hEv`. Establish `hψv : ∀ y, v (ψ y) ≤ 1` using `fun y => (hv _).2 (psi_int hψ y)`. Establish `hzp : ∀ z : ℤ_[p], v (zp Ω z) ≤ 1` using `fun z => (hv _).2 (by rw [zp]; exact isIntegral_algebraMap)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : ∀ t, v (e t) ≤ 1` using `fun t => (hv _).2 (he t).1`. Establish `hcv : ∀ r, v (c r) ≤ 1` using `fun r => by`. Rewrite using `[hc r]; exact v.map_sum_le fun t _ => by rw [map_mul]; exact mul_le_one' (hev t) (hzp _)`. Establish `hxv : v x ≤ 1`. Rewrite using `[hx]; exact v.map_sum_le fun t _ => by rw [map_mul]; exact mul_le_one' (hev t) (hψv _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨E, F, π, κ, lam, hE, -, hπE, hκ, hκu, hesp⟩` from `GlobalTheory.T.exists_integral_basis_of_integral_algebraic_elements p Ω hC v hv hp0 hp1 d e he`. Establish `hπ1 : v π < 1`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h2 : 1 ≤ v π ^ E` using `one_le_pow₀ h`. Rewrite `h2` using `[hπE]`. Conclude with `absurd hp1 (not_lt.2 h2)`. Establish `hκv : ∀ j, v (κ j) ≤ 1` using `fun j => (hv _).2 (hκ j).1`. Establish `LeviInductionForms : ∀ b : Fin F → Lau p, v (∑ j, κ j * ψ (algebraMap (Lau p) (O0 p) (b j))) < 1 → ∀ j, (p : Lau p) ∣ b j`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `b hb j`. Establish `hr` using `GlobalTheory.T.residue_linear_disjointness_coeff_lt_one p Ω hC v hv hp1 T n ψ hψ F κ b (fun j => hκ j) hb`. Rewrite using `[← pow_one (p : Lau p), GlobalTheory.K5.Basic.natCast_pow_dvd_iff]`. Introduce `r`. Assume the negation of the conclusion as `hnd`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hκu (fun j => (b j).coeff r) ⟨j, by simpa using hnd⟩`. Establish `h2` using `hr r`. Rewrite `h2` using `[h1]`. Conclude with `lt_irrefl _ h2`. Establish `K1` using `GlobalTheory.T.ramified_divisibility_of_unramified_divisibility p Ω v ψ E F π κ hE hp0 hp1 hπE hκv hψv LeviInductionForms`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `Kk` using `key_k v hp0 hp1 ψ π κ hπ1.le hκv hψv K1`. Take `⟨B, hB⟩ : ∃ B : Fin F → Fin E → Lau p, ∀ j s, B j s = ∑ t, HahnSeries.C (lam t j s) * a t` from `⟨_, fun _ _ => rfl⟩`. Establish `hx2 : x = S ψ π κ B`. Simplify using `only [S, hB, map_sum, map_mul, psi_C hψ, hx, hesp, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun s _ => Finset.sum_congr rfl fun t _ => by ring`. Establish `hc2 : ∀ r, c r = S ψ π κ (fun j s => HahnSeries.C ((B j s).coeff r))`. Introduce `r`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [S, psi_C hψ, hB, HahnSeries.coeff_sum, HahnSeries.C_mul_eq_smul, HahnSeries.coeff_smul, smul_eq_mul, zp_eq, map_sum, map_mul, hc, hesp, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun s _ => Finset.sum_congr rfl fun t _ => by`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[← HahnSeries.C_mul_eq_smul, map_mul, map_mul, psi_C hψ, psi_C hψ, zp_eq, zp_eq]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[cong_iff v hv hp0, hx2, Kk]`. Repeatedly rewrite using `[cong_iff v hv hp0, hc2, Kk, dvd_C_iff, GlobalTheory.K5.Basic.natCast_pow_dvd_iff]`. Conclude with `⟨fun h r j s => h j s r, fun h j s r => h r j s⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `⟨r, hr0, hri⟩`. Establish `hcr : v (c r) = 1`. Use `le_antisymm (hcv r) ?_` and prove the remaining obligations. Establish `h1` using `(hv _).2 hri`. Rewrite `h1` using `[map_inv₀]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : v (c r) ≠ 0` using `(Valuation.ne_zero_iff v).2 hr0`. Conclude with `(inv_le_one₀ (pos_iff_ne_zero.2 h0)).1 h1`. Establish `hx1 : v x = 1`. Use `le_antisymm hxv (not_lt.1 fun hlt => ?_)` and prove the remaining obligations. Establish `h3` using `GlobalTheory.T.residue_linear_disjointness_coeff_lt_one p Ω hC v hv hp1 T n ψ hψ d e a he (by rwa [← hx]) r`.
-
-Rewrite `h3` using `[← hc r, hcr]`. Conclude with `lt_irrefl _ h3`. Establish `hx0 : x ≠ 0`. Introduce `h`. Rewrite `hx1` using `[h, map_zero]`.
-
-Conclude with `zero_ne_one hx1`. Conclude with `⟨hx0, (hv _).1 (by rw [map_inv₀, hx1, inv_one])⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Glue.ev_cong_iff_and_unit : ∀ (p : ℕ) [Fact p.Prime], ∀ (Ω : Type) [Field Ω] [Algebra (O0 p) Ω], IsClo p Ω → ∀ (T : GlobalTheory.K5.Tower p Ω) (n : ℕ), ∀ (ψ : O0 p →+* Ω), IsReb T n ψ → ∀ (k : ℕ) (c : ℤ → Ω) (x x' : Ω), Ev ψ c x x' → ((Cong p k x 0 ↔ ∀ r, Cong p k (c r) 0) ∧ ((∃ r, c r ≠ 0 ∧ IsInt p (c r)⁻¹) → x ≠ 0 ∧ IsInt p x⁻¹)) := by
   intro p _ Ω _ _ hC T n ψ hψ k c x x' hEv

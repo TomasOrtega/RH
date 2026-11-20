@@ -22,11 +22,11 @@ open IsLocalRing
 namespace GlobalTheory.LocalLefschetz
 
 /- English proof (translation)
-Substitute `h` using the available equality. Proceed by induction on `x using WithBot.recBotCoe with`. Consider the case `bot => simp at hy`. Consider the case `coe n`. Establish `h3 : (3 : ℕ∞) ≤ n + 1` using `WithBot.coe_le_coe.mp hy`.
+Substitute using the available equality. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `: (2 : ℕ∞) ≤ n`. Proceed by induction on `n using ENat.recTopCoe with`. Consider the case `top => simp`. Consider the case `coe m`. Establish `: (3 : ℕ) ≤ m + 1` using `by exact_mod_cast h3`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `(by omega : 2 ≤ m)` after adjusting the coercions. Conclude with `WithBot.coe_le_coe.mpr this`.
+A detailed English derivation is pending.
 -/
 lemma two_le_of_add_one {x y : WithBot ℕ∞} (h : x + 1 = y) (hy : 3 ≤ y) : 2 ≤ x := by
   subst h
@@ -43,49 +43,43 @@ lemma two_le_of_add_one {x y : WithBot ℕ∞} (h : x + 1 = y) (hy : 3 ≤ y) : 
     exact WithBot.coe_le_coe.mpr this
 
 /- English proof (translation)
-Introduce `R _ _ hcomp hdim f hf hf2 _ hpur A _ _ _ hdep hEt`. Establish `hf0 : f ≠ 0`. Introduce and unpack `rfl`. Conclude with `hf2 (Ideal.zero_mem _)`. Use `haveI : IsDomain R := ReciprocityTheory.CA.AB.RegA.IsRegularLocalRing.isDomain R`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hreg : IsSMulRegular A f` using `GlobalTheory.T.isSMulRegular_of_etale_punctured_of_depth_pos' R A (ReciprocityTheory.CA.ModDepthGE.mono (by norm_num) hdep) hEt f hf0`. Use `haveI hRb : IsRegularLocalRing (R ⧸ Ideal.span {f}) := ReciprocityTheory.CA.AB.RegA.IsRegularLocalRing.quotient_span_singleton hf hf2`. Establish `hdimb : 2 ≤ ringKrullDim (R ⧸ Ideal.span {f})` using `two_le_of_add_one (ReciprocityTheory.CA.AB.RegA.IsRegularLocalRing.ringKrullDim_quotient_span_singleton_add_one hf hf2) hdim`. Use `haveI : Module.Finite R (A ⧸ (Ideal.span {f}).map (algebraMap R A)) := Module.Finite.of_surjective (Ideal.Quotient.mkₐ R ((Ideal.span {f}).map (algebraMap R A))).toLinearMap Ideal.Quotient.mk_surjective`. Use `haveI : Module.Finite (R ⧸ Ideal.span {f}) (A ⧸ (Ideal.span {f}).map (algebraMap R A)) := Module.Finite.of_restrictScalars_finite R _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hdepb` using `GlobalTheory.modDepthGE_quotient_map_span_singleton R A f hf hreg 1 hdep`. Establish `hEtb` using `GlobalTheory.T.etale_quotient_of_etale_punctured' R A f hEt`. Take `⟨A', _, _, hA'fin, ι, hι, hdep', hEt', k, hk⟩` from `GlobalTheory.T.exists_finite_depth_two_hull_of_etale_punctured_spectrum _ hdimb _ hdepb hEtb`. Establish `hfree : Module.Free (R ⧸ Ideal.span {f}) A'` using `hpur A' hdep' hEt'`. Take `⟨_, _⟩` from `GlobalTheory.isDomain_and_isIntegrallyClosed_of_isRegularLocalRing (R ⧸ Ideal.span {f})`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hnf : ¬ IsField (R ⧸ Ideal.span {f})`. Introduce `hF`. Use `ringKrullDim_eq_zero_of_isField hF` as an intermediate fact. Rewrite `hdimb` using `[this]`. Conclude with `absurd hdimb (by decide)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hEtA' : Algebra.Etale (R ⧸ Ideal.span {f}) A'`. Use `GlobalTheory.T.etale_of_etale_at_height_one_primes _ A' hnf fun p _ hp => hEt' p ?_` and prove the remaining obligations. Introduce and unpack `rfl`. Establish `h1` using `maximalIdeal_height_eq_ringKrullDim (R := R ⧸ Ideal.span {f})`. Rewrite `h1` using `[hp]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `hdimb` using `[← h1]`. Conclude with `absurd hdimb (by decide)`. Take `⟨B, _, _, hBfin, hBfree, hBet, ⟨e⟩⟩` from `GlobalTheory.T.exists_finite_free_etale_lift_of_quotient_etale R hcomp f hf A'`. Set `φ : A →ₐ[R] B ⧸ (Ideal.span {f}).map (algebraMap R B)` to `{ toRingHom := e.symm.toRingHom.comp (ι.toRingHom.comp (Ideal.Quotient.mk _)) commutes' := fun r => by`. Establish `h1 : (Ideal.Quotient.mk ((Ideal.span {f}).map (algebraMap R A)) (algebraMap R A r)) = algebraMap (R ⧸ Ideal.span {f}) _ (algebraMap R (R ⧸ Ideal.span {f}) r)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← IsScalarTower.algebraMap_apply]`. Both sides reduce to the same expression. Use `show e.symm (ι (Ideal.Quotient.mk _ (algebraMap R A r))) = _`. Rewrite using `[h1, ι.commutes, e.symm.commutes, ← IsScalarTower.algebraMap_apply] }`. Establish `hφ : ∀ a, φ a = e.symm (ι (Ideal.Quotient.mk _ a))` using `fun a => rfl`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨ψ, hψ⟩` from `GlobalTheory.T.exists_lift_algHom_of_etale_punctured R hcomp hdim f hf hf0 A hEt B φ`. Establish `hψa : ∀ a, Ideal.Quotient.mk _ (ψ a) = φ a` using `fun a => by`. Rewrite using `[← hψ]`. Both sides reduce to the same expression. Establish `hBreg : IsSMulRegular B f` using `fun x y h => smul_right_injective B hf0 h`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hsat : ∀ a : A, ψ a ∈ (Ideal.span {f}).map (algebraMap R B) → a ∈ (Ideal.span {f}).map (algebraMap R A)`. Introduce `a ha`. Establish `h1 : φ a = 0`. Rewrite using `[← hψa]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[hφ]`. Establish `h2 : ι (Ideal.Quotient.mk _ a) = 0`. Simplify using `using h1`. Establish `h3 : Ideal.Quotient.mk ((Ideal.span {f}).map (algebraMap R A)) a = 0` using `hι (by rw [h2, map_zero])`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mp h3`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨hinj, hfsat⟩` from `GlobalTheory.T.injective_and_saturated_of_injective_mod_regular' R A B f hf hBreg ψ hsat`. Establish `hmap : (maximalIdeal R).map (Ideal.Quotient.mk (Ideal.span {f})) ≤ maximalIdeal (R ⧸ Ideal.span {f})`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Establish `: (maximalIdeal (R ⧸ Ideal.span {f})).comap (Ideal.Quotient.mk (Ideal.span {f})) = maximalIdeal R` using `by haveI := Ideal.comap_isMaximal_of_surjective (Ideal.Quotient.mk (Ideal.span {f})) Ideal.Quotient.mk_surjective (K := maximalIdeal (R ⧸ Ideal.span {f}))`. Conclude with `IsLocalRing.eq_maximalIdeal this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this]`. Establish `hspan : ∀ z : B, z ∈ (Ideal.span {f}).map (algebraMap R B) → ∃ c : B, z = f • c`. Introduce `z hz`. Rewrite `hz` using `[Ideal.map_span, Set.image_singleton, Ideal.mem_span_singleton']`. Take `⟨c, hc⟩` from `hz`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨c, by rw [Algebra.smul_def, ← hc, mul_comm]⟩`. Establish `hcok : ∃ k : ℕ, ∀ x ∈ maximalIdeal R ^ k, ∀ b : B, ∃ a : A, ∃ c : B, x • b = ψ a + f • c`. Use `⟨k, fun x hx b => ?_⟩` and prove the remaining obligations. Establish `hx' : Ideal.Quotient.mk (Ideal.span {f}) x ∈ maximalIdeal (R ⧸ Ideal.span {f}) ^ k`. Use `Ideal.mem_map_of_mem (Ideal.Quotient.mk (Ideal.span {f})) hx` as an intermediate fact.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono hmap k this`. Take `⟨abar, habar⟩` from `hk _ hx' (e (Ideal.Quotient.mk _ b))`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective abar`. Use `⟨a, ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h1 : Ideal.Quotient.mk ((Ideal.span {f}).map (algebraMap R B)) (x • b - ψ a) = 0`. Rewrite using `[map_sub, hψa, hφ]`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (x • b) - e.symm (ι (Ideal.Quotient.mk _ a)) = 0`. Establish `habar' : ι (Ideal.Quotient.mk _ a) = Ideal.Quotient.mk (Ideal.span {f}) x • e (Ideal.Quotient.mk _ b)` using `habar`. Establish `h2 : ∀ z, e.symm (Ideal.Quotient.mk (Ideal.span {f}) x • e z) = Ideal.Quotient.mk (Ideal.span {f}) x • z` using `fun z => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Algebra.smul_def, map_mul, AlgEquiv.commutes, AlgEquiv.symm_apply_apply, ← Algebra.smul_def]`. Rewrite using `[habar', h2]`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mkₐ R _ (x • b) - _ = 0`. Rewrite using `[map_smul, ← algebraMap_smul (R ⧸ Ideal.span {f}) x, Ideal.Quotient.algebraMap_eq]`. Conclude with `sub_eq_zero.mpr rfl`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c, hc⟩` from `hspan _ (Ideal.Quotient.eq_zero_iff_mem.mp h1)`. Conclude with `⟨c, by rw [← hc]; abel⟩`. Establish `hdim1 : 1 ≤ ringKrullDim (R ⧸ Ideal.span {f})` using `le_trans (by decide) hdimb`. Take `⟨s, hs0, hs⟩` from `GlobalTheory.T.cokernel_torsion_of_finiteLength_mod_element R f hdim1 A B ψ hcok`. Establish `hEtB : ∀ (p : Ideal R) [p.IsPrime], p ≠ maximalIdeal R → Algebra.Etale (Localization.AtPrime p) (TensorProduct R (Localization.AtPrime p) B)` using `fun p _ _ => inferInstance`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨k2, hk2⟩` from `GlobalTheory.T.finiteLength_coker_of_etale_punctured_spectrum R A B hEt hEtB ψ hinj ⟨s, hs0, hs⟩`. Establish `hdesc : ∀ (n : ℕ) (b : B), f ^ n • b ∈ ψ.range → b ∈ ψ.range`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro b hb`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using hb`. Consider the case `succ n ih`. Introduce `b hb`. Apply `ih` to reduce the goal to its premises. Apply `hfsat` to reduce the goal to its premises.
-
-Rewrite using `[← mul_smul, ← pow_succ']` and apply the resulting hypothesis. Establish `hsurj : Function.Surjective ψ` using `fun b => by`. Take `⟨a, ha⟩` from `hdesc k2 b (hk2 _ (Ideal.pow_mem_pow hf k2) b)`. Conclude with `⟨a, ha⟩`. Set `eqv : A ≃ₐ[R] B` to `AlgEquiv.ofBijective ψ ⟨hinj, hsurj⟩`.
-
-Use `haveI : Module.Free R A := Module.Free.of_equiv eqv.symm.toLinearEquiv`. Use `haveI : Nontrivial A := by`. Take `⟨rs, -, -, hr⟩` from `hdep`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nontrivial_iff_subsingleton]`.
-
-Conclude with `hr.top_ne_smul (Subsingleton.elim _ _)`. Conclude with `GlobalTheory.T.modDepthGE_three_of_free_regularLocal R hdim A`.
+A detailed English derivation is pending.
 -/
 theorem depth_three : ∀ (R : Type) [CommRing R] [IsRegularLocalRing R], IsAdicComplete (maximalIdeal R) R → 3 ≤ ringKrullDim R → ∀ f ∈ maximalIdeal R, f ∉ maximalIdeal R ^ 2 → ∀ [IsLocalRing (R ⧸ Ideal.span {f})], GlobalTheory.PurityFree (R ⧸ Ideal.span {f}) → ∀ (A : Type) [CommRing A] [Algebra R A] [Module.Finite R A], ReciprocityTheory.CA.ModDepthGE R A 2 → (∀ (p : Ideal R) [p.IsPrime], p ≠ maximalIdeal R → Algebra.Etale (Localization.AtPrime p) (TensorProduct R (Localization.AtPrime p) A)) → ReciprocityTheory.CA.ModDepthGE R A 3 := by
   intro R _ _ hcomp hdim f hf hf2 _ hpur A _ _ _ hdep hEt

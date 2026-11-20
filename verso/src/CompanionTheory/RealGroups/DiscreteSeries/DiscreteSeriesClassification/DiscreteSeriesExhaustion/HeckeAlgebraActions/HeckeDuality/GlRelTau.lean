@@ -11,11 +11,11 @@ open Formalism.REAL (GlRel qdet)
 variable {n : ℕ}
 
 /- English proof (translation)
-Introduce `a b c d`. Establish `h` using `X.gl b a d c`. Simplify using `only [neg_mul_neg]`. Rewrite using `[h]`. Apply the tactic sequence `rcases eq_or_ne a d with h1 | h1 <;> rcases eq_or_ne b c with h2 | h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Substitute `h1` using the available equality. Substitute `h2` using the available equality. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Substitute `h1` using the available equality.
+Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Substitute using the available equality.
 
-Simplify using `[h2, Ne.symm h2]`. Substitute `h2` using the available equality. Simplify using `[h1, Ne.symm h1]`. Simplify using `[h1, h2, Ne.symm h1, Ne.symm h2]`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem glRel_tau (X : GMod n) : GlRel (fun a b => -X.E b a) := by
   intro a b c d

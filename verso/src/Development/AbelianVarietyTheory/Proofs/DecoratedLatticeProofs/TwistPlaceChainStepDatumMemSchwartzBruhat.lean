@@ -25,25 +25,23 @@ open GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting (FinPl Is
 namespace GlobalTheory.SBTwist
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Establish `hU : ∀ᶠ y in nhds x, ∀ i j, Valued.v (y i j - x i j) < 1`. Rewrite using `[Filter.eventually_all]`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Rewrite using `[Filter.eventually_all]`. Introduce `j`. Establish `hc : Continuous fun y : Matrix (Fin b) (Fin a) (Fv D.host.F v) => y i j` using `continuous_id.matrix_elem i j`. Establish `hn : {z : Fv D.host.F v | Valued.v (z - x i j) < 1} ∈ nhds (x i j)` using `Valued.mem_nhds.2 ⟨1, fun z hz => by simpa using hz⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hc.continuousAt.preimage_mem_nhds hn`. Use `filter_upwards [hU] with y hy`. Establish `hint : ∀ i j, y i j ∈ v.adicCompletionIntegers D.host.F ↔ x i j ∈ v.adicCompletionIntegers D.host.F`. Introduce `i j`. Simplify using `only [HeightOneSpectrum.mem_adicCompletionIntegers]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Establish `h1` using `hy i j`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `: x i j = y i j - (y i j - x i j)` using `by ring`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `le_trans (Valuation.map_sub _ _ _) (max_le h (le_of_lt h1))` and prove the remaining obligations. Introduce `h`. Establish `: y i j = (y i j - x i j) + x i j` using `by ring`. Rewrite using `[this]`. Conclude with `le_trans (Valuation.map_add _ _ _) (max_le (le_of_lt h1) h)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Unfold `GlobalTheory.StepVec.viaRed`. Distinguish the cases in `hx : ∀ i j, x i j ∈ v.adicCompletionIntegers D.host.F`. Establish `hy' : ∀ i j, y i j ∈ v.adicCompletionIntegers D.host.F` using `fun i j => (hint i j).2 (hx i j)`. Rewrite using `[dif_pos hy', dif_pos hx]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `only [Matrix.of_apply]`. Establish `hs : (⟨y i j, hy' i j⟩ : v.adicCompletionIntegers D.host.F) - ⟨x i j, hx i j⟩ = ⟨y i j - x i j, Subring.sub_mem _ (hy' i j) (hx i j)⟩` using `rfl`. Establish `h0` using `(hr ⟨y i j - x i j, Subring.sub_mem _ (hy' i j) (hx i j)⟩).2 (hy i j)`. Rewrite `h0` using `[← hs, map_sub, sub_eq_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h0`. Establish `hy' : ¬ ∀ i j, y i j ∈ v.adicCompletionIntegers D.host.F` using `fun h => hx fun i j => (hint i j).1 (h i j)`. Rewrite using `[dif_neg hy', dif_neg hx]`. Use `haveI := GlobalTheory.AdelicUnitaryTop.compactSpace_adicCompletionIntegers D.host.F v`. Establish `hK : IsCompact {Y : Matrix (Fin b) (Fin a) (Fv D.host.F v) | ∀ i j, Y i j ∈ v.adicCompletionIntegers D.host.F}`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `he : {Y : Matrix (Fin b) (Fin a) (Fv D.host.F v) | ∀ i j, Y i j ∈ v.adicCompletionIntegers D.host.F} = Set.pi Set.univ (fun _ : Fin b => Set.pi Set.univ (fun _ : Fin a => (v.adicCompletionIntegers D.host.F : Set (Fv D.host.F v))))`. Use extensionality with `Y`. Conclude with `⟨fun h i _ j _ => h i j, fun h i j => h i (Set.mem_univ _) j (Set.mem_univ _)⟩`. Rewrite using `[he]`. Conclude with `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_iff_compactSpace.2 ‹_›`.
-
-Use `HasCompactSupport.intro hK ?_` and prove the remaining obligations. Introduce `Y hY`. Establish `hY' : ¬ ∀ i j, Y i j ∈ v.adicCompletionIntegers D.host.F` using `hY`. Unfold `GlobalTheory.StepVec.viaRed`. Conclude with `dif_neg hY'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem viaRed_mem_SB {D : D7} {v : FinPl D} {k : Type} [CommRing k] {a b : ℕ}
     (r : v.adicCompletionIntegers D.host.F →+* k)
@@ -105,9 +103,9 @@ theorem viaRed_mem_SB {D : D7} {v : FinPl D} {k : Type} [CommRing k] {a b : ℕ}
     exact dif_neg hY'
 
 /- English proof (translation)
-Introduce `D PP v φ hφ a b r ξ mu hmu`. Take `⟨⟨rr, hrr⟩, -⟩` from `GlobalTheory.PlaceRed.red_dict D v φ PP hφ`. Establish `hred : GlobalTheory.StepVec.IsRedMap φ PP rr` using `hrr`. Establish `hmu' : LiftsChar φ PP mu ξ⁻¹⁻¹` using `by rwa [inv_inv]`. Establish `heq : phiQ (a` using `a) (b := b) v r mu = GlobalTheory.StepVec.viaRed rr (GlobalTheory.StepVec.qLoc r PP ξ⁻¹) :=`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun Y => GlobalTheory.StepVec.phiQ_eq_viaRed_qLoc D v φ PP rr hred a b r mu ξ⁻¹ hmu' Y`. Rewrite using `[heq]`. Conclude with `viaRed_mem_SB rr hred.2.1 _`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiQ_mem_SB : ∀ (D : D7) (PP : Pl D.host.E) (v : FinPl D) (φ : SplitProj D v), IsProjAt φ PP → ∀ (a b r : ℕ) (ξ : (kP PP)ˣ →* ℂˣ) (mu : (Fv D.host.F v)ˣ →* ℂˣ), LiftsChar φ PP mu ξ → phiQ (a := a) (b := b) v r mu ∈ GlobalTheory.SplitWeil.SB (Matrix (Fin b) (Fin a) (Fv D.host.F v)) := by
   intro D PP v φ hφ a b r ξ mu hmu

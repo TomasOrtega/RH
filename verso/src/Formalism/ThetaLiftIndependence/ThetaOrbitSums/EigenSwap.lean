@@ -5,11 +5,11 @@ namespace Formalism.ThetaLiftIndependence
 namespace EigenvalueSwapLemmas
 
 /- English proof (translation)
-Establish `h : ∀ x ∈ Module.End.eigenspace (B ∘ₗ A) μ, A x ∈ Module.End.eigenspace (A ∘ₗ B) μ`. Introduce `x hx`. Rewrite `hx`, the goal using `[Module.End.mem_eigenspace_iff]`. Simplify using `only [LinearMap.comp_apply] at hx ⊢`. Rewrite using `[hx, map_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `LinearMap.finrank_le_finrank_of_injective (f := A.restrict h) ?_` and prove the remaining obligations. Introduce `x y hxy`. Establish `hx` using `(Module.End.mem_eigenspace_iff.1 x.2)`. Establish `hy` using `(Module.End.mem_eigenspace_iff.1 y.2)`. Establish `hA : A x = A y` using `congrArg Subtype.val hxy`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Establish `: μ • (x : E) = μ • (y : E)`. Rewrite using `[← hx, ← hy]`. Simplify using `[hA]`. Conclude with `smul_right_injective E hμ this`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eig_le {𝕜 E F : Type} [Field 𝕜] [AddCommGroup E] [Module 𝕜 E] [FiniteDimensional 𝕜 E]
     [AddCommGroup F] [Module 𝕜 F] [FiniteDimensional 𝕜 F] (A : E →ₗ[𝕜] F) (B : F →ₗ[𝕜] E)

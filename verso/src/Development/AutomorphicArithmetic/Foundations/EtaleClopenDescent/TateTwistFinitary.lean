@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TateTwistRingFuncto
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex TensorProduct GlobalTheory.EtC
 
 /- English proof (translation)
-Introduce `q i`. Conclude with `GlobalTheory.T.etaleSheafOfRingFunctor_isFinitary (ZMod q) (twF q i) (GlobalTheory.T.tateTwistRingFunctor_preservesFilteredColimits q i)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Cb.tateTwist_finitary :
     ∀ (q : ℕ) (i : ℤ), Finitary (tw q i) := by

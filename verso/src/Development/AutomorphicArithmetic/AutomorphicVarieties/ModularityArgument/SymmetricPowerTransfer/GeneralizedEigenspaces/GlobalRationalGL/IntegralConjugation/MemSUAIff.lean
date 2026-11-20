@@ -15,7 +15,7 @@ namespace UpperTheory.V.Z.Sym.Dict.Br
 variable {L : Type} [Field L] [NumberField L] [IsCMField L]
 
 /- English proof (translation)
-Apply `Prod.ext` to reduce the goal to its premises. Conclude with `(infEq L).symm.injective hi`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `w`. Conclude with `hf w`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem ad_ext {a b : Ad L} (hi : pInf L a = pInf L b)
     (hf : ∀ w : Plc L, pLoc L w (pFin L a) = pLoc L w (pFin L b)) : a = b := by
@@ -26,7 +26,7 @@ private theorem ad_ext {a b : Ad L} (hi : pInf L a = pInf L b)
     exact hf w
 
 /- English proof (translation)
-Establish `h : mL w x = ((pLoc L w).comp (pFin L)).mapMatrix ((x : GL (Fin 2) (Ad L)) : Matrix (Fin 2) (Fin 2) (Ad L))` using `rfl`. Rewrite using `[h, ← RingHom.map_det]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem det_mL (x : UA L 2) (w : Plc L) :
     (mL w x).det = pLoc L w (pFin L ((x : GL (Fin 2) (Ad L)) : Matrix (Fin 2) (Fin 2) (Ad L)).det) := by
@@ -35,7 +35,7 @@ private theorem det_mL (x : UA L 2) (w : Plc L) :
   rfl
 
 /- English proof (translation)
-Establish `h : (pInf L).mapMatrix ((x : GL (Fin 2) (Ad L)) : Matrix (Fin 2) (Fin 2) (Ad L)) = 1`. Establish `h1 : cInf x = 1` using `hx`. Conclude with `congrArg (fun y : GL (Fin 2) (Cinf L) => (y : Matrix (Fin 2) (Fin 2) (Cinf L))) h1`. Rewrite using `[RingHom.map_det, h, Matrix.det_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem det_inf (x : UA L 2) (hx : x ∈ finU L 2) :
     pInf L ((x : GL (Fin 2) (Ad L)) : Matrix (Fin 2) (Fin 2) (Ad L)).det = 1 := by
@@ -45,11 +45,11 @@ private theorem det_inf (x : UA L 2) (hx : x ∈ finU L 2) :
   rw [RingHom.map_det, h, Matrix.det_one]
 
 /- English proof (translation)
-Establish `key : x ∈ SUA L ↔ ((x : GL (Fin 2) (Ad L)) : Matrix (Fin 2) (Fin 2) (Ad L)).det = 1` using `by show GeneralLinearGroup.det (x : GL (Fin 2) (Ad L)) = 1 ↔ _`. Rewrite using `[Units.ext_iff]`. Both sides reduce to the same expression. Rewrite using `[key]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h w`. Rewrite using `[det_mL, h, map_one, map_one]`. Introduce `h`. Apply `ad_ext` to reduce the goal to its premises. Rewrite using `[det_inf x hx, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `w`. Rewrite using `[← det_mL, h w, map_one, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 private theorem mem_SUA_iff (x : UA L 2) (hx : x ∈ finU L 2) :
     x ∈ SUA L ↔ ∀ w : Plc L, (mL w x).det = 1 := by
@@ -68,9 +68,9 @@ private theorem mem_SUA_iff (x : UA L 2) (hx : x ∈ finU L 2) :
       rw [← det_mL, h w, map_one, map_one]
 
 /- English proof (translation)
-Set `M : Matrix (Fin 2) (Fin 2) (integralClosure O (Lsq K Δ))` to `fun i j => ⟨mt g i j, hi i j⟩`. Establish `hM : ((integralClosure O (Lsq K Δ)).val : integralClosure O (Lsq K Δ) →+* Lsq K Δ).mapMatrix M = mt g`. Apply the tactic sequence `ext i j <;> rfl`. Establish `hdet : M.det = 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `RingHom.map_det ((integralClosure O (Lsq K Δ)).val : integralClosure O (Lsq K Δ) →+* Lsq K Δ) M` as an intermediate fact. Rewrite `this` using `[hM, hd]`. Conclude with `this`. Use `⟨GeneralLinearGroup.mk'' M (by rw [hdet]; exact isUnit_one), ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext i j <;> rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem mem_KD {K O : Type} [Field K] [CommRing O] [Algebra O K] {Δ : K} (g : DX Δ) (hd : (mt g).det = 1)
     (hi : ∀ i j, IsIntegral O (mt g i j)) : g ∈ KD Δ O := by
@@ -86,7 +86,7 @@ private theorem mem_KD {K O : Type} [Field K] [CommRing O] [Algebra O K] {Δ : K
   ext i j <;> rfl
 
 /- English proof (translation)
-Establish `h` using `(Subgroup.mem_iInf.1 g.2) v`. Establish `h2 : GeneralLinearGroup.det (((g : DA Δ).1 v : DX (cv v Δ)) : GL (Fin 2) (Lsq (Kv v) (cv v Δ))) = 1` using `h`. Conclude with `congrArg Units.val h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem SA_det {Δ : Lp L} (g : SA Δ) (v : Pl (Lp L)) : (mt ((g : DA Δ).1 v)).det = 1 := by
   have h := (Subgroup.mem_iInf.1 g.2) v
@@ -94,13 +94,13 @@ private theorem SA_det {Δ : Lp L} (g : SA Δ) (v : Pl (Lp L)) : (mt ((g : DA Δ
   exact congrArg Units.val h2
 
 /- English proof (translation)
-Establish `hun : ∀ v, star (mt ((g : DA R.Δ).1 v)) * mt ((g : DA R.Δ).1 v) = 1`. Introduce `v`. Rewrite using `[((suIff (Kv v) (cv v R.Δ)).1 _).1, SA_det, one_smul]`. Establish `hint : ∀ᶠ v in Filter.cofinite, ∀ i j, IsIntegral (Ov v) (mt ((g : DA R.Δ).1 v) i j)`. Use `Filter.Eventually.mono (g : DA R.Δ).2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `v hv`. Take `⟨m, hm⟩` from `hv`. Introduce `i j`. Establish `h : mt ((g : DA R.Δ).1 v) i j = (((m : Matrix (Fin 2) (Fin 2) (integralClosure (Ov v) (Lsq (Kv v) (cv v R.Δ)))) i j : integralClosure (Ov v) (Lsq (Kv v) (cv v R.Δ))) : Lsq (Kv v) (cv v R.Δ))`. Conclude with `congrArg (fun z : GL (Fin 2) (Lsq (Kv v) (cv v R.Δ)) => (z : Matrix (Fin 2) (Fin 2) (Lsq (Kv v) (cv v R.Δ))) i j) hm.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `((m : Matrix (Fin 2) (Fin 2) (integralClosure (Ov v) (Lsq (Kv v) (cv v R.Δ)))) i j).2`. Take `⟨b, hb, hloc⟩` from `adEx L R 2 (fun v => mt ((g : DA R.Δ).1 v)) hun hint`. Use `⟨⟨b, hb, ?_⟩, hloc⟩` and prove the remaining obligations. Use `(mem_SUA_iff b hb).2 fun w => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hloc w]`. Establish `h` using `RingHom.map_det (R.ρ _ w rfl) (mt ((g : DA R.Δ).1 (un w)))`. Rewrite `h` using `[SA_det, map_one]`. Conclude with `h.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ex_of (R : RingBr L) (g : SA R.Δ) : ∃ b : ↥(finU L 2 ⊓ SUA L), ∀ w,
     mL w (b : UA L 2) = (mt ((g : DA R.Δ).1 (un w))).map (R.ρ _ w rfl) := by
@@ -125,7 +125,7 @@ private theorem ex_of (R : RingBr L) (g : SA R.Δ) : ∃ b : ↥(finU L 2 ⊓ SU
   exact h.symm
 
 /- English proof (translation)
-Take `⟨-, -, -, -, hsep, hfin, -, -⟩` from `uaFacts L 2`. Conclude with `Subtype.ext (hsep _ _ (fun w => Units.ext (h w)) fun τ => (((hfin _).1.1 x.2.1) τ).trans (((hfin _).1.1 y.2.1) τ).symm)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem sep_of (x y : ↥(finU L 2 ⊓ SUA L)) (h : ∀ w, mL w (x : UA L 2) = mL w (y : UA L 2)) : x = y := by
   obtain ⟨-, -, -, -, hsep, hfin, -, -⟩ := uaFacts L 2
@@ -135,23 +135,21 @@ private theorem sep_of (x y : ↥(finU L 2 ⊓ SUA L)) (h : ∀ w, mL w (x : UA 
 end UpperTheory.V.Z.Sym.Dict.Br
 
 /- English proof (translation)
-Introduce `L _ _ _ R`. Use `choose f hf using ex_of R`. Establish `hmul : ∀ g h, f (g * h) = f g * f h`. Introduce `g h`. Use `sep_of _ _ fun w => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : mL w ((f g * f h : ↥(finU L 2 ⊓ SUA L)) : UA L 2) = mL w (f g : UA L 2) * mL w (f h : UA L 2)`. Simplify using `only [mL, Subgroup.coe_mul, map_mul, Units.val_mul]`. Rewrite using `[h1, hf, hf, hf, ← Matrix.map_mul]`. Both sides reduce to the same expression. Establish `hinj : Function.Injective f`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g h e`. Establish `hv : ∀ v, mt ((g : DA R.Δ).1 v) = mt ((h : DA R.Δ).1 v)`. Introduce `v`. Use `Matrix.ext fun i j => sub_eq_zero.1 (R.ρ_inj v _ fun w hw => ?_)` and prove the remaining obligations. Substitute `hw` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `h1` using `(hf g w).symm.trans ((congrArg (fun b : ↥(finU L 2 ⊓ SUA L) => mL w (b : UA L 2)) e).trans (hf h w))`. Establish `h2` using `congrFun (congrFun h1 i) j`. Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `h2`. Conclude with `Subtype.ext (Subtype.ext (funext fun v => Subtype.ext (Units.ext (hv v))))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `hsurj : Function.Surjective f`. Introduce and unpack `⟨y, hyF, hyS⟩`. Take `⟨x, hu, hi, hl⟩` from `adSurj L R 2 y`. Establish `hdet : ∀ v, (x v).det = 1`. Introduce `v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Establish an intermediate fact.
 
-Use `sub_eq_zero.1 (R.ρ_inj v _ fun w hw => ?_)` and prove the remaining obligations. Substitute `hw` using the available equality. Establish `h1` using `RingHom.map_det (R.ρ _ w rfl) (x (un w))`. Establish `h2 : (R.ρ _ w rfl).mapMatrix (x (un w)) = mL w y` using `(hl w).symm`. Rewrite using `[map_sub, map_one, h1, h2, (mem_SUA_iff y hyF).1 hyS w, sub_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `choose d hd using fun v => (suIff (Kv v) (cv v R.Δ)).2 (x v) (hu v) (hdet v)`. Establish `hmem : ∀ᶠ v in Filter.cofinite, d v ∈ KD (cv v R.Δ) (Ov v)` using `hi.mono fun v hv => mem_KD (d v) (by rw [hd]; exact hdet v) (by rw [hd]; exact hv)`. Set `g0 : DA R.Δ` to `⟨d, hmem⟩`. Establish `hg0 : g0 ∈ SA R.Δ`. Use `Subgroup.mem_iInf.2 fun v => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show GeneralLinearGroup.det ((d v : DX (cv v R.Δ)) : GL (Fin 2) (Lsq (Kv v) (cv v R.Δ))) = 1`. Use `Units.ext ?_` and prove the remaining obligations. Use `show (mt (d v)).det = 1`. Rewrite using `[hd]`. Conclude with `hdet v`.
-
-Use `⟨⟨g0, hg0⟩, sep_of _ _ fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[hf]`. Use `show (mt (d (un w))).map (R.ρ _ w rfl) = mL w y`. Rewrite using `[hd, hl]`. Conclude with `⟨MulEquiv.ofBijective (MonoidHom.mk' f hmul) ⟨hinj, hsurj⟩, fun g w => hf g w⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Dict.Br.bSEx :
     ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (R : RingBr L), ∃ b : SA R.Δ ≃* ↥(finU L 2 ⊓ SUA L), ∀ g w, mL w (b g : UA L 2) = (mt ((g : DA R.Δ).1 (un w))).map (R.ρ _ w rfl) := by

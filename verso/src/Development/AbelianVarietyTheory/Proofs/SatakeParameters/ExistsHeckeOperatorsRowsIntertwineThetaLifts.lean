@@ -28,16 +28,16 @@ section TwLemmas
 variable {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
 
 /- English proof (translation)
-Use extensionality with `x`. Conclude with `SetLike.ext_iff.mp h (Tw.mk s x)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem tw_sub_injective (s : Bool) {V W : Submodule ℂ E} (h : Tw.sub s V = Tw.sub s W) : V = W := by
   ext x
   exact SetLike.ext_iff.mp h (Tw.mk s x)
 
 /- English proof (translation)
-Establish `h1 : Tw.sub s (Submodule.span ℂ S) = (Submodule.span ℂ S).map (Tw.mkL s E)`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `⟨Tw.out x, hx, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `hy`. Rewrite using `[h1, Submodule.map_span]`. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tw_span_image (s : Bool) (S : Set E) :
     Submodule.span ℂ ((Tw.mk s : E → Tw s E) '' S) = Tw.sub s (Submodule.span ℂ S) := by
@@ -49,7 +49,7 @@ theorem tw_span_image (s : Bool) (S : Set E) :
   rw [h1, Submodule.map_span]; rfl
 
 /- English proof (translation)
-Use `show Tw.map s a * Tw.map s b = Tw.map s b * Tw.map s a`. Use extensionality with `x`. Conclude with `congrArg (Tw.mk s) (LinearMap.congr_fun h.eq (Tw.out x))`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem tw_commute (s : Bool) {a b : Module.End ℂ E} (h : Commute a b) : Commute (Tw.map s a) (Tw.map s b) := by
   show Tw.map s a * Tw.map s b = Tw.map s b * Tw.map s a
@@ -62,7 +62,7 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
 /- English proof (translation)
-Apply `(Module.Basis.mk (hK t).1 (hK t).2.ge).ext` to reduce the goal to its premises. Introduce `k`. Rewrite using `[Module.Basis.mk_apply, ← CxData.jR_opR _ hK]`. Conclude with `congrArg (Tw.mk (twAt D.what₂.embLL A3.A.v0)) (hg _)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem opC_eq (R : RealDat3 D A3 Ks) (F : Face3 D A3) (hK : (R.toCx3 F).KFormR) (t : T) (i : (A3.rowI t).OpIx)
     (g : Module.End ℂ (R.HX t).H) (hg : ∀ x, R.jX t ((A3.rowI t).opAll i x) = g (R.jX t x)) :
@@ -74,9 +74,9 @@ theorem opC_eq (R : RealDat3 D A3 Ks) (F : Face3 D A3) (hK : (R.toCx3 F).KFormR)
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Establish `hFD : FiniteDimensional D.what₂.LL (A3.fam3.amb3.FR A3.A.μ0)` using `Module.Finite.of_basis (A3.A.fam.R A3.A.μ0).S.basis`. Establish `hFin : Finite (Module.Basis.ofVectorSpaceIndex D.what₂.LL (A3.fam3.amb3.FR A3.A.μ0))` using `Module.Finite.finite_basis (CxData.bR (A := A3.fam3.amb3) A3.A.μ0)`. Establish `hjR : ∀ i x, (R.toCx3 F).jR A3.A.μ0 ((A3.rowI A3.A.μ0).opAll i x) = Tw.map (twAt D.what₂.embLL A3.A.v0) (op i) ((R.toCx3 F).jR A3.A.μ0 x)` using `fun i x => (CxData.jR_opR _ hK _ (Sum.inl i) x).trans (LinearMap.congr_fun (hOpC i) _)`. Establish `hspan` using `(GlobalTheory.span_image_eigAt_of_basis A3.fam3.base3.v0.embedding ((R.toCx3 F).jR A3.A.μ0) (CxData.bR (A := A3.fam3.amb3) A3.A.μ0) (A3.rowI A3.A.μ0).opAll (fun i => Tw.map (E := (R.HX A3.A.μ0).H) (F := (R.HX A3.A.μ0).H) (twAt D.what₂.embLL A3.A.v0) (op i)) (hK _).1 (hK _).2 hjR) …`. Establish `hTw` using `(GlobalTheory.TwEig.pairComm_eigSum_sub_iSup (twAt D.what₂.embLL A3.A.v0) op).2.1 (cxSys A3.fam3.base3.v0.embedding ((A3.rowI A3.A.μ0).HasRes3 p.1))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `tw_sub_injective (twAt D.what₂.embLL A3.A.v0)` to reduce the goal to its premises. Rewrite using `[← tw_span_image, Set.image_image]`. Conclude with `hspan.trans hTw`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_parts_eq (R : RealDat3 D A3 Ks) (F : Face3 D A3) (hK : (R.toCx3 F).KFormR)
     (op : (A3.rowI A3.A.μ0).OpIx → Module.End ℂ (R.HX A3.A.μ0).H)
@@ -104,9 +104,9 @@ theorem span_parts_eq (R : RealDat3 D A3 Ks) (F : Face3 D A3) (hK : (R.toCx3 F).
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Assume the negation of the conclusion as `hall`. Use `push Not at hall`. Take `⟨w, hw, hw0⟩` from `(Submodule.ne_bot_iff _).mp hc`. Establish `hc' : R.EEc c ≠ ⊥` using `fun h0 => hc ((hEEc c).symm.trans h0)`. Establish `hcar : R.Carries p c`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hc', ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Rewrite using `[hall v ((SetLike.ext_iff.mp (hEEc c) v).mp hv)]`. Conclude with `Submodule.zero_mem _`. Conclude with `GlobalTheory.thetaUp_injective_on_carried R F hB hPos p c hcar w ((SetLike.ext_iff.mp (hEEc c) w).mpr hw) hw0 (hall w hw)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adj_ne_zero (R : RealDat3 D A3 Ks) (F : Face3 D A3) (hB : R.PThmB)
     (hPos : 0 < R.kap ∧ ∀ i t p, 0 < R.lam3 i t p A3.A.v0)
@@ -126,7 +126,7 @@ theorem adj_ne_zero (R : RealDat3 D A3 Ks) (F : Face3 D A3) (hB : R.PThmB)
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Rewrite using `[← hLA]`. Unfold `RealDat3.EEp3 RealDat3.Carries`. Simplify using `only [hEEc, hspanE]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem eep_eq (R : RealDat3 D A3 Ks) (hEEc : ∀ c, R.EEc c = EEc R.toRealDat R.SF c) (p : A3.fam3.base3.Ix)
     (op : (A3.rowI A3.A.μ0).OpIx → Module.End ℂ (R.HX A3.A.μ0).H)
@@ -143,19 +143,15 @@ theorem eep_eq (R : RealDat3 D A3 Ks) (hEEc : ∀ c, R.EEc c = EEc R.toRealDat R
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Take `⟨hCore', hSF, -, -, hEEc, -, -⟩` from `GlobalTheory.CoreThree.heckeCharacterisation_places_parts_of_weak R F hC`. Establish `hCore` using `hCore' hEx`. Take `⟨h, hOpsE, hNE, hTop, hEig, -⟩` from `GlobalTheory.T.exists_sphericalOperators_rows_normal_eigenspaces R.toRealDat F.lv2 hCore hS R.SF hSF`. Use `choose hX hXops hXnorm using (GlobalTheory.T.realization_family_normal_operators R.toRealDat F.lv2 hCore.lev hCore.fam hCore.models).1`. Use `choose pl cX c0 hDict using GlobalTheory.T.every_rowOperator_is_labelOperator_with_partner hH R F hLI hC hEx hS hJ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : (R.toCx3 F).KFormR` using `RealDat3.kFormR_of hCore.models`. Establish `hOpC : ∀ t i, (R.toCx3 F).opC t (Sum.inl i) = Tw.map (twAt D.what₂.embLL A3.A.v0) (hX t (pl t i) (cX t i))` using `fun t i => opC_eq R F hK t i _ ((hDict t).op _ (hXops t) i)`. Establish `hSys` using `fun t i => GlobalTheory.T.matched_spherical_pairs_commute_composite_lift R.toRealDat F.lv2 hCore hS R.SF hSF t (pl t i) ((hDict t).good i) (cX t i) (c0 t i) ((hDict t).mat i) (hX t) (hXops t)`. Use `⟨fun t i => Tw.map (E := R.HE.H) (F := R.HE.H) (twAt D.what₂.embLL A3.A.v0) (h (pl t i) (c0 t i)), ⟨?_, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `t i u`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hOpC]`. Conclude with `congrArg (Tw.mk (twAt D.what₂.embLL A3.A.v0)) ((hSys t i).1 h hOpsE (Tw.out (s := twAt D.what₂.embLL A3.A.v0) u))`. Introduce `i j`. Conclude with `tw_commute _ (hNE.1 _ _ ((hDict _).good i) ((hDict _).good j) _ _)`. Introduce `p`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNX` using `hXnorm A3.A.μ0`. Establish `hspanE` using `span_parts_eq R F hK (fun i => hX A3.A.μ0 (pl A3.A.μ0 i) (cX A3.A.μ0 i)) (hOpC A3.A.μ0) p`. Establish `hNop : ∀ i, Commute (hX A3.A.μ0 (pl A3.A.μ0 i) (cX A3.A.μ0 i)) (LinearMap.adjoint (hX A3.A.μ0 (pl A3.A.μ0 i) (cX A3.A.μ0 i)))` using `fun i => by`. Establish `hg` using `(hDict A3.A.μ0).good i`. Establish `hc` using `hNX.1 _ _ hg hg (cX A3.A.μ0 i) (dualC (Finsupp.mapRange star (star_zero ℂ) (cX A3.A.μ0 i)))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hc` using `[← hNX.2 _ hg]`. Conclude with `hc`. Establish `hNh : ∀ i, Commute (h (pl A3.A.μ0 i) (c0 A3.A.μ0 i)) (LinearMap.adjoint (h (pl A3.A.μ0 i) (c0 A3.A.μ0 i)))` using `fun i => by`. Establish `hg` using `(hDict A3.A.μ0).good i`. Establish `hc` using `hNE.1 _ _ hg hg (c0 A3.A.μ0 i) (dualC (Finsupp.mapRange star (star_zero ℂ) (c0 A3.A.μ0 i)))`.
-
-Rewrite `hc` using `[← hNE.2 _ hg]`. Conclude with `hc`. Establish `hPC : Formalism.L2.Col.PairComm (fun i => hX A3.A.μ0 (pl A3.A.μ0 i) (cX A3.A.μ0 i))` using `fun i j => hNX.1 _ _ ((hDict _).good i) ((hDict _).good j) _ _`. Take `⟨-, hLA⟩` from `GlobalTheory.T.parts_adjoint_intertwiner_eq_joint_eigenspaces (R.Th A3.A.μ0) (fun i => hX A3.A.μ0 (pl A3.A.μ0 i) (cX A3.A.μ0 i)) (fun i => h (pl A3.A.μ0 i) (c0 A3.A.μ0 i)) (fun c => EEc R.toRealDat R.SF c) (fun c i => evC (Yc D 0) (pl A3.A.μ0 i) (fun d => c (pl A3.A.μ0 i) (dualLa …`. Establish `hEEp` using `eep_eq R hEEc p _ (fun i => h (pl A3.A.μ0 i) (c0 A3.A.μ0 i)) _ hspanE (hLA _).2`.
-
-Conclude with `(congrArg (Tw.sub (twAt D.what₂.embLL A3.A.v0)) hEEp).trans ((GlobalTheory.TwEig.pairComm_eigSum_sub_iSup (twAt D.what₂.embLL A3.A.v0) (fun i => h (pl A3.A.μ0 i) (c0 A3.A.μ0 i))).2.1 _).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_core (hH : HoweUnram) (R : RealDat3 D A3 Ks) (F : Face3 D A3) (hLI : GlobalTheory.Chain.LiftInteg D)
     (hC : R.WeakCharacterisation F) (hEx : R.toRealDat.ExAt) (hS : SchurAll R.toRealDat) (hJ : InertJunk A3) (hB : R.PThmB)
@@ -205,7 +201,7 @@ theorem exists_core (hH : HoweUnram) (R : RealDat3 D A3 Ks) (F : Face3 D A3) (hL
         (fun i => h (pl A3.A.μ0 i) (c0 A3.A.μ0 i))).2.1 _).symm
 
 /- English proof (translation)
-Introduce `hH _ hCD _ _ _ _ _ _ _ _ _ _ _ _ R F hLI hC hEx hJ hB hPos` and use `exists_core hH R F hLI hC hEx (GlobalTheory.Hk3.schurAll_of_cuspRapidDecay hCD R.toRealDat) hJ hB hPos`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_heckeIntertwiningDefinite_of_liftInteg : HoweUnram → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → ∀ {D : D7} {G : Type}
     [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks]

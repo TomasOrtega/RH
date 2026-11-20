@@ -9,19 +9,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.UnipModHalf
 
 /- English proof (translation)
-Establish `h1 : (ℓ.symm : Module.End R A) * (ℓ : Module.End R A) = 1`. Use extensionality with `y`. Simplify using the standard rewrite rules. Establish `h2 : (ℓ : Module.End R A) * (ℓ.symm : Module.End R A) = 1`. Use extensionality with `y`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Establish `hDℓ : Commute ((ℓ : Module.End R A) - 1) (ℓ : Module.End R A)` using `(Commute.refl _).sub_left (Commute.one_left _)`. Establish `hDs : Commute ((ℓ : Module.End R A) - 1) (ℓ.symm : Module.End R A)` using `by show _ = _`. Rewrite using `[sub_mul, mul_sub, h2, h1, one_mul, mul_one]`. Proceed by induction on `n using Int.induction_on with`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Consider the case `zero => exact ⟨0, Commute.zero_right _, by ext y; simp⟩`. Consider the case `succ k ih`. Take `⟨X, hc, hX⟩` from `ih`. Use `⟨(ℓ : Module.End R A) * X + 1, (hDℓ.mul_right hc).add_right (Commute.one_right _), ?_⟩` and prove the remaining obligations. Establish `e : ((ℓ ^ ((k : ℤ) + 1) : A ≃ₗ[R] A) : Module.End R A) = (ℓ : Module.End R A) * ((ℓ ^ (k : ℤ) : A ≃ₗ[R] A) : Module.End R A)`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use extensionality with `y`. Rewrite using `[add_comm, zpow_add, zpow_one]`. Both sides reduce to the same expression. Rewrite using `[e, eq_add_of_sub_eq hX]`. Use `noncomm_ring`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `pred k ih`. Take `⟨X, hc, hX⟩` from `ih`. Use `⟨(ℓ.symm : Module.End R A) * X - (ℓ.symm : Module.End R A), (hDs.mul_right hc).sub_right hDs, ?_⟩` and prove the remaining obligations. Establish `e : ((ℓ ^ (-(k : ℤ) - 1) : A ≃ₗ[R] A) : Module.End R A) = (ℓ.symm : Module.End R A) * ((ℓ ^ (-(k : ℤ)) : A ≃ₗ[R] A) : Module.End R A)`. Use extensionality with `y`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_eq_neg_add, zpow_add, zpow_neg_one]`. Both sides reduce to the same expression. Rewrite using `[e, eq_add_of_sub_eq hX]`. Use `set s : Module.End R A := (ℓ.symm : Module.End R A)`. Use `set l : Module.End R A := (ℓ : Module.End R A)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `: s * ((l - 1) * X + 1) - 1 = (l - 1) * (s * X - s) + (s * l - 1) * X - (l * s - 1) * X + (l * s - 1)` using `by noncomm_ring`. Rewrite using `[this, h1, h2]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem zpow_sub_one_eq_mul {R A : Type*} [CommRing R] [AddCommGroup A] [Module R A]
     (ℓ : A ≃ₗ[R] A) (n : ℤ) :
@@ -67,33 +67,31 @@ namespace GlobalTheory.UnipModHalf
 open Matrix
 
 /- English proof (translation)
-Introduce `E _ _ r L' Mb P hMP A _ _ φ ℓ n hℓ γ t hγ hγ1 ht w hw`. Set `tL : (Fin r → E) →ₗ[𝓞 E] (Fin r → E)` to `(Matrix.mulVecLin t).restrictScalars (𝓞 E)`. Set `gL : (Fin r → E) →ₗ[𝓞 E] (Fin r → E)` to `(Matrix.mulVecLin γ).restrictScalars (𝓞 E)`. Set `T : Module.End (𝓞 E) L'` to `tL.restrict (fun x hx => (ht ⟨x, hx⟩).1)`. Set `G : Module.End (𝓞 E) L'` to `gL.restrict (fun x hx => hγ x hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `U : Module.End (𝓞 E) L'` to `G * T - 1`. Establish `hU : ∀ x : L', ((U x : L') : Fin r → E) = γ *ᵥ (t *ᵥ (x : Fin r → E)) - x`. Introduce `x`. Both sides reduce to the same expression. Establish `hpow : ∀ k : ℕ, ∀ x : L', ((γ * t - 1) ^ k) *ᵥ (x : Fin r → E) = (((U ^ k) x : L') : Fin r → E)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro x`. Simplify using the standard rewrite rules. Consider the case `succ k ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `x`. Rewrite using `[pow_succ', ← Matrix.mulVec_mulVec, ih, pow_succ', Module.End.mul_apply, hU, Matrix.sub_mulVec, Matrix.one_mulVec, ← Matrix.mulVec_mulVec]`. Establish `hsub : ∀ (I : Ideal (𝓞 E)) (z : L'), (z : Fin r → E) ∈ I • L' → z ∈ I • (⊤ : Submodule (𝓞 E) L')`. Introduce `I z hz`. Establish `e : I • L' = (I • (⊤ : Submodule (𝓞 E) L')).map L'.subtype`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Submodule.map_smul'', Submodule.map_subtype_top]`. Rewrite `hz` using `[e]`. Take `⟨u, hu, huz⟩` from `hz`. Establish `: u = z` using `Subtype.ext huz`. Conclude with `this ▸ hu`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set ℓn : Module.End (𝓞 E) A := ((ℓ ^ n : A ≃ₗ[𝓞 E] A) : Module.End (𝓞 E) A)`. Establish `hπU : ∀ x : L', (Mb • (⊤ : Submodule (𝓞 E) L')).mkQ (U x) = φ ((ℓn - 1) (φ.symm ((Mb • (⊤ : Submodule (𝓞 E) L')).mkQ x)))`. Introduce `x`. Establish `hG : (Mb • (⊤ : Submodule (𝓞 E) L')).mkQ (G (T x)) = (Mb • (⊤ : Submodule (𝓞 E) L')).mkQ (T x)`. Rewrite using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hsub Mb _ (hγ1 _ (T x).2)`. Establish `hT : (Mb • (⊤ : Submodule (𝓞 E) L')).mkQ (T x) = φ ((ℓ ^ n) (φ.symm ((Mb • (⊤ : Submodule (𝓞 E) L')).mkQ x)))` using `(ht x).2`. Simplify using `only [U, LinearMap.sub_apply, Module.End.mul_apply, Module.End.one_apply, map_sub, hG, hT]`. Simplify using `[ℓn]`. Establish `hπUk : ∀ k : ℕ, ∀ x : L', (Mb • (⊤ : Submodule (𝓞 E) L')).mkQ ((U ^ k) x) = φ (((ℓn - 1) ^ k) (φ.symm ((Mb • (⊤ : Submodule (𝓞 E) L')).mkQ x)))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro x`. Simplify using the standard rewrite rules. Consider the case `succ k ih`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `x`. Rewrite using `[pow_succ', Module.End.mul_apply, hπU, ih, LinearEquiv.symm_apply_apply, pow_succ', Module.End.mul_apply]`. Take `⟨X, hc, hX⟩` from `zpow_sub_one_eq_mul ℓ n`. Establish `hℓ' : ∀ y : A, ((ℓn - 1) ^ r) y ∈ P • (⊤ : Submodule (𝓞 E) A)`. Introduce `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[show ℓn - 1 = ((ℓ : Module.End (𝓞 E) A) - 1) * X from hX, hc.mul_pow, Module.End.mul_apply]`. Use `hℓ ((X ^ r) y)` as an intermediate fact. Rewrite `this` using `[← Module.End.one_eq_id]`. Then use the resulting hypothesis. Establish `hQ : (Mb • (⊤ : Submodule (𝓞 E) L')).mkQ ((U ^ r) ⟨w, hw⟩) ∈ P • (⊤ : Submodule (𝓞 E) (L' ⧸ (Mb • (⊤ : Submodule (𝓞 E) L'))))`. Rewrite using `[hπUk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hm : ((P • (⊤ : Submodule (𝓞 E) A)).map (φ : A →ₗ[𝓞 E] (L' ⧸ (Mb • (⊤ : Submodule (𝓞 E) L'))))) ≤ P • ⊤`. Rewrite using `[Submodule.map_smul'']`. Conclude with `Submodule.smul_mono le_rfl le_top`. Conclude with `hm (Submodule.mem_map_of_mem (hℓ' _))`. Establish `hL : (U ^ r) ⟨w, hw⟩ ∈ P • (⊤ : Submodule (𝓞 E) L')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : P • (⊤ : Submodule (𝓞 E) (L' ⧸ (Mb • (⊤ : Submodule (𝓞 E) L')))) = (P • (⊤ : Submodule (𝓞 E) L')).map (Mb • (⊤ : Submodule (𝓞 E) L')).mkQ`. Rewrite using `[Submodule.map_smul'', Submodule.map_top, Submodule.range_mkQ]`. Rewrite `hQ` using `[e]`. Establish `hQ'` using `Submodule.mem_comap.mpr hQ`. Rewrite `hQ'` using `[Submodule.comap_map_mkQ]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : Mb • (⊤ : Submodule (𝓞 E) L') ≤ P • (⊤ : Submodule (𝓞 E) L')` using `Submodule.smul_mono_left hMP`. Conclude with `(sup_le hle le_rfl) hQ'`. Establish `key` using `hpow r ⟨w, hw⟩`. Simplify using `only at key`. Rewrite using `[key]`.
-
-Establish `e : P • L' = (P • (⊤ : Submodule (𝓞 E) L')).map L'.subtype`. Rewrite using `[Submodule.map_smul'', Submodule.map_subtype_top]`. Rewrite using `[e]`. Conclude with `Submodule.mem_map_of_mem hL`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unip_mod_half : ∀ {E : Type} [Field E] [NumberField E] {r : ℕ} (L' : Submodule (𝓞 E) (Fin r → E)) (Mb P : Ideal (𝓞 E)), Mb ≤ P →
     ∀ {A : Type} [AddCommGroup A] [Module (𝓞 E) A] (φ : A ≃ₗ[𝓞 E] (L' ⧸ (Mb • (⊤ : Submodule (𝓞 E) L'))))

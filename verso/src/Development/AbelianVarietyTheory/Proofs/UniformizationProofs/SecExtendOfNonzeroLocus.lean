@@ -16,7 +16,7 @@ namespace GlobalTheory
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor LBGerm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => Set.mem_iInter.1 h k, fun h => Set.mem_iInter.2 fun k' => by obtain rfl := Subsingleton.elim k k'; exact h⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_wchart_oneTerm {X : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] [Unique K] (k : K) {j : K → L.ι} {x : X} :
     x ∈ LB.wchart L (fun _ : K => 𝟙 X) j ↔ x ∈ L.U (j k) :=
@@ -24,11 +24,11 @@ theorem mem_wchart_oneTerm {X : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] [U
     obtain rfl := Subsingleton.elim k k'; exact h⟩
 
 /- English proof (translation)
-Substitute `he` using the available equality. Establish `le : ∀ j : K' → L.ι, LB.wchart L (fun _ : K' => 𝟙 X) j ≤ LB.wchart L (fun _ : K => 𝟙 X) (fun _ => j default)` using `fun j x hx => (mem_wchart_oneTerm default).2 ((mem_wchart_oneTerm (j := j) default).1 hx)`. Set `s' : (LB.LinComb L (fun _ : K' => 𝟙 X) (fun _ => e)).Sec` to `secOfGerm (M := LB.LinComb L (fun _ : K' => 𝟙 X) (fun _ => e)) (fun j => resG X (le j) (s.f fun _ => j default)) fun y j j' hj hj' => by`. Use `(gs_res (𝟙 X) y (le j) hj _).trans ((sec_trans s (𝟙 X) y (le j hj) (le j' hj')).trans (congrArg₂ (· * ·) (congrArg Units.val ?_) (gs_res (𝟙 X) y (le j') hj' _).symm))` and prove the remaining obligations. Use `Eq.trans ?_ (gm_linComb L (fun _ : K' => 𝟙 X) (fun _ => e) (𝟙 X) y j j' hj hj').symm` and prove the remaining obligations.
+Substitute using the available equality. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[trF, Fintype.prod_unique, Fintype.prod_unique]`. Establish `hs : ∀ (x : X) (j : K' → L.ι), x ∈ LB.wchart L (fun _ : K' => 𝟙 X) j → gs (𝟙 X) x _ (s'.f j) = gs (𝟙 X) x _ (s.f fun _ => j default)` using `fun x j hx => gs_res (𝟙 X) x (le j) hx _`. Use `⟨s', nonzeroLocus_eq_of _ _ (fun y hy => ?_) fun y j hj => ?_, fun x i hx => hs x _ ((mem_wchart_oneTerm default).2 hx)⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `exists_chart_of_mem_nonzeroLocus hy`. Conclude with `⟨fun _ => j default, (mem_wchart_oneTerm default).2 ((mem_wchart_oneTerm (j := j) default).1 hj)⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[hs y j hj]`. Conclude with `(mem_nonzeroLocus_iff_isUnit s (le j hj)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sec_oneTerm {X : Scheme.{0}} (L : LB X) {K K' : Type} [Fintype K] [Unique K] [Fintype K'] [Unique K']
     {e e' : ℤ} (he : e = e') (s : (LB.LinComb L (fun _ : K => 𝟙 X) (fun _ => e)).Sec) :
@@ -55,17 +55,17 @@ theorem exists_sec_oneTerm {X : Scheme.{0}} (L : LB X) {K K' : Type} [Fintype K]
     exact (mem_nonzeroLocus_iff_isUnit s (le j hj)).symm
 
 /- English proof (translation)
-Introduce `X _ _ L hL N s`. Establish `hj : ∀ j : Fin 1 → L.ι, ∃ i, j = fun _ => i` using `fun j => ⟨j 0, funext fun k => congrArg j (Subsingleton.elim _ _)⟩`. Establish `hJ : ∀ j : PUnit.{1} → L.ι, ∃ i, j = fun _ => i` using `fun j => ⟨j PUnit.unit, rfl⟩`. Take `⟨s', hl, hs⟩ : ∃ s' : (lbPow L N).Sec, nonzeroLocus s' = nonzeroLocus s ∧ ∀ (x : X) (i : L.ι), x ∈ L.U i → gs (𝟙 X) x _ (powFn s' fun _ => i) = gs (𝟙 X) x _ (s.f fun _ => i)` from `exists_sec_oneTerm L (K' := PUnit) rfl s`. Use `⟨fun a => ?_, fun n t ht => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨m, hm⟩` from `exists_sec_eq_pow_mul (m := 0) hL s' (fun J => resG X (inf_le_left.trans hl.le) a) (mem_secOn_of_germ (M := lbPow L 0) _ fun y J J' h hJ hJ' => by`. Rewrite using `[gm_lbPow_g 0 (𝟙 X) y J J' hJ hJ', pow_zero, Units.val_one, _root_.one_mul]`. Conclude with `(gs_res (𝟙 X) y (inf_le_left.trans hl.le) ⟨h, hJ⟩ a).trans (gs_res (𝟙 X) y (inf_le_left.trans hl.le) ⟨h, hJ'⟩ a).symm)`. Take `⟨u, hu⟩` from `hm m le_rfl`. Take `⟨t, -, ht⟩` from `exists_sec_oneTerm L (K' := Fin 1) (e' := ((N * m : ℕ) : ℤ)) (by rw [zero_add]) u`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨m, t, fun x j hx hxj => ?_⟩` and prove the remaining obligations. Take `⟨i, rfl⟩` from `hj j`. Establish `hy : x ∈ nonzeroLocus s' ⊓ powChart L (fun _ => i)` using `⟨hl.ge hx, mem_powChart.2 hxj⟩`. Establish `e` using `congrArg (gs (𝟙 X) x _) (hu fun _ => i)`. Rewrite `e` using `[gs_res _ x _ hy, gs_mul _ x _ hy, gs_pow _ x _ hy, gs_res _ x _ hy, gs_res _ x _ hy, hs x i hxj]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(ht x i hxj).trans e`. Take `⟨t', -, ht'⟩ : ∃ t' : (lbPow L n).Sec, nonzeroLocus t' = nonzeroLocus t ∧ ∀ (x : X) (i : L.ι), x ∈ L.U i → gs (𝟙 X) x _ (powFn t' fun _ => i) = gs (𝟙 X) x _ (t.f fun _ => i)` from `exists_sec_oneTerm L (K' := PUnit) rfl t`. Take `⟨m, hm⟩` from `exists_pow_mul_powFn_eq_zero hL s' t' fun J => fn_ext fun y hy => by`. Take `⟨i, rfl⟩` from `hJ J`. Rewrite using `[gs_res _ y _ hy, gs_zero _ y _ hy, ht' y i (mem_powChart.1 hy.2)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `ht y _ (hl.le hy.1) (mem_powChart.1 hy.2)`. Use `⟨m, fun j => fn_ext fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨i, rfl⟩` from `hj j`. Establish `hi : y ∈ L.U i` using `(mem_wchart_oneTerm (j := fun _ : Fin 1 => i) 0).1 hy`. Establish `hp : y ∈ powChart L (fun _ => i)` using `mem_powChart.2 hi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `congrArg (gs (𝟙 X) y _) (hm fun _ => i)`. Rewrite `e` using `[gs_mul _ y _ hp, gs_pow _ y _ hp, gs_zero _ y _ hp, hs y i hi, ht' y i hi]`. Rewrite using `[gs_mul _ y _ hy, gs_pow _ y _ hy, gs_zero _ y _ hy]`. Conclude with `e`.
+A detailed English derivation is pending.
 -/
 theorem sec_extend_of_nonzeroLocus : ∀ (X : Scheme.{0}) [CompactSpace X] [QuasiSeparatedSpace X] (L : LB X), L.IsLB → ∀ (N : ℕ) (s : H0 L N), (∀ a : Γ(X, nonzeroLocus s), ∃ (m : ℕ) (t : H0 L (N * m)), ∀ (x : X) (j : Fin 1 → L.ι), x ∈ nonzeroLocus s → x ∈ L.U (j 0) → Geo.Tor.gs (𝟙 X) x _ (t.f j) = Geo.Tor.gs (𝟙 X) x _ (s.f j) ^ m * Geo.Tor.gs (𝟙 X) x _ a) ∧ ∀ (n : ℕ) (t : H0 L n), (∀ (x : X) (j : Fin 1 → L.ι), x ∈ nonzeroLocus s → x ∈ L.U (j 0) → Geo.Tor.gs (𝟙 X) x _ (t.f j) = 0) → ∃ m : ℕ, ∀ j : Fin 1 → L.ι, (show Γ(X, LB.wchart L (fun _ : Fin 1 => 𝟙 X) j) from s.f j) ^ m * (show Γ(X, LB.wchart L (fun _ : Fin 1 => 𝟙 X) j) from t.f j) = 0 := by
   intro X _ _ L hL N s

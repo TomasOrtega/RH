@@ -8,7 +8,7 @@ open UpperTheory.V.W (Plc Lp)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qh37.globEx`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Dict.Br.globEx :
     ∀ (L : Type) [Field L] [NumberField L] [IsCMField L], ∃ (Δ : Lp L) (e : Lsq (Lp L) Δ ≃+* L), (∀ x, e (star x) = IsCMField.complexConj L (e x)) ∧ (∀ a : Lp L, e (algebraMap _ _ a) = algebraMap (Lp L) L a) ∧ ∀ σ : Lp L →+* ℝ, σ Δ < 0 :=

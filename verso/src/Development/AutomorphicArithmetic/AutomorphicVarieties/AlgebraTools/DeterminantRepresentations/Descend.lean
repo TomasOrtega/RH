@@ -9,11 +9,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Deter
 open Polynomial UpperTheory.V.W
 
 /- English proof (translation)
-Take `⟨m, g, b, rfl⟩` from `UpperTheory.V.AlgebraTools.Det.genSpan (A := A) (G := G) (MvPolynomial σ A) x`. Establish `hP : D'.D (MvPolynomial (Fin m) A') (GDet.gen fun j => MonoidAlgebra.single (g j) 1) ∈ Set.range (MvPolynomial.map ι)`. Rewrite using `[MvPolynomial.mem_range_map_iff_coeffs_subset]`. Introduce `c hc'`. Take `⟨β, -, rfl⟩` from `MvPolynomial.mem_coeffs_iff.mp hc'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hc m g β`. Take `⟨Q, hQ⟩` from `hP`. Establish `key` using `UpperTheory.V.AlgebraTools.Det.genEval D' (MvPolynomial σ A') m (fun j => MonoidAlgebra.single (g j) 1) (fun j => MvPolynomial.map ι (b j))`. Use `⟨MvPolynomial.aeval b Q, ?_⟩` and prove the remaining obligations. Establish `hx : MonoidAlgebra.mapRingHom G (MvPolynomial.map ι) (∑ j, b j • MonoidAlgebra.mapRingHom G (algebraMap A (MvPolynomial σ A)) (MonoidAlgebra.single (g j) 1)) = ∑ j, (MvPolynomial.map ι (b j)) • MonoidAlgebra.mapRingHom G (algebraMap A' (MvPolynomial σ A')) (MonoidAlgebra.single ( …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[map_sum, MonoidAlgebra.mapRingHom_single]`. Rewrite using `[hx, key, ← hQ, MvPolynomial.map_aeval]`. Simplify using `[MvPolynomial.aeval_def, MvPolynomial.eval₂_map]`. Rewrite using `[MvPolynomial.bind₁, MvPolynomial.aeval_def, MvPolynomial.eval₂_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem exists_isCompact_preimage_eq_of_isLimit_of_isAffineHom {n : ℕ} {A G : Type} [CommRing A] [Group G] {A' : Type} [CommRing A']
     (ι : A →+* A') (D' : GDet n A' G)
@@ -38,7 +38,7 @@ private theorem exists_isCompact_preimage_eq_of_isLimit_of_isAffineHom {n : ℕ}
   rfl
 
 /- English proof (translation)
-Simplify using `[GDet.gen, map_sum, MonoidAlgebra.mapRingHom_single]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem mapRingHom_gdet_gen_single_eq_gen_single {A G : Type} [CommRing A] [Group G] {A' : Type} [CommRing A'] (ι : A →+* A')
     (m : ℕ) (g : Fin m → G) :
@@ -47,21 +47,19 @@ private theorem mapRingHom_gdet_gen_single_eq_gen_single {A G : Type} [CommRing 
   simp [GDet.gen, map_sum, MonoidAlgebra.mapRingHom_single]
 
 /- English proof (translation)
-Introduce `n A G _ _ A' _ ι D' hι hc`. Establish `hr` using `fun σ x => exists_isCompact_preimage_eq_of_isLimit_of_isAffineHom ι D' hc σ x`. Establish `hinj : ∀ σ : Type, Function.Injective (MvPolynomial.map (σ` using `σ) ι) := fun σ => MvPolynomial.map_injective ι hι`. Set `d : (σ : Type) → MonoidAlgebra (MvPolynomial σ A) G →* MvPolynomial σ A` to `fun σ => { toFun := fun x => Classical.choose (hr σ x) map_one' := hinj σ (by rw [Classical.choose_spec (hr σ 1), map_one, map_one, map_one]) map_mul' := fun x y => hinj σ (by`. Rewrite using `[Classical.choose_spec (hr σ (x * y)), map_mul, map_mul, map_mul, Classical.choose_spec (hr σ x), Classical.choose_spec (hr σ y)]) }`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hd : ∀ σ x, MvPolynomial.map ι (d σ x) = D'.D (MvPolynomial σ A') (MonoidAlgebra.mapRingHom G (MvPolynomial.map ι) x)` using `fun σ x => Classical.choose_spec (hr σ x)`. Establish `hnat : ∀ (σ τ : Type) (f : MvPolynomial σ A →ₐ[A] MvPolynomial τ A) (x : MonoidAlgebra (MvPolynomial σ A) G), d τ (MonoidAlgebra.mapRingHom G (f : MvPolynomial σ A →+* MvPolynomial τ A) x) = f (d σ x)`. Introduce `σ τ f x`. Apply `hinj τ` to reduce the goal to its premises. Set `f' : MvPolynomial σ A' →ₐ[A'] MvPolynomial τ A'` to `MvPolynomial.aeval fun i => MvPolynomial.map ι (f (MvPolynomial.X i))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression.
 
-Establish `hf : (MvPolynomial.map ι).comp (f : MvPolynomial σ A →+* MvPolynomial τ A) = (f' : MvPolynomial σ A' →+* MvPolynomial τ A').comp (MvPolynomial.map ι)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Establish `ha` using `f.commutes a`. Simplify using `only [MvPolynomial.algebraMap_eq] at ha`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[f', ha]`. Introduce `i`. Simplify using `[f']`. Establish `e1 : MonoidAlgebra.mapRingHom G (MvPolynomial.map ι) (MonoidAlgebra.mapRingHom G (f : MvPolynomial σ A →+* MvPolynomial τ A) x) = MonoidAlgebra.mapRingHom G (f' : MvPolynomial σ A' →+* MvPolynomial τ A') (MonoidAlgebra.mapRingHom G (MvPolynomial.map ι) x)`. Rewrite using `[← RingHom.comp_apply, ← MonoidAlgebra.mapRingHom_comp, hf, MonoidAlgebra.mapRingHom_comp, RingHom.comp_apply]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hd, e1, D'.nat (MvPolynomial σ A') (MvPolynomial τ A') f', ← hd]`. Conclude with `(RingHom.congr_fun hf _).symm`. Establish `hhom : ∀ (σ : Type) (b : MvPolynomial σ A) (x : MonoidAlgebra (MvPolynomial σ A) G), d σ (b • x) = b ^ n * d σ x`. Introduce `σ b x`. Apply `hinj σ` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hs : MonoidAlgebra.mapRingHom G (MvPolynomial.map ι) (b • x) = MvPolynomial.map ι b • MonoidAlgebra.mapRingHom G (MvPolynomial.map ι) x`. Use extensionality with `g`. Simplify using `[MonoidAlgebra.mapRingHom_apply]`. Rewrite using `[hd, map_mul, map_pow, hd, hs, D'.homog]`. Take `⟨D, hD⟩` from `UpperTheory.V.AlgebraTools.Det.extendPoly d hnat hhom`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hex : D.map ι = D'`. Apply `UpperTheory.V.AlgebraTools.Det.extGen` to reduce the goal to its premises. Introduce `m g`. Rewrite using `[← mapRingHom_gdet_gen_single_eq_gen_single ι m g, (UpperTheory.V.AlgebraTools.Det.mapApi D ι).2.2.2.1 (Fin m), hD, hd]`. Use `⟨D, hex, fun D2 h2 => ?_⟩` and prove the remaining obligations.
-
-Conclude with `(UpperTheory.V.AlgebraTools.Det.injTest (X := Unit) (fun _ => A') (fun _ => ι) (fun a ha => hι (by rw [ha (), map_zero])) ).1 D2 D (fun _ => by rw [h2, hex])`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.Det.descend :
     ∀ {n : ℕ} {A G : Type} [CommRing A] [Group G] {A' : Type} [CommRing A'] (ι : A →+* A') (D' : GDet n A' G), Function.Injective ι →

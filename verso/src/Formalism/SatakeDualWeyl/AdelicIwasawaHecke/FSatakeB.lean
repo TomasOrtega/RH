@@ -9,13 +9,13 @@ namespace Formalism.UG.P
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {σ : L →+* L} {n : ℕ}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem fSatake_borel_iff (b : GU σ n) :
     IsBorelU b ↔ (((b : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L).BlockTriangular id := Iff.rfl
 
 /- English proof (translation)
-Rewrite `hb`, `hb'`, the goal using `[fSatake_borel_iff]`. Simplify `hb.mul hb'` using `only [Subgroup.coe_mul, Units.val_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem fSatake_borel_mul {b b' : GU σ n} (hb : IsBorelU b) (hb' : IsBorelU b') :
     IsBorelU (b * b') := by
@@ -23,7 +23,7 @@ theorem fSatake_borel_mul {b b' : GU σ n} (hb : IsBorelU b) (hb' : IsBorelU b')
   simpa only [Subgroup.coe_mul, Units.val_mul] using hb.mul hb'
 
 /- English proof (translation)
-Rewrite `hb`, the goal using `[fSatake_borel_iff]`. Use `haveI : Invertible (((b : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) := Units.invertible _`. Use `Matrix.blockTriangular_inv_of_blockTriangular hb` as an intermediate fact. Simplify `this` using `[Matrix.coe_units_inv]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem fSatake_borel_inv {b : GU σ n} (hb : IsBorelU b) : IsBorelU b⁻¹ := by
   rw [fSatake_borel_iff] at hb ⊢
@@ -32,9 +32,9 @@ theorem fSatake_borel_inv {b : GU σ n} (hb : IsBorelU b) : IsBorelU b⁻¹ := b
   simpa [Matrix.coe_units_inv] using this
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Introduce `j _ hj`. Break down `lt_or_gt_of_ne hj with h | h` into its components or cases. Rewrite using `[hM h, zero_mul]`. Rewrite using `[hN h, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fSatake_diag_mul {M N : Matrix (Fin n) (Fin n) L} (hM : M.BlockTriangular id)
     (hN : N.BlockTriangular id) (i : Fin n) : (M * N) i i = M i i * N i i := by
@@ -47,7 +47,7 @@ theorem fSatake_diag_mul {M N : Matrix (Fin n) (Fin n) L} (hM : M.BlockTriangula
     exact absurd (Finset.mem_univ i) h
 
 /- English proof (translation)
-Use `fSatake_diag_mul ((fSatake_borel_iff b).1 hb) ((fSatake_borel_iff b').1 hb') i` as an intermediate fact. Simplify `this` using `only [Subgroup.coe_mul, Units.val_mul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem fSatake_borel_diag_mul {b b' : GU σ n} (hb : IsBorelU b) (hb' : IsBorelU b') (i : Fin n) :
     (((b * b' : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i i =
@@ -57,7 +57,7 @@ theorem fSatake_borel_diag_mul {b b' : GU σ n} (hb : IsBorelU b) (hb' : IsBorel
   simpa only [Subgroup.coe_mul, Units.val_mul] using this
 
 /- English proof (translation)
-Rewrite using `[← fSatake_borel_diag_mul (fSatake_borel_inv hb) hb i]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fSatake_borel_diag_inv {b : GU σ n} (hb : IsBorelU b) (i : Fin n) :
     (((b⁻¹ : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i i *
@@ -66,7 +66,7 @@ theorem fSatake_borel_diag_inv {b : GU σ n} (hb : IsBorelU b) (i : Fin n) :
   simp
 
 /- English proof (translation)
-Use `k.isLt` as an intermediate fact. Use `l.isLt` as an intermediate fact. Rewrite using `[Fin.ext_iff, Fin.val_rev]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem fSatake_rev_iff (k l : Fin n) : (k : ℕ) + l + 1 = n ↔ k = l.rev := by
   have := k.isLt
@@ -75,9 +75,9 @@ theorem fSatake_rev_iff (k l : Fin n) : (k : ℕ) + l + 1 = n ↔ k = l.rev := b
   omega
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single l.rev]`. Rewrite using `[show antiJ L n l.rev l = 1 from if_pos ((fSatake_rev_iff l.rev l).2 rfl), mul_one]`. Both sides reduce to the same expression. Introduce `j _ hj`. Rewrite using `[show antiJ L n j l = 0 from if_neg (fun h => hj ((fSatake_rev_iff j l).1 h)), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fSatake_cTJ (M : Matrix (Fin n) (Fin n) L) (i l : Fin n) :
     (cT σ M * antiJ L n) i l = σ (M l.rev i) := by
@@ -90,11 +90,11 @@ theorem fSatake_cTJ (M : Matrix (Fin n) (Fin n) L) (i l : Fin n) :
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Establish `h` using `congrFun (congrFun hU i) i.rev`. Rewrite `h` using `[Matrix.mul_apply, Finset.sum_eq_single i.rev]`. Rewrite `h` using `[fSatake_cTJ, Fin.rev_rev, show antiJ L n i i.rev = 1 from if_pos ((fSatake_rev_iff i i.rev).2 (Fin.rev_rev i).symm)]`. Conclude with `h`. Introduce `l _ hl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[fSatake_cTJ]`. Break down `lt_or_gt_of_ne hl with h1 | h1` into its components or cases. Establish `h2 : i < l.rev`. Simplify using `only [Fin.lt_iff_val_lt_val, Fin.val_rev] at h1 ⊢`. Use linear arithmetic over natural numbers and integers.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb _ _ h2, map_zero, zero_mul]`. Rewrite using `[hb l i.rev h1, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fSatake_unit_diag_mat {M : Matrix (Fin n) (Fin n) L} (hb : ∀ i j : Fin n, j < i → M i j = 0)
     (hU : cT σ M * antiJ L n * M = antiJ L n) (i : Fin n) : σ (M i i) * M i.rev i.rev = 1 := by
@@ -115,7 +115,7 @@ theorem fSatake_unit_diag_mat {M : Matrix (Fin n) (Fin n) L} (hb : ∀ i j : Fin
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-The claim follows from `fSatake_unit_diag_mat hb b.2 i`.
+A detailed English derivation is pending.
 -/
 theorem fSatake_unit_diag {b : GU σ n} (hb : IsBorelU b) (i : Fin n) :
     σ ((((b : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i i) *
@@ -123,15 +123,13 @@ theorem fSatake_unit_diag {b : GU σ n} (hb : IsBorelU b) (i : Fin n) :
   fSatake_unit_diag_mat hb b.2 i
 
 /- English proof (translation)
-Establish `hne : ∀ i, e i ≠ 0` using `fun i h => by`. Use `he i.rev` as an intermediate fact. Rewrite `this` using `[Fin.rev_rev, h, mul_zero]`. Conclude with `zero_ne_one this`. Set `g : GL (Fin n) L` to `⟨Matrix.diagonal e, Matrix.diagonal (fun i => (e i)⁻¹), by simp [Matrix.diagonal_mul_diagonal, mul_inv_cancel₀ (hne _)], by simp [Matrix.diagonal_mul_diagonal, inv_mul_cancel₀ (hne _)]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hc : cT σ (Matrix.diagonal e) = Matrix.diagonal (fun i => σ (e i))`. Use extensionality with `a c`. Distinguish the cases in `h : a = c`. Substitute `h` using the available equality. Simplify using `[cT]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[cT, Matrix.diagonal_apply, h, Ne.symm h]`. Establish `hg : g ∈ GU σ n` using `by show cT σ (Matrix.diagonal e) * antiJ L n * Matrix.diagonal e = antiJ L n`. Use extensionality with `i l`. Rewrite using `[hc, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Simplify using `only [antiJ]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `split_ifs with h`. Establish `hl : l = i.rev` using `(fSatake_rev_iff l i).1 (by omega)`. Substitute `hl` using the available equality. Simplify using `[he i]`. Simplify using the standard rewrite rules.
-
-Conclude with `⟨⟨g, hg⟩, rfl, rfl⟩`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem fSatake_diag_exists (e : Fin n → L) (he : ∀ i, σ (e i) * e i.rev = 1) :
     ∃ d : GU σ n, (((d : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = Matrix.diagonal e ∧

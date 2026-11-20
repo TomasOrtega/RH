@@ -23,7 +23,7 @@ namespace GlobalTheory.LatticeHom
 variable {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ}
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `SymmetricSemicharacter.exists_chart u SymmetricSemicharacter.valueRules hL z`. Use `⟨fun _ => i, ?_⟩` and prove the remaining obligations. Rewrite using `[Cartier.lbPow_U]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_chart_lbPow (u : HolUnif A L g) (hL : L.IsLB) (n : ℕ) (z : Fin g → ℂ) :
     ∃ k : (lbPow L n).ι, ⊤ ≤ (u.ex z).left ⁻¹ᵁ (lbPow L n).U k := by
@@ -32,18 +32,16 @@ theorem exists_chart_lbPow (u : HolUnif A L g) (hL : L.IsLB) (n : ℕ) (z : Fin 
   rwa [Cartier.lbPow_U]
 
 /- English proof (translation)
-The claim follows from `pow_ne_zero n (u.fr_ne _ z (Cartier.lbPow_U L n k ▸ hk))`.
+A detailed English derivation is pending.
 -/
 theorem fr_pow_ne_zero (u : HolUnif A L g) (n : ℕ) {z : Fin g → ℂ} {k : (lbPow L n).ι}
     (hk : ⊤ ≤ (u.ex z).left ⁻¹ᵁ (lbPow L n).U k) : u.fr (k PUnit.unit) z ^ n ≠ 0 :=
   pow_ne_zero n (u.fr_ne _ z (Cartier.lbPow_U L n k ▸ hk))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 ((top_le_preimage_iff_mem _ _).1 h)`. Establish `h1` using `(top_le_preimage_basicOpen_iff _ _ _).1 ((top_le_preimage_iff_mem _ _).2 hk)`. Rewrite `h1` using `[hs k z (top_le_preimage_of_valAt'_ne_zero _ h1)]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `left_ne_zero_of_mul h1`. Introduce `h`. Take `⟨k, hk⟩` from `exists_chart_lbPow u hL n z`. Use `top_le_preimage_mono _ (le_iSup (fun k => A.left.basicOpen (s.f k)) k) ?_` and prove the remaining obligations. Rewrite using `[top_le_preimage_basicOpen_iff, hs k z hk]`.
-
-Conclude with `mul_ne_zero h (fr_pow_ne_zero u n hk)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_preimage_nonzeroLocus_iff (u : HolUnif A L g) (hL : L.IsLB) {n : ℕ} {s : (lbPow L n).Sec}
     {θ : (Fin g → ℂ) → ℂ} (hs : u.IsFnPow n s θ) (z : Fin g → ℂ) :
@@ -61,7 +59,7 @@ theorem le_preimage_nonzeroLocus_iff (u : HolUnif A L g) (hL : L.IsLB) {n : ℕ}
     exact mul_ne_zero h (fr_pow_ne_zero u n hk)
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `exists_chart_lbPow u hL n z`. Establish `hW` using `(top_le_preimage_inf _ _ _).2 ⟨(le_preimage_nonzeroLocus_iff u hL hs z).2 hz, hk⟩`. Establish `h` using `congrArg (valAt' (u.ex z).left _) (hr k)`. Rewrite `h` using `[valAt'_mul, valAt'_res _ _ _ hW, valAt'_res _ _ _ hW, valAt'_res _ _ _ hW, hs k z hk, hs' k z hk, ← _root_.mul_assoc]`. Rewrite using `[mul_right_cancel₀ (fr_pow_ne_zero u n hk) h, mul_div_cancel_right₀ _ hz]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem valAt'_eq_div_of_mul (u : HolUnif A L g) (hL : L.IsLB) {n : ℕ} {s s' : (lbPow L n).Sec}
     {θ θ' : (Fin g → ℂ) → ℂ} (hs : u.IsFnPow n s θ) (hs' : u.IsFnPow n s' θ') (r : Γ(A.left, Out.nonzeroLocus s))
@@ -76,11 +74,11 @@ theorem valAt'_eq_div_of_mul (u : HolUnif A L g) (hL : L.IsLB) {n : ℕ} {s s' :
   rw [mul_right_cancel₀ (fr_pow_ne_zero u n hk) h, mul_div_cancel_right₀ _ hz]
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `exists_chart_lbPow u hL n z₀`. Establish `hle` using `A.left.basicOpen_le ((s i).f k)`. Take `⟨v, hv⟩ : IsUnit (resG A.left hle ((s i).f k))` from `RingedSpace.isUnit_res_basicOpen _ _`. Use `⟨A.left.basicOpen ((s i).f k), fun j => resG A.left hle ((s j).f k) * (v⁻¹).val, ?_, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[top_le_preimage_basicOpen_iff, hs i k z₀ hk]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_ne_zero h0 (fr_pow_ne_zero u n hk)`. Establish `hk'` using `top_le_preimage_mono _ hle hz`. Establish `h1` using `(top_le_preimage_basicOpen_iff _ _ _).1 hz`. Rewrite `h1` using `[hs i k z hk']`. Use `⟨left_ne_zero_of_mul h1, fun j => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[valAt'_mul, valAt'_units_inv _ hz, hv, valAt'_res _ _ _ hz, valAt'_res _ _ _ hz, hs i k z hk', hs j k z hk', ← div_eq_mul_inv, mul_div_mul_right _ _ (right_ne_zero_of_mul h1)]`.
+A detailed English derivation is pending.
 -/
 theorem exists_regular_quotients (u : HolUnif A L g) (hL : L.IsLB) {n : ℕ} {κ : Type*} {s : κ → (lbPow L n).Sec}
     {θ : κ → (Fin g → ℂ) → ℂ} (hs : ∀ j, u.IsFnPow n (s j) (θ j)) (i : κ) {z₀ : Fin g → ℂ} (h0 : θ i z₀ ≠ 0) :
@@ -100,11 +98,11 @@ theorem exists_regular_quotients (u : HolUnif A L g) (hL : L.IsLB) {n : ℕ} {κ
       ← div_eq_mul_inv, mul_div_mul_right _ _ (right_ne_zero_of_mul h1)]
 
 /- English proof (translation)
-Establish `hr : IsReduced A.left` using `isReduced_of_smooth_complex _ A.hom inferInstance`. Establish `h0 : u.ex 0 = η[A]`. Rewrite using `[(u.ker 0).2 u.Λ.zero_mem, Hom.one_def, toUnit_unit, Category.id_comp]`. Establish `h0' : u'.ex 0 = η[A']`. Rewrite using `[(u'.ker 0).2 u'.Λ.zero_mem, Hom.one_def, toUnit_unit, Category.id_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← h0, ← hf, map_zero, h0']`. Establish `hft : LocallyOfFiniteType (A ⊗ A).hom`. Express the relevant statement in the definitionally equal form `LocallyOfFiniteType (pullback.fst A.hom A.hom ≫ A.hom)`. Use `infer_instance`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Use `TorusEnd.hom_ext_of_points (existsUnique_hom_of_locally_regular existsUnique_point_of_ringHom (eq_of_valAt'_eq valAt'_rules existsUnique_point_of_ringHom) A' (A ⊗ A) (isReduced_tensorObj_complex A A hr hr inferInstance inferInstance) hft) fun y => ?_` and prove the remaining obligations. Take `⟨z, hz⟩` from `u.ex_onto (y ≫ fst A A)`. Take `⟨w, hw⟩` from `u.ex_onto (y ≫ snd A A)`. Apply the tactic sequence `have hy : y = lift (u.ex z) (u.ex w) := by ext1 <;> simp [hz, hw]`. Rewrite using `[hy, ← Category.assoc, ← Hom.mul_def, ← u.ex_add, ← hf, map_add, u'.ex_add, Hom.mul_def, ← Category.assoc, lift_map, ← hf, ← hf]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMonHom_of_lift {A' : Over (Sp ℂ)} [GrpObj A'] {L' : LB A'.left} {g' : ℕ} (u : HolUnif A L g)
     (u' : HolUnif A' L' g') [Smooth A.hom] (F : (Fin g → ℂ) →ₗ[ℂ] (Fin g' → ℂ)) (f : A ⟶ A')
@@ -130,21 +128,19 @@ theorem isMonHom_of_lift {A' : Over (Sp ℂ)} [GrpObj A'] {L' : LB A'.left} {g' 
       lift_map, ← hf, ← hf]
 
 /- English proof (translation)
-Establish `hsm` using `P.isAb.smooth`. Establish `hr : IsReduced P.A.left` using `isReduced_of_smooth_complex _ P.A.hom hsm`. Set `Φ : (𝟙_ (Over (Sp ℂ)) ⟶ P.A) → (𝟙_ (Over (Sp ℂ)) ⟶ P'.A)` to `fun y => u'.ex (F (Function.surjInv u.ex_onto y))`. Establish `hΦ : ∀ z, Φ (u.ex z) = u'.ex (F z)` using `fun z => by`. Establish `h1 : Function.surjInv u.ex_onto (u.ex z) - z ∈ u.Λ`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← u.ker]`. Use `u.ex_add (Function.surjInv u.ex_onto (u.ex z) - z) z` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, Function.surjInv_eq u.ex_onto]`. Conclude with `mul_eq_right.1 this.symm`. Use `SectionTheta.ex_add_lattice u' (F z) ⟨_, hF _ h1⟩` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[← map_add, add_sub_cancel]`. Then use the resulting hypothesis. Take `⟨m, s, hcov, hD⟩` from `veryAmple_lbPow hamp ℂ P' 4 le_rfl`. Use `choose θ hθ hθs using fun j => hfn 4 (s j)`. Take `⟨f, hf, -⟩` from `existsUnique_hom_of_locally_regular existsUnique_point_of_ringHom (eq_of_valAt'_eq valAt'_rules existsUnique_point_of_ringHom) P'.A P.A hr inferInstance Φ fun y => by`. Take `⟨z₀, rfl⟩` from `u.ex_onto y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `TorusEnd.exists_top_le_preimage_of_iSup_eq_top (u'.ex (F z₀)).left _ hcov`. Take `⟨haff, r, hr, hgen⟩` from `hD i`. Establish `hmem` using `le_preimage_nonzeroLocus_iff u' P'.isLB (hθs i)`. Take `⟨G, hG0, hG⟩` from `hd z₀`. Use `choose t ht using fun j => hsec d _ (hG _ (hθ j))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨U, ρ, hU0, hU⟩` from `exists_regular_quotients u P.isLB ht i (mul_ne_zero ((hmem _).1 hi) hG0)`. Use `⟨U, _, hU0, haff, fun y' hy' => ?_, fun ψ => ?_⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `u.ex_onto y'`. Rewrite using `[hΦ]`. Conclude with `(hmem _).2 (left_ne_zero_of_mul (hU z hy').1)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Q, rfl⟩` from `hgen ψ`. Use `⟨MvPolynomial.eval₂ (RingHom.comp (P.A.hom.appLE ⊤ _ le_top).hom (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom) ρ Q, fun y' hy' => ?_⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `u.ex_onto y'`. Establish `h1` using `left_ne_zero_of_mul (hU z hy').1`. Establish `h2` using `right_ne_zero_of_mul (hU z hy').1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hΦ, TorusEnd.valAt'_eval₂ _ _ hy', TorusEnd.valAt'_eval₂ _ _ ((hmem _).2 h1)]`. Use `congr 2`. Use function extensionality and compare the values at `j`. Rewrite using `[(hU z hy').2 j, valAt'_eq_div_of_mul u' P'.isLB (hθs i) (hθs j) (r j) (hr j) h1, mul_div_mul_right _ _ h2]`. Establish `hfe : ∀ z, u'.ex (F z) = u.ex z ≫ f` using `fun z => by rw [hf, hΦ]`.
-
-Conclude with `⟨f, isMonHom_of_lift u u' F f hfe, hfe⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isMonHom_of_complementary (hamp : Out.AmpleSt) (P P' : Out.PolAV (Sp ℂ)) {g g' : ℕ}
     (u : HolUnif P.A P.L g) (u' : HolUnif P'.A P'.L g') {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ}

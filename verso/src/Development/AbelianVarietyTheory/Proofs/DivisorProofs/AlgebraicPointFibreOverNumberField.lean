@@ -16,13 +16,11 @@ namespace GlobalTheory.BdFibPoint
 open IsLocalRing
 
 /- English proof (translation)
-Set `a' : ResidueField A →+* k` to `ResidueField.lift a`. Set `b' : ResidueField A →+* K` to `ResidueField.lift b`. Establish `ea : a'.comp (residue A) = a` using `ResidueField.lift_comp_residue a`. Establish `eb : b'.comp (residue A) = b` using `ResidueField.lift_comp_residue b`. Establish `ha' : a'.Finite` using `RingHom.Finite.of_comp_finite (f := residue A) (by rw [ea]; exact ha)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : CharZero (ResidueField A) := b'.charZero`. Use `haveI : FiniteDimensional ℚ (ResidueField A) := Module.Finite.of_injective b'.toRatAlgHom.toLinearMap b'.injective`. Use `haveI : NumberField (ResidueField A) := ⟨⟩`. Use `letI : Algebra (ResidueField A) k := a'.toAlgebra`. Use `letI : Algebra (ResidueField A) Qb := (io.comp b').toAlgebra`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Module.Finite (ResidueField A) k := ha'`. Use `haveI : IsAlgClosed Qb := (algebraicClosure.isAlgClosure ℚ ℂ).isAlgClosed`. Set `f : k →ₐ[ResidueField A] Qb` to `IsAlgClosed.lift`. Use `⟨NumberField.of_module_finite (ResidueField A) k, f.toRingHom, ?_⟩` and prove the remaining obligations. Rewrite using `[← ea, ← eb]`.
-
-Use extensionality with `x`. Conclude with `congrArg _ (f.commutes (residue A x))`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem exists_extend {A k K : Type} [CommRing A] [IsLocalRing A] [Field k] [Field K] [NumberField K]
     (a : A →+* k) (b : A →+* K) [IsLocalHom a] [IsLocalHom b] (ha : a.Finite) (io : K →+* Qb) :
@@ -47,13 +45,11 @@ theorem exists_extend {A k K : Type} [CommRing A] [IsLocalRing A] [Field k] [Fie
   exact congrArg _ (f.commutes (residue A x))
 
 /- English proof (translation)
-Set `a` to `Scheme.stalkClosedPointTo (R := .of R) ξ`. Set `e` to `X.presheaf.stalkCongr (Inseparable.of_eq h)`. Set `b` to `e.hom ≫ Scheme.stalkClosedPointTo (R := .of K) w`. Establish `ha : Spec.map a ≫ X.fromSpecStalk _ = ξ` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk _`. Establish `hb : Spec.map b ≫ X.fromSpecStalk _ = w`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Spec.map_comp, Category.assoc, TopCat.Presheaf.stalkCongr_hom]`. Conclude with `(congrArg (_ ≫ ·) (Scheme.SpecMap_stalkSpecializes_fromSpecStalk (Inseparable.of_eq h).ge)).trans (Scheme.Spec_stalkClosedPointTo_fromSpecStalk _)`. Use `haveI : IsLocalHom a.hom := Scheme.isLocalHom_stalkClosedPointTo _`. Use `haveI : IsLocalHom ((residue R).comp a.hom) := RingHom.isLocalHom_comp _ _`. Use `haveI : IsLocalHom b.hom := by haveI : IsLocalHom e.hom.hom := isLocalHom_of_isIso _ haveI := Scheme.isLocalHom_stalkClosedPointTo (R := .of K) w`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `RingHom.isLocalHom_comp _ _`. Take `⟨hN, io₀, H⟩` from `exists_extend ((residue R).comp a.hom) b.hom hf io`. Use `⟨hN, io₀, ?_⟩` and prove the remaining obligations. Rewrite using `[← ha, ← hb, ← Spec.map_comp_assoc, ← Spec.map_comp_assoc, ← Spec.map_comp_assoc]`. Use `congr 2`.
-
-Conclude with `CommRingCat.hom_ext H`.
+A detailed English derivation is pending.
 -/
 theorem exists_through {X : Scheme.{0}} {K R : Type} [Field K] [NumberField K] [CommRing R] [IsLocalRing R]
     (io : K →+* Qb) (w : Sp K ⟶ X) (ξ : Sp R ⟶ X) (h : ξ (closedPoint R) = w (closedPoint K))
@@ -81,11 +77,9 @@ theorem exists_through {X : Scheme.{0}} {K R : Type} [Field K] [NumberField K] [
   exact CommRingCat.hom_ext H
 
 /- English proof (translation)
-Establish `h₀ : ∀ a ∈ maximalIdeal R ^ (0 + 1), residue R a = 0` using `fun a ha => by`. Rewrite `ha` using `[zero_add, pow_one]`. Conclude with `(residue_eq_zero_iff a).2 ha`. Establish `hs : spMap (Ideal.Quotient.lift _ (residue R) h₀) ≫ ReciprocityTheory.ChartRestriction.G.Out.thick R (maximalIdeal R) 0 = spMap (residue R)` using `by show Spec.map _ ≫ Spec.map _ = Spec.map _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Take `⟨φ, m, h₁, h₂, h₃⟩` from `SpecialFibreExt.exists_fib P.U.toUnifPre 0 (spMap (Ideal.Quotient.lift _ (residue R) h₀))`. Use `⟨φ, m, h₁.congr hs rfl, h₂.trans hs, ?_⟩` and prove the remaining obligations. Establish `key : ∀ (M : RigLB t.G) (c : CubicalStr t.G M), M = t.PP → HEq c t.cub → m.IsPullCubical φ.cub c → m.IsPullCubical φ.cub t.cub`. Introduce and unpack `M c rfl h h'`.
-
-Conclude with `eq_of_heq h ▸ h'`. Conclude with `key _ _ P.bundle (PelUnifCompare.cubG_heq P) h₃`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_fibAt {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] (t : SAB H (Sp R)) (P : PELUnif (maximalIdeal R) t) :
@@ -107,11 +101,9 @@ theorem exists_fibAt {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Rec
   exact key _ _ P.bundle (PelUnifCompare.cubG_heq P) h₃
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Y T y hy`. Use `isProper_genStr T.Z` as an intermediate fact. Take `⟨K, _, _, io, w, rfl⟩` from `GlobalTheory.T.algebraic_point_defined_over_number_field c.F _ (genStr T.Z) inferInstance y`. Take `⟨k, _, m, d, ξ, t, P, g, hξ, ⟨-, -, hf⟩, -, -, ⟨sm⟩, -⟩` from `T.toric _ hy`. Establish `hx : ξ (closedPoint _) = w (closedPoint K)` using `hξ.trans (congrArg w (Subsingleton.elim (α := PrimeSpectrum K) _ _))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hN, io₀, e⟩` from `exists_through io w ξ hx hf`. Take `⟨φ, n, h₁, h₂, h₃⟩` from `exists_fibAt t P`. Use `⟨_, _, hN, io₀, spMap (residue _) ≫ ξ, φ, SpecialFibreExt.comp n sm.cm, e, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(h₁.comp sm.cart).congr (Category.assoc _ _ _).symm rfl`. Use `show n.e ≫ sm.cm.e = _`.
-
-Rewrite using `[h₂, sm.base, Category.assoc]`. Conclude with `pullCubComp _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ rfl rfl rfl sm.lin h₃`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fibre_at_boundary : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (T : TorModel Y) (y : Sp Qb ⟶ gen T.Z), y (IsLocalRing.closedPoint Qb) ∈ genBd T.Z → ∃ (K₀ : Type) (_ : Field K₀) (_ : NumberField K₀) (io₀ : K₀ →+* Qb) (y₀ : Sp K₀ ⟶ gen T.Z) (φ : Fib K₀) (m : CubeMap φ.G T.Z.t.G), spMap io₀ ≫ y₀ = y ∧ FibAt T.Z.t (y₀ ≫ genι T.Z) φ m := by
   intro E _ _ _ H Dw l Xo c O _ β Y T y hy

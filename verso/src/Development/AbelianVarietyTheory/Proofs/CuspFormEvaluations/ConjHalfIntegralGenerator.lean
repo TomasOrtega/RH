@@ -14,9 +14,9 @@ open NumberField Complex
 open scoped ComplexConjugate
 
 /- English proof (translation)
-Establish `hre` using `congrArg Complex.re h`. Establish `him` using `congrArg Complex.im h`. Simplify using `[pow_two] at hre him`. Establish `hre0 : z.re = 0`. Break down `mul_eq_zero.mp (show z.re * z.im = 0 by linarith) with h0 | h0` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `h0`. Rewrite `hre` using `[h0]`. Use polynomial arithmetic with `[mul_self_nonneg z.re]`. Apply the tactic sequence `apply Complex.ext <;> simp [hre0]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem conj_eq_neg_of_sq_eq_neg {z : ℂ} {d : ℝ} (hd : 0 < d) (h : z ^ 2 = -(d : ℂ)) :
     conj z = -z := by
@@ -32,9 +32,9 @@ theorem conj_eq_neg_of_sq_eq_neg {z : ℂ} {d : ℝ} (hd : 0 < d) (h : z ^ 2 = -
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Take `⟨φ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[IsCMField.complexEmbedding_complexConj, map_neg]`. Apply `conj_eq_neg_of_sq_eq_neg (d := (H.d : ℝ)) (by exact_mod_cast H.d_prime.pos)` to reduce the goal to its premises. Establish `h` using `congrArg (fun x : 𝓞 E => φ (x : E)) H.rt_sq`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `using h`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem complexConj_rt (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) :
     IsCMField.complexConj E ((H.rt : 𝓞 E) : E) = -((H.rt : 𝓞 E) : E) := by
@@ -46,11 +46,11 @@ theorem complexConj_rt (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
   simpa using h
 
 /- English proof (translation)
-Establish `h2 : (2 : E) * (H.w0 : E) = 1 + (H.rt : E)`. Use `congrArg (fun x : 𝓞 E => (x : E)) H.two_weight_eq_one_add_root` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Establish `h3 : (2 : E) * IsCMField.complexConj E (H.w0 : E) = 1 - (H.rt : E)`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (IsCMField.complexConj E) h2` as an intermediate fact. Rewrite `this` using `[map_mul, map_add, map_one, complexConj_rt]`. Establish `h22 : IsCMField.complexConj E (2 : E) = 2` using `map_ofNat _ 2`. Rewrite `this` using `[h22]`. Rewrite using `[this]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Unfold `ReciprocityTheory.ChartRestriction.G.FD.cc`. Apply `mul_left_cancel₀ (two_ne_zero : (2 : E) ≠ 0)` to reduce the goal to its premises. Rewrite using `[h3, mul_sub, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem conj_halfIntegralGenerator (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) :
     ReciprocityTheory.ChartRestriction.G.FD.cc ((H.w0 : 𝓞 E) : E) = (1 : E) - ((H.w0 : 𝓞 E) : E) := by
@@ -69,7 +69,7 @@ theorem conj_halfIntegralGenerator (H : ReciprocityTheory.ChartRestriction.G.Geo
   rw [h3, mul_sub, h2]; ring
 
 /- English proof (translation)
-Introduce `H` and use `conj_halfIntegralGenerator H`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ {E : Type} [inst : Field E] [inst_1 : NumberField E] [inst_2 : NumberField.IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E), ReciprocityTheory.ChartRestriction.G.FD.cc (↑(ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host.w0 H) : E) = (1 : E) - (↑(ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host.w0 H) : E) := fun H => conj_halfIntegralGenerator H
 

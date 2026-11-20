@@ -11,7 +11,7 @@ noncomputable section
 universe u
 
 /- English proof (translation)
-Use extensionality with `d`. Rewrite using `[coeff_weightedHomogeneousComponent, coeff_map, coeff_map, coeff_weightedHomogeneousComponent]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem weightedHomogeneousComponent_map {σ M R S : Type*} [AddCommMonoid M] [CommRing R]
     [CommRing S] (φ : R →+* S) (w : σ → M) (n : M) (p : MvPolynomial σ R) :
@@ -26,19 +26,19 @@ theorem weightedHomogeneousComponent_map {σ M R S : Type*} [AddCommMonoid M] [C
 attribute [local instance] MvPolynomial.algebraMvPolynomial
 
 /- English proof (translation)
-Introduce `O _ _ _ K _ _ ι _ P hP hT`. Use `set φ := algebraMap O (FractionRing O) with hφ`. Set `M : Submonoid (MRing ι O)` to `(nonZeroDivisors O).map (C (σ := Σ k, ι k))`. Establish `: IsLocalization M (MRing ι (FractionRing O))` using `MvPolynomial.isLocalization (nonZeroDivisors O) (FractionRing O)`. Establish `hmap : algebraMap (MRing ι O) (MRing ι (FractionRing O)) = MvPolynomial.map φ` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdisj : Disjoint (M : Set (MRing ι O)) P`. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `_ ⟨m, hm, rfl⟩ hmP`. Establish `: m ∈ P.comap (C : O →+* MRing ι O)` using `hmP`. Rewrite `this` using `[hT, Ideal.mem_bot]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `nonZeroDivisors.ne_zero hm this`. Establish `hgen : genFib P = Ideal.map (algebraMap (MRing ι O) (MRing ι (FractionRing O))) P` using `rfl`. Establish `hprime : (genFib P).IsPrime` using `hgen ▸ IsLocalization.isPrime_of_isPrime_disjoint M _ P hP.isPrime hdisj`. Establish `hunder : (genFib P).comap (MvPolynomial.map φ) = P` using `IsLocalization.under_map_of_isPrime_disjoint M (MRing ι (FractionRing O)) hP.isPrime hdisj`. Use `⟨hprime, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `x hx b`. Rewrite `hx` using `[hgen, IsLocalization.mem_map_algebraMap_iff M]`. Take `⟨⟨⟨p, hp⟩, ⟨_, ⟨m, hm, rfl⟩⟩⟩, h⟩` from `hx`. Simplify using `only [hmap, map_C] at h`. Establish `hm0 : φ m ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hm`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx' : x = C (φ m)⁻¹ * MvPolynomial.map φ p`. Rewrite using `[← h, mul_comm x, ← mul_assoc, ← C_mul, inv_mul_cancel₀ hm0, C_1, one_mul]`. Rewrite using `[hx', weightedHomogeneousComponent_C_mul, weightedHomogeneousComponent_map]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_map_of_mem _ (hP.multiHomog p hp b))`. Introduce `s c hs hsP`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `d hd`. Apply `hs` to reduce the goal to its premises. Introduce `h0`. Rewrite `hd` using `[coeff_map, h0, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hd rfl`. Introduce `h`. Apply `hsP` to reduce the goal to its premises. Rewrite using `[← hunder]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem GenericFibProps.proof : GenericFibProps.Statement := by
   intro O _ _ _ K _ _ ι _ P hP hT

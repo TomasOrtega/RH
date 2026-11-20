@@ -16,15 +16,15 @@ namespace GlobalTheory.CMRiem
 open GlobalTheory.CubeValues GlobalTheory.SymmetricSemicharacter
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `exists_chart u valueRules hL 0`. Establish `hl : ⊤ ≤ (u.ex (0 + (l : Fin g → ℂ))).left ⁻¹ᵁ L.U i` using `by rwa [ex_add_period u 0 _ l.2]`. Establish `hm : ⊤ ≤ (u.ex (0 + (m : Fin g → ℂ))).left ⁻¹ᵁ L.U i` using `by rwa [ex_add_period u 0 _ m.2]`. Establish `hlm : ⊤ ≤ (u.ex (0 + (l : Fin g → ℂ) + m)).left ⁻¹ᵁ L.U i`. Rewrite using `[ex_add_period u _ _ m.2, ex_add_period u 0 _ l.2]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `e1` using `h.2.2.2 l i 0 hi`. Establish `e2` using `h.2.2.2 m i _ hl`. Establish `e3` using `h.2.2.2 m i 0 hi`. Establish `e4` using `h.2.2.2 l i _ hm`. Establish `hc : (0 : Fin g → ℂ) + m + l = 0 + l + m` using `by abel`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e4` using `[hc]`. Establish `hne` using `u.fr_ne i _ hlm`. Rewrite `hne` using `[zero_add]`. Establish `hχl : χ l ≠ 0` using `fun h0 ↦ by simpa [h0] using h.2.2.1 l`. Establish `hχm : χ m ≠ 0` using `fun h0 ↦ by simpa [h0] using h.2.2.1 m`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [zero_add, zero_dotProduct, mul_zero, Complex.exp_add, Complex.exp_zero, one_mul] at e1 e2 e3 e4`. Use `set X := Complex.exp (Real.pi / 2 * ((l : Fin g → ℂ) ⬝ᵥ Hm.mulVec (star (l : Fin g → ℂ))))`. Use `set Y := Complex.exp (Real.pi / 2 * ((m : Fin g → ℂ) ⬝ᵥ Hm.mulVec (star (m : Fin g → ℂ))))`. Establish `hX : X ≠ 0` using `Complex.exp_ne_zero _`. Establish `hY : Y ≠ 0` using `Complex.exp_ne_zero _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `key : (χ l * χ m * X * Y * u.fr i ((l : Fin g → ℂ) + m)) * Complex.exp (Real.pi * ((l : Fin g → ℂ) ⬝ᵥ Hm.mulVec (star (m : Fin g → ℂ)))) = (χ l * χ m * X * Y * u.fr i ((l : Fin g → ℂ) + m)) * Complex.exp (Real.pi * ((m : Fin g → ℂ) ⬝ᵥ Hm.mulVec (star (l : Fin g → ℂ))))`. Take the linear combination `(-1 : ℂ) * e1 - χ l * X * e2 + e3 + χ m * Y * e4`. Conclude with `mul_left_cancel₀ (by simp [hχl, hχm, hX, hY, hne]) key`.
+A detailed English derivation is pending.
 -/
 theorem exp_herm_swap {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u : HolUnif A L g) (hL : L.IsLB)
     {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ} (h : u.IsAH Hm χ) (l m : u.Λ) :
@@ -64,17 +64,15 @@ namespace GlobalTheory.CMRiem
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {I : Type} [Fintype I]
 
 /- English proof (translation)
-Establish `hnr : ∀ i, NumberField.ComplexEmbedding.conjugate (φ i) ≠ φ i` using `fun i h ↦ (NumberField.InfinitePlace.isComplex_mk_iff.1 (NumberField.IsTotallyComplex.isComplex (NumberField.InfinitePlace.mk (φ i)))) (NumberField.ComplexEmbedding.isReal_iff.2 h)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `(i | i) (j | j) h`. Simplify using `only [Sum.elim_inl] at h`. Take `⟨k, -, hk⟩` from `hφ (φ i)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hk i (Or.inl rfl), hk j (Or.inl h)]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr] at h`. Take `⟨k, -, hk⟩` from `hφ (φ i)`. Use `(hk i (Or.inl rfl)).trans (hk j (Or.inr h)).symm` as an intermediate fact. Substitute `this` using the available equality.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `absurd h.symm (hnr i)`. Simplify using `only [Sum.elim_inl, Sum.elim_inr] at h`. Take `⟨k, -, hk⟩` from `hφ (φ j)`. Use `(hk i (Or.inr h.symm)).trans (hk j (Or.inl rfl)).symm` as an intermediate fact. Substitute `this` using the available equality.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Conclude with `absurd h (hnr i)`. Simplify using `only [Sum.elim_inr] at h`. Establish `h' : φ i = φ j`. Simplify using `using congrArg NumberField.ComplexEmbedding.conjugate h`. Take `⟨k, -, hk⟩` from `hφ (φ i)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hk i (Or.inl rfl), hk j (Or.inl h')]`. Introduce `σ`. Take `⟨i, hi, -⟩` from `hφ σ`. Break down `hi with h | h` into its components or cases. Conclude with `⟨Sum.inl i, h.symm⟩`.
-
-Conclude with `⟨Sum.inr i, h.symm⟩`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cmEmb_bijective (φ : I → E →+* ℂ) (hφ : IsCMType φ) :
     Function.Bijective (Sum.elim φ fun i ↦ NumberField.ComplexEmbedding.conjugate (φ i)) := by
@@ -108,7 +106,7 @@ theorem cmEmb_bijective (φ : I → E →+* ℂ) (hφ : IsCMType φ) :
     · exact ⟨Sum.inr i, h.symm⟩
 
 /- English proof (translation)
-Establish `h1` using `trace_eq_sum_embeddings (K := ℚ) (L := E) ℂ (x := x)`. Rewrite `h1` using `[eq_ratCast]`. Rewrite using `[h1, ← Fintype.sum_equiv (RingHom.equivRatAlgHom E ℂ) (fun σ : E →+* ℂ ↦ σ x) (fun σ ↦ σ x) (fun σ ↦ rfl), ← Fintype.sum_bijective _ (cmEmb_bijective φ hφ) (fun s ↦ (Sum.elim φ (fun i ↦ NumberField.ComplexEmbedding.conjugate (φ i)) s) x) (fun σ : E →+* ℂ ↦ σ x) (fun s ↦ rfl), Fin …`. Simplify using `[NumberField.ComplexEmbedding.conjugate_coe_eq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem trace_eq_sum_cm (φ : I → E →+* ℂ) (hφ : IsCMType φ) (x : E) :
     ((Algebra.trace ℚ E x : ℚ) : ℂ) = ∑ i, (φ i x + starRingEnd ℂ (φ i x)) := by
@@ -121,9 +119,9 @@ theorem trace_eq_sum_cm (φ : I → E →+* ℂ) (hφ : IsCMType φ) (x : E) :
   simp [NumberField.ComplexEmbedding.conjugate_coe_eq]
 
 /- English proof (translation)
-Establish `h` using `linearIndependent_monoidHom E ℂ`. Establish `hinj : Function.Injective (fun s : I ⊕ I ↦ ((Sum.elim φ fun i ↦ NumberField.ComplexEmbedding.conjugate (φ i)) s : E →* ℂ))`. Introduce `s t hst`. Apply `(cmEmb_bijective φ hφ).1` to reduce the goal to its premises. Use extensionality with `x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Conclude with `DFunLike.congr_fun hst x`. Conclude with `h.comp _ hinj`.
+A detailed English derivation is pending.
 -/
 theorem cmEmb_linearIndependent (φ : I → E →+* ℂ) (hφ : IsCMType φ) :
     LinearIndependent ℂ (fun s : I ⊕ I ↦
@@ -144,15 +142,15 @@ namespace GlobalTheory.CMRiem
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {I : Type} [Fintype I]
 
 /- English proof (translation)
-Use `set W := Submodule.span ℚ L`. Set `Φ : E →ₗ[ℚ] (Fin g → ℂ)` to `(AddMonoidHom.mk' (fun x j ↦ φ (e j) x) (fun a b ↦ by funext j; simp)).toRatLinearMap`. Set `b` to `Module.finBasis ℚ W`. Set `v : Fin (Module.finrank ℚ W) → (Fin g → ℂ)` to `fun k ↦ Φ (b k)`. Establish `hle : Submodule.span ℝ (Λ : Set (Fin g → ℂ)) ≤ Submodule.span ℝ (Set.range v)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.span_le]`. Introduce `w hw`. Take `⟨x, hx, rfl⟩` from `(hlat w).1 hw`. Establish `hxW : x ∈ W` using `Submodule.subset_span hx`. Establish `h1 : (fun j ↦ φ (e j) x) = Φ ((⟨x, hxW⟩ : W) : E)` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, ← b.sum_repr ⟨x, hxW⟩]`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, map_sum, map_smul]`. Use `Submodule.sum_mem _ fun k _ ↦ ?_` and prove the remaining obligations. Rewrite using `[← Rat.cast_smul_eq_qsmul ℝ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2g : Module.finrank ℝ (Fin g → ℂ) = 2 * g`. Rewrite using `[Module.finrank_pi_fintype]`. Simplify using `[Complex.finrank_real_complex, mul_comm]`. Establish `hrank : 2 * g ≤ Module.finrank ℚ W`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hE : Module.finrank ℚ E = 2 * g`. Rewrite using `[← NumberField.Embeddings.card E ℂ, ← Fintype.card_of_bijective (cmEmb_bijective φ hφ), Fintype.card_sum, ← Fintype.card_congr e, Fintype.card_fin]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `Submodule.eq_top_of_finrank_eq (le_antisymm (Submodule.finrank_le W) (hE ▸ hrank))`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem span_eq_top_of_full (φ : I → E →+* ℂ) (hφ : IsCMType φ) {g : ℕ} (e : Fin g ≃ I) (L : Set E)
     (Λ : Submodule ℤ (Fin g → ℂ)) (hfull : Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤)
@@ -188,9 +186,9 @@ theorem span_eq_top_of_full (φ : I → E →+* ℂ) (hφ : IsCMType φ) {g : �
   exact Submodule.eq_top_of_finrank_eq (le_antisymm (Submodule.finrank_le W) (hE ▸ hrank))
 
 /- English proof (translation)
-Set `S : Submodule ℚ E` to `(LinearMap.range (Algebra.linearMap ℚ ℝ)).comap f.toRatLinearMap`. Establish `hLS : L ⊆ S` using `fun x hx ↦ by`. Take `⟨q, hq⟩` from `hf x hx`. Conclude with `⟨q, by simp [hq]⟩`. Establish `hS : S = ⊤` using `eq_top_iff.2 (hL ▸ Submodule.span_le.2 hLS)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hx : x ∈ S` using `hS ▸ Submodule.mem_top`. Take `⟨q, hq⟩` from `hx`. Conclude with `⟨q, by simpa using hq.symm⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rat_of_span {L : Set E} (hL : Submodule.span ℚ L = ⊤) (f : E →+ ℝ)
     (hf : ∀ x ∈ L, ∃ q : ℚ, f x = q) (x : E) : ∃ q : ℚ, f x = q := by
@@ -212,21 +210,21 @@ variable {E : Type} [Field E] [NumberField E] {I : Type} [Fintype I]
 def hermE (φ : I → E →+* ℂ) (h : I → ℝ) (x x' : E) : ℂ := ∑ i, (h i : ℂ) * (φ i x * starRingEnd ℂ (φ i x'))
 
 /- English proof (translation)
-Simplify using `only [hermE, map_add, add_mul, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermE_add_left (φ : I → E →+* ℂ) (h : I → ℝ) (a b x' : E) :
     hermE φ h (a + b) x' = hermE φ h a x' + hermE φ h b x' := by
   simp only [hermE, map_add, add_mul, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [hermE, map_add, add_mul, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermE_add_right (φ : I → E →+* ℂ) (h : I → ℝ) (x a b : E) :
     hermE φ h x (a + b) = hermE φ h x a + hermE φ h x b := by
   simp only [hermE, map_add, add_mul, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [hermE, map_sum, map_mul, Complex.conj_ofReal, Complex.conj_conj]`. Conclude with `Finset.sum_congr rfl fun i _ ↦ by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hermE_swap (φ : I → E →+* ℂ) (h : I → ℝ) (x x' : E) :
     hermE φ h x' x = starRingEnd ℂ (hermE φ h x x') := by
@@ -234,7 +232,7 @@ theorem hermE_swap (φ : I → E →+* ℂ) (h : I → ℝ) (x x' : E) :
   exact Finset.sum_congr rfl fun i _ ↦ by ring
 
 /- English proof (translation)
-Simplify using `[hermE, Complex.im_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermE_one_im (φ : I → E →+* ℂ) (h : I → ℝ) (w : E) :
     (hermE φ h w 1).im = ∑ i, h i * (φ i w).im := by
@@ -245,35 +243,33 @@ end GlobalTheory.CMRiem
 open GlobalTheory.CMRiem in
 
 /- English proof (translation)
-Introduce `E _ _ _ I _ φ hφ c y hc 𝔠 T`. Take `⟨χ, hAH⟩` from `T.U.ah`. Establish `hLB : (T.X.diag T.U.c).IsLB` using `ReciprocityTheory.ChartRestriction.G.Geo.Tor.pull_isLB (T.X.isLB T.U.c) _`. Establish `hlatΛ : ∀ w, w ∈ T.U.u.Λ ↔ ∃ x ∈ lattice c y, w = fun j ↦ φ (T.U.e j) x`. Introduce `w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[T.U.lat]`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates.defCoord]`. Establish `hH : ∀ x x', ((fun j ↦ φ (T.U.e j) x) ⬝ᵥ (Matrix.diagonal fun j ↦ (T.U.h (T.U.e j) : ℂ)).mulVec (star fun j ↦ φ (T.U.e j) x')) = hermE φ T.U.h x x'`. Introduce `x x'`. Simplify using `only [dotProduct, Matrix.mulVec_diagonal, Pi.star_apply, hermE]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[Equiv.sum_comp T.U.e (fun i ↦ φ i x * ((T.U.h i : ℂ) * star (φ i x')))]`. Conclude with `Finset.sum_congr rfl fun i _ ↦ by simp only [Complex.star_def]; ring`. Establish `hint : ∀ x ∈ lattice c y, ∀ x' ∈ lattice c y, ∃ n : ℤ, (hermE φ T.U.h x x').im = n`. Introduce `x hx x' hx'`. Establish `hl : (fun j ↦ φ (T.U.e j) x) ∈ T.U.u.Λ` using `(hlatΛ _).2 ⟨x, hx, rfl⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : (fun j ↦ φ (T.U.e j) x') ∈ T.U.u.Λ` using `(hlatΛ _).2 ⟨x', hx', rfl⟩`. Establish `hs` using `exp_herm_swap T.U.u hLB hAH ⟨_, hl⟩ ⟨_, hm⟩`. Simplify using `only [hH] at hs`. Take `⟨n, hn⟩` from `Complex.exp_eq_exp_iff_exists_int.1 hs`. Use `⟨n, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `him` using `congrArg Complex.im hn`. Rewrite `him` using `[hermE_swap φ T.U.h x x']`. Simplify using `at him`. Establish `hπ : Real.pi ≠ 0` using `Real.pi_ne_zero`. Establish `h2 : Real.pi * (2 * ((hermE φ T.U.h x x').im - n)) = 0` using `by linarith`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `mul_eq_zero.1 h2 with h3 | h3` into its components or cases. Conclude with `absurd h3 hπ`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hspan` using `span_eq_top_of_full φ hφ T.U.e (lattice c y) T.U.u.Λ T.U.u.full hlatΛ`. Set `Bf : E → E →+ ℝ` to `fun x' ↦ AddMonoidHom.mk' (fun x ↦ (hermE φ T.U.h x x').im) (fun a b ↦ by simp only [hermE_add_left, Complex.add_im])`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Cf : E → E →+ ℝ` to `fun x ↦ AddMonoidHom.mk' (fun x' ↦ (hermE φ T.U.h x x').im) (fun a b ↦ by simp only [hermE_add_right, Complex.add_im])`. Establish `hrat1 : ∀ x' ∈ lattice c y, ∀ x, ∃ q : ℚ, (hermE φ T.U.h x x').im = q` using `fun x' hx' x ↦ rat_of_span hspan (Bf x') (fun x hx ↦ by`. Take `⟨n, hn⟩` from `hint x hx x' hx'`. Conclude with `⟨n, by simp [Bf, hn]⟩) x`. Establish `hrat : ∀ x x', ∃ q : ℚ, (hermE φ T.U.h x x').im = q` using `fun x x' ↦ rat_of_span hspan (Cf x) (fun x' hx' ↦ hrat1 x' hx' x) x'`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Use `choose q hq using fun w ↦ hrat w 1`. Set `f : Module.Dual ℚ E` to `{ toFun := q map_add' := fun a b ↦ Rat.cast_injective (α := ℝ) (by`. Rewrite using `[Rat.cast_add, ← hq, ← hq, ← hq]`. Conclude with `(Bf 1).map_add a b)`. Use the proof step `map_smul' := fun r a ↦ Rat.cast_injective (α := ℝ) (by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[RingHom.id_apply, smul_eq_mul, Rat.cast_mul, ← hq, ← hq]`. Use `(Bf 1).toRatLinearMap.map_smul r a` as an intermediate fact. Simplify using `only [AddMonoidHom.coe_toRatLinearMap, Rat.smul_def] at this`. Rewrite using `[Rat.smul_def]`. Conclude with `this) }`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `set β := ((Algebra.traceForm ℚ E).toDual (traceForm_nondegenerate ℚ E)).symm f`. Establish `htr : ∀ w, Algebra.trace ℚ E (β * w) = q w` using `fun w ↦ by`. Rewrite using `[← Algebra.traceForm_apply, LinearMap.BilinForm.apply_toDual_symm_apply]`. Both sides reduce to the same expression. Set `gc : I ⊕ I → ℂ` to `Sum.elim (fun i ↦ φ i β + Complex.I * T.U.h i / 2) (fun i ↦ starRingEnd ℂ (φ i β) - Complex.I * T.U.h i / 2)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrel : ∑ s, gc s • ((Sum.elim φ fun i ↦ NumberField.ComplexEmbedding.conjugate (φ i)) s : E → ℂ) = 0`. Use function extensionality and compare the values at `w`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr, smul_eq_mul, NumberField.ComplexEmbedding.conjugate_coe_eq, Pi.zero_apply, gc]`. Establish `ht` using `trace_eq_sum_cm φ hφ (β * w)`. Rewrite `ht` using `[htr w]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hqw : ((q w : ℚ) : ℂ) = ∑ i, ((T.U.h i : ℂ) * ((φ i w).im : ℂ))`. Use `hq w` as an intermediate fact. Rewrite `this` using `[hermE_one_im]`. Rewrite using `[← Complex.ofReal_ratCast, ← this]`. Use `push_cast`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[← Finset.sum_add_distrib]`. Establish `hterm : ∀ i, (φ i β + Complex.I * T.U.h i / 2) * φ i w + (starRingEnd ℂ (φ i β) - Complex.I * T.U.h i / 2) * starRingEnd ℂ (φ i w) = (φ i (β * w) + starRingEnd ℂ (φ i (β * w))) - (T.U.h i : ℂ) * ((φ i w).im : ℂ)`. Introduce `i`. Establish `hz` using `Complex.sub_conj (φ i w)`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Move the coercions through the operations in `at hz`. Rewrite using `[map_mul, map_mul]`. Take the linear combination `(Complex.I * T.U.h i / 2) * hz + ((T.U.h i : ℂ) * ((φ i w).im : ℂ)) * Complex.I_sq`. Rewrite using `[Finset.sum_congr rfl fun i _ ↦ hterm i, Finset.sum_sub_distrib, ← ht, ← hqw, sub_self]`. Use `⟨β, fun i ↦ ?_⟩` and prove the remaining obligations.
-
-Establish `h0` using `Fintype.linearIndependent_iff.1 (cmEmb_linearIndependent φ hφ) gc hrel (Sum.inl i)`. Simplify using `only [gc, Sum.elim_inl] at h0`. Take the linear combination `(-2 * Complex.I) * h0 + (T.U.h i : ℂ) * Complex.I_sq`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.cmPoint_herm_eq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (φ : I → E →+* ℂ), IsCMType φ →
     ∀ (c : Ideal (OF E)) (y : (Af E)ˣ), c ≠ ⊥ → ∀ (𝔠 : FracId (FR E)) (T : CxPt 𝔠 φ (lattice c y)),

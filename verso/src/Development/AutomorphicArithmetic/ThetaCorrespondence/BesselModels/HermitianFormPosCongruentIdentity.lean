@@ -7,9 +7,9 @@ namespace UpperTheory.Lit.Bur.HermCongr
 open scoped ComplexOrder in
 
 /- English proof (translation)
-Establish `hA : J₀.IsHermitian` using `hH`. Use `Matrix.PosDef.of_dotProduct_mulVec_pos hA ?_` and prove the remaining obligations. Introduce `x hx`. Establish `hre : 0 < (star x ⬝ᵥ J₀ *ᵥ x).re` using `hp x hx`. Establish `him : (star x ⬝ᵥ J₀ *ᵥ x).im = 0` using `hA.im_star_dotProduct_mulVec_self x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Complex.pos_iff.2 ⟨hre, him.symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem posDef_of_herm_re_pos {m : ℕ} {J₀ : Matrix (Fin m) (Fin m) ℂ} (hH : J₀ᴴ = J₀)
     (hp : ∀ x : Fin m → ℂ, x ≠ 0 → 0 < (Formalism.QuantumDeterminants.herm J₀ x x).re) : J₀.PosDef := by
@@ -21,27 +21,25 @@ theorem posDef_of_herm_re_pos {m : ℕ} {J₀ : Matrix (Fin m) (Fin m) ℂ} (hH 
   exact Complex.pos_iff.2 ⟨hre, him.symm⟩
 
 /- English proof (translation)
-Establish `hP` using `posDef_of_herm_re_pos hH hp`. Establish `hA : J₀.IsHermitian` using `hH`. Establish `hd : ∀ i, 0 < hA.eigenvalues i` using `hP.eigenvalues_pos`. Use `set U : Matrix (Fin m) (Fin m) ℂ := (hA.eigenvectorUnitary : Matrix (Fin m) (Fin m) ℂ) with hU`. Establish `hUU : star U * U = 1` using `Unitary.coe_star_mul_self hA.eigenvectorUnitary`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUU' : U * star U = 1` using `Unitary.coe_mul_star_self hA.eigenvectorUnitary`. Establish `hJ : J₀ = U * diagonal (fun i => ((hA.eigenvalues i : ℝ) : ℂ)) * star U`. Use `hA.spectral_theorem` as an intermediate fact. Rewrite `this` using `[Unitary.conjStarAlgAut_apply]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `s : Fin m → ℂ` to `fun i => ((Real.sqrt (hA.eigenvalues i) : ℝ) : ℂ)`. Set `t : Fin m → ℂ` to `fun i => (((Real.sqrt (hA.eigenvalues i))⁻¹ : ℝ) : ℂ)`. Establish `hst : diagonal s * diagonal t = 1`. Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Establish `: Real.sqrt (hA.eigenvalues i) ≠ 0` using `(Real.sqrt_pos.2 (hd i)).ne'`. Simplify using `only [s, t, ← Complex.ofReal_mul, mul_inv_cancel₀ this, Complex.ofReal_one]`. Establish `hts : diagonal t * diagonal s = 1`. Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Establish `: Real.sqrt (hA.eigenvalues i) ≠ 0` using `(Real.sqrt_pos.2 (hd i)).ne'`. Simplify using `only [s, t, ← Complex.ofReal_mul, inv_mul_cancel₀ this, Complex.ofReal_one]`. Establish `htdt : diagonal t * diagonal (fun i => ((hA.eigenvalues i : ℝ) : ℂ)) * diagonal t = 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[diagonal_mul_diagonal, diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Establish `h0 : Real.sqrt (hA.eigenvalues i) ≠ 0` using `(Real.sqrt_pos.2 (hd i)).ne'`. Establish `h1 : Real.sqrt (hA.eigenvalues i) * Real.sqrt (hA.eigenvalues i) = hA.eigenvalues i` using `Real.mul_self_sqrt (hd i).le`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (Real.sqrt (hA.eigenvalues i))⁻¹ * hA.eigenvalues i * (Real.sqrt (hA.eigenvalues i))⁻¹ = 1`. Establish `h3 : ∀ r : ℝ, r ≠ 0 → r⁻¹ * (r * r) * r⁻¹ = 1`. Introduce `r hr`. Clear the denominators using the available nonvanishing facts. Establish `h4` using `h3 _ h0`.
+Fix the arbitrary inputs or assume the hypotheses. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules.
 
-Rewrite `h4` using `[h1]`. Then use the resulting hypothesis. Simplify using `only [t]`. Conclude with `h2` after adjusting the coercions. Establish `htH : (diagonal t)ᴴ = diagonal t`. Rewrite using `[diagonal_conjTranspose]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[t]`. Use `⟨U * diagonal t, diagonal s * star U, ?_, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hts, Matrix.mul_one, hUU']`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hUU, Matrix.mul_one, hst]`.
-
-Rewrite using `[conjTranspose_mul, htH, ← star_eq_conjTranspose]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_congr_one {m : ℕ} {J₀ : Matrix (Fin m) (Fin m) ℂ} (hH : J₀ᴴ = J₀)
     (hp : ∀ x : Fin m → ℂ, x ≠ 0 → 0 < (Formalism.QuantumDeterminants.herm J₀ x x).re) :
@@ -110,7 +108,7 @@ end UpperTheory.Lit.Bur.HermCongr
 open Matrix GlobalTheory.RealBessel GlobalTheory.BesselMapOne Formalism.L2.Theta GlobalTheory.SmVec
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @UpperTheory.Lit.Bur.HermCongr.exists_congr_one | exact UpperTheory.Lit.Bur.HermCongr.exists_congr_one | (intros; apply UpperTheory.Lit.Bur.HermCongr.exists_congr_one <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.UpperTheory.Lit.Bur.hermitian_form_pos_congruent_identity : ∀ {m : ℕ} {J₀ : Matrix (Fin m) (Fin m) ℂ} (hH : J₀ᴴ = J₀) (hp : ∀ x : Fin m → ℂ, x ≠ 0 → 0 < (Formalism.QuantumDeterminants.herm J₀ x x).re), ∃ A Ai : Matrix (Fin m) (Fin m) ℂ, A * Ai = 1 ∧ Ai * A = 1 ∧ Aᴴ * J₀ * A = 1 := by
   first | exact @UpperTheory.Lit.Bur.HermCongr.exists_congr_one | exact UpperTheory.Lit.Bur.HermCongr.exists_congr_one | (intros; apply UpperTheory.Lit.Bur.HermCongr.exists_congr_one <;> assumption)

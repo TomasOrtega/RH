@@ -19,27 +19,27 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule (ofAdj)
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use `congrFun (congrFun (adj_adj (D := D) (m := 1) (n := 1) (Matrix.of fun _ _ => x)) 0) 0` as an intermediate fact. Simplify `this` using `[adj]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem adelicConj_adelicConj_eq_self (x : AE D) : cA D (cA D x) = x := by
   have := congrFun (congrFun (adj_adj (D := D) (m := 1) (n := 1) (Matrix.of fun _ _ => x)) 0) 0
   simpa [adj] using this
 
 /- English proof (translation)
-Rewrite using `[← p.sec_pr, p.pr_sec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem e_mul_sec (p : SplitPt D k) (x : k) : p.e * p.sec x = p.sec x := by
   rw [← p.sec_pr, p.pr_sec]
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem map_pr_rat (p : SplitPt D k) {m n : ℕ} (M : Matrix (Fin m) (Fin n) D.host.E) :
     (rat M : Mx D m n).map p.pr = M.map (iota p) := by
   ext i j; rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem matrix_mul_replicateCol_eq_replicateCol_mulVec {R : Type} [CommRing R] {m l : Type} [Fintype l] (A : Matrix m l R) (x : l → R) :
     A * replicateCol (Fin 1) x = replicateCol (Fin 1) (A *ᵥ x) := by
@@ -48,7 +48,7 @@ theorem matrix_mul_replicateCol_eq_replicateCol_mulVec {R : Type} [CommRing R] {
 variable {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [adj, wCol, Matrix.transpose_apply, Matrix.map_apply, Matrix.of_apply, adelicConj_adelicConj_eq_self]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem adj_wCol (p : SplitPt D k) {W₀ L' : HSp D} (ζ' : Fin L'.rank → D.host.E) (β : Frame p W₀ n) (t : n → k) :
     adj (wCol p ζ' β t) = Matrix.of fun i j => p.sec (dualPick ((L'.gram.map (iota p)) *ᵥ fun i => iota p (ζ' i)) j *
@@ -65,33 +65,33 @@ open GlobalTheory.FinPl.LineAct.ColTrans
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ p n n' _ _ _ _ ρ B L' W₀ ζ' l hL α α₀ β hsum t`. Use `set ι := iota p with hι`. Use `set g' : Fin L'.rank → k := (L'.gram.map ι) *ᵥ fun i => ι (ζ' i) with hg'`. Use `set v : Fin W₀.rank → k := fun j => (ι D.host.xi0)⁻¹ * ((W₀.gram.map ι) *ᵥ (β.b *ᵥ t)) j with hv`. Establish `hadj : adj (wCol p ζ' β t) = Matrix.of fun i j => p.sec (dualPick g' j * v i)` using `adj_wCol p ζ' β t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hu : (B.o.resS W₀).symm (0, l.κ W₀ (wCol p ζ' β t)) = (incA D (-D.host.xi0⁻¹) • giA W₀) ⬝ adj (wCol p ζ' β t) ⬝ (adj (rat l.τ) ⬝ gA B.L ⬝ B.o.pB)`. Rewrite using `[OrthDec.resS_symm_apply, Matrix.zero_mul, zero_add, Link.κ, ofAdj, adj_mul]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_assoc]`. Rewrite using `[hu]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Establish `hA : p.e • adj (wCol p ζ' β t) = adj (wCol p ζ' β t)`. Rewrite using `[hadj]`. Use extensionality with `i j`. Simplify using `[e_mul_sec]`. Introduce `i j`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Establish `: p.e • ((incA D (-D.host.xi0⁻¹) • giA W₀) ⬝ adj (wCol p ζ' β t) ⬝ (adj (rat l.τ) ⬝ gA B.L ⬝ B.o.pB)) = (incA D (-D.host.xi0⁻¹) • giA W₀) ⬝ adj (wCol p ζ' β t) ⬝ (adj (rat l.τ) ⬝ gA B.L ⬝ B.o.pB)` using `by conv_rhs => rw [← hA]`. Rewrite using `[Matrix.mul_smul (incA D (-D.host.xi0⁻¹) • giA W₀) p.e (adj (wCol p ζ' β t)), Matrix.smul_mul p.e ((incA D (-D.host.xi0⁻¹) • giA W₀) ⬝ adj (wCol p ζ' β t))]`. Conclude with `congrFun (congrFun this i) j`. Generalize the expression as in `hUdef : (incA D (-D.host.xi0⁻¹) • giA W₀) ⬝ adj (wCol p ζ' β t) ⬝ (adj (rat l.τ) ⬝ gA B.L ⬝ B.o.pB) = U replace hUdef := hUdef.symm`. Establish `hR : adj (rat l.τ) ⬝ gA B.L ⬝ B.o.pB = rat (l.τᴴ * B.L.gram * B.o.qB)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[← rat_conjTranspose, gA, OrthDec.pB, ← rat_mul, ← rat_mul]`. Establish `hX : (incA D (-D.host.xi0⁻¹) • giA W₀ : Mx D W₀.rank W₀.rank).map p.pr = ι (-D.host.xi0⁻¹) • (W₀.gram⁻¹).map ι`. Use extensionality with `i j`. Simplify using `[giA, rat, hι, iota]`. Establish `hW : (adj (wCol p ζ' β t)).map p.pr = vecMulVec v (dualPick g')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hadj]`. Use extensionality with `i j`. Simplify using `[vecMulVec, p.pr_sec, mul_comm]`. Establish `hUm : U.map p.pr = (ι (-D.host.xi0⁻¹) • (W₀.gram⁻¹).map ι) * vecMulVec v (dualPick g') * (l.τᴴ * B.L.gram * B.o.qB).map ι`. Rewrite using `[hUdef, hR, Matrix.map_mul, Matrix.map_mul, hX, hW, map_pr_rat]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUA : U ⬝ B.o.jA = 0`. Simplify using `only [hUdef, Matrix.mul_assoc, OrthDec.pB_jA, Matrix.mul_zero]`. Establish `hrat : (l.τᴴ * B.L.gram * B.o.qB) *ᵥ vecB B.o B.ζ = -((D.host.xi0 * star D.host.xi0) • (L'.gram *ᵥ ζ'))`. Establish `hz : B.ζ = -(l.τ *ᵥ ζ')` using `by rw [l.map, neg_neg]`. Rewrite using `[vecB, Matrix.mulVec_mulVec, Matrix.mul_assoc, B.o.qB_iB, Matrix.mul_one, hz, Matrix.mulVec_neg, Matrix.mulVec_mulVec, Matrix.mul_assoc, GlobalTheory.Unf.Model.tau_gram l hL, Matrix.smul_mulVec]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hgi : ∀ i, g' i = ι ((L'.gram *ᵥ ζ') i)` using `fun i => (RingHom.map_mulVec ι _ _ i).symm`. Establish `hg0 : g' ≠ 0`. Introduce `h0`. Apply `hL.2` to reduce the goal to its premises. Establish `h1 : L'.gram *ᵥ ζ' = 0`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Apply `ι.injective` to reduce the goal to its premises. Rewrite using `[← hgi, h0, Pi.zero_apply, Pi.zero_apply, map_zero]`. Rewrite using `[h1, dotProduct_zero]`. Establish `hxi : ι D.host.xi0 ≠ 0` using `fun h => GlobalTheory.Unf.Inhab.cmHost_imaginaryGenerator_ne_zero D ((iota p).injective (h.trans (map_zero _).symm))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGG : (W₀.gram⁻¹).map ι * W₀.gram.map ι = 1`. Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ (gram_isUnit_det W₀), Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hcol : U.map p.pr *ᵥ (fun i => p.pr (ratV (vecB B.o B.ζ) i)) = -(β.b *ᵥ t)`. Establish `h1 : (fun i => p.pr (ratV (vecB B.o B.ζ) i)) = ι ∘ vecB B.o B.ζ` using `rfl`. Establish `h2 : (l.τᴴ * B.L.gram * B.o.qB).map ι *ᵥ (ι ∘ vecB B.o B.ζ) = (-(ι (D.host.xi0 * star D.host.xi0))) • g'`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[← RingHom.map_mulVec, hrat, Pi.smul_apply, hgi]`. Simplify using `[map_neg, map_mul]`. Establish `h3 : vecMulVec v (dualPick g') *ᵥ g' = v`. Rewrite using `[Matrix.vecMulVec_mulVec, dualPick_dot g' hg0, MulOpposite.op_one, one_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `h4 : v = (ι D.host.xi0)⁻¹ • ((W₀.gram.map ι) *ᵥ (β.b *ᵥ t))` using `rfl`. Rewrite using `[h1, hUm, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, h2, Matrix.mulVec_smul, h3, h4, Matrix.mulVec_smul, Matrix.mulVec_smul, Matrix.smul_mulVec, Matrix.mulVec_mulVec, hGG, Matrix.one_mulVec, smul_smul, smul_smul, ← neg_one_smul k (β.b *ᵥ t)]`. Use `congr 1`. Establish `hs : ι (star D.host.xi0) = -ι D.host.xi0` using `by rw [GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg, map_neg]`. Rewrite using `[map_mul, hs, map_neg, map_inv₀]`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Establish `hrd : rd α₀ β U = fromCols 0 (replicateCol (Fin 1) (-t))`. Establish `hb : α₀.b = _` using `hsum`. Rewrite using `[rd, hb, Matrix.mul_assoc, Matrix.mul_fromCols, Matrix.mul_fromCols, ← Matrix.mul_assoc (U.map p.pr), ← Matrix.map_mul, hUA, Matrix.map_zero _ (map_zero _), Matrix.zero_mul, Matrix.mul_zero, matrix_mul_replicateCol_eq_replicateCol_mulVec, matrix_mul_replicateCol_eq_replicateCol_m …`. Introduce `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Rewrite using `[hrd]`. Consider the cases of `j with`. Consider the case `inl j => simp`. Consider the case `inr j => simp`.
+A detailed English derivation is pending.
 -/
 theorem kappa_wCol_translate : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : SplitPt D k) (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (ρ : ℕ) (B : BesLev D ρ) (L' W₀ : HSp D) (ζ' : Fin L'.rank → D.host.E) (l : Link B L' ζ'), IsLineVec L' ζ' → ∀ (α : Frame p B.A n') (α₀ : Frame p B.V₀ (n' ⊕ Fin 1)) (β : Frame p W₀ n), IsSumFrame B.o B.ζ α α₀ → ∀ t : n → k, IsHalf p.e ((B.o.resS W₀).symm (0, l.κ W₀ (GlobalTheory.FinPl.LineAct.wCol p ζ' β t))) ∧ ∀ i j, rd α₀ β ((B.o.resS W₀).symm (0, l.κ W₀ (GlobalTheory.FinPl.LineAct.wCol p ζ' β t))) i j = Sum.elim (fun _ => 0) (fun _ => -t i) j := by
   intro D k _ _ _ _ p n n' _ _ _ _ ρ B L' W₀ ζ' l hL α α₀ β hsum t

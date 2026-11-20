@@ -8,9 +8,9 @@ open NumberField IsDedekindDomain GlobalTheory.CMVal GlobalTheory.IndefiniteRowS
 namespace GlobalTheory.DeformedSum
 
 /- English proof (translation)
-Establish `h1 : HasDerivAt (fun t : ℂ => a + t * b) b u`. Simplify using `using ((hasDerivAt_id u).mul_const b).const_add a`. Establish `h2 : HasDerivAt (fun t : ℂ => c * (a + t * b)⁻¹ ^ n) (c * (n * (a + u * b)⁻¹ ^ (n - 1) * (-b / (a + u * b) ^ 2))) u` using `((h1.inv hu).pow n).const_mul c`. Use `h2.congr_deriv ?_` and prove the remaining obligations. Break down `n with _ | n` into its components or cases.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using the standard rewrite rules. Rewrite using `[Nat.add_sub_cancel, div_eq_mul_inv, ← inv_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hasDerivAt_inv_pow_affine (c a b : ℂ) (n : ℕ) (u : ℂ) (hu : a + u * b ≠ 0) :
     HasDerivAt (fun t : ℂ => c * (a + t * b)⁻¹ ^ n)
@@ -28,9 +28,9 @@ theorem hasDerivAt_inv_pow_affine (c a b : ℂ) (n : ℕ) (u : ℂ) (hu : a + u 
     ring
 
 /- English proof (translation)
-Introduce `h`. Establish `hφ : φ i x ≠ 0` using `(map_ne_zero (φ i)).mpr hx`. Establish `hpos : 0 < ‖φ i x‖` using `norm_pos_iff.mpr hφ`. Establish `hz1 : ‖z i‖ < 1` using `hz i`. Unfold `defCoord at h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `heq : φ i x = -(z i * starRingEnd ℂ (φ i x))` using `eq_neg_of_add_eq_zero_left h`. Establish `hn : ‖φ i x‖ = ‖z i‖ * ‖φ i x‖` using `by conv_lhs => rw [heq]`. Rewrite using `[norm_neg, norm_mul, Complex.norm_conj]`. Establish `hlt` using `mul_lt_of_lt_one_left hpos hz1`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem defCoord_ne_zero {E : Type} [Field E] [NumberField E] {I : Type} (φ : I → E →+* ℂ) (z : I → ℂ)
     (hz : z ∈ polydisc I) (x : E) (hx : x ≠ 0) (i : I) : defCoord φ z x i ≠ 0 := by
@@ -47,15 +47,15 @@ theorem defCoord_ne_zero {E : Type} [Field E] [NumberField E] {I : Type} (φ : I
   linarith
 
 /- English proof (translation)
-Introduce `E _ _ I _ _ φ k m x hx z hz`. Use `set C : I → ℂ := fun i => ((-1 : ℂ) ^ m i * ∏ j ∈ Finset.range (m i), ((k : ℂ) + j)) * (starRingEnd ℂ (φ i x)) ^ m i with hC`. Establish `hd : ∀ i, HasFDerivAt (fun w : I → ℂ => C i * (defCoord φ w x i)⁻¹ ^ (k + m i)) ((C i * (-((k + m i : ℕ) : ℂ) * starRingEnd ℂ (φ i x) * (defCoord φ z x i)⁻¹ ^ (k + m i + 1))) • ContinuousLinearMap.proj (R` using `ℂ) (φ := fun _ : I => ℂ) i) z := by`. Introduce `i`. Establish `h1` using `hasDerivAt_inv_pow_affine (C i) (φ i x) (starRingEnd ℂ (φ i x)) (k + m i) (z i) (defCoord_ne_zero φ z hz x hx i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `h1.comp_hasFDerivAt z (hasFDerivAt_apply (𝕜 := ℂ) (F' := fun _ : I => ℂ) i z)`. Conclude with `h2`. Establish `hprod` using `HasFDerivAt.finsetProd (u := Finset.univ) (fun i _ => hd i)`. Establish `hfun : (fun w : I → ℂ => dTerm φ k m w x) = (fun w => ∏ i ∈ Finset.univ, C i * (defCoord φ w x i)⁻¹ ^ (k + m i))` using `rfl`. Rewrite using `[hfun]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `hprod.congr_fderiv ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`. Use `congr 1`. Use `symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use symmetry to reverse the relation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `dTerm`. Rewrite using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ j)]`. Use `congr 1`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hij : i ≠ j` using `Finset.ne_of_mem_erase hi`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hC, hij]`. Simplify using `only [hC, Pi.add_apply, Pi.single_eq_same, Finset.prod_range_succ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_dTerm : ∀ (E : Type) [Field E] [NumberField E] (I : Type) [Fintype I] [DecidableEq I] (φ : I → E →+* ℂ)
     (k : ℕ) (m : I → ℕ) (x : E), x ≠ 0 → ∀ z ∈ polydisc I,
@@ -94,6 +94,6 @@ theorem hasFDerivAt_dTerm : ∀ (E : Type) [Field E] [NumberField E] (I : Type) 
 end GlobalTheory.DeformedSum
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.DeformedSum.hasFDerivAt_dTerm`.
+A detailed English derivation is pending.
 -/
 example : ∀ (E : Type) [Field E] [NumberField E] (I : Type) [Fintype I] [DecidableEq I] (φ : I → E →+* ℂ) (k : ℕ) (m : I → ℕ) (x : E), x ≠ 0 → ∀ z ∈ polydisc I, HasFDerivAt (fun w : I → ℂ => dTerm φ k m w x) (∑ j, dTerm φ k (m + Pi.single j 1) z x • (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : I => ℂ) j)) z := GlobalTheory.DeformedSum.hasFDerivAt_dTerm

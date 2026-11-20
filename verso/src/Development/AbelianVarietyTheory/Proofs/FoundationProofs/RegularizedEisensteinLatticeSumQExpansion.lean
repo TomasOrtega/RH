@@ -14,9 +14,9 @@ noncomputable section
 namespace GlobalTheory.LatQ
 
 /- English proof (translation)
-Use `⟨∑ y ∈ Finset.range L, ‖φ (y : ZMod L)‖, fun x => ?_⟩` and prove the remaining obligations. Unfold `hat`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun y _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Establish `: ‖cexp (2 * π * Complex.I * ((y : ℂ) * (x : ℂ)) / (L : ℂ))‖ = 1`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h : (2 * π * Complex.I * ((y : ℂ) * (x : ℂ)) / (L : ℂ)) = ((2 * π * y * x / L : ℝ) : ℂ) * Complex.I` using `by push_cast; ring`. Rewrite using `[h, Complex.norm_exp_ofReal_mul_I]`. Rewrite using `[this, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem hat_bounded (L : ℕ) (φ : ZMod L → ℂ) : ∃ C : ℝ, ∀ x, ‖hat φ x‖ ≤ C := by
   refine ⟨∑ y ∈ Finset.range L, ‖φ (y : ZMod L)‖, fun x => ?_⟩
@@ -30,21 +30,21 @@ theorem hat_bounded (L : ℕ) (φ : ZMod L → ℂ) : ∃ C : ℝ, ∀ x, ‖hat
   rw [this, mul_one]
 
 /- English proof (translation)
-Simplify using `[trm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem trm_zero_eq (j : ℕ) (w : ℂ) : trm j 0 w = (w ^ j)⁻¹ := by
   simp [trm]
 
 /- English proof (translation)
-Rewrite using `[trm_zero_eq, trm_zero_eq, neg_pow, mul_inv, ← inv_pow, inv_neg, inv_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trm_neg (j : ℕ) (w : ℂ) : trm j 0 (-w) = (-1) ^ j * trm j 0 w := by
   rw [trm_zero_eq, trm_zero_eq, neg_pow, mul_inv, ← inv_pow, inv_neg, inv_one]
 
 /- English proof (translation)
-Rewrite using `[tendsto_zero_iff_norm_tendsto_zero]`. Establish `h1 : Tendsto (fun d : ℤ => |(d : ℝ)|) cofinite atTop` using `(tendsto_norm_cocompact_atTop.comp Int.tendsto_coe_cofinite)`. Establish `h2 : Tendsto (fun d : ℤ => ‖z + d‖) cofinite atTop`. Use `tendsto_atTop_mono (fun d => ?_) (tendsto_atTop_add_const_right _ (-‖z‖) h1)` and prove the remaining obligations. Use `norm_sub_norm_le ((d : ℂ)) (-z)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Complex.norm_intCast, norm_neg, sub_neg_eq_add] at this`. Combine the linear relations using `[show ‖(d : ℂ) + z‖ = ‖z + d‖ by rw [add_comm]]`. Establish `h3 : Tendsto (fun d : ℤ => ‖z + d‖ ^ j) cofinite atTop` using `(tendsto_pow_atTop (by omega)).comp h2`. Use `h3.inv_tendsto_atTop.congr (fun d => ?_)` and prove the remaining obligations. Simplify using `[trm_zero_eq, norm_inv, norm_pow]`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem trm_tendsto (j : ℕ) (hj : 1 ≤ j) (z : ℂ) :
     Tendsto (fun d : ℤ => trm j 0 (z + d)) cofinite (𝓝 0) := by
@@ -62,7 +62,7 @@ theorem trm_tendsto (j : ℕ) (hj : 1 ≤ j) (z : ℂ) :
   simp [trm_zero_eq, norm_inv, norm_pow]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hL.ne'⟩ ∑ r ∈ Finset.range L, φ (f r) = ∑ y, φ y := by haveI : NeZero L := ⟨hL.ne'⟩ rw [← Finset.sum_image (fun x hx y hy h => hf hx hy h)] congr 1 apply Finset.eq_univ_of_card rw [Finset.card_image_of_injOn hf, Finset.card_range, ZMod.card]`.
+Supply the required witnesses or components.
 -/
 theorem sum_range_eq_univ (L : ℕ) (hL : 0 < L) (φ : ZMod L → ℂ) (f : ℕ → ZMod L)
     (hf : Set.InjOn f (Finset.range L)) :
@@ -75,11 +75,11 @@ theorem sum_range_eq_univ (L : ℕ) (hL : 0 < L) (φ : ZMod L → ℂ) (f : ℕ 
   rw [Finset.card_image_of_injOn hf, Finset.card_range, ZMod.card]
 
 /- English proof (translation)
-Establish `h1 : hat φ 0 = ∑ y ∈ Finset.range L, φ (y : ZMod L)` using `by simp [hat]`. Rewrite using `[h1, sum_range_eq_univ L hL φ, sum_range_eq_univ L hL φ]`. Introduce `a ha b hb h`. Simplify using `only [Finset.coe_range, Set.mem_Iio] at ha hb`. Use `congrArg ZMod.val h` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [ZMod.val_natCast, Nat.mod_eq_of_lt ha, Nat.mod_eq_of_lt hb] at this`. Conclude with `this`. Introduce `a ha b hb h`. Simplify using `only [Finset.coe_range, Set.mem_Iio] at ha hb`. Rewrite `h` using `[ZMod.intCast_eq_intCast_iff_dvd_sub]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (d - (b : ℤ)) - (d - (a : ℤ)) = (a : ℤ) - b` using `by ring`. Rewrite `h` using `[h2]`. Apply the tactic sequence `have h3 := Int.eq_zero_of_abs_lt_dvd h (by rw [abs_lt]; constructor <;> omega)`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem kills (L : ℕ) (hL : 0 < L) (φ : ZMod L → ℂ) (d : ℤ) :
     ∑ r ∈ Finset.range L, φ ((d - r : ℤ) : ZMod L) = hat φ 0 := by
@@ -99,14 +99,14 @@ theorem kills (L : ℕ) (hL : 0 < L) (φ : ZMod L → ℂ) (d : ℤ) :
     omega
 
 /- English proof (translation)
-Use `haveI : NeZero L := ⟨hL.ne'⟩`. Conclude with `⟨∑ y, ‖φ y‖, fun y => Finset.single_le_sum (f := fun y => ‖φ y‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ y)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem phi_bounded (L : ℕ) (hL : 0 < L) (φ : ZMod L → ℂ) : ∃ C : ℝ, ∀ y, ‖φ y‖ ≤ C := by
   haveI : NeZero L := ⟨hL.ne'⟩
   exact ⟨∑ y, ‖φ y‖, fun y => Finset.single_le_sum (f := fun y => ‖φ y‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ y)⟩
 
 /- English proof (translation)
-Establish `: (L : ℤ) ≠ 0` using `by exact_mod_cast hL.ne'`. Simplify using `[latF, Int.mul_ediv_cancel _ this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem latF_mul (L : ℕ) (hL : 0 < L) (b : ℤ → ℂ) (φ : ZMod L → ℂ) (k d : ℤ) :
     latF L b φ (k * L, d) = b k * φ (d : ZMod L) := by
@@ -114,14 +114,14 @@ theorem latF_mul (L : ℕ) (hL : 0 < L) (b : ℤ → ℂ) (φ : ZMod L → ℂ) 
   simp [latF, Int.mul_ediv_cancel _ this]
 
 /- English proof (translation)
-Simplify using `[latF, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem latF_ndvd (L : ℕ) (b : ℤ → ℂ) (φ : ZMod L → ℂ) (x : ℤ × ℤ) (h : ¬ (L : ℤ) ∣ x.1) :
     latF L b φ x = 0 := by
   simp [latF, h]
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `hA`. Establish `hs` using `(GlobalTheory.T.summable_regularizedEisensteinLatticeTerm j L (0, 1) τ hj hL).prod_factor c`. Use `(hs.mul_left C).of_norm_bounded (fun d => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right (hC d) (norm_nonneg _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem row_summable (j L : ℕ) (hj : 1 ≤ j) (hL : 0 < L) (A : ℤ → ℂ) (hA : ∃ C : ℝ, ∀ d, ‖A d‖ ≤ C) (τ : ℍ) (c : ℤ) :
     Summable fun d : ℤ => A d * dif L (0, 1) (dif L (0, 1) fun y : ℤ × ℤ => trm j 0 ((y.1 : ℂ) * τ + y.2)) (c, d) := by
@@ -132,9 +132,9 @@ theorem row_summable (j L : ℕ) (hj : 1 ≤ j) (hL : 0 < L) (A : ℤ → ℂ) (
   exact mul_le_mul_of_nonneg_right (hC d) (norm_nonneg _)
 
 /- English proof (translation)
-Repeatedly rewrite using `[latF_mul L hL b φ k]`. Take `⟨C, hC⟩` from `phi_bounded L hL φ`. Establish `hA : ∃ C : ℝ, ∀ d : ℤ, ‖b k * φ (d : ZMod L)‖ ≤ C` using `⟨‖b k‖ * C, fun d => by rw [norm_mul]; exact mul_le_mul_of_nonneg_left (hC _) (norm_nonneg _)⟩`. Establish `hK : ∀ d : ℤ, ∑ r ∈ Finset.range L, b k * φ (((d - r : ℤ)) : ZMod L) = 0`. Introduce `d`.
+Rewrite the conclusion repeatedly using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Finset.mul_sum, kills L hL φ d, h0, mul_zero]`. Conclude with `GlobalTheory.RowLim.rowlim L (fun d => b k * φ (d : ZMod L)) (fun d => trm j 0 (((k * L : ℤ) : ℂ) * τ + d)) (fun y : ℤ × ℤ => trm j 0 ((y.1 : ℂ) * τ + y.2)) (k * L) hL hA hK (fun d => rfl) (trm_tendsto j hj _) (row_summable j L hj hL _ hA τ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem row_lim (j L : ℕ) (b : ℤ → ℂ) (φ : ZMod L → ℂ) (hj : 1 ≤ j) (hL : 0 < L) (h0 : hat φ 0 = 0)
     (τ : ℍ) (k : ℤ) :
@@ -152,7 +152,7 @@ theorem row_lim (j L : ℕ) (b : ℤ → ℂ) (φ : ZMod L → ℂ) (hj : 1 ≤ 
     (trm_tendsto j hj _) (row_summable j L hj hL _ hA τ _)
 
 /- English proof (translation)
-Break down `(show j = 1 ∨ 2 ≤ j by omega) with rfl | hj2` into its components or cases. Use `GlobalTheory.T.lipschitz_weight_one_periodic_mean_zero L φ z hL hz h0 using 2` and compare the differences between its conclusion and the goal. Simplify using the standard rewrite rules. Conclude with `GlobalTheory.T.lipschitz_formula_periodic_weight j L φ z hj2 hL hz`.
+Separate the alternatives or extract the components of the hypothesis. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lip_all (j L : ℕ) (φ : ZMod L → ℂ) (z : ℂ) (hj : 1 ≤ j) (hL : 0 < L) (hz : 0 < z.im) (h0 : hat φ 0 = 0) :
     Tendsto (fun R : ℕ => ∑ d ∈ Finset.Icc (-(R : ℤ)) R, φ (d : ZMod L) * trm j 0 (z + d)) atTop
@@ -164,13 +164,13 @@ theorem lip_all (j L : ℕ) (φ : ZMod L → ℂ) (z : ℂ) (hj : 1 ≤ j) (hL :
   · exact GlobalTheory.T.lipschitz_formula_periodic_weight j L φ z hj2 hL hz
 
 /- English proof (translation)
-Establish `hlim` using `row_lim j L b φ hj hL h0 τ ((n + 1 : ℕ) : ℤ)`. Establish `hz : 0 < ((((((n + 1 : ℕ) : ℤ) * L : ℤ)) : ℂ) * (τ : ℂ)).im`. Establish `: (((((n + 1 : ℕ) : ℤ) * L : ℤ)) : ℂ) = (((n + 1 : ℕ) * L : ℕ) : ℝ)` using `by push_cast; ring`. Rewrite using `[this, Complex.im_ofReal_mul]`. Conclude with `mul_pos (by exact_mod_cast Nat.mul_pos (Nat.succ_pos n) hL) τ.im_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `(lip_all j L φ _ hj hL hz h0).const_mul (b ((n + 1 : ℕ) : ℤ))`. Establish `h3 : (fun R : ℕ => b ((n + 1 : ℕ) : ℤ) * ∑ d ∈ Finset.Icc (-(R : ℤ)) R, φ (d : ZMod L) * trm j 0 (((((n + 1 : ℕ) : ℤ) * L : ℤ) : ℂ) * τ + d)) = (fun R : ℕ => ∑ d ∈ Finset.Icc (-(R : ℤ)) R, b ((n + 1 : ℕ) : ℤ) * φ (d : ZMod L) * trm j 0 (((((n + 1 : ℕ) : ℤ) * L : ℤ) : ℂ) * τ + d))`. Use function extensionality and compare the values at `R`. Rewrite using `[Finset.mul_sum]`. Repeatedly rewrite using `[mul_assoc]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[h3]`. Rewrite using `[tendsto_nhds_unique hlim h2]`. Establish `hL' : (L : ℂ) ≠ 0` using `by exact_mod_cast hL.ne'`. Establish `h4 : ∀ m : ℕ, cexp (2 * π * Complex.I * ((m + 1 : ℕ) : ℂ) * ((((((n + 1 : ℕ) : ℤ) * L : ℤ)) : ℂ) * τ) / L) = cexp (2 * π * Complex.I * ((m + 1 : ℕ) : ℂ) * (((n + 1 : ℕ) : ℂ) * τ))`. Introduce `m`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Repeatedly rewrite using `[h4]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion repeatedly using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem row_pos (j L : ℕ) (b : ℤ → ℂ) (φ : ZMod L → ℂ) (hj : 1 ≤ j) (hL : 0 < L) (h0 : hat φ 0 = 0)
     (τ : ℍ) (n : ℕ) :
@@ -200,13 +200,13 @@ theorem row_pos (j L : ℕ) (b : ℤ → ℂ) (φ : ZMod L → ℂ) (hj : 1 ≤ 
   ring
 
 /- English proof (translation)
-Use `tendsto_nhds_unique (row_lim j L b φ hj hL h0 τ (-k)) ?_` and prove the remaining obligations. Use `(row_lim j L b φ hj hL h0 τ k).congr (fun R => ?_)` and prove the remaining obligations. Use `Finset.sum_nbij' (fun d => -d) (fun d => -d) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `d hd`. Simplify using `only [Finset.mem_Icc] at hd ⊢`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Introduce `d hd`. Simplify using `only [Finset.mem_Icc] at hd ⊢`. Use linear arithmetic over natural numbers and integers. Introduce `d _`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Introduce `d _`. Simplify using the standard rewrite rules. Introduce `d _`. Establish `e1 : (((-k) * L : ℤ) : ℂ) * τ + ((-d : ℤ) : ℂ) = -(((k * L : ℤ) : ℂ) * τ + (d : ℂ))` using `by push_cast; ring`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e2` using `hpar k d`. Rewrite using `[e1, trm_neg, show ((-d : ℤ) : ZMod L) = -(d : ZMod L) by push_cast; rfl]`. Establish `: ((-1 : ℂ) ^ j) * (-1) ^ j = 1` using `by rw [← mul_pow]; norm_num`. Take the linear combination `(-((-1 : ℂ) ^ j * trm j 0 (((k * L : ℤ) : ℂ) * τ + (d : ℂ)))) * e2 - (b k * φ (d : ZMod L) * trm j 0 (((k * L : ℤ) : ℂ) * τ + (d : ℂ))) * this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem row_neg (j L : ℕ) (b : ℤ → ℂ) (φ : ZMod L → ℂ) (hj : 1 ≤ j) (hL : 0 < L) (h0 : hat φ 0 = 0)
     (hpar : ∀ x y : ℤ, b (-x) * φ (-(y : ZMod L)) = (-1) ^ j * (b x * φ y)) (τ : ℍ) (k : ℤ) :
@@ -230,7 +230,7 @@ theorem row_neg (j L : ℕ) (b : ℤ → ℂ) (φ : ZMod L → ℂ) (hj : 1 ≤ 
       (b k * φ (d : ZMod L) * trm j 0 (((k * L : ℤ) : ℂ) * τ + (d : ℂ))) * this
 
 /- English proof (translation)
-Use `congr 1`. Use function extensionality and compare the values at `d`. Use `congr 1`. Simplify using `[dif]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem row_zero_indep (j L : ℕ) (b : ℤ → ℂ) (φ : ZMod L → ℂ) (τ τ' : ℍ) :
     ∑' d : ℤ, latF L b φ ((0 : ℤ) * L, d) *
@@ -241,11 +241,9 @@ theorem row_zero_indep (j L : ℕ) (b : ℤ → ℂ) (φ : ZMod L → ℂ) (τ �
   simp [dif]
 
 /- English proof (translation)
-Take `⟨Cb, hCb⟩` from `hb`. Take `⟨Cφ, hCφ⟩` from `phi_bounded L hL φ`. Establish `hb0 : 0 ≤ Cb` using `(norm_nonneg _).trans (hCb 0)`. Establish `hφ0 : 0 ≤ Cφ` using `(norm_nonneg _).trans (hCφ 0)`. Use `⟨Cb * Cφ, fun x => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `latF`. Use `split_ifs`. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hCb _) (hCφ _) (norm_nonneg _) hb0`. Simplify using `only [norm_zero]`.
-
-Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem latF_bounded (L : ℕ) (hL : 0 < L) (b : ℤ → ℂ) (φ : ZMod L → ℂ) (hb : ∃ C : ℝ, ∀ x, ‖b x‖ ≤ C) :
     ∃ C : ℝ, ∀ x, ‖latF L b φ x‖ ≤ C := by
@@ -259,11 +257,11 @@ theorem latF_bounded (L : ℕ) (hL : 0 < L) (b : ℤ → ℂ) (φ : ZMod L → �
   · simp only [norm_zero]; positivity
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (fun n : ℤ => n * (L : ℤ))` using `fun x y h => mul_right_cancel₀ (by exact_mod_cast hL.ne' : (L : ℤ) ≠ 0) h`. Establish `hsupp : Function.support F ⊆ Set.range (fun n : ℤ => n * (L : ℤ))`. Introduce `k hk`. Assume the negation of the conclusion as `hn`. Conclude with `hk (hz k fun ⟨n, hn'⟩ => hn ⟨n, by rw [hn', mul_comm]⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hinj.tsum_eq hsupp]`. Establish `hg : Summable fun n : ℤ => F (n * L)` using `hFs.comp_injective hinj`. Establish `hsucc : Function.Injective (fun n : ℕ => (n : ℤ) + 1)` using `fun x y h => by simpa using h`. Establish `hnsucc : Function.Injective (fun n : ℕ => -((n : ℤ) + 1))` using `fun x y h => by simpa using h`. Rewrite using `[tsum_of_add_one_of_neg_add_one (f := fun n : ℤ => F (n * L)) (hg.comp_injective hsucc) (hg.comp_injective hnsucc)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpos' : ∀ n : ℕ, F (((n : ℤ) + 1) * L) = κ * T n` using `fun n => by rw [← hpos n, Nat.cast_succ]`. Simplify using `only [hneg, hpos', tsum_mul_left, hT.tsum_eq]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem tsum_rows (L : ℕ) (hL : 0 < L) (F : ℤ → ℂ) (κ S : ℂ) (T : ℕ → ℂ) (hFs : Summable F)
     (hz : ∀ k, ¬ (L : ℤ) ∣ k → F k = 0) (hneg : ∀ k : ℤ, F ((-k) * L) = F (k * L))
@@ -285,15 +283,13 @@ theorem tsum_rows (L : ℕ) (hL : 0 < L) (F : ℤ → ℂ) (κ S : ℂ) (T : ℕ
   ring
 
 /- English proof (translation)
-Introduce `j L b φ hj hL hb h0 hpar`. Establish `hL' : (L : ℂ) ≠ 0` using `by exact_mod_cast hL.ne'`. Establish `hκ : ((-2 * π * Complex.I / L) ^ j / (j - 1).factorial : ℂ) ≠ 0`. Use `div_ne_zero (pow_ne_zero _ (div_ne_zero ?_ hL')) (by exact_mod_cast (Nat.factorial_pos _).ne')` and prove the remaining obligations. Use `mul_ne_zero (mul_ne_zero (by norm_num) (by exact_mod_cast Real.pi_ne_zero)) Complex.I_ne_zero` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Generalize the expression as in `hκdef : ((-2 * π * Complex.I / L) ^ j / (j - 1).factorial : ℂ) = κ at hκ`. Take `⟨K, hK⟩ : ∃ K : ℂ, ∀ τ : ℍ, ∑' d : ℤ, latF L b φ ((0 : ℤ) * L, d) * dif L (0, 1) (dif L (0, 1) fun y : ℤ × ℤ => trm j 0 ((y.1 : ℂ) * τ + y.2)) ((0 : ℤ) * L, d) = K` from `⟨_, fun τ => row_zero_indep j L b φ τ UpperHalfPlane.I⟩`. Use `⟨K / (2 * κ), (GlobalTheory.T.coeffEisensteinSeriesTwisted_qExpansion_double j _ (hat φ) b (hat_bounded L φ) hb).1, fun τ => ?_⟩` and prove the remaining obligations. Establish `hq` using `(GlobalTheory.T.coeffEisensteinSeriesTwisted_qExpansion_double j (K / (2 * κ)) (hat φ) b (hat_bounded L φ) hb).2.2 τ`. Take `⟨CΦ, hCΦ⟩` from `latF_bounded L hL b φ hb`.
+Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hs : Summable fun x : ℤ × ℤ => latF L b φ x * dif L (0, 1) (dif L (0, 1) fun y : ℤ × ℤ => trm j 0 ((y.1 : ℂ) * τ + y.2)) x`. Use `((GlobalTheory.T.summable_regularizedEisensteinLatticeTerm j L (0, 1) τ hj hL).mul_left CΦ).of_norm_bounded (fun x => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right (hCΦ x) (norm_nonneg _)`. Establish `hrows` using `tsum_rows L hL (fun k => ∑' d : ℤ, latF L b φ (k, d) * dif L (0, 1) (dif L (0, 1) fun y : ℤ × ℤ => trm j 0 ((y.1 : ℂ) * τ + y.2)) (k, d)) κ _ _ hs.prod (fun k hk => by simp only [latF_ndvd L b φ (k, _) hk, zero_mul, tsum_zero]) (fun k => row_neg j L b φ hj hL h0 hpar τ k) (fun n …`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (2 * (-2 * π * Complex.I / L) ^ j / (j - 1).factorial : ℂ) = 2 * κ` using `by rw [← hκdef]; ring`. Rewrite using `[e, lat, hs.tsum_prod, hrows]`. Use `beta_reduce`. Rewrite using `[hK τ]`. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lat_qexp : ∀ (j L : ℕ) (b : ℤ → ℂ) (φ : ZMod L → ℂ), 1 ≤ j → 0 < L → (∃ C : ℝ, ∀ x, ‖b x‖ ≤ C) →
     hat φ 0 = 0 → (∀ x y : ℤ, b (-x) * φ (-(y : ZMod L)) = (-1) ^ j * (b x * φ y)) →

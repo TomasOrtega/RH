@@ -16,7 +16,7 @@ variable {K : Type*} [DecidableEq K] {ι : K → Type*}
 variable {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Use extensionality with `d`. Simplify using `only [coeff_map, coeff_weightedHomogeneousComponent]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_residue_weightedHomogeneousComponent (m : K → ℕ) (f : MRing ι O) :
     MvPolynomial.map (IsLocalRing.residue O) (weightedHomogeneousComponent (blockWeight ι) m f) =
@@ -27,7 +27,7 @@ theorem map_residue_weightedHomogeneousComponent (m : K → ℕ) (f : MRing ι O
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite `hf`, the goal using `[mem_weightedHomogeneousSubmodule]`. Rewrite using `[← weightedHomogeneousComponent_eq_self hf, map_residue_weightedHomogeneousComponent]`. Conclude with `weightedHomogeneousComponent_isWeightedHomogeneous _ _`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_residue_mem_weightedHomogeneousSubmodule {m : K → ℕ} {f : MRing ι O}
     (hf : f ∈ weightedHomogeneousSubmodule O (blockWeight ι) m) :
@@ -38,9 +38,7 @@ theorem map_residue_mem_weightedHomogeneousSubmodule {m : K → ℕ} {f : MRing 
   exact weightedHomogeneousComponent_isWeightedHomogeneous _ _
 
 /- English proof (translation)
-Take `⟨f, rfl⟩` from `MvPolynomial.map_surjective _ IsLocalRing.residue_surjective g`. Use `⟨weightedHomogeneousComponent (blockWeight ι) m f, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_weightedHomogeneousSubmodule]`. Conclude with `weightedHomogeneousComponent_isWeightedHomogeneous _ _`. Rewrite using `[map_residue_weightedHomogeneousComponent]`.
-
-Conclude with `weightedHomogeneousComponent_eq_self ((mem_weightedHomogeneousSubmodule _ _ _ _).1 hg)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_form_map_residue_eq {m : K → ℕ} {g : MRing ι (IsLocalRing.ResidueField O)}
     (hg : g ∈ weightedHomogeneousSubmodule (IsLocalRing.ResidueField O) (blockWeight ι) m) :
@@ -54,11 +52,11 @@ theorem exists_form_map_residue_eq {m : K → ℕ} {g : MRing ι (IsLocalRing.Re
     exact weightedHomogeneousComponent_eq_self ((mem_weightedHomogeneousSubmodule _ _ _ _).1 hg)
 
 /- English proof (translation)
-Establish `hfh` using `(mem_weightedHomogeneousSubmodule _ _ _ _).1 hf`. Take `⟨p, hp, hpf⟩` from `(Ideal.mem_map_iff_of_surjective _ (MvPolynomial.map_surjective _ IsLocalRing.residue_surjective)).1 hfP`. Establish `hpm : weightedHomogeneousComponent (blockWeight ι) m p ∈ P` using `hP p hp m`. Establish `hker : f - weightedHomogeneousComponent (blockWeight ι) m p ∈ RingHom.ker (MvPolynomial.map (IsLocalRing.residue O) : MRing ι O →+* _)`. Rewrite using `[RingHom.mem_ker, map_sub, map_residue_weightedHomogeneousComponent, hpf, weightedHomogeneousComponent_eq_self ((mem_weightedHomogeneousSubmodule _ _ _ _).1 (map_residue_mem_weightedHomogeneousSubmodule hf)), sub_self]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hker` using `[MvPolynomial.ker_map, IsLocalRing.ker_residue, hϖ.maximalIdeal_eq, Ideal.map_span, Set.image_singleton, Ideal.mem_span_singleton']`. Take `⟨g, hg⟩` from `hker`. Use `⟨_, hpm, weightedHomogeneousComponent (blockWeight ι) m g, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_weightedHomogeneousSubmodule]`. Conclude with `weightedHomogeneousComponent_isWeightedHomogeneous _ _`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : C ϖ * weightedHomogeneousComponent (blockWeight ι) m g = f - weightedHomogeneousComponent (blockWeight ι) m p`. Rewrite using `[C_mul', ← map_smul, ← C_mul', mul_comm, hg, map_sub, weightedHomogeneousComponent_eq_self hfh, weightedHomogeneousComponent_eq_self (weightedHomogeneousComponent_isWeightedHomogeneous _ _)]`. Rewrite using `[h2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_eq_add_mul_of_map_residue_mem {ϖ : O} (hϖ : Irreducible ϖ) {P : Ideal (MRing ι O)}
     (hP : IsMultiHomogIdeal P) {m : K → ℕ} {f : MRing ι O}
@@ -90,33 +88,31 @@ theorem exists_eq_add_mul_of_map_residue_mem {ϖ : O} (hϖ : Irreducible ϖ) {P 
 end Reduction
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ K _ _ ι _ P hP htor m`. Take `⟨hfree, hfin⟩` from `h1 O ϖ hϖ K ι P htor m`. Set `ρ : MRing ι O →ₐ[O] MRing ι (IsLocalRing.ResidueField O)` to `mapAlgHom (Algebra.ofId O (IsLocalRing.ResidueField O))`. Establish `hρ : ∀ f, ρ f = MvPolynomial.map (IsLocalRing.residue O) f` using `fun f => rfl`. Establish `hle : P ≤ (specialIdeal P).comap ρ` using `fun x hx => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Ideal.mem_comap, hρ]`. Conclude with `Ideal.mem_map_of_mem _ hx`. Set `T` to `Ideal.quotientMapₐ (specialIdeal P) ρ hle`. Establish `hT : ∀ f, T (Ideal.Quotient.mk P f) = Ideal.Quotient.mk (specialIdeal P) (MvPolynomial.map (IsLocalRing.residue O) f)` using `fun f => rfl`. Establish `hTM : ∀ y ∈ gradedPieceR P m, T y ∈ gradedPiece (specialIdeal P) m`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Take `⟨f, hf, rfl⟩` from `Submodule.mem_map.1 hy`. Conclude with `Submodule.mem_map.2 ⟨_, map_residue_mem_weightedHomogeneousSubmodule hf, (hT f).symm⟩`. Set `b` to `Module.Free.chooseBasis O (gradedPieceR P m)`. Set `v : Module.Free.ChooseBasisIndex O (gradedPieceR P m) → gradedPiece (specialIdeal P) m` to `fun i => ⟨T (b i), hTM _ (b i).2⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : ∀ i, ((v i : gradedPiece (specialIdeal P) m) : _) = T (b i)` using `fun i => rfl`. Establish `hsmul : ∀ (c : O) (x : MRing ι (IsLocalRing.ResidueField O) ⧸ specialIdeal P), IsLocalRing.residue O c • x = c • x` using `fun c x => by`. Rewrite using `[← IsLocalRing.ResidueField.algebraMap_eq, algebraMap_smul]`. Establish `hli : LinearIndependent (IsLocalRing.ResidueField O) v`. Rewrite using `[Fintype.linearIndependent_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Introduce `g hg i`. Use `choose c hc using fun j => IsLocalRing.residue_surjective (g j)`. Set `y : gradedPieceR P m` to `∑ j, c j • b j`. Take `⟨f, hf, hfy⟩` from `Submodule.mem_map.1 y.2`. Establish `hfy' : Ideal.Quotient.mk P f = (y : MRing ι O ⧸ P)` using `hfy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : Ideal.Quotient.mk (specialIdeal P) (MvPolynomial.map (IsLocalRing.residue O) f) = 0`. Rewrite using `[← hT, hfy']`. Establish `hg'` using `congrArg Subtype.val hg`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Submodule.coe_zero, hv] at hg'`. Simplify using `only [y, Submodule.coe_sum, Submodule.coe_smul, map_sum, map_smul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hg']`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← hc j, hsmul]`. Take `⟨p, hp, g0, hg0, hfp⟩` from `exists_eq_add_mul_of_map_residue_mem hϖ hP hf (Ideal.Quotient.eq_zero_iff_mem.1 h0)`. Set `z : gradedPieceR P m` to `⟨Ideal.Quotient.mk P g0, Submodule.mem_map.2 ⟨g0, hg0, rfl⟩⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hyz : y = ϖ • z`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hfy', hfp, map_add, Ideal.Quotient.eq_zero_iff_mem.2 hp, zero_add, map_mul, Submodule.coe_smul]`. Use `show _ = ϖ • Ideal.Quotient.mk P g0`. Rewrite using `[← map_mul, C_mul']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `map_smul (Ideal.Quotient.mkₐ O P) ϖ g0`. Establish `hbli` using `b.linearIndependent`. Rewrite `hbli` using `[Fintype.linearIndependent_iff]`. Establish `key : ∑ j, (c j - ϖ * b.repr z j) • b j = 0`. Establish `e1 : ∑ j, (c j - ϖ * b.repr z j) • b j = ∑ j, c j • b j - ϖ • ∑ j, b.repr z j • b j`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.smul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Conclude with `(sub_smul (c j) (ϖ * b.repr z j) (b j)).trans (congrArg (c j • b j - ·) (mul_smul ϖ (b.repr z j) (b j)))`. Rewrite using `[e1, b.sum_repr]`. Conclude with `sub_eq_zero.2 hyz`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hi` using `hbli _ key i`. Rewrite using `[← hc i, sub_eq_zero.1 hi, map_mul, (IsLocalRing.residue_eq_zero_iff ϖ).2 ((IsLocalRing.mem_maximalIdeal ϖ).2 (mem_nonunits_iff.2 hϖ.not_isUnit)), zero_mul]`. Establish `hsp : ⊤ ≤ Submodule.span (IsLocalRing.ResidueField O) (Set.range v)`. Introduce and unpack `⟨x, hx⟩ -`. Take `⟨g, hg, rfl⟩` from `Submodule.mem_map.1 hx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨f, hf, rfl⟩` from `exists_form_map_residue_eq hg`. Set `y : gradedPieceR P m` to `⟨Ideal.Quotient.mk P f, Submodule.mem_map.2 ⟨f, hf, rfl⟩⟩`. Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Use `⟨fun j => IsLocalRing.residue O (b.repr y j), ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hy` using `congrArg Subtype.val (b.sum_repr y)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at hy ⊢`. Express the relevant statement in the definitionally equal form `_ = T (y : MRing ι O ⧸ P)`. Rewrite using `[← hy, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[map_smul, hv, hsmul]`. Rewrite using `[Module.finrank_eq_card_basis (Module.Basis.mk hli hsp), Module.finrank_eq_card_chooseBasisIndex]`.
+A detailed English derivation is pending.
 -/
 theorem SpecialPieceRank.proof (h1 : GradedPieceFree.Statement.{u}) : SpecialPieceRank.Statement.{u} := by
   intro O _ _ _ ϖ hϖ K _ _ ι _ P hP htor m

@@ -16,14 +16,14 @@ variable [IsCMField E] {X : PT E} {DF : ℕ} {P : Par X DF} {I : Submodule ℤ (
 def gam (hI : IsSplit P I) (n : Fin (Module.finrank ℝ (IR I)) → ℤ) : Vsp X.dim := ∑ j, n j • cp hI j
 
 /- English proof (translation)
-Unfold `gam`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (cp_mem hI j)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem gam_mem (hI : IsSplit P I) (n) : gam hI n ∈ X.L := by
   unfold gam
   exact Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (cp_mem hI j)
 
 /- English proof (translation)
-Unfold `gam`. Rewrite using `[Col.Hf_sum_l, Complex.im_sum]`. Repeatedly rewrite using `[← Int.cast_smul_eq_zsmul ℂ, Col.Hf_smul_l, Complex.mul_im, Complex.intCast_re, Complex.intCast_im, zero_mul, add_zero, cp_pair hI, Pi.single_apply]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gam_pair (hI : IsSplit P I) (n) (i) :
     (Hf (gam hI n) ((Ib hI i : IR I) : Vsp X.dim)).im = n i := by
@@ -34,7 +34,7 @@ theorem gam_pair (hI : IsSplit P I) (n) (i) :
   simp
 
 /- English proof (translation)
-Unfold `GT.ptN2`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem pointNormSq_nonneg_quotient (hP : Ext.PackingCount) (hI : IsSplit P I) (β) (t) :
     0 ≤ (YB hI hP 1).ptN2 1 β t := by
@@ -42,43 +42,43 @@ theorem pointNormSq_nonneg_quotient (hP : Ext.PackingCount) (hI : IsSplit P I) (
   positivity
 
 /- English proof (translation)
-Establish `hK : ∀ a ∈ IR I, ∀ b ∈ IR I, (Hf a b).im = 0` using `Col.iso_IR hI.iso`. Establish `hE2 : ∀ a : ℝ, Real.exp a ^ 2 = Real.exp (2 * a)` using `fun a => by`. Rewrite using `[sq, ← Real.exp_add, two_mul]`. Establish `hp1add : ∀ a b, Col.p1 (IR I) (a + b) = Col.p1 (IR I) a + Col.p1 (IR I) b`. Introduce `a b`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Col.p1, z_add, add_smul, Finset.sum_add_distrib]`. Establish `hp2add : ∀ a b, Col.p2 (IR I) (a + b) = Col.p2 (IR I) a + Col.p2 (IR I) b`. Introduce `a b`. Simplify using `only [Col.p2, hp1add]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Establish `hp2K : ∀ b ∈ IR I, Col.p2 (IR I) b = 0`. Introduce `b hb`. Establish `h` using `congrArg Subtype.val ((Col.ob (IR I)).sum_repr' ⟨b, hb⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Submodule.coe_inner] at h`. Rewrite using `[Col.p2, Col.p1, sub_eq_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [← h]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[z_of_K hI k hb, Complex.coe_smul]`. Both sides reduce to the same expression. Establish `hucn : ∀ v, ‖Col.uc (IR I) v‖ ^ 2 = ∑ k, (Col.z (IR I) k v).im ^ 2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Rewrite using `[← Col.Hf_self_re, Col.uc, Col.Hf_sum_l]`. Simplify using `[Col.Hf_sum_r, Col.Hf_rsmul_l, Col.Hf_rsmul_r, Col.Hf_e hK, Complex.re_sum, sq]`. Establish `hnadd : ∀ a b : Vsp X.dim, ‖a + b‖ ^ 2 = ‖a‖ ^ 2 + 2 * (Hf a b).re + ‖b‖ ^ 2`. Introduce `a b`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Col.Hf_self_re, ← Col.Hf_self_re, ← Col.Hf_self_re, Col.Hf_add_l, Col.Hf_add_r, Col.Hf_add_r, Col.Hf_swap a b]`. Simplify using `only [Complex.add_re, Complex.conj_re]`. Expand and normalize the polynomial expressions, which then agree. Use `set c : ℝ := Real.exp (-Real.pi * (2 * ∑ k, (Col.z (IR I) k W).im ^ 2 + ‖Col.p2 (IR I) W‖ ^ 2)) with hc`. Establish `hpt : ∀ t, X.ptN2 1 s (fun _ => W + tb hI t) = ‖zmG I s (W + tb hI t)‖ ^ 2 * c`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `t`. Establish `hw` using `Col.norm_sq_decomp hK (W + tb hI t)`. Establish `hy : ∀ k, (Col.z (IR I) k (W + tb hI t)).im = (Col.z (IR I) k W).im` using `fun k => by`. Rewrite using `[z_add, Complex.add_im, z_of_K hI k (tb_mem hI t), Complex.ofReal_im, add_zero]`. Establish `hp : Col.p2 (IR I) (W + tb hI t) = Col.p2 (IR I) W`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hp2add, hp2K _ (tb_mem hI t), add_zero]`. Establish `key : ‖W + tb hI t‖ ^ 2 = (Col.S (IR I) (W + tb hI t)).re + 2 * ∑ k, (Col.z (IR I) k W).im ^ 2 + ‖Col.p2 (IR I) W‖ ^ 2`. Rewrite using `[hw, hp]`. Establish `: ∑ k, ‖Col.z (IR I) k (W + tb hI t)‖ ^ 2 = (Col.S (IR I) (W + tb hI t)).re + 2 * ∑ k, (Col.z (IR I) k W).im ^ 2`. Rewrite using `[Col.S, Complex.re_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← hy k, Complex.sq_norm, Complex.normSq_apply, sq, Complex.mul_re]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Establish `e1 : X.ptN2 1 s (fun _ => W + tb hI t) = ‖s (fun _ => W + tb hI t)‖ ^ 2 * Real.exp (-Real.pi * ‖W + tb hI t‖ ^ 2)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Unfold `PT.ptN2 HC`. Simplify using `[Col.Hf_self_re]`. Establish `e2 : ‖zmG I s (W + tb hI t)‖ ^ 2 = ‖s (fun _ => W + tb hI t)‖ ^ 2 * Real.exp (-Real.pi * (Col.S (IR I) (W + tb hI t)).re)`. Unfold `zmG`. Rewrite using `[norm_mul, mul_pow, Complex.norm_exp, hE2]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `congr 2`. Simplify using `[Complex.mul_re]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2, mul_assoc, hc, ← Real.exp_add, key]`. Use `congr 2`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hcont : Continuous fun t : Fin (Module.finrank ℝ (IR I)) → ℝ => ‖zmG I s (W + tb hI t)‖ ^ 2 * c` using `(((zmG_continuous hs).comp (continuous_const.add (tb_continuous hI))).norm.pow 2).mul continuous_const`. Establish `hint : IntegrableOn (fun t : Fin (Module.finrank ℝ (IR I)) → ℝ => ‖zmG I s (W + tb hI t)‖ ^ 2 * c) (cubeIco (Fin (Module.finrank ℝ (IR I))))`. Use `(hcont.continuousOn.integrableOn_compact (isCompact_univ_pi fun _ => isCompact_Icc (a := (0 : ℝ)) (b := 1))).mono_set ?_` and prove the remaining obligations. Rewrite using `[cubeIco_eq]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Set.pi_mono fun _ _ => Set.Ico_subset_Icc_self`. Establish `hpar : HasSum (fun n => ‖zmC hI s n W‖ ^ 2) (∫ t in {x : Fin (Module.finrank ℝ (IR I)) → ℝ | ∀ i, x i ∈ Set.Ioc (0 : ℝ) 1}, ‖zmG I s (W + tb hI t)‖ ^ 2)` using `fibre_parseval hI hs W`. Establish `hcube : ∫ t in cubeIco (Fin (Module.finrank ℝ (IR I))), ‖zmG I s (W + tb hI t)‖ ^ 2 * c = (∑' n, ‖zmC hI s n W‖ ^ 2) * c`. Rewrite using `[integral_mul_const, setIntegral_congr_set (cube_ae_eq _), hpar.tsum_eq]`. Repeatedly rewrite using `[hpt]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← ofReal_integral_eq_lintegral_ofReal hint (Filter.Eventually.of_forall fun t => by positivity), hcube, ← tsum_mul_right, ENNReal.ofReal_tsum_of_nonneg (fun n => by positivity) (hpar.summable.mul_right c)]`. Use `congr 1`. Use function extensionality and compare the values at `n`. Use `congr 1`. Establish `hγ` using `gam_mem hI n`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hadd` using `zmC_add hI hs hγ n (gam_pair hI n) 0 W`. Rewrite `hadd` using `[zero_add]`. Establish `hB : zmB hI s (Col.wmap (IR I) (W + gam hI n)) = zmC hI s 0 (W + gam hI n)`. Unfold `zmB`. Rewrite using `[Col.jj_wmap' hK, ← zeroMode_proj_two hI hs]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `heps : ‖(X.eps (gam hI n) : ℂ)‖ = 1`. Apply the tactic sequence `rcases X.eps_pm _ hγ with h | h <;> simp [h]`. Establish `hg : (gaugeExp I (gam hI n) W).re = 2 * Real.pi * ∑ k, (Col.z (IR I) k (gam hI n)).im * (Col.z (IR I) k W).im + Real.pi * ∑ k, (Col.z (IR I) k (gam hI n)).im * (Col.z (IR I) k (gam hI n)).im + Real.pi * (Hf (Col.p2 (IR I) W) (Col.p2 (IR I) (gam hI n))).re + Real.pi * ‖Col.p2 (IR …`. Unfold `gaugeExp`. Simplify using `[Complex.mul_re, Complex.mul_im, Complex.re_sum, Col.Hf_self_re, Finset.mul_sum]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hp2n` using `hnadd (Col.p2 (IR I) W) (Col.p2 (IR I) (gam hI n))`. Rewrite `hp2n` using `[← hp2add]`. Establish `hucW : ‖Col.uc (IR I) (W + gam hI n)‖ ^ 2 = ∑ k, ((Col.z (IR I) k W).im + (Col.z (IR I) k (gam hI n)).im) ^ 2`. Rewrite using `[hucn]`. Simplify using `[z_add]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsq : ∑ k, ((Col.z (IR I) k W).im + (Col.z (IR I) k (gam hI n)).im) ^ 2 = ∑ k, (Col.z (IR I) k W).im ^ 2 + 2 * ∑ k, (Col.z (IR I) k (gam hI n)).im * (Col.z (IR I) k W).im + ∑ k, (Col.z (IR I) k (gam hI n)).im * (Col.z (IR I) k (gam hI n)).im`. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Unfold `GT.ptN2`.
+Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hB, hadd, Col.norm_wmap hK, norm_mul, norm_mul, heps, one_mul, Complex.norm_exp, mul_pow, hE2, hp2n, hucW, hsq, hg, hc]`. Rewrite using `[mul_comm (Real.exp _) (‖zmC hI s n W‖ ^ 2), mul_assoc, mul_assoc, ← Real.exp_add, ← Real.exp_add]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem fibre_sum (hI : IsSplit P I) (hP : Ext.PackingCount) {s : (Fin 1 → Vsp X.dim) → ℂ}
     (hs : s ∈ X.Sec 1 1) (W : Vsp X.dim) :
@@ -205,29 +205,25 @@ theorem fibre_sum (hI : IsSplit P I) (hP : Ext.PackingCount) {s : (Fin 1 → Vsp
   ring
 
 /- English proof (translation)
-Establish `hF : zmB hI s ∈ (Col.YB hI hP 1).Sec 1` using `zeroMode_mem_sections hI hP hs`. Establish `hE : ∀ a b : ℝ, Real.exp a ^ 2 * Real.exp b = Real.exp (2 * a + b)` using `fun a b => by`. Rewrite using `[Real.exp_add, sq, ← Real.exp_add, two_mul]`. Establish `hper : ∀ γ ∈ lat (Col.YB hI hP 1).b, ∀ v, (Col.YB hI hP 1).ptN2 1 (zmB hI s) (v + γ) = (Col.YB hI hP 1).ptN2 1 (zmB hI s) v`. Introduce `γ hγ v`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `hF.2 γ hγ v`. Establish `hka` using `(Col.YB hI hP 1).ka_abs γ hγ`. Establish `hn : ‖v + γ‖ ^ 2 = ‖v‖ ^ 2 + 2 * (Hf v γ).re + ‖γ‖ ^ 2`. Rewrite using `[← Col.Hf_self_re, ← Col.Hf_self_re, ← Col.Hf_self_re, Col.Hf_add_l, Col.Hf_add_r, Col.Hf_add_r, Col.Hf_swap v γ]`. Simplify using `only [Complex.add_re, Complex.conj_re]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hre : ((((1 : ℕ) : ℂ) * (Real.pi : ℂ) * Hf v γ + ((1 : ℕ) : ℂ) * (Real.pi : ℂ) * Hf γ γ / 2)).re = Real.pi * (Hf v γ).re + Real.pi * ‖γ‖ ^ 2 / 2`. Rewrite using `[← Col.Hf_self_re]`. Simplify using `[Complex.add_re, Complex.mul_re]`. Unfold `GT.ptN2`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[h1, norm_mul, norm_mul, hka, one_mul, Complex.norm_exp, hre, mul_pow, mul_right_comm, hE, hn, mul_comm]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hBsymm : ∀ x : Fin (2 * Fintype.card (Fin (gB (IR I)))) → ℝ, (Col.bB hI hP).equivFun.symm x = ∑ i, x i • (Col.bB hI hP) i` using `fun x => Module.Basis.equivFun_symm_apply _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hBc : Continuous (Col.bB hI hP).equivFun.symm` using `(Col.bB hI hP).equivFun.symm.toLinearMap.continuous_of_finiteDimensional`. Establish `hcont : Continuous ((Col.YB hI hP 1).ptN2 1 (zmB hI s))`. Unfold `GT.ptN2`. Conclude with `(hF.1.continuous.norm.pow 2).mul (Real.continuous_exp.comp (continuous_const.mul (continuous_norm.pow 2)))`. Use `set g : (Fin (2 * Fintype.card (Fin (gB (IR I)))) → ℝ) → ℝ := fun x => (Col.YB hI hP 1).ptN2 1 (zmB hI s) ((Col.bB hI hP).equivFun.symm x) with hgdef`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgc : Continuous g` using `hcont.comp hBc`. Establish `hgper : ∀ (x : Fin (2 * Fintype.card (Fin (gB (IR I)))) → ℝ) (n : Fin (2 * Fintype.card (Fin (gB (IR I)))) → ℤ), g (x + fun i => (n i : ℝ)) = g x`. Introduce `x n`. Simplify using `only [hgdef, map_add]`. Apply `hper` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hBsymm]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Int.cast_smul_eq_zsmul ℝ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Use `set a0 := (Col.bB hI hP).equivFun A0 with ha0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hshift : ∀ x, (Col.YB hI hP 1).ptN2 1 (zmB hI s) (A0 + (Col.bB hI hP).equivFun.symm x) = g (x + a0)`. Introduce `x`. Simplify using `only [hgdef, map_add, ha0, LinearEquiv.symm_apply_apply]`. Rewrite using `[add_comm]`. Establish `hbox : ∫ x in {x : Fin (2 * Fintype.card (Fin (gB (IR I)))) → ℝ | ∀ i, x i ∈ Set.Ioc (0 : ℝ) 1}, g (x + a0) = ∫ x in {x : Fin (2 * Fintype.card (Fin (gB (IR I)))) → ℝ | ∀ i, x i ∈ Set.Ioc (0 : ℝ) 1}, g x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `tof_box_shift (fun x => (g x : ℂ)) (Complex.continuous_ofReal.comp hgc) (fun x n => by simp only [hgper]) a0`. Rewrite `h` using `[integral_complex_ofReal, integral_complex_ofReal]`. Conclude with `h` after adjusting the coercions. Establish `hcube : ∫ x in cubeIco (Fin (2 * Fintype.card (Fin (gB (IR I))))), g (x + a0) = ∫ x in cubeIco (Fin (2 * Fintype.card (Fin (gB (IR I))))), g x`. Rewrite using `[setIntegral_congr_set (cube_ae_eq _), setIntegral_congr_set (cube_ae_eq _)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `hbox`. Establish `hint : IntegrableOn (fun x => g (x + a0)) (cubeIco (Fin (2 * Fintype.card (Fin (gB (IR I))))))`. Use `((hgc.comp (continuous_id.add continuous_const)).continuousOn.integrableOn_compact (isCompact_univ_pi fun _ => isCompact_Icc (a := (0 : ℝ)) (b := 1))).mono_set ?_` and prove the remaining obligations. Rewrite using `[cubeIco_eq]`. Conclude with `Set.pi_mono fun _ _ => Set.Ico_subset_Icc_self`.
-
-Establish `hl2 : (Col.YB hI hP 1).l2 1 (zmB hI s) = ∫ x in cubeIco (Fin (2 * Fintype.card (Fin (gB (IR I))))), g (x + a0)`. Unfold `GT.l2`. Rewrite using `[avg_fd_cube, hcube]`. Both sides reduce to the same expression. Repeatedly rewrite using `[hshift]`.
-
-Rewrite using `[hl2, ofReal_integral_eq_lintegral_ofReal hint (Filter.Eventually.of_forall fun x => by simp only [hgdef]; unfold GT.ptN2; positivity)]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem YB_cube (hI : IsSplit P I) (hP : Ext.PackingCount) {s : (Fin 1 → Vsp X.dim) → ℂ}
     (hs : s ∈ X.Sec 1 1) (A0 : EuclideanSpace ℂ (Fin (gB (IR I)))) :

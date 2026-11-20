@@ -8,7 +8,7 @@ open scoped TensorProduct GlobalTheory.CuspRep.CuspidalL2GL
 open UpperTheory.V.Cj UpperTheory.V.Cj.H
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul φ v => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem cmp_rT {W : Type} [AddCommGroup W] [Module ℂ W] {d : ℕ} (T : W →ₗ[ℂ] W) (i : Fin d)
     (x : W ⊗[ℂ] (Fin d → ℂ)) : cmp i (T.rTensor _ x) = T (cmp i x) := by
@@ -24,11 +24,11 @@ private noncomputable def coords {E : Type} [Field E] [NumberField E] [IsTotally
   map_smul' c α := funext fun p => map_smul (Bor.cmp p.2) c _
 
 /- English proof (translation)
-Introduce `α β h`. Establish `hs : Submodule.span ℝ (Set.range e) = ⊤`. Use `eq_top_iff.2 fun X _ => ?_` and prove the remaining obligations. Rewrite using `[he X]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `AlternatingMap.coe_multilinearMap_injective` to reduce the goal to its premises. Use `MultilinearMap.ext_of_span_eq_top (g := fun _ => e) (fun _ => hs) fun I => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `α (fun j => e (I j)) = β (fun j => e (I j))`. Rewrite using `[← sum_cmp (α _), ← sum_cmp (β _)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congrFun h (I, i)` as an intermediate fact. Conclude with `congrArg (· ⊗ₜ[ℂ] _) this`.
+A detailed English derivation is pending.
 -/
 private theorem coords_inj {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} (Ξ : AlgRep E a) (q : ℕ)
     {n : ℕ} {e : Fin n → Herm E a} (he : IsFrame e) : Function.Injective (coords Ξ q e) := by
@@ -46,17 +46,13 @@ private theorem coords_inj {E : Type} [Field E] [NumberField E] [IsTotallyComple
   exact congrArg (· ⊗ₜ[ℂ] _) this
 
 /- English proof (translation)
-Introduce `E _ _ _ a Ξ r m q U hU`. Take `⟨n, e, he⟩` from `frameEx E a`. Take `⟨W, _, _, _, ρ, hρ, hk⟩` from `kType E a Ξ q`. Establish `hF` using `formsFiniteGL E a U hU W ρ hρ fun t u => ((m t).map (u + ·)).prod`. Use `set F := Submodule.span ℂ (GlobalTheory.Published.AutFinGL.forms U ρ fun t u => ((m t).map (u + ·)).prod) with hFd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : ∀ ω ∈ Submodule.span ℂ {ω : Co Ξ q | IsH r m ω ∧ ∀ u ∈ U, trans u ω = ω}, ∀ p, coords Ξ q e ω p ∈ F`. Introduce `ω hω p`. Proceed by induction on `hω using Submodule.span_induction with`. Consider the case `zero => rw [map_zero]`. Conclude with `F.zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `F.add_mem hx hy`. Consider the case `smul c x _ hx => rw [map_smul]`. Conclude with `F.smul_mem c hx`. Consider the case `mem ω hω`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨h, hu⟩` from `hω`. Take `⟨U', -, -, hl⟩` from `h.lev`. Use `Submodule.subset_span ⟨(h.aut _ _).1, fun k hk' => ?_, fun g => ?_, (h.aut _ _).2⟩` and prove the remaining obligations. Establish `h1` using `congrArg (fun η : Co Ξ q => cmp p.2 (η fun j => e (p.1 j))) (hu k hk')`. Conclude with `(cmp_rT _ _ _).symm.trans h1`.
-
-Take `⟨T, w, hT, hw⟩` from `hk ω hl.equiv (fun j => e (p.1 j)) p.2`. Use `GlobalTheory.Published.AutFinGL.type_of_map ρ T hT w g` as an intermediate fact. Rewrite `this` using `[hw]`. Conclude with `this`. Use `FiniteDimensional.of_injective (V₂ := (Fin q → Fin n) × Fin Ξ.d → F) (LinearMap.pi fun p => ((LinearMap.proj p ∘ₗ coords Ξ q e) ∘ₗ Submodule.subtype _).codRestrict F fun ω => hle ω.1 ω.2 p) fun α β h => Subtype.ext (coords_inj Ξ q he (funext fun p => ?_))` and prove the remaining obligations.
-
-Conclude with `congrArg Subtype.val (congrFun h p)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.H.harmFin :
     UpperTheory.V.Cj.H.HarmFin := by

@@ -8,11 +8,11 @@ open ReciprocityTheory.Gal
 namespace GlobalTheory.ShapeNeg
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ x`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨⟨a, b⟩, rfl⟩` from `IsLocalization.mk'_surjective (nonZeroDivisors O) y`. Establish `hb : (b : O) ≠ 0` using `nonZeroDivisors.ne_zero b.2`. Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hb hϖ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, Submodule.mem_one]`. Use `⟨a * ((u⁻¹ : Oˣ) : O), ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, IsLocalization.mul_mk'_eq_mk'_of_mul, IsLocalization.eq_mk'_iff_mul_eq, ← map_mul]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hu]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem ko_killed_by_pow_uniformizer : ∀ {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {ϖ : O}, Irreducible ϖ →
     ∀ x : Formalism.NG.KO O, ∃ n : ℕ, ϖ ^ n • x = 0 := by

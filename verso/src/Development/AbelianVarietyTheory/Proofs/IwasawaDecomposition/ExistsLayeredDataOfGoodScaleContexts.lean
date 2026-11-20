@@ -14,23 +14,21 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Fo
 namespace GlobalTheory.Fc
 
 /- English proof (translation)
-Introduce `hconds Q' QO h hq`. Take `⟨ε0, hε0, h⟩` from `h`. Take `⟨ε1, hε1, hq⟩` from `hq`. Use `⟨min ε0 ε1, lt_min hε0 hε1, fun eps C8 C5 c6 Cb he he0 he52 hC8 => ?_⟩` and prove the remaining obligations. Take `⟨K0, h⟩` from `h eps C8 C5 c6 Cb he (he0.trans (min_le_left _ _)) he52 hC8`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨K1, hq⟩` from `hq eps C8 C5 c6 Cb he (he0.trans (min_le_right _ _)) he52 hC8`. Use `⟨K0.sup K1, fun C hstd hC hL => ?_⟩` and prove the remaining obligations. Take `⟨c1, h⟩` from `h C hstd hC (large_of_sup hL).1`. Take `⟨c1', hq⟩` from `hq C hstd hC (large_of_sup hL).2`. Use `⟨max (max c1 c1') 0, fun cD hcD => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c2, h⟩` from `h cD (le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hcD)`. Take `⟨c2q, hq⟩` from `hq cD (le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hcD)`. Take `⟨c2', hlow⟩` from `GlobalTheory.EX.WinLow.window_lower hconds eps C he he52 hstd cD (le_trans (le_max_right _ _) hcD)`. Use `⟨max (max c2 c2q) c2', fun ch hch => ?_⟩` and prove the remaining obligations. Take `⟨x0, h⟩` from `h ch (le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hch)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hq` using `hq ch (le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hch)`. Take `⟨x1, hlow⟩` from `hlow ch (le_trans (le_max_right _ _) hch)`. Take `⟨x2, hint⟩` from `exists_du_nat eps he he52`. Establish `hq' : ∃ x3 : ℝ, Par.Pos ⟨eps, C, cD, ch, C5, c6, Cb⟩ → ∀ K : Ctx, Par.Of ⟨eps, C, cD, ch, C5, c6, Cb⟩ K → x3 ≤ K.s.x → ∀ β : BPt K, β.Is Q' → QO ⟨eps, C, cD, ch, C5, c6, Cb⟩ β.D β.O`. Distinguish the cases in `hp : Par.Pos ⟨eps, C, cD, ch, C5, c6, Cb⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Take `⟨x3, h3⟩` from `hq hp`. Conclude with `⟨x3, fun _ => h3⟩`. Conclude with `⟨0, fun hp' => absurd hp' hp⟩`. Take `⟨x3, hq'⟩` from `hq'`. Use `⟨1, max (max x0 x3) (max x1 x2), one_pos, fun s P a b c hs hx d3 => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hok` using `d3.ok`. Establish `hx0 : x0 ≤ s.x` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hx`. Establish `hx3 : x3 ≤ s.x` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hx`. Establish `hx1 : x1 ≤ s.x` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hx`. Establish `hx2 : x2 ≤ s.x` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨du, hpos, hdu⟩` from `hint s C cD ch P _ a b c hs hx2 hok`. Take `⟨hD, hDle⟩` from `GlobalTheory.Mem.Top.DsLow.DsP_pos_and_lower P`. Use `⟨du, DsP P, hpos, hD, fun u => ?_, fun Lv h1 h2 h3 => ?_⟩` and prove the remaining obligations. Rewrite using `[one_mul]`. Conclude with `hlow s P _ a b c du (DsP P) hs hx1 hok hdu hDle u`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `K : Ctx` to `⟨s, C, cD, ch, P, _, a, b, c, hstd, hok, Lv, fun u => by rw [h1]; exact hdu u, h2, h3⟩`. Take `⟨D, Y, g1, g2, g3, g4, ⟨X, f, T, co, hQ, he⟩, u1, u2, u3⟩` from `h K rfl rfl rfl hs hx0 d3`. Use `⟨D, Y, g1, g2, g3, g4, fun p p1 p2 p3 p4 => ⟨fun hp => ?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨rfl, he⟩` from `Sigma.mk.inj he`. Conclude with `hq' hp K ⟨rfl, rfl, rfl, hs, d3⟩ hx3 ⟨X, f, T, co, Y, eq_of_heq he, p, p1, p2, p3, p4, ⟨C5, c6, Cb, d3⟩, g2, g3, u1, u2⟩ hQ`.
-
-Conclude with `DQ.qd_setDiv D (Y.obj p) (nPrime p.L) p.ht ⟨u1, u2, u3⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem recExP_of_recAtG : StandardLattice.SiegelMassRatioCM → ∀ (Q' : V4.Slot) (QO : Par → ∀ D : D7, Obj D → Prop), RecAtG (fun K D Y => GroupRetwisting.FromCoreAt Q' K D Y ∧ DQ.TupUsedAt D ∧ DQ.TwAllAt D Y.nch Y.xd ∧ DQ.MtStableAt D) → (EvP fun κ K => ∀ β : BPt K, β.Is Q' → QO κ β.D β.O) → RecExP (fun κ => DQ.withQD (fun D O => κ.Pos → QO κ D O)) := by
   intro hconds Q' QO h hq

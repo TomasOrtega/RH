@@ -20,19 +20,19 @@ namespace Formalism.L2.Th1.H
 namespace UC
 
 /- English proof (translation)
-The claim follows from `KerPTh_of exp_series_entire latticeGaussSummable formNormEquiv`.
+A detailed English derivation is pending.
 -/
 theorem kerPTh : KerPTh := KerPTh_of exp_series_entire latticeGaussSummable formNormEquiv
 /- English proof (translation)
-The claim follows from `KerPNonzero_of diagonalIntegral`.
+A detailed English derivation is pending.
 -/
 theorem kerPNonzero : KerPNonzero := KerPNonzero_of diagonalIntegral
 /- English proof (translation)
-The claim follows from `GaussIntegrable_of formNormEquiv`.
+A detailed English derivation is pending.
 -/
 theorem gaussIntegrable : GaussIntegrable := GaussIntegrable_of formNormEquiv
 /- English proof (translation)
-The claim follows from `UnitaryGauss_of gaussSumEighthPower`.
+A detailed English derivation is pending.
 -/
 theorem unitaryGauss : UnitaryGauss := UnitaryGauss_of gaussSumEighthPower
 
@@ -42,16 +42,16 @@ variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [FiniteDimensiona
   {Λ : AddSubgroup V} {α : V → ℂ} {δ Ae : V ≃ₗ[ℂ] V}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hF.1, fun x hx z => by rw [h x hx]; exact hF.2 x hx z⟩`.
+Supply the required witnesses or components.
 -/
 theorem th_congr (α' : V → ℂ) (h : ∀ x ∈ Λ, α' x = α x) {F : V → ℂ} (hF : F ∈ Th H α Λ) :
     F ∈ Th H α' Λ :=
   ⟨hF.1, fun x hx z => by rw [h x hx]; exact hF.2 x hx z⟩
 
 /- English proof (translation)
-Rewrite using `[thIsom V V H H δ hU.isom Λ α (pullInv δ θ)]`. Establish `e : (fun v => pullInv δ θ (δ v)) = θ`. Use function extensionality and compare the values at `v`. Simplify using `[pullInv]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `th_congr _ hU.inv hθ`.
+A detailed English derivation is pending.
 -/
 theorem pull_mem (hU : UnitaryData H Λ α δ Ae) {θ : V → ℂ} (hθ : θ ∈ Th H α Λ) :
     pullInv δ θ ∈ Th H α (imgLat (δ : V →ₗ[ℂ] V) Λ) := by
@@ -63,13 +63,13 @@ theorem pull_mem (hU : UnitaryData H Λ α δ Ae) {θ : V → ℂ} (hθ : θ ∈
   exact th_congr _ hU.inv hθ
 
 /- English proof (translation)
-Take `⟨w, z, hwz⟩` from `kerPNonzero V H Λ α hU.herm hU.pos hL hU.selfDual hU.semi`. Take `⟨θ₀, hdef⟩ : ∃ θ₀ : V → ℂ, θ₀ = fun z => kerP H α Λ z w` from `⟨_, rfl⟩`. Establish `hθ₀ : θ₀ ∈ Th H α Λ`. Rewrite using `[hdef]`. Conclude with `(kerPTh V H Λ α hU.herm hU.pos hL hU.semi w).2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hne : θ₀ ≠ 0`. Introduce `h`. Apply `hwz` to reduce the goal to its premises. Use `congrFun h z` as an intermediate fact. Rewrite `this` using `[hdef]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `this`. Take `⟨-, hline2⟩` from `lineTransport V H hU.herm Λ (imgLat (δ : V →ₗ[ℂ] V) Λ) α hU.selfDual (Cay.selfDual_img H Λ δ hU.isom hU.selfDual) hU.semi hU.semi' hU.idx₂ hU.idx₁ θ₀ hθ₀ hne (hLine θ₀ hθ₀ hne)`. Take `⟨c, hc⟩` from `hline2 _ (pull_mem hU hθ₀)`. Use `⟨c, fun θ hθ => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `hLine θ₀ hθ₀ hne θ hθ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Inv.inter_smul, smul_comm, ← hc]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_const (hL : IsLat Λ) (hU : UnitaryData H Λ α δ Ae) (hLine : AtMostLine H α Λ) :
     ∃ c : ℂ, ∀ θ ∈ Th H α Λ, pullInv δ θ = c • inter H α Λ (imgLat (δ : V →ₗ[ℂ] V) Λ) θ := by
@@ -94,9 +94,9 @@ theorem exists_const (hL : IsLat Λ) (hU : UnitaryData H Λ α δ Ae) (hLine : A
   rfl
 
 /- English proof (translation)
-Take `⟨-, hidx⟩` from `unitary_index V H Λ α δ Ae hL hU`. Introduce `h0`. Rewrite `hidx` using `[h0]`. Establish `hdt0 : LinearMap.det (Ae : V →ₗ[ℂ] V) ≠ 0` using `(LinearEquiv.isUnit_det' Ae).ne_zero`. Establish `h1 : (relIdx (imgLat (δ : V →ₗ[ℂ] V) Λ) Λ : ℝ) ≠ 0` using `by exact_mod_cast hU.idx₁`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ‖LinearMap.det (Ae : V →ₗ[ℂ] V)‖ ^ 2 ≠ 0` using `pow_ne_zero _ (norm_ne_zero_iff.mpr hdt0)`. Conclude with `mul_ne_zero h1 h2 (by simpa using hidx.symm)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem latA_idx_ne (hL : IsLat Λ) (hU : UnitaryData H Λ α δ Ae) : relIdx (latA Λ δ Ae) Λ ≠ 0 := by
   obtain ⟨-, hidx⟩ := unitary_index V H Λ α δ Ae hL hU
@@ -108,7 +108,7 @@ theorem latA_idx_ne (hL : IsLat Λ) (hU : UnitaryData H Λ α δ Ae) : relIdx (l
   exact mul_ne_zero h1 h2 (by simpa using hidx.symm)
 
 /- English proof (translation)
-Take `⟨-, hidx⟩` from `unitary_index V H Λ α δ Ae hL hU`. Rewrite using `[(repsExist V _ _ (latA_idx_ne hL hU)).2 S hS, hidx, Real.sqrt_mul (Nat.cast_nonneg _), Real.sqrt_sq (norm_nonneg _)]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sqrt_card (hL : IsLat Λ) (hU : UnitaryData H Λ α δ Ae) {S : Finset V}
     (hS : IsReps (latA Λ δ Ae) Λ S) :
@@ -121,11 +121,11 @@ theorem sqrt_card (hL : IsLat Λ) (hU : UnitaryData H Λ α δ Ae) {S : Finset V
 end Line
 
 /- English proof (translation)
-Establish `h8` using `unitaryGauss V H Λ α δ Ae hU S hS`. Establish `h1 : ‖gaussC H α Ae S‖ = 1`. Use `congrArg norm h8` as an intermediate fact. Rewrite `this` using `[norm_pow, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) (by norm_num)).mp this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hs : Real.sqrt S.card ≠ 0`. Introduce `h0`. Rewrite `h1` using `[gaussC, h0]`. Simplify using `at h1`. Rewrite `h1` using `[gaussC, norm_mul, norm_inv, Complex.norm_real, Real.norm_of_nonneg (Real.sqrt_nonneg _)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear denominators, using `at h1` for the nonvanishing conditions. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem norm_sum_phi {V : Type} [AddCommGroup V] [Module ℂ V] {H : Sesq V} {Λ : AddSubgroup V} {α : V → ℂ}
     {δ Ae : V ≃ₗ[ℂ] V} (hU : UnitaryData H Λ α δ Ae) {S : Finset V} (hS : IsReps (latA Λ δ Ae) Λ S) :
@@ -144,17 +144,15 @@ theorem norm_sum_phi {V : Type} [AddCommGroup V] [Module ℂ V] {H : Sesq V} {Λ
   exact h1
 
 /- English proof (translation)
-Take `⟨c₀, C₀, hc₀, -, hform⟩` from `formNormEquiv V H hH hP`. Take `⟨u, hu, hule⟩` from `latticeGaussSummable V Λ hL (Real.pi / 2 * c₀) ‖y‖ (by positivity)`. Establish `hfin : μ D' < ⊤` using `hb.measure_lt_top`. Establish `: IsFiniteMeasure (μ.restrict D')` using `⟨by simpa using hfin⟩`. Establish `hbound : ∀ x : Λ, ‖diagCoef H α y (x : V)‖ ≤ u x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x`. Rewrite using `[norm_diagCoef H α y x hy (hα.1 x x.2)]`. Use `le_trans ?_ (hule x (-y) (by rw [norm_neg]))` and prove the remaining obligations. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `h` using `(hform (y + (x : V))).1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `e : (x : V) - -y = y + (x : V)` using `by abel`. Rewrite using `[e]`. Establish `hpi : 0 < Real.pi / 2` using `by positivity`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h hpi.le]`. Establish `hn : ∀ (x : Λ) (z : V), ‖diagCoef H α y (x : V) * Complex.exp (2 * (Real.pi : ℂ) * Complex.I * (altE H (y + (x : V)) z : ℂ))‖ ≤ u x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Introduce `x z`. Rewrite using `[norm_mul, norm_char, mul_one]`. Conclude with `hbound x`. Establish `hcont : Continuous fun z => ∑' x : Λ, diagCoef H α y (x : V) * Complex.exp (2 * (Real.pi : ℂ) * Complex.I * (altE H (y + (x : V)) z : ℂ))`. Use `continuous_tsum (fun x => ?_) hu hn` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `continuous_const.mul (Complex.continuous_exp.comp ?_)` and prove the remaining obligations. Conclude with `continuous_const.mul (Complex.continuous_ofReal.comp (continuous_altE H hH _))`. Establish `e : (fun z => α y * opU H y (fun v => kerP H α Λ v z) z * (wt H z : ℂ)) = fun z => ∑' x : Λ, diagCoef H α y (x : V) * Complex.exp (2 * (Real.pi : ℂ) * Complex.I * (altE H (y + (x : V)) z : ℂ))`. Use function extensionality and compare the values at `fun z => diag_expansion H hH α Λ y z`. Rewrite using `[e]`.
-
-Use `Integrable.of_bound hcont.aestronglyMeasurable (∑' x, u x) (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Conclude with `tsum_of_norm_bounded hu.hasSum (fun x => hn x z)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem diag_integrable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [FiniteDimensional ℂ V]
     [MeasurableSpace V] [BorelSpace V] (μ : Measure V) [μ.IsAddHaarMeasure] (H : Sesq V) (Λ : AddSubgroup V)
@@ -195,17 +193,17 @@ theorem diag_integrable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [F
   exact tsum_of_norm_bounded hu.hasSum (fun x => hn x z)
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `exists_const hL hU hLine`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Take `⟨S₂, hS₂⟩` from `(repsExist V Λ (imgLat (δ : V →ₗ[ℂ] V) Λ) hU.idx₂).1`. Establish `hsd2` using `Cay.selfDual_img H Λ δ hU.isom hU.selfDual`. Take `⟨r, hr⟩ : ∃ r : ℂ, r = ((Real.sqrt (relIdx Λ (imgLat (δ : V →ₗ[ℂ] V) Λ)) : ℝ) : ℂ)⁻¹` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hr]`. Establish `hpt : ∀ z, kerP H α Λ (δ.symm z) z * (wt H z : ℂ) = c * r * ∑ y ∈ S₂, α y * opU H y (fun v => kerP H α Λ v z) z * (wt H z : ℂ)`. Introduce `z`. Establish `hm` using `(kerPTh V H Λ α hU.herm hU.pos hL hU.semi z).2`. Establish `h1` using `congrFun (hc _ hm) z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `interReps V H hU.herm Λ (imgLat (δ : V →ₗ[ℂ] V) Λ) α hU.semi' _ hm.2 S₂ hS₂ z`. Establish `h3 : pullInv δ (fun v => kerP H α Λ v z) z = kerP H α Λ (δ.symm z) z` using `rfl`. Rewrite `h1` using `[h3, Pi.smul_apply, h2, ← hr, sumU, smul_eq_mul]`. Rewrite using `[h1, ← Finset.sum_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hint : ∀ y ∈ S₂, Integrable (fun z => α y * opU H y (fun v => kerP H α Λ v z) z * (wt H z : ℂ)) (μ.restrict D')` using `fun y hy => diag_integrable μ H Λ α hU.herm hU.pos hL hU.semi D' hb y (hU.semi'.1 y (hS₂.1 y hy))`. Establish `hleft` using `unfoldingIntegral V μ H Λ α δ Ae hL hU D' hD' hb S hS`. Rewrite `hleft` using `[(cayleyGaussianIntegral V μ H hU.herm hU.pos δ Ae hU.isom hU.cay).2]`. Rewrite using `[← hleft]`. Repeatedly rewrite using `[hpt]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[integral_const_mul, integral_finsetSum _ hint]`. Establish `hdiag` using `diagonalIntegral V μ H Λ (imgLat (δ : V →ₗ[ℂ] V) Λ) α hU.herm hU.pos hL hU.selfDual hsd2 hU.semi hU.semi' D' hD' hb`. Take `⟨y₀, hy₀, hy₀Λ, hsum⟩` from `Inv.sum_reps hS₂ (fun y => ∫ z in D', α y * opU H y (fun v => kerP H α Λ v z) z * (wt H z : ℂ) ∂μ) (fun y hy hyΛ => by`. Use `hdiag y (hS₂.1 y hy)` as an intermediate fact. Rewrite `this` using `[if_neg hyΛ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this)`. Rewrite using `[hsum]`. Use `hdiag y₀ (hS₂.1 y₀ hy₀)` as an intermediate fact. Rewrite `this` using `[if_pos hy₀Λ]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem const_value {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [FiniteDimensional ℂ V]
     [MeasurableSpace V] [BorelSpace V] (μ : Measure V) [μ.IsAddHaarMeasure] {H : Sesq V} {Λ : AddSubgroup V}

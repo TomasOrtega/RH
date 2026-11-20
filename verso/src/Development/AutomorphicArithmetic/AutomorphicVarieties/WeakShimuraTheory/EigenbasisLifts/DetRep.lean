@@ -17,7 +17,7 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.CayleyH
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial Matrix UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Ws.Eb GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Proceed by induction on `z using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `single g r => ext i j`. Simplify using `[W.GDet.repAlg, Algebra.smul_def]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 private theorem detRep_lift {n : ℕ} {B C G : Type} [CommRing B] [CommRing C] [Algebra B C] [Group G]
     (ρ : G →* Matrix (Fin n) (Fin n) C) (z : MonoidAlgebra B G) :
@@ -28,7 +28,7 @@ private theorem detRep_lift {n : ℕ} {B C G : Type} [CommRing B] [CommRing C] [
   | single g r => ext i j; simp [W.GDet.repAlg, Algebra.smul_def]
 
 /- English proof (translation)
-Rewrite using `[← (CA.d_toDet _ y).1, CA.d_toDet_ofRep.1, (CA.d_ofRep _ _ _).1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem detRep_chi {n : ℕ} {C G : Type} [CommRing C] [Group G]
     (ρ : G →* Matrix (Fin n) (Fin n) C) (y : MonoidAlgebra C G) :
@@ -36,7 +36,7 @@ private theorem detRep_chi {n : ℕ} {C G : Type} [CommRing C] [Group G]
   rw [← (CA.d_toDet _ y).1, CA.d_toDet_ofRep.1, (CA.d_ofRep _ _ _).1]
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.CayleyHamiltonSymmetric.detRep`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Eb.detRep :
     ∀ {A k G : Type} [CommRing A] [IsLocalRing A] [IsNoetherianRing A] [IsAdicComplete (maximalIdeal A) A] [Field k] (f : A →+* k) [IsLocalHom f] [Group G] {n : ℕ} (D : W.GDet n A G) (ρ : G →* GL (Fin n) k), 1 ≤ n → Function.Surjective f → Full ρ → D.map f = W.GDet.ofRep (W.mat ρ) →

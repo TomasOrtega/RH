@@ -9,7 +9,7 @@ open LateralTheory.KummerTheory.LHCut
 variable {Λ : Type} [CommRing Λ]
 
 /- English proof (translation)
-Use `show (F.obj.map h.op).hom ((F.obj.map g.op).hom a) = (F.obj.map (h ≫ g).op).hom a`. Rewrite using `[op_comp, Functor.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sres_comp {F : Shv Λ} {W V U : Scheme.{0}} (h : W ⟶ V) (g : V ⟶ U) (a : Sec F U) :
     Sec.res h (Sec.res g a) = Sec.res (h ≫ g) a := by
@@ -18,7 +18,7 @@ theorem sres_comp {F : Shv Λ} {W V U : Scheme.{0}} (h : W ⟶ V) (g : V ⟶ U) 
   rfl
 
 /- English proof (translation)
-The claim follows from `(congrArg (fun k => k.hom a) (φ.hom.naturality g.op)).symm`.
+A detailed English derivation is pending.
 -/
 theorem smap_res {F G : Shv Λ} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (a : Sec F U) :
     Sec.res g (Sec.map φ a) = Sec.map φ (Sec.res g a) :=
@@ -31,14 +31,14 @@ theorem smap_comp {F G H : Shv Λ} (φ : F ⟶ G) (ψ : G ⟶ H) {U : Scheme.{0}
     Sec.map ψ (Sec.map φ a) = Sec.map (φ ≫ ψ) a := rfl
 
 /- English proof (translation)
-Rewrite using `[smap_comp, HomologicalComplex.d_comp_d]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dd {C : Cx Λ} (i j k : ℤ) {U : Scheme.{0}} (a : Sec (C.X i) U) :
     Sec.map (C.d j k) (Sec.map (C.d i j) a) = 0 := by
   rw [smap_comp, HomologicalComplex.d_comp_d]; rfl
 
 /- English proof (translation)
-Substitute `ht` using the available equality. Substitute `hw` using the available equality. Rewrite using `[μ.leibniz, ha, map_zero, LinearMap.zero_apply, zero_add]`.
+Substitute using the available equality. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem leib' {I J K : Cx Λ} (μ : Pair I J K) (U : Scheme.{0}) (s t w : ℤ) (h : s + t = w) (a : Sec (I.X s) U)
     (b : Sec (J.X t) U) (ha : Sec.map (I.d s (s + 1)) a = 0) (t' w' : ℤ) (ht : t + 1 = t') (hw : w + 1 = w') :
@@ -47,21 +47,21 @@ theorem leib' {I J K : Cx Λ} (μ : Pair I J K) (U : Scheme.{0}) (s t w : ℤ) (
   rw [μ.leibniz, ha, map_zero, LinearMap.zero_apply, zero_add]
 
 /- English proof (translation)
-Simplify using `only [rst, pullback.map]`. Use `erw [pullback.lift_fst]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rst_fst {X S : Scheme.{0}} (p : X ⟶ S) {V U : Over S} (g : V ⟶ U) :
     rst p g ≫ pullback.fst p U.hom = pullback.fst p V.hom := by
   simp only [rst, pullback.map]; erw [pullback.lift_fst]; simp
 
 /- English proof (translation)
-Simplify using `only [rst, pullback.map]`. Use `erw [pullback.lift_snd]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rst_snd {X S : Scheme.{0}} (p : X ⟶ S) {V U : Over S} (g : V ⟶ U) :
     rst p g ≫ pullback.snd p U.hom = pullback.snd p V.hom ≫ g.left := by
   simp only [rst, pullback.map]; erw [pullback.lift_snd]
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, rst_fst, rst_fst, rst_fst]`. Rewrite using `[Category.assoc, rst_snd, rst_snd, ← Category.assoc, rst_snd, Category.assoc, Over.comp_left]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem rst_comp {X S : Scheme.{0}} (p : X ⟶ S) {W V U : Over S} (g' : W ⟶ V) (g : V ⟶ U) :
     rst p (g' ≫ g) = rst p g' ≫ rst p g := by
@@ -70,36 +70,36 @@ theorem rst_comp {X S : Scheme.{0}} (p : X ⟶ S) {W V U : Over S} (g' : W ⟶ V
   · rw [Category.assoc, rst_snd, rst_snd, ← Category.assoc, rst_snd, Category.assoc, Over.comp_left]
 
 /- English proof (translation)
-The claim follows from `map_add _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem smap_add {F G : Shv Λ} (φ : F ⟶ G) {U : Scheme.{0}} (a b : Sec F U) :
     Sec.map φ (a + b) = Sec.map φ a + Sec.map φ b := map_add _ _ _
 /- English proof (translation)
-The claim follows from `map_sub _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem smap_sub {F G : Shv Λ} (φ : F ⟶ G) {U : Scheme.{0}} (a b : Sec F U) :
     Sec.map φ (a - b) = Sec.map φ a - Sec.map φ b := map_sub _ _ _
 /- English proof (translation)
-The claim follows from `map_smul _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem smap_smul {F G : Shv Λ} (φ : F ⟶ G) {U : Scheme.{0}} (c : ULift.{1} Λ) (a : Sec F U) :
     Sec.map φ (c • a) = c • Sec.map φ a := map_smul _ _ _
 /- English proof (translation)
-The claim follows from `map_sum _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem smap_sum {F G : Shv Λ} (φ : F ⟶ G) {U : Scheme.{0}} {ι : Type*} (t : Finset ι) (f : ι → Sec F U) :
     Sec.map φ (∑ i ∈ t, f i) = ∑ i ∈ t, Sec.map φ (f i) := map_sum _ _ _
 /- English proof (translation)
-The claim follows from `map_sub _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem sres_sub {F : Shv Λ} {V U : Scheme.{0}} (g : V ⟶ U) (a b : Sec F U) :
     Sec.res g (a - b) = Sec.res g a - Sec.res g b := map_sub _ _ _
 /- English proof (translation)
-The claim follows from `map_zero _`.
+A detailed English derivation is pending.
 -/
 theorem sres_zero {F : Shv Λ} {V U : Scheme.{0}} (g : V ⟶ U) : Sec.res g (0 : Sec F U) = 0 := map_zero _
 /- English proof (translation)
-The claim follows from `map_sum _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem sres_sum {F : Shv Λ} {V U : Scheme.{0}} (g : V ⟶ U) {ι : Type*} (t : Finset ι) (f : ι → Sec F U) :
     Sec.res g (∑ i ∈ t, f i) = ∑ i ∈ t, Sec.res g (f i) := map_sum _ _ _
@@ -108,21 +108,21 @@ section Main
 variable {I J K : Cx Λ} {r : ℕ → ℕ} {M : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Units.smul_def, Units.smul_def]`. Conclude with `map_zsmul _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem usmul_map {F G : Shv Λ} (φ : F ⟶ G) {U : Scheme.{0}} (u : ℤˣ) (a : Sec F U) :
     Sec.map φ (u • a) = u • Sec.map φ a := by
   rw [Units.smul_def, Units.smul_def]; exact map_zsmul _ _ _
 
 /- English proof (translation)
-Rewrite using `[Units.smul_def, Units.smul_def]`. Conclude with `map_zsmul _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem usmul_res {F : Shv Λ} {V U : Scheme.{0}} (g : V ⟶ U) (u : ℤˣ) (a : Sec F U) :
     Sec.res g (u • a) = u • Sec.res g a := by
   rw [Units.smul_def, Units.smul_def]; exact map_zsmul _ _ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a s`. Simplify using `only [dS, Pi.add_apply]`. Rewrite using `[smap_add, smul_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem dS_add (n m : ℤ) {U : Scheme.{0}} (b b' : FinalTheorems J r M n U) : dS n m (b + b') = dS n m b + dS n m b' := by
   funext a s
@@ -130,7 +130,7 @@ theorem dS_add (n m : ℤ) {U : Scheme.{0}} (b b' : FinalTheorems J r M n U) : d
   rw [smap_add, smul_add]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a s`. Simplify using `only [dS, Pi.smul_apply]`. Rewrite using `[smap_smul, Units.smul_def, Units.smul_def, smul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem dS_smul (n m : ℤ) {U : Scheme.{0}} (c : ULift.{1} Λ) (b : FinalTheorems J r M n U) : dS n m (c • b) = c • dS n m b := by
   funext a s
@@ -138,7 +138,7 @@ theorem dS_smul (n m : ℤ) {U : Scheme.{0}} (c : ULift.{1} Λ) (b : FinalTheore
   rw [smap_smul, Units.smul_def, Units.smul_def, smul_comm]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a s`. Simplify using `only [dS, Pi.zero_apply]`. Rewrite using `[usmul_map, dd, smul_zero, smul_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem dS_dS (n m k : ℤ) {U : Scheme.{0}} (b : FinalTheorems J r M n U) : dS m k (dS n m b) = 0 := by
   funext a s
@@ -148,23 +148,23 @@ theorem dS_dS (n m k : ℤ) {U : Scheme.{0}} (b : FinalTheorems J r M n U) : dS 
 variable (μ : Pair I J K) {X S : Scheme.{0}} (p : X ⟶ S) (γ : ∀ a : ℕ, Fin (r a) → Sec (I.X (a : ℤ)) X)
 
 /- English proof (translation)
-Simplify using `only [Phi, Pi.add_apply, map_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Phi_add (n w : ℤ) (h : n = w) (U : Over S) (b b' : FinalTheorems J r M n U.left) :
     Phi μ p γ n w h U (b + b') = Phi μ p γ n w h U b + Phi μ p γ n w h U b' := by
   simp only [Phi, Pi.add_apply, map_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [Phi, Pi.smul_apply, map_smul, Finset.smul_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Phi_smul (n w : ℤ) (h : n = w) (U : Over S) (c : ULift.{1} Λ) (b : FinalTheorems J r M n U.left) :
     Phi μ p γ n w h U (c • b) = c • Phi μ p γ n w h U b := by
   simp only [Phi, Pi.smul_apply, map_smul, Finset.smul_sum]
 
 /- English proof (translation)
-Simplify using `only [Phi, dS]`. Rewrite using `[smap_sum]`. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[smap_sum]`. Use `Finset.sum_congr rfl (fun s _ => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ha : Sec.map (I.d ((a : ℕ) : ℤ) ((a : ℕ) + 1)) (Sec.res (pullback.fst p U.hom) (γ a s)) = 0`. Rewrite using `[← smap_res, hγ]`. Conclude with `sres_zero _`. Rewrite using `[leib' μ _ _ _ _ _ _ _ ha (n' - ((a : ℕ) : ℤ)) w' (by omega) hw, usmul_res, smap_res, Units.smul_def, Units.smul_def, map_zsmul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem d_Phi (hγ : Closed γ) (n w : ℤ) (h : n = w) (n' w' : ℤ) (hn : n + 1 = n') (hw : w + 1 = w') (U : Over S)
     (b : FinalTheorems J r M n U.left) :
@@ -180,9 +180,9 @@ theorem d_Phi (hγ : Closed γ) (n w : ℤ) (h : n = w) (n' w' : ℤ) (hn : n + 
     Units.smul_def, map_zsmul]
 
 /- English proof (translation)
-Simplify using `only [Phi]`. Rewrite using `[sres_sum]`. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[sres_sum]`. Use `Finset.sum_congr rfl (fun s _ => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[μ.nat, sres_comp, sres_comp, sres_comp, rst_fst, rst_snd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Phi_res (n w : ℤ) (h : n = w) {V U : Over S} (g : V ⟶ U) (b : FinalTheorems J r M n U.left) :
     Sec.res (rst p g) (Phi μ p γ n w h U b) = Phi μ p γ n w h V (fun a s => Sec.res g.left (b a s)) := by
@@ -196,17 +196,15 @@ theorem Phi_res (n w : ℤ) (h : n = w) {V U : Over S} (g : V ⟶ U) (b : FinalT
 end Main
 
 /- English proof (translation)
-Introduce `Λ _ I J K μ X S p r M γ hγ j j' h U`. Use `⟨⟨fun x y => ?_, fun c x => ?_⟩, fun j'' h' x => ?_, fun V g => ⟨⟨fun x y => ?_, fun c x => ?_⟩, fun x => ?_, fun W g' x => ?_⟩⟩` and prove the remaining obligations. Use `Prod.ext (dS_add _ _ _ _) ?_ show Phi μ p γ _ _ h U (x.1 + y.1) - Sec.map (K.d j j') (x.2 + y.2) = _` and prove the remaining obligations. Rewrite using `[Phi_add, smap_add, add_sub_add_comm]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `Prod.ext (dS_smul _ _ _ _) ?_ show Phi μ p γ _ _ h U (c • x.1) - Sec.map (K.d j j') (c • x.2) = _` and prove the remaining obligations. Rewrite using `[Phi_smul, smap_smul, ← smul_sub]`. Both sides reduce to the same expression. Use `Prod.ext (dS_dS _ _ _ _) ?_ show Phi μ p γ _ _ h' U (dS _ _ x.1) - Sec.map (K.d j' j'') (Phi μ p γ _ _ h U x.1 - Sec.map (K.d j j') x.2) = 0` and prove the remaining obligations. Rewrite using `[smap_sub, d_Phi μ p γ hγ (j + 1) j' h (j' + 1) j'' (by omega) h', dd, sub_zero, sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Prod.ext ?_ (map_add _ _ _)` and prove the remaining obligations. Use function extensionality and compare the values at `a s`. Conclude with `map_add _ _ _`. Use `Prod.ext ?_ (map_smul _ _ _)` and prove the remaining obligations. Use function extensionality and compare the values at `a s`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `map_smul _ _ _`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `a s show Sec.res g.left (_ • Sec.map _ _) = _ • Sec.map _ (Sec.res g.left _)`. Rewrite using `[usmul_res, smap_res]`. Use `show Sec.res (rst p g) (Phi μ p γ _ _ h U x.1 - Sec.map (K.d j j') x.2) = Phi μ p γ _ _ h V (fun a s => Sec.res g.left (x.1 a s)) - Sec.map (K.d j j') (Sec.res (rst p g) x.2)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[sres_sub, Phi_res, smap_res]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `a s show Sec.res (g' ≫ g).left _ = Sec.res g'.left (Sec.res g.left _)`. Rewrite using `[Over.comp_left, sres_comp]`. Use `show Sec.res (rst p (g' ≫ g)) x.2 = Sec.res (rst p g') (Sec.res (rst p g) x.2)`.
-
-Rewrite using `[rst_comp, sres_comp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coneAlg_of : ConeAlg := by
   intro Λ _ I J K μ X S p r M γ hγ j j' h U

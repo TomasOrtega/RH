@@ -4,17 +4,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open TensorProduct IsLocalRing Polynomial UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.CA
 
 /- English proof (translation)
-Introduce `n A E _ _ _ D D' M hM h`. Use `Det.ext' fun S _ _ y => ?_` and prove the remaining obligations. Establish `h1 : ∀ x : E, (1 : S) ⊗ₜ[A] x ∈ Submodule.span S ((fun z : E => (1 : S) ⊗ₜ[A] z) '' M)`. Introduce `x`. Establish `hx : x ∈ Submodule.span A M` using `hM ▸ Submodule.mem_top`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem z hz => exact Submodule.subset_span ⟨z, hz, rfl⟩`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [tmul_add]`. Conclude with `add_mem ha hb`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul a z _ hz => rw [tmul_smul]`. Conclude with `Submodule.smul_of_tower_mem _ a hz`. Establish `h2 : y ∈ Submodule.span S ((fun z : E => (1 : S) ⊗ₜ[A] z) '' M)`. Proceed by induction on `y with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b ha hb => exact add_mem ha hb`. Consider the case `tmul s x`. Establish `: s ⊗ₜ[A] x = s • ((1 : S) ⊗ₜ[A] x)` using `by simp [smul_tmul']`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ s (h1 x)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨k, s, g, rfl⟩` from `Submodule.mem_span_set'.1 h2`. Use `choose x hxM hx using fun a => (g a).2`. Establish `h3 : ∑ a, s a • (g a : S ⊗[A] E) = Algebra.TensorProduct.map (MvPolynomial.aeval s) (AlgHom.id A E) (Det.gen x)`. Simplify using `only [Det.gen, map_sum, Algebra.TensorProduct.map_tmul, MvPolynomial.aeval_X, AlgHom.id_apply]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[← hx a]`. Simplify using `[smul_tmul']`. Rewrite using `[h3, D.nat, D'.nat]`. Conclude with `congrArg _ (h k x hxM)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CA.d_poly_ext :
     ∀ {n : ℕ} {A E : Type} [CommRing A] [Ring E] [Algebra A E] (D : Det n A E) (D' : Det n A E) (M : Set E), Submodule.span A M = ⊤ → (∀ (k : ℕ) (x : Fin k → E), (∀ a, x a ∈ M) → D.poly x = D'.poly x) → D = D' := by

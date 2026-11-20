@@ -11,15 +11,15 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 namespace GlobalTheory.OrthogonalDesignFromSize
 
 /- English proof (translation)
-Introduce `hC D hN9 hT i k hk hHG r ρ hr π hπ hd _`. Establish `hdec : ∃ e, GlobalTheory.IndefiniteRowSideFullHecke.CongruenceModuleMatrices.IsDecomp (t` using `D.R.t) (r π) (ρ π) (D.nd.chi i) e := hd`. Establish `hcont : Continuous (fun g => ((ρ π g : GL (Fin D.R.r) (D.nd.O i)) : Matrix (Fin D.R.r) (Fin D.R.r) (D.nd.O i)))` using `GlobalTheory.BlockJumpsCompare.continuous_rho D.nd i r ρ π (hr π) hd`. Establish `hrb : IsRhoBar D.nd i (redRep D.nd i (ρ π))`. Use `⟨isOpen_ker_redRep D i (ρ π) hcont, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x w hw B σ hB hσ`. Establish `e2` using `congrArg (Polynomial.map (IsLocalRing.residue (D.nd.O i))) (charpoly_of_decomp D i r ρ π hd σ)`. Rewrite `e2` using `[Polynomial.map_mul, Polynomial.map_prod, ← Matrix.charpoly_map, ← Matrix.charpoly_map]`. Rewrite using `[heckePol_res D i x π w, ← (hr π).2.2 w hw B σ hB hσ, ← Matrix.charpoly_map]`. Use `(e2.trans ?_).symm` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hirr` using `(hN9 i hHG _ hrb).1`. Establish `hpos : 0 < D.R.r`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `D.R.two_le_m` as an intermediate fact. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers. Establish `habs : AbsIrrSub (mapRep (IsLocalRing.residue (D.nd.O i)) (ρ π)) ⊤` using `GlobalTheory.ResAbsIrrGood.absIrrSub_top_of_irred (D.naut.kFbar i) hpos _ fun W hW => hirr W fun g _ x hx => hW g x hx`. Establish `hlive : Live D.nd i` using `⟨π, hπ, r π, ρ π, hr π, hdec, habs⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨r₀, ρ₀, hr₀, hw⟩` from `hT i hlive`. Take `⟨S, hS, hg⟩` from `GlobalTheory.T.exists_globalObjects_every_family_wild hC D.nd i r₀ ρ₀ hr₀ hw r ρ hr π hπ hdec`. Conclude with `⟨S, hS, hg.2 ⟨k, hk⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem main : GlobalTheory.TwSys.Cheb → ∀ D : D7, AutomorphicSideWildInertia.ResidualIrreducibleGood D → TakenAll D → TypePrimeCongruences.TypePrimeWildIdempotentChoice D := by
   intro hC D hN9 hT i k hk hHG r ρ hr π hπ hd _

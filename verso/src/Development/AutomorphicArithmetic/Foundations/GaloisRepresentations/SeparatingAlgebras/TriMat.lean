@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Separ
 open UpperTheory.Gal.Gen
 
 /- English proof (translation)
-Establish `hv : v = ∑ x, v x • (Pi.single x 1 : X → k)`. Use extensionality with `y`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `conv_rhs => rw [hv]`. Simplify using `[map_sum, Finsupp.finset_sum_apply, mul_comm]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma repr_sum_mul {k X ι : Type*} [Field k] [Fintype X] [DecidableEq X]
     (b : Module.Basis ι k (X → k)) (v : X → k) (i : ι) :
@@ -15,7 +15,7 @@ private lemma repr_sum_mul {k X ι : Type*} [Field k] [Fintype X] [DecidableEq X
   simp [map_sum, Finsupp.finset_sum_apply, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_assoc, Matrix.mul_apply, ← repr_sum_mul b]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private lemma conj_apply {k X ι : Type*} [Field k] [Fintype X] [DecidableEq X] [Fintype ι]
     (b : Module.Basis ι k (X → k)) (M : Matrix X X k) (i j : ι) :
@@ -26,19 +26,19 @@ private lemma conj_apply {k X ι : Type*} [Field k] [Fintype X] [DecidableEq X] 
   simp [Matrix.mul_apply, Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Introduce `hF l _ H _ hH X _ _ ρ`. Set `ρ' : Representation (ZMod l) H (X → ZMod l)` to `((Matrix.toLinAlgEquiv' (R := ZMod l) (n := X)).toAlgHom.toRingHom.toMonoidHom).comp (((Int.castRingHom (ZMod l)).mapMatrix (m := X)).toMonoidHom.comp ρ)`. Establish `hρ' : ∀ h v, ρ' h v = ((ρ h).map (Int.castRingHom (ZMod l))).mulVec v`. Introduce `h v`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 
-Take `⟨b₀, hb₀⟩` from `hF l H hH (X → ZMod l) ρ'`. Establish `hcard : Module.finrank (ZMod l) (X → ZMod l) = Fintype.card X` using `Module.finrank_fintype_fun_eq_card _`. Set `e : Fin (Module.finrank (ZMod l) (X → ZMod l)) ≃ Fin (Fintype.card X)` to `finCongr hcard`. Set `b` to `b₀.reindex e`. Establish `hb : ∀ h i j, j ≤ i → b.repr (ρ' h (b j) - b j) i = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `h i j hij`. Use `hb₀ h (e.symm i) (e.symm j) (by simpa [e] using hij)` as an intermediate fact. Simplify `this` using `[b]`. Set `Q : Matrix (Fin (Fintype.card X)) X ℤ` to `fun i x => ((b.repr (Pi.single x 1) i).val : ℤ)`. Set `P : Matrix X (Fin (Fintype.card X)) ℤ` to `fun x j => ((b j x).val : ℤ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `⟨Q, P, fun h i j hij => ?_⟩` and prove the remaining obligations. Apply `(ZMod.intCast_zmod_eq_zero_iff_dvd _ l).1` to reduce the goal to its premises. Establish `hQ : Q.map (Int.castRingHom (ZMod l)) = (Matrix.of fun i x => b.repr (Pi.single x 1) i : Matrix _ X (ZMod l))`. Use extensionality with `i x`. Express the relevant statement in the definitionally equal form `((((b.repr (Pi.single x 1) i).val : ℤ)) : ZMod l) = b.repr (Pi.single x 1) i`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Int.cast_natCast, ZMod.natCast_zmod_val]`. Establish `hP : P.map (Int.castRingHom (ZMod l)) = (Matrix.of fun x j => b j x : Matrix X _ (ZMod l))`. Use extensionality with `x j`. Express the relevant statement in the definitionally equal form `((((b j x).val : ℤ)) : ZMod l) = b j x`. Rewrite using `[Int.cast_natCast, ZMod.natCast_zmod_val]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : (((Q * ρ h * P) i j : ℤ) : ZMod l) = b.repr (ρ' h (b j)) i`. Establish `h1 : (((Q * ρ h * P) i j : ℤ) : ZMod l) = ((Q * ρ h * P).map (Int.castRingHom (ZMod l))) i j` using `rfl`. Rewrite using `[h1, Matrix.map_mul, Matrix.map_mul, hQ, hP, conj_apply, hρ']`. Establish `hd` using `hb h i j hij`. Rewrite `hd` using `[map_sub, Finsupp.sub_apply, sub_eq_zero, Module.Basis.repr_self, Finsupp.single_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Int.cast_sub, hc, hd]`. Distinguish the cases in `hij' : i = j`. Substitute `hij'` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hij', Ne.symm hij']`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.Gal.Gen.triMat_pf :
     UpperTheory.Gal.Gen.Flag → UpperTheory.Gal.Gen.TriMat := by

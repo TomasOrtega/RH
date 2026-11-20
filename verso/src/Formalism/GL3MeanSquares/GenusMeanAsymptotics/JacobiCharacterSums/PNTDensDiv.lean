@@ -10,7 +10,7 @@ namespace Formalism.HermitianLattices.Ext.PrimesInProgressions.Dens
 open Formalism.HermitianLattices.Ext.PrimitiveCharacterCasts.ZD Formalism.ZeroFreeDirichlet
 
 /- English proof (translation)
-Establish `h` using `harmonic_le_one_add_log x`. Rewrite `h` using `[harmonic_eq_sum_Icc]`. Move the coercions through the operations in `at h`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 lemma divSq_harm (x : ℕ) : ∑ k ∈ Icc 1 x, ((k : ℝ))⁻¹ ≤ 1 + Real.log x := by
   have h := harmonic_le_one_add_log x
@@ -19,13 +19,13 @@ lemma divSq_harm (x : ℕ) : ∑ k ∈ Icc 1 x, ((k : ℝ))⁻¹ ≤ 1 + Real.lo
   exact h
 
 /- English proof (translation)
-Establish `h1 : ∀ n ∈ Icc 1 x, ((n.divisors.card : ℕ) : ℝ) ^ 2 = ∑ p ∈ Icc 1 x ×ˢ Icc 1 x, if Nat.lcm p.1 p.2 ∣ n then (1 : ℝ) else 0`. Introduce `n hn`. Rewrite `hn` using `[mem_Icc]`. Establish `hd : n.divisors = (Icc 1 x).filter (· ∣ n)`. Use extensionality with `a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Nat.mem_divisors, mem_filter, mem_Icc]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, h0⟩`. Conclude with `⟨⟨Nat.pos_of_dvd_of_pos h (by omega), (Nat.le_of_dvd (by omega) h).trans hn.2⟩, h⟩`. Introduce and unpack `⟨_, h⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨h, by omega⟩`. Rewrite using `[← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul, mul_one, sq, ← Nat.cast_mul, ← card_product, hd, ← filter_product]`. Use `congr 2`. Use extensionality with `p`. Simplify using `[Nat.lcm_dvd_iff]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[sum_congr rfl h1, sum_comm]`. Use `sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[← sum_filter, sum_const, nsmul_eq_mul, mul_one, ← Nat.Ioc_filter_dvd_card_eq_div]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma divSq_count (x : ℕ) : ∑ n ∈ Icc 1 x, ((n.divisors.card : ℕ) : ℝ) ^ 2 =
     ∑ p ∈ Icc 1 x ×ˢ Icc 1 x, ((x / Nat.lcm p.1 p.2 : ℕ) : ℝ) := by
@@ -52,7 +52,7 @@ lemma divSq_count (x : ℕ) : ∑ n ∈ Icc 1 x, ((n.divisors.card : ℕ) : ℝ)
   rfl
 
 /- English proof (translation)
-Establish `hg : 0 < Nat.gcd a b` using `Nat.gcd_pos_of_pos_left b ha`. Establish `h1 : Nat.gcd a b * (a / Nat.gcd a b) = a` using `Nat.mul_div_cancel' (Nat.gcd_dvd_left a b)`. Establish `h2 : Nat.gcd a b * (b / Nat.gcd a b) = b` using `Nat.mul_div_cancel' (Nat.gcd_dvd_right a b)`. Apply `Nat.eq_of_mul_eq_mul_left hg` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 -/
 lemma divSq_lcm {a b : ℕ} (ha : 1 ≤ a) :
     Nat.lcm a b = Nat.gcd a b * (a / Nat.gcd a b) * (b / Nat.gcd a b) := by
@@ -65,21 +65,19 @@ lemma divSq_lcm {a b : ℕ} (ha : 1 ≤ a) :
     _ = Nat.gcd a b * (Nat.gcd a b * (a / Nat.gcd a b) * (b / Nat.gcd a b)) := by ring
 
 /- English proof (translation)
-Use `set φ : ℕ × ℕ → ℕ × ℕ × ℕ := fun p => (Nat.gcd p.1 p.2, p.1 / Nat.gcd p.1 p.2, p.2 / Nat.gcd p.1 p.2) with hφ`. Use `set F : ℕ × ℕ × ℕ → ℝ := fun t => ((t.1 : ℝ))⁻¹ * (((t.2.1 : ℝ))⁻¹ * ((t.2.2 : ℝ))⁻¹) with hF`. Establish `hinj : Set.InjOn φ (Icc 1 x ×ˢ Icc 1 x : Finset (ℕ × ℕ))`. Introduce `p _ q _ h`. Simplify using `only [hφ, Prod.mk.injEq] at h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hg, h1, h2⟩` from `h`. Establish `e1 : Nat.gcd p.1 p.2 * (p.1 / Nat.gcd p.1 p.2) = p.1` using `Nat.mul_div_cancel' (Nat.gcd_dvd_left _ _)`. Establish `e2 : Nat.gcd p.1 p.2 * (p.2 / Nat.gcd p.1 p.2) = p.2` using `Nat.mul_div_cancel' (Nat.gcd_dvd_right _ _)`. Establish `e3 : Nat.gcd q.1 q.2 * (q.1 / Nat.gcd q.1 q.2) = q.1` using `Nat.mul_div_cancel' (Nat.gcd_dvd_left _ _)`. Establish `e4 : Nat.gcd q.1 q.2 * (q.2 / Nat.gcd q.1 q.2) = q.2` using `Nat.mul_div_cancel' (Nat.gcd_dvd_right _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Chain the equalities or inequalities of the calculation.
 
-Use `ext`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Establish `hsub : (Icc 1 x ×ˢ Icc 1 x).image φ ⊆ Icc 1 x ×ˢ (Icc 1 x ×ˢ Icc 1 x)`. Introduce `t ht`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `ht` using `[mem_image]`. Take `⟨p, hp, rfl⟩` from `ht`. Simplify using `only [mem_product, mem_Icc] at hp`. Take `⟨⟨a1, a2⟩, b1, b2⟩` from `hp`. Establish `hg : 0 < Nat.gcd p.1 p.2` using `Nat.gcd_pos_of_pos_left _ a1`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hφ, mem_product, mem_Icc]`. Use `⟨⟨hg, (Nat.le_of_dvd a1 (Nat.gcd_dvd_left _ _)).trans a2⟩, ⟨Nat.div_pos (Nat.le_of_dvd a1 (Nat.gcd_dvd_left _ _)) hg, (Nat.div_le_self _ _).trans a2⟩, ⟨Nat.div_pos (Nat.le_of_dvd b1 (Nat.gcd_dvd_right _ _)) hg, (Nat.div_le_self _ _).trans b2⟩⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Simplify using `only [mem_product, mem_Icc] at hp`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[divSq_lcm hp.1.1]`. Simplify using `only [hF, hφ]`. Use `push_cast`. Rewrite using `[mul_inv, mul_inv, mul_assoc]`. Use `_ = ∑ t ∈ (Icc 1 x ×ˢ Icc 1 x).image φ, F t := (sum_image hinj).symm`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Check the signs of the components of the expression.
 
-Use `_ ≤ ∑ t ∈ Icc 1 x ×ˢ (Icc 1 x ×ˢ Icc 1 x), F t := by`. Use `sum_le_sum_of_subset_of_nonneg hsub fun t _ _ => ?_` and prove the remaining obligations. Simplify using `only [hF]`. Check the signs of the components of the expression. Use `_ = (∑ k ∈ Icc 1 x, ((k : ℝ))⁻¹) ^ 3 := by`.
-
-Simplify using `only [hF]`. Rewrite using `[sum_product]`. Simplify using `only [sum_product, ← mul_sum, ← sum_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma divSq_cube (x : ℕ) :
     ∑ p ∈ Icc 1 x ×ˢ Icc 1 x, ((Nat.lcm p.1 p.2 : ℕ) : ℝ)⁻¹ ≤ (∑ k ∈ Icc 1 x, ((k : ℝ))⁻¹) ^ 3 := by
@@ -132,11 +130,9 @@ lemma divSq_cube (x : ℕ) :
         ring
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hlog : 0 ≤ Real.log x` using `Real.log_natCast_nonneg x`. Establish `hH0 : 0 ≤ ∑ k ∈ Icc 1 x, ((k : ℝ))⁻¹` using `sum_nonneg fun k _ => by positivity`. Combine the equalities or inequalities in the displayed calculation. Use `sum_le_sum fun p _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← div_eq_mul_inv]`. Conclude with `Nat.cast_div_le`. Use `_ = (x : ℝ) * ∑ p ∈ Icc 1 x ×ˢ Icc 1 x, ((Nat.lcm p.1 p.2 : ℕ) : ℝ)⁻¹ := by rw [mul_sum]`. Use `_ ≤ (x : ℝ) * (1 + Real.log x) ^ 3 := by`. Use `mul_le_mul_of_nonneg_left ?_ (Nat.cast_nonneg x)` and prove the remaining obligations.
-
-Conclude with `(divSq_cube x).trans (pow_le_pow_left₀ hH0 (divSq_harm x) 3)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem divisor_square_bound : DivSq := by
   intro x hx
@@ -154,19 +150,19 @@ theorem divisor_square_bound : DivSq := by
         exact (divSq_cube x).trans (pow_le_pow_left₀ hH0 (divSq_harm x) 3)
 
 /- English proof (translation)
-Introduce `Y N U σ hU hσ`. Establish `hU0 : (0 : ℝ) < U` using `by exact_mod_cast hU`. Establish `hterm : ∀ n ∈ Ioc U (2 * U), (‖mco Y N n‖ * (n : ℝ) ^ (-σ)) ^ 2 ≤ (U : ℝ) ^ (-(2 * σ)) * ((n.divisors.card : ℕ) : ℝ) ^ 2`. Introduce `n hn`. Rewrite `hn` using `[mem_Ioc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hn1 : 1 ≤ n` using `by omega`. Establish `hUn : (U : ℝ) ≤ n` using `by exact_mod_cast hn.1.le`. Establish `h1 : ‖mco Y N n‖ ≤ (n.divisors.card : ℝ)` using `mco_norm_le Y N hn1`. Establish `h2 : (n : ℝ) ^ (-σ) ≤ (U : ℝ) ^ (-σ)` using `Real.rpow_le_rpow_of_nonpos hU0 hUn (by linarith)`. Establish `h3 : (0 : ℝ) ≤ (n : ℝ) ^ (-σ)` using `Real.rpow_nonneg (Nat.cast_nonneg n) _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : ((U : ℝ) ^ (-σ)) ^ 2 = (U : ℝ) ^ (-(2 * σ))`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hU0.le]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, h4, mul_comm]`. Establish `hsub : Ioc U (2 * U) ⊆ Icc 1 (2 * U)`. Introduce `n hn`. Rewrite `hn` using `[mem_Ioc]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[mem_Icc]`. Use linear arithmetic over natural numbers and integers. Establish `hD` using `divisor_square_bound (2 * U) (by omega)`. Establish `hpow : (U : ℝ) ^ (1 - 2 * σ) = (U : ℝ) ^ (-(2 * σ)) * U`. Rewrite using `[show (1 - 2 * σ) = -(2 * σ) + 1 by ring, Real.rpow_add hU0, Real.rpow_one]`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_left ?_ (Real.rpow_nonneg hU0.le _)` and prove the remaining obligations. Conclude with `sum_le_sum_of_subset_of_nonneg hsub fun n _ _ => by positivity`. Use `_ ≤ (U : ℝ) ^ (-(2 * σ)) * (((2 * U : ℕ) : ℝ) * (1 + Real.log ((2 * U : ℕ) : ℝ)) ^ 3) := mul_le_mul_of_nonneg_left hD (Real.rpow_nonneg hU0.le _)`. Use `_ = 2 * (U : ℝ) ^ (1 - 2 * σ) * (1 + Real.log (2 * U)) ^ 3 := by`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hpow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem coefficient_block_bound : CoefficientBlockBound := by
   intro Y N U σ hU hσ

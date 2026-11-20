@@ -17,7 +17,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] [MeasurableSpace G] [Measurab
 def cnt (μS : Measure G) (Ω : Set G) (q : G) : ℝ≥0∞ := μS {t | t ∈ Ω ∧ q * t ∈ Ω}
 
 /- English proof (translation)
-Establish `hT : MeasurableSet {p : G × G | p.2 ∈ Ω ∧ p.1 * p.2 ∈ Ω}` using `(measurable_snd hΩ).inter ((measurable_fst.mul measurable_snd) hΩ)`. Conclude with `measurable_measure_prodMk_left hT`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cnt_measurable {μS : Measure G} [SFinite μS] {Ω : Set G} (hΩ : MeasurableSet Ω) :
     Measurable (cnt μS Ω) := by
@@ -26,28 +26,26 @@ theorem cnt_measurable {μS : Measure G} [SFinite μS] {Ω : Set G} (hΩ : Measu
   exact measurable_measure_prodMk_left hT
 
 /- English proof (translation)
-The claim follows from `measure_mono fun t ht => ht.1`.
+A detailed English derivation is pending.
 -/
 theorem cnt_le (μS : Measure G) (Ω : Set G) (q : G) : cnt μS Ω q ≤ μS Ω := measure_mono fun t ht => ht.1
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, -, -, -, hright, -⟩` from `hS`. Establish `hg : Measurable (fun p : G × G => p.1 * p.2⁻¹)` using `measurable_fst.mul measurable_snd.inv`. Use extensionality with `A hA`. Rewrite using `[Measure.map_apply hg hA, withDensity_apply _ hA]`. Use `set P : Set (G × G) := {p | p.1 ∈ A ∧ p.2 ∈ Ω ∧ p.1 * p.2 ∈ Ω} with hPdef`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hP : MeasurableSet P` using `(measurable_fst hA).inter ((measurable_snd hΩm).inter ((measurable_fst.mul measurable_snd) hΩm))`. Establish `h1 : (μS.prod μS) P = ∫⁻ q in A, cnt μS Ω q ∂μS`. Rewrite using `[Measure.prod_apply hP, ← lintegral_indicator hA]`. Use `lintegral_congr fun q => ?_` and prove the remaining obligations. Rewrite using `[Set.indicator_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hq : q ∈ A`. Rewrite using `[if_pos hq]`. Unfold `cnt`. Use `congr 1`. Use extensionality with `t`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[hPdef, hq]`. Rewrite using `[if_neg hq]`. Establish `hempty : Prod.mk q ⁻¹' P = ∅`. Use extensionality with `t`. Simplify using `[hPdef, hq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hempty, measure_empty]`. Establish `h2 : (μS.prod μS) P = ((μS.restrict Ω).prod (μS.restrict Ω)) ((fun p : G × G => p.1 * p.2⁻¹) ⁻¹' A)`. Rewrite using `[Measure.prod_apply_symm hP, Measure.prod_apply_symm (hg hA), ← lintegral_indicator hΩm]`. Use `lintegral_congr fun t => ?_` and prove the remaining obligations. Rewrite using `[Set.indicator_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `ht : t ∈ Ω`. Rewrite using `[if_pos ht]`. Establish `hBt : MeasurableSet ((fun x => (x, t)) ⁻¹' ((fun p : G × G => p.1 * p.2⁻¹) ⁻¹' A))` using `(measurable_mul_const t⁻¹) hA`. Rewrite using `[Measure.restrict_apply hBt]`. Establish `hmt` using `hright t (hΩS ht)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use extensionality with `q`. Simplify using `[hPdef, ht]`. Use `_ = (μS.map (fun x => x * t)) ((fun x => (x, t)) ⁻¹' ((fun p : G × G => p.1 * p.2⁻¹) ⁻¹' A) ∩ Ω) := (Measure.map_apply (measurable_mul_const t) (hBt.inter hΩm)).symm`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = μS ((fun x => (x, t)) ⁻¹' ((fun p : G × G => p.1 * p.2⁻¹) ⁻¹' A) ∩ Ω) := by`. Rewrite using `[hmt]`. Rewrite using `[if_neg ht]`. Establish `hempty : (fun x => (x, t)) ⁻¹' P = ∅`. Use extensionality with `q`.
-
-Simplify using `[hPdef, ht]`. Rewrite using `[hempty, measure_empty]`. Conclude with `h2.symm.trans h1`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conv_map {S : Set G} {μS : Measure G} [SFinite μS] (hS : IsHaarSub S μS) {Ω : Set G}
     (hΩm : MeasurableSet Ω) (hΩS : Ω ⊆ S) :
@@ -106,9 +104,9 @@ theorem conv_map {S : Set G} {μS : Measure G} [SFinite μS] (hS : IsHaarSub S �
   exact h2.symm.trans h1
 
 /- English proof (translation)
-Establish `hg : Measurable (fun p : G × G => p.1 * p.2⁻¹)` using `measurable_fst.mul measurable_snd.inv`. Establish `hI : Integrable (fun p : G × G => f (p.1 * p.2⁻¹)) ((μS.restrict Ω).prod (μS.restrict Ω))`. Use the matching hypothesis. Establish `h1 : ∫ s in Ω, ∫ t in Ω, f (s * t⁻¹) ∂μS ∂μS = ∫ p, f (p.1 * p.2⁻¹) ∂((μS.restrict Ω).prod (μS.restrict Ω))` using `(integral_prod (fun p : G × G => f (p.1 * p.2⁻¹)) hI).symm`. Establish `h2 : ∫ p, f (p.1 * p.2⁻¹) ∂((μS.restrict Ω).prod (μS.restrict Ω)) = ∫ q, f q ∂(((μS.restrict Ω).prod (μS.restrict Ω)).map (fun p : G × G => p.1 * p.2⁻¹))` using `(integral_map_of_stronglyMeasurable hg hf).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Use the matching hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1, h2, conv_map hS hΩm hΩS]`. Conclude with `integral_withDensity_eq_integral_toReal_smul (cnt_measurable hΩm) (ae_of_all _ fun q => (cnt_le μS Ω q).trans_lt hfin) f`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conv_integral {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] {S : Set G} {μS : Measure G} [SFinite μS]
     (hS : IsHaarSub S μS) {Ω : Set G} (hΩm : MeasurableSet Ω) (hΩS : Ω ⊆ S) (hfin : μS Ω < ⊤) (f : G → E)

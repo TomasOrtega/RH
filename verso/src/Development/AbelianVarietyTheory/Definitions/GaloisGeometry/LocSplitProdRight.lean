@@ -10,9 +10,9 @@ def LocSplit {G : Type} [Group G] (J L : Subgroup G) : Prop :=
   ∀ k ∈ J, ∃ k₁ ∈ J, ∃ k₂ ∈ J, k₁ ∈ L ∧ k = k₁ * k₂ ∧ ∀ l ∈ L, Commute k₂ l
 
 /- English proof (translation)
-Introduce `k hk`. Use `⟨(k.1, 1), Subgroup.mem_prod.2 ⟨(Subgroup.mem_prod.1 hk).1, B.one_mem⟩, (1, k.2), Subgroup.mem_prod.2 ⟨A.one_mem, (Subgroup.mem_prod.1 hk).2⟩, Subgroup.mem_prod.2 ⟨Subgroup.mem_top _, Subgroup.one_mem _⟩, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp`. Introduce `l hl`. Establish `hl2 : l.2 = 1` using `Subgroup.mem_bot.1 (Subgroup.mem_prod.1 hl).2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `show (1, k.2) * l = l * (1, k.2)`. Apply the tactic sequence `ext <;> simp [hl2]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem locSplit_prod_left {G H : Type} [Group G] [Group H] (A : Subgroup G) (B : Subgroup H) :
     LocSplit (A.prod B) ((⊤ : Subgroup G).prod ⊥) := by
@@ -27,9 +27,9 @@ theorem locSplit_prod_left {G H : Type} [Group G] [Group H] (A : Subgroup G) (B 
     ext <;> simp [hl2]
 
 /- English proof (translation)
-Introduce `k hk`. Take `⟨k', hk', rfl⟩` from `Subgroup.mem_map.1 hk`. Take `⟨k₁, hk₁, k₂, hk₂, hk₁L, hsplit, hc⟩` from `h k' hk'`. Use `⟨e.toMonoidHom k₁, Subgroup.mem_map_of_mem _ hk₁, e.toMonoidHom k₂, Subgroup.mem_map_of_mem _ hk₂, Subgroup.mem_map_of_mem _ hk₁L, by rw [hsplit, map_mul], ?_⟩` and prove the remaining obligations. Introduce `l hl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨l', hl', rfl⟩` from `Subgroup.mem_map.1 hl`. Conclude with `(hc l' hl').map e.toMonoidHom`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem LocSplit.map {G H : Type} [Group G] [Group H] {J L : Subgroup G} (h : LocSplit J L) (e : G ≃* H) :
     LocSplit (J.map e.toMonoidHom) (L.map e.toMonoidHom) := by
@@ -43,7 +43,7 @@ theorem LocSplit.map {G H : Type} [Group G] [Group H] {J L : Subgroup G} (h : Lo
   exact (hc l' hl').map e.toMonoidHom
 
 /- English proof (translation)
-Take `⟨k₁, _, k₂, _, hk₁L, rfl, hc⟩` from `h k hk`. Establish `hcl : k₂ * l * k₂⁻¹ = l` using `by rw [(hc l hl).eq, mul_inv_cancel_right]`. Rewrite using `[show k₁ * k₂ * l * (k₁ * k₂)⁻¹ = k₁ * (k₂ * l * k₂⁻¹) * k₁⁻¹ by group, hcl]`. Conclude with `L.mul_mem (L.mul_mem hk₁L hl) (L.inv_mem hk₁L)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LocSplit.conj_mem {G : Type} [Group G] {J L : Subgroup G} (h : LocSplit J L) {k l : G} (hk : k ∈ J) (hl : l ∈ L) :
     k * l * k⁻¹ ∈ L := by
@@ -58,19 +58,15 @@ variable {G Γ : Type} [Group G] [Group Γ] (ι : Γ →* G)
 variable {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W]
 
 /- English proof (translation)
-Establish `hF' : ∀ (γ : Γ) (g : G) (j : J), F (ι γ * g * j) = (χ j : ℂ) • ρ γ (F g)` using `hF`. Establish `hterm : ∀ a ∈ A, ∀ b ∈ B, b⁻¹ * (k * a) ∈ J → F (h * k * a) = F (h * b)`. Introduce `a ha b hb hJ`. Establish `e : h * k * a = ι 1 * (h * b) * ((⟨b⁻¹ * (k * a), hJ⟩ : J) : G)` using `by simp [mul_assoc]`. Rewrite using `[e, hF', hχ ⟨b⁻¹ * (k * a), hJ⟩ (L.mul_mem (L.inv_mem (hBL b hb)) (L.mul_mem hkL (hAL a ha)))]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `exB : ∀ a ∈ A, ∃ b, b ∈ B ∧ b⁻¹ * (k * a) ∈ J`. Introduce `a ha`. Take `⟨k₁, k₂, hk⟩` from `hA.1 a ha`. Conclude with `(hB.2 _ ⟨⟨k, hkJ⟩ * k₁, k₂, by rw [hk]; simp [mul_assoc]⟩).exists`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `exA : ∀ b ∈ B, ∃ a, a ∈ A ∧ a⁻¹ * (k⁻¹ * b) ∈ J`. Introduce `b hb`. Take `⟨k₁, k₂, hk⟩` from `hB.1 b hb`. Conclude with `(hA.2 _ ⟨⟨k, hkJ⟩⁻¹ * k₁, k₂, by rw [hk]; simp [mul_assoc]⟩).exists`. Use `choose! φ hφB hφJ using exB`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `choose! ψ hψA hψJ using exA`. Use `Finset.sum_nbij' φ ψ hφB hψA ?_ ?_ ?_` and prove the remaining obligations. Introduce `a ha`. Take `⟨k₁, k₂, hk⟩` from `hB.1 (φ a) (hφB a ha)`. Establish `hg : ∃ k₁ k₂ : J, k⁻¹ * φ a = (k₁ : G) * x * k₂` using `⟨⟨k, hkJ⟩⁻¹ * k₁, k₂, by rw [hk]; simp [mul_assoc]⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `(hA.2 _ hg).unique ⟨hψA _ (hφB a ha), hψJ _ (hφB a ha)⟩ ⟨ha, ?_⟩` and prove the remaining obligations. Rewrite using `[show a⁻¹ * (k⁻¹ * φ a) = ((φ a)⁻¹ * (k * a))⁻¹ by group]`. Conclude with `J.inv_mem (hφJ a ha)`. Introduce `b hb`. Take `⟨k₁, k₂, hk⟩` from `hA.1 (ψ b) (hψA b hb)`.
-
-Establish `hg : ∃ k₁ k₂ : J, k * ψ b = (k₁ : G) * x * k₂` using `⟨⟨k, hkJ⟩ * k₁, k₂, by rw [hk]; simp [mul_assoc]⟩`. Use `(hB.2 _ hg).unique ⟨hφB _ (hψA b hb), hφJ _ (hψA b hb)⟩ ⟨hb, ?_⟩` and prove the remaining obligations. Rewrite using `[show b⁻¹ * (k * ψ b) = ((ψ b)⁻¹ * (k⁻¹ * b))⁻¹ by group]`. Conclude with `J.inv_mem (hψJ b hb)`. Introduce `a ha`.
-
-Conclude with `hterm a ha (φ a) (hφB a ha) (hφJ a ha)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sum_mul_reps (ρ : Γ →* Module.End ℂ W) {J L : Subgroup G} {χ : J →* ℂˣ}
     (hχ : ∀ k : J, (k : G) ∈ L → χ k = 1) {x : G} {A B : Finset G} (hA : IsDC J x A) (hB : IsDC J x B)
@@ -112,7 +108,7 @@ theorem sum_mul_reps (ρ : Γ →* Module.End ℂ W) {J L : Subgroup G} {χ : J 
     exact hterm a ha (φ a) (hφB a ha) (hφJ a ha)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `h`. Establish `hs` using `sum_mul_reps ι ρ hχ hA hB hAL hBL hF J.one_mem L.one_mem h`. Simplify using `only [mul_one] at hs`. Conclude with `hs`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dcOp_eq_of_isDC (ρ : Γ →* Module.End ℂ W) {J L : Subgroup G} {χ : J →* ℂˣ}
     (hχ : ∀ k : J, (k : G) ∈ L → χ k = 1) {x : G} {A B : Finset G} (hA : IsDC J x A) (hB : IsDC J x B)
@@ -124,13 +120,13 @@ theorem dcOp_eq_of_isDC (ρ : Γ →* Module.End ℂ W) {J L : Subgroup G} {χ :
   exact hs
 
 /- English proof (translation)
-Establish `hF' : ∀ (γ : Γ) (g : G) (j : J), F (ι γ * g * j) = (χ j : ℂ) • ρ γ (F g)` using `hF`. Use `show ∀ (γ : Γ) (g : G) (j : J), dcOp A F (ι γ * g * j) = (χ j : ℂ) • ρ γ (dcOp A F g)`. Introduce `γ g j`. Take `⟨j₁, hj₁J, j₂, hj₂J, hj₁L, hj, hc⟩` from `hs (j : G) j.2`. Establish `hχj : χ j = χ ⟨j₂, hj₂J⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hjj : j = ⟨j₁, hj₁J⟩ * ⟨j₂, hj₂J⟩` using `Subtype.ext hj`. Rewrite using `[hjj, map_mul, hχ ⟨j₁, hj₁J⟩ hj₁L, one_mul]`. Establish `hsum` using `sum_mul_reps ι ρ hχ hA hA hAL hAL hF hj₁J hj₁L g`. Simplify using `only [dcOp]`. Rewrite using `[← hsum, map_sum, Finset.smul_sum, hχj]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Establish `e : ι γ * g * (j : G) * a = ι γ * (g * j₁ * a) * ((⟨j₂, hj₂J⟩ : J) : G)`. Rewrite using `[hj]`. Simplify using `only [mul_assoc]`. Rewrite using `[(hc a (hAL a ha)).eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `hF' γ (g * j₁ * a) ⟨j₂, hj₂J⟩`.
+A detailed English derivation is pending.
 -/
 theorem LocSplit.dcOp_mem (ρ : Γ →* Module.End ℂ W) {J L : Subgroup G} {χ : J →* ℂˣ} (hs : LocSplit J L)
     (hχ : ∀ k : J, (k : G) ∈ L → χ k = 1) {x : G} {A : Finset G} (hA : IsDC J x A) (hAL : ∀ a ∈ A, a ∈ L)
@@ -154,13 +150,13 @@ theorem LocSplit.dcOp_mem (ρ : Γ →* Module.End ℂ W) {J L : Subgroup G} {χ
 end Operators
 
 /- English proof (translation)
-The claim follows from `locSplit_prod_left _ _`.
+A detailed English derivation is pending.
 -/
 example : LocSplit ((Subgroup.zpowers (Equiv.swap (0 : Fin 3) 1)).prod (⊤ : Subgroup (Equiv.Perm (Fin 3))))
     ((⊤ : Subgroup (Equiv.Perm (Fin 3))).prod ⊥) := locSplit_prod_left _ _
 
 /- English proof (translation)
-Introduce `k hk` and use `⟨k, hk, 1, J.one_mem, h hk, (mul_one k).symm, fun l _ => Commute.one_left l⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 example {G : Type} [Group G] {J L : Subgroup G} (h : J ≤ L) : LocSplit J L :=
   fun k hk => ⟨k, hk, 1, J.one_mem, h hk, (mul_one k).symm, fun l _ => Commute.one_left l⟩

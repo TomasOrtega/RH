@@ -12,9 +12,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.HolDict
 
 /- English proof (translation)
-Introduce `hV D V`. Take `⟨_, _, _, _⟩` from `GlobalTheory.TwistAdelicTop.locallyCompact_secondCountable_borel_countable V`. Establish `: IsTopologicalGroup (GA D V)` using `inferInstanceAs (IsTopologicalGroup (HR (AF D.host.F) D.sp.cm.sig V.gram))`. Establish `hμ : (Measure.haar : Measure (GA D V)).IsHaarMeasure` using `inferInstance`. Take `⟨hr, 𝓕, h𝓕⟩` from `GlobalTheory.Mem.AdelicGroupFund.rightInvariant_and_exists_fundamentalDomain D V _ hμ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨_, 𝓕, hμ, hr, h𝓕, (GlobalTheory.CuspDecay.measure_lt_top hV V _ 𝓕 hμ h𝓕).ne⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_finPair : GlobalTheory.Mem.Vol.FiniteVolume₂ → ∀ (D : D7) (V : HSp D), ∃ μ 𝓕, FinPair V μ 𝓕 := by
   intro hV D V

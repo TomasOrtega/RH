@@ -10,7 +10,7 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BSP
 
 /- English proof (translation)
-Establish `ht : Filter.Tendsto (fun t : ℝ≥0 => c * (t : ℝ) ^ n) (nhdsWithin (1 : ℝ≥0) (Set.Iio 1)) (nhds (c * ((1 : ℝ≥0) : ℝ) ^ n))` using `((continuous_const.mul ((NNReal.continuous_coe).pow n)).tendsto 1).mono_left nhdsWithin_le_nhds`. Establish `: (nhdsWithin (1 : ℝ≥0) (Set.Iio 1)).NeBot` using `nhdsWithin_Iio_self_neBot' ⟨0, zero_lt_one⟩`. Establish `h2` using `le_of_tendsto ht (eventually_nhdsWithin_of_forall fun t (hti : t ∈ Set.Iio 1) => h t hti)`. Simplify using `using h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem le_one_of_mul_pow_le_one (c : ℝ) (n : ℕ) (h : ∀ t : ℝ≥0, t < 1 → c * (t : ℝ) ^ n ≤ 1) : c ≤ 1 := by
   have ht : Filter.Tendsto (fun t : ℝ≥0 => c * (t : ℝ) ^ n) (nhdsWithin (1 : ℝ≥0) (Set.Iio 1)) (nhds (c * ((1 : ℝ≥0) : ℝ) ^ n)) :=
@@ -20,19 +20,19 @@ theorem le_one_of_mul_pow_le_one (c : ℝ) (n : ℕ) (h : ∀ t : ℝ≥0, t < 1
   simpa using h2
 
 /- English proof (translation)
-Introduce `l _ K bk ρ hρ hρ1 y hy`. Establish `hl0 : (0 : ℝ) < l` using `Nat.cast_pos.2 (Fact.out : l.Prime).pos`. Take `⟨a, ha1, ha2, ha3, -⟩` from `GlobalTheory.T.exists_gaussNorm_coeff_wittDisc l K bk ρ hρ hρ1`. Take `⟨-, hk2, -, -⟩` from `GlobalTheory.T.closedDiscGaugeCompletion_zero_one_properties l K bk`. Establish `hcont : ∀ (r : ℝ≥0), 0 < r → ∀ (b : ℕ → (bk.DS r →+ Disc l (0 : Wq l bk.a) 1)), (∀ n z, ‖b n z‖ * (r : ℝ) ^ n ≤ ‖z‖) → ∀ n, Continuous (b n)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `r hr b hb n`. Use `AddMonoidHomClass.continuous_of_bound (b n) (((r : ℝ) ^ n)⁻¹) fun z => ?_` and prove the remaining obligations. Establish `hp : (0 : ℝ) < (r : ℝ) ^ n` using `pow_pos (by exact_mod_cast hr) n`. Rewrite using `[inv_mul_eq_div, le_div_iff₀ hp]`. Conclude with `hb n z`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `htor : ∀ z : Disc l (0 : Wq l bk.a) 1, l • z = 0 → z = 0`. Introduce `z hz`. Establish `h` using `(GlobalTheory.T.closedDiscGaugeCompletion_basic_properties l (Wq l bk.a) (0 : Wq l bk.a) 1).2.1 z`. Rewrite `h` using `[← nsmul_eq_mul, hz, norm_zero]`. Conclude with `norm_eq_zero.1 (by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(div_eq_zero_iff.1 h.symm).resolve_right hl0.ne'` as an intermediate fact. Conclude with `this)`. Establish `hle : ∀ n, ‖a n y‖ ≤ 1`. Introduce `n`. Use `le_one_of_mul_pow_le_one _ n fun t ht => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ρ', R, y', h1, h2, h3, hR, hRy, hy'⟩` from `hy t ht`. Establish `hρ' : 0 < ρ'` using `hρ.trans_le h2`. Take `⟨a', ha1', ha2', -, -⟩` from `GlobalTheory.T.exists_gaussNorm_coeff_wittDisc l K bk ρ' hρ' h3`. Establish `hRc : Continuous R` using `AddMonoidHomClass.continuous_of_bound R 1 fun z => (hR.norm_le z).trans (one_mul _).ge`. Establish `e : ((a n).comp (R : bk.DS ρ' →+ bk.DS ρ)) = a' n` using `(GlobalTheory.T.closedDiscGaugeCompletion_basic_properties l bk.S (X : bk.S) ρ').2.2.1 _ htor _ _ ((hcont ρ hρ a ha2 n).comp hRc) (hcont ρ' hρ' a' ha2' n) fun x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [AddMonoidHom.coe_comp, AddMonoidHom.coe_coe, Function.comp_apply]`. Rewrite using `[hR.ext x, RingHom.id_apply, ha1, ha1']`. Establish `e2 : a n y = a' n y'` using `by rw [← hRy, ← e]; rfl`. Rewrite using `[e2]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `choose w hw using fun n => hk2 (a n y) (hle n)`. Use `⟨PowerSeries.mk w, ?_⟩` and prove the remaining obligations. Establish `h0 : ‖y - toDisc l (X : bk.S) ρ (PowerSeries.mk w)‖ ≤ 0` using `ha3 _ 0 le_rfl fun n => by`. Rewrite using `[map_sub, ha1, coeff_mk, ← hw, sub_self, norm_zero, zero_mul]`. Conclude with `(sub_eq_zero.1 (norm_le_zero_iff.1 h0)).symm`.
+A detailed English derivation is pending.
 -/
 theorem disc_bdd_isSeries : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (ρ : ℝ≥0), 0 < ρ → ρ < 1 → ∀ y : bk.DS ρ, (∀ ρ₁ : ℝ≥0, ρ₁ < 1 → ∃ (ρ' : ℝ≥0) (R : bk.DS ρ' →+* bk.DS ρ) (y' : bk.DS ρ'), ρ₁ ≤ ρ' ∧ ρ ≤ ρ' ∧ ρ' < 1 ∧ IsDiscMap (RingHom.id bk.S) R ∧ R y' = y ∧ ‖y'‖ ≤ 1) → ∃ a, toDisc l (X : bk.S) ρ a = y := by
   intro l _ K bk ρ hρ hρ1 y hy

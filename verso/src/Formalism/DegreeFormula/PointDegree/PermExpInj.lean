@@ -6,9 +6,9 @@ namespace Formalism.DegreeFormula.PermutationPointDegree
 open Formalism.DegreeFormula
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Use extensionality with `i`. Use `DFunLike.congr_fun h (τ, i)` as an intermediate fact. Simplify using `only [permExp, Finsupp.equivFunOnFinite_symm_apply_apply] at this`. Establish `h1` using `(σ τ i).isLt`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2` using `(ρ τ i).isLt`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem permExp_inj {ι : Type} [Fintype ι] {N : ℕ} (σ ρ : ι → Equiv.Perm (Fin N))
     (h : permExp σ = permExp ρ) : σ = ρ := by
@@ -21,7 +21,7 @@ theorem permExp_inj {ι : Type} [Fintype ι] {N : ℕ} (σ ρ : ι → Equiv.Per
   omega
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_range_id]`. Rewrite using `[← Fin.sum_univ_eq_sum_range]`. Use `Fintype.sum_equiv Fin.revPerm _ _ ?_` and prove the remaining obligations. Introduce `i`. Simplify using `[Fin.val_rev]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -34,7 +34,7 @@ theorem sum_delta (N : ℕ) : ∑ i : Fin N, (N - 1 - (i : ℕ)) = N * (N - 1) /
   omega
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_congr rfl (fun x _ => neg_pow (X x : MvPolynomial (ι × Fin N) ℝ) (e x)), Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, monomial_eq, Finsupp.prod_fintype _ _ (by intro i; simp)]`. Simplify using `only [Finsupp.equivFunOnFinite_symm_apply_apply, map_pow, map_neg, map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prod_negX {ι : Type} [Fintype ι] {N : ℕ} (e : ι × Fin N → ℕ) :
     (∏ x : ι × Fin N, (-X x : MvPolynomial (ι × Fin N) ℝ) ^ (e x)) =
@@ -45,15 +45,15 @@ theorem prod_negX {ι : Type} [Fintype ι] {N : ℕ} (e : ι × Fin N → ℕ) :
   simp only [Finsupp.equivFunOnFinite_symm_apply_apply, map_pow, map_neg, map_one, one_mul]
 
 /- English proof (translation)
-Introduce `ι _ _ N`. Rewrite using `[prod_negX]`. Unfold `degFl`. Rewrite using `[Finset.sum_eq_single (fun _ => 1)]`. Establish `hs : ∑ x : ι × Fin N, (N - 1 - (x.2 : ℕ)) = dimFl ι N`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Fintype.sum_prod_type]`. Simplify using `[sum_delta, dimFl]`. Establish `he : permExp (fun _ : ι => (1 : Equiv.Perm (Fin N))) = Finsupp.equivFunOnFinite.symm (fun x : ι × Fin N => N - 1 - (x.2 : ℕ))`. Use extensionality with `x`. Simplify using `[permExp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[he, coeff_C_mul, coeff_monomial, if_pos rfl, hs]`. Simplify using `[← pow_add, ← two_mul, pow_mul]`. Introduce `σ _ hσ`. Establish `he : permExp (fun _ : ι => (1 : Equiv.Perm (Fin N))) = Finsupp.equivFunOnFinite.symm (fun x : ι × Fin N => N - 1 - (x.2 : ℕ))`. Use extensionality with `x`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[permExp]`. Rewrite using `[coeff_C_mul, coeff_monomial, ← he, if_neg]`. Simplify using the standard rewrite rules. Introduce `h`. Conclude with `hσ (permExp_inj _ _ h).symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem degFlPoint : DegFlPoint := by
   intro ι _ _ N
@@ -82,7 +82,7 @@ end Formalism.DegreeFormula.PermutationPointDegree
 namespace Formalism.DegreeFormula
 
 /- English proof (translation)
-The claim follows from `Formalism.DegreeFormula.PermutationPointDegree.degFlPoint`.
+A detailed English derivation is pending.
 -/
 theorem degreePoint : DegFlPoint := Formalism.DegreeFormula.PermutationPointDegree.degFlPoint
 

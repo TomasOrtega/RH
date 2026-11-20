@@ -8,7 +8,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace LateralTheory.E.ChernClassTriangleValuesFromKummerTorsor
 
 /- English proof (translation)
-The claim follows from `LateralTheory.EtaleFoundations.exists_natural_etale_kummer_degree_two_value_of_roots_kummer_gluing (LateralTheory.E.ChernClassEdgeValuesFromKummerTorsor.prim_loc_of hr) (LateralTheory.E.ChernClassEdgeValuesFromKummerTorsor.kumT_ex_of hk) LateralTheory.EtaleFoundations.etale_sheaf …`.
+A detailed English derivation is pending.
 -/
 theorem etale_kummer_chern_triangle_values_exist_of_local_roots_and_kummer_tor (hr : LateralTheory.E.ChernClassRootLocalization.LeafRootLoc) (hk : LateralTheory.E.CupProductRingLaws.LeafKumTExists) :
     LateralTheory.E.ChernClassExistence.EtaleKummerChernTriangleValuesExistNatural :=

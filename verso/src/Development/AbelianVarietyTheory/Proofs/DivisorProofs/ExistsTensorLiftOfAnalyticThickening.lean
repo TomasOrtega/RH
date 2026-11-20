@@ -8,9 +8,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AnPer
 
 /- English proof (translation)
-Use `letI : Algebra ℂ S.T.C := ((algebraMap R S.T.C).comp (algebraMap ℂ R)).toAlgebra`. Set `fR : R →ₐ[ℂ] S.T.C` to `{ algebraMap R S.T.C with commutes' := fun _ ↦ rfl }`. Set `fH : Hol (K₀.W S.T.k) →ₐ[ℂ] S.T.C` to `{ S.T.ρ with commutes' := fun a ↦ by`. Establish `h1 : algebraMap ℂ (Hol (K₀.W S.T.k)) a = K₀.cst S.T.k (algebraMap ℂ (Hol F₀.V) a)` using `((Hol.comap Prod.fst (fun _ _ ↦ analyticAt_fst) (K₀.base S.T.k)).commutes a).symm`. Express the relevant statement in the definitionally equal form `S.T.ρ (algebraMap ℂ (Hol (K₀.W S.T.k)) a) = algebraMap R S.T.C (algebraMap ℂ R a)`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[h1, S.T.ρ_cst, S.compat]`. Express the relevant statement in the definitionally equal form `algebraMap R S.T.C (et (algebraMap ℂ (Hol F₀.V) a)) = _`. Rewrite using `[et.commutes] }`. Use `⟨(Algebra.TensorProduct.lift fR fH (fun _ _ ↦ Commute.all _ _)).toRingHom, fun d h ↦ ?_⟩` and prove the remaining obligations. Conclude with `Algebra.TensorProduct.lift_tmul _ _ _ d h`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_tensorLift_of_DObj {g : ℕ} {Λ : Type} [AddCommGroup Λ] {F₀ : Fam Empty g Λ} (K₀ : Charts F₀) {R : Type} [CommRing R]
     [Algebra ℂ R] (et : Hol F₀.V →ₐ[ℂ] R) (M : Ideal R) (S : K₀.DObj (et : Hol F₀.V →+* R) M) :

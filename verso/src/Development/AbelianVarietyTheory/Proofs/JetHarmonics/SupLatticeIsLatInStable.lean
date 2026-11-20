@@ -23,7 +23,7 @@ variable {F : Type} [Field F] {K : Type} [Field K] [NumberField K] [Algebra F K]
 omit [NumberField K] [Module (𝓞 F) C] [IsScalarTower (𝓞 F) F C] in
 
 /- English proof (translation)
-Rewrite using `[← map_smul, TensorProduct.tmul_smul, TensorProduct.smul_tmul', TensorProduct.smul_tmul', Algebra.smul_def, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coord_one_tmul_smul (z : (Fin n → K) ≃ₗ[K] K ⊗[F] C) (r : F) (f : C) :
     z.symm (1 ⊗ₜ[F] (r • f)) = algebraMap F K r • z.symm (1 ⊗ₜ[F] f) := by
@@ -31,13 +31,11 @@ theorem coord_one_tmul_smul (z : (Fin n → K) ≃ₗ[K] K ⊗[F] C) (r : F) (f 
     Algebra.smul_def, smul_eq_mul]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span ⟨x, hx, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Simplify using `only [TensorProduct.tmul_add, map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul r x _ hx`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Establish `hi : IsIntegral ℤ (algebraMap F K (r : F))` using `(RingOfIntegers.isIntegral_coe r).map (algebraMap F K).toIntAlgHom`. Establish `e : z.symm (1 ⊗ₜ[F] (r • x)) = (⟨algebraMap F K (r : F), hi⟩ : 𝓞 K) • z.symm (1 ⊗ₜ[F] x)`. Rewrite using `[← algebraMap_smul F r x, coord_one_tmul_smul]`. Both sides reduce to the same expression. Simplify using `only [e]`.
-
-Conclude with `Submodule.smul_mem _ _ hx`. Conclude with `Submodule.span_mono (Set.image_mono Submodule.subset_span)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem spanK_span (z : (Fin n → K) ≃ₗ[K] K ⊗[F] C) (s : Set C) :
     spanK z (Submodule.span (𝓞 F) s : Set C) = spanK z s := by
@@ -61,17 +59,15 @@ theorem spanK_span (z : (Fin n → K) ≃ₗ[K] K ⊗[F] C) (s : Set C) :
   · exact Submodule.span_mono (Set.image_mono Submodule.subset_span)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Take `⟨s, rfl⟩` from `hfg`. Rewrite using `[spanK_span]`. Conclude with `Submodule.fg_span (s.finite_toSet.image _)`. Establish `h1 : ∀ f : C, z.symm (1 ⊗ₜ[F] f) ∈ Submodule.span K (spanK z (M : Set C) : Set (Fin n → K))`.
+Prove the components needed by the constructor for the conclusion. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f`. Establish `hf : f ∈ Submodule.span F (M : Set C)` using `htop ▸ Submodule.mem_top`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span (Submodule.subset_span ⟨x, hx, rfl⟩)`. Consider the case `zero => simp`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Simplify using `only [TensorProduct.tmul_add, map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul r x _ hx`. Rewrite using `[coord_one_tmul_smul]`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.smul_mem _ _ hx`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Take `⟨t, rfl⟩` from `z.symm.surjective x`. Proceed by induction on `t using TensorProduct.induction_on with`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `zero => simp`. Consider the case `tmul k f`. Establish `e : (k ⊗ₜ[F] f : K ⊗[F] C) = k • (1 ⊗ₜ[F] f)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[e, map_smul]`.
-
-Conclude with `Submodule.smul_mem _ _ (h1 f)`. Consider the case `add x y hx hy`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ (hx trivial) (hy trivial)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spanK_isLatIn (z : (Fin n → K) ≃ₗ[K] K ⊗[F] C) (M : Submodule (𝓞 F) C) (hfg : M.FG)
     (htop : Submodule.span F (M : Set C) = ⊤) : Formalism.EigenvalueLevelCeiling.IsLatIn ⊤ (spanK z (M : Set C)) := by
@@ -108,9 +104,9 @@ theorem spanK_isLatIn (z : (Fin n → K) ≃ₗ[K] K ⊗[F] C) (M : Submodule (�
 end General
 
 /- English proof (translation)
-Introduce `D B P6 j X hinj EX p ka wL wF T K _ _ _ _ Bs Df S P _ _ oc O v i z act h hL hact`. Rewrite using `[h.Ms_eq]`. Use `⟨spanK_isLatIn z _ hL.fg hL.span_eq_top, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.map_le_iff_le_comap]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨f, hf, rfl⟩`. Use `show O.ρ i g (z.symm (1 ⊗ₜ f)) ∈ spanK z _`. Rewrite using `[h.rho_eq]`. Conclude with `Submodule.subset_span ⟨act g f, hact g f hf, rfl⟩`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem supLattice_isLatIn_stable : ∀ (D : D7) (B : WeightFamilies.Prov D) (P6 : ModuliIntegralCharts.Prov D) (j : ℕ) (X : WeightAlgebra.PJ D B P6 j) (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D) (p : ℕ) (ka wL wF : WeightFamilies.Wt D j) (T : ℕ) (K : Type) [Field K] [NumberField K] [StarRing K] [Algebra B.KO K] (Bs : DefBase K) (Df : DefSide Bs) (S : IndefData Df) (P : Type) [Group P] [Finite P] (oc : OnConst) (O : OnObj S P oc) (v : HeightOneSpectrum (𝓞 K)) (i : Bs.J) (z : (Fin (O.nZ i) → K) ≃ₗ[K] K ⊗[B.KO] B.Cusp j ka) (act : P → B.Cusp j ka → B.Cusp j ka), FormTie X hinj EX p ka wL wF T O v i z act → Submodule.IsLattice B.KO (B.Mlat j ka) → (∀ g, ∀ F ∈ B.Mlat j ka, act g F ∈ B.Mlat j ka) → Formalism.EigenvalueLevelCeiling.IsLatIn ⊤ (O.Ms i) ∧ ∀ g : P, (O.Ms i).map ((O.ρ i g).restrictScalars (𝓞 K)) ≤ O.Ms i := by
   intro D B P6 j X hinj EX p ka wL wF T K _ _ _ _ Bs Df S P _ _ oc O v i z act h hL hact

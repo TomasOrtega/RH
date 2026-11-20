@@ -59,9 +59,9 @@ def WordBoundStep (C CLa : ℝ) : Prop :=
         wordLoss F l jz u ≤ 1 / 8 * (sl p F (flatDeg lam0) Y (r + K) jz (posU F (F.LLset jz).card jz u) : ℝ)
 
 /- English proof (translation)
-Unfold `wordLoss`. Apply `List.sum_nonneg` to reduce the goal to its premises. Introduce `c hc`. Take `⟨z, -, rfl⟩` from `List.mem_map.1 hc`. Unfold `opCost`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Apply the tactic sequence `split_ifs <;> norm_num`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem wordLoss_nonneg {n' r k : ℕ} [NeZero n'] (Fr : Frames n' r) (l : List (Fin n' × (Fin k × Fin k))) (jz : ℤ)
     (u : ℕ) : 0 ≤ wordLoss Fr l jz u := by
@@ -73,17 +73,17 @@ theorem wordLoss_nonneg {n' r k : ℕ} [NeZero n'] (Fr : Frames n' r) (l : List 
   split_ifs <;> norm_num
 
 /- English proof (translation)
-Introduce `p W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w n' m r _ _ TT L₁ L₂ de h' x lam0 aT bT a Y cpp c0 Dp cStar K _ _ hk hrk F nb B hD Fp hFp l hl hc`. Establish `hind : ∀ l' : List (Fin n' × (Fin (m + 1) × Fin (m + 1))), (∀ z ∈ l', z.1 ∈ TT) → MemAtLe 0 (1 / 8) (fun jz u => wordLoss F l' jz u) p O hk F (flatDeg lam0) Y (orbitWindowCount r de h' x) (goodG' r de h' x) (cPrime n' r TT.card c0 cpp cStar) (opWord l' Fp)`. Introduce `l' hl'`. Proceed by induction on `l' with`. Consider the case `nil`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `h0` using `hLe 0 (1 / 8) p O hk F (flatDeg lam0) Y (orbitWindowCount r de h' x) (goodG' r de h' x) (cPrime n' r TT.card c0 cpp cStar) Fp hFp`. Establish `e0 : (fun jz u => wordLoss F ([] : List (Fin n' × (Fin (m + 1) × Fin (m + 1)))) jz u) = fun _ _ => 0`. Use function extensionality and compare the values at `jz u`. Simplify using `[wordLoss]`. Rewrite using `[e0]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify `h0` using `[opWord]`. Consider the case `cons y l' ih`. Establish `ih'` using `ih fun z hz => hl' z (List.mem_cons_of_mem _ hz)`. Establish `hy` using `h1 p W Qq O Kf ι σ j w n' m r TT L₁ L₂ de h' x lam0 aT bT a Y cpp c0 Dp cStar K hk hrk F nb B hD (fun jz u => wordLoss F l' jz u) (opWord l' Fp) ih' y.1 (hl' y List.mem_cons_self) y.2.1 y.2.2`. Establish `e1 : (fun jz u => wordLoss F (y :: l') jz u) = fun jz u => wordLoss F l' jz u + opCost F y.1 jz u`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `jz u`. Simplify using `only [wordLoss, List.map_cons, List.sum_cons]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`. Simplify `hy` using `[opWord]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hW` using `hind l hl`. Apply `memAtG_of_le` to reduce the goal to its premises. Use `memAtLe_mono p O hk F (flatDeg lam0) Y (orbitWindowCount r de h' x) (goodG' r de h' x) (cPrime n' r TT.card c0 cpp cStar) 0 (1 / 8) (1 / 8) (3 / 8) (fun jz u => wordLoss F l jz u) (fun _ _ => 0) ?_ ?_ _ hW` and prove the remaining obligations. Introduce `jz u hu`. Establish `hb` using `hB p W Qq O Kf ι σ j w n' m r TT L₁ L₂ de h' x lam0 aT bT a Y cpp c0 Dp cStar K hk hrk F nb B hD l hl hc jz u (by have := NeZero.pos r; omega)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Introduce `jz u _ hu`. Establish `hb` using `hB p W Qq O Kf ι σ j w n' m r TT L₁ L₂ de h' x lam0 aT bT a Y cpp c0 Dp cStar K hk hrk F nb B hD l hl hc jz u hu`. Establish `h0` using `wordLoss_nonneg F l jz u`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem restWordStep_of (C CLa : ℝ) (hLe : RestLeOfG) (h1 : OneOpStep C CLa) (hB : WordBoundStep C CLa) :
     WordConditionAt C CLa := by
@@ -134,7 +134,7 @@ def RestWordBound (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg : ℝ) : Prop
   tableLineDegreeFive.admitted D CLa Ck Crk Cdeg → ∃ C₁ : ℝ, 0 < C₁ ∧ ∀ C : ℝ, C₁ ≤ C → WordBoundStep C CLa
 
 /- English proof (translation)
-Introduce `hA`. Take `⟨C₁, p1, h1'⟩` from `h1 hA`. Take `⟨C₂, _, hB'⟩` from `hB hA`. Use `⟨max C₁ C₂, lt_max_of_lt_left p1, fun C hC => ?_⟩` and prove the remaining obligations. Conclude with `restWordStep_of C CLa hLe (h1' C (le_trans (le_max_left _ _) hC)) (hB' C (le_trans (le_max_right _ _) hC))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem restWord_of (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg : ℝ) (hLe : RestLeOfG) (h1 : RestOneOp D CLa Ck Crk Cdeg)
     (hB : RestWordBound D CLa Ck Crk Cdeg) : RestWord D CLa Ck Crk Cdeg := by

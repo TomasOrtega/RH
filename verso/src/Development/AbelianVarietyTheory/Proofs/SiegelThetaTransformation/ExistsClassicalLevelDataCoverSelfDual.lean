@@ -26,7 +26,7 @@ section Alg
 variable {R Q : Type} [CommRing R] [AddCommGroup Q] [Module R Q] {I : Ideal R} {r : ℕ}
 
 /- English proof (translation)
-Simplify using `only [← map_smul, ← map_sum]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[Finset.sum_apply, Pi.single_apply, Algebra.smul_def]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem equiv_col (e : (Fin r → R ⧸ I) ≃ₗ[R] Q) (c : Fin r → R) :
     e (fun j => Ideal.Quotient.mk I (c j)) = ∑ j, c j • e (Pi.single j 1) := by
@@ -42,7 +42,7 @@ noncomputable def rho (e : (Fin r → R ⧸ I) ≃ₗ[R] Q) : GL (Fin r) (R ⧸ 
       simp)
 
 /- English proof (translation)
-Rewrite using `[← equiv_col]`. Express the relevant statement in the definitionally equal form `e ((k : Matrix (Fin r) (Fin r) (R ⧸ I)) *ᵥ (e.symm (e (Pi.single i 1)))) = _`. Rewrite using `[e.symm_apply_apply, ← ha]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
 Simplify using the standard rewrite rules.
 -/
@@ -57,11 +57,11 @@ theorem rho_apply (e : (Fin r → R ⧸ I) ≃ₗ[R] Q) (k : GL (Fin r) (R ⧸ I
   simp
 
 /- English proof (translation)
-Rewrite using `[cop_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, m, hm, h⟩`. Use `IsUnit.of_mul_eq_one_right (Ideal.Quotient.mk I a) ?_` and prove the remaining obligations. Rewrite using `[← map_mul, ← map_one (Ideal.Quotient.mk I), Ideal.Quotient.eq, ← h]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hm`. Introduce `h`. Take `⟨b, hb⟩` from `h.exists_left_inv`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Rewrite `hb` using `[← map_mul, ← map_one (Ideal.Quotient.mk I), eq_comm, Ideal.Quotient.eq]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨a, _, hb, by ring⟩`.
+Supply the required witnesses or components.
 -/
 theorem cop_iff_isUnit {s : R} : IsCoprime (Ideal.span {s}) I ↔ IsUnit (Ideal.Quotient.mk I s) := by
   rw [cop_iff]
@@ -77,15 +77,13 @@ theorem cop_iff_isUnit {s : R} : IsCoprime (Ideal.span {s}) I ↔ IsUnit (Ideal.
     exact ⟨a, _, hb, by ring⟩
 
 /- English proof (translation)
-Take `⟨ez, hez⟩` from `exists_equiv_of_span I r e z hz`. Take `⟨ex, hex⟩` from `exists_equiv_of_span I r e x hx`. Use `choose a ha using fun j i => Ideal.Quotient.mk_surjective (ez.symm (x i) j)`. Use `choose b hb using fun j i => Ideal.Quotient.mk_surjective (ex.symm (z i) j)`. Establish `h1 : ∀ i, x i = ∑ j, a j i • z j` using `fun i => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [← hez, ← equiv_col, ha]`. Conclude with `(ez.apply_symm_apply _).symm`. Establish `h2 : ∀ i, z i = ∑ j, b j i • x j` using `fun i => by`. Simplify using `only [← hex, ← equiv_col, hb]`. Conclude with `(ex.apply_symm_apply _).symm`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `⟨Matrix.of a, cop_iff_isUnit.2 ?_, h1⟩` and prove the remaining obligations. Establish `h3 : (Ideal.Quotient.mk I).mapMatrix (Matrix.of a * Matrix.of b) = 1`. Use extensionality with `j i`. Establish `: ez (fun j => Ideal.Quotient.mk I ((Matrix.of a * Matrix.of b) j i)) = ez (Pi.single i 1)`. Rewrite using `[equiv_col]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hez]`. Rewrite using `[h2 i]`. Simplify using `only [h1, Matrix.mul_apply, Finset.sum_smul, Finset.smul_sum, smul_smul, mul_comm, Matrix.of_apply]`. Conclude with `Finset.sum_comm`. Use `congrFun (ez.injective this) j` as an intermediate fact.
-
-Simplify `this` using `[Pi.single_apply, Matrix.one_apply]`. Establish `h4` using `congrArg Matrix.det h3`. Rewrite `h4` using `[← RingHom.map_det, Matrix.det_mul, map_mul, Matrix.det_one]`. Conclude with `IsUnit.of_mul_eq_one _ h4`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_matrix (e : Q ≃ₗ[R] (Fin r → R ⧸ I)) (z x : Fin r → Q)
     (hz : Submodule.span R (Set.range z) = ⊤) (hx : Submodule.span R (Set.range x) = ⊤) :
@@ -116,13 +114,11 @@ theorem exists_matrix (e : Q ≃ₗ[R] (Fin r → R ⧸ I)) (z x : Fin r → Q)
   exact IsUnit.of_mul_eq_one _ h4
 
 /- English proof (translation)
-Use `haveI : Nontrivial (S ⧸ 𝔪) := Ideal.Quotient.nontrivial_iff.2 h.ne_top`. Use `haveI : Finite (S ⧸ 𝔪) := Finite.of_surjective _ Ideal.Quotient.mk_surjective`. Use `haveI : Fintype (S ⧸ 𝔪) := Fintype.ofFinite _`. Establish `h1 : 1 < Nat.card (S ⧸ 𝔪)` using `Finite.one_lt_card`. Establish `h0 : ((Nat.card (S ⧸ 𝔪) : ℕ) : S ⧸ 𝔪) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[Nat.card_eq_fintype_card]`. Conclude with `Nat.cast_card_eq_zero _`. Establish `hN' : (N : S ⧸ 𝔪) = 0` using `by rw [← map_natCast (Ideal.Quotient.mk 𝔪), hN, map_zero]`. Assume the negation of the conclusion as `hlt`. Establish `hc : Nat.Coprime (Nat.card (S ⧸ 𝔪)) N`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: Nat.card (S ⧸ 𝔪) = 2 ∨ Nat.card (S ⧸ 𝔪) = 3` using `by omega`. Apply the tactic sequence `rcases this with h | h <;> rw [h]`. Conclude with `Nat.coprime_two_left.2 h2`. Conclude with `(Nat.Prime.coprime_iff_not_dvd Nat.prime_three).2 h3`. Use `hc.cast (R := S ⧸ 𝔪)` as an intermediate fact.
-
-Rewrite `this` using `[h0, hN']`. Conclude with `not_isCoprime_zero_zero this`.
+A detailed English derivation is pending.
 -/
 theorem four_le_card {S : Type} [CommRing S] [Finite S] (N : ℕ) (h2 : Odd N) (h3 : ¬ 3 ∣ N) (hN : (N : S) = 0)
     (𝔪 : Ideal S) (h : 𝔪.IsMaximal) : 4 ≤ Nat.card (S ⧸ 𝔪) := by
@@ -148,9 +144,7 @@ end Alg
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {X : Data E r}
 
 /- English proof (translation)
-Use `haveI : Finite (𝓞 E ⧸ I) := Ideal.finiteQuotientOfFreeOfNeBot _ hI`. Use `haveI : Module.Finite (𝓞 E) X.Λ := Module.Finite.iff_fg.2 X.Λ_fg`. Use `haveI : Module.FinitePresentation (𝓞 E) X.Λ := Module.finitePresentation_of_finite _ _`. Use `haveI : Module.Projective (𝓞 E) X.Λ := Module.Flat.projective_of_finitePresentation`. Use `nonempty_equiv_quot I r ?_` and prove the remaining obligations.
-
-Establish `h` using `(X.Λ.tensorEquivSpan E).finrank_eq`. Rewrite `h` using `[IsLocalization.finrank_eq E (nonZeroDivisors (𝓞 E)) le_rfl, IsLocalizedModule.finrank_eq (nonZeroDivisors (𝓞 E)) (TensorProduct.mk (𝓞 E) E X.Λ 1) le_rfl, X.Λ_span]`. Simplify using `using h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem nonempty_equiv_lat (X : Data E r) (I : Ideal (𝓞 E)) (hI : I ≠ ⊥) :
     Nonempty ((X.Λ ⧸ (I • ⊤ : Submodule (𝓞 E) X.Λ)) ≃ₗ[𝓞 E] (Fin r → 𝓞 E ⧸ I)) := by
@@ -165,17 +159,17 @@ theorem nonempty_equiv_lat (X : Data E r) (I : Ideal (𝓞 E)) (hI : I ≠ ⊥) 
   simpa using h
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_smul_top_iff I L v`.
+A detailed English derivation is pending.
 -/
 theorem mem_smul_top {L : Lt E r} {I : Ideal (𝓞 E)} {v : L} :
     v ∈ (I • ⊤ : Submodule (𝓞 E) L) ↔ (v : Fin r → E) ∈ I • L := Submodule.mem_smul_top_iff I L v
 
 /- English proof (translation)
-Take `⟨e⟩` from `nonempty_equiv_lat X I hI`. Take `⟨x, hx⟩` from `exists_span I r e`. Use `choose b hb using fun i => Submodule.Quotient.mk_surjective _ (x i)`. Use `⟨fun i => b i, fun i => (b i).2, fun v hv => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 E)).1 (hx ▸ Submodule.mem_top : Submodule.Quotient.mk (⟨v, hv⟩ : X.Λ) ∈ Submodule.span (𝓞 E) (Set.range x))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: Submodule.Quotient.mk (⟨v, hv⟩ : X.Λ) = (Submodule.Quotient.mk (∑ i, c i • b i) : X.Λ ⧸ (I • ⊤ : Submodule (𝓞 E) X.Λ))`. Rewrite using `[← hc]`. Simplify using `only [← hb, ← Submodule.mkQ_apply, map_sum, map_smul]`. Establish `h2` using `mem_smul_top.1 ((Submodule.Quotient.eq _).1 this)`. Establish `h3 : v = ∑ i, c i • (b i : Fin r → E) + ((⟨v, hv⟩ - ∑ i, c i • b i : X.Λ) : Fin r → E)` using `by simp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3]`. Conclude with `Submodule.add_mem_sup (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)) h2`.
+A detailed English derivation is pending.
 -/
 theorem exists_frame (X : Data E r) (I : Ideal (𝓞 E)) (hI : I ≠ ⊥) : ∃ β : Fin r → Fin r → E,
     (∀ i, β i ∈ X.Λ) ∧ X.Λ ≤ Submodule.span (𝓞 E) (Set.range β) ⊔ I • X.Λ := by
@@ -196,7 +190,7 @@ theorem exists_frame (X : Data E r) (I : Ideal (𝓞 E)) (hI : I ≠ ⊥) : ∃ 
     Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)) h2
 
 /- English proof (translation)
-Take `⟨s, hs, H⟩` from `H`. Take `⟨a, m, hm, e⟩` from `cop_iff.1 hs`. Conclude with `⟨s, cop_iff.2 ⟨a, m, h hm, e⟩, Submodule.smul_mono_left h H⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cong_mono {𝔞 𝔟 : Ideal (𝓞 E)} (h : 𝔞 ≤ 𝔟) {u v : Fin r → E} (H : Cong X 𝔞 u v) : Cong X 𝔟 u v := by
   obtain ⟨s, hs, H⟩ := H
@@ -204,13 +198,11 @@ theorem cong_mono {𝔞 𝔟 : Ideal (𝓞 E)} (h : 𝔞 ≤ 𝔟) {u v : Fin r 
   exact ⟨s, cop_iff.2 ⟨a, m, h hm, e⟩, Submodule.smul_mono_left h H⟩
 
 /- English proof (translation)
-Take `⟨s, hs, H⟩` from `H`. Take `⟨t, ht, H'⟩` from `H'`. Take `⟨m, hm, m', hm', e⟩` from `Ideal.isCoprime_iff_exists.1 h`. Take `⟨a, x, hx, e1⟩` from `cop_iff.1 hs`. Take `⟨b, y, hy, e2⟩` from `cop_iff.1 ht`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨m' * s + m * t, IsCoprime.mul_right (cop_iff.2 ⟨a, x + a * m * (s - t), ?_, ?_⟩) (cop_iff.2 ⟨b, y + b * m' * (t - s), ?_, ?_⟩), ?_⟩` and prove the remaining obligations. Conclude with `add_mem hx (Ideal.mul_mem_right _ _ (Ideal.mul_mem_left _ _ hm))`. Take the linear combination `e1 + a * s * e`. Conclude with `add_mem hy (Ideal.mul_mem_right _ _ (Ideal.mul_mem_left _ _ hm'))`. Take the linear combination `e2 + b * t * e`.
+Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[add_smul, mul_smul m', mul_smul m]`. Use `add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, Submodule.mul_smul]`. Conclude with `Submodule.smul_mem_smul hm' H`. Rewrite using `[Submodule.mul_smul]`.
-
-Conclude with `Submodule.smul_mem_smul hm H'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cong_glue {𝔞 𝔟 : Ideal (𝓞 E)} (h : IsCoprime 𝔞 𝔟) {u v : Fin r → E} (H : Cong X 𝔞 u v)
     (H' : Cong X 𝔟 u v) : Cong X (𝔞 * 𝔟) u v := by
@@ -231,7 +223,7 @@ theorem cong_glue {𝔞 𝔟 : Ideal (𝓞 E)} (h : IsCoprime 𝔞 𝔟) {u v : 
     · rw [Submodule.mul_smul]; exact Submodule.smul_mem_smul hm H'
 
 /- English proof (translation)
-Rewrite using `[cong_iff, ← Finset.sum_sub_distrib]`. Conclude with `le_loc _ (Submodule.sum_mem _ fun j _ => sub_smul (c j) (d j) (β j) ▸ Submodule.smul_mem_smul (h j) (hβ j))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cong_coeff' {𝔞 : Ideal (𝓞 E)} {β : Fin r → Fin r → E} (hβ : ∀ i, β i ∈ X.Λ) {c d : Fin r → 𝓞 E}
     (h : ∀ j, c j - d j ∈ 𝔞) : Cong X 𝔞 (∑ j, c j • β j) (∑ j, d j • β j) := by
@@ -242,19 +234,17 @@ theorem cong_coeff' {𝔞 : Ideal (𝓞 E)} {β : Fin r → Fin r → E} (hβ : 
 variable {La : Type} [AddCommGroup La] [Module (𝓞 E) La]
 
 /- English proof (translation)
-Take `⟨e'⟩` from `nonempty_equiv_lat X J hJ`. Set `f : La →ₗ[𝓞 E] X.Λ` to `LinearMap.codRestrict X.Λ (s • δ) fun a => h1 _ (hδ a)`. Set `g` to `Submodule.mapQ (J • ⊤ : Submodule (𝓞 E) La) (J • ⊤ : Submodule (𝓞 E) X.Λ) f (Submodule.smul_le.2 fun m hm x _ => by`. Rewrite using `[Submodule.mem_comap, map_smul]`. Conclude with `Submodule.smul_mem_smul hm trivial)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsurj : Function.Surjective g`. Introduce `q`. Take `⟨⟨v, hv⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Take `⟨c, m, hm, ec⟩` from `cop_iff.1 (cop_mul hs hs)`. Take `⟨_, ⟨a, rfl⟩, w, hw, hvw⟩` from `Submodule.mem_sup.1 (hL (h2 v hv))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Submodule.Quotient.mk (c • a), (Submodule.Quotient.eq _).2 (mem_smul_top.2 ?_)⟩` and prove the remaining obligations. Establish `hw' : s • w ∈ J • X.Λ` using `smul_map_mem LinearMap.id h1 hw`. Establish `: s • δ (c • a) - v = -(c • s • w) - m • v`. Rewrite using `[map_smul, eq_sub_of_add_eq hvw]`. Establish `: v = (c * (s * s) + m) • v` using `by rw [ec, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(norm := module) -this`. Express the relevant statement in the definitionally equal form `s • δ (c • a) - v ∈ _`. Rewrite using `[this]`. Conclude with `sub_mem (neg_mem (Submodule.smul_mem _ _ hw')) (Submodule.smul_mem_smul hm hv)`. Establish `hinj : Function.Injective (e'.toLinearMap ∘ₗ g ∘ₗ e.symm.toLinearMap)` using `OrzechProperty.injective_of_surjective_endomorphism _ (e'.surjective.comp (hsurj.comp e.symm.surjective))`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hg : Function.Injective g` using `fun x y hxy => e.injective (hinj (by simp [hxy]))`. Take `⟨t, ht, h⟩` from `h`. Rewrite using `[Submodule.Quotient.eq]`. Use `mem_of_loc (L := ⊤) trivial le_rfl ⟨t, ht, ?_⟩` and prove the remaining obligations. Rewrite using `[← Submodule.Quotient.mk_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hg` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use `(Submodule.Quotient.mk_eq_zero _).2 (mem_smul_top.2 ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `s • δ (t • (a - b)) ∈ _`. Rewrite using `[map_smul, map_sub]`.
-
-Conclude with `Submodule.smul_mem _ _ h`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_cong {J : Ideal (𝓞 E)} (hJ : J ≠ ⊥)
     (e : (La ⧸ (J • ⊤ : Submodule (𝓞 E) La)) ≃ₗ[𝓞 E] (Fin r → 𝓞 E ⧸ J)) {L : Lt E r} {s : 𝓞 E}
@@ -296,46 +286,42 @@ theorem mem_of_cong {J : Ideal (𝓞 E)} (hJ : J ≠ ⊥)
   exact Submodule.smul_mem _ _ h
 
 /- English proof (translation)
-Simplify using `only [← Submodule.mkQ_apply, map_sum, map_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mk_comb {K : Submodule (𝓞 E) La} (c : Fin r → 𝓞 E) (z : Fin r → La) :
     (Submodule.Quotient.mk (∑ j, c j • z j) : La ⧸ K) = ∑ j, c j • Submodule.Quotient.mk (z j) := by
   simp only [← Submodule.mkQ_apply, map_sum, map_smul]
 
 /- English proof (translation)
-Establish `hle : D.𝔪 ≤ J` using `hprod ▸ Ideal.mul_le_right`. Establish `hJ : J ≠ ⊥` using `fun h => D.ne_bot (le_bot_iff.1 (h ▸ hle))`. Take `⟨-, s, hs, h1, h2⟩` from `hLl`. Establish `hs' : IsCoprime (Ideal.span {s}) J` using `(hprod ▸ hs.of_mul_right_left).of_mul_right_right`. Establish `inj` using `fun a b => mem_of_cong (a := a) (b := b) hJ e hs' h1 h2 δ hδ hL`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨c, m, hm, ec⟩` from `cop_iff.1 hs'`. Establish `hz : ∀ i, ∃ z, Cong X J (δ z) (D.β i)` using `fun i => by`. Take `⟨_, ⟨a, rfl⟩, w, hw, hvw⟩` from `Submodule.mem_sup.1 (hL (h2 _ (D.β_mem i)))`. Use `⟨c • a, s, hs', ?_⟩` and prove the remaining obligations. Establish `hw' : s • w ∈ J • X.Λ` using `smul_map_mem LinearMap.id h1 hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: s • (δ (c • a) - D.β i) = -(c • s • w) - s • m • D.β i`. Rewrite using `[map_smul, eq_sub_of_add_eq hvw]`. Establish `: s • D.β i = s • (c * s + m) • D.β i` using `by rw [ec, one_smul]`. Take the linear combination `(norm := module) -this`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_mem (neg_mem (Submodule.smul_mem _ _ hw')) (Submodule.smul_mem _ _ (Submodule.smul_mem_smul hm (D.β_mem i)))`. Use `choose z hz using hz`. Establish `hcomb : ∀ a : Fin r → 𝓞 E, Cong X J (δ (∑ j, a j • z j)) (∑ j, a j • D.β j)` using `fun a => by`. Simplify `cong_sum hz a` using `only [map_sum, map_smul]`. Establish `hsp : Submodule.span (𝓞 E) (Set.range fun i => (Submodule.Quotient.mk (z i) : La ⧸ (J • ⊤ : Submodule (𝓞 E) La))) = ⊤`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `eq_top_iff.2 fun q _ => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Take `⟨u, hu, w, hw, huw⟩` from `Submodule.mem_sup.1 (D.β_span (X.Λ.smul_mem c (h1 _ (hδ a))))`. Take `⟨b, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 E)).1 hu`. Establish `h3 : Cong X J (δ a) (∑ j, b j • D.β j)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨s, hs', ?_⟩` and prove the remaining obligations. Establish `: s • (δ a - ∑ j, b j • D.β j) = m • s • δ a + s • w`. Rewrite using `[eq_sub_of_add_eq huw]`. Establish `: s • δ a = s • (c * s + m) • δ a` using `by rw [ec, one_smul]`. Take the linear combination `(norm := module) this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `add_mem (Submodule.smul_mem_smul hm (h1 _ (hδ a))) (Submodule.smul_mem _ _ (Submodule.smul_mono_left hle hw))`. Rewrite using `[inj _ _ (cong_trans h3 (cong_symm (hcomb b))), mk_comb]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Use `⟨_, hf1 _ hsp, fun xs y hy hy' => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `datF`. Use `split_ifs with h`. Take `⟨a, ha, hr⟩` from `h.1.choose_spec`. Rewrite using `[← hf2 _ hsp _ a ha]`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[← mk_comb]`. Conclude with `inj _ _ (cong_trans (cong_symm (hy i).1) (cong_trans (cong_mono hle (hr i)) (cong_symm (hcomb _))))`. Rewrite using `[mul_zero]`. Assume the negation of the conclusion as `h0`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨a, hdet, ha⟩` from `exists_matrix e _ _ hsp (hf0 _ h0)`. Take `⟨p, hp, q, hq, epq⟩` from `Ideal.isCoprime_iff_exists.1 hcop`. Set `a' : Matrix (Fin r) (Fin r) (𝓞 E)` to `p • a + q • 1`. Establish `e1 : ∀ j i, a' j i - a j i ∈ J` using `fun j i => by`. Establish `: a' j i - a j i = q * ((1 : Matrix (Fin r) (Fin r) (𝓞 E)) j i - a j i)`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [a', Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Take the linear combination `a j i * epq`. Rewrite using `[this]`. Conclude with `Ideal.mul_mem_right _ _ hq`. Establish `e2 : ∀ j i, a' j i - (1 : Matrix (Fin r) (Fin r) (𝓞 E)) j i ∈ 𝔐` using `fun j i => by`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `: a' j i - (1 : Matrix (Fin r) (Fin r) (𝓞 E)) j i = p * (a j i - (1 : Matrix (Fin r) (Fin r) (𝓞 E)) j i)`. Simplify using `only [a', Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Take the linear combination `(1 : Matrix (Fin r) (Fin r) (𝓞 E)) j i * epq`. Rewrite using `[this]`. Conclude with `Ideal.mul_mem_right _ _ hp`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hd : ∀ (I : Ideal (𝓞 E)) (b : Matrix (Fin r) (Fin r) (𝓞 E)), (∀ j i, a' j i - b j i ∈ I) → IsCoprime (Ideal.span {b.det}) I → IsCoprime (Ideal.span {a'.det}) I` using `fun I b hb hI => by`. Rewrite `hI`, the goal using `[cop_iff_isUnit, RingHom.map_det]`. Use `hI using 2` and compare the differences between its conclusion and the goal. Use extensionality with `j i`. Conclude with `Ideal.Quotient.eq.2 (hb j i)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hu : IsUnit (a'.map (Ideal.Quotient.mk D.𝔪))`. Rewrite using `[Matrix.isUnit_iff_isUnit_det]`. Establish `: IsCoprime (Ideal.span {a'.det}) D.𝔪` using `hprod ▸ IsCoprime.mul_right (hd _ 1 e2 (by rw [Matrix.det_one]; exact cop_one)) (hd _ a e1 hdet)`. Rewrite `this` using `[cop_iff_isUnit, RingHom.map_det]`. Then use the resulting hypothesis. Use `h ⟨⟨⟨hu.unit, hgrp _ fun i j => ⟨_, e2 i j, ?_⟩⟩, a', rfl, fun i => ?_⟩, hy'⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Matrix.one_apply]`. Rewrite using `[hprod]`. Use `cong_glue hcop (cong_trans (hy i).2 (cong_symm ?_)) (cong_trans (hy i).1 ?_)` and prove the remaining obligations. Simplify `cong_coeff' D.β_mem fun j => e2 j i` using `[Matrix.one_apply]`. Use `cong_trans ?_ (cong_trans (hcomb fun j => a j i) (cong_symm (cong_coeff' D.β_mem fun j => e1 j i)))` and prove the remaining obligations.
-
-Use `(Submodule.Quotient.eq _).1 ((ha i).trans (mk_comb _ _).symm)` as an intermediate fact. Use `⟨s, hs', ?_⟩` and prove the remaining obligations. Rewrite using `[← map_sub]`. Use `Submodule.smul_induction_on this (fun m hm x _ => ?_) fun x y hx hy => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_comm]`.
-
-Conclude with `Submodule.smul_mem_smul hm (h1 _ (hδ x))`. Rewrite using `[map_add, smul_add]`. Conclude with `add_mem hx hy`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tie_core (D : SW.Level X) {𝔐 J : Ideal (𝓞 E)} (hprod : D.𝔪 = 𝔐 * J) (hcop : IsCoprime 𝔐 J)
     (hgrp : ∀ k : GL (Fin r) (𝓞 E ⧸ D.𝔪), (∀ i j, ∃ a ∈ 𝔐,
@@ -441,9 +427,9 @@ theorem tie_core (D : SW.Level X) {𝔐 J : Ideal (𝓞 E)} (hprod : D.𝔪 = �
         · rw [map_add, smul_add]; exact add_mem hx hy
 
 /- English proof (translation)
-Use extensionality with `q`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb, rfl⟩`. Conclude with `⟨⟨b, hb⟩, rfl⟩`. Introduce and unpack `⟨i, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨_, i.2, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem image_lt_eq_range {Q : Type} {n : ℕ} (hn : r ≤ n) (x : Fin n → Q) :
     x '' {b | b.val < r} = Set.range fun i => x (Fin.castLE hn i) := by
@@ -455,9 +441,9 @@ theorem image_lt_eq_range {Q : Type} {n : ℕ} (hn : r ≤ n) (x : Fin n → Q) 
     exact ⟨_, i.2, rfl⟩
 
 /- English proof (translation)
-Use extensionality with `a`. Establish `hb : bar a = H.bar a` using `RingOfIntegers.ext ((coe_bar a).trans (H.bar_eq a).symm)`. Rewrite using `[mem_conjI, hb]`. Use `⟨fun h => ?_, fun h => Ideal.mem_map_of_mem (H.bar : 𝓞 E →+* 𝓞 E) h⟩` and prove the remaining obligations. Use `bar_mem h` as an intermediate fact.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[LevelPairing.bar_bar]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem conjI_Mfr {H : Host E} (l : Geo.Tor.Level H) : conjI (Mfr l) = l.Mb := by
   ext a
@@ -468,15 +454,15 @@ theorem conjI_Mfr {H : Host E} (l : Geo.Tor.Level H) : conjI (Mfr l) = l.Mb := b
   rwa [LevelPairing.bar_bar] at this
 
 /- English proof (translation)
-The claim follows from `(l.prod ▸ Ideal.mul_le_right : Ideal.span {(l.M : 𝓞 E)} ≤ Mfr l) (Ideal.mem_span_singleton_self _)`.
+A detailed English derivation is pending.
 -/
 theorem natCast_mem_Mfr {H : Host E} (l : Geo.Tor.Level H) : (l.M : 𝓞 E) ∈ Mfr l :=
   (l.prod ▸ Ideal.mul_le_right : Ideal.span {(l.M : 𝓞 E)} ≤ Mfr l) (Ideal.mem_span_singleton_self _)
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : l.Mb = ⊤`. Rewrite using `[← conjI_Mfr, h, eq_top_iff]`. Conclude with `fun a _ => mem_conjI.2 trivial`. Establish `h2` using `l.prod`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Rewrite `h2` using `[h1, Ideal.map_top, Ideal.mul_top, eq_comm, Ideal.span_singleton_eq_top]`. Establish `h3 : IsUnit (algebraMap ℤ (𝓞 E) (l.M : ℤ))` using `by simpa using h2`. Establish `h4` using `Int.isUnit_iff.1 (isUnit_of_map_unit _ _ h3)`. Use `l.three_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem Mfr_ne_top {H : Host E} (l : Geo.Tor.Level H) : Mfr l ≠ ⊤ := by
   intro h
@@ -490,7 +476,7 @@ theorem Mfr_ne_top {H : Host E} (l : Geo.Tor.Level H) : Mfr l ≠ ⊤ := by
   omega
 
 /- English proof (translation)
-Take `⟨u, v, e⟩` from `h.cast (R := R)`. Conclude with `Ideal.isCoprime_iff_exists.2 ⟨_, I.mul_mem_left u ha, _, J.mul_mem_left v hb, e⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cop_of_nat {R : Type} [CommRing R] {I J : Ideal R} {a b : ℕ} (h : Nat.Coprime a b) (ha : (a : R) ∈ I)
     (hb : (b : R) ∈ J) : IsCoprime I J := by
@@ -498,45 +484,37 @@ theorem cop_of_nat {R : Type} [CommRing R] {I J : Ideal R} {a b : ℕ} (h : Nat.
   exact Ideal.isCoprime_iff_exists.2 ⟨_, I.mul_mem_left u ha, _, J.mul_mem_left v hb, e⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c n d σ r X hn hr _ hd h3 ph ψ x₀ hph`. Substitute `hr` using the available equality. Take `⟨-, huniq, adj, hadj, hadj'⟩` from `halves_free_and_adjoint E H Dw l Xo c n d hd`. Take `⟨-, hM, hcM, hMb, hI, -⟩` from `hd`. Take `⟨pa, pb, pc, pd, px, -⟩` from `hph`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hM0 : l.M ≠ 0` using `by have := l.three_le; omega`. Establish `hM2 : d.l₂.M ≠ 0` using `by have := d.l₂.three_le; omega`. Establish `hp : d.I * Jd d = Ideal.span {(d.pd : 𝓞 E)}`. Establish `h2` using `d.l₂.prod`. Rewrite `h2` using `[hMb, hM, Ideal.map_mul, _root_.mul_mul_mul_comm, l.prod, Nat.cast_mul, ← Ideal.span_singleton_mul_span_singleton]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `mul_left_cancel₀ ?_ h2` and prove the remaining obligations. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hM0` after adjusting the coercions. Establish `hpJ : (d.pd : 𝓞 E) ∈ Jd d` using `(hp ▸ Ideal.mul_le_right : Ideal.span {(d.pd : 𝓞 E)} ≤ Jd d) (Ideal.mem_span_singleton_self _)`. Establish `hprod : Mfr d.l₂ = Mfr l * Jd d`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Mfr, hMb, Ideal.map_mul]`. Both sides reduce to the same expression. Establish `hcop : IsCoprime (Mfr l) (Jd d)` using `cop_of_nat hcM.symm (natCast_mem_Mfr l) hpJ`. Establish `hbot : Mfr d.l₂ ≠ ⊥` using `fun h => by`. Use `natCast_mem_Mfr d.l₂` as an intermediate fact.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[h, Ideal.mem_bot]`. Conclude with `hM2 (by exact_mod_cast this)`. Establish `hle : Mfr d.l₂ ≤ Jd d` using `hprod ▸ Ideal.mul_le_right`. Establish `hle' : Mfr d.l₂ ≤ Mfr l` using `hprod ▸ Ideal.mul_le_left`. Establish `hJ : Jd d ≠ ⊥` using `fun h => hbot (le_bot_iff.1 (h ▸ hle))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI : Finite (𝓞 E ⧸ Jd d) := Ideal.finiteQuotientOfFreeOfNeBot _ hJ`. Use `haveI := Dw.fin`. Use `haveI := Dw.proj`. Take `⟨e⟩ : Nonempty (LaJ Xo c d ≃ₗ[𝓞 E] (Fin (Dw.p + Dw.q) → 𝓞 E ⧸ Jd d))` from `nonempty_equiv_quot (N := Dw.La) (Jd d) _ Dw.rank`. Rewrite `px` using `[image_lt_eq_range hn]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨e₀, he₀⟩` from `exists_equiv_of_span _ _ e _ px`. Set `χ : (LaJ Xo c d ≃ₗ[𝓞 E] LaJ Xo c d) →* ℂˣ` to `(Units.map (σ : c.F →* ℂ)).comp (MonoidHom.mk' (fun g => (ψ (adj g))⁻¹) fun g g' => by rw [hadj, map_mul, mul_inv, mul_comm])`. Set `ext : (Fin (Dw.p + Dw.q) → LaJ Xo c d) → Fin n → LaJ Xo c d` to `fun x b => if h : b.val < Dw.p + Dw.q then x ⟨b, h⟩ else 0`. Establish `hext : ∀ x i, ext x (Fin.castLE hn i) = x i` using `fun x i => dif_pos i.2`. Set `f : (Fin (Dw.p + Dw.q) → LaJ Xo c d) → ℂ` to `fun x => σ (ph (ext x))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hf : ∀ x, σ (ph x) = f fun i => x (Fin.castLE hn i)` using `fun x => congrArg σ (pa _ _ fun b hb => (hext (fun i => x (Fin.castLE hn i)) ⟨b, hb⟩).symm)`. Establish `hfg : ∀ g : LaJ Xo c d ≃ₗ[𝓞 E] LaJ Xo c d, f (fun i => g (x₀ (Fin.castLE hn i))) = (χ g : ℂˣ)` using `fun g => by`. Rewrite using `[← hf fun b => g (x₀ b), pc (adj g) g ((hadj' _ _).2 rfl), pd, _root_.mul_one]`. Both sides reduce to the same expression. Establish `hchar : ∀ g : GL (Fin (Dw.p + Dw.q)) (𝓞 E ⧸ Jd d), (g : Matrix (Fin (Dw.p + Dw.q)) (Fin (Dw.p + Dw.q)) (𝓞 E ⧸ Jd d)).det = 1 → χ (rho e₀ g) = 1` using `generalLinearGroup_char_eq_one_of_det_eq_one _ _ _ (χ.comp (rho e₀)) (four_le_card d.pd (Nat.odd_mul.1 (hM ▸ d.l₂.odd)).2 h3 (by rw [← map_natCast (Ideal.Quotient.mk (Jd d)), Ideal.Quotient.eq_zero_iff_mem]; exact hpJ))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨β, hβ, hβ'⟩` from `exists_frame X (Mfr d.l₂) hbot`. Set `G` to `(Matrix.GeneralLinearGroup.map (n := Fin (Dw.p + Dw.q)) (Ideal.Quotient.factor hle')).ker`. Set `D : SW.Level X` to `{ 𝔪 := Mfr d.l₂ proper := Mfr_ne_top _ ne_bot := hbot cop := by`. Rewrite using `[conjI_Mfr, Ideal.isCoprime_iff_sup_eq, sup_comm]`. Conclude with `d.l₂.coprime`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `odd := cop_of_nat (Nat.coprime_two_right.2 d.l₂.odd) (natCast_mem_Mfr _) (Ideal.mem_span_singleton_self _)`. Use `β := β`. Use `β_mem := hβ`. Use `β_span := hβ'`. Use `J := G`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `lam := (χ.comp ((rho e₀).comp (Matrix.GeneralLinearGroup.map (Ideal.Quotient.factor hle)))).comp G.subtype`. Use `w := H.w0`. Use `w_int := H.w0.2`. Use `w_tr := by`. Use `congrArg (fun a : 𝓞 E => (a : E)) (PullbackSections.CVA.cmHostUnit_add_conj_eq_one H)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Simplify `this }` using `[H.bar_eq, cc]`. Establish `hG : ∀ k : GL (Fin (Dw.p + Dw.q)) (𝓞 E ⧸ Mfr d.l₂), k ∈ G ↔ ∀ i j, ∃ a ∈ Mfr l, (k : Matrix (Fin (Dw.p + Dw.q)) (Fin (Dw.p + Dw.q)) (𝓞 E ⧸ Mfr d.l₂)) i j - (1 : Matrix (Fin (Dw.p + Dw.q)) (Fin (Dw.p + Dw.q)) (𝓞 E ⧸ Mfr d.l₂)) i j = Ideal.Quotient.mk (Mfr d.l₂) a` using `fun k => by`. Rewrite using `[MonoidHom.mem_ker, Matrix.GeneralLinearGroup.ext_iff]`. Use `forall₂_congr fun i j => ?_` and prove the remaining obligations. Establish `key : ∀ u : 𝓞 E ⧸ Mfr d.l₂, Ideal.Quotient.factor hle' u = 0 ↔ ∃ a ∈ Mfr l, u = Ideal.Quotient.mk (Mfr d.l₂) a` using `fun u => by`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective u`. Conclude with `⟨a, Ideal.Quotient.eq_zero_iff_mem.1 h, rfl⟩`. Introduce and unpack `⟨a, ha, rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 ha`. Rewrite using `[← key, map_sub, sub_eq_zero]`. Establish `h1 : Ideal.Quotient.factor hle' ((1 : Matrix (Fin (Dw.p + Dw.q)) (Fin (Dw.p + Dw.q)) (𝓞 E ⧸ Mfr d.l₂)) i j) = (1 : Matrix (Fin (Dw.p + Dw.q)) (Fin (Dw.p + Dw.q)) (𝓞 E ⧸ Mfr l)) i j`. Simplify using `only [Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Both sides reduce to the same expression. Use `⟨D, rfl, hprod, hcop, rfl, hG, fun k hk => hchar _ ?_, fun L hL δ hδ hLδ => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((Ideal.Quotient.factor hle).mapMatrix _).det = 1`. Rewrite using `[← RingHom.map_det]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `(congrArg _ hk).trans (map_one _)`. Use `haveI : Finite (LaJ Xo c d) := Finite.of_equiv _ e.symm.toEquiv haveI : Finite (LaJ Xo c d ≃ₗ[𝓞 E] LaJ Xo c d) := Finite.of_injective (fun g => (g : LaJ Xo c d → LaJ Xo c d)) DFunLike.coe_injective`. Take `⟨t, ht, H⟩` from `tie_core D hprod hcop (fun k => (hG k).2) e f (fun x hx => by`. Use `pb (ext x) fun h => hx (by simp only [f, h, map_zero])` as an intermediate fact. Rewrite using `[image_lt_eq_range hn, funext (hext x)] at this)` and apply the resulting hypothesis.
-
-Use the proof step `(fun z hz => by`. Take `⟨g, hg, -⟩` from `huniq _ z px hz`. Rewrite using `[← funext hg, hfg]`. Use `Complex.norm_eq_one_of_pow_eq_one (n := Nat.card (LaJ Xo c d ≃ₗ[𝓞 E] LaJ Xo c d)) ?_ Nat.card_pos.ne'` and prove the remaining obligations. Rewrite using `[← Units.val_pow_eq_pow_val, ← map_pow, pow_card_eq_one', map_one, Units.val_one])`.
-
-Use the proof step `(fun z hz k a ha => by`. Take `⟨g, hg, -⟩` from `huniq _ z px hz`. Establish `h1` using `rho_apply e₀ (Matrix.GeneralLinearGroup.map (Ideal.Quotient.factor hle) k.1) a (by`. Express the relevant statement in the definitionally equal form `_ = (k.1.1).map _`. Rewrite using `[← ha, Matrix.map_map]`.
-
-Use the proof step `rfl)`. Simplify using `only [he₀] at h1`. Establish `h2` using `hfg (g * rho e₀ (Matrix.GeneralLinearGroup.map (Ideal.Quotient.factor hle) k.1))`. Simplify using `only [LinearEquiv.mul_apply, h1, map_sum, map_smul] at h2`. Rewrite using `[← funext hg, hfg]`.
-
-Conclude with `h2.trans (by rw [map_mul, Units.val_mul]; rfl)) hL δ hδ hLδ hn`. Conclude with `⟨t, ht, fun xs y h1 h2 => (hf _).trans (H _ y h1 h2)⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_levTie : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (n : ℕ) (d : DeltaDat Xo c n) (σ : c.F →+* ℂ) (r : ℕ) (X : Data E r) (hn : r ≤ n), r = Dw.p + Dw.q → SelfD X X.Λ → d.IsLev → ¬ 3 ∣ d.pd → ∀ (ph : (Fin n → LaJ Xo c d) → c.F) (ψ : (LaI Xo c d ≃ₗ[𝓞 E] LaI Xo c d) →* c.Fˣ) (x₀ : Fin n → LaJ Xo c d), d.PhiPin ph ψ x₀ → ∃ D : SW.Level X, LevTie d σ ph D hn := by
   intro E _ _ _ H Dw l Xo c n d σ r X hn hr _ hd h3 ph ψ x₀ hph

@@ -29,9 +29,9 @@ abbrev movLat (O K : Type) [CommRing O] [Field K] [Algebra O K] {r : ℕ} (h : G
   (stdLat O K r).map (((h : Matrix (Fin r) (Fin r) K).mulVecLin).restrictScalars O)
 
 /- English proof (translation)
-Establish `h : (e + cA D e) • (mt V g - 1) = mt V g - 1` using `Matrix.ext fun i j => hg i j`. Establish `h' : (e + cA D e) • (mt V g' - 1) = mt V g' - 1` using `Matrix.ext fun i j => hg' i j`. Establish `h1 : mt V (g * g') - 1 = (mt V g - 1) * mt V g' + (mt V g' - 1)`. Rewrite using `[mt_mul, Matrix.sub_mul, Matrix.one_mul]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `h2 : (e + cA D e) • (mt V (g * g') - 1) = mt V (g * g') - 1`. Rewrite using `[h1, smul_add, ← Matrix.smul_mul, h, h']`. Conclude with `fun i j => congrFun (congrFun h2 i) j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem suppAt_mul {D : D7} {e : AE D} {V : HSp D} {g g' : GA D V} (hg : SuppAt e V g) (hg' : SuppAt e V g') :
     SuppAt e V (g * g') := by
@@ -44,13 +44,13 @@ theorem suppAt_mul {D : D7} {e : AE D} {V : HSp D} {g g' : GA D V} (hg : SuppAt 
   exact fun i j => congrFun (congrFun h2 i) j
 
 /- English proof (translation)
-Take `⟨v', π, hπ⟩` from `GlobalTheory.T.exists_place_chart_of_splitIdempotent e he`. Take `⟨ε, ⟨α, rfl, hα1, hα0⟩, hf⟩` from `hv`. Establish `hπe : π e = 1`. Establish `: π (1 - e) = 0` using `(hπ.2.1 _).2 (by rw [mul_sub, mul_one, he.1, sub_self])`. Rewrite `this` using `[map_sub, map_one, sub_eq_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`. Establish `hπc : π (cA D e) = 0` using `(hπ.2.1 _).2 he.2.1`. Establish `h1 : π (algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 α)) = 1`. Rewrite using `[← hf, map_add, hπe, hπc, add_zero]`. Rewrite `h1` using `[hπ.2.2.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hvv : v' = v`. Substitute `hvv` using the available equality. Conclude with `⟨π, hπ⟩`. It suffices to derive a contradiction. Establish `h2` using `hα0 v' hvv`.
+Substitute using the available equality. Supply the required witnesses or components. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : sndA D.host.F (pairA D.host.F 0 α) = α` using `rfl`. Rewrite `h1` using `[h3, h2]`. Conclude with `zero_ne_one h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_of_finIdem {D : D7} {v : HeightOneSpectrum (𝓞 D.host.F)} {e : AE D}
     (hv : IsFinIdem D v (e + cA D e)) (he : IsSplitIdem D e) : ∃ π : AE D →+* Fv D.host.F v, Chart e v π := by
@@ -72,14 +72,14 @@ theorem chart_of_finIdem {D : D7} {v : HeightOneSpectrum (𝓞 D.host.F)} {e : A
     rw [h3, h2] at h1
     exact zero_ne_one h1
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.glIntegral_inv_mul_of_lattice_map_eq O K r h h' hh`.
+A detailed English derivation is pending.
 -/
 theorem gInt_of_movLat_eq (O K : Type) [CommRing O] [Field K] [Algebra O K] {r : ℕ}
     (h h' : GL (Fin r) K) (hh : movLat O K h = movLat O K h') : GInt O (h⁻¹ * h') :=
   GlobalTheory.T.glIntegral_inv_mul_of_lattice_map_eq O K r h h' hh
 
 /- English proof (translation)
-Introduce `D e v π he hπ W β hβ g hg`. Use `haveI := Formalism.UG.P.glint_finite_residueField (F := D.host.F) v`. Rewrite using `[GlobalTheory.T.lattice_index_split_place_eq_product_local e v π he hπ W β hβ g hg, map_inv, GlobalTheory.T.relIndex_standardLattice_transpose_inv_dvr]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latIndex_eq_split : ∀ {D : D7} (e : AE D) (v : HeightOneSpectrum (𝓞 D.host.F)) (π : AE D →+* Fv D.host.F v),
     IsSplitIdem D e → Chart e v π → ∀ (W : HSp D) (β : GL (Fin W.rank) (Fv D.host.F v)), Frame W e π β →
@@ -93,29 +93,25 @@ theorem latIndex_eq_split : ∀ {D : D7} (e : AE D) (v : HeightOneSpectrum (𝓞
   rw [GlobalTheory.T.lattice_index_split_place_eq_product_local e v π he hπ W β hβ g hg, map_inv, GlobalTheory.T.relIndex_standardLattice_transpose_inv_dvr]
 
 /- English proof (translation)
-Introduce `D W n hn v f hf ⟨e, he, hef⟩ C hC hdist`. Substitute `hef` using the available equality. Take `⟨π, hπ⟩` from `chart_of_finIdem hf he`. Take `⟨β, hβ⟩` from `GlobalTheory.SplitFrame.exists_frame e v π he hπ W`. Use `haveI := Formalism.UG.P.glint_finite_residueField (F := D.host.F) v`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set O := Ov D v`. Use `set K := Fv D.host.F v`. Use `set σ : ℝ := (n : ℝ) / 2 with hσ`. Establish `hsupp : ∀ g ∈ C, SuppAt e W g` using `fun g hg => (hC g hg).1`. Set `Φ : GL (Fin W.rank) K → ℝ` to `fun h => ((((movLat O K h).toAddSubgroup.relIndex (stdLat O K W.rank).toAddSubgroup : ℕ) : ℝ) * (((stdLat O K W.rank).toAddSubgroup.relIndex (movLat O K h).toAddSubgroup : ℕ) : ℝ)) ^ (-σ)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hK : ∀ g, SuppAt e W g → (g ∈ KsphC W ∅ ↔ GInt O (rho W π β g))` using `GlobalTheory.SplitHecke.Stab.mem_KsphC_iff_gInt e v π he hπ W β hβ`. Establish `hterm : ∀ g ∈ C, (latIndex W g : ℝ) ^ (-(n : ℝ) / 2) = Φ (rho W π β g)`. Introduce `g hg`. Rewrite using `[latIndex_eq_split e v π he hπ W β hβ g (hsupp g hg), Nat.cast_mul, neg_div]`. Establish `hinj : ∀ g ∈ C, ∀ g' ∈ C, movLat O K (rho W π β g) = movLat O K (rho W π β g') → g = g'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `g hg g' hg' hm`. Establish `h1` using `gInt_of_movLat_eq O K _ _ hm`. Rewrite `h1` using `[← map_inv, ← map_mul]`. Conclude with `hdist g hg g' hg' ((hK _ (suppAt_mul (GlobalTheory.SplitHecke.Stab.suppAt_inv (hsupp g hg)) (hsupp g' hg'))).2 h1)`. Establish `hone : ∀ g ∈ C, movLat O K (1 : GL (Fin W.rank) K) ≠ movLat O K (rho W π β g)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg hm`. Establish `h1` using `gInt_of_movLat_eq O K _ _ hm`. Rewrite `h1` using `[inv_one, one_mul]`. Conclude with `(hC g hg).2 ((hK g (hsupp g hg)).2 h1)`. Establish `hnot : (1 : GL (Fin W.rank) K) ∉ C.image (rho W π β)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h1`. Take `⟨g, hg, hg1⟩` from `Finset.mem_image.1 h1`. Conclude with `hone g hg (by rw [hg1])`. Establish `hsum : ∑ g ∈ C, (latIndex W g : ℝ) ^ (-(n : ℝ) / 2) = ∑ h ∈ C.image (rho W π β), Φ h`. Rewrite using `[Finset.sum_image (fun g hg g' hg' he' => hinj g hg g' hg' (congrArg (movLat O K) he'))]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `Finset.sum_congr rfl hterm`. Establish `hΦ1 : Φ 1 = 1`. Establish `: movLat O K (1 : GL (Fin W.rank) K) = stdLat O K W.rank`. Simplify using `[movLat]`. Simplify using `only [Φ, this, AddSubgroup.relIndex_self, Nat.cast_one, mul_one, Real.one_rpow]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Establish `hσr : (W.rank : ℝ) - 1 < σ`. Rewrite using `[hσ]; have : (2 * W.rank + 5 : ℝ) ≤ n := by exact_mod_cast hn`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hbig` using `GlobalTheory.T.sum_lattice_pairs_index_rpow_le O K W.rank σ hσr (insert 1 (C.image (rho W π β))) (by`. Introduce `h hh h' hh' hm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `rcases Finset.mem_insert.1 hh with rfl | hh <;> rcases Finset.mem_insert.1 hh' with rfl | hh'`. Both sides reduce to the same expression. Take `⟨g', hg', rfl⟩` from `Finset.mem_image.1 hh'`. Conclude with `absurd hm (hone g' hg')`. Take `⟨g, hg, rfl⟩` from `Finset.mem_image.1 hh`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd hm.symm (hone g hg)`. Take `⟨g, hg, rfl⟩` from `Finset.mem_image.1 hh`. Take `⟨g', hg', rfl⟩` from `Finset.mem_image.1 hh'`. Rewrite using `[hinj g hg g' hg' hm])`. Rewrite `hbig` using `[Finset.sum_insert hnot]`.
-
-Establish `hq : (Nat.card (IsLocalRing.ResidueField O) : ℝ) = (Ideal.absNorm v.asIdeal : ℝ)`. Rewrite using `[Formalism.UG.P.tjcosets_card_residue]`. Both sides reduce to the same expression. Rewrite `hbig` using `[hq]`. Rewrite using `[hsum]`.
-
-Express the relevant statement in the definitionally equal form `Φ 1 + ∑ h ∈ C.image (rho W π β), Φ h ≤ _ at hbig`. Rewrite `hbig` using `[hΦ1]`. Rewrite `hbig` using `[hσ]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem indexSum_split : ∀ (D : D7) (W : HSp D) (n : ℕ), 2 * W.rank + 5 ≤ n → ∀ (v : HeightOneSpectrum (𝓞 D.host.F)) (f : Formalism.L2.Theta.AE D), IsFinIdem D v f → (∃ e, Formalism.L2.Theta.IsSplitIdem D e ∧ e + Formalism.L2.Theta.cA D e = f) → ∀ C : Finset (GA D W), (∀ g ∈ C, SuppF W f g ∧ g ∉ KsphC W ∅) → (∀ g ∈ C, ∀ g' ∈ C, g⁻¹ * g' ∈ KsphC W ∅ → g = g') → ∑ g ∈ C, (latIndex W g : ℝ) ^ (-(n : ℝ) / 2) ≤ (∏ i ∈ Finset.range W.rank, (1 - (Ideal.absNorm v.asIdeal : ℝ) ^ ((i : ℝ) - (n : ℝ) / 2))⁻¹) ^ 2 - 1 := by
   classical

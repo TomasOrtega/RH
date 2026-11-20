@@ -37,7 +37,7 @@ def kFinVec (ρ : Representation ℂ G X) (K : Subgroup G) : Submodule ℂ X whe
 variable [TopologicalSpace G] [IsTopologicalGroup G]
 
 /- English proof (translation)
-Introduce `v` and use `by have : {g : G | smoothRep ρ g v = v} = {g : G | ρ g v = v} := Set.ext fun _ => Subtype.ext_iff exact this ▸ v.2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isSmooth_smoothRep (ρ : Representation ℂ G X) : IsSmooth (smoothRep ρ) := fun v => by
   have : {g : G | smoothRep ρ g v = v} = {g : G | ρ g v = v} := Set.ext fun _ => Subtype.ext_iff
@@ -73,21 +73,21 @@ def embPl : ∀ v, GPl σ J v →* GAd σ J
   | .inr v => emb σ J v
 
 /- English proof (translation)
-The claim follows from `| .inl w => continuous_embArch σ J w | .inr v => continuous_emb σ J v`.
+A detailed English derivation is pending.
 -/
 theorem continuous_embPl : ∀ v, Continuous (embPl σ J v)
   | .inl w => continuous_embArch σ J w
   | .inr v => continuous_emb σ J v
 
 /- English proof (translation)
-The claim follows from `| .inl w, x => projArch_embArch_self σ J w x | .inr v, x => proj_emb_self σ J v x`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem projPl_embPl_self : ∀ v x, projPl σ J v (embPl σ J v x) = x
   | .inl w, x => projArch_embArch_self σ J w x
   | .inr v, x => proj_emb_self σ J v x
 
 /- English proof (translation)
-The claim follows from `| .inl _, .inl _, h, x => projArch_embArch_ne σ J (fun e => h (congrArg _ e)) x | .inl u, .inr v, _, x => projArch_emb σ J u v x | .inr u, .inl v, _, x => proj_embArch σ J u v x | .inr _, .inr _, h, x => proj_emb_ne σ J (fun e => h (congrArg _ e)) x`.
+A detailed English derivation is pending.
 -/
 theorem projPl_embPl_ne : ∀ {u v}, u ≠ v → ∀ x, projPl σ J u (embPl σ J v x) = 1
   | .inl _, .inl _, h, x => projArch_embArch_ne σ J (fun e => h (congrArg _ e)) x
@@ -96,9 +96,9 @@ theorem projPl_embPl_ne : ∀ {u v}, u ≠ v → ∀ x, projPl σ J u (embPl σ 
   | .inr _, .inr _, h, x => proj_emb_ne σ J (fun e => h (congrArg _ e)) x
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h g => (h.and (eventually_projFinLoc_mem_stabLoc σ J L g)).mono fun v hv => hv.1 _ hv.2⟩` and prove the remaining obligations. Establish `: ∀ v, ∃ k ∈ stabLoc σ J L v, a v k → ∀ k' ∈ stabLoc σ J L v, a v k'` using `fun v => by`. Distinguish the cases in `e : ∀ k' ∈ stabLoc σ J L v, a v k'`. Conclude with `⟨1, one_mem _, fun _ => e⟩`. Use `push Not at e`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `e.imp fun k hk => ⟨hk.1, fun h => absurd h hk.2⟩`. Use `choose k hk hk' using this`. Take `⟨g, hg, -⟩` from `existsUnique_projFinLoc_eq σ J L k (.of_forall hk)`. Conclude with `(h g).mono fun v hv => hk' v (hg v ▸ hv)`.
+A detailed English derivation is pending.
 -/
 theorem forall_eventually_proj_iff (L : Submodule (𝓞 E) (Fin n → E)) [Submodule.IsLattice E L]
     (a : ∀ v, GLoc σ J v → Prop) : (∀ g : GFin σ J, ∀ᶠ v in cofinite, a v (projFinLoc σ J v g)) ↔
@@ -127,7 +127,7 @@ variable {σ J} {δ : ∀ v, GPl σ J v →* (Hs v →L[ℂ] Hs v)} {ξ : ∀ v,
   {B : (∀ v, Hs v) → H}
 
 /- English proof (translation)
-The claim follows from `(forall_eventually_proj_iff σ J L fun v k => δ (.inr v) k (ξ (.inr v)) = ξ (.inr v)).1 fun g => (Sum.inr_injective.tendsto_cofinite.eventually (h.fixed (ofFin σ J g))).mono fun v hv => (congrArg (δ (.inr v) · _) (proj_ofFin σ J v g)).symm.trans hv`.
+A detailed English derivation is pending.
 -/
 theorem IsFactorisation.eventually_fixed (h : IsFactorisation σ J δ ξ π B) (L : Submodule (𝓞 E) (Fin n → E))
     [Submodule.IsLattice E L] : ∀ᶠ v in cofinite, ∀ k ∈ stabLoc σ J L v, δ (.inr v) k (ξ (.inr v)) = ξ (.inr v) :=
@@ -136,9 +136,9 @@ theorem IsFactorisation.eventually_fixed (h : IsFactorisation σ J δ ξ π B) (
       (congrArg (δ (.inr v) · _) (proj_ofFin σ J v g)).symm.trans hv
 
 /- English proof (translation)
-Rewrite using `[h.apply_pure _ _ hy]`. Use `congr 1`. Use function extensionality and compare the values at `u`. Distinguish the cases in `e : u = v`. Substitute `e` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[projPl_embPl_ne σ J e, e]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem IsFactorisation.apply_embPl [DecidableEq (Formalism.MainNotions.SchurIrreducible.Pl F)] (h : IsFactorisation σ J δ ξ π B) {y : ∀ v, Hs v}
     (hy : Restr ξ y) (v : Formalism.MainNotions.SchurIrreducible.Pl F) (g : GPl σ J v) :
@@ -151,13 +151,13 @@ theorem IsFactorisation.apply_embPl [DecidableEq (Formalism.MainNotions.SchurIrr
   · simp [projPl_embPl_ne σ J e, e]
 
 /- English proof (translation)
-Use `eq_top_iff.2 (h.dense.ge.trans (Submodule.topologicalClosure_minimal _ (Submodule.span_le.2 ?_) isSubrep_isoPart.1))` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Establish `hr` using `SmallThetaModules.restr_update hy v`. Establish `h0 : B (Function.update y v 0) = 0` using `h.ext fun z hz => by simp [h.inner_update hy hz]`. Set `T : Hs v →ₗ[ℂ] H` to `{ toFun := fun x => B (Function.update y v x) map_add' := fun a b => by simpa using h.pure_update hy v 1 a b map_smul' := fun c a => by simpa [h0] using h.pure_update hy v c a 0 }`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hT : ∀ x, ‖T x‖ ≤ √‖∏ᶠ (u) (_ : u ≠ v), ⟪y u, y u⟫_ℂ‖ * ‖x‖` using `fun x => by`. Establish `e` using `h.inner_update hy (hr x) v x`. Rewrite using `[Function.update_self, finprod_congr fun u => finprod_congr fun hu : u ≠ v => by`. Rewrite `e` using `[Function.update_of_ne hu]]`. Establish `e'` using `congrArg norm e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e'` using `[norm_mul, inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K]`. Use `le_of_sq_le_sq (le_of_eq ?_) (by positivity)` and prove the remaining obligations. Rewrite using `[mul_pow, Real.sq_sqrt (norm_nonneg _), mul_comm]`. Simplify `e'` using `[T]`. Use `apply_mem_isoPart (π := δ v) (ρ := π.comp (embPl σ J v)) (U := ⊤) (T := T.mkContinuous _ hT) (mem_homIn_top.2 fun g x => by` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `(h.apply_embPl (hr x) v g).symm) (y v)` using `[T]`. Simplify `this` using `[T]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IsFactorisation.hasCompPl (h : IsFactorisation σ J δ ξ π B) (v : Formalism.MainNotions.SchurIrreducible.Pl F) :
     HasCompPl σ J v (δ v) π := by
@@ -225,7 +225,7 @@ def KOff (S : Finset (HeightOneSpectrum (𝓞 D.host.F))) : Subgroup (GfC V) :=
 variable {V}
 
 /- English proof (translation)
-Rewrite using `[KsphC_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_KOff {S : Finset (HeightOneSpectrum (𝓞 D.host.F))} {g : GfC V} : g ∈ KOff V S ↔ (g : GA D V) ∈ KsphC V S := by
   rw [KsphC_eq]; rfl
@@ -241,35 +241,35 @@ Both sides reduce to the same expression.
 @[simp] theorem coe_archInf (w : InfinitePlace D.host.F) (x : Gw V w) : (archInf V w x : GA D V) = embW V w x := rfl
 
 /- English proof (translation)
-The claim follows from `ofInf_projInf_mul_ofFin_projFin _ _ g`.
+A detailed English derivation is pending.
 -/
 theorem toInf_mul_toFin (g : GA D V) : (toInf V g : GA D V) * toFin V g = g := ofInf_projInf_mul_ofFin_projFin _ _ g
 
 /- English proof (translation)
-The claim follows from `ext_inf_fin _ _ (by simp [mem_finPts.1 y.2]) (by simp [mem_infPts.1 x.2])`.
+A detailed English derivation is pending.
 -/
 theorem commute_inf_fin (x : GinfC V) (y : GfC V) : Commute (x : GA D V) y :=
   ext_inf_fin _ _ (by simp [mem_finPts.1 y.2]) (by simp [mem_infPts.1 x.2])
 
 /- English proof (translation)
-The claim follows from `(finPtsEquiv D.sp.cm.sig V.gram).apply_symm_apply y`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem toFin_coe (y : GfC V) : toFin V y = y := (finPtsEquiv D.sp.cm.sig V.gram).apply_symm_apply y
 
 /- English proof (translation)
-The claim follows from `Subtype.ext ((congrArg (ofFin _ _) (mem_infPts.1 x.2)).trans (map_one _))`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem toFin_coe_inf (x : GinfC V) : toFin V x = 1 :=
   Subtype.ext ((congrArg (ofFin _ _) (mem_infPts.1 x.2)).trans (map_one _))
 
 /- English proof (translation)
-The claim follows from `Subtype.ext ((congrArg (ofInf _ _) (mem_finPts.1 y.2)).trans (map_one _))`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem toInf_coe_fin (y : GfC V) : toInf V y = 1 :=
   Subtype.ext ((congrArg (ofInf _ _) (mem_finPts.1 y.2)).trans (map_one _))
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (by simpa using toInf_mul_toFin (x : GA D V))`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem toInf_coe (x : GinfC V) : toInf V x = x :=
   Subtype.ext (by simpa using toInf_mul_toFin (x : GA D V))
@@ -277,12 +277,12 @@ The claim follows from `Subtype.ext (by simpa using toInf_mul_toFin (x : GA D V)
 variable (V)
 
 /- English proof (translation)
-The claim follows from `((continuous_ofFin _ _).comp (continuous_projFin _ _)).subtype_mk _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_toFin : Continuous (toFin V) := ((continuous_ofFin _ _).comp (continuous_projFin _ _)).subtype_mk _
 
 /- English proof (translation)
-The claim follows from `((continuous_ofInf _ _).comp (continuous_projInf _ _)).subtype_mk _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_toInf : Continuous (toInf V) := ((continuous_ofInf _ _).comp (continuous_projInf _ _)).subtype_mk _
 
@@ -333,7 +333,7 @@ abbrev IsCopyFinInf (σ : Representation ℂ (GfC V) W) (δ : GinfC V →* (X �
 variable {V}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(M.ds τ).1, Orb.isUnitaryRep_dsRep M τ, Orb.isTopIrreducible_dsRep M τ⟩`.
+Supply the required witnesses or components.
 -/
 theorem isIrrUnitary_dsRep (M : DSModel V S) (τ : D.what₂.Tau) : IsIrrUnitary (dsRep M τ) :=
   ⟨(M.ds τ).1, Orb.isUnitaryRep_dsRep M τ, Orb.isTopIrreducible_dsRep M τ⟩
@@ -362,7 +362,7 @@ def IsCopyFinDS (σ : Representation ℂ (GfC V) W) (M : DSModel V S) (ρ : GA D
 open Classical in
 
 /- English proof (translation)
-Use `and_congr_right fun _ => forall_congr' fun τ => ⟨fun h g hg y => ?_, fun h x y => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `exists_archEquiv_eq V (embOverOf D τ) rfl hg`. Rewrite using `[atTau_archEquiv hθ V _ rfl]`. Conclude with `h x y`. Conclude with `atTau_archEquiv hθ V (embOverOf D τ) rfl x ▸ h _ (archEquiv_mem_UH V (embOverOf D τ) rfl x) y`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_homDS {θ : InfF D} (hθ : IsInfFam θ) {M : DSModel V S} {ρ : GA D V →* (H →L[ℂ] H)} {U : Submodule ℂ H}
     {Φ : ContinuousMultilinearMap ℂ M.H H} : Φ ∈ homDS M ρ U ↔ (∀ y, Φ y ∈ U) ∧ ∀ τ,
@@ -377,14 +377,14 @@ variable {Y : Type} [NormedAddCommGroup Y] [InnerProductSpace ℂ Y] {πf : GfC 
   {πi : GinfC V →* (X →L[ℂ] X)} {π ρ : GA D V →* (H →L[ℂ] H)} {U : Submodule ℂ H}
 
 /- English proof (translation)
-The claim follows from `let ⟨_, h⟩ := h h.isUnitaryRep (continuous_toFin V) (continuous_toInf V) hf hi`.
+A detailed English derivation is pending.
 -/
 theorem IsFinInf.isUnitaryRep (h : IsFinInf V πf πi π) (hf : IsUnitaryRep πf) (hi : IsUnitaryRep πi) : IsUnitaryRep π :=
   let ⟨_, h⟩ := h
   h.isUnitaryRep (continuous_toFin V) (continuous_toInf V) hf hi
 
 /- English proof (translation)
-The claim follows from `h.choose_spec.uEquiv`.
+A detailed English derivation is pending.
 -/
 theorem IsFinInf.uEquiv [CompleteSpace H] (h : IsFinInf V πf πi π) : UEquiv (finInf V πf πi) π := h.choose_spec.uEquiv
 

@@ -22,13 +22,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   (Xo : Moduli Dw l) (c : Coeff l)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Frames.framedPoint_field_fromTest GlobalTheory.abelianSchemeLaws_all.1.secBaseChange E H Dw l Xo c`.
+A detailed English derivation is pending.
 -/
 theorem spread_holds : SpreadSt Xo c :=
   GlobalTheory.Frames.framedPoint_field_fromTest GlobalTheory.abelianSchemeLaws_all.1.secBaseChange E H Dw l Xo c
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨intFrames Xo c Out.CubePf.cubePull (lieFree Xo c) (thetaFrame_of Xo c GlobalTheory.abelianSchemeLaws_all.2.secTwist) (spread_holds Xo c), lieFree Xo c, spread_holds Xo c⟩`.
+Supply the required witnesses or components.
 -/
 theorem all_hold : IntFramesSt Xo c ∧ LieFreeSt Xo c ∧ SpreadSt Xo c :=
   ⟨intFrames Xo c Out.CubePf.cubePull (lieFree Xo c) (thetaFrame_of Xo c GlobalTheory.abelianSchemeLaws_all.2.secTwist)
@@ -40,7 +40,7 @@ def rescale {S : Type} [Field S] [Algebra c.F S] (y : FrPt Xo c S) (a : Sˣ) : F
   { y with s := scalSec y.x (a : S) y.s, gen := isGenAt_scalSec y.gen a }
 
 /- English proof (translation)
-Use `choose u hu using fun τ => GlobalTheory.IntFramesCompare.exists_eigenBasisAt (c := c) hx τ`. Take `⟨s, hs⟩` from `gfp_gen GlobalTheory.abelianSchemeLaws_all.2.secTwist x`. Conclude with `⟨⟨x, hx, u, fun τ => (hu τ).1, fun τ => (hu τ).2.1, fun τ => (hu τ).2.2, s, hs⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_framed {S : Type} [Field S] [Algebra c.F S] (x : Sp S ⟶ Xo.X) (hx : x ≫ Xo.s = sOf c S) :
     ∃ y : FrPt Xo c S, y.x = x := by

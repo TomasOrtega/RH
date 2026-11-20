@@ -64,17 +64,15 @@ theorem addDers_apply {κ : Type} [Fintype κ] (τ : κ → Derivation R B B) (�
 variable (R B) in
 
 /- English proof (translation)
-Establish `hfg : (Submodule.span B (Set.range (KaehlerDifferential.D R B))).FG`. Rewrite using `[KaehlerDifferential.span_range_derivation]`. Conclude with `Module.Finite.fg_top`. Take `⟨s', hsub, hs'⟩` from `(Submodule.fg_span_iff_fg_span_finset_subset _).1 hfg`. Establish `hex : ∀ x : s', ∃ b, KaehlerDifferential.D R B b = x` using `fun x => hsub x.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose β hβ using hex`. Establish `hspan : Submodule.span B (Set.range fun x : s' => KaehlerDifferential.D R B (β x)) = ⊤`. Rewrite using `[show (Set.range fun x : s' => KaehlerDifferential.D R B (β x)) = ↑s' by`. Use extensionality with `ω`. Simplify using `[hβ]]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hs', KaehlerDifferential.span_range_derivation]`. Establish `hsurj : Function.Surjective (Fintype.linearCombination B (fun x : s' => KaehlerDifferential.D R B (β x)))`. Rewrite using `[← LinearMap.range_eq_top, Fintype.range_linearCombination, hspan]`. Take `⟨h, hh⟩` from `Module.projective_lifting_property _ LinearMap.id hsurj`. Set `τ : s' → Derivation R B B` to `fun x => (LinearMap.proj x ∘ₗ h).compDer (KaehlerDifferential.D R B)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hD : ∀ b, KaehlerDifferential.D R B b = ∑ x, τ x b • KaehlerDifferential.D R B (β x)` using `fun b => by conv_lhs => rw [← LinearMap.id_apply (R := B) (KaehlerDifferential.D R B b), ← hh]`. Simplify using `[τ, Fintype.linearCombination_apply]`. Use `⟨s', inferInstance, β, τ, fun A _ _ φ φ' hprod b => ?_⟩` and prove the remaining obligations. Set `_ : Algebra B A` to `φ'.toRingHom.toAlgebra`. Establish `: IsScalarTower R B A` using `IsScalarTower.of_algebraMap_eq fun r => (φ'.commutes r).symm`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Set `δ : Derivation R B A` to `{ toFun := fun b => φ b - φ' b map_add' := fun b b' => by simp only [map_add]; ring map_smul' := fun r b => by simp [smul_sub] map_one_eq_zero' := by simp leibniz' := fun a b => by show φ (a * b) - φ' (a * b) = φ' a * (φ b - φ' b) + φ' b * (φ a - φ' a)`. Rewrite using `[map_mul, map_mul]`. Take the linear combination `hprod a b }`. Establish `key` using `congrArg δ.liftKaehlerDifferential (hD b)`. Simplify using `only [map_sum, map_smul, Derivation.liftKaehlerDifferential_comp_D] at key`.
-
-Conclude with `key`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_ders [Algebra.Smooth R B] :
     ∃ (κ : Type) (_ : Fintype κ) (β : κ → B) (τ : κ → Derivation R B B),
@@ -138,87 +136,87 @@ def dualScale (R : Type) [CommRing R] {S : Type} [CommRing S] [Algebra R S] (s :
   dualTo (inlS R S) (inr s) (TrivSqZeroExt.inr_mul_inr _ _ _)
 
 /- English proof (translation)
-Simplify using `[dualMap, dualTo_apply]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem fst_dualMap (ρ : S →ₐ[R] S') (a : DualNumber S) :
     (dualMap ρ a).fst = ρ a.fst := by
   simp [dualMap, dualTo_apply]
 
 /- English proof (translation)
-Simplify using `[dualMap, dualTo_apply]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem snd_dualMap (ρ : S →ₐ[R] S') (a : DualNumber S) :
     (dualMap ρ a).snd = ρ a.snd := by
   simp [dualMap, dualTo_apply]
 
 /- English proof (translation)
-Simplify using `[dualScale, dualTo_apply]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem fst_dualScale (s : S) (a : DualNumber S) : (dualScale R s a).fst = a.fst := by
   simp [dualScale, dualTo_apply]
 
 /- English proof (translation)
-Simplify using `[dualScale, dualTo_apply, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem snd_dualScale (s : S) (a : DualNumber S) : (dualScale R s a).snd = a.snd * s := by
   simp [dualScale, dualTo_apply, mul_comm]
 
 /- English proof (translation)
-Apply the tactic sequence `refine TrivSqZeroExt.ext ?_ ?_ <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dualMap_inr (ρ : S →ₐ[R] S') (a : S) : dualMap ρ (inr a) = inr (ρ a) := by
   refine TrivSqZeroExt.ext ?_ ?_ <;> simp
 
 /- English proof (translation)
-Apply the tactic sequence `refine TrivSqZeroExt.ext ?_ ?_ <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dualScale_inr (s a : S) : dualScale R s (inr a) = inr (a * s) := by
   refine TrivSqZeroExt.ext ?_ ?_ <;> simp
 
 /- English proof (translation)
-The claim follows from `AlgHom.ext fun a => TrivSqZeroExt.ext (by simp) (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem dualMap_comp (ρ : S →ₐ[R] S') (ρ' : S' →ₐ[R] S'') :
     (dualMap ρ').comp (dualMap ρ) = dualMap (ρ'.comp ρ) := AlgHom.ext fun a => TrivSqZeroExt.ext (by simp) (by simp)
 
 /- English proof (translation)
-The claim follows from `AlgHom.ext fun a => TrivSqZeroExt.ext (by simp) (by simp only [AlgHom.comp_apply, snd_dualScale]; ring)`.
+A detailed English derivation is pending.
 -/
 theorem dualScale_comp (s t : S) :
     (dualScale R s).comp (dualScale R t) = dualScale R (s * t) := AlgHom.ext fun a => TrivSqZeroExt.ext (by simp) (by simp only [AlgHom.comp_apply, snd_dualScale]; ring)
 
 /- English proof (translation)
-The claim follows from `AlgHom.ext fun a => TrivSqZeroExt.ext (by simp) (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem dualScale_one : dualScale R (1 : S) = AlgHom.id R _ := AlgHom.ext fun a => TrivSqZeroExt.ext (by simp) (by simp)
 
 /- English proof (translation)
-The claim follows from `AlgHom.ext fun a => TrivSqZeroExt.ext (by simp) (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem dualMap_comp_dualScale (ρ : S →ₐ[R] S') (s : S) :
     (dualMap ρ).comp (dualScale R s) = (dualScale R (ρ s)).comp (dualMap ρ) := AlgHom.ext fun a => TrivSqZeroExt.ext (by simp) (by simp)
 
 /- English proof (translation)
-The claim follows from `AlgHom.ext fun a => by simp [fstS]`.
+A detailed English derivation is pending.
 -/
 theorem fstS_comp_dualMap (ρ : S →ₐ[R] S') :
     (fstS R S').comp (dualMap ρ) = ρ.comp (fstS R S) := AlgHom.ext fun a => by simp [fstS]
 
 /- English proof (translation)
-The claim follows from `AlgHom.ext fun a => by simp [fstS]`.
+A detailed English derivation is pending.
 -/
 theorem fstS_comp_dualScale (s : S) : (fstS R S).comp (dualScale R s) = fstS R S := AlgHom.ext fun a => by simp [fstS]
 
 /- English proof (translation)
-Establish `hi : ∀ x : S, GlobalTheory.SqZero.dualMap ρ (inlS R S x) = inlS R S' (ρ x)` using `fun x => TrivSqZeroExt.ext (by simp) (by simp)`. Rewrite using `[isAway_iff, hi]`. Use `⟨h.unit.map (inlS R S'), fun z => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨N, a, ha⟩` from `h.surj_fin ![z.fst, z.snd]`. Establish `h0` using `ha 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `ha 1`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one] at h0 h1`. Use `⟨N, inlS R S (a 0) + inr (a 1), ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow]`. Use `TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[h0]`. Simplify using `[h1, mul_comm]`. Establish `e0 : ρ a.fst = 0` using `by simpa using congrArg TrivSqZeroExt.fst ha`. Establish `e1 : ρ a.snd = 0` using `by simpa using congrArg TrivSqZeroExt.snd ha`. Apply the tactic sequence `obtain ⟨N, hN⟩ := h.ker_fin (a := ![a.fst, a.snd]) (fun i => by fin_cases i <;> simp [e0, e1])`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h0` using `hN 0`. Establish `h1` using `hN 1`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one] at h0 h1`. Use `⟨N, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Simplify using `[h0]`. Simplify using `[h1]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem IsAway.dualMap {ρ : S →ₐ[R] S'} {g : S} (h : IsAway ρ g) :
     IsAway (dualMap ρ) (inlS R S g) := by
@@ -248,12 +246,12 @@ theorem IsAway.dualMap {ρ : S →ₐ[R] S'} {g : S} (h : IsAway ρ g) :
     · simp [h1]
 
 /- English proof (translation)
-Introduce `s` and use `⟨inl s, by simp⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem fstS_surjective : Function.Surjective (fstS R S) := fun s => ⟨inl s, by simp⟩
 
 /- English proof (translation)
-Establish `h0 : a.fst = 0` using `by simpa using ha`. Apply the tactic sequence `refine ⟨2, TrivSqZeroExt.ext ?_ ?_⟩ <;> simp [pow_two, h0]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem nil_of_fstS (a : DualNumber S) (ha : fstS R S a = 0) : IsNilpotent a := by
   have h0 : a.fst = 0 := by simpa using ha
@@ -271,7 +269,7 @@ abbrev scl (s : S) (w : sp (R₀ := R) (DualNumber S) ⟶ G) :
 
 omit [GrpObj G] in
 /- English proof (translation)
-Simplify using `only [res]`. Rewrite using `[← Category.assoc, spMap_comp, dualMap_comp]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem res_res (ρ : S →ₐ[R] S') (ρ' : S' →ₐ[R] S'') (w : sp (R₀ := R) (DualNumber S) ⟶ G) :
     res ρ' (res ρ w) = res (ρ'.comp ρ) w := by
@@ -280,7 +278,7 @@ theorem res_res (ρ : S →ₐ[R] S') (ρ' : S' →ₐ[R] S'') (w : sp (R₀ := 
 
 omit [GrpObj G] in
 /- English proof (translation)
-Simplify using `only [scl]`. Rewrite using `[← Category.assoc, spMap_comp, dualScale_comp]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem scl_scl (s t : S) (w : sp (R₀ := R) (DualNumber S) ⟶ G) :
     scl s (scl t w) = scl (s * t) w := by
@@ -289,7 +287,7 @@ theorem scl_scl (s t : S) (w : sp (R₀ := R) (DualNumber S) ⟶ G) :
 
 omit [GrpObj G] in
 /- English proof (translation)
-Simplify using `only [scl]`. Rewrite using `[dualScale_one, spMap_id, Category.id_comp]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem scl_one (w : sp (R₀ := R) (DualNumber S) ⟶ G) : scl (1 : S) w = w := by
   dsimp only [scl]
@@ -297,7 +295,7 @@ theorem scl_one (w : sp (R₀ := R) (DualNumber S) ⟶ G) : scl (1 : S) w = w :=
 
 omit [GrpObj G] in
 /- English proof (translation)
-Simplify using `only [res, scl]`. Rewrite using `[← Category.assoc, ← Category.assoc, spMap_comp, spMap_comp, dualMap_comp_dualScale]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem res_scl (ρ : S →ₐ[R] S') (s : S) (w : sp (R₀ := R) (DualNumber S) ⟶ G) :
     res ρ (scl s w) = scl (ρ s) (res ρ w) := by
@@ -305,7 +303,7 @@ theorem res_scl (ρ : S →ₐ[R] S') (s : S) (w : sp (R₀ := R) (DualNumber S)
   rw [← Category.assoc, ← Category.assoc, spMap_comp, spMap_comp, dualMap_comp_dualScale]
 
 /- English proof (translation)
-Unfold `IsTanOver at hw ⊢`. Simplify using `only [GlobalTheory.SqZero.res]`. Rewrite using `[← Category.assoc, spMap_comp, fstS_comp_dualMap, ← spMap_comp, Category.assoc, hw, comp_one']`.
+Replace the relevant objects with their definitions. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsTanOver.res {w : sp (R₀ := R) (DualNumber S) ⟶ G} (hw : IsTanOver w) (ρ : S →ₐ[R] S') :
     IsTanOver (res ρ w) := by
@@ -314,7 +312,7 @@ theorem IsTanOver.res {w : sp (R₀ := R) (DualNumber S) ⟶ G} (hw : IsTanOver 
   rw [← Category.assoc, spMap_comp, fstS_comp_dualMap, ← spMap_comp, Category.assoc, hw, comp_one']
 
 /- English proof (translation)
-Unfold `IsTanOver at hw ⊢`. Simplify using `only [GlobalTheory.SqZero.scl]`. Rewrite using `[← Category.assoc, spMap_comp, fstS_comp_dualScale, hw]`.
+Replace the relevant objects with their definitions. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsTanOver.scl {w : sp (R₀ := R) (DualNumber S) ⟶ G} (hw : IsTanOver w) (s : S) :
     IsTanOver (scl s w) := by
@@ -323,7 +321,7 @@ theorem IsTanOver.scl {w : sp (R₀ := R) (DualNumber S) ⟶ G} (hw : IsTanOver 
   rw [← Category.assoc, spMap_comp, fstS_comp_dualScale, hw]
 
 /- English proof (translation)
-Take `⟨φ, h1, h2⟩` from `exists_chart_pt_of_nil j (fstS R S) fstS_surjective nil_of_fstS w u (by rw [hu]; exact hw)`. Conclude with `⟨φ, h1, fun b => by simpa using congrArg (fun f => f b) h2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_chart_of_isTanOver {B : Type} [CommRing B] [Algebra R B] (j : sp B ⟶ G)
     [IsOpenImmersion j.left] (u : B →ₐ[R] S) (hu : spMap u ≫ j = 1)
@@ -334,7 +332,7 @@ theorem exists_chart_of_isTanOver {B : Type} [CommRing B] [Algebra R B] (j : sp 
   exact ⟨φ, h1, fun b => by simpa using congrArg (fun f => f b) h2⟩
 
 /- English proof (translation)
-Establish `hd : ∀ b, φ b - ((inlS R S).comp u) b = inr (φ b).snd` using `fun b => TrivSqZeroExt.ext (by simp [hφ]) (by simp)`. Establish `key` using `hτ (DualNumber S) φ ((inlS R S).comp u) (fun b b' => by rw [hd, hd]; exact TrivSqZeroExt.inr_mul_inr _ _ _) b`. Rewrite `key` using `[hd]`. Simplify `congrArg TrivSqZeroExt.snd key` using `[TrivSqZeroExt.snd_sum, mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses repeatedly using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem snd_eq_sum {B κ : Type} [CommRing B] [Algebra R B] [Fintype κ] {β : κ → B}
     {τ : κ → Derivation R B B}
@@ -353,15 +351,15 @@ theorem snd_eq_sum {B κ : Type} [CommRing B] [Algebra R B] [Fintype κ] {β : �
 variable [Smooth G.hom] {ρ : S →ₐ[R] S'} {g : S}
 
 /- English proof (translation)
-Take `⟨B, _, _, j, u, hj, hu⟩` from `hS`. Use `smooth_of_chart j` as an intermediate fact. Take `⟨κ, _, β, τ, hτ⟩` from `exists_ders R B`. Take `⟨φ, rfl, hφ⟩` from `exists_chart_of_isTanOver j u hu hw`. Take `⟨φ', rfl, hφ'⟩` from `exists_chart_of_isTanOver j u hu hw'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e : (dualMap ρ).comp φ = (dualMap ρ).comp φ'`. Apply `chart_inj j` to reduce the goal to its premises. Establish `h'` using `h`. Simplify using `only [res] at h'`. Rewrite `h'` using `[← Category.assoc, ← Category.assoc, spMap_comp, spMap_comp]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hz : ∀ i, ρ ((φ (β i)).snd - (φ' (β i)).snd) = 0` using `fun i => by`. Use `congrArg (fun f => (f (β i)).snd) e` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`. Take `⟨N, hN⟩` from `hρ.ker_fin hz`. Use `⟨N, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e2 : (dualScale R (g ^ N)).comp φ = (dualScale R (g ^ N)).comp φ'`. Use `AlgHom.ext fun b => TrivSqZeroExt.ext (by simp [hφ, hφ']) ?_` and prove the remaining obligations. Establish `s1` using `snd_eq_sum hτ u φ hφ b`. Establish `s2` using `snd_eq_sum hτ u φ' hφ' b`. Simplify using `only [AlgHom.comp_apply, snd_dualScale]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← sub_eq_zero, ← sub_mul, s1, s2, ← Finset.sum_sub_distrib, Finset.sum_mul]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_sub, mul_assoc, mul_comm _ (g ^ N), hN i, mul_zero]`. Simplify using `only [scl]`. Rewrite using `[← Category.assoc, ← Category.assoc, spMap_comp, spMap_comp, e2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_scl_eq_of_unitInChart (hS : UnitInChart G S) (hρ : IsAway ρ g)
     {w w' : sp (R₀ := R) (DualNumber S) ⟶ G} (hw : IsTanOver w) (hw' : IsTanOver w')
@@ -393,15 +391,13 @@ theorem exists_scl_eq_of_unitInChart (hS : UnitInChart G S) (hρ : IsAway ρ g)
   rw [← Category.assoc, ← Category.assoc, spMap_comp, spMap_comp, e2]
 
 /- English proof (translation)
-Take `⟨B, _, _, j, u, hj, hu⟩` from `hS`. Use `smooth_of_chart j` as an intermediate fact. Take `⟨κ, _, β, τ, hτ⟩` from `exists_ders R B`. Establish `hu' : spMap (ρ.comp u) ≫ j = 1` using `by rw [← spMap_comp, Category.assoc, hu, comp_one']`. Take `⟨φ', rfl, hφ'⟩` from `exists_chart_of_isTanOver j (ρ.comp u) hu' hw'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨N, a, ha⟩` from `hρ.surj_fin (fun i => (φ' (β i)).snd)`. Set `ψ` to `addDers τ ((inlS R S).comp u) (fun i => (inr (a i) : DualNumber S)) (fun _ _ => TrivSqZeroExt.inr_mul_inr _ _ _)`. Establish `hψ : (fstS R S).comp ψ = u` using `AlgHom.ext fun b => by simp [ψ, addDers_apply, TrivSqZeroExt.fst_sum]`. Use `⟨N, spMap ψ ≫ j, ?_, ?_⟩` and prove the remaining obligations. Use `show spMap (fstS R S) ≫ spMap ψ ≫ j = 1`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, spMap_comp, hψ, hu]`. Establish `e : (dualMap ρ).comp ψ = (dualScale R (ρ g ^ N)).comp φ'`. Use `AlgHom.ext fun b => TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Simplify using `[ψ, addDers_apply, hφ', TrivSqZeroExt.fst_sum]`. Establish `s` using `snd_eq_sum hτ (ρ.comp u) φ' hφ' b`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [AlgHom.comp_apply, snd_dualScale, snd_dualMap, ψ, addDers_apply]`. Rewrite using `[s, Finset.sum_mul]`. Simplify using `[TrivSqZeroExt.snd_sum, map_sum, mul_assoc, ha]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Simplify using `only [res, scl]`.
-
-Rewrite using `[← Category.assoc, ← Category.assoc, spMap_comp, spMap_comp, e]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_res_eq_of_unitInChart (hS : UnitInChart G S) (hρ : IsAway ρ g)
     {w' : sp (R₀ := R) (DualNumber S') ⟶ G} (hw' : IsTanOver w') :
@@ -432,7 +428,7 @@ theorem exists_res_eq_of_unitInChart (hS : UnitInChart G S) (hρ : IsAway ρ g)
 
 omit [Smooth G.hom] [GrpObj G] in
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hNM`. Rewrite using `[pow_add, mul_comm, ← scl_scl, h, scl_scl]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem scl_pow_eq_of_le {w w' : sp (R₀ := R) (DualNumber S) ⟶ G} {N M : ℕ} (hNM : N ≤ M)
     (h : scl (g ^ N) w = scl (g ^ N) w') : scl (g ^ M) w = scl (g ^ M) w' := by
@@ -441,7 +437,7 @@ theorem scl_pow_eq_of_le {w w' : sp (R₀ := R) (DualNumber S) ⟶ G} {N M : ℕ
 
 omit [Smooth G.hom] [GrpObj G] in
 /- English proof (translation)
-The claim follows from `away_ext (span_range_map hs (inlS R S)) (fun i => dualMap (q i)) (fun i => (hq i).dualMap) fun i => h i`.
+A detailed English derivation is pending.
 -/
 theorem dual_ext {κ : Type} {s : κ → S} (hs : Ideal.span (Set.range s) = ⊤) {B : κ → Type}
     [∀ i, CommRing (B i)] [∀ i, Algebra R (B i)] (q : ∀ i, S →ₐ[R] B i)
@@ -450,11 +446,11 @@ theorem dual_ext {κ : Type} {s : κ → S} (hs : Ideal.span (Set.range s) = ⊤
     fun i => h i
 
 /- English proof (translation)
-Take `⟨κ, _, s, hs, hU⟩` from `exists_fin_unitInChart G S`. Establish `key : ∀ k, ∃ N : ℕ, res (awayHom R (s k)) (scl (g ^ N) w) = res (awayHom R (s k)) (scl (g ^ N) w')`. Introduce `k`. Take `⟨ψ, hψ⟩` from `hρ.lift ((awayHom R (awayHom R (s k) g)).comp (awayHom R (s k))) (isAway_awayHom (R := R) (awayHom R (s k) g)).unit`. Take `⟨N, hN⟩` from `exists_scl_eq_of_unitInChart (hU k) (isAway_awayHom (awayHom R (s k) g)) (hw.res _) (hw'.res _) (by rw [res_res, res_res, ← hψ, ← res_res, ← res_res, h])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨N, by rw [res_scl, res_scl, map_pow]; exact hN⟩`. Use `choose N hN using key`. Use `Fintype.ofFinite κ` as an intermediate fact. Use `⟨Finset.univ.sup N, dual_ext hs (fun k => awayHom R (s k)) (fun k => isAway_awayHom (s k)) fun k => ?_⟩` and prove the remaining obligations. Establish `h1` using `hN k`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `h1`, the goal using `[res_scl, res_scl, map_pow]`. Conclude with `scl_pow_eq_of_le (Finset.le_sup (Finset.mem_univ k)) h1`.
+A detailed English derivation is pending.
 -/
 theorem exists_scl_eq (hρ : IsAway ρ g)
     {w w' : sp (R₀ := R) (DualNumber S) ⟶ G} (hw : IsTanOver w) (hw' : IsTanOver w')
@@ -477,29 +473,25 @@ theorem exists_scl_eq (hρ : IsAway ρ g)
   exact scl_pow_eq_of_le (Finset.le_sup (Finset.mem_univ k)) h1
 
 /- English proof (translation)
-Take `⟨κ, _, s, hs, hU⟩` from `exists_fin_unitInChart G S`. Use `Fintype.ofFinite κ` as an intermediate fact. Set `q : ∀ k, S →ₐ[R] Localization.Away (s k)` to `fun k => awayHom R (s k)`. Establish `hq : ∀ k, IsAway (q k) (s k)` using `fun k => isAway_awayHom (s k)`. Set `p : ∀ k, Localization.Away (s k) →ₐ[R] Localization.Away (q k g)` to `fun k => awayHom R (q k g)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hp : ∀ k, IsAway (p k) (q k g)` using `fun k => isAway_awayHom (q k g)`. Establish `hψ0 : ∀ k, ∃ ψ : S' →ₐ[R] Localization.Away (q k g), ψ.comp ρ = (p k).comp (q k)` using `fun k => hρ.lift _ (hp k).unit`. Use `choose ψ hψ using hψ0`. Establish `hψa : ∀ k, IsAway (ψ k) (ρ (s k))` using `fun k => hρ.swap (hq k) (hψ k) (hp k)`. Establish `hgk : ∀ k, ψ k (ρ g) = p k (q k g)` using `fun k => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← AlgHom.comp_apply, hψ k, AlgHom.comp_apply]`. Establish `hk : ∀ k, ∃ (N : ℕ) (v : sp (R₀` using `R) (DualNumber (Localization.Away (s k))) ⟶ G), IsTanOver v ∧ res (p k) v = scl (p k (q k g) ^ N) (res (ψ k) w') := fun k => exists_res_eq_of_unitInChart (hU k) (hp k) (hw'.res (ψ k))`. Use `choose N v hv hvN using hk`. Take `⟨M, hM⟩ : ∃ M, ∀ k, N k ≤ M` from `⟨Finset.univ.sup N, fun k => Finset.le_sup (Finset.mem_univ k)⟩`. Set `W'` to `scl (ρ g ^ M) w'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `v1 : ∀ k, sp (R₀` to `R) (DualNumber (Localization.Away (s k))) ⟶ G := fun k => scl (q k g ^ (M - N k)) (v k)`. Establish `H1 : ∀ k, res (p k) (v1 k) = res (ψ k) W'` using `fun k => by`. Simplify using `only [v1, W']`. Rewrite using `[res_scl, hvN k, scl_scl, res_scl, map_pow, map_pow, hgk, ← pow_add, Nat.sub_add_cancel (hM k)]`. Set `q2 : ∀ k l, S →ₐ[R] Localization.Away (s k * s l)` to `fun k l => awayHom R (s k * s l)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq2 : ∀ k l, IsAway (q2 k l) (s k * s l)` using `fun k l => isAway_awayHom _`. Establish `hja0 : ∀ k l, ∃ ja : Localization.Away (s k) →ₐ[R] Localization.Away (s k * s l), ja.comp (q k) = q2 k l` using `fun k l => (hq k).lift _ (isUnit_of_mul_isUnit_left (y := q2 k l (s l)) (by rw [← map_mul]; exact (hq2 k l).unit))`. Establish `hjb0 : ∀ k l, ∃ ja : Localization.Away (s l) →ₐ[R] Localization.Away (s k * s l), ja.comp (q l) = q2 k l` using `fun k l => (hq l).lift _ (isUnit_of_mul_isUnit_right (x := q2 k l (s k)) (by rw [← map_mul]; exact (hq2 k l).unit))`. Use `choose ja hja using hja0`. Use `choose jb hjb using hjb0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hP : ∀ k l, ∃ P : ℕ, scl (q2 k l g ^ P) (res (ja k l) (v1 k)) = scl (q2 k l g ^ P) (res (jb k l) (v1 l))`. Introduce `k l`. Establish `hp2` using `isAway_awayHom (R := R) (q2 k l g)`. Take `⟨χ, hχ⟩` from `(hp k).lift ((awayHom R (q2 k l g)).comp (ja k l)) (by`. Rewrite using `[AlgHom.comp_apply, ← AlgHom.comp_apply (ja k l), hja]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hp2.unit)`. Take `⟨χ', hχ'⟩` from `(hp l).lift ((awayHom R (q2 k l g)).comp (jb k l)) (by`. Rewrite using `[AlgHom.comp_apply, ← AlgHom.comp_apply (jb k l), hjb]`. Conclude with `hp2.unit)`. Establish `e : χ.comp (ψ k) = χ'.comp (ψ l)` using `hρ.ext (by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[AlgHom.comp_assoc, AlgHom.comp_assoc, hψ, hψ, ← AlgHom.comp_assoc, ← AlgHom.comp_assoc, hχ, hχ', AlgHom.comp_assoc, AlgHom.comp_assoc, hja, hjb])`. Use `exists_scl_eq hp2 (((hv k).scl _).res _) (((hv l).scl _).res _) ?_` and prove the remaining obligations. Rewrite using `[res_res, res_res, ← hχ, ← hχ', ← res_res, ← res_res, H1, H1, res_res, res_res, e]`. Use `choose Q hQ using hP`. Take `⟨P, hPQ⟩ : ∃ P, ∀ k l, Q k l ≤ P` from `⟨Finset.univ.sup fun k => Finset.univ.sup (Q k), fun k l => (Finset.le_sup (f := Q k) (Finset.mem_univ l)).trans (Finset.le_sup (f := fun k => Finset.univ.sup (Q k)) (Finset.mem_univ k))⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Set `v2 : ∀ k, sp (R₀` to `R) (DualNumber (Localization.Away (s k))) ⟶ G := fun k => scl (q k g ^ P) (v1 k)`. Establish `H2 : ∀ k l, res (ja k l) (v2 k) = res (jb k l) (v2 l)` using `fun k l => by show res (ja k l) (scl (q k g ^ P) (v1 k)) = res (jb k l) (scl (q l g ^ P) (v1 l))`. Rewrite using `[res_scl (ja k l) (q k g ^ P) (v1 k), res_scl (jb k l) (q l g ^ P) (v1 l), map_pow, map_pow, ← AlgHom.comp_apply (ja k l), hja, ← AlgHom.comp_apply (jb k l), hjb]`. Conclude with `scl_pow_eq_of_le (hPQ k l) (hQ k l)`. Take `⟨z, hz⟩` from `away_glue (X := G) (span_range_map hs (inlS R S)) (fun k => dualMap (q k)) (fun k => (hq k).dualMap) v2 (fun k l T _ _ a b e => agree_of_isAway ((hq k).dualMap) ((hq l).dualMap) (a₀ := dualMap (ja k l)) (b₀ := dualMap (jb k l)) (by rw [dualMap_comp, dualMap_comp, hja, hjb]) (by r …`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨M + P, z, ?_, ?_⟩` and prove the remaining obligations. Use `show spMap (fstS R S) ≫ z = 1`. Use `away_ext hs q hq fun k => ?_` and prove the remaining obligations. Rewrite using `[comp_one', ← Category.assoc, spMap_comp, ← fstS_comp_dualMap, ← spMap_comp, Category.assoc, hz k]`. Conclude with `((hv k).scl _).scl _`.
-
-Use `dual_ext (span_range_map hs ρ) ψ hψa fun k => ?_` and prove the remaining obligations. Rewrite using `[res_res, hψ k, ← res_res]`. Use `show res (p k) (spMap (dualMap (q k)) ≫ z) = _`. Rewrite using `[hz k]`. Use `show res (p k) (scl (q k g ^ P) (v1 k)) = _`.
-
-Rewrite using `[res_scl (p k) (q k g ^ P) (v1 k), H1 k]`. Simplify using `only [W']`. Rewrite using `[res_scl, res_scl, scl_scl]`. Simplify using `only [map_pow, hgk]`. Rewrite using `[← pow_add, add_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_res_eq (hρ : IsAway ρ g)
     {w' : sp (R₀ := R) (DualNumber S') ⟶ G} (hw' : IsTanOver w') :

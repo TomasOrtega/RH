@@ -22,7 +22,7 @@ Both sides reduce to the same expression.
 theorem mat_one {n : ℕ} {J : Matrix (Fin n) (Fin n) E} : mat (1 : UA σ J) = 1 := rfl
 
 /- English proof (translation)
-Rewrite using `[← mat_mul, inv_mul_cancel, mat_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mat_inv_mul {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (g : UA σ J) : mat g⁻¹ * mat g = 1 := by
   rw [← mat_mul, inv_mul_cancel, mat_one]
@@ -94,11 +94,11 @@ variable {d r m : ℕ} {J : Matrix (Fin d) (Fin d) E} {X : Matrix (Fin d) (Fin r
   {I : Matrix (Fin d) (Fin m) (AE F E)}
 
 /- English proof (translation)
-Establish `e : mat u⁻¹ * X = X * (A⁻¹).1`. Establish `: X = mat u * (X * (A⁻¹).1)`. Rewrite using `[← Matrix.mul_assoc, h1, Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one]`. Use `conv_lhs => rw [this, ← Matrix.mul_assoc, mat_inv_mul, Matrix.one_mul]`. Use `⟨e, fun z => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `h2 ((D⁻¹).1 *ᵥ z)`. Use `⟨-((A⁻¹).1 *ᵥ a), ?_⟩` and prove the remaining obligations. Establish `h3` using `congrArg (mat u⁻¹ *ᵥ ·) ha`. Simplify using `only [Matrix.mulVec_add] at h3`. Rewrite `h3` using `[Matrix.mulVec_mulVec _ (mat u⁻¹) (mat u), mat_inv_mul, Matrix.one_mulVec, Matrix.mulVec_mulVec z D.1, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec, Matrix.mulVec_mulVec a (mat u⁻¹) X, e, ← Matrix.mulVec_mulVec]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3, Matrix.mulVec_neg, add_neg_cancel_right]`.
+A detailed English derivation is pending.
 -/
 theorem act_inv {u : UA σ J} {A : GL (Fin r) (AE F E)} {D : GL (Fin m) (AE F E)} (h1 : mat u * X = X * A.1)
     (h2 : ∀ z, ∃ a, mat u *ᵥ (I *ᵥ z) = I *ᵥ (D.1 *ᵥ z) + X *ᵥ a) :
@@ -118,9 +118,9 @@ theorem act_inv {u : UA σ J} {A : GL (Fin r) (AE F E)} {D : GL (Fin m) (AE F E)
   rw [h3, Matrix.mulVec_neg, add_neg_cancel_right]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `h`. Take `⟨h1', h2'⟩` from `h'`. Use `⟨?_, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[mat_mul, Matrix.mul_assoc, h1', ← Matrix.mul_assoc, h1, Matrix.mul_assoc, Units.val_mul]`. Take `⟨a', ha'⟩` from `h2' z`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `h2 (D'.1 *ᵥ z)`. Use `⟨a + A.1 *ᵥ a', ?_⟩` and prove the remaining obligations. Rewrite using `[mat_mul, ← Matrix.mulVec_mulVec, ha', Matrix.mulVec_add, ha, Matrix.mulVec_mulVec a' (mat u) X, h1, Matrix.mulVec_add, Units.val_mul, ← Matrix.mulVec_mulVec z D.1, ← Matrix.mulVec_mulVec a' X, add_assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem act_mul {u v : UA σ J} {A A' : GL (Fin r) (AE F E)} {D D' : GL (Fin m) (AE F E)}
     (h : mat u * X = X * A.1 ∧ ∀ z, ∃ a, mat u *ᵥ (I *ᵥ z) = I *ᵥ (D.1 *ᵥ z) + X *ᵥ a)
@@ -137,7 +137,7 @@ theorem act_mul {u v : UA σ J} {A A' : GL (Fin r) (AE F E)} {D D' : GL (Fin m) 
       Matrix.mulVec_add, Units.val_mul, ← Matrix.mulVec_mulVec z D.1, ← Matrix.mulVec_mulVec a' X, add_assoc]
 
 /- English proof (translation)
-Simplify using `only [Units.val_one, Matrix.mul_one, Matrix.one_mulVec]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mem_unipCols_iff {u : UA σ J} : u ∈ unipCols σ J X I ↔
     mat u * X = X * (1 : GL (Fin r) (AE F E)).1 ∧
@@ -145,7 +145,7 @@ theorem mem_unipCols_iff {u : UA σ J} : u ∈ unipCols σ J X I ↔
   simp only [Units.val_one, Matrix.mul_one, Matrix.one_mulVec]; rfl
 
 /- English proof (translation)
-Take `⟨A, D, h⟩` from `hp`. Use `act_mul (act_mul h (mem_unipCols_iff.1 hn)) (act_inv h.1 h.2)` as an intermediate fact. Rewrite `this` using `[mul_one, mul_one, mul_inv_cancel, mul_inv_cancel]`. Conclude with `mem_unipCols_iff.2 this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_mem_unipCols {p n : UA σ J} (hp : p ∈ stabCols σ J X I) (hn : n ∈ unipCols σ J X I) :
     p * n * p⁻¹ ∈ unipCols σ J X I := by
@@ -167,7 +167,7 @@ section Flag
 variable {d d₁ : ℕ} {W : Spc F E d} {H' : Plane E d d₁} {pl : ∀ j : ℕ, Plane E (d₁ - 2 * j) (d₁ - 2 * (j + 1))} {i : ℕ}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_unipPar {u : UA σ W.J} : u ∈ unipPar σ W H' pl i ↔
     mat u * incM F (flagX H' pl (i + 1)) = incM F (flagX H' pl (i + 1)) ∧ ∀ z, ∃ a : Fin (i + 1) → AE F E,
@@ -175,18 +175,18 @@ theorem mem_unipPar {u : UA σ W.J} : u ∈ unipPar σ W H' pl i ↔
   Iff.rfl
 
 /- English proof (translation)
-Introduce `_ hu` and use `Subgroup.subset_closure ⟨⟨1, Matrix.blockTriangular_one, fun k => Matrix.one_apply_eq k, by rw [Matrix.mul_one]; exact hu.1⟩, hu.2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unipPar_le_unipFlag : unipPar σ W H' pl i ≤ unipFlag σ W H' pl i := fun _ hu =>
   Subgroup.subset_closure ⟨⟨1, Matrix.blockTriangular_one, fun k => Matrix.one_apply_eq k, by
     rw [Matrix.mul_one]; exact hu.1⟩, hu.2⟩
 
 /- English proof (translation)
-Proceed by induction on `hu using Subgroup.closure_induction with`. Consider the case `mem u h`. Take `⟨⟨A, hA, h1, h2⟩, h3⟩` from `h`. Establish `hd : IsUnit A.det` using `by rw [Matrix.det_of_upperTriangular hA]; simp [h1]`. Conclude with `⟨((Matrix.isUnit_iff_isUnit_det A).2 hd).unit, h2, by simpa using h3⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Consider the case `one => exact ⟨1, by simp [mat_one], fun z => ⟨0, by simp [mat_one]⟩⟩`. Consider the case `mul u v _ _ hu hv`. Take `⟨A, h⟩` from `hu`. Take `⟨A', h'⟩` from `hv`. Conclude with `⟨A * A', by simpa only [mul_one] using act_mul h h'⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `inv u _ hu`. Take `⟨A, h⟩` from `hu`. Conclude with `⟨A⁻¹, by simpa only [inv_one] using act_inv h.1 h.2⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem act_of_mem_unipFlag {u : UA σ W.J} (hu : u ∈ unipFlag σ W H' pl i) : ∃ A : GL (Fin (i + 1)) (AE F E),
     mat u * incM F (flagX H' pl (i + 1)) = incM F (flagX H' pl (i + 1)) * A.1 ∧ ∀ z, ∃ a,
@@ -207,7 +207,7 @@ theorem act_of_mem_unipFlag {u : UA σ W.J} (hu : u ∈ unipFlag σ W H' pl i) :
     exact ⟨A⁻¹, by simpa only [inv_one] using act_inv h.1 h.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by rw [Units.val_one, Matrix.mul_one]; exact hm.1, fun z => ⟨0, by rw [Matrix.mulVec_mulVec, hm.2.2, Matrix.mulVec_zero, add_zero, Matrix.mulVec_mulVec]; rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem act_of_isLeviFlag {Y : Spc F E (d₁ - 2 * i)} {h₁ : UA σ Y.J} {m : UA σ W.J} (hm : IsLeviFlag H' pl i h₁ m) :
     mat m * incM F (flagX H' pl (i + 1)) = incM F (flagX H' pl (i + 1)) * (1 : GL (Fin (i + 1)) (AE F E)).1 ∧ ∀ z, ∃ a,
@@ -217,7 +217,7 @@ theorem act_of_isLeviFlag {Y : Spc F E (d₁ - 2 * i)} {h₁ : UA σ Y.J} {m : U
     rw [Matrix.mulVec_mulVec, hm.2.2, Matrix.mulVec_zero, add_zero, Matrix.mulVec_mulVec]; rfl⟩⟩
 
 /- English proof (translation)
-The claim follows from `let ⟨A, h⟩ := act_of_mem_unipFlag hp conj_mem_unipCols ⟨A, 1, h⟩ hn`.
+A detailed English derivation is pending.
 -/
 theorem conj_mem_unipPar {p n : UA σ W.J} (hp : p ∈ unipFlag σ W H' pl i) (hn : n ∈ unipPar σ W H' pl i) :
     p * n * p⁻¹ ∈ unipPar σ W H' pl i :=
@@ -225,7 +225,7 @@ theorem conj_mem_unipPar {p n : UA σ W.J} (hp : p ∈ unipFlag σ W H' pl i) (h
   conj_mem_unipCols ⟨A, 1, h⟩ hn
 
 /- English proof (translation)
-Establish `h : m ∈ stabCols σ W.J (incM F (flagX H' pl (i + 1))) (incM F (chainEmb H' pl i))` using `⟨1, h₁.1, act_of_isLeviFlag hm⟩`. Conclude with `⟨conj_mem_unipCols h, fun hn => by simpa [mul_assoc, unipPar] using conj_mem_unipCols (inv_mem h) hn⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem levi_normalises {Y : Spc F E (d₁ - 2 * i)} {h₁ : UA σ Y.J} {m : UA σ W.J} (hm : IsLeviFlag H' pl i h₁ m)
     (n : UA σ W.J) : n ∈ unipPar σ W H' pl i ↔ m * n * m⁻¹ ∈ unipPar σ W H' pl i := by
@@ -234,7 +234,7 @@ theorem levi_normalises {Y : Spc F E (d₁ - 2 * i)} {h₁ : UA σ Y.J} {m : UA 
   exact ⟨conj_mem_unipCols h, fun hn => by simpa [mul_assoc, unipPar] using conj_mem_unipCols (inv_mem h) hn⟩
 
 /- English proof (translation)
-Take `⟨A, h⟩` from `act_of_mem_unipFlag hu`. Establish `k` using `act_of_isLeviFlag hm`. Use `act_mul (act_mul (act_mul h k) (act_inv h.1 h.2)) (act_inv k.1 k.2)` as an intermediate fact. Rewrite `this` using `[mul_one, mul_inv_cancel, inv_one, mul_one, one_mul, inv_one, mul_one, mul_inv_cancel]`. Conclude with `mem_unipCols_iff.2 this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comm_mem_unipPar {Y : Spc F E (d₁ - 2 * i)} {h₁ : UA σ Y.J} {m u : UA σ W.J} (hm : IsLeviFlag H' pl i h₁ m)
     (hu : u ∈ unipFlag σ W H' pl i) : u * m * u⁻¹ * m⁻¹ ∈ unipPar σ W H' pl i := by

@@ -6,7 +6,7 @@ import Formalism.ThetaLogCoordinates.DualWeylCoordinates.DualWeylProofs.ClosureB
 namespace Formalism.InvariantFactorPaths.ColumnFamilies.Top
 
 /- English proof (translation)
-The claim follows from `closure_third_part_of claimA_straightening standard_basis_theorem branching_count_holds`.
+A detailed English derivation is pending.
 -/
 theorem closure_third_part : ClosureBranching := closure_third_part_of claimA_straightening standard_basis_theorem branching_count_holds
 

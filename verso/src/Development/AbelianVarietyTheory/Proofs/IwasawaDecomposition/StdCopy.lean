@@ -21,13 +21,13 @@ namespace GlobalTheory.Mem.R3.Rw.StdTr
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `hXg htr hR hc hs`. Consider the cases of `z' with`. Consider the case `@mk Xg' tr' core' alg' alg_eq' R' cG' geo' pins' lev' idG' good' mu' le' ks'`. Simplify using `only at hXg htr hR hc ⊢`. Substitute `hXg htr` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Simplify by unfolding definitions. Substitute using the available equality.
 
-Take `rfl` from `eq_of_heq hc`. Express the relevant statement in the definitionally equal form `BrgStd (w.st Z') w.I hX (usedOf w.I T Wt) z.Xg z.tr R'.toRealDat`. Express the relevant statement in the definitionally equal form `HEq R' _ at hR`. Establish `e : alg' = alg (a` using `⟨Z.W, Z.V, Z.S, Z.N, Z.G⟩) ⟨Z'.W, Z'.V, Z'.S, Z'.N, Z'.G⟩ z.alg := by`. Apply `Algebra.algebra_ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `y`. Apply `(w.st Z').B.embLL.injective` to reduce the goal to its premises. Rewrite using `[alg_eq']`. Conclude with `(z.alg_eq y).symm`. Use `clear cG' geo' pins' lev' idG' good' mu' le' ks' alg_eq' hc`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Substitute `e` using the available equality. Take `rfl` from `eq_of_heq hR`. Conclude with `(by with_unfolding_all exact (hs :))`.
+A detailed English derivation is pending.
 -/
 theorem std_copy (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (Z Z' : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl) (z : Dat (w.st Z) w.I hX T Wt) (z' : Dat (w.st Z') w.I hX T Wt) : z'.Xg = z.Xg → z'.tr = z.tr → HEq z'.R (real3 (a := ⟨Z.W, Z.V, Z.S, Z.N, Z.G⟩) ⟨Z'.W, Z'.V, Z'.S, Z'.N, Z'.G⟩ (iK := z.alg) z.R) → HEq z'.core (coreJ (a := ⟨Z.W, Z.V, Z.S, Z.N, Z.G⟩) ⟨Z'.W, Z'.V, Z'.S, Z'.N, Z'.G⟩ z.core) → z.Std → z'.Std := by
   intro hXg htr hR hc hs

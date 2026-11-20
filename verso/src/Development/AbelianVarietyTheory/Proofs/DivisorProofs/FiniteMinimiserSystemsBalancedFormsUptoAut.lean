@@ -7,25 +7,23 @@ open GlobalTheory.PolFan GlobalTheory.LocM
 namespace GlobalTheory.Poinc.MinSysTypeBal
 
 /- English proof (translation)
-Introduce `O _ bar φ Y _ _ _ _ hX n N _ _ eb`. Use `haveI : Module.Free ℤ Y := Module.Free.of_equiv eb.symm`. Use `haveI : Module.Finite ℤ Y := Module.Finite.equiv eb.symm`. Take `⟨S₀, hS₀, hfin⟩` from `hX.finite`. Use `set F := hS₀.toFinset with hF`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ι` to `Σ m : Fin (F.card + 1), (Fin m.val → F)`. Set `P : ι → Prop` to `fun i => IsCone bar φ (fun j => ((i.2 j : F) : LinearMap.BilinForm ℤ Y)) ∧ ∀ x, x ≠ 0 → 0 < ∑ j, ((i.2 j : F) : LinearMap.BilinForm ℤ Y) x x`. Set `T : ι → Finset ((Fin n → ZMod N) → Y)` to `fun i => if h : P i then Classical.choose (GlobalTheory.T.finite_minimiserSystems_posCombination_definiteSum Y n N eb i.1.val _ (fun j x y => (h.1.mem j).1 x y) (fun j y => h.1.nonneg j y) h.2) else ∅`. Use `⟨Finset.univ.biUnion T, ?_⟩` and prove the remaining obligations. Introduce `b hb hpos`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨m, γ, k, cf, hcone, hk, hcf, hsum⟩` from `GlobalTheory.Poinc.Cover.exists_cone O bar φ Y hX b hb hpos`. Take `⟨e, he⟩` from `hfin m γ hcone`. Use `⟨e, fun μ h1 h2 => ?_⟩` and prove the remaining obligations. Set `γ' : Fin m → F` to `fun j => ⟨pull e.toLinearMap (γ j), hS₀.mem_toFinset.2 (he j)⟩`. Establish `hcone'` using `hcone.pull_equiv e`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hinj : Function.Injective γ'` using `fun j l hjl => by`. Establish `h` using `congrArg Subtype.val hjl`. Simplify using `only [γ'] at h`. Conclude with `hcone'.injective h`. Establish `hm : m < F.card + 1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression.
 
-Use `Fintype.card_le_of_injective γ' hinj` as an intermediate fact. Simplify using `only [Fintype.card_fin, Fintype.card_coe] at this`. Use linear arithmetic over natural numbers and integers. Set `i : ι` to `⟨⟨m, hm⟩, γ'⟩`. Establish `hbyy : ∀ y, (k : ℤ) * b y y = ∑ j, (cf j : ℤ) * γ j y y` using `fun y => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `LinearMap.congr_fun₂ hsum y y` as an intermediate fact. Simplify `this` using `[LinearMap.sum_apply, nsmul_eq_mul]`. Establish `hPi : P i`. Use `⟨hcone', fun x hx => ?_⟩` and prove the remaining obligations. Simplify using `only [i, γ', pull_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hex : e x ≠ 0` using `by simpa using hx`. Establish `hnn : ∀ j ∈ Finset.univ, 0 ≤ γ j (e x) (e x)` using `fun j _ => hcone.nonneg j _`. Use `lt_of_le_of_ne (Finset.sum_nonneg hnn) fun h0 => ?_` and prove the remaining obligations. Establish `hz` using `(Finset.sum_eq_zero_iff_of_nonneg hnn).1 h0.symm`. Establish `h3` using `hpos _ hex`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers.
 
-Establish `h4` using `hbyy (e x)`. Simplify using `[hz] at h4`. Break down `h4 with h4 | h4` into its components or cases. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Establish `hmem : μ ∈ T i`. Simplify using `only [T, dif_pos hPi]`. Use `Classical.choose_spec (GlobalTheory.T.finite_minimiserSystems_posCombination_definiteSum Y n N eb i.1.val _ (fun j x y => (hPi.1.mem j).1 x y) (fun j y => hPi.1.nonneg j y) hPi.2) (pull e.toLinearMap b) k cf hk hcf ?_ μ h1 h2` and prove the remaining obligations. Use extensionality with `a c`. Use `LinearMap.congr_fun₂ hsum (e a) (e c)` as an intermediate fact.
-
-Simplify `this` using `[i, γ', pull_apply, LinearMap.sum_apply]`. Conclude with `Finset.mem_biUnion.2 ⟨i, Finset.mem_univ _, hmem⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem finite_minimiser_systems_upTo_aut : ∀ (O : Type) [CommRing O] (bar : O → O) (φ : InvFun O) (Y : Type) [AddCommGroup Y]
     [Module O Y] [Module.Finite O Y] [Module.Projective O Y], IsPolFanOn bar φ Y → ∀ (n N : ℕ) [NeZero N], 3 ≤ N →

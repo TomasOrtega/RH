@@ -10,7 +10,7 @@ open TensorProduct
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FrNil.counit_ev_sub_constantCoeff | exact GlobalTheory.FrNil.counit_ev_sub_constantCoeff | (intros; apply GlobalTheory.FrNil.counit_ev_sub_constantCoeff <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.counit_formalChart_ev_sub_constantCoeff_dvd : ∀ (p : ℕ) (O : Type) [CommRing O] (G : PDivGroup p O) (d : ℕ) (c : QLog.Chart G d) (n : ℕ) (F : MvPowerSeries (Fin d) O), (p : O) ∣ Coalgebra.counit (R := O) (c.ev n F) - constantCoeff F := by
   first | exact @GlobalTheory.FrNil.counit_ev_sub_constantCoeff | exact GlobalTheory.FrNil.counit_ev_sub_constantCoeff | (intros; apply GlobalTheory.FrNil.counit_ev_sub_constantCoeff <;> assumption)

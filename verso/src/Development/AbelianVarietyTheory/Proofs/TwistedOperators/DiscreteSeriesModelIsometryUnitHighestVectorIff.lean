@@ -25,21 +25,21 @@ open GlobalTheory.RealPar.TorusWt GlobalTheory.RealPar.KStabLie GlobalTheory.Cov
 variable {p q n : ℕ} {T : GrpData p q}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h a set θ : Ix p q → ℝ := Pi.single a 1 with hθ`. Establish `h0` using `R.der _ (torX_mem θ) v`. Establish `h1 : (fun t : ℝ => R.U.π (T.expt (t • torX θ)) (R.ι v)) = fun t : ℝ => Complex.exp ((ν a * Complex.I) * t) • R.ι v`. Use function extensionality and compare the values at `t`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[smul_torX, h]`. Use `congr 2`. Rewrite using `[Finset.sum_eq_single a]`. Simplify using `[hθ]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `c _ hc`. Simplify using `[hθ, hc]`. Simplify using the standard rewrite rules. Establish `h2 : HasDerivAt (fun t : ℝ => Complex.exp ((ν a * Complex.I) * t) • R.ι v) ((ν a * Complex.I) • R.ι v) 0`. Establish `: HasDerivAt (fun t : ℝ => ((ν a * Complex.I) * (t : ℂ))) (ν a * Complex.I) 0`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using ((Complex.ofRealCLM.hasDerivAt (x := 0)).const_mul (ν a * Complex.I))`. Simplify using `using this.cexp.smul_const (R.ι v)`. Rewrite `h0` using `[h1]`. Establish `h3` using `h0.unique h2`. Rewrite `h3` using `[← map_smul]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4` using `R.ι_inj h3`. Establish `h5 : torX θ = Complex.I • Eab a a`. Rewrite using `[torX_eq_sum, Finset.sum_eq_single a]`. Simplify using `[hθ]`. Introduce `c _ hc`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hθ, hc]`. Simplify using the standard rewrite rules. Rewrite `h4` using `[h5, map_smul, LinearMap.smul_apply, mul_comm, mul_smul]`. Conclude with `smul_right_injective _ Complex.I_ne_zero h4`. Introduce `h θ`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `flow_eq R (torX_mem _)` to reduce the goal to its premises. Rewrite using `[torX_eq_sum, map_sum, LinearMap.sum_apply]`. Simplify using `only [map_smul, LinearMap.smul_apply, h, smul_smul, ← Finset.sum_smul]`. Use `congr 1`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun a _ => by ring`.
+A detailed English derivation is pending.
 -/
 theorem torus_iff (R : DSRep T) (ν : Ix p q → ℝ) (v : R.HK.V) :
     (∀ θ : Ix p q → ℝ, R.U.π (T.expt (torX θ)) (R.ι v) =
@@ -86,31 +86,31 @@ theorem torus_iff (R : DSRep T) (ν : Ix p q → ℝ) (v : R.HK.V) :
 def sb (b : Bool) : ℝ := if b then -1 else 1
 
 /- English proof (translation)
-Apply the tactic sequence `cases b <;> simp [sb]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sb_mul_self (b : Bool) : sb b * sb b = 1 := by cases b <;> simp [sb]
 
 /- English proof (translation)
-Apply the tactic sequence `cases br <;> cases cj <;> simp [sb, sg]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sg_eq (br cj : Bool) : sg br cj = sb br * sb cj := by cases br <;> cases cj <;> simp [sb, sg]
 
 /- English proof (translation)
-Apply the tactic sequence `cases cj <;> simp [cjc, sb, ← Complex.exp_conj]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cjc_exp (cj : Bool) (r : ℝ) :
     cjc cj (Complex.exp ((r : ℂ) * Complex.I)) = Complex.exp (((sb cj * r : ℝ) : ℂ) * Complex.I) := by
   cases cj <;> simp [cjc, sb, ← Complex.exp_conj]
 
 /- English proof (translation)
-Apply the tactic sequence `cases cj <;> simp [cjc]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cjc_cjc (cj : Bool) (z : ℂ) : cjc cj (cjc cj z) = z := by cases cj <;> simp [cjc]
 
 /- English proof (translation)
-Rewrite using `[cov_expt_torX]`. Use extensionality with `i j`. Take `⟨a, rfl⟩` from `e.surjective i`. Take `⟨b, rfl⟩` from `e.surjective j`. Distinguish the cases in `h : a = b`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Apply the tactic sequence `cases br <;> simp [phi, sb, barMat, plainMat, ← Complex.exp_conj]`. Apply the tactic sequence `cases br <;> simp [phi, sb, barMat, plainMat, h]`.
+Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem phi_torus (br : Bool) (e : Ix p q ≃ Fin n) (θ : Ix p q → ℝ) :
     phi br e ((T.cov (T.expt (torX θ)) : GL (Ix p q) ℂ) : Mat p q) =
@@ -125,15 +125,15 @@ theorem phi_torus (br : Bool) (e : Ix p q ≃ Fin n) (θ : Ix p q → ℝ) :
   · cases br <;> simp [phi, sb, barMat, plainMat, h]
 
 /- English proof (translation)
-Establish `h0` using `(GlobalTheory.RealPar.mem_Upq _).1 (T.cov_mem x)`. Establish `h1 : Formalism.REAL.inUJ ε (phi br e ((T.cov x : GL (Ix p q) ℂ) : Mat p q))`. Consider the cases of `br`. Conclude with `GlobalTheory.IndefiniteRowSideFullHecke.BarMatrix.plainMat_mem h h0`. Conclude with `GlobalTheory.IndefiniteRowSideFullHecke.BarMatrix.barMat_mem h h0`.
+Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h3 : phi br e ((T.cov x : GL (Ix p q) ℂ) : Mat p q) * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * phi br e ((T.cov x : GL (Ix p q) ℂ) : Mat p q)`. Use extensionality with `i j`. Take `⟨a, rfl⟩` from `e.surjective i`. Take `⟨b, rfl⟩` from `e.surjective j`. Rewrite using `[Formalism.REAL.Jm, Matrix.mul_diagonal, Matrix.diagonal_mul, h a, h b]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation.
 
-Distinguish the cases in `hab : sameBlock a b`. Apply the tactic sequence `have : a.isLeft = b.isLeft := by cases a <;> cases b <;> simp_all [sameBlock]`. Rewrite using `[this, mul_comm]`. Use `hx a b hab` as an intermediate fact. Apply the tactic sequence `cases br <;> simp [phi, barMat, plainMat, this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable.
 
-Use `⟨?_, h3⟩` and prove the remaining obligations. Generalize the expression as in `phi br e ((T.cov x : GL (Ix p q) ℂ) : Mat p q) = g at h1 h3`. Rewrite using `[Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose]`. Unfold `Formalism.REAL.inUJ at h1`. Rewrite `h1` using `[Matrix.mul_assoc, ← h3, ← Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h4` using `congrArg (· * Formalism.REAL.Jm ε) h1`. Simplify `h4` using `only [Matrix.mul_assoc, Formalism.REAL.Jm_mul_self, Matrix.mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem phi_mem_Kset {ε : Fin n → Bool} {e : Ix p q ≃ Fin n} (h : SignCompat ε e) (br : Bool) {x : T.G}
     (hx : x ∈ T.Kset) : phi br e ((T.cov x : GL (Ix p q) ℂ) : Mat p q) ∈ Formalism.REAL.Kset ε := by
@@ -162,11 +162,9 @@ theorem phi_mem_Kset {ε : Fin n → Bool} {e : Ix p q ≃ Fin n} (h : SignCompa
   simpa only [Matrix.mul_assoc, Formalism.REAL.Jm_mul_self, Matrix.mul_one] using h4
 
 /- English proof (translation)
-Unfold `Eab`. Rewrite using `[Complex.ofReal_sub, sub_smul]`. Use `congr 1`. Use `split_ifs with h`. Substitute `h` using the available equality.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `[Matrix.single_mul_single_of_ne _ _ _ _ h]`. Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
-
-Simplify using `[Matrix.single_mul_single_of_ne _ _ _ _ (Ne.symm h)]`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Eab_bracket (x a b : Ix p q) : Eab x x * Eab a b - Eab a b * Eab x x =
     (((if x = a then 1 else 0) - (if x = b then 1 else 0) : ℝ) : ℂ) • Eab a b := by
@@ -184,17 +182,17 @@ variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} {M : DSModel V S} {τ
   {br cj : Bool} {e : Ix p q ≃ Fin V.rank} {m : ℤ} {U : M.H τ → R.U.H}
 
 /- English proof (translation)
-Rewrite using `[← norm_eq_zero, h.norm, norm_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tie_zero (h : Comparison₂ R M τ br cj e m U) : U 0 = 0 := by
   rw [← norm_eq_zero, h.norm, norm_zero]
 
 /- English proof (translation)
-Establish `key : ∀ z : ℂ, (z * ⟪U x, U y⟫_ℂ).re = 0`. Introduce `z`. Establish `h1` using `norm_add_sq (𝕜 := ℂ) (U x) (U (cjc cj z • y))`. Establish `h2` using `norm_add_sq (𝕜 := ℂ) x (cjc cj z • y)`. Rewrite `h1` using `[← h.add, h.norm, h.norm, h.norm, h2, h.smul, cjc_cjc, inner_smul_right, inner_smul_right, hxy]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [mul_zero, map_zero, RCLike.re_to_complex] at h1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `k1` using `key 1`. Establish `k2` using `key Complex.I`. Apply `Complex.ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `using k1`. Simplify using `using k2`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem tie_orth (h : Comparison₂ R M τ br cj e m U) {x y : M.H τ} (hxy : ⟪x, y⟫_ℂ = 0) : ⟪U x, U y⟫_ℂ = 0 := by
   have key : ∀ z : ℂ, (z * ⟪U x, U y⟫_ℂ).re = 0 := by
@@ -211,17 +209,17 @@ theorem tie_orth (h : Comparison₂ R M τ br cj e m U) {x y : M.H τ} (hxy : �
   · simpa using k2
 
 /- English proof (translation)
-Establish `hm' : (m : ℂ) = 2 * (c : ℂ)` using `by exact_mod_cast congrArg (fun x : ℚ => (x : ℂ)) hm`. Establish `hs : ∀ θ : Ix p q → ℝ, Complex.exp ((∑ a, (θ a : ℂ)) * Complex.I / 2) ^ (-m) * cjc cj (Complex.exp (((∑ j, μ j * (sb br * θ (e.symm j)) : ℝ) : ℂ) * Complex.I)) = Complex.exp (((∑ a, ν a * θ a : ℝ) : ℂ) * Complex.I)`. Introduce `θ`. Rewrite using `[cjc_exp, ← Complex.exp_int_mul, ← Complex.exp_add, ← e.sum_comp]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `: sb cj * ∑ a, μ (e a) * (sb br * θ (e.symm (e a))) = ∑ a, ν a * θ a + c * ∑ a, θ a`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[hν, sg_eq, Equiv.symm_apply_apply]`. Establish `h1` using `sb_mul_self br`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `sb_mul_self cj`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this]`. Use `push_cast`. Rewrite using `[hm']`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← torus_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hw θ`. Rewrite using `[← hy, h.grp, phi_torus, hw _ (diag_mem_Kset _ _), h.smul, smul_smul, sq_expt_torX, hs]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `hw θ _`. Establish `h1` using `hw fun a => sb br * θ (e a)`. Establish `h2` using `hs fun a => sb br * θ (e a)`. Rewrite `h1` using `[← hy, h.grp, phi_torus, sq_expt_torX, ← h2, mul_smul, ← h.smul]`. Establish `h3` using `h.bij.1 (smul_right_injective _ (zpow_ne_zero _ (Complex.exp_ne_zero _)) h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify `h3` using `only [Equiv.apply_symm_apply, ← mul_assoc (sb br), sb_mul_self, one_mul]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem wt_iff (h : Comparison₂ R M τ br cj e m U) {c : ℚ} (hm : (m : ℚ) = 2 * c) {μ : Fin V.rank → ℝ} {ν : Ix p q → ℝ}
     (hν : ∀ a, μ (e a) = sg br cj * (ν a + c)) {y : M.H τ} {w : R.HK.V} (hy : U y = R.ι w) :
@@ -257,11 +255,11 @@ theorem wt_iff (h : Comparison₂ R M τ br cj e m U) {c : ℚ} (hm : (m : ℚ) 
     simpa only [Equiv.apply_symm_apply, ← mul_assoc (sb br), sb_mul_self, one_mul] using h3
 
 /- English proof (translation)
-Establish `key : ∀ X ∈ upq p q, IsKC X → ⟪U y, R.ι (R.HK.act X v)⟫_ℂ = 0`. Introduce `X hX hXK`. Establish `h3` using `((innerSL ℂ (U y)).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (R.der X hX v)`. Establish `h4 : (((innerSL ℂ (U y)).restrictScalars ℝ) ∘ fun t : ℝ => R.U.π (T.expt (t • X)) (R.ι v)) = fun _ => 0`. Use function extensionality and compare the values at `t`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Express the relevant statement in the definitionally equal form `⟪U y, R.U.π (T.expt (t • X)) (R.ι v)⟫_ℂ = 0`. Rewrite using `[← hv, h.grp, inner_smul_right, tie_orth h (hy _ (hF _ (phi_mem_Kset he br (expt_mem T hX hXK t)) _ hx)), mul_zero]`. Rewrite `h3` using `[h4]`. Conclude with `h3.unique (hasDerivAt_const _ _)`. Take `⟨X, Y, hX, hXK, hY, hYK, rfl⟩` from `exists_decomp hZ`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply, map_add, map_smul, inner_add_right, inner_smul_right, key X hX hXK, key Y hY hYK, mul_zero, add_zero]`.
+A detailed English derivation is pending.
 -/
 theorem orth_act (h : Comparison₂ R M τ br cj e m U) (he : SignCompat (M.ε τ) e) {F : Submodule ℂ (M.H τ)}
     (hF : IsKStableOn (M.ε τ) (M.σ τ) F) {x y : M.H τ} (hx : x ∈ F) (hy : ∀ z ∈ F, ⟪y, z⟫_ℂ = 0) {v : R.HK.V}
@@ -281,21 +279,21 @@ theorem orth_act (h : Comparison₂ R M τ br cj e m U) (he : SignCompat (M.ε �
     inner_smul_right, key X hX hXK, key Y hY hYK, mul_zero, add_zero]
 
 /- English proof (translation)
-Establish `hσ` using `(M.ds τ).2.2.1`. Establish `h1` using `(wt_iff h hm (ν := fun a => (blattner lam a : ℝ)) (fun a => by rw [ho.2.2 a]; push_cast; rfl) hv).1 hw`. Simplify using `only [hwSub, wtSub, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`. Use `⟨fun a => by simpa using h1 a, fun a b hab => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `h.bij.2 (R.ι (R.HK.act (Eab a b) v))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h2 : IsWtOn (Formalism.REAL.Kset (M.ε τ)) (M.σ τ) (Formalism.QuantumDeterminants.lowK (M.ε τ) (M.lam τ) + sg br cj • Formalism.REAL.root (e a) (e b)) y`. Use `(wt_iff h hm (ν := fun x => (blattner lam x : ℝ) + ((if x = a then 1 else 0) - (if x = b then 1 else 0))) (fun x => ?_) hy).2 fun x => ?_` and prove the remaining obligations. Rewrite using `[Pi.add_apply, ho.2.2 x]`. Simplify using `only [Formalism.REAL.root, Pi.smul_apply, Pi.sub_apply, Pi.single_apply, EmbeddingLike.apply_eq_iff_eq, smul_eq_mul]`. Use `push_cast`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Use `congrArg (fun f : Module.End ℂ R.HK.V => f v) (R.HK.lie (Eab x x) (Eab a b))` as an intermediate fact. Simplify using `only [Eab_bracket, map_smul, LinearMap.smul_apply, LinearMap.sub_apply, Module.End.mul_apply, h1] at this`. Rewrite using `[Complex.ofReal_add, add_smul, this]`. Normalize the expressions using the abelian group laws.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `hlt : ((lam b + c : ℚ) : ℝ) < ((lam a + c : ℚ) : ℝ)`. Use `hp.2.1 a b hab` as an intermediate fact. Conclude with `(by linarith : lam b + c < lam a + c)` after adjusting the coercions. Establish `hanti : StrictAnti (M.lam τ)` using `(M.enum τ).1`. Establish `h3 : ¬ CDom (M.ε τ) (Formalism.QuantumDeterminants.lowK (M.ε τ) (M.lam τ) + sg br cj • Formalism.REAL.root (e a) (e b)) (Formalism.QuantumDeterminants.lowK (M.ε τ) (M.lam τ))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha` using `ho.2.1 a`. Establish `hb` using `ho.2.1 b`. Distinguish the cases in `hs : br = cj`. Establish `s1 : sg br cj = 1` using `if_pos hs`. Rewrite `ha`, `hb`, the goal using `[s1]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[one_smul]`. Conclude with `GlobalTheory.HolDict.BorelK.not_cdom _ (hanti.lt_iff_gt.1 (by linarith))`. Establish `s1 : sg br cj = -1` using `if_neg hs`. Rewrite `ha`, `hb`, the goal using `[s1]`. Rewrite using `[show (-1 : ℝ) • Formalism.REAL.root (e a) (e b) = Formalism.REAL.root (e b) (e a) by simp [Formalism.REAL.root]]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `GlobalTheory.HolDict.BorelK.not_cdom _ (hanti.lt_iff_gt.1 (by linarith))`. Establish `hK : IsKC (Eab a b)`. Introduce `x y hxy`. Use `Matrix.single_apply_of_ne _ _ _ _ _ ?_` and prove the remaining obligations. Introduce and unpack `⟨rfl, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `cases a <;> cases b <;> simp_all [posC, sameBlock]`. Establish `h4` using `orth_act h ho.1 GlobalTheory.HolDict.BorelK.stable_sSup hx (GlobalTheory.HolDict.BorelK.orth_of_not_cdom hσ h2 h3) hv hK`. Rewrite `h4` using `[hy, inner_self_eq_zero]`. Conclude with `R.ι_inj (by rw [h4, map_zero])`.
+A detailed English derivation is pending.
 -/
 theorem mem_hwSub {lam : Ix p q → ℚ} {c : ℚ} (hp : IsParam lam) (ho : IsOrd (M.ε τ) (M.lam τ) lam c (sg br cj) e)
     (hm : (m : ℚ) = 2 * c) (h : Comparison₂ R M τ br cj e m U) {x : M.H τ} {v : R.HK.V} (hv : U x = R.ι v)
@@ -349,15 +347,15 @@ theorem mem_hwSub {lam : Ix p q → ℚ} {c : ℚ} (hp : IsParam lam) (ho : IsOr
   exact R.ι_inj (by rw [h4, map_zero])
 
 /- English proof (translation)
-Introduce `D V S M τ p q T R lam c br cj e m U hp ho hm h h1 x v hv`. Establish `hn : ‖R.ι v‖ = ‖x‖` using `by rw [← hv, h.norm]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, b, d⟩`. Use `⟨⟨?_, mem_hwSub hp ho hm h hv b d⟩, hn.trans a⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `rfl`. Simplify using `[a] at hn`. Introduce and unpack `⟨⟨-, a⟩, b⟩`. Take `⟨F, hF⟩` from `(M.ds τ).2.2.2.2.2.1`. Take `⟨w, hwF, hw0, hw⟩` from `hF.2.2.2.1`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hwl : w ∈ lowKSub (M.ε τ) (M.lam τ) (M.σ τ)` using `(le_sSup (s := {S | IsKTypeOf (M.ε τ) (M.σ τ) (Formalism.QuantumDeterminants.lowK (M.ε τ) (M.lam τ)) S}) hF) hwF`. Take `⟨u, hu⟩` from `(h.kfin w).1 ⟨F, hF.1, hwF, hF.2.1⟩`. Establish `hu1` using `mem_hwSub hp ho hm h hu.symm hwl hw`. Establish `hu0 : (⟨u, hu1⟩ : hwSub R.HK.act (blattner lam)) ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: u = 0` using `congrArg Subtype.val h0`. Apply `hw0` to reduce the goal to its premises. Rewrite using `[← norm_eq_zero, ← h.norm, ← hu, this, map_zero, norm_zero]`. Take `⟨z, hz⟩` from `(finrank_eq_one_iff_of_nonzero' _ hu0).1 h1 ⟨v, a⟩`. Establish `hz' : z • u = v` using `congrArg Subtype.val hz`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx : x = cjc cj z • w` using `h.bij.1 (by rw [hv, h.smul, cjc_cjc, ← hu, ← map_smul, hz'])`. Use `⟨hn.symm.trans b, hx ▸ Submodule.smul_mem _ _ hwl, fun θ hθ => ?_⟩` and prove the remaining obligations. Rewrite using `[hx, map_smul, hw θ hθ, smul_comm]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem highestUnit_iff : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (τ : D.what₂.Tau) (p q : ℕ) (T : GrpData p q) (R : DSRep T) (lam : Ix p q → ℚ) (c : ℚ) (br cj : Bool) (e : Ix p q ≃ Fin V.rank) (m : ℤ) (U : M.H τ → R.U.H), IsParam lam → IsOrd (M.ε τ) (M.lam τ) lam c (sg br cj) e → (m : ℚ) = 2 * c → Comparison₂ R M τ br cj e m U → Module.finrank ℂ ↥(hwSub R.HK.act (blattner lam)) = 1 → ∀ x v, U x = R.ι v → (IsHighestUnit (M.ε τ) (M.lam τ) (M.σ τ) x ↔ UnitHW R (blattner lam) v) := by
   intro D V S M τ p q T R lam c br cj e m U hp ho hm h h1 x v hv

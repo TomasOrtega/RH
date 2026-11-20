@@ -6,11 +6,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Conne
 open IsLocalRing UpperTheory.V.AlgebraTools.Conn
 
 /- English proof (translation)
-Establish `hy' : y ∈ (Module.annihilator R (R ⧸ I)).jacobson`. Rewrite using `[Ideal.annihilator_quotient]`. Conclude with `(IsLocalRing.maximalIdeal_le_jacobson _) hy`. Establish `hn' : ∀ p ∈ (Module.annihilator R (R ⧸ I)).minimalPrimes, y ∉ p`. Rewrite using `[Ideal.annihilator_quotient]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hn`. Establish `key` using `Module.supportDim_quotSMulTop_succ_eq_of_notMem_minimalPrimes_of_mem_jacobson hn' hy'`. Rewrite `key` using `[Module.supportDim_quotient_eq_ringKrullDim]`. Rewrite using `[← key, ← Module.supportDim_quotient_eq_ringKrullDim]`. Establish `hs : Module.support R (R ⧸ (I ⊔ Ideal.span {y})) = Module.support R (QuotSMulTop y (R ⧸ I))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Module.support_quotSMulTop, Module.support_eq_zeroLocus, Module.support_eq_zeroLocus, Ideal.annihilator_quotient, Ideal.annihilator_quotient, PrimeSpectrum.zeroLocus_sup, PrimeSpectrum.zeroLocus_span]`. Simplify using `only [Module.supportDim]`. Rewrite using `[hs]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.AlgebraTools.Conn.drop_one {R : Type} [CommRing R] [IsLocalRing R]
     [IsNoetherianRing R] (I : Ideal R) (y : R) (hy : y ∈ maximalIdeal R)
@@ -33,9 +33,9 @@ private theorem UpperTheory.V.AlgebraTools.Conn.drop_one {R : Type} [CommRing R]
   rw [hs]
 
 /- English proof (translation)
-Introduce `hm`. Rewrite `h` using `[ringKrullDim_quotient, Order.krullDim_pos_iff]`. Take `⟨a, b, hab⟩` from `h`. Establish `ha : I ≤ a.1.asIdeal` using `a.2`. Establish `hma : maximalIdeal R ≤ a.1.asIdeal` using `hm.2 ⟨a.1.isPrime, ha⟩ (IsLocalRing.le_maximalIdeal a.1.isPrime.ne_top)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbm : b.1.asIdeal ≤ maximalIdeal R` using `IsLocalRing.le_maximalIdeal b.1.isPrime.ne_top`. Establish `hlt : a.1.asIdeal < b.1.asIdeal` using `hab`. Conclude with `absurd (hbm.trans hma) (not_le_of_gt hlt)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.AlgebraTools.Conn.max_notMem_minimalPrimes {R : Type} [CommRing R] [IsLocalRing R]
     (I : Ideal R) (h : 0 < ringKrullDim (R ⧸ I)) : maximalIdeal R ∉ I.minimalPrimes := by
@@ -50,17 +50,15 @@ private theorem UpperTheory.V.AlgebraTools.Conn.max_notMem_minimalPrimes {R : Ty
   exact absurd (hbm.trans hma) (not_le_of_gt hlt)
 
 /- English proof (translation)
-Introduce `A R _ _ _ _ _ _ _ S hS`. Set `T : Set (Ideal A)` to `⋃ I ∈ S, (Ideal.comap (algebraMap A R)) '' I.minimalPrimes`. Establish `hT : T.Finite` using `Set.Finite.biUnion S.finite_toSet (fun I _ => (Ideal.finite_minimalPrimes_of_isNoetherianRing R I).image _)`. Establish `memT : ∀ q, q ∈ T ↔ ∃ I ∈ S, ∃ p ∈ I.minimalPrimes, Ideal.comap (algebraMap A R) p = q`. Introduce `q`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [T, Set.mem_iUnion, Set.mem_image, exists_prop]`. Establish `hmA : Ideal.comap (algebraMap A R) (maximalIdeal R) = maximalIdeal A` using `IsLocalRing.eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal _)`. Establish `hTprime : ∀ q ∈ T, q.IsPrime`. Introduce `q hq`. Take `⟨I, _, p, hp, rfl⟩` from `(memT q).mp hq`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `haveI := hp.1.1`. Use `infer_instance`. Establish `hnot : ¬ ∃ q ∈ hT.toFinset, maximalIdeal A ≤ id q`. Introduce and unpack `⟨q, hq, hle⟩`. Take `⟨I, hI, p, hp, rfl⟩` from `(memT _).mp (hT.mem_toFinset.mp hq)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := hp.1.1`. Establish `heq : maximalIdeal A = Ideal.comap (algebraMap A R) p` using `(IsLocalRing.maximalIdeal.isMaximal A).eq_of_le Ideal.IsPrime.ne_top' hle`. Use `haveI : (Ideal.comap (algebraMap A R) p).IsMaximal := heq ▸ IsLocalRing.maximalIdeal.isMaximal A`. Establish `hpm : p = maximalIdeal R` using `IsLocalRing.eq_maximalIdeal (Ideal.isMaximal_of_isIntegral_of_isMaximal_comap p this)`. Conclude with `UpperTheory.V.AlgebraTools.Conn.max_notMem_minimalPrimes I (hS I hI) (hpm ▸ hp)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsub` using `(Ideal.subset_union_prime (s := hT.toFinset) (f := id) ⊥ ⊥ (fun q hq _ _ => hTprime q (hT.mem_toFinset.mp hq)) (I := maximalIdeal A)).not.mpr hnot`. Take `⟨x, hxm, hx⟩` from `Set.not_subset.mp hsub`. Use `⟨x, hxm, fun I hI => UpperTheory.V.AlgebraTools.Conn.drop_one I _ ?_ ?_⟩` and prove the remaining obligations. Establish `hx' : x ∈ Ideal.comap (algebraMap A R) (maximalIdeal R)` using `hmA ▸ hxm`. Conclude with `hx'`.
-
-Introduce `p hp hxp`. Apply `hx` to reduce the goal to its premises. Simplify using `only [Set.mem_iUnion, id]`. Conclude with `⟨Ideal.comap (algebraMap A R) p, hT.mem_toFinset.mpr ((memT _).mpr ⟨I, hI, p, hp, rfl⟩), hxp⟩`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.Conn.drop :
     ∀ {A R : Type} [CommRing A] [IsLocalRing A] [CommRing R] [IsLocalRing R] [IsNoetherianRing R] [Algebra A R]

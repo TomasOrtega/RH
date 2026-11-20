@@ -22,9 +22,9 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
 
 /- English proof (translation)
-Unfold `psi`. Rewrite using `[Complex.star_def, ← Complex.exp_conj, ← Complex.exp_add]`. Establish `h : (starRingEnd ℂ) (Complex.I * (((c * ell k r z x).re : ℝ) : ℂ)) + Complex.I * (((c * ell k r z x).re : ℝ) : ℂ) = 0`. Rewrite using `[map_mul, Complex.conj_I, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h, Complex.exp_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_star_mul (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (x : B.Mat k r) :
     star (psi k r z c x) * psi k r z c x = 1 := by
@@ -38,36 +38,36 @@ theorem psi_star_mul (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (x : B.Mat k r)
 def oneP : B.SS k r := (((1 : B.Mat k r), (1 : B.Mat k r)), ((1 : B.Mat k r), (1 : B.Mat k r)))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Formalism.FourierDecayAlt.P.BigCellZetaMinors.one_uw _, WeylGroupFacts.mem_n_one, Formalism.FourierDecayAlt.P.BigCellZetaMinors.one_uw _, WeylGroupFacts.mem_n_one⟩`.
+Supply the required witnesses or components.
 -/
 theorem oneP_inSS (D : B.RealPlaceData k r Wp Wq) : D.inSS oneP :=
   ⟨Formalism.FourierDecayAlt.P.BigCellZetaMinors.one_uw _, WeylGroupFacts.mem_n_one, Formalism.FourierDecayAlt.P.BigCellZetaMinors.one_uw _, WeylGroupFacts.mem_n_one⟩
 
 /- English proof (translation)
-Use `show (1 : B.Mat k r)⁻¹ * (1 : B.Mat k r)⁻¹ * g * 1 * 1 = g`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sgs_oneP (g : B.Mat k r) : B.sgs oneP g = g := by
   show (1 : B.Mat k r)⁻¹ * (1 : B.Mat k r)⁻¹ * g * 1 * 1 = g
   simp
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `hp`. Establish `hnN : (Matrix.of p.1.2 : B.Mat k r)⁻¹ ∈ Nset k r` using `WeylGroupFacts.mem_n_inv h2`. Establish `mem : ∀ g ∈ JF.Om k r D.z D.z', g ∈ Q.Glev k r 0 ∩ Q.OmPlus k r D.z D.z'` using `fun g hg => ⟨(Formalism.FourierDecayAlt.P.CapelliUnderIntegral.glev0 g).2 hg.1, hg.2⟩`. Establish `nlev : ∀ m ∈ Nset k r, m ∈ Q.Nlev k r 0` using `fun m hm => ⟨hm, (Formalism.FourierDecayAlt.P.CapelliUnderIntegral.glev0 m).2 hm.1⟩`. Establish `hyn : y * (Matrix.of p.2.2 : B.Mat k r) ∈ JF.Om k r D.z D.z'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Formalism.FourierDecayAlt.P.PositiveOrbitOpen.sgs_Om D (p := (((1 : B.Mat k r), (1 : B.Mat k r)), ((1 : B.Mat k r), p.2.2))) ⟨Formalism.FourierDecayAlt.P.BigCellZetaMinors.one_uw _, WeylGroupFacts.mem_n_one, Formalism.FourierDecayAlt.P.BigCellZetaMinors.one_uw _, h4⟩ hy` as an intermediate fact. Establish `e : B.sgs (((1 : B.Mat k r), (1 : B.Mat k r)), ((1 : B.Mat k r), p.2.2)) y = y * (Matrix.of p.2.2 : B.Mat k r)` using `by show (1 : B.Mat k r)⁻¹ * (1 : B.Mat k r)⁻¹ * y * (Matrix.of p.2.2 : B.Mat k r) * 1 = _`. Simplify using the standard rewrite rules. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Establish `hnyn : (Matrix.of p.1.2 : B.Mat k r)⁻¹ * y * (Matrix.of p.2.2 : B.Mat k r) ∈ JF.Om k r D.z D.z'`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `Formalism.FourierDecayAlt.P.PositiveOrbitOpen.sgs_Om D (p := (((1 : B.Mat k r), p.1.2), ((1 : B.Mat k r), p.2.2))) ⟨Formalism.FourierDecayAlt.P.BigCellZetaMinors.one_uw _, h2, Formalism.FourierDecayAlt.P.BigCellZetaMinors.one_uw _, h4⟩ hy` as an intermediate fact. Establish `e : B.sgs (((1 : B.Mat k r), p.1.2), ((1 : B.Mat k r), p.2.2)) y = (Matrix.of p.1.2 : B.Mat k r)⁻¹ * y * (Matrix.of p.2.2 : B.Mat k r)` using `by show (1 : B.Mat k r)⁻¹ * (Matrix.of p.1.2 : B.Mat k r)⁻¹ * y * (Matrix.of p.2.2 : B.Mat k r) * 1 = _`. Simplify using the standard rewrite rules. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Take `⟨_, hL, hR, hU⟩` from `hX`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Establish `e1 : X ((Matrix.of p.1.2 : B.Mat k r)⁻¹ * y * (Matrix.of p.2.2 : B.Mat k r)) = (psi k r D.z cStd (Matrix.of p.1.2 : B.Mat k r)⁻¹ * psi k r D.z' cStd (Matrix.of p.2.2 : B.Mat k r)) • X y`. Rewrite using `[Matrix.mul_assoc, hL _ (mem _ hyn) _ (nlev _ hnN), hR _ (mem _ hy) _ (nlev _ h4), smul_smul]`. Establish `e2 : X ((Matrix.of p.1.1 : B.Mat k r)⁻¹ * ((Matrix.of p.1.2 : B.Mat k r)⁻¹ * y * (Matrix.of p.2.2 : B.Mat k r)) * (Matrix.of p.2.1 : B.Mat k r)) = (D.π (Matrix.of p.1.1 : B.Mat k r)⁻¹).comp ((X ((Matrix.of p.1.2 : B.Mat k r)⁻¹ * y * (Matrix.of p.2.2 : B.Mat k r))).comp (D.π' (Mat …` using `hU _ (mem _ hnyn) _ (Formalism.FourierDecayAlt.P.BigCellInversePair.uw_inv h1) _ h3`. Establish `hsgs : B.sgs p y = (Matrix.of p.1.1 : B.Mat k r)⁻¹ * ((Matrix.of p.1.2 : B.Mat k r)⁻¹ * y * (Matrix.of p.2.2 : B.Mat k r)) * (Matrix.of p.2.1 : B.Mat k r)` using `by show (Matrix.of p.1.1 : B.Mat k r)⁻¹ * (Matrix.of p.1.2 : B.Mat k r)⁻¹ * y * (Matrix.of p.2.2 : B.Mat k r) * (Matrix.of p.2.1 : B.Mat k r) = _`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hu1` using `WeylGroupFacts.isUnit_of_uh h1.1`. Establish `hu3` using `WeylGroupFacts.isUnit_of_uh h3.1`. Establish `hπ : ∀ w, D.π (Matrix.of p.1.1 : B.Mat k r) (D.π (Matrix.of p.1.1 : B.Mat k r)⁻¹ w) = w`. Introduce `w`. Use `D.π_rep.2 _ h1 _ (Formalism.FourierDecayAlt.P.BigCellInversePair.uw_inv h1)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.mul_nonsing_inv _ hu1, D.π_rep.1]`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← this]`. Both sides reduce to the same expression. Establish `hπ' : ∀ w, D.π' (Matrix.of p.2.1 : B.Mat k r) (D.π' (Matrix.of p.2.1 : B.Mat k r)⁻¹ w) = w`. Introduce `w`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `D.π'_rep.2 _ h3 _ (Formalism.FourierDecayAlt.P.BigCellInversePair.uw_inv h3)` as an intermediate fact. Rewrite `this` using `[Matrix.mul_nonsing_inv _ hu3, D.π'_rep.1]`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← this]`. Both sides reduce to the same expression. Establish `hc : JF.xiP D p * (psi k r D.z cStd (Matrix.of p.1.2 : B.Mat k r)⁻¹ * psi k r D.z' cStd (Matrix.of p.2.2 : B.Mat k r)) = 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Unfold `JF.xiP`. Establish `a1` using `BesselUnipotentEquiv.star_psi_inv D.z cStd D.z_mem _ h2`. Establish `a2` using `psi_star_mul D.z cStd ((Matrix.of p.1.2 : B.Mat k r)⁻¹)`. Establish `a3` using `psi_star_mul D.z' cStd (Matrix.of p.2.2 : B.Mat k r)`. Rewrite `a2` using `[a1]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Unfold `B.rho`. Rewrite using `[hsgs, e2, e1]`. Use extensionality with `w`. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul, hπ', hπ, smul_smul, hc, one_smul]`.
+Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem eqv_of_FFl (D : B.RealPlaceData k r Wp Wq) (X : B.Mat k r → (Wq →L[ℂ] Wp))
     (hX : X ∈ Q.FFl k r D.z D.z' D.π D.π' 0 (Q.OmPlus k r D.z D.z'))
@@ -141,27 +141,25 @@ theorem eqv_of_FFl (D : B.RealPlaceData k r Wp Wq) (X : B.Mat k r → (Wq →L[�
 end eqv
 
 /- English proof (translation)
-Use `⟨0, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v X hX Cs hCs hCsQ`. Use `set Db := (T v).base with hDb`. Establish `hplace : Q.IsPlace (D.parOf S v) Db.z Db.z' Db.π Db.π'` using `(hB.1.2.2.2.1.2 v).2.2.2.1`. Establish `hT : Tz S.G.k S.G.r Db.z = S.T` using `hplace.2.2.2.1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT' : Tz S.G.k S.G.r Db.z' = S.T'` using `hplace.2.2.2.2.1`. Establish `hQ : ∀ x ∈ MA.Qset (D.parOf S v).r (D.parOf S v).TT, x ∈ JF.QDom S.G.k S.G.r Db.z Db.z'`. Introduce `x hx`. Use `⟨hx.1, ?_⟩` and prove the remaining obligations. Establish `h3 : S.T * S.T' < Complex.normSq x.2` using `hx.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hT, hT']`. Conclude with `h3`. Establish `hX' : X ∈ Q.FFl S.G.k S.G.r Db.z Db.z' Db.π Db.π' 0 (Q.OmPlus S.G.k S.G.r Db.z Db.z')`. Use `hX` as an intermediate fact. Unfold `smoothFormsPositiveCone at this`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[Formalism.FourierDecayAlt.P.CutMP.JA.FFS.omP_eq E Wp Wq S T v]`. Then use the resulting hypothesis. Take `⟨K', hK'c, hCsK', hK'Q⟩` from `exists_compact_between hCs (Formalism.FourierDecayAlt.P.BigCellOpenDomain.qdom_open Db.z Db.z') (fun x hx => hQ x (hCsQ hx))`. Take `⟨φ, hφ, ⟨C, hCc, hCO, hCφ⟩, hint⟩` from `hA S.G.k S.G.r (Wp (S.pl v)) (Wq (S.pl v)) Db K' hK'c hK'Q`. Establish `hsuppC : tsupport (fun g => φ g • X g) ⊆ C`. Use `closure_minimal (fun g hg => ?_) hCc.isClosed` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hgC`. Conclude with `hg (by simp [hCφ g hgC])`. Use `⟨fun g => φ g • X g, interior K', isOpen_interior, hCsK', ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g₀ hg₀`. Distinguish the cases in `hO : g₀ ∈ Q.OmPlus S.G.k S.G.r Db.z Db.z'`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨U₁, φ', hU₁, hg₁, hφ', hφe⟩` from `hφ g₀ hg₀`. Take `⟨U₂, f', hU₂, hg₂, hf', hfe⟩` from `hX'.1 g₀ ⟨(Formalism.FourierDecayAlt.P.CapelliUnderIntegral.glev0 g₀).2 hg₀, hO⟩`. Use `⟨U₁ ∩ U₂, fun g => φ' g • f' g, hU₁.inter hU₂, ⟨hg₁, hg₂⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hφ'.mono Set.inter_subset_left).smul (hf'.mono Set.inter_subset_right)`. Introduce `g hg hgG`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [hφe g hg.1 hgG, hfe g hg.2 ((Formalism.FourierDecayAlt.P.CapelliUnderIntegral.glev0 g).2 hgG)]`. Use `⟨Cᶜ, fun _ => 0, hCc.isClosed.isOpen_compl, fun h => hO (hCO h).2, contDiffOn_const, ?_⟩` and prove the remaining obligations. Introduce `g hg _`. Simplify using `[hCφ g hg]`. Conclude with `hCc.of_isClosed_subset (isClosed_tsupport _) hsuppC`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Formalism.FourierDecayAlt.P.CutMP.JA.FFS.omP_eq E Wp Wq S T v]`. Conclude with `fun g hg => (hCO (hsuppC hg)).2`. Introduce `y hy`. Establish `hgy : B.gq Db y ∈ JF.Om S.G.k S.G.r Db.z Db.z'` using `Formalism.FourierDecayAlt.P.big_cell_domain S.G.k S.G.r (Wp (S.pl v)) (Wq (S.pl v)) Db y (hQ y hy)`. Establish `hJ : B.JF Db (fun g => φ g • X g) (B.gq Db y) = (∫ p, φ (B.sgs p (B.gq Db y)) ∂Db.μSS) • X (B.gq Db y)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Express the relevant statement in the definitionally equal form `∫ p, JF.xiP Db p • B.rho Db p (fun g => φ g • X g) (B.gq Db y) ∂Db.μSS = _`. Rewrite using `[← integral_smul_const]`. Apply `integral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [Formalism.FourierDecayAlt.P.B5.ae_inSS Db] with p hp`. Establish `hr : B.rho Db p (fun g => φ g • X g) (B.gq Db y) = φ (B.sgs p (B.gq Db y)) • B.rho Db p X (B.gq Db y)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Unfold `B.rho`. Rewrite using `[ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul]`. Rewrite using `[hr, smul_comm, eqv_of_FFl Db X hX' hp hgy]`. Use `⟨fun hyU => ?_, fun h0 => ?_⟩` and prove the remaining obligations. Establish `h1` using `hint oneP (oneP_inSS Db) y (interior_subset hyU)`.
-
-Simplify using `only [sgs_oneP] at h1`. Rewrite using `[hJ, h1, one_smul]`. Rewrite using `[hJ, h0, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sAExh_of_avgCutoff (hA : Formalism.FourierDecayAlt.P.JFxI.AvgCutoff) : SAExh := by
   refine ⟨0, ?_⟩

@@ -19,15 +19,15 @@ def chi (a b : Fin n → Fin g → ℚ) : TF n g := fun m =>
   if ∀ k i, IsIntegral ℤ (m k i - a k i) then cexp (2 * π * I * ((∑ k, m k ⬝ᵥ b k : ℚ) : ℂ)) else 0
 
 /- English proof (translation)
-The claim follows from `IsIntegrallyClosed.isIntegral_iff`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_iff_int (q : ℚ) : IsIntegral ℤ q ↔ ∃ z : ℤ, (z : ℚ) = q :=
   IsIntegrallyClosed.isIntegral_iff
 
 /- English proof (translation)
-Use `⟨∏ p : Fin n × Fin g, (a p.1 p.2).den, Finset.prod_pos fun p _ => (a p.1 p.2).den_pos, fun k i => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩ : (a k i).den ∣ ∏ p : Fin n × Fin g, (a p.1 p.2).den` from `Finset.dvd_prod_of_mem (fun p : Fin n × Fin g => (a p.1 p.2).den) (Finset.mem_univ (k, i))`. Use `⟨c * (a k i).num, ?_⟩` and prove the remaining obligations. Rewrite using `[hc]`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[← Rat.den_mul_eq_num]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_den (a : Fin n → Fin g → ℚ) :
     ∃ R : ℕ, 0 < R ∧ ∀ k i, ∃ z : ℤ, (z : ℚ) = R * a k i := by
@@ -42,19 +42,17 @@ theorem exists_den (a : Fin n → Fin g → ℚ) :
   ring
 
 /- English proof (translation)
-Take `⟨R, hR, ha⟩` from `exists_den a`. Take `⟨S, hS, hb⟩` from `exists_den b`. Use `choose u hu using ha`. Use `choose v hv using hb`. Use `⟨R * S, Nat.mul_pos hR hS, fun x hx k i => ?_, fun x y hy => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h : ∀ k i, IsIntegral ℤ (x k i - a k i)`. Assume the negation of the conclusion as `h`. Conclude with `hx (if_neg h)`. Take `⟨z, hz⟩` from `(isIntegral_iff_int _).1 (h k i)`. Use `(isIntegral_iff_int _).2 ⟨R * S * z + S * u k i, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.smul_apply, smul_eq_mul]`. Use `push_cast`. Rewrite using `[hz, hu]`. Expand and normalize the polynomial expressions, which then agree. Use `choose w hw using fun k i => (isIntegral_iff_int _).1 (hy k i)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Establish `h1 : (∀ k i, IsIntegral ℤ ((x + ((R * S : ℕ) : ℚ) • y) k i - a k i)) ↔ ∀ k i, IsIntegral ℤ (x k i - a k i)`. Use `forall₂_congr fun k i => ?_` and prove the remaining obligations. Simplify using `only [isIntegral_iff_int, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, ← hw]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨z - R * S * w k i, by push_cast at hz ⊢; linarith⟩`. Introduce and unpack `⟨z, hz⟩`. Conclude with `⟨z + R * S * w k i, by push_cast; linarith⟩`. Establish `h2 : ∑ k, (x + ((R * S : ℕ) : ℚ) • y) k ⬝ᵥ b k = ∑ k, x k ⬝ᵥ b k + ((∑ k, ∑ i, R * w k i * v k i : ℤ) : ℚ)`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [dotProduct, ← Finset.sum_add_distrib, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, hw, hv]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Unfold `chi`.
-
-Rewrite using `[if_congr h1 rfl rfl, h2, Rat.cast_add, mul_add, Complex.exp_add, Rat.cast_intCast, mul_comm (2 * π * I) ((_ : ℤ) : ℂ), Complex.exp_int_mul_two_pi_mul_I, mul_one]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSB_chi (a b : Fin n → Fin g → ℚ) : IsSB (chi a b) := by
   obtain ⟨R, hR, ha⟩ := exists_den a
@@ -94,15 +92,15 @@ theorem isSB_chi (a b : Fin n → Fin g → ℚ) : IsSB (chi a b) := by
       mul_comm (2 * π * I) ((_ : ℤ) : ℂ), Complex.exp_int_mul_two_pi_mul_I, mul_one]
 
 /- English proof (translation)
-Establish `h` using `CanTh.hasSum_prod_thTerm (τ := fun _ : Fin n => τ) (fun _ => CanTh.mem_thetaDomain hτ) (fun k i => (a k i : ℝ)) (fun k i => (b k i : ℝ)) ζ`. Rewrite using `[← h.tsum_eq, thS]`. Set `f : (Fin n → Fin g → ℤ) → Matrix (Fin n) (Fin g) ℚ` to `fun m k i => m k i + a k i`. Establish `hf : Function.Injective f` using `fun m m' e => by`. Use function extensionality and compare the values at `k i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congrFun (congrFun e k) i` as an intermediate fact. Simplify using `only [f, add_left_inj] at this`. Conclude with `this` after adjusting the coercions. Rewrite using `[← hf.tsum_eq]`. Use `tsum_congr fun m => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : ∀ k i, IsIntegral ℤ (f m k i - a k i)` using `fun k i => (isIntegral_iff_int _).2 ⟨m k i, by simp [f]⟩`. Simplify using `only [CanTh.thTerm]`. Rewrite using `[chi, if_pos h1, ← Complex.exp_sum, ← Complex.exp_add]`. Use `congr 1`. Establish `h2 : ∀ k, ((fun i => (m k i : ℂ)) + fun i => (((a k i : ℚ) : ℝ) : ℂ)) = qv (f m k)` using `fun k => by funext i; simp [qv, f]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ∀ k, ((f m k ⬝ᵥ b k : ℚ) : ℂ) = qv (f m k) ⬝ᵥ fun i => (((b k i : ℚ) : ℝ) : ℂ)` using `fun k => by simp [qv, dotProduct]`. Simplify using `only [h2, Rat.cast_sum, h3, dotProduct_add, Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Introduce `x hx`. Establish `h1 : ∀ k i, IsIntegral ℤ (x k i - a k i)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Supply the required witnesses or components.
 
-Assume the negation of the conclusion as `h`. Conclude with `hx (by simp only [chi, if_neg h, zero_mul])`. Use `choose z hz using fun k i => (isIntegral_iff_int _).1 (h1 k i)`. Conclude with `⟨z, by ext k i; simp [f, hz]⟩`.
+A detailed English derivation is pending.
 -/
 theorem thS_chi (a b : Fin n → Fin g → ℚ) {τ : Matrix (Fin g) (Fin g) ℂ}
     (hτ : (τ.map Complex.im).PosDef) (ζ : Fin n → Fin g → ℂ) :
@@ -141,13 +139,13 @@ def spanChi (n g : ℕ) : Submodule ℂ (TF n g) :=
   Submodule.span ℂ (Set.range fun p : (Fin n → Fin g → ℚ) × (Fin n → Fin g → ℚ) => chi p.1 p.2)
 
 /- English proof (translation)
-Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨p, rfl⟩` from `hx`. Use `Submodule.subset_span ⟨(p.1, p.2 + b), funext fun m => ?_⟩` and prove the remaining obligations. Simplify using `only [chi]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `split_ifs`. Rewrite using `[← Complex.exp_add]`. Simplify using `only [Pi.add_apply, dotProduct_add, Finset.sum_add_distrib, Rat.cast_add, mul_add]`. Rewrite using `[zero_mul]`. Consider the case `zero => convert (spanChi n g).zero_mem using 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `m`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy => convert (spanChi n g).add_mem hx hy using 1`. Use function extensionality and compare the values at `m`. Simplify using `[add_mul]`.
+Simplify using the standard rewrite rules. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `smul c x _ hx => convert (spanChi n g).smul_mem c hx using 1`. Use function extensionality and compare the values at `m`. Simplify using `[mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_exp_mem {f : TF n g} (hf : f ∈ spanChi n g) (b : Fin n → Fin g → ℚ) :
     (fun m => f m * cexp (2 * π * I * ((∑ k, m k ⬝ᵥ b k : ℚ) : ℂ))) ∈ spanChi n g := by
@@ -167,13 +165,13 @@ theorem mul_exp_mem {f : TF n g} (hf : f ∈ spanChi n g) (b : Fin n → Fin g �
 def avg (R : ℕ) (q : ℚ) : ℂ := (R : ℂ)⁻¹ * ∑ s ∈ Finset.range R, cexp (2 * π * I * (q / R)) ^ s
 
 /- English proof (translation)
-Establish `hq : (R : ℂ) ≠ 0` using `by exact_mod_cast hR.ne'`. Establish `h1 : cexp (2 * π * I * ((z : ℚ) / R)) = 1 ↔ (R : ℤ) ∣ z`. Rewrite using `[Complex.exp_eq_one_iff]`. Use `exists_congr fun c => ?_` and prove the remaining obligations. Rewrite using `[mul_comm (c : ℂ), mul_right_inj' Complex.two_pi_I_ne_zero, div_eq_iff hq, mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `norm_cast`. Unfold `avg`. Use `split_ifs with h`. Rewrite using `[h1.2 h]`. Simplify using `[hq]`.
+Put the expressions in a common number system so they can be compared. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[geom_sum_eq (mt h1.1 h), ← Complex.exp_nat_mul]`. Establish `: (R : ℂ) * (2 * π * I * ((z : ℚ) / R)) = z * (2 * π * I)`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this, Complex.exp_int_mul_two_pi_mul_I]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem avg_int {R : ℕ} (hR : 0 < R) (z : ℤ) : avg R z = if (R : ℤ) ∣ z then 1 else 0 := by
   have hq : (R : ℂ) ≠ 0 := by exact_mod_cast hR.ne'
@@ -194,11 +192,11 @@ theorem avg_int {R : ℕ} (hR : 0 < R) (z : ℤ) : avg R z = if (R : ℤ) ∣ z 
     simp
 
 /- English proof (translation)
-Establish `h` using `(spanChi n g).smul_mem (R : ℂ)⁻¹ ((spanChi n g).sum_mem fun s (_ : s ∈ Finset.range R) => (spanChi n g).smul_mem (cexp (2 * π * I * (-c / R)) ^ s) (mul_exp_mem hf (Pi.single k (Pi.single i ((s : ℚ) / R)))))`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `m`. Establish `h1 : ∀ t : ℚ, ∑ l, m l ⬝ᵥ (Pi.single k (Pi.single i t) : Fin n → Fin g → ℚ) l = m k i * t` using `fun t => by`. Rewrite using `[Finset.sum_eq_single k]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `l _ hl`. Simplify using `[hl]`. Simplify using the standard rewrite rules. Simplify using `only [avg, Pi.smul_apply, Finset.sum_apply, smul_eq_mul, h1, Finset.mul_sum]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm (f m), mul_left_comm (_ ^ s) (f m), ← Complex.exp_nat_mul, ← Complex.exp_nat_mul, ← Complex.exp_add]`. Use `congr 3`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mul_avg_mem {f : TF n g} (hf : f ∈ spanChi n g) (R : ℕ) (c : ℚ) (k : Fin n) (i : Fin g) :
     (fun m => f m * avg R (m k i - c)) ∈ spanChi n g := by
@@ -223,17 +221,15 @@ theorem mul_avg_mem {f : TF n g} (hf : f ∈ spanChi n g) (R : ℕ) (c : ℚ) (k
   ring
 
 /- English proof (translation)
-Establish `h : ∀ s : Finset (Fin n × Fin g), (fun m => chi c 0 m * ∏ p ∈ s, avg R (m p.1 p.2 - c p.1 p.2)) ∈ spanChi n g`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.prod_empty, mul_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Conclude with `Submodule.subset_span ⟨(c, 0), rfl⟩`. Consider the case `insert p s hp ih`. Use `mul_avg_mem ih R (c p.1 p.2) p.1 p.2 using 2 with m` and compare the differences between its conclusion and the goal. Rewrite using `[Finset.prod_insert hp]`. Expand and normalize the polynomial expressions, which then agree.
+Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `h Finset.univ using 2 with m` and compare the differences between its conclusion and the goal. Distinguish the cases in `h1 : ∀ k i, IsIntegral ℤ (m k i - c k i)`. Use `choose z hz using fun k i => (isIntegral_iff_int _).1 (h1 k i)`. Establish `h2 : (∀ k i, ∃ w : ℤ, m k i - c k i = R * w) ↔ ∀ p : Fin n × Fin g, (R : ℤ) ∣ z p.1 p.2`. Rewrite using `[Prod.forall]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `forall₂_congr fun k i => exists_congr fun w => ?_` and prove the remaining obligations. Rewrite using `[← hz]`. Use `norm_cast`. Rewrite using `[chi, if_pos h1, if_congr h2 rfl rfl]`. Simplify using `only [← hz, avg_int hR, Finset.prod_boole]`.
+Put the expressions in a common number system so they can be compared. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[chi, if_neg h1, zero_mul, if_neg]`. Introduce `h2`. Use `h1 fun k i => ?_` and prove the remaining obligations. Take `⟨z, hz⟩` from `h2 k i`.
-
-Conclude with `(isIntegral_iff_int _).2 ⟨R * z, by rw [hz]; push_cast; rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ind_mem {R : ℕ} (hR : 0 < R) (c : Fin n → Fin g → ℚ) :
     (fun m : Matrix (Fin n) (Fin g) ℚ =>
@@ -267,27 +263,25 @@ theorem ind_mem {R : ℕ} (hR : 0 < R) (c : Fin n → Fin g → ℚ) :
     exact (isIntegral_iff_int _).2 ⟨R * z, by rw [hz]; push_cast; rfl⟩
 
 /- English proof (translation)
-Take `⟨R, hR, h0, hp⟩` from `hφ`. Establish `hq : (R : ℚ) ≠ 0` using `by exact_mod_cast hR.ne'`. Establish `hz : (0 : ℤ) < R * R` using `by positivity`. Set `T : Finset (Fin n → Fin g → ℤ)` to `Fintype.piFinset fun _ => Fintype.piFinset fun _ => Finset.Ico (0 : ℤ) (R * R)`. Establish `h` using `(spanChi n g).sum_mem fun c (_ : c ∈ T) => (spanChi n g).smul_mem (φ fun k i => (c k i : ℚ) / R) (ind_mem hR fun k i => (c k i : ℚ) / R)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `m`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `h1 : IntM ((R : ℚ) • m)`. Use `choose z hzm using fun k i => (isIntegral_iff_int _).1 (h1 k i)`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.smul_apply, smul_eq_mul] at hzm`. Establish `h2 : ∀ k i, m k i - ((z k i % (R * R) : ℤ) : ℚ) / R = R * ((z k i / (R * R) : ℤ) : ℚ)`. Introduce `k i`. Rewrite using `[Int.emod_def]`. Generalize the expression as in `z k i / (R * R) = w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Rewrite using `[hzm]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_eq_single_of_mem (fun k i => z k i % (R * R))]`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[if_pos fun k i => ⟨_, h2 k i⟩, mul_one, ← hp (fun k i => ((z k i % (R * R) : ℤ) : ℚ) / R) (fun k i => ((z k i / (R * R) : ℤ) : ℚ)) fun k i => (isIntegral_iff_int _).2 ⟨_, rfl⟩]`. Use `congr 1`. Use extensionality with `k i`. Express the relevant statement in the definitionally equal form `m k i = ((z k i % (R * R) : ℤ) : ℚ) / R + R * ((z k i / (R * R) : ℤ) : ℚ)`. Take the linear combination `h2 k i`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Simplify using `only [T, Fintype.mem_piFinset, Finset.mem_Ico]`. Conclude with `fun k i => ⟨Int.emod_nonneg _ hz.ne', Int.emod_lt_of_pos _ hz⟩`. Introduce `c hc hne`. Rewrite using `[if_neg, mul_zero]`. Introduce `h3`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `hne (funext fun k => funext fun i => ?_)` and prove the remaining obligations. Simplify using `only [T, Fintype.mem_piFinset, Finset.mem_Ico] at hc`. Take `⟨w, hw⟩` from `h3 k i`. Establish `h4 : z k i = c k i + R * R * w`. Establish `: (z k i : ℚ) = c k i + R * R * w`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hzm]`. Clear denominators, using `at hw` for the nonvanishing conditions. Take the linear combination `hw`. Conclude with `this` after adjusting the coercions. Rewrite using `[h4, Int.add_mul_emod_self_left, Int.emod_eq_of_lt (hc k i).1 (hc k i).2]`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[not_not.1 (mt (h0 m) h1), Finset.sum_eq_zero]`. Introduce `c _`. Rewrite using `[if_neg, mul_zero]`. Introduce `h3`. Use `h1 fun k i => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨w, hw⟩` from `h3 k i`. Use `(isIntegral_iff_int _).2 ⟨c k i + R * R * w, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.smul_apply, smul_eq_mul]`. Use `push_cast`. Clear denominators, using `at hw` for the nonvanishing conditions.
-
-Take the linear combination `-hw`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem mem_spanChi {φ : TF n g} (hφ : IsSB φ) : φ ∈ spanChi n g := by
   obtain ⟨R, hR, h0, hp⟩ := hφ
@@ -347,7 +341,7 @@ theorem mem_spanChi {φ : TF n g} (hφ : IsSB φ) : φ ∈ spanChi n g := by
     linear_combination -hw
 
 /- English proof (translation)
-Unfold `thS`. Simplify using `only [← tsum_mul_left]`. Rewrite using `[← Summable.tsum_finsetSum fun j _ => (SiegelSum.summable_norm_thetaTerm _ _ (φ j) (hφ j) τ hτ ζ).of_norm.mul_left (t j)]`. Use `tsum_congr fun x => ?_` and prove the remaining obligations. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul, mul_assoc]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem thS_sum {m : ℕ} (t : Fin m → ℂ) (φ : Fin m → TF n g) (hφ : ∀ j, IsSB (φ j))
     {τ : Matrix (Fin g) (Fin g) ℂ} (hτ : τ ∈ Siegel (Fin g)) (ζ : Fin n → Fin g → ℂ) :
@@ -363,7 +357,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r q0 : ℕ} {X : Da
   (hr : X.p0 + q0 = r) {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} (idx : Fin g ≃ X.Ψ × Fin r)
 
 /- English proof (translation)
-Rewrite using `[thA, thS_chi a b (tauMat_im_posDef idx hs hx), Finset.mul_sum, Complex.exp_sum, mul_assoc, ← Finset.prod_mul_distrib]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem thA_chi (hs : IsSympl X bas) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (a b : Fin n → Fin g → ℚ)
     (z : Fin n → Fin g → ℂ) :
@@ -374,9 +368,9 @@ theorem thA_chi (hs : IsSympl X bas) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (a b 
   rfl
 
 /- English proof (translation)
-Establish `h : thA X bas idx (∑ j, t j • chi (a j) (b j)) x = fun z => ∑ j, (t j * (hMat X bas idx x).det ^ (n / 2)) * ∏ k, canFn X bas idx (fun i => (a j k i : ℝ)) (fun i => (b j k i : ℝ)) x (z k)`. Use function extensionality and compare the values at `z`. Simplify using `only [mul_assoc, ← thA_chi idx hs hx]`. Simplify using `only [thA]`. Rewrite using `[thS_sum t _ (fun j => isSB_chi _ _) ⟨tauMat_isSymm idx hs hx, tauMat_im_posDef idx hs hx⟩, Finset.mul_sum]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Rewrite using `[thP, h, Jet.polyDeriv_sum_fun P _ _ _ (fun j (z : Fin n → Fin g → ℂ) => ∏ k, canFn X bas idx (fun i => (a j k i : ℝ)) (fun i => (b j k i : ℝ)) x (z k)) fun j _ => differentiable_prod_col fun k => differentiable_canFn idx hs hx _ _]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [thFr, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_sum_smul_chi (hs : IsSympl X bas) {x : Frame X.Ψ r} (hx : x ∈ X.dom) {m : ℕ}
     (a b : Fin m → Fin n → Fin g → ℚ) (t : Fin m → ℂ) (P : Harm.Poly ℂ X.Ψ q0 X.p0 (Fin n)) :
@@ -398,9 +392,9 @@ theorem theta_sum_smul_chi (hs : IsSympl X bas) {x : Frame X.Ψ r} (hx : x ∈ X
   exact Finset.sum_congr rfl fun j _ => by rw [thFr, mul_assoc]
 
 /- English proof (translation)
-Introduce `E _ _ _ r X g q0 hr bas idx n hs _`. Use `⟨fun a b => ⟨chi a b, isSB_chi a b, fun _ => rfl, fun P x hx => ?_⟩, fun φ hφ => ?_⟩` and prove the remaining obligations. Simplify using `using theta_sum_smul_chi hr idx hs hx (fun _ : Fin 1 => a) (fun _ => b) (fun _ => 1) P`. Take `⟨m, t, f, rfl⟩` from `Submodule.mem_span_set'.1 (mem_spanChi hφ) choose p hp using fun j => (f j).2`. Use `⟨m, fun j => (p j).1, fun j => (p j).2, t, fun P x hx => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← theta_sum_smul_chi hr idx hs hx]`. Simplify using `only [hp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem harmonicTheta_eq_sum_thetaCharacteristic : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g q0 : ℕ) (hr : X.p0 + q0 = r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → (∀ (a b : Fin n → Fin g → ℚ), ∃ φ : TF n g, IsSB φ ∧ (∀ m : Matrix (Fin n) (Fin g) ℚ, φ m = if ∀ k i, IsIntegral ℤ (m k i - a k i) then cexp (2 * π * I * ((∑ k, m k ⬝ᵥ b k : ℚ) : ℂ)) else 0) ∧ ∀ P, ∀ x ∈ X.dom, thP X hr bas idx φ P x = thFr X hr bas idx n (fun k i => (a k i : ℝ)) (fun k i => (b k i : ℝ)) P x) ∧ ∀ φ : TF n g, IsSB φ → ∃ (m : ℕ) (a b : Fin m → Fin n → Fin g → ℚ) (t : Fin m → ℂ), ∀ P, ∀ x ∈ X.dom, thP X hr bas idx φ P x = ∑ j, t j * thFr X hr bas idx n (fun k i => (a j k i : ℝ)) (fun k i => (b j k i : ℝ)) P x := by
   intro E _ _ _ r X g q0 hr bas idx n hs _

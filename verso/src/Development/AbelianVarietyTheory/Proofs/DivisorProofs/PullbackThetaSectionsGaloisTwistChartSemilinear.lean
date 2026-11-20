@@ -9,9 +9,9 @@ open GlobalTheory.Mum GlobalTheory.Mum.Conj
 namespace GlobalTheory.Mum.Conj
 
 /- English proof (translation)
-Introduce `R _ _ A N σ c t t' h j`. Establish `ht : @id (GlobalTheory.FieldBaseChange.SecOver (fst (TFK (R` using `R) (Kb R)) A.A).left (LB.LinComb A.L (K := Fin 1) (fun _ => (snd (TFK (R := R) (Kb R)) A.A).left) (fun _ => (N : ℤ)))) t' = c • @id (GlobalTheory.FieldBaseChange.SecOver (fst (TFK (R := R) (Kb R)) A.A).left (LB.LinComb A.L (K := Fin 1) (fun _ => (snd (TFK (R := R) (Kb R)) A.A).le …`. Establish `e : secTw A N σ t' = σ c • @id (GlobalTheory.FieldBaseChange.SecOver (fst (TFK (R` using `R) (Kb R)) A.A).left (LB.LinComb A.L (K := Fin 1) (fun _ => (snd (TFK (R := R) (Kb R)) A.A).left) (fun _ => (N : ℤ)))) (secTw A N σ t) := by`. Unfold `secTw`. Rewrite using `[show t' = @id (GlobalTheory.FieldBaseChange.SecOver (fst (TFK (R := R) (Kb R)) A.A).left (LB.LinComb A.L (K := Fin 1) (fun _ => (snd (TFK (R := R) (Kb R)) A.A).left) (fun _ => (N : ℤ)))) t' from rfl, ht, map_smulₛₗ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem secTw_chart_smul : ∀ (R : Type) [CommRing R] [IsDomain R] (A : PolAV (Sp (FractionRing R))) (N : ℕ)
     (σ : Kb R →ₐ[FractionRing R] Kb R) (c : Kb R) (t t' : SecK A.L (snd (TFK (R := R) (Kb R)) A.A).left N),

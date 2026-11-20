@@ -24,7 +24,7 @@ def reflM (τ : A →+* A) (J : Matrix n n A) (a : A) (d : n → A) : Matrix n n
   1 - a • Matrix.vecMulVec d (rowOf τ J d)
 
 /- English proof (translation)
-Simplify using `only [rowOf, hform, dotProduct, Matrix.vecMul, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rowOf_dot (τ : A →+* A) (J : Matrix n n A) (x y : n → A) :
     rowOf τ J x ⬝ᵥ y = hform τ J x y := by
@@ -32,21 +32,21 @@ theorem rowOf_dot (τ : A →+* A) (J : Matrix n n A) (x y : n → A) :
   exact Finset.sum_comm
 
 /- English proof (translation)
-Simplify using `only [hform, Pi.sub_apply, map_sub, sub_mul, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_sub_left (τ : A →+* A) (J : Matrix n n A) (x y z : n → A) :
     hform τ J (x - y) z = hform τ J x z - hform τ J y z := by
   simp only [hform, Pi.sub_apply, map_sub, sub_mul, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `only [hform, Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_sub_right (τ : A →+* A) (J : Matrix n n A) (x y z : n → A) :
     hform τ J x (y - z) = hform τ J x y - hform τ J x z := by
   simp only [hform, Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `only [hform, map_sum, map_mul, hτ]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hJ i j]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem map_hform (τ : A →+* A) (hτ : ∀ a, τ (τ a) = a) (J : Matrix n n A)
     (hJ : ∀ i j, τ (J j i) = J i j) (x y : n → A) : τ (hform τ J x y) = hform τ J y x := by
@@ -56,9 +56,9 @@ theorem map_hform (τ : A →+* A) (hτ : ∀ a, τ (τ a) = a) (J : Matrix n n 
   rw [hJ i j]; ring
 
 /- English proof (translation)
-Establish `hP : Matrix.vecMulVec d (rowOf τ J d) * Matrix.vecMulVec d (rowOf τ J d) = hform τ J d d • Matrix.vecMulVec d (rowOf τ J d)`. Rewrite using `[Matrix.vecMulVec_mul_vecMulVec, rowOf_dot]`. Use extensionality with `i j`. Simplify using `[Matrix.vecMulVec_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [reflM, sub_mul, mul_sub, one_mul, mul_one, Matrix.smul_mul, Matrix.mul_smul, hP, smul_smul]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 -/
 theorem reflM_mul (τ : A →+* A) (J : Matrix n n A) (a b : A) (d : n → A)
     (h : a + b = a * b * hform τ J d d) : reflM τ J a d * reflM τ J b d = 1 := by
@@ -72,17 +72,15 @@ theorem reflM_mul (τ : A →+* A) (J : Matrix n n A) (a b : A) (d : n → A)
     _ = 1 := by rw [sub_eq_zero.2 h]; simp
 
 /- English proof (translation)
-Use `set w := rowOf τ J d with hw`. Use `set Q : Matrix n n A := Matrix.vecMulVec (fun i => τ (w i)) w with hQ`. Establish `hc : cT τ (reflM τ J a d) = 1 - τ a • Matrix.vecMulVec (fun i => τ (w i)) (fun k => τ (d k))`. Use extensionality with `i j`. Simplify using `[cT, reflM, Matrix.one_apply, Matrix.vecMulVec_apply, ← hw, apply_ite τ, mul_comm, eq_comm]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : Matrix.vecMulVec (fun i => τ (w i)) (fun k => τ (d k)) * J = Q`. Rewrite using `[Matrix.vecMulVec_mul]`. Both sides reduce to the same expression. Establish `hJd : J.mulVec d = fun i => τ (w i)`. Use extensionality with `i`.
+Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hw, rowOf, Matrix.mulVec, Matrix.vecMul, dotProduct, map_sum, map_mul, hτ]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hJ i j]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : J * Matrix.vecMulVec d w = Q`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_vecMulVec, hJd]`. Establish `h3 : Q * Matrix.vecMulVec d w = hform τ J d d • Q`. Rewrite using `[hQ, Matrix.vecMulVec_mul_vecMulVec, hw, rowOf_dot]`. Use extensionality with `i j`. Simplify using `[Matrix.vecMulVec_apply]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h4 : cT τ (reflM τ J a d) * J = J - τ a • Q`. Rewrite using `[hc, sub_mul, one_mul, Matrix.smul_mul, h1]`. Rewrite using `[h4]`. Simplify using `only [reflM, ← hw, sub_mul, mul_sub, one_mul, mul_one, Matrix.smul_mul, Matrix.mul_smul, h2, h3, smul_smul]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem reflM_unitary (τ : A →+* A) (hτ : ∀ a, τ (τ a) = a) (J : Matrix n n A)
     (hJ : ∀ i j, τ (J j i) = J i j) (a : A) (d : n → A)
@@ -113,7 +111,7 @@ theorem reflM_unitary (τ : A →+* A) (hτ : ∀ a, τ (τ a) = a) (J : Matrix 
     _ = J := by rw [sub_eq_zero.2 h]; simp
 
 /- English proof (translation)
-Simplify using `only [reflM, Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.smul_mulVec, Matrix.vecMulVec_mulVec, rowOf_dot]`. Use extensionality with `i`. Simplify using `[Matrix.vecMulVec_apply, mul_comm, mul_left_comm, mul_assoc]`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem reflM_mulVec (τ : A →+* A) (J : Matrix n n A) (a : A) (d p : n → A) :
     (reflM τ J a d).mulVec p = p - (a * hform τ J d p) • d := by
@@ -121,11 +119,11 @@ theorem reflM_mulVec (τ : A →+* A) (J : Matrix n n A) (a : A) (d p : n → A)
   ext i; simp [Matrix.vecMulVec_apply, mul_comm, mul_left_comm, mul_assoc]
 
 /- English proof (translation)
-Establish `hτc : τ (hform τ J p p - hform τ J y p) * τ ci = 1`. Rewrite using `[← map_mul, hci, map_one]`. Rewrite `hτc` using `[map_sub, map_hform τ hτ J hJ, map_hform τ hτ J hJ]`. Establish `hH : hform τ J (y - p) (y - p) = (hform τ J p p - hform τ J y p) + (hform τ J p p - hform τ J p y)`. Rewrite using `[hform_sub_left, hform_sub_right, hform_sub_right, hyp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `key : ci + τ ci = ci * τ ci * hform τ J (y - p) (y - p)`. Rewrite using `[hH]`. Take the linear combination `(-(τ ci)) * hci - ci * hτc`. Use `⟨reflM_mul τ J _ _ _ key, reflM_mul τ J _ _ _ ?_, reflM_unitary τ hτ J hJ _ _ key, ?_⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[add_comm, key]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[reflM_mulVec, hform_sub_left]`. Establish `: ci * (hform τ J y p - hform τ J p p) = -1` using `by linear_combination -hci`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -165,7 +163,7 @@ def selT {W G : Type*} (g₁ : G) (Z : Set W) (V : ℕ → Set W) (f : ℕ → W
   | k + 1, y => (V k ∩ Z).piecewise (f k) (fun _ => g₁) y
 
 /- English proof (translation)
-Simplify using `only [selT]`. Conclude with `Set.piecewise_eq_of_mem _ _ _ h`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem selT_of_mem {W G : Type*} (g₁ : G) (Z : Set W) (V : ℕ → Set W) (f : ℕ → W → G) (k : ℕ) {y : W}
     (h : y ∈ V k ∩ Z) : selT g₁ Z V f (k + 1) y = f k y := by
@@ -174,39 +172,33 @@ theorem selT_of_mem {W G : Type*} (g₁ : G) (Z : Set W) (V : ℕ → Set W) (f 
   exact Set.piecewise_eq_of_mem _ _ _ h
 
 /- English proof (translation)
-Break down `Z.eq_empty_or_nonempty with rfl | hne` into its components or cases. Conclude with `⟨fun _ => g₁, measurable_const, by simp, fun C _ => ⟨∅, isCompact_empty, by simp⟩⟩`. Establish `loc' : ∀ y₀ : Z, ∃ L : Set W, IsCompact L ∧ y₀.1 ∈ interior L ∧ ∃ f : W → G, ContinuousOn f (L ∩ Z) ∧ ∀ y ∈ L ∩ Z, P (f y) y`. Introduce and unpack `⟨y₀, hy₀⟩`. Take `⟨U, hU, hyU, f, hf, hP⟩` from `loc y₀ hy₀`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨L, hL, hyL, hLU⟩` from `exists_compact_between (isCompact_singleton (x := y₀)) hU (Set.singleton_subset_iff.2 hyU)`. Establish `hsub : L ∩ Z ⊆ U ∩ Z` using `Set.inter_subset_inter_left _ hLU`. Conclude with `⟨L, hL, hyL (Set.mem_singleton _), f, hf.mono hsub, fun y hy => hP y (hsub hy)⟩`. Use `choose L hLc hLi f hfc hfP using loc'`. Take `⟨T, hTc, hTU⟩` from `TopologicalSpace.isOpen_iUnion_countable (fun y₀ : Z => interior (L y₀)) (fun _ => isOpen_interior)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcov : ∀ y ∈ Z, ∃ i ∈ T, y ∈ interior (L i)`. Introduce `y hy`. Establish `: y ∈ ⋃ i ∈ T, interior (L i)`. Rewrite using `[hTU]`. Conclude with `Set.mem_iUnion.2 ⟨⟨y, hy⟩, hLi _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hTne : T.Nonempty`. Take `⟨y, hy⟩` from `hne`. Take `⟨i, hi, -⟩` from `hcov y hy`. Conclude with `⟨i, hi⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨e, he⟩` from `hTc.exists_eq_range hTne`. Use `set V : ℕ → Set W := fun k => interior (L (e k)) with hV`. Establish `hVo : ∀ k, IsOpen (V k)` using `fun k => isOpen_interior`. Establish `hcov' : ∀ y ∈ Z, ∃ k, y ∈ V k`. Introduce `y hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi, hyi⟩` from `hcov y hy`. Rewrite `hi` using `[he]`. Take `⟨k, rfl⟩` from `hi`. Conclude with `⟨k, hyi⟩`. Establish `hVL : ∀ k, V k ∩ Z ⊆ L (e k) ∩ Z` using `fun k => Set.inter_subset_inter_left _ interior_subset`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `set p := selP Z V with hpdef`. Use `set t := selT g₁ Z V (fun k => f (e k)) with htdef`. Establish `ht : ∀ n, Measurable (t n)`. Introduce and unpack `(_ | k)`. Conclude with `measurable_const`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `(ContinuousOn.measurable_piecewise ((hfc _).mono (hVL k)) continuousOn_const ((hVo k).measurableSet.inter hZ.measurableSet) :)`. Establish `hp : ∀ n, MeasurableSet {y | p n y}`. Introduce and unpack `(_ | k)`. Conclude with `hZ.measurableSet.compl`. Conclude with `(hVo k).measurableSet`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hex : ∀ y, ∃ n, p n y`. Introduce `y`. Distinguish the cases in `hy : y ∈ Z`. Take `⟨k, hk⟩` from `hcov' y hy`. Conclude with `⟨k + 1, hk⟩`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨0, hy⟩`. Establish `hfind : ∀ y : W, y ∈ Z → ∃ k : ℕ, Nat.find (hex y) = k + 1 ∧ y ∈ V k`. Introduce `y hy`. Establish `hs` using `Nat.find_spec (hex y)`. Break down `hn : Nat.find (hex y) with _ | k` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hs` using `[hn]`. Conclude with `absurd hy hs`. Rewrite `hs` using `[hn]`. Conclude with `⟨k, rfl, hs⟩`. Establish `hval : ∀ y : W, y ∈ Z → ∃ k : ℕ, Nat.find (hex y) = k + 1 ∧ y ∈ V k ∧ t (Nat.find (hex y)) y = f (e k) y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y hy`. Take `⟨k, hk, hyk⟩` from `hfind y hy`. Use `⟨k, hk, hyk, ?_⟩` and prove the remaining obligations. Rewrite using `[hk]`. Conclude with `selT_of_mem g₁ Z V _ k ⟨hyk, hy⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨fun y => t (Nat.find (hex y)) y, Measurable.find ht hp hex, ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Take `⟨k, -, hyk, h⟩` from `hval y hy`. Simplify using `only [h]`. Conclude with `hfP _ y (hVL k ⟨hyk, hy⟩)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `C hC`. Establish `hCZ : IsCompact (C ∩ Z)` using `hC.inter_right hZ`. Take `⟨S, hS⟩` from `hCZ.elim_finite_subcover V hVo (fun y hy => by`. Take `⟨k, hk⟩` from `hcov' y hy.2`. Conclude with `Set.mem_iUnion.2 ⟨k, hk⟩)`.
-
-Use `⟨⋃ k ∈ Finset.range (S.sup id + 1), f (e k) '' (L (e k) ∩ Z), (Finset.range _).isCompact_biUnion fun k _ => ((hLc _).inter_right hZ).image_of_continuousOn (hfc _), ?_⟩` and prove the remaining obligations. Introduce `y hyC hyZ`. Take `⟨k, hk, hyk, h⟩` from `hval y hyZ`. Establish `hmem` using `hS ⟨hyC, hyZ⟩`. Simplify using `only [Set.mem_iUnion] at hmem`.
-
-Take `⟨j, hj, hyj⟩` from `hmem`. Establish `hle : Nat.find (hex y) ≤ j + 1` using `Nat.find_min' (hex y) hyj`. Establish `hkj : k ≤ S.sup id`. Establish `: j ≤ S.sup id` using `Finset.le_sup (f := id) hj`. Use linear arithmetic over natural numbers and integers.
-
-Simplify using `only [h]`. Conclude with `Set.mem_biUnion (Finset.mem_coe.2 (Finset.mem_range.2 (by omega))) ⟨y, hVL k ⟨hyk, hyZ⟩, rfl⟩`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_section {W G : Type*} [TopologicalSpace W] [LocallyCompactSpace W]
     [SecondCountableTopology W] [T2Space W] [MeasurableSpace W] [BorelSpace W]
@@ -313,21 +305,21 @@ section Local
 variable {K : Type} [CommRing K] {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Simplify using `[hform]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_neg_neg (τ : K →+* K) (J : Matrix n n K) (u : n → K) :
     hform τ J (-u) (-u) = hform τ J u u := by
   simp [hform]
 
 /- English proof (translation)
-Simplify using `[hform]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_neg_right (τ : K →+* K) (J : Matrix n n K) (u v : n → K) :
     hform τ J u (-v) = -hform τ J u v := by
   simp [hform]
 
 /- English proof (translation)
-Establish `hd' : ∀ i, Continuous fun x => d x i` using `fun i => (continuous_apply i).comp hd`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Simplify using `only [reflM, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul, Matrix.vecMulVec_apply, rowOf, Matrix.vecMul, dotProduct]`. Conclude with `continuous_const.sub (ha.mul ((hd' i).mul (continuous_finset_sum _ fun k _ => (hτ.comp (hd' k)).mul continuous_const)))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem reflM_cont [TopologicalSpace K] [IsTopologicalRing K] {X : Type*} [TopologicalSpace X]
     (τ : K →+* K) (hτ : Continuous τ) (J : Matrix n n K) {a : X → K} {d : X → n → K}
@@ -340,9 +332,9 @@ theorem reflM_cont [TopologicalSpace K] [IsTopologicalRing K] {X : Type*} [Topol
     (continuous_finset_sum _ fun k _ => (hτ.comp (hd' k)).mul continuous_const)))
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `ha`. Rewrite using `[← hU.continuousAt_iff]`. Establish `: (Ring.inverse : K → K) ∘ (Units.val : Kˣ → K) = fun v : Kˣ => ((v⁻¹ : Kˣ) : K)`. Use function extensionality and compare the values at `v`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Conclude with `(Units.continuous_val.comp continuous_inv).continuousAt`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuousAt_ringInverse [TopologicalSpace K] [IsTopologicalRing K]
     (hU : IsOpenEmbedding (Units.val : Kˣ → K)) {a : K} (ha : IsUnit a) :
@@ -355,15 +347,13 @@ theorem continuousAt_ringInverse [TopologicalSpace K] [IsTopologicalRing K]
   exact (Units.continuous_val.comp continuous_inv).continuousAt
 
 /- English proof (translation)
-Establish `hneg` using `hform_neg_neg τ J u`. Set `cf : (n → K) → K` to `fun v => hform τ J (-u) (-u) - hform τ J v (-u)`. Establish `hcf : Continuous cf`. Use `continuous_const.sub ?_` and prove the remaining obligations. Simplify using `only [hform]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ((hτc.comp (continuous_apply i)).mul continuous_const).mul continuous_const`. Establish `hopen : IsOpen {a : K | IsUnit a}`. Establish `: {a : K | IsUnit a} = Set.range (Units.val : Kˣ → K)`. Use extensionality with `a`. Conclude with `Iff.rfl`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Unfold both sides to obtain the same proposition, which implies itself. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `hU.isOpen_range`. Establish `hmem : cf u = 2 * hform τ J u u`. Simplify using `only [cf, hform_neg_right, hneg]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfacts : ∀ v : {v : n → K // v ∈ cf ⁻¹' {a : K | IsUnit a} ∧ hform τ J v v = hform τ J u u}, _` using `fun v => refl_facts τ hτ J hJ (-u) v.1 (by rw [hneg]; exact v.2.2) (Ring.inverse (cf v.1)) (Ring.mul_inverse_cancel _ v.2.1)`. Use `⟨cf ⁻¹' {a : K | IsUnit a}, hopen.preimage hcf, ?_, fun v => ⟨⟨reflM τ J (Ring.inverse (cf v.1)) (v.1 - -u), reflM τ J (τ (Ring.inverse (cf v.1))) (v.1 - -u), (hfacts v).1, (hfacts v).2.1⟩, (hfacts v).2.2.1⟩, ?_, fun v => (hfacts v).2.2.2⟩` and prove the remaining obligations. Use `show IsUnit (cf u)`. Rewrite using `[hmem]`. Conclude with `h2.mul hu`.
-
-Establish `hci : Continuous fun v : {v : n → K // v ∈ cf ⁻¹' {a : K | IsUnit a} ∧ hform τ J v v = hform τ J u u} => Ring.inverse (cf v.1)` using `continuous_iff_continuousAt.2 fun v => ContinuousAt.comp (f := fun v : {v : n → K // v ∈ cf ⁻¹' {a : K | IsUnit a} ∧ hform τ J v v = hform τ J u u} => cf v.1) (continuousAt_ringInverse hU v.2.1) (hcf.comp continuous_subtype_val).continuousAt`. Establish `hd : Continuous fun v : {v : n → K // v ∈ cf ⁻¹' {a : K | IsUnit a} ∧ hform τ J v v = hform τ J u u} => v.1 - -u` using `continuous_subtype_val.sub continuous_const`. Use `Continuous.subtype_mk (Units.continuous_iff.2 ⟨?_, ?_⟩) _` and prove the remaining obligations. Conclude with `reflM_cont τ hτc J hci hd`. Conclude with `reflM_cont τ hτc J (hτc.comp hci) hd`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem local_refl [TopologicalSpace K] [IsTopologicalRing K] (τ : K →+* K) (hτc : Continuous τ)
     (hτ : ∀ a, τ (τ a) = a) (J : Matrix n n K) (hJ : ∀ i j, τ (J j i) = J i j)
@@ -408,27 +398,21 @@ theorem local_refl [TopologicalSpace K] [IsTopologicalRing K] (τ : K →+* K) (
 end Local
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ R _ _ _ _ _ hLoc x hx`. Take `⟨hTR, hLC, hSC, hT2, hArt, hRed, -, -⟩` from `id hLoc`. Use `haveI := hTR`. Use `haveI := hLC`. Use `haveI := hSC`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := hT2`. Use `haveI := hArt`. Use `haveI := hRed`. Take `⟨hKr, hKl, hKs, hKt, hσc, -, -, hBor, -, hgram⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hCM R`. Use `haveI := hKr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `haveI := hKl`. Use `haveI := hKs`. Use `haveI := hKt`. Take `⟨hHg, -, -, -, hHb, hact⟩` from `GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hCM M J hJ R`. Use `haveI := hHg`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI := hHb`. Take `⟨-, -, h2, hinv, -, -, -⟩` from `GlobalTheory.T.tensor_involution_algebra_properties F E σ hCM R`. Establish `hUe` using `GlobalTheory.T.units_open_embedding_local_tensor F E σ hCM R hLoc`. Use `haveI := hBor 1 M`. Establish `hZ : IsClosed {y : Fin 1 → Fin M → R ⊗[F] E | gramR R σ J y = gramR R σ J x}` using `isClosed_eq (hgram 1 M J) continuous_const`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hJk : ∀ i j, sigR R σ (JR R J j i) = JR R J i j`. Introduce `i j`. Simplify using `[sigR, inclR, JR, Matrix.map_apply, hJ.1 i j]`. Establish `hdet : IsUnit (hform (sigR R σ) (JR R J) (x 0) (x 0))`. Use `hx` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite `this` using `[Matrix.det_fin_one]`. Conclude with `this`. Take `⟨s, hs, hsP, hsC⟩` from `exists_section (1 : HA R σ J) {y : Fin 1 → Fin M → R ⊗[F] E | gramR R σ J y = gramR R σ J x} hZ (fun g y => actW R σ J g x = y) (by`. Introduce `y₀ hy₀`. Establish `hZ0 : ∀ y : Fin 1 → Fin M → R ⊗[F] E, gramR R σ J y = gramR R σ J x → hform (sigR R σ) (JR R J) (y 0) (y 0) = hform (sigR R σ) (JR R J) (x 0) (x 0)` using `fun y hy => congrFun (congrFun hy 0) 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hβ` using `hZ0 y₀ hy₀`. Take `⟨U, hUo, huU, t, ht, htv⟩` from `local_refl (sigR R σ) hσc hinv (JR R J) hJk hUe h2 (y₀ 0) (hβ ▸ hdet)`. Establish `hgp : gramR R σ J x = gramR R σ J (fun a => - y₀ a)`. Use extensionality with `a b`. Rewrite using `[Fin.fin_one_eq_zero a, Fin.fin_one_eq_zero b]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `show hform (sigR R σ) (JR R J) (x 0) (x 0) = hform (sigR R σ) (JR R J) (- y₀ 0) (- y₀ 0)`. Rewrite using `[hform_neg_neg, hβ]`. Take `⟨h₀, hh₀⟩` from `GlobalTheory.T.witt_extension_artinian_ring F E σ hCM M J hJ R 1 x _ hgp hx`. Establish `hmem : ∀ y ∈ (fun y : Fin 1 → Fin M → R ⊗[F] E => y 0) ⁻¹' U ∩ {y : Fin 1 → Fin M → R ⊗[F] E | gramR R σ J y = gramR R σ J x}, y 0 ∈ U ∧ hform (sigR R σ) (JR R J) (y 0) (y 0) = hform (sigR R σ) (JR R J) (y₀ 0) (y₀ 0)` using `fun y hy => ⟨hy.1, (hZ0 y hy.2).trans hβ.symm⟩`. Set `g : ((fun y : Fin 1 → Fin M → R ⊗[F] E => y 0) ⁻¹' U ∩ {y : Fin 1 → Fin M → R ⊗[F] E | gramR R σ J y = gramR R σ J x} : Set _) → HA R σ J` to `fun y => t ⟨y.1 0, hmem y.1 y.2⟩`.
-
-Establish `hg : Continuous g` using `ht.comp (Continuous.subtype_mk ((continuous_apply 0).comp continuous_subtype_val) _)`. Use `⟨_, hUo.preimage (continuous_apply 0), huU, fun y => if hy : y ∈ (fun y : Fin 1 → Fin M → R ⊗[F] E => y 0) ⁻¹' U ∩ {y : Fin 1 → Fin M → R ⊗[F] E | gramR R σ J y = gramR R σ J x} then g ⟨y, hy⟩ * h₀ else 1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[continuousOn_iff_continuous_restrict]`. Use `(hg.mul (continuous_const (y := h₀))).congr fun y => ?_` and prove the remaining obligations. Use `show g y * h₀ = (if hy : y.1 ∈ (fun y : Fin 1 → Fin M → R ⊗[F] E => y 0) ⁻¹' U ∩ {y : Fin 1 → Fin M → R ⊗[F] E | gramR R σ J y = gramR R σ J x} then g ⟨y.1, hy⟩ * h₀ else 1)`.
-
-Rewrite using `[dif_pos y.2]`. Introduce `y hy`. Simplify using `only [dif_pos hy]`. Rewrite using `[(hact 1).2.2.1, hh₀]`. Use function extensionality and compare the values at `a`.
-
-Rewrite using `[Fin.fin_one_eq_zero a]`. Conclude with `htv ⟨y 0, hmem y hy⟩)`. Conclude with `⟨s, hs, fun y hy => hsP y hy, fun C hC => hsC C hC⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem orbit_section : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R], IsLocR R → ∀ x : Fin 1 → Fin M → R ⊗[F] E, IsUnit (gramR R σ J x).det → ∃ s : (Fin 1 → Fin M → R ⊗[F] E) → HA R σ J, Measurable s ∧ (∀ y, gramR R σ J y = gramR R σ J x → actW R σ J (s y) x = y) ∧ ∀ C : Set (Fin 1 → Fin M → R ⊗[F] E), IsCompact C → ∃ C' : Set (HA R σ J), IsCompact C' ∧ ∀ y ∈ C, gramR R σ J y = gramR R σ J x → s y ∈ C' := by
   intro F E _ _ _ _ _ σ hCM M J hJ R _ _ _ _ _ hLoc x hx

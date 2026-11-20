@@ -29,7 +29,7 @@ Both sides reduce to the same expression.
 theorem adr_snd [IsTotallyReal F] (w : InfinitePlace F) (r : ℝ) : (adr (F := F) w r).2 = 1 := rfl
 
 /- English proof (translation)
-Use `Prod.ext (funext fun u => ?_) (mul_one _)` and prove the remaining obligations. Use `show (adr w r).1 u * (adr w s).1 u = (adr w (r * s)).1 u`. Rewrite using `[adr_fst, adr_fst, adr_fst, ← map_mul]`. Use `congr 1`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem adr_mul [IsTotallyReal F] (w : InfinitePlace F) (r s : ℝ) : adr w r * adr w s = adr (F := F) w (r * s) := by
   refine Prod.ext (funext fun u => ?_) (mul_one _)
@@ -39,7 +39,7 @@ theorem adr_mul [IsTotallyReal F] (w : InfinitePlace F) (r s : ℝ) : adr w r * 
   split_ifs <;> simp
 
 /- English proof (translation)
-Use `Prod.ext (funext fun u => ?_) rfl` and prove the remaining obligations. Use `show (adr w 1).1 u = 1`. Rewrite using `[adr_fst, ite_self, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adr_one [IsTotallyReal F] (w : InfinitePlace F) : adr (F := F) w 1 = 1 := by
   refine Prod.ext (funext fun u => ?_) rfl
@@ -47,7 +47,7 @@ theorem adr_one [IsTotallyReal F] (w : InfinitePlace F) : adr (F := F) w 1 = 1 :
   rw [adr_fst, ite_self, map_one]
 
 /- English proof (translation)
-Rewrite using `[← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply (IsTotallyReal.isReal u), adr_fst]`. Use `congr 1`. Conclude with `(InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal u)).apply_symm_apply _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem ext_adr [IsTotallyReal F] (w u : InfinitePlace F) (r : ℝ) :
     InfinitePlace.Completion.extensionEmbedding u ((adr w r).1 u) = ((if u = w then r else 1 : ℝ) : ℂ) := by
@@ -56,7 +56,7 @@ theorem ext_adr [IsTotallyReal F] (w u : InfinitePlace F) (r : ℝ) :
   exact (InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal u)).apply_symm_apply _
 
 /- English proof (translation)
-Use `Prod.ext ?_ (mul_one _)` and prove the remaining obligations. Use `show (finOne F).1 * (adr w r).1 = (finOne F).1`. Establish `h0 : (finOne F).1 = 0` using `rfl`. Rewrite using `[h0, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finOne_adr [IsTotallyReal F] (w : InfinitePlace F) (r : ℝ) : finOne F * adr w r = finOne F := by
   refine Prod.ext ?_ (mul_one _)

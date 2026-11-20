@@ -35,7 +35,7 @@ def famAt (D : DegPre V) (F : Type) [Field F] [Algebra (FractionRing V) F] (k : 
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-The claim follows from `secScal_iff (prB_over D F) (GC.famφ_eq D F α) D.P.isLB s g _ (toF V F) ((Over.w (DegPre.prB D F)).symm.trans (prB_over D F)) r`.
+A detailed English derivation is pending.
 -/
 theorem secScal_iff_pullAb (D : DegPre V) (F : Type) [Field F] [Algebra (FractionRing V) F] {k : ℕ} {α : D.X}
     (s : SecAbF D F k α) (g : SecAb D k α) (r : V) :
@@ -45,7 +45,7 @@ theorem secScal_iff_pullAb (D : DegPre V) (F : Type) [Field F] [Algebra (Fractio
     ((Over.w (DegPre.prB D F)).symm.trans (prB_over D F)) r
 
 /- English proof (translation)
-Establish `E` using `(Fintype.equivFin J).symm`. Establish `H` using `expandsAt_comb U e k (fun p => σ (E p)) (fun p => f (E p)) (fun p => h (E p)) (fun p => b (E p))`. Rewrite `H` using `[E.sum_comp (fun p => b p • σ p)]`. Conclude with `(congrArg (U.ExpandsAt e k _) (funext fun α => E.sum_comp (fun p => b p • f p α))).mp H`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expandsAt_sum (U : UnifPre I D A G) (e k : ℕ) {J : Type} [Fintype J] (σ : J → SecG U k)
     (f : J → ∀ α, SecAb D.toPre k α) (h : ∀ p, U.ExpandsAt e k (σ p) (f p)) (b : J → V) :
@@ -56,7 +56,7 @@ theorem expandsAt_sum (U : UnifPre I D A G) (e k : ℕ) {J : Type} [Fintype J] (
   exact (congrArg (U.ExpandsAt e k _) (funext fun α => E.sum_comp (fun p => b p • f p α))).mp H
 
 /- English proof (translation)
-Use `⟨1, one_ne_zero, τ, g, ?_, fun α => ?_, hτ⟩` and prove the remaining obligations. Conclude with `(secScal_iff pullback.condition _ U.LG.isLB _ _ _ (algebraMap V (FractionRing V)) rfl 1).2 (by rw [map_one, one_smul]; rfl)`. Conclude with `(secScal_iff_pullAb _ _ (famAt D.toPre _ k α s) _ 1).2 (by rw [map_one, one_smul]; exact hs α)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem expands_toGen (U : UnifPre I D A G) (k : ℕ) (τ : SecG U k) (g : ∀ α, SecAb D.toPre k α)
     (s : Fam D.toPre (FractionRing V) k) (hτ : ∀ e, U.ExpandsAt e k τ g)
@@ -69,25 +69,23 @@ theorem expands_toGen (U : UnifPre I D A G) (k : ℕ) (τ : SecG U k) (g : ∀ �
 open Classical in
 
 /- English proof (translation)
-Take `⟨F, ⟨r, hr, τ, g, hτ, hg, hE⟩, -⟩` from `(U.expand k hk).1 s`. Establish `hτ' : toGen U.toUnifPre k τ = algebraMap V (FractionRing V) r • s` using `(secScal_iff pullback.condition _ U.LG.isLB s τ _ (algebraMap V (FractionRing V)) rfl r).1 hτ`. Establish `hg' : ∀ α, pullAb D.toPre _ k α (g α) = famAt D.toPre _ k α (toF V (FractionRing V) r • F)` using `fun α => by`. Rewrite using `[map_smul]`. Conclude with `(secScal_iff_pullAb _ _ _ _ r).1 (hg α)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `choose t ht using h₅`. Establish `ht' : ∀ i α, pullAb D.toPre _ k α (f i α) = famAt D.toPre _ k α (t i)` using `fun i α => by`. Use `(secScal_iff_pullAb _ _ (famAt D.toPre _ k α (t i)) (f i α) 1).1 (by` as an intermediate fact. Establish `e : scal (DegPre.BF D.toPre (FractionRing V)).hom (1 : V) = 1`. Unfold `scal`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_one, map_one]`. Rewrite using `[e]`. Conclude with `ht i α)`. Rewrite `this` using `[map_one, one_smul]`. Then use the resulting hypothesis. Establish `hb : ∀ c : D.toPre.X, ∃ b : J → V, (∃ i₀, cls i₀ = c) → (show SecAb D.toPre k c from g c) = ∑ i, (if cls i = c then b i else 0) • f i c` using `fun c => by`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hc : ∃ i₀, cls i₀ = c`. Take `⟨i₀, rfl⟩` from `hc`. Take `⟨a, ha, -⟩` from `h₇ i₀ (g (cls i₀))`. Use `⟨fun i => if h : cls i = cls i₀ then a ⟨i, h⟩ else 0, fun _ => ?_⟩` and prove the remaining obligations. Establish `e : (show SecAb D.toPre k (cls i₀) from g (cls i₀)) = ∑ i : {i // cls i = cls i₀}, a i • f i (cls i₀)` using `SecOver.ext _ _ fun j => (ha j).trans (map_sum (chartLin D.toPre.P.A.hom _ j) (fun i : {i // cls i = cls i₀} => a i • f i (cls i₀)) _).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[e, ← Fintype.sum_subtype_add_sum_subtype (fun i => cls i = cls i₀), Finset.sum_eq_zero (s := (Finset.univ : Finset {i // ¬ cls i = cls i₀})) (fun i _ => by rw [if_neg i.2, zero_smul]), add_zero]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [if_pos i.2]; beta_reduce; rw [dif_pos i.2]`. Conclude with `⟨0, fun h => absurd h hc⟩`. Use `choose b hb using hb`. Establish `key : toF V (FractionRing V) r • F = ∑ i, toF V (FractionRing V) (b (cls i) i) • t i`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `fam_ext fun α j => ?_` and prove the remaining obligations. Take `⟨i₀, m, rfl⟩` from `h₃ α`. Use `congrArg (LB.Sec.f · j) (GlobalTheory.FamFree.eq_of_eq_add_nsmul hG _ _ ⟨m, rfl⟩ ?_)` and prove the remaining obligations. Use `(hg' _).symm.trans (Eq.trans ?_ (map_sum (famAt D.toPre _ k (cls i₀)) _ _).symm)` and prove the remaining obligations. Use `(congrArg (pullAb D.toPre _ k (cls i₀)) (hb _ ⟨i₀, rfl⟩)).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ, map_smul, ← ht']`. Use `split_ifs with h`. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `z : f i (cls i₀) = 0` using `SecOver.ext _ _ (h₆ i _ fun m e => h (h₂ i₀ i ⟨m, e⟩).symm)`. Rewrite using `[z, map_zero (pullAb D.toPre _ k (cls i₀)), smul_zero, smul_zero]`. Establish `E₁` using `expands_toGen U.toUnifPre k τ g _ hE hg'`. Establish `E₂` using `expands_toGen U.toUnifPre k _ _ (∑ i, toF V (FractionRing V) (b (cls i) i) • t i) (fun e => expandsAt_sum U.toUnifPre e k σ f (fun i => h₄ i e) (fun i => b (cls i) i)) (fun α => by`. Rewrite using `[map_sum, map_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_smulₛₗ, map_smul, ← ht'])`. Rewrite `E₁` using `[key]`. Establish `e : toGen U.toUnifPre k τ = toGen U.toUnifPre k (∑ i, b (cls i) i • σ i)` using `((U.expand k hk).2 _).unique E₁ E₂`. Establish `hr' : algebraMap V (FractionRing V) r ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective V _)).2 hr`. Use `⟨fun i => (algebraMap V (FractionRing V) r)⁻¹ * algebraMap V _ (b (cls i) i), ?_⟩` and prove the remaining obligations.
-
-Rewrite `e` using `[hτ', map_sum]`. Rewrite using `[← inv_smul_smul₀ hr' s, e, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_smulₛₗ, smul_smul]`.
+A detailed English derivation is pending.
 -/
 theorem exists_comb (hG : GlobalFnsSt) (U : Unif I D A G) {k : ℕ} (hk : 1 ≤ k) {J : Type} [Fintype J]
     (σ : J → SecG U.toUnifPre k) (cls : J → D.toPre.X) (f : J → ∀ α, SecAb D.toPre k α)

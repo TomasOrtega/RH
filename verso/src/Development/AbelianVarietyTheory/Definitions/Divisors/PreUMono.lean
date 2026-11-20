@@ -15,7 +15,7 @@ variable {R R' : Type} [CommRing R] [CommRing R'] {X X' : Scheme.{0}} (φ : X' �
 def preU (U : X.affineOpens) : X'.affineOpens := ⟨φ ⁻¹ᵁ U.1, U.2.preimage φ⟩
 
 /- English proof (translation)
-The claim follows from `fun _ _ h _ hx ↦ h hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem preU_mono : Monotone (preU φ) := fun _ _ h _ hx ↦ h hx
 

@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsCrys
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CubeTheorem
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.GroupBplus.groupSt | exact GlobalTheory.GroupBplus.groupSt | (intros; apply GlobalTheory.GroupBplus.groupSt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.group_structure_of_published_inputs : GlobalTheory.Published.RaynaudExtension → GlobalTheory.Published.GrothendieckOrthogonality → GlobalTheory.Published.DualAbelianScheme → GlobalTheory.Published.CubeTheorem → GlobalTheory.GroupBplus.GroupSt := by
   first | exact @GlobalTheory.GroupBplus.groupSt | exact GlobalTheory.GroupBplus.groupSt | (intros; apply GlobalTheory.GroupBplus.groupSt <;> assumption)

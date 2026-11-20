@@ -15,13 +15,13 @@ open GlobalTheory.PRep GlobalTheory.SmGL
 namespace UpperTheory.Lit.Mix
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.geometricLemma_of_filtration GlobalTheory.bernsteinZelevinskyFiniteness_holds GlobalTheory.geometricLemmaFiltration_unconditional`.
+A detailed English derivation is pending.
 -/
 theorem geometricLemma : GlobalTheory.Published.GeometricLemma :=
   GlobalTheory.geometricLemma_of_filtration GlobalTheory.bernsteinZelevinskyFiniteness_holds GlobalTheory.geometricLemmaFiltration_unconditional
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.zelevinskyPolynomialRing_of_parts GlobalTheory.bernsteinZelevinskyFiniteness_holds PositivityTheory.RgGu.segmentRepresentation (PositivityTheory.Groth.grothendieckRingPolynomial_of_seg PositivityTheory.RgGu.segmentRepresentation)`.
+A detailed English derivation is pending.
 -/
 theorem polynomialRing : GlobalTheory.Published.ZelevinskyPolynomialRing :=
   GlobalTheory.zelevinskyPolynomialRing_of_parts GlobalTheory.bernsteinZelevinskyFiniteness_holds PositivityTheory.RgGu.segmentRepresentation
@@ -31,7 +31,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-The claim follows from `UpperTheory.Lit.Full.top geometricLemma GlobalTheory.bernsteinZelevinskyFiniteness_holds polynomialRing k r t V π χ s i u hs hu`.
+A detailed English derivation is pending.
 -/
 theorem mixed {r : ℕ} (t : ℕ) {π : Representation ℂ (GL (Fin r) k) V} (s : IsSmooth π) (i : π.IsIrreducible)
     (u : IsUnitarisable π) {χ : kˣ →* ℂˣ} (hs : IsSmoothChar χ) (hu : IsUnitaryChar χ) :
@@ -39,7 +39,7 @@ theorem mixed {r : ℕ} (t : ℕ) {π : Representation ℂ (GL (Fin r) k) V} (s 
   UpperTheory.Lit.Full.top geometricLemma GlobalTheory.bernsteinZelevinskyFiniteness_holds polynomialRing k r t V π χ s i u hs hu
 
 /- English proof (translation)
-The claim follows from `mixed t s i u hs hu`.
+A detailed English derivation is pending.
 -/
 theorem prod₂_detRep' (_H : GlobalTheory.Published.BernsteinUnitaryProductIrreducible) {r : ℕ} (t : ℕ)
     {π : Representation ℂ (GL (Fin r) k) V} (s : IsSmooth π) (i : π.IsIrreducible)
@@ -47,7 +47,7 @@ theorem prod₂_detRep' (_H : GlobalTheory.Published.BernsteinUnitaryProductIrre
     (prod₂ π (detRep (Fin t) χ)).IsIrreducible := mixed t s i u hs hu
 
 /- English proof (translation)
-The claim follows from `@prod₂_detRep'`.
+A detailed English derivation is pending.
 -/
 example : type_of% @GlobalTheory.Published.BernsteinUnitaryProductIrreducible.prod₂_detRep := @prod₂_detRep'
 

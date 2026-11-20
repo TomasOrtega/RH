@@ -11,15 +11,13 @@ local notation "ℚ̄" => AlgebraicClosure ℚ
 noncomputable section
 
 /- English proof (translation)
-Establish `key : ∀ b b' : B, b ≠ 1 → b' ≠ 1 → b = b'`. Introduce `b b' hb hb'`. Assume the negation of the conclusion as `hne`. Establish `: Fintype B` using `Fintype.ofFinite B`. Establish `h3 : ({1, b, b'} : Finset B).card = 3`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.card_insert_of_notMem, Finset.card_pair hne]`. Simplify using `[Ne.symm hb, Ne.symm hb']`. Establish `h4` using `Finset.card_le_univ ({1, b, b'} : Finset B)`. Rewrite `hB` using `[Nat.card_eq_fintype_card]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `hfy : f y ≠ 1` using `fun h ↦ hy (hfg h)`. Use extensionality with `x`. Distinguish the cases in `hx : f x = 1`. Rewrite using `[hx]`. Conclude with `(hfg hx).symm`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : x * y⁻¹ ∈ f.ker`. Rewrite using `[MonoidHom.mem_ker, map_mul, map_inv, key _ _ hx hfy, mul_inv_cancel]`. Establish `e' : g x = g y`. Establish `h` using `hfg e`. Rewrite `h` using `[MonoidHom.mem_ker, map_mul, map_inv, mul_inv_eq_one]`. Then use the resulting hypothesis.
-
-Conclude with `key _ _ hx (e' ▸ hy)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem eq_of_ker_le_of_natCard_le_two {A B : Type*} [Group A] [Group B] [Finite B]
     (hB : Nat.card B ≤ 2) {f g : A →* B} (hfg : f.ker ≤ g.ker) {y : A} (hy : g y ≠ 1) : f = g := by
@@ -47,9 +45,9 @@ theorem eq_of_ker_le_of_natCard_le_two {A B : Type*} [Group A] [Group B] [Finite
     exact key _ _ hx (e' ▸ hy)
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_one]`. Introduce `g hg`. Establish `h : g ∈ commutator Γ`. Rewrite using `[← Abelianization.ker_of]`. Conclude with `hg`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[commutator, Subgroup.commutator_eq_bot_iff_le_centralizer.2 (fun x _ y _ ↦ mul_comm' y x)]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem abelianization_of_injective {Γ : Type*} [Group Γ] [IsMulCommutative Γ] :
     Function.Injective (Abelianization.of : Γ →* Abelianization Γ) := by
@@ -70,13 +68,11 @@ variable (K L : FiniteSubfield) [hKL : Fact (K ≤ L)]
   [(L.1.fixingSubgroup.subgroupOf K.1.fixingSubgroup).Normal]
 
 /- English proof (translation)
-Use `set e := quotientGaloisEquiv K L`. Establish `key : (Abelianization.map e.symm.toMonoidHom).comp (Abelianization.map e.toMonoidHom) = MonoidHom.id _`. Use `Abelianization.hom_ext _ _ (MonoidHom.ext fun q ↦ ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hinj : Function.Injective (Abelianization.map e.toMonoidHom)` using `fun a b hab ↦ by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (Abelianization.map e.symm.toMonoidHom) hab` as an intermediate fact. Rewrite `this` using `[← MonoidHom.comp_apply, ← MonoidHom.comp_apply, key]`. Then use the resulting hypothesis. Rewrite `h` using `[abstractSymbol_apply, ← map_one (Abelianization.map e.toMonoidHom)]`. Establish `h1` using `hinj h`. Rewrite `h1` using `[MulEquiv.symm_apply_eq, map_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : fixedEquiv K c ∈ (norm IdeleClassLimit (K.openSubgroup : Subgroup (ℚ̄ ≃ₐ[ℚ] ℚ̄)) (L.openSubgroup : Subgroup (ℚ̄ ≃ₐ[ℚ] ℚ̄))).range`. Rewrite `h1` using `[normClass, MonoidHom.comp_apply, QuotientGroup.mk'_apply, QuotientGroup.eq_one_iff]`. Conclude with `h1`. Take `⟨b, hb⟩` from `h2`. Use `⟨(fixedEquiv L).symm b, (fixedEquiv K).injective ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← norm_fixedEquiv hKL.out, MulEquiv.apply_symm_apply]`. Conclude with `hb`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_ideleClassNorm_of_abstractSymbol_eq_one {c : IdeleClassGroup K.1}
     (h : abstractSymbol K L c = 1) : ∃ d : IdeleClassGroup L.1, FiniteSubfield.ideleClassNorm hKL.out d = c := by
@@ -103,9 +99,9 @@ theorem exists_eq_ideleClassNorm_of_abstractSymbol_eq_one {c : IdeleClassGroup K
 variable [IsMulCommutative (L.1 ≃ₐ[K.1] L.1)]
 
 /- English proof (translation)
-Take `⟨d, hd⟩` from `exists_eq_ideleClassNorm_of_abstractSymbol_eq_one K L h`. Take `⟨y, rfl⟩` from `IdeleClassGroup.mk_surjective L.1 d`. Establish `hd' : (QuotientGroup.mk (ideleNorm K.1 L.1 y) : IdeleClassGroup K.1) = QuotientGroup.mk x` using `hd`. Take `⟨a, ha⟩` from `QuotientGroup.eq.1 hd'`. Establish `hx : x = ideleNorm K.1 L.1 y * diagonal K.1 a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[ha, mul_inv_cancel_left]`. Rewrite using `[hx, map_mul, ideleSymbol_ideleNorm, ideleSymbol_diagonal_eq_one_of_le_sup K L hL, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ideleSymbol_eq_one_of_abstractSymbol_eq_one (hL : L.1 ≤ K.1 ⊔ maxCyclotomic)
     {x : IdeleGroup K.1} (h : abstractSymbol K L (IdeleClassGroup.mk K.1 x) = 1) :
@@ -120,7 +116,7 @@ theorem ideleSymbol_eq_one_of_abstractSymbol_eq_one (hL : L.1 ≤ K.1 ⊔ maxCyc
   rw [hx, map_mul, ideleSymbol_ideleNorm, ideleSymbol_diagonal_eq_one_of_le_sup K L hL, mul_one]
 
 /- English proof (translation)
-Establish `hB : Nat.card (Abelianization (L.1 ≃ₐ[K.1] L.1)) ≤ 2` using `(Nat.card_le_card_of_surjective _ (QuotientGroup.mk_surjective (s := commutator _))).trans hcard`. Establish `h` using `eq_of_ker_le_of_natCard_le_two hB (f := (abstractSymbol K L).comp (IdeleClassGroup.mk K.1)) (g := Abelianization.of.comp (ideleSymbol K.1 L.1)) (y := y) (fun z hz ↦ by`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.comp_apply, ideleSymbol_eq_one_of_abstractSymbol_eq_one K L hL hz, map_one])`. Use the proof step `(fun h1 ↦ hy (abelianization_of_injective (by rw [MonoidHom.comp_apply] at h1; rw [h1, map_one])))`. Conclude with `congrArg (fun f : IdeleGroup K.1 →* Abelianization (L.1 ≃ₐ[K.1] L.1) ↦ f x) h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem abstractSymbol_mk_of_natCard_le_two (hcard : Nat.card (L.1 ≃ₐ[K.1] L.1) ≤ 2)
     (hL : L.1 ≤ K.1 ⊔ maxCyclotomic) {y : IdeleGroup K.1} (hy : ideleSymbol K.1 L.1 y ≠ 1)

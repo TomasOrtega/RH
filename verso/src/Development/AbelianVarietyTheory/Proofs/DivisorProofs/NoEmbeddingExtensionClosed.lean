@@ -9,9 +9,7 @@ set_option autoImplicit false
 namespace GlobalTheory.FrobFilt
 
 /- English proof (translation)
-Set `G : X.Modules ⥤ Ab` to `Scheme.Modules.toPresheaf X ⋙ (evaluation _ _).obj (Opposite.op W)`. Use `haveI : PreservesLimitsOfSize.{0, 0} ((evaluation (TopologicalSpace.Opens X)ᵒᵖ Ab).obj (Opposite.op W)) := ⟨fun {J} _ => evaluation_preservesLimitsOfShape _⟩`. Use `haveI : PreservesLimits G := comp_preservesLimits _ _`. Use `haveI : PreservesFiniteLimits G := inferInstance`. Use `haveI : G.PreservesZeroMorphisms := inferInstance`.
-
-Use `haveI : Mono S.f := hS.mono_f`. Establish `hM : Mono (G.map S.f)` using `inferInstance`. Establish `hE : (S.map G).Exact` using `hS.exact.map_of_mono_of_preservesKernel G inferInstance inferInstance`. Use `⟨(AddCommGrpCat.mono_iff_injective _).1 hM, ?_⟩` and prove the remaining obligations. Conclude with `(ShortComplex.ab_exact_iff _).1 hE`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sections_leftExact {X : Scheme.{0}} (S : ShortComplex X.Modules) (hS : S.ShortExact)
     (W : X.Opens) : Function.Injective (S.f.app W) ∧
@@ -29,13 +27,13 @@ theorem sections_leftExact {X : Scheme.{0}} (S : ShortComplex X.Modules) (hS : S
   exact (ShortComplex.ab_exact_iff _).1 hE
 
 /- English proof (translation)
-Introduce `U V hVU hV`. Set `i : (Opposite.op U : B.X.Opensᵒᵖ) ⟶ Opposite.op V` to `(homOfLE hVU).op`. Establish `natg : ∀ u : Γ(S.X₂, U), S.g.app V ((Scheme.Modules.presheaf S.X₂).map i u) = (Scheme.Modules.presheaf S.X₃).map i (S.g.app U u)` using `fun u => ConcreteCategory.congr_hom (S.g.mapPresheaf.naturality i) u`. Establish `natf : ∀ u : Γ(S.X₁, U), S.f.app V ((Scheme.Modules.presheaf S.X₁).map i u) = (Scheme.Modules.presheaf S.X₂).map i (S.f.app U u)` using `fun u => ConcreteCategory.congr_hom (S.f.mapPresheaf.naturality i) u`. Establish `hU` using `sections_leftExact S hS U`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hVi` using `sections_leftExact S hS V`. Use `(injective_iff_map_eq_zero ((Scheme.Modules.presheaf S.X₂).map i).hom).2 ?_` and prove the remaining obligations. Introduce `s hs`. Establish `hs' : (Scheme.Modules.presheaf S.X₂).map i s = 0` using `hs`. Establish `e3 : S.g.app U s = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `h₃ U V hVU hV` to reduce the goal to its premises. Rewrite using `[← natg, hs']`. Simplify using the standard rewrite rules. Take `⟨a, rfl⟩` from `hU.2 s e3`. Establish `ea : a = 0`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `h₁ U V hVU hV` to reduce the goal to its premises. Apply `hVi.1` to reduce the goal to its premises. Rewrite using `[natf, hs']`. Simplify using the standard rewrite rules. Substitute `ea` using the available equality.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality.
 
 Simplify using the standard rewrite rules.
 -/

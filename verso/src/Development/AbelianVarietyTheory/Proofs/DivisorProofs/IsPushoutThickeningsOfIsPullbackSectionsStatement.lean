@@ -4,7 +4,7 @@ import Mathlib
 open AlgebraicGeometry CategoryTheory CategoryTheory.Limits
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.ThickPush.isPushout_of_isPullback_sections` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsPushoutThickeningsOfIsPullbackSections.lean&line=168#L168)
 -/

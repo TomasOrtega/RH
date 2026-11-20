@@ -9,65 +9,59 @@ open Matrix NumberField GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMi
 open scoped TensorProduct Classical
 
 /- English proof (translation)
-Introduce `p _ G β hβ y₀ s hy hsep hdeg S`. Use `set Ec : Subalgebra ℚ G.C := Subalgebra.centralizer ℚ ({(y₀ : G.C)} : Set G.C) with hEc`. Establish `memE : ∀ x : G.C, x ∈ Ec ↔ Commute x (y₀ : G.C)`. Introduce `x`. Rewrite using `[hEc, Subalgebra.mem_centralizer_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `(h (y₀ : G.C) (Set.mem_singleton _)).symm`. Introduce `h g hg`. Rewrite using `[Set.mem_singleton_iff.1 hg]`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Conclude with `h.eq.symm`. Establish `hcomm : ∀ a b : Ec, a * b = b * a` using `fun a b => Subtype.ext (GlobalTheory.LKCx.ClsReg.commute_of_commute_of_separable G y₀ hsep hdeg a b ((memE a).1 a.2) ((memE b).1 b.2)).eq`. Use `letI : CommRing Ec := { (inferInstance : Ring Ec) with mul_comm := hcomm }`. Use `haveI : FiniteDimensional ℚ G.C := Module.Finite.trans G.F G.C`. Use `haveI : FiniteDimensional ℚ Ec := inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsReduced Ec := ⟨fun x ⟨k, hk⟩ => Subtype.ext (GlobalTheory.T.eq_zero_of_nilpotent_commute_separable_minpoly p G y₀ hsep hdeg x ((memE x).1 x.2) k (by simpa using congrArg Subtype.val hk))⟩`. Establish `sh_add : ∀ x y : G.C, sh G (x + y) = sh G x + sh G y` using `fun x y => by simp [sh]`. Establish `sh_mul : ∀ x y : G.C, sh G (x * y) = sh G y * sh G x` using `fun x y => by simp [sh]`. Establish `sh_one : sh G 1 = 1` using `by simp [sh]`. Establish `sh_zero : sh G 0 = 0` using `by simp [sh]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `sh_alg : ∀ q : ℚ, sh G (algebraMap ℚ G.C q) = algebraMap ℚ G.C q` using `fun q => by`. Simplify using `only [sh, RingHom.map_rat_algebraMap G.star q, MulOpposite.algebraMap_apply, MulOpposite.unop_op]`. Establish `sh_sh : ∀ x, sh G (sh G x) = x` using `fun x => G.star_star x`. Establish `sh_binv : sh G ((β⁻¹ : G.Cˣ) : G.C) = ((β⁻¹ : G.Cˣ) : G.C)`. Establish `h1 : sh G ((β⁻¹ : G.Cˣ) : G.C) * (β : G.C) = 1`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[← hβ, ← sh_mul, Units.mul_inv, sh_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, Units.mul_inv, mul_one]`. Use `_ = _ := by rw [h1, one_mul]`. Establish `hs0 : s ≠ 0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Establish `h0 : sh G (y₀ : G.C) = 0`. Use `congrArg (fun t => ((β⁻¹ : G.Cˣ) : G.C) * (((y₀⁻¹ : G.Cˣ) : G.C) * t)) hy` as an intermediate fact. Simplify `this` using `[← mul_assoc]`. Establish `: (y₀ : G.C) = 0` using `by rw [← sh_sh (y₀ : G.C), h0, sh_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `y₀.ne_zero this`. Establish `tC_y : (β : G.C) * sh G (y₀ : G.C) * ((β⁻¹ : G.Cˣ) : G.C) = algebraMap ℚ G.C s * ((y₀⁻¹ : G.Cˣ) : G.C)`. Use `congrArg (fun t => ((y₀⁻¹ : G.Cˣ) : G.C) * t * ((β⁻¹ : G.Cˣ) : G.C)) hy` as an intermediate fact. Simplify using `only [← mul_assoc, Units.inv_mul, one_mul] at this`. Rewrite using `[this, mul_assoc, Units.mul_inv, mul_one, Algebra.commutes]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `tC_mul : ∀ x y : G.C, (β : G.C) * sh G (x * y) * ((β⁻¹ : G.Cˣ) : G.C) = ((β : G.C) * sh G y * ((β⁻¹ : G.Cˣ) : G.C)) * ((β : G.C) * sh G x * ((β⁻¹ : G.Cˣ) : G.C))`. Introduce `x y`. Rewrite using `[sh_mul]`. Simplify using `only [mul_assoc, Units.inv_mul_cancel_left]`. Establish `tC_mem : ∀ x : G.C, Commute x (y₀ : G.C) → Commute ((β : G.C) * sh G x * ((β⁻¹ : G.Cˣ) : G.C)) (y₀ : G.C)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `x hx`. Establish `h1 : Commute ((β : G.C) * sh G x * ((β⁻¹ : G.Cˣ) : G.C)) (algebraMap ℚ G.C s * ((y₀⁻¹ : G.Cˣ) : G.C))`. Rewrite using `[← tC_y]`. Use `show _ * _ = _ * _`. Rewrite using `[← tC_mul, ← tC_mul, hx.eq]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h2 : Commute ((β : G.C) * sh G x * ((β⁻¹ : G.Cˣ) : G.C)) ((y₀⁻¹ : G.Cˣ) : G.C)`. Establish `h3` using `h1.smul_right (s⁻¹)`. Rewrite `h3` using `[Algebra.smul_def, ← mul_assoc, ← map_mul, inv_mul_cancel₀ hs0, map_one, one_mul]`. Then use the resulting hypothesis. Simplify using `using h2.units_inv_right`. Set `τf : Ec → Ec` to `fun x => ⟨(β : G.C) * sh G (x : G.C) * ((β⁻¹ : G.Cˣ) : G.C), (memE _).2 (tC_mem x ((memE x).1 x.2))⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `τf_val : ∀ x : Ec, ((τf x : Ec) : G.C) = (β : G.C) * sh G (x : G.C) * ((β⁻¹ : G.Cˣ) : G.C)` using `fun x => rfl`. Establish `τf_inv : ∀ x, τf (τf x) = x`. Introduce `x`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[τf_val, τf_val, sh_mul, sh_mul, sh_sh, hβ, sh_binv]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_assoc, Units.mul_inv_cancel_left]`. Rewrite using `[Units.mul_inv, mul_one]`. Set `τa : Ec →ₐ[ℚ] Ec` to `{ toFun := τf map_one' := by apply Subtype.ext; rw [τf_val]; simp [sh_one] map_mul' := by`. Introduce `x y`. Apply `Subtype.ext` to reduce the goal to its premises.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[τf_val, Subalgebra.coe_mul, tC_mul, ← τf_val, ← τf_val, ← Subalgebra.coe_mul, hcomm]`. Use the proof step `map_zero' := by apply Subtype.ext; rw [τf_val]; simp [sh_zero]`. Use the proof step `map_add' := by`. Introduce `x y`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[τf_val, Subalgebra.coe_add, sh_add, mul_add, add_mul]`. Both sides reduce to the same expression. Use the proof step `commutes' := by`. Introduce `q`. Apply `Subtype.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[τf_val]`. Express the relevant statement in the definitionally equal form `(β : G.C) * sh G (algebraMap ℚ G.C q) * ((β⁻¹ : G.Cˣ) : G.C) = algebraMap ℚ G.C q`. Rewrite using `[sh_alg, ← Algebra.commutes, mul_assoc, Units.mul_inv, mul_one] }`. Establish `τa_apply : ∀ x, τa x = τf x` using `fun x => rfl`. Set `τe : Ec ≃ₐ[ℚ] Ec` to `AlgEquiv.ofAlgHom τa τa (AlgHom.ext fun x => τf_inv x) (AlgHom.ext fun x => τf_inv x)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `τe_apply : ∀ x, τe x = τf x` using `fun x => rfl`. Establish `τe_inv : ∀ x, τe (τe x) = x` using `fun x => τf_inv x`. Take `⟨x₁, hx₁⟩` from `DFunLike.ne_iff.mp (IsCMField.complexConj_ne_one G.F)`. Use `set jF : G.F := x₁ - IsCMField.complexConj G.F x₁ with hjF`. Establish `hjF0 : jF ≠ 0`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[hjF, sub_ne_zero]; intro h; exact hx₁ (by rw [← h]; rfl)`. Establish `hjFc : IsCMField.complexConj G.F jF = -jF`. Rewrite using `[hjF, map_sub, IsCMField.complexConj_apply_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `cen : ∀ z : G.F, algebraMap G.F G.C z ∈ Ec` using `fun z => (memE _).2 (Algebra.commutes z (y₀ : G.C))`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Set `jE : Ec` to `⟨algebraMap G.F G.C jF, cen jF⟩`. Establish `hjE : IsUnit jE`. Establish `h : jE * ⟨algebraMap G.F G.C jF⁻¹, cen _⟩ = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `algebraMap G.F G.C jF * algebraMap G.F G.C jF⁻¹ = 1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, mul_inv_cancel₀ hjF0, map_one]`. Conclude with `⟨⟨jE, _, h, by rw [hcomm]; exact h⟩, rfl⟩`. Establish `hjτ : τe jE = -jE`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[τe_apply, τf_val]`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(β : G.C) * (G.star (algebraMap G.F G.C jF)).unop * ((β⁻¹ : G.Cˣ) : G.C) = -algebraMap G.F G.C jF`. Rewrite using `[G.star_F, hjFc, ← Algebra.commutes, mul_assoc, Units.mul_inv, mul_one, map_neg]`. Take `⟨A', hA'⟩` from `GlobalTheory.T.finite_classes_fixedUnits_mod_rat_norms Ec τe τe_inv jE hjE hjτ S`. Use `⟨A'.image Subtype.val, ?_⟩` and prove the remaining obligations. Introduce `a ha hac hafix hloc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ua, rfl⟩` from `ha`. Establish `ha' : (ua : G.C) ∈ Ec` using `(memE _).2 hac`. Use `set a' : Ec := ⟨ua, ha'⟩ with ha'def`. Establish `hinvE : ((ua⁻¹ : G.Cˣ) : G.C) ∈ Ec` using `(memE _).2 hac.units_inv_left`. Establish `ha'u : IsUnit a'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h : a' * ⟨_, hinvE⟩ = 1` using `Subtype.ext ua.mul_inv`. Conclude with `⟨⟨a', _, h, by rw [hcomm]; exact h⟩, rfl⟩`. Establish `ha'fix : τe a' = a'` using `Subtype.ext hafix`. Establish `hloc' : ∀ ℓ : ℕ, ℓ.Prime → ℓ ∉ S → ∃ (c : ℚ) (b x y : Ec), c ≠ 0 ∧ IsUnit b ∧ a' = x * (algebraMap ℚ Ec c * (b * τe b)) ∧ algebraMap ℚ Ec c * (b * τe b) = y * a' ∧ ∃ d : ℕ, ¬ ℓ ∣ d ∧ IsIntegral ℤ ((d : Ec) * x) ∧ IsIntegral ℤ ((d : Ec) * y)`. Introduce `ℓ hℓ hℓS`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `haveI : Fact ℓ.Prime := ⟨hℓ⟩`. Take `⟨u, z, hzc, hz⟩` from `hloc ℓ hℓS`. Take `⟨hinj, hsurj⟩` from `GlobalTheory.T.tensor_centralizer_injective_commutant_eq ℚ_[ℓ] G.C (y₀ : G.C)`. Use `set ι := Algebra.TensorProduct.map (AlgHom.id ℚ_[ℓ] ℚ_[ℓ]) Ec.val with hι`. Establish `hinCy : inC G ℚ_[ℓ] (y₀ : G.C) = (1 : ℚ_[ℓ]) ⊗ₜ[ℚ] (y₀ : G.C)` using `rfl`.
+Both sides reduce to the same expression. Treat this case separately. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, hw⟩` from `hsurj z (hinCy ▸ hzc)`. Take `⟨w2, hw2⟩` from `hsurj ((z⁻¹ : (ℚ_[ℓ] ⊗[ℚ] G.C)ˣ) : ℚ_[ℓ] ⊗[ℚ] G.C) (hinCy ▸ hzc.units_inv_left)`. Establish `hww : w * w2 = 1` using `hinj (by rw [map_mul, hw, hw2, Units.mul_inv, map_one])`. Set `Z : (ℚ_[ℓ] ⊗[ℚ] Ec)ˣ` to `⟨w, w2, hww, by rw [mul_comm]; exact hww⟩`. Use `set τℓ := Algebra.TensorProduct.map (AlgHom.id ℚ_[ℓ] ℚ_[ℓ]) τe.toAlgHom with hτℓ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hkey : ∀ t : ℚ_[ℓ] ⊗[ℚ] Ec, ι (τℓ t) = inC G ℚ_[ℓ] (β : G.C) * (starT G.star ℚ_[ℓ] (ι t)).unop * inC G ℚ_[ℓ] ((β⁻¹ : G.Cˣ) : G.C)`. Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hτℓ, hι, Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.map_tmul, starT_tmul]`. Simplify using `only [inC, AlgHom.id_apply, Subalgebra.coe_val, RingHom.coe_coe, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one]`. Both sides reduce to the same expression. Consider the case `add t1 t2 h1 h2 => rw [map_add, map_add, h1, h2, map_add, map_add, MulOpposite.unop_add, mul_add, add_mul]`. Establish `heq : (1 : ℚ_[ℓ]) ⊗ₜ[ℚ] a' = algebraMap ℚ_[ℓ] (ℚ_[ℓ] ⊗[ℚ] Ec) (u : ℚ_[ℓ]) * ((Z : ℚ_[ℓ] ⊗[ℚ] Ec) * τℓ (Z : ℚ_[ℓ] ⊗[ℚ] Ec))`.
-
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, AlgHom.commutes, hkey]`. Establish `hZ : ι (Z : ℚ_[ℓ] ⊗[ℚ] Ec) = z` using `hw`. Rewrite using `[hZ, hι, Algebra.TensorProduct.map_tmul]`. Express the relevant statement in the definitionally equal form `inC G ℚ_[ℓ] (ua : G.C) = _`.
-
-Rewrite using `[hz]`. Simplify using `only [mul_assoc]`. Take `⟨c, b, x, y, hc, hb, h1, h2, d, hd, hx, hy⟩` from `GlobalTheory.T.exists_global_norm_approx_of_local_padic_norm Ec τe.toAlgHom ℓ a' u Z ha'u heq`. Conclude with `⟨c, b, x, y, hc, hb, h1, h2, d, hd, hx, hy⟩`. Take `⟨a₀, ha₀, r, e, hre⟩` from `hA' a' ha'u ha'fix hloc'`.
-
-Use `⟨(a₀ : G.C), Finset.mem_image_of_mem _ ha₀, r, Units.map (Ec.val : Ec →* G.C) e, (memE _).1 (e : Ec).2, ?_⟩` and prove the remaining obligations. Rewrite `hre` using `[τe_apply]`. Use `congrArg Subtype.val hre` as an intermediate fact. Simplify using `only [Subalgebra.coe_mul, Subalgebra.coe_algebraMap, τf_val] at this`. Simplify using `using this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.LKCx.ClsReg.finite_fixed_classes_regular : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (β : G.Cˣ), sh G β = β →
     ∀ (y₀ : G.Cˣ) (s : ℚ), (y₀ : G.C) * β * sh G (y₀ : G.C) = algebraMap ℚ G.C s * β →

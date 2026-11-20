@@ -29,19 +29,19 @@ def singleE (c : ℤ) : E →ₗ[S] ConeE S x E := Finsupp.lsingle c
 variable {S x E}
 
 /- English proof (translation)
-The claim follows from `Finsupp.ext h`.
+A detailed English derivation is pending.
 -/
 theorem coneE_ext {w w' : ConeE S x E} (h : ∀ d, coeffE S x E d w = coeffE S x E d w') : w = w' :=
   Finsupp.ext h
 
 /- English proof (translation)
-The claim follows from `Finsupp.single_eq_same`.
+A detailed English derivation is pending.
 -/
 theorem coeffE_singleE_same (c : ℤ) (v : E) : coeffE S x E c (singleE S x E c v) = v :=
   Finsupp.single_eq_same
 
 /- English proof (translation)
-The claim follows from `Finsupp.single_eq_of_ne h.symm`.
+A detailed English derivation is pending.
 -/
 theorem coeffE_singleE_ne {c d : ℤ} (h : c ≠ d) (v : E) : coeffE S x E d (singleE S x E c v) = 0 :=
   Finsupp.single_eq_of_ne h.symm
@@ -55,13 +55,13 @@ theorem coeffE_omega_smul (a : Ω) (w : ConeE S x E) (c : ℤ) : coeffE S x E c 
 def suppE (w : ConeE S x E) : Finset ℤ := Finsupp.support (show ℤ →₀ E from w)
 
 /- English proof (translation)
-The claim follows from `Finsupp.mem_support_iff`.
+A detailed English derivation is pending.
 -/
 theorem mem_suppE {w : ConeE S x E} {d : ℤ} : d ∈ suppE w ↔ coeffE S x E d w ≠ 0 :=
   Finsupp.mem_support_iff
 
 /- English proof (translation)
-The claim follows from `Finsupp.sum_single (show ℤ →₀ E from w)`.
+A detailed English derivation is pending.
 -/
 theorem sum_singleE (w : ConeE S x E) : ∑ c ∈ suppE w, singleE S x E c (coeffE S x E c w) = w :=
   Finsupp.sum_single (show ℤ →₀ E from w)
@@ -85,7 +85,7 @@ def shiftE : Multiplicative ℤ →* Module.End Ω (ConeE S x E) where
 
 variable {S x E} in
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(Finsupp.equivMapDomain (Equiv.addRight n) (show ℤ →₀ E from w)) c = _`. Rewrite using `[Finsupp.equivMapDomain_apply]`. Simplify using `only [Equiv.addRight_symm_apply]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem coeffE_shiftE (n : ℤ) (w : ConeE S x E) (c : ℤ) :
     coeffE S x E c (shiftE S x E (Multiplicative.ofAdd n) w) = coeffE S x E (c - n) w := by
@@ -110,7 +110,7 @@ Both sides reduce to the same expression.
 theorem coneE_smul (p : Poly S N) (w : ConeE S x E) : p • w = coneE S x E p w := rfl
 
 /- English proof (translation)
-Rewrite using `[coneE_smul]`. Express the relevant statement in the definitionally equal form `coeffE S x E c (lpActE S x E (ConeLaurent.toLP S x (coneLaurent S x f)) w) = _`. Rewrite using `[coneLaurent_of_isHomogeneous hf, ConeLaurent.toLaurent_ofLaurent, lpActE, AddMonoidAlgebra.lift_single, LinearMap.smul_apply, coeffE_omega_smul, coeffE_shiftE]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeffE_smul_of_isHomogeneous {f : Poly S N} {e : ℕ} (hf : f.IsHomogeneous e)
     (w : ConeE S x E) (c : ℤ) : coeffE S x E c (f • w) = aeval x f • coeffE S x E (c - e) w := by
@@ -120,7 +120,7 @@ theorem coeffE_smul_of_isHomogeneous {f : Poly S N} {e : ℕ} (hf : f.IsHomogene
     LinearMap.smul_apply, coeffE_omega_smul, coeffE_shiftE]
 
 /- English proof (translation)
-Use `coneE_ext fun d => ?_` and prove the remaining obligations. Establish `h` using `coeffE_smul_of_isHomogeneous (x := x) (isHomogeneous_C (Fin (N + 1)) s) w d`. Rewrite `h` using `[coneE_smul]`. Rewrite using `[h, aeval_C, Nat.cast_zero, sub_zero, algebraMap_smul, map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem coneE_C (s : S) (w : ConeE S x E) : coneE S x E (C s) w = s • w := by
   refine coneE_ext fun d => ?_
@@ -134,7 +134,7 @@ instance : IsScalarTower S (Poly S N) (ConeE S x E) where
     exact coneE_C s (p • w)
 
 /- English proof (translation)
-Use `coneE_ext fun d => ?_` and prove the remaining obligations. Rewrite using `[coeffE_smul_of_isHomogeneous hf]`. Distinguish the cases in `h : c + e = d`. Rewrite using `[← h, add_sub_cancel_right, coeffE_singleE_same, coeffE_singleE_same]`. Rewrite using `[coeffE_singleE_ne h, coeffE_singleE_ne (by omega), smul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_singleE {f : Poly S N} {e : ℕ} (hf : f.IsHomogeneous e) (c : ℤ) (v : E) :
     f • singleE S x E c v = singleE S x E (c + e) (aeval x f • v) := by
@@ -145,9 +145,9 @@ theorem smul_singleE {f : Poly S N} {e : ℕ} (hf : f.IsHomogeneous e) (c : ℤ)
   · rw [coeffE_singleE_ne h, coeffE_singleE_ne (by omega), smul_zero]
 
 /- English proof (translation)
-Use `⟨fun w w' h => coneE_ext fun d => ?_, fun w => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (coeffE S x E (d + e)) h`. Simplify using `only [coeffE_smul_of_isHomogeneous hs, add_sub_cancel_right] at h1`. Conclude with `smul_right_injective E h0 h1`. Use `⟨shiftE S x E (Multiplicative.ofAdd (-(e : ℤ))) ((aeval x s)⁻¹ • w), coneE_ext fun d => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `coeffE S x E d (s • _) = _`. Rewrite using `[coeffE_smul_of_isHomogeneous hs, coeffE_shiftE, coeffE_omega_smul, smul_smul, mul_inv_cancel₀ h0, one_smul, sub_neg_eq_add, sub_add_cancel]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijective_smul_of_isHomogeneous {s : Poly S N} {e : ℕ} (hs : s.IsHomogeneous e)
     (h0 : aeval x s ≠ 0) : Function.Bijective (fun w : ConeE S x E => s • w) := by
@@ -181,7 +181,7 @@ def FinGradedSub.coneSubE : Submodule (Poly S N) (ConeE S x E) where
     rwa [sub_add_cancel] at this
 
 /- English proof (translation)
-Introduce `d` and use `by by_cases h : c = d · subst h; rw [coeffE_singleE_same]; exact hv · rw [coeffE_singleE_ne h]; exact zero_mem _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem FinGradedSub.singleE_mem_coneSubE {c : ℤ} {v : E} (hv : v ∈ M.piece c) :
     singleE S x E c v ∈ M.coneSubE := fun d => by
@@ -196,7 +196,7 @@ def FinGradedSub.conePieceE (a : ℤ) : Submodule S M.coneSubE where
   smul_mem' s m hm d hd := by rw [Submodule.coe_smul_of_tower, map_smul, hm d hd, smul_zero]
 
 /- English proof (translation)
-Use `coneE_ext fun d => ?_` and prove the remaining obligations. Distinguish the cases in `h : a = d`. Substitute `h` using the available equality. Rewrite using `[coeffE_singleE_same]`. Rewrite using `[coeffE_singleE_ne h, hm d (Ne.symm h)]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem FinGradedSub.eq_singleE_of_mem_conePieceE {a : ℤ} {m : M.coneSubE} (hm : m ∈ M.conePieceE a) :
     (m : ConeE S x E) = singleE S x E a (coeffE S x E a m) := by
@@ -206,7 +206,7 @@ theorem FinGradedSub.eq_singleE_of_mem_conePieceE {a : ℤ} {m : M.coneSubE} (hm
   · rw [coeffE_singleE_ne h, hm d (Ne.symm h)]
 
 /- English proof (translation)
-Introduce `_ hd` and use `coeffE_singleE_ne (Ne.symm hd) v`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem FinGradedSub.singleE_mem_conePieceE {c : ℤ} {v : E} (hv : v ∈ M.piece c) :
     (⟨singleE S x E c v, M.singleE_mem_coneSubE hv⟩ : M.coneSubE) ∈ M.conePieceE c :=
@@ -239,15 +239,13 @@ def FinGradedSub.coneGradedE : GradedPMod S N M.coneSubE where
     rw [coeffE_smul_of_isHomogeneous hp, hm (e - d) (by omega), smul_zero]
 
 /- English proof (translation)
-Take `⟨n, deg, gen, hgen, hspan⟩` from `M.fg`. Establish `heq : M.coneSubE = Submodule.span (Poly S N) (Set.range fun j => singleE S x E (deg j) (gen j))`. Use `le_antisymm (fun w hw => ?_) (Submodule.span_le.mpr ?_)` and prove the remaining obligations. Rewrite using `[← sum_singleE w]`. Use `Submodule.sum_mem _ fun c _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hv` using `hspan c (hw c)`. Use `Submodule.span_induction (p := fun v _ => singleE S x E c v ∈ Submodule.span (Poly S N) (Set.range fun j => singleE S x E (deg j) (gen j))) ?_ ?_ ?_ ?_ hv` and prove the remaining obligations. Introduce and unpack `_ ⟨j, f, e, hf, hej, rfl⟩`. Establish `: singleE S x E c (aeval x f • gen j) = f • singleE S x E (deg j) (gen j)`. Rewrite using `[smul_singleE hf, show deg j + (e : ℤ) = c by omega]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Rewrite using `[map_zero]`. Conclude with `zero_mem _`. Introduce `a b _ _ ha hb`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_add]`. Conclude with `add_mem ha hb`. Introduce `s a _ ha`. Rewrite using `[map_smul]`. Conclude with `Submodule.smul_of_tower_mem _ s ha`.
-
-Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `M.singleE_mem_coneSubE (hgen j)`. Rewrite using `[Module.Finite.iff_fg, heq]`. Conclude with `Submodule.fg_span (Set.finite_range _)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FinGradedSub.coneSubE_finite : Module.Finite (Poly S N) M.coneSubE := by
   obtain ⟨n, deg, gen, hgen, hspan⟩ := M.fg

@@ -12,15 +12,15 @@ open scoped ENNReal NumberField.AdeleRing InnerProductSpace ComplexConjugate
 open scoped Pointwise
 
 /- English proof (translation)
-Use `set H : (UPos n r → 𝔸[K]) → ℂ := fun s => rc μ f φ (unipOne K n r s * x) with hH`. Use `set c : ℂ := ct r (rc μ f φ) x with hc`. Establish `hHc : Continuous H` using `(continuous_rconv (Gam K n) μ f φ).comp ((continuous_unipOne r).mul continuous_const)`. Establish `hper : ∀ ξ ∈ unipLattice K n r, ∀ s, H (ξ + s) = H s`. Introduce `ξ hξ s`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [H, rc]`. Rewrite using `[unipOne_add, mul_assoc, rconv_mul_left (Gam K n) μ f φ (unipOne_mem_rationalGLOne r ⟨ξ, hξ⟩)]`. Establish `hD` using `isAddFundamentalDomain_scaledUnipFD (K := K) (n := n) (r := r) hM`. Establish `hD1` using `unipMeasure_scaledUnipFD (K := K) (n := n) (r := r) hM`. Take `⟨C, hC, hDC⟩` from `exists_isCompact_superset_scaledUnipFD (K := K) (n := n) r hM`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : ∀ t, IntegrableOn (fun y => H (t + y)) (scaledUnipFD K n r M) (unipMeasure K n r)` using `fun t => ((hHc.comp (continuous_const.add continuous_id)).continuousOn.integrableOn_compact hC).mono_set hDC`. Establish `hcint : IntegrableOn (fun _ : UPos n r → 𝔸[K] => c) (scaledUnipFD K n r M) (unipMeasure K n r)` using `integrableOn_const (by rw [hD1]; exact ENNReal.one_ne_top)`. Establish `hmean0 : ∫ y in scaledUnipFD K n r M, H y ∂unipMeasure K n r = c`. Rewrite using `[hD.setIntegral_eq isAddFundamentalDomain_unipFundamentalDomain fun ξ s => hper ξ ξ.2 s]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi0 : IntegrableOn H (scaledUnipFD K n r M) (unipMeasure K n r)` using `by simpa using hint 0`. Establish `hmean : ∫ y in scaledUnipFD K n r M, (H y - c) ∂unipMeasure K n r = 0`. Rewrite using `[integral_sub hi0 hcint, hmean0, setIntegral_const, measureReal_def, hD1]`. Simplify using the standard rewrite rules. Establish `h0` using `norm_le_of_forall_altSum_le hD hD1 (k + 1) (fun s => H s - c) (fun ξ hξ s => by simp only [hper ξ hξ s]) (fun t => (hint t).sub hcint) hmean B (fun y hy => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `hB y hy` as an intermediate fact. Rewrite `this`, the goal using `[altSum_succ]`. Simplify `this)` using `only [sub_sub_sub_cancel_right]`. Simplify `h0` using `[H, unipOne_zero]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem sub_ct_le_of_altSum {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measure (G1 K n))
     [μ.IsHaarMeasure] (f : CC K n) (φ : L2 μ) {r M : ℕ} (hM : 0 < M) (x : G1 K n) (k : ℕ) {B : ℝ}
@@ -59,13 +59,11 @@ private theorem sub_ct_le_of_altSum {K : Type} [Field K] [NumberField K] {n : �
   simpa [H, unipOne_zero] using h0
 
 /- English proof (translation)
-Use `sub_ct_le_of_altSum (r := r) μ f φ hM x k fun y hy => ?_` and prove the remaining obligations. Establish `key : ∀ ε : Fin (k + 1) → Bool, rc μ f φ (unipOne K n r (0 + altPoint y ε) * x) = rc μ f φ (unipOne K n r (truncInf (0 + altPoint y ε)) * x)`. Introduce `ε`. Rewrite using `[zero_add]`. Establish `hfinP` using `hfin (truncFin (altPoint y ε)) (fun p => rfl) fun p => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨a, ha, hPa⟩` from `exists_finite_altPoint_eq_natCast_mul hM y hy ε p`. Conclude with `⟨a, ha, hPa⟩`. Establish `hP : unipOne K n r (altPoint y ε) * x = unipOne K n r (truncInf (altPoint y ε)) * x * (x⁻¹ * unipOne K n r (truncFin (altPoint y ε)) * x)`. Simplify using `only [mul_assoc, mul_inv_cancel_left]`. Rewrite using `[← mul_assoc, ← unipOne_add, truncInf_add_truncFin]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hP]`. Conclude with `rconv_mul_right μ f φ hfinP _`. Establish `heq : altSum (k + 1) (fun s => rc μ f φ (unipOne K n r s * x)) y 0 = altSum (k + 1) (fun s => rc μ f φ (unipOne K n r (truncInf s) * x)) y 0`. Rewrite using `[altSum_eq_sum, altSum_eq_sum]`. Conclude with `Finset.sum_congr rfl fun ε _ => congrArg (altSign ε • ·) (key ε)`.
-
-Rewrite using `[heq]`. Conclude with `hB y hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sub_ct_le_of_altSum_inf {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measure (G1 K n))
     [μ.IsHaarMeasure] (f : CC K n) (φ : L2 μ) {r M : ℕ} (hM : 0 < M) (x : G1 K n)
@@ -100,51 +98,45 @@ private theorem sub_ct_le_of_altSum_inf {K : Type} [Field K] [NumberField K] {n 
   exact hB y hy
 
 /- English proof (translation)
-Introduce `K _ _ n μ _ f hf ω t hBor ht r hr hrn`. Take `⟨hω, hωB⟩` from `hBor`. Take `⟨U, hU, hUf⟩` from `hf.2`. Take `⟨V₀, hV₀c, hV₀⟩` from `exists_compact_mem_nhds (1 : normOneGL K n)`. Take `⟨Cc, N, hCc⟩` from `exists_encard_le_siegel hω ht hV₀c`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨N, fun k => ?_⟩` and prove the remaining obligations. Take `⟨M, hM, hMconj⟩` from `exists_natCast_conj_unipGL_mem U hU hω r`. Take `⟨C₁, hC₁⟩` from `exists_norm_archMat_conj_le hω hωB ht hr hrn (isCompact_scaledInfSet (K := K) M)`. Use `set C₁' := max C₁ 0`. Use `set R₁ := C₁' * t⁻¹`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `diffBd f hf (k + 1) R₁`. Use `set c' := max c 0`. Establish `h𝒞` using `isCompact_unipBall (K := K) (n := n) (((k + 1 : ℕ) : ℝ) * R₁)`. Use `set Q := archProj K n '' unipBall (K := K) (n := n) (((k + 1 : ℕ) : ℝ) * R₁) * tsupport (f : normOneGL K n → ℂ)`. Establish `hQ : IsCompact Q` using `(h𝒞.image continuous_archProj).mul f.hasCompactSupport`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨s, -, hs⟩` from `hQ.elim_nhds_subcover (fun g => (fun y => y * g) '' V₀) fun g _ => by`. Use `(Homeomorph.mulRight g).isOpenMap.image_mem_nhds hV₀` as an intermediate fact. Rewrite `this` using `[Homeomorph.coe_mulRight]`. Simplify `this` using `only [one_mul]`. Use `⟨c' * C₁' ^ k * R₁ * √(μ.real Q * (s.card * max Cc 0)), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `φ ρ x R ⟨hρ, b, hb, kk, hkk, hx⟩ hsieg hR1 hR`. Take `⟨m₀, hmC₀, hm₀⟩` from `hCc b hb ρ hρ hsieg kk hkk x hx R hR1 hR`. Take `⟨m, hmdef⟩ : ∃ m : ℕ, m = s.card * m₀` from `⟨_, rfl⟩`. Establish `hm : ∀ z : normOneGL K n, {γ : rationalGLOne K n | γ • z ∈ (fun y => x * y) '' Q}.encard ≤ m`. Introduce `z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `encard_le_of_subset_mul s hs hm₀ z` as an intermediate fact. Rewrite using `[hmdef]`. Conclude with `this` after adjusting the coercions. Establish `hmC : (m : ℝ) ≤ s.card * Cc * R ^ N`. Rewrite using `[hmdef, Nat.cast_mul, mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_left hmC₀ (Nat.cast_nonneg _)`. Use `set gain := ρ ⟨r, hrn⟩ / ρ ⟨r - 1, by omega⟩`. Establish `hgain0 : 0 ≤ gain` using `div_nonneg (hρ _).le (hρ _).le`. Establish `hgain : gain ≤ t⁻¹`. Establish `h1` using `hsieg ⟨r - 1, by omega⟩ ⟨r, hrn⟩ (by simp; omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[div_le_iff₀ (hρ _), ← div_eq_inv_mul, le_div_iff₀ ht, mul_comm]`. Conclude with `h1`. Establish `hc'0 : 0 ≤ c'` using `le_max_right _ _`. Establish `hC₁'0 : 0 ≤ C₁'` using `le_max_right _ _`. Establish `hgR : C₁' * gain ≤ R₁` using `mul_le_mul_of_nonneg_left hgain hC₁'0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hg0 : 0 ≤ C₁' * gain` using `mul_nonneg hC₁'0 hgain0`. Use `set b₀ := c' * ((C₁' * gain) ^ k * R₁)`. Establish `hb₀ : 0 ≤ b₀` using `mul_nonneg hc'0 (mul_nonneg (pow_nonneg hg0 _) (hg0.trans hgR))`. Establish `hfinal : ‖rc μ f φ x - ct r (rc μ f φ) x‖ ≤ b₀ * √(μ.real Q * m) * ‖φ‖`. Use `sub_ct_le_of_altSum_inf (r := r) μ f φ hM x ?_ k ?_` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `z hz1 hz2 w`. Take `⟨u, hu⟩` from `hMconj b hb ρ hρ kk hkk z hz1 hz2`. Establish `hxu : x⁻¹ * unipOne K n r z * x = finOne K n (u : AdelicGLn.integralFiniteGL K n)`. Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(x : AdelicGLn.AdelicGL K n)⁻¹ * unipGL z * (x : AdelicGLn.AdelicGL K n) = finEmb K n _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hx]`. Conclude with `hu`. Rewrite using `[hxu, ← map_inv]`. Conclude with `hUf _ (U.inv_mem u.2) w`. Introduce `y hy set Y : Fin (k + 1) → ArchMatrix K n := fun i => conjArch K n (x : AdelicGLn.AdelicGL K n) (truncInf (y i))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hYY : ∀ i j, Y i * Y j = 0` using `fun i j => conjArch_mul_conjArch _ _ _`. Establish `hYn : ∀ i, ‖Y i‖ ≤ C₁' * gain`. Introduce `i`. Establish `h1` using `hC₁ b hb ρ hρ hsieg kk hkk (truncInf (y i)) (fun p => rfl) (fun p => infinite_mem_scaledInfSet hM (hy i) p)`. Apply the tactic sequence `have h2 : Y i = archMat K n ((((b * diagUnits n (fun i => posIdele (K := K) (ρ i) (hρ i)) * kk)⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]) * blockEntry (truncInf (y i)) * ((b * diagUnits n (fun i => posIdele (K := K) (ρ i) (hρ i)) * kk : AdelicGLn.AdelicGL K n) : …`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Y, conjArch, AddMonoidHom.coe_mk, ZeroHom.coe_mk, hx]`. Rewrite using `[h2]`. Conclude with `h1.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) hgain0)`. Establish `hYR : ∀ i, ‖Y i‖ ≤ R₁` using `fun i => (hYn i).trans hgR`. Establish `hex : ∀ ε : Fin (k + 1) → Bool, ∃ C : ArchUnits K n, archProj K n C = x⁻¹ * unipOne K n r (truncInf (altPoint y ε)) * x ∧ (C : ArchMatrix K n) = 1 + altPoint Y ε`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `ε`. Take `⟨C, hC1, hC2⟩` from `exists_archProj_eq_conj x (truncInf (altPoint y ε)) fun p => rfl`. Use `⟨C, hC1, ?_⟩` and prove the remaining obligations. Rewrite using `[hC2, ← truncInfHom_apply, map_altPoint (truncInfHom n r), map_altPoint (conjArch K n (x : AdelicGLn.AdelicGL K n))]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `choose Cε hCε1 hCε2 using hex`. Establish `hsum : altSum (k + 1) (fun s => rc μ f φ (unipOne K n r (truncInf s) * x)) y 0 = ∑ ε, (altSign ε : ℂ) * rconv (rationalGLOne K n) μ f φ (x * archProj K n (Cε ε))`. Rewrite using `[altSum_eq_sum]`. Use `Finset.sum_congr rfl fun ε _ => ?_` and prove the remaining obligations. Rewrite using `[zero_add, hCε1 ε, zsmul_eq_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `: x * (x⁻¹ * unipOne K n r (truncInf (altPoint y ε)) * x) = unipOne K n r (truncInf (altPoint y ε)) * x` using `by group`. Rewrite using `[this]`. Rewrite using `[hsum]`. Establish `hb' : ∀ w, ‖∑ ε, (altSign ε : ℂ) * f ((archProj K n (Cε ε))⁻¹ * w)‖ ≤ b₀`. Introduce `w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `(hc Y hYY hYR Cε hCε2 w).trans ?_` and prove the remaining obligations. Establish `hprod : ∏ i, ‖Y i‖ ≤ (C₁' * gain) ^ (k + 1)`. Rewrite using `[← Fin.prod_const]`. Conclude with `Finset.prod_le_prod (fun i _ => norm_nonneg _) fun i _ => hYn i`. Establish `hprod' : ∏ i, ‖Y i‖ ≤ (C₁' * gain) ^ k * R₁`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hprod.trans ?_` and prove the remaining obligations. Rewrite using `[pow_succ]`. Conclude with `mul_le_mul_of_nonneg_left hgR (pow_nonneg hg0 _)`. Combine the equalities or inequalities in the displayed calculation. Establish `hmem : ∀ ε, Cε ε ∈ unipBall (K` using `K) (n := n) (((k + 1 : ℕ) : ℝ) * R₁) := fun ε => mem_unipBall_of_val_eq hYY hYR (hCε2 ε)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsq` using `enorm_sum_altSign_rconv_sq_le μ f φ x h𝒞 Cε hmem hb' hm`. Establish `hA : ENNReal.ofReal b₀ ^ 2 * μ Q * (m : ℝ≥0∞) ≠ ⊤` using `ENNReal.mul_ne_top (ENNReal.mul_ne_top (by simp) hQ.measure_lt_top.ne) (by simp)`. Establish `hle` using `norm_le_of_enorm_sq_le hA (by rw [mul_assoc]; exact hsq)`. Use `hle.trans (le_of_eq ?_)` and prove the remaining obligations. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Rewrite using `[ENNReal.toReal_mul, ENNReal.toReal_mul, ENNReal.toReal_pow, ENNReal.toReal_ofReal hb₀, ENNReal.toReal_natCast, Real.sqrt_mul (by positivity), Real.sqrt_mul' _ (by positivity), Real.sqrt_sq hb₀, measureReal_def, mul_assoc, Real.sqrt_mul ENNReal.toReal_nonneg]`. Use `hfinal.trans ?_` and prove the remaining obligations. Establish `hμQ : 0 ≤ μ.real Q` using `measureReal_nonneg`. Establish `hRN : 1 ≤ R ^ N` using `one_le_pow₀ hR1`. Establish `hm' : (m : ℝ) ≤ s.card * max Cc 0 * R ^ N` using `hmC.trans (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left (le_max_left _ _) (Nat.cast_nonneg _)) (pow_nonneg (by linarith) _))`.
-
-Establish `hsqrt : √(μ.real Q * m) ≤ √(μ.real Q * (s.card * max Cc 0)) * √(R ^ N)`. Rewrite using `[← Real.sqrt_mul (mul_nonneg hμQ (mul_nonneg (Nat.cast_nonneg _) (le_max_right _ _)))]`. Use `Real.sqrt_le_sqrt ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left hm' hμQ`.
-
-Establish `hsR : √(R ^ N) ≤ R ^ N`. Rewrite using `[Real.sqrt_le_left (by linarith)]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hsqrt' : √(μ.real Q * m) ≤ √(μ.real Q * (s.card * max Cc 0)) * R ^ N` using `hsqrt.trans (mul_le_mul_of_nonneg_left hsR (Real.sqrt_nonneg _))`. Combine the equalities or inequalities in the displayed calculation.
-
-Simplify using `only [b₀, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.rootDecay :
     ∀ {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measure (G1 K n)) [μ.IsHaarMeasure] (a : CC K n), IsLeftSmooth a → ∀ (ω : Set (AdelicGLn.AdelicGL K n)) (t : ℝ), Bor ω → 0 < t →

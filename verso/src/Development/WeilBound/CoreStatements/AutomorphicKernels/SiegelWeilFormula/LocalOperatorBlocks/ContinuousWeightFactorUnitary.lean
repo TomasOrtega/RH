@@ -10,7 +10,7 @@ namespace PositivityTheory.SiegelWeilFormula.KLI
 variable {m n : ℕ}
 
 /- English proof (translation)
-Introduce `x y h`. Conclude with `Subtype.ext (Units.ext h)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mR_injective : Function.Injective (mR : GR n → M2 n) := by
   intro x y h
@@ -27,13 +27,13 @@ Both sides reduce to the same expression.
 theorem mR_one : mR (1 : GR n) = 1 := rfl
 
 /- English proof (translation)
-Simplify using `[JJ, Matrix.fromBlocks_multiply, Matrix.fromBlocks_neg, ← Matrix.fromBlocks_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem JJ_mul_JJ : JJ n * JJ n = -1 := by
   simp [JJ, Matrix.fromBlocks_multiply, Matrix.fromBlocks_neg, ← Matrix.fromBlocks_one]
 
 /- English proof (translation)
-Introduce `h0`. Establish `e` using `congrArg Matrix.det (JJ_mul_JJ (n := n))`. Rewrite `e` using `[Matrix.det_mul, h0, zero_mul, Matrix.det_neg, Matrix.det_one, mul_one]`. Conclude with `(pow_ne_zero _ (neg_ne_zero.2 one_ne_zero)) e.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem JJ_det_ne : (JJ n).det ≠ 0 := by
   intro h0
@@ -42,7 +42,7 @@ theorem JJ_det_ne : (JJ n).det ≠ 0 := by
   exact (pow_ne_zero _ (neg_ne_zero.2 one_ne_zero)) e.symm
 
 /- English proof (translation)
-Establish `e` using `congrArg Matrix.det h`. Rewrite `e` using `[Matrix.det_mul, Matrix.det_mul]`. Use `isUnit_iff_ne_zero.2 fun h0 => ?_` and prove the remaining obligations. Rewrite `e` using `[h0, mul_zero]`. Conclude with `JJ_det_ne e.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_ne_of_inG {M : M2 n} (h : InG M) : IsUnit M.det := by
   have e := congrArg Matrix.det h
@@ -59,7 +59,7 @@ Both sides reduce to the same expression.
 theorem mR_toGR (M : M2 n) (h : InG M) : mR (toGR M h) = M := rfl
 
 /- English proof (translation)
-Establish `h1 : IsUnit (aᴴ).det` using `by rw [Matrix.det_conjTranspose]; exact ha.star`. Simplify using `[InG, mLc, JJ, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, Matrix.conjTranspose_nonsing_inv, Matrix.mul_nonsing_inv _ h1, Matrix.nonsing_inv_mul _ ha]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem inG_mLc {a : Matrix (Fin n) (Fin n) ℂ} (ha : IsUnit a.det) : InG (mLc a) := by
   have h1 : IsUnit (aᴴ).det := by rw [Matrix.det_conjTranspose]; exact ha.star
@@ -67,13 +67,13 @@ theorem inG_mLc {a : Matrix (Fin n) (Fin n) ℂ} (ha : IsUnit a.det) : InG (mLc 
     Matrix.mul_nonsing_inv _ h1, Matrix.nonsing_inv_mul _ ha]
 
 /- English proof (translation)
-Simplify using `[InG, nU, JJ, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, hb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inG_nU {b : Matrix (Fin n) (Fin n) ℂ} (hb : bᴴ = b) : InG (nU b) := by
   simp [InG, nU, JJ, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, hb]
 
 /- English proof (translation)
-Simplify using `[InG, JJ, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, ← Matrix.fromBlocks_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inG_JJ : InG (JJ n) := by
   simp [InG, JJ, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, ← Matrix.fromBlocks_one]
@@ -83,7 +83,7 @@ open scoped Classical in
 def mG (a : Matrix (Fin n) (Fin n) ℂ) : GR n := if h : IsUnit a.det then toGR _ (inG_mLc h) else 1
 
 /- English proof (translation)
-Unfold `mG`. Rewrite using `[dif_pos ha]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mR_mG {a : Matrix (Fin n) (Fin n) ℂ} (ha : IsUnit a.det) : mR (mG a) = mLc a := by
   unfold mG; rw [dif_pos ha]; rfl
@@ -93,7 +93,7 @@ open scoped Classical in
 def nG (b : Matrix (Fin n) (Fin n) ℂ) : GR n := if h : bᴴ = b then toGR _ (inG_nU h) else 1
 
 /- English proof (translation)
-Unfold `nG`. Rewrite using `[dif_pos hb]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mR_nG {b : Matrix (Fin n) (Fin n) ℂ} (hb : bᴴ = b) : mR (nG b) = nU b := by
   unfold nG; rw [dif_pos hb]; rfl
@@ -106,13 +106,11 @@ Both sides reduce to the same expression.
 theorem mR_jG : mR (jG n) = JJ n := rfl
 
 /- English proof (translation)
-Establish `e : (Matrix.fromBlocks M.toBlocks₁₁ M.toBlocks₁₂ M.toBlocks₂₁ M.toBlocks₂₂)ᴴ * JJ n * Matrix.fromBlocks M.toBlocks₁₁ M.toBlocks₁₂ M.toBlocks₂₁ M.toBlocks₂₂ = JJ n`. Rewrite using `[Matrix.fromBlocks_toBlocks]`. Conclude with `h`. Simplify using `only [JJ, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_inj] at e`. Take `⟨e1, e2, -, e4⟩` from `e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `e1` as an intermediate fact. Simplify using `at this`. Conclude with `(neg_add_eq_zero.1 this).symm`. Use `e2` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `at this`. Rewrite using `[sub_eq_neg_add]`. Conclude with `this`. Use `e4` as an intermediate fact. Simplify using `at this`.
-
-Conclude with `(neg_add_eq_zero.1 this).symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inG_blocks {M : M2 n} (h : InG M) :
     M.toBlocks₁₁ᴴ * M.toBlocks₂₁ = M.toBlocks₂₁ᴴ * M.toBlocks₁₁ ∧
@@ -129,13 +127,11 @@ theorem inG_blocks {M : M2 n} (h : InG M) :
   · have := e4; simp at this; exact (neg_add_eq_zero.1 this).symm
 
 /- English proof (translation)
-Take `⟨-, hAD, hBD⟩` from `inG_blocks (M := mR y) y.2`. Use `set A := (mR y).toBlocks₁₁`. Use `set B := (mR y).toBlocks₁₂`. Use `set D := (mR y).toBlocks₂₂`. Rewrite `hAD` using `[h, Matrix.conjTranspose_zero, Matrix.zero_mul, sub_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hA : IsUnit A.det`. Establish `h1` using `congrArg Matrix.det hAD`. Rewrite `h1` using `[Matrix.det_mul, Matrix.det_one, Matrix.det_conjTranspose]`. Conclude with `isUnit_iff_ne_zero.2 fun h0 => by simp [h0] at h1`. Establish `hD : D = (Aᴴ)⁻¹` using `(Matrix.inv_eq_right_inv hAD).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hb : (A⁻¹ * B)ᴴ = A⁻¹ * B`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_nonsing_inv, ← hD, hBD, hD, Matrix.conjTranspose_nonsing_inv, Matrix.conjTranspose_conjTranspose]`. Use `⟨A, A⁻¹ * B, hA, hb, mR_injective ?_⟩` and prove the remaining obligations. Rewrite using `[mR_mul, mR_mG hA, mR_nG hb, mLc, nU, Matrix.fromBlocks_multiply, ← Matrix.fromBlocks_toBlocks (mR y)]`. Simplify using `only [Matrix.mul_one, Matrix.zero_mul, add_zero, Matrix.mul_zero, zero_add, Matrix.mul_nonsing_inv_cancel_left _ _ hA]`.
-
-Rewrite using `[h]`. Use `show Matrix.fromBlocks A B 0 D = Matrix.fromBlocks A B 0 (Aᴴ)⁻¹`. Rewrite using `[← hD]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem par_eq (y : GR n) (h : (mR y).toBlocks₂₁ = 0) :
     ∃ a b : Matrix (Fin n) (Fin n) ℂ, IsUnit a.det ∧ bᴴ = b ∧ y = mG a * nG b := by
@@ -160,13 +156,13 @@ theorem par_eq (y : GR n) (h : (mR y).toBlocks₂₁ = 0) :
   rw [← hD]
 
 /- English proof (translation)
-The claim follows from `mR_injective (by rw [mR_mul, mR_jG, mR_nG hb, h])`.
+A detailed English derivation is pending.
 -/
 theorem eq_jn (g : GR n) (b : Matrix (Fin n) (Fin n) ℂ) (hb : bᴴ = b) (h : mR g = JJ n * nU b) : g = jG n * nG b :=
   mR_injective (by rw [mR_mul, mR_jG, mR_nG hb, h])
 
 /- English proof (translation)
-Use `conv_lhs => rw [← Matrix.fromBlocks_toBlocks M]`. Rewrite using `[Matrix.fromBlocks_mulVec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mulVec_blocks (M : M2 n) (x y : Fin n → ℂ) :
     M *ᵥ Sum.elim x y = Sum.elim (M.toBlocks₁₁ *ᵥ x + M.toBlocks₁₂ *ᵥ y) (M.toBlocks₂₁ *ᵥ x + M.toBlocks₂₂ *ᵥ y) := by
@@ -175,7 +171,7 @@ theorem mulVec_blocks (M : M2 n) (x y : Fin n → ℂ) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[JJ, Matrix.fromBlocks_mulVec]`. Simplify using `[dotProduct, Fintype.sum_sum_type, Matrix.neg_mulVec, sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dot_JJ (x y : Fin n → ℂ) :
     star (Sum.elim x y) ⬝ᵥ (JJ n *ᵥ Sum.elim x y) = star x ⬝ᵥ y - star y ⬝ᵥ x := by
@@ -183,7 +179,7 @@ theorem dot_JJ (x y : Fin n → ℂ) :
   simp [dotProduct, Fintype.sum_sum_type, Matrix.neg_mulVec, sub_eq_add_neg]
 
 /- English proof (translation)
-Use `conv_rhs => rw [← h]`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inG_dot {M : M2 n} (h : InG M) (z : Fin n ⊕ Fin n → ℂ) :
     star (M *ᵥ z) ⬝ᵥ (JJ n *ᵥ (M *ᵥ z)) = star z ⬝ᵥ (JJ n *ᵥ z) := by
@@ -192,11 +188,11 @@ theorem inG_dot {M : M2 n} (h : InG M) (z : Fin n ⊕ Fin n → ℂ) :
 
 open scoped ComplexOrder in
 /- English proof (translation)
-Take `⟨x, hx0, hx⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`. Establish `e` using `inG_dot (M := mR g) g.2 (Sum.elim (c • x) x)`. Rewrite `e` using `[mulVec_blocks]`. Establish `hlow : (mR g).toBlocks₂₁ *ᵥ (c • x) + (mR g).toBlocks₂₂ *ᵥ x = 0`. Rewrite using `[← hx, Matrix.add_mulVec, Matrix.smul_mulVec, Matrix.mulVec_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e` using `[hlow, dot_JJ, dot_JJ]`. Simplify using `only [star_zero, zero_dotProduct, dotProduct_zero, sub_zero, star_smul, smul_dotProduct, dotProduct_smul, smul_eq_mul] at e`. Establish `hxx : star x ⬝ᵥ x ≠ 0` using `fun h => hx0 (dotProduct_star_self_eq_zero.1 h)`. Establish `: (star c - c) * (star x ⬝ᵥ x) = 0` using `by rw [sub_mul]; exact e.symm`. Break down `mul_eq_zero.1 this with h | h` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hc h`. Conclude with `hxx h`.
+A detailed English derivation is pending.
 -/
 theorem automorphy_det_ne_zero_of_im (g : GR n) (c : ℂ) (hc : star c - c ≠ 0)
     (h0 : (c • (mR g).toBlocks₂₁ + (mR g).toBlocks₂₂).det = 0) : False := by
@@ -215,55 +211,55 @@ theorem automorphy_det_ne_zero_of_im (g : GR n) (c : ℂ) (hc : star c - c ≠ 0
   · exact hxx h
 
 /- English proof (translation)
-Introduce `h0` and use `automorphy_det_ne_zero_of_im g Complex.I (by norm_num [Complex.ext_iff]) (by rw [u1] at h0; exact h0)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem automorphy_first_det_ne_zero (g : GR n) : (u1 (mR g)).det ≠ 0 := fun h0 =>
   automorphy_det_ne_zero_of_im g Complex.I (by norm_num [Complex.ext_iff]) (by rw [u1] at h0; exact h0)
 
 /- English proof (translation)
-Introduce `h0` and use `automorphy_det_ne_zero_of_im g (-Complex.I) (by norm_num [Complex.ext_iff]) (by rw [u2, ← neg_smul] at h0; exact h0)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem automorphy_second_det_ne_zero (g : GR n) : (u2 (mR g)).det ≠ 0 := fun h0 =>
   automorphy_det_ne_zero_of_im g (-Complex.I) (by norm_num [Complex.ext_iff]) (by rw [u2, ← neg_smul] at h0; exact h0)
 
 /- English proof (translation)
-Use `conv_lhs => rw [← Matrix.fromBlocks_toBlocks M, ← Matrix.fromBlocks_toBlocks N, Matrix.fromBlocks_multiply]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lower_left_block_mul (M N : M2 n) : (M * N).toBlocks₂₁ = M.toBlocks₂₁ * N.toBlocks₁₁ + M.toBlocks₂₂ * N.toBlocks₂₁ := by
   conv_lhs => rw [← Matrix.fromBlocks_toBlocks M, ← Matrix.fromBlocks_toBlocks N, Matrix.fromBlocks_multiply]
   rfl
 
 /- English proof (translation)
-Use `conv_lhs => rw [← Matrix.fromBlocks_toBlocks M, ← Matrix.fromBlocks_toBlocks N, Matrix.fromBlocks_multiply]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lower_right_block_mul (M N : M2 n) : (M * N).toBlocks₂₂ = M.toBlocks₂₁ * N.toBlocks₁₂ + M.toBlocks₂₂ * N.toBlocks₂₂ := by
   conv_lhs => rw [← Matrix.fromBlocks_toBlocks M, ← Matrix.fromBlocks_toBlocks N, Matrix.fromBlocks_multiply]
   rfl
 
 /- English proof (translation)
-Simplify using `[u1, lower_left_block_mul, lower_right_block_mul, h, Matrix.mul_add, Matrix.mul_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem automorphy_first_mul_parabolic (M N : M2 n) (h : M.toBlocks₂₁ = 0) : u1 (M * N) = M.toBlocks₂₂ * u1 N := by
   simp [u1, lower_left_block_mul, lower_right_block_mul, h, Matrix.mul_add, Matrix.mul_smul]
 
 /- English proof (translation)
-Simplify using `[u2, lower_left_block_mul, lower_right_block_mul, h, Matrix.mul_add, Matrix.mul_smul, Matrix.mul_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem automorphy_second_mul_parabolic (M N : M2 n) (h : M.toBlocks₂₁ = 0) : u2 (M * N) = M.toBlocks₂₂ * u2 N := by
   simp [u2, lower_left_block_mul, lower_right_block_mul, h, Matrix.mul_add, Matrix.mul_smul, Matrix.mul_neg]
 
 /- English proof (translation)
-Simplify using `[u1, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem automorphy_first_parabolic (M : M2 n) (h : M.toBlocks₂₁ = 0) : u1 M = M.toBlocks₂₂ := by simp [u1, h]
 
 /- English proof (translation)
-Simplify using `[u2, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem automorphy_second_parabolic (M : M2 n) (h : M.toBlocks₂₁ = 0) : u2 M = M.toBlocks₂₂ := by simp [u2, h]
 
 /- English proof (translation)
-Establish `h21 : (1 : M2 n).toBlocks₂₁ = 0` using `by rw [← Matrix.fromBlocks_one, Matrix.toBlocks_fromBlocks₂₁]`. Establish `h22 : (1 : M2 n).toBlocks₂₂ = 1` using `by rw [← Matrix.fromBlocks_one, Matrix.toBlocks_fromBlocks₂₂]`. Simplify using `[F0, f0, mR_one, u1, u2, h21, h22]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem weight_factor_one (p q : ℕ) (e : ℤ) : F0 p q e (1 : GR n) = 1 := by
   have h21 : (1 : M2 n).toBlocks₂₁ = 0 := by rw [← Matrix.fromBlocks_one, Matrix.toBlocks_fromBlocks₂₁]
@@ -271,7 +267,7 @@ theorem weight_factor_one (p q : ℕ) (e : ℤ) : F0 p q e (1 : GR n) = 1 := by
   simp [F0, f0, mR_one, u1, u2, h21, h22]
 
 /- English proof (translation)
-Simplify using `only [F0, f0, mR_mul, Matrix.det_mul, automorphy_first_mul_parabolic _ _ h, automorphy_second_mul_parabolic _ _ h, automorphy_first_parabolic _ h, automorphy_second_parabolic _ h, mul_zpow]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem weight_factor_mul_parabolic (p q : ℕ) (e : ℤ) (y g : GR n) (h : (mR y).toBlocks₂₁ = 0) :
     F0 p q e (y * g) = F0 p q e y * F0 p q e g := by
@@ -279,9 +275,9 @@ theorem weight_factor_mul_parabolic (p q : ℕ) (e : ℤ) (y g : GR n) (h : (mR 
   ring
 
 /- English proof (translation)
-Establish `hm : mR (mG a * nG b) = Matrix.fromBlocks a (a * b) 0 (aᴴ)⁻¹`. Rewrite using `[mR_mul, mR_mG ha, mR_nG hb, mLc, nU, Matrix.fromBlocks_multiply]`. Simplify using the standard rewrite rules. Establish `hs : star a.det ≠ 0` using `star_ne_zero.2 ha.ne_zero`. Establish `hi : ((aᴴ)⁻¹).det = (star a.det)⁻¹` using `by rw [Matrix.det_nonsing_inv, Matrix.det_conjTranspose, Ring.inverse_eq_inv']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [F0, f0, hm, u1, u2, Matrix.toBlocks_fromBlocks₂₁, Matrix.toBlocks_fromBlocks₂₂, smul_zero, neg_zero, zero_add, Matrix.det_fromBlocks_zero₂₁, hi]`. Rewrite using `[mul_zpow, inv_zpow', inv_zpow', inv_zpow', neg_neg, neg_neg, mul_assoc, ← zpow_add₀ hs, ← zpow_add₀ hs]`. Put the polynomial expressions in normal form.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form.
 -/
 theorem weight_factor_levi_unipotent (p q : ℕ) (e : ℤ) (a b : Matrix (Fin n) (Fin n) ℂ) (ha : IsUnit a.det) (hb : bᴴ = b) :
     F0 (n := n) p q e (mG a * nG b) = a.det ^ e * (star a.det) ^ ((p : ℤ) + q - e) := by
@@ -295,20 +291,20 @@ theorem weight_factor_levi_unipotent (p q : ℕ) (e : ℤ) (a b : Matrix (Fin n)
   ring_nf
 
 /- English proof (translation)
-The claim follows from `Units.continuous_val.comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem mR_cont : Continuous (mR : GR n → M2 n) := Units.continuous_val.comp continuous_subtype_val
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun i => continuous_pi fun j => (continuous_apply (g j)).comp (continuous_apply (f i))`.
+A detailed English derivation is pending.
 -/
 theorem cont_blk (f g : Fin n → Fin n ⊕ Fin n) : Continuous fun M : M2 n => (Matrix.of fun i j => M (f i) (g j)) :=
   continuous_pi fun i => continuous_pi fun j => (continuous_apply (g j)).comp (continuous_apply (f i))
 
 /- English proof (translation)
-Establish `h21 : Continuous fun g : GR n => (mR g).toBlocks₂₁` using `(cont_blk Sum.inr Sum.inl).comp mR_cont`. Establish `h22 : Continuous fun g : GR n => (mR g).toBlocks₂₂` using `(cont_blk Sum.inr Sum.inr).comp mR_cont`. Establish `hd : Continuous fun g : GR n => (mR g).det` using `mR_cont.matrix_det`. Establish `hu1 : Continuous fun g : GR n => (u1 (mR g)).det` using `((h21.const_smul Complex.I).add h22).matrix_det`. Establish `hu2 : Continuous fun g : GR n => (u2 (mR g)).det` using `((h21.const_smul Complex.I).neg.add h22).matrix_det`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hd.zpow₀ e fun g => Or.inl (det_ne_of_inG g.2).ne_zero).mul ?_` and prove the remaining obligations. Conclude with `(hu1.zpow₀ _ fun g => Or.inl (automorphy_first_det_ne_zero g)).mul (hu2.zpow₀ _ fun g => Or.inl (automorphy_second_det_ne_zero g))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_weight_factor_unitary (p q : ℕ) (e : ℤ) : Continuous (F0 (n := n) p q e) := by
   have h21 : Continuous fun g : GR n => (mR g).toBlocks₂₁ := (cont_blk Sum.inr Sum.inl).comp mR_cont
@@ -320,9 +316,9 @@ theorem continuous_weight_factor_unitary (p q : ℕ) (e : ℤ) : Continuous (F0 
   exact (hu1.zpow₀ _ fun g => Or.inl (automorphy_first_det_ne_zero g)).mul (hu2.zpow₀ _ fun g => Or.inl (automorphy_second_det_ne_zero g))
 
 /- English proof (translation)
-Establish `hM` using `det_ne_of_inG h`. Establish `hX : IsUnit (JJ n * M).det`. Rewrite using `[Matrix.det_mul]`. Conclude with `(isUnit_iff_ne_zero.2 JJ_det_ne).mul hM`. Establish `e : M * JJ n * Mᴴ * (JJ n * M) = JJ n * (JJ n * M)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem inG_swap {M : M2 n} (h : InG M) : M * JJ n * Mᴴ = JJ n := by
   have hM := det_ne_of_inG h
@@ -337,11 +333,11 @@ theorem inG_swap {M : M2 n} (h : InG M) : M * JJ n * Mᴴ = JJ n := by
     _ = JJ n := by rw [Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hX, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `e : Matrix.fromBlocks M.toBlocks₁₁ M.toBlocks₁₂ M.toBlocks₂₁ M.toBlocks₂₂ * JJ n * (Matrix.fromBlocks M.toBlocks₁₁ M.toBlocks₁₂ M.toBlocks₂₁ M.toBlocks₂₂)ᴴ = JJ n`. Rewrite using `[Matrix.fromBlocks_toBlocks]`. Conclude with `inG_swap h`. Simplify using `only [JJ, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_inj] at e`. Take `⟨-, e2, -, e4⟩` from `e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `e2` as an intermediate fact. Simplify using `at this`. Rewrite using `[sub_eq_neg_add]`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `e4` as an intermediate fact. Simplify using `at this`. Conclude with `(neg_add_eq_zero.1 this).symm`.
+A detailed English derivation is pending.
 -/
 theorem inG_blocks' {M : M2 n} (h : InG M) :
     M.toBlocks₁₁ * M.toBlocks₂₂ᴴ - M.toBlocks₁₂ * M.toBlocks₂₁ᴴ = 1 ∧
@@ -356,21 +352,19 @@ theorem inG_blocks' {M : M2 n} (h : InG M) :
   · have := e4; simp at this; exact (neg_add_eq_zero.1 this).symm
 
 /- English proof (translation)
-Take `⟨h1, -, -⟩` from `inG_blocks (M := mR g) g.2`. Take `⟨k2, k4⟩` from `inG_blocks' (M := mR g) g.2`. Use `set A := (mR g).toBlocks₁₁ with hA`. Use `set B := (mR g).toBlocks₁₂ with hB`. Use `set C := (mR g).toBlocks₂₁ with hC`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set D := (mR g).toBlocks₂₂ with hD`. Establish `hCi : C * C⁻¹ = 1` using `Matrix.mul_nonsing_inv _ h`. Establish `hiC : C⁻¹ * C = 1` using `Matrix.nonsing_inv_mul _ h`. Establish `hCH : (C⁻¹)ᴴ * Cᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, hCi, Matrix.conjTranspose_one]`. Establish `hHC : Cᴴ * (C⁻¹)ᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, hiC, Matrix.conjTranspose_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set a := -(C⁻¹)ᴴ with ha_def`. Establish `ha : IsUnit a.det`. Establish `e : a * (-Cᴴ) = 1` using `by rw [ha_def, neg_mul_neg, hCH]`. Use `congrArg Matrix.det e` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, Matrix.det_one]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `isUnit_iff_ne_zero.2 (left_ne_zero_of_mul_eq_one this)`. Establish `haH : (aᴴ)⁻¹ = -C`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[ha_def, Matrix.conjTranspose_neg, Matrix.conjTranspose_conjTranspose, neg_mul_neg, hCi]`. Establish `hb : (Cᴴ * A)ᴴ = Cᴴ * A` using `by rw [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, h1]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb' : (C⁻¹ * D)ᴴ = C⁻¹ * D`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨a, Cᴴ * A, C⁻¹ * D, ha, hb, hb', mR_injective ?_⟩` and prove the remaining obligations. Establish `hBe : B = A * (C⁻¹ * D) - (C⁻¹)ᴴ`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hDC : Dᴴ * (C⁻¹)ᴴ = C⁻¹ * D` using `by rw [← Matrix.conjTranspose_mul, hb']`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mR_mul, mR_mul, mR_mul, mR_mG ha, mR_nG hb, mR_jG, mR_nG hb', mLc, nU, JJ, nU, haH]`. Use `conv_lhs => rw [← Matrix.fromBlocks_toBlocks (mR g)]`. Simplify using `only [Matrix.fromBlocks_multiply, Matrix.mul_one, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.one_mul, Matrix.mul_neg, Matrix.neg_mul, neg_zero, neg_neg]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Both sides reduce to the same expression.
 
-Rewrite using `[Matrix.fromBlocks_inj]`. Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_⟩ <;> symm`. Rewrite using `[ha_def, Matrix.neg_mul, neg_neg, ← Matrix.mul_assoc, hCH, Matrix.one_mul]`. Rewrite using `[show Matrix.toBlocks₁₂ (mR g) = B from rfl, hBe, ha_def]`. Simplify using `only [Matrix.neg_mul, Matrix.mul_add, Matrix.mul_neg, ← Matrix.mul_assoc, hCH, Matrix.one_mul]`.
-
-Normalize the expressions using the abelian group laws. Both sides reduce to the same expression. Rewrite using `[← Matrix.mul_assoc, hCi, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem big_eq (g : GR n) (h : IsUnit (mR g).toBlocks₂₁.det) :
     ∃ a b b' : Matrix (Fin n) (Fin n) ℂ, IsUnit a.det ∧ bᴴ = b ∧ b'ᴴ = b' ∧ g = mG a * nG b * jG n * nG b' := by
@@ -418,7 +412,7 @@ theorem big_eq (g : GR n) (h : IsUnit (mR g).toBlocks₂₁.det) :
   · rw [← Matrix.mul_assoc, hCi, Matrix.one_mul]
 
 /- English proof (translation)
-Use `⟨((Polynomial.X : Polynomial ℂ) • C.map Polynomial.C + D.map Polynomial.C).det, fun r => ?_⟩` and prove the remaining obligations. Rewrite using `[← Polynomial.coe_evalRingHom, RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -432,9 +426,9 @@ theorem det_poly (C D : Matrix (Fin n) (Fin n) ℂ) :
   ring
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `hp` to reduce the goal to its premises. Apply `Polynomial.eq_zero_of_infinite_isRoot` to reduce the goal to its premises. Use `Set.Infinite.mono (fun x hx => ?_) (Set.infinite_range_of_injective (Nat.cast_injective (R := ℂ)))` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨k, rfl⟩` from `hx`. Conclude with `h k`.
+A detailed English derivation is pending.
 -/
 theorem exists_real_ne {p : Polynomial ℂ} (hp : p ≠ 0) : ∃ k : ℕ, p.eval (k : ℂ) ≠ 0 := by
   by_contra h
@@ -446,7 +440,7 @@ theorem exists_real_ne {p : Polynomial ℂ} (hp : p ≠ 0) : ∃ k : ℕ, p.eval
   exact h k
 
 /- English proof (translation)
-Establish `hi : ((-1 : Matrix (Fin n) (Fin n) ℂ)ᴴ)⁻¹ = -1`. Rewrite using `[Matrix.conjTranspose_neg, Matrix.conjTranspose_one]`. Conclude with `Matrix.inv_eq_left_inv (by simp)`. Rewrite using `[mLc, hi, ← Matrix.fromBlocks_one, Matrix.fromBlocks_neg]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mLc_neg_one : mLc (-1 : Matrix (Fin n) (Fin n) ℂ) = -1 := by
   have hi : ((-1 : Matrix (Fin n) (Fin n) ℂ)ᴴ)⁻¹ = -1 := by
@@ -456,13 +450,13 @@ theorem mLc_neg_one : mLc (-1 : Matrix (Fin n) (Fin n) ℂ) = -1 := by
   simp
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_neg, Matrix.det_one, mul_one]`. Conclude with `(isUnit_neg_one.pow _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_neg_one_det : IsUnit (-1 : Matrix (Fin n) (Fin n) ℂ).det := by
   rw [Matrix.det_neg, Matrix.det_one, mul_one]; exact (isUnit_neg_one.pow _)
 
 /- English proof (translation)
-Apply `mR_injective` to reduce the goal to its premises. Rewrite using `[mR_mul, mR_mul, mR_jG, mR_mG isUnit_neg_one_det, mLc_neg_one, JJ_mul_JJ, mR_one]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem jj_m_eq : jG n * jG n * mG (-1) = 1 := by
   apply mR_injective
@@ -470,21 +464,19 @@ theorem jj_m_eq : jG n * jG n * mG (-1) = 1 := by
   simp
 
 /- English proof (translation)
-Rewrite using `[Matrix.conjTranspose_smul, Matrix.conjTranspose_one]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem herm_real (t : ℝ) : ((t : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ))ᴴ = (t : ℂ) • 1 := by
   rw [Matrix.conjTranspose_smul, Matrix.conjTranspose_one]; simp
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `det_poly (mR g).toBlocks₂₁ (mR g).toBlocks₂₂`. Establish `hp0 : p ≠ 0` using `fun h0 => automorphy_first_det_ne_zero g (by rw [u1, ← hp, h0, Polynomial.eval_zero])`. Take `⟨k, hk⟩` from `exists_real_ne hp0`. Use `set t : ℝ := (k : ℝ)`. Use `set g' := g * nG ((t : ℂ) • 1) * jG n`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h21 : (mR g').toBlocks₂₁ = -((t : ℂ) • (mR g).toBlocks₂₁ + (mR g).toBlocks₂₂)`. Simplify using `only [g', mR_mul, mR_jG, mR_nG (herm_real t), lower_left_block_mul, lower_right_block_mul, JJ, nU, Matrix.toBlocks_fromBlocks₁₁, Matrix.toBlocks_fromBlocks₁₂, Matrix.toBlocks_fromBlocks₂₁, Matrix.toBlocks_fromBlocks₂₂]`. Simplify using `[Matrix.mul_smul, add_comm]`. Establish `hu : IsUnit (mR g').toBlocks₂₁.det`. Rewrite using `[h21, Matrix.det_neg, ← hp]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(isUnit_neg_one.pow _).mul (isUnit_iff_ne_zero.2 (by simpa [t] using hk))`. Take `⟨a, b, b', ha, hb, hb', hg'⟩` from `big_eq g' hu`. Use `⟨a, b, b', -t, ha, hb, hb', ?_⟩` and prove the remaining obligations. Rewrite using `[← hg']`. Simplify using `only [g', mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `e0 : nG ((t : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ)) * nG (((-t : ℝ) : ℂ) • 1) = 1`. Apply `mR_injective` to reduce the goal to its premises. Rewrite using `[mR_mul, mR_nG (herm_real t), mR_nG (herm_real (-t)), nU, nU, Matrix.fromBlocks_multiply, mR_one, ← Matrix.fromBlocks_one]`. Simplify using the standard rewrite rules. Establish `key : ∀ x : GR n, jG n * (jG n * (mG (-1) * x)) = x` using `fun x => by`.
-
-Rewrite using `[← mul_assoc, ← mul_assoc, jj_m_eq, one_mul]`. Rewrite using `[key, e0, mul_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem all_eq (g : GR n) :
     ∃ (a b b' : Matrix (Fin n) (Fin n) ℂ) (t : ℝ), IsUnit a.det ∧ bᴴ = b ∧ b'ᴴ = b' ∧
@@ -515,7 +507,7 @@ theorem all_eq (g : GR n) :
   rw [key, e0, mul_one]
 
 /- English proof (translation)
-Simplify using `[InG, JJ, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, hc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inG_nb {c : Matrix (Fin n) (Fin n) ℂ} (hc : cᴴ = c) : InG (Matrix.fromBlocks 1 0 c 1) := by
   simp [InG, JJ, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, hc]
@@ -523,7 +515,7 @@ theorem inG_nb {c : Matrix (Fin n) (Fin n) ℂ} (hc : cᴴ = c) : InG (Matrix.fr
 def nbG (t : ℝ) : GR n := toGR _ (inG_nb (herm_real (n := n) t))
 
 /- English proof (translation)
-Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[Matrix.fromBlocks_multiply, ← Matrix.fromBlocks_one]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem nbG_inv_val (t : ℝ) :
     (Matrix.fromBlocks (1 : Matrix (Fin n) (Fin n) ℂ) 0 ((t : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ)) (1 : Matrix (Fin n) (Fin n) ℂ))⁻¹ =
@@ -533,7 +525,7 @@ theorem nbG_inv_val (t : ℝ) :
   simp
 
 /- English proof (translation)
-Establish `h1 : Continuous fun t : ℝ => Matrix.fromBlocks (1 : Matrix (Fin n) (Fin n) ℂ) 0 ((t : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ)) (1 : Matrix (Fin n) (Fin n) ℂ)` using `Continuous.matrix_fromBlocks continuous_const continuous_const (Complex.continuous_ofReal.smul continuous_const) continuous_const`. Establish `h2 : Continuous fun t : ℝ => Matrix.fromBlocks (1 : Matrix (Fin n) (Fin n) ℂ) 0 (((-t : ℝ) : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ)) (1 : Matrix (Fin n) (Fin n) ℂ)` using `Continuous.matrix_fromBlocks continuous_const continuous_const ((Complex.continuous_ofReal.comp continuous_neg).smul continuous_const) continuous_const`. Use `Continuous.subtype_mk (Units.continuous_iff.2 ⟨h1, ?_⟩) _` and prove the remaining obligations. Use `h2.congr fun t => ?_` and prove the remaining obligations. Conclude with `(nbG_inv_val t).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem nbG_cont : Continuous (nbG (n := n)) := by
   have h1 : Continuous fun t : ℝ => Matrix.fromBlocks (1 : Matrix (Fin n) (Fin n) ℂ) 0 ((t : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ)) (1 : Matrix (Fin n) (Fin n) ℂ) :=
@@ -547,7 +539,7 @@ theorem nbG_cont : Continuous (nbG (n := n)) := by
   exact (nbG_inv_val t).symm
 
 /- English proof (translation)
-Apply `mR_injective` to reduce the goal to its premises. Rewrite using `[mR_one, ← Matrix.fromBlocks_one]`. Use `show Matrix.fromBlocks (1 : Matrix (Fin n) (Fin n) ℂ) 0 (((0 : ℝ) : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ)) (1 : Matrix (Fin n) (Fin n) ℂ) = _`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nbG_zero : nbG (n := n) 0 = 1 := by
   apply mR_injective
@@ -556,17 +548,15 @@ theorem nbG_zero : nbG (n := n) 0 = 1 := by
   simp
 
 /- English proof (translation)
-Introduce `g`. Take `⟨p, hp⟩` from `det_poly (mR g).toBlocks₂₂ (mR g).toBlocks₂₁`. Establish `hp0 : p ≠ 0`. Introduce `h0`. Establish `e` using `hp (-Complex.I)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `e` using `[h0, Polynomial.eval_zero]`. Establish `: (-Complex.I) • (mR g).toBlocks₂₂ + (mR g).toBlocks₂₁ = (-Complex.I) • u1 (mR g)`. Rewrite using `[u1, smul_add, smul_smul]`. Simplify using `[add_comm]`. Rewrite `e` using `[this, Matrix.det_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_ne_zero (pow_ne_zero _ (by simp)) (automorphy_first_det_ne_zero g) e.symm`. Use `set S : Set ℝ := {t | p.eval (t : ℂ) = 0}`. Establish `hS : S.Finite`. Use `Set.Finite.subset ((p.roots.toFinset.finite_toSet).preimage Complex.ofReal_injective.injOn) fun t ht => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_preimage, Finset.mem_coe, Multiset.mem_toFinset]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Polynomial.mem_roots hp0).2 ht`. Establish `hd : Dense Sᶜ` using `hS.countable.dense_compl ℝ`. Establish `: Filter.NeBot (nhdsWithin (0 : ℝ) Sᶜ)` using `mem_closure_iff_nhdsWithin_neBot.1 (hd 0)`. Use `mem_closure_of_tendsto (f := fun t => g * nbG t) (b := nhdsWithin (0 : ℝ) Sᶜ) ?_ ?_` and prove the remaining obligations. Establish `: Continuous fun t => g * nbG (n` using `n) t := continuous_const.mul nbG_cont`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0` using `this.tendsto 0`. Simplify using `only [nbG_zero, mul_one] at h0`. Conclude with `h0.mono_left nhdsWithin_le_nhds`. Use `eventually_nhdsWithin_of_forall fun t ht => ?_ show IsUnit (mR (g * nbG t)).toBlocks₂₁.det` and prove the remaining obligations. Establish `e : (mR (g * nbG t)).toBlocks₂₁ = (t : ℂ) • (mR g).toBlocks₂₂ + (mR g).toBlocks₂₁`.
-
-Rewrite using `[mR_mul, lower_left_block_mul]`. Use `show _ * (Matrix.fromBlocks (1 : Matrix (Fin n) (Fin n) ℂ) 0 ((t : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ)) (1 : Matrix (Fin n) (Fin n) ℂ)).toBlocks₁₁ + _ * (Matrix.fromBlocks (1 : Matrix (Fin n) (Fin n) ℂ) 0 ((t : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ)) (1 : Matrix (Fin n) (Fin n) ℂ)). …`. Simplify using `[add_comm]`. Rewrite using `[e, ← hp]`. Conclude with `isUnit_iff_ne_zero.2 ht`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dense_big : Dense {g : GR n | IsUnit (mR g).toBlocks₂₁.det} := by
   intro g

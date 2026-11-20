@@ -157,9 +157,9 @@ def ThetaDictionary : Prop :=
 end Row
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨τ, i, j⟩`. Simplify using `only [push, letB, MvPolynomial.aeval_X, AlgHom.id_apply]`. Rewrite using `[Finset.sum_eq_single j]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `b _ hb`. Simplify using `[Matrix.one_apply_ne hb]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem push_one (c : Coeff l) (n : ℕ) :
     push (Dw := Dw) c (1 : Matrix (Fin n) (Fin n) E) = AlgHom.id _ _ := by
@@ -173,7 +173,7 @@ theorem push_one (c : Coeff l) (n : ℕ) :
   · simp
 
 /- English proof (translation)
-Introduce `γ₀ γ _ h k`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 example (c : Coeff l) {n : ℕ} (dd : (E →+* ℂ) → ℤ) {J : Subgroup (UA E n)} (lam : J →* c.Fˣ)
     (io : c.F →ₗ[c.F] MvPolynomial (LtN Dw n) c.F) : IsPlaced c dd lam io (0 : UA E n → c.F) := by

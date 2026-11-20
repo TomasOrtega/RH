@@ -8,9 +8,9 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 namespace GlobalTheory.HSNef
 
 /- English proof (translation)
-Introduce `k _ X _ p M J _ f w h`. Take `⟨ρ, hρ, hreg, -⟩` from `h`. Use `⟨⟨M, M, ρ, ρ, hρ, hρ⟩, rfl, fun j x i c hi _ => ?_⟩` and prove the remaining obligations. Establish `e : Pair.loc ⟨M, M, ρ, ρ, hρ, hρ⟩ 1 0 (f j) i c = f j * (ρ i : X.functionField)`. Simplify using `[Pair.loc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Conclude with `(hreg x i hi).1 j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFS_mem_pair : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k), ∀ (M : HermLB p) (J : Type) [Fintype J] (f : J → X.functionField) (w : J → ℝ), IsFS M f w → ∃ P : Pair p, P.L = M ∧ ∀ j, f j ∈ P.H 1 0 := by
   intro k _ X _ p M J _ f w h

@@ -16,14 +16,14 @@ section
 variable {Γ H A Z V J : Type} [Group Γ] [Group H] [Group A] [Group Z] [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `[rop, Finsupp.sum, Finset.sum_add_distrib, smul_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem rop_add (r : H →₀ ℂ) (Φ Ψ : H → V) : rop r (Φ + Ψ) = rop r Φ + rop r Ψ := by
   funext g
   simp [rop, Finsupp.sum, Finset.sum_add_distrib, smul_add]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [rop, Finsupp.sum, Pi.smul_apply, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun u _ => smul_comm _ _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem rop_smul (r : H →₀ ℂ) (a : ℂ) (Φ : H → V) : rop r (a • Φ) = a • rop r Φ := by
   funext g
@@ -44,17 +44,17 @@ private def eigForms (ι : Γ →* H) (K : Subgroup H) (ξ : Representation ℂ 
     exact ⟨Submodule.smul_mem _ a hb, fun j => by rw [rop_smul, hb', smul_comm]⟩
 
 /- English proof (translation)
-Establish `key : ∀ u, c u = 1 → rop r Φ u = θ • Φ u`. Introduce `u hu`. Rewrite using `[hres u hu, ← hφ u hu]`. Use `Finsupp.sum_congr fun u' hu' => ?_` and prove the remaining obligations. Rewrite using `[hres _ (by rw [map_mul, hu, hr u' hu', one_mul])]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `g`. Distinguish the cases in `hg : ∃ γ u k, c u = 1 ∧ k ∈ K ∧ g = ι γ * u * k`. Take `⟨γ, u, k, hu, hk, rfl⟩` from `hg`. Establish `h1` using `hform.2 k hk (ι γ * u)`. Establish `h2` using `hΦ.2 k hk (ι γ * u)`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `hform.1 γ u`. Establish `h4` using `hΦ.1 γ u`. Rewrite using `[h1, h3, Pi.smul_apply, h2, h4, key u hu, map_smul]`. Establish `h0 : ∀ g', (¬ ∃ γ u k, c u = 1 ∧ k ∈ K ∧ g' = ι γ * u * k) → Φ g' = 0`. Introduce `g' hg'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hne`. Conclude with `hg' (hsupp g' hne)`. Establish `h1 : ∀ u' ∈ r.support, Φ (g * u') = 0`. Introduce `u' hu'`. Apply `h0` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨γ, u, k, hu, hk, he⟩`. Use `hg ⟨γ, u * (k * u'⁻¹ * k⁻¹), k, ?_, hk, ?_⟩` and prove the remaining obligations. Simplify using `[map_mul, map_inv, hu, hr u' hu']`. Establish `: g = ι γ * u * k * u'⁻¹` using `by rw [← he]; group`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `group`. Rewrite using `[Pi.smul_apply, h0 g hg, smul_zero]`. Unfold `rop`. Conclude with `Finset.sum_eq_zero fun u' hu' => by show r u' • Φ (g * u') = 0`. Rewrite using `[h1 u' hu', smul_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ext_eig_at {ι : Γ →* H} {K : Subgroup H} {ξ : Representation ℂ Γ V} {c : H →* A} {φ Φ : H → V}
     (hΦ : Φ ∈ forms ι K ξ) (hres : ∀ u, c u = 1 → Φ u = φ u)
@@ -96,17 +96,17 @@ private theorem ext_eig_at {ι : Γ →* H} {K : Subgroup H} {ξ : Representatio
 end
 
 /- English proof (translation)
-Introduce `hZ hC Γ H A Z V _ _ _ _ _ _ ι K ξ _ c ζ hζ φ hφ hne J r θ hr hforms heig`. Take `⟨Φ₀, hΦ₀, hres, hsupp⟩` from `hZ Γ H A V ι K ξ c φ hφ`. Establish `hM0 : Φ₀ ∈ eigForms ι K ξ r θ` using `⟨hΦ₀, fun j => ext_eig_at hΦ₀ hres hsupp (hr j) (hforms j Φ₀ hΦ₀) (heig j)⟩`. Establish `hMle : eigForms ι K ξ r θ ≤ forms ι K ξ` using `fun Φ h => h.1`. Establish `hMne : eigForms ι K ξ r θ ≠ ⊥`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `hb`. Take `⟨u, hu, hu'⟩` from `hne`. Establish `h0 : Φ₀ = 0`. Establish `: Φ₀ ∈ (⊥ : Submodule ℂ (H → V))` using `hb ▸ hM0`. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Apply `hu'` to reduce the goal to its premises. Rewrite using `[← hres u hu, h0]`. Both sides reduce to the same expression. Establish `hstable : ∀ Φ ∈ eigForms ι K ξ r θ, ∀ z, (fun g => Φ (g * ζ z)) ∈ eigForms ι K ξ r θ`. Introduce and unpack `Φ ⟨hΦ, hΦ'⟩ z`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `⟨⟨fun γ g => ?_, fun k hk g => ?_⟩, fun j => ?_⟩` and prove the remaining obligations. Use `show Φ (ι γ * g * ζ z) = ξ γ (Φ (g * ζ z))`. Rewrite using `[mul_assoc, hΦ.1]`. Use `show Φ (g * k * ζ z) = Φ (g * ζ z)`. Rewrite using `[mul_assoc, ← hζ z k, ← mul_assoc, hΦ.2 k hk]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `g`. Establish `h` using `congrFun (hΦ' j) (g * ζ z)`. Rewrite `h`, the goal using `[Pi.smul_apply]`. Rewrite using `[← h]`. Unfold `rop`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finsupp.sum_congr fun u _ => ?_` and prove the remaining obligations. Use `show (r j) u • Φ (g * u * ζ z) = (r j) u • Φ (g * ζ z * u)`. Rewrite using `[mul_assoc g u, ← hζ z u, ← mul_assoc]`. Take `⟨Φ, hΦ, hΦ0, ψ, hψ⟩` from `hC Γ H Z V ι K ξ ζ hζ (eigForms ι K ξ r θ) hMle hMne hstable`. Conclude with `⟨Φ, hΦ.1, hΦ0, hΦ.2, ψ, hψ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pExtEig_holds : ExtZero → CentralEig → ExtEig := by
   intro hZ hC Γ H A Z V _ _ _ _ _ _ ι K ξ _ c ζ hζ φ hφ hne J r θ hr hforms heig

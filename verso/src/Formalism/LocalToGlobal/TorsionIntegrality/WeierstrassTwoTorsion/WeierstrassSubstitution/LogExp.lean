@@ -14,7 +14,7 @@ section SlopeTestRemainingChoices
 variable {R : Type u} [CommRing R]
 
 /- English proof (translation)
-Use `first`. Consider the case `(rw [← PowerSeries.coe_substAlgHom ha]; exact map_neg _ f)`. Consider the case `simp [PowerSeries.subst_neg ha]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem subst_neg' {a : R⟦X⟧} (ha : HasSubst a) (f : R⟦X⟧) : (-f).subst a = -f.subst a := by
   first
@@ -22,7 +22,7 @@ theorem subst_neg' {a : R⟦X⟧} (ha : HasSubst a) (f : R⟦X⟧) : (-f).subst 
     | simp [PowerSeries.subst_neg ha]
 
 /- English proof (translation)
-Use `first`. Consider the case `(rw [← PowerSeries.coe_substAlgHom ha]; exact map_one _)`. Consider the case `simp`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem subst_one' {a : R⟦X⟧} (ha : HasSubst a) : (1 : R⟦X⟧).subst a = 1 := by
   first
@@ -30,7 +30,7 @@ theorem subst_one' {a : R⟦X⟧} (ha : HasSubst a) : (1 : R⟦X⟧).subst a = 1
     | simp
 
 /- English proof (translation)
-Use `first`. Consider the case `exact HasSubst.of_constantCoeff_zero' h`. Consider the case `exact HasSubst.of_constantCoeff_zero h`. Consider the case `exact PowerSeries.HasSubst.of_constantCoeff_zero' h`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem hasSubst_lemma {a : R⟦X⟧} (h : constantCoeff a = 0) : HasSubst a := by
   first
@@ -39,7 +39,7 @@ private theorem hasSubst_lemma {a : R⟦X⟧} (h : constantCoeff a = 0) : HasSub
   | exact PowerSeries.HasSubst.of_constantCoeff_zero' h
 
 /- English proof (translation)
-Use `first`. Consider the case `exact PowerSeries.subst_mul ha f g`. Consider the case `(rw [← PowerSeries.coe_substAlgHom ha]; exact map_mul _ f g)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem powerSeries_subst_mul_of_hasSubst {a : R⟦X⟧} (ha : HasSubst a) (f g : R⟦X⟧) :
     (f * g).subst a = f.subst a * g.subst a := by
@@ -48,7 +48,7 @@ private theorem powerSeries_subst_mul_of_hasSubst {a : R⟦X⟧} (ha : HasSubst 
   | (rw [← PowerSeries.coe_substAlgHom ha]; exact map_mul _ f g)
 
 /- English proof (translation)
-Take `⟨h, rfl⟩` from `(PowerSeries.X_dvd_iff).mpr hf`. Rewrite using `[powerSeries_subst_mul_of_hasSubst (hasSubst_lemma ha0), PowerSeries.subst_X (hasSubst_lemma ha0), map_mul, ha0, zero_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem constantCoeff_powerSeries_subst_eq_zero {a f : R⟦X⟧} (ha0 : constantCoeff a = 0) (hf : constantCoeff f = 0) :
     constantCoeff (f.subst a) = 0 := by
@@ -56,7 +56,7 @@ private theorem constantCoeff_powerSeries_subst_eq_zero {a f : R⟦X⟧} (ha0 : 
   rw [powerSeries_subst_mul_of_hasSubst (hasSubst_lemma ha0), PowerSeries.subst_X (hasSubst_lemma ha0), map_mul, ha0, zero_mul]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact PowerSeries.subst_comp_subst_apply ha hb f`. Consider the case `exact (PowerSeries.subst_comp_subst_apply ha hb f).symm`. Consider the case `rw [PowerSeries.subst_comp_subst_apply ha hb]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem powerSeries_subst_subst_eq_subst_subst {a b f : R⟦X⟧} (ha : HasSubst a) (hb : HasSubst b) :
     PowerSeries.subst b (PowerSeries.subst a f : R⟦X⟧)
@@ -67,7 +67,7 @@ private theorem powerSeries_subst_subst_eq_subst_subst {a b f : R⟦X⟧} (ha : 
   | rw [PowerSeries.subst_comp_subst_apply ha hb]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← powerSeries_subst_subst_eq_subst_subst hl ha, hel, PowerSeries.subst_X ha]`. Use `_ = e.subst (l.subst b) := by rw [h]`. Use `_ = b := by rw [← powerSeries_subst_subst_eq_subst_subst hl hb, hel, PowerSeries.subst_X hb]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subst_injective_of_leftInverse {l e a b : R⟦X⟧} (hl : HasSubst l) (ha : HasSubst a)
     (hb : HasSubst b) (hel : e.subst l = X) (h : l.subst a = l.subst b) : a = b := by
@@ -79,9 +79,9 @@ theorem subst_injective_of_leftInverse {l e a b : R⟦X⟧} (hl : HasSubst l) (h
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `K _ _ W`. Take `⟨hc, hd, -⟩` from `hI K (om W)`. Take `⟨-, hfo, ho0, -⟩` from `hU K W`. Use `⟨hc, ?_, hd, ?_⟩` and prove the remaining obligations. Simplify using `only [logSer, integ, coeff_mk]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[ho0]`. Simplify using `only [D, logSer, Derivation.smul_apply, smul_eq_mul, hd, hfo]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem logSpec_of (hI : IntegSpec.{u}) (hU : UnitSpec.{u}) : LogSpec.{u} := by
   intro K _ _ W
@@ -93,13 +93,13 @@ theorem logSpec_of (hI : IntegSpec.{u}) (hU : UnitSpec.{u}) : LogSpec.{u} := by
   · simp only [D, logSer, Derivation.smul_apply, smul_eq_mul, hd, hfo]
 
 /- English proof (translation)
-Introduce `K _ _ W`. Take `⟨hL0, hL1, hLd, -⟩` from `logSpec_of hI hU K W`. Take `⟨-, hfo, -⟩` from `hU K W`. Take `⟨hE0, hLE, hEL, hcoef, -⟩` from `hC K (logSer W) hL0 (by rw [hL1]; exact isUnit_one)`. Establish `hE0' : constantCoeff (expSer W) = 0` using `hE0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hLE' : (logSer W).subst (expSer W) = X` using `hLE`. Establish `hs : HasSubst (expSer W)` using `hasSubst_lemma hE0'`. Use `⟨hE0, ?_, hLE, hEL, ?_⟩` and prove the remaining obligations. Establish `h : coeff 1 (expSer W) * coeff 1 (logSer W) = 1` using `hcoef`. Rewrite `h` using `[hL1, mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h1` using `congrArg (derivative K) hLE'`. Rewrite `h1` using `[derivative_subst hs, hLd, derivative_X]`. Establish `h2 : (fw W).subst (expSer W) * (om W).subst (expSer W) = 1`. Rewrite using `[← powerSeries_subst_mul_of_hasSubst hs, hfo, subst_one' hs]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[h2, one_mul]`. Use `_ = (fw W).subst (expSer W) := by rw [mul_assoc, h1, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expSpec_of (hI : IntegSpec.{u}) (hC : CompInvSpec.{u}) (hU : UnitSpec.{u}) :
     ExpSpec.{u} := by
@@ -123,9 +123,9 @@ theorem expSpec_of (hI : IntegSpec.{u}) (hC : CompInvSpec.{u}) (hU : UnitSpec.{u
       _ = (fw W).subst (expSer W) := by rw [mul_assoc, h1, mul_one]
 
 /- English proof (translation)
-Introduce `K _ _ W f`. Take `⟨hE0, -, -, -, hEd⟩` from `expSpec_of hI hC hU K W`. Establish `hs : HasSubst (expSer W)` using `hasSubst_lemma hE0`. Rewrite using `[derivative_subst hs, hEd]`. Simplify using `only [D, Derivation.smul_apply, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[powerSeries_subst_mul_of_hasSubst hs, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chainZ_of (hI : IntegSpec.{u}) (hC : CompInvSpec.{u}) (hU : UnitSpec.{u}) :
     ChainZ.{u} := by
@@ -137,13 +137,13 @@ theorem chainZ_of (hI : IntegSpec.{u}) (hC : CompInvSpec.{u}) (hU : UnitSpec.{u}
   rw [powerSeries_subst_mul_of_hasSubst hs, mul_comm]
 
 /- English proof (translation)
-Introduce `K _ _ W`. Take `⟨hL0, -, hLd, -⟩` from `logSpec_of hI hU K W`. Take `⟨hE0, -, hLE, hEL, -⟩` from `expSpec_of hI hC hU K W`. Take `⟨hi0, -, -, -, -, -, -, hiom⟩` from `hS K W`. Establish `hsi : HasSubst (iSer W)` using `hasSubst_lemma hi0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsE : HasSubst (expSer W)` using `hasSubst_lemma hE0`. Establish `hL' : (logSer W).subst (iSer W) = -logSer W`. Take `⟨-, -, huniq⟩` from `hI K (-om W)`. Establish `e1` using `huniq ((logSer W).subst (iSer W)) (constantCoeff_powerSeries_subst_eq_zero hi0 hL0) (by rw [derivative_subst hsi, hLd, hiom])`. Establish `e2` using `huniq (-logSer W) (by rw [map_neg, hL0, neg_zero]) (by rw [map_neg, hLd])`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, e2]`. Use `⟨hL', ?_⟩` and prove the remaining obligations. Establish `hnX0 : constantCoeff (-X : K⟦X⟧) = 0` using `by simp`. Establish `hsn : HasSubst (-X : K⟦X⟧)` using `hasSubst_lemma hnX0`. Apply `subst_injective_of_leftInverse (l := logSer W) (e := expSer W) (hasSubst_lemma hL0) (hasSubst_lemma (constantCoeff_powerSeries_subst_eq_zero hnX0 hE0)) (hasSubst_lemma (constantCoeff_powerSeries_subst_eq_zero hE0 hi0)) hEL` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← powerSeries_subst_subst_eq_subst_subst hsE hsn, hLE, PowerSeries.subst_X hsn, ← powerSeries_subst_subst_eq_subst_subst hsi hsE, hL', subst_neg' hsE, hLE]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem logNeg_of (hI : IntegSpec.{u}) (hC : CompInvSpec.{u}) (hU : UnitSpec.{u})
     (hS : ISerSpec.{u}) : LogNeg.{u} := by

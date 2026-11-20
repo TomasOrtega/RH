@@ -11,19 +11,17 @@ noncomputable section
 namespace GlobalTheory.FibreTheta
 
 /- English proof (translation)
-Introduce `S P K _ t hI`. Set `T : Over S` to `Over.mk t`. Take `⟨⟨b, hb⟩, -⟩` from `GlobalTheory.abelianSchemeLaws_all.2.secTwist S P 1 le_rfl K t (1 : T ⟶ P.A)`. Use `P.isAb.comm` as an intermediate fact. Establish `e : translPt P.A (1 : T ⟶ P.A) = snd T P.A` using `by show (fst T P.A ≫ 1) * snd T P.A = _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[MonObj.comp_one, _root_.one_mul]`. Establish `i₀ : Fin (1 ^ P.g)` using `⟨0, by simp⟩`. Establish `su : ∀ {M : Type} [AddCommMonoid M] (q : Fin (1 ^ P.g) → M), ∑ i, q i = q i₀` using `fun q => Finset.sum_eq_single i₀ (fun a _ h => absurd (Fin.ext (by have := a.2; have := i₀.2; simp at *; omega)) h) (by simp)`. Establish `nz : ∃ j, (b i₀).f j ≠ 0`. Assume the negation of the conclusion as `hz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hz`. Take `⟨r, -, hu⟩` from `hb (b i₀)`. Establish `h0 : ∀ r' : Fin (1 ^ P.g) → Γ(T.left, ⊤), ∀ j, (b i₀).f j = ∑ i, ((T ⊗ P.A).left.presheaf.map (homOfLE le_top).op).hom ((fst T P.A).left.appTop.hom (r' i)) * (b i).f j` using `fun r' j => by`. Rewrite using `[su, hz j, mul_zero]`. Use `(hu (fun _ => 0) (h0 _)).trans (hu (fun _ => 1) (h0 _)).symm` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `zero_ne_one ((Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv.symm.injective ((map_zero _).trans ((congrFun this i₀).trans (map_one _).symm)))`. Take `⟨j, hj⟩` from `nz`. Use `haveI : IsReduced (T ⊗ P.A).left := inferInstance`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y, y ∈ (T ⊗ P.A).left.basicOpen ((b i₀).f j) := by`. Assume the negation of the conclusion as `h`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `push_neg at h`. Conclude with `hj (eq_zero_of_basicOpen_eq_bot _ (eq_bot_iff.2 fun y hy' => (h y hy').elim))`. Establish `hy₀ : y ∈ nonzeroLocus (b i₀)` using `TopologicalSpace.Opens.mem_iSup.2 ⟨j, hy⟩`. Establish `hF : FormEq (![(snd T P.A).left, (translPt P.A (1 : T ⟶ P.A)).left] : Fin 2 → _) ![((1 : ℕ) : ℤ) - 1, 1] (![(snd T P.A).left] : Fin 1 → _) ![1]`. Introduce `U _ h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Simplify using `[Fin.prod_univ_succ]`. Take `⟨s, hs⟩` from `exists_sec P.isLB hF (b i₀)`. Use `choose J hJ using fun χ : (T ⊗ P.A).left ⟶ P.A.left => exists_chart P.isLB (χ y)`. Establish `hJ' : Good P.L y J` using `hJ`.
-
-Use `⟨s, y, ?_⟩` and prove the remaining obligations. Use `show y ∈ nonzeroLocus s`. Rewrite using `[GlobalTheory.AbVarProj.mem_nonzeroLocus_iff_sval s y hJ', hs _ (𝟙 _) y J hJ']`. Conclude with `(GlobalTheory.AbVarProj.mem_nonzeroLocus_iff_sval (b i₀) y hJ').1 hy₀`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sec_nonempty : ∀ (S : Scheme.{0}) (P : PolAV S) (K : Type) [Field K] (t : Spec (CommRingCat.of K) ⟶ S),
     IsIntegral (Over.mk t ⊗ P.A).left → ∃ θ : LB.Sec (LB.LinComb P.L (K := Fin 1) ![(snd (Over.mk t) P.A).left] ![1]),

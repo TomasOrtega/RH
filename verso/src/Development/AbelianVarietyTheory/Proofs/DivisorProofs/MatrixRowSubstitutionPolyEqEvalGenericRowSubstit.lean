@@ -13,11 +13,11 @@ def evY (O : Type) [CommRing O] (N : ℕ) (R : Type) [CommRing R] [Algebra O R] 
   eval₂Hom (MvPolynomial.map (algebraMap O R)) (fun v => C (Y v.1 v.2))
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a`. Simplify using `[evY, GlobalTheory.HighWt.genSub, rowSubst, MvPolynomial.algebraMap_eq]`. Consider the case `add p q hp hq`. Simplify using `only [GlobalTheory.HighWt.genSub, map_add] at hp hq ⊢`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Rewrite using `[hp, hq]`. Consider the case `mul_X p v hp`. Simplify using `only [GlobalTheory.HighWt.genSub, map_mul] at hp ⊢`. Rewrite using `[hp]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `[evY, rowSubst, map_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evY_genSub (O : Type) [CommRing O] (N : ℕ) (R : Type) [CommRing R] [Algebra O R] (Y : Matrix (Fin N) (Fin N) R)
     (f : MvPolynomial (Fin N × Fin N) O) : evY O N R Y (GlobalTheory.HighWt.genSub O N f) = rowSubst O N R Y f := by
@@ -34,7 +34,7 @@ theorem evY_genSub (O : Type) [CommRing O] (N : ℕ) (R : Type) [CommRing R] [Al
     simp [evY, rowSubst, map_sum]
 
 /- English proof (translation)
-Simplify using `only [evY, coe_eval₂Hom, MvPolynomial.eval₂, Finsupp.sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Establish `h : (m.prod fun v k => (C (Y v.1 v.2) : MvPolynomial (Fin N × Fin N) R) ^ k) = C (m.prod fun v k => Y v.1 v.2 ^ k)`. Simplify using `[Finsupp.prod, map_prod, map_pow]`. Rewrite using `[h, mul_comm, C_mul']`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -49,7 +49,7 @@ theorem evY_eq_sum (O : Type) [CommRing O] (N : ℕ) (R : Type) [CommRing R] [Al
   rfl
 
 /- English proof (translation)
-Introduce `O _ N R _ _ Y f`. Rewrite using `[← evY_genSub, evY_eq_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem main : ∀ (O : Type) [CommRing O] (N : ℕ) (R : Type) [CommRing R] [Algebra O R] (Y : Matrix (Fin N) (Fin N) R) (f : MvPolynomial (Fin N × Fin N) O), rowSubst O N R Y f = ∑ m ∈ (GlobalTheory.HighWt.genSub O N f).support, (m.prod fun v k => Y v.1 v.2 ^ k) • MvPolynomial.map (algebraMap O R) ((GlobalTheory.HighWt.genSub O N f).coeff m) := by
   intro O _ N R _ _ Y f

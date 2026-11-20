@@ -10,9 +10,9 @@ noncomputable section
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Unfold `capGens`. Rewrite using `[List.map_ofFn]`. Use `congr 1`. Use function extensionality and compare the values at `i F h`. Simplify using `only [Function.comp_apply, genOpL, capGen, zgB, Q.LZ, id, List.map_cons, List.map_nil, List.sum_cons, List.sum_nil, one_smul, add_zero, Pi.add_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem clag_list {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (Bs : Fin k → Fin (2 * r + k + 1) → ℂ) (w : ℂ) (σ : Equiv.Perm (Fin k)) :
@@ -29,7 +29,7 @@ theorem clag_list {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ
   split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `k r E _ _ Bs w f g`. Simplify using `only [Q.capLft, Q.qmFrev, Finset.sum_apply, Pi.smul_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[List.map_reverse, List.foldr_reverse, clag_list]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem left_capelli_as_generators : CapLAsGens := by
   intro k r E _ _ Bs w f g

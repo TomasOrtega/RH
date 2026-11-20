@@ -22,9 +22,9 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
 omit [IsNonarchimedeanLocalField F] [CharZero F] in
 
 /- English proof (translation)
-Unfold `Frames.mass`. Rewrite using `[← Summable.tsum_finsetSum (fun i _ => ENNReal.summable)]`. Use `ENNReal.tsum_le_tsum fun o => ?_` and prove the remaining obligations. Distinguish the cases in `hP : S.IsTerm d o.out ∧ P o.out`. Take `⟨i, hi, hQ⟩` from `h _ hP.1 hP.2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Rewrite using `[if_pos hP]`. Use `le_trans ?_ (Finset.single_le_sum (f := fun i => if S.IsTerm d o.out ∧ Q i o.out then ENNReal.ofReal (S.mu o.out) else 0) (fun _ _ => zero_le) hi)` and prove the remaining obligations. Conclude with `(if_pos ⟨hP.1, hQ⟩).ge`. Rewrite using `[if_neg hP]`. Conclude with `zero_le`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mass_le_sum {ι : Type} (s : Finset ι) (d : S.Datum) (P : Submodule L.O S.V → Prop)
     (Q : ι → Submodule L.O S.V → Prop) (h : ∀ Λ, S.IsTerm d Λ → P Λ → ∃ i ∈ s, Q i Λ) :
@@ -44,7 +44,7 @@ theorem mass_le_sum {ι : Type} (s : Finset ι) (d : S.Datum) (P : Submodule L.O
 omit [IsNonarchimedeanLocalField F] [CharZero F] in
 
 /- English proof (translation)
-Simplify using `using mass_le_sum S {()} d P (fun _ => Q) (fun Λ h1 h2 => ⟨(), by simp, h Λ h1 h2⟩)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mass_mono (d : S.Datum) (P Q : Submodule L.O S.V → Prop)
     (h : ∀ Λ, S.IsTerm d Λ → P Λ → Q Λ) : S.mass d P ≤ S.mass d Q := by
@@ -53,7 +53,7 @@ theorem mass_mono (d : S.Datum) (P Q : Submodule L.O S.V → Prop)
 omit [IsNonarchimedeanLocalField F] [CharZero F] in
 
 /- English proof (translation)
-Unfold `Frames.nn Frames.sumData`. Conclude with `ENNReal.tsum_le_tsum fun o => mul_le_mul_right (mass_mono S _ _ _ fun _ _ _ => trivial) _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem sumData_mass_le (P : S.Datum → Submodule L.O S.V → Prop) :
     (S.sumData fun d => S.mass d (P d)) ≤ S.nn := by
@@ -61,7 +61,7 @@ theorem sumData_mass_le (P : S.Datum → Submodule L.O S.V → Prop) :
   exact ENNReal.tsum_le_tsum fun o => mul_le_mul_right (mass_mono S _ _ _ fun _ _ _ => trivial) _
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `GlobalTheory.HL.BasicIneq.basic_inequality L r k S hk`. Simplify `h1 d (P d))` using `using h2 P B 1 zero_le_one hB (fun d => by simpa`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ampSq_le_of_mass (hk : 1 ≤ k) (P : S.Datum → Submodule L.O S.V → Prop) (B : ℝ)
     (hB : ∀ d, S.mass d (P d) ≤ ENNReal.ofReal B) :
@@ -70,11 +70,11 @@ theorem ampSq_le_of_mass (hk : 1 ≤ k) (P : S.Datum → Submodule L.O S.V → P
   simpa using h2 P B 1 zero_le_one hB (fun d => by simpa using h1 d (P d))
 
 /- English proof (translation)
-Use `(ampSq_le_of_mass S hk P _ fun d => ?_).trans (mul_le_mul_right (sumData_mass_le S P) _)` and prove the remaining obligations. Distinguish the cases in `hT : ∃ Λ, S.IsTerm d Λ`. Take `⟨Λ₀, h₀⟩` from `hT`. Establish `hH : 1 ≤ S.Hp` using `(GlobalTheory.HL.Defect.exponents_and_defect L r k S d Λ₀ h₀).2.2.2.2.1`. Establish `hq : 2 ≤ S.q` using `(GlobalTheory.UnramOrder.order_facts L S.ϖ S.ϖ_irr).2.2.2.2.2.2.1`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(mass_mono S d _ (fun Λ => S.cardI d Λ = 1) fun Λ h1 h2 => ?_).trans (((GlobalTheory.T.hermitianDoubleCoset_mass_le_and_finite L r k S hk d).1 1).trans (ENNReal.ofReal_le_ofReal ?_))` and prove the remaining obligations. Establish `hb` using `(GlobalTheory.HL.Defect.exponents_and_defect L r k S d Λ h1).2.2.2.2.2.2.1.1 (hP d Λ h1 h2)`. Take `⟨⟨i, hi⟩, hle, -⟩` from `GlobalTheory.HL.SmallImage.small_image L r k S d Λ h1`. Establish `: 0 < S.q ^ i` using `by positivity`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[Nat.cast_one, one_pow, mul_one]`. Conclude with `pow_le_pow_right₀ hH (by nlinarith)`. Use `(mass_le_sum S (∅ : Finset Unit) d _ (fun _ _ => True) fun Λ h1 _ => (hT ⟨Λ, h1⟩).elim).trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ampSq_le_of_zero (hk : 1 ≤ k) (P : S.Datum → Submodule L.O S.V → Prop)
     (hP : ∀ d Λ, S.IsTerm d Λ → P d Λ → S.BBzero d Λ) :
@@ -98,15 +98,15 @@ theorem ampSq_le_of_zero (hk : 1 ≤ k) (P : S.Datum → Submodule L.O S.V → P
     simp
 
 /- English proof (translation)
-Establish `hk1 : 1 ≤ k` using `by omega`. Establish `hq : 2 ≤ S.q` using `(GlobalTheory.UnramOrder.order_facts L S.ϖ S.ϖ_irr).2.2.2.2.2.2.1`. Establish `hβ : 0 < S.q ^ i` using `by positivity`. Establish `hβ' : (0 : ℝ) < ((S.q ^ i : ℕ) : ℝ) ^ (k - 1)` using `by positivity`. Establish `hm : ∀ d, S.mass d (fun Λ => S.be d Λ = S.q ^ i) ≤ ENNReal.ofReal ((i + 1) * (S.Hp ^ (9 * (r + 1) ^ 2 + 12 * (r + 1)) * ((S.q ^ i : ℕ) : ℝ) ^ (k - 1)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `d`. Use `(mass_le_sum S (Finset.range (i + 1)) d _ (fun j Λ => S.cardI d Λ = S.q ^ j) fun Λ h1 h2 => ?_).trans ?_` and prove the remaining obligations. Take `⟨⟨j, hj⟩, hle, -⟩` from `GlobalTheory.HL.SmallImage.small_image L r k S d Λ h1`. Use `⟨j, Finset.mem_range.2 ?_, hj⟩` and prove the remaining obligations. Rewrite `hle` using `[hj, h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(Nat.pow_le_pow_iff_right (by omega)).1 hle` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `(Finset.sum_le_card_nsmul _ _ (ENNReal.ofReal (S.Hp ^ (9 * (r + 1) ^ 2 + 12 * (r + 1)) * ((S.q ^ i : ℕ) : ℝ) ^ (k - 1))) fun j hj => ?_).trans ?_` and prove the remaining obligations. Use `((GlobalTheory.T.hermitianDoubleCoset_mass_le_and_finite L r k S hk1 d).1 _).trans (ENNReal.ofReal_le_ofReal ?_)` and prove the remaining obligations. Establish `hji : S.q ^ j ≤ S.q ^ i` using `Nat.pow_le_pow_right (by omega) (by have := Finset.mem_range.1 hj; omega)`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `gcongr`. Rewrite using `[Finset.card_range, nsmul_eq_mul, ENNReal.ofReal_mul (by positivity : (0 : ℝ) ≤ i + 1), ← ENNReal.ofReal_natCast, Nat.cast_succ]`. Use `(ampSq_le_of_mass S hk1 _ _ hm).trans ?_` and prove the remaining obligations. Use `(mul_le_mul_right (GlobalTheory.T.sumData_mass_be_eq_le L r k S hk _ hβ) _).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← ENNReal.ofReal_mul (by positivity)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem ampSq_defect_le (hk : 4 * r + 7 ≤ k) (hH : 0 ≤ S.Hp) (i : ℕ) :
     (S.ampSq fun d Λ => S.be d Λ = S.q ^ i) ≤
@@ -142,23 +142,19 @@ theorem ampSq_defect_le (hk : 4 * r + 7 ≤ k) (hH : 0 ≤ S.Hp) (i : ℕ) :
   field_simp
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ L r k S hk`. Establish `hk1 : 1 ≤ k` using `by omega`. Use `⟨ampSq_le_of_zero S hk1 _ fun _ _ _ h => h, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hz : ∀ d Λ, S.IsTerm d Λ → S.BBzero d Λ`. Conclude with `ampSq_le_of_zero S hk1 _ fun d Λ h _ => hz d Λ h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Use `push_neg at hz`. Take `⟨d₀, Λ₀, h₀, hn⟩` from `hz`. Take `⟨ha, -, -, hqa, hH, -, -, hqH, -⟩` from `GlobalTheory.HL.Defect.exponents_and_defect L r k S d₀ Λ₀ h₀`. Establish `hq : 2 ≤ S.q` using `(GlobalTheory.UnramOrder.order_facts L S.ϖ S.ϖ_irr).2.2.2.2.2.2.1`. Establish `hq' : (2 : ℝ) ≤ S.q` using `by exact_mod_cast hq`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h2 : (2 : ℝ) ≤ S.Hp` using `hq'.trans (hqH hn)`. Take `⟨A, hA⟩` from `Int.eq_ofNat_of_zero_le ha`. Establish `hAH : (A : ℝ) + 1 ≤ S.Hp`. Rewrite `hqa` using `[hA, zpow_natCast]`. Establish `h1 : A + 1 ≤ S.q ^ A` using `Nat.lt_pow_self (by omega)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `le_trans (by exact_mod_cast h1) hqa`. Use `(GlobalTheory.AmpCS.ampSq_le_card_mul_sum L r k S hk1 (Finset.range (A + 1)) (fun i d Λ => S.be d Λ = S.q ^ i) _ (fun d Λ h => ?_) (fun d Λ h i _ i' _ h1 h2 => ?_)).trans ?_` and prove the remaining obligations. Take `⟨i, hi, hb⟩` from `(GlobalTheory.HL.Defect.exponents_and_defect L r k S d Λ h).2.2.2.2.2.1`. Conclude with `⟨fun _ => ⟨i, Finset.mem_range.2 (by omega), hb⟩, fun _ => trivial⟩`. Conclude with `Nat.pow_right_injective hq (h1.symm.trans h2)`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum` using `Finset.sum_le_card_nsmul (Finset.range (A + 1)) (fun i => S.ampSq fun d Λ => S.be d Λ = S.q ^ i) (ENNReal.ofReal (S.Hp * S.Hp ^ (9 * (r + 1) ^ 2 + 12 * (r + 1)) * (S.Hp ^ 2 * S.Hp ^ (4 * (r + 1)))) * S.nn) (fun i hi => by`. Use `(ampSq_defect_le S hk (by linarith) i).trans (mul_le_mul_left (ENNReal.ofReal_le_ofReal ?_) _)` and prove the remaining obligations. Establish `hi' : (i : ℝ) ≤ A`. Use `Finset.mem_range.1 hi` as an intermediate fact. Conclude with `(by omega : i ≤ A)` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : (4 : ℝ) ≤ S.Hp ^ 2` using `by nlinarith`. Establish `h5 : (i : ℝ) + 1 ≤ S.Hp` using `by linarith`. Use the proof step `gcongr)`. Use `(mul_le_mul_right hsum _).trans ?_` and prove the remaining obligations. Establish `hc : ((A + 1 : ℕ) : ℝ≥0∞) ≤ ENNReal.ofReal S.Hp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← ENNReal.ofReal_natCast]`. Conclude with `ENNReal.ofReal_le_ofReal (by push_cast; exact hAH)`. Rewrite using `[Finset.card_range, nsmul_eq_mul, ← mul_assoc, ← mul_assoc]`. Use `mul_le_mul_left ?_ _` and prove the remaining obligations. Use `(mul_le_mul_left (mul_le_mul' hc hc) _).trans ?_` and prove the remaining obligations.
-
-Rewrite using `[← ENNReal.ofReal_mul (by linarith), ← ENNReal.ofReal_mul (by positivity)]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Establish `he : S.Hp * S.Hp * (S.Hp * S.Hp ^ (9 * (r + 1) ^ 2 + 12 * (r + 1)) * (S.Hp ^ 2 * S.Hp ^ (4 * (r + 1)))) = S.Hp ^ (9 * (r + 1) ^ 2 + 16 * (r + 1) + 5)`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[he]`.
-
-Conclude with `pow_le_pow_right₀ hH (by nlinarith)`.
+Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ampSq_le_height_mul_mass : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), 4 * r + 7 ≤ k → S.ampSq S.BBzero ≤ ENNReal.ofReal (S.Hp ^ (39 * (r + 1) ^ 2)) * S.nn ∧ (S.ampSq fun _ _ => True) ≤ ENNReal.ofReal (S.Hp ^ (39 * (r + 1) ^ 2)) * S.nn := by
   intro F _ _ _ _ _ E _ _ _ L r k S hk

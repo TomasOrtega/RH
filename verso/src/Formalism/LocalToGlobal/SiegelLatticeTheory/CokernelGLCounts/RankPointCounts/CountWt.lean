@@ -12,9 +12,9 @@ open Classical
 variable {D : Formalism.BasicNotions.D7}
 
 /- English proof (translation)
-Establish `hmat : a.mat = modMat δ T T' p w + shM δ T T' p w` using `modShift_holds δ T T' p w a ha`. Establish `hset : {xy : (Loc.IL (D.R.rS + 1) → (D.s.atP p).Ep) × (Loc.IN a → (D.s.atP p).Ep) | Loc.uLow xy.1 * modMat δ T T' p w * Loc.uUp a xy.2 ∈ kkOrb M p Y} = {xy | zAt a xy ∈ orbR (M p) (Y + shM δ T T' p w)}`. Use extensionality with `xy`. Simplify using `only [Set.mem_ofPred_eq]`. Rewrite using `[mem_orbR_iff M δ T T' p w Y (zAt a xy), zAt_eq hmat xy, add_sub_cancel_right]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Unfold `wtL wtZ muA`. Simplify using `only [ha]`. Rewrite using `[hset]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem wtL_eq_wtZ (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (δ : ∀ p : PlF D, (D.s.atP p).Fp)
     {T T' : ℕ} {p : PlF D} {w : Point D.host.E (D.R.rS + 1)} {a : Loc.Pt (D.s.atP p).Ep (D.R.rS + 1)}
@@ -32,13 +32,11 @@ theorem wtL_eq_wtZ (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) 
   rw [hset]
 
 /- English proof (translation)
-Use `Formalism.MainNotions.LocalModelPeriodLattices.top_of_OK (M p) hOK` as an intermediate fact. Establish `hZ0 : ∀ i j, (Y + shM δ T T' p w) i j ∈ (M p).R` using `fun i j => add_mem (hY i j) (shM_mem M δ T T' p w i j)`. Take `⟨hfin, hsum⟩` from `LocOrbCut.wt_gen (M p) hOK a (Y + shM δ T T' p w) hZ0`. Use `set S := {q : Formalism.FourierDecayAlt.A5.Cos (M p).R (Formalism.MainNotions.LocalModelPeriodLattices.tr a) | LocOrbCut.zQ (M p).R a q ∈ orbR (M p) (Y + shM δ T T' p w)} with hSdef`. Establish `hsupp : (Function.support (fun q : Formalism.FourierDecayAlt.A5.Cos (M p).R (Formalism.MainNotions.LocalModelPeriodLattices.tr a) => if LocOrbCut.zQ (M p).R a q ∈ orbR (M p) (Y + shM δ T T' p w) then (1 : ℂ) else 0)) = S`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `q`. Simplify using `[hSdef]`. Rewrite `hfin` using `[hsupp]`. Use `⟨hfin, ?_⟩` and prove the remaining obligations. Rewrite using `[wtL_eq_wtZ M δ ha Y]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : (wtZ (M p) a (orbR (M p) (Y + shM δ T T' p w)) : ℂ) = (S.ncard : ℂ)`. Rewrite using `[hsum, finsum_eq_sum_of_support_subset _ (s := hfin.toFinset) (by rw [hsupp]; simp)]`. Rewrite using `[Finset.sum_boole, Set.ncard_eq_toFinset_card S hfin]`. Use `congr 2`. Conclude with `Finset.filter_true_of_mem (fun q hq => hfin.mem_toFinset.1 hq)`.
-
-Conclude with `hc` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem wtL_count (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (δ : ∀ p : PlF D, (D.s.atP p).Fp)
     {T T' : ℕ} {p : PlF D} {w : Point D.host.E (D.R.rS + 1)} {a : Loc.Pt (D.s.atP p).Ep (D.R.rS + 1)}

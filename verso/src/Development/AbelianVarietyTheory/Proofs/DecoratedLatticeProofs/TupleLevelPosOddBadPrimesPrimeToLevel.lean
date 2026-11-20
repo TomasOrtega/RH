@@ -11,13 +11,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.TupLevel
 
 /- English proof (translation)
-Rewrite using `[← Nat.not_even_iff_odd, even_iff_two_dvd]`. Introduce `h2`. Use `haveI := P.isPrime`. Use `haveI : Finite (𝓞 E ⧸ P.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot _ P.ne_bot`. Use `haveI : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h2` using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Take `⟨x, hx⟩` from `exists_prime_addOrderOf_dvd_card' (G := 𝓞 E ⧸ P.asIdeal) 2 h2`. Establish `h0 : x ≠ 0`. Introduce and unpack `rfl`. Rewrite `hx` using `[addOrderOf_zero]`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd hx (by norm_num)`. Establish `h1 : (2 : 𝓞 E ⧸ P.asIdeal) * x = 0`. Use `addOrderOf_nsmul_eq_zero x` as an intermediate fact. Rewrite `this` using `[hx, two_nsmul]`. Rewrite using `[two_mul, this]`.
-
-Break down `mul_eq_zero.1 h1 with h3 | h3` into its components or cases. Conclude with `h (Ideal.Quotient.eq_zero_iff_mem.1 (by rw [map_ofNat]; exact h3))`. Conclude with `h0 h3`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem odd_absNorm {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)) (h : (2 : 𝓞 E) ∉ P.asIdeal) :
     Odd (Ideal.absNorm P.asIdeal) := by
@@ -41,7 +39,7 @@ theorem odd_absNorm {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum 
   · exact h0 h3
 
 /- English proof (translation)
-Establish `hp : Odd (∏ P : Formalism.L2.Col.rowSG Pr sel mu, Formalism.L2.Col.qOf P.1)` using `Finset.prod_induction _ Odd (fun _ _ => Odd.mul) odd_one fun P _ => odd_absNorm P.1 (h2 P.1 (Finset.mem_union.2 (Or.inr P.2)))`. Take `⟨P₀, hP₀⟩ : (Pr.vT u).Nonempty` from `Finset.card_pos.1 (hPr.vT_card u ▸ hX.f_pos)`. Establish `hT : Odd (Pr.T u)` using `hPr.vT_norm u P₀ hP₀ ▸ odd_absNorm P₀ (h2 P₀ (Finset.mem_union.2 (Or.inl hP₀)))`. Conclude with `hp.pow.mul (hT.mul hp.pow)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem odd_levC {X : Formalism.L2.Col.Fields} {Pr : Formalism.L2.Col.Primes X}
     {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)} {S : Set ℕ} {mu : Tup X.F X.E X.K S}
@@ -55,9 +53,9 @@ theorem odd_levC {X : Formalism.L2.Col.Fields} {Pr : Formalism.L2.Col.Primes X}
   exact hp.pow.mul (hT.mul hp.pow)
 
 /- English proof (translation)
-Introduce `B X I hI _ u a`. Take `⟨hXo, hPr, -⟩` from `base_fields_primes_ok B X`. Establish `hc : (B.primes X).cond = B.host.QS * B.host.q * B.host.d` using `rfl`. Establish `h2` using `fun Q (hQ : Q ∈ Formalism.L2.Col.Sall (Pr := B.primes X) I.sel (I.tup a) u) => GlobalTheory.DatumJets.HidaSetting.notMem_Sall hPr hI.sel_ok u Nat.prime_two (hI.ram_mem 2 Nat.prime_two B.host.toHostRaw.two_dvd_condN) (by rw [hc]; exact B.host.toHostRaw.two_dvd_condN) hQ`. Establish `ho : Odd (levC I.sel (I.tup a) (I.cst a) u)` using `odd_levC hXo hPr (I.cst a) u fun Q hQ h => h2 Q hQ (by exact_mod_cast h)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨ho.pos, ho, fun Q hQ h => ?_⟩` and prove the remaining obligations. Take `⟨l, n, -, hlP, hl, -⟩` from `Ideal.exists_prime_and_absNorm_eq_pow Q.asIdeal`. Distinguish the cases in `hd : l ∣ B.host.QS * B.host.q * B.host.d`. Conclude with `GlobalTheory.DatumJets.HidaSetting.notMem_Sall hPr hI.sel_ok u hl (hI.ram_mem l hl hd) (by rw [hc]; exact hd) hQ hlP`. Conclude with `UpperTheory.Ram.natCast_notMem_of_coprime Q.isPrime.ne_top hlP ((Nat.Prime.coprime_iff_not_dvd hl).2 hd).symm h`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem levC_pos_odd_and_off : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (u : B.Word) (a : I.ι), 0 < levC I.sel (I.tup a) (I.cst a) u ∧ Odd (levC I.sel (I.tup a) (I.cst a) u) ∧ (∀ Q ∈ Formalism.L2.Col.Sall (Pr := B.primes X) I.sel (I.tup a) u, ((B.host.QS * B.host.q * B.host.d : ℕ) : 𝓞 B.host.E) ∉ Q.asIdeal) := by
   intro B X I hI _ u a

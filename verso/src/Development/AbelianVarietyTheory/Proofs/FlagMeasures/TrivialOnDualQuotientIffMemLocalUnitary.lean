@@ -18,19 +18,19 @@ section Abstract
 variable {A : Type} [CommRing A] {k : ℕ} (τ : A →+* A) (J : Matrix (Fin k) (Fin k) A)
 
 /- English proof (translation)
-Simplify using `only [hform, Pi.sub_apply, map_sub, sub_mul, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_sub_left (x x' y : Fin k → A) : hform τ J (x - x') y = hform τ J x y - hform τ J x' y := by
   simp only [hform, Pi.sub_apply, map_sub, sub_mul, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `only [hform, Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_sub_right (x y y' : Fin k → A) : hform τ J x (y - y') = hform τ J x y - hform τ J x y' := by
   simp only [hform, Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `only [hform, Pi.smul_apply, smul_eq_mul, map_mul]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hform_smul_swap (c : A) (x y : Fin k → A) : hform τ J x (τ c • y) = hform τ J (c • x) y := by
   simp only [hform, Pi.smul_apply, smul_eq_mul, map_mul]
@@ -38,7 +38,7 @@ theorem hform_smul_swap (c : A) (x y : Fin k → A) : hform τ J x (τ c • y) 
   ring
 
 /- English proof (translation)
-Establish `h : cT τ g.1 * J * g.1 = J` using `hg`. Rewrite using `[GlobalTheory.DualFrame.hform_mulVec, mulVec_mulVec, h, GlobalTheory.DualFrame.hform_eq_dot]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem hform_unitary {g : GL (Fin k) A} (hg : g ∈ UJ τ J) (x y : Fin k → A) :
     hform τ J (g.1 *ᵥ x) (g.1 *ᵥ y) = hform τ J x y := by
@@ -46,7 +46,7 @@ theorem hform_unitary {g : GL (Fin k) A} (hg : g ∈ UJ τ J) (x y : Fin k → A
   rw [GlobalTheory.DualFrame.hform_mulVec, mulVec_mulVec, h, GlobalTheory.DualFrame.hform_eq_dot]
 
 /- English proof (translation)
-Rewrite using `[← hform_unitary τ J hg ((g⁻¹).1 *ᵥ x) y, mulVec_mulVec, Units.mul_inv, one_mulVec]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem hform_move {g : GL (Fin k) A} (hg : g ∈ UJ τ J) (x y : Fin k → A) :
     hform τ J x (g.1 *ᵥ y) = hform τ J ((g⁻¹).1 *ᵥ x) y := by
@@ -55,9 +55,9 @@ theorem hform_move {g : GL (Fin k) A} (hg : g ∈ UJ τ J) (x y : Fin k → A) :
 variable {τ J} {O : Subring A} {L D : Submodule O (Fin k → A)}
 
 /- English proof (translation)
-Take `⟨hu, hs⟩` from `hg`. Introduce `y`. Rewrite using `[hD, hD]`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hform_move τ J hu]`. Conclude with `h _ (((stabGL L).inv_mem hs x).1 hx)`. Introduce `h x hx`. Rewrite using `[← hform_unitary τ J hu]`. Conclude with `h _ ((hs x).1 hx)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stab_dual (hD : ∀ y, y ∈ D ↔ ∀ x ∈ L, hform τ J x y ∈ O) {g : GL (Fin k) A}
     (hg : g ∈ level τ J L) : g ∈ stabGL D := by
@@ -73,25 +73,23 @@ theorem stab_dual (hD : ∀ y, y ∈ D ↔ ∀ x ∈ L, hform τ J x y ∈ O) {g
     exact h _ ((hs x).1 hx)
 
 /- English proof (translation)
-Establish `hgD` using `stab_dual hD hg`. Establish `hval : ∀ (x : D) (a : O), x.1 - a.1 • d ∈ L → f x = a • f ⟨d, hd⟩`. Introduce `x a h`. Rewrite using `[← map_smul, ← sub_eq_zero, ← map_sub]`. Conclude with `hfL _ h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfd : f ⟨d, hd⟩ ≠ 0`. Introduce `h`. Apply `hf0` to reduce the goal to its premises. Use extensionality with `x`. Take `⟨a, ha, hx⟩` from `hgen x.1 x.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hval x ⟨a, ha⟩ hx, h, smul_zero]`. Both sides reduce to the same expression. Establish `hker : ∀ x : D, f x = 0 → e • x.1 ∈ L`. Introduce `x hx0`. Take `⟨a, ha, hx⟩` from `hgen x.1 x.2`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hfield ⟨a, ha⟩ with ⟨b, hb⟩ | h` into its components or cases. It suffices to derive a contradiction. Apply `hfd` to reduce the goal to its premises. Rewrite using `[← hact (f ⟨d, hd⟩), ← hb, mul_smul, hact, mul_smul, ← hval x ⟨a, ha⟩ hx, hx0, smul_zero]`. Establish `h1` using `L.add_mem (L.smul_mem e hx) (h d hd)`.
+It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : e • (x.1 - a • d) + (e * ⟨a, ha⟩) • d = e • x.1`. Rewrite using `[smul_sub, mul_smul]`. Conclude with `sub_add_cancel _ _`. Rewrite `h1` using `[h2]`. Then use the resulting hypothesis. Establish `hhalf : ∀ g' ∈ stabFun D f, ∀ x ∈ D, e • (g'.1 *ᵥ x - x) ∈ L`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `g' ⟨h1, h2⟩ x hx`. Use `hker (⟨g'.1 *ᵥ x, (h1 x).1 hx⟩ - ⟨x, hx⟩) ?_` and prove the remaining obligations. Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `h2 ⟨x, hx⟩`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Use `⟨hgD, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero, ← map_sub]`. Use `hfL _ ?_` and prove the remaining obligations. Use `h x.1 x.2` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[sub_mulVec, one_mulVec]`. Then use the resulting hypothesis. Introduce `h x hx`. Rewrite using `[sub_mulVec, one_mulVec]`. Establish `h1` using `hhalf g h x hx`. Establish `h2 : τ e • (g.1 *ᵥ x - x) ∈ L`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hL]`. Introduce `z hz`. Rewrite using `[hform_smul_swap, hform_sub_right, hform_move τ J hg.1, ← hform_sub_left, mulVec_smul, ← smul_sub]`. Conclude with `(hD x).1 hx _ (hhalf g⁻¹ ((stabFun D f).inv_mem h) z hz)`. Establish `h3` using `L.add_mem h1 h2`.
-
-Establish `h4 : e • (g.1 *ᵥ x - x) + τ e • (g.1 *ᵥ x - x) = g.1 *ᵥ x - x`. Rewrite using `[hτe, sub_smul, one_smul]`. Conclude with `add_sub_cancel _ _`. Rewrite `h3` using `[h4]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem triv_iff_stabFun (hD : ∀ y, y ∈ D ↔ ∀ x ∈ L, hform τ J x y ∈ O)
     (hL : ∀ y, y ∈ L ↔ ∀ x ∈ D, hform τ J x y ∈ O)
@@ -152,11 +150,9 @@ theorem triv_iff_stabFun (hD : ∀ y, y ∈ D ↔ ∀ x ∈ L, hform τ J x y �
     rwa [h4] at h3
 
 /- English proof (translation)
-Establish `: Fact p.Prime` using `⟨hp⟩`. Use `isSimpleAddGroup_of_prime_card hG` as an intermediate fact. Break down `IsSimpleAddGroup.eq_bot_or_eq_top_of_normal (DistribSMul.toAddMonoidHom G e).range inferInstance with h | h` into its components or cases. Use `left`. Introduce `y`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `AddSubgroup.mem_bot.1 (h ▸ ⟨y, rfl⟩)`. Use `right`. Introduce `y`. Establish `hy : y ∈ (DistribSMul.toAddMonoidHom G e).range` using `by rw [h]; exact AddSubgroup.mem_top y`. Take `⟨z, hz⟩` from `AddMonoidHom.mem_range.1 hy`.
-
-Rewrite using `[← hz]`. Use `show e • e • z = e • z`. Rewrite using `[smul_smul, he]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idem_act {R : Type} [Ring R] {G : Type} [AddCommGroup G] [Module R G] {p : ℕ} (hp : p.Prime)
     (hG : Nat.card G = p) {e : R} (he : e * e = e) : (∀ y : G, e • y = 0) ∨ (∀ y : G, e • y = y) := by
@@ -176,13 +172,13 @@ theorem idem_act {R : Type} [Ring R] {G : Type} [AddCommGroup G] [Module R G] {p
     rw [smul_smul, he]
 
 /- English proof (translation)
-Establish `ha` using `((hint a).1 a.2).1`. Establish `hm : ∀ c : V, sp.symm (c, 0) ∈ O` using `fun c => by`. Rewrite using `[hint, sp.apply_symm_apply]`. Conclude with `⟨c.2, zero_mem _⟩`. Distinguish the cases in `hu : IsUnit (⟨_, ha⟩ : V)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Consider separately whether the proposition holds or fails.
 
-Take `⟨b, hb⟩` from `hu.exists_left_inv`. Establish `hb' : (b : K) * (sp a).1 = 1` using `congrArg Subtype.val hb`. Use `Or.inl ⟨⟨_, hm b⟩, Subtype.ext (sp.injective ?_)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `sp (sp.symm (b, 0) * a * e) = sp e`. Rewrite using `[map_mul, map_mul, sp.apply_symm_apply, he]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `ext <;> simp [hb']`. Establish `h1 : (⟨_, ha⟩ : V) ∈ IsLocalRing.maximalIdeal V` using `hu`. Rewrite `h1` using `[hmax, Ideal.mem_span_singleton']`. Take `⟨c, hc⟩` from `h1`. Establish `hc' : (c : K) * T = (sp a).1` using `by simpa using congrArg Subtype.val hc`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Or.inr ⟨⟨_, hm c⟩, Subtype.ext (sp.injective ?_)⟩` and prove the remaining obligations. Rewrite using `[Subring.coe_mul, Subring.coe_mul, Subring.coe_natCast, map_mul, map_mul, sp.apply_symm_apply, he, map_natCast]`. Apply the tactic sequence `ext <;> simp [hc']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem unit_or_dvd {K : Type} [Field K] (V : ValuationSubring K) (T : ℕ)
     (hmax : IsLocalRing.maximalIdeal V = Ideal.span {(T : V)}) (sp : A ≃+* K × K)
@@ -213,9 +209,7 @@ section Local
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Establish `: intV E v ≤ (intV E v).comap (sigR σ (v.adicCompletion F))`. Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ (⟨⟨_, a, rfl⟩, rfl⟩ | ⟨a, rfl⟩)`. Conclude with `Subring.subset_closure (Or.inl ⟨⟨_, (⟨σ a, (a.isIntegral_coe).map (σ.restrictScalars ℤ)⟩ : 𝓞 E), rfl⟩, rfl⟩)`. Use `show (σ 1) ⊗ₜ[F] (a : v.adicCompletion F) ∈ intV E v`.
-
-Rewrite using `[map_one]`. Conclude with `Subring.subset_closure (Or.inr ⟨a, rfl⟩)`. Conclude with `this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigR_mem (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) :
     ∀ a ∈ intV E v, sigR σ (v.adicCompletion F) a ∈ intV E v := by
@@ -229,11 +223,11 @@ theorem sigR_mem (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) :
   exact this
 
 /- English proof (translation)
-Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨y, hy, rfl⟩` from `hx`. Use `Submodule.subset_span ⟨_, h y hy, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [Nat.cast_smul_eq_nsmul, Pi.smul_apply, map_nsmul]`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [smul_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `add_mem ha hb`. Consider the case `smul a b _ hb => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ _ hb`.
+A detailed English derivation is pending.
 -/
 theorem nsmul_mem_loc (v : HeightOneSpectrum (𝓞 F)) (T : ℕ) (L L' : Submodule (𝓞 E) (Fin n → E))
     (h : ∀ x ∈ L', (T : E) • x ∈ L) : ∀ x ∈ loc v L', (T : intV E v) • x ∈ loc v L := by
@@ -251,21 +245,19 @@ theorem nsmul_mem_loc (v : HeightOneSpectrum (𝓞 F)) (T : ℕ) (L L' : Submodu
 end Local
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ cm n J hJ hdet T f bad S hT hsp hdeg v hv y hy`. Take `⟨-, d, hd, hgen⟩` from `GlobalTheory.T.hermitianLattice_level_local_dual_quotient_length_one F E cm n J hJ hdet T f S.Lb hT hsp hdeg (stepLevel_tLat F E n cm.sig J T f bad S) v hv`. Take `⟨-, hmax, sp, hsig, hdiag⟩` from `(GlobalTheory.T.cmField_splitCompletely_place_structure F E cm T hT hsp).2 v hv`. Establish `hint : ∀ x, x ∈ intV E v ↔ (sp x).1 ∈ v.adicCompletionIntegers F ∧ (sp x).2 ∈ v.adicCompletionIntegers F` using `split_integral_local F E v sp hdiag`. Take `⟨B, C, hBC, hB, hC⟩` from `GlobalTheory.DualFrame.exists_dual_frames F E cm.sig n J (isUnit_iff_ne_zero.2 hdet) S.Lb S.Lb_fin S.Lb_span v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hD, hL, -⟩` from `GlobalTheory.DualFrames.dual_of_dual_frames _ (intV E v) (sigR cm.sig (v.adicCompletion F)) (fun a => sp.injective (by rw [hsig, hsig]; rfl)) (sigR_mem _ v) n _ (by ext i j; exact congrArg (inclE (F := F) (v.adicCompletion F)) (congrFun (congrFun hJ i) j)) B C _ _ hBC hB hC`. Establish `hTD` using `nsmul_mem_loc v T S.Lb (dualL cm.sig J S.Lb) fun x hx => S.Lb_dual x (GlobalTheory.DualFrame.mem_dualSet_of_mem_span _ _ _ hx)`. Establish `key : ∀ (sp' : E ⊗[F] v.adicCompletion F ≃+* v.adicCompletion F × v.adicCompletion F), (∀ x, x ∈ intV E v ↔ (sp' x).1 ∈ v.adicCompletionIntegers F ∧ (sp' x).2 ∈ v.adicCompletionIntegers F) → ∀ e : intV E v, sp' e = (1, 0) → sigR cm.sig (v.adicCompletion F) e = 1 - e → (∀ m : S.fM …`. Introduce `sp' hint' e he hτe hact`. Use `triv_iff_stabFun hD hL (S.fT v hv) (S.fT_ne v hv) (S.fT_L v hv) e hτe hact (fun a => ?_) d hd hgen hy` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `(unit_or_dvd _ T hmax sp' hint' e he a).imp id ?_` and prove the remaining obligations. Introduce and unpack `⟨c, hc⟩ x hx`. Rewrite using `[hc, mul_smul]`. Conclude with `Submodule.smul_mem _ _ (hTD x hx)`. Establish `he : sp.symm (1, 0) ∈ intV E v`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hint, sp.apply_symm_apply]`. Conclude with `⟨one_mem _, zero_mem _⟩`. Establish `hτ : sigR cm.sig (v.adicCompletion F) (sp.symm (1, 0)) = 1 - sp.symm (1, 0)`. Apply `sp.injective` to reduce the goal to its premises. Rewrite using `[hsig, map_sub, map_one, sp.apply_symm_apply]`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `ext <;> simp [swapR]`. Establish `hee : (⟨_, he⟩ : intV E v) * ⟨_, he⟩ = ⟨_, he⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `sp.symm (1, 0) * sp.symm (1, 0) = sp.symm (1, 0)`. Rewrite using `[← map_mul]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[S.UlocAlt v hv, Subgroup.mem_inf, and_iff_right hy]`. Break down `idem_act hT (S.fM_card v hv) hee with h0 | h1` into its components or cases. Use `key (sp.trans RingEquiv.prodComm) (fun x => (hint x).trans and_comm) (1 - ⟨_, he⟩) ?_ ?_ fun m => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `RingEquiv.prodComm (sp (1 - sp.symm (1, 0))) = _`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub sp, map_one, sp.apply_symm_apply]`. Apply the tactic sequence `ext <;> simp`. Express the relevant statement in the definitionally equal form `sigR cm.sig (v.adicCompletion F) (1 - sp.symm (1, 0)) = 1 - (1 - sp.symm (1, 0))`. Rewrite using `[map_sub, map_one, hτ]`. Rewrite using `[sub_smul, one_smul, h0, sub_zero]`.
-
-Conclude with `key sp hint ⟨_, he⟩ (sp.apply_symm_apply _) hτ h1`.
+Apply the first step, then apply the next step to every resulting obligation. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trivial_iff_mem_Uloc : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (cm : CMData F E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHerm (cm.sig : E →+* E) J → J.det ≠ 0 → ∀ (T f : ℕ) (bad : Set (HeightOneSpectrum (𝓞 F))) (S : StepLevel F E cm.sig J T f bad), T.Prime → SplitsIn E T → Module.finrank ℚ E = 2 * f → ∀ (v : HeightOneSpectrum (𝓞 F)), (T : 𝓞 F) ∈ v.asIdeal → ∀ y ∈ levelVL cm.sig J v S.Lb, (∀ x ∈ loc v (dualL cm.sig J S.Lb), (y.1 - 1) *ᵥ x ∈ loc v S.Lb) ↔ y ∈ S.Uloc v := by
   intro F E _ _ _ _ _ _ cm n J hJ hdet T f bad S hT hsp hdeg v hv y hy

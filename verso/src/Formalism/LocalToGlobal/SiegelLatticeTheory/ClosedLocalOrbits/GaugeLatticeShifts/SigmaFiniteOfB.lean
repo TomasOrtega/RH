@@ -21,14 +21,14 @@ section Model
 variable {k r : ℕ}
 
 /- English proof (translation)
-Conclude with `continuous_id`.
+A detailed English derivation is pending.
 -/
 theorem cont_of : Continuous (fun x : Formalism.QuantumDeterminants.Mt k r =>
     (Matrix.of x : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)) := by
   exact continuous_id
 
 /- English proof (translation)
-Establish `hc : Continuous (Formalism.FourierDecayAlt.B.rmulF a : Formalism.QuantumDeterminants.Mt k r → Formalism.QuantumDeterminants.Mt k r)` using `cont_of.matrix_mul continuous_const`. Conclude with `hc.measurable`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem meas_rmul (a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     Measurable (Formalism.FourierDecayAlt.B.rmulF a : Formalism.QuantumDeterminants.Mt k r → Formalism.QuantumDeterminants.Mt k r) := by
@@ -37,7 +37,7 @@ theorem meas_rmul (a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
   exact hc.measurable
 
 /- English proof (translation)
-Establish `hc : Continuous (Formalism.QuantumDeterminants.conjM (k` using `k) (r := r) a) := (continuous_const.matrix_mul cont_of).matrix_mul continuous_const`. Conclude with `hc.measurable`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem meas_conj (a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     Measurable (Formalism.QuantumDeterminants.conjM (k := k) (r := r) a) := by
@@ -46,7 +46,7 @@ theorem meas_conj (a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
   exact hc.measurable
 
 /- English proof (translation)
-Establish `hc : Continuous (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => (fun i j => (Matrix.of p.1 * Matrix.of p.2) i j : Formalism.QuantumDeterminants.Mt k r))` using `(cont_of.comp continuous_fst).matrix_mul (cont_of.comp continuous_snd)`. Conclude with `hc.measurable`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem meas_mulP : Measurable (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r =>
     (fun i j => (Matrix.of p.1 * Matrix.of p.2) i j : Formalism.QuantumDeterminants.Mt k r)) := by
@@ -56,7 +56,7 @@ theorem meas_mulP : Measurable (fun p : Formalism.QuantumDeterminants.Mt k r × 
   exact hc.measurable
 
 /- English proof (translation)
-Use `haveI : IsFiniteMeasureOnCompacts μ := ⟨h.finite_compact⟩`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem sigmaFinite_of_b {U : Set (Formalism.FourierDecayAlt.B.Mat k r)} {μ : Measure (Formalism.QuantumDeterminants.Mt k r)}
     (h : Formalism.FourierDecayAlt.B.IsHaarOn U μ) : SigmaFinite μ := by
@@ -64,16 +64,16 @@ theorem sigmaFinite_of_b {U : Set (Formalism.FourierDecayAlt.B.Mat k r)} {μ : M
   infer_instance
 
 /- English proof (translation)
-Conclude with `⟨sigmaFinite_of_b h, h.ne_zero, h.conc, h.left⟩`.
+Supply the required witnesses or components.
 -/
 theorem haarOn_sk_of_b' {U : Set (Formalism.FourierDecayAlt.B.Mat k r)} {μ : Measure (Formalism.QuantumDeterminants.Mt k r)}
     (h : Formalism.FourierDecayAlt.B.IsHaarOn U μ) : Formalism.MainNotions.S.IsHaarOn U μ := by
   exact ⟨sigmaFinite_of_b h, h.ne_zero, h.conc, h.left⟩
 
 /- English proof (translation)
-Establish `hg' : gᴴ * Formalism.QuantumDeterminants.Hpk k r * g = Formalism.QuantumDeterminants.Hpk k r` using `hg`. Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`. Establish `h1` using `congrArg Matrix.det hg'`. Rewrite `h1` using `[Matrix.det_mul, Matrix.det_mul, h0, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Formalism.FourierDecayAlt.P.B2x5.isUnit_det_Hpk k r).ne_zero h1.symm`.
+A detailed English derivation is pending.
 -/
 theorem det_unit_of_UH {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hg : g ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)) : IsUnit g.det := by
@@ -85,11 +85,11 @@ theorem det_unit_of_UH {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) �
   exact (Formalism.FourierDecayAlt.P.B2x5.isUnit_det_Hpk k r).ne_zero h1.symm
 
 /- English proof (translation)
-Take `⟨hU, hfix, hz⟩` from `hg`. Establish `hdet` using `det_unit_of_UH hU`. Establish `hinv : g⁻¹ * g = 1` using `Matrix.nonsing_inv_mul g hdet`. Establish `hinv' : g * g⁻¹ = 1` using `Matrix.mul_nonsing_inv g hdet`. Establish `hfixinv : ∀ v, g *ᵥ v = v → g⁻¹ *ᵥ v = v` using `fun v hv => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `⟨?_, fun a => ⟨hfixinv _ (hfix a).1, hfixinv _ (hfix a).2⟩, hfixinv _ hz⟩` and prove the remaining obligations. Establish `hU' : gᴴ * Formalism.QuantumDeterminants.Hpk k r * g = Formalism.QuantumDeterminants.Hpk k r` using `hU`. Use `show (g⁻¹)ᴴ * Formalism.QuantumDeterminants.Hpk k r * g⁻¹ = Formalism.QuantumDeterminants.Hpk k r`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Formalism.QuantumDeterminants.Hpk k r := by rw [hinv']; simp`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inv_mem_UW {z : Fin (2 * r + k + 1) → ℂ} {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hg : g ∈ Formalism.QuantumDeterminants.UWset k r z) : g⁻¹ ∈ Formalism.QuantumDeterminants.UWset k r z := by
@@ -110,17 +110,17 @@ theorem inv_mem_UW {z : Fin (2 * r + k + 1) → ℂ} {g : Matrix (Fin (2 * r + k
     _ = Formalism.QuantumDeterminants.Hpk k r := by rw [hinv']; simp
 
 /- English proof (translation)
-Introduce `s hs`. Take `⟨h0, hh0, n0, hn0, rfl⟩` from `hs`. Use `sigmaFinite_of_b hW` as an intermediate fact. Use `sigmaFinite_of_b hN` as an intermediate fact. Establish `hd` using `det_unit_of_UH hh0.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv0` using `inv_mem_UW hh0`. Establish `hNc : μN.map (Formalism.QuantumDeterminants.conjM h0⁻¹) = μN` using `Formalism.FourierDecayAlt.P.b2_conjInvRaw_proof k r z μN hz hT hN h0⁻¹ hinv0`. Establish `hW1 : μW.map (Formalism.FourierDecayAlt.B.rmulF h0) = μW` using `hW.right h0 hh0`. Establish `hN1 : μN.map (Formalism.FourierDecayAlt.B.rmulF n0) = μN` using `hN.right n0 hn0`. Set `F : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r → Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r` to `Prod.map (Formalism.FourierDecayAlt.B.rmulF h0) (Formalism.FourierDecayAlt.B.rmulF n0 ∘ Formalism.QuantumDeterminants.conjM h0⁻¹)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hFm : Measurable F` using `(meas_rmul h0).prodMap ((meas_rmul n0).comp (meas_conj _))`. Establish `hF : (μW.prod μN).map F = μW.prod μN`. Establish `h2 : μN.map (Formalism.FourierDecayAlt.B.rmulF n0 ∘ Formalism.QuantumDeterminants.conjM h0⁻¹) = μN`. Rewrite using `[← Measure.map_map (meas_rmul n0) (meas_conj _), hNc, hN1]`. Use `haveI : SigmaFinite (μW.map (Formalism.FourierDecayAlt.B.rmulF h0)) := by rw [hW1]; infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : SigmaFinite (μN.map (Formalism.FourierDecayAlt.B.rmulF n0 ∘ Formalism.QuantumDeterminants.conjM h0⁻¹)) := by rw [h2]; infer_instance`. Rewrite using `[← Measure.map_prod_map _ _ (meas_rmul h0) ((meas_rmul n0).comp (meas_conj _)), hW1, h2]`. Establish `hcomm : (Formalism.FourierDecayAlt.B.rmulF (h0 * n0)) ∘ (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => (fun i j => (Matrix.of p.1 * Matrix.of p.2) i j : Formalism.QuantumDeterminants.Mt k r)) = (fun p : Formalism.QuantumDeterminants.Mt k r …`. Use function extensionality and compare the values at `p`. Establish `hi : h0 * h0⁻¹ = 1` using `Matrix.mul_nonsing_inv h0 hd`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hii : (h0⁻¹)⁻¹ = h0` using `Matrix.nonsing_inv_nonsing_inv h0 hd`. Use `show Matrix.of p.1 * Matrix.of p.2 * (h0 * n0) = (Matrix.of p.1 * h0) * (h0⁻¹ * Matrix.of p.2 * (h0⁻¹)⁻¹ * n0)`. Rewrite using `[hii]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hi, Matrix.mul_one]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by simp only [Matrix.mul_assoc]`. Unfold `Formalism.MainNotions.S.muS`. Rewrite using `[Measure.map_map (meas_rmul _) meas_mulP, hcomm, ← Measure.map_map meas_mulP hFm, hF]`.
+A detailed English derivation is pending.
 -/
 theorem muS_right {z : Fin (2 * r + k + 1) → ℂ} (hz : Formalism.QuantumDeterminants.inWb k r z) (hT : 0 < Formalism.QuantumDeterminants.Tz k r z)
     {μW μN : Measure (Formalism.QuantumDeterminants.Mt k r)} (hW : Formalism.FourierDecayAlt.B.IsHaarOn (Formalism.QuantumDeterminants.UWset k r z) μW)
@@ -163,9 +163,9 @@ theorem muS_right {z : Fin (2 * r + k + 1) → ℂ} (hz : Formalism.QuantumDeter
 end Model
 
 /- English proof (translation)
-Establish `hPP : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P hP`. Establish `hm : Formalism.MainNotions.S.uMat (x * s) = Formalism.MainNotions.S.uMat x * Formalism.MainNotions.S.uMat s`. Simplify using `[Formalism.MainNotions.S.uMat]`. Establish `key : P⁻¹ * Formalism.MainNotions.S.uMat (x * s) * P = (P⁻¹ * Formalism.MainNotions.S.uMat x * P) * (P⁻¹ * Formalism.MainNotions.S.uMat s * P)`. Rewrite using `[hm, show P⁻¹ * Formalism.MainNotions.S.uMat x * P * (P⁻¹ * Formalism.MainNotions.S.uMat s * P) = P⁻¹ * Formalism.MainNotions.S.uMat x * (P * P⁻¹) * Formalism.MainNotions.S.uMat s * P by simp only [Matrix.mul_assoc], hPP, Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Use function extensionality and compare the values at `i j`. Conclude with `congrFun (congrFun key i) j`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem psiP_mul {r k : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {P : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hP : IsUnit P.det) (x s : Formalism.REAL.UJ ε) :
@@ -183,15 +183,15 @@ theorem psiP_mul {r k : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {P : Matrix (Fi
   exact congrFun (congrFun key i) j
 
 /- English proof (translation)
-Introduce `n r k ε e z z' T T' hF μ hμ s hs`. Establish `hn : n = 2 * r + k + 1` using `by have := hF.dim; omega`. Substitute `hn` using the available equality. Take `⟨d, hGP⟩` from `goodPos_shift hF`. Establish `hF''` using `frameLoc_shift hF d`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨P, hPJ, hPdet, hPe, zH, -, hzH, -, hPz, -, hTz, -⟩` from `pFrame_holds r k ε e z (z' + ∑ a, d a • e a) T T' hF'' hGP`. Establish `hT : 0 < Formalism.QuantumDeterminants.Tz k r zH` using `by rw [hTz]; exact hF.T_pos`. Take `⟨μW0, hW0⟩` from `Formalism.FourierDecayAlt.P.weyl_haar_exists k r zH hzH hT`. Take `⟨μN0, hN0⟩` from `Formalism.FourierDecayAlt.P.unipotent_haar_exists k r`. Take `⟨-, hC⟩` from `hHC r k ε e z zH P hPJ hPdet hPe hzH hPz hT hF.k_pos`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, -, hm⟩` from `hC μW0 μN0 (haarOn_sk_of_b' hW0) (haarOn_sk_of_b' hN0) μ hμ`. Establish `hψs : P⁻¹ * Formalism.MainNotions.S.uMat s * P ∈ Formalism.QuantumDeterminants.Sset k r zH` using `(hSC r k ε e z zH P hPJ hPdet hPe hzH hPz hT s).1 hs`. Establish `hme : MeasurableEmbedding (psiP (ε` using `ε) P) := (Formalism.FourierDecayAlt.P.HaarUniquenessConjugation.phi_closedEmbedding (ε := ε) (P := P) Formalism.REAL.uJEmb hPdet).measurableEmbedding`. Establish `hms : Measurable (fun x : Formalism.REAL.UJ ε => x * s)` using `(continuous_mul_const s).measurable`. Establish `hmap : (μ.map (fun x => x * s)).map (psiP P) = μ.map (psiP P)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Measure.map_map hme.measurable hms]`. Establish `: psiP P ∘ (fun x : Formalism.REAL.UJ ε => x * s) = Formalism.FourierDecayAlt.B.rmulF (P⁻¹ * Formalism.MainNotions.S.uMat s * P) ∘ psiP P`. Use function extensionality and compare the values at `x`. Conclude with `psiP_mul hPdet x s`. Rewrite using `[this, ← Measure.map_map (meas_rmul _) hme.measurable, hm, Measure.map_smul, muS_right hzH hT hW0 hN0 _ hψs]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← hme.comap_map (μ.map (fun x => x * s)), hmap, hme.comap_map]`.
+A detailed English derivation is pending.
 -/
 theorem rightInvS_of (hSC : SetCorr) (hHC : HaarCorr) : RightInvS := by
   intro n r k ε e z z' T T' hF μ hμ s hs
@@ -223,7 +223,7 @@ end Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.JL.RI
 namespace Formalism.L2.SG.RealObj.InfCut.JacobianCoordinates.JL
 
 /- English proof (translation)
-The claim follows from `RI.rightInvS_of hSC hHC`.
+A detailed English derivation is pending.
 -/
 theorem rightInvS_of (hSC : SetCorr) (hHC : HaarCorr) : RightInvS := RI.rightInvS_of hSC hHC
 

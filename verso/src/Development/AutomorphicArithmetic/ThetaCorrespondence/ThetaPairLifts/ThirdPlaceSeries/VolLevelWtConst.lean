@@ -18,13 +18,13 @@ open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Fam
 /- English proof (translation)
-Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha haT`. Apply the tactic sequence `obtain ⟨VT, hVT, hT3⟩ := _root_.GlobalTheory.T.exists_volume_constant_of_true_geometry W hW u a ha haT`. Use `⟨fun j => if h : j + 2 ≤ B.R.m then Classical.choose (_root_.GlobalTheory.T.true_geometry_chain_step_identity_alt W hW u a ha haT j h) else if h' : j + 1 = B.R.m then Classical.choose (_root_.GlobalTheory.T.true_geometry_chain_step_value_alt W hW u a ha haT j h') else 1, VT, ?_, …` and prove the remaining obligations. Introduce `j hj`. Distinguish the cases in `h : j + 2 ≤ B.R.m`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [dif_pos h]`. Conclude with `(Classical.choose_spec (_root_.GlobalTheory.T.true_geometry_chain_step_identity_alt W hW u a ha haT j h)).1`. Establish `h' : j + 1 = B.R.m` using `by omega`. Simplify using `only [dif_neg h, dif_pos h']`. Conclude with `(Classical.choose_spec (_root_.GlobalTheory.T.true_geometry_chain_step_value_alt W hW u a ha haT j h')).1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `t J hJ`. Use `⟨?_, hT3 t J hJ⟩` and prove the remaining obligations. Introduce `j hj α`. Distinguish the cases in `h : j + 2 ≤ B.R.m`. Simplify using `only [dif_pos h]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(Classical.choose_spec (_root_.GlobalTheory.T.true_geometry_chain_step_identity_alt W hW u a ha haT j h)).2 t J hJ α`. Establish `h' : j + 1 = B.R.m` using `by omega`. Simplify using `only [dif_neg h, dif_pos h']`. Conclude with `(Classical.choose_spec (_root_.GlobalTheory.T.true_geometry_chain_step_value_alt W hW u a ha haT j h')).2 t J hJ α`.
+A detailed English derivation is pending.
 -/
 theorem vol_level_wt_const_alt : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.Fam.AllFamilyConditions W → ∀ (u : B.Word) (a : _root_.GlobalTheory.Fam.GeometricFamily W u), a.Is → a.True → ∃ (V : ℕ → ℂ) (VT : ℂ), (∀ j, j < B.R.m → V j ≠ 0) ∧ VT ≠ 0 ∧ ∀ t (J : _root_.GlobalTheory.Fam.QuadraticExtensionData a t), J.Reads → J.Vol V ∧ J.VolT VT := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha haT

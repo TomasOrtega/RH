@@ -18,13 +18,13 @@ namespace PositivityTheory.Rg.Rsw.L.LMajor
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨R, hR⟩` from `hc.isCompact.isBounded.subset_closedBall (0 : D.what₂.Tau → Fin a → Fin b → ℂ)`. Take `⟨hcl, hcont, -, hcpt⟩` from `(GlobalTheory.T.adelicMatrixSchwartzMajorant_measurable_rationalShift D θ hθ).1 a b K hK`. Use `set R' : ℝ := ∑ _τ : D.what₂.Tau, ∑ _i : Fin a, ∑ _j : Fin b, R with hR'`. Use `HasCompactSupport.intro' (hcpt R') (hcl.inter (isClosed_le hcont continuous_const)) fun x hx => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hc0 : c (fun τ i j => compAt θ τ x i j) ≠ 0` using `left_ne_zero_of_mul hne`. Establish `hΦ : Φ x ≠ 0` using `right_ne_zero_of_mul hne`. Establish `hmem : (fun τ i j => compAt θ τ x i j) ∈ Metric.closedBall (0 : D.what₂.Tau → Fin a → Fin b → ℂ) R` using `hR (subset_tsupport _ hc0)`. Rewrite `hmem` using `[Metric.mem_closedBall, dist_zero_right]`. Apply `hx` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hbox x hΦ, ?_⟩` and prove the remaining obligations. Use `show GlobalTheory.Unf.realSize θ x ≤ R'`. Unfold `GlobalTheory.Unf.realSize`. Use `Finset.sum_le_sum fun τ _ => Finset.sum_le_sum fun i _ => Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Establish `h1` using `norm_le_pi_norm (fun τ i j => compAt θ τ x i j) τ`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `norm_le_pi_norm (fun i j => compAt θ τ x i j) i`. Establish `h3` using `norm_le_pi_norm (fun j => compAt θ τ x i j) j`. Conclude with `h3.trans (h2.trans (h1.trans hmem))`.
+A detailed English derivation is pending.
 -/
 theorem cutSupp (θ : InfFam D) (hθ : IsInfFam θ) {a b : ℕ} (K : Set (Mx D a b)) (hK : IsCompact K)
     (Φ : Mx D a b → ℂ) (hbox : ∀ x, Φ x ≠ 0 → GlobalTheory.Unf.InBox K x) (c : (D.what₂.Tau → Fin a → Fin b → ℂ) → ℂ)

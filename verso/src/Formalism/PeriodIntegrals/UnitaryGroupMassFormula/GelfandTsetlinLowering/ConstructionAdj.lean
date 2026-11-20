@@ -11,61 +11,51 @@ namespace PI.WGL
 open Formalism.BasicNotions MvPolynomial PI.WGL.Adj
 
 /- English proof (translation)
-Introduce `n N h lam sg hI io hio hext hlast`. Take `⟨hioV, hioEq⟩` from `hio`. Take `⟨hc0, hcB, -⟩` from `hN n N h lam sg hI`. Take `⟨hxi0, hxiV, -, -, -, hxiU⟩` from `hX n N h lam sg hI`. Take `⟨d, b, hbV, hexp⟩` from `exists_frame n sg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hdel_sg : delSq ℂ n sg = nablaSq ℂ n sg` using `((h3 n sg).1).symm`. Establish `hdel_lam : delSq ℂ N lam = nablaSq ℂ N lam` using `((h3 N lam).1).symm`. Set `br : MvPolynomial (Fin N × Fin N) ℂ →ₗ[ℂ] MvPolynomial (Fin n × Fin n) ℂ` to `∑ k, (nfL lam (io (b k))).smulRight (b k)`. Establish `hbr : ∀ f, br f = ∑ k, normFock lam f (io (b k)) • b k`. Introduce `f`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[br, LinearMap.sum_apply, LinearMap.smulRight_apply, nfL_apply]`. Establish `hbrV : ∀ f, br f ∈ nablaSq ℂ n sg`. Introduce `f`. Rewrite using `[hbr]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (hbV k)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hT : ∀ s ∈ nablaSq ℂ n sg, ∀ f, normFock lam (io s) f = normFock sg s (br f)`. Introduce `s hs f`. Establish `e` using `hexp s hs`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_smul]`. Rewrite using `[nf_sum_smul_left]`. Use `_ = normFock sg s (br f) := by`. Rewrite using `[hbr, nf_sum_smul_right]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← nf_herm, mul_comm]`. Establish `hsep : ∀ x y, x ∈ nablaSq ℂ n sg → y ∈ nablaSq ℂ n sg → (∀ s ∈ nablaSq ℂ n sg, normFock sg s x = normFock sg s y) → x = y`. Introduce `x y hx hy hxy`. Establish `hd : x - y ∈ nablaSq ℂ n sg` using `Submodule.sub_mem _ hx hy`. Establish `h0 : normFock sg (x - y) (x - y) = 0` using `by rw [nf_sub_right, hxy _ hd, sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `sub_eq_zero.mp (nf_self_eq_zero sg _ h0)`. Establish `hB4 : ∀ (g : GL (Fin n) ℂ) (f : MvPolynomial (Fin N × Fin N) ℂ), br (sqAct ℂ N lam (embGL ℂ n N h g) f) = sqAct ℂ n sg g (br f)`. Introduce `g f`. Use `hsep _ _ (hbrV _) (sqAct_mem_nabla sg g _ (hbrV f)) fun s hs => ?_` and prove the remaining obligations. Establish `hs' : sqAct ℂ n sg (gStar g) s ∈ nablaSq ℂ n sg` using `sqAct_mem_nabla sg _ s hs`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hT s hs, nf_sqAct_adj' lam (embGL ℂ n N h g) (io s) f, ← embGL_gStar, ← hioEq _ s hs, hT _ hs', nf_sqAct_adj' sg g s (br f)]`. Establish `hB5 : ∀ (a : ℂˣ) (f : MvPolynomial (Fin N × Fin N) ℂ), br (sqAct ℂ N lam (lastGL ℂ N a) f) = ((a ^ degZ lam sg : ℂˣ) : ℂ) • br f`. Introduce `a f`. Use `hsep _ _ (hbrV _) (Submodule.smul_mem _ _ (hbrV f)) fun s hs => ?_` and prove the remaining obligations. Rewrite using `[← hT s hs, nf_sqAct_adj' lam (lastGL ℂ N a) (io s) f, ← lastGL_cU, hlast _ s hs, nf_smul_left, nf_smul_right, hT s hs, cU_zpow_val]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hextV : extremal ℂ n sg ∈ nablaSq ℂ n sg` using `extremal_mem sg`. Establish `hext0 : extremal ℂ n sg ≠ 0` using `extremal_ne sg`. Set `Tm : Module.End ℂ (nablaSq ℂ n sg)` to `LinearMap.codRestrict (nablaSq ℂ n sg) ((br ∘ₗ io) ∘ₗ (nablaSq ℂ n sg).subtype) (fun x => hbrV _)`. Use `haveI : FiniteDimensional ℂ (nablaSq ℂ n sg) := PI.WHw.bC_fd n n sg.natW`. Use `haveI : Nontrivial (nablaSq ℂ n sg) := ⟨⟨⟨_, hextV⟩, 0, fun h0 => hext0 (congrArg Subtype.val h0)⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨κ, hκ⟩` from `Module.End.exists_eigenvalue Tm`. Take `⟨v, hv⟩` from `hκ.exists_hasEigenvector`. Establish `hv1 : br (io (v : MvPolynomial (Fin n × Fin n) ℂ)) = κ • (v : MvPolynomial (Fin n × Fin n) ℂ)`. Use `Module.End.HasEigenvector.apply_eq_smul hv` as an intermediate fact. Conclude with `congrArg Subtype.val this`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hv0 : (v : MvPolynomial (Fin n × Fin n) ℂ) ≠ 0` using `fun h0 => hv.2 (Subtype.ext h0)`. Set `U : Submodule ℂ (MvPolynomial (Fin n × Fin n) ℂ)` to `nablaSq ℂ n sg ⊓ LinearMap.ker (br ∘ₗ io - κ • LinearMap.id)`. Establish `hmemU : ∀ x, x ∈ U ↔ x ∈ nablaSq ℂ n sg ∧ br (io x) = κ • x`. Introduce `x`. Simplify using `only [U, Submodule.mem_inf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.comp_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hUst : ∀ (g : GL (Fin n) ℂ), ∀ x ∈ U, sqAct ℂ n sg g x ∈ U`. Introduce `g x hx`. Rewrite `hx`, the goal using `[hmemU]`. Use `⟨sqAct_mem_nabla sg g x hx.1, ?_⟩` and prove the remaining obligations. Rewrite using `[hioEq g x hx.1, hB4, hx.2, sqAct_smul]`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hall : ∀ s ∈ nablaSq ℂ n sg, br (io s) = κ • s`. Break down `(h3 n sg).2.1 U inf_le_left hUst with hU | hU` into its components or cases. It suffices to derive a contradiction. Establish `hvU : (v : MvPolynomial (Fin n × Fin n) ℂ) ∈ U` using `(hmemU _).2 ⟨v.2, hv1⟩`. Rewrite `hvU` using `[hU, Submodule.mem_bot]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hv0 hvU`. Introduce `s hs`. Rewrite `hs` using `[← hU]`. Conclude with `((hmemU s).1 hs).2`. Use `set K := normFock lam (io (extremal ℂ n sg)) (io (extremal ℂ n sg)) with hKdef`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hnorm : ∀ s ∈ nablaSq ℂ n sg, normFock lam (io s) (io s) = K * normFock sg s s`. Establish `hK : star κ = K`. Use `hT _ hextV (io (extremal ℂ n sg))` as an intermediate fact. Rewrite `this` using `[hall _ hextV, nf_smul_right, nf_extremal, mul_one]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `s hs`. Rewrite using `[hT s hs, hall s hs, nf_smul_right, hK]`. Establish `hKre : K.re = ‖((cBr h lam sg : ℤ) : ℂ)‖ ^ 2 * (normFock lam (xi ℂ h lam sg) (xi ℂ h lam sg)).re`. Rewrite using `[hKdef, hext, PI.GTS.re_normFock_smul]`. Establish `hKreal : K = ((K.re : ℝ) : ℂ)` using `by rw [hKdef]; exact nf_self_eq_re lam _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcpos : 0 < ‖((cBr h lam sg : ℤ) : ℂ)‖`. Rewrite using `[norm_pos_iff]`. Conclude with `hc0` after adjusting the coercions. Establish `hKpos : 0 < K.re`. Rewrite using `[hKre]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_pos (pow_pos hcpos 2) (nf_self_re_pos lam _ hxi0)`. Establish `hKle : K.re ≤ brBd h lam sg ^ 2`. Establish `hc2 : ‖((cBr h lam sg : ℤ) : ℂ)‖ ^ 2 ≤ cBd h lam sg ^ 2`. Establish `hcn : ‖((cBr h lam sg : ℤ) : ℂ)‖ = |((cBr h lam sg : ℤ) : ℝ)|`. Rewrite using `[← Complex.ofReal_intCast, Complex.norm_real, Real.norm_eq_abs]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hcn]`. Conclude with `pow_le_pow_left₀ (abs_nonneg _) hcB 2`. Establish `hSF` using `h5 N lam (xi ℂ h lam sg) hxiV hxiU`. Establish `hbb : brBd h lam sg ^ 2 = cBd h lam sg ^ 2 * (Module.finrank ℂ (delSq ℂ N lam) : ℝ)`. Unfold `brBd`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[mul_pow, Real.sq_sqrt (Nat.cast_nonneg _)]`. Rewrite using `[hKre, hbb]`. Conclude with `mul_le_mul hc2 hSF (nf_self_re_nonneg lam _) (sq_nonneg _)`. Use `⟨?_, br, ⟨?_, ?_, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `s hs`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hnorm s hs, hKreal, Complex.re_ofReal_mul]`. Conclude with `mul_le_mul_of_nonneg_right hKle (nf_self_re_nonneg sg s)`. Introduce `f _`. Rewrite using `[hdel_sg]`. Conclude with `hbrV f`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨io (extremal ℂ n sg), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hdel_lam]`. Conclude with `hioV _ hextV`. Introduce `h0`. Use `hT _ hextV (io (extremal ℂ n sg))` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[h0, nf_zero_right]`. Rewrite `this` using `[← hKdef]`. Rewrite `hKpos` using `[this]`. Simplify using `at hKpos`. Introduce `g f _`.
-
-Conclude with `hB4 g f`. Introduce `a f _`. Conclude with `hB5 a f`. Introduce `f _`. Use `set u := br f with hu`.
-
-Establish `huV : u ∈ nablaSq ℂ n sg` using `hbrV f`. Establish `hTu : normFock lam (io u) f = normFock sg u u` using `hT u huV f`. Establish `hCS` using `nf_cauchy_schwarz lam (io u) f`. Establish `hnA : ‖normFock sg u u‖ = (normFock sg u u).re` using `by conv_lhs => rw [nf_self_eq_re sg u]`. Conclude with `Complex.norm_of_nonneg (nf_self_re_nonneg sg u)`.
-
-Rewrite `hCS` using `[nf_herm lam (io u) f, hTu, norm_star, hnA, hnorm u huV, hKreal, Complex.re_ofReal_mul]`. Establish `hA` using `nf_self_re_nonneg sg u`. Establish `hF` using `nf_self_re_nonneg lam f`. Establish `hAle : (normFock sg u u).re ≤ K.re * (normFock lam f f).re`. Break down `hA.lt_or_eq with hApos | hA0` into its components or cases.
-
-Use `le_of_mul_le_mul_left ?_ hApos` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[← hA0]`. Conclude with `mul_nonneg hKpos.le hF`. Combine the equalities or inequalities in the displayed calculation.
-
-Introduce `s hs f _`. Conclude with `hT s hs f`.
+Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem adjointBr_of (h3 : PI.HwIrred) (h5 : PI.SchurFock) (hN : Numbers) (hX : XiFacts) :
     AdjointBr := by

@@ -29,7 +29,7 @@ Both sides reduce to the same expression.
 theorem iotL_apply (g : Mat k r) : iotL k r g = Hpk k r * gᴴ * Hpk k r := rfl
 
 /- English proof (translation)
-Take `⟨h1, h2, -⟩` from `Formalism.QuantumDeterminants.hpkFacts k r`. Simplify using `only [iotL_apply, Matrix.conjTranspose_mul, h1, Matrix.conjTranspose_conjTranspose]`. Rewrite using `[show Hpk k r * (Hpk k r * (g * Hpk k r)) * Hpk k r = (Hpk k r * Hpk k r) * g * (Hpk k r * Hpk k r) by`. Simplify using `only [Matrix.mul_assoc], h2, Matrix.one_mul, Matrix.mul_one]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem iotL_iotL (g : Mat k r) : iotL k r (iotL k r g) = g := by
   obtain ⟨h1, h2, -⟩ := Formalism.QuantumDeterminants.hpkFacts k r
@@ -38,7 +38,7 @@ theorem iotL_iotL (g : Mat k r) : iotL k r (iotL k r g) = g := by
     simp only [Matrix.mul_assoc], h2, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Take `⟨-, h2, -⟩` from `Formalism.QuantumDeterminants.hpkFacts k r`. Simplify using `only [iotL_apply, Matrix.conjTranspose_mul]`. Rewrite using `[show Hpk k r * bᴴ * Hpk k r * (Hpk k r * aᴴ * Hpk k r) = Hpk k r * bᴴ * (Hpk k r * Hpk k r) * aᴴ * Hpk k r by`. Simplify using `only [Matrix.mul_assoc], h2, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem iotL_mul (a b : Mat k r) : iotL k r (a * b) = iotL k r b * iotL k r a := by
   obtain ⟨-, h2, -⟩ := Formalism.QuantumDeterminants.hpkFacts k r
@@ -48,12 +48,12 @@ theorem iotL_mul (a b : Mat k r) : iotL k r (a * b) = iotL k r b * iotL k r a :=
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-The claim follows from `(Formalism.FourierDecayAlt.P.B6.inv_eq_hermitian_form_conjTranspose hg).symm`.
+A detailed English derivation is pending.
 -/
 theorem iotL_GV {g : Mat k r} (hg : g ∈ GV k r) : iotL k r g = g⁻¹ := (Formalism.FourierDecayAlt.P.B6.inv_eq_hermitian_form_conjTranspose hg).symm
 
 /- English proof (translation)
-Rewrite using `[iotL_GV hg]`. Conclude with `Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_inv hg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iotL_mem {g : Mat k r} (hg : g ∈ GV k r) : iotL k r g ∈ GV k r := by
   rw [iotL_GV hg]; exact Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_inv hg
@@ -73,7 +73,7 @@ section words
 variable {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Unfold `LdV`. Simplify using `only [Matrix.mul_assoc]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem ldV_rtransl (X t : Mat k r) (f : Mat k r → E) (g : Mat k r) :
     LdV X (fun y => f (y * t)) g = LdV X f (g * t) := by
@@ -81,7 +81,7 @@ theorem ldV_rtransl (X t : Mat k r) (f : Mat k r → E) (g : Mat k r) :
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-The claim follows from `| [], _ => rfl | X :: u, f => by funext g show LdV X (u.foldr LdV (fun y => f (y * t))) g = LdV X (u.foldr LdV f) (g * t) rw [lw_rtransl t u f, ldV_rtransl]`.
+A detailed English derivation is pending.
 -/
 theorem lw_rtransl (t : Mat k r) : ∀ (u : List (Mat k r)) (f : Mat k r → E),
     u.foldr LdV (fun y => f (y * t)) = fun y => u.foldr LdV f (y * t)
@@ -92,7 +92,7 @@ theorem lw_rtransl (t : Mat k r) : ∀ (u : List (Mat k r)) (f : Mat k r → E),
     rw [lw_rtransl t u f, ldV_rtransl]
 
 /- English proof (translation)
-The claim follows from `lw_rtransl t u f`.
+A detailed English derivation is pending.
 -/
 theorem dLR_rtransl (t : Mat k r) (u : List (Mat k r)) (f : Mat k r → E) :
     dLR u [] (fun y => f (y * t)) = fun y => dLR u [] f (y * t) := lw_rtransl t u f
@@ -113,7 +113,7 @@ Both sides reduce to the same expression.
 theorem postL_apply (P : Wp →L[ℂ] Wp) (A : Wq →L[ℂ] Wp) : postL P A = P.comp A := rfl
 
 /- English proof (translation)
-Use `show deriv (fun s : ℝ => postL P (f (NormedSpace.exp (-((s : ℂ) • X)) * g))) 0 = postL P (deriv (fun s : ℝ => f (NormedSpace.exp (-((s : ℂ) • X)) * g)) 0)`. Use `Formalism.FourierDecayAlt.P.SandwichRhoAction.deriv_comp_of_leftInv (postL P) (postL Q) (fun A => ?_) _ 0` and prove the remaining obligations. Rewrite using `[postL_apply, postL_apply, ← ContinuousLinearMap.comp_assoc, hQP]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ldV_post {P Q : Wp →L[ℂ] Wp} (hQP : Q.comp P = 1) (X : Mat k r) (f : Mat k r → (Wq →L[ℂ] Wp))
     (g : Mat k r) : LdV X (fun y => P.comp (f y)) g = P.comp (LdV X f g) := by
@@ -124,7 +124,7 @@ theorem ldV_post {P Q : Wp →L[ℂ] Wp} (hQP : Q.comp P = 1) (X : Mat k r) (f :
   rfl
 
 /- English proof (translation)
-The claim follows from `| [], _ => rfl | X :: u, f => by funext g show LdV X (u.foldr LdV (fun y => P.comp (f y))) g = P.comp (LdV X (u.foldr LdV f) g) rw [lw_post hQP u f, ldV_post hQP]`.
+A detailed English derivation is pending.
 -/
 theorem lw_post {P Q : Wp →L[ℂ] Wp} (hQP : Q.comp P = 1) : ∀ (u : List (Mat k r)) (f : Mat k r → (Wq →L[ℂ] Wp)),
     u.foldr LdV (fun y => P.comp (f y)) = fun y => P.comp (u.foldr LdV f y)
@@ -135,7 +135,7 @@ theorem lw_post {P Q : Wp →L[ℂ] Wp} (hQP : Q.comp P = 1) : ∀ (u : List (Ma
     rw [lw_post hQP u f, ldV_post hQP]
 
 /- English proof (translation)
-Establish `u1` using `WeylGroupFacts.isUnit_of_uh hh.1`. Rewrite using `[← Bs.π_rep.2 _ (WeylGroupFacts.uw_inv hh) _ hh, Matrix.nonsing_inv_mul _ u1, Bs.π_rep.1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem pi_leftInv (Bs : B.RealPlaceData k r Wp Wq) {h : Mat k r} (hh : h ∈ UWset k r Bs.z) :
     (Bs.π h⁻¹).comp (Bs.π h) = 1 := by
@@ -157,7 +157,7 @@ section comp
 variable {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Take `⟨U, f', hU, hgU, hf', he⟩` from `h`. Conclude with `⟨iotL k r ⁻¹' U, fun y => f' (iotL k r y), hU.preimage (iotL k r).continuous, hgU, hf'.comp (iotL k r).contDiff.contDiffOn (fun y hy => hy), fun y hy hyG => he _ hy (iotL_mem hyG)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem loc_iot {m : ℕ∞} {f : Mat k r → E} {g : Mat k r} (h : CapelliWordSumExpansion.Loc m f (iotL k r g)) :
     CapelliWordSumExpansion.Loc m (fun y => f (iotL k r y)) g := by
@@ -166,14 +166,14 @@ theorem loc_iot {m : ℕ∞} {f : Mat k r → E} {g : Mat k r} (h : CapelliWordS
     hf'.comp (iotL k r).contDiff.contDiffOn (fun y hy => hy), fun y hy hyG => he _ hy (iotL_mem hyG)⟩
 
 /- English proof (translation)
-Introduce `g hg` and use `loc_iot (hf _ (iotL_mem hg))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ckOn_iot {m : ℕ∞} {f : Mat k r → E} (hf : CkOn m (GV k r) f) :
     CkOn m (GV k r) (fun y => f (iotL k r y)) :=
   fun g hg => loc_iot (hf _ (iotL_mem hg))
 
 /- English proof (translation)
-Introduce `g hg`. Take `⟨U, f', hU, hgU, hf', he⟩` from `hf (g * t) (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul hg ht)`. Use `⟨mulR t ⁻¹' U, fun y => f' (mulR t y), hU.preimage (mulR t).continuous, hgU, hf'.comp (mulR t).contDiff.contDiffOn (fun y hy => hy), fun y hy hyG => he _ hy (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul hyG ht)⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem ckOn_rtransl {m : ℕ∞} {f : Mat k r → E} (hf : CkOn m (GV k r) f) {t : Mat k r} (ht : t ∈ GV k r) :
     CkOn m (GV k r) (fun y => f (y * t)) := by
@@ -190,7 +190,7 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq]
 
 /- English proof (translation)
-Introduce `g hg`. Take `⟨U, f', hU, hgU, hf', he⟩` from `hf g hg`. Conclude with `⟨U, fun y => postL P (f' y), hU, hgU, (postL P).contDiff.comp_contDiffOn hf', fun y hy hyG => by show P.comp (f y) = postL P (f' y); rw [he y hy hyG]; rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ckOn_post {m : ℕ∞} {f : Mat k r → (Wq →L[ℂ] Wp)} (hf : CkOn m (GV k r) f) (P : Wp →L[ℂ] Wp) :
     CkOn m (GV k r) (fun y => P.comp (f y)) := by
@@ -210,7 +210,7 @@ def sxF (e : p + ρ = n) (x : PBQ.XP k p ρ) : Mat k n :=
   D.castM e (U.Rn k p ρ (-x.2) * U.embG k p ρ ((Matrix.of x.1.1 : Mat k ρ)⁻¹ * (Matrix.of x.1.2 : Mat k ρ)⁻¹))
 
 /- English proof (translation)
-Unfold `PBQ.sP sxF`. Rewrite using `[if_pos hx]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cast_leftFactor_eq_of_good {Bj : B.RealPlaceData k ρ Wp Wq} {x : PBQ.XP k p ρ} (hx : PBQ.GoodP Bj x) (e : p + ρ = n) :
     D.castM e (PBQ.sP Bj x) = sxF e x := by
@@ -218,7 +218,7 @@ theorem cast_leftFactor_eq_of_good {Bj : B.RealPlaceData k ρ Wp Wq} {x : PBQ.XP
   rw [if_pos hx]
 
 /- English proof (translation)
-Use `Formalism.FourierDecayAlt.P.PBE.castM_GV e (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul (LeftFubiniLemmas.rn_nset _).1 ?_)` and prove the remaining obligations. Rewrite using `[← Formalism.FourierDecayAlt.P.Dx2.Tower.lev_eq_embG]`. Conclude with `Formalism.FourierDecayAlt.P.Dx2.Tower.lev_GV p ρ _ (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_inv hx.1.1) (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_inv hx.2.1))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sxF_GV {Bj : B.RealPlaceData k ρ Wp Wq} (e : p + ρ = n) {x : PBQ.XP k p ρ} (hx : PBQ.GoodP Bj x) :
     sxF e x ∈ GV k n := by
@@ -228,7 +228,7 @@ theorem sxF_GV {Bj : B.RealPlaceData k ρ Wp Wq} (e : p + ρ = n) {x : PBQ.XP k 
     (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_inv hx.1.1) (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_inv hx.2.1))
 
 /- English proof (translation)
-Establish `c1 : IsClosed {x : Mt k ρ | (Matrix.of x : Mat k ρ) ∈ UWset k ρ Bj.z}` using `Formalism.FourierDecayAlt.P.B6.isClosed_UWset k ρ Bj.z`. Establish `c2 : IsClosed {x : Mt k ρ | (Matrix.of x : Mat k ρ) ∈ Nset k ρ}` using `Formalism.FourierDecayAlt.P.B6.isClosed_Nset k ρ`. Conclude with `(c1.preimage (continuous_fst.comp continuous_fst)).inter (c2.preimage (continuous_snd.comp continuous_fst))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isClosed_good (Bj : B.RealPlaceData k ρ Wp Wq) : IsClosed {x : PBQ.XP k p ρ | PBQ.GoodP Bj x} := by
   have c1 : IsClosed {x : Mt k ρ | (Matrix.of x : Mat k ρ) ∈ UWset k ρ Bj.z} := Formalism.FourierDecayAlt.P.B6.isClosed_UWset k ρ Bj.z
@@ -236,9 +236,9 @@ theorem isClosed_good (Bj : B.RealPlaceData k ρ Wp Wq) : IsClosed {x : PBQ.XP k
   exact (c1.preimage (continuous_fst.comp continuous_fst)).inter (c2.preimage (continuous_snd.comp continuous_fst))
 
 /- English proof (translation)
-Establish `hinv : ContinuousOn (fun y : Mat k ρ => y⁻¹) (GV k ρ)` using `Formalism.FourierDecayAlt.P.PBG.inv_cont_GV`. Establish `h1 : ContinuousOn (fun x : PBQ.XP k p ρ => (Matrix.of x.1.1 : Mat k ρ)⁻¹) {x | PBQ.GoodP Bj x}` using `hinv.comp (continuous_fst.comp continuous_fst).continuousOn fun x hx => hx.1.1`. Establish `h2 : ContinuousOn (fun x : PBQ.XP k p ρ => (Matrix.of x.1.2 : Mat k ρ)⁻¹) {x | PBQ.GoodP Bj x}` using `hinv.comp (continuous_snd.comp continuous_fst).continuousOn fun x hx => hx.2.1`. Establish `h3 : ContinuousOn (fun x : PBQ.XP k p ρ => U.embG k p ρ ((Matrix.of x.1.1 : Mat k ρ)⁻¹ * (Matrix.of x.1.2 : Mat k ρ)⁻¹)) {x | PBQ.GoodP Bj x}`. Establish `e1 : (U.embG k p ρ) = ιLev k p ρ` using `funext fun y => (Formalism.FourierDecayAlt.P.Dx2.Tower.lev_eq_embG p ρ y).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1]`. Conclude with `(Formalism.FourierDecayAlt.P.Dx2.Tower.lev_cont p ρ).comp_continuousOn (h1.mul h2)`. Establish `h4 : Continuous (fun x : PBQ.XP k p ρ => U.Rn k p ρ (-x.2))` using `(Formalism.FourierDecayAlt.P.Ux10.cont_Rn k p ρ).comp continuous_snd.neg`. Conclude with `(Formalism.FourierDecayAlt.P.Dx2.Tower.castM_cont e).comp_continuousOn (h4.continuousOn.mul h3)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cont_sxF (Bj : B.RealPlaceData k ρ Wp Wq) (e : p + ρ = n) :
     ContinuousOn (sxF e) {x : PBQ.XP k p ρ | PBQ.GoodP Bj x} := by
@@ -281,9 +281,9 @@ def Gt (Bj : B.RealPlaceData k ρ Wp Wq) (e : p + ρ = n) (Φt : Mat k n → (Wq
   ∫ x, PBQ.cP Bj x • fam Bj e Φt x g ∂(PBQ.muXP Bj)
 
 /- English proof (translation)
-Unfold `PBQ.pbF Gt`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [PBQ.ae_goodP (p := p) Bj] with x hx`. Unfold `PBQ.pbI fam`. Rewrite using `[if_pos hx]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [iotL_mul, iotL_iotL, cast_leftFactor_eq_of_good hx e]`.
+A detailed English derivation is pending.
 -/
 theorem pbF_eq_Gt (Bj : B.RealPlaceData k ρ Wp Wq) (B0 : B.RealPlaceData k n Wp Wq) (e : p + ρ = n)
     (H : Mat k n → (Wq →L[ℂ] Wp)) (g : Mat k n) :
@@ -296,14 +296,14 @@ theorem pbF_eq_Gt (Bj : B.RealPlaceData k ρ Wp Wq) (B0 : B.RealPlaceData k n Wp
   simp only [iotL_mul, iotL_iotL, cast_leftFactor_eq_of_good hx e]
 
 /- English proof (translation)
-Unfold `PBQ.cP`. Rewrite using `[norm_mul, Formalism.FourierDecayAlt.P.LeftFubiniLemmas.norm_psi, Formalism.FourierDecayAlt.P.LeftFubiniLemmas.norm_psi, one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_cP (Bj : B.RealPlaceData k ρ Wp Wq) (x : PBQ.XP k p ρ) : ‖PBQ.cP Bj x‖ ≤ 1 := by
   unfold PBQ.cP
   rw [norm_mul, Formalism.FourierDecayAlt.P.LeftFubiniLemmas.norm_psi, Formalism.FourierDecayAlt.P.LeftFubiniLemmas.norm_psi, one_mul]
 
 /- English proof (translation)
-Unfold `PBQ.cP`. Establish `hof2 : Continuous (fun x : PBQ.XP k p ρ => (Matrix.of x.1.2 : B.Mat k ρ))` using `continuous_fst.snd`. Conclude with `((Formalism.FourierDecayAlt.P.ParameterFamilyAlgebra.psi_cont_of Bj.z cStd).comp hof2).mul ((Formalism.FourierDecayAlt.P.ParameterFamilyAlgebra.psi_cont_of (liftVec k p ρ Bj.z) cStd).comp ((Formalism.FourierDecayAlt.P.Dx2.SplitF.rn_cont (k := k) p ρ).comp continuous_snd))`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_characterProduct (Bj : B.RealPlaceData k ρ Wp Wq) : Continuous (fun x : PBQ.XP k p ρ => PBQ.cP Bj x) := by
   unfold PBQ.cP
@@ -313,7 +313,7 @@ theorem continuous_characterProduct (Bj : B.RealPlaceData k ρ Wp Wq) : Continuo
       ((Formalism.FourierDecayAlt.P.Dx2.SplitF.rn_cont (k := k) p ρ).comp continuous_snd))
 
 /- English proof (translation)
-Establish `hMv : Formalism.FourierDecayAlt.P.Ux10.Mv (0 : Formalism.FourierDecayAlt.P.Ux10.J k n → ℝ) = 0`. Use extensionality with `a b`. Simplify using `[Formalism.FourierDecayAlt.P.Ux10.Mv]`. Simplify using `[Formalism.FourierDecayAlt.P.Ux10.chart, hMv, Formalism.FourierDecayAlt.P.Ux10.prj_zero, Formalism.FourierDecayAlt.P.Ux10.kap]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem chart_zero (g0 : Mat k n) : Formalism.FourierDecayAlt.P.Ux10.chart g0 0 = g0 := by
   have hMv : Formalism.FourierDecayAlt.P.Ux10.Mv (0 : Formalism.FourierDecayAlt.P.Ux10.J k n → ℝ) = 0 := by
@@ -331,13 +331,11 @@ open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Form
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Unfold `U.muRC`. Establish `h0 : IsFiniteMeasureOnCompacts (volume : Measure (Fin p → ℂ))` using `by rw [volume_pi]; infer_instance`. Establish `h1 : IsFiniteMeasureOnCompacts (volume : Measure (G.UT p → ℂ))` using `by rw [volume_pi]; infer_instance`. Establish `h2 : IsFiniteMeasureOnCompacts (volume : Measure (Fin p → ℝ))` using `by rw [volume_pi]; infer_instance`. Establish `h3 : IsFiniteMeasureOnCompacts (volume : Measure (Fin (2 * ρ + k + 1) → Fin p → ℂ))`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[volume_pi]`. Use `infer_instance`. Establish `: SigmaFinite (volume : Measure (Fin p → ℝ))` using `by rw [volume_pi]; infer_instance`. Establish `: SigmaFinite (volume : Measure (G.UT p → ℂ))` using `by rw [volume_pi]; infer_instance`. Establish `: SigmaFinite (volume : Measure ((G.UT p → ℂ) × (Fin p → ℝ)))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.volume_eq_prod]`. Use `infer_instance`. Establish `h4 : IsFiniteMeasureOnCompacts (volume : Measure ((G.UT p → ℂ) × (Fin p → ℝ)))`. Rewrite using `[Measure.volume_eq_prod]`. Use `infer_instance`.
-
-Rewrite using `[Measure.volume_eq_prod]`. Use `infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fmc_RC (k p ρ : ℕ) : IsFiniteMeasureOnCompacts (U.muRC k p ρ) := by
   unfold U.muRC
@@ -360,11 +358,11 @@ variable {k p ρ n : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSp
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Bj.haarW` as an intermediate fact. Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Bj.haarN` as an intermediate fact. Use `Formalism.FourierDecayAlt.P.Dx2.SplitF.sf_RC (k := k) p ρ` as an intermediate fact. Use `fmc_RC k p ρ` as an intermediate fact. Establish `hK1 : IsCompact ((fun x : PBQ.XP k p ρ => x.1.1) '' K)` using `hK.image (continuous_fst.comp continuous_fst)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK2 : IsCompact ((fun x : PBQ.XP k p ρ => x.1.2) '' K)` using `hK.image (continuous_snd.comp continuous_fst)`. Establish `hK3 : IsCompact ((fun x : PBQ.XP k p ρ => x.2) '' K)` using `hK.image continuous_snd`. Establish `hbox : K ⊆ (((fun x : PBQ.XP k p ρ => x.1.1) '' K) ×ˢ ((fun x : PBQ.XP k p ρ => x.1.2) '' K)) ×ˢ ((fun x : PBQ.XP k p ρ => x.2) '' K)` using `fun x hx => ⟨⟨⟨x, hx, rfl⟩, ⟨x, hx, rfl⟩⟩, ⟨x, hx, rfl⟩⟩`. Use `(measure_mono hbox).trans_lt ?_` and prove the remaining obligations. Rewrite using `[PBQ.muXP, Measure.prod_prod, Measure.prod_prod]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ENNReal.mul_lt_top (ENNReal.mul_lt_top (Bj.haarW.finite_compact _ hK1) (Bj.haarN.finite_compact _ hK2)) hK3.measure_lt_top`.
+A detailed English derivation is pending.
 -/
 theorem muXP_lt_top_of_isCompact (Bj : B.RealPlaceData k ρ Wp Wq) {K : Set (PBQ.XP k p ρ)} (hK : IsCompact K) :
     PBQ.muXP Bj K < ⊤ := by
@@ -384,61 +382,49 @@ theorem muXP_lt_top_of_isCompact (Bj : B.RealPlaceData k ρ Wp Wq) {K : Set (PBQ
     hK3.measure_lt_top
 
 /- English proof (translation)
-Establish `: CompleteSpace Wp` using `FiniteDimensional.complete ℂ Wp`. Establish `: BorelSpace (PBQ.XP k p ρ)`. Establish `: BorelSpace (U.RC k p ρ)` using `Prod.borelSpace`. Establish `: BorelSpace (Mt k ρ × Mt k ρ)` using `Prod.borelSpace`. Conclude with `Prod.borelSpace`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Φ : Mat k n → (Wq →L[ℂ] Wp) := PBG.Kr B0 H with hΦdef`. Use `set Φt : Mat k n → (Wq →L[ℂ] Wp) := fun y => Φ (iotL k n y) with hΦtdef`. Establish `hΦ : CkOn ⊤ (GV k n) Φ` using `fun g hg => PBG.kr_loc_cpt B0 hH hCs hHC g hg`. Establish `hΦt : CkOn ⊤ (GV k n) Φt` using `ckOn_iot hΦ`. Use `set μ := PBQ.muXP (p := p) Bj with hμ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨V, hV, K, hK, hKp⟩` from `hP _ hgU`. Use `set O := interior (iotL k n ⁻¹' V) with hOdef`. Establish `hOo : IsOpen O` using `isOpen_interior`. Establish `hgO : g0 ∈ O`. Rewrite using `[hOdef, mem_interior_iff_mem_nhds]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(iotL k n).continuous.continuousAt.preimage_mem_nhds hV`. Establish `hzero : ∀ x, (x ∉ K ∨ ¬ PBQ.GoodP Bj x) → ∀ g ∈ GV k n, g ∈ O → fam Bj e Φt x g = 0`. Introduce `x hx g hg hgO'`. Unfold `fam`. Use `split_ifs with hxg`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hxK : x ∉ K` using `hx.resolve_right (not_not.2 hxg)`. Establish `hgV : iotL k n g ∈ V` using `(interior_subset hgO' : g ∈ iotL k n ⁻¹' V)`. Establish `hiG` using `iotL_mem hg`. Establish `h0 : Φt (g * iotL k n (sxF e x)) = 0` using `by show PBG.Kr B0 H (iotL k n (g * iotL k n (sxF e x))) = 0`. Rewrite using `[iotL_mul, iotL_iotL]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Unfold `PBG.Kr`. Use `integral_eq_zero_of_ae ?_` and prove the remaining obligations. Use `filter_upwards [PBG.ae_inR B0] with ξ hξ`. Establish `hnot` using `hKp _ hgV hiG x hxg hxK ξ hξ`. Rewrite `hnot` using `[cast_leftFactor_eq_of_good hxg e]`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmem : sxF e x * iotL k n g * Matrix.of ξ.2 * Matrix.of ξ.1 ∈ GV k n` using `Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul (sxF_GV e hxg) hiG) hξ.2.1) hξ.1.1`. Simplify using `only [hHC _ hmem hnot, ContinuousLinearMap.zero_comp, smul_zero, Pi.zero_apply]`. Rewrite using `[h0, ContinuousLinearMap.comp_zero]`. Both sides reduce to the same expression. Take `⟨δ1, hδ1, hsub⟩` from `Metric.mem_nhds_iff.1 (Formalism.FourierDecayAlt.P.Ux10.dom_open.mem_nhds (Formalism.FourierDecayAlt.P.Ux10.zero_mem_dom (k := k) (r := n)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcc : ContinuousAt (Formalism.FourierDecayAlt.P.Ux10.chart g0) 0` using `(Formalism.FourierDecayAlt.P.Ux10.chart_cd g0).continuousOn.continuousAt (Formalism.FourierDecayAlt.P.Ux10.dom_open.mem_nhds Formalism.FourierDecayAlt.P.Ux10.zero_mem_dom)`. Take `⟨δ2, hδ2, hsub2⟩` from `Metric.mem_nhds_iff.1 (hcc.preimage_mem_nhds (by rw [chart_zero]; exact hOo.mem_nhds hgO))`. Use `set δ := min δ1 δ2 / 2 with hδ`. Establish `hδp : 0 < δ` using `by rw [hδ]; positivity`. Establish `hδ1' : δ < δ1` using `by rw [hδ]; have := min_le_left δ1 δ2; linarith`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hδ2' : δ < δ2` using `by rw [hδ]; have := min_le_right δ1 δ2; linarith`. Establish `hcl : Metric.closedBall (0 : Formalism.FourierDecayAlt.P.Ux10.J k n → ℝ) δ ⊆ Formalism.FourierDecayAlt.P.Ux10.Dom k n` using `fun Y hY => hsub (Metric.closedBall_subset_ball hδ1' hY)`. Establish `hclO : ∀ Y ∈ Metric.closedBall (0 : Formalism.FourierDecayAlt.P.Ux10.J k n → ℝ) δ, Formalism.FourierDecayAlt.P.Ux10.chart g0 Y ∈ O` using `fun Y hY => hsub2 (Metric.closedBall_subset_ball hδ2' hY)`. Use `set Kc := Formalism.FourierDecayAlt.P.Ux10.chart g0 '' Metric.closedBall (0 : Formalism.FourierDecayAlt.P.Ux10.J k n → ℝ) δ with hKcdef`. Establish `hKc : IsCompact Kc` using `(isCompact_closedBall _ _).image_of_continuousOn ((Formalism.FourierDecayAlt.P.Ux10.chart_cd g0).continuousOn.mono hcl)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hKcG : Kc ⊆ GV k n`. Introduce and unpack `_ ⟨Y, hY, rfl⟩`. Conclude with `Formalism.FourierDecayAlt.P.Ux10.chart_mem hg0 (hcl hY)`. Establish `hmemKc : ∀ Y ∈ Metric.ball (0 : Formalism.FourierDecayAlt.P.Ux10.J k n → ℝ) δ, Formalism.FourierDecayAlt.P.Ux10.chart g0 Y ∈ Kc` using `fun Y hY => ⟨Y, Metric.ball_subset_closedBall hY, rfl⟩`. Establish `hmemO : ∀ Y ∈ Metric.ball (0 : Formalism.FourierDecayAlt.P.Ux10.J k n → ℝ) δ, Formalism.FourierDecayAlt.P.Ux10.chart g0 Y ∈ O` using `fun Y hY => hclO Y (Metric.ball_subset_closedBall hY)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set Kx := K ∩ {x : PBQ.XP k p ρ | PBQ.GoodP Bj x} with hKxdef`. Establish `hKx : IsCompact Kx` using `hK.inter_right (isClosed_good Bj)`. Use `set KImage := (fun q : PBQ.XP k p ρ × Mat k n => q.2 * iotL k n (sxF e q.1)) '' (Kx ×ˢ Kc) with hKimdef`. Establish `hKim : IsCompact KImage`. Use `(hKx.prod hKc).image_of_continuousOn ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `continuous_snd.continuousOn.mul ?_` and prove the remaining obligations. Conclude with `(iotL k n).continuous.comp_continuousOn ((cont_sxF Bj e).comp continuous_fst.continuousOn fun q hq => hq.1.2)`. Establish `hKimG : KImage ⊆ GV k n`. Introduce and unpack `_ ⟨q, hq, rfl⟩`. Conclude with `Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul (hKcG hq.2) (iotL_mem (sxF_GV e hq.1.2))`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hunit : ∀ w : List (Formalism.FourierDecayAlt.P.Ux10.J k n), ∀ X ∈ w.map Formalism.FourierDecayAlt.P.Ux10.Lt, unitLie k n X`. Introduce `w X hX`. Take `⟨i, _, rfl⟩` from `List.mem_map.1 hX`. Conclude with `Formalism.FourierDecayAlt.P.Ux10.Lt_unit i`. Establish `hΨ : ∀ w : List (Formalism.FourierDecayAlt.P.Ux10.J k n), ContinuousOn (dLR (w.map Formalism.FourierDecayAlt.P.Ux10.Lt) [] Φt) (GV k n)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce `w`. Rewrite using `[Formalism.FourierDecayAlt.P.B4.dLR_eq]`. Conclude with `Formalism.FourierDecayAlt.P.B5.ckOn_continuousOn (m := ((0 : ℕ) : ℕ∞)) (smooth_on_of_word_derivatives _ (allLie_lr (hunit w) (by simp)) 0 (Formalism.FourierDecayAlt.P.B5.ckOn_mono le_top hΦt))`. Establish `hbw : ∀ w : List (Formalism.FourierDecayAlt.P.Ux10.J k n), ∃ C : ℝ, ∀ y ∈ KImage, ‖dLR (w.map Formalism.FourierDecayAlt.P.Ux10.Lt) [] Φt y‖ ≤ C` using `fun w => hKim.exists_bound_of_continuousOn ((hΨ w).mono hKimG)`. Use `choose Cw hCw using hbw`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set Wm := (List.finite_length_le (Formalism.FourierDecayAlt.P.Ux10.J k n) m).toFinset with hWm`. Use `set c : ℝ := ∑ w ∈ Wm, max (Cw w) 0 with hcdef`. Establish `hc0 : 0 ≤ c` using `Finset.sum_nonneg fun w _ => le_max_right _ _`. Establish `hcw : ∀ w : List (Formalism.FourierDecayAlt.P.Ux10.J k n), w.length ≤ m → ∀ y ∈ KImage, ‖dLR (w.map Formalism.FourierDecayAlt.P.Ux10.Lt) [] Φt y‖ ≤ c`. Introduce `w hw y hy`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hwm : w ∈ Wm` using `by rw [hWm, Set.Finite.mem_toFinset]; exact hw`. Combine the equalities or inequalities in the displayed calculation. Use `set β : PBQ.XP k p ρ → ℝ := Kx.indicator (fun _ => c) with hβ`. Establish `hβ0 : ∀ x, 0 ≤ β x` using `fun x => Set.indicator_nonneg (fun _ _ => hc0) x`. Establish `hβI : Integrable β μ` using `(integrableOn_const (μ := μ) (s := Kx) (C := c) (muXP_lt_top_of_isCompact Bj hKx).ne).integrable_indicator hKx.isClosed.measurableSet`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hwords : ∀ (w : List (Formalism.FourierDecayAlt.P.Ux10.J k n)) x, PBQ.GoodP Bj x → ∀ y, dLR (w.map Formalism.FourierDecayAlt.P.Ux10.Lt) [] (fam Bj e Φt x) y = (Bj.π (Matrix.of x.1.1)).comp (dLR (w.map Formalism.FourierDecayAlt.P.Ux10.Lt) [] Φt (y * iotL k n (sxF e x)))`. Introduce `w x hx y`. Establish `hf : fam Bj e Φt x = fun g => (Bj.π (Matrix.of x.1.1)).comp (Φt (g * iotL k n (sxF e x)))`. Use function extensionality and compare the values at `g`. Unfold `fam`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[if_pos hx]`. Rewrite using `[hf]`. Use `show (w.map Formalism.FourierDecayAlt.P.Ux10.Lt).foldr LdV (fun g => (Bj.π (Matrix.of x.1.1)).comp (Φt (g * iotL k n (sxF e x)))) y = _`. Rewrite using `[lw_post (pi_leftInv Bj hx.1)]`. Use `show (Bj.π (Matrix.of x.1.1)).comp ((w.map Formalism.FourierDecayAlt.P.Ux10.Lt).foldr LdV (fun g => Φt (g * iotL k n (sxF e x))) y) = (Bj.π (Matrix.of x.1.1)).comp ((w.map Formalism.FourierDecayAlt.P.Ux10.Lt).foldr LdV Φt (y * iotL k n (sxF e x)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[lw_rtransl]`. Establish `hbd : ∀ w : List (Formalism.FourierDecayAlt.P.Ux10.J k n), w.length ≤ m → ∀ Y ∈ Metric.ball (0 : Formalism.FourierDecayAlt.P.Ux10.J k n → ℝ) δ, ∀ x, ‖dLR (w.map Formalism.FourierDecayAlt.P.Ux10.Lt) [] (fam Bj e Φt x) (Formalism.FourierDecayAlt.P.Ux10.chart g0 Y)‖ ≤ β x`. Introduce `w hw Y hY x`. Use `set y := Formalism.FourierDecayAlt.P.Ux10.chart g0 Y with hydef`. Establish `hyG : y ∈ GV k n` using `hKcG (hmemKc Y hY)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hxK : x ∈ Kx`. Rewrite using `[hwords w x hxK.2 y, hβ, Set.indicator_of_mem hxK]`. Use `(ContinuousLinearMap.opNorm_comp_le _ _).trans ?_` and prove the remaining obligations. Use `(mul_le_of_le_one_left (norm_nonneg _) (Formalism.FourierDecayAlt.P.B7.norm_pi_le Bj hxK.2.1)).trans ?_` and prove the remaining obligations. Conclude with `hcw w hw _ ⟨(x, y), ⟨hxK, hmemKc Y hY⟩, rfl⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx' : x ∉ K ∨ ¬ PBQ.GoodP Bj x`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hxK ⟨hc.1, hc.2⟩`. Establish `h0 : dLR (w.map Formalism.FourierDecayAlt.P.Ux10.Lt) [] (fam Bj e Φt x) y = 0`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Formalism.FourierDecayAlt.P.B4.dLR_eq]`. Conclude with `Formalism.FourierDecayAlt.P.PBG.W_zero_near _ (allLie_lr (hunit w) (by simp)) hOo (fun g hg hgO' => hzero x hx' g hg hgO') y hyG (hmemO Y hY)`. Rewrite using `[h0, norm_zero]`. Conclude with `hβ0 x`. Establish `hgood : μ.restrict {x : PBQ.XP k p ρ | PBQ.GoodP Bj x} = μ` using `Measure.restrict_eq_self_of_ae_mem (PBQ.ae_goodP (p := p) Bj)`.
-
-Establish `hM : ∀ w : List (Formalism.FourierDecayAlt.P.Ux10.J k n), w.length ≤ m → ∀ Y ∈ Metric.ball (0 : Formalism.FourierDecayAlt.P.Ux10.J k n → ℝ) δ, AEStronglyMeasurable (fun x => dLR (w.map Formalism.FourierDecayAlt.P.Ux10.Lt) [] (fam Bj e Φt x) (Formalism.FourierDecayAlt.P.Ux10.chart …`. Introduce `w hw Y hY`. Use `set y := Formalism.FourierDecayAlt.P.Ux10.chart g0 Y with hydef`. Establish `hyG : y ∈ GV k n` using `hKcG (hmemKc Y hY)`. Establish `hs : ContinuousOn (fun x : PBQ.XP k p ρ => y * iotL k n (sxF e x)) {x | PBQ.GoodP Bj x}` using `continuousOn_const.mul ((iotL k n).continuous.comp_continuousOn (cont_sxF Bj e))`.
-
-Establish `hmap : Set.MapsTo (fun x : PBQ.XP k p ρ => y * iotL k n (sxF e x)) {x | PBQ.GoodP Bj x} (GV k n)` using `fun x hx => Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul hyG (iotL_mem (sxF_GV e hx))`. Establish `hπ : ContinuousOn (fun x : PBQ.XP k p ρ => Bj.π (Matrix.of x.1.1)) {x | PBQ.GoodP Bj x}` using `Bj.π_cont.comp (continuous_fst.comp continuous_fst).continuousOn fun x hx => hx.1`. Establish `hG : ContinuousOn (fun x : PBQ.XP k p ρ => (Bj.π (Matrix.of x.1.1)).comp (dLR (w.map Formalism.FourierDecayAlt.P.Ux10.Lt) [] Φt (y * iotL k n (sxF e x)))) {x | PBQ.GoodP Bj x}` using `hπ.clm_comp ((hΨ w).comp hs hmap)`. Establish `hGm` using `hG.aestronglyMeasurable (μ := μ) (isClosed_good Bj).measurableSet`. Rewrite `hGm` using `[hgood]`.
-
-Use `hGm.congr ?_` and prove the remaining obligations. Use `filter_upwards [PBQ.ae_goodP (p := p) Bj] with x hx`. Conclude with `(hwords w x hx y).symm`. Establish `hh : ∀ x, CkOn ((m : ℕ) : ℕ∞) (GV k n) (fam Bj e Φt x)`. Introduce `x`.
-
-Distinguish the cases in `hx : PBQ.GoodP Bj x`. Establish `hf : fam Bj e Φt x = fun g => (Bj.π (Matrix.of x.1.1)).comp (Φt (g * iotL k n (sxF e x)))`. Use function extensionality and compare the values at `g`. Unfold `fam`. Rewrite using `[if_pos hx]`.
-
-Rewrite using `[hf]`. Conclude with `ckOn_post (ckOn_rtransl (Formalism.FourierDecayAlt.P.B5.ckOn_mono le_top hΦt) (iotL_mem (sxF_GV e hx))) _`. Establish `hf : fam Bj e Φt x = fun _ => 0`. Use function extensionality and compare the values at `g`. Unfold `fam`.
-
-Rewrite using `[if_neg hx]`. Rewrite using `[hf]`. Conclude with `Formalism.FourierDecayAlt.P.SmoothnessOnGoodSet.ckOn_zero _`. Establish `hAL` using `Formalism.FourierDecayAlt.P.ChartIntegralLocal.int_chart_loc (μ := μ) (fun x => PBQ.cP Bj x) (norm_cP Bj) (continuous_characterProduct Bj).aestronglyMeasurable (fam Bj e Φt) m hh hg0 hδp hcl hM β hβI hbd`. Conclude with `Formalism.FourierDecayAlt.P.ChartIntegralLocal.ck_at_of_chart hg0 hδp hAL`.
+A detailed English derivation is pending.
 -/
 theorem ck_at (Bj : B.RealPlaceData k ρ Wp Wq) (B0 : B.RealPlaceData k n Wp Wq) (e : p + ρ = n)
     {H : Mat k n → (Wq →L[ℂ] Wp)} {Cs : Set (Mat k n)} (hH : CkOn ⊤ (GV k n) H) (hCs : IsCompact Cs)
@@ -646,7 +632,7 @@ variable {k p ρ n : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSp
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P5.Rad.smoothLev_of_ck (hΩ.preimage (iotL k n).continuous) fun m g₀ hg₀ => by obtain ⟨U', F', hU', hgU', hF', he⟩ := ck_at Bj B0 e hH hCs hHC hP m hg₀.1.1 hg₀.2 exact ⟨U', F', hU', hgU', hF', fun g hg hgl => he g hg hgl.1⟩`.
+A detailed English derivation is pending.
 -/
 theorem gt_smooth (Bj : B.RealPlaceData k ρ Wp Wq) (B0 : B.RealPlaceData k n Wp Wq) (e : p + ρ = n)
     {H : Mat k n → (Wq →L[ℂ] Wp)} {Cs : Set (Mat k n)} (hH : CkOn ⊤ (GV k n) H) (hCs : IsCompact Cs)
@@ -666,11 +652,11 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.P.PartialBesselLeftWordLemmas
 
 /- English proof (translation)
-Introduce `k p ρ n Wp Wq _ _ _ _ _ _ Bj B0 e _ H Cs hH hCs hHC Ω hΩ hP y hy hyG`. Establish `hS` using `gt_smooth Bj B0 e hH hCs hHC hΩ hP`. Establish `hmem : iotL k n y ∈ Q.Glev k n 0 ∩ iotL k n ⁻¹' Ω`. Use `⟨Formalism.FourierDecayAlt.P.OrbitalIntegralIdentities.glev0 (iotL_mem hyG), ?_⟩` and prove the remaining obligations. Use `show iotL k n (iotL k n y) ∈ Ω`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[iotL_iotL]`. Conclude with `hy`. Take `⟨U', F', hU', hgU', hF', he⟩` from `hS (iotL k n y) hmem`. Establish `hloc : CapelliWordSumExpansion.Loc ⊤ (Gt Bj e (fun z => PBG.Kr B0 H (iotL k n z))) (iotL k n y)` using `⟨U', F', hU', hgU', hF', fun g hg hgG => he g hg (Formalism.FourierDecayAlt.P.OrbitalIntegralIdentities.glev0 hgG)⟩`. Establish `heq : PBQ.pbF Bj B0 e H = fun z => Gt Bj e (fun y => PBG.Kr B0 H (iotL k n y)) (iotL k n z)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `(pbF_eq_Gt Bj B0 e H)`. Rewrite using `[heq]`. Conclude with `loc_iot hloc`.
+A detailed English derivation is pending.
 -/
 theorem partial_bessel_smooth_compact_support : PartialBesselProperness.PbLoc := by
   intro k p ρ n Wp Wq _ _ _ _ _ _ Bj B0 e _ H Cs hH hCs hHC Ω hΩ hP y hy hyG

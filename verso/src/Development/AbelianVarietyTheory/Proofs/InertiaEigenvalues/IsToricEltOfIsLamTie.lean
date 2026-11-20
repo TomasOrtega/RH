@@ -7,11 +7,11 @@ open NumberField IsDedekindDomain ReciprocityTheory.Gal Formalism.ConjugateSelfD
 namespace GlobalTheory.LamTie
 
 /- English proof (translation)
-Introduce `D N X Z hZ h`. Use `⟨fun i hi => ?_, fun i hi lam => ?_⟩` and prove the remaining obligations. Take `⟨hS, ι, hι, hl⟩` from `h i hi`. Use `⟨ι, hι, fun lam s hs => ?_⟩` and prove the remaining obligations. Take `⟨j, a, s', ⟨-, hs', hv⟩, u, hu, hQ⟩` from `hl lam`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `rfl : s = s' := by`. Establish `h1` using `hs.1`. Establish `h2` using `hs'.1`. Use linear arithmetic over natural numbers and integers. Establish `h1 : 1 ≤ s` using `by exact_mod_cast hs.2.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Conclude with `⟨_, inferInstance, phi D.host, Z.kap j a s, cond0 D.host Z.w0, Z.lam0 (X.l i) j a, u, GlobalTheory.T.isHostDatum_kap_lam0_of_ok D Z hZ (X.l i) j a s h1 hs.2.2, hS, hv, hu, hQ⟩`. Take `⟨-, ι, -, hl⟩` from `h i hi`. Take `⟨j, a, s, ⟨-, hs, -⟩, -⟩` from `hl lam`. Conclude with `⟨s, hs⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isToricElt_of_isLamTie : ∀ (D : D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N) (Z : LamDat D), Z.Ok →
     IsLamTie X Z → IsToricElt X ∧ ∀ i, X.NonzeroIndexPlace i → ∀ lam : X.abelian₂ i, ∃ s : ℤ, BlochKatoReduction.Gen.SOk X i lam s := by

@@ -24,11 +24,11 @@ def optionSumEquiv (A B : Type) : Option A ⊕ B ≃ A ⊕ Option B where
   right_inv := by rintro (a | (_ | b)) <;> rfl
 
 /- English proof (translation)
-Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by have := c.pos; omega⟩`. Establish `hr : b.repr (∑ j, η j • b (.inr j)) (.inr c) = η c`. Simplify using `[Finsupp.single_apply]`. Establish `hd : IsUnit (b.det (Function.update b (.inr c) (∑ j, η j • b (.inr j))))`. Rewrite using `[Module.Basis.det_apply, Module.Basis.toMatrix_update, Module.Basis.toMatrix_self, ← Matrix.cramer_apply, Matrix.cramer_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hc` using `[← hr]`. Conclude with `hc`. Take `⟨h1, h2⟩` from `(Module.Basis.is_basis_iff_det b).2 hd`. Set `q : Fin (k + 1) ⊕ Fin m ≃ Fin k ⊕ Fin (m + 1)` to `(Equiv.sumCongr finSuccEquivLast (Equiv.refl _)).trans ((optionSumEquiv _ _).trans (Equiv.sumCongr (Equiv.refl _) (finSuccEquiv' c).symm))`. Use `⟨m, (Module.Basis.mk h1 h2.ge).reindex q.symm, fun i => ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: q (.inl i.castSucc) = .inl i` using `by simp [q, optionSumEquiv]`. Rewrite using `[Module.Basis.reindex_apply, Equiv.symm_symm, this, Module.Basis.mk_apply, Function.update_of_ne (by simp)]`. Establish `: q (.inl (Fin.last k)) = .inr c` using `by simp [q, optionSumEquiv]`. Rewrite using `[Module.Basis.reindex_apply, Equiv.symm_symm, this, Module.Basis.mk_apply, Function.update_self]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_basis_succ {R N : Type} [CommRing R] [AddCommGroup N] [Module R N] {k n : ℕ}
     (b : Module.Basis (Fin k ⊕ Fin n) R N) (η : Fin n → R) (c : Fin n) (hc : IsUnit (η c)) :
@@ -54,9 +54,9 @@ theorem exists_basis_succ {R N : Type} [CommRing R] [AddCommGroup N] [Module R N
     rw [Module.Basis.reindex_apply, Equiv.symm_symm, this, Module.Basis.mk_apply, Function.update_self]
 
 /- English proof (translation)
-Unfold `initSpan`. Use `congr 1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, hi, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `hi' : (i : ℕ) < j` using `hi`. Conclude with `⟨⟨i, by omega⟩, hi', rfl⟩`. Introduce and unpack `⟨i, hi, rfl⟩`. Conclude with `⟨i.castSucc, hi, rfl⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem initSpan_castSucc {R N : Type} [CommRing R] [AddCommGroup N] [Module R N] {k : ℕ} (v : Fin (k + 1) → N)
     {j : ℕ} (hj : j ≤ k) : initSpan R v j = initSpan R (fun i : Fin k => v i.castSucc) j := by
@@ -71,7 +71,7 @@ theorem initSpan_castSucc {R N : Type} [CommRing R] [AddCommGroup N] [Module R N
     exact ⟨i.castSucc, hi, rfl⟩
 
 /- English proof (translation)
-Unfold `initSpan`. Rewrite using `[← Submodule.span_union, ← Set.image_singleton, ← Set.image_union]`. Use `congr 2`. Use extensionality with `i`. Simplify using `only [Set.mem_setOf_eq, Set.mem_union, Set.mem_singleton_iff, Fin.ext_iff]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -85,13 +85,11 @@ theorem initSpan_succ {R N : Type} [CommRing R] [AddCommGroup N] [Module R N] {M
   omega
 
 /- English proof (translation)
-Establish `h0 : ∀ j ≤ k, initSpan R u j = initSpan R v j` using `fun j hj => by`. Rewrite using `[initSpan_castSucc v hj, hu j hj]`. Simplify using `only [hv]`. Introduce `j hj`. Break down `hj.eq_or_lt with rfl | hj` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[initSpan_succ u hk, initSpan_succ v (Nat.lt_succ_self k), h0 k le_rfl]`. Establish `hs : ∑ i : Fin k, b.repr (u ⟨k, hk⟩) (.inl i) • b (.inl i) ∈ initSpan R v k` using `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i.castSucc, i.2, hv i⟩)`. Establish `hw : u ⟨k, hk⟩ = ∑ i : Fin k, b.repr (u ⟨k, hk⟩) (.inl i) • b (.inl i) + (e : R) • v ⟨k, Nat.lt_succ_self k⟩` using `by conv_lhs => rw [← b.sum_repr (u ⟨k, hk⟩), Fintype.sum_sum_type]`. Rewrite using `[show v ⟨k, Nat.lt_succ_self k⟩ = _ from hv', Finset.smul_sum]`. Simplify using `only [he, mul_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Generalize the expression as in `∑ i : Fin k, b.repr (u ⟨k, hk⟩) (.inl i) • b (.inl i) = s at hs hw`. Use `le_antisymm (sup_le le_sup_left ?_) (sup_le le_sup_left ?_)` and prove the remaining obligations. Rewrite using `[Submodule.span_singleton_le_iff_mem, hw]`. Conclude with `Submodule.add_mem_sup hs (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _))`. Rewrite using `[Submodule.span_singleton_le_iff_mem, ← Submodule.smul_mem_iff_of_isUnit _ e.isUnit, ← sub_eq_iff_eq_add'.2 hw]`.
-
-Conclude with `Submodule.sub_mem _ (Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)) (Submodule.mem_sup_left hs)`. Conclude with `h0 j (by omega)`.
+Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem initSpan_step {R N : Type} [CommRing R] [AddCommGroup N] [Module R N] {M k n : ℕ}
     (b : Module.Basis (Fin k ⊕ Fin n) R N) (η : Fin n → R) (u : Fin M → N) (hk : k < M)
@@ -124,9 +122,9 @@ theorem initSpan_step {R N : Type} [CommRing R] [AddCommGroup N] [Module R N] {M
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
 
 /- English proof (translation)
-Establish `h1 : spMap (ev w U' hw) ≫ tau hU' ≫ f = w ≫ f` using `by rw [← Category.assoc, tau, spMap_ev]`. Establish `h2 : (ev w U' hw).comp (ev (tau hU' ≫ f) U (le_preimage_map f le (tau_le hU' le_rfl))) = ev (w ≫ f) U (le_preimage_map f le hw)`. Rewrite using `[← ev_spMap _ _ _ _ (h1 ▸ le_preimage_map f le hw)]`. Conclude with `FlagMod.ev_congr h1 _ _ _`. Rewrite using `[basPull_apply, basPull_apply, tanPull_tanPull _ _ _ _ (by rw [h2]; exact e₂)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `tan_ext` to reduce the goal to its premises. Rewrite using `[FlagMod.tanPull_left, FlagMod.tanPull_left, h2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tanPull_basPull {Y X X' : Scheme.{0}} {t : SAB H Y} {π : X ⟶ Y} {f : X' ⟶ X} {U : X.Opens} {hU : IsAffineOpen U}
     {U' : X'.Opens} {hU' : IsAffineOpen U'} (le : U' ≤ f ⁻¹ᵁ U) {κ : Type} [Finite κ]
@@ -149,9 +147,9 @@ variable {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {V : ValuationSubring c.
   {X : Scheme.{0}} {π : X ⟶ M.X} {ty : (E →+* ℂ) → Finset ℕ} {A : Atlas M π ty} {σ : E →+* ℂ} {k : ℕ}
 
 /- English proof (translation)
-Substitute `e` using the available equality. Take `⟨h1, h2⟩` from `(h K w u).1 hu`. Use `⟨D.int (L.a β) K (w ≫ f) _ u h1, ?_⟩` and prove the remaining obligations. Take `⟨e, he⟩` from `h2 (L.a β) (le_preimage_map f (L.le β) hw) β hw`. Rewrite `he` using `[Coc.tr_self, Matrix.one_mulVec]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨e, fun i => congrFun he i⟩`.
+Supply the required witnesses or components.
 -/
 theorem flag_data {D : Adapted A σ k} {hk : k < Dw.mult σ} {X' : Scheme.{0}} {f : X' ⟶ X} {L : D.C.Line f}
     {ty' : (E →+* ℂ) → Finset ℕ} {A' : Atlas M (f ≫ π) ty'} (h : StepRel D hk L A') (β : L.J) {K : Type} [Field K]
@@ -168,13 +166,13 @@ theorem flag_data {D : Adapted A σ k} {hk : k < Dw.mult σ} {X' : Scheme.{0}} {
   exact ⟨e, fun i => congrFun he i⟩
 
 /- English proof (translation)
-Introduce `x`. Take `⟨β, hx⟩` from `L.cover x`. Take `⟨c₀, hc⟩` from `L.unit β`. Establish `e₀ : spMap (ev (tau (L.aff β) ≫ f) _ (le_preimage_map f (L.le β) (tau_le (L.aff β) le_rfl))) ≫ tau (D.C.aff (L.a β)) ≫ π = tau (L.aff β) ≫ f ≫ π`. Rewrite using `[← Category.assoc, tau.eq_1 (D.C.aff (L.a β)), spMap_ev, Category.assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨m, b', h1, h2⟩` from `exists_basis_succ (basPull _ e₀ (D.b (L.a β))) (L.η β) c₀ hc`. Use `⟨L.B β, L.aff β, m, b', hx, fun K _ w hw u hu => ?_⟩` and prove the remaining obligations. Establish `e₂ : spMap (ev (w ≫ f) _ (le_preimage_map f (L.le β) hw)) ≫ tau (D.C.aff (L.a β)) ≫ π = w ≫ f ≫ π`. Rewrite using `[← Category.assoc, tau, spMap_ev, Category.assoc]`. Take `⟨g1, e, g2⟩` from `flag_data h β w hw (Category.assoc _ _ _) e₂ u hu`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `initSpan_step _ _ (u σ) hk g1 e g2 _ (fun i => ?_) ?_` and prove the remaining obligations. Rewrite using `[basAt, basPull_apply, h1]`. Conclude with `tanPull_basPull (L.le β) _ w hw e₀ _ e₂ _`. Rewrite using `[basAt, basPull_apply, h2, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smulₛₗ, tanPull_basPull (L.le β) _ w hw e₀ _ e₂ _]`.
+A detailed English derivation is pending.
 -/
 theorem intStep_succ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (V : ValuationSubring c.F)

@@ -6,7 +6,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeTransference.Num
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LatticeTransference.KeySmall
 
 /- English proof (translation)
-The claim follows from `PI.Tr.transferenceCover_of' PI.Tr.poissonGauss PI.Tr.gaussStep PI.Tr.keySmall`.
+A detailed English derivation is pending.
 -/
 theorem transference_covering : PI.TransferenceCover :=
   PI.Tr.transferenceCover_of' PI.Tr.poissonGauss PI.Tr.gaussStep PI.Tr.keySmall

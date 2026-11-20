@@ -13,7 +13,7 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 namespace GlobalTheory.ExpImage
 
 /- English proof (translation)
-Unfold `cycVal`. Simplify using `only [map_add]`. Use `push_cast`. Simplify using `only [add_mul, Finset.sum_add_distrib, mul_add]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cycVal_add {l : ℕ} [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (s e : ℕ)
     (lam lam' : ℕ → ↥(K0 K)) (d d' : ↥(K0 K)) :
@@ -26,7 +26,7 @@ theorem cycVal_add {l : ℕ} [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (s e
   ring
 
 /- English proof (translation)
-Unfold `cycVal`. Simplify using `only [map_neg]`. Use `push_cast`. Simplify using `only [neg_mul, Finset.sum_neg_distrib, mul_neg]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cycVal_neg {l : ℕ} [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (s e : ℕ)
     (lam : ℕ → ↥(K0 K)) (d : ↥(K0 K)) :
@@ -38,34 +38,32 @@ theorem cycVal_neg {l : ℕ} [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (s e
   ring
 
 /- English proof (translation)
-Simplify using `[cycVal]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cycVal_zero {l : ℕ} [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (s e : ℕ) :
     cycVal P K s e (fun _ => 0) 0 = 0 := by
   simp [cycVal]
 
 /- English proof (translation)
-Establish `hl1 : 1 < l` using `(Fact.out : l.Prime).one_lt`. Establish `hsum` using `GlobalTheory.ExpImage.Values.sum_zeta P`. Establish `hgeom : ∑ r ∈ Finset.range l, P.ζQ 1 ^ r = 0`. Rewrite using `[Finset.range_eq_Ico, Finset.sum_eq_sum_Ico_succ_bot (by omega), hsum]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hpow : P.ζQ 1 ^ l = 1`. Establish `h` using `geom_sum_mul (P.ζQ 1) l`. Rewrite `h` using `[hgeom, zero_mul]`. Conclude with `(sub_eq_zero.mp h.symm)`. Establish `h0 : P.ζQ 0 = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `GlobalTheory.ExpImage.Values.zeta_pow P 0 1`. Simplify `h.symm` using `[hpow]`. Establish `h1 : P.ζQ 1 ≠ 1`. Introduce `h`. Rewrite `hsum` using `[h]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : ((l - 1 : ℕ) : Om l) = -1` using `by simpa using hsum`. Establish `hz : ((l : ℕ) : Om l) = 0`. Move the coercions through the operations in `[Nat.cast_sub hl1.le] at hc`. Take the linear combination `hc`. Conclude with `(Nat.cast_ne_zero.mpr (by omega : l ≠ 0)) hz`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hchain : ∀ j, P.ζQ (j + 1) ^ l = P.ζQ j` using `fun j => by`. Simplify using `using GlobalTheory.ExpImage.Values.zeta_pow P j 1`. Establish `hmem` using `GlobalTheory.T.cyclotomicLevel_integers_mem_closure_levels l K P.ζQ h0 h1 hchain s hs α hα hn`. Use `clear hα hn`. Proceed by induction on `hmem using AddSubgroup.closure_induction with`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `mem x hx`. Take `⟨j, n, c, hj, hjs, hn', hc, hc1, rfl⟩` from `hx`. Conclude with `GlobalTheory.T.exists_cyclotomicFrobeniusTwistedValue_eq l P K s e j n hj hjs hn' c hc hc1`. Consider the case `zero`. Use `⟨fun _ => 0, 0, fun _ => by simp, by simp, by simp, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[cycVal_zero, mul_zero]`. Consider the case `add x y _ _ ihx ihy`. Take `⟨lam, d, hlam, hd, hfr, hv⟩` from `ihx`. Take `⟨lam', d', hlam', hd', hfr', hv'⟩` from `ihy`. Use `⟨fun a => lam a + lam' a, d + d', fun a => ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hlam a) (hlam' a))`. Use `push_cast`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hd hd')`. Simplify using `only [map_add, Finset.sum_add_distrib]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hfr, ← hfr']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[cycVal_add, hv, hv']`. Expand and normalize the polynomial expressions, which then agree. Consider the case `neg x _ ih`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Take `⟨lam, d, hlam, hd, hfr, hv⟩` from `ih`. Use `⟨fun a => -lam a, -d, fun a => by simpa using hlam a, by simpa using hd, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [map_neg, Finset.sum_neg_distrib]`. Rewrite using `[← hfr]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[cycVal_neg, hv]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_cycVal_eq_pow_mul (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (s e : ℕ)
     (hs : 1 ≤ s) (α : Om l) (hα : α ∈ Ks K s) (hn : ‖α‖ ≤ 1) :

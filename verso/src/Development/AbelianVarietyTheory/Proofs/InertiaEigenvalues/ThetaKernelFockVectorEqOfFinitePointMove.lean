@@ -18,11 +18,11 @@ noncomputable section
 namespace GlobalTheory.LevelSeries
 
 /- English proof (translation)
-Introduce `D ψ θ V W χV χW om ΛV ΛW sW f₀ hP z hz e e₂ M O f f' a _ hf' hom BW Q s g`. Establish `hw` using `hP.1.weil`. Establish `hf₀ : IsThetaFunO ψ V W f₀` using `hP.2.2.2.2.2.2.2.2.2.theta`. Establish `hth : IsThetaFunO ψ V W f'` using `by clear hom`. Proceed by induction on `hf' using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `mem x hx`. Take `⟨y, -, -, rfl⟩` from `hx`. Conclude with `GlobalTheory.TwistFactorCompare.isTheta_heisO hw.std hf₀ y`. Consider the case `zero => simpa using GlobalTheory.OrientedHeis.theta_smul (0 : ℂ) hf₀`. Consider the case `add x y _ _ hx hy => exact GlobalTheory.OrientedHeis.theta_add hx hy`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c x _ hx => exact GlobalTheory.OrientedHeis.theta_smul (c : ℂ) hx`. Establish `h1` using `(GlobalTheory.OrientedHeis.om_pureTensorO D ψ θ V W χV χW om hw hP.1.inf (fun _ => 1) (fun _ => 1) (fun _ => 1) (fun _ => 1) sW sW BW BW z 1 (fun τ => by simp only [GlobalTheory.FiniteFock.compAt_mt_of_finite θ τ hz, Matrix.mul_one, Matrix.one_mul]) (fun τ => by simp only [Global …`. Establish `hp : ((s * z, g) : GA D V × GA D W) = (s, g) * (z, 1)` using `by simp`. Unfold `thetaKO stdF`. Rewrite using `[hp, map_mul, Module.End.mul_apply, h1, hom, GlobalTheory.FiniteFock.pureTensorO_smul, map_smul, Pi.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaKO_flip : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (V W : HSp D) (χV χW : (AE D)ˣ →* Circle) (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)) (ΛV : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (ΛW : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E)) (sW : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ) (f₀ : WO V W → ℂ), VacPair ψ θ V W χV χW om ΛV ΛW sW f₀ → ∀ (z : GA D V), z ∈ GfC V → ∀ (e e₂ : AE D) (M : ℕ) (O : Subring ℂ) (f f' : WO V W → ℂ) (a : ℂ), f ∈ trSp ψ V W ΛV ΛW f₀ e M O → f' ∈ trSp ψ V W ΛV ΛW f₀ e₂ M O → om (z, 1) f' = a • f → ∀ (BW : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ) (Q : MvPolynomial (FVar D W.rank V.rank) ℂ) (s : GA D V) (g : GA D W), a * thetaKO om s g (stdF ψ θ V W sW BW f Q) = thetaKO om (s * z) g (stdF ψ θ V W sW BW f' Q) := by
   intro D ψ θ V W χV χW om ΛV ΛW sW f₀ hP z hz e e₂ M O f f' a _ hf' hom BW Q s g

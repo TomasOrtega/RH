@@ -5,7 +5,7 @@ open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 namespace GlobalTheory.JR
 
 /- English proof (translation)
-Use `haveI : ProperSpace F := ProperSpace.of_locallyCompactSpace F`. Use `haveI : SecondCountableTopology (Matrix (Fin r) (Fin r) F) := inferInstanceAs (SecondCountableTopology (Fin r → Fin r → F))`. Use `haveI : LocallyCompactSpace (Matrix (Fin r) (Fin r) F) := inferInstanceAs (LocallyCompactSpace (Fin r → Fin r → F))`. Use `haveI : SecondCountableTopology (Matrix (Fin r) (Fin r) F)ᵐᵒᵖ := (MulOpposite.opHomeomorph (M := Matrix (Fin r) (Fin r) F)).symm.secondCountableTopology`. Conclude with `⟨Units.isClosedEmbedding_embedProduct.locallyCompactSpace, Units.isEmbedding_embedProduct.secondCountableTopology⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem gl_lc_sc (F : Type) [NontriviallyNormedField F] [LocallyCompactSpace F] (r : ℕ) :
     LocallyCompactSpace (GL (Fin r) F) ∧ SecondCountableTopology (GL (Fin r) F) := by
@@ -20,9 +20,9 @@ theorem gl_lc_sc (F : Type) [NontriviallyNormedField F] [LocallyCompactSpace F] 
     Units.isEmbedding_embedProduct.secondCountableTopology⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ hU r M`. Use `haveI : LocallyCompactSpace F := hU.lcF`. Take `⟨h1, h2⟩` from `gl_lc_sc F r`. Use `letI := M.mG`. Use `haveI := M.bG`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `haveI := M.haarG`. Use `⟨fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.isMulLeftInvariant_eq_smul (Measure.map (· * g) M.μG) M.μG, ← Measure.modularCharacterFun_eq_haarScalarFactor, GlobalTheory.ParAvg.modularCharacterFun_GL, one_smul]`.
+A detailed English derivation is pending.
 -/
 theorem gl_unimodular : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E]
     [StarRing E] [Unram F E] (r : ℕ) (M : Meas r F E), (letI := M.mG; M.μG.IsMulRightInvariant) := by

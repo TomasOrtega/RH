@@ -8,9 +8,9 @@ noncomputable section
 namespace GlobalTheory.RedFixed
 
 /- English proof (translation)
-Set `_ : Algebra O T` to `(a.comp (algebraMap O k)).toAlgebra`. Set `_ : Algebra Z T` to `(b.comp (algebraMap Z W)).toAlgebra`. Establish `: IsScalarTower Z O T` using `IsScalarTower.of_algebraMap_eq fun z => (h z).symm`. Set `b' : W →ₐ[Z] T` to `{ b with commutes' := fun _ => rfl }`. Set `a' : k →ₐ[O] T` to `{ a with commutes' := fun _ => rfl }`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `F₁ : O ⊗[Z] W →ₐ[O] T` to `Algebra.TensorProduct.lift (Algebra.ofId O T) b' fun _ _ => Commute.all _ _`. Conclude with `⟨(Algebra.TensorProduct.lift a' F₁ fun _ _ => Commute.all _ _).toRingHom, fun c o w => rfl⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem exists_lift {Z O W k T : Type} [CommRing Z] [CommRing O] [CommRing W] [CommRing k] [CommRing T]
     [Algebra Z O] [Algebra Z W] [Algebra O k] (a : k →+* T) (b : W →+* T)
@@ -28,9 +28,9 @@ theorem exists_lift {Z O W k T : Type} [CommRing Z] [CommRing O] [CommRing W] [C
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Establish `h` using `PadicInt.toZMod_spec z`. Rewrite `h` using `[PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton]`. Take `⟨y, hy⟩` from `h`. Establish `h2` using `congrArg f hy`. Rewrite `h2` using `[map_mul, map_natCast, CharP.cast_eq_zero, zero_mul, map_sub, sub_eq_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h2]`. Generalize the expression as in `PadicInt.toZMod z = n`. Rewrite using `[ZMod.cast_eq_val, map_natCast, ← map_natCast (algebraMap (ZMod l) R), ZMod.natCast_zmod_val]`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_padicInt {R : Type} [CommRing R] [CharP R l] [Algebra (ZMod l) R] (f : ℤ_[l] →+* R) (z : ℤ_[l]) :
     f z = algebraMap (ZMod l) R (PadicInt.toZMod z) := by
@@ -44,7 +44,7 @@ theorem map_padicInt {R : Type} [CommRing R] [CharP R l] [Algebra (ZMod l) R] (f
   rw [ZMod.cast_eq_val, map_natCast, ← map_natCast (algebraMap (ZMod l) R), ZMod.natCast_zmod_val]
 
 /- English proof (translation)
-Use `PerfectRing.ofSurjective _ _ fun x => ?_` and prove the remaining obligations. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := OCb l) x`. Take `⟨a, rfl⟩` from `(bijective_frobenius (OCb l) l).2 a`. Take `⟨b, rfl⟩` from `(bijective_frobenius (OCb l) l).2 b`. Conclude with `⟨algebraMap _ _ a / algebraMap _ _ b, by simp [frobenius_def]⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem perfect_Cb : PerfectRing (Cb l) l := by
   refine PerfectRing.ofSurjective _ _ fun x => ?_
@@ -54,13 +54,13 @@ theorem perfect_Cb : PerfectRing (Cb l) l := by
   exact ⟨algebraMap _ _ a / algebraMap _ _ b, by simp [frobenius_def]⟩
 
 /- English proof (translation)
-Establish `hex : Function.Exact (Algebra.linearMap (ZMod l) C) (f - LinearMap.id : C →ₗ[ZMod l] C)`. Introduce `x`. Rewrite using `[LinearMap.sub_apply, hf, sub_eq_zero, LinearMap.id_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2` using `(Subfield.mem_bot_iff_pow_eq_self C l).2 h`. Establish `h3 : (⊥ : Subfield C) ≤ (algebraMap (ZMod l) C).fieldRange` using `bot_le`. Conclude with `h3 h2`. Introduce and unpack `⟨a, rfl⟩`. Rewrite using `[Algebra.linearMap_apply, ← map_pow, ZMod.pow_card]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `(Module.Flat.lTensor_exact k hex y).1 (by`. Rewrite using `[LinearMap.lTensor_sub, LinearMap.sub_apply, hy, LinearMap.lTensor_id, LinearMap.id_apply, sub_self])`. Use `⟨TensorProduct.rid (ZMod l) k t, ?_⟩` and prove the remaining obligations. Rewrite using `[← ht]`. Use `clear ht`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [TensorProduct.smul_tmul, Algebra.algebraMap_eq_smul_one]`. Consider the case `add a b ha hb => simp [ha, hb, TensorProduct.add_tmul]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem fixed_tensor {k C : Type} [Field k] [Field C] [CharP C l] [Algebra (ZMod l) k] [Algebra (ZMod l) C]
     (f : C →ₗ[ZMod l] C) (hf : ∀ x, f x = x ^ l) (y : k ⊗[ZMod l] C) (hy : f.lTensor k y = y) :
@@ -86,27 +86,27 @@ theorem fixed_tensor {k C : Type} [Field k] [Field C] [CharP C l] [Algebra (ZMod
   | add a b ha hb => simp [ha, hb, TensorProduct.add_tmul]
 
 /- English proof (translation)
-Set `_ : Algebra (ZMod l) k` to `ZMod.algebra k l`. Set `_ : Algebra (ZMod l) C` to `ZMod.algebra C l`. Take `⟨F, hF⟩` from `exists_lift (Z := ℤ_[l]) (O := O) (W := WittVector l C) (k := k) (T := k ⊗[ZMod l] C) Algebra.TensorProduct.includeLeftRingHom ((Algebra.TensorProduct.includeRight : C →ₐ[ZMod l] k ⊗[ZMod l] C).toRingHom.comp WittVector.constantCoeff) (fun z => by`. Establish `h1` using `map_padicInt ((algebraMap O k).comp (algebraMap ℤ_[l] O)) z`. Establish `h2` using `map_padicInt ((WittVector.constantCoeff : WittVector l C →+* C).comp (algebraMap ℤ_[l] (WittVector l C))) z`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1`, `h2` using `[RingHom.comp_apply]`. Rewrite using `[RingHom.comp_apply, h1, h2]`. Simplify using `[Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul])`. Establish `hF' : ∀ (c : k) (o : O) (w : WittVector l C), F (c ⊗ₜ (o ⊗ₜ w)) = (o • c) ⊗ₜ[ZMod l] w.coeff 0`. Introduce `c o w`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hF]`. Simplify using `[Algebra.smul_def, mul_comm]`. Set `j : WittVector l C →+* k ⊗[O] (O ⊗[ℤ_[l]] WittVector l C)` to `(Algebra.TensorProduct.includeRight : O ⊗[ℤ_[l]] WittVector l C →ₐ[O] k ⊗[O] (O ⊗[ℤ_[l]] WittVector l C)).toRingHom.comp (Algebra.TensorProduct.includeRight : WittVector l C →ₐ[ℤ_[l]] (O ⊗[ℤ_[l]] WittVector l C)).toRingHom`. Establish `hl : ((l : ℕ) : k ⊗[O] (O ⊗[ℤ_[l]] WittVector l C)) = 0`. Rewrite using `[← map_natCast (algebraMap k (k ⊗[O] (O ⊗[ℤ_[l]] WittVector l C))), CharP.cast_eq_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : Function.Surjective (WittVector.constantCoeff : WittVector l C →+* C)` using `fun c => ⟨WittVector.teichmuller l c, by simp⟩`. Set `g : C →+* k ⊗[O] (O ⊗[ℤ_[l]] WittVector l C)` to `RingHom.liftOfSurjective _ hs ⟨j, by`. Rewrite using `[WittVector.ker_constantCoeff, Ideal.span_le, Set.singleton_subset_iff]`. Express the relevant statement in the definitionally equal form `j _ = 0`. Rewrite using `[map_natCast, hl]⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hg : ∀ w : WittVector l C, g (w.coeff 0) = (1 : k) ⊗ₜ ((1 : O) ⊗ₜ w)` using `fun w => RingHom.liftOfRightInverse_comp_apply _ _ _ _ w`. Set `G : k ⊗[ZMod l] C →+ k ⊗[O] (O ⊗[ℤ_[l]] WittVector l C)` to `TensorProduct.liftAddHom { toFun := fun c => { toFun := fun t => c • g t map_zero' := by simp map_add' := fun _ _ => by simp } map_zero' := by ext; simp map_add' := fun _ _ => by ext; simp [add_smul] } (fun n c t => by`. Take `⟨m, rfl⟩` from `ZMod.natCast_zmod_surjective n`. Express the relevant statement in the definitionally equal form `((m : ZMod l) • c) • g t = c • g ((m : ZMod l) • t)`. Rewrite using `[Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul, map_nsmul, smul_assoc, smul_comm])`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hG : ∀ c t, G (c ⊗ₜ t) = c • g t` using `fun _ _ => rfl`. Establish `hGF : ∀ y, G (F y) = y`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`. Consider the case `tmul c r`. Proceed by induction on `r using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [TensorProduct.tmul_add, map_add, map_add, ha, hb]`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul o w`. Rewrite using `[hF', hG, hg, TensorProduct.smul_tmul', smul_eq_mul, mul_one, TensorProduct.smul_tmul, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Set `f : C →ₗ[ZMod l] C` to `(frobenius C l).toAddMonoidHom.toZModLinearMap l`. Establish `hφ : ∀ y, F (Algebra.TensorProduct.map (AlgHom.id k k) (Algebra.TensorProduct.map (AlgHom.id O O) φ) y) = f.lTensor k (F y)`. Introduce `y`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb, map_add, map_add]`. Consider the case `tmul c r`. Proceed by induction on `r using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [TensorProduct.tmul_add, map_add, map_add, ha, hb, map_add, map_add]`. Consider the case `tmul o w`. Rewrite using `[hF']`. Conclude with `(hF' c o (φ w)).trans (by rw [hφ0]; rfl)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `fixed_tensor f (fun _ => rfl) (F x) (by rw [← hφ, hx])`. Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[← hGF x, hc, hG, map_one, Algebra.algebraMap_eq_smul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixed_witt {O k C : Type} [CommRing O] [Field k] [Field C] [CharP k l] [CharP C l] [PerfectRing C l]
     [Algebra ℤ_[l] O] [Algebra O k] [Algebra ℤ_[l] (WittVector l C)]
@@ -185,7 +185,7 @@ theorem fixed_witt {O k C : Type} [CommRing O] [Field k] [Field C] [CharP k l] [
   rw [← hGF x, hc, hG, map_one, Algebra.algebraMap_eq_smul_one]
 
 /- English proof (translation)
-Introduce `l _ LL k _ _ _ x hx`. Use `perfect_Cb (l := l)` as an intermediate fact. Conclude with `fixed_witt (frobW l) (fun _ => rfl) x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fixed_red : ∀ {l : ℕ} [Fact l.Prime] (LL : FinExt l) (k : Type) [Field k] [Algebra ↥(OL LL) k] [CharP k l] (x : k ⊗[↥(OL LL)] RW LL), Algebra.TensorProduct.map (AlgHom.id k k) (φRW LL) x = x → ∃ c : k, x = algebraMap k (k ⊗[↥(OL LL)] RW LL) c := by
   intro l _ LL k _ _ _ x hx

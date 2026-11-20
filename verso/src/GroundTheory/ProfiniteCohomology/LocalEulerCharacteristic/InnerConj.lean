@@ -27,7 +27,7 @@ theorem innerConjHom_apply (g γ : Γ) : innerConjHom g γ = g⁻¹ * γ * g :=
   rfl
 
 /- English proof (translation)
-The claim follows from `(continuous_const.mul continuous_id).mul continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem continuous_innerConjHom (g : Γ) : Continuous (innerConjHom g) :=
   (continuous_const.mul continuous_id).mul continuous_const
@@ -55,7 +55,7 @@ omit [TopologicalSpace Γ] [IsTopologicalGroup Γ] in
 
 @[reassoc]
 /- English proof (translation)
-Use extensionality with `a`. Conclude with `(Rep.hom_comm_apply f g a).symm`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem innerConjMor_naturality {A B : Rep.{u} k Γ} (f : A ⟶ B) (g : Γ) :
     (Rep.resFunctor (innerConjHom g)).map f ≫ innerConjMor B g = innerConjMor A g ≫ f := by
@@ -76,7 +76,7 @@ noncomputable def innerConjShortComplexMor (S : ShortComplex (Rep.{u} k Γ)) (g 
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `δ_comp_cohomologyMapAlong (innerConjHom g) (continuous_innerConjHom g) (innerConjShortComplexMor S g) hS hS i j hij`.
+A detailed English derivation is pending.
 -/
 theorem δ_comp_cohomologyInnerConj {S : ShortComplex (Rep.{u} k Γ)} [IsDiscreteRep S.X₁]
     [IsDiscreteRep S.X₂] [IsDiscreteRep S.X₃] (hS : S.ShortExact) (i j : ℕ) (hij : i + 1 = j)
@@ -86,13 +86,13 @@ theorem δ_comp_cohomologyInnerConj {S : ShortComplex (Rep.{u} k Γ)} [IsDiscret
     (innerConjShortComplexMor S g) hS hS i j hij
 
 /- English proof (translation)
-Apply `ModuleCat.hom_ext` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Take `⟨z, rfl⟩` from `homologyπ_surjective (cochainsComplex A) 0 x`. Express the relevant statement in the definitionally equal form `(cohomologyInnerConj A 0 g).hom ((cohomologyπ A 0).hom z) = (cohomologyπ A 0).hom z`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[cohomologyInnerConj, cohomologyπ_cohomologyMapAlong_apply]`. Use `congr 1`. Apply `iCycles_injective (cochainsComplex A) 0` to reduce the goal to its premises. Rewrite using `[iCycles_cyclesMap_apply]`. Use `set c := ((cochainsComplex A).iCycles 0).hom z`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd : ((cochainsComplex A).d 0 1).hom c = 0` using `iCycles_d_apply _ 0 1 z`. Establish `hfix : A.ρ g (c.1 Fin.elim0) = c.1 Fin.elim0`. Establish `h1` using `congrArg (fun c' : locallyConstantCochains A 1 => c'.1 fun _ => g) hd`. Establish `h2` using `cochainsComplex_d_zero_apply A c (fun _ => g)`. Establish `h3` using `h2.symm.trans h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `sub_eq_zero.1 h3`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Express the relevant statement in the definitionally equal form `A.ρ g (c.1 (⇑(innerConjHom g) ∘ x)) = c.1 x`. Rewrite using `[Subsingleton.elim (⇑(innerConjHom g) ∘ x) Fin.elim0, Subsingleton.elim x Fin.elim0, hfix]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cohomologyInnerConj_zero (A : Rep.{u} k Γ) [IsDiscreteRep A] (g : Γ) :
     cohomologyInnerConj A 0 g = 𝟙 _ := by
@@ -120,9 +120,9 @@ theorem cohomologyInnerConj_zero (A : Rep.{u} k Γ) [IsDiscreteRep A] (g : Γ) :
 variable [CompactSpace Γ]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => intro A _ g`. Conclude with `cohomologyInnerConj_zero A g`. Consider the case `succ n ih`. Introduce `A _ g`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `δ_comp_cohomologyInnerConj (coindShortComplex_shortExact A) n (n + 1) rfl g`. Establish `h3 : cohomologyInnerConj (coindShortComplex A).X₃ n g = 𝟙 _` using `ih _ g`. Rewrite `h` using `[h3, Category.id_comp]`. Express the relevant statement in the definitionally equal form `coindδ A n ≫ cohomologyInnerConj A (n + 1) g = coindδ A n at h`. Rewrite using `[← cancel_epi (coindδ A n), h, Category.comp_id]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cohomologyInnerConj_eq_id (n : ℕ) :
     ∀ (A : Rep.{u} k Γ) [IsDiscreteRep A] (g : Γ), cohomologyInnerConj A n g = 𝟙 _ := by
@@ -137,7 +137,7 @@ theorem cohomologyInnerConj_eq_id (n : ℕ) :
     rw [← cancel_epi (coindδ A n), h, Category.comp_id]
 
 /- English proof (translation)
-Rewrite using `[cohomologyInnerConj_eq_id]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cohomologyInnerConj_apply (A : Rep.{u} k Γ) [IsDiscreteRep A] (n : ℕ) (g : Γ)
     (x : cohomology A n) : (cohomologyInnerConj A n g).hom x = x := by

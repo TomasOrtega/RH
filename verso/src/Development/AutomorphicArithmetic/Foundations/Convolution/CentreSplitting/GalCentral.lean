@@ -10,7 +10,7 @@ open GlobalTheory.CuspRep (CuspSub GA Af Ad finGL locGL)
 open UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.Dp UpperTheory.V
 
 /- English proof (translation)
-The claim follows from `(UpperTheory.ConvolutionTheory.K.adUnique E σ s.toRingHom h.1 h.2.1).trans (UpperTheory.ConvolutionTheory.K.adUnique E σ (UpperTheory.V.FieldIso.adm σ) (UpperTheory.V.FieldIso.continuous_adm σ) (UpperTheory.V.FieldIso.adm_algebraMap σ)).symm`.
+A detailed English derivation is pending.
 -/
 private theorem galAd_eq_adm {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (σ : E ≃+* E)
     (s : Ad E ≃+* Ad E) (h : UpperTheory.CBC.IsGalAd σ s) : s.toRingHom = UpperTheory.V.FieldIso.adm σ :=
@@ -20,7 +20,7 @@ private theorem galAd_eq_adm {E : Type} [Field E] [NumberField E] [IsTotallyComp
 
 open Neutral.B1 Formalism.L2.Host Formalism.L2.Host.CT GlobalTheory.CuspRep in
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Express the relevant statement in the definitionally equal form `coord _ _ = _`. Unfold `coord`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem cinf_real {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (σ : E ≃+* E) (c : ℝ) :
     UpperTheory.V.FieldIso.cinf σ (fun _ => (c : ℂ)) = fun _ => (c : ℂ) := by
@@ -30,11 +30,9 @@ private theorem cinf_real {E : Type} [Field E] [NumberField E] [IsTotallyComplex
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `GlobalTheory.UnitaryBC.splitCentre`. Rewrite using `[UpperTheory.V.FieldIso.gaMap_infGL]`. Use `congr 1`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `UpperTheory.V.FieldIso.cinf σ (Matrix.diagonal (fun _ => fun _ : InfinitePlace E => Complex.exp (t : ℂ)) i j) = Matrix.diagonal (fun _ => fun _ : InfinitePlace E => Complex.exp (t : ℂ)) i j`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Rewrite using `[Matrix.diagonal_apply_eq, ← Complex.ofReal_exp]`. Conclude with `cinf_real σ _`. Rewrite using `[Matrix.diagonal_apply_ne _ h]`.
-
-Conclude with `map_zero _`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem map_splitCentre {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (σ : E ≃+* E) (a : ℕ)
     (t : ℝ) : UpperTheory.V.FieldIso.gaMap a σ (GlobalTheory.UnitaryBC.splitCentre E a t) = GlobalTheory.UnitaryBC.splitCentre E a t := by
@@ -52,11 +50,11 @@ private theorem map_splitCentre {E : Type} [Field E] [NumberField E] [IsTotallyC
     exact map_zero _
 
 /- English proof (translation)
-Introduce `E _ _ _ n σ s h`. Use `⟨fun s' h' => RingEquiv.ext fun x => ?_, fun t => ?_⟩` and prove the remaining obligations. Establish `e` using `(galAd_eq_adm σ s' h').trans (galAd_eq_adm σ s h).symm`. Conclude with `congrArg (fun f : Ad E →+* Ad E => f x) e`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `Units.ext (Matrix.ext fun i => i.elim0)`. Establish `hd : (Module.finrank ℚ E : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 Module.finrank_pos.ne'`. Establish `hn' : (n : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 hn.ne'`. Establish `ht : t = ⟨Real.exp (n * Module.finrank ℚ E * (Real.log t / (n * Module.finrank ℚ E))), Real.exp_pos _⟩`. Use `Subtype.ext ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(t : ℝ) = Real.exp _`. Rewrite using `[mul_div_cancel₀ _ (mul_ne_zero hn' hd), Real.exp_log t.2]`. Rewrite using `[ht, ← UpperTheory.V.KernelIndexFullLattice.splitEq_holds E n, galAd_eq_adm σ s h]`. Conclude with `map_splitCentre σ n _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Dp.galCentral :
     UpperTheory.ConvolutionTheory.Dp.GalCentral := by

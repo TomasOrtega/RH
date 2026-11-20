@@ -13,7 +13,7 @@ namespace GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.AopProps
 variable {r : ℕ}
 
 /- English proof (translation)
-Use extensionality with `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne h, Pi.single_eq_of_ne h]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma update_add_single (i : Fin r) (m : Fin r → ℕ) (t k : ℕ) :
     Function.update (m + (Pi.single i t : Fin r → ℕ)) i k = Function.update m i k := by
@@ -23,7 +23,7 @@ lemma update_add_single (i : Fin r) (m : Fin r → ℕ) (t k : ℕ) :
   · simp [Function.update_of_ne h, Pi.single_eq_of_ne h]
 
 /- English proof (translation)
-Use extensionality with `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne h, Pi.single_eq_of_ne h]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma add_single_eq_update (i : Fin r) (m : Fin r → ℕ) (t : ℕ) :
     m + (Pi.single i t : Fin r → ℕ) = Function.update m i (m i + t) := by
@@ -33,7 +33,7 @@ lemma add_single_eq_update (i : Fin r) (m : Fin r → ℕ) (t : ℕ) :
   · simp [Function.update_of_ne h, Pi.single_eq_of_ne h]
 
 /- English proof (translation)
-Simplify using `[partialSum]`.
+Simplify using the standard rewrite rules.
 -/
 lemma partialSum_update (i : Fin r) (v : (Fin r → ℕ) → ℚ) (m : Fin r → ℕ) (k : ℕ) :
     partialSum i v (Function.update m i k) =
@@ -41,9 +41,9 @@ lemma partialSum_update (i : Fin r) (v : (Fin r → ℕ) → ℚ) (m : Fin r →
   simp [partialSum]
 
 /- English proof (translation)
-Rewrite using `[partialSum_update, partialSum_update, Finset.sum_range_add]`. Establish `h` using `hv.2 (Function.update m i k)`. Establish `h2 : ∑ x ∈ Finset.range l, v (Function.update m i (k + x)) = 0`. Rewrite using `[← h]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[add_single_eq_update, Function.update_self, Function.update_idem]`. Rewrite using `[h2, add_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma partialSum_periodic {l : ℕ} (i : Fin r) (v : (Fin r → ℕ) → ℚ) (hv : GoodAt l i v)
     (m : Fin r → ℕ) (k : ℕ) :
@@ -57,21 +57,21 @@ lemma partialSum_periodic {l : ℕ} (i : Fin r) (v : (Fin r → ℕ) → ℚ) (h
   rw [h2, add_zero]
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.DYdd7.main f hf a`.
+A detailed English derivation is pending.
 -/
 lemma sum_window {l : ℕ} (f : ℕ → ℚ) (hf : ∀ k, f (k + l) = f k) (a : ℕ) :
     ∑ k ∈ Finset.range l, f (a + k) = ∑ k ∈ Finset.range l, f k :=
   _root_.UpperTheory.Reformulated.B.DYdd7.main f hf a
 
 /- English proof (translation)
-Simplify using `only [meanP, update_add_single]`.
+Simplify using the standard rewrite rules.
 -/
 lemma partialSumMean_add_single (l : ℕ) (i : Fin r) (v : (Fin r → ℕ) → ℚ) (m : Fin r → ℕ) (t : ℕ) :
     meanP l i v (m + (Pi.single i t : Fin r → ℕ)) = meanP l i v m := by
   simp only [meanP, update_add_single]
 
 /- English proof (translation)
-The claim follows from `|((partialSum i v (Function.update m i k) : ℚ) : ℝ)| ≤ k * C := by rw [partialSum_update] push_cast refine (Finset.abs_sum_le_sum_abs _ _).trans ?_ refine (Finset.sum_le_card_nsmul _ _ C fun j _ => hC _).trans ?_ simp`.
+A detailed English derivation is pending.
 -/
 lemma partialSum_abs_le (i : Fin r) (v : (Fin r → ℕ) → ℚ) {C : ℝ}
     (hC : ∀ m, |(v m : ℝ)| ≤ C) (m : Fin r → ℕ) (k : ℕ) :
@@ -83,7 +83,7 @@ lemma partialSum_abs_le (i : Fin r) (v : (Fin r → ℕ) → ℚ) {C : ℝ}
   simp
 
 /- English proof (translation)
-The claim follows from `|((partialSum i v m : ℚ) : ℝ)| ≤ l * C := by have hC0 : 0 ≤ C := (abs_nonneg _).trans (hC m) have hper : Function.Periodic (fun k => partialSum i v (Function.update m i k)) l := fun k => partialSum_periodic i v hv m k have hmod : partialSum i v m = partialSum i v (Function.update …`.
+A detailed English derivation is pending.
 -/
 lemma partialSum_bound {l : ℕ} (hl : 0 < l) (i : Fin r) (v : (Fin r → ℕ) → ℚ)
     (hv : GoodAt l i v) {C : ℝ} (hC : ∀ m, |(v m : ℝ)| ≤ C) (m : Fin r → ℕ) :
@@ -101,7 +101,7 @@ lemma partialSum_bound {l : ℕ} (hl : 0 < l) (i : Fin r) (v : (Fin r → ℕ) �
   exact mul_le_mul_of_nonneg_right this hC0
 
 /- English proof (translation)
-The claim follows from `|((meanP l i v m : ℚ) : ℝ)| ≤ l * C := by have hl' : (0 : ℝ) < l := by exact_mod_cast hl unfold meanP push_cast rw [abs_div, abs_of_pos hl', div_le_iff₀ hl'] refine (Finset.abs_sum_le_sum_abs _ _).trans ?_ refine (Finset.sum_le_card_nsmul _ _ ((l : ℝ) * C) fun j _ => ?_).trans ?_ …`.
+A detailed English derivation is pending.
 -/
 lemma abs_partialSumMean_le {l : ℕ} (hl : 0 < l) (i : Fin r) (v : (Fin r → ℕ) → ℚ)
     (hv : GoodAt l i v) {C : ℝ} (hC : ∀ m, |(v m : ℝ)| ≤ C) (m : Fin r → ℕ) :
@@ -116,7 +116,7 @@ lemma abs_partialSumMean_le {l : ℕ} (hl : 0 < l) (i : Fin r) (v : (Fin r → �
   · simp [mul_comm]
 
 /- English proof (translation)
-Establish `hl' : (l : ℚ) ≠ 0` using `by exact_mod_cast hl.ne'`. Unfold `meanP`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Clear the denominators using the available nonvanishing facts.
 -/
 lemma mul_partialSumMean {l : ℕ} (hl : 0 < l) (i : Fin r) (v : (Fin r → ℕ) → ℚ) (m : Fin r → ℕ) :
     (l : ℚ) * meanP l i v m = ∑ k ∈ Finset.range l, partialSum i v (Function.update m i k) := by
@@ -125,11 +125,11 @@ lemma mul_partialSumMean {l : ℕ} (hl : 0 < l) (i : Fin r) (v : (Fin r → ℕ)
   field_simp
 
 /- English proof (translation)
-Establish `hps : ∀ (m : Fin r → ℕ) (t : ℕ), partialSum i v (m + (Pi.single i t : Fin r → ℕ)) = partialSum i v (Function.update m i (m i + t))` using `fun m t => by`. Rewrite using `[add_single_eq_update]`. Use `⟨fun m => ?_, fun m => ?_⟩` and prove the remaining obligations. Simplify using `only [Aop, partialSumMean_add_single]`. Establish `h1 : m + (Pi.single i l : Fin r → ℕ) + (Pi.single i 1 : Fin r → ℕ) = m + (Pi.single i (1 + l) : Fin r → ℕ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[add_assoc, ← Pi.single_add, add_comm l 1]`. Rewrite using `[h1, hps, hps, ← add_assoc, partialSum_periodic i v hv]`. Establish `hterm : ∀ e, Aop l i v (m + (Pi.single i e : Fin r → ℕ)) = partialSum i v (Function.update m i (m i + 1 + e)) - meanP l i v m` using `fun e => by`. Establish `h1 : m + (Pi.single i e : Fin r → ℕ) + (Pi.single i 1 : Fin r → ℕ) = m + (Pi.single i (1 + e) : Fin r → ℕ)`. Rewrite using `[add_assoc, ← Pi.single_add, add_comm e 1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Aop, partialSumMean_add_single]`. Rewrite using `[h1, hps, ← add_assoc]`. Simplify using `only [hterm]`. Rewrite using `[Finset.sum_sub_distrib, sum_window (fun k => partialSum i v (Function.update m i k)) (fun k => partialSum_periodic i v hv m k) (m i + 1), ← mul_partialSumMean hl]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma Aop_goodAt {l : ℕ} (hl : 0 < l) (i : Fin r) (v : (Fin r → ℕ) → ℚ) (hv : GoodAt l i v) :
     GoodAt l i (Aop l i v) := by
@@ -162,9 +162,9 @@ namespace GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel
 open AopProps in
 
 /- English proof (translation)
-Introduce `r l i v hl hv ⟨C, hC⟩`. Use `⟨⟨l * C + l * C, fun m => ?_⟩, ⟨l * C, fun m => ?_⟩, Aop_goodAt hl i v hv⟩` and prove the remaining obligations. Unfold `Aop`. Use `push_cast`. Conclude with `(abs_sub _ _).trans (add_le_add (partialSum_bound hl i v hv hC _) (abs_partialSumMean_le hl i v hv hC _))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Establish `hC0 : 0 ≤ C` using `(abs_nonneg _).trans (hC m)`. Unfold `Bop`. Use `split_ifs`. Conclude with `abs_partialSumMean_le hl i v hv hC m`. Simplify using `using mul_nonneg (Nat.cast_nonneg l) hC0`.
+Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem aop_props : ∀ (r l : ℕ) (i : Fin r) (v : (Fin r → ℕ) → ℚ), 0 < l → GoodAt l i v → BddW v →
     BddW (Aop l i v) ∧ BddW (Bop l i v) ∧ GoodAt l i (Aop l i v) := by

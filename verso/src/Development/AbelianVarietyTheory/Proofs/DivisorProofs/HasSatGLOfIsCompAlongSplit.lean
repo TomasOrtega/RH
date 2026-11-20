@@ -25,15 +25,15 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.SplitSatake
 
 /- English proof (translation)
-Introduce `E _ _ _ n π hπ w hw V W _ _ _ _ ρ₁ ρ₂ h₁ h₂ T hT`. Take `⟨e, he⟩` from `GlobalTheory.T.splitPlace_unitaryLocalPoints_equiv_GL E n w hw`. Take `⟨r, -, -, hc⟩` from `GlobalTheory.T.exists_continuous_retraction_onto_unitaryLocalPoints E n w`. Set `s : GL (Fin n) (w.adicCompletion E) →* UA E n` to `(locU n w).subtype.comp e.symm.toMulEquiv.toMonoidHom`. Establish `hs : ∀ y, cLoc w (s y) = y` using `fun y => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `he (e.symm y)` as an intermediate fact. Rewrite `this` using `[e.apply_symm_apply]`. Conclude with `this.symm`. Set `P : GlobalTheory.DefU.AutSub E n` to `⟨π, hπ⟩`. Establish `key : ∀ {X : Type} [AddCommGroup X] [Module ℂ X] (τ : Representation ℂ (GL (Fin n) (w.adicCompletion E)) X), IsCompAlong π (locU n w) ((cLoc w).comp (locU n w).subtype) τ → ∃ f : τ.IntertwiningMap (P.rep.comp s), f ≠ 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `X _ _ τ ⟨-, f, h0, hf, h2⟩`. Use `⟨⟨f.codRestrict π hf, fun y => LinearMap.ext fun v => Subtype.ext ?_⟩, fun e0 => h0 ?_⟩` and prove the remaining obligations. Establish `h3` using `h2 (e.symm y) v`. Establish `hy : ((cLoc w).comp (locU n w).subtype) (e.symm y) = y` using `hs y`. Rewrite `h3` using `[hy]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `h3`. Conclude with `LinearMap.ext fun v => congrArg Subtype.val (DFunLike.congr_fun e0 v)`. Take `⟨f, hf⟩` from `key ρ₁ h₁`. Take `⟨f', hf'⟩` from `key ρ₂ h₂`. Establish `hcomm : ∀ g : UA E n, ∃ u, ∀ y, Commute ((s u)⁻¹ * g) (s y)` using `fun g => ⟨e (r g), fun y => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `: s (e (r g)) = (r g : UA E n)` using `congrArg Subtype.val (e.symm_apply_apply (r g))`. Rewrite using `[this]`. Conclude with `hc g (e.symm y)⟩`. Take `⟨q⟩` from `(GlobalTheory.T.irreducibleRep_isotypic_of_centraliser_factor _ _ _ _ _ P.rep s ρ₁ ρ₂ P.isIrreducible_rep h₁.1 h₂.1 hcomm f hf).2 f' hf'`. Conclude with `GlobalTheory.BaseChangeBridge.hasSatGL_of_equiv q.toLinearEquiv (fun g x => LinearMap.congr_fun (q.toIntertwiningMap.isIntertwining' g) x) hT`.
+A detailed English derivation is pending.
 -/
 theorem hasSatGL_of_isCompAlong_split : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (π : Submodule ℂ (UA E n → ℂ)), IsAutRepU π →
     ∀ w : HeightOneSpectrum (𝓞 E), IsSplitAt w → ∀ (V W : Type) [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]

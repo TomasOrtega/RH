@@ -13,17 +13,17 @@ namespace GlobalTheory.St
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D X u wt hw γ₀ hγ hfix`. Take `⟨Q, Qi, G', h1, h2, hq, he, hf, hz, hG', hD⟩` from `GlobalTheory.T.columnWittFrame_basis_blockGram D X u wt hw`. Establish `hU : ((γ₀ : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E).map (starRingEnd X.B.I.E))ᵀ * X.B.I.J * (γ₀ : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) = X.B.I.J` using `hγ`. Establish `hcol : ∀ b, (γ₀ : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) *ᵥ (fun i => Q i (Sum.inr b)) = fun i => Q i (Sum.inr b)`. Introduce `b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `b with a | a | ⟨⟩` into its components or cases. Establish `e : (fun i => Q i (Sum.inr (Sum.inl a))) = X.eR a` using `funext (he a)`. Rewrite using `[e]`. Conclude with `hfix _ (Or.inl (Or.inl ⟨a, rfl⟩))`. Establish `e : (fun i => Q i (Sum.inr (Sum.inr (Sum.inl a)))) = X.fR a` using `funext (hf a)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `hfix _ (Or.inl (Or.inr ⟨a, rfl⟩))`. Establish `e : (fun i => Q i (Sum.inr (Sum.inr (Sum.inr ())))) = X.zR u` using `funext hz`. Rewrite using `[e]`. Conclude with `hfix _ (Or.inr rfl)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨y, hy, hγQ⟩` from `(GlobalTheory.unitary_stabiliser_orthogonal_summand X.B.I.E (starRingEnd X.B.I.E) _ _ _ X.B.I.J _ G' Q Qi h1 h2 hD hG').2 _ hU hcol`. Use `⟨y, hy, fun j => ?_⟩` and prove the remaining obligations. Establish `hQ : (γ₀ : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) * Q = Q * (Matrix.fromBlocks y (0 : Matrix (Fin (D.R.N 0)) (Fin D.R.rS ⊕ Fin D.R.rS ⊕ Unit) X.B.I.E) (0 : Matrix (Fin D.R.rS ⊕ Fin D.R.rS ⊕ Unit) (Fin (D.R.N 0)) X.B.I.E) (1 : Matrix (Fin D.R.rS ⊕ Fin D.R.rS ⊕ Unit) (Fin D.R. …`. Rewrite using `[hγQ, Matrix.mul_assoc _ Qi Q, h2, Matrix.mul_one]`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e` using `congrFun (congrFun hQ i) (Sum.inl j)`. Rewrite `e` using `[Matrix.mul_apply, Matrix.mul_apply, Fintype.sum_sum_type]`. Simplify using `only [Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₂₁, Matrix.zero_apply, mul_zero, Finset.sum_const_zero, add_zero, hq] at e`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem unitary_fix_acts_on_complement_frame : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word) (wt : (VS D).V ≃ₗ[D.host.E] (VS D).V), WittX X u wt → ∀ γ₀ : GL (Fin X.B.I.n) X.B.I.E, γ₀ ∈ Formalism.UG.UJ (starRingEnd X.B.I.E) X.B.I.J → (∀ x ∈ fixSet X u, (γ₀ : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) *ᵥ x = x) → ∃ y₀ : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) X.B.I.E, (y₀.map (starRingEnd X.B.I.E))ᵀ * (Formalism.L2.Forms.gramN D 0 (Nat.zero_le _)).map X.ιE.symm * y₀ = (Formalism.L2.Forms.gramN D 0 (Nat.zero_le _)).map X.ιE.symm ∧ ∀ j, (γ₀ : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) *ᵥ X.crd (qFr wt j) = ∑ i, y₀ i j • X.crd (qFr wt i) := by
   intro D X u wt hw γ₀ hγ hfix

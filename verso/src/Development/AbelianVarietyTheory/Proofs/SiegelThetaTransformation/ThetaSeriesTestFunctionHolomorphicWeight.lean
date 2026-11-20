@@ -15,11 +15,11 @@ open scoped ComplexConjugate ComplexOrder Real Classical
 namespace GlobalTheory.SW.ThetaHol
 
 /- English proof (translation)
-Use `⟨fun k i => decide (0 ≤ x k i), fun ζ hζ => ?_⟩` and prove the remaining obligations. Rewrite using `[Complex.norm_exp, Complex.norm_exp]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Simplify using `only [mul_assoc, Complex.re_ofReal_mul, Complex.I_mul_re, Complex.im_sum, Complex.add_im, Complex.mul_im, dotProduct, qv, Complex.ratCast_re, Complex.ratCast_im, Complex.ofReal_re, Complex.ofReal_im, Complex.I_re, Complex.I_im, zero_mul, mul_zero, add_zero, mul_one, Complex.re_of …`. Use `mul_le_mul_of_nonneg_left (neg_le_neg (Finset.sum_le_sum fun k _ => ?_)) Real.pi_pos.le` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `add_le_add le_rfl ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left (Finset.sum_le_sum fun i _ => ?_) zero_le_two` and prove the remaining obligations. Establish `h1 : |(ζ k i).im| ≤ S` using `(Complex.abs_im_le_norm _).trans ((norm_le_pi_norm (ζ k) i).trans ((norm_le_pi_norm ζ k).trans hζ))`. Establish `h2` using `abs_le.mp h1`. Use `split_ifs with h`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (0 : ℝ) ≤ (x k i : ℝ)` using `by exact_mod_cast h`. Use the polynomial consequences of the given equalities and inequalities. Establish `: (x k i : ℝ) < 0` using `by exact_mod_cast lt_of_not_ge h`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem exists_corner {κ ι : Type} [Fintype κ] [Fintype ι] (τ : Matrix ι ι ℂ) (S : ℝ)
     (x : Matrix κ ι ℚ) : ∃ s : κ → ι → Bool, ∀ ζ : κ → ι → ℂ, ‖ζ‖ ≤ S →
@@ -46,19 +46,17 @@ theorem exists_corner {κ ι : Type} [Fintype κ] [Fintype ι] (τ : Matrix ι �
     nlinarith
 
 /- English proof (translation)
-Introduce `ζ₀`. Set `F : Matrix κ ι ℚ → (κ → ι → ℂ) → ℂ` to `fun x ζ => φ x * cexp (π * I * ∑ k, (qv (x k) ⬝ᵥ τ *ᵥ qv (x k) + 2 * (qv (x k) ⬝ᵥ ζ k)))`. Set `S : ℝ` to `‖ζ₀‖ + 2`. Set `cor : (κ → ι → Bool) → κ → ι → ℂ` to `fun s k i => ((if s k i then -S else S : ℝ) : ℂ) * I`. Use `choose s hs using fun x : Matrix κ ι ℚ => exists_corner τ S x`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hFd : ∀ x, Differentiable ℂ (F x)`. Introduce `x`. Simplify using `only [F, dotProduct]`. Use `fun_prop`. Establish `hbd : ∀ x, ∀ z : κ → ι → ℂ, ‖z‖ ≤ S → ‖F x z‖ ≤ ‖F x (cor (s x))‖`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `x z hz`. Simplify using `only [F, norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hs x z hz) (norm_nonneg _)`. Establish `hsum : Summable fun x => ‖F x (cor (s x))‖`. Establish `hfin : Summable fun x => ∑ t : κ → ι → Bool, ‖F x (cor t)‖` using `summable_sum fun t _ => SiegelSum.summable_norm_thetaTerm κ ι φ hφ τ hτ (cor t)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Summable.of_nonneg_of_le (fun x => norm_nonneg _) (fun x => ?_) hfin` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun t => ‖F x (cor t)‖) (fun t _ => norm_nonneg _) (Finset.mem_univ (s x))`. Establish `hder : ∀ x, ∀ ζ ∈ Metric.ball (0 : κ → ι → ℂ) (‖ζ₀‖ + 1), ‖fderiv ℂ (F x) ζ‖ ≤ 2 * ‖F x (cor (s x))‖`. Introduce `x ζ hζ`. Establish `h` using `GlobalTheory.SCV.norm_fderiv_le_of_ball (f := F x) (c := ζ) (r := 1) (M := ‖F x (cor (s x))‖) one_pos (hFd x).differentiableOn (fun z hz => hbd x z (by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `hz` using `[Metric.mem_ball, dist_eq_norm]`. Rewrite `hζ` using `[Metric.mem_ball, dist_zero_right]`. Use `norm_sub_norm_le z ζ` as an intermediate fact. Simplify using `only [S]`. Use the proof step `linarith))`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Simplify using `using h`. Establish `h0 : ζ₀ ∈ Metric.ball (0 : κ → ι → ℂ) (‖ζ₀‖ + 1)`. Rewrite using `[Metric.mem_ball, dist_zero_right]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `key` using `hasFDerivAt_tsum_of_isPreconnected (hsum.mul_left 2) Metric.isOpen_ball (convex_ball _ _).isPreconnected (fun x ζ _ => (hFd x ζ).hasFDerivAt) hder h0 (SiegelSum.summable_norm_thetaTerm κ ι φ hφ τ hτ ζ₀).of_norm h0`.
-
-Conclude with `key.differentiableAt`.
+A detailed English derivation is pending.
 -/
 theorem differentiable_thS {κ ι : Type} [Fintype κ] [Fintype ι] [DecidableEq ι]
     {φ : Matrix κ ι ℚ → ℂ} (hφ : IsSB φ) {τ : Matrix ι ι ℂ} (hτ : τ ∈ Siegel ι) :
@@ -103,11 +101,9 @@ theorem differentiable_thS {κ ι : Type} [Fintype κ] [Fintype ι] [DecidableEq
   exact key.differentiableAt
 
 /- English proof (translation)
-Establish `hτ` using `UnAct.tauMat_mem idx hs hx`. Establish `hlin : Differentiable ℂ fun z : Fin n → Fin g → ℂ => fun k => hMat X bas idx x *ᵥ z k`. Use `differentiable_pi.2 fun k => differentiable_pi.2 fun i => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct]`. Use `fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hth` using `(differentiable_thS hφ hτ).comp hlin`. Establish `hq : Differentiable ℂ fun z : Fin n → Fin g → ℂ => ∑ k, (hMat X bas idx x *ᵥ z k) ⬝ᵥ imInv X bas idx x *ᵥ (hMat X bas idx x *ᵥ z k)`. Simplify using `only [Matrix.mulVec, dotProduct]`. Use `fun_prop`. Unfold `thA`.
-
-Conclude with `((hq.const_mul _).cexp.const_mul _).mul hth`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem differentiable_thA {E : Type} [Field E] [NumberField E] [IsCMField E] {r g n : ℕ}
     {X : Data E r} {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} (idx : Fin g ≃ X.Ψ × Fin r)
@@ -131,13 +127,13 @@ end GlobalTheory.SW.ThetaHol
 namespace GlobalTheory.SW
 
 /- English proof (translation)
-Introduce `E _ _ _ r X g q0 hr bas idx n hs hn c c' φ hφ P hP`. Take `⟨m, a, b, t, ht⟩` from `(GlobalTheory.T.thetaCharacteristics_iff_testFunction_thetaSeries E r X g q0 hr bas idx n hs hn).2 φ hφ`. Establish `hH` using `Harm.isHarmonic_of_mem_rowHighest hP`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hd : DifferentiableOn ℂ (fun x => ∑ j, t j * thFr X hr bas idx n (fun k i => (a j k i : ℝ)) (fun k i => (b j k i : ℝ)) P x) X.dom` using `DifferentiableOn.fun_sum fun j _ => (differentiableOn_thFr idx hs hr n _ _ hH).const_mul (t j)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hd.congr fun x hx => ht P x hx`. Introduce `x hx u hu`. Establish `hxu` using `ReciprocityTheory.ChartRestriction.G.FD.OrthogonalFrameDomain.rmul_mem_dom X hx hu`. Rewrite using `[ht P _ hxu, ht P x hx, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[thFr_rmul idx hr _ _ hs hP hx hu]`. Expand and normalize the polynomial expressions, which then agree. Introduce `γ hγ x hx`. Unfold `thP`. Rewrite using `[(wG_laws E r X g bas idx n hs hn γ hγ φ hφ).2.1 x hx]`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Conclude with `GlobalTheory.SCV.analyticOnNhd_of_differentiable (ThetaHol.differentiable_thA idx hs hφ hx) _`.
+A detailed English derivation is pending.
 -/
 theorem theta_holomorphic_weight : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g q0 : ℕ) (hr : X.p0 + q0 = r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∀ (c : X.Ψ → Fin q0 → ℕ) (c' : X.Ψ → Fin X.p0 → ℕ) (φ : TF n g), IsSB φ → ∀ P ∈ Harm.rowHighest ℂ c c', DifferentiableOn ℂ (thP X hr bas idx φ P) X.dom ∧ (∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, thP X hr bas idx φ P (rmul x b) = bchar (wtOf X hr c c' n) b * thP X hr bas idx φ P x) ∧ (∀ γ, IsUn X γ → ∀ x ∈ X.dom, thP X hr bas idx (wG X bas idx γ φ) P (lact γ x) = thP X hr bas idx φ P x) ∧ ∀ x ∈ X.dom, AnalyticOnNhd ℂ (thA X bas idx φ x) Set.univ := by
   intro E _ _ _ r X g q0 hr bas idx n hs hn c c' φ hφ P hP

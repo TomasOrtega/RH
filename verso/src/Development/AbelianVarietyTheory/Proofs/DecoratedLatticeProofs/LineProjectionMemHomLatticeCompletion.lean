@@ -17,16 +17,16 @@ open GlobalTheory.IwaPlace
 variable {D : D7}
 
 /- English proof (translation)
-Simplify using `only [hermAt, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermAt_eq (S : HSp D) (x y : Fin S.rank → AE D) :
     hermAt S x y = (fun i => cA D (y i)) ⬝ᵥ (gA S *ᵥ x) := by
   simp only [hermAt, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Establish `e : (fun i => cA D ((π *ᵥ y) i)) = (fun i => cA D (y i)) ᵥ* adj π`. Use function extensionality and compare the values at `i`. Rewrite using `[adj, Matrix.vecMul_transpose]`. Conclude with `RingHom.map_mulVec (cA D) π y i`. Establish `e2 : gA S *ᵥ (π *ᵥ x) = adj π *ᵥ (gA S *ᵥ x)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Conclude with `congrArg (· *ᵥ x) h.symm`. Rewrite using `[hermAt_eq, hermAt_eq, e, e2]`. Conclude with `Matrix.dotProduct_mulVec _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hermAt_mulVec (S : HSp D) {π : Mx D S.rank S.rank} (h : adj π ⬝ gA S = gA S ⬝ π) (x y : Fin S.rank → AE D) :
     hermAt S (π *ᵥ x) y = hermAt S x (π *ᵥ y) := by
@@ -41,7 +41,7 @@ theorem hermAt_mulVec (S : HSp D) {π : Mx D S.rank S.rank} (h : adj π ⬝ gA S
   exact Matrix.dotProduct_mulVec _ _ _
 
 /- English proof (translation)
-Simplify using `only [hermAt, Pi.smul_apply, smul_eq_mul, map_mul, GlobalTheory.DualPairCheck.cA_cA]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hermAt_smul (S : HSp D) (a : AE D) (x y : Fin S.rank → AE D) :
     hermAt S (a • x) y = hermAt S x (cA D a • y) := by
@@ -50,20 +50,20 @@ theorem hermAt_smul (S : HSp D) (a : AE D) (x y : Fin S.rank → AE D) :
   ring
 
 /- English proof (translation)
-Simplify using `only [hermAt, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermAt_add_left (S : HSp D) (x x' y : Fin S.rank → AE D) :
     hermAt S (x + x') y = hermAt S x y + hermAt S x' y := by
   simp only [hermAt, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨add_mem ha.1 hb.1, by rw [RingHom.map_add]; exact add_mem ha.2 hb.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem add_mem_intAt {P : Pl D → Prop} {a b : AE D} (ha : a ∈ intAt D P) (hb : b ∈ intAt D P) : a + b ∈ intAt D P :=
   ⟨add_mem ha.1 hb.1, by rw [RingHom.map_add]; exact add_mem ha.2 hb.2⟩
 
 /- English proof (translation)
-Rewrite using `[o.pB_eq]`. Simplify using `only [adj_mul, adj_adj, adj_gA, adj_giA, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem proj_selfAdj {S A L : HSp D} (o : OrthDec S A L) :
     adj (o.jB ⬝ o.pB) ⬝ gA S = gA S ⬝ (o.jB ⬝ o.pB) := by
@@ -73,9 +73,9 @@ theorem proj_selfAdj {S A L : HSp D} (o : OrthDec S A L) :
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Take `⟨hs, -, hd⟩` from `GlobalTheory.IwaPlace.LocSD.isSDAt_latV D S M p.v hM`. Use `(hd _ (mulVec_mem_idAt π (hs y hy))).2 fun x hx => ?_` and prove the remaining obligations. Establish `hy' : y = p.e • y + cA D p.e • y`. Use function extensionality and compare the values at `i`. Rewrite using `[← add_smul, Pi.smul_apply, smul_eq_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((FrameLat.idem_iff p (y i)).1 (hs y hy i)).symm`. Rewrite using `[hy', Matrix.mulVec_add, hermAt_add_left]`. Use `add_mem_intAt ((hd _ (hs _ (hw y hy))).1 (hw y hy) x hx) ?_` and prove the remaining obligations. Rewrite using `[hermAt_mulVec S h, hermAt_smul, GlobalTheory.DualPairCheck.cA_cA, ← Matrix.mulVec_smul]`. Conclude with `(hd y (hs y hy)).1 hy _ (hw x hx)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulVec_mem_of_half (p : SplitPt D k) {S : HSp D} {M : Lat S} (hM : IsSelfDualC S M) {π : Mx D S.rank S.rank}
     (h : adj π ⬝ gA S = gA S ⬝ π)
@@ -93,11 +93,11 @@ theorem mulVec_mem_of_half (p : SplitPt D k) {S : HSp D} {M : Lat S} (hM : IsSel
   exact (hd y (hs y hy)).1 hy _ (hw x hx)
 
 /- English proof (translation)
-Establish `h1 : (o.jB ⬝ o.pB).map p.pr * o.jA.map p.pr = 0`. Rewrite using `[← Matrix.map_mul, Matrix.mul_assoc, o.pB_jA, Matrix.mul_zero]`. Conclude with `Matrix.map_zero _ (map_zero _)`. Establish `h2 : (o.jB ⬝ o.pB) *ᵥ ratV (vecB o ζ) = ratV (vecB o ζ)`. Establish `e : ratV (vecB o ζ) = o.jB *ᵥ ratV ζ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec (incA D) o.iB ζ i`. Rewrite using `[e, Matrix.mulVec_mulVec, Matrix.mul_assoc, o.pB_jB, Matrix.mul_one]`. Establish `h3 : (o.jB ⬝ o.pB).map p.pr *ᵥ (fun i => p.pr (ratV (vecB o ζ) i)) = fun i => p.pr (ratV (vecB o ζ) i)`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `RingHom.map_mulVec p.pr (o.jB ⬝ o.pB) (ratV (vecB o ζ)) i` as an intermediate fact. Rewrite `this` using `[h2]`. Conclude with `this.symm`. Rewrite `h` using `[IsSumFrame]`. Rewrite using `[h, Matrix.mulVec_mulVec, Matrix.mul_fromCols, ← Matrix.mul_assoc, h1, Matrix.zero_mul, ← Matrix.replicateCol_mulVec, h3, Matrix.fromCols_mulVec, Matrix.fromCols_mulVec_sumElim, Matrix.zero_mulVec, Matrix.mulVec_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_frame {p : SplitPt D k} {n : Type} [Fintype n] [DecidableEq n] {S A L : HSp D} (o : OrthDec S A L)
     (ζ : Fin L.rank → D.host.E) {α : Frame p A n} {α₀ : Frame p S (n ⊕ Fin 1)} (h : IsSumFrame o ζ α α₀)
@@ -122,11 +122,11 @@ theorem proj_frame {p : SplitPt D k} {n : Type} [Fintype n] [DecidableEq n] {S A
     Matrix.mulVec_zero]
 
 /- English proof (translation)
-Establish `hb : α₀.b *ᵥ (α₀.b' *ᵥ fun i => p.pr (z i)) = fun i => p.pr (z i)`. Rewrite using `[Matrix.mulVec_mulVec, α₀.bb', Matrix.one_mulVec]`. Establish `h1 : (α₀.b' *ᵥ fun i => p.pr (z i)) ∈ lastKer Λ`. Use `(hΛ _).2 ?_` and prove the remaining obligations. Rewrite using `[hb]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [p.sec_pr]`. Conclude with `GlobalTheory.FinPlLoc.smul_latV p.v (FrameLat.e_mem_intAt p) hz`. Establish `h2 : (Sum.elim 0 ((α₀.b' *ᵥ fun i => p.pr (z i)) ∘ Sum.inr) : n ⊕ Fin 1 → k) ∈ lastKer Λ` using `GlobalTheory.IndefiniteRowSideFullHecke.AppendedVectorData.mem_lastKer.2 ⟨Λ.zero_mem, (GlobalTheory.IndefiniteRowSideFullHecke.AppendedVectorData.mem_lastKer.1 h1).2⟩`. Establish `h3` using `(hΛ _).1 h2`. Rewrite `h3` using `[← proj_frame o ζ h, hb]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `h3 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Rewrite using `[Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul, ← p.sec_pr, RingHom.map_mulVec]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem proj_half {p : SplitPt D k} {n : Type} [Fintype n] [DecidableEq n] {S A L : HSp D} (o : OrthDec S A L)
     (ζ : Fin L.rank → D.host.E) {α : Frame p A n} {α₀ : Frame p S (n ⊕ Fin 1)} (h : IsSumFrame o ζ α α₀)
@@ -149,13 +149,11 @@ theorem proj_half {p : SplitPt D k} {n : Type} [Fintype n] [DecidableEq n] {S A 
   rfl
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ ι p I P hP n' _ _ ρ B S α α₀ M LS Λ hM hLS h x hx`. Establish `hπ : ∀ y ∈ latV B.V₀ M P, (B.o.jB ⬝ B.o.pB) *ᵥ y ∈ latV B.V₀ M P`. Introduce `y hy`. Use `(GlobalTheory.FinPlLoc.part_lat P B.V₀ M _ hM.1).2 ⟨mulVec_mem_idAt _ (GlobalTheory.FinPlLoc.latV_idAt hy), fun v hv e he => ?_⟩` and prove the remaining obligations. Take `⟨i, rfl⟩` from `(hP.mem v).1 hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Matrix.mulVec_smul]`. Conclude with `mulVec_mem_of_half (p i) hM (proj_selfAdj B.o) (fun z hz => proj_half B.o B.ζ (h i).1 (h i).2 hz) (GlobalTheory.FinPlLoc.smul_latV _ he hy)`. Take `⟨hx1, hx2⟩` from `(GlobalTheory.FinPl.LatMem.mem_latO_iff D B.V₀ S M LS hM hLS P x).1 hx`. Establish `e : (B.o.resS S).symm (0, (B.o.resS S x).2) = x ⬝ (B.o.jB ⬝ B.o.pB)`. Rewrite using `[OrthDec.resS_symm_apply, OrthDec.resS_apply, Matrix.zero_mul, zero_add, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `(GlobalTheory.FinPl.LatMem.mem_latO_iff D B.V₀ S M LS hM hLS P _).2 ⟨fun i j => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Conclude with `Ideal.sum_mem _ fun l _ => Ideal.mul_mem_right _ _ (hx1 i l)`. Use `hx2 _ (hπ y hy)` as an intermediate fact.
-
-Rewrite `this` using `[Matrix.mulVec_mulVec]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem lineProj_mem_latO : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type) (p : ι → SplitPt D k) (I : List ι) (P : Pl D → Prop), Places p I P → ∀ (n' : Type) [Fintype n'] [DecidableEq n'] (ρ : ℕ) (B : BesLev D ρ) (S : HSp D) (α : ∀ i, Frame (p i) B.A n') (α₀ : ∀ i, Frame (p i) B.V₀ (n' ⊕ Fin 1)) (M : Lat B.V₀) (LS : Lat S) (Λ : ι → Submodule 𝒪[k] (n' → k)), IsSelfDualC B.V₀ M → IsSelfDualC S LS → (∀ i, IsSumFrame B.o B.ζ (α i) (α₀ i) ∧ (α₀ i).IsLat M (lastKer (Λ i))) → ∀ x ∈ latO B.V₀ S (M : Set _) (LS : Set _) P, (B.o.resS S).symm (0, (B.o.resS S x).2) ∈ latO B.V₀ S (M : Set _) (LS : Set _) P := by
   intro D k _ _ _ _ ι p I P hP n' _ _ ρ B S α α₀ M LS Λ hM hLS h x hx

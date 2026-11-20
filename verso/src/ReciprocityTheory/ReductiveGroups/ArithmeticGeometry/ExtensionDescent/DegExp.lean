@@ -82,14 +82,14 @@ abbrev expW (e : ℕ) (p : (PUnit.{1} → D.toPre.P.L.ι) × (PUnit.{1} → U.LG
       LB.wchart D.toPre.P.L (D.toPre.Oφ (U.gt e).pG α) (jt α))
 
 /- English proof (translation)
-The claim follows from `inf_le_right.trans ((Finset.inf_le hα).trans inf_le_left)`.
+A detailed English derivation is pending.
 -/
 lemma expW_le_f (e : ℕ) (p) (j₁) {S : Finset D.toPre.X} (jf jt) {α : D.toPre.X} (hα : α ∈ S) :
     U.expW e p j₁ S jf jt ≤ (U.gt e).pG.left ⁻¹ᵁ LB.wchart D.toPre.P.L (D.toPre.famφB α) (jf α) :=
   inf_le_right.trans ((Finset.inf_le hα).trans inf_le_left)
 
 /- English proof (translation)
-The claim follows from `inf_le_right.trans ((Finset.inf_le hα).trans inf_le_right)`.
+A detailed English derivation is pending.
 -/
 lemma expWeight_le_chart_weight (e : ℕ) (p) (j₁) {S : Finset D.toPre.X} (jf jt) {α : D.toPre.X} (hα : α ∈ S) :
     U.expW e p j₁ S jf jt ≤ LB.wchart D.toPre.P.L (D.toPre.Oφ (U.gt e).pG α) (jt α) :=

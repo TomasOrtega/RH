@@ -11,7 +11,7 @@ open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.R Formalism.FourierDeca
 namespace GlobalTheory.HatNF
 
 /- English proof (translation)
-The claim follows from `tendsto_list_sum l h`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_list_map_sum_real {α : Type*} (l : List α) (u : α → ℕ → ℝ) (v : α → ℝ)
     (h : ∀ x ∈ l, Tendsto (u x) atTop (𝓝 (v x))) :
@@ -19,37 +19,33 @@ theorem tendsto_list_map_sum_real {α : Type*} (l : List α) (u : α → ℕ →
   tendsto_list_sum l h
 
 /- English proof (translation)
-Introduce `a ha Cb`. Take `⟨c₁, hc₁⟩` from `GlobalTheory.HatNF.vecV_cut_polyOp`. Take `⟨c₂, hc₂⟩` from `Formalism.FourierDecayAlt.P.PBE.vecV_cut_op`. Use `⟨5 * max Cb 8 + max Cb 8 ^ 2 + 1 + |max c₁ c₂|, ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ P0 p N w hDD hw hwN`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨C, J, Θs, hC, hpoly, hB⟩` from `GlobalTheory.T.wordBound_compactSupportCoefficients a ha Wp Wq P0 p w hw`. Use `⟨C, J, Θs, hC, hpoly, ?_⟩` and prove the remaining obligations. Introduce and unpack `φ f ⟨e₀, A, hφ, hf, hfA, hA⟩ e c hc hG`. Establish `hXn : ((2 * P0.r + P0.k + 1 : ℕ) : ℝ) = 2 * (P0.r : ℝ) + P0.k + 1` using `by push_cast; ring`. Establish `hr0 : (0 : ℝ) ≤ P0.r` using `Nat.cast_nonneg _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrX : (P0.r : ℝ) + 1 ≤ 2 * (P0.r : ℝ) + P0.k + 1`. Establish `: (0 : ℝ) ≤ P0.k` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hN0 : (0 : ℝ) ≤ N` using `Nat.cast_nonneg _`. Establish `hCb8 : (8 : ℝ) ≤ max Cb 8` using `le_max_right _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCb0 : (0 : ℝ) ≤ max Cb 8` using `by linarith`. Establish `hwN' : (w.length : ℝ) ≤ N` using `by exact_mod_cast hwN`. Establish `hw0 : (0 : ℝ) ≤ w.length` using `Nat.cast_nonneg _`. Establish `he0 : (0 : ℝ) ≤ (2 * (P0.r : ℝ) + 2) * e₀` using `by positivity`. Establish `hcut' : ∀ n g, Formalism.FourierDecayAlt.P.CutBP.cutN P0.k P0.r n g = 1 - Formalism.FourierDecayAlt.P.JCx2.pdPsi ((n : ℝ) + 1) g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `n g`. Simplify using `[Formalism.FourierDecayAlt.P.CutBP.cutN, Formalism.FourierDecayAlt.P.JCx2.pdPsi, Formalism.FourierDecayAlt.P.JCx2.pdPhi, Formalism.FourierDecayAlt.P.JCx2.pdChi, Formalism.FourierDecayAlt.P.JCx2.pdSq]`. Establish `hmono : ∀ c : ℝ, c ≤ max c₁ c₂ → ∀ B' : ℝ, max c₁ c₂ * ((P0.r : ℝ) + 1) ^ 2 * ((P0.r : ℝ) * (2 * (P0.r : ℝ) + P0.k + 1) + 1) ≤ B' → c * ((P0.r : ℝ) + 1) ^ 2 * ((P0.r : ℝ) * ((2 * P0.r + P0.k + 1 : ℕ) : ℝ) + 1) ≤ B'`. Introduce `c hc B' hB`. Rewrite using `[hXn]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `le_trans ?_ hB` and prove the remaining obligations. Apply `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hc (by positivity)) (by positivity)` to reduce the goal to its premises. Take `⟨δ₀, hδ₀, hφ0⟩` from `hφ.2.1`. Use `set γ := TBB.bigPt P0.r c with hγ`. Use `set δ : ℝ := min δ₀ (TBB.Gp p γ / 2) with hδdef`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hδ : 0 < δ` using `lt_min hδ₀ (by linarith)`. Establish `hδ1 : δ ≤ δ₀` using `min_le_left _ _`. Establish `hδ2 : δ < TBB.Gp p γ` using `lt_of_le_of_lt (min_le_right _ _) (by linarith)`. Take `⟨χ, hχ⟩ : ∃ χ : ℝ → ℝ, C6.IsCut0 χ` from `⟨_, Formalism.FourierDecayAlt.P.Topx2.base_cutoff_is_truncation⟩`. Establish `hmul : ∀ n, mulG p.T.base φ (Formalism.FourierDecayAlt.P.CutBP.apx (D.cutF p.T.base χ f δ) n) = fun g => Formalism.FourierDecayAlt.P.CutBP.cutN P0.k P0.r n g • mulG p.T.base φ f g`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `n`. Use function extensionality and compare the values at `g`. Simplify using `only [mulG, Formalism.FourierDecayAlt.P.CutBP.apx, D.cutF]`. Distinguish the cases in `hg : Gf P0.k P0.r p.T.base.z p.T.base.z' g < δ₀`. Simplify using `[hφ0 _ hg]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hχ.2.2 _ ((one_le_div hδ).2 (hδ1.trans (not_lt.1 hg)))]`. Simplify using `only [Complex.ofReal_one, one_smul]`. Conclude with `smul_comm _ _ _`. Establish `hn` using `fun n => hB φ (Formalism.FourierDecayAlt.P.CutBP.apx (D.cutF p.T.base χ f δ) n) ⟨hφ.1, Formalism.FourierDecayAlt.P.CutBP.cptCoef_apx P0 p.T.base hχ hf hδ n⟩ e c hc hG`. Simplify using `only [hmul] at hn`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `le_of_tendsto_of_tendsto' (b := atTop) ?_ ?_ hn` and prove the remaining obligations. Use `Tendsto.norm ((Formalism.FourierDecayAlt.P.BetaSesquilinearity.hsVec_cont.tendsto _).comp ?_)` and prove the remaining obligations. Take `⟨nf, fib, o, κ, Dop, hfib, hIn, ho, hκ, hΘ⟩` from `hDD w hw e`. Establish `hcongr : ∀ G, p.V (p.Θ.Θ w e G) γ = D.vecV p.T.base p.ν' p.m₀ (B.opApply Dop G) γ` using `fun G => Formalism.FourierDecayAlt.P.PBE.vecV_congrGPos p.T.base p.ν' p.m₀ γ (fun g hg => hΘ G g ⟨hg.1, hg.2, fun l hl => by simp at hl⟩)`. Rewrite using `[hcongr]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `ho' : (o : ℝ) ≤ max Cb 8 * N * (2 * (P0.r : ℝ) + P0.k + 1)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hXn]`. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (le_max_left _ _) (Nat.cast_nonneg _)) (by linarith)`. Use `_ ≤ max Cb 8 * N * (2 * (P0.r : ℝ) + P0.k + 1) := mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hwN' hCb0) (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hκ' : (κ : ℝ) ≤ max Cb 8 * ((P0.r : ℝ) + 1) * o` using `hκ.trans (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (le_max_left _ _) (by linarith)) (Nat.cast_nonneg _))`. Establish `hthr` using `Formalism.FourierDecayAlt.P.PBE.thr_arith (P0.r) (2 * (P0.r : ℝ) + P0.k + 1) N (max Cb 8) (max c₁ c₂) o κ _ hr0 hrX hN0 hCb0 (Nat.cast_nonneg _) ho' (Nat.cast_nonneg _) hκ' hA`. Take `⟨hck, bF, hbF⟩` from `GlobalTheory.HatNF.mulG_ckOn_inCC Wp Wq P0 p.T.base e₀ o φ f A hφ hf (hfA o)`. Establish `hv : ∀ g, Gf P0.k P0.r p.T.base.z p.T.base.z' g < δ₀ → mulG p.T.base φ f g = 0`. Introduce `g hg`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[mulG, hφ0 _ hg]`. Establish `hth` using `hmono c₂ (le_max_right _ _) (A - (2 * (P0.r : ℝ) + 2) * ((e₀ : ℝ) + o) - 1 - ((κ : ℝ) + 3 * ((P0.r : ℝ) + 1) * o)) (by linarith [hthr])`. Establish `key` using `hc₂ P0.k P0.r Wp Wq p.T.base p.ν' p.m₀ γ (mulG p.T.base φ f) (Formalism.FourierDecayAlt.P.CutBP.cutN P0.k P0.r) nf fib o κ Dop δ₀ _ bF hfib hIn hδ₀ hv hck hbF hcut' hth`. Conclude with `key.congr fun n => (hcongr _).symm`. Use `Tendsto.const_mul _ (tendsto_list_map_sum_real Θs (fun Θ n => ‖B.hsVec (p.V (B.opApply Θ (Formalism.FourierDecayAlt.P.CutBP.apx (D.cutF p.T.base χ f δ) n)) γ)‖) (fun Θ => ‖B.hsVec (p.V (B.opApply Θ f) γ)‖) fun Θ hΘ => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Tendsto.norm ((Formalism.FourierDecayAlt.P.BetaSesquilinearity.hsVec_cont.tendsto _).comp ?_)` and prove the remaining obligations. Rewrite using `[← GlobalTheory.HatNF.vec_opApply_cutF_eq Wp Wq P0 p Θ f χ δ γ hχ hδ hδ2]`. Use `set o : ℕ := w.length * (2 * P0.r + P0.k + 1) with ho`. Use `set κ : ℕ := w.length * (8 * (P0.r + 1) * (2 * P0.r + P0.k + 1)) with hκ`. Establish `hoR : (o : ℝ) = w.length * (2 * (P0.r : ℝ) + P0.k + 1)` using `by rw [ho]; push_cast; ring`.
-
-Establish `hκR : (κ : ℝ) = 8 * ((P0.r : ℝ) + 1) * o` using `by rw [hoR, hκ]; push_cast; ring`. Establish `ho' : (o : ℝ) ≤ max Cb 8 * N * (2 * (P0.r : ℝ) + P0.k + 1)`. Rewrite using `[hoR]`. Conclude with `mul_le_mul_of_nonneg_right (by nlinarith) (by linarith)`. Establish `hκ' : (κ : ℝ) ≤ max Cb 8 * ((P0.r : ℝ) + 1) * o`.
-
-Rewrite using `[hκR]`. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hCb8 (by linarith)) (Nat.cast_nonneg _)`. Establish `hthr` using `Formalism.FourierDecayAlt.P.PBE.thr_arith (P0.r) (2 * (P0.r : ℝ) + P0.k + 1) N (max Cb 8) (max c₁ c₂) o κ _ hr0 hrX hN0 hCb0 (Nat.cast_nonneg _) ho' (Nat.cast_nonneg _) hκ' hA`. Establish `h3 : (0 : ℝ) ≤ 3 * ((P0.r : ℝ) + 1) * o` using `by positivity`. Conclude with `hc₁ Wp Wq P0 p o κ Θ (D.cutF p.T.base χ f δ) (A - 2 * ((P0.r : ℝ) + 1) * o) (hpoly Θ hΘ) (Formalism.FourierDecayAlt.P.JCTx6.Link2.ckOn_cutF p.T.base hχ hf δ) (Formalism.FourierDecayAlt.P.PBE.cutF_inCC p.T.base hχ hfA hδ _ o (by linarith)) (hmono c₁ (le_max_left _ _) _ (by linarit …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem wordBound_decay : ∀ a : ℕ → ℕ, BasicLiftAll a → ∀ Cb : ℝ, ∃ Cc : ℝ, ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par) (p : KB.Pl P Wp Wq) (N : ℕ) (w : List C.Letter), KB.InDDplus2 P p.l0 p.T.base Cb p.Θ → KB.CutWord P p.l0 w → w.length ≤ N → ∃ (C : ℝ) (J : ℕ) (Θs : List (B.DiffOp P.k P.r Wp Wq)), WordBound p (a P.r) w C J Θs (fun φ f => ∃ (e : ℕ) (A : ℝ), CutPow e φ ∧ B.CkOn ⊤ (B.GV P.k P.r) f ∧ (∀ m : ℕ, B.InCC A m f) ∧ Cc * ((P.r : ℝ) + 1) ^ 4 * ((N : ℝ) * (2 * (P.r : ℝ) + P.k + 1) ^ 2 + (2 * (P.r : ℝ) + P.k + 1) ^ 3) ≤ A - (2 * (P.r : ℝ) + 2) * e) := by
   intro a ha Cb

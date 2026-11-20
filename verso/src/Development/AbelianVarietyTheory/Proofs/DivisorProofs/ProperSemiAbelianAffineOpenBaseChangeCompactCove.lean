@@ -13,15 +13,13 @@ open GlobalTheory.CatCoh GlobalTheory.CechDR GlobalTheory.CechFin
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E _ _ _ H X t hP U J W hW hcov`. Establish `hsep : IsSeparated t.G.hom` using `t.semi.separated`. Establish `hU : IsAffineOpen U.1` using `U.2`. Establish `: IsOpenImmersion hU.fromSpec` using `hU.isOpenImmersion_fromSpec`. Establish `: IsOpenImmersion (pullback.fst t.G.hom hU.fromSpec)` using `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `QuasiCompact.compactSpace_of_compactSpace (pullback.snd t.G.hom hU.fromSpec)`. Introduce `I hI`. Use `GlobalTheory.isAffineHom_diagonal_of_isSeparated (pullback.snd t.G.hom hU.fromSpec)` as an intermediate fact. Use `GlobalTheory.isAffineOpen_finset_biInf (fun i => ?_) I hI` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hle : W i ≤ (pullback.fst t.G.hom hU.fromSpec).opensRange`. Introduce `x hx`. Establish `hx' : x ∈ t.G.hom ⁻¹ᵁ U.1` using `hcov ▸ (le_iSup W i) hx`. Establish `hy : t.G.hom x ∈ Set.range hU.fromSpec`. Rewrite using `[hU.range_fromSpec]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hx'`. Take `⟨y, hy⟩` from `hy`. Take `⟨z, hz, -⟩` from `Scheme.Pullback.exists_preimage_pullback x y hy.symm`. Conclude with `⟨z, hz⟩`. Rewrite using `[← (pullback.fst t.G.hom hU.fromSpec).isAffineOpen_iff_of_isOpenImmersion, Scheme.Hom.image_preimage_eq_opensRange_inf, inf_eq_right.2 hle]`.
-
-Conclude with `hW i`. Rewrite using `[← Scheme.Hom.preimage_iSup, hcov, ← Scheme.Hom.comp_preimage, pullback.condition, Scheme.Hom.comp_preimage, hU.fromSpec_preimage_self, Scheme.Hom.preimage_top]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pullback_fromSpec_compact_affineCover : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Scheme.{0}) (t : SAB H X), IsProper t.G.hom → ∀ (U : X.affineOpens) (J : Type) (W : J → t.G.left.Opens), (∀ i, IsAffineOpen (W i)) → ⨆ i, W i = t.G.hom ⁻¹ᵁ U.1 → CompactSpace ↑(pullback t.G.hom U.2.fromSpec : Scheme.{0}) ∧ (∀ I : Finset J, I.Nonempty → IsAffineOpen (⨅ i ∈ I, pullback.fst t.G.hom U.2.fromSpec ⁻¹ᵁ W i)) ∧ ⨆ i, pullback.fst t.G.hom U.2.fromSpec ⁻¹ᵁ W i = ⊤ := by
   intro E _ _ _ H X t hP U J W hW hcov

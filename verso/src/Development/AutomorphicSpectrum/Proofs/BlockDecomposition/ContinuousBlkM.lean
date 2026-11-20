@@ -15,9 +15,9 @@ def blkM {n : ℕ} (b : Matrix (Fin n) (Fin n) ℂ) (u : Fin n → ℂ) (d : ℝ
       (Matrix.of fun _ _ => (d : ℂ)))
 
 /- English proof (translation)
-Establish `hb : (b : Matrix (Fin n) (Fin n) ℂ).IsHermitian` using `mem_hermC.1 b.2`. Rewrite using `[mem_hermC]`. Unfold `blkM`. Simplify using `only [Matrix.reindex_apply]`. Apply `Matrix.IsHermitian.submatrix` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Matrix.IsHermitian.fromBlocks hb` to reduce the goal to its premises. Use extensionality with `i j`. Simplify using `[Matrix.conjTranspose_apply]`. Use extensionality with `i j`. Simplify using `[Matrix.conjTranspose_apply]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem blkM_mem {n : ℕ} (b : hermC n) (u : Fin n → ℂ) (d : ℝ) :
     blkM (b : Matrix (Fin n) (Fin n) ℂ) u d ∈ hermC (n + 1) := by
@@ -36,9 +36,9 @@ def blk {n : ℕ} (b : hermC n) (u : Fin n → ℂ) (d : ℝ) : hermC (n + 1) :=
   ⟨blkM (b : Matrix (Fin n) (Fin n) ℂ) u d, blkM_mem b u d⟩
 
 /- English proof (translation)
-Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Unfold `blkM`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply]`. Apply the tactic sequence `rcases h1 : finSumFinEquiv.symm i with i' | i' <;> rcases h2 : finSumFinEquiv.symm j with j' | j' <;>`. Simplify using `only [Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.replicateCol_apply, Matrix.replicateRow_apply, Pi.star_apply, Matrix.of_apply]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `all_goals fun_prop`.
+A detailed English derivation is pending.
 -/
 theorem continuous_blkM {n : ℕ} :
     Continuous (fun x : Matrix (Fin n) (Fin n) ℂ × (Fin n → ℂ) × ℝ => blkM x.1 x.2.1 x.2.2) := by

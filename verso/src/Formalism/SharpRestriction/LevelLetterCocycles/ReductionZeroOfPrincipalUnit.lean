@@ -16,7 +16,7 @@ section Part1
 variable (LL : Type) [Field LL] (l : ℕ) [Fact l.Prime] (s : ℕ)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `ζ`. Simplify using `only [precomp_apply, powR_powR]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem invCutPf_precomp_mul (a b : (ZMod (l ^ (s + 1)))ˣ) (f : Rs LL l s → LL) :
     precomp LL l s a (precomp LL l s b f) = precomp LL l s (a * b) f := by
@@ -24,7 +24,7 @@ theorem invCutPf_precomp_mul (a b : (ZMod (l ^ (s + 1)))ˣ) (f : Rs LL l s → L
   simp only [precomp_apply, powR_powR]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `ζ`. Simplify using `only [precomp_apply, powR_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem invCutPf_precomp_one (f : Rs LL l s → LL) : precomp LL l s 1 f = f := by
   funext ζ
@@ -42,15 +42,15 @@ def invCutPf_stab (f : Rs LL l s → LL) : Subgroup (ZMod (l ^ (s + 1)))ˣ where
       _ = f := by rw [invCutPf_precomp_mul, inv_mul_cancel, invCutPf_precomp_one]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem invCutPf_mem_stab (f : Rs LL l s → LL) (a : (ZMod (l ^ (s + 1)))ˣ) :
     a ∈ invCutPf_stab LL l s f ↔ precomp LL l s a f = f := Iff.rfl
 
 /- English proof (translation)
-Establish `hN : 0 < l ^ (s + 1)` using `pos_pow l s`. Use `haveI : NeZero (l ^ (s + 1)) := ⟨hN.ne'⟩`. Establish `h0 : IsPrimitiveRoot (ζ₀ : LL) (l ^ (s + 1))` using `(mem_primitiveRoots hN).1 ζ₀.2`. Establish `h1 : IsPrimitiveRoot (ζ : LL) (l ^ (s + 1))` using `(mem_primitiveRoots hN).1 ζ.2`. Take `⟨i, hi, hζ⟩` from `h0.eq_pow_of_pow_eq_one h1.pow_eq_one`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcop : i.Coprime (l ^ (s + 1))` using `(h0.pow_iff_coprime hN i).1 (by rw [hζ]; exact h1)`. Use `⟨ZMod.unitOfCoprime i hcop, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show (ζ₀ : LL) ^ ((ZMod.unitOfCoprime i hcop : ZMod (l ^ (s + 1)))).val = ζ`. Rewrite using `[ZMod.coe_unitOfCoprime, ZMod.val_natCast, Nat.mod_eq_of_lt hi, hζ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invCutPf_exists_pow (ζ₀ ζ : Rs LL l s) : ∃ a, powR LL l s a ζ₀ = ζ := by
   have hN : 0 < l ^ (s + 1) := pos_pow l s
@@ -66,9 +66,9 @@ theorem invCutPf_exists_pow (ζ₀ ζ : Rs LL l s) : ∃ a, powR LL l s a ζ₀ 
 end Part1
 
 /- English proof (translation)
-Introduce `LL _ l _ s S hS f hf`. Distinguish the cases in `h : Nonempty (Rs LL l s)`. Take `⟨ζ₀⟩` from `h`. Use `⟨f ζ₀, fun ζ => ?_⟩` and prove the remaining obligations. Establish `hle : Subgroup.closure S ≤ invCutPf_stab LL l s f` using `(Subgroup.closure_le _).2 fun a ha => (invCutPf_mem_stab LL l s f a).2 (hf a ha)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨a, rfl⟩` from `invCutPf_exists_pow LL l s ζ₀ ζ`. Establish `ha : precomp LL l s a f = f` using `(invCutPf_mem_stab LL l s f a).1 (hle (by rw [hS]; exact Subgroup.mem_top a))`. Conclude with `(precomp_apply LL l s a f ζ₀).symm.trans (congrFun ha ζ₀)`. Conclude with `⟨0, fun ζ => (h ⟨ζ⟩).elim⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem precompConst : PrecompConst := by
   intro LL _ l _ s S hS f hf
@@ -88,27 +88,27 @@ section Part2
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Rewrite using `[← PadicInt.ker_toZModPow, RingHom.mem_ker]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem invCutPf_toZModPow_eq_zero {n : ℕ} {z : ℤ_[l]} :
     PadicInt.toZModPow n z = 0 ↔ z ∈ Ideal.span {(l : ℤ_[l]) ^ n} := by
   rw [← PadicInt.ker_toZModPow, RingHom.mem_ker]
 
 /- English proof (translation)
-Rewrite using `[← invCutPf_toZModPow_eq_zero, map_sub, map_one, sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem invCutPf_eq_one_iff {k : ℕ} {z : ℤ_[l]} :
     PadicInt.toZModPow k z = 1 ↔ z - 1 ∈ Ideal.span {(l : ℤ_[l]) ^ k} := by
   rw [← invCutPf_toZModPow_eq_zero, map_sub, map_one, sub_eq_zero]
 
 /- English proof (translation)
-Rewrite using `[PadicInt.norm_lt_one_iff_dvd, invCutPf_toZModPow_eq_zero, pow_one, Ideal.mem_span_singleton]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem invCutPf_lt_one_iff {z : ℤ_[l]} : ‖z‖ < 1 ↔ PadicInt.toZModPow 1 z = 0 := by
   rw [PadicInt.norm_lt_one_iff_dvd, invCutPf_toZModPow_eq_zero, pow_one, Ideal.mem_span_singleton]
 
 /- English proof (translation)
-Break down `(PadicInt.norm_le_one z).lt_or_eq with h1 | h1` into its components or cases. Conclude with `absurd (invCutPf_lt_one_iff.1 h1) h`. Conclude with `h1`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem invCutPf_norm_eq_one {z : ℤ_[l]} (h : PadicInt.toZModPow 1 z ≠ 0) : ‖z‖ = 1 := by
   rcases (PadicInt.norm_le_one z).lt_or_eq with h1 | h1
@@ -116,7 +116,7 @@ theorem invCutPf_norm_eq_one {z : ℤ_[l]} (h : PadicInt.toZModPow 1 z ≠ 0) : 
   · exact h1
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero, ← map_sub]`. Conclude with `invCutPf_lt_one_iff.1 h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invCutPf_congr {z w : ℤ_[l]} (h : ‖z - w‖ < 1) :
     PadicInt.toZModPow 1 z = PadicInt.toZModPow 1 w := by
@@ -124,7 +124,7 @@ theorem invCutPf_congr {z w : ℤ_[l]} (h : ‖z - w‖ < 1) :
   exact invCutPf_lt_one_iff.1 h
 
 /- English proof (translation)
-Rewrite using `[← PadicInt.zmod_cast_comp_toZModPow k n h, RingHom.comp_apply, RingHom.comp_apply, e]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem invCutPf_lower {k n : ℕ} (h : k ≤ n) {z w : ℤ_[l]}
     (e : PadicInt.toZModPow n z = PadicInt.toZModPow n w) :
@@ -140,14 +140,14 @@ def invCutPf_rho (s : ℕ) : (ZMod (l ^ (s + 1)))ˣ →* (ZMod (l ^ (0 + 1)))ˣ 
   ZMod.unitsMap (pow_dvd_pow l (invCutPf_le s))
 
 /- English proof (translation)
-The claim follows from `Units.ext (RingHom.congr_fun (PadicInt.zmod_cast_comp_toZModPow (0 + 1) (s + 1) (invCutPf_le s)) (x : ℤ_[l]))`.
+A detailed English derivation is pending.
 -/
 theorem invCutPf_rho_red (s : ℕ) (x : ℤ_[l]ˣ) : invCutPf_rho s (redU l s x) = redU l 0 x :=
   Units.ext (RingHom.congr_fun (PadicInt.zmod_cast_comp_toZModPow (0 + 1) (s + 1) (invCutPf_le s))
     (x : ℤ_[l]))
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use `show PadicInt.toZModPow (0 + 1) (u : ℤ_[l]) = 1`. Rewrite using `[invCutPf_eq_one_iff, zero_add, pow_one]`. Conclude with `h1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reduction_zero_of_principal_unit (u : ℤ_[l]ˣ) (h1 : (u : ℤ_[l]) - 1 ∈ Ideal.span {(l : ℤ_[l])}) :
     redU l 0 u = 1 := by
@@ -157,19 +157,19 @@ theorem reduction_zero_of_principal_unit (u : ℤ_[l]ˣ) (h1 : (u : ℤ_[l]) - 1
   exact h1
 
 /- English proof (translation)
-Establish `hl` using `(Fact.out : l.Prime)`. Use `haveI : NeZero (l ^ 1) := ⟨pow_ne_zero _ hl.ne_zero⟩`. Use `haveI : Fact (1 < l ^ 1) := ⟨by rw [pow_one]; exact hl.one_lt⟩`. Take `⟨a, ha⟩ : ∃ a : ℤ_[l], a = (((x : ZMod (l ^ 1)).val : ℕ) : ℤ_[l])` from `⟨_, rfl⟩`. Establish `hxa : PadicInt.toZModPow 1 a = x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ha, map_natCast, ZMod.natCast_zmod_val]`. Establish `hanorm : ‖a‖ = 1` using `invCutPf_norm_eq_one (by rw [hxa]; exact x.ne_zero)`. Establish `htot : Nat.totient (l ^ 1) = l - 1` using `by rw [pow_one, Nat.totient_prime hl]`. Establish `hferm : (x : ZMod (l ^ 1)) ^ (l - 1) = 1`. Establish `h` using `pow_card_eq_one (x := x)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[ZMod.card_units_eq_totient, htot]`. Rewrite using `[← Units.val_pow_eq_pow_val, h, Units.val_one]`. Establish `hl1norm : ‖((l - 1 : ℕ) : ℤ_[l])‖ = 1`. Apply `invCutPf_norm_eq_one` to reduce the goal to its premises. Rewrite using `[map_natCast, Ne, ZMod.natCast_eq_zero_iff]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hd`. Use `Nat.le_of_dvd (by have := hl.two_le; omega) hd` as an intermediate fact. Rewrite `this` using `[pow_one]`. Use `hl.two_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hFa : ‖Polynomial.aeval a ((Polynomial.X ^ (l - 1) - 1 : Polynomial ℤ_[l]))‖ < 1`. Rewrite using `[invCutPf_lt_one_iff]`. Simplify using `only [map_sub, map_pow, Polynomial.aeval_X, map_one, hxa, hferm, sub_self]`. Establish `hder : ‖Polynomial.aeval a (Polynomial.derivative (Polynomial.X ^ (l - 1) - 1 : Polynomial ℤ_[l]))‖ = 1`. Simplify using `only [Polynomial.derivative_sub, Polynomial.derivative_X_pow, Polynomial.derivative_one, sub_zero, map_mul, Polynomial.aeval_C, map_pow, Polynomial.aeval_X, Algebra.algebraMap_self, RingHom.id_apply, norm_mul, norm_pow, hanorm, one_pow, mul_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hl1norm`. Take `⟨z, hz, hza, -, -⟩` from `hensels_lemma (F := (Polynomial.X ^ (l - 1) - 1 : Polynomial ℤ_[l])) (a := a) (by rw [hder, one_pow]; exact hFa)`. Rewrite `hza` using `[hder]`. Establish `hz1 : z ^ (l - 1) = 1`. Simplify `hz` using `[sub_eq_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hl1 : l - 1 ≠ 0` using `by have := hl.two_le; omega`. Establish `hzu : IsUnit z` using `IsUnit.of_pow_eq_one hz1 hl1`. Use `⟨⟨hzu.unit, Units.ext (by simpa using hz1)⟩, Units.ext ?_⟩` and prove the remaining obligations. Use `show PadicInt.toZModPow 1 z = (x : ZMod (l ^ 1))`. Rewrite using `[invCutPf_congr hza, hxa]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invCutPf_teich (x : (ZMod (l ^ 1))ˣ) : ∃ d : DeltaT l, redU l 0 d.1 = x := by
   have hl := (Fact.out : l.Prime)
@@ -213,7 +213,7 @@ theorem invCutPf_teich (x : (ZMod (l ^ 1))ˣ) : ∃ d : DeltaT l, redU l 0 d.1 =
   rw [invCutPf_congr hza, hxa]
 
 /- English proof (translation)
-Rewrite using `[← Nat.modEq_iff_dvd' (Nat.one_le_pow _ _ hm), ← ZMod.natCast_eq_natCast_iff, Nat.cast_pow, Nat.cast_one, hmu, Units.ext_iff, Units.val_pow_eq_pow_val, Units.val_one]`. Conclude with `eq_comm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invCutPf_pow_eq_one_iff (n : ℕ) (u : ℤ_[l]ˣ) (m : ℕ)
     (hmu : ((m : ℕ) : ZMod (l ^ (n + 1))) = PadicInt.toZModPow (n + 1) (u : ℤ_[l])) (hm : 1 ≤ m)
@@ -223,29 +223,27 @@ theorem invCutPf_pow_eq_one_iff (n : ℕ) (u : ℤ_[l]ˣ) (m : ℕ)
   exact eq_comm
 
 /- English proof (translation)
-Establish `hl` using `(Fact.out : l.Prime)`. Consider the cases of `s with`. Consider the case `zero => rw [pow_zero, orderOf_eq_one_iff]`. Conclude with `reduction_zero_of_principal_unit u h1`. Consider the case `succ t => haveI : NeZero (l ^ (t + 1 + 1)) := ⟨(pos_pow l (t + 1)).ne'⟩`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm_def⟩ : ∃ m : ℕ, m = (PadicInt.toZModPow (t + 1 + 1) (u : ℤ_[l])).val` from `⟨_, rfl⟩`. Establish `hmu : ((m : ℕ) : ZMod (l ^ (t + 1 + 1))) = PadicInt.toZModPow (t + 1 + 1) (u : ℤ_[l])`. Rewrite using `[hm_def, ZMod.natCast_zmod_val]`. Establish `hmu' : PadicInt.toZModPow (t + 1 + 1) ((m : ℕ) : ℤ_[l]) = PadicInt.toZModPow (t + 1 + 1) (u : ℤ_[l])`. Rewrite using `[map_natCast, hmu]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hk : ∀ k ≤ t + 1 + 1, (((m : ℕ) : ZMod (l ^ k)) = 1 ↔ (u : ℤ_[l]) - 1 ∈ Ideal.span {(l : ℤ_[l]) ^ k})`. Introduce `k hk`. Rewrite using `[← map_natCast (PadicInt.toZModPow (p := l) k) m, invCutPf_lower hk hmu', invCutPf_eq_one_iff]`. Establish `hl2' : 1 < l ^ 2` using `Nat.one_lt_pow two_ne_zero hl.one_lt`. Establish `hA : m % l = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hk 1 (by omega)).2 (by rw [pow_one]; exact h1)` as an intermediate fact. Rewrite `this` using `[← Nat.cast_one (R := ZMod (l ^ 1)), ZMod.natCast_eq_natCast_iff', pow_one, Nat.mod_eq_of_lt hl.one_lt]`. Conclude with `this`. Establish `hB : m % l ^ 2 ≠ 1`. Introduce `hc`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h2` to reduce the goal to its premises. Apply `(hk 2 (by omega)).1` to reduce the goal to its premises. Rewrite using `[← Nat.cast_one (R := ZMod (l ^ 2)), ZMod.natCast_eq_natCast_iff', hc, Nat.mod_eq_of_lt hl2']`. Establish `hm1 : 1 < m`. Break down `Nat.lt_or_ge 1 m with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `h`. Use `interval_cases m`. Simplify using `at hA`. Conclude with `absurd (Nat.mod_eq_of_lt hl2') hB`. Establish `hdvd1 : l ∣ m - 1` using `(Nat.modEq_iff_dvd' hm1.le).1 (by show 1 % l = m % l`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hA, Nat.mod_eq_of_lt hl.one_lt])`. Establish `hndvd2 : ¬ l ^ 2 ∣ m - 1` using `fun hd => hB (by`. Establish `: 1 % l ^ 2 = m % l ^ 2` using `(Nat.modEq_iff_dvd' hm1.le).2 hd`. Rewrite using `[← this, Nat.mod_eq_of_lt hl2'])`. Establish `hndvd : ¬ l ∣ m`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Nat.dvd_iff_mod_eq_zero, hA]`. Conclude with `one_ne_zero`. Establish `hm0 : m - 1 ≠ 0` using `by omega`. Establish `hv1 : padicValNat l (m - 1) = 1`. Establish `a1 : 1 ≤ padicValNat l (m - 1)` using `(padicValNat_dvd_iff_le hm0).1 (by rw [pow_one]; exact hdvd1)`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `a2 : ¬ 2 ≤ padicValNat l (m - 1)` using `fun h => hndvd2 ((padicValNat_dvd_iff_le hm0).2 h)`. Use linear arithmetic over natural numbers and integers. Establish `hodd : Odd l` using `hl.odd_of_ne_two hl2`. Establish `hv : ∀ j : ℕ, padicValNat l (m ^ (l ^ j) - 1) = 1 + j`. Introduce `j`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `padicValNat.pow_sub_pow hodd hm1 hdvd1 hndvd (pow_ne_zero j hl.ne_zero)` as an intermediate fact. Rewrite `this` using `[one_pow]`. Rewrite using `[this, hv1, padicValNat.prime_pow]`. Establish `hne : ∀ j : ℕ, m ^ (l ^ j) - 1 ≠ 0`. Introduce `j`.
+Use linear arithmetic over natural numbers and integers. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use `Nat.one_lt_pow (pow_ne_zero j hl.ne_zero) hm1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Apply `orderOf_eq_prime_pow` to reduce the goal to its premises. Rewrite using `[invCutPf_pow_eq_one_iff (t + 1) u m hmu hm1.le, padicValNat_dvd_iff_le (hne t), hv]`. Use linear arithmetic over natural numbers and integers.
-
-Rewrite using `[invCutPf_pow_eq_one_iff (t + 1) u m hmu hm1.le, padicValNat_dvd_iff_le (hne (t + 1)), hv]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem invCutPf_orderOf (hl2 : l ≠ 2) (s : ℕ) (u : ℤ_[l]ˣ)
     (h1 : (u : ℤ_[l]) - 1 ∈ Ideal.span {(l : ℤ_[l])})
@@ -313,9 +311,9 @@ theorem invCutPf_orderOf (hl2 : l ≠ 2) (s : ℕ) (u : ℤ_[l]ˣ)
       omega
 
 /- English proof (translation)
-Establish `hl` using `(Fact.out : l.Prime)`. Use `haveI : NeZero (l ^ (s + 1)) := ⟨(pos_pow l s).ne'⟩`. Use `haveI : NeZero (l ^ (0 + 1)) := ⟨(pos_pow l 0).ne'⟩`. Establish `hsurj : Function.Surjective (invCutPf_rho (l` using `l) s) := ZMod.unitsMap_surjective (pow_dvd_pow l (invCutPf_le s))`. Establish `e1` using `Subgroup.card_eq_card_quotient_mul_card_subgroup (invCutPf_rho (l := l) s).ker`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e1` using `[Nat.card_congr (QuotientGroup.quotientKerEquivOfSurjective _ hsurj).toEquiv, Nat.card_eq_fintype_card (α := (ZMod (l ^ (s + 1)))ˣ), Nat.card_eq_fintype_card (α := (ZMod (l ^ (0 + 1)))ˣ), ZMod.card_units_eq_totient, ZMod.card_units_eq_totient, Nat.totient_prime_pow_succ hl, Nat.t …`. Establish `hpos : 0 < l - 1` using `by have := hl.two_le; omega`. Conclude with `Nat.eq_of_mul_eq_mul_left hpos (e1.symm.trans (mul_comm _ _))`.
+A detailed English derivation is pending.
 -/
 theorem invCutPf_card_ker (s : ℕ) : Nat.card (invCutPf_rho (l := l) s).ker = l ^ s := by
   have hl := (Fact.out : l.Prime)
@@ -333,7 +331,7 @@ theorem invCutPf_card_ker (s : ℕ) : Nat.card (invCutPf_rho (l := l) s).ker = l
   exact Nat.eq_of_mul_eq_mul_left hpos (e1.symm.trans (mul_comm _ _))
 
 /- English proof (translation)
-Use `haveI : NeZero (l ^ (s + 1)) := ⟨(pos_pow l s).ne'⟩`. Use `symm`. Apply `Subgroup.eq_of_le_of_card_ge` to reduce the goal to its premises. Rewrite using `[Subgroup.zpowers_le, MonoidHom.mem_ker, invCutPf_rho_red, reduction_zero_of_principal_unit u h1]`. Rewrite using `[Nat.card_zpowers, invCutPf_orderOf hl2 s u h1 h2, invCutPf_card_ker]`.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invCutPf_ker_eq (hl2 : l ≠ 2) (s : ℕ) (u : ℤ_[l]ˣ)
     (h1 : (u : ℤ_[l]) - 1 ∈ Ideal.span {(l : ℤ_[l])})
@@ -348,11 +346,11 @@ theorem invCutPf_ker_eq (hl2 : l ≠ 2) (s : ℕ) (u : ℤ_[l]ˣ)
 end Part2
 
 /- English proof (translation)
-Introduce `l _ hl2 s u h1 h2`. Rewrite using `[eq_top_iff]`. Introduce `g _`. Take `⟨d, hd⟩` from `invCutPf_teich (l := l) (invCutPf_rho s g)`. Establish `hk : g * (redU l s d.1)⁻¹ ∈ (invCutPf_rho (l` using `l) s).ker := by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[MonoidHom.mem_ker, map_mul, map_inv, invCutPf_rho_red, hd, mul_inv_cancel]`. Rewrite `hk` using `[invCutPf_ker_eq hl2 s u h1 h2]`. Establish `hu : redU l s u ∈ Subgroup.closure (insert (redU l s u) (Set.range fun d : DeltaT l => redU l s d.1))` using `Subgroup.subset_closure (Set.mem_insert _ _)`. Establish `hdm : redU l s d.1 ∈ Subgroup.closure (insert (redU l s u) (Set.range fun d : DeltaT l => redU l s d.1))` using `Subgroup.subset_closure (Set.mem_insert_of_mem _ ⟨d, rfl⟩)`. Establish `hz` using `(Subgroup.zpowers_le.2 hu) hk`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using Subgroup.mul_mem _ hz hdm`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem genUnits : GenUnits := by
   intro l _ hl2 s u h1 h2
@@ -451,11 +449,9 @@ def levBasics_conv {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} 
     h.ev_γ, h.gen⟩
 
 /- English proof (translation)
-Introduce `l _ K LL hG hCA h5`. Establish `: FiniteDimensional ℚ_[l] ↥(K0 K)` using `((D.loc l).PD K).finK₀`. Use `haveI : NeZero (Module.finrank ℚ_[l] ↥(K0 K)) := ⟨Module.finrank_pos.ne'⟩`. Take `⟨⟨hdom, -, -⟩, -⟩` from `Formalism.MainNotions.N.T2.litGoodO l LL`. Use `haveI := hdom`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : IsAdicComplete (Ideal.span {((((D.loc l).PD K).p : ℕ) : ↥(OL LL))}) ↥(OL LL) := by`. Rewrite using `[(D.loc l).PD_p]`. Conclude with `Formalism.MainNotions.WachCoordinates.Br.complete_OL LL`. Establish `hR : ToolsR.RingP ((HW l).W K 1 LL hCA.2.2)` using `ring_condition_uniformizer_polynomial D HW F h9 l K LL hCA`. Establish `hT : Formalism.MainNotions.WachCoordinates.ToolsAlg ((HW l).W K 1 LL hCA.2.2)` using `tool_algebra_of_ring_condition D HW F h9 l K LL hCA h5`.
-
-Establish `hpu` using `Formalism.MainNotions.WachCoordinates.Br.not_isUnit_p ((HW l).W K 1 LL hCA.2.2) (Formalism.MainNotions.WachCoordinates.Br.valRing_rec (D.loc l) LL)`. Establish `hB : ∀ (a : ZMod (Module.finrank ℚ_[l] ↥(K0 K))) (s : ℕ), LevBasics ((HW l).W K 1 LL hCA.2.2) a s` using `fun a s => levBasics_conv (Formalism.MainNotions.N.Pv.LocalLengthBound.LB.levelBasicsOfRingCondition D HW F h9 Formalism.MainNotions.UnusedSlot80.InvCutPfL.genUnits l K LL hCA a s)`. Conclude with `invLevCore_of_parts ((HW l).W K 1 LL hCA.2.2) hR.1 hB (fun a s => levDiv_of ((HW l).W K 1 LL hCA.2.2) hR hT hpu a s (hB a s)) (fun a s => hRat l K LL hCA a s (hB a s)) Formalism.MainNotions.UnusedSlot80.InvCutPfL.precompConst`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem invLevCore_L (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9 D HW F)

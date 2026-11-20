@@ -17,17 +17,17 @@ open Module Function in
 open scoped TensorProduct Pointwise in
 
 /- English proof (translation)
-Establish `hspanT : Submodule.span L (Set.range fun i => (1 : L) ⊗ₜ[K] v i) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce and unpack `t -`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => exact zero_mem _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul l y`. Establish `hy : y ∈ Submodule.span K (Set.range v)` using `hv ▸ Submodule.mem_top`. Establish `h1 : TensorProduct.mk K L V 1 y ∈ Submodule.span K (TensorProduct.mk K L V 1 '' Set.range v)` using `Submodule.apply_mem_span_image_of_mem_span _ hy`. Establish `h2` using `Submodule.span_le_restrictScalars K L _ h1`. Rewrite `h2` using `[← Set.range_comp]`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : l ⊗ₜ[K] y = l • ((1 : L) ⊗ₜ[K] y)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[h3]`. Conclude with `Submodule.smul_mem _ l h2`. Consider the case `add a b ha hb => exact add_mem ha hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Establish `hw : Submodule.span L (Set.range fun i => G ((1 : L) ⊗ₜ[K] v i)) = ⊤`. Establish `h : (Set.range fun i => G ((1 : L) ⊗ₜ[K] v i)) = G '' Set.range fun i => (1 : L) ⊗ₜ[K] v i`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[h, Submodule.span_image, hspanT, Submodule.map_top, LinearMap.range_eq_top.mpr hG]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨κ, a, ha, hspan, hli⟩` from `exists_linearIndependent' L fun i => G ((1 : L) ⊗ₜ[K] v i)`. Set `b` to `Basis.mk hli (hspan.trans hw).ge`. Use `haveI : Finite κ := Module.Finite.finite_basis b`. Use `haveI := Fintype.ofFinite κ`. Establish `hcard : Fintype.card κ = d` using `by rw [← hd, Module.finrank_eq_card_basis b]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Set `e : Fin d ≃ κ` to `(Fintype.equivFinOfCardEq hcard).symm`. Use `⟨a ∘ e, b.reindex e.symm, ha.comp e.injective, fun k => ?_⟩` and prove the remaining obligations. Simplify using `[b, Basis.mk_apply]`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Avoid.exists_basis_map_one_tmul_of_surjective {K L V W ι : Type*} [CommRing K] [Field L]
     [Algebra K L] [AddCommGroup V] [Module K V] [AddCommGroup W] [Module L W]
@@ -73,7 +73,7 @@ section Minor
 open exteriorPower
 
 /- English proof (translation)
-Establish `: pairingDual R M r (ιMulti R r fun k => f k ∘ₗ φ) = pairingDual R N r (ιMulti R r f) ∘ₗ exteriorPower.map r φ`. Apply `exteriorPower.linearMap_ext` to reduce the goal to its premises. Use extensionality with `v`. Simplify using `[pairingDual_ιMulti_ιMulti]`. Rewrite using `[this, LinearMap.comp_apply]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem pairingDual_ιMulti_comp {R M N : Type*} [CommRing R] [AddCommGroup M] [Module R M]
     [AddCommGroup N] [Module R N] {r : ℕ} (φ : M →ₗ[R] N) (f : Fin r → Dual R N)
@@ -88,11 +88,11 @@ theorem pairingDual_ιMulti_comp {R M N : Type*} [CommRing R] [AddCommGroup M] [
   rw [this, LinearMap.comp_apply]
 
 /- English proof (translation)
-Set `φ : V →ₗ[K] (ι → K)` to `LinearMap.pi c`. Establish `hφ : Injective φ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `v hv`. Conclude with `hc v fun j => congrFun hv j`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hinj : Injective (exteriorPower.map r φ)` using `map_injective_field hφ`. Use `by_contra! h`. Apply `hx` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Apply `((Pi.basisFun K ι).exteriorPower r).repr.injective` to reduce the goal to its premises. Use extensionality with `J`. Rewrite using `[basis_repr_apply, ιMultiDual, ιMulti_family, ← pairingDual_ιMulti_comp, map_zero, Finsupp.zero_apply, ← h J, ιMulti_family]`. Use `congr 3`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem exists_minor_ne_zero_of_separating {K V ι : Type*} [Field K] [AddCommGroup V]
     [Module K V] [Finite ι] [LinearOrder ι] (c : ι → Dual K V)
@@ -115,9 +115,9 @@ theorem exists_minor_ne_zero_of_separating {K V ι : Type*} [Field K] [AddCommGr
   congr 3
 
 /- English proof (translation)
-Use `exists_minor_ne_zero_of_separating c (fun v hv => ?_) x hx` and prove the remaining obligations. Rewrite using `[← forall_dual_apply_eq_zero_iff K v]`. Establish `: Dual.eval K V v = 0`. Apply `LinearMap.ext_on_range hc` to reduce the goal to its premises. Simplify using `using hv`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `f`. Simplify using `using DFunLike.congr_fun this f`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_minor_ne_zero_of_span {K V ι : Type*} [Field K] [AddCommGroup V]
     [Module K V] [Finite ι] [LinearOrder ι] (c : ι → Dual K V)
@@ -132,7 +132,7 @@ theorem exists_minor_ne_zero_of_span {K V ι : Type*} [Field K] [AddCommGroup V]
   simpa using DFunLike.congr_fun this f
 
 /- English proof (translation)
-The claim follows from `exists_minor_ne_zero_of_span c c.span_eq x hx`.
+A detailed English derivation is pending.
 -/
 theorem exists_minor_ne_zero {K V ι : Type*} [Field K] [AddCommGroup V]
     [Module K V] [Finite ι] [LinearOrder ι] (c : Basis ι K (Dual K V))
@@ -145,17 +145,15 @@ open scoped TensorProduct Pointwise in
 open exteriorPower in
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hall : ∀ φ : ⋀[K]^r (Dual K V), pairingDual K V r φ x = 0`. Introduce `φ`. Establish `hφ : φ ∈ Submodule.span K (Set.range (ιMulti_family K r c))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ιMulti_family_span_of_span K hc]`. Conclude with `Submodule.mem_top`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨s, rfl⟩` from `hy`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Conclude with `hne (Set.powersetCard.ofFinEmbEquiv.symm s)`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => simp [hy, hz]`. Consider the case `smul t y _ hy => simp [hy]`. Set `b` to `Basis.ofVectorSpace K V`.
+Treat this case separately. Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `letI : LinearOrder (Basis.ofVectorSpaceIndex K V) := IsWellOrder.linearOrder WellOrderingRel`. Set `B` to `b.exteriorPower r`. Establish `hcoord : ∀ s, B.coord s = ιMultiDual K r b s` using `fun s => B.ext fun t => by`. Establish `hBt : B t = ιMulti_family K r b t` using `by simp [B, Module.Basis.exteriorPower]`. Rewrite using `[Basis.coord_apply, B.repr_self, hBt]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hst : s = t`. Substitute `hst` using the available equality. Rewrite using `[ιMultiDual_apply_diag, Finsupp.single_eq_same]`. Rewrite using `[ιMultiDual_apply_nondiag K r b s t hst, Finsupp.single_eq_of_ne hst]`. Apply `hx` to reduce the goal to its premises.
-
-Use `B.ext_elem fun s => ?_` and prove the remaining obligations. Rewrite using `[map_zero, Finsupp.zero_apply, ← B.coord_apply, hcoord]`. Conclude with `hall _`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Avoid.exists_orderEmbedding_minor_ne_zero {K V ι : Type*} [Field K] [AddCommGroup V]
     [Module K V] [Finite ι] [LinearOrder ι] (c : ι → Dual K V)
@@ -191,7 +189,7 @@ theorem _root_.GlobalTheory.Avoid.exists_orderEmbedding_minor_ne_zero {K V ι : 
   exact hall _
 
 /- English proof (translation)
-Simplify using `[ιMulti_family, pairingDual_ιMulti_ιMulti]`.
+Simplify using the standard rewrite rules.
 -/
 theorem minor_ιMulti {R V ι : Type*} [CommRing R] [AddCommGroup V] [Module R V] [LinearOrder ι]
     (c : ι → Dual R V) {r : ℕ} (J : Set.powersetCard ι r) (v : Fin r → V) :

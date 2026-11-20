@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.NatCastMemOfP
 open Formalism.BasicNotions NumberField IsDedekindDomain Formalism.MainNotions Formalism.MainNotions.G Formalism.MainNotions.FormalGroupSystem Formalism.L2.G.Pend Formalism.L2.Ker Formalism.L2.PairingIndexBounds.F GlobalTheory.TwU TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.VolAt.vol_main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FHomLatticeVolumeCompletionSplitPlace.lean&line=73#L73)
 -/

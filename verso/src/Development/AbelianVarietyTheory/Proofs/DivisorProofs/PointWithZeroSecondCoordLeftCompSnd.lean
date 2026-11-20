@@ -22,36 +22,36 @@ theorem spOver_left {D D' : Type} [CommRing D] [Algebra R D] [CommRing D'] [Alge
     (spOver (R := R) φ).left = spMap (φ : D →+* D') := rfl
 
 /- English proof (translation)
-Rewrite using `[← Over.comp_left]`. Unfold `pt0`. Rewrite using `[lift_fst]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem pointWithZeroSecondCoord_left_comp_fst {D : Type} [CommRing D] [Algebra R D] (x : Pt A D) :
     (pt0 B x).left ≫ (fst A B).left = x.left := by
   rw [← Over.comp_left]; unfold pt0; rw [lift_fst]
 
 /- English proof (translation)
-Rewrite using `[← Over.comp_left]`. Unfold `ptV`. Rewrite using `[lift_fst]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ptV_fst (v : epsR R ⟶ B) {D : Type} [CommRing D] [Algebra R D] (x : Pt A D) :
     (ptV v x).left ≫ (fst A B).left = spMap (TrivSqZeroExt.inlAlgHom R D D : D →+* DualNumber D) ≫ x.left := by
   rw [← Over.comp_left]; unfold ptV; rw [lift_fst]; rfl
 
 /- English proof (translation)
-Rewrite using `[← Over.comp_left]`. Unfold `ptV`. Rewrite using `[lift_snd]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ptV_snd (v : epsR R ⟶ B) {D : Type} [CommRing D] [Algebra R D] (x : Pt A D) :
     (ptV v x).left ≫ (snd A B).left = spMap (EpsWeil.epsMap R D : DualNumber R →+* DualNumber D) ≫ v.left := by
   rw [← Over.comp_left]; unfold ptV; rw [lift_snd]; rfl
 
 /- English proof (translation)
-Rewrite using `[← Over.comp_left]`. Unfold `pt0`. Rewrite using `[lift_snd]`. Establish `e1 : (spOver (TrivSqZeroExt.fstHom R D D) ≫ spOver (EpsWeil.epsMap R D) ≫ v) = (1 : Pt B D)`. Rewrite using `[← Category.assoc, spOver_comp]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (TrivSqZeroExt.fstHom R D D).comp (EpsWeil.epsMap R D) = (Algebra.ofId R D).comp (TrivSqZeroExt.fstHom R R R)`. Apply `AlgHom.ext` to reduce the goal to its premises. Introduce `c`. Simplify using `[EpsWeil.epsMap, DualNumber.lift_apply_apply, TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.algebraMap_eq_inl']`. Rewrite using `[this, ← spOver_comp, Category.assoc]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : spOver (TrivSqZeroExt.fstHom R R R) ≫ v = (1 : Over.mk (spMap (algebraMap R R)) ⟶ B)`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Rewrite using `[Over.comp_left, spOver_left, Hom.one_def, Over.comp_left]`. Establish `: (CartesianMonoidalCategory.toUnit (Over.mk (spMap (algebraMap R R)))).left = 𝟙 (Sp R)`. Establish `h` using `Over.w (CartesianMonoidalCategory.toUnit (Over.mk (spMap (algebraMap R R))))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Category.comp_id _).symm.trans (h.trans ?_)` and prove the remaining obligations. Conclude with `Spec.map_id _`. Rewrite using `[this]`. Conclude with `hv.trans (Category.id_comp _).symm`. Rewrite using `[h1, MonObj.comp_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← e1]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem pointWithZeroSecondCoord_left_comp_snd (v : epsR R ⟶ B) (hv : IsTangent v) {D : Type} [CommRing D] [Algebra R D] (x : Pt A D) :
     (pt0 B x).left ≫ (snd A B).left =
@@ -76,35 +76,35 @@ theorem pointWithZeroSecondCoord_left_comp_snd (v : epsR R ⟶ B) (hv : IsTangen
   rw [← e1]; rfl
 
 /- English proof (translation)
-Simplify using `[EpsWeil.epsMap, DualNumber.lift_apply_apply, TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.algebraMap_eq_inl']`.
+Simplify using the standard rewrite rules.
 -/
 theorem epsMap_fst {D : Type} [CommRing D] [Algebra R D] (c : DualNumber R) :
     (EpsWeil.epsMap R D c).fst = algebraMap R D c.fst := by
   simp [EpsWeil.epsMap, DualNumber.lift_apply_apply, TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.algebraMap_eq_inl']
 
 /- English proof (translation)
-Simplify using `[EpsWeil.epsMap, DualNumber.lift_apply_apply, TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.algebraMap_eq_inl']`.
+Simplify using the standard rewrite rules.
 -/
 theorem epsMap_inl {D : Type} [CommRing D] [Algebra R D] (b : R) :
     EpsWeil.epsMap R D (TrivSqZeroExt.inl b) = TrivSqZeroExt.inl (algebraMap R D b) := by
   simp [EpsWeil.epsMap, DualNumber.lift_apply_apply, TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.algebraMap_eq_inl']
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [EpsWeil.epsMap, DualNumber.lift_apply_apply, TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.algebraMap_eq_inl', Algebra.smul_def]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem epsMap_inr {D : Type} [CommRing D] [Algebra R D] (b : R) :
     EpsWeil.epsMap R D (TrivSqZeroExt.inr b) = TrivSqZeroExt.inr (algebraMap R D b) := by
   ext <;> simp [EpsWeil.epsMap, DualNumber.lift_apply_apply, TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.algebraMap_eq_inl', Algebra.smul_def]
 
 /- English proof (translation)
-Simplify using `[epsHom, DualNumber.lift_apply_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem snd_epsHom' {D D' : Type} [CommRing D] [Algebra R D] [CommRing D'] [Algebra R D'] (φ : D →ₐ[R] D')
     (z : DualNumber D) : (epsHom φ z).snd = φ z.snd := by
   simp [epsHom, DualNumber.lift_apply_apply]
 
 /- English proof (translation)
-Use `ext`. Simplify using `[epsHom, DualNumber.lift_apply_apply]`. Simplify using `[snd_epsHom']`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem epsHom_inl' {D D' : Type} [CommRing D] [Algebra R D] [CommRing D'] [Algebra R D'] (φ : D →ₐ[R] D')
     (r : D) : epsHom φ (TrivSqZeroExt.inl r) = TrivSqZeroExt.inl (φ r) := by
@@ -113,7 +113,7 @@ theorem epsHom_inl' {D D' : Type} [CommRing D] [Algebra R D] [CommRing D'] [Alge
   · simp [snd_epsHom']
 
 /- English proof (translation)
-Use `ext`. Conclude with `(SqExt.dual R).π_val v.left (pt_w v) β`. Conclude with `(tanVal_apply v β).symm`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem dualVal_eq (v : epsR R ⟶ B) (β : Form (B.hom ≫ 𝟙 _)) :
     (SqExt.dual R).val v.left (pt_w v) β.1 = TrivSqZeroExt.inr (tanVal v β) := by
@@ -150,7 +150,7 @@ abbrev yV (v : epsR R ⟶ B) (D : Type) [CommRing D] [Algebra R D] : Sp (DualNum
   spMap (EpsWeil.epsMap R D : DualNumber R →+* DualNumber D) ≫ v.left
 
 /- English proof (translation)
-The claim follows from `pt_w (spOver (EpsWeil.epsMap R D) ≫ v)`.
+A detailed English derivation is pending.
 -/
 theorem yV_w (v : epsR R ⟶ B) (D : Type) [CommRing D] [Algebra R D] :
     yV v D ≫ B.hom ≫ 𝟙 _ = spMap (algebraMap R (epsExt R D).C) :=
@@ -194,11 +194,9 @@ def u1B : Thick.triv (epsExt R D).C (yV v D) (yV_w v D) ⟶ m₂.functor.obj (tr
     exact Category.id_comp _
 
 /- English proof (translation)
-Set `E` to `epsExt R D`. Establish `k1` using `Form.ev_sq β (u0B m₂ v x hv) (m₂.functor.map s) (E.secHom (E.red_w (yV_w v D)) E.i E.π_i) (cB m₂ v x hv) rfl rfl (fun r ↦ by`. Express the relevant statement in the definitionally equal form `s.φ r = TrivSqZeroExt.inl r`. Conclude with `hs r)`. Establish `k2` using `Form.ev_sq β (u1B m₂ v x) (m₂.functor.map i) (E.idHom (yV_w v D)) (cB m₂ v x hv) rfl rfl (fun r ↦ by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `i.φ r = r`. Conclude with `hi r)`. Rewrite using `[k1, k2]`. Rewrite using `[add_sub_add_right_eq_sub, ← map_sub]`. Establish `vm` using `(SqExt.dual R).val_map E (EpsWeil.epsMap R D) (Algebra.ofId R D) (fun c ↦ (epsMap_fst c).symm) (fun b ↦ epsMap_inl b) v.left (pt_w v) (yV v D) (yV_w v D) rfl β`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem bval (hv : IsTangent v) (β : Form (B.hom ≫ 𝟙 _)) (s : trivAt (pt0 B x) ⟶ thickAt B x) (i : trivAt (ptV v x) ⟶ thickAt B x)
     (hs : ∀ r, s.φ r = TrivSqZeroExt.inl r) (hi : ∀ r, i.φ r = r) :
@@ -223,9 +221,9 @@ theorem bval (hv : IsTangent v) (β : Form (B.hom ≫ 𝟙 _)) (s : trivAt (pt0 
 end Bside
 
 /- English proof (translation)
-Substitute `hX1 hX2 hX3 hX4 hY1 hY2 hW hZ hfvt` using the available equality. Establish `h1 : epsHom φ As = epsHom φ Ae + epsHom φ Ai` using `by rw [hAs, map_add]`. Establish `key : epsHom φ As * Bτ - TrivSqZeroExt.inl Aa * Bs' - epsHom φ Ai * Bτ + Ab * Bi' = Ae' * Bi' - epsHom φ (Ae * Bi) - TrivSqZeroExt.inl Aa * TrivSqZeroExt.inr (algebraMap R D' t)`. Rewrite using `[map_mul]`. Take the linear combination `Bτ * h1 - Bi' * hAb - epsHom φ Ae * hBτ - TrivSqZeroExt.inl Aa * hBs`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[key, TrivSqZeroExt.snd_sub, TrivSqZeroExt.snd_sub, snd_epsHom', TrivSqZeroExt.inl_mul_inr, TrivSqZeroExt.snd_inr, smul_eq_mul, map_sub, map_mul, AlgHom.commutes, Algebra.smul_def, map_neg]`. Take the linear combination `(algebraMap R D' t) * hAa`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem alg {D D' : Type} [CommRing D] [Algebra R D] [CommRing D'] [Algebra R D'] (φ : D →ₐ[R] D') (t : R)
     (Ae Ai As Bi : DualNumber D) (Bτ Bi' Bs' Ab Ae' X1 X2 X3 X4 Y1 Y2 W : DualNumber D') (Aa fvv fvt C' Z : D') (C : D)
@@ -257,7 +255,7 @@ def kFn (m₁ : IsMor (dp0 R) (A.hom ≫ 𝟙 _) (dp0 R) ((A ⊗ B).hom ≫ 𝟙
   else 0
 
 /- English proof (translation)
-Establish `h : ∃ i : trivAt (ptV v x) ⟶ thickAt B x, ∀ r, i.φ r = r` using `⟨i, hi⟩`. Unfold `kFn`. Rewrite using `[dif_pos h, show h.choose = i from Thick.hom_ext fun r ↦ (h.choose_spec r).trans (hi r).symm]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem kFn_eq (m₁ : IsMor (dp0 R) (A.hom ≫ 𝟙 _) (dp0 R) ((A ⊗ B).hom ≫ 𝟙 _) (RingHom.id R) (fst A B).left)
     (m₂ : IsMor (dp0 R) (B.hom ≫ 𝟙 _) (dp0 R) ((A ⊗ B).hom ≫ 𝟙 _) (RingHom.id R) (snd A B).left)
@@ -274,17 +272,15 @@ end GlobalTheory.PtExt.CupA
 
 open GlobalTheory.PtExt.CupA in
 /- English proof (translation)
-Introduce `R _ A B _ _ m₁ m₂ v hv a β κ hκ`. Use `⟨kFn m₁ m₂ v a β, ?_⟩` and prove the remaining obligations. Introduce `D _ _ D' _ _ φ x _`. Take `⟨s, i, s', i', a', b, τ, hs, hi, hs', hi', ha, hb, hτ⟩` from `(GlobalTheory.T.exists_tangentVector_contraction_twoCochain_product R A B v hv).1 D D' φ x`. Establish `hK` using `hκ D D' φ x s i s' i' a' b τ hs hi hs' hi' ha hb hτ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `κ D D' φ x = TrivSqZeroExt.snd (R := D') ((show DualNumber D' from τ.φ (ev a (m₁.functor.map s))) * (show DualNumber D' from ev β.1 (m₂.functor.map τ)) - (show DualNumber D' from s'.φ (ev a (m₁.functor.map a'))) * (show DualNumber D' from ev β.1 (m₂.functor.map s')) - (show DualN …`. Establish `fAs : (show DualNumber D from ev a (m₁.functor.map s)) = (show DualNumber D from ev a (eA m₁ v x)) + (show DualNumber D from ev a (m₁.functor.map i))`. Rewrite using `[show m₁.functor.map s = eA m₁ v x ≫ m₁.functor.map i from Thick.hom_ext fun r ↦ by`. Express the relevant statement in the definitionally equal form `s.φ r = i.φ (TrivSqZeroExt.inl r)`. Conclude with `(hs r).trans (hi _).symm, ev_comp]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `i.φ _ + _ = _`. Use `erw [hi]`. Establish `fAb` using `ev_sq a (m₁.functor.map a') (eA m₁ v (spOver φ ≫ x)) (eA m₁ v x) (m₁.functor.map b) (fun r ↦ by`. Express the relevant statement in the definitionally equal form `TrivSqZeroExt.inl (a'.φ r) = b.φ (TrivSqZeroExt.inl r)`. Conclude with `(congrArg TrivSqZeroExt.inl (ha r)).trans ((hb _).trans (epsHom_inl' φ r)).symm)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `fAa` using `ev_sq a (trivMap φ x) (uA m₁ (spOver φ ≫ x)) (uA m₁ x) (m₁.functor.map a') (fun r ↦ by`. Express the relevant statement in the definitionally equal form `φ r = a'.φ r`. Conclude with `(ha r).symm)`. Establish `fBτ` using `Form.ev_sq β (m₂.functor.map b) (m₂.functor.map i') (m₂.functor.map i) (m₂.functor.map τ) rfl rfl (fun r ↦ by`. Express the relevant statement in the definitionally equal form `i'.φ (b.φ r) = τ.φ (i.φ r)`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `(hi' _).trans ((hb r).trans (((congrArg τ.φ (hi r)).trans (hτ r)).symm)))`. Establish `fBs` using `bval m₂ v (spOver φ ≫ x) hv β s' i' hs' hi'`. Establish `e1` using `kFn_eq m₁ m₂ v a β x i hi`. Establish `e2` using `kFn_eq m₁ m₂ v a β (spOver φ ≫ x) i' hi'`. Express the relevant statement in the definitionally equal form `(Fn1.add κ (fv ((-tanVal v β) • a)).neg) D D' φ x = _`.
-
-Unfold `Fn1.add Fn1.neg`. Rewrite using `[hK, e1, e2]`. Conclude with `alg φ (tanVal v β) _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ (fv a D D' φ x) _ _ _ _ (hτ _) (hs' _) (hτ _) (hi' _).symm`. Use `rfl (hb _) (hτ _) (ha _) rfl fAs fAb fAa fBτ fBs`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.PtExt.cohom_contr_cupA : ∀ (R : Type) [CommRing R] (A B : Over (Sp R)) [GrpObj A] [GrpObj B] (m₁ : IsMor (dp0 R) (A.hom ≫ 𝟙 _) (dp0 R) ((A ⊗ B).hom ≫ 𝟙 _) (RingHom.id R) (fst A B).left) (m₂ : IsMor (dp0 R) (B.hom ≫ 𝟙 _) (dp0 R) ((A ⊗ B).hom ≫ 𝟙 _) (RingHom.id R) (snd A B).left) (v : epsR R ⟶ B), IsTangent v → ∀ (a : Z1 (O (dp0 R) (A.hom ≫ 𝟙 _))) (β : Form (B.hom ≫ 𝟙 _)) (κ : Fn1 A), IsContr (cupZ _ (m₁.coef.pullbackOneCocycle a) (m₂.coef.pullbackOneCocycle β.1)).1 v κ → Cohom (whole A) κ (fv ((-tanVal v β) • a)) := by
   intro R _ A B _ _ m₁ m₂ v hv a β κ hκ

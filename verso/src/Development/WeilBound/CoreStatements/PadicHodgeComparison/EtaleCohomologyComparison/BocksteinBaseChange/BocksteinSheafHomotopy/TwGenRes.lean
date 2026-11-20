@@ -15,7 +15,7 @@ namespace CrystallineSemistableComparison.TwSeq
 open GlobalTheory.EtC
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `Polynomial.cyclotomic.dvd_X_pow_sub_one Q ℤ`. Use `congrArg (Polynomial.aeval ζ.1) hc` as an intermediate fact. Rewrite `this` using `[map_mul, ζ.2.2, zero_mul, map_sub, map_pow, Polynomial.aeval_X, map_one, sub_eq_zero]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_self {Q : ℕ} {A : Type} [CommRing A] (ζ : Prim Q A) : ζ.1 ^ Q = 1 := by
   obtain ⟨c, hc⟩ := Polynomial.cyclotomic.dvd_X_pow_sub_one Q ℤ
@@ -36,13 +36,13 @@ Both sides reduce to the same expression.
 theorem pw_val {Q q : ℕ} [NeZero Q] (h : q ∣ Q) {A : Type} [CommRing A] (ζ : Prim Q A) : (pw h ζ).1 = ζ.1 ^ (Q / q) := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (map_pow f _ _)`.
+A detailed English derivation is pending.
 -/
 theorem pw_map {Q q : ℕ} [NeZero Q] (h : q ∣ Q) {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (ζ : Prim Q A) :
     (pw h ζ).map f = pw h (ζ.map f) := Subtype.ext (map_pow f _ _)
 
 /- English proof (translation)
-Establish `h` using `ConcreteCategory.congr_hom ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ twF q i)).naturality g.op) (Submodule.Quotient.mk (Finsupp.single ζ 1) : (Prim q Γ(U, ⊤) →₀ ULift.{1} (ZMod q)) ⧸ twRel q i Γ(U, ⊤))`. Use `h.symm.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ twF q i)).app (op V)).hom (Submodule.Quotient.mk (Finsupp.mapDomain (Prim.map g.appTop.hom) (Finsupp.single ζ 1))) = _`. Rewrite using `[Finsupp.mapDomain_single]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem twGen_res {q : ℕ} (i : ℤ) {V U : Scheme.{0}} (g : V ⟶ U) (ζ : Prim q Γ(U, ⊤)) :
     Sec.res g (twGen i ζ) = twGen i (ζ.map g.appTop.hom) := by
@@ -55,15 +55,15 @@ theorem twGen_res {q : ℕ} (i : ℤ) {V U : Scheme.{0}} (g : V ⟶ U) (ζ : Pri
   rfl
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `KummerTwistLemmas.twLift i ((restr (ZMod.castHom h (ZMod q))).obj (tw q i)) (fun U ζ => (show Sec ((restr (ZMod.castHom h (ZMod q))).obj (tw q i)) U from twGen i (pw h ζ))) (fun g ζ => by`. Express the relevant statement in the definitionally equal form `Sec.res g (twGen i (pw h ζ)) = twGen i (pw h (ζ.map g.appTop.hom))`. Rewrite using `[twGen_res, pw_map])`. Use the proof step `(fun U ζ ξ a ha => by`. Set `a' : (ZMod q)ˣ` to `ZMod.unitsMap h a`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hξ : (pw h ξ).1 = (pw h ζ).1 ^ (a' : ZMod q).val`. Rewrite using `[pw_val, pw_val, ha, ← pow_mul, mul_comm, pow_mul]`. Establish `h1 : ((pw h ζ).1) ^ q = 1` using `pow_self (pw h ζ)`. Rewrite using `[← pw_val h ζ, pow_eq_pow_mod _ h1, pow_eq_pow_mod ((a' : ZMod q).val) h1]`. Establish `hv : (a' : ZMod q).val = (a : ZMod Q).val % q`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(ZMod.castHom h (ZMod q) (a : ZMod Q)).val = _`. Rewrite using `[ZMod.castHom_apply, ZMod.cast_eq_val, ZMod.val_natCast]`. Rewrite using `[hv, Nat.mod_mod]`. Use `((hG q i).2.2 U (pw h ζ) (pw h ξ) a' hξ)` as an intermediate fact. Express the relevant statement in the definitionally equal form `twGen i (pw h ξ) = (ULift.up (ZMod.castHom h (ZMod q) ((a ^ i : (ZMod Q)ˣ) : ZMod Q)) : ULift.{1} (ZMod q)) • twGen i (pw h ζ)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, ← Nat.cast_smul_eq_nsmul (ULift.{1} (ZMod q))]`. Use `congr 1`. Apply `ULift.ext` to reduce the goal to its premises. Rewrite using `[ULift.down_natCast, ZMod.natCast_zmod_val]`. Simplify using `only [a', ZMod.unitsMap]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_zpow]`. Use the proof step `rfl)`. Use `⟨π, fun U ζ ξ hξ => ?_, hπ⟩` and prove the remaining obligations. Rewrite using `[hπ U ζ, show pw h ζ = ξ from Subtype.ext (show (pw h ζ).1 = ξ.1 from hξ.symm)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem redSheaf (hG : E.InGen) {Q q : ℕ} [NeZero Q] [NeZero q] (h : q ∣ Q) (i : ℤ) :
     ∃ π : tw Q i ⟶ (restr (ZMod.castHom h (ZMod q))).obj (tw q i), IsRedSh h i π ∧

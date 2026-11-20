@@ -10,9 +10,9 @@ open UpperTheory.V.Lit.Geo
 
 open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af GlobalTheory.UnitaryBC UpperTheory.V.Lit.Dr UpperTheory.V.Lit.Bor in
 /- English proof (translation)
-Introduce `v v' h`. Establish `hu : IsUnit (GeneralLinearGroup.map (pInf E) g).val` using `Units.isUnit _`. Establish `h1 : vInf v = vInf v'` using `Matrix.vecMul_injective_of_isUnit hu h`. Use function extensionality and compare the values at `i`. Establish `h2 : ((pInf E).comp (algebraMap E (Ad E))) (v i) = ((pInf E).comp (algebraMap E (Ad E))) (v' i)` using `congrFun h1 i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Conclude with `((pInf E).comp (algebraMap E (Ad E))).injective h2`.
+A detailed English derivation is pending.
 -/
 private theorem pt_injective {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} (g : GA E a) :
     Function.Injective (pt g) := by
@@ -25,17 +25,17 @@ private theorem pt_injective {E : Type} [Field E] [NumberField E] [IsTotallyComp
 
 open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af GlobalTheory.UnitaryBC UpperTheory.V.Lit.Dr UpperTheory.V.Lit.Bor in
 /- English proof (translation)
-Introduce `E _ _ _ a ha L hL`. Take `⟨c, hc, hlow⟩` from `UpperTheory.geometric_side_comparison`. Take `⟨N, hN⟩` from `UpperTheory.geometry_of_numbers_lattice_estimate E a ha L hL`. Take `⟨C, -, hC⟩` from `UpperTheory.moment_bound_of_pointwise_moments N 1`. Establish `hD : (0 : ℝ) < (a : ℝ) * Fintype.card (InfinitePlace E)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : (0 : ℝ) < a` using `by exact_mod_cast ha`. Establish `h2 : (0 : ℝ) < Fintype.card (InfinitePlace E)` using `by exact_mod_cast Fintype.card_pos`. Conclude with `mul_pos h1 h2`. Use `⟨c / ((a : ℝ) * Fintype.card (InfinitePlace E)), div_pos hc hD, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hell : ell E a (toL (mom L g).1) = trF (mom L g).1 1 / ((a : ℝ) * Fintype.card (InfinitePlace E))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [trF, mul_one, Matrix.trace, Matrix.diag, Finset.sum_apply, Complex.re_sum]`. Both sides reduce to the same expression. Rewrite using `[hell]`. Use `div_le_div_of_nonneg_right ?_ hD.le` and prove the remaining obligations. Rewrite using `[UpperTheory.hermitian_space_moment_identity E a ha L hL g 1, le_div_iff₀ (by linarith)]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [(UpperTheory.geometric_side_quadraticForm_identity E a).1]`. Set `φ : lat L g →+ EuclideanSpace ℂ (Fin a × InfinitePlace E)` to `((euc (E := E) (a := a)).toLinearMap.toAddMonoidHom.comp (pt (rt g))).comp (lat L g).subtype`. Establish `hφ : ∀ v : lat L g, ‖φ v‖ ^ 2 = qf (pt (rt g) v.1)` using `fun v => norm_euc_sq _`. Establish `hinj : Function.Injective φ` using `fun v v' h => Subtype.ext (pt_injective (rt g) ((euc (E := E) (a := a)).injective h))`. Establish `hs0 : Summable fun v : lat L g => Real.exp (-Real.pi * qf (pt (rt g) v.1))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `((hN g).2 1 1 one_pos le_rfl).1` using `only [one_mul]`. Establish `hs1 : Summable fun v : lat L g => qf (pt (rt g) v.1) * Real.exp (-Real.pi * qf (pt (rt g) v.1))`. Use `((hC _ _ (hN g)).1.sub hs0).congr fun v => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `hlow (lat L g) _ φ hinj` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hφ] at this`. Conclude with `this hs0 hs1 hg`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.hermitian_point_embedding_injective :
     GradA := by

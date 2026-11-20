@@ -41,25 +41,25 @@ def Gf (μW : Measure (Mt k r)) (F : (Fin (2 * r + k + 1) → ℂ) → ℝ≥0�
   ∫⁻ h, F (Matrix.of h *ᵥ v) ∂μW
 
 /- English proof (translation)
-The claim follows from `Continuous.matrix_mulVec (continuous_snd (X := Fin (2 * r + k + 1) → ℂ) (Y := Mat k r)) continuous_fst`.
+A detailed English derivation is pending.
 -/
 theorem cont_act : Continuous (fun p : (Fin (2 * r + k + 1) → ℂ) × Mt k r => (Matrix.of p.2 : Mat k r) *ᵥ p.1) :=
   Continuous.matrix_mulVec (continuous_snd (X := Fin (2 * r + k + 1) → ℂ) (Y := Mat k r)) continuous_fst
 
 /- English proof (translation)
-The claim follows from `(hF.comp cont_act.measurable).lintegral_prod_right'`.
+A detailed English derivation is pending.
 -/
 theorem meas_Gf [SFinite μW] {F : (Fin (2 * r + k + 1) → ℂ) → ℝ≥0∞} (hF : Measurable F) : Measurable (Gf μW F) :=
   (hF.comp cont_act.measurable).lintegral_prod_right'
 
 /- English proof (translation)
-The claim follows from `continuous_const.dotProduct (continuous_const.matrix_mulVec continuous_id)`.
+A detailed English derivation is pending.
 -/
 theorem cont_herm (w : Fin (2 * r + k + 1) → ℂ) : Continuous (fun v => herm (Hpk k r) v w) :=
   continuous_const.dotProduct (continuous_const.matrix_mulVec continuous_id)
 
 /- English proof (translation)
-Unfold `herm`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_both {n : ℕ} (H g : Matrix (Fin n) (Fin n) ℂ) (hg : gᴴ * H * g = H) (v w : Fin n → ℂ) :
     herm H (g *ᵥ v) (g *ᵥ w) = herm H v w := by
@@ -67,9 +67,9 @@ theorem herm_both {n : ℕ} (H g : Matrix (Fin n) (Fin n) ℂ) (hg : gᴴ * H * 
   rw [Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hg]
 
 /- English proof (translation)
-Introduce `i hi`. Simplify using `only [Matrix.mulVec, dotProduct, MB.Em]`. Use `Finset.sum_eq_zero fun m _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg, zero_mul]`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hi` using `[h]`. Use `m.isLt` as an intermediate fact. Simplify using `only [wI] at hi`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem inWb_Em (u : Fin (k + 1) → ℂ) : inWb k r (MB.Em k r *ᵥ u) := by
   intro i hi
@@ -83,20 +83,18 @@ theorem inWb_Em (u : Fin (k + 1) → ℂ) : inWb k r (MB.Em k r *ᵥ u) := by
   omega
 
 /- English proof (translation)
-Rewrite using `[← inWb_eq hz', Matrix.mulVec_mulVec, emb_mul_Em, ← Matrix.mulVec_mulVec]`. Conclude with `inWb_Em _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inWb_emb (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (hz' : inWb k r z') : inWb k r (embWb k r μ *ᵥ z') := by
   rw [← inWb_eq hz', Matrix.mulVec_mulVec, emb_mul_Em, ← Matrix.mulVec_mulVec]
   exact inWb_Em _
 
 /- English proof (translation)
-Unfold `rhsW`. Rewrite using `[← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `lintegral_congr fun ζ => ?_` and prove the remaining obligations. Establish `inner : ∀ h : Mt k r, ∫⁻ h', F (orbV k r z' (fun i j => (Matrix.of h * embWb k r (μsec ζ) * (Matrix.of h')⁻¹) i j)) ∂μW' = ENNReal.ofReal a' * F (Matrix.of h *ᵥ (embWb k r (μsec ζ) *ᵥ z'))`. Introduce `h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hae : ∀ᵐ h' ∂μW', Matrix.of h' ∈ UWset k r z'`. Rewrite using `[ae_iff]`. Conclude with `hd.haarW'.2.2.1`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr_ae ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [hae] with h' hh'`. Use `show F ((Matrix.of h * embWb k r (μsec ζ) * (Matrix.of h')⁻¹) *ᵥ z') = F (Matrix.of h *ᵥ (embWb k r (μsec ζ) *ᵥ z'))`. Rewrite using `[← Matrix.mulVec_mulVec, inv_fix (HU.isUnit_of_uh hh'.1) hh'.2.2, ← Matrix.mulVec_mulVec]`. Use `_ = F (Matrix.of h *ᵥ (embWb k r (μsec ζ) *ᵥ z')) * μW' Set.univ := lintegral_const _`. Use `_ = ENNReal.ofReal a' * F (Matrix.of h *ᵥ (embWb k r (μsec ζ) *ᵥ z')) := by rw [hd.massW', mul_comm]`.
-
-Repeatedly rewrite using `[inner]`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Unfold `Gf`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem rhs_orb (hd : WbData k r z z' μW μW' a a' μsec) (F : (Fin (2 * r + k + 1) → ℂ) → ℝ≥0∞) :
     rhsW k r z z' μW μW' μsec (fun x => F (orbV k r z' x)) = ENNReal.ofReal a' *
@@ -126,9 +124,9 @@ theorem rhs_orb (hd : WbData k r z z' μW μW' a a' μsec) (F : (Fin (2 * r + k 
   ring
 
 /- English proof (translation)
-Use `hW.1` as an intermediate fact. Unfold `Gf`. Rewrite using `[lintegral_lintegral_swap (μ := Q) (ν := μW) (f := fun v (h : Mt k r) => F (Matrix.of h *ᵥ v)) (hF.comp cont_act.measurable).aemeasurable]`. Establish `hae : ∀ᵐ h ∂μW, Matrix.of h ∈ UWset k r z`. Rewrite using `[ae_iff]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hW.2.2.1`. Establish `e : ∀ᵐ h ∂μW, ∫⁻ v, F (Matrix.of h *ᵥ v) ∂Q = ∫⁻ v, F v ∂Q` using `by filter_upwards [hae] with h hh`. Establish `hmv : Measurable (fun v : Fin (2 * r + k + 1) → ℂ => (Matrix.of h : Mat k r) *ᵥ v)` using `(continuous_const.matrix_mulVec continuous_id).measurable`. Rewrite using `[← lintegral_map hF hmv, hQ _ ⟨hh.1, hh.2.1⟩]`. Rewrite using `[lintegral_congr_ae e, lintegral_const, mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem avg_Q (Q : Measure (Fin (2 * r + k + 1) → ℂ)) [SigmaFinite Q] (hQ : ∀ s ∈ UWb k r, Q.map (fun v => s *ᵥ v) = Q)
     (hW : IsHaarOn (UWset k r z) μW) {F : (Fin (2 * r + k + 1) → ℂ) → ℝ≥0∞} (hF : Measurable F) :
@@ -148,9 +146,9 @@ theorem avg_Q (Q : Measure (Fin (2 * r + k + 1) → ℂ)) [SigmaFinite Q] (hQ : 
   rw [lintegral_congr_ae e, lintegral_const, mul_comm]
 
 /- English proof (translation)
-Take `⟨u, hu, huv⟩` from `hT k r z v' v hz hv' hv hTz h1.symm h2.symm`. Establish `hm : Measurable (fun y : Mt k r => F (Matrix.of y *ᵥ v'))` using `hF.comp ((cont_act (k := k) (r := r)).comp (Continuous.prodMk continuous_const continuous_id)).measurable`. Unfold `Gf`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr fun h => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `show F (Matrix.of h *ᵥ v) = F ((Matrix.of h * u) *ᵥ v')`. Rewrite using `[← Matrix.mulVec_mulVec, huv]`. Use `_ = ∫⁻ y, F (Matrix.of y *ᵥ v') ∂(μW.map (rmulM u)) := (lintegral_map hm (rmulM_cont u).measurable).symm`. Use `_ = ∫⁻ h, F (Matrix.of h *ᵥ v') ∂μW := by rw [hU k r z μW hW hfin u hu]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Gf_fib (hU : UnimodK) (hT : FibTrans) (hW : IsHaarOn (UWset k r z) μW) (hfin : μW Set.univ ≠ ⊤)
     (hz : inWb k r z) (hTz : 0 < Tz k r z) {F : (Fin (2 * r + k + 1) → ℂ) → ℝ≥0∞} (hF : Measurable F)

@@ -7,7 +7,7 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutGermTopFields
 namespace Formalism.FourierDecayAlt.P.CutBP
 
 /- English proof (translation)
-The claim follows from `GT.germDataTopAll_of_parts GT.top_level_gram GT.top_level_germ_leading GT.top_level_fibre GT.top_level_Y_continuity GT.field_mem_unitary GT.field_supremum GT.field_measurability GT.field_locality`.
+A detailed English derivation is pending.
 -/
 theorem germ_data_top_level : GermDataTopAll :=
   GT.germDataTopAll_of_parts GT.top_level_gram GT.top_level_germ_leading GT.top_level_fibre GT.top_level_Y_continuity

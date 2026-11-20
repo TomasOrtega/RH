@@ -19,9 +19,9 @@ section Flag
 variable {Ψ : Type} {N j n e : ℕ}
 
 /- English proof (translation)
-Unfold `pMat lowMat`. Distinguish the cases in `hc : b < a ∧ ((a : ℕ) < N - j ↔ (b : ℕ) < N - j)`. Simplify using `only [hc, dite_true]`. Distinguish the cases in `hs : Sep keep (⟨(τ, a, b), hc⟩ : LowIdx Ψ N j)`. Simplify using `only [cExt, hs, dite_true, pL]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Conclude with `analytic_coord _`. Simplify using `only [cExt, hs, dite_false]`. Conclude with `analyticOnNhd_const`. Simplify using `only [hc, dite_false]`. Conclude with `analyticOnNhd_const`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem analytic_pMat (keep : Ψ × Fin N → Prop) (s : Set (Fin e → ℂ)) (ε : Fin n ⊕ PIdx j keep ≃ Fin e)
     (τ : Ψ) (a b : Fin N) :
@@ -38,7 +38,7 @@ theorem analytic_pMat (keep : Ψ × Fin N → Prop) (s : Set (Fin e → ℂ)) (�
     exact analyticOnNhd_const
 
 /- English proof (translation)
-Unfold `pH`. Apply the tactic sequence `exact analytic_mul_entry (fun _ => h τ) _ (fun _ _ => analyticOnNhd_const) (analytic_pMat keep s ε τ) a b`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem analytic_pH (keep : Ψ × Fin N → Prop) (s : Set (Fin e → ℂ)) (h : Ψ → Matrix (Fin N) (Fin N) ℂ)
     (ε : Fin n ⊕ PIdx j keep ≃ Fin e) (τ : Ψ) (a b : Fin N) :
@@ -48,7 +48,7 @@ theorem analytic_pH (keep : Ψ × Fin N → Prop) (s : Set (Fin e → ℂ)) (h :
     (analytic_pMat keep s ε τ) a b
 
 /- English proof (translation)
-Establish `: pB ε = ⇑(ContinuousLinearMap.pi (R` using `ℂ) fun i : Fin n => ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin e => ℂ) (ε (Sum.inl i))) := by`. Use function extensionality and compare the values at `w i`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `fun w _ => ContinuousLinearMap.analyticAt _ w`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem analytic_pB {Λ : Type} (ε : Fin n ⊕ Λ ≃ Fin e) (V : Set (Fin n → ℂ)) :
     AnalyticOnNhd ℂ (pB ε) (pD ε V) := by
@@ -62,9 +62,9 @@ theorem analytic_pB {Λ : Type} (ε : Fin n ⊕ Λ ≃ Fin e) (V : Set (Fin n �
 end Flag
 
 /- English proof (translation)
-Introduce `K _ ι _ Φ _ y Ψ _ _ N j M n e Rb keep Kk _ ιk _ κ v F kb V bl r h ε hc p`. Take `⟨-, -, -, hb, -⟩` from `hc`. Take `⟨-, -, hbl, hval, -⟩` from `hb`. Establish `hmap : Set.MapsTo (pB ε) (pD ε V) V` using `fun w hw => hw`. Establish `hzb : ∀ q, AnalyticOnNhd ℂ (fun w => bl (pB ε w) q) (pD ε V)` using `fun q => (hbl q).comp (analytic_pB ε V) hmap`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : ∀ q I, AnalyticOnNhd ℂ (fun w => valAt M.x (F.u q I) (bl (pB ε w))) (pD ε V)` using `fun q I => (hval q I).comp (analytic_pB ε V) hmap`. Conclude with `analytic_flagZ M F (fun w => bl (pB ε w)) (fun w τ' => pH keep h ε τ' w) hzb hv (fun τ' => analytic_pH keep _ h ε τ') (v p)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pPhi_holo : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n e : ℕ) (Rb : AnLogRes (mCoordIdeal M.x) ⊤ n) (keep : Ψ × Fin N → Prop) (Kk : Type) [Fintype Kk] (ιk : Kk → Type) [∀ k, Fintype (ιk k)] (κ : Kk → K) (v : (Σ k, ιk k) → (Σ k, ι k)) (F : FrameData ι Ψ N M.Ω M.blk) (kb : Fin Rb.A.n) (V : Set (Fin n → ℂ)) (bl : (Fin n → ℂ) → (Σ k, baseIdx ι M.blk k) → ℂ) (r : ((Σ k, baseIdx ι M.blk k) → ℂ) → Rb.X) (h : Ψ → Matrix (Fin N) (Fin N) ℂ) (ε : Fin n ⊕ PIdx j keep ≃ Fin e), IsPCtx M Rb keep κ v F kb V bl r h → ∀ p, AnalyticOnNhd ℂ (fun w => pPhi M F keep v bl h ε w p) (pD ε V) := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M n e Rb keep Kk _ ιk _ κ v F kb V bl r h ε hc p

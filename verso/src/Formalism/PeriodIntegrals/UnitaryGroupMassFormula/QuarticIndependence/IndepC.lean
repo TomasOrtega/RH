@@ -5,11 +5,11 @@ namespace PI.QmIndepW
 open Complex
 
 /- English proof (translation)
-Establish `h1` using `h 1 le_rfl (by norm_num)`. Establish `h2` using `h 2 (by norm_num) (by norm_num)`. Establish `h3` using `h 3 (by norm_num) (by norm_num)`. Establish `h4` using `h 4 (by norm_num) (by norm_num)`. Establish `h5` using `h 5 (by norm_num) le_rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Move the coercions through the operations in `at h1 h2 h3 h4 h5`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Take the linear combination `5 * h1 - 10 * h2 + 10 * h3 - 5 * h4 + h5`. Take the linear combination `(-77/12 : ℂ) * h1 + (107/6 : ℂ) * h2 + (-39/2 : ℂ) * h3 + (61/6 : ℂ) * h4 + (-25/12 : ℂ) * h5`. Take the linear combination `(71/24 : ℂ) * h1 + (-59/6 : ℂ) * h2 + (49/4 : ℂ) * h3 + (-41/6 : ℂ) * h4 + (35/24 : ℂ) * h5`.
+Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-7/12 : ℂ) * h1 + (13/6 : ℂ) * h2 + (-3 : ℂ) * h3 + (11/6 : ℂ) * h4 + (-5/12 : ℂ) * h5`. Take the linear combination `(1/24 : ℂ) * h1 + (-1/6 : ℂ) * h2 + (1/4 : ℂ) * h3 + (-1/6 : ℂ) * h4 + (1/24 : ℂ) * h5`.
+Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem quartic_coeffs (a0 a1 a2 a3 a4 : ℂ)
     (h : ∀ t : ℕ, 1 ≤ t → t ≤ 5 → a0 + a1 * t + a2 * (t : ℂ) ^ 2 + a3 * (t : ℂ) ^ 3 + a4 * (t : ℂ) ^ 4 = 0) :
@@ -37,7 +37,7 @@ def IndepC : Prop :=
     y00 = 0 ∧ y10 = 0 ∧ y20 = 0 ∧ y01 = 0 ∧ y11 = 0 ∧ y21 = 0 ∧ y02 = 0 ∧ y12 = 0 ∧ y22 = 0
 
 /- English proof (translation)
-Use `quartic_coeffs _ _ _ _ _ fun t ht1 _ => ?_` and prove the remaining obligations. Establish `ht : (t : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr (by omega)`. Establish `h` using `hyp _ (inv_ne_zero (mul_ne_zero ht hω))`. Simplify using `only [inv_inv, star_inv₀, star_mul', star_natCast, hs, nine] at h`. Take the linear combination `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem ray (y00 y10 y20 y01 y11 y21 y02 y12 y22 : ℂ)
     (hyp : ∀ c : ℂ, c ≠ 0 → nine c⁻¹ (star c)⁻¹ y00 y10 y20 y01 y11 y21 y02 y12 y22 = 0)
@@ -51,15 +51,15 @@ theorem ray (y00 y10 y20 y01 y11 y21 y02 y12 y22 : ℂ)
   linear_combination h
 
 /- English proof (translation)
-Introduce `y00 y10 y20 y01 y11 y21 y02 y12 y22 hyp`. Take `⟨A1, B1, C1, D1, E1⟩` from `ray _ _ _ _ _ _ _ _ _ hyp 1 1 one_ne_zero (by simp)`. Take `⟨-, B2, C2, D2, -⟩` from `ray _ _ _ _ _ _ _ _ _ hyp I (-I) I_ne_zero (by simp)`. Take `⟨-, -, C3, -, -⟩` from `ray _ _ _ _ _ _ _ _ _ hyp (1 + I) (1 - I) (by intro h; have := congrArg Complex.re h; simp at this) (by simp [sub_eq_add_neg])`. Establish `h2I : (2 : ℂ) * I ≠ 0` using `mul_ne_zero two_ne_zero I_ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h4I : (4 : ℂ) * I ≠ 0` using `mul_ne_zero (by norm_num) I_ne_zero`. Establish `y01z : y01 = 0`. Establish `: (2 * I) * y01 = 0` using `by linear_combination I * B1 - B2`. Conclude with `(mul_eq_zero.mp this).resolve_left h2I`. Establish `y10z : y10 = 0` using `by linear_combination B1 - y01z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `y12z : y12 = 0`. Establish `: (2 * I) * y12 = 0` using `by linear_combination I * D1 - D2 + (I * y12 - I * y21) * I_sq`. Conclude with `(mul_eq_zero.mp this).resolve_left h2I`. Establish `y21z : y21 = 0` using `by linear_combination D1 - y12z`. Establish `y11z : y11 = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (2 : ℂ) * y11 = 0` using `by linear_combination C1 + C2 + (y11 - y20 - y02) * I_sq`. Conclude with `(mul_eq_zero.mp this).resolve_left two_ne_zero`. Establish `y20z : y20 = 0`. Establish `: (4 * I) * y20 = 0`. Take the linear combination `C3 - (y20 - y11 + y02) * I_sq + 2 * I * C1 - (2 + 2 * I) * y11z`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `(mul_eq_zero.mp this).resolve_left h4I`. Establish `y02z : y02 = 0` using `by linear_combination C1 - y11z - y20z`. Establish `y22z : y22 = 0` using `by linear_combination E1`. Conclude with `⟨A1, y10z, y20z, y01z, y11z, y21z, y02z, y12z, y22z⟩`.
+A detailed English derivation is pending.
 -/
 theorem indepC : IndepC := by
   intro y00 y10 y20 y01 y11 y21 y02 y12 y22 hyp

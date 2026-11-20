@@ -10,11 +10,9 @@ open NumberField IsDedekindDomain MeasureTheory Topology Filter Formalism.MainNo
   PI.VolFromSW SdUniqW PositiveNearLattice SdDualW VolAAW
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ h1 h2 a h3 h4 X0 hT hdet ψ hψ d b`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)`. Establish `hσ : ∀ x, σ (σ x) = x` using `sigma_invol σ hCM.2.2.2`. Use `filter_upwards [hC F ψ hψ, ev_dual b σ hσ J hJ.2 (a := a), ev_dualH b σ hσ a] with v hCv hDW hDH`. Use `secondCountable_Fv F v` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `locallyCompact_Fv F v` as an intermediate fact. Use `⟨fun μv hμ => ?_, fun νv hν => ?_⟩` and prove the remaining obligations. Establish `hA` using `ann_eq v (psiV F ψ v) (BR (Fv F v) σ J (n := a)) (latV (M := M) (n := a) b v) hCv (smul_latV b v σ J) hDW`. Conclude with `vol_one_of_ann hμ (fun X T Y => by rw [BR_add, psiV_add]) (SdDualW.latSub v b a M) (isCompact_latV b v a M) (isClopen_latV b v a M).isOpen hA`. Establish `hA` using `ann_eq v (psiV F ψ v) (pairHerm (Fv F v) σ a) (hermO b v σ a : Set (HermR (Fv F v) σ a)) hCv (smul_hermO b v σ a) hDH`.
-
-Conclude with `vol_one_of_ann hν (fun S T U => by rw [pairHerm_add, psiV_add]) (hermO b v σ a) (isCompact_hermO b v σ a).1 (isCompact_hermO b v σ a).2 hA`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem volAA_of (hC : CondAA) : VolAA := by
   intro F E _ _ _ _ _ σ hCM M J hJ h1 h2 a h3 h4 X0 hT hdet ψ hψ d b

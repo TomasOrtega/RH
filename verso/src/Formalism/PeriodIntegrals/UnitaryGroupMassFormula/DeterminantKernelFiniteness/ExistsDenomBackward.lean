@@ -12,17 +12,15 @@ namespace PI.KerDetFinW
 open PI.KerIso
 
 /- English proof (translation)
-Take `⟨α, hα, hαI⟩` from `I.isFractional`. Establish `hα0 : algebraMap (𝓞 E) E α ≠ 0`. Introduce `h`. Conclude with `nonZeroDivisors.ne_zero hα ((map_eq_zero_iff _ (IsFractionRing.injective (𝓞 E) E)).1 h)`. Set `b` to `RingOfIntegers.basis E`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `φ : Fin 4 → Fin 4 × n → (E →ₗ[K] K)` to `fun a w => LinearMap.proj w ∘ₗ (g₀ : (Fin 4 → E) →ₗ[K] (Fin 4 × n → K)) ∘ₗ LinearMap.single K (fun _ : Fin 4 => E) a`. Take `⟨N, hN0, hN⟩` from `exists_nat_mul_mem_int_fam (fun q : Fin 4 × Module.Free.ChooseBasisIndex ℤ (𝓞 E) × (Fin 4 × n) => φ q.1 q.2.2 ((algebraMap (𝓞 E) E α)⁻¹ * algebraMap (𝓞 E) E (b q.2.1)))`. Use `⟨N, hN0, fun x hx w => ?_⟩` and prove the remaining obligations. Establish `hxs : g₀ x w = ∑ a, φ a w (x a)` using `by conv_lhs => rw [← Finset.univ_sum_single x]`. Rewrite using `[map_sum, Finset.sum_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hterm : ∀ a, (N : K) * φ a w (x a) ∈ (algebraMap (𝓞 K) K).range`. Introduce `a`. Take `⟨z, hz⟩` from `hαI (x a) (FractionalIdeal.mem_coe.2 (hx a))`. Establish `hxa : x a = ∑ i, (b.repr z i) • ((algebraMap (𝓞 E) E α)⁻¹ * algebraMap (𝓞 E) E (b i))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : x a = (algebraMap (𝓞 E) E α)⁻¹ * algebraMap (𝓞 E) E z`. Rewrite using `[hz, Algebra.smul_def, inv_mul_cancel_left₀ hα0]`. Rewrite using `[h1]`. Use `conv_lhs => rw [← b.sum_repr z]`. Rewrite using `[map_sum, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, mul_smul_comm]`. Rewrite using `[hxa, map_sum, Finset.mul_sum]`. Use `Subring.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, mul_smul_comm]`.
-
-Conclude with `zsmul_mem (hN (a, i, w)) _`. Rewrite using `[hxs, Finset.mul_sum]`. Conclude with `Subring.sum_mem _ fun a _ => hterm a`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma exists_denom_forward {K E : Type} [Field K] [NumberField K] [Field E] [NumberField E] [Algebra K E]
     {n : Type} [Fintype n] (I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E)
@@ -65,11 +63,11 @@ lemma exists_denom_forward {K E : Type} [Field K] [NumberField K] [Field E] [Num
   exact Subring.sum_mem _ fun a _ => hterm a
 
 /- English proof (translation)
-Take `⟨N, hN0, hN⟩` from `exists_nat_mul_mem_frac_fam I hI (fun q : (Fin 4 × n) × Fin 4 => g₀.symm (Pi.single q.1 1) q.2)`. Use `⟨N, hN0, fun v hv a => ?_⟩` and prove the remaining obligations. Establish `hv' : g₀.symm v = ∑ w, v w • g₀.symm (Pi.single w 1)` using `by conv_lhs => rw [← Finset.univ_sum_single v]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← map_smul]`. Use `congr 1`. Use extensionality with `j`. Rewrite using `[Pi.single_apply, Pi.smul_apply, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[hv', Finset.sum_apply, Finset.mul_sum, ← FractionalIdeal.mem_coe]`. Use `Submodule.sum_mem _ fun w _ => ?_` and prove the remaining obligations. Rewrite using `[FractionalIdeal.mem_coe, Pi.smul_apply, Algebra.smul_def, mul_left_comm]`. Conclude with `int_mul_mem I (hv w) (hN (w, a))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma exists_denom_backward {K E : Type} [Field K] [NumberField K] [Field E] [NumberField E] [Algebra K E]
     {n : Type} [Fintype n] (I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) (hI : I ≠ 0)
@@ -95,11 +93,11 @@ lemma exists_denom_backward {K E : Type} [Field K] [NumberField K] [Field E] [Nu
   exact int_mul_mem I (hv w) (hN (w, a))
 
 /- English proof (translation)
-Introduce `K E _ _ _ _ _ n _ I hI S pp gp g₀ hpp hgp`. Take `⟨N₁, h1pos, h1⟩` from `exists_denom_forward (K := K) I g₀`. Take `⟨N₂, h2pos, h2⟩` from `exists_denom_backward I hI g₀`. Establish `hg₀ : ∀ p, p.Prime → ¬ p ∣ N₁ * N₂ → AtP {x : E | x ∈ I} g₀ p`. Introduce `p hp hdvd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcop : Nat.Coprime (N₁ * N₂) p` using `((Nat.Prime.coprime_iff_not_dvd hp).2 hdvd).symm`. Conclude with `⟨fun x hx => ⟨N₁, Nat.Coprime.coprime_dvd_left (dvd_mul_right N₁ N₂) hcop, h1 x hx⟩, fun v hv => ⟨N₂, Nat.Coprime.coprime_dvd_left (dvd_mul_left N₂ N₁) hcop, h2 v hv⟩⟩`. Use `(Nat.divisors (N₁ * N₂)).finite_toSet.subset ?_` and prove the remaining obligations. Introduce and unpack `p ⟨hp, hS, hne⟩`. Rewrite using `[Finset.mem_coe, Nat.mem_divisors]`.
+Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, (Nat.mul_pos h1pos h2pos).ne'⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hdvd`. Conclude with `hne (ordK_detRel_eq_zero (pp p) (hpp p hp hS) (hg₀ p hp hdvd) (hgp p hp hS))`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem detOrdFin : DetOrdFin := by
   intro K E _ _ _ _ _ n _ I hI S pp gp g₀ hpp hgp

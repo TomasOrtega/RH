@@ -5,39 +5,35 @@ open MvPolynomial Formalism.GradedWeylDivisibility GlobalTheory.GenCoef
 namespace GlobalTheory.UpperTransvection
 
 /- English proof (translation)
-Use `set S := Submonoid.closure {M : Matrix (Fin N) (Fin N) R | ∃ (a b : Fin N) (r : R), a ≠ b ∧ M = Matrix.transvection a b r}`. It suffices to establish `key : ∀ n : ℕ, ∀ c : Matrix (Fin N) (Fin N) R, (∀ a b, b ≤ a → c a b = 0) → (Finset.univ.filter fun p : Fin N × Fin N => c p.1 p.2 ≠ 0).card ≤ n → 1 + c ∈ S from key _ c hc le_rfl`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c _ hcard`. Establish `hc0 : c = 0`. Use extensionality with `i j`. Assume the negation of the conclusion as `h`. Establish `: (i, j) ∈ (Finset.univ.filter fun p : Fin N × Fin N => c p.1 p.2 ≠ 0)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h`. Rewrite `hcard` using `[Nat.le_zero, Finset.card_eq_zero]`. Simplify using `[hcard] at this`. Substitute `hc0` using the available equality. Simplify using `using S.one_mem`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Consider the case `succ n ih`. Introduce `c hc hcard`. Use `set T := (Finset.univ.filter fun p : Fin N × Fin N => c p.1 p.2 ≠ 0) with hT`. Break down `T.eq_empty_or_nonempty with hE | hne` into its components or cases. Conclude with `ih c hc (by rw [← hT, hE]; simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨p, hpT, hpmin⟩` from `Finset.exists_min_image T (fun p => p.1) hne`. Take `⟨a, b⟩` from `p`. Establish `hab : c a b ≠ 0` using `by simpa [hT] using hpT`. Establish `hlt : a < b`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hab (hc a b (not_lt.mp h))`. Establish `hcol : ∀ i, c i a = 0`. Introduce `i`. Assume the negation of the conclusion as `h`. Establish `hi : (i, a) ∈ T` using `by simpa [hT] using h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `hpmin _ hi`. Establish `h2 : a ≤ i` using `h1`. Conclude with `h (hc i a h2)`. Use `set r := c a b`. Use `set c' := c - Matrix.single a b r with hc'`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hc'_apply : ∀ i j, c' i j = if i = a ∧ j = b then 0 else c i j`. Introduce `i j`. Simplify using `only [hc', Matrix.sub_apply, Matrix.single_apply]`. Distinguish the cases in `h : i = a ∧ j = b`. Take `⟨rfl, rfl⟩` from `h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `[r]`. Establish `h' : ¬ (a = i ∧ b = j)` using `fun ⟨h1, h2⟩ => h ⟨h1.symm, h2.symm⟩`. Simplify using `[h, h']`. Establish `hc'up : ∀ i j, j ≤ i → c' i j = 0`. Introduce `i j hji`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hc'_apply]`. Use `split_ifs`. Both sides reduce to the same expression. Conclude with `hc i j hji`. Establish `hT' : (Finset.univ.filter fun p : Fin N × Fin N => c' p.1 p.2 ≠ 0) ⊆ T.erase (a, b)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `q hq`. Take `⟨i, j⟩` from `q`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hq`. Rewrite `hq` using `[hc'_apply]`. Use `split_ifs at hq with h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `absurd rfl hq`. Rewrite using `[Finset.mem_erase]`. Use `⟨?_, by simpa [hT] using hq⟩` and prove the remaining obligations. Introduce `heq`. Simplify using `only [Prod.mk.injEq] at heq`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `h heq`. Establish `hcard' : (Finset.univ.filter fun p : Fin N × Fin N => c' p.1 p.2 ≠ 0).card ≤ n`. Use `Finset.card_le_card hT'` as an intermediate fact. Rewrite `this` using `[Finset.card_erase_of_mem hpT]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hmem' : 1 + c' ∈ S` using `ih c' hc'up hcard'`. Establish `hcolz : c' * Matrix.single a b r = 0`. Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.single_apply, Matrix.zero_apply]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `k _`. Use `split_ifs with h`. Take `⟨rfl, rfl⟩` from `h`. Rewrite using `[hc'_apply]`. Use `split_ifs`.
-
-Simplify using the standard rewrite rules. Rewrite using `[hcol]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish `heq : 1 + c = (1 + c') * Matrix.transvection a b r`.
-
-Rewrite using `[Matrix.transvection, add_mul, one_mul, mul_add, mul_one, hcolz, add_zero, hc']`. Normalize the expressions using the abelian group laws. Rewrite using `[heq]`. Use `S.mul_mem hmem' (Submonoid.subset_closure ⟨a, b, r, hlt.ne, rfl⟩)` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 theorem upper_mem_closure (R : Type) [CommRing R] (N : ℕ) (c : Matrix (Fin N) (Fin N) R)
     (hc : ∀ a b, b ≤ a → c a b = 0) :

@@ -20,7 +20,7 @@ open CategoryTheory Limits in
 variable {ι : Type} [LinearOrder ι] {R : Type u} [Ring R] {S : Type u'} [Ring S] in
 
 /- English proof (translation)
-Establish `e : (_root_.GlobalTheory.cechCyclesIso A p).hom.hom ((_root_.GlobalTheory.cechCyclesIso A p).inv.hom x) = x`. Simplify using the standard rewrite rules. Rewrite using `[← _root_.GlobalTheory.cechCyclesIso_hom_subtype]`. Express the relevant statement in the definitionally equal form `((_root_.GlobalTheory.cechCyclesIso A p).hom.hom ((_root_.GlobalTheory.cechCyclesIso A p).inv.hom x)).1 = x.1`. Rewrite using `[e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.iCycles_cechCyclesIso_inv (A : _root_.GlobalTheory.Cube.{v} ι R) (p : ℕ)
     (x : LinearMap.ker (_root_.GlobalTheory.Cube.d A (p + 1))) :
@@ -37,7 +37,7 @@ open CategoryTheory Limits in
 variable {ι : Type} [LinearOrder ι] {R : Type u} [Ring R] {S : Type u'} [Ring S] in
 
 /- English proof (translation)
-The claim follows from `(ModuleCat.epi_iff_surjective _).1 (inferInstance : Epi ((_root_.GlobalTheory.cechCyclesIso A p).inv ≫ (_root_.GlobalTheory.cechComplex A).homologyπ p))`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.cechClass_surjective (A : _root_.GlobalTheory.Cube.{v} ι R) (p : ℕ) :
     Function.Surjective (_root_.GlobalTheory.cechClass A p) :=
@@ -45,7 +45,7 @@ theorem _root_.GlobalTheory.cechClass_surjective (A : _root_.GlobalTheory.Cube.{
     (inferInstance : Epi ((_root_.GlobalTheory.cechCyclesIso A p).inv ≫ (_root_.GlobalTheory.cechComplex A).homologyπ p))
 
 /- English proof (translation)
-Establish `hex` using `(ShortComplex.ShortExact.moduleCat_exact_iff_function_exact _).1 (ShortComplex.exact_of_g_is_cokernel (ShortComplex.mk _ _ ((cechComplex A).toCycles_comp_homologyπ q p)) ((cechComplex A).homologyIsCokernel q p h))`. Use `(hex ((cechCyclesIso A p).inv.hom x)).trans (exists_congr fun y => ?_)` and prove the remaining obligations. Rewrite using `[← iCycles_cechCyclesIso_inv A p x, ← (cechComplex A).toCycles_i q p]`. Conclude with `((ModuleCat.mono_iff_injective ((cechComplex A).iCycles p)).1 inferInstance).eq_iff.symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cechClass_eq_zero_iff_prev (A : Cube.{v} ι R) (q p : ℕ)
     (h : (ComplexShape.up ℕ).prev p = q) (x : LinearMap.ker (Cube.d A (p + 1))) :
@@ -62,13 +62,13 @@ open CategoryTheory Limits in
 variable {ι : Type} [LinearOrder ι] {R : Type u} [Ring R] {S : Type u'} [Ring S] in
 
 /- English proof (translation)
-Use `set K := _root_.GlobalTheory.cechComplex A`. Establish `hex : (ShortComplex.mk (K.toCycles p (p + 1)) (K.homologyπ (p + 1)) (by simp)).Exact` using `ShortComplex.exact_of_g_is_cokernel _ (K.homologyIsCokernel p (p + 1) (by simp))`. Establish `hrange : LinearMap.range (K.toCycles p (p + 1)).hom = LinearMap.ker (K.homologyπ (p + 1)).hom` using `hex.moduleCat_range_eq_ker`. Establish `hi : Function.Injective (K.iCycles (p + 1)).hom` using `(ModuleCat.mono_iff_injective _).1 inferInstance`. Establish `hd : ∀ y, (K.iCycles (p + 1)).hom ((K.toCycles p (p + 1)).hom y) = _root_.GlobalTheory.Cube.d A (p + 1) y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Rewrite using `[← LinearMap.comp_apply, ← ModuleCat.hom_comp, HomologicalComplex.toCycles_i, _root_.GlobalTheory.cechComplex_d]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `(K.homologyπ (p + 1)).hom ((_root_.GlobalTheory.cechCyclesIso A (p + 1)).inv.hom x) = 0 ↔ _`. Rewrite using `[← LinearMap.mem_ker, ← hrange, LinearMap.mem_range]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Use `⟨y, ?_⟩` and prove the remaining obligations. Use `congrArg (K.iCycles (p + 1)).hom hy` as an intermediate fact. Rewrite `this` using `[_root_.GlobalTheory.iCycles_cechCyclesIso_inv, hd]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `this`. Introduce and unpack `⟨y, hy⟩`. Use `⟨y, hi ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.GlobalTheory.iCycles_cechCyclesIso_inv]`. Conclude with `(hd y).trans hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.cechClass_succ_eq_zero_iff (A : _root_.GlobalTheory.Cube.{v} ι R) (p : ℕ)
     (x : LinearMap.ker (_root_.GlobalTheory.Cube.d A (p + 1 + 1))) :
@@ -103,7 +103,7 @@ theorem _root_.GlobalTheory.cechClass_succ_eq_zero_iff (A : _root_.GlobalTheory.
 open CategoryTheory Limits in
 variable {ι : Type} [LinearOrder ι] {R : Type u} [Ring R] {S : Type u'} [Ring S] in
 /- English proof (translation)
-Establish `e : (_root_.GlobalTheory.cechCyclesIso A 0).inv ≫ (_root_.GlobalTheory.cechComplex A).homologyπ 0 = (_root_.GlobalTheory.cechHomologyZeroIso A).inv`. Rewrite using `[Iso.inv_comp_eq, ← _root_.GlobalTheory.homologyπ_cechHomologyZeroIso_hom, Category.assoc, Iso.hom_inv_id, Category.comp_id]`. Rewrite using `[_root_.GlobalTheory.cechClass, e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem cechClass_zero_eq_iso_inv (A : _root_.GlobalTheory.Cube.{v} ι R) :
     _root_.GlobalTheory.cechClass A 0 = (_root_.GlobalTheory.cechHomologyZeroIso A).inv.hom := by
@@ -116,7 +116,7 @@ private theorem cechClass_zero_eq_iso_inv (A : _root_.GlobalTheory.Cube.{v} ι R
 open CategoryTheory Limits in
 variable {ι : Type} [LinearOrder ι] {R : Type u} [Ring R] {S : Type u'} [Ring S] in
 /- English proof (translation)
-Rewrite using `[cechClass_zero_eq_iso_inv]`. Conclude with `(_root_.GlobalTheory.cechHomologyZeroIso A).symm.toLinearEquiv.bijective`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cechClass_zero_bijective' (A : _root_.GlobalTheory.Cube.{v} ι R) :
     Function.Bijective (_root_.GlobalTheory.cechClass A 0) := by
@@ -127,7 +127,7 @@ open CategoryTheory Limits in
 variable {ι : Type} [LinearOrder ι] {R : Type u} [Ring R] {S : Type u'} [Ring S] in
 
 /- English proof (translation)
-The claim follows from `(cechClass_zero_bijective' A).1.eq_iff' (map_zero _)`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.cechClass_zero_eq_zero_iff (A : _root_.GlobalTheory.Cube.{v} ι R)
     (x : LinearMap.ker (_root_.GlobalTheory.Cube.d A (0 + 1))) :
@@ -138,14 +138,14 @@ open CategoryTheory Limits in
 variable {ι : Type} [LinearOrder ι] {R : Type u} [Ring R] {S : Type u'} [Ring S] in
 
 /- English proof (translation)
-The claim follows from `cechClass_zero_bijective' A`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.cechClass_zero_bijective (A : _root_.GlobalTheory.Cube.{v} ι R) :
     Function.Bijective (_root_.GlobalTheory.cechClass A 0) :=
   cechClass_zero_bijective' A
 
 /- English proof (translation)
-Establish `h : ((cechCyclesIso A 0).inv ≫ (cechComplex A).homologyπ 0) ≫ (cechHomologyZeroIso A).hom = 𝟙 _`. Rewrite using `[Category.assoc, homologyπ_cechHomologyZeroIso_hom, Iso.inv_hom_id]`. Conclude with `congr(($h).hom x)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cechHomologyZeroIso_cechClass (A : Cube.{v} ι R) (x : LinearMap.ker (Cube.d A (0 + 1))) :
     (cechHomologyZeroIso A).hom.hom (cechClass A 0 x) = x := by
@@ -158,9 +158,9 @@ open CategoryTheory Limits in
 variable {ι : Type} [LinearOrder ι] {R : Type u} [Ring R] {S : Type u'} [Ring S] in
 
 /- English proof (translation)
-Establish `hi : Function.Injective ((_root_.GlobalTheory.cechComplex B).iCycles p).hom` using `(ModuleCat.mono_iff_injective _).1 inferInstance`. Establish `hc : (HomologicalComplex.cyclesMap (_root_.GlobalTheory.cechComplexMap φ) p).hom ((_root_.GlobalTheory.cechCyclesIso A p).inv.hom x) = (_root_.GlobalTheory.cechCyclesIso B p).inv.hom y`. Apply `hi` to reduce the goal to its premises. Rewrite using `[_root_.GlobalTheory.iCycles_cechCyclesIso_inv, ← LinearMap.comp_apply, ← ModuleCat.hom_comp, HomologicalComplex.cyclesMap_i, ModuleCat.hom_comp, LinearMap.comp_apply, _root_.GlobalTheory.iCycles_cechCyclesIso_inv, ← h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only [_root_.GlobalTheory.cechClass, ModuleCat.hom_comp, LinearMap.comp_apply]`. Rewrite using `[← hc, ← LinearMap.comp_apply, ← ModuleCat.hom_comp, HomologicalComplex.homologyπ_naturality]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem _root_.GlobalTheory.homologyMap_cechClass {A B : _root_.GlobalTheory.Cube.{v} ι R} (φ : A ⟶ B) (p : ℕ)
     (x : LinearMap.ker (_root_.GlobalTheory.Cube.d A (p + 1)))
@@ -186,7 +186,7 @@ open CategoryTheory Limits in
 variable {ι : Type} [LinearOrder ι] {R : Type u} [Ring R] {S : Type u'} [Ring S] in
 
 /- English proof (translation)
-Rewrite using `[LinearMap.mem_ker, ← _root_.GlobalTheory.Cube.termMap_d, LinearMap.mem_ker.1 h, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.Cube.termMap_mem_ker {A B : _root_.GlobalTheory.Cube.{v} ι R} (φ : A ⟶ B) {p : ℕ}
     {x : _root_.GlobalTheory.Cube.Term A p}
@@ -199,9 +199,9 @@ open CategoryTheory Limits in
 variable {ι : Type} [LinearOrder ι] {R : Type u} [Ring R] {S : Type u'} [Ring S] in
 
 /- English proof (translation)
-Rewrite using `[cechClass_zero_eq_iso_inv]`. Establish `hinj : Function.Injective (_root_.GlobalTheory.cechHomologyZeroIso A).hom.hom` using `(ModuleCat.mono_iff_injective _).1 inferInstance`. Apply `hinj` to reduce the goal to its premises. Establish `h` using `congrArg (fun g => ModuleCat.Hom.hom g a) (_root_.GlobalTheory.cechAugHomology_comp A)`. Simplify using `only [ModuleCat.hom_comp, LinearMap.comp_apply, ModuleCat.hom_ofHom, Submodule.subtype_apply] at h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[h]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.cechAugHomology_apply (A : _root_.GlobalTheory.Cube.{v} ι R) (a : A.obj ∅) :
     (_root_.GlobalTheory.cechAugHomology A).hom a =
@@ -259,7 +259,7 @@ variable {f : R →+* S} {A A' : _root_.GlobalTheory.Cube.{v} ι R} {B B' : _roo
   (ψ : _root_.GlobalTheory.Cube.SemiHom f A B) in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Rewrite using `[_root_.GlobalTheory.Cube.SemiHom.term_apply, _root_.GlobalTheory.Cube.d_apply, _root_.GlobalTheory.Cube.d_apply, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, _root_.GlobalTheory.Cube.SemiHom.app_res, _root_.GlobalTheory.Cube.SemiHom.term_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.Cube.SemiHom.term_d (p : ℕ) (x : _root_.GlobalTheory.Cube.Term A p) :
     ψ.term (p + 1) (_root_.GlobalTheory.Cube.d A p x) =
@@ -273,7 +273,7 @@ theorem _root_.GlobalTheory.Cube.SemiHom.term_d (p : ℕ) (x : _root_.GlobalTheo
 omit [LinearOrder ι] in
 
 /- English proof (translation)
-The claim follows from `funext fun _ => ψ.app_res _ a`.
+A detailed English derivation is pending.
 -/
 theorem term_aug (a : A.obj ∅) : ψ.term 1 (Cube.aug A a) = Cube.aug B (ψ.app ∅ a) :=
   funext fun _ => ψ.app_res _ a
@@ -285,7 +285,7 @@ variable {f : R →+* S} {A A' : _root_.GlobalTheory.Cube.{v} ι R} {B B' : _roo
 omit [LinearOrder ι] in
 
 /- English proof (translation)
-Establish `hne : ∀ s : {s : Finset ι // s.card = p + 1}, s.1.Nonempty` using `fun s => Finset.card_pos.1 (by rw [s.2]; exact Nat.succ_pos p)`. Use `⟨fun x y hxy => funext fun s => (h s.1 (hne s)).1 (congrFun hxy s), fun y => ?_⟩` and prove the remaining obligations. Use `⟨fun s => ((h s.1 (hne s)).2 (y s)).choose, funext fun s => ?_⟩` and prove the remaining obligations. Conclude with `((h s.1 (hne s)).2 (y s)).choose_spec`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Cube.SemiHom.term_bijective
     (h : ∀ s : Finset ι, s.Nonempty → Function.Bijective (ψ.app s)) (p : ℕ) :
@@ -313,9 +313,9 @@ variable {f : R →+* S} {A A' : _root_.GlobalTheory.Cube.{v} ι R} {B B' : _roo
   (ψ : _root_.GlobalTheory.Cube.SemiHom f A B) in
 
 /- English proof (translation)
-Consider the cases of `p with`. Consider the case `zero`. Rewrite `h`, the goal using `[_root_.GlobalTheory.cechClass_zero_eq_zero_iff]`. Rewrite using `[h, map_zero]`. Consider the case `succ p`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite `h`, the goal using `[_root_.GlobalTheory.cechClass_succ_eq_zero_iff]`. Take `⟨y, hy⟩` from `h`. Conclude with `⟨ψ.term (p + 1) y, by rw [← _root_.GlobalTheory.Cube.SemiHom.term_d, hy, _root_.GlobalTheory.Cube.SemiHom.coe_cocycle]⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.Cube.SemiHom.cechClass_cocycle_eq_zero (p : ℕ)
     (x : LinearMap.ker (_root_.GlobalTheory.Cube.d A (p + 1)))
@@ -342,7 +342,7 @@ variable {f : R →+* S} {A A' : _root_.GlobalTheory.Cube.{v} ι R} {B B' : _roo
 
 @[simp]
 /- English proof (translation)
-Establish `e : ((_root_.GlobalTheory.cechClass A p).quotKerEquivOfSurjective (_root_.GlobalTheory.cechClass_surjective A p)).symm (_root_.GlobalTheory.cechClass A p x) = Submodule.Quotient.mk x` using `(LinearEquiv.symm_apply_eq _).2 rfl`. Simplify using `only [_root_.GlobalTheory.Cube.SemiHom.homology, LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem _root_.GlobalTheory.Cube.SemiHom.homology_cechClass (p : ℕ)
     (x : LinearMap.ker (_root_.GlobalTheory.Cube.d A (p + 1))) :
@@ -356,7 +356,7 @@ theorem _root_.GlobalTheory.Cube.SemiHom.homology_cechClass (p : ℕ)
   rfl
 
 /- English proof (translation)
-Use extensionality with `x`. Take `⟨x, rfl⟩` from `cechClass_surjective A p x`. Rewrite using `[homology_cechClass]`. Conclude with `(homologyMap_cechClass φ p x _ rfl).symm`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homology_ofHom (φ : A ⟶ A') (p : ℕ) :
     (ofHom φ).homology p = (HomologicalComplex.homologyMap (cechComplexMap φ) p).hom := by
@@ -371,19 +371,19 @@ variable {f : R →+* S} {A A' : _root_.GlobalTheory.Cube.{v} ι R} {B B' : _roo
   (ψ : _root_.GlobalTheory.Cube.SemiHom f A B) in
 
 /- English proof (translation)
-Establish `hT` using `ψ.term_bijective h`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z hz`. Take `⟨x, rfl⟩` from `_root_.GlobalTheory.cechClass_surjective A p z`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `hz` using `[_root_.GlobalTheory.Cube.SemiHom.homology_cechClass]`. Consider the cases of `p with`. Consider the case `zero`. Rewrite `hz`, the goal using `[_root_.GlobalTheory.cechClass_zero_eq_zero_iff]`. Establish `hx` using `congrArg Subtype.val hz`.
+Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hx` using `[_root_.GlobalTheory.Cube.SemiHom.coe_cocycle]`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `(hT 0).1` to reduce the goal to its premises. Rewrite using `[hx]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `succ p`. Rewrite `hz`, the goal using `[_root_.GlobalTheory.cechClass_succ_eq_zero_iff]`. Take `⟨y, hy⟩` from `hz`. Take `⟨y', rfl⟩` from `(hT p).2 y`. Use `⟨y', (hT (p + 1)).1 ?_⟩` and prove the remaining obligations.
+Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[_root_.GlobalTheory.Cube.SemiHom.term_d, hy, _root_.GlobalTheory.Cube.SemiHom.coe_cocycle]`. Introduce `z`. Take `⟨y, rfl⟩` from `_root_.GlobalTheory.cechClass_surjective B p z`. Take `⟨x', hx'⟩` from `(hT p).2 y.1`. Establish `hker : x' ∈ LinearMap.ker (_root_.GlobalTheory.Cube.d A (p + 1))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.mem_ker]`. Apply `(hT (p + 1)).1` to reduce the goal to its premises. Rewrite using `[_root_.GlobalTheory.Cube.SemiHom.term_d, hx', map_zero]`. Conclude with `LinearMap.mem_ker.1 y.2`. Use `⟨_root_.GlobalTheory.cechClass A p ⟨x', hker⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[_root_.GlobalTheory.Cube.SemiHom.homology_cechClass]`. Use `congr 1`. Conclude with `Subtype.ext hx'`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Cube.SemiHom.homology_bijective
     (h : ∀ s : Finset ι, s.Nonempty → Function.Bijective (ψ.app s))
@@ -428,9 +428,9 @@ variable {f : R →+* S} {A A' : _root_.GlobalTheory.Cube.{v} ι R} {B B' : _roo
   (ψ : _root_.GlobalTheory.Cube.SemiHom f A B) in
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `_root_.GlobalTheory.cechClass_surjective A p x`. Rewrite using `[_root_.GlobalTheory.homologyMap_cechClass α p x ⟨_root_.GlobalTheory.Cube.termMap α (p + 1) x.1, _root_.GlobalTheory.Cube.termMap_mem_ker α x.2⟩ rfl, _root_.GlobalTheory.Cube.SemiHom.homology_cechClass, _root_.GlobalTheory.Cube.SemiHom.homology_cechClass, _root_.GlobalTheory.hom …`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `s`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [_root_.GlobalTheory.Cube.SemiHom.coe_cocycle, _root_.GlobalTheory.Cube.SemiHom.term_apply, _root_.GlobalTheory.Cube.termMap_apply]`. Conclude with `h s.1 (Finset.card_pos.1 (by rw [s.2]; exact Nat.succ_pos p)) (x.1 s)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Cube.SemiHom.homology_naturality (ψ' : _root_.GlobalTheory.Cube.SemiHom f A' B') (α : A ⟶ A')
     (β : B ⟶ B')
@@ -455,7 +455,7 @@ theorem _root_.GlobalTheory.Cube.SemiHom.homology_naturality (ψ' : _root_.Globa
   exact h s.1 (Finset.card_pos.1 (by rw [s.2]; exact Nat.succ_pos p)) (x.1 s)
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `cechClass_surjective A p x`. Rewrite using `[homology_cechClass, homology_cechClass, homology_cechClass]`. Conclude with `congrArg _ (Subtype.ext (funext fun s => h s.1 (Finset.card_pos.1 (by have := s.2; omega)) _))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homology_homology {Q : Type*} [Ring Q] {g : S →+* Q} {k : R →+* Q} {C : Cube ι Q}
     (χ : Cube.SemiHom g B C) (ω : Cube.SemiHom k A C)
@@ -472,9 +472,9 @@ variable {f : R →+* S} {A A' : _root_.GlobalTheory.Cube.{v} ι R} {B B' : _roo
   (ψ : _root_.GlobalTheory.Cube.SemiHom f A B) in
 
 /- English proof (translation)
-Rewrite using `[_root_.GlobalTheory.cechAugHomology_apply, _root_.GlobalTheory.cechAugHomology_apply, _root_.GlobalTheory.Cube.SemiHom.homology_cechClass]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `s`. Rewrite using `[_root_.GlobalTheory.Cube.SemiHom.coe_cocycle, _root_.GlobalTheory.Cube.SemiHom.term_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Unfold `_root_.GlobalTheory.Cube.aug`. Simplify using `[_root_.GlobalTheory.Cube.SemiHom.app_res]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.Cube.SemiHom.homology_cechAugHomology (a : A.obj ∅) :
     ψ.homology 0 ((_root_.GlobalTheory.cechAugHomology A).hom a) =
@@ -495,7 +495,7 @@ def restrictScalars (f : R →+* S) (B : Cube.{v} ι S) :
   app_res _ _ := rfl
 
 /- English proof (translation)
-The claim follows from `homology_bijective _ (fun _ _ => Function.bijective_id) p`.
+A detailed English derivation is pending.
 -/
 theorem homology_restrictScalars_bijective (f : R →+* S) (B : Cube.{v} ι S) (p : ℕ) :
     Function.Bijective ((restrictScalars f B).homology p) :=

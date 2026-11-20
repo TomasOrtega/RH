@@ -41,9 +41,9 @@ def Ind (hs : M.split = some g) (γ : IsoMbe Z₁.Z Z₂.Z) (θ : DD1 hs Z₁ TT
     θ (mk1 hs Z₁ TT l) = mk1 hs Z₂ TT l₂
 
 /- English proof (translation)
-Rewrite using `[M.L.O_def]`. Use `⟨Polynomial.X * (Polynomial.X - Polynomial.C ⟨c, hc⟩), Polynomial.monic_X.mul (Polynomial.monic_X_sub_C _), ?_⟩` and prove the remaining obligations. Establish `hmap : algebraMap (𝒪[F]) E ⟨c, hc⟩ = algebraMap F E c` using `rfl`. Simplify using `only [Polynomial.eval₂_mul, Polynomial.eval₂_X, Polynomial.eval₂_sub, Polynomial.eval₂_C, hmap]`. Apply `g.e.injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[map_mul, map_sub, AlgEquiv.commutes, Prod.algebraMap_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem split_symm_pair_zero_mem_O (c : F) (hc : c ∈ 𝒪[F]) : g.e.symm (c, 0) ∈ M.L.O := by
   rw [M.L.O_def]
@@ -55,15 +55,13 @@ private theorem split_symm_pair_zero_mem_O (c : F) (hc : c ∈ 𝒪[F]) : g.e.sy
   simp [map_mul, map_sub, AlgEquiv.commutes, Prod.algebraMap_apply]
 
 /- English proof (translation)
-Unfold `Model.R at hy`. Rewrite `hy` using `[hs]`. Simplify using `only [Subring.mem_comap, Subring.mem_map, RingHom.mem_eqLocus] at hy`. Take `⟨⟨a, b⟩, hab, he⟩` from `hy`. Establish `he' : g.e y = ((a : F), (b : F))` using `he.symm`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[he']`. Use `⟨a.2, ?_⟩` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, Ideal.Quotient.eq, Ideal.mem_span_singleton'] at hab`. Take `⟨d, hd⟩` from `hab`. Express the relevant statement in the definitionally equal form `d * g.q = a - b at hd`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hq : (g.q : F) ≠ 0` using `fun h => g.q_irr.ne_zero (Subtype.ext h)`. Establish `hd' : (d : F) * (g.q : F) = (a : F) - (b : F)`. Use `congrArg Subtype.val hd` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Establish `key : ((b : F) - (a : F)) / (g.q : F) = ((-d : 𝒪[F]) : F)`. Rewrite using `[div_eq_iff hq]`. Use `push_cast`. Take the linear combination `hd'`. Rewrite using `[key]`.
-
-Conclude with `(-d).2`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem split_coords_mem_integers_of_mem_R (hs : M.split = some g) (y : E) (hy : y ∈ M.R) :
     (g.e y).1 ∈ 𝒪[F] ∧ ((g.e y).2 - (g.e y).1) / (g.q : F) ∈ 𝒪[F] := by
@@ -90,12 +88,12 @@ private theorem split_coords_mem_integers_of_mem_R (hs : M.split = some g) (y : 
   exact (-d).2
 
 /- English proof (translation)
-The claim follows from `split_symm_pair_zero_mem_O _ (split_coords_mem_integers_of_mem_R hs _ x.2).1`.
+A detailed English derivation is pending.
 -/
 theorem iotaOne_mem_first (hs : M.split = some g) (x : M.R) : g.e.symm ((g.e (x : E)).1, 0) ∈ M.L.O := split_symm_pair_zero_mem_O _ (split_coords_mem_integers_of_mem_R hs _ x.2).1
 
 /- English proof (translation)
-The claim follows from `split_symm_pair_zero_mem_O _ (split_coords_mem_integers_of_mem_R hs _ x.2).2`.
+A detailed English derivation is pending.
 -/
 theorem iotaOne_mem_second (hs : M.split = some g) (x : M.R) :
     g.e.symm (((g.e (x : E)).2 - (g.e (x : E)).1) / (g.q : F), 0) ∈ M.L.O := split_symm_pair_zero_mem_O _ (split_coords_mem_integers_of_mem_R hs _ x.2).2

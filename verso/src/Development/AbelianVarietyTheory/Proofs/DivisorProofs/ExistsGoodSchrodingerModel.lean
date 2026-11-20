@@ -15,9 +15,7 @@ noncomputable section
 namespace GlobalTheory.ModelEx
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J`. Take `⟨h1, h2, h3, h4⟩` from `GlobalTheory.T.unitary_adelic_group_topology F E σ n J`. Use `haveI := h1`. Use `haveI := h2`. Use `haveI := h3`.
-
-Use `haveI := h4`. Use `haveI := GlobalTheory.T.discreteTopology_rational_unitary F E σ n J`. Use `haveI : BorelSpace (UA σ J) := ⟨rfl⟩`. Take `⟨𝓕, h𝓕⟩` from `GlobalTheory.FundDomDiscrete.exists_isFundamentalDomain (ratU σ J) (MeasureTheory.Measure.haar)`. Conclude with `⟨MeasureTheory.Measure.haar, 𝓕, inferInstance, h𝓕⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_haar_fundDom : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E), ∃ (μ : MeasureTheory.Measure (UA σ J)) (𝓕 : Set (UA σ J)),
@@ -31,13 +29,11 @@ theorem exists_haar_fundDom : ∀ (F E : Type) [Field F] [NumberField F] [Field 
   exact ⟨MeasureTheory.Measure.haar, 𝓕, inferInstance, h𝓕⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB n d X W r s r' s' hX hW`. Take `⟨co, hco⟩` from `GlobalTheory.RatDarboux.exists_rational_darboux_of_isGood B hB X W r s r' s' hX hW`. Take `⟨μ, 𝓕, hμ, h𝓕⟩` from `exists_haar_fundDom F E σ n X.J`. Establish `hS` using `GlobalTheory.VacIndic.eventually_isVac_indicator B hB X W r s r' s' hX hW co hco`. Set `M₀ : Model σ X W` to `⟨co, fun _ => 0, 0, ∅⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `ind : ∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ` to `fun v => Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1`. Set `vac : ∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ` to `fun v => if M₀.IsVac B.ψ v (ind v) then ind v else (GlobalTheory.T.exists_finitePlace_vacuum_any_darboux_coordinates B hB X W r s r' s' hX hW co v).choose`. Use `⟨⟨co, vac, μ, 𝓕⟩, ⟨hco, fun v => ?_, ?_, hμ, h𝓕⟩⟩` and prove the remaining obligations. Use `show M₀.IsVac B.ψ v (vac v)`. Distinguish the cases in `h : M₀.IsVac B.ψ v (ind v)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `only [vac, if_pos h]`. Conclude with `h`. Simplify using `only [vac, if_neg h]`. Conclude with `(GlobalTheory.T.exists_finitePlace_vacuum_any_darboux_coordinates B hB X W r s r' s' hX hW co v).choose_spec`. Use `filter_upwards [hS] with v hv show vac v = ind v`.
-
-Conclude with `if_pos hv`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem model_exists : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E), B.IsGood σ → ∀ (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (r s r' s' : ℕ),

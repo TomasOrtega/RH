@@ -5,11 +5,11 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.InvMemLatMono
 open UpperTheory.Gal.G3
 
 /- English proof (translation)
-Introduce `v hv`. Take `⟨w, hw, e⟩` from `hu _ (hi v hv)`. Use `⟨j • L.actG g w, hj w hw, ?_⟩` and prove the remaining obligations. Establish `h1 : L.actG g (L.actG g⁻¹ v) = v`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : j' • L.actG (g * u * g⁻¹) v = j' • (v + N • j • L.actG g w)`. Establish `e2` using `congrArg (L.actG g) e`. Simplify using `only [map_add, map_nsmul, h1] at e2`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, e2, smul_add, smul_smul, smul_smul]`. Use `congr 2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hj0 : (j' : ℚ) ≠ 0` using `by exact_mod_cast hj'.ne'`. Rewrite `key` using `[← Nat.cast_smul_eq_nsmul ℚ, ← Nat.cast_smul_eq_nsmul ℚ]`. Conclude with `smul_right_injective _ hj0 key`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem congOne_conj {p : ℕ} [Fact p.Prime] {D : GlobalTheory.UPel.HT.Datum p} {G : GlobalTheory.LKTrip.HTGroup p}
     (L : GlobalTheory.LKGeo.Link D G) (N : ℕ) (g : G.GAf) (j j' : ℕ) (hj' : 0 < j')
@@ -32,15 +32,13 @@ private theorem congOne_conj {p : ℕ} [Fact p.Prime] {D : GlobalTheory.UPel.HT.
   exact smul_right_injective _ hj0 key
 
 /- English proof (translation)
-Introduce `p _ D G L N`. Use `⟨fun k hk u hu => ?_, fun g => ?_, fun M hN hM => GlobalTheory.W2.relIndex_KN_ne_zero L hN hM⟩` and prove the remaining obligations. Establish `key : ∀ u, L.CongOne N u → L.CongOne N (k * u * k⁻¹)`. Introduce `u hu v hv`. Take `⟨w, hw, e⟩` from `hu _ (UpperTheory.Gal.Int.Geo.integ_of_mem (inv_mem hk) v hv)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨L.actG k w, UpperTheory.Gal.Int.Geo.integ_of_mem hk w hw, ?_⟩` and prove the remaining obligations. Establish `h1 : L.actG k (L.actG k⁻¹ v) = v`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, e, map_add, map_nsmul, h1]`. Use `⟨key u hu.1, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (k * u * k⁻¹)⁻¹ = k * u⁻¹ * k⁻¹` using `by group`. Rewrite using `[e]`. Conclude with `key _ hu.2`. Take `⟨j, hj0, hjp, hj⟩` from `GlobalTheory.T.exists_coprime_nsmul_endomorphism_preserves_completion p D (L.actG g)`. Take `⟨j', hj0', hjp', hj'⟩` from `GlobalTheory.T.exists_coprime_nsmul_endomorphism_preserves_completion p D (L.actG g⁻¹)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨j * j', ?_, fun u hu => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `Nat.Coprime.mul_left hjp hjp'`. Conclude with `congOne_conj L N g j j' hj0' hj hj' u hu.1`. Establish `e : (g * u * g⁻¹)⁻¹ = g * u⁻¹ * g⁻¹` using `by group`. Rewrite using `[e]`.
-
-Conclude with `congOne_conj L N g j j' hj0' hj hj' _ hu.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G3.pKNBasic :
     KNBasic := by

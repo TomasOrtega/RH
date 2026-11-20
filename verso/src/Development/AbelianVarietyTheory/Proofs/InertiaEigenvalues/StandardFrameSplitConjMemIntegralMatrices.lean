@@ -28,13 +28,11 @@ noncomputable section
 namespace GlobalTheory.SplitFrameKO
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Rewrite `hne` using `[map_zero, map_zero]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `absurd hne (not_lt.2 zero_le')`. Establish `h1 : Valued.v (c y⁻¹) < 1`. Rewrite using `[map_inv₀, map_inv₀]`. Conclude with `inv_lt_one_of_one_lt₀ hne`. Establish `h2` using `GlobalTheory.FixedAtSplit.valued_lt_one_of_map c hc _ h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[map_inv₀]`. Establish `h3 : 1 < Valued.v y`. Establish `hpos : 0 < Valued.v y`. Rewrite using `[zero_lt_iff]`. Conclude with `(map_ne_zero _).2 hy0`.
-
-Conclude with `(inv_lt_one₀ hpos).1 h2`. Conclude with `absurd hy (not_le.2 h3)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valued_le_one_of_map {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     {v : HeightOneSpectrum (𝓞 F)} {w : HeightOneSpectrum (𝓞 E)}
@@ -58,7 +56,7 @@ theorem valued_le_one_of_map {F E : Type} [Field F] [NumberField F] [Field E] [N
   exact absurd hy (not_le.2 h3)
 
 /- English proof (translation)
-Establish `: (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible` using `Valuation.Compatible.ofValuation _`. Establish `he` using `ValuativeRel.isEquiv (ValuativeRel.valuation (w.adicCompletion E)) (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ)))`. Conclude with `he.le_one_iff_le_one.1 ((Valuation.mem_integer_iff _ _).1 (((GlobalTheory.SplitFlip.mem_KO_iff κ).1 hκ).1 a b))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem val_le_one_of_mem_KO {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)} {n : ℕ}
     (κ : GL (Fin n) (w.adicCompletion E)) (hκ : κ ∈ GlobalTheory.SplitWeil.KO (w.adicCompletion E) (Fin n)) (a b : Fin n) :
@@ -76,23 +74,23 @@ namespace GlobalTheory.SplitFrameKO
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `D V n hF P β hS s`. Take `⟨⟨βs, βs', h1, h2, hfr⟩, -⟩` from `hS`. Take `⟨c, hc, hc', hci⟩` from `GlobalTheory.SplitComplHomeo.exists_complEquiv D.host.E s`. Take `⟨f, hf⟩ : ∃ f : (FiniteAdeleRing (𝓞 D.host.F) D.host.F ⊗[D.host.F] D.host.E) →+* s.w.adicCompletion D.host.E, f = (GlobalTheory.StdFrames.cpt s.w).comp (swapAE D)` from `⟨_, rfl⟩`. Establish `hn : V.rank = n` using `GlobalTheory.SplitFrameW.eq_of_mul_eq_one (βs.map f) (βs'.map f) (by rw [← Matrix.map_mul, h1, Matrix.map_one _ (map_zero f) (map_one f)]) (by rw [← Matrix.map_mul, h2, Matrix.map_one _ (map_zero f) (map_one f)])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Substitute `hn` using the available equality. Take `⟨Φc, hΦc⟩ : ∃ Φc : Matrix (Fin V.rank) (Fin V.rank) (EAf D) →+* Matrix (Fin V.rank) (Fin V.rank) (s.v.adicCompletion (maximalRealSubfield D.host.E)), Φc = (c.symm.toRingHom.comp (GlobalTheory.StdFrames.cpt s.w)).mapMatrix` from `⟨_, rfl⟩`. Take `⟨B, hB⟩ : ∃ B : Matrix (Fin V.rank) (Fin V.rank) (EAf D), B = βs.map (swapAE D)` from `⟨_, rfl⟩`. Take `⟨B', hB'⟩ : ∃ B' : Matrix (Fin V.rank) (Fin V.rank) (EAf D), B' = βs'.map (swapAE D)` from `⟨_, rfl⟩`. Establish `hBB : B * B' = 1`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hB, hB', ← Matrix.map_mul, h1, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hBB' : B' * B = 1`. Rewrite using `[hB, hB', ← Matrix.map_mul, h2, Matrix.map_one _ (map_zero _) (map_one _)]`. Take `⟨X, hX⟩ : ∃ X, X = Φc ((β⁻¹).val * B)` from `⟨_, rfl⟩`. Take `⟨X', hX'⟩ : ∃ X', X' = Φc (B' * β.val)` from `⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hXX : X * X' = 1`. Rewrite using `[hX, hX', ← map_mul, show (β⁻¹).val * B * (B' * β.val) = (β⁻¹).val * (B * B') * β.val by`. Simplify using `only [Matrix.mul_assoc], hBB, Matrix.mul_one, Units.inv_mul, map_one]`. Establish `hXX' : X' * X = 1`. Rewrite using `[hX, hX', ← map_mul, show B' * β.val * ((β⁻¹).val * B) = B' * (β.val * (β⁻¹).val) * B by`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc], Units.mul_inv, Matrix.mul_one, hBB', map_one]`. Take `⟨g, hg⟩ : ∃ g : GL (Fin V.rank) (s.v.adicCompletion (maximalRealSubfield D.host.E)), g = ⟨X', X, hXX', hXX⟩` from `⟨_, rfl⟩`. Use `⟨g, fun κ _ hk a b => ?_⟩` and prove the remaining obligations. Establish `hK : Φc (((κ.1 : Matrix (Fin V.rank) (Fin V.rank) (ReciprocityTheory.Aut.AL D.host.E)).map (swapCast hF).symm).map (swapAE D)) = ((s.loc V.rank κ : GL _ _) : Matrix _ _ _)`. Rewrite using `[hΦc]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `c.symm (((GlobalTheory.StdFrames.toAd D).comp (swapAE D)) ((swapCast hF).symm (κ.1.val i j)) s.w) = s.proj (κ.1.val i j)`. Rewrite using `[GlobalTheory.SplitFrameW.cpt_swap D.host.F hF ((GlobalTheory.StdFrames.toAd D).comp (swapAE D)) (fun a x => GlobalTheory.StdFrames.toAd_spec D x a) s c hc hci]`. Conclude with `c.symm_apply_apply _`. Establish `e1 : (finE V (P.ψ κ)).val = B * (((κ.1 : Matrix (Fin V.rank) (Fin V.rank) (ReciprocityTheory.Aut.AL D.host.E)).map (swapCast hF).symm).map (swapAE D)) * B'`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(finMat D.sp.cm.sig V.gram (P.ψ κ)).map (swapAE D) = _`. Rewrite using `[hfr κ, Matrix.map_mul, Matrix.map_mul, hB, hB']`. Establish `hM : Φc ((β⁻¹ * finE V (P.ψ κ) * β).val) = X * ((s.loc V.rank κ : GL _ _) : Matrix _ _ _) * X'`. Rewrite using `[Units.val_mul, Units.val_mul, e1, ← hK, hX, hX', ← map_mul, ← map_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e3 : (↑(g⁻¹ * s.loc V.rank κ * g) : Matrix (Fin V.rank) (Fin V.rank) (s.v.adicCompletion (maximalRealSubfield D.host.E))) = X * ((s.loc V.rank κ : GL _ _) : Matrix _ _ _) * X'`. Rewrite using `[hg]`. Both sides reduce to the same expression. Establish `hent : Φc ((β⁻¹ * finE V (P.ψ κ) * β).val) a b = c.symm (GlobalTheory.StdFrames.cpt s.w ((β⁻¹ * finE V (P.ψ κ) * β).val a b))`. Rewrite using `[hΦc]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `e2 : GlobalTheory.StdFrames.cpt s.w ((β⁻¹ * finE V (P.ψ κ) * β).val a b) = c ((↑(g⁻¹ * s.loc V.rank κ * g) : Matrix (Fin V.rank) (Fin V.rank) (s.v.adicCompletion (maximalRealSubfield D.host.E))) a b)`. Rewrite using `[e3, ← hM, hent, c.apply_symm_apply]`. Rewrite using `[e2]`. Conclude with `valued_le_one_of_map c hc _ (val_le_one_of_mem_KO _ hk a b)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (V : HSp D) (n : ℕ) (hF : D.host.F = maximalRealSubfield D.host.E) (P : principalLevelFrame.RowPsi V n) (β : GL (Fin V.rank) (EAf D)), GlobalTheory.Mem.R3.StdFrame hF P → ∀ (s : SplitPlace D.host.E), ∃ h : GL (Fin n) (s.v.adicCompletion (maximalRealSubfield D.host.E)), ∀ κ : Formalism.AUTREP.GAf D.host.E n, TrivOutside {s.v} κ → h⁻¹ * s.loc n κ * h ∈ GlobalTheory.SplitWeil.KO (s.v.adicCompletion (maximalRealSubfield D.host.E)) (Fin n) → ∀ a b : Fin V.rank, Valued.v (GlobalTheory.StdFrames.cpt s.w ((β⁻¹ * finE V (P.ψ κ) * β).val a b)) ≤ 1 := by
   intro D V n hF P β hS s

@@ -4,7 +4,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ProductFormulaHaar.Asse
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ProductFormulaHaar.HaarAlg
 
 /- English proof (translation)
-The claim follows from `PI.ProdFormulaE.Assemble.prodFormulaE_of_haar PI.ProdFormulaE.HaarAlgP.haarScaling`.
+A detailed English derivation is pending.
 -/
 theorem product_formula_e : PI.ProdFormulaE.ProdFormulaE :=
   PI.ProdFormulaE.Assemble.prodFormulaE_of_haar PI.ProdFormulaE.HaarAlgP.haarScaling

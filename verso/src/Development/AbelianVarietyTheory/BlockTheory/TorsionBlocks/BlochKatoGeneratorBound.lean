@@ -48,7 +48,7 @@ variable {G : Type} [Group G] {LL : Type} [Field LL] {O : Type} [CommRing O] [Al
   {ρ : Representation LL G V} in
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(∀ g : G, _root_.GlobalTheory.IndefiniteRowSideFullHecke.GaloisLatticeModuleActions.latModAct L I g (Submodule.Quotient.mk x) = Submodule.Quotient.mk x) ↔ _`. Simplify using `only [_root_.GlobalTheory.IndefiniteRowSideFullHecke.GaloisLatticeModuleActions.latModAct, Submodule.mapQ_apply, Submodule.Quotient.eq]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.GaloisLatticeModuleActions.mk_mem_H0Mod (L : _root_.Formalism.WeaklyAdmissibleFiltrations.Lattice (O := O) ρ) (I : Ideal O)
     (x : ↥L.T) :
@@ -67,7 +67,7 @@ variable {G : Type} [Group G] {LL : Type} [Field LL] {O : Type} [CommRing O] [Al
 omit [Algebra O LL] [IsScalarTower O LL V] in
 
 /- English proof (translation)
-Use `haveI : Module.Finite O ↥L.T := Module.Finite.iff_fg.mpr L.fg`. Conclude with `Module.Finite.of_restrictScalars_finite O (O ⧸ I) _`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.GaloisLatticeModuleActions.finite_latMod (L : _root_.Formalism.WeaklyAdmissibleFiltrations.Lattice (O := O) ρ) (I : Ideal O) :
     Module.Finite (O ⧸ I) (_root_.GlobalTheory.IndefiniteRowSideFullHecke.GaloisLatticeModuleActions.LatMod L I) := by
@@ -96,7 +96,7 @@ def GeneratorBound (PD : PeriodData G Qp K₀ K B BdR) (T : LocLat G Qp LL O) (�
       (Module.finrank Qp K + 1) * Module.finrank O ↥T.L.T
 
 /- English proof (translation)
-Take `⟨⟨s, hs, hc⟩, h2⟩` from `h`. Conclude with `⟨s, hs, hc.trans h2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem GeneratorBound.le {PD : PeriodData G Qp K₀ K B BdR} {T : LocLat G Qp LL O} {ϖ : O}
     (h : GeneratorBound PD T ϖ) :

@@ -10,23 +10,21 @@ noncomputable section
 namespace Formalism.UG.P
 
 /- English proof (translation)
-Establish `hsl : Function.support (fun x => g x * φv x) ⊆ (S : Set X)` using `fun x hx => hS x (left_ne_zero_of_mul hx)`. Establish `hin : ∀ y, (∑ᶠ x, if P y x then g x else 0) = ∑ x ∈ S, if P y x then g x else 0`. Introduce `y`. Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hP : P y x`. Conclude with `hS x (by simpa [hP] using hx)`. Conclude with `absurd (by simp [hP]) hx`. Establish `hTfin : (⋃ x ∈ (S : Set X), {y | P y x}).Finite` using `S.finite_toSet.biUnion fun x _ => Set.Subsingleton.finite fun y hy y' hy' => huniq x y y' hy hy'`. Establish `hout : (∑ᶠ y, c y * ∑ x ∈ S, if P y x then g x else 0) = ∑ y ∈ hTfin.toFinset, c y * ∑ x ∈ S, if P y x then g x else 0`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises. Introduce `y hy`. Rewrite using `[Set.Finite.coe_toFinset]`. Establish `hne : (∑ x ∈ S, if P y x then g x else 0) ≠ 0` using `right_ne_zero_of_mul hy`. Take `⟨x, hxS, hx⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hne`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `Set.mem_biUnion (Finset.mem_coe.mpr hxS) ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hP`. Conclude with `hx (if_neg hP)`. Rewrite using `[finsum_eq_sum_of_support_subset _ hsl]`. Simplify using `only [hin]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hout, Finset.sum_mul]`. Simplify using `only [Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun x hxS => ?_` and prove the remaining obligations. Distinguish the cases in `hex : ∃ y, P y x`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y0, hy0⟩` from `hex`. Establish `hy0T : y0 ∈ hTfin.toFinset`. Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `Set.mem_biUnion (Finset.mem_coe.mpr hxS) hy0`. Rewrite using `[Finset.sum_eq_single y0, if_pos hy0, hφ x y0 hy0]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `y _ hy`. Rewrite using `[if_neg (fun h => hy (huniq x y y0 h hy0))]`. Expand and normalize the polynomial expressions, which then agree. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd hy0T h`. Use `push_neg at hex`. Rewrite using `[hnone x hex, mul_zero]`. Use `symm`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
-
-Introduce `y _`. Rewrite using `[if_neg (hex y)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem finsum_mul_eq_sum_over_classes {X Y : Type} (S : Finset X) (g φv : X → ℂ) (c : Y → ℂ) (φ1 : ℂ)
     (P : Y → X → Prop) {_ : ∀ y x, Decidable (P y x)}
@@ -84,7 +82,7 @@ theorem finsum_mul_eq_sum_over_classes {X Y : Type} (S : Finset X) (g φv : X �
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {σ : L →+* L} {n : ℕ}
 
 /- English proof (translation)
-Unfold `chiDeltaU`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Simplify using `[fSatake_ord_one]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem fSatake_chiDelta_one {q m : ℕ} (α : Fin m → ℂ) :
     chiDeltaU (σ := σ) (n := n) q α 1 = 1 := by
@@ -95,9 +93,7 @@ theorem fSatake_chiDelta_one {q m : ℕ} (α : Fin m → ℂ) :
   · rfl
 
 /- English proof (translation)
-Establish `hfin` using `finite_supp (KU σ n) (isCommensurated_integral_unitary_of_unramified hU n) h hh`. Unfold `SatU`. Conclude with `finsum_mul_eq_sum_over_classes (S := hfin.toFinset) (g := fun x => h x.out) (φv := fun x => φ x.out) (c := fun a : Fin m → ℤ => ∏ i : Fin m, α i ^ (a i) * (q : ℂ) ^ (-(a i) * ((n : ℤ) - 1 - 2 * (i.val : ℤ)))) (φ1 := φ 1) (P := fun a x => ∃ u : GU σ n, IsUnipU u ∧ ∃ k ∈ KU σ n, (( …`. Introduce and unpack `⟨b, k, hb, hk, e⟩`. Take `⟨a, u, hu, k', hk', e'⟩` from `fSatake_cell_exists hU hm hm' hb hk`.
-
-Conclude with `hx a ⟨u, hu, k', hk', e ▸ e'⟩))`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem fSatake_key (hSph : SphericalExistsU) [CompleteSpace L] {ϖ : L} {q m : ℕ}
     (hU : IsUnramInv ϖ σ q) (hm : 2 * m ≤ n) (hm' : n ≤ 2 * m + 1) {α : Fin m → ℂ}
@@ -123,17 +119,15 @@ theorem fSatake_key (hSph : SphericalExistsU) [CompleteSpace L] {ϖ : L} {q m : 
       exact hx a ⟨u, hu, k', hk', e ▸ e'⟩))
 
 /- English proof (translation)
-Introduce `b g k hb hk`. Establish `hb1 : IsBorelU (1 : GU σ n)` using `fun i j hij => by`. Simplify using `[Matrix.one_apply_ne (ne_of_lt hij).symm]`. Establish `hr : ∀ (y κ : GU σ n), κ ∈ KU σ n → φ (y * κ) = φ y` using `fun y κ hκ => by`. Use `hφ 1 y κ hb1 hκ` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[fSatake_chiDelta_one]`. Establish `hl : ∀ y : GU σ n, φ (b * y) = chiDeltaU q α b * φ y` using `fun y => by`. Use `hφ b y 1 hb (KU σ n).one_mem` as an intermediate fact. Simplify using `using this`. Take `⟨hbi, -⟩` from `hh`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Unfold `hAct`. Combine the equalities or inequalities in the displayed calculation. Use `finsum_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[show b * g * k * x.out = b * (g * (k * x.out)) by group, hl, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `_ = chiDeltaU q α b * ∑ᶠ x : GU σ n ⧸ KU σ n, h x.out • φ (g * (k * x.out)) := (mul_finsum _ _).symm`. Use `_ = chiDeltaU q α b * ∑ᶠ x : GU σ n ⧸ KU σ n, h x.out • φ (g * x.out) := by`. Use `congr 1`. Use `symm`. Rewrite using `[← finsum_comp_equiv (MulAction.toPerm k : (GU σ n ⧸ KU σ n) ≃ (GU σ n ⧸ KU σ n))]`.
+Reduce the equality to equality of the corresponding arguments. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `finsum_congr fun x => ?_` and prove the remaining obligations. Take `⟨κ, hκ⟩` from `out_smul (KU σ n) k x`. Simplify using `only [MulAction.toPerm_apply]`. Rewrite using `[hκ]`. Establish `e1 : h (k * x.out * κ) = h x.out` using `hbi ⟨k, hk⟩ κ x.out`.
-
-Rewrite using `[e1, show g * (k * x.out * κ) = g * (k * x.out) * κ by group, hr _ _ κ.2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fSatake_hAct_sph {q m : ℕ} {α : Fin m → ℂ} {h : GU σ n → ℂ} (hh : h ∈ Hecke ℂ (KU σ n))
     {φ : GU σ n → ℂ} (hφ : IsSphericalU q α φ) : IsSphericalU q α (hAct (KU σ n) h φ) := by
@@ -167,11 +161,11 @@ theorem fSatake_hAct_sph {q m : ℕ} {α : Fin m → ℂ} {h : GU σ n → ℂ} 
         rw [e1, show g * (k * x.out * κ) = g * (k * x.out) * κ by group, hr _ _ κ.2]
 
 /- English proof (translation)
-Introduce `L _ _ _ ϖ σ q n m hU hm hm' α hα h hh φ hφ`. Take `⟨φ0, -, -, huniq⟩` from `hSphericalExistsU L ϖ σ q n m hU hm hm' α hα`. Establish `h1` using `huniq _ (fSatake_hAct_sph hh hφ)`. Establish `h2` using `huniq _ hφ`. Establish `hv : hAct (KU σ n) h φ 1 = SatU ϖ q h α * φ 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `hAct`. Simplify using `only [one_mul, smul_eq_mul]`. Conclude with `fSatake_key hSphericalExistsU hU hm hm' hα hh hφ`. Rewrite using `[h1, hv]`. Use `conv_rhs => rw [h2]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `g`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem satake_transform_inert_prime (hSphericalExistsU : Formalism.UG.SphericalExistsU) : Formalism.UG.SatakeInert := by
   intro L _ _ _ ϖ σ q n m hU hm hm' α hα h hh φ hφ
@@ -189,15 +183,15 @@ theorem satake_transform_inert_prime (hSphericalExistsU : Formalism.UG.Spherical
   ring
 
 /- English proof (translation)
-Introduce `L _ _ _ ϖ σ q n m hU hm hm' α hα h₁ hh₁ h₂ hh₂`. Take `⟨φ0, hφ0, hφ01, -⟩` from `hSphericalExistsU L ϖ σ q n m hU hm hm' α hα`. Establish `hSI` using `satake_transform_inert_prime hSphericalExistsU L ϖ σ q n m hU hm hm' α hα`. Establish `hh₁'` using `hh₁`. Establish `hh₂'` using `hh₂`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hb₁, hs₁⟩` from `hh₁'`. Take `⟨hb₂, hs₂⟩` from `hh₂'`. Establish `hconv : conv (KU σ n) h₁ h₂ ∈ Hecke ℂ (KU σ n)` using `by show _ ∧ _`. Conclude with `⟨conv_biInv _ _ _ hb₁ hb₂, conv_finDosetSupp (isCommensurated_integral_unitary_of_unramified hU n) _ _ hs₁ hs₂⟩`. Establish `hb1 : IsBorelU (1 : GU σ n)` using `fun i j hij => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Simplify using `[Matrix.one_apply_ne (ne_of_lt hij).symm]`. Establish `hamf : φ0 ∈ AMF ℂ (⊥ : Subgroup (GU σ n)) (KU σ n) (1 : Representation ℂ (⊥ : Subgroup (GU σ n)) ℂ)`. Introduce `γ g κ`. Establish `hγ : (γ : GU σ n) = 1` using `Subgroup.mem_bot.mp γ.2`. Rewrite using `[hγ, one_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hφ0 1 g κ hb1 κ.2` as an intermediate fact. Simplify `this` using `[fSatake_chiDelta_one]`. Establish `hmul` using `hecke_act_mul (GU σ n) ⊥ (KU σ n) ℂ ℂ 1 (isCommensurated_integral_unitary_of_unramified hU n) h₁ hh₁ h₂ hh₂ φ0 hamf`. Establish `hs2 : IsSphericalU q α (SatU ϖ q h₂ α • φ0)` using `fun b g k hb hk => by`. Simplify using `only [Pi.smul_apply, smul_eq_mul, hφ0 b g k hb hk]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `hmul` using `[hSI _ hconv _ hφ0, hSI _ hh₂ _ hφ0, hSI _ hh₁ _ hs2]`. Use `congrFun hmul 1` as an intermediate fact. Simplify using `only [Pi.smul_apply, smul_eq_mul, hφ01, mul_one] at this`. Rewrite using `[this]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem satake_transform_multiplicative (hSphericalExistsU : Formalism.UG.SphericalExistsU) : Formalism.UG.SatMul := by
   intro L _ _ _ ϖ σ q n m hU hm hm' α hα h₁ hh₁ h₂ hh₂

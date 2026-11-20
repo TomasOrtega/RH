@@ -6,17 +6,17 @@ namespace ReciprocityTheory.ChartRestriction.G.T0
 open MvPolynomial
 
 /- English proof (translation)
-Set `fx : (UXVar D N →₀ ℕ) → (Fin (D + 2) →₀ ℕ)` to `fun s => Finsupp.equivFunOnFinite.symm (fun i => s (Sum.inr i))`. Set `fu : (UXVar D N →₀ ℕ) → (Option (Fin (D + 2) × Fin (N + 1)) →₀ ℕ)` to `fun s => Finsupp.equivFunOnFinite.symm (fun o => Option.elim o (n' - uDeg s) (fun p => s (Sum.inl p)))`. Establish `hmaps : ∀ s ∈ Q.support, (fun s => (fx s, fu s)) s ∈ (Finset.univ.finsuppAntidiag n) ×ˢ (Finset.univ.finsuppAntidiag n')`. Introduce `s hs`. Simplify using `only [Finset.mem_product, Finset.mem_finsuppAntidiag, Finset.subset_univ, and_true]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Simplify `hx s hs` using `[fx, xDeg]`. Use `hu s hs` as an intermediate fact. Simplify using `only [fu, Finsupp.coe_equivFunOnFinite_symm, Fintype.sum_option, Option.elim]`. Unfold `uDeg at this ⊢`.
+Prove the components needed by the constructor for the conclusion. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Use linear arithmetic over natural numbers and integers. Establish `hinj : Set.InjOn (fun s => (fx s, fu s)) Q.support`. Introduce `s _ t _ hst`. Simplify using `only [Prod.mk.injEq] at hst`. Use extensionality with `v`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Break down `v with p | i` into its components or cases. Use `congrArg (fun f => f (some p)) hst.2` as an intermediate fact. Simplify `this` using `[fu]`. Use `congrArg (fun f => f i) hst.1` as an intermediate fact. Simplify `this` using `[fx]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.card_product, Finset.card_finsuppAntidiag_nat_eq_choose, Finset.card_finsuppAntidiag_nat_eq_choose]`. Simplify using `only [Finset.card_univ, Fintype.card_fin, Fintype.card_option, Fintype.card_prod]`. Use `congr 1`. Rewrite using `[show D + 2 + n - 1 = n + D + 1 by omega]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.choose_symm_of_eq_add (by omega)`. Rewrite using `[show (D + 2) * (N + 1) + 1 + n' - 1 = n' + (D + 2) * (N + 1) by omega]`. Conclude with `Nat.choose_symm_of_eq_add (by omega)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_support_le {R : Type*} [CommSemiring R] {D N n n' : ℕ}
     (Q : MvPolynomial (UXVar D N) R) (hx : XHom n Q) (hu : UDegLE n' Q) :
@@ -63,7 +63,7 @@ noncomputable def Ey {D N : ℕ} (y : Fin (N + 1) → ℂ) :
   aeval (Sum.elim X fun i => ∑ j, X (i, j) * C (y j))
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem sum_le_sqrt_card_mul {α : Type*} (s : Finset α) (a : α → ℝ) :
     ∑ i ∈ s, a i ≤ Real.sqrt s.card * Real.sqrt (∑ i ∈ s, a i ^ 2) := by
@@ -73,21 +73,17 @@ theorem sum_le_sqrt_card_mul {α : Type*} (s : Finset α) (a : α → ℝ) :
     _ = Real.sqrt s.card * Real.sqrt (∑ i ∈ s, a i ^ 2) := Real.sqrt_mul (Nat.cast_nonneg _) _
 
 /- English proof (translation)
-Take `⟨θ, hθ⟩` from `(ReciprocityTheory.MultiplicativeHeights.Closed.torus_l2_cauchy_inequality _ (Ey y R)).2 β`. Use `set z := ReciprocityTheory.MultiplicativeHeights.torusPoint θ with hzdef`. Establish `hz : ∀ p, ‖z p‖ = 1`. Introduce `p`. Simplify using `only [hzdef, ReciprocityTheory.MultiplicativeHeights.torusPoint]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.norm_exp]`. Simplify using the standard rewrite rules. Use `set Y := ∑ j, ‖y j‖ with hY`. Use `set pt : UXVar D N → ℂ := fun v => eval z (Sum.elim X (fun i => ∑ j, X (i, j) * C (y j)) v) with hpt`. Establish `hev : eval z (Ey y R) = eval pt R`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Use `congrArg (fun φ => φ R) (MvPolynomial.comp_aeval (R := ℂ) (Sum.elim X fun i => ∑ j, X (i, j) * C (y j)) (aeval z))` as an intermediate fact. Simplify using `only [AlgHom.comp_apply] at this`. Combine the equalities or inequalities in the displayed calculation. Establish `hpt1 : ∀ p, ‖pt (Sum.inl p)‖ = 1` using `fun p => by simp [hpt, hz]`. Establish `hpt2 : ∀ i, ‖pt (Sum.inr i)‖ ≤ Y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i`. Simplify using `only [hpt, Sum.elim_inr, map_sum, map_mul, eval_X, eval_C]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, hz, one_mul]`. Establish `hY0 : 0 ≤ Y` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hmono : ∀ α ∈ R.support, ‖∏ v, pt v ^ α v‖ ≤ Y ^ n`. Introduce `α hα`. Rewrite using `[norm_prod, Fintype.prod_sum_type]`. Simplify using `only [norm_pow, hpt1, one_pow, Finset.prod_const_one, one_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcard` using `card_support_le R hx hu`. Combine the equalities or inequalities in the displayed calculation. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun α hα => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hmono α hα) (norm_nonneg _)`.
-
-Use `_ = (∑ α ∈ R.support, ‖coeff α R‖) * Y ^ n := by rw [Finset.sum_mul]`. Use `_ ≤ (Real.sqrt R.support.card * ReciprocityTheory.MultiplicativeHeights.polyL2 R) * Y ^ n := by gcongr`. Conclude with `sum_le_sqrt_card_mul _ _`. Use `_ ≤ _ := by`. Rewrite using `[mul_comm (Real.sqrt _) (ReciprocityTheory.MultiplicativeHeights.polyL2 R)]`.
-
-Use `gcongr`. Unfold `ReciprocityTheory.MultiplicativeHeights.polyL2`. Check the signs of the components of the expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem coeff_Ey_le {D N n n' : ℕ} (R : MvPolynomial (UXVar D N) ℂ) (hx : XHom n R)
     (hu : UDegLE n' R) (y : Fin (N + 1) → ℂ) (β : Fin (D + 2) × Fin (N + 1) →₀ ℕ) :

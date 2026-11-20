@@ -14,9 +14,7 @@ noncomputable section
 namespace GlobalTheory.LBObs.PairInj
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `H2.mk_surjective _ c`. Rewrite using `[CoefMap.pullCohomologyTwo_class, CoefMap.pullCohomologyTwo_class, CoefMap.pullCohomologyTwo_class]`. Use `congrArg _ (Subtype.ext ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `T T' T'' a b`. Use `show extHom R₁ (coefHom (CoefMap.restrict (OPair f₀ t₀) K) T'') (extHom R₁ (coefHom (pairRes f₀ t₀) (K.obj T'')) _) = extHom R₁ (coefHom (CoefMap.restrict (OAff t₀) (K ⋙ pairFst f₀)) T'') _`.
-
-Conclude with `(PairExt.extHom_of_id R₁ _ (fun _ ↦ rfl) _).trans ((PairExt.extHom_of_id R₁ _ (fun _ ↦ rfl) _).trans (PairExt.extHom_of_id R₁ _ (fun _ ↦ rfl) _).symm)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem pull2_pairRes_restrict (R₀ R₁ : Type) [CommRing R₀] [CommRing R₁] [Algebra R₀ R₁] {X₀ Z₀ : Scheme.{0}}
     (t₀ : Z₀ ⟶ Sp R₀) (f₀ : Z₀ ⟶ X₀) {D : Type} [Category.{0} D] (K : D ⥤ (Pair f₀)ᵒᵖ)
@@ -34,9 +32,9 @@ theorem pull2_pairRes_restrict (R₀ R₁ : Type) [CommRing R₀] [CommRing R₁
     (PairExt.extHom_of_id R₁ _ (fun _ ↦ rfl) _).symm)
 
 /- English proof (translation)
-Introduce `R₀ R₁ _ _ _ X₀ Z₀ t₀ f₀ D _ _ K hB x y e`. Establish `hG` using `(BasisExt.restrict_ext_bijective R₀ R₁ Z₀ t₀ D (K ⋙ pairFst f₀) hB.1 hB.2).2.1`. Establish `hP` using `((PairExt.pairRes_ext_bijective R₀ R₁ X₀ Z₀ t₀ f₀).1.2).2`. Take `⟨x0, rfl⟩` from `hP x`. Take `⟨y0, rfl⟩` from `hP y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `e` using `[pull2_pairRes_restrict, pull2_pairRes_restrict]`. Rewrite using `[hG e]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem restrict_pair_injective : ∀ (R₀ R₁ : Type) [CommRing R₀] [CommRing R₁] [Algebra R₀ R₁] (X₀ Z₀ : Scheme.{0}) (t₀ : Z₀ ⟶ Sp R₀) (f₀ : Z₀ ⟶ X₀) (D : Type) [Category.{0} D] [Quiver.IsThin D] (K : D ⥤ (Pair f₀)ᵒᵖ), IsBas (opOf (K ⋙ pairFst f₀)) → Function.Injective (extMap R₁ (CoefMap.restrict (OPair f₀ t₀) K)).pull2 := by
   intro R₀ R₁ _ _ _ X₀ Z₀ t₀ f₀ D _ _ K hB x y e

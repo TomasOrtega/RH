@@ -21,7 +21,7 @@ variable {O C : Type} [CommRing O] [Field C] [Algebra O C]
   {U : Type} [AddCommGroup U] [Module C U] [Module O U] [IsScalarTower O C U] {n : ℕ}
 
 /- English proof (translation)
-Establish `hl : LinearIndependent C g.row` using `LinearIndependent.of_comp (Fintype.linearCombination C w) h`. Establish `hu` using `(Matrix.isUnit_iff_isUnit_det _).1 (Matrix.linearIndependent_rows_iff_isUnit.1 hl)`. Rewrite `hu` using `[Matrix.det_of_lowerTriangular _ fun i j hij => hg i j hij]`. Conclude with `Finset.prod_ne_zero_iff.1 hu.ne_zero i (Finset.mem_univ i)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diag_ne_zero_of_linearIndependent {w : Fin n → U} {g : Matrix (Fin n) (Fin n) C}
     (hg : ∀ i j, i < j → g i j = 0) (h : LinearIndependent C fun i => ∑ j, g i j • w j) (i : Fin n) : g i i ≠ 0 := by
@@ -31,11 +31,11 @@ theorem diag_ne_zero_of_linearIndependent {w : Fin n → U} {g : Matrix (Fin n) 
   exact Finset.prod_ne_zero_iff.1 hu.ne_zero i (Finset.mem_univ i)
 
 /- English proof (translation)
-Establish `hd : IsUnit g.det` using `lowerTri_isUnit_det g hg fun i => (diag_ne_zero_of_linearIndependent hg h.1 i).isUnit`. Establish `e : (g' * g⁻¹) * g = g'` using `Matrix.nonsing_inv_mul_cancel_right _ _ hd`. Establish `e1 : ∑ j, (g' * g⁻¹) i j • ∑ k, g j k • w k = ∑ k, g' i k • w k`. Simplify using `only [Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul, ← Matrix.mul_apply, e]`. Take `⟨b, hb⟩` from `(h.sum_mem_iff ((g' * g⁻¹) i)).1 (e1 ▸ h') i`. Establish `e2` using `lowerTri_mul_diag _ _ (lowerTri_mul _ _ hg' (lowerTri_inv g hg hd)) hg i`. Rewrite `e2` using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e2, map_mul, ← hb]`. Conclude with `mul_le_of_le_one_left' (hv.map_le_one b)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsLatBasis.diag_le {v : Valuation C ℝ≥0} (hv : v.Integers O) {La : Submodule O U} {w : Fin n → U}
     {g g' : Matrix (Fin n) (Fin n) C} (hg : ∀ i j, i < j → g i j = 0) (hg' : ∀ i j, i < j → g' i j = 0)
@@ -55,7 +55,7 @@ theorem IsLatBasis.diag_le {v : Valuation C ℝ≥0} (hv : v.Integers O) {La : S
   exact mul_le_of_le_one_left' (hv.map_le_one b)
 
 /- English proof (translation)
-The claim follows from `(h.2.le (Submodule.subset_span ⟨i, rfl⟩)).1`.
+A detailed English derivation is pending.
 -/
 theorem IsLatBasis.mem {La : Submodule O U} {w : Fin n → U} (h : IsLatBasis C La w) (i : Fin n) : w i ∈ La :=
   (h.2.le (Submodule.subset_span ⟨i, rfl⟩)).1
@@ -63,13 +63,13 @@ theorem IsLatBasis.mem {La : Submodule O U} {w : Fin n → U} (h : IsLatBasis C 
 end Lat
 
 /- English proof (translation)
-Use `letI := io.toAlgebra`. Take `⟨-, kO, P, ψ, z, hP, hz, g, a, x, hc, hg, ha, hx, hb⟩` from `h`. Take `⟨-, kO', P', ψ', z', hP', hz', g', a', x', hc', hg', ha', hx', hb'⟩` from `h'`. Take `rfl : z = z'` from `FlagTan.frMap_unique hz hz'`. Establish `key` using `fun τ => sum_bLie_mem_htLat_iff_of_pointOver E H Dw l Xo c p C v O T _ _ kO kO' P P' ψ ψ' hP hP' τ _ (z.u τ) (x τ) (x' τ) (hx τ) (hx' τ)`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hd` using `fun τ => diag_ne_zero_of_linearIndependent (hg τ) (hb τ).1`. Establish `hd'` using `fun τ => diag_ne_zero_of_linearIndependent (hg' τ) (hb' τ).1`. Establish `ha0 : a ≠ 0` using `by rintro rfl; simp at ha`. Establish `ha0' : a' ≠ 0` using `by rintro rfl; simp at ha'`. Set `t : Ix Dw → Cˣ` to `fun i => Option.rec (Units.mk0 a ha0) (fun s => Units.mk0 _ (hd s.1 s.2)) i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `t' : Ix Dw → Cˣ` to `fun i => Option.rec (Units.mk0 a' ha0') (fun s => Units.mk0 _ (hd' s.1 s.2)) i`. Establish `b1 : FrBor t z y` using `(frBor_iff_frChg z y t).2 ⟨g, hg, fun _ _ => rfl, hc⟩`. Establish `b2 : FrBor t' z y'` using `(frBor_iff_frChg z y' t').2 ⟨g', hg', fun _ _ => rfl, hc'⟩`. Establish `hv : ∀ i : Ix Dw, v (t' i).val = v (t i).val`. Introduce and unpack `(_ | ⟨τ, i⟩)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `ha'.trans ha.symm`. Conclude with `le_antisymm (IsLatBasis.diag_le P.integers (hg τ) (hg' τ) (hb τ) i ((key τ _).2 ((hb' τ).mem i))) (IsLatBasis.diag_le P.integers (hg' τ) (hg τ) (hb' τ) i ((key τ _).1 ((hb τ).mem i)))`. Use `⟨t' * t⁻¹, (frBor_calculus E H Dw l Xo c C y z y').2.2.1 _ _ ((frBor_calculus E H Dw l Xo c C z y y).2.2.2 t b1) b2, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.mul_apply, Pi.inv_apply, Units.val_mul, Units.val_inv_eq_inv_val, map_mul, map_inv₀, hv]`. Conclude with `mul_inv_cancel₀ ((Valuation.ne_zero_iff v).2 (t i).ne_zero)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsHTFrame.exists_frBor {E : Type} [Field E] [NumberField E] [IsCMField E]
     {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
@@ -107,9 +107,9 @@ theorem IsHTFrame.exists_frBor {E : Type} [Field E] [NumberField E] [IsCMField E
 attribute [local instance] algPadicInt algPadicField towerPadic factPadic PadicComplexHost.isAdicComplete
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c p _ _ T io y₀ k y y' h h'`. Use `letI := H.starRing`. Take `⟨t, ht, hv⟩` from `IsHTFrame.exists_frBor h h'`. Establish `hn : ∀ i, ‖(t i : ℂ_[p])‖ = 1` using `fun i => by`. Rewrite using `[PadicComplex.norm_eq_norm, Valuation.norm_def, PadicComplex.RankOne.hom_eq_embedding, Valuation.embedding_restrict, hv i, NNReal.coe_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨t, ht, hn⟩, fun e f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[FlagTan.evR_frBor hf ht, norm_mul, Units.coe_prod, norm_prod]`. Simplify using `[norm_zpow, hn]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isHTFrameCp_indep : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (p : ℕ) [Fact p.Prime] [Algebra c.F ℂ_[p]] (T : CDVR) (io : c.F →+* T.Fr) (y₀ : IntFr Xo c T io) (k : letI := io.toAlgebra; T.Fr →ₐ[c.F] ℂ_[p]) (y y' : FrPt Xo c ℂ_[p]), IsHTFrameCp p y₀ k y → IsHTFrameCp p y₀ k y' → (∃ t : Ix Dw → ℂ_[p]ˣ, FrBor t y y' ∧ ∀ i, ‖(t i : ℂ_[p])‖ = 1) ∧ ∀ (e : Ix Dw → ℤ), ∀ f ∈ secZ Xo c e, ‖evR Xo c f y‖ = ‖evR Xo c f y'‖ := by
   intro E _ _ _ H Dw l Xo c p _ _ T io y₀ k y y' h h'

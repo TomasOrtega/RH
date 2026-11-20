@@ -10,19 +10,17 @@ open Formalism.MainNotions.S NumberField GlobalTheory.Count GlobalTheory.Indefin
 namespace GlobalTheory.StepTens
 
 /- English proof (translation)
-Take `⟨m, hm, -⟩` from `GlobalTheory.rowsAut_tens_continuousMultilinear B`. Establish `hloc` using `(GlobalTheory.StepLoc.stepSpace_props_of_diff B.I.n (B.I.ε v) (B.H v) (B.σ v) (B.lam v) (hU v) (hd v) P).2.1 X.1 X.2 (u v) (hu v)`. Establish `h1 : ∀ v, B.σ v 1 = 1` using `fun v => (hU v).1.1`. Use `set y := GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.dAct (B.σ v) X.1 (u v) with hy`. Establish `hder : ∀ v', HasDerivAt (GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.orbit (B.σ v') (atPlace B v X v').1 (u v')) ((Pi.single v y : ∀ v, B.H v) v') 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v'`. Distinguish the cases in `h : v' = v`. Substitute `h` using the available equality. Simplify `hloc.1` using `[atPlace]`. Establish `h0 : atPlace B v X v' = 0`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[atPlace, h]`. Rewrite using `[h0, Pi.single_eq_of_ne h]`. Establish `: GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.orbit (B.σ v') (0 : gLie (B.I.ε v')).1 (u v') = fun _ => u v'`. Use function extensionality and compare the values at `t`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.orbit, h1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `hasDerivAt_const _ _`. Establish `hT` using `(GlobalTheory.TensDer.hasDerivAt_orbit_tens B (atPlace B v X) u _ hder h1).deriv`. Use `⟨Function.update u v y, ?_, ?_⟩` and prove the remaining obligations. Introduce `v'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `h : v' = v`. Substitute `h` using the available equality. Simplify using `using hloc.2`. Rewrite using `[Function.update_of_ne h]`. Conclude with `GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.stepSpace_mono _ _ _ (Nat.le_succ P) (hu v')`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `dAct`. Rewrite using `[hT, Finset.sum_eq_single v]`. Simplify using `only [Pi.single_eq_same]`. Introduce `v' _ h`. Rewrite using `[Pi.single_eq_of_ne h, ← hm]`.
-
-Conclude with `m.map_coord_zero v' (by simp)`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dAct_tens_of_diff (B : RowsAut) (hU : ∀ v, IsURepOn (UJset (B.I.ε v)) (B.σ v))
     (hd : ∀ v P, ∀ w ∈ GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.stepSpace (B.I.ε v) (B.lam v) (B.σ v) P,
@@ -68,11 +66,11 @@ theorem dAct_tens_of_diff (B : RowsAut) (hU : ∀ v, IsURepOn (UJset (B.I.ε v))
     · simp
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil`. Use `⟨u, fun v => ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[List.length_nil, GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.stepSpace_zero]`. Conclude with `hu v`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `cons X l ih`. Take `⟨u', h1, h2⟩` from `ih`. Take `⟨u'', h3, h4⟩` from `dAct_tens_of_diff B hU hd l.length X.1 X.2 u' h1`. Use `⟨u'', h3, ?_⟩` and prove the remaining obligations. Rewrite using `[← h4, ← h2]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem wordAct_tens_of_diff (B : RowsAut) (hU : ∀ v, IsURepOn (UJset (B.I.ε v)) (B.σ v))
     (hd : ∀ v P, ∀ w ∈ GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.stepSpace (B.I.ε v) (B.lam v) (B.σ v) P,
@@ -94,17 +92,17 @@ theorem wordAct_tens_of_diff (B : RowsAut) (hU : ∀ v, IsURepOn (UJset (B.I.ε 
     rfl
 
 /- English proof (translation)
-Introduce `w hw`. Take `⟨m, hm, -⟩` from `GlobalTheory.rowsAut_tens_continuousMultilinear B`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨l, u, hl, hu, rfl⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨u', h1, h2⟩` from `wordAct_tens_of_diff B hU hd u hu l`. Conclude with `⟨1, fun _ => u', fun _ v => GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.stepSpace_mono _ _ _ hl (h1 v), by simp [h2]⟩`. Consider the case `zero => exact ⟨0, fun i => i.elim0, fun i => i.elim0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨k, u, hu, rfl⟩` from `hx`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨k', u', hu', rfl⟩` from `hy`. Use `⟨k + k', Fin.append u u', ?_, ?_⟩` and prove the remaining obligations. Introduce `l`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) l` and prove the remaining obligations. Simplify using `using hu i`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hu' i`. Simplify using `[Fin.sum_univ_add]`. Consider the case `smul c x _ hx`. Take `⟨k, u, hu, rfl⟩` from `hx`. Take `⟨v₀⟩ : Nonempty (InfinitePlace B.I.F)` from `inferInstance`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨k, fun l => Function.update (u l) v₀ (c • u l v₀), ?_, ?_⟩` and prove the remaining obligations. Introduce `l v`. Distinguish the cases in `h : v = v₀`. Substitute `h` using the available equality. Simplify using `using Submodule.smul_mem _ c (hu l v)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hu l v` using `[Function.update_of_ne h]`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← hm, ← hm, m.map_update_smul, Function.update_eq_self]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem stepSpan_le_of_differentiable (B : RowsAut) (hU : ∀ v, IsURepOn (UJset (B.I.ε v)) (B.σ v))
     (hd : ∀ v P, ∀ w ∈ GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.stepSpace (B.I.ε v) (B.lam v) (B.σ v) P,

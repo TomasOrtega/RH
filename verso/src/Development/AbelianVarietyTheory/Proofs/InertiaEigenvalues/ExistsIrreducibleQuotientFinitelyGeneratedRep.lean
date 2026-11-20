@@ -9,19 +9,17 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil ValuativeRel Top
 namespace GlobalTheory.IrrQuot
 
 /- English proof (translation)
-Introduce `G V _ _ _ ρ s hV hspan`. Establish `key : ∀ T : Subrepresentation ρ, (∀ v ∈ s, v ∈ T.toSubmodule) → T = ⊤`. Introduce `T hT`. Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises. Use `eq_top_iff.2 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hspan]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `w ⟨g, v, hv, rfl⟩`. Conclude with `T.apply_mem_toSubmodule g (hT v hv)`. Use `haveI : Module.Finite (MonoidAlgebra ℂ G) ρ.asModule := by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `t : Finset ρ.asModule` to `s`. Use `⟨⟨t, ?_⟩⟩` and prove the remaining obligations. Establish `h` using `key (Subrepresentation.ofSubmodule' (Submodule.span (MonoidAlgebra ℂ G) (t : Set ρ.asModule))) (fun v hv => Submodule.subset_span (R := MonoidAlgebra ℂ G) (s := (t : Set ρ.asModule)) hv)`. Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations. Establish `hx : x ∈ Subrepresentation.ofSubmodule' (Submodule.span (MonoidAlgebra ℂ G) (t : Set ρ.asModule))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Rewrite using `[h]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `hx`. Use `haveI : IsCoatomic (Subrepresentation ρ) := (OrderIso.isCoatomic_iff Subrepresentation.subrepresentationSubmoduleOrderIso).2 inferInstance`. Establish `hbt : (⊥ : Subrepresentation ρ) ≠ ⊤`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h`. Take `⟨v, hv⟩` from `exists_ne (0 : V)`. Establish `: v ∈ (⊤ : Subrepresentation ρ).toSubmodule` using `trivial`. Rewrite `this` using `[← h]`. Conclude with `hv this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨M, hM, -⟩` from `(eq_top_or_exists_le_coatom (⊥ : Subrepresentation ρ)).resolve_left hbt`. Use `⟨_, inferInstance, inferInstance, GlobalTheory.SmGL.subQuot ⊤ M, GlobalTheory.SmGL.isIrreducible_subQuot hM.covBy_top, ?_⟩` and prove the remaining obligations. Use `⟨⟨(Submodule.mkQ _).comp (LinearMap.codRestrict (⊤ : Subrepresentation ρ).toSubmodule LinearMap.id (fun _ => trivial)), fun g => rfl⟩, ?_⟩` and prove the remaining obligations. Introduce `y`. Take `⟨⟨v, _⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`.
-
-Conclude with `⟨v, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem main : ∀ (G V : Type) [Group G] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V) (s : Finset V), Nontrivial V → Submodule.span ℂ {w | ∃ g : G, ∃ v ∈ s, w = ρ g v} = ⊤ → ∃ (W : Type) (_ : AddCommGroup W) (_ : Module ℂ W) (τ : Representation ℂ G W), τ.IsIrreducible ∧ ∃ f : ρ.IntertwiningMap τ, Function.Surjective f := by
   intro G V _ _ _ ρ s hV hspan

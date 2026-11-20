@@ -8,7 +8,7 @@ open Matrix
 namespace ReciprocityTheory.PGsh.Up
 
 /- English proof (translation)
-Take `⟨k, c, ⟨f⟩, hx⟩` from `h`. Conclude with `⟨k, c, ⟨e.trans f⟩, hx⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma hasLen_of_equiv {C : Type} [Field C] {v : Valuation C NNReal} {R : Type} [CommRing R]
     [Algebra R C] {M N : Type} [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N]
@@ -17,15 +17,13 @@ lemma hasLen_of_equiv {C : Type} [Field C] {v : Valuation C NNReal} {R : Type} [
   exact ⟨k, c, ⟨e.trans f⟩, hx⟩
 
 /- English proof (translation)
-Use `set e := Fintype.equivFin κ`. Use `set X' := X.submatrix e.symm e.symm`. Establish `hdet : X'.det = X.det` using `Matrix.det_submatrix_equiv_self e.symm X`. Set `Φ : (κ → R) ≃ₗ[R] (Fin (Fintype.card κ) → R)` to `LinearEquiv.funCongrLeft R R e.symm`. Establish `hrange : (LinearMap.range X.mulVecLin).map (Φ : (κ → R) →ₗ[R] (Fin (Fintype.card κ) → R)) = LinearMap.range X'.mulVecLin`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨y, rfl⟩, rfl⟩`. Use `⟨y ∘ e.symm, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Use `show (X' *ᵥ (y ∘ e.symm)) i = (X *ᵥ y) (e.symm i)`. Simplify using `only [X', Matrix.mulVec, dotProduct, Matrix.submatrix_apply, Function.comp_apply]`. Conclude with `Equiv.sum_comp e.symm (fun k => X (e.symm i) k * y k)`. Introduce and unpack `⟨y, rfl⟩`. Use `⟨X *ᵥ (y ∘ e), ⟨y ∘ e, rfl⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVecLin_apply, X', Matrix.submatrix_mulVec_equiv, Φ, LinearEquiv.funCongrLeft_apply, LinearMap.funLeft_apply, Function.comp_apply]`. Simplify using the standard rewrite rules. Establish `h` using `Smith.hasLen_coker_det hv X'`. Rewrite `h` using `[hdet]`.
-
-Conclude with `hasLen_of_equiv (Submodule.Quotient.equiv _ _ Φ hrange) h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasLen_coker_det' {C : Type} [Field C] (v : Valuation C NNReal) (R : Type) [CommRing R]
     [Algebra R C] (hv : v.Integers R) (κ : Type) [Fintype κ] [DecidableEq κ] (X : Matrix κ κ R) :
@@ -55,13 +53,13 @@ theorem hasLen_coker_det' {C : Type} [Field C] (v : Valuation C NNReal) (R : Typ
   exact hasLen_of_equiv (Submodule.Quotient.equiv _ _ Φ hrange) h
 
 /- English proof (translation)
-The claim follows from `lenId_of (fun C _ v R _ _ hv => hasLen_coker_det' v R hv) hB`.
+A detailed English derivation is pending.
 -/
 theorem lenId_of_B (hB : LenIdBStatement) : LenIdStatement :=
   lenId_of (fun C _ v R _ _ hv => hasLen_coker_det' v R hv) hB
 
 /- English proof (translation)
-The claim follows from `hasLen_ext (hasLen_coker_det' v R hv) ι π hι hπ hex ha hc`.
+A detailed English derivation is pending.
 -/
 theorem hasLen_ext' {C : Type} [Field C] {v : Valuation C NNReal} {R : Type} [CommRing R]
     [Algebra R C] (hv : v.Integers R)

@@ -25,13 +25,13 @@ namespace GlobalTheory.BigOn.Exp.TwConj
 open GlobalTheory.ConjTwist
 
 /- English proof (translation)
-Take `⟨gR, cR0, cL0, hT, u, hu, hF⟩` from `h`. Take `⟨gR', cR0', cL0', hT', u', hu', hF'⟩` from `h'`. Establish `huu : u' = u` using `funext fun τ => Subtype.ext ((hu' τ).trans (hu τ).symm)`. Substitute `huu` using the available equality. Take `⟨a, ⟨k, hk, hak⟩, ha⟩` from `GlobalTheory.T.definiteSideRealisations_coefMap_differ_rootOfUnity _ _ _ _ _ _ _ _ _ _ _ _ _ hT hT' j`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Take `⟨F, x, hx⟩` from `GlobalTheory.T.exists_coefficientPolynomial_GLFunction_ne_zero (FWT.lamV D j)`. Establish `e1` using `hF' F`. Rewrite `e1` using `[ha]`. Use `erw [LinearMap.map_smul, LinearMap.map_smul, hF F] at e1`. Establish `e2` using `congrFun e1 x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul] at e2`. Establish `hc : c' = D.what₂.embLL a * c`. Establish `h3 : D.what₂.embLL a * c * coefFn D.what₂.embLL (FWT.lamV D j) (F : Pol D.what₂.LL D.what₂.Tau (Vc D j).rank) x = c' * coefFn D.what₂.embLL (FWT.lamV D j) (F : Pol D.what₂.LL D.what₂.Tau (Vc D j).rank) x`. Rewrite using `[mul_assoc]`. Conclude with `e2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mul_right_cancel₀ hx h3).symm`. Use `⟨k, hk, ?_⟩` and prove the remaining obligations. Rewrite using `[hc, mul_pow, ← map_pow, hak, map_one, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem scale_pow_eq_of_isScale {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T : Type}
     {A3 : FamIn3 D.what₂.LL Γ Pl0 I0 (List ℕ) T D.R.m}
@@ -58,7 +58,7 @@ theorem scale_pow_eq_of_isScale {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl
   rw [hc, mul_pow, ← map_pow, hak, map_one, one_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [coefFn, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_map, RingHom.id_comp]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem coefFn_map_eq {D : D7} {n : ℕ} {K : Type} [Field K] (σ : K →+* ℂ) (lam : D.what₂.Tau → DomWeight n)
     (F : Formalism.L2.DIV.Pol K D.what₂.Tau n) : coefFn (RingHom.id ℂ) lam (MvPolynomial.map σ F) = coefFn σ lam F := by
@@ -66,15 +66,15 @@ theorem coefFn_map_eq {D : D7} {n : ℕ} {K : Type} [Field K] (σ : K →+* ℂ)
   simp only [coefFn, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_map, RingHom.id_comp]
 
 /- English proof (translation)
-Proceed by induction on `hP using Submodule.span_induction with`. Consider the case `mem P hP`. Take `⟨Fv, -, rfl⟩` from `hP`. Use `⟨GlobalTheory.CoefModel.mapVV (Formalism.L2.Host.embLL0 D) (lamV D j) Fv, by rw [c.map_smul, Φ.map_smul], fun τ hτ => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `MvPolynomial.map _ _ = MvPolynomial.map _ (MvPolynomial.map _ _)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[MvPolynomial.map_map, show (τ : ℂ →+* ℂ).comp (Formalism.L2.Host.embLL0 D) = Formalism.L2.Host.embLL0 D from RingHom.ext hτ]`. Consider the case `zero => exact ⟨0, by rw [c.map_zero, Φ.map_zero, smul_zero], fun τ _ => (map_zero _).symm⟩`. Consider the case `add P₁ P₂ _ _ h1 h2`. Take `⟨y1, rfl, c1⟩` from `h1`. Take `⟨y2, rfl, c2⟩` from `h2`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨y1 + y2, by rw [c.map_add, Φ.map_add, smul_add], fun τ hτ => ?_⟩` and prove the remaining obligations. Establish `e1` using `c1 τ hτ`. Establish `e2` using `c2 τ hτ`. Unfold `ConjVec at e1 e2 ⊢`. Rewrite using `[Submodule.coe_add, map_add, ← e1, ← e2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul a P₁ _ h1`. Take `⟨y1, rfl, c1⟩` from `h1`. Use `⟨(a : ℂ) • y1, ?_, fun τ hτ => ?_⟩` and prove the remaining obligations. Rewrite using `[c.map_smul, Φ.map_smul, smul_comm a₀]`. Both sides reduce to the same expression.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e1` using `c1 τ hτ`. Unfold `ConjVec at e1 ⊢`. Take `⟨o, ho⟩` from `a.2`. Establish `ha : (τ : ℂ →+* ℂ) (a : ℂ) = a` using `by rw [← ho]; exact hτ _`. Rewrite using `[Submodule.coe_smul, MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, ← e1, ha]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_fixed_of_mem_span {D : D7} (j : Fin D.R.m) {W M : Type} [AddCommGroup W] [Module ℂ W] [AddCommGroup M] [Module ℂ M]
     (Φ : W →ₗ[ℂ] M) (c : VsV D j ℂ →ₗ[ℂ] W) (a₀ : ℂ) (S : Set (VV (↥D.LL0) (lamV D j))) {P : M}
@@ -111,19 +111,19 @@ theorem exists_fixed_of_mem_span {D : D7} (j : Fin D.R.m) {W M : Type} [AddCommG
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `hA`. Use `AtTw.imp (AtTw.and hA lowAt_holds) fun Fm x hx i p hr hm w _ j H => ?_` and prove the remaining obligations. Take `⟨⟨-, -, hin⟩, hlow⟩` from `H`. Establish `hR` using `ratHyp0_at_point Fm x hx i p hr hm _ hin hlow j`. Introduce `ρ ν hρ hp hN`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hν0, c₀, hsc, n, hn, hνn⟩` from `hN`. Take `⟨-, -, -, -, u, hu, -⟩` from `id hsc`. Take `⟨c, hc⟩` from `GlobalTheory.ExtCoeff.exists_extC _ _ _ _ _ _ _ j Unit (fun _ => p.P.A3.A.μ0) (p.O j)`. Establish `hB` using `hρ.base ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w)`. Establish `hBo` using `baseOf_of_realPin hR.core.lev hρ hp ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `H1` using `GlobalTheory.CoefLatConj.coefLat_conj (Fm.D x i) _ _ _ p.P.A3.A p.T p.R.toRealDat (F2 p) p.κ p.v₀ p.O hR.core hR.fw hR.io j hR.pins c hc u hu _ hB hBo`. Take `⟨κ, hκ0, hκ, H2⟩` from `H1`. Establish `hspan` using `(H2.2 _ (Formalism.L2.Host.embLL0 _) (labLL0 _) (smallInt _) (smallInt_isCoefRing _)).1`. Establish `hO : OMPins p.T p.R.toRealDat p.κ p.v₀ p.O j` using `hR.pins`. Establish `hfield` using `hO.2.lift.field`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc0` using `hO.2.lift.c0`. Take `⟨gramR, c0R, c0L, hft, hbc⟩` from `hc0`. Establish `hcL : ∀ F : VV (Fm.D x i).what₂.LL (lamV (Fm.D x i) j), c (GlobalTheory.CoefModel.mapVV (Fm.D x i).what₂.embLL (lamV (Fm.D x i) j) F) = c0L j F` using `fun F => by`. Take `⟨v', hv', hv0⟩` from `hbc F`. Use `(hc v' _ ?_).trans hv0` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `MvPolynomial.map (Fm.D x i).what₂.embLL _ = _`. Rewrite using `[hv', MvPolynomial.map_map, hfield]`. Establish `hκs : IsScale p.R p.v₀ (baseW (Fm.ex x hx i) w j ρ) κ` using `⟨gramR, c0R, c0L, hft, u, hu, fun F => (congrArg (fun z => harmFn _ _ _ (p.R.ioP j (PiTensorProduct.tprod ℂ u) z)) (hcL F)).symm.trans ((hκ _).trans (congrArg (κ • ·) (coefFn_map_eq _ _ _)))⟩`. Take `⟨k, hk, hkk⟩` from `scale_pow_eq_of_isScale p.R p.v₀ _ hsc hκs`. Establish `hφc : phs p j * c₀ ≠ 0` using `fun h0 => hν0 ((pow_eq_zero_iff hn).1 (hνn.trans (by rw [h0, zero_pow hn])))`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hφ : phs p j ≠ 0` using `left_ne_zero_of_mul hφc`. Use `⟨c, u, ν / (phs p j * κ), hc, hu, ⟨n * k, Nat.pos_of_ne_zero (Nat.mul_ne_zero hn hk), ?_⟩, ?_⟩` and prove the remaining obligations. Establish `e : ν ^ (n * k) = (phs p j * κ) ^ (n * k)`. Rewrite using `[pow_mul, hνn, ← pow_mul, mul_pow, mul_pow, mul_comm n k, pow_mul c₀, pow_mul κ, hkk]`. Rewrite using `[div_pow, e, div_self (pow_ne_zero _ (mul_ne_zero hφ hκ0))]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `h₀ P hP`. Take `⟨y, hPy, hy⟩` from `exists_fixed_of_mem_span j (p.R.ioP j (PiTensorProduct.tprod ℂ u)) c κ⁻¹ _ ((hspan (finPt _ h₀)).le hP)`. Use `⟨y, ?_, hy⟩` and prove the remaining obligations. Establish `e : ν * κ⁻¹ = ν / (phs p j * κ) * phs p j` using `by field_simp`. Conclude with `(congrArg (ν • ·) hPy).trans ((smul_smul ν κ⁻¹ _).trans (congrArg (· • _) e))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem coefAt_of_twAdm : TwAdm → CoefAt := by
   intro hA

@@ -14,9 +14,9 @@ variable {k : Type*} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchi
 variable {D : Type*} [Fintype D] [DecidableEq D]
 
 /- English proof (translation)
-Use `⟨fun x => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[← hG, vecMul_vecMul, ← Units.val_mul, inv_mul_cancel_right, Units.val_mul, ← vecMul_vecMul, hg.1, hG]`. Establish `h1` using `hg.2 _ ((hG x).2 hx)`. Rewrite `h1`, the goal using `[mem_smul_lat]`. Rewrite using `[← hG]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `h1 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Units.smul_def, Units.smul_def, smul_vecMul, vecMul_vecMul, vecMul_vecMul, sub_mul, mul_sub, ← Units.val_mul, inv_mul_cancel_right, Units.val_mul, mul_one, one_mul]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_mem_glLatCong {Λ Λ' : Submodule 𝒪[k] (D → k)} {u : kˣ} (G : GL D k)
     (hG : ∀ x, x ᵥ* G.val ∈ Λ' ↔ x ∈ Λ) {g : GL D k} (hg : g ∈ glLatCong u Λ') :
@@ -31,7 +31,7 @@ theorem conj_mem_glLatCong {Λ Λ' : Submodule 𝒪[k] (D → k)} {u : kˣ} (G :
       ← Units.val_mul, inv_mul_cancel_right, Units.val_mul, mul_one, one_mul]
 
 /- English proof (translation)
-Use `forall_congr' fun j => ?_` and prove the remaining obligations. Establish `h0 : 0 < valuation k (c j : k)` using `zero_lt_iff.2 (by simp)`. Rewrite using `[diagGL_val, vecMul_diagonal, map_mul, h, Units.val_mul, map_mul]`. Conclude with `mul_le_mul_iff_left₀ h0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vecMul_diagGL_mem (b c d : D → kˣ) (h : ∀ j, d j = b j * c j) (x : D → k) :
     x ᵥ* (diagGL c).val ∈ diagLat d ↔ x ∈ diagLat b := by
@@ -41,9 +41,9 @@ theorem vecMul_diagGL_mem (b c d : D → kˣ) (h : ∀ j, d j = b j * c j) (x : 
   exact mul_le_mul_iff_left₀ h0
 
 /- English proof (translation)
-Establish `hm : ∀ x, v • x ∈ v • Λ ↔ x ∈ Λ` using `fun x => by rw [mem_smul_lat, inv_smul_smul]`. Use `⟨fun x => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[← hm, ← hm x, ← hg.1 (v • x), Units.smul_def v x, smul_vecMul, ← Units.smul_def v (x ᵥ* g.val)]`. Establish `h1` using `hg.2 _ ((hm x).2 hx)`. Rewrite `h1` using `[mem_smul_lat, mem_smul_lat]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[mem_smul_lat]`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[smul_comm v⁻¹, Units.smul_def v, smul_vecMul, ← Units.smul_def v, inv_smul_smul]`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_glLatCong_of_smul {Λ : Submodule 𝒪[k] (D → k)} {u v : kˣ} {g : GL D k}
     (hg : g ∈ glLatCong u (v • Λ)) : g ∈ glLatCong u Λ := by
@@ -57,13 +57,13 @@ theorem mem_glLatCong_of_smul {Λ : Submodule 𝒪[k] (D → k)} {u v : kˣ} {g 
     rw [smul_comm v⁻¹, Units.smul_def v, smul_vecMul, ← Units.smul_def v, inv_smul_smul]
 
 /- English proof (translation)
-Rewrite `hg` using `[dualLat_diagLat]`. Establish `h1` using `GlobalTheory.FunObj.GivenAdm.invT_mem_glLatCong (conj_mem_glLatCong (Λ := stdLat k D) (diagGL fun j => (c j)⁻¹) (vecMul_diagGL_mem 1 _ _ (by simp)) hg)`. Establish `h2 : invT (diagGL fun j => (c j)⁻¹) = diagGL c`. Rewrite using `[← _root_.inv_inj]`. Use `Units.ext ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[invT_inv_val, diagGL_val, diagonal_transpose]`. Use `symm`. Use `Units.inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations. Simplify using `[diagGL_val]`. Rewrite `h1` using `[map_mul, map_mul, map_inv, h2]`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Establish `h3` using `conj_mem_glLatCong (Λ := diagLat c) (diagGL c)⁻¹ (fun x => by`. Rewrite using `[stdLat, ← vecMul_diagGL_mem 1 c c (by simp), vecMul_vecMul, Units.inv_mul, vecMul_one]) h1`. Simplify `h3` using `[mul_assoc]`. Establish `h3` using `GlobalTheory.FunObj.GivenAdm.gdet_mem_unitCong h1`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `h3` using `[gdet_mul, gdet_mul, show gdet (diagGL c)⁻¹ = (gdet (diagGL c))⁻¹ from map_inv _ _, mul_inv_cancel_comm]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem invT_mem_of_dual {u : kˣ} {c : D → kˣ} {g : GL D k} (hg : g ∈ glLatCong u (dualLat (diagLat c))) :
     invT g ∈ glLatCong u (diagLat c) ∧ gdet (invT g) ∈ unitCong u := by
@@ -87,9 +87,9 @@ theorem invT_mem_of_dual {u : kˣ} {c : D → kˣ} {g : GL D k} (hg : g ∈ glLa
       mul_inv_cancel_comm] at h3
 
 /- English proof (translation)
-Establish `hr : ∀ (M : Matrix D D k) i, (Y * M).row i = Y.row i ᵥ* M` using `fun M i => by`. Use function extensionality and compare the values at `j`. Simplify using `[Matrix.row, Matrix.mul_apply, vecMul, dotProduct]`. Distinguish the cases in `hY : Y ∈ matLat A Λ`. Rewrite using `[show Y * g.val = Y + Y * (g.val - 1) by rw [Matrix.mul_sub, Matrix.mul_one, add_sub_cancel]]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `h.2 _ _ fun i => by rw [hr]; exact hg.2 _ (hY i)`. Rewrite using `[h.1 _ hY, h.1 _ fun H => hY fun i => (hg.1 _).1 (by rw [← hr]; exact H i)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HasDepth.mul_glLatCong {A : Type*} {ϖ : kˣ} {e : ℕ} {Λ : Submodule 𝒪[k] (D → k)}
     {Ψ : Matrix A D k → ℂ} (h : HasDepth ϖ e Λ Ψ) {g : GL D k} (hg : g ∈ glLatCong (ϖ ^ e) Λ)
@@ -102,17 +102,17 @@ theorem HasDepth.mul_glLatCong {A : Type*} {ϖ : kˣ} {e : ℕ} {Λ : Submodule 
   · rw [h.1 _ hY, h.1 _ fun H => hY fun i => (hg.1 _).1 (by rw [← hr]; exact H i)]
 
 /- English proof (translation)
-Establish `hlt : valuation k ((ϖ ^ e : kˣ) : k) < 1`. Rewrite using `[Units.val_pow_eq_pow_val, map_pow]`. Conclude with `pow_lt_one₀ zero_le' (hϖ ▸ uniformizer_lt_one) (by omega)`. Establish `key : ∀ X Z : Matrix A D k, IsPrimFrame (latA ϖ e (diagLat c)) X → Z ∈ matLat A (ϖ ^ e • latA ϖ e (diagLat c)) → ∃ κ ∈ glLatCong (ϖ ^ e) (latA ϖ e (diagLat c)), X + Z = X * κ.val`. Rewrite using `[latA, dualLat_diagLat, smul_diagLat]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.PrimFrameMove.exists_glLatCong_move k A D _ _ hlt`. Establish `prim : ∀ X Z : Matrix A D k, IsPrimFrame (latA ϖ e (diagLat c)) X → Z ∈ matLat A (ϖ ^ e • latA ϖ e (diagLat c)) → IsPrimFrame (latA ϖ e (diagLat c)) (X + Z)`. Introduce `X Z hX hZ`. Take `⟨κ, hκ, h⟩` from `key X Z hX hZ`. Rewrite using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Conclude with `GlobalTheory.SplitFlip.Model.isPrimFrame_mul hX κ hκ.1`. Use `⟨fun X hX => if_neg fun h => hX h.2.1, fun X Z hZ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hX : IsPrimFrame (latA ϖ e (diagLat c)) X`. Unfold `phiA`. Rewrite using `[if_pos hX, if_pos (prim X Z hX hZ)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨κ, hκ, h⟩` from `key X Z hX hZ`. Take `⟨h1, h2⟩` from `invT_mem_of_dual (mem_glLatCong_of_smul hκ)`. Take `⟨g, rfl⟩` from `(rank_eq_card_iff_exists_frameMatrixFirstColumnBlock σ X).1 hX.1`. Establish `h3 : X0 k σ * (invT g).val * κ.val = X0 k σ * (invT (g * invT κ)).val`. Rewrite using `[map_mul, invT_invT, Units.val_mul, Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hf` using `@splitTheta_fFun_frameFirstBlock_mul k _ _ _ _ A A' D _ _ _ _ _ _ _ _ μ hμ σ ν Ψ`. Rewrite using `[h, h3, hf, hf, gdet_mul, map_mul, apow_mul, hν _ h2, apow_of_valuation_eq_one h2.1, mul_one, mul_one]`. Use `congr 1`. Simplify using `only [smallF, Units.val_mul, ← Matrix.mul_assoc, HasDepth.mul_glLatCong hΨ h1]`. Establish `hX' : ¬ IsPrimFrame (latA ϖ e (diagLat c)) (X + Z)` using `fun h => hX (by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using prim _ (-Z) h (neg_mem hZ))`. Unfold `phiA`. Rewrite using `[if_neg hX, if_neg hX']`.
+A detailed English derivation is pending.
 -/
 theorem hasDepth_phiA (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [MeasurableSpace k] [BorelSpace k] (A A' D : Type) [Fintype A] [DecidableEq A] [Fintype A'] [DecidableEq A']

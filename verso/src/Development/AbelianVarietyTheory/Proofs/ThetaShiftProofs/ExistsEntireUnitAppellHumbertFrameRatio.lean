@@ -18,16 +18,16 @@ variable {X Y : Scheme.{0}} (x : Sp ℂ ⟶ X) {L : LB Y} {L' : LB X} (φ : X �
 abbrev ix (j : L.ι) (i : L'.ι) : (LB.div (L.pull φ) L').ι := (fun _ => j, i)
 
 /- English proof (translation)
-The claim follows from `inf_of x (wchart_of x L φ j hj) hi`.
+A detailed English derivation is pending.
 -/
 lemma ix_chart (j : L.ι) (i : L'.ι) (hj : ⊤ ≤ (x ≫ φ) ⁻¹ᵁ L.U j) (hi : ⊤ ≤ x ⁻¹ᵁ L'.U i) :
     ⊤ ≤ x ⁻¹ᵁ (LB.div (L.pull φ) L').U (ix φ j i) :=
   inf_of x (wchart_of x L φ j hj) hi
 
 /- English proof (translation)
-Establish `c` using `wchart_of x L φ j hj`. Establish `c'` using `wchart_of x L φ j' hj'`. Establish `h` using `unitVal_iso x w hw (fun _ => j) (fun _ => j') i i' c c' hi hi'`. Establish `h3` using `unitVal_linComb x L φ 1 j j' (inf_of x c c') (inf_of _ hj hj')`. Use `replace h := h.trans (congrArg (fun a => a * _ * _) h3)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[valAt'_eq_unitVal x (ix_chart x φ j i hj hi), valAt'_eq_unitVal x (ix_chart x φ j' i' hj' hi'), valAt'_eq_unitVal x (inf_of x hi hi'), valAt'_eq_unitVal _ (inf_of _ hj hj')]`. Establish `h4` using `congrArg Units.val h`. Simplify using `only [Units.val_mul, zpow_one, Units.val_inv_eq_inv_val] at h4`. Use `(congrArg (· * _) h4).trans ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 lemma val_iso_pull (w : LB.Iso L' (L.pull φ)) (hw : w.IsGen) (j j' : L.ι) (i i' : L'.ι)
     (hj : ⊤ ≤ (x ≫ φ) ⁻¹ᵁ L.U j) (hj' : ⊤ ≤ (x ≫ φ) ⁻¹ᵁ L.U j')
@@ -48,7 +48,7 @@ lemma val_iso_pull (w : LB.Iso L' (L.pull φ)) (hw : w.IsGen) (j j' : L.ι) (i i
   field_simp
 
 /- English proof (translation)
-Rewrite using `[valAt'_eq_unitVal x (ix_chart x φ j i hj hi)]`. Conclude with `Units.ne_zero _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma val_ne_zero (w : LB.Iso L' (L.pull φ)) (j : L.ι) (i : L'.ι)
     (hj : ⊤ ≤ (x ≫ φ) ⁻¹ᵁ L.U j) (hi : ⊤ ≤ x ⁻¹ᵁ L'.U i) :
@@ -59,25 +59,23 @@ lemma val_ne_zero (w : LB.Iso L' (L.pull φ)) (j : L.ι) (i : L'.ι)
 end Val
 
 /- English proof (translation)
-Introduce `A' _ X L L' hL hL' φ w hw g g' u Hm χ hu e F he fr th θ hd hne hc hθ`. Take `rfl : e = fun z => (u.ex (F z)).left ≫ φ` from `funext fun z => (he z).symm`. Establish `hFd : Differentiable ℂ F` using `(LinearMap.toContinuousLinearMap F).differentiable`. Take `⟨r, hr, hrφ⟩` from `exists_glue (fun p : L.ι × L'.ι => F ⁻¹' ({z | ⊤ ≤ (u.ex z).left ⁻¹ᵁ (φ ⁻¹ᵁ L.U p.1)} ∩ {z | ⊤ ≤ (u.ex z).left ⁻¹ᵁ L'.U p.2})) (fun p => ((u.hol _ 0).1.inter (u.hol _ 0).1).preimage hFd.continuous) (fun z => by`. Take `⟨j, hj⟩` from `exists_chart ((u.ex (F z)).left ≫ φ) hL`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `exists_chart (u.ex (F z)).left hL'`. Conclude with `⟨(j, i), hj, hi⟩)`. Use the proof step `(fun p z => fr p.1 z / (valAt' (u.ex (F z)).left _ (w.s (ix φ p.1 p.2)).val * u.fr p.2 (F z)))`. Use the proof step `(fun p => by`. Establish `d1` using `(u.hol _ (w.s (ix φ p.1 p.2)).val).2.comp (s := F ⁻¹' ({z | ⊤ ≤ (u.ex z).left ⁻¹ᵁ (φ ⁻¹ᵁ L.U p.1)} ∩ {z | ⊤ ≤ (u.ex z).left ⁻¹ᵁ L'.U p.2})) hFd.differentiableOn fun z hz => ix_chart _ φ _ _ hz.1 hz.2`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d2` using `(u.fr_hol p.2).comp (s := F ⁻¹' ({z | ⊤ ≤ (u.ex z).left ⁻¹ᵁ (φ ⁻¹ᵁ L.U p.1)} ∩ {z | ⊤ ≤ (u.ex z).left ⁻¹ᵁ L'.U p.2})) hFd.differentiableOn fun z hz => hz.2`. Establish `d3` using `(hd p.1).mono (s := F ⁻¹' ({z | ⊤ ≤ (u.ex z).left ⁻¹ᵁ (φ ⁻¹ᵁ L.U p.1)} ∩ {z | ⊤ ≤ (u.ex z).left ⁻¹ᵁ L'.U p.2})) fun z hz => hz.1`. Simplify using `only [div_eq_mul_inv]`. Conclude with `d3.mul ((d1.mul d2).inv fun z hz => mul_ne_zero (val_ne_zero _ φ w _ _ hz.1 hz.2) (u.fr_ne p.2 _ hz.2)))`. Use the proof step `(fun p q z hp hq => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `val_iso_pull (u.ex (F z)).left φ w hw p.1 q.1 p.2 q.2 hp.1 hq.1 hp.2 hq.2`. Establish `h1` using `hc p.1 q.1 z (inf_of _ hp.1 hq.1)`. Establish `h2` using `u.fr_compat p.2 q.2 (F z) (inf_of _ hp.2 hq.2)`. Rewrite using `[div_eq_div_iff (mul_ne_zero (val_ne_zero _ φ w _ _ hp.1 hp.2) (u.fr_ne _ _ hp.2)) (mul_ne_zero (val_ne_zero _ φ w _ _ hq.1 hq.2) (u.fr_ne _ _ hq.2)), h1, h2, ← _root_.mul_assoc (valAt' _ _ (w.s (ix φ p.1 p.2)).val), h]`. Use the proof step `ring)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hchart : ∀ z, ∃ j i, ⊤ ≤ ((u.ex (F z)).left ≫ φ) ⁻¹ᵁ L.U j ∧ ⊤ ≤ (u.ex (F z)).left ⁻¹ᵁ L'.U i` using `fun z => by`. Take `⟨j, hj⟩` from `exists_chart ((u.ex (F z)).left ≫ φ) hL`. Take `⟨i, hi⟩` from `exists_chart (u.ex (F z)).left hL'`. Conclude with `⟨j, i, hj, hi⟩`. Use `⟨r, hr, fun z => ?_, fun la l hl z => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨j, i, hj, hi⟩` from `hchart z`. Rewrite using `[hrφ (j, i) z ⟨hj, hi⟩]`. Conclude with `div_ne_zero (hne _ _ hj) (mul_ne_zero (val_ne_zero _ φ w _ _ hj hi) (u.fr_ne _ _ hi))`. Take `⟨j, i, hj, hi⟩` from `hchart z`. Establish `hper : u.ex (F (z + la)) = u.ex (F z)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_add, hl, u.ex_add, (u.ker l).2 l.2, _root_.mul_one]`. Establish `hj' : ⊤ ≤ ((u.ex (F (z + la))).left ≫ φ) ⁻¹ᵁ L.U j` using `by rwa [hper]`. Establish `hi' : ⊤ ≤ (u.ex (F (z + la))).left ⁻¹ᵁ L'.U i` using `by rwa [hper]`. Establish `h1` using `hu.2.2.2 l i (F z) hi`. Establish `t1` using `hθ j z hj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `t2` using `hθ j (z + la) hj'`. Establish `n1` using `u.fr_ne _ _ hi`. Establish `n2` using `u.fr_ne _ _ hi'`. Establish `n3` using `val_ne_zero _ φ w _ _ hj hi`. Rewrite using `[hrφ (j, i) z ⟨hj, hi⟩, hrφ (j, i) (z + la) ⟨hj', hi'⟩]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hper] at t2 ⊢`. Rewrite using `[← mul_div_assoc, ← mul_div_assoc, ← t1, ← t2]`. Rewrite `n2`, the goal using `[map_add, hl]`. Rewrite `n1`, the goal using `[h1]`. Establish `n4` using `left_ne_zero_of_mul n1`.
-
-Simplify using `only [hermForm]`. Generalize the expression as in `χ l * Complex.exp _ = c at n4 ⊢`. Generalize the expression as in `valAt' _ _ (w.s (ix φ j i)).val = a at n3 ⊢`. Use `beta_reduce`. Clear the denominators using the available nonvanishing facts.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_entire_unit_automorphy :
     ∀ (A' : Over (Sp ℂ)) [GrpObj A'] (X : Scheme.{0}) (L : LB X) (L' : LB A'.left), L.IsLB → L'.IsLB → ∀ (φ : A'.left ⟶ X) (w : LB.Iso L' (L.pull φ)), w.IsGen → ∀ (g g' : ℕ) (u : HolUnif A' L' g') (Hm : Matrix (Fin g') (Fin g') ℂ) (χ : u.Λ → ℂ), u.IsAH Hm χ → ∀ (e : (Fin g → ℂ) → (Sp ℂ ⟶ X)) (F : (Fin g → ℂ) →ₗ[ℂ] (Fin g' → ℂ)), (∀ z, (u.ex (F z)).left ≫ φ = e z) → ∀ (fr : L.ι → (Fin g → ℂ) → ℂ) (th : L.Sec) (θ : (Fin g → ℂ) → ℂ), (∀ j, DifferentiableOn ℂ (fr j) {z | ⊤ ≤ e z ⁻¹ᵁ L.U j}) → (∀ j z, ⊤ ≤ e z ⁻¹ᵁ L.U j → fr j z ≠ 0) → (∀ j j' z, ⊤ ≤ e z ⁻¹ᵁ (L.U j ⊓ L.U j') → fr j z = valAt' (e z) (L.U j ⊓ L.U j') (L.g j j').val * fr j' z) → (∀ j z, ⊤ ≤ e z ⁻¹ᵁ L.U j → valAt' (e z) (L.U j) (th.f j) = θ z * fr j z) → ∃ ρ : (Fin g → ℂ) → ℂ, Differentiable ℂ ρ ∧ (∀ z, ρ z ≠ 0) ∧ ∀ (la : Fin g → ℂ) (l : u.Λ), F la = l → ∀ z, θ (z + la) * ρ (z + la) = χ l * Complex.exp (Real.pi * hermForm Hm (F z) l + Real.pi / 2 * hermForm Hm l l) * (θ z * ρ z) := by

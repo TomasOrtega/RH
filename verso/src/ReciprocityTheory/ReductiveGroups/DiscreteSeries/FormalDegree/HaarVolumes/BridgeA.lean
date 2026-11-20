@@ -16,9 +16,7 @@ variable {N : ℕ}
 abbrev eN (N : ℕ) : Fin N ⊕ Fin 0 ≃ Fin N := Equiv.sumEmpty (Fin N) (Fin 0)
 
 /- English proof (translation)
-Use extensionality with `i j`. Break down `i with i | i` into its components or cases. Break down `j with j | j` into its components or cases. Simplify using `[Formalism.UG.Jpq, Matrix.one_apply]`. Conclude with `j.elim0`.
-
-Conclude with `i.elim0`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma Jpq_zero (N : ℕ) : Formalism.UG.Jpq N 0 = 1 := by
   ext i j
@@ -29,13 +27,13 @@ lemma Jpq_zero (N : ℕ) : Formalism.UG.Jpq N 0 = 1 := by
   · exact i.elim0
 
 /- English proof (translation)
-Simplify using `[Jm, Formalism.REAL.Jm]`.
+Simplify using the standard rewrite rules.
 -/
 lemma Jm_true (N : ℕ) : Jm (fun _ : Fin N => true) = 1 := by
   simp [Jm, Formalism.REAL.Jm]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma cT_eq {m : Type} [Fintype m] (M : Matrix m m ℂ) : Formalism.UG.cT (starRingEnd ℂ) M = Mᴴ := by
   ext i j
@@ -60,7 +58,7 @@ lemma psi_symm_val (N : ℕ) (u : (Matrix (Fin N) (Fin N) ℂ)ˣ) :
   rfl
 
 /- English proof (translation)
-Use `show Formalism.UG.cT (starRingEnd ℂ) (u : Matrix (Fin N ⊕ Fin 0) (Fin N ⊕ Fin 0) ℂ) * Formalism.UG.Jpq N 0 * u = Formalism.UG.Jpq N 0 ↔ _`. Rewrite using `[Jpq_zero, cT_eq, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma mem_upq_iff (N : ℕ) (u : GL (Fin N ⊕ Fin 0) ℂ) :
     u ∈ Formalism.UG.Upq N 0 ↔ (u : Matrix (Fin N ⊕ Fin 0) (Fin N ⊕ Fin 0) ℂ)ᴴ * u = 1 := by
@@ -69,7 +67,7 @@ lemma mem_upq_iff (N : ℕ) (u : GL (Fin N ⊕ Fin 0) ℂ) :
   rw [Jpq_zero, cT_eq, Matrix.mul_one]
 
 /- English proof (translation)
-Use `show (u : Matrix (Fin N) (Fin N) ℂ)ᴴ * Formalism.REAL.Jm (fun _ : Fin N => true) * u = Formalism.REAL.Jm (fun _ : Fin N => true) ↔ _`. Rewrite using `[show Formalism.REAL.Jm (fun _ : Fin N => true) = 1 by simp [Formalism.REAL.Jm], Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma mem_un_iff (N : ℕ) (u : (Matrix (Fin N) (Fin N) ℂ)ˣ) :
     u ∈ UNgrp N ↔ (u : Matrix (Fin N) (Fin N) ℂ)ᴴ * u = 1 := by
@@ -78,7 +76,7 @@ lemma mem_un_iff (N : ℕ) (u : (Matrix (Fin N) (Fin N) ℂ)ˣ) :
   rw [show Formalism.REAL.Jm (fun _ : Fin N => true) = 1 by simp [Formalism.REAL.Jm], Matrix.mul_one]
 
 /- English proof (translation)
-Rewrite using `[Matrix.conjTranspose_reindex]`. Establish `hm` using `(Matrix.reindexAlgEquiv ℂ ℂ e).map_mul Aᴴ A`. Rewrite `hm` using `[h, map_one]`. Conclude with `hm.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma reindex_unitary {m n : Type} [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n] (e : m ≃ n)
     (A : Matrix m m ℂ) (h : Aᴴ * A = 1) : (reindex e e A)ᴴ * reindex e e A = 1 := by
@@ -99,25 +97,25 @@ def iso (N : ℕ) : Formalism.BasicNotions.UpqT N 0 ≃* UNgrp N where
   map_mul' g h := Subtype.ext (map_mul (psi N) _ _)
 
 /- English proof (translation)
-The claim follows from `psi_val N _`.
+A detailed English derivation is pending.
 -/
 lemma toM_iso (N : ℕ) (g : Formalism.BasicNotions.UpqT N 0) :
     toM (iso N g) = reindex (eN N) (eN N) (Formalism.BasicNotions.UpqT.mat g) := psi_val N _
 
 /- English proof (translation)
-The claim follows from `psi_symm_val N _`.
+A detailed English derivation is pending.
 -/
 lemma mat_iso_symm (N : ℕ) (k : UNgrp N) :
     Formalism.BasicNotions.UpqT.mat ((iso N).symm k) = reindex (eN N).symm (eN N).symm (toM k) := psi_symm_val N _
 
 /- English proof (translation)
-The claim follows from `Units.continuous_val.comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 lemma continuous_mat (N : ℕ) : Continuous (fun g : Formalism.BasicNotions.UpqT N 0 => Formalism.BasicNotions.UpqT.mat g) :=
   Units.continuous_val.comp continuous_subtype_val
 
 /- English proof (translation)
-Establish `hpsi : Continuous fun u : GL (Fin N ⊕ Fin 0) ℂ => psi N u` using `Units.continuous_iff.2 ⟨Units.continuous_val.matrix_reindex _ _, Units.continuous_coe_inv.matrix_reindex _ _⟩`. Conclude with `(hpsi.comp continuous_subtype_val).subtype_mk _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma continuous_iso (N : ℕ) : Continuous (iso N) := by
   have hpsi : Continuous fun u : GL (Fin N ⊕ Fin 0) ℂ => psi N u :=
@@ -132,11 +130,9 @@ instance instContMulUpqT (N : ℕ) : ContinuousMul (Formalism.BasicNotions.UpqT 
   inferInstanceAs (ContinuousMul (Formalism.UG.Upq N 0))
 
 /- English proof (translation)
-Establish `hv : (Units.val ∘ fun u : (Matrix (Fin N) (Fin N) ℂ)ˣ => (psi N).symm u) = fun u : (Matrix (Fin N) (Fin N) ℂ)ˣ => reindex (eN N).symm (eN N).symm (u : Matrix (Fin N) (Fin N) ℂ)`. Use function extensionality and compare the values at `u`. Conclude with `psi_symm_val N u`. Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hv]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Units.continuous_val.matrix_reindex _ _`. Establish `hf : (fun u : (Matrix (Fin N) (Fin N) ℂ)ˣ => ((((psi N).symm u)⁻¹ : GL (Fin N ⊕ Fin 0) ℂ) : Matrix (Fin N ⊕ Fin 0) (Fin N ⊕ Fin 0) ℂ)) = fun u => reindex (eN N).symm (eN N).symm (((u⁻¹ : (Matrix (Fin N) (Fin N) ℂ)ˣ)) : Matrix (Fin N) (Fin N) ℂ)`. Use function extensionality and compare the values at `u`. Rewrite using `[← map_inv, psi_symm_val]`. Rewrite using `[hf]`.
-
-Conclude with `Units.continuous_coe_inv.matrix_reindex _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma continuous_psi_symm (N : ℕ) : Continuous (fun u : (Matrix (Fin N) (Fin N) ℂ)ˣ => (psi N).symm u) := by
   have hv : (Units.val ∘ fun u : (Matrix (Fin N) (Fin N) ℂ)ˣ => (psi N).symm u) =
@@ -155,7 +151,7 @@ lemma continuous_psi_symm (N : ℕ) : Continuous (fun u : (Matrix (Fin N) (Fin N
   exact Units.continuous_coe_inv.matrix_reindex _ _
 
 /- English proof (translation)
-The claim follows from `((continuous_psi_symm N).comp continuous_subtype_val).subtype_mk _`.
+A detailed English derivation is pending.
 -/
 lemma continuous_iso_symm (N : ℕ) : Continuous (iso N).symm :=
   ((continuous_psi_symm N).comp continuous_subtype_val).subtype_mk _
@@ -166,7 +162,7 @@ def homeo (N : ℕ) : Formalism.BasicNotions.UpqT N 0 ≃ₜ UNgrp N where
   continuous_invFun := continuous_iso_symm N
 
 /- English proof (translation)
-The claim follows from `(homeo N).toMeasurableEquiv.map_apply T`.
+A detailed English derivation is pending.
 -/
 lemma map_iso_apply (N : ℕ) (μ : Measure (Formalism.BasicNotions.UpqT N 0)) (T : Set (UNgrp N)) :
     μ.map (iso N) T = μ ((iso N) ⁻¹' T) :=
@@ -176,15 +172,13 @@ def coords {N : ℕ} (M : Matrix (Fin N) (Fin N) ℂ) : UCo N :=
   (fun a => (M a a).im, fun ab => M ab.1.1 ab.1.2)
 
 /- English proof (translation)
-Use extensionality with `a b`. Establish `hab` using `congrFun (congrFun hM a) b`. Rewrite `hab` using `[Matrix.conjTranspose_apply, Matrix.neg_apply]`. Simplify using `only [skMat, coords]`. Use `split_ifs with h1 h2 h3`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Substitute `h1` using the available equality. Establish `hre : (M a a).re = 0`. Establish `h4` using `congrArg Complex.re hab`. Simplify using `only [Complex.star_def, Complex.conj_re, Complex.neg_re] at h4`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Complex.ext` to reduce the goal to its premises. Simplify using `only [Complex.mul_re, Complex.I_re, Complex.I_im, Complex.ofReal_re, Complex.ofReal_im]`. Rewrite using `[hre]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Complex.mul_im, Complex.I_re, Complex.I_im, Complex.ofReal_re, Complex.ofReal_im]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Both sides reduce to the same expression. Rewrite using `[hab, neg_neg]`. Break down `lt_trichotomy a b with h | h | h` into its components or cases. Conclude with `absurd h h3`.
-
-Conclude with `absurd h h1`. Conclude with `absurd h h2`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 lemma skMat_coords {N : ℕ} (M : Matrix (Fin N) (Fin N) ℂ) (hM : Mᴴ = -M) : skMat (coords M) = M := by
   ext a b
@@ -211,7 +205,7 @@ lemma skMat_coords {N : ℕ} (M : Matrix (Fin N) (Fin N) ℂ) (hM : Mᴴ = -M) :
     · exact absurd h h2
 
 /- English proof (translation)
-Establish `h' : (X : Matrix (Fin N ⊕ Fin 0) (Fin N ⊕ Fin 0) ℂ)ᴴ * Formalism.UG.Jpq N 0 + Formalism.UG.Jpq N 0 * (X : Matrix (Fin N ⊕ Fin 0) (Fin N ⊕ Fin 0) ℂ) = 0` using `X.2`. Rewrite `h'` using `[Jpq_zero, Matrix.mul_one, Matrix.one_mul]`. Conclude with `eq_neg_of_add_eq_zero_left h'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma lie_skew {N : ℕ} (X : Formalism.BasicNotions.lieU N 0) :
     (X : Matrix (Fin N ⊕ Fin 0) (Fin N ⊕ Fin 0) ℂ)ᴴ = -(X : Matrix (Fin N ⊕ Fin 0) (Fin N ⊕ Fin 0) ℂ) := by
@@ -221,9 +215,9 @@ lemma lie_skew {N : ℕ} (X : Formalism.BasicNotions.lieU N 0) :
   exact eq_neg_of_add_eq_zero_left h'
 
 /- English proof (translation)
-Establish `hsk : (reindex (eN N) (eN N) (X : Matrix (Fin N ⊕ Fin 0) (Fin N ⊕ Fin 0) ℂ))ᴴ = -reindex (eN N) (eN N) (X : Matrix (Fin N ⊕ Fin 0) (Fin N ⊕ Fin 0) ℂ)`. Rewrite using `[Matrix.conjTranspose_reindex, lie_skew X]`. Apply the tactic sequence `try rfl`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show uToLieMat (coords (reindex (eN N) (eN N) (X : Matrix (Fin N ⊕ Fin 0) (Fin N ⊕ Fin 0) ℂ))) = X`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [uToLieMat]`. Rewrite using `[skMat_coords _ hsk]`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma uToLie_coords {N : ℕ} (X : Formalism.BasicNotions.lieU N 0) :
     uToLie (coords (reindex (eN N) (eN N) (X : Matrix (Fin N ⊕ Fin 0) (Fin N ⊕ Fin 0) ℂ))) = X := by
@@ -239,9 +233,9 @@ lemma uToLie_coords {N : ℕ} (X : Formalism.BasicNotions.lieU N 0) :
   simp
 
 /- English proof (translation)
-Use `letI : NormedRing (Matrix m m ℂ) := Matrix.linftyOpNormedRing`. Use `letI : NormedRing (Matrix n n ℂ) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℂ (Matrix m m ℂ) := Matrix.linftyOpNormedAlgebra`. Use `letI : NormedAlgebra ℂ (Matrix n n ℂ) := Matrix.linftyOpNormedAlgebra`. Use `letI : NormedAlgebra ℚ (Matrix m m ℂ) := Matrix.linftyOpNormedAlgebra`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI : NormedAlgebra ℚ (Matrix n n ℂ) := Matrix.linftyOpNormedAlgebra`. Conclude with `NormedSpace.map_exp (Matrix.reindexAlgEquiv ℂ ℂ e) (Matrix.reindexAlgEquiv ℂ ℂ e).toLinearEquiv.toLinearMap.continuous_of_finiteDimensional A`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 lemma reindex_exp {m n : Type} [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n] (e : m ≃ n)
     (A : Matrix m m ℂ) : reindex e e (NormedSpace.exp A) = NormedSpace.exp (reindex e e A) := by
@@ -255,13 +249,11 @@ lemma reindex_exp {m n : Type} [Fintype m] [Fintype n] [DecidableEq m] [Decidabl
     (Matrix.reindexAlgEquiv ℂ ℂ e).toLinearEquiv.toLinearMap.continuous_of_finiteDimensional A
 
 /- English proof (translation)
-Use extensionality with `g`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq, toM_iso]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, hxe⟩`. Use `⟨uToLie x, hx, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm : Formalism.BasicNotions.UpqT.mat g = reindex (eN N).symm (eN N).symm (reindex (eN N) (eN N) (Formalism.BasicNotions.UpqT.mat g))`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[hm, hxe, reindex_exp]`. Apply the tactic sequence `try rfl`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨X, hX, hXe⟩`. Use `⟨coords (reindex (eN N) (eN N) (X : Matrix (Fin N ⊕ Fin 0) (Fin N ⊕ Fin 0) ℂ)), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[uToLie_coords]`. Conclude with `hX`. Rewrite using `[hXe, reindex_exp, skMat_coords]`.
-
-Rewrite using `[Matrix.conjTranspose_reindex, lie_skew X]`. Apply the tactic sequence `try rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma toM_preimage_exp_ball_eq_upqT_exp_ball (N : ℕ) (r : ℝ) :
     (iso N) ⁻¹' {k : UNgrp N | ∃ x ∈ uToLie ⁻¹' Formalism.BasicNotions.ballU N 0 r, toM k = NormedSpace.exp (skMat x)} =
@@ -287,7 +279,7 @@ lemma toM_preimage_exp_ball_eq_upqT_exp_ball (N : ℕ) (r : ℝ) :
       try rfl
 
 /- English proof (translation)
-Unfold `volU`. Apply `Finset.prod_pos` to reduce the goal to its premises. Introduce `i _`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Check the signs of the components of the expression.
 -/
 lemma volU_pos (N : ℕ) : 0 < volU N := by
   unfold volU
@@ -296,11 +288,11 @@ lemma volU_pos (N : ℕ) : 0 < volU N := by
   positivity
 
 /- English proof (translation)
-Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Simplify using `only [skMat]`. Distinguish the cases in `h1 : a = b`. Simplify using `only [if_pos h1]`. Conclude with `continuous_const.mul (Complex.continuous_ofReal.comp ((continuous_apply a).comp continuous_fst))`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [if_neg h1]`. Distinguish the cases in `h2 : b < a`. Simplify using `only [dif_pos h2]`. Conclude with `(continuous_apply _).comp continuous_snd`. Simplify using `only [dif_neg h2]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h3 : a < b`. Simplify using `only [dif_pos h3]`. Conclude with `((continuous_apply _).comp continuous_snd).star.neg`. Simplify using `only [dif_neg h3]`. Conclude with `continuous_const`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma continuous_skMat (N : ℕ) : Continuous (skMat : UCo N → Matrix (Fin N) (Fin N) ℂ) := by
   refine continuous_pi fun a => continuous_pi fun b => ?_
@@ -320,14 +312,14 @@ lemma continuous_skMat (N : ℕ) : Continuous (skMat : UCo N → Matrix (Fin N) 
         exact continuous_const
 
 /- English proof (translation)
-Use `show Continuous fun x : UCo N => (⟨uToLieMat x, uToLieMat_mem x⟩ : Formalism.BasicNotions.lieU N 0)`. Conclude with `Continuous.subtype_mk ((continuous_skMat N).matrix_reindex _ _) _`.
+A detailed English derivation is pending.
 -/
 lemma continuous_uToLie (N : ℕ) : Continuous (uToLie (N := N)) := by
   show Continuous fun x : UCo N => (⟨uToLieMat x, uToLieMat_mem x⟩ : Formalism.BasicNotions.lieU N 0)
   exact Continuous.subtype_mk ((continuous_skMat N).matrix_reindex _ _) _
 
 /- English proof (translation)
-Establish `hv : Continuous (fun X : Formalism.BasicNotions.lieU N 0 => (X : Matrix (Fin N ⊕ Fin 0) (Fin N ⊕ Fin 0) ℂ))` using `continuous_subtype_val`. Unfold `Formalism.BasicNotions.ballU`. Conclude with `isOpen_lt (continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ((continuous_apply j).comp ((continuous_apply i).comp hv)).norm) continuous_const`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma isOpen_ballU (N : ℕ) (r : ℝ) : IsOpen (Formalism.BasicNotions.ballU N 0 r) := by
   have hv : Continuous (fun X : Formalism.BasicNotions.lieU N 0 => (X : Matrix (Fin N ⊕ Fin 0) (Fin N ⊕ Fin 0) ℂ)) :=
@@ -337,13 +329,13 @@ lemma isOpen_ballU (N : ℕ) (r : ℝ) : IsOpen (Formalism.BasicNotions.ballU N 
     ((continuous_apply j).comp ((continuous_apply i).comp hv)).norm) continuous_const
 
 /- English proof (translation)
-Simplify using `[uToLieMat]`.
+Simplify using the standard rewrite rules.
 -/
 lemma uToLieMat_apply (x : UCo N) (a b : Fin N) : uToLieMat x ((eN N).symm a) ((eN N).symm b) = skMat x a b := by
   simp [uToLieMat]
 
 /- English proof (translation)
-Establish `hx' : ∑ i, ∑ j, ‖uToLieMat x i j‖ < r` using `hx`. Rewrite using `[← uToLieMat_apply]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 lemma norm_skMat_lt (x : UCo N) (r : ℝ) (hx : uToLie x ∈ Formalism.BasicNotions.ballU N 0 r) (a b : Fin N) :
     ‖skMat x a b‖ < r := by
@@ -359,11 +351,11 @@ lemma norm_skMat_lt (x : UCo N) (r : ℝ) (hx : uToLie x ∈ Formalism.BasicNoti
     _ < r := hx'
 
 /- English proof (translation)
-Establish `h1 : ‖x.1‖ < r`. Use `(pi_norm_lt_iff hr).2 fun a => ?_` and prove the remaining obligations. Establish `h5` using `norm_skMat_lt x r hx a a`. Simplify `h5` using `[skMat]`. Establish `h2 : ‖x.2‖ < r`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `(pi_norm_lt_iff hr).2 ?_` and prove the remaining obligations. Introduce and unpack `⟨⟨a, b⟩, hab⟩`. Establish `h5` using `norm_skMat_lt x r hx a b`. Simplify `h5` using `[skMat, ne_of_gt hab, hab]`. Rewrite using `[Prod.norm_def]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `max_lt h1 h2`.
+A detailed English derivation is pending.
 -/
 lemma norm_lt_of_mem (x : UCo N) (r : ℝ) (hr : 0 < r) (hx : uToLie x ∈ Formalism.BasicNotions.ballU N 0 r) : ‖x‖ < r := by
   have h1 : ‖x.1‖ < r := by
@@ -379,9 +371,9 @@ lemma norm_lt_of_mem (x : UCo N) (r : ℝ) (hr : 0 < r) (hx : uToLie x ∈ Forma
   exact max_lt h1 h2
 
 /- English proof (translation)
-Use `show ∑ i, ∑ j, ‖uToLieMat (0 : UCo N) i j‖ < r`. Establish `h0 : ∀ i j, uToLieMat (0 : UCo N) i j = 0`. Introduce `i j`. Simplify using `only [uToLieMat, Matrix.reindex_apply, Matrix.submatrix_apply, skMat]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `[h0, hr]`.
+A detailed English derivation is pending.
 -/
 lemma zero_mem_B (r : ℝ) (hr : 0 < r) : (0 : UCo N) ∈ uToLie ⁻¹' Formalism.BasicNotions.ballU N 0 r := by
   show ∑ i, ∑ j, ‖uToLieMat (0 : UCo N) i j‖ < r
@@ -392,27 +384,27 @@ lemma zero_mem_B (r : ℝ) (hr : 0 < r) : (0 : UCo N) ∈ uToLie ⁻¹' Formalis
   simp [h0, hr]
 
 /- English proof (translation)
-The claim follows from `div_pos one_pos (mul_pos (by positivity) (volU_pos N))`.
+A detailed English derivation is pending.
 -/
 theorem cOmega_pos' (N : ℕ) : 0 < 1 / (2 ^ (N * (N - 1) / 2) * volU N) :=
   div_pos one_pos (mul_pos (by positivity) (volU_pos N))
 
 /- English proof (translation)
-Establish `hH : (μ.map (iso N)).IsHaarMeasure` using `(iso N).isHaarMeasure_map μ (continuous_iso N) (continuous_iso_symm N)`. Establish `hP : IsProbabilityMeasure (μ.map (iso N))` using `Measure.isProbabilityMeasure_map (continuous_iso N).measurable.aemeasurable`. Use `⟨_, isOmegaLeb_uToLie, ?_⟩` and prove the remaining obligations. Establish `hκ : (0 : ℝ) < 2 ^ (N * (N - 1) / 2)` using `by positivity`. Establish `hV : 0 < volU N` using `volU_pos N`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcpos` using `cOmega_pos' N`. Rewrite using `[ENNReal.tendsto_nhds ENNReal.ofReal_ne_top]`. Introduce `ε hε`. Take `⟨e, he0, he1, he2⟩` from `ENNReal.lt_iff_exists_real_btwn.1 hε`. Establish `he : 0 < e` using `ENNReal.ofReal_pos.1 he1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨δ, hδ, hB⟩` from `volU_density (μ.map (iso N)) (e / (1 / (2 ^ (N * (N - 1) / 2) * volU N))) (div_pos he hcpos)`. Use `filter_upwards [Ioo_mem_nhdsGT hδ] with r hr`. Establish `hBo : IsOpen (uToLie ⁻¹' Formalism.BasicNotions.ballU N 0 r)` using `(isOpen_ballU N r).preimage (continuous_uToLie N)`. Establish `hBn : ∀ x ∈ uToLie ⁻¹' Formalism.BasicNotions.ballU N 0 r, ‖x‖ < δ` using `fun x hx => (norm_lt_of_mem x r hr.1 hx).trans hr.2`. Establish `hB0 : volume (uToLie ⁻¹' Formalism.BasicNotions.ballU N 0 r) ≠ 0` using `(hBo.measure_pos volume ⟨0, zero_mem_B r hr.1⟩).ne'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBt : volume (uToLie ⁻¹' Formalism.BasicNotions.ballU N 0 r) ≠ ⊤` using `ne_of_lt (lt_of_le_of_lt (measure_mono fun x hx => mem_ball_zero_iff.2 (norm_lt_of_mem x r hr.1 hx)) measure_ball_lt_top)`. Establish `hnum : μ {g | ∃ X ∈ Formalism.BasicNotions.ballU N 0 r, Formalism.BasicNotions.UpqT.mat g = NormedSpace.exp (X : Matrix (Fin N ⊕ Fin 0) (Fin N ⊕ Fin 0) ℂ)} = μ.map (iso N) {k : UNgrp N | ∃ x ∈ uToLie ⁻¹' Formalism.BasicNotions.ballU N 0 r, toM k = NormedSpace.exp (skMat x)}`. Rewrite using `[map_iso_apply, toM_preimage_exp_ball_eq_upqT_exp_ball]`. Establish `hden : (ENNReal.ofReal (2 ^ (N * (N - 1) / 2)) • Measure.map (uToLie (N` using `N)) volume) (Formalism.BasicNotions.ballU N 0 r) = ENNReal.ofReal (2 ^ (N * (N - 1) / 2)) * volume (uToLie ⁻¹' Formalism.BasicNotions.ballU N 0 r) := by`. Rewrite using `[Measure.smul_apply, Measure.map_apply (continuous_uToLie N).measurable (isOpen_ballU N r).measurableSet, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨hup, hlo⟩` from `hB _ hBo.measurableSet hBn`. Simplify using `only [Set.mem_Icc]`. Rewrite using `[hnum, hden]`. Establish `hκ0 : ENNReal.ofReal (2 ^ (N * (N - 1) / 2)) ≠ 0` using `(ENNReal.ofReal_pos.2 hκ).ne'`. Prove the components needed by the constructor for the conclusion.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.le_div_iff_mul_le (Or.inl (mul_ne_zero hκ0 hB0)) (Or.inl (ENNReal.mul_ne_top ENNReal.ofReal_ne_top hBt))]`. Use `le_trans (le_of_eq ?_) hlo` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← ENNReal.ofReal_mul' hκ.le]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Combine the equalities or inequalities in the displayed calculation. Use `ENNReal.div_le_of_le_mul (le_trans hup (le_of_eq ?_))` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← ENNReal.ofReal_mul (by positivity)]`. Use `congr 2`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Use `_ = ENNReal.ofReal (1 / (2 ^ (N * (N - 1) / 2) * volU N)) + ENNReal.ofReal e := ENNReal.ofReal_add hcpos.le he.le`. Use `_ ≤ _ := by gcongr`.
+A detailed English derivation is pending.
 -/
 theorem omegaDensity_main (μ : Measure (Formalism.BasicNotions.UpqT N 0)) [μ.IsHaarMeasure] [IsProbabilityMeasure μ] :
     Formalism.BasicNotions.OmegaDensity μ (ENNReal.ofReal (1 / (2 ^ (N * (N - 1) / 2) * volU N))) := by

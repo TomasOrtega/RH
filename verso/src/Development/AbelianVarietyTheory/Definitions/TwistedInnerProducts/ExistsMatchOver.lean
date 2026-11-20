@@ -26,7 +26,7 @@ def colOf (Ψ : GLf G → WtSp G) : Bridge.Gf (G.V (.top 0)) → (coefPlus G θ)
     (GlobalTheory.CoefModel.mapVV D.what₂.embLL (LaP G) (Ψ (Formalism.UG.bc (Lev.swapAE D) (g : GL _ _))))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `h`. Conclude with `congrArg ξ (GlobalTheory.CoefModel.rhoH_toHilb (LaP G) (posDef_dual G) _ _)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem pairVec_colOf (ξ : Module.Dual ℂ (coefPlus G θ).W) (Ψ : GLf G → WtSp G) :
     pairVec (coefPlus G θ) ξ (colOf θ Ψ) = scal θ (ξ ∘ₗ (GlobalTheory.CoefModel.toHilb (LaP G) (posDef_dual G)).toLinearMap) Ψ := by
@@ -34,7 +34,7 @@ theorem pairVec_colOf (ξ : Module.Dual ℂ (coefPlus G θ).W) (Ψ : GLf G → W
   exact congrArg ξ (GlobalTheory.CoefModel.rhoH_toHilb (LaP G) (posDef_dual G) _ _)
 
 /- English proof (translation)
-Rewrite using `[← TestLatModel.finE_rat γ γE hm, Subgroup.coe_mul, Subgroup.coe_mul, map_mul, map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fin_mul (γ : GQ (Xp G)) (γE : UR D.sp.cm (Xp G).gram) (hm : Bridge.IsRatMat (Xp G) γ γE.1) (g k : Bridge.Gf (Xp G)) :
     Formalism.UG.bc (Lev.swapAE D) (Bridge.ratF (Xp G) γ * g * k).1 =
@@ -45,7 +45,7 @@ theorem fin_mul (γ : GQ (Xp G)) (γE : UR D.sp.cm (Xp G).gram) (hm : Bridge.IsR
 variable {θ} in
 
 /- English proof (translation)
-Establish `h` using `TestLatModel.map_rhoVr hθ V lam γ γE h γ.1⁻¹ v`. Rewrite `h` using `[mul_inv_cancel, inv_one, map_one (GlobalTheory.CoefModel.realGL θ V), map_one invTrK, map_one (rhoK lam), inv_inv, Module.End.one_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem map_rat (hθ : IsInfFam θ) (V : HSp D) (lam : D.what₂.Tau → DomWeight V.rank) (γ : GQ V)
     (γE : GL (Fin V.rank) D.host.E) (h : Bridge.IsRatMat V γ γE) (v : VV D.what₂.LL lam) :
@@ -58,9 +58,9 @@ theorem map_rat (hθ : IsInfFam θ) (V : HSp D) (lam : D.what₂.Tau → DomWeig
 variable {θ} in
 
 /- English proof (translation)
-Use `(GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.mem_cols G θ _).2 fun γ g k => ?_` and prove the remaining obligations. Take `⟨γE, hU, hγ⟩` from `γ.2`. Establish `hm : Bridge.IsRatMat (Xp G) γ γE` using `hγ.symm`. Establish `hk : Formalism.UG.bc (Lev.swapAE D) k.1.1 ∈ G.Kplus` using `k.2`. Unfold `colOf`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[fin_mul γ ⟨γE, hU⟩ hm g k.1, hr _ _ hk, hl]`. Conclude with `(congrArg (GlobalTheory.CoefModel.toHilb (LaP G) (posDef_dual G)) (map_rat hθ _ _ γ γE hm _)).trans (GlobalTheory.CoefModel.rhoH_toHilb (LaP G) (posDef_dual G) _ _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colOf_mem (hθ : IsInfFam θ) {Ψ : GLf G → WtSp G} (hl : ∀ γ g, Ψ (ratIn G γ * g) = rhoW G γ (Ψ g))
     (hr : ∀ g, ∀ k ∈ G.Kplus, Ψ (g * k) = Ψ g) : colOf θ Ψ ∈ Cols G θ := by
@@ -106,7 +106,7 @@ def lift (t : T) (x : (R.HX t).H) : GA D (Yc D 0) → ℂ :=
   d.dnFun t (D.R.m - 1) (Lift.liftInt (R.νX t) (R.fdX t) (thetaKO (R.ωX t)) (R.ptX t d.polX) (d.formX t x))
 
 /- English proof (translation)
-The claim follows from `| 0, _, _, _ => rfl | n + 1, hn, F, v => (dnFrom_dnVec h t n (by omega) (R.ioY t n F) (R.ItY n (d.polY n) v)).trans (congrArg (d.dnFun t n) (funext fun g => ((h t n hn).eq F (d.polY n) v g).symm))`.
+A detailed English derivation is pending.
 -/
 theorem dnFrom_dnVec (h : R.chain_ioY) (t : T) : ∀ n, n ≤ D.R.m - 1 → ∀ (F : R.CC t n) (v : SmT (R.MY n)),
     (Lift.dnFrom (R.CC t) (R.ioY t) n F).1 (d.dnVec n v) = d.dnFun t n (F.1 v)
@@ -115,14 +115,14 @@ theorem dnFrom_dnVec (h : R.chain_ioY) (t : T) : ∀ n, n ≤ D.R.m - 1 → ∀ 
       (congrArg (d.dnFun t n) (funext fun g => ((h t n hn).eq F (d.polY n) v g).symm))
 
 /- English proof (translation)
-The claim follows from `(d.dnFrom_dnVec h.ioY t _ le_rfl _ _).trans (congrArg (d.dnFun t _) (funext fun g => ((h.ioX t).eq _ d.polX d.v g).symm))`.
+A detailed English derivation is pending.
 -/
 theorem thDn_w (h : R.IsChain) (t : T) (x : (R.HX t).H) : R.thDn t x d.w = d.lift t x :=
   (d.dnFrom_dnVec h.ioY t _ le_rfl _ _).trans
     (congrArg (d.dnFun t _) (funext fun g => ((h.ioX t).eq _ d.polX d.v g).symm))
 
 /- English proof (translation)
-Establish `e : PiTensorProduct.lift (Mult.postOn (R.MY 0) R.e0 (PiTensorProduct.lift.symm (R.thDn t x))) = R.e0 ∘ₗ R.thDn t x`. Use extensionality with `v`. Simplify using `[Mult.postOn]`. Rewrite using `[h.Th, rowForm, e, LinearMap.comp_apply, d.thDn_w h]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem rowForm_Th (h : R.IsChain) (t : T) (x : (R.HX t).H) : rowForm R d.w (R.HE.e (R.Th t x)) = R.e0 (d.lift t x) := by
   have e : PiTensorProduct.lift (Mult.postOn (R.MY 0) R.e0 (PiTensorProduct.lift.symm (R.thDn t x))) = R.e0 ∘ₗ R.thDn t x := by
@@ -167,13 +167,13 @@ def Guard (R : RealDat D A Ks) : Prop :=
   ∀ t, ∀ PP ∈ R.Q t, ((Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal
 
 /- English proof (translation)
-Introduce `t PP hP h'` and use `h.2 t PP hP (by rw [Nat.cast_mul]; exact Ideal.mul_mem_left _ _ h')`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem guard_of_qGuard {R : RealDat D A Ks} (h : Formalism.IndefR.FWT.QGuard R) : Guard R := fun t PP hP h' =>
   h.2 t PP hP (by rw [Nat.cast_mul]; exact Ideal.mul_mem_left _ _ h')
 
 /- English proof (translation)
-Introduce `_ PP _ h'` and use `by rw [h, Ideal.absNorm_top, Nat.cast_one] at h' exact PP.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h')`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem guard_of_top (R : RealDat D A Ks) (h : D.host.ccK = ⊤) : Guard R := fun _ PP _ h' => by
   rw [h, Ideal.absNorm_top, Nat.cast_one] at h'
@@ -249,12 +249,12 @@ def AtScale (C b : ℝ) : Prop := ch.sc = ⟨1, C, b⟩
 variable {ch}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, h.2, h.3, h.4, h.5, h.6⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsBase.withReal (h : ch.IsBase) (ρ ξ) : (ch.withReal ρ ξ).IsBase := ⟨h.1, h.2, h.3, h.4, h.5, h.6⟩
 
 /- English proof (translation)
-The claim follows from `(h.const i j t).unique h0 hc`.
+A detailed English derivation is pending.
 -/
 theorem IsBase.c_eq (h : ch.IsBase) {i j t} (h0 : SquareNonzero ch.W ch.S.B ch.rm t i j) {c : ℂ}
     (hc : IsSquareConst ch.W ch.S.B ch.rm t i j c) : ch.c i j t = c := (h.const i j t).unique h0 hc
@@ -262,7 +262,7 @@ theorem IsBase.c_eq (h : ch.IsBase) {i j t} (h0 : SquareNonzero ch.W ch.S.B ch.r
 end Choice
 
 /- English proof (translation)
-Rewrite using `[← pairVec_colOf]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem psiK_eq (a : Fin ch.n) (u : R.HE.H) : psiK ch a u =
     Bplus ch.W ch.M (scal ch.W.θ (ch.ξ ∘ₗ (GlobalTheory.CoefModel.toHilb (LaP ch.G) (posDef_dual ch.G)).toLinearMap) (ch.Psi a))
@@ -270,20 +270,20 @@ theorem psiK_eq (a : Fin ch.n) (u : R.HE.H) : psiK ch a u =
   rw [← pairVec_colOf]; rfl
 
 /- English proof (translation)
-The claim follows from `colOf_mem ch.W.θ_is (psi_left _ _ a) fun g _ hk => psi_right _ _ a g hk`.
+A detailed English derivation is pending.
 -/
 theorem col_mem (a : Fin ch.n) : ch.col a ∈ Cols ch.G ch.W.θ :=
   colOf_mem ch.W.θ_is (psi_left _ _ a) fun g _ hk => psi_right _ _ a g hk
 
 /- English proof (translation)
-Use `fPsiPhi_smul ch.W ch.M ch.ρ ch.ξ 1 z (ch.col a) (ch.Phi a) (ch.form u)` as an intermediate fact. Rewrite `this` using `[one_smul, one_mul, ← map_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem psiK_smul (a : Fin ch.n) (z : ℂ) (u : R.HE.H) : psiK ch a (z • u) = z * psiK ch a u := by
   have := fPsiPhi_smul ch.W ch.M ch.ρ ch.ξ 1 z (ch.col a) (ch.Phi a) (ch.form u)
   rwa [one_smul, one_mul, ← map_smul] at this
 
 /- English proof (translation)
-Simplify using `using psiK_smul ch a 0 0`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem psiK_zero (a : Fin ch.n) : psiK ch a 0 = 0 := by
   simpa using psiK_smul ch a 0 0
@@ -291,7 +291,7 @@ theorem psiK_zero (a : Fin ch.n) : psiK ch a 0 = 0 := by
 variable {ch} in
 
 /- English proof (translation)
-Rewrite using `[psiK, map_add]`. Conclude with `fPsiPhi_add ch.W ch.M h h'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiK_add {a : Fin ch.n} {u u' : R.HE.H} (h : ConvK ch a u) (h' : ConvK ch a u') :
     psiK ch a (u + u') = psiK ch a u + psiK ch a u' := by
@@ -303,13 +303,13 @@ def psiL (a : Fin ch.n) (h : ∀ u, ConvK ch a u) : R.HE.H →ₗ[ℂ] ℂ where
   map_smul' := psiK_smul ch a
 
 /- English proof (translation)
-The claim follows from `ch.cv.rowForm_Th h t x`.
+A detailed English derivation is pending.
 -/
 theorem form_Th (h : R.IsChain) (t : T) (x : (R.HX t).H) : ch.form (R.Th t x) = R.e0 (ch.cv.lift t x) :=
   ch.cv.rowForm_Th h t x
 
 /- English proof (translation)
-Introduce `u hu ρ' ξ' a` and use `by rw [h u hu]; exact psiK_zero _ a`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem realOK_of_inj (h : ∀ u, (∀ a, psiK ch a u = 0) → u = 0) : ch.RealOK := fun u hu ρ' ξ' a => by
   rw [h u hu]; exact psiK_zero _ a
@@ -317,7 +317,7 @@ theorem realOK_of_inj (h : ∀ u, (∀ a, psiK ch a u = 0) → u = 0) : ch.RealO
 variable {ch} in
 
 /- English proof (translation)
-The claim follows from `h' u (h u hu ρ' ξ')`.
+A detailed English derivation is pending.
 -/
 theorem Choice.RealOK.inj (h : ch.RealOK) {ρ' ξ'} (h' : ∀ u, (∀ a, psiK (ch.withReal ρ' ξ') a u = 0) → u = 0) (u : R.HE.H)
     (hu : ∀ a, psiK ch a u = 0) : u = 0 := h' u (h u hu ρ' ξ')
@@ -325,30 +325,30 @@ theorem Choice.RealOK.inj (h : ch.RealOK) {ρ' ξ'} (h' : ∀ u, (∀ a, psiK (c
 variable {ch} in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.withReal ρ' ξ', realOK_of_inj _ h'⟩`.
+Supply the required witnesses or components.
 -/
 theorem Choice.IsBase.is_withReal (h : ch.IsBase) {ρ' ξ'} (h' : ∀ u, (∀ a, psiK (ch.withReal ρ' ξ') a u = 0) → u = 0) :
     (ch.withReal ρ' ξ').Is := ⟨h.withReal ρ' ξ', realOK_of_inj _ h'⟩
 
 /- English proof (translation)
-Simplify using `[cTot, Finset.prod_ne_zero_iff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cTot_ne_zero_iff (t : T) : cTot ch t ≠ 0 ↔ ∀ i j, ch.c i j t ≠ 0 := by
   simp [cTot, Finset.prod_ne_zero_iff]
 
 /- English proof (translation)
-Simplify using `only [ratio, cTot, sqRatio, Finset.prod_div_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ratio_eq_prod (t : T) : ratio ch t = ∏ i, ∏ j, sqRatio ch i j t := by
   simp only [ratio, cTot, sqRatio, Finset.prod_div_distrib]
 
 /- English proof (translation)
-The claim follows from `div_self h`.
+A detailed English derivation is pending.
 -/
 theorem ratio_base (h : cTot ch A.μ0 ≠ 0) : ratio ch A.μ0 = 1 := div_self h
 
 /- English proof (translation)
-Establish `e : (z * ratio ch t)⁻¹ * v = cTot ch A.μ0 * ((κ⁻¹ : ℂˣ) : ℂ) * ((z * cTot ch t)⁻¹ * κ * v)`. Use `κ.ne_zero` as an intermediate fact. Rewrite using `[ratio, Units.val_inv_eq_inv_val, mul_inv, mul_inv, inv_div, div_eq_mul_inv]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e, psiN, mul_right_inj' (mul_ne_zero h (Units.ne_zero _))]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem psiN_eq_iff (h : cTot ch A.μ0 ≠ 0) (κ : ℂˣ) (z v : ℂ) (t : T) (a : Fin ch.n) (u : R.HE.H) :
     psiN ch κ a u = (z * ratio ch t)⁻¹ * v ↔ psiK ch a u = (z * cTot ch t)⁻¹ * κ * v := by
@@ -359,27 +359,27 @@ theorem psiN_eq_iff (h : cTot ch A.μ0 ≠ 0) (κ : ℂˣ) (z v : ℂ) (t : T) (
   rw [e, psiN, mul_right_inj' (mul_ne_zero h (Units.ne_zero _))]
 
 /- English proof (translation)
-The claim follows from `vSum_smul _ _ _ _ t z x a`.
+A detailed English derivation is pending.
 -/
 theorem vK_smul (t : T) (z : D.what₂.LL) (x : A.fam.amb.FR t) (a : Fin ch.n) :
     vK ch t (z • x) a = D.what₂.embLL z * vK ch t x a := vSum_smul _ _ _ _ t z x a
 
 /- English proof (translation)
-The claim follows from `vSum_add _ _ _ _ t h x x'`.
+A detailed English derivation is pending.
 -/
 theorem vK_add (t : T) {a : Fin ch.n} (h : ch.S.SumOK t (ch.Phi a)) (x x' : A.fam.amb.FR t) :
     vK ch t (x + x') a = vK ch t x a + vK ch t x' a := vSum_add _ _ _ _ t h x x'
 
 /- English proof (translation)
-Take `⟨rm⟩` from `nonempty_realMatch W hL`. Establish `key : ∀ (Y Y' : LSp D) (s s') (S S' : HSp D) Λ Λ' s₀ s₀' (f : WO S S' → ℂ), Y = ⟨S, Λ⟩ → Y' = ⟨S', Λ'⟩ → HEq s s₀ → HEq s' s₀' → IsVacO R.ψ R.θ S S' s₀ s₀' (Λ : Set _) (Λ' : Set _) f → ∃ f', IsVacO W.ψ W.θ Y.sp Y'.sp s s' (Y.lat : Set _) (Y'.lat : Set _) f' ∧ HEq f' f`. Introduce and unpack `_ _ s s' S S' Λ Λ' s₀ s₀' f rfl rfl h1 h2 h`. Take `rfl` from `eq_of_heq h1`. Take `rfl` from `eq_of_heq h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨f, hW.ψ ▸ hW.θ ▸ h, HEq.rfl⟩`. Establish `top : ∀ k, k = D.R.m → columnBlock R.toLevCh k = ⟨D.sp.X', R.ΛX⟩ ∧ HEq (W.cart (.grid 0 k)) (cart R.MX)`. Introduce and unpack `_ rfl`. Conclude with `⟨colY_m _, hW.cartX⟩`. Establish `H : ∀ i j, ∃ f : WO (G.V (.grid i j)) (G.V (.grid i (j + 1))) → ℂ, (∀ t, i ≤ D.R.m → j < D.R.m → W.IsVac (.mu t i j) f) ∧ (i = 0 → j + 1 < D.R.m → HEq f (R.vac j)) ∧ (i = 0 → j + 1 = D.R.m → HEq f R.vacX)` using `fun i j => by`.
+Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Break down `i with _ | i` into its components or cases. Break down `lt_trichotomy (j + 1) D.R.m with h | h | h` into its components or cases. Take `⟨f, h1, h2⟩` from `key _ _ _ _ _ _ _ _ _ _ _ (colY_lt R.toLevCh (show j < D.R.m by omega)) (colY_lt R.toLevCh h) (hW.cartY j (by omega)) (hW.cartY _ h) (hch.vY A.μ0 j h).1`. Conclude with `⟨f, fun _ _ _ => h1, fun _ _ => h2, fun _ _ => by omega⟩`. Take `rfl : j = D.R.m - 1` from `by omega`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨f, h1, h2⟩` from `key _ _ _ _ _ _ _ _ _ _ _ (colY_lt R.toLevCh (show D.R.m - 1 < D.R.m by omega)) (top _ h).1 (hW.cartY _ (by omega)) (top _ h).2 (hch.vX A.μ0).1`. Conclude with `⟨f, fun _ _ _ => h1, fun _ _ => by omega, fun _ _ => h2⟩`. Conclude with `⟨0, fun _ _ _ => by omega, fun _ _ => by omega, fun _ _ => by omega⟩`. Conclude with `⟨rm.vT _ j, fun t => rm.vT_is t _ j, fun h => by omega, fun h => by omega⟩`. Use `choose vT h1 h2 h3 using H`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨{ rm with vT := vT, vT_is := fun t i j => h1 i j t }, fun k => h2 0 k rfl, fun k => h3 0 k rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_match_over (hL : R.toLevCh.Is A.μ0) (hch : R.IsChain) {sc : Consts} {G : GridData R.toLevCh sc} {W : G.Weil}
     (hW : W.Over R) : ∃ rm : RealMatch W, rm.Over R := by
@@ -411,7 +411,7 @@ theorem exists_match_over (hL : R.toLevCh.Is A.μ0) (hch : R.IsChain) {sc : Cons
   exact ⟨{ rm with vT := vT, vT_is := fun t i j => h1 i j t }, fun k => h2 0 k rfl, fun k => h3 0 k rfl⟩
 
 /- English proof (translation)
-Take `⟨M, hM⟩` from `exists_vol G hL A.μ0`. Take `⟨rm, hrm⟩` from `exists_match_over hL hch hW`. Take `⟨n, e, -, -, hn, -⟩` from `TestLatModel.exists_testLat (G := G) (node_isV G hL (X := .grid 0 0) ⟨Nat.zero_le _, Nat.zero_le _⟩).sd.1.fg default`. Conclude with `⟨M, rm, default, n, e, hn, hM.isRow, hrm, fun _ _ _ h1 h2 h3 => ⟨h1, hW, hM.isRow, hrm, h2, h3⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_choice (hL : R.toLevCh.Is A.μ0) (hch : R.IsChain) {sc : Consts} {G : GridData R.toLevCh sc} {W : G.Weil}
     (hW : W.Over R) (S : SumChoice W Set.univ) (cv : ChainVec R) :
@@ -423,14 +423,14 @@ theorem exists_choice (hL : R.toLevCh.Is A.μ0) (hch : R.IsChain) {sc : Consts} 
   exact ⟨M, rm, default, n, e, hn, hM.isRow, hrm, fun _ _ _ h1 h2 h3 => ⟨h1, hW, hM.isRow, hrm, h2, h3⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 example (ρ ξ) (t : T) : vK (ch.withReal ρ ξ) t = vK ch t ∧ cTot (ch.withReal ρ ξ) t = cTot ch t := ⟨rfl, rfl⟩
 
 /- English proof (translation)
-Use `h u (fun b => ?_) ch.ρ ch.ξ a` and prove the remaining obligations. Establish `e : pairVec (coefPlus ch.G ch.W.θ) 0 (ch.col b) = (0 : ℂ) • pairVec (coefPlus ch.G ch.W.θ) 0 (ch.col b)`. Use function extensionality and compare the values at `x`. Simplify using `[pairVec_apply]`. Use `show Bplus _ _ (pairVec (coefPlus ch.G ch.W.θ) 0 (ch.col b)) _ = 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, ← one_smul ℂ (thetaChi _ _ _ _ _), Bplus_smul, zero_mul, zero_mul]`.
+A detailed English derivation is pending.
 -/
 example (ρ) (h : (ch.withReal ρ 0).RealOK) (a : Fin ch.n) (u : R.HE.H) : psiK ch a u = 0 := by
   refine h u (fun b => ?_) ch.ρ ch.ξ a

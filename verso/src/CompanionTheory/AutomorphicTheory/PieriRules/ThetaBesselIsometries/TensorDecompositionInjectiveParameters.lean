@@ -25,7 +25,7 @@ variable {k r : ℕ} {ι κ : Type} [Fintype ι] [DecidableEq ι] [Fintype κ] [
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Simplify using `only [hh, inner_smul_left, inner_smul_right, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [RCLike.star_def]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hh_smul (Γ : Matrix ι ι ℂ) (R : Rep k r) (a b : ℂ) (x y : ι → R.H) :
     hh Γ R (fun c => a • x c) (fun c => b • y c) = a * star b * hh Γ R x y := by
@@ -36,7 +36,7 @@ theorem hh_smul (Γ : Matrix ι ι ℂ) (R : Rep k r) (a b : ℂ) (x y : ι → 
 
 omit [DecidableEq ι] [DecidableEq κ] in
 /- English proof (translation)
-Simplify using `only [hh, sum_inner, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm (s := (univ : Finset κ))]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem hh_sum_right (Γ : Matrix ι ι ℂ) (R : Rep k r) (x : ι → R.H) (y : κ → ι → R.H) :
     hh Γ R x (fun c => ∑ J, y J c) = ∑ J, hh Γ R x (y J) := by
@@ -47,9 +47,9 @@ theorem hh_sum_right (Γ : Matrix ι ι ℂ) (R : Rep k r) (x : ι → R.H) (y :
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Simplify using `only [hh, star_sum, star_mul']`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h : star (Γ j i) = Γ i j`. Use `congrFun (congrFun hΓ i) j` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[Matrix.conjTranspose_apply]`. Rewrite using `[h]`. Use `congr 1`. Conclude with `inner_conj_symm _ _`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem hh_star (Γ : Matrix ι ι ℂ) (hΓ : Γᴴ = Γ) (R : Rep k r) (x y : ι → R.H) :
     star (hh Γ R x y) = hh Γ R y x := by
@@ -64,13 +64,13 @@ theorem hh_star (Γ : Matrix ι ι ℂ) (hΓ : Γᴴ = Γ) (R : Rep k r) (x y : 
   exact inner_conj_symm _ _
 
 /- English proof (translation)
-Use `set z : ι → R.H := fun c => ∑ j, Γ c j • x j with hz`. Establish `h1 : hh Γ R x z = ((∑ i, ‖z i‖ ^ 2 : ℝ) : ℂ)`. Unfold `hh`. Use `push_cast`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: ⟪z i, z i⟫_ℂ = ∑ j, Γ i j * ⟪z i, x j⟫_ℂ` using `by conv_lhs => enter [3]; rw [hz]`. Simplify using `only [inner_sum, inner_smul_right]`. Rewrite using `[← this, inner_self_eq_norm_sq_to_K]`. Both sides reduce to the same expression. Rewrite `h` using `[h1, Complex.ofReal_eq_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ∀ i, z i = 0` using `fun i => by`. Use `(Finset.sum_eq_zero_iff_of_nonneg (fun i _ => sq_nonneg ‖z i‖)).1 h i (mem_univ _)` as an intermediate fact. Simplify using `using this`. Establish `h3 : ∑ i, Γ c i • z i = x c`. Simplify using `only [hz, Finset.smul_sum, smul_smul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.sum_smul, ← Matrix.mul_apply, hΓ, Matrix.one_apply]`. Simplify using the standard rewrite rules. Rewrite using `[← h3]`. Simplify using `[h2]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_hh (Γ : Matrix ι ι ℂ) (hΓ : Γ * Γ = 1) (R : Rep k r) (x : ι → R.H)
     (h : hh Γ R x (fun c => ∑ j, Γ c j • x j) = 0) (c : ι) : x c = 0 := by
@@ -97,7 +97,7 @@ theorem eq_zero_of_hh (Γ : Matrix ι ι ℂ) (hΓ : Γ * Γ = 1) (R : Rep k r) 
   simp [h2]
 
 /- English proof (translation)
-Use `hT.smul 0 0 R.smSub.zero_mem` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem SmMap_zero {R R' : Rep k r} {T : R.H → R'.H} (hT : SmMap R R' T) : T 0 = 0 := by
   have := hT.smul 0 0 R.smSub.zero_mem
@@ -105,7 +105,7 @@ theorem SmMap_zero {R R' : Rep k r} {T : R.H → R'.H} (hT : SmMap R R' T) : T 0
 
 omit [DecidableEq ι] [DecidableEq κ] in
 /- English proof (translation)
-The claim follows from `h1 pr_sm := h2 io_eq := fun I g hg y hy => by funext c have := congrFun (h.io_eq I g hg y hy) c simp only [act] at this ⊢ rw [this, Finset.smul_sum] refine Finset.sum_congr rfl fun j _ => ?_ rw [map_smul, smul_comm] pr_eq := fun I g hg x hx => by rw [← Finset.smul_sum, ← Finset.s …`.
+A detailed English derivation is pending.
 -/
 theorem raw_scale {ρ : Mx k r → Matrix ι ι ℂ} {R : Rep k r} {RI : κ → Rep k r}
     {io : ∀ I, ι → (RI I).H → R.H} {pr : ∀ I, ι → R.H → (RI I).H} (h : TensRaw ρ R RI io pr)
@@ -141,31 +141,27 @@ theorem raw_scale {ρ : Mx k r → Matrix ι ι ℂ} {R : Rep k r} {RI : κ → 
     rw [← Finset.smul_sum, h.pr_io_ne I J hIJ y hy, smul_zero]
 
 /- English proof (translation)
-Introduce `hH k r ι κ _ _ _ _ ρ Γ d R RI io pr ε mu muI hR hRI hinj hF hT`. Establish `hK : PI.KFinSmooth` using `hH.1.2.2.1`. Establish `hP : PoulsenG` using `hH.2.2.2.2.2.1`. Establish `hform` using `GlobalTheory.T.tensor_decomposition_parameters hK k r ι κ ρ Γ d R RI io pr ε mu muI hR hRI hF hT`. Establish `horth : ∀ I J, I ≠ J → ∀ y ∈ (RI I).sm, ∀ y' ∈ (RI J).sm, hh Γ R (fun c => io I c y) (fun c => io J c y') = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `I J hIJ`. Break down `(hP k r ε _ _ _ _ (hRI I) (hRI J)).2 _ (hform I J) with h | ⟨U, hU⟩` into its components or cases. Conclude with `h`. Conclude with `absurd (hinj (GlobalTheory.T.discrete_series_parameter_unique hH k r ε _ _ _ _ (hRI I) (hRI J) U hU)) hIJ`. Use `choose cI hc using fun I => (hP k r ε _ _ _ _ (hRI I) (hRI I)).1 _ (hform I I)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hunit : ∀ I, ∃ w ∈ (RI I).sm, ‖w‖ = 1` using `fun I => by`. Take `⟨-, -, -, -, h5, -, h7, ⟨w, hw, hwK, -⟩, -⟩` from `GlobalTheory.T.discreteSeries_unitary_smooth_basic hK k r ε _ _ (hRI I)`. Conclude with `⟨w, h5 w (h7 w hwK), hw⟩`. Establish `hreal : ∀ I, ((cI I).re : ℂ) = cI I` using `fun I => by`. Take `⟨w, hw, hn⟩` from `hunit I`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `hc I w hw w hw`. Establish `h2` using `hh_star Γ hF.1 R (fun c => io I c w) (fun c => io I c w)`. Rewrite `h1` using `[inner_self_eq_norm_sq_to_K, hn]`. Simplify using `only [map_one, one_pow, mul_one] at h1`. Rewrite `h2` using `[h1]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Complex.conj_eq_iff_re.1 h2`. Establish `hne : ∀ I, cI I ≠ 0` using `fun I h0 => by`. Take `⟨w, hw, hn⟩` from `hunit I`. Establish `hx : ∀ c, (∑ j, Γ c j • io I j w) ∈ R.smSub` using `fun c => Submodule.sum_mem _ fun j _ => R.smSub.smul_mem _ ((hT.io_sm I j).mem _ hw)`. Establish `hz : hh Γ R (fun c => io I c w) (fun c => ∑ j, Γ c j • io I j w) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (fun c => ∑ j, Γ c j • io I j w) = fun c => ∑ J, io J c (∑ e, pr J e (∑ j, Γ e j • io I j w))`. Use function extensionality and compare the values at `fun c => (hT.sum_io_pr _ hx c).symm`. Rewrite using `[e, hh_sum_right]`. Use `Finset.sum_eq_zero fun J _ => ?_` and prove the remaining obligations. Establish `hm : ∑ e, pr J e (∑ j, Γ e j • io I j w) ∈ (RI J).smSub` using `Submodule.sum_mem _ fun e _ => (hT.pr_sm J e).mem _ (hx e)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `hIJ : I = J`. Substitute `hIJ` using the available equality. Use `hc I w hw _ hm` as an intermediate fact. Rewrite `this` using `[h0, zero_mul]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `horth I J hIJ w hw _ hm`. Establish `h0'` using `eq_zero_of_hh Γ hF.2.1 R _ hz`. Establish `h1` using `hT.pr_io I w hw`. Simplify using `only [h0', SmMap_zero (hT.pr_sm I _), Finset.sum_const_zero] at h1`. Rewrite `hn` using `[← h1, norm_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `zero_ne_one hn`. Establish `hre : ∀ I, (cI I).re ≠ 0` using `fun I h => hne I (by rw [← hreal I, h]; simp)`. Establish `hsc : ∀ (m m' : Fin (2 * r + k + 1) → ℝ) (S S' : Rep k r), S.IsDG ε m → S'.IsDG ε m' → ∀ (T : S.H → S'.H) (a : ℂ), SmMap S S' T → SmMap S S' (fun v => a • T v)`. Introduce `m m' S S' hS hS' T a h`. Use `(GlobalTheory.T.smooth_maps_closure hK k r ε _ _ _ S S' S' hS hS' hS').2.2.1 T T (a - 1) h h` as an intermediate fact.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify `this` using `only [sub_smul, one_smul, sub_add_cancel]`. Use `set a : κ → ℂ := fun I => (((Real.sqrt |(cI I).re|)⁻¹ : ℝ) : ℂ) with ha`. Establish `hane : ∀ I, a I ≠ 0` using `fun I => by`. Simplify using `only [ha, ne_eq, Complex.ofReal_eq_zero, inv_eq_zero]`. Conclude with `(Real.sqrt_pos.2 (abs_pos.2 (hre I))).ne'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun I c v => a I • io I c v, fun I c v => (a I)⁻¹ • pr I c v, fun I => (cI I).re / |(cI I).re|, ⟨raw_scale hT a hane (fun I c => hsc _ _ _ _ (hRI I) hR _ _ (hT.io_sm I c)) (fun I c => hsc _ _ _ _ hR (hRI I) _ _ (hT.pr_sm I c)), fun I => ?_, fun I y hy y' hy' => ?_, fun I J hIJ y …` and prove the remaining obligations. Break down `lt_or_gt_of_ne (hre I) with h | h` into its components or cases. Use `right`. Rewrite using `[abs_of_neg h, div_neg, div_self (hre I)]`. Use `left`.
-
-Rewrite using `[abs_of_pos h, div_self (hre I)]`. Establish `h1` using `hc I y hy y' hy'`. Rewrite using `[hh_smul, h1, ← mul_assoc]`. Use `congr 1`. Establish `h2 : (Real.sqrt |(cI I).re|)⁻¹ * (Real.sqrt |(cI I).re|)⁻¹ * (cI I).re = (cI I).re / |(cI I).re|`.
-
-Rewrite using `[← mul_inv, Real.mul_self_sqrt (abs_nonneg _), div_eq_inv_mul]`. Rewrite using `[← h2]`. Simplify using `only [ha, RCLike.star_def, Complex.conj_ofReal]`. Rewrite using `[Complex.ofReal_mul, Complex.ofReal_mul, hreal I]`. Rewrite using `[hh_smul, horth I J hIJ y hy y' hy', mul_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tensH_of_raw : HypsG → ∀ (k r : ℕ) (ι κ : Type) [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ] (ρ : Mx k r → Matrix ι ι ℂ) (Γ : Matrix ι ι ℂ) (d : ℕ) (R : Rep k r) (RI : κ → Rep k r) (io : ∀ I, ι → (RI I).H → R.H) (pr : ∀ I, ι → R.H → (RI I).H) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) (muI : κ → Fin (2 * r + k + 1) → ℝ), R.IsDG ε mu → (∀ I, (RI I).IsDG ε (muI I)) → Function.Injective muI → IsFRep ρ Γ d → TensRaw ρ R RI io pr → ∃ io' pr' ep, TensH ρ Γ R RI io' pr' ep := by
   intro hH k r ι κ _ _ _ _ ρ Γ d R RI io pr ε mu muI hR hRI hinj hF hT

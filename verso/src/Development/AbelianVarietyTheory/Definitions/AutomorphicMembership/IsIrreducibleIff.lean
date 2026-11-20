@@ -11,9 +11,9 @@ namespace GlobalTheory.CuspRep
 variable {G : Type} [Group G]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨?_, fun W hW => ?_⟩` and prove the remaining obligations. Establish `: (⊥ : Submodule ℂ V) ≠ ⊤` using `fun e => bot_ne_top (α := Subrepresentation ρ) (Subrepresentation.toSubmodule_injective e)`. Conclude with `(Submodule.nontrivial_iff ℂ).1 ⟨⟨_, _, this⟩⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `(eq_bot_or_eq_top (⟨W, hW⟩ : Subrepresentation ρ)).imp (congrArg Subrepresentation.toSubmodule) (congrArg Subrepresentation.toSubmodule)`. Introduce and unpack `⟨h0, h⟩`. Establish `: Nontrivial (Subrepresentation ρ)` using `⟨⟨⊥, ⊤, fun e => bot_ne_top (congrArg Subrepresentation.toSubmodule e : (⊥ : Submodule ℂ V) = ⊤)⟩⟩`. Conclude with `⟨fun W => (h W.toSubmodule W.apply_mem_toSubmodule).imp (fun e => Subrepresentation.toSubmodule_injective e) (fun e => Subrepresentation.toSubmodule_injective e)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isIrreducible_iff {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V) :
     ρ.IsIrreducible ↔ Nontrivial V ∧ ∀ W : Submodule ℂ V, (∀ g, ∀ v ∈ W, ρ g v ∈ W) → W = ⊥ ∨ W = ⊤ := by
@@ -98,7 +98,7 @@ def Irr.twist (σ : Irr G) (χ : G →* ℂˣ) (hχ : IsOpen {g | χ g = 1}) : I
 def Irr.ofChar (χ : G →* ℂˣ) (hχ : IsOpen {g | χ g = 1}) : Irr G := Quotient.mk _ ((SmIrr.triv G).twist χ hχ)
 
 /- English proof (translation)
-Take `⟨e⟩ : Nonempty ((twRep (Representation.trivial ℂ G ℂ) χ).Equiv (twRep (Representation.trivial ℂ G ℂ) χ'))` from `Quotient.exact h`. Use extensionality with `g`. Establish `h1 : e (((χ g : ℂˣ) : ℂ) • (1 : ℂ)) = ((χ' g : ℂˣ) : ℂ) • e (1 : ℂ)` using `LinearMap.congr_fun (e.isIntertwining' g) (1 : ℂ)`. Rewrite `h1` using `[map_smul]`. Conclude with `smul_left_injective ℂ ((map_ne_zero_iff e e.injective).2 (one_ne_zero (α := ℂ))) h1`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Irr.ofChar_inj {χ χ' : G →* ℂˣ} {hχ : IsOpen {g | χ g = 1}} {hχ' : IsOpen {g | χ' g = 1}}
     (h : Irr.ofChar χ hχ = Irr.ofChar χ' hχ') : χ = χ' := by

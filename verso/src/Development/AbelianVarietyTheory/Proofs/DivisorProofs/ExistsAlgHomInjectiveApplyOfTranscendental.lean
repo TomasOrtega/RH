@@ -6,11 +6,9 @@ open AlgebraicGeometry CategoryTheory ReciprocityTheory.ChartRestriction.G.Geo.T
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `e` to `Equiv.optionSubtypeNe i₀`. Establish `key : ∀ y : ι → A, y ∘ e = fun o => o.elim (y i₀) (fun b => y b.1)`. Apply the tactic sequence `intro y; funext o; cases o <;> rfl`. Rewrite `hx` using `[← algebraicIndependent_equiv e, key]`. Rewrite using `[← algebraicIndependent_equiv e, key]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h1, h2⟩` from `AlgebraicIndependent.option_iff.1 hx`. Establish `hrest : (fun b : {b // b ≠ i₀} => Function.update x i₀ (x i₀ ^ n) b.1) = fun b => x b.1`. Use function extensionality and compare the values at `b`. Conclude with `Function.update_of_ne b.2 _ _`. Rewrite using `[hrest, Function.update_self]`.
-
-Conclude with `AlgebraicIndependent.option_iff.2 ⟨h1, h2.pow hn⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algebraicIndependent_update_pow {R A ι : Type} [CommRing R] [CommRing A] [Algebra R A]
     [DecidableEq ι] {x : ι → A} (hx : AlgebraicIndependent R x) (i₀ : ι) {n : ℕ} (hn : 0 < n) :

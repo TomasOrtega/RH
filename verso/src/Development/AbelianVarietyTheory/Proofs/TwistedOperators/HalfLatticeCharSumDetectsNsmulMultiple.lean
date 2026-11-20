@@ -23,37 +23,33 @@ open GlobalTheory.Core.Rk.ThetaOf GlobalTheory.DownLift.GenQuot
 set_option synthInstance.maxHeartbeats 100000 in
 
 /- English proof (translation)
-Introduce `D ψ S T Λ e k R hk hpair hann hR hU t htΛ hte`. Establish `half_sub : ∀ {c : AE D} {x y : WO S T}, IsHalf c x → IsHalf c y → IsHalf c (x - y)` using `fun hx hy i j => by simp only [Matrix.sub_apply, mul_sub, hx i j, hy i j]`. Establish `half_add : ∀ {c : AE D} {x y : WO S T}, IsHalf c x → IsHalf c y → IsHalf c (x + y)` using `fun hx hy i j => by simp only [Matrix.add_apply, mul_add, hx i j, hy i j]`. Establish `half_nsmul : ∀ {c : AE D} {x : WO S T} (n : ℕ), IsHalf c x → IsHalf c (n • x)` using `fun n hx i j => by rw [Matrix.smul_apply, nsmul_eq_mul, mul_left_comm, hx i j]`. Establish `half_smul : ∀ {c : AE D} {x : WO S T} (a : AE D), IsHalf c x → IsHalf c (a • x)` using `fun a hx i j => by simp only [Matrix.smul_apply, smul_eq_mul]; rw [mul_left_comm, hx i j]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `pair_add : ∀ x y y' : WO S T, ψ (symplO S T x (y + y')) = ψ (symplO S T x y) * ψ (symplO S T x y')`. Introduce `x y y'`. Rewrite using `[symplO_add_right, AddChar.map_add_eq_mul]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, huΛ, hue, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `h1 : ∀ r ∈ R, ψ (symplO S T (k • u) r) = 1` using `fun r hr => by`. Rewrite using `[symplO_nsmul_swap]`. Conclude with `hpair u huΛ hue _ (hR r hr).2 (half_nsmul k (hR r hr).1)`. Rewrite using `[Finset.sum_congr rfl h1]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hnot`. Establish `hex : ∃ r₀ ∈ R, ψ (symplO S T t r₀) ≠ 1`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Apply `hnot` to reduce the goal to its premises.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set a : AE D := algebraMap D.host.F (AE D) ((k : D.host.F)⁻¹) with ha`. Establish `hka : k • a = 1`. Rewrite using `[ha, ← map_nsmul, nsmul_eq_mul, mul_inv_cancel₀ (by exact_mod_cast hk.ne'), map_one]`. Establish `hkx : ∀ x : WO S T, k • (a • x) = x` using `fun x => by`. Rewrite using `[← smul_assoc, hka, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨a • t, ?_, half_smul a hte, (hkx t).symm⟩` and prove the remaining obligations. Apply `hann _ (half_smul a hte)` to reduce the goal to its premises. Introduce `y hyΛ hyc`. Take `⟨r, ⟨hrR, hdiff⟩, -⟩` from `hU (a • y) (half_smul a hyc) (by rw [hkx]; exact hyΛ)`. Establish `hsw : symplO S T (a • t) y = symplO S T t (a • y)` using `by conv_lhs => rw [← hkx y]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← symplO_nsmul_swap, hkx]`. Rewrite using `[hsw, show a • y = (a • y - r) + r by abel, pair_add, hall r hrR, mul_one]`. Conclude with `hpair t htΛ hte _ hdiff (half_sub (half_smul a hyc) (hR r hrR).1)`. Take `⟨r₀, hr₀R, hr₀⟩` from `hex`. Choose the witnesses or unpack the hypotheses as in `⟨rep, rep_spec⟩ : ∃ rep : WO S T → WO S T, ∀ y, IsHalf (cA D e) y → k • y ∈ Λ → rep y ∈ R ∧ y - rep y ∈ Λ := by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun y => if h : IsHalf (cA D e) y ∧ k • y ∈ Λ then (hU y h.1 h.2).exists.choose else 0, ?_⟩` and prove the remaining obligations. Introduce `y h1 h2`. Simplify using `only`. Rewrite using `[dif_pos (And.intro h1 h2)]`. Conclude with `(hU y h1 h2).exists.choose_spec`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `rep_eq : ∀ y r, IsHalf (cA D e) y → k • y ∈ Λ → r ∈ R → y - r ∈ Λ → rep y = r` using `fun y r h1 h2 hr hd => (hU y h1 h2).unique (rep_spec y h1 h2) ⟨hr, hd⟩`. Establish `hadd : ∀ r ∈ R, ∀ s ∈ R, IsHalf (cA D e) (r + s) ∧ k • (r + s) ∈ Λ` using `fun r hr s hs => ⟨half_add (hR r hr).1 (hR s hs).1, by rw [nsmul_add]; exact Λ.add_mem (hR r hr).2 (hR s hs).2⟩`. Establish `hsub : ∀ r ∈ R, ∀ s ∈ R, IsHalf (cA D e) (r - s) ∧ k • (r - s) ∈ Λ` using `fun r hr s hs => ⟨half_sub (hR r hr).1 (hR s hs).1, by rw [nsmul_sub]; exact Λ.sub_mem (hR r hr).2 (hR s hs).2⟩`. Establish `key : ∑ r ∈ R, ψ (symplO S T t r₀) * ψ (symplO S T t r) = ∑ r ∈ R, ψ (symplO S T t r)`. Apply `Finset.sum_nbij' (fun r => rep (r + r₀)) (fun r => rep (r - r₀))` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `r hr`. Conclude with `(rep_spec _ (hadd r hr r₀ hr₀R).1 (hadd r hr r₀ hr₀R).2).1`. Introduce `r hr`. Conclude with `(rep_spec _ (hsub r hr r₀ hr₀R).1 (hsub r hr r₀ hr₀R).2).1`. Introduce `r hr`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `rep_spec _ (hadd r hr r₀ hr₀R).1 (hadd r hr r₀ hr₀R).2`. Establish `hs` using `hsub _ h1 r₀ hr₀R`. Use `rep_eq _ r hs.1 hs.2 hr ?_` and prove the remaining obligations. Establish `: rep (r + r₀) - r₀ - r = -((r + r₀) - rep (r + r₀))` using `by abel`. Rewrite using `[this]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Λ.neg_mem h2`. Introduce `r hr`. Take `⟨h1, h2⟩` from `rep_spec _ (hsub r hr r₀ hr₀R).1 (hsub r hr r₀ hr₀R).2`. Establish `hs` using `hadd _ h1 r₀ hr₀R`. Use `rep_eq _ r hs.1 hs.2 hr ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: rep (r - r₀) + r₀ - r = -((r - r₀) - rep (r - r₀))` using `by abel`. Rewrite using `[this]`. Conclude with `Λ.neg_mem h2`. Introduce `r hr`. Take `⟨h1, h2⟩` from `rep_spec _ (hadd r hr r₀ hr₀R).1 (hadd r hr r₀ hr₀R).2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hrep : rep (r + r₀) = (r + r₀) + -((r + r₀) - rep (r + r₀))` using `by abel`. Establish `hhalf : IsHalf (cA D e) (-((r + r₀) - rep (r + r₀)))`. Use `half_sub (hadd r hr r₀ hr₀R).1 (hR _ h1).1` as an intermediate fact. Introduce `i j`. Simplify using `only [Matrix.neg_apply, mul_neg, this i j]`.
-
-Use `show _ = ψ (symplO S T t (rep (r + r₀)))`. Rewrite using `[hrep, pair_add, pair_add, hpair t htΛ hte _ (Λ.neg_mem h2) hhalf, mul_one, mul_comm]`. Rewrite `key` using `[← Finset.mul_sum]`. Establish `h0 : (ψ (symplO S T t r₀) - 1) * ∑ r ∈ R, ψ (symplO S T t r) = 0`. Rewrite using `[sub_mul, key, one_mul, sub_self]`.
-
-Conclude with `(mul_eq_zero.mp h0).resolve_left (sub_ne_zero.mpr hr₀)`.
+A detailed English derivation is pending.
 -/
 theorem charSum_detects_multiple : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (Λ : AddSubgroup (WO S T)) (e : AE D) (k : ℕ) (R : Finset (WO S T)), 0 < k → (∀ u ∈ Λ, IsHalf e u → ∀ y ∈ Λ, IsHalf (cA D e) y → ψ (symplO S T u y) = 1) → (∀ x : WO S T, IsHalf e x → (∀ y ∈ Λ, IsHalf (cA D e) y → ψ (symplO S T x y) = 1) → x ∈ Λ) → (∀ y ∈ R, IsHalf (cA D e) y ∧ k • y ∈ Λ) → (∀ y : WO S T, IsHalf (cA D e) y → k • y ∈ Λ → ∃! r, r ∈ R ∧ y - r ∈ Λ) → ∀ t ∈ Λ, IsHalf e t → ((∃ u ∈ Λ, IsHalf e u ∧ t = k • u) → ∑ r ∈ R, ψ (symplO S T t r) = R.card) ∧ ((¬ ∃ u ∈ Λ, IsHalf e u ∧ t = k • u) → ∑ r ∈ R, ψ (symplO S T t r) = 0) := by
   intro D ψ S T Λ e k R hk hpair hann hR hU t htΛ hte

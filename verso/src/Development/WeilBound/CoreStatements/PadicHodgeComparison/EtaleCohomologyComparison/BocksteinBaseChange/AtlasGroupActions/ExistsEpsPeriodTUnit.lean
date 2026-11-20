@@ -14,7 +14,7 @@ namespace CrystallineSemistableComparison.GlueBE
 variable (l : ℕ) [Fact l.Prime]
 
 /- English proof (translation)
-Establish `h` using `(AInf.isUnit_teichmuller_of_untilt_eq_one (K := ℂ_[l]) (p := l) (untilt_epsilon (p := l))).map (WittVector.constantCoeff (p := l) (R := Ob l))`. Rewrite `h` using `[WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isUnit_epsilon : IsUnit (epsilon l : Ob l) := by
   have h := (AInf.isUnit_teichmuller_of_untilt_eq_one (K := ℂ_[l]) (p := l) (untilt_epsilon (p := l))).map
@@ -25,7 +25,7 @@ def eU (k : ℕ) : (Ob l)ˣ :=
   (Units.map ((frobeniusEquiv (Ob l) l).symm : Ob l →+* Ob l).toMonoidHom)^[k] (isUnit_epsilon l).unit
 
 /- English proof (translation)
-Rewrite using `[eU, Function.iterate_succ_apply']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eU_succ (k : ℕ) : eU l (k + 1) = Units.map ((frobeniusEquiv (Ob l) l).symm : Ob l →+* Ob l).toMonoidHom (eU l k) := by
   rw [eU, Function.iterate_succ_apply']
@@ -55,14 +55,14 @@ def eps : B.Eps l where
     exact untilt_frobeniusEquiv_symm_epsilon_ne_one
 
 /- English proof (translation)
-Rewrite using `[B.Eps.μ, B.Eps.qk, AInf.mu, map_sub, map_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eps_μ : (eps l).μ = algebraMap (AInf ℂ_[l] l) (ACris.ACris ℂ_[l] l) (AInf.mu (epsilon l)) := by
   rw [B.Eps.μ, B.Eps.qk, AInf.mu, map_sub, map_one]
   rfl
 
 /- English proof (translation)
-Take `⟨u, hu, e⟩` from `ACris.exists_periodT_eq_mu_mul_unit (K := ℂ_[l]) (p := l) (untilt_epsilon (p := l)) untilt_frobeniusEquiv_symm_epsilon_ne_one`. Conclude with `⟨eps l, u, hu, by rw [eps_μ]; exact e⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_eps_period_t_unit (K : IntermediateField ℚ_[l] (PadicAlgCl l)) : ∃ ε : B.Eps l, ∃ u : (per l K).A, IsUnit u ∧ (per l K).t = (show (per l K).A from ε.μ) * u := by
   obtain ⟨u, hu, e⟩ := ACris.exists_periodT_eq_mu_mul_unit (K := ℂ_[l]) (p := l) (untilt_epsilon (p := l))

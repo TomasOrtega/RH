@@ -17,7 +17,7 @@ open Matrix
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Simplify using `only [form, dotProduct, mulVec, map_sum, map_mul, hσ, hJ, Finset.mul_sum, mul_neg, neg_mul, Finset.sum_neg_distrib, neg_neg]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_swap {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
     (hJ : ∀ i j, σ (J j i) = -J i j) (u v : Fin n → E) : form σ J u v = -σ (form σ J v u) := by
@@ -26,7 +26,7 @@ theorem form_swap {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) {n : ℕ} {J
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-The claim follows from `dotProduct_comm _ _`.
+A detailed English derivation is pending.
 -/
 theorem form_eq_dot {σ : E →ₐ[F] E} {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (u v : Fin n → E) :
     (J *ᵥ fun i => σ (v i)) ⬝ᵥ u = form σ J u v := dotProduct_comm _ _
@@ -36,21 +36,21 @@ section Plane
 variable {σ : E →ₐ[F] E} {B : Base F E} {n n₁ : ℕ} {W : Spc F E n} {W₁ : Spc F E n₁} {H : Plane E n n₁} {i₀ i₁ : ℕ}
 
 /- English proof (translation)
-Rewrite using `[prX, vecMulVec_mulVec, op_smul_eq_smul, form_eq_dot, hA.xy, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prX_mulVec_x_of_isAdapted (hA : H.IsAdapted σ B W W₁ i₀ i₁) : prX σ W.J H *ᵥ H.x = H.x := by
   rw [prX, vecMulVec_mulVec, op_smul_eq_smul, form_eq_dot, hA.xy, one_smul]
 
 /- English proof (translation)
-Rewrite using `[prY, neg_mulVec, vecMulVec_mulVec, op_smul_eq_smul, form_eq_dot, hA.xx, zero_smul, neg_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prY_mulVec_x_eq_zero_of_isAdapted (hA : H.IsAdapted σ B W W₁ i₀ i₁) : prY σ W.J H *ᵥ H.x = 0 := by
   rw [prY, neg_mulVec, vecMulVec_mulVec, op_smul_eq_smul, form_eq_dot, hA.xx, zero_smul, neg_zero]
 
 /- English proof (translation)
-Establish `h` using `hA.orth (Pi.single j 1)`. Rewrite `h` using `[mulVec_single_one]`. Simplify using `only [form, dotProduct] at h`. Simplify using `only [vecMul, dotProduct]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[← h.2]; exact Finset.sum_congr rfl fun i _ => by simp [mul_comm]`. Rewrite using `[← h.1]; exact Finset.sum_congr rfl fun i _ => by simp [mul_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem dot_col (hA : H.IsAdapted σ B W W₁ i₀ i₁) (j : Fin n₁) :
     ((W.J *ᵥ fun i => σ (H.y i)) ᵥ* H.ι) j = 0 ∧ ((W.J *ᵥ fun i => σ (H.x i)) ᵥ* H.ι) j = 0 := by
@@ -63,7 +63,7 @@ theorem dot_col (hA : H.IsAdapted σ B W W₁ i₀ i₁) (j : Fin n₁) :
   · rw [← h.1]; exact Finset.sum_congr rfl fun i _ => by simp [mul_comm]
 
 /- English proof (translation)
-Rewrite using `[prX, vecMulVec_mul]`. Establish `: ((W.J *ᵥ fun i => σ (H.y i)) ᵥ* H.ι) = 0` using `funext fun j => (dot_col hA j).1`. Rewrite using `[this]`. Use `ext`. Simplify using `[vecMulVec]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem prX_mul_ι (hA : H.IsAdapted σ B W W₁ i₀ i₁) : prX σ W.J H * H.ι = 0 := by
   rw [prX, vecMulVec_mul]
@@ -71,7 +71,7 @@ theorem prX_mul_ι (hA : H.IsAdapted σ B W W₁ i₀ i₁) : prX σ W.J H * H.�
   rw [this]; ext; simp [vecMulVec]
 
 /- English proof (translation)
-Rewrite using `[prY, Matrix.neg_mul, vecMulVec_mul]`. Establish `: ((W.J *ᵥ fun i => σ (H.x i)) ᵥ* H.ι) = 0` using `funext fun j => (dot_col hA j).2`. Rewrite using `[this]`. Use `ext`. Simplify using `[vecMulVec]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem prY_mul_ι (hA : H.IsAdapted σ B W W₁ i₀ i₁) : prY σ W.J H * H.ι = 0 := by
   rw [prY, Matrix.neg_mul, vecMulVec_mul]
@@ -79,15 +79,15 @@ theorem prY_mul_ι (hA : H.IsAdapted σ B W W₁ i₀ i₁) : prY σ W.J H * H.�
   rw [this]; ext; simp [vecMulVec]
 
 /- English proof (translation)
-Rewrite using `[prI, Matrix.sub_mul, Matrix.sub_mul, prX_mul_ι hA, prY_mul_ι hA, Matrix.one_mul, sub_zero, sub_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prI_mul_ι (hA : H.IsAdapted σ B W W₁ i₀ i₁) : prI σ W.J H * H.ι = H.ι := by
   rw [prI, Matrix.sub_mul, Matrix.sub_mul, prX_mul_ι hA, prY_mul_ι hA, Matrix.one_mul, sub_zero, sub_zero]
 
 /- English proof (translation)
-Establish `hyx : form σ W.J H.y H.x = -1` using `by rw [form_swap hσ hW, hA.xy, map_one]`. Establish `lin : ∀ (a b : Fin n → E) (s t : E) (w : Fin n → E), form σ W.J (a - s • H.x + t • H.y) w = form σ W.J a w - s * form σ W.J H.x w + t * form σ W.J H.y w` using `fun a b s t w => by`. Simplify using `only [form, sub_dotProduct, add_dotProduct, smul_dotProduct, smul_eq_mul]`. Establish `e : prI σ W.J H *ᵥ v = v - form σ W.J v H.y • H.x + form σ W.J v H.x • H.y`. Rewrite using `[prI, sub_mulVec, sub_mulVec, one_mulVec, prX, prY, neg_mulVec, vecMulVec_mulVec, vecMulVec_mulVec, op_smul_eq_smul, op_smul_eq_smul, form_eq_dot, form_eq_dot, sub_neg_eq_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, lin _ v, lin _ v, hA.xx, hA.yy, hA.xy, hyx]`. Apply the tactic sequence `constructor <;> ring`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem form_prI (hσ : ∀ x, σ (σ x) = x) (hW : ∀ i j, σ (W.J j i) = -W.J i j) (hA : H.IsAdapted σ B W W₁ i₀ i₁)
     (v : Fin n → E) : form σ W.J (prI σ W.J H *ᵥ v) H.x = 0 ∧ form σ W.J (prI σ W.J H *ᵥ v) H.y = 0 := by
@@ -108,11 +108,11 @@ section Range
 variable {σ : E →ₐ[F] E} {B : Base F E} {n n₁ : ℕ} {W : Spc F E n} {W₁ : Spc F E n₁} {H : Plane E n n₁} {i₀ i₁ : ℕ}
 
 /- English proof (translation)
-Take `⟨hrs, A, hA⟩` from `h`. Set `e : Fin r ⊕ Fin s ≃ Fin m` to `finSumFinEquiv.trans (finCongr hrs)`. Set `A' : Matrix (Fin m) (Fin m) ℂ` to `A.submatrix id e.symm`. Establish `h2 : A'ᵀ * M * A'.map star = (Matrix.fromBlocks 1 0 0 (-1) : Matrix (Fin r ⊕ Fin s) (Fin r ⊕ Fin s) ℂ).submatrix e.symm e.symm`. Rewrite using `[← hA]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Simplify using `[A', Matrix.mul_apply]`. Establish `h3 : (A'ᵀ * M * A'.map star).det ≠ 0`. Rewrite using `[h2, det_submatrix_equiv_self, det_fromBlocks_zero₂₁]`. Simplify using `[Matrix.det_neg]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `h0`. Rewrite `h3` using `[det_mul, det_mul, h0, mul_zero, zero_mul]`. Conclude with `h3 rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_ne_zero_of_sig {m : ℕ} (M : Matrix (Fin m) (Fin m) ℂ) (r s : ℕ) (h : HasSig M r s) : M.det ≠ 0 := by
   obtain ⟨hrs, A, hA⟩ := h
@@ -127,7 +127,7 @@ theorem det_ne_zero_of_sig {m : ℕ} (M : Matrix (Fin m) (Fin m) ℂ) (r s : ℕ
   exact h3 rfl
 
 /- English proof (translation)
-Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Introduce `h0`. Apply `det_ne_zero_of_sig _ _ _ (hY.sig w)` to reduce the goal to its premises. Rewrite using `[det_smul, ← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero, mul_zero]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_ne_zero_of_skew {m r s : ℕ} {Y : Spc F E m} (hY : Y.IsSkew σ B r s) : Y.J.det ≠ 0 := by
   obtain ⟨w⟩ : Nonempty (InfinitePlace F) := inferInstance
@@ -136,7 +136,7 @@ theorem det_ne_zero_of_skew {m r s : ℕ} {Y : Spc F E m} (hY : Y.IsSkew σ B r 
   rw [det_smul, ← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero, mul_zero]
 
 /- English proof (translation)
-Introduce `a b hab`. Rewrite using `[← sub_eq_zero]`. Apply `eq_zero_of_vecMul_eq_zero hdet` to reduce the goal to its premises. Establish `: H.ι *ᵥ (a - b) = 0` using `by rw [mulVec_sub, hab, sub_self]`. Rewrite using `[← hA.gram, ← vecMul_vecMul, ← vecMul_vecMul, vecMul_transpose, this, zero_vecMul, zero_vecMul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ι_injective (hdet : W₁.J.det ≠ 0) (hA : H.IsAdapted σ B W W₁ i₀ i₁) : Function.Injective H.ι.mulVec := by
   intro a b hab
@@ -146,28 +146,28 @@ theorem ι_injective (hdet : W₁.J.det ≠ 0) (hA : H.IsAdapted σ B W W₁ i�
   rw [← hA.gram, ← vecMul_vecMul, ← vecMul_vecMul, vecMul_transpose, this, zero_vecMul, zero_vecMul]
 
 /- English proof (translation)
-Simplify using `[form, add_dotProduct, smul_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_comb (J : Matrix (Fin n) (Fin n) E) (a b : E) (u v w : Fin n → E) :
     form σ J (a • u + b • v) w = a * form σ J u w + b * form σ J v w := by
   simp [form, add_dotProduct, smul_dotProduct]
 
 /- English proof (translation)
-Establish `hyx : form σ W.J H.y H.x = -1` using `by rw [form_swap hσ hW, hA.xy, map_one]`. Set `Ax : Matrix (Fin 2) (Fin n) E` to `Matrix.of ![W.J *ᵥ fun i => σ (H.x i), W.J *ᵥ fun i => σ (H.y i)]`. Establish `hAx : ∀ v, Ax *ᵥ v = ![form σ W.J v H.x, form σ W.J v H.y]`. Apply the tactic sequence `intro v; ext k; fin_cases k <;> exact form_eq_dot (σ := σ) _ _ _`. Set `K` to `LinearMap.ker Ax.mulVecLin`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression.
 
-Establish `hsurj : LinearMap.range Ax.mulVecLin = ⊤`. Rewrite using `[LinearMap.range_eq_top]`. Introduce `p`. Use `⟨(-p 0) • H.y + p 1 • H.x, ?_⟩` and prove the remaining obligations. Rewrite using `[mulVecLin_apply, hAx, form_comb, form_comb, hyx, hA.xx, hA.yy, hA.xy]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `ext k; fin_cases k <;> simp`. Establish `hK : Module.finrank E K = n₁` using `by show Module.finrank E (LinearMap.ker Ax.mulVecLin) = n₁`. Use `LinearMap.finrank_range_add_finrank_ker Ax.mulVecLin` as an intermediate fact. Rewrite `this` using `[hsurj, finrank_top, Module.finrank_fin_fun, Module.finrank_fin_fun]`. Use `hA.rank` as an intermediate fact.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hR : Module.finrank E (LinearMap.range H.ι.mulVecLin) = n₁`. Rewrite using `[LinearMap.finrank_range_of_inj (ι_injective hdet hA), Module.finrank_fin_fun]`. Establish `hle : LinearMap.range H.ι.mulVecLin ≤ K`. Introduce and unpack `_ ⟨t, rfl⟩`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[LinearMap.mem_ker, mulVecLin_apply, mulVecLin_apply, hAx, (hA.orth t).1, (hA.orth t).2]`. Apply the tactic sequence `ext k; fin_cases k <;> rfl`. Establish `heq` using `Submodule.eq_of_le_of_finrank_eq hle (by rw [hR, hK])`. Establish `hcol : ∀ j : Fin n, ∃ t, H.ι *ᵥ t = fun i => prI σ W.J H i j`. Introduce `j`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hv : (fun i => prI σ W.J H i j) ∈ K`. Rewrite using `[LinearMap.mem_ker, mulVecLin_apply, hAx]`. Establish `h` using `form_prI hσ hW hA (Pi.single j 1)`. Establish `e : prI σ W.J H *ᵥ Pi.single j 1 = fun i => prI σ W.J H i j` using `mulVec_single_one _ _`. Apply the tactic sequence `rw [← e, h.1, h.2]; ext k; fin_cases k <;> rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `hv` using `[← heq]`. Take `⟨t, ht⟩` from `hv`. Conclude with `⟨t, ht⟩`. Use `choose t ht using hcol`. Use `⟨Matrix.of fun k j => t j k, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Establish `h : (H.ι *ᵥ t j) i = prI σ W.J H i j` using `congrFun (ht j) i`. Rewrite using `[Matrix.mul_apply, ← h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem prI_eq_mul (hσ : ∀ x, σ (σ x) = x) (hW : ∀ i j, σ (W.J j i) = -W.J i j) (hdet : W₁.J.det ≠ 0)
     (hA : H.IsAdapted σ B W W₁ i₀ i₁) : ∃ T : Matrix (Fin n₁) (Fin n) E, prI σ W.J H = H.ι * T := by
@@ -221,7 +221,7 @@ namespace GlobalTheory.UnipHaar.RadMem
 open Matrix
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨h 0 0 (by decide), h 1 0 (by decide), h 2 0 (by decide), h 1 1 (by decide), h 2 1 (by decide), h 2 2 (by decide)⟩`. Apply the tactic sequence `rintro ⟨h00, h10, h20, h11, h21, h22⟩ a b hab fin_cases a <;> fin_cases b <;> first | assumption | (exfalso; revert hab; decide)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mem_raise3 {S : Type} [Ring S] (ε : Fin 3 → S) (X : S) :
     X ∈ raise ε wt3 0 ↔ (ε 0 * X * ε 0 = 0 ∧ ε 1 * X * ε 0 = 0 ∧ ε 2 * X * ε 0 = 0 ∧ ε 1 * X * ε 1 = 0 ∧
@@ -235,26 +235,26 @@ theorem mem_raise3 {S : Type} [Ring S] (ε : Fin 3 → S) (X : S) :
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Simplify using `[cA, inclR, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.map_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cA_incl (σ : E →ₐ[F] E) (e : E) : cA σ (inclR (F := F) (AF F) e) = inclR (F := F) (AF F) (σ e) := by
   simp [cA, inclR, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.map_tmul]
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul`.
+A detailed English derivation is pending.
 -/
 theorem incM_mul {l m k : ℕ} (A : Matrix (Fin l) (Fin m) E) (C : Matrix (Fin m) (Fin k) E) :
     incM F (A * C) = incM F A * incM F C := Matrix.map_mul
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_mulVec _ _ _ _).symm`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem incM_mulVec {l m : ℕ} (A : Matrix (Fin l) (Fin m) E) (v : Fin m → E) :
     incM F A *ᵥ incV F v = incV F (A *ᵥ v) := by
   funext i; exact (RingHom.map_mulVec _ _ _ _).symm
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[incM, incV, vecMulVec]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem incM_vecMulVec {m : ℕ} (a b : Fin m → E) : incM F (vecMulVec a b) = vecMulVec (incV F a) (incV F b) := by
   ext i j; simp [incM, incV, vecMulVec]
@@ -268,17 +268,17 @@ open Matrix
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hu`. Proceed by induction on `hu using Subgroup.closure_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `one`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `e1 : mat (1 : UA σ W.J) = 1` using `rfl`. Conclude with `⟨by rw [e1, one_mulVec], fun z => ⟨0, by rw [e1, one_mulVec, zero_smul, add_zero]⟩⟩`. Consider the case `mul a b _ _ ha hb`. Establish `e : mat (a * b) = mat a * mat b` using `rfl`. Use `⟨by rw [e, ← mulVec_mulVec, hb.1, ha.1], fun z => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Supply the required witnesses or components. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨p, hp⟩` from `hb.2 z`. Take `⟨q, hq⟩` from `ha.2 z`. Use `⟨q + p, ?_⟩` and prove the remaining obligations. Rewrite using `[e, ← mulVec_mulVec, hp, mulVec_add, mulVec_smul, hq, ha.1, add_smul]`. Normalize the expressions using the abelian group laws.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Consider the case `inv a _ ha`. Establish `e : mat a⁻¹ * mat a = 1` using `Units.inv_mul a.1`. Establish `hx : mat a⁻¹ *ᵥ incV F H.x = incV F H.x` using `by conv_lhs => rw [← ha.1]`. Rewrite using `[mulVec_mulVec, e, one_mulVec]`. Use `⟨hx, fun z => ?_⟩` and prove the remaining obligations.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨q, hq⟩` from `ha.2 z`. Use `⟨-q, ?_⟩` and prove the remaining obligations. Establish `: mat a⁻¹ *ᵥ (mat a *ᵥ (incM F H.ι *ᵥ z)) = mat a⁻¹ *ᵥ (incM F H.ι *ᵥ z + q • incV F H.x)` using `by rw [hq]`. Rewrite `this` using `[mulVec_mulVec _ (mat a⁻¹) (mat a), e, one_mulVec, mulVec_add, mulVec_smul, hx]`. Rewrite using `[neg_smul, ← sub_eq_add_neg, eq_sub_iff_add_eq]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this.symm`. Introduce `h`. Conclude with `Subgroup.subset_closure h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_unip_iff_set (σ : E →ₐ[F] E) {n n₁ : ℕ} (W : Spc F E n) (H : Plane E n n₁) (u : UA σ W.J) :
     u ∈ unip σ W H ↔ (mat u *ᵥ incV F H.x = incV F H.x ∧
@@ -312,43 +312,37 @@ theorem mem_unip_iff_set (σ : E →ₐ[F] E) {n n₁ : ℕ} (W : Spc F E n) (H 
   · intro h; exact Subgroup.subset_closure h
 
 /- English proof (translation)
-Establish `hσ : ∀ x, σ (σ x) = x` using `sigma_invol hB.cm`. Take `⟨T, hT⟩` from `prI_eq_mul hσ hW.skew (det_ne_zero_of_skew hW₁) hA`. Establish `hu : (mat u)ᵀ * incM F W.J * (mat u).map (cA σ) = incM F W.J` using `u.2`. Establish `hmap : ∀ A : Matrix (Fin n) (Fin n) E, incM F A = (inclR (F` using `F) (E := E) (AF F)).mapMatrix A := fun A => rfl`. Rewrite using `[mem_unip_iff_set, mem_raise3]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set x' := incV F H.x with hx'`. Use `set y' := incV F H.y with hy'`. Use `set ι' := incM F H.ι with hι'`. Use `set cx := incV F (W.J *ᵥ fun i => σ (H.x i)) with hcx`. Use `set cy := incV F (W.J *ᵥ fun i => σ (H.y i)) with hcy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set M := mat u with hM`. Use `set X := M - 1 with hX`. Use `set ex := idem3 σ W.J H 0 with hex0`. Use `set ei := idem3 σ W.J H 1 with hei0`. Use `set ey := idem3 σ W.J H 2 with hey0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : ex + ei + ey = 1` using `by show incM F (prX σ W.J H) + incM F (prI σ W.J H) + incM F (prY σ W.J H) = 1`. Rewrite using `[prI, hmap, hmap, hmap, map_sub, map_sub, map_one]`. Normalize the expressions using the abelian group laws. Establish `hex : ex = vecMulVec x' cy` using `incM_vecMulVec _ _`. Establish `hey : ey = -vecMulVec y' cx` using `by show incM F (prY σ W.J H) = _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[prY, hmap, map_neg, ← hmap, incM_vecMulVec]`. Establish `hexx : ex *ᵥ x' = x'` using `by show incM F (prX σ W.J H) *ᵥ incV F H.x = incV F H.x`. Rewrite using `[incM_mulVec, prX_mulVec_x_of_isAdapted hA]`. Establish `heyx : ey *ᵥ x' = 0` using `by show incM F (prY σ W.J H) *ᵥ incV F H.x = 0`. Rewrite using `[incM_mulVec, prY_mulVec_x_eq_zero_of_isAdapted hA]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Simplify using `[incV]`. Establish `hei : ei = 1 - ex - ey` using `by rw [← hsum]; abel`. Establish `heix : ei *ᵥ x' = 0` using `by rw [hei, sub_mulVec, sub_mulVec, one_mulVec, hexx, heyx]; simp`. Establish `heiι : ei * ι' = ι'` using `by show incM F (prI σ W.J H) * incM F H.ι = incM F H.ι`.
+Reduce the equality to equality of the corresponding arguments. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← incM_mul, prI_mul_ι hA]`. Establish `hT' : ei = ι' * incM F T` using `by show incM F (prI σ W.J H) = _`. Rewrite using `[hT, incM_mul]`. Establish `hcx' : cx = incM F W.J *ᵥ fun i => cA σ (x' i)`. Rewrite using `[hcx, ← incM_mulVec]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congr 1`. Apply the tactic sequence `all_goals (funext i; simp only [incV, hx', cA_incl])`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, hι⟩`. Establish `hXx : X *ᵥ x' = 0` using `by rw [hX, sub_mulVec, one_mulVec, hx, sub_self]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Establish `g0 : X * ex = 0`. Rewrite using `[hex, mul_vecMulVec, hXx]`. Use extensionality with `i j`. Simplify using `[vecMulVec]`. Establish `hXz : ∀ z, ∃ a : AE F E, X *ᵥ (ι' *ᵥ z) = a • x'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z`. Take `⟨a, ha⟩` from `hι z`. Conclude with `⟨a, by rw [hX, sub_mulVec, one_mulVec, ha, add_sub_cancel_left]⟩`. Establish `kill : ∀ P : Matrix (Fin n) (Fin n) (AE F E), P *ᵥ x' = 0 → P * X * ι' = 0`. Introduce `P hP`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use extensionality with `i j`. Take `⟨a, ha⟩` from `hXz (Pi.single j 1)`. Establish `: (P *ᵥ (X *ᵥ (ι' *ᵥ Pi.single j 1))) i = (P *ᵥ (a • x')) i` using `by rw [ha]`. Rewrite `this` using `[mulVec_smul, hP, smul_zero, mulVec_mulVec _ P X, mulVec_mulVec _ (P * X) ι', mulVec_single_one]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `via : ∀ P : Matrix (Fin n) (Fin n) (AE F E), P *ᵥ x' = 0 → P * X * ei = 0`. Introduce `P hP`. Combine the equalities or inequalities in the displayed calculation. Establish `hxc : M.map (cA σ) *ᵥ (fun i => cA σ (x' i)) = fun i => cA σ (x' i)`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `h1` using `RingHom.map_mulVec (cA σ : AE F E →+* AE F E) M x' i`. Rewrite `h1` using `[hx]`. Conclude with `h1.symm`. Establish `hw : Mᵀ *ᵥ (incM F W.J *ᵥ fun i => cA σ (x' i)) = incM F W.J *ᵥ fun i => cA σ (x' i)` using `by conv_lhs => rw [← hxc]`. Rewrite using `[mulVec_mulVec, mulVec_mulVec, hu]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkey : cx ⬝ᵥ (X *ᵥ y') = 0`. Rewrite using `[hX, sub_mulVec, one_mulVec, dotProduct_sub, sub_eq_zero, hcx', dotProduct_mulVec _ M y', ← mulVec_transpose, hw]`. Establish `g3 : ey * X * ey = 0`. Rewrite using `[hey, Matrix.neg_mul, Matrix.neg_mul, Matrix.mul_neg, neg_neg, vecMulVec_mul, vecMulVec_mul_vecMulVec, ← dotProduct_mulVec, hkey, zero_smul]`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[vecMulVec]`. Use `⟨by rw [Matrix.mul_assoc, g0, Matrix.mul_zero], by rw [Matrix.mul_assoc, g0, Matrix.mul_zero], by rw [Matrix.mul_assoc, g0, Matrix.mul_zero], via ei heix, via ey heyx, g3⟩` and prove the remaining obligations. Introduce and unpack `⟨c00, c10, c20, c11, c21, c22⟩`. Establish `g0 : X * ex = 0`. Establish `: X * ex = (ex + ei + ey) * X * ex` using `by rw [hsum, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this, Matrix.add_mul, Matrix.add_mul, Matrix.add_mul, Matrix.add_mul, c00, c10, c20, add_zero, add_zero]`. Establish `hx : M *ᵥ x' = x'`. Establish `: X *ᵥ x' = 0` using `by conv_lhs => rw [← hexx]`. Rewrite using `[mulVec_mulVec, g0, zero_mulVec]`. Rewrite `this` using `[hX, sub_mulVec, one_mulVec, sub_eq_zero]`.
-
-Conclude with `this`. Use `⟨hx, fun z => ?_⟩` and prove the remaining obligations. Establish `a1 : ei *ᵥ (ι' *ᵥ z) = ι' *ᵥ z` using `by rw [mulVec_mulVec, heiι]`. Establish `a2 : X * ei = ex * X * ei`. Establish `: X * ei = (ex + ei + ey) * X * ei` using `by rw [hsum, Matrix.one_mul]`.
-
-Rewrite using `[this, Matrix.add_mul, Matrix.add_mul, Matrix.add_mul, Matrix.add_mul, c11, c21, add_zero, add_zero]`. Establish `h1 : X *ᵥ (ι' *ᵥ z) = ex *ᵥ ((X * ei) *ᵥ (ι' *ᵥ z))`. Combine the equalities or inequalities in the displayed calculation. Use `⟨cy ⬝ᵥ ((X * ei) *ᵥ (ι' *ᵥ z)), ?_⟩` and prove the remaining obligations. Establish `hM' : M *ᵥ (ι' *ᵥ z) = ι' *ᵥ z + X *ᵥ (ι' *ᵥ z)` using `by rw [hX, sub_mulVec, one_mulVec]; abel`.
-
-Rewrite using `[hM', h1, hex, vecMulVec_mulVec, op_smul_eq_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_unip_iff_raise (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n n₁ : ℕ) (W : Spc F E n) (W₁ : Spc F E n₁) (H : Plane E n n₁) (i₀ i₁ r s r₁ s₁ : ℕ)

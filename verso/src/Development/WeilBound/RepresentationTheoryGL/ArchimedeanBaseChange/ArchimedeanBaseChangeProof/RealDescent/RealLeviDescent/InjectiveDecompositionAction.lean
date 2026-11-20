@@ -55,14 +55,14 @@ def HCdecLv : Prop :=
         ∀ x : V, ∃ w : Lt n → V, evKP E1 E2 a x - evLv lev E1 E2 b x = ∑ l : Lt n, if inUU lev l then xL E1 E2 l (w l) else 0
 
 /- English proof (translation)
-Introduce `a b c d _ _` and use `⟨h.1 a b c d, h.2.1 a b c d, h.2.2 a b c d⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem isLevPairA_of {V : Type} [AddCommGroup V] [Module ℂ V] {E1 E2 : Fin n → Fin n → Module.End ℂ V}
     (h : IsPairA E1 E2) (lev : Fin n → ℕ) : IsLevPairA lev E1 E2 :=
   fun a b c d _ _ => ⟨h.1 a b c d, h.2.1 a b c d, h.2.2 a b c d⟩
 
 /- English proof (translation)
-Introduce `n lev hlev a ha`. Take `⟨b, hb, hb'⟩` from `h n lev hlev a ha`. Conclude with `⟨b, fun V _ _ E1 E2 hE c d hcd => hb V E1 E2 (isLevPairA_of hE lev) c d hcd, hb'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hcdecL_of (h : HCdecLv) : HCdecL := by
   intro n lev hlev a ha
@@ -83,7 +83,7 @@ def ActUU : Prop :=
 def InjectiveDecompositionAction : Prop := InjUU ∧ HCdecL ∧ ActUU
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hU (hR hB hV), hH, hA⟩`.
+Supply the required witnesses or components.
 -/
 theorem injective_decomposition_action_of (hB : BdSqL) (hV : VanKL) (hR : BdSqL → VanKL → InjRL) (hU : InjRL → InjUU) (hH : HCdecL) (hA : ActUU) :
     InjectiveDecompositionAction :=

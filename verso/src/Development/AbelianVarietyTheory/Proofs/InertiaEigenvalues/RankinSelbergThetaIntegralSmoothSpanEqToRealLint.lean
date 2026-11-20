@@ -13,20 +13,18 @@ namespace GlobalTheory.RSPoleToc
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Establish `hz : z = ((z.re : ℝ) : ℂ)` using `Complex.ext (by simp) (by simp [h2])`. Rewrite using `[hz, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_ofReal_norm {z : ℂ} (h1 : 0 ≤ z.re) (h2 : z.im = 0) : z = ((‖z‖ : ℝ) : ℂ) := by
   have hz : z = ((z.re : ℝ) : ℂ) := Complex.ext (by simp) (by simp [h2])
   rw [hz, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg h1]
 
 /- English proof (translation)
-Use `set u : Fin a → Cinf E := fun i => pInf E (y i)`. Use `set w := g * (infGL E a (GlobalTheory.RSTheta.rowGL ℓ u))⁻¹`. Use `set s : ℝ := (GlobalTheory.ThetaPoisson.latt a J).indicator 1 ((fun i => pFin E (y i)) - η)`. Establish `hs : (GlobalTheory.ThetaPoisson.latt a J).indicator (1 : (Fin a → Af E) → ℂ) ((fun i => pFin E (y i)) - η) = (s : ℂ)` using `by classical`. Apply the tactic sequence `simp only [s]; rw [Set.indicator_apply, Set.indicator_apply]; split_ifs <;> simp`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs0 : 0 ≤ s` using `Set.indicator_nonneg (fun _ _ => zero_le_one) _`. Establish `hΦu : Φ u = (((Φ u).re : ℝ) : ℂ)` using `Complex.ext (by simp) (by simp [(hΦ u).2])`. Establish `e : GlobalTheory.RSTheta.rsPsi ℓ F F Φ J η g y = ((Complex.normSq (F w) * (Φ u).re * s : ℝ) : ℂ)`. Simplify using `only [GlobalTheory.RSTheta.rsPsi, GlobalTheory.ThetaPoisson.thetaFn, GlobalTheory.RSTheta.rsInf]`. Rewrite using `[hs, Complex.mul_conj, hΦu]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `push_cast`. Both sides reduce to the same expression. Use `eq_ofReal_norm ?_ ?_` and prove the remaining obligations. Rewrite using `[e, Complex.ofReal_re]`. Conclude with `mul_nonneg (mul_nonneg (Complex.normSq_nonneg _) (hΦ u).1) hs0`.
-
-Rewrite using `[e, Complex.ofReal_im]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rsPsi_self_eq (ℓ : Fin a) (F : GA E a → ℂ) (Φ : (Fin a → Cinf E) → ℂ)
     (hΦ : ∀ u, 0 ≤ (Φ u).re ∧ (Φ u).im = 0) (J : (FractionalIdeal (𝓞 E)⁰ E)ˣ) (η : Fin a → Af E) (g : GA E a)
@@ -51,7 +49,7 @@ theorem rsPsi_self_eq (ℓ : Fin a) (F : GA E a → ℂ) (Φ : (Fin a → Cinf E
   · rw [e, Complex.ofReal_im]
 
 /- English proof (translation)
-Rewrite using `[ENNReal.tsum_toReal_eq fun _ => enorm_ne_top, Complex.ofReal_tsum]`. Conclude with `tsum_congr fun i => by rw [toReal_enorm, ← hf i]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tsum_eq_toReal {ι : Type} (f : ι → ℂ) (hf : ∀ i, f i = ((‖f i‖ : ℝ) : ℂ)) :
     ∑' i, f i = (((∑' i, ‖f i‖ₑ).toReal : ℝ) : ℂ) := by
@@ -59,15 +57,13 @@ theorem tsum_eq_toReal {ι : Type} (f : ι → ℂ) (hf : ∀ i, f i = ((‖f i�
   exact tsum_congr fun i => by rw [toReal_enorm, ← hf i]
 
 /- English proof (translation)
-Use `set G : GA E a → ℝ≥0∞ := fun g => (∑' ξ : {ξ : Fin a → E // ξ ≠ 0}, ‖GlobalTheory.RSTheta.rsPsi ℓ F F Φ J η g ((fun j => algebraMap E (Ad E) (ξ.1 j)) ᵥ* g.val)‖ₑ) * ENNReal.ofReal ((ideleModule E (GeneralLinearGroup.det g) : ℝ) ^ x) with hG`. Establish `hcont : ∀ ξ : {ξ : Fin a → E // ξ ≠ 0}, Continuous fun g : GA E a => GlobalTheory.RSTheta.rsPsi ℓ F F Φ J η g ((fun j => algebraMap E (Ad E) (ξ.1 j)) ᵥ* g.val)`. Introduce `ξ`. Establish `h1 : Continuous fun g : GA E a => (g, (fun j => algebraMap E (Ad E) (ξ.1 j)) ᵥ* (g.val : Matrix (Fin a) (Fin a) (Ad E)))` using `continuous_id.prodMk (continuous_const.matrix_vecMul Units.continuous_val)`. Establish `h2` using `GlobalTheory.RSTheta.continuous_rsPsi hF hF hΦc hΦs J η`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `h2.comp h1`. Conclude with `h3`. Establish `hdet : Continuous fun g : GA E a => ((ideleModule E (GeneralLinearGroup.det g) : ℝ) ^ x)`. Establish `h : Continuous fun g : GA E a => (ideleModule E (GeneralLinearGroup.det g) : ℝ)` using `continuous_subtype_val.comp (continuous_ideleModule.comp (GroundTheory.Automorphic.AdelicGLn.continuous_det E a))`. Conclude with `h.rpow_const fun g => Or.inl (ideleModule E (GeneralLinearGroup.det g)).2.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hGm : Measurable G`. Use `Measurable.mul ?_ (ENNReal.measurable_ofReal.comp hdet.measurable)` and prove the remaining obligations. Conclude with `(lowerSemicontinuous_tsum fun ξ => (hcont ξ).enorm.lowerSemicontinuous).measurable`. Establish `hpt : ∀ g : GA E a, (∑' ξ : {ξ : Fin a → E // ξ ≠ 0}, GlobalTheory.RSTheta.rsPsi ℓ F F Φ J η g ((fun j => algebraMap E (Ad E) (ξ.1 j)) ᵥ* g.val)) * ((((ideleModule E (GeneralLinearGroup.det g) : ℝ) ^ (x : ℝ) : ℝ)) : ℂ) = (((G g).toReal : ℝ) : ℂ)`. Introduce `g`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[tsum_eq_toReal _ fun ξ => rsPsi_self_eq ℓ F Φ hΦ J η g _, hG]`. Simplify using `only`. Rewrite using `[ENNReal.toReal_mul, ENNReal.toReal_ofReal (Real.rpow_nonneg (ideleModule E (GeneralLinearGroup.det g)).2.le x), Complex.ofReal_mul]`. Establish `hae : ∀ᵐ g ∂μ.restrict 𝓕, G g < ⊤` using `ae_lt_top hGm hfin`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[GlobalTheory.RSPole.thetaZ]`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall hpt)`. Use `_ = ((∫ g in 𝓕, (G g).toReal ∂μ : ℝ) : ℂ) := integral_ofReal`. Use `_ = _ := by rw [integral_toReal hGm.aemeasurable hae]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaZ_eq_toReal (ℓ : Fin a) (F : GA E a → ℂ) (hF : Continuous F) (Φ : (Fin a → Cinf E) → ℂ)
     (hΦc : Continuous Φ) (hΦs : tsupport Φ ⊆ GlobalTheory.RSTheta.rowSet E ℓ) (hΦ : ∀ u, 0 ≤ (Φ u).re ∧ (Φ u).im = 0)
@@ -114,7 +110,7 @@ theorem thetaZ_eq_toReal (ℓ : Fin a) (F : GA E a → ℂ) (hF : Continuous F) 
     _ = _ := by rw [integral_toReal hGm.aemeasurable hae]
 
 /- English proof (translation)
-Introduce `E _ _ _ a ℓ π F _ hF Φ hΦc hΦs hΦ J η μ _ 𝓕 _ x hfin`. Conclude with `thetaZ_eq_toReal ℓ F hF Φ hΦc hΦs hΦ J η μ 𝓕 x hfin`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem thetaZ_eq_toReal_lintegral : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (ℓ : Fin a) (π : CuspSub E a)
     (F : GA E a → ℂ), F ∈ GlobalTheory.JSW.mspanR π → Continuous F →

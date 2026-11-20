@@ -22,7 +22,7 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {n : ℕ}
 
 /- English proof (translation)
-Use `haveI : LocallyCompactSpace (Mat n) := inferInstanceAs (LocallyCompactSpace (Fin n → Fin n → ℂ))`. Use `haveI : LocallyCompactSpace (Mat n)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isClosedEmbedding.locallyCompactSpace`. Conclude with `Units.isClosedEmbedding_embedProduct.locallyCompactSpace`.
+A detailed English derivation is pending.
 -/
 theorem locCpt (n : ℕ) : LocallyCompactSpace (G n) := by
   haveI : LocallyCompactSpace (Mat n) := inferInstanceAs (LocallyCompactSpace (Fin n → Fin n → ℂ))
@@ -30,7 +30,7 @@ theorem locCpt (n : ℕ) : LocallyCompactSpace (G n) := by
   exact Units.isClosedEmbedding_embedProduct.locallyCompactSpace
 
 /- English proof (translation)
-Use `haveI := locCpt n`. Use `letI : MeasurableSpace (G n) := borel _`. Use `haveI : BorelSpace (G n) := ⟨rfl⟩`. Conclude with `⟨inferInstance, inferInstance, Measure.haar, inferInstance⟩`.
+Equip the data with the indicated structure. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_haar (n : ℕ) : ∃ (_ : MeasurableSpace (G n)) (_ : BorelSpace (G n)) (μ : Measure (G n)), μ.IsHaarMeasure := by
   haveI := locCpt n
@@ -39,9 +39,9 @@ theorem exists_haar (n : ℕ) : ∃ (_ : MeasurableSpace (G n)) (_ : BorelSpace 
   exact ⟨inferInstance, inferInstance, Measure.haar, inferInstance⟩
 
 /- English proof (translation)
-Introduce `s y hy`. Establish `h` using `hu.2.2.1 s y hy`. Rewrite `h` using `[hA _ (hu.2.1 s) y hy]`. Establish `h2 : dt (dt u) s y = iteratedDeriv 2 (fun r => u r y) s`. Simplify using `only [dt, iteratedDeriv_succ, iteratedDeriv_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h2, h]`. Establish `: (1 / 4 : ℂ) = ((1 / 4 : ℝ) : ℂ)` using `by push_cast; rfl`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem waveEq {n : ℕ} (E : KMod n) (u : ℝ → Mat n → E.V) (hu : IsWave E u) (A : E.V →L[ℂ] E.V)
     (hA : ∀ f ∈ CE E, ∀ g ∈ GLs n, Om f g = (1 / 4 : ℂ) • ∑ p : Ix n, Rd (hm p) (Rd (hm p) f) g + A (f g)) :
@@ -57,17 +57,15 @@ theorem waveEq {n : ℕ} (E : KMod n) (u : ℝ → Mat n → E.V) (hu : IsWave E
   rfl
 
 /- English proof (translation)
-Take `⟨mG, bG, μ, hμ⟩` from `exists_haar n`. Use `letI : InnerProductSpace ℝ E.V := InnerProductSpace.rclikeToReal ℂ E.V`. Take `⟨A, hA⟩` from `GlobalTheory.T.casimir_right_laplacian_formula E`. Take `⟨l1, l2, l3⟩` from `hlg x hx`. Establish `hxu : IsUnit x.det` using `isUnit_iff_ne_zero.2 hx`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hxx : x⁻¹ * x = 1` using `Matrix.nonsing_inv_mul _ hxu`. Establish `hxx' : x * x⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hxu`. Establish `hxi : x⁻¹ ∈ GLs n`. Establish `: x⁻¹.det * x.det = 1` using `by rw [← Matrix.det_mul, hxx, Matrix.det_one]`. Conclude with `left_ne_zero_of_mul_eq_one this |> fun h => h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmul : ∀ y ∈ GLs n, x⁻¹ * y ∈ GLs n` using `fun y hy => by`. Simplify using `only [GLs, Set.mem_setOf_eq, Matrix.det_mul]`. Conclude with `mul_ne_zero hxi hy`. Establish `hbp : ∀ Ψ : Mat n → ℝ, ContDiffOn ℝ ∞ Ψ (GLs n) → (∃ R : ℝ, ∀ y ∈ GLs n, R < lg (x⁻¹ * y) → Ψ y = 0) → ∀ X : Mat n, ∫ y : G n, Rr X Ψ y.val ∂μ = 0`. Introduce `Ψ hΨ ⟨R, hRΨ⟩ X`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `GlobalTheory.T.integral_right_derivative_zero_alt hR μ Ψ hΨ ⟨R + lg x, fun y hy hlt => hRΨ y hy ?_⟩ X` and prove the remaining obligations. Use `(hL n).1 x hx _ (hmul y hy)` as an intermediate fact. Rewrite `this` using `[← mul_assoc, hxx', one_mul]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hv` using `GlobalTheory.T.energy_identity_of_length_function (W := E.V) μ (fun y => lg (x⁻¹ * y)) l1 l2 C₁ hC₁ l3 hbp χ h1 h2 h3 h5 u hu.1 (A.restrictScalars ℝ) (waveEq E u hu A hA) C hC (lg (1 : Mat n) + C * t) h4 ?_ ?_ t ht x hx ?_`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hv`. Introduce `y hy hlt`. Use `h0 (x⁻¹ * y) (hmul y hy) (by have h' : lg (x⁻¹ * y) < lg (1 : Mat n) + C * t + 1 := hlt; linarith)` as an intermediate fact. Rewrite `this` using `[← mul_assoc, hxx', one_mul]`. Then use the resulting hypothesis. Introduce `y hy`.
-
-Conclude with `hu.2.2.2 y hy`. Simplify using `only [hxx]`. Conclude with `le_refl _`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem speed_pos (hL : LgFacts) (hR : RCalc) {n : ℕ} (C₁ : ℝ) (hC₁ : 0 ≤ C₁)
     (hlg : ∀ x ∈ GLs n, ContDiffOn ℝ ∞ (fun y : Mat n => lg (x⁻¹ * y)) (GLs n) ∧ (∀ R : ℝ, IsCompact {y : G n | lg (x⁻¹ * y.val) ≤ R}) ∧ ∀ y ∈ GLs n, ∀ p : Ix n, |fderiv ℝ (fun y : Mat n => lg (x⁻¹ * y)) y (y * hm p)| ≤ C₁)
@@ -106,15 +104,15 @@ theorem speed_pos (hL : LgFacts) (hR : RCalc) {n : ℕ} (C₁ : ℝ) (hC₁ : 0 
     exact le_refl _
 
 /- English proof (translation)
-Introduce `hL hU hR n`. Take `⟨C₁, hC₁, hlg⟩` from `GlobalTheory.T.translated_length_bounded_derivative hL n`. Take `⟨χ, h1, h2, h3, h4, h5⟩` from `GlobalTheory.T.smooth_monotone_cutoff_exists`. Use `set C := C₁ * (1 + Fintype.card (Ix n)) with hCdef`. Establish `hC0 : 0 ≤ C` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl0 : 0 ≤ lg (1 : Mat n)`. Unfold `lg`. Apply `Real.log_nonneg` to reduce the goal to its premises. Establish `: 0 ≤ ∑ a, ∑ b, (‖(1 : Mat n) a b‖ ^ 2 + ‖(1 : Mat n)⁻¹ a b‖ ^ 2)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨C + lg (1 : Mat n) + 1, ?_⟩` and prove the remaining obligations. Establish `key : ∀ (E : KMod n) (u : ℝ → Mat n → E.V), IsWave E u → ∀ t : ℝ, 0 ≤ t → ∀ x ∈ GLs n, (∀ y ∈ GLs n, lg y ≤ (C + lg (1 : Mat n) + 1) * (1 + t) → u 0 (x * y) = 0) → u t x = 0`. Introduce `E u hu t ht x hx h0`. Use `speed_pos hL hR C₁ hC₁ hlg χ h1 h2 h3 h4 h5 E u hu t ht x hx C le_rfl ?_` and prove the remaining obligations. Introduce `y hy hle`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `h0 y hy (hle.trans ?_)` and prove the remaining obligations. Use polynomial arithmetic with `[mul_nonneg hC0 ht, mul_nonneg hl0 ht]`. Introduce `E u hu t x hx h0`. Break down `le_total 0 t with ht | ht` into its components or cases. Conclude with `key E u hu t ht x hx (by rwa [abs_of_nonneg ht] at h0)`.
+Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `key E _ (GlobalTheory.T.wave_time_reversal E u hu) (-t) (by linarith) x hx (by` as an intermediate fact. Introduce `y hy hle`. Simplify using `only [neg_zero]`. Conclude with `h0 y hy (by rwa [abs_of_nonpos ht]))`. Simplify using `using this`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem asmSpeed : AsmSpeed := by
   intro hL hU hR n

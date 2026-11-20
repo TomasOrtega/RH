@@ -14,7 +14,7 @@ open Classical
 def ann (n : ℕ) : Set ℂ := {D | ((n : ℝ) + 1)⁻¹ ≤ ‖D‖ ∧ ‖D‖ ≤ (n : ℝ) + 1}
 
 /- English proof (translation)
-Use `Metric.isCompact_of_isClosed_isBounded ?_ ?_` and prove the remaining obligations. Conclude with `(isClosed_le continuous_const continuous_norm).inter (isClosed_le continuous_norm continuous_const)`. Conclude with `(Metric.isBounded_closedBall (x := (0 : ℂ)) (r := (n : ℝ) + 1)).subset fun D hD => by`. Rewrite using `[Metric.mem_closedBall, dist_zero_right]`. Conclude with `hD.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_ann (n : ℕ) : IsCompact (ann n) := by
   refine Metric.isCompact_of_isClosed_isBounded ?_ ?_
@@ -24,7 +24,7 @@ theorem isCompact_ann (n : ℕ) : IsCompact (ann n) := by
       exact hD.2
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `h.1`. Rewrite `h1` using `[norm_zero]`. Conclude with `absurd h1 (not_le.mpr (by positivity))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zero_notMem_ann (n : ℕ) : (0 : ℂ) ∉ ann n := by
   intro h
@@ -33,7 +33,7 @@ theorem zero_notMem_ann (n : ℕ) : (0 : ℂ) ∉ ann n := by
   exact absurd h1 (not_le.mpr (by positivity))
 
 /- English proof (translation)
-Introduce `m n hmn D hD`. Establish `hmn' : (m : ℝ) ≤ n` using `by exact_mod_cast hmn`. Establish `h : (m : ℝ) + 1 ≤ (n : ℝ) + 1` using `by linarith`. Conclude with `⟨le_trans (inv_anti₀ (by positivity) h) hD.1, hD.2.trans h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem ann_mono : Monotone ann := by
   intro m n hmn D hD
@@ -42,9 +42,7 @@ theorem ann_mono : Monotone ann := by
   exact ⟨le_trans (inv_anti₀ (by positivity) h) hD.1, hD.2.trans h⟩
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `exists_nat_ge (max ‖D‖ ‖D‖⁻¹)`. Establish `hpos : 0 < ‖D‖` using `norm_pos_iff.mpr hD`. Use `⟨n, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : ‖D‖⁻¹ ≤ (n : ℝ) + 1` using `(le_max_right _ _).trans (hn.trans (le_add_of_nonneg_right zero_le_one))`. Conclude with `inv_le_of_inv_le₀ hpos h1`.
-
-Conclude with `(le_max_left _ _).trans (hn.trans (le_add_of_nonneg_right zero_le_one))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_mem_ann {D : ℂ} (hD : D ≠ 0) : ∃ n, D ∈ ann n := by
   obtain ⟨n, hn⟩ := exists_nat_ge (max ‖D‖ ‖D‖⁻¹)
@@ -56,11 +54,11 @@ theorem exists_mem_ann {D : ℂ} (hD : D ≠ 0) : ∃ n, D ∈ ann n := by
   · exact (le_max_left _ _).trans (hn.trans (le_add_of_nonneg_right zero_le_one))
 
 /- English proof (translation)
-Establish `hcont : Continuous fun z : ℂ => ε⁻¹ * z ^ s` using `by fun_prop`. Use `Metric.isCompact_of_isClosed_isBounded (hQ.isClosed.preimage hcont) ?_` and prove the remaining obligations. Take `⟨M, hM⟩` from `hQ.isBounded.exists_norm_le`. Use `(Metric.isBounded_closedBall (x := (0 : ℂ)) (r := max 1 M)).subset fun z hz => ?_` and prove the remaining obligations. Establish `h1 : ‖z‖ ^ s ≤ M`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hM _ hz` as an intermediate fact. Rewrite `this` using `[norm_mul, norm_inv, hε, inv_one, one_mul, norm_pow]`. Then use the resulting hypothesis. Rewrite using `[Metric.mem_closedBall, dist_zero_right]`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h2 : 1 < ‖z‖` using `lt_of_le_of_lt (le_max_left _ _) hcon`. Establish `h3 : ‖z‖ ≤ ‖z‖ ^ s` using `le_self_pow₀ h2.le hs`. Combine the linear relations using `[le_max_right 1 M]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem isCompact_preimage_pow {s : ℕ} (hs : s ≠ 0) {ε : ℂ} (hε : ‖ε‖ = 1) {Q : Set ℂ} (hQ : IsCompact Q) :
     IsCompact {z : ℂ | ε⁻¹ * z ^ s ∈ Q} := by
@@ -79,7 +77,7 @@ theorem isCompact_preimage_pow {s : ℕ} (hs : s ≠ 0) {ε : ℂ} (hε : ‖ε�
   linarith [le_max_right 1 M]
 
 /- English proof (translation)
-Introduce `h`. Apply `h0` to reduce the goal to its premises. Simplify `h` using `[zero_pow hs]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem zero_notMem_preimage_pow {s : ℕ} (hs : s ≠ 0) (ε : ℂ) {Q : Set ℂ} (h0 : (0 : ℂ) ∉ Q) :
     (0 : ℂ) ∉ {z : ℂ | ε⁻¹ * z ^ s ∈ Q} := by
@@ -92,9 +90,9 @@ section ss
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
 /- English proof (translation)
-Establish `h1 : ‖a‖ ≤ ‖u‖ + ‖u - a‖`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : ‖a‖ ^ 2 ≤ (‖u‖ + ‖u - a‖) ^ 2` using `pow_le_pow_left₀ (norm_nonneg _) h1 2`. Establish `e : η * ‖u‖ ^ 2 + η⁻¹ * ‖u - a‖ ^ 2 - 2 * ‖u‖ * ‖u - a‖ = η⁻¹ * (η * ‖u‖ - ‖u - a‖) ^ 2`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `: 0 ≤ η⁻¹ * (η * ‖u‖ - ‖u - a‖) ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem norm_sq_le_eta (a u : H) (η : ℝ) (hη : 0 < η) :
     ‖a‖ ^ 2 ≤ (1 + η) * ‖u‖ ^ 2 + (1 + η⁻¹) * ‖u - a‖ ^ 2 := by
@@ -109,7 +107,7 @@ theorem norm_sq_le_eta (a u : H) (η : ℝ) (hη : 0 < η) :
   nlinarith
 
 /- English proof (translation)
-Unfold `bz`. Establish `hc : Continuous fun z : ℂ => (((s : ℝ) * ‖z‖ ^ (s - 1) : ℝ) : ℂ)` using `by fun_prop`. Conclude with `hc.stronglyMeasurable.smul hbt`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem stronglyMeasurable_bz (s : ℕ) {bt : ℂ → H} (hbt : StronglyMeasurable bt) :
     StronglyMeasurable (bz s bt) := by
@@ -118,7 +116,7 @@ theorem stronglyMeasurable_bz (s : ℕ) {bt : ℂ → H} (hbt : StronglyMeasurab
   exact hc.stronglyMeasurable.smul hbt
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Apply the tactic sequence `by_cases hz : z ∈ Qz <;> simp [Set.indicator, hz]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sq_norm_indicator (Qz : Set ℂ) (f : ℂ → H) :
     (fun z => ‖Qz.indicator f z‖ ^ 2) = Qz.indicator (fun z => ‖f z‖ ^ 2) := by
@@ -126,7 +124,7 @@ theorem sq_norm_indicator (Qz : Set ℂ) (f : ℂ → H) :
   by_cases hz : z ∈ Qz <;> simp [Set.indicator, hz]
 
 /- English proof (translation)
-Establish `hm : AEStronglyMeasurable (Qz.indicator (bz s bt)) volume` using `((stronglyMeasurable_bz s hbt).indicator hQz).aestronglyMeasurable`. Rewrite using `[memLp_two_iff_integrable_sq_norm hm, sq_norm_indicator]`. Conclude with `(integrable_indicator_iff hQz).2 hloc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem memLp_indicator_bz {s : ℕ} {bt : ℂ → H} (hbt : StronglyMeasurable bt) {Qz : Set ℂ}
     (hQz : MeasurableSet Qz) (hloc : IntegrableOn (fun z => ‖bz s bt z‖ ^ 2) Qz) :
@@ -137,37 +135,35 @@ theorem memLp_indicator_bz {s : ℕ} {bt : ℂ → H} (hbt : StronglyMeasurable 
   exact (integrable_indicator_iff hQz).2 hloc
 
 /- English proof (translation)
-Establish `hε0 : ε ≠ 0` using `by rintro rfl; simp at hε`. Use `set Qz : Set ℂ := {z | ε⁻¹ * z ^ s ∈ Q} with hQzdef`. Establish `hQzm : MeasurableSet Qz` using `(isCompact_preimage_pow hs hε hQ).isClosed.measurableSet`. Establish `hbtQ : StronglyMeasurable (Qz.indicator bt)` using `hbt.indicator hQzm`. Establish `hbQ : MemLp (bz s (Qz.indicator bt)) 2 volume`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[bz_indicator]`. Conclude with `memLp_indicator_bz hbt hQzm hloc`. Establish `hSS0 : 0 ≤ SS` using `le_trans (integral_nonneg fun _ => sq_nonneg _) (sup 1 one_ne_zero)`. Establish `hsh : Tendsto (fun a : ℂ => (s : ℂ) * ((fun _ : ℂ => (1 : ℂ)) a * id a - id a)) (cocompact ℂ) (𝓝 0)`. Simplify using `using (tendsto_const_nhds : Tendsto (fun _ : ℂ => (0 : ℂ)) (cocompact ℂ) (𝓝 0))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hne : ∀ ζ ∈ G.rootSet s 1, ζ ≠ 1 → Tendsto (fun a : ℂ => ζ * (fun _ : ℂ => (1 : ℂ)) a * id a - id a) (cocompact ℂ) (cocompact ℂ)`. Introduce `ζ _ h1`. Use `(tendsto_smul_cocompact (ζ - 1) (sub_ne_zero.2 h1) id tendsto_id).congr fun a => ?_` and prove the remaining obligations. Simplify using `only [id]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT` using `tendsto_pairD hs hβ hε hbQ hbQ id id (fun _ => (1 : ℂ)) 0 (Eventually.of_forall fun _ => one_ne_zero) tendsto_const_nhds hsh hne`. Use `set L : ℝ := ∫ z, ‖bz s (Qz.indicator bt) z‖ ^ 2 with hL`. Establish `hinner : ∀ v : H, ⟪v, v⟫_ℂ = ((‖v‖ ^ 2 : ℝ) : ℂ)` using `fun v => by`. Rewrite using `[inner_self_eq_norm_sq_to_K]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hval : ∫ z, G.psi β (0 * z) • ⟪bz s (Qz.indicator bt) z, bz s (Qz.indicator bt) z⟫_ℂ = (L : ℂ)`. Establish `hψ0 : ∀ z, G.psi β (0 * z) = 1` using `fun z => by simp [G.psi]`. Repeatedly rewrite using `[hψ0, one_smul, hinner]`. Rewrite using `[hL, integral_complex_ofReal]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hT` using `[hval]`. Use `set f : ℂ → ℝ := fun x => ∫ D, ‖mainD s β ε (Qz.indicator bt) x D‖ ^ 2 with hf`. Establish `hpair : ∀ x, pairD s β ε (Qz.indicator bt) (Qz.indicator bt) x x 1 = (f x : ℂ)`. Introduce `x`. Simplify using `only [pairD, norm_one, one_pow, Complex.ofReal_one, one_smul, one_mul, hinner, hf]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[integral_complex_ofReal]`. Establish `hfT : Tendsto f (cocompact ℂ) (𝓝 L)`. Use `(Complex.continuous_re.tendsto _).comp hT` as an intermediate fact. Simplify `this` using `[Function.comp_def, hpair]`. Establish `hbound : ∀ η : ℝ, 0 < η → L ≤ (1 + η) * SS`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `η hη`. Take `⟨vQ, hvQ⟩ : ∃ v : ℝ, v = (volume Q).toReal` from `⟨_, rfl⟩`. Establish `hg : Tendsto (fun x : ℂ => (1 + η) * SS + (1 + η⁻¹) * (C * ‖x‖⁻¹) ^ 2 * vQ) (cocompact ℂ) (𝓝 ((1 + η) * SS))`. Establish `h0 : Tendsto (fun x : ℂ => ‖x‖⁻¹) (cocompact ℂ) (𝓝 0)` using `tendsto_inv_atTop_zero.comp tendsto_norm_cocompact_atTop`. Establish `h1 : Tendsto (fun x : ℂ => (1 + η) * SS + (1 + η⁻¹) * (C * ‖x‖⁻¹) ^ 2 * vQ) (cocompact ℂ) (𝓝 ((1 + η) * SS + (1 + η⁻¹) * (C * 0) ^ 2 * vQ))` using `tendsto_const_nhds.add ((tendsto_const_nhds.mul ((tendsto_const_nhds.mul h0).pow 2)).mul tendsto_const_nhds)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using h1`. Use `le_of_tendsto_of_tendsto hfT hg ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ne_cocompact 0] with x hx`. Establish `hmD : MemLp (mainD s β ε (Qz.indicator bt) x) 2 volume` using `memLp_mainD hs β hε hbtQ hbQ x`. Establish `i1 : Integrable (fun D => ‖mainD s β ε (Qz.indicator bt) x D‖ ^ 2)` using `(memLp_two_iff_integrable_sq_norm hmD.1).1 hmD`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `i2 : Integrable (fun D => ‖ut x D‖ ^ 2)` using `(memLp_two_iff_integrable_sq_norm (memU x hx).1).1 (memU x hx)`. Establish `hQm : MeasurableSet Q` using `hQ.isClosed.measurableSet`. Establish `i3 : Integrable (Q.indicator fun _ => (1 + η⁻¹) * (C * ‖x‖⁻¹) ^ 2)` using `(integrableOn_const hQ.measure_lt_top.ne).integrable_indicator hQm`. Establish `hpt : ∀ᵐ D, ‖mainD s β ε (Qz.indicator bt) x D‖ ^ 2 ≤ (1 + η) * ‖ut x D‖ ^ 2 + Q.indicator (fun _ => (1 + η⁻¹) * (C * ‖x‖⁻¹) ^ 2) D` using `by filter_upwards [hC x hx] with D hD`. Rewrite using `[mainD_indicator hs β hε0 bt Q x D]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hDQ : D ∈ Q`. Rewrite using `[Set.indicator_of_mem hDQ, Set.indicator_of_mem hDQ]`. Establish `hr` using `hD hDQ`. Establish `hr2 : ‖ut x D - mainD s β ε bt x D‖ ^ 2 ≤ (C * ‖x‖⁻¹) ^ 2` using `pow_le_pow_left₀ (norm_nonneg _) hr 2`. Use `norm_sq_le_eta (mainD s β ε bt x D) (ut x D) η hη` as an intermediate fact.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hc : 0 ≤ 1 + η⁻¹` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[Set.indicator_of_notMem hDQ, Set.indicator_of_notMem hDQ, norm_zero]`. Establish `: 0 ≤ (1 + η) * ‖ut x D‖ ^ 2` using `by positivity`. Simplify using `using this`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `e1 : ∫ D, ((1 + η) * ‖ut x D‖ ^ 2 + Q.indicator (fun _ => (1 + η⁻¹) * (C * ‖x‖⁻¹) ^ 2) D) = (1 + η) * (∫ D, ‖ut x D‖ ^ 2) + ∫ D, Q.indicator (fun _ => (1 + η⁻¹) * (C * ‖x‖⁻¹) ^ 2) D`. Rewrite using `[integral_add (i2.const_mul _) i3, integral_const_mul]`. Establish `e2 : ∫ D, Q.indicator (fun _ => (1 + η⁻¹) * (C * ‖x‖⁻¹) ^ 2) D = (1 + η⁻¹) * (C * ‖x‖⁻¹) ^ 2 * vQ`. Rewrite using `[integral_indicator hQm, setIntegral_const, smul_eq_mul, hvQ, Measure.real, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e1, e2]`. Use `_ ≤ (1 + η) * SS + (1 + η⁻¹) * (C * ‖x‖⁻¹) ^ 2 * vQ := by`. Use `mul_le_mul_of_nonneg_left (sup x hx) (by positivity : (0 : ℝ) ≤ 1 + η)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[← bz_indicator]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `le_of_forall_pos_lt_add fun δ hδ => ?_` and prove the remaining obligations. Establish `hη : 0 < δ / (SS + 1)` using `by positivity`. Establish `h1` using `hbound _ hη`. Establish `h2 : (1 + δ / (SS + 1)) * SS < SS + δ`. Establish `: δ / (SS + 1) * SS < δ`.
-
-Rewrite using `[div_mul_eq_mul_div, div_lt_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
+Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem integral_bz_Q_le {s : ℕ} (hs : s ≠ 0) {β : ℂ} (hβ : β ≠ 0) {ε : ℂ} (hε : ‖ε‖ = 1)
     (ut : ℂ → ℂ → H) (bt : ℂ → H) (SS : ℝ) (memU : ∀ x : ℂ, x ≠ 0 → MemLp (ut x) 2 volume)

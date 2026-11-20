@@ -17,7 +17,7 @@ Both sides reduce to the same expression.
 theorem lev_val (j : Fin (2 * r' + k + 1)) : (levPos k i r' j).val = j.val + i := rfl
 
 /- English proof (translation)
-Introduce `a b h`. Apply `Fin.ext` to reduce the goal to its premises. Establish `h'` using `congrArg Fin.val h`. Rewrite `h'` using `[lev_val, lev_val]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem lev_inj : Function.Injective (levPos k i r') := by
   intro a b h
@@ -27,9 +27,9 @@ theorem lev_inj : Function.Injective (levPos k i r') := by
   omega
 
 /- English proof (translation)
-Establish `hj` using `j.isLt`. Establish `h1 : i ≤ (levPos k i r' j).val ∧ (levPos k i r' j).val < 2 * r' + k + 1 + i` using `by rw [lev_val]; omega`. Simplify using `only [liftVec]`. Rewrite using `[dif_pos h1]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Apply `Fin.ext` to reduce the goal to its premises. Use `show j.val + i - i = j.val`. Use linear arithmetic over natural numbers and integers.
+Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem liftVec_lev (v : Fin (2 * r' + k + 1) → ℂ) (j : Fin (2 * r' + k + 1)) :
     liftVec k i r' v (levPos k i r' j) = v j := by
@@ -43,7 +43,7 @@ theorem liftVec_lev (v : Fin (2 * r' + k + 1) → ℂ) (j : Fin (2 * r' + k + 1)
   omega
 
 /- English proof (translation)
-Simplify using `only [liftVec]`. Rewrite using `[dif_neg hp]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem liftVec_out (v : Fin (2 * r' + k + 1) → ℂ) (p : Fin (2 * (i + r') + k + 1))
     (hp : ¬ (i ≤ p.val ∧ p.val < 2 * r' + k + 1 + i)) : liftVec k i r' v p = 0 := by
@@ -51,11 +51,9 @@ theorem liftVec_out (v : Fin (2 * r' + k + 1) → ℂ) (p : Fin (2 * (i + r') + 
   rw [dif_neg hp]
 
 /- English proof (translation)
-Establish `hp` using `p.isLt`. Establish `hq` using `q.isLt`. Establish `h1 : i ≤ (levPos k i r' p).val ∧ (levPos k i r' p).val < 2 * r' + k + 1 + i` using `by rw [lev_val]; omega`. Establish `h2 : i ≤ (levPos k i r' q).val ∧ (levPos k i r' q).val < 2 * r' + k + 1 + i` using `by rw [lev_val]; omega`. Simplify using `only [ιLev]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[dif_pos h1, dif_pos h2]`. Apply the tactic sequence `congr 1 <;> apply Fin.ext`. Use `show p.val + i - i = p.val`. Use linear arithmetic over natural numbers and integers. Use `show q.val + i - i = q.val`.
-
-Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem ιLev_lev (g : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1)) ℂ) (p q : Fin (2 * r' + k + 1)) :
     ιLev k i r' g (levPos k i r' p) (levPos k i r' q) = g p q := by
@@ -72,7 +70,7 @@ theorem ιLev_lev (g : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1)) ℂ)
     omega
 
 /- English proof (translation)
-Simplify using `only [ιLev]`. Rewrite using `[dif_neg hp]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem ιLev_out (g : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1)) ℂ) (p q : Fin (2 * (i + r') + k + 1))
     (hp : ¬ (i ≤ p.val ∧ p.val < 2 * r' + k + 1 + i)) : ιLev k i r' g p q = if p = q then 1 else 0 := by
@@ -80,7 +78,7 @@ theorem ιLev_out (g : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1)) ℂ)
   rw [dif_neg hp]
 
 /- English proof (translation)
-Simplify using `only [ιLev]`. Rewrite using `[dif_pos hp, dif_neg hq]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem ιLev_in_out (g : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1)) ℂ) (p q : Fin (2 * (i + r') + k + 1))
     (hp : i ≤ p.val ∧ p.val < 2 * r' + k + 1 + i) (hq : ¬ (i ≤ q.val ∧ q.val < 2 * r' + k + 1 + i)) :
@@ -89,9 +87,9 @@ theorem ιLev_in_out (g : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1)) �
   rw [dif_pos hp, dif_neg hq]
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_image (s := Finset.univ) (g := levPos k i r') (fun x _ y _ e => lev_inj e)]`. Use `(Finset.sum_subset (Finset.subset_univ _) ?_).symm` and prove the remaining obligations. Introduce `p _ hp`. Apply `h` to reduce the goal to its premises. Introduce `hc`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hp` to reduce the goal to its premises. Use `Finset.mem_image.2 ⟨⟨p.val - i, by omega⟩, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Apply `Fin.ext` to reduce the goal to its premises. Use `show p.val - i + i = p.val`. Use linear arithmetic over natural numbers and integers.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem sum_lev {M : Type*} [AddCommMonoid M] (f : Fin (2 * (i + r') + k + 1) → M)
     (h : ∀ p : Fin (2 * (i + r') + k + 1), ¬ (i ≤ p.val ∧ p.val < 2 * r' + k + 1 + i) → f p = 0) :
@@ -108,11 +106,11 @@ theorem sum_lev {M : Type*} [AddCommMonoid M] (f : Fin (2 * (i + r') + k + 1) �
   omega
 
 /- English proof (translation)
-Establish `hp` using `p.isLt`. Establish `hq` using `q.isLt`. Simplify using `only [Hpk, Fin.ext_iff, lev_val]`. Establish `e1 : (↑p + i < i + r' ∧ ↑p + i + (↑q + i) = 2 * (i + r') + k) ↔ (↑p < r' ∧ ↑p + ↑q = 2 * r' + k)`. Apply the tactic sequence `constructor <;> intro h <;> omega`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `e2 : (↑q + i < i + r' ∧ ↑p + i + (↑q + i) = 2 * (i + r') + k) ↔ (↑q < r' ∧ ↑p + ↑q = 2 * r' + k)`. Apply the tactic sequence `constructor <;> intro h <;> omega`. Establish `e3 : (i + r' ≤ p.val + i ∧ p.val + i ≤ i + r' + k ∧ p.val + i = q.val + i) ↔ (r' ≤ p.val ∧ p.val ≤ r' + k ∧ p.val = q.val)`. Apply the tactic sequence `constructor <;> intro h <;> omega`. Establish `e4 : (↑p + i = i + r' + k) ↔ (↑p = r' + k)`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `constructor <;> intro h <;> omega`. Simplify using `only [e1, e2, e3, e4]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem hpk_lev (p q : Fin (2 * r' + k + 1)) :
     Hpk k (i + r') (levPos k i r' p) (levPos k i r' q) = Hpk k r' p q := by
@@ -131,7 +129,7 @@ theorem hpk_lev (p q : Fin (2 * r' + k + 1)) :
   simp only [e1, e2, e3, e4]
 
 /- English proof (translation)
-Simplify using `only [Hpk, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hpk_in_out (p q : Fin (2 * (i + r') + k + 1))
     (hp : i ≤ p.val ∧ p.val < 2 * r' + k + 1 + i) (hq : ¬ (i ≤ q.val ∧ q.val < 2 * r' + k + 1 + i)) :
@@ -140,7 +138,7 @@ theorem hpk_in_out (p q : Fin (2 * (i + r') + k + 1))
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Simplify using `only [Hpk, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hpk_out_in (p q : Fin (2 * (i + r') + k + 1))
     (hp : ¬ (i ≤ p.val ∧ p.val < 2 * r' + k + 1 + i)) (hq : i ≤ q.val ∧ q.val < 2 * r' + k + 1 + i) :
@@ -155,7 +153,7 @@ def Lz (k i r' : ℕ) (X : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1)) 
   else 0
 
 /- English proof (translation)
-Use extensionality with `p q`. Simplify using `only [ιLev, Lz, Matrix.add_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ιLev_eq (X : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1)) ℂ) :
     ιLev k i r' X = Lz k i r' X + ιLev k i r' 0 := by
@@ -164,11 +162,9 @@ theorem ιLev_eq (X : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1)) ℂ) 
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hp` using `p.isLt`. Establish `hq` using `q.isLt`. Establish `h1 : i ≤ (levPos k i r' p).val ∧ (levPos k i r' p).val < 2 * r' + k + 1 + i` using `by rw [lev_val]; omega`. Establish `h2 : i ≤ (levPos k i r' q).val ∧ (levPos k i r' q).val < 2 * r' + k + 1 + i` using `by rw [lev_val]; omega`. Simplify using `only [Lz]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[dif_pos h1, dif_pos h2]`. Apply the tactic sequence `congr 1 <;> apply Fin.ext`. Use `show p.val + i - i = p.val`. Use linear arithmetic over natural numbers and integers. Use `show q.val + i - i = q.val`.
-
-Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem Lz_lev (X : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1)) ℂ) (p q : Fin (2 * r' + k + 1)) :
     Lz k i r' X (levPos k i r' p) (levPos k i r' q) = X p q := by
@@ -185,7 +181,7 @@ theorem Lz_lev (X : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1)) ℂ) (p
     omega
 
 /- English proof (translation)
-Simplify using `only [Lz]`. Rewrite using `[dif_neg hp]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem Lz_out_left (X : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1)) ℂ) (p q : Fin (2 * (i + r') + k + 1))
     (hp : ¬ (i ≤ p.val ∧ p.val < 2 * r' + k + 1 + i)) : Lz k i r' X p q = 0 := by
@@ -193,7 +189,7 @@ theorem Lz_out_left (X : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1)) �
   rw [dif_neg hp]
 
 /- English proof (translation)
-Simplify using `only [Lz]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; apply hq; assumption)`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Lz_out_right (X : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1)) ℂ) (p q : Fin (2 * (i + r') + k + 1))
     (hq : ¬ (i ≤ q.val ∧ q.val < 2 * r' + k + 1 + i)) : Lz k i r' X p q = 0 := by
@@ -220,11 +216,11 @@ variable (hL : LevHom)
 include hL
 
 /- English proof (translation)
-Use extensionality with `p q`. Distinguish the cases in `hp : i ≤ p.val ∧ p.val < 2 * r' + k + 1 + i`. Distinguish the cases in `hq : i ≤ q.val ∧ q.val < 2 * r' + k + 1 + i`. Take `⟨a, rfl⟩ : ∃ a, levPos k i r' a = p` from `⟨⟨p.val - i, by omega⟩, Fin.ext (by show p.val - i + i = p.val; omega)⟩`. Take `⟨b, rfl⟩ : ∃ b, levPos k i r' b = q` from `⟨⟨q.val - i, by omega⟩, Fin.ext (by show q.val - i + i = q.val; omega)⟩`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Lz_lev, Matrix.mul_apply, Matrix.mul_apply, sum_lev]`. Simplify using `only [Lz_lev]`. Introduce `m hm`. Rewrite using `[Lz_out_right _ _ _ hm, zero_mul]`. Rewrite using `[Lz_out_right _ _ _ hq, Matrix.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Finset.sum_eq_zero fun m _ => by rw [Lz_out_right _ _ _ hq, mul_zero]).symm`. Rewrite using `[Lz_out_left _ _ _ hp, Matrix.mul_apply]`. Conclude with `(Finset.sum_eq_zero fun m _ => by rw [Lz_out_left _ _ _ hp, zero_mul]).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Lz_mul (X Y : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1)) ℂ) :
     Lz k i r' (X * Y) = Lz k i r' X * Lz k i r' Y := by
@@ -245,14 +241,14 @@ theorem Lz_mul (X Y : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1)) ℂ) 
     exact (Finset.sum_eq_zero fun m _ => by rw [Lz_out_left _ _ _ hp, zero_mul]).symm
 
 /- English proof (translation)
-Rewrite using `[← ιLev_eq]`. Conclude with `(hL k i r').1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Lz_one : Lz k i r' 1 + ιLev k i r' 0 = 1 := by
   rw [← ιLev_eq]
   exact (hL k i r').1
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [zero_add, pow_one, pow_one]`. Consider the case `succ n ih => rw [pow_succ, Lz_mul hL, ih, ← pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem Lz_pow (X : Matrix (Fin (2 * r' + k + 1)) (Fin (2 * r' + k + 1)) ℂ) (n : ℕ) :
     Lz k i r' (X ^ (n + 1)) = Lz k i r' X ^ (n + 1) := by

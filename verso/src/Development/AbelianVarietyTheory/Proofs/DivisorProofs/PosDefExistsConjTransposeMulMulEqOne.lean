@@ -8,27 +8,25 @@ namespace GlobalTheory
 open Matrix
 
 /- English proof (translation)
-Introduce `d H hP`. Establish `hH : H.IsHermitian` using `hP.isHermitian`. Use `set U : Matrix (Fin d) (Fin d) ℂ := (hH.eigenvectorUnitary : Matrix (Fin d) (Fin d) ℂ) with hUdef`. Establish `hU1 : Uᴴ * U = 1` using `hH.eigenvectorUnitary.2.1`. Establish `hU2 : U * Uᴴ = 1` using `hH.eigenvectorUnitary.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hspec : H = U * diagonal (fun i => ((hH.eigenvalues i : ℝ) : ℂ)) * Uᴴ`. Establish `h` using `hH.spectral_theorem`. Rewrite `h` using `[Unitary.conjStarAlgAut_apply]`. Simplify `h` using `[Matrix.star_eq_conjTranspose, Function.comp_def]`. Establish `hpos : ∀ i, 0 < hH.eigenvalues i` using `fun i => hP.eigenvalues_pos i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `r : Fin d → ℝ` to `fun i => Real.sqrt (hH.eigenvalues i)`. Establish `hr : ∀ i, 0 < r i` using `fun i => Real.sqrt_pos.2 (hpos i)`. Establish `hrr : ∀ i, r i * r i = hH.eigenvalues i` using `fun i => Real.mul_self_sqrt (hpos i).le`. Set `s : Fin d → ℂ` to `fun i => (((r i)⁻¹ : ℝ) : ℂ)`. Set `t : Fin d → ℂ` to `fun i => ((r i : ℝ) : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hst : diagonal s * diagonal t = 1`. Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [s, t, ← Complex.ofReal_mul, inv_mul_cancel₀ (hr i).ne', Complex.ofReal_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hts : diagonal t * diagonal s = 1`. Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [s, t, ← Complex.ofReal_mul, mul_inv_cancel₀ (hr i).ne', Complex.ofReal_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `Y : Matrix (Fin d) (Fin d) ℂ` to `U * diagonal s`. Set `Z : Matrix (Fin d) (Fin d) ℂ` to `diagonal t * Uᴴ`. Establish `hYZ : Y * Z = 1`. Simplify using `only [Y, Z]`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (diagonal s), hst, Matrix.one_mul, hU2]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hZY : Z * Y = 1`. Simplify using `only [Y, Z]`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc Uᴴ, hU1, Matrix.one_mul, hts]`. Use `⟨⟨Y, Z, hYZ, hZY⟩, ?_⟩` and prove the remaining obligations. Use `show Yᴴ * H * Y = 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsH : (diagonal s)ᴴ = diagonal s`. Rewrite using `[diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[s]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdiag : diagonal s * diagonal (fun i => ((hH.eigenvalues i : ℝ) : ℂ)) * diagonal s = 1`. Rewrite using `[diagonal_mul_diagonal, diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [s, ← hrr i, ← Complex.ofReal_mul]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[show (r i)⁻¹ * (r i * r i) * (r i)⁻¹ = ((r i)⁻¹ * r i) * (r i * (r i)⁻¹) by ring, inv_mul_cancel₀ (hr i).ne', mul_inv_cancel₀ (hr i).ne']`. Simplify using the standard rewrite rules. Simplify using `only [Y]`. Rewrite using `[conjTranspose_mul, hsH, hspec]`. Combine the equalities or inequalities in the displayed calculation.
-
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hU1, Matrix.mul_one, Matrix.mul_one, hdiag]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem posDef_exists_conjTranspose_mul_mul_eq_one :
     ∀ (d : ℕ) (H : Matrix (Fin d) (Fin d) ℂ), H.PosDef →

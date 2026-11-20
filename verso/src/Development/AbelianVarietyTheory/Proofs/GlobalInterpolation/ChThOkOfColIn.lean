@@ -25,19 +25,17 @@ variable {X : Fields} (A : Amb X) {a b : ℕ} (Sa SB : Finset (HeightOneSpectrum
   (lam : X.Tau → DomWeight a) (lam' : X.Tau → DomWeight b) (n : X.Tau → ℕ)
 
 /- English proof (translation)
-Use `latFin X a b Sa N N' c c' hR.1 hR.2.1 hc hc'` as an intermediate fact. Set `_` to `Fintype.ofFinite (↥(mulLat c (homAt Sa N N')) ⧸ (mulLat (c * c') (homAt Sa N N')).comap (mulLat c (homAt Sa N N')).subtype)`. Use `set rep := fun z : ↥(mulLat c (homAt Sa N N')) ⧸ (mulLat (c * c') (homAt Sa N N')).comap (mulLat c (homAt Sa N N')).subtype => ((Function.surjInv (Submodule.Quotient.mk_surjective ((mulLat (c * c') (homAt Sa N N')).comap (mulLat c (homAt Sa N N')).subtype)) z : ↥(mulLat c (homAt …`. Establish `hRz : ∀ z, InRange Sa D (c * c') N N' (x + rep z)` using `fun z => hR.add (Subtype.coe_prop _)`. Establish `h1 : A.thInd Sa N N' c x = fun w => ∑ z, A.thInd Sa N N' (c * c') (x + rep z) w`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `w`. Rewrite using `[hadd N N' c c' x hc hc' hR w]`. Unfold `latSum`. Rewrite using `[finsum_eq_sum_of_fintype]`. Establish `hJ : jetOp lam lam' (A.jetK Sa N N' c x) n = jetOp lam lam' (fun m => ∑ z, A.jetK Sa N N' (c * c') (x + rep z) m) n`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.JetIdentity.jetOp_congr lam lam' n _ _ fun m hm => ?_` and prove the remaining obligations. Establish `h2 : derivAt0 (A.thInd Sa N N' c x) m = ∑ z, derivAt0 (A.thInd Sa N N' (c * c') (x + rep z)) m`. Unfold `derivAt0`. Rewrite using `[h1, iteratedFDeriv_sum (fun z _ => hsm N N' (c * c') (x + rep z) (hRz z) _)]`. Rewrite using `[Finset.sum_apply, _root_.sum_apply]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `choose k hk using fun z => hrat N N' (c * c') (x + rep z) (hRz z) m hm`. Establish `h3 : (A.chiF a b N N')⁻¹ * jetC A.cD (A.thInd Sa N N' c x) m = A.σ₀ (∑ z, k z)`. Rewrite using `[map_sum]`. Simplify using `only [hk]`. Unfold `jetC`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[h2, Finset.mul_sum, Finset.mul_sum]`. Unfold `Amb.jetK`. Rewrite using `[h3, desc_map]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Rewrite using `[← hk z, desc_map]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `latSum`. Rewrite using `[finsum_eq_sum_of_fintype]`. Unfold `thDistC`. Rewrite using `[if_pos ⟨(Dvd.intro _ rfl).trans hR.2.2.2.1, hR.2.2.2.2⟩, hJ, Formalism.L2.Ker.jetOp_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations.
-
-Conclude with `(if_pos ⟨hR.2.2.2.1, mem_divLat_add D c _ hR.2.2.2.2 (Subtype.coe_prop _)⟩).symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem thDistC_add_deg (hadd : A.IndAdd a b Sa D) (hsm : A.IndSmooth a b Sa D)
     (hrat : ∀ N N' c x, InRange Sa D c N N' x → ∀ m : DVar X.Tau a b →₀ ℕ, (∀ τ, (degAt m τ : ℤ) = degNu lam n τ) →
@@ -93,7 +91,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Ch
   (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)) (A : Amb X) (u : Pr.Word)
 
 /- English proof (translation)
-Establish `hD` using `modulus_pos sel mu cst u hT`. Unfold `RatStep at hR`. Rewrite `hR` using `[← stepC_eq_stepT W Ch sel mu cst hq A u i hi]`. Conclude with `{ cong := fun N fr N' fr' c x x' _ _ h => thDistC_cong A _ _ sel _ _ _ _ _ _ N fr N' fr' c x x' h add := fun N fr N' fr' c c' x hN hN' hc hc' hd hx => thDistC_add_deg A _ _ _ sel _ _ _ _ _ (indAdd_of A _ _ _ _ hD (latFin X _ _ _) (indTieD_of_la A _ _ _ _ hD hL)) (indSmooth_of A _ …`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stepC_ok_deg (i : ℕ) (hi : i < R.m) (j : ℕ) (hT : 0 < Pr.T u) (hq : MuqTie Ch sel mu cst)
     (hL : A.LaHyp (R.N i) (R.N j) (Sall sel mu u)) (hE : A.ESmooth (R.N i) (R.N j))
@@ -121,9 +119,9 @@ theorem stepC_ok_deg (i : ℕ) (hi : i < R.m) (j : ℕ) (hT : 0 < Pr.T u) (hq : 
 end Chain
 
 /- English proof (translation)
-Establish `bad` using `GlobalTheory.ThetaMove.BadPrimes.bad_primes Z.X Z.Pr sel S mu u h.ok.fields h.ok.primes h.isSel h.T_mem h.g_mem`. Establish `key : ∀ i j, i < Z.R.m → j = i + 1 → ThDist.Ok (stepC Z.W Z.Ch sel mu cst (ambOf s B χ cD) u i (Z.W.lamTrue u j)) (Sall sel mu u) (cAof sel mu cst * cBof sel mu cst u) ((rhoVr Z.X.emb (Z.W.lamTrue u i)).comp (ufGL Z.X.E (Z.R.N i))) ((rhoVr Z.X.emb (Z.W.lamTrue u j)).comp (ufGL Z. …`. Introduce and unpack `i _ hi rfl`. Take `⟨hL, hS⟩` from `GlobalTheory.T.normalisedFamily_latticeHyp_and_smooth H Z.X s cc δ B χ cD (Z.R.N i) (Z.R.N (i + 1)) h.ok.fields h.ana.1 h.ana.2.2.1 h.ana.2.2.2.1 hV (GlobalTheory.IndefiniteRowSideFullHecke.IndexExponentDegree.even_N _ _) (GlobalTheory.IndefiniteRowSideFullHecke.IndexExponentDegr …`. Conclude with `stepC_ok_deg Z.W Z.Ch sel mu cst _ u i hi (i + 1) (h.ok.primes.T_prime u).pos hq ⟨hL.1, hL.2.1, fun P hP => (bad P hP).1, fun P hP => GlobalTheory.PeriodIdealUnit.locP_AA_eq_one Z.X H s cc δ B χ cD P (bad P hP).2.1 (bad P hP).2.2.1 (h.cop P hP), hL.2.2.2.2⟩ hS (hJ i hi) (GlobalTh …`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨fun i hi => key i (i + 1) (by omega) rfl, key (m2 + 1) Z.R.m (by omega) hm⟩`.
+A detailed English derivation is pending.
 -/
 theorem chTh_ok_of_hyp {Z : Dat} {H : D7} {s : Seam H Z.X} {cc : Ideal (𝓞 H.host.K)} {δ : ℂ} (B : Base H cc δ) {χ : TaylorLogMetric.IdE H → ℂ}
     {cD : H.what₂.Tau → ℂ} {sel : HeightOneSpectrum (𝓞 Z.X.F) → HeightOneSpectrum (𝓞 Z.X.E)} {S : Set ℕ}
@@ -152,9 +150,9 @@ theorem chTh_ok_of_hyp {Z : Dat} {H : D7} {s : Seam H Z.X} {cc : Ideal (𝓞 H.h
 open GlobalTheory.Mem GlobalTheory.Mem.Col2 in
 
 /- English proof (translation)
-Establish `h1` using `chTh_ok_of_hyp (Z := I.dat) (I.J.toRec B C W V S N G) hm (hyp_of_colIn B C W V S N G I h a u) hE hV (muqTie_of_ok _ _ _ _ _ (h.idx_ok a)) (by`. Rewrite using `[← AmbIn.amb_eq_ambOf]`. Introduce `i hi L L' c x hx m hd`. Use `hJ.exists_eq hi hx fun τ => ?_` and prove the remaining obligations. Rewrite using `[monoDeg_eq_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hd τ).trans (GlobalTheory.MoveCompare.degNu_eq (Pr := B.primes X) B.wts u hi τ))`. Rewrite `h1` using `[← AmbIn.amb_eq_ambOf]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chTh_ok_of_colIn (B : GlobalTheory.Mem.Base) (C : Cols B) (W : RowsRest B C) (V : DivStage B C W) (S : SStage B C W) (N : NStage B C W)
     (G : GJStage B C) {X : PreX B.toPre} (I : ColIn B X) (h : I.Ok) (hJ : I.JetsIn)
@@ -174,7 +172,7 @@ theorem chTh_ok_of_colIn (B : GlobalTheory.Mem.Base) (C : Cols B) (W : RowsRest 
 open GlobalTheory.Mem GlobalTheory.Mem.Col2 in
 
 /- English proof (translation)
-The claim follows from `chTh_ok_of_colIn B C W V S N G I h hJ hE hV a u _ h.hm`.
+A detailed English derivation is pending.
 -/
 theorem chTh_ok_of_colIn' (B : GlobalTheory.Mem.Base) (C : Cols B) (W : RowsRest B C) (V : DivStage B C W) (S : SStage B C W) (N : NStage B C W)
     (G : GJStage B C) {X : PreX B.toPre} (I : ColIn B X) (h : I.Ok) (hJ : I.JetsIn)

@@ -15,13 +15,11 @@ open scoped nonZeroDivisors ComplexConjugate
 namespace GlobalTheory.DiffInt
 
 /- English proof (translation)
-Introduce `E _ _ _ a μ S hS hμS c hc hδ F hF C hC`. Use `set δ : GA E a → ℝ := fun g => (ideleModule E (GeneralLinearGroup.det g) : ℝ) with hδdef`. Establish `hδc : Continuous δ` using `GlobalTheory.RSThetaLow.continuous_absDet`. Establish `hae : ∀ᵐ g ∂(μ.restrict S), g ∈ S` using `ae_restrict_mem₀ hS`. Use `haveI : IsFiniteMeasure (μ.restrict S) := isFiniteMeasure_restrict.mpr hμS.ne`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key` using `GlobalTheory.integral_mul_cpow_of_rapid_decay_entire (GA E a) (μ.restrict S) δ F hδc.measurable (hae.mono fun g hg => ⟨lt_of_lt_of_le hc (hδ g hg).1, (hδ g hg).2⟩) (by`. Use `Integrable.mono' (integrable_const (1 : ℝ)) hδc.aestronglyMeasurable ?_` and prove the remaining obligations. Use `hae.mono fun g hg => ?_` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (le_trans hc.le (hδ g hg).1)]`. Conclude with `(hδ g hg).2)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use the proof step `hF.aestronglyMeasurable`. Use the proof step `(by`. Introduce `K`. Use `⟨max C 0 / c ^ K, hae.mono fun g hg => ?_⟩` and prove the remaining obligations. Establish `hcK : 0 < c ^ K` using `pow_pos hc K`.
-
-Establish `h1 : c ^ K ≤ δ g ^ K` using `pow_le_pow_left₀ hc.le (hδ g hg).1 K`. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ hcK]`. Combine the equalities or inequalities in the displayed calculation. Use `key.2.comp (differentiable_id.sub_const (1 : ℂ))` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integral_absDet_cpow_entire : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (μ : Measure (GA E a)) (S : Set (GA E a)), NullMeasurableSet S μ → μ S < ⊤ → ∀ c : ℝ, 0 < c → (∀ g ∈ S, c ≤ (ideleModule E (GeneralLinearGroup.det g) : ℝ) ∧ (ideleModule E (GeneralLinearGroup.det g) : ℝ) ≤ 1) → ∀ F : GA E a → ℂ, Continuous F → ∀ C : ℝ, (∀ g, ‖F g‖ ≤ C) → Differentiable ℂ fun s : ℂ => ∫ g in S, F g * ((ideleModule E (GeneralLinearGroup.det g) : ℝ) : ℂ) ^ (s - 1) ∂μ := by
   intro E _ _ _ a μ S hS hμS c hc hδ F hF C hC

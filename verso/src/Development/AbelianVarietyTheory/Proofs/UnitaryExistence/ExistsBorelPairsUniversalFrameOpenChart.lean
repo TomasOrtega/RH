@@ -27,17 +27,15 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.Frames
 
 /- English proof (translation)
-Introduce `hS E _ _ _ H Dw l Xo c p A j y₀ π X s u hj hU`. Take `⟨B, q, Y, r, hYd, hYz, hY⟩` from `GlobalTheory.T.exists_triangularFrameRing_over_testRing c.F (E →+* ℂ) (fun τ => Dw.mult τ) A`. Take `⟨uB, huB⟩` from `GlobalTheory.T.exists_framedPoint_baseChange_algebraMap hS E H Dw l Xo c A.R B.R q u`. Take `⟨uB', huB', -⟩` from `GlobalTheory.T.existsUnique_frameChangeByMatrices E H Dw l Xo c B.R uB Y r fun τ => lowerTri_isUnit_det _ (hYz τ) (hYd τ)`. Establish `hux : u.x = spMap π.toRingHom ≫ y₀.x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨-, u₀, h₀, h₁⟩` from `hU`. Conclude with `h₁.1.trans h₀.1`. Establish `hx' : uB'.x = spMap (q.comp π).toRingHom ≫ y₀.x`. Rewrite using `[huB'.1, huB.1, hux, spMap_algHom_comp, Category.assoc]`. Take `⟨q', ⟨-, hq'⟩, -⟩` from `GlobalTheory.T.universalFrame_classifies_framedPoints hS E H Dw l Xo c p.R A.R y₀ π X s u hU B.R uB' (q.comp π) hx'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨B, uB, uB', fun k => match k with` and prove the remaining obligations. Consider the case `none => r`. Consider the case `some ⟨τ, i⟩ => (hYd τ i).unit, q, q', huB, hq',`. Use the proof step `(frBor_iff_frChg uB uB' _).2 ⟨Y, hYz, fun τ i => (hYd τ i).unit_spec.symm, huB'⟩, ?_⟩`. Introduce `T _ _ a a' z z' t hz hz' hb`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hgz, hgd, hgc⟩` from `(frBor_iff_frChg z z' t).1 hb`. Take `⟨b, ⟨hb1, hb2, hb3⟩, -⟩` from `hY T a g (t none) (fun τ i => by rw [hgd]; exact Units.isUnit _) hgz`. Establish `h1 : FrMap b uB z` using `frMap_cancel (Xo := Xo) (c := c) _ _ _ q b u uB z huB (by rw [hb1]; exact hz)`. Establish `h2 : FrMap b uB' z'`. Use `(GlobalTheory.T.frameChange_comm_baseChange E H Dw l Xo c B.R T b uB uB' z z' Y r huB' h1).2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hb3, funext hb2]`. Conclude with `hgc`. Establish `h3 : FrMap (b.comp q') u z'` using `frMap_trans (Xo := Xo) (c := c) _ _ _ q' b u uB' z' hq' h2`. Use `⟨b, hb1, GlobalTheory.T.universalFrame_classifies_unique_openChart hS E H Dw l Xo c p.R A.R j y₀ π X s u hj hU T _ _ z' h3 hz', ?_⟩` and prove the remaining obligations. Introduce and unpack `(_ | ⟨τ, i⟩)`.
-
-Conclude with `hb3`. Use `show b (Y τ i i) = _`. Rewrite using `[← hgd, ← hb2 τ]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem univFrame_borelPairs : Out.SecBaseChangeSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (p A : TRing c.F) (j : Sp p.R ⟶ Xo.XF c) (y₀ : FrPt Xo c p.R) (π : p.R →ₐ[c.F] A.R) (X : (∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) A.R)) (s : (A.R)ˣ) (u : FrPt Xo c A.R), OpenChart j y₀ → UnivFrame y₀ π X s u → ∃ (B : TRing c.F) (uB uB' : FrPt Xo c B.R) (tB : Ix Dw → (B.R)ˣ) (q q' : A.R →ₐ[c.F] B.R), FrMap q u uB ∧ FrMap q' u uB' ∧ FrBor tB uB uB' ∧ ∀ (T : Type) [CommRing T] [Algebra c.F T] (a a' : A.R →ₐ[c.F] T) (z z' : FrPt Xo c T) (t : Ix Dw → Tˣ), FrMap a u z → FrMap a' u z' → FrBor t z z' → ∃ b : B.R →ₐ[c.F] T, b.comp q = a ∧ b.comp q' = a' ∧ ∀ i, b (tB i : B.R) = (t i : T) := by
   intro hS E _ _ _ H Dw l Xo c p A j y₀ π X s u hj hU

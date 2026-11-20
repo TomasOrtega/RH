@@ -31,11 +31,11 @@ open GlobalTheory.Grid
 namespace GlobalTheory.RowTest.BottomRat
 
 /- English proof (translation)
-Introduce `D T _ L μ₀ sc G W i j A A' WW X _ _ _ hX t P γ hγ x`. Establish `hw` using `hX.is.weil t`. Establish `hF : IsThetaFunO W.ψ (neg A) WW (pureTensorO W.ψ W.θ (neg A) WW (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B (X.f t) P)` using `GlobalTheory.Chain.InnerSteps.theta_pureTensorO (S := neg A) hX.is.isVac.1 hX.is.isVac.2.inf (fun τ => -X.rA.s τ) X.rA.B X.rW.s X.rW.B (GlobalTheory.ConstRatio.theta_f hX.is t).1 P`. Unfold `Tri.I`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `g`. Unfold `Tri.ker thetaKO`. Use `set F := pureTensorO W.ψ W.θ (neg A) WW (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B (X.f t) P`. Use `set ω' := (X.ω t).toSgn true`. Establish `e : ∀ y, X.ω t (g, y) = ω' ((ofSgn true A).symm g, y)` using `fun y => by`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[ω', WRep.toSgn]`. Rewrite using `[e, e]`. Establish `e2 : (((ofSgn true A).symm g, γ * x) : GA D (sgn true A) × GA D WW) = (1, γ) * ((ofSgn true A).symm g, x)` using `by simp`. Rewrite using `[e2, map_mul, Module.End.mul_apply]`. Conclude with `hw.om_aut 1 (one_mem _) γ hγ _ (hw.om_pres _ _ hF)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem I_rat_left : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →

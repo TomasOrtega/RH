@@ -7,27 +7,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.HidaC
 open IsLocalRing
 
 /- English proof (translation)
-Introduce `Λ T _ _ _ _ _ _ _ m hm`. Take `⟨hfin, -, n, h1, h2⟩` from `UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.finMax Λ T`. Use `set I' := Ideal.map (algebraMap Λ T) (maximalIdeal Λ) with hI'`. Establish `key : ∀ (k : ℕ) (y : T), y ∈ ((maximalIdeal Λ) ^ k • (⊤ : Submodule Λ T)) ↔ y ∈ (I' ^ k • (⊤ : Submodule T T))`. Introduce `k y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.smul_top_eq_map, Submodule.restrictScalars_mem, Ideal.map_pow, Ideal.smul_eq_mul, Ideal.mul_top]`. Use `haveI hΛ : IsAdicComplete (maximalIdeal Λ) T := UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.finCompl Λ T (maximalIdeal Λ)`. Establish `hT : IsAdicComplete I' T` using `{ haus' := fun y hy => IsHausdorff.haus' (I := maximalIdeal Λ) y fun k => SModEq.sub_mem.mpr ((key k _).mpr (SModEq.sub_mem.mp (hy k))) prec' := fun f hf => by`. Take `⟨L, hL⟩` from `IsPrecomplete.prec' (I := maximalIdeal Λ) f fun hmn => SModEq.sub_mem.mpr ((key _ _).mpr (SModEq.sub_mem.mp (hf hmn)))`. Conclude with `⟨L, fun k => SModEq.sub_mem.mpr ((key k _).mp (SModEq.sub_mem.mp (hL k)))⟩ }`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI hJ : IsAdicComplete (⊥ : Ideal T).jacobson T := UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.cofinalCompl T T I' _ n h1 h2 hT`. Use `haveI := hfin`. Use `haveI := Fintype.ofFinite (MaximalSpectrum T)`. Use `set s := Finset.univ.filter (fun p : MaximalSpectrum T => p.asIdeal ≠ m) with hs`. Use `set m'' := s.inf (fun p => p.asIdeal) with hm''`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hnot : ¬ m'' ≤ m`. Introduce `h`. Take `⟨p, hp, hpm⟩` from `(Ideal.IsPrime.inf_le' hm.isPrime).mp h`. Conclude with `(Finset.mem_filter.mp hp).2 (p.isMaximal.eq_of_le hm.ne_top hpm)`. Establish `htop : m ⊔ m'' = ⊤` using `hm.out.2 _ (lt_of_le_of_ne le_sup_left fun h => hnot (h ▸ le_sup_right))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1mem : (1 : T) ∈ m ⊔ m''` using `htop ▸ Submodule.mem_top`. Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.mp h1mem`. Establish `hbp : ∀ p : Ideal T, p.IsMaximal → p ≠ m → b ∈ p`. Introduce `p hp hpm`. Establish `hle : m'' ≤ p` using `Finset.inf_le (f := fun p : MaximalSpectrum T => p.asIdeal) (b := ⟨p, hp⟩) (by simp [s, hpm])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hle hb`. Establish `memJ : ∀ y : T, (∀ p : Ideal T, p.IsMaximal → y ∈ p) → y ∈ (⊥ : Ideal T).jacobson` using `fun y hy => Ideal.mem_sInf.mpr fun p hp => hy p hp.2`. Establish `hJm : ∀ y : T, y ∈ (⊥ : Ideal T).jacobson → ∀ p : Ideal T, p.IsMaximal → y ∈ p` using `fun y hy p hp => Ideal.mem_sInf.mp hy ⟨bot_le, hp⟩`. Establish `hxx : b * b - b ∈ (⊥ : Ideal T).jacobson`. Establish `e1 : b * b - b = -(b * a)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ha' : a = 1 - b` using `by rw [← hab]; ring`. Rewrite using `[ha']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`. Use `memJ _ fun p hp => p.neg_mem ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hpm : p = m`. Rewrite using `[hpm]`. Conclude with `m.mul_mem_left _ ha`. Conclude with `p.mul_mem_right _ (hbp p hp hpm)`. Take `⟨e, he, hex⟩` from `UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.idemLift T _ b hxx`.
-
-Use `⟨e, he, fun hem => ?_, fun p hp hpm => ?_⟩` and prove the remaining obligations. Apply `hm.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `h3 : e - b ∈ m` using `hJm _ hex m hm`. Establish `h4 : (1 : T) = e - (e - b) + a` using `by rw [← hab]; ring`.
-
-Rewrite using `[h4]`. Conclude with `m.add_mem (m.sub_mem hem h3) ha`. Establish `h3 : e - b ∈ p` using `hJm _ hex p hp`. Establish `h4 : e = (e - b) + b` using `by ring`. Rewrite using `[h4]`.
-
-Conclude with `p.add_mem h3 (hbp p hp hpm)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.maxIdem :
     ∀ (Λ T : Type) [CommRing Λ] [IsLocalRing Λ] [IsNoetherianRing Λ] [IsAdicComplete (maximalIdeal Λ) Λ] [CommRing T] [Algebra Λ T] [Module.Finite Λ T] (m : Ideal T), m.IsMaximal → ∃ e : T, IsIdempotentElem e ∧ e ∉ m ∧ ∀ m' : Ideal T, m'.IsMaximal → m' ≠ m → e ∈ m' := by

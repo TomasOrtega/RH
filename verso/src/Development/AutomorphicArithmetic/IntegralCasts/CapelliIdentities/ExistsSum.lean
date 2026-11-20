@@ -1,23 +1,21 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ μ _ K hKo hKc S hS`. Use `haveI : DiscreteTopology (G ⧸ K) := QuotientGroup.discreteTopology hKo`. Establish `hcont : Continuous (QuotientGroup.mk : G → G ⧸ K)` using `QuotientGroup.continuous_mk`. Establish `hfin : ((QuotientGroup.mk : G → G ⧸ K) '' S).Finite` using `(hS.image hcont).finite_of_discrete`. Set `C : G ⧸ K → Set G` to `fun x => (QuotientGroup.mk : G → G ⧸ K) ⁻¹' {x}`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hmem : ∀ (x : G ⧸ K) (g : G), g ∈ C x ↔ (x.out)⁻¹ * g ∈ K`. Introduce `x g`. Rewrite using `[← QuotientGroup.eq, QuotientGroup.out_eq']`. Conclude with `eq_comm`. Establish `hmeas : ∀ x, MeasurableSet (C x)` using `fun x => ((isOpen_discrete {x}).preimage hcont).measurableSet`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcomp : ∀ x, IsCompact (C x)`. Introduce `x`. Establish `h : C x = (fun k => x.out * k) '' (K : Set G)`. Use extensionality with `g`. Rewrite using `[hmem]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨_, h, by simp⟩`. Introduce and unpack `⟨k, hk, rfl⟩`. Simplify using `using hk`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h]`. Conclude with `hKc.image (continuous_const.mul continuous_id)`. Use `⟨hfin.toFinset, fun x => x.out, fun x => (μ.real (C x) : ℂ), ?_⟩` and prove the remaining obligations. Introduce `F hF h0`. Establish `hout : ∀ g : G, F (QuotientGroup.mk g : G ⧸ K).out = F g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `g`. Establish `h` using `hF (QuotientGroup.mk g : G ⧸ K).out _ ((hmem _ g).1 rfl)`. Rewrite `h` using `[mul_inv_cancel_left]`. Conclude with `h.symm`. Establish `hdec : ∀ g, F g = ∑ x ∈ hfin.toFinset, (C x).indicator (fun _ => F x.out) g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Rewrite using `[Finset.sum_eq_single (QuotientGroup.mk g : G ⧸ K)]`. Rewrite using `[Set.indicator_of_mem (show g ∈ C (QuotientGroup.mk g) from rfl), hout]`. Introduce `x _ hx`. Establish `hg : g ∉ C x` using `fun h => hx (Eq.symm h)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_notMem hg]`. Introduce `hg`. Rewrite using `[Set.indicator_of_mem (show g ∈ C (QuotientGroup.mk g) from rfl), hout]`. Conclude with `h0 g fun hgS => hg (hfin.mem_toFinset.2 ⟨g, hgS, rfl⟩)`. Rewrite using `[MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall hdec), MeasureTheory.integral_finset_sum]`.
-
-Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[MeasureTheory.integral_indicator_const _ (hmeas x), Complex.real_smul]`. Introduce `x _`. Rewrite using `[MeasureTheory.integrable_indicator_iff (hmeas x)]`. Conclude with `MeasureTheory.integrableOn_const (hcomp x).measure_lt_top.ne`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qg3.exists_sum.{u_1} :
     ∀ {G : Type u_1} [inst : Group G]

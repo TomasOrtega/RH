@@ -4,27 +4,25 @@ open NumberField
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `F _ _ M _ _ N hN hc p hp hgen a b hab`. Use `set I : Ideal (𝓞 F) := Ideal.span {(N : 𝓞 F)} with hI`. Establish `hNp : ∀ (c : 𝓞 F) i, ((N : 𝓞 F) * c) • p i = 0`. Introduce `c i`. Rewrite using `[mul_comm, mul_smul, Nat.cast_smul_eq_nsmul, hp i, smul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `ψ : 𝓞 F × 𝓞 F →+ M` to `{ toFun := fun x => x.1 • p 0 + x.2 • p 1 map_zero' := by simp map_add' := by intro x y; simp [add_smul]; abel }`. Set `g : 𝓞 F × 𝓞 F →+ (𝓞 F ⧸ I) × (𝓞 F ⧸ I)` to `{ toFun := fun x => (Ideal.Quotient.mk I x.1, Ideal.Quotient.mk I x.2) map_zero' := by simp map_add' := by intro x y; simp }`. Establish `hgker : ∀ x y : 𝓞 F, (x, y) ∈ g.ker ↔ (N : 𝓞 F) ∣ x ∧ (N : 𝓞 F) ∣ y`. Introduce `x y`. Simplify using `only [AddMonoidHom.mem_ker, g, AddMonoidHom.coe_mk, ZeroHom.coe_mk, Prod.mk_eq_zero, Ideal.Quotient.eq_zero_iff_mem, hI, Ideal.mem_span_singleton]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hle : g.ker ≤ ψ.ker`. Introduce and unpack `⟨x, y⟩ hx`. Rewrite `hx` using `[hgker]`. Take `⟨⟨c, rfl⟩, ⟨d, rfl⟩⟩` from `hx`. Simplify using `[ψ, hNp]`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hrange : (ψ.range : Set M) = {x : M | N • x = 0}`. Use extensionality with `y`. Simplify using `only [SetLike.mem_coe, AddMonoidHom.mem_range, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨x1, x2⟩, rfl⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `only [ψ, AddMonoidHom.coe_mk, ZeroHom.coe_mk, smul_add]`. Rewrite using `[smul_comm, hp 0, smul_zero, smul_comm, hp 1, smul_zero, add_zero]`. Introduce `hy`. Take `⟨a, b, rfl⟩` from `hgen y hy`. Conclude with `⟨(a, b), rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hindψ : ψ.ker.index = N ^ (2 * Module.finrank ℚ F)`. Rewrite using `[AddSubgroup.index_ker, ← hc]`. Conclude with `Nat.card_congr (Equiv.setCongr hrange)`. Establish `hcardR : Nat.card (𝓞 F ⧸ I) = N ^ Module.finrank ℚ F`. Establish `h1` using `Ideal.absNorm_span_singleton (S := 𝓞 F) (N : 𝓞 F)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Rewrite using `[hI, h1, ← map_natCast (algebraMap ℤ (𝓞 F)) N, Algebra.norm_algebraMap, NumberField.RingOfIntegers.rank]`. Simplify using the standard rewrite rules. Establish `hindg : g.ker.index = N ^ (2 * Module.finrank ℚ F)`. Establish `hs : Function.Surjective g`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨u, v⟩`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective u`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective v`. Conclude with `⟨(x, y), rfl⟩`. Rewrite using `[AddSubgroup.index_ker, AddMonoidHom.range_eq_top.mpr hs]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Nat.card_congr (AddSubgroup.topEquiv).toEquiv, Nat.card_prod, hcardR, ← pow_add, two_mul]`. Establish `hrel` using `AddSubgroup.relIndex_mul_index hle`. Rewrite `hrel` using `[hindψ, hindg]`. Establish `hpos : 0 < N ^ (2 * Module.finrank ℚ F)` using `pow_pos (by omega) _`. Establish `h1 : g.ker.relIndex ψ.ker = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Nat.eq_of_mul_eq_mul_right hpos (hrel.trans (one_mul _).symm)` as an intermediate fact. Conclude with `this`. Establish `hk` using `AddSubgroup.relIndex_eq_one.mp h1`. Establish `hmem : ((a, b) : 𝓞 F × 𝓞 F) ∈ ψ.ker` using `hab`. Use `hk hmem` as an intermediate fact.
-
-Conclude with `(hgker a b).mp this`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dvd_of_two_gens_of_card_torsion : ∀ (F : Type) [Field F] [NumberField F] (M : Type) [AddCommGroup M] [Module (𝓞 F) M] (N : ℕ), 1 ≤ N →
     Nat.card {x : M // N • x = 0} = N ^ (2 * Module.finrank ℚ F) →

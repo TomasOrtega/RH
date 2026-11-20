@@ -16,13 +16,13 @@ open scoped TensorProduct
 namespace GlobalTheory.Mem.R3.StdModel
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, fun i j i' j' a b => by obtain rfl := Fin.ext a; obtain rfl := Fin.ext b; rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem matEq_refl {A : Type} [CommRing A] {a : ℕ} (x : GL (Fin a) A) : MatEq x x :=
   ⟨rfl, fun i j i' j' a b => by obtain rfl := Fin.ext a; obtain rfl := Fin.ext b; rfl⟩
 
 /- English proof (translation)
-The claim follows from `Units.ext (Matrix.ext fun i j => h.2 i j i j rfl rfl)`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_matEq {A : Type} [CommRing A] {a : ℕ} {x y : GL (Fin a) A} (h : MatEq x y) : x = y :=
   Units.ext (Matrix.ext fun i j => h.2 i j i j rfl rfl)
@@ -37,9 +37,9 @@ def crd (lam : X.Tau → DomWeight n) : VV X.K lam →ₛₗ[σ] (VVIdx lam → 
   map_smul' a v := by funext i; simp
 
 /- English proof (translation)
-Establish `: (fun i => crd σ lam (bVV X.K lam i)) = fun i => Pi.basisFun ℂ (VVIdx lam) i`. Use function extensionality and compare the values at `i j`. Use `show σ ((bVV X.K lam).repr (bVV X.K lam i) j) = _`. Rewrite using `[Module.Basis.repr_self, Pi.basisFun_apply, Finsupp.single_apply, Pi.single_apply]`. Distinguish the cases in `h : i = j`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`. Simplify using `[h, Ne.symm h]`. Rewrite using `[this]`. Conclude with `(Pi.basisFun ℂ (VVIdx lam)).linearIndependent`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem crd_li (lam : X.Tau → DomWeight n) : LinearIndependent ℂ fun i => crd σ lam (bVV X.K lam i) := by
   classical
@@ -57,7 +57,7 @@ def actC (lam : X.Tau → DomWeight n) (f : Module.End X.K (VV X.K lam)) (w : VV
   ∑ j, w j • crd σ lam (f (bVV X.K lam j))
 
 /- English proof (translation)
-Use `conv_lhs => rw [← (bVV X.K lam).sum_repr v]`. Rewrite using `[map_sum]`. Simplify using `only [map_smulₛₗ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem expand {W : Type} [AddCommGroup W] [Module ℂ W] {lam : X.Tau → DomWeight n} (c : VV X.K lam →ₛₗ[σ] W) (v : VV X.K lam) :
     c v = ∑ j, σ ((bVV X.K lam).repr v j) • c (bVV X.K lam j) := by
@@ -66,7 +66,7 @@ theorem expand {W : Type} [AddCommGroup W] [Module ℂ W] {lam : X.Tau → DomWe
   simp only [map_smulₛₗ]
 
 /- English proof (translation)
-Use `expand σ ((crd σ lam).comp f) v` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem crd_act (lam : X.Tau → DomWeight n) (f : Module.End X.K (VV X.K lam)) (v : VV X.K lam) :
     crd σ lam (f v) = actC σ lam f (crd σ lam v) := by
@@ -74,7 +74,7 @@ theorem crd_act (lam : X.Tau → DomWeight n) (f : Module.End X.K (VV X.K lam)) 
   exact this
 
 /- English proof (translation)
-Rewrite `hv` using `[expand σ c v]`. Use `Fintype.linearIndependent_iff.1 h _ hv` as an intermediate fact. Apply `(bVV X.K lam).repr.injective` to reduce the goal to its premises. Use extensionality with `j`. Simplify using `using this j`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem inj_of_li {W : Type} [AddCommGroup W] [Module ℂ W] {lam : X.Tau → DomWeight n} (c : VV X.K lam →ₛₗ[σ] W)
     (h : LinearIndependent ℂ fun i => c (bVV X.K lam i)) (v : VV X.K lam) (hv : c v = 0) : v = 0 := by
@@ -87,9 +87,9 @@ theorem inj_of_li {W : Type} [AddCommGroup W] [Module ℂ W] {lam : X.Tau → Do
 variable [NeZero n]
 
 /- English proof (translation)
-Use `⟨crd σ lam, ?_, ?_, crd_li σ lam, hc, fun h => ⟨h, matEq_refl _⟩⟩` and prove the remaining obligations. Introduce and unpack `γ _ g rfl hm v`. Rewrite using `[← eq_of_matEq hm]`. Conclude with `crd_act σ lam _ v`. Introduce `hc' t φ h x hm`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `rfl : h = x` from `Subtype.ext (eq_of_matEq hm)`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem stdSide_model (hc : CMData X.F X.E) {ι : Type} (lam : X.Tau → DomWeight n)
     (rho : GL (Fin n) X.E →* Module.End X.K (VV X.K lam)) (SG : ι → Finset (Pl X.E)) (Fm : ι → Type)
@@ -110,7 +110,7 @@ variable {σ} {a : ℕ} {H Γ W : Type} [AddCommGroup W] [Module ℂ W]
   {ι : Type} {lam : X.Tau → DomWeight n} {rho : GL (Fin n) X.E →* Module.End X.K (VV X.K lam)}
 
 /- English proof (translation)
-Take `⟨c, hli, hv⟩` from `s.value`. Take `⟨d, hd⟩` from `hv h t`. Rewrite using `[hd]`. Conclude with `fun e => hφ d (inj_of_li σ c hli _ e)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ad_ne_zero {SG : ι → Finset (Pl X.E)} {Fm : ι → Type} {val : ∀ t, Fm t → DecoSet X.E n ∅ (SG t) → VV X.K lam}
     {ad : ∀ t, Fm t → H → W} (s : StdSide σ mat rat ρ lam rho SG Fm val ad) (t : ι) (φ : Fm t) (hφ : ∀ d, val t φ d ≠ 0) (h : H) :
@@ -121,7 +121,7 @@ theorem ad_ne_zero {SG : ι → Finset (Pl X.E)} {Fm : ι → Type} {val : ∀ t
   exact fun e => hφ d (inj_of_li σ c hli _ e)
 
 /- English proof (translation)
-Take `⟨c, -, hr, -, hc, hx⟩` from `s`. Use function extensionality and compare the values at `h`. Take `⟨x, hm⟩` from `hx h`. Rewrite using `[hr hc t φ h x hm, hr hc t' φ' h x hm, e]`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem ad_eq {S : Finset (Pl X.E)} {Fm : ι → Type} {val : ∀ t, Fm t → DecoSet X.E n ∅ S → VV X.K lam}
     {ad : ∀ t, Fm t → H → W} (s : StdSide σ mat rat ρ lam rho (fun _ => S) Fm val ad) (t t' : ι) (φ : Fm t) (φ' : Fm t')
@@ -132,11 +132,11 @@ theorem ad_eq {S : Finset (Pl X.E)} {Fm : ι → Type} {val : ∀ t, Fm t → De
   rw [hr hc t φ h x hm, hr hc t' φ' h x hm, e]
 
 /- English proof (translation)
-Take `⟨c, -, hr, hli, hc, hx⟩` from `s`. Take `⟨c', -, hr', -, -⟩` from `s'`. Take `⟨T, hT⟩` from `LinearMap.exists_extend ((Module.Basis.span hli).constr ℂ fun i => c' (bVV X.K lam i))`. Establish `hb : ∀ i, T (c (bVV X.K lam i)) = c' (bVV X.K lam i)` using `fun i => by`. Use `LinearMap.congr_fun hT (Module.Basis.span hli i)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Module.Basis.constr_basis, LinearMap.comp_apply, Submodule.subtype_apply, Module.Basis.span_apply]`. Conclude with `this`. Use `⟨T, fun t φ h => ?_⟩` and prove the remaining obligations. Take `⟨x, hm⟩` from `hx h`. Rewrite using `[hr hc t φ h x hm, hr' hc t φ h x hm, expand σ c, expand σ c', map_sum]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_smul, hb]`.
+A detailed English derivation is pending.
 -/
 theorem one_map {SG : ι → Finset (Pl X.E)} {Fm : ι → Type} {val : ∀ t, Fm t → DecoSet X.E n ∅ (SG t) → VV X.K lam}
     {ad ad' : ∀ t, Fm t → H → W} (s : StdSide σ mat rat ρ lam rho SG Fm val ad) (s' : StdSide σ mat rat ρ lam rho SG Fm val ad') :
@@ -154,9 +154,9 @@ theorem one_map {SG : ι → Finset (Pl X.E)} {Fm : ι → Type} {val : ∀ t, F
   simp only [map_smul, hb]
 
 /- English proof (translation)
-Introduce `s`. Establish `e` using `ad_eq s true false () () rfl`. Take `⟨h⟩` from `‹Nonempty H›`. Establish `h0` using `ad_ne_zero s true () (fun _ => hv) h`. Establish `e1 : f h = -f h` using `congrFun e h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (2 : ℂ) • f h = 0` using `by rw [two_smul]; exact add_eq_zero_iff_eq_neg.2 e1`. Conclude with `h0 ((smul_eq_zero.1 h2).resolve_left two_ne_zero)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem not_sign [Nonempty H] {S : Finset (Pl X.E)} (v : VV X.K lam) (hv : v ≠ 0) (f : H → W) :
     ¬ StdSide σ mat rat ρ lam rho (fun _ : Bool => S) (fun _ => Unit) (fun _ _ _ => v) fun b _ => cond b f (-f) := by
@@ -169,11 +169,11 @@ theorem not_sign [Nonempty H] {S : Finset (Pl X.E)} (v : VV X.K lam) (hv : v ≠
   exact h0 ((smul_eq_zero.1 h2).resolve_left two_ne_zero)
 
 /- English proof (translation)
-Substitute `e` using the available equality. Choose the witnesses or unpack the hypotheses as in `rfl : lam = lam' := by`. Use function extensionality and compare the values at `τ`. Establish `: (lam τ).w = (lam' τ).w` using `funext fun i => hl τ i i rfl`. Consider the cases of `h1 : lam τ`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `h2 : lam' τ`. Rewrite `this` using `[h1, h2]`. Simplify using `only at this`. Substitute `this` using the available equality. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality. Both sides reduce to the same expression.
 
-Use `⟨c0, fun γ γE g h hm v => ?_, hli⟩` and prove the remaining obligations. Rewrite using `[← eq_of_matEq hm]`. Conclude with `hi γ γE h v`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transport {K E ι' : Type} [Field K] [NumberField K] [Field E] [NumberField E] [Fintype ι'] (σ : K →+* ℂ) {a n : ℕ} (e : a = n)
     (lam : ι' → DomWeight a) (lam' : ι' → DomWeight n)
@@ -204,15 +204,13 @@ section Rec
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Take `⟨hc, c, ha, hm, hw⟩` from `h`. Take `⟨hc', c', ha', hm', hw'⟩` from `h'`. Take `rfl : N = N'` from `hc.symm.trans hc'`. Take `rfl : i = i'` from `Fin.ext e`. Establish `key : ∀ (d : Fin N → ℚ), StrictAnti d → (∀ i, ∃ s, (d i, s) ∈ S) → Set.range d = {y | (y, true) ∈ S}`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `d hd hmem`. Establish `h1 : (Finset.univ.image fun i => (d i, true)) = S`. Apply `Finset.eq_of_subset_of_card_le` to reduce the goal to its premises. Introduce `x hx`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs⟩` from `hmem i`. Use `hS _ hs` as an intermediate fact. Simplify using `only at this`. Conclude with `this ▸ hs`. Rewrite using `[Finset.card_image_of_injective _ (fun a b q => hd.injective (Prod.ext_iff.1 q).1), hc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use extensionality with `y`. Simplify using `[← h1]`. Establish `: c = c'` using `(ha.range_inj ha').1 ((key c ha hm).trans (key c' ha' hm').symm)`. Establish `q` using `(hw i).trans (this ▸ (hw' i).symm)`.
-
-Conclude with `q` after adjusting the coercions.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isWtOfPar_unique {N N' : ℕ} {S : SPar} (hS : ∀ x ∈ S, x.2 = true) {lam : DomWeight N} {lam' : DomWeight N'}
     (h : Bridge.IsWtOfPar lam S) (h' : Bridge.IsWtOfPar lam' S) (i : Fin N) (i' : Fin N') (e : (i : ℕ) = i') :
@@ -240,17 +238,17 @@ theorem isWtOfPar_unique {N N' : ℕ} {S : SPar} (hS : ∀ x ∈ S, x.2 = true) 
   exact_mod_cast q
 
 /- English proof (translation)
-Establish `hk` using `D.R.m_add_three_le_k`. Establish `hr : D.sp.X'.rank = D.R.N D.R.m - 1` using `by rw [D.sp.X'_rank, rank_X'_eq]; rfl`. Use `⟨hr ▸ (GlobalTheory.ForcedWeights.lamRForced D τ).1, fun i => (RowPar.of (D.hc τ)).sgHC i.1 - RowPar.sh D.R, ?_, ?_, fun i => RowPar.sgTrue_eq _ i⟩` and prove the remaining obligations. Introduce `i j hij`. Establish `h1` using `RowPar.sgTrue_eq (D.hc τ) i`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `RowPar.sgTrue_eq (D.hc τ) j`. Establish `h3 : (((RowPar.of (D.hc τ)).sgTrue.w j : ℤ) : ℚ) ≤ (RowPar.of (D.hc τ)).sgTrue.w i`. Conclude with `(RowPar.of (D.hc τ)).sgTrue.anti hij.le` after adjusting the coercions. Establish `h4 : ((i : ℕ) : ℚ) < (j : ℕ)` using `by exact_mod_cast hij`. Simplify using `only [rhoVec] at h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `i`. Use `⟨true, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.ForcedWeights.dpar_eq, Finset.mem_image]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hi` using `i.2`. Unfold `Ranks.N at hi`. Distinguish the cases in `h1 : i.1 < D.R.k - 1`. Conclude with `⟨.inl ⟨i.1, h1⟩, Finset.mem_univ _, by simp [GlobalTheory.ForcedWeights.entry, RowPar.sgHC, RowPar.sh, h1, RowPar.of]⟩`. Establish `hq : (i.1 - (D.R.k - 1)) / (D.R.t + 1) < D.R.m`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.div_lt_iff_lt_mul (by omega)]; omega`. Distinguish the cases in `h2 : (i.1 - (D.R.k - 1)) % (D.R.t + 1) = 0`. Conclude with `⟨.inr (.inl ⟨_, hq⟩), Finset.mem_univ _, by`. Simplify using `[GlobalTheory.ForcedWeights.entry, RowPar.sgHC, RowPar.sh, h1, h2, RowPar.of, RowPar.bAt, hq]⟩`. Establish `h3 : (i.1 - (D.R.k - 1)) % (D.R.t + 1) < D.R.t + 1` using `Nat.mod_lt _ (by omega)`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨.inr (.inr (⟨_, hq⟩, ⟨(i.1 - (D.R.k - 1)) % (D.R.t + 1) - 1, by omega⟩)), Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Simplify using `only [GlobalTheory.ForcedWeights.entry, RowPar.sgHC, RowPar.sh, h1, h2, RowPar.of, RowPar.eAt, hq, dite_true, dite_false, if_false, Prod.mk.injEq, and_true]`. Rewrite using `[Nat.cast_sub (by omega)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem isWtOfPar_sgTrue (D : D7) (τ : D.what₂.Tau) :
     Bridge.IsWtOfPar (RowPar.of (D.hc τ)).sgTrue ((Ptw D).Dpar D.R.m τ) := by
@@ -288,7 +286,7 @@ theorem isWtOfPar_sgTrue (D : D7) (τ : D.what₂.Tau) :
         ring
 
 /- English proof (translation)
-Use `isWtOfPar_unique ?_ (GlobalTheory.ForcedWeights.lamRForced X.toD7 τ) (isWtOfPar_sgTrue X.toD7 τ) i i' e` and prove the remaining obligations. Rewrite using `[GlobalTheory.ForcedWeights.dpar_eq]`. Introduce `x hx`. Take `⟨_, -, rfl⟩` from `Finset.mem_image.1 hx`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem lamRdef_eq (X : Stages) (τ) (i : Fin X.toD7.sp.X'.rank) (i' : Fin (X.B.R.N X.B.R.m - 1)) (e : (i : ℕ) = i') :
     (Bridge.lamRdef (Ptw X.toD7) τ).w i = (X.B.wts.sgTrue τ).w i' := by
@@ -304,9 +302,9 @@ Both sides reduce to the same expression.
 theorem labLL_eq (X : Stages) : labLL X.toD7 = X.B.fields.emb := rfl
 
 /- English proof (translation)
-Take `⟨_, g, rfl⟩` from `h`. Use `⟨⟨_, GlobalTheory.Mem.ColAd.finN_mem hn hG g⟩, ?_⟩` and prove the remaining obligations. Substitute `hn` using the available equality. Use `⟨rfl, fun i j i' j' a b => ?_⟩` and prove the remaining obligations. Take `rfl` from `Fin.ext a`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `rfl` from `Fin.ext b`. Unfold `R3.matIn`. Rewrite using `[mul_one]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_matEq {D : D7} (V : HSp D) {n : ℕ} (hn : V.rank = n) (hG : V.gram = 1) (h : Bridge.Gf V) :
     ∃ x : UAd D.sp.cm n, R3.MatEq (R3.matIn V 1 h) (x : GL (Fin n) _) := by
@@ -321,19 +319,19 @@ theorem exists_matEq {D : D7} (V : HSp D) {n : ℕ} (hn : V.rank = n) (hG : V.gr
   rfl
 
 /- English proof (translation)
-Take `⟨hj, W, hk, hm, ht, hjj, he, hv, hb, hw⟩` from `GlobalTheory.ForcedWeights.lamLForced X.toD7 j h1 h2 τ`. Establish `hk : W.k = X.B.R.k` using `hk`. Establish `hm : W.m = X.B.R.m` using `hm`. Establish `ht : W.t = X.B.R.t` using `ht`. Establish `he : (W.e : ℚ) = (X.B.hc τ).e ⟨j - 1, hj.2⟩` using `he`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : ∀ a : Fin (X.B.R.k - 1), (W.v (a + 2) : ℚ) = (X.B.hc τ).v a` using `hv`. Establish `hb : ∀ a : Fin X.B.R.m, (W.b (a + 1) : ℚ) = (X.B.hc τ).b a` using `hb`. Establish `hkm` using `X.B.R.m_add_three_le_k`. Establish `q` using `RowPar.lamV_eq (X.B.hc τ) h1 h2 i'`. Establish `hi` using `i'.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE : (RowPar.of (X.B.hc τ)).eAt (j - 1) = W.e`. Rewrite using `[he]`. Conclude with `dif_pos hj.2`. Establish `hB : ∀ n, n < X.B.R.m → (RowPar.of (X.B.hc τ)).bAt n = W.b (n + 1)` using `fun n hn => by`. Rewrite using `[hb ⟨n, hn⟩]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `dif_pos hn`. Establish `key : W.lamPrime (i'.1 + 1) = (RowPar.of (X.B.hc τ)).lamVQ j i'`. Unfold `Ranks.nV Ranks.r at hi`. Unfold `IndefiniteWeightData.WeightData.lamPrime IndefiniteWeightData.WeightData.thetaWt IndefiniteWeightData.WeightData.dTau IndefiniteWeightData.WeightData.aPlus IndefiniteWeightData.WeightData.aMinus IndefiniteWeightData.WeightData.lam IndefiniteWeightData.WeightData.nV IndefiniteWeig …`. Rewrite using `[hk, hm, ht, hjj, hE]`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails.
 
-Use `congr 1`. Distinguish the cases in `a : i'.1 < X.B.R.k + j - 1`. Rewrite using `[if_pos a, if_pos (show i'.1 + 1 ≤ _ from a), Nat.add_sub_cancel]`. Distinguish the cases in `b : i'.1 < X.B.R.k - 1`. Rewrite using `[dif_pos b, if_pos (show i'.1 + 1 ≤ _ from b), hv ⟨_, b⟩]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[dif_neg b, if_neg (show ¬ i'.1 + 1 ≤ _ from b), hB _ (by omega), Int.cast_neg, show i'.1 + 1 - (X.B.R.k - 1) = i'.1 - (X.B.R.k - 1) + 1 by omega]`. Both sides reduce to the same expression. Rewrite using `[if_neg a, if_neg (show ¬ i'.1 + 1 ≤ _ from a)]`. Distinguish the cases in `b : i'.1 < X.B.R.k + j - 1 + X.B.R.t`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos b, if_pos (show i'.1 + 1 ≤ _ from b)]`. Rewrite using `[if_neg b, if_neg (show ¬ i'.1 + 1 ≤ _ from b), hB _ (by omega), show X.B.R.m - j + 1 - (X.B.R.m - j + 1 - (i'.1 + 1 - (X.B.R.k + j - 1) - X.B.R.t)) = i'.1 - (X.B.R.k + j - 1 + X.B.R.t) + 1 by omega, show j + (i'.1 - (X.B.R.k + j - 1 + X.B.R.t) + 1) - 1 + 1 = j + (i'.1 - (X.B.R.k …`. Use `(hw i).trans ((e ▸ key).trans q.symm)` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lamLdef_eq (X : Stages) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ X.B.R.m) (τ) (i : Fin (X.toD7.sp.V j).rank) (i' : Fin X.B.R.nV)
     (e : (i : ℕ) = i') : (Bridge.lamLdef (D := X.toD7) (X.toD7.sp.V j).rank j τ).w i = (X.B.wts.lamV j τ).w i' := by
@@ -377,7 +375,7 @@ theorem lamLdef_eq (X : Stages) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ X.B.R.m) (�
   exact_mod_cast this
 
 /- English proof (translation)
-Take `⟨hs, -, h2, -⟩` from `hI.spaces`. Express the relevant statement in the definitionally equal form `X.B.sp.X'.gram = 1`. Rewrite using `[h2]`. Use `Matrix.ext fun i i' => (Formalism.BasicNotions.Examples₂.stdSpace_gram_apply hs _ _ _ _ i i').trans ?_` and prove the remaining obligations. Simplify using `[Matrix.one_apply, Formalism.BasicNotions.Examples₂.sgn]`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem gram_X' (X : Stages) {px : PreX X.B.toPre} (I : ColIn X.B px) (hI : I.Ok) : X.toD7.sp.X'.gram = 1 := by
   obtain ⟨hs, -, h2, -⟩ := hI.spaces
@@ -387,9 +385,9 @@ theorem gram_X' (X : Stages) {px : PreX X.B.toPre} (I : ColIn X.B px) (hI : I.Ok
   simp [Matrix.one_apply, Formalism.BasicNotions.Examples₂.sgn]
 
 /- English proof (translation)
-Take `⟨hs, -, -, -, -, hV⟩` from `hI.spaces`. Establish `h1` using `hV ((i : ℕ) + 1)`. Establish `hn : X.B.sp.Vneg ((i : ℕ) + 1) = false` using `X.B.V_pos _ (by omega) i.2`. Rewrite `h1` using `[hn]`. Express the relevant statement in the definitionally equal form `(X.B.sp.V ((i : ℕ) + 1)).gram = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[h1]`. Use `Matrix.ext fun a b => (Formalism.BasicNotions.Examples₂.stdSpace_gram_apply hs _ _ _ _ a b).trans ?_` and prove the remaining obligations. Simplify using `[Matrix.one_apply, Formalism.BasicNotions.Examples₂.sgn]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem gram_V (X : Stages) {px : PreX X.B.toPre} (I : ColIn X.B px) (hI : I.Ok) (i : Fin X.toD7.R.m) : (Vc X.toD7 i).gram = 1 := by
   obtain ⟨hs, -, -, -, -, hV⟩ := hI.spaces
@@ -402,7 +400,7 @@ theorem gram_V (X : Stages) {px : PreX X.B.toPre} (I : ColIn X.B px) (hI : I.Ok)
   simp [Matrix.one_apply, Formalism.BasicNotions.Examples₂.sgn]
 
 /- English proof (translation)
-Take `rfl` from `h.1`. Conclude with `(eq_of_matEq h).symm.trans (eq_of_matEq h')`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem matEq_unique {A : Type} [CommRing A] {a b : ℕ} {x : GL (Fin a) A} {y y' : GL (Fin b) A} (h : MatEq x y) (h' : MatEq x y') :
     y = y' := by
@@ -415,11 +413,9 @@ variable (X : Stages) {px : PreX X.B.toPre} (I : ColIn X.B px) (hX : X.B.fields.
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Take `⟨cV, c0, hIs, hT, -⟩` from `GlobalTheory.CoefModel.exists_coef_lift X.toD7 i (X.B.V_posDef _ (by omega) i.2)`. Establish `hr : (Vc X.toD7 i).rank = X.B.R.nV` using `X.toD7.sp.V_rank _ (by omega) i.2`. Take `⟨c, hc, hli⟩` from `transport (W := cV.W) (K := X.toD7.what₂.LL) (E := X.toD7.host.E) (ι' := X.toD7.what₂.Tau) X.toD7.what₂.embLL hr _ (X.B.wts.lamV ((i : ℕ) + 1)) (fun τ a a' e => lamLdef_eq X ((i : ℕ) + 1) (by omega) i.2 τ a a' e) (fun l => rhoVr (labLL X.toD7) l) c0 hT.2.1 (Bridge.IsRatMat (Vc X. …`. Use `choose x hx using exists_matEq (D := X.toD7) (Vc X.toD7 i) hr (gram_V X I hI i)`. Use `⟨cV, hIs, fun t f h => c ((((mtKGSD (Pr := X.B.primes px) X.B.wts I.Ch I.sel t.1 ((i : ℕ) + 1)).res (mtKOk _ _ _ _ hX _)).symm f).1 (decoPt (F := X.toD7.host.F) (E := X.toD7.host.E) X.toD7.sp.cm X.B.R.nV ∅ (rowSG (X.B.primes px) I.sel t.1) (QuotientGroup.mk (x h)))), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `BrgStdV StdSide`. Rewrite using `[hβ]`. Use `⟨c, hc, ?_, hli, X.toD7.sp.cm, fun h => ⟨x h, hx h⟩⟩` and prove the remaining obligations. Introduce `hc' t φ h y hm`. Take `rfl : x h = y` from `Subtype.ext (matEq_unique (hx h) hm)`.
-
-Conclude with `congrArg (fun g : (mtKGSD (Pr := X.B.primes px) X.B.wts I.Ch I.sel t.1 ((i : ℕ) + 1)).EqFun => c (g.1 _)) (LinearEquiv.symm_apply_apply _ φ.2)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_brgStdV (hI : I.Ok) (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)) (i : Fin X.toD7.R.m) (hβ : L.βV i = 1) :
     ∃ cV : CoefA (Vc X.toD7 i), cV.Is ∧ ∃ jL, BrgStdV X I hX U Xg tr L i cV jL := by
@@ -443,11 +439,9 @@ open Formalism.IndefR.Mult Formalism.IndefR.Datum Formalism.IndefR.Cx Formalism.
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Take `⟨cX, pr, c0, gr, hIs, -, -, hT, -⟩` from `GlobalTheory.CoefSpace.exists_coef_dualPair X.toD7 θ M hθ`. Establish `hr : X.toD7.sp.X'.rank = X.B.R.N X.B.R.m - 1` using `by rw [X.toD7.sp.X'_rank, rank_X'_eq]; rfl`. Take `⟨c, hc, hli⟩` from `transport (W := cX.W) (K := X.toD7.what₂.LL) (E := X.toD7.host.E) (ι' := X.toD7.what₂.Tau) X.toD7.what₂.embLL hr _ X.B.wts.sgTrue (fun τ a a' e => lamRdef_eq X τ a a' e) (fun l => rhoV (labLL X.toD7) l) c0 hT.2.1 (Bridge.IsRatMat X.toD7.sp.X') (fun γ v => cX.coef.ρ γ v) hT.1`. Use `choose x hx using exists_matEq (D := X.toD7) X.toD7.sp.X' hr (gram_X' X I hI)`. Use `⟨cX, hIs, fun t f h => c ((((mtildeKGSD (Pr := X.B.primes px) X.B.wts I.Ch I.sel t.1).res (mtildeKOk _ _ _ _ hX)).symm f).1 (decoPt (F := X.toD7.host.F) (E := X.toD7.host.E) X.toD7.sp.cm (X.B.R.N X.B.R.m - 1) ∅ (rowSG (X.B.primes px) I.sel t.1) (QuotientGroup.mk (x h)))), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `BrgStdR StdSide`. Rewrite using `[hβ]`. Use `⟨c, hc, ?_, hli, X.toD7.sp.cm, fun h => ⟨x h, hx h⟩⟩` and prove the remaining obligations. Introduce `hc' t φ h y hm`. Take `rfl : x h = y` from `Subtype.ext (matEq_unique (hx h) hm)`.
-
-Conclude with `congrArg (fun g : (mtildeKGSD (Pr := X.B.primes px) X.B.wts I.Ch I.sel t.1).EqFun => c (g.1 _)) (LinearEquiv.symm_apply_apply _ φ.2)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_brgStdR (hI : I.Ok) (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)) (hβ : L.βX = 1) (θ : InfFam X.toD7) (hθ : IsInfFam θ)
     (M : DSModel X.toD7.sp.X' (parB (Ptw X.toD7) X.toD7.R.m)) :

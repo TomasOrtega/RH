@@ -15,7 +15,7 @@ def pos2 : Fin 2 → UPos 3 2 := ![⟨(0, 2), by decide⟩, ⟨(1, 2), by decide
 def pos1 : Fin 2 → UPos 3 1 := ![⟨(0, 1), by decide⟩, ⟨(0, 2), by decide⟩]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Apply the tactic sequence `intro a b h fin_cases a <;> fin_cases b <;> simp_all [pos2]`. Apply the tactic sequence `rintro ⟨⟨i, j⟩, h⟩ fin_cases i <;> fin_cases j <;> simp at h`. Conclude with `⟨0, rfl⟩`. Conclude with `⟨1, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem second_position_bijective : Function.Bijective pos2 := by
   constructor
@@ -27,7 +27,7 @@ theorem second_position_bijective : Function.Bijective pos2 := by
     · exact ⟨1, rfl⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Apply the tactic sequence `intro a b h fin_cases a <;> fin_cases b <;> simp_all [pos1]`. Apply the tactic sequence `rintro ⟨⟨i, j⟩, h⟩ fin_cases i <;> fin_cases j <;> simp at h`. Conclude with `⟨0, rfl⟩`. Conclude with `⟨1, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem first_position_bijective : Function.Bijective pos1 := by
   constructor
@@ -49,11 +49,11 @@ def lowR {R : Type} [CommRing R] (c : R) : GL (Fin 3) R :=
     by ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_three]⟩
 
 /- English proof (translation)
-Establish `hmp` using `measurePreserving_piCongrLeft (fun _ : UPos 3 r => GroundTheory.Global.adeleMeasure K) e`. Establish `h` using `hmp.setIntegral_preimage_emb (MeasurableEquiv.measurableEmbedding _) F (unipFundamentalDomain K 3 r)`. Establish `happ : ∀ y : Fin 2 → 𝔸[K], MeasurableEquiv.piCongrLeft (fun _ : UPos 3 r => 𝔸[K]) e y = fun p => y (e.symm p)`. Introduce `y`. Use function extensionality and compare the values at `p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨i, rfl⟩` from `e.surjective p`. Simplify using `[MeasurableEquiv.coe_piCongrLeft, Equiv.piCongrLeft_apply_apply]`. Establish `hpre : (MeasurableEquiv.piCongrLeft (fun _ : UPos 3 r => 𝔸[K]) e) ⁻¹' unipFundamentalDomain K 3 r = vecDomain K (Fin 2)`. Use extensionality with `y`. Simplify using `only [Set.mem_preimage, happ, unipFundamentalDomain, vecDomain, Set.mem_univ_pi]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `⟨fun hy i => by simpa using hy (e i), fun hy p => hy _⟩`. Rewrite using `[← h, hpre]`. Simplify using `only [happ]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem setIntegral_block {r : ℕ} (e : Fin 2 ≃ UPos 3 r) (F : (UPos 3 r → 𝔸[K]) → ℂ) :
     ∫ X in unipFundamentalDomain K 3 r, F X ∂unipMeasure K 3 r =
@@ -76,7 +76,7 @@ theorem setIntegral_block {r : ℕ} (e : Fin 2 ≃ UPos 3 r) (F : (UPos 3 r → 
   simp only [happ]
 
 /- English proof (translation)
-Establish `h0 : (Equiv.ofBijective pos2 second_position_bijective).symm ⟨(0, 2), by decide⟩ = 0` using `(Equiv.ofBijective pos2 second_position_bijective).symm_apply_apply 0`. Establish `h1 : (Equiv.ofBijective pos2 second_position_bijective).symm ⟨(1, 2), by decide⟩ = 1` using `(Equiv.ofBijective pos2 second_position_bijective).symm_apply_apply 1`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[uni, unipMatrix, blockEntry_apply, h0, h1, Matrix.one_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem unip2 (y : Fin 2 → 𝔸[K]) :
     (unipGL (fun p => y ((Equiv.ofBijective pos2 second_position_bijective).symm p)) : AdelicGLn.AdelicGL K 3) =
@@ -90,7 +90,7 @@ theorem unip2 (y : Fin 2 → 𝔸[K]) :
     simp [uni, unipMatrix, blockEntry_apply, h0, h1, Matrix.one_apply]
 
 /- English proof (translation)
-Establish `h0 : (Equiv.ofBijective pos1 first_position_bijective).symm ⟨(0, 1), by decide⟩ = 0` using `(Equiv.ofBijective pos1 first_position_bijective).symm_apply_apply 0`. Establish `h1 : (Equiv.ofBijective pos1 first_position_bijective).symm ⟨(0, 2), by decide⟩ = 1` using `(Equiv.ofBijective pos1 first_position_bijective).symm_apply_apply 1`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[uni, unipMatrix, blockEntry_apply, h0, h1, Matrix.one_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem unip1 (y : Fin 2 → 𝔸[K]) :
     (unipGL (fun p => y ((Equiv.ofBijective pos1 first_position_bijective).symm p)) : AdelicGLn.AdelicGL K 3) =
@@ -104,7 +104,7 @@ theorem unip1 (y : Fin 2 → 𝔸[K]) :
     simp [uni, unipMatrix, blockEntry_apply, h0, h1, Matrix.one_apply]
 
 /- English proof (translation)
-Rewrite using `[← map_mul]`. Establish `: swR K * swR K = 1`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [swR, Matrix.mul_apply, Fin.sum_univ_three]`. Rewrite using `[this, map_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem dia_sw_sq : AdelicGLn.diagonal K 3 (swR K) * AdelicGLn.diagonal K 3 (swR K) = 1 := by
   rw [← map_mul]
@@ -114,7 +114,7 @@ theorem dia_sw_sq : AdelicGLn.diagonal K 3 (swR K) * AdelicGLn.diagonal K 3 (swR
   rw [this, map_one]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[swR, uni, lowR, AdelicGLn.diagonal_apply, Matrix.mul_apply, Fin.sum_univ_three]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem conj_sw (x y : 𝔸[K]) :
     AdelicGLn.diagonal K 3 (swR K) * uni x y 0 * AdelicGLn.diagonal K 3 (swR K) =
@@ -124,15 +124,15 @@ theorem conj_sw (x y : 𝔸[K]) :
     simp [swR, uni, lowR, AdelicGLn.diagonal_apply, Matrix.mul_apply, Fin.sum_univ_three]
 
 /- English proof (translation)
-Introduce `r hr0 hr3 g`. Establish `hr : r = 1 ∨ r = 2` using `by omega`. Break down `hr with rfl | rfl` into its components or cases. Establish `h1 : constantTerm 1 f g = ∫ y in vecDomain K (Fin 2), f (lowR (y 0) * uni 0 0 (y 1) * (AdelicGLn.diagonal K 3 (swR K) * g)) ∂vecMeasure K (Fin 2)`. Rewrite using `[constantTerm, setIntegral_block K (Equiv.ofBijective pos1 first_position_bijective)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f (unipGL (fun p => y ((Equiv.ofBijective pos1 first_position_bijective).symm p)) * g) = f (lowR (y 0) * uni 0 0 (y 1) * (AdelicGLn.diagonal K 3 (swR K) * g))`. Rewrite using `[unip1, ← conj_sw, ← hinv (swR K) (uni (y 0) (y 1) 0 * g)]`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [mul_one, mul_assoc]`. Use `_ = AdelicGLn.diagonal K 3 (swR K) * uni (y 0) (y 1) 0 * AdelicGLn.diagonal K 3 (swR K) * (AdelicGLn.diagonal K 3 (swR K) * g) := by`. Rewrite using `[← dia_sw_sq K]`. Simplify using `only [mul_assoc]`. Rewrite using `[h1, hY']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : constantTerm 2 f g = ∫ y in vecDomain K (Fin 2), f (uni 0 (y 0) (y 1) * g) ∂vecMeasure K (Fin 2)`. Rewrite using `[constantTerm, setIntegral_block K (Equiv.ofBijective pos2 second_position_bijective)]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f (unipGL (fun p => y ((Equiv.ofBijective pos2 second_position_bijective).symm p)) * g) = f (uni 0 (y 0) (y 1) * g)`. Rewrite using `[unip2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, hY]`.
+A detailed English derivation is pending.
 -/
 theorem cusp_of_constantTerms (f : AdelicGLn.AdelicGL K 3 → ℂ) (hinv : IsLeftInvariant f)
     (hY : ∀ g, ∫ y in vecDomain K (Fin 2), f (uni 0 (y 0) (y 1) * g) ∂vecMeasure K (Fin 2) = 0)

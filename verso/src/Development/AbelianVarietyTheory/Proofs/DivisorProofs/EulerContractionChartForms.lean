@@ -6,9 +6,9 @@ namespace GlobalTheory.LogDR.StabTheta
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Establish `key : spanForms M H a ≤ (spanForms M' H a).comap (DistribMulAction.toAddMonoidHom (abelian₂ K) c)`. Unfold `spanForms`. Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `_ ⟨m, hm, v, hv, rfl⟩`. Rewrite using `[SetLike.mem_coe, AddSubgroup.mem_comap]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Use `show c • (m • ExteriorAlgebra.ιMulti K a v) ∈ AddSubgroup.closure _`. Rewrite using `[smul_smul]`. Conclude with `AddSubgroup.subset_closure ⟨c * m, h m hm, v, hv, rfl⟩`. Conclude with `key hη`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_spanForms (M M' : Set K) (H : Set Ω[K⁄ℤ]) (a : ℕ) (c : K)
     (h : ∀ m ∈ M, c * m ∈ M') {η : abelian₂ K} (hη : η ∈ spanForms M H a) :
@@ -25,11 +25,11 @@ theorem smul_mem_spanForms (M M' : Set K) (H : Set Ω[K⁄ℤ]) (a : ℕ) (c : K
   exact key hη
 
 /- English proof (translation)
-Establish `key : spanForms M H q ≤ (spanForms M H (q + 1)).comap (AddMonoidHom.mulLeft (ExteriorAlgebra.ι K w))`. Unfold `spanForms`. Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `_ ⟨m, hm, v, hv, rfl⟩`. Rewrite using `[SetLike.mem_coe, AddSubgroup.mem_comap]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Use `show ExteriorAlgebra.ι K w * (m • ExteriorAlgebra.ιMulti K q v) ∈ AddSubgroup.closure _`. Rewrite using `[mul_smul_comm]`. Use `AddSubgroup.subset_closure ⟨m, hm, Fin.cons w v, ?_, ?_⟩` and prove the remaining obligations. Introduce `k`. Use `Fin.cases ?_ (fun k => ?_) k` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hw`. Simplify using `using hv k`. Rewrite using `[ExteriorAlgebra.ιMulti_succ_apply]`. Simplify using `[Matrix.vecTail]`. Conclude with `key hη`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem iota_mul_mem_spanForms (M : Set K) (H : Set Ω[K⁄ℤ]) (q : ℕ) (w : Ω[K⁄ℤ]) (hw : w ∈ H)
     {η : abelian₂ K} (hη : η ∈ spanForms M H q) :
@@ -52,7 +52,7 @@ theorem iota_mul_mem_spanForms (M : Set K) (H : Set Ω[K⁄ℤ]) (q : ℕ) (w : 
   exact key hη
 
 /- English proof (translation)
-Rewrite using `[hθ.2.2 j]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem theta_dlog {n : ℕ} (x : Fin n → Kˣ) (i : Fin n) (θ : abelian₂ K →ₗ[K] abelian₂ K)
     (hθ : IsEulerContraction x i θ) (j : Fin n) :
@@ -61,9 +61,9 @@ theorem theta_dlog {n : ℕ} (x : Fin n → Kˣ) (i : Fin n) (θ : abelian₂ K 
   split_ifs <;> simp
 
 /- English proof (translation)
-Apply the tactic sequence `have hif : (if j = i then (1 : K) else 0) ∈ A := by split_ifs <;> simp`. Unfold `frame`. Use `split_ifs with hj`. Conclude with `⟨_, hif, theta_dlog x i θ hθ j⟩`. Establish `hd : dK (x j : K) = (x j : K) • dlog (x j)`.
+Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Supply the required witnesses or components. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `dlog`. Rewrite using `[smul_smul]`. Simplify using the standard rewrite rules. Use `⟨(x j : K) * (if j = i then 1 else 0), A.mul_mem (hx j) hif, ?_⟩` and prove the remaining obligations. Rewrite using `[hd, map_smul, map_smul, theta_dlog x i θ hθ j, Algebra.smul_def, ← map_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_frame (A : Subring K) {n : ℕ} (x : Fin n → Kˣ) (J : Finset (Fin n)) (i : Fin n)
     (θ : abelian₂ K →ₗ[K] abelian₂ K) (hx : ∀ j, (x j : K) ∈ A) (hθ : IsEulerContraction x i θ) (j : Fin n) :
@@ -80,13 +80,13 @@ theorem theta_frame (A : Subring K) {n : ℕ} (x : Fin n → Kˣ) (J : Finset (F
     rw [hd, map_smul, map_smul, theta_dlog x i θ hθ j, Algebra.smul_def, ← map_mul]
 
 /- English proof (translation)
-Introduce `q`. Proceed by induction on `q with`. Consider the case `zero`. Introduce `v hv`. Rewrite using `[ExteriorAlgebra.ιMulti_succ_apply, hθ.2.1, ExteriorAlgebra.ιMulti_zero_apply, hθ.1, mul_zero, sub_zero, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨j, hj⟩` from `hv 0`. Take `⟨a, ha, he⟩` from `theta_frame A x J i θ hx hθ j`. Rewrite using `[← hj, he, Algebra.algebraMap_eq_smul_one]`. Use `AddSubgroup.subset_closure ⟨a, ha, Matrix.vecTail v, fun k => k.elim0, ?_⟩` and prove the remaining obligations. Rewrite using `[ExteriorAlgebra.ιMulti_zero_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ q ih`. Introduce `v hv`. Rewrite using `[ExteriorAlgebra.ιMulti_succ_apply, hθ.2.1]`. Take `⟨j, hj⟩` from `hv 0`. Take `⟨a, ha, he⟩` from `theta_frame A x J i θ hx hθ j`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `htail : ∀ k, Matrix.vecTail v k ∈ Set.range (frame x J)` using `fun k => hv k.succ`. Use `AddSubgroup.sub_mem _ ?_ ?_` and prove the remaining obligations. Rewrite using `[← hj, he, ← Algebra.smul_def]`. Conclude with `AddSubgroup.subset_closure ⟨a, ha, Matrix.vecTail v, htail, rfl⟩`. Conclude with `iota_mul_mem_spanForms _ _ q _ (hv 0) (ih _ htail)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_iotaMulti (A : Subring K) {n : ℕ} (x : Fin n → Kˣ) (J : Finset (Fin n)) (i : Fin n)
     (θ : abelian₂ K →ₗ[K] abelian₂ K) (hx : ∀ j, (x j : K) ∈ A) (hθ : IsEulerContraction x i θ) :
@@ -118,15 +118,13 @@ end GlobalTheory.LogDR.StabTheta
 
 open GlobalTheory.LogDR.StabTheta in
 /- English proof (translation)
-Introduce `K _ A n x J t i θ hx hθ`. Prove the components needed by the constructor for the conclusion. Introduce `q η hη`. Establish `key : chartForms A x J t (q + 1) ≤ (chartForms A x J t q).comap θ.toAddMonoidHom`. Unfold `chartForms spanForms`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `_ ⟨c, hc, v, hv, rfl⟩`. Rewrite using `[SetLike.mem_coe, AddSubgroup.mem_comap]`. Use `show θ (c • ExteriorAlgebra.ιMulti K (q + 1) v) ∈ spanForms _ _ q`. Rewrite using `[map_smul]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `smul_mem_spanForms (A : Set K) _ _ q c ?_ (theta_iotaMulti A x J i θ hx hθ q v hv)` and prove the remaining obligations. Introduce `m hm`. Use `show c * m * (t : K) ∈ A`. Rewrite using `[mul_right_comm]`. Conclude with `A.mul_mem hc hm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `key hη`. Introduce `η hη`. Establish `key : chartForms A x J t 0 ≤ θ.toAddMonoidHom.ker`. Unfold `chartForms spanForms`. Rewrite using `[AddSubgroup.closure_le]`.
-
-Introduce and unpack `_ ⟨c, hc, v, hv, rfl⟩`. Rewrite using `[SetLike.mem_coe, AddMonoidHom.mem_ker]`. Use `show θ (c • ExteriorAlgebra.ιMulti K 0 v) = 0`. Rewrite using `[map_smul, ExteriorAlgebra.ιMulti_zero_apply, hθ.1, smul_zero]`. Conclude with `key hη`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LogDR.chartForms_stable_euler :
     ∀ (K : Type) [Field K] (A : Subring K) (n : ℕ) (x : Fin n → Kˣ) (J : Finset (Fin n)) (t : Kˣ) (i : Fin n) (θ : abelian₂ K →ₗ[K] abelian₂ K), (∀ j, (x j : K) ∈ A) → IsEulerContraction x i θ → (∀ q, ∀ η ∈ chartForms A x J t (q + 1), θ η ∈ chartForms A x J t q) ∧ ∀ η ∈ chartForms A x J t 0, θ η = 0 := by

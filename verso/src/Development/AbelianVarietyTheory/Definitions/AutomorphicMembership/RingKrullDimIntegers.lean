@@ -156,13 +156,13 @@ open Var in
     simp only [fval, fun k => (e k).val_eq, ← map_mul, val_cx]
 
 /- English proof (translation)
-Take `@⟨μ, hμ, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, h₁, rfl, h₃, h₄, h₅, rfl, h₇, h₈, h₉, h₁₀, h₁₁, h₁₂, h₁₃, h₁₄, h₁₅, h₁₆, h₁₇, h₁₈⟩` from `C`. Choose the witnesses or unpack the hypotheses as in `rfl : μ = (std F).ptsMeas :=`. Use function extensionality and compare the values at `fun Y => funext fun σ => (hμ Y σ).measurable_eq.trans ((std F).borel Y σ).measurable_eq.symm`. Consider the cases of `h₁`. Consider the cases of `h₃`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `h₄`. Consider the cases of `h₅`. Consider the cases of `h₇`. Consider the cases of `h₈`. Consider the cases of `h₉`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `h₁₀`. Consider the cases of `h₁₁`. Consider the cases of `h₁₂`. Consider the cases of `h₁₃`. Consider the cases of `h₁₄`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `h₁₅`. Consider the cases of `h₁₆`. Consider the cases of `h₁₇`. Consider the cases of `h₁₈`. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem eq_std (C : CxSt F) : C = std F := by
   obtain @⟨μ, hμ, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _,
@@ -178,14 +178,14 @@ instance : Unique (CxSt F) := ⟨⟨std F⟩, eq_std⟩
 variable (C : CxSt F) (Y : Var F) (σ : F →+* ℂ) (Δ : Y.Dv) (m : C.Met Y σ Δ)
 
 /- English proof (translation)
-Take `rfl` from `C.eq_std`. Conclude with `Var.pn_nonneg`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pn_nonneg (f : C.FnC Y σ) (y : Pts Y σ) : 0 ≤ C.pn Y σ Δ m f y := by
   obtain rfl := C.eq_std
   exact Var.pn_nonneg
 
 /- English proof (translation)
-Take `rfl` from `C.eq_std`. Establish `e` using `(Var.hasVal_sum_smul (y := y) hg (fun i => Var.secReg_cx_iff.2 (hf i)) c).val_eq`. Simplify using `only [Var.fval_cx] at e`. Conclude with `(Var.pn_eq hg).trans (congrArg₂ (‖·‖ ^ 2 * ·) e (Var.pn_frame hg).symm)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pn_sum {ι : Type} [Fintype ι] (c : ι → ℂ) (f : ι → Y.Fn) (y : Pts Y σ) (g : Y.Fnˣ) (hg : Δ.IsEqn (under y) g)
     (hf : ∀ i, Δ.RegularAt (under y) (f i)) : C.pn Y σ Δ m (∑ i, c i • C.cx Y σ (f i)) y =
@@ -196,7 +196,7 @@ theorem pn_sum {ι : Type} [Fintype ι] (c : ι → ℂ) (f : ι → Y.Fn) (y : 
   exact (Var.pn_eq hg).trans (congrArg₂ (‖·‖ ^ 2 * ·) e (Var.pn_frame hg).symm)
 
 /- English proof (translation)
-Take `rfl` from `C.eq_std`. Conclude with `(Var.mSmooth_ofWeight_iff h φ).trans (Weight.isCInf_iff_isSmooth _).symm`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mSmooth_ofWeight_iff {L : LB Y.X} {r : L.ι → Y.Fnˣ} (h : Presents Δ L r) (φ : Weight Y.str σ L) :
     C.mSmooth Y σ Δ (C.ofWeight Y σ Δ L r h φ) ↔ φ.IsCInf := by
@@ -361,17 +361,17 @@ def Nef : Prop := A.SemiPos ∧ A.NefFib ∧ ∀ x : Y.X, IsClosed ({x} : Set Y.
 variable {A}
 
 /- English proof (translation)
-The claim follows from `have ⟨M, L, k, cf, h, _⟩ := h; ⟨M, L, k, cf, h⟩`.
+A detailed English derivation is pending.
 -/
 theorem NefFib.isModel (h : A.NefFib) : A.IsModel := have ⟨M, L, k, cf, h, _⟩ := h; ⟨M, L, k, cf, h⟩
 
 /- English proof (translation)
-The claim follows from `have ⟨M, L, k, cf, _, h, _⟩ := h; ⟨M, L, k, cf, h⟩`.
+A detailed English derivation is pending.
 -/
 theorem IsArTop.isModel {t : ℝ} (h : A.IsArTop t) : A.IsModel := have ⟨M, L, k, cf, _, h, _⟩ := h; ⟨M, L, k, cf, h⟩
 
 /- English proof (translation)
-The claim follows from `h.2.1.isModel`.
+A detailed English derivation is pending.
 -/
 theorem Nef.isModel (h : A.Nef) : A.IsModel := h.2.1.isModel
 
@@ -380,9 +380,7 @@ end Adl
 namespace Base
 
 /- English proof (translation)
-Use `eq_of_le_of_not_lt ?_ fun h' => RingOfIntegers.not_isField F ?_` and prove the remaining obligations. Rewrite using `[← Nat.cast_one, ← Ring.krullDimLE_iff]`. Conclude with `Ring.krullDimLE_one_iff_of_noZeroDivisors.2 fun I hI hP => hP.isMaximal hI`. Establish `h'' : ringKrullDim (𝓞 F) ≤ 0` using `Order.le_of_lt_succ h'`. Rewrite `h''` using `[← Nat.cast_zero, ← Ring.krullDimLE_iff]`.
-
-Conclude with `Ring.KrullDimLE.isField_of_isDomain`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ringKrullDim_integers : ringKrullDim (𝓞 F) = 1 := by
   refine eq_of_le_of_not_lt ?_ fun h' => RingOfIntegers.not_isField F ?_
@@ -393,11 +391,11 @@ theorem ringKrullDim_integers : ringKrullDim (𝓞 F) = 1 := by
     exact Ring.KrullDimLE.isField_of_isDomain
 
 /- English proof (translation)
-Use `ProjSpace.isIntegral_of_isDomain (𝓞 F) n` as an intermediate fact. Establish `hc : ∀ i, topologicalKrullDim (ProjSpace.chart (𝓞 F) n i : Set (PSpace (𝓞 F) n)) = (n + 1 : ℕ)` using `fun i => by`. Rewrite using `[topologicalKrullDim_eq_of_isEmbedding (ProjSpace.chartι (𝓞 F) n i).isOpenEmbedding.isEmbedding (congrArg SetLike.coe (ProjSpace.opensRange_chartι (𝓞 F) n i))]`. Use `(PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim (R := MvPolynomial {j // j ≠ i} (𝓞 F))).trans ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_integers]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[add_comm]`. Establish `: Smooth (PSpace.str (𝓞 F) n)` using `SmoothOfRelativeDimension.smooth n _`. Establish `: Flat (spMap (Int.castRingHom (𝓞 F)))` using `(ArithBase.isArithVar_id ringKrullDim_integers).flat`. Use `⟨inferInstance, inferInstance, ‹_›, ⟨n, 𝟙 _, inferInstance, Category.id_comp _⟩, inferInstance, le_antisymm (topologicalKrullDim_le_of_forall_exists_isOpen fun x => ?_) ((hc 0).ge.trans (topologicalKrullDim_subspace_le _ _))⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `ProjSpace.exists_mem_chart (𝓞 F) n x`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨_, (ProjSpace.chart (𝓞 F) n i).isOpen, hi, (hc i).le⟩`.
+Supply the required witnesses or components.
 -/
 theorem isArithVar_pspace (n : ℕ) : IsArithVar (PSpace.str (𝓞 F) n) n := by
   have := ProjSpace.isIntegral_of_isDomain (𝓞 F) n
@@ -417,7 +415,7 @@ theorem isArithVar_pspace (n : ℕ) : IsArithVar (PSpace.str (𝓞 F) n) n := by
   exact ⟨_, (ProjSpace.chart (𝓞 F) n i).isOpen, hi, (hc i).le⟩
 
 /- English proof (translation)
-Establish `h : RegAt (below y) (algebraMap _ Z.functionField a)` using `⟨a, rfl⟩`. Rewrite using `[valAt, dif_pos h]`. Conclude with `congrArg _ (IsFractionRing.injective (Z.presheaf.stalk (below y)) Z.functionField h.choose_spec)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valAt_stalk {K : Type} [Field K] {Z : Scheme.{0}} [IsIntegral Z] (y : Sp K ⟶ Z)
     (a : Z.presheaf.stalk (below y)) :
@@ -427,13 +425,13 @@ theorem valAt_stalk {K : Type} [Field K] {Z : Scheme.{0}} [IsIntegral Z] (y : Sp
   exact congrArg _ (IsFractionRing.injective (Z.presheaf.stalk (below y)) Z.functionField h.choose_spec)
 
 /- English proof (translation)
-The claim follows from `(Δ.exists_isEqn x).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem isEqn_eqn {Z : Scheme.{0}} [IsIntegral Z] (Δ : CartierDiv Z) (x : Z) : Δ.IsEqn x (eqn Δ x) :=
   (Δ.exists_isEqn x).choose_spec
 
 /- English proof (translation)
-Take `⟨_, ⟨a, rfl⟩, rfl⟩` from `hf`. Use `⟨by rw [valAt_stalk]; exact (a.isUnit.map _).ne_zero, fun m => ?_⟩` and prove the remaining obligations. Establish `e {S : Type} [Field S] (ψ : Z.presheaf.stalk (below y) →+* S) : ψ (a ^ m : _ˣ) = ψ a ^ m`. Conclude with `(congrArg Units.val (map_zpow (Units.map ψ.toMonoidHom) a m)).trans (Units.val_zpow_eq_zpow_val _ _)`. Rewrite using `[← e, valAt_stalk, valAt_stalk, e]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valAt_zpow {K : Type} [Field K] {Z : Scheme.{0}} [IsIntegral Z] (y : Sp K ⟶ Z) {f : Z.functionField}
     (hf : UnitAt (below y) f) : valAt y f ≠ 0 ∧ ∀ m : ℤ, valAt y (f ^ m) = valAt y f ^ m := by
@@ -446,7 +444,7 @@ theorem valAt_zpow {K : Type} [Field K] {Z : Scheme.{0}} [IsIntegral Z] (y : Sp 
 omit [NumberField F] in
 
 /- English proof (translation)
-Establish `e` using `ratVal_fnOf (y := y) CxPts.mem_ptsIn_top trivial 1`. Rewrite `e` using `[map_one, CxPts.ev_one CxPts.mem_ptsIn_top]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem ratVal_one {Y : Var F} {σ : F →+* ℂ} (y : Pts Y σ) : ratVal (1 : Y.Fn) y = 1 := by
   have e := ratVal_fnOf (y := y) CxPts.mem_ptsIn_top trivial 1
@@ -455,7 +453,7 @@ theorem ratVal_one {Y : Var F} {σ : F →+* ℂ} (y : Pts Y σ) : ratVal (1 : Y
 omit [NumberField F] in
 
 /- English proof (translation)
-Simplify using `using (CartierDiv.isEqn_zero x).iff_unitAt.1 (isEqn_eqn 0 x)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem unitAt_eqn_zero {Y : Var F} (x : Y.X) : UnitAt x (eqn (0 : Y.Dv) x : Y.Fn) := by
   simpa using (CartierDiv.isEqn_zero x).iff_unitAt.1 (isEqn_eqn 0 x)
@@ -482,9 +480,9 @@ variable {C : CxSt F} {Y : Var F} {A : Adl C Y} {M : Model Y} {L : HermLB M.p} {
   {cf : HeightOneSpectrum (𝓞 F) → ℝ}
 
 /- English proof (translation)
-Establish `hj : ((j : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast j.ne_zero`. Take `⟨h₁, r, hr, h₂, h₃⟩` from `h`. Use `⟨h₁.subset fun v hv h0 => hv (by simp [h0]), r, hr, fun σ y y' i f a b c => ?_, fun v e y yt i a b => ?_⟩` and prove the remaining obligations. Use `Eq.trans (congrArg (Real.exp · * _) ?_) (h₂ σ y y' i f a b c)` and prove the remaining obligations. Simplify using `only [Adl.divide, PNat.mul_coe, Nat.cast_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Clear the denominators using the available nonvanishing facts. Use `(h₃ v e y yt i a b).trans (congrArg _ ?_)` and prove the remaining obligations. Simplify using `only [Adl.divide, PNat.mul_coe, Nat.cast_mul]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem Induced.divide (h : A.Induced M L k cf) (j : ℕ+) :
     (A.divide j).Induced M L k fun v => cf v / (j : ℕ) := by
@@ -499,9 +497,9 @@ theorem Induced.divide (h : A.Induced M L k cf) (j : ℕ+) :
     field_simp
 
 /- English proof (translation)
-Take `⟨h₁, r, hr, h₂, h₃⟩` from `h`. Use `⟨(h₁.union hc).subset (Function.support_add _ _), r, hr, fun σ y y' i f a b c => ?_, fun v e y yt i a b => ?_⟩` and prove the remaining obligations. Simplify `h₂ σ y y' i f a b c` using `only [twist, add_zero]`. Use `h₃ v e y yt i a b` as an intermediate fact. Simplify using `only [twist, Pi.add_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take the linear combination `this`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem Induced.twist_fin (h : A.Induced M L k cf) {c : HeightOneSpectrum (𝓞 F) → ℝ}
     (hc : (Function.support c).Finite) : (A.twist 0 c).Induced M L k (cf + c) := by
@@ -523,9 +521,9 @@ def triv : Adl C Y where
   lg _ e y := -Real.log (e.w (valAt y.1 (eqn (0 : Y.Dv) (below y.1) : Y.Fn)))
 
 /- English proof (translation)
-Establish `g : (0 : Y.Dv).GeneratesAt (under y) 1` using `CartierDiv.generatesAt_zero_iff.2 (unitAt_one _)`. Establish `h₁` using `C.pn_mul Y σ _ (C.mPow Y σ 0 τ ((triv C Y).m σ)) f 1 y hf (by rw [smul_zero]; exact g.regularAt)`. Establish `h₂` using `C.pn_mPow Y σ 0 τ ((triv C Y).m σ) 1 y g`. Establish `h₃` using `C.pn_ofWeight Y σ 0 (LB.triv Y.X) (fun _ => 1) presents_zero (Weight.ofFun fun _ => 0) 1 y PUnit.unit trivial g.regularAt`. Rewrite `h₁` using `[mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h₂` using `[one_pow]`. Rewrite using `[h₁, h₂]`. Use `erw [h₃]`. Simplify using `[ratVal_one, Weight.ofFun]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pn_triv (σ : F →+* ℂ) (τ : ℕ) {f : Y.Fn} {y : Pts Y σ} (hf : RegAt (under y) f) :
     C.pn Y σ _ (C.mPow Y σ 0 τ ((triv C Y).m σ)) (C.cx Y σ f) y = ‖ratVal f y‖ ^ 2 := by
@@ -543,11 +541,11 @@ theorem pn_triv (σ : F →+* ℂ) (τ : ℕ) {f : Y.Fn} {y : Pts Y σ} (hf : Re
 variable (C) in
 
 /- English proof (translation)
-Establish `hL` using `LB.isLB_pull (HermLB.triv M.p).isLB M.j`. Use `⟨by simp, fun _ => 1, ⟨hL, fun a b h => ?_, fun _ x _ => ?_⟩, fun σ y y' i f _ _ hf => ?_, fun v e y yt i _ _ => ?_⟩` and prove the remaining obligations. Take `rfl : a = b` from `Subsingleton.elim (α := PUnit → PUnit) _ _`. Use `congrArg (fun u : Γ(Y.X, _)ˣ => fnOf _ h.1 u.val) (hL.g_self a)` as an intermediate fact. Rewrite `this` using `[Units.val_one, map_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(this.symm.trans (fnOf_resG _ h.1 _)).trans (mul_one _).symm`. Conclude with `(smul_zero (1 : ℕ) : _ • (0 : Y.Dv) = 0).symm ▸ CartierDiv.isEqn_zero x`. Establish `hf' : RegAt (under y) f` using `CartierDiv.regularAt_zero_iff.1 ((smul_zero (1 : ℕ) : _ • (0 : Y.Dv) = 0) ▸ hf)`. Use `(congrArg _ (pn_triv σ _ hf')).trans ?_` and prove the remaining obligations. Simplify using `[triv, HermLB.triv, Weight.ofFun]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `(valAt_zpow y.1 (unitAt_eqn_zero (below y.1))).2 (-1)` as an intermediate fact. Simplify using `only [zpow_neg, zpow_one] at this`. Simplify using `[triv, this]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem induced_triv (M : Model Y) : (triv C Y).Induced M (HermLB.triv M.p) 1 0 := by
   have hL := LB.isLB_pull (HermLB.triv M.p).isLB M.j
@@ -566,7 +564,7 @@ theorem induced_triv (M : Model Y) : (triv C Y).Induced M (HermLB.triv M.p) 1 0 
     simp [triv, this]
 
 /- English proof (translation)
-Use `pn_triv (C := C) σ τ (unitAt_one (under y)).regAt` as an intermediate fact. Simplify using `only [nrmInf]`. Use `erw [one_pow, this]`. Simplify using `[triv, ratVal_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nrmInf_triv (σ : F →+* ℂ) (τ : ℕ) (y : Pts Y σ) : (triv C Y).nrmInf σ τ 1 y = 1 := by
   have := pn_triv (C := C) σ τ (unitAt_one (under y)).regAt
@@ -575,9 +573,9 @@ theorem nrmInf_triv (σ : F →+* ℂ) (τ : ℕ) (y : Pts Y σ) : (triv C Y).nr
   simp [triv, ratVal_one]
 
 /- English proof (translation)
-Take `⟨h₀, h⟩` from `valAt_zpow y.1 (unitAt_eqn_zero (below y.1))`. Establish `h₁` using `h τ`. Establish `h₂` using `e.w.pos h₀`. Simplify using `only [zpow_natCast] at h₁`. Simplify using `only [nrmFin, triv, PNat.val_ofNat, Nat.cast_one, div_one, one_pow, one_mul, h₁, map_pow, Real.rpow_one, mul_neg, Real.exp_neg, Real.exp_nat_mul, Real.exp_log h₂]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `mul_inv_cancel₀ (pow_pos h₂ _).ne'`.
+A detailed English derivation is pending.
 -/
 theorem nrmFin_triv (v : HeightOneSpectrum (𝓞 F)) (τ : ℕ) (e : Ext v) (y : AlgPt Y) :
     (triv C Y).nrmFin v τ 1 e y = 1 := by
@@ -590,32 +588,32 @@ theorem nrmFin_triv (v : HeightOneSpectrum (𝓞 F)) (τ : ℕ) (e : Ext v) (y :
   exact mul_inv_cancel₀ (pow_pos h₂ _).ne'
 
 /- English proof (translation)
-The claim follows from `have ⟨M, L, k, _, h⟩ := h; ⟨M, L, k, _, h.divide j⟩`.
+A detailed English derivation is pending.
 -/
 theorem IsModel.divide (h : A.IsModel) (j : ℕ+) : (A.divide j).IsModel :=
   have ⟨M, L, k, _, h⟩ := h; ⟨M, L, k, _, h.divide j⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, _, _, _, induced_triv C M, (HermLB.isNef_triv _ 0).vertical⟩`.
+Supply the required witnesses or components.
 -/
 theorem nefFib_triv (C : CxSt F) (M : Model Y) : (triv C Y).NefFib :=
   ⟨_, _, _, _, induced_triv C M, (HermLB.isNef_triv _ 0).vertical⟩
 
 /- English proof (translation)
-The claim follows from `IsModel.divide ⟨_, _, _, _, (induced_triv C (Model.pspace F n)).twist_fin hc⟩ j`.
+A detailed English derivation is pending.
 -/
 theorem isModel_triv_proj (C : CxSt F) (n : ℕ) {c : HeightOneSpectrum (𝓞 F) → ℝ} (hc : (Function.support c).Finite)
     (j : ℕ+) : (((triv C (proj F n)).twist 0 c).divide j).IsModel :=
   IsModel.divide ⟨_, _, _, _, (induced_triv C (Model.pspace F n)).twist_fin hc⟩ j
 
 /- English proof (translation)
-The claim follows from `(C.mSmooth_ofWeight_iff Y σ 0 presents_zero _).2 (Weight.isCInf_ofFun (CxPts.cInfAt_const 0))`.
+A detailed English derivation is pending.
 -/
 theorem mSmooth_triv (σ : F →+* ℂ) : C.mSmooth Y σ 0 ((triv C Y).m σ) :=
   (C.mSmooth_ofWeight_iff Y σ 0 presents_zero _).2 (Weight.isCInf_ofFun (CxPts.cInfAt_const 0))
 
 /- English proof (translation)
-Use `⟨?_, fun σ y => (nrmInf_triv σ τ y).le, fun v e y => (nrmFin_triv v τ e y).le⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `1 ^ _ ∈ Y.H0 (τ • 0)`. Rewrite using `[one_pow, smul_zero]`. Conclude with `Var.eff_iff_one_mem.1 Y.eff_zero`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_mem_small_triv (τ : ℕ) : 1 ∈ (triv C Y).small τ := by
   refine ⟨?_, fun σ y => (nrmInf_triv σ τ y).le, fun v e y => (nrmFin_triv v τ e y).le⟩
@@ -661,9 +659,9 @@ structure ResSt (C : CxSt F) : Type 1 where
 omit [StarRing F] in
 
 /- English proof (translation)
-Unfold `Adl.supInf`. Rewrite using `[Real.mul_iSup_of_nonneg (Real.exp_pos _).le]`. Use `congrArg _ (funext fun y => ?_)` and prove the remaining obligations. Simplify using `only [Adl.nrmInf, Adl.twist, InfinitePlace.mk_embedding, Pi.add_apply]`. Rewrite using `[← mul_assoc, ← Real.exp_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem supInf_twist {C : CxSt F} {Y : Var F} (A : Adl C Y) (ci : InfinitePlace F → ℝ)
     (cf : HeightOneSpectrum (𝓞 F) → ℝ) (v : InfinitePlace F) (τ : ℕ) (f : Y.Fn) :
@@ -679,9 +677,9 @@ theorem supInf_twist {C : CxSt F} {Y : Var F} (A : Adl C Y) (ci : InfinitePlace 
 omit [StarRing F] in
 
 /- English proof (translation)
-Unfold `Adl.supFin`. Rewrite using `[Real.mul_iSup_of_nonneg (Real.exp_pos _).le]`. Use `congrArg _ (funext fun q => ?_)` and prove the remaining obligations. Establish `hn : ((A.n : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast A.n.ne_zero`. Simplify using `only [Adl.nrmFin, Adl.twist]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_left_comm, ← Real.exp_add]`. Use `congr 2`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem supFin_twist {C : CxSt F} {Y : Var F} (A : Adl C Y) (ci : InfinitePlace F → ℝ)
     (cf : HeightOneSpectrum (𝓞 F) → ℝ) (v : HeightOneSpectrum (𝓞 F)) (τ : ℕ) (f : Y.Fn) :
@@ -697,7 +695,7 @@ theorem supFin_twist {C : CxSt F} {Y : Var F} (A : Adl C Y) (ci : InfinitePlace 
   ring
 
 /- English proof (translation)
-Unfold `Adl.supInf`. Use `congrArg _ (funext fun y => ?_)` and prove the remaining obligations. Establish `e : frameAt W v.embedding = W.X v` using `by simp [frameAt]`. Simplify using `[Adl.nrmInf, ofW, e, Real.sqrt_eq_rpow]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem supInf_ofW (C : CxSt F) (Y : Var F) (L : Y.Dv) (W : HLat F) (ι : W.V →ₗ[F] Y.Fn) (v : InfinitePlace F) (τ : ℕ)
     (f : Y.Fn) : (ofW C Y L W ι).supInf v τ f =
@@ -770,7 +768,7 @@ def geoOf (C : CxSt F) (K : CutSt C) (R : ResSt C) : DV.Geo F where
   regOn := C.regOn
 
 /- English proof (translation)
-Simplify using `[Adl.deg, ofW]`.
+Simplify using the standard rewrite rules.
 -/
 theorem deg_ofW (C : CxSt F) (Y : Var F) (L : Y.Dv) (W : HLat F) (ι : W.V →ₗ[F] Y.Fn) :
     (ofW C Y L W ι).deg = (Y.inter (fun _ => L) : ℝ) := by simp [Adl.deg, ofW]
@@ -786,7 +784,7 @@ theorem deg_twist {C : CxSt F} {Y : Var F} (A : Adl C Y) (ci : InfinitePlace F �
 omit [StarRing F] in
 
 /- English proof (translation)
-Simplify using `[supInf_twist, Adl.supInf.eq_1 (Adl.triv C Y), Adl.nrmInf_triv]`.
+Simplify using the standard rewrite rules.
 -/
 example (C : CxSt F) (Y : Var F) (ci : InfinitePlace F → ℝ) (cf : HeightOneSpectrum (𝓞 F) → ℝ) (v : InfinitePlace F)
     (τ : ℕ) : ((Adl.triv C Y).twist ci cf).supInf v τ 1 = Real.exp (-((τ : ℝ) * ci v)) := by
@@ -795,7 +793,7 @@ example (C : CxSt F) (Y : Var F) (ci : InfinitePlace F → ℝ) (cf : HeightOneS
 omit [StarRing F] in
 
 /- English proof (translation)
-Introduce `h` and use `by obtain ⟨σ⟩ : Nonempty (F →+* ℂ) := inferInstance obtain ⟨y⟩ : Nonempty (Pts Y σ) := inferInstance have h₁ := h.2.1 σ y have h₂ := Adl.nrmInf_triv (C := C) σ 1 y simp only [Adl.nrmInf, Adl.twist, Pi.add_apply, show (Adl.triv C Y).ci = 0 from rfl, Pi.zero_apply, mul_zero, neg_ze …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (C : CxSt F) (Y : Var F) : 1 ∉ ((Adl.triv C Y).twist (fun _ => -1) 0).small 1 := fun h => by
   obtain ⟨σ⟩ : Nonempty (F →+* ℂ) := inferInstance
@@ -810,7 +808,7 @@ example (C : CxSt F) (Y : Var F) : 1 ∉ ((Adl.triv C Y).twist (fun _ => -1) 0).
 omit [StarRing F] in
 
 /- English proof (translation)
-Take `rfl` from `C.eq_std`. Introduce `h`. Take `⟨y⟩ : Nonempty (Pts Y σ)` from `inferInstance`. Take `⟨_, hk⟩` from `(Var.mSmooth_fsMet_iff.1 h y).2`. Conclude with `hk ⟨_, Var.mem_eqnSet Δ y, by rw [zero_mul]; exact Var.hasVal_zero⟩`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 example (C : CxSt F) (Y : Var F) (σ : F →+* ℂ) (Δ : Y.Dv) : ¬ C.mSmooth Y σ Δ (C.fsMet Y σ Δ fun _ : Unit => 0) := by
   obtain rfl := C.eq_std

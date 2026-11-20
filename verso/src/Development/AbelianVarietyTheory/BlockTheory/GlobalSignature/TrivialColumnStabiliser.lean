@@ -34,9 +34,9 @@ def ColumnStabilisersTrivial : Prop :=
       ∀ y ∈ GAf D, stabGroup D Lv u y = ⊥
 
 /- English proof (translation)
-Unfold `stabGroup`. Rewrite using `[Subgroup.mem_inf, Subgroup.mem_map]`. Use `and_congr_right fun _ => ⟨?_, fun h => ⟨_, h, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨x, hx, rfl⟩`. Simplify `hx` using `[mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_stabGroup (D : D7) (Lv : LevelData D) (u : D.what₂.Word)
     (y γ : GL (Fin D.R.k) (D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F)) :

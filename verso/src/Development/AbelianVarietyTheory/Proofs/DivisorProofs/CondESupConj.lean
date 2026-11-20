@@ -18,17 +18,15 @@ namespace GlobalTheory.FunObj.SqNum
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D T L P`. Establish `hcc : ∀ x : D.host.E, GlobalTheory.Member.cF D x = D.host.conj x` using `fun x => Formalism.BasicNotions.bridge_star_holds D.R D.host x`. Establish `hne : ∀ v ∈ P.S0, ∀ v' ∈ P.S0, (P.w v).asIdeal ≠ D.host.conj • (P.w v').asIdeal`. Introduce `v hv v' hv' h`. Establish `hc : GlobalTheory.Mem.Chr.ConjPl (GlobalTheory.Member.cF D).toRingEquiv (P.w v') (P.w v)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.Mem.Chr.conjPl_iff_mem]`. Introduce `x y hxy`. Establish `hy : y = D.host.conj • x` using `RingOfIntegers.ext (by rw [hxy]; exact hcc _)`. Rewrite using `[hy, h]`. Conclude with `Ideal.smul_mem_pointwise_smul_iff.symm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `e : v' = v`. Substitute `e` using the available equality. Take `⟨f, hf⟩` from `P.w_split v' hv'`. Conclude with `GlobalTheory.GridChars.not_conjPl_self hf hcc hc`. Apply `e` to reduce the goal to its premises.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `(GlobalTheory.Mem.Chr.under_eq_iff_conjPl (GlobalTheory.Member.cF D) D.sp.cm.deg2 (GlobalTheory.IdeleNinety.conj_ne_one D) (P.w v') (P.w v)).2 (Or.inr hc)`. Rewrite `h1` using `[P.under_w hv, P.under_w hv']`. Conclude with `h1.symm`. Establish `hmax' : ∀ v, (D.host.conj • (P.w v).asIdeal).IsMaximal`. Introduce `v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(P.w v).isPrime` as an intermediate fact. Use `Ideal.IsPrime.isMaximal inferInstance fun h0 => (P.w v).ne_bot ?_` and prove the remaining obligations. Use `congrArg (fun I : Ideal (𝓞 D.host.E) => D.host.conj⁻¹ • I) h0` as an intermediate fact. Simplify using `using this`. Rewrite using `[condE, Finset.smul_prod']`.
-
-Simplify using `only [smul_pow']`. Use `Ideal.prod_sup_eq_top fun v hv => Ideal.sup_prod_eq_top fun v' hv' => ?_` and prove the remaining obligations. Conclude with `Ideal.pow_sup_pow_eq_top (Ideal.IsMaximal.coprime_of_ne (P.w v).isMaximal (hmax' v') (hne v hv v' hv'))`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem condE_sup_conj : ∀ {D : D7} {T : Type} {L : LevCh D T} (P : Places L), condE P ⊔ D.host.conj • condE P = ⊤ := by
   intro D T L P

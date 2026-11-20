@@ -14,9 +14,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 variable (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e`. Establish `e1 : PI.UJClassFin.sigR (Af F) σ (a ⊗ₜ[F] e) = a ⊗ₜ[F] σ e` using `by simp [PI.UJClassFin.sigR]`. Rewrite using `[e1, Psi_tmul, Psi_tmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[PI.UnitaryApproxDefs.sigR]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem Psi_sigR (v : HeightOneSpectrum (𝓞 F)) (x : Af F ⊗[F] E) :
     Psi v (PI.UJClassFin.sigR (Af F) σ x) = PI.UnitaryApproxDefs.sigR σ (Fv F v) (Psi v x) := by
@@ -29,7 +29,7 @@ theorem Psi_sigR (v : HeightOneSpectrum (𝓞 F)) (x : Af F ⊗[F] E) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Use `show Psi v ((1 : Af F) ⊗ₜ[F] e) = e ⊗ₜ[F] (1 : Fv F v)`. Rewrite using `[Psi_tmul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem Psi_inclR (v : HeightOneSpectrum (𝓞 F)) (e : E) :
     Psi v (inclR (F := F) (Af F) e) = PI.UnitaryApproxDefs.inclE (F := F) (Fv F v) e := by
@@ -52,11 +52,11 @@ theorem gLoc_val (g : HA (AF F) σ J) (v : HeightOneSpectrum (𝓞 F)) :
       (finMat σ J g).map (Psi v) := rfl
 
 /- English proof (translation)
-Use `show PI.UnitaryApproxDefs.cT (PI.UnitaryApproxDefs.sigR σ (Fv F v)) ((gLoc σ J g v : GL (Fin M) (E ⊗[F] Fv F v)) : Matrix (Fin M) (Fin M) _) * J.map (PI.UnitaryApproxDefs.inclE (F := F) (Fv F v)) * ((gLoc σ J g v : GL (Fin M) (E ⊗[F] Fv F v)) : Matrix (Fin M) (Fin M) _) = J.map ( …`. Rewrite using `[gLoc_val]`. Establish `hU` using `congrArg (fun X => X.map (Psi (E := E) v)) (finMat_unitary σ J g)`. Use `beta_reduce at hU`. Rewrite `hU` using `[mapAlg_mul, mapAlg_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcT : ∀ X : Matrix (Fin M) (Fin M) (Af F ⊗[F] E), (PI.UJClassFin.cT (PI.UJClassFin.sigR (Af F) σ) X).map (Psi v) = PI.UnitaryApproxDefs.cT (PI.UnitaryApproxDefs.sigR σ (Fv F v)) (X.map (Psi v))`. Introduce `X`. Use extensionality with `i j`. Simplify using `[PI.UJClassFin.cT, PI.UnitaryApproxDefs.cT, Psi_sigR]`. Establish `hJ : (JR (Af F) J).map (Psi (E` using `E) v) = J.map (PI.UnitaryApproxDefs.inclE (F := F) (Fv F v)) := by`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Simplify using `[JR, Psi_inclR]`. Rewrite `hU` using `[hcT, hJ]`. Conclude with `hU`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gLoc_mem (g : HA (AF F) σ J) (v : HeightOneSpectrum (𝓞 F)) :
     gLoc σ J g v ∈ PI.UnitaryApproxDefs.UPts σ J (Fv F v) := by
@@ -76,11 +76,11 @@ theorem gLoc_mem (g : HA (AF F) σ J) (v : HeightOneSpectrum (𝓞 F)) :
   exact hU
 
 /- English proof (translation)
-Establish `hD : ((N0 : 𝓞 F)) ≠ 0` using `by exact_mod_cast hN0.ne'`. Take `⟨γ, hγ, hc⟩` from `unitary_approximation_finite F E (Fin M) σ J hσσ hθ hH hdet T (fun w => gLoc σ J g w) (fun w _ => gLoc_mem σ J g w) (N0 : 𝓞 F) hD`. Use `⟨⟨γ, hγ⟩, fun i j => ?_⟩` and prove the remaining obligations. Use `show ∃ o ∈ Oh F E, (evT (T : Set (HeightOneSpectrum (𝓞 F))) ⊗ₜ[F] (1 : E)) * (finMat σ J g i j - inclR (F := F) (Af F) ((γ : Matrix (Fin M) (Fin M) E) i j)) = N0 • o`. Establish `hc' : ∀ w : T, ∃ s ∈ PI.UnitaryApproxDefs.tensInt (F` using `F) (Fv F w.1) (PI.UnitaryApproxDefs.intOE E) (w.1.adicCompletionIntegers F).toSubring, Psi w.1 (finMat σ J g i j) - PI.UnitaryApproxDefs.inclE (F := F) (Fv F w.1) ((γ : Matrix (Fin M) (Fin M) E) i j) = PI.UnitaryApproxDefs.inclE (F := F) (Fv F w.1) (algebraMap F E ((N0 : 𝓞 F) : F …`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose s hs hse using hc'`. Use `⟨∑ w : T, (sgl w.1 1 ⊗ₜ[F] (1 : E)) * Phi w.1 (s w), AddSubgroup.sum_mem _ fun w _ => Oh_mul (tmul_mem_Oh (sgl_int _ (one_mem _)) isIntegral_one) (Phi_int _ (hs w)), ?_⟩` and prove the remaining obligations. Rewrite using `[evT_eq_sum, TensorProduct.sum_tmul, Finset.sum_mul, ← Finset.sum_coe_sort T, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[← Phi_Psi, map_sub, Psi_inclR, hse w, Phi_mul, Phi_inclE]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e0 : ((N0 : 𝓞 F) : F) = (N0 : F)` using `by simp`. Establish `e1 : sgl w.1 1 ⊗ₜ[F] (algebraMap F E ((N0 : 𝓞 F) : F)) = N0 • (sgl w.1 1 ⊗ₜ[F] (1 : E))`. Rewrite using `[e0, show algebraMap F E (N0 : F) = (N0 : F) • (1 : E) by rw [Algebra.smul_def, mul_one], TensorProduct.tmul_smul, Nat.cast_smul_eq_nsmul]`. Rewrite using `[e1, smul_mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem approxT (hσσ : ∀ e, σ (σ e) = e) (hθ : ∃ θ, σ θ ≠ θ) (hH : PI.UnitaryApproxDefs.IsHerm (σ : E →+* E) J)
     (hdet : IsUnit J.det) (g : HA (AF F) σ J) (T : Finset (HeightOneSpectrum (𝓞 F))) (N0 : ℕ)

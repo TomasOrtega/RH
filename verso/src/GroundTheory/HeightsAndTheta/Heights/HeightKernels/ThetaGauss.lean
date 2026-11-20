@@ -14,7 +14,7 @@ noncomputable section
 variable {g : ℕ}
 
 /- English proof (translation)
-Unfold `qf`. Rewrite using `[← Matrix.mulVec_mulVec, star_eq_conjTranspose, conjTranspose_eq_transpose_of_trivial, Matrix.dotProduct_mulVec, vecMul_transpose]`. Simplify using `[dotProduct, sq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem qf_star_mul_self (B : Matrix (Fin g) (Fin g) ℝ) (v : Fin g → ℝ) :
     qf (star B * B) v = ∑ i, (B *ᵥ v) i ^ 2 := by
@@ -24,7 +24,7 @@ theorem qf_star_mul_self (B : Matrix (Fin g) (Fin g) ℝ) (v : Fin g → ℝ) :
   simp [dotProduct, sq]
 
 /- English proof (translation)
-Establish `h : (fun x : Fin g → ℝ => exp (-c * ∑ i, x i ^ 2)) = fun x => ∏ i, exp (-c * x i ^ 2)`. Use function extensionality and compare the values at `x`. Rewrite using `[Finset.mul_sum, Real.exp_sum]`. Rewrite using `[h, integral_fintype_prod_volume_eq_prod (f := fun _ (t : ℝ) => exp (-c * t ^ 2))]`. Simplify using `only [integral_gaussian, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem integral_exp_sum_sq (c : ℝ) :
     ∫ x : Fin g → ℝ, exp (-c * ∑ i, x i ^ 2) = (√(π / c)) ^ g := by
@@ -34,9 +34,9 @@ theorem integral_exp_sum_sq (c : ℝ) :
   simp only [integral_gaussian, Finset.prod_const, Finset.card_univ, Fintype.card_fin]
 
 /- English proof (translation)
-Establish `hdet : LinearMap.det (Matrix.toLin' B) ≠ 0` using `by rwa [LinearMap.det_toLin']`. Establish `hmap` using `Measure.map_linearMap_addHaar_eq_smul_addHaar (μ := (volume : Measure (Fin g → ℝ))) hdet`. Establish `hm : Measurable (Matrix.toLin' B)` using `(LinearMap.continuous_of_finiteDimensional (Matrix.toLin' B)).measurable`. Establish `h1 : ∫ v, f (B *ᵥ v) = ∫ x, f x ∂(Measure.map (Matrix.toLin' B) volume)`. Rewrite using `[integral_map hm.aemeasurable hf.aestronglyMeasurable]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[h1, hmap, integral_smul_measure, LinearMap.det_toLin']`. Rewrite using `[ENNReal.toReal_ofReal (abs_nonneg _), abs_inv, smul_eq_mul]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem integral_comp_mulVec (B : Matrix (Fin g) (Fin g) ℝ) (hB : B.det ≠ 0)
     (f : (Fin g → ℝ) → ℝ) (hf : Continuous f) :
@@ -53,13 +53,13 @@ theorem integral_comp_mulVec (B : Matrix (Fin g) (Fin g) ℝ) (hB : B.det ≠ 0)
   rw [ENNReal.toReal_ofReal (abs_nonneg _), abs_inv, smul_eq_mul]
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `CStarAlgebra.nonneg_iff_eq_star_mul_self.mp hY.posSemidef.nonneg`. Establish `hdetY : Y.det = B.det ^ 2`. Rewrite using `[hB, det_mul, star_eq_conjTranspose, det_conjTranspose]`. Simplify using `[sq]`. Establish `hBdet : B.det ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `h`. Use `hY.det_pos` as an intermediate fact. Rewrite `this` using `[hdetY, h]`. Simplify using `at this`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Use `congr 1`. Use function extensionality and compare the values at `v`. Rewrite using `[hB, qf_star_mul_self]`. Use `_ = |B.det|⁻¹ * ∫ x : Fin g → ℝ, exp (-c * ∑ i, x i ^ 2) := integral_comp_mulVec B hBdet (fun x : Fin g → ℝ => exp (-c * ∑ i, x i ^ 2)) (by fun_prop)`. Use `_ = (√(π / c)) ^ g * (√Y.det)⁻¹ := by`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[integral_exp_sum_sq c, hdetY, Real.sqrt_sq_eq_abs]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem integral_exp_qf (Y : Matrix (Fin g) (Fin g) ℝ) (hY : Y.PosDef) (c : ℝ) :
     ∫ v, exp (-c * qf Y v) = (√(π / c)) ^ g * (√Y.det)⁻¹ := by
@@ -76,9 +76,9 @@ theorem integral_exp_qf (Y : Matrix (Fin g) (Fin g) ℝ) (hY : Y.PosDef) (c : �
         rw [integral_exp_sum_sq c, hdetY, Real.sqrt_sq_eq_abs]; ring
 
 /- English proof (translation)
-Rewrite using `[integral_exp_qf Y hY (2 * π)]`. Establish `hd` using `hY.det_pos`. Establish `h2 : π / (2 * π) = (2 : ℝ)⁻¹` using `by field_simp`. Rewrite using `[h2, Real.rpow_neg (by positivity), ← Real.sqrt_eq_rpow, Real.sqrt_mul (by positivity), Real.sqrt_inv, mul_inv, inv_pow]`. Use `congr 1`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Real.sqrt_eq_rpow, Real.sqrt_eq_rpow, ← Real.rpow_natCast, ← Real.rpow_natCast, ← Real.rpow_mul (by norm_num), ← Real.rpow_mul (by norm_num), mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem integral_exp_two_pi_qf (Y : Matrix (Fin g) (Fin g) ℝ) (hY : Y.PosDef) :
     ∫ v, exp (-(2 * π) * qf Y v) = ((2 : ℝ) ^ g * Y.det) ^ (-(1 / 2 : ℝ)) := by
@@ -92,15 +92,13 @@ theorem integral_exp_two_pi_qf (Y : Matrix (Fin g) (Fin g) ℝ) (hY : Y.PosDef) 
     ← Real.rpow_mul (by norm_num), ← Real.rpow_mul (by norm_num), mul_comm]
 
 /- English proof (translation)
-Use `set τ : Matrix (Fin g) (Fin g) ℂ := Complex.I • Y.map (fun y => (((c / π) * y : ℝ) : ℂ)) with hτ`. Establish `him : τ.map Complex.im = (c / π) • Y`. Use extensionality with `i j`. Simplify using `[hτ]`. Establish `hYt : Yᵀ = Y`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hY.isHermitian` as an intermediate fact. Rewrite `this` using `[IsHermitian, conjTranspose_eq_transpose_of_trivial]`. Conclude with `this`. Establish `hdom : τ ∈ ReciprocityTheory.PTheta.ThetaDomain (Fin g)` using `by show (τ.map Complex.im + (τ.map Complex.im)ᵀ).PosDef`. Rewrite using `[him, transpose_smul, hYt, ← two_smul ℝ, smul_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hY.smul (by positivity)`. Establish `hs` using `ReciprocityTheory.PTheta.thetaSummable_holds (Fin g) v 0 0 τ hdom`. Use `hs.congr fun k => ?_` and prove the remaining obligations. Unfold `ReciprocityTheory.PTheta.thetaTerm`. Rewrite using `[ReciprocityTheory.PTheta.sphereQuadraticPositivity.norm_eC, ReciprocityTheory.PTheta.sphereQuadraticPositivity.im_arg, him]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hw : (fun i => (k i : ℝ) + v i) = intVec k + v` using `by funext i; simp [intVec]`. Rewrite using `[hw]`. Use `congr 1`. Simplify using `only [qf, smul_mulVec, dotProduct_smul, Pi.zero_apply, Complex.zero_im, smul_eq_mul]`. Simplify using `[dotProduct]`.
-
-Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem summable_exp_qf (Y : Matrix (Fin g) (Fin g) ℝ) (hY : Y.PosDef) (c : ℝ) (hc : 0 < c)
     (v : Fin g → ℝ) : Summable fun k : Fin g → ℤ => exp (-c * qf Y (intVec k + v)) := by
@@ -125,7 +123,7 @@ theorem summable_exp_qf (Y : Matrix (Fin g) (Fin g) ℝ) (hY : Y.PosDef) (c : �
   field_simp
 
 /- English proof (translation)
-Rewrite using `[Module.Basis.mem_span_iff_repr_mem]`. Introduce `i`. Conclude with `⟨k i, by simp [intVec]⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem intVec_mem_span (k : Fin g → ℤ) :
     intVec k ∈ Submodule.span ℤ (Set.range (Pi.basisFun ℝ (Fin g))) := by
@@ -134,7 +132,7 @@ theorem intVec_mem_span (k : Fin g → ℤ) :
   exact ⟨k i, by simp [intVec]⟩
 
 /- English proof (translation)
-Rewrite `hx` using `[Module.Basis.mem_span_iff_repr_mem]`. Take `⟨n, hn⟩` from `hx i`. Conclude with `⟨n, by simpa using hn.symm⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_int_of_mem_span {x : Fin g → ℝ}
     (hx : x ∈ Submodule.span ℤ (Set.range (Pi.basisFun ℝ (Fin g)))) (i : Fin g) :
@@ -154,13 +152,13 @@ def latticeEquiv :
     simp [intVec, hn]
 
 /- English proof (translation)
-Establish `: Countable (Submodule.span ℤ (Set.range (Pi.basisFun ℝ (Fin g)))).toAddSubgroup` using `(latticeEquiv (g := g)).symm.injective.countable`. Establish `hD` using `ZSpan.isAddFundamentalDomain' (Pi.basisFun ℝ (Fin g)) (volume : Measure (Fin g → ℝ))`. Establish `hDI : ZSpan.fundamentalDomain (Pi.basisFun ℝ (Fin g)) =ᵐ[volume] Set.Icc (0 : Fin g → ℝ) 1`. Rewrite using `[ZSpan.fundamentalDomain_pi_basisFun, ← Set.pi_univ_Icc]`. Conclude with `Measure.ae_eq_set_pi (fun i _ => Ico_ae_eq_Icc)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hP : ∀ u, ∑' k, F (intVec k + u) = (∑' k, ENNReal.ofReal (F (intVec k + u))).toReal`. Introduce `u`. Rewrite using `[← ENNReal.ofReal_tsum_of_nonneg (fun k => hF0 _) (hs u), ENNReal.toReal_ofReal (tsum_nonneg fun k => hF0 _)]`. Establish `hPm : Measurable fun u => ∑' k : Fin g → ℤ, F (intVec k + u)`. Repeatedly rewrite using `[hP]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Measurable.tsum fun k => ENNReal.measurable_ofReal.comp (hFc.measurable.comp (measurable_const_add _))).ennreal_toReal`. Rewrite using `[integral_eq_lintegral_of_nonneg_ae (Filter.Eventually.of_forall fun u => tsum_nonneg fun k => hF0 _) hPm.aestronglyMeasurable, integral_eq_lintegral_of_nonneg_ae (Filter.Eventually.of_forall hF0) hFc.aestronglyMeasurable]`. Use `congr 1`. Rewrite using `[hD.lintegral_eq_tsum'' (fun x => ENNReal.ofReal (F x)), ← setLIntegral_congr hDI, ← lintegral_tsum (μ := volume.restrict (ZSpan.fundamentalDomain (Pi.basisFun ℝ (Fin g)))) (f := fun (γ : (Submodule.span ℤ (Set.range (Pi.basisFun ℝ (Fin g)))).toAddSubgroup) (x : Fin g → ℝ) => ENN …`. Use `setLIntegral_congr_fun (ZSpan.fundamentalDomain_measurableSet _) (fun u _ => ?_)` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ENNReal.ofReal_tsum_of_nonneg (fun k => hF0 _) (hs u)]`. Rewrite using `[← (latticeEquiv (g := g)).tsum_eq]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem integral_cube_tsum (F : (Fin g → ℝ) → ℝ) (hF0 : ∀ x, 0 ≤ F x) (hFc : Continuous F)
     (hs : ∀ u, Summable fun k : Fin g → ℤ => F (intVec k + u)) :

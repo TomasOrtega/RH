@@ -18,7 +18,7 @@ variable {D : D7} (m : Mv D) {hL : _root_.UpperTheory.Zero.LLC.RecTExists}
 section
 variable {cf : CharFrame D} {jE : D.host.E →+* Qb} {A : _root_.GlobalTheory.HeightCounting.CharFrameHostEmbedding D cf jE} {M : Formalism.L2.MtFam D} {C : NChoice D} {tp : TupTied D cf C}
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact (x :))`.
+A detailed English derivation is pending.
 -/
 theorem Mv.labConj_alt (x : LabConj D A.wdT) : LabConj m.D (m.sideA_alt A).wdT := (by with_unfolding_all exact (x :))
 end

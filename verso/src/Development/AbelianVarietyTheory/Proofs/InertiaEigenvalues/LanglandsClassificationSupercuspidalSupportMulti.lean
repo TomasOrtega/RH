@@ -10,9 +10,9 @@ open ValuativeRel GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil Glo
 namespace GlobalTheory.LocGL
 
 /- English proof (translation)
-Take `⟨_, Ψ, -, hΨ, -⟩` from `hZ k`. Take `⟨c, y, hd, ⟨Δ, ⟨hΔ, -⟩, hy⟩, hx⟩` from `h`. Establish `key : HasSupport x.rep (∑ a, (Δ a).ms)` using `SupportRing.hasSupport_of_isSubquotient_prodIrr hΨ (fun a => (hy a).hasSupport) hx.1 hx.isSubquotient`. Establish `e : msupp 𝔪 = ∑ a, (Δ a).ms`. Rewrite using `[← hΔ, msupp, Multiset.bind, Multiset.map_map, Finset.sum_eq_multiset_sum]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `key`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSupport_msupp_of_isL (hZ : ZelevinskyPolynomialRing) (k : Type) [Field k] [ValuativeRel k]
     [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k] (𝔪 : Multiset (Segment k)) (x : IrrGL k)

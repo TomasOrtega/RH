@@ -15,7 +15,7 @@ section MajLatticeAux
 variable {K : Type*} [Field K] [NumberField K]
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact UpperTheory.Reformulated.B.CommonMajorizingLattice.majLattice_common .. | (apply UpperTheory.Reformulated.B.CommonMajorizingLattice.majLattice_common <;> assumption) | (intros; apply UpperTheory.Reformulated.B.CommonMajorizingLattice.majLattice_common <;> assumption …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem majLattice_common (t : Finset K) :
     ∃ d : ℤ, d ≠ 0 ∧ ∀ a ∈ t, IsIntegral ℤ ((d : K) * a) := by
@@ -59,11 +59,11 @@ theorem majLattice_realize_eq (b : Basis ι K V) (X : InfinitePlace K → Matrix
   rfl
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `z hz`. Establish `hu : ∀ v, majLattice_u z v = 0`. Introduce `v`. Establish `hw : (X v)⁻¹ *ᵥ majLattice_u z v = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Establish `h0` using `congrArg (fun w => w (v, i, 0)) hz`. Establish `h1` using `congrArg (fun w => w (v, i, 1)) hz`. Simplify using `[majLattice_alt, majLattice_Traw] at h0 h1`. Conclude with `Complex.ext h0 h1`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `congrArg (fun w => X v *ᵥ w) hw` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (hX v)]`. Use function extensionality and compare the values at `i`. Use `Prod.ext (funext fun w => absurd w.2 (not_isReal_iff_isComplex.mpr (IsTotallyComplex.isComplex _))) (funext fun w => ?_)` and prove the remaining obligations. Simplify `congrFun (hu w.1) i` using `[majLattice_u]`.
+Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem majLattice_T_injective (X : InfinitePlace K → Matrix ι ι ℂ)
     (hX : ∀ v, IsUnit (X v).det) : Function.Injective (majLattice_alt X) := by
@@ -85,7 +85,7 @@ theorem majLattice_T_injective (X : InfinitePlace K → Matrix ι ι ℂ)
   simpa [majLattice_u] using congrFun (hu w.1) i
 
 /- English proof (translation)
-Establish `hc : nrComplexPlaces K = Fintype.card (InfinitePlace K)` using `by classical`. Rewrite using `[nrComplexPlaces]`. Use `Fintype.card_congr (Equiv.subtypeUnivEquiv (IsTotallyComplex.isComplex (K := K)))` and compare the differences between its conclusion and the goal. Rewrite using `[finrank_euclideanSpace, Module.finrank_pi_fintype]`. Simplify using `only [mixedEmbedding.finrank, IsTotallyComplex.finrank, hc, Finset.sum_const, Finset.card_univ, smul_eq_mul, Fintype.card_prod, Fintype.card_fin]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -109,9 +109,9 @@ def majLattice_B (X : InfinitePlace K → Matrix ι ι ℂ) (hX : ∀ v, IsUnit 
       majLattice_finrank)
 
 /- English proof (translation)
-Use `((majLattice_B X hX).mem_span_iff_repr_mem ℤ _).mpr fun k => ?_` and prove the remaining obligations. Establish `hr : (majLattice_B X hX).repr (realize b X x) k = (latticeBasis K).repr (mixedEmbedding K (b.repr x k.1)) k.2`. Rewrite using `[majLattice_realize_eq, show majLattice_alt X (fun i => mixedEmbedding K (b.repr x i)) = LinearMap.linearEquivOfInjective (majLattice_alt X) (majLattice_T_injective X hX) majLattice_finrank (fun i => mixedEmbedding K (b.repr x i)) from rfl]`. Simplify using `only [majLattice_B, Basis.map_repr, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply, Pi.basis_repr]`. Rewrite using `[hr]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : mixedEmbedding K (b.repr x k.1) ∈ Submodule.span ℤ (Set.range (latticeBasis K))`. Rewrite using `[mem_span_latticeBasis]`. Conclude with `LinearMap.mem_range.mpr ⟨⟨_, hx k.1⟩, rfl⟩`. Conclude with `((latticeBasis K).mem_span_iff_repr_mem ℤ _).mp hmem k.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem majLattice_mem_span (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (hX : ∀ v, IsUnit (X v).det) (x : V) (hx : ∀ i, IsIntegral ℤ (b.repr x i)) :
@@ -132,9 +132,9 @@ theorem majLattice_mem_span (b : Basis ι K V) (X : InfinitePlace K → Matrix �
   exact ((latticeBasis K).mem_span_iff_repr_mem ℤ _).mp hmem k.2
 
 /- English proof (translation)
-Rewrite using `[majLattice_realize_eq]`. Establish `: (fun i => mixedEmbedding K (b.repr (integralBasis K k.2 • b k.1) i)) = Pi.single k.1 (latticeBasis K k.2)`. Use function extensionality and compare the values at `i`. Break down `eq_or_ne i k.1 with rfl | h` into its components or cases. Simplify using `[Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`. Rewrite using `[this]`. Simplify using `[majLattice_B]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem majLattice_B_apply (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (hX : ∀ v, IsUnit (X v).det) (k : Σ _ : ι, Free.ChooseBasisIndex ℤ (𝓞 K)) :
@@ -152,22 +152,20 @@ theorem majLattice_B_apply (b : Basis ι K V) (X : InfinitePlace K → Matrix ι
 variable [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact Bl.general_b_fact_second_rest.goal1 .. | (apply Bl.general_b_fact_second_rest.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_second_rest.goal1 <;> assumption) | (apply @Bl.general_b_fact_second_rest.goal1 <;> assumption) | (intros; apply @Bl.general_b_fact …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem majLattice_exists_c (L : Submodule (𝓞 K) V)
     (hL : Submodule.span K (L : Set V) = ⊤) (y : V) : ∃ c : ℤ, c ≠ 0 ∧ c • y ∈ L := by
   first | exact Bl.general_b_fact_second_rest.goal1 .. | (apply Bl.general_b_fact_second_rest.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_second_rest.goal1 <;> assumption) | (apply @Bl.general_b_fact_second_rest.goal1 <;> assumption) | (intros; apply @Bl.general_b_fact_second_rest.goal1 <;> assumption) | (apply @Bl.general_b_fact_second_rest.goal1 <;> first | assumption | infer_instance) | exact @Bl.general_b_fact_second_rest.goal1 K V ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› L hL y | exact @Bl.general_b_fact_second_rest.goal1 K V ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› L hL | exact @Bl.general_b_fact_second_rest.goal1 K V ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› L | exact @Bl.general_b_fact_second_rest.goal1 K V ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› | exact @Bl.general_b_fact_second_rest.goal1 K V ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› | exact @Bl.general_b_fact_second_rest.goal1 K V ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› | exact @Bl.general_b_fact_second_rest.goal1 K V ‹_› ‹_› ‹_› ‹_› ‹_› | exact @Bl.general_b_fact_second_rest.goal1 K V ‹_› ‹_› ‹_› ‹_› | exact @Bl.general_b_fact_second_rest.goal1 K V ‹_› ‹_› ‹_› | exact @Bl.general_b_fact_second_rest.goal1 K V ‹_› ‹_› | exact @Bl.general_b_fact_second_rest.goal1 K V ‹_› | exact @Bl.general_b_fact_second_rest.goal1 K V | exact @Bl.general_b_fact_second_rest.goal1 K
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `hfg`. Take `⟨d, hd, ht⟩` from `majLattice_common (s.biUnion fun g => Finset.univ.image fun i => b.repr g i)`. Use `⟨d, hd, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[← hs]`. Proceed by induction on `hx using Submodule.span_induction with`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction.
 
-Consider the case `mem g hg`. Introduce `i`. Conclude with `ht _ (Finset.mem_biUnion.mpr ⟨g, Finset.mem_coe.mp hg, Finset.mem_image.mpr ⟨i, Finset.mem_univ _, rfl⟩⟩)`. Consider the case `zero => intro i`. Simplify using `using isIntegral_zero`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Introduce `i`. Simplify using `only [map_add, Finsupp.add_apply, mul_add]`. Conclude with `(hx i).add (hy i)`. Consider the case `smul r x _ hx`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i`. Establish `: b.repr (r • x) i = algebraMap (𝓞 K) K r * b.repr x i`. Rewrite using `[← algebraMap_smul K r x, map_smul]`. Both sides reduce to the same expression. Rewrite using `[this, mul_left_comm]`.
-
-Conclude with `(RingOfIntegers.isIntegral_coe r).mul (hx i)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem majLattice_exists_d (b : Basis ι K V) (L : Submodule (𝓞 K) V) (hfg : L.FG) :
     ∃ d : ℤ, d ≠ 0 ∧ ∀ x ∈ L, ∀ i, IsIntegral ℤ ((d : K) * b.repr x i) := by
@@ -194,7 +192,7 @@ theorem majLattice_exists_d (b : Basis ι K V) (L : Submodule (𝓞 K) V) (hfg :
     exact (RingOfIntegers.isIntegral_coe r).mul (hx i)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem majLattice_mem_zmap (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (L : Submodule (𝓞 K) V) (w : EuclideanSpace ℝ (InfinitePlace K × ι × Fin 2)) :
@@ -203,19 +201,17 @@ theorem majLattice_mem_zmap (b : Basis ι K V) (X : InfinitePlace K → Matrix �
 end MajLatticeMain
 
 /- English proof (translation)
-Introduce `K V ι _ _ _ _ _ _ _ _ _ _ b X hX L hL`. Take `⟨d, hd, hdL⟩` from `majLattice_exists_d b L hL.fg`. Establish `hd' : (d : ℝ) ≠ 0` using `Int.cast_ne_zero.mpr hd`. Prove the components needed by the constructor for the conclusion. Establish `hmaps : Set.MapsTo (fun w => (d : ℝ) • w) (zmap (realize b X) L : Set (EuclideanSpace ℝ (InfinitePlace K × ι × Fin 2))) (Submodule.span ℤ (Set.range (majLattice_B X hX)) : Set (EuclideanSpace ℝ (InfinitePlace K × ι × Fin 2)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Introduce `w hw`. Take `⟨x, hx, rfl⟩` from `(majLattice_mem_zmap b X L w).mp hw`. Establish `h1 : (d : ℝ) • realize b X x = realize b X (d • x)`. Rewrite using `[map_zsmul, Int.cast_smul_eq_zsmul]`. Simplify using `only [h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `majLattice_mem_span` to reduce the goal to its premises. Introduce `i`. Establish `h2 : b.repr (d • x) i = (d : K) * b.repr x i`. Rewrite using `[map_zsmul, Finsupp.smul_apply, zsmul_eq_mul]`. Rewrite using `[h2]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hdL x hx i`. Establish `: DiscreteTopology (Submodule.span ℤ (Set.range (majLattice_B X hX)) : Set (EuclideanSpace ℝ (InfinitePlace K × ι × Fin 2)))` using `inferInstanceAs (DiscreteTopology (Submodule.span ℤ (Set.range (majLattice_B X hX))))`. Use `DiscreteTopology.of_continuous_injective ((continuous_const_smul (d : ℝ)).restrict hmaps) ?_` and prove the remaining obligations. Introduce `p q hpq`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `congrArg Subtype.val hpq` as an intermediate fact. Conclude with `smul_right_injective _ hd' this`. Rewrite using `[eq_top_iff, ← (majLattice_B X hX).span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Take `⟨c, hc, hcL⟩` from `majLattice_exists_c L hL.span_eq_top (b k.1)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc' : (c : ℝ) ≠ 0` using `Int.cast_ne_zero.mpr hc`. Establish `hmem : (c : ℝ) • majLattice_B X hX k ∈ zmap (realize b X) L`. Use `(majLattice_mem_zmap b X L _).mpr ⟨(RingOfIntegers.basis K k.2) • (c • b k.1), L.smul_mem _ hcL, ?_⟩` and prove the remaining obligations. Rewrite using `[majLattice_B_apply b, integralBasis_apply, algebraMap_smul, smul_comm, map_zsmul, Int.cast_smul_eq_zsmul]`. Use `Submodule.smul_mem (Submodule.span ℝ (zmap (realize b X) L : Set (EuclideanSpace ℝ (InfinitePlace K × ι × Fin 2)))) (c : ℝ)⁻¹ (Submodule.subset_span hmem)` as an intermediate fact.
-
-Rewrite `this` using `[inv_smul_smul₀ hc']`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem majLattice : MajLattice := by
   intro K V ι _ _ _ _ _ _ _ _ _ _ b X hX L hL

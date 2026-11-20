@@ -40,7 +40,7 @@ def AsmStep : Prop :=
       (∀ a b, S.hT (f a) (f b) = 0) → Formalism.L2.SG.Saturated.IsSplitBy aa F0 Λ
 
 /- English proof (translation)
-Introduce `E _ _ _ S r T aa F0 Λ hC`. Take `⟨f, hf⟩` from `h1 E S r T aa F0 Λ hC`. Take `⟨f', hf', hiso⟩` from `h2 E S r T aa F0 Λ hC f hf`. Conclude with `h3 E S r T aa F0 Λ hC f' hf' hiso`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem coreStep_of (h1 : FrameStep) (h2 : IsoStep) (h3 : AsmStep) : CoreStep := by
   intro E _ _ _ S r T aa F0 Λ hC

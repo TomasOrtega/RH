@@ -27,14 +27,14 @@ def pureT (s : ∀ i, N i) (ξ : ∀ i, N i) : RTens s :=
   if h : Restr s ξ then ⟨evFam s ξ, Submodule.subset_span ⟨ξ, h, rfl⟩⟩ else 0
 
 /- English proof (translation)
-Unfold `pureT`. Rewrite using `[dif_pos h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem coe_pureT {s ξ : ∀ i, N i} (h : Restr s ξ) : (pureT s ξ : AdmFun s → ℂ) = evFam s ξ := by
   unfold pureT; rw [dif_pos h]
 
 omit [∀ i, AddCommGroup (N i)] [∀ i, Module ℂ (N i)] in
 /- English proof (translation)
-Use `(h.insert v).subset fun i hi => ?_` and prove the remaining obligations. Distinguish the cases in `hv : i = v`. Conclude with `Or.inl hv`. Use `right`. Simplify `hi` using `[Function.update_of_ne hv]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the first alternative. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem restr_update [DecidableEq ι] {s ξ : ∀ i, N i} (h : Restr s ξ) (v : ι) (x : N v) :
     Restr s (Function.update ξ v x) := by
@@ -45,7 +45,7 @@ theorem restr_update [DecidableEq ι] {s ξ : ∀ i, N i} (h : Restr s ξ) (v : 
     simpa [Function.update_of_ne hv] using hi
 
 /- English proof (translation)
-Use `(Set.Finite.union h l.2).subset fun i hi => ?_` and prove the remaining obligations. Distinguish the cases in `e : ξ i = s i`. Use `right`. Simplify `hi` using `[e]`. Conclude with `Or.inl e`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Prove the first alternative. A detailed English derivation is pending.
 -/
 theorem mulSupport_fin {s ξ : ∀ i, N i} (h : Restr s ξ) (l : AdmFun s) :
     (Function.mulSupport fun i => l.1 i (ξ i)).Finite := by
@@ -56,7 +56,7 @@ theorem mulSupport_fin {s ξ : ∀ i, N i} (h : Restr s ξ) (l : AdmFun s) :
   · exact Or.inl e
 
 /- English proof (translation)
-Unfold `evFam`. Rewrite using `[← mul_finprod_cond_ne v (mulSupport_fin (restr_update h v x) l), Function.update_self]`. Use `congr 1`. Use `finprod_congr fun i => finprod_congr fun hi => ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne hi]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem evFam_update [DecidableEq ι] {s ξ : ∀ i, N i} (h : Restr s ξ) (l : AdmFun s) (v : ι) (x : N v) :
     evFam s (Function.update ξ v x) l = l.1 v x * ∏ᶠ (i) (_ : i ≠ v), l.1 i (ξ i) := by
@@ -67,7 +67,7 @@ theorem evFam_update [DecidableEq ι] {s ξ : ∀ i, N i} (h : Restr s ξ) (l : 
   rw [Function.update_of_ne hi]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_add, Submodule.coe_smul, coe_pureT (restr_update h v _), coe_pureT (restr_update h v _), coe_pureT (restr_update h v _)]`. Use function extensionality and compare the values at `l`. Simplify using `only [Pi.add_apply, Pi.smul_apply, evFam_update h, map_add, map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pureT_mlin [DecidableEq ι] {s ξ : ∀ i, N i} (h : Restr s ξ) (v : ι) (c : ℂ) (x y : N v) :
     pureT s (Function.update ξ v (c • x + y)) =
@@ -80,9 +80,9 @@ theorem pureT_mlin [DecidableEq ι] {s ξ : ∀ i, N i} (h : Restr s ξ) (v : ι
   ring
 
 /- English proof (translation)
-Apply `Submodule.map_injective_of_injective (RTens s).injective_subtype` to reduce the goal to its premises. Rewrite using `[Submodule.map_span, Submodule.map_top, Submodule.range_subtype]`. Express the relevant statement in the definitionally equal form `_ = Submodule.span ℂ _`. Use `congr 1`. Use extensionality with `z`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨ξ, h, rfl⟩, rfl⟩`. Conclude with `⟨ξ, h, coe_pureT h⟩`. Introduce and unpack `⟨ξ, h, rfl⟩`. Conclude with `⟨_, ⟨ξ, h, rfl⟩, coe_pureT h⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem pureT_span (s : ∀ i, N i) :
     Submodule.span ℂ {z | ∃ ξ, Restr s ξ ∧ z = pureT s ξ} = ⊤ := by
@@ -98,7 +98,7 @@ theorem pureT_span (s : ∀ i, N i) :
     exact ⟨_, ⟨ξ, h, rfl⟩, coe_pureT h⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(LinearMap.proj (R := ℂ) (φ := fun _ : AdmFun s => ℂ) (show AdmFun s from ⟨l, hl⟩)).comp (RTens s).subtype, fun _ h => congrFun (coe_pureT h) (show AdmFun s from ⟨l, hl⟩)⟩`.
+Supply the required witnesses or components.
 -/
 theorem pureT_sep (s : ∀ i, N i) (l : ∀ i, N i →ₗ[ℂ] ℂ) (hl : {i | l i (s i) ≠ 1}.Finite) :
     ∃ Λ : RTens s →ₗ[ℂ] ℂ, ∀ ξ, Restr s ξ → Λ (pureT s ξ) = ∏ᶠ i, l i (ξ i) :=
@@ -106,19 +106,17 @@ theorem pureT_sep (s : ∀ i, N i) (l : ∀ i, N i →ₗ[ℂ] ℂ) (hl : {i | l
     fun _ h => congrFun (coe_pureT h) (show AdmFun s from ⟨l, hl⟩)⟩
 
 /- English proof (translation)
-Distinguish the cases in `hp : {i | p i (m i) ≠ s i}.Finite`. Establish `h1 : ∀ l : AdmFun s, ∃ Λ : S →ₗ[ℂ] ℂ, ∀ φ, Restr m φ → Λ (pu φ) = ∏ᶠ i, l.1 i (p i (φ i))`. Introduce `l`. Use `hsep (fun i => (l.1 i).comp (p i)) ((hp.union l.2).subset fun i hi => ?_)` and prove the remaining obligations. Distinguish the cases in `e : p i (m i) = s i`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `right`. Simplify `hi` using `[e]`. Conclude with `Or.inl e`. Use `choose Λ hΛ using h1`. Take `⟨r, hr⟩` from `(RTens s).subtype.exists_leftInverse_of_injective (RTens s).ker_subtype`.
+Simplify to obtain the desired conclusion from the available facts. Prove the first alternative. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨r.comp (LinearMap.pi Λ), fun φ hφ => ?_⟩` and prove the remaining obligations. Establish `h2 : Restr s fun i => p i (φ i)`. Use `(Set.Finite.union hφ hp).subset fun i hi => ?_` and prove the remaining obligations. Distinguish the cases in `e : φ i = m i`. Use `right`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Prove the first alternative. Establish an intermediate fact.
 
-Simplify `hi` using `[e]`. Conclude with `Or.inl e`. Establish `h3 : LinearMap.pi Λ (pu φ) = (RTens s).subtype (pureT s fun i => p i (φ i))`. Rewrite using `[Submodule.subtype_apply, coe_pureT h2]`. Use function extensionality and compare the values at `l`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hΛ l φ hφ`. Rewrite using `[LinearMap.comp_apply, h3, ← LinearMap.comp_apply, hr, LinearMap.id_apply]`. Use `⟨0, fun φ hφ => ?_⟩` and prove the remaining obligations. Establish `h2 : ¬ Restr s fun i => p i (φ i)`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Prove the first alternative.
 
-Use `hp ((Set.Finite.union hφ h).subset fun i hi => ?_)` and prove the remaining obligations. Distinguish the cases in `e : φ i = m i`. Use `right`. Simplify `hi` using `[e]`. Conclude with `Or.inl e`.
-
-Unfold `pureT`. Rewrite using `[dif_neg h2, LinearMap.zero_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift {M : ι → Type} [∀ i, AddCommGroup (M i)] [∀ i, Module ℂ (M i)] (m : ∀ i, M i)
     {S : Type} [AddCommGroup S] [Module ℂ S] (pu : (∀ i, M i) → S)
@@ -168,7 +166,7 @@ def PureSep (L : LocW D X) : Prop :=
     ∃ Λ : X.Sch V W →ₗ[ℂ] ℂ, ∀ φ, Restr (L.vac V W) φ → Λ (L.pure V W φ) = ∏ᶠ v, l v (φ v)
 
 /- English proof (translation)
-Introduce `g h φ`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem isThetaMap_zero (L : LocW D X) (V W : HS D) (χ₁ χ₂ : X.Chr) (v : Pl D) {N : Type} [AddCommGroup N]
     [Module ℂ N] (σ : Representation ℂ (L.Hloc W v) N) : IsThetaMap L V W χ₁ χ₂ v σ 0 := by
@@ -176,7 +174,7 @@ theorem isThetaMap_zero (L : LocW D X) (V W : HS D) (χ₁ χ₂ : X.Chr) (v : P
   simp
 
 /- English proof (translation)
-Distinguish the cases in `h : HasSmallTheta L V W χ₁ χ₂ v`. Take `⟨M, i1, i2, π, hπ⟩` from `h`. Conclude with `⟨M, i1, i2, π, fun _ => hπ⟩`. Conclude with `⟨PUnit, inferInstance, inferInstance, 1, fun h' => absurd h' h⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_module (L : LocW D X) (V W : HS D) (χ₁ χ₂ : X.Chr) (v : Pl D) :
     ∃ (M : Type) (_ : AddCommGroup M) (_ : Module ℂ M) (π : Representation ℂ (L.Hloc W v) M),
@@ -187,9 +185,9 @@ theorem exists_module (L : LocW D X) (V W : HS D) (χ₁ χ₂ : X.Chr) (v : Pl 
   · exact ⟨PUnit, inferInstance, inferInstance, 1, fun h' => absurd h' h⟩
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ f, f ≠ 0 ∧ IsThetaMap L V W χ₁ χ₂ v σ f ∧ f (L.vac V W v) = y`. Take `⟨f, h0, h1, h2⟩` from `h`. Conclude with `⟨f, h1, fun _ => h0, fun _ => h2⟩`. Distinguish the cases in `h' : ∃ f, f ≠ 0 ∧ IsThetaMap L V W χ₁ χ₂ v σ f`. Take `⟨f, h0, h1⟩` from `h'`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨f, h1, fun _ => h0, fun k => absurd k h⟩`. Conclude with `⟨0, isThetaMap_zero L V W χ₁ χ₂ v σ, fun k => absurd k h', fun k => absurd k h⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_thetaMap (L : LocW D X) (V W : HS D) (χ₁ χ₂ : X.Chr) (v : Pl D) {N : Type} [AddCommGroup N]
     [Module ℂ N] (σ : Representation ℂ (L.Hloc W v) N) (y : N) :
@@ -205,7 +203,7 @@ theorem exists_thetaMap (L : LocW D X) (V W : HS D) (χ₁ χ₂ : X.Chr) (v : P
     · exact ⟨0, isThetaMap_zero L V W χ₁ χ₂ v σ, fun k => absurd k h', fun k => absurd k h⟩
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ f, IsThetaMap L V W χ₁ χ₂ v σ f ∧ f (L.vac V W v) ≠ 0`. Take `⟨f, h1, h2⟩` from `h`. Conclude with `⟨f, h1, fun _ e => h2 (by simp [e]), fun _ => h2⟩`. Take `⟨p, h1, h2, -⟩` from `exists_thetaMap L V W χ₁ χ₂ v σ 0`. Conclude with `⟨p, h1, h2, fun k => absurd k h⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_thetaMap' (L : LocW D X) (V W : HS D) (χ₁ χ₂ : X.Chr) (v : Pl D) {N : Type} [AddCommGroup N]
     [Module ℂ N] (σ : Representation ℂ (L.Hloc W v) N) :
@@ -219,9 +217,7 @@ theorem exists_thetaMap' (L : LocW D X) (V W : HS D) (χ₁ χ₂ : X.Chr) (v : 
     exact ⟨p, h1, h2, fun k => absurd k h⟩
 
 /- English proof (translation)
-Use `choose M iA iM π hπ using fun (V _V' W : HS D) (α β : X.Chr) v => exists_module L V W β (β / α) v`. Use `choose p hp hp0 hpv using fun (V V' W : HS D) (α β : X.Chr) v => exists_thetaMap' L V W β (β / α) v (π V V' W α β v)`. Use `choose q hq hq0 hqv using fun (V V' W : HS D) (α β : X.Chr) v => exists_thetaMap L V' W α (α / β) v (π V V' W α β v) (p V V' W α β v (L.vac V W v))`. Use `choose P hP using fun (V V' W : HS D) (α β : X.Chr) => exists_lift (L.vac V W) (L.pure V W) (hL V W) (fun v => p V V' W α β v (L.vac V W v)) (p V V' W α β)`. Use `choose Q hQ using fun (V V' W : HS D) (α β : X.Chr) => exists_lift (L.vac V' W) (L.pure V' W) (hL V' W) (fun v => p V V' W α β v (L.vac V W v)) (q V V' W α β)`.
-
-Conclude with `⟨{ PiT := M piRep := π pi_def := hπ pL := p pL' := q pL_th := hp pL'_th := hq pL_ne := hp0 pL'_ne := hq0 pL'_sph := fun V V' W α β v _ h => hqv V V' W α β (Sum.inl v) h PiG := fun V V' W α β => RTens fun v => p V V' W α β v (L.vac V W v) purePi := fun V V' W α β => pureT fun v => …`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_locP (L : LocW D X) (hL : PureSep L) :
     ∃ P : LocP L, ∀ V V' W α β v,
@@ -258,7 +254,7 @@ theorem exists_locP (L : LocW D X) (hL : PureSep L) :
     pG'_pure := hQ }, hpv⟩
 
 /- English proof (translation)
-Introduce `_ _ L h` and use `⟨(exists_locP L h).choose⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem nonempty_locP : ∀ (D : D7) (X : ThetaX D) (L : Formalism.MainNotions.KudlaSiegelWeil.LocW D X),
     (∀ (V W : Formalism.MainNotions.KudlaSiegelWeil.HS D) (l : ∀ v, L.SchL V W v →ₗ[ℂ] ℂ), {v | l v (L.vac V W v) ≠ 1}.Finite →
@@ -349,23 +345,23 @@ def collapsed (X : ThetaX D) (hX : ∀ V W, X.kfin V W = ⊥) : LocW D X where
     exact ⟨1, one_ne_zero, fun φ => by rw [one_smul]; rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstance, fun N _ => eq_bot_or_eq_top N⟩`.
+Supply the required witnesses or components.
 -/
 theorem isIrr_one (Gp : Type) [Monoid Gp] : IsIrr (1 : Representation ℂ Gp ℂ) :=
   ⟨inferInstance, fun N _ => eq_bot_or_eq_top N⟩
 
 /- English proof (translation)
-Use `⟨isIrr_one _, fun N _ _ σ hσ => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨f, h0, hf⟩`. Set `f' : ℂ →ₗ[ℂ] N` to `f`. Establish `h0' : f' ≠ 0` using `h0`. Establish `hf' : ∀ h z, σ h (f' z) = f' z` using `fun h z => by`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hf 1 h z` as an intermediate fact. Conclude with `((one_smul ℂ _).symm.trans this.symm)`. Establish `hinj : Function.Injective f'`. Rewrite using `[← LinearMap.ker_eq_bot]`. Conclude with `(eq_bot_or_eq_top _).resolve_right fun e => h0' (LinearMap.ker_eq_top.1 e)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsur : Function.Surjective f'`. Rewrite using `[← LinearMap.range_eq_top]`. Use `(hσ.2 _ ?_).resolve_left fun e => h0' (LinearMap.range_eq_bot.1 e)` and prove the remaining obligations. Introduce and unpack `g _ ⟨z, rfl⟩`. Conclude with `⟨z, (hf' g z).symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨(LinearEquiv.ofBijective f' ⟨hinj, hsur⟩).symm, fun g x => ?_⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `hsur x`. Rewrite using `[hf']`. Both sides reduce to the same expression. Introduce and unpack `⟨e, he⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨(e.symm.toLinearMap : ℂ →ₗ[ℂ] N), fun h => ?_, fun g h φ => ?_⟩` and prove the remaining obligations. Establish `h1 : e.symm 1 = 0` using `LinearMap.congr_fun h (1 : ℂ)`. Simplify using `at h1`. Express the relevant statement in the definitionally equal form `e.symm φ = (1 : ℂ) • σ h (e.symm φ)`. Rewrite using `[one_smul]`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `e.injective` to reduce the goal to its premises. Rewrite using `[he]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem collapsed_small (X : ThetaX D) (hX : ∀ V W, X.kfin V W = ⊥) (V W : HS D) (χ₁ χ₂ : X.Chr) (v : Pl D) :
     SmallTheta (collapsed X hX) V W χ₁ χ₂ v (1 : Representation ℂ _ ℂ) := by
@@ -399,15 +395,15 @@ theorem collapsed_small (X : ThetaX D) (hX : ∀ V W, X.kfin V W = ⊥) (V W : H
       rfl
 
 /- English proof (translation)
-Use `⟨fun P => ?_⟩` and prove the remaining obligations. Set `V : HS D` to `X.Xs 0 0`. Establish `hne : ∀ v, P.pL V V V 1 1 v (1 : ℂ) ≠ 0`. Introduce `v hv`. Establish `hs` using `P.pi_def V V V 1 1 v ⟨ℂ, inferInstance, inferInstance, 1, collapsed_small X hX V V _ _ v⟩`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h0` using `P.pL_ne V V V 1 1 v (((collapsed_small X hX V V 1 (1 / 1) v).2 _ _ hs.1).2 ?_)`. Use `h0 (LinearMap.ext fun (z : ℂ) => ?_)` and prove the remaining obligations. Set `f : ℂ →ₗ[ℂ] P.PiT V V V 1 1 v` to `P.pL V V V 1 1 v`. Establish `h1 : f 1 = 0` using `hv`. Express the relevant statement in the definitionally equal form `f z = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← mul_one z, ← smul_eq_mul, map_smul, h1, smul_zero]`. Take `⟨e, he⟩` from `(hs.2 ℂ 1 (isIrr_one _)).1 (((collapsed_small X hX V V 1 (1 / 1) v).2 ℂ 1 (isIrr_one _)).2 ⟨LinearEquiv.refl ℂ ℂ, fun _ _ => rfl⟩)`. Use `⟨e.symm, fun g x => ?_⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `e.surjective x`. Rewrite using `[← he, e.symm_apply_apply, e.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `choose l hl using fun v => Module.Projective.exists_dual_eq_one ℂ (hne v)`. Take `⟨Λ, hΛ⟩` from `P.purePi_sep V V V 1 1 l (Set.finite_empty.subset fun v hv => hv (hl v))`. Establish `h1` using `hΛ _ (Set.finite_empty.subset fun v hv => hv rfl)`. Establish `h2` using `P.pG_pure V V V 1 1 ((collapsed X hX).vac V V) (Set.finite_empty.subset fun v hv => hv rfl)`. Rewrite `h1` using `[← h2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : (collapsed X hX).pure V V ((collapsed X hX).vac V V) = 0` using `rfl`. Rewrite `h1` using `[h3, map_zero, map_zero]`. Conclude with `zero_ne_one (h1.trans (finprod_eq_one_of_forall_eq_one fun v => hl v))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem collapsed_isEmpty (X : ThetaX D) (hX : ∀ V W, X.kfin V W = ⊥) : IsEmpty (LocP (collapsed X hX)) := by
   refine ⟨fun P => ?_⟩
@@ -436,7 +432,7 @@ theorem collapsed_isEmpty (X : ThetaX D) (hX : ∀ V W, X.kfin V W = ⊥) : IsEm
   exact zero_ne_one (h1.trans (finprod_eq_one_of_forall_eq_one fun v => hl v))
 
 /- English proof (translation)
-Introduce `h`. Take `⟨X⟩` from `GlobalTheory.thetaX_nonempty_provisional D`. Conclude with `(collapsed_isEmpty { X with kfin := fun _ _ => ⊥ } fun _ _ => rfl).false (h _ _).some`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem not_forall_nonempty_locP (D : D7) : ¬ ∀ (X : ThetaX D) (L : LocW D X), Nonempty (LocP L) := by
   intro h

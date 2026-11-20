@@ -22,13 +22,13 @@ def shear : GL ι A :=
     by rw [Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]; simp⟩
 
 /- English proof (translation)
-Simplify using `[mulVec_pairVec, shear]`.
+Simplify using the standard rewrite rules.
 -/
 theorem shear_mulVec (x y : m → A) : (shear e).1 *ᵥ pairVec e x y = pairVec e x (x + y) := by
   simp [mulVec_pairVec, shear]
 
 /- English proof (translation)
-The claim follows from `Units.ext (by change ((Matrix.fromBlocks 1 0 1 1).submatrix e.symm e.symm).map f = (Matrix.fromBlocks 1 0 1 1).submatrix e.symm e.symm simp [← Matrix.submatrix_map, Matrix.fromBlocks_map])`.
+A detailed English derivation is pending.
 -/
 theorem bc_shear {B : Type} [CommRing B] (f : A →+* B) : bc f (shear e) = shear e :=
   Units.ext (by
@@ -38,7 +38,7 @@ theorem bc_shear {B : Type} [CommRing B] (f : A →+* B) : bc f (shear e) = shea
 
 omit [DecidableEq m] [DecidableEq ι] in
 /- English proof (translation)
-Rewrite using `[dblGram, blkMat_mulVec, Matrix.neg_mulVec]`. Simplify using `[dotProduct, ← e.sum_comp, sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pair_dblGram (J : Matrix m m A) (x y x' y' : m → A) :
     pairVec e x y ⬝ᵥ dblGram e J *ᵥ pairVec e x' y' = x ⬝ᵥ J *ᵥ x' - y ⬝ᵥ J *ᵥ y' := by
@@ -46,11 +46,11 @@ theorem pair_dblGram (J : Matrix m m A) (x y x' y' : m → A) :
   simp [dotProduct, ← e.sum_comp, sub_eq_add_neg]
 
 /- English proof (translation)
-Use `keepsDiag_of_mulVec fun w hw => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `(mem_diagSub e).1 hw`. Take `⟨s, t, hst⟩ : ∃ s t, x *ᵥ pairVec e a a = pairVec e s t` from `⟨_, _, (pairVec_eta e _).symm⟩`. Rewrite using `[hst, pairVec_mem_diagSub, ← sub_eq_zero]`. Establish `h1 : ∀ b, (s - t) ⬝ᵥ J *ᵥ b = 0` using `fun b => by`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `(mem_diagSub e).1 ((inv_mem hy (pairVec e b b)).1 ((pairVec_mem_diagSub e).2 rfl))`. Establish `h2` using `h (pairVec e a a) ((y⁻¹).1 *ᵥ pairVec e b b)`. Rewrite `h2` using `[Matrix.mulVec_mulVec _ y.1, Units.mul_inv, Matrix.one_mulVec, hst, hc, pair_dblGram, pair_dblGram, sub_self]`. Rewrite using `[sub_dotProduct, h2]`. Use function extensionality and compare the values at `i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h3` using `h1 (J⁻¹ *ᵥ Pi.single i 1)`. Rewrite `h3` using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hJ, Matrix.one_mulVec, dotProduct_single, mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem keepsDiag_of_pairing {J : Matrix m m A} (hJ : IsUnit J.det) {x : Matrix ι ι A} {y : GL ι A}
     (h : ∀ u' u, (x *ᵥ u') ⬝ᵥ dblGram e J *ᵥ (y.1 *ᵥ u) = u' ⬝ᵥ dblGram e J *ᵥ u) (hy : y ∈ stabGL (diagSub A e)) :
@@ -72,13 +72,13 @@ theorem keepsDiag_of_pairing {J : Matrix m m A} (hJ : IsUnit J.det) {x : Matrix 
 end Pure
 
 /- English proof (translation)
-Take `⟨k, b, hb, h⟩` from `GlobalTheory.ValIwasawa.iwasawa V K (n + n) (x⁻¹ * shear finSumFinEquiv)`. Use `⟨k * (shear finSumFinEquiv)⁻¹, inv_mem_iff.1 (mem_stabGL_diagSub.2 (keepsDiag_of_mulVec fun w hw => ?_))⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `(mem_diagSub _).1 hw`. Establish `h1 : (x * bc (algebraMap V K) (k * (shear finSumFinEquiv)⁻¹))⁻¹ * shear finSumFinEquiv = shear finSumFinEquiv * b`. Rewrite using `[map_mul, map_inv, bc_shear, mul_inv_rev, mul_assoc, h, mul_inv_rev, inv_inv, mul_assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg _ (inv_mul_cancel_left _ _)`. Establish `h2 : (b.1.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₂₁ = 0`. Use extensionality with `i j`. Use `hb ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Fin.castAdd n j : ℕ) < Fin.natAdd n i`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.val_castAdd, Fin.val_natAdd]`. Use linear arithmetic over natural numbers and integers. Establish `h3 : pairVec finSumFinEquiv a a = (shear finSumFinEquiv).1 *ᵥ pairVec finSumFinEquiv a 0`. Rewrite using `[shear_mulVec, add_zero]`. Rewrite using `[h3, Matrix.mulVec_mulVec, ← Units.val_mul, h1, Units.val_mul, ← Matrix.mulVec_mulVec, mulVec_pairVec _ b.1, h2, shear_mulVec, pairVec_mem_diagSub]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem iwasawa_diag {V K : Type} [CommRing V] [IsDomain V] [ValuationRing V] [Field K] [Algebra V K]
     [IsFractionRing V K] {n : ℕ} (x : GL (Fin (n + n)) K) : ∃ k : GL (Fin (n + n)) V,
@@ -106,11 +106,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {J : Matrix (Fin n) (Fin n) E} {Q : Matrix (Fin (n + n)) (Fin (n + n)) E} {v : HeightOneSpectrum (𝓞 F)}
 
 /- English proof (translation)
-Establish `e : Q.map τ = dblGram finSumFinEquiv (J.map τ)`. Rewrite using `[hQ, dblGram, blkMat_map _ _ (map_zero _), dblGram, Matrix.map_neg _ (map_neg _)]`. Establish `hu : IsUnit (J.map τ).det`. Rewrite using `[← AlgHom.mapMatrix_apply, ← AlgHom.map_det]`. Conclude with `((map_ne_zero τ).2 hJ).isUnit`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `(keepsDiag_iff _).1 (mem_stabGL_diagSub.1 hg)`. Establish `h2` using `(keepsDiag_iff _).1 (keepsDiag_of_pairing finSumFinEquiv hu (x := (splitHom σ Q (τ.comp σ) g).1) (fun u' u => e ▸ pairing_splitHom τ g u' u) hg)`. Use `mem_siegelOf.2 ((keepsDiag_iff _).2 fun i j => split_ext h τ ?_ ?_)` and prove the remaining obligations. Rewrite using `[map_add, map_add]`. Conclude with `h1 i j`.
-
-Rewrite using `[map_add, map_add]`. Conclude with `h2 i j`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_siegelH_of_split (h : IsCMExt F E σ) (hQ : Q = dblGram finSumFinEquiv J) (hJ : J.det ≠ 0)
     (τ : E →ₐ[F] Fv F v) {g : GLoc σ Q v} (hg : splitHom σ Q τ g ∈ stabGL (diagSub (Fv F v) finSumFinEquiv)) :
@@ -127,7 +125,7 @@ theorem mem_siegelH_of_split (h : IsCMExt F E σ) (hQ : Q = dblGram finSumFinEqu
   · rw [map_add, map_add]; exact h2 i j
 
 /- English proof (translation)
-Introduce `g` and use `by obtain ⟨a, ha⟩ := Frames.exists_isLatticeFrame (F := F) L have hβ := (isLatticeFrame_dbl ha).isSplitBasis τ h rw [bc_blkGL, bc_blkGL] at hβ generalize bc (splitProj τ : Fv F v ⊗[F] E →+* Fv F v) (bc (compFin F E v) a) = β at hβ have hd : blkGL finSumFinEquiv (β, β) ∈ stabGL (d …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hasIwasawa_of_algHom (h : IsCMExt F E σ) (hQ : Q = dblGram finSumFinEquiv J) (hJ : IsHermND σ J)
     (hQ' : IsHermND σ Q) (τ : E →ₐ[F] Fv F v) (L : Submodule (𝓞 E) (Fin n → E)) [Submodule.IsLattice E L]
@@ -155,7 +153,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift (FinPl Lat)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-The claim follows from `(SelfDual.forall_isSelfDualAt_iff (σ := D.sp.cm.sig) (GlobalTheory.Doubling.isHermND_gram A).2 hL.1).2 (fun y => hL.2 y) v`.
+A detailed English derivation is pending.
 -/
 theorem isSelfDualAt_of_isSelfDualC {D : D7} {A : HSp D} {L : Lat A} (hL : IsSelfDualC A L) (v : FinPl D) :
     IsSelfDualAt D.sp.cm.sig A.gram L v :=
@@ -163,7 +161,7 @@ theorem isSelfDualAt_of_isSelfDualC {D : D7} {A : HSp D} {L : Lat A} (hL : IsSel
     (fun y => hL.2 y) v
 
 /- English proof (translation)
-Introduce `D A L hL v ⟨P, P', hne, hP, hP'⟩`. Take `⟨τ, -⟩` from `existsUnique_splitPrime_eq (isCMExt_host D) (v := v) hne (HeightOneSpectrum.ext hP) (HeightOneSpectrum.ext hP')`. Use `haveI := hL.1`. Conclude with `hasIwasawa_of_algHom (isCMExt_host D) (gram_hdbl A) (GlobalTheory.Doubling.isHermND_gram A) (GlobalTheory.Doubling.isHermND_gram (dblSp A)) τ L (isSelfDualAt_of_isSelfDualC hL v)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem hasIwasawa_split : ∀ (D : D7) (A : HSp D) (L : Lat A), IsSelfDualC A L → ∀ v : FinPl D,
     Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) v →

@@ -5,15 +5,15 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped nonZeroDivisors Pointwise
 
 /- English proof (translation)
-Introduce `Ω _ _ _ M F n a _ hFn ζ hζ δ hδ y hy hfix hz`. Establish `hM : M ≠ 0` using `NeZero.ne M`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Take `⟨Y, hY⟩` from `IsAlgClosed.exists_pow_nat_eq y (Nat.pos_of_ne_zero hM)`. Establish `hcomm` using `(galBasic Ω (F * n) hFn).2.2.2.2.2.1 y hfix`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hroot : ∀ g ∈ fixMu ℚ Ω F, ∀ z : Ω, z ^ M = g y / y → ∃ k : ℕ, k < M ∧ ζ ^ k = g (opP δ a Y) / opP δ a Y / opP δ a z`. Introduce `g _ z hz'`. Apply `hζ.eq_pow_of_pow_eq_one` to reduce the goal to its premises. Establish `hgy : g y ≠ 0` using `by simpa using hy`. Establish `hdy : δ y ≠ 0` using `by simpa using hy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdgy : δ (g y) ≠ 0` using `by simpa using hgy`. Unfold `opP`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [map_div₀, map_pow, div_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `_ = 1 := by`. Rewrite using `[hY, hz', map_div₀ δ, hcomm g δ]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[div_pow, mul_div_cancel₀ _ (pow_ne_zero a hy)]`. Use `choose! zf hzf using hz`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hk` using `fun g hg => hroot g hg (zf g) (hzf g hg).2`. Use `choose! kf hkf using hk`. Use `⟨fun g => (kf g : ZMod M), Y, hY, fun g hg => ⟨zf g, (hzf g hg).1, (hzf g hg).2, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[ZMod.val_natCast, Nat.mod_eq_of_lt (hkf g hg).1]`. Conclude with `(hkf g hg).2`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.ML.kolEx :
     ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (M F n a : ℕ) [NeZero M], F * n ≠ 0 → ∀ (ζ : Ω), IsPrimitiveRoot ζ M → ∀ δ : G ℚ Ω, Pows M a δ → ∀ y : Ω, y ≠ 0 → (∀ h ∈ fixMu ℚ Ω (F * n), h y = y) →

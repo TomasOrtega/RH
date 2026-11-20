@@ -18,9 +18,9 @@ def StdPB : Prop := ∀ (S : Type) [CommRing S] (f g : S),
     IsIso e ∧ e ≫ pullback.fst _ _ = spMap (LateralTheory.E.t_E1Cut.rL f g) ∧ e ≫ pullback.snd _ _ = spMap (LateralTheory.E.t_E1Cut.rR f g)
 
 /- English proof (translation)
-Introduce `x y h`. Establish `hx : pull R (inv e) F n (pull R e F n x) = x`. Rewrite using `[← pull_comp, IsIso.inv_hom_id, pull_id]`. Establish `hy : pull R (inv e) F n (pull R e F n y) = y`. Rewrite using `[← pull_comp, IsIso.inv_hom_id, pull_id]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hx, ← hy, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_inj_of_iso (R : Type) [CommRing R] {E E' : Spc} (e : E ⟶ E') [IsIso e] (F : Shv R) (n : ℤ) :
     Function.Injective (pull R e F n) := by
@@ -35,9 +35,9 @@ end LateralTheory.E.MVPf
 
 open LateralTheory.E.MVPf in
 /- English proof (translation)
-Introduce `hA1 R _ F S _ f g hfg n hc x hxf hxg`. Use `h1 hA1 R F _ _ (h2 R S f g hfg) n ?_ x hxf hxg` and prove the remaining obligations. Introduce `c`. Take `⟨e, he, hfst, hsnd⟩` from `h3 S f g`. Take `⟨a, b, hab⟩` from `hc (pull R e F n c)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨a, b, pull_inj_of_iso R e F n ?_⟩` and prove the remaining obligations. Rewrite using `[hab, map_sub, ← pull_comp, ← pull_comp, hfst, hsnd]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem LateralTheory.E.t_E1Cut.MV_of (h1 : MVSpc) (h2 : StdCover) (h3 : StdPB) : LateralTheory.E.t_E1Cut.MV := by
   intro hA1 R _ F S _ f g hfg n hc x hxf hxg

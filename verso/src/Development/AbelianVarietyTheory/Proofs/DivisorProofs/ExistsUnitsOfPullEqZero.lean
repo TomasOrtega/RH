@@ -12,9 +12,9 @@ noncomputable section
 namespace GlobalTheory.SmallGlue
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `(cls_eq_zero_iff (pull_isLB hL q)).1 h`. Establish `le : ∀ j, q ⁻¹ᵁ L.U j ≤ (L.pull q).U (fun _ => j)` using `fun j y hy => mem_pull.2 hy`. Use `⟨fun j => res (le j) (t.s (fun _ => j)), fun Z f z i j hi hj => ?_⟩` and prove the remaining obligations. Establish `hm : f z ∈ (L.pull q).U (fun _ => i) ⊓ (L.pull q).U (fun _ => j)` using `⟨mem_pull.2 hi, mem_pull.2 hj⟩`. Use `congrArg (gm f z _) (ht (fun _ => i) (fun _ => j))` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_mul, gm_res _ z _ hm, gm_res _ z _ hm]`. Rewrite using `[gm_res f z (le i) hi, gm_res f z (le j) hj]`. Conclude with `this.trans (congrArg (· * _) (gm_pull_g L q f z (fun _ => i) (fun _ => j) hm.1 hm.2))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_units_of_pull_eq_zero {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) (q : Y ⟶ X)
     (h : GlobalTheory.CechPic.pull q (cls L hL) = 0) :
@@ -31,9 +31,9 @@ theorem exists_units_of_pull_eq_zero {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB)
   exact this.trans (congrArg (· * _) (gm_pull_g L q f z (fun _ => i) (fun _ => j) hm.1 hm.2))
 
 /- English proof (translation)
-Use `unit_ext fun y hy => ?_` and prove the remaining obligations. Establish `hm : q ((𝟙 Y : Y ⟶ Y) y) ∈ L.U i ⊓ L.U j` using `hy`. Establish `e` using `h y hm.1 hm.2`. Rewrite `e` using `[gm_pull (𝟙 Y) q y _ hm.1, gm_pull (𝟙 Y) q y _ hm.2]`. Rewrite using `[gm_pull (𝟙 Y) q y _ hm, gm_pull (𝟙 Y) q y _ hm, map_mul, gm_res (𝟙 Y ≫ q) y _ hm, gm_res (𝟙 Y ≫ q) y _ hm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e`.
+A detailed English derivation is pending.
 -/
 theorem pullU_isGen_of_germ {X Y : Scheme.{0}} {L : LB X} (q : Y ⟶ X) (d : ∀ j, Γ(X, L.U j)ˣ) (i j : L.ι)
     (h : ∀ y : Y, q y ∈ L.U i → q y ∈ L.U j →
@@ -50,17 +50,15 @@ theorem pullU_isGen_of_germ {X Y : Scheme.{0}} {L : LB X} (q : Y ⟶ X) (d : ∀
   exact e
 
 /- English proof (translation)
-Introduce `X X₁ X₂ X₀ ι₁ ι₂ ρ₁ ρ₂ hsq hlift hpatch huniq c h₁ h₂`. Take `⟨L, hL, rfl⟩` from `cls_surj c`. Take `⟨α, hα⟩` from `exists_units_of_pull_eq_zero hL ι₁ h₁`. Take `⟨β, hβ⟩` from `exists_units_of_pull_eq_zero hL ι₂ h₂`. Establish `pt : ∀ x : X₀, ι₂ (ρ₂ x) = ι₁ (ρ₁ x)` using `fun x => congrArg (fun g => g x) hsq.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `le : ∀ j, ρ₁ ⁻¹ᵁ (ι₁ ⁻¹ᵁ L.U j) ≤ ρ₂ ⁻¹ᵁ (ι₂ ⁻¹ᵁ L.U j)` using `fun j x hx => by show ι₂ (ρ₂ x) ∈ L.U j`. Rewrite using `[pt]`. Conclude with `hx`. Establish `hu : ∀ j (x : X₀), ι₁ (ρ₁ x) ∈ L.U j → gm (𝟙 X₀) x (ρ₁ ⁻¹ᵁ (ι₁ ⁻¹ᵁ L.U j)) (pullU ρ₁ _ (α j) * (res (le j) (pullU ρ₂ _ (β j)))⁻¹) = gm ρ₁ x _ (α j) * (gm ρ₂ x _ (β j))⁻¹` using `fun j x hx => by`. Rewrite using `[map_mul, map_inv, gm_res (𝟙 X₀) x (le j) hx, gm_pull (𝟙 X₀) ρ₁ x _ hx, gm_pull (𝟙 X₀) ρ₂ x _ (le j hx), Category.id_comp, Category.id_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `glue_unit (⊤ : X₀.Opens) (fun j => ρ₁ ⁻¹ᵁ (ι₁ ⁻¹ᵁ L.U j)) (fun _ => le_top) (fun x _ => by`. Take `⟨j, hj⟩` from `exists_chart hL (ι₁ (ρ₁ x))`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨j, hj⟩)`. Use the proof step `(fun j => pullU ρ₁ _ (α j) * (res (le j) (pullU ρ₂ _ (β j)))⁻¹)`. Use the proof step `(fun i j x hx => by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `(hu i x hx.1).trans (Eq.trans ?_ (hu j x hx.2).symm)` and prove the remaining obligations. Rewrite using `[hα _ ρ₁ x i j hx.1 hx.2, hβ _ ρ₂ x i j (le i hx.1) (le j hx.2), hsq, mul_inv, _root_.mul_mul_mul_comm, mul_inv_cancel, _root_.one_mul])`. Take `⟨v, hv⟩` from `hlift w`. Establish `hd : ∀ j, ∃ d : Γ(X, L.U j)ˣ, pullU ι₁ _ d = α j * (res le_top v)⁻¹ ∧ pullU ι₂ _ d = β j` using `fun j => hpatch _ _ _ fun x hx => by`. Establish `e : gm (𝟙 X₀) x ⊤ w = gm ρ₁ x _ (α j) * (gm ρ₂ x _ (β j))⁻¹` using `(gm_res (𝟙 X₀) x (le_top : ρ₁ ⁻¹ᵁ (ι₁ ⁻¹ᵁ L.U j) ≤ ⊤) hx w).symm.trans ((congrArg _ (hw j)).trans (hu j x hx))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_inv, gm_res ρ₁ x _ hx, hv, e, mul_inv, inv_inv, mul_inv_cancel_left]`. Use `choose d hd₁ hd₂ using hd`. Use `(cls_eq_zero_iff hL).2 ⟨⟨d⟩, fun i j => huniq _ _ _ ?_ ?_⟩` and prove the remaining obligations. Use `pullU_isGen_of_germ ι₁ d i j fun y hi hj => ?_` and prove the remaining obligations. Rewrite using `[hd₁, hd₁, map_mul, map_mul, map_inv, map_inv, gm_res (𝟙 X₁) y _ hi, gm_res (𝟙 X₁) y _ hj, hα _ (𝟙 X₁) y i j hi hj, _root_.mul_assoc]`.
-
-Use `pullU_isGen_of_germ ι₂ d i j fun y hi hj => ?_` and prove the remaining obligations. Rewrite using `[hd₂, hd₂]`. Conclude with `hβ _ (𝟙 X₂) y i j hi hj`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cech_patching : ∀ {X X₁ X₂ X₀ : Scheme.{0}} (ι₁ : X₁ ⟶ X) (ι₂ : X₂ ⟶ X) (ρ₁ : X₀ ⟶ X₁) (ρ₂ : X₀ ⟶ X₂), ρ₁ ≫ ι₁ = ρ₂ ≫ ι₂ →
     (∀ u : Γ(X₀, ⊤)ˣ, ∃ v : Γ(X₁, ⊤)ˣ, ∀ x : X₀, gm ρ₁ x ⊤ v = gm (𝟙 X₀) x ⊤ u) →

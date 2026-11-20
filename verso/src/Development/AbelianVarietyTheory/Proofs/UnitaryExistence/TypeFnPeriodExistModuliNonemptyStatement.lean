@@ -6,7 +6,7 @@ open NumberField Matrix
 open scoped nonZeroDivisors
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor
 /- English proof (citation)
-Apply `GlobalTheory.PeriodExists.typeFn_period_exist` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUnitaryExistence%2FTypeFnPeriodExistModuliNonempty.lean&line=152#L152)
 -/

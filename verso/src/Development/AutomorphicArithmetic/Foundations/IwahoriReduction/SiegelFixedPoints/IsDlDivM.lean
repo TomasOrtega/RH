@@ -5,13 +5,13 @@ open scoped MatrixGroups Matrix
 open GlobalTheory.KZ GlobalTheory.K4 GlobalTheory.Glue GlobalTheory.KummerEisensteinGalois UpperTheory.Kd.L
 
 /- English proof (translation)
-Establish `hp : l.Prime` using `Fact.out`. Take `⟨k, m, hm, rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hM.ne' l hp.ne_one`. Establish `hc : IsCoprime (l : ℤ) (m : ℤ)` using `Nat.isCoprime_iff_coprime.2 ((Nat.Prime.coprime_iff_not_dvd hp).2 hm)`. Establish `hc' : IsCoprime (l : A) (m : A)` using `by simpa using hc.map (Int.castRingHom A)`. Establish `hlu : ¬ IsUnit (l : A)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ((l : A) : Ω) ∈ A.nonunits` using `by simpa using hl`. Use `(ValuationSubring.coe_mem_nonunits_iff).1 h1` as an intermediate fact. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 this`. Establish `hmu : IsUnit (m : A)`. Take `⟨a, b, e⟩` from `hc'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `IsLocalRing.isUnit_or_isUnit_of_isUnit_add (e ▸ isUnit_one) with h | h` into its components or cases. Conclude with `absurd (isUnit_of_mul_isUnit_right h) hlu`. Conclude with `isUnit_of_mul_isUnit_right h`. Take `⟨u, hu⟩` from `hmu.exists_right_inv`. Use `⟨k, (u : Ω), u.2, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (m : Ω) * (u : Ω) = 1` using `by simpa using congrArg (fun x : A => (x : Ω)) hu`. Use `push_cast`. Rewrite using `[mul_assoc, e, mul_one]`.
+A detailed English derivation is pending.
 -/
 private theorem exists_pow_eq {Ω : Type} [Field Ω] (l : ℕ) [Fact l.Prime] (A : ValuationSubring Ω)
     (hl : ((l : ℕ) : Ω) ∈ A.nonunits) (M : ℕ) (hM : 0 < M) : ∃ k : ℕ, ∃ u ∈ A, (l : Ω) ^ k = (M : Ω) * u := by
@@ -35,11 +35,11 @@ private theorem exists_pow_eq {Ω : Type} [Field Ω] (l : ℕ) [Fact l.Prime] (A
   rw [mul_assoc, e, mul_one]
 
 /- English proof (translation)
-Take `⟨-, a, c, κ, hκ, he, ha, hc, hcg⟩` from `h`. Use `⟨hψ, a, c, κ, hκ, he, ha, hc, fun r => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, e⟩` from `hcg r`. Use `⟨u * z, mul_mem hu hz, ?_⟩` and prove the remaining obligations. Establish `hm : algebraMap ℚ Ω (M : ℚ) = (M : Ω)` using `map_natCast _ _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `e` using `[NrmT.theta_eq_C_mul _ (X.exp a), NrmT.theta_eq_C_mul _ (X.exp c), hm]`. Establish `hM0 : (M : Ω) ≠ 0` using `Nat.cast_ne_zero.2 hM.ne'`. Establish `e2 : HahnSeries.C (M : Ω) * ψ * X.exp a * X.exp c = HahnSeries.C (M : Ω) * (ψ * X.exp a * X.exp c)` using `by ring`. Establish `e3 : HahnSeries.C (M : Ω) * theta 1 (X.exp a) * X.exp c - X.exp a * (HahnSeries.C (M : Ω) * theta 1 (X.exp c)) = HahnSeries.C (M : Ω) * (theta 1 (X.exp a) * X.exp c - X.exp a * theta 1 (X.exp c))` using `by ring`. Rewrite `e` using `[e2, e3, HahnSeries.C_mul_eq_smul, HahnSeries.C_mul_eq_smul, HahnSeries.coeff_smul, HahnSeries.coeff_smul, smul_eq_mul, smul_eq_mul, ← mul_sub, pow_add, hk]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `mul_left_cancel₀ hM0` to reduce the goal to its premises. Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem isDl_divM {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] [CharZero Ω] {ε : Ω →+* ℂ}
     (X : Tower Ω ε) (A : ValuationSubring Ω) (l n k M : ℕ) (hM : 0 < M) (u : Ω) (hu : u ∈ A)
@@ -63,7 +63,7 @@ private theorem isDl_divM {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure 
   rw [e]; ring
 
 /- English proof (translation)
-Take `⟨hφ, a, c, κ, hκ, he, ha, hc, hcg⟩` from `h`. Use `⟨hφ, a, c, κ, hκ, he, ha, hc, fun r => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, e⟩` from `hcg r`. Conclude with `⟨(l : Ω) ^ k * z, mul_mem (pow_mem (natCast_mem A l) k) hz, by rw [e, pow_add]; ring⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem isDl_weak {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
     (X : Tower Ω ε) (A : ValuationSubring Ω) (l n k : ℕ) (s : ℚ) (F : X.K) (φ : HahnSeries ℚ Ω)
@@ -74,19 +74,15 @@ private theorem isDl_weak {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+*
   exact ⟨(l : Ω) ^ k * z, mul_mem (pow_mem (natCast_mem A l) k) hz, by rw [e, pow_add]; ring⟩
 
 /- English proof (translation)
-Introduce `Ω _ _ _ _ ε X l _ A hl n M hM w φ φ' hw hφ _ hφ'`. Establish `hj` using `X.j_hol.imp fun _ h => And.symm h`. Take `⟨k, u, huA, hk⟩` from `exists_pow_eq l A hl M hM`. Establish `hw0 : w ≠ 0`. Introduce and unpack `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨-, a, c, κ, hκ, he, ha, -, -⟩` from `hφ`. Rewrite `he` using `[zero_mul]`. Establish `ha0 : a = 0`. Break down `mul_eq_zero.1 he.symm with h | h` into its components or cases. Conclude with `absurd ((map_eq_zero_iff _ (algebraMap Ω X.K).injective).1 h) hκ`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `h`. Take `⟨-, r, hr, -⟩` from `ha`. Conclude with `hr (by rw [ha0, map_zero]; rfl)`. Take `⟨φ2, h2, hs2⟩` from `GlobalTheory.T.exists_logDerivQExpansion_modPrimePow_of_translationInvariant ε X hj l A hl (n + k) M w hM hw0 hw`. Establish `hu` using `GlobalTheory.T.isLogDerivQExpansionModPrimePow_unique ε X hj l A hl n (M : ℚ) w φ φ2 hφ (isDl_weak X A l n k _ w φ2 h2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hT : ∀ b ∈ Finset.range M, IsDl X A l (n + k) (M : ℚ) (X.sl (ofSL (ModularGroup.T ^ b)) w) (NrmT.trT ε b φ2)` using `fun b _ => NrmT.isLogDerivQExpansionModPrimePow_slash_T_pow X A l (n + k) _ w φ2 b h2`. Establish `hP` using `GlobalTheory.T.isLogDerivQExpansion_finset_prod_zpow ε X hj l A hl (n + k) (M : ℚ) ℕ (Finset.range M) (fun b => X.sl (ofSL (ModularGroup.T ^ b)) w) (fun b => NrmT.trT ε b φ2) (fun _ => 1) hT`. Simplify using `only [zpow_one, one_smul] at hP`. Rewrite `hP` using `[NrmT.sum_trT M φ2 hs2 (NrmT.resZ φ2) (NrmT.resZ_coeff φ2)]`. Establish `hN` using `isDl_divM X A l n k M hM u huA hk _ (NrmT.resZ φ2) (fun r => by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[NrmT.resZ_coeff]`. Use `split_ifs`. Conclude with `h2.1 r`. Conclude with `zero_mem A) hP`. Use `NrmT.isDl_congr X A l n 1 _ (NrmT.resZ φ2) φ' hN (fun r => ?_) (fun r => ?_)` and prove the remaining obligations.
-
-Rewrite using `[hφ']`. Use `split_ifs`. Conclude with `hφ.1 r`. Conclude with `zero_mem A`. Rewrite using `[hφ', NrmT.resZ_coeff]`.
-
-Use `split_ifs`. Conclude with `hu r`. Conclude with `⟨0, zero_mem A, by ring⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Kd.L.nrm :
     ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] [CharZero Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (A : ValuationSubring Ω), ((l : ℕ) : Ω) ∈ A.nonunits → ∀ (n M : ℕ), 0 < M → ∀ (w : X.K) (φ φ' : HahnSeries ℚ Ω), w ∈ KT X M → IsDl X A l n (M : ℚ) w φ → (∀ r : ℚ, φ.coeff r ≠ 0 → (r * M).den = 1) → (∀ r : ℚ, φ'.coeff r = if r.den = 1 then φ.coeff r else 0) → IsDl X A l n 1 (nrmT X M w) φ' := by

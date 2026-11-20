@@ -5,15 +5,13 @@ namespace Formalism.FourierDecayAlt.P.PBCut
 open Formalism.FourierDecayAlt NumberField
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, hw1, hw2, hl1, hl2, hde, -⟩` from `h`. Introduce `v Y hY`. Take `⟨hY1, hY2⟩` from `hY`. Unfold `C.HidaSetting.cutLo at hY1`. Unfold `C.HidaSetting.cutHi at hY2`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Establish `hne1 : S.l + 1 ≠ 1` using `by omega`. Establish `hne2 : S.l + 1 ≠ (S.G.place (S.pl v)).k` using `by simp only [Sz.Glob.place]; omega`. Establish `hu : ∀ de : ℕ → ℝ, (S.G.place (S.pl v)).u de (S.l + 1) = (S.G.place (S.pl v)).v S.l - 1 / 2 - de S.l * (S.G.place (S.pl v)).Del`. Introduce `de`. Unfold `Sz.Cfg.u`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[if_neg hne1, if_neg hne2, Nat.add_sub_cancel]`. Simplify using `only [D.parOf]`. Unfold `I.OnCut`. Rewrite using `[hu S.de, hu S.de']`. Apply the tactic sequence `rcases hw1.1 S.l with h | h <;> rcases hw2.1 S.l with h' | h'`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `absurd (h.trans h'.symm) hde`. Use `right`. Rewrite using `[h, h']`. Apply the tactic sequence `constructor <;> linarith`. Use `left`.
-
-Rewrite using `[h, h']`. Apply the tactic sequence `constructor <;> linarith`. Conclude with `absurd (h.trans h'.symm) hde`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem cutInside_of_built {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePlace E → Type}
     [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)] [∀ x, NormedAddCommGroup (Wq x)]

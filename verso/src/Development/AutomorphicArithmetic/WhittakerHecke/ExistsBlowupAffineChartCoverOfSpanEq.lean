@@ -12,13 +12,11 @@ open GroundTheory.Arith.SchemeCoh GroundTheory.Arith.SchemeCoh.ProjSpace MvPolyn
 attribute [local instance] MvPolynomial.gradedAlgebra
 
 /- English proof (translation)
-Simplify using `only [Scheme.Hom.image_top_eq_opensRange, opensRange_affineBlowupChart_eq_basicOpen]`. Use `Proj.iSup_basicOpen_eq_top (reesGrading I) (fun m => reesGenerator I (a m)) ?_` and prove the remaining obligations. Use `(reesGrading_irrelevant_le_span I).trans ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨b, rfl⟩`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hb : (b : R) ∈ Ideal.span (Set.range fun l => (a l : R))` using `by rw [h]; exact b.2`. Take `⟨c, hc⟩` from `(Ideal.mem_span_range_iff_exists_fun).mp hb`. Establish `hsum : reesGenerator I b = ∑ l, algebraMap R ↥(reesAlgebra I) (c l) * reesGenerator I (a l)`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[AddSubmonoidClass.coe_finset_sum]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [reesGenerator_coe, ← hc, MulMemClass.coe_mul, map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `show _ = Polynomial.C (c l) * _`. Rewrite using `[Polynomial.C_mul_monomial]`. Rewrite using `[SetLike.mem_coe, hsum]`.
-
-Conclude with `sum_mem fun l _ => Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨l, rfl⟩)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem chart_cover {R : Type} [CommRing R] (I : Ideal R) {M : ℕ} (a : Fin (M + 1) → ↥I)
     (h : Ideal.span (Set.range fun l => (a l : R)) = I) :
@@ -41,9 +39,9 @@ private theorem chart_cover {R : Type} [CommRing R] (I : Ideal R) {M : ℕ} (a :
   exact sum_mem fun l _ => Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨l, rfl⟩)
 
 /- English proof (translation)
-Establish `hel : HomogeneousLocalization.Away.isLocalizationElem (reesGenerator_mem_reesGrading I a) (reesGenerator_mem_reesGrading I b) = chartFraction I a b`. Apply `HomogeneousLocalization.val_injective` to reduce the goal to its premises. Rewrite using `[chartFraction_eq_mk]`. Simplify using `[HomogeneousLocalization.Away.isLocalizationElem, HomogeneousLocalization.val_mk, pow_one]`. Establish `hpre : affineBlowupChart I a ⁻¹ᵁ (affineBlowupChart I b).opensRange = PrimeSpectrum.basicOpen (chartFraction I a b)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[opensRange_affineBlowupChart_eq_basicOpen, affineBlowupChart_eq_awayι, ← hel]`. Conclude with `Proj.awayι_preimage_basicOpen (reesGrading I) (reesGenerator_mem_reesGrading I a) Nat.one_pos (reesGenerator_mem_reesGrading I b) Nat.one_pos`. Rewrite using `[← hpre, Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Hom.image_top_eq_opensRange, Scheme.Hom.image_top_eq_opensRange]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem chart_inter {R : Type} [CommRing R] (I : Ideal R) (a b : ↥I) :
     (affineBlowupChart I a ''ᵁ ⊤) ⊓ (affineBlowupChart I b ''ᵁ ⊤) =
@@ -63,7 +61,7 @@ private theorem chart_inter {R : Type} [CommRing R] (I : Ideal R) (a b : ↥I) :
     Scheme.Hom.image_top_eq_opensRange]
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.appLE, hU.fromSpec_app_self, Category.assoc, ← Functor.map_comp]`. Use `Category.comp_id _` and compare the differences between its conclusion and the goal. Conclude with `CategoryTheory.Functor.map_id _ _`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 private theorem fromSpec_appLE_top {Z : Scheme.{0}} {U : Z.Opens} (hU : IsAffineOpen U)
     (e : (⊤ : (Spec Γ(Z, U)).Opens) ≤ hU.fromSpec ⁻¹ᵁ U) :
@@ -73,15 +71,13 @@ private theorem fromSpec_appLE_top {Z : Scheme.{0}} {U : Z.Opens} (hU : IsAffine
   exact CategoryTheory.Functor.map_id _ _
 
 /- English proof (translation)
-Establish `hU : IsAffineOpen U.1` using `U.2`. Use `haveI : IsOpenImmersion (IsAffineOpen.fromSpec U.2) := inferInstanceAs (IsOpenImmersion hU.fromSpec)`. Establish `hI : I.comap U.2.fromSpec = specIdealSheaf (I.ideal U)`. Use `Scheme.IdealSheafData.ext_of_isAffine ?_` and prove the remaining obligations. Establish `e : (⊤ : (Spec Γ(Z, U.1)).Opens) ≤ U.2.fromSpec ⁻¹ᵁ U.1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[U.2.fromSpec_preimage_self]`. Establish `h5 : (I.comap U.2.fromSpec).ideal ⟨⊤, isAffineOpen_top _⟩ = Ideal.map (Scheme.ΓSpecIso Γ(Z, U.1)).inv.hom (I.ideal U)`. Rewrite using `[Scheme.IdealSheafData.comap_ideal_eq_map_appLE I U.2.fromSpec U ⟨⊤, isAffineOpen_top _⟩ e]`. Establish `h6` using `fromSpec_appLE_top U.2 e`. Establish `h7 : ∀ f g : Γ(Z, U.1) ⟶ Γ(Spec Γ(Z, U.1), ⊤), f = g → Ideal.map f.hom (I.ideal U) = Ideal.map g.hom (I.ideal U)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `f _ rfl`. Both sides reduce to the same expression. Conclude with `h7 _ _ h6`. Conclude with `h5.trans (specIdealSheaf_ideal_top (I.ideal U)).symm`. Establish `h1` using `hπ.pullback_snd_of_isOpenImmersion U.2.fromSpec`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h1` using `[hI]`. Take `⟨e, he⟩` from `(isBlowupAlongIdealSheaf_affineBlowup_toSpec (I.ideal U)).exists_iso h1`. Use `⟨e.hom ≫ pullback.fst π U.2.fromSpec, inferInstance, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, he]`. Rewrite using `[Scheme.Hom.image_top_eq_opensRange, Scheme.Hom.opensRange_comp_of_isIso, Scheme.Hom.opensRange_pullbackFst]`.
-
-Conclude with `congrArg (π ⁻¹ᵁ ·) hU.opensRange_fromSpec`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_open_emb {Z W : Scheme.{0}} (I : Z.IdealSheafData) (π : W ⟶ Z)
     (hπ : IsBlowupAlongIdealSheaf π I) (U : Z.affineOpens) :
@@ -113,15 +109,15 @@ private theorem exists_open_emb {Z W : Scheme.{0}} (I : Z.IdealSheafData) (π : 
     exact congrArg (π ⁻¹ᵁ ·) hU.opensRange_fromSpec
 
 /- English proof (translation)
-Set `E : Γ(W, ψ ''ᵁ ⊤) ≅ CommRingCat.of C` to `ψ.appIso ⊤ ≪≫ Scheme.ΓSpecIso (CommRingCat.of C)`. Use `⟨E.commRingCatIsoToRingEquiv, ?_, ?_⟩` and prove the remaining obligations. Establish `hcat : π.appLE U.1 (ψ ''ᵁ ⊤) le ≫ E.hom = CommRingCat.ofHom φ`. Establish `h0 : (⊤ : (Spec (CommRingCat.of C)).Opens) ≤ ψ ⁻¹ᵁ (ψ ''ᵁ ⊤)` using `fun x _ => ⟨x, trivial, rfl⟩`. Establish `h1 : (⊤ : (Spec (CommRingCat.of C)).Opens) ≤ (ψ ≫ π) ⁻¹ᵁ U.1` using `fun x hx => le (h0 hx)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : π.appLE U.1 (ψ ''ᵁ ⊤) le ≫ (ψ.appIso ⊤).hom = (ψ ≫ π).appLE U.1 ⊤ h1`. Rewrite using `[Scheme.Hom.appIso_hom', Scheme.Hom.appLE_comp_appLE]`. Establish `h3 : ∀ (f : Spec (CommRingCat.of C) ⟶ Z) (hf : f = Spec.map (CommRingCat.ofHom φ) ≫ U.2.fromSpec) (h : (⊤ : (Spec (CommRingCat.of C)).Opens) ≤ f ⁻¹ᵁ U.1), f.appLE U.1 ⊤ h ≫ (Scheme.ΓSpecIso (CommRingCat.of C)).hom = CommRingCat.ofHom φ`. Introduce and unpack `f rfl h`. Establish `h4 : (⊤ : (Spec Γ(Z, U.1)).Opens) ≤ (IsAffineOpen.fromSpec U.2) ⁻¹ᵁ U.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[U.2.fromSpec_preimage_self]`. Rewrite using `[← Scheme.Hom.appLE_comp_appLE (Spec.map (CommRingCat.ofHom φ)) (IsAffineOpen.fromSpec U.2) U.1 ⊤ ⊤ h4 le_top, fromSpec_appLE_top U.2 h4]`. Establish `h8 : (Spec.map (CommRingCat.ofHom φ)).appLE ⊤ ⊤ le_top = (Spec.map (CommRingCat.ofHom φ)).appTop`. Conclude with `Scheme.Hom.appLE_eq_app _`. Rewrite using `[h8, ← Scheme.ΓSpecIso_inv_naturality, Category.assoc, Iso.inv_hom_id, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show π.appLE U.1 (ψ ''ᵁ ⊤) le ≫ (ψ.appIso ⊤).hom ≫ (Scheme.ΓSpecIso (CommRingCat.of C)).hom = _`. Rewrite using `[← Category.assoc, h2]`. Conclude with `h3 _ hψ h1`. Introduce `x`. Conclude with `congrArg (fun f => f.hom x) hcat`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `z`. Establish `h2 : (Spec (CommRingCat.of C)).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of C)).inv.hom z) = PrimeSpectrum.basicOpen z` using `basicOpen_eq_of_affine (R := CommRingCat.of C) z`. Rewrite using `[← h2, Scheme.image_basicOpen]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private theorem sections_transfer {Z W : Scheme.{0}} (π : W ⟶ Z) (U : Z.affineOpens) {C : Type} [CommRing C]
     (φ : Γ(Z, U.1) →+* C) (ψ : Spec (CommRingCat.of C) ⟶ W) [IsOpenImmersion ψ]
@@ -158,29 +154,25 @@ private theorem sections_transfer {Z W : Scheme.{0}} (π : W ⟶ Z) (U : Z.affin
     rfl
 
 /- English proof (translation)
-Establish `himg : ∀ (m) (O : (Spec (CommRingCat.of (C m))).Opens), (ch m ≫ j) ''ᵁ O = j ''ᵁ (ch m ''ᵁ O)` using `fun m O => Scheme.Hom.comp_image _ _ _`. Establish `hψ : ∀ m, (ch m ≫ j) ≫ π = Spec.map (CommRingCat.ofHom (φ m)) ≫ U.2.fromSpec`. Introduce `m`. Rewrite using `[Category.assoc, hch]`. Establish `hle : ∀ m, (ch m ≫ j) ''ᵁ ⊤ ≤ π ⁻¹ᵁ U.1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `m`. Rewrite using `[himg, ← hjr]`. Conclude with `(j.opensFunctor).monotone le_top`. Use `choose e he1 he2 using fun m => sections_transfer π U (φ m) (ch m ≫ j) (hψ m) (hle m)`. Establish `key : ∀ m x, π.appLE U.1 ((ch m ≫ j) ''ᵁ ⊤) (hle m) x = (e m).symm (φ m x)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `m x`. Rewrite using `[← he1 m x, RingEquiv.symm_apply_apply]`. Establish `hone : ∀ m, fr m m = 1`. Introduce `m`. Establish `h1 : (fr m m - 1) * φ m (g m) = 0` using `by rw [sub_mul, ← heq, one_mul, sub_self]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `sub_eq_zero.mp ((mem_nonZeroDivisors_iff_right.mp (hnzd m)) _ h1)`. Use `⟨fun m => (ch m ≫ j) ''ᵁ ⊤, hle, fun m l => (e m).symm (fr m l), ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `m`. Conclude with `(isAffineOpen_top _).image_of_isOpenImmersion (ch m ≫ j)`. Apply `le_antisymm` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `iSup_le fun m => hle m`. Rewrite using `[← hjr]`. Introduce and unpack `x ⟨y, -, rfl⟩`. Establish `hy : y ∈ ⨆ m, ch m ''ᵁ ⊤` using `hcov ▸ trivial`. Take `⟨m, hm⟩` from `TopologicalSpace.Opens.mem_iSup.mp hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `TopologicalSpace.Opens.mem_iSup.mpr ⟨m, ?_⟩` and prove the remaining obligations. Rewrite using `[himg]`. Conclude with `⟨y, hm, rfl⟩`. Introduce `m l`. Rewrite using `[key, key, heq, map_mul, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `m`. Simplify using `only [hone, map_one]`. Introduce `m`. Rewrite using `[key]`. Use `mem_nonZeroDivisors_iff_right.mpr fun y hy => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1` using `congrArg (e m) hy`. Rewrite `h1` using `[map_mul, RingEquiv.apply_symm_apply, map_zero]`. Conclude with `(map_eq_zero_iff _ (e m).injective).mp ((mem_nonZeroDivisors_iff_right.mp (hnzd m)) _ h1)`. Introduce `m`. Establish `hcomp : (MvPolynomial.eval₂Hom (π.appLE U.1 ((ch m ≫ j) ''ᵁ ⊤) (hle m)).hom (fun l => (e m).symm (fr m l))) = (e m).symm.toRingHom.comp (MvPolynomial.eval₂Hom (φ m) (fr m))`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[key]`. Introduce `i`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hcomp]`. Conclude with `(e m).symm.surjective.comp (hsurj m)`. Introduce `m l`. Establish `hinf : ∀ P Q : A.Opens, j ''ᵁ P ⊓ j ''ᵁ Q = j ''ᵁ (P ⊓ Q)`. Introduce `P Q`.
-
-Apply `TopologicalSpace.Opens.ext` to reduce the goal to its premises. Conclude with `(Set.image_inter j.isOpenEmbedding.injective).symm`. Use `Eq.trans ?_ (he2 m (fr m l)).symm` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[himg, himg]`.
-
-Use `_ = j ''ᵁ (ch m ''ᵁ ⊤ ⊓ ch l ''ᵁ ⊤) := hinf _ _`. Use `_ = j ''ᵁ (ch m ''ᵁ PrimeSpectrum.basicOpen (fr m l)) := by rw [hint]`. Use `_ = _ := (himg m _).symm`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem assemble {Z W A : Scheme.{0}} (π : W ⟶ Z) (U : Z.affineOpens) {M : ℕ}
     (g : Fin (M + 1) → Γ(Z, U.1)) (C : Fin (M + 1) → Type) [∀ m, CommRing (C m)]
@@ -262,11 +254,11 @@ private theorem assemble {Z W A : Scheme.{0}} (π : W ⟶ Z) (U : Z.affineOpens)
       _ = _ := (himg m _).symm
 
 /- English proof (translation)
-Introduce `Z W I π hπ U M g hg`. Establish `hgm : ∀ l, g l ∈ I.ideal U` using `fun l => hg ▸ Ideal.subset_span ⟨l, rfl⟩`. Set `a : Fin (M + 1) → ↥(I.ideal U)` to `fun l => ⟨g l, hgm l⟩`. Take `⟨j, hj, hjπ, hjr⟩` from `exists_open_emb I π hπ U`. Use `assemble π U g (fun m => HomogeneousLocalization.Away (reesGrading (I.ideal U)) (reesGenerator (I.ideal U) (a m))) (fun m => chartRingHom (I.ideal U) (a m)) (fun m l => chartFraction (I.ideal U) (a m) (a l)) j hjr (fun m => affineBlowupChart (I.ideal U) (a m)) ?_ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `m`. Rewrite using `[hjπ, ← Category.assoc, affineBlowupChart_comp_toSpec]`. Conclude with `fun m l => chartRingHom_coe_eq_chartFraction_mul (I.ideal U) (a m) (a l)`. Conclude with `fun m => chartRingHom_mem_nonZeroDivisors (I.ideal U) (a m)`. Conclude with `fun m => UpperTheory.surjective_eval_blowupChart_of_span_eq _ a hg m`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `chart_cover _ a hg`. Conclude with `fun m l => chart_inter _ _ _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_blowup_affine_chart_cover_of_span_eq :
     ∀ {Z W : Scheme.{0}} (I : Z.IdealSheafData) (π : W ⟶ Z), IsBlowupAlongIdealSheaf π I → ∀ (U : Z.affineOpens) {M : ℕ} (g : Fin (M + 1) → Γ(Z, U.1)),

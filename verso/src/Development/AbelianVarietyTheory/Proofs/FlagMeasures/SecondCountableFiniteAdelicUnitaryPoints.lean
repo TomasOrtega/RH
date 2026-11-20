@@ -8,7 +8,7 @@ open scoped InnerProductSpace
 namespace GlobalTheory.CongTop
 
 /- English proof (translation)
-Introduce `I` and use `(adelic_topology I).2.2.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem secondCountable_finiteAdelicPoints : ∀ (I : AutInst), SecondCountableTopology I.Gf :=
   fun I => (adelic_topology I).2.2.1

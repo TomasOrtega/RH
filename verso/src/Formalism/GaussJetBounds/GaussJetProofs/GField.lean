@@ -14,9 +14,7 @@ variable {F : Type} [NormedField F] {σ : Type}
 def gN (P : MvPolynomial σ F) : ℝ := ⨆ n : σ →₀ ℕ, ‖coeff n P‖
 
 /- English proof (translation)
-Use `⟨∑ n ∈ P.support, ‖coeff n P‖, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨n, rfl⟩`. Distinguish the cases in `hn : n ∈ P.support`. Conclude with `Finset.single_le_sum (f := fun n => ‖coeff n P‖) (fun _ _ => norm_nonneg _) hn`. Use `show ‖coeff n P‖ ≤ _`.
-
-Rewrite using `[notMem_support_iff.mp hn, norm_zero]`. Conclude with `Finset.sum_nonneg fun _ _ => norm_nonneg _`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma gN_bdd (P : MvPolynomial σ F) : BddAbove (Set.range fun n : σ →₀ ℕ => ‖coeff n P‖) := by
   refine ⟨∑ n ∈ P.support, ‖coeff n P‖, ?_⟩
@@ -28,39 +26,37 @@ lemma gN_bdd (P : MvPolynomial σ F) : BddAbove (Set.range fun n : σ →₀ ℕ
     exact Finset.sum_nonneg fun _ _ => norm_nonneg _
 
 /- English proof (translation)
-The claim follows from `le_ciSup (gN_bdd P) n`.
+A detailed English derivation is pending.
 -/
 lemma le_gN (P : MvPolynomial σ F) (n : σ →₀ ℕ) : ‖coeff n P‖ ≤ gN P :=
   le_ciSup (gN_bdd P) n
 
 /- English proof (translation)
-The claim follows from `(norm_nonneg _).trans (le_gN P 0)`.
+A detailed English derivation is pending.
 -/
 lemma gN_nonneg (P : MvPolynomial σ F) : 0 ≤ gN P := (norm_nonneg _).trans (le_gN P 0)
 
 /- English proof (translation)
-The claim follows from `ciSup_le h`.
+A detailed English derivation is pending.
 -/
 lemma gN_le {P : MvPolynomial σ F} {c : ℝ} (h : ∀ n, ‖coeff n P‖ ≤ c) : gN P ≤ c :=
   ciSup_le h
 
 /- English proof (translation)
-The claim follows from `le_antisymm (gN_le fun n => by simp) (gN_nonneg _)`.
+A detailed English derivation is pending.
 -/
 lemma gN_zero : gN (0 : MvPolynomial σ F) = 0 :=
   le_antisymm (gN_le fun n => by simp) (gN_nonneg _)
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `ne_zero_iff.mp hP`. Conclude with `(norm_pos_iff.mpr hn).trans_le (le_gN P n)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 lemma gN_pos {P : MvPolynomial σ F} (hP : P ≠ 0) : 0 < gN P := by
   obtain ⟨n, hn⟩ := ne_zero_iff.mp hP
   exact (norm_pos_iff.mpr hn).trans_le (le_gN P n)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `hP`. Conclude with `(gN_pos hP).ne' h`. Introduce and unpack `rfl`.
-
-Conclude with `gN_zero`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 lemma gN_eq_zero {P : MvPolynomial σ F} : gN P = 0 ↔ P = 0 := by
   constructor
@@ -71,9 +67,9 @@ lemma gN_eq_zero {P : MvPolynomial σ F} : gN P = 0 ↔ P = 0 := by
     exact gN_zero
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `gN_le fun n => ?_` and prove the remaining obligations. Rewrite using `[coeff_C]`. Use `split_ifs`. Conclude with `le_rfl`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using the standard rewrite rules. Simplify using `using le_gN (C z : MvPolynomial σ F) 0`.
+A detailed English derivation is pending.
 -/
 lemma gN_C (z : F) : gN (C z : MvPolynomial σ F) = ‖z‖ := by
   classical
@@ -86,13 +82,13 @@ lemma gN_C (z : F) : gN (C z : MvPolynomial σ F) = ‖z‖ := by
   · simpa using le_gN (C z : MvPolynomial σ F) 0
 
 /- English proof (translation)
-Establish `hne : P.support.Nonempty` using `support_nonempty.mpr hP`. Take `⟨m, hm, hmax⟩` from `Finset.exists_max_image P.support (fun n => ‖coeff n P‖) hne`. Establish `hmg : ‖coeff m P‖ = gN P`. Use `le_antisymm (le_gN P m) (gN_le fun n => ?_)` and prove the remaining obligations. Distinguish the cases in `hn : n ∈ P.support`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Conclude with `hmax n hn`. Rewrite using `[notMem_support_iff.mp hn, norm_zero]`. Conclude with `norm_nonneg _`. Set `S` to `P.support.filter fun n => ‖coeff n P‖ = gN P`. Establish `hS : S.Nonempty` using `⟨m, Finset.mem_filter.mpr ⟨hm, hmg⟩⟩`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨i, hi, hmin⟩` from `Finset.exists_min_image S (fun n => toLex n) hS`. Use `⟨i, (Finset.mem_filter.mp hi).2, fun k hk => lt_of_le_of_ne (le_gN P k) fun hkg => ?_⟩` and prove the remaining obligations. Establish `hkS : k ∈ S`. Use `Finset.mem_filter.mpr ⟨?_, hkg⟩` and prove the remaining obligations. Rewrite using `[mem_support_iff]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h0`. Rewrite `hkg` using `[h0, norm_zero]`. Conclude with `(gN_pos hP).ne hkg`. Conclude with `absurd (hmin k hkS) (not_le.mpr hk)`.
+A detailed English derivation is pending.
 -/
 lemma exists_min_gN [LinearOrder σ] {P : MvPolynomial σ F} (hP : P ≠ 0) :
     ∃ i : σ →₀ ℕ, ‖coeff i P‖ = gN P ∧ ∀ k : σ →₀ ℕ, toLex k < toLex i → ‖coeff k P‖ < gN P := by
@@ -120,7 +116,7 @@ lemma exists_min_gN [LinearOrder σ] {P : MvPolynomial σ F} (hP : P ≠ 0) :
 variable [IsUltrametricDist F]
 
 /- English proof (translation)
-Use `gN_le fun n => ?_` and prove the remaining obligations. Rewrite using `[coeff_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le_max (le_gN P n) (le_gN Q n))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma gN_add_le (P Q : MvPolynomial σ F) : gN (P + Q) ≤ max (gN P) (gN Q) := by
   refine gN_le fun n => ?_
@@ -128,7 +124,7 @@ lemma gN_add_le (P Q : MvPolynomial σ F) : gN (P + Q) ≤ max (gN P) (gN Q) := 
   exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le_max (le_gN P n) (le_gN Q n))
 
 /- English proof (translation)
-Use `gN_le fun n => ?_` and prove the remaining obligations. Rewrite using `[coeff_mul]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (mul_nonneg (gN_nonneg P) (gN_nonneg Q)) fun p _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (le_gN P _) (le_gN Q _) (norm_nonneg _) (gN_nonneg P)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma gN_mul_le (P Q : MvPolynomial σ F) : gN (P * Q) ≤ gN P * gN Q := by
   classical
@@ -140,17 +136,15 @@ lemma gN_mul_le (P Q : MvPolynomial σ F) : gN (P * Q) ≤ gN P * gN Q := by
   exact mul_le_mul (le_gN P _) (le_gN Q _) (norm_nonneg _) (gN_nonneg P)
 
 /- English proof (translation)
-Distinguish the cases in `hP : P = 0`. Simplify using `[hP, gN_zero]`. Distinguish the cases in `hQ : Q = 0`. Simplify using `[hQ, gN_zero]`. Use `le_antisymm (gN_mul_le P Q) ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨_, _⟩` from `exists_wellFoundedLT σ`. Take `⟨i, hi, hi'⟩` from `exists_min_gN hP`. Take `⟨j, hj, hj'⟩` from `exists_min_gN hQ`. Establish `key : ‖coeff (i + j) (P * Q)‖ = ‖coeff i P * coeff j Q‖`. Rewrite using `[coeff_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `IsNonarchimedean.apply_sum_eq_of_lt (f := fun x : F => ‖x‖) (l := fun p : (σ →₀ ℕ) × (σ →₀ ℕ) => coeff p.1 P * coeff p.2 Q) (k := (i, j)) IsUltrametricDist.isNonarchimedean_norm (fun a => (norm_neg a).symm) (by simp) ?_` and prove the remaining obligations. Introduce and unpack `⟨a, b⟩ hab hne`. Use `replace hab : a + b = i + j := by simpa using hab`. Simplify using `only [norm_mul, hi, hj]`. Establish `hcase : toLex a < toLex i ∨ toLex b < toLex j`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Take `⟨h1, h2⟩` from `hcon`. Establish `hsum : toLex a + toLex b = toLex i + toLex j`. Rewrite using `[← toLex_add, ← toLex_add]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `congrArg toLex hab`. Break down `h1.lt_or_eq with h1 | h1` into its components or cases. Conclude with `absurd hsum (add_lt_add_of_lt_of_le h1 h2).ne'`. Break down `h2.lt_or_eq with h2 | h2` into its components or cases. Conclude with `absurd hsum (add_lt_add_of_le_of_lt h1.le h2).ne'`.
-
-Conclude with `hne (Prod.ext (toLex.injective h1.symm) (toLex.injective h2.symm))`. Break down `hcase with h | h` into its components or cases. Conclude with `(mul_le_mul_of_nonneg_left (le_gN Q b) (norm_nonneg _)).trans_lt (mul_lt_mul_of_pos_right (hi' a h) (gN_pos hQ))`. Conclude with `(mul_le_mul_of_nonneg_right (le_gN P a) (norm_nonneg _)).trans_lt (mul_lt_mul_of_pos_left (hj' b h) (gN_pos hP))`. Combine the equalities or inequalities in the displayed calculation.
+Separate the alternatives or extract the components of the hypothesis. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma gN_mul (P Q : MvPolynomial σ F) : gN (P * Q) = gN P * gN Q := by
   classical
@@ -196,7 +190,7 @@ def gNN (P : MvPolynomial σ F) : ℝ≥0 := Real.toNNReal (gN P)
 
 omit [IsUltrametricDist F] in
 /- English proof (translation)
-The claim follows from `Real.coe_toNNReal _ (gN_nonneg P)`.
+A detailed English derivation is pending.
 -/
 lemma coe_gNN (P : MvPolynomial σ F) : ((gNN P : ℝ≥0) : ℝ) = gN P :=
   Real.coe_toNNReal _ (gN_nonneg P)
@@ -219,12 +213,12 @@ def gVal (F σ : Type) [NormedField F] [IsUltrametricDist F] : Valuation (MvPoly
     exact gN_add_le P Q
 
 /- English proof (translation)
-The claim follows from `coe_gNN P`.
+A detailed English derivation is pending.
 -/
 lemma gVal_coe (P : MvPolynomial σ F) : ((gVal F σ P : ℝ≥0) : ℝ) = gN P := coe_gNN P
 
 /- English proof (translation)
-Introduce `P hP hmem`. Rewrite `hmem` using `[SetLike.mem_coe, Valuation.mem_supp_iff]`. Establish `h0 : gN P = 0` using `by rw [← gVal_coe, hmem]; rfl`. Conclude with `nonZeroDivisors.ne_zero hP (gN_eq_zero.mp h0)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma gVal_supp : nonZeroDivisors (MvPolynomial σ F) ≤ (gVal F σ).supp.primeCompl := by
   intro P hP hmem
@@ -238,7 +232,7 @@ def gValK (F σ : Type) [NormedField F] [IsUltrametricDist F] : Valuation (GK F 
   (gVal F σ).extendToLocalization gVal_supp (GK F σ)
 
 /- English proof (translation)
-Rewrite using `[gValK, Valuation.extendToLocalization_apply_map_apply, gVal_coe]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma gValK_algebraMap (P : MvPolynomial σ F) :
     ((gValK F σ (algebraMap _ (GK F σ) P) : ℝ≥0) : ℝ) = gN P := by
@@ -255,7 +249,7 @@ def gAbs (F σ : Type) [NormedField F] [IsUltrametricDist F] : AbsoluteValue (GK
     exact h.trans (max_le_add_of_nonneg (NNReal.coe_nonneg _) (NNReal.coe_nonneg _))
 
 /- English proof (translation)
-Establish `h` using `(gValK F σ).map_add x y`. Rewrite `h` using `[← NNReal.coe_le_coe, NNReal.coe_max]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma gAbs_add_le_max (x y : GK F σ) : gAbs F σ (x + y) ≤ max (gAbs F σ x) (gAbs F σ y) := by
   have h := (gValK F σ).map_add x y
@@ -263,7 +257,7 @@ lemma gAbs_add_le_max (x y : GK F σ) : gAbs F σ (x + y) ≤ max (gAbs F σ x) 
   exact h
 
 /- English proof (translation)
-The claim follows from `gValK_algebraMap P`.
+A detailed English derivation is pending.
 -/
 lemma gAbs_algebraMap (P : MvPolynomial σ F) : gAbs F σ (algebraMap _ (GK F σ) P) = gN P :=
   gValK_algebraMap P
@@ -271,16 +265,16 @@ lemma gAbs_algebraMap (P : MvPolynomial σ F) : gAbs F σ (algebraMap _ (GK F σ
 end Gauss
 
 /- English proof (translation)
-Rewrite using `[← map_intCast (algebraMap ℚ_[l] ℂ_[l]), norm_algebraMap']`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma norm_intCast_padicComplex (l : ℕ) [Fact l.Prime] (z : ℤ) :
     ‖(z : ℂ_[l])‖ = ‖(z : ℚ_[l])‖ := by
   rw [← map_intCast (algebraMap ℚ_[l] ℂ_[l]), norm_algebraMap']
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `gN_le fun n => ?_` and prove the remaining obligations. Rewrite using `[coeff_map, eq_intCast, norm_intCast_padicComplex]`. Conclude with `Padic.norm_int_le_one _`. Take `⟨n, hn⟩` from `ne_zero_iff.mp hP`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hn` using `[coeff_map, eq_intCast]`. Establish `hnd : ¬ (l : ℤ) ∣ coeff n P` using `fun h => hn ((ZMod.intCast_zmod_eq_zero_iff_dvd _ _).mpr h)`. Establish `h1 : ‖((coeff n P : ℤ) : ℚ_[l])‖ = 1` using `le_antisymm (Padic.norm_int_le_one _) (not_lt.mp fun h => hnd (Padic.norm_intCast_lt_one_iff.mp h))`. Use `le_gN (MvPolynomial.map (Int.castRingHom ℂ_[l]) P) n` as an intermediate fact. Rewrite `this` using `[coeff_map, eq_intCast, norm_intCast_padicComplex, h1]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 lemma gN_map_int (l : ℕ) [Fact l.Prime] {σ : Type} (P : MvPolynomial σ ℤ)
     (hP : MvPolynomial.map (Int.castRingHom (ZMod l)) P ≠ 0) :
@@ -299,7 +293,7 @@ lemma gN_map_int (l : ℕ) [Fact l.Prime] {σ : Type} (P : MvPolynomial σ ℤ)
     rwa [coeff_map, eq_intCast, norm_intCast_padicComplex, h1] at this
 
 /- English proof (translation)
-Use `eval₂_comp_left ι (C : A →+* MvPolynomial σ A) X P` as an intermediate fact. Rewrite `this` using `[eval₂_eta]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma eval₂_ringHom_eq {σ A K : Type} [CommRing A] [CommRing K] (ι : MvPolynomial σ A →+* K)
     (P : MvPolynomial σ A) : eval₂ (ι.comp C) (fun i => ι (X i)) P = ι P := by
@@ -308,7 +302,7 @@ lemma eval₂_ringHom_eq {σ A K : Type} [CommRing A] [CommRing K] (ι : MvPolyn
   exact this.symm
 
 /- English proof (translation)
-Rewrite using `[aeval_def, ← eval₂_ringHom_eq, eval₂_map]`. Use `congr 1`. Conclude with `RingHom.ext_int _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 lemma aeval_int_eq {σ A K : Type} [CommRing A] [CommRing K] [Algebra ℤ K]
     (ι : MvPolynomial σ A →+* K) (P : MvPolynomial σ ℤ) :
@@ -318,13 +312,11 @@ lemma aeval_int_eq {σ A K : Type} [CommRing A] [CommRing K] [Algebra ℤ K]
   exact RingHom.ext_int _ _
 
 /- English proof (translation)
-Introduce `l _ σ _`. Set `inst : NormedField (GK ℂ_[l] σ)` to `(gAbs ℂ_[l] σ).toNormedField`. Set `ι : MvPolynomial σ ℂ_[l] →+* GK ℂ_[l] σ` to `algebraMap _ _`. Establish `hι : ∀ P, ‖ι P‖ = gN P` using `fun P => gAbs_algebraMap P`. Establish `hev : ∀ P, eval₂ (ι.comp C) (fun i => ι (X i)) P = ι P` using `eval₂_ringHom_eq ι`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨GK ℂ_[l] σ, inst, ?_, ?_, ι.comp C, fun i => ι (X i), ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `IsUltrametricDist.isUltrametricDist_of_forall_norm_add_le_max_norm fun x y => gAbs_add_le_max x y`. Conclude with `charZero_of_injective_ringHom (ι.comp C).injective`. Introduce `z`. Rewrite using `[RingHom.comp_apply, hι, gN_C]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `P`. Rewrite using `[hev, hι]`. Both sides reduce to the same expression. Introduce `P hP`. Use `(congrArg norm (@aeval_int_eq σ ℂ_[l] (GK ℂ_[l] σ) _ _ (Ring.toIntAlgebra _) ι P)).trans ?_` and prove the remaining obligations.
-
-Rewrite using `[hι]`. Conclude with `gN_map_int l P hP`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem residuallyGenericExists : GenericExists := by
   intro l _ σ _

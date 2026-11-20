@@ -16,9 +16,9 @@ namespace GlobalTheory.ThK.DiffLevel
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Establish `hev : ∀ i, ∀ᶠ v in cofinite, φ i v = M.vac v` using `fun i => Filter.eventually_cofinite.2 (T.finite_toSet.subset fun v hv => by`. Assume the negation of the conclusion as `h`. Conclude with `hv (hT i v h))`. Establish `hex` using `fun i => GlobalTheory.T.exists_open_subgroup_fixing_pure_tensor F E σ B n d X W M χX χW om r s r' s' hK hP (f i) (φ i) (hSB i) (hev i)`. Use `choose U hU hfix using hex`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⨅ i, U i, ?_, fun k hk hf => ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.coe_iInf]`. Conclude with `isOpen_iInter_of_finite hU`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => hfix i k (Subgroup.mem_iInf.1 hk i) hf`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_open_fix_sum (hK : KP) (B : Base F E) {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W}
     {χX χW : Chr F E} {om : Rep σ X W} {r s r' s' : ℕ} (hP : IsPair B M χX χW om r s r' s') (T : Finset (Pl F)) {m : ℕ}
@@ -40,7 +40,7 @@ theorem exists_open_fix_sum (hK : KP) (B : Base F E) {n d : ℕ} {X : Spc F E n}
     exact Finset.sum_congr rfl fun i _ => hfix i k (Subgroup.mem_iInf.1 hk i) hf
 
 /- English proof (translation)
-Unfold `Model.I theta`. Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[show ((g, h * k) : UA σ X.J × UA σ W.J) = (g, h) * (1, k) by simp, map_mul, Module.End.mul_apply, hk]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem I_mul_of_fix {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (om : Rep σ X W)
     (Φ : (Fin n × Fin d → AF F) → ℂ) (k : UA σ W.J) (hk : om (1, k) Φ = Φ) (h : UA σ W.J) :
@@ -51,11 +51,11 @@ theorem I_mul_of_fix {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X
   rw [show ((g, h * k) : UA σ X.J × UA σ W.J) = (g, h) * (1, k) by simp, map_mul, Module.End.mul_apply, hk]
 
 /- English proof (translation)
-Introduce `hK F E _ _ _ _ _ σ B a a' G X om om' R Rf hM _ _ c Φ Φ' _ hPM c₀ hc₀ ψ' hψ'`. Establish `hT` using `hM.triple`. Establish `hσ : ∀ x, σ (σ x) = x` using `GlobalTheory.SiegelSet.sigma_sigma hT.base.cm`. Take `⟨T, -, m, m', f, φ, f', φ₁, hi, hj, hΦ, hΦ', -⟩` from `hPM`. Take `⟨U₁, hU₁, h₁⟩` from `exists_open_fix_sum hK B (Check.isPair_of_isTriple hT).1 T f φ (fun i v => (hi i).2.1 v) (fun i => (hi i).2.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨U₂, hU₂, h₂⟩` from `exists_open_fix_sum hK B (Check.isPair_of_isTriple hT).2 T f' φ₁ (fun j v => (hj j).2.1 v) (fun j => (hj j).2.2)`. Use `set e := toGAd hσ G.W.J hc₀`. Establish `he : Continuous e.symm` using `continuous_subtype_val.subtype_mk _`. Use `⟨(U₁ ⊓ U₂).comap e.symm.toMonoidHom, (hU₁.inter hU₂).preimage he, fun k hk hfin g => ?_⟩` and prove the remaining obligations. Establish `hf : (mat (e.symm k)).map (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)) = 1` using `congrArg Units.val (MonoidHom.mem_ker.1 hfin)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k₁ : om (1, e.symm k) Φ = Φ` using `hΦ ▸ h₁ _ hk.1 hf`. Establish `k₂ : om' (1, e.symm k) Φ' = Φ'` using `hΦ' ▸ h₂ _ hk.2 hf`. Rewrite using `[hψ' (e.symm (g * k)) (g * k) rfl, hψ' (e.symm g) g rfl, map_mul, I_mul_of_fix _ _ _ _ k₁, I_mul_of_fix _ _ _ _ k₂]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem level : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (R : RealMaps F a a') (Rf : FinMaps F a a'), IsMatched B G X om om' R Rf → G.q = 0 → 1 ≤ G.p →

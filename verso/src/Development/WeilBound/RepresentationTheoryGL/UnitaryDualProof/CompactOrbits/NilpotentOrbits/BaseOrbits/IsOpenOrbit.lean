@@ -13,9 +13,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hu : u1 - u2 ∈ Z` using `Z.sub_mem h1 h2`. Establish `hue : (u1 - u2) * e = u1 - u2` using `by rw [sub_mul, h1e, h2e]`. Take `⟨u', -, -, hu'⟩` from `hprim _ hu hue (sub_ne_zero.mpr hne)`. Apply `hw0` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hz : (u1 - u2) *ᵥ w = 0` using `by rw [sub_mulVec, h12, sub_self]`. Rewrite using `[← hw, ← hu', ← mulVec_mulVec, hz, mulVec_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem uniq_eZ (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (e : Matrix (Fin n) (Fin n) k)
     (hprim : ∀ u ∈ Z, u * e = u → u ≠ 0 → ∃ u' ∈ Z, u' * e = u' ∧ u' * u = e)
@@ -30,9 +30,9 @@ theorem uniq_eZ (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (e : Matrix (Fin n
   rw [← hw, ← hu', ← mulVec_mulVec, hz, mulVec_zero]
 
 /- English proof (translation)
-Establish `hex : ∀ v : Fin n → k, ∃ u ∈ Z, u * e = u ∧ u *ᵥ w = e *ᵥ v` using `fun v => one_dim Z hZ h0 e he hee hprim w (e *ᵥ v) hw hw0 (by rw [mulVec_mulVec, hee])`. Use `choose φ hφZ hφe hφw using hex`. Use `⟨{ toFun := φ, map_add' := ?_, map_smul' := ?_ }, fun v => ⟨hφZ v, hφe v, hφw v⟩⟩` and prove the remaining obligations. Introduce `v1 v2`. Apply `uniq_eZ Z e hprim w hw hw0 _ _ (hφZ _) (Z.add_mem (hφZ v1) (hφZ v2)) (hφe _) (by rw [add_mul, hφe, hφe])` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hφw, add_mulVec, hφw, hφw, mulVec_add]`. Introduce `c v`. Apply `uniq_eZ Z e hprim w hw hw0 _ _ (hφZ _) (Z.smul_mem (hφZ v) c) (hφe _) (by rw [smul_mul_assoc, hφe])` to reduce the goal to its premises. Rewrite using `[hφw, smul_mulVec, hφw, mulVec_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_psi (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z) (h0 : dB0 Z = 0)
     (e : Matrix (Fin n) (Fin n) k) (he : e ∈ Z) (hee : e * e = e)
@@ -54,21 +54,17 @@ theorem exists_psi (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z) (h0
     rw [hφw, smul_mulVec, hφw, mulVec_smul]
 
 /- English proof (translation)
-Take `⟨ψ, hψ⟩` from `exists_psi Z hZ h0 e he hee hprim w.1 w.2 hw0'`. Establish `hψc : Continuous ψ`. Establish `hrep : ∀ v : Fin n → k, ψ v = ∑ i, v i • ψ (fun j => if i = j then 1 else 0)`. Introduce `v`. Use `conv_lhs => rw [pi_eq_sum_univ v]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum]`. Simplify using `only [map_smul]`. Establish `hfun : (ψ : (Fin n → k) → Matrix (Fin n) (Fin n) k) = fun v => ∑ i, v i • ψ (fun j => if i = j then 1 else 0)` using `funext hrep`. Rewrite using `[hfun]`. Conclude with `continuous_finset_sum _ (fun i _ => (continuous_apply i).smul continuous_const)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Φ : Wt e → Matrix (Fin n) (Fin n) k` to `fun w' => 1 + ψ (w'.1 - w.1)`. Establish `hΦ : Continuous Φ` using `continuous_const.add (hψc.comp (continuous_subtype_val.sub continuous_const))`. Establish `hΦw : Φ w = 1` using `by simp [Φ]`. Establish `hU : {A : Matrix (Fin n) (Fin n) k | A.det ≠ 0} ∩ ({A : Matrix (Fin n) (Fin n) k | sm γ (A - 1)} ∩ {A | sm γ (A⁻¹ - 1)}) ∈ 𝓝 (Φ w)`. Rewrite using `[hΦw]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Filter.inter_mem ?_ (Filter.inter_mem ?_ ?_)` and prove the remaining obligations. Conclude with `(isOpen_ne_fun (continuous_id.matrix_det) continuous_const).mem_nhds (by simp)`. Conclude with `(continuous_id.sub continuous_const).continuousAt.preimage_mem_nhds ((isOpen_sm γ).mem_nhds (by simpa using sm_zero γ))`. Conclude with `(cont_inv_one.sub continuousAt_const).preimage_mem_nhds ((isOpen_sm γ).mem_nhds (by simpa using sm_zero γ))`. Use `Filter.mem_of_superset (hΦ.continuousAt.preimage_mem_nhds hU) ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `w' ⟨hdet, hs1, hs2⟩`. Take `⟨huZ, hue, huw⟩` from `hψ (w'.1 - w.1)`. Establish `hA : Φ w' = 1 + ψ (w'.1 - w.1)` using `rfl`. Establish `hmemG : (Matrix.nonsingInvUnit (Φ w') (isUnit_iff_ne_zero.mpr hdet) : GL (Fin n) k) ∈ Gs Z e`. Use `⟨fun a ha => ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show a * Φ w' = Φ w' * a`. Rewrite using `[hA, mul_add, add_mul, mul_one, one_mul, hZ.1 a ha _ huZ]`. Use `show Φ w' * e = e * Φ w'`. Rewrite using `[hA, add_mul, mul_add, one_mul, mul_one, hZ.1 _ huZ e he]`. Use `show Φ w' * (1 - e) = 1 - e`.
-
-Rewrite using `[hA, add_mul, one_mul, mul_sub, mul_one, hue, sub_self, add_zero]`. Use `⟨⟨_, hmemG⟩, ⟨hs1, hs2⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[smul_val]`. Use `show Φ w' *ᵥ w.1 = w'.1`.
-
-Rewrite using `[hA, add_mulVec, one_mulVec, huw, mulVec_sub, w'.2, w.2]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem orbit_nhds (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z) (h0 : dB0 Z = 0)
     (e : Matrix (Fin n) (Fin n) k) (he : e ∈ Z) (hee : e * e = e)
@@ -119,11 +115,11 @@ theorem orbit_nhds (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z) (h0
   abel
 
 /- English proof (translation)
-Rewrite using `[isOpen_iff_mem_nhds]`. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Establish `hne : (g • w).1 ≠ 0`. Introduce `h`. Apply `hw0` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h'` using `congrArg (fun x => ((g : GL (Fin n) k)⁻¹ : GL (Fin n) k).val *ᵥ x) h`. Simplify using `only [smul_val, mulVec_mulVec, mulVec_zero] at h'`. Simplify using `using h'`. Use `Filter.mem_of_superset (orbit_nhds Z hZ h0 e he hee hprim γ (g • w) hne) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨h, hh, rfl⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨h * g, (Ks Z e γ).mul_mem hh hg, mul_smul h g w⟩`.
+Supply the required witnesses or components.
 -/
 theorem isOpen_orbit (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z) (h0 : dB0 Z = 0)
     (e : Matrix (Fin n) (Fin n) k) (he : e ∈ Z) (hee : e * e = e)
@@ -143,19 +139,17 @@ theorem isOpen_orbit (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z) (
   exact ⟨h * g, (Ks Z e γ).mul_mem hh hg, mul_smul h g w⟩
 
 /- English proof (translation)
-Take `⟨hlc, hcs⟩` from `hf`. Establish `key : ∀ᶠ A in 𝓝 (1 : Matrix (Fin n) (Fin n) k), ∀ q ∈ tsupport f, ∀ q' : Y × Wt e, q'.1 = q.1 → q'.2.1 = A *ᵥ q.2.1 → f q' = f q`. Use `hcs.eventually_forall_of_forall_eventually (fun p _ => ?_)` and prove the remaining obligations. Establish `hS : IsOpen {x | f x = f p}` using `hlc.isOpen_fiber _`. Establish `hι : Topology.IsInducing (Prod.map id Subtype.val : Y × Wt e → Y × (Fin n → k))` using `Topology.IsInducing.id.prodMap Topology.IsInducing.subtypeVal`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨t, ht, hte⟩` from `hι.isOpen_iff.mp hS`. Establish `hH : Continuous (fun z : Matrix (Fin n) (Fin n) k × (Y × Wt e) => (z.2.1, z.1 *ᵥ z.2.2.1))` using `continuous_snd.fst.prodMk (continuous_fst.matrix_mulVec (continuous_subtype_val.comp continuous_snd.snd))`. Establish `hpt : p ∈ Prod.map id Subtype.val ⁻¹' t`. Rewrite using `[hte]`. Conclude with `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h1 : ∀ᶠ z : Matrix (Fin n) (Fin n) k × (Y × Wt e) in 𝓝 (1, p), (z.2.1, z.1 *ᵥ z.2.2.1) ∈ t`. Apply `hH.continuousAt.preimage_mem_nhds` to reduce the goal to its premises. Apply `ht.mem_nhds` to reduce the goal to its premises. Use `show (p.1, (1 : Matrix (Fin n) (Fin n) k) *ᵥ p.2.1) ∈ t`. Rewrite using `[one_mulVec]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hpt`. Establish `hm : ∀ᶠ x in 𝓝 p, f x = f p` using `hS.mem_nhds rfl`. Establish `h2 : ∀ᶠ z : Matrix (Fin n) (Fin n) k × (Y × Wt e) in 𝓝 (1, p), f z.2 = f p` using `(continuous_snd.tendsto ((1 : Matrix (Fin n) (Fin n) k), p)).eventually hm`. Use `filter_upwards [h1, h2] with z hz1 hz2 q' hq1 hq2`. Establish `hq' : q' ∈ Prod.map id Subtype.val ⁻¹' t` using `by show (q'.1, q'.2.1) ∈ t`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hq1, hq2]`. Conclude with `hz1`. Rewrite `hq'` using `[hte]`. Conclude with `(hq' : f q' = f p).trans hz2.symm`. Take `⟨γ, hγ⟩` from `nhds_one_ball key`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hP : ∀ g ∈ Ks Z e γ, ∀ q ∈ tsupport f, f (q.1, g • q.2) = f q` using `fun g hg q hq => hγ _ (fun i j => (hg.1 i j).1) q hq (q.1, g • q.2) rfl (smul_val Z e g q.2)`. Use `⟨γ, fun g hg p => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hp : p ∈ tsupport f`. Conclude with `hP g hg p hp`. Distinguish the cases in `hp' : (p.1, g • p.2) ∈ tsupport f`.
-
-Establish `h'` using `hP g⁻¹ ((Ks Z e γ).inv_mem hg) _ hp'`. Simplify using `only [inv_smul_smul] at h'`. Conclude with `h'.symm`. Rewrite using `[image_eq_zero_of_notMem_tsupport hp', image_eq_zero_of_notMem_tsupport hp]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unif (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (e : Matrix (Fin n) (Fin n) k) (hee : e * e = e)
     {Y : Type*} [TopologicalSpace Y] (f : Y × Wt e → ℂ) (hf : f ∈ TF (Y × Wt e)) :

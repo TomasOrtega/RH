@@ -17,17 +17,17 @@ def AbW (x : WD h) : Prop :=
 def Cmp (x y : WD h) : Prop := AbW x ∨ AbW y → x = y
 
 /- English proof (translation)
-Introduce `_` and use `e`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Cmp.of_eq {x y : WD h} (e : x = y) : Cmp x y := fun _ => e
 
 /- English proof (translation)
-The claim follows from `c (Or.inl a)`.
+A detailed English derivation is pending.
 -/
 theorem Cmp.left {x y : WD h} (c : Cmp x y) (a : AbW x) : x = y := c (Or.inl a)
 
 /- English proof (translation)
-The claim follows from `c (Or.inr a)`.
+A detailed English derivation is pending.
 -/
 theorem Cmp.right {x y : WD h} (c : Cmp x y) (a : AbW y) : x = y := c (Or.inr a)
 

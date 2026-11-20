@@ -13,7 +13,7 @@ open scoped Classical
 namespace GlobalTheory.GLm
 
 /- English proof (translation)
-Unfold `ip`. Use `congr 1`. Use `Fintype.sum_equiv (Equiv.inv G) _ _ fun x => ?_` and prove the remaining obligations. Simplify using `[mul_comm]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem ip_symm_of_inv {G : Type} [Group G] [Fintype G] (α β : G → ℂ) : ip α β = ip β α := by
   unfold ip
@@ -22,17 +22,17 @@ theorem ip_symm_of_inv {G : Type} [Group G] [Fintype G] (α β : G → ℂ) : ip
   simp [mul_comm]
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `f hf hn h0`. Distinguish the cases in `hu : IsUnit f`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `h1 : f = 1` using `hf.isUnit_iff.mp hu`. Use `⟨[], by simp, ?_, by simpa using h1⟩` and prove the remaining obligations. Rewrite using `[← hn, h1]`. Simplify using `[degL]`. Take `⟨P, hPm, hPi, q, hq⟩` from `Polynomial.exists_monic_irreducible_factor f hu`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hqm : q.Monic` using `hPm.of_mul_monic_left (hq ▸ hf)`. Establish `hdeg : n = P.natDegree + q.natDegree`. Rewrite using `[← hn, hq, hPm.natDegree_mul hqm]`. Establish `hpos : 0 < P.natDegree` using `hPi.natDegree_pos`. Establish `hc : P.coeff 0 * q.coeff 0 ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h0` using `[hq, Polynomial.mul_coeff_zero]`. Then use the resulting hypothesis. Take `⟨Q, hQ1, hQ2, hQ3⟩` from `ih q.natDegree (by omega) q hqm rfl (right_ne_zero_of_mul hc)`. Take `⟨τ, hτ, -⟩` from `hG g L P.natDegree hpos`. Establish `hP : IsPrimeLab P.natDegree P` using `⟨hPm, hPi, left_ne_zero_of_mul hc, rfl⟩`. Use `⟨(P, ⟨P.natDegree, τ P⟩) :: Q, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `p hp`. Break down `List.mem_cons.mp hp with rfl | hp` into its components or cases. Conclude with `(hτ P hP).1`. Conclude with `hQ1 p hp`. Rewrite using `[hdeg, ← hQ2]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[degL]`. Rewrite using `[List.map_cons, List.prod_cons, ← hQ3]`. Conclude with `hq`.
+A detailed English derivation is pending.
 -/
 theorem exists_cusp_list (g : ℕ) [Fact g.Prime] (L : LabelDatum g) (hG : Green) :
     ∀ (n : ℕ) (f : (ZMod g)[X]), f.Monic → f.natDegree = n → f.coeff 0 ≠ 0 →
@@ -65,21 +65,19 @@ theorem exists_cusp_list (g : ℕ) [Fact g.Prime] (L : LabelDatum g) (hG : Green
       · rw [List.map_cons, List.prod_cons, ← hQ3]; exact hq
 
 /- English proof (translation)
-Take `⟨Q, hQ1, hQ2, hQ3⟩` from `exists_cusp_list g L hG n f hf hn h0`. Establish `hirr : ∀ p ∈ Q.map Prod.snd, IsIrr p.2`. Introduce `p hp`. Take `⟨q, hq, rfl⟩` from `List.mem_map.mp hp`. Conclude with `(hQ1 q hq).2.1.2.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hch : IsChar (hcL (Q.map Prod.snd) n)` using `(GlobalTheory.T.harishChandraProductList_isCharacter_and_perm_invariant g _ (Q.map Prod.snd) n hQ2.symm fun p hp => by`. Take `⟨V, -, hV⟩` from `hirr p hp`. Conclude with `⟨V, hV⟩).1`. Establish `hne : hcL (Q.map Prod.snd) n 1 ≠ 0`. Introduce `h`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hd` using `GlobalTheory.T.harishChandraProductList_degree g (Q.map Prod.snd) n hQ2.symm`. Rewrite `hd` using `[h, zero_mul]`. Use `mul_ne_zero ?_ ?_ hd.symm` and prove the remaining obligations. Use `Finset.prod_ne_zero_iff.mpr fun i hi => ?_` and prove the remaining obligations. Establish `hi1 : i ≠ 0` using `by have := (Finset.mem_Icc.mp hi).1; omega`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : 1 < g ^ i` using `Nat.one_lt_pow hi1 (Fact.out : g.Prime).one_lt`. Rewrite using `[sub_ne_zero]`. Conclude with `h1.ne'` after adjusting the coercions. Use `List.prod_ne_zero fun hz => ?_` and prove the remaining obligations. Take `⟨p, hp, hp0⟩` from `List.mem_map.mp hz`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨d, hd0, hd1⟩` from `(GlobalTheory.T.groupAlgebraTrace_idempotent_and_irreducible_degree (Gn g p.1) 1 p.2).2.1 (hirr p hp)`. Rewrite `hd1` using `[hp0]`. Establish `: d = 0` using `by exact_mod_cast hd1.symm`. Use linear arithmetic over natural numbers and integers. Establish `hdec` using `GlobalTheory.T.character_decomposition_and_classFunction_expansion (Gn g n) (hcL (Q.map Prod.snd) n)`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hsum` using `hdec.2.1 (hdec.2.2.1 hch)`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Apply `hne` to reduce the goal to its premises. Rewrite using `[hsum, finsum_mem_of_eqOn_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Introduce `ρ hρ`. Establish `: ip (hcL (Q.map Prod.snd) n) ρ = 0`. Assume the negation of the conclusion as `hip`. Conclude with `hcon ρ hρ ⟨Q, hQ1, hQ2, hQ3, by rwa [ip_symm_of_inv]⟩`.
-
-Simplify using `[this]`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_irr_hasLabel (g : ℕ) [Fact g.Prime] (L : LabelDatum g) (hG : Green) (n : ℕ) (f : (ZMod g)[X])
     (hf : f.Monic) (hn : f.natDegree = n) (h0 : f.coeff 0 ≠ 0) :
@@ -123,11 +121,11 @@ theorem exists_irr_hasLabel (g : ℕ) [Fact g.Prime] (L : LabelDatum g) (hG : Gr
     simp [this]
 
 /- English proof (translation)
-Introduce `h`. Take `⟨-, h1, h2⟩` from `GlobalTheory.T.groupAlgebraTrace_idempotent_and_irreducible_degree G 1 ρ`. Take `⟨d, hd0, hd1⟩` from `h1 hρ`. Establish `htr : tr (1 : MonoidAlgebra ℂ G) ρ = ρ 1`. Unfold `tr`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[Finset.sum_eq_single 1]`. Simplify using `[MonoidAlgebra.one_def]`. Introduce `b _ hb`. Simplify using `[MonoidAlgebra.one_def, Finsupp.single_apply, hb, hb.symm]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hd : ρ 1 ≠ 0` using `by rw [hd1]; exact_mod_cast hd0.ne'`. Establish `hc : (Fintype.card G : ℂ) ≠ 0` using `by exact_mod_cast Fintype.card_ne_zero`. Rewrite `h2` using `[h, mul_zero, htr]`. Conclude with `mul_ne_zero (div_ne_zero hd hc) hd (h2.symm.trans (by simp))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zOf_ne_zero_of_isIrr {G : Type} [Group G] [Fintype G] {ρ : G → ℂ} (hρ : IsIrr ρ) : zOf ρ ≠ 0 := by
   intro h
@@ -146,11 +144,11 @@ theorem zOf_ne_zero_of_isIrr {G : Type} [Group G] [Fintype G] {ρ : G → ℂ} (
   exact mul_ne_zero (div_ne_zero hd hc) hd (h2.symm.trans (by simp))
 
 /- English proof (translation)
-Introduce `g _ L hG n f hf hn h0 he`. Take `⟨ρ, hρ, hl⟩` from `exists_irr_hasLabel g L hG n f hf hn h0`. Establish `hfin : {χ : Gn g n → ℂ | IsIrr χ ∧ HasLabel L χ f}.Finite` using `(GlobalTheory.T.finite_irrCharacters_and_finsum_centralIdempotents_eq_one (Gn g n)).1.subset fun χ hχ => hχ.1`. Apply `zOf_ne_zero_of_isIrr hρ` to reduce the goal to its premises. Establish `h : zOf ρ * eSerC L n f = zOf ρ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Unfold `eSerC`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hfin, Finset.mul_sum, Finset.sum_eq_single ρ]`. Rewrite using `[(GlobalTheory.T.centralIdempotentOfIrrCharacter_orthogonal_central _ ρ ρ hρ hρ).1, if_pos rfl]`. Introduce `b hb hne`. Rewrite using `[(GlobalTheory.T.centralIdempotentOfIrrCharacter_orthogonal_central _ ρ b hρ (hfin.mem_toFinset.mp hb).1).1, if_neg hne.symm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `hb`. Conclude with `absurd (hfin.mem_toFinset.mpr ⟨hρ, hl⟩) hb`. Rewrite using `[← h, he, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eSerC_ne_zero : ∀ (g : ℕ) [Fact g.Prime] (L : LabelDatum g), Green → ∀ (n : ℕ) (f : (ZMod g)[X]),
     f.Monic → f.natDegree = n → f.coeff 0 ≠ 0 → eSerC L n f ≠ 0 := by

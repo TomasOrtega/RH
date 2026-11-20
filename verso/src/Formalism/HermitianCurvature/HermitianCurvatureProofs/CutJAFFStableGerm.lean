@@ -12,11 +12,11 @@ section germ
 variable {k r : ℕ} {E' : Type*} [NormedAddCommGroup E'] [NormedSpace ℂ E']
 
 /- English proof (translation)
-Distinguish the cases in `hc : c = 0`. Simplify using `[hc]`. Distinguish the cases in `hd : DifferentiableAt ℝ h t`. Conclude with `deriv_const_smul c hd`. Establish `hd' : ¬ DifferentiableAt ℝ (fun s => c • h s) t`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h'`. Apply `hd` to reduce the goal to its premises. Establish `e : h = fun s => c⁻¹ • (c • h s)`. Use function extensionality and compare the values at `s`. Simplify using `[smul_smul, inv_mul_cancel₀ hc]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `h'.const_smul c⁻¹`. Rewrite using `[deriv_zero_of_not_differentiableAt hd, deriv_zero_of_not_differentiableAt hd', smul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deriv_const_smul_any (c : ℂ) (h : ℝ → E') (t : ℝ) :
     deriv (fun s => c • h s) t = c • deriv h t := by
@@ -35,7 +35,7 @@ theorem deriv_const_smul_any (c : ℂ) (h : ℝ → E') (t : ℝ) :
     rw [deriv_zero_of_not_differentiableAt hd, deriv_zero_of_not_differentiableAt hd', smul_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Conclude with `deriv_const_smul_any c (fun t => f (g * NormedSpace.exp ((t : ℂ) • X))) 0`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem rdV_smul (X : B.Mat k r) (c : ℂ) (f : B.Mat k r → E') :
     RdV X (c • f) = c • RdV X f := by
@@ -43,7 +43,7 @@ theorem rdV_smul (X : B.Mat k r) (c : ℂ) (f : B.Mat k r → E') :
   exact deriv_const_smul_any c (fun t => f (g * NormedSpace.exp ((t : ℂ) • X))) 0
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons X w ih => show RdV X (B.Rw w (c • f)) = c • RdV X (B.Rw w f)`. Rewrite using `[ih, rdV_smul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem rw_smul (w : List (B.Mat k r)) (c : ℂ) (f : B.Mat k r → E') :
     B.Rw w (c • f) = c • B.Rw w f := by
@@ -54,9 +54,9 @@ theorem rw_smul (w : List (B.Mat k r)) (c : ℂ) (f : B.Mat k r → E') :
     rw [ih, rdV_smul]
 
 /- English proof (translation)
-Use `show deriv (fun t : ℝ => f (g * NormedSpace.exp ((t : ℂ) • X))) 0 = deriv (fun t : ℝ => f' (g * NormedSpace.exp ((t : ℂ) • X))) 0`. Apply `Filter.EventuallyEq.deriv_eq` to reduce the goal to its premises. Establish `hc : Continuous (fun t : ℝ => g * NormedSpace.exp ((t : ℂ) • X))` using `(Formalism.FourierDecayAlt.P.B5.curve_contDiff g X).continuous`. Establish `hev : ∀ᶠ t : ℝ in nhds (0 : ℝ), g * NormedSpace.exp (((t : ℝ) : ℂ) • X) ∈ U`. Apply `hc.continuousAt.preimage_mem_nhds` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `show U ∈ nhds (g * NormedSpace.exp (((0 : ℝ) : ℂ) • X))`. Rewrite using `[Formalism.FourierDecayAlt.P.B5.curve_zero]`. Conclude with `hU.mem_nhds hg`. Use `filter_upwards [hev] with t ht`. Conclude with `he _ ht (Formalism.FourierDecayAlt.P.B5.curve_mem hgG hX t)`.
+A detailed English derivation is pending.
 -/
 theorem rdV_local {X : B.Mat k r} (hX : B.inLie k r X) {U : Set (B.Mat k r)} (hU : IsOpen U)
     {f f' : B.Mat k r → E'} (he : ∀ x ∈ U, x ∈ B.GV k r → f x = f' x) {g : B.Mat k r} (hg : g ∈ U)
@@ -75,7 +75,7 @@ theorem rdV_local {X : B.Mat k r} (hX : B.inLie k r X) {U : Set (B.Mat k r)} (hU
   exact he _ ht (Formalism.FourierDecayAlt.P.B5.curve_mem hgG hX t)
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => exact he`. Consider the case `cons X w ih`. Introduce `x hx hxG`. Conclude with `rdV_local (hw X (by simp)) hU (ih (fun Y hY => hw Y (by simp [hY]))) hx hxG`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem rw_local (w : List (B.Mat k r)) (hw : ∀ X ∈ w, B.inLie k r X) {U : Set (B.Mat k r)} (hU : IsOpen U)
     {f f' : B.Mat k r → E'} (he : ∀ x ∈ U, x ∈ B.GV k r → f x = f' x) :
@@ -87,7 +87,7 @@ theorem rw_local (w : List (B.Mat k r)) (hw : ∀ X ∈ w, B.inLie k r X) {U : S
     exact rdV_local (hw X (by simp)) hU (ih (fun Y hY => hw Y (by simp [hY]))) hx hxG
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons a l ih => simp [ih, smul_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem sum_map_smul' {ι M : Type*} [AddCommMonoid M] [Module ℂ M] (c : ℂ) (l : List ι) (φ : ι → M) :
     (l.map fun i => c • φ i).sum = c • (l.map φ).sum := by
@@ -98,17 +98,17 @@ theorem sum_map_smul' {ι M : Type*} [AddCommMonoid M] [Module ℂ M] (c : ℂ) 
 end germ
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ _ Θ`. Use `⟨fun U f f' hU he g hg hgG => ⟨?_, ?_⟩, fun c f g => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Unfold `B.opApply`. Use `congr 1`. Apply `List.map_congr_left` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `T _`. Rewrite using `[rw_local T.word T.word_lie hU he g hg hgG]`. Unfold `B.opAdj`. Use `congr 1`. Apply `List.map_congr_left` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `T _`. Rewrite using `[rw_local T.word.reverse (fun X hX => T.word_lie X (List.mem_reverse.1 hX)) hU (f := fun x => T.coefAdj x (f x)) (f' := fun x => T.coefAdj x (f' x)) (fun x hx hxG => by simp only [he x hx hxG]) g hg hgG]`. Unfold `B.opApply`. Rewrite using `[← sum_map_smul']`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `T _`. Rewrite using `[rw_smul, Pi.smul_apply, map_smul]`. Unfold `B.opAdj`. Rewrite using `[← sum_map_smul']`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `T _`. Establish `e : (fun x => T.coefAdj x ((c • f) x)) = c • (fun x => T.coefAdj x (f x))`. Use function extensionality and compare the values at `x`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using the standard rewrite rules. Rewrite using `[e, rw_smul, Pi.smul_apply, smul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem germ_operators_holds : GermOps := by
   intro k r Wp Wq _ _ _ _ _ Θ

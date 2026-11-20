@@ -18,7 +18,7 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `S` and use `GlobalTheory.T.exists_semiAbelianModel_of_geometricHalf S GlobalTheory.T.uniformisationExistence_and_torsion_statements.1 GlobalTheory.T.all_six_abelian_scheme_laws_hold.1 GlobalTheory.T.all_six_abelian_scheme_laws_hold.2.1 GlobalTheory.T.uniformisationExistence_and_torsion_state …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem zh_of_semistableReduction : GlobalTheory.Published.SemistableReductionSt → GlobalTheory.ZH.ZHSt :=
   fun S => GlobalTheory.T.exists_semiAbelianModel_of_geometricHalf S GlobalTheory.T.uniformisationExistence_and_torsion_statements.1 GlobalTheory.T.all_six_abelian_scheme_laws_hold.1 GlobalTheory.T.all_six_abelian_scheme_laws_hold.2.1 GlobalTheory.T.uniformisationExistence_and_torsion_statements.2 (GlobalTheory.T.zarhinGeometric_of_semistableReduction S)

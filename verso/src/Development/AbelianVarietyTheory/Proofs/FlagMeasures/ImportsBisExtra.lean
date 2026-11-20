@@ -5,13 +5,13 @@ namespace GlobalTheory.SublatticeFacts
 open Matrix
 
 /- English proof (translation)
-Take `⟨t, rfl⟩` from `hfg`. Use `choose f hf1 hf using fun v : n → A => hden (X *ᵥ v)`. Use `⟨∏ v ∈ t, f v, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Nat.one_le_iff_ne_zero.mpr (Finset.prod_ne_zero_iff.mpr fun v _ => by have := hf1 v; omega)`. Introduce `y hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Rewrite using `[Nat.cast_smul_eq_nsmul A]`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Rewrite using `[← Finset.mul_prod_erase t f hx, mul_nsmul, ← Nat.cast_smul_eq_nsmul A (f x)]`. Conclude with `Submodule.smul_of_tower_mem _ (∏ v ∈ t.erase x, f v) (hf x)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Rewrite using `[Matrix.mulVec_add, smul_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx`.
+Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: X *ᵥ (a • x) = a • (X *ᵥ x)`. Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, Finset.mul_sum, Subring.smul_def, mul_left_comm]`. Rewrite using `[this, smul_comm]`. Conclude with `Submodule.smul_mem _ a hx`.
+A detailed English derivation is pending.
 -/
 theorem finiteRing_sq_sub_mul_sq_eq_of_card {A : Type} [CommRing A] {S : Subring A} {n : Type} [Fintype n] [DecidableEq n]
     (Λ : Submodule (↥S) (n → A)) (hfg : Submodule.FG Λ)
@@ -40,7 +40,7 @@ theorem finiteRing_sq_sub_mul_sq_eq_of_card {A : Type} [CommRing A] {S : Subring
       exact Submodule.smul_mem _ a hx
 
 /- English proof (translation)
-Introduce `Λ hfg hden X` and use `finiteRing_sq_sub_mul_sq_eq_of_card Λ hfg hden X`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ {A : Type} [inst : CommRing A] {S : Subring A} {n : Type} [inst_1 : Fintype n] [DecidableEq n]
     (Λ : Submodule (↥S) (n → A)), Submodule.FG Λ →

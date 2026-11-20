@@ -5,23 +5,23 @@ namespace Formalism.LogVandermondeBounds.TaylorLogMetric
 open Finset
 
 /- English proof (translation)
-Establish `hq : 1 ≤ x ^ 2` using `by nlinarith`. Establish `step : ∀ i j : ℕ, (x ^ 2) ^ i + x * (x ^ 2) ^ j - (x ^ 2 - 1) * ((i : ℚ) + j + 1) ≤ (x ^ 2) ^ i + x * (x ^ 2) ^ (j + 1) - (x ^ 2 - 1) * ((i : ℚ) + (j + 1 : ℕ) + 1)`. Introduce `i j`. Establish `hA : 1 ≤ (x ^ 2) ^ j` using `one_le_pow₀ hq`. Establish `hB : 1 ≤ x * (x ^ 2) ^ j` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Rewrite using `[pow_succ (x ^ 2) j]`. Establish `hq0 : 0 ≤ x ^ 2 - 1` using `by linarith`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hB hq0]`. Establish `mono : ∀ i j k : ℕ, (x ^ 2) ^ i + x * (x ^ 2) ^ j - (x ^ 2 - 1) * ((i : ℚ) + j + 1) ≤ (x ^ 2) ^ i + x * (x ^ 2) ^ (j + k) - (x ^ 2 - 1) * ((i : ℚ) + (j + k : ℕ) + 1)`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Introduce `i j k`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => exact ih.trans (by simpa [Nat.add_assoc] using step i (j + k))`. Establish `diag : ∀ m : ℕ, x ^ 3 - 2 * x ^ 2 + 3 ≤ (x ^ 2) ^ (m + 1) + x * (x ^ 2) ^ (m + 1) - (x ^ 2 - 1) * (((m + 1 : ℕ) : ℚ) + (m + 1 : ℕ) + 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => push_cast`. Put the polynomial expressions in normal form. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Put the polynomial expressions in normal form. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Consider the case `succ m ih`. Establish `hA : 1 ≤ (x ^ 2) ^ (m + 1)` using `one_le_pow₀ hq`. Establish `hB : 2 ≤ (x ^ 2) ^ (m + 1) + x * (x ^ 2) ^ (m + 1)` using `by nlinarith`. Use `ih.trans ?_` and prove the remaining obligations. Move the coercions through the operations in `at *`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[pow_succ (x ^ 2) (m + 1)]`. Use the polynomial consequences of the given equalities and inequalities. Introduce `i j hij hne`. Break down `Nat.eq_zero_or_pos i with rfl | hi` into its components or cases. Establish `hj : 1 ≤ j`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `Nat.eq_zero_or_pos j with rfl | hj` into its components or cases. Conclude with `absurd rfl hne`. Conclude with `hj`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hj`. Use `le_trans ?_ (mono 0 1 k)` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form.
 
-Use `push_cast`. Put the polynomial expressions in normal form. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨m, rfl⟩` from `Nat.exists_eq_add_of_le hi`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hij`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `mono (1 + m) (1 + m) k` as an intermediate fact. Establish `h2` using `diag m`. Rewrite `*` using `[Nat.add_comm 1 m]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the hypotheses and the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma key_ineq (x : ℚ) (hx : 2 ≤ x) :
     ∀ i j : ℕ, i ≤ j → (i, j) ≠ (0, 0) →
@@ -79,7 +79,7 @@ Use the polynomial consequences of the given equalities and inequalities.
 lemma sq_ge_two (p : ℕ) (hp : 2 ≤ p) : 2 ≤ p ^ 2 := by nlinarith
 
 /- English proof (translation)
-Establish `h : ∃ j', (p ^ 2) ^ j = (p ^ 2) ^ j'` using `⟨j, rfl⟩`. Unfold `coefL`. Rewrite using `[dif_pos h]`. Establish `hj : j = Classical.choose h` using `Nat.pow_right_injective (sq_ge_two p hp) (Classical.choose_spec h)`. Rewrite using `[← hj]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma coefL_pow (p j : ℕ) (hp : 2 ≤ p) : coefL p ((p ^ 2) ^ j) = 1 / (p : ℚ) ^ j := by
   have h : ∃ j', (p ^ 2) ^ j = (p ^ 2) ^ j' := ⟨j, rfl⟩
@@ -89,14 +89,14 @@ lemma coefL_pow (p j : ℕ) (hp : 2 ≤ p) : coefL p ((p ^ 2) ^ j) = 1 / (p : �
   rw [← hj]
 
 /- English proof (translation)
-Unfold `coefL`. Rewrite using `[dif_neg h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma coefL_zero (p a : ℕ) (h : ¬∃ j, a = (p ^ 2) ^ j) : coefL p a = 0 := by
   unfold coefL
   rw [dif_neg h]
 
 /- English proof (translation)
-Establish `h : ∃ j', p * (p ^ 2) ^ j = p * (p ^ 2) ^ j'` using `⟨j, rfl⟩`. Unfold `coefG`. Rewrite using `[dif_pos h]`. Establish `hj : j = Classical.choose h` using `Nat.pow_right_injective (sq_ge_two p hp) (Nat.eq_of_mul_eq_mul_left (by omega) (Classical.choose_spec h))`. Rewrite using `[← hj]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma coefG_pow (p j : ℕ) (hp : 2 ≤ p) : coefG p (p * (p ^ 2) ^ j) = 1 / (p : ℚ) ^ (j + 1) := by
   have h : ∃ j', p * (p ^ 2) ^ j = p * (p ^ 2) ^ j' := ⟨j, rfl⟩
@@ -107,18 +107,18 @@ lemma coefG_pow (p j : ℕ) (hp : 2 ≤ p) : coefG p (p * (p ^ 2) ^ j) = 1 / (p 
   rw [← hj]
 
 /- English proof (translation)
-Unfold `coefG`. Rewrite using `[dif_neg h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma coefG_zero (p a : ℕ) (h : ¬∃ j, a = p * (p ^ 2) ^ j) : coefG p a = 0 := by
   unfold coefG
   rw [dif_neg h]
 
 /- English proof (translation)
-Unfold `coefA`. Distinguish the cases in `hij : i ≤ j`. Establish `h : ∃ i' j', i' ≤ j' ∧ (p ^ 2) ^ i = (p ^ 2) ^ i' ∧ p * (p ^ 2) ^ j = p * (p ^ 2) ^ j'` using `⟨i, j, hij, rfl, rfl⟩`. Rewrite using `[dif_pos h, if_pos hij]`. Take `⟨-, h2, h3⟩` from `Classical.choose_spec (Classical.choose_spec h)`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hi : i = Classical.choose h` using `Nat.pow_right_injective (sq_ge_two p hp) h2`. Establish `hj : j = Classical.choose (Classical.choose_spec h)` using `Nat.pow_right_injective (sq_ge_two p hp) (Nat.eq_of_mul_eq_mul_left (by omega) h3)`. Rewrite using `[← hj, ← hi]`. Rewrite using `[if_neg hij, dif_neg]`. Introduce and unpack `⟨i', j', h1, h2, h3⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hi : i = i'` using `Nat.pow_right_injective (sq_ge_two p hp) h2`. Establish `hj : j = j'` using `Nat.pow_right_injective (sq_ge_two p hp) (Nat.eq_of_mul_eq_mul_left (by omega) h3)`. Substitute `hi hj` using the available equality. Conclude with `hij h1`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 lemma coefA_pow (p i j : ℕ) (hp : 2 ≤ p) :
     coefA p ((p ^ 2) ^ i) (p * (p ^ 2) ^ j) = if i ≤ j then 1 / (p : ℚ) ^ (i + j + 1) else 0 := by
@@ -140,7 +140,7 @@ lemma coefA_pow (p i j : ℕ) (hp : 2 ≤ p) :
     exact hij h1
 
 /- English proof (translation)
-Unfold `coefA`. Rewrite using `[dif_neg h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma coefA_zero (p a b : ℕ) (h : ¬∃ i j, i ≤ j ∧ a = (p ^ 2) ^ i ∧ b = p * (p ^ 2) ^ j) :
     coefA p a b = 0 := by
@@ -148,39 +148,37 @@ lemma coefA_zero (p a b : ℕ) (h : ¬∃ i j, i ≤ j ∧ a = (p ^ 2) ^ i ∧ b
   rw [dif_neg h]
 
 /- English proof (translation)
-Introduce `p hp`. Establish `hp2 : 2 ≤ p` using `hp.two_le`. Establish `hp0 : 0 < p` using `hp.pos`. Establish `hpq : (p : ℚ) ≠ 0` using `by exact_mod_cast hp0.ne'`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `a`. Distinguish the cases in `hd : p ∣ a`. Take `⟨c, rfl⟩` from `hd`. Rewrite using `[if_pos (dvd_mul_right p c), Nat.mul_div_cancel_left c hp0]`. Establish `ha1 : p * c ≠ 1`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `h`. Break down `c with _ | c` into its components or cases. Simplify using `at h`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[if_neg ha1, sub_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hc : ∃ k, c = p * (p ^ 2) ^ k`. Take `⟨k, rfl⟩` from `hc`. Rewrite using `[coefG_pow p k hp2, show p * (p * (p ^ 2) ^ k) = (p ^ 2) ^ (k + 1) by ring, coefL_pow p _ hp2]`. Rewrite using `[coefG_zero p c hc, coefL_zero]`. Introduce and unpack `⟨j, hj⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Break down `j with _ | k` into its components or cases. Rewrite `hj` using `[pow_zero]`. Conclude with `ha1 hj`. Apply `hc` to reduce the goal to its premises. Use `⟨k, ?_⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: p * c = p * (p * (p ^ 2) ^ k)` using `by rw [hj]; ring`. Conclude with `Nat.eq_of_mul_eq_mul_left hp0 this`. Rewrite using `[if_neg hd]`. Distinguish the cases in `ha : a = 1`. Substitute `ha` using the available equality.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `coefL_pow p 0 hp2`. Rewrite `h1` using `[pow_zero, pow_zero]`. Rewrite using `[if_pos rfl, h1]`. Evaluate the numerical expressions. Rewrite using `[if_neg ha, sub_zero, coefL_zero]`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce and unpack `⟨j, rfl⟩`. Break down `j with _ | k` into its components or cases. Conclude with `ha (pow_zero _)`. Conclude with `hd (dvd_pow (dvd_pow_self p two_ne_zero) (Nat.succ_ne_zero k))`. Introduce `a b`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hA : ∃ i, a = p * (p ^ 2) ^ i`. Take `⟨i, rfl⟩` from `hA`. Rewrite using `[coefG_pow p i hp2]`. Distinguish the cases in `hB : ∃ k, b = (p ^ 2) ^ k`. Take `⟨k, rfl⟩` from `hB`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Simplify using `only [coefB]`. Rewrite using `[coefL_pow p k hp2, coefA_pow p k i hp2]`. Break down `k with _ | j` into its components or cases. Establish `hn : ¬(p ∣ p * (p ^ 2) ^ i ∧ p ∣ (p ^ 2) ^ 0)`. Introduce and unpack `⟨-, h⟩`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite `h` using `[pow_zero, Nat.dvd_one]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg hn, if_pos (Nat.zero_le _)]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hb : (p ^ 2) ^ (j + 1) = p * (p * (p ^ 2) ^ j)` using `by ring`. Rewrite using `[hb, if_pos ⟨dvd_mul_right _ _, dvd_mul_right _ _⟩, Nat.mul_div_cancel_left _ hp0, Nat.mul_div_cancel_left _ hp0, coefA_pow p i j hp2]`. Distinguish the cases in `h : i ≤ j`. Rewrite using `[if_pos h, if_neg (by omega)]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg h, if_pos (by omega)]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [coefB]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coefL_zero p b hB, coefA_zero p b _ (by rintro ⟨i', j', -, h2, -⟩; exact hB ⟨i', h2⟩)]`. Simplify using `only [mul_zero, sub_zero]`. Use `split_ifs with h`. Take `⟨-, c, rfl⟩` from `h`. Rewrite using `[Nat.mul_div_cancel_left _ hp0, Nat.mul_div_cancel_left _ hp0]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply `coefA_zero` to reduce the goal to its premises. Introduce and unpack `⟨i', j', -, -, h3⟩`. Conclude with `hB ⟨j' + 1, by rw [h3]; ring⟩`. Both sides reduce to the same expression. Simplify using `only [coefB]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Rewrite using `[coefG_zero p a hA, coefA_zero p b a (by rintro ⟨i', j', -, -, h3⟩; exact hA ⟨j', h3⟩)]`. Simplify using `only [zero_mul, zero_sub, mul_zero, neg_zero]`. Use `split_ifs with h`. Take `⟨⟨c, rfl⟩, -⟩` from `h`. Rewrite using `[Nat.mul_div_cancel_left _ hp0]`.
-
-Apply `coefA_zero` to reduce the goal to its premises. Introduce and unpack `⟨i', j', -, h2, -⟩`. Conclude with `hA ⟨i', by rw [h2]⟩`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem logarithm_series_coefficient_identities : LogarithmSeriesIdentities := by
   intro p hp

@@ -16,7 +16,7 @@ variable {n : Type} [Fintype n] [DecidableEq n] {T : Type} [TopologicalSpace T] 
 variable {ψ : AddChar k Circle} {c : kˣ}
 
 /- English proof (translation)
-Use `⟨fun f hf => ⟨hf.1.comp_continuous e.continuous, hf.2.comp_homeomorph e⟩, fun f _ g _ hfg => ?_, fun g hg => ⟨g ∘ e.symm, ⟨hg.1.comp_continuous e.symm.continuous, hg.2.comp_homeomorph e.symm⟩, ?_⟩⟩` and prove the remaining obligations. Use function extensionality and compare the values at `y`. Simplify using `using congrFun hfg (e.symm y)`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem bijOn_comp {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] (e : X ≃ₜ Y) :
     Set.BijOn (fun f : Y → ℂ => f ∘ e) {f | f ∈ SB Y} {f | f ∈ SB X} := by
@@ -31,15 +31,13 @@ theorem bijOn_comp {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] (e : X
 omit [DecidableEq n] [T2Space T] in
 
 /- English proof (translation)
-Take `⟨hlc, hcs⟩` from `hf`. Establish `hlc2 : IsLocallyConstant fun p : (T × (n → k)) × (n → k) => f (p.1.1, p.1.2 + p.2) - f p.1` using `(hlc.comp_continuous (by fun_prop)).sub (hlc.comp_continuous continuous_fst)`. Establish `hW : IsOpen {p : (T × (n → k)) × (n → k) | f (p.1.1, p.1.2 + p.2) - f p.1 = 0}` using `hlc2.isOpen_fiber 0`. Take `⟨U, V, -, hV, hKU, h0V, hUV⟩` from `generalized_tube_lemma hcs.isCompact (isCompact_singleton (x := (0 : n → k))) hW (by`. Introduce and unpack `⟨z, u⟩ ⟨-, hu⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Simplify using `only [Set.mem_singleton_iff] at hu`. Simplify using `[hu])`. Take `⟨s, hs⟩` from `exists_box_subset (hV.mem_nhds (h0V rfl))`. Establish `key : ∀ z ∈ tsupport f, ∀ u ∈ box n s, f (z.1, z.2 + u) = f z`. Introduce `z hz u hu`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hm : (z, u) ∈ {p : (T × (n → k)) × (n → k) | f (p.1.1, p.1.2 + p.2) - f p.1 = 0}` using `hUV ⟨hKU hz, hs hu⟩`. Conclude with `sub_eq_zero.mp hm`. Use `⟨s, fun u hu z => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hz : z ∈ tsupport f`. Conclude with `key z hz u hu`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hz' : (z.1, z.2 + u) ∈ tsupport f`. Establish `hneg : -u ∈ box n s` using `fun i _ => neg_mem_cball (hu i (Set.mem_univ i))`. Use `key _ hz' (-u) hneg` as an intermediate fact. Simplify using `only [add_neg_cancel_right, Prod.mk.eta] at this`. Conclude with `this.symm`.
-
-Rewrite using `[image_eq_zero_of_notMem_tsupport hz, image_eq_zero_of_notMem_tsupport hz']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_box_invariant_snd {f : T × (n → k) → ℂ} (hf : f ∈ SB (T × (n → k))) :
     ∃ s : kˣ, ∀ u ∈ box n s, ∀ z : T × (n → k), f (z.1, z.2 + u) = f z := by
@@ -70,7 +68,7 @@ theorem exists_box_invariant_snd {f : T × (n → k) → ℂ} (hf : f ∈ SB (T 
 
 omit [DecidableEq n] [T2Space T] [Fintype n] in
 /- English proof (translation)
-Use `haveI := t2Space k`. Use `⟨hf.1.comp_continuous (by fun_prop), HasCompactSupport.intro (hf.2.isCompact.image continuous_snd) fun x hx => ?_⟩` and prove the remaining obligations. Conclude with `image_eq_zero_of_notMem_tsupport fun h => hx ⟨_, h, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem slice_mem_SB {f : T × (n → k) → ℂ} (hf : f ∈ SB (T × (n → k))) (t : T) :
     (fun x => f (t, x)) ∈ SB (n → k) := by
@@ -85,11 +83,11 @@ def pf (ψ : AddChar k Circle) (μ : Measure (n → k)) (f : T × (n → k) → 
   fun z => ∫ x, f (z.1, x) * (ψ (x ⬝ᵥ z.2) : ℂ) ∂μ
 
 /- English proof (translation)
-Take `⟨hlc, hcs⟩` from `hf`. Establish `hW : IsOpen {p : T × (n → k) | f p - f (t₀, p.2) = 0}` using `(hlc.sub (hlc.comp_continuous (by fun_prop))).isOpen_fiber 0`. Take `⟨U, V, hU, -, ht₀U, hLV, hUV⟩` from `generalized_tube_lemma (isCompact_singleton (x := t₀)) (hcs.isCompact.image continuous_snd) hW (by`. Introduce and unpack `⟨t, x⟩ ⟨ht, -⟩`. Simplify using `only [Set.mem_singleton_iff] at ht`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `[ht])`. Use `⟨U, hU, ht₀U rfl, fun t ht x => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ Prod.snd '' tsupport f`. Establish `hm : (t, x) ∈ {p : T × (n → k) | f p - f (t₀, p.2) = 0}` using `hUV ⟨ht, hLV hx⟩`. Conclude with `sub_eq_zero.mp hm`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (t, x) ∉ tsupport f` using `fun h => hx ⟨_, h, rfl⟩`. Establish `h2 : (t₀, x) ∉ tsupport f` using `fun h => hx ⟨_, h, rfl⟩`. Rewrite using `[image_eq_zero_of_notMem_tsupport h1, image_eq_zero_of_notMem_tsupport h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_isOpen_nhd_eq_of_mem_SB {f : T × (n → k) → ℂ} (hf : f ∈ SB (T × (n → k))) (t₀ : T) :
     ∃ V : Set T, IsOpen V ∧ t₀ ∈ V ∧ ∀ t ∈ V, ∀ x, f (t, x) = f (t₀, x) := by
@@ -110,15 +108,15 @@ private theorem exists_isOpen_nhd_eq_of_mem_SB {f : T × (n → k) → ℂ} (hf 
     rw [image_eq_zero_of_notMem_tsupport h1, image_eq_zero_of_notMem_tsupport h2]
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `exists_box_invariant_snd hf`. Establish `hslice : ∀ t, (fun y => ∫ x, f (t, x) * (ψ (x ⬝ᵥ y) : ℂ) ∂μ) ∈ SB (n → k)` using `fun t => fourier_mem_SB μ h (slice_mem_SB hf t)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce and unpack `⟨t₀, y₀⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Take `⟨V, hV, ht₀, hVf⟩` from `exists_isOpen_nhd_eq_of_mem_SB hf t₀`. Take `⟨O, hO, hy₀, hOf⟩` from `(IsLocallyConstant.iff_exists_open _).mp (hslice t₀).1 y₀`. Use `⟨V ×ˢ O, hV.prod hO, ⟨ht₀, hy₀⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨t, y⟩ ⟨ht, hy⟩`. Establish `e1 : pf ψ μ f (t, y) = pf ψ μ f (t₀, y)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Simplify using `only [pf]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[hVf t ht x]`. Rewrite using `[e1]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hOf y hy`. Use `haveI := t2Space k`. Use `HasCompactSupport.intro ((hf.2.isCompact.image continuous_fst).prod (isCompact_box (c * s⁻¹))) ?_` and prove the remaining obligations. Introduce and unpack `⟨t, y⟩ hty`. Rewrite `hty` using `[Set.mem_prod, not_and_or]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `hty with ht | hy` into its components or cases. Establish `h0 : ∀ x, f (t, x) = 0` using `fun x => image_eq_zero_of_notMem_tsupport fun hx => ht ⟨_, hx, rfl⟩`. Simplify using `[pf, h0]`. Use `show ∫ x, f (t, x) * (ψ (x ⬝ᵥ y) : ℂ) ∂μ = 0`. Conclude with `fourier_eq_zero_pi μ h (f := fun x => f (t, x)) (fun u hu x => hs u hu (t, x)) hy`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pf_mem_SB (μ : Measure (n → k)) [μ.IsAddRightInvariant] (h : HasConductor ψ c)
     {f : T × (n → k) → ℂ} (hf : f ∈ SB (T × (n → k))) : pf ψ μ f ∈ SB (T × (n → k)) := by
@@ -152,11 +150,11 @@ theorem pf_mem_SB (μ : Measure (n → k)) [μ.IsAddRightInvariant] (h : HasCond
       exact fourier_eq_zero_pi μ h (f := fun x => f (t, x)) (fun u hu x => hs u hu (t, x)) hy
 
 /- English proof (translation)
-Use `haveI := secondCountable k`. Take `⟨s, hs⟩` from `fourier_inversion_pi (Measure.pi fun _ : n => m) h hf`. Establish `hbox : ∀ r : kˣ, (Measure.pi fun _ : n => m).real (box n r) = (nabs k r * m.real (𝒪[k] : Set k)) ^ Fintype.card n`. Introduce `r`. Establish `hc` using `measureReal_cball m r`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Measure.real] at hc ⊢`. Rewrite using `[box, Measure.pi_pi, ENNReal.toReal_prod, hc, Finset.prod_const, Finset.card_univ]`. Establish `h1 : nabs k s * nabs k (c * s⁻¹) = nabs k c`. Rewrite using `[nabs_mul k, mul_left_comm, ← nabs_mul k, mul_inv_cancel, nabs_one k, mul_one]`. Establish `h2 : nabs k s * m.real (𝒪[k] : Set k) * (nabs k (c * s⁻¹) * m.real (𝒪[k] : Set k)) = m.real (𝒪[k] : Set k) ^ 2 * nabs k c`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hs, hbox, hbox, ← mul_pow, h2]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inversion_const (m : Measure k) [m.IsAddHaarMeasure] (h : HasConductor ψ c)
     {f : (n → k) → ℂ} (hf : f ∈ SB (n → k)) :
@@ -179,13 +177,13 @@ theorem inversion_const (m : Measure k) [m.IsAddHaarMeasure] (h : HasConductor �
 
 omit [T2Space T] in
 /- English proof (translation)
-Use `haveI := secondCountable k`. Take `⟨t, y⟩` from `z`. Establish `hsl` using `slice_mem_SB hf t`. Establish `hg : (fun w => f (t, w - y)) ∈ SB (n → k)` using `⟨hsl.1.comp_continuous (continuous_sub_right y), hsl.2.comp_homeomorph (Homeomorph.subRight y)⟩`. Establish `hinv` using `inversion_const m h hg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [zero_sub] at hinv`. Use `show ∫ x, (∫ w, f (t, w) * (ψ (w ⬝ᵥ x) : ℂ) ∂(Measure.pi fun _ => m)) * (ψ (x ⬝ᵥ y) : ℂ) ∂(Measure.pi fun _ => m) = _ * f (t, -y)`. Rewrite using `[← hinv]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← integral_mul_const]`. Establish `e` using `integral_sub_right_eq_self (μ := Measure.pi fun _ : n => m) (fun u => f (t, u) * (ψ ((u + y) ⬝ᵥ x) : ℂ)) y`. Simplify using `only [sub_add_cancel] at e`. Rewrite using `[e]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `u`. Rewrite using `[add_dotProduct, AddChar.map_add_eq_mul, Circle.coe_mul, dotProduct_comm y x]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem pf_pf (m : Measure k) [m.IsAddHaarMeasure] (h : HasConductor ψ c)
     {f : T × (n → k) → ℂ} (hf : f ∈ SB (T × (n → k))) (z : T × (n → k)) :
@@ -214,17 +212,15 @@ theorem pf_pf (m : Measure k) [m.IsAddHaarMeasure] (h : HasConductor ψ c)
   ring
 
 /- English proof (translation)
-Use `haveI := secondCountable k`. Use `set C : ℂ := (((m.real (𝒪[k] : Set k) ^ 2 * nabs k c) ^ Fintype.card n : ℝ) : ℂ) with hC`. Establish `hC0 : C ≠ 0`. Establish `h1 : 0 < m.real (𝒪[k] : Set k)`. Rewrite using `[measureReal_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ENNReal.toReal_pos ((isOpen_int k).measure_ne_zero m ⟨0, by simp⟩) (isCompact_int k).measure_lt_top.ne`. Establish `h2` using `nabs_pos k c`. Rewrite using `[hC]`. Conclude with `Complex.ofReal_ne_zero.mpr (pow_pos (mul_pos (pow_pos h1 2) h2) _).ne'`. Establish `hsmul : ∀ (a : ℂ) (g : T × (n → k) → ℂ), pf ψ (Measure.pi fun _ : n => m) (a • g) = a • pf ψ (Measure.pi fun _ : n => m) g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `a g`. Use function extensionality and compare the values at `z`. Simplify using `only [pf, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Conclude with `integral_const_mul a _`. Establish `hpp : ∀ g ∈ SB (T × (n → k)), ∀ z, pf ψ (Measure.pi fun _ : n => m) (pf ψ (Measure.pi fun _ : n => m) g) z = C * g (z.1, -z.2)` using `fun g hg z => pf_pf m h hg z`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨fun g hg => pf_mem_SB (Measure.pi fun _ : n => m) h hg, fun g hg g' hg' hgg => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `z`. Establish `e1` using `hpp g hg (z.1, -z.2)`. Establish `e2` using `hpp g' hg' (z.1, -z.2)`. Rewrite `e1` using `[hgg]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [neg_neg, Prod.mk.eta] at e1 e2`. Conclude with `mul_left_cancel₀ hC0 (e1.symm.trans e2)`. Establish `h2` using `pf_mem_SB (Measure.pi fun _ : n => m) h (pf_mem_SB (Measure.pi fun _ : n => m) h hg)`. Use `⟨(C ^ 2)⁻¹ • pf ψ (Measure.pi fun _ : n => m) (pf ψ (Measure.pi fun _ : n => m) (pf ψ (Measure.pi fun _ : n => m) g)), (SB _).smul_mem _ (pf_mem_SB (Measure.pi fun _ : n => m) h h2), ?_⟩` and prove the remaining obligations. Rewrite using `[hsmul]`.
-
-Use function extensionality and compare the values at `z`. Rewrite using `[Pi.smul_apply, hpp _ h2, hpp _ hg]`. Simplify using `only [neg_neg, Prod.mk.eta, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem pf_bijOn (m : Measure k) [m.IsAddHaarMeasure] (h : HasConductor ψ c) :
     Set.BijOn (pf ψ (Measure.pi fun _ => m)) {f | f ∈ SB (T × (n → k))} {f | f ∈ SB (T × (n → k))} := by
@@ -352,7 +348,7 @@ section Main
 variable {k : Type} [Field k]
 
 /- English proof (translation)
-Simplify using `only [chr, mul_add, AddChar.map_add_eq_mul, Circle.coe_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chr_add (ψ : AddChar k Circle) (s : ℤˣ) (x y : k) : chr ψ s (x + y) = chr ψ s x * chr ψ s y := by
   simp only [chr, mul_add, AddChar.map_add_eq_mul, Circle.coe_mul]
@@ -361,13 +357,11 @@ variable [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   [MeasurableSpace k] [BorelSpace k]
 
 /- English proof (translation)
-Use `haveI := secondCountable k`. Establish `hsub : ∀ c, L (c - d) = L c - L d` using `fun c => eq_sub_of_add_eq (by rw [← hL, sub_add_cancel])`. Establish `hchr : ∀ c, chr ψ (-s) (L (c - d)) = chr ψ (-s) (L c) * chr ψ s (L d)`. Introduce `c`. Rewrite using `[hsub, sub_eq_add_neg, chr_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Simplify using `[chr]`. Use `haveI : (volM m a b).IsAddRightInvariant := Measure.pi.isAddRightInvariant _`. Use `haveI : MeasurableAdd (Matrix a b k) := inferInstanceAs (MeasurableAdd (a → b → k))`. Establish `e : ∫ c, G (c + d) * chr ψ (-s) (L c) ∂(volM m a b) = ∫ c, G c * chr ψ (-s) (L (c - d)) ∂(volM m a b)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `integral_add_right_eq_self (μ := volM m a b) (fun c : Matrix a b k => G c * chr ψ (-s) (L (c - d))) d` as an intermediate fact. Simplify using `only [add_sub_cancel_right] at this`. Conclude with `this`. Rewrite using `[e]`. Repeatedly rewrite using `[hchr, ← mul_assoc]`.
-
-Rewrite using `[integral_mul_const, mul_comm]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_shift (ψ : AddChar k Circle) (m : Measure k) [m.IsAddHaarMeasure] (s : ℤˣ)
     {a b : Type} [Fintype a] [Fintype b] (G : Matrix a b k → ℂ) (L : Matrix a b k → k)
@@ -399,7 +393,7 @@ variable {ρ v τ w W : Type} [Fintype ρ] [DecidableEq ρ] [Fintype v] [Decidab
   [Fintype τ] [DecidableEq τ] [Fintype w] [DecidableEq w] [Fintype W] [DecidableEq W]
 
 /- English proof (translation)
-Simplify using `only [four₁, om_uGL, glueCols_mul_uMat, add_assoc]`. Conclude with `integral_shift ψ m s₁ (fun c => Φ (glueCols ξ (x₀ + ξ * ν') c)) (fun c => trace (η * c)) (fun x y => by rw [Matrix.mul_add, Matrix.trace_add]) (ξ * b + x₀ * ν)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem four₁_om (Φ : Matrix W (ρ ⊕ v ⊕ ρ) k → ℂ) (ν : Matrix v ρ k) (ν' : Matrix ρ v k) (b : Matrix ρ ρ k)
     (ξ : Matrix W ρ k) (η : Matrix ρ W k) (x₀ : Matrix W v k) :
@@ -412,7 +406,7 @@ theorem four₁_om (Φ : Matrix W (ρ ⊕ v ⊕ ρ) k → ℂ) (ν : Matrix v ρ
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k]
   [Fintype ρ] [DecidableEq ρ] [Fintype v] [DecidableEq v] [DecidableEq τ] [DecidableEq w] in
 /- English proof (translation)
-Simplify using `only [glueFun, glueRows, Matrix.fromCols_mul_fromRows]`.
+Simplify using the standard rewrite rules.
 -/
 theorem glueFun_mul_glueRows (η' : Matrix ρ τ k) (η₀ : Matrix ρ w k) (ηd : Matrix ρ τ k)
     (r : Matrix τ v k) (x : Matrix w v k) (ys : Matrix τ v k) :
@@ -422,7 +416,7 @@ theorem glueFun_mul_glueRows (η' : Matrix ρ τ k) (η₀ : Matrix ρ w k) (ηd
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k]
   [DecidableEq ρ] [Fintype v] [DecidableEq v] [Fintype τ] [DecidableEq τ] [Fintype w] [DecidableEq w] in
 /- English proof (translation)
-Apply the tactic sequence `ext (i | i | i) j <;> simp [glueRows, Matrix.fromRows_mul]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem glueRows_add_mul (r : Matrix τ v k) (x : Matrix w v k) (ys : Matrix τ v k)
     (ξ' : Matrix τ ρ k) (ξ₀ : Matrix w ρ k) (ν' : Matrix ρ v k) :
@@ -430,7 +424,7 @@ theorem glueRows_add_mul (r : Matrix τ v k) (x : Matrix w v k) (ys : Matrix τ 
   ext (i | i | i) j <;> simp [glueRows, Matrix.fromRows_mul]
 
 /- English proof (translation)
-Use `four₁_om ψ m μ s₁ Φ ν ν' 0 (glueRows ξ' ξ₀ 0) (glueFun 0 η₀ ηd) (glueRows r x₀₀ ys)` as an intermediate fact. Rewrite `this` using `[Matrix.mul_zero, zero_add, ← Matrix.mul_assoc, glueFun_mul_glueRows, Matrix.zero_mul, zero_add, glueRows_add_mul]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem four₁_n (Φ : Matrix (τ ⊕ w ⊕ τ) (ρ ⊕ v ⊕ ρ) k → ℂ) (ν : Matrix v ρ k) (ν' : Matrix ρ v k)
     (ξ' : Matrix τ ρ k) (ξ₀ : Matrix w ρ k) (η₀ : Matrix ρ w k) (ηd : Matrix ρ τ k)
@@ -444,9 +438,9 @@ theorem four₁_n (Φ : Matrix (τ ⊕ w ⊕ τ) (ρ ⊕ v ⊕ ρ) k → ℂ) (�
   exact this
 
 /- English proof (translation)
-Use `four₁_om ψ m μ s₁ Φ (0 : Matrix v ρ k) 0 b ξ η x₀` as an intermediate fact. Simplify using `only [Matrix.mul_zero, add_zero] at this`. Rewrite `this` using `[← Matrix.mul_assoc]`. Use `show four₁ ψ m s₁ (om μ (uGL (0 : Matrix v ρ k) 0 b) 1 Φ) (ξ, η, x₀) = _`. Rewrite using `[this, show trace (η * ξ * b) = ∑ p, ∑ q, (η * ξ) p q * b q p by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.trace, Matrix.mul_apply]]`.
+A detailed English derivation is pending.
 -/
 theorem four₁_om_zGL_eq_chr_trace_mul (Φ : Matrix W (ρ ⊕ v ⊕ ρ) k → ℂ) (b : Matrix ρ ρ k)
     (ξ : Matrix W ρ k) (η : Matrix ρ W k) (x₀ : Matrix W v k) :

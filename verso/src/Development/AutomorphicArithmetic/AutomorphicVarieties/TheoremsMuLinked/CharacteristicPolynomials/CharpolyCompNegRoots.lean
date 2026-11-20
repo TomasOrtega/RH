@@ -6,11 +6,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeilGroupCharacter
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing Polynomial Matrix UpperTheory.V UpperTheory.V.HV UpperTheory.V.Alg GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Establish `h : (M.charmatrix).map (Polynomial.compRingHom (-X : R[X])) = -(-M).charmatrix`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[charmatrix_apply_eq]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `[charmatrix_apply_ne _ _ _ hij]`. Establish `h2 : M.charpoly.comp (-X) = (-1) ^ n * (-M).charpoly`. Rewrite using `[Matrix.charpoly, ← Polynomial.coe_compRingHom_apply, RingHom.map_det, RingHom.mapMatrix_apply, h, det_neg, Fintype.card_fin]`. Both sides reduce to the same expression.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h2, ← mul_assoc, ← mul_pow, neg_one_mul, neg_neg, one_pow, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem charpoly_neg {R : Type} [CommRing R] {n : ℕ} (M : Matrix (Fin n) (Fin n) R) :
     (-M).charpoly = (-1) ^ n * M.charpoly.comp (-X) := by
@@ -28,7 +28,7 @@ private theorem charpoly_neg {R : Type} [CommRing R] {n : ℕ} (M : Matrix (Fin 
   rw [h2, ← mul_assoc, ← mul_pow, neg_one_mul, neg_neg, one_pow, one_mul]
 
 /- English proof (translation)
-Rewrite using `[Polynomial.prod_comp, ← Fin.prod_const, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [sub_comp, X_comp, C_comp, map_neg]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem charpoly_comp_neg_roots {R : Type} [CommRing R] {n : ℕ} (a : Fin n → R) :
     (-1 : R[X]) ^ n * (∏ i, (X - C (a i))).comp (-X) = ∏ i, (X - C (-a i)) := by
@@ -38,19 +38,19 @@ private theorem charpoly_comp_neg_roots {R : Type} [CommRing R] {n : ℕ} (a : F
   ring
 
 /- English proof (translation)
-Introduce `K k B G _ _ _ _ n r j φ χ η hj hred hsym`. Set `χ' : Fin n → G →* kˣ` to `fun i => W.pushCh (Int.castRingHom k) η * χ i`. Establish `hval : ∀ g i, (((χ' i) g : kˣ) : k) = (((η g : ℤˣ) : ℤ) : k) * ((χ i g : kˣ) : k)`. Introduce `g i`. Simplify using `[χ', W.pushCh]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `key : ∀ g, Pr.chPoly χ g = Pr.chPoly χ' g`. Introduce `g`. Break down `Int.units_eq_one_or (η g) with h | h` into its components or cases. Unfold `Pr.chPoly`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hval g i, h]`. Simplify using the standard rewrite rules. Take `⟨p, hp1, hp2⟩` from `hred g`. Establish `hp1' : Polynomial.map j p = (W.mat r g).charpoly` using `hp1`. Establish `hM : (W.mat r g).charpoly = (-1) ^ n * (W.mat r g).charpoly.comp (-X)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← charpoly_neg, hsym g, h, Units.val_neg, Units.val_one, Int.cast_neg, Int.cast_one, neg_one_smul]`. Establish `hp : p = (-1) ^ n * p.comp (-X)`. Apply `Polynomial.map_injective j hj` to reduce the goal to its premises. Rewrite using `[Polynomial.map_mul, Polynomial.map_pow, Polynomial.map_neg, Polynomial.map_one, Polynomial.map_comp, Polynomial.map_neg, Polynomial.map_X, hp1']`. Conclude with `hM`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hq` using `congrArg (Polynomial.map φ) hp`. Rewrite `hq` using `[Polynomial.map_mul, Polynomial.map_pow, Polynomial.map_neg, Polynomial.map_one, Polynomial.map_comp, Polynomial.map_neg, Polynomial.map_X, hp2]`. Rewrite using `[hq]`. Unfold `Pr.chPoly`. Rewrite using `[charpoly_comp_neg_roots (fun i => (((χ i) g : kˣ) : k))]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hval g i, h]`. Simplify using the standard rewrite rules. Take `⟨σ, hσ⟩` from `Pr.charPerm G k n χ χ' key`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨σ i, hσ i⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Th.Det.perm4 :
     ∀ (K k B G : Type) [Field K] [Field k] [CommRing B] [Group G] (n : ℕ) (r : G →* GL (Fin n) K) (j : B →+* K) (φ : B →+* k) (χ : Fin n → G →* kˣ) (η : G →* ℤˣ), Function.Injective j → Pr.RedTo r j φ χ → (∀ g, (W.mat r g).charpoly = ((((η g : ℤˣ) : ℤ) : K) • W.mat r g).charpoly) → ∀ i, ∃ i', W.pushCh (Int.castRingHom k) η * χ i = χ i' := by

@@ -11,7 +11,7 @@ namespace GlobalTheory.CxForm.HolAtlas
 variable {M : Type} [TopologicalSpace M] {n : ℕ} (A : HolAtlas M n)
 
 /- English proof (translation)
-The claim follows from `(contDiffOn_piLp 2).2 fun a => GlobalTheory.ChartGlue.contDiffOn_real ((A.e i).isOpen_inter_preimage_symm (A.e j).open_source) (differentiableOn_euclidean.1 (A.holo i j) a)`.
+A detailed English derivation is pending.
 -/
 theorem contDiffOn_real_transition (i j : A.ι) :
     ContDiffOn ℝ ∞ (A.e j ∘ (A.e i).symm) ((A.e i).target ∩ (A.e i).symm ⁻¹' (A.e j).source) :=
@@ -19,23 +19,19 @@ theorem contDiffOn_real_transition (i j : A.ι) :
     ((A.e i).isOpen_inter_preimage_symm (A.e j).open_source) (differentiableOn_euclidean.1 (A.holo i j) a)
 
 /- English proof (translation)
-Take `⟨i, hxe⟩` from `A.cover x`. Use `set e := A.e i with he`. Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.mp e.open_target (e x) (e.map_source hxe)`. Set `β : ContDiffBump (e x)` to `⟨ε / 4, ε / 2, by linarith, by linarith⟩`. Establish `hcb : Metric.closedBall (e x) (ε / 2) ⊆ e.target` using `(Metric.closedBall_subset_ball (half_lt_self hε)).trans hball`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set C := e.symm '' Metric.closedBall (e x) (ε / 2) with hC`. Establish `hCc : IsCompact C` using `(isCompact_closedBall (e x) (ε / 2)).image_of_continuousOn (e.continuousOn_symm.mono fun y hy => hcb hy)`. Establish `hCsub : C ⊆ e.source`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `e.map_target (hcb hy)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `ψ : M → ℝ` to `fun w => if w ∈ e.source then β (e w) else 0`. Establish `hsupp : Function.support ψ ⊆ C`. Introduce `w hw`. Simplify using `only [Function.mem_support, ψ] at hw`. Use `split_ifs at hw with hws`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `: e w ∈ Metric.ball (e x) (ε / 2)`. Rewrite using `[← β.support_eq]`. Conclude with `hw`. Conclude with `⟨e w, Metric.ball_subset_closedBall this, e.left_inv hws⟩`. Conclude with `absurd rfl hw`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hts : tsupport ψ ⊆ C` using `closure_minimal hsupp hCc.isClosed`. Use `⟨i, ψ, ?_, hts.trans hCsub, ?_⟩` and prove the remaining obligations. Introduce `k`. Rewrite using `[preimage_univ, inter_univ]`. Apply `contDiffOn_of_locally_contDiffOn` to reduce the goal to its premises.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `y hy`. Distinguish the cases in `hys : (A.e k).symm y ∈ e.source`. Use `⟨(A.e k).target ∩ (A.e k).symm ⁻¹' e.source, (A.e k).isOpen_inter_preimage_symm e.open_source, ⟨hy, hys⟩, ?_⟩` and prove the remaining obligations. Establish `hβ : ContDiff ℝ ∞ (fun y : V n => ((β y : ℝ) : ℂ))` using `Complex.ofRealCLM.contDiff.comp β.contDiff`. Use `((hβ.comp_contDiffOn (A.contDiffOn_real_transition k i)).mono inter_subset_right).congr fun v hv => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hv1 : (A.e k).symm v ∈ e.source` using `hv.2.2`. Simplify using `only [Function.comp, ψ, if_pos hv1]`. Both sides reduce to the same expression. Use `⟨(A.e k).target ∩ (A.e k).symm ⁻¹' Cᶜ, (A.e k).isOpen_inter_preimage_symm hCc.isClosed.isOpen_compl, ⟨hy, fun h => hys (hCsub h)⟩, ?_⟩` and prove the remaining obligations. Use `(contDiffOn_const (c := (0 : ℂ))).congr fun v hv => ?_` and prove the remaining obligations.
-
-Establish `: ψ ((A.e k).symm v) = 0`. Assume the negation of the conclusion as `h`. Conclude with `hv.2.2 (hsupp h)`. Simplify using `[Function.comp, this]`. Establish `ho : IsOpen (e.source ∩ e ⁻¹' Metric.ball (e x) (ε / 4))` using `e.isOpen_inter_preimage Metric.isOpen_ball filter_upwards [ho.mem_nhds ⟨hxe, Metric.mem_ball_self (by linarith)⟩] with w hw`.
-
-Simplify using `only [ψ, if_pos hw.1]`. Conclude with `β.one_of_mem_closedBall (Metric.ball_subset_closedBall hw.2)`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_smooth_bump [T2Space M] (x : M) :
     ∃ (i : A.ι) (ψ : M → ℝ), A.SmoothOn univ (fun y => (ψ y : ℂ)) ∧ tsupport ψ ⊆ (A.e i).source ∧
@@ -97,13 +93,13 @@ end GlobalTheory.CxForm.HolAtlas
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `choose E Ψ hΨs hΨt hΨ1 using A.exists_smooth_bump`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun x : M => interior {y | Ψ x y = 1}) (fun _ => isOpen_interior) (fun y _ => mem_iUnion.2 ⟨y, mem_interior_iff_mem_nhds.2 (hΨ1 y)⟩)`. Set `p : Fin t.card → M` to `fun i => (t.equivFin.symm i : M)`. Set `ψ : Fin t.card → M → ℝ` to `fun i => Ψ (p i)`. Establish `hsum : ∀ x, ∑ i, ψ i x * ∏ j ∈ Finset.univ with j < i, (1 - ψ j x) = 1 - ∏ i, (1 - ψ i x)` using `fun x => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_one_sub_ordered]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨t.card, fun i => E (p i), fun i x => ψ i x * ∏ j ∈ Finset.univ with j < i, (1 - ψ j x), fun i k => ?_, fun i => (tsupport_mul_subset_left).trans (hΨt (p i)), fun x => ?_⟩` and prove the remaining obligations. Use `((hΨs (p i) k).mul (contDiffOn_prod (t := Finset.univ.filter (· < i)) fun j _ => (contDiffOn_const (c := (1 : ℂ))).sub (hΨs (p j) k))).congr fun v _ => ?_` and prove the remaining obligations. Simplify using `[Function.comp, ψ]`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsum]`. Take `⟨u, hu, hxu⟩` from `mem_iUnion₂.1 (ht (mem_univ x))`. Establish `h1 : ψ (t.equivFin ⟨u, hu⟩) x = 1`. Establish `: p (t.equivFin ⟨u, hu⟩) = u` using `by simp [p]`. Simplify using `only [ψ, this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(interior_subset hxu : x ∈ {y | Ψ u y = 1})`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ (t.equivFin ⟨u, hu⟩)) (by rw [h1]; ring)]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_finite_smooth_partition_holAtlas {M : Type} [TopologicalSpace M] [CompactSpace M] [T2Space M] {n : ℕ}
     (A : GlobalTheory.CxForm.HolAtlas M n) :

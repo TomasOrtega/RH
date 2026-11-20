@@ -24,7 +24,7 @@ private theorem fracInv_apply (Φ : Matrix n n O) (y : n → O) (i : n) :
 
 omit [IsDomain O] [IsDiscreteValuationRing O] [IsFractionRing O K] in
 /- English proof (translation)
-Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem mkQ_eq_zero_iff (z : K) :
     (1 : Submodule O K).mkQ z = 0 ↔ ∃ y : O, algebraMap O K y = z := by
@@ -32,15 +32,15 @@ private theorem mkQ_eq_zero_iff (z : K) :
 
 omit [IsDiscreteValuationRing O] in
 /- English proof (translation)
-Establish `hK : algebraMap O K Φ.det ≠ 0` using `fun h0 => h (IsFractionRing.injective O K (by rw [h0, map_zero]))`. Use extensionality with `y`. Rewrite using `[LinearMap.mem_ker, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: ∀ i, ∃ x : O, algebraMap O K x = (Φ.adjugate *ᵥ y) i • (algebraMap O K Φ.det)⁻¹` using `fun i => (mkQ_eq_zero_iff _).1 (congrFun hy i)`. Use `choose x hx using this`. Establish `h1 : Φ.det • x = Φ.adjugate *ᵥ y`. Use function extensionality and compare the values at `i`. Apply `IsFractionRing.injective O K` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.smul_apply, smul_eq_mul, map_mul, hx, Algebra.smul_def]`. Clear the denominators using the available nonvanishing facts. Use `⟨x, ?_⟩` and prove the remaining obligations. Establish `h2 : Φ.det • (Φ *ᵥ x) = Φ.det • y`. Rewrite using `[← Matrix.mulVec_smul, h1, Matrix.mulVec_mulVec, Matrix.mul_adjugate, Matrix.smul_mulVec, Matrix.one_mulVec]`.
+Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Conclude with `mul_left_cancel₀ h (congrFun h2 i)`. Introduce and unpack `⟨x, rfl⟩`. Use function extensionality and compare the values at `i`. Rewrite using `[fracInv_apply, Pi.zero_apply, mkQ_eq_zero_iff]`.
+Assume the hypotheses and unpack their components. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨x i, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, Matrix.adjugate_mul, Matrix.smul_mulVec, Matrix.one_mulVec, Pi.smul_apply, smul_eq_mul, Algebra.smul_def, map_mul]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 private theorem ker_fracInv (Φ : Matrix n n O) (h : Φ.det ≠ 0) :
     LinearMap.ker (fracInv K Φ) = LinearMap.range Φ.mulVecLin := by
@@ -75,19 +75,19 @@ private theorem ker_fracInv (Φ : Matrix n n O) (h : Φ.det ≠ 0) :
 
 omit [IsDomain O] [IsDiscreteValuationRing O] in
 /- English proof (translation)
-Establish `hK : algebraMap O K Φ.det ≠ 0` using `fun h0 => h (IsFractionRing.injective O K (by rw [h0, map_zero]))`. Use extensionality with `w`. Rewrite using `[H1c, LinearMap.mem_ker, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[coefMap_apply, Pi.zero_apply]`. Simplify using `only [fracInv_apply, ← map_smul, ← map_sum]`. Rewrite using `[mkQ_eq_zero_iff]`. Use `⟨y i, ?_⟩` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [smul_smul, ← Finset.sum_smul]`. Establish `h2 : ∑ j, Φ i j * (Φ.adjugate *ᵥ y) j = Φ.det * y i`. Establish `: (Φ *ᵥ (Φ.adjugate *ᵥ y)) i = Φ.det * y i`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_adjugate, Matrix.smul_mulVec, Matrix.one_mulVec, Pi.smul_apply, smul_eq_mul]`. Conclude with `this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, Algebra.smul_def, map_mul]`. Clear the denominators using the available nonvanishing facts. Introduce `hw choose z hz using fun i => (1 : Submodule O K).mkQ_surjective (w i)`. Establish `: ∀ i, ∃ y : O, algebraMap O K y = ∑ j, Φ i j • z j` using `fun i => by`. Rewrite using `[← mkQ_eq_zero_iff, map_sum]`.
+Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congrFun hw i` as an intermediate fact. Rewrite `this` using `[coefMap_apply, Pi.zero_apply]`. Simplify `this` using `only [map_smul, hz]`. Use `choose y hy using this`. Use `⟨y, funext fun i => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[fracInv_apply, ← hz]`. Use `congr 1`. Establish `h3 : algebraMap O K ((Φ.adjugate *ᵥ y) i) = algebraMap O K Φ.det * z i`. Establish `h4 : algebraMap O K ((Φ.adjugate *ᵥ y) i) = ∑ k, (Φ.adjugate * Φ) i k • z k`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, hy, Matrix.mul_apply, Finset.sum_smul, ← Algebra.smul_def, Finset.smul_sum, smul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_comm`. Rewrite using `[h4, Matrix.adjugate_mul, ← Algebra.smul_def]`. Simplify using `[Matrix.one_apply, ite_smul]`. Rewrite using `[Algebra.smul_def, h3]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 private theorem range_fracInv (Φ : Matrix n n O) (h : Φ.det ≠ 0) :
     LinearMap.range (fracInv K Φ) = H1c Φ (FracMod O K) := by
@@ -133,7 +133,7 @@ private theorem range_fracInv (Φ : Matrix n n O) (h : Φ.det ≠ 0) :
     field_simp
 
 /- English proof (translation)
-Rewrite using `[← length_cokernel_eq_addVal_det, ← range_fracInv Φ h, ← (fracInv K Φ).quotKerEquivRange.length_eq]`. Conclude with `(Submodule.quotEquivOfEq _ _ (ker_fracInv Φ h)).length_eq`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem length_kernel_fraction_module_of_det_ne_zero (Φ : Matrix n n O) (h : Φ.det ≠ 0) :
     Module.length O (H1c Φ (FracMod O K)) = IsDiscreteValuationRing.addVal O Φ.det := by
@@ -142,9 +142,9 @@ private theorem length_kernel_fraction_module_of_det_ne_zero (Φ : Matrix n n O)
   exact (Submodule.quotEquivOfEq _ _ (ker_fracInv Φ h)).length_eq
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Rewrite using `[ENat.eq_top_iff_forall_ge]`. Introduce `k`. Establish `hd : (Matrix.of fun (_ _ : Unit) => ϖ ^ k).det = ϖ ^ k` using `by simp`. Use `length_kernel_fraction_module_of_det_ne_zero (K := K) (Matrix.of fun (_ _ : Unit) => ϖ ^ k) (by rw [hd]; exact pow_ne_zero _ hϖ.ne_zero)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hd, hϖ.addVal_pow]`. Rewrite using `[← this]`. Conclude with `Module.length_le_of_injective _ (Submodule.subtype_injective _)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem length_fracMod : Module.length O (Unit → FracMod O K) = ⊤ := by
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible O
@@ -158,13 +158,13 @@ private theorem length_fracMod : Module.length O (Unit → FracMod O K) = ⊤ :=
   exact Module.length_le_of_injective _ (Submodule.subtype_injective _)
 
 /- English proof (translation)
-Distinguish the cases in `h : Φ.det = 0`. Rewrite using `[h, IsDiscreteValuationRing.addVal_zero, eq_top_iff, ← length_fracMod (O := O) (K := K)]`. Take `⟨v, hv, hΦ⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h`. Take `⟨i, hi⟩` from `Function.ne_iff.1 hv`. Establish `hK : algebraMap O K (v i) ≠ 0` using `fun h0 => hi (IsFractionRing.injective O K (by rw [h0, Pi.zero_apply, map_zero]))`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Module.length_le_of_surjective ((LinearMap.pi fun _ : Unit => LinearMap.proj i) ∘ₗ (H1c Φ (FracMod O K)).subtype) ?_` and prove the remaining obligations. Introduce `t`. Take `⟨z, hz⟩` from `(1 : Submodule O K).mkQ_surjective (t ())`. Use `⟨⟨fun j => v j • (1 : Submodule O K).mkQ ((algebraMap O K (v i))⁻¹ * z), ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[H1c, LinearMap.mem_ker]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `a`. Rewrite using `[coefMap_apply]`. Simplify using `only [smul_smul, ← Finset.sum_smul]`. Establish `: ∑ j, Φ a j * v j = 0` using `congrFun hΦ a`. Rewrite using `[this, zero_smul, Pi.zero_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `u`. Express the relevant statement in the definitionally equal form `v i • (1 : Submodule O K).mkQ ((algebraMap O K (v i))⁻¹ * z) = t ()`. Rewrite using `[← map_smul, ← hz, Algebra.smul_def, mul_inv_cancel_left₀ hK]`. Conclude with `length_kernel_fraction_module_of_det_ne_zero Φ h`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_kernel_fraction_module_eq_addVal_det (Φ : Matrix n n O) :
     Module.length O (H1c Φ (FracMod O K)) = IsDiscreteValuationRing.addVal O Φ.det := by

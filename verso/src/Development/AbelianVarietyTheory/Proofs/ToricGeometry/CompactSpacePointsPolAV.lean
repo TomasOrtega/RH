@@ -20,19 +20,19 @@ abbrev pointTopology (X : Over (Sp ℂ)) : TopologicalSpace (𝟙_ (Over (Sp ℂ
   TopologicalSpace.generateFrom {S : Set (𝟙_ (Over (Sp ℂ)) ⟶ X) | ∃ (U : X.left.Opens) (f : Γ(X.left, U)) (O : Set ℂ), IsOpen O ∧ S = {x | ⊤ ≤ (x).left ⁻¹ᵁ U ∧ valAt' x.left U f ∈ O}}
 
 /- English proof (translation)
-Use `continuous_generateFrom_iff.2 ?_` and prove the remaining obligations. Introduce and unpack `S ⟨V, f, O, hO, rfl⟩`. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce and unpack `w ⟨hwV, hwO⟩`. Establish `hpU : (σ w).left (default : PrimeSpectrum ℂ) ∈ U` using `((h1 _ (σ w).left).1 U).1 (hσ w)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hpV : (σ w).left (default : PrimeSpectrum ℂ) ∈ V` using `((h1 _ (σ w).left).1 V).1 hwV`. Take `⟨g, hgV, hpg⟩` from `hU.exists_basicOpen_le ⟨_, hpV⟩ hpU`. Use `letI := (X.left.presheaf.map (homOfLE <| X.left.basicOpen_le g).op).hom.toAlgebra`. Use `haveI := hU.isLocalization_basicOpen g`. Take `⟨⟨a, _, ⟨n, rfl⟩⟩, ha⟩` from `IsLocalization.surj (Submonoid.powers g) (resG X.left hgV f)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [RingHom.algebraMap_toAlgebra] at ha`. Establish `key : ∀ q : Sp ℂ ⟶ X.left, ⊤ ≤ q ⁻¹ᵁ X.left.basicOpen g → valAt' q V f * valAt' q U g ^ n = valAt' q U a`. Introduce `q hq`. Establish `hqU : ⊤ ≤ q ⁻¹ᵁ U` using `((h1 _ q).1 U).2 (X.left.basicOpen_le g (((h1 _ q).1 _).1 hq))`. Take `⟨e, he⟩` from `(h1 _ q).2.1 _ hq`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e', he'⟩` from `(h1 _ q).2.1 _ hqU`. Use `congrArg e ha` as an intermediate fact. Rewrite `this` using `[map_mul]`. Rewrite using `[← (h1 _ q).2.2.1 V _ hgV f hq, ← (h1 _ q).2.2.1 U _ (X.left.basicOpen_le g) a hq, he, he, he', ← map_pow, ← he', ← (h1 _ q).2.2.1 U _ (X.left.basicOpen_le g) _ hq, he]`. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `set F : Z → ℂ := fun w => valAt' (σ w).left U a / valAt' (σ w).left U g ^ n with hF`. Establish `hopen : IsOpen {w | valAt' (σ w).left U g ≠ 0}` using `isOpen_ne_fun (hc g) continuous_const`. Establish `hFc : ContinuousOn F {w | valAt' (σ w).left U g ≠ 0}` using `(hc a).continuousOn.div ((hc g).pow n).continuousOn (fun w hw => pow_ne_zero _ hw)`. Use `Filter.mem_of_superset ((hFc.isOpen_inter_preimage hopen hO).mem_nhds ?_) ?_` and prove the remaining obligations. Establish `hq : ⊤ ≤ (σ w).left ⁻¹ᵁ X.left.basicOpen g` using `((h1 _ (σ w).left).1 _).2 hpg`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hne : valAt' (σ w).left U g ≠ 0` using `((h1 _ (σ w).left).2.2.2.2.1 U g).1 hq`. Use `⟨hne, ?_⟩` and prove the remaining obligations. Use `show valAt' (σ w).left U a / valAt' (σ w).left U g ^ n ∈ O`. Rewrite using `[← key _ hq, mul_div_cancel_right₀ _ (pow_ne_zero _ hne)]`. Conclude with `hwO`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce and unpack `w' ⟨hne, hw'⟩`. Establish `hq : ⊤ ≤ (σ w').left ⁻¹ᵁ X.left.basicOpen g` using `((h1 _ (σ w').left).2.2.2.2.1 U g).2 hne`. Use `⟨((h1 _ (σ w').left).1 V).2 (hgV (((h1 _ (σ w').left).1 _).1 hq)), ?_⟩` and prove the remaining obligations. Establish `h' : valAt' (σ w').left U a / valAt' (σ w').left U g ^ n ∈ O` using `hw'`. Rewrite `h'` using `[← key _ hq, mul_div_cancel_right₀ _ (pow_ne_zero _ hne)]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem continuous_of_affine (h1 : ValueRules) (X : Over (Sp ℂ)) (U : X.left.Opens)
     (hU : IsAffineOpen U) {Z : Type} [TopologicalSpace Z] (σ : Z → (𝟙_ (Over (Sp ℂ)) ⟶ X))
@@ -80,23 +80,21 @@ theorem continuous_of_affine (h1 : ValueRules) (X : Over (Sp ℂ)) (U : X.left.O
     rwa [← key _ hq, mul_div_cancel_right₀ _ (pow_ne_zero _ hne)] at h'
 
 /- English proof (translation)
-Use `letI := pointTopology X`. Establish `hXw : ∀ x : 𝟙_ (Over (Sp ℂ)) ⟶ X, x.left ≫ X.hom = 𝟙 _` using `fun x => by`. Simplify using `using Over.w x`. Use `set K : Set (Fin n → ℂ) := {z | (∀ j, ‖z j‖ ≤ 1) ∧ ∀ p ∈ RingHom.ker (MvPolynomial.eval₂Hom c r), MvPolynomial.eval z p = 0} with hK`. Establish `hKc : IsCompact K`.
+Equip the data with the indicated structure. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(isCompact_closedBall (0 : Fin n → ℂ) 1).of_isClosed_subset ?_ ?_` and prove the remaining obligations. Establish `hKe : K = (⋂ j, {z : Fin n → ℂ | ‖z j‖ ≤ 1}) ∩ ⋂ p ∈ RingHom.ker (MvPolynomial.eval₂Hom c r), {z | MvPolynomial.eval z p = 0}`. Use extensionality with `z`. Simplify using `[hK]`. Rewrite using `[hKe]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsClosed.inter (isClosed_iInter fun j => ?_) (isClosed_biInter fun p _ => ?_)` and prove the remaining obligations. Conclude with `isClosed_le (continuous_norm.comp (continuous_apply j)) continuous_const`. Conclude with `isClosed_eq (MvPolynomial.continuous_eval p) continuous_const`. Introduce `z hz`. Rewrite using `[Metric.mem_closedBall, dist_zero_right]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(pi_norm_le_iff_of_nonneg zero_le_one).2 hz.1`. Set `e : K → (Γ(X.left, U) →+* ℂ)` to `fun z => (MvPolynomial.eval₂Hom c r).liftOfSurjective hs ⟨MvPolynomial.eval z.1, fun p hp => z.2.2 p hp⟩`. Establish `he : ∀ z : K, ∀ p, e z (MvPolynomial.eval₂Hom c r p) = MvPolynomial.eval z.1 p` using `fun z p => RingHom.liftOfRightInverse_comp_apply _ _ _ _ _`. Establish `hconst : ∀ z : K, ∀ a, e z (constFn X.hom U a) = a` using `fun z a => by`. Rewrite using `[← hc, ← MvPolynomial.eval₂Hom_C c r a, he]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using the standard rewrite rules. Establish `hex` using `fun z : K => (h2 X U hU (e z) (hconst z))`. Use `choose σ hσ hσu using hex`. Establish `hσc : Continuous σ` using `continuous_of_affine h1 X U hU σ (fun z => (hσ z).1) (fun f => by`. Take `⟨p, rfl⟩` from `hs f`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `((MvPolynomial.continuous_eval p).comp continuous_subtype_val).congr fun z => ?_` and prove the remaining obligations. Rewrite using `[(hσ z).2, he]`. Use the proof step `rfl)`. Use `haveI : CompactSpace K := isCompact_iff_compactSpace.1 hKc`. Use `⟨Set.range σ, isCompact_range hσc, fun x hx hle => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨ex, hex⟩` from `(h1 _ x.left).2.1 U hx`. Establish `hcomp : ex.comp (MvPolynomial.eval₂Hom c r) = MvPolynomial.eval (fun j => valAt' x.left U (r j))`. Use `MvPolynomial.ringHom_ext (fun a => ?_) (fun j => ?_)` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, MvPolynomial.eval₂Hom_C, MvPolynomial.eval_C]`. Rewrite using `[← hex, hc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `(h1 _ x.left).2.2.2.2.2 X.hom (hXw x) U a hx`. Simplify using `[hex]`. Establish `hz : (fun j => valAt' x.left U (r j)) ∈ K`. Use `⟨hle, fun p hp => ?_⟩` and prove the remaining obligations. Rewrite using `[← hcomp, RingHom.comp_apply, RingHom.mem_ker.1 hp, map_zero]`.
-
-Use `⟨⟨_, hz⟩, ?_⟩` and prove the remaining obligations. Use `(hσu ⟨_, hz⟩ x ⟨hx, fun f => ?_⟩).symm` and prove the remaining obligations. Take `⟨p, rfl⟩` from `hs f`. Rewrite using `[he, ← hcomp, RingHom.comp_apply, hex]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_compact_of_affine (h1 : ValueRules) (h2 : AffinePoints) (X : Over (Sp ℂ))
     (U : X.left.Opens) (hU : IsAffineOpen U) {n : ℕ} (r : Fin n → Γ(X.left, U))
@@ -154,9 +152,9 @@ theorem exists_compact_of_affine (h1 : ValueRules) (h2 : AffinePoints) (X : Over
   rw [he, ← hcomp, RingHom.comp_apply, hex]
 
 /- English proof (translation)
-Use `letI := pointTopology X`. Use `continuous_generateFrom_iff.2 ?_` and prove the remaining obligations. Introduce and unpack `S ⟨U, f, O, hO, rfl⟩`. Apply `TopologicalSpace.isOpen_generateFrom_of_mem` to reduce the goal to its premises. Use `⟨φ.left ⁻¹ᵁ U, (φ.left.app U).hom f, O, hO, ?_⟩` and prove the remaining obligations.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq, Over.comp_left]`. Rewrite using `[(h1 _ x.left).2.2.2.1 _ φ.left U f]`. Conclude with `Iff.rfl`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem continuous_comp (h1 : ValueRules) {X Y : Over (Sp ℂ)} (φ : X ⟶ Y) :
     @Continuous _ _ (pointTopology X) (pointTopology Y) (fun x => x ≫ φ) := by
@@ -171,21 +169,19 @@ theorem continuous_comp (h1 : ValueRules) {X Y : Over (Sp ℂ)} (φ : X ⟶ Y) :
   exact Iff.rfl
 
 /- English proof (translation)
-Use `letI := pointTopology X`. Use `choose hA r hr c hc hsurj using H`. Establish `hC` using `fun i => exists_compact_of_affine h1 h2 X _ (hA i) (r i) (c i) (hc i) (hsurj i)`. Use `choose C hCc hCmem using hC`. Use `⟨(isCompact_iUnion hCc).of_isClosed_subset isClosed_univ fun x _ => ?_⟩` and prove the remaining obligations.
+Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx0 : x.left (default : PrimeSpectrum ℂ) ∈ (⨆ i, Out.nonzeroLocus (s i))`. Rewrite using `[hcov]`. Discharge the goal by the elementary cases of `trivial`. Unfold `Out.nonzeroLocus at hx0`. Simplify using `only [TopologicalSpace.Opens.mem_iSup] at hx0`.
+Check the elementary cases of the proposition. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨i, k, hik⟩` from `hx0`. Use `set a : Fin (M + 1) → ℂ := fun j => valAt' x.left (L.U k) ((s j).f k) with ha`. Take `⟨i0, hi0⟩` from `Finite.exists_max (fun j => ‖a j‖)`. Establish `hai : a i ≠ 0` using `((h1 _ x.left).2.2.2.2.1 _ _).1 (((h1 _ x.left).1 _).2 hik)`. Establish `hai0 : a i0 ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h0`. Use `hi0 i` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`. Conclude with `hai (norm_le_zero_iff.1 this)`. Establish `hb0 : ⊤ ≤ x.left ⁻¹ᵁ X.left.basicOpen ((s i0).f k)` using `((h1 _ x.left).2.2.2.2.1 _ _).2 hai0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Establish `hmem0 : x.left (default : PrimeSpectrum ℂ) ∈ X.left.basicOpen ((s i0).f k)` using `((h1 _ x.left).1 _).1 hb0`. Establish `hN : ⊤ ≤ x.left ⁻¹ᵁ Out.nonzeroLocus (s i0)`. Use `((h1 _ x.left).1 _).2 ?_` and prove the remaining obligations. Unfold `Out.nonzeroLocus`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨k, hmem0⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hNk : ⊤ ≤ x.left ⁻¹ᵁ (Out.nonzeroLocus (s i0) ⊓ L.U k)` using `((h1 _ x.left).1 _).2 ⟨((h1 _ x.left).1 _).1 hN, X.left.basicOpen_le _ hmem0⟩`. Use `Set.mem_iUnion.2 ⟨i0, hCmem i0 x hN fun j => ?_⟩` and prove the remaining obligations. Establish `hrel : a j = valAt' x.left (Out.nonzeroLocus (s i0)) (r i0 j) * a i0`. Take `⟨e, he⟩` from `(h1 _ x.left).2.1 _ hNk`. Use `congrArg e (hr i0 j k)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite `this` using `[map_mul, ← he, ← he, ← he, (h1 _ x.left).2.2.1 _ _ _ _ hNk, (h1 _ x.left).2.2.1 _ _ _ _ hNk, (h1 _ x.left).2.2.1 _ _ _ _ hNk]`. Conclude with `this`. Establish `hle` using `hi0 j`. Rewrite `hle` using `[hrel, norm_mul]`. Establish `hpos : 0 < ‖a i0‖` using `norm_pos_iff.2 hai0`.
-
-Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem compact_of_sections (h1 : ValueRules) (h2 : AffinePoints) (X : Over (Sp ℂ))
     (L : LB X.left) {M : ℕ} (s : Fin (M + 1) → LB.Sec L)
@@ -237,23 +233,19 @@ theorem compact_of_sections (h1 : ValueRules) (h2 : AffinePoints) (X : Over (Sp 
   nlinarith
 
 /- English proof (translation)
-Introduce `h1 h2 P`. Take `⟨A, grp, hab, g, hsm, L, hL, hrig, h9⟩` from `P`. Unfold `Out.RelAmple at h9`. Take `⟨N, hN, M, s, hcov, hh⟩` from `h9 ⊤ (AlgebraicGeometry.isAffineOpen_top _)`. Set `X' : Over (Sp ℂ)` to `Over.mk ((A.hom ∣_ ⊤) ≫ (⊤ : (Sp ℂ).Opens).ι)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `haveI : IsIso (⊤ : (Sp ℂ).Opens).ι := by`. Rewrite using `[← Scheme.topIso_hom]`. Use `infer_instance`. Establish `hψ : Function.Surjective (((⊤ : (Sp ℂ).Opens).ι.app ⊤).hom.comp (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom)`. Establish `s1` using `(ConcreteCategory.bijective_of_isIso ((⊤ : (Sp ℂ).Opens).ι.app ⊤)).2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s2` using `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv).2`. Conclude with `s1.comp s2`. Establish `hC : @CompactSpace _ (pointTopology X')`. Use `compact_of_sections h1 h2 X' (Out.powOver A hsm ⊤ N) s hcov fun i => ?_` and prove the remaining obligations. Take `⟨ha, r, hr1, hr2⟩` from `hh i`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 
-Use `⟨ha, r, hr1, ((A.hom ∣_ ⊤).appLE ⊤ (Out.nonzeroLocus (s i)) ?_).hom.comp ((((⊤ : (Sp ℂ).Opens).ι.app ⊤).hom.comp (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom)), ?_, ?_⟩` and prove the remaining obligations. Conclude with `le_top`. Introduce `a`. Both sides reduce to the same expression. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨p, rfl⟩` from `hr2 y`. Take `⟨q, rfl⟩` from `MvPolynomial.map_surjective _ hψ p`. Use `⟨q, ?_⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.coe_eval₂Hom, MvPolynomial.coe_eval₂Hom]`. Conclude with `(MvPolynomial.eval₂_map _ _ _ _).symm`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `φ : X' ⟶ A` to `Over.homMk (A.hom ⁻¹ᵁ ⊤).ι (morphismRestrict_ι _ _).symm`. Use `letI := pointTopology X'`. Use `letI := pointTopology A`. Establish `hsurj : Function.Surjective (fun y : 𝟙_ (Over (Sp ℂ)) ⟶ X' => y ≫ φ)`. Introduce `x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Check the elementary cases of the proposition. Introduce a local definition for the expression.
 
-Establish `hr : Set.range x.left.base ⊆ Set.range (A.hom ⁻¹ᵁ ⊤).ι.base`. Rewrite using `[Scheme.Opens.range_ι]`. Introduce `y _`. Discharge the goal by the elementary cases of `trivial`. Set `y0` to `IsOpenImmersion.lift (A.hom ⁻¹ᵁ ⊤).ι x.left hr`.
-
-Establish `hy0 : y0 ≫ (A.hom ⁻¹ᵁ ⊤).ι = x.left` using `IsOpenImmersion.lift_fac _ _ _`. Use `⟨Over.homMk y0 ?_, ?_⟩` and prove the remaining obligations. Use `show y0 ≫ (A.hom ∣_ ⊤) ≫ (⊤ : (Sp ℂ).Opens).ι = _`. Rewrite using `[morphismRestrict_ι, ← Category.assoc, hy0]`. Conclude with `Over.w x`.
-
-Use `ext1`. Conclude with `hy0`. Conclude with `hsurj.compactSpace (continuous_comp h1 φ)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compactSpace_points_polAV : (∀ (X : Scheme.{0}) (x : Sp ℂ ⟶ X), (∀ (U : X.Opens), ⊤ ≤ x ⁻¹ᵁ U ↔ x (default : PrimeSpectrum ℂ) ∈ U) ∧ (∀ (U : X.Opens), ⊤ ≤ x ⁻¹ᵁ U → ∃ e : Γ(X, U) →+* ℂ, ∀ f, valAt' x U f = e f) ∧ (∀ (U V : X.Opens) (h : V ≤ U) (f : Γ(X, U)), ⊤ ≤ x ⁻¹ᵁ V → valAt' x V (resG X h f) = valAt' x U f) ∧ (∀ (Y : Scheme.{0}) (φ : X ⟶ Y) (U : Y.Opens) (f : Γ(Y, U)), valAt' x (φ ⁻¹ᵁ U) ((φ.app U).hom f) = valAt' (x ≫ φ) U f) ∧ (∀ (U : X.Opens) (f : Γ(X, U)), ⊤ ≤ x ⁻¹ᵁ X.basicOpen f ↔ valAt' x U f ≠ 0) ∧ (∀ (p : X ⟶ Sp ℂ), x ≫ p = 𝟙 _ → ∀ (U : X.Opens) (a : ℂ), ⊤ ≤ x ⁻¹ᵁ U → valAt' x U (constFn p U a) = a)) → (∀ (X : Over (Sp ℂ)) (U : X.left.Opens), IsAffineOpen U → ∀ e : Γ(X.left, U) →+* ℂ, (∀ a, e (constFn X.hom U a) = a) → ∃! x : (𝟙_ (Over (Sp ℂ)) ⟶ X), ⊤ ≤ (x).left ⁻¹ᵁ U ∧ ∀ f, valAt' x.left U f = e f) → (∀ P : Out.PolAV (Sp ℂ), @CompactSpace (𝟙_ (Over (Sp ℂ)) ⟶ P.A) (TopologicalSpace.generateFrom {S : Set (𝟙_ (Over (Sp ℂ)) ⟶ P.A) | ∃ (U : P.A.left.Opens) (f : Γ(P.A.left, U)) (O : Set ℂ), IsOpen O ∧ S = {x | ⊤ ≤ (x).left ⁻¹ᵁ U ∧ valAt' x.left U f ∈ O}})) := by
   intro h1 h2 P

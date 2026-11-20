@@ -16,13 +16,13 @@ namespace GlobalTheory.OrbitPlace
 open ReciprocityTheory.ChartRestriction.G.Pdiv.AvDefs in
 
 /- English proof (translation)
-Take `⟨s, x, hx⟩` from `GlobalTheory.CharDepth.padicTensor_eq_mul_add A p e`. Establish `hp0 : IsLocalRing.residue O (p : O) = 0` using `(IsLocalRing.residue_eq_zero_iff _).2 hp`. Establish `key : ∀ ρ : A →+* O, IsLocalRing.residue O (tauExt ρ e) = IsLocalRing.residue O (ρ x)`. Introduce `ρ`. Establish `h1 : tauExt (p` using `p) ρ ((1 : ℤ_[p]) ⊗ₜ[ℤ] x) = ρ x := by simp [tauExt]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hx, map_add, map_mul, map_natCast, h1, map_add, map_mul, hp0, zero_mul, zero_add]`. Establish `h1 : IsLocalRing.residue O (σ x) = 1`. Establish `: tauExt σ e = 1` using `hσ`. Rewrite using `[← key, this, map_one]`. Establish `h2 : IsLocalRing.residue O (tauExt σ' e) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(IsLocalRing.residue_eq_zero_iff _).2 (h x)` as an intermediate fact. Rewrite `this` using `[map_sub, map_pow, h1, one_pow, sub_eq_zero]`. Rewrite using `[key, this]`. Establish `hu : IsUnit (tauExt σ' e)`. Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, h2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_ne_zero`. Establish `hid : tauExt σ' e * tauExt σ' e = tauExt σ' e * 1` using `by rw [← map_mul, he, mul_one]`. Conclude with `hu.mul_left_cancel hid`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_emb_of_congr_pow (A : Type) [CommRing A] (p : ℕ) [Fact p.Prime] (O : Type)
     [CommRing O] [IsLocalRing O] [Algebra ℤ_[p] O] (hp : ¬ IsUnit (p : O))
@@ -51,25 +51,23 @@ theorem mem_emb_of_congr_pow (A : Type) [CommRing A] (p : ℕ) [Fact p.Prime] (O
   exact hu.mul_left_cancel hid
 
 /- English proof (translation)
-Introduce `E _ _ p hpp C _ _ _ v O _ _ hv _ _ hp hd d _ τ hτ hfr`. Use `haveI : IsDomain O := hv.hom_inj.isDomain (algebraMap O C)`. Take `⟨w, hw⟩` from `GlobalTheory.exists_placeU_mem_emb p (𝓞 E) O (τ 0)`. Establish `hsep` using `GlobalTheory.ringOfIntegers_hom_eq_of_congr_maximalIdeal E p hpp.out hd C v O hv hp`. Establish `hmem : ∀ k : ℕ, τ (k : ZMod d) ∈ ReciprocityTheory.ChartRestriction.G.Pdiv.AvDefs.Emb (O` using `O) w.e := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simpa using hw`. Consider the case `succ k ih`. Rewrite using `[Nat.cast_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mem_emb_of_congr_pow _ p O hp w.e w.idem _ _ (hfr _) ih`. Establish `hpow : ∀ (k : ℕ) x, IsLocalRing.residue O (τ (k : ZMod d) x) = IsLocalRing.residue O (τ 0 x) ^ (p ^ k)`. Introduce `k x`. Proceed by induction on `k with`. Consider the case `zero => simp`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `succ k ih`. Use `(IsLocalRing.residue_eq_zero_iff _).2 (hfr (k : ZMod d) x)` as an intermediate fact. Rewrite `this` using `[map_sub, map_pow, sub_eq_zero]`. Rewrite using `[Nat.cast_succ, this, ih, ← pow_mul, pow_succ]`. Establish `hsurj : ∀ σ ∈ ReciprocityTheory.ChartRestriction.G.Pdiv.AvDefs.Emb (O` using `O) w.e, ∃ s, τ s = σ := by`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `σ hσ`. Take `⟨i, hi⟩` from `GlobalTheory.EmbFrob.exists_frobenius_pow p (𝓞 E) C v O hv hp w (τ 0) σ hw hσ`. Use `⟨(i : ZMod d), hsep _ _ fun x => ?_⟩` and prove the remaining obligations. Establish `h1 : σ x - τ 0 x ^ (p ^ i) ∈ IsLocalRing.maximalIdeal O`. Introduce `hu`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(hi x).ne (hv.one_of_isUnit hu)`. Use `(IsLocalRing.residue_eq_zero_iff _).2 h1` as an intermediate fact. Rewrite `this` using `[map_sub, map_pow, sub_eq_zero]`. Rewrite using `[← IsLocalRing.residue_eq_zero_iff, map_sub, hpow, this, sub_self]`. Establish `hmem' : ∀ s : ZMod d, τ s ∈ ReciprocityTheory.ChartRestriction.G.Pdiv.AvDefs.Emb (O` using `O) w.e := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `s`. Use `hmem s.val` as an intermediate fact. Rewrite `this` using `[ZMod.natCast_zmod_val]`. Then use the resulting hypothesis. Establish `hbij : Function.Bijective (fun s : ZMod d => (⟨τ s, hmem' s⟩ : ReciprocityTheory.ChartRestriction.G.Pdiv.AvDefs.Emb (O` using `O) w.e)) := ⟨fun a b h => hτ (congrArg Subtype.val h), fun σ => by`. Take `⟨s, hs⟩` from `hsurj σ.1 σ.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨s, Subtype.ext hs⟩⟩`. Take `⟨⟨t₀⟩, -⟩` from `GlobalTheory.EmbCount.card_emb E p C v O hv w.e w.idem`. Establish `hn : w.n = d`. Establish `h1` using `Nat.card_congr (t₀.trans (Equiv.ofBijective _ hbij).symm)`. Rewrite `h1` using `[Nat.card_zmod, Nat.card_eq_fintype_card, Fintype.card_fin]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `h1`. Establish `hcast : Function.Bijective (fun j : Fin w.n => ((j.val : ℕ) : ZMod d))`. Use `⟨fun a b h => ?_, fun s => ⟨⟨s.val, hn ▸ ZMod.val_lt s⟩, ZMod.natCast_zmod_val s⟩⟩` and prove the remaining obligations. Establish `h'` using `congrArg ZMod.val h`. Simplify using `only [ZMod.val_natCast] at h'`.
-
-Rewrite `h'` using `[Nat.mod_eq_of_lt (hn ▸ a.2), Nat.mod_eq_of_lt (hn ▸ b.2)]`. Conclude with `Fin.ext h'`. Set `t : Fin w.n ≃ ReciprocityTheory.ChartRestriction.G.Pdiv.AvDefs.Emb (O` to `O) w.e := (Equiv.ofBijective _ hcast).trans (Equiv.ofBijective _ hbij)`. Use `⟨w, hn, t, fun j => rfl, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.tau_basis_unit_determinant.exists_basis_isUnit_det p (𝓞 E) O w (fun j => (t j).1) (fun j => (t j).2) (fun j j' h => t.injective (Subtype.ext (hsep _ _ h)))`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_placeU_of_frobenius_orbit : ∀ (E : Type) [Field E] [NumberField E] (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C], v.Integers O → ∀ [IsLocalRing O] [Algebra ℤ_[p] O], ¬ IsUnit (p : O) → ¬ (p : ℤ) ∣ NumberField.discr E → ∀ (d : ℕ) [NeZero d] (τ : ZMod d → (𝓞 E →+* O)), Function.Injective τ → (∀ s x, τ (s + 1) x - τ s x ^ p ∈ IsLocalRing.maximalIdeal O) → ∃ (w : ReciprocityTheory.ChartRestriction.G.Pdiv.AvDefs.PlaceU p (𝓞 E)) (_ : w.n = d) (t : Fin w.n ≃ ReciprocityTheory.ChartRestriction.G.Pdiv.AvDefs.Emb (O := O) w.e), (∀ j : Fin w.n, ((t j : ReciprocityTheory.ChartRestriction.G.Pdiv.AvDefs.Emb (O := O) w.e) : 𝓞 E →+* O) = τ ((j.val : ℕ) : ZMod d)) ∧ ∃ b : Module.Basis (Fin w.n) ℤ_[p] (LinearMap.range (LinearMap.mulLeft ℤ_[p] w.e)), IsUnit (Matrix.det (Matrix.of fun i j => ReciprocityTheory.ChartRestriction.G.Pdiv.AvDefs.tauExt ((t j : ReciprocityTheory.ChartRestriction.G.Pdiv.AvDefs.Emb (O := O) w.e) : 𝓞 E →+* O) (b i : ℤ_[p] ⊗[ℤ] 𝓞 E))) := by
   intro E _ _ p hpp C _ _ _ v O _ _ hv _ _ hp hd d _ τ hτ hfr

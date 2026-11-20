@@ -36,7 +36,7 @@ def mm (tl : Fin N → (E →+* ℂ)) (η : TV a M (Fin q ⊕ (Fin N ⊕ Fin N))
       ((MultilinearMap.mkPiAlgebra ℝ (Fin N) ℂ).compLinearMap fun k => ent (tl k) (I'' k) (I' k))
 
 /- English proof (translation)
-Simplify using `[mm, Finset.sum_apply, vec, ent_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mm_apply (tl : Fin N → (E →+* ℂ)) (η : TV a M (Fin q ⊕ (Fin N ⊕ Fin N))) (X : Fin N → Herm E a)
     (I : Fin q → Fin a) : mm tl η X I = ∑ I' : Fin N → Fin a, ∑ I'' : Fin N → Fin a,
@@ -47,7 +47,7 @@ def om (tl : Fin N → (E →+* ℂ)) (η : TV a M (Fin q ⊕ (Fin N ⊕ Fin N))
   MultilinearMap.alternatization (mm tl η)
 
 /- English proof (translation)
-Rewrite using `[om, MultilinearMap.alternatization_apply, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, Units.smul_def, MultilinearMap.domDomCongr_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem om_apply (tl : Fin N → (E →+* ℂ)) (η : TV a M (Fin q ⊕ (Fin N ⊕ Fin N))) (X : Fin N → Herm E a)
     (I : Fin q → Fin a) :
@@ -57,13 +57,13 @@ theorem om_apply (tl : Fin N → (E →+* ℂ)) (η : TV a M (Fin q ⊕ (Fin N �
   rw [Pi.smul_apply, Units.smul_def, MultilinearMap.domDomCongr_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `I`. Rewrite using `[pm_apply, Pi.neg_apply, om_apply, om_apply, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[← smul_neg, mm_apply, mm_apply, ← Finset.sum_neg_distrib]`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun I' _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun I'' _ => ?_` and prove the remaining obligations. Rewrite using `[← smul_neg]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `e : Sum.elim (I ∘ Equiv.swap p p') (Sum.elim I' I'') = Sum.elim I (Sum.elim I' I'') ∘ Equiv.swap (Sum.inl p) (Sum.inl p')`. Use function extensionality and compare the values at `x`. Break down `x with x | x` into its components or cases. Apply the tactic sequence `simp [Equiv.swap_apply_def] split_ifs <;> simp_all`. Simplify using `[Equiv.swap_apply_def]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Conclude with `congrFun h _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem om_swap (tl : Fin N → (E →+* ℂ)) (η : TV a M (Fin q ⊕ (Fin N ⊕ Fin N))) (p p' : Fin q)
     (h : pm (Equiv.swap (Sum.inl p) (Sum.inl p')) η = -η) (X : Fin N → Herm E a) :
@@ -89,15 +89,15 @@ theorem om_swap (tl : Fin N → (E →+* ℂ)) (η : TV a M (Fin q ⊕ (Fin N �
   exact congrFun h _
 
 /- English proof (translation)
-Use `set U := kap E a τ k with hUdef`. Establish `hs : (star k.1).map (coord τ) = Uᴴ`. Use extensionality with `i j`. Simplify using `[U, kap, Matrix.star_apply, Matrix.conjTranspose_apply, J.coord_star]`. Establish `hU : Uᴴ * U = 1`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : star k.1 * k.1 = 1` using `Matrix.UnitaryGroup.star_mul_self k`. Establish `h2` using `congrArg (fun m => m.map (coord τ)) h1`. Simplify using `only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)] at h2`. Rewrite `h2` using `[hs]`. Conclude with `h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : (k.1 * X * star k.1).map (coord τ) = U * X.map (coord τ) * Uᴴ`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hs]`. Both sides reduce to the same expression. Establish `hc : ∀ y x, coord τ ((k.1 * X * star k.1) y x) = (U * X.map (coord τ) * Uᴴ) y x` using `fun y x => by`. Rewrite using `[← hm]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion repeatedly using the stated equalities.
 
-Both sides reduce to the same expression. Repeatedly rewrite using `[hc]`. Establish `key : (Uᴴ * (U * X.map (coord τ) * Uᴴ) * U) a' b = coord τ (X a' b)`. Rewrite using `[show Uᴴ * (U * X.map (coord τ) * Uᴴ) * U = (Uᴴ * U) * X.map (coord τ) * (Uᴴ * U) by`. Simplify using `only [Matrix.mul_assoc], hU, Matrix.one_mul, Matrix.mul_one, Matrix.map_apply]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Rewrite using `[← key]`. Generalize the expression as in `U * X.map (coord τ) * Uᴴ = Z`. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem intersection_update_fsHerm_neg_one (τ : E →+* ℂ) (k : Kinf E a) (X : Matrix (Fin a) (Fin a) (Cinf E)) (a' b : Fin a) :
     ∑ x, ∑ y, coord τ ((k.1 * X * star k.1) y x) * kap E a τ k x b * star (kap E a τ k y a') = coord τ (X a' b) := by
@@ -127,7 +127,7 @@ theorem intersection_update_fsHerm_neg_one (τ : E →+* ℂ) (k : Kinf E a) (X 
   ring
 
 /- English proof (translation)
-Simplify using `only [kap, Matrix.map_apply]`. Conclude with `J.coord_conjugate τ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kap_bar [IsTotallyComplex E] (τ : E →+* ℂ) (k : Kinf E a) (x y : Fin a) :
     kap E a (barE E τ) k x y = star (kap E a τ k x y) := by
@@ -135,9 +135,9 @@ theorem kap_bar [IsTotallyComplex E] (τ : E →+* ℂ) (k : Kinf E a) (x y : Fi
   exact J.coord_conjugate τ _
 
 /- English proof (translation)
-Use `conv_lhs => rw [← h2 k]`. Rewrite using `[actT_apply]`. Set `e : (Fin q → Fin a) × ((Fin N → Fin a) × (Fin N → Fin a)) ≃ (Fin q ⊕ (Fin N ⊕ Fin N) → Fin a)` to `(Equiv.prodCongr (Equiv.refl _) (Equiv.sumArrowEquivProdArrow _ _ _).symm).trans (Equiv.sumArrowEquivProdArrow _ _ _).symm`. Use `(Fintype.sum_equiv e _ _ (fun w => ?_)).symm` and prove the remaining obligations. Rewrite using `[Fintype.prod_sum_type, Fintype.prod_sum_type]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [lab3, Sum.elim_inl, Sum.elim_inr, Function.comp_apply, kap_bar]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eta_expand [IsTotallyComplex E] (lab : Fin q → (E →+* ℂ)) (tl : Fin N → (E →+* ℂ)) (ρ : Kinf E a → Module.End ℂ M)
     (η : TV a M (Fin q ⊕ (Fin N ⊕ Fin N)))
@@ -156,9 +156,9 @@ theorem eta_expand [IsTotallyComplex E] (lab : Fin q → (E →+* ℂ)) (tl : Fi
   rfl
 
 /- English proof (translation)
-Establish `h : ∀ I' I'' : Fin N → Fin a, (∏ j, coord (tl j) ((adHerm k (Y j)).1 (I'' j) (I' j))) * (K * ((∏ j, kap E a (tl j) k (I' j) (B' j)) * ∏ j, star (kap E a (tl j) k (I'' j) (A' j)))) = K * ∏ j, (coord (tl j) ((k.1 * (Y j).1 * star k.1) (I'' j) (I' j)) * kap E a (tl j) k (I' j) (B' j …`. Introduce `I' I''`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_mul_distrib]`. Simplify using `only [adHerm]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Repeatedly rewrite using `[h, ← Finset.mul_sum]`. Use `congr 1`. Rewrite using `[sum_sum_prod (fun j x y => coord (tl j) ((k.1 * (Y j).1 * star k.1) y x) * kap E a (tl j) k x (B' j) * star (kap E a (tl j) k y (A' j)))]`. Conclude with `Finset.prod_congr rfl fun j _ => intersection_update_fsHerm_neg_one (tl j) k (Y j).1 (A' j) (B' j)`.
+Rewrite the conclusion repeatedly using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coef_id (tl : Fin N → (E →+* ℂ)) (k : Kinf E a) (Y : Fin N → Herm E a) (K : ℂ) (A' B' : Fin N → Fin a) :
     ∑ I' : Fin N → Fin a, ∑ I'' : Fin N → Fin a, (∏ j, coord (tl j) ((adHerm k (Y j)).1 (I'' j) (I' j))) *
@@ -179,15 +179,13 @@ theorem coef_id (tl : Fin N → (E →+* ℂ)) (k : Kinf E a) (Y : Fin N → Her
   exact Finset.prod_congr rfl fun j _ => intersection_update_fsHerm_neg_one (tl j) k (Y j).1 (A' j) (B' j)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `I`. Rewrite using `[mm_apply, actT_apply]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun I' _ => Finset.sum_congr rfl fun I'' _ => ?_` and prove the remaining obligations. Rewrite using `[eta_expand lab tl ρ η h2 k I I' I'', Finset.smul_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[smul_smul]`. Use `_ = ∑ w : (Fin q → Fin a) × ((Fin N → Fin a) × (Fin N → Fin a)), (∑ I' : Fin N → Fin a, ∑ I'' : Fin N → Fin a, (∏ j, coord (tl j) ((adHerm k (Y j)).1 (I'' j) (I' j))) * ((∏ p, kap E a (lab p) k (I p) (w.1 p)) * ((∏ j, kap E a (tl j) k (I' j) (w.2.1 j)) * ∏ j, star (kap E a (tl j) …`. Repeatedly rewrite using `[Finset.sum_smul]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun I' _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_comm]`. Use `_ = ∑ w : (Fin q → Fin a) × ((Fin N → Fin a) × (Fin N → Fin a)), ((∏ p, kap E a (lab p) k (I p) (w.1 p)) * ∏ j, coord (tl j) ((Y j).1 (w.2.2 j) (w.2.1 j))) • ρ k (η (Sum.elim w.1 (Sum.elim w.2.1 w.2.2))) := by`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[coef_id]`. Use `_ = _ := by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun J1 _ => ?_` and prove the remaining obligations. Rewrite using `[mm_apply, map_sum, Finset.smul_sum, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun B' _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum, Finset.smul_sum]`.
-
-Use `Finset.sum_congr rfl fun A' _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mm_equiv [IsTotallyComplex E] (lab : Fin q → (E →+* ℂ)) (tl : Fin N → (E →+* ℂ)) (ρ : Kinf E a → Module.End ℂ M)
     (η : TV a M (Fin q ⊕ (Fin N ⊕ Fin N)))
@@ -225,9 +223,9 @@ theorem mm_equiv [IsTotallyComplex E] (lab : Fin q → (E →+* ℂ)) (tl : Fin 
         rw [map_smul, smul_smul]
 
 /- English proof (translation)
-Introduce `k X`. Rewrite using `[om, MultilinearMap.alternatization_apply, MultilinearMap.alternatization_apply, map_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def, Units.smul_def, map_zsmul, MultilinearMap.domDomCongr_apply, MultilinearMap.domDomCongr_apply]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `mm_equiv lab tl ρ η h2 k (fun i => X (σ i))`.
+A detailed English derivation is pending.
 -/
 theorem om_cochain [IsTotallyComplex E] (lab : Fin q → (E →+* ℂ)) (tl : Fin N → (E →+* ℂ))
     (ρ : Kinf E a → Module.End ℂ M) (η : TV a M (Fin q ⊕ (Fin N ⊕ Fin N)))

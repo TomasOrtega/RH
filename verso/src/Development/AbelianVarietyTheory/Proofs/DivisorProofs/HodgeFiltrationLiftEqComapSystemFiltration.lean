@@ -17,11 +17,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.LiftSys
 
 /- English proof (translation)
-Establish `hb` using `(H.toCrystallineDeRham R I (divided₂ hI) (isDPNilpotent_squareZero hI) R₀ π hπ hk X X₀ s s₀ i hs hs' hs'' h m).1`. Take `⟨e, he, -⟩` from `GlobalTheory.T.hodge_cohomology_iso_presented_crystal R R₀ I hI π hπ hk X₀ s₀ S X s i h hP`. Establish `key : ∀ c, m.pull1 c ∈ S.K hI ↔ c ∈ F1 s` using `fun c ↦ by`. Express the relevant statement in the definitionally equal form `S.r hI (m.pull1 c) = 0 ↔ toH1O s c = 0`. Rewrite using `[← he m c, LinearEquiv.map_eq_zero_iff, structureSheaf_comparison_comm]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨fun h0 ↦ cmpO_injective R X s (h0.trans (map_zero _).symm), fun h0 ↦ by rw [h0, map_zero]⟩`. Use extensionality with `x`. Take `⟨c, rfl⟩` from `hb.2 x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c', hc', e'⟩`.
+Supply the required witnesses or components. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← hb.1 e']`. Conclude with `(key c').2 hc'`. Introduce `hx`. Conclude with `⟨c, (key c).1 hx, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hodgeFiltration_lift_map_eq_crystalline_kernel (H : CrystallineSmoothLift) {R R₀ : Type} [CommRing R] [CommRing R₀] {I : Ideal R} (hI : I ^ 2 = 0)
     {π : R →+* R₀} (hπ : Function.Surjective π) (hk : RingHom.ker π = I) {X₀ X : Scheme.{0}} {s₀ : X₀ ⟶ Sp R₀}
@@ -45,9 +45,9 @@ theorem hodgeFiltration_lift_map_eq_crystalline_kernel (H : CrystallineSmoothLif
     exact ⟨c, (key c).1 hx, rfl⟩
 
 /- English proof (translation)
-Establish `hnil : IsNilpotent (RingHom.ker π)` using `⟨2, by rw [hk, hI]⟩`. Establish `hpr` using `(GlobalTheory.NilLift.isProper_and_geometricallyConnected_of_smooth_lift R R₀ π hπ hnil X A₀ i h hX hA hA').1`. Establish `e : X.hom ≫ 𝟙 _ = X.hom` using `Category.comp_id _`. Establish `h' : IsPullback i A₀.hom (X.hom ≫ 𝟙 _) (spMap π)` using `by rw [e]; exact h`. Establish `hs : Smooth (X.hom ≫ 𝟙 _)` using `by rw [e]; exact hX`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs' : IsSeparated (X.hom ≫ 𝟙 _)` using `by rw [e]; infer_instance`. Establish `hs'' : QuasiCompact (X.hom ≫ 𝟙 _)` using `by rw [e]; infer_instance`. Establish `hP' : S.Presents (X.hom ≫ 𝟙 _) i` using `by rw [e]; exact hP`. Unfold `primitiveCrystalHodgeLiftClasses`. Rewrite using `[hodgeFiltration_lift_map_eq_crystalline_kernel H hI hπ hk h' hs hs' hs'' S hP']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hodgeFiltration_lift_eq_comap_systemFiltration (H : CrystallineSmoothLift) (R R₀ : Type) [CommRing R] [CommRing R₀] (I : Ideal R)
     (hI : I ^ 2 = 0) (π : R →+* R₀) (hπ : Function.Surjective π) (hk : RingHom.ker π = I) (A₀ : Over (Sp R₀))

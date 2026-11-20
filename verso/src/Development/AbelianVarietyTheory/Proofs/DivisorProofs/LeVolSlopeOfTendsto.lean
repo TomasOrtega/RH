@@ -26,9 +26,9 @@ def drSym (la : AllWt.Weight S.Dw) : Sym D.host.E →₀ ℤ :=
   ∑ z : Letter S.Dw, Finsupp.single (fun _ => false, none, .inl (z.1, z.2)) (-exOf S.Dw la 0 (some z))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Apply the tactic sequence `have e : ∀ w w' : Sym D.host.E →₀ ℤ, expo S.Dw (w + w') x = expo S.Dw w x + expo S.Dw w' x := fun w w' => Finsupp.sum_add_index' (fun _ => by simp) fun _ _ _ => by split_ifs <;> simp`. Set `φ : (Sym D.host.E →₀ ℤ) →+ ℤ` to `AddMonoidHom.mk' (fun w => expo S.Dw w x) e`. Express the relevant statement in the definitionally equal form `φ _ = _`. Rewrite using `[drSym, map_sum, Finset.sum_eq_single x (fun z _ hz => ?_) (by simp)]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `expo S.Dw _ x = _`. Rewrite using `[GlobalTheory.Mean4O.expo_single, if_pos (by simp [letterOf])]`. Express the relevant statement in the definitionally equal form `expo S.Dw _ x = _`. Rewrite using `[GlobalTheory.Mean4O.expo_single, if_neg (by simpa [letterOf] using hz)]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem expo_drSym (la : AllWt.Weight S.Dw) : expo S.Dw (drSym la) = fun z => -exOf S.Dw la 0 (some z) := by
   classical
@@ -46,7 +46,7 @@ theorem expo_drSym (la : AllWt.Weight S.Dw) : expo S.Dw (drSym la) = fun z => -e
 variable {s : FinalTheorems S κ} (Φ : s.Flag) (k : s.Comp)
 
 /- English proof (translation)
-Rewrite using `[expo_drSym, GlobalTheory.ShFam.DeKeyTrue.divOf_neg_exOf]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem divOf_drSym (la : AllWt.Weight S.Dw) : divOf (Φ.C k) (expo S.Dw (drSym la)) = (Φ.C k).Lw la := by
   rw [expo_drSym, GlobalTheory.ShFam.DeKeyTrue.divOf_neg_exOf]
@@ -66,7 +66,7 @@ def finN (la : AllWt.Weight S.Dw) (v : HeightOneSpectrum (𝓞 D.what₂.LL)) (e
     Real.exp (lgOf (Φ.C k) (drSym la) v e y)
 
 /- English proof (translation)
-Simplify using `[finN, Adl.nrmFin, adlOf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem finN_eq (hm : Mets (Φ.C k) (cxSt D.what₂.LL)) (la : AllWt.Weight S.Dw) (v : HeightOneSpectrum (𝓞 D.what₂.LL))
     (e : Ext v) (y : AlgPt (Φ.C k).Y) (f : (Φ.C k).Y.Fn) :
@@ -79,7 +79,7 @@ def htLog (B : ℝ) (v : HeightOneSpectrum (𝓞 D.what₂.LL)) : ℝ :=
   ∑ p ∈ Pad.setB κ B, -Real.log (NumberField.HeightOneSpectrum.adicAbv D.what₂.LL v (p : D.what₂.LL)) * htEx D.host.E p
 
 /- English proof (translation)
-The claim follows from `limsup_le_limsup ((eventually_gt_atTop 0).mono fun k hk => ENNReal.div_le_div_right (mul_le_mul_right (EReal.toENNReal_le_toENNReal (ENNReal.log_monotone (ENat.toENNReal_le.2 (h _ (Nat.mul_pos ha hk))))) _) _)`.
+A detailed English derivation is pending.
 -/
 theorem countVol_mono_pos (Dm d : ℕ) {a : ℕ} (ha : 0 < a) {m m' : ℕ → ℕ∞} (h : ∀ τ, 1 ≤ τ → m τ ≤ m' τ) :
     countVol Dm d a m ≤ countVol Dm d a m' :=
@@ -87,7 +87,7 @@ theorem countVol_mono_pos (Dm d : ℕ) {a : ℕ} (ha : 0 < a) {m m' : ℕ → �
     (EReal.toENNReal_le_toENNReal (ENNReal.log_monotone (ENat.toENNReal_le.2 (h _ (Nat.mul_pos ha hk))))) _) _)
 
 /- English proof (translation)
-Use `((le_volSlope_iff hW vol a).2 h).trans (iInf_mono fun t => EReal.sub_le_sub ?_ le_rfl)` and prove the remaining obligations. Conclude with `EReal.coe_ennreal_le_coe_ennreal_iff.2 (ENNReal.div_le_div_left (ENNReal.ofReal_le_ofReal hδ) _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem le_volSlope_of_le {δ W a : ℝ} (hδ : δ ≤ W) (hW : 0 < W) {vol : ℝ → ℝ≥0∞}
     (h : ∀ t, ENNReal.ofReal (W * (a + t)) ≤ vol t) : (a : EReal) ≤ volSlope δ vol := by
@@ -95,11 +95,11 @@ theorem le_volSlope_of_le {δ W a : ℝ} (hδ : δ ≤ W) (hW : 0 < W) {vol : �
   exact EReal.coe_ennreal_le_coe_ennreal_iff.2 (ENNReal.div_le_div_left (ENNReal.ofReal_le_ofReal hδ) _)
 
 /- English proof (translation)
-Use `le_volSlope_of_le hδ hW fun t => ?_` and prove the remaining obligations. Establish `hr : Tendsto (fun r : ℚ => (r : ℝ)) (𝓝[>] 0) (𝓝 0)`. Simplify using `using (Rat.continuous_coe_real.tendsto 0).mono_left nhdsWithin_le_nhds`. Establish `h1 : Tendsto (fun r : ℚ => dg r * (ar r / (((Dm : ℝ) + 1) * dg r)) + dg r * (t - c - C * r)) (𝓝[>] 0) (𝓝 (W * sl + W * (t - c - C * 0)))` using `(hd.mul ha).add (hd.mul (tendsto_const_nhds.sub (hr.const_mul C)))`. Establish `e : W * sl + W * (t - c - C * 0) = W * (sl - c + t)` using `by ring`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[e]`. Use `le_of_tendsto ((ENNReal.continuous_ofReal.tendsto _).comp h1) ?_` and prove the remaining obligations. Use `filter_upwards [h, hd.eventually (lt_mem_nhds hW)] with r h2 h3`. Use `le_of_eq_of_le (congrArg ENNReal.ofReal ?_) (h2 t)` and prove the remaining obligations. Use `h3.ne'` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem le_volSlope_of_tendsto {δ W sl c C : ℝ} {Dm : ℕ} {ar dg : ℚ → ℝ} {vol : ℝ → ℝ≥0∞} (hδ : δ ≤ W) (hW : 0 < W)
     (hd : Tendsto dg (𝓝[>] 0) (𝓝 W)) (ha : Tendsto (fun r => ar r / (((Dm : ℝ) + 1) * dg r)) (𝓝[>] 0) (𝓝 sl))

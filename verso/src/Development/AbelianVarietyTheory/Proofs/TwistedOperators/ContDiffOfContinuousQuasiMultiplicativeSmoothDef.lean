@@ -7,69 +7,59 @@ open Metric Set Filter Topology Convolution
 namespace GlobalTheory.FuncEqSmooth
 
 /- English proof (translation)
-Establish `h00 : ((0:ℝ), (0:ℝ)) ∈ U` using `hUs 0`. Establish `hw0 : c 0 * E 0 0 = 1`. Establish `h1` using `hfe (0,0) h00`. Simplify using `only [add_zero] at h1`. Establish `h2 : c 0 * (c 0 * E 0 0) = c 0 * 1` using `by rw [mul_one, ← mul_assoc]; exact h1.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `mul_left_cancel₀ hc0 h2`. Establish `hEcont : ContinuousAt (fun p : ℝ × ℝ => E p.1 p.2) (0,0)` using `hE.continuousOn.continuousAt (hU.mem_nhds h00)`. Establish `hwcont : ContinuousAt (fun v : ℝ => c v * E 0 v) 0`. Establish `h1 : ContinuousAt (fun v : ℝ => E (0:ℝ) v) 0` using `hEcont.comp (f := fun v : ℝ => ((0:ℝ), v)) (by fun_prop)`. Conclude with `hc.continuousAt.mul h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.1 hU _ h00`. Take `⟨δ, hδ, hwδ⟩` from `Metric.continuousAt_iff.1 hwcont (1/2) (by norm_num)`. Use `set r := min ε δ with hr`. Establish `hr0 : 0 < r` using `lt_min hε hδ`. Establish `hbox : ∀ a b : ℝ, |a| < r → |b| < r → (a, b) ∈ U`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b ha hb`. Apply `hball` to reduce the goal to its premises. Rewrite using `[mem_ball, Prod.dist_eq, max_lt_iff]`. Simplify using `only [Real.dist_eq, sub_zero]`. Conclude with `⟨lt_of_lt_of_le ha (min_le_left _ _), lt_of_lt_of_le hb (min_le_left _ _)⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `ψ : ContDiffBump (0:ℝ)` to `⟨r/4, r/2, by positivity, by linarith⟩`. Use `set φ : ℝ → ℝ := ψ.normed volume with hφdef`. Establish `hφ0 : ∀ x : ℝ, r/2 ≤ |x| → φ x = 0`. Introduce `x hx`. Rewrite using `[← Function.notMem_support, hφdef, ψ.support_normed_eq, mem_ball, Real.dist_eq, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `show ¬ |x| < r/2`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hφs : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) φ` using `ψ.contDiff_normed`. Set `φr : ℝ → ℂ` to `fun y => ((φ y : ℝ) : ℂ)`. Establish `hφr : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) φr` using `Complex.ofRealCLM.contDiff.comp hφs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hφr0 : ∀ x : ℝ, r/2 ≤ |x| → φr x = 0`. Introduce `x hx`. Simplify using `[φr, hφ0 x hx]`. Set `A : ℝ → ℂ` to `c ⋆[ContinuousLinearMap.mul ℝ ℂ, volume] (fun y => φr (-y))`. Establish `hA : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) A`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hcs : HasCompactSupport (fun y => φr (-y))`. Use `HasCompactSupport.intro (isCompact_closedBall (0:ℝ) (r/2)) (fun y hy => ?_)` and prove the remaining obligations. Rewrite `hy` using `[mem_closedBall, Real.dist_eq, sub_zero, not_le]`. Conclude with `hφr0 _ (by rw [abs_neg]; exact hy.le)`. Conclude with `hcs.contDiff_convolution_right (L := ContinuousLinearMap.mul ℝ ℂ) hc.locallyIntegrable (hφr.comp contDiff_neg)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `G : ℝ → ℝ → ℂ` to `fun t y => φr (-y) * E t (-y)`. Set `h : ℝ → ℂ` to `fun t => (c ⋆[ContinuousLinearMap.mul ℝ ℂ, volume] G t) 0`. Establish `hG : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (Function.uncurry G) (ball (0:ℝ) r ×ˢ univ)`. Introduce `q hq`. Apply `ContDiffAt.contDiffWithinAt` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq1 : |q.1| < r`. Use `hq.1` as an intermediate fact. Rewrite `this` using `[mem_ball, Real.dist_eq, sub_zero]`. Conclude with `this`. Distinguish the cases in `hq2 : |q.2| < r`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmem : (q.1, -q.2) ∈ U` using `hbox _ _ hq1 (by rw [abs_neg]; exact hq2)`. Establish `hEat : ContDiffAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun p : ℝ × ℝ => E p.1 p.2) (q.1, -q.2)` using `hE.contDiffAt (hU.mem_nhds hmem)`. Establish `h2 : ContDiffAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun q : ℝ × ℝ => E q.1 (-q.2)) q` using `hEat.comp (f := fun q : ℝ × ℝ => (q.1, -q.2)) q (by fun_prop)`. Establish `h1 : ContDiffAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun q : ℝ × ℝ => φr (-q.2)) q` using `(hφr.comp (contDiff_snd.neg)).contDiffAt`. Conclude with `h1.mul h2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_neg at hq2`. Establish `hev : ∀ᶠ q' in 𝓝 q, r/2 < |q'.2|` using `continuousAt_const.eventually_lt (by fun_prop) (by linarith)`. Use `contDiffAt_const (c := (0:ℂ)).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hev] with q' hq'`. Use `show φr (-q'.2) * E q'.1 (-q'.2) = 0`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hφr0 _ (by rw [abs_neg]; exact hq'.le), zero_mul]`. Establish `hparam` using `contDiffOn_convolution_right_with_param (μ := volume) (n := ⊤) (ContinuousLinearMap.mul ℝ ℂ) (f := c) (g := G) (s := ball (0:ℝ) r) (k := closedBall (0:ℝ) (r/2)) isOpen_ball (isCompact_closedBall _ _) (fun p x _ hx => by`. Rewrite `hx` using `[mem_closedBall, Real.dist_eq, sub_zero, not_le]`. Use `show φr (-x) * E p (-x) = 0`. Rewrite using `[hφr0 _ (by rw [abs_neg]; exact hx.le), zero_mul])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `hc.locallyIntegrable hG`. Establish `hh : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) h (ball (0:ℝ) r)`. Establish `hemb : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun t : ℝ => (t, (0:ℝ))) (ball (0:ℝ) r)` using `(contDiff_id.prodMk contDiff_const).contDiffOn`. Establish `h3` using `ContDiffOn.comp (g := fun q : ℝ × ℝ => (c ⋆[ContinuousLinearMap.mul ℝ ℂ, volume] G q.1) q.2) hparam hemb (fun t ht => ⟨ht, mem_univ _⟩)`. Conclude with `h3`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrδ : r ≤ δ` using `min_le_right _ _`. Set `cl : ℝ → ℝ` to `fun v => max (-(r/2)) (min v (r/2))`. Establish `hclc : Continuous cl` using `continuous_const.max (continuous_id.min continuous_const)`. Establish `hcl : ∀ v, cl v ∈ Icc (-(r/2)) (r/2)` using `fun v => ⟨le_max_left _ _, max_le (by linarith) (min_le_right _ _)⟩`. Establish `hclid : ∀ v, |v| ≤ r/2 → cl v = v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `v hv`. Take `⟨h1, h2⟩` from `abs_le.1 hv`. Use `show max (-(r/2)) (min v (r/2)) = v`. Rewrite using `[min_eq_left h2, max_eq_right h1]`. Establish `hE0on : ContinuousOn (fun v : ℝ => E 0 v) (Icc (-(r/2)) (r/2))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `hE.continuousOn.comp (f := fun v : ℝ => ((0:ℝ), v)) (by fun_prop : Continuous fun v : ℝ => ((0:ℝ), v)).continuousOn (fun v (hv : v ∈ Icc (-(r/2)) (r/2)) => hbox 0 v (by simp [hr0]) (abs_lt.2 ⟨by linarith [hv.1], by linarith [hv.2]⟩))`. Conclude with `h3`. Set `Ehat : ℝ → ℂ` to `fun v => E 0 (cl v)`. Establish `hEhat : Continuous Ehat` using `hE0on.comp_continuous hclc hcl`. Set `g : ℝ → ℂ` to `fun x => c (-x) * Ehat (-x)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hgc : Continuous g` using `(hc.comp continuous_neg).mul (hEhat.comp continuous_neg)`. Establish `hg0 : g 0 = 1` using `by show c (-0) * E 0 (cl (-0)) = 1`. Rewrite using `[neg_zero, hclid 0 (by simp; positivity), hw0]`. Establish `hdist` using `ψ.dist_normed_convolution_le (μ := volume) (x₀ := 0) (ε := 1/2) hgc.aestronglyMeasurable (fun x hx => by`. Establish `hx' : |x| < r/2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h6` using `hx`. Rewrite `h6` using `[mem_ball, Real.dist_eq, sub_zero]`. Conclude with `h6`. Establish `e1 : g x = c (-x) * E 0 (-x)` using `by show c (-x) * E 0 (cl (-x)) = _`. Rewrite using `[hclid _ (by rw [abs_neg]; exact hx'.le)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e1, hg0, ← hw0]`. Conclude with `(hwδ (by rw [Real.dist_eq, sub_zero, abs_neg]; linarith)).le)`. Establish `hconv : (ψ.normed volume ⋆[ContinuousLinearMap.lsmul ℝ ℝ, volume] g) 0 = h 0` using `by show _ = (c ⋆[ContinuousLinearMap.mul ℝ ℂ, volume] G 0) 0`. Rewrite using `[convolution_def, convolution_def]`. Use `integral_congr_ae (Eventually.of_forall fun u => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ContinuousLinearMap.lsmul_apply, ContinuousLinearMap.mul_apply', zero_sub, neg_neg, g, G, Ehat, φr]`. Distinguish the cases in `hu : |u| < r/2`. Rewrite using `[hclid u hu.le, Complex.real_smul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hz : ψ.normed volume u = 0` using `hφ0 u (not_lt.1 hu)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hz' : φ u = 0` using `hφ0 u (not_lt.1 hu)`. Rewrite using `[hz, hz']`. Simplify using the standard rewrite rules. Establish `h0ne : h 0 ≠ 0`. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hdist` using `[hconv, hg0, h0]`. Evaluate the numerical expressions using `at hdist`. Establish `hAh : ∀ t, |t| < r → A t = c t * h t`. Introduce `t ht`. Use `show (c ⋆[ContinuousLinearMap.mul ℝ ℂ, volume] (fun y => φr (-y))) t = c t * (c ⋆[ContinuousLinearMap.mul ℝ ℂ, volume] G t) 0`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[convolution_def, convolution_def, ← integral_const_mul, ← integral_add_right_eq_self (μ := volume) (fun u => (ContinuousLinearMap.mul ℝ ℂ) (c u) (φr (-(t - u)))) t]`. Use `integral_congr_ae (Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Simplify using `only [ContinuousLinearMap.mul_apply', G, zero_sub, neg_neg]`. Establish `e : -(t - (s + t)) = s` using `by ring`. Rewrite using `[e]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hs : |s| < r/2`. Establish `h7` using `hfe (t, s) (hbox t s ht (by linarith))`. Simplify using `only at h7`. Rewrite using `[add_comm s t, h7]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hφr0 s (not_lt.1 hs)]`. Expand and normalize the polynomial expressions, which then agree. Establish `hcont_h : ContinuousOn h (ball (0:ℝ) r)` using `hh.continuousOn`. Use `set V := ball (0:ℝ) r ∩ h ⁻¹' {0}ᶜ with hV`. Establish `hVo : IsOpen V` using `hcont_h.isOpen_inter_preimage isOpen_ball isOpen_compl_singleton`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h0V : (0:ℝ) ∈ V` using `⟨mem_ball_self hr0, h0ne⟩`. Establish `hcV : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) c V`. Establish `h4 : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun t => A t * (h t)⁻¹) V` using `hA.contDiffOn.mul ((hh.mono inter_subset_left).inv (fun t ht => ht.2))`. Use `h4.congr (fun t ht => ?_)` and prove the remaining obligations. Establish `ht1 : |t| < r`.
-
-Establish `h8` using `ht.1`. Rewrite `h8` using `[mem_ball, Real.dist_eq, sub_zero]`. Conclude with `h8`. Establish `hne : h t ≠ 0` using `ht.2`. Use `show c t = A t * (h t)⁻¹`.
-
-Rewrite using `[hAh t ht1, mul_inv_cancel_right₀ hne]`. Rewrite using `[contDiff_iff_contDiffAt]`. Introduce `t₀`. Use `set W := (fun t : ℝ => (t₀, t)) ⁻¹' U ∩ V with hW`. Establish `hWo : IsOpen W` using `(hU.preimage (by fun_prop)).inter hVo`.
-
-Establish `h0W : (0:ℝ) ∈ W` using `⟨hUs t₀, h0V⟩`. Establish `hFW : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun t => c (t₀ + t)) W`. Establish `hE' : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun t => E t₀ t) W` using `hE.comp (f := fun t : ℝ => (t₀, t)) (contDiff_const.prodMk contDiff_id).contDiffOn (fun t ht => ht.1)`. Establish `h5 : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun t => c t₀ * c t * E t₀ t) W` using `(contDiffOn_const.mul (hcV.mono inter_subset_right)).mul hE'`. Use `h5.congr (fun t ht => ?_)` and prove the remaining obligations.
-
-Conclude with `hfe (t₀, t) ht.1`. Establish `hF0 : ContDiffAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun t => c (t₀ + t)) 0` using `hFW.contDiffAt (hWo.mem_nhds h0W)`. Establish `hsub : ContDiffAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun x : ℝ => x - t₀) t₀` using `(contDiff_id.sub contDiff_const).contDiffAt`. Establish `hF0' : ContDiffAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun t => c (t₀ + t)) ((fun x : ℝ => x - t₀) t₀)`. Simplify using `using hF0`.
-
-Establish `h9` using `ContDiffAt.comp (f := fun x : ℝ => x - t₀) t₀ hF0' hsub`. Use `h9 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiff_of_func_eq (c : ℝ → ℂ) (E : ℝ → ℝ → ℂ) (U : Set (ℝ × ℝ)) (hc : Continuous c)
     (hc0 : c 0 ≠ 0) (hU : IsOpen U) (hUs : ∀ s, (s, 0) ∈ U)

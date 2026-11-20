@@ -7,11 +7,11 @@ open Matrix Finset Formalism.MainNotions.S GlobalTheory.Dec
 namespace GlobalTheory.PhiTriangular
 
 /- English proof (translation)
-Set `m : ℕ → ℤ` to `fun k => if h : k < n then muInt lam ⟨k, h⟩ else 0`. Establish `h1 : ∀ i : Fin n, (if l ≤ i then sInt lam i else 0) = m (max i.val l.val) - m (max (i.val + 1) l.val)`. Introduce `i`. Distinguish the cases in `h : l ≤ i`. Establish `h' : l.val ≤ i.val` using `h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[if_pos h, max_eq_left h', max_eq_left (by omega : l.val ≤ i.val + 1)]`. Simplify using `only [m, sInt, dif_pos i.isLt]`. Establish `h' : i.val < l.val` using `by simpa using h`. Rewrite using `[if_neg h, max_eq_right h'.le, max_eq_right (by omega : i.val + 1 ≤ l.val), sub_self]`. Simplify using `only [h1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Fin.sum_univ_eq_sum_range (fun k => m (max k l.val) - m (max (k + 1) l.val)) n, Finset.sum_range_sub' (fun k => m (max k l.val)) n, max_eq_right (Nat.zero_le _), max_eq_left l.isLt.le]`. Simplify using `[m]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_sInt_from {n : ℕ} (lam : Fin n → ℝ) (l : Fin n) :
     ∑ i : Fin n, (if l ≤ i then sInt lam i else 0) = muInt lam l := by
@@ -32,9 +32,9 @@ theorem sum_sInt_from {n : ℕ} (lam : Fin n → ℝ) (l : Fin n) :
   simp [m]
 
 /- English proof (translation)
-Use `Finset.prod_of_injOn (Fin.castLE i.isLt) ((Fin.castLE_injective _).injOn) (by simp) ?_ ?_` and prove the remaining obligations. Introduce `k _ hk`. Rewrite using `[if_neg]`. Introduce `h`. Conclude with `hk ⟨⟨k.val, Nat.lt_succ_of_le h⟩, by simp, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j _`. Rewrite using `[if_pos]`. Conclude with `Nat.le_of_lt_succ j.isLt`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_castLE_succ {n : ℕ} (d : Fin n → ℂ) (i : Fin n) :
     ∏ j : Fin (i.val + 1), d (Fin.castLE i.isLt j) = ∏ l : Fin n, if l ≤ i then d l else 1 := by
@@ -48,7 +48,7 @@ theorem prod_castLE_succ {n : ℕ} (d : Fin n → ℂ) (i : Fin n) :
     exact Nat.le_of_lt_succ j.isLt
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih => rw [Finset.sum_insert hi, Finset.prod_insert hi, zpow_add₀ ha, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem zpow_finset_sum {ι : Type} (s : Finset ι) (f : ι → ℤ) {a : ℂ} (ha : a ≠ 0) :
     a ^ (∑ i ∈ s, f i) = ∏ i ∈ s, a ^ f i := by
@@ -58,9 +58,9 @@ theorem zpow_finset_sum {ι : Type} (s : Finset ι) (f : ι → ℤ) {a : ℂ} (
   | insert i s hi ih => rw [Finset.sum_insert hi, Finset.prod_insert hi, zpow_add₀ ha, ih]
 
 /- English proof (translation)
-Simplify using `only [prod_castLE_succ, ← Finset.prod_zpow]`. Rewrite using `[Finset.prod_comm]`. Use `Finset.prod_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← sum_sInt_from, ← Finset.sum_neg_distrib, zpow_finset_sum _ _ (hd l)]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `by_cases h : l ≤ i <;> simp [h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem prod_partial_zpow {n : ℕ} (lam : Fin n → ℝ) (d : Fin n → ℂ) (hd : ∀ l, d l ≠ 0) :
     ∏ i : Fin n, (∏ j : Fin (i.val + 1), d (Fin.castLE i.isLt j)) ^ (-(sInt lam i)) =
@@ -73,9 +73,9 @@ theorem prod_partial_zpow {n : ℕ} (lam : Fin n → ℝ) (d : Fin n → ℂ) (h
   by_cases h : l ≤ i <;> simp [h]
 
 /- English proof (translation)
-Introduce `n lam c z c' hc hc' hd hz`. Establish `hd' : ∀ l, c l l * c' l l ≠ 0` using `fun l => mul_ne_zero (hd l).1 (hd l).2`. Use `⟨fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.LeadMinorTri.leadMinor_lower_mul_mul_upper n c z c' hc hc']`. Conclude with `mul_ne_zero (Finset.prod_ne_zero_iff.2 fun j _ => hd' _) (hz i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `Phi`. Simplify using `only [GlobalTheory.LeadMinorTri.leadMinor_lower_mul_mul_upper n c z c' hc hc', mul_zpow _ (leadMinor z _ _)]`. Rewrite using `[Finset.prod_mul_distrib, prod_partial_zpow lam (fun l => c l l * c' l l) hd']`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiTri : PhiTri := by
   intro n lam c z c' hc hc' hd hz

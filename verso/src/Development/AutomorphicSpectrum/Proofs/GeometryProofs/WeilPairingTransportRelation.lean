@@ -13,11 +13,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.CompanionTheory.Ar.TorsionChars
 
 /- English proof (translation)
-Use `set m := Nat.card (rootsOfUnity n Ω) with hm`. Use `haveI : NeZero m := ⟨Nat.card_pos.ne'⟩`. Establish `hinj : Function.Injective (Units.map (i : Ω →* Ω'))` using `Units.map_injective i.injective`. Set `f : rootsOfUnity n Ω → rootsOfUnity m Ω'` to `fun u => ⟨Units.map (i : Ω →* Ω') u.1, by`. Establish `h1 : (u : Ωˣ) ^ m = 1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrArg Subtype.val (pow_card_eq_one' (x := u))` as an intermediate fact. Rewrite `this` using `[Subgroup.coe_pow, Subgroup.coe_one]`. Conclude with `this`. Rewrite using `[mem_rootsOfUnity, ← map_pow, h1, map_one]⟩`. Establish `hf : Function.Injective f`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `a b hab`. Conclude with `Subtype.ext (hinj (congrArg Subtype.val hab))`. Establish `hbij` using `hf.bijective_of_nat_card_le (card_rootsOfUnity Ω' m)`. Take `⟨u, hu⟩` from `hbij.2 ⟨v, by rw [mem_rootsOfUnity]; exact hv⟩`. Conclude with `⟨u.1, congrArg Subtype.val hu⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_units_map_eq {Ω Ω' : Type} [Field Ω] [Field Ω'] (i : Ω →+* Ω') (n : ℕ) [NeZero n]
     (v : Ω'ˣ) (hv : v ^ Nat.card (rootsOfUnity n Ω) = 1) :
@@ -42,9 +42,9 @@ theorem exists_units_map_eq {Ω Ω' : Type} [Field Ω] [Field Ω'] (i : Ω →+*
   exact ⟨u.1, congrArg Subtype.val hu⟩
 
 /- English proof (translation)
-Establish `h1 : χ 1 = 1`. Use `hχ 1 1 (one_pow n) (one_pow n)` as an intermediate fact. Simplify using `using this`. Proceed by induction on `k with`. Consider the case `zero => simpa using h1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Proceed by induction. Treat this case separately.
 
-Consider the case `succ k ih`. Establish `hk : (g ^ k) ^ n = 1` using `by rw [← pow_mul, mul_comm, pow_mul, hg, one_pow]`. Rewrite using `[pow_succ, hχ _ _ hk hg, ih, pow_succ]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_right_of_mul {G M : Type} [CommGroup G] [CommGroup M] (n : ℕ) (χ : G → M)
     (hχ : ∀ g g', g ^ n = 1 → g' ^ n = 1 → χ (g * g') = χ g * χ g')
@@ -59,39 +59,37 @@ theorem pow_right_of_mul {G M : Type} [CommGroup G] [CommGroup M] (n : ℕ) (χ 
     rw [pow_succ, hχ _ _ hk hg, ih, pow_succ]
 
 /- English proof (translation)
-Introduce `Ω Ω' _ _ i C A _ _ rel n hn hCA hAC hmul hinjA hinjC e e' emul eperf enondeg e'mul e'perf`. Use `haveI : NeZero n := ⟨by omega⟩`. Establish `hinj : Function.Injective (Units.map (i : Ω →* Ω'))` using `Units.map_injective i.injective`. Establish `hrel11 : rel 1 1`. Take `⟨a₀, -, h₀⟩` from `hCA 1 (one_pow n)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `hmul _ _ _ _ h₀ h₀`. Rewrite `h` using `[_root_.mul_one]`. Establish `: a₀ * a₀ = a₀` using `hinjA _ _ _ h h₀`. Establish `h1 : a₀ = 1` using `by simpa using this`. Rewrite `h₀` using `[h1]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hrelpow : ∀ a c, rel a c → ∀ k : ℕ, rel (a ^ k) (c ^ k)`. Introduce `a c h k`. Proceed by induction on `k with`. Consider the case `zero => simpa using hrel11`. Consider the case `succ k ih => rw [pow_succ, pow_succ]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hmul _ _ _ _ ih h`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `y' hy' set m := Nat.card (rootsOfUnity n Ω) with hm`. Establish `hCm : ∀ g : C, g ^ n = 1 → g ^ m = 1`. Introduce `g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `enondeg _ (by rw [← pow_mul, mul_comm, pow_mul, hg, one_pow]) ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[pow_right_of_mul n (e x) (fun g g' => emul x g g' hx) g hg m]`. Establish `hmem : e x g ∈ rootsOfUnity n Ω`. Rewrite using `[mem_rootsOfUnity, ← pow_right_of_mul n (e x) (fun g g' => emul x g g' hx) g hg n, hg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `emul x 1 1 hx (one_pow n) (one_pow n)` as an intermediate fact. Simplify using `using this`. Use `congrArg Subtype.val (pow_card_eq_one' (x := (⟨e x g, hmem⟩ : rootsOfUnity n Ω)))` as an intermediate fact. Rewrite `this` using `[Subgroup.coe_pow, Subgroup.coe_one]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hAm : ∀ a : A, a ^ n = 1 → a ^ m = 1`. Introduce `a ha`. Take `⟨c, hc, hac⟩` from `hAC a ha`. Establish `h` using `hrelpow a c hac m`. Rewrite `h` using `[hCm c hc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hinjA _ _ _ h hrel11`. Establish `hval : ∀ a : A, a ^ n = 1 → ∃ u : Ωˣ, Units.map (i : Ω →* Ω') u = e' y' a`. Introduce `a ha`. Apply `exists_units_map_eq i n` to reduce the goal to its premises. Rewrite using `[← pow_right_of_mul n (e' y') (fun g g' => e'mul y' g g' hy') a ha m, hAm a ha]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `e'mul y' 1 1 hy' (one_pow n) (one_pow n)` as an intermediate fact. Simplify using `using this`. Establish `hpart : ∀ c : C, c ^ n = 1 → ∃ u : Ωˣ, ∃ a : A, a ^ n = 1 ∧ rel a c ∧ Units.map (i : Ω →* Ω') u = e' y' a`. Introduce `c hc`. Take `⟨a, ha, hac⟩` from `hCA c hc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨u, hu⟩` from `hval a ha`. Conclude with `⟨u, a, ha, hac, hu⟩`. Set `χ : C → Ωˣ` to `fun c => if h : c ^ n = 1 then (hpart c h).choose else 1`. Establish `hχ : ∀ c : C, c ^ n = 1 → ∀ a : A, a ^ n = 1 → rel a c → Units.map (i : Ω →* Ω') (χ c) = e' y' a`. Introduce `c hc a ha hac`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨a₁, -, hrel, hu⟩` from `(hpart c hc).choose_spec`. Establish `: χ c = (hpart c hc).choose` using `dif_pos hc`. Rewrite using `[this, hu, hinjA _ _ _ hrel hac]`. Take `⟨y, hy, hye⟩` from `eperf χ (by`. Introduce `g g' hg hg'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, ha, hag⟩` from `hCA g hg`. Take `⟨a', ha', hag'⟩` from `hCA g' hg'`. Establish `hgg : (g * g') ^ n = 1` using `by rw [mul_pow, hg, hg', _root_.one_mul]`. Establish `haa : (a * a') ^ n = 1` using `by rw [mul_pow, ha, ha', _root_.one_mul]`. Apply `hinj` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, hχ _ hgg _ haa (hmul _ _ _ _ hag hag'), hχ _ hg _ ha hag, hχ _ hg' _ ha' hag', e'mul y' _ _ hy' ha ha'])`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Introduce `g g' hg hg' hrel`. Rewrite using `[← hχ g hg g' hg' hrel, hye g hg]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `y hy`. Establish `hpart : ∀ a : A, a ^ n = 1 → ∃ c : C, c ^ n = 1 ∧ rel a c` using `hAC`. Set `χ : A → Ω'ˣ` to `fun a => if h : a ^ n = 1 then Units.map (i : Ω →* Ω') (e y (hpart a h).choose) else 1`. Establish `hχ : ∀ a : A, a ^ n = 1 → ∀ c : C, rel a c → χ a = Units.map (i : Ω →* Ω') (e y c)`. Introduce `a ha c hac`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: χ a = Units.map (i : Ω →* Ω') (e y (hpart a ha).choose)` using `dif_pos ha`. Rewrite using `[this, hinjC _ _ _ (hpart a ha).choose_spec.2 hac]`. Take `⟨y', hy', hye⟩` from `e'perf χ (by`. Introduce `g g' hg hg'`. Take `⟨c, hc, hgc⟩` from `hAC g hg`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c', hc', hgc'⟩` from `hAC g' hg'`. Establish `hgg : (g * g') ^ n = 1` using `by rw [mul_pow, hg, hg', _root_.one_mul]`. Rewrite using `[hχ _ hgg _ (hmul _ _ _ _ hgc hgc'), hχ _ hg _ hgc, hχ _ hg' _ hgc', emul y _ _ hy hc hc', map_mul])`. Use `⟨y', hy', ?_⟩` and prove the remaining obligations. Introduce `g g' hg hg' hrel`.
-
-Rewrite using `[← hye g' hg', hχ g' hg' g hrel]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem chars_descend : ∀ (Ω Ω' : Type) [Field Ω] [Field Ω'] (i : Ω →+* Ω') (C A : Type) [CommGroup C] [CommGroup A] (rel : A → C → Prop) (n : ℕ), 1 ≤ n →
   (∀ c : C, c ^ n = 1 → ∃ a : A, a ^ n = 1 ∧ rel a c) →

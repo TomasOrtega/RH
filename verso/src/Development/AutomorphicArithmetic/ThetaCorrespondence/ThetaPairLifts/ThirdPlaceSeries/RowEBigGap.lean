@@ -13,9 +13,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Gl
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Core.Rk.GapAt
 /- English proof (translation)
-Introduce `hL p`. Use `⟨1, one_pos, fun _ _ _ _ _ _ _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun _ _ _ _ => ⟨0, fun _ _ => ⟨11311, fun ch hch _ => ⟨300000 * 4 ^ 30, fun K hK hx β _ _ _ _ => ?_⟩⟩⟩⟩⟩` and prove the remaining obligations. Use `show BigGap β.X.toD7`. Use `bigGap_of_val β.val ?_ ?_` and prove the remaining obligations. Rewrite using `[hK.2.2.1]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hch`. Rewrite using `[β.sc]`. Conclude with `hx`.
+A detailed English derivation is pending.
 -/
 theorem rowE_bigGap_alt : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL),
     GlobalTheory.Fc.RowE (Bl.IsGoodE p.s) (_root_.GlobalTheory.Mem.Top.Bl.BundleLinkage p) (fun _ D _ _ _ => GlobalTheory.Core.Rk.BigGap D) := by

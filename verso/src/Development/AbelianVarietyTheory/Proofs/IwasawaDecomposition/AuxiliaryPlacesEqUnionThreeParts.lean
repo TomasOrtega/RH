@@ -27,11 +27,11 @@ def placesWithNonzeroContentOrConj (D : D7) (F0 : HeightOneSpectrum (𝓞 D.what
   {w | ∃ j, ∃ w' ∈ ({D.plEq w, Formalism.DivisionValues.conjPl (D.plEq w)} : Set (HeightOneSpectrum (𝓞 D.what₂.LL))), F0 w' j ≠ 0}
 
 /- English proof (translation)
-Use extensionality with `w`. Simplify using `only [Dat.W1, Dat.IwasawaPlaceIndex, Dat.W1jw, placesWithNonzeroContentOrConj, Set.mem_union, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, w', hw', h | h | h⟩`. Conclude with `Or.inl (Or.inl ⟨j, w', hw', h⟩)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Prove the first alternative.
 
-Conclude with `Or.inl (Or.inr ⟨j, w', hw', h⟩)`. Conclude with `Or.inr ⟨j, w', hw', h⟩`. Introduce and unpack `((⟨j, w', hw', h⟩ | ⟨j, w', hw', h⟩) | ⟨j, w', hw', h⟩)`. Conclude with `⟨j, w', hw', Or.inl h⟩`. Conclude with `⟨j, w', hw', Or.inr (Or.inl h)⟩`.
+Prove the first alternative. Prove the second alternative. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨j, w', hw', Or.inr (Or.inr h)⟩`.
+Supply the required witnesses or components.
 -/
 theorem Dat.auxiliaryPlaces_eq_union_three_parts (z : Dat X I hX T Wt) (F0 : HeightOneSpectrum (𝓞 X.toD7.what₂.LL) → Fin X.toD7.R.m → ℝ) :
     z.W1 F0 = z.IwasawaPlaceIndex ∪ z.W1jw ∪ placesWithNonzeroContentOrConj X.toD7 F0 := by
@@ -48,7 +48,7 @@ theorem Dat.auxiliaryPlaces_eq_union_three_parts (z : Dat X I hX T Wt) (F0 : Hei
     · exact ⟨j, w', hw', Or.inr (Or.inr h)⟩
 
 /- English proof (translation)
-The claim follows from `Set.ext_iff.mp (z.auxiliaryPlaces_eq_union_three_parts F0) w`.
+A detailed English derivation is pending.
 -/
 theorem Dat.mem_auxiliaryPlaces_iff_three_parts (z : Dat X I hX T Wt) (F0 : HeightOneSpectrum (𝓞 X.toD7.what₂.LL) → Fin X.toD7.R.m → ℝ)
     (w : X.B.places.Pl) : w ∈ z.W1 F0 ↔ (w ∈ z.IwasawaPlaceIndex ∨ w ∈ z.W1jw) ∨ w ∈ placesWithNonzeroContentOrConj X.toD7 F0 :=

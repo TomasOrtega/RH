@@ -14,13 +14,11 @@ open scoped ContDiff ComplexOrder
 namespace GlobalTheory.SecForm
 
 /- English proof (translation)
-Introduce `n m l _ _ _ _ U H hH ξ η`. Establish `hM : ∀ v ∈ U, MContDiffAt ∞ H v` using `fun v hv a b => (hH.smooth a b).contDiffAt (hH.isOpen.mem_nhds hv)`. Establish `hP : ∀ v ∈ U, ∀ᶠ x in 𝓝 v, (H x).PosDef` using `fun v hv => Filter.eventually_of_mem (hH.isOpen.mem_nhds hv) hH.posDef`. Establish `key : ∀ v ∈ U, ContDiffAt ℝ ∞ (fun x => kappa * (secondForm H x ξ * secondFormAdj H x η).trace) v`. Introduce `v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hu : IsUnit (H v).det` using `(hH.posDef v hv).det_pos.ne'.isUnit`. Establish `hs : IsUnit (subGram (H v)).det` using `(posDef_subGram (hH.posDef v hv)).det_pos.ne'.isUnit`. Establish `hc : ∀ ζ, MContDiffAt ∞ (fun x => secondForm H x ζ) v` using `fun ζ => by show MContDiffAt ∞ (fun x => quotMap m l * conn H x ζ * incl m l) v`. Conclude with `((mContDiffAt_const _).mul ((hM v hv).conn hu (j := ∞) (by simp) ζ)).mul (mContDiffAt_const _)`. Establish `ha : MContDiffAt ∞ (fun x => secondFormAdj H x η) v` using `by show MContDiffAt ∞ (fun x => (subGram (H x))ᵀ⁻¹ * (secondForm H x η)ᴴ * (quotGram (H x))ᵀ) v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(((hM v hv).subGram.transpose.inv (by rwa [det_transpose])).mul (hc η).conjTranspose).mul ((hM v hv).quotGram hs).transpose`. Establish `hp` using `(hc ξ).mul ha`. Simplify using `only [Matrix.trace, Matrix.diag_apply]`. Conclude with `contDiffAt_const.mul (ContDiffAt.sum fun i _ => hp i i)`. Introduce `v hv`.
-
-Use `((key v hv).congr_of_eventuallyEq ?_).contDiffWithinAt` and prove the remaining obligations. Use `filter_upwards [hH.isOpen.mem_nhds hv] with x hx`. Conclude with `extTrace_eq ((hM x hx).of_le (by simp)) (hP x hx) ξ η`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem contDiffOn_extTrace : ∀ {n : ℕ} {m l : Type} [Fintype m] [Fintype l] [DecidableEq m] [DecidableEq l]
     {U : Set (V n)} {H : V n → Matrix (m ⊕ l) (m ⊕ l) ℂ}, IsPosFrame U H →

@@ -17,7 +17,7 @@ noncomputable def UpperTheory.Reformulated.B.Qe29.Umon.{u_2, u_3} :
       Submonoid.closure (Set.range fun (ab : Fin n × Fin n) ↦ E ab.1 ab.2)
 
 /- English proof (translation)
-Introduce `K V _ _ _`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qe29.aux3.{u_1, u_2} :
     ∀ {K : Type u_1} {V : Type u_2} [inst : Field K] [inst_1 : AddCommGroup V] [inst_2 : _root_.Module K V],
@@ -59,9 +59,9 @@ noncomputable def UpperTheory.Reformulated.B.Qe29.isoSub.{u_2, u_3} :
         {x : V | ∃ u ∈ UpperTheory.Reformulated.B.Qe29.Umon E, ∃ (v : V), UpperTheory.Reformulated.B.Qe29.IsHWV E lam v ∧ x = (u : V → V) v}
 
 /- English proof (translation)
-Introduce `n K V _ _ _ E mu a b x hx`. Establish `hE : E a b ∈ UpperTheory.Reformulated.B.Qe29.Umon E` using `Submonoid.subset_closure ⟨(a, b), rfl⟩`. Establish `hle : UpperTheory.Reformulated.B.Qe29.isoSub E mu ≤ (UpperTheory.Reformulated.B.Qe29.isoSub E mu).comap (E a b)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `y ⟨u, hu, v, hv, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `Submodule.subset_span ⟨E a b * u, Submonoid.mul_mem _ hE hu, v, hv, rfl⟩`. Conclude with `hle hx`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qe29.isotypic_stable_gl_operator.{u_1, u_2} :
     ∀ {n : ℕ} {K : Type u_1} {V : Type u_2} [inst : Field K] [inst_1 : AddCommGroup V] [inst_2 : _root_.Module K V]

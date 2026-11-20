@@ -15,9 +15,9 @@ variable {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [SecondCountabl
   {s : Fin n → ι → Y → ℂ} {De : MvPolynomial (Fin n) ℂ} {mu0 : La} {σ : ι → Y → ℂ}
 
 /- English proof (translation)
-Take `⟨i0, hX0⟩` from `hX`. Use `⟨bsA_nsq_pos A hx.1, bsA_nsq_pos A (hσ.2 x hx), ?_, ?_, jz_det_ne A hD hF x hx _ (A.mem_pick x)⟩` and prove the remaining obligations. Establish `h` using `bsB_z_ne A hx hX0`. Use `lt_of_lt_of_le ?_ (Finset.single_le_sum (fun j _ => by positivity) (Finset.mem_univ i0))` and prove the remaining obligations. Establish `: s i0 (A.pick x) x / w0 (A.pick x) x ≠ 0` using `h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Take `⟨k, hk⟩` from `hD.no_common_zero x`. Use `lt_of_lt_of_le ?_ (Finset.single_le_sum (fun j _ => by positivity) (Finset.mem_univ k))` and prove the remaining obligations. Establish `: w k (A.pick x) x / w0 (A.pick x) x ≠ 0` using `div_ne_zero hk hx.1`. Check the signs of the components of the expression.
+Check the signs of the components of the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem bsD_pos (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De)
     (hσ : A.IsFrameOn mu0 (A.Mset w0 s De) σ) (hX : ∃ i0 : Fin n, MvPolynomial.X i0 ∣ De)
@@ -39,9 +39,9 @@ theorem bsD_pos (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De)
     positivity
 
 /- English proof (translation)
-Establish `hw` using `bsA_isSecOn_mono A hD.isSection_denom (Set.subset_univ (A.Mset w0 s De))`. Use `⟨fun i => ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `(hσ.1.1 i).mul ((hw.1 i).pow m)`. Use `h.congr fun v _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Pi.mul_apply, Pi.pow_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce `i j y hy hi hj`. Establish `h` using `bsA_tr_mul A hσ.1.2 (bsA_tr_pow A hw.2 m) i j y hy hi hj`. Simplify `h` using `only`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem bsD_denom (hD : A.D0 L w w0 s) (hσ : A.IsFrameOn mu0 (A.Mset w0 s De) σ) (m : ℕ) :
     A.IsSecOn (mu0 + m • L) (A.Mset w0 s De) (fun i y => σ i y * w0 i y ^ m) := by
@@ -55,11 +55,11 @@ theorem bsD_denom (hD : A.D0 L w w0 s) (hσ : A.IsFrameOn mu0 (A.Mset w0 s De) �
     simpa only using h
 
 /- English proof (translation)
-Take `⟨ha, hnσ, hZ, hSw, hd⟩` from `bsD_pos A hD hF hσ hX x x.2`. Establish `hb : σ (A.pick (x : Y)) x * w0 (A.pick (x : Y)) x ^ T' ≠ 0` using `mul_ne_zero (hσ.2 x x.2) (pow_ne_zero _ x.2.1)`. Establish `e1` using `bsC_nsq_prod A mu0 L T' f σ w0 (f (A.pick (x : Y)) x / (σ (A.pick (x : Y)) x * w0 (A.pick (x : Y)) x ^ T')) x (div_mul_cancel₀ _ hb).symm`. Establish `e2` using `bsC_sqn_ratio A L s w0 x x.2.1`. Establish `e3` using `bsC_sqn_ratio A L w w0 x x.2.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e4` using `exp_neg_frameWeight_eq A w w0 s mu0 σ x hnσ hd hSw`. Establish `hs0 : 0 ≤ A.sqn L s x` using `Finset.sum_nonneg fun k _ => bsA_nsq_nonneg A L (s k) x`. Establish `hw0 : 0 ≤ A.sqn L w x` using `Finset.sum_nonneg fun k _ => bsA_nsq_nonneg A L (w k) x`. Establish `hp : 0 ≤ A.nsq (mu0 + T' • L) f x * A.sqn L s x ^ (-((T' : ℝ) - 1 / 2)) * A.sqn L w x ^ (-(1 / 2 : ℝ))` using `mul_nonneg (mul_nonneg (bsA_nsq_nonneg A _ f x) (Real.rpow_nonneg hs0 _)) (Real.rpow_nonneg hw0 _)`. Rewrite using `[← ENNReal.ofReal_mul hp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[e1, e2, e3, e4, show (T' : ℝ) - 3 / 2 + 1 = (T' : ℝ) - 1 / 2 by ring]`. Conclude with `bsC_alg _ _ _ _ _ _ T' ha hZ hSw`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bsD_heq (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De)
     (hσ : A.IsFrameOn mu0 (A.Mset w0 s De) σ) (hX : ∃ i0 : Fin n, MvPolynomial.X i0 ∣ De)
@@ -91,7 +91,7 @@ theorem bsD_heq (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De)
   exact bsC_alg _ _ _ _ _ _ T' ha hZ hSw
 
 /- English proof (translation)
-Establish `hφm : Measurable fun y => ENNReal.ofReal (A.nsq (mu0 + T' • L) f y * A.sqn L s y ^ (-((T' : ℝ) - 1 / 2)) * A.sqn L w y ^ (-(1 / 2 : ℝ)))` using `ENNReal.measurable_ofReal.comp (((bsA_nsq_cont A hf).measurable.mul ((bsA_sqn_cont A hD.sec_s).measurable.pow_const _)).mul ((bsA_sqn_cont A hD.sec_w).measurable.pow_const _))`. Establish `hflat` using `lintegral_flat A hD hF _ hφm`. Establish `hc` using `lintegral_congr (μ := vol n (flatStein A hD hF).z) (bsD_heq A hD hF hσ hX T' f)`. Rewrite using `[← hc, ← hflat]`. Conclude with `lt_of_le_of_lt (setLIntegral_le_lintegral _ _) hint`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bsD_hfin (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De)
     (hσ : A.IsFrameOn mu0 (A.Mset w0 s De) σ) (hX : ∃ i0 : Fin n, MvPolynomial.X i0 ∣ De)
@@ -113,13 +113,13 @@ theorem bsD_hfin (hD : A.D0 L w w0 s) (hF : A.Flat w0 s De)
   exact lt_of_le_of_lt (setLIntegral_le_lintegral _ _) hint
 
 /- English proof (translation)
-Take `⟨hph0s, hph0l⟩` from `smooth_leviNonneg_frameWeight A hD hF hLSE hσ hpos`. Establish `hw0M` using `bsA_isSecOn_mono A hD.isSection_denom (Set.subset_univ (A.Mset w0 s De))`. Establish `hg : ∀ k, Holo n (flatStein A hD hF).z (fun x : A.Mset w0 s De => s k (A.pick (x : Y)) x / w0 (A.pick (x : Y)) x)` using `fun k => bsB_holo_ratio A hD hF (a := s k) (b := w0) (bsA_isSecOn_mono A (hD.sec_s k) (Set.subset_univ _)) hw0M fun y hy => hy.1`. Establish `hnz : ∀ x : A.Mset w0 s De, ∃ k, s k (A.pick (x : Y)) x / w0 (A.pick (x : Y)) x ≠ 0`. Introduce `x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨i0, hX0⟩` from `hX`. Conclude with `⟨i0, bsB_z_ne A x.2 hX0⟩`. Establish `ht : (n : ℝ) - 1 < (T' : ℝ) - 3 / 2`. Establish `: ((n + 1 : ℕ) : ℝ) ≤ T'` using `by exact_mod_cast hT`. Move the coercions through the operations in `at this`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hFz : Holo n (flatStein A hD hF).z (fun x : A.Mset w0 s De => f (A.pick (x : Y)) x / (σ (A.pick (x : Y)) x * w0 (A.pick (x : Y)) x ^ T'))` using `bsB_holo_ratio A hD hF (la := mu0 + T' • L) (a := f) (b := fun i y => σ i y * w0 i y ^ T') (bsA_isSecOn_mono A hf (Set.subset_univ _)) (bsD_denom A hD hσ T') fun y hy => mul_ne_zero (hσ.2 y hy) (pow_ne_zero _ hy.1)`. Establish `hfin` using `bsD_hfin A hD hF hσ hX T' f hf hint`. Establish `hSk : SStatement n (A.Mset w0 s De)` using `hS (A.Mset w0 s De)`. Take `⟨hh, h1, h2, h3⟩` from `hSk (flatStein A hD hF) n (fun k (x : A.Mset w0 s De) => s k (A.pick (x : Y)) x / w0 (A.pick (x : Y)) x) (fun x => bsPh0 A w w0 s mu0 σ x) ((T' : ℝ) - 3 / 2) (fun x => f (A.pick (x : Y)) x / (σ (A.pick (x : Y)) x * w0 (A.pick (x : Y)) x ^ T')) hn hg hnz hph0s hph0l ht hFz hfin`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨hh, h1, h2, lt_of_le_of_lt h3 (ENNReal.mul_lt_top ENNReal.ofReal_lt_top hfin)⟩`.
+Supply the required witnesses or components.
 -/
 theorem bsD_skoda (hS : SAll.{u} n) (hLSE : LSEAll.{u} n) (hn : 2 ≤ n) (hD : A.D0 L w w0 s)
     (hF : A.Flat w0 s De) (hX : ∃ i0 : Fin n, MvPolynomial.X i0 ∣ De)

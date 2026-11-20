@@ -6,9 +6,9 @@ open UpperTheory.Gal.CertificateRingHomMap (GUf Gam0 AfQ Plc sim mat comp rat le
 open scoped TensorProduct Classical
 
 /- English proof (translation)
-Establish `hu : k₁⁻¹ * k₂ ∈ KM.subgroupOf K` using `QuotientGroup.eq.1 e`. Establish `hu' : (k₁ : X)⁻¹ * k₂ ∈ KM` using `by simpa [Subgroup.mem_subgroupOf] using hu`. Establish `hm` using `hc k₁ k₁.2 _ hu'`. Establish `e2 : h * (k₂ : X) * y = (h * k₁ * ((k₁ : X)⁻¹ * k₂) * (h * k₁)⁻¹) * (h * k₁ * y)` using `by group`. Rewrite using `[e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(K₀.mul_mem_cancel_left hm).symm`.
+A detailed English derivation is pending.
 -/
 private lemma memSum_cls {X : Type} [Group X] {K KM K₀ : Subgroup X} {h : X}
     (hc : ∀ k ∈ K, ∀ u ∈ KM, h * k * u * (h * k)⁻¹ ∈ K₀) (k₁ k₂ : K)
@@ -22,7 +22,7 @@ private lemma memSum_cls {X : Type} [Group X] {K KM K₀ : Subgroup X} {h : X}
   exact (K₀.mul_mem_cancel_left hm).symm
 
 /- English proof (translation)
-Unfold `memFn`. Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_subtype]`. Simplify using `[Finset.sum_boole]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma memSum_eq {X : Type} [Group X] (K KM K₀ : Subgroup X) (h y : X)
     [Fintype (K ⧸ KM.subgroupOf K)] :
@@ -33,33 +33,31 @@ private lemma memSum_eq {X : Type} [Group X] (K KM K₀ : Subgroup X) (h y : X)
   simp [Finset.sum_boole]
 
 /- English proof (translation)
-Introduce `X _ K KM K₀ h hK0 hidx hnorm hc`. Use `haveI : (KM.subgroupOf K).Normal := ⟨fun n hn g => by`. Rewrite `hn`, the goal using `[Subgroup.mem_subgroupOf]`. Simplify using `using hnorm g g.2 n hn⟩`. Use `haveI : (KM.subgroupOf K).FiniteIndex := ⟨hidx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `letI : Fintype (K ⧸ KM.subgroupOf K) := Fintype.ofFinite _`. Establish `hex : ∀ y, memFn K KM K₀ h y ≠ 0 → ∃ q : K ⧸ KM.subgroupOf K, h * (q.out : X) * y ∈ K₀`. Introduce `y hy`. Assume the negation of the conclusion as `hne`. Apply `hy` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `: IsEmpty {q : K ⧸ KM.subgroupOf K // h * (q.out : X) * y ∈ K₀}` using `⟨fun ⟨q, hq⟩ => hne ⟨q, hq⟩⟩`. Unfold `memFn`. Rewrite using `[Nat.card_of_isEmpty, Nat.cast_zero]`. Establish `hP : ∀ (a : K) (q : K ⧸ KM.subgroupOf K) (y : X), h * (q.out : X) * ((a : X) * y) ∈ K₀ ↔ h * ((q * (QuotientGroup.mk a : K ⧸ KM.subgroupOf K)).out : X) * y ∈ K₀`. Introduce `a q y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (QuotientGroup.mk (q.out * a) : K ⧸ KM.subgroupOf K) = QuotientGroup.mk (q * (QuotientGroup.mk a : K ⧸ KM.subgroupOf K)).out`. Rewrite using `[QuotientGroup.out_eq', QuotientGroup.mk_mul, QuotientGroup.out_eq']`. Establish `hcls` using `memSum_cls hc (q.out * a) (q * (QuotientGroup.mk a : K ⧸ KM.subgroupOf K)).out e y`. Establish `e2 : h * (q.out : X) * ((a : X) * y) = h * ((q.out * a : K) : X) * y`. Simplify using `only [Subgroup.coe_mul, mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e2]`. Conclude with `hcls`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `show IsBiInv K₀ (memFn K KM K₀ h) ∧ FinDosetSupp K₀ (memFn K KM K₀ h)`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `a b g`. Unfold `memFn`. Use `congr 1`. Apply `Nat.card_congr` to reduce the goal to its premises. Use `(Equiv.mulRight (QuotientGroup.mk (⟨a, hK0 a.2⟩ : K) : K ⧸ KM.subgroupOf K)).subtypeEquiv ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Introduce `q`. Establish `e1 : h * (q.out : X) * ((a : X) * g * (b : X)) = h * (q.out : X) * (((⟨a, hK0 a.2⟩ : K) : X) * g) * (b : X)`. Apply the tactic sequence `rw [← mul_assoc (h * (q.out : X))] <;> rfl`. Rewrite using `[e1, Subgroup.mul_mem_cancel_right _ b.2]`. Conclude with `hP ⟨a, hK0 a.2⟩ q g`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨Finset.univ.image (fun q : K ⧸ KM.subgroupOf K => (h * (q.out : X))⁻¹), fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨q, hq⟩` from `hex y hy`. Use `⟨(h * (q.out : X))⁻¹, Finset.mem_image.mpr ⟨q, Finset.mem_univ _, rfl⟩, 1, ⟨_, hq⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [OneMemClass.coe_one, one_mul]`. Use `group`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Introduce `y hy`. Take `⟨q, hq⟩` from `hex y hy`. Conclude with `⟨_, (q.out).2, hq⟩`. Introduce `V _ _ Φ hΦ g`. Unfold `hAct`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpt : ∀ x : X ⧸ K₀, memFn K KM K₀ h x.out • Φ (g * x.out) = ∑ q : K ⧸ KM.subgroupOf K, (if (QuotientGroup.mk (h * (q.out : X))⁻¹ : X ⧸ K₀) = x then Φ (g * (h * (q.out : X))⁻¹) else 0)`. Introduce `x`. Rewrite using `[memSum_eq, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Establish `hiff : (QuotientGroup.mk (h * (q.out : X))⁻¹ : X ⧸ K₀) = x ↔ h * (q.out : X) * x.out ∈ K₀` using `by conv_lhs => rw [← QuotientGroup.out_eq' x]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[QuotientGroup.eq, inv_inv]`. Distinguish the cases in `hm : h * (q.out : X) * x.out ∈ K₀`. Rewrite using `[if_pos hm, if_pos (hiff.mpr hm), one_smul]`. Establish `hg : g * x.out = g * (h * (q.out : X))⁻¹ * (h * (q.out : X) * x.out)` using `by group`. Rewrite using `[hg]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hΦ _ hm _`. Rewrite using `[if_neg hm, if_neg (fun e => hm (hiff.mp e)), zero_smul]`. Rewrite using `[finsum_eq_sum_of_fintype (fun k : K ⧸ KM.subgroupOf K => Φ (g * (h * (k.out : X))⁻¹)), finsum_congr hpt, finsum_sum_comm]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[finsum_eq_single _ (QuotientGroup.mk (h * (q.out : X))⁻¹ : X ⧸ K₀)]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Simplify using the standard rewrite rules. Introduce `x hx`. Rewrite using `[if_neg (Ne.symm hx)]`. Introduce `q _`. Apply `Set.Finite.subset (Set.finite_singleton (QuotientGroup.mk (h * (q.out : X))⁻¹ : X ⧸ K₀))` to reduce the goal to its premises.
-
-Introduce `x hx`. Assume the negation of the conclusion as `hne`. Conclude with `hx (if_neg (Ne.symm hne))`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.Seed.pMemSum :
     MemSum := by

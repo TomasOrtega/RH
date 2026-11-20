@@ -44,7 +44,7 @@ variable {L} in
 variable (L) in
 
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.HeckeSplit.UnrAt _root_.Formalism.L2.Host.HChar.UnrAt _root_.Formalism.L2.Host.IsUnitAt _root_.Formalism.L2.Host.HChar.loc`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 -/
 theorem _root_.GlobalTheory.HeckeSplit.unrAt_iff (χ : _root_.Formalism.L2.Host.HChar L) (v : HeightOneSpectrum (𝓞 L)) :
     _root_.GlobalTheory.HeckeSplit.UnrAt χ.1 v ↔ χ.UnrAt v := by
@@ -57,7 +57,7 @@ variable {L} in
 variable (L) in
 
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.HeckeSplit.TrivAt`. Rewrite using `[DFunLike.ext_iff]`. Unfold `_root_.Formalism.L2.Host.HChar.loc`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 -/
 theorem _root_.GlobalTheory.HeckeSplit.trivAt_iff (χ : _root_.Formalism.L2.Host.HChar L) (v : HeightOneSpectrum (𝓞 L)) :
     _root_.GlobalTheory.HeckeSplit.TrivAt χ.1 v ↔ χ.loc v = 1 := by
@@ -72,7 +72,7 @@ variable {L} in
 variable (L) in
 
 /- English proof (translation)
-The claim follows from `Units.ext rfl`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem _root_.GlobalTheory.HeckeSplit.infPart_infIdele (x : (InfiniteAdeleRing L)ˣ) :
     _root_.GlobalTheory.HeckeSplit.infPart L (_root_.GlobalTheory.HeckeSplit.infIdele L x) = x :=
@@ -84,7 +84,7 @@ variable {L} in
 variable (L) in
 
 /- English proof (translation)
-The claim follows from `Units.ext rfl`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem _root_.GlobalTheory.HeckeSplit.finPart_infIdele (v : HeightOneSpectrum (𝓞 L))
     (x : (InfiniteAdeleRing L)ˣ) :
@@ -97,7 +97,7 @@ variable {L} in
 variable (L) in
 
 /- English proof (translation)
-The claim follows from `Units.ext (_root_.Neutral.B1.localIdele_snd_self L v x)`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem _root_.GlobalTheory.HeckeSplit.finPart_localIdele (v : HeightOneSpectrum (𝓞 L))
     (x : (v.adicCompletion L)ˣ) :
@@ -110,7 +110,7 @@ variable {L} in
 variable (L) in
 
 /- English proof (translation)
-The claim follows from `Units.ext rfl`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem _root_.GlobalTheory.HeckeSplit.infPart_localIdele (v : HeightOneSpectrum (𝓞 L))
     (x : (v.adicCompletion L)ˣ) :
@@ -123,7 +123,7 @@ variable {L} in
 variable (L) in
 
 /- English proof (translation)
-The claim follows from `Units.ext ((_root_.Neutral.B1.localIdele_isSupportedAt L v x).2 w h)`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HeckeSplit.finPart_localIdele_ne {v w : HeightOneSpectrum (𝓞 L)} (h : w ≠ v)
     (x : (v.adicCompletion L)ˣ) : _root_.GlobalTheory.HeckeSplit.finPart L w (_root_.HeckeValGen.localIdele L v x) = 1 :=
@@ -132,19 +132,19 @@ theorem _root_.GlobalTheory.HeckeSplit.finPart_localIdele_ne {v w : HeightOneSpe
 variable {L}
 
 /- English proof (translation)
-The claim follows from `(Formalism.L2.Host.hcharSub L).mul_mem hχ hψ`.
+A detailed English derivation is pending.
 -/
 theorem IsHeckeChar.mul {χ ψ : Ideles L →* ℂˣ} (hχ : IsHeckeChar L χ) (hψ : IsHeckeChar L ψ) :
     IsHeckeChar L (χ * ψ) := (Formalism.L2.Host.hcharSub L).mul_mem hχ hψ
 
 /- English proof (translation)
-The claim follows from `(Formalism.L2.Host.hcharSub L).inv_mem hχ`.
+A detailed English derivation is pending.
 -/
 theorem IsHeckeChar.inv {χ : Ideles L →* ℂˣ} (hχ : IsHeckeChar L χ) :
     IsHeckeChar L χ⁻¹ := (Formalism.L2.Host.hcharSub L).inv_mem hχ
 
 /- English proof (translation)
-Introduce `x _` and use `h x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem TrivAt.unrAt {χ : Ideles L →* ℂˣ} {v : HeightOneSpectrum (𝓞 L)} (h : TrivAt χ v) :
     UnrAt χ v := fun x _ => h x

@@ -38,40 +38,40 @@ def Iso {n : ℕ} (A C : BR k n) : Prop := Nonempty (A.ρ.Equiv C.ρ)
 def Sm {n : ℕ} (A : BR k n) : Prop := IsSmooth A.ρ
 
 /- English proof (translation)
-The claim follows from `eqv_refl A.ρ`.
+A detailed English derivation is pending.
 -/
 theorem iso_refl {n : ℕ} (A : BR k n) : Iso A A := eqv_refl A.ρ
 
 /- English proof (translation)
-The claim follows from `eqv_symm (ρ := A.ρ) (σ := C.ρ) h`.
+A detailed English derivation is pending.
 -/
 theorem iso_symm {n : ℕ} {A C : BR k n} (h : Iso A C) : Iso C A := eqv_symm (ρ := A.ρ) (σ := C.ρ) h
 
 /- English proof (translation)
-The claim follows from `eqv_trans (ρ := A.ρ) (σ := C.ρ) (τ := D.ρ) h h'`.
+A detailed English derivation is pending.
 -/
 theorem iso_trans {n : ℕ} {A C D : BR k n} (h : Iso A C) (h' : Iso C D) : Iso A D :=
   eqv_trans (ρ := A.ρ) (σ := C.ρ) (τ := D.ρ) h h'
 
 /- English proof (translation)
-The claim follows from `w.2.rep.smooth`.
+A detailed English derivation is pending.
 -/
 theorem sm_one (w : IrrGL k) : Sm (one w) := w.2.rep.smooth
 
 /- English proof (translation)
-The claim follows from `isSmooth_prodIrr x hx`.
+A detailed English derivation is pending.
 -/
 theorem sm_pr {a N : ℕ} (x : Fin a → IrrGL k) (hx : ∑ i, (x i).1 = N) : Sm (pr x hx) := isSmooth_prodIrr x hx
 
 /- English proof (translation)
-The claim follows from `ind₂_congr e (π₁ := A.ρ) (σ₁ := A'.ρ) (π₂ := C.ρ) (σ₂ := C'.ρ) h h'`.
+A detailed English derivation is pending.
 -/
 theorem two_congr {r t N : ℕ} (e : r + t = N) {A A' : BR k r} {C C' : BR k t} (h : Iso A A') (h' : Iso C C') :
     Iso (two e A C) (two e A' C') :=
   ind₂_congr e (π₁ := A.ρ) (σ₁ := A'.ρ) (π₂ := C.ρ) (σ₂ := C'.ρ) h h'
 
 /- English proof (translation)
-The claim follows from `ind₂_assoc' h₁ h₂ h₃ h₄ A.ρ C.ρ D.ρ s₁ s₂ s₃`.
+A detailed English derivation is pending.
 -/
 theorem two_assoc {r s t M M' N : ℕ} (h₁ : r + s = M) (h₂ : M + t = N) (h₃ : s + t = M') (h₄ : r + M' = N)
     (A : BR k r) (C : BR k s) (D : BR k t) (s₁ : Sm A) (s₂ : Sm C) (s₃ : Sm D) :
@@ -79,7 +79,7 @@ theorem two_assoc {r s t M M' N : ℕ} (h₁ : r + s = M) (h₂ : M + t = N) (h�
   ind₂_assoc' h₁ h₂ h₃ h₄ A.ρ C.ρ D.ρ s₁ s₂ s₃
 
 /- English proof (translation)
-The claim follows from `multiProd_head (d := N) (X := fun i => (A i).V) (fun i => (A i).ρ) (stdBlocks N hM) e (stdBlocks (fun i : Fin d => N i.succ) hT)`.
+A detailed English derivation is pending.
 -/
 theorem mp_head {d T M : ℕ} (N : Fin (d + 1) → ℕ) (hM : ∑ i, N i = M) (A : ∀ i, BR k (N i))
     (hT : ∑ i : Fin d, N i.succ = T) (e : N 0 + T = M) :
@@ -88,7 +88,7 @@ theorem mp_head {d T M : ℕ} (N : Fin (d + 1) → ℕ) (hM : ∑ i, N i = M) (A
     (stdBlocks (fun i : Fin d => N i.succ) hT)
 
 /- English proof (translation)
-The claim follows from `multiProd_empty (d := N) (d' := N') (X := fun i => (A i).V) (X' := fun i => (A' i).V) (fun i => (A i).ρ) (fun i => (A' i).ρ) (stdBlocks N hM) (stdBlocks N' hM')`.
+A detailed English derivation is pending.
 -/
 theorem mp_empty {M : ℕ} (N N' : Fin 0 → ℕ) (hM : ∑ i, N i = M) (hM' : ∑ i, N' i = M) (A : ∀ i, BR k (N i))
     (A' : ∀ i, BR k (N' i)) : Iso (mp N hM A) (mp N' hM' A') :=
@@ -96,28 +96,28 @@ theorem mp_empty {M : ℕ} (N N' : Fin 0 → ℕ) (hM : ∑ i, N i = M) (hM' : �
     (fun i => (A' i).ρ) (stdBlocks N hM) (stdBlocks N' hM')
 
 /- English proof (translation)
-The claim follows from `ind₂_unit_right e A.ρ hA (d := N) (X := fun i => (C i).V) (fun i => (C i).ρ) (stdBlocks N hN)`.
+A detailed English derivation is pending.
 -/
 theorem two_unit {r t : ℕ} (e : r + t = r) (A : BR k r) (hA : Sm A) (N : Fin 0 → ℕ) (hN : ∑ i, N i = t)
     (C : ∀ i, BR k (N i)) : Iso (two e A (mp N hN C)) A :=
   ind₂_unit_right e A.ρ hA (d := N) (X := fun i => (C i).V) (fun i => (C i).ρ) (stdBlocks N hN)
 
 /- English proof (translation)
-The claim follows from `two_unit e A hA _ hy _`.
+A detailed English derivation is pending.
 -/
 theorem two_unit_pr {r t : ℕ} (e : r + t = r) (A : BR k r) (hA : Sm A) (y : Fin 0 → IrrGL k)
     (hy : ∑ i, (y i).1 = t) : Iso (two e A (pr y hy)) A :=
   two_unit e A hA _ hy _
 
 /- English proof (translation)
-The claim follows from `mp_empty N _ hM hy A _`.
+A detailed English derivation is pending.
 -/
 theorem mp_empty_pr {M : ℕ} (N : Fin 0 → ℕ) (hM : ∑ i, N i = M) (A : ∀ i, BR k (N i)) (y : Fin 0 → IrrGL k)
     (hy : ∑ i, (y i).1 = M) : Iso (mp N hM A) (pr y hy) :=
   mp_empty N _ hM hy A _
 
 /- English proof (translation)
-The claim follows from `mp_head (fun i => (z i).1) hz (fun i => one (z i)) hx e`.
+A detailed English derivation is pending.
 -/
 theorem pr_succ {a t N : ℕ} (z : Fin (a + 1) → IrrGL k)
     (hx : ∑ i : Fin a, (z i.succ).1 = t) (hz : ∑ i, (z i).1 = N) (e : (z 0).1 + t = N) :
@@ -125,7 +125,7 @@ theorem pr_succ {a t N : ℕ} (z : Fin (a + 1) → IrrGL k)
   mp_head (fun i => (z i).1) hz (fun i => one (z i)) hx e
 
 /- English proof (translation)
-The claim follows from `H`.
+A detailed English derivation is pending.
 -/
 theorem of_iso {d h : ℕ} (y : Fin d → Fin h → IrrGL k) (N : Fin d → ℕ) {M c : ℕ} (hN : ∀ i, ∑ j, (y i j).1 = N i)
     (hM : ∑ i, N i = M) (z : Fin c → IrrGL k) (hz : ∑ p, (z p).1 = M)
@@ -135,7 +135,7 @@ theorem of_iso {d h : ℕ} (y : Fin d → Fin h → IrrGL k) (N : Fin d → ℕ)
 attribute [irreducible] one two mp pr Iso Sm
 
 /- English proof (translation)
-Take `rfl : a = b` from `by simpa using congrArg List.length h`. Take `rfl` from `List.ofFn_injective h`. Conclude with `iso_refl _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pr_congr {a b N : ℕ} {x : Fin a → IrrGL k} {z : Fin b → IrrGL k} (h : List.ofFn x = List.ofFn z)
     (hx : ∑ i, (x i).1 = N) (hz : ∑ i, (z i).1 = N) : Iso (pr x hx) (pr z hz) := by
@@ -144,9 +144,9 @@ theorem pr_congr {a b N : ℕ} {x : Fin a → IrrGL k} {z : Fin b → IrrGL k} (
   exact iso_refl _
 
 /- English proof (translation)
-Establish `hb : b = a + 1` using `by simpa using congrArg List.length h`. Substitute `hb` using the available equality. Establish `h' : z 0 :: List.ofFn (fun i : Fin a => z i.succ) = w :: List.ofFn x` using `List.ofFn_succ.symm.trans h`. Establish `h₁ : z 0 = w` using `(List.cons.inj h').1`. Establish `h₂ : (fun i : Fin a => z i.succ) = x` using `List.ofFn_injective (List.cons.inj h').2`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `h₁ h₂` using the available equality. Conclude with `pr_succ z hx hz e`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem pr_cons {a b t N : ℕ} {w : IrrGL k} {x : Fin a → IrrGL k} {z : Fin b → IrrGL k}
     (h : List.ofFn z = w :: List.ofFn x) (hx : ∑ i, (x i).1 = t) (hz : ∑ i, (z i).1 = N) (e : w.1 + t = N) :
@@ -160,17 +160,17 @@ theorem pr_cons {a b t N : ℕ} {w : IrrGL k} {x : Fin a → IrrGL k} {z : Fin b
   exact pr_succ z hx hz e
 
 /- English proof (translation)
-Proceed by induction on `a with`. Consider the case `zero`. Introduce `b c r t N x y z h hab hx hy hz e`. Take `rfl : b = 0` from `by simpa using hab`. Take `rfl : t = 0` from `by simpa using hy.symm`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e0 : N = r` using `e.symm`. Substitute `e0` using the available equality. Conclude with `iso_trans (pr_congr (by simpa using h) hz hx) (iso_symm (two_unit_pr e _ (sm_pr x hx) y hy))`. Consider the case `succ a ih`. Introduce `b c r t N x y z h _ hx hy hz e`.
+Establish an intermediate fact. Substitute using the available equality. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hx' : List.ofFn x = x 0 :: List.ofFn fun i : Fin a => x i.succ` using `List.ofFn_succ`. Establish `hs : (x 0).1 + ∑ i : Fin a, (x i.succ).1 = r` using `(Fin.sum_univ_succ fun i => (x i).1).symm.trans hx`. Establish `A` using `pr_cons hx' rfl hx hs`. Break down `Nat.eq_zero_or_pos a with rfl | ha` into its components or cases. Take `rfl : (x 0).1 = r` from `by simpa using hs`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `B` using `iso_trans A (two_unit_pr hs _ (sm_one (x 0)) (fun i : Fin 0 => x i.succ) rfl)`. Use `iso_trans (pr_cons (w := x 0) (by simpa using h) hy hz e) ?_` and prove the remaining obligations. Conclude with `two_congr e (iso_symm B) (iso_refl _)`. Set `L` to `(List.ofFn fun i : Fin a => x i.succ) ++ List.ofFn y`. Establish `hL : List.ofFn L.get = L` using `List.ofFn_get L`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : ∑ i, (L.get i).1 = ∑ i : Fin a, (x i.succ).1 + t`. Use `congrArg (fun l : List (IrrGL k) => (l.map Sigma.fst).sum) hL` as an intermediate fact. Simplify using `only [L, List.map_append, List.sum_append, List.map_ofFn, List.sum_ofFn, Function.comp_def] at this`. Rewrite using `[← hy]`. Conclude with `this`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e' : (x 0).1 + (∑ i : Fin a, (x i.succ).1 + t) = N` using `by omega`. Establish `B` using `pr_cons (w := x 0) (z := z) (x := L.get) (by rw [h, hx', hL]; rfl) hT hz e'`. Establish `C` using `ih (fun i => x i.succ) y L.get hL (Or.inl ha.ne') rfl hy hT rfl`. Establish `D` using `two_assoc hs e rfl e' (one (x 0)) (pr (fun i : Fin a => x i.succ) rfl) (pr y hy) (sm_one _) (sm_pr _ _) (sm_pr _ _)`. Conclude with `iso_trans B (iso_trans (two_congr e' (iso_refl _) C) (iso_trans (iso_symm D) (two_congr e (iso_symm A) (iso_refl _))))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pr_append {a : ℕ} : ∀ {b c r t N : ℕ} (x : Fin a → IrrGL k) (y : Fin b → IrrGL k) (z : Fin c → IrrGL k)
     (_ : List.ofFn z = List.ofFn x ++ List.ofFn y) (_ : a ≠ 0 ∨ b = 0) (hx : ∑ i, (x i).1 = r)
@@ -210,9 +210,9 @@ theorem pr_append {a : ℕ} : ∀ {b c r t N : ℕ} (x : Fin a → IrrGL k) (y :
         (two_congr e (iso_symm A) (iso_refl _))))
 
 /- English proof (translation)
-Rewrite using `[List.ofFn_mul]`. Use `congrArg List.flatten (congrArg List.ofFn (funext fun i => congrArg List.ofFn (funext fun j => ?_)))` and prove the remaining obligations. Establish `key : ∀ p : Fin (d * h), p = finProdFinEquiv (i, j) → y (finProdFinEquiv.symm p).1 (finProdFinEquiv.symm p).2 = y i j`. Introduce and unpack `_ rfl`. Rewrite using `[Equiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `key _ (Fin.ext (by simp; ring))`.
+A detailed English derivation is pending.
 -/
 theorem ofFn_lex {α : Type*} {d h : ℕ} (y : Fin d → Fin h → α) :
     List.ofFn (fun p : Fin (d * h) => y (finProdFinEquiv.symm p).1 (finProdFinEquiv.symm p).2) =
@@ -226,13 +226,11 @@ theorem ofFn_lex {α : Type*} {d h : ℕ} (y : Fin d → Fin h → α) :
   exact key _ (Fin.ext (by simp; ring))
 
 /- English proof (translation)
-Proceed by induction on `d with`. Consider the case `zero`. Introduce `y N M hN hM hM'`. Take `rfl : M = 0` from `by simpa using hM.symm`. Set `z : Fin 0 → IrrGL k` to `fun i => i.elim0`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hz : ∑ i, (z i).1 = 0` using `by simp`. Conclude with `iso_trans (mp_empty_pr N hM _ z hz) (pr_congr (x := z) (by rw [ofFn_lex]; simp) hz hM')`. Consider the case `succ d ih`. Introduce `y N M hN hM hM'`. Establish `e : N 0 + ∑ i : Fin d, N i.succ = M` using `(Fin.sum_univ_succ N).symm.trans hM`.
+Establish an intermediate fact. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : ∑ p : Fin (d * h), (y (finProdFinEquiv.symm p).1.succ (finProdFinEquiv.symm p).2).1 = ∑ i : Fin d, N i.succ`. Rewrite using `[Equiv.sum_comp finProdFinEquiv.symm fun q : Fin d × Fin h => (y q.1.succ q.2).1, Fintype.sum_prod_type]`. Conclude with `Finset.sum_congr rfl fun i _ => hN _`. Establish `A` using `mp_head N hM (fun i => pr (y i) (hN i)) rfl e`. Establish `B` using `ih (fun i => y i.succ) (fun i => N i.succ) _ (fun i => hN _) rfl hT`.
-
-Establish `C` using `pr_append (y 0) _ _ (by rw [ofFn_lex y, ofFn_lex fun i : Fin d => y i.succ, List.ofFn_succ, List.flatten_cons]) (by rcases Nat.eq_zero_or_pos h with rfl | hh; exacts [Or.inr rfl, Or.inl hh.ne']) (hN 0) hT hM' e`. Conclude with `iso_trans A (iso_trans (two_congr e (iso_refl _) B) (iso_symm C))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mp_pr_iso {h : ℕ} (d : ℕ) : ∀ (y : Fin d → Fin h → IrrGL k) (N : Fin d → ℕ) (M : ℕ)
     (hN : ∀ i, ∑ j, (y i j).1 = N i) (hM : ∑ i, N i = M)
@@ -261,7 +259,7 @@ theorem mp_pr_iso {h : ℕ} (d : ℕ) : ∀ (y : Fin d → Fin h → IrrGL k) (N
     exact iso_trans A (iso_trans (two_congr e (iso_refl _) B) (iso_symm C))
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ d _ y N M hN hM hM'` and use `of_iso y N hN hM _ hM' (mp_pr_iso d y N M hN hM hM')`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem multiProd_prodIrr_equiv : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k]

@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.ExpansionInvariance
 
 /- English proof (translation)
-The claim follows from `| 0, _ => rfl | n + 1, h => by show k n ∘ₗ chainTo k n = k' n ∘ₗ chainTo k' n rw [h n n.lt_succ_self, chainTo_congr_lt n fun j hj => h j (by omega)]`.
+A detailed English derivation is pending.
 -/
 theorem chainTo_congr_lt {V : ℕ → Type} [∀ j, AddCommGroup (V j)] [∀ j, Module ℂ (V j)]
     {k k' : ∀ j, V j →ₗ[ℂ] V (j + 1)} : ∀ n, (∀ j, j < n → k j = k' j) → chainTo k n = chainTo k' n
@@ -23,7 +23,7 @@ theorem chainTo_congr_lt {V : ℕ → Type} [∀ j, AddCommGroup (V j)] [∀ j, 
     rw [h n n.lt_succ_self, chainTo_congr_lt n fun j hj => h j (by omega)]
 
 /- English proof (translation)
-The claim follows from `| 0, hn => absurd hn (Nat.not_lt_zero _) | n + 1, hn => by show k₁ n ∘ₗ chainTo k₁ n = k₂ n ∘ₗ chainTo k₂ n + k₃ n ∘ₗ chainTo k₃ n rcases Nat.lt_succ_iff_lt_or_eq.mp hn with h' | h' · rw [chainTo_add_at j₀ h₂ h₃ h n h', h₂ n (by omega), h₃ n (by omega), LinearMap.comp_add] · subs …`.
+A detailed English derivation is pending.
 -/
 theorem chainTo_add_at {V : ℕ → Type} [∀ j, AddCommGroup (V j)] [∀ j, Module ℂ (V j)]
     {k₁ k₂ k₃ : ∀ j, V j →ₗ[ℂ] V (j + 1)} (j₀ : ℕ) (h₂ : ∀ j, j ≠ j₀ → k₂ j = k₁ j) (h₃ : ∀ j, j ≠ j₀ → k₃ j = k₁ j)
@@ -38,7 +38,7 @@ theorem chainTo_add_at {V : ℕ → Type} [∀ j, AddCommGroup (V j)] [∀ j, Mo
         chainTo_congr_lt (k := k₃) (k' := k₁) j₀ (fun j hj => h₃ j (by omega)), h, LinearMap.add_comp]
 
 /- English proof (translation)
-The claim follows from `| 0, hn => absurd hn (Nat.not_lt_zero _) | n + 1, hn => by show k₁ n ∘ₗ chainTo k₁ n = a • (k₂ n ∘ₗ chainTo k₂ n) rcases Nat.lt_succ_iff_lt_or_eq.mp hn with h' | h' · rw [chainTo_smul_at j₀ a h₂ h n h', h₂ n (by omega), LinearMap.comp_smul] · subst h' rw [chainTo_congr_lt (k := k …`.
+A detailed English derivation is pending.
 -/
 theorem chainTo_smul_at {V : ℕ → Type} [∀ j, AddCommGroup (V j)] [∀ j, Module ℂ (V j)]
     {k₁ k₂ : ∀ j, V j →ₗ[ℂ] V (j + 1)} (j₀ : ℕ) (a : ℂ) (h₂ : ∀ j, j ≠ j₀ → k₂ j = k₁ j)
@@ -52,7 +52,7 @@ theorem chainTo_smul_at {V : ℕ → Type} [∀ j, AddCommGroup (V j)] [∀ j, M
       rw [chainTo_congr_lt (k := k₂) (k' := k₁) j₀ (fun j hj => h₂ j (by omega)), h, LinearMap.smul_comp]
 
 /- English proof (translation)
-Establish `e : Formalism.L2.Ker.jetLin (fun k => c * J k) = c • Formalism.L2.Ker.jetLin J`. Use `(MvPolynomial.basisMonomials ((ι × Fin b × Fin b) ⊕ Formalism.L2.Ker.DVar ι a b) K).ext fun m => ?_` and prove the remaining obligations. Simplify using `only [Formalism.L2.Ker.jetLin, LinearMap.smul_apply, Module.Basis.constr_basis, MvPolynomial.smul_monomial, smul_eq_mul]`. Use `ext1 P`. Simplify using `only [Formalism.L2.Ker.jetOp, Formalism.L2.Ker.jetMap, e, LinearMap.comp_apply, LinearMap.smul_apply, map_smul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jetOp_mul_tab {K : Type} [Field K] {ι : Type} [Fintype ι] {a b : ℕ} (lam : ι → DomWeight a)
     (lam' : ι → DomWeight b) (c : K) (J : (Formalism.L2.Ker.DVar ι a b →₀ ℕ) → K) (n : ι → ℕ) :
@@ -67,9 +67,9 @@ theorem jetOp_mul_tab {K : Type} [Field K] {ι : Type} [Fintype ι] {a b : ℕ} 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
 
 /- English proof (translation)
-Establish `hJ : ∀ x' y', jetTab W S.N.frC p (a • f) x' y' = fun k => a * jetTab W S.N.frC p f x' y' k`. Introduce `x' y'`. Use function extensionality and compare the values at `k`. Simplify using `only [jetTab, kerFin, fockIn, GlobalTheory.FiniteFock.pureTensorO_smul, GridData.Weil.ker, thetaKO, map_smul, Pi.smul_apply, smul_eq_mul]`. Unfold `GlobalTheory.TopZeroInv.kkVec fockComp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[hJ, jetOp_mul_tab, smul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem kkVec_smul (S : GridChoice W U) (p : Pair T) (a : ℂ) (f : WO (G.pS p) (G.pT p) → ℂ) (x : FinPt G p.small)
     (y : FinPt G p.big) : GlobalTheory.TopZeroInv.kkVec S p (a • f) x y = a • GlobalTheory.TopZeroInv.kkVec S p f x y := by
@@ -189,15 +189,15 @@ theorem pairML_apply (S : GridChoice W U) (t : T) (x : ∀ j, FinPt G (.top j)) 
       (colMapV S t (fun j => (cc j : WO _ _ → ℂ)) x) (rowMapV S (fun i => (rr i : WO _ _ → ℂ)) y) u v := rfl
 
 /- English proof (translation)
-Introduce `D T L sc G W U S t δ τ c c' r r' hc hr hprod x y`. Use `LinearMap.ext fun u => LinearMap.ext fun v => ?_` and prove the remaining obligations. Set `f : δ → ∀ j : Fin D.R.m, ↥(GlobalTheory.RowVertexInv.thetaSub W.ψ (G.pS (.top t j : Pair T)) (G.pT (.top t j : Pair T)))` to `fun d j => if h : d ∈ τ.support then ⟨c d j, (hc d h j).1⟩ else 0`. Set `f' : δ → ∀ j : Fin D.R.m, ↥(GlobalTheory.RowVertexInv.thetaSub W.ψ (G.pS (.top t j : Pair T)) (G.pT (.top t j : Pair T)))` to `fun d j => if h : d ∈ τ.support then ⟨c' d j, (hc d h j).2⟩ else 0`. Set `g : δ → ∀ i : Fin D.R.m, ↥(GlobalTheory.RowVertexInv.thetaSub W.ψ (G.pS (.chi i D.R.m : Pair T)) (G.pT (.chi i D.R.m : Pair T)))` to `fun d i => if h : d ∈ τ.support then ⟨r d i, (hr d h i).1⟩ else 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `g' : δ → ∀ i : Fin D.R.m, ↥(GlobalTheory.RowVertexInv.thetaSub W.ψ (G.pS (.chi i D.R.m : Pair T)) (G.pT (.chi i D.R.m : Pair T)))` to `fun d i => if h : d ∈ τ.support then ⟨r' d i, (hr d h i).2⟩ else 0`. Establish `ef : ∀ d ∈ τ.support, (fun j => (f d j : WO _ _ → ℂ)) = c d` using `fun d hd => funext fun j => by simp only [f, dif_pos hd]`. Establish `ef' : ∀ d ∈ τ.support, (fun j => (f' d j : WO _ _ → ℂ)) = c' d` using `fun d hd => funext fun j => by simp only [f', dif_pos hd]`. Establish `eg : ∀ d ∈ τ.support, (fun i => (g d i : WO _ _ → ℂ)) = r d` using `fun d hd => funext fun i => by simp only [g, dif_pos hd]`. Establish `eg' : ∀ d ∈ τ.support, (fun i => (g' d i : WO _ _ → ℂ)) = r' d` using `fun d hd => funext fun i => by simp only [g', dif_pos hd]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `GlobalTheory.funProd_multilinear_sum_eq (pairML S t x y u v) τ f f' g g' (fun w z => by`. Rewrite using `[Finsupp.sum, Finsupp.sum]`. Establish `h1` using `hprod w z`. Rewrite `h1` using `[Finsupp.sum, Finsupp.sum]`. Use `(Finset.sum_congr rfl fun d hd => ?_).trans (h1.trans (Finset.sum_congr rfl fun d hd => ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← ef d hd, ← eg d hd]`. Rewrite using `[← ef' d hd, ← eg' d hd])`. Establish `hL : ∀ (cc : δ → ∀ j : Fin D.R.m, WO (G.pS (.top t j : Pair T)) (G.pT (.top t j : Pair T)) → ℂ) (rr : δ → ∀ i : Fin D.R.m, WO (G.pS (.chi i D.R.m : Pair T)) (G.pT (.chi i D.R.m : Pair T)) → ℂ) (F : δ → ∀ j : Fin D.R.m, ↥(GlobalTheory.RowVertexInv.thetaSub W.ψ (G.pS (.top t j : Pa …`. Introduce `cc rr F H hF hH`. Unfold `pairV`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[Finsupp.sum, Finsupp.sum, LinearMap.sum_apply, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, LinearMap.smul_apply, smul_eq_mul, pairML_apply, hF d hd, hH d hd]`. Rewrite using `[hL c r f g ef eg, hL c' r' f' g' ef' eg']`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairV_eq_of_prodFun_eq : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T} (S : GridChoice W U) (t : T)
     {δ : Type} (τ : δ →₀ ℂ) (c c' : δ → ∀ j : Fin D.R.m, WO (G.pS (.top t j : Pair T)) (G.pT (.top t j : Pair T)) → ℂ)

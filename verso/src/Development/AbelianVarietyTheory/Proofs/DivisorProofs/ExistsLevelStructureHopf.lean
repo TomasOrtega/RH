@@ -20,9 +20,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.GroupBplus.Aff
 
 /- English proof (translation)
-Take `⟨Idx, hI, q, c, hc⟩` from `GlobalTheory.T.exists_finite_torsion_prechart_cover R K G hG N hN`. Establish `hfin : ∀ i, Finite ((c i).C →ₐ[R] K)` using `fun i => (GlobalTheory.T.torsion_prechart_points_separate R K G hG N hN (q i) (c i)).1`. Use `Finite.of_surjective (fun x : Σ i, ((c i).C →ₐ[R] K) => torsMap x.2 (c x.1).j) fun z => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `hc K z`. Take `⟨ψ, -, hψ⟩` from `((c i).bij K).surjOn hi`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨⟨i, ψ⟩, hψ⟩`.
+Supply the required witnesses or components.
 -/
 theorem finite_tors_generic (R K : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [IsAlgClosed K]
     [CharZero K] [Algebra R K] [IsFractionRing R K] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G]
@@ -35,9 +35,9 @@ theorem finite_tors_generic (R K : Type) [CommRing R] [IsDomain R] [IsIntegrally
   exact ⟨⟨i, ψ⟩, hψ⟩
 
 /- English proof (translation)
-Introduce `R K _ _ _ _ _ _ _ _ G _ _ hG N hN`. Use `haveI := finite_tors_generic R K G hG N hN`. Take `⟨hf, hp, hs⟩` from `GlobalTheory.T.torsion_order_finite_projective R K G hG N hN`. Take `⟨h1, h2, h3⟩` from `GlobalTheory.T.torsion_order_comultiplication R K G hG N hN`. Take `⟨A, iA, hA, cA, io, hio⟩` from `GlobalTheory.T.order_hopf_comultiplication R K (Tors G N K) (ord G N K) hf hp hs h1 h2 h3`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI fA : Module.Finite R A := Module.Finite.equiv io.symm.toLinearEquiv`. Use `haveI pA : Module.Projective R A := Module.Projective.of_equiv io.symm.toLinearEquiv`. Take `⟨θ, hθ⟩` from `GlobalTheory.T.torsion_order_hopf_iso R K G hG N hN A io hio`. Conclude with `⟨A, iA, hA, cA, fA, pA, θ, GlobalTheory.T.torsion_point_of_hopf_order R K G hG N hN A io θ hθ⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_level : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [IsAlgClosed K] [CharZero K] [Algebra R K] [IsFractionRing R K] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (N : ℕ), N ≠ 0 → ∃ (A : Type) (_ : CommRing A) (_ : HopfAlgebra R A) (_ : IsCocomm R A) (_ : Module.Finite R A) (_ : Module.Projective R A) (θ : TorsPt G N A), IsLevel K θ := by
   intro R K _ _ _ _ _ _ _ _ G _ _ hG N hN

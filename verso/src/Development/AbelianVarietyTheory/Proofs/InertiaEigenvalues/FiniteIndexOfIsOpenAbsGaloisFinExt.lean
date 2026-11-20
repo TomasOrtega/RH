@@ -5,7 +5,7 @@ open scoped Formalism.Per
 namespace GlobalTheory.OpenFiniteIndex
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional ℚ_[l] K.1 := K.2`. Establish `hc : IsClosed ((K.1.fixingSubgroup : Subgroup (GQ l)) : Set (GQ l))` using `IntermediateField.fixingSubgroup_isClosed K.1`. Conclude with `isCompact_iff_compactSpace.mp hc.isCompact`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem compactSpace_fixing (l : ℕ) [Fact l.Prime] (K : FinExt l) : CompactSpace ↥(GK K) := by
   haveI : FiniteDimensional ℚ_[l] K.1 := K.2
@@ -14,7 +14,7 @@ theorem compactSpace_fixing (l : ℕ) [Fact l.Prime] (K : FinExt l) : CompactSpa
   exact isCompact_iff_compactSpace.mp hc.isCompact
 
 /- English proof (translation)
-Introduce `l _ K H hH`. Use `haveI := compactSpace_fixing l K`. Use `haveI : Finite (↥(GK K) ⧸ H) := Subgroup.quotient_finite_of_isOpen H hH`. Conclude with `Subgroup.finiteIndex_of_finite_quotient`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem finiteIndex_of_isOpen : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (H : Subgroup ↥(GK K)),
     IsOpen (H : Set ↥(GK K)) → H.FiniteIndex := by

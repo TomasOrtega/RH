@@ -4,13 +4,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
 /- English proof (translation)
-Establish `hl : l.Prime` using `Fact.out`. Take `⟨a, m, hm, rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hh l hl.ne_one`. Establish `h1 : (x ^ m - 1) ^ l ^ a = 0`. Rewrite using `[sub_pow_char_pow, one_pow, ← pow_mul, mul_comm, hp, sub_self]`. Establish `h2 : x ^ m - 1 = 0` using `(pow_eq_zero_iff (pow_ne_zero _ hl.ne_zero)).1 h1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[← mul_geom_sum, mul_eq_zero]`. Break down `h2 with h2 | h2` into its components or cases. Conclude with `sub_eq_zero.1 h2`. It suffices to derive a contradiction. Establish `h3 : residue D x = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(residue_eq_zero_iff _).2 hx` as an intermediate fact. Rewrite `this` using `[map_sub, map_one, sub_eq_zero]`. Then use the resulting hypothesis. Establish `h4` using `congrArg (residue D) h2`. Simplify using `only [map_sum, map_pow, h3, one_pow, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one, map_zero] at h4`. Establish `h5 : (l : ResidueField D) = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_natCast (residue D), CharP.cast_eq_zero, map_zero]`. Use `haveI : CharP (ResidueField D) l := (CharP.charP_iff_prime_eq_zero hl).2 h5`. Conclude with `hm ((CharP.cast_eq_zero_iff _ l m).1 h4)`.
+A detailed English derivation is pending.
 -/
 private theorem exists_prime_power_pow_eq_one {l : ℕ} [Fact l.Prime] {D : Type} [CommRing D] [IsDomain D] [IsLocalRing D]
     [CharP D l] {x : D} (hx : x - 1 ∈ maximalIdeal D) {h : ℕ} (hh : h ≠ 0) (hp : x ^ h = 1) : x = 1 := by
@@ -35,25 +35,23 @@ private theorem exists_prime_power_pow_eq_one {l : ℕ} [Fact l.Prime] {D : Type
     exact hm ((CharP.cast_eq_zero_iff _ l m).1 h4)
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ F C₀ hF D _ _ _ _ hO χ hc h1 hs hI g`. Establish `hl : l.Prime` using `Fact.out`. Establish `hlO : (l : O) ∈ maximalIdeal O`. Rewrite using `[← residue_eq_zero_iff, map_natCast, CharP.cast_eq_zero]`. Use `haveI : CharP D l := (CharP.charP_iff_prime_eq_zero hl).2 (by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_natCast (algebraMap O D), hO _ hlO])`. Use `haveI : CompactSpace F.G0 := isCompact_iff_compactSpace.1 (Subgroup.isClosed_of_isOpen _ hF.del_open).isCompact`. Take `⟨s, s', h, hh, -, hs', H⟩` from `UpperTheory.V.Fr.ab_gen hF`. Use `exists_prime_power_pow_eq_one (h1 g) hh ?_` and prove the remaining obligations. Establish `key : ∀ N : ℕ, χ g ^ h - 1 ∈ maximalIdeal D ^ N`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Introduce `N`. Set `q` to `Ideal.Quotient.mk (maximalIdeal D ^ N)`. Set `φ : F.G0 →* (D ⧸ maximalIdeal D ^ N)ˣ` to `((q : D →* _).comp χ).toHomUnits`. Establish `hφ : ∀ x, (φ x : D ⧸ maximalIdeal D ^ N) = q (χ x)` using `fun _ => rfl`. Establish `hone : ∀ x n, φ.rangeRestrict x ^ n = 1 ↔ χ x ^ n - 1 ∈ maximalIdeal D ^ N`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x n`. Rewrite using `[← Ideal.Quotient.eq, Subtype.ext_iff, Units.ext_iff, map_pow, map_one]`. Both sides reduce to the same expression. Use `haveI : Finite φ.range := by haveI hf : Finite (Set.range fun g => q (χ g)) := (hc N).range_finite`. Use `Finite.of_injective (β := Set.range fun g => q (χ g)) (fun y => ⟨(y.1 : D ⧸ maximalIdeal D ^ N), ?_⟩) ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨_, x, rfl⟩` from `y`. Conclude with `⟨x, rfl⟩`. Introduce `y z hyz`. Conclude with `Subtype.ext (Units.ext (congrArg Subtype.val hyz))`. Establish `hP : IsPGroup l φ.range`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `y`. Take `⟨x, rfl⟩` from `φ.rangeRestrict_surjective y`. Use `⟨N, (hone x _).2 ?_⟩` and prove the remaining obligations. Establish `e : χ x ^ l ^ N - 1 = (χ x - 1) ^ l ^ N` using `by rw [sub_pow_char_pow, one_pow]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `Ideal.pow_le_pow_right (Nat.lt_pow_self hl.one_lt).le (Ideal.pow_mem_pow (h1 x) _)`. Establish `hop : IsOpen (φ.rangeRestrict.ker : Set F.G0)`. Use `(hc N).isOpen_fiber 1 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Simplify using `only [SetLike.mem_coe, MonoidHom.mem_ker, Set.mem_setOf_eq]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subtype.ext_iff, Units.ext_iff]`. Both sides reduce to the same expression. Use `(hone g h).1 ((H φ.range hP φ.rangeRestrict hop).2 (fun x => ?_) (fun a => ?_) g)` and prove the remaining obligations. Use `Subtype.ext (Units.ext ?_) show q (χ _) = q (χ _)` and prove the remaining obligations. Rewrite using `[hs]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨v, x, hx, hΨ, e⟩` from `hs' a`. Use `Subtype.ext (Units.ext ?_)` and prove the remaining obligations. Use `show q (χ _) = 1`. Rewrite using `[e, hI v x hx hΨ, map_one]`. Rewrite using `[← sub_eq_zero]`.
-
-Establish `hb` using `Ideal.iInf_pow_eq_bot_of_isLocalRing (maximalIdeal D) (maximalIdeal.isMaximal D).ne_top`. Rewrite using `[← Ideal.mem_bot, ← hb]`. Conclude with `Ideal.mem_iInf.2 key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.frobenius_corner_middle_trivial :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] {F : Frame l (ResidueField O)} {C₀ : ℕ}, F.Ok C₀ → ∀ (D : Type) [CommRing D] [IsDomain D] [Algebra O D] [IsCO O D], (∀ c ∈ maximalIdeal O, algebraMap O D c = 0) → ∀ χ : F.G0 →* D, AdicCont (maximalIdeal D) χ → (∀ g, χ g - 1 ∈ maximalIdeal D) → (∀ g, χ (F.star g) = χ g) → (∀ v g, g ∈ F.Iv v → F.Ψ (F.loc v g) = 1 → χ (F.loc0 v g) = 1) → ∀ g, χ g = 1 := by

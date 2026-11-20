@@ -10,7 +10,7 @@ open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Establish `h : (p.map ι.toRingHom).eval (ι x) = ι (p.eval x)`. Rewrite using `[Polynomial.eval_map]`. Conclude with `Polynomial.eval₂_at_apply ι.toRingHom x`. Rewrite using `[Polynomial.IsRoot.def, Polynomial.IsRoot.def, h]`. Conclude with `map_eq_zero_iff ι ι.injective`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isRoot_map_equiv {k : Type} [Field k] (ι : k ≃+* ℂ) (p : Polynomial k) (x : k) :
     (p.map ι.toRingHom).IsRoot (ι x) ↔ p.IsRoot x := by
@@ -21,7 +21,7 @@ private theorem isRoot_map_equiv {k : Type} [Field k] (ι : k ≃+* ℂ) (p : Po
   exact map_eq_zero_iff ι ι.injective
 
 /- English proof (translation)
-Establish `h : Matrix.scalar (Fin n) (c * x) - c • M = c • (Matrix.scalar (Fin n) x - M)`. Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.scalar_apply, Matrix.diagonal_apply, hij, mul_sub]`. Rewrite using `[Polynomial.IsRoot.def, Polynomial.IsRoot.def, Matrix.eval_charpoly, Matrix.eval_charpoly, h, Matrix.det_smul]`. Simplify using `[hc]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem isRoot_charpoly_smul {k : Type} [Field k] {n : ℕ} (c : k) (hc : c ≠ 0)
     (M : Matrix (Fin n) (Fin n) k) (x : k) :
@@ -34,7 +34,7 @@ private theorem isRoot_charpoly_smul {k : Type} [Field k] {n : ℕ} (c : k) (hc 
   simp [hc]
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem charpoly_gl_conj {k : Type} [Field k] {n : ℕ} (g a : GL (Fin n) k) :
     ((g * a * g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).charpoly =
@@ -42,13 +42,11 @@ private theorem charpoly_gl_conj {k : Type} [Field k] {n : ℕ} (g a : GL (Fin n
   rw [Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj]
 
 /- English proof (translation)
-Establish `key : ∀ y : ℂ, ((c • M).charpoly.map ι.toRingHom).IsRoot (ι c * y) ↔ (M.charpoly.map ι.toRingHom).IsRoot y`. Introduce `y`. Take `⟨x, rfl⟩` from `ι.surjective y`. Rewrite using `[← map_mul, isRoot_map_equiv, isRoot_map_equiv, isRoot_charpoly_smul c hc0]`. Introduce `α hα hβ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hιc : ι c ≠ 0` using `(map_ne_zero_iff ι ι.injective).2 hc0`. Establish `hα' : ι c * ((ι c)⁻¹ * α) = α` using `by field_simp`. Establish `h1 : (M.charpoly.map ι.toRingHom).IsRoot ((ι c)⁻¹ * α)`. Rewrite using `[← key, hα']`. Conclude with `hα`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `h _ h1 ?_` and prove the remaining obligations. Rewrite using `[← key]`. Establish `h2 : ι c * (q * ((ι c)⁻¹ * α)) = q * α`. Clear the denominators using the available nonvanishing facts. Rewrite using `[h2]`.
-
-Conclude with `hβ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ratio_smul {k : Type} [Field k] {n : ℕ} (ι : k ≃+* ℂ) (c : k) (hc0 : c ≠ 0)
     (M : Matrix (Fin n) (Fin n) k) (q : ℂ)
@@ -75,9 +73,9 @@ private theorem ratio_smul {k : Type} [Field k] {n : ℕ} (ι : k ≃+* ℂ) (c 
   exact hβ
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l _ ι n r w A r' μ hU`. Take `⟨s, j, hj, hF, h⟩` from `hU`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg⟩`. Use `⟨s, j, hj, hF, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hg s, charpoly_gl_conj]`. Conclude with `h`. Use `⟨s, j, hj, hF, ?_⟩` and prove the remaining obligations. Rewrite using `[UpperTheory.V.Af.tw_val]`. Conclude with `ratio_smul ι _ (Units.ne_zero _) _ _ h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.GalN.V.L.unliso :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (n : ℕ) (r : G F Ω →* GL (Fin n) (Qbar l)) (w : HeightOneSpectrum (𝓞 F)) (A : ValuationSubring Ω) (r' : G F Ω →* GL (Fin n) (Qbar l)) (μ : G F Ω →* (Qbar l)ˣ), UnlAt ι r w A → (RepIso r r' → UnlAt ι r' w A) ∧ UnlAt ι (UpperTheory.V.Af.tw r μ) w A := by

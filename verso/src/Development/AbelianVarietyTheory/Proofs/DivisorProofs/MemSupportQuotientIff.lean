@@ -4,11 +4,9 @@ open CategoryTheory CategoryTheory.Limits TensorProduct
 namespace GlobalTheory.QuotientSupportBaseChange
 
 /- English proof (translation)
-Rewrite using `[Module.mem_support_iff_nontrivial_residueField_tensorProduct, Module.mem_support_iff_nontrivial_residueField_tensorProduct]`. Set `Kp` to `p.asIdeal.ResidueField`. Set `Kq` to `(PrimeSpectrum.comap (algebraMap R A) p).asIdeal.ResidueField`. Establish `hq : (PrimeSpectrum.comap (algebraMap R A) p).asIdeal = p.asIdeal.comap (algebraMap R A)` using `rfl`. Set `_ : Algebra Kq Kp` to `(Ideal.ResidueField.map (PrimeSpectrum.comap (algebraMap R A) p).asIdeal p.asIdeal (algebraMap R A) hq).toAlgebra`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `: IsScalarTower R Kq Kp` using `IsScalarTower.of_algebraMap_eq fun r => by`. Express the relevant statement in the definitionally equal form `algebraMap R Kp r = Ideal.ResidueField.map (PrimeSpectrum.comap (algebraMap R A) p).asIdeal p.asIdeal (algebraMap R A) hq (algebraMap R Kq r)`. Rewrite using `[Ideal.ResidueField.map_algebraMap]`. Conclude with `IsScalarTower.algebraMap_apply R A Kp r`. Rewrite using `[(AlgebraTensorModule.cancelBaseChange R A Kp Kp M).nontrivial_congr, ← (AlgebraTensorModule.cancelBaseChange R Kq Kp Kp M).nontrivial_congr]`.
-
-Conclude with `Module.FaithfullyFlat.nontrivial_tensorProduct_iff_right Kq Kp`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_support_baseChange {R A M : Type} [CommRing R] [CommRing A] [Algebra R A]
     [AddCommGroup M] [Module R M] [Module.Finite R M] (p : PrimeSpectrum A) :
@@ -32,9 +30,9 @@ theorem mem_support_baseChange {R A M : Type} [CommRing R] [CommRing A] [Algebra
   exact Module.FaithfullyFlat.nontrivial_tensorProduct_iff_right Kq Kp
 
 /- English proof (translation)
-Set `n` to `Submodule.span R (Set.range s)`. Set `e₀` to `AlgebraTensorModule.tensorQuotientEquiv (R := R) A R A n`. Establish `hmap : (LinearMap.range (AlgebraTensorModule.lTensor A A (n.subtype.restrictScalars R))).map (hf.equiv : A ⊗[R] M →ₗ[A] N) = Submodule.span A (Set.range fun i => f (s i))`. Express the relevant statement in the definitionally equal form `(n.baseChange A).map (hf.equiv : A ⊗[R] M →ₗ[A] N) = _`. Rewrite using `[Submodule.baseChange_span, Submodule.map_span]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `x`. Simplify using `[IsBaseChange.equiv_tmul]`. Conclude with `⟨e₀.trans (Submodule.Quotient.equiv _ _ hf.equiv hmap)⟩`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem nonempty_quotient_equiv {R A M N ι : Type} [CommRing R] [CommRing A] [Algebra R A]
     [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N] [Module A N]
@@ -54,13 +52,13 @@ theorem nonempty_quotient_equiv {R A M N ι : Type} [CommRing R] [CommRing A] [A
   exact ⟨e₀.trans (Submodule.Quotient.equiv _ _ hf.equiv hmap)⟩
 
 /- English proof (translation)
-Set `_ : Algebra R R'` to `ba.hom.toAlgebra`. Set `_ : Algebra R S` to `qa.hom.toAlgebra`. Set `_ : Algebra R' S'` to `qa'.hom.toAlgebra`. Set `_ : Algebra S S'` to `ga.hom.toAlgebra`. Set `_ : Algebra R S'` to `(qa ≫ ga).hom.toAlgebra`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `: IsScalarTower R R' S'` using `IsScalarTower.of_algebraMap_eq fun r => by`. Express the relevant statement in the definitionally equal form `(qa ≫ ga).hom r = qa'.hom (ba.hom r)`. Rewrite using `[h.w]`. Both sides reduce to the same expression. Establish `: IsScalarTower R S S'` using `IsScalarTower.of_algebraMap_eq fun r => rfl`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hpo : Algebra.IsPushout R R' S S'` using `CommRingCat.isPushout_iff_isPushout.mp h.flip`. Establish `: Module.Finite R S` using `hfin`. Take `⟨e⟩ : Nonempty ((R' ⊗[R] (S ⧸ Submodule.span R (Set.range s))) ≃ₗ[R'] S' ⧸ Submodule.span R' (Set.range fun i => ga.hom (s i)))` from `nonempty_quotient_equiv _ hpo.out s`. Establish `key : p ∈ Module.support R' (S' ⧸ Submodule.span R' (Set.range fun i => ga.hom (s i))) ↔ PrimeSpectrum.comap ba.hom p ∈ Module.support R (S ⧸ Submodule.span R (Set.range s))`. Rewrite using `[← e.support_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mem_support_baseChange p`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem mem_support_quotient_iff (R S R' S' : CommRingCat.{0}) (qa : R ⟶ S) (ba : R ⟶ R')
     (ga : S ⟶ S') (qa' : R' ⟶ S') (h : IsPushout qa ba ga qa') (hfin : qa.hom.Finite)

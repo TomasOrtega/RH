@@ -9,7 +9,7 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open scoped TensorProduct Matrix
 namespace GlobalTheory.InertTensorField
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB v w hvw`. Establish `hp : (v.asIdeal.map (algebraMap (𝓞 F) (𝓞 E))).IsPrime`. Rewrite using `[show v.asIdeal.map (algebraMap (𝓞 F) (𝓞 E)) = w.asIdeal from hvw]`. Conclude with `w.isPrime`. Conclude with `GlobalTheory.InertField.isField_of_inert F E hB.cm.2.2.1 v hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isField_tensor_of_isInertAt_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     _root_.UpperTheory.TP.W.GoodK σ B → ∀ (v : Pl F) (w : HeightOneSpectrum (𝓞 E)), Formalism.UG.IsInertAt F E v w → IsField (Fv F v ⊗[F] E) := by

@@ -13,9 +13,9 @@ attribute [local instance] SplitExt.free SplitExt.finite
 namespace GlobalTheory.OneBasis.AdaptedFamily
 
 /- English proof (translation)
-Take `⟨x, hx, hm⟩` from `(wellFounded_lt (α := ℕ)).has_min ((fun x => (Q x).toNat) '' s) (hs.image _)`. Take `⟨x, hx, rfl⟩` from `hx`. Use `⟨x, hx, fun y hy => ?_⟩` and prove the remaining obligations. Establish `h₁ : ¬ (Q y).toNat < (Q x).toNat` using `hm _ ⟨y, hy, rfl⟩`. Establish `h₂` using `h x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₃` using `h y`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem exists_min_on {X : Type} {Q : X → ℤ} (h : ∀ x, 0 ≤ Q x) {s : Set X} (hs : s.Nonempty) :
     ∃ x ∈ s, ∀ y ∈ s, Q x ≤ Q y := by
@@ -28,17 +28,15 @@ theorem exists_min_on {X : Type} {Q : X → ℤ} (h : ∀ x, 0 ≤ Q x) {s : Set
   omega
 
 /- English proof (translation)
-Introduce `hL V _ _ _ ϖ hϖ D Q hQ k hk`. Establish `hQ0 : ∀ χ, 0 ≤ Q χ` using `fun χ => by`. Distinguish the cases in `h : χ = 0`. Rewrite using `[h, QForm.Q_zero hϖ D hQ]`. Use `QForm.Q_pos hϖ D hQ h` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Set `C` to `D.toPre.X ⧸ FamFree.multiples D.toPre k`. Establish `hc : Nat.card C = k ^ Module.finrank ℤ D.toPre.X` using `AddSubgroup.index_range_nsmul D.toPre.X k`. Establish `: Finite C` using `Nat.finite_of_card_ne_zero (by rw [hc]; positivity)`. Use `Fintype.ofFinite C` as an intermediate fact.
+Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `e : Fin (Fintype.card (C × Fin (k ^ D.toPre.P.g))) ≃ C × Fin (k ^ D.toPre.P.g)` to `(Fintype.equivFin _).symm`. Use `choose rep hrep hmin using fun c : C => exists_min_on hQ0 (s := {α | (QuotientAddGroup.mk α : C) = c}) ⟨c.out, c.out_eq⟩`. Establish `hQmin : ∀ c z, Q (rep c) ≤ Q (rep c + k • z)` using `fun c m => hmin c _ (((FamFree.mk_eq_mk_iff _ _).2 ⟨m, rfl⟩).symm.trans (hrep c))`. Use `choose b hb using fun c => AdaptedBasis.exists_isBasisB hL.2.1.secTwist D.toPre hk (rep c)`. Use `choose Φ f hΦ hf hz using fun c m => AdaptedBasis.integralFamily_of_min hL.1.globalFns hϖ hQ hk (rep c) (b c m) (hQmin c)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `inj : ∀ c c', rep c = rep c' → c = c'` using `fun c c' h => (hrep c).symm.trans (by rw [h]; exact hrep c')`. Set `ε : ∀ i₀, {i // rep (e i).1 = rep (e i₀).1} ≃ Fin (k ^ D.toPre.P.g)` to `fun i₀ => { toFun := fun i => (e i.1).2 invFun := fun m => ⟨e.symm ((e i₀).1, m), by rw [Equiv.apply_symm_apply]⟩ left_inv := fun i => Subtype.ext (e.symm_apply_eq.2 (Prod.ext (inj _ _ i.2).symm rfl)) right_inv := fun m => by simp }`. Use `⟨_, fun i => rep (e i).1, k ^ D.toPre.P.g, fun i => f (e i).1 (e i).2, ⟨⟨fun i => hQmin _, fun i i' ⟨m, hm⟩ => ?_, fun α => ?_, fun i₀ => ?_⟩, fun i => ⟨_, hΦ _ _⟩, fun i => hz _ _, fun i₀ => ?_⟩, fun F _ _ i => FamBaseChange.main hL.1.globalFns V _ D k _ _ (hΦ _ _) F⟩` and prove the remaining obligations. Conclude with `congrArg rep ((hrep _).symm.trans (((FamFree.mk_eq_mk_iff _ _).2 ⟨m, hm.symm⟩).symm.trans (hrep _)))`. Take `⟨m, hm⟩` from `(FamFree.mk_eq_mk_iff _ _).1 (hrep (QuotientAddGroup.mk α))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨e.symm (QuotientAddGroup.mk α, ⟨0, by positivity⟩), m, ?_⟩` and prove the remaining obligations. Simplify using `only [Equiv.apply_symm_apply]`. Conclude with `hm.symm`. Conclude with `(Nat.card_congr (ε i₀)).trans (Nat.card_fin _)`. Use `AdaptedBasis.isBasisB_reindex (ε i₀) (hb (e i₀).1) fun i => ?_` and prove the remaining obligations.
-
-Establish `key : ∀ c c' m, c = c' → f c m (rep c') = b c' m`. Introduce and unpack `c _ m rfl`. Conclude with `hf c m`. Conclude with `key _ _ _ (inj _ _ i.2)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem main : LL → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (ϖ : V), Irreducible ϖ → ∀ (D : DegData V (maximalIdeal V)) (Q : D.toPre.X → ℤ), QForm.IsQ D.toPre ϖ Q → ∀ k : ℕ, 1 ≤ k → ∃ (r : ℕ) (cls : Fin r → D.toPre.X) (mu : ℕ) (f : Fin r → ∀ α, D.toPre.SecB k α), AdFam D Q k cls mu f ∧ ∀ (F : Type) [Field F] [Algebra (FractionRing V) F] (i : Fin r), ∃ s : Fam D.toPre F k, GlobalTheory.ZH.FamOf D.toPre F (f i) s := by
   classical

@@ -5,24 +5,24 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.NormLeO
 open Matrix IsLocalRing ReciprocityTheory.Gal UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.UnitaryThreeInertia
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.NormLeOneOfIsIntegral.norm_le_one_of_isIntegral l x hx`.
+A detailed English derivation is pending.
 -/
 private theorem norm_le_one_of_int (l : ℕ) [Fact l.Prime] (x : PadicAlgCl l) (hx : IsIntegral ℤ_[l] x) :
     ‖x‖ ≤ 1 :=
   _root_.UpperTheory.Reformulated.B.NormLeOneOfIsIntegral.norm_le_one_of_isIntegral l x hx
 
 /- English proof (translation)
-Establish `hu : ∀ u : Aˣ, ‖f u‖ = 1`. Introduce `u`. Establish `h1 : ‖f u‖ * ‖f ((u⁻¹ : Aˣ) : A)‖ = 1`. Rewrite using `[← norm_mul, ← map_mul, Units.mul_inv]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2` using `hle u`. Establish `h3` using `hle (u⁻¹ : Aˣ)`. Establish `h4` using `norm_nonneg (f u)`. Use the polynomial consequences of the given equalities and inequalities. Use `⟨fun u ⟨v, hv⟩ => hv ▸ hu v, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible A`. Establish `hl0 : (l : A) ≠ 0`. Introduce `h`. Establish `h' : f l = 0` using `by rw [h, map_zero]`. Establish `: (l : PadicAlgCl l) = 0` using `by simpa using h'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero) this`. Establish `hl : ‖f l‖ < 1`. Establish `: f l = algebraMap ℚ_[l] (PadicAlgCl l) (l : ℚ_[l])` using `by simp`. Rewrite using `[this, norm_algebraMap']`. Conclude with `Padic.norm_p_lt_one`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨‖f ϖ‖, norm_nonneg _, ?_, fun n x hx => ?_⟩` and prove the remaining obligations. Take `⟨n, u, h⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hl0 hϖ`. Rewrite `hl` using `[h, map_mul, norm_mul, hu, one_mul, map_pow, norm_pow]`. Assume the negation of the conclusion as `hc`. Conclude with `absurd hl (not_lt.2 (one_le_pow₀ (not_lt.1 hc)))`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hx` using `[hϖ.maximalIdeal_eq, Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Take `⟨y, rfl⟩` from `hx`. Rewrite using `[map_mul, norm_mul, map_pow, norm_pow]`. Conclude with `mul_le_of_le_one_left (by positivity) (hle y)`.
+A detailed English derivation is pending.
 -/
 private theorem dvr_norm {l : ℕ} [Fact l.Prime] {A : Type} [CommRing A] [IsDomain A] [IsDiscreteValuationRing A]
     (f : A →+* PadicAlgCl l) (hle : ∀ x, ‖f x‖ ≤ 1) :
@@ -58,7 +58,7 @@ private theorem dvr_norm {l : ℕ} [Fact l.Prime] {A : Type} [CommRing A] [IsDom
     exact mul_le_of_le_one_left (by positivity) (hle y)
 
 /- English proof (translation)
-Use `MonoidHom.ext fun g => ?_` and prove the remaining obligations. Simplify using `[conjBy, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem conjBy_conjBy {G R : Type} [Group G] [CommRing R] (r : G →* GG 3 R) (h k : GL (Fin 3) R) :
     conjBy h (conjBy k r) = conjBy (h * k) r := by
@@ -66,7 +66,7 @@ private theorem conjBy_conjBy {G R : Type} [Group G] [CommRing R] (r : G →* GG
   simp [conjBy, mul_assoc]
 
 /- English proof (translation)
-Use `MonoidHom.ext fun g => ?_` and prove the remaining obligations. Simplify using `[conjBy]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem conjBy_one {G R : Type} [Group G] [CommRing R] (r : G →* GG 3 R) :
     conjBy 1 r = r := by
@@ -74,25 +74,25 @@ private theorem conjBy_one {G R : Type} [Group G] [CommRing R] (r : G →* GG 3 
   simp [conjBy]
 
 /- English proof (translation)
-Take `⟨hu, q, hq0, hq1, hq⟩` from `dvr_norm (f : A →+* PadicAlgCl l) hle`. Simplify using `only [RingHom.coe_coe] at hu hq`. Establish `hr : r = conjBy (tor _ t⁻¹) (push f r')`. Rewrite using `[hp, conjBy_conjBy, ← map_mul, inv_mul_cancel, map_one, conjBy_one]`. Take `⟨c1, c2, c3, -, -⟩` from `conjBy_tor (push f r') t⁻¹`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `c1`, `c2`, `c3` using `[← hr]`. Establish `hent : ∀ g a b, (push f r' g).mat a b = f ((r' g).mat a b)` using `fun _ _ _ => rfl`. Establish `hrz : ∀ g a b, (F.rz (PadicAlgCl l) g).mat a b = algebraMap O _ ((r0 F.η F.Ψ g).mat a b)` using `fun _ _ _ => rfl`. Establish `hdiag : ∀ g a, ‖(r g).mat a a - (F.rz (PadicAlgCl l) g).mat a a‖ < 1`. Introduce `g a`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `hq 1 _ (by rw [pow_one]; exact hpt.red g a a)`. Rewrite `h` using `[pow_one, Matrix.sub_apply, map_sub, Matrix.map_apply, AlgHom.commutes]`. Rewrite using `[c1, hent, hrz]`. Simplify using `only [wt, sub_self, zpow_zero, Units.val_one, one_mul]`. Conclude with `lt_of_le_of_lt h hq1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hz : ‖zeta F.c g₁ r - zeta F.c g₁ (F.rz (PadicAlgCl l))‖ < 1`. Establish `e : zeta F.c g₁ r - zeta F.c g₁ (F.rz (PadicAlgCl l)) = ((r g₁).mat 0 0 - (F.rz (PadicAlgCl l) g₁).mat 0 0) + -((r (gstar F.c g₁)).mat 0 0 - (F.rz (PadicAlgCl l) (gstar F.c g₁)).mat 0 0)`. Simplify using `only [zeta, zmat, Matrix.sub_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max _ _) (max_lt (hdiag _ _) ?_)` and prove the remaining obligations. Rewrite using `[norm_neg]`. Conclude with `hdiag _ _`. Establish `hz0 : ‖zeta F.c g₁ (F.rz (PadicAlgCl l))‖ = 1`. Establish `h0` using `(zeta_reducible_rep_eq_sub_inv_and_isUnit F.η F.Ψ F.c g₁ ⟨hF.csq, hF.ηc, hF.Ψc, hg.1, hg.2⟩).2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hu _ (h0.map (algebraMap O A)), AlgHom.commutes]`. Simplify using `only [zeta, zmat, Matrix.sub_apply, map_sub, hrz]`. Use `⟨fun g => (c2 g).trans (hpt.mult g), c3 _ _ ⟨?_, ?_, ?_⟩, ?_, hz, ?_, hdiag⟩` and prove the remaining obligations. Use extensionality with `a b`. Rewrite using `[hent, hpt.norm.atc]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Matrix.one_apply, apply_ite f]`. Establish `h` using `congrArg f hpt.norm.z12`. Simplify `h` using `only [zmat, Matrix.sub_apply, map_sub, map_zero, hent]`. Establish `h` using `congrArg f hpt.norm.z21`. Simplify `h` using `only [zmat, Matrix.sub_apply, map_sub, map_zero, hent]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `continuous_matrix fun a b => ?_` and prove the remaining obligations. Simplify using `only [mats, c1, hent]`. Use `continuous_const.mul (continuous_iff_continuousAt.2 fun g => ?_)` and prove the remaining obligations. Rewrite using `[ContinuousAt, Metric.tendsto_nhds]`. Introduce `ε hε`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one hε hq1`. Use `filter_upwards [(hpt.cont n).eventually_eq g] with g' hg'`. Establish `h` using `congrFun (congrFun hg' a) b`. Rewrite `h` using `[Matrix.map_apply, Matrix.map_apply, Ideal.Quotient.eq]`. Rewrite using `[dist_eq_norm, ← map_sub]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lt_of_le_of_lt (hq n _ h) hn`. Establish `e : zeta F.c g₁ r = (zeta F.c g₁ r - zeta F.c g₁ (F.rz (PadicAlgCl l))) + zeta F.c g₁ (F.rz (PadicAlgCl l))`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by rw [hz0]; exact hz.ne), hz0]`. Conclude with `max_eq_right hz.le`.
+A detailed English derivation is pending.
 -/
 private theorem aux {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] [Algebra O (PadicAlgCl l)]
     {G Γ ι : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Group Γ] [TopologicalSpace Γ]
@@ -155,7 +155,7 @@ private theorem aux {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRin
     exact max_eq_right hz.le
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ _ _ _ _ _ _ _ G Γ ι _ _ _ _ _ _ _ _ _ _ _ _ _ F hF g₁ hg r hr`. Take `⟨A, hA, hfin, t, r', hpt, hp⟩` from `hr`. Take `⟨h1, h2, h3, h4, h5, h6⟩` from `aux F hF g₁ hg r A.val (fun x => norm_le_one_of_int l _ (isIntegral_trans (A := O) _ ((Algebra.IsIntegral.isIntegral (R := O) x).map A.val))) t r' hpt hp`. Use `⟨h1, h2, h3, h4, h5, h6, fun s => ⟨A, hA, hfin, t * s⁻¹, r', hpt, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[conjBy_conjBy, ← map_mul, inv_mul_cancel_right, hp]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.V.UnitaryThreeInertia.isCharZeroPt_basic :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [CharZero O] [Finite (ResidueField O)]

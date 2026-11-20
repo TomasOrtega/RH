@@ -7,11 +7,11 @@ open scoped MatrixGroups ModularForm Manifold Topology
 namespace GlobalTheory.OddFrame
 
 /- English proof (translation)
-Introduce `n hn`. Break down `lt_or_ge n 0 with hneg | hpos` into its components or cases. Establish `h0 : (0 : ℤ) ≤ (Module.finrank ℂ (ModularForm 𝒮ℒ n) : ℤ)` using `Int.natCast_nonneg _`. Take `⟨m, hm⟩` from `hn`. Generalize the expression as in `(Module.finrank ℂ (ModularForm 𝒮ℒ n) : ℤ) = d at h0 ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable.
 
-Apply the tactic sequence `split_ifs <;> omega`. Use `lift n to ℕ using hpos`. Establish `hke : Even n` using `by exact_mod_cast hn`. Establish `hrank` using `ModularForm.dimension_level_one n hke`. Establish `hfin : Module.finrank ℂ (ModularForm 𝒮ℒ (n : ℤ)) = if n % 12 = 2 then n / 12 else n / 12 + 1`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `Module.finrank_eq_of_rank_eq hrank`. Take `⟨m, hm⟩` from `hke`. Generalize the expression as in `Module.finrank ℂ (ModularForm 𝒮ℒ (n : ℤ)) = d at hfin ⊢`. Apply the tactic sequence `split_ifs at hfin ⊢ <;> omega`.
+Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem levelOne_twelve_mul_finrank_lower_bound :
     ∀ n : ℤ, Even n → n + 5 + 3 * (if n % 4 = 0 then 1 else -1) +

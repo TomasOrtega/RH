@@ -24,7 +24,7 @@ def TopExists : Prop :=
       ∃ J : ℕ, 1 ≤ J ∧ ∃ (T : Top Xo n (n ^ J)) (k : ℕ), Nonempty (GlobalTheory.LN.AmpFrames T.t.G T.t.PP.L ((n ^ k) ^ 2))
 
 /- English proof (translation)
-Take `⟨J, hJ, T, -⟩` from `h E H D hD Xo n hn`. Conclude with `⟨J, hJ, ⟨T⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem TopExists.nonempty_top (h : TopExists) (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E)
     (D : Datum H) (hD : 1 ≤ D.p + D.q) (Xo : ∀ l : Level H, Moduli D l) (n : ℕ) (hn : AuxiliaryInertOddPrime H n) :
@@ -35,14 +35,14 @@ theorem TopExists.nonempty_top (h : TopExists) (E : Type) [Field E] [NumberField
 namespace FullLevel
 
 /- English proof (translation)
-Establish `h` using `IsCyclotomicExtension.Rat.natAbs_discr 21 HostModel.E21`. Conclude with `h ▸ Nat.div_dvd_of_dvd (Nat.prod_primeFactors_pow_totient_ediv_dvd (by norm_num))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem natAbs_discr_dvd : (NumberField.discr HostModel.E21).natAbs ∣ 21 ^ Nat.totient 21 := by
   have h := IsCyclotomicExtension.Rat.natAbs_discr 21 HostModel.E21
   exact h ▸ Nat.div_dvd_of_dvd (Nat.prod_primeFactors_pow_totient_ediv_dvd (by norm_num))
 
 /- English proof (translation)
-Use `⟨by norm_num, by decide, ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[HostModel.host_d]`. Evaluate the decidable proposition. Establish `h₁ : 5 ∣ 21 ^ Nat.totient 21` using `(Int.natCast_dvd.1 h).trans natAbs_discr_dvd`. Establish `h₂` using `(by norm_num : Nat.Prime 5).dvd_of_dvd_pow h₁`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition. Establish an intermediate fact. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -54,13 +54,13 @@ theorem Prime_five : AuxiliaryInertOddPrime HostModel.host 5 := by
     omega
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨fun h => h.2.2.1 ?_, fun h => h.2.2.1 ?_⟩ <;> rw [HostModel.host_d] <;> decide`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem not_Prime : ¬ AuxiliaryInertOddPrime HostModel.host 7 ∧ ¬ AuxiliaryInertOddPrime HostModel.host 11 := by
   refine ⟨fun h => h.2.2.1 ?_, fun h => h.2.2.1 ?_⟩ <;> rw [HostModel.host_d] <;> decide
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨HostModel.host, HostModel.hypDatum _, fun l => (h _ _ (HostModel.hypDatum _) l (by simp)).some, rfl, rfl, by simp, Prime_five, fun J => ⟨HostModel.level _ (5 ^ J) (by positivity), rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem hypotheses_inhabited (h : N1ab) :
     ∃ (H : Host HostModel.E21) (D : Datum H) (_ : ∀ l : Level H, Moduli D l), D.p = 1 ∧ D.q = 1 ∧ 1 ≤ D.p + D.q ∧

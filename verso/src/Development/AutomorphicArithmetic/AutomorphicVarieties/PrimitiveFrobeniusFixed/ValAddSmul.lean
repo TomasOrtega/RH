@@ -6,7 +6,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped nonZeroDivisors Pointwise
 
 /- English proof (translation)
-Rewrite using `[ZMod.val_add, ← add_smul]`. Use `conv_rhs => rw [← Nat.mod_add_div' (a.val + b.val) M]`. Rewrite using `[add_smul, mul_smul, hx, smul_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem val_add_smul {W : Type} [AddCommGroup W] {M : ℕ} [NeZero M] (x : W) (hx : M • x = 0) (a b : ZMod M) :
     (a + b).val • x = a.val • x + b.val • x := by
@@ -15,9 +15,7 @@ private theorem val_add_smul {W : Type} [AddCommGroup W] {M : ℕ} [NeZero M] (x
   rw [add_smul, mul_smul, hx, smul_zero, add_zero]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp only [Finset.sum_empty]`. Conclude with `IsLocallyConstant.const (0 : W)`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.sum_insert ha]`.
-
-Conclude with `(h a).add ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem lc_sum {X ι W : Type} [TopologicalSpace X] [AddCommGroup W] (s : Finset ι) (f : ι → X → W)
     (h : ∀ i, IsLocallyConstant (f i)) : IsLocallyConstant fun x => ∑ i ∈ s, f i x := by
@@ -29,37 +27,35 @@ private theorem lc_sum {X ι W : Type} [TopologicalSpace X] [AddCommGroup W] (s 
     exact (h a).add ih
 
 /- English proof (translation)
-Introduce `Ω _ _ _ O W _ _ _ M F n _ _ hFn β hβ σ hσ w hw κ hκ hlc hunr`. Establish `hF0 : F ≠ 0` using `NeZero.ne F`. Take `⟨hN, -, -, -, hlift, -, -, -, -, hmul⟩` from `galBasic Ω F hF0`. Establish `pb` using `(placeBasic Ω).2.2.2.2.2.2.2.2.2`. Establish `hcm : ∀ g : G ℚ Ω, ∀ u ∈ fixMu ℚ Ω F, g⁻¹ * u * g ∈ fixMu ℚ Ω F`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g u hu`. Use `hN.conj_mem u hu g⁻¹` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis. Establish `hfix : ∀ k ∈ fixMu ℚ Ω F, ∀ x : W, M • x = 0 → (β k : O) • x = x`. Introduce `k hk x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c, hc⟩` from `hβ k hk`. Establish `e : (β k : O) = 1 + c * M`. Rewrite using `[mul_comm, ← hc]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, add_smul, one_smul, mul_smul, Nat.cast_smul_eq_nsmul, hx, smul_zero, add_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `hx : ∀ g : G ℚ Ω, M • ((β g : O) • w) = 0`. Introduce `g`. Rewrite using `[smul_comm, hw, smul_zero]`. Establish `h1 : κ 1 = 0`. Use `hκ 1 (one_mem _) 1 (one_mem _)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[mul_one]`. Take the linear combination `-this`. Establish `hinv : ∀ k ∈ fixMu ℚ Ω F, κ k⁻¹ + κ k = 0`. Introduce `k hk`. Rewrite using `[← hκ _ (inv_mem hk) _ hk, inv_mul_cancel, h1]`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hconj : ∀ k ∈ fixMu ℚ Ω F, ∀ y ∈ fixMu ℚ Ω F, κ (k⁻¹ * y * k) = κ y`. Introduce `k hk y hy`. Rewrite using `[hκ _ (mul_mem (inv_mem hk) hy) _ hk, hκ _ (inv_mem hk) _ hy]`. Take the linear combination `hinv k hk`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `u hu v hv`. Simplify using `only [nu]`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl (fun t _ => ?_)` and prove the remaining obligations. Establish `e : (σ t)⁻¹ * (u * v) * σ t = ((σ t)⁻¹ * u * σ t) * ((σ t)⁻¹ * v * σ t)` using `by group`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e, hκ _ (hcm _ u hu) _ (hcm _ v hv)]`. Conclude with `val_add_smul _ (hx (σ t)) _ _`. Simplify using `only [nu]`. Apply `lc_sum` to reduce the goal to its premises. Introduce `t`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `c : fixMu ℚ Ω F → fixMu ℚ Ω F` to `fun u => ⟨(σ t)⁻¹ * u * σ t, hcm _ u u.2⟩`. Establish `hc : Continuous c` using `Continuous.subtype_mk ((continuous_const.mul continuous_subtype_val).mul continuous_const) _`. Conclude with `(hlc.comp_continuous hc).comp (fun k : ZMod M => k.val • ((β (σ t) : O) • w))`. Introduce `g u hu`. Take `⟨b, hb⟩` from `hlift g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [nu]`. Rewrite using `[Finset.smul_sum, ← Equiv.sum_comp (Equiv.mulLeft b) (fun t => (κ ((σ t)⁻¹ * (g * u * g⁻¹) * σ t)).val • (β (σ t) : O) • w)]`. Use `Finset.sum_congr rfl (fun s _ => ?_)` and prove the remaining obligations. Use `show (κ ((σ (b * s))⁻¹ * (g * u * g⁻¹) * σ (b * s))).val • (β (σ (b * s)) : O) • w = _`. Establish `hk0 : (g * σ s)⁻¹ * σ (b * s) ∈ fixMu ℚ Ω F` using `(hmul (b * s) (b * s) (g * σ s) (σ (b * s)) (hmul b s g (σ s) hb (hσ s)).1 (hσ (b * s))).2.2.mp rfl`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨k, hk, hτ⟩ : ∃ k ∈ fixMu ℚ Ω F, σ (b * s) = g * σ s * k` from `⟨_, hk0, by group⟩`. Rewrite using `[hτ]`. Establish `e : (g * σ s * k)⁻¹ * (g * u * g⁻¹) * (g * σ s * k) = k⁻¹ * ((σ s)⁻¹ * u * σ s) * k` using `by group`. Rewrite using `[e, hconj k hk _ (hcm _ u hu), map_mul, map_mul, Units.val_mul, Units.val_mul, mul_smul, mul_smul, hfix k hk w hw]`. Conclude with `smul_comm _ _ _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `u hu`. Simplify using `only [nu]`. Rewrite using `[Finset.smul_sum]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `t _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[smul_comm, hx (σ t), smul_zero]`. Introduce `A hA g hg`. Simplify using `only [nu]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `t _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hA' : ¬ Over ((σ t)⁻¹ • A) n`. Introduce `h'`. Apply `hA` to reduce the goal to its premises. Use `((pb A (σ t)⁻¹).2.2.2.1 (n : Ω)).1` as an intermediate fact. Rewrite `this` using `[map_natCast]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this h'`. Establish `hmem : (σ t)⁻¹ * g * σ t ∈ Ine (F` using `ℚ) ((σ t)⁻¹ • A) := by`. Rewrite using `[(pb A (σ t)⁻¹).2.1]`. Establish `e : (σ t)⁻¹⁻¹ * ((σ t)⁻¹ * g * σ t) * (σ t)⁻¹ = g` using `by group`. Rewrite using `[e]`.
-
-Conclude with `hg`. Rewrite using `[hunr _ hA' _ hmem, ZMod.val_zero, zero_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.ML.nuIs :
     ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (O W : Type) [CommRing O] [AddCommGroup W] [Module O W] (M F n : ℕ) [NeZero M] [NeZero F], F ∣ n → ∀ (β : G ℚ Ω →* Oˣ), (∀ g ∈ fixMu ℚ Ω F, (M : O) ∣ (β g : O) - 1) → ∀ σ : (ZMod F)ˣ → G ℚ Ω, (∀ t, Lifts F t (σ t)) →

@@ -13,13 +13,13 @@ open ModularForm (E₄ E₆)
 namespace GlobalTheory.FN
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε T`. Take `⟨hext, hcl, -, -⟩` from `GlobalTheory.T.fractionField_ext_closure_injective Ω ε T`. Take `⟨c1, cmul, -, -⟩` from `GlobalTheory.T.cmp_mul_ofSL_and_up_cmp_eq_up_mob`. Use `⟨fun f => ?_, fun g h f => ?_⟩` and prove the remaining obligations. Establish `e : (T.sl 1 : T.K ≃ₐ[Ω] T.K).toRingEquiv.toRingHom = RingHom.id T.K`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply `hext` to reduce the goal to its premises. Introduce `a`. Conclude with `T.sl_io 1 a a (c1 a).symm`. Conclude with `congrArg (fun φ : T.K →+* T.K => φ f) e`. Establish `e : (T.sl (g * h) : T.K ≃ₐ[Ω] T.K).toRingEquiv.toRingHom = ((T.sl h : T.K ≃ₐ[Ω] T.K).toRingEquiv.toRingHom).comp ((T.sl g : T.K ≃ₐ[Ω] T.K).toRingEquiv.toRingHom)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hext` to reduce the goal to its premises. Introduce `a`. Take `⟨a', ha', hga⟩` from `hcl g a`. Take `⟨a'', ha'', hha⟩` from `hcl h a'`. Establish `: (a'' : ℍ → ℂ) = cmp (g * h) a` using `by rw [ha'', ha', cmul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [RingHom.comp_apply]`. Use `show T.sl (g * h) (T.io a) = T.sl h (T.sl g (T.io a))`. Rewrite using `[T.sl_io (g * h) a a'' this, hga, hha]`. Conclude with `congrArg (fun φ : T.K →+* T.K => φ f) e`.
+A detailed English derivation is pending.
 -/
 theorem frac_sl_right_action : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (T : Frac Ω ε), (∀ f, T.sl 1 f = f) ∧ ∀ g h f, T.sl (g * h) f = T.sl h (T.sl g f) := by
   intro Ω _ _ _ ε T

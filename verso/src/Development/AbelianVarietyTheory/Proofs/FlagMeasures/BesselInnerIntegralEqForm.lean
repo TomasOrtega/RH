@@ -13,42 +13,42 @@ noncomputable section
 namespace GlobalTheory.SgInf.InnerInt
 
 /- English proof (translation)
-The claim follows from `Matrix.isUnit_det_of_left_inverse (hpkFacts k r).2.1`.
+A detailed English derivation is pending.
 -/
 theorem hpk_det_isUnit (k r : ℕ) : IsUnit (Hpk k r).det :=
   Matrix.isUnit_det_of_left_inverse (hpkFacts k r).2.1
 
 /- English proof (translation)
-The claim follows from `(uHGroup _ (Hpk k r) (hpk_det_isUnit k r)).2.1 a ha b hb`.
+A detailed English derivation is pending.
 -/
 theorem gg_mul {k r : ℕ} {a b : Mat k r} (ha : a ∈ GG k r) (hb : b ∈ GG k r) : a * b ∈ GG k r :=
   (uHGroup _ (Hpk k r) (hpk_det_isUnit k r)).2.1 a ha b hb
 
 /- English proof (translation)
-The claim follows from `(uHGroup _ (Hpk k r) (hpk_det_isUnit k r)).2.2 a ha`.
+A detailed English derivation is pending.
 -/
 theorem gg_inv {k r : ℕ} {a : Mat k r} (ha : a ∈ GG k r) : IsUnit a.det ∧ a⁻¹ ∈ GG k r :=
   (uHGroup _ (Hpk k r) (hpk_det_isUnit k r)).2.2 a ha
 
 /- English proof (translation)
-The claim follows from `(⟨T.toLinearMap, fun v => hT v⟩ : H →ₗᵢ[ℂ] H).inner_map_map u v`.
+A detailed English derivation is pending.
 -/
 theorem inner_map_of_norm {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (T : H →L[ℂ] H)
     (hT : ∀ v, ‖T v‖ = ‖v‖) (u v : H) : ⟪T u, T v⟫_ℂ = ⟪u, v⟫_ℂ :=
   (⟨T.toLinearMap, fun v => hT v⟩ : H →ₗᵢ[ℂ] H).inner_map_map u v
 
 /- English proof (translation)
-Take `⟨⟨h1, hmul⟩, hiso, -⟩` from `hσ`. Take `⟨hyu, hyi⟩` from `gg_inv hy`. Take `⟨hsu, hsi⟩` from `gg_inv hs`. Establish `e1 : σ (y⁻¹ * (s * x)) = (σ y⁻¹).comp ((σ s).comp (σ x))`. Rewrite using `[hmul _ hyi _ (gg_mul hs hx), hmul _ hs _ hx]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : ∀ v, σ y (σ y⁻¹ v) = v`. Introduce `v`. Establish `h` using `hmul _ hy _ hyi`. Rewrite `h` using `[Matrix.mul_nonsing_inv _ hyu, h1]`. Use `congrArg (fun T : H →L[ℂ] H => T v) h` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using this.symm`. Establish `e3 : ∀ v, σ s⁻¹ (σ s v) = v`. Introduce `v`. Establish `h` using `hmul _ hsi _ hs`. Rewrite `h` using `[Matrix.nonsing_inv_mul _ hsu, h1]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrArg (fun T : H →L[ℂ] H => T v) h` as an intermediate fact. Simplify using `using this.symm`. Simplify using `only [coef]`. Rewrite using `[e1, ← starRingEnd_apply, inner_conj_symm]`. Simplify using `only [ContinuousLinearMap.comp_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `i1` using `inner_map_of_norm (σ y) (hiso y hy) (σ y⁻¹ (σ s (σ x w))) w`. Rewrite `i1` using `[e2]`. Rewrite using `[← i1]`. Establish `i2` using `inner_map_of_norm (σ s⁻¹) (hiso _ hsi) (σ s (σ x w)) (σ y w)`. Rewrite `i2` using `[e3]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← i2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem star_coef_mul_eq {k r : ℕ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : Mat k r → (H →L[ℂ] H)) (hσ : IsURepOn (GG k r) σ) (w : H) {y s x : Mat k r}
@@ -86,21 +86,21 @@ end GlobalTheory.SgInf.InnerInt
 open GlobalTheory.SgInf.InnerInt in
 
 /- English proof (translation)
-Introduce `k r H _ _ _ Wp _ _ _ _ σ w a μG d z c π μS hstd hside W hW y hy x hx`. Establish `hσ : IsURepOn (GG k r) σ` using `hstd.2.1`. Establish `hdec : Decay σ (DD σ w : Set H) a` using `hstd.2.2.2.2.2.2.2.1`. Establish `hz` using `hside.1`. Establish `hT` using `hside.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hπ` using `hside.2.2.1`. Establish `hhaar` using `hside.2.2.2.1`. Establish `hSG : Sset k r z ⊆ GG k r` using `(GlobalTheory.T.bessel_subgroups_closed_unitaryW_compact k r z hz hT).2.2.2.1.1`. Establish `hpis` using `GlobalTheory.T.besselSubgroupRepTwisted_isUnitaryRep k r z c π hz hT hπ`. Establish `huni` using `(GlobalTheory.T.unimodular_besselSubgroups_UW_N k r z hz hT μS).1 hhaar`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hstab : ∀ g ∈ GG k r, ∀ v ∈ (DD σ w : Set H), σ g v ∈ (DD σ w : Set H)`. Introduce `g hg v hv`. Establish `hle : Submodule.map (σ g).toLinearMap (DD σ w) ≤ DD σ w`. Rewrite using `[DD, Submodule.map_span_le]`. Introduce and unpack `_ ⟨g', hg', rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `: (σ g).toLinearMap (σ g' w) = σ (g * g') w`. Rewrite using `[hσ.1.2 g hg g' hg']`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `mem_DD σ w (gg_mul hg hg')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hle ⟨v, hv, rfl⟩`. Establish `hD` using `GlobalTheory.T.besselForm_converges_equivariant_hermitian k r σ w a μG d z c π μS hstd hside (DD σ w : Set H) hstab hdec (σ y w) (mem_DD σ w hy) (σ (Matrix.of x) w) (mem_DD σ w hx)`. Establish `hFi` using `hD.1`. Establish `hGi` using `hFi.apply_continuousLinearMap (W (Matrix.of x))`. Establish `hm : AEStronglyMeasurable (fun s : Mt k r => (coef σ (σ y w) (σ (Matrix.of x) w) (Matrix.of s) • PiS (psiGen k r z c) π (Matrix.of s)⁻¹) (W (Matrix.of x))) (μS.map invM)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[huni.2]`. Conclude with `hGi.aestronglyMeasurable`. Establish `hmap` using `integral_map measurable_invM.aemeasurable hm`. Rewrite `hmap` using `[huni.2]`. Unfold `be`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[ContinuousLinearMap.integral_apply hFi, hmap]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Establish `hae : ∀ᵐ s ∂μS, Matrix.of s ∈ Sset k r z` using `ae_iff.2 hhaar.2.2.1`. Use `filter_upwards [hae] with s hs`. Establish `hsG` using `hSG hs`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hdet` using `(gg_inv hsG).1`. Take `⟨h, hh, m, hm', hsm⟩` from `hs`. Rewrite using `[of_invM, Matrix.nonsing_inv_nonsing_inv _ hdet, ContinuousLinearMap.smul_apply, star_coef_mul_eq σ hσ w hy hsG hx]`. Use `congr 1`. Rewrite using `[hsm, hW h hh m hm' _ hx, (hpis.1 h hh m hm').2, ContinuousLinearMap.smul_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SgInf.inner_integral_eq_be : ∀ (k r : ℕ) {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp] [CompleteSpace Wp] (σ : Mat k r → (H →L[ℂ] H)) (w : H) (a : ℝ) (μG : Measure (Mt k r)) (d : ℝ) (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) (π : Mat k r → (Wp →L[ℂ] Wp)) (μS : Measure (Mt k r)), Std σ w a μG d → Side z π μS → ∀ W : Mat k r → Wp, IsSPsiEquiv z (psiGen k r z c) π W → ∀ y ∈ GG k r, ∀ x : Mt k r, Matrix.of x ∈ GG k r → ∫ s, star (coef σ w w (y⁻¹ * (Matrix.of s * Matrix.of x))) • W (Matrix.of s * Matrix.of x) ∂μS = be (psiGen k r z c) π μS σ (σ y w) (σ (Matrix.of x) w) (W (Matrix.of x)) := by
   intro k r H _ _ _ Wp _ _ _ _ σ w a μG d z c π μS hstd hside W hW y hy x hx

@@ -16,7 +16,7 @@ def DictLatB : Prop :=
     NFl X u n → LatQ X (Xq X n) (xq X n) (Mq X n) → Formalism.HermitianLatticesTheory.gmap n (VS D).L0 = (VS D).L0
 
 /- English proof (translation)
-Introduce `X u n hn` and use `⟨hF X u n hn, hB X u n hn⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem dictLat_of (hF : DictLatF) (hB : DictLatB) : DictLat :=
   fun X u n hn => ⟨hF X u n hn, hB X u n hn⟩

@@ -2,7 +2,7 @@ import Development.WeilBound.CoreStatements.AutomorphicKernels.UnitarySchrodinge
 import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.BinaryMassMeans.OneVecBinary
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.PfSWUS.HMass.siegelDensitiesLowA_of_leaves PositivityTheory.Rg.Mass.oneVecBinary hB`.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.PfSWUS.HMass.siegelDensitiesLowA_of_sch (hB : PositivityTheory.PfSWUS.HMass.SchwartzDensInf) :
     PositivityTheory.PfSWUS.HMass.SiegelDensitiesLowA :=

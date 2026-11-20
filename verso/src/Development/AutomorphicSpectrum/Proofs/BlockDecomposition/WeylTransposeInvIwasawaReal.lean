@@ -16,7 +16,7 @@ open GlobalTheory.CompanionTheory.GL2Factorization
 namespace GlobalTheory.CompanionTheory.GL2Factorization.IwasawaDual
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `[GL2LocalData.tinvR, Matrix.transpose_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem tinvR_mul {n : Type} [Fintype n] [DecidableEq n] (g h : GL n ℝ) :
     GL2LocalData.tinvR (g * h) = GL2LocalData.tinvR g * GL2LocalData.tinvR h := by
@@ -24,11 +24,11 @@ theorem tinvR_mul {n : Type} [Fintype n] [DecidableEq n] (g h : GL n ℝ) :
   simp [GL2LocalData.tinvR, Matrix.transpose_mul]
 
 /- English proof (translation)
-Establish `h1 : k.val * (k⁻¹ : GL (Fin 2) ℝ).val = 1`. Rewrite using `[← Units.val_mul]`. Simplify using the standard rewrite rules. Establish `h2 : (k⁻¹ : GL (Fin 2) ℝ).val = k.valᵀ`. Establish `h3 : (k⁻¹ : GL (Fin 2) ℝ).val * k.val = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Units.val_mul]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation. Apply `Units.ext` to reduce the goal to its premises. Use `show (k⁻¹ : GL (Fin 2) ℝ).valᵀ = k.val`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, Matrix.transpose_transpose]`.
+A detailed English derivation is pending.
 -/
 theorem tinvR_orth (k : GL (Fin 2) ℝ) (hk : k.val * k.valᵀ = 1) : GL2LocalData.tinvR k = k := by
   have h1 : k.val * (k⁻¹ : GL (Fin 2) ℝ).val = 1 := by
@@ -43,9 +43,9 @@ theorem tinvR_orth (k : GL (Fin 2) ℝ) (hk : k.val * k.valᵀ = 1) : GL2LocalDa
   rw [h2, Matrix.transpose_transpose]
 
 /- English proof (translation)
-Establish `h : (dg2 x y)⁻¹ = dg2 x⁻¹ y⁻¹`. Rewrite using `[inv_eq_iff_mul_eq_one]`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dg2, Matrix.mul_apply, Fin.sum_univ_two]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply `Units.ext` to reduce the goal to its premises. Use `show ((dg2 x y)⁻¹ : GL (Fin 2) ℝ).valᵀ = _`. Rewrite using `[h]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dg2]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem transposeInv_diagonal_real (x y : ℝˣ) : GL2LocalData.tinvR (dg2 x y) = dg2 x⁻¹ y⁻¹ := by
   have h : (dg2 x y)⁻¹ = dg2 x⁻¹ y⁻¹ := by
@@ -60,7 +60,7 @@ theorem transposeInv_diagonal_real (x y : ℝˣ) : GL2LocalData.tinvR (dg2 x y) 
   fin_cases i <;> fin_cases j <;> simp [dg2]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dg2, GL2LocalData.w2R, Matrix.mul_apply, Fin.sum_univ_two]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem weyl_mul_diagonal_real (x y : ℝˣ) : GL2LocalData.w2R * dg2 x y = dg2 y x * GL2LocalData.w2R := by
   apply Units.ext
@@ -68,16 +68,16 @@ theorem weyl_mul_diagonal_real (x y : ℝˣ) : GL2LocalData.w2R * dg2 x y = dg2 
   fin_cases i <;> fin_cases j <;> simp [dg2, GL2LocalData.w2R, Matrix.mul_apply, Fin.sum_univ_two]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [GL2LocalData.w2R, Matrix.mul_apply, Fin.sum_univ_two]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem weyl_real_orthogonal : GL2LocalData.w2R.val * GL2LocalData.w2R.valᵀ = 1 := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [GL2LocalData.w2R, Matrix.mul_apply, Fin.sum_univ_two]
 
 /- English proof (translation)
-Introduce `a b k hk`. Use `⟨GL2LocalData.w2R * k, ?_, ?_⟩` and prove the remaining obligations. Establish `: (GL2LocalData.w2R * k).val = GL2LocalData.w2R.val * k.val` using `rfl`. Rewrite using `[this, Matrix.transpose_mul, mul_assoc, ← mul_assoc k.val, hk, one_mul, weyl_real_orthogonal]`. Establish `hab : a * (a * b)⁻¹ = b⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_inv, ← mul_assoc, mul_inv_cancel, one_mul]`. Rewrite using `[tinvR_mul, tinvR_orth k hk, transposeInv_diagonal_real, hab, ← mul_assoc, weyl_mul_diagonal_real, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem iwasawa_dual : ∀ (a b : ℝˣ) (k : GL (Fin 2) ℝ), k.val * k.valᵀ = 1 → ∃ k' : GL (Fin 2) ℝ, k'.val * k'.valᵀ = 1 ∧ GL2LocalData.w2R * GL2LocalData.tinvR (dg2 (a * b) b * k) = dg2 (a * (a * b)⁻¹) (a * b)⁻¹ * k' := by
   intro a b k hk

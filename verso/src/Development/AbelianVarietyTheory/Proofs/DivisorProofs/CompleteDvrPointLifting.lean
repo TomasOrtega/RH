@@ -7,9 +7,9 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.F
 namespace GlobalTheory.FactorDepth
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `h`. Establish `hm : (⊥ : Subfield k).map φ = ⊥` using `Subfield.map_bot φ`. Set `f : (⊥ : Subfield k) →+* (⊥ : Subfield k')` to `(φ.comp (⊥ : Subfield k).subtype).codRestrict _ fun x => hm ▸ ⟨x.1, x.2, rfl⟩`. Establish `hf : Function.Surjective f` using `fun y => by`. Take `⟨x, hx, e⟩ : y.1 ∈ (⊥ : Subfield k).map φ` from `hm.symm ▸ y.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨⟨x, hx⟩, Subtype.ext e⟩`. Conclude with `⟨φ ∘ t, ht.ringHom_of_comp_eq f φ hf φ.injective (by ext; rfl)⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem trdegGe_map_of_ringHom {k k' : Type} [Field k] [Field k'] (φ : k →+* k') {n : ℕ} (h : TrdegGe k n) :
     TrdegGe k' n := by
@@ -23,7 +23,7 @@ theorem trdegGe_map_of_ringHom {k k' : Type} [Field k] [Field k'] (φ : k →+* 
   exact ⟨φ ∘ t, ht.ringHom_of_comp_eq f φ hf φ.injective (by ext; rfl)⟩
 
 /- English proof (translation)
-Establish `h1 : s x ⤳ closedPoint O` using `IsLocalRing.specializes_closedPoint _`. Take `⟨ξ, h2, h3⟩` from `s.isClosedMap.specializingMap h1`. Conclude with `⟨ξ, h2, h3⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_specializes_over_closedPoint (O : Type) [CommRing O] [IsLocalRing O] (X : Scheme.{0})
     (s : X ⟶ Sp O) [IsProper s] (x : X) : ∃ ξ : X, x ⤳ ξ ∧ s ξ = closedPoint O := by
@@ -32,25 +32,23 @@ theorem exists_specializes_over_closedPoint (O : Type) [CommRing O] [IsLocalRing
   exact ⟨ξ, h2, h3⟩
 
 /- English proof (translation)
-Take `⟨ξ, hξ, hs⟩` from `exists_specializes_over_closedPoint O X s (g (closedPoint K))`. Choose the witnesses or unpack the hypotheses as in `⟨A, _, j, _, p, rfl⟩ : ∃ (A : Type) (_ : CommRing A) (j : Sp A ⟶ X) (_ : IsOpenImmersion j) (p : PrimeSpectrum A), j p = ξ := by`. Take `⟨_, ⟨U, hU, rfl⟩, hxU, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ ξ) isOpen_univ`. Establish `hU : IsAffineOpen U` using `hU`. Establish `: ξ ∈ Set.range hU.fromSpec` using `by rw [hU.range_fromSpec]; exact hxU`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨p, hp⟩` from `this`. Conclude with `⟨Γ(X, U), inferInstance, hU.fromSpec, inferInstanceAs (IsOpenImmersion hU.fromSpec), p, hp⟩`. Establish `hr : Set.range g ⊆ Set.range j`. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[Subsingleton.elim x (closedPoint K)]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hξ.mem_open j.isOpenEmbedding.isOpen_range ⟨p, rfl⟩`. Take `⟨φ, hφ⟩ : ∃ φ : A →+* K, spMap φ ≫ j = g` from `⟨(Spec.preimage (IsOpenImmersion.lift j g hr)).hom, by`. Rewrite using `[spMap, CommRingCat.ofHom_hom, Spec.map_preimage, IsOpenImmersion.lift_fac]⟩`. Take `⟨α, hα⟩ : ∃ α : O →+* A, spMap α = j ≫ s` from `⟨(Spec.preimage (j ≫ s)).hom, by rw [spMap, CommRingCat.ofHom_hom, Spec.map_preimage]⟩`. Establish `hcomp : φ.comp α = a`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: spMap (φ.comp α) = spMap a`. Rewrite using `[← hg, ← hφ, Category.assoc, ← hα, spMap, CommRingCat.ofHom_comp, Spec.map_comp]`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective this)`. Set `_` to `a.toAlgebra`. Set `_` to `φ.toAlgebra`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `_` to `α.toAlgebra`. Establish `: IsScalarTower O A K` using `IsScalarTower.of_algebraMap_eq' hcomp.symm`. Establish `hft : Algebra.FiniteType O A` using `(HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType) (φ := CommRingCat.ofHom α)).mp (show LocallyOfFiniteType (spMap α) from hα ▸ inferInstance)`. Establish `hpre : IsPreimmersion (spMap φ)`. Establish `: IsPreimmersion (spMap φ ≫ j)` using `hφ ▸ inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `IsPreimmersion.of_comp _ j`. Establish `hst : φ.SurjectiveOnStalks` using `((IsPreimmersion.SpecMap_iff (CommRingCat.ofHom φ)).1 hpre).2`. Establish `hfr : ∀ x : K, ∃ u v : A, algebraMap A K v ≠ 0 ∧ x * algebraMap A K v = algebraMap A K u` using `fun x => by`. Take `⟨u, v, c, hc, hv, e⟩` from `RingHom.surjectiveOnStalks_iff_forall_ideal.1 hst ⊥ bot_ne_top x`. Use `⟨u, v, hv, mul_left_cancel₀ (show c ≠ 0 from hc) ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_comm x, ← mul_assoc]`. Conclude with `e`. Establish `hker : RingHom.ker (algebraMap A K) ≤ p.asIdeal`. Establish `h1 : j (spMap φ (closedPoint K)) ⤳ j p`. Rewrite `hξ` using `[← hφ]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hξ`. Establish `h2` using `(PrimeSpectrum.le_iff_specializes (PrimeSpectrum.comap φ (closedPoint K)) p).mpr (j.isOpenEmbedding.isInducing.specializes_iff.mp h1)`. Conclude with `fun x hx => h2 (show φ x ∈ (closedPoint K).asIdeal from (show φ x = 0 from hx) ▸ Ideal.zero_mem _)`. Establish `hmax : (maximalIdeal O).map (algebraMap O A) ≤ p.asIdeal`. Establish `h1 : (j ≫ s) p = closedPoint O` using `hs`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[← hα]`. Conclude with `Ideal.map_le_iff_le_comap.2 (congrArg PrimeSpectrum.asIdeal h1).ge`. Take `⟨T, f, ψ, e, hl, ht⟩` from `GlobalTheory.T.valuation_ring_prime_dominance O A K ha hfr p.asIdeal p.isPrime hker hmax d hd`. Use `⟨T, spMap f ≫ j, ψ, f.comp α, hl, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ← hα, spMap, spMap, spMap, CommRingCat.ofHom_comp, Spec.map_comp]`.
-
-Rewrite using `[← hφ, ← Category.assoc, ← Category.assoc, spMap, spMap, spMap, spMap, ← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, e]`. Set `q : Sp A` to `PrimeSpectrum.comap f (closedPoint T.V)`. Conclude with `trdegGe_map_of_ringHom (k := q.asIdeal.ResidueField) (k' := X.residueField (j q)) ((Scheme.Spec.residueFieldIso (.of A) q).inv ≫ inv (j.residueFieldMap q)).hom ht`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem exists_cdvr_centred_trdegGe (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O]
     (X : Scheme.{0}) (s : X ⟶ Sp O) [IsProper s] (K : Type) [Field K] (g : Sp K ⟶ X) [IsPreimmersion g]

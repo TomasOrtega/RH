@@ -7,13 +7,13 @@ open Formalism.BasicNotions Formalism.MainNotions.StandardLattice Formalism.L2.G
 namespace GlobalTheory
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.DefiniteMass.mass_eq_massI D`.
+A detailed English derivation is pending.
 -/
 theorem genusMassStd (D : D7) : GenusMassStd D :=
   GlobalTheory.DefiniteMass.mass_eq_massI D
 
 /- English proof (translation)
-Introduce `_ D` and use `genusMassStd D`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem genusMassStd_of_landherrHasse :
     (∀ D : D7, LandherrHasse D) → ∀ D : D7, GenusMassStd D :=

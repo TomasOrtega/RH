@@ -11,7 +11,7 @@ end Alg
 
 variable {R : Type} [CommRing R] {g d : ℕ} {N : ℕ → ℕ} in
 /- English proof (translation)
-Apply the tactic sequence `rcases y with q | b <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma kosD_inl_indep_ev
     (m : Fin g → ∀ j j', Matrix (Fin (N j)) (Fin (N j')) R) (ev ev' : ∀ j, Matrix (Fin d) (Fin (N j)) R)
@@ -21,7 +21,7 @@ private lemma kosD_inl_indep_ev
 
 variable {R : Type} [CommRing R] {g d : ℕ} {N : ℕ → ℕ} in
 /- English proof (translation)
-Apply the tactic sequence `rcases x with p | b <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma kosD_inr_eq_zero
     (m : Fin g → ∀ j j', Matrix (Fin (N j)) (Fin (N j')) R) (ev : ∀ j, Matrix (Fin d) (Fin (N j)) R)
@@ -31,7 +31,7 @@ private lemma kosD_inr_eq_zero
 
 variable {R : Type} [CommRing R] {g d : ℕ} {N : ℕ → ℕ} in
 /- English proof (translation)
-Simplify using `[_root_.GlobalTheory.KeyKa.kosD, map_sum, apply_ite]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma map_kosD_inl_inl {S : Type} [CommRing S] (f : R →+* S)
     (m : Fin g → ∀ j j', Matrix (Fin (N j)) (Fin (N j')) R) (ev : ∀ j, Matrix (Fin d) (Fin (N j)) R)
@@ -41,73 +41,63 @@ private lemma map_kosD_inl_inl {S : Type} [CommRing S] (f : R →+* S)
   simp [_root_.GlobalTheory.KeyKa.kosD, map_sum, apply_ite]
 
 /- English proof (translation)
-Introduce `O _ _ _ g d N m ev ev₀ Pm hcx hev hdet hsurj hker hres`. Use `set K := _root_.GlobalTheory.KeyKa.kosD m ev with hK`. Use `set K₀ := _root_.GlobalTheory.KeyKa.kosD m ev₀ with hK₀`. Establish `hrow : ∀ p y, K (.inl p) y = K₀ (.inl p) y` using `fun p y => kosD_inl_indep_ev m ev ev₀ p y`. Establish `haug : ∀ a y, K (.inr a) y = ∑ b, Pm a b * K₀ (.inr b) y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `a y`. Break down `y with ⟨I, l⟩ | c` into its components or cases. Distinguish the cases in `hI : I = ∅`. Substitute `hI show ev 0 a l = ∑ b, Pm a b * (if (∅ : Finset (Fin g)) = ∅ then ev₀ 0 b l else 0)` using the available equality. Rewrite using `[hev]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `Matrix.mul_apply.trans (Finset.sum_congr rfl fun b _ => by rw [if_pos rfl])`. Use `show (if I = ∅ then ev I.card a l else 0) = ∑ b, Pm a b * (if I = ∅ then ev₀ I.card b l else 0)`. Simplify using `[hI]`. Simplify using `[hK, hK₀, kosD_inr_eq_zero]`. Establish `hcx₀ : _root_.GlobalTheory.KeyKa.IsCx _root_.GlobalTheory.KeyKa.kdeg K₀`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Use `⟨fun x y hxy => ?_, ?_⟩` and prove the remaining obligations. Break down `x with p | a` into its components or cases. Rewrite using `[← hrow]`. Conclude with `hcx.1 _ _ hxy`. Break down `y with ⟨I, l⟩ | c` into its components or cases.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI : I ≠ ∅`. Introduce and unpack `rfl`. Conclude with `hxy rfl`. Use `show (if I = ∅ then ev₀ I.card a l else 0) = 0`. Simplify using `[hI]`.
+Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `kosD_inr_eq_zero m ev₀ _ c`. Establish `hsq : ∀ x y, ∑ b, K x b * K b y = 0` using `fun x y => by`. Use `congrFun (congrFun hcx.2 x) y` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply]`. Use extensionality with `x y`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[Matrix.mul_apply, Matrix.zero_apply]`. Establish `hmid : ∀ x b, K₀ x b * K₀ b y = K₀ x b * K b y`. Introduce `x b`. Break down `b with q | c` into its components or cases. Rewrite using `[hrow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hz : K₀ x (.inr c) = 0` using `kosD_inr_eq_zero m ev₀ x c`. Rewrite using `[hz, zero_mul, zero_mul]`. Break down `x with p | a` into its components or cases. Rewrite using `[← hsq (.inl p) y]`. Use `Fintype.sum_congr _ _ fun b => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmid, hrow]`. Establish `hvec : Pm.mulVec (fun b => ∑ c, K₀ (.inr b) c * K₀ c y) = 0`. Use extensionality with `a'`. Rewrite using `[Matrix.mulVec, dotProduct, Pi.zero_apply, ← hsq (.inr a') y]`. Simplify using `only [Finset.mul_sum, haug, Finset.sum_mul]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.sum_comm]`. Use `Fintype.sum_congr _ _ fun c => Fintype.sum_congr _ _ fun b => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, hmid]`. Conclude with `congrFun (Matrix.eq_zero_of_mulVec_eq_zero hdet hvec) a`. Use `⟨hcx₀, _root_.GlobalTheory.TorsExists.exists_torsSq O _ _root_.GlobalTheory.KeyKa.kdeg K₀ hcx₀ ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `v hv`. Establish `hz : ∀ x c, K₀ x (.inr c) = 0` using `fun x c => kosD_inr_eq_zero m ev₀ x c`. Establish `hmv : ∀ (u : _root_.GlobalTheory.KeyKa.KIx g d N → IsLocalRing.ResidueField O) y, (K₀.map (IsLocalRing.residue O)).mulVec u y = ∑ I : Finset (Fin g), ∑ l : Fin (N I.card), IsLocalRing.residue O (K₀ y (.inl ⟨I, l⟩)) * u (.inl ⟨I, l⟩)`. Introduce `u y`. Rewrite using `[Matrix.mulVec, dotProduct, Fintype.sum_sum_type, Fintype.sum_sigma]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Matrix.map_apply, hz]`. Establish `hmv₀ : ∀ (u : _root_.GlobalTheory.KeyKa.KIx g 0 N → IsLocalRing.ResidueField O) y, (_root_.GlobalTheory.KeyKa.kosD (fun i j j' => (m i j j').map (IsLocalRing.residue O)) (fun _ => 0)).mulVec u y = ∑ I : Finset (Fin g), ∑ l : Fin (N I.card), _root_.GlobalTheory.KeyKa.kosD (fun i j …`. Introduce `u y`. Rewrite using `[Matrix.mulVec, dotProduct, Fintype.sum_sum_type, Fintype.sum_sigma]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hent : ∀ (p q : (I : Finset (Fin g)) × Fin (N I.card)), IsLocalRing.residue O (K₀ (.inl p) (.inl q)) = _root_.GlobalTheory.KeyKa.kosD (fun i j j' => (m i j j').map (IsLocalRing.residue O)) (fun _ => (0 : Matrix (Fin 0) _ _)) (.inl p) (.inl q)` using `fun p q => map_kosD_inl_inl _ m ev₀ _ p q`. Use `choose u0 hu0 using fun a : Fin d => IsLocalRing.residue_surjective (v (.inr a))`. Take `⟨s, hs⟩` from `hsurj u0`. Use `choose sa hsa using fun a : Fin d => hsurj (Pi.single a 1)`. Use `choose x hx using fun l : Fin (N 0) => IsLocalRing.residue_surjective (v (.inl ⟨∅, l⟩))`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hc : ∀ a, IsLocalRing.residue O ((ev₀ 0).mulVec x a) = 0`. Introduce `a`. Establish `h` using `congrFun hv (.inr a)`. Rewrite `h` using `[Pi.zero_apply, hmv, Finset.sum_eq_single (∅ : Finset (Fin g))]`. Rewrite using `[← h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[hx]`. Both sides reduce to the same expression. Introduce `I _ hI`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Use `show IsLocalRing.residue O (if I = ∅ then ev₀ I.card a l else 0) * _ = 0`. Simplify using `[hI]`. Introduce `h'`. Conclude with `absurd (Finset.mem_univ _) h'`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set s' : Fin (N 0) → O := ∑ a, (ev₀ 0).mulVec x a • sa a with hs'`. Establish `hs'ev : (ev₀ 0).mulVec s' = (ev₀ 0).mulVec x`. Use extensionality with `a`. Simplify using `[hs', Matrix.mulVec_sum, Matrix.mulVec_smul, hsa, Finset.sum_apply, Pi.single_apply]`. Establish `hs'res : ∀ l, IsLocalRing.residue O (s' l) = 0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Introduce `l`. Simplify using `[hs', Finset.sum_apply, hc]`. Establish `hx'0 : (ev 0).mulVec (x - s') = 0`. Rewrite using `[hev, ← Matrix.mulVec_mulVec, Matrix.mulVec_sub, hs'ev, sub_self, Matrix.mulVec_zero]`. Take `⟨w1, hw1⟩` from `hker (x - s') hx'0`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Take `⟨w', hw'⟩` from `hres (Sum.elim (fun p => v (.inl p)) (fun e => Fin.elim0 e)) (by`. Use extensionality with `z`. Break down `z with ⟨I, l⟩ | e` into its components or cases. Establish `h` using `congrFun hv (.inl ⟨I, l⟩)`. Rewrite `h` using `[Pi.zero_apply, hmv]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hmv₀, Pi.zero_apply, ← h]`. Use `Finset.sum_congr rfl fun J _ => Finset.sum_congr rfl fun l' _ => ?_` and prove the remaining obligations. Rewrite using `[hent]`. Both sides reduce to the same expression. Conclude with `Fin.elim0 e)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Set `wf : (I : Finset (Fin g)) → Fin (N I.card) → IsLocalRing.ResidueField O` to `fun I l => if hI : I = ∅ then IsLocalRing.residue O (s (Fin.cast (by simp [hI]) l)) else if I.card = 1 then ∑ i, (if h : I = {i} then IsLocalRing.residue O (w1 i (Fin.cast (by simp [h]) l)) else 0) else w' (.inl ⟨I, l⟩)`. Use `⟨Sum.elim (fun p => wf p.1 p.2) (fun _ => 0), ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Break down `y with ⟨I, l⟩ | a` into its components or cases. Distinguish the cases in `hI : I = ∅`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Substitute `hI` using the available equality. Take `⟨l, rfl⟩ : ∃ l' : Fin (N 0), l' = l` from `⟨l, rfl⟩`. Establish `hxl : IsLocalRing.residue O (x l) = ∑ i, ∑ l'' : Fin (N 1), IsLocalRing.residue O (m i 0 1 l l'') * IsLocalRing.residue O (w1 i l'')`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hw1]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = IsLocalRing.residue O (x l - s' l)`. Simplify using `[hs'res]`. Use `_ = _ := by simp [Finset.sum_apply, Matrix.mulVec, dotProduct, map_sum]`. Use `Eq.trans ?_ (hx l)` and prove the remaining obligations. Rewrite using `[hmv, hxl]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hJ : ∀ J : Finset (Fin g), ∑ l' : Fin (N J.card), IsLocalRing.residue O (K₀ (.inl ⟨∅, l⟩) (.inl ⟨J, l'⟩)) * Sum.elim (fun p : (I : Finset (Fin g)) × Fin (N I.card) => wf p.1 p.2) (fun _ : Fin d => (0 : IsLocalRing.ResidueField O)) (.inl ⟨J, l'⟩) = ∑ i, if J = {i} then ∑ l'' : Fin …`. Introduce `J`. Distinguish the cases in `h : ∃ i, J = {i}`. Take `⟨i, rfl⟩` from `h`. Rewrite using `[Finset.sum_eq_single i (fun j _ hj => if_neg fun h' => hj (Finset.singleton_inj.mp h').symm) (fun h' => absurd (Finset.mem_univ _) h'), if_pos rfl]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun l' _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[hK₀] first`. Consider the case `(simp [_root_.GlobalTheory.KeyKa.kosD]; done)`. Consider the case `(simp [_root_.GlobalTheory.KeyKa.kosD]; rfl)`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `first`. Consider the case `(simp [wf]; done)`. Consider the case `(simp [wf]; rfl)`. Use `push_neg at h`. Rewrite using `[Finset.sum_eq_zero fun i _ => if_neg (h i)]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun l' _ => ?_` and prove the remaining obligations. Rewrite using `[hK₀]`. Simplify using `[_root_.GlobalTheory.KeyKa.kosD, h]`. Rewrite using `[Finset.sum_congr rfl fun J _ => hJ J, Finset.sum_comm]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately.
 
-Use `Eq.trans ?_ (hw' ⟨I, l⟩ hI).symm` and prove the remaining obligations. Rewrite using `[hmv, hmv₀]`. Use `Finset.sum_congr rfl fun J _ => Finset.sum_congr rfl fun l' _ => ?_` and prove the remaining obligations. Distinguish the cases in `hdeg : J.card = I.card + 1`. Establish `hJ0 : J ≠ ∅`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce and unpack `rfl`. Simplify using `at hdeg`. Establish `hJ1 : J.card ≠ 1`. Introduce `h`. Conclude with `hI (Finset.card_eq_zero.mp (by omega))`.
-
-Rewrite using `[hent]`. Use `congr 1`. Simplify using `[wf, hJ0, hJ1]`. Establish `h0 : K₀ (.inl ⟨I, l⟩) (.inl ⟨J, l'⟩) = 0` using `hcx₀.1 _ _ (by show J.card + 1 ≠ I.card + 1 + 1; omega)`. Rewrite using `[← hent, h0, map_zero, zero_mul, zero_mul]`.
-
-Rewrite using `[hmv, Finset.sum_eq_single (∅ : Finset (Fin g))]`. Rewrite using `[← hu0 a, ← hs]`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `show IsLocalRing.residue O (if (∅ : Finset (Fin g)) = ∅ then ev₀ 0 a l else 0) * wf ∅ l = _`.
-
-Use `first`. Consider the case `(simp [wf]; done)`. Consider the case `(simp [wf]; rfl)`. Consider the case `rfl`. Consider the case `(simp only [wf, ↓reduceDIte, ↓reduceIte]; rfl)`.
-
-Introduce `I _ hI`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Use `show IsLocalRing.residue O (if I = ∅ then ev₀ I.card a l else 0) * _ = 0`. Simplify using `[hI]`. Introduce `h'`.
-
-Conclude with `absurd (Finset.mem_univ _) h'`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.KeyKa.KoszulTors.koszul_tors : ∀ (O : Type) [CommRing O] [IsDomain O] [IsLocalRing O]
     (g d : ℕ) (N : ℕ → ℕ) (m : Fin g → ∀ j j', Matrix (Fin (N j)) (Fin (N j')) O)

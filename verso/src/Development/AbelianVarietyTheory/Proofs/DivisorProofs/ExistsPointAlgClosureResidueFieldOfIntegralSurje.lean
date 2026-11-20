@@ -6,11 +6,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `letI : Algebra A B := φ.toAlgebra`. Use `haveI : Algebra.IsIntegral A B := ⟨hφ⟩`. Use `haveI : P.LiesOver (IsLocalRing.maximalIdeal A) := ⟨hP.symm⟩`. Use `letI : Algebra (IsLocalRing.ResidueField A) (B ⧸ P) := Ideal.Quotient.algebraOfLiesOver P (IsLocalRing.maximalIdeal A)`. Use `haveI : IsScalarTower A (IsLocalRing.ResidueField A) (B ⧸ P) := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `haveI : Algebra.IsIntegral A (B ⧸ P) := inferInstance`. Use `haveI : Algebra.IsIntegral (IsLocalRing.ResidueField A) (B ⧸ P) := Algebra.IsIntegral.tower_top (R := A)`. Set `l : (B ⧸ P) →ₐ[IsLocalRing.ResidueField A] AlgebraicClosure (IsLocalRing.ResidueField A)` to `IsAlgClosed.lift`. Use `⟨l.toRingHom.comp (Ideal.Quotient.mk P), ?_⟩` and prove the remaining obligations. Use extensionality with `a`.
-
-Establish `h` using `l.commutes (algebraMap A (IsLocalRing.ResidueField A) a)`. Rewrite `h` using `[← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ringHom_algClosure_residueField_of_isIntegral (A B : Type) [CommRing A]
     [IsLocalRing A] [CommRing B] (φ : A →+* B) (hφ : φ.IsIntegral) (P : Ideal B) [P.IsPrime]
@@ -36,11 +34,11 @@ theorem exists_ringHom_algClosure_residueField_of_isIntegral (A B : Type) [CommR
   exact h
 
 /- English proof (translation)
-Introduce `A _ _ Y g hi hs`. Use `haveI : IsAffine Y := isAffine_of_isAffineHom g`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (Y.isoSpec.inv ≫ g)`. Establish `h1 : IsIntegralHom (Spec.map φ)` using `by rw [hφ]; infer_instance`. Establish `h2 : Surjective (Spec.map φ)` using `by rw [hφ]; infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : φ.hom.IsIntegral` using `IsIntegralHom.SpecMap_iff.mp h1`. Take `⟨P, hP⟩` from `h2.surj (IsLocalRing.closedPoint A)`. Establish `hP' : (PrimeSpectrum.asIdeal P).comap φ.hom = IsLocalRing.maximalIdeal A` using `congrArg PrimeSpectrum.asIdeal hP`. Use `haveI := PrimeSpectrum.isPrime P`. Take `⟨ψ, hψ⟩` from `exists_ringHom_algClosure_residueField_of_isIntegral A Γ(Y, ⊤) φ.hom h3 (PrimeSpectrum.asIdeal P) hP'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Spec.map (CommRingCat.ofHom ψ) ≫ Y.isoSpec.inv, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ← hφ, ← Spec.map_comp, ← hψ]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_point_algClosure_residueField_of_isIntegralHom :
     ∀ (A : Type) [CommRing A] [IsLocalRing A] (Y : Scheme.{0}) (g : Y ⟶ Spec (CommRingCat.of A)),

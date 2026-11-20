@@ -30,12 +30,12 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 set_option synthInstance.maxHeartbeats 200000
 open UpperTheory.GalN.V UpperTheory.V.Z.Win UpperTheory.V.Z.Desc.W UpperTheory.Zero.LLC
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.V.Z.Desc.W.same_of_statement P (_root_.UpperTheory.BaseChangeIdentities.bcSpeh_alt (_root_.UpperTheory.BaseChangeIdentities.bridge P.litN.aut.bc P.litN.loc.bern)) satTw (sumAEOf satTw (_root_.UpperTheory.V.Z.Desc.W.galAEOf_alt P hR)) _root_.UpperTheory.V.Z.Desc …`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Desc.W.same_of_prints_of_rT (P : _root_.UpperTheory.V.Af.Hypotheses') (hR : RowT) : Same :=
   _root_.UpperTheory.V.Z.Desc.W.same_of_statement P (_root_.UpperTheory.BaseChangeIdentities.bcSpeh_alt (_root_.UpperTheory.BaseChangeIdentities.bridge P.litN.aut.bc P.litN.loc.bern)) satTw (sumAEOf satTw (_root_.UpperTheory.V.Z.Desc.W.galAEOf_alt P hR)) _root_.UpperTheory.V.Z.Desc.W.splitSat_alt onePart
 /- English proof (translation)
-Introduce `hR PH` and use `_root_.UpperTheory.V.Z.Desc.W.jPT_of_alt recTExists (compatTOf hR plainRec) plainRec (_root_.UpperTheory.V.Z.Desc.W.same_of_prints_of_rT PH.toClassicalTheorems hR) _root_.UpperTheory.V.Z.Desc.W.sphT_alt _root_.UpperTheory.V.Z.Desc.W.pseudo_local_langlands_descent unlOf PH`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Desc.W.point_property_of_isJ_arith_rep_autCsd : RowT →
     _root_.UpperTheory.V.Af.HypothesesH' → Z.Desc.DescWeak → ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ), 1 ≤ n →

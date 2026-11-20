@@ -7,17 +7,17 @@ open scoped TensorProduct Quaternion
 namespace GlobalTheory.CompanionTheory.PlaneSA
 
 /- English proof (translation)
-Introduce `U hU`. Establish `hc : 1 - a.re ^ 2 ≠ 0` using `fun h => hp (sub_eq_zero.1 h).symm`. Set `g : K × K → Q d β K` to `fun z => ⟨z.1, z.2 * a.imI, z.2 * a.imJ, z.2 * a.imK⟩`. Establish `hg : Continuous g`. Rewrite using `[continuous_q_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `refine ⟨continuous_fst, ?_, ?_, ?_⟩ <;> exact continuous_snd.mul continuous_const`. Establish `hg1 : g (a.re, 1) = a`. Apply the tactic sequence `ext <;> simp [g]`. Establish `hpre : g ⁻¹' U ∈ 𝓝 ((a.re, 1) : K × K)` using `hg.continuousAt.preimage_mem_nhds (by rwa [hg1])`. Take `⟨A, hA, V, hV, hAV⟩` from `mem_nhds_prod_iff.1 hpre`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hx : Filter.Tendsto (fun r : K => (1 - r ^ 2) / (1 - a.re ^ 2)) (𝓝 a.re) (𝓝 1)`. Establish `hcont : Continuous fun r : K => (1 - r ^ 2) / (1 - a.re ^ 2)`. Simplify using `only [div_eq_mul_inv]`. Conclude with `(continuous_const.sub (continuous_id.pow 2)).mul continuous_const`. Use `hcont.tendsto a.re` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[div_self hc]`. Use `filter_upwards [hA, hx.eventually (hsq V hV)] with r hrA hr`. Take `⟨μ, hμV, hμ⟩` from `hr`. Use `⟨g (r, μ), hAV (Set.mk_mem_prod hrA hμV), ?_, rfl⟩` and prove the remaining obligations. Establish `hy : algebraMap F K d * a.imI ^ 2 + algebraMap F K β * a.imJ ^ 2 - algebraMap F K d * algebraMap F K β * a.imK ^ 2 = a.re ^ 2 - 1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: qn a = 1` using `ha`. Simplify using `only [qn] at this`. Take the linear combination `-this`. Establish `hμ' : μ ^ 2 * (1 - a.re ^ 2) = 1 - r ^ 2`. Rewrite using `[hμ]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
 
-Clear the denominators using the available nonvanishing facts. Simplify using `only [qn, g]`. Take the linear combination `-(μ ^ 2) * hy + hμ'`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem re_normOne_open_of_sq_ne_one {F K : Type} [Field F] [Field K] [Algebra F K] [TopologicalSpace K]
     [IsTopologicalDivisionRing K] (d β : F)

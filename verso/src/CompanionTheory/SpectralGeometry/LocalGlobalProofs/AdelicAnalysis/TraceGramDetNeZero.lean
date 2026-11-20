@@ -13,7 +13,7 @@ section Alg
 variable {F E : Type} [Field F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-Rewrite using `[Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_one_tmul [FiniteDimensional F E] (R : Type) [CommRing R] [Algebra F R] (e : E) :
     Algebra.trace R (R ⊗[F] E) ((1 : R) ⊗ₜ[F] e) = algebraMap F R (Algebra.trace F E e) := by
@@ -36,13 +36,13 @@ theorem coordL_apply (R : Type) [CommRing R] [Algebra F R] (M : ℕ) {d : ℕ} (
     coordL R M b x p = (Algebra.TensorProduct.basis R b).repr (x p.1) p.2 := rfl
 
 /- English proof (translation)
-Establish `hx : ∀ z : R ⊗[F] E, z = ∑ k, (Algebra.TensorProduct.basis R b).repr z k • ((1 : R) ⊗ₜ[F] b k)`. Introduce `z`. Use `conv_lhs => rw [← (Algebra.TensorProduct.basis R b).sum_repr z]`. Simplify using `only [Algebra.TensorProduct.basis_apply]`. Establish `hs : ∀ (r : R) (w : R ⊗[F] E), sigR R σ (r • w) = r • sigR R σ w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r w`. Conclude with `map_smul (Algebra.TensorProduct.map (AlgHom.id R R) (σ : E →ₐ[F] E)) r w`. Generalize the expression as in `hcu : (Algebra.TensorProduct.basis R b).repr u = cu`. Generalize the expression as in `hcv : (Algebra.TensorProduct.basis R b).repr v = cv`. Establish `hu : u = ∑ k, cu k • ((1 : R) ⊗ₜ[F] b k)` using `by rw [← hcu]; exact hx u`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hv : v = ∑ k, cv k • ((1 : R) ⊗ₜ[F] b k)` using `by rw [← hcv]; exact hx v`. Rewrite using `[hu, hv, map_sum, Finset.sum_mul, Finset.sum_mul, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : sigR R σ ((1 : R) ⊗ₜ[F] b k) = (1 : R) ⊗ₜ[F] σ (b k)` using `by simp [sigR]`. Establish `h2 : inclR R e = (1 : R) ⊗ₜ[F] e` using `rfl`. Rewrite using `[hs, h1, h2, smul_mul_assoc, smul_mul_assoc, mul_smul_comm, map_smul, map_smul, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, one_mul, one_mul, trace_one_tmul, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem trace_expand [FiniteDimensional F E] (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) {d : ℕ}
     (b : Module.Basis (Fin d) F E) (u v : R ⊗[F] E) (e : E) :
@@ -73,7 +73,7 @@ theorem trace_expand [FiniteDimensional F E] (R : Type) [CommRing R] [Algebra F 
   ring
 
 /- English proof (translation)
-Simplify using `only [hR, hform, map_sum, JR, Matrix.map_apply, trace_expand R σ b]`. Simplify using `only [dotProduct, Matrix.mulVec, Fintype.sum_prod_type, coordL_apply, traceGram, Matrix.map_apply, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_hR [FiniteDimensional F E] (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) {M d : ℕ}
     (J : Matrix (Fin M) (Fin M) E) (b : Module.Basis (Fin d) F E) (x y : Fin M → R ⊗[F] E) :
@@ -86,9 +86,9 @@ theorem trace_hR [FiniteDimensional F E] (R : Type) [CommRing R] [Algebra F R] (
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Establish `h : ∀ (K : Matrix (Fin M) (Fin M) A) (u v : Fin M → A), hform s K u v = (s ∘ u) ⬝ᵥ (K *ᵥ v)`. Introduce `K u v`. Simplify using `[hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`. Establish `hc : s ∘ (g *ᵥ x) = (g.map s) *ᵥ (s ∘ x)`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `RingHom.map_mulVec s g x i`. Rewrite using `[h, h, hc, ← Matrix.vecMul_transpose, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Simplify using `only [cT, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hform_mulVec {A : Type} [CommRing A] (s : A →+* A) {M : ℕ} (J g : Matrix (Fin M) (Fin M) A)
     (x y : Fin M → A) :
@@ -104,7 +104,7 @@ theorem hform_mulVec {A : Type} [CommRing A] (s : A →+* A) {M : ℕ} (J g : Ma
   simp only [cT, Matrix.mul_assoc]
 
 /- English proof (translation)
-Use extensionality with `p q`. Simplify using `using h (Pi.single p 1) (Pi.single q 1)`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem matrix_ext_dot {ι A : Type} [Fintype ι] [DecidableEq ι] [CommRing A] (P Q : Matrix ι ι A)
     (h : ∀ u v : ι → A, u ⬝ᵥ P *ᵥ v = u ⬝ᵥ Q *ᵥ v) : P = Q := by
@@ -112,7 +112,7 @@ theorem matrix_ext_dot {ι A : Type} [Fintype ι] [DecidableEq ι] [CommRing A] 
   simpa using h (Pi.single p 1) (Pi.single q 1)
 
 /- English proof (translation)
-Rewrite using `[← Matrix.vecMul_transpose g u, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dot_conj {ι A : Type} [Fintype ι] [CommRing A] (g P : Matrix ι ι A) (u v : ι → A) :
     u ⬝ᵥ (gᵀ * P * g) *ᵥ v = (g *ᵥ u) ⬝ᵥ P *ᵥ (g *ᵥ v) := by
@@ -120,9 +120,9 @@ theorem dot_conj {ι A : Type} [Fintype ι] [CommRing A] (g P : Matrix ι ι A) 
     Matrix.mulVec_mulVec, Matrix.mul_assoc]
 
 /- English proof (translation)
-Set `e : E ≃ₐ[F] E` to `AlgEquiv.ofBijective σ ⟨σ.toRingHom.injective, fun x => ⟨σ x, hσ x⟩⟩`. Use `Matrix.IsSymm.ext fun p q => ?_` and prove the remaining obligations. Simplify using `only [traceGram]`. Establish `hm : e (σ (b q.2) * J q.1 p.1 * b p.2) = σ (b p.2) * J p.1 q.1 * b q.2`. Express the relevant statement in the definitionally equal form `σ (σ (b q.2) * J q.1 p.1 * b p.2) = _`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_mul, map_mul, hσ, hJ]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `(Algebra.trace_eq_of_algEquiv e _).symm.trans (congrArg _ hm)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem traceGram_isSymm [FiniteDimensional F E] (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) {M d : ℕ}
     (J : Matrix (Fin M) (Fin M) E) (hJ : ∀ i j, σ (J j i) = J i j) (b : Module.Basis (Fin d) F E) :
@@ -138,17 +138,17 @@ theorem traceGram_isSymm [FiniteDimensional F E] (σ : E →ₐ[F] E) (hσ : ∀
   exact (Algebra.trace_eq_of_algEquiv e _).symm.trans (congrArg _ hm)
 
 /- English proof (translation)
-Introduce `h0`. Take `⟨v, hv, hBv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr h0`. Apply `hv` to reduce the goal to its premises. Set `y : Fin M → E` to `fun j => ∑ l, v (j, l) • b l`. Establish `h1 : ∀ i k, Algebra.trace F E (σ (b k) * (J *ᵥ y) i) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `i k`. Establish `h` using `congrFun hBv (i, k)`. Simplify using `only [Matrix.mulVec, dotProduct, Fintype.sum_prod_type, traceGram, Pi.zero_apply] at h`. Rewrite using `[← h]`. Simplify using `only [Matrix.mulVec, dotProduct, y, Finset.mul_sum, map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, mul_smul_comm, map_smul, smul_eq_mul, mul_comm, mul_assoc]`. Establish `h2 : ∀ i z, Algebra.trace F E (z * (J *ᵥ y) i) = 0`. Introduce `i z`. Establish `hz : z = ∑ k, b.repr (σ z) k • σ (b k)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `congrArg σ (b.sum_repr (σ z))`. Rewrite `h` using `[hσ, map_sum]`. Conclude with `h.symm.trans (Finset.sum_congr rfl fun k _ => map_smul σ _ _)`. Rewrite using `[hz, Finset.sum_mul, map_sum]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_mul_assoc, map_smul, h1, smul_zero]`. Establish `h3 : J *ᵥ y = 0`. Use function extensionality and compare the values at `i`. Use `(traceForm_nondegenerate F E).1 _ fun z => ?_` and prove the remaining obligations. Rewrite using `[Algebra.traceForm_apply, mul_comm]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h2 i z`. Establish `h4` using `Matrix.eq_zero_of_mulVec_eq_zero hJ h3`. Use function extensionality and compare the values at `p`. Conclude with `Fintype.linearIndependent_iff.mp b.linearIndependent (fun l => v (p.1, l)) (congrFun h4 p.1) p.2`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem traceGram_det_ne_zero [FiniteDimensional F E] [Algebra.IsSeparable F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) {M d : ℕ} (J : Matrix (Fin M) (Fin M) E) (hJ : J.det ≠ 0)
@@ -184,7 +184,7 @@ theorem traceGram_det_ne_zero [FiniteDimensional F E] [Algebra.IsSeparable F E] 
   exact Fintype.linearIndependent_iff.mp b.linearIndependent (fun l => v (p.1, l)) (congrFun h4 p.1) p.2
 
 /- English proof (translation)
-Establish `hm : cT (sigR R σ) (HA.mat R σ J h : Matrix (Fin M) (Fin M) (R ⊗[F] E)) * JR R J * (HA.mat R σ J h : Matrix (Fin M) (Fin M) (R ⊗[F] E)) = JR R J` using `(show HR R σ J from h).2`. Rewrite using `[hR, hform_mulVec, hm, hR]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem hR_mat (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) {M : ℕ}
     (J : Matrix (Fin M) (Fin M) E) (h : HA R σ J) (x y : Fin M → R ⊗[F] E) :
@@ -197,15 +197,15 @@ theorem hR_mat (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) {M : �
 end Alg
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ d b`. Use `haveI : FiniteDimensional F E := Module.Finite.of_basis b`. Establish `hσ : ∀ x, σ (σ x) = x`. Introduce `x`. Set `τ : E →+* ℂ` to `(IsAlgClosed.lift (R := ℚ) (S := E) (M := ℂ)).toRingHom`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hCM.2.2.2, hCM.2.2.2, star_star]`. Use `⟨traceGram σ J b, traceGram_isSymm σ hσ J hJ.1 b, traceGram_det_ne_zero σ hσ J hJ.2 b, fun R _ _ h => ?_⟩` and prove the remaining obligations. Set `c` to `coordL (F := F) (E := E) R M b`. Set `T : (Fin M → R ⊗[F] E) →ₗ[R] (Fin M → R ⊗[F] E)` to `(Matrix.mulVecLin (HA.mat R σ J h : Matrix (Fin M) (Fin M) (R ⊗[F] E))).restrictScalars R`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `g : Matrix (Fin M × Fin d) (Fin M × Fin d) R` to `LinearMap.toMatrix' (c.toLinearMap ∘ₗ T ∘ₗ c.symm.toLinearMap)`. Establish `hg : ∀ x, g *ᵥ c x = c ((HA.mat R σ J h : Matrix (Fin M) (Fin M) (R ⊗[F] E)) *ᵥ x)`. Introduce `x`. Simplify using `[g, T, LinearMap.toMatrix'_mulVec]`. Use `⟨g, ?_, fun X => (hg (X 0)).symm⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `matrix_ext_dot _ _ fun u v => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `c.surjective u`. Take `⟨y, rfl⟩` from `c.surjective v`. Rewrite using `[dot_conj, hg, hg]`. Establish `hx` using `trace_hR R σ J b x y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy` using `trace_hR R σ J b ((HA.mat R σ J h : Matrix (Fin M) (Fin M) (R ⊗[F] E)) *ᵥ x) ((HA.mat R σ J h : Matrix (Fin M) (Fin M) (R ⊗[F] E)) *ᵥ y)`. Rewrite `hy` using `[hR_mat]`. Conclude with `hy.symm.trans hx`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coord_orthogonal : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E), ∃ B : Matrix (Fin M × Fin d) (Fin M × Fin d) F, B.IsSymm ∧ B.det ≠ 0 ∧ ∀ (R : Type) [CommRing R] [Algebra F R] (h : HA R σ J), ∃ g : Matrix (Fin M × Fin d) (Fin M × Fin d) R, gᵀ * B.map (algebraMap F R) * g = B.map (algebraMap F R) ∧ ∀ X : Fin 1 → Fin M → R ⊗[F] E, (fun p : Fin M × Fin d => (Algebra.TensorProduct.basis R b).repr (actW R σ J h X 0 p.1) p.2) = g *ᵥ fun p : Fin M × Fin d => (Algebra.TensorProduct.basis R b).repr (X 0 p.1) p.2 := by
   intro F E _ _ _ _ _ σ hCM M J hJ d b

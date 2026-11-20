@@ -7,11 +7,9 @@ namespace GlobalTheory
 open scoped Pointwise
 
 /- English proof (translation)
-Establish `hsub : 𝓕 ⊆ ⋃ γ : Γ, γ • S ∩ 𝓕`. Introduce `g hg`. Take `⟨γ, hγ, hγS⟩` from `hmeet g`. Use `Set.mem_iUnion.2 ⟨(⟨γ, hγ⟩ : Γ)⁻¹, ?_, hg⟩` and prove the remaining obligations. Use `Set.mem_smul_set.2 ⟨γ * g, hγS, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (γ⁻¹ : G) * (γ * g) = g`. Use `group`. Combine the equalities or inequalities in the displayed calculation. Use `tsum_congr fun γ => ?_` and prove the remaining obligations. Use `congr 1`.
-
-Use function extensionality and compare the values at `g`. Use `show f g = f ((γ⁻¹ : Γ) * g)`. Conclude with `(hinv _ (γ⁻¹ : Γ).2 g).symm`. Use `_ = ∫⁻ g in S, f g ∂ν := (h𝓕.setLIntegral_eq_tsum' f S).symm`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem lintegral_fundamentalDomain_le_of_meets_orbits
     {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul G] (Γ : Subgroup G) [Countable Γ]

@@ -12,7 +12,7 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 namespace GlobalTheory.Shares
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `Ideal.exists_maximal (𝓞 K)`. Conclude with `⟨⟨m, hm.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hm (RingOfIntegers.not_isField K)⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_heightOneSpectrum_ringOfIntegers (K : Type) [Field K] [NumberField K] :
     Nonempty (HeightOneSpectrum (𝓞 K)) := by
@@ -21,13 +21,13 @@ theorem nonempty_heightOneSpectrum_ringOfIntegers (K : Type) [Field K] [NumberFi
   exact ⟨⟨m, hm.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hm (RingOfIntegers.not_isField K)⟩⟩
 
 /- English proof (translation)
-Introduce `D B P j X ka wL wF N w R t T CR c δ xs hA hD hT hL`. Take `⟨la⟩` from `nonempty_heightOneSpectrum_ringOfIntegers B.KO`. Establish `hdim : ∀ M : Submodule B.KO (B.Cusp j ka), Module.finrank ℂ (R.sp ka M) = Module.finrank B.KO M` using `fun M => ((GlobalTheory.T.genericSections_polynomial_dictionary D B P j X R la N wL w t).2.2.2.2.2.2.2 ka M).2`. Establish `hspan : Submodule.span B.KO (B.Mlat j ka : Set (B.Cusp j ka)) = ⊤` using `hL.span_eq_top`. Establish `hd : X.rk ka (B.Mlat j ka) = Module.finrank B.KO (B.Cusp j ka)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `PJ.rk`. Rewrite using `[hspan, finrank_top]`. Establish `hup : Module.finrank ℂ (R.sp ka Set.univ) = Module.finrank B.KO (B.Cusp j ka)`. Establish `h` using `hdim ⊤`. Rewrite `h` using `[Submodule.top_coe, finrank_top]`. Then use the resulting hypothesis.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hsum` using `Submodule.finrank_quotient_add_finrank (WeightFamilies.MggK B CR T c j ka)`. Establish `hq` using `rhoP_eq_finrank B CR T c j ka hspan`. Establish `hlo` using `hA.lower`. Rewrite `hlo` using `[hdim]`. Establish `key` using `(GlobalTheory.T.card_exponents_and_choose_ratio_bounds_pair (WeightFamilies.dimY D j) T).2 δ (X.rk ka (B.Mlat j ka)) (WeightFamilies.rhoP B CR T c j ka) hD hT (by rw [hd, ← hup]; exact hA.upper)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `key.2 (by rw [hq, hd, ← hsum]; omega)`.
+A detailed English derivation is pending.
 -/
 theorem shareRhoP_of_anFacts : ∀ (D : D7) (B : WeightFamilies.Prov D) (P : ModuliIntegralCharts.Prov D) (j : ℕ) (X : PJ D B P j) (ka wL wF : WeightFamilies.Wt D j) (N : ℕ) (w : Fin N → B.Cusp j wL) (R : Rdg X) (t : Idx D j N → ℂ) (T : ℕ) (CR c : ℝ) (δ : ℕ) (xs : Fin δ → R.Y), AnFacts R w t ka wF T (WeightFamilies.MggK B CR T c j ka) xs → 2 ≤ WeightFamilies.dimY D j → 11 * WeightFamilies.dimY D j ^ 2 ≤ T → LatAt B j ka → ShareRhoP (D := D) (j := j) T (WeightFamilies.rhoP B CR T c j ka) (X.rk ka (B.Mlat j ka)) := by
   intro D B P j X ka wL wF N w R t T CR c δ xs hA hD hT hL

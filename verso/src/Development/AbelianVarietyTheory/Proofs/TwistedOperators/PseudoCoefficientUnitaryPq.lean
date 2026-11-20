@@ -24,11 +24,11 @@ noncomputable section
 namespace GlobalTheory.Published
 
 /- English proof (translation)
-Introduce `n ε X _ _ σ h μ _`. Use `haveI := h.1`. Take `⟨f, hf, hbi, hpt⟩` from `hPE n ε X σ h μ`. Establish `hadm : IsAdmRep ε σ` using `(GlobalTheory.T.admissible_unitary_K_finite.1 hUA) n ε X σ h.2.2.1 h.2.2.2.1`. Establish `hfl : HasFiniteLength ε σ` using `(GlobalTheory.T.irreducible_admissible_finite_length hKA n ε X σ ⟨h.2.1, hadm, h.2.2.2.1⟩).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨Θ, hΘ⟩` from `hCR n ε μ X σ hadm hfl`. Establish `hch : IsCharFn (ujMat ε) μ (ujRep h.2.2.1) Θ` using `hΘ.1`. Use `⟨f, hbi, ⟨hf, hpt.1, ?_, ?_, ⟨Θ, hch, ?_⟩⟩⟩` and prove the remaining obligations. Introduce `U _ _ _ π hu hi ht hne`. Conclude with `hpt.2 U π hu hi (GlobalTheory.T.tempered_K_finite_coefficients hUA n ε μ U π hu hi ht) hne`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hs hnc dt _ _`. Conclude with `(hCO n ε X σ h μ f hf hbi hpt Θ hch s hs dt).2 hnc`. Introduce `s hs hc dt _ _`. Conclude with `(hCO n ε X σ h μ f hf hbi hpt Θ hch s hs dt).1 hc`.
+A detailed English derivation is pending.
 -/
 theorem pseudoCoefficientUpq_of_hypotheses (hUA : IrreducibleUnitaryAdmissible) (hKA : KFiniteCoefficientsAnalytic)
     (hCR : CharacterRegularityFiniteLength) (hPE : PseudoCoefficientExistence) (hCO : CuspidalOrbitalIntegrals) :

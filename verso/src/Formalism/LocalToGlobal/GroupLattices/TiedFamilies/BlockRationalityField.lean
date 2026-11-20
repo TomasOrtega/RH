@@ -21,9 +21,9 @@ variable {D : D7}
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Use `hS (D.gat u w hg).P (locAt X u w hg B).rk (Gt.gat_pos u w hg) _ _ D.what₂.embLL ((D.fm u).lam 0) ?_ ?_` and prove the remaining obligations. Introduce `v s i`. Conclude with `Gt.gat_lam u w hg v s i`. Introduce `τ`. Use `⟨bc (tEL D τ) ((locAt X u w hg B).B)⁻¹, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Conclude with `(tEL_emb D τ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem blkRatRec_of_stmt (hS : BlockRationalityField) (X : Formalism.L2.Herm.Herm0 D) (Gt : GatTies D) (u : D.what₂.Word)
     (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (B : GL (Fin D.R.k) D.host.E) :

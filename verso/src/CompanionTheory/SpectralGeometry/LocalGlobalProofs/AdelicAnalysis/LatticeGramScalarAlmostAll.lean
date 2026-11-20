@@ -9,25 +9,23 @@ open scoped TensorProduct ENNReal NNReal Matrix
 namespace GlobalTheory.CompanionTheory.SW.GoodTrans
 
 /- English proof (translation)
-Set `τ : O →+* O` to `s.restrict O O hs`. Establish `hτ : ∀ a : O, ((τ a : O) : T) = s a` using `fun a => rfl`. Set `JO : Matrix (Fin M) (Fin M) O` to `fun i j => ⟨JT i j, hJO i j⟩`. Set `x0 : Fin M → O` to `fun i => ⟨x i, hx i⟩`. Set `y0 : Fin M → O` to `fun i => ⟨y i, hy i⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hcoe : ∀ p q : Fin M → O, ((hform τ JO p q : O) : T) = hform s JT (fun i => (p i : T)) (fun i => (q i : T))`. Introduce `p q`. Simplify using `[hform, hτ, JO]`. Establish `hβ0 : ((hform τ JO x0 x0 : O) : T) = hform s JT x x` using `hcoe x0 x0`. Establish `hxy0 : hform τ JO x0 x0 = hform τ JO y0 y0` using `Subtype.ext (by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hβ0, hxy]`. Conclude with `(hcoe y0 y0).symm)`. Establish `hunit : IsUnit (hform τ JO x0 x0)` using `IsUnit.of_mul_eq_one ⟨w, hw⟩ (Subtype.ext (by`. Rewrite using `[Subring.coe_mul, hβ0]`. Conclude with `hxw))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτinv : ∀ a : O, τ (τ a) = a` using `fun a => Subtype.ext (hss a)`. Establish `hJ0 : ∀ i j, τ (JO j i) = JO i j` using `fun i j => Subtype.ext (hJ i j)`. Establish `hfix : s (hform τ JO x0 x0 : O) = (hform τ JO x0 x0 : O)`. Use `GlobalTheory.CompanionTheory.SW.QuasiRefl.hform_conj_symm hτinv hJ0 x0 x0` as an intermediate fact. Conclude with `congrArg Subtype.val this`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ε, z, hε, hz⟩` from `hgood (hform τ JO y0 x0) _ hunit hfix`. Establish `hε' : ε * τ ε = 1` using `Subtype.ext hε`. Establish `hu : IsUnit (hform τ JO x0 x0 - τ ε * hform τ JO y0 x0)` using `IsUnit.of_mul_eq_one z (Subtype.ext hz)`. Take `⟨g0, hg0, hgx, -⟩` from `GlobalTheory.CompanionTheory.SW.QuasiRefl.exists_unitary_carry O τ hτinv M JO hJ0 x0 y0 ε hxy0 hunit hε' hu`. Establish `hval : ∀ g : GL (Fin M) O, ((bc O.subtype g : GL (Fin M) T) : Matrix (Fin M) (Fin M) T) = (g : Matrix (Fin M) (Fin M) O).map O.subtype` using `fun g => rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨bc O.subtype g0, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h0 : cT τ (g0 : Matrix (Fin M) (Fin M) O) * JO * (g0 : Matrix (Fin M) (Fin M) O) = JO` using `hg0`. Establish `h1` using `congrArg (RingHom.mapMatrix O.subtype) h0`. Rewrite `h1` using `[map_mul, map_mul]`. Use `show cT s ((bc O.subtype g0 : GL (Fin M) T) : Matrix (Fin M) (Fin M) T) * JT * ((bc O.subtype g0 : GL (Fin M) T) : Matrix (Fin M) (Fin M) T) = JT`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `e1 : RingHom.mapMatrix O.subtype (cT τ (g0 : Matrix (Fin M) (Fin M) O)) = cT s ((bc O.subtype g0 : GL (Fin M) T) : Matrix (Fin M) (Fin M) T)`. Use extensionality with `i j`. Both sides reduce to the same expression. Establish `e2 : RingHom.mapMatrix O.subtype JO = JT`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Apply function extensionality and compare values at an arbitrary argument.
 
-Both sides reduce to the same expression. Establish `e3 : RingHom.mapMatrix O.subtype (g0 : Matrix (Fin M) (Fin M) O) = ((bc O.subtype g0 : GL (Fin M) T) : Matrix (Fin M) (Fin M) T)` using `rfl`. Rewrite `h1` using `[e1, e2, e3]`. Then use the resulting hypothesis. Use function extensionality and compare the values at `i`. Use `congrArg Subtype.val (congrFun hgx i)` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `this` using `[Matrix.mulVec, dotProduct, hval, x0, y0]`. Introduce `i j`. Rewrite using `[hval]`. Conclude with `((g0 : Matrix (Fin M) (Fin M) O) i j).2`. Introduce `i j`.
-
-Rewrite using `[← map_inv, hval]`. Conclude with `(((g0⁻¹ : GL (Fin M) O) : Matrix (Fin M) (Fin M) O) i j).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transit_ring {T : Type} [CommRing T] (O : Subring T) (s : T →+* T)
     (hs : ∀ y ∈ O, s y ∈ O) (hss : ∀ y, s (s y) = y) {M : ℕ} (JT : Matrix (Fin M) (Fin M) T)
@@ -94,7 +92,7 @@ theorem transit_ring {T : Type} [CommRing T] (O : Subring T) (s : T →+* T)
     exact (((g0⁻¹ : GL (Fin M) O) : Matrix (Fin M) (Fin M) O) i j).2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h a i => (hO _).2 (h a i), fun h a i => (hO _).1 (h a i)⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_latV_iff {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {d n M : ℕ}
     (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F)) (O : Subring (Fv F v ⊗[F] E))
@@ -104,7 +102,7 @@ theorem mem_latV_iff {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F
   ⟨fun h a i => (hO _).2 (h a i), fun h a i => (hO _).1 (h a i)⟩
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `O.sum_mem fun j _ => O.mul_mem (hg i j) (hx j)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mulVec_mem {T : Type} [CommRing T] (O : Subring T) {M : ℕ} (g : Matrix (Fin M) (Fin M) T)
     (hg : ∀ i j, g i j ∈ O) (x : Fin M → T) (hx : ∀ i, x i ∈ O) (i : Fin M) : (g *ᵥ x) i ∈ O := by
@@ -112,27 +110,23 @@ theorem mulVec_mem {T : Type} [CommRing T] (O : Subring T) {M : ℕ} (g : Matrix
   exact O.sum_mem fun j _ => O.mul_mem (hg i j) (hx j)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h M J hJ t ht d b`. Establish `hinv : ∀ x, σ (σ x) = x` using `fun x => by`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2, h.2.2.2, star_star]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `I` using `GlobalTheory.CompanionTheory.SW.GoodInt.rational_integral_units F E σ h d b`. Use `filter_upwards [GlobalTheory.CompanionTheory.SW.GoodRing.good_ring F E σ h d b, I.2 t ht, Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => I.1 (J i j)] with v hring hv hJv`. Take `⟨O, hO, hstab, -, -, -, hgood, -⟩` from `hring`. Introduce `x y hx hy hxt hyx`. Establish `hss : ∀ z : Fv F v ⊗[F] E, sigR (Fv F v) σ (sigR (Fv F v) σ z) = z`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => show a ⊗ₜ[F] σ (σ e) = a ⊗ₜ[F] e`. Rewrite using `[hinv]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add p q hp hq => rw [map_add, map_add, hp, hq]`. Establish `hc : ∀ c : Fv F v, c ∈ v.adicCompletionIntegers F → c ⊗ₜ[F] (1 : E) ∈ O`. Introduce `c hcv`. Use `(hO _).2 fun k => ?_` and prove the remaining obligations. Establish `e : c ⊗ₜ[F] (1 : E) = c • (1 : Fv F v ⊗[F] E)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.TensorProduct.one_def, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[e, map_smul, Finsupp.smul_apply, smul_eq_mul]`. Conclude with `mul_mem hcv ((hO 1).1 O.one_mem k)`. Use `set c : Fv F v := algebraMap F (Fv F v) t with hcdef`. Establish `hc0 : c ≠ 0` using `fun h0 => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hv` using `[h0, map_zero]`. Conclude with `zero_ne_one hv`. Establish `hβ : hform (sigR (Fv F v) σ) (JR (Fv F v) J) (x 0) (x 0) = c ⊗ₜ[F] (1 : E)` using `congrFun (congrFun hxt 0) 0`. Establish `hxy : hform (sigR (Fv F v) σ) (JR (Fv F v) J) (x 0) (x 0) = hform (sigR (Fv F v) σ) (JR (Fv F v) J) (y 0) (y 0)` using `(congrFun (congrFun hyx 0) 0).symm`. Establish `hci : c⁻¹ ∈ v.adicCompletionIntegers F`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, hv, inv_one]`. Establish `hmul : c ⊗ₜ[F] (1 : E) * c⁻¹ ⊗ₜ[F] (1 : E) = 1`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_inv_cancel₀ hc0, mul_one, Algebra.TensorProduct.one_def]`. Take `⟨g, hg, hgx, hgO, hgiO⟩` from `transit_ring O (sigR (Fv F v) σ) hstab hss (JR (Fv F v) J) (fun i j => (hO _).2 (hJv i j)) (fun i j => by show sigR (Fv F v) σ (inclR (Fv F v) (J j i)) = inclR (Fv F v) (J i j)`. Rewrite using `[← hJ.1 i j]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use the proof step `rfl)`. Use the proof step `(x 0) (y 0) (fun i => (hO _).2 (hx 0 i)) (fun i => (hO _).2 (hy 0 i)) hxy`. Use the proof step `(c⁻¹ ⊗ₜ[F] (1 : E)) (hc _ hci) (by rw [hβ, hmul]) hgood`. Set `h' : HA (Fv F v) σ J` to `(⟨g, hg⟩ : HR (Fv F v) σ J)`. Establish `hact : ∀ {n : ℕ} (X : Fin n → Fin M → Fv F v ⊗[F] E) (a : Fin n), actW (Fv F v) σ J h' X a = (g : Matrix (Fin M) (Fin M) (Fv F v ⊗[F] E)) *ᵥ X a` using `fun _ _ => rfl`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨h', ?_, fun n X => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Rewrite using `[hact, Fin.fin_one_eq_zero a, hgx]`. Rewrite using `[mem_latV_iff b v O hO, mem_latV_iff b v O hO]`. Prove the components needed by the constructor for the conclusion.
-
-Introduce `hX a i`. Establish `e : X a = ((g⁻¹ : GL (Fin M) (Fv F v ⊗[F] E)) : Matrix (Fin M) (Fin M) _) *ᵥ ((g : Matrix (Fin M) (Fin M) (Fv F v ⊗[F] E)) *ᵥ X a)`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Rewrite using `[e]`. Conclude with `mulVec_mem O _ hgiO _ (fun j => by rw [← hact]; exact hX a j) i`.
-
-Introduce `hX a i`. Rewrite using `[hact]`. Conclude with `mulVec_mem O _ hgO _ (hX a) i`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_trans : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (t : F), t ≠ 0 → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E), ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ∀ x y : Fin 1 → Fin M → Fv F v ⊗[F] E, x ∈ latV b v → y ∈ latV b v → gramR (Fv F v) σ J x = (hermScal (Fv F v) σ (algebraMap F _ t) : HermR (Fv F v) σ 1) → gramR (Fv F v) σ J y = gramR (Fv F v) σ J x → ∃ h : HA (Fv F v) σ J, actW (Fv F v) σ J h x = y ∧ ∀ (n : ℕ) (X : Fin n → Fin M → Fv F v ⊗[F] E), actW (Fv F v) σ J h X ∈ latV b v ↔ X ∈ latV b v := by
   intro F E _ _ _ _ _ σ h M J hJ t ht d b

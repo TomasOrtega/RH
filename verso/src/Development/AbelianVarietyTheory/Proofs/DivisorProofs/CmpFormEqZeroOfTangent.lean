@@ -24,13 +24,13 @@ namespace GlobalTheory.LieInjField
 open GlobalTheory.CechDR in
 
 /- English proof (translation)
-Establish `hsm : Smooth (A.hom ≫ 𝟙 (Sp R))` using `by haveI := hab.smooth; infer_instance`. Establish `hsep : IsSeparated (A.hom ≫ 𝟙 (Sp R))` using `by haveI := hab.proper; infer_instance`. Establish `hqc : QuasiCompact (A.hom ≫ 𝟙 (Sp R))` using `by haveI := hab.proper; infer_instance`. Establish `hcmp` using `(cechDeRham_comparison_bijective_cup_smooth hC R A.left _ hsm hsep hqc).1`. Establish `hcl : Function.Injective (clForm (A.hom ≫ 𝟙 (Sp R)))` using `(hH R A g hab hdim).2.2.2.2.1.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `ω`. Take `⟨c, hc⟩` from `hcmp.2 (clForm _ ω)`. Establish `hF : clForm _ ω ∈ CechHodgeFiltration (A.hom ≫ 𝟙 (Sp R))` using `by rw [cechHodgeFiltration_eq_range]; exact ⟨ω, rfl⟩`. Establish `h1 : c ∈ F1 (A.hom ≫ 𝟙 (Sp R))`. Express the relevant statement in the definitionally equal form `toH1O _ c = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Apply `GlobalTheory.T.structure_sheaf_comparison_injective R A.left _` to reduce the goal to its premises. Rewrite using `[← structureSheaf_comparison_comm, map_zero, hc]`. Conclude with `hF`. Rewrite `h1` using `[hodgeFiltration_eq_range]`. Take `⟨f, rfl⟩` from `h1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hc` using `[comparison_formClass]`. Conclude with `⟨f, hcl hc⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cmpForm_surjective (hC : GlobalTheory.Published.CrystallineSmoothLift) (hH : GlobalTheory.Published.AbelianHodgeDeRham)
     (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ) (hab : IsAbelianScheme A)
@@ -54,13 +54,13 @@ theorem cmpForm_surjective (hC : GlobalTheory.Published.CrystallineSmoothLift) (
   exact ⟨f, hcl hc⟩
 
 /- English proof (translation)
-Use `haveI := hab.comm`. Establish `hsm : Smooth B.hom` using `hab.smooth`. Take `⟨y, hy⟩` from `GlobalTheory.T.exists_lieBasis_smooth_commGroupScheme_field K B g hdim`. Use `GlobalTheory.T.cmpForm_eq_zero_of_pullback_vanishing K B hsm f fun L _ σ ↦ ?_` and prove the remaining obligations. Use `letI : GrpObj ((Over.pullback (spMap σ)).obj B) := Functor.grpObjObj`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hG` using `isGrpPullback_pullback B (spMap σ)`. Establish `hab'` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hab hG`. Use `haveI := hab'.comm`. Establish `hdim' : SmoothOfRelativeDimension g ((Over.pullback (spMap σ)).obj B).hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback hG.1 hdim`. Establish `m : IsMor (dp0 K) (B.hom ≫ 𝟙 (Sp K)) (dp0 L) (((Over.pullback (spMap σ)).obj B).hom ≫ 𝟙 (Sp L)) σ (Limits.pullback.fst B.hom (spMap σ))` using `IsMor.of_dividedPowersZeroIdeal _ (by simpa using hG.1.w)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Use `⟨_, _, m, hG.1, fun u ↦ ?_⟩` and prove the remaining obligations. Set `c : epsR L ⟶ (Over.pullback (spMap σ)).obj B` to `GlobalTheory.GrpTangent.epsScale 0 ≫ u`. Establish `hc : tanVal c (m.pullForm f) = 0`. Rewrite using `[tanVal_epsScale, zero_mul]`. Establish `ht : IsTangent (c⁻¹ * u)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.GrpTangent.isTangent_iff, MonObj.comp_mul, GrpObj.comp_inv, ← Category.assoc, GlobalTheory.GrpTangent.epsZero_epsScale, inv_mul_cancel]`. Establish `e : u = c * (c⁻¹ * u)` using `(mul_inv_cancel_left c u).symm`. Rewrite using `[e, GlobalTheory.T.crystallineForm_tangentValue_mul_abelianScheme hC hH L _ g hab' hdim', hc, zero_add]`. Conclude with `GlobalTheory.T.pullbackForm_vanishes_tangents_of_lieBasis K B hsm g y hy f (fun i ↦ hf _ (hy.1 i)) L σ _ _ hG m _ ht`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cmpForm_eq_zero_of_tangent (hC : GlobalTheory.Published.CrystallineSmoothLift) (hH : GlobalTheory.Published.AbelianHodgeDeRham)
     (K : Type) [Field K] (B : Over (Sp K)) [GrpObj B] (g : ℕ) (hab : IsAbelianScheme B)
@@ -103,23 +103,21 @@ theorem lieVal_apply (K : Type) [Field K] (B : Over (Sp K)) [GrpObj B] [IsCommMo
     (v : Serre.Lie (Serre.intAct B)) : lieVal K B v = tanVal v.hom := rfl
 
 /- English proof (translation)
-Introduce `hC hH K _ B _ g hab hdim v w hv hw h`. Use `haveI := hab.comm`. Take `⟨y, hy⟩` from `GlobalTheory.T.exists_lieBasis_smooth_commGroupScheme_field K B g hdim`. Set `b` to `Serre.Lie.basis (Serre.intAct B) hy`. Use `haveI := Module.Finite.of_basis b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hL : Module.finrank K (Serre.Lie (Serre.intAct B)) = g`. Rewrite using `[Module.finrank_eq_card_basis b, Fintype.card_fin]`. Establish `htop : GlobalTheory.CechDR.ClosedForm (B.hom ≫ 𝟙 (Sp K)) = ⊤` using `(hH K B g hab hdim).2.2.2.2.1.1`. Take `⟨hfin, -, hrk⟩ : Module.Finite K (GlobalTheory.CechDR.GlobForm (B.hom ≫ 𝟙 (Sp K))) ∧ Module.Projective K (GlobalTheory.CechDR.GlobForm (B.hom ≫ 𝟙 (Sp K))) ∧ ∀ p : PrimeSpectrum K, Module.rankAtStalk (GlobalTheory.CechDR.GlobForm (B.hom ≫ 𝟙 (Sp K))) p = g` from `(hH K B g hab hdim).2.2.1`. Establish `hG : Module.finrank K (GlobalTheory.CechDR.GlobForm (B.hom ≫ 𝟙 (Sp K))) = g`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h'` using `hrk (IsLocalRing.closedPoint K)`. Rewrite `h'` using `[Module.rankAtStalk_eq_finrank_of_free]`. Then use the resulting hypothesis. Set `eC : GlobalTheory.CechDR.ClosedForm (B.hom ≫ 𝟙 (Sp K)) ≃ₗ[K] GlobalTheory.CechDR.GlobForm (B.hom ≫ 𝟙 (Sp K))` to `LinearEquiv.ofTop _ htop`. Use `haveI : Module.Finite K (GlobalTheory.CechDR.ClosedForm (B.hom ≫ 𝟙 (Sp K))) := Module.Finite.equiv eC.symm`. Establish `hC' : Module.finrank K (GlobalTheory.CechDR.ClosedForm (B.hom ≫ 𝟙 (Sp K))) = g` using `by rw [eC.finrank_eq, hG]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `c` to `GlobalTheory.CechDR.cmpForm (B.hom ≫ 𝟙 (Sp K))`. Establish `hcs : Function.Surjective c` using `cmpForm_surjective hC hH K B g hab hdim`. Set `P` to `lieVal K B`. Establish `hker : LinearMap.ker c ≤ LinearMap.ker P.flip` using `fun f hf ↦ LinearMap.ext fun u ↦ GlobalTheory.T.formValueOnTangentVector_eq_zero_of_globalForm_zero K B u.hom f hf`. Set `T : GlobalTheory.CechDR.ClosedForm (B.hom ≫ 𝟙 (Sp K)) →ₗ[K] Module.Dual K (Serre.Lie (Serre.intAct B))` to `(LinearMap.ker c).liftQ P.flip hker ∘ₗ (c.quotKerEquivOfSurjective hcs).symm.toLinearMap`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hT : ∀ f, T (c f) = P.flip f` using `fun f ↦ by`. Establish `: (c.quotKerEquivOfSurjective hcs).symm (c f) = Submodule.Quotient.mk f` using `(c.quotKerEquivOfSurjective hcs).symm_apply_eq.2 rfl`. Express the relevant statement in the definitionally equal form `(LinearMap.ker c).liftQ P.flip hker ((c.quotKerEquivOfSurjective hcs).symm (c f)) = _`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hTi : Function.Injective T`. Rewrite using `[← LinearMap.ker_eq_bot, Submodule.eq_bot_iff]`. Introduce `ω hω`. Take `⟨f, rfl⟩` from `hcs ω`. Rewrite `hω` using `[LinearMap.mem_ker, hT]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `cmpForm_eq_zero_of_tangent hC hH K B g hab hdim f fun v hv ↦ LinearMap.congr_fun hω (Serre.Lie.mk (Serre.intAct B) v hv)`. Establish `hTs : Function.Surjective T` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by`. Rewrite using `[Subspace.dual_finrank_eq, hL, hC'])).1 hTi`. Set `V` to `Serre.Lie.mk (Serre.intAct B) v hv`. Set `W` to `Serre.Lie.mk (Serre.intAct B) w hw`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hsurj : Function.Surjective (T ∘ₗ c)` using `hTs.comp hcs`. Establish `key : ∀ φ : Module.Dual K (Serre.Lie (Serre.intAct B)), φ V = φ W` using `fun φ ↦ by`. Take `⟨f, rfl⟩` from `hsurj φ`. Rewrite using `[LinearMap.comp_apply, hT]`. Conclude with `h f`.
-
-Establish `hVW : V - W = 0` using `(Module.forall_dual_apply_eq_zero_iff K (V - W)).1 fun φ ↦ by rw [map_sub, key φ, sub_self]`. Conclude with `congrArg Serre.Lie.hom (sub_eq_zero.1 hVW)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_of_tanVal_eq : GlobalTheory.Published.CrystallineSmoothLift → GlobalTheory.Published.AbelianHodgeDeRham → ∀ (K : Type) [Field K] (B : Over (Sp K)) [GrpObj B] (g : ℕ), IsAbelianScheme B → SmoothOfRelativeDimension g B.hom → ∀ v w : epsR K ⟶ B, IsTangent v → IsTangent w → (∀ f : Form (B.hom ≫ 𝟙 (Sp K)), tanVal v f = tanVal w f) → v = w := by
   intro hC hH K _ B _ g hab hdim v w hv hw h

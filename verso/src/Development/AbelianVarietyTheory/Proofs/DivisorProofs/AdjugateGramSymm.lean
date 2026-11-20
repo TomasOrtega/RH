@@ -28,17 +28,17 @@ def casimir (x : Fin r → O) (s : O →+ O) (φ : O →+ ℤ) : O :=
   ∑ i, ∑ j, (gram x s φ).adjugate i j • (s (x i) * x j)
 
 /- English proof (translation)
-Use `set G : Matrix (Fin r) (Fin r) ℤ := Matrix.of fun i j => b (x i) (x j) with hG`. Establish `hGt : Gᵀ = G` using `by ext i j; simp [hG, hb]`. Establish `hA : ∀ i j, G.adjugate i j = G.adjugate j i`. Introduce `i j`. Establish `h` using `congrArg (fun M : Matrix (Fin r) (Fin r) ℤ => M i j) (adjugate_transpose G)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hGt]`. Simplify using `using h.symm`. Establish `hv : v = ∑ k, x.repr v k • x k` using `(x.sum_repr v).symm`. Establish `hb' : ∀ i, b (x i) v = ∑ k, G i k * x.repr v k`. Introduce `i`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [hv]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smul, smul_eq_mul, mul_comm]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ j, ∑ i, G.adjugate i j * b (x i) v = G.det * x.repr v j`. Introduce `j`. Establish `e : ∑ i, G.adjugate i j * b (x i) v = ∑ k, (G.adjugate * G) j k * x.repr v k`. Repeatedly rewrite using `[hb', Finset.mul_sum, mul_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hA]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, adjugate_mul]`. Simplify using `[Matrix.smul_apply, one_apply]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.sum_smul, key]`. Use `conv_lhs => rw [hv]`. Rewrite using `[Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [smul_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_smul_eq_sum (x : Module.Basis (Fin r) ℤ O) (b : LinearMap.BilinForm ℤ O)
     (hb : ∀ u v, b u v = b v u) (v : O) :
@@ -76,9 +76,9 @@ theorem det_smul_eq_sum (x : Module.Basis (Fin r) ℤ O) (b : LinearMap.BilinFor
 open scoped MatrixOrder in
 
 /- English proof (translation)
-Take `⟨C, hC, rfl⟩` from `CStarAlgebra.isStrictlyPositive_iff_eq_star_mul_self.mp hP.isStrictlyPositive`. Establish `e : (star C * C * H).trace = (C * H * Cᴴ).trace`. Rewrite using `[Matrix.mul_assoc, Matrix.trace_mul_comm]`. Both sides reduce to the same expression. Establish `hs` using `hH.mul_mul_conjTranspose_same C`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[e]`. Use `hs.trace_nonneg.lt_of_ne fun h => h0 ?_` and prove the remaining obligations. Establish `h1` using `hs.trace_eq_zero_iff.1 h.symm`. Rewrite `h1` using `[show Cᴴ = star C from rfl, hC.star.mul_left_eq_zero, hC.mul_right_eq_zero]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem trace_mul_pos_real {n : ℕ} {P H : Matrix (Fin n) (Fin n) ℝ} (hP : P.PosDef) (hH : H.PosSemidef)
     (h0 : H ≠ 0) : 0 < (P * H).trace := by
@@ -92,13 +92,13 @@ theorem trace_mul_pos_real {n : ℕ} {P H : Matrix (Fin n) (Fin n) ℝ} (hP : P.
   rwa [show Cᴴ = star C from rfl, hC.star.mul_left_eq_zero, hC.mul_right_eq_zero] at h1
 
 /- English proof (translation)
-Establish `hsym : ∀ y z, Matrix.toBilin' G y z = Matrix.toBilin' G z y`. Introduce `y z`. Rewrite using `[Matrix.toBilin'_apply', Matrix.toBilin'_apply', Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose, hs, dotProduct_comm]`. Establish `hnn : ∀ y, 0 ≤ Matrix.toBilin' G y y`. Introduce `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hy : y = 0`. Simplify using `[hy]`. Rewrite using `[Matrix.toBilin'_apply']`. Conclude with `(hp y hy).le`. Establish `hpsd : (G.map (Int.cast : ℤ → ℝ)).PosSemidef`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `GlobalTheory.gram_posSemidef_of_int_form (Matrix.toBilin' G) hsym hnn (fun u => Pi.single u 1)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `u v`. Simplify using `[Matrix.toBilin'_apply']`. Rewrite using `[hpsd.posDef_iff_isUnit, Matrix.isUnit_iff_isUnit_det, isUnit_iff_ne_zero, ← Int.cast_det]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Take `⟨z, hz, hGz⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 (by exact_mod_cast h)`. Establish `h1` using `hp z hz`. Rewrite `h1` using `[hGz, dotProduct_zero]`. Conclude with `lt_irrefl _ h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem posDef_of_int {n : ℕ} (G : Matrix (Fin n) (Fin n) ℤ) (hs : Gᵀ = G)
     (hp : ∀ v : Fin n → ℤ, v ≠ 0 → 0 < v ⬝ᵥ G *ᵥ v) : (G.map (Int.cast : ℤ → ℝ)).PosDef := by
@@ -125,7 +125,7 @@ theorem posDef_of_int {n : ℕ} (G : Matrix (Fin n) (Fin n) ℤ) (hs : Gᵀ = G)
   exact lt_irrefl _ h1
 
 /- English proof (translation)
-Establish `hd` using `hP.det_pos`. Establish `e : P.adjugate = P.det • P⁻¹`. Rewrite using `[Matrix.inv_def, smul_smul, Ring.inverse_eq_inv', mul_inv_cancel₀ hd.ne', one_smul]`. Rewrite using `[e]`. Conclude with `hP.inv.smul hd`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjugate_posDef {n : ℕ} {P : Matrix (Fin n) (Fin n) ℝ} (hP : P.PosDef) : P.adjugate.PosDef := by
   have hd := hP.det_pos
@@ -135,7 +135,7 @@ theorem adjugate_posDef {n : ℕ} {P : Matrix (Fin n) (Fin n) ℝ} (hP : P.PosDe
   exact hP.inv.smul hd
 
 /- English proof (translation)
-Simplify using `only [form_apply]`. Rewrite using `[← hφs (s u * v), hs, hss]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem form_symm {s : O →+ O} {φ : O →+ ℤ} (hs : ∀ a b, s (a * b) = s b * s a) (hss : ∀ a, s (s a) = a)
     (hφs : ∀ a, φ (s a) = φ a) (u v : O) : form s φ u v = form s φ v u := by
@@ -149,7 +149,7 @@ theorem gram_eq (x : Fin r → O) (s : O →+ O) (φ : O →+ ℤ) :
     gram x s φ = Matrix.of fun i j => form s φ (x i) (x j) := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [transpose_apply, gram_eq, of_apply]`. Conclude with `form_symm hs hss hφs _ _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gram_transpose {x : Fin r → O} {s : O →+ O} {φ : O →+ ℤ} (hs : ∀ a b, s (a * b) = s b * s a)
     (hss : ∀ a, s (s a) = a) (hφs : ∀ a, φ (s a) = φ a) : (gram x s φ)ᵀ = gram x s φ := by
@@ -158,7 +158,7 @@ theorem gram_transpose {x : Fin r → O} {s : O →+ O} {φ : O →+ ℤ} (hs : 
   exact form_symm hs hss hφs _ _
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun M : Matrix (Fin r) (Fin r) ℤ => M i j) (adjugate_transpose (gram x s φ))`. Rewrite `h` using `[gram_transpose hs hss hφs]`. Simplify using `using h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem adjugate_gram_symm {x : Fin r → O} {s : O →+ O} {φ : O →+ ℤ} (hs : ∀ a b, s (a * b) = s b * s a)
     (hss : ∀ a, s (s a) = a) (hφs : ∀ a, φ (s a) = φ a) (i j : Fin r) :
@@ -168,7 +168,7 @@ theorem adjugate_gram_symm {x : Fin r → O} {s : O →+ O} {φ : O →+ ℤ} (h
   simpa using h.symm
 
 /- English proof (translation)
-Unfold `casimir`. Simplify using `only [map_sum, map_zsmul, hs, hss]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by`. Rewrite using `[adjugate_gram_symm hs hss hφs]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem casimir_star {x : Fin r → O} {s : O →+ O} {φ : O →+ ℤ} (hs : ∀ a b, s (a * b) = s b * s a)
     (hss : ∀ a, s (s a) = a) (hφs : ∀ a, φ (s a) = φ a) : s (casimir x s φ) = casimir x s φ := by
@@ -179,7 +179,7 @@ theorem casimir_star {x : Fin r → O} {s : O →+ O} {φ : O →+ ℤ} (hs : �
     rw [adjugate_gram_symm hs hss hφs]
 
 /- English proof (translation)
-Simplify using `only [dotProduct, mulVec, of_apply, map_sum, LinearMap.sum_apply, LinearMap.map_smul, LinearMap.smul_apply, smul_eq_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem quad_eq (x : Fin r → O) (b : LinearMap.BilinForm ℤ O) (v : Fin r → ℤ) :
     v ⬝ᵥ (Matrix.of fun i j => b (x i) (x j)) *ᵥ v = b (∑ i, v i • x i) (∑ j, v j • x j) := by
@@ -190,7 +190,7 @@ theorem quad_eq (x : Fin r → O) (b : LinearMap.BilinForm ℤ O) (v : Fin r →
   ring
 
 /- English proof (translation)
-Use `posDef_of_int _ (by ext i j; simp [hb]) fun v hv => ?_` and prove the remaining obligations. Rewrite using `[quad_eq]`. Use `hpos _ fun h => hv ?_` and prove the remaining obligations. Use `(Fintype.linearIndependent_iff.1 x.linearIndependent) v h` as an intermediate fact. Conclude with `funext this`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem posDef_gram (x : Module.Basis (Fin r) ℤ O) (b : LinearMap.BilinForm ℤ O) (hb : ∀ u v, b u v = b v u)
     (hpos : ∀ w, w ≠ 0 → 0 < b w w) :

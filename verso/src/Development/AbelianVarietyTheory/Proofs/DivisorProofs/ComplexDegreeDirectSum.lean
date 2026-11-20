@@ -12,9 +12,9 @@ set_option autoImplicit false
 namespace GlobalTheory.CxDegSum
 
 /- English proof (translation)
-Use `h.finite` as an intermediate fact. Use `h.isIntegral` as an intermediate fact. Establish `: IsFinite (spMap (Int.castRingHom k))`. Rewrite using `[IsFinite.SpecMap_iff]`. Conclude with `RingHom.finite_algebraMap.2 h.finite`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨_, L, hL⟩` from `(isProjOver_iff_isProper_and_exists_isAmpleLB p).1 h.isProjOver`. Establish `hP : IsProjOver (p ≫ spMap (Int.castRingHom k))` using `hL.isProjOver _`. Establish `H : IsPullback (cxFibre.fst p) (cxFibre.snd p) (p ≫ spMap (Int.castRingHom k)) (spMap (Int.castRingHom ℂ))` using `IsPullback.of_hasPullback _ _`. Conclude with `ProjSpace.isProjOver_of_isPullback_spMap _ H hP`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isProjOver_cxFibre {k : Type} [CommRing k] {S : Scheme.{0}} {p : S ⟶ Sp k} {D : ℕ}
     (h : IsArithVar p D) : IsProjOver (cxFibre.snd p) := by
@@ -30,11 +30,11 @@ theorem isProjOver_cxFibre {k : Type} [CommRing k] {S : Scheme.{0}} {p : S ⟶ S
   exact ProjSpace.isProjOver_of_isPullback_spMap _ H hP
 
 /- English proof (translation)
-Introduce `k _ S p _ h E F r s hE hF`. Establish `hf` using `isProjOver_cxFibre h`. Establish `fin {G : (cxFibre p).Modules} {r : ℕ} (h : IsVB G r) : FiniteCoh ℂ G`. Use `h.isFiniteQC` as an intermediate fact. Use `finiteCoh_of_isProjOver (fun _ => rfl) G hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: PreservesBinaryBiproduct E F (Scheme.Modules.pullback (cxFibre.fst p))` using `preservesBinaryBiproduct_of_preservesBinaryCoproduct _`. Establish `e` using `(Scheme.Modules.pullback (cxFibre.fst p)).mapBiprod E F`. Rewrite using `[cxDeg, cxDeg, cxDeg, degOfRank_congr ℂ e]`. Simplify using `only [degOfRank, chi_biprod (fin (hE.pullback _)) (fin (hF.pullback _))]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem cxDeg_biprod : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k) [IsIntegral S], IsArithVar p 1 → ∀ (E F : S.Modules) (r s : ℕ), VB.IsVB E r → VB.IsVB F s → cxDeg p (E ⊞ F) (r + s) = cxDeg p E r + cxDeg p F s := by
   intro k _ S p _ h E F r s hE hF

@@ -16,11 +16,11 @@ def sdd (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (g : Matrix (Fin n
   opCj (σ (sub g))
 
 /- English proof (translation)
-Take `⟨⟨h1, hm⟩, hn, hc⟩` from `hσ`. Use `⟨⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Unfold `sdd`. Rewrite using `[sub_one, h1]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `a ha b hb`. Unfold `sdd`. Rewrite using `[sub_mul, hm _ (inUJ_sub ha) _ (inUJ_sub hb)]`. Both sides reduce to the same expression. Introduce `g hg v`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hn _ (inUJ_sub hg) (ofCj v)`. Introduce `v`. Establish `hcs : Continuous (sub : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ)` using `continuous_id.matrix_submatrix _ _`. Conclude with `(hc (ofCj v)).comp hcs.continuousOn (fun g hg => inUJ_sub hg)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem urep_sdd {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hσ : IsURepOn (UJset ε) σ) :
     IsURepOn (UJset (ε ∘ Fin.rev)) (sdd σ) := by
@@ -35,13 +35,13 @@ theorem urep_sdd {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hσ : Is
     exact (hc (ofCj v)).comp hcs.continuousOn (fun g hg => inUJ_sub hg)
 
 /- English proof (translation)
-Rewrite using `[ofD_smul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem smul_ofD (c : ℂ) (u : D) : c • ofD u = ofD (conj c • u) := by
   rw [ofD_smul]; simp
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_comm, ← Equiv.sum_comp Fin.revPerm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Equiv.sum_comp Fin.revPerm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sum_rev_swap {M : Type*} [AddCommMonoid M] (F : Fin n → Fin n → M) :
     ∑ a, ∑ b, F a b = ∑ a, ∑ b, F (Fin.rev b) (Fin.rev a) := by
@@ -51,11 +51,11 @@ theorem sum_rev_swap {M : Type*} [AddCommMonoid M] (F : Fin n → Fin n → M) :
   rfl
 
 /- English proof (translation)
-Unfold `actM`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, Edd_ofD, smul_ofD, ofD_sum]`. Rewrite using `[sum_rev_swap]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [Fin.rev_rev, sub_apply, smul_smul]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `congr 2`. Apply the tactic sequence `have he := inG_entry hX (Fin.rev b) (Fin.rev a)`. Simplify using `only [Function.comp_apply, Fin.rev_rev] at he`. Rewrite using `[he]`. Unfold `sg`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Simplify using `only [Fin.rev_rev]`. Apply the tactic sequence `cases ε a <;> cases ε b <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem actM_Edd {E : Fin n → Fin n → Module.End ℂ D} {X : Matrix (Fin n) (Fin n) ℂ}
     (hX : inG (ε ∘ Fin.rev) X) (u : D) : actM (Edd ε E) X (ofD u) = ofD (actM E (sub X) u) := by
@@ -73,7 +73,7 @@ theorem actM_Edd {E : Fin n → Fin n → Module.End ℂ D} {X : Matrix (Fin n) 
   cases ε a <;> cases ε b <;> simp
 
 /- English proof (translation)
-Rewrite using `[RCLike.real_smul_eq_coe_smul (K := ℂ), RCLike.real_smul_eq_coe_smul (K := ℂ) r (ofCj x), ReciprocityTheory.ChartRestriction.DS.Mult1.ConjugateHilbertSpace.smul_def, RCLike.conj_ofReal]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem real_smul_cj (r : ℝ) (x : Cj H) : r • x = toCj (r • ofCj x) := by
   rw [RCLike.real_smul_eq_coe_smul (K := ℂ), RCLike.real_smul_eq_coe_smul (K := ℂ) r (ofCj x),
@@ -86,7 +86,7 @@ def toCjR : H →L[ℝ] Cj H where
   cont := continuous_id
 
 /- English proof (translation)
-The claim follows from `glRep_Edd ε hD.glRep kStable k hk v hv := hD.kStable (sub k) (K_sub hk) (ofCj v) hv deriv X hX v := by have h3 := hD.deriv (sub X) (inG_sub hX) (toD v) have h4 := (toCjR (H := H)).hasFDerivAt.comp_hasDerivAt (0 : ℝ) h3 have hv : v = ofD (toD v) := rfl rw [hv, actM_Edd hX] convert …`.
+A detailed English derivation is pending.
 -/
 theorem derived_sdd {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {E : Fin n → Fin n → Module.End ℂ D}
     (hD : IsDerivedOn ε σ D E) : IsDerivedOn (ε ∘ Fin.rev) (sdd σ) (cjSub D) (Edd ε E) where

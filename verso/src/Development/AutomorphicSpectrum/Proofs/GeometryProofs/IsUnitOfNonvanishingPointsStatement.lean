@@ -19,7 +19,7 @@ open ReciprocityTheory.ChartRestriction.G.TB.ValAt ReciprocityTheory.ChartRestri
 open GlobalTheory.CompanionTheory.Ar.Flat.GagaC
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.Ar.Flat.GagaC.isUnit_of_forall_complexPoint` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FIsUnitOfNonvanishingPoints.lean&line=90#L90)
 -/

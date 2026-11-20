@@ -22,30 +22,28 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
 variable [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[B.hsVec]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem hsVec_smul (c : ℂ) (A : Wq →L[ℂ] Wp) : B.hsVec (c • A) = c • B.hsVec A := by
   ext i
   simp [B.hsVec]
 
 /- English proof (translation)
-Take `⟨hOK, hz, hz', hTz, hTz', -, -⟩` from `id hpl`. Establish `hζ' : Tz P.k P.r Bs.z * Tz P.k P.r Bs.z' < Complex.normSq ζ`. Rewrite using `[hTz, hTz']`. Conclude with `hζ`. Take `⟨hFr', hpass⟩` from `hLf Wp Wq P Bs hpl hk ζ hζ Fr hFr`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hq : ((fun _ => (1 : ℂ)), ζ) ∈ NF.QR P.k P.r Bs.z Bs.z'` using `⟨fun _ => one_ne_zero, hζ'⟩`. Take `⟨-, hg, hG⟩` from `Formalism.FourierDecayAlt.P.NFRadRedA.mem_domR hz hz' Bs.sec hq`. Establish `hEx` using `Gauge.GC.lie_existence_of_iso_group Gauge.GC.KLIso.lie_algebra_isomorphism_holds Gauge.GC.lie_group_realization`. Take `⟨E, hEfib, hEeig, hE0⟩` from `hEx Wp Wq P Bs.z Bs.z' Bs.π Bs.π' hpl hk _ hg hG.ne' _ hFr' ρ`. Establish `hEF : E ∈ NF.Fib P.k P.r Bs.z Bs.z' Bs.μsec Bs.π Bs.π' ζ` using `fun p hp => hEfib p.1 hp.1 p.2 hp.2.1 hp.2.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgl'` using `(Formalism.FourierDecayAlt.P.frame_general_linear Wq P.k P.r (P.k - 1) Bs.z' Bs.π' (fun a => (NF.muZ P.k P.r Bs.μsec ζ)⁻¹ *ᵥ Fr a) ⟨Bs.π'_rep, Bs.π'_cont⟩ (Formalism.FourierDecayAlt.P.Qx8.frame_sub hFr' (by simp))).2`. Establish `hEc : ∀ (Y : ℂ) (v : Wq), E (Q.capRep P.k P.r Bs.π' (fun a => (NF.muZ P.k P.r Bs.μsec ζ)⁻¹ *ᵥ Fr a) (Y + ((P.k : ℂ) - 2) / 2) v) = M.xC P ρ Y • E v`. Introduce `Y v`. Rewrite using `[hgl']`. Conclude with `hEeig Y v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Y₀, hY₀⟩` from `Formalism.FourierDecayAlt.P5.Kfp.sep_real hOK`. Establish `horth : ∀ σ, σ ≠ ρ → inner ℂ (B.hsVec (e σ ζ)) (B.hsVec E) = 0`. Introduce `σ hσ`. Establish `h` using `hR Wp Wq P Bs e hpl hk hF hQQ ζ hζ _ hFr' E hEF Y₀ (M.xC P ρ (Y₀ : ℂ) • E) (fun v => by rw [hEc, ContinuousLinearMap.smul_apply]) σ`. Rewrite `h` using `[hsVec_smul, inner_smul_right]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (M.xC P ρ (Y₀ : ℂ) - M.xC P σ (Y₀ : ℂ)) * inner ℂ (B.hsVec (e σ ζ)) (B.hsVec E) = 0`. Rewrite using `[sub_mul, h, sub_self]`. Break down `mul_eq_zero.1 h2 with h3 | h3` into its components or cases. Conclude with `absurd (hY₀ (sub_eq_zero.1 h3)).symm hσ`. Conclude with `h3`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hexp` using `(hF.2 ζ hζ).2.2 E hEF`. Establish `hE1 : E = inner ℂ (B.hsVec (e ρ ζ)) (B.hsVec E) • e ρ ζ` using `by conv_lhs => rw [hexp]`. Rewrite using `[Finset.sum_eq_single ρ (fun σ _ hσ => by rw [horth σ hσ, zero_smul]) (fun h => absurd (Finset.mem_univ ρ) h)]`. Establish `hc0 : inner ℂ (B.hsVec (e ρ ζ)) (B.hsVec E) ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hE0` to reduce the goal to its premises. Rewrite using `[hE1, h0, zero_smul]`. Establish `heig : ∀ (Y : ℂ) (v : Wq), e ρ ζ (Q.capRep P.k P.r Bs.π' (fun a => (NF.muZ P.k P.r Bs.μsec ζ)⁻¹ *ᵥ Fr a) (Y + ((P.k : ℂ) - 2) / 2) v) = M.xC P ρ Y • e ρ ζ v`. Introduce `Y v`. Establish `h` using `hEc Y v`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Generalize the expression as in `hcdef : inner ℂ (B.hsVec (e ρ ζ)) (B.hsVec E) = c at hE1 hc0`. Rewrite `h` using `[hE1]`. Simplify using `only [ContinuousLinearMap.smul_apply] at h`. Rewrite `h` using `[smul_comm (M.xC P ρ Y) c]`. Conclude with `smul_right_injective Wp hc0 h`.
-
-Rewrite using `[hpass (e ρ ζ) ((hF.2 ζ hζ).1 ρ) w x]`. Establish `hw : w = (w - ((P.k : ℂ) - 2) / 2) + ((P.k : ℂ) - 2) / 2` using `by ring`. Use `conv_lhs => rw [hw]`. Conclude with `heig _ x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem base (hR : GLRight) (hLf : GLLeft) (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq)
     (e : M.Ty P → ℂ → (Wq →L[ℂ] Wp)) (hpl : Q.IsPlace P Bs.z Bs.z' Bs.π Bs.π') (hk : 2 ≤ P.k)
@@ -112,7 +110,7 @@ theorem base (hR : GLRight) (hLf : GLLeft) (P : M.Par) (Bs : B.RealPlaceData P.k
 end AsmPf
 
 /- English proof (translation)
-Introduce `hR hL Cc E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ v e hH hk ζ hζ ρ Fr hFr w x`. Take `⟨hB, hFrame, -, hQQ⟩` from `hH`. Establish `hpl` using `(hB.1.2.2.2.1.2 v).2.2.2.1`. Conclude with `AsmPf.base hR hL (D.parOf S v) (T v).base e hpl hk hFrame hQQ ζ hζ ρ Fr hFr w x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gaugeLines_of_cut : GaugeLinesOfCut := by
   intro hR hL Cc E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ v e hH hk ζ hζ ρ Fr hFr w x

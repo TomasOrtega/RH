@@ -19,9 +19,9 @@ namespace GlobalTheory.RowRealEq
 variable {D : D7} {T : Type} {L : LevCh D T}
 
 /- English proof (translation)
-Establish `h0` using `GlobalTheory.ColKer.mu_exp hL t j hj τ`. Establish `heta : HasInfExp D L.eta τ (1 / 2)` using `GlobalTheory.HeckeInfExp.hasInfExp_of_chrEq D _ _ _ hL.eta (GlobalTheory.Chain.StepVac.hasInfQ_tau (a := fun _ => 1 / 2) ⟨_, fun _ => by norm_num, L.C.isEta.inf⟩) τ`. Unfold `Formalism.IndefR.Lift.attChr`. Use `split_ifs`. Rewrite using `[sub_eq_add_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `GlobalTheory.Chain.StepVac.hasInfExp_mul h0 (GlobalTheory.Chain.StepVac.hasInfExp_inv heta)`. Simplify using `using h0`.
+A detailed English derivation is pending.
 -/
 theorem hasInfExp_attChr_mu {μ0 : T} (hL : L.Is μ0) (t : T) {j : ℕ} (hj : j < D.R.m) (n : ℕ) (τ : D.what₂.Tau) :
     HasInfExp D (Formalism.IndefR.Lift.attChr (L.mu t (j + 1)) L.eta n) τ
@@ -37,9 +37,7 @@ theorem hasInfExp_attChr_mu {μ0 : T} (hL : L.Is μ0) (t : T) {j : ℕ} (hj : j 
   · simpa using h0
 
 /- English proof (translation)
-Use `⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F hS ch _ _ => ?_⟩⟩` and prove the remaining obligations. Establish `hL` using `hS.core.lev`. Introduce `t t' j hj`. Use `⟨fun a ha b hb f hf => ?_, fun a ha b hb f hf => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.RealEqWeil.weilDatum_realEq D _ _ _ _ _ _ _ _ _ (ch.W.om_is (.top t j) (show j + 1 ≤ D.R.m by omega)) (ch.W.om_is (.top t' j) (show j + 1 ≤ D.R.m by omega)) (fun τ => ⟨_, hasInfExp_attChr_mu hL t hj _ τ, hasInfExp_attChr_mu hL t' hj _ τ⟩) (fun τ => ⟨_, hasInfExp_attC …`.
-
-Conclude with `GlobalTheory.RealEqWeil.weilDatum_realEq D _ _ _ _ _ _ _ _ _ (ch.W.om_is (.mu t D.R.m j) (show D.R.m ≤ D.R.m ∧ j + 1 ≤ D.R.m by omega)) (ch.W.om_is (.mu t' D.R.m j) (show D.R.m ≤ D.R.m ∧ j + 1 ≤ D.R.m by omega)) (fun τ => ⟨_, hasInfExp_attChr_mu hL t hj _ τ, hasInfExp_attChr_mu h …`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem realEqAt : Big fun ch => RealEqAt ch := by
   refine ⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F hS ch _ _ => ?_⟩⟩

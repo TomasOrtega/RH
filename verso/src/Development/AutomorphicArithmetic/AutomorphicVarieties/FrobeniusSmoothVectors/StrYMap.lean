@@ -53,9 +53,9 @@ def strS : Submodule k (F.G0 → M) where
 variable {F M} {M' : Type} [AddCommGroup M'] [Module k M']
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5⟩` from `hy`. Use `⟨h1.comp f, fun g h => ?_, congrArg f h3, fun v => ?_, fun v => ?_⟩` and prove the remaining obligations. Simplify using `only [h2, map_add, map_smul]`. Take `⟨α, hα⟩` from `h4 v`. Conclude with `⟨f α, fun s => by simp only [hα, map_smul]⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨β, hβ⟩` from `h5 v`. Conclude with `⟨f β, fun s => by simp only [hβ, map_smul]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem strY_map (f : M →ₗ[k] M') {y : F.G0 → M} (hy : y ∈ F.strY M) : (fun g => f (y g)) ∈ F.strY M' := by
   obtain ⟨h1, h2, h3, h4, h5⟩ := hy
@@ -67,7 +67,7 @@ theorem strY_map (f : M →ₗ[k] M') {y : F.G0 → M} (hy : y ∈ F.strY M) : (
     exact ⟨f β, fun s => by simp only [hβ, map_smul]⟩
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `ha`. Use `⟨h1.comp f, fun g h => ?_, fun g => congrArg f (h3 g), fun v => ?_⟩` and prove the remaining obligations. Simplify using `only [h2, map_add, map_smul]`. Take `⟨γ, hγ⟩` from `h4 v`. Conclude with `⟨f γ, fun s => by simp only [hγ, map_smul]⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem strS_map (f : M →ₗ[k] M') {a : F.G0 → M} (ha : a ∈ F.strS M) : (fun g => f (a g)) ∈ F.strS M' := by
   obtain ⟨h1, h2, h3, h4⟩ := ha

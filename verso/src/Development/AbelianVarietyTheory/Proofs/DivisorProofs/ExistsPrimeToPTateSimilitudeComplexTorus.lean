@@ -16,9 +16,9 @@ noncomputable section
 namespace GlobalTheory.HTTate
 
 /- English proof (translation)
-Establish `hu : IsUnit (n : Γ(Sp ℂ, ⊤))` using `GlobalTheory.SepClosedTorsion.isUnit_natCast_top (by exact_mod_cast hn.ne')`. Take `⟨-, hfin, het⟩` from `GlobalTheory.GrpTangent.finiteEtale_mulN_torsion A (hG := hA) hu`. Set `e2 : (Over.mk t ⟶ torsion A n) ≃ {x : Sp K ⟶ (torsion A n).left // x ≫ (torsion A n).hom = t}` to `{ toFun := fun y => ⟨y.left, Over.w y⟩ invFun := fun x => Over.homMk x.1 x.2 left_inv := fun y => Over.OverMorphism.ext rfl right_inv := fun x => rfl }`. Set `e : {x : Over.mk t ⟶ A // x ^ n = 1} ≃ {x : Sp K ⟶ (torsion A n).left // x ≫ (torsion A n).hom = t}` to `(GlobalTheory.TorsionUnram.torsionEquiv A n (Over.mk t)).symm.trans e2`. Take `⟨h1, h2⟩` from `GlobalTheory.FinEt.card_points_eq_finrank (torsion A n).hom t z`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨Finite.of_equiv _ e.symm, (Nat.card_congr e).trans h2⟩`.
+Supply the required witnesses or components.
 -/
 theorem torsion_card (A : Over (Sp ℂ)) [GrpObj A] (hA : IsAbelianScheme A) {n : ℕ} (hn : 0 < n) {K : Type} [Field K]
     [IsSepClosed K] (t : Sp K ⟶ Sp ℂ) (z : Sp K) :
@@ -45,11 +45,9 @@ Both sides reduce to the same expression.
 theorem toC_left {k : Type} [Field k] (j : ℂ →+* k) : (toC j).left = spMap j := rfl
 
 /- English proof (translation)
-Introduce `x y h`. Establish `hf : Flat (spMap j)`. Rewrite using `[Flat.SpecMap_iff]`. Use `letI := j.toAlgebra`. Conclude with `(inferInstance : Module.Flat ℂ k)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hs : Surjective (spMap j)` using `⟨fun q => ⟨default, Subsingleton.elim (α := PrimeSpectrum ℂ) _ _⟩⟩`. Establish `: Epi (spMap j)` using `Flat.epi_of_flat_of_surjective _`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Establish `h'` using `congrArg (fun z => z.left) h`. Simplify using `only [preHom, MonoidHom.mk'_apply, Over.comp_left, toC_left] at h'`.
-
-Conclude with `(cancel_epi (spMap j)).1 h'`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pre_injective {k : Type} [Field k] (j : ℂ →+* k) (A : Over (Sp ℂ)) [GrpObj A] :
     Function.Injective (preHom (G := A) (toC j)) := by
@@ -66,9 +64,9 @@ theorem pre_injective {k : Type} [Field k] (j : ℂ →+* k) (A : Over (Sp ℂ))
   exact (cancel_epi (spMap j)).1 h'
 
 /- English proof (translation)
-Take `⟨z⟩ : Nonempty (Sp k)` from `inferInstance`. Take `⟨f₁, c₁⟩` from `torsion_card A hA hn (spMap j) z`. Take `⟨f₀, c₀⟩` from `torsion_card A hA hn (𝟙 (Sp ℂ)) (spMap j z)`. Set `F : {x : Over.mk (𝟙 (Sp ℂ)) ⟶ A // x ^ n = 1} → {x : Over.mk (spMap j) ⟶ A // x ^ n = 1}` to `fun y => ⟨preHom (toC j) y.1, by rw [← map_pow, y.2, map_one]⟩`. Establish `hF : Function.Injective F` using `fun y y' h => Subtype.ext (pre_injective j A (congrArg Subtype.val h))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨y, hy⟩` from `(hF.bijective_of_nat_card_le (by rw [c₀, c₁]; rfl)).2 ⟨x, hx⟩`. Conclude with `⟨y.1, y.2, congrArg Subtype.val hy⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pre_onto {k : Type} [Field k] [IsAlgClosed k] (j : ℂ →+* k) (A : Over (Sp ℂ)) [GrpObj A]
     (hA : IsAbelianScheme A) {n : ℕ} (hn : 0 < n) (x : Over.mk (spMap j) ⟶ A) (hx : x ^ n = 1) :
@@ -83,7 +81,7 @@ theorem pre_onto {k : Type} [Field k] [IsAlgClosed k] (j : ℂ →+* k) (A : Ove
   exact ⟨y.1, y.2, congrArg Subtype.val hy⟩
 
 /- English proof (translation)
-Rewrite using `[toC_left]`. Apply `Units.ext` to reduce the goal to its premises. Conclude with `(congrArg (fun q => q.hom (c : ℂ)) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom j))).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem unitOn_pull {k : Type} [Field k] (j : ℂ →+* k) (c : ℂˣ) :
     Units.map (toC j).left.appTop.hom.toMonoidHom (unitOn c) = unitOn (Units.map j.toMonoidHom c) := by
@@ -92,7 +90,7 @@ theorem unitOn_pull {k : Type} [Field k] (j : ℂ →+* k) (c : ℂˣ) :
   exact (congrArg (fun q => q.hom (c : ℂ)) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom j))).symm
 
 /- English proof (translation)
-Rewrite using `[Hom.one_def, Category.assoc, IsMonHom.one_hom, ← Hom.one_def]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem one_comp_hom {S : Scheme.{0}} {T G H : Over S} [GrpObj G] [GrpObj H] (φ : G ⟶ H) [IsMonHom φ] :
     (1 : T ⟶ G) ≫ φ = 1 := by
@@ -105,37 +103,31 @@ namespace GlobalTheory.UPel.HT
 open Classical in
 
 /- English proof (translation)
-Introduce `p _ D N ρ A _ _ act L D' t Q e eta hN hNp hA hL hG hP hadd hsurj hker hact hW heta k _ _ x`. Take `⟨f, ν, rfl, htow, hgen⟩` from `hG`. Take `⟨j, rfl⟩ : ∃ j : ℂ →+* k, spMap j = x` from `⟨(Spec.preimage x).hom, by simp [spMap]⟩`. Establish `hGF : Out.GlobalFnsSt` using `GlobalTheory.abelianSchemeLaws_all.1.globalFns`. Set `π` to `preHom (G := A) (GlobalTheory.HTTate.toC j)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hπ : Function.Injective π` using `GlobalTheory.HTTate.pre_injective j A`. Set `e' : Multiplicative (Fin D.g → ℂ) →* (Over.mk (𝟙 (Sp ℂ)) ⟶ A)` to `MonoidHom.mk' (fun z => e z.toAdd) fun z w => hadd _ _`. Establish `hpow : ∀ (n : ℕ) z, e z ^ n = e (n • z)` using `fun n z => (map_pow e' (Multiplicative.ofAdd z) n).symm`. Establish `hsm : ∀ n : ℕ, 0 < n → ∀ z : Fin D.g → ℂ, n • (n : ℂ)⁻¹ • z = z` using `fun n hn z => by`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, smul_smul, mul_inv_cancel₀ (by exact_mod_cast hn.ne'), one_smul]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsm' : ∀ n : ℕ, 0 < n → ∀ z : Fin D.g → ℂ, (n : ℂ)⁻¹ • n • z = z` using `fun n hn z => by`. Rewrite using `[smul_comm, hsm n hn]`. Establish `hshift : ∀ n : ℕ, 0 < n → ∀ a c : D'.La, e ((n : ℂ)⁻¹ • Q (a + n • c)) = e ((n : ℂ)⁻¹ • Q a)`. Introduce `n hn a c`. Rewrite using `[map_add, smul_add, hadd, map_nsmul, hsm' n hn, (hker _).2 ⟨c, rfl⟩, _root_.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Set `ev : ℕ → D.La → (Over.mk (spMap j) ⟶ A)` to `fun n a => if 0 < n ∧ n.Coprime p then π (e ((n : ℂ)⁻¹ • Q (f n a))) else 1`. Establish `hev : ∀ n, 0 < n → n.Coprime p → ∀ a, ev n a = π (e ((n : ℂ)⁻¹ • Q (f n a)))` using `fun n hn hc a => if_pos ⟨hn, hc⟩`. Establish `hev' : ∀ n, ¬ (0 < n ∧ n.Coprime p) → ∀ a, ev n a = 1` using `fun n h a => if_neg h`. Use `⟨{ ζ := fun n => Units.map j.toMonoidHom (GlobalTheory.PeriodTate.rt n (ν n)) ζ_prim := fun n hn hc => (GlobalTheory.PeriodTate.rt_prim hn (hgen n hn hc).1).map_of_injective (Units.map_injective j.injective) ζ_pow := fun n m hn hm hc => by` and prove the remaining obligations. Rewrite using `[← map_pow, GlobalTheory.PeriodTate.rt_pow hm, GlobalTheory.PeriodTate.rt_congr hn (htow n m hn hm hc).1]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `ev := ev`. Use `add := fun n a b => ?_`. Use `lin := fun n c a => ?_`. Use `ker := fun n hn hc a => ?_`. Use `onto := fun n hn hc q => ?_`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `tower := fun n m hn hm hc a => ?_`. Use `isom := fun n hn hc a b => ?_ }, fun y => ?_⟩`. Distinguish the cases in `h : 0 < n ∧ n.Coprime p`. Establish `hf : f n (a + b) = f n a + f n b` using `(f n).map_add a b`. Rewrite using `[hev n h.1 h.2, hev n h.1 h.2, hev n h.1 h.2, hf, map_add, smul_add, hadd, map_mul]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hev' n h, hev' n h, hev' n h, _root_.mul_one]`. Distinguish the cases in `h : 0 < n ∧ n.Coprime p`. Rewrite using `[hev n h.1 h.2, hev n h.1 h.2]`. Take `⟨d, hd⟩` from `(hgen n h.1 h.2).2.1 c a`. Use `replace hd : f n (c • a) = c • f n a + n • d := hd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use `show π _ = π _ ≫ _`. Rewrite using `[hd, hshift n h.1, show π (e ((n : ℂ)⁻¹ • Q (f n a))) ≫ act.act c = π (e ((n : ℂ)⁻¹ • Q (f n a)) ≫ act.act c) from Category.assoc _ _ _, ← hact, hP.1, Matrix.mulVec_smul]`. Rewrite using `[hev' n h, hev' n h] haveI := act.hom c`. Conclude with `(GlobalTheory.HTTate.one_comp_hom (act.act c)).symm`. Rewrite using `[hev n hn hc, map_eq_one_iff π hπ, hker]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hk : (∃ e, f n a = n • e) ↔ ∃ e : D.La, a = n • e` using `(hgen n hn hc).2.2.1 a`. Rewrite using `[← hk]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc'⟩`. Conclude with `⟨c, hP.2.1 (by rw [map_nsmul, hc', hsm n hn])⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨c, hc'⟩`. Conclude with `⟨c, by rw [hc', map_nsmul, hsm' n hn]⟩`. Prove the components needed by the constructor for the conclusion. Introduce `hq`. Take `⟨y, hy, rfl⟩` from `GlobalTheory.HTTate.pre_onto j A hA hn q hq`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨z, rfl⟩` from `hsurj y`. Rewrite `hy` using `[hpow, hker]`. Take `⟨a', ha'⟩` from `hy`. Take `⟨a, c, rfl⟩` from `(hgen n hn hc).2.2.2.1 a'`. Use `⟨a, (hev n hn hc a).trans (congrArg π ?_)⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hshift n hn _ c, ha', hsm' n hn]`. Introduce and unpack `⟨a, rfl⟩`. Rewrite using `[hev n hn hc, ← map_pow, hpow, hsm n hn, (hker _).2 ⟨_, rfl⟩, map_one]`. Establish `hn' : n.Coprime p` using `Nat.Coprime.coprime_dvd_left (Nat.dvd_mul_right n m) hc`. Take `⟨c, hc'⟩` from `(htow n m hn hm hc).2 a`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `replace hc' : f (n * m) a = f n a + n • c := hc'`. Rewrite using `[hev _ (Nat.mul_pos hn hm) hc, hev n hn hn', ← map_pow, hpow, Nat.cast_mul, mul_inv_rev, mul_smul, hsm m hm, hc', hshift n hn]`. Use `show Out.WeilIs A L n (ev n a) (ev n b) (unitOn (Units.map j.toMonoidHom (GlobalTheory.PeriodTate.rt n (ν n)) ^ (2 * D.EF a b)))`. Establish `h` using `GlobalTheory.CommPairing.weilIs_pull hGF hA hL (GlobalTheory.HTTate.toC j) (hW n (f n a) (f n b) (GlobalTheory.PeriodTate.rt n _) hn (GlobalTheory.PeriodTate.rt_val _ _))`. Establish `e2 : D.plat.EF a b = 2 * D.EF a b` using `by show ((2 : ℤ) • D.EF) a b = _`.
-
-Rewrite using `[LinearMap.smul_apply, LinearMap.smul_apply, smul_eq_mul]`. Establish `hν : (n : ℤ) ∣ D'.EF (f n a) (f n b) - ν n * (2 * D.EF a b)`. Rewrite using `[← e2]`. Conclude with `(hgen n hn hc).2.2.2.2 a b`. Rewrite `h` using `[GlobalTheory.HTTate.unitOn_pull, GlobalTheory.PeriodTate.rt_congr hn hν, GlobalTheory.PeriodTate.rt_mul, map_zpow]`.
-
-Rewrite using `[hev n hn hc, hev n hn hc]`. Conclude with `h`. Use `show toUnit _ ≫ eta y = ev N y`. Rewrite using `[hev N hN hNp]`. Use `show _ = GlobalTheory.HTTate.toC j ≫ e _`.
-
-Rewrite using `[← heta, ← Category.assoc]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem exists_tateIsoO_of_period : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (N : ℕ) (ρ : D.O →+* Matrix (Fin D.g) (Fin D.g) ℂ) (A : Over (Sp ℂ)) [GrpObj A] [IsCommMonObj A] (act : OActN D.O A) (L : LB A.left) (D' : PLat D.O D.inv) t (Q : D'.La →+ (Fin D.g → ℂ)) (e : (Fin D.g → ℂ) → (Over.mk (𝟙 (Sp ℂ)) ⟶ A)) (eta : D.La → (𝟙_ (Over (Sp ℂ)) ⟶ A)), 0 < N → N.Coprime p → IsAbelianScheme A → L.IsLB → Genus p N D.plat D' t → IsPeriod D' ρ Q → (∀ z w, e (z + w) = e z * e w) → Function.Surjective e → (∀ z, e z = 1 ↔ z ∈ Q.range) → (∀ a z, e (ρ a *ᵥ z) = e z ≫ act.act a) → (∀ (k : ℕ) (a b : D'.La) (c : ℂˣ), 0 < k → (c : ℂ) = Complex.exp (-(2 * Real.pi * Complex.I) * (D'.EF a b : ℂ) / k) → Out.WeilIs A L k (e ((k : ℂ)⁻¹ • Q a)) (e ((k : ℂ)⁻¹ • Q b)) (unitOn c)) → (∀ a, toUnit _ ≫ eta a = e ((N : ℂ)⁻¹ • Q (t a))) → ∀ (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ Sp ℂ), ∃ I : TateIsoO D k (Over.mk x ⟶ A) (fun c g => g ≫ act.act c) (fun n g g' z => Out.WeilIs A L n g g' (unitOn z)), ∀ y, toUnit _ ≫ eta y = I.ev N y := by
   intro p _ D N ρ A _ _ act L D' t Q e eta hN hNp hA hL hG hP hadd hsurj hker hact hW heta k _ _ x

@@ -11,14 +11,14 @@ namespace GlobalTheory.SUChartSection
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Simplify using `[yF, yM, Matrix.mul_apply, mat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem yF_apply_sum (X : Data E r) (w : V (nd X)) (τ : X.Ψ) (a b : Fin r) :
     yF X w τ a b = ∑ k, nmat X w τ a k * gsB X w τ k b := by
   simp [yF, yM, Matrix.mul_apply, mat]
 
 /- English proof (translation)
-Take `⟨R, hR, hball⟩` from `exists_ball X hx`. Establish `hs : {w | cpt X x w ∈ X.dom} ∈ nhds (0 : V (nd X))` using `Filter.mem_of_superset (Metric.ball_mem_nhds 0 hR) (fun w hw => hball w hw)`. Conclude with `((GlobalTheory.T.contDiffOn_gramSchmidtUpperTriangularFactor X hx τ a b).contDiffAt hs).differentiableAt (by simp)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gsB_differentiableAt (X : Data E r) {x : Frame X.Ψ r} (hx : IsOrth X x) (τ : X.Ψ) (a b : Fin r) :
     DifferentiableAt ℝ (fun w => gsB X w τ a b) 0 := by
@@ -28,14 +28,14 @@ theorem gsB_differentiableAt (X : Data E r) {x : Frame X.Ψ r} (hx : IsOrth X x)
   exact ((GlobalTheory.T.contDiffOn_gramSchmidtUpperTriangularFactor X hx τ a b).contDiffAt hs).differentiableAt (by simp)
 
 /- English proof (translation)
-The claim follows from `((PoinPf.diff_nmat X τ a b).restrictScalars ℝ) 0`.
+A detailed English derivation is pending.
 -/
 theorem nmat_differentiableAt (X : Data E r) (τ : X.Ψ) (a b : Fin r) :
     DifferentiableAt ℝ (fun w : V (nd X) => nmat X w τ a b) 0 :=
   ((PoinPf.diff_nmat X τ a b).restrictScalars ℝ) 0
 
 /- English proof (translation)
-Establish `h` using `congrFun (congrFun (PoinPf.nmat_zero X τ) a) b`. Simplify `h` using `[mat]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem nmat_zero_apply (X : Data E r) (τ : X.Ψ) (a b : Fin r) :
     nmat X 0 τ a b = (1 : Matrix (Fin r) (Fin r) ℂ) a b := by
@@ -43,24 +43,22 @@ theorem nmat_zero_apply (X : Data E r) (τ : X.Ψ) (a b : Fin r) :
   simpa [mat] using h
 
 /- English proof (translation)
-Rewrite using `[gsB_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gsB_zero_apply (X : Data E r) (τ : X.Ψ) (a b : Fin r) :
     gsB X 0 τ a b = (1 : Matrix (Fin r) (Fin r) ℂ) a b := by
   rw [gsB_zero]
 
 /- English proof (translation)
-Establish `hS` using `(GlobalTheory.T.unitaryChartSectionFrameEntries_hasStrictFDerivAt X hx).hasFDerivAt`. Establish `h1` using `hasFDerivAt_pi'.1 hS τ`. Establish `h2` using `hasFDerivAt_pi'.1 h1 a`. Establish `h3` using `hasFDerivAt_pi'.1 h2 b`. Establish `hT : HasFDerivAt (fun w => ∑ k, nmat X w τ a k * gsB X w τ k b) (∑ k, (nmat X 0 τ a k • fderiv ℝ (fun w => gsB X w τ k b) 0 + gsB X 0 τ k b • fderiv ℝ (fun w => nmat X w τ a k) 0)) 0` using `HasFDerivAt.fun_sum (fun k _ => (nmat_differentiableAt X τ a k).hasFDerivAt.mul (gsB_differentiableAt X hx τ k b).hasFDerivAt)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3' : HasFDerivAt (fun w => ∑ k, nmat X w τ a k * gsB X w τ k b) ((ContinuousLinearMap.proj b).comp ((ContinuousLinearMap.proj a).comp ((ContinuousLinearMap.proj τ).comp (dY X)))) 0`. Establish `: (fun w => ∑ k, nmat X w τ a k * gsB X w τ k b) = fun w => yF X w τ a b`. Use function extensionality and compare the values at `w`. Rewrite using `[yF_apply_sum]`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h3`. Establish `hU` using `congrArg (fun L => L z) (h3'.unique hT)`. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.proj_apply] at hU`. Rewrite using `[hU]`. Establish `hB0 : (fun w : V (nd X) => gsB X w τ a b) = fun _ => 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `w`. Conclude with `gsB_lower X w τ hba`. Use `set e := (Fintype.equivFin (Ent X)) ⟨τ, ⟨(a, b), hba⟩⟩`. Establish `hN : (fun w : V (nd X) => nmat X w τ a b) = ⇑((EuclideanSpace.proj e : V (nd X) →L[ℂ] ℂ).restrictScalars ℝ)`. Use function extensionality and compare the values at `w`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify using `[nmat, hba, e]`. Both sides reduce to the same expression. Establish `hsum : (∑ k, (nmat X 0 τ a k • fderiv ℝ (fun w => gsB X w τ k b) 0 + gsB X 0 τ k b • fderiv ℝ (fun w => nmat X w τ a k) 0)) = fderiv ℝ (fun w => gsB X w τ a b) 0 + fderiv ℝ (fun w => nmat X w τ a b) 0`. Simplify using `only [nmat_zero_apply, gsB_zero_apply, Matrix.one_apply, ite_smul, one_smul, zero_smul, Finset.sum_add_distrib, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[hsum, ContinuousLinearMap.add_apply]`.
-
-Rewrite using `[hB0, hN, fderiv_const_apply, ContinuousLinearMap.fderiv, ContinuousLinearMap.zero_apply, zero_add]`. Apply the tactic sequence `simp [nmat, hba, e] <;> rfl`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem dY_lower (X : Data E r) {x : Frame X.Ψ r} (hx : IsOrth X x) (z : V (nd X)) (τ : X.Ψ)
     (a b : Fin r) (hba : b < a) : dY X z τ a b = nmat X z τ a b := by

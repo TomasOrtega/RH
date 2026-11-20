@@ -20,7 +20,7 @@ open GlobalTheory.LFun (toCompl locMat locChar IsSplitChart IsInertChart IsFrame
 namespace GlobalTheory.AbsInert
 
 /- English proof (translation)
-Unfold `ordL`. Rewrite using `[dif_neg hy, WithZero.toAdd_unzero_eq_log]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ordL_eq_neg_log {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {y : L}
     (hy : Valued.v y ≠ (0 : WithZero (Multiplicative ℤ))) : ordL y = -WithZero.log (Valued.v y) := by
@@ -28,23 +28,21 @@ theorem ordL_eq_neg_log {L : Type} [Field L] [Valued L (WithZero (Multiplicative
   rw [dif_neg hy, WithZero.toAdd_unzero_eq_log]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ v w h hw x`. Use `set N : Fv F v := Algebra.norm (Fv F v) x.1 with hNdef`. Use `set z : w.adicCompletion E := toCompl h x.1 with hzdef`. Establish `hN0 : N ≠ 0` using `((x.isUnit.map (Algebra.norm (Fv F v))).ne_zero)`. Establish `hz0 : z ≠ 0` using `(x.isUnit.map (toCompl h)).ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `GlobalTheory.Doubling.algebraMap_norm_eq hσ (R := Fv F v) x.1`. Establish `key'` using `congrArg (toCompl h) key`. Rewrite `key'` using `[map_mul]`. Establish `hl : toCompl h (algebraMap (Fv F v) (Fv F v ⊗[F] E) N) = GlobalTheory.LFun.complMap h N`. Simplify using `[Algebra.TensorProduct.algebraMap_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite `key'` using `[hl]`. Set `c : w.adicCompletion E →+* w.adicCompletion E` to `(GlobalTheory.LFun.InertChart.complEquiv hw h).toRingHom.comp (((sigR (Fv F v) σ : Fv F v ⊗[F] E →+* Fv F v ⊗[F] E)).comp (GlobalTheory.LFun.InertChart.complEquiv hw h).symm.toRingHom)`. Establish `he : ∀ t, GlobalTheory.LFun.InertChart.complEquiv hw h t = toCompl h t` using `fun _ => rfl`. Establish `hs : (GlobalTheory.LFun.InertChart.complEquiv hw h).symm z = x.1`. Rewrite using `[RingEquiv.symm_apply_eq, he]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcz : c z = toCompl h (sigR (Fv F v) σ x.1)` using `by show GlobalTheory.LFun.InertChart.complEquiv hw h (sigR (Fv F v) σ ((GlobalTheory.LFun.InertChart.complEquiv hw h).symm z)) = _`. Rewrite using `[hs, he]`. Establish `hc : GlobalTheory.LFun.IsConjAt σ h c`. Unfold `GlobalTheory.LFun.IsConjAt`. Introduce `t`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `show GlobalTheory.LFun.InertChart.complEquiv hw h (sigR (Fv F v) σ ((GlobalTheory.LFun.InertChart.complEquiv hw h).symm (toCompl h t))) = _`. Rewrite using `[← he t, RingEquiv.symm_apply_apply, he]`. Take `⟨ϖ, hU⟩` from `GlobalTheory.LFun.InertChart.exists_isUnramInv hσ hw hc`. Establish `hvc : Valued.v (toCompl h (sigR (Fv F v) σ x.1)) = Valued.v z`. Rewrite using `[← hcz]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hU.2.1 z`. Establish `he1 : w.asIdeal.ramificationIdx (𝓞 F) = 1` using `GlobalTheory.LFun.isUnram_iff.mp (GlobalTheory.LFun.isUnram_of_isInertAt hw) w h`. Establish `hvN : Valued.v N = Valued.v z ^ 2`. Establish `hv` using `GlobalTheory.LFun.valued_complMap h hN0`. Rewrite `hv` using `[he1, pow_one, key', map_mul, hvc]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sq]`. Conclude with `hv.symm`. Establish `hz' : Valued.v z ≠ 0` using `(Valuation.ne_zero_iff _).mpr hz0`. Establish `hN' : Valued.v N ≠ 0` using `(Valuation.ne_zero_iff _).mpr hN0`. Rewrite using `[GlobalTheory.Doubling.absEv_apply, coe_nnnorm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `show ‖N‖ = _`. Rewrite using `[NumberField.FinitePlace.norm_def, WithZeroMulInt.toNNReal_neg_apply _ hN', WithZero.toAdd_unzero_eq_log, hvN, WithZero.log_pow, ordL_eq_neg_log (y := toCompl h x.1) hz']`. Establish `hq : ((Ideal.absNorm v.asIdeal : ℝ≥0) : ℝ) = (qV F v : ℝ)` using `by simp [qV]`. Rewrite using `[NNReal.coe_zpow, hq]`. Use `congr 1`.
-
-Rewrite using `[nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem absEv_inert : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (v : HeightOneSpectrum (𝓞 F)) (w : HeightOneSpectrum (𝓞 E)) (h : w.under (𝓞 F) = v), IsInertAt F E v w → ∀ x : (Fv F v ⊗[F] E)ˣ, (absEv F E v x : ℝ) = (qV F v : ℝ) ^ (-(2 * ordL (toCompl h x.1))) := by
   intro F E _ _ _ _ _ σ hσ v w h hw x

@@ -16,7 +16,7 @@ def cJ (n a : ℕ) (h : 2 * (a + 2) ≤ n) (p : Fin 2) : Fin n := ⟨n - 2 - a +
 def cM (L : Type) [Field L] (c : Fin 2 → Fin n) : Matrix (Fin n) (Fin 2) L := fun b p => if b = c p then 1 else 0
 
 /- English proof (translation)
-Use extensionality with `p r`. Simplify using `[Matrix.mul_apply, cM, Matrix.transpose_apply, eq_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cM_tr_mul (c c' : Fin 2 → Fin n) :
     (cM L c)ᵀ * cM L c' = fun p r => if c p = c' r then 1 else 0 := by
@@ -26,15 +26,15 @@ theorem cM_tr_mul (c c' : Fin 2 → Fin n) :
 def w2 (L : Type) [Field L] : Matrix (Fin 2) (Fin 2) L := !![0, 1; 1, 0]
 
 /- English proof (translation)
-Apply the tactic sequence `ext p r; fin_cases p <;> fin_cases r <;> simp [w2, Matrix.mul_apply, Fin.sum_univ_two]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem weyl_mul_weyl : w2 L * w2 L = 1 := by
   ext p r; fin_cases p <;> fin_cases r <;> simp [w2, Matrix.mul_apply, Fin.sum_univ_two]
 
 /- English proof (translation)
-Use extensionality with `b p`. Establish `hL : (antiJ L n * cM L (cI n a h)) b p = if (b : ℕ) + (cI n a h p : ℕ) + 1 = n then 1 else 0`. Simplify using `[Matrix.mul_apply, cM, antiJ]`. Rewrite using `[hL]`. Apply the tactic sequence `fin_cases p <;> simp [Matrix.mul_apply, cM, w2, Fin.sum_univ_two, cI, cJ, Fin.ext_iff] <;>`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `if_congr (by omega) rfl rfl`.
+A detailed English derivation is pending.
 -/
 theorem antiJ_mul_cI (a : ℕ) (h : 2 * (a + 2) ≤ n) :
     antiJ L n * cM L (cI n a h) = cM L (cJ n a h) * w2 L := by
@@ -46,9 +46,9 @@ theorem antiJ_mul_cI (a : ℕ) (h : 2 * (a + 2) ≤ n) :
     exact if_congr (by omega) rfl rfl
 
 /- English proof (translation)
-Use extensionality with `b p`. Establish `hL : (antiJ L n * cM L (cJ n a h)) b p = if (b : ℕ) + (cJ n a h p : ℕ) + 1 = n then 1 else 0`. Simplify using `[Matrix.mul_apply, cM, antiJ]`. Rewrite using `[hL]`. Apply the tactic sequence `fin_cases p <;> simp [Matrix.mul_apply, cM, w2, Fin.sum_univ_two, cI, cJ, Fin.ext_iff] <;>`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `if_congr (by omega) rfl rfl`.
+A detailed English derivation is pending.
 -/
 theorem antiJ_mul_cJ (a : ℕ) (h : 2 * (a + 2) ≤ n) :
     antiJ L n * cM L (cJ n a h) = cM L (cI n a h) * w2 L := by
@@ -60,7 +60,7 @@ theorem antiJ_mul_cJ (a : ℕ) (h : 2 * (a + 2) ≤ n) :
     exact if_congr (by omega) rfl rfl
 
 /- English proof (translation)
-Rewrite using `[cM_tr_mul]`. Use extensionality with `p r`. Simplify using `only [cI, Fin.ext_iff, Matrix.one_apply]`. Apply the tactic sequence `fin_cases p <;> fin_cases r <;> simp`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cI_tr_cI (a : ℕ) (h : 2 * (a + 2) ≤ n) : (cM L (cI n a h))ᵀ * cM L (cI n a h) = 1 := by
   rw [cM_tr_mul]
@@ -69,7 +69,7 @@ theorem cI_tr_cI (a : ℕ) (h : 2 * (a + 2) ≤ n) : (cM L (cI n a h))ᵀ * cM L
   fin_cases p <;> fin_cases r <;> simp
 
 /- English proof (translation)
-Rewrite using `[cM_tr_mul]`. Use extensionality with `p r`. Simplify using `only [cJ, Fin.ext_iff, Matrix.one_apply]`. Apply the tactic sequence `fin_cases p <;> fin_cases r <;> simp`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cJ_tr_cJ (a : ℕ) (h : 2 * (a + 2) ≤ n) : (cM L (cJ n a h))ᵀ * cM L (cJ n a h) = 1 := by
   rw [cM_tr_mul]
@@ -78,9 +78,9 @@ theorem cJ_tr_cJ (a : ℕ) (h : 2 * (a + 2) ≤ n) : (cM L (cJ n a h))ᵀ * cM L
   fin_cases p <;> fin_cases r <;> simp
 
 /- English proof (translation)
-Rewrite using `[cM_tr_mul]`. Use extensionality with `p r`. Use `p.2` as an intermediate fact. Use `r.2` as an intermediate fact. Simplify using `only [cI, cJ, Fin.ext_iff, Matrix.zero_apply]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg (by omega)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cI_tr_cJ (a : ℕ) (h : 2 * (a + 2) ≤ n) : (cM L (cI n a h))ᵀ * cM L (cJ n a h) = 0 := by
   rw [cM_tr_mul]
@@ -91,9 +91,9 @@ theorem cI_tr_cJ (a : ℕ) (h : 2 * (a + 2) ≤ n) : (cM L (cI n a h))ᵀ * cM L
   rw [if_neg (by omega)]
 
 /- English proof (translation)
-Rewrite using `[cM_tr_mul]`. Use extensionality with `p r`. Use `p.2` as an intermediate fact. Use `r.2` as an intermediate fact. Simplify using `only [cI, cJ, Fin.ext_iff, Matrix.zero_apply]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg (by omega)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cJ_tr_cI (a : ℕ) (h : 2 * (a + 2) ≤ n) : (cM L (cJ n a h))ᵀ * cM L (cI n a h) = 0 := by
   rw [cM_tr_mul]
@@ -107,13 +107,13 @@ def blockM (a : ℕ) (h : 2 * (a + 2) ≤ n) (X Y : Matrix (Fin 2) (Fin 2) L) : 
   1 + cM L (cI n a h) * (X - 1) * (cM L (cI n a h))ᵀ + cM L (cJ n a h) * (Y - 1) * (cM L (cJ n a h))ᵀ
 
 /- English proof (translation)
-Simplify using `[blockM]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blockM_one (a : ℕ) (h : 2 * (a + 2) ≤ n) : blockM (L := L) a h 1 1 = 1 := by
   simp [blockM]
 
 /- English proof (translation)
-Simplify using `only [add_mul, mul_add, one_mul, mul_one, h1, h2]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem units_mul_relation_rearrange_commRing {R : Type} [Ring R] (A B A' B' : R) (h1 : A * B' = 0) (h2 : B * A' = 0) :
     (1 + A + B) * (1 + A' + B') = 1 + (A + A' + A * A') + (B + B' + B * B') := by
@@ -121,13 +121,13 @@ theorem units_mul_relation_rearrange_commRing {R : Type} [Ring R] (A B A' B' : R
   abel
 
 /- English proof (translation)
-Establish `h1 : (cM L (cI n a h))ᵀ * cM L (cI n a h) = 1` using `cI_tr_cI a h`. Establish `h2 : (cM L (cJ n a h))ᵀ * cM L (cJ n a h) = 1` using `cJ_tr_cJ a h`. Establish `h3 : (cM L (cI n a h))ᵀ * cM L (cJ n a h) = 0` using `cI_tr_cJ a h`. Establish `h4 : (cM L (cJ n a h))ᵀ * cM L (cI n a h) = 0` using `cJ_tr_cI a h`. Simplify using `only [blockM]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Generalize the expression as in `cM L (cI n a h) = C at *`. Generalize the expression as in `cM L (cJ n a h) = D at *`. Establish `e1 : ∀ P Q : Matrix (Fin 2) (Fin 2) L, (C * P * Cᵀ) * (C * Q * Cᵀ) = C * (P * Q) * Cᵀ` using `fun P Q => by`. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : ∀ P Q : Matrix (Fin 2) (Fin 2) L, (D * P * Dᵀ) * (D * Q * Dᵀ) = D * (P * Q) * Dᵀ` using `fun P Q => by`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `e3 : ∀ P Q : Matrix (Fin 2) (Fin 2) L, (C * P * Cᵀ) * (D * Q * Dᵀ) = 0` using `fun P Q => by`. Combine the equalities or inequalities in the displayed calculation. Establish `e4 : ∀ P Q : Matrix (Fin 2) (Fin 2) L, (D * P * Dᵀ) * (C * Q * Cᵀ) = 0` using `fun P Q => by`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `f : ∀ (E : Matrix (Fin n) (Fin 2) L) (P Q : Matrix (Fin 2) (Fin 2) L), E * (P * Q - 1) * Eᵀ = E * (P - 1) * Eᵀ + E * (Q - 1) * Eᵀ + E * ((P - 1) * (Q - 1)) * Eᵀ` using `fun E P Q => by`. Rewrite using `[← Matrix.add_mul, ← Matrix.add_mul, ← Matrix.mul_add, ← Matrix.mul_add]`. Use `congr 2`. Use `noncomm_ring`. Rewrite using `[units_mul_relation_rearrange_commRing _ _ _ _ (e3 _ _) (e4 _ _), e1, e2, f C X X', f D Y Y']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blockM_mul (a : ℕ) (h : 2 * (a + 2) ≤ n) (X Y X' Y' : Matrix (Fin 2) (Fin 2) L) :
     blockM a h X Y * blockM a h X' Y' = blockM a h (X * X') (Y * Y') := by
@@ -161,13 +161,13 @@ def partner (σ : L →+* L) (h : GL (Fin 2) L) : Matrix (Fin 2) (Fin 2) L :=
   w2 L * cT σ ((h⁻¹ : GL (Fin 2) L) : Matrix (Fin 2) (Fin 2) L) * w2 L
 
 /- English proof (translation)
-Simplify using `[partner, cT_one, weyl_mul_weyl]`.
+Simplify using the standard rewrite rules.
 -/
 theorem partner_one (σ : L →+* L) : partner σ 1 = 1 := by
   simp [partner, cT_one, weyl_mul_weyl]
 
 /- English proof (translation)
-Simplify using `only [partner]`. Rewrite using `[_root_.mul_inv_rev, Units.val_mul, cT_mul]`. Generalize the expression as in `cT σ ((g⁻¹ : GL (Fin 2) L) : Matrix (Fin 2) (Fin 2) L) = P`. Generalize the expression as in `cT σ ((h⁻¹ : GL (Fin 2) L) : Matrix (Fin 2) (Fin 2) L) = Q`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Chain the equalities or inequalities of the calculation.
 -/
 theorem partner_mul (σ : L →+* L) (g h : GL (Fin 2) L) : partner σ (g * h) = partner σ g * partner σ h := by
   simp only [partner]
@@ -191,11 +191,11 @@ theorem rootGL_val (σ : L →+* L) (a : ℕ) (h : 2 * (a + 2) ≤ n) (g : GL (F
       blockM a h (g : Matrix (Fin 2) (Fin 2) L) (partner σ g) := rfl
 
 /- English proof (translation)
-Establish `hc : ∀ c : Fin 2 → Fin n, (cM L c).map σ = cM L c` using `fun c => by`. Apply the tactic sequence `ext b p; simp only [cM, Matrix.map_apply]; split_ifs <;> simp`. Establish `e : ∀ (c : Fin 2 → Fin n) (P : Matrix (Fin 2) (Fin 2) L), cT σ (cM L c * P * (cM L c)ᵀ) = cM L c * cT σ P * (cM L c)ᵀ` using `fun c P => by`. Simplify using `only [cT_mul]`. Establish `h1 : cT σ (cM L c) = (cM L c)ᵀ` using `by simp [cT, hc]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : cT σ (cM L c)ᵀ = cM L c`. Simplify using `only [cT, ← Matrix.transpose_map, hc, Matrix.transpose_transpose]`. Rewrite using `[h1, h2, Matrix.mul_assoc]`. Establish `hadd : ∀ P Q : Matrix (Fin n) (Fin n) L, cT σ (P + Q) = cT σ P + cT σ Q` using `fun P Q => by`. Use extensionality with `b p`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[cT]`. Establish `hsub : ∀ P Q : Matrix (Fin 2) (Fin 2) L, cT σ (P - Q) = cT σ P - cT σ Q` using `fun P Q => by`. Use extensionality with `b p`. Simplify using `[cT]`. Simplify using `only [blockM, hadd, e, cT_one, hsub]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem cT_blockM (σ : L →+* L) (a : ℕ) (h : 2 * (a + 2) ≤ n) (X Y : Matrix (Fin 2) (Fin 2) L) :
     cT σ (blockM a h X Y) = blockM a h (cT σ X) (cT σ Y) := by
@@ -215,27 +215,27 @@ theorem cT_blockM (σ : L →+* L) (a : ℕ) (h : 2 * (a + 2) ≤ n) (X Y : Matr
   simp only [blockM, hadd, e, cT_one, hsub]
 
 /- English proof (translation)
-Establish `hJC` using `antiJ_mul_cI (L := L) a h`. Establish `hJD` using `antiJ_mul_cJ (L := L) a h`. Establish `hCC` using `cI_tr_cI (L := L) a h`. Establish `hDD` using `cJ_tr_cJ (L := L) a h`. Establish `hCD` using `cI_tr_cJ (L := L) a h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDC` using `cJ_tr_cI (L := L) a h`. Establish `hJt : (antiJ L n)ᵀ = antiJ L n`. Use extensionality with `b d; simp only [antiJ, Matrix.transpose_apply]; exact if_congr (by omega) rfl rfl`. Establish `hwt : (w2 L)ᵀ = w2 L`. Apply the tactic sequence `ext p r; fin_cases p <;> fin_cases r <;> simp [w2]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hCJ : (cM L (cI n a h))ᵀ * antiJ L n = w2 L * (cM L (cJ n a h))ᵀ`. Use `congrArg Matrix.transpose hJC` as an intermediate fact. Simplify `this` using `only [Matrix.transpose_mul, hJt, hwt]`. Establish `hDJ : (cM L (cJ n a h))ᵀ * antiJ L n = w2 L * (cM L (cI n a h))ᵀ`. Use `congrArg Matrix.transpose hJD` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `only [Matrix.transpose_mul, hJt, hwt]`. Establish `hsub : ∀ P Q : Matrix (Fin 2) (Fin 2) L, cT σ (P - Q) = cT σ P - cT σ Q` using `fun P Q => by`. Use extensionality with `b p`. Simplify using `[cT]`. Rewrite using `[cT_blockM]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [blockM]`. Generalize the expression as in `cM L (cI n a h) = C at *`. Generalize the expression as in `cM L (cJ n a h) = D at *`. Generalize the expression as in `antiJ L n = J at *`. Generalize the expression as in `hA : cT σ X = A at *`.
+Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `hB : cT σ Y = B at *`. Establish `s1 : (1 + C * (A - 1) * Cᵀ + D * (B - 1) * Dᵀ) * J = J + C * ((A - 1) * w2 L) * Dᵀ + D * ((B - 1) * w2 L) * Cᵀ`. Simplify using `only [Matrix.add_mul, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc (C * (A - 1)), hCJ, Matrix.mul_assoc (D * (B - 1)), hDJ]`. Simplify using `only [Matrix.mul_assoc]`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `s2 : ∀ P Q U W : Matrix (Fin 2) (Fin 2) L, (J + C * P * Dᵀ + D * Q * Cᵀ) * (1 + C * U * Cᵀ + D * W * Dᵀ) = J + D * (w2 L * U + Q + Q * U) * Cᵀ + C * (w2 L * W + P + P * W) * Dᵀ` using `fun P Q U W => by`. Establish `t1 : J * (C * U * Cᵀ) = D * (w2 L * U) * Cᵀ`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hJC, Matrix.mul_assoc D]`. Establish `t2 : J * (D * W * Dᵀ) = C * (w2 L * W) * Dᵀ`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hJD, Matrix.mul_assoc C]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `t3 : (C * P * Dᵀ) * (C * U * Cᵀ) = 0`. Combine the equalities or inequalities in the displayed calculation. Establish `t4 : (C * P * Dᵀ) * (D * W * Dᵀ) = C * (P * W) * Dᵀ`. Combine the equalities or inequalities in the displayed calculation. Establish `t5 : (D * Q * Cᵀ) * (C * U * Cᵀ) = D * (Q * U) * Cᵀ`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `t6 : (D * Q * Cᵀ) * (D * W * Dᵀ) = 0`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.mul_one, t1, t2, t3, t4, t5, t6]`. Normalize the expressions using the abelian group laws.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[s1, s2]`. Establish `z1 : w2 L * (Y - 1) + (A - 1) * w2 L + (A - 1) * w2 L * (Y - 1) = 0`. Establish `: w2 L * (Y - 1) + (A - 1) * w2 L + (A - 1) * w2 L * (Y - 1) = A * w2 L * Y - w2 L` using `by noncomm_ring`. Rewrite using `[this, h1, sub_self]`. Establish `z2 : w2 L * (X - 1) + (B - 1) * w2 L + (B - 1) * w2 L * (X - 1) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: w2 L * (X - 1) + (B - 1) * w2 L + (B - 1) * w2 L * (X - 1) = B * w2 L * X - w2 L` using `by noncomm_ring`. Rewrite using `[this, h2, sub_self]`. Rewrite using `[z1, z2]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem blockM_unitary (σ : L →+* L) (a : ℕ) (h : 2 * (a + 2) ≤ n) (X Y : Matrix (Fin 2) (Fin 2) L)
     (h1 : cT σ X * w2 L * Y = w2 L) (h2 : cT σ Y * w2 L * X = w2 L) :
@@ -301,27 +301,25 @@ theorem blockM_unitary (σ : L →+* L) (a : ℕ) (h : 2 * (a + 2) ≤ n) (X Y :
   simp
 
 /- English proof (translation)
-Apply the tactic sequence `ext p r; fin_cases p <;> fin_cases r <;> simp [w2, cT]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem conj_transpose_antidiag_fixed (σ : L →+* L) : cT σ (w2 L) = w2 L := by
   ext p r; fin_cases p <;> fin_cases r <;> simp [w2, cT]
 
 /- English proof (translation)
-Use extensionality with `p r`. Simplify using `[cT, hσ]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_cT (σ : L →+* L) (hσ : ∀ x, σ (σ x) = x) (X : Matrix (Fin 2) (Fin 2) L) : cT σ (cT σ X) = X := by
   ext p r; simp [cT, hσ]
 
 /- English proof (translation)
-Use `show cT σ ((rootGL σ a h g : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * antiJ L n * _ = antiJ L n`. Rewrite using `[rootGL_val]`. Establish `hw` using `weyl_mul_weyl (L := L)`. Establish `hg1 : ((g⁻¹ : GL (Fin 2) L) : Matrix (Fin 2) (Fin 2) L) * (g : Matrix (Fin 2) (Fin 2) L) = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hg2 : (g : Matrix (Fin 2) (Fin 2) L) * ((g⁻¹ : GL (Fin 2) L) : Matrix (Fin 2) (Fin 2) L) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Use `blockM_unitary σ a h _ _ ?_ ?_` and prove the remaining obligations. Simplify using `only [partner]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = cT σ (((g⁻¹ : GL (Fin 2) L) : Matrix (Fin 2) (Fin 2) L) * (g : Matrix (Fin 2) (Fin 2) L)) * w2 L := by`. Rewrite using `[hw, cT_mul]`. Simplify using the standard rewrite rules. Use `_ = _ := by rw [hg1, cT_one, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Simplify using `only [partner, cT_mul, conj_transpose_antidiag_fixed, cT_cT σ hσ]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = w2 L * (((g⁻¹ : GL (Fin 2) L) : Matrix (Fin 2) (Fin 2) L) * (g : Matrix (Fin 2) (Fin 2) L)) := by`. Rewrite using `[hw]`.
-
-Simplify using `[Matrix.mul_assoc]`. Use `_ = _ := by rw [hg1, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rootGL_mem (σ : L →+* L) (hσ : ∀ x, σ (σ x) = x) (a : ℕ) (h : 2 * (a + 2) ≤ n) (g : GL (Fin 2) L) :
     rootGL σ a h g ∈ GU σ n := by
@@ -369,13 +367,13 @@ def wU (L : Type) [Field L] : GL (Fin 2) L where
   inv_val := weyl_mul_weyl
 
 /- English proof (translation)
-Apply the tactic sequence `ext p r; fin_cases p <;> fin_cases r <;> simp [nU, Matrix.mul_apply, Fin.sum_univ_two, add_comm]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem nU_add (x y : L) : nU (x + y) = nU x * nU y := by
   ext p r; fin_cases p <;> fin_cases r <;> simp [nU, Matrix.mul_apply, Fin.sum_univ_two, add_comm]
 
 /- English proof (translation)
-The claim follows from `Units.ext weyl_mul_weyl`.
+A detailed English derivation is pending.
 -/
 theorem wU_mul_wU : wU L * wU L = 1 := Units.ext weyl_mul_weyl
 
@@ -386,21 +384,21 @@ def sR (σ : L →+* L) (hσ : ∀ x, σ (σ x) = x) (a : ℕ) (h : 2 * (a + 2) 
   rootHom σ hσ a h (wU L)
 
 /- English proof (translation)
-Simplify using `only [uR, nU_add, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem uR_add (σ : L →+* L) (hσ : ∀ x, σ (σ x) = x) (a : ℕ) (h : 2 * (a + 2) ≤ n) (x y : L) :
     uR σ hσ a h (x + y) = uR σ hσ a h x * uR σ hσ a h y := by
   simp only [uR, nU_add, map_mul]
 
 /- English proof (translation)
-Simplify using `only [sR, ← map_mul, wU_mul_wU, map_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sR_mul_sR (σ : L →+* L) (hσ : ∀ x, σ (σ x) = x) (a : ℕ) (h : 2 * (a + 2) ≤ n) :
     sR σ hσ a h * sR σ hσ a h = 1 := by
   simp only [sR, ← map_mul, wU_mul_wU, map_one]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, cM, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h1 : b = c p <;> by_cases h2 : d = c r <;> simp [h1, h2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cM_conj_apply (c : Fin 2 → Fin n) (P : Matrix (Fin 2) (Fin 2) L) (b d : Fin n) :
     (cM L c * P * (cM L c)ᵀ) b d = ∑ p, ∑ r, if b = c p ∧ d = c r then P p r else 0 := by
@@ -410,7 +408,7 @@ theorem cM_conj_apply (c : Fin 2 → Fin n) (P : Matrix (Fin 2) (Fin 2) L) (b d 
   by_cases h1 : b = c p <;> by_cases h2 : d = c r <;> simp [h1, h2]
 
 /- English proof (translation)
-Introduce `p r e` and use `by have := congrArg Fin.val e simp only [cI] at this exact Fin.ext (by omega)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cI_injective (a : ℕ) (h : 2 * (a + 2) ≤ n) : Function.Injective (cI n a h) := fun p r e => by
   have := congrArg Fin.val e
@@ -418,7 +416,7 @@ theorem cI_injective (a : ℕ) (h : 2 * (a + 2) ≤ n) : Function.Injective (cI 
   exact Fin.ext (by omega)
 
 /- English proof (translation)
-Introduce `p r e` and use `by have := congrArg Fin.val e simp only [cJ] at this exact Fin.ext (by omega)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cJ_injective (a : ℕ) (h : 2 * (a + 2) ≤ n) : Function.Injective (cJ n a h) := fun p r e => by
   have := congrArg Fin.val e
@@ -426,7 +424,7 @@ theorem cJ_injective (a : ℕ) (h : 2 * (a + 2) ≤ n) : Function.Injective (cJ 
   exact Fin.ext (by omega)
 
 /- English proof (translation)
-Rewrite using `[cM_conj_apply]`. Simplify using `[hc.eq_iff, ite_and]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cM_conj_same {c : Fin 2 → Fin n} (hc : Function.Injective c) (P : Matrix (Fin 2) (Fin 2) L) (p r : Fin 2) :
     (cM L c * P * (cM L c)ᵀ) (c p) (c r) = P p r := by
@@ -434,9 +432,7 @@ theorem cM_conj_same {c : Fin 2 → Fin n} (hc : Function.Injective c) (P : Matr
   simp [hc.eq_iff, ite_and]
 
 /- English proof (translation)
-Rewrite using `[cM_conj_apply]`. Use `Finset.sum_eq_zero fun p _ => Finset.sum_eq_zero fun r _ => if_neg ?_` and prove the remaining obligations. Introduce and unpack `⟨h1, h2⟩`. Break down `h with h | h` into its components or cases. Conclude with `h p h1`.
-
-Conclude with `h r h2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem cM_conj_out {c : Fin 2 → Fin n} (P : Matrix (Fin 2) (Fin 2) L) {b d : Fin n}
     (h : (∀ p, b ≠ c p) ∨ ∀ p, d ≠ c p) : (cM L c * P * (cM L c)ᵀ) b d = 0 := by
@@ -448,7 +444,7 @@ theorem cM_conj_out {c : Fin 2 → Fin n} (P : Matrix (Fin 2) (Fin 2) L) {b d : 
   · exact h r h2
 
 /- English proof (translation)
-Introduce `e` and use `by have := congrArg Fin.val e have := p.2 have := r.2 simp only [cI, cJ] at * omega`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cI_ne_cJ (a : ℕ) (h : 2 * (a + 2) ≤ n) (p r : Fin 2) : cI n a h p ≠ cJ n a h r := fun e => by
   have := congrArg Fin.val e
@@ -458,7 +454,7 @@ theorem cI_ne_cJ (a : ℕ) (h : 2 * (a + 2) ≤ n) (p r : Fin 2) : cI n a h p �
   omega
 
 /- English proof (translation)
-Simplify using `only [blockM, Matrix.add_apply]`. Rewrite using `[cM_conj_same (cI_injective a h), cM_conj_out _ (Or.inl fun t => cI_ne_cJ a h p t)]`. Establish `: (1 : Matrix (Fin n) (Fin n) L) (cI n a h p) (cI n a h r) = (1 : Matrix (Fin 2) (Fin 2) L) p r`. Simplify using `[Matrix.one_apply, (cI_injective a h).eq_iff]`. Simplify using `[this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem blockM_cI (a : ℕ) (h : 2 * (a + 2) ≤ n) (X Y : Matrix (Fin 2) (Fin 2) L) (p r : Fin 2) :
     blockM a h X Y (cI n a h p) (cI n a h r) = X p r := by
@@ -469,7 +465,7 @@ theorem blockM_cI (a : ℕ) (h : 2 * (a + 2) ≤ n) (X Y : Matrix (Fin 2) (Fin 2
   simp [this]
 
 /- English proof (translation)
-Simplify using `only [blockM, Matrix.add_apply]`. Rewrite using `[cM_conj_same (cJ_injective a h), cM_conj_out _ (Or.inl fun t => (cI_ne_cJ a h t p).symm)]`. Establish `: (1 : Matrix (Fin n) (Fin n) L) (cJ n a h p) (cJ n a h r) = (1 : Matrix (Fin 2) (Fin 2) L) p r`. Simplify using `[Matrix.one_apply, (cJ_injective a h).eq_iff]`. Simplify using `[this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem blockM_cJ (a : ℕ) (h : 2 * (a + 2) ≤ n) (X Y : Matrix (Fin 2) (Fin 2) L) (p r : Fin 2) :
     blockM a h X Y (cJ n a h p) (cJ n a h r) = Y p r := by
@@ -480,7 +476,7 @@ theorem blockM_cJ (a : ℕ) (h : 2 * (a + 2) ≤ n) (X Y : Matrix (Fin 2) (Fin 2
   simp [this]
 
 /- English proof (translation)
-Simplify using `only [blockM, Matrix.add_apply]`. Rewrite using `[cM_conj_out _ h1, cM_conj_out _ h2]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem blockM_out (a : ℕ) (h : 2 * (a + 2) ≤ n) (X Y : Matrix (Fin 2) (Fin 2) L) {b d : Fin n}
     (h1 : (∀ p, b ≠ cI n a h p) ∨ ∀ p, d ≠ cI n a h p) (h2 : (∀ p, b ≠ cJ n a h p) ∨ ∀ p, d ≠ cJ n a h p) :
@@ -500,7 +496,7 @@ section Main
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {n : ℕ} {ϖ : L} {σ : L →+* L} {q : ℕ}
 
 /- English proof (translation)
-Establish `h0 : Valued.v x ≠ 0` using `by simpa using hx`. Unfold `ordL`. Rewrite using `[dif_neg h0, neg_neg]`. Use `conv_lhs => rw [← WithZero.coe_unzero h0]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem v_eq_exp' {x : L} (hx : x ≠ 0) : Valued.v x = WithZero.exp (-ordL x) := by
   have h0 : Valued.v x ≠ 0 := by simpa using hx
@@ -510,7 +506,7 @@ theorem v_eq_exp' {x : L} (hx : x ≠ 0) : Valued.v x = WithZero.exp (-ordL x) :
   rfl
 
 /- English proof (translation)
-Establish `h1` using `v_eq_exp' (inv_ne_zero hx)`. Rewrite `h1` using `[map_inv₀, v_eq_exp' hx, ← WithZero.exp_neg]`. Use `WithZero.exp_injective h1` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ordL_inv' {x : L} (hx : x ≠ 0) : ordL x⁻¹ = -ordL x := by
   have h1 := v_eq_exp' (inv_ne_zero hx)
@@ -519,9 +515,9 @@ theorem ordL_inv' {x : L} (hx : x ≠ 0) : ordL x⁻¹ = -ordL x := by
   omega
 
 /- English proof (translation)
-Establish `h1 : ordL (1 : L) = 0` using `by simp [ordL]; rfl`. Unfold `chiDeltaU`. Use `Finset.prod_eq_one fun k _ => ?_` and prove the remaining obligations. Use `split_ifs with hk`. Rewrite using `[hu.2, h1]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem chi_unip (χ : Fin (n / 2) → ℂ) (u : GU σ n) (hu : IsUnipU u) : chiDeltaU q χ u = 1 := by
   have h1 : ordL (1 : L) = 0 := by simp [ordL]; rfl
@@ -532,14 +528,14 @@ theorem chi_unip (χ : Fin (n / 2) → ℂ) (u : GU σ n) (hu : IsUnipU u) : chi
   · rfl
 
 /- English proof (translation)
-The claim follows from `P.fIwasawa_chi_mul σ q _ (fun i => (χ i).ne_zero) hq b c ((P.spherical_upper_iff _).1 hb) ((P.spherical_upper_iff _).1 hc)`.
+A detailed English derivation is pending.
 -/
 theorem chi_borel_mul (hq : (q : ℂ) ≠ 0) (χ : Fin (n / 2) → ℂˣ) (b c : GU σ n) (hb : IsBorelU b) (hc : IsBorelU c) :
     chiDeltaU q (fun k => (χ k : ℂ)) (b * c) = chiDeltaU q (fun k => (χ k : ℂ)) b * chiDeltaU q (fun k => (χ k : ℂ)) c :=
   P.fIwasawa_chi_mul σ q _ (fun i => (χ i).ne_zero) hq b c ((P.spherical_upper_iff _).1 hb) ((P.spherical_upper_iff _).1 hc)
 
 /- English proof (translation)
-Use `(P.spherical_upper_iff _).2 ?_` and prove the remaining obligations. Rewrite using `[Subgroup.coe_mul]`. Conclude with `P.spherical_upper_mul _ _ ((P.spherical_upper_iff _).1 hb) ((P.spherical_upper_iff _).1 hc)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem borel_mul (b c : GU σ n) (hb : IsBorelU b) (hc : IsBorelU c) : IsBorelU (b * c) := by
   refine (P.spherical_upper_iff _).2 ?_

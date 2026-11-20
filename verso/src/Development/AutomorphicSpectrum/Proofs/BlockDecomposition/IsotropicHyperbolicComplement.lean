@@ -7,23 +7,23 @@ open Matrix
 namespace GlobalTheory.CompanionTheory.Dblock.CompFrame
 
 /- English proof (translation)
-Introduce `n D ε C h1 h2`. Establish `hJJ : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1` using `Formalism.REAL.Jm_mul_self ε`. Establish `hJh : (Formalism.REAL.Jm ε)ᴴ = Formalism.REAL.Jm ε` using `GlobalTheory.CompanionTheory.HCSide.CentreNone.Jm_herm ε`. Generalize the expression as in `hJ : Formalism.REAL.Jm ε = J at *`. Establish `hAA : C * Cᴴ * (C * Cᴴ) = C * Cᴴ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc Cᴴ, h1, Matrix.one_mul]`. Establish `hAB : C * Cᴴ * (J * C * Cᴴ * J) = 0`. Establish `e : C * Cᴴ * (J * C * Cᴴ * J) = C * (Cᴴ * J * C) * Cᴴ * J`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e, h2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hBA : J * C * Cᴴ * J * (C * Cᴴ) = 0`. Establish `e : J * C * Cᴴ * J * (C * Cᴴ) = J * C * (Cᴴ * J * C) * Cᴴ`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e, h2]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hBB : J * C * Cᴴ * J * (J * C * Cᴴ * J) = J * C * Cᴴ * J`. Establish `e : J * C * Cᴴ * J * (J * C * Cᴴ * J) = J * C * (Cᴴ * (J * J) * C) * Cᴴ * J`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e, hJJ, Matrix.mul_one, h1, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hPh : (1 - C * Cᴴ - J * C * Cᴴ * J)ᴴ = 1 - C * Cᴴ - J * C * Cᴴ * J`. Simplify using `only [conjTranspose_sub, conjTranspose_one, conjTranspose_mul, conjTranspose_conjTranspose, hJh, Matrix.mul_assoc]`. Establish `hPP : (1 - C * Cᴴ - J * C * Cᴴ * J) * (1 - C * Cᴴ - J * C * Cᴴ * J) = 1 - C * Cᴴ - J * C * Cᴴ * J`. Simplify using `only [Matrix.sub_mul, Matrix.mul_sub, Matrix.one_mul, Matrix.mul_one, hAA, hAB, hBA, hBB]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Establish `hPJ : J * (1 - C * Cᴴ - J * C * Cᴴ * J) = (1 - C * Cᴴ - J * C * Cᴴ * J) * J`. Establish `e1 : J * (J * C * Cᴴ * J) = C * Cᴴ * J`. Simplify using `only [← Matrix.mul_assoc, hJJ, Matrix.one_mul]`. Establish `e2 : J * C * Cᴴ * J * J = J * (C * Cᴴ)`. Rewrite using `[Matrix.mul_assoc _ J J, hJJ, Matrix.mul_one, Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.sub_mul, Matrix.mul_sub, Matrix.one_mul, Matrix.mul_one, e1, e2]`. Normalize the expressions using the abelian group laws. Substitute `hJ` using the available equality. Take `⟨m, ε', R, r1, r2, r3⟩` from `GlobalTheory.CompanionTheory.HCSide.CentreNone.exists_frame_J hPh hPP hPJ`. Use `⟨m, R, ε', r1, r3, ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hCP : Cᴴ * (1 - C * Cᴴ - Formalism.REAL.Jm ε * C * Cᴴ * Formalism.REAL.Jm ε) = 0`. Establish `e : Cᴴ * (Formalism.REAL.Jm ε * C * Cᴴ * Formalism.REAL.Jm ε) = (Cᴴ * Formalism.REAL.Jm ε * C) * Cᴴ * Formalism.REAL.Jm ε`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_sub, Matrix.mul_sub, e, h2, ← Matrix.mul_assoc, h1]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e : R = (1 - C * Cᴴ - Formalism.REAL.Jm ε * C * Cᴴ * Formalism.REAL.Jm ε) * R`. Rewrite using `[← r2, Matrix.mul_assoc, r1, Matrix.mul_one]`. Rewrite using `[e, ← Matrix.mul_assoc, hCP, Matrix.zero_mul]`. Rewrite using `[r2]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem exists_comp_frame : ∀ {n D : ℕ} (ε : Fin n → Bool) (C : Matrix (Fin n) (Fin D) ℂ),
     Cᴴ * C = 1 → Cᴴ * Formalism.REAL.Jm ε * C = 0 →

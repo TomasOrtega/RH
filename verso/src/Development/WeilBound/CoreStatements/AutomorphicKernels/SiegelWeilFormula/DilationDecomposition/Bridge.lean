@@ -15,27 +15,27 @@ open GlobalTheory.Doubling (absE)
 namespace PositivityTheory.SiegelWeilFormula.Kdil
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.HolFamily.continuousOn_iteratedDeriv_family`.
+A detailed English derivation is pending.
 -/
 theorem derCont : DerCont := GlobalTheory.CompanionTheory.HolFamily.continuousOn_iteratedDeriv_family
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.Strip.strip_open_real_discs`.
+A detailed English derivation is pending.
 -/
 theorem stripOK : StripOK := GlobalTheory.CompanionTheory.Strip.strip_open_real_discs
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.NumberFieldMatrix.matrix_countable`.
+A detailed English derivation is pending.
 -/
 theorem matCount : MatCount := GlobalTheory.CompanionTheory.NumberFieldMatrix.matrix_countable
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.HolMean.holomorphic_mean`.
+A detailed English derivation is pending.
 -/
 theorem holMean : HolMean := GlobalTheory.CompanionTheory.HolMean.holomorphic_mean
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.BigCell.dense_bigCell₂₂`.
+A detailed English derivation is pending.
 -/
 theorem bigDense : BigDense := GlobalTheory.CompanionTheory.BigCell.dense_bigCell₂₂
 

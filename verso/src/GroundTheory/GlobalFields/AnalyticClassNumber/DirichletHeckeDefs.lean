@@ -52,7 +52,7 @@ theorem coe_galoisCharacter (σ : Gal(maxCyclotomic/ℚ)) :
   rfl
 
 /- English proof (translation)
-Establish `h : Continuous fun u : ℤ̂ˣ ↦ (χ (ProfiniteInteger.proj (modulus N) (u : ℤ̂)) : ℂ)` using `continuous_of_discreteTopology.comp ((ProfiniteInteger.continuous_proj _).comp Units.continuous_val)`. Conclude with `continuous_induced_rng.2 h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_toCircle_unitsMod : Continuous fun u : ℤ̂ˣ ↦ toCircle χ (unitsMod N u) := by
   have h : Continuous fun u : ℤ̂ˣ ↦ (χ (ProfiniteInteger.proj (modulus N) (u : ℤ̂)) : ℂ) :=
@@ -79,7 +79,7 @@ theorem heckeCharacter_apply (x : IdeleClassGroup ℚ) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[heckeCharacter_apply, coe_galoisCharacter, cycCharacter_reciprocityMap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coe_heckeCharacter_apply (x : IdeleClassGroup ℚ) :
     (heckeCharacter χ x : ℂ) = χ (ProfiniteInteger.proj (modulus N) ((unitPart x)⁻¹ : ℤ̂ˣ)) := by

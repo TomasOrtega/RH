@@ -17,9 +17,9 @@ namespace GlobalTheory.RowReal
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
 /- English proof (translation)
-Establish `hm1 : 1 ≤ D.R.m - i` using `by omega`. Establish `hm2 : D.R.m - i ≤ D.R.m` using `by omega`. Establish `h0 : HasInfExp D (G.ch.chi (D.R.m - i)) τ (cen D sc.cGap τ (D.R.m - i) : ℚ)` using `GlobalTheory.HeckeInfExp.hasInfExp_of_chrEq D _ _ (fun τ => (cen D sc.cGap τ (D.R.m - i) : ℚ)) (G.ch.chi_eq _ hm1 hm2) ⟨fun τ => 2 * cen D sc.cGap τ (D.R.m - i), fun τ => by push_cast; ring, G.ch.inf _ hm1 hm2⟩ τ`. Establish `heta : HasInfExp D L.eta τ (1 / 2)` using `GlobalTheory.HeckeInfExp.hasInfExp_of_chrEq D _ _ _ hL.eta (GlobalTheory.Chain.StepVac.hasInfQ_tau (a := fun _ => 1 / 2) ⟨_, fun _ => by norm_num, L.C.isEta.inf⟩) τ`. Unfold `Formalism.IndefR.Lift.attChr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `split_ifs`. Rewrite using `[sub_eq_add_neg]`. Conclude with `GlobalTheory.Chain.StepVac.hasInfExp_mul h0 (GlobalTheory.Chain.StepVac.hasInfExp_inv heta)`. Simplify using `using h0`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hasInfExp_attChr_chi {μ0 : T} (hL : L.Is μ0) {i : ℕ} (hi : i < D.R.m) (n : ℕ) (τ : D.what₂.Tau) :
     HasInfExp D (Formalism.IndefR.Lift.attChr (G.ch.chi (D.R.m - i)) L.eta n) τ
@@ -39,7 +39,7 @@ theorem hasInfExp_attChr_chi {μ0 : T} (hL : L.Is μ0) {i : ℕ} (hi : i < D.R.m
   · simpa using h0
 
 /- English proof (translation)
-Use `show (num D sc.cGap τ).cen ((i.rev : ℕ) + 1) = _`. Rewrite using `[Fin.val_rev, show D.R.m - (i + 1) + 1 = D.R.m - i by omega]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rowEntries_c_rev (τ : D.what₂.Tau) (i : Fin D.R.m) :
     (rowEntries D sc.cGap τ).c i.rev = cen D sc.cGap τ (D.R.m - i) := by
@@ -48,7 +48,7 @@ theorem rowEntries_c_rev (τ : D.what₂.Tau) (i : Fin D.R.m) :
   rfl
 
 /- English proof (translation)
-Break down `Nat.even_or_odd n with ⟨k, hk⟩ | ⟨k, hk⟩` into its components or cases. Rewrite using `[if_neg (Nat.not_odd_iff_even.2 ⟨k, hk⟩), hk, show (k + k + 1) / 2 = k by omega] push_cast; ring`. Rewrite using `[if_pos ⟨k, hk⟩, hk, show (2 * k + 1 + 1) / 2 = k + 1 by omega] push_cast; ring`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem half_ceil (n : ℕ) : (((n + 1) / 2 : ℕ) : ℚ) = (n : ℚ) / 2 + if Odd n then 1 / 2 else 0 := by
   rcases Nat.even_or_odd n with ⟨k, hk⟩ | ⟨k, hk⟩
@@ -58,9 +58,9 @@ theorem half_ceil (n : ℕ) : (((n + 1) / 2 : ℕ) : ℚ) = (n : ℚ) / 2 + if O
     push_cast; ring
 
 /- English proof (translation)
-Establish `hX : DefNode D.R.m (.grid n D.R.m)` using `⟨Nat.lt_succ_iff.1 hn, rfl⟩`. Establish `hW` using `posOnb_of_defNode W μ0 hL hX`. Establish `hB : IsUnit (W.onb (.grid n D.R.m) τ).det`. Establish `h` using `congrArg Matrix.det (hW τ)`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `isUnit_iff_ne_zero.2 fun h0 => by rw [h0, mul_zero] at h; exact zero_ne_one h`. Rewrite using `[ptGrid_le W g hn, compAt_kappa_snd g ⟨n, hn⟩ hW τ, Matrix.det_mul, Matrix.det_mul, Matrix.det_nonsing_inv, mul_right_comm, Ring.mul_inverse_cancel _ hB, one_mul]`. Conclude with `Matrix.det_submatrix_equiv_self (finCongr (rank_gridM G (Nat.lt_succ_iff.1 hn))) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_compAt_ptGrid {μ0 : T} (hL : L.Is μ0) (W : G.Weil) (g : Gc D.what₂.Tau (rowSizes D)) (n : ℕ) (hn : n < D.R.m + 1)
     (τ : D.what₂.Tau) :
@@ -77,17 +77,17 @@ theorem det_compAt_ptGrid {μ0 : T} (hL : L.Is μ0) (W : G.Weil) (g : Gc D.what�
   exact Matrix.det_submatrix_equiv_self (finCongr (rank_gridM G (Nat.lt_succ_iff.1 hn))) _
 
 /- English proof (translation)
-Introduce `D T L sc G μ0 hL W U S g t i d hd`. Establish `hp : DefPair D.R.m (.chi (i : ℕ) D.R.m : Pair T)` using `⟨i.2, rfl⟩`. Establish `hn` using `DefPair.nodes hp`. Establish `hom` using `W.om_is (.chi (i : ℕ) D.R.m) (by`. Simplify using `only [DefPair, DefNode] at hp hn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pair.InRange, Node.InRange]`. Use the proof step `omega)`. Take `⟨h1, h2⟩` from `GlobalTheory.T.gridFiniteDatumVector_theta_fockVacuum W S.Z hp d hd`. Establish `hf : IsThetaFunO W.ψ _ _ (movedVec t S d) ∧ ∀ τ, IsFockVacAt (heisO W.ψ _ _) W.θ τ (cplxO (G.cartS W.cart (.chi (i : ℕ) D.R.m) τ) (G.onT W.cart (.chi (i : ℕ) D.R.m) τ)) (movedVec t S d)` using `GlobalTheory.T.weil_finitePoint_preserves_fockVacuum D W.ψ W.θ _ _ _ _ (W.om _) hom W.θ_is _ _ _ h1 h2 _ (GlobalTheory.FockReal.negGA_mem_GfC _ (S.N.u _).2) _ (S.N.u _).2`. Establish `hrS : (G.pS (.chi (i : ℕ) D.R.m : Pair T)).rank = (rowSizes D).nC ((i : ℕ) + 1)` using `rank_gridM G (by omega)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrT : (G.pT (.chi (i : ℕ) D.R.m : Pair T)).rank = (rowSizes D).nC (i : ℕ)` using `rank_gridM G (by omega)`. Establish `key` using `GlobalTheory.FockReal.om_fockIn hL W W.onb hp (fun X hX τ => GlobalTheory.FockReal.onb_def hL W hX τ) (fun τ => (cen D sc.cGap τ (D.R.m - i) : ℚ) - if Odd (G.pS (.chi (i : ℕ) D.R.m : Pair T)).rank then 1 / 2 else 0) (fun τ => (cen D sc.cGap τ (D.R.m - i) : ℚ) - if Odd (G.pT (.chi …`. Establish `e1 : fockIn W W.onb (.chi (i : ℕ) D.R.m) (movedVec t S d) 1 = movedVec t S d` using `GlobalTheory.FiniteFock.pureTensorO_one _ _ _ _ _ _ _ _ _`. Rewrite `key` using `[show GlobalTheory.FockReal.realSubst W W.onb (.chi (i : ℕ) D.R.m) (ptGrid W g i) (ptGrid W g (i + 1)) 1 = 1 from map_one _, e1]`. Rewrite using `[key]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Simplify using `only [GlobalTheory.FockReal.realChar, GridData.toPair, mt_negGA]`. Simplify using `only [det_compAt_ptGrid hL W g (i : ℕ) (by omega), det_compAt_ptGrid hL W g ((i : ℕ) + 1) (by omega)]`. Simplify using `only [colScal, detChar, detU, MonoidHom.coe_mk, OneHom.coe_mk, Units.val_mul, Units.coe_prod, Units.val_zpow_eq_zpow_val, MonoidHom.coe_toHomUnits, MonoidHom.coe_comp, Function.comp_apply]`. Rewrite using `[← Finset.prod_mul_distrib]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Both sides reduce to the same expression. Simplify using `only [GlobalTheory.FockReal.sgnP, rowEntries_c_rev, Fin.val_succ, rank_gridM G (show (i : ℕ) + 1 ≤ D.R.m by omega), Int.cast_sub, Int.cast_natCast, half_ceil]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Simplify using `only [GlobalTheory.FockReal.sgnP, rowEntries_c_rev, Fin.val_castSucc, hrT, Int.cast_add, Int.cast_neg, Int.cast_natCast, half_ceil]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem om_ptGrid_movedVec : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ0 : T}, L.Is μ0 →
     ∀ (W : G.Weil) {U : Set T} (S : GridChoice W U) (g : Gc D.what₂.Tau (GlobalTheory.RowReal.rowSizes D)) (t : T) (i : Fin D.R.m)

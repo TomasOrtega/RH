@@ -6,27 +6,27 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.MemSpan
 open UpperTheory.V.Loc UpperTheory.V.Alg IsLocalRing MvPowerSeries
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.MemSpanMonomial.mem_span_X f hf`.
+A detailed English derivation is pending.
 -/
 private theorem mem_span_X {O σ : Type} [CommRing O] [Fintype σ] (f : MvPowerSeries σ O)
     (hf : constantCoeff f = 0) : ∃ g : σ → MvPowerSeries σ O, f = ∑ i, MvPowerSeries.X i * g i :=
   _root_.UpperTheory.Reformulated.B.MemSpanMonomial.mem_span_X f hf
 
 /- English proof (translation)
-Rewrite using `[mem_maximalIdeal, mem_nonunits_iff, MvPowerSeries.isUnit_iff_constantCoeff, isUnit_iff_ne_zero, not_not]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem mem_max {E σ : Type} [Field E] (a : MvPowerSeries σ E) :
     a ∈ maximalIdeal _ ↔ constantCoeff a = 0 := by
   rw [mem_maximalIdeal, mem_nonunits_iff, MvPowerSeries.isUnit_iff_constantCoeff, isUnit_iff_ne_zero, not_not]
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `mem_span_X f hf`. Establish `hc : ∀ j, coeff (Finsupp.single j 1) f = constantCoeff (g j)`. Introduce `j`. Rewrite using `[hg, map_sum, Finset.sum_eq_single j]`. Rewrite using `[MvPowerSeries.X, coeff_monomial_mul, if_pos le_rfl, one_mul, tsub_self, coeff_zero_eq_constantCoeff_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `i _ hij`. Rewrite using `[MvPowerSeries.X, coeff_monomial_mul, if_neg]`. Introduce `h`. Use `h i` as an intermediate fact. Simplify using `[Finsupp.single_apply, hij.symm] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `only [hc]`. Rewrite using `[hg, ← Finset.sum_sub_distrib]`. Use `Ideal.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_C_mul, mul_comm (C _), ← mul_sub, pow_two]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_mul ((mem_max _).2 (by simp)) ((mem_max _).2 (by simp))`.
+A detailed English derivation is pending.
 -/
 private theorem lin_part {E : Type} [Field E] {n : ℕ} (f : MvPowerSeries (Fin n) E)
     (hf : constantCoeff f = 0) :
@@ -50,11 +50,11 @@ private theorem lin_part {E : Type} [Field E] {n : ℕ} (f : MvPowerSeries (Fin 
   exact Ideal.mul_mem_mul ((mem_max _).2 (by simp)) ((mem_max _).2 (by simp))
 
 /- English proof (translation)
-Set `K : ℕ →o Ideal A` to `⟨fun k => RingHom.ker (s ^ k), monotone_nat_of_le_succ fun k a ha => by`. Rewrite `ha`, the goal using `[RingHom.mem_ker]`. Rewrite using `[pow_succ', RingHom.mul_def, RingHom.comp_apply, ha, map_zero]⟩`. Take `⟨N, hN⟩` from `monotone_stabilizes_iff_noetherian.2 (inferInstance : IsNoetherian A A) K`. Rewrite using `[injective_iff_map_eq_zero]`.
+Introduce a local definition for the expression. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `a ha`. Establish `hsN : Function.Surjective (s ^ N)`. Rewrite using `[RingHom.coe_pow]`. Conclude with `hs.iterate N`. Take `⟨b, rfl⟩` from `hsN a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : b ∈ K (N + 1)` using `by show (s ^ (N + 1)) b = 0`. Rewrite using `[pow_succ', RingHom.mul_def, RingHom.comp_apply, ha]`. Rewrite `h1` using `[← hN (N + 1) (Nat.le_succ N)]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem inj_of_surj {A : Type} [CommRing A] [IsNoetherianRing A] (s : A →+* A)
     (hs : Function.Surjective s) : Function.Injective s := by
@@ -74,19 +74,17 @@ private theorem inj_of_surj {A : Type} [CommRing A] [IsNoetherianRing A] (s : A 
   exact h1
 
 /- English proof (translation)
-Use `haveI : IsAdicComplete (maximalIdeal E) E := by`. Rewrite using `[maximalIdeal_eq_bot]`. Use `infer_instance`. Use `haveI := co_mvps E E (Fin n)`. Take `⟨s, ⟨-, hs⟩, -⟩` from `co_ev E E (MvPowerSeries (Fin n) E) (Fin n) (Algebra.ofId E _) y fun i => (mem_max _).2 (hy i)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hsurj : Function.Surjective s`. Use `co_surj E _ _ s fun f hf => ?_` and prove the remaining obligations. Use `set J := (maximalIdeal (MvPowerSeries (Fin n) E)).map s ⊔ maximalIdeal (MvPowerSeries (Fin n) E) ^ 2`. Establish `hT : ∀ v : Fin n → E, ∑ j, v j • (X j : MvPowerSeries (Fin n) E) ∈ J`. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction.
 
-Establish `hv : v ∈ Submodule.span E (Set.range fun i j : Fin n => coeff (Finsupp.single j 1) (y i))`. Rewrite using `[hsp]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨i, rfl⟩` from `hv`. Establish `h1 : y i ∈ J` using `Ideal.mem_sup_left (by`. Rewrite using `[← hs]; exact Ideal.mem_map_of_mem s ((mem_max _).2 (by simp)))`. Establish `h2` using `Ideal.mem_sup_right (S := (maximalIdeal (MvPowerSeries (Fin n) E)).map s) (lin_part (y i) (hy i))`. Simplify using `using J.sub_mem h1 h2`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb`. Simplify using `only [Pi.add_apply, add_smul, Finset.sum_add_distrib]`. Conclude with `J.add_mem ha hb`. Consider the case `smul c a _ ha`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_smul, ← Finset.smul_sum]`. Rewrite using `[smul_eq_C_mul]`. Conclude with `J.mul_mem_left _ ha`. Establish `h2` using `Ideal.mem_sup_right (S := (maximalIdeal (MvPowerSeries (Fin n) E)).map s) (lin_part f ((mem_max _).1 hf))`. Simplify using `using J.add_mem h2 (hT fun j => coeff (Finsupp.single j 1) f)`.
-
-Conclude with `⟨AlgEquiv.ofBijective s ⟨inj_of_surj s.toRingHom hsurj, hsurj⟩, hs⟩`.
+A detailed English derivation is pending.
 -/
 private theorem exists_equiv {E : Type} [Field E] {n : ℕ} (y : Fin n → MvPowerSeries (Fin n) E)
     (hy : ∀ i, constantCoeff (y i) = 0)
@@ -125,7 +123,7 @@ private theorem exists_equiv {E : Type} [Field E] {n : ℕ} (y : Fin n → MvPow
   exact ⟨AlgEquiv.ofBijective s ⟨inj_of_surj s.toRingHom hsurj, hsurj⟩, hs⟩
 
 /- English proof (translation)
-Establish `h1 : f - algebraMap E _ (constantCoeff f) ∈ maximalIdeal _` using `(mem_max _).2 (by simp [MvPowerSeries.algebraMap_apply])`. Establish `h2 : s (f - algebraMap E _ (constantCoeff f)) ∈ maximalIdeal _` using `fun h => h1 (by`. Simplify using `using h.map s.symm)`. Rewrite `h2` using `[mem_max, map_sub, AlgEquiv.commutes]`. Simplify `h2` using `[MvPowerSeries.algebraMap_apply, sub_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem const_equiv {E σ : Type} [Field E] (s : MvPowerSeries σ E ≃ₐ[E] MvPowerSeries σ E)
     (f : MvPowerSeries σ E) : constantCoeff (s f) = constantCoeff f := by
@@ -137,7 +135,7 @@ private theorem const_equiv {E σ : Type} [Field E] (s : MvPowerSeries σ E ≃�
   simpa [MvPowerSeries.algebraMap_apply, sub_eq_zero] using h2
 
 /- English proof (translation)
-Establish `h : maximalIdeal (MvPowerSeries σ E) ≤ (maximalIdeal _).comap s` using `fun a ha => by`. Rewrite using `[Ideal.mem_comap, mem_max, const_equiv]`. Conclude with `(mem_max _).1 ha`. Conclude with `((Ideal.pow_right_mono h N).trans (Ideal.le_comap_pow _ N)) hf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pow_equiv {E σ : Type} [Field E] (s : MvPowerSeries σ E ≃ₐ[E] MvPowerSeries σ E) (N : ℕ)
     {f : MvPowerSeries σ E} (hf : f ∈ maximalIdeal _ ^ N) : s f ∈ maximalIdeal _ ^ N := by
@@ -146,13 +144,13 @@ private theorem pow_equiv {E σ : Type} [Field E] (s : MvPowerSeries σ E ≃ₐ
   exact ((Ideal.pow_right_mono h N).trans (Ideal.le_comap_pow _ N)) hf
 
 /- English proof (translation)
-Introduce `O R E _ _ _ _ _ n I x φ z h hz hsp`. Take `⟨s, hs⟩` from `exists_equiv (fun i => φ (z i)) (fun i => by rw [h.const, hz, map_zero]) hsp`. Set `φ' : R →ₐ[O] MvPowerSeries (Fin n) E` to `((s.symm.restrictScalars O).toAlgHom).comp φ`. Establish `hφ : ∀ a, φ' a = s.symm (φ a)` using `fun _ => rfl`. Use `⟨φ', ⟨?_, fun a => ?_, fun N f => ?_, fun N a ha => ?_⟩, fun i => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← h.ker]`. Use extensionality with `a`. Rewrite using `[RingHom.mem_ker, RingHom.mem_ker, hφ, map_eq_zero_iff _ s.symm.injective]`. Rewrite using `[hφ, const_equiv, h.const]`. Take `⟨a, c, hc, hm⟩` from `h.dense N (s f)`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨a, c, hc, ?_⟩` and prove the remaining obligations. Establish `h1` using `pow_equiv s.symm N hm`. Establish `h2 : s.symm (c • s f) = c • f`. Rewrite using `[← algebraMap_smul E c, map_smul, AlgEquiv.symm_apply_apply, algebraMap_smul]`. Rewrite `h1` using `[map_sub, h2]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `h.inj N a ?_` and prove the remaining obligations. Establish `h1` using `pow_equiv s N ha`. Rewrite `h1` using `[hφ, AlgEquiv.apply_symm_apply]`. Then use the resulting hypothesis. Rewrite using `[hφ, ← hs, AlgEquiv.symm_apply_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.V.Loc.chartChange :
     ∀ {O R E : Type} [CommRing O] [CommRing R] [Algebra O R] [Field E] [Algebra O E] (n : ℕ) (I : Ideal R) (x : R →ₐ[O] O) (φ : R →ₐ[O] MvPowerSeries (Fin n) E) (z : Fin n → R), UpperTheory.V.Loc.IsCompl I x φ → (∀ i, x (z i) = 0) → Submodule.span E (Set.range fun i j : Fin n => MvPowerSeries.coeff (Finsupp.single j 1) (φ (z i))) = ⊤ → ∃ φ' : R →ₐ[O] MvPowerSeries (Fin n) E, UpperTheory.V.Loc.IsCompl I x φ' ∧ ∀ i, φ' (z i) = MvPowerSeries.X i := by

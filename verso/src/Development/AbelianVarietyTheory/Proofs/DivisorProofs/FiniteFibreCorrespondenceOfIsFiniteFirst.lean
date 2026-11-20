@@ -7,9 +7,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.FibreCrit
 
 /- English proof (translation)
-Take `⟨U, hU, hyU, -⟩` from `exists_isAffineOpen_mem_and_subset (X := Y) (U := ⊤) (x := y) trivial`. Establish `: IsAffine U` using `hU`. Establish `: IsNoetherian U.toScheme` using `{}`. Take `⟨y', rfl⟩ : y ∈ Set.range U.ι` from `by rw [Scheme.Opens.range_ι]; exact hyU`. Establish `hC` using `irreducibleComponent_mem_irreducibleComponents y'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨o, ho, hne, hoC⟩` from `TopologicalSpace.NoetherianSpace.exists_isOpen_nonempty_subset_irreducibleComponent _ hC`. Take `⟨_, ⟨w, hwo, rfl⟩, hwO⟩` from `hd.inter_open_nonempty _ (U.ι.isOpenEmbedding.isOpenMap _ ho) (hne.image _)`. Establish `hg` using `hC.1.isGenericPoint_genericPoint (isClosed_of_mem_irreducibleComponents _ hC)`. Conclude with `⟨U.ι hC.1.genericPoint, (hg.specializes mem_irreducibleComponent).map U.ι.continuous, ((hg.specializes (hoC hwo)).map U.ι.continuous).mem_open hO hwO⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_generization_mem {Y : Scheme.{0}} [IsLocallyNoetherian Y] {O : Set Y} (hO : IsOpen O)
     (hd : Dense O) (y : Y) : ∃ e0 : Y, e0 ⤳ y ∧ e0 ∈ O := by
@@ -27,7 +27,7 @@ theorem exists_generization_mem {Y : Scheme.{0}} [IsLocallyNoetherian Y] {O : Se
     ((hg.specializes (hoC hwo)).map U.ι.continuous).mem_open hO hwO⟩
 
 /- English proof (translation)
-Use `PrimeSpectrum.ext ?_` and prove the remaining obligations. Use `show Ideal.comap (algebraMap V K) p.asIdeal = ⊥`. Rewrite using `[(Ideal.eq_bot_or_top p.asIdeal).resolve_right p.isPrime.ne_top, ← RingHom.ker_eq_comap_bot]`. Conclude with `(RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective V K)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spMap_algebraMap_apply (V K : Type) [CommRing V] [IsDomain V] [Field K] [Algebra V K]
     [IsFractionRing V K] (p : Sp K) : spMap (algebraMap V K) p = (⊥ : PrimeSpectrum V) := by
@@ -41,15 +41,13 @@ end GlobalTheory.FibreCrit
 namespace GlobalTheory.FibreCrit
 
 /- English proof (translation)
-Introduce `X Y₀ Y s t i hs hi hd hY hfin z`. Use `(s.finite_preimage (hfin z)).subset ?_` and prove the remaining obligations. Introduce `y hy`. Simplify using `only [Set.mem_ofPred_eq] at hy`. Take `⟨e0, he0y, he0i⟩` from `exists_generization_mem i.isOpenEmbedding.isOpen_range i.denseRange y`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨V, _, _, _, g, hg0, hg1⟩ : ∃ (V : Type) (_ : CommRing V) (_ : IsDomain V) (_ : IsDiscreteValuationRing V) (g : Sp V ⟶ Y), g (⊥ : PrimeSpectrum V) ∈ Set.range i ∧ g (IsLocalRing.closedPoint V) = y := by`. Distinguish the cases in `he : e0 = y`. Substitute `he` using the available equality. Establish `hpt : ∀ q, (spMap (algebraMap (Y.residueField e0) (PowerSeries (Y.residueField e0))) ≫ Y.fromSpecResidueField e0) q = e0` using `fun q => by`. Establish `h` using `Set.mem_range_self (f := Y.fromSpecResidueField e0) (spMap (algebraMap (Y.residueField e0) (PowerSeries (Y.residueField e0))) q)`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[Scheme.range_fromSpecResidueField]`. Rewrite using `[Scheme.Hom.comp_apply]`. Conclude with `h`. Conclude with `⟨PowerSeries (Y.residueField e0), inferInstance, inferInstance, inferInstance, spMap (algebraMap (Y.residueField e0) (PowerSeries (Y.residueField e0))) ≫ Y.fromSpecResidueField e0, (hpt _).symm ▸ he0i, hpt _⟩`. Take `⟨O, hO, hV, -, f, hf0, hf1⟩` from `GlobalTheory.exists_complete_discreteValuationRing_of_specializes he0y he`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨O, inferInstance, hO, hV, f, hf0 ▸ he0i, hf1⟩`. Establish `hr : Set.range (spMap (algebraMap V (FractionRing V)) ≫ g) ⊆ Set.range i`. Introduce and unpack `_ ⟨q, rfl⟩`. Rewrite using `[Scheme.Hom.comp_apply, spMap_algebraMap_apply V (FractionRing V) q]`. Conclude with `hg0`.
-
-Use `⟨V, FractionRing V, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, g ≫ s, g ≫ t, IsOpenImmersion.lift i _ hr, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(congrArg (· ≫ s) (IsOpenImmersion.lift_fac i _ hr)).symm.trans (Category.assoc _ _ _)`. Conclude with `(congrArg (· ≫ t) (IsOpenImmersion.lift_fac i _ hr)).symm.trans (Category.assoc _ _ _)`. Conclude with `(Scheme.Hom.comp_apply g s _).trans (congrArg s hg1)`. Conclude with `((Scheme.Hom.comp_apply g t _).trans (congrArg t hg1)).trans hy`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem finite_fibre_of_isFinite : ∀ (X Y₀ Y : Scheme.{0}) (s t : Y ⟶ X) (i : Y₀ ⟶ Y), IsFinite s → IsOpenImmersion i → IsDominant i → IsLocallyNoetherian Y → (∀ z : X, {u : X | ∃ (V K : Type) (_ : CommRing V) (_ : IsDomain V) (_ : IsDiscreteValuationRing V) (_ : Field K) (_ : Algebra V K) (_ : IsFractionRing V K) (y' z' : Sp V ⟶ X) (x : Sp K ⟶ Y₀), spMap (algebraMap V K) ≫ y' = x ≫ i ≫ s ∧ spMap (algebraMap V K) ≫ z' = x ≫ i ≫ t ∧ y' (IsLocalRing.closedPoint V) = u ∧ z' (IsLocalRing.closedPoint V) = z}.Finite) → ∀ z : X, {y : Y | t y = z}.Finite := by
   intro X Y₀ Y s t i hs hi hd hY hfin z

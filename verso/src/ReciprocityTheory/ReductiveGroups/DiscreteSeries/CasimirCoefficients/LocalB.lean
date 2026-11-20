@@ -17,7 +17,7 @@ section PathL
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
 /- English proof (translation)
-Establish `h1` using `hasDerivAt_exp_smul_const Y ((0 : ℝ) : ℂ)`. Establish `hof : HasDerivAt (fun y : ℝ => (y : ℂ)) 1 (0 : ℝ)` using `Complex.ofRealCLM.hasDerivAt`. Establish `h2` using `HasDerivAt.scomp (h := fun y : ℝ => (y : ℂ)) (0 : ℝ) h1 hof`. Establish `h3` using `h2.const_mul z`. Conclude with `h3.congr_deriv (by simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma lcB_path (z Y : Matrix (Fin n) (Fin n) ℂ) :
     HasDerivAt (fun s : ℝ => z * NormedSpace.exp ((s : ℂ) • Y)) (z * Y) 0 := by
@@ -32,19 +32,17 @@ end PathL
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Use `set z := A * NormedSpace.exp ((t : ℂ) • Y) with hz`. Establish `hcomm : ∀ s : ℝ, A * NormedSpace.exp ((s : ℂ) • Y) = z * NormedSpace.exp (((s - t : ℝ) : ℂ) • Y)`. Introduce `s`. Rewrite using `[hz, mul_assoc, ← Matrix.exp_add_of_commute _ _ (((Commute.refl Y).smul_left _).smul_right _), ← add_smul]`. Rewrite using `[show ((t : ℂ) + ((s - t : ℝ) : ℂ)) = (s : ℂ) by push_cast; ring]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `lcB_path z Y`. Establish `h2` using `hasDerivAt_iff_tendsto_slope.1 h1`. Establish `h3 : HasDerivAt (fun s : ℝ => z * NormedSpace.exp ((s : ℂ) • Y)) (z * Y) 0` using `hasDerivAt_iff_tendsto_slope.2 h2`. Establish `h4` using `HasDerivAt.comp_sub_const t t (by rw [sub_self]; exact h3)`. Establish `hp : HasDerivAt (fun s : ℝ => A * NormedSpace.exp ((s : ℂ) • Y)) (z * Y) t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show (fun s : ℝ => A * NormedSpace.exp ((s : ℂ) • Y)) = fun s => z * NormedSpace.exp (((s - t : ℝ) : ℂ) • Y) from funext hcomm]`. Conclude with `h4`. Establish `hF : HasFDerivAt (psM T μ) (fderiv ℂ (psM T μ) z) z` using `(hdiff.differentiableAt (hUo.mem_nhds ht)).hasFDerivAt`. Establish `hF' : HasFDerivAt (psM T μ) ((fderiv ℂ (psM T μ) z).restrictScalars ℝ) z` using `hF.restrictScalars ℝ`. Establish `hq0` using `hF'.comp_hasDerivAt t hp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ((fderiv ℂ (psM T μ) z).restrictScalars ℝ) (z * Y) = -(T.dτ Y * psM T μ z)` using `hid z ht`. Establish `hq : HasDerivAt (fun s : ℝ => psM T μ (A * NormedSpace.exp ((s : ℂ) • Y))) (-(T.dτ Y * psM T μ z)) t` using `hq0.congr_deriv e`. Establish `ho1 : HasDerivAt (fun s : ℝ => T.op (γ s)) (T.op (γ t) * T.dτ Y) t`. Establish `h5` using `(T.hasDeriv Y hY γ hγ).const_mul (T.op (γ t))`. Establish `h6` using `HasDerivAt.comp_sub_const t t (by rw [sub_self]; exact h5)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `he : (fun s : ℝ => T.op (γ s)) = fun s => T.op (γ t) * ((T.τ (γ (s - t)) : unitary (T.V →L[ℂ] T.V)) : T.V →L[ℂ] T.V)`. Use function extensionality and compare the values at `s`. Establish `hs` using `hmul t (s - t)`. Rewrite `hs` using `[show t + (s - t) = s by ring]`. Simplify using `only [KType.op]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hs, map_mul]`. Both sides reduce to the same expression. Rewrite using `[he]`. Conclude with `h6`. Establish `hprod` using `ho1.mul hq`.
-
-Establish `hzero : T.op (γ t) * T.dτ Y * psM T μ (A * NormedSpace.exp ((t : ℂ) • Y)) + T.op (γ t) * -(T.dτ Y * psM T μ z) = 0`. Rewrite using `[mul_neg, mul_assoc]`. Conclude with `add_neg_cancel _`. Conclude with `hzero ▸ hprod`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma lcB_hasDerivAt (T : KType ε Λ) (μ : Fin n → ℤ) {U : Set (Matrix (Fin n) (Fin n) ℂ)} (hUo : IsOpen U)
     (hdiff : DifferentiableOn ℂ (psM T μ) U) {Y : Matrix (Fin n) (Fin n) ℂ}
@@ -98,9 +96,9 @@ lemma lcB_hasDerivAt (T : KType ε Λ) (μ : Fin n → ℤ) {U : Set (Matrix (Fi
   exact hzero ▸ hprod
 
 /- English proof (translation)
-Establish `h0 : γ 0 = 1` using `by simpa using hmul 0 0`. Set `g : ℝ → T.V →L[ℂ] T.V` to `fun t => T.op (γ t) * psM T μ (A * NormedSpace.exp ((t : ℂ) • Y))`. Establish `hd : ∀ t ∈ Icc (0 : ℝ) 1, HasDerivAt g 0 t` using `fun t ht => lcB_hasDerivAt T μ hUo hdiff hid hY γ hγ hmul A (hpath t ht)`. Establish `hcont : ContinuousOn g (Icc 0 1)` using `fun t ht => (hd t ht).continuousAt.continuousWithinAt`. Establish `hc` using `constant_of_has_deriv_right_zero hcont (fun t ht => (hd t (Ico_subset_Icc_self ht)).hasDerivWithinAt) 1 ⟨zero_le_one, le_rfl⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `hc` using `[g, h0, KType.op]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem lcB_const (T : KType ε Λ) (μ : Fin n → ℤ) {U : Set (Matrix (Fin n) (Fin n) ℂ)} (hUo : IsOpen U)
     (hdiff : DifferentiableOn ℂ (psM T μ) U) {Y : Matrix (Fin n) (Fin n) ℂ}

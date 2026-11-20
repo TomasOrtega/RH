@@ -11,25 +11,23 @@ namespace GlobalTheory.Mem.RaySplit
 open GlobalTheory.NT GlobalTheory.Published GlobalTheory.Mem.Fld
 
 /- English proof (translation)
-Use `hR.1` as an intermediate fact. Use `𝔭.isPrime` as an intermediate fact. Use `𝔭.isMaximal` as an intermediate fact. Establish `hcop : IsCoprime 𝔭.asIdeal 𝔮`. Rewrite using `[Ideal.isCoprime_iff_sup_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `h`. Conclude with `hnd (Ideal.dvd_iff_le.2 (le_sup_right.trans (𝔭.isMaximal.eq_of_le h le_sup_left).symm.le))`. Take `⟨σ, P, hP, hPo, hσ⟩` from `exists_isFrob L 𝔭`. Establish `hne : P ≠ ⊥` using `Ideal.ne_bot_of_liesOver_of_ne_bot 𝔭.ne_bot P`. Establish `hPm : P.IsMaximal` using `hP.isMaximal hne`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hef` using `(GlobalTheory.Bauer.ncard_eq_finrank_iff K L 𝔭).1 hs P ⟨hP, hPo⟩`. Establish `hf : 𝔭.asIdeal.inertiaDeg' P = 1`. Rewrite using `[Ideal.inertiaDeg'_eq_inertiaDeg]`. Conclude with `Nat.eq_one_of_mul_eq_one_left hef`. Establish `hN : Ideal.absNorm P = Ideal.absNorm 𝔭.asIdeal`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Ideal.absNorm_eq_pow_inertiaDeg'_of_liesOver P 𝔭.asIdeal 𝔭.isPrime 𝔭.ne_bot, hf, pow_one]`. Establish `: Finite (𝓞 L ⧸ P)` using `Ideal.finiteQuotientOfFreeOfNeBot _ hne`. Use `letI := Ideal.Quotient.field P`. Use `letI := Fintype.ofFinite (𝓞 L ⧸ P)`. Establish `hpow : ∀ x : 𝓞 L, x ^ Ideal.absNorm 𝔭.asIdeal - x ∈ P` using `fun x => by`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Ideal.Quotient.eq, map_pow, ← hN, Ideal.absNorm_apply, Submodule.cardQuot_apply, Nat.card_eq_fintype_card]`. Conclude with `FiniteField.pow_card _`. Establish `hin : InInertia L 𝔭 σ` using `⟨P, hP, hPo, fun x => by`. Use `add_mem (hσ x) (hpow x)` as an intermediate fact. Rewrite using `[sub_add_sub_cancel] at this⟩` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hσ1 : σ = 1` using `hR.2.1 𝔭 hnd σ hin`. Establish `hχ : ∀ χ : (L ≃ₐ[K] L) →* ℂˣ, heckeIdeal L χ 𝔭.asIdeal = 1` using `fun χ => by`. Rewrite using `[heckeIdeal_asIdeal, heckeVal_of_unramIn L χ (hR.2.1 𝔭 hnd) ⟨P, hP, hPo, hσ⟩, hσ1, map_one, Units.val_one]`. Take `⟨α, β, hab, he⟩` from `(hR.2.2.2 𝔭.asIdeal 𝔭.ne_bot hcop).1 hχ`. Establish `hα : α ∈ 𝔭.asIdeal * Ideal.span {β}` using `he ▸ Ideal.mem_span_singleton_self α`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨π, hπ, rfl⟩` from `Ideal.mem_mul_span_singleton.1 hα`. Establish `hβ0 : Ideal.span {β} ≠ (0 : Ideal (𝓞 K))`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hab.2.1`. Establish `hsp : 𝔭.asIdeal = Ideal.span {π}`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `mul_right_cancel₀ hβ0 ?_` and prove the remaining obligations. Rewrite using `[he, Ideal.span_singleton_mul_span_singleton]`. Use `⟨π, hsp, ?_⟩` and prove the remaining obligations. Take `⟨i, hi, j, hj, hij⟩` from `Ideal.isCoprime_iff_exists.1 hab.2.2.2.1`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hi`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h1 : (π - 1) * β ∈ 𝔮`. Use `hab.2.2.2.2.1` as an intermediate fact. Rewrite `this` using `[show π * β - β = (π - 1) * β by ring]`. Then use the resulting hypothesis. Establish `h2 : π - 1 = c * ((π - 1) * β) + (π - 1) * j`. Take the linear combination `(π - 1) * hij.symm`.
-
-Rewrite using `[h2]`. Conclude with `add_mem (Ideal.mul_mem_left _ _ h1) (Ideal.mul_mem_left _ _ hj)`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_span_eq_of_splits (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
     (𝔮 : Ideal (𝓞 K)) (hR : GlobalTheory.Mem.Fld.IsRayField K L 𝔮) (𝔭 : HeightOneSpectrum (𝓞 K)) (hnd : ¬ 𝔭.asIdeal ∣ 𝔮)

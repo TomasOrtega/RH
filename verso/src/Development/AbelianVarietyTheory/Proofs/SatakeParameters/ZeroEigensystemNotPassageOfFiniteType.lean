@@ -18,7 +18,7 @@ noncomputable section
 namespace GlobalTheory.ZeroPassage
 
 /- English proof (translation)
-Unfold `dualPoly`. Rewrite using `[coeff_C_mul, coeff_zero_eq_eval_zero, eval_comp]`. Simplify using `[← coeff_zero_eq_eval_zero, hp]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dualPoly_coeff_zero {K : Type} [Field K] (s : K) (p : K[X]) (hp : p ≠ 0) : (dualPoly s p).coeff 0 = 1 := by
   unfold dualPoly
@@ -26,18 +26,16 @@ theorem dualPoly_coeff_zero {K : Type} [Field K] (s : K) (p : K[X]) (hp : p ≠ 
   simp [← coeff_zero_eq_eval_zero, hp]
 
 /- English proof (translation)
-Simplify using `[Formalism.L2.Col.heckePoly, Formalism.L2.Col.heckePolyOf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem heckePoly_zero {L Pl : Type} [Field L] (n : ℕ) (q : Pl → ℕ) (P : Pl) :
     Formalism.L2.Col.heckePoly n q (fun _ => (0 : L)) P = 0 := by
   simp [Formalism.L2.Col.heckePoly, Formalism.L2.Col.heckePolyOf]
 
 /- English proof (translation)
-Unfold `InertDat3.ixFin3 at hp`. Use `split_ifs at hp with hfin`. Rewrite `hp` using `[Set.Finite.mem_toFinset]`. Use `⟨hp.1, fun hb => hp.2.2 ?_⟩` and prove the remaining obligations. Establish `hle : D.inertTypeEigenspaceSum p ≤ B.partF p.1`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `iSup₂_le fun x hx => ?_` and prove the remaining obligations. Use `le_trans ?_ (Formalism.L2.Col.eigAt_le_eigSum (op := B.op) (C := B.HasRes p.1) (x := fun i => x (Sum.inl i)) hx.1)` and prove the remaining obligations. Conclude with `le_iInf fun i => iInf_le (fun k => (D.opAll k).maxGenEigenspace (x k)) (Sum.inl i)`. Rewrite `hb`, the goal using `[eq_bot_iff]`. Conclude with `le_trans (Submodule.comap_mono (Submodule.map_mono hle)) hb`.
-
-Simplify using `at hp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_resSet_of_mem_ixFin3 {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G]
     {Pl0 I0 Ty : Type} {B : BlockDat K G Pl0} (D : InertDat3 B I0 Ty) {X : Finset (G → K)}
@@ -55,15 +53,13 @@ theorem mem_resSet_of_mem_ixFin3 {K : Type} [Field K] [NumberField K] [StarRing 
   · simp at hp
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F h j p`. Introduce and unpack `⟨x, hx, hx0⟩`. Take `⟨P, hP⟩` from `(GlobalTheory.CoreThree.heckeCharacterisation_places_parts_of_weak R F h).2.2.2.2.2.2`. Establish `hxz : (fun i => x (Sum.inl i)) = fun _ => (0 : D.what₂.LL)`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h1` using `congrFun hx0 (Sum.inl i)`. Conclude with `(map_eq_zero_iff _ D.what₂.embLL.injective).1 h1.symm`. Set `P' : (A3.A.fam.L j A3.A.μ0).Pl` to `⟨P, hP⟩`. Establish `hres` using `hx.1 P'`. Rewrite `hres` using `[hxz]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `replace hres := (heckePoly_zero (L := D.what₂.LL) (Pl := (A3.A.fam.L j A3.A.μ0).Pl) _ _ _).symm.trans hres`. Establish `hmem : p.1.1 ∈ (A3.A.fam.R A3.A.μ0).resSet A3.A.X` using `mem_resSet_of_mem_ixFin3 (A3.rowI A3.A.μ0) p.2`. Establish `hc : (p.1.1 P).coeff 0 = 1` using `(A3.A.fam.R A3.A.μ0).lf_coeff_zero_of_mem_resSet (fun Q => (h.base.fam.degR A3.A.μ0 Q).1) hmem P`. Establish `hne : p.1.1 P ≠ 0` using `fun h0 => by rw [h0, coeff_zero] at hc; exact zero_ne_one hc`. Establish `hb : ((A3.A.fam.L j A3.A.μ0).blockProd P').coeff 0 = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[coeff_zero_eq_eval_zero]`. Conclude with `(A3.A.fam.L j A3.A.μ0).lf_blockProd_eval_zero P'`. Establish `ht : ((A3.fam3.tr3 j p.1).1 ((A3.A.fam.L j A3.A.μ0).pl P')).coeff 0 = 1` using `dualPoly_coeff_zero _ _ hne`. Establish `h2` using `congrArg (fun f => Polynomial.coeff f 0) hres`. Simplify using `only [coeff_zero, mul_coeff_zero, hb, ht, mul_one] at h2`.
-
-Conclude with `zero_ne_one h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem zero_not_passage : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3), R.WeakCharacterisation F → ∀ j (p : A3.fam3.base3.Ix), ¬ cxSys D.what₂.embLL ((A3.liftI j A3.A.μ0).HasRes3 (A3.fam3.tr3 j p.1)) 0 := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F h j p

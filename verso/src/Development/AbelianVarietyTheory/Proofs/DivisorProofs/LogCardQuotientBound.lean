@@ -13,29 +13,29 @@ noncomputable section
 namespace GlobalTheory.AdicSpan
 
 /- English proof (translation)
-Introduce `L _ _ κ ℓ`. Take `⟨S₁, hS₁⟩` from `isIntB_mul_star_eventually L (RingHom.toOpposite (RingHom.id L) fun x y => mul_comm x y) κ ℓ`. Take `⟨S₂, hS₂⟩` from `GlobalTheory.T.adicIntegralTensorBasis_iff_exists_integral_multiple L κ ℓ`. Use `⟨S₁ ∪ S₂, fun v hv I h0 hadd hmul ⟨D, hD0, hDI, hIO⟩ => ?_⟩` and prove the remaining obligations. Establish `hv₁ : v ∉ S₁` using `fun h => hv (Finset.mem_union_left _ h)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hv₂ : v ∉ S₂` using `fun h => hv (Finset.mem_union_right _ h)`. Establish `hOmul` using `(hS₁ v hv₁).1`. Establish `hloc` using `hS₂ v hv₂`. Establish `hOadd : ∀ y z, IsIntB v ℓ y → IsIntB v ℓ z → IsIntB v ℓ (y + z)` using `fun y z hy hz i => by`. Rewrite using `[map_add, Finsupp.add_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem (hy i) (hz i)`. Establish `hone : (1 : ℤ) ∉ v.asIdeal` using `fun h => v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h)`. Establish `hloc1 : ∀ c : ℤ, ∃ s : ℤ, s ∉ v.asIdeal ∧ IsIntegral ℤ ((s : L) * (c : L))` using `fun c => ⟨1, hone, by rw [Int.cast_one, one_mul, ← eq_intCast (algebraMap ℤ L)]; exact isIntegral_algebraMap⟩`. Establish `hcast : ∀ c : ℤ, ((c : v.adicCompletion ℚ ⊗[ℚ] L)) = (1 : v.adicCompletion ℚ) ⊗ₜ[ℚ] (c : L)` using `fun c => by rw [← Algebra.TensorProduct.includeRight_apply, map_intCast]`. Establish `hO : ∀ c : L, (∃ s : ℤ, s ∉ v.asIdeal ∧ IsIntegral ℤ ((s : L) * c)) → IsIntB v ℓ ((1 : v.adicCompletion ℚ) ⊗ₜ[ℚ] c)` using `fun c hc => (hloc c).2 hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htm : ∀ a b : L, ((1 : v.adicCompletion ℚ) ⊗ₜ[ℚ] a) * ((1 : v.adicCompletion ℚ) ⊗ₜ[ℚ] b) = (1 : v.adicCompletion ℚ) ⊗ₜ[ℚ] (a * b)` using `fun a b => by`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Establish `hDL : (D : L) ≠ 0` using `Int.cast_ne_zero.2 hD0`. Set `K : Set L` to `{a | (1 : v.adicCompletion ℚ) ⊗ₜ[ℚ] (a / D) ∈ I}`. Establish `hK0 : (0 : L) ∈ K` using `by show _ ∈ I; rw [zero_div, TensorProduct.tmul_zero]; exact h0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKadd : ∀ a ∈ K, ∀ b ∈ K, a + b ∈ K` using `fun a ha b hb => by show _ ∈ I; rw [add_div, TensorProduct.tmul_add]; exact hadd _ ha _ hb`. Establish `hKmul : ∀ c : L, (∃ s : ℤ, s ∉ v.asIdeal ∧ IsIntegral ℤ ((s : L) * c)) → ∀ a ∈ K, c * a ∈ K` using `fun c hc a ha => by show _ ∈ I; rw [mul_div_assoc, ← htm]; exact hmul _ (hO c hc) _ ha`. Establish `hKloc : ∀ a ∈ K, ∃ s : ℤ, s ∉ v.asIdeal ∧ IsIntegral ℤ ((s : L) * a)` using `fun a ha => by`. Apply `(hloc a).1` to reduce the goal to its premises. Use `hIO _ ha` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[hcast, htm, mul_div_cancel₀ _ hDL]`. Then use the resulting hypothesis. Take `⟨g, hgK, hg⟩` from `GlobalTheory.T.exists_generator_localized_integers_ideal_in_field L v K hK0 hKadd hKmul hKloc`. Establish `hDK : (D : L) * D ∈ K` using `by show _ ∈ I`. Establish `h1` using `hDI _ (hO _ (hloc1 1))`. Rewrite `h1` using `[Int.cast_one, ← Algebra.TensorProduct.one_def, mul_one, hcast, ← mul_div_cancel_right₀ (D : L) hDL]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Take `⟨c₀, hc₀, hc₀g⟩` from `hg _ hDK`. Establish `hg0 : g ≠ 0`. Introduce and unpack `rfl`. Rewrite `hc₀g` using `[mul_zero]`. Conclude with `hDL (mul_self_eq_zero.1 hc₀g)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : g / D * (D / g) = 1` using `by field_simp`. Establish `e1' : D / g * (g / D) = 1` using `by field_simp`. Set `m : (v.adicCompletion ℚ ⊗[ℚ] L)ˣ` to `{ val := (1 : v.adicCompletion ℚ) ⊗ₜ[ℚ] (g / D), inv := (1 : v.adicCompletion ℚ) ⊗ₜ[ℚ] (D / g), val_inv := by rw [htm, e1]; rfl inv_val := by rw [htm, e1']; rfl }`. Use `⟨m, fun x => ⟨fun hx => ?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨y, ρ₁, hρ₁, rfl⟩` from `GlobalTheory.T.adicTensor_exists_rational_add_integral_mul L κ ℓ v x D hD0`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy : (1 : v.adicCompletion ℚ) ⊗ₜ[ℚ] y ∈ I`. Establish `h2 : (1 : v.adicCompletion ℚ) ⊗ₜ[ℚ] ((-1 : ℤ) : L) * ((D : v.adicCompletion ℚ ⊗[ℚ] L) * ρ₁) ∈ I` using `hmul _ (hO _ (hloc1 _)) _ (hDI _ hρ₁)`. Use `hadd _ hx _ h2` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← hcast]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hyK : (D : L) * y ∈ K` using `by show _ ∈ I; rwa [mul_div_cancel_left₀ _ hDL]`. Take `⟨c, hc, hcg⟩` from `hg _ hyK`. Establish `e2 : g / D * c = y`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[div_mul_eq_mul_div, mul_comm g c, ← hcg, mul_div_cancel_left₀ _ hDL]`. Establish `e3 : g / D * c₀ = D`. Rewrite using `[div_mul_eq_mul_div, mul_comm g c₀, ← hc₀g, mul_div_cancel_left₀ _ hDL]`. Use `⟨(1 : v.adicCompletion ℚ) ⊗ₜ[ℚ] c + (1 : v.adicCompletion ℚ) ⊗ₜ[ℚ] c₀ * ρ₁, hOadd _ _ (hO c hc) (hOmul _ _ (hO c₀ hc₀) hρ₁), ?_⟩` and prove the remaining obligations. Use `show _ = (1 : v.adicCompletion ℚ) ⊗ₜ[ℚ] (g / D) * _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_add, htm, ← mul_assoc, htm, e2, e3, hcast]`. Introduce and unpack `⟨ρ, hρ, rfl⟩`. Rewrite using `[mul_comm]`. Conclude with `hmul ρ hρ _ hgK`.
+A detailed English derivation is pending.
 -/
 theorem isIntB_lattice_principal_eventually : ∀ (L : Type) [Field L] [NumberField L] (κ : Type) (ℓ : Module.Basis κ ℚ L),
     ∃ S : Finset (HeightOneSpectrum ℤ), ∀ v ∉ S, ∀ I : Set (v.adicCompletion ℚ ⊗[ℚ] L), 0 ∈ I →

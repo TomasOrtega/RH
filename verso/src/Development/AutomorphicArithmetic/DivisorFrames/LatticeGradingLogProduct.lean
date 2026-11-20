@@ -8,13 +8,13 @@ open NumberField ReciprocityTheory.GeometryOfNumbersTheory GlobalTheory.LieHt Gl
 namespace UpperTheory.NormDeterminantRelation
 
 /- English proof (translation)
-Use `choose m hm using fun k => (Submodule.mem_span_range_iff_exists_fun (𝓞 K)).mp (h k)`. Set `A : Matrix (Fin g) (Fin g) (𝓞 K)` to `Matrix.of fun l k => m k l`. Establish `hmat : (s : K) • (Matrix.of fun i k => y k i) = (Matrix.of fun i k => x k i) * A.map (algebraMap (𝓞 K) K)`. Use extensionality with `i k`. Use `congrFun (hm k) i` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Finset.sum_apply]`. Rewrite using `[Matrix.smul_apply, Matrix.of_apply, Matrix.mul_apply]`. Rewrite `this` using `[Pi.smul_apply]`. Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.smul_apply, Matrix.of_apply, Matrix.map_apply, Algebra.smul_def, mul_comm]`. Both sides reduce to the same expression. Use `⟨A.det, ?_⟩` and prove the remaining obligations. Establish `hd` using `congrArg Matrix.det hmat`. Rewrite `hd` using `[Matrix.det_smul, Matrix.det_mul, Fintype.card_fin]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hd, Algebra.smul_def, mul_comm]`. Use `congr 1`. Conclude with `(RingHom.map_det (algebraMap (𝓞 K) K) A).symm`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem det_rel {K : Type} [Field K] [NumberField K] {g : ℕ} (x y : Fin g → Fin g → K) (s : ℕ)
     (h : ∀ k, (s : K) • y k ∈ Submodule.span (𝓞 K) (Set.range x)) :
@@ -40,19 +40,17 @@ private theorem det_rel {K : Type} [Field K] [NumberField K] {g : ℕ} (x y : Fi
   exact (RingHom.map_det (algebraMap (𝓞 K) K) A).symm
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Take `⟨q, hq, hqr₀⟩` from `RingOfIntegers.isIntegral_coe r`. Establish `hqr : Polynomial.eval₂ (Int.castRingHom ℂ_[p]) (j (r : K)) q = 0`. Establish `h0` using `congrArg j hqr₀`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[Polynomial.hom_eval₂, map_zero]`. Rewrite using `[← h0]`. Use `congr 1`. Conclude with `RingHom.ext_int _ _`. Use `set x : ℂ_[p] := j (r : K) with hx`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite `hqr` using `[Polynomial.eval₂_eq_sum_range, Finset.sum_range_succ, hq.coeff_natDegree, map_one, one_mul]`. Establish `h1 : x ^ q.natDegree = - ∑ i ∈ Finset.range q.natDegree, Int.castRingHom ℂ_[p] (q.coeff i) * x ^ i`. Take the linear combination `hqr`. Establish `h2 : ∀ s : Finset ℕ, (∀ i ∈ s, i < q.natDegree) → ‖∑ i ∈ s, Int.castRingHom ℂ_[p] (q.coeff i) * x ^ i‖ < ‖x‖ ^ q.natDegree`. Introduce `s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro _`. Simplify using the standard rewrite rules. Check the signs of the components of the expression. Consider the case `insert i s hi ih`.
+Check the signs of the components of the expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hs`. Rewrite using `[Finset.sum_insert hi]`. Use `lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max _ _) (max_lt ?_ (ih fun j hj => hs j (Finset.mem_insert_of_mem hj)))` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow]`. Establish `h3 : ‖((q.coeff i : ℤ) : ℂ_[p])‖ ≤ 1` using `IsUltrametricDist.norm_intCast_le_one _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h4 : ‖x‖ ^ i < ‖x‖ ^ q.natDegree` using `pow_lt_pow_right₀ h (hs i (Finset.mem_insert_self _ _))`. Establish `h5 : 0 ≤ ‖x‖ ^ i` using `by positivity`. Simplify using `only [eq_intCast]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h6` using `h2 _ (fun i hi => Finset.mem_range.mp hi)`.
-
-Rewrite `h6` using `[← norm_neg, ← h1, norm_pow]`. Conclude with `lt_irrefl _ h6`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem norm_int_le {K : Type} [Field K] [NumberField K] (p : ℕ) [Fact p.Prime] (j : K →+* ℂ_[p])
     (r : 𝓞 K) : ‖j (r : K)‖ ≤ 1 := by
@@ -90,9 +88,9 @@ private theorem norm_int_le {K : Type} [Field K] [NumberField K] (p : ℕ) [Fact
   exact lt_irrefl _ h6
 
 /- English proof (translation)
-Establish `h1 : ‖(s : ℚ_[p])‖ = 1`. Rewrite using `[Padic.norm_natCast_eq_one_iff]`. Conclude with `(Nat.Prime.coprime_iff_not_dvd Fact.out).mpr hs`. Establish `h2` using `PadicComplex.norm_extends' p (s : ℚ_[p])`. Rewrite `h2` using `[h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h2`.
+A detailed English derivation is pending.
 -/
 private theorem norm_nat_eq (p : ℕ) [Fact p.Prime] (s : ℕ) (hs : ¬ p ∣ s) : ‖(s : ℂ_[p])‖ = 1 := by
   have h1 : ‖(s : ℚ_[p])‖ = 1 := by
@@ -106,27 +104,25 @@ end UpperTheory.NormDeterminantRelation
 
 open UpperTheory.NormDeterminantRelation in
 /- English proof (translation)
-Introduce `K _ _ g L hL`. Set `S : Set K` to `{d | ∃ x : Fin g → Fin g → K, (∀ i, x i ∈ L) ∧ d = (Matrix.of fun i k => x k i).det}`. Set `𝔞 : Submodule (𝓞 K) K` to `Submodule.span (𝓞 K) S`. Use `haveI : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩`. Take `⟨x₀, s₀, hx₀, hi₀, hs₀, hsp₀⟩` from `GlobalTheory.FullLatLocBasis.exists_basis_primeTo_p K g 2 L hL`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hs0 : (s₀ : K) ≠ 0` using `Nat.cast_ne_zero.mpr (by rintro rfl; exact hs₀ (dvd_zero 2))`. Establish `hdet0 : (Matrix.of fun i k => x₀ k i).det ≠ 0`. Establish `hu : IsUnit (Matrix.of fun i k => x₀ k i)` using `Matrix.linearIndependent_cols_iff_isUnit.mp hi₀`. Conclude with `(Matrix.isUnit_iff_isUnit_det _ |>.mp hu).ne_zero`. Establish `hfg : 𝔞.FG`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : 𝔞 ≤ Submodule.span (𝓞 K) {((s₀ : K) ^ g)⁻¹ * (Matrix.of fun i k => x₀ k i).det}`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Take `⟨r, hr⟩` from `det_rel x₀ y s₀ fun k => hsp₀ _ (hy k)`. Use `Submodule.mem_span_singleton.mpr ⟨r, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← mul_smul_comm, ← hr, ← mul_assoc, inv_mul_cancel₀ (pow_ne_zero _ hs0), one_mul]`. Conclude with `Submodule.FG.of_le (Submodule.fg_span_singleton _) hle`. Take `⟨n, c, hn, hc, hw, -⟩` from `UpperTheory.ideal_norm_log_height K 𝔞 _ hfg (Submodule.subset_span ⟨x₀, hx₀, rfl⟩) hdet0`. Use `⟨c, 1 / n, hc, fun p _ j => ?_⟩` and prove the remaining obligations. Take `⟨x, s, hx, hi, hs, hsp⟩` from `GlobalTheory.FullLatLocBasis.exists_basis_primeTo_p K g p L hL`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.T.lattice_padic_grading_det K g p j L x s hx hi hs hsp]`. Set `w : AbsoluteValue K ℝ` to `(NormedField.toAbsoluteValue ℂ_[p]).comp j.injective`. Establish `hwa : ∀ b, w b = ‖j b‖` using `fun b => rfl`. Establish `hna : IsNonarchimedean w` using `fun a b => by`. Rewrite using `[hwa, hwa, hwa, map_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `IsUltrametricDist.norm_add_le_max _ _`. Establish `hsm : ∀ (r : 𝓞 K) (b : K), ‖j (r • b)‖ ≤ ‖j b‖` using `fun r b => by`. Rewrite using `[Algebra.smul_def, map_mul, norm_mul]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) (norm_int_le p j r)`. Establish `hub : ∀ b ∈ 𝔞, ‖j b‖ ≤ ‖j (Matrix.of fun i k => x k i).det‖`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `b hb`. Proceed by induction on `hb using Submodule.span_induction with`. Consider the case `mem b hb`. Take `⟨y, hy, rfl⟩` from `hb`. Take `⟨r, hr⟩` from `det_rel x y s fun k => hsp _ (hy k)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hsm r (Matrix.of fun i k => x k i).det`. Rewrite `h1` using `[← hr, map_mul, map_pow, map_natCast, norm_mul, norm_pow, norm_nat_eq p s hs, one_pow, one_mul]`. Conclude with `h1`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb`.
+Treat this case separately. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[map_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ha hb)`. Consider the case `smul r a _ ha => exact (hsm r a).trans ha`. Establish `hsup : sSup ((fun b => w b) '' (𝔞 : Set K)) = ‖j (Matrix.of fun i k => x k i).det‖`. Apply `IsGreatest.csSup_eq` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Use `⟨⟨_, Submodule.subset_span ⟨x, hx, rfl⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Conclude with `hub b hb`. Establish `h` using `hw w hna`. Rewrite `h` using `[hsup, hwa]`.
-
-Rewrite using `[← h, Real.log_pow]`. Establish `hn' : (n : ℝ) ≠ 0` using `by exact_mod_cast hn.ne'`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.lattice_grading_log_product :
     ∀ (K : Type) [Field K] [NumberField K] (g : ℕ) (L : Submodule (𝓞 K) (Fin g → K)), Full L → ∃ (c : K) (t : ℝ), c ≠ 0 ∧ ∀ (p : ℕ) [Fact p.Prime] (j : K →+* ℂ_[p]), ∑ k, lnGrP p j L k = -(t * Real.log ‖j c‖) := by

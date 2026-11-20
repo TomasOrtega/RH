@@ -29,7 +29,7 @@ def atPHom {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) (τ : D.what₂.Tau) 
       (GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ V y τ)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.PointAtPlaceHom.atTau_spec hθ V τ (GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ V x τ)`.
+A detailed English derivation is pending.
 -/
 theorem atPHom_spec {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) (τ : D.what₂.Tau) (x : GA D V) :
     IsAtTau θ V τ (cmp θ τ x) (atPHom hθ V τ x) :=
@@ -38,13 +38,13 @@ theorem atPHom_spec {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) (τ : D.what
 open Classical in
 
 /- English proof (translation)
-Establish `hs` using `atPHom_spec hθ V τ x`. Establish `inf1 : ∀ (y : GA D V) (ρ : D.what₂.Tau), θ ρ (infPart D (((matHom V y).1 - 1) i j)) = infMat D.sp.cm.sig V.gram (θ ρ) y i j - (1 : Matrix (Fin V.rank) (Fin V.rank) ℂ) i j`. Introduce `y ρ`. Establish `e1 : θ ρ (infPart D ((1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) i j)) = (1 : Matrix (Fin V.rank) (Fin V.rank) ℂ) i j` using `congrFun (congrFun (GlobalTheory.PointAtPlaceHom.infMat_one V (θ ρ)) i) j`. Rewrite using `[Matrix.sub_apply, RingHom.map_sub, RingHom.map_sub, e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[← sub_eq_zero]`. Use `hσ.ext _ ?_ fun ρ => ?_` and prove the remaining obligations. Establish `a2 : (finHom V (atPHom hθ V τ x)).1 = (finHom V 1).1` using `by rw [map_one]; exact congrArg Units.val hs.1`. Establish `e : finPart D ((matHom V (atPHom hθ V τ x)).1 i j) = finPart D ((1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) i j)` using `congrFun (congrFun a2 i) j`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.sub_apply, RingHom.map_sub, RingHom.map_sub, RingHom.map_mul, e, hσ.fin, zero_mul, sub_self, sub_zero]`. Set `π : AE D →+* ℂ` to `(θ ρ).comp (infPart D)`. Establish `hπ : ∀ z, θ ρ (infPart D z) = π z` using `fun _ => rfl`. Establish `hc : π (σ (Pi.single τ 1)) = (Pi.single τ 1 : D.what₂.Tau → ℂ) ρ` using `hσ.comp (Pi.single τ 1) ρ`. Establish `i1 : ∀ y : GA D V, π (((matHom V y).1 - 1) i j) = infMat D.sp.cm.sig V.gram (θ ρ) y i j - (1 : Matrix (Fin V.rank) (Fin V.rank) ℂ) i j` using `fun y => inf1 y ρ`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hπ, RingHom.map_sub π, RingHom.map_mul π, i1, i1, hc]`. Distinguish the cases in `c : ρ = τ`. Substitute `c` using the available equality. Rewrite using `[hs.2.1, Pi.single_eq_same, one_mul, sub_self]`. Rewrite using `[hs.2.2 ρ c, Pi.single_eq_of_ne c, zero_mul, sub_self, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem matHom_atPHom {θ : InfFam D} (hθ : IsInfFam θ) {σ : (D.what₂.Tau → ℂ) →+ AE D}
     (hσ : GlobalTheory.FockCompare.Chart θ σ) (V : HSp D) (τ : D.what₂.Tau) (x : GA D V) (i j : Fin V.rank) :
@@ -75,7 +75,7 @@ theorem matHom_atPHom {θ : InfFam D} (hθ : IsInfFam θ) {σ : (D.what₂.Tau �
     · rw [hs.2.2 ρ c, Pi.single_eq_of_ne c, zero_mul, sub_self, sub_zero]
 
 /- English proof (translation)
-Use extensionality with `i l`. Use `congrFun (congrFun h i) l` as an intermediate fact. Simplify using `only [Matrix.mul_apply, Matrix.zero_apply] at this ⊢`. Simplify using `only [he, mul_assoc, ← Finset.mul_sum, this, mul_zero]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mul_eq_zero_of_entry {n k : ℕ} {A : Type} [CommRing A] {m m' : Matrix (Fin n) (Fin n) A} {e : A}
     (he : ∀ i j, m' i j = e * m i j) {N : Matrix (Fin n) (Fin k) A} (h : m * N = 0) : m' * N = 0 := by
@@ -85,7 +85,7 @@ theorem mul_eq_zero_of_entry {n k : ℕ} {A : Type} [CommRing A] {m m' : Matrix 
   simp only [he, mul_assoc, ← Finset.mul_sum, this, mul_zero]
 
 /- English proof (translation)
-Use extensionality with `i l`. Use `congrFun (congrFun h i) l` as an intermediate fact. Simplify using `only [Matrix.mul_apply, Matrix.zero_apply] at this ⊢`. Simplify using `only [he, mul_left_comm _ e, ← Finset.mul_sum, this, mul_zero]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem entry_mul_eq_zero {n k : ℕ} {A : Type} [CommRing A] {m m' : Matrix (Fin n) (Fin n) A} {e : A}
     (he : ∀ i j, m' i j = e * m i j) {N : Matrix (Fin k) (Fin n) A} (h : N * m = 0) : N * m' = 0 := by
@@ -95,7 +95,7 @@ theorem entry_mul_eq_zero {n k : ℕ} {A : Type} [CommRing A] {m m' : Matrix (Fi
   simp only [he, mul_left_comm _ e, ← Finset.mul_sum, this, mul_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `congrFun h i` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct] at this ⊢`. Simplify using `only [he, mul_assoc, mul_left_comm _ e, ← Finset.mul_sum, this]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mulVec_of_entry {n k : ℕ} {A : Type} [CommRing A] {m m' : Matrix (Fin n) (Fin n) A} {e : A}
     (he : ∀ i j, m' i j = e * m i j) {N : Matrix (Fin n) (Fin k) A} {y : Fin n → A} {a : Fin k → A}
@@ -106,9 +106,9 @@ theorem mulVec_of_entry {n k : ℕ} {A : Type} [CommRing A] {m m' : Matrix (Fin 
   simp only [he, mul_assoc, mul_left_comm _ e, ← Finset.mul_sum, this]
 
 /- English proof (translation)
-Take `⟨σ, hσ⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Establish `key : NI V C ≤ (NI V C).comap (atPHom hθ V τ)`. Use `(Subgroup.closure_le _).2 fun x hx => ?_` and prove the remaining obligations. Take `⟨h1, h2, h3⟩` from `hx`. Establish `hm` using `matHom_atPHom hθ hσ V τ x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply the tactic sequence `refine Subgroup.subset_closure ⟨mul_eq_zero_of_entry hm h1, entry_mul_eq_zero hm h2, fun y hy => ?_⟩`. Take `⟨a, ha⟩` from `h3 y hy`. Apply the tactic sequence `exact ⟨_, mulVec_of_entry hm ha⟩`. Conclude with `key hh`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem atPHom_mem_NI {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) {r : ℕ} (C : Matrix (Fin V.rank) (Fin r) D.host.E)
     (τ : D.what₂.Tau) {h : GA D V} (hh : h ∈ NI V C) : atPHom hθ V τ h ∈ NI V C := by
@@ -124,9 +124,9 @@ theorem atPHom_mem_NI {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) {r : ℕ} 
   exact key hh
 
 /- English proof (translation)
-Introduce `D θ hθ V r C _ τ h`. Establish `hs` using `atPHom_spec hθ V τ (h : GA D V)`. Set `p : NI V C` to `⟨atPHom hθ V τ h, atPHom_mem_NI hθ V C τ h.2⟩`. Use `⟨p, mem_atP.2 ⟨hs.1, hs.2.2⟩, p⁻¹ * h, mem_offP.2 ?_, (mul_inv_cancel_left p h).symm⟩` and prove the remaining obligations. Use `show infMat D.sp.cm.sig V.gram (θ τ) ((atPHom hθ V τ h)⁻¹ * h) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : infMat D.sp.cm.sig V.gram (θ τ) (atPHom hθ V τ h) = infMat D.sp.cm.sig V.gram (θ τ) h` using `hs.2.1`. Rewrite using `[GlobalTheory.PointAtPlaceHom.infMat_mul, ← e, ← GlobalTheory.PointAtPlaceHom.infMat_mul, inv_mul_cancel, GlobalTheory.PointAtPlaceHom.infMat_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem decomp : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (r : ℕ) (C : Matrix (Fin V.rank) (Fin r) D.host.E), IsIsoFrame V C → ∀ (τ : D.what₂.Tau) (h : NI V C), ∃ p ∈ GlobalTheory.FibreAtTau.atP θ V C τ, ∃ q ∈ GlobalTheory.FibreAtTau.offP θ V C τ, h = p * q := by
   intro D θ hθ V r C _ τ h

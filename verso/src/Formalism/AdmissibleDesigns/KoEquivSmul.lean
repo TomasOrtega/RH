@@ -43,7 +43,7 @@ Both sides reduce to the same expression.
 theorem epsHom_apply (e : ℕ) (g : G) : epsHom PD (LL := LL) e g = Formalism.MainNotions.N.epsTw PD e g := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Express the relevant statement in the definitionally equal form `Matrix.mulVec (Formalism.MainNotions.N.epsTw PD (LL := LL) e g) v j = _`. Simplify using `[Matrix.mulVec, dotProduct, Formalism.MainNotions.N.epsTw]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem matRep_eps (e : ℕ) (g : G) (v : Fin 1 → LL) :
     Formalism.MainNotions.N.matRep (epsHom PD (LL := LL) e) g v =
@@ -96,9 +96,9 @@ theorem twLat_V (hinj : Function.Injective (algebraMap O LL)) (ε' : G → O)
     (twLat hinj ε' hε e hcont).V = (Fin 1 → LL) := rfl
 
 /- English proof (translation)
-Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H v`. Unfold `actD`. Use `(congrArg Submodule.Quotient.mk (?_ : (twLat hinj ε' hε e hcont).ρ h v = (ε' h ^ e) • v)).trans (Submodule.Quotient.mk_smul _ _ _)` and prove the remaining obligations. Use function extensionality and compare the values at `j`.
+Proceed by induction. Treat this case separately. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show Formalism.MainNotions.N.matRep (epsHom PD (LL := LL) e) h v j = (ε' h ^ e) • v j`. Rewrite using `[matRep_eps, Algebra.smul_def, map_pow, hε, Subsingleton.elim j 0]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actD_twLat (hinj : Function.Injective (algebraMap O LL)) (ε' : G → O)
     (hε : ∀ g, algebraMap O LL (ε' g) = algebraMap Qp LL (((PD.χ g)⁻¹ : Qpˣ) : Qp)) (e : ℕ)
@@ -142,9 +142,9 @@ def vecK : (Fin 1 → LL) →ₛₗ[σ.symm.toRingHom] FractionRing O' where
     exact congrArg (fun y => algebraMap O LL y * v 0) (σ.apply_symm_apply c).symm
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨c, rfl⟩` from `Submodule.mem_one.1 hx`. Rewrite using `[Submodule.mem_comap]`. Use `⟨fun _ => σ c, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show algebraMap O LL (σ c) = eK (algebraMap O' (FractionRing O') c)`. Conclude with `(heK c).symm`.
+A detailed English derivation is pending.
 -/
 theorem kVec_le : (1 : Submodule O' (FractionRing O')) ≤ (Formalism.MainNotions.N.stdG O LL 1).comap (kVec σ eK heK) := by
   intro x hx
@@ -181,7 +181,7 @@ def koEquiv : KO O' ≃+ ((Fin 1 → LL) ⧸ Formalism.MainNotions.N.stdG O LL 1
   map_add' x y := map_add _ x y
 
 /- English proof (translation)
-Use `show koTo σ eK heK (a • x) = σ a • koTo σ eK heK x`. Conclude with `(koTo σ eK heK).map_smulₛₗ a x`.
+A detailed English derivation is pending.
 -/
 theorem koEquiv_smul (a : O') (x : KO O') : koEquiv σ eK heK (a • x) = σ a • koEquiv σ eK heK x := by
   show koTo σ eK heK (a • x) = σ a • koTo σ eK heK x

@@ -11,11 +11,9 @@ open scoped Matrix
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `k _ n g g' P μ h`. Use `set A : Matrix (Fin n) (Fin n) k := (g : Matrix (Fin n) (Fin n) k)`. Use `set Ai : Matrix (Fin n) (Fin n) k := ((g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)`. Use `set B : Matrix (Fin n) (Fin n) k := (g' : Matrix (Fin n) (Fin n) k)`. Use `set M : Matrix (Fin n) (Fin n) k := (P : Matrix (Fin n) (Fin n) k)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Mi : Matrix (Fin n) (Fin n) k := ((P⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)`. Establish `hA : A * Ai = 1` using `g.mul_inv`. Establish `hM : Mi * M = 1` using `P.inv_mul`. Establish `hM' : M * Mi = 1` using `P.mul_inv`. Establish `hB : B = Mi * Aiᵀ * (Aᵀ * M * B)`.
-
-Establish `: Aiᵀ * Aᵀ = 1` using `by rw [← Matrix.transpose_mul, hA, Matrix.transpose_one]`. Combine the equalities or inequalities in the displayed calculation. Use `show B.trace = μ * Ai.trace`. Rewrite using `[hB, h, Matrix.mul_smul, Matrix.trace_smul, smul_eq_mul, Matrix.trace_mul_comm, ← Matrix.mul_assoc, hM', Matrix.one_mul, Matrix.trace_transpose]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Ga.trPair :
     ∀ (k : Type) [Field k] (n : ℕ) (g g' P : GL (Fin n) k) (μ : kˣ), (g : Matrix (Fin n) (Fin n) k)ᵀ * (P : Matrix (Fin n) (Fin n) k) * (g' : Matrix (Fin n) (Fin n) k) = (μ : k) • (P : Matrix (Fin n) (Fin n) k) → Ga.tr g' = μ * Ga.tr g⁻¹ := by

@@ -58,7 +58,7 @@ def LocCore : Prop :=
       LocConcl I g r e f z Rf.z0 v
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h1, hs, hn, hee, hff, hef, hz, ht, hi, hiz⟩`.
+Supply the required witnesses or components.
 -/
 theorem hyps_of {I : AutInst} {g r k : ℕ} {e f : Fin r → Fin I.n → I.E} {z : Fin I.n → I.E}
     (h1 : 1 ≤ g)
@@ -77,14 +77,14 @@ theorem hyps_of {I : AutInst} {g r k : ℕ} {e f : Fin r → Fin I.n → I.E} {z
   ⟨h1, hs, hn, hee, hff, hef, hz, ht, hi, hiz⟩
 
 /- English proof (translation)
-Introduce `I g r k e f z Rf hH v hv`. Conclude with `hC I g r k e f z Rf hH v hv (hI I g r k e f Rf hH.1 hH.2.2.1 v hv)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem locXu_of (hI : LocIdem) (hC : LocCore) : LocXu := by
   intro I g r k e f z Rf hH v hv
   exact hC I g r k e f z Rf hH v hv (hI I g r k e f Rf hH.1 hH.2.2.1 v hv)
 
 /- English proof (translation)
-The claim follows from `hG (locXu_of hI hC)`.
+A detailed English derivation is pending.
 -/
 theorem target_of (hI : LocIdem) (hC : LocCore) (hG : Glue) : _root_.PI.ScXuExists.Target :=
   hG (locXu_of hI hC)

@@ -14,7 +14,7 @@ namespace PositivityTheory.SiegelWeilFormula.kfour
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 variable {σ : E →ₐ[F] E} {n : ℕ} {Y : Spc F E n}
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d`. Take `⟨ν, 𝓕, hν, h𝓕, h1⟩` from `exists_cov (F := F) (E := E) d.m d.n`. Take `⟨i1, i2, i3, i4⟩` from `doubled_group_topological_properties σ d.Y`. Conclude with `⟨⟨ν, hν, 𝓕, h𝓕, h1⟩, exists_w d.ok.frame, i1, i2, i3, i4⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem auxiliaryExistence_holds : _root_.PositivityTheory.SiegelWeilFormula.SiegelWeilDatumProperties := by
   intro F E _ _ _ _ _ σ d

@@ -15,7 +15,7 @@ namespace PositivityTheory.Rg.Sw.Glob
 variable {D : D7} {n : ℕ}
 
 /- English proof (translation)
-Unfold `phiS`. Rewrite using `[dif_pos h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem phiS_eq' {m : ℕ} {θ : InfFam D} {τ : D.what₂.Tau} {fr : Matrix (Fin m) (Fin m) ℂ} {c : ℝ}
     {Ψ : Mx D m n → ℂ} {P : PX m n} (h : tens θ τ fr (fP c P) Ψ ∈ schwartzA θ m n) : phiS θ τ fr c Ψ P = ⟨_, h⟩ := by
@@ -23,7 +23,7 @@ theorem phiS_eq' {m : ℕ} {θ : InfFam D} {τ : D.what₂.Tau} {fr : Matrix (Fi
   rw [dif_pos h]
 
 /- English proof (translation)
-Rewrite using `[Matrix.conjTranspose_smul, Matrix.conjTranspose_one, Complex.star_def, Complex.conj_ofReal]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_smul_one (t : ℝ) : ((t : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ))ᴴ = (t : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ) := by
   rw [Matrix.conjTranspose_smul, Matrix.conjTranspose_one, Complex.star_def, Complex.conj_ofReal]

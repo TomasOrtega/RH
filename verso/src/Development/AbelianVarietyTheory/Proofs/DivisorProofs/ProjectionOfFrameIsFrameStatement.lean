@@ -7,7 +7,7 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.LocM GlobalTheory.ShFam GlobalT
 open Formalism.MainNotions.DIV.Cons (intO)
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.VB.IsFrame.of_retract` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FProjectionOfFrameIsFrame.lean&line=10#L10)
 -/

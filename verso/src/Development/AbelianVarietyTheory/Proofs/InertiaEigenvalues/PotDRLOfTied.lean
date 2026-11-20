@@ -9,7 +9,7 @@ open Formalism Formalism.MainNotions Formalism.BasicNotions Formalism.BasicNotio
 namespace GlobalTheory.Pass
 
 /- English proof (translation)
-Introduce `L A hT l _ K K' LL h R hc`. Take `⟨T⟩` from `hT l`. Conclude with `(GlobalTheory.T.restrict_crystalline_deRham_finiteExt l (L l) (A l) T K K' LL h R.V R.ρ).2.2 (GlobalTheory.Per.CrisDR.isDR_of_isCrys l (L l) (A l) T K' LL R.V _ hc).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem potDRL_of_tied : ∀ (L : LocTheory) (A : ∀ (l : ℕ) [Fact l.Prime], LocAinf l (L l)), (∀ (l : ℕ) [Fact l.Prime], Nonempty (LocTied l (L l) (A l))) → PotDRL L := by
   intro L A hT l _ K K' LL h R hc

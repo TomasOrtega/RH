@@ -9,31 +9,29 @@ open CategoryTheory AlgebraicGeometry Polynomial DividedPowers GlobalTheory.LogC
 namespace GlobalTheory.CompanionTheory.ThickAct
 
 /- English proof (translation)
-Establish `hunit : ∀ (T : Thick L) (x : T.B), IsUnit (Ideal.Quotient.mk T.J x) → IsUnit x`. Introduce `T x hx`. Take `⟨y, hy⟩` from `hx.exists_right_inv`. Take `⟨y', rfl⟩` from `Ideal.Quotient.mk_surjective y`. Establish `hm : x * y' - 1 ∈ T.J`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← Ideal.Quotient.eq, map_mul, map_one]`. Conclude with `hy`. Establish `h1 : IsUnit (1 + (x * y' - 1))` using `(GlobalTheory.LogCris.CupModel.isNilpotent_of_mem T hm).isUnit_one_add`. Rewrite `h1` using `[add_sub_cancel]`. Conclude with `isUnit_of_mul_isUnit_left h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hker : ∀ (T : Thick L) (x : (thU L q hq).U T), Ideal.Quotient.mk T.J ((x.1 : T.Bˣ) : T.B) = 1` using `fun T x => congrArg Units.val (MonoidHom.mem_ker.1 x.2)`. Establish `hlift : ∀ (T : Thick L) (a : Fin d → (thU L q hq).U T) (c : D ⟶ T) (k : Fin d), Ideal.Quotient.mk T.J (((a k).1 : T.B) * c.φ (t k)) = g T (τ k)`. Introduce `T a c k`. Rewrite using `[map_mul, hker, one_mul, hcl]`. Establish `hu : ∀ (T : Thick L) (c₁ c₂ : D ⟶ T), (∀ k, c₁.φ (t k) = c₂.φ (t k)) → c₁ = c₂`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `T c₁ c₂ h`. Take `⟨c, _, hc⟩` from `hex T (fun k => c₂.φ (t k)) (fun k => hcl T c₂ k)`. Conclude with `(hc c₁ h).trans (hc c₂ fun _ => rfl).symm`. Use `choose act hact using fun (T : Thick L) (a : Fin d → (thU L q hq).U T) (c : D ⟶ T) => (hex T _ (hlift T a c)).exists`. Establish `hw : ∀ (T : Thick L) (e : D ⟶ T) (k : Fin d), IsUnit (e.φ (t k))` using `fun T e k => hunit T _ (by rw [hcl]; exact (τ k).isUnit.map (g T))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨⟨@fun T a c => act T a c, ?_, ?_, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `T c show act T 1 c = c`. Apply `hu` to reduce the goal to its premises. Introduce `k`. Rewrite using `[hact]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Introduce `T a b c show act T (a * b) c = act T a (act T b c)`. Apply `hu` to reduce the goal to its premises. Introduce `k`. Rewrite using `[hact, hact, hact]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_assoc (((a k).1 : T.Bˣ) : T.B) (((b k).1 : T.Bˣ) : T.B) (c.φ (t k))`. Introduce `T T' a c φ show act T a c ≫ φ = act T' (fun k => (thU L q hq).map φ (a k)) (c ≫ φ)`. Apply `hu` to reduce the goal to its premises. Introduce `k`. Rewrite using `[hact]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Express the relevant statement in the definitionally equal form `φ.φ ((act T a c).φ (t k)) = _`. Rewrite using `[hact, map_mul]`. Both sides reduce to the same expression. Introduce `T show Nonempty (D ⟶ T) choose u hu' using fun k => Ideal.Quotient.mk_surjective (I := T.J) (g T (τ k))`. Conclude with `⟨(hex T u hu').exists.choose⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `T show ∀ c c' : D ⟶ T, ∃! a, act T a c = c'`. Introduce `c c'`. Set `a : Fin d → (thU L q hq).U T` to `fun k => ⟨(hw T c' k).unit * ((hw T c k).unit)⁻¹, by`. Rewrite using `[MonoidHom.mem_ker, map_mul, map_inv]`. Establish `e : Units.map (Ideal.Quotient.mk T.J).toMonoidHom (hw T c' k).unit = Units.map (Ideal.Quotient.mk T.J).toMonoidHom (hw T c k).unit`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.coe_map, IsUnit.unit_spec, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe, hcl]`. Rewrite using `[e, mul_inv_cancel]⟩`. Use `⟨a, ?_, ?_⟩` and prove the remaining obligations. Apply `hu` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Rewrite using `[hact]`. Express the relevant statement in the definitionally equal form `(((hw T c' k).unit * ((hw T c k).unit)⁻¹ : T.Bˣ) : T.B) * c.φ (t k) = c'.φ (t k)`. Rewrite using `[Units.val_mul, mul_assoc, IsUnit.val_inv_mul, mul_one, IsUnit.unit_spec]`. Introduce `a' ha'`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `k`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Establish `h` using `congrArg (fun e : D ⟶ T => e.φ (t k)) ha'`. Simplify using `only [hact] at h`.
-
-Express the relevant statement in the definitionally equal form `((a' k).1 : T.B) = (((hw T c' k).unit * ((hw T c k).unit)⁻¹ : T.Bˣ) : T.B)`. Rewrite using `[Units.val_mul, IsUnit.unit_spec (hw T c' k), ← h, mul_assoc, IsUnit.mul_val_inv, mul_one]`. Introduce `T a c k`. Conclude with `hact T a c k`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_act_of_hom {b : Base} {L : b.Fun} (q : b.Rˣ) (hq : (q : b.R) - 1 ∈ b.I) (D : Thick L)
     {R : Type} [CommRing R] {d : ℕ} (τ : Fin d → Rˣ) (t : Fin d → D.B)
@@ -122,7 +120,7 @@ theorem exists_act_of_hom {b : Base} {L : b.Fun} (q : b.Rˣ) (hq : (q : b.R) - 1
     exact hact T a c k
 
 /- English proof (translation)
-Introduce `O _ F d s b ht κ 𝓛 δ hδ hp hn q hq`. Use `choose g hg using fun T => GlobalTheory.T.exists_lift_to_thickening s ht 𝓛 δ hδ hp hn T`. Conclude with `exists_act_of_hom q hq (liftObj s ht 𝓛 δ hδ hp hn) s.T 𝓛.t g (fun T c k => (hg T).1 c (s.T k) (𝓛.t k) (𝓛.hT k).symm) (fun T u hu => (hg T).2.2 u hu)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem thick_act : ∀ {O : Type} [CommRing O] {F : Fn O} {d : ℕ} (s : F.Small d) {b : Base} (ht : b.t = 1) {κ : O →+* b.R ⧸ b.I} (𝓛 : Lift s.a (fun k => (s.T k : s.R)) b.R b.I κ) (δ : DividedPowers (b.I.map 𝓛.i)) (hδ : IsDPMorphism b.γ δ 𝓛.i) (hp : b.p ≠ 0) (hn : IsNilpotent (b.p : b.R)) (q : b.Rˣ) (hq : (q : b.R) - 1 ∈ b.I), ∃ A : Act (𝟭 _) (thU (F.cr b ht κ) q hq) d (liftObj s ht 𝓛 δ hδ hp hn), ∀ (T : Thick (F.cr b ht κ)) (a : Fin d → (thU (F.cr b ht κ) q hq).U T) (c : liftObj s ht 𝓛 δ hδ hp hn ⟶ T) (k : Fin d), (A.act a c).φ (𝓛.t k) = ((a k).1 : T.B) * c.φ (𝓛.t k) := by
   intro O _ F d s b ht κ 𝓛 δ hδ hp hn q hq

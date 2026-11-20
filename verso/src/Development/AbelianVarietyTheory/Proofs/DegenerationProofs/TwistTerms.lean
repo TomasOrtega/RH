@@ -8,14 +8,14 @@ namespace NumD
 variable {O : Type} [CommRing O] (N : NumD O)
 
 /- English proof (translation)
-Rewrite using `[β.symm, β.div_add hj, β.symm z, β.symm z]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Form.div_add_left {N : NumD O} {k : ℕ} (β : N.Form k) {j : ℕ} (hj : j ∣ k) (x y z : N.X) :
     β.be (x + y) z / j = β.be x z / j + β.be y z / j := by
   rw [β.symm, β.div_add hj, β.symm z, β.symm z]
 
 /- English proof (translation)
-Break down `eq_or_ne j 0 with rfl | h` into its components or cases. Take `rfl : k = 0` from `Nat.eq_zero_of_zero_dvd hj`. Establish `h0 : β.be y z = 0` using `by simpa using β.dvd y z`. Simplify using `[h0]`. Rewrite using `[β.div_add_left hj, map_nsmul, LinearMap.smul_apply, nsmul_eq_mul, Int.mul_ediv_cancel_left _ (Int.natCast_ne_zero.2 h)]`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem Form.div_add_nsmul {N : NumD O} {k : ℕ} (β : N.Form k) {j : ℕ} (hj : j ∣ k) (x y z : N.X) :
     β.be (x + j • y) z / j = β.be x z / j + β.be y z := by
@@ -27,7 +27,7 @@ theorem Form.div_add_nsmul {N : NumD O} {k : ℕ} (β : N.Form k) {j : ℕ} (hj 
       Int.mul_ediv_cancel_left _ (Int.natCast_ne_zero.2 h)]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih => rw [succ_nsmul, β.div_add hj, ih]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Form.div_nsmul {N : NumD O} {k : ℕ} (β : N.Form k) {j : ℕ} (hj : j ∣ k) (m : ℕ) (x y : N.X) :
     β.be x (m • y) / j = β.be x y / j * m := by
@@ -36,13 +36,13 @@ theorem Form.div_nsmul {N : NumD O} {k : ℕ} (β : N.Form k) {j : ℕ} (hj : j 
   | succ m ih => rw [succ_nsmul, β.div_add hj, ih]; push_cast; ring
 
 /- English proof (translation)
-Establish `hd : ∀ x z, (2 * (m : ℤ) ^ 2) ∣ β.be x z` using `fun x z => (mul_dvd_mul_left 2 (by exact_mod_cast hm)).trans (β.dvd x z)`. Take `⟨a, ha⟩` from `hd y y`. Take `⟨b, hb⟩` from `hd y χ`. Take `⟨c, hc⟩` from `hd χ χ`. Take `⟨t, ht⟩` from `ho.pow (n := 2)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hm0 : (m : ℤ) ^ 2 ≠ 0` using `pow_ne_zero _ (Int.natCast_ne_zero.2 ho.pos.ne')`. Establish `h1 : (m ^ 2 - 1) / 2 = t` using `by omega`. Establish `h2 : (m : ℤ) ^ 2 = 2 * t + 1` using `by exact_mod_cast ht`. Establish `e : β.be (y + m • χ) (y + m • χ) = 2 * m ^ 2 * (a + 2 * m * b + m ^ 2 * c)`. Simplify using `only [map_add, map_nsmul, LinearMap.add_apply, LinearMap.smul_apply, nsmul_eq_mul, β.symm χ y, ha, hb, hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `d1 : ∀ x : ℤ, 2 * (m : ℤ) ^ 2 * x / 2 = m ^ 2 * x` using `fun x => by`. Rewrite using `[mul_assoc, Int.mul_ediv_cancel_left _ two_ne_zero]`. Establish `d2 : ∀ x : ℤ, 2 * (m : ℤ) ^ 2 * x / (m ^ 2 : ℕ) = 2 * x` using `fun x => by`. Rewrite using `[Nat.cast_pow, mul_right_comm, Int.mul_ediv_cancel _ hm0]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, h1, ha, hb, hc, d1, d1, d2, d2, Int.mul_ediv_cancel_left _ (mul_ne_zero two_ne_zero hm0)]`. Take the linear combination `(-a) * h2`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem Form.exp_count {N : NumD O} {k : ℕ} (β : N.Form k) {m : ℕ} (hm : m ^ 2 ∣ k) (ho : Odd m) (y χ : N.X) :
     β.be (y + m • χ) (y + m • χ) / (2 * m ^ 2) =
@@ -67,7 +67,7 @@ theorem Form.exp_count {N : NumD O} {k : ℕ} (β : N.Form k) {m : ℕ} (hm : m 
   linear_combination (-a) * h2
 
 /- English proof (translation)
-Use `show N.ψ p.1.1.toAdd * u ^ (β.be p.1.1.toAdd p.1.1.toAdd / 2) * mulq N.θ N.σ j p.1.2.b / (p.1.2.s p.1.1.toAdd * u ^ (β.be p.1.1.toAdd p.1.1.toAdd / j) * cubN N.θ j 1 p.1.2.b p.1.2.b / dbl N.θ N.σ p.1.2.b ^ j) ^ ((j - 1) / 2) = _ * (N.ψ p.1.1.toAdd * mulq N.θ N.σ j p.1.2.b / (p.1. …`. Rewrite using `[zpow_sub, zpow_mul, zpow_natCast, mul_right_comm (p.1.2.s _), mul_div_right_comm _ (u ^ _), mul_pow]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_div, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem twist_wQ {k : ℕ} (β : N.Form k) (u : Oˣ) {j : ℕ} (hj : j ∣ k) (p : N.QT j) :
     (N.twist β u).wQ (N.twQ β u hj p) =
@@ -81,9 +81,9 @@ theorem twist_wQ {k : ℕ} (β : N.Form k) (u : Oˣ) {j : ℕ} (hj : j ∣ k) (p
   simp only [ofMul_mul, ofMul_div, ofMul_inv]; abel
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `N.twG_pow β u g l hl m`. Use `show ((N.ψ χ * u ^ (β.be χ χ / 2) * (N.twG β u g l hl ^ m).s χ : Oˣ) : O) * N.th (N.c χ * (show N.A from (N.twG β u g l hl ^ m).b)) = _ * (((N.ψ χ * (g ^ m).s χ : Oˣ) : O) * N.th (N.c χ * (g ^ m).b))`. Rewrite using `[h1, h2, ← mul_assoc (_ : O), ← Units.val_mul, zpow_add]`. Use `congr 2`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [ofMul_mul]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem twist_vt {k : ℕ} (β : N.Form k) (u : Oˣ) (g : N.Gt) (l : N.X → ℤ) (hl : ∀ a b, l (a + b) = l a + l b)
     (m : ℕ) (χ : N.X) :
@@ -97,9 +97,9 @@ theorem twist_vt {k : ℕ} (β : N.Form k) (u : Oˣ) (g : N.Gt) (l : N.X → ℤ
   simp only [ofMul_mul]; abel
 
 /- English proof (translation)
-Use `NumD.Gt.ext rfl (funext fun (z : N.X) => ?_)` and prove the remaining obligations. Use `show g.s z * u ^ l z * (g'.s z * u ^ l' z) / N.θ (N.c z) g.b g'.b = g.s z * g'.s z / N.θ (N.c z) g.b g'.b * u ^ (l z + l' z)`. Rewrite using `[zpow_add]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_div]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem twG_mul {k : ℕ} (β : N.Form k) (u : Oˣ) (g g' : N.Gt) (l l' : N.X → ℤ) (hl : ∀ a b, l (a + b) = l a + l b)
     (hl' : ∀ a b, l' (a + b) = l' a + l' b) :
@@ -113,7 +113,7 @@ theorem twG_mul {k : ℕ} (β : N.Form k) (u : Oˣ) (g g' : N.Gt) (l l' : N.X �
   simp only [ofMul_mul, ofMul_div]; abel
 
 /- English proof (translation)
-Take `rfl : l = l'` from `funext h`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem twG_congr {k : ℕ} (β : N.Form k) (u : Oˣ) (g : N.Gt) (l l' : N.X → ℤ) (hl : ∀ a b, l (a + b) = l a + l b)
     (hl' : ∀ a b, l' (a + b) = l' a + l' b) (h : ∀ z, l z = l' z) : N.twG β u g l hl = N.twG β u g l' hl' := by
@@ -121,7 +121,7 @@ theorem twG_congr {k : ℕ} (β : N.Form k) (u : Oˣ) (g : N.Gt) (l l' : N.X →
   rfl
 
 /- English proof (translation)
-The claim follows from `NumD.Gt.ext (congrArg (fun x : (N.twist β u).Gt => x.b) h) (funext fun z => mul_right_cancel (congrArg (fun x : (N.twist β u).Gt => x.s z) h))`.
+A detailed English derivation is pending.
 -/
 theorem twG_inj {k : ℕ} (β : N.Form k) (u : Oˣ) (g g' : N.Gt) (l : N.X → ℤ) (hl : ∀ a b, l (a + b) = l a + l b)
     (h : N.twG β u g l hl = N.twG β u g' l hl) : g = g' :=
@@ -129,16 +129,16 @@ theorem twG_inj {k : ℕ} (β : N.Form k) (u : Oˣ) (g g' : N.Gt) (l : N.X → �
     (funext fun z => mul_right_cancel (congrArg (fun x : (N.twist β u).Gt => x.s z) h))
 
 /- English proof (translation)
-The claim follows from `NumD.Gt.ext rfl (funext fun (z : N.X) => N.twist_τ β u y z)`.
+A detailed English derivation is pending.
 -/
 theorem twist_io {k : ℕ} (β : N.Form k) (u : Oˣ) (y : N.X) :
     (N.twist β u).io y = N.twG β u (N.io y) (fun z => β.be y z) (fun a b => map_add _ a b) :=
   NumD.Gt.ext rfl (funext fun (z : N.X) => N.twist_τ β u y z)
 
 /- English proof (translation)
-Use `show (((N.twist β u).wQ (N.twQ β u hm p) / mulq N.θ N.σ m p.1.2.b : Oˣ) : O) * (N.twist β u).vt (N.twG β u p.1.2 _ (β.div_add hm p.1.1.toAdd) ^ m) χ = _ * (((N.wQ p / mulq N.θ N.σ m p.1.2.b : Oˣ) : O) * N.vt (p.1.2 ^ m) χ)`. Rewrite using `[twist_wQ, twist_vt, β.exp_count hm ho, ← mul_assoc, ← mul_assoc, ← Units.val_mul, ← Units.val_mul]`. Use `congr 2`. Simplify using `only [zpow_add]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [ofMul_mul, ofMul_div]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem twist_txT {k : ℕ} (β : N.Form k) (u : Oˣ) (m : ℕ) (hm : m ^ 2 ∣ k) (ho : Odd m) (p : N.QT (m ^ 2)) (χ : N.X) :
     (N.twist β u).txT m (N.twQ β u hm p) χ =
@@ -153,9 +153,9 @@ theorem twist_txT {k : ℕ} (β : N.Form k) (u : Oˣ) (m : ℕ) (hm : m ^ 2 ∣ 
   simp only [ofMul_mul, ofMul_div]; abel
 
 /- English proof (translation)
-Use `show ((q.1.2.s p.1.1.toAdd * u ^ (β.be q.1.1.toAdd p.1.1.toAdd / j) * cubN N.θ (m ^ 2) 1 p.1.2.b q.1.2.b * (N.twist β u).wQ (N.twQ β u hm p) / mulq N.θ N.σ m (q.1.2.b * p.1.2.b) : Oˣ) : O) * (N.twist β u).vt ((N.twG β u q.1.2 _ (β.div_add hj q.1.1.toAdd) * N.twG β u p.1.2 _ (β.di …`. Rewrite using `[twG_mul, twist_wQ, twist_vt, β.exp_count hm ho, β.div_add hj, β.div_nsmul hj, ← mul_assoc (_ : O), ← mul_assoc (_ : O), ← Units.val_mul, ← Units.val_mul]`. Use `congr 2`. Simplify using `only [add_mul, zpow_add]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [ofMul_mul, ofMul_div]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem twist_evT {k : ℕ} (β : N.Form k) (u : Oˣ) (m : ℕ) (hm : m ^ 2 ∣ k) (ho : Odd m) (p : N.QT (m ^ 2)) (χ : N.X)
     {j : ℕ} (hj : j ∣ k) (q : N.QT j) :
@@ -176,7 +176,7 @@ theorem twist_evT {k : ℕ} (β : N.Form k) (u : Oˣ) (m : ℕ) (hm : m ^ 2 ∣ 
   simp only [ofMul_mul, ofMul_div]; abel
 
 /- English proof (translation)
-Use `show q.1.2.s q'.1.1.toAdd * u ^ (β.be q.1.1.toAdd q'.1.1.toAdd / j) * cubN N.θ j 1 q'.1.2.b q.1.2.b / (q'.1.2.s q.1.1.toAdd * u ^ (β.be q'.1.1.toAdd q.1.1.toAdd / j) * cubN N.θ j 1 q.1.2.b q'.1.2.b) = q.1.2.s q'.1.1.toAdd * cubN N.θ j 1 q'.1.2.b q.1.2.b / (q'.1.2.s q.1.1.toAdd * …`. Rewrite using `[β.symm q'.1.1.toAdd]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_div]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem twist_wp {k : ℕ} (β : N.Form k) (u : Oˣ) {j : ℕ} (hj : j ∣ k) (q q' : N.QT j) :
     (N.twist β u).wp (N.twQ β u hj q) (N.twQ β u hj q') = N.wp q q' := by
@@ -188,7 +188,7 @@ theorem twist_wp {k : ℕ} (β : N.Form k) (u : Oˣ) {j : ℕ} (hj : j ∣ k) (q
   simp only [ofMul_mul, ofMul_div]; abel
 
 /- English proof (translation)
-Use `Subtype.ext (Prod.ext rfl ?_)` and prove the remaining obligations. Use `show N.twG β u (q.1.2 * q'.1.2) _ (β.div_add hj (q.1.1.toAdd + q'.1.1.toAdd)) = N.twG β u q.1.2 _ (β.div_add hj q.1.1.toAdd) * N.twG β u q'.1.2 _ (β.div_add hj q'.1.1.toAdd)`. Rewrite using `[twG_mul]`. Conclude with `N.twG_congr β u _ _ _ _ _ fun z => β.div_add_left hj _ _ z`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twQ_mul {k : ℕ} (β : N.Form k) (u : Oˣ) {j : ℕ} (hj : j ∣ k) (q q' : N.QT j) :
     N.twQ β u hj (q * q') = N.twQ β u hj q * N.twQ β u hj q' := by
@@ -199,7 +199,7 @@ theorem twQ_mul {k : ℕ} (β : N.Form k) (u : Oˣ) {j : ℕ} (hj : j ∣ k) (q 
   exact N.twG_congr β u _ _ _ _ _ fun z => β.div_add_left hj _ _ z
 
 /- English proof (translation)
-Use `exists_congr fun (z : N.X) => and_congr_right fun (h : q'.1.1.toAdd = q.1.1.toAdd + j • z) => ?_` and prove the remaining obligations. Use `show _ ↔ N.twG β u q'.1.2 _ (β.div_add hj q'.1.1.toAdd) = N.twG β u q.1.2 _ (β.div_add hj q.1.1.toAdd) * (N.twist β u).io z`. Rewrite using `[twist_io, twG_mul, ← N.twG_congr β u (q.1.2 * N.io z) (fun x => β.be q'.1.1.toAdd x / j) (fun x => β.be q.1.1.toAdd x / j + β.be z x) (β.div_add hj q'.1.1.toAdd) _ fun x => by rw [h, β.div_add_nsmul hj]]`. Conclude with `⟨fun e => by rw [e], N.twG_inj β u _ _ _ _⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem twist_qEq {k : ℕ} (β : N.Form k) (u : Oˣ) {j : ℕ} (hj : j ∣ k) (q q' : N.QT j) :
     N.QEq q q' ↔ (N.twist β u).QEq (N.twQ β u hj q) (N.twQ β u hj q') := by
@@ -214,7 +214,7 @@ theorem twist_qEq {k : ℕ} (β : N.Form k) (u : Oˣ) {j : ℕ} (hj : j ∣ k) (
 end NumD
 
 /- English proof (translation)
-Introduce `_ _ N _ β u m hm ho p χ` and use `⟨N.twist_txT β u m hm ho p χ, fun _ hj q _ => N.twist_evT β u m hm ho p χ hj q, fun _ hj q q' => ⟨N.twist_wp β u hj q q', N.twQ_mul β u hj q q', N.twist_qEq β u hj q q'⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem twist_terms : ∀ (O : Type) [CommRing O] (N : NumD O), ∀ (k : ℕ) (β : N.Form k) (u : Oˣ) (m : ℕ) (hm : m ^ 2 ∣ k), Odd m → ∀ (p : N.QT (m ^ 2)) (χ : N.X), (N.twist β u).txT m (N.twQ β u hm p) χ = (u ^ (β.be (p.1.1.toAdd + m • χ) (p.1.1.toAdd + m • χ) / (2 * m ^ 2)) : Oˣ) * N.txT m p χ ∧ (∀ (j : ℕ) (hj : j ∣ k) (q : N.QT j), j ≠ 0 → (N.twist β u).evT m (N.twQ β u hm p) (N.twQ β u hj q).1.2 χ = (u ^ (β.be (p.1.1.toAdd + m • χ) (p.1.1.toAdd + m • χ) / (2 * m ^ 2) + β.be q.1.1.toAdd (p.1.1.toAdd + m • χ) / j) : Oˣ) * N.evT m p q.1.2 χ) ∧ ∀ (j : ℕ) (hj : j ∣ k) (q q' : N.QT j), (N.twist β u).wp (N.twQ β u hj q) (N.twQ β u hj q') = N.wp q q' ∧ N.twQ β u hj (q * q') = N.twQ β u hj q * N.twQ β u hj q' ∧ (N.QEq q q' ↔ (N.twist β u).QEq (N.twQ β u hj q) (N.twQ β u hj q')) :=
   fun _ _ N _ β u m hm ho p χ => ⟨N.twist_txT β u m hm ho p χ, fun _ hj q _ => N.twist_evT β u m hm ho p χ hj q,

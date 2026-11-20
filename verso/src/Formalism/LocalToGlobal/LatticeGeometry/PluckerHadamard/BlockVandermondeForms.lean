@@ -16,7 +16,7 @@ variable {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ}
 def dS (τ : Ψ) (S : Finset (Fin N)) : Derivation ℝ (Pol Ψ N) (Pol Ψ N) := ∑ i ∈ S, pderiv (τ, i)
 
 /- English proof (translation)
-Unfold `dS`. Use `Finset.induction_on S (by simp) ?_` and prove the remaining obligations. Introduce `a t ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, Derivation.add_apply, ih]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem dS_apply (τ : Ψ) (S : Finset (Fin N)) (P : Pol Ψ N) : dS τ S P = ∑ i ∈ S, pderiv (τ, i) P := by
   classical
@@ -26,13 +26,11 @@ theorem dS_apply (τ : Ψ) (S : Finset (Fin N)) (P : Pol Ψ N) : dS τ S P = ∑
   rw [Finset.sum_insert ha, Finset.sum_insert ha, Derivation.add_apply, ih]
 
 /- English proof (translation)
-Rewrite using `[dS_apply]`. Simplify using `only [pderiv_X]`. Distinguish the cases in `h : σ = τ ∧ a ∈ S`. Take `⟨rfl, ha⟩` from `h`. Rewrite using `[if_pos ⟨rfl, ha⟩, Finset.sum_eq_single a]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Pi.single_apply, Ne.symm hb]`. Introduce `h'`. Conclude with `absurd ha h'`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h]`. Use `Finset.sum_eq_zero fun i hi => ?_` and prove the remaining obligations. Rewrite using `[Pi.single_apply, if_neg]`. Introduce `he`. Simplify using `only [Prod.mk.injEq] at he`.
-
-Conclude with `h ⟨he.1, by rw [he.2]; exact hi⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dS_X (τ : Ψ) (S : Finset (Fin N)) (σ : Ψ) (a : Fin N) :
     dS τ S (X (σ, a)) = if σ = τ ∧ a ∈ S then 1 else 0 := by
@@ -54,7 +52,7 @@ theorem dS_X (τ : Ψ) (S : Finset (Fin N)) (σ : Ψ) (a : Fin N) :
     exact h ⟨he.1, by rw [he.2]; exact hi⟩
 
 /- English proof (translation)
-Use `revert h`. Use `Finset.induction_on s (fun _ => by rw [Finset.prod_empty, Derivation.map_one_eq_zero]) ?_` and prove the remaining obligations. Introduce `a t ha ih h`. Rewrite using `[Finset.prod_insert ha, Derivation.leibniz, h a (Finset.mem_insert_self a t), ih (fun i hi => h i (Finset.mem_insert_of_mem hi)), smul_zero, smul_zero, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem d_prod_zero (D : Derivation ℝ (Pol Ψ N) (Pol Ψ N)) {ι : Type*} (s : Finset ι) (f : ι → Pol Ψ N)
     (h : ∀ i ∈ s, D (f i) = 0) : D (∏ i ∈ s, f i) = 0 := by
@@ -66,7 +64,7 @@ theorem d_prod_zero (D : Derivation ℝ (Pol Ψ N) (Pol Ψ N)) {ι : Type*} (s :
     ih (fun i hi => h i (Finset.mem_insert_of_mem hi)), smul_zero, smul_zero, add_zero]
 
 /- English proof (translation)
-Rewrite using `[Finset.card_filter, Finset.card_filter]`. Conclude with `Fin.sum_univ_eq_sum_range (fun x => if p x then 1 else 0) N`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem card_filter_fin_val_eq_card_filter_range (N : ℕ) (p : ℕ → Prop) [DecidablePred p] :
     (Finset.univ.filter (fun i : Fin N => p i.val)).card = ((Finset.range N).filter p).card := by
@@ -74,9 +72,9 @@ private theorem card_filter_fin_val_eq_card_filter_range (N : ℕ) (p : ℕ → 
   exact Fin.sum_univ_eq_sum_range (fun x => if p x then 1 else 0) N
 
 /- English proof (translation)
-Unfold `smallBlock`. Rewrite using `[card_filter_fin_val_eq_card_filter_range N (fun x => j ≤ x)]`. Establish `e : (Finset.range N).filter (fun x => j ≤ x) = Finset.Ico j N`. Use extensionality with `x`. Simplify using `only [Finset.mem_filter, Finset.mem_range, Finset.mem_Ico]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `⟨fun h => ⟨h.2, h.1⟩, fun h => ⟨h.2, h.1⟩⟩`. Rewrite using `[e, Nat.card_Ico]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_smallBlock (N j : ℕ) : (smallBlock N j).card = N - j := by
   unfold smallBlock
@@ -88,9 +86,9 @@ theorem card_smallBlock (N j : ℕ) : (smallBlock N j).card = N - j := by
   rw [e, Nat.card_Ico]
 
 /- English proof (translation)
-Unfold `Formalism.ShimuraLimitIdentity.top`. Rewrite using `[card_filter_fin_val_eq_card_filter_range N (fun x => x < j)]`. Establish `e : (Finset.range N).filter (fun x => x < j) = Finset.range j`. Use extensionality with `x`. Simplify using `only [Finset.mem_filter, Finset.mem_range]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Conclude with `fun h => h.2`. Conclude with `fun h => ⟨by omega, h⟩`. Rewrite using `[e, Finset.card_range]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_top (N j : ℕ) (hj : j ≤ N) : (Formalism.ShimuraLimitIdentity.top N j).card = j := by
   unfold Formalism.ShimuraLimitIdentity.top
@@ -108,9 +106,9 @@ end BlockVandermondeForms
 open BlockVandermondeForms
 
 /- English proof (translation)
-Introduce `Ψ _ _ N τ k hk G`. Simplify using `only [degFlL, LinearMap.smul_apply, LinearMap.sum_apply, MvPolynomial.lcoeff_apply, smul_eq_mul]`. Rewrite using `[mul_eq_zero]`. Use `right`. Establish `h : ∀ σ : Ψ → Equiv.Perm (Fin N), (∏ t, ((Equiv.Perm.sign (σ t) : ℤ) : ℝ)) * (Formalism.ShimuraLimitIdentity.psumAt τ k * G).coeff (Formalism.DegreeFormula.permExp σ) = ∑ j : Fin N, Formalism.DegreeFormula.PPowSum.sgnP σ * (X (τ, (σ τ).symm j) ^ k * G).coeff (Formalism.DegreeForm …`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `σ`. Rewrite using `[Formalism.ShimuraLimitIdentity.psumAt, Finset.sum_mul, coeff_sum, Finset.mul_sum]`. Conclude with `(Equiv.sum_comp (σ τ).symm (fun i => Formalism.DegreeFormula.PPowSum.sgnP σ * (X (τ, i) ^ k * G).coeff (Formalism.DegreeFormula.permExp σ))).symm`. Rewrite using `[Finset.sum_congr rfl fun σ _ => h σ, Finset.sum_comm]`. Conclude with `Finset.sum_eq_zero fun j _ => Formalism.DegreeFormula.PPowSum.slice τ k hk G j`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flag_integral_kills_power_sums : FlagIntegralAnnihilatesPowerSums := by
   intro Ψ _ _ N τ k hk G
@@ -132,11 +130,11 @@ theorem flag_integral_kills_power_sums : FlagIntegralAnnihilatesPowerSums := by
 namespace BlockVandermondeForms
 
 /- English proof (translation)
-Use `Finset.induction_on_max S (by simp) fun m S hm ih => ?_` and prove the remaining obligations. Establish `hmS : m ∉ S` using `fun h => lt_irrefl m (hm m h)`. Rewrite using `[Finset.sum_insert hmS, Finset.card_insert_of_notMem hmS]`. Establish `h1 : ((insert m S).filter (fun b => m < b)).card = 0`. Rewrite using `[Finset.card_eq_zero, Finset.filter_eq_empty_iff]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Break down `Finset.mem_insert.mp hx with rfl | hx` into its components or cases. Conclude with `lt_irrefl _`. Conclude with `fun h => lt_asymm h (hm x hx)`. Establish `h2 : ∀ a ∈ S, ((insert m S).filter (fun b => a < b)).card = (S.filter (fun b => a < b)).card + 1`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha`. Rewrite using `[Finset.filter_insert, if_pos (hm a ha), Finset.card_insert_of_notMem (fun h => hmS (Finset.mem_filter.mp h).1)]`. Rewrite using `[h1, zero_add, Finset.sum_congr rfl h2, Finset.sum_add_distrib, ih, Finset.sum_const, smul_eq_mul, mul_one, Nat.choose_succ_succ', Nat.choose_one_right]`. Simplify using `only [Nat.reduceAdd]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem pairs_eq {N : ℕ} (S : Finset (Fin N)) :
     ∑ a ∈ S, (S.filter (fun b => a < b)).card = S.card.choose 2 := by
@@ -159,9 +157,9 @@ theorem pairs_eq {N : ℕ} (S : Finset (Fin N)) :
   omega
 
 /- English proof (translation)
-Establish `hs : ∀ k : ℕ, (k + 1).choose 2 = k.choose 2 + k` using `fun k => by`. Rewrite using `[Nat.choose_succ_succ', Nat.choose_one_right]`. Simplify using `only [Nat.reduceAdd]`. Use linear arithmetic over natural numbers and integers. Proceed by induction on `b with`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `succ b ih`. Rewrite using `[← Nat.add_assoc, hs, hs, ih]`. Expand and normalize the polynomial expressions, which then agree.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem add_choose_two (a b : ℕ) : (a + b).choose 2 = a.choose 2 + a * b + b.choose 2 := by
   have hs : ∀ k : ℕ, (k + 1).choose 2 = k.choose 2 + k := fun k => by
@@ -177,7 +175,7 @@ theorem add_choose_two (a b : ℕ) : (a + b).choose 2 = a.choose 2 + a * b + b.c
 variable {Ψ : Type} [Fintype Ψ] {N : ℕ}
 
 /- English proof (translation)
-Unfold `blockVandermondePolynomial`. Rewrite using `[← pairs_eq S]`. Use `MvPolynomial.IsHomogeneous.prod _ _ _ fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.card_eq_sum_ones]`. Conclude with `MvPolynomial.IsHomogeneous.prod _ _ _ fun b _ => (isHomogeneous_X ℝ _).sub (isHomogeneous_X ℝ _)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vdm_homog (τ : Ψ) (S : Finset (Fin N)) : (blockVandermondePolynomial τ S).IsHomogeneous (S.card.choose 2) := by
   unfold blockVandermondePolynomial

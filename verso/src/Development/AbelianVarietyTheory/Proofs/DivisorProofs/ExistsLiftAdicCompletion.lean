@@ -9,11 +9,11 @@ open scoped TensorProduct
 namespace GlobalTheory.TraitLift
 
 /- English proof (translation)
-Use `haveI : IsNoetherianRing A := Algebra.EssFiniteType.isNoetherianRing ℤ A`. Set `R` to `AdicCompletion (maximalIdeal A) A`. Use `haveI : Module.FaithfullyFlat A R := Module.FaithfullyFlat.of_flat_of_isLocalHom`. Use `letI : Field (V ⧸ maximalIdeal V) := Ideal.Quotient.field _`. Set `C` to `V ⊗[A] R`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `e : (C ⧸ (maximalIdeal V).map (algebraMap V C)) ≃+* R ⊗[A] (V ⧸ maximalIdeal V)` to `((Algebra.TensorProduct.quotIdealMapEquivQuotTensor C (maximalIdeal V)).toRingEquiv.trans (Algebra.TensorProduct.cancelBaseChange A V V (V ⧸ maximalIdeal V) R).toRingEquiv).trans (Algebra.TensorProduct.comm A _ _).toRingEquiv`. Use `haveI := formalFibre_isReduced_of_field A (V ⧸ maximalIdeal V)`. Use `haveI : Nontrivial (R ⊗[A] (V ⧸ maximalIdeal V)) := inferInstance`. Take `⟨V', i1, i2, i3, h₀, hc, hirr⟩` from `GlobalTheory.ReducedFibre.exists_cdvr_of_flat_of_isReduced V C e.toEquiv.nontrivial (isReduced_of_injective e e.injective)`. Use `⟨V', i1, i2, i3, h₀.comp (algebraMap V C), h₀.comp (Algebra.TensorProduct.includeRight (R := A) (A := V) (B := R)).toRingHom, hc, ?_, hirr⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `a`. Simplify using `only [RingHom.comp_apply]`. Use `congr 1`. Rewrite using `[← IsScalarTower.algebraMap_apply]`. Conclude with `(Algebra.TensorProduct.includeRight (R := A) (A := V) (B := R)).commutes a`.
+A detailed English derivation is pending.
 -/
 theorem exists_lift_adicCompletion (A V : Type) [CommRing A] [IsLocalRing A] [Algebra.EssFiniteType ℤ A]
     [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Algebra A V] :
@@ -42,9 +42,9 @@ theorem exists_lift_adicCompletion (A V : Type) [CommRing A] [IsLocalRing A] [Al
   exact (Algebra.TensorProduct.includeRight (R := A) (A := V) (B := R)).commutes a
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Use `⟨(injective_iff_map_eq_zero h).mpr fun x hx => ?_, ⟨fun x hx => ?_⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible h0 hϖ`. Rewrite `hx` using `[map_mul, map_pow]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_ne_zero (u.isUnit.map h).ne_zero (pow_ne_zero n (hh ϖ hϖ).ne_zero) hx`. Assume the negation of the conclusion as `hu`. Establish `hm : x ∈ maximalIdeal V` using `hu`. Rewrite `hm` using `[hϖ.maximalIdeal_eq, Ideal.mem_span_singleton]`. Conclude with `(hh ϖ hϖ).not_isUnit (isUnit_of_dvd_unit (map_dvd h hm) hx)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocalHom_and_injective {V V' : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     [CommRing V'] [IsDomain V'] (h : V →+* V') (hh : ∀ ϖ : V, Irreducible ϖ → Irreducible (h ϖ)) :
@@ -61,11 +61,11 @@ theorem isLocalHom_and_injective {V V' : Type} [CommRing V] [IsDomain V] [IsDisc
     exact (hh ϖ hϖ).not_isUnit (isUnit_of_dvd_unit (map_dvd h hm) hx)
 
 /- English proof (translation)
-Introduce `A R V _ _ _ _ j hj _ _ _ f`. Take `⟨e, he⟩` from `hj`. Use `letI : Algebra A V := f.toAlgebra`. Take `⟨V', i1, i2, i3, h, g, hc, hcomp, hirr⟩` from `exists_lift_adicCompletion A V`. Take `⟨hinj, hloc⟩` from `isLocalHom_and_injective h hirr`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨V', i1, i2, i3, h, g.comp e.symm.toRingHom, hc, hinj, hloc, ?_, hirr⟩` and prove the remaining obligations. Use extensionality with `a`. Use `RingHom.congr_fun hcomp a` as an intermediate fact. Simplify using `only [RingHom.comp_apply] at this ⊢`. Rewrite using `[← he a]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify `this` using `[RingHom.algebraMap_toAlgebra]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_lift_of_isCpl : ∀ (A R V : Type) [CommRing A] [IsLocalRing A] [Algebra.EssFiniteType ℤ A] [CommRing R] (j : A →+* R), IsCpl j → ∀ [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (f : A →+* V), ∃ (V' : Type) (_ : CommRing V') (_ : IsDomain V') (_ : IsDiscreteValuationRing V') (h : V →+* V') (g : R →+* V'), IsAdicComplete (maximalIdeal V') V' ∧ Function.Injective h ∧ IsLocalHom h ∧ g.comp j = h.comp f ∧ ∀ ϖ : V, Irreducible ϖ → Irreducible (h ϖ) := by
   intro A R V _ _ _ _ j hj _ _ _ f

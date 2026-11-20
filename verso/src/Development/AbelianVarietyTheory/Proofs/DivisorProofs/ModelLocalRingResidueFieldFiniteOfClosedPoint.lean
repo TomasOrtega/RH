@@ -7,9 +7,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.ResFin
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ hA M x hx`. Use `haveI : Algebra.FiniteType ℤ o := hA.ft`. Use `haveI : LocallyOfFiniteType (spMap (algebraMap ℤ o)) := (HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)).2 (RingHom.finiteType_algebraMap.2 inferInstance)`. Use `haveI : LocallyOfFiniteType M.s := M.lft`. Establish `h` using `finite_residueField_of_isClosed_of_locallyOfFiniteType_int (M.s ≫ spMap (algebraMap ℤ o)) x hx`.
-
-Use `haveI : Finite (ResidueField (M.Z.presheaf.stalk x)) := h`. Conclude with `Finite.of_equiv _ (ResidueField.mapEquiv (M.stalkEquiv x)).toEquiv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_residueField_O : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (M : RatModel o Ω)
     (x : M.Z), IsClosed ({x} : Set M.Z) → Finite (ResidueField (M.O x)) := by

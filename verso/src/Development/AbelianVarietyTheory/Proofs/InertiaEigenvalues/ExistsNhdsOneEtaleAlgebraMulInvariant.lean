@@ -6,13 +6,13 @@ open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 namespace GlobalTheory.JR.MulInv
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ A φ hφ`. Take `⟨h1, h2⟩` from `hφ`. Set `bil : A.K →ₗ[F] A.L →ₗ[F] A.L` to `(LinearMap.mul F A.L).flip ∘ₗ (IsScalarTower.toAlgHom F A.K A.L).toLinearMap`. Establish `hbil : Continuous fun p : A.K × A.L => bil p.1 p.2` using `IsModuleTopology.continuous_bilinear_of_finite_left bil`. Establish `hm : Continuous fun p : A.L × A.K => p.1 * algebraMap A.K A.L p.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hbil.comp continuous_swap` as an intermediate fact. Simplify `this` using `[bil, Function.comp_def, mul_comm]`. Establish `hl : IsLocallyConstant (fun p : A.L × A.K => (φ (p.1 * algebraMap A.K A.L p.2), φ p.1))` using `(h1.comp_continuous hm).prodMk (h1.comp_continuous continuous_fst)`. Establish `ho : IsOpen ((fun p : A.L × A.K => (φ (p.1 * algebraMap A.K A.L p.2), φ p.1)) ⁻¹' {q | q.1 = q.2})` using `hl _`. Take `⟨u, v, -, hv, hu, h0, huv⟩` from `generalized_tube_lemma (s := tsupport φ) (t := {(1 : A.K)}) h2 isCompact_singleton ho (by rintro ⟨x, y⟩ ⟨-, hy⟩; simp at hy; simp [hy])`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨v, hv.mem_nhds (h0 rfl), fun s hs s' hs' hss y => ?_⟩` and prove the remaining obligations. Establish `key : ∀ x ∈ tsupport φ, ∀ t ∈ v, φ (x * algebraMap A.K A.L t) = φ x` using `fun x hx t ht => huv (Set.mk_mem_prod (hu hx) ht)`. Distinguish the cases in `hy : y ∈ tsupport φ`. Conclude with `key y hy s hs`. Distinguish the cases in `hy' : y * algebraMap A.K A.L s ∈ tsupport φ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `key _ hy' s' hs'` as an intermediate fact. Rewrite `this` using `[mul_assoc, ← map_mul, hss, map_one, mul_one]`. Conclude with `this.symm`. Rewrite using `[image_eq_zero_of_notMem_tsupport hy, image_eq_zero_of_notMem_tsupport hy']`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nhds_one_mul_invariant : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E]
     [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (φ : A.L → ℂ), IsTest φ →

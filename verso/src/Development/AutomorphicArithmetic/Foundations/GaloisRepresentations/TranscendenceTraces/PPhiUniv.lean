@@ -25,7 +25,7 @@ private def famS {Q : ℕ} {Z S : Scheme.{0}} (p : Z ⟶ S) {G J : Shv (ZMod Q)}
   DirectSum.toModule _ _ _ fun u => famL p t u
 
 /- English proof (translation)
-The claim follows from `DirectSum.toModule_lof _ _ _`.
+A detailed English derivation is pending.
 -/
 private theorem famS_inc {Q : ℕ} {Z S : Scheme.{0}} (p : Z ⟶ S) {G J : Shv (ZMod Q)} (t : Fam0 p G J)
     {U : Scheme.{0}} (u : U ⟶ S) (a : Sec G (pullback p u)) :
@@ -42,13 +42,13 @@ private def famP {Q : ℕ} {Z S : Scheme.{0}} (p : Z ⟶ S) {G J : Shv (ZMod Q)}
       ⟨g.unop, pbm p g.unop u _ rfl, rfl, pbm_fst .., pbm_snd ..⟩ a).symm)
 
 /- English proof (translation)
-Introduce `Q Z S p G J t`. Take `⟨ψ, hψ, huniq⟩` from `(GlobalTheory.T.etaleToSheafify_locally_bijective_and_lift (ZMod Q) (phiP p G)).2.2 J (famP p t)`. Establish `key : ∀ (U : Scheme) (y : DS p G U), Sec.map ψ (phiSec p G U y) = famS p t U y`. Introduce `U y`. Conclude with `congrArg (fun φ => ModuleCat.Hom.hom (φ.app (op U)) y) hψ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ψ, fun A a => ?_, fun m hm => huniq m ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Sec.map ψ (phiSec p G A.U (inc p G A.u (Sec.res A.cmp a))) = _`. Rewrite using `[key, famS_inc]`. Establish `hn : Sec.res (𝟙 A.U) (t.app A a) = t.app (Sq.of p A.u) (Sec.res A.cmp a)` using `t.nat (A := Sq.of p A.u) (B := A) ⟨𝟙 _, A.cmp, Category.id_comp _, A.cmp_v, A.cmp_r.trans (Category.comp_id _).symm⟩ a`. Rewrite `hn` using `[res_id]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hn.symm`. Apply `NatTrans.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `U`. Apply `ModuleCat.hom_ext` to reduce the goal to its premises. Apply `DS.hom_ext p` to reduce the goal to its premises.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `u a`. Express the relevant statement in the definitionally equal form `Sec.map m (phiSec p G U.unop (inc p G u a)) = famS p t U.unop (inc p G u a)`. Rewrite using `[← phiE_of]`. Conclude with `(hm (Sq.of p u) a).trans (famS_inc p t u a).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiUniv_of : PhiUniv := by
   intro Q Z S p G J t

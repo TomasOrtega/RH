@@ -13,15 +13,15 @@ open GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Mem.Top.Bl GlobalTheory.
 noncomputable section
 
 /- English proof (translation)
-Introduce `hE`. Take `⟨CF0, hE⟩` from `hE`. Use `⟨CF0, fun CF hCF => ⟨1, one_pos, fun eps C8 _ _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun _ _ _ _ => ⟨0, fun _ _ => ⟨0, fun _ _ => ?_⟩⟩⟩⟩⟩` and prove the remaining obligations. Take `⟨x₀, hx⟩` from `hE eps CF hCF`. Use `⟨x₀, fun K _ _ _ hK hxK => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hF` using `hx K.s hK hxK`. Use `⟨fun _ _ _ => ∅, fun _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, fun P f _ _ Ξ => if h : Ξ.Finite then Classical.choose (hF P f Ξ h) else ∅, by simp, ?_, ?_⟩` and prove the remaining obligations. Introduce `P f _ _ Ξ z hz`. Distinguish the cases in `h : Ξ.Finite`. Simplify using `only at hz`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify by unfolding definitions.
 
-Rewrite `hz` using `[dif_pos h]`. Conclude with `(Classical.choose_spec (hF P f Ξ h)).1 z hz`. Simplify using `only at hz`. Rewrite `hz` using `[dif_neg h]`. Simplify using `at hz`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `B f T _ hH _ _ w Z hX Wt z L hL hS`. Take `⟨hq, hC, hfin, hmem⟩` from `GlobalTheory.RowEx.twisted_data_off_base_level B f T w Z hX Wt z`. Establish `hS2` using `hH.2`. Simplify using `only at hS2`. Rewrite `hS2` using `[dif_pos hfin]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hL]`. Conclude with `(Classical.choose_spec (hF B.toPre f (T.set f) hfin)).2 (w.st Z) f rfl HEq.rfl L hL _ _ _ _ _ _ _ hS hC hq (fun t => ⟨_, hmem t, HEq.rfl⟩) (fun y hy => hS2 y hy)`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.RowEx.dat_choice_exists : GlobalTheory.RowEx.ExField → ∃ CF0 : ℝ, ∀ CF, CF0 ≤ CF → EvLg fun K B f T => ∀ (w : ColW B f T) (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl) (z : Dat (w.st Z) w.I hX T Wt) (L : SizeData₂ (w.st Z).toD7), L.sc = K.s → GlobalTheory.RowClaim.HidaSetting L z.R.toRealDat z.F.lv2 → ∃ ch : GlobalTheory.RowTest.Choice z.R.toRealDat, ch.Is ∧ ch.AtScale CF L.sc.b ∧ ch.FieldOK := by
   classical

@@ -14,17 +14,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.LamInert
 
 /- English proof (translation)
-Introduce `D lam hl v w hw`. Establish `hmap : Ideal.map (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) v.asIdeal = w.asIdeal` using `hw`. Establish `hfix : ∀ x : 𝓞 D.host.F, GlobalTheory.FinWeil.sgO D (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x) = algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x` using `fun x => by`. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Use `(GlobalTheory.FinWeil.coe_sgO D _).trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(D.host.conjE_mem_hostF_iff _).1 (by`. Express the relevant statement in the definitionally equal form `((x : D.host.F) : D.host.E) ∈ _`. Conclude with `(x : D.host.F).2)`. Establish `hstab : ∀ r ∈ w.asIdeal, GlobalTheory.FinWeil.sgO D r ∈ w.asIdeal`. Rewrite using `[← hmap]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: Ideal.map (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) v.asIdeal ≤ (Ideal.map (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) v.asIdeal).comap (GlobalTheory.FinWeil.sgO D)`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, hfix]`. Conclude with `Ideal.mem_map_of_mem _ hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `fun r hr => this hr`. Establish `hfin : Finite (𝓞 D.host.E ⧸ w.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot w.asIdeal w.ne_bot`. Establish `h1` using `((hl.2 w.asIdeal w.isMaximal hfin).2 hstab).1`. Establish `hcard : Nat.card (𝓞 D.host.E ⧸ w.asIdeal) = qV D.host.E w`. Express the relevant statement in the definitionally equal form `_ = Ideal.absNorm w.asIdeal`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `hsq : qV D.host.E w = qV D.host.F v ^ 2` using `GlobalTheory.LFun.InertChart.absNorm_eq (GlobalTheory.AdelicU.isCMExt_host D).2.2.1 hw`. Rewrite `h1` using `[hcard, hsq]`. Rewrite using `[hsq, h1]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Rewrite using `[Real.sqrt_sq (Nat.cast_nonneg _)]`. Use `push_cast`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lam_qV_inert : ∀ (D : D7) (lam : ℕ →* ℂ), GlobalTheory.FinWeil.GoodNorm (GlobalTheory.FinWeil.sgO D) lam → ∀ (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOneSpectrum (𝓞 D.host.E)), IsInertAt D.host.F D.host.E v w → lam (qV D.host.E w) = -((qV D.host.F v : ℕ) : ℂ) := by
   intro D lam hl v w hw

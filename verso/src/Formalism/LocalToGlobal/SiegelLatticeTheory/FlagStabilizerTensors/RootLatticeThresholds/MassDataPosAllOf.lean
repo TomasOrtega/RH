@@ -20,13 +20,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 def DvPosC : Prop := ∀ {D : D7} (X : HidaSetting D) (v : NumberField.InfinitePlace X.B.I.F), 0 < X.dv v
 
 /- English proof (translation)
-Establish `hTie` using `hX.1`. Establish `hcol` using `(inColumnsAt_holds X hb hK FdN FdN' u u' X0 (Formalism.L2.SG.LocVol.locOf X u u' ψ) ⟨0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0⟩ hX)`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show 0 < Formalism.L2.SG.RealObj.degX X`. Unfold `Formalism.L2.SG.RealObj.degX`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_pos fun v _ => hDv X v`. Conclude with `Nat.cast_pos.mpr (finrank_Vpi_pos X u)`. Conclude with `Nat.cast_pos.mpr (finrank_Vpi_pos X u')`. Conclude with `massH_pos X u`. Conclude with `massH_pos X u'`.
-
-Use `show (0 : ℝ) < (bk X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).d`. Rewrite using `[show (bk X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).d = _ from hcol.1]`. Conclude with `mul_pos (Nat.cast_pos.mpr (finrank_Vpi_pos X u)) (div_pos (covolH_pos X hb u hTie) (mul_pos (volH_pos X hb u hTie) (muHpp_pos X hb hK u)))`. Use `show (0 : ℝ) < (bk X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).d'`. Rewrite using `[show (bk X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).d' = _ from hcol.2.2.1]`.
-
-Conclude with `mul_pos (Nat.cast_pos.mpr (finrank_Vpi_pos X u')) (div_pos (covolH_pos X hb u' hTie) (mul_pos (volH_pos X hb u' hTie) (muHpp_pos X hb hK u')))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem recPosC_of_dv {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (hK : X.LevelSubgroupCharacter) (FdN FdN' : Set X.B.I.Ginf)
     (u u' : D.what₂.Word) (X0 : Fin (2 * D.R.rS + 2) → Fin X.B.I.n → X.B.I.E)
@@ -74,7 +70,7 @@ def DensNonnegAll : Prop :=
     0 ≤ supDens Lsp T.Y.δ ϖ u u' (T.X.Fu u) (T.Y.what₂ u) / ∏' p, alpD u u' p
 
 /- English proof (translation)
-Introduce `D T u u' X0 C Th Q i0 i0' νq Lsp ϖ hne hst hCT hdet hC hTh _`. Establish `hK : T.X.LevelSubgroupNormalized` using `hCT.1`. Establish `hV : 0 < T.X.volK2` using `ENNReal.toReal_pos hK.2.2.1.ne' hK.2.2.2.ne`. Establish `hX : Formalism.L2.SG.TypedSets.HypX T.X T.hb (T.Y.FN u) (T.Y.FN u') u u'` using `⟨T.measTie, hK, T.Y.FN_fund u, T.Y.FN_fund u'⟩`. Conclude with `Formalism.L2.SG.Pf.MassDataPos.massDataPosC_of (hL := Formalism.L2.SG.Pf.MassDataX.locHaarPosC_holds ..) (hCv := Formalism.L2.SG.Pf.MassDataX.covolPosC_of (hSW := hSW) (hψ := T.ψ_char) (hC := T.measCompat) (hT := T.measTie) (hdet := hdet) ..) (hQv := Formalism.L2.SG.Pf.MassDataPo …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem massDataPosAll_of (hP : ProdConvAll) (hSW : PI.VolStabS.MassDataS.SWXS) (hDv : Formalism.L2.SG.Pf.MassDataX.DvPosC)
     (hDN : DensNonnegAll) : MassDataPosAll := by

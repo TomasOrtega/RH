@@ -12,9 +12,9 @@ open NumberField
 namespace Formalism.UG.P
 
 /- English proof (translation)
-Use `⟨Ideal.absNorm (Ideal.span {d}), ?_, ?_⟩` and prove the remaining obligations. Use `Nat.pos_of_ne_zero ?_` and prove the remaining obligations. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `hd`. Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {d}))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨t, by rw [← ht, mul_comm]⟩`.
+A detailed English derivation is pending.
 -/
 theorem csBdd_nat_mul {K : Type} [Field K] [NumberField K] (d : 𝓞 K) (hd : d ≠ 0) :
     ∃ m : ℕ, 0 < m ∧ ∃ t : 𝓞 K, (m : 𝓞 K) = d * t := by
@@ -27,13 +27,13 @@ theorem csBdd_nat_mul {K : Type} [Field K] [NumberField K] (d : 𝓞 K) (hd : d 
     exact ⟨t, by rw [← ht, mul_comm]⟩
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ _ _ _ h hsymm hpos d e hd he`. Take `⟨N, ι, hι, hmul, hlat⟩` from `Formalism.HermitianLatticesTheory.traceReal_main h hsymm hpos`. Take `⟨C, hC⟩` from `hCovolOfDual K V h hsymm hpos N ι hι e he`. Take `⟨m, hm, t, ht⟩` from `csBdd_nat_mul d hd`. Set `S : Set (Submodule (𝓞 K) V)` to `{M | Submodule.IsLattice K M ∧ (∀ x ∈ M, ∀ y ∈ M, (d : K) * h x y ∈ (1 : Submodule (𝓞 K) K)) ∧ (∀ x ∈ Formalism.HermitianLatticesTheory.dual h M, (e : K) • x ∈ M)}`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hSd : ∀ M ∈ S, ∀ x ∈ M, ∀ y ∈ M, (m : K) * h x y ∈ (1 : Submodule (𝓞 K) K)`. Introduce `M hM x hx y hy`. Take `⟨a, ha⟩` from `Submodule.mem_one.mp (hM.2.1 x hx y hy)`. Use `Submodule.mem_one.mpr ⟨t * a, ?_⟩` and prove the remaining obligations. Establish `hmK : (m : K) = (d : K) * (t : K)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congrArg (algebraMap (𝓞 K) K) ht` as an intermediate fact. Simplify using `using this`. Rewrite using `[map_mul, ha, hmK]`. Establish `htc : algebraMap (𝓞 K) K t = (t : K)` using `rfl`. Rewrite using `[htc]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨s, -, hs⟩` from `Formalism.HermitianLatticesTheory.classSetFinite_core Formalism.HermitianLatticesTheory.shortVectors Formalism.HermitianLatticesTheory.finIntermediate Formalism.HermitianLatticesTheory.isomOfTrace h hpos N ι hι hmul m hm C S hSd (fun M hM => hlat M hM.1) (fun M hM _ _ => hC M hM. …`. Conclude with `⟨s, fun M hM hdM heM => hs M ⟨hM, hdM, heM⟩⟩`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem class_set_finite_bounded_holds (hCovolOfDual : Formalism.UG.CS.CovolOfDual) :
     Formalism.UG.CS.ClassSetFiniteBdd := by

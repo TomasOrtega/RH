@@ -9,9 +9,9 @@ open Filter Topology
 namespace GlobalTheory.OrbitAnalytic
 
 /- English proof (translation)
-Establish `h0 : HasDerivAt (fun s : ℝ => U t (U s v)) (U t v') (t - t)`. Rewrite using `[sub_self]`. Conclude with `((U t).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt 0 h`. Use `(h0.comp_sub_const t t).congr_of_eventuallyEq (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Use `show U x v = U t (U (x - t) v)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← ContinuousLinearMap.mul_apply, ← hU]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_orbit {H : Type} [NormedAddCommGroup H] [NormedSpace ℂ H]
     (U : ℝ → H →L[ℂ] H) (hU : ∀ s t, U (s + t) = U s * U t) (v v' : H)
@@ -27,11 +27,11 @@ theorem hasDerivAt_orbit {H : Type} [NormedAddCommGroup H] [NormedSpace ℂ H]
   ring
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => simpa using hasDerivAt_const s (c 0)`. Consider the case `succ n ih`. Establish `hterm : HasDerivAt (fun x : ℝ => (x ^ (n + 1) / ((n + 1).factorial : ℝ)) • c (n + 1)) ((s ^ n / (n.factorial : ℝ)) • c (n + 1)) s`. Establish `h` using `((hasDerivAt_pow (n + 1) s).div_const ((n + 1).factorial : ℝ)).smul_const (c (n + 1))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h using 2` and compare the differences between its conclusion and the goal. Rewrite using `[Nat.factorial_succ, Nat.add_sub_cancel]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `e : (fun x : ℝ => ∑ k ∈ Finset.range (n + 1 + 1), (x ^ k / (k.factorial : ℝ)) • c k) = fun x => (∑ k ∈ Finset.range (n + 1), (x ^ k / (k.factorial : ℝ)) • c k) + (x ^ (n + 1) / ((n + 1).factorial : ℝ)) • c (n + 1)`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Conclude with `Finset.sum_range_succ _ _`. Rewrite using `[e]`. Conclude with `(ih.add hterm).congr_deriv (Finset.sum_range_succ _ _).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma hasDerivAt_sum_pow_div_factorial_smul {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (c : ℕ → E) (N : ℕ) (s : ℝ) :
@@ -56,13 +56,13 @@ private lemma hasDerivAt_sum_pow_div_factorial_smul {E : Type} [NormedAddCommGro
     exact (ih.add hterm).congr_deriv (Finset.sum_range_succ _ _).symm
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero`. Introduce `f _ hM z _`. Simplify using `using hM (a + z)`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `f hf hM z hz`. Establish `hder : ∀ s, HasDerivAt (fun s : ℝ => f 0 (a + s) - ∑ k ∈ Finset.range (n + 1), (s ^ k / (k.factorial : ℝ)) • f k a) (f 1 (a + s) - ∑ k ∈ Finset.range n, (s ^ k / (k.factorial : ℝ)) • f (k + 1) a) s`. Introduce `s`. Conclude with `((hf 0 (a + s)).comp_const_add a s).sub (hasDerivAt_sum_pow_div_factorial_smul (fun k => f k a) n s)`. Establish `hB : ∀ s, HasDerivAt (fun x : ℝ => x ^ (n + 1) / ((n + 1).factorial : ℝ) * M) (s ^ n / (n.factorial : ℝ) * M) s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Use `(((hasDerivAt_pow (n + 1) s).div_const ((n + 1).factorial : ℝ)).mul_const M).congr_deriv ?_` and prove the remaining obligations. Rewrite using `[Nat.factorial_succ, Nat.add_sub_cancel]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `ha0 : ‖(fun s : ℝ => f 0 (a + s) - ∑ k ∈ Finset.range (n + 1), (s ^ k / (k.factorial : ℝ)) • f k a) 0‖ ≤ (fun x : ℝ => x ^ (n + 1) / ((n + 1).factorial : ℝ) * M) 0`. Simplify using `[Finset.sum_range_succ']`. Establish `hbound : ∀ s ∈ Set.Ico (0 : ℝ) z, ‖f 1 (a + s) - ∑ k ∈ Finset.range n, (s ^ k / (k.factorial : ℝ)) • f (k + 1) a‖ ≤ s ^ n / (n.factorial : ℝ) * M` using `fun s hs => ih (fun k => f (k + 1)) (fun k t => hf (k + 1) t) hM s hs.1`. Establish `key` using `image_norm_le_of_norm_deriv_right_le_deriv_boundary (fun s _ => (hder s).continuousAt.continuousWithinAt) (fun s _ => (hder s).hasDerivWithinAt) ha0 hB hbound`. Conclude with `key ⟨hz, le_rfl⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma norm_sub_taylor_sum_le_of_hasDerivAt_tower {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (M a : ℝ)
     (N : ℕ) : ∀ (f : ℕ → ℝ → E), (∀ k t, HasDerivAt (f k) (f (k + 1) t) t) →
@@ -101,21 +101,19 @@ private lemma norm_sub_taylor_sum_le_of_hasDerivAt_tower {E : Type} [NormedAddCo
     exact key ⟨hz, le_rfl⟩
 
 /- English proof (translation)
-Establish `hM0 : 0 ≤ M` using `(norm_nonneg _).trans (hM 0)`. Establish `hfac : (0 : ℝ) < N.factorial` using `by positivity`. Establish `hfac' : (N.factorial : ℝ) ≤ (N + 1).factorial`. Conclude with `Nat.factorial_le (Nat.le_succ N)` after adjusting the coercions. Break down `le_or_gt 0 z with hz | hz` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `h` using `norm_sub_taylor_sum_le_of_hasDerivAt_tower M a (N + 1) f hf hM z hz`. Rewrite using `[abs_of_nonneg hz]`. Conclude with `h.trans (mul_le_mul_of_nonneg_right (div_le_div_of_nonneg_left (pow_nonneg hz _) hfac hfac') hM0)`. Take `⟨g, hg⟩ : ∃ g : ℕ → ℝ → E, ∀ k t, g k t = ((-1 : ℝ) ^ k) • f k (-t)` from `⟨fun k t => ((-1 : ℝ) ^ k) • f k (-t), fun _ _ => rfl⟩`. Establish `hgd : ∀ k t, HasDerivAt (g k) (g (k + 1) t) t`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `k t`. Establish `h1` using `(hf k (0 - t)).comp_const_sub 0 t`. Simplify using `only [zero_sub] at h1`. Establish `h2` using `h1.const_smul ((-1 : ℝ) ^ k)`. Establish `hgk : g k = fun x => ((-1 : ℝ) ^ k) • f k (-x)` using `funext (hg k)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hgk, hg]`. Conclude with `h2.congr_deriv (by rw [pow_succ, mul_smul, neg_one_smul])`. Establish `hgM : ∀ t, ‖g (N + 1) t‖ ≤ M`. Introduce `t`. Simplify `hM (-t)` using `[hg, norm_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `norm_sub_taylor_sum_le_of_hasDerivAt_tower M (-a) (N + 1) g hgd hgM (-z) (by linarith)`. Establish `e1 : g 0 (-a + -z) = f 0 (a + z)`. Rewrite using `[hg]`. Simplify using `only [pow_zero, one_smul, neg_add, neg_neg]`. Establish `e2 : ∑ k ∈ Finset.range (N + 1), ((-z) ^ k / (k.factorial : ℝ)) • g k (-a) = ∑ k ∈ Finset.range (N + 1), (z ^ k / (k.factorial : ℝ)) • f k a`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hg, neg_neg, smul_smul]`. Use `congr 1`. Rewrite using `[neg_pow]`. Establish `h1 : ((-1 : ℝ) ^ k) * (-1) ^ k = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← mul_pow]`. Evaluate the numerical expressions. Combine the equalities or inequalities in the displayed calculation. Rewrite `h` using `[e1, e2]`. Rewrite using `[abs_of_neg hz]`.
-
-Conclude with `h.trans (mul_le_mul_of_nonneg_right (div_le_div_of_nonneg_left (pow_nonneg (by linarith) _) hfac hfac') hM0)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem taylor_bound {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (f : ℕ → ℝ → E) (hf : ∀ k t, HasDerivAt (f k) (f (k + 1) t) t) (a z : ℝ) (N : ℕ) (M : ℝ)
@@ -166,23 +164,21 @@ theorem taylor_bound {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
       (div_le_div_of_nonneg_left (pow_nonneg (by linarith) _) hfac hfac') hM0)
 
 /- English proof (translation)
-Take `⟨p, hp⟩ : ∃ p : FormalMultilinearSeries ℝ ℝ E, ∀ k, p k = ContinuousMultilinearMap.mkPiRing ℝ (Fin k) (((k.factorial : ℝ)⁻¹) • f k a)` from `⟨fun k => ContinuousMultilinearMap.mkPiRing ℝ (Fin k) (((k.factorial : ℝ)⁻¹) • f k a), fun _ => rfl⟩`. Establish `happly : ∀ k (y : ℝ), p k (fun _ => y) = (y ^ k / (k.factorial : ℝ)) • f k a`. Introduce `k y`. Rewrite using `[hp, ContinuousMultilinearMap.mkPiRing_apply, Finset.prod_const, Finset.card_univ, Fintype.card_fin, smul_smul, div_eq_mul_inv]`. Establish `hnorm : ∀ k, ‖p k‖ = (k.factorial : ℝ)⁻¹ * ‖f k a‖`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `k`. Rewrite using `[hp, ContinuousMultilinearMap.norm_mkPiRing, norm_smul, norm_inv, Real.norm_of_nonneg (Nat.cast_nonneg _)]`. Establish `hbd : ∀ k, ‖p k‖ * r ^ k ≤ C`. Introduce `k`. Establish `hrk : 0 < r ^ k` using `pow_pos hr k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hk : (0 : ℝ) < k.factorial` using `by positivity`. Rewrite using `[hnorm]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hM k a`. Use `_ = C := by field_simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hrad : ENNReal.ofReal r ≤ p.radius` using `p.le_radius_of_bound C (r := r.toNNReal) fun k => by`. Rewrite using `[Real.coe_toNNReal _ hr.le]`. Conclude with `hbd k`. Use `⟨p, ENNReal.ofReal r, hrad, ENNReal.ofReal_pos.mpr hr, ?_⟩` and prove the remaining obligations. Introduce `y hy`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hy` using `[Metric.eball_ofReal, Metric.mem_ball, dist_zero_right, Real.norm_eq_abs]`. Establish `hq0 : 0 ≤ |y| / r` using `by positivity`. Establish `hq1 : |y| / r < 1` using `(div_lt_one hr).mpr hy`. Establish `hterm : ∀ n, ‖p n (fun _ => y)‖ ≤ C * (|y| / r) ^ n`. Introduce `n`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin, Real.norm_eq_abs, div_pow]`. Clear the denominators using the available nonvanishing facts. Use `_ ≤ C * (|y| / r) ^ n := by gcongr`. Conclude with `hbd n`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsum : Summable (fun n => ‖p n (fun _ => y)‖)` using `Summable.of_nonneg_of_le (fun n => norm_nonneg _) hterm ((summable_geometric_of_lt_one hq0 hq1).mul_left C)`. Rewrite using `[hasSum_iff_tendsto_nat_of_summable_norm hsum, ← tendsto_add_atTop_iff_nat 1]`. Simplify using `only [happly]`. Rewrite using `[tendsto_iff_norm_sub_tendsto_zero]`. Use `squeeze_zero (g := fun N : ℕ => C * (((N + 1 : ℕ) : ℝ) * (|y| / r) ^ (N + 1))) (fun _ => norm_nonneg _) (fun N => ?_) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[norm_sub_rev]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Nat.factorial_succ, div_pow]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
-
-Use `((tendsto_self_mul_const_pow_of_lt_one hq0 hq1).comp (tendsto_add_atTop_nat 1)).const_mul C` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem analyticAt_of_bound {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
     (f : ℕ → ℝ → E) (hf : ∀ k t, HasDerivAt (f k) (f (k + 1) t) t) (C r : ℝ) (hr : 0 < r)
@@ -249,15 +245,13 @@ theorem analyticAt_of_bound {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E
     simpa using this
 
 /- English proof (translation)
-Take `⟨p, ρ, hp⟩` from `h`. Establish `hiter : ∀ k, iteratedDeriv k (f 0) = f k`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact iteratedDeriv_zero`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ k ih`. Rewrite using `[iteratedDeriv_succ, ih]`. Use function extensionality and compare the values at `t`. Conclude with `(hf k t).deriv`. Establish `hval : ∀ k, f k a = k.factorial • p k (fun _ => (1 : ℝ))`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Rewrite using `[hp.factorial_smul 1 k, ← iteratedDeriv_eq_iteratedFDeriv, hiter]`. Take `⟨r', hr'0, hr'ρ⟩` from `ENNReal.lt_iff_exists_nnreal_btwn.mp hp.r_pos`. Take `⟨C, -, hCb⟩` from `p.norm_mul_pow_le_of_lt_radius (hr'ρ.trans_le hp.r_le)`. Establish `hr'pos : (0 : ℝ) < r'` using `by exact_mod_cast hr'0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨C, r', hr'pos, fun k => ?_⟩` and prove the remaining obligations. Establish `hpos : (0 : ℝ) < (r' : ℝ) ^ k` using `pow_pos hr'pos k`. Combine the equalities or inequalities in the displayed calculation. Simplify using `using (p k).le_opNorm (fun _ => (1 : ℝ))`. Use `_ ≤ k.factorial * (C / (r' : ℝ) ^ k) := by gcongr`.
-
-Rewrite using `[le_div_iff₀ hpos]`. Conclude with `hCb k`. Use `_ = C * (k.factorial : ℝ) / (r' : ℝ) ^ k := by ring`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bound_of_analyticAt {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
     (f : ℕ → ℝ → E) (hf : ∀ k t, HasDerivAt (f k) (f (k + 1) t) t) (a : ℝ)
@@ -292,11 +286,11 @@ theorem bound_of_analyticAt {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E
     _ = C * (k.factorial : ℝ) / (r' : ℝ) ^ k := by ring
 
 /- English proof (translation)
-Introduce `H₁ _ _ _ H₂ _ _ _ U₁ U₂ hU₁ hU₂ h01 _ hiso w₁ w₂ hd₁ hd₂ hw han`. Establish `hF₁ : ∀ k t, HasDerivAt (fun s : ℝ => U₁ s (w₁ k)) (U₁ t (w₁ (k + 1))) t` using `fun k t => hasDerivAt_orbit U₁ hU₁ (w₁ k) (w₁ (k + 1)) (hd₁ k) t`. Establish `hF₂ : ∀ k t, HasDerivAt (fun s : ℝ => U₂ s (w₂ k)) (U₂ t (w₂ (k + 1))) t` using `fun k t => hasDerivAt_orbit U₂ hU₂ (w₂ k) (w₂ (k + 1)) (hd₂ k) t`. Take `⟨C, r, hr, hCr⟩` from `bound_of_analyticAt (fun k t => U₁ t (w₁ k)) hF₁ 0 han`. Introduce `a _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `analyticAt_of_bound (fun k t => U₂ t (w₂ k)) hF₂ C r hr (fun k t => ?_) a` and prove the remaining obligations. Establish `h1` using `hCr k`. Simplify using `only [h01, ContinuousLinearMap.one_apply] at h1`. Simplify using `only [hiso]`. Rewrite using `[← hw k]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem analyticOnNhd_orbit_of_norm_eq : ∀ (H₁ : Type) [NormedAddCommGroup H₁] [InnerProductSpace ℂ H₁] [CompleteSpace H₁] (H₂ : Type) [NormedAddCommGroup H₂] [InnerProductSpace ℂ H₂] [CompleteSpace H₂] (U₁ : ℝ → H₁ →L[ℂ] H₁) (U₂ : ℝ → H₂ →L[ℂ] H₂), (∀ s t, U₁ (s + t) = U₁ s * U₁ t) → (∀ s t, U₂ (s + t) = U₂ s * U₂ t) → U₁ 0 = 1 → U₂ 0 = 1 → (∀ t x, ‖U₂ t x‖ = ‖x‖) → ∀ (w₁ : ℕ → H₁) (w₂ : ℕ → H₂), (∀ k, HasDerivAt (fun t : ℝ => U₁ t (w₁ k)) (w₁ (k + 1)) 0) → (∀ k, HasDerivAt (fun t : ℝ => U₂ t (w₂ k)) (w₂ (k + 1)) 0) → (∀ k, ‖w₁ k‖ = ‖w₂ k‖) → AnalyticAt ℝ (fun t : ℝ => U₁ t (w₁ 0)) 0 → AnalyticOnNhd ℝ (fun t : ℝ => U₂ t (w₂ 0)) Set.univ := by
   intro H₁ _ _ _ H₂ _ _ _ U₁ U₂ hU₁ hU₂ h01 _ hiso w₁ w₂ hd₁ hd₂ hw han

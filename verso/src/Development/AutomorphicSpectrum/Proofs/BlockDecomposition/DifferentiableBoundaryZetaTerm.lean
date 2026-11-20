@@ -8,25 +8,23 @@ open Ad3 Ad3.R
 namespace GlobalTheory.CompanionTheory.RSZeta
 
 /- English proof (translation)
-Introduce `μ 𝓕 mK 𝓓 H c h0 hH s₀`. Take `⟨C, hC⟩` from `hH.bdd`. Establish `hband : MeasurableSet band` using `(measurable_Dt measurableSet_Ici).inter (measurable_Dt measurableSet_Iio)`. Establish `hS : MeasurableSet (𝓕 ∩ band)` using `h0.meas.inter hband`. Use `haveI : IsFiniteMeasure (μ.restrict (𝓕 ∩ band)) := ⟨by rw [Measure.restrict_apply_univ]; exact h0.vol⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set R : ℝ := |s₀.re| + 1 with hR`. Establish `hR0 : 0 ≤ R` using `by positivity`. Establish `hC0 : 0 ≤ C` using `(norm_nonneg _).trans (hC 1)`. Establish `hpow : ∀ g ∈ 𝓕 ∩ band, ∀ s ∈ Metric.ball s₀ 1, ‖((Dt g : ℝ) : ℂ) ^ s‖ ≤ (2 : ℝ) ^ R`. Introduce `g hg s hs`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h1, h2⟩` from `hg.2`. Rewrite using `[Complex.norm_cpow_eq_rpow_re_of_pos (Dt_pos g)]`. Establish `hre : s.re ≤ R`. Establish `h3 : |(s - s₀).re| ≤ ‖s - s₀‖` using `Complex.abs_re_le_norm _`. Establish `h4 : ‖s - s₀‖ < 1` using `by simpa [dist_eq_norm] using hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5` using `abs_le.1 h3`. Establish `h6` using `le_abs_self s₀.re`. Simplify using `only [Complex.sub_re] at h5`. Rewrite using `[hR]`. Combine the linear relations using `[h5.2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hlog : ∀ g ∈ 𝓕 ∩ band, ‖Complex.log ((Dt g : ℝ) : ℂ)‖ ≤ 1`. Introduce `g hg`. Take `⟨h1, h2⟩` from `hg.2`. Rewrite using `[← Complex.ofReal_log (Dt_pos g).le, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (Real.log_nonneg h1)]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear relations using `[Real.log_le_sub_one_of_pos (Dt_pos g)]`. Establish `hF' : ∀ s : ℂ, Measurable fun g => H g * cdet c g * (((Dt g : ℝ) : ℂ) ^ s * Complex.log ((Dt g : ℝ) : ℂ))`. Introduce `s`. Establish `hl : Measurable fun g => Complex.log ((Dt g : ℝ) : ℂ)` using `Complex.measurable_log.comp (Complex.measurable_ofReal.comp measurable_Dt)`. Conclude with `(hH.cont.measurable.mul (measurable_cdet c)).mul (((Complex.measurable_ofReal.comp measurable_Dt).pow_const s).mul hl)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hbd : ∀ g ∈ 𝓕 ∩ band, ∀ s ∈ Metric.ball s₀ 1, ‖H g * cdet c g * ((((Dt g : ℝ) : ℂ) ^ s) * Complex.log ((Dt g : ℝ) : ℂ))‖ ≤ C * (2 : ℝ) ^ R`. Introduce `g hg s hs`. Rewrite using `[norm_mul, norm_mul, norm_mul, norm_cdet, mul_one]`. Establish `h1` using `hpow g hg s hs`. Establish `h2` using `hlog g hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h3` using `hC g`. Combine the equalities or inequalities in the displayed calculation. Establish `hint : Integrable (fun g => H g * cdet c g * ((Dt g : ℝ) : ℂ) ^ s₀) (μ.restrict (𝓕 ∩ band))`. Use `(integrable_const (C * (2 : ℝ) ^ R)).mono' (measurable_w hH c s₀).aestronglyMeasurable ?_` and prove the remaining obligations. Use `(ae_restrict_iff' hS).2 (Eventually.of_forall fun g hg => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[norm_mul, norm_mul, norm_cdet, mul_one]`. Establish `h1` using `hpow g hg s₀ (Metric.mem_ball_self one_pos)`. Establish `h3` using `hC g`. Use `gcongr`. Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := μ.restrict (𝓕 ∩ band)) (F := fun s g => H g * cdet c g * ((Dt g : ℝ) : ℂ) ^ s) (F' := fun s g => H g * cdet c g * (((Dt g : ℝ) : ℂ) ^ s * Complex.log ((Dt g : ℝ) : ℂ))) (x₀ := s₀) (s := Metric.ball s₀ 1) (bound := fun _ => C …`.
-
-Use `((hasDerivAt_id s).const_cpow (c := ((Dt g : ℝ) : ℂ)) (Or.inl (Dt_ne g))).const_mul (H g * cdet c g)` as an intermediate fact. Simplify using `using this)`. Conclude with `key.2.differentiableAt`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem Bd_differentiable : ∀ (μ : Measure G2) (𝓕 : Set G2) (mK : Measure KA) (𝓓 : Set Jd) (H : G2 → ℂ) (c : HeckeCharacter ℚ),
     Set0 μ 𝓕 mK 𝓓 → Aut H → Differentiable ℂ (GlobalTheory.CompanionTheory.RSZeta.Bd μ 𝓕 H c) := by

@@ -16,9 +16,9 @@ def extendScalarsRep (K L : Type) [Field K] [Field L] [Algebra K L] {G : Type} [
     rfl
 
 /- English proof (translation)
-Establish `h1 : (extendScalarsRep K L ρ).character g = ((LinearMap.toMatrix' (ρ g)).map (algebraMap K L)).trace`. Express the relevant statement in the definitionally equal form `LinearMap.trace L _ (Matrix.toLin' _) = _`. Conclude with `Matrix.trace_toLin'_eq _`. Establish `h2 : ρ.character g = (LinearMap.toMatrix' (ρ g)).trace`. Express the relevant statement in the definitionally equal form `LinearMap.trace K _ (ρ g) = _`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.trace_toLin'_eq, Matrix.toLin'_toMatrix']`. Rewrite using `[h1, h2]`. Simplify using `[Matrix.trace, map_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem character_extendScalarsRep (K L : Type) [Field K] [Field L] [Algebra K L] {G : Type}
     [Group G] {n : ℕ} (ρ : Representation K G (Fin n → K)) (g : G) :
@@ -34,7 +34,7 @@ theorem character_extendScalarsRep (K L : Type) [Field K] [Field L] [Algebra K L
   simp [Matrix.trace, map_sum]
 
 /- English proof (translation)
-Introduce `K L _ _ _ G _ χ ⟨n, ρ, h⟩`. Use `⟨n, extendScalarsRep K L ρ, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[h g, character_extendScalarsRep]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isChar_baseChange : ∀ (K L : Type) [Field K] [Field L] [Algebra K L] (G : Type) [Group G]
     (χ : G → L), IsChar K L χ → IsChar L L χ := by

@@ -16,11 +16,11 @@ namespace GlobalTheory.DecLocal
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial
 
 /- English proof (translation)
-Introduce `p _ F Ω _ _ _ _ A hp`. Establish `hint : ∀ x : 𝓞 F, algebraMap F Ω (x : F) ∈ A` using `fun x => ReciprocityTheory.Gal.mem_of_isIntegral_int A ((NumberField.RingOfIntegers.isIntegral_coe x).algebraMap)`. Set `f : 𝓞 F →+* A` to `RingHom.codRestrict ((algebraMap F Ω).comp (algebraMap (𝓞 F) F)) A hint`. Set `I : Ideal (𝓞 F)` to `Ideal.comap f (IsLocalRing.maximalIdeal A)`. Establish `hI : ∀ x : 𝓞 F, x ∈ I ↔ A.valuation (algebraMap F Ω (x : F)) < 1` using `fun x => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `f x ∈ IsLocalRing.maximalIdeal A ↔ _`. Conclude with `ValuationSubring.valuation_lt_one_iff A (f x)`. Establish `hpI : ((p : 𝓞 F)) ∈ I`. Rewrite using `[hI]`. Simplify using `using hp`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hp0 : ((p : 𝓞 F)) ≠ 0`. Conclude with `(Fact.out : p.Prime).ne_zero` after adjusting the coercions. Set `w : HeightOneSpectrum (𝓞 F)` to `{ asIdeal := I, isPrime := Ideal.comap_isPrime f _, ne_bot := fun h => hp0 (by rw [← Ideal.mem_bot, ← h]; exact hpI) }`. Conclude with `⟨w, hpI, fun x => (hI x).symm⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_place_below : ∀ {p : ℕ} [Fact p.Prime] {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     (A : ValuationSubring Ω), A.valuation (p : Ω) < 1 →
@@ -43,11 +43,11 @@ theorem exists_place_below : ∀ {p : ℕ} [Fact p.Prime] {F Ω : Type} [Field F
   exact ⟨w, hpI, fun x => (hI x).symm⟩
 
 /- English proof (translation)
-Introduce `p _ Ω _ _ j n z hz`. Establish `hf : ((X ^ (p ^ n) - 1 : Polynomial Ω).map j) = X ^ (p ^ n) - 1` using `by simp`. Establish `hne : (X ^ (p ^ n) - 1 : Polynomial (PadicAlgCl p)) ≠ 0`. Simplify using `using X_pow_sub_C_ne_zero (pow_pos (Fact.out : p.Prime).pos n) (1 : PadicAlgCl p)`. Establish `hz' : z ∈ ((X ^ (p ^ n) - 1 : Polynomial Ω).map j).roots`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[hf, mem_roots hne]`. Simplify using `[hz]`. Rewrite `hz'` using `[Splits.roots_map (IsAlgClosed.splits _), Multiset.mem_map]`. Take `⟨y, hy, rfl⟩` from `hz'`. Use `⟨y, ?_, rfl⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `isRoot_of_mem_roots hy` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_root_of_unity : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [IsAlgClosed Ω] (j : Ω →+* PadicAlgCl p)
     (n : ℕ) (z : PadicAlgCl p), z ^ (p ^ n) = 1 → ∃ y : Ω, y ^ (p ^ n) = 1 ∧ j y = z := by
@@ -64,11 +64,11 @@ theorem exists_root_of_unity : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field �
   simpa [sub_eq_zero] using this
 
 /- English proof (translation)
-Rewrite using `[valuation_lt_one_iff', hA, hA]`. Break down `eq_or_ne y 0 with rfl | hy` into its components or cases. Simplify using the standard rewrite rules. Establish `h0 : 0 < ‖j y‖` using `norm_pos_iff.2 ((map_ne_zero j).2 hy)`. Rewrite using `[map_inv₀, norm_inv]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hy, false_or]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨h.le, not_le.2 ((one_lt_inv₀ h0).2 h)⟩`. Introduce and unpack `⟨h1, h2⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `lt_of_le_of_ne h1 fun h => h2 ?_` and prove the remaining obligations. Rewrite using `[h, inv_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_lt_one_iff {p : ℕ} [Fact p.Prime] {Ω : Type} [Field Ω] (A : ValuationSubring Ω) (j : Ω →+* PadicAlgCl p)
     (hA : ∀ x, x ∈ A ↔ ‖j x‖ ≤ 1) (y : Ω) : ‖j y‖ < 1 ↔ A.valuation y < 1 := by
@@ -86,9 +86,9 @@ theorem norm_lt_one_iff {p : ℕ} [Fact p.Prime] {Ω : Type} [Field Ω] (A : Val
       rw [h, inv_one]
 
 /- English proof (translation)
-Introduce `p _ F Ω _ _ _ _ A j hA v hv`. Set `φ : F →+* PadicAlgCl p` to `j.comp (algebraMap F Ω)`. Take `⟨v', -, hφ⟩` from `PI.CompDegEF.placeProp p F φ`. Establish `hvp : v ∈ Formalism.BasicNotions.placesOver F p` using `by show ((p : 𝓞 F)) ∈ v.asIdeal`. Rewrite using `[← hv, ← norm_lt_one_iff A j hA]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using GlobalTheory.PlaceBridge.norm_l_lt_one (l := p)`. Conclude with `PI.CompDegEF.locDegOf_of PI.CompDegEF.ballCard PI.CompDegEF.denseSurj PI.CompDegEF.kerProp PI.CompDegEF.normCard p F φ ⟨_, GlobalTheory.PlaceBridge.finiteDimensional_adjoin_range φ⟩ (fun x => IntermediateField.subset_adjoin _ _ ⟨x, rfl⟩) (GlobalTheory.PlaceBridge.adjoin_range_sub …`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem finrank_closure_eq_locDeg : ∀ (p : ℕ) [Fact p.Prime] (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     (A : ValuationSubring Ω) (j : Ω →+* PadicAlgCl p), (∀ x, x ∈ A ↔ ‖j x‖ ≤ 1) →
@@ -109,11 +109,11 @@ theorem finrank_closure_eq_locDeg : ∀ (p : ℕ) [Fact p.Prime] (F Ω : Type) [
     (fun x => ⟨(hφ x).1, (norm_lt_one_iff A j hA _).trans (hv x)⟩)
 
 /- English proof (translation)
-Introduce `p _ F Ω _ _ _ _ _ A hp`. Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed F`. Take `⟨w, hw, hAw⟩` from `exists_place_below (F := F) A hp`. Take `⟨j, hj⟩` from `GlobalTheory.PlaceBridge.exists_embedding F Ω w A hw hAw`. Take `⟨i, hi⟩` from `GlobalTheory.T.exists_decompositionGroup_equiv_padicGalois p F Ω A j hj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨_, GlobalTheory.PlaceBridge.finiteDimensional_adjoin_range (j.comp (algebraMap F Ω)), i, ?_, fun g => GlobalTheory.T.localInertia_iff_mem_placeInertia p F Ω A j hj _ i.toMulEquiv hi g, fun v hv => finrank_closure_eq_locDeg p F Ω A j hj v hv⟩` and prove the remaining obligations. Introduce `O _ ε hε g n ζ hζ`. Take `⟨y, hy, rfl⟩` from `exists_root_of_unity p Ω j n ζ hζ`. Take `⟨a, ha, ha'⟩` from `hε (i.symm g) n y hy`. Use `⟨a, ?_, ha'⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `hi (i.symm g) y`. Rewrite `e` using `[ContinuousMulEquiv.apply_symm_apply]`. Rewrite using `[e, ha, map_pow]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem decEquiv : ReciprocityTheory.ChartRestriction.T2.DecEquiv := by
   intro p _ F Ω _ _ _ _ _ A hp

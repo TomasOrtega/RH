@@ -11,19 +11,17 @@ namespace Formalism.IndefR.LatticeTransfer
 open Formalism.IndefR.TransferLatticeStatement Formalism.HN Formalism.L2.GlobalTheoryTheory.DivPassage
 
 /- English proof (translation)
-Establish `h15` using `all_parts_transfer_holds`. Establish `hlat : IsGLat ρ A.Rg` using `⟨hL.fg, hL.span_eq_top, hst⟩`. Establish `p` using `h15 K G A.S T τ H₀ χ₀ H χ hτ hM _ _ (Pi.basisFun K (Fin A.Dg)) A.Xg ρ hX hU A.Rg hlat`. Establish `q` using `h15 K G A.S T τ H₀ χ₀ H₀ χ₀ hτ hM _ _ (Pi.basisFun K (Fin A.Dg)) A.Xg ρ hX hU A.Rg hlat`. Establish `e0 : A.latticeAtBaseLevel = cut A.Rg (epP H₀ χ₀ ρ ∘ₗ eGood τ ρ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hgood, LinearMap.comp_id, ← h0]`. Both sides reduce to the same expression. Establish `e1 : A.latticeAtSharpLevel = cut A.Rg (epP H χ ρ ∘ₗ eGood τ ρ)`. Rewrite using `[hgood, LinearMap.comp_id, ← h1]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `es : ∀ s, A.Rs s = cut A.Rg (epP H₀ χ₀ ρ ∘ₗ eS (τ s) ρ)` using `fun s => by`. Rewrite using `[← h0, ← hs, ← Matrix.mulVecLin_mul]`. Both sides reduce to the same expression. Unfold `TransferLatticeConditions at p q`. Simplify using `only at p q`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Simplify by unfolding definitions.
 
-Simplify using `only [← e0, ← e1, ← es, ← hn, ← hG] at p`. Establish `hM' : ∀ s, nS (τ s) H₀ χ₀ = 1` using `hM`. Simplify using `only [← e0, ← es, hM', one_mul] at q`. Take `⟨⟨-, r1⟩, ⟨-, -, -, -, -, -, d0⟩, -, ⟨d1, -⟩, m⟩` from `p`. Establish `r0` using `q.1.2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h85 : (8.5 : ℝ) = 17 / 2` using `by norm_num`. Rewrite `d1`, `m` using `[h85]`. Use `⟨⟨r0, r1⟩, ?_, ?_, fun h => (m h).1⟩` and prove the remaining obligations. Unfold `LevelAmb.Deg0`. Rewrite using `[r0, Nat.cast_sum]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_le_iff_le_add'.1 d0`. Unfold `LevelAmb.Deg1`. Rewrite using `[r1]`. Use `(abs_le.1 d1).1` as an intermediate fact. Conclude with `sub_le_iff_le_add.2 (by`.
-
-Establish `h2` using `neg_le_sub_iff_le_add.1 this`. Conclude with `h2)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem levelAmb_transfer
     {K : Type} [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K] {D0 D1 : ℕ}

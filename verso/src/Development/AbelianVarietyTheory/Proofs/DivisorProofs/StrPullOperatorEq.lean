@@ -9,11 +9,11 @@ set_option autoImplicit false
 namespace GlobalTheory.TorsionForm.OneVec.StrPull
 
 /- English proof (translation)
-Simplify using `only [join, Finset.mem_union, Finset.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(⟨a, ha, h⟩ | ⟨a, ha, h⟩)`. Establish `h'` using `congrArg Fin.val h`. Simplify using `at h'`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Fin.ext h']` and apply the resulting hypothesis. Establish `h'` using `congrArg Fin.val h`. Simplify using `at h'`. Use linear arithmetic over natural numbers and integers. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Or.inl ⟨i, h, rfl⟩`.
+Prove the first alternative.
 -/
 theorem mem_join_castAdd {m g : ℕ} (S : Finset (Fin m)) (I : Finset (Fin g)) (i : Fin m) :
     Fin.castAdd g i ∈ join S I ↔ i ∈ S := by
@@ -29,11 +29,11 @@ theorem mem_join_castAdd {m g : ℕ} (S : Finset (Fin m)) (I : Finset (Fin g)) (
   · intro h; exact Or.inl ⟨i, h, rfl⟩
 
 /- English proof (translation)
-Simplify using `only [join, Finset.mem_union, Finset.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(⟨a, ha, h⟩ | ⟨a, ha, h⟩)`. Establish `h'` using `congrArg Fin.val h`. Simplify using `at h'`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Establish `h'` using `congrArg Fin.val h`. Simplify using `at h'`. Rewrite using `[← Fin.ext h']` and apply the resulting hypothesis. Introduce `h`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Or.inr ⟨c, h, rfl⟩`.
+Prove the second alternative.
 -/
 theorem mem_join_natAdd {m g : ℕ} (S : Finset (Fin m)) (I : Finset (Fin g)) (c : Fin g) :
     Fin.natAdd m c ∈ join S I ↔ c ∈ I := by
@@ -49,21 +49,21 @@ theorem mem_join_natAdd {m g : ℕ} (S : Finset (Fin m)) (I : Finset (Fin g)) (c
   · intro h; exact Or.inr ⟨c, h, rfl⟩
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[basePart, mem_join_castAdd]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem basePart_join {m g : ℕ} (S : Finset (Fin m)) (I : Finset (Fin g)) :
     basePart (join S I) = S := by
   ext i; simp [basePart, mem_join_castAdd]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[fibrePart, mem_join_natAdd]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem fibrePart_join {m g : ℕ} (S : Finset (Fin m)) (I : Finset (Fin g)) :
     fibrePart (join S I) = I := by
   ext i; simp [fibrePart, mem_join_natAdd]
 
 /- English proof (translation)
-Use extensionality with `x`. Use `Fin.addCases (fun i => ?_) (fun c => ?_) x` and prove the remaining obligations. Simplify using `[basePart, mem_join_castAdd]`. Simplify using `[fibrePart, mem_join_natAdd]`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem join_parts {m g : ℕ} (U : Finset (Fin (m + g))) :
     join (basePart U) (fibrePart U) = U := by
@@ -73,7 +73,7 @@ theorem join_parts {m g : ℕ} (U : Finset (Fin (m + g))) :
   · simp [fibrePart, mem_join_natAdd]
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← basePart_join S I, h, basePart_join]`. Rewrite using `[← fibrePart_join S I, h, fibrePart_join]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem join_inj {m g : ℕ} {S S' : Finset (Fin m)} {I I' : Finset (Fin g)}
     (h : join S I = join S' I') : S = S' ∧ I = I' := by
@@ -82,13 +82,13 @@ theorem join_inj {m g : ℕ} {S S' : Finset (Fin m)} {I I' : Finset (Fin g)}
   · rw [← fibrePart_join S I, h, fibrePart_join]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `U`. Express the relevant statement in the definitionally equal form `(if basePart U = ∅ then (Pi.single (join ∅ I) 1 : Ext (1 + 1 + g)) (join S' (fibrePart U)) else 0) = _`. Distinguish the cases in `hS : S' = ∅`. Substitute `hS` using the available equality. Simplify using `only [if_true, Pi.single_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hU : U = join ∅ I`. Substitute `hU` using the available equality. Simplify using `[basePart_join, fibrePart_join]`. Rewrite using `[if_neg hU] split_ifs with hb hj`. Establish `hf` using `(join_inj hj).2`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `absurd ((join_parts U).symm.trans (by rw [hb, hf])) hU`. Both sides reduce to the same expression. Both sides reduce to the same expression. Rewrite using `[if_neg hS]`. Simplify using `only [Pi.single_apply]`.
+Both sides reduce to the same expression. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Use `split_ifs with hb hj`. Conclude with `absurd (join_inj hj).1 hS`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rhoL_single {n g : ℕ} (S' : Finset (Fin (1 + 1))) (I : Finset (Fin g)) :
     rhoL (n := n) S' (Pi.single (join ∅ I) 1) =
@@ -115,9 +115,9 @@ theorem rhoL_single {n g : ℕ} (S' : Finset (Fin (1 + 1))) (I : Finset (Fin g))
     · rfl
 
 /- English proof (translation)
-Rewrite using `[pullOp, ContinuousLinearMap.sum_apply, Finset.sum_eq_single (∅ : Finset (Fin (1 + 1)))]`. Simplify using `only [ContinuousLinearMap.comp_apply, rhoL_single, if_true]`. Simplify using `[lamL]`. Both sides reduce to the same expression. Introduce `S _ hS`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[ContinuousLinearMap.comp_apply, rhoL_single, hS]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem pullOp_single {n g : ℕ} (a : Fin n → ℂ) (K : Ext (n + n + g) →L[ℂ] Ext (n + n + g))
     (I : Finset (Fin g)) :
@@ -131,7 +131,7 @@ theorem pullOp_single {n g : ℕ} (a : Fin n → ℂ) (K : Ext (n + n + g) →L[
   · intro h; exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Simplify using `[pullFull, basePart_join, fibrePart_join]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pullFull_join {n g : ℕ} (a : Fin n → ℂ) (y : Ext (n + n + g)) (S : Finset (Fin (1 + 1)))
     (I : Finset (Fin g)) :
@@ -145,9 +145,9 @@ namespace GlobalTheory.TorsionForm.OneVec
 open GlobalTheory.TorsionForm.OneVec.StrPull in
 
 /- English proof (translation)
-Establish `h : strN K = ∑ I : Finset (Fin g), ((-1) ^ I.card * (I.card : ℂ)) • (fun S' : Finset (Fin (n + n)) => K (Pi.single (join ∅ I) 1) (join S' I))`. Use function extensionality and compare the values at `S'`. Simplify using `[strN, Finset.sum_apply, smul_eq_mul]`. Rewrite using `[h, map_sum]`. Use function extensionality and compare the values at `S`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Finset.sum_apply]`. Simplify using `only [strN, pullOp_single, pullFull_join, map_smul, Pi.smul_apply, smul_eq_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem strN_pullOp {n g : ℕ} (a : Fin n → ℂ) (K : Ext (n + n + g) →L[ℂ] Ext (n + n + g)) :
     strN (pullOp a K) = pullBaseL a (strN K) := by

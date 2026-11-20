@@ -21,11 +21,9 @@ open GlobalTheory.Core.Rk.IP
 namespace GlobalTheory.Core.Rk.IP
 
 /- English proof (translation)
-Introduce `hWeil D ψ A B ha hb hwitt χB omh homh ν 𝓕 hcov mH hmH φ hφ`. Establish `hwitt' : Formalism.MainNotions.SchurIrreducible.wittIdx B = 0 ∨ A.rank + Formalism.MainNotions.SchurIrreducible.wittIdx B < B.rank`. Rewrite using `[GlobalTheory.RallisIP.wittIdx_eq_wittIndex]`. Conclude with `hwitt`. Take `⟨-, hW2⟩` from `hWeil D A B mH hmH ha hwitt'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hint, hser⟩` from `hW2 ψ χB omh homh φ hφ`. Use `⟨hint, ?_⟩` and prove the remaining obligations. Take `⟨-, h2⟩` from `hser hb ν 𝓕 hcov`. Use function extensionality and compare the values at `g`. Rewrite using `[← swSection_eq_swSec]`.
-
-Conclude with `((h2 g).2).symm`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaMean_eq_eis_of_weil : GlobalTheory.Published.WeilSiegelFormulaUnitary → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A B : HSp D), 1 ≤ A.rank → 2 * A.rank < B.rank → (wittIndex B = 0 ∨ A.rank + wittIndex B < B.rank) → ∀ (χB : (AE D)ˣ →* Circle) (omh : WRep (dblSp A) B), IsWeilDatumO ψ (dblSp A) B 1 χB omh → ∀ (ν : Measure (WO A B)) (𝓕 : Set (WO A B)), IsCovolOne (ratL B A) ν 𝓕 → ∀ mH : Measure (GA D B), mH.IsHaarMeasure → ∀ φ : WO (dblSp A) B → ℂ, IsThetaFunO ψ (dblSp A) B φ → (∀ g, Integrable (GlobalTheory.AutomorphicL2Unitary.descend (GQ B) fun h => thetaKO omh g h φ) (autMeasure B mH)) ∧ GlobalTheory.ThetaMean.thetaMean omh mH φ = GlobalTheory.Eis.eis A (swSec A B omh ν 𝓕 φ) := by
   intro hWeil D ψ A B ha hb hwitt χB omh homh ν 𝓕 hcov mH hmH φ hφ

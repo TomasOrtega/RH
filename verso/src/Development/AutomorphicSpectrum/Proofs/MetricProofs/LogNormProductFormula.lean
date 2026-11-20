@@ -6,11 +6,11 @@ open GlobalTheory.CompanionTheory.Ar.PB.WSq GlobalTheory.CompanionTheory.Ar.PB.W
 namespace GlobalTheory.CompanionTheory.Ar.PB.WSq.Fib
 
 /- English proof (translation)
-Establish `hne : ∀ i, (if P i then (1 : ℂ) else v i * f i) ≠ 0`. Introduce `i`. Use `split_ifs with hp`. Conclude with `one_ne_zero`. Conclude with `mul_ne_zero (h i hp).1 (h i hp).2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfac : ∀ i ∈ (Finset.univ : Finset (Fin N)), ‖(if P i then (1 : ℂ) else v i * f i) ^ e i‖ ≠ 0` using `fun i _ => norm_ne_zero_iff.mpr (zpow_ne_zero _ (hne i))`. Establish `hprod : ∏ i : Fin N, ‖(if P i then (1 : ℂ) else v i * f i) ^ e i‖ ≠ 0` using `Finset.prod_ne_zero_iff.mpr hfac`. Rewrite using `[norm_mul, norm_prod, Real.log_mul (norm_ne_zero_iff.mpr ht) hprod, Real.log_prod hfac]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_zpow, Real.log_zpow]`. Use `split_ifs with hp`. Simplify using the standard rewrite rules. Rewrite using `[norm_mul, Real.log_mul (norm_ne_zero_iff.mpr (h i hp).1) (norm_ne_zero_iff.mpr (h i hp).2)]`.
+A detailed English derivation is pending.
 -/
 theorem log_norm_mul_prod_ite_zpow (N : ℕ) (P : Fin N → Prop) (t : ℂ) (v f : Fin N → ℂ)
     (e : Fin N → ℤ) (ht : t ≠ 0) (h : ∀ i, ¬ P i → v i ≠ 0 ∧ f i ≠ 0) :

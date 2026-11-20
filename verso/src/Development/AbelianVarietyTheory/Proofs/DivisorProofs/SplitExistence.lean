@@ -15,21 +15,19 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 /- English proof (translation)
-Take `⟨μ, 𝓕, hμ, h𝓕, h1⟩` from `hdom`. Take `⟨t, m, hm, ht⟩` from `hlevi`. Establish `hsum : ∀ h, fa h + fb h = fa' h + fb' h`. Introduce `h`. Establish `e1` using `h₁.1 μ 𝓕 hμ h𝓕 h1 h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e2` using `h₂.1 μ 𝓕 hμ h𝓕 h1 h`. Simplify using `only [Pi.add_apply] at e1 e2`. Rewrite using `[e1, e2]`. Establish `key : ∀ h, fa h = fa' h`. Introduce `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hne`. Establish `hA` using `h₁.2.1 t m hm h`. Establish `hA'` using `h₂.2.1 t m hm h`. Establish `hB` using `h₁.2.2 t m hm h`. Establish `hB'` using `h₂.2.2 t m hm h`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s1` using `hsum (m * h)`. Establish `s0` using `hsum h`. Use `set cA' : ℂ := (X.α t : ℂ) * (((absE F E t : ℝ) ^ ((a' : ℝ) / 2) : ℝ) : ℂ) with hcA`. Use `set cB : ℂ := (X.β t : ℂ) * (((absE F E t : ℝ) ^ ((a : ℝ) / 2) : ℝ) : ℂ) with hcB`. Establish `e : cA' * (fa h - fa' h) = cB * (fa h - fa' h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `-hA + hA' + s1 - hB + hB' - cB * s0`. Establish `e' : cA' = cB` using `mul_right_cancel₀ (sub_ne_zero.2 hne) e`. Establish `n1 : ‖cA'‖ = (absE F E t : ℝ) ^ ((a' : ℝ) / 2)`. Rewrite using `[hcA, norm_mul, Circle.norm_coe, one_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (Real.rpow_nonneg (NNReal.coe_nonneg _) _)]`. Establish `n2 : ‖cB‖ = (absE F E t : ℝ) ^ ((a : ℝ) / 2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hcB, norm_mul, Circle.norm_coe, one_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (Real.rpow_nonneg (NNReal.coe_nonneg _) _)]`. Establish `hlt' : (a' : ℝ) / 2 < (a : ℝ) / 2`. Establish `: (a' : ℝ) < a` using `by exact_mod_cast hlt`. Combine the linear equalities and inequalities to obtain the conclusion. Use `Real.rpow_lt_rpow_of_exponent_lt ht hlt'` as an intermediate fact.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[← n1, ← n2, e']`. Conclude with `lt_irrefl _ this`. Use `⟨funext key, funext fun h => ?_⟩` and prove the remaining obligations. Use `hsum h` as an intermediate fact. Rewrite `this` using `[key h]`.
-
-Conclude with `add_left_cancel this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem split2_unique {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {a a' : ℕ} {W : Spc F E (a + a')} {d₁ : ℕ} {W₁ : Spc F E d₁} {H' : Plane E (a + a') d₁} {X : Chars F E}
@@ -79,11 +77,11 @@ theorem split2_unique {F E : Type} [Field F] [NumberField F] [Field E] [NumberFi
   exact add_left_cancel this
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hH`. Establish `hd` using `GlobalTheory.T.triple_adapted_plane_theta_integral F E σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hH`. Establish `hl` using `GlobalTheory.T.triple_adapted_plane_local_factor F E σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hH`. Take `⟨h1, h2⟩` from `GlobalTheory.T.triple_adapted_plane_restriction hP F E σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hH`. Use `⟨fun Φ hΦ => ?_, fun Φ' hΦ' => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨fa, fb, hs⟩` from `h1 Φ hΦ`. Use `⟨(fa, fb), hs, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨e1, e2⟩` from `split2_unique hT.geo.lt hd hl hy hs`. Conclude with `Prod.ext e1 e2`. Take `⟨fa, fb, hs⟩` from `h2 Φ' hΦ'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(fa, fb), hs, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨e1, e2⟩` from `split2_unique hT.geo.lt hd hl hy hs`. Conclude with `Prod.ext e1 e2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem splitEx : KP → SplitEx := by
   intro hP F E _ _ _ _ _ σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hH

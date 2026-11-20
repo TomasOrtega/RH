@@ -14,7 +14,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Establish `ht : Tested z` using `⟨p, φ, y, h⟩`. Unfold `evR evalAt`. Rewrite using `[dif_pos ht]`. Conclude with `GlobalTheory.TransferCompare.evalWD_framed Xo c f hf S _ p _ φ _ y z ht.choose_spec.choose_spec.choose_spec h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evR_of_frMap_test {f : Rul Xo c}
     (hf : IsNatural (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) f) {p : TRing c.F} {S : Type}
@@ -26,14 +26,14 @@ theorem evR_of_frMap_test {f : Rul Xo c}
   exact GlobalTheory.TransferCompare.evalWD_framed Xo c f hf S _ p _ φ _ y z ht.choose_spec.choose_spec.choose_spec h
 
 /- English proof (translation)
-The claim follows from `cspB_idem_spec _ (cspB_isClopen (CompSplitPfD.cspD_comp_disj Xo c) Z) y.x y.x_over q`.
+A detailed English derivation is pending.
 -/
 theorem idem_notMem_iff (Z : Comp Xo c) {p : TRing c.F} (y : FrPt Xo c p.R) (q : PrimeSpectrum p.R) :
     idem Z p y ∉ q.asIdeal ↔ ptF y q ∈ (Z : Set (Xo.XF c)) :=
   cspB_idem_spec _ (cspB_isClopen (CompSplitPfD.cspD_comp_disj Xo c) Z) y.x y.x_over q
 
 /- English proof (translation)
-Introduce `q hq` and use `by have hC := cspB_isClopen (CompSplitPfD.cspD_comp_disj Xo c) Z have h1 : cspB_idem _ hC z.x z.x_over = 0 := (cspB_idem_map _ hC φ y.x_over z.x_over h.1).symm.trans h0 exact (cspB_idem_spec _ hC z.x z.x_over q).2 hq (h1 ▸ q.asIdeal.zero_mem)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem liesOff_of_map_idem {Z : Comp Xo c} {p : TRing c.F} {S : Type} [CommRing S] [Algebra c.F S]
     {φ : p.R →ₐ[c.F] S} {y : FrPt Xo c p.R} {z : FrPt Xo c S} (h : FrMap φ y z) (h0 : φ (idem Z p y) = 0) :
@@ -43,9 +43,9 @@ theorem liesOff_of_map_idem {Z : Comp Xo c} {p : TRing c.F} {S : Type} [CommRing
   exact (cspB_idem_spec _ hC z.x z.x_over q).2 hq (h1 ▸ q.asIdeal.zero_mem)
 
 /- English proof (translation)
-Use `⟨fun h => funext fun p => funext fun y => ?_, fun h => ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `GlobalTheory.TransferCompare.frBC_framed Xo c _ _ (Ideal.Quotient.mkₐ c.F (Ideal.span {idem Z p y})) y`. Establish `h0` using `h _ z (liesOff_of_map_idem hz (Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _)))`. Rewrite `h0` using `[evR_of_frMap_test hf hz]`. Take `⟨a, ha⟩` from `Ideal.mem_span_singleton'.1 (Ideal.Quotient.eq_zero_iff_mem.1 h0)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h1 : idem Z p y * idem Z p y = idem Z p y` using `congrFun (congrFun (idem_mul_idem Z) p) y`. Use `show idem Z p y * f p y = f p y`. Rewrite using `[← ha, mul_left_comm, h1]`. Rewrite using `[← h, mul_comm]`. Conclude with `mul_mem_suppOn _ (idem_mem_suppOn Z)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_suppOn_iff_idem_mul_of_natural {f : Rul Xo c}
     (hf : IsNatural (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) f) (Z : Comp Xo c) :
@@ -62,26 +62,26 @@ theorem mem_suppOn_iff_idem_mul_of_natural {f : Rul Xo c}
   · rw [← h, mul_comm]; exact mul_mem_suppOn _ (idem_mem_suppOn Z)
 
 /- English proof (translation)
-The claim follows from `mem_suppOn_iff_idem_mul_of_natural hf.1 Z`.
+A detailed English derivation is pending.
 -/
 theorem mem_suppOn_iff_idem_mul {e : Ix Dw → ℤ} {f : Rul Xo c} (hf : f ∈ secZ Xo c e) (Z : Comp Xo c) :
     f ∈ suppOn Z ↔ idem Z * f = f := mem_suppOn_iff_idem_mul_of_natural hf.1 Z
 
 /- English proof (translation)
-The claim follows from `(mem_suppOn_iff_idem_mul hf.1 Z).1 hf.2`.
+A detailed English derivation is pending.
 -/
 theorem idem_mul_eq {e : Ix Dw → ℤ} {Z : Comp Xo c} {f : Rul Xo c} (hf : f ∈ secZ Xo c e ⊓ suppOn Z) :
     idem Z * f = f := (mem_suppOn_iff_idem_mul hf.1 Z).1 hf.2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨zero_add e ▸ mul_mem_secZ (idem_mem_secZ Z) hf, mul_comm f (idem Z) ▸ mul_mem_suppOn f (idem_mem_suppOn Z)⟩`.
+Supply the required witnesses or components.
 -/
 theorem idem_mul_mem {e : Ix Dw → ℤ} (Z : Comp Xo c) {f : Rul Xo c} (hf : f ∈ secZ Xo c e) :
     idem Z * f ∈ secZ Xo c e ⊓ suppOn Z :=
   ⟨zero_add e ▸ mul_mem_secZ (idem_mem_secZ Z) hf, mul_comm f (idem Z) ▸ mul_mem_suppOn f (idem_mem_suppOn Z)⟩
 
 /- English proof (translation)
-Establish `: IsReduced p.R` using `(Ideal.isRadical_iff_quotient_reduced _).1 p.rad`. Conclude with `(nilpotent_iff_mem_prime.2 fun J hJ => h ⟨J, hJ⟩).eq_zero`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_prime {K : Type} [Field K] {p : TRing K} {a : p.R}
     (h : ∀ q : PrimeSpectrum p.R, a ∈ q.asIdeal) : a = 0 := by
@@ -89,7 +89,7 @@ theorem eq_zero_of_forall_prime {K : Type} [Field K] {p : TRing K} {a : p.R}
   exact (nilpotent_iff_mem_prime.2 fun J hJ => h ⟨J, hJ⟩).eq_zero
 
 /- English proof (translation)
-The claim follows from `funext fun p => funext fun y => eq_zero_of_forall_prime fun q => by show idem Z p y * idem Z' p y ∈ q.asIdeal by_contra hn have h1 := not_or.1 (mt q.isPrime.mul_mem_iff_mem_or_mem.2 hn) exact Set.disjoint_left.1 (CompSplitPfD.cspD_comp_disj Xo c Z Z' h) ((idem_notMem_iff Z y q).1 …`.
+A detailed English derivation is pending.
 -/
 theorem idem_mul_idem_of_ne {Z Z' : Comp Xo c} (h : Z ≠ Z') : idem Z * idem Z' = 0 :=
   funext fun p => funext fun y => eq_zero_of_forall_prime fun q => by
@@ -102,13 +102,11 @@ theorem idem_mul_idem_of_ne {Z Z' : Comp Xo c} (h : Z ≠ Z') : idem Z * idem Z'
 variable (Xo c) in
 
 /- English proof (translation)
-Use `funext fun p => funext fun y => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_apply, Finset.sum_apply]`. Use `show _ = (1 : p.R)`. Use `sub_eq_zero.1 (eq_zero_of_forall_prime fun q => ?_)` and prove the remaining obligations. Establish `hall : ptF y q ∈ ⋃₀ irreducibleComponents (Xo.XF c)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sUnion_irreducibleComponents]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨W, hW, hq⟩` from `Set.mem_sUnion.1 hall`. Set `Z₀ : Comp Xo c` to `⟨W, hW⟩`. Establish `h1 : idem Z₀ p y ∉ q.asIdeal` using `(idem_notMem_iff Z₀ y q).2 hq`.
+Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(q.isPrime.mem_or_mem (x := idem Z₀ p y) ?_).resolve_left h1` and prove the remaining obligations. Establish `h2 : idem Z₀ p y * ∑ Z : Comp Xo c, idem Z p y = idem Z₀ p y`. Rewrite using `[Finset.mul_sum]`. Conclude with `(Finset.sum_eq_single Z₀ (fun Z _ h => congrFun (congrFun (idem_mul_idem_of_ne h.symm) p) y) (fun h => absurd (Finset.mem_univ _) h)).trans (congrFun (congrFun (idem_mul_idem Z₀) p) y)`. Rewrite using `[mul_sub, h2, mul_one, sub_self]`.
-
-Conclude with `q.asIdeal.zero_mem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_idem [Fintype (Comp Xo c)] : ∑ Z : Comp Xo c, idem Z = 1 := by
   classical
@@ -132,7 +130,7 @@ theorem sum_idem [Fintype (Comp Xo c)] : ∑ Z : Comp Xo c, idem Z = 1 := by
 variable (Xo c) in
 
 /- English proof (translation)
-Use `CompFin.finite_comp Xo c` as an intermediate fact. Use `Fintype.ofFinite (Comp Xo c)` as an intermediate fact. Rewrite using `[finsum_eq_sum_of_fintype, sum_idem]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem finsum_idem : ∑ᶠ Z : Comp Xo c, idem Z = 1 := by
   have := CompFin.finite_comp Xo c
@@ -140,7 +138,7 @@ theorem finsum_idem : ∑ᶠ Z : Comp Xo c, idem Z = 1 := by
   rw [finsum_eq_sum_of_fintype, sum_idem]
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_mul, sum_idem, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_idem_mul [Fintype (Comp Xo c)] (f : Rul Xo c) : ∑ Z : Comp Xo c, idem Z * f = f := by
   rw [← Finset.sum_mul, sum_idem, one_mul]
@@ -151,28 +149,28 @@ variable {r : ℕ} {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {x : ℝ} {Z : Co
   {δ : HeightOneSpectrum (𝓞 c.F) → ℝ} (s : ConstSec U x Z la δ)
 
 /- English proof (translation)
-Rewrite using `[mul_assoc, s.mul_inv, mul_comm, idem_mul_eq hf]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_sig_mul_inv {e : Ix Dw → ℤ} {f : Rul Xo c} (hf : f ∈ secZ Xo c e ⊓ suppOn Z) :
     f * s.sig * s.inv = f := by
   rw [mul_assoc, s.mul_inv, mul_comm, idem_mul_eq hf]
 
 /- English proof (translation)
-Rewrite using `[mul_right_comm, s.mul_sig_mul_inv hf]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_inv_mul_sig {e : Ix Dw → ℤ} {f : Rul Xo c} (hf : f ∈ secZ Xo c e ⊓ suppOn Z) :
     f * s.inv * s.sig = f := by
   rw [mul_right_comm, s.mul_sig_mul_inv hf]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨mul_mem_secZ hf s.sig_mem, mul_mem_suppOn f s.sig_mem_suppOn⟩`.
+Supply the required witnesses or components.
 -/
 theorem mul_sig_mem {e : Ix Dw → ℤ} {f : Rul Xo c} (hf : f ∈ secZ Xo c e) :
     f * s.sig ∈ secZ Xo c (e + exOf Dw la 0) ⊓ suppOn Z :=
   ⟨mul_mem_secZ hf s.sig_mem, mul_mem_suppOn f s.sig_mem_suppOn⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨add_neg_cancel_right e (exOf Dw la 0) ▸ mul_mem_secZ hf s.inv_mem, mul_mem_suppOn f s.inv_mem_suppOn⟩`.
+Supply the required witnesses or components.
 -/
 theorem mul_inv_mem {e : Ix Dw → ℤ} {f : Rul Xo c} (hf : f ∈ secZ Xo c (e + exOf Dw la 0)) :
     f * s.inv ∈ secZ Xo c e ⊓ suppOn Z :=
@@ -204,7 +202,7 @@ Both sides reduce to the same expression.
 end ConstSec
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ hf Z => mem_suppOn_iff_idem_mul hf Z, fun _ _ _ _ _ _ s e => ⟨fun _ hf => s.mul_sig_mul_inv hf, s.mulEquiv e, fun _ => rfl, fun _ => rfl⟩, CompFin.finite_comp Xo c, sum_idem Xo c⟩`.
+Supply the required witnesses or components.
 -/
 theorem suppOn_idem_laws (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) :

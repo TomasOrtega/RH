@@ -8,15 +8,13 @@ namespace HDiscLat
 open Module
 
 /- English proof (translation)
-Establish `hblk : ∀ c, (Matrix.toSquareBlock (Matrix.blockDiagonal' M) Sigma.fst c).det = (M c).det`. Introduce `c`. Set `e : κ c ≃ {s : (Σ c, κ c) // s.1 = c}` to `{ toFun := fun k => ⟨⟨c, k⟩, rfl⟩ invFun := fun s => cast (congrArg κ s.2) s.1.2 left_inv := fun k => rfl right_inv := by`. Introduce and unpack `⟨⟨a, k⟩, rfl⟩`. Use `rfl }`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Both sides reduce to the same expression.
 
-Rewrite using `[← Matrix.det_submatrix_equiv_self e]`. Use `congr 1`. Use extensionality with `k k'`. Use `show Matrix.blockDiagonal' M ⟨c, k⟩ ⟨c, k'⟩ = M c k k'`. Use `first`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Treat this case separately. Treat this case separately.
 
-Consider the case `exact Matrix.blockDiagonal'_apply_eq M c k k'`. Consider the case `simp [Matrix.blockDiagonal'_apply]`. Use `letI : LinearOrder ι := LinearOrder.lift' (Fintype.equivFin ι) (Fintype.equivFin ι).injective`. Use `first`. Consider the case `rw [(Matrix.blockTriangular_blockDiagonal' M).det]`.
+Equip the data with the indicated structure. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `rw [Matrix.BlockTriangular.det (Matrix.blockTriangular_blockDiagonal' M)]`. Rewrite using `[Finset.prod_congr rfl (fun c _ => hblk c)]`. Use `Finset.prod_subset (Finset.subset_univ _) ?_` and prove the remaining obligations. Introduce `c _ hc`. Use `haveI : IsEmpty (κ c) := ⟨fun k => hc (Finset.mem_image.2 ⟨⟨c, k⟩, Finset.mem_univ _, rfl⟩)⟩`.
-
-Conclude with `Matrix.det_isEmpty`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem det_blockDiagonal' {ι R : Type*} [Fintype ι] [DecidableEq ι] [CommRing R]
     {κ : ι → Type*} [∀ c, Fintype (κ c)] [∀ c, DecidableEq (κ c)]
@@ -53,9 +51,9 @@ theorem det_blockDiagonal' {ι R : Type*} [Fintype ι] [DecidableEq ι] [CommRin
   exact Matrix.det_isEmpty
 
 /- English proof (translation)
-Rewrite using `[Algebra.discr_def, Algebra.norm_eq_matrix_det a h, ← Matrix.det_transpose (Algebra.leftMulMatrix a h), ← Matrix.det_mul]`. Use `congr 1`. Use extensionality with `p q`. Simplify using `only [Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, Algebra.traceMatrix_apply, Algebra.traceForm_apply, Algebra.leftMulMatrix_eq_repr_mul]`. Use `conv_lhs => rw [← a.sum_repr (h * a p)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_mul, map_sum]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, map_smul, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_mul {F L : Type*} [Field F] [Field L] [Algebra F L] {κ : Type*} [Fintype κ]
     [DecidableEq κ] (a : Basis κ F L) (h : L) :
@@ -74,21 +72,21 @@ theorem gram_mul {F L : Type*} [Field F] [Field L] [Algebra F L] {κ : Type*} [F
   rw [smul_mul_assoc, map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Use `set N := Submodule.span R (Set.range b')`. Establish `hrank : finrank R N = finrank R CC`. Rewrite using `[finrank_span_eq_card hli, finrank_eq_card_basis α, Fintype.card_fin, Fintype.card_congr σ, Fintype.card_fin]`. Use `set s := Submodule.smithNormalFormCoeffs α hrank`. Establish `hlen : Module.length R (CC ⧸ N) = ∑ i, IsDiscreteValuationRing.addVal R (s i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[(Submodule.quotientEquivPiSpan N α hrank).length_eq, Module.length_pi_of_fintype]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Ring.ord_eq_addVal]`. Both sides reduce to the same expression. Establish `hdet : Associated (α.det (b' ∘ σ)) (∏ i, s i)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `key` using `ReciprocityTheory.MultiplicativeHeights.det_subtype_comp_associated_prod α N hrank (α.equiv (Basis.span hli) σ)`. Use `key using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← LinearMap.det_toMatrix α, Basis.det_apply]`. Use `congr 1`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[LinearMap.toMatrix_apply, Basis.toMatrix_apply]`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe, Basis.equiv_apply, Submodule.subtype_apply]`. Rewrite using `[Module.Basis.span_apply]`. Establish `hne : (∏ i, s i) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun i _ => Submodule.smithNormalFormCoeffs_ne_zero α hrank i`. Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hne hϖ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hval : ∑ i, IsDiscreteValuationRing.addVal R (s i) = n`. Rewrite using `[← ReciprocityTheory.MultiplicativeHeights.addVal_prod, hu, IsDiscreteValuationRing.addVal_mul, IsDiscreteValuationRing.addVal_eq_zero_of_unit, IsDiscreteValuationRing.addVal_pow, IsDiscreteValuationRing.addVal_uniformizer hϖ]`. Simplify using the standard rewrite rules. Set `E : CC ≃ₗ[R] SA` to `(LinearEquiv.ofInjective φ hφ).trans (LinearEquiv.ofEq _ _ hSA.symm)`. Establish `hE : ∀ y, (E y : V) = φ y` using `fun y => rfl`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hmap : N.map (E : CC →ₗ[R] SA) = (Submodule.span R (Set.range (φ ∘ b'))).comap SA.subtype`. Use extensionality with `x`. Simplify using `only [Submodule.mem_map, Submodule.mem_comap, Submodule.subtype_apply]`. Rewrite using `[Set.range_comp, ← Submodule.map_span]`. Prove the components needed by the constructor for the conclusion.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce and unpack `⟨y, hy, rfl⟩`. Express the relevant statement in the definitionally equal form `φ y ∈ _`. Conclude with `Submodule.mem_map_of_mem hy`. Introduce and unpack `⟨y, hy, hyx⟩`. Conclude with `⟨y, hy, Subtype.ext (by change φ y = _; exact hyx)⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨v, hv⟩` from `hdet.symm`. Use `⟨n, u * v, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← (Submodule.Quotient.equiv N _ E hmap).length_eq, hlen, hval]`. Rewrite using `[← hv, hu, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem length_quot {R : Type*} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     {ϖ : R} (hϖ : Irreducible ϖ)

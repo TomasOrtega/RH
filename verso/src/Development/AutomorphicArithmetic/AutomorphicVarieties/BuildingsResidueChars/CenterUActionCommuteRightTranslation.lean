@@ -8,13 +8,11 @@ open scoped TensorProduct
 attribute [local instance 100] LieRing.ofAssociativeRing
 
 /- English proof (translation)
-Introduce `K _ _ n z hz g`. Take `⟨ι, hι, ⟨D⟩⟩` from `UpperTheory.exists_idempotent_decomposition_mixedSpace K`. Establish `hinf : Commute (uAction z) (rtInf (archPart g))`. Establish `hsub : Algebra.adjoin ℂ {x | ∃ τ u, x = capOp D n τ u} ≤ Subalgebra.centralizer ℂ {rtInf (archPart g)}`. Rewrite using `[Algebra.adjoin_le_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `x ⟨τ, u, rfl⟩`. Rewrite using `[SetLike.mem_coe, Subalgebra.mem_centralizer_iff]`. Introduce and unpack `y rfl`. Conclude with `(UpperTheory.capOp_commute_rightTranslation K n ι D τ u (archPart g)).eq.symm`. Establish `hm` using `hsub (UpperTheory.centerU_action_mem_adjoin_capOp K n ι D z hz)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hm` using `[Subalgebra.mem_centralizer_iff]`. Conclude with `(hm _ rfl).symm`. Establish `hfin : Commute (uAction z) (rtFin (finPart g))`. Use `LinearMap.ext fun φ => ?_` and prove the remaining obligations. Conclude with `uAction_rtFin z (finPart g) φ`.
-
-Conclude with `hinf.mul_right hfin`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.centerU_action_commute_rightTranslation :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ), ∀ z ∈ (isExpLieAlgebra K n).centerU, ∀ g, Commute (uAction z) (rt (K := K) (n := n) g) := by

@@ -7,9 +7,9 @@ open KaehlerDifferential GlobalTheory.CechDR GlobalTheory.PD GlobalTheory.WH Glo
 open scoped TensorProduct
 
 /- English proof (translation)
-Take `⟨n, w, hw⟩` from `IsArtinian.exists_pow_succ_smul_dvd y (1 : R)`. Simplify using `only [smul_eq_mul, mul_one] at hw`. Use `⟨w, IsReduced.eq_zero _ ⟨n + 1, ?_⟩⟩` and prove the remaining obligations. Establish `h : y ^ n * (1 - y * w) = 0`. Rewrite using `[mul_sub, mul_one, ← mul_assoc, ← pow_succ, hw, sub_self]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_pow, pow_succ, pow_succ]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 private lemma red_art {R : Type} [CommRing R] [IsArtinianRing R] [IsReduced R] (y : R) :
     ∃ z, y * (1 - y * z) = 0 := by
@@ -24,23 +24,21 @@ private lemma red_art {R : Type} [CommRing R] [IsArtinianRing R] [IsReduced R] (
     _ = 0 := by rw [h, mul_zero]
 
 /- English proof (translation)
-Establish `memB : ∀ g ∈ rA ℂ (xv x) {0}, algebraMap F L g ∈ rB ℂ L (xv x) {0}`. Introduce `g hg`. Rewrite using `[rB, Subalgebra.mem_restrictScalars, mem_integralClosure_iff]`. Conclude with `isIntegral_algebraMap (x := (⟨g, hg⟩ : rA ℂ (xv x) {0}))`. Unfold `rA at hf`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Proceed by induction.
 
-Proceed by induction on `hf using Algebra.adjoin_induction with`. Consider the case `mem y hy`. Take `⟨i, hi, j, rfl⟩` from `hy`. Rewrite `hi` using `[Finset.mem_singleton]`. Substitute `hi` using the available equality.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Fin.eq_zero_or_eq_succ j with rfl | ⟨k, rfl⟩` into its components or cases. Use `⟨1, memB _ (Algebra.subset_adjoin ⟨0, Finset.mem_singleton_self 0, 0, rfl⟩), ?_⟩` and prove the remaining obligations. Use `Ideal.zero_mem _` and compare the differences between its conclusion and the goal. Rewrite using `[sub_eq_zero]`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `⟨0, tco_mem ℂ L (xv x) k, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero, sub_zero]`. Conclude with `Ideal.subset_span ⟨k, rfl⟩`. Consider the case `algebraMap c0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `⟨c0, memB _ (Subalgebra.algebraMap_mem _ c0), ?_⟩` and prove the remaining obligations. Use `Ideal.zero_mem _` and compare the differences between its conclusion and the goal. Rewrite using `[sub_eq_zero]`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[IsScalarTower.algebraMap_apply ℂ F L]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `add f g _ _ ihf ihg`. Take `⟨c, hb, h⟩` from `ihf`. Take `⟨c', hb', h'⟩` from `ihg`. Use `⟨c + c', by rw [map_add]; exact Subalgebra.add_mem _ hb hb', ?_⟩` and prove the remaining obligations. Use `Ideal.add_mem _ h h' using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [map_add, Subalgebra.coe_sub, Subalgebra.coe_add, Subalgebra.coe_algebraMap]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul f g _ _ ihf ihg`. Take `⟨c, hb, h⟩` from `ihf`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c', hb', h'⟩` from `ihg`. Use `⟨c * c', by rw [map_mul]; exact Subalgebra.mul_mem _ hb hb', ?_⟩` and prove the remaining obligations. Use `Ideal.add_mem _ (Ideal.mul_mem_right (⟨_, hb'⟩ : rB ℂ L (xv x) {0}) _ h) (Ideal.mul_mem_left _ (algebraMap ℂ (rB ℂ L (xv x) {0}) c) h') using 1` and compare the differences between its conclusion and the goal. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [map_mul, Subalgebra.coe_sub, Subalgebra.coe_add, Subalgebra.coe_mul, Subalgebra.coe_algebraMap]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem exists_const_sub_mem_span_tco_of_mem_rA {F L : Type} [Field F] [Field L] [Algebra ℂ F] [Algebra ℂ L] [Algebra F L]
     [IsScalarTower ℂ F L] (d : ℕ) (x : Fin (d + 1) → Fˣ) (f : F) (hf : f ∈ rA ℂ (xv x) {0}) :
@@ -92,17 +90,15 @@ private theorem exists_const_sub_mem_span_tco_of_mem_rA {F L : Type} [Field F] [
     ring
 
 /- English proof (translation)
-Establish `hfin` using `(GlobalTheory.T.finite_cover_chart_smooth_normal ℂ F L d (xv x) hc {0} (Finset.singleton_nonempty 0)).1`. Take `⟨s, hs⟩` from `hfin.fg_top`. Use `⟨⟨s.image (fun z => Ideal.Quotient.mk _ (⟨z.1, z.2⟩ : rB ℂ L (xv x) {0})), ?_⟩⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce and unpack `q -`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Establish `hy : (⟨y.1, y.2⟩ : integralClosure (rA ℂ (xv x) {0}) L) ∈ Submodule.span (rA ℂ (xv x) {0}) (s : Set (integralClosure (rA ℂ (xv x) {0}) L))`. Rewrite using `[hs]`. Discharge the goal by the elementary cases of `trivial`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (⟨(⟨y.1, y.2⟩ : integralClosure (rA ℂ (xv x) {0}) L).1, (⟨y.1, y.2⟩ : integralClosure (rA ℂ (xv x) {0}) L).2⟩ : rB ℂ L (xv x) {0}) ∈ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Express the relevant assertion in an equivalent form by its definition.
 
-Generalize the expression as in `(⟨y.1, y.2⟩ : integralClosure (rA ℂ (xv x) {0}) L) = z at hy ⊢`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem w hw => exact Submodule.subset_span (Finset.mem_coe.mpr (Finset.mem_image_of_mem _ hw))`. Consider the case `zero`. Use `Submodule.zero_mem _ using 1` and compare the differences between its conclusion and the goal.
+Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Conclude with `map_zero (Ideal.Quotient.mk _)`. Consider the case `add u w _ _ hu hw`. Use `Submodule.add_mem _ hu hw using 1` and compare the differences between its conclusion and the goal. Conclude with `map_add (Ideal.Quotient.mk _) _ _`. Consider the case `smul r u _ hu`.
+Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hb, hc'⟩` from `exists_const_sub_mem_span_tco_of_mem_rA (L := L) d x r.1 r.2`. Establish `e : (⟨((r • u : integralClosure (rA ℂ (xv x) {0}) L) : L), (r • u).2⟩ : rB ℂ L (xv x) {0}) = ⟨_, hb⟩ * ⟨u.1, u.2⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[Algebra.smul_def]`. Conclude with `Or.inl rfl`.
-
-Rewrite using `[e, map_mul, Ideal.Quotient.eq.mpr hc', Ideal.Quotient.mk_algebraMap, ← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ c hu`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Prove the first alternative. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma fin_quot {F L : Type} [Field F] [Field L] [Algebra ℂ F] [Algebra ℂ L] [Algebra F L]
     [IsScalarTower ℂ F L] (d : ℕ) (x : Fin (d + 1) → Fˣ) (hc : IsFinCover ℂ L (xv x)) :
@@ -141,21 +137,19 @@ private lemma fin_quot {F L : Type} [Field F] [Field L] [Algebra ℂ F] [Algebra
     exact Submodule.smul_mem _ c hu
 
 /- English proof (translation)
-Introduce `_ F L _ _ _ _ _ _ d x hc hred e v hv`. Take `⟨b, hb, hbv, heb, hev⟩` from `hv`. Rewrite `hev` using `[mul_zero]`. Use `haveI : Module.Finite ℂ ((rB ℂ L (xv x) {0}) ⧸ (Ideal.span (Set.range fun j : Fin d => (⟨_, tco_mem ℂ L (xv x) j⟩ : rB ℂ L (xv x) {0})))) := fin_quot d x hc`. Use `haveI : IsArtinianRing ((rB ℂ L (xv x) {0}) ⧸ (Ideal.span (Set.range fun j : Fin d => (⟨_, tco_mem ℂ L (xv x) j⟩ : rB ℂ L (xv x) {0})))) := IsArtinianRing.of_finite ℂ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsReduced ((rB ℂ L (xv x) {0}) ⧸ (Ideal.span (Set.range fun j : Fin d => (⟨_, tco_mem ℂ L (xv x) j⟩ : rB ℂ L (xv x) {0})))) := hred`. Take `⟨zq, hz⟩` from `red_art (Ideal.Quotient.mk (Ideal.span (Set.range fun j : Fin d => (⟨_, tco_mem ℂ L (xv x) j⟩ : rB ℂ L (xv x) {0}))) ⟨b * v, hbv⟩)`. Take `⟨z, rfl⟩` from `Ideal.Quotient.mk_surjective zq`. Establish `hmem : (⟨b * v, hbv⟩ : rB ℂ L (xv x) {0}) * (1 - ⟨b * v, hbv⟩ * z) ∈ Ideal.span (Set.range fun j : Fin d => (⟨_, tco_mem ℂ L (xv x) j⟩ : rB ℂ L (xv x) {0}))`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_mul, map_sub, map_one, map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hz`. Take `⟨c, hcsum⟩` from `Ideal.mem_span_range_iff_exists_fun.mp hmem`. Establish `he1 : e.1 (1 - ⟨b * v, hbv⟩ * z) = 1`. Rewrite using `[map_sub, map_one, map_mul]`. Express the relevant statement in the definitionally equal form `1 - e.1 ⟨b * v, hbv⟩ * e.1 z = 1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hev, zero_mul, sub_zero]`. Establish `hes : e.1 (⟨b, hb⟩ * (1 - ⟨b * v, hbv⟩ * z)) ≠ 0`. Rewrite using `[map_mul, he1, mul_one]`. Conclude with `heb`. Establish `hs0 : ((⟨b, hb⟩ * (1 - ⟨b * v, hbv⟩ * z) : rB ℂ L (xv x) {0}) : L) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Apply `hes` to reduce the goal to its premises. Rewrite using `[show (⟨b, hb⟩ * (1 - ⟨b * v, hbv⟩ * z) : rB ℂ L (xv x) {0}) = 0 from Subtype.ext h, map_zero]`. Establish `key : ((⟨b, hb⟩ * (1 - ⟨b * v, hbv⟩ * z) : rB ℂ L (xv x) {0}) : L) * v = ∑ l, (c l : L) * tt L x l`. Establish `h1 : (((⟨b * v, hbv⟩ : rB ℂ L (xv x) {0}) * (1 - ⟨b * v, hbv⟩ * z) : rB ℂ L (xv x) {0}) : L) = ∑ l, (c l : L) * tt L x l`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← hcsum]`. Simplify using `[tt]`. Rewrite using `[← h1]`. Simplify using `only [Subalgebra.coe_mul, Subalgebra.coe_sub, Subalgebra.coe_one]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun l => (c l : L) * ((⟨b, hb⟩ * (1 - ⟨b * v, hbv⟩ * z) : rB ℂ L (xv x) {0}) : L)⁻¹, fun l => ⟨⟨b, hb⟩ * (1 - ⟨b * v, hbv⟩ * z), hes, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm, mul_assoc, inv_mul_cancel₀ hs0, mul_one]`. Conclude with `(c l).2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, inv_mul_cancel₀ hs0, one_mul]`.
-
-Use `_ = _ := by`. Rewrite using `[key, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => by ring`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.productCup_of_system.locMax_of :
     ValBasic → LocMax := by

@@ -24,7 +24,7 @@ namespace GlobalTheory.VacIso
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, map_add, hx, hy]`. Consider the case `tmul a e => rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem piW_cA {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F} (t : E →ₐ[F] Fv F v) (x : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E) :
@@ -35,9 +35,9 @@ theorem piW_cA {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] 
   | tmul a e => rfl
 
 /- English proof (translation)
-Establish `hc : compFin F E v z = 0` using `GlobalTheory.AdelicU.split_ext h τ (by rw [map_zero]; exact h1) (by rw [map_zero]; exact h2)`. Establish `e` using `hz (1 - GlobalTheory.LatVac.liftV v 1) (by rw [map_sub, map_one, GlobalTheory.LatVac.evFin_liftV, sub_self])`. Rewrite `e` using `[sub_smul, one_smul, sub_eq_zero]`. Rewrite using `[e, Algebra.smul_def, Algebra.TensorProduct.algebraMap_apply]`. Express the relevant statement in the definitionally equal form `GlobalTheory.EmbChart.tensAt E v ((1 : Fv F v) ⊗ₜ[F] (1 : E)) * z = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[GlobalTheory.EmbChart.tensAt_mul_right, hc, mul_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_zero_of_at_split {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F} (τ : E →ₐ[F] Fv F v)
@@ -51,17 +51,15 @@ theorem eq_zero_of_at_split {F E : Type} [Field F] [NumberField F] [Field E] [Nu
   rw [GlobalTheory.EmbChart.tensAt_mul_right, hc, mul_zero, map_zero]
 
 /- English proof (translation)
-Introduce `D a a' Bs Γ X om om' hTr u hu hpi ξ`. Establish `hcm : IsCMExt D.host.F D.host.E D.sp.cm.sig` using `hTr.base.cm`. Use `set z := GlobalTheory.WeilM.hTens (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F Γ.V'.J) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F Γ.W.J) u u with hzde …`. Establish `hat : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (evFin D.host.F Bs.v₁) z`. Introduce `c hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hij : ∀ i j, c • u i j = 0` using `fun i j => by`. Use `congrFun (congrFun (hu c hc) i) j` as an intermediate fact. Simplify using `using this`. Simplify using `only [hzdef, GlobalTheory.WeilM.hTens, Finset.smul_sum, ← smul_mul_assoc, hij, zero_mul, Finset.sum_const_zero]`. Establish `first : ∀ t : D.host.E →ₐ[D.host.F] Fv D.host.F Bs.v₁, (∀ i j, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piW t (u i j) = 0) → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piW t z = 0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t ht`. Simplify using `only [hzdef, GlobalTheory.WeilM.hTens, map_sum, map_mul, ht, zero_mul, Finset.sum_const_zero]`. Establish `last : ∀ t : D.host.E →ₐ[D.host.F] Fv D.host.F Bs.v₁, (∀ i j, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piW (t.comp D.sp.cm.sig) (u i j) = 0) → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piW t z = 0`. Introduce `t ht`. Simplify using `only [hzdef, GlobalTheory.WeilM.hTens, map_sum, map_mul, GlobalTheory.VacIso.piW_cA, ht, mul_zero, Finset.sum_const_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hz0 : z = 0`. Break down `hpi with h0 | h0` into its components or cases. Establish `h0' : ∀ i j, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piW Bs.τ₁ (u i j) = 0` using `fun i j => by`. Simplify using `using congrFun (congrFun h0 i) j`. Use `GlobalTheory.VacIso.eq_zero_of_at_split hcm Bs.τ₁ hat (first _ h0') (last _ ?_)` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.AdelicU.comp_conj_conj hcm]`. Conclude with `h0'`. Establish `h0' : ∀ i j, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piW (Bs.τ₁.comp D.sp.cm.sig) (u i j) = 0` using `fun i j => by`. Simplify using `using congrFun (congrFun h0 i) j`. Conclude with `GlobalTheory.VacIso.eq_zero_of_at_split hcm Bs.τ₁ hat (last _ h0') (first _ h0')`.
-
-Simplify using `only [GlobalTheory.WeilM.symp, ← hzdef, hz0, mul_zero, map_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem symp_self_eq_zero : ∀ {D : D7} {a a' : ℕ} (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo D.sp.cm.sig a a')
     (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars D.host.F D.host.E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep D.sp.cm.sig Γ.V Γ.W)

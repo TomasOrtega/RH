@@ -19,7 +19,7 @@ open Set
 variable {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {σ : k →+* ℂ} {d : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `b`. Simplify using `only [AlgChart.dtrans, Pi.smul_apply]`. Rewrite using `[show WithLp.toLp 2 (t • v) = t • WithLp.toLp 2 v from rfl, ContinuousLinearMap.map_smul_of_tower]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dtrans_smul_real (c c' : AlgChart p σ d) (y : CxPts p σ) (t : ℝ) (v : Fin d → ℂ) :
     c.dtrans c' y (t • v) = t • c.dtrans c' y v := by
@@ -29,7 +29,7 @@ theorem dtrans_smul_real (c c' : AlgChart p σ d) (y : CxPts p σ) (t : ℝ) (v 
   rfl
 
 /- English proof (translation)
-Establish `h` using `(continuous_and_smul ha hy).2 0 0`. Simplify using `only [smul_zero, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, zero_mul] at h`. Rewrite using `[h]`. Conclude with `hε`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_zero_lt {R : AnRead p σ d} {a : ChartForm p σ d} (ha : IsKaehlerForm R a) {c : AlgChart p σ d}
     {y : CxPts p σ} (hy : y ∈ c.e.source) {ε : ℝ} (hε : 0 < ε) : a c y 0 < ε := by
@@ -39,9 +39,9 @@ theorem form_zero_lt {R : AnRead p σ d} {a : ChartForm p σ d} (ha : IsKaehlerF
   exact hε
 
 /- English proof (translation)
-Establish `h` using `hE.cont c (c.e y) (c.e.map_source hy) (by rwa [c.e.left_inv hy]) 0 (by rw [c.e.left_inv hy, WithLp.ofLp_zero]; exact form_zero_lt ha hy hε)`. Establish `hl : ContinuousAt (fun t : ℝ => (c.e y, t • ξ)) 0` using `by fun_prop`. Use `h.comp_of_eq hl (by simp)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Function.comp_apply, c.e.left_inv hy]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem continuousAt_line {R : AnRead p σ d} {a : ChartForm p σ d} (ha : IsKaehlerForm R a) {E : ChartMap p σ d}
     {W : Set (CxPts p σ)} {ε : ℝ} (hε : 0 < ε) (hE : IsExphOn a E W ε) (c : AlgChart p σ d) {y : CxPts p σ}
@@ -57,9 +57,9 @@ theorem continuousAt_line {R : AnRead p σ d} {a : ChartForm p σ d} (ha : IsKae
   rfl
 
 /- English proof (translation)
-Establish `h` using `hE.smooth c c (c.e y) (c.e.map_source hy) (by rwa [c.e.left_inv hy]) 0 (by rw [c.e.left_inv hy, WithLp.ofLp_zero]; exact form_zero_lt ha hy hε) (by rw [c.e.left_inv hy, WithLp.ofLp_zero, hE.zero c y hy hW]; exact hy)`. Establish `hl : ContDiffAt ℝ ∞ (fun t : ℝ => (c.e y, t • WithLp.toLp 2 η)) 0` using `by fun_prop`. Establish `e0 : ((c.e y, (0 : ℝ) • WithLp.toLp 2 η) : ReciprocityTheory.L2DbarEstimates.V d × ReciprocityTheory.L2DbarEstimates.V d) = (c.e y, 0)` using `by simp`. Rewrite `h` using `[← e0]`. Use `h.comp (0 : ℝ) hl` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `t`. Simplify using `only [Function.comp_apply, c.e.left_inv hy]`. Both sides reduce to the same expression.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem contDiffAt_line {R : AnRead p σ d} {a : ChartForm p σ d} (ha : IsKaehlerForm R a) {E : ChartMap p σ d}
     {W : Set (CxPts p σ)} {ε : ℝ} (hε : 0 < ε) (hE : IsExphOn a E W ε) (c : AlgChart p σ d) {y : CxPts p σ}
@@ -78,33 +78,29 @@ theorem contDiffAt_line {R : AnRead p σ d} {a : ChartForm p σ d} (ha : IsKaehl
   rfl
 
 /- English proof (translation)
-Introduce `k _ Y p σ d R a ha c E E' ρ W W' W₀ O₁ ε ε' hε hε' hE hE' hW₀ hO₁W' hO₁ hρ hW' c₀ y hy hy0 ξ n`. Distinguish the cases in `h0 : ρ y = 0`. Establish `hyW : y ∈ W`. Break down `hy0 with h | h` into its components or cases. Conclude with `hW₀ h`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `absurd (hO₁ y h) (by rw [h0]; exact zero_ne_one)`. Establish `e : (fun t : ℝ => c₀.e (glue c ρ E E' c₀ y (t • ξ.ofLp))) = fun t => c₀.e (E c₀ y (t • ξ.ofLp))`. Use function extensionality and compare the values at `t`. Simplify using `only [glue]`. Rewrite using `[if_pos h0]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[e]`. Conclude with `hE.jets c₀ y hy hyW ξ n`. Distinguish the cases in `h1 : y ∈ O₁`. Establish `hyW' : y ∈ W'` using `hρ y h0`. Establish `hcont` using `continuousAt_line ha hε' hE' c₀ hy hyW' ξ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hval : E' c₀ y ((0 : ℝ) • ξ.ofLp) = y` using `by rw [zero_smul]; exact hE'.zero c₀ y hy hyW'`. Establish `hev : ∀ᶠ t in 𝓝 (0 : ℝ), E' c₀ y (t • ξ.ofLp) ∈ c.e.source` using `hcont.preimage_mem_nhds (by rw [hval]; exact c.e.open_source.mem_nhds (hW' hyW'))`. Establish `e : (fun t : ℝ => c₀.e (glue c ρ E E' c₀ y (t • ξ.ofLp))) =ᶠ[𝓝 0] fun t => c₀.e (E' c₀ y (t • ξ.ofLp))` using `by filter_upwards [hev] with t ht`. Simplify using `only [glue]`. Rewrite using `[if_neg h0, hO₁ y h1, sub_self, zero_smul, zero_add, one_smul, c.e.left_inv ht]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e.iteratedDeriv_eq n]`. Conclude with `hE'.jets c₀ y hy hyW' ξ n`. Establish `hyW : y ∈ W` using `hW₀ (hy0.resolve_right h1)`. Establish `hyW' : y ∈ W'` using `hρ y h0`. Establish `hyc : y ∈ c.e.source` using `hW' hyW'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set η := c₀.dtrans c y ξ.ofLp with hη`. Establish `hEt : ∀ t : ℝ, E c₀ y (t • ξ.ofLp) = E c y (t • η)` using `fun t => by`. Rewrite using `[hE.trans c₀ c y hy hyc, dtrans_smul_real]`. Establish `hE't : ∀ t : ℝ, E' c₀ y (t • ξ.ofLp) = E' c y (t • η)` using `fun t => by`. Rewrite using `[hE'.trans c₀ c y hy hyc, dtrans_smul_real]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `set f : ℝ → ReciprocityTheory.L2DbarEstimates.V d := fun t => c.e (E c y (t • η)) with hfd`. Use `set g : ℝ → ReciprocityTheory.L2DbarEstimates.V d := fun t => c.e (E' c y (t • η)) with hgd`. Establish `hf : ContDiffAt ℝ ∞ f 0` using `contDiffAt_line ha hε hE c hyc hyW η`. Establish `hg : ContDiffAt ℝ ∞ g 0` using `contDiffAt_line ha hε' hE' c hyc hyW' η`. Use `set u : ℝ → CxPts p σ := fun t => glue c ρ E E' c₀ y (t • ξ.ofLp) with hud`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hu : ∀ t, u t = c.e.symm ((1 - ρ y) • f t + ρ y • g t)` using `fun t => by`. Simplify using `only [hud, glue]`. Rewrite using `[if_neg h0, hEt, hE't]`. Establish `hcomb : ContDiffAt ℝ ∞ (fun t => (1 - ρ y) • f t + ρ y • g t) 0` using `(hf.const_smul _).add (hg.const_smul _)`. Establish `hc0 : (1 - ρ y) • f 0 + ρ y • g 0 = c.e y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hfd, hgd, zero_smul, hE.zero c y hyc hyW, hE'.zero c y hyc hyW']`. Rewrite using `[← add_smul, sub_add_cancel, one_smul]`. Establish `hev : ∀ᶠ t in 𝓝 (0 : ℝ), (1 - ρ y) • f t + ρ y • g t ∈ c.e.target` using `hcomb.continuousAt.preimage_mem_nhds (by rw [hc0]; exact c.e.open_target.mem_nhds (c.e.map_source hyc))`. Establish `hcu : (fun t => c.e (u t)) =ᶠ[𝓝 0] fun t => (1 - ρ y) • f t + ρ y • g t` using `by filter_upwards [hev] with t ht`. Rewrite using `[hu, c.e.right_inv ht]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hu0 : u 0 = y` using `by rw [hu, hc0, c.e.left_inv hyc]`. Establish `hucont : ContinuousAt u 0`. Establish `hs : ContinuousAt c.e.symm ((1 - ρ y) • f 0 + ρ y • g 0)`. Rewrite using `[hc0]`. Conclude with `c.e.continuousAt_symm (c.e.map_source hyc)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hs.comp (x := (0 : ℝ)) hcomb.continuousAt` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `t`. Conclude with `hu t`. Establish `hjc : ∀ m : ℕ, iteratedDeriv m (fun t => c.e (u t)) 0 = jet (matIn a c) m (c.e (u 0), WithLp.toLp 2 η)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `m`. Establish `hm : ((m : ℕ) : WithTop ℕ∞) ≤ ∞` using `by exact_mod_cast le_top`. Rewrite using `[hcu.iteratedDeriv_eq m, iteratedDeriv_fun_add ((hf.const_smul _).of_le hm) ((hg.const_smul _).of_le hm), iteratedDeriv_fun_const_smul_field, iteratedDeriv_fun_const_smul_field, hu0]`. Establish `j1` using `hE.jets c y hyc hyW (WithLp.toLp 2 η) m`. Establish `j2` using `hE'.jets c y hyc hyW' (WithLp.toLp 2 η) m`.
-
-Rewrite using `[hfd, hgd]`. Simplify using `only [WithLp.ofLp_toLp] at j1 j2`. Rewrite using `[j1, j2, ← add_smul, sub_add_cancel, one_smul]`. Establish `key` using `GlobalTheory.ChernReg.ExphOn.iteratedDeriv_chart_trans k Y p σ d R a ha c c₀ u (WithLp.toLp 2 η) (hu0 ▸ hyc) (hu0 ▸ hy) hucont (hcomb.congr_of_eventuallyEq hcu) hjc n`. Rewrite `key` using `[hu0]`.
-
-Simplify using `only [WithLp.ofLp_toLp] at key`. Rewrite `key` using `[hη, dtrans_dtrans c₀ c c₀ hy hyc hy, dtrans_self c₀ hy, WithLp.toLp_ofLp]`. Conclude with `key`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glue_jets : ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) (p : Y ⟶ Sp k) (σ : k →+* ℂ) (d : ℕ) (R : AnRead p σ d) (a : ChartForm p σ d), IsKaehlerForm R a → ∀ (c : AlgChart p σ d) (E E' : ChartMap p σ d) (ρ : CxPts p σ → ℝ) (W W' W₀ O₁ : Set (CxPts p σ)) (ε ε' : ℝ), 0 < ε → 0 < ε' → ExphOn.IsExphOn a E W ε → ExphOn.IsExphOn a E' W' ε' → W₀ ⊆ W → O₁ ⊆ W' → (∀ y ∈ O₁, ρ y = 1) → (∀ y, ρ y ≠ 0 → y ∈ W') → W' ⊆ c.e.source → ∀ c₀ : AlgChart p σ d, ∀ y ∈ c₀.e.source, y ∈ W₀ ∪ O₁ → ∀ (ξ : ReciprocityTheory.L2DbarEstimates.V d) (n : ℕ), iteratedDeriv n (fun t : ℝ => c₀.e (ExphOn.glue c ρ E E' c₀ y (t • ξ.ofLp))) 0 = jet (matIn a c₀) n (c₀.e y, ξ) := by
   intro k _ Y p σ d R a ha c E E' ρ W W' W₀ O₁ ε ε' hε hε' hE hE' hW₀ hO₁W' hO₁ hρ hW' c₀ y hy hy0 ξ n

@@ -24,53 +24,47 @@ variable [IsDomain O] [NeZero n]
 variable {W}
 
 /- English proof (translation)
-Use `set a : ZMod n := c' + (e : ZMod n) with hadef`. Establish `ha' : c' + ((e + 1 : ℕ) : ZMod n) = a + 1` using `by rw [hadef]; push_cast; ring`. Use `set a' : ZMod n := c' + ((e + 1 : ℕ) : ZMod n) with ha'def`. Use `set H : ℕ := A.Hs a' (e + 1) 0 with hHdef`. Use `set U : LetA O n := LamUp W A c' e with hUdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set Λ' : LetA O n := abelian₂ W A a' (e + 1) with hΛ'def`. Establish `hUΔ : U ∈ W.AΔ` using `Formalism.MainNotions.UnusedSlot80.ToolsR.φ_AΔ (Formalism.MainNotions.UnusedSlot80.ArcC.lam_mem_AΔ W C.hR.1 A _ e)`. Establish `hp0Δ : ps W 0 ∈ W.AΔ` using `ps_mem_AΔ W C.hR.1 0`. Establish `hS'` using `hS`. Take `⟨I, g, c₀, α, hg, hF⟩` from `hS`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set N : ℕ := H + ∑ i, (-(α i 0)).toNat with hNdef`. Take `⟨m₀, u₀, hu₀, u₁, hu₁, hl, ⟨r₀, hr₀, hu₀e⟩, ⟨s₁, hs₁, hu₁e⟩⟩` from `crt W (W.AΔ.mul_mem C.hR.1 (W.AΔ.pow_mem hUΔ 2)) (W.AΔ.pow_mem hp0Δ N) (cop_lamUp W C.hR C.hp0 A c' e N)`. Establish `hx0 : InFNc W T a' 1 (u₀ • x)`. Establish `hz : InFP W T c' (e + 1) 1 (Λ' • (u₀ • x))`. Rewrite using `[smul_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Formalism.MainNotions.UnusedSlot80.Relay2.inMultiple_smul W T c' (e + 1) _ hu₀ hxP`. Establish `hrep0` using `repVV_smul W T c' (e + 1) _ _ b sol _ f hu₀ hrep`. Rewrite `hrep0` using `[smul_comm]`. Establish `hfr0 : ∀ m, InFr W a' (W.π₀ * U) (ps W 0 ^ H) (algebraMap (LetA O n) W.EE u₀ * f m)`. Introduce `m`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t, ht, hft⟩` from `hfr m`. Use `⟨r₀ * t, W.AΔ.mul_mem hr₀ ht, ?_⟩` and prove the remaining obligations. Rewrite `hft` using `[hΛ'def, lam_succ]`. Rewrite using `[hu₀e]`. Simplify using `only [map_mul, map_pow, map_one] at hft ⊢`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Take the linear combination `(algebraMap (LetA O n) W.EE W.π₀ * algebraMap (LetA O n) W.EE U * algebraMap (LetA O n) W.EE r₀) * hft`. Use `(h0 (u₀ • x) k _ hz hrep0 hfr0).2 ⟨κ, ?_⟩` and prove the remaining obligations. Use `secIn_mulA W hS' hu₀` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `m`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hMH : Mw A.G₀ A.S A.η (A.ty (a + 1)) ≤ H`. Use `Formalism.MainNotions.UnusedSlot80.ArcC.hs_ge A hA c' hc' (e + 1) (e + 1) (by omega) le_rfl` as an intermediate fact. Rewrite `this` using `[Nat.sub_self, ← ha'def, ha']`. Rewrite using `[hHdef, ha']`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Conclude with `this`. Establish `key : ∀ i, ∃ (t : ℕ) (z : W.DD T), InFNc W T a' 1 z ∧ InFP W T c' (e + 1) 1 (Λ' • z) ∧ RepVV W T c' (e + 1) (A.M PD.p) Λ' b sol z (fun m => lE W t * (algebraMap (LetA O n) W.EE u₁ * (g i * algebraMap O W.EE (c₀ i m))))`. Introduce `i`. Distinguish the cases in `hci : c₀ i = 0`. Use `⟨0, 0, inFNc_zero T a', by rw [smul_zero]; exact Formalism.MainNotions.UnusedSlot80.Relay2.inMultiple_zero W T c' (e + 1) _, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `repVV_zero C A c' (e + 1) T hT.1 b sol hb Λ' using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `m`. Simplify using `[hci]`. Establish `hα : ∀ s, s < e → -(A.Hs a e s : ℤ) ≤ α i (s + 1)`. Introduce `s hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Apply `hci` to reduce the goal to its premises. Establish `hcond` using `(hg i).2 (s + 1) (by omega)`. Establish `hH1 : A.Hs a' (e + 1) (s + 1) = A.Hs a e s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hs_succ, ha', add_sub_cancel_right]`. Use `dvO_zero_high W C.hbij C.hinj C.hV C.hs C.h5 A hA c' hc' T hT (C.h3 T hT.1) (C.hmod T hT.1) b hb.1 (e + 1) (s + 1) (by omega) (-(α i (s + 1))) ?_ (c₀ i) hcond` and prove the remaining obligations. Rewrite using `[hH1]`. Use linear arithmetic over natural numbers and integers. Establish `hgi : InId W (a + 1) (e + 1) (α i) (g i)` using `by rw [← ha']; exact (hg i).1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hNi : H + (-(α i 0)).toNat ≤ N`. Use `Finset.single_le_sum (f := fun j => (-(α j 0)).toNat) (fun j _ => Nat.zero_le _) (Finset.mem_univ i)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨vv, hvv, g', heq, hId, hFr⟩` from `mono_lift W C.hR A a e (α i) (g i) hgi hα N H hNi hs₁`. Establish `hcondE : condNN W T a e b (fun s => α i (s + 1)) (c₀ i)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Introduce `s hs`. Establish `h1` using `(hg i).2 (s + 1) (by omega)`. Rewrite `h1` using `[ha', filS_succ, dvO_succ]`. Take `⟨y, hy, hye⟩` from `h1`. Rewrite `hy` using `[Formalism.MainNotions.UnusedSlot80.ArcF.φVB_inj T hye]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `set F : Fin d → W.EE := fun m => g' * algebraMap O W.EE (c₀ i m) with hFdef`. Establish `hFfr : ∀ m, InFr W a 1 (abelian₂ W A a e) (F m)` using `fun m => by`. Use `inFr_mulA W hFr (W.AΔ.algebraMap_mem (c₀ i m))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `show g' * algebraMap O W.EE (c₀ i m) = _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[mul_comm, ← IsScalarTower.algebraMap_apply]`. Take `⟨κi, y, hyP, hyrep⟩` from `pOfSec' W C.hO2 C.hR C.hH C.hCA A c' e (A.M PD.p) T hT.1 b sol hb F hFfr`. Establish `hyN : InFNc W T a 1 y`. Establish `hrepy : RepVV W T c' e (A.M PD.p) (abelian₂ W A (c' + (e : ZMod n)) e) b sol (lA W ^ 0 • y) (fun m => lE W κi * F m)` using `by simpa using hyrep`. Use `(IH y 0 _ hyP hrepy (fun m => Formalism.MainNotions.UnusedSlot80.ArcF.inFr_lE W (hFfr m) κi)).2 ⟨0, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨1, fun _ => lE W κi * g', fun _ => c₀ i, fun _ s => α i (s + 1), fun _ => ⟨Formalism.MainNotions.UnusedSlot80.ArcF.inFr_lE W hId κi, hcondE⟩, fun m => ?_⟩` and prove the remaining obligations. Simplify using `only [Fin.sum_univ_one, hFdef]`. Rewrite using `[show lE W 0 = 1 by simp [lE]]`. Expand and normalize the polynomial expressions, which then agree. Establish `hzN` using `up1 C T A hA hT a H hMH hvv y hyN`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hzP, hzrep, -⟩` from `transport W C.hR C.hp0 T A c' e (A.M PD.p) b sol y (fun m => lE W κi * F m) hyP hyrep (fun m => Formalism.MainNotions.UnusedSlot80.ArcF.inFr_lE W (hFfr m) κi) H le_rfl hvv`. Use `⟨κi, (ps W 0 ^ H * vv) • W.φD T y, by rw [ha']; exact hzN, hzP, ?_⟩` and prove the remaining obligations. Use `hzrep using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `m`. Rewrite using `[hFdef]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul W.φE, φE_lE, AlgHom.commutes]`. Rewrite using `[hu₁e]`. Take the linear combination `(lE W κi * algebraMap O W.EE (c₀ i m)) * heq`. Use `choose t z hzN hzP hzrep using key`. Use `set Tt : ℕ := ∑ i, t i with hTt`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `htle : ∀ i, t i ≤ Tt` using `fun i => Finset.single_le_sum (f := t) (fun j _ => Nat.zero_le _) (Finset.mem_univ i)`. Establish `hZrep : RepVV W T c' (e + 1) (A.M PD.p) Λ' b sol (∑ i, lA W ^ (Tt - t i) • z i) (fun m => lE W (Tt + κ) * (algebraMap (LetA O n) W.EE u₁ * f m))`. Establish `h1` using `repVV_sum C A c' (e + 1) T hT.1 b sol hb Λ' Finset.univ (fun i => lA W ^ (Tt - t i) • z i) (fun i m => lE W (Tt - t i) * (lE W (t i) * (algebraMap (LetA O n) W.EE u₁ * (g i * algebraMap O W.EE (c₀ i m))))) (fun i _ => by`. Use `repVV_smul W T c' (e + 1) _ Λ' b sol _ _ (lA_mem W (Tt - t i)) (hzrep i)` as an intermediate fact. Rewrite using `[← lE_eq] at this)` and apply the resulting hypothesis.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `m`. Simplify using `only [lE_mul]`. Establish `: ∀ i, Tt - t i + t i = Tt` using `fun i => Nat.sub_add_cancel (htle i)`. Simplify using `only [this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Finset.mul_sum, ← Finset.mul_sum, ← hF m]`. Unfold `lE`. Rewrite using `[pow_add]`. Expand and normalize the polynomial expressions, which then agree. Establish `hZN : InFNc W T a' 1 (∑ i, lA W ^ (Tt - t i) • z i)` using `inFNc_sum T a' _ _ fun i _ => inFNc_smul C.hR.1 T a' (lA_mem W _) (hzN i)`.
-
-Establish `hZP : InFP W T c' (e + 1) 1 (Λ' • ∑ i, lA W ^ (Tt - t i) • z i)`. Rewrite using `[Finset.smul_sum]`. Conclude with `Formalism.MainNotions.UnusedSlot80.Relay2.inMultiple_sum W T c' (e + 1) _ _ _ fun i _ => by`. Rewrite using `[smul_comm]`. Conclude with `Formalism.MainNotions.UnusedSlot80.Relay2.inMultiple_smul W T c' (e + 1) _ (lA_mem W _) (hzP i)`.
-
-Establish `hx1P : InFP W T c' (e + 1) 1 (Λ' • (u₁ • x))`. Rewrite using `[smul_comm]`. Conclude with `Formalism.MainNotions.UnusedSlot80.Relay2.inMultiple_smul W T c' (e + 1) _ hu₁ hxP`. Establish `hrep1` using `repVV_smul W T c' (e + 1) _ _ b sol _ f hu₁ hrep`. Rewrite `hrep1` using `[smul_comm]`.
-
-Establish `hx1` using `mem_of_sec_eq C A hA c' hc' T hT b sol hb (e + 1) (u₁ • x) _ k 0 (Tt + κ) _ hx1P hZP hZN hrep1 (by rw [pow_zero, one_smul]; exact hZrep)`. Establish `hsum` using `inFNc_add T a' hx0 hx1`. Rewrite `hsum` using `[← add_smul, ← hl]`. Conclude with `Formalism.MainNotions.UnusedSlot80.ArcC.arc_sat W C.hCA C.hsat C.hR T hT.1 A c' (e + 1) (Formalism.MainNotions.UnusedSlot80.ArcC.arc_up W C.hs C.hR C.h5 A hA c' hc' (e + 1) T hT) x hxP ⟨m₀, hsum⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step_mpr (C : Ctx W) (A : ArcP n) (hA : A.OK) (c' : ZMod n) (hc' : c' ∈ A.cuts)
     (T : LocLat G Qp LL O) (hT : Win W A T) {d : ℕ} (b : Fin d → W.DD T) (sol : Fin d → ℕ → Fin d → LL)
@@ -215,9 +209,9 @@ theorem step_mpr (C : Ctx W) (A : ArcP n) (hA : A.OK) (c' : ZMod n) (hc' : c' �
     (Formalism.MainNotions.UnusedSlot80.ArcC.arc_up W C.hs C.hR C.h5 A hA c' hc' (e + 1) T hT) x hxP ⟨m₀, hsum⟩
 
 /- English proof (translation)
-Introduce `e`. Proceed by induction on `e with`. Consider the case `zero => exact secCrit_zero A c' T b sol`. Consider the case `succ e IH`. Introduce `x k f hxP hrep hfr`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hxN`. Conclude with `(step_mp C A hA c' hc' T hT b sol hb e IH (h0 e) x hxP hxN).2 k f hrep hfr`. Introduce and unpack `⟨κ, hS⟩`. Conclude with `step_mpr C A hA c' hc' T hT b sol hb e IH (h0 e) x k f hxP hrep hfr κ hS`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem secCrit_all (C : Ctx W) (A : ArcP n) (hA : A.OK) (c' : ZMod n) (hc' : c' ∈ A.cuts)
     (T : LocLat G Qp LL O) (hT : Win W A T) {d : ℕ} (b : Fin d → W.DD T) (sol : Fin d → ℕ → Fin d → LL)

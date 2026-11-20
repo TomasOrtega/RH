@@ -3,7 +3,7 @@ import Mathlib
 namespace GlobalTheory.CompanionTheory.BasicCover
 
 /- English proof (translation)
-Consider the cases of `nonempty_fintype J`. Use `choose n hn using h`. Conclude with `⟨∑ j, n j, fun j => mono j _ _ (Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ j)) (hn j)⟩`.
+Split into cases according to the possible forms of the given data. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_uniform_bound {J : Type} [Finite J] (P : J → ℕ → Prop)
     (mono : ∀ j n m, n ≤ m → P j n → P j m) (h : ∀ j, ∃ n, P j n) : ∃ N, ∀ j, P j N := by
@@ -13,7 +13,7 @@ theorem exists_uniform_bound {J : Type} [Finite J] (P : J → ℕ → Prop)
   exact ⟨∑ j, n j, fun j => mono j _ _ (Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ j)) (hn j)⟩
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hnm`. Rewrite using `[pow_add, mul_comm, mul_smul, h, smul_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_smul_eq_zero_mono {R M : Type} [CommRing R] [AddCommGroup M] [Module R M]
     (t : R) (y : M) {n m : ℕ} (hnm : n ≤ m) (h : t ^ n • y = 0) : t ^ m • y = 0 := by
@@ -21,7 +21,7 @@ theorem pow_smul_eq_zero_mono {R M : Type} [CommRing R] [AddCommGroup M] [Module
   rw [pow_add, mul_comm, mul_smul, h, smul_zero]
 
 /- English proof (translation)
-Take `⟨⟨c, hc⟩, hc'⟩` from `IsLocalizedModule.exists_of_eq (S := Submonoid.powers t) (f := φ) (x₁ := y) (x₂ := 0) (by rw [h, map_zero])`. Take `⟨n, rfl⟩` from `(Submonoid.mem_powers_iff _ _).1 hc`. Conclude with `⟨n, by simpa [Submonoid.smul_def] using hc'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_pow_smul_eq_zero {R M M' : Type} [CommRing R] [AddCommGroup M] [Module R M]
     [AddCommGroup M'] [Module R M'] (t : R) (φ : M →ₗ[R] M')
@@ -33,7 +33,7 @@ theorem exists_pow_smul_eq_zero {R M M' : Type} [CommRing R] [AddCommGroup M] [M
   exact ⟨n, by simpa [Submonoid.smul_def] using hc'⟩
 
 /- English proof (translation)
-Take `⟨⟨y, ⟨c, hc⟩⟩, hy⟩` from `IsLocalizedModule.surj (Submonoid.powers t) φ z`. Take `⟨n, rfl⟩` from `(Submonoid.mem_powers_iff _ _).1 hc`. Conclude with `⟨n, y, by simpa [Submonoid.smul_def] using hy⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_pow_smul_eq_map {R M M' : Type} [CommRing R] [AddCommGroup M] [Module R M]
     [AddCommGroup M'] [Module R M'] (t : R) (φ : M →ₗ[R] M')
@@ -44,31 +44,27 @@ theorem exists_pow_smul_eq_map {R M M' : Type} [CommRing R] [AddCommGroup M] [Mo
   exact ⟨n, y, by simpa [Submonoid.smul_def] using hy⟩
 
 /- English proof (translation)
-Introduce `R E _ _ _ J _ f _ F _ _ res ρ _ hcomp hrρ hunit hloc hsep hglue i`. Establish `inj : ∀ (g g' : {g : R // ∃ i, f i ∣ g}) (h : g.1 ∣ g'.1) (t : R), g'.1 = g.1 * t → t ∣ g.1 → ∀ x, res g g' h x = 0 → x = 0`. Introduce `g g' h t ht htd x hx`. Use `hloc g g' h t ht` as an intermediate fact. Take `⟨n, hn⟩` from `GlobalTheory.CompanionTheory.BasicCover.exists_pow_smul_eq_zero t (res g g' h) x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hu : IsUnit (algebraMap R (Module.End R (F g)) (t ^ n))`. Rewrite using `[map_pow]`. Conclude with `(hunit g t htd).pow n`. Apply `((Module.End.isUnit_iff _).1 hu).1` to reduce the goal to its premises. Rewrite using `[Module.algebraMap_end_apply, hn, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun x => ?_, fun z => ?_, fun {x₁ x₂} hx => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `x`. Take `⟨n, rfl⟩` from `(Submonoid.mem_powers_iff _ _).1 hc`. Use `show IsUnit (algebraMap R (Module.End R (F ⟨f i, i, dvd_rfl⟩)) (f i ^ n))`. Rewrite using `[map_pow]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hunit _ (f i) dvd_rfl).pow n`. Establish `Pex : ∀ j, ∃ n, (fun j n => ∃ y : F ⟨f j, j, dvd_rfl⟩, f i ^ n • res ⟨f i, i, dvd_rfl⟩ ⟨f i * f j, i, dvd_mul_right _ _⟩ (dvd_mul_right _ _) z = res ⟨f j, j, dvd_rfl⟩ ⟨f i * f j, i, dvd_mul_right _ _⟩ (dvd_mul_left _ _) y) j n`. Introduce `j`. Use `hloc ⟨f j, j, dvd_rfl⟩ ⟨f i * f j, i, dvd_mul_right _ _⟩ (dvd_mul_left _ _) (f i) (mul_comm _ _)` as an intermediate fact. Conclude with `GlobalTheory.CompanionTheory.BasicCover.exists_pow_smul_eq_map (f i) _ _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Take `⟨N, hN⟩` from `GlobalTheory.CompanionTheory.BasicCover.exists_uniform_bound (fun j n => ∃ y : F ⟨f j, j, dvd_rfl⟩, f i ^ n • res ⟨f i, i, dvd_rfl⟩ ⟨f i * f j, i, dvd_mul_right _ _⟩ (dvd_mul_right _ _) z = res ⟨f j, j, dvd_rfl⟩ ⟨f i * f j, i, dvd_mul_right _ _⟩ (dvd_mul_left _ _) y) (fun j n m h …`. Take `⟨y, hy⟩` from `hex`. Conclude with `⟨f i ^ (m - n) • y, by`. Rewrite using `[map_smul, ← hy, smul_smul, ← pow_add, Nat.sub_add_cancel hnm]⟩) Pex`. Use `choose y hy using hN`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `lift : ∀ j (g'' : {g : R // ∃ i, f i ∣ g}) (h1 : f j ∣ g''.1) (h2 : f i * f j ∣ g''.1) (h3 : f i ∣ g''.1), res ⟨f j, j, dvd_rfl⟩ g'' h1 (y j) = f i ^ N • res ⟨f i, i, dvd_rfl⟩ g'' h3 z`. Introduce `j g'' h1 h2 h3`. Rewrite using `[← hcomp ⟨f j, j, dvd_rfl⟩ ⟨f i * f j, i, dvd_mul_right _ _⟩ g'' (dvd_mul_left _ _) h2 h1 (y j), ← hy j, map_smul, hcomp ⟨f i, i, dvd_rfl⟩ ⟨f i * f j, i, dvd_mul_right _ _⟩ g'' (dvd_mul_right _ _) h2 h3 z]`. Establish `Qex : ∀ p : J × J, ∃ m, f i ^ m • (res ⟨f p.1, p.1, dvd_rfl⟩ ⟨f p.1 * f p.2, p.1, dvd_mul_right _ _⟩ (dvd_mul_right _ _) (y p.1) - res ⟨f p.2, p.2, dvd_rfl⟩ ⟨f p.1 * f p.2, p.1, dvd_mul_right _ _⟩ (dvd_mul_left _ _) (y p.2)) = 0`. Introduce and unpack `⟨j, k⟩`.
+Simplify by unfolding definitions. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only`. Use `hloc ⟨f j * f k, j, dvd_mul_right _ _⟩ ⟨f j * f k * f i, j, dvd_mul_of_dvd_left (dvd_mul_right _ _) _⟩ (dvd_mul_right _ _) (f i) rfl` as an intermediate fact. Apply `GlobalTheory.CompanionTheory.BasicCover.exists_pow_smul_eq_zero (f i) (res ⟨f j * f k, j, dvd_mul_right _ _⟩ ⟨f j * f k * f i, j, dvd_mul_of_dvd_left (dvd_mul_right _ _) _⟩ (dvd_mul_right _ _))` to reduce the goal to its premises. Rewrite using `[map_sub, hcomp ⟨f j, j, dvd_rfl⟩ ⟨f j * f k, j, dvd_mul_right _ _⟩ ⟨f j * f k * f i, j, dvd_mul_of_dvd_left (dvd_mul_right _ _) _⟩ (dvd_mul_right _ _) (dvd_mul_right _ _) (dvd_mul_of_dvd_left (dvd_mul_right _ _) _) (y j), hcomp ⟨f k, k, dvd_rfl⟩ ⟨f j * f k, j, dvd_mul_right _ _⟩ …`. Take `⟨M, hM⟩` from `GlobalTheory.CompanionTheory.BasicCover.exists_uniform_bound (fun (p : J × J) m => f i ^ m • (res ⟨f p.1, p.1, dvd_rfl⟩ ⟨f p.1 * f p.2, p.1, dvd_mul_right _ _⟩ (dvd_mul_right _ _) (y p.1) - res ⟨f p.2, p.2, dvd_rfl⟩ ⟨f p.1 * f p.2, p.1, dvd_mul_right _ _⟩ (dvd_mul_left _ _) (y p. …`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hii : f i ^ N • z = y i`. Apply `sub_eq_zero.1` to reduce the goal to its premises. Apply `inj ⟨f i, i, dvd_rfl⟩ ⟨f i * f i, i, dvd_mul_right _ _⟩ (dvd_mul_right _ _) (f i) rfl dvd_rfl` to reduce the goal to its premises. Rewrite using `[map_sub, map_smul, hy i, sub_self]`. Take `⟨e, he⟩` from `hglue (fun j => f i ^ M • y j) fun j k => by`.
+Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h4` using `hM (j, k)`. Simplify using `only at h4 ⊢`. Rewrite `h4` using `[smul_sub, sub_eq_zero]`. Rewrite using `[map_smul, map_smul]`. Conclude with `h4`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨(e, ⟨f i ^ (M + N), pow_mem (Submonoid.mem_powers _) _⟩), ?_⟩` and prove the remaining obligations. Use `show f i ^ (M + N) • z = ρ ⟨f i, i, dvd_rfl⟩ e`. Rewrite using `[he i]`. Rewrite using `[← hii, smul_smul, ← pow_add]`. Establish `hd : ρ ⟨f i, i, dvd_rfl⟩ (x₁ - x₂) = 0` using `by rw [map_sub, hx, sub_self]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `Rj : ∀ j, ∃ n, f i ^ n • ρ ⟨f j, j, dvd_rfl⟩ (x₁ - x₂) = 0`. Introduce `j`. Use `hloc ⟨f j, j, dvd_rfl⟩ ⟨f i * f j, i, dvd_mul_right _ _⟩ (dvd_mul_left _ _) (f i) (mul_comm _ _)` as an intermediate fact. Apply `GlobalTheory.CompanionTheory.BasicCover.exists_pow_smul_eq_zero (f i) (res ⟨f j, j, dvd_rfl⟩ ⟨f i * f j, i, dvd_mul_right _ _⟩ (dvd_mul_left _ _))` to reduce the goal to its premises. Rewrite using `[hrρ, ← hrρ ⟨f i, i, dvd_rfl⟩ ⟨f i * f j, i, dvd_mul_right _ _⟩ (dvd_mul_right _ _), hd, map_zero]`.
-
-Take `⟨N, hN⟩` from `GlobalTheory.CompanionTheory.BasicCover.exists_uniform_bound (fun j n => f i ^ n • ρ ⟨f j, j, dvd_rfl⟩ (x₁ - x₂) = 0) (fun j n m hnm hn => GlobalTheory.CompanionTheory.BasicCover.pow_smul_eq_zero_mono _ _ hnm hn) Rj`. Establish `h0 : f i ^ N • (x₁ - x₂) = 0` using `hsep _ fun j => by rw [map_smul]; exact hN j`. Use `⟨⟨f i ^ N, pow_mem (Submonoid.mem_powers _) N⟩, ?_⟩` and prove the remaining obligations. Use `show f i ^ N • x₁ = f i ^ N • x₂`. Rewrite using `[← sub_eq_zero, ← smul_sub]`.
-
-Conclude with `h0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocalizedModule_of_basic_cover : ∀ (R E : Type) [CommRing R] [AddCommGroup E] [Module R E] (J : Type) [Finite J] (f : J → R), Ideal.span (Set.range f) = ⊤ →
   ∀ (F : {g : R // ∃ i, f i ∣ g} → Type) [∀ g, AddCommGroup (F g)] [∀ g, Module R (F g)]

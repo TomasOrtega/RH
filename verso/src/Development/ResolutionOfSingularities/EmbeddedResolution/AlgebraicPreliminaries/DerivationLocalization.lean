@@ -12,11 +12,11 @@ variable [IsScalarTower R S N] [IsScalarTower S S' N] [IsScalarTower R S' N]
 namespace Derivation
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `IsLocalization.map_units (M := M) S' y`. Establish `hcomm : ∀ (s : S) (c : S') (n : N), c • s • n = s • c • n`. Introduce `s c n`. Rewrite using `[← IsScalarTower.algebraMap_smul S' s n, ← IsScalarTower.algebraMap_smul S' s (c • n), smul_smul, smul_smul, mul_comm]`. Establish `h1 : ∀ n : N, (y : S) • (((u⁻¹ : S'ˣ) : S') • n) = n`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `n`. Rewrite using `[← IsScalarTower.algebraMap_smul S' (y : S) (((u⁻¹ : S'ˣ) : S') • n), ← hu, smul_smul, u.mul_inv, one_smul]`. Establish `h2 : ∀ n : N, ((u⁻¹ : S'ˣ) : S') • ((y : S) • n) = n`. Introduce `n`. Rewrite using `[← IsScalarTower.algebraMap_smul S' (y : S) n, ← hu, smul_smul, u.inv_mul, one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨⟨(algebraMap S (Module.End S N)) (y : S), { toFun := fun n => ((u⁻¹ : S'ˣ) : S') • n map_add' := fun a b => smul_add _ _ _ map_smul' := fun s n => hcomm s ((u⁻¹ : S'ˣ) : S') n }, LinearMap.ext fun n => h1 n, LinearMap.ext fun n => h2 n⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 private theorem isUnit_algebraMap_moduleEnd (M : Submonoid S) [IsLocalization M S'] (y : M) :
     IsUnit ((algebraMap S (Module.End S N)) (y : S)) := by
@@ -39,9 +39,9 @@ private theorem isUnit_algebraMap_moduleEnd (M : Submonoid S) [IsLocalization M 
     LinearMap.ext fun n => h1 n, LinearMap.ext fun n => h2 n⟩, rfl⟩
 
 /- English proof (translation)
-Establish `hu : ∀ y : M, IsUnit ((algebraMap S (Module.End S N)) (y : S))` using `fun y => isUnit_algebraMap_moduleEnd (S' := S') M y`. Establish `: IsLocalizedModule M (KaehlerDifferential.map R R S S')` using `inferInstance`. Use `⟨(LinearMap.extendScalarsOfIsLocalization M S' (IsLocalizedModule.lift M (KaehlerDifferential.map R R S S') D.liftKaehlerDifferential hu)).compDer (KaehlerDifferential.D R S'), fun s => ?_⟩` and prove the remaining obligations. Use `show IsLocalizedModule.lift M (KaehlerDifferential.map R R S S') D.liftKaehlerDifferential hu (KaehlerDifferential.D R S' (algebraMap S S' s)) = D s`. Establish `key : IsLocalizedModule.lift M (KaehlerDifferential.map R R S S') D.liftKaehlerDifferential hu (KaehlerDifferential.map R R S S' (KaehlerDifferential.D R S s)) = D.liftKaehlerDifferential (KaehlerDifferential.D R S s)` using `LinearMap.congr_fun (IsLocalizedModule.lift_comp M (KaehlerDifferential.map R R S S') D.liftKaehlerDifferential hu) (KaehlerDifferential.D R S s)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← KaehlerDifferential.map_D R R S S' s, key]`. Conclude with `D.liftKaehlerDifferential_comp_D s`.
+A detailed English derivation is pending.
 -/
 private theorem exists_liftToLocalization (D : Derivation R S N) (M : Submonoid S)
     [IsLocalization M S'] :
@@ -70,7 +70,7 @@ noncomputable def liftToLocalization (D : Derivation R S N) (M : Submonoid S)
 
 @[simp]
 /- English proof (translation)
-The claim follows from `(exists_liftToLocalization (S' := S') D M).choose_spec s`.
+A detailed English derivation is pending.
 -/
 theorem liftToLocalization_algebraMap (D : Derivation R S N) (M : Submonoid S)
     [IsLocalization M S'] (s : S) :
@@ -78,7 +78,7 @@ theorem liftToLocalization_algebraMap (D : Derivation R S N) (M : Submonoid S)
   (exists_liftToLocalization (S' := S') D M).choose_spec s
 
 /- English proof (translation)
-Take `⟨D', hD'⟩` from `exists_liftToLocalization (S' := S') (N := S') ((Algebra.linearMap S S').compDer D) M`. Conclude with `⟨D', fun s => hD' s⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem exists_mapToLocalization (D : Derivation R S S) (M : Submonoid S)
     [IsLocalization M S'] :
@@ -94,7 +94,7 @@ noncomputable def mapToLocalization (D : Derivation R S S) (M : Submonoid S)
 
 @[simp]
 /- English proof (translation)
-The claim follows from `(exists_mapToLocalization (S' := S') D M).choose_spec s`.
+A detailed English derivation is pending.
 -/
 theorem mapToLocalization_algebraMap (D : Derivation R S S) (M : Submonoid S)
     [IsLocalization M S'] (s : S) :
@@ -102,7 +102,7 @@ theorem mapToLocalization_algebraMap (D : Derivation R S S) (M : Submonoid S)
   (exists_mapToLocalization (S' := S') D M).choose_spec s
 
 /- English proof (translation)
-Take `⟨ψ, m, hψ⟩` from `Module.FinitePresentation.exists_lift_of_isLocalizedModule M (Algebra.linearMap S S') D.liftKaehlerDifferential`. Use `⟨m, LinearMap.compDer ψ (KaehlerDifferential.D R S), fun s => ?_⟩` and prove the remaining obligations. Establish `h1 : algebraMap S S' (ψ (KaehlerDifferential.D R S s)) = (m : S) • D.liftKaehlerDifferential (KaehlerDifferential.D R S s)` using `LinearMap.congr_fun hψ (KaehlerDifferential.D R S s)`. Rewrite `h1` using `[Derivation.liftKaehlerDifferential_comp_D, Algebra.smul_def]`. Conclude with `h1.symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_derivation_mul_eq (M : Submonoid S) [IsLocalization M S']
     [Module.FinitePresentation S (KaehlerDifferential R S)] (D : Derivation R S S') :
@@ -118,7 +118,7 @@ theorem exists_derivation_mul_eq (M : Submonoid S) [IsLocalization M S']
   exact h1.symm
 
 /- English proof (translation)
-Take `⟨m, D₀, h⟩` from `exists_derivation_mul_eq (S' := S') M (D.compAlgebraMap S)`. Conclude with `⟨m, D₀, fun s => h s⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_derivation_mul_eq_of_isLocalization (M : Submonoid S) [IsLocalization M S']
     [Module.FinitePresentation S (KaehlerDifferential R S)] (D : Derivation R S' S') :

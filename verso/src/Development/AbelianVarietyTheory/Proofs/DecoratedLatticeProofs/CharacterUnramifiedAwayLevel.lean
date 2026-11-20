@@ -20,15 +20,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.MuUnrOff
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Yd cX ex W hP t n x h1 h2 hPg hQ`. Establish `hL` using `hP.bot.hyp.2.2.2.1.lev`. Use `GlobalTheory.SeeSaw.LevelTest.charUnramAt_of fun w hw => ?_` and prove the remaining obligations. Take `⟨j, rfl⟩ : ∃ j, n = j + 1` from `⟨n - 1, by omega⟩`. Establish `hj : j < D.R.m` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `show GlobalTheory.LFun.UnrAt ((pk W).toLevCh.mu0 (j + 1) * (pk W).toLevCh.xi t) w`. Use `GlobalTheory.LFun.UnrAt.mul ?_ ?_` and prove the remaining obligations. Use `(GlobalTheory.LFun.unrAt_iff_of_chrEq (hL.mu0 ⟨j, hj⟩) w).2 (((pk W).toLevCh.C.isMu0 ⟨j, hj⟩).unr w fun k hk => ?_)` and prove the remaining obligations. Break down `GlobalTheory.ConjOverQuad.div_or_conj_div D (pk W).toLevCh.C.P k w hk with h | ⟨w', h, hc⟩` into its components or cases. Conclude with `hPg w ((hL.Pg w).2 ⟨k, h⟩) hw`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `hPg w' ((hL.Pg w').2 ⟨k, h⟩) (Eq.trans ?_ hw)` and prove the remaining obligations. Use extensionality with `a`. Use `show algebraMap _ _ a ∈ w'.asIdeal ↔ algebraMap _ _ a ∈ w.asIdeal`. Rewrite using `[hc, Formalism.L2.Col.mem_conjIdeal]`. Establish `: Formalism.L2.Col.cO D.host.E (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) a) = algebraMap _ _ a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Conclude with `(D.sp.cm.fixed _).2 ⟨a, rfl⟩`. Rewrite using `[this]`. Use `(GlobalTheory.LFun.unrAt_iff_of_chrEq (hL.xi t) w).2 ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hu`.
-
-Break down `(hL.Q_ram t w).1 hu with h | ⟨P', hP', hc⟩` into its components or cases. Conclude with `hQ w h hw`. Conclude with `hQ P' hP' ((GlobalTheory.LevelPlaces.under_eq_of_isConjPl hc).trans hw)`.
+Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem mu_charUnramAt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex), PkHyp W → ∀ (t : W.P.T) (n : ℕ) (x : HeightOneSpectrum (𝓞 D.host.F)), 1 ≤ n → n ≤ D.R.m → (∀ PP ∈ (pk W).Pg, PP.under (𝓞 D.host.F) ≠ x) → (∀ PP ∈ (pk W).Q t, PP.under (𝓞 D.host.F) ≠ x) → GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.CharUnramAt D ((pk W).toLevCh.mu t n) x := by
   intro D L hT Gi Gl Kc Yd cX ex W hP t n x h1 h2 hPg hQ

@@ -14,11 +14,11 @@ section Corner
 variable {R S : Type} [CommRing R] [CommRing S]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `p q`. Take `⟨⟨a, i⟩, rfl⟩` from `(stdBlocks n h).surjective p`. Take `⟨⟨b, j⟩, rfl⟩` from `(stdBlocks n h).surjective q`. Distinguish the cases in `hab : a = b`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Substitute `hab` using the available equality. Rewrite using `[leviEmb_apply_same]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[GlobalTheory.IwasawaAdelic.cornerGL_entry_same, GlobalTheory.IwasawaAdelic.cornerGL_entry_same, leviEmb_apply_same]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : stdBlocks n h ⟨a, i⟩ ≠ stdBlocks n h ⟨a, j⟩` using `fun he => hij (by simpa using (stdBlocks n h).injective he)`. Rewrite using `[GlobalTheory.IwasawaAdelic.cornerGL_entry_ne _ _ hne, GlobalTheory.IwasawaAdelic.cornerGL_entry_ne _ _ hij, leviEmb_apply_same]`. Establish `hne : stdBlocks n h ⟨a, i⟩ ≠ stdBlocks n h ⟨b, j⟩` using `fun he => hab (congrArg Sigma.fst ((stdBlocks n h).injective he))`. Rewrite using `[leviEmb_apply_ne _ _ _ hab, GlobalTheory.IwasawaAdelic.cornerGL_entry_ne _ _ hne, leviEmb_apply_ne _ _ _ hab, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem cc_cornerGL_leviEmb {c N : ℕ} (n : Fin c → ℕ) (h : ∑ i, n i = N) (s : R →ₙ+* S)
     (l : ∀ i, GL (Fin (n i)) R) :
@@ -42,11 +42,11 @@ theorem cc_cornerGL_leviEmb {c N : ℕ} (n : Fin c → ℕ) (h : ∑ i, n i = N)
     rw [leviEmb_apply_ne _ _ _ hab, GlobalTheory.IwasawaAdelic.cornerGL_entry_ne _ _ hne, leviEmb_apply_ne _ _ _ hab, map_zero]
 
 /- English proof (translation)
-Rewrite `hu`, the goal using `[mem_unipRad]`. Take `⟨hP, hD⟩` from `hu`. Use `⟨mem_parab_iff.2 fun a b i j hlt => ?_, fun a i j => ?_⟩` and prove the remaining obligations. Establish `hne : stdBlocks n h ⟨a, i⟩ ≠ stdBlocks n h ⟨b, j⟩` using `fun he => by`. Use `congrArg Sigma.fst ((stdBlocks n h).injective he)` as an intermediate fact.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(ne_of_gt hlt) this`. Rewrite using `[GlobalTheory.IwasawaAdelic.cornerGL_entry_ne _ _ hne, mem_parab_iff.1 hP a b i j hlt, map_zero]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[GlobalTheory.IwasawaAdelic.cornerGL_entry_same, hD a i i]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hne : stdBlocks n h ⟨a, i⟩ ≠ stdBlocks n h ⟨a, j⟩` using `fun he => by`. Conclude with `hij (by simpa using (stdBlocks n h).injective he)`. Rewrite using `[GlobalTheory.IwasawaAdelic.cornerGL_entry_ne _ _ hne, hD a i j, Matrix.one_apply_ne hij, Matrix.one_apply_ne hij, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cc_cornerGL_mem_unipRad {c N : ℕ} (n : Fin c → ℕ) (h : ∑ i, n i = N) (s : R →ₙ+* S) {u : GL (Fin N) R}
     (hu : u ∈ unipRad R (stdBlocks n h)) : cornerGL N s u ∈ unipRad S (stdBlocks n h) := by
@@ -70,11 +70,11 @@ end Corner
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
 /- English proof (translation)
-Take `⟨b, hb, k, hy⟩` from `GlobalTheory.IwasawaAdelic.exists_upper_mul_unitary_inf E N (Matrix.GeneralLinearGroup.map (pInf E) x)`. Establish `hbP` using `GlobalTheory.IwasawaAdelic.mem_parab_of_upper n h b hb`. Take `⟨u, hu, hbu⟩` from `exists_levi_mul_unip (Cinf E) (stdBlocks n h) ⟨b, hbP⟩`. Use `set L := leviEmb (Cinf E) (stdBlocks n h) (leviProj (Cinf E) (stdBlocks n h) ⟨b, hbP⟩) with hL`. Establish `hN` using `leviEmb_mem_normalizer (Cinf E) (stdBlocks n h) (leviProj (Cinf E) (stdBlocks n h) ⟨b, hbP⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu' : L * u * L⁻¹ ∈ unipRad (Cinf E) (stdBlocks n h)` using `(Subgroup.mem_normalizer_iff.1 hN u).1 hu`. Use `⟨infGL E N (L * u * L⁻¹), GlobalTheory.IwasawaAdelic.infGL_mem_unipRad E n h _ hu', fun i => leviProj (Cinf E) (stdBlocks n h) ⟨b, hbP⟩ i, k, ?_⟩` and prove the remaining obligations. Rewrite using `[← GlobalTheory.IwasawaAdelic.infGL_leviEmb, ← hL]`. Use `conv_lhs => rw [← infGL_mul_finGL x, hy]`. Simplify using `only [Subtype.coe_mk] at hbu`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hbu]`. Simplify using `only [map_mul, map_inv]`. Use `group`.
+A detailed English derivation is pending.
 -/
 theorem iwasawa_inf {c N : ℕ} (n : Fin c → ℕ) (h : ∑ i, n i = N) (x : GA E N) :
     ∃ u ∈ unipRad (Ad E) (stdBlocks n h), ∃ (m : ∀ i, GL (Fin (n i)) (Cinf E)) (k : Kinf E N),
@@ -97,7 +97,7 @@ theorem iwasawa_inf {c N : ℕ} (n : Fin c → ℕ) (h : ∑ i, n i = N) (x : GA
   group
 
 /- English proof (translation)
-Rewrite using `[locGL, cc_cornerGL_leviEmb, finGL, cc_cornerGL_leviEmb]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem finGL_locGL_leviEmb {c N : ℕ} (n : Fin c → ℕ) (h : ∑ i, n i = N) (w : HeightOneSpectrum (𝓞 E))
     (μ : ∀ i, GL (Fin (n i)) (w.adicCompletion E)) :
@@ -107,7 +107,7 @@ theorem finGL_locGL_leviEmb {c N : ℕ} (n : Fin c → ℕ) (h : ∑ i, n i = N)
   rfl
 
 /- English proof (translation)
-Conclude with `cc_cornerGL_mem_unipRad n h _ (cc_cornerGL_mem_unipRad n h _ hu)`.
+A detailed English derivation is pending.
 -/
 theorem finGL_locGL_mem_unipRad {c N : ℕ} (n : Fin c → ℕ) (h : ∑ i, n i = N) (w : HeightOneSpectrum (𝓞 E))
     {u : GL (Fin N) (w.adicCompletion E)} (hu : u ∈ unipRad (w.adicCompletion E) (stdBlocks n h)) :
@@ -115,7 +115,7 @@ theorem finGL_locGL_mem_unipRad {c N : ℕ} (n : Fin c → ℕ) (h : ∑ i, n i 
   exact cc_cornerGL_mem_unipRad n h _ (cc_cornerGL_mem_unipRad n h _ hu)
 
 /- English proof (translation)
-Establish `hc` using `LocSph.comm_locGL w _ hy g`. Use `conv_lhs => rw [← infGL_mul_finGL y]`. Use `conv_rhs => rw [← infGL_mul_finGL y]`. Rewrite using `[mul_assoc, ← (finGL E N).map_mul, hc, (finGL E N).map_mul, ← mul_assoc, infGL_comm, mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem commute_finGL_locGL {N : ℕ} (w : HeightOneSpectrum (𝓞 E)) {y : GA E N}
     (hy : Matrix.GeneralLinearGroup.map (pLoc E w) (Matrix.GeneralLinearGroup.map (pFin E) y) = 1)
@@ -127,7 +127,7 @@ theorem commute_finGL_locGL {N : ℕ} (w : HeightOneSpectrum (𝓞 E)) {y : GA E
   rw [mul_assoc, ← (finGL E N).map_mul, hc, (finGL E N).map_mul, ← mul_assoc, infGL_comm, mul_assoc]
 
 /- English proof (translation)
-Use `set g := Matrix.GeneralLinearGroup.map (pLoc E w) (Matrix.GeneralLinearGroup.map (pFin E) y)`. Use `⟨y * (finGL E N (locGL E N w g))⁻¹, g, ?_, by group⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, map_inv, map_inv, pFin_finGL, pLoc_locGL, mul_inv_cancel]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_split_at {N : ℕ} (w : HeightOneSpectrum (𝓞 E)) (y : GA E N) :
     ∃ (y₀ : GA E N) (g : GL (Fin N) (w.adicCompletion E)),

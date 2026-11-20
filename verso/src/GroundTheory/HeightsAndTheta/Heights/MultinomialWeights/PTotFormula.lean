@@ -16,7 +16,7 @@ theorem intFl_apply (d : IndexData) (G : XPoly d) :
     intFl d G = flagNormalisation d.f d.N * RestTerms.flagIntegral d.f d.N G := rfl
 
 /- English proof (translation)
-Rewrite using `[intFl_apply, hK d.f d.N k σ G hk1 hkN, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem intFl_powerSum_mul (hK : RestTerms.FlagIntegralKillsPowerSums.Statement) (d : IndexData)
     {k : ℕ} (hk1 : 1 ≤ k) (hkN : k ≤ d.N) (σ : Fin d.f) (G : XPoly d) :
@@ -27,7 +27,7 @@ def totalDeriv (d : IndexData) (τ : Fin d.f) : Derivation ℚ (XPoly d) (XPoly 
   ∑ i : Fin d.N, pderiv (τ, i)
 
 /- English proof (translation)
-Rewrite using `[totalDeriv, ← Derivation.coeFnAddMonoidHom_apply, map_sum, Finset.sum_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem totalDeriv_apply (d : IndexData) (τ : Fin d.f) (G : XPoly d) :
     totalDeriv d τ G = ∑ i : Fin d.N, pderiv (τ, i) G := by
@@ -35,11 +35,11 @@ theorem totalDeriv_apply (d : IndexData) (τ : Fin d.f) (G : XPoly d) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[totalDeriv_apply]`. Simplify using `only [RestTerms.blockPowerSum, map_sum, Derivation.leibniz_pow, pderiv_X]`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single i]`. Simplify using `[nsmul_eq_mul, smul_eq_mul]`. Introduce `b _ hb`. Simplify using `[hb]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun i' _ => ?_` and prove the remaining obligations. Establish `: ((σ, i') : Fin d.f × Fin d.N) ≠ (τ, i)` using `fun e => h (congrArg Prod.fst e)`. Simplify using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem totalDeriv_blockPowerSum (d : IndexData) (τ σ : Fin d.f) (k : ℕ) :
     totalDeriv d τ (RestTerms.blockPowerSum d.f d.N k σ) =
@@ -61,17 +61,17 @@ theorem totalDeriv_blockPowerSum (d : IndexData) (τ σ : Fin d.f) (k : ℕ) :
     simp [this]
 
 /- English proof (translation)
-Introduce `d τ F Q _ _ hdec`. Unfold `RestTerms.IsPowerSumDecomposition at hdec`. Substitute `hdec` using the available equality. Establish `hN` using `d.two_le_N`. Establish `key : ∀ k ∈ Icc 1 d.N, ∀ σ : Fin d.f, intFl d (totalDeriv d τ (RestTerms.blockPowerSum d.f d.N k σ * Q k σ)) = if σ = τ then (k : ℚ) * intFl d (RestTerms.blockPowerSum d.f d.N (k - 1) τ * Q k τ) else 0`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k hk σ`. Rewrite `hk` using `[Finset.mem_Icc]`. Rewrite using `[Derivation.leibniz, map_add, smul_eq_mul, smul_eq_mul, intFl_powerSum_mul hK d hk.1 hk.2, zero_add, totalDeriv_blockPowerSum]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show Q k σ * (C (k : ℚ) * RestTerms.blockPowerSum d.f d.N (k - 1) σ) = (k : ℚ) • (RestTerms.blockPowerSum d.f d.N (k - 1) σ * Q k σ) by`. Rewrite using `[smul_eq_C_mul]`. Use the proof step `ring, map_smul, smul_eq_mul]`. Rewrite using `[mul_zero, map_zero]`. Establish `h0 : RestTerms.blockPowerSum d.f d.N 0 τ = C (d.N : ℚ)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Simplify using `[RestTerms.blockPowerSum]`. Unfold `totalFl`. Rewrite using `[← totalDeriv_apply]`. Simplify using `only [map_sum]`. Rewrite using `[Finset.sum_congr rfl fun k hk => Finset.sum_congr rfl fun σ _ => key k hk σ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[Finset.sum_eq_single 1]`. Rewrite using `[Nat.sub_self, h0, ← smul_eq_C_mul, map_smul, smul_eq_mul, Nat.cast_one, one_mul]`. Introduce `k hk hk1`. Rewrite `hk` using `[Finset.mem_Icc]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[intFl_powerSum_mul hK d (k := k - 1) (by omega) (by omega), mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_Icc.mpr ⟨le_rfl, by omega⟩) h`.
+A detailed English derivation is pending.
 -/
 theorem TotFormula.proof (hK : RestTerms.FlagIntegralKillsPowerSums.Statement) :
     TotFormula.Statement := by
@@ -109,7 +109,7 @@ theorem TotFormula.proof (hK : RestTerms.FlagIntegralKillsPowerSums.Statement) :
     exact absurd (Finset.mem_Icc.mpr ⟨le_rfl, by omega⟩) h
 
 /- English proof (translation)
-The claim follows from `TotFormula.proof RestTerms.FlagIntegralKillsPowerSums.full`.
+A detailed English derivation is pending.
 -/
 theorem TotFormula.full : TotFormula.Statement :=
   TotFormula.proof RestTerms.FlagIntegralKillsPowerSums.full

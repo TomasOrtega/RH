@@ -17,7 +17,7 @@ open scoped ENNReal
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ} {D : ℕ}
 
 /- English proof (translation)
-Rewrite using `[VolDens.meas, glueMeas_apply _ _ (fun c c' => c.holo_trans c') (fun c c' y hy hy' => by`. Rewrite using `[ω.trans c c' y hy hy', ENNReal.ofReal_mul (sq_nonneg _)]) c hS hc,`. Use `chartMeas_apply_of_subset _ _ hS hc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem meas_eq [SecondCountableTopology (CxPts p σ)] (ω : VolDens p σ D) (c : AlgChart p σ D)
     {S : Set (CxPts p σ)} (hS : MeasurableSet S) (hc : S ⊆ c.e.source) :
@@ -27,20 +27,18 @@ theorem meas_eq [SecondCountableTopology (CxPts p σ)] (ω : VolDens p σ D) (c 
     chartMeas_apply_of_subset _ _ hS hc]
 
 /- English proof (translation)
-The claim follows from `(ω.cont c).comp c.e.continuousOn_symm fun _ hv => c.e.map_target hv`.
+A detailed English derivation is pending.
 -/
 theorem continuousOn_dens (ω : VolDens p σ D) (c : AlgChart p σ D) :
     ContinuousOn (fun v => ω.dens c (c.e.symm v)) c.e.target :=
   (ω.cont c).comp c.e.continuousOn_symm fun _ hv => c.e.map_target hv
 
 /- English proof (translation)
-Use `set g := fun v => ω.dens c (c.e.symm v)`. Establish `hv0 : c.e y ∈ c.e.target` using `c.e.map_source hy`. Establish `hg : ContinuousAt g (c.e y)` using `(continuousOn_dens ω c).continuousAt (c.e.open_target.mem_nhds hv0)`. Establish `h1 : ∀ᶠ v in 𝓝 (c.e y), g v < g (c.e y) + 1` using `hg.eventually (gt_mem_nhds (lt_add_one _))`. Establish `h2 : ∀ᶠ v in 𝓝 (c.e y), v ∈ c.e.target` using `c.e.open_target.mem_nhds hv0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ε, hε, hball⟩` from `Metric.eventually_nhds_iff_ball.1 (h1.and h2)`. Use `⟨c.e.source ∩ c.e ⁻¹' Metric.ball (c.e y) ε, c.e.isOpen_inter_preimage Metric.isOpen_ball, ⟨hy, Metric.mem_ball_self hε⟩, ?_⟩` and prove the remaining obligations. Establish `hO : MeasurableSet (c.e.source ∩ c.e ⁻¹' Metric.ball (c.e y) ε)` using `(c.e.isOpen_inter_preimage Metric.isOpen_ball).measurableSet`. Rewrite using `[meas_eq ω c hO Set.inter_subset_left]`. Establish `hsub : c.e '' (c.e.source ∩ c.e ⁻¹' Metric.ball (c.e y) ε) ⊆ Metric.ball (c.e y) ε`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `hz.2`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono_ae (ae_restrict_of_forall_mem Metric.isOpen_ball.measurableSet fun v hv => ENNReal.ofReal_le_ofReal (hball v hv).1.le)` and prove the remaining obligations. Use `_ = ENNReal.ofReal (g (c.e y) + 1) * volume (Metric.ball (c.e y) ε) := setLIntegral_const _ _`.
-
-Use `_ < ∞ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top measure_ball_lt_top`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_open_lt_top [SecondCountableTopology (CxPts p σ)] (ω : VolDens p σ D)
     (c : AlgChart p σ D) {y : CxPts p σ} (hy : y ∈ c.e.source) :
@@ -70,13 +68,11 @@ theorem exists_open_lt_top [SecondCountableTopology (CxPts p σ)] (ω : VolDens 
     _ < ∞ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top measure_ball_lt_top
 
 /- English proof (translation)
-Use `set g := fun v => ω.dens c (c.e.symm v)`. Establish `hv0 : c.e y ∈ c.e.target` using `c.e.map_source hy`. Establish `hg : ContinuousAt g (c.e y)` using `(continuousOn_dens ω c).continuousAt (c.e.open_target.mem_nhds hv0)`. Establish `hpos : 0 < g (c.e y)`. Simplify using `only [g, c.e.left_inv hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `ω.pos c y hy`. Establish `h1 : ∀ᶠ v in 𝓝 (c.e y), g (c.e y) / 2 < g v` using `hg.eventually (lt_mem_nhds (half_lt_self hpos))`. Establish `h2 : ∀ᶠ v in 𝓝 (c.e y), v ∈ c.e.target ∩ c.e.symm ⁻¹' U` using `(isOpen_over c.e hU).mem_nhds (mem_over c.e hy hyU)`. Take `⟨ε, hε, hball⟩` from `Metric.eventually_nhds_iff_ball.1 (h1.and h2)`. Establish `hA : MeasurableSet (c.e.source ∩ U)` using `(c.e.open_source.inter hU).measurableSet`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsub : Metric.ball (c.e y) ε ⊆ c.e '' (c.e.source ∩ U)`. Rewrite using `[c.e.image_source_inter_eq']`. Conclude with `fun v hv => (hball v hv).2`. Use `(lt_of_lt_of_le ?_ (measure_mono (μ := ω.meas) (Set.inter_subset_right : c.e.source ∩ U ⊆ U))).ne'` and prove the remaining obligations. Rewrite using `[meas_eq ω c hA Set.inter_subset_left]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem meas_pos [SecondCountableTopology (CxPts p σ)] (ω : VolDens p σ D)
     (c : AlgChart p σ D) {U : Set (CxPts p σ)} (hU : IsOpen U) {y : CxPts p σ} (hy : y ∈ c.e.source)
@@ -112,11 +108,9 @@ end GlobalTheory.HSAmp.VolFin
 open GlobalTheory.HSAmp.VolFin in
 
 /- English proof (translation)
-Introduce `k _ X _ p D hX hS σ ω`. Use `haveI := CxPts.secondCountableTopology_of_isProjOver σ hX.isProjOver`. Use `haveI := hX.compactSpace σ`. Take `⟨R⟩` from `hS σ`. Use `haveI : IsLocallyFiniteMeasure ω.meas := ⟨fun y => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨i, hi⟩` from `R.cover y`. Take `⟨O, hO, hyO, hfin⟩` from `exists_open_lt_top ω (R.chart i) hi`. Conclude with `⟨O, hO.mem_nhds hyO, hfin⟩⟩`. Use `⟨inferInstance, ⟨fun U hU ⟨y, hyU⟩ => ?_⟩⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `R.cover y`.
-
-Conclude with `meas_pos ω (R.chart i) hU hi hyU`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HSAmp.volDens_meas_finite_openPos : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X]
     (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → GenSmooth p D → ∀ (σ : k →+* ℂ) (ω : VolDens p σ D),

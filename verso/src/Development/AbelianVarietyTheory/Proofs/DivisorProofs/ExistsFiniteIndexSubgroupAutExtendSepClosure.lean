@@ -11,9 +11,9 @@ namespace GlobalTheory.SepExt
 open Polynomial
 
 /- English proof (translation)
-Use `set p := minpoly K a`. Establish `hp0 : p ≠ 0` using `minpoly.ne_zero ha.isIntegral`. Establish `hsplit : (p.map (algebraMap K Ω)).Splits` using `IsSepClosed.splits_codomain p ha`. Establish `hne : p.map (algebraMap K Ω') ≠ 0` using `(Polynomial.map_ne_zero_iff (algebraMap K Ω').injective).2 hp0`. Establish `himg` using `Splits.image_rootSet_of_map_ne_zero hsplit j hne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hroot : IsScalarTower.toAlgHom K L Ω' a ∈ p.rootSet Ω'`. Rewrite using `[mem_rootSet_of_ne hp0, aeval_algHom_apply, minpoly.aeval, map_zero]`. Rewrite `hroot` using `[← himg]`. Take `⟨w, -, hw⟩` from `hroot`. Conclude with `(AlgHom.mem_fieldRange).2 ⟨w, hw⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_fieldRange (K L Ω Ω' : Type) [Field K] [Field L] [Field Ω] [Field Ω'] [Algebra K L]
     [Algebra K Ω] [IsSepClosed Ω] [Algebra L Ω'] [Algebra K Ω'] [IsScalarTower K L Ω']
@@ -37,23 +37,21 @@ namespace GlobalTheory.SepExt
 open Polynomial
 
 /- English proof (translation)
-Introduce `K L Ω Ω' _ _ _ _ _ _ _ _ _ _ _ _ j`. Use `haveI : IsSepClosed Ω := IsSepClosure.sep_closed K`. Set `Ls : IntermediateField K L` to `separableClosure K L`. Set `ψ : Ls →ₐ[K] Ω'` to `(IsScalarTower.toAlgHom K L Ω').comp Ls.val`. Establish `hmem : ∀ a : Ls, ψ a ∈ j.fieldRange` using `fun a => mem_fieldRange K L Ω Ω' j a ((mem_separableClosure_iff).1 a.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `e : Ω ≃ₐ[K] j.fieldRange` to `AlgEquiv.ofInjectiveField j`. Set `φ : Ls →ₐ[K] Ω` to `e.symm.toAlgHom.comp (ψ.codRestrict j.fieldRange.toSubalgebra hmem)`. Establish `hφ : ∀ a : Ls, j (φ a) = ψ a`. Introduce `a`. Establish `h` using `congrArg Subtype.val (e.apply_symm_apply ⟨ψ a, hmem a⟩)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `h`. Set `E : IntermediateField K Ω` to `φ.fieldRange`. Establish `: FiniteDimensional K E` using `(AlgEquiv.ofInjectiveField φ).toLinearEquiv.finiteDimensional`. Establish `: Finite ((Ω ≃ₐ[K] Ω) ⧸ E.fixingSubgroup)` using `Subgroup.quotient_finite_of_isOpen _ E.fixingSubgroup_isOpen`. Use `⟨E.fixingSubgroup, Subgroup.finiteIndex_of_finite_quotient, fun σ hσ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Set `A` to `AlgebraicClosure Ω'`. Use `letI : Algebra Ω A := ((algebraMap Ω' A).comp j.toRingHom).toAlgebra`. Use `haveI : IsScalarTower K Ω A := IsScalarTower.of_algebraMap_eq fun x => by`. Express the relevant statement in the definitionally equal form `algebraMap K A x = algebraMap Ω' A (j (algebraMap K Ω x))`. Rewrite using `[AlgHom.commutes, ← IsScalarTower.algebraMap_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Algebra.IsAlgebraic K Ω' := Algebra.IsAlgebraic.trans K L Ω'`. Use `haveI : IsAlgClosure K A := IsAlgClosure.ofAlgebraic K Ω' A`. Use `haveI : Normal K A := IsAlgClosure.normal K A`. Set `τ : A ≃ₐ[K] A` to `σ.liftNormal A`. Establish `hτ : ∀ x : Ω, τ (algebraMap Ω' A (j x)) = algebraMap Ω' A (j (σ x))` using `fun x => AlgEquiv.liftNormal_commutes σ A x`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfixL : ∀ a : L, τ (algebraMap L A a) = algebraMap L A a`. Establish `hinj` using `IsPurelyInseparable.injective_comp_algebraMap Ls L A`. Establish `heq : (τ.toRingEquiv.toRingHom.comp (algebraMap L A)).comp (algebraMap Ls L) = (algebraMap L A).comp (algebraMap Ls L)`. Use extensionality with `a`. Establish `h1 : algebraMap L A (algebraMap Ls L a) = algebraMap Ω' A (j (φ a))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hφ]`. Conclude with `IsScalarTower.algebraMap_apply L Ω' A _`. Establish `h2 : σ (φ a) = φ a` using `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hσ _ ⟨a, rfl⟩`. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[h1]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `τ (algebraMap Ω' A (j (φ a))) = _`. Rewrite using `[hτ, h2]`. Conclude with `fun a => congrArg (fun f : L →+* A => f a) (hinj heq)`. Set `τL : A ≃ₐ[L] A` to `{ τ.toRingEquiv with commutes' := hfixL }`. Use `⟨τL.restrictNormal Ω', fun x => ?_⟩` and prove the remaining obligations.
-
-Apply `(algebraMap Ω' A).injective` to reduce the goal to its premises. Rewrite using `[AlgEquiv.restrictNormal_commutes]`. Conclude with `hτ x`.
+A detailed English derivation is pending.
 -/
 theorem exists_finiteIndex_extend : ∀ (K L Ω Ω' : Type) [Field K] [Field L] [Field Ω] [Field Ω'] [Algebra K L] [FiniteDimensional K L] [Algebra K Ω] [IsSepClosure K Ω] [Algebra L Ω'] [IsSepClosure L Ω'] [Algebra K Ω'] [IsScalarTower K L Ω'] (j : Ω →ₐ[K] Ω'), ∃ H : Subgroup (Ω ≃ₐ[K] Ω), H.FiniteIndex ∧ ∀ σ ∈ H, ∃ σ' : Ω' ≃ₐ[L] Ω', ∀ x, σ' (j x) = j (σ x) := by
   intro K L Ω Ω' _ _ _ _ _ _ _ _ _ _ _ _ j

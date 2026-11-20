@@ -19,7 +19,7 @@ def SelfDualMass : Prop :=
       Formalism.HermitianLatticesTheory.mass W.hT W.L0 = Formalism.MainNotions.StandardLattice.massI D W.rank
 
 /- English proof (translation)
-Use `letI := D.host.cmStar`. Introduce `W hW L hL hu`. Conclude with `h D { W with L0 := L, standardTuple_isLattice := hL, baseLattice_isUnimodular := hu } hW`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem SelfDualMass.all_lattices (h : SelfDualMass) (D : D7) :
     letI := D.host.cmStar
@@ -45,17 +45,15 @@ theorem stdForm_apply (x y : Fin M → E) : stdForm E M x y = ∑ i, star (x i) 
 
 omit [StarRing E] in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨j, rfl⟩` from `hy`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Introduce `i`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `using isIntegral_one`. Simplify `isIntegral_zero` using `[hij]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `zero => intro i`. Simplify using `using isIntegral_zero`. Consider the case `add a b _ _ ha hb => intro i`. Conclude with `(ha i).add (hb i)`. Consider the case `smul a y _ hy`.
+Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Establish `: (a • y) i = (a : E) * y i` using `by simp [Algebra.smul_def]`. Rewrite using `[this]`. Conclude with `a.isIntegral_coe.mul (hy i)`. Introduce `hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `: x = ∑ i, (⟨x i, hx i⟩ : 𝓞 E) • (Pi.single i 1 : Fin M → E)`. Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply, Algebra.smul_def]`. Both sides reduce to the same expression. Rewrite using `[this]`.
-
-Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_stdLat_iff (x : Fin M → E) : x ∈ stdLat E M ↔ ∀ i, IsIntegral ℤ (x i) := by
   constructor
@@ -84,7 +82,7 @@ theorem mem_stdLat_iff (x : Fin M → E) : x ∈ stdLat E M ↔ ∀ i, IsIntegra
 
 omit [NumberField E] [StarRing E] in
 /- English proof (translation)
-Rewrite using `[Submodule.mem_one]`. Conclude with `⟨fun ⟨b, hb⟩ => hb ▸ b.isIntegral_coe, fun h => ⟨⟨a, h⟩, rfl⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_one_iff (a : E) : a ∈ (1 : Submodule (𝓞 E) E) ↔ IsIntegral ℤ a := by
   rw [Submodule.mem_one]
@@ -129,7 +127,7 @@ def stdSpace : HSpace E where
       exact IsIntegral.sum _ fun i _ => ((hy i).map (starRingEnd E).toIntAlgHom).mul (hx i)
 
 /- English proof (translation)
-Introduce `τ x hx`. Express the relevant statement in the definitionally equal form `0 < (τ (∑ i, star (x i) * x i)).re`. Take `⟨j, hj⟩ : ∃ j, x j ≠ 0` from `Function.ne_iff.1 hx`. Simplify using `only [map_sum, map_mul, hc, Complex.re_sum, ← Complex.normSq_eq_conj_mul_self, Complex.ofReal_re]`. Conclude with `Finset.sum_pos' (fun i _ => Complex.normSq_nonneg _) ⟨j, Finset.mem_univ _, Complex.normSq_pos.2 ((map_ne_zero τ).2 hj)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem stdSpace_posDef (hc : ∀ (τ : E →+* ℂ) (a : E), τ (star a) = starRingEnd ℂ (τ a)) :
     PosDefAtRealPlaces (stdSpace E M) := by
@@ -144,7 +142,7 @@ theorem stdSpace_posDef (hc : ∀ (τ : E →+* ℂ) (a : E), τ (star a) = star
 end Std
 
 /- English proof (translation)
-Use `letI := D.host.cmStar`. Conclude with `⟨stdSpace_posDef _ M D.sp.cm.cmUnram.2.1, rfl⟩`.
+Equip the data with the indicated structure. Supply the required witnesses or components.
 -/
 theorem stdSpace_case (D : D7) (M : ℕ) :
     letI := D.host.cmStar

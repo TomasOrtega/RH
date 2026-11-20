@@ -29,11 +29,11 @@ def pieceIdeal (y : (Σ k, ι k) → Ω) (s : F →+* ℂ) : Ideal (MvPolynomial
 omit [Fintype K] in
 
 /- English proof (translation)
-Establish `key : ∀ I : Ideal (MvPolynomial (Σ k, ι k) ℂ), (∀ f ∈ I, eval z f = 0) ↔ I ≤ RingHom.ker (eval z)` using `fun I => ⟨fun h f hf => RingHom.mem_ker.2 (h f hf), fun h f hf => RingHom.mem_ker.1 (h hf)⟩`. Rewrite using `[key, pieceIdeal, sup_le_iff, Ideal.map_le_iff_le_comap, Ideal.span_le]`. Apply `and_congr` to reduce the goal to its premises. Conclude with `⟨fun h f hf => RingHom.mem_ker.1 (Ideal.mem_comap.1 (h hf)), fun h f hf => Ideal.mem_comap.2 (RingHom.mem_ker.2 (h f hf))⟩`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h d g g' θ hg hg' hgg`. Use `h ⟨d, g, g', θ, hg, hg', hgg, rfl⟩` as an intermediate fact. Simplify using `only [SetLike.mem_coe, RingHom.mem_ker, map_sub, map_mul, eval_C] at this`. Conclude with `sub_eq_zero.1 this`. Introduce and unpack `h f ⟨d, g, g', θ, hg, hg', hgg, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `only [SetLike.mem_coe, RingHom.mem_ker, map_sub, map_mul, eval_C]`. Conclude with `sub_eq_zero.2 (h d g g' θ hg hg' hgg)`.
+A detailed English derivation is pending.
 -/
 theorem zero_pieceIdeal_iff (y : (Σ k, ι k) → Ω) (s : F →+* ℂ) (z : (Σ k, ι k) → ℂ) :
     (∀ f ∈ pieceIdeal y s, eval z f = 0) ↔
@@ -56,13 +56,13 @@ theorem zero_pieceIdeal_iff (y : (Σ k, ι k) → Ω) (s : F →+* ℂ) (z : (Σ
 omit [Fintype K] in
 
 /- English proof (translation)
-Establish `hint : (τ : ℂ →+* ℂ).comp (Int.castRingHom ℂ) = Int.castRingHom ℂ` using `RingHom.ext_int _ _`. Establish `hmm : ∀ g : MRing ι, MvPolynomial.map (τ : ℂ →+* ℂ) (MvPolynomial.map (Int.castRingHom ℂ) g) = MvPolynomial.map (Int.castRingHom ℂ) g`. Introduce `g`. Rewrite using `[MvPolynomial.map_map, hint]`. Rewrite using `[pieceIdeal, pieceIdeal, Ideal.map_sup, Ideal.map_map, Ideal.map_span]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `congr 1`. Conclude with `RingHom.ext hmm`. Use `congr 1`. Use extensionality with `f`.
+Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨d, g, g', θ, hg, hg', hgg, rfl⟩, rfl⟩`. Use `⟨d, g, g', θ, hg, hg', hgg, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_mul, map_C, hmm, hmm]`. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨d, g, g', θ, hg, hg', hgg, rfl⟩`. Use `⟨_, ⟨d, g, g', θ, hg, hg', hgg, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_mul, map_C, hmm, hmm]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pieceIdeal_map (y : (Σ k, ι k) → Ω) (s : F →+* ℂ) (τ : ℂ ≃+* ℂ) :
     (pieceIdeal y s).map (MvPolynomial.map (τ : ℂ →+* ℂ)) = pieceIdeal y ((τ : ℂ →+* ℂ).comp s) := by
@@ -89,7 +89,7 @@ theorem pieceIdeal_map (y : (Σ k, ι k) → Ω) (s : F →+* ℂ) (τ : ℂ ≃
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (MvPolynomial.map (σ` using `Σ k, ι k) (τ : ℂ →+* ℂ)) := map_injective _ τ.injective`. Use `(Ideal.map_radical_of_surjective (map_surjective _ τ.surjective) ?_).symm` and prove the remaining obligations. Rewrite using `[(RingHom.injective_iff_ker_eq_bot _).1 hinj]`. Conclude with `bot_le`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem radical_map_conj (I : Ideal (MvPolynomial (Σ k, ι k) ℂ)) (τ : ℂ ≃+* ℂ) :
     (I.map (MvPolynomial.map (τ : ℂ →+* ℂ))).radical = I.radical.map (MvPolynomial.map (τ : ℂ →+* ℂ)) := by
@@ -99,9 +99,9 @@ theorem radical_map_conj (I : Ideal (MvPolynomial (Σ k, ι k) ℂ)) (τ : ℂ �
   exact bot_le
 
 /- English proof (translation)
-Establish `hc : Countable F` using `Countable.of_equiv _ (Module.finBasis ℚ F).equivFun.toEquiv.symm`. Establish `hΩ : Cardinal.aleph0 < Cardinal.mk ℂ`. Rewrite using `[Cardinal.mk_complex]`. Conclude with `Cardinal.aleph0_lt_continuum`. Establish `h1` using `@GroundTheory.Global.trdeg_eq_cardinalMk_of_countable ℂ _ _ F _ sg.toAlgebra hc hΩ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `@GroundTheory.Global.trdeg_eq_cardinalMk_of_countable ℂ _ _ F _ sg'.toAlgebra hc hΩ`. Take `⟨τ, hτ⟩` from `@GroundTheory.Global.exists_ringEquiv_extend_of_trdeg_eq ℂ _ _ F F _ _ sg.toAlgebra sg'.toAlgebra (RingEquiv.refl F) (h1.trans h2.symm)`. Conclude with `⟨τ, RingHom.ext fun a => hτ a⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_ringEquiv_comp [NumberField F] (sg sg' : F →+* ℂ) :
     ∃ τ : ℂ ≃+* ℂ, (τ : ℂ →+* ℂ).comp sg = sg' := by
@@ -116,11 +116,11 @@ theorem exists_ringEquiv_comp [NumberField F] (sg sg' : F →+* ℂ) :
   exact ⟨τ, RingHom.ext fun a => hτ a⟩
 
 /- English proof (translation)
-Introduce `z hz hzI`. Establish `hzs : LiesOver y s z` using `((zero_pieceIdeal_iff y s z).1 hzI).2`. Set `U : Set ((Σ k, ι k) → ℂ)` to `⋃ s' ∈ ({s}ᶜ : Set (F →+* ℂ)), {z | LiesOver y s' z}`. Establish `hU : IsClosed U` using `Set.Finite.isClosed_biUnion (Set.toFinite _) fun s' _ => EmbeddingWeight.isClosed_liesOver y s'`. Establish `hzU : z ∉ U`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [U, Set.mem_iUnion, Set.mem_compl_iff, Set.mem_singleton_iff, Set.mem_ofPred_eq, not_exists]`. Introduce `s' hs' h'`. Conclude with `hs' ((hex z hz).unique h' hzs)`. Use `filter_upwards [hU.isOpen_compl.mem_nhds hzU] with z' hz' hz'P`. Take `⟨s', hs', -⟩` from `hex z' hz'P`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hss : s' = s`. Assume the negation of the conclusion as `hne`. Conclude with `hz' (Set.mem_biUnion (x := s') hne hs')`. Substitute `hss` using the available equality. Conclude with `(zero_pieceIdeal_iff y s' z').2 ⟨hz'P.2, hs'⟩`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem piece_open [NumberField F] {y : (Σ k, ι k) → Ω}
     (hex : ∀ z ∈ mcPts (mCoordIdeal y), ∃! s : F →+* ℂ, LiesOver y s z) (s : F →+* ℂ) :
@@ -148,11 +148,11 @@ end PieceDegreeAlt
 open PieceDegreeAlt
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ F _ _ _ y D L sg sg' hP _ hL hex`. Establish `hint : ∀ s : F →+* ℂ, ptsIntegral (mCoordIdeal y) (pot L) ({z | LiesOver y s z}.indicator fun _ => (1 : ℝ)) = NumbersDVR.intNum ℂ (pieceIdeal y s).radical (fun j => (L j).a)`. Introduce `s`. Rewrite using `[← hI K ι (mCoordIdeal y) D L (pieceIdeal y s) hP hL le_sup_left (piece_open hex s)]`. Use `GroundTheory.Heights₂.Heights.Inter.DiagRAux.ptsIntegral_congr_mcPts _ (fun _ _ _ => rfl) fun z hz => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hiff : z ∈ {z | LiesOver y s z} ↔ z ∈ {z | ∀ f ∈ pieceIdeal y s, eval z f = 0}`. Simplify using `only [Set.mem_ofPred_eq, zero_pieceIdeal_iff]`. Conclude with `⟨fun h => ⟨hz.2, h⟩, fun h => h.2⟩`. Distinguish the cases in `h : LiesOver y s z`. Rewrite using `[Set.indicator_of_mem h, Set.indicator_of_mem (hiff.1 h)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_notMem h, Set.indicator_of_notMem (fun h' => h (hiff.2 h'))]`. Take `⟨τ, hτ⟩` from `exists_ringEquiv_comp sg sg'`. Rewrite using `[hint, hint, ← hτ, ← pieceIdeal_map y sg τ, radical_map_conj]`. Conclude with `congrArg (fun x : ℤ => (x : ℝ)) (hC K ι ℂ τ (pieceIdeal y sg).radical D (fun j => (L j).a)).symm`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PieceDegree.proof (hI : PieceIntegral.Statement) (hC : ConjIntNum.Statement) :
     PieceDegree.Statement := by

@@ -25,7 +25,7 @@ open GlobalTheory.MovedDict Formalism.L2.Ker GlobalTheory.SignedHC
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.MultLatDecomp.heisO_eq_root_smul_finRat` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FHeisenbergRootSmulFiniteRationalLatticeDecomp.lean&line=33#L33)
 -/

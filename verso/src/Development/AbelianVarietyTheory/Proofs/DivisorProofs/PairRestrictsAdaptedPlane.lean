@@ -21,7 +21,7 @@ noncomputable section
 namespace GlobalTheory.SiegelConv
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [schr, Pi.smul_apply, smul_eq_mul, Prod.fst_add, Prod.snd_add, add_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul, add_dotProduct, dotProduct_add]`. Use `congr 2`. Establish `h : ⅟(2 : R) * 2 = 1` using `invOf_mul_self 2`. Take the linear combination `(-(w.1 ⬝ᵥ w'.2)) * h`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem schrSchr {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R ℂ) {κ : Type} [Fintype κ]
     (w w' : (κ → R) × (κ → R)) (φ : (κ → R) → ℂ) :
@@ -34,37 +34,33 @@ theorem schrSchr {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R �
   linear_combination (-(w.1 ⬝ᵥ w'.2)) * h
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hpair d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hpair₁ d' hd' d₁' hd₁' dd hdd dd₁ hdd₁ ed hed_mem hed_heis hed_inv hed_adm hed_ne l₁ hl₁ hl₁_inv μ hμ Φ hΦ`. Establish `hψ : IsStd B.ψ` using `hpair.base.std`. Use `haveI : Nontrivial (AF F) := (inferInstance : Nontrivial (InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F))`. Take `⟨D, hDinj, hD⟩` from `GlobalTheory.T.darboux_model_coordinates F E σ B n d X W M χX χW om r s r' s' hpair d' hd' dd hdd`. Take `⟨hPinj, hPy⟩` from `GlobalTheory.T.pair_adapted_model_restriction F E σ B n d X W M χX χW om r s r' s' hpair d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hpair₁`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `κ` to `(Fin n × Fin d) ⊕ (Fin n × Fin d)`. Set `P` to `GlobalTheory.SiegelConv.lagP n H'.ι H'.x`. Set `L : Submodule F ((κ → F) × (κ → F))` to `((LinearMap.range P).restrictScalars F).map D`. Set `l` to `l₁ ∘ₗ ed`. Establish `hmem : ∀ w, ∀ φ ∈ schA F κ, dd.rho B.ψ w φ ∈ schA F κ` using `fun w φ hφ => GlobalTheory.HeisSchA.schr_mem_schA B.ψ hψ (dd.e w) φ hφ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinvZ : ∀ (Z : Matrix (Fin d₁) (Fin n) (AE F E)) (Y : Fin n ⊕ Fin n → AE F E), ∀ φ ∈ schA F κ, l (dd.rho B.ψ (incM F H'.ι * (Z * (diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) (AE F E))ᵀ) + Matrix.vecMulVec (incV F H'.x) Y) φ) = l φ`. Introduce `Z Y φ hφ`. Establish `hiso` using `GlobalTheory.T.pair_adapted_matrix_phase_identity F E σ B n d X W M χX χW om r s r' s' hpair d₁ W₁ H' i₀ i₁ hH Z 0 0 Y`. Establish `h0 : Matrix.vecMulVec (incV F H'.x) (0 : Fin n ⊕ Fin n → AE F E) = 0`. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.vecMulVec_apply]`. Establish `h0' : incM F H'.ι * ((0 : Matrix (Fin d₁) (Fin n) (AE F E)) * (diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) (AE F E))ᵀ) = 0`. Rewrite using `[Matrix.zero_mul, Matrix.mul_zero]`. Rewrite `hiso` using `[h0, h0', add_zero, zero_add]`. Establish `hform` using `dd.form (incM F H'.ι * (Z * (diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) (AE F E))ᵀ)) (Matrix.vecMulVec (incV F H'.x) Y)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hform` using `[hiso]`. Establish `hss` using `schrSchr B.ψ (dd.e (incM F H'.ι * (Z * (diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) (AE F E))ᵀ))) (dd.e (Matrix.vecMulVec (incV F H'.x) Y)) φ`. Rewrite `hss` using `[← hform, mul_zero, AddChar.map_zero_eq_one, one_smul, ← map_add]`. Establish `hb' : dd.rho B.ψ (Matrix.vecMulVec (incV F H'.x) Y) φ ∈ schA F κ` using `hmem _ φ hφ`. Use `show l₁ (ed (schr B.ψ (dd.e (incM F H'.ι * (Z * (diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) (AE F E))ᵀ) + Matrix.vecMulVec (incV F H'.x) Y)) φ)) = l₁ (ed φ)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hss]`. Use `show l₁ (ed (dd.rho B.ψ (incM F H'.ι * (Z * (diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) (AE F E))ᵀ)) (dd.rho B.ψ (Matrix.vecMulVec (incV F H'.x) Y) φ))) = l₁ (ed φ)`. Rewrite using `[hed_heis _ _ hb']`. Conclude with `(hl₁_inv Z _ (hed_mem _ hb')).trans (congrArg l₁ (hed_inv Y φ hφ))`. Establish `hL_iso : ∀ a ∈ L, ∀ b ∈ L, a.1 ⬝ᵥ b.2 = b.1 ⬝ᵥ a.2`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce and unpack `_ ⟨_, ⟨p, rfl⟩, rfl⟩ _ ⟨_, ⟨q, rfl⟩, rfl⟩`. Establish `hp` using `GlobalTheory.SiegelConv.smul_incM_lagP (F := F) (n := n) H'.ι H'.x (1 : AF F) p`. Establish `hq` using `GlobalTheory.SiegelConv.smul_incM_lagP (F := F) (n := n) H'.ι H'.x (1 : AF F) q`. Simplify using `only [one_smul] at hp hq`. Establish `hiso` using `GlobalTheory.T.pair_adapted_matrix_phase_identity F E σ B n d X W M χX χW om r s r' s' hpair d₁ W₁ H' i₀ i₁ hH (incM F p.1) (incM F q.1) (fun i => inclR (F := F) (AF F) (p.2 i)) (fun i => inclR (F := F) (AF F) (q.2 i))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hiso` using `[← hp, ← hq]`. Establish `hform` using `dd.form (incM F (P p)) (incM F (P q))`. Rewrite `hform` using `[hiso, hD, hD]`. Simplify using `only [GlobalTheory.SiegelConv.ratP, GlobalTheory.SiegelConv.ratDot, ← map_sub] at hform`. Conclude with `sub_eq_zero.mp ((algebraMap F (AF F)).injective (hform.symm.trans (map_zero _).symm))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hL_dim : Module.finrank F L = Fintype.card κ`. Establish `h1 : Module.finrank F L = Module.finrank F ((LinearMap.range P).restrictScalars F)` using `(LinearEquiv.finrank_eq (Submodule.equivMapOfInjective D hDinj _)).symm`. Establish `h2 : Module.finrank F ((LinearMap.range P).restrictScalars F) = Module.finrank F E * Module.finrank E (LinearMap.range P)` using `(Module.finrank_mul_finrank F E (LinearMap.range P)).symm`. Establish `h3 : Module.finrank E (LinearMap.range P) = d₁ * n + (n + n)`. Rewrite using `[LinearMap.finrank_range_of_inj hPinj, Module.finrank_prod, Module.finrank_matrix, Module.finrank_fintype_fun_eq_card]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hE : Module.finrank F E = 2` using `hpair.base.cm.2.2.1`. Establish `hd : d = d₁ + 2` using `hH.rank`. Rewrite using `[h1, h2, h3, hE]`. Simplify using `only [κ, Fintype.card_sum, Fintype.card_prod, Fintype.card_fin, hd]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hL_inv : ∀ (t : AF F), ∀ w ∈ L, ∀ φ ∈ schA F κ, l (schr B.ψ (t • GlobalTheory.SiegelConv.ratP w) φ) = l φ`. Introduce and unpack `t _ ⟨_, ⟨p, rfl⟩, rfl⟩ φ hφ`. Establish `e : t • GlobalTheory.SiegelConv.ratP (D (P p)) = dd.e (t • incM F (P p))` using `by rw [map_smul, hD]`. Rewrite using `[e, GlobalTheory.SiegelConv.smul_incM_lagP]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hinvZ _ _ φ hφ`. Set `A` to `D ∘ₗ GlobalTheory.SiegelConv.vvMap F (n := n) H'.y`. Establish `hA : ∀ s', A s' ∈ L → s' = 0`. Introduce and unpack `s' ⟨_, ⟨p, rfl⟩, hu⟩`. Establish `h1 : P p = GlobalTheory.SiegelConv.vvMap F (n` using `n) H'.y s' := hDinj hu`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `hPy (GlobalTheory.SiegelConv.vecOf F s') ⟨p, h1⟩`. Use function extensionality and compare the values at `ji`. Take `⟨j, i⟩` from `ji`. Establish `h3 : ∑ i, s' (j, i) • Module.finBasis F E i = 0` using `congrFun h2 j`. Conclude with `Fintype.linearIndependent_iff.mp (Module.finBasis F E).linearIndependent (fun i => s' (j, i)) h3 i`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hl_adm : l ∈ (adeleClass F).adm κ` using `hed_adm l₁ hl₁`. Use `show (letI : MeasurableSpace (Fin n → AE F E) := borel _; Integrable (fun y => l (GlobalTheory.SiegelAvg.starFam dd B.ψ (incV F H'.y) y Φ)) μ)`. Use `GlobalTheory.T.siegel_haar_integrable_basis F E n _ μ hμ (fun ν hν => ?_)` and prove the remaining obligations. Establish `key` using `GlobalTheory.T.lagrangian_invariant_functional F B.ψ hψ κ L hL_iso hL_dim l hl_adm hL_inv (Fin n × Fin (Module.finrank F E)) A hA ν hν Φ hΦ`. Establish `e : (fun t => l (GlobalTheory.SiegelAvg.starFam dd B.ψ (incV F H'.y) (GlobalTheory.SiegelConv.basisMap F E n t) Φ)) = fun t => l (schr B.ψ (GlobalTheory.SiegelConv.extA A t) Φ)`.
-
-Use function extensionality and compare the values at `t`. Rewrite using `[GlobalTheory.SiegelAvg.starFam_apply]`. Use `show l (schr B.ψ (dd.e _) Φ) = _`. Rewrite using `[show dd.e _ = GlobalTheory.SiegelConv.extA A t from GlobalTheory.T.siegel_lagrangian_vecMulVec_coords F E n d κ dd.e.toLinearMap D hD H'.y t]`. Rewrite using `[e]`.
-
-Conclude with `key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem avg_conv : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →

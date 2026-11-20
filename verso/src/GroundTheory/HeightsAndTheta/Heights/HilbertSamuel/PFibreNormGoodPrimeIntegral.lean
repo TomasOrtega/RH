@@ -17,11 +17,11 @@ namespace GroundTheory.Heights₂.Heights.HilbertSamuel
 open ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.ArakelovGeometry MvPolynomial
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ _ y D e L q hA hB he hL hz p hp hgood τ s hs j c hc μ`. Take `⟨N, M, hpM, hrel⟩` from `hN K ι Ω y D L hz p hp hgood`. Establish `hy : ∀ k, ∃ i, y ⟨k, i⟩ ≠ 0`. Take `⟨_, ⟨_, _, hrv⟩, _, _⟩` from `hA`. Take `⟨c', hc'⟩` from `CoordArithOfFnField.nonzero_of_relevant y hrv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `fun k => ⟨c' k, hc' k⟩`. Establish `hM : (M : Ω) ≠ 0` using `Nat.cast_ne_zero.mpr (by rintro rfl; exact hpM (dvd_zero p))`. Take `⟨hj, hfin, -, hch, hcp⟩` from `hc`. Use `hfin` as an intermediate fact. Establish `hint` using `hI K ι Ω y D e L q N M hy he hL hM (hD K ι Ω y D e L N M hy hL hrel) τ s hs j hj`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgen` using `PullFormsGeneric.proof (PullRatiosAlgebraic.proof PullConeNull.proof PullConeDegree.proof PullGradedAlgebraic.proof) K ι Ω y D e L hA hB he hL hz`. Conclude with `hP Ω D (fun i => aeval y (L i)) (pullField y L) rfl hgen p hp M hpM j (q * τ) _ hint c (hch _ le_rfl) hcp μ`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem FibreNormGoodPrimeIntegral.proof (hN : PullConeNullModP.Statement) (hD : PullConeDegreeInt.Statement)
     (hI : PullSectionIntegralInt.Statement) (hP : DehomNormPIntegral.Statement) :

@@ -8,13 +8,13 @@ namespace GlobalTheory.EtC
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex in
 
 /- English proof (translation)
-Introduce `R _ I hI S hS n`. Establish `hp : ∀ p : ℤ, (S.map (HomologicalComplex.eval _ _ p)).ShortExact` using `fun p => hS.map_of_exact _`. Establish `hmono : ∀ p : ℤ, Mono (S.f.f p)` using `fun p => (hp p).mono_f`. Establish `hepi : ∀ p : ℤ, Epi (S.g.f p)` using `fun p => (hp p).epi_g`. Use `⟨fun a => ?_, fun b hb => ?_, fun c hc => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Cochain.mk (fun p q h => Injective.factorThru (a.v p q h) (S.f.f p)), ?_⟩` and prove the remaining obligations. Use extensionality with `p q h`. Simplify using the standard rewrite rules. Establish `hb' : ∀ p q (h : p + n = q), S.f.f p ≫ b.v p q h = 0`. Introduce `p q h`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Cochain.congr_v hb p q h` as an intermediate fact. Simplify using `using this`. Use `⟨Cochain.mk (fun p q h => (CokernelCofork.IsColimit.desc' (hp p).gIsCokernel (b.v p q h) (hb' p q h)).1), ?_⟩` and prove the remaining obligations. Use `Cochain.ext _ _ (fun p q h => ?_)` and prove the remaining obligations. Simplify using `only [Cochain.zero_cochain_comp_v, Cochain.ofHom_v, Cochain.mk_v]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `(CokernelCofork.IsColimit.desc' (hp p).gIsCokernel (b.v p q h) (hb' p q h)).2`. Use `Cochain.ext _ _ (fun p q h => ?_)` and prove the remaining obligations. Use `Cochain.congr_v hc p q h` as an intermediate fact. Simplify using `only [Cochain.zero_cochain_comp_v, Cochain.ofHom_v, Cochain.zero_v] at this`. Simplify using `using (cancel_epi (S.g.f p)).mp (this.trans (comp_zero).symm)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.EtC.cochain_shortExact_of_injective :
     ∀ (R : Type) [CommRing R] (I : _root_.GlobalTheory.EtC.Cx R), (∀ n, Injective (I.X n)) → ∀ (S : ShortComplex (_root_.GlobalTheory.EtC.Cx R)), S.ShortExact → ∀ n : ℤ, (∀ a : Cochain S.X₁ I n, ∃ b : Cochain S.X₂ I n, (Cochain.ofHom S.f).comp b (zero_add n) = a) ∧ (∀ b : Cochain S.X₂ I n, (Cochain.ofHom S.f).comp b (zero_add n) = 0 → ∃ c : Cochain S.X₃ I n, (Cochain.ofHom S.g).comp c (zero_add n) = b) ∧ ∀ c : Cochain S.X₃ I n, (Cochain.ofHom S.g).comp c (zero_add n) = 0 → c = 0 := by

@@ -14,7 +14,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {X : Formalism.L2.SG.HidaSetting.HidaSetting D} {θ : ℝ} (C : Choice X θ)
 
 /- English proof (translation)
-The claim follows from `cutAt_of_haar C u u' τ a b ξ ξ' c (haarAtC_holds C u u' τ) A₀ hA hCC`.
+A detailed English derivation is pending.
 -/
 theorem cutAt_holds (u u' : D.what₂.Word) (τ : D.what₂.Tau) (a b : X.B.H (vOf X τ)) (ξ : X.Vloc u (vOf X τ))
     (ξ' : X.Vloc u' (vOf X τ)) (c : ℂ) (A₀ : ℝ)

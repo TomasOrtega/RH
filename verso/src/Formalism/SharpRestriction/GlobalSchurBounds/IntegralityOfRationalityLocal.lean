@@ -41,15 +41,15 @@ def IntegralityLevelZeroUnderForms : Prop := FormsTwistCompatibilityFamily D u �
 variable {D u}
 
 /- English proof (translation)
-Introduce `v φ hφ`. Establish `hφ' : φ ∈ (D.fm u).Fi 0 ∧ ∀ v', Nm D u 0 v' φ = 0`. Simplify `hφ` using `only [MramI, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker]`. Take `⟨hFi, hN⟩` from `hφ'`. Take `⟨H⟩` from `hU v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hUF, hDF⟩` from `hF v φ hFi`. Establish `hpass : ∀ v', v' ≠ v → ∀ f : Fn D u 0 →ₗ[ℂ] Fn D u 0, (∀ a, dia D u 0 v' a (f φ) = f (dia D u 0 v' a φ)) → Nm D u 0 v' (f φ) = 0`. Introduce `v' _ f hf`. Establish `h : Nm D u 0 v' (f φ) = f (Nm D u 0 v' φ)`. Simplify using `only [Nm, LinearMap.sum_apply, map_sum, hf]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h, hN v', map_zero]`. Establish `memR : ∀ ψ, ψ ∈ (D.fm u).Fi 0 → (∀ v', Nm D u 0 v' ψ = 0) → ψ ∈ MramI D u 0`. Introduce `ψ h1 h2`. Simplify using `only [MramI, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker]`. Conclude with `⟨h1, h2⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Use `⟨memR _ hUF fun v' => ?_, memR _ hDF fun v' => ?_, H.UD_ram hFi (hN v) hDF⟩` and prove the remaining obligations. Distinguish the cases in `h : v' = v`. Substitute `h` using the available equality. Conclude with `H.Nm_U hFi (hN _) hUF`. Conclude with `hpass v' h _ fun a => (hX v v' (Ne.symm h) φ hFi a).1`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `h : v' = v`. Substitute `h` using the available equality. Conclude with `H.Nm_D hFi (hN _) hDF`. Conclude with `hpass v' h _ fun a => (hX v v' (Ne.symm h) φ hFi a).2`.
+A detailed English derivation is pending.
 -/
 theorem ramified_lines_of_level_zero (hF : FiSt0 D u) (hX : CrossDia0 D u) (hU : UnfAll0 D u) : LocalLatticeBases.HeckeRamifiedLevelZero D u := by
   intro v φ hφ
@@ -79,7 +79,7 @@ theorem ramified_lines_of_level_zero (hF : FiSt0 D u) (hX : CrossDia0 D u) (hU :
     · exact hpass v' h _ fun a => (hX v v' (Ne.symm h) φ hFi a).2
 
 /- English proof (translation)
-Introduce `w hw hs v` and use `h 0 (Nat.zero_le _) w hw hs v`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem integrality_of_rationality_local (h : IntAtT D u) : LocalLatticeBases.HeckeIntegralLevelZero D u :=
   fun w hw hs v => h 0 (Nat.zero_le _) w hw hs v
@@ -87,7 +87,7 @@ theorem integrality_of_rationality_local (h : IntAtT D u) : LocalLatticeBases.He
 variable {eps : ℝ}
 
 /- English proof (translation)
-Take `⟨x0, hx0⟩` from `tie`. Use `⟨x0, fun x hx hx1 i u hs => ?_⟩` and prove the remaining obligations. Take `⟨hT, hA⟩` from `hx0 x hx hx1 i u hs`. Conclude with `hI _ _ hT hA hs`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem hI_tied (Fm : FamP eps) (tie : FamU Fm fun D u => FormsTwistCompatibilityFamily D u ∧ admS D u)
     (hI : ∀ (D : D7) (u : D.what₂.Word), IntegralityLevelZeroUnderForms D u) : FamU Fm LocalLatticeBases.HeckeIntegralLevelZero := by
@@ -97,7 +97,7 @@ theorem hI_tied (Fm : FamP eps) (tie : FamU Fm fun D u => FormsTwistCompatibilit
   exact hI _ _ hT hA hs
 
 /- English proof (translation)
-Take `⟨x0, hx0⟩` from `tie`. Use `⟨x0, fun x hx hx1 i u hs => ?_⟩` and prove the remaining obligations. Take `⟨hT, hA⟩` from `hx0 x hx hx1 i u hs`. Conclude with `ramified_lines_of_level_zero (hF _ _ hT hA hs) (hX _ _ hT hA hs) (hU _ _ hT hA hs)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem hR_tied (Fm : FamP eps) (tie : FamU Fm fun D u => FormsTwistCompatibilityFamily D u ∧ admS D u)
     (hF : ∀ (D : D7) (u : D.what₂.Word), FiSt0T D u) (hX : ∀ (D : D7) (u : D.what₂.Word), CrossDia0T D u)

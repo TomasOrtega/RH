@@ -14,19 +14,19 @@ namespace GlobalTheory.ArchFree.means
 open GlobalTheory.PositiveMeans
 
 /- English proof (translation)
-Take `⟨M', ρ', halg, hext⟩` from `GlobalTheory.TwoTorsionPt.exists_extension M ρ`. Establish `hl : lamConj M ρ (lamOf D cc δ) = lamConj M' ρ' (lamOf D cc δ)`. Unfold `lamConj`. Rewrite using `[(hext _ h2).2, (hext _ h3).2]`. Rewrite using `[hl]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hD : DataIn D (tor0 D cc δ) M'`. Use `⟨fun τ x => halg _ ?_, (hext _ h2).1, (hext _ h3).1⟩` and prove the remaining obligations. Conclude with `(Algebra.IsAlgebraic.isAlgebraic (R := ℚ) x).algHom (embT D τ).toRatAlgHom`. Take `⟨hfix, hbar, -⟩` from `GlobalTheory.ThetaConj.useBar_holds D cc δ hc M' ρ' hD`. Break down `hfix with hfix | hfix` into its components or cases.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Take `⟨cc', δ', hc', -, e⟩` from `GlobalTheory.ConjCurve.galCurve_holds D cc δ hc M' ρ' hfix hD.2.1 hD.2.2 1 one_pos`. Conclude with `⟨cc', δ', hc', e⟩`. Take `⟨cc', δ', hc', -, e⟩` from `GlobalTheory.ConjCurve.galCurve_holds D cc δ hc M' (rhoBar M' ρ') hfix hD.2.1 hD.2.2 1 one_pos`. Establish `hm : (lamConj M' ρ' (lamOf D cc δ)).map (starRingEnd ℂ).toAddMonoidHom = lamOf D cc' δ'`. Rewrite using `[← e]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Conclude with `(congrArg Tor.abelian₂ hbar).symm`. Generalize the expression as in `lamConj M' ρ' (lamOf D cc δ) = Λ at hm`. Take `⟨-, -, hdisc, -, hO⟩` from `GlobalTheory.T.idealPeriodLattice_of_curveDatum D (GlobalTheory.InducedType.induced_type D).1 cc' δ' hc'`. Establish `hd : TaylorLogMetric.discr Λ = 1`. Rewrite `hdisc` using `[← hm, TaylorLogMetric.discr, g2, g3, eisG_conj, eisG_conj]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `(starRingEnd ℂ).injective` to reduce the goal to its premises. Rewrite using `[map_one, ← hdisc, TaylorLogMetric.discr, g2, g3]`. Simplify using `[map_ofNat]`. Take `⟨L, hL⟩` from `GlobalTheory.LatticeInvariants.exists_periodPair_of_discr_ne_zero (Λ := Λ) (by rw [hd]; exact one_ne_zero)`. Take `⟨c, d, h, -, e'⟩` from `GlobalTheory.ConjCurve.exists_crv D Λ L.ω₁ L.ω₂ (by simpa using L.indep.ne_zero 0) (fun z => (hL z).trans PeriodPair.mem_lattice) (fun r z hz => by`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨r', hr⟩` from `exists_conj D r`. Establish `h1 : (starRingEnd ℂ) z ∈ lamOf D cc' δ'` using `hm ▸ ⟨z, hz, rfl⟩`. Establish `h4 : GlobalTheory.ConjCurve.embK D r' * (starRingEnd ℂ) z ∈ lamOf D cc' δ'` using `hO r' _ h1`. Rewrite `h4` using `[hr, ← map_mul, ← hm]`. Take `⟨u, hu, e⟩` from `h4`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `: u = _` using `(starRingEnd ℂ).injective e`. Conclude with `this ▸ hu) hd 1 one_pos`. Conclude with `⟨c, d, h, e'⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_crv_conj {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (hc : Crv D cc δ)
     (M : IntermediateField ℚ ℂ) (ρ : M →ₐ[ℚ] ℂ) (h2 : g2 (lamOf D cc δ) ∈ M) (h3 : g3 (lamOf D cc δ) ∈ M) :
@@ -68,27 +68,27 @@ theorem exists_crv_conj {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (hc : C
     exact ⟨c, d, h, e'⟩
 
 /- English proof (translation)
-Take `⟨C, hC, hA⟩` from `GlobalTheory.LatticeAreaBound.area_bounded_of_discr_eq_one`. Establish `hc1 : 0 ≤ Real.posLog C` using `Real.posLog_nonneg`. Establish `hc2 : 0 ≤ Real.posLog (2 * Real.pi ^ 2)` using `Real.posLog_nonneg`. Use `⟨18 + 3 / 2 * (Real.posLog (2 * Real.pi ^ 2) + (Real.posLog C + 2)), by positivity, ?_⟩` and prove the remaining obligations. Introduce `D cc δ t0 hc _ L hL hrd hdl M _ h2 h3 _ t ht`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨-, hlogd, hr1, -⟩` from `GlobalTheory.T.derivationDenominators_and_hostField_sizes D (GlobalTheory.InducedType.induced_type D).1`. Establish `hn : (0 : ℝ) < Module.finrank ℚ M` using `by exact_mod_cast Module.finrank_pos`. Establish `hcard : (Fintype.card (M →ₐ[ℚ] ℂ) : ℝ) = Module.finrank ℚ M`. Conclude with `AlgHom.card ℚ M ℂ` after adjusting the coercions. Establish `hper` using `GlobalTheory.T.mean_log_period_conjugates_eq_chowlaSelberg D (GlobalTheory.InducedType.induced_type D).1 cc δ hc M h2 h3`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd0 : (0 : ℝ) < D.host.d` using `by exact_mod_cast D.host.hyp.2.1.pos`. Establish `hpi` using `Real.pi_gt_three`. Establish `hγ` using `Real.one_half_lt_eulerMascheroniConstant`. Establish `hlp : 0 ≤ Real.log Real.pi` using `Real.log_nonneg (by linarith)`. Establish `hl2p : 0 ≤ Real.log (2 * Real.pi)` using `Real.log_nonneg (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hper` using `[Real.log_div (by positivity) (by positivity), Real.log_sqrt hd0.le, div_eq_iff hn.ne']`. Establish `hB : Real.posLog (3 * (2 * D.host.rdE + 1)) ≤ 9 * L`. Use `(Real.posLog_le_posLog (by positivity) (show _ ≤ 9 * D.host.rdE by linarith)).trans ?_` and prove the remaining obligations. Rewrite using `[Real.posLog_eq_log (by rw [abs_of_pos (by positivity)]; linarith), Real.log_mul (by norm_num) (by positivity)]`. Use `Real.log_le_sub_one_of_pos (show (0 : ℝ) < 9 by norm_num)` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `key : ∀ ρ : M →ₐ[ℚ] ℂ, Real.posLog (area (lamConj M ρ (lamOf D cc δ)))⁻¹ ≤ Real.posLog C - Real.log (area (lamConj M ρ (lamOf D cc δ)) / Real.pi) - Real.log Real.pi ∧ Real.posLog (nrm1Sq (lamConj M ρ (lamOf D cc δ)) (GL3Theta.th0 (lamConj M ρ (lamOf D cc δ)) (t ρ))) ≤ (18 * L + 3 …`. Introduce `ρ`. Take `⟨cc', δ', hc', e⟩` from `exists_crv_conj hc M ρ h2 h3`. Establish `ht'` using `ht ρ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `ht'`, the goal using `[e]`. Take `⟨hΛ, -, hdisc, -, hO⟩` from `GlobalTheory.T.idealPeriodLattice_of_curveDatum D (GlobalTheory.InducedType.induced_type D).1 cc' δ' hc'`. Take `⟨ha0, haC⟩` from `hA _ hΛ hdisc`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Real.log_div ha0.ne' (by positivity)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `Real.posLog_le_posLog ha0.le haC`. Establish `h4` using `Real.posLog_sub_posLog_inv (x := area (lamOf D cc' δ'))`. Combine the linear equalities and inequalities to obtain the conclusion. Use `posLog_nrm_le _ hΛ hdisc ((GlobalTheory.T.admJ_and_torsion_data_algebraic D (GlobalTheory.InducedType.induced_type D).1).1 cc' δ' hc'.1 hc'.2) (GlobalTheory.T.sigmaStar_value_le_meanSquare_genusOne D (GlobalTheory.InducedType.induced_type D).1 cc' δ' hc') ht'.1 (not_mem_lattice_o …` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `s1 : ∑ ρ : M →ₐ[ℚ] ℂ, Real.posLog (area (lamConj M ρ (lamOf D cc δ)))⁻¹ ≤ (Real.posLog C + 2) * L * Module.finrank ℚ M`. Use `(Finset.sum_le_sum fun ρ _ => (key ρ).1).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_sub_distrib, hper, Finset.sum_const, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, nsmul_eq_mul, hcard]`. Establish `h5` using `le_abs_self (logDerivativeAtOne D)`. Establish `h6 : Real.posLog C ≤ Real.posLog C * L` using `le_mul_of_one_le_right hc1 hL`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h7 : Real.posLog C - (Real.eulerMascheroniConstant + (Real.log (2 * Real.pi) - Real.log D.host.d / 2) - logDerivativeAtOne D) - Real.log Real.pi ≤ (Real.posLog C + 2) * L` using `by linarith`. Use `mul_le_mul_of_nonneg_right h7 hn.le` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h8 : Real.posLog (2 * Real.pi ^ 2) ≤ Real.posLog (2 * Real.pi ^ 2) * L` using `le_mul_of_one_le_right hc2 hL`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_le_iff₀ hn]`. Use `s1.trans (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right ?_ (by linarith)) hn.le)` and prove the remaining obligations. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[div_le_iff₀ hn]`. Use `(Finset.sum_le_sum fun ρ _ => (key ρ).2).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_add_distrib, ← Finset.mul_sum, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, hcard]`. Use `mul_le_mul_of_nonneg_right h8 hn.le` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem means_le : ∃ C : ℝ, 0 < C ∧ ∀ (D : D7), ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (t0 : ℂ), Crv D cc δ → GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D cc δ) t0 → ∀ L : ℝ, 1 ≤ L → Real.log D.host.rdE ≤ L → |logDerivativeAtOne D| ≤ L → ∀ (M : IntermediateField ℚ ℂ) [FiniteDimensional ℚ M], g2 (lamOf D cc δ) ∈ M → g3 (lamOf D cc δ) ∈ M → wpF (lamOf D cc δ) t0 ∈ M → ∀ t : (M →ₐ[ℚ] ℂ) → ℂ, (∀ ρ, GL3Theta.IsTwoTorsionPointUnkilled D (lamConj M ρ (lamOf D cc δ)) (t ρ)) → (∑ ρ : M →ₐ[ℚ] ℂ, Real.posLog (area (lamConj M ρ (lamOf D cc δ)))⁻¹) / (Module.finrank ℚ M : ℝ) ≤ C * L ∧ (∑ ρ : M →ₐ[ℚ] ℂ, Real.posLog (nrm1Sq (lamConj M ρ (lamOf D cc δ)) (GL3Theta.th0 (lamConj M ρ (lamOf D cc δ)) (t ρ)))) / (Module.finrank ℚ M : ℝ) ≤ C * L := by
   obtain ⟨C, hC, hA⟩ := GlobalTheory.LatticeAreaBound.area_bounded_of_discr_eq_one

@@ -5,9 +5,9 @@ open NumberField
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h1 : InfinitePlace.mk τ = InfinitePlace.mk τ'`. Apply `(IsCMField.equivInfinitePlace E).injective` to reduce the goal to its premises. Rewrite using `[IsCMField.equivInfinitePlace_apply, IsCMField.equivInfinitePlace_apply, InfinitePlace.comap_mk, InfinitePlace.comap_mk, h]`. Break down `InfinitePlace.mk_eq_iff.1 h1 with h2 | h2` into its components or cases. Conclude with `Or.inl h2.symm`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Conclude with `Or.inr h2.symm`.
+Prove the second alternative.
 -/
 theorem cm_eq_or_conj_of_comp_eq (E : Type) [Field E] [NumberField E] [IsCMField E]
     (τ τ' : E →+* ℂ)
@@ -23,7 +23,7 @@ theorem cm_eq_or_conj_of_comp_eq (E : Type) [Field E] [NumberField E] [IsCMField
   · exact Or.inr h2.symm
 
 /- English proof (translation)
-Establish `h` using `IsTotallyReal.complexEmbedding_isReal (τ.comp (algebraMap (maximalRealSubfield E) E))`. Rewrite `h` using `[ComplexEmbedding.isReal_iff]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cm_conj_comp_eq (E : Type) [Field E] [NumberField E] (τ : E →+* ℂ) :
     (ComplexEmbedding.conjugate τ).comp (algebraMap (maximalRealSubfield E) E) =
@@ -33,13 +33,11 @@ theorem cm_conj_comp_eq (E : Type) [Field E] [NumberField E] (τ : E →+* ℂ) 
   exact h
 
 /- English proof (translation)
-Use `⟨fun φ => k (ComplexEmbedding.lift E φ), fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.prod_fiberwise Finset.univ (fun τ : E →+* ℂ => τ.comp (algebraMap (maximalRealSubfield E) E))]`. Use `Finset.prod_congr rfl fun φ _ => ?_` and prove the remaining obligations. Use `set τ₀ := ComplexEmbedding.lift E φ with hτ₀`. Establish `h0 : τ₀.comp (algebraMap (maximalRealSubfield E) E) = φ` using `ComplexEmbedding.lift_comp_algebraMap E φ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (ComplexEmbedding.conjugate τ₀).comp (algebraMap (maximalRealSubfield E) E) = φ`. Rewrite using `[cm_conj_comp_eq, h0]`. Establish `hne : τ₀ ≠ ComplexEmbedding.conjugate τ₀` using `fun h => IsTotallyComplex.complexEmbedding_not_isReal τ₀ (ComplexEmbedding.isReal_iff.2 h.symm)`. Establish `hfib : Finset.univ.filter (fun τ : E →+* ℂ => τ.comp (algebraMap (maximalRealSubfield E) E) = φ) = {τ₀, ComplexEmbedding.conjugate τ₀}`. Use extensionality with `τ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `cm_eq_or_conj_of_comp_eq E τ₀ τ (h.trans h0.symm)`. Introduce and unpack `(rfl | rfl)`.
-
-Conclude with `h0`. Conclude with `h1`. Rewrite using `[hfib, Finset.prod_pair hne, h0, h1, hk, mul_comm (2 : ℤ), zpow_mul, zpow_two]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cm_prod_regroup_maximalReal (E : Type) [Field E] [NumberField E] [IsCMField E]
     (k : (E →+* ℂ) → ℤ) (hk : ∀ τ, k (ComplexEmbedding.conjugate τ) = k τ) :

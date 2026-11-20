@@ -7,11 +7,11 @@ open GlobalTheory.PRep
 namespace GlobalTheory.SmoothRiesz
 
 /- English proof (translation)
-Set `b` to `Module.finBasis ℂ F`. Establish `key : ∀ c : Fin (Module.finrank ℂ F) → ℂ, T (∑ i, starRingEnd ℂ (c i) • b i) = ∑ i, c i • T (b i)`. Introduce `c`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[LinearMap.map_smulₛₗ, Complex.conj_conj]`. Establish `hli : LinearIndependent ℂ fun i => T (b i)`. Use `Fintype.linearIndependent_iff.2 fun c hc i => ?_` and prove the remaining obligations. Establish `h` using `Fintype.linearIndependent_iff.1 b.linearIndependent _ (hT _ ((key c).trans hc)) i`. Simplify using `using h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hsp` using `hli.span_eq_top_of_card_eq_finrank' (by simp)`. Introduce `l`. Establish `hl : l ∈ Submodule.span ℂ (Set.range fun i => T (b i))` using `hsp ▸ Submodule.mem_top`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).1 hl`. Conclude with `⟨_, (key c).trans hc⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem surjective_of_injective {F : Type} [AddCommGroup F] [Module ℂ F] [FiniteDimensional ℂ F]
     (T : F →ₛₗ[starRingEnd ℂ] Module.Dual ℂ F) (hT : ∀ x, T x = 0 → x = 0) : Function.Surjective T := by
@@ -45,23 +45,21 @@ def stabiliser {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (ρ : Repr
     rw [← Module.End.mul_apply, ← map_mul]; simp
 
 /- English proof (translation)
-Introduce `G _ _ _ K hKo hKc V _ _ ρ hρ hU`. Take `⟨B, -, hpos, hinv⟩` from `hU`. Establish `hadj : ∀ g v x, B (ρ g⁻¹ v) x = B v (ρ g x)`. Introduce `g v x`. Rewrite using `[← hinv g, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hnd : ∀ x, B x x = 0 → x = 0` using `fun x hx => by`. Assume the negation of the conclusion as `h`. Use `hpos x h` as an intermediate fact. Rewrite `this` using `[hx]`. Simplify using `at this`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hsm : ∀ x, B.flip x ∈ smoothPart ρ.dual`. Introduce `x`. Use `(stabiliser ρ.dual (B.flip x)).isOpen_of_mem_nhds (g := 1) (Filter.mem_of_superset ((hρ.1 x).mem_nhds (by simp)) fun g hg => ?_)` and prove the remaining obligations. Establish `hg' : ρ g x = x` using `hg`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show B (ρ g⁻¹ v) x = B v x`. Rewrite using `[hadj, hg']`. Use `⟨B.flip.codRestrict _ hsm, ⟨?_, ?_⟩, fun g x => Subtype.ext (LinearMap.ext fun v => (hadj g v x).symm)⟩` and prove the remaining obligations. Use `(injective_iff_map_eq_zero _).2 fun x hx => hnd x ?_` and prove the remaining obligations. Conclude with `LinearMap.congr_fun (congrArg Subtype.val hx) x`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Introduce `l`. Set `U : Subgroup G` to `stabiliser ρ.dual l.1 ⊓ K`. Establish `hUo : IsOpen (U : Set G)` using `IsOpen.inter l.2 hKo`. Establish `hUc : IsCompact (U : Set G)` using `hKc.of_isClosed_subset (U.isClosed_of_isOpen hUo) fun _ h => h.2`. Use `haveI := hρ.2 U hUo hUc`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Set `T : fixed ρ U →ₛₗ[starRingEnd ℂ] Module.Dual ℂ (fixed ρ U)` to `(B.domRestrict₁₂ (fixed ρ U) (fixed ρ U)).flip`. Take `⟨x, hx⟩` from `surjective_of_injective T (fun x hx => Subtype.ext (hnd x (LinearMap.congr_fun hx x))) (l.1 ∘ₗ (fixed ρ U).subtype)`. Use `⟨x, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show B.flip x = l.1`. Rewrite using `[← sub_eq_zero, ← LinearMap.ker_eq_top, eq_top_iff, ← (GlobalTheory.LocGL.isCompl_fixed_twKer hρ.1 hUc).sup_eq_top]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `sup_le (fun v hv => ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Conclude with `sub_eq_zero.2 (LinearMap.congr_fun hx ⟨v, hv⟩)`. Introduce and unpack `_ ⟨u, v, rfl⟩`. Establish `h1 : l.1 (ρ u v) = l.1 v`. Use `LinearMap.congr_fun (show ρ.dual (u : G)⁻¹ l.1 = l.1 from (U.inv_mem u.2).1) v` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← this]`. Use `show _ = l.1 (ρ (u : G)⁻¹⁻¹ v)`. Rewrite using `[inv_inv]`. Establish `h2 : B (ρ u v) x = B v x`. Rewrite using `[← inv_inv (u : G), hadj, GlobalTheory.LGrp.mem_fixed.1 x.2 _ (U.inv_mem u.2)]`.
-
-Simplify using `[h1, h2]`.
+A detailed English derivation is pending.
 -/
 theorem exists_conj_smoothDual : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (K : Subgroup G), IsOpen (K : Set G) → IsCompact (K : Set G) → ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V), IsAdmissible ρ → GlobalTheory.LGrp.IsUnitarisable ρ → ∃ φ : V →ₛₗ[starRingEnd ℂ] smoothPart ρ.dual, Function.Bijective φ ∧ ∀ g x, φ (ρ g x) = GlobalTheory.LGrp.smoothDual ρ g (φ x) := by
   intro G _ _ _ K hKo hKc V _ _ ρ hρ hU

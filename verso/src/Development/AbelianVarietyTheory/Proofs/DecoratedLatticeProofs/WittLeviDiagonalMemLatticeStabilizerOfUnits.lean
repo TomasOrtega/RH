@@ -14,9 +14,9 @@ namespace GlobalTheory.FinPl.LeviUnitK
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.FinPl.LatIndHalf.mul_mem_latV hc hz`. Establish `e : (fun k => c * z k) = z + fun k => (c - 1) * z k`. Use function extensionality and compare the values at `k`. Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e]`. Conclude with `add_mem hz h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_of_sub_one {S : HSp D} {L : Lat S} {P : Pl D → Prop} {c : AE D} (hc : finPart D (c - 1) ∈ intAE D)
     {z : Fin S.rank → AE D} (hz : z ∈ latV S L P) : (fun k => c * z k) ∈ latV S L P := by
@@ -26,7 +26,7 @@ theorem mul_mem_of_sub_one {S : HSp D} {L : Lat S} {P : Pl D → Prop} {c : AE D
   rw [e]; exact add_mem hz h
 
 /- English proof (translation)
-Use `⟨mul_mem_of_sub_one hc, fun h => ?_⟩` and prove the remaining obligations. Establish `h2` using `mul_mem_of_sub_one hc' h`. Establish `e : (fun k => c' * (c * z k)) = z` using `by funext k; rw [← mul_assoc, h1, one_mul]`. Rewrite `h2` using `[e]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_iff_of_unit {S : HSp D} {L : Lat S} {P : Pl D → Prop} {c c' : AE D} (hc : finPart D (c - 1) ∈ intAE D)
     (hc' : finPart D (c' - 1) ∈ intAE D) (h1 : c' * c = 1) (z : Fin S.rank → AE D) :
@@ -37,14 +37,14 @@ theorem mem_iff_of_unit {S : HSp D} {L : Lat S} {P : Pl D → Prop} {c c' : AE D
   rwa [e] at h2
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [colMul, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem colMul_mul {m n : ℕ} (x : Mx D m n) (i : Fin n) (c a : AE D) :
     colMul x i (c * a) = fun k => c * colMul x i a k := by
   funext k; simp only [colMul, mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Finset.sum_eq_single i (fun j _ hj => by rw [h i j (Ne.symm hj), zero_mul]) (by simp)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem diag_mulVec {R : Type} [CommRing R] {n : ℕ} {M : Matrix (Fin n) (Fin n) R}
     (h : ∀ i j, i ≠ j → M i j = 0) (w : Fin n → R) (i : Fin n) : (M *ᵥ w) i = M i i * w i := by
@@ -52,9 +52,9 @@ theorem diag_mulVec {R : Type} [CommRing R] {n : ℕ} {M : Matrix (Fin n) (Fin n
   exact Finset.sum_eq_single i (fun j _ hj => by rw [h i j (Ne.symm hj), zero_mul]) (by simp)
 
 /- English proof (translation)
-Introduce `i j hij`. Establish `h1 : ((t⁻¹).1 * t.1) i j = 0`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_apply_ne hij]`. Establish `h2 : (t.1 * (t⁻¹).1) j j = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_apply_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[Matrix.mul_apply, Finset.sum_eq_single j (fun k _ hk => by rw [ht k j hk, mul_zero]) (by simp)]`. Rewrite `h2` using `[Matrix.mul_apply, Finset.sum_eq_single j (fun k _ hk => by rw [ht j k (Ne.symm hk), zero_mul]) (by simp)]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem inv_offdiag {R : Type} [CommRing R] {n : ℕ} (t : GL (Fin n) R) (ht : ∀ i j, i ≠ j → t.1 i j = 0) :
     ∀ i j, i ≠ j → (t⁻¹).1 i j = 0 := by
@@ -69,7 +69,7 @@ theorem inv_offdiag {R : Type} [CommRing R] {n : ℕ} (t : GL (Fin n) R) (ht : �
     _ = 0 := by rw [← mul_assoc, h1, zero_mul]
 
 /- English proof (translation)
-Establish `h1 : ((t⁻¹).1 * t.1) i i = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_apply_eq]`. Rewrite `h1` using `[Matrix.mul_apply, Finset.sum_eq_single i (fun k _ hk => by rw [ht k i hk, mul_zero]) (by simp)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem inv_mul_diag {R : Type} [CommRing R] {n : ℕ} (t : GL (Fin n) R) (ht : ∀ i j, i ≠ j → t.1 i j = 0) (i : Fin n) :
     (t⁻¹).1 i i * t.1 i i = 1 := by
@@ -83,7 +83,7 @@ Both sides reduce to the same expression.
 theorem adj_apply' {m n : ℕ} (x : Mx D m n) (i : Fin n) (j : Fin m) : GlobalTheory.MixModel.adj x i j = cA D (x j i) := rfl
 
 /- English proof (translation)
-Rewrite using `[← map_one (cA D), ← map_sub]`. Conclude with `(GlobalTheory.FinPl.FrameLat.cA_int_iff _).2 h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cA_sub_one {a : AE D} (h : finPart D (a - 1) ∈ intAE D) : finPart D (cA D a - 1) ∈ intAE D := by
   rw [← map_one (cA D), ← map_sub]
@@ -94,13 +94,13 @@ end GlobalTheory.FinPl.LeviUnitK
 open GlobalTheory.FinPl.LeviUnitK in
 
 /- English proof (translation)
-Introduce `D S S₀ ρ d L L₀ v _hL hM t ht hg hu`. Use `⟨hg, fun y _ => ?_⟩` and prove the remaining obligations. Establish `ht'` using `inv_offdiag t ht`. Establish `hadj : ∀ i j, i ≠ j → GlobalTheory.MixModel.adj (t⁻¹).1 i j = 0` using `fun i j hij => by`. Rewrite using `[adj_apply', ht' j i (Ne.symm hij), map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `eX : ∀ i, (d.pX *ᵥ (mt S (d.levi t) *ᵥ y)) i = t.1 i i * (d.pX *ᵥ y) i`. Introduce `i`. Rewrite using `[Matrix.mulVec_mulVec, d.pX_levi t, ← Matrix.mulVec_mulVec, diag_mulVec ht]`. Establish `eY : ∀ i, (d.pY *ᵥ (mt S (d.levi t) *ᵥ y)) i = cA D ((t⁻¹).1 i i) * (d.pY *ᵥ y) i`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.mulVec_mulVec, d.pY_levi t, ← Matrix.mulVec_mulVec, diag_mulVec hadj, adj_apply']`. Establish `e0 : d.p0 *ᵥ (mt S (d.levi t) *ᵥ y) = d.p0 *ᵥ y` using `by rw [Matrix.mulVec_mulVec, d.wittDecomp_projAnisotropic_levi t]`. Rewrite using `[hM y, hM (mt S (d.levi t) *ᵥ y), e0]`. Simplify using `only [eX, eY, colMul_mul]`. Establish `hX : ∀ i, colMul d.jX i ((d.pX *ᵥ y) i) ∈ latV S L (· = v) ↔ (fun k => t.1 i i * colMul d.jX i ((d.pX *ᵥ y) i) k) ∈ latV S L (· = v)` using `fun i => mem_iff_of_unit (hu i).1.2 (hu i).2.2 (inv_mul_diag t ht i) _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hY : ∀ i, colMul d.jY i ((d.pY *ᵥ y) i) ∈ latV S L (· = v) ↔ (fun k => cA D ((t⁻¹).1 i i) * colMul d.jY i ((d.pY *ᵥ y) i) k) ∈ latV S L (· = v)` using `fun i => mem_iff_of_unit (cA_sub_one (hu i).2.2) (cA_sub_one (hu i).1.2) (by rw [← map_mul, mul_comm, inv_mul_diag t ht i, map_one]) _`. Conclude with `and_congr (forall_congr' hX) (and_congr (forall_congr' hY) Iff.rfl)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FinPl.LeviUnitK.inK_levi : ∀ (D : D7) (S S₀ : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (L : Lat S) (L₀ : Lat S₀) (v : Pl D), IsSelfDualC S L → MonoAt d L L₀ v → ∀ t : GL (Fin ρ) (AE D), (∀ i j, i ≠ j → t.1 i j = 0) → d.levi t ∈ grpAt S (· = v) → (∀ i, t.1 i i - 1 ∈ intAt D (· = v) ∧ (t⁻¹).1 i i - 1 ∈ intAt D (· = v)) → InK S L (· = v) (d.levi t) := by
   intro D S S₀ ρ d L L₀ v _hL hM t ht hg hu

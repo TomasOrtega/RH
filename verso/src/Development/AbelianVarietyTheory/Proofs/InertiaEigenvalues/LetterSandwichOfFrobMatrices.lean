@@ -22,7 +22,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 attribute [local instance] letterModule
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `[letE]`. Simplify using `[letE, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mul_letE (i : ZMod n) (a : LetA O n) : a * letE i = Pi.single i (a i) := by
   funext j
@@ -31,15 +31,15 @@ theorem mul_letE (i : ZMod n) (a : LetA O n) : a * letE i = Pi.single i (a i) :=
   · simp [letE, h]
 
 /- English proof (translation)
-Rewrite using `[mul_letE]`. Simplify using `[letE]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem letE_mul_self (i : ZMod n) : (letE i : LetA O n) * letE i = letE i := by
   rw [mul_letE]; simp [letE]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Use `⟨(W.N T).smul_mem _ hy, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(letE i : LetA O n) • ((letE i : LetA O n) • y) = (letE i : LetA O n) • y`. Rewrite using `[smul_smul, letE_mul_self]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨hx, he⟩`. Conclude with `⟨x, hx, he⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_Nl_iff (i : ZMod n) (x : W.DD T) :
     x ∈ W.Nl T i ↔ x ∈ W.N T ∧ (letE i : LetA O n) • x = x := by
@@ -52,13 +52,13 @@ theorem mem_Nl_iff (i : ZMod n) (x : W.DD T) :
     exact ⟨x, hx, he⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨x, hx, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem letE_smul_mem (i : ZMod n) {x : W.DD T} (hx : x ∈ W.N T) :
     (letE i : LetA O n) • x ∈ W.Nl T i := ⟨x, hx, rfl⟩
 
 /- English proof (translation)
-Use `W.φD_smul T (algebraMap (LetA O n) W.EE a) x` as an intermediate fact. Rewrite `this` using `[algebraMap_smul, W.φE_ext, algebraMap_smul]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem φD_smulA (a : LetA O n) (x : W.DD T) : W.φD T (a • x) = W.φA a • W.φD T x := by
   have := W.φD_smul T (algebraMap (LetA O n) W.EE a) x
@@ -66,7 +66,7 @@ theorem φD_smulA (a : LetA O n) (x : W.DD T) : W.φD T (a • x) = W.φA a • 
   exact this
 
 /- English proof (translation)
-Use `W.γD_smul T g (algebraMap (LetA O n) W.EE a) x` as an intermediate fact. Rewrite `this` using `[algebraMap_smul, W.γE_ext, algebraMap_smul]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem γD_smulA (g : W.Gam) (a : LetA O n) (x : W.DD T) :
     W.γD T g (a • x) = W.γA g a • W.γD T g x := by
@@ -75,7 +75,7 @@ theorem γD_smulA (g : W.Gam) (a : LetA O n) (x : W.DD T) :
   exact this
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `[LocWach.γA, letγ, letE]`. Simplify using `[LocWach.γA, letγ, letE, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem γA_letE (g : W.Gam) (i : ZMod n) : W.γA g (letE i) = letE i := by
   funext j
@@ -86,22 +86,22 @@ theorem γA_letE (g : W.Gam) (i : ZMod n) : W.γA g (letE i) = letE i := by
 include W in
 
 /- English proof (translation)
-Use `PD.finK₀` as an intermediate fact. Conclude with `⟨by rw [W.n_eq]; exact Module.finrank_pos.ne'⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem neZero_letters : NeZero n := by
   have := PD.finK₀
   exact ⟨by rw [W.n_eq]; exact Module.finrank_pos.ne'⟩
 
 /- English proof (translation)
-Establish `hq : IsUnit (algebraMap (LetA O n) W.EE W.q)`. Establish `h1 : (letπ : LetA O n) * W.q = (1 + letπ) ^ PD.p - 1`. Use function extensionality and compare the values at `i`. Simplify `W.q₀_def` using `[letπ, LocWach.q]`. Use `set x := algebraMap (LetA O n) W.EE letπ with hx`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr⟩` from `exists_add_pow_prime_eq PD.hp (1 : W.EE) x`. Take `⟨u, hu⟩ : IsUnit (x ^ PD.p)` from `W.EE_π.pow _`. Use `W.EE_complete` as an intermediate fact. Establish `hj : ((PD.p : ℕ) : W.EE) ∈ Ideal.jacobson (⊥ : Ideal W.EE)` using `IsAdicComplete.le_jacobson_bot (Ideal.span {((PD.p : ℕ) : W.EE)}) (Ideal.mem_span_singleton_self _)`. Establish `h2` using `(Ideal.mem_jacobson_bot.1 hj) (x * r * (↑u⁻¹ : W.EE))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : x * algebraMap (LetA O n) W.EE W.q = (((PD.p : ℕ) : W.EE) * (x * r * (↑u⁻¹ : W.EE)) + 1) * u`. Rewrite using `[hx, ← map_mul, h1, map_sub, map_pow, map_add, map_one, ← hx, hr, ← hu]`. Use `u.inv_mul` as an intermediate fact. Take the linear combination `(-((PD.p : ℕ) : W.EE) * x * r) * this`. Conclude with `isUnit_of_mul_isUnit_right (h3 ▸ h2.mul u.isUnit)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ k : ℕ, IsUnit (algebraMap (LetA O n) W.EE ((W.φA ^ k) W.q))`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simpa using hq`. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[pow_succ', AlgHom.mul_apply]`. Use `W.φE_ext ((W.φA ^ k) W.q)` as an intermediate fact. Conclude with `this ▸ ih.map W.φE`. Conclude with `key _`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_Q : IsUnit (algebraMap (LetA O n) W.EE W.Q) := by
   have hq : IsUnit (algebraMap (LetA O n) W.EE W.q) := by
@@ -133,7 +133,7 @@ theorem isUnit_Q : IsUnit (algebraMap (LetA O n) W.EE W.Q) := by
   exact key _
 
 /- English proof (translation)
-Rewrite `h` using `[← algebraMap_smul W.EE, ← algebraMap_smul W.EE (W.Q ^ m) y, map_pow]`. Conclude with `((isUnit_Q W).pow m).smul_left_cancel.1 h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Q_pow_smul_cancel (m : ℕ) {x y : W.DD T} (h : W.Q ^ m • x = W.Q ^ m • y) : x = y := by
   rw [← algebraMap_smul W.EE, ← algebraMap_smul W.EE (W.Q ^ m) y, map_pow] at h
@@ -142,16 +142,16 @@ theorem Q_pow_smul_cancel (m : ℕ) {x y : W.DD T} (h : W.Q ^ m • x = W.Q ^ m 
 variable {W T}
 
 /- English proof (translation)
-Rewrite using `[← phi_letE W i, ← φD_smulA, ((mem_Nl_iff W T _ x).1 hx).2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem φD_fixed (i : ZMod n) {x : W.DD T} (hx : x ∈ W.Nl T (i - 1)) :
     (letE i : LetA O n) • W.φD T x = W.φD T x := by
   rw [← phi_letE W i, ← φD_smulA, ((mem_Nl_iff W T _ x).1 hx).2]
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨z, hz, rfl⟩` from `hx`. Rewrite using `[← phi_letE W i, ← φD_smulA]`. Conclude with `Submodule.subset_span ⟨_, letE_smul_mem W T _ hz, rfl⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ a hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem letE_smul_φpull (i : ZMod n) {y : W.DD T} (hy : y ∈ W.φpull T) :
     (letE i : LetA O n) • y ∈ phiPullLetter W T i := by

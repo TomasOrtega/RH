@@ -18,7 +18,7 @@ abbrev finf (D : D7) : AE D →+* Ainf D.host.F ⊗[D.host.F] D.host.E :=
   (Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E)).toRingHom
 
 /- English proof (translation)
-Use `show infHom V g = 1 ↔ _`. Rewrite using `[Units.ext_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mem_GfC_iff (V : HSp D) (g : GA D V) : g ∈ GfC V ↔ (Formalism.L2.Theta.mt V g).map (finf D) = 1 := by
   show infHom V g = 1 ↔ _
@@ -26,7 +26,7 @@ theorem mem_GfC_iff (V : HSp D) (g : GA D V) : g ∈ GfC V ↔ (Formalism.L2.The
   rfl
 
 /- English proof (translation)
-Establish `e1 : (x ⬝ m ⬝ y).map (finf D) = x.map (finf D) ⬝ m.map (finf D) ⬝ y.map (finf D)`. Rewrite using `[Matrix.map_mul (f := finf D), Matrix.map_mul (f := finf D)]`. Establish `e2 : (x ⬝ y).map (finf D) = x.map (finf D) ⬝ y.map (finf D)` using `Matrix.map_mul (f := finf D)`. Rewrite using `[e1, e2, hm, Matrix.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_sand {k n : ℕ} (x : Mx D k n) (m : Mx D n n)
     (y : Mx D n k) (hm : m.map (finf D) = 1) :
@@ -37,7 +37,7 @@ theorem map_sand {k n : ℕ} (x : Mx D k n) (m : Mx D n n)
   rw [e1, e2, hm, Matrix.mul_one]
 
 /- English proof (translation)
-Rewrite `ha`, the goal using `[mem_GfC_iff]`. Rewrite using `[OrthDec.mt_emb, Matrix.map_add _ (map_add (finf D)), map_sand _ _ _ ha, GlobalTheory.MixModel.mt_one, Matrix.mul_one, ← Matrix.map_add _ (map_add (finf D)), o.sum_eq_one, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem orth_emb_mem_GfC {S A B : HSp D} (o : OrthDec S A B) {a : GA D A} (ha : a ∈ GfC A) :
     o.emb (a, 1) ∈ GfC S := by
@@ -46,7 +46,7 @@ theorem orth_emb_mem_GfC {S A B : HSp D} (o : OrthDec S A B) {a : GA D A} (ha : 
     o.sum_eq_one, Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Rewrite `hg`, the goal using `[mem_GfC_iff]`. Rewrite using `[HypDec.unitaryMatrix_wittCoreEmbedding, Matrix.map_add _ (map_add (finf D)), Matrix.map_add _ (map_add (finf D)), map_sand _ _ _ hg, ← Matrix.map_add _ (map_add (finf D)), ← Matrix.map_add _ (map_add (finf D)), d.sum_eq_one, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem witt_embedding_mem_finite_unitary_points {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) {g : GA D S₀} (hg : g ∈ GfC S₀) :
     d.emb0 g ∈ GfC S := by
@@ -55,7 +55,7 @@ theorem witt_embedding_mem_finite_unitary_points {S S₀ : HSp D} {ρ : ℕ} (d 
     d.sum_eq_one, Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Rewrite using `[embA_apply]`. Conclude with `witt_embedding_mem_finite_unitary_points d (orth_emb_mem_GfC o ha)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem embA_mem_GfC {S S₀ A L : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (o : OrthDec S₀ A L) {a : GA D A}
     (ha : a ∈ GfC A) : embA d o a ∈ GfC S := by
@@ -63,14 +63,14 @@ theorem embA_mem_GfC {S S₀ A L : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (o :
   exact witt_embedding_mem_finite_unitary_points d (orth_emb_mem_GfC o ha)
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `Iff.rfl`.
+Substitute using the available equality. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem castGA_fst {I I' : AutInst} (e : I = I') (x : I.GA) : (castGA e x).1 = 1 ↔ x.1 = 1 := by
   subst e
   exact Iff.rfl
 
 /- English proof (translation)
-Establish `e` using `(Formalism.L2.SG.EvalTIota.brg_mem_GfC_i (Formalism.IndefR.RationalEmbedding.iota D k)).1 (by simpa using hk)`. Conclude with `(castGA_fst h.symm (Formalism.IndefR.RationalEmbedding.iota D k)).2 e`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem iotaX_fst {X : HidaSetting D} (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) {k : GA D (D.sp.Y 0)}
     (hk : k ∈ GfC (D.sp.Y 0)) : (iotaX X h k).1 = 1 := by
@@ -85,9 +85,9 @@ variable {D : D7} {X : HidaSetting D} {h : X.B.I = Formalism.L2.SG.InstExistsPf.
   {ψ : AddChar (AF D.host.F) ℂ} {A : HSp D}
 
 /- English proof (translation)
-Use `Prod.ext (Subtype.ext ?_) (Subtype.ext ?_)` and prove the remaining obligations. Use `show (iotaX X h (embA B.d B.o (a * b))).1 = (iotaX X h (embA B.d B.o a)).1 * (iotaX X h (embA B.d B.o b)).1`. Rewrite using `[map_mul, map_mul]`. Both sides reduce to the same expression. Use `show (iotaX X h (embA B.d B.o (a * b))).2 = (iotaX X h (embA B.d B.o a)).2 * (iotaX X h (embA B.d B.o b)).2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[map_mul, map_mul]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem toH_mul (B : SBes X h u ψ A) (a b : GA D A) : B.toH (a * b) = B.toH a * B.toH b := by
   refine Prod.ext (Subtype.ext ?_) (Subtype.ext ?_)
@@ -99,15 +99,15 @@ theorem toH_mul (B : SBes X h u ψ A) (a b : GA D A) : B.toH (a * b) = B.toH a *
     rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (iotaX_fst h (embA_mem_GfC B.d B.o ha))`.
+A detailed English derivation is pending.
 -/
 theorem toH_fst (B : SBes X h u ψ A) {a : GA D A} (ha : a ∈ GfC A) : (B.toH a).1 = 1 :=
   Subtype.ext (iotaX_fst h (embA_mem_GfC B.d B.o ha))
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `(B.tieH ((iotaX X h).symm (1, (k : X.B.I.Gf)))).2 (by`. Rewrite using `[ContinuousMulEquiv.apply_symm_apply]`. Conclude with `⟨one_mem _, k.2⟩)`. Use `⟨a, Prod.ext (Subtype.ext ?_) (Subtype.ext ?_)⟩` and prove the remaining obligations. Use `show (iotaX X h (embA B.d B.o a)).1 = 1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha, ContinuousMulEquiv.apply_symm_apply]`. Use `show (iotaX X h (embA B.d B.o a)).2 = k`. Rewrite using `[ha, ContinuousMulEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toH_surj (B : SBes X h u ψ A) (k : Hfin X u) : ∃ a : GA D A, B.toH a = (1, k) := by
   obtain ⟨a, ha⟩ := (B.tieH ((iotaX X h).symm (1, (k : X.B.I.Gf)))).2 (by
@@ -120,7 +120,7 @@ theorem toH_surj (B : SBes X h u ψ A) (k : Hfin X u) : ∃ a : GA D A, B.toH a 
     rw [ha, ContinuousMulEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Take `⟨a', ha'⟩` from `toH_surj B k`. Establish `e : B.toH (a * a') = B.toH (a' * a)` using `by rw [(Subgroup.mem_center_iff.1 hc a').symm]`. Rewrite `e` using `[toH_mul, toH_mul, ha']`. Conclude with `congrArg Prod.snd e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toH_snd_comm (B : SBes X h u ψ A) {a : GA D A} (hc : a ∈ Subgroup.center (GA D A)) (k : Hfin X u) :
     (B.toH a).2 * k = k * (B.toH a).2 := by
@@ -130,11 +130,9 @@ theorem toH_snd_comm (B : SBes X h u ψ A) {a : GA D A} (hc : a ∈ Subgroup.cen
   exact congrArg Prod.snd e
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hT`. Use `⟨fun ξ => ⟨fun γ y => ?_, fun y κ => ?_⟩, fun g ξ y => ?_⟩` and prove the remaining obligations. Use `show T ξ ((_, _) * y * (1, δ)) = T ξ (y * (1, δ))`. Rewrite using `[mul_assoc]`. Conclude with `(h1 ξ).1 γ _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ((1 : Hinf X u), (κ : Hfin X u)) * (1, δ) = (1, δ) * (1, (κ : Hfin X u))` using `Prod.ext rfl (hδ κ).symm`. Establish `e : y * (1, (κ : Hfin X u)) * (1, δ) = y * (1, δ) * (1, (κ : Hfin X u))`. Rewrite using `[mul_assoc, mul_assoc, hc]`. Conclude with `(congrArg (T ξ) e).trans ((h1 ξ).2 _ κ)`. Establish `hc : ((g : Hinf X u), (1 : Hfin X u)) * (1, δ) = (1, δ) * (g, 1)` using `Prod.ext ((mul_one g).trans (one_mul g).symm) ((one_mul δ).trans (mul_one δ).symm)`.
-
-Establish `e : y * (g, 1) * (1, δ) = y * (1, δ) * (g, 1)`. Rewrite using `[mul_assoc, mul_assoc, hc]`. Conclude with `(h2 g ξ (y * (1, δ))).trans (congrArg (T ξ) e.symm)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rtr_mem_Cu (hK : X.LevelSubgroupCharacter) {δ : Hfin X u} (hδ : ∀ k : Hfin X u, δ * k = k * δ)
     {T : X.Vpi u →ₗ[ℂ] (Hinf X u × Hfin X u → ℂ)} (hT : T ∈ Cu X u hK) :
@@ -156,7 +154,7 @@ theorem rtr_mem_Cu (hK : X.LevelSubgroupCharacter) {δ : Hfin X u} (hδ : ∀ k 
     exact (h2 g ξ (y * (1, δ))).trans (congrArg (T ξ) e.symm)
 
 /- English proof (translation)
-Use extensionality with `ξ y`. Establish `hc : ((1 : Hinf X u), δ⁻¹) * (1, δ) = 1` using `Prod.ext (mul_one 1) (inv_mul_cancel δ)`. Establish `e : y * (1, δ⁻¹) * (1, δ) = y` using `by rw [mul_assoc, hc, mul_one]`. Conclude with `congrArg (T ξ) e`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rtr_inv_rtr (δ : Hfin X u) (T : X.Vpi u →ₗ[ℂ] (Hinf X u × Hfin X u → ℂ)) :
     Formalism.L2.SG.ColDict.rtr X δ⁻¹ (Formalism.L2.SG.ColDict.rtr X δ T) = T := by
@@ -170,9 +168,9 @@ end GlobalTheory.Core.Mi.CenAct
 open GlobalTheory.Core.Mi.CenAct in
 
 /- English proof (translation)
-Introduce `D X h u ψ A B hK a _ haf hac`. Use `set δ : Hfin X u := (B.toH a).2 with hδdef`. Establish `hδ : ∀ k : Hfin X u, δ * k = k * δ` using `toH_snd_comm B hac`. Establish `hta : B.toH a = (1, δ)` using `Prod.ext (toH_fst B haf) rfl`. Use `⟨(Formalism.L2.SG.ColDict.rtr X δ).restrict (fun T hT => rtr_mem_Cu hK hδ hT), fun T₁ T₂ e => ?_, fun T ξ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Establish `e'` using `congrArg (fun S : Cu X u hK => Formalism.L2.SG.ColDict.rtr X δ⁻¹ (S : X.Vpi u →ₗ[ℂ] (Hinf X u × Hfin X u → ℂ))) e`. Simplify `e'` using `only [LinearMap.restrict_apply, rtr_inv_rtr]`. Use function extensionality and compare the values at `a' show T.1 ξ (B.toH a' * (1, δ)) = T.1 ξ (B.toH (a' * a))`. Rewrite using `[toH_mul, hta]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Core.Mi.central_acts_on_columns : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (u : D.what₂.Word) (ψ : AddChar (AF D.host.F) ℂ) (A : HSp D) (B : SBes X h u ψ A) (hK : X.LevelSubgroupCharacter) (a : GA D A), GlobalTheory.Core.Mi.IdE X → a ∈ GfC A → a ∈ Subgroup.center (GA D A) → ∃ R : Cu X u hK →ₗ[ℂ] Cu X u hK, Function.Injective R ∧ ∀ (T : Cu X u hK) ξ, B.colForm (R T).1 ξ = rTrans a (B.colForm T.1 ξ) := by
   intro D X h u ψ A B hK a _ haf hac

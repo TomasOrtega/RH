@@ -6,11 +6,11 @@ open CategoryTheory Limits AlgebraicGeometry TensorProduct
 open FunctorialResolution.Blowup
 
 /- English proof (translation)
-Unfold `sectionsRingHom`. Express the relevant statement in the definitionally equal form `_ = (CommRingCat.ofHom φ ≫ U.ι.appLE U V e).hom`. Use `congr 1`. Establish `h2 : (Scheme.ΓSpecIso Γ(X, U)).inv ≫ hU.isoSpec.hom.appLE ⊤ V (le_top.trans (Scheme.Hom.preimage_top _).ge) = U.ι.appLE U V e`. Establish `h3 : hU.isoSpec.hom.appLE ⊤ V (le_top.trans (Scheme.Hom.preimage_top _).ge) = hU.isoSpec.hom.appTop ≫ (U : Scheme).presheaf.map (homOfLE le_top).op` using `rfl`.
+Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h3, IsAffineOpen.isoSpec_hom_appTop, Category.assoc, Iso.inv_hom_id_assoc, Scheme.Opens.ι_appLE, Scheme.Opens.topIso_inv]`. Use `erw [← Functor.map_comp]`. Both sides reduce to the same expression. Rewrite using `[Scheme.Hom.comp_appLE]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Scheme.ΓSpecIso_inv_naturality, Category.assoc]`. Conclude with `congrArg (CommRingCat.ofHom φ ≫ ·) h2`.
+A detailed English derivation is pending.
 -/
 private theorem sections_eq {S : Type} [CommRing S] {X : Scheme.{0}} (U : X.Opens) (hU : IsAffineOpen U)
     (φ : S →+* Γ(X, U)) (V : (U : Scheme.{0}).Opens) (e : V ≤ U.ι ⁻¹ᵁ U) :
@@ -35,9 +35,9 @@ private theorem sections_eq {S : Type} [CommRing S] {X : Scheme.{0}} (U : X.Open
       exact congrArg (CommRingCat.ofHom φ ≫ ·) h2
 
 /- English proof (translation)
-Introduce `S _ X I N J φ h`. Use extensionality with `V : 1`. Use function extensionality and compare the values at `V`. Establish `e : (V : (N.1 : Scheme.{0}).Opens) ≤ N.1.ι ⁻¹ᵁ N.1`. Introduce `x _`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `x.2`. Rewrite using `[Scheme.IdealSheafData.comap_ideal_eq_map_appLE I N.1.ι N V e, h, Ideal.map_map, comap_specIdealSheaf_ideal, sections_eq N.1 N.2 φ V e]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.idealSheaf_comap_eq_specIdealSheaf_of_eq_map :
     ∀ {S : Type} [CommRing S] {X : Scheme.{0}} (I : X.IdealSheafData) (N : X.affineOpens) (J : Ideal S)

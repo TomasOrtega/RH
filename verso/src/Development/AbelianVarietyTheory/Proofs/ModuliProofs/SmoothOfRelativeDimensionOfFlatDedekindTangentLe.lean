@@ -30,15 +30,15 @@ def pointOfDerivations {k B C : Type} [CommRing k] [CommRing B] [Field C] [Algeb
     (funext fun i ↦ map_add (D i) a b)
 
 /- English proof (translation)
-Set `` to `Ideal.Quotient.field x`. Set `C` to `AlgebraicClosure (B ⧸ x)`. Establish `: Module.Finite C (Derivation k B C)` using `.equiv (derivationEquivDual k B C).symm`. Set `D` to `Module.finBasis C (Derivation k B C)`. Use `⟨C, inferInstance, inferInstance, _, pointOfDerivations D, finrank_cotangent_le_finrank_derivation k x C, fun c ↦ funext fun i ↦ (D i).map_algebraMap c, fun lam h ↦ ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h₀ : ∑ i, lam (Pi.single i 1) • D i = 0`. Use extensionality with `b`. Establish `h₁ : lam (fun i ↦ D i b) = 0` using `h b`. Rewrite `h₁` using `[LinearMap.pi_apply_eq_sum_univ]`. Establish `h₂ : (∑ i, lam (Pi.single i 1) • D i) b = ∑ i, lam (Pi.single i 1) * D i b`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `map_sum (Derivation.coeFnAddMonoidHom (R := k) (A := B) (M := C)) (fun i ↦ lam (Pi.single i 1) • D i) Finset.univ` as an intermediate fact. Use `congrFun this b` as an intermediate fact. Rewrite `this` using `[Finset.sum_apply]`. Conclude with `this`. Rewrite using `[h₂, Derivation.zero_apply, ← h₁]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul, mul_comm]`. Use `congr 2`. Use extensionality with `j`. Simplify using `[Pi.single_apply, eq_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `LinearMap.pi_ext' fun i ↦ LinearMap.ext_ring ?_` and prove the remaining obligations. Simplify using `using Fintype.linearIndependent_iff.mp D.linearIndependent _ h₀ i`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_point_of_isMaximal (k : Type) [Field k] [PerfectField k] {B : Type} [CommRing B]
     [Algebra k B] [Algebra.FiniteType k B] (x : Ideal B) [x.IsMaximal] :
@@ -73,11 +73,11 @@ theorem exists_point_of_isMaximal (k : Type) [Field k] [PerfectField k] {B : Typ
   simpa using Fintype.linearIndependent_iff.mp D.linearIndependent _ h₀ i
 
 /- English proof (translation)
-Set `e : L ≃ₐ[A] Localization.AtPrime q` to `IsLocalization.algEquiv q.primeCompl _ _`. Establish `: Algebra.IsSmoothAt R q` using `Algebra.FormallySmooth.of_equiv (e.restrictScalars R)`. Use `exists_isStandardSmoothOfRelativeDimension_of_isSmoothAt R q ?_` and prove the remaining obligations. Set `: Algebra L (Localization.AtPrime q)` to `e.toRingHom.toAlgebra`. Establish `: IsScalarTower R L (Localization.AtPrime q)` using `.of_algebraMap_eq fun r ↦ ((e.restrictScalars R).commutes r).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: Algebra.FormallyEtale L (Localization.AtPrime q)` using `.of_equiv (AlgEquiv.ofRingEquiv (f := e.toRingEquiv) (R := L) fun _ ↦ rfl)`. Establish `: Algebra.EssFiniteType A L` using `.of_isLocalization L q.primeCompl`. Establish `: Algebra.EssFiniteType R L` using `.comp R A L`. Use `IsLocalization.AtPrime.isLocalRing L q` as an intermediate fact. Establish `: Module.Free L Ω[L⁄R]` using `Module.free_of_flat_of_isLocalRing`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← (KaehlerDifferential.tensorKaehlerEquivOfFormallyEtale R L (Localization.AtPrime q)).finrank_eq, Module.finrank_baseChange, hd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_isStandardSmoothOfRelativeDimension_of_isLocalization (R : Type*) [CommRing R]
     {A : Type*} [CommRing A] [Algebra R A] [Algebra.FinitePresentation R A] (q : Ideal A)
@@ -101,7 +101,7 @@ theorem exists_isStandardSmoothOfRelativeDimension_of_isLocalization (R : Type*)
     (Localization.AtPrime q)).finrank_eq, Module.finrank_baseChange, hd]
 
 /- English proof (translation)
-Use `(LinearEquiv.ofBijective (KaehlerDifferential.map R V L L) ⟨?_, KaehlerDifferential.map_surjective R V L⟩).finrank_eq` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨y, rfl⟩` from `(KaehlerDifferential.exact_mapBaseChange_map R V L x).mp hx`. Rewrite using `[Subsingleton.elim y 0, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_kaehler_eq_of_formallyUnramified (R V L : Type*) [CommRing R] [CommRing V]
     [CommRing L] [Algebra R V] [Algebra V L] [Algebra R L] [IsScalarTower R V L]
@@ -115,11 +115,11 @@ theorem finrank_kaehler_eq_of_formallyUnramified (R V L : Type*) [CommRing R] [C
   rw [Subsingleton.elim y 0, map_zero]
 
 /- English proof (translation)
-Introduce `p hp`. Use `hp.1.1` as an intermediate fact. Establish `h : p.map (e : R →+* S) ∈ minimalPrimes S`. Use `⟨⟨Ideal.map_isPrime_of_equiv e, bot_le⟩, fun q hq hle ↦ ?_⟩` and prove the remaining obligations. Use `hq.1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Ideal.map_le_iff_le_comap]`. Use `hp.2 ⟨Ideal.comap_isPrime _ q, bot_le⟩ ?_` and prove the remaining obligations. Use `(Ideal.comap_mono hle).trans ?_` and prove the remaining obligations. Rewrite using `[Ideal.comap_map_of_bijective (e : R →+* S) e.bijective]`. Rewrite using `[ringKrullDim_eq_of_ringEquiv (Ideal.quotientEquiv p _ e rfl)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hd _ h`.
+A detailed English derivation is pending.
 -/
 theorem le_ringKrullDim_quotient_of_ringEquiv {R S : Type*} [CommRing R] [CommRing S] (e : R ≃+* S)
     {d : WithBot ℕ∞} (hd : ∀ q ∈ minimalPrimes S, d ≤ ringKrullDim (S ⧸ q)) :
@@ -139,15 +139,15 @@ theorem le_ringKrullDim_quotient_of_ringEquiv {R S : Type*} [CommRing R] [CommRi
 attribute [local instance] Algebra.TensorProduct.rightAlgebra in
 
 /- English proof (translation)
-Set `ρ : V →ₐ[o] ResidueField V` to `IsScalarTower.toAlgHom o V _`. Establish `hρ : Function.Surjective ρ` using `residue_surjective`. Set `φ : V ⊗[o] A →+* ResidueField V ⊗[o] A` to `(Algebra.TensorProduct.map ρ (AlgHom.id o A)).toRingHom`. Establish `hφ : Function.Surjective φ` using `LinearMap.rTensor_surjective A (g := ρ.toLinearMap) hρ`. Establish `hker : RingHom.ker φ = (maximalIdeal V).map (algebraMap V (V ⊗[o] A))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `Algebra.TensorProduct.rTensor_ker (R := o) (C := A) ρ hρ`. Rewrite `h` using `[show RingHom.ker ρ = maximalIdeal V from ker_residue]`. Conclude with `h`. Establish `hd'` using `le_ringKrullDim_quotient_of_ringEquiv (Algebra.TensorProduct.cancelBaseChange o V K K A).toRingEquiv hd`. Take `⟨h₁, -, h₂, h₃, -⟩` from `isSmoothAt_of_flat_of_finrank_cotangent_le_of_surjective V K hd' φ hφ hker x hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: Algebra.FinitePresentation V (V ⊗[o] A)` using `Algebra.FinitePresentation.of_finiteType.mp inferInstance`. Take `⟨-, -, h₄⟩` from `isSmoothAt_of_flat_of_isRegularLocalRing V φ hφ hker x (Localization.AtPrime x)`. Rewrite `h₄` using `[h₃]`. Set `L` to `Localization.AtPrime (x.comap φ)`. Establish `h₅ : Module.finrank L Ω[L⁄V] = d` using `by exact_mod_cast h₄`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Algebra.FinitePresentation o A` using `Algebra.FinitePresentation.of_finiteType.mp ‹_›`. Establish `: Algebra.FormallyEtale o V` using `.of_isLocalization M`. Establish `: Algebra.FormallySmooth o L` using `.comp o V L`. Use `IsLocalization.tensorRight (S := A) V M` as an intermediate fact. Establish `hL` using `IsLocalization.isLocalization_isLocalization_atPrime_isLocalization (Algebra.algebraMapSubmonoid A M) L (x.comap φ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : (x.comap φ).comap (algebraMap A (V ⊗[o] A)) = x.comap (Algebra.TensorProduct.includeRight : A →ₐ[o] ResidueField V ⊗[o] A).toRingHom`. Rewrite using `[Ideal.comap_comap]`. Use `congr 1`. Rewrite using `[← hq]`. Conclude with `exists_isStandardSmoothOfRelativeDimension_of_isLocalization o _ L ((finrank_kaehler_eq_of_formallyUnramified o V L).trans h₅)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isStandardSmoothOfRelativeDimension_of_localization (o V K : Type) [CommRing o]
     [IsNoetherianRing o] [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
@@ -195,21 +195,19 @@ theorem exists_isStandardSmoothOfRelativeDimension_of_localization (o V K : Type
     ((finrank_kaehler_eq_of_formallyUnramified o V L).trans h₅)
 
 /- English proof (translation)
-Set `m` to `q.under o`. Establish `: Algebra.FiniteType ℤ A` using `.trans (S := o) ‹_› ‹_›`. Establish `: Finite (A ⧸ q)`. Set `` to `Ideal.Quotient.field q`. Establish `h : ((Ideal.Quotient.mk q).comp (algebraMap ℤ A)).FiniteType` using `(RingHom.finiteType_algebraMap.mpr ‹_›).comp_surjective Ideal.Quotient.mk_surjective`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `@finite_field_of_finiteType_int _ _ (RingHom.finiteType_algebraMap.mp ?_)` and prove the remaining obligations. Conclude with `(congrArg RingHom.FiniteType (RingHom.ext_int _ _)).mp h`. Set `e : m.ResidueField →ₐ[o] q.ResidueField` to `Ideal.ResidueField.mapₐ m q (Algebra.ofId o A) rfl`. Establish `: Finite m.ResidueField` using `.of_injective e e.toRingHom.injective`. Establish `hm : m ≠ ⊥` using `fun h ↦ by`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Finite o` using `.of_injective (algebraMap o m.ResidueField) ((RingHom.injective_iff_ker_eq_bot _).mpr (m.ker_algebraMap_residueField.trans h))`. Conclude with `not_finite o`. Establish `: m.IsMaximal` using `Ideal.IsPrime.isMaximal inferInstance hm`. Use `IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain o hm (Localization.AtPrime m)` as an intermediate fact. Set `χ : m.ResidueField ⊗[o] A →ₐ[o] q.ResidueField` to `Algebra.TensorProduct.lift e (IsScalarTower.toAlgHom o A _) fun _ _ ↦ .all _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ψ : A →+* m.ResidueField ⊗[o] A` to `(Algebra.TensorProduct.includeRight : A →ₐ[o] m.ResidueField ⊗[o] A).toRingHom`. Establish `hψ : Function.Surjective ψ` using `TensorProduct.mk_surjective o A _ m.algebraMap_residueField_surjective`. Establish `hχψ (a : A) : χ (ψ a) = algebraMap A _ a` using `by simp [χ, ψ]`. Establish `hχ : Function.Surjective χ.toRingHom` using `fun y ↦ by`. Take `⟨a, rfl⟩` from `q.algebraMap_residueField_surjective y`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Conclude with `⟨_, hχψ a⟩`. Set `x` to `RingHom.ker χ.toRingHom`. Establish `: x.IsMaximal` using `RingHom.ker_isMaximal_of_surjective _ hχ`. Establish `hq : x.comap ψ = q`. Use extensionality with `a`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← Ideal.algebraMap_residueField_eq_zero (I := q), ← hχψ]`. Both sides reduce to the same expression. Take `⟨C, _, _, r, g, h₁, h₂, h₃⟩` from `exists_point_of_isMaximal m.ResidueField x`. Establish `hr : r ≤ d`. Use `ht C r (g.comp ψ) (fun c ↦ ?_) fun lam h ↦ h₃ lam fun b ↦ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `h₂ (algebraMap o _ c)` as an intermediate fact. Rewrite `this` using `[← IsScalarTower.algebraMap_apply, ← (Algebra.TensorProduct.includeRight : A →ₐ[o] m.ResidueField ⊗[o] A).commutes]`. Conclude with `this`. Take `⟨a, rfl⟩` from `hψ b`. Conclude with `h a`.
-
-Rewrite using `[← hq]`. Conclude with `exists_isStandardSmoothOfRelativeDimension_of_localization o (Localization.AtPrime m) (FractionRing o) m.primeCompl hd x (h₁.trans hr)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isStandardSmoothOfRelativeDimension_of_isMaximal (o : Type) [CommRing o]
     [IsDedekindDomain o] [CharZero o] [Algebra.FiniteType ℤ o]
@@ -268,19 +266,17 @@ theorem exists_isStandardSmoothOfRelativeDimension_of_isMaximal (o : Type) [Comm
     (FractionRing o) m.primeCompl hd x (h₁.trans hr)
 
 /- English proof (translation)
-Introduce `o _ _ _ X s d _ _ _ hd ht`. Establish `key (z : X) : ∃ U : X.Opens, z ∈ U ∧ SmoothOfRelativeDimension d (U.ι ≫ s)`. Take `⟨A, _, _, j, _, p, hp, hj⟩` from `exists_affine_chart_over s z`. Establish `: Algebra.FiniteType o A` using `RingHom.finiteType_algebraMap.mp <| (HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType) (φ := CommRingCat.ofHom (algebraMap o A))).mp (hj ▸ inferInstance)`. Establish `: Module.Flat o A` using `RingHom.flat_algebraMap_iff.mp <| (HasRingHomProperty.Spec_iff (P := @Flat) (φ := CommRingCat.ofHom (algebraMap o A))).mp (hj ▸ inferInstance)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨q, hq, hpq⟩` from `Ideal.exists_le_maximal _ p.isPrime.ne_top`. Take `⟨f, hf, hs⟩` from `exists_isStandardSmoothOfRelativeDimension_of_isMaximal o (hd A j ‹_› hj) (d := d) (fun C _ _ r g h₁ h₂ ↦ by`. Use `ht C r ((TrivSqZeroExt.fstHom C C (Fin r → C)).toRingHom.comp (g.comp (algebraMap o A))) (spMap g ≫ j) ?_ fun lam h ↦ h₂ lam fun a ↦ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hj, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `RingHom.ext fun c ↦ TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Both sides reduce to the same expression. Conclude with `h₁ c`. Simplify using `only [constPt, ← Category.assoc, cancel_mono, ← Spec.map_comp, ← CommRingCat.ofHom_comp] at h`. Establish `h'` using `congrArg (fun t ↦ TrivSqZeroExt.snd (t.hom a)) (Spec.map_injective h)`.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h') q` using `[dirMap, TrivSqZeroExt.algebraMap_eq_inl]`. Set `j'` to `Spec.map (CommRingCat.ofHom (algebraMap A (Localization.Away f))) ≫ j`. Establish `hs' : SmoothOfRelativeDimension d (j' ≫ s)`. Rewrite using `[Category.assoc, hj, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← IsScalarTower.algebraMap_eq, HasRingHomProperty.Spec_iff (P := @SmoothOfRelativeDimension d)]`. Conclude with `RingHom.locally_of RingHom.isStandardSmoothOfRelativeDimension_respectsIso _ ((RingHom.isStandardSmoothOfRelativeDimension_algebraMap d).mpr hs)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨j'.opensRange, ?_, ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : p ∈ Set.range (PrimeSpectrum.comap (algebraMap A (Localization.Away f))) := by`. Rewrite using `[PrimeSpectrum.localization_away_comap_range _ f]`. Conclude with `fun h ↦ hf (hpq h)`. Use `⟨t, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← hp, ← ht]`. Both sides reduce to the same expression. Rewrite using `[← j'.isoOpensRange_inv_comp, Category.assoc]`. Use `smoothOfRelativeDimension_comp 0 d j'.isoOpensRange.inv (j' ≫ s)` as an intermediate fact. Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis.
-
-Use `choose U hU hs using key`. Use `HasRingHomProperty.instIsZariskiLocalAtSource (P := @SmoothOfRelativeDimension d)` as an intermediate fact. Conclude with `IsZariskiLocalAtSource.of_iSup_eq_top U (top_le_iff.mp fun z _ ↦ le_iSup U z (hU z)) hs`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smoothOfRelativeDimension_of_flat_of_tangent_le : ∀ (o : Type) [CommRing o] [IsDedekindDomain o] [CharZero o] (X : Scheme.{0}) (s : X ⟶ Sp o) (d : ℕ), Algebra.FiniteType ℤ o → Flat s → LocallyOfFiniteType s → (∀ (R : Type) [CommRing R] [Algebra o R] (x : Sp R ⟶ X), IsOpenImmersion x → x ≫ s = spMap (algebraMap o R) → ∀ q ∈ minimalPrimes (FractionRing o ⊗[o] R), (d : WithBot ℕ∞) ≤ ringKrullDim ((FractionRing o ⊗[o] R) ⧸ q)) → (∀ (K : Type) [Field K] [IsAlgClosed K] (r : ℕ) (β : o →+* K) (x : Sp (TrivSqZeroExt K (Fin r → K)) ⟶ X), x ≫ s = spMap ((algebraMap K (TrivSqZeroExt K (Fin r → K))).comp β) → (∀ lam : (Fin r → K) →ₗ[K] K, spMap (dirMap lam) ≫ x = constPt (spMap (dirMap lam) ≫ x) → lam = 0) → r ≤ d) → SmoothOfRelativeDimension d s := by
   intro o _ _ _ X s d _ _ _ hd ht

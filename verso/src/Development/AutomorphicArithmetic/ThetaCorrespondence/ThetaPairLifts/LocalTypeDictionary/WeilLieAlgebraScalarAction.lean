@@ -13,19 +13,17 @@ open NumberField MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMas
 namespace GlobalTheory.LieScal
 open scoped Classical in
 /- English proof (translation)
-Introduce `hP hD hV F E _ _ _ _ _ σ α β κ _ _ _ _ _ P Q R S ψ τ JA JB d a b A C Φ om hCM hψ hFr hΦ hom`. Take `⟨ω₀, c₀, hH, hc, hact⟩` from `_root_.GlobalTheory.T.isGeneric_localComponent hP hD hV F E σ α β κ P Q R S ψ τ JA JB d a b A C Φ hCM hψ hFr hΦ`. Take `⟨ν, hν, hmul, hνc, hν0⟩` from `_root_.GlobalTheory.T.metaplectic_splitting_unique_up_to_character hP F E σ α β κ ψ JA JB d om ω₀ hψ hom hH hc`. Take `⟨k, hk⟩` from `_root_.GlobalTheory.T.realLift_characterTrace_hasDerivAt hP F E σ β R S τ JB b C hCM hFr.2.2 ν hmul hνc hν0`. Use `⟨fun w => c₀ w + k w, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `γ hγ Y hY T g hg l hl`. Establish `hH1 : ∀ t : ℝ, At (evI F) (((γ (Multiplicative.ofAdd t)).1 : Matrix β β (AE F E)) - 1)` using `fun t => hγ.2 _`. Establish `hpm : ∀ f : SInf F κ, pureA F f g ∈ schA F κ` using `fun f => Submodule.subset_span ⟨f, g, hg, rfl⟩`. Establish `e1 : (fun t : ℝ => l (om (γ (Multiplicative.ofAdd t)) (pureA F (Φ T) g))) = fun t => ν (γ (Multiplicative.ofAdd t)) * l (ω₀ (γ (Multiplicative.ofAdd t)) (pureA F (Φ T) g))`. Use function extensionality and compare the values at `t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hν _ (hH1 t) _ (hpm _), map_smul, smul_eq_mul]`. Use `show HasDerivAt (fun t : ℝ => l (om (γ (Multiplicative.ofAdd t)) (pureA F (Φ T) g))) _ 0`. Rewrite using `[e1]`. Establish `h3` using `(hk γ hγ Y hY).mul (hact γ hγ Y hY T g hg l hl)`. Establish `hγ0 : γ (Multiplicative.ofAdd (0 : ℝ)) = 1` using `by rw [ofAdd_zero, map_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1m : At (evI F) (((1 : UG (cA σ) JB).1 : Matrix β β (AE F E)) - 1)` using `fun u _ => by simp`. Establish `hν1 : ν 1 = 1`. Use `hmul 1 1 h1m h1m` as an intermediate fact. Rewrite `this` using `[mul_one]`. Conclude with `(mul_eq_left₀ (hν0 1 h1m)).mp this.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `beta_reduce at h3`. Rewrite `h3` using `[hγ0, hν1, map_one, Module.End.one_apply, one_mul]`. Use `h3.congr_deriv ?_` and prove the remaining obligations. Establish `e2 : sumPl (fun w => fockAct2 P Q R S (Y w) + (((fun w => c₀ w + k w) w) * (Y w).trace) • (1 : Module.End ℂ _)) = sumPl (fun w => fockAct2 P Q R S (Y w) + (c₀ w * (Y w).trace) • (1 : Module.End ℂ _)) + (∑ w, k w * (Y w).trace) • (1 : Module.End ℂ (Tens F P Q R S))`. Simplify using `only [add_mul, add_smul, ← add_assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `sumPl_add_smul (fun w => fockAct2 P Q R S (Y w) + (c₀ w * (Y w).trace) • (1 : Module.End ℂ _)) _`. Rewrite using `[e2, LinearMap.add_apply, LinearMap.smul_apply, Module.End.one_apply, map_add, map_smul]`. Establish `key : ∀ (z : ℂ) (f f' : SInf F κ), pureA F ⇑(f' + z • f) g = z • pureA F ⇑f g + pureA F ⇑f' g`. Introduce `z f f'`. Use function extensionality and compare the values at `x`.
-
-Simplify using `[pureA]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, map_add, map_smul, smul_eq_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lie_algebra_acts_by_scalar : _root_.GlobalTheory.FunPr.ThetaLocalInputs → DerEx → VacLine → LieScalar := by
   intro hP hD hV F E _ _ _ _ _ σ α β κ _ _ _ _ _ P Q R S ψ τ JA JB d a b A C Φ om hCM hψ hFr hΦ hom
@@ -68,7 +66,7 @@ section
 open scoped TensorProduct GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.LieScal.lie_algebra_acts_by_scalar | exact _root_.GlobalTheory.LieScal.lie_algebra_acts_by_scalar | (intros; apply _root_.GlobalTheory.LieScal.lie_algebra_acts_by_scalar <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.weil_lie_algebra_scalar_action : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.RealLift.DerEx → GlobalTheory.RealLift.VacLine → GlobalTheory.RealLift.LieScalar := by
   first | exact @_root_.GlobalTheory.LieScal.lie_algebra_acts_by_scalar | exact _root_.GlobalTheory.LieScal.lie_algebra_acts_by_scalar | (intros; apply _root_.GlobalTheory.LieScal.lie_algebra_acts_by_scalar <;> assumption)

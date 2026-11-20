@@ -1,13 +1,13 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `t r hr h`. Establish `h1 : t.re * t.re - t.im * t.im = r`. Use `congrArg Complex.re h` as an intermediate fact. Simplify `this` using `[pow_two]`. Establish `h2 : t.re * t.im + t.im * t.re = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `congrArg Complex.im h` as an intermediate fact. Simplify `this` using `[pow_two]`. Establish `h3 : t.re = 0`. Establish `hm : t.re * t.im = 0` using `by linarith [mul_comm t.im t.re]`. Break down `mul_eq_zero.mp hm with h0 | h0` into its components or cases.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `h0`. It suffices to derive a contradiction. Rewrite `h1` using `[h0]`. Use polynomial arithmetic with `[mul_self_nonneg t.re]`. Apply `Complex.ext` to reduce the goal to its premises.
+It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `[h3]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qh17.conj_of_sq_neg :
     ∀ {t : ℂ} {r : ℝ},

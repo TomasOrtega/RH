@@ -96,7 +96,7 @@ end Sum
 variable {K : Type} [Field K] [NumberField K] [IsTotallyComplex K]
 
 /- English proof (translation)
-Introduce `h'` and use `by obtain ⟨τ⟩ : Nonempty (K →+* ℂ) := inferInstance obtain ⟨x, hx⟩ := Multiset.card_eq_one.1 (α.card_infChar τ) obtain ⟨k, hk⟩ := (h τ).2 x (by rw [hx]; exact Multiset.mem_singleton_self x) obtain ⟨m, hm⟩ := h' τ x (by rw [hx]; exact Multiset.mem_singleton_self x) have e : (((2 * …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_halfIntegral_of_isRegAlg {α : CG K 1} (h : α.IsRegAlg) : ¬ HalfIntegral α := fun h' => by
   obtain ⟨τ⟩ : Nonempty (K →+* ℂ) := inferInstance
@@ -123,17 +123,17 @@ def liftWeight {n : ℕ} (lam : DomWeight n) (t : ℤ) (ht : ∀ k, t ≤ lam.w 
     · exact le_rfl
 
 /- English proof (translation)
-Set `f : ℕ → ℂ` to `fun i => ((if h : i < n then lam.w ⟨i, h⟩ - t else 0 : ℤ) : ℂ) + ((n : ℂ) - i)`. Establish `h1 : infOfWeight (liftWeight lam t ht) = (Multiset.range (n + (n + 1))).map f`. Rewrite using `[show n + (n + 1) = 2 * n + 1 by ring, ← Finset.range_val, ← Nat.Iio_eq_range, ← Fin.map_valEmbedding_univ, Finset.map_val, Multiset.map_map]`. Use `Multiset.map_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [liftWeight, f, Function.comp, Fin.valEmbedding_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, Multiset.range_add, Multiset.map_add, Multiset.map_map]`. Use `congr 1`. Rewrite using `[← Finset.range_val, ← Nat.Iio_eq_range, ← Fin.map_valEmbedding_univ, Finset.map_val, Multiset.map_map, infOfWeight, Multiset.map_map]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `Multiset.map_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [f, Function.comp, Fin.valEmbedding_apply, dif_pos i.2]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : Multiset.range (n + 1) = (Multiset.range (n + 1)).map (n - ·)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `congrArg Finset.val (Finset.range_image_pred_top_sub (n + 1))` as an intermediate fact. Rewrite `this` using `[Finset.image_val_of_injOn]`. Simplify using `using this.symm`. Introduce `a ha b hb hab`. Simplify using `only [Finset.coe_range, Set.mem_Iio] at ha hb hab`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Use `conv_rhs => rw [h2, Multiset.map_map]`. Use `Multiset.map_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hi' : i ≤ n` using `Nat.lt_succ_iff.1 (Multiset.mem_range.1 hi)`. Simplify using `only [f, Function.comp, dif_neg (show ¬ n + i < n by omega), Nat.cast_sub hi']`.
+Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem infOfWeight_liftWeight {n : ℕ} (lam : DomWeight n) (t : ℤ) (ht : ∀ k, t ≤ lam.w k) :
     infOfWeight (liftWeight lam t ht) = (infOfWeight lam).map (· + (((n : ℂ) + 1) / 2 - t)) +
@@ -169,7 +169,7 @@ theorem infOfWeight_liftWeight {n : ℕ} (lam : DomWeight n) (t : ℤ) (ht : ∀
     ring
 
 /- English proof (translation)
-Rewrite using `[infOfWeight_liftWeight]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 example : infOfWeight (liftWeight (⟨0, antitone_const⟩ : DomWeight 2) 0 fun _ => le_rfl) =
     (infOfWeight (⟨0, antitone_const⟩ : DomWeight 2)).map (· + 3 / 2) +
@@ -178,13 +178,13 @@ example : infOfWeight (liftWeight (⟨0, antitone_const⟩ : DomWeight 2) 0 fun 
   norm_num
 
 /- English proof (translation)
-The claim follows from `not_halfIntegral_of_isRegAlg ((CG.isRegAlg_ofChar _).2 fun τ => ⟨0, by simp [CG.expo_one]⟩)`.
+A detailed English derivation is pending.
 -/
 example : ¬ HalfIntegral (CG.ofChar (1 : HChar K)) :=
   not_halfIntegral_of_isRegAlg ((CG.isRegAlg_ofChar _).2 fun τ => ⟨0, by simp [CG.expo_one]⟩)
 
 /- English proof (translation)
-The claim follows from `h 5 (by decide)`.
+A detailed English derivation is pending.
 -/
 example (h : CoreU) : CoreUFor 5 := h 5 (by decide)
 

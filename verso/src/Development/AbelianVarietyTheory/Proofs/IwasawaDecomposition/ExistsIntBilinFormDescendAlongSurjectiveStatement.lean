@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqZeroOfIsOr
 open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.TorRef GlobalTheory.PolFan
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.exists_bilinForm_descend_of_surjective | exact GlobalTheory.exists_bilinForm_descend_of_surjective | (intros; apply GlobalTheory.exists_bilinForm_descend_of_surjective <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_intBilinForm_descend_along_surjective : ∀ {X Y : Type} [AddCommGroup X] [AddCommGroup Y] (f : X →+ Y), Function.Surjective f → ∀ β : LinearMap.BilinForm ℤ X,
   (∀ x, f x = 0 → ∀ y, β x y = 0) → (∀ x, f x = 0 → ∀ y, β y x = 0) →

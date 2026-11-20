@@ -10,7 +10,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.AbelianLetters
 
 /- English proof (translation)
-Establish `h : GrpTangent.epsScale ((n : ℂ)⁻¹) ≫ (v ^ n) = v`. Rewrite using `[GrpTangent.pow_eq_epsScale_comp hv, GrpTangent.epsScale_mul_assoc, inv_mul_cancel₀ (Nat.cast_ne_zero.2 hn.ne'), GrpTangent.epsScale_one, Category.id_comp]`. Conclude with `congrArg (fun φ => φ.left) h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scale_tangent_pow (P : Out.PolAV (Sp ℂ)) (v : epsR ℂ ⟶ P.A) (n : ℕ) (hn : 0 < n) (hv : IsTangent v) :
     spMap (epsScaleR ((n : ℂ)⁻¹)) ≫ (v ^ n).left = v.left := by

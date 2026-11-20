@@ -13,17 +13,17 @@ local notation "𝔸" => FiniteAdeleRing (𝓞 F) F
 local notation "𝒜" => E ⊗[F] FiniteAdeleRing (𝓞 F) F
 
 /- English proof (translation)
-Establish `hφ : ∀ A : GL (Fin k) E, bc ρ (bc (prV (E` using `E) v) (bc (inclE (F := F) 𝔸) A)) = bc (ρ.comp ((prV (E := E) v).comp (inclE (F := F) 𝔸))) A := by`. Introduce `A`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Simplify using `[bc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hinj : Function.Injective (ρ.comp ((prV (E` using `E) v).comp (inclE (F := F) 𝔸))) := RingHom.injective _`. Establish `hz : (x⁻¹ * bc (inclE (F` using `F) 𝔸) γ * x) ^ N = 1 := by`. Rewrite using `[show x⁻¹ * bc (inclE (F := F) 𝔸) γ * x = MulAut.conj x⁻¹ (bc (inclE (F := F) 𝔸) γ) by`. Simplify using `[MulAut.conj_apply], ← map_pow, hγN, map_one]`. Establish `hmem` using `hU _ hγ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hwN : (bc ρ (bc (prV (E` using `E) v) (x⁻¹ * bc (inclE (F := F) 𝔸) γ * x))) ^ N = 1 := by`. Rewrite using `[← map_pow, ← map_pow, hz, map_one, map_one]`. Establish `hδN : (h⁻¹ * bc ρ (bc (prV (E` using `E) v) (x⁻¹ * bc (inclE (F := F) 𝔸) γ * x)) * h) ^ N = 1 := by`. Rewrite using `[show h⁻¹ * bc ρ (bc (prV (E := E) v) (x⁻¹ * bc (inclE (F := F) 𝔸) γ * x)) * h = MulAut.conj h⁻¹ (bc ρ (bc (prV (E := E) v) (x⁻¹ * bc (inclE (F := F) 𝔸) γ * x))) by`. Simplify using `only [MulAut.conj_apply, inv_inv], ← map_pow, hwN, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hδ1` using `iwU_coprime v g hg hv _ hmem N hN hδN`. Establish `hw1 : bc ρ (bc (prV (E` using `E) v) (x⁻¹ * bc (inclE (F := F) 𝔸) γ * x)) = 1 := by`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [map_mul, map_inv] at hw1`. Rewrite `hw1` using `[hφ]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hγ1 : bc (ρ.comp ((prV (E` using `E) v).comp (inclE (F := F) 𝔸))) γ = 1 := by`. Combine the equalities or inequalities in the displayed calculation. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply `hinj` to reduce the goal to its premises.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e` using `congrArg (fun A : GL (Fin k) (v.adicCompletion F) => A.1 i j) hγ1`. Simplify `e` using `[bc, Matrix.one_apply, apply_ite]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem gen_coprime (U : Subgroup (GL (Fin k) 𝒜)) (g : ℕ) (hg : g.Prime) (v : HeightOneSpectrum (𝓞 F))
     (hv : (g : 𝓞 F) ∈ v.asIdeal) (ρ : E ⊗[F] v.adicCompletion F →+* v.adicCompletion F)
@@ -68,7 +68,7 @@ theorem gen_coprime (U : Subgroup (GL (Fin k) 𝒜)) (g : ℕ) (hg : g.Prime) (v
   simpa [bc, Matrix.one_apply, apply_ite] using e
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ, ih, pow_succ]`. Use `group`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private lemma inv_mul_mul_pow {G : Type} [Group G] (x y : G) (n : ℕ) :
     (x⁻¹ * y * x) ^ n = x⁻¹ * y ^ n * x := by
@@ -77,21 +77,17 @@ private lemma inv_mul_mul_pow {G : Type} [Group G] (x y : G) (n : ℕ) :
   | succ n ih => rw [pow_succ, ih, pow_succ]; group
 
 /- English proof (translation)
-Establish `hyR : bc (inclE (F` using `F) 𝔸) γ ∈ ratPts σ J 𝔸 := ⟨γ, hγJ, rfl⟩`. Establish `hyU : bc (inclE (F` using `F) 𝔸) γ ∈ UPts σ J 𝔸 := Formalism.UG.P.rational_points_le_holds F E (Fin k) σ J 𝔸 hyR`. Establish `hpowU : ∀ m : ℕ, (x : GL (Fin k) 𝒜)⁻¹ * bc (inclE (F` using `F) 𝔸) γ ^ m * x ∈ U := by`. Introduce `m`. Rewrite using `[← inv_mul_mul_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `U.pow_mem hγ m`. Use `haveI hfinS := finite_stabAt_of_local σ J hτ hH hdet hdef Λ hfin hspan U hU x`. Set `f : ℕ → stabAt ((ratPts σ J 𝔸).subgroupOf (UPts σ J 𝔸)) (U.subgroupOf (UPts σ J 𝔸)) x` to `fun m => ⟨⟨⟨bc (inclE (F := F) 𝔸) γ ^ m, pow_mem hyU m⟩, Subgroup.mem_subgroupOf.2 (pow_mem hyR m)⟩, by show _ ∈ U.subgroupOf (UPts σ J 𝔸)`. Conclude with `Subgroup.mem_subgroupOf.2 (hpowU m)⟩`. Take `⟨m₁, m₂, hne12, heq⟩` from `Finite.exists_ne_map_eq_of_infinite f`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hpow : bc (inclE (F` using `F) 𝔸) γ ^ m₁ = bc (inclE (F := F) 𝔸) γ ^ m₂ := by`. Establish `e` using `congrArg (fun s => ((s.1 : UPts σ J 𝔸) : GL (Fin k) 𝒜)) heq`. Conclude with `e`. Take `⟨N, hN0, hyN⟩ : ∃ N : ℕ, 0 < N ∧ bc (inclE (F` from `F) 𝔸) γ ^ N = 1 := by`. Break down `Nat.lt_or_gt_of_ne hne12 with hlt | hlt` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨m₂ - m₁, Nat.sub_pos_of_lt hlt, ?_⟩` and prove the remaining obligations. Establish `e : bc (inclE (F` using `F) 𝔸) γ ^ m₂ = bc (inclE (F := F) 𝔸) γ ^ m₁ * bc (inclE (F := F) 𝔸) γ ^ (m₂ - m₁) := by`. Rewrite using `[← pow_add, Nat.add_sub_cancel' hlt.le]`. Rewrite `e` using `[← hpow]`. Conclude with `mul_left_cancel (a := bc (inclE (F := F) 𝔸) γ ^ m₁) (by rw [mul_one]; exact e.symm)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨m₁ - m₂, Nat.sub_pos_of_lt hlt, ?_⟩` and prove the remaining obligations. Establish `e : bc (inclE (F` using `F) 𝔸) γ ^ m₁ = bc (inclE (F := F) 𝔸) γ ^ m₂ * bc (inclE (F := F) 𝔸) γ ^ (m₁ - m₂) := by`. Rewrite using `[← pow_add, Nat.add_sub_cancel' hlt.le]`. Rewrite `e` using `[hpow]`. Conclude with `mul_left_cancel (a := bc (inclE (F := F) 𝔸) γ ^ m₂) (by rw [mul_one]; exact e.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, m, hm, hNam⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hN0.ne' (g 0) (hg 0).one_lt.ne'`. Establish `hg0m : Nat.Coprime m (g 0)` using `Nat.coprime_comm.mp ((Nat.Prime.coprime_iff_not_dvd (hg 0)).mpr hm)`. Establish `hγ1 : γ ^ (g 0 ^ a) = 1`. Use `gen_coprime U (g 0) (hg 0) (v 0) (hv 0) (ρ 0) (h 0) (hUg 0) (x : GL (Fin k) 𝒜) (γ ^ (g 0 ^ a)) ?_ m hg0m ?_` and prove the remaining obligations. Rewrite using `[map_pow]`.
-
-Conclude with `hpowU _`. Rewrite using `[map_pow, ← pow_mul, ← hNam]`. Conclude with `hyN`. Establish `hcop : Nat.Coprime (g 0 ^ a) (g 1)` using `Nat.Coprime.pow_left a ((Nat.coprime_primes (hg 0) (hg 1)).mpr hne)`. Use `gen_coprime U (g 1) (hg 1) (v 1) (hv 1) (ρ 1) (h 1) (hUg 1) (x : GL (Fin k) 𝒜) γ hγ (g 0 ^ a) hcop ?_` and prove the remaining obligations.
-
-Rewrite using `[← map_pow, hγ1, map_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen_triv (σ : E →ₐ[F] E) (J : Matrix (Fin k) (Fin k) E)
     (hτ : ∀ τ : E →+* ℂ, τ.comp (σ : E →+* E) = (starRingEnd ℂ).comp τ)

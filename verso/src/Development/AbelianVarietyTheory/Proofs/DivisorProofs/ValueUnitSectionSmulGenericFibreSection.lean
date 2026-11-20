@@ -19,7 +19,7 @@ def gv {A : Type} [CommRing A] {X : Scheme.{0}} (f : Sp A ⟶ X) (V : X.Opens) (
   (Scheme.ΓSpecIso (CommRingCat.of A)).hom.hom (((Sp A).presheaf.map (homOfLE h).op).hom ((f.app V).hom c))
 
 /- English proof (translation)
-Rewrite using `[gs_eq f z V (h trivial)]`. Simplify using `only [stalkOf, gv, RingHom.comp_apply]`. Rewrite using `[Iso.hom_inv_id_apply]`. Conclude with `(TopCat.Presheaf.germ_res_apply _ _ _ _ _).symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gs_gv {A : Type} [CommRing A] {X : Scheme.{0}} (f : Sp A ⟶ X) (V : X.Opens) (h : ⊤ ≤ f ⁻¹ᵁ V) (c : Γ(X, V))
     (z : Sp A) : gs f z V c = stalkOf z (gv f V h c) := by
@@ -29,7 +29,7 @@ theorem gs_gv {A : Type} [CommRing A] {X : Scheme.{0}} (f : Sp A ⟶ X) (V : X.O
   exact (TopCat.Presheaf.germ_res_apply _ _ _ _ _).symm
 
 /- English proof (translation)
-Rewrite using `[gs_eq _ z ⊤ trivial]`. Simplify using `only [stalkOf, RingHom.comp_apply]`. Use `congrArg (fun q => q.hom e) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom ψ))` as an intermediate fact. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at this`. Rewrite using `[← this, Iso.hom_inv_id_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -43,7 +43,7 @@ theorem gs_spMap_top {A B : Type} [CommRing A] [CommRing B] (ψ : A →+* B) (e 
   rfl
 
 /- English proof (translation)
-Rewrite using `[← gs_pull (spMap ψ) f z V (h trivial) c, ← gs_res (spMap ψ) z h trivial, gs_spMap_top]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gs_comp_gv {A B : Type} [CommRing A] [CommRing B] (ψ : A →+* B) {X : Scheme.{0}} (f : Sp A ⟶ X) (V : X.Opens)
     (h : ⊤ ≤ f ⁻¹ᵁ V) (c : Γ(X, V)) (z : Sp B) : gs (spMap ψ ≫ f) z V c = stalkOf z (ψ (gv f V h c)) := by
@@ -51,7 +51,7 @@ theorem gs_comp_gv {A B : Type} [CommRing A] [CommRing B] (ψ : A →+* B) {X : 
   rfl
 
 /- English proof (translation)
-The claim follows from `PrimeSpectrum.ext (by haveI := a.isPrime; haveI := b.isPrime; rw [Ideal.eq_bot_of_prime a.asIdeal, Ideal.eq_bot_of_prime b.asIdeal])`.
+A detailed English derivation is pending.
 -/
 theorem sp_field_eq {F : Type} [Field F] (a b : Sp F) : a = b :=
   PrimeSpectrum.ext (by haveI := a.isPrime; haveI := b.isPrime; rw [Ideal.eq_bot_of_prime a.asIdeal, Ideal.eq_bot_of_prime b.asIdeal])
@@ -61,51 +61,41 @@ end GlobalTheory.Mum.UnitGen
 open GlobalTheory.Mum.UnitGen in
 
 /- English proof (translation)
-Introduce `R _ _ _ hB D C k s`. Establish `hL : C.P.L.L.IsLB` using `C.P.L.isLB`. Establish `hrg : C.P.L.rig.IsGen` using `C.P.L.rigGen`. Establish `hE : eSec C.A.A ≫ C.α = C.gp ≫ eSec C.G` using `GlobalTheory.ZJ.eSec_comp_of_isGrpPullback C.α_cart`. Take `⟨i₀, hi₀⟩` from `exists_chart hL ((C.gp ≫ eSec C.G) (cpt (FractionRing R)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hs₀ : ⊤ ≤ (eSec C.A.A) ⁻¹ᵁ LB.wchart C.P.L.L (fun _ : Fin 1 => C.α) (fun _ => i₀)` using `(top_le_iff_cpt _ _).2 (Set.mem_iInter.2 fun _ => by`. Rewrite using `[Set.mem_preimage, ← Scheme.Hom.comp_apply, hE]`. Conclude with `hi₀)`. Establish `hr₀ : ⊤ ≤ C.gp ⁻¹ᵁ LB.wchart C.P.L.L (fun _ : PUnit => eSec C.G) (fun _ => i₀)` using `(top_le_iff_cpt _ _).2 (Set.mem_iInter.2 fun _ => by`. Rewrite using `[Set.mem_preimage, ← Scheme.Hom.comp_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hi₀)`. Use `set cs : FractionRing R := gv (eSec C.A.A) _ hs₀ (s.f (fun _ => i₀)) with hcs`. Use `set cr : FractionRing R := gv C.gp _ hr₀ (C.P.L.rig.s (fun _ => i₀)).val with hcr`. Establish `hcr0 : IsUnit cr` using `((((C.P.L.rig.s (fun _ => i₀)).isUnit.map (C.gp.app _).hom).map _).map _)`. Take `⟨x, y, hy, hxy⟩` from `IsFractionRing.div_surjective (A := R) (cs / cr ^ k)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨x, y, nonZeroDivisors.ne_zero hy, ?_⟩` and prove the remaining obligations. Introduce `W _ _ _ T a σ hσ J hJ`. Establish `hinj : Function.Injective ((algebraMap W (FractionRing W)).comp T.φ)` using `(IsFractionRing.injective W (FractionRing W)).comp T.inj`. Take `⟨ga, hga, hgp⟩` from `Modif.factor_gp R C.toModif (FractionRing W) ((algebraMap W _).comp T.φ) (jK W ≫ T.ξ) hinj (by`. Rewrite using `[Category.assoc, T.ξ_π]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Spec.map_comp _ _).symm)`. Establish `hjK : jK W = spMap (algebraMap W (FractionRing W))` using `rfl`. Establish `hU : unitW T.G ≫ T.β = T.ξ ≫ eSec C.G` using `GlobalTheory.ZJ.eSec_comp_of_isGrpPullback T.cart`. Use `set g : Sp (FractionRing W) := cpt (FractionRing W)`. Use `set p : Sp (FractionRing W) ⟶ T.G.left := jK W ≫ unitW T.G with hp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set p' : Sp (FractionRing W) ⟶ C.A.A.left := spMap ga ≫ eSec C.A.A with hp'`. Establish `hr : jK W ≫ T.ξ ≫ eSec C.G = spMap ga ≫ C.gp ≫ eSec C.G` using `by rw [← Category.assoc, hgp, Category.assoc]`. Establish `hpp : p ≫ T.β = p' ≫ C.α`. Rewrite using `[hp, hp', Category.assoc, Category.assoc, hU, hE, hr]`. Use `set I := J (T.ξ ≫ eSec C.G) with hIdef`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hI : (T.ξ ≫ eSec C.G) (cpt W) ∈ C.P.L.L.U I` using `hJ _`. Establish `hItop : ⊤ ≤ (T.ξ ≫ eSec C.G) ⁻¹ᵁ C.P.L.L.U I` using `(top_le_iff_cpt _ _).2 hI`. Establish `hpI : (p ≫ T.β) g ∈ C.P.L.L.U I`. Rewrite using `[hp, Category.assoc, hU, Scheme.Hom.comp_apply]`. Conclude with `hItop trivial`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpi₀ : (p ≫ T.β) g ∈ C.P.L.L.U i₀`. Rewrite using `[hp, Category.assoc, hU, ← Category.assoc, hgp, Category.assoc, Scheme.Hom.comp_apply, sp_field_eq ((spMap ga) g) (cpt (FractionRing R))]`. Conclude with `hi₀`. Take `⟨J', hJ', hJ'e⟩` from `exists_good C.P.L.L hL g (K := PUnit) (fun _ => p ≫ T.β) (fun _ => I) (fun _ _ _ => rfl) (fun _ => hpI)`. Establish `e1` using `hσ _ p p' hpp g J' hJ'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e1` using `[sval_of σ p g J' (fun _ => I) (fun _ => hJ'e ⟨⟩), sval_of s p' g J' (fun _ => I) (fun _ => by rw [← hpp]; exact hJ'e ⟨⟩)]`. Establish `hσtop : ⊤ ≤ unitW T.G ⁻¹ᵁ LB.wchart C.P.L.L (fun _ : Fin 1 => T.β) (fun _ => I)` using `(top_le_iff_cpt _ _).2 (Set.mem_iInter.2 fun _ => by`. Rewrite using `[Set.mem_preimage, ← Scheme.Hom.comp_apply, hU]`. Conclude with `hI)`. Establish `hρtop : ⊤ ≤ T.ξ ⁻¹ᵁ LB.wchart C.P.L.L (fun _ : PUnit => eSec C.G) (fun _ => I)` using `(top_le_iff_cpt _ _).2 (Set.mem_iInter.2 fun _ => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.mem_preimage, ← Scheme.Hom.comp_apply]`. Conclude with `hI)`. Use `set σv : W := gv (unitW T.G) _ hσtop (σ.f (fun _ => I)) with hσv`. Use `set ρv : W := gv T.ξ _ hρtop (C.P.L.rig.s (fun _ => I)).val with hρv`. Establish `eσ : gs p g (LB.wchart C.P.L.L (fun _ : Fin 1 => T.β) (fun _ => I)) (σ.f (fun _ => I)) = stalkOf g (algebraMap W _ σv)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hp, hjK]`. Conclude with `gs_comp_gv _ _ _ hσtop _ g`. Establish `hu : unitW T.G ≫ T.G.hom = 𝟙 _` using `by simpa [unitW, eSec] using Over.w (η[T.G])`. Establish `ea : gs p g ⊤ (scal T.G.hom a) = stalkOf g (algebraMap W _ a)`. Establish `h1 : p ≫ T.G.hom = spMap (algebraMap W (FractionRing W))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hp, Category.assoc, hu, Category.comp_id]`. Establish `h2` using `gs_pull p T.G.hom g ⊤ trivial ((Scheme.ΓSpecIso (CommRingCat.of W)).inv.hom a)`. Rewrite `h2` using `[h1, gs_spMap_top, Iso.inv_hom_id_apply]`. Conclude with `h2`. Establish `hrp : (jK W ≫ T.ξ) ≫ eSec C.G = p ≫ T.β` using `by rw [hp, Category.assoc, Category.assoc, hU]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hp'i₀ : p' g ∈ LB.wchart C.P.L.L (fun _ : Fin 1 => C.α) (fun _ => i₀)` using `Set.mem_iInter.2 fun _ => by`. Rewrite using `[Set.mem_preimage, ← Scheme.Hom.comp_apply, ← hpp]`. Conclude with `hpi₀`. Establish `hp'I : p' g ∈ LB.wchart C.P.L.L (fun _ : Fin 1 => C.α) (fun _ => I)` using `Set.mem_iInter.2 fun _ => by`. Rewrite using `[Set.mem_preimage, ← Scheme.Hom.comp_apply, ← hpp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hpI`. Establish `hri₀ : (jK W ≫ T.ξ) g ∈ LB.wchart C.P.L.L (fun _ : PUnit => eSec C.G) (fun _ => i₀)` using `Set.mem_iInter.2 fun _ => by`. Rewrite using `[Set.mem_preimage, ← Scheme.Hom.comp_apply, hrp]`. Conclude with `hpi₀`. Establish `hrI : (jK W ≫ T.ξ) g ∈ LB.wchart C.P.L.L (fun _ : PUnit => eSec C.G) (fun _ => I)` using `Set.mem_iInter.2 fun _ => by`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Set.mem_preimage, ← Scheme.Hom.comp_apply, hrp]`. Conclude with `hpI`. Establish `e2` using `sec_trans s p' g hp'i₀ hp'I`. Establish `orbitMap_conj_smul_zero : gs p' g (LB.wchart C.P.L.L (fun _ : Fin 1 => C.α) (fun _ => i₀)) (s.f (fun _ => i₀)) = stalkOf g (ga cs)`. Rewrite using `[hp']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `gs_comp_gv ga _ _ hs₀ _ g`. Establish `e3` using `gen_trans hrg (jK W ≫ T.ξ) g hri₀ hrI`. Establish `eB0 : (gm (jK W ≫ T.ξ) g (LB.wchart C.P.L.L (fun _ : PUnit => eSec C.G) (fun _ => i₀)) (C.P.L.rig.s (fun _ => i₀))).val = stalkOf g (ga cr)`. Use `(gs_unit (jK W ≫ T.ξ) g _ hri₀ _).symm.trans ?_` and prove the remaining obligations. Rewrite using `[hgp]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `gs_comp_gv ga _ _ hr₀ _ g`. Establish `eB : (gm (jK W ≫ T.ξ) g (LB.wchart C.P.L.L (fun _ : PUnit => eSec C.G) (fun _ => I)) (C.P.L.rig.s (fun _ => I))).val = stalkOf g (algebraMap W _ ρv)`. Use `(gs_unit (jK W ≫ T.ξ) g _ hrI _).symm.trans ?_` and prove the remaining obligations. Rewrite using `[hjK]`. Conclude with `gs_comp_gv _ _ _ hρtop _ g`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `et : trF (L` using `C.P.L.L) (fun _ : Fin 1 => C.α) (fun _ => ((k : ℕ) : ℤ)) p' g (fun _ => i₀) (fun _ => I) = (trF (L := C.P.L.L) (fun _ : PUnit => eSec C.G) (fun _ => 1) (jK W ≫ T.ξ) g (fun _ => i₀) (fun _ => I)) ^ k := by`. Simplify using `only [trF]`. Rewrite using `[show p' ≫ C.α = (jK W ≫ T.ξ) ≫ eSec C.G from hpp.symm.trans hrp.symm]`. Simplify using the standard rewrite rules. Rewrite `e1` using `[eσ, ea]`.
-
-Rewrite `e2` using `[orbitMap_conj_smul_zero, et]`. Establish `e3v` using `congrArg Units.val e3`. Rewrite `e3v` using `[Units.val_mul, eB0, eB]`. Establish `hy0 : algebraMap R (FractionRing R) y ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hy`. Establish `hxy' : algebraMap R _ x * cr ^ k = cs * algebraMap R _ y`.
-
-Rewrite `hxy` using `[div_eq_div_iff hy0 (pow_ne_zero _ hcr0.ne_zero)]`. Conclude with `hxy`. Establish `hXY` using `congrArg (fun q => stalkOf g (ga q)) hxy'`. Simplify using `only [map_mul, map_pow, hga, RingHom.comp_apply] at hXY`. Rewrite `hXY` using `[e3v, e2, Units.val_pow_eq_pow_val]`.
-
-Establish `hW : T.φ y * σv = a * T.φ x * ρv ^ k`. Apply `((stalkOf_injective g).comp (IsFractionRing.injective W (FractionRing W)))` to reduce the goal to its premises. Simplify using `only [Function.comp_apply, map_mul, map_pow]`. Use `((trF (L := C.P.L.L) (fun _ : PUnit => eSec C.G) (fun _ => 1) (jK W ≫ T.ξ) g (fun _ => i₀) (fun _ => I)).isUnit.pow k).mul_left_inj.1 ?_` and prove the remaining obligations. Rewrite using `[e1]`.
-
-Take the linear combination `(-(stalkOf g (algebraMap W (FractionRing W) a))) * hXY`. Establish `eBc : (gm T.ξ (cpt W) (LB.wchart C.P.L.L (fun _ : PUnit => eSec C.G) (fun _ => I)) (C.P.L.rig.s (fun _ => I))).val = stalkOf (cpt W) ρv` using `(gs_unit T.ξ (cpt W) _ (hρtop trivial) _).symm.trans (gs_gv _ _ hρtop _ _)`. Establish `eσc : gs (unitW T.G) (cpt W) (LB.wchart C.P.L.L (fun _ : Fin 1 => T.β) (fun _ => I)) (σ.f (fun _ => I)) = stalkOf (cpt W) σv` using `gs_gv _ _ hσtop _ _`. Rewrite using `[sval_of σ (unitW T.G) (cpt W) J (fun _ => I) (fun _ => by rw [hU])]`. Use `erw [eσc]`.
-
-Rewrite using `[val_of C.P.L.rig T.ξ (cpt W) J (fun _ => I) (fun _ => rfl), eBc, ← map_mul, ← map_pow, ← map_mul, hW]`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mum.UnitGen.value_unit_generic : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (C : LabCover D) (k : ℕ) (s : SecK C.P.L.L C.α k), ∃ x y : R, y ≠ 0 ∧ ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W] (T : Trait C W) (a : W) (σ : SecK C.P.L.L T.β k), (∀ (Z : Scheme.{0}) (p : Z ⟶ T.G.left) (p' : Z ⟶ C.A.A.left), p ≫ T.β = p' ≫ C.α → ∀ z J, Good C.P.L.L z J → sval σ p z J = gs p z ⊤ (scal T.G.hom a) * sval s p' z J) → ∀ J, Good C.P.L.L (cpt W) J → stalkOf (cpt W) (T.φ y) * sval σ (unitW T.G) (cpt W) J = stalkOf (cpt W) (a * T.φ x) * (val C.P.L.rig T.ξ (cpt W) J).val ^ k := by
   intro R _ _ _ hB D C k s

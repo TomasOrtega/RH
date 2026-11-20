@@ -11,7 +11,7 @@ section Lift
 variable {O R : Type*} [CommRing O] [CommRing R] [Algebra O R]
 
 /- English proof (translation)
-Take `⟨r, hr⟩ : Polynomial.X ^ n ∣ p - q` from `Polynomial.X_pow_dvd_iff.2 fun i hi => by simp [h i hi]`. Rewrite using `[← map_sub, hr, map_mul, map_pow, Polynomial.aeval_X]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow hx n)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_sub_mem {I : Ideal R} {x : R} (hx : x ∈ I) {p q : Polynomial O} {n : ℕ}
     (h : ∀ i < n, p.coeff i = q.coeff i) : Polynomial.aeval x p - Polynomial.aeval x q ∈ I ^ n := by
@@ -21,7 +21,7 @@ theorem aeval_sub_mem {I : Ideal R} {x : R} (hx : x ∈ I) {p q : Polynomial O} 
   exact Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow hx n)
 
 /- English proof (translation)
-Apply `sub_eq_zero.mp` to reduce the goal to its premises. Apply `IsHausdorff.haus ‹IsHausdorff I R› (a - b)` to reduce the goal to its premises. Introduce `n`. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top]`. Conclude with `h n`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_sub_mem_pow (I : Ideal R) [IsHausdorff I R] {a b : R} (h : ∀ n, a - b ∈ I ^ n) : a = b := by
   apply sub_eq_zero.mp
@@ -31,9 +31,9 @@ theorem eq_of_sub_mem_pow (I : Ideal R) [IsHausdorff I R] {a b : R} (h : ∀ n, 
   exact h n
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `IsPrecomplete.prec' (I := I) (fun n => Polynomial.aeval (x : R) (trunc n f)) (fun {m n} hmn => by`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`. Conclude with `aeval_sub_mem x.2 fun i hi => by simp [coeff_trunc, hi, hi.trans_le hmn])`. Use `⟨y, fun n => ?_⟩` and prove the remaining obligations. Use `(hy n).symm` as an intermediate fact.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem exists_lim (I : Ideal R) [IsAdicComplete I R] (x : I) (f : O⟦X⟧) :
     ∃ y : R, ∀ n, y - Polynomial.aeval (x : R) (trunc n f) ∈ I ^ n := by
@@ -81,14 +81,14 @@ def lift (I : Ideal R) [IsAdicComplete I R] (x : I) : O⟦X⟧ →ₐ[O] R where
     simpa using h
 
 /- English proof (translation)
-The claim follows from `(exists_lim I x f).choose_spec n`.
+A detailed English derivation is pending.
 -/
 theorem lift_sub_trunc_mem (I : Ideal R) [IsAdicComplete I R] (x : I) (f : O⟦X⟧) (n : ℕ) :
     lift I x f - Polynomial.aeval (x : R) (trunc n f) ∈ I ^ n :=
   (exists_lim I x f).choose_spec n
 
 /- English proof (translation)
-The claim follows from `eq_of_sub_mem_pow I fun n => by have h := (I ^ n).add_mem (lift_sub_trunc_mem I x (p : O⟦X⟧) n) (aeval_sub_mem (p := trunc n (p : O⟦X⟧)) (q := p) x.2 fun i hi => by simp [coeff_trunc, hi]) simpa using h`.
+A detailed English derivation is pending.
 -/
 theorem lift_coe (I : Ideal R) [IsAdicComplete I R] (x : I) (p : Polynomial O) :
     lift I x (p : O⟦X⟧) = Polynomial.aeval (x : R) p :=
@@ -98,24 +98,24 @@ theorem lift_coe (I : Ideal R) [IsAdicComplete I R] (x : I) (p : Polynomial O) :
     simpa using h
 
 /- English proof (translation)
-Simplify using `using lift_coe I x (Polynomial.X : Polynomial O)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 @[simp] theorem lift_X (I : Ideal R) [IsAdicComplete I R] (x : I) : lift I x (X : O⟦X⟧) = x := by
   simpa using lift_coe I x (Polynomial.X : Polynomial O)
 
 /- English proof (translation)
-The claim follows from `(lift I x).commutes r`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem lift_C (I : Ideal R) [IsAdicComplete I R] (x : I) (r : O) :
     lift I x (C r) = algebraMap O R r :=
   (lift I x).commutes r
 
 /- English proof (translation)
-Use `AlgHom.ext fun f => eq_of_sub_mem_pow I fun n => ?_` and prove the remaining obligations. Take `⟨g, hg⟩ : (X : O⟦X⟧) ^ n ∣ f - (trunc n f : O⟦X⟧)` from `X_pow_dvd_iff.2 fun i hi => by simp [coeff_trunc, hi]`. Establish `hp : φ (trunc n f : O⟦X⟧) = ψ (trunc n f : O⟦X⟧)`. Establish `: φ.comp (Polynomial.coeToPowerSeries.algHom O) = ψ.comp (Polynomial.coeToPowerSeries.algHom O)` using `Polynomial.algHom_ext (by simpa using h)`. Simplify using `using DFunLike.congr_fun this (trunc n f)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `: φ f - ψ f = φ X ^ n * (φ g - ψ g)`. Rewrite using `[sub_eq_iff_eq_add.1 hg]`. Simplify using `only [map_add, map_mul, map_pow, hp, h]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow hI n)`.
+A detailed English derivation is pending.
 -/
 theorem algHom_ext (I : Ideal R) [IsHausdorff I R] {φ ψ : O⟦X⟧ →ₐ[O] R} (hI : φ X ∈ I)
     (h : φ X = ψ X) : φ = ψ := by
@@ -164,7 +164,7 @@ def ofPt (a : maximalIdeal O) : oneUnits O :=
     simp⟩
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (by simp [ofPt])`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem pt_ofPt (a : maximalIdeal O) : pt (ofPt a) = a := Subtype.ext (by simp [ofPt])
 
@@ -172,13 +172,13 @@ def ev [IsAdicComplete (maximalIdeal O) O] (a : maximalIdeal O) : O⟦X⟧ →�
   lift (maximalIdeal O) a
 
 /- English proof (translation)
-The claim follows from `lift_X _ a`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem ev_X [IsAdicComplete (maximalIdeal O) O] (a : maximalIdeal O) : ev a X = a :=
   lift_X _ a
 
 /- English proof (translation)
-The claim follows from `lift_C _ a r`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem ev_C [IsAdicComplete (maximalIdeal O) O] (a : maximalIdeal O) (r : O) : ev a (C r) = r :=
   lift_C _ a r
@@ -198,12 +198,12 @@ def mu (f : O⟦X⟧) : ℕ∞ := ⨅ n, IsDiscreteValuationRing.addVal O (coeff
 def lam (f : O⟦X⟧) : ℕ := sInf {n | IsDiscreteValuationRing.addVal O (coeff n f) = mu f}
 
 /- English proof (translation)
-The claim follows from `iInf_le _ n`.
+A detailed English derivation is pending.
 -/
 theorem mu_le (f : O⟦X⟧) (n : ℕ) : mu f ≤ IsDiscreteValuationRing.addVal O (coeff n f) := iInf_le _ n
 
 /- English proof (translation)
-Establish `hne : {n | IsDiscreteValuationRing.addVal O (coeff n f) = mu f}.Nonempty`. Take `⟨n, hn⟩` from `csInf_mem (Set.range_nonempty fun n => IsDiscreteValuationRing.addVal O (coeff n f))`. Conclude with `⟨n, hn⟩`. Conclude with `Nat.sInf_mem hne`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem addVal_coeff_lam (f : O⟦X⟧) : IsDiscreteValuationRing.addVal O (coeff (lam f) f) = mu f := by
   have hne : {n | IsDiscreteValuationRing.addVal O (coeff n f) = mu f}.Nonempty := by
@@ -212,7 +212,7 @@ theorem addVal_coeff_lam (f : O⟦X⟧) : IsDiscreteValuationRing.addVal O (coef
   exact Nat.sInf_mem hne
 
 /- English proof (translation)
-Unfold `mu`. Rewrite using `[iInf_eq_top, PowerSeries.ext_iff]`. Simplify using `[IsDiscreteValuationRing.addVal_eq_top_iff]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mu_eq_top_iff {f : O⟦X⟧} : mu f = ⊤ ↔ f = 0 := by
   unfold mu

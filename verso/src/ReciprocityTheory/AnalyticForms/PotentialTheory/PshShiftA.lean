@@ -10,7 +10,7 @@ noncomputable section
 variable {ι κ : Type*} [Fintype ι] [Fintype κ]
 
 /- English proof (translation)
-Establish `h2 : fderiv ℝ φ =ᶠ[𝓝 z] fderiv ℝ ψ` using `h.eventuallyEq_nhds.mono fun y hy => hy.fderiv_eq`. Unfold `levi`. Rewrite using `[h2.fderiv_eq]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem levi_congr {φ ψ : (ι → ℂ) → ℝ} {z : ι → ℂ} (h : φ =ᶠ[𝓝 z] ψ) (w : ι → ℂ) :
     levi φ z w = levi ψ z w := by
@@ -19,9 +19,9 @@ theorem levi_congr {φ ψ : (ι → ℂ) → ℝ} {z : ι → ℂ} (h : φ =ᶠ[
   rw [h2.fderiv_eq]
 
 /- English proof (translation)
-Establish `hH : AnalyticAt ℂ (fderiv ℂ τ) z` using `hτ.fderiv`. Set `R` to `ContinuousLinearMap.restrictScalarsL ℂ E F ℝ ℝ`. Establish `hev : fderiv ℝ τ =ᶠ[𝓝 z] fun y => R (fderiv ℂ τ y)` using `by filter_upwards [hτ.eventually_analyticAt] with y hy`. Conclude with `(hy.differentiableAt.hasFDerivAt.restrictScalars ℝ).fderiv`. Establish `hD : HasFDerivAt (fun y => R (fderiv ℂ τ y)) (R.comp ((fderiv ℂ (fderiv ℂ τ) z).restrictScalars ℝ)) z` using `R.hasFDerivAt.comp z (hH.differentiableAt.hasFDerivAt.restrictScalars ℝ)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hev.fderiv_eq, hD.fderiv]`. Simplify using `[R, smul_smul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem fderiv_fderiv_I_smul_I_smul_of_analyticAt {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [NormedAddCommGroup F] [NormedSpace ℂ F] [CompleteSpace F] {τ : E → F} {z : E}
@@ -40,20 +40,20 @@ private theorem fderiv_fderiv_I_smul_I_smul_of_analyticAt {E F : Type*} [NormedA
   simp [R, smul_smul]
 
 /- English proof (translation)
-The claim follows from `fderiv_fderiv_I_smul_I_smul_of_analyticAt hτ a`.
+A detailed English derivation is pending.
 -/
 theorem sndDeriv_I_I {τ : (ι → ℂ) → (κ → ℂ)} {z : ι → ℂ} (hτ : AnalyticAt ℂ τ z) (a : ι → ℂ) :
     fderiv ℝ (fderiv ℝ τ) z (Complex.I • a) (Complex.I • a) = - fderiv ℝ (fderiv ℝ τ) z a a :=
   fderiv_fderiv_I_smul_I_smul_of_analyticAt hτ a
 
 /- English proof (translation)
-Establish `hτR : ∀ n : ℕ∞, ContDiffAt ℝ n τ z` using `fun n => (hτ.contDiffAt (n := n)).restrict_scalars ℝ`. Establish `hφ1 : ∀ᶠ x in 𝓝 (τ z), DifferentiableAt ℝ φ x` using `(hφ.eventually (by simp)).mono fun x hx => hx.differentiableAt (by norm_num)`. Establish `hφ1' : ∀ᶠ y in 𝓝 z, DifferentiableAt ℝ φ (τ y)` using `hτ.continuousAt.eventually hφ1`. Establish `hev : fderiv ℝ (φ ∘ τ) =ᶠ[𝓝 z] fun y => (fderiv ℝ φ (τ y)).comp (fderiv ℝ τ y)` using `by filter_upwards [hτ.eventually_analyticAt, hφ1'] with y hy hφy`. Conclude with `fderiv_comp y hφy (hy.differentiableAt.restrictScalars ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdA : DifferentiableAt ℝ (fderiv ℝ φ) (τ z)` using `(hφ.fderiv_right (m := 1) (by norm_num)).differentiableAt one_ne_zero`. Establish `hdB : DifferentiableAt ℝ (fderiv ℝ τ) z` using `((hτR 2).fderiv_right (m := 1) (by norm_num)).differentiableAt one_ne_zero`. Establish `hτz : HasFDerivAt τ (fderiv ℝ τ z) z` using `((hτR 1).differentiableAt one_ne_zero).hasFDerivAt`. Establish `hc : HasFDerivAt (fun y => fderiv ℝ φ (τ y)) ((fderiv ℝ (fderiv ℝ φ) (τ z)).comp (fderiv ℝ τ z)) z` using `hdA.hasFDerivAt.comp z hτz`. Establish `hD` using `hc.clm_comp hdB.hasFDerivAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : fderiv ℝ τ z = (fderiv ℂ τ z).restrictScalars ℝ` using `(hτ.differentiableAt.hasFDerivAt.restrictScalars ℝ).fderiv`. Establish `hI` using `sndDeriv_I_I hτ w`. Unfold `levi`. Rewrite using `[hev.fderiv_eq, hD.fderiv]`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.compL_apply, ContinuousLinearMap.flip_apply, hI, map_neg, hB, ContinuousLinearMap.coe_restrictScalars', ContinuousLinearMap.map_smul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem levi_comp {φ : (κ → ℂ) → ℝ} {τ : (ι → ℂ) → (κ → ℂ)} {z : ι → ℂ} (w : ι → ℂ)
     (hτ : AnalyticAt ℂ τ z) (hφ : ContDiffAt ℝ 2 φ (τ z)) :
@@ -87,13 +87,13 @@ theorem levi_comp {φ : (κ → ℂ) → ℝ} {τ : (ι → ℂ) → (κ → ℂ
   ring
 
 /- English proof (translation)
-Simplify using `[levi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem levi_zero (φ : (ι → ℂ) → ℝ) (z : ι → ℂ) : levi φ z 0 = 0 := by
   simp [levi]
 
 /- English proof (translation)
-Unfold `levi`. Rewrite using `[smul_comm Complex.I t w]`. Simplify using `only [map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem levi_smul_dir (φ : (ι → ℂ) → ℝ) (z w : ι → ℂ) (t : ℝ) :
     levi φ z (t • w) = t ^ 2 * levi φ z w := by
@@ -103,11 +103,11 @@ theorem levi_smul_dir (φ : (ι → ℂ) → ℝ) (z w : ι → ℂ) (t : ℝ) :
   ring
 
 /- English proof (translation)
-Establish `hf1 : ∀ᶠ y in 𝓝 z, DifferentiableAt ℝ f y` using `(hf.eventually (by simp)).mono fun y hy => hy.differentiableAt (by norm_num)`. Establish `hg1 : ∀ᶠ y in 𝓝 z, DifferentiableAt ℝ g y` using `(hg.eventually (by simp)).mono fun y hy => hy.differentiableAt (by norm_num)`. Establish `hev : fderiv ℝ (fun y => f y + c * g y) =ᶠ[𝓝 z] fun y => fderiv ℝ f y + c • fderiv ℝ g y` using `by filter_upwards [hf1, hg1] with y hfy hgy`. Conclude with `(hfy.hasFDerivAt.add (hgy.hasFDerivAt.const_mul c)).fderiv`. Establish `hdf : DifferentiableAt ℝ (fderiv ℝ f) z` using `(hf.fderiv_right (m := 1) (by norm_num)).differentiableAt one_ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdg : DifferentiableAt ℝ (fderiv ℝ g) z` using `(hg.fderiv_right (m := 1) (by norm_num)).differentiableAt one_ne_zero`. Unfold `levi`. Establish `hD : HasFDerivAt (fun y => fderiv ℝ f y + c • fderiv ℝ g y) (fderiv ℝ (fderiv ℝ f) z + c • fderiv ℝ (fderiv ℝ g) z) z` using `hdf.hasFDerivAt.add (hdg.hasFDerivAt.const_smul c)`. Rewrite using `[hev.fderiv_eq, hD.fderiv]`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem levi_add_smul {f g : (ι → ℂ) → ℝ} {z : ι → ℂ} (c : ℝ) (hf : ContDiffAt ℝ 2 f z)
     (hg : ContDiffAt ℝ 2 g z) (w : ι → ℂ) :
@@ -133,18 +133,18 @@ theorem levi_add_smul {f g : (ι → ℂ) → ℝ} {z : ι → ℂ} (c : ℝ) (h
   ring
 
 /- English proof (translation)
-Establish `h : fderiv ℝ (⇑L) = fun _ => L` using `funext fun _ => L.fderiv`. Simplify using `[levi, h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem levi_clm (L : (ι → ℂ) →L[ℝ] ℝ) (z w : ι → ℂ) : levi (⇑L) z w = 0 := by
   have h : fderiv ℝ (⇑L) = fun _ => L := funext fun _ => L.fderiv
   simp [levi, h]
 
 /- English proof (translation)
-Establish `hcd : ∀ n : ℕ∞, ContDiffAt ℝ n G z` using `fun n => (hG.contDiffAt (n := n)).restrict_scalars ℝ`. Establish `hG1 : ∀ᶠ y in 𝓝 z, DifferentiableAt ℝ G y` using `hG.eventually_analyticAt.mono fun y hy => hy.differentiableAt.restrictScalars ℝ`. Set `Q` to `ContinuousLinearMap.compL ℝ (ι → ℂ) ℂ ℝ Complex.reCLM`. Establish `hev : fderiv ℝ (fun y => (G y).re) =ᶠ[𝓝 z] fun y => Q (fderiv ℝ G y)` using `by filter_upwards [hG1] with y hy`. Conclude with `((Complex.reCLM.hasFDerivAt).comp y hy.hasFDerivAt).fderiv`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdG : DifferentiableAt ℝ (fderiv ℝ G) z` using `((hcd 2).fderiv_right (m := 1) (by norm_num)).differentiableAt one_ne_zero`. Establish `hD : HasFDerivAt (fun y => Q (fderiv ℝ G y)) (Q.comp (fderiv ℝ (fderiv ℝ G) z)) z` using `Q.hasFDerivAt.comp z hdG.hasFDerivAt`. Unfold `levi`. Rewrite using `[hev.fderiv_eq, hD.fderiv]`. Establish `hI` using `fderiv_fderiv_I_smul_I_smul_of_analyticAt hG w`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [ContinuousLinearMap.comp_apply, Q, ContinuousLinearMap.compL_apply, Complex.reCLM_apply, hI, Complex.neg_re]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem levi_re_analytic {G : (ι → ℂ) → ℂ} {z : ι → ℂ} (hG : AnalyticAt ℂ G z) (w : ι → ℂ) :
     levi (fun y => (G y).re) z w = 0 := by
@@ -167,9 +167,9 @@ theorem levi_re_analytic {G : (ι → ℂ) → ℂ} {z : ι → ℂ} (hG : Analy
   ring
 
 /- English proof (translation)
-Establish `h1 : ContDiffOn ℝ 1 (fderiv ℝ φ) U` using `hφ.fderiv_of_isOpen hU (by norm_num)`. Establish `h2 : ContinuousOn (fderiv ℝ (fderiv ℝ φ)) U` using `h1.continuousOn_fderiv_of_isOpen hU le_rfl`. Establish `h3 : ContinuousOn (fun p : (ι → ℂ) × (ι → ℂ) => fderiv ℝ (fderiv ℝ φ) p.1) (U ×ˢ Set.univ)` using `h2.comp continuousOn_fst fun p hp => hp.1`. Establish `h4 : ContinuousOn (fun p : (ι → ℂ) × (ι → ℂ) => Complex.I • p.2) (U ×ˢ Set.univ)` using `(by fun_prop : Continuous fun p : (ι → ℂ) × (ι → ℂ) => Complex.I • p.2).continuousOn`. Unfold `levi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `(((h3.clm_apply continuousOn_snd).clm_apply continuousOn_snd).add ((h3.clm_apply h4).clm_apply h4)).div_const 4`.
+A detailed English derivation is pending.
 -/
 theorem continuousOn_levi {φ : (ι → ℂ) → ℝ} {U : Set (ι → ℂ)} (hU : IsOpen U)
     (hφ : ContDiffOn ℝ 2 φ U) :

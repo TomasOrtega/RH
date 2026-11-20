@@ -18,9 +18,9 @@ variable {C : Type} [CommRing C] [TopologicalSpace C] [IsTopologicalRing C] [IsL
   {X S : Scheme.{0}}
 
 /- English proof (translation)
-Rewrite using `[t2_iff_isClosed_diagonal]`. Set `h` to `PtsOver.prodHomeomorph (IsPullback.of_hasPullback p p) s`. Establish `hd : pullback.diagonal p ≫ pullback.fst p p ≫ p = p` using `by simp`. Establish `key : ∀ x, h (PtsOver.map (pullback.diagonal p) hd s x) = (x, x)` using `fun x => Prod.ext (Subtype.ext (by simp [h])) (Subtype.ext (by simp [h]))`. Establish `hc` using `(h.isClosedEmbedding.comp (PtsOver.isClosedEmbedding_map (pullback.diagonal p) hd s)).isClosed_range`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hc` using `[show h ∘ PtsOver.map (pullback.diagonal p) hd s = fun x => (x, x) from funext key]`. Rewrite using `[← Set.range_diag]` and apply the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem PtsOver.t2Space [T1Space C] (p : X ⟶ S) [IsSeparated p] (s : Sp C ⟶ S) : T2Space (PtsOver p s) := by
   rw [t2_iff_isClosed_diagonal]
@@ -60,9 +60,9 @@ Both sides reduce to the same expression.
     (PtsOver.baseChangeHomeomorph hP z).1 = z.1 ≫ g := rfl
 
 /- English proof (translation)
-Take `⟨φ, rfl⟩` from `Spec.map_surjective q`. Establish `hφ : φ.hom.FiniteType` using `(HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)).1 inferInstance`. Use `letI := φ.hom.toAlgebra`. Establish `: Algebra.FiniteType C A` using `hφ`. Take `⟨n, f, hf⟩` from `Algebra.FiniteType.iff_quotient_mvPolynomial''.1 this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨n, _, isClosedEmbedding_coord (A := A) (id_eq_spMap_algebraMap C) (fun i => f (MvPolynomial.X i)) ?_⟩` and prove the remaining obligations. Conclude with `(congrArg (fun g : MvPolynomial (Fin n) C →ₐ[C] A => Function.Surjective g) (MvPolynomial.aeval_unique f)).mp hf`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_isClosedEmbedding_of_affine [T1Space C] {A : CommRingCat.{0}} (q : Spec A ⟶ Sp C)
     [LocallyOfFiniteType q] : ∃ (n : ℕ) (c : Pts q → (Fin n → C)), IsClosedEmbedding c := by
@@ -78,7 +78,7 @@ theorem exists_isClosedEmbedding_of_affine [T1Space C] {A : CommRingCat.{0}} (q 
 omit [IsTopologicalRing C] [IsOpenUnits C] [TopologicalSpace C] in
 
 /- English proof (translation)
-Rewrite using `[PtsOver.range_map, range_comp_of_isOpenImmersion, IsAffineOpen.opensRange_fromSpec]`. Conclude with `(le_preimage_iff x.1 U).2 hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_range_map_fromSpec (p : X ⟶ S) (s : Sp C ⟶ S) {U : X.Opens} (hU : IsAffineOpen U) (x : PtsOver p s)
     (hx : x.1 (IsLocalRing.closedPoint C) ∈ U) :
@@ -87,9 +87,9 @@ theorem mem_range_map_fromSpec (p : X ⟶ S) (s : Sp C ⟶ S) {U : X.Opens} (hU 
   exact (le_preimage_iff x.1 U).2 hx
 
 /- English proof (translation)
-Use `⟨fun x n hn => ?_⟩` and prove the remaining obligations. Take `⟨U, hU, hx, -⟩` from `exists_isAffineOpen_le x.1 (le_preimage_top _)`. Take `⟨y, rfl⟩` from `mem_range_map_fromSpec p _ hU x ((le_preimage_iff _ _).1 hx)`. Take `⟨m, c, hc⟩` from `exists_isClosedEmbedding_of_affine (hU.fromSpec ≫ p)`. Use `hc.locallyCompactSpace` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `he` using `PtsOver.isOpenEmbedding_map (p := hU.fromSpec ≫ p) hU.fromSpec rfl (𝟙 (Sp C))`. Take `⟨K, hK, hKn, hKc⟩` from `local_compact_nhds (he.continuous.continuousAt.preimage_mem_nhds hn)`. Conclude with `⟨_, he.isOpenMap.image_mem_nhds hK, Set.image_subset_iff.2 hKn, hKc.image he.continuous⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Pts.locallyCompactSpace [T1Space C] [LocallyCompactSpace C] (p : X ⟶ Sp C) [LocallyOfFiniteType p] :
     LocallyCompactSpace (Pts p) := by
@@ -103,7 +103,7 @@ theorem Pts.locallyCompactSpace [T1Space C] [LocallyCompactSpace C] (p : X ⟶ S
   exact ⟨_, he.isOpenMap.image_mem_nhds hK, Set.image_subset_iff.2 hKn, hKc.image he.continuous⟩
 
 /- English proof (translation)
-The claim follows from `have := Pts.locallyCompactSpace (pullback.snd p s) (PtsOver.baseChangeHomeomorph (IsPullback.of_hasPullback p s)).symm.isClosedEmbedding.locallyCompactSpace`.
+A detailed English derivation is pending.
 -/
 theorem PtsOver.locallyCompactSpace [T1Space C] [LocallyCompactSpace C] (p : X ⟶ S) [LocallyOfFiniteType p]
     (s : Sp C ⟶ S) : LocallyCompactSpace (PtsOver p s) :=
@@ -111,9 +111,9 @@ theorem PtsOver.locallyCompactSpace [T1Space C] [LocallyCompactSpace C] (p : X �
   (PtsOver.baseChangeHomeomorph (IsPullback.of_hasPullback p s)).symm.isClosedEmbedding.locallyCompactSpace
 
 /- English proof (translation)
-Establish `he` using `fun i => PtsOver.isOpenEmbedding_map (p := (hU i).fromSpec ≫ p) (hU i).fromSpec rfl (𝟙 (Sp C))`. Establish `: ∀ i, SecondCountableTopology (Set.range (PtsOver.map (p` using `(hU i).fromSpec ≫ p) (hU i).fromSpec rfl (𝟙 (Sp C)))) := fun i => by`. Take `⟨m, c, hc⟩` from `exists_isClosedEmbedding_of_affine ((hU i).fromSpec ≫ p)`. Use `hc.isEmbedding.secondCountableTopology` as an intermediate fact. Conclude with `(he i).isEmbedding.toHomeomorph.symm.secondCountableTopology`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `secondCountableTopology_of_countable_cover (fun i => (he i).isOpen_range) ?_` and prove the remaining obligations. Use `Set.eq_univ_of_forall fun x => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `exists_le_preimage_of_iSup_eq_top x.1 hc`. Conclude with `Set.mem_iUnion.2 ⟨i, mem_range_map_fromSpec p _ (hU i) x ((le_preimage_iff _ _).1 hi)⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Pts.secondCountableTopology_of_cover [T1Space C] [SecondCountableTopology C] (p : X ⟶ Sp C)
     [LocallyOfFiniteType p] {ι : Type*} [Countable ι] {U : ι → X.Opens} (hU : ∀ i, IsAffineOpen (U i))
@@ -130,7 +130,7 @@ theorem Pts.secondCountableTopology_of_cover [T1Space C] [SecondCountableTopolog
   exact Set.mem_iUnion.2 ⟨i, mem_range_map_fromSpec p _ (hU i) x ((le_preimage_iff _ _).1 hi)⟩
 
 /- English proof (translation)
-Establish `: CompactSpace (pullback p s : Scheme.{0})` using `QuasiCompact.compactSpace_of_compactSpace (pullback.snd p s)`. Set `𝒰` to `(pullback p s).affineCover.finiteSubcover`. Use `Pts.secondCountableTopology_of_cover (pullback.snd p s) (U := fun i => (𝒰.f i).opensRange) (fun i => isAffineOpen_opensRange _) 𝒰.iSup_opensRange` as an intermediate fact. Conclude with `(PtsOver.baseChangeHomeomorph (IsPullback.of_hasPullback p s)).symm.secondCountableTopology`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem PtsOver.secondCountableTopology [T1Space C] [SecondCountableTopology C] (p : X ⟶ S)
     [LocallyOfFiniteType p] [QuasiCompact p] (s : Sp C ⟶ S) : SecondCountableTopology (PtsOver p s) := by
@@ -144,7 +144,7 @@ theorem PtsOver.secondCountableTopology [T1Space C] [SecondCountableTopology C] 
 open scoped MonObj in
 
 /- English proof (translation)
-The claim follows from `(continuous_over_comp (μ[A])).comp (tensorHomeomorph A A).symm.continuous`.
+A detailed English derivation is pending.
 -/
 theorem continuousMul_over (A : Over (Sp C)) [MonObj A] : ContinuousMul (𝟙_ (Over (Sp C)) ⟶ A) where
   continuous_mul := (continuous_over_comp (μ[A])).comp (tensorHomeomorph A A).symm.continuous
@@ -152,7 +152,7 @@ theorem continuousMul_over (A : Over (Sp C)) [MonObj A] : ContinuousMul (𝟙_ (
 open scoped MonObj in
 
 /- English proof (translation)
-The claim follows from `(continuousMul_over A).continuous_mul continuous_inv := continuous_over_comp (GrpObj.inv (X := A))`.
+A detailed English derivation is pending.
 -/
 theorem isTopologicalGroup_over (A : Over (Sp C)) [GrpObj A] : IsTopologicalGroup (𝟙_ (Over (Sp C)) ⟶ A) where
   continuous_mul := (continuousMul_over A).continuous_mul
@@ -163,7 +163,7 @@ variable {R : Type} [CommRing R] {N : ℕ}
 omit [TopologicalSpace C] [IsTopologicalRing C] [IsLocalRing C] [IsOpenUnits C] in
 
 /- English proof (translation)
-Rewrite using `[pt_preimage_chart, top_le_iff]`. Rewrite using `[← Ideal.span_singleton_eq_top, ← Set.range_const (ι := Unit), ← iSup_spOpen_eq_top_iff, iSup_const]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem le_pt_preimage_chart_iff (c : R →+* C) (v : Fin (N + 1) → C) (hv : Ideal.span (Set.range v) = ⊤)
     (i : Fin (N + 1)) : ⊤ ≤ pt c v hv ⁻¹ᵁ chart R N i ↔ IsUnit (v i) := by
@@ -173,7 +173,7 @@ theorem le_pt_preimage_chart_iff (c : R →+* C) (v : Fin (N + 1) → C) (hv : I
 omit [TopologicalSpace C] [IsTopologicalRing C] [IsLocalRing C] [IsOpenUnits C] in
 
 /- English proof (translation)
-Establish `h` using `(le_pt_preimage_chart_iff c v hv i).2 hi`. Establish `e : ∀ a : C, (Scheme.ΓSpecIso (CommRingCat.of C)).hom.hom (fnOn ⊤ a) = a` using `fun a => (congrArg _ (GlobalTheory.Cartier.resG_self (X := Sp C) le_top _)).trans (Iso.inv_hom_id_apply (Scheme.ΓSpecIso (CommRingCat.of C)) a)`. Establish `h1` using `congrArg (Scheme.ΓSpecIso (CommRingCat.of C)).hom.hom (pullRatio_pt_top_mul c v hv i j hi h)`. Rewrite `h1` using `[map_mul, e, e]`. Rewrite using `[valR_eq _ _ h, ← h1, mul_assoc, Ring.mul_inverse_cancel _ hi, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -194,7 +194,7 @@ def projPt (c : R →+* C) (v : Unimodular C N) : PtsOver (PSpace.str R N) (spMa
 omit [TopologicalSpace C] [IsTopologicalRing C] [IsOpenUnits C] in
 
 /- English proof (translation)
-Introduce `x` and use `(exists_eq_pt c x.1 x.2).elim fun v h => h.elim fun hv e => ⟨⟨v, hv⟩, Subtype.ext e.symm⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem projPt_surjective (c : R →+* C) : Function.Surjective (projPt (N := N) c) := fun x =>
   (exists_eq_pt c x.1 x.2).elim fun v h => h.elim fun hv e => ⟨⟨v, hv⟩, Subtype.ext e.symm⟩
@@ -202,18 +202,18 @@ theorem projPt_surjective (c : R →+* C) : Function.Surjective (projPt (N := N)
 omit [TopologicalSpace C] [IsTopologicalRing C] [IsLocalRing C] [IsOpenUnits C] in
 
 /- English proof (translation)
-The claim follows from `Subtype.ext_iff.trans (pt_eq_pt_iff c v.2 w.2)`.
+A detailed English derivation is pending.
 -/
 theorem projPt_eq_iff (c : R →+* C) (v w : Unimodular C N) :
     projPt c v = projPt c w ↔ ∃ u : Cˣ, w.1 = u • v.1 :=
   Subtype.ext_iff.trans (pt_eq_pt_iff c v.2 w.2)
 
 /- English proof (translation)
-Establish `hs : ∀ i, Subring.closure (Set.range (constFn (PSpace.str R N) (chart R N i)) ∪ Set.range (ratio R N i)) = ⊤` using `fun i => by`. Use `(Algebra.adjoin_range_eq_range_aeval R (ratio R N i)).trans ((AlgHom.range_eq_top _).2 (aeval_ratio_surjective R N i))` as an intermediate fact. Establish `h2` using `congrArg Subalgebra.toSubring this`. Rewrite `h2` using `[Algebra.adjoin_eq_ring_closure]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(PtsOver.continuous_iff_of_generators (isAffineOpen_chart R N) (iSup_chart R N) hs).2 fun i => ?_` and prove the remaining obligations. Establish `hset : {b : Unimodular C N | ⊤ ≤ (projPt c b).1 ⁻¹ᵁ chart R N i} = {b | IsUnit (b.1 i)}` using `Set.ext fun b => le_pt_preimage_chart_iff c b.1 b.2 i`. Establish `hcont : ∀ j, Continuous fun b : Unimodular C N => b.1 j` using `fun j => (continuous_apply j).comp continuous_subtype_val`. Rewrite using `[hset]`. Use `⟨(IsOpenUnits.isOpenEmbedding_unitsVal (M := C)).isOpen_range.preimage (hcont i), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨j, rfl⟩`. Use `ContinuousOn.congr (fun b hb => ?_) fun b hb => valR_pt_ratio c b.1 b.2 hb j` and prove the remaining obligations. Conclude with `((hcont j).continuousAt.mul (ContinuousAt.comp (f := fun b : Unimodular C N => b.1 i) (continuousAt_inverse_of_isUnit hb) (hcont i).continuousAt)).continuousWithinAt`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_projPt (c : R →+* C) : Continuous (projPt (N := N) c) := by
   have hs : ∀ i, Subring.closure (Set.range (constFn (PSpace.str R N) (chart R N i)) ∪
@@ -247,15 +247,15 @@ def supSpherePt (c : R →+* F) (N : ℕ) (v : Metric.sphere (0 : Fin (N + 1) �
   projPt c ⟨v.1, span_range_eq_top_iff_ne_zero.2 (ne_zero_of_mem_unit_sphere v)⟩
 
 /- English proof (translation)
-The claim follows from `(continuous_projPt c).comp (continuous_subtype_val.subtype_mk _)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_supSpherePt (c : R →+* F) : Continuous (supSpherePt c N) :=
   (continuous_projPt c).comp (continuous_subtype_val.subtype_mk _)
 
 /- English proof (translation)
-Introduce `x`. Take `⟨⟨v, hv⟩, rfl⟩` from `projPt_surjective c x`. Establish `h0 : v ≠ 0` using `span_range_eq_top_iff_ne_zero.1 hv`. Take `⟨i, hi⟩` from `Finite.exists_max fun j => ‖v j‖`. Establish `hn : ‖v‖ = ‖v i‖` using `le_antisymm ((pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 hi) (norm_le_pi_norm v i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hvi : v i ≠ 0` using `fun h => h0 (by rwa [h, norm_zero, norm_eq_zero] at hn)`. Use `⟨⟨(v i)⁻¹ • v, ?_⟩, Subtype.ext (pt_units_smul c hv (Units.mk0 _ hvi)⁻¹)⟩` and prove the remaining obligations. Rewrite using `[mem_sphere_zero_iff_norm, norm_smul, hn, norm_inv, inv_mul_cancel₀ (norm_ne_zero_iff.2 hvi)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem supSpherePt_surjective (c : R →+* F) : Function.Surjective (supSpherePt c N) := by
   intro x
@@ -268,14 +268,14 @@ theorem supSpherePt_surjective (c : R →+* F) : Function.Surjective (supSphereP
   rw [mem_sphere_zero_iff_norm, norm_smul, hn, norm_inv, inv_mul_cancel₀ (norm_ne_zero_iff.2 hvi)]
 
 /- English proof (translation)
-The claim follows from `(supSpherePt_surjective c).compactSpace (continuous_supSpherePt c)`.
+A detailed English derivation is pending.
 -/
 theorem compactSpace_pSpace [ProperSpace F] (c : R →+* F) (N : ℕ) :
     CompactSpace (PtsOver (PSpace.str R N) (spMap c)) :=
   (supSpherePt_surjective c).compactSpace (continuous_supSpherePt c)
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `Spec.map_surjective s`. Take `⟨N, i, _, hi⟩` from `hp`. Use `compactSpace_pSpace c.hom N` as an intermediate fact. Conclude with `(PtsOver.isClosedEmbedding_map i hi (spMap c.hom)).compactSpace`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem PtsOver.compactSpace [ProperSpace F] {p : X ⟶ Sp R} (hp : IsProjOver p) (s : Sp F ⟶ Sp R) :
     CompactSpace (PtsOver p s) := by
@@ -291,7 +291,7 @@ section Sphere
 variable {𝕜 : Type} [RCLike 𝕜] {R : Type} [CommRing R] {N : ℕ}
 
 /- English proof (translation)
-The claim follows from `span_range_eq_top_iff_ne_zero.2 fun h => ne_zero_of_mem_unit_sphere v ((WithLp.ofLp_eq_zero 2).1 h)`.
+A detailed English derivation is pending.
 -/
 theorem span_range_sphere (v : Metric.sphere (0 : EuclideanSpace 𝕜 (Fin (N + 1))) 1) :
     Ideal.span (Set.range v.1.ofLp) = ⊤ :=
@@ -302,15 +302,15 @@ def spherePt (c : R →+* 𝕜) (N : ℕ) (v : Metric.sphere (0 : EuclideanSpace
   projPt c ⟨v.1.ofLp, span_range_sphere v⟩
 
 /- English proof (translation)
-The claim follows from `(continuous_projPt c).comp (((PiLp.continuous_ofLp 2 _).comp continuous_subtype_val).subtype_mk _)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_spherePt (c : R →+* 𝕜) : Continuous (spherePt c N) :=
   (continuous_projPt c).comp (((PiLp.continuous_ofLp 2 _).comp continuous_subtype_val).subtype_mk _)
 
 /- English proof (translation)
-Introduce `x`. Take `⟨⟨v, hv⟩, rfl⟩` from `projPt_surjective c x`. Establish `h0 : WithLp.toLp 2 v ≠ 0` using `fun h => span_range_eq_top_iff_ne_zero.1 hv ((WithLp.toLp_eq_zero 2).1 h)`. Establish `hn : ((‖WithLp.toLp 2 v‖ : ℝ) : 𝕜) ≠ 0` using `by simpa using h0`. Use `⟨⟨((‖WithLp.toLp 2 v‖ : ℝ) : 𝕜)⁻¹ • WithLp.toLp 2 v, ?_⟩, Subtype.ext (pt_units_smul c hv (Units.mk0 _ hn)⁻¹)⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mem_sphere_zero_iff_norm, norm_smul, norm_inv, RCLike.norm_ofReal, abs_norm, inv_mul_cancel₀ (norm_ne_zero_iff.2 h0)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem spherePt_surjective (c : R →+* 𝕜) : Function.Surjective (spherePt c N) := by
   intro x
@@ -327,7 +327,7 @@ end Sphere
 open scoped MonObj in
 
 /- English proof (translation)
-Use `⟨fun X p => ⟨fun _ => PtsOver.t2Space p _, fun _ => PtsOver.locallyCompactSpace p _, fun _ _ => PtsOver.secondCountableTopology p _, fun h => PtsOver.compactSpace h _⟩, fun N => ?_, fun A _ => isTopologicalGroup_over A⟩` and prove the remaining obligations. Unfold `Pts`. Rewrite using `[id_eq_spMap_algebraMap ℂ]`. Conclude with `⟨spherePt (RingHom.id ℂ) N, fun _ => rfl, continuous_spherePt _, spherePt_surjective _⟩`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem complex_points_topology :
     (∀ (X : Scheme.{0}) (p : X ⟶ Sp ℂ),
@@ -346,7 +346,7 @@ theorem complex_points_topology :
   exact ⟨spherePt (RingHom.id ℂ) N, fun _ => rfl, continuous_spherePt _, spherePt_surjective _⟩
 
 /- English proof (translation)
-Use `⟨compactSpace_pSpace _ 1, projPt _ ⟨![1, 0], span_range_eq_top_iff_ne_zero.2 (by simp)⟩, projPt _ ⟨![0, 1], span_range_eq_top_iff_ne_zero.2 (by simp)⟩, fun h => ?_⟩` and prove the remaining obligations. Take `⟨u, hu⟩` from `(projPt_eq_iff _ _ _).1 h`. Simplify using `using congrFun hu 1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 -/
 example : let P := PtsOver (PSpace.str ℂ 1) (spMap (RingHom.id ℂ))
     CompactSpace P ∧ Nontrivial P := by

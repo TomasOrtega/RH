@@ -8,9 +8,9 @@ namespace GlobalTheory.Honda
 variable {K : Type} [NormedField K] [IsUltrametricDist K]
 
 /- English proof (translation)
-Rewrite using `[← Commute.geom_sum₂_mul (Commute.all _ _), add_sub_cancel_left, norm_mul]`. Establish `hs : ‖∑ k ∈ Finset.range n, (c + e) ^ k * c ^ (n - 1 - k)‖ ≤ 1`. Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one` to reduce the goal to its premises. Introduce `k _`. Rewrite using `[norm_mul, norm_pow, norm_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_one₀ (pow_le_one₀ (norm_nonneg _) hce) (by positivity) (pow_le_one₀ (norm_nonneg _) hc)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem norm_add_pow_sub_pow_le (c e : K) {r : ℝ} (hc : ‖c‖ ≤ 1) (hce : ‖c + e‖ ≤ 1) (he : ‖e‖ ≤ r)
     (n : ℕ) : ‖(c + e) ^ n - c ^ n‖ ≤ r := by
@@ -24,13 +24,13 @@ theorem norm_add_pow_sub_pow_le (c e : K) {r : ℝ} (hc : ‖c‖ ≤ 1) (hce : 
     _ = r := one_mul r
 
 /- English proof (translation)
-Take `⟨_, _, hl1, hmax, hiso, hfr⟩` from `hU`. Proceed by induction on `i with`. Consider the case `zero => exact ⟨fun a _ => by simp, fun x => by simp⟩`. Consider the case `succ i ih`. Take `⟨ih1, ih2⟩` from `ih`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨fun a ha => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ', RingHom.mul_def, RingHom.comp_apply] set b := (σ ^ i) a`. Establish `hb : ‖b‖ ≤ 1` using `(ih2 a).le.trans ha`. Establish `h1 : ‖σ b - b ^ l‖ ≤ ‖(l : K)‖` using `hmax _ (hfr b hb)`. Establish `hc : ‖a ^ l ^ i‖ ≤ 1` using `by rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) ha`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ‖b ^ l - (a ^ l ^ i) ^ l‖ ≤ ‖(l : K)‖`. Use `norm_add_pow_sub_pow_le (a ^ l ^ i) (b - a ^ l ^ i) hc (by simpa using hb) (ih1 a ha) l` as an intermediate fact. Simplify using `using this`. Establish `: σ b - a ^ l ^ (i + 1) = (σ b - b ^ l) + (b ^ l - (a ^ l ^ i) ^ l)` using `by ring`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le h1 h2)`. Rewrite using `[pow_succ', RingHom.mul_def, RingHom.comp_apply, hiso, ih2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFrobLift_pow (l : ℕ) (σ : K →+* K) (hU : Unr K l σ) (i : ℕ) :
     Formalism.G.IsFrobLift l (l ^ i) (σ ^ i) ∧ ∀ x : K, ‖(σ ^ i) x‖ = ‖x‖ := by
@@ -54,7 +54,7 @@ theorem isFrobLift_pow (l : ℕ) (σ : K →+* K) (hU : Unr K l σ) (i : ℕ) :
     · rw [pow_succ', RingHom.mul_def, RingHom.comp_apply, hiso, ih2]
 
 /- English proof (translation)
-Introduce `K _ _ _ l σ hU s A hA i h m`. Establish `hpr : l.Prime` using `hU.1`. Establish `hl1 : ‖(l : K)‖ < 1` using `hU.2.2.1`. Establish `hp0 : (l : K) ≠ 0` using `Nat.cast_ne_zero.mpr hpr.ne_zero`. Conclude with `Formalism.LT.FrobP.main l i hpr (σ ^ i) hp0 hl1 (isFrobLift_pow l σ hU i).1 A hA m`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pow_frob_sub_le : ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [CharZero K] (l : ℕ) (σ : K →+* K), Unr K l σ → ∀ (s : Type) (A : MvPowerSeries s K), (∀ m, ‖MvPowerSeries.coeff m A‖ ≤ 1) → ∀ (i : ℕ) (h : l ^ i ≠ 0) (m : s →₀ ℕ), ‖MvPowerSeries.coeff m (A ^ (l ^ i) - MvPowerSeries.expand (l ^ i) h (MvPowerSeries.map (σ ^ i) A))‖ ≤ ‖(l : K)‖ := by
   intro K _ _ _ l σ hU s A hA i h m

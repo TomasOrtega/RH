@@ -18,45 +18,41 @@ open scoped TensorProduct
 namespace GlobalTheory.AfUnitSplit
 
 /- English proof (translation)
-Introduce `v` and use `by rw [map_add]; exact add_mem (ha v) (hb v)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isInt_add' {p : ℕ} {a b : AfP p} (ha : IsIntAf a) (hb : IsIntAf b) : IsIntAf (a + b) := fun v => by
   rw [map_add]; exact add_mem (ha v) (hb v)
 
 /- English proof (translation)
-Introduce `v` and use `by rw [map_sub]; exact sub_mem (ha v) (hb v)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isInt_sub' {p : ℕ} {a b : AfP p} (ha : IsIntAf a) (hb : IsIntAf b) : IsIntAf (a - b) := fun v => by
   rw [map_sub]; exact sub_mem (ha v) (hb v)
 
 /- English proof (translation)
-Introduce `v` and use `by rw [map_mul]; exact mul_mem (ha v) (hb v)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isInt_mul' {p : ℕ} {a b : AfP p} (ha : IsIntAf a) (hb : IsIntAf b) : IsIntAf (a * b) := fun v => by
   rw [map_mul]; exact mul_mem (ha v) (hb v)
 
 /- English proof (translation)
-Introduce `v` and use `by rw [map_intCast]; exact intCast_mem _ k`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isInt_intCast' {p : ℕ} (k : ℤ) : IsIntAf (k : AfP p) := fun v => by
   rw [map_intCast]; exact intCast_mem _ k
 
 /- English proof (translation)
-Introduce `p _ a b K hK hKp ha hb hab`. Take `⟨m₀, β, hβ, e⟩` from `LaHatMod.exists_int_add_mul K hK hKp a ha`. Establish `hgpos : 0 < Int.gcd m₀ (K : ℤ)` using `Int.gcd_pos_of_ne_zero_right _ (by exact_mod_cast hK.ne')`. Take `⟨g, a₀, K₀, hg, hcop, hm, hKe⟩` from `Int.exists_gcd_one' hgpos`. Establish `hgK : g ∣ K`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: (g : ℤ) ∣ (K : ℤ)` using `⟨K₀, by rw [hKe]; ring⟩`. Conclude with `this` after adjusting the coercions. Establish `hgp : g.Coprime p` using `Nat.Coprime.coprime_dvd_left hgK hKp`. Establish `hbez : (1 : ℤ) = a₀ * Int.gcdA a₀ K₀ + K₀ * Int.gcdB a₀ K₀`. Rewrite using `[← Int.gcd_eq_gcd_ab, hcop]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `set s := Int.gcdA a₀ K₀`. Use `set t := Int.gcdB a₀ K₀`. Establish `hbez' : (1 : AfP p) = (a₀ : AfP p) * s + (K₀ : AfP p) * t`. Use `congrArg (Int.cast : ℤ → AfP p) hbez` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact.
 
-Move the coercions through the operations in `at this`. Conclude with `this`. Establish `hKc : (K : AfP p) = (K₀ : AfP p) * (g : AfP p)`. Use `congrArg (Int.cast : ℤ → AfP p) hKe` as an intermediate fact. Move the coercions through the operations in `at this`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hmc : (m₀ : AfP p) = (a₀ : AfP p) * (g : AfP p)`. Use `congrArg (Int.cast : ℤ → AfP p) hm` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hgq : (g : ℚ) ≠ 0` using `by exact_mod_cast hg.ne'`. Use `set u := algebraMap ℚ (AfP p) (g : ℚ)⁻¹`. Establish `hu : (g : AfP p) * u = 1`. Rewrite using `[← map_natCast (algebraMap ℚ (AfP p)), ← map_mul, mul_inv_cancel₀ hgq, map_one]`. Establish `ha' : a = (g : AfP p) * ((a₀ : AfP p) + (K₀ : AfP p) * β)`.
-
-Rewrite using `[e, hmc, hKc]`. Expand and normalize the polynomial expressions, which then agree. Establish `hεb : ((a₀ : AfP p) + (K₀ : AfP p) * β) * b = (K₀ : AfP p)`. Take the linear combination `(-(((a₀ : AfP p) + (K₀ : AfP p) * β) * b - (K₀ : AfP p))) * hu + u * hab - u * b * ha' + u * hKc`. Use `⟨g, (a₀ : AfP p) + (K₀ : AfP p) * β, (s : AfP p) - b * ((s : AfP p) * β - t), hgp, hgK, isInt_add' (isInt_intCast' _) (isInt_mul' (isInt_intCast' _) hβ), isInt_sub' (isInt_intCast' _) (isInt_mul' hb (isInt_sub' (isInt_mul' (isInt_intCast' _) hβ) (isInt_intCast' _))), ?_, ha'⟩` and prove the remaining obligations.
-
-Take the linear combination `(-((s : AfP p) * β - t)) * hεb - hbez'`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_dvd_mul_unit : ∀ (p : ℕ) [Fact p.Prime] (a b : AfP p) (K : ℕ), 0 < K → K.Coprime p → IsIntAf a →
     IsIntAf b → a * b = (K : AfP p) → ∃ (c : ℕ) (ε ε' : AfP p), c.Coprime p ∧ c ∣ K ∧ IsIntAf ε ∧ IsIntAf ε' ∧

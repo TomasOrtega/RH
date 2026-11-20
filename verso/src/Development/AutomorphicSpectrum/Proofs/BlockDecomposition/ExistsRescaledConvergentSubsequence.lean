@@ -7,15 +7,15 @@ open scoped ContDiff
 namespace GlobalTheory.CompanionTheory.LimVec
 
 /- English proof (translation)
-Introduce `M _ _ _ g hg`. Set `e : M ≃ₗ[ℂ] (Fin (Module.finrank ℂ M) → ℂ)` to `(Module.finBasis ℂ M).equivFun`. Set `s : ℕ → ℂ` to `fun k => ((‖e (g k)‖⁻¹ : ℝ) : ℂ)`. Establish `hv : ∀ k, e (g k) ≠ 0` using `fun k h => hg k (by simpa using h)`. Establish `hmem : ∀ k, s k • e (g k) ∈ Metric.sphere (0 : Fin (Module.finrank ℂ M) → ℂ) 1`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k`. Establish `hn : ‖e (g k)‖ ≠ 0` using `norm_ne_zero_iff.mpr (hv k)`. Rewrite using `[mem_sphere_zero_iff_norm, norm_smul]`. Simplify using `only [s, Complex.norm_real, norm_inv, norm_norm]`. Conclude with `inv_mul_cancel₀ hn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hvs, φ, hφ, hlim⟩` from `(isCompact_sphere (0 : Fin (Module.finrank ℂ M) → ℂ) 1).tendsto_subseq hmem`. Establish `hv0 : v ≠ 0`. Introduce `h`. Rewrite `hvs` using `[h]`. Simplify using `at hvs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun k => s (φ k), φ, e.symm v, hφ, by simpa using hv0, fun ℓ => ?_⟩` and prove the remaining obligations. Set `L : (Fin (Module.finrank ℂ M) → ℂ) →ₗ[ℂ] ℂ` to `ℓ ∘ₗ e.symm.toLinearMap`. Establish `hL : Continuous L` using `LinearMap.continuous_of_finiteDimensional L`. Establish `h` using `(hL.tendsto v).comp hlim`. Establish `hfun : (L ∘ ((fun k => s k • e (g k)) ∘ φ)) = fun k => s (φ k) * ℓ (g (φ k))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `k`. Simplify using `[L]`. Rewrite `h` using `[hfun]`. Simplify `h` using `[L]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem normalised_subseq_limit : ∀ {M : Type} [AddCommGroup M] [Module ℂ M] [FiniteDimensional ℂ M] (g : ℕ → M), (∀ k, g k ≠ 0) → ∃ (c : ℕ → ℂ) (φ : ℕ → ℕ) (G : M), StrictMono φ ∧ G ≠ 0 ∧ ∀ ℓ : Module.Dual ℂ M, Tendsto (fun k => c k * ℓ (g (φ k))) atTop (𝓝 (ℓ G)) := by
   intro M _ _ _ g hg

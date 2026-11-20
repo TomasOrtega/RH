@@ -14,7 +14,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.CompanionTheory.CtS
 
 /- English proof (translation)
-Establish `h : x ^ b / y ^ a = (((Units.mk0 x hx) ^ (b : ℤ) * (Units.mk0 y hy) ^ (-(a : ℤ)) : Lˣ) : L)`. Simplify using `[div_eq_mul_inv]`. Rewrite using `[h, Units.val_mul, GlobalTheory.CompanionTheory.SwapInt.ordL_mul_of_ne (Units.ne_zero _) (Units.ne_zero _), GlobalTheory.CompanionTheory.UnitaryContraction.ordL_zpow, GlobalTheory.CompanionTheory.UnitaryContraction.ordL_zpow]`. Simplify using `only [Units.val_mk0]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ordL_pow_div_pow {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {x y : L}
     (hx : x ≠ 0) (hy : y ≠ 0) (a b : ℕ) :
@@ -28,17 +28,15 @@ theorem ordL_pow_div_pow {L : Type} [Field L] [Valued L (WithZero (Multiplicativ
   ring
 
 /- English proof (translation)
-Introduce `E _ _ _ a b w i j m hi hj`. Establish `h1 : m.1.val.det ≠ 0`. Use `m.1.isUnit` as an intermediate fact. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 this).ne_zero`. Establish `h2 : m.2.val.det ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `m.2.isUnit` as an intermediate fact. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 this).ne_zero`. Establish `hq : 0 < (qV E w : ℝ)`. Establish `: qV E w ≠ 0`. Unfold `qV`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `w.ne_bot`. Conclude with `Nat.pos_of_ne_zero this` after adjusting the coercions. Establish `ho` using `ordL_pow_div_pow h1 h2 a b`. Rewrite `ho` using `[hi, hj]`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `absHalf`. Rewrite using `[ho]`. Establish `hs : Real.sqrt ((qV E w : ℝ) ^ (-((b : ℤ) * (i : ℤ) - (a : ℤ) * (j : ℤ)))) = (qV E w : ℝ) ^ (-((i : ℝ) * b - (j : ℝ) * a) / 2)`. Rewrite using `[Real.sqrt_eq_rpow, ← Real.rpow_intCast, ← Real.rpow_mul hq.le]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hs, Complex.ofReal_cpow hq.le, Complex.ofReal_natCast]`. Use `congr 1`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem absHalf_blockDet_value : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a b : ℕ) (w : Pl E) (i j : ℕ) (m : GLw a w × GLw b w), ordL m.1.val.det = (i : ℤ) → ordL m.2.val.det = (j : ℤ) → absHalf w (m.1.val.det ^ b / m.2.val.det ^ a) = (qV E w : ℂ) ^ (-((i : ℂ) * b - (j : ℂ) * a) / 2) := by
   intro E _ _ _ a b w i j m hi hj

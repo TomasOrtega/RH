@@ -38,7 +38,7 @@ def LTorsLatticeSt : Prop :=
         ∀ (l' : ℕ) [Fact l'.Prime], l' ≠ l → (l' : K) ≠ 0 → Function.Bijective (tmap l' A B q))
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : IsAlgClosed (AlgebraicClosure (ZMod 3)) := inferInstance
 

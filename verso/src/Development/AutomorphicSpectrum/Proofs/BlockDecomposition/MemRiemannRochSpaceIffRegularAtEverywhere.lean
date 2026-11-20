@@ -9,9 +9,9 @@ namespace GlobalTheory.CompanionTheory.GLFirstBasisOrbit
 variable {k : Type} [Field k] {n : ℕ}
 
 /- English proof (translation)
-Unfold `gmap`. Rewrite using `[Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`. Rewrite using `[Matrix.toLin'_apply, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hz`. Introduce `h`. Use `⟨_, h, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.toLin'_apply, Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_gmap {N : ℕ} (g : GL (Fin N) k) (M : Submodule k (Fin N → k)) (x : Fin N → k) :
     x ∈ gmap g M ↔ (g⁻¹).val *ᵥ x ∈ M := by
@@ -28,14 +28,14 @@ theorem mem_gmap {N : ℕ} (g : GL (Fin N) k) (M : Submodule k (Fin N → k)) (x
       Matrix.one_mulVec]
 
 /- English proof (translation)
-Rewrite using `[mem_gmap, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_mem_gmap {N : ℕ} (g : GL (Fin N) k) (M : Submodule k (Fin N → k)) (x : Fin N → k) :
     g.val *ᵥ x ∈ gmap g M ↔ x ∈ M := by
   rw [mem_gmap, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[mem_gmap, mem_gmap, mem_gmap, Matrix.mulVec_mulVec, ← Units.val_mul, _root_.mul_inv_rev]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem gmap_mul {N : ℕ} (g h : GL (Fin N) k) (M : Submodule k (Fin N → k)) :
     gmap (g * h) M = gmap g (gmap h M) := by
@@ -43,14 +43,14 @@ theorem gmap_mul {N : ℕ} (g h : GL (Fin N) k) (M : Submodule k (Fin N → k)) 
   rw [mem_gmap, mem_gmap, mem_gmap, Matrix.mulVec_mulVec, ← Units.val_mul, _root_.mul_inv_rev]
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[mem_gmap, inv_one, Units.val_one, Matrix.one_mulVec]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem gmap_one {N : ℕ} (M : Submodule k (Fin N → k)) : gmap (1 : GL (Fin N) k) M = M := by
   ext x
   rw [mem_gmap, inv_one, Units.val_one, Matrix.one_mulVec]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[mem_gmap]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gmap_top {N : ℕ} (g : GL (Fin N) k) : gmap g ⊤ = ⊤ := by
   ext x
@@ -63,7 +63,7 @@ def gmapEquiv {N : ℕ} (g : GL (Fin N) k) : Submodule k (Fin N → k) ≃ Submo
   right_inv M := by rw [← gmap_mul, mul_inv_cancel, gmap_one]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (Matrix.toLin' g.val)`. Introduce `x y h`. Use `congrArg (fun z => (g⁻¹).val *ᵥ z) h` as an intermediate fact. Simplify `this` using `[Matrix.toLin'_apply, Matrix.mulVec_mulVec, ← Units.val_mul]`. Conclude with `(Submodule.equivMapOfInjective _ hinj M).finrank_eq.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem finrank_gmap {N : ℕ} (g : GL (Fin N) k) (M : Submodule k (Fin N → k)) :
     Module.finrank k (gmap g M) = Module.finrank k M := by
@@ -74,7 +74,7 @@ theorem finrank_gmap {N : ℕ} (g : GL (Fin N) k) (M : Submodule k (Fin N → k)
   exact (Submodule.equivMapOfInjective _ hinj M).finrank_eq.symm
 
 /- English proof (translation)
-Introduce `h`. Use `congrFun h 0` as an intermediate fact. Simplify using `[e0] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem first_basis_ne_zero : e0 k n ≠ 0 := by
   intro h
@@ -82,23 +82,23 @@ theorem first_basis_ne_zero : e0 k n ≠ 0 := by
   simp [e0] at this
 
 /- English proof (translation)
-Simplify using `[e0]`.
+Simplify using the standard rewrite rules.
 -/
 theorem star_e0_dotProduct (x : Fin (n + 1) → k) : e0 k n ⬝ᵥ x = x 0 := by
   simp [e0]
 
 /- English proof (translation)
-Simplify using `[H0]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_riemannRochSpace_iff_regularAt_everywhere (x : Fin (n + 1) → k) : x ∈ H0 k n ↔ x 0 = 0 := by
   simp [H0]
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `Function.ne_iff.mp hx`. Set `A : Matrix (Fin (n + 1)) (Fin (n + 1)) k` to `(1 : Matrix _ _ k).updateCol i x`. Establish `hA : A.det = x i`. Use `Matrix.cramer_apply (1 : Matrix (Fin (n + 1)) (Fin (n + 1)) k) x i` as an intermediate fact. Rewrite using `[← show (1 : Matrix (Fin (n + 1)) (Fin (n + 1)) k).updateCol i x = A from rfl, ← this]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Set `G : Matrix (Fin (n + 1)) (Fin (n + 1)) k` to `A.submatrix id (Equiv.swap 0 i)`. Establish `hG : G.det ≠ 0`. Use `Matrix.det_permute' (Equiv.swap 0 i) A` as an intermediate fact. Rewrite using `[show G = A.submatrix id (Equiv.swap 0 i) from rfl, this, hA]`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `mul_ne_zero ?_ hi` and prove the remaining obligations. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign (Equiv.swap (0 : Fin (n + 1)) i)) with h | h <;> rw [h] <;> simp`. Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero G hG, ?_⟩` and prove the remaining obligations. Use extensionality with `a`. Simplify using `[Matrix.GeneralLinearGroup.mkOfDetNeZero, e0, G, A]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem exists_GL_first_basis_eq (x : Fin (n + 1) → k) (hx : x ≠ 0) :
     ∃ g : GL (Fin (n + 1)) k, g.val *ᵥ e0 k n = x := by
@@ -119,9 +119,9 @@ theorem exists_GL_first_basis_eq (x : Fin (n + 1) → k) (hx : x ≠ 0) :
   simp [Matrix.GeneralLinearGroup.mkOfDetNeZero, e0, G, A]
 
 /- English proof (translation)
-Take `⟨h, hh⟩` from `exists_GL_first_basis_eq a ha`. Establish `hd : (h.val)ᵀ.det ≠ 0`. Rewrite using `[Matrix.det_transpose]`. Conclude with `(Matrix.isUnits_det_units h).ne_zero`. Set `T : GL (Fin (n + 1)) k` to `Matrix.GeneralLinearGroup.mkOfDetNeZero (h.val)ᵀ hd`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨T⁻¹, fun x => ?_⟩` and prove the remaining obligations. Establish `hT : T.val = (h.val)ᵀ` using `rfl`. Establish `h1 : a = e0 k n ᵥ* T.val` using `by rw [hT, Matrix.vecMul_transpose, hh]`. Rewrite using `[Matrix.dotProduct_mulVec, h1, Matrix.vecMul_vecMul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.vecMul_one, star_e0_dotProduct]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_gl_cov (a : Fin (n + 1) → k) (ha : a ≠ 0) :
     ∃ g : GL (Fin (n + 1)) k, ∀ x, a ⬝ᵥ (g.val *ᵥ x) = x 0 := by
@@ -137,7 +137,7 @@ theorem exists_gl_cov (a : Fin (n + 1) → k) (ha : a ≠ 0) :
     Units.val_one, Matrix.vecMul_one, star_e0_dotProduct]
 
 /- English proof (translation)
-Rewrite using `[mem_gmap, mem_riemannRochSpace_iff_regularAt_everywhere, ← h ((g⁻¹).val *ᵥ z), Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem mem_GL_image_hyperplane_iff (g : GL (Fin (n + 1)) k) (a : Fin (n + 1) → k)
     (h : ∀ x, a ⬝ᵥ (g.val *ᵥ x) = x 0) (z : Fin (n + 1) → k) :
@@ -146,9 +146,9 @@ theorem mem_GL_image_hyperplane_iff (g : GL (Fin (n + 1)) k) (a : Fin (n + 1) �
     Matrix.one_mulVec]
 
 /- English proof (translation)
-Establish `h1 : g.val *ᵥ e0 k n ∈ Submodule.span k {e0 k n}`. Rewrite using `[← h, smul_mem_gmap]`. Conclude with `Submodule.mem_span_singleton_self _`. Take `⟨s, hs⟩` from `Submodule.mem_span_singleton.mp h1`. Use `⟨s, ?_, hs.symm⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Establish `h2 : g.val *ᵥ e0 k n = 0` using `by rw [← hs, zero_smul]`. Establish `h3` using `congrArg (fun z => (g⁻¹).val *ᵥ z) h2`. Simplify using `only [Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec, Matrix.mulVec_zero] at h3`. Conclude with `first_basis_ne_zero h3`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_scalar_stabilizer_line (g : GL (Fin (n + 1)) k)
     (h : gmap g (Submodule.span k {e0 k n}) = Submodule.span k {e0 k n}) :
@@ -182,7 +182,7 @@ def stabV (red : Γ →* GL (Fin (n + 1)) k) (ρ : Γ →* Module.End ℂ V) : S
     rw [map_smul, ha γ h]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_stabV (red : Γ →* GL (Fin (n + 1)) k) (ρ : Γ →* Module.End ℂ V) (y : V) :
     y ∈ stabV red ρ ↔

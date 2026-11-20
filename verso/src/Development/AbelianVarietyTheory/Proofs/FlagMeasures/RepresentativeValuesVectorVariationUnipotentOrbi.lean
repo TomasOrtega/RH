@@ -7,7 +7,7 @@ open scoped InnerProductSpace ContDiff
 namespace GlobalTheory.PathVar
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Units.ext h)`.
+A detailed English derivation is pending.
 -/
 theorem uMat_inj {n : ℕ} {ε : Fin n → Bool} {a b : Formalism.REAL.UJ ε} (h : uMat a = uMat b) : a = b :=
   Subtype.ext (Units.ext h)
@@ -18,7 +18,7 @@ Both sides reduce to the same expression.
 theorem uMat_mul' {n : ℕ} {ε : Fin n → Bool} (a b : Formalism.REAL.UJ ε) : uMat (a * b) = uMat a * uMat b := rfl
 
 /- English proof (translation)
-Apply `uMat_inj` to reduce the goal to its premises. Rewrite using `[uMat_mul', uMat_expU, uMat_expU, uMat_expU, add_smul, Submodule.coe_add]`. Apply `Matrix.exp_add_of_commute` to reduce the goal to its premises. Simplify using `only [Submodule.coe_smul]`. Conclude with `((Commute.refl (X : Matrix (Fin n) (Fin n) ℂ)).smul_left s).smul_right t`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem expU_add {n : ℕ} {ε : Fin n → Bool} (X : gLie ε) (s t : ℝ) :
     expU ((s + t) • X) = expU (s • X) * expU (t • X) := by
@@ -29,7 +29,7 @@ theorem expU_add {n : ℕ} {ε : Fin n → Bool} (X : gLie ε) (s t : ℝ) :
   exact ((Commute.refl (X : Matrix (Fin n) (Fin n) ℂ)).smul_left s).smul_right t
 
 /- English proof (translation)
-Apply `uMat_inj` to reduce the goal to its premises. Rewrite using `[uMat_expU, zero_smul, Submodule.coe_zero, NormedSpace.exp_zero]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem expU_zero {n : ℕ} {ε : Fin n → Bool} (X : gLie ε) : expU ((0 : ℝ) • X) = 1 := by
   apply uMat_inj
@@ -40,9 +40,9 @@ noncomputable def pt (B : RowsAut) (E : gInf B) (z : B.I.GA) (t : ℝ) : B.I.GA 
   z * ((fun v => expU (t • E v)), 1)
 
 /- English proof (translation)
-Unfold `pt`. Rewrite using `[mul_assoc]`. Use `congr 1`. Use `Prod.ext ?_ (by simp)` and prove the remaining obligations. Use function extensionality and compare the values at `v`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `expU_add _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem pt_add (B : RowsAut) (E : gInf B) (z : B.I.GA) (s t : ℝ) :
     pt B E z (s + t) = pt B E z s * ((fun v => expU (t • E v)), 1) := by
@@ -54,9 +54,9 @@ theorem pt_add (B : RowsAut) (E : gInf B) (z : B.I.GA) (s t : ℝ) :
   exact expU_add _ _ _
 
 /- English proof (translation)
-Unfold `pt`. Establish `: (((fun v => expU ((0 : ℝ) • E v)), 1) : B.I.GA) = 1`. Use `Prod.ext ?_ rfl` and prove the remaining obligations. Use function extensionality and compare the values at `v`. Conclude with `expU_zero _`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem pt_zero (B : RowsAut) (E : gInf B) (z : B.I.GA) : pt B E z 0 = z := by
   unfold pt
@@ -67,9 +67,9 @@ theorem pt_zero (B : RowsAut) (E : gInf B) (z : B.I.GA) : pt B E z 0 = z := by
   rw [this, mul_one]
 
 /- English proof (translation)
-Establish `h1 : ∀ i, HasDerivAt (fun t => Fr i u (pt B E z t)) (Fr i (dAct B E u) (pt B E z s)) s`. Introduce `i`. Establish `h0` using `(h i P u hu).2.2 E (pt B E z s)`. Rewrite `h0` using `[← sub_self s]`. Establish `h2` using `h0.comp_sub_const s s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [← pt_add, add_sub_cancel] at h2`. Conclude with `h2`. Establish `h2 : HasDerivAt (fun t => fun i => Fr i u (pt B E z t)) (fun i => Fr i (dAct B E u) (pt B E z s)) s` using `hasDerivAt_pi.2 h1`. Conclude with `((EuclideanSpace.equiv (Fin D) ℂ).symm.toContinuousLinearMap.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt s h2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_vv (B : RowsAut) {D : ℕ} (T : Fin D → (B.Hs →L[ℂ] B.I.L2 B.μf B.fund))
     (Fr : Fin D → B.Hs → B.I.GA → ℂ) (h : ∀ i, IsReps B (T i) (Fr i)) {P : ℕ} {u : B.Hs} (hu : u ∈ VP B P)
@@ -87,7 +87,7 @@ theorem hasDerivAt_vv (B : RowsAut) {D : ℕ} (T : Fin D → (B.Hs →L[ℂ] B.I
   exact ((EuclideanSpace.equiv (Fin D) ℂ).symm.toContinuousLinearMap.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt s h2
 
 /- English proof (translation)
-Unfold `Formalism.REAL.hs`. Use `Finset.sum_le_sum fun i _ => Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, norm_smul, Real.norm_of_nonneg h0]`. Conclude with `pow_le_pow_left₀ (by positivity) (mul_le_of_le_one_left (norm_nonneg _) h1) 2`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hs_smul_le {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) {s : ℝ} (h0 : 0 ≤ s) (h1 : s ≤ 1) :
     Formalism.REAL.hs (s • X) ≤ Formalism.REAL.hs X := by
@@ -97,9 +97,9 @@ theorem hs_smul_le {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) {s : ℝ} (h0 : 0 
   exact pow_le_pow_left₀ (by positivity) (mul_le_of_le_one_left (norm_nonneg _) h1) 2
 
 /- English proof (translation)
-Use `⟨by simp [pt], fun v => (s • A v).1, fun v => (t • Z v).1, fun v => ⟨(s • A v).2, (t • Z v).2⟩, ?_, fun v => rfl, fun s' t' => ?_⟩` and prove the remaining obligations. Use `le_trans (add_le_add (Real.sqrt_le_sqrt ?_) (Real.sqrt_le_sqrt ?_)) hρ` and prove the remaining obligations. Conclude with `Finset.sum_le_sum fun v _ => hs_smul_le _ hs.1 hs.2`. Conclude with `Finset.sum_le_sum fun v _ => hs_smul_le _ ht.1 ht.2`. Take `⟨m, hm, hm'⟩` from `hN (s' * s) (t' * t)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨m, hm, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[hm' v]`. Simplify using `only [Submodule.coe_smul, Complex.coe_smul, smul_smul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pt_mem_omega (B : RowsAut) (x : B.I.GA) (W : Submodule B.I.E (Fin B.I.n → B.I.E)) (ρ : ℝ)
     (A Z : gInf B)
@@ -120,7 +120,7 @@ theorem pt_mem_omega (B : RowsAut) (x : B.I.GA) (W : Submodule B.I.E (Fin B.I.n 
     simp only [Submodule.coe_smul, Complex.coe_smul, smul_smul]
 
 /- English proof (translation)
-Use `norm_image_sub_le_of_norm_deriv_le_segment_01' (f := fun t => vv B Fr u (pt B E z t)) (f' := fun s => vv B Fr (dAct B E u) (pt B E z s)) (C := Real.sqrt (∑ v, Formalism.REAL.hs (E v).1) * (Real.sqrt B.I.f * beP B.I.n b P * M * ‖u‖)) (fun s _ => (hasDerivAt_vv B T Fr h hu E z s).h …` as an intermediate fact. Use `(hb s (Set.Ico_subset_Icc_self hs) _ (hS.2.2.2.2.2.2 E u hu)).trans ?_` and prove the remaining obligations. Use `(mul_le_mul_of_nonneg_left (hS.2.2.2.2.2.1 E u hu) hM).trans (le_of_eq ?_)` and prove the remaining obligations. Use the proof step `ring)`. Simplify `this` using `only [pt_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem leg (B : RowsAut) (b M : ℝ) (P : ℕ) {D : ℕ} (T : Fin D → (B.Hs →L[ℂ] B.I.L2 B.μf B.fund))
     (Fr : Fin D → B.Hs → B.I.GA → ℂ) (hS : StepBoundAt B b P) (h : ∀ i, IsReps B (T i) (Fr i)) (hM : 0 ≤ M)
@@ -140,15 +140,15 @@ theorem leg (B : RowsAut) (b M : ℝ) (P : ℕ) {D : ℕ} (T : Fin D → (B.Hs �
   simpa only [pt_zero] using this
 
 /- English proof (translation)
-Introduce `B b ρ M P D T Fr x W hS h hM hb y hy u hu`. Take `⟨hy2, A0, Z0, hg, hρ, hy1, hN⟩` from `hy`. Set `A : gInf B` to `fun v => ⟨A0 v, (hg v).1⟩`. Set `Z : gInf B` to `fun v => ⟨Z0 v, (hg v).2⟩`. Establish `hmem` using `fun s t hs ht => pt_mem_omega B x W ρ A Z hρ hN (s := s) (t := t) hs ht`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hyeq : y = pt B Z (pt B A x 1) 1`. Use `Prod.ext ?_ (by simp [pt, hy2])` and prove the remaining obligations. Use function extensionality and compare the values at `v`. Apply `uMat_inj` to reduce the goal to its premises. Rewrite using `[hy1 v]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [pt, one_smul]`. Both sides reduce to the same expression. Establish `h1` using `leg B b M P T Fr hS h hM A x (fun t ht w hw => by`. Use `hb _ (hmem t 0 ht (by simp)) w hw` as an intermediate fact. Rewrite using `[pt_zero] at this) hu` and apply the resulting hypothesis.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h2` using `leg B b M P T Fr hS h hM Z (pt B A x 1) (fun t ht w hw => hb _ (hmem 1 t (by simp) ht) w hw) hu`. Establish `hK : 0 ≤ Real.sqrt B.I.f * beP B.I.n b P * M * ‖u‖`. Unfold `beP`. Check the signs of the components of the expression. Rewrite `h2` using `[← hyeq]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[add_mul, add_comm]`. Conclude with `add_le_add h1 h2`. Use `_ ≤ ρ * (Real.sqrt B.I.f * beP B.I.n b P * M * ‖u‖) := mul_le_mul_of_nonneg_right hρ hK`. Use `_ = _ := by ring`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem path_variation : ∀ (B : RowsAut) (b ρ M : ℝ) (P : ℕ) (D : ℕ) (T : Fin D → (B.Hs →L[ℂ] B.I.L2 B.μf B.fund)) (Fr : Fin D → B.Hs → B.I.GA → ℂ) (x : B.I.GA) (W : Submodule B.I.E (Fin B.I.n → B.I.E)), StepBoundAt B b P → (∀ i, IsReps B (T i) (Fr i)) → 0 ≤ M → (∀ y ∈ omega B.I x W ρ, ∀ u ∈ VP B (P + 1), ‖vv B Fr u y‖ ≤ M * ‖u‖) → ∀ y ∈ omega B.I x W ρ, ∀ u ∈ VP B P, ‖vv B Fr u y - vv B Fr u x‖ ≤ ρ * Real.sqrt B.I.f * beP B.I.n b P * M * ‖u‖ := by
   intro B b ρ M P D T Fr x W hS h hM hb y hy u hu

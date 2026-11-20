@@ -20,7 +20,7 @@ def smoothWtG (Xa : ArchInM X) (G : Wt X.Ψ r) (x0 : Frame X.Ψ r) (bb : ℝ) (z
     (1 / 2) * Real.log (∑ k, ‖Xa.w k (cpt X x0 z)‖ ^ 2)))
 
 /- English proof (translation)
-Introduce `_ hz` and use `((IW.phla_cpt_cdAt X x0 hz G).add ((contDiffAt_const.mul (OntoB.logDens_contDiffAt hz)).add ((contDiffAt_const.mul (OntoB.rhF_contDiffAt hz)).add (contDiffAt_const.mul (logw_contDiffAt Xa x0 hz))))).contDiffWithinAt`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem smoothWtG_contDiffOn (Xa : ArchInM X) (G : Wt X.Ψ r) (x0 : Frame X.Ψ r) (bb : ℝ) :
     ContDiffOn ℝ ∞ (smoothWtG Xa G x0 bb) (OmF X x0) := fun _ hz =>
@@ -29,9 +29,9 @@ theorem smoothWtG_contDiffOn (Xa : ArchInM X) (G : Wt X.Ψ r) (x0 : Frame X.Ψ r
       (contDiffAt_const.mul (logw_contDiffAt Xa x0 hz))))).contDiffWithinAt
 
 /- English proof (translation)
-Establish `h1` using `(IW.phla_cpt_cdAt X x0 hz G).of_le HE.two_le_inf`. Establish `h2` using `(OntoB.logDens_contDiffAt hz).of_le HE.two_le_inf`. Establish `h3` using `(OntoB.rhF_contDiffAt hz).of_le HE.two_le_inf`. Establish `h4` using `(logw_contDiffAt Xa x0 hz).of_le HE.two_le_inf`. Establish `h5` using `logSum_levi_nonneg (g := fun k y => Xa.w k (cpt X x0 y)) (OntoB.isOpen_OmF X x0) (w_diffOn Xa x0) hz (Xa.w_nz _ hz) ξ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `smoothWtG`. Rewrite using `[Y.LocalMaximumSecondDerivative.leviV_ofReal_add h1 ((contDiffAt_const.mul h2).add ((contDiffAt_const.mul h3).add (contDiffAt_const.mul h4))), Y.LocalMaximumSecondDerivative.leviV_ofReal_add (contDiffAt_const.mul h2) ((contDiffAt_const.mul h3).add (contDiffAt_const.mul h4)), Y.Lo …`. Simplify using `only [Complex.add_re, Complex.re_ofReal_mul]`. Unfold `leviRh leviO leviM leviDens at hm`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem smoothWtG_levi (Xa : ArchInM X) (G : Wt X.Ψ r) (x0 : Frame X.Ψ r) (bb : ℝ) {z : V (nd X)}
     (hz : z ∈ OmF X x0) (ξ : Fin (nd X) → ℂ)
@@ -56,15 +56,15 @@ theorem smoothWtG_levi (Xa : ArchInM X) (G : Wt X.Ψ r) (x0 : Frame X.Ψ r) (bb 
   linarith
 
 /- English proof (translation)
-Establish `hU` using `OntoB.isOpen_OmF X x0`. Establish `hd : AEMeasurable (fun z => ENNReal.ofReal (densF X x0 z)) (volume.restrict (OmF X x0))` using `(OntoB.densF_continuousOn.aemeasurable hU.measurableSet).ennreal_ofReal`. Unfold `InAt muF`. Rewrite using `[lintegral_withDensity_eq_lintegral_mul_non_measurable₀ _ hd (Filter.Eventually.of_forall fun _ => ENNReal.ofReal_lt_top)]`. Use `iff_of_eq (congrArg (· < ⊤) (lintegral_congr_ae ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hae : ∀ᵐ z ∂(volume : Measure (V (nd X))), z ∈ OmF X x0 → Fl.s k0 (cpt X x0 z) ≠ 0`. Rewrite using `[ae_iff]`. Use `measure_mono_null (fun z hz => ?_) hnull` and prove the remaining obligations. Simplify using `using hz`. Use `filter_upwards [ae_restrict_mem hU.measurableSet, ae_restrict_of_ae hae] with z hz hz'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hs : ∃ k, Fl.s k (cpt X x0 z) ≠ 0` using `⟨k0, hz' hz⟩`. Establish `hsp : 0 < ∑ k, ‖Fl.s k (cpt X x0 z)‖ ^ 2` using `sum_normSq_pos hs`. Establish `hdom : cpt X x0 z ∈ X.dom` using `hz`. Establish `hw` using `sum_normSq_w_pos Xa hdom`. Establish `hdp` using `OntoB.densF_pos hz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hka : 0 < kaF X x0 bb z` using `Real.exp_pos _`. Simplify using `only [Pi.mul_apply]`. Rewrite using `[if_pos hdom, ENNReal.ofReal_rpow_of_pos hw, ENNReal.ofReal_rpow_of_pos hsp, ← ENNReal.ofReal_mul (Real.exp_pos _).le, ← ENNReal.ofReal_mul (mul_nonneg (Real.exp_pos _).le (Real.rpow_nonneg hw.le _)), Real.rpow_def_of_pos hw, Real.rpow_def_of_pos hsp, ← Real.exp_add, ← Real.exp_a …`. Use `congr 1`. Rewrite using `[kaF, div_eq_mul_inv, ← Real.exp_neg]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [← Real.exp_log hdp]`. Rewrite using `[mul_assoc, ← Real.exp_add, mul_left_comm, ← Real.exp_add, mul_assoc, ← Real.exp_add]`. Use `congr 2`. Unfold `smoothWtG`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem inAt_iffG (Xa : ArchInM X) (Fl : FlatM X Xa) (G : Wt X.Ψ r) (x0 : Frame X.Ψ r) (bb t : ℝ)
     (k0 : Fin (nd X)) (hnull : volume {y | y ∈ OmF X x0 ∧ Fl.s k0 (cpt X x0 y) = 0} = 0)
@@ -110,9 +110,9 @@ theorem inAt_iffG (Xa : ArchInM X) (Fl : FlatM X Xa) (G : Wt X.Ψ r) (x0 : Frame
 end
 
 /- English proof (translation)
-Introduce `E _ _ _ r X Xa Fl G x0 ho bb hm ⟨k0, z0, hz0, hz0'⟩ F hF hI`. Establish `hU` using `OntoB.isOpen_OmF X x0`. Establish `hc` using `OmFConnStatement_holds r X x0 ho`. Establish `hgn` using `HE.hgn_of hU hc (s_diffOn Fl x0 k0) hz0 (fun h => hz0' h.self_of_nhds)`. Establish `hnull` using `HE.zeros_null hU (s_diffOn Fl x0 k0) hgn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨S, hS, -⟩` from `exhaustG_holds r X x0 ho _ (s_diffOn Fl x0 k0)`. Establish `hcast : ((nd X + 1 : ℕ) : ℝ) - 1 / 2 = ((nd X : ℝ) - 1 / 2) + 1` using `by push_cast; ring`. Rewrite `hI` using `[inAt_iffG Xa Fl G x0 bb _ k0 hnull, hcast]`. Take `⟨H, hH, hFH⟩` from `SkodaIter.step Xa.n_ge hU (s := fun k z => Fl.s k (cpt X x0 z)) k0 (s_diffOn Fl x0) hgn ⟨S, hS⟩ (smoothWtG_contDiffOn Xa G x0 bb) (fun z hz ξ => smoothWtG_levi Xa G x0 bb hz ξ (hm z hz ξ)) (t := (nd X : ℝ) - 1 / 2) (by linarith) hF hI`. Conclude with `⟨H, fun k => ⟨(hH k).1, (inAt_iffG Xa Fl G x0 bb _ k0 hnull _).2 (hH k).2⟩, hFH⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem divOne_up : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (Xa : ArchInM X) (Fl : FlatM X Xa) (G : Wt X.Ψ r) (x0 : Frame X.Ψ r), IsOrth X x0 → ∀ bb : ℝ, (∀ z ∈ OmF X x0, ∀ ξ : Fin (nd X) → ℂ, bb * leviRh X x0 z ξ ≤ leviO X x0 (phla X G) z ξ - leviDens X x0 z ξ) → (∃ k0, ∃ z ∈ OmF X x0, Fl.s k0 (cpt X x0 z) ≠ 0) → ∀ F : V (nd X) → ℂ, DifferentiableOn ℂ F (OmF X x0) → InAt X x0 (fun x => open Classical in if x ∈ X.dom then ENNReal.ofReal (Real.exp (-phla X G x)) * ENNReal.ofReal (∑ k, ‖Xa.w k x‖ ^ 2) ^ (-(1 / 2 : ℝ)) * ENNReal.ofReal (∑ k, ‖Fl.s k x‖ ^ 2) ^ (-(((nd X + 1 : ℕ) : ℝ) - 1 / 2)) else 0) bb F → ∃ H : Fin (nd X) → V (nd X) → ℂ, (∀ k, DifferentiableOn ℂ (H k) (OmF X x0) ∧ InAt X x0 (fun x => open Classical in if x ∈ X.dom then ENNReal.ofReal (Real.exp (-phla X G x)) * ENNReal.ofReal (∑ k, ‖Xa.w k x‖ ^ 2) ^ (-(1 / 2 : ℝ)) * ENNReal.ofReal (∑ k, ‖Fl.s k x‖ ^ 2) ^ (-(((nd X : ℕ) : ℝ) - 1 / 2)) else 0) bb (H k)) ∧ ∀ z ∈ OmF X x0, F z = ∑ k, Fl.s k (cpt X x0 z) * H k z := by
   intro E _ _ _ r X Xa Fl G x0 ho bb hm ⟨k0, z0, hz0, hz0'⟩ F hF hI

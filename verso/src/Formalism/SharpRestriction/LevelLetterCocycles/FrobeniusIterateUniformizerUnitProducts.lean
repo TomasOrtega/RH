@@ -28,9 +28,9 @@ def unitQProds : Submonoid (LetA O n) where
     ring
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `hq`. Establish `hQ : W.Q = W.q`. Simplify using `[LocWach.Q, hs]`. Establish `e : W.π₀ + ((PD.p : ℕ) : LetA O n) = ((w⁻¹ : (LetA O n)ˣ) : LetA O n) * W.Q`. Rewrite using `[hQ, hw, ← mul_assoc, Units.inv_mul, one_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Units.map ((W.φA ^ s : LetA O n →ₐ[O] LetA O n) : LetA O n →* LetA O n) w⁻¹, {s}, ?_⟩` and prove the remaining obligations. Rewrite using `[e, map_mul]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ps_mem_unitQProds (hs : W.s = 1) (hq : ∃ w : (LetA O n)ˣ, W.q = (w : LetA O n) * (W.π₀ + ((PD.p : ℕ) : LetA O n)))
     (s : ℕ) : (W.φA ^ s) (W.π₀ + ((PD.p : ℕ) : LetA O n)) ∈ unitQProds W := by
@@ -44,9 +44,9 @@ theorem ps_mem_unitQProds (hs : W.s = 1) (hq : ∃ w : (LetA O n)ˣ, W.q = (w : 
   simp
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `hπ`. Use `⟨((w : LetA O n) ^ M * letπ ^ ((PD.p - 1) * M - 1)) • x, (W.N T).smul_mem _ hx, ?_⟩` and prove the remaining obligations. Establish `e : W.π₀ ^ M = letπ * ((w : LetA O n) ^ M * letπ ^ ((PD.p - 1) * M - 1))`. Rewrite using `[hw, mul_pow, ← pow_mul]`. Establish `: (PD.p - 1) * M = ((PD.p - 1) * M - 1) + 1` using `by omega`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `conv_lhs => rw [this]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Formalism.MainNotions.DeltaInvariantLattices.smulA, LinearMap.smul_apply, LinearMap.id_apply]`. Rewrite using `[e]`. Simplify using `only [mul_smul]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pi0pow_mem_aN (T : LocLat G Qp LL O) (M : ℕ) (hM : 1 ≤ (PD.p - 1) * M)
     (hπ : ∃ w : (LetA O n)ˣ, W.π₀ = (w : LetA O n) * letπ ^ (PD.p - 1)) (x : W.DD T) (hx : x ∈ W.N T) :
@@ -69,15 +69,15 @@ theorem restriction_eq_restriction_H1 (H : Subgroup G) (T : LocLat G Qp LL O) (�
     Formalism.MainNotions.DeltaInvariantLattices.res H T κ = resH1 T H κ := rfl
 
 /- English proof (translation)
-Establish `hg : W.gamK = W.gam` using `W.gamK_eq_one hs hp`. Establish `hr` using `((h9 T hT hs hp).2.2 hfr).1`. Take `⟨_, _, hπ, _, hq, _⟩` from `hr`. Establish `hq' : ∃ w : (LetA O n)ˣ, W.q = (w : LetA O n) * (W.π₀ + ((PD.p : ℕ) : LetA O n))`. Take `⟨w, hw⟩` from `hq`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨w, ?_⟩` and prove the remaining obligations. Rewrite using `[hw]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[Formalism.MainNotions.DeltaInvariantLattices.Eat]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hmem : (x : W.DD T × W.DD T) ∈ W.divisibleCocycles T`. Establish `h1` using `(Submodule.mem_inf.mp x.2).1`. Rewrite `h1` using `[hg]`. Conclude with `h1`. Rewrite using `[h2b T hT, restriction_eq_restriction_H1, hres T x ⟨_, hmem⟩ rfl]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨u, J, rfl⟩` from `hΛ`. Take `⟨z', hz', hzz⟩` from `hz`. Establish `hy' : (J.map fun j => (W.φA ^ j) W.Q).prod • (x : W.DD T × W.DD T).1 ∈ W.N T`. Use `(W.N T).smul_mem ((u⁻¹ : (LetA O n)ˣ) : LetA O n) hy` as an intermediate fact. Rewrite `this` using `[← mul_smul, ← mul_assoc, Units.inv_mul, one_mul]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hzN : (x : W.DD T × W.DD T).2 ∈ Formalism.MainNotions.DeltaInvariantLattices.aN W T letπ`. Rewrite using `[hzz]`. Conclude with `pi0pow_mem_aN W T M hM hπ z' hz'.1`. Use `h7 T hT J (x : W.DD T × W.DD T).1 (x : W.DD T × W.DD T).2 hy' hzN hmem` as an intermediate fact. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem wach_cocycle_class_mem_latticeFiniteCohomology (hs : W.s = 1) (hp : PD.p ≠ 2) (hfr : Module.finrank K₀ K = 1)
     (h7 : Formalism.MainNotions.DeltaInvariantLattices.WachCrystallineExtension W) (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W) (h2b : Formalism.MainNotions.DeltaInvariantLattices.HerrComplexSecondProperty W)
@@ -113,9 +113,9 @@ theorem wach_cocycle_class_mem_latticeFiniteCohomology (hs : W.s = 1) (hp : PD.p
   exact this
 
 /- English proof (translation)
-Take `⟨_, _, _, _, hq, _⟩` from `((h9 T hT hs hp).2.2 hfr).1`. Use `ps_mem_unitQProds W hs ?_ s` and prove the remaining obligations. Take `⟨w, hw⟩` from `hq`. Use `⟨w, ?_⟩` and prove the remaining obligations. Rewrite using `[hw]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[Formalism.MainNotions.DeltaInvariantLattices.Eat]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem frobenius_iterate_uniformizer_unit_products (hs : W.s = 1) (hp : PD.p ≠ 2) (hfr : Module.finrank K₀ K = 1)
     (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W) (T : LocLat G Qp LL O) (hT : IsCrys PD T.ρ) (s : ℕ) :
@@ -134,7 +134,7 @@ end F2Core
 section F2Rows
 
 /- English proof (translation)
-Use `⟨⟨(algebraMap ↥(K0 K) ↥K.1).injective, fun x => ⟨⟨x, x.2, hK x.2⟩, rfl⟩⟩, H.W_s K 1 LL h, ?_⟩` and prove the remaining obligations. Rewrite using `[P.PD_p]`. Conclude with `hl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem caseA_of_le_Kur_of_ne_two {l : ℕ} [Fact l.Prime] (P : LocPrime l) (H : LocHW l P) {K LL : FinExt l} (h : Good K 1 LL)
     (hK : K.1 ≤ MaximalUnramifiedExtension l) (hl : l ≠ 2) : Formalism.MainNotions.LiftingTheory.CaseA (H.W K 1 LL h) := by
@@ -143,7 +143,7 @@ theorem caseA_of_le_Kur_of_ne_two {l : ℕ} [Fact l.Prime] (P : LocPrime l) (H :
   exact hl
 
 /- English proof (translation)
-Establish `e : K₀ ≃ₗ[K₀] K` using `LinearEquiv.ofBijective (Algebra.linearMap K₀ K) hA.1`. Rewrite using `[← e.finrank_eq, Module.finrank_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_of_caseA {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K]
     [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K]
@@ -171,7 +171,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {v : AddValuation LL (WithTop ℚ)} {n : ℕ} (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-Introduce `hh M hM T hT _ c x hx hΛ`. Establish `hfr` using `finrank_of_caseA W hC`. Take `⟨Λ, ⟨k, m, rfl⟩, hΛy⟩` from `hΛ`. Use `wach_cocycle_class_mem_latticeFiniteCohomology W hC.2.1 hC.2.2 hfr h7 h9 h2b hres T hT M (by omega) x hx.2.2 _ ?_ hΛy.1` and prove the remaining obligations. Conclude with `Submonoid.prod_mem _ fun s _ => pow_mem (frobenius_iterate_uniformizer_unit_products W hC.2.1 hC.2.2 hfr h9 T hT s) _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem wach_cohomology_class_unramified_functor (hC : Formalism.MainNotions.LiftingTheory.CaseA W) (h7 : Formalism.MainNotions.DeltaInvariantLattices.WachCrystallineExtension W) (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W)
     (h2b : Formalism.MainNotions.DeltaInvariantLattices.HerrComplexSecondProperty W)
@@ -185,11 +185,9 @@ theorem wach_cohomology_class_unramified_functor (hC : Formalism.MainNotions.Lif
   exact Submonoid.prod_mem _ fun s _ => pow_mem (frobenius_iterate_uniformizer_unit_products W hC.2.1 hC.2.2 hfr h9 T hT s) _
 
 /- English proof (translation)
-Introduce `hC hh M hM T hT _ c y x Λ hΛ _ hΛy hcls`. Establish `hfr` using `finrank_of_caseA W hC`. Take `⟨z, hc, hz, rfl⟩` from `hcls`. Take `⟨y', hy', _, hyy⟩` from `hΛy`. Use `wach_cocycle_class_mem_latticeFiniteCohomology W hC.2.1 hC.2.2 hfr h7 h9 h2b (hres (W.gamK_eq_one hC.2.1 hC.2.2)) T hT M (by omega) ⟨(y, z), hc⟩ hz Λ ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Submonoid.closure_le.mpr ?_) hΛ` and prove the remaining obligations. Introduce and unpack `_ ⟨s, rfl⟩`. Conclude with `frobenius_iterate_uniformizer_unit_products W hC.2.1 hC.2.2 hfr h9 T hT s`. Use `show Λ • y ∈ W.N T`. Rewrite using `[hyy, one_smul]`.
-
-Conclude with `hy'.1`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wach_cohomology_class_at_functor (h7 : Formalism.MainNotions.DeltaInvariantLattices.WachCrystallineExtension W) (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W) (h2b : Formalism.MainNotions.DeltaInvariantLattices.HerrComplexSecondProperty W)
     (hres : W.gamK = W.gam → ∀ (T : LocLat G Qp LL O) (pr : ↥(W.wachCocyclesDelta T)) (pr' : ↥(W.divisibleCocycles T)),
@@ -213,7 +211,7 @@ end F2At
 section F2Rows2
 
 /- English proof (translation)
-Introduce `l _ K LL hA _` and use `wach_cohomology_class_unramified_functor ((HW l).W K 1 LL hA.2.2) (caseA_of_le_Kur_of_ne_two (D.loc l) (HW l) hA.2.2 hA.1 hA.2.1) (h.1 l K 1 LL hA.2.2) (h.2.1 l K 1 LL hA.2.2) (h.2.2 l K 1 LL hA.2.2) (((F l).E K 1 LL hA.2.2).tie.clK_res (((HW l).W K 1 LL hA.2.2).gamK_eq_one (case …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem wach_cohomology_class_unramified_case (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (h : SecondFiltrationHypotheses D HW F) :
     SecondFiltrationEtale D HW F := fun l _ K LL hA _ =>
@@ -224,13 +222,13 @@ theorem wach_cohomology_class_unramified_case (D : D7) (HW : HWOf D.loc) (F : Fo
         (caseA_of_le_Kur_of_ne_two (D.loc l) (HW l) hA.2.2 hA.1 hA.2.1).2.2))
 
 /- English proof (translation)
-Introduce `h` and use `wach_cohomology_class_unramified_case D HW F h.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cohomology_class_unramified_statement (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : FamilyMassExplicitOfVolumeAgreement D HW F :=
   fun h => wach_cohomology_class_unramified_case D HW F h.1
 
 /- English proof (translation)
-Introduce `l _ K LL hG _ _` and use `wach_cohomology_class_at_functor ((HW l).W K 1 LL hG) (h.1 l K 1 LL hG) (h.2.1 l K 1 LL hG) (h.2.2 l K 1 LL hG) ((F l).E K 1 LL hG).tie.clK_res`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem second_filtration_case_a_of_hypotheses (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (h : SecondFiltrationHypotheses D HW F) :
     SecondFiltrationArcLifting D HW F := fun l _ K LL hG _ _ =>
@@ -238,7 +236,7 @@ theorem second_filtration_case_a_of_hypotheses (D : D7) (HW : HWOf D.loc) (F : F
     ((F l).E K 1 LL hG).tie.clK_res
 
 /- English proof (translation)
-Introduce `h` and use `second_filtration_case_a_of_hypotheses D HW F h.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem second_filtration_theorem_arc_lifting (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : SecondFiltrationTheoremArcLifting D HW F :=
   fun h => second_filtration_case_a_of_hypotheses D HW F h.1

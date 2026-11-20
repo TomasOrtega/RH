@@ -45,7 +45,7 @@ structure KerRefHyp {σ₀ : X.K →+* ℂ} (G : ChainGlob W σ₀) (Gc : ChGlob
 variable {W Ch sel S cst Am u m2}
 
 /- English proof (translation)
-The claim follows from `kernelEquiv_trivialTuple W (colLevSym Ch) Ch sel S cst Am u m2 H.hX H.hPr (by have := H.hm; omega) H.thHyp H.idx H.xiLaw H.psiLaw (fixE_colLevSym Ch H.hm) (refKEquiv_of_cpTop H.hX H.hPr (fixE_colLevSym Ch H.hm) (coupling_index_set_finite sel _ cst _ u m2 _) (cpTopEquivOn_of H.hX …`.
+A detailed English derivation is pending.
 -/
 theorem KerRefHyp.xiEquiv {σ₀ : X.K →+* ℂ} {G : ChainGlob W σ₀} {Gc : ChGlob X R.m} (H : KerRefHyp W Ch sel S cst Am u m2 G Gc) :
     XiEquiv W (colLevSym Ch) Ch sel (mu0 X.F X.E X.K S) cst Am u (symXi Ch sel S cst u m2) :=
@@ -56,7 +56,7 @@ theorem KerRefHyp.xiEquiv {σ₀ : X.K →+* ℂ} {G : ChainGlob W σ₀} {Gc : 
         _ _ _ _ H.topLaw (lastRow_colLevSym Ch H.hm)))
 
 /- English proof (translation)
-The claim follows from `xiHyp_of_thHyp H.hm H.sig H.hPr H.thHyp H.chi_ne H.rho`.
+A detailed English derivation is pending.
 -/
 theorem KerRefHyp.xiHyp {σ₀ : X.K →+* ℂ} {G : ChainGlob W σ₀} {Gc : ChGlob X R.m} (H : KerRefHyp W Ch sel S cst Am u m2 G Gc) :
     XiHyp W (colLevSym Ch) Ch sel (mu0 X.F X.E X.K S) cst Am u (symXi Ch sel S cst u m2) G :=

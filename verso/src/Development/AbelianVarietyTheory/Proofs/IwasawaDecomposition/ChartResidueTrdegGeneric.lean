@@ -19,7 +19,7 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 namespace GlobalTheory.FullFlagDim
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc]`. Use `congr 1`. Conclude with `(Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom g)).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem spMap_comp_assoc {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C)
     {X : Scheme.{0}} (x : Sp A ⟶ X) : spMap g ≫ spMap f ≫ x = spMap (g.comp f) ≫ x := by
@@ -28,7 +28,7 @@ theorem spMap_comp_assoc {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (
   exact (Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom g)).symm
 
 /- English proof (translation)
-Unfold `uni`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_uni {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {m : ℕ} (s : Low m → R) (j i : Fin m) :
     φ (uni s j i) = uni (fun q => φ (s q)) j i := by
@@ -36,15 +36,15 @@ theorem map_uni {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {m : ℕ
   split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw Xo p W Y i₀ Z hfull a x hgen`. Take `⟨Ω, _, R, ι, s, hs, hind⟩` from `GlobalTheory.T.exists_valuation_independent_maximal ((Sp Γ(Z.X, (Z.U a).1)).residueField x) (Σ τ : E →+* ℂ, Low (Dw.mult τ))`. Establish `hfr : ∀ {S : Type} [CommRing S] (χ : Γ(Z.X, (Z.U a).1) →+* S), GlobalTheory.LocM.IsFrame (Y Z.i).t (χ.comp (Z.alg a)) (spMap χ ≫ Z.chart a ≫ Z.π) ((Z.fr a).bc χ)` using `fun χ => GlobalTheory.LocM.isFrame_bc E H Dw _ _ _ _ _ _ _ χ _ _ (Z.frame a)`. Take `⟨v, hv, hcomb⟩` from `isFrame_uni (Y Z.i).t _ _ _ (hfr (ι.comp (resMap x))) fun τ q => s ⟨τ, q⟩`. Establish `hbc : ∀ {S : Type} [CommRing S] (χ : R →+* S) τ i, IsCombAtG (Y Z.i).t (spMap (χ.comp (ι.comp (resMap x))) ≫ Z.chart a ≫ Z.π) ((Z.fr a).bc (χ.comp (ι.comp (resMap x))) τ) (fun j => uni (fun q => χ (s ⟨τ, q⟩)) j i) (v.bc χ τ i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `S _ χ τ i`. Establish `h` using `comb_bc χ (hcomb τ i)`. Rewrite `h` using `[spMap_comp_assoc]`. Rewrite using `[← Vecs.bc_bc]`. Simplify using `only [map_uni] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `h`. Take `⟨σ, hσr, hσg, hflag⟩` from `GlobalTheory.T.chart_trdeg_valuation_bound Z a x hgen Ω R ι v hv (fun τ k _ i hi => ⟨_, fun j hj => by`. Establish `h0 : ∀ q, IsLocalRing.residue R (s ⟨τ, q⟩) = 0` using `fun q => (IsLocalRing.residue_eq_zero_iff _).2 (hs _)`. Establish `hji : j ≠ i` using `fun e => by subst e; omega`. Simplify using `only [uni, h0, hji, if_false, dite_eq_ite, ite_self], hbc (IsLocalRing.residue R) τ i⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hpt : spMap ((Z.chart a ≫ Z.π).residueFieldMap x).hom ≫ (Y Z.i).X.fromSpecResidueField ((Z.chart a ≫ Z.π) x) = spMap (resMap x) ≫ Z.chart a ≫ Z.π`. Rewrite using `[spMap_resMap]`. Conclude with `Scheme.Hom.SpecMap_residueFieldMap_fromSpecResidueField (Z.chart a ≫ Z.π) x`. Establish `hpt' : spMap ((R.subtype.comp ι).comp ((Z.chart a ≫ Z.π).residueFieldMap x).hom) ≫ (Y Z.i).X.fromSpecResidueField ((Z.chart a ≫ Z.π) x) = spMap ((R.subtype.comp ι).comp (resMap x)) ≫ Z.chart a ≫ Z.π`. Rewrite using `[← spMap_comp_assoc, hpt, spMap_comp_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem` using `GlobalTheory.T.frame_conjugate_fields_agree (Y Z.i).t Z.ty hfull ((Z.chart a ≫ Z.π).residueFieldMap x).hom ((Y Z.i).X.fromSpecResidueField ((Z.chart a ≫ Z.π) x)) ((resMap x).comp (Z.alg a)) ((Z.fr a).bc (resMap x)) (by rw [hpt]; exact hfr (resMap x)) σ (R.subtype.comp ι) hσr hσg …`. Establish `h` using `GlobalTheory.T.algebraically_independent_le_trdeg ((Z.chart a ≫ Z.π).residueFieldMap x).hom σ (R.subtype.comp ι) hσr (fun j : (Σ τ : E →+* ℂ, Low (Dw.mult τ)) => (s j : Ω)) (fun j => hmem j.1 j.2) hind`. Rewrite `h` using `[Fintype.card_sigma]`. Simplify using `only [card_low] at h`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trdeg_ge_of_generic : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
     {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}

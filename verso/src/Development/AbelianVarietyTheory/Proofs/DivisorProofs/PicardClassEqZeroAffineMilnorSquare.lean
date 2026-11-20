@@ -15,11 +15,11 @@ namespace GlobalTheory.DualOpen
 open TopologicalSpace
 
 /- English proof (translation)
-Rewrite `h` using `[← cls_pull hL f (pull_isLB hL f)]`. Take `⟨t, ht⟩` from `(cls_eq_zero_iff _).1 h`. Establish `le : ∀ i, f ⁻¹ᵁ L.U i ≤ (L.pull f).U (fun _ ↦ i)` using `fun i y hy ↦ mem_pull.2 hy`. Use `⟨fun i ↦ res (le i) (t.s fun _ ↦ i), fun Z r z i j hi hj ↦ ?_⟩` and prove the remaining obligations. Establish `mi : r z ∈ (L.pull f).U (fun _ ↦ i)` using `mem_pull.2 hi`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `mj : r z ∈ (L.pull f).U (fun _ ↦ j)` using `mem_pull.2 hj`. Establish `hm : r z ∈ (L.pull f).U (fun _ ↦ i) ⊓ (L.pull f).U (fun _ ↦ j)` using `⟨mi, mj⟩`. Establish `e` using `congrArg (gm r z _) (ht (fun _ ↦ i) (fun _ ↦ j))`. Rewrite `e` using `[map_mul, gm_res r z _ hm, gm_res r z _ hm, gm_pull_g L f r z _ _ mi mj]`. Rewrite using `[gm_res r z (le i) hi, gm_res r z (le j) hj]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e`.
+A detailed English derivation is pending.
 -/
 theorem exists_units_of_pull_eq_zero {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) (f : Y ⟶ X)
     (h : CechPic.pull f (cls L hL) = 0) : ∃ b : ∀ i, Γ(Y, f ⁻¹ᵁ L.U i)ˣ,
@@ -38,25 +38,23 @@ theorem exists_units_of_pull_eq_zero {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB)
   exact e
 
 /- English proof (translation)
-Take `⟨L, hL, rfl⟩` from `cls_surj c`. Take `⟨b₁, hb₁⟩` from `exists_units_of_pull_eq_zero hL f₁ h₁`. Take `⟨b₂, hb₂⟩` from `exists_units_of_pull_eq_zero hL f₂ h₂`. Establish `le : ∀ W : X.Opens, g₁ ⁻¹ᵁ (f₁ ⁻¹ᵁ W) ≤ g₂ ⁻¹ᵁ (f₂ ⁻¹ᵁ W)` using `fun W ↦ by`. Rewrite using `[← Scheme.Hom.comp_preimage, ← Scheme.Hom.comp_preimage, w]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `injU : ∀ (W : X.Opens) (a b : Γ(X, W)ˣ), pullU f₁ W a = pullU f₁ W b → pullU f₂ W a = pullU f₂ W b → a = b` using `fun W a b e₁ e₂ ↦ Units.ext (inj W _ _ (congrArg Units.val e₁) (congrArg Units.val e₂))`. Establish `exU : ∀ (W : X.Opens) (a₁ : Γ(X₁, f₁ ⁻¹ᵁ W)ˣ) (a₂ : Γ(X₂, f₂ ⁻¹ᵁ W)ˣ), res le_rfl (pullU g₁ _ a₁) = res (le W) (pullU g₂ _ a₂) → ∃ a : Γ(X, W)ˣ, pullU f₁ W a = a₁ ∧ pullU f₂ W a = a₂` using `fun W a₁ a₂ e ↦ by`. Establish `e' : res le_rfl (pullU g₁ _ a₁⁻¹) = res (le W) (pullU g₂ _ a₂⁻¹)`. Rewrite using `[map_inv, map_inv, map_inv, map_inv, e]`. Take `⟨a, p₁, p₂⟩` from `ex W (le W) a₁.val a₂.val (congrArg Units.val e)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨a', q₁, q₂⟩` from `ex W (le W) (a₁⁻¹).val (a₂⁻¹).val (congrArg Units.val e')`. Establish `k : a * a' = 1` using `inj W _ _ (by rw [map_mul, map_one, p₁, q₁, Units.mul_inv]) (by rw [map_mul, map_one, p₂, q₂, Units.mul_inv])`. Conclude with `⟨⟨a, a', k, (mul_comm _ _).trans k⟩, Units.ext p₁, Units.ext p₂⟩`. Establish `key : ∀ {G : Type} [CommGroup G] (a x y : G), a * x * (a * y)⁻¹ = x * y⁻¹` using `fun a x y ↦ by`. Rewrite using `[← div_eq_mul_inv, ← div_eq_mul_inv, mul_div_mul_left_eq_div]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `V : L.ι → X₀.Opens` to `fun i ↦ g₁ ⁻¹ᵁ (f₁ ⁻¹ᵁ L.U i)`. Set `q : ∀ i, Γ(X₀, V i)ˣ` to `fun i ↦ pullU g₁ _ (b₁ i) * (res (le _) (pullU g₂ _ (b₂ i)))⁻¹`. Establish `gq : ∀ i x, x ∈ V i → gm (𝟙 X₀) x (V i) (q i) = gm g₁ x _ (b₁ i) * (gm g₂ x _ (b₂ i))⁻¹` using `fun i x hx ↦ by`. Establish `e₁` using `gm_pull (𝟙 X₀) g₁ x _ hx (b₁ i)`. Establish `e₂` using `(gm_res (𝟙 X₀) x (le (L.U i)) hx _).trans (gm_pull (𝟙 X₀) g₂ x _ (le _ hx) (b₂ i))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e₁`, `e₂` using `[Category.id_comp]`. Conclude with `(map_mul _ _ _).trans (congrArg₂ (· * ·) e₁ ((map_inv _ _).trans (congrArg (·⁻¹) e₂)))`. Take `⟨F, hF⟩` from `glue_unit ⊤ V (fun _ ↦ le_top) (fun x _ ↦ by`. Take `⟨i, hi⟩` from `exists_chart hL (f₁ (g₁ x))`. Conclude with `Opens.mem_iSup.2 ⟨i, hi⟩) q (fun i j x hx ↦ by`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[gq i x hx.1, gq j x hx.2, hb₁ _ g₁ x i j hx.1 hx.2, hb₂ _ g₂ x i j (le _ hx.1) (le _ hx.2), w, key])`. Take `⟨u, hu⟩` from `lift F`. Establish `hu' : pullU g₂ ⊤ u = F` using `hu`. Establish `loc : ∀ i, ∃ s : Γ(X, L.U i)ˣ, pullU f₁ _ s = b₁ i ∧ pullU f₂ _ s = b₂ i * res le_top u` using `fun i ↦ exU _ _ _ (unit_ext fun x hx ↦ by`. Establish `e` using `congrArg (gm (𝟙 X₀) x (V i)) (hF i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e` using `[gm_res (𝟙 X₀) x _ hx, gq i x hx, ← hu']`. Establish `e₀` using `gm_pull (𝟙 X₀) g₂ x ⊤ trivial u`. Establish `e₁` using `gm_pull (𝟙 X₀) g₁ x _ hx (b₁ i)`. Establish `e₂` using `gm_pull (𝟙 X₀) g₂ x _ (le _ hx) (b₂ i * res le_top u)`. Rewrite `e₀`, `e₁`, `e₂` using `[Category.id_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[gm_res (𝟙 X₀) x _ hx, gm_res (𝟙 X₀) x _ hx, e₁, e₂, map_mul, gm_res g₂ x _ (le _ hx), ← e₀]`. Conclude with `(mul_inv_eq_iff_eq_mul.1 e.symm).trans (mul_comm _ _))`. Use `choose s hs₁ hs₂ using loc`. Establish `gp : ∀ {Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (W : X.Opens) (a : Γ(X, W)ˣ), f y ∈ W → gm (𝟙 Y) y (f ⁻¹ᵁ W) (pullU f W a) = gm f y W a` using `fun f y W a hy ↦ (gm_pull (𝟙 _) f y W hy a).trans (by rw [Category.id_comp])`. Use `(cls_eq_zero_iff hL).2 ⟨⟨s⟩, fun i j ↦ injU _ _ _ (unit_ext fun y hy ↦ ?_) (unit_ext fun y hy ↦ ?_)⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `hb₁ _ (𝟙 _) y i j hy.1 hy.2`. Rewrite `e` using `[Category.id_comp, ← hs₁, ← hs₁, gp f₁ y _ _ hy.1, gp f₁ y _ _ hy.2]`. Rewrite using `[gp f₁ y _ _ hy, gp f₁ y _ _ hy, map_mul, gm_res f₁ y _ hy, gm_res f₁ y _ hy]`. Conclude with `e`. Establish `e` using `hb₂ _ (𝟙 _) y i j hy.1 hy.2`.
-
-Rewrite `e` using `[Category.id_comp]`. Establish `k : ∀ i, f₂ y ∈ L.U i → gm f₂ y _ (s i) = gm (𝟙 _) y _ (b₂ i) * gm (𝟙 _) y ⊤ u` using `fun i hi ↦ by`. Rewrite using `[← gp f₂ y _ _ hi, hs₂, map_mul, gm_res (𝟙 _) y _ hi]`. Rewrite using `[gp f₂ y _ _ hy, gp f₂ y _ _ hy, map_mul, gm_res f₂ y _ hy, gm_res f₂ y _ hy]`. Conclude with `(k i hy.1).trans (by rw [e, k j hy.2, _root_.mul_assoc])`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_square {X X₁ X₂ X₀ : Scheme.{0}} (f₁ : X₁ ⟶ X) (f₂ : X₂ ⟶ X) (g₁ : X₀ ⟶ X₁) (g₂ : X₀ ⟶ X₂)
     (w : g₁ ≫ f₁ = g₂ ≫ f₂)
@@ -125,7 +123,7 @@ theorem eq_zero_of_square {X X₁ X₂ X₀ : Scheme.{0}} (f₁ : X₁ ⟶ X) (f
     exact (k i hy.1).trans (by rw [e, k j hy.2, _root_.mul_assoc])
 
 /- English proof (translation)
-Introduce `S A T T₁ T₂ T₀ _ j₁ j₂ k₁ k₂ h hs`. Establish `H` using `GlobalTheory.T.sections_flat_baseChange_affineMilnorSquare_open S A T T₁ T₂ T₀ j₁ j₂ k₁ k₂ h`. Establish `w : k₁ ≫ j₁ = k₂ ≫ j₂` using `Over.OverMorphism.ext h.w`. Use `eq_zero_of_square _ _ (A ◁ k₁).left (A ◁ k₂).left ?_ (fun W ↦ (H W).1) (fun W h₂ ↦ (H W).2 _ le_rfl h₂ le_rfl) hs` and prove the remaining obligations. Rewrite using `[← Over.comp_left, ← Over.comp_left, ← MonoidalCategory.whiskerLeft_comp, ← MonoidalCategory.whiskerLeft_comp, w]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem pic_eq_zero_of_milnor : ∀ (S : Scheme.{0}) (A T T₁ T₂ T₀ : Over S) [Flat A.hom] (j₁ : T₁ ⟶ T) (j₂ : T₂ ⟶ T)
     (k₁ : T₀ ⟶ T₁) (k₂ : T₀ ⟶ T₂), Milnor j₁.left j₂.left k₁.left k₂.left →

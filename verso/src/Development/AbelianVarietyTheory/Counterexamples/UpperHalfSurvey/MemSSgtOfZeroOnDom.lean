@@ -12,7 +12,7 @@ open ReciprocityTheory.ChartRestriction.G.FD NumberField MeasureTheory
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
 
 /- English proof (translation)
-Establish `e : ∀ s : X.Ψ → ℝ, P (X.flow ξ (fun τ => (s τ : ℂ)) x) = Q (X.flow ξ (fun τ => (s τ : ℂ)) x)` using `fun s => h _ (TransvectionPeriodicity.flow_real_mem_dom X hξ.2.1 s x hx)`. Unfold `Data.fj`. Simplify using `only [e]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem fj_congr (la : Wt X.Ψ r) {ξ : Fin r → E} (hξ : X.IsIso ξ) (ν : X.Ψ → ℝ)
     {P Q : Frame X.Ψ r → ℂ} (h : ∀ x ∈ X.dom, P x = Q x) {x : Frame X.Ψ r} (hx : x ∈ X.dom) :
@@ -23,9 +23,9 @@ theorem fj_congr (la : Wt X.Ψ r) {ξ : Fin r → E} (hξ : X.IsIso ξ) (ν : X.
   simp only [e]
 
 /- English proof (translation)
-Establish `h` using `PeriodLatticeCountable.fd_exists X la`. Unfold `Data.fj`. Rewrite using `[if_pos (fun p _ => ⟨0, by simp⟩), dif_pos h]`. Take `⟨-, -, h0, h1⟩` from `h.choose_spec`. Establish `: (volume h.choose).toReal ≠ 0` using `(ENNReal.toReal_pos h0.ne' h1.ne).ne'`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `[Measure.real, this]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fj_one (la : Wt X.Ψ r) (ξ : Fin r → E) (x : Frame X.Ψ r) :
     X.fj la ξ 0 (fun _ => 1) x = 1 := by
@@ -37,9 +37,9 @@ theorem fj_one (la : Wt X.Ψ r) (ξ : Fin r → E) (x : Frame X.Ψ r) :
   simp [Measure.real, this]
 
 /- English proof (translation)
-Take `⟨n, hn, h⟩` from `X.χ_fin 0`. Establish `h0 : X.χ 0 γ ≠ 0` using `fun e => by`. Use `h γ hγ` as an intermediate fact. Rewrite `this` using `[e, zero_pow hn.ne']`. Conclude with `zero_ne_one this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `X.χ_add 0 0 γ hγ` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `(mul_left_cancel₀ h0 (by rw [mul_one]; exact this)).symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_zero {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) : X.χ 0 γ = 1 := by
   obtain ⟨n, hn, h⟩ := X.χ_fin 0
@@ -52,14 +52,14 @@ theorem chi_zero {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) : X.χ 0 γ = 1 := by
   exact (mul_left_cancel₀ h0 (by rw [mul_one]; exact this)).symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨differentiableOn_const _, fun _ _ _ _ => by simp [bchar], fun γ hγ _ _ => by simp [chi_zero X hγ]⟩, 1, fun x _ => by simp [Data.pnorm]⟩`.
+Supply the required witnesses or components.
 -/
 theorem one_isBddSec : X.IsBddSec 0 (fun _ => 1) :=
   ⟨⟨differentiableOn_const _, fun _ _ _ _ => by simp [bchar],
     fun γ hγ _ _ => by simp [chi_zero X hγ]⟩, 1, fun x _ => by simp [Data.pnorm]⟩
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `hd`. Introduce `h`. Use `h.2 ξ hξ x hx` as an intermediate fact. Rewrite `this` using `[fj_one]`. Conclude with `one_ne_zero this`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_not_mem_SS {ξ : Fin r → E} (hξ : X.IsIso ξ) (hd : X.dom.Nonempty) :
     (fun _ => 1) ∉ X.SS 0 := by
@@ -70,9 +70,9 @@ theorem one_not_mem_SS {ξ : Fin r → E} (hξ : X.IsIso ξ) (hd : X.dom.Nonempt
   exact one_ne_zero this
 
 /- English proof (translation)
-Use extensionality with `P`. Use `⟨fun h => h.1, fun hP => ⟨hP, fun ξ hξ ν hν x hx => ?_⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Establish `hs` using `BoundedSectionAlgebra.sign_of_bdd X moderateCoefficientPositivity_holds hP.1 hξ ν hx h`. Establish `hsum : ∑ τ, ν τ = 0` using `le_antisymm (hν.trans hc) (Finset.sum_nonneg fun τ _ => hs τ)`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : ν = 0` using `funext fun τ => (Finset.sum_eq_zero_iff_of_nonneg (fun τ _ => hs τ)).1 hsum τ (Finset.mem_univ _)`. Substitute `h0` using the available equality. Conclude with `h (hP.2 ξ hξ x hx)`.
+Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem SSgt_eq_SS (la : Wt X.Ψ r) {c : ℝ} (hc : c ≤ 0) : X.SSgt la c = X.SS la := by
   ext P
@@ -86,7 +86,7 @@ theorem SSgt_eq_SS (la : Wt X.Ψ r) {c : ℝ} (hc : c ≤ 0) : X.SSgt la c = X.S
   exact h (hP.2 ξ hξ x hx)
 
 /- English proof (translation)
-Use `m3bExp_holds r X la P hP ξ hξ x hx s hs` as an intermediate fact. Simplify using `only [h, zero_mul] at this`. Conclude with `this.unique hasSum_zero`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_fj_zero {la : Wt X.Ψ r} {P : Frame X.Ψ r → ℂ} (hP : X.IsSec la P)
     {ξ : Fin r → E} (hξ : X.IsIso ξ) {x : Frame X.Ψ r} (hx : x ∈ X.dom)
@@ -97,11 +97,11 @@ theorem eq_zero_of_fj_zero {la : Wt X.Ψ r} {P : Frame X.Ψ r → ℂ} (hP : X.I
   exact this.unique hasSum_zero
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨τ, hτ⟩ : ∃ τ, τ ∈ X.Ψ := by`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Distinguish the cases in `h : ComplexEmbedding.conjugate τ ∈ X.Ψ`. Conclude with `⟨_, h⟩`. Conclude with `⟨τ, (X.cmType τ).2 h⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Introduce `h`. Establish `: Nonempty (Fin r)` using `⟨⟨0, hr⟩⟩`. Apply `(h ⟨τ, hτ⟩).1` to reduce the goal to its premises. Establish `: mat (0 : Frame X.Ψ r) ⟨τ, hτ⟩ = 0` using `rfl`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Matrix.det_zero`.
+A detailed English derivation is pending.
 -/
 theorem zero_not_mem_dom (hr : 0 < r) : (0 : Frame X.Ψ r) ∉ X.dom := by
   obtain ⟨τ, hτ⟩ : ∃ τ, τ ∈ X.Ψ := by
@@ -116,9 +116,9 @@ theorem zero_not_mem_dom (hr : 0 < r) : (0 : Frame X.Ψ r) ∉ X.dom := by
   rw [this]; exact Matrix.det_zero
 
 /- English proof (translation)
-Establish `hf : ∀ ξ, X.IsIso ξ → ∀ ν, ∀ x ∈ X.dom, X.fj la ξ ν P x = 0` using `fun ξ hξ ν x hx => by`. Rewrite using `[fj_congr X la hξ ν (Q := 0) h hx]`. Conclude with `BoundedSectionAlgebra.fj_zero X la ξ x ν`. Use `⟨⟨⟨⟨(differentiableOn_const (0 : ℂ)).congr h, fun x hx b hb => ?_, fun γ hγ x hx => ?_⟩, 0, fun x hx => ?_⟩, fun ξ hξ x hx => hf ξ hξ 0 x hx⟩, fun ξ hξ ν _ x hx => hf ξ hξ ν x hx⟩` and prove the remaining obligations. Rewrite using `[h _ (OrthogonalFrameDomain.rmul_mem_dom X hx hb), h x hx, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h _ (GlobalTheory.MajInv.lact_mem_dom X (X.Γ_stab γ hγ) hx), h x hx, mul_zero]`. Simplify using `[Data.pnorm, h x hx]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_SSgt_of_zero_on_dom (la : Wt X.Ψ r) (c : ℝ) {P : Frame X.Ψ r → ℂ}
     (h : ∀ x ∈ X.dom, P x = 0) : P ∈ X.SSgt la c := by
@@ -133,7 +133,7 @@ theorem mem_SSgt_of_zero_on_dom (la : Wt X.Ψ r) (c : ℝ) {P : Frame X.Ψ r →
 open Classical in
 
 /- English proof (translation)
-Establish `h : ∀ x ∈ X.dom, (fun y : Frame X.Ψ r => if y = 0 then (1 : ℂ) else 0) x = 0` using `fun x hx => by`. Establish `: x ≠ 0` using `fun e => zero_not_mem_dom X hr (e ▸ hx)`. Simplify using `[this]`. Conclude with `⟨_, mem_SSgt_of_zero_on_dom X la c h, fun e => by simpa using congrFun e 0, h⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem exists_ne_zero_mem_SSgt (hr : 0 < r) (la : Wt X.Ψ r) (c : ℝ) :
     ∃ P ∈ X.SSgt la c, P ≠ 0 ∧ ∀ x ∈ X.dom, P x = 0 := by

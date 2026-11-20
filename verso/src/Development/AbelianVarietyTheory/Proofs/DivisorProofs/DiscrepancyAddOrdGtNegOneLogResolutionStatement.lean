@@ -8,7 +8,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.Discrepancy GlobalTheory.FieldPair
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Discrepancy.neg_one_lt_discrep_add_ord_of_logRes` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDiscrepancyAddOrdGtNegOneLogResolution.lean&line=68#L68)
 -/

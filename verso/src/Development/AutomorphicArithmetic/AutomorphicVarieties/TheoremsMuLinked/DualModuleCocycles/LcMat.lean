@@ -3,9 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.D
 open Matrix IsLocalRing UpperTheory.V UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.Pa UpperTheory.V.Th UpperTheory.V.Th.Coc
 
 /- English proof (translation)
-Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Establish `hx : ∀ a b, ∀ᶠ y in nhds x, f y a b = f x a b` using `fun a b => (IsLocallyConstant.iff_eventually_eq _).mp (h a b) x`. Use `filter_upwards [Filter.eventually_all.mpr fun a => Filter.eventually_all.mpr (hx a)] with y hy`. Use extensionality with `a b`.
-
-Conclude with `hy a b`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private theorem lc_mat {Γ K : Type} [TopologicalSpace Γ] {n : ℕ} (f : Γ → Matrix (Fin n) (Fin n) K)
     (h : ∀ a b, IsLocallyConstant fun g => f g a b) : IsLocallyConstant f := by
@@ -18,31 +16,29 @@ private theorem lc_mat {Γ K : Type} [TopologicalSpace Γ] {n : ℕ} (f : Γ →
   exact hy a b
 
 /- English proof (translation)
-Introduce `O R X _ _ _ _ _ n G _ _ _ x δ ρ τ c c₀ d hspan hL hρ hτ`. Establish `hsingle : ∀ g : G, repR x ρ (MonoidAlgebra.single g 1) = ρ g`. Introduce `g`. Rewrite using `[repR_single, map_one, one_smul]`. Establish `hmulD : ∀ g h : G, d (MonoidAlgebra.single (g * h) 1) = d (MonoidAlgebra.single g 1) * bar X (ρ h) + bar X (ρ g) * d (MonoidAlgebra.single h 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `g h`. Establish `e` using `hL.mul (MonoidAlgebra.single g 1) (MonoidAlgebra.single h 1)`. Rewrite `e` using `[MonoidAlgebra.single_mul_single, mul_one, hsingle, hsingle]`. Conclude with `e`. Establish `hgen : ∀ h : G, IsLocallyConstant fun g => (d (MonoidAlgebra.single g 1) * bar X (ρ h)).trace`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `e : (fun g => (d (MonoidAlgebra.single g 1) * bar X (ρ h)).trace) = fun g => c • δ (τ (MonoidAlgebra.single (g * h) 1)) - (bar X (ρ g) * d (MonoidAlgebra.single h 1)).trace`. Use function extensionality and compare the values at `g`. Rewrite using `[← hL.tr, hmulD, Matrix.trace_add, add_sub_cancel_right]`. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsLocallyConstant.sub ?_ ?_` and prove the remaining obligations. Conclude with `(hτ.comp_continuous (continuous_mul_right h)).comp (fun y => c • y)`. Conclude with `hρ.comp fun M => (M * d (MonoidAlgebra.single h 1)).trace`. Establish `hspanLC : ∀ Z ∈ Submodule.span O (Set.range ρ), IsLocallyConstant fun g => (d (MonoidAlgebra.single g 1) * bar X Z).trace`. Introduce `Z hZ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `hZ using Submodule.span_induction with`. Consider the case `mem Z hZ`. Take `⟨h, rfl⟩` from `hZ`. Conclude with `hgen h`. Consider the case `zero`.
+Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `e : (fun g => (d (MonoidAlgebra.single g 1) * bar X (0 : Matrix (Fin n) (Fin n) O)).trace) = fun _ => 0`. Use function extensionality and compare the values at `g`. Establish `hb : bar X (0 : Matrix (Fin n) (Fin n) O) = 0`. Use extensionality with `i j`. Simplify using `[bar]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[hb, Matrix.mul_zero, Matrix.trace_zero]`. Rewrite using `[e]`. Conclude with `IsLocallyConstant.const 0`. Consider the case `add Z W _ _ hZ hW`. Establish `e : (fun g => (d (MonoidAlgebra.single g 1) * bar X (Z + W)).trace) = fun g => (d (MonoidAlgebra.single g 1) * bar X Z).trace + (d (MonoidAlgebra.single g 1) * bar X W).trace`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `g`. Establish `hb : bar X (Z + W) = bar X Z + bar X W`. Use extensionality with `i j`. Simplify using `[bar]`. Rewrite using `[hb, Matrix.mul_add, Matrix.trace_add]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `hZ.add hW`. Consider the case `smul k Z _ hZ`. Establish `e : (fun g => (d (MonoidAlgebra.single g 1) * bar X (k • Z)).trace) = fun g => algebraMap O X k * (d (MonoidAlgebra.single g 1) * bar X Z).trace`. Use function extensionality and compare the values at `g`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hb : bar X (k • Z) = algebraMap O X k • bar X Z`. Use extensionality with `i j`. Simplify using `[bar, Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[hb, Matrix.mul_smul, Matrix.trace_smul, smul_eq_mul]`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `hZ.comp fun y => algebraMap O X k * y`. Apply `lc_mat` to reduce the goal to its premises. Introduce `a b`. Establish `key : ∀ M : Matrix (Fin n) (Fin n) X, (M * bar X (c₀ • Matrix.of fun i j => if i = b ∧ j = a then (1:O) else 0)).trace = (c₀ • M) a b`. Introduce `M`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, bar, Matrix.map_apply, Matrix.smul_apply, Matrix.of_apply, smul_ite, smul_zero, smul_eq_mul, mul_one, ite_and]`. Simplify using `only [apply_ite (algebraMap O X), map_zero, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, Algebra.smul_def, mul_one]`. Rewrite using `[mul_comm]`. Establish `e : (fun g => (c₀ • d (MonoidAlgebra.single g 1)) a b) = fun g => (d (MonoidAlgebra.single g 1) * bar X (c₀ • Matrix.of fun i j => if i = b ∧ j = a then (1:O) else 0)).trace`. Use function extensionality and compare the values at `g`.
-
-Rewrite using `[key]`. Rewrite using `[e]`. Conclude with `hspanLC _ (hspan _)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Th.Coc.lc :
     ∀ {O R X : Type} [CommRing O] [CommRing R] [Algebra O R] [CommRing X] [Algebra O X] {n : ℕ} {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (x : R →ₐ[O] O) (δ : R →ₗ[O] X) (ρ : G →* Matrix (Fin n) (Fin n) O) (τ : MonoidAlgebra R G → R) (c c₀ : O) (d : MonoidAlgebra R G →+ Matrix (Fin n) (Fin n) X), (∀ Z : Matrix (Fin n) (Fin n) O, c₀ • Z ∈ Submodule.span O (Set.range ρ)) → IsLift x δ (repR x ρ) τ c d → (IsLocallyConstant fun g => bar X (ρ g)) → (IsLocallyConstant fun g => δ (τ (MonoidAlgebra.single g 1))) → IsLocallyConstant fun g => c₀ • d (MonoidAlgebra.single g 1) := by

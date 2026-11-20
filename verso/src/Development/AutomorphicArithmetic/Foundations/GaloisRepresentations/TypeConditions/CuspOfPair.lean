@@ -12,7 +12,7 @@ open NumberField GlobalTheory.CuspRep GlobalTheory.ContraPair
 namespace UpperTheory.GalS
 
 /- English proof (translation)
-The claim follows from `H`.
+A detailed English derivation is pending.
 -/
 theorem carId (H : CarU) : CarU := H
 

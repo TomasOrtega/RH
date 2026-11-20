@@ -12,14 +12,14 @@ namespace GlobalTheory.FockAlg.HarmLift
 variable {p q r s : ℕ} {W : Type} [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Rewrite using `[fockAct1_eq, omAct_eq_parts (lineMatrixKroneckerLeftFactor_eq_zero_of_isPC hZ) Q, add_sub_cancel_right]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem plusPart_eq_sub {Z : Mat p q} (hZ : IsPC Z) (Q : Pol p q r s) :
     plusPart (fockAct1 p q r s Z) Q = fockAct1 p q r s Z Q - minusPart (fockAct1 p q r s Z) Q := by
   rw [fockAct1_eq, omAct_eq_parts (lineMatrixKroneckerLeftFactor_eq_zero_of_isPC hZ) Q, add_sub_cancel_right]
 
 /- English proof (translation)
-Rewrite using `[fockAct1_eq, minusPart_omAct (lineMatrixKroneckerLeftFactor_eq_zero_of_isPC hZ)]`. Conclude with `downOp_mem _ d Q hQ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minusPart_mem {Z : Mat p q} (hZ : IsPC Z) {d : ℕ} {Q : Pol p q r s}
     (hQ : Q ∈ homog (Ix p q × Ix r s) d) :
@@ -28,7 +28,7 @@ theorem minusPart_mem {Z : Mat p q} (hZ : IsPC Z) {d : ℕ} {Q : Pol p q r s}
   exact downOp_mem _ d Q hQ
 
 /- English proof (translation)
-Rewrite using `[fockAct1_eq, minusPart_omAct (lineMatrixKroneckerLeftFactor_eq_zero_of_isPC hZ)]`. Conclude with `downOp_low _ d Q hd hQ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minusPart_low {Z : Mat p q} (hZ : IsPC Z) {d : ℕ} (hd : d < 2) {Q : Pol p q r s}
     (hQ : Q ∈ homog (Ix p q × Ix r s) d) : minusPart (fockAct1 p q r s Z) Q = 0 := by
@@ -36,17 +36,17 @@ theorem minusPart_low {Z : Mat p q} (hZ : IsPC Z) {d : ℕ} (hd : d < 2) {Q : Po
   exact downOp_low _ d Q hd hQ
 
 /- English proof (translation)
-Rewrite using `[← HarmStable.coe_fockHarmonicsSecondMemberSubmodule, Submodule.span_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem span_harm2 : Submodule.span ℂ (harm2 p q r s) = HarmStable.sub2 p q r s := by
   rw [← HarmStable.coe_fockHarmonicsSecondMemberSubmodule, Submodule.span_eq]
 
 /- English proof (translation)
-Proceed by induction on `d using Nat.strong_induction_on with`. Consider the case `_ d ih`. Break down `Nat.lt_or_ge d 2 with hd | hd` into its components or cases. Introduce `f hf`. Use `Submodule.mem_sup_left ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← SetLike.mem_coe, HarmStable.coe_fockHarmonicsSecondMemberSubmodule]`. Conclude with `fun Z hZ => minusPart_low hZ hd hf`. Take `⟨n, rfl⟩ : ∃ n, d = n + 2` from `⟨d - 2, by omega⟩`. Rewrite using `[(GlobalTheory.FischerParts.fischer_parts p q r s n).1, span_harm2]`. Use `sup_le (inf_le_right.trans le_sup_left) (Submodule.span_le.2 ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨Q, hQ, Z, hZ, rfl⟩`. Rewrite using `[SetLike.mem_coe, plusPart_eq_sub hZ]`. Use `Submodule.sub_mem _ (Submodule.mem_sup_right (hpr Z hZ Q)) ?_` and prove the remaining obligations. Conclude with `ih (n - 2) (by omega) (minusPart_mem hZ hQ)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem homog_le (pr : Pol p q r s →ₗ[ℂ] W)
     (hpr : ∀ Z : Mat p q, IsPC Z → ∀ f, pr (fockAct1 p q r s Z f) = 0) (d : ℕ) :
@@ -67,9 +67,9 @@ theorem homog_le (pr : Pol p q r s →ₗ[ℂ] W)
       exact ih (n - 2) (by omega) (minusPart_mem hZ hQ)
 
 /- English proof (translation)
-Introduce `P Q R S W _ _ pr hpr f`. Establish `hf : f ∈ HarmStable.sub2 P Q R S ⊔ LinearMap.ker pr`. Rewrite using `[← sum_homogeneousComponent f]`. Conclude with `Submodule.sum_mem _ fun i _ => homog_le pr hpr i (homogeneousComponent_mem i f)`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨y, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← HarmStable.coe_fockHarmonicsSecondMemberSubmodule]`. Conclude with `hy`. Rewrite using `[map_add, LinearMap.mem_ker.1 hz, add_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_harm2_rep : ∀ (P Q R S : ℕ) (W : Type) [AddCommGroup W] [Module ℂ W]
     (pr : Pol P Q R S →ₗ[ℂ] W), (∀ Z : Mat P Q, IsPC Z → ∀ f, pr (fockAct1 P Q R S Z f) = 0) →

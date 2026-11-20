@@ -15,7 +15,7 @@ def sigD : D.host.E →ₐ[D.host.F] D.host.E := letI := D.host.cmStar; D.sp.cm.
 def embT : D.what₂.Tau → D.host.E →+* ℂ := fun τ => D.host.emb (D.eTau τ : D.R.GG)
 
 /- English proof (translation)
-The claim follows from `letI := D.host.cmStar; D.sp.X_rank i hi`.
+A detailed English derivation is pending.
 -/
 theorem rankN (i : ℕ) (hi : i ≤ D.R.m) : letI := D.host.cmStar; (D.sp.X i).rank = D.R.N i :=
   letI := D.host.cmStar; D.sp.X_rank i hi
@@ -65,7 +65,7 @@ def lamT (u : D.what₂.Word) (i : ℕ) : D.what₂.Tau → DomWeight (D.R.N i) 
   fun τ => shW ((D.fm u).lam i τ) ((i * (D.R.t + 1) / 2 : ℕ) : ℤ)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Simplify using `[lamT, shW_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem lamT_zero (u : D.what₂.Word) : lamT u 0 = (D.fm u).lam 0 := by
   funext τ

@@ -30,14 +30,14 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Flat.Marking
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.punctured_polydisc_open_connected n a ρ hρ`.
+A detailed English derivation is pending.
 -/
 theorem punct_top (n a : ℕ) (ρ : ℝ) (hρ : 0 < ρ) :
     IsOpen (punct n a ρ) ∧ IsPreconnected (punct n a ρ) ∧ (punct n a ρ).Nonempty :=
   GlobalTheory.T.punctured_polydisc_open_connected n a ρ hρ
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exp_hom_bijective_of_local_inj M g g' ex r h hex hc ho hr he`.
+A detailed English derivation is pending.
 -/
 theorem bijective_of_exp {M : Type} [Group M] {g g' : ℕ} (ex : (Fin g' → ℂ) → M) (r : (Fin g → ℂ) → M)
     (h : (Fin g → ℂ) →ₗ[ℂ] (Fin g' → ℂ)) (hex : ∀ z w, ex (z + w) = ex z * ex w) (hc : ∀ x, ex (h x) = r x)
@@ -46,9 +46,9 @@ theorem bijective_of_exp {M : Type} [Group M] {g g' : ℕ} (ex : (Fin g' → ℂ
   GlobalTheory.T.exp_hom_bijective_of_local_inj M g g' ex r h hex hc ho hr he
 
 /- English proof (translation)
-Set `A : Matrix (Fin g) (Fin g') ℂ` to `LinearMap.toMatrix' (h.symm : (Fin g' → ℂ) →ₗ[ℂ] (Fin g → ℂ))`. Establish `hA : ∀ x, A.mulVec (h x) = x` using `fun x => by`. Simplify using `[A, LinearMap.toMatrix'_mulVec]`. Use `⟨A.transpose * Hm * A.transpose.conjTranspose, Matrix.isHermitian_mul_mul_conjTranspose _ hH, fun x y => ?_⟩` and prove the remaining obligations. Unfold `hermForm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, ← Matrix.star_vecMul, Matrix.dotProduct_mulVec, Matrix.vecMul_transpose, Matrix.vecMul_transpose, hA, hA]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_transport {g g' : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (h : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g' → ℂ))
     (hH : Hm.IsHermitian) : ∃ Hf : Matrix (Fin g') (Fin g') ℂ, Hf.IsHermitian ∧
@@ -62,7 +62,7 @@ theorem herm_transport {g g' : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (h : (Fin 
     Matrix.vecMul_transpose, Matrix.vecMul_transpose, hA, hA]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.tangent_vector_lifts_open_immersion A T φ g W y v hv`.
+A detailed English derivation is pending.
 -/
 theorem deriv_of_open {A T : Scheme.{0}} (φ : A ⟶ T) [IsOpenImmersion φ] {g : ℕ} (W : (Fin g → ℂ) → (Sp ℂ ⟶ A))
     (y : Fin g → ℂ) (v : Sp (DualNumber ℂ) ⟶ T) (hv : IsDerivAt0 (fun x => W x ≫ φ) y v) :
@@ -70,7 +70,7 @@ theorem deriv_of_open {A T : Scheme.{0}} (φ : A ⟶ T) [IsOpenImmersion φ] {g 
   GlobalTheory.T.tangent_vector_lifts_open_immersion A T φ g W y v hv
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.family_exp_derivative_lie R G g n M B ψ e b hb u`.
+A detailed English derivation is pending.
 -/
 theorem isDerivAt0_frame {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] {g n : ℕ}
     {M : LieModel G (𝟙 (Sp R)) (Fin g → R)} {B : Set (Fin n → ℂ)} {ψ : (Fin n → ℂ) → (R →+* ℂ)}
@@ -81,18 +81,16 @@ theorem isDerivAt0_frame {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] [I
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.period_lattice_rank_two_g E H D g ty P hP`.
+A detailed English derivation is pending.
 -/
 theorem finrank_of_isPeriod (D : Datum H) {g : ℕ} {ty : Fin g → (E →+* ℂ)} {P : D.La →+ (Fin g → ℂ)}
     (hP : IsPeriod D ty P) : Module.finrank ℤ D.La = 2 * g :=
   GlobalTheory.T.period_lattice_rank_two_g E H D g ty P hP
 
 /- English proof (translation)
-Establish `hd : DiscreteTopology P.range` using `hP.2.2.1`. Establish `h0 : IsOpen ({0} : Set P.range)` using `isOpen_discrete _`. Take `⟨V, hV, hVe⟩` from `isOpen_induced_iff.1 h0`. Establish `h0V : (0 : Fin g → ℂ) ∈ V`. Establish `: (0 : P.range) ∈ Subtype.val ⁻¹' V` using `hVe ▸ rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Take `⟨δ, hδ, hb⟩` from `Metric.isOpen_iff.1 hV 0 h0V`. Use `⟨δ, hδ, fun x hx hm => ?_⟩` and prove the remaining obligations. Establish `h1 : (⟨x, hm⟩ : P.range) ∈ Subtype.val ⁻¹' V` using `hb (by simpa using hx)`. Rewrite `h1` using `[hVe]`.
-
-Conclude with `congrArg Subtype.val h1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isolated_of_isPeriod (D : Datum H) {g : ℕ} {ty : Fin g → (E →+* ℂ)} {P : D.La →+ (Fin g → ℂ)}
     (hP : IsPeriod D ty P) : ∃ δ : ℝ, 0 < δ ∧ ∀ x : Fin g → ℂ, ‖x‖ < δ → x ∈ P.range → x = 0 := by
@@ -109,14 +107,14 @@ theorem isolated_of_isPeriod (D : Datum H) {g : ℕ} {ty : Fin g → (E →+* �
   exact congrArg Subtype.val h1
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.boundary_chart_holomorphic E H D l Xo σ n a C`.
+A detailed English derivation is pending.
 -/
 theorem isHolTo_pt {Xo : Moduli D l} {σ : KA l →+* ℂ} {n a : ℕ} (C : BdryChart Xo σ n a) :
     IsHolTo (punct n a 1) C.pt :=
   GlobalTheory.T.boundary_chart_holomorphic E H D l Xo σ n a C
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.family_uniformisation_local_period E H D l Xo σ g ty FU m B y hB hc hne hs hy`.
+A detailed English derivation is pending.
 -/
 theorem exists_index {Xo : Moduli D l} {σ : KA l →+* ℂ} {g : ℕ} {ty : Fin g → (E →+* ℂ)}
     (FU : FamilyUnif Xo σ ty) {m : ℕ} {B : Set (Fin m → ℂ)} {y : (Fin m → ℂ) → (Sp ℂ ⟶ Xo.X)} (hB : IsOpen B)
@@ -126,7 +124,7 @@ theorem exists_index {Xo : Moduli D l} {σ : KA l →+* ℂ} {g : ℕ} {ty : Fin
   GlobalTheory.T.family_uniformisation_local_period E H D l Xo σ g ty FU m B y hB hc hne hs hy
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.group_points_equiv_common_cover E H S₁ S₂ V t₁ t₂ tV f₁ f₂ m₁ m₂ x y₁ y₂ h₁ h₂`.
+A detailed English derivation is pending.
 -/
 theorem exists_fibre_equiv {S₁ S₂ V : Scheme.{0}} {t₁ : SAB H S₁} {t₂ : SAB H S₂} {tV : SAB H V}
     {f₁ : V ⟶ S₁} {f₂ : V ⟶ S₂} (m₁ : SABMap tV t₁ f₁) (m₂ : SABMap tV t₂ f₂) (x : Sp ℂ ⟶ V)
@@ -138,19 +136,17 @@ theorem exists_fibre_equiv {S₁ S₂ V : Scheme.{0}} {t₁ : SAB H S₁} {t₂ 
   GlobalTheory.T.group_points_equiv_common_cover E H S₁ S₂ V t₁ t₂ tV f₁ f₂ m₁ m₂ x y₁ y₂ h₁ h₂
 
 /- English proof (translation)
-Establish `hsq : spMap (dualMap (C.ψ z)) ≫ spMap (algebraMap C.R (DualNumber C.R)) = spMap (algebraMap ℂ (DualNumber ℂ)) ≫ spMap (C.ψ z)`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Use `RingHom.ext fun r => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hT : ∀ u : Fin C.g → C.R, ∃ v : epsAt (spMap (C.ψ z)) ⟶ C.t.G, v.left = spMap (dualMap (C.ψ z)) ≫ (C.M.pt u).left` using `fun u => ⟨Over.homMk (spMap (dualMap (C.ψ z)) ≫ (C.M.pt u).left) (by`. Establish `hw` using `Over.w (C.M.pt u)`. Use `show (spMap (dualMap (C.ψ z)) ≫ (C.M.pt u).left) ≫ C.t.G.hom = spMap (algebraMap ℂ (DualNumber ℂ)) ≫ spMap (C.ψ z)`. Rewrite using `[Category.assoc, hw, ← hsq]`. Use the proof step `simp), rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose v hv using fun c : Fin C.g => hT (Pi.single c 1)`. Establish `hvv : C.IsVal z (fun c => Pi.single c 1) v` using `fun c => hv c`. Establish `he : ∀ c : Fin C.g, (fun b => C.ψ z ((Pi.single c 1 : Fin C.g → C.R) b)) = (Pi.single c 1 : Fin C.g → ℂ)` using `fun c => by`. Use extensionality with `b`. Distinguish the cases in `h : b = c`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`. Establish `hs : ∀ (K : Matrix (Fin C.g) (Fin C.g) ℂ) c d, hermForm K (Pi.single c 1) (Pi.single d 1) = K c d` using `fun K c d => by`. Establish `: star (Pi.single d 1 : Fin C.g → ℂ) = Pi.single d 1`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use extensionality with `b`. Distinguish the cases in `h : b = d`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[hermForm, this]`. Establish `h1` using `(hA C.g _ v (Matrix.of fun c d => (Real.pi : ℂ) * hermForm A (fun b => C.ψ z ((Pi.single c 1 : Fin C.g → C.R) b)) (fun b => C.ψ z ((Pi.single d 1 : Fin C.g → C.R) b))) hvv).2 (fun _ _ => rfl)`. Establish `h2` using `(hB C.g _ v _ hvv).1 h1`. Use extensionality with `c d`. Establish `h3` using `h2 c d`.
-
-Simplify using `only [Matrix.of_apply, he, hs] at h3`. Conclude with `mul_left_cancel₀ (by exact_mod_cast Real.pi_ne_zero) h3`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isRiemannMatrix_unique {Xo : Moduli D l} {σ : KA l →+* ℂ} {n a : ℕ} (C : BdryChart Xo σ n a) (z : Fin n → ℂ)
     {A B : Matrix (Fin C.g) (Fin C.g) ℂ} (hA : C.IsRiem z A) (hB : C.IsRiem z B) : A = B := by
@@ -194,9 +190,9 @@ theorem isRiemannMatrix_unique {Xo : Moduli D l} {σ : KA l →+* ℂ} {n a : �
   exact mul_left_cancel₀ (by exact_mod_cast Real.pi_ne_zero) h3
 
 /- English proof (translation)
-Set `c : ℂˣ` to `Units.mk0 (Complex.exp (-(2 * Real.pi * Complex.I) * ((FU.Di i).EF x y : ℂ) / N)) (Complex.exp_ne_zero _)`. Establish `hw` using `FU.ex_weil i P hP N x y c hN rfl`. Establish `hc` using `(GlobalTheory.UU.cubWeil_iff_weilIs (c := Xo.univ.t.cub) GlobalTheory.SemiRigid.globalFns (univ_isAb Xo) h.1 h.2.1 (unitOn c)).2 hw`. Establish `e0` using `h.unique hc`. Establish `e1` using `congrArg (fun q : (Γ(Sp ℂ, ⊤))ˣ => (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom q.val) e0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `e1` using `[unitOn, c]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem weil_value {Xo : Moduli D l} {σ : KA l →+* ℂ} {g : ℕ} {ty : Fin g → (E →+* ℂ)} (FU : FamilyUnif Xo σ ty)
     (i : Fin FU.n) (P : (FU.Di i).La →+ (Fin g → ℂ)) (hP : IsPeriod (FU.Di i) ty P) (N : ℕ) (ζ : ℂˣ) (hN : 0 < N)
@@ -211,15 +207,13 @@ theorem weil_value {Xo : Moduli D l} {σ : KA l →+* ℂ} {g : ℕ} {ty : Fin g
   simpa [unitOn, c] using e1
 
 /- English proof (translation)
-Establish `key : ∀ b, ∃ (rb : (Fin g → ℂ) → (Over.mk (spMap (C.ψ b)) ⟶ C.t.G)) (Wb : (Fin g → ℂ) → (Sp ℂ ⟶ C.tV.G.left)), b ∈ B' → (∀ x y, rb (x + y) = rb x * rb y) ∧ Function.Surjective rb ∧ (∀ x, rb x = 1 ↔ x ∈ (P₀ b).range) ∧ (∀ x, Wb x ≫ C.tV.G.hom = C.pt b ∧ Wb x ≫ C.m₂.φ = (FU.ex i (P …`. Introduce `b`. Distinguish the cases in `hb : b ∈ B'`. Take `⟨Φ, hm, hw, hW⟩` from `exists_fibre_equiv C.m₁ C.m₂ (C.pt b) (spMap (C.ψ b)) (FU.u i (P₀ b)) (C.pt_eq b (hsub hb)).1 (hu b hb).symm`. Establish `hper` using `hP.1 b hb`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose w hw1 hw2 hw3 using hw`. Establish `hone : Φ 1 = 1`. Use `hm 1 1` as an intermediate fact. Rewrite `this` using `[_root_.mul_one]`. Conclude with `left_eq_mul.mp this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun x => Φ (FU.ex i (P₀ b) x), fun x => w (FU.ex i (P₀ b) x), fun _ => ⟨?_, ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `x y show Φ _ = _`. Rewrite using `[FU.ex_add i _ hper, hm]`. Conclude with `Φ.surjective.comp (FU.ex_onto i _ hper)`. Introduce `x`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Rewrite using `[← FU.ex_ker i _ hper x, ← hone]`. Conclude with `Φ.injective.eq_iff`. Conclude with `fun x => ⟨hw1 _, hw2 _, hw3 _⟩`. Conclude with `fun N x x' ζ h => hW N _ _ ζ h`. Conclude with `⟨fun _ => 1, fun _ => w₀, fun h => absurd h hb⟩`.
-
-Use `choose r Wt h using key`. Conclude with `⟨r, Wt, h⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_family {Xo : Moduli D l} {σ : KA l →+* ℂ} {n a : ℕ} (C : BdryChart Xo σ n a) {g : ℕ}
     {ty : Fin g → (E →+* ℂ)} (FU : FamilyUnif Xo σ ty) (i : Fin FU.n) {B' : Set (Fin n → ℂ)}
@@ -267,13 +261,11 @@ theorem exists_family {Xo : Moduli D l} {σ : KA l →+* ℂ} {n a : ℕ} (C : B
   exact ⟨r, Wt, h⟩
 
 /- English proof (translation)
-Use `GlobalTheory.HolFibre.isHolTo_of_isPullback C.m₂.cart.1 ?_ ?_` and prove the remaining obligations. Conclude with `GlobalTheory.FiniteOrderConst.isHolTo_of_eqOn (FU.hol i n B' P₀ hB hP).2 fun bz hb => (hW _ hb.1 _).2`. Establish `h1 : IsHolTo (B' ×ˢ (Set.univ : Set (Fin g → ℂ))) (fun bz : (Fin n → ℂ) × (Fin g → ℂ) => C.pt bz.1)`. Introduce `U f`. Establish `h0` using `isHolTo_pt C U f`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : {b ∈ B' | ⊤ ≤ C.pt b ⁻¹ᵁ U} = B' ∩ {b ∈ punct n a 1 | ⊤ ≤ C.pt b ⁻¹ᵁ U}`. Use extensionality with `b`. Conclude with `⟨fun h => ⟨h.1, hsub h.1, h.2⟩, fun h => ⟨h.1, h.2.2⟩⟩`. Establish `ho : IsOpen {b ∈ B' | ⊤ ≤ C.pt b ⁻¹ᵁ U}` using `hs ▸ hB.inter h0.1`. Establish `hq : {bz ∈ B' ×ˢ (Set.univ : Set (Fin g → ℂ)) | ⊤ ≤ C.pt bz.1 ⁻¹ᵁ U} = Prod.fst ⁻¹' {b ∈ B' | ⊤ ≤ C.pt b ⁻¹ᵁ U}`.
+By extensionality, compare the relevant components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `bz`. Simplify using the standard rewrite rules. Use `⟨by rw [hq]; exact ho.preimage continuous_fst, ?_⟩` and prove the remaining obligations. Establish `hd : DifferentiableOn ℂ (fun b => valAt' (C.pt b) U f) {b ∈ B' | ⊤ ≤ C.pt b ⁻¹ᵁ U}` using `h0.2.mono fun b hb => ⟨hsub hb.1, hb.2⟩`. Rewrite using `[hq]`.
-
-Conclude with `hd.comp differentiableOn_fst fun _ h => h`. Conclude with `GlobalTheory.FiniteOrderConst.isHolTo_of_eqOn h1 fun bz hb => (hW _ hb.1 _).1`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem family_hol {Xo : Moduli D l} {σ : KA l →+* ℂ} {n a : ℕ} (C : BdryChart Xo σ n a) {g : ℕ}
     {ty : Fin g → (E →+* ℂ)} (FU : FamilyUnif Xo σ ty) (i : Fin FU.n) {B' : Set (Fin n → ℂ)}
@@ -310,17 +302,15 @@ def Good {Xo : Moduli D l} {σ : KA l →+* ℂ} {n a : ℕ} (C : BdryChart Xo �
         (ζ : ℂ) = Complex.exp (-(2 * Real.pi * Complex.I) * ((hermForm Hm x x').im : ℂ) / N)
 
 /- English proof (translation)
-Introduce `m u v Γ hv`. Set `x : Fin m → Fin g → ℂ` to `fun c => h.symm (fun b => C.ψ z (u c b))`. Establish `hx : ∀ c, h (x c) = fun b => C.ψ z (u c b)` using `fun c => h.apply_symm_apply _`. Establish `hD : ∀ c, IsDerivAt0 (fun x => (r x).left) (x c) (v c).left` using `fun c => by`. Rewrite using `[hd, hx, hv c]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isDerivAt0_frame e hz (u c)`. Use `haveI := C.j_open`. Use `haveI : IsOpenImmersion C.m₁.φ := MorphismProperty.of_isPullback C.m₁.cart.1.flip ‹IsOpenImmersion C.j›`. Establish `hD' : ∀ c, ∃ v' : Sp (DualNumber ℂ) ⟶ C.tV.G.left, v' ≫ C.m₁.φ = (v c).left ∧ IsDerivAt0 Wz (x c) v'` using `fun c => deriv_of_open C.m₁.φ Wz (x c) _ (by`. Establish `: (fun x => Wz x ≫ C.m₁.φ) = fun x => (r x).left` using `funext fun x => (hW x).2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `hD c)`. Use `choose v' hv1 hv2 using hD'`. Establish `hover : ∀ c, v' c ≫ C.tV.G.hom = spMap (algebraMap ℂ (DualNumber ℂ)) ≫ C.pt z` using `fun c => by`. Rewrite using `[← cancel_mono C.j, Category.assoc, Category.assoc, ← C.m₁.cart.1.w, ← Category.assoc, hv1 c, (C.pt_eq z hz1).1]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Over.w (v c)`. Set `vV : Fin m → (epsAt (C.pt z) ⟶ C.tV.G)` to `fun c => Over.homMk (v' c) (hover c)`. Set `vU : Fin m → (epsAt (FU.u i P₀) ⟶ Xo.univ.t.G)` to `fun c => Over.homMk (v' c ≫ C.m₂.φ) (by show (v' c ≫ C.m₂.φ) ≫ Xo.univ.t.G.hom = spMap (algebraMap ℂ (DualNumber ℂ)) ≫ FU.u i P₀`. Rewrite using `[Category.assoc, C.m₂.cart.1.w, ← Category.assoc, hover c, hu, Category.assoc])`. Establish `e1` using `GlobalTheory.T.hodge_gram_pullback_iff E H _ _ C.t C.tV C.j C.m₁ (C.pt z) (spMap (C.ψ z)) m vV v Γ (C.pt_eq z hz1).1.symm (fun c => hv1 c)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e2` using `GlobalTheory.T.hodge_gram_pullback_iff E H _ _ Xo.univ.t C.tV C.k C.m₂ (C.pt z) (FU.u i P₀) m vV vU Γ hu (fun c => rfl)`. Establish `e3` using `hodgeGram_iff_period E H D l Xo σ g ty FU i P₀ Hm₀ hper hH₀ him (FU.u i P₀) rfl m vU x Γ (fun c => by`. Use `ReciprocityTheory.ChartRestriction.G.PullbackSections.ExpRows.isDerivAt0_comp_hom (hv2 c) C.m₂.φ` as an intermediate fact. Establish `h2 : (fun x => Wz x ≫ C.m₂.φ) = fun x => (FU.ex i P₀ x).left` using `funext fun x => (hW x).1`. Rewrite `this` using `[h2]`.
-
-Conclude with `this)`. Rewrite using `[← e1, e2, e3]`. Use `forall₂_congr fun c d => ?_` and prove the remaining obligations. Rewrite using `[← hf, hx, hx]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isRiem_of_period {Xo : Moduli D l} {σ : KA l →+* ℂ} {n a : ℕ} (C : BdryChart Xo σ n a) {g : ℕ}
     {ty : Fin g → (E →+* ℂ)} (FU : FamilyUnif Xo σ ty) {ρ : ℝ} (e : FamExp C.t.G C.M (ball 0 ρ) C.ψ)
@@ -367,7 +357,7 @@ theorem isRiem_of_period {Xo : Moduli D l} {σ : KA l →+* ℂ} {n a : ℕ} (C 
   rw [← hf, hx, hx]
 
 /- English proof (translation)
-Introduce `U f`. Establish `hq : {b ∈ B' | ⊤ ≤ y b ⁻¹ᵁ U} = B' ∩ {b ∈ B | ⊤ ≤ y b ⁻¹ᵁ U}`. Use extensionality with `b`. Conclude with `⟨fun h => ⟨h.1, hs h.1, h.2⟩, fun h => ⟨h.1, h.2.2⟩⟩`. Conclude with `⟨hq ▸ ho.inter (h U f).1, (h U f).2.mono fun b hb => ⟨hs hb.1, hb.2⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem isHolTo_mono' {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {X : Scheme.{0}} {B B' : Set V}
     {y : V → (Sp ℂ ⟶ X)} (h : IsHolTo B y) (hs : B' ⊆ B) (ho : IsOpen B') : IsHolTo B' y := by
@@ -378,33 +368,31 @@ theorem isHolTo_mono' {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {X :
   exact ⟨hq ▸ ho.inter (h U f).1, (h U f).2.mono fun b hb => ⟨hs hb.1, hb.2⟩⟩
 
 /- English proof (translation)
-Break down `B'.eq_empty_or_nonempty with rfl | ⟨b₀, hb₀⟩` into its components or cases. Conclude with `⟨fun _ => 0, fun x => by simp, fun z hz => absurd hz (Set.notMem_empty z)⟩`. Establish `hsub1 : B' ⊆ punct n a 1` using `fun b hb => ⟨ball_subset_ball hρ (hsub hb).1, (hsub hb).2⟩`. Establish `hsubB : B' ⊆ ball 0 ρ` using `fun b hb => (hsub hb).1`. Take `⟨r, Wt, hr⟩` from `exists_family C FU i P₀ hsub1 hP hu ((1 : Over.mk (C.pt b₀) ⟶ C.tV.G).left)`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hol` using `family_hol C FU i P₀ hB hsub1 hP Wt (fun b hb x => ⟨((hr b hb).2.2.2.1 x).1, ((hr b hb).2.2.2.1 x).2.1⟩)`. Establish `holr : IsHolTo (B' ×ˢ Set.univ) (fun bz : (Fin n → ℂ) × (Fin g → ℂ) => (r bz.1 bz.2).left)` using `GlobalTheory.FiniteOrderConst.isHolTo_of_eqOn (GlobalTheory.HolFibre.isHolTo_comp hol C.m₁.φ) fun bz hb => (((hr _ hb.1).2.2.2.1 _).2.2).symm`. Take `⟨hl, hlhol, hl2⟩` from `exists_linear_lift_of_additive_family C.R C.t.G C.g n C.M (ball 0 ρ) C.ψ e g B' r hB hsubB (fun b hb => (hr b hb).1) holr`. Establish `hbij : ∀ z ∈ B', Function.Bijective (hl z)`. Introduce `z hz`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hadd, hons, hker, -, -⟩` from `hr z hz`. Take `⟨δ, hδ, hiso⟩` from `isolated_of_isPeriod _ (hP.1 z hz)`. Use `bijective_of_exp (e.ex z) (r z) (hl z) (e.add z (hsubB hz)) (hl2 z hz).1 hons ⟨δ, hδ, fun x hx h1 => hiso x hx ((hker x).1 h1)⟩ ?_` and prove the remaining obligations. Take `⟨W, hW, hzW, ρ', hρ', hinj⟩` from `ExpLift.ex_inj_near e (hsubB hz)`. Use `⟨ρ', hρ', fun y hy h1 => hinj z hzW y (mem_ball_zero_iff.2 hy) 0 (mem_ball_self hρ') ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h1, ExpLift.ex_zero e (hsubB hz)]`. Use `⟨fun z => ((hl z).toAddMonoidHom).comp (P₀ z), ?_, ?_⟩` and prove the remaining obligations. Introduce `x`. Establish `hsum : ∀ z, ((hl z).toAddMonoidHom.comp (P₀ z)) x = ∑ k, (P₀ z x k) • hl z (Pi.single k 1)` using `fun z => by`. Establish `: P₀ z x = ∑ k, (P₀ z x k) • (Pi.single k 1 : Fin g → ℂ)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `show hl z (P₀ z x) = _`. Use `conv_lhs => rw [this]`. Simplify using `only [map_sum, map_smul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hsum]`. Conclude with `DifferentiableOn.fun_sum fun k _ => DifferentiableOn.smul ((differentiableOn_pi.1 (hP.2 x)) k) (hlhol _)`. Introduce `z hz`. Establish `hper` using `hP.1 z hz`. Take `⟨hadd, hons, hker, hWz, hwe⟩` from `hr z hz`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨hlex, -, hlder⟩` from `hl2 z hz`. Set `hh : (Fin g → ℂ) ≃ₗ[ℂ] (Fin C.g → ℂ)` to `LinearEquiv.ofBijective (hl z) (hbij z hz)`. Establish `hhv : ∀ x, hh x = hl z x` using `fun _ => rfl`. Take `⟨Hm₀, hH₀, hpos₀, him₀⟩` from `hper.2.2.2.2`. Take `⟨Hm, hHm, hf⟩` from `herm_transport Hm₀ hh hH₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hg : g = C.g` using `by simpa using hh.finrank_eq`. Establish `hrange : (((hl z).toAddMonoidHom.comp (P₀ z)).range : Set (Fin C.g → ℂ)) = e.per z`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩ show e.ex z (hl z (P₀ z x)) = 1`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hlex]`. Conclude with `(hker _).2 ⟨x, rfl⟩`. Introduce `hy`. Take `⟨x, rfl⟩` from `(hbij z hz).2 y`. Establish `h1 : r z x = 1` using `by rw [← hlex]; exact hy`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c, rfl⟩` from `(hker x).1 h1`. Conclude with `⟨c, rfl⟩`. Use `⟨by rw [finrank_of_isPeriod _ hper, hg], (hbij z hz).1.comp hper.2.1, hrange, Hm, ⟨hHm, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨y, rfl⟩` from `hh.surjective x`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hf]`. Conclude with `hpos₀ y (fun h0 => hx (by rw [h0, map_zero]))`. Conclude with `isRiem_of_period C FU e i (hsubB hz) (hsub1 hz) (P₀ z) hper (hu z hz) (r z) (Wt z) (fun x => ⟨(hWz x).2.1, (hWz x).2.2⟩) hh hlder Hm₀ Hm hH₀ him₀ hf`. Introduce `N ζ hN x hx x' hx' hc`. Rewrite `hx`, `hx'` using `[← hrange]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨c₁, rfl⟩` from `hx`. Take `⟨c₂, rfl⟩` from `hx'`. Establish `e1 : ∀ c, e.ex z ((N : ℂ)⁻¹ • ((hl z).toAddMonoidHom.comp (P₀ z)) c) = r z ((N : ℂ)⁻¹ • P₀ z c)` using `fun c => by`. Rewrite using `[← hlex, map_smul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite `hc` using `[e1, e1]`. Use `weil_value FU i (P₀ z) hper N ζ hN c₁ c₂ (hwe N _ _ _ hc)` as an intermediate fact. Establish `h3 : (hermForm Hm (((hl z).toAddMonoidHom.comp (P₀ z)) c₁) (((hl z).toAddMonoidHom.comp (P₀ z)) c₂)).im = (FU.Di i).EF c₁ c₂` using `by show (hermForm Hm (hh (P₀ z c₁)) (hh (P₀ z c₂))).im = _`. Rewrite using `[hf, him₀]`. Rewrite using `[this, h3]`.
-
-Use `push_cast`. Both sides reduce to the same expression. Introduce `x y show (hermForm Hm (hh (P₀ z x)) (hh (P₀ z y))).im = _`. Rewrite using `[hf, him₀]`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem local_marking {Xo : Moduli D l} {σ : KA l →+* ℂ} {n a : ℕ} (C : BdryChart Xo σ n a) {g : ℕ}
     {ty : Fin g → (E →+* ℂ)} (FU : FamilyUnif Xo σ ty) {ρ : ℝ} (hρ : ρ ≤ 1)
@@ -504,17 +492,15 @@ namespace GlobalTheory.CompanionTheory.Ar.Flat
 open Marking in
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo σ n a C g ty FU ρ e hρ0 hρ1`. Take `⟨ho, hc, hne⟩` from `punct_top n a ρ hρ0`. Establish `hsub1 : punct n a ρ ⊆ punct n a 1` using `fun b hb => ⟨ball_subset_ball hρ1 hb.1, hb.2⟩`. Establish `hs : ∀ b ∈ punct n a ρ, (C.pt b ≫ C.k) ≫ Xo.s = spMap σ` using `fun b hb => by`. Rewrite using `[Category.assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(C.pt_eq b (hsub1 hb)).2`. Establish `hy : IsHolTo (punct n a ρ) (fun b => C.pt b ≫ C.k)` using `GlobalTheory.HolFibre.isHolTo_comp (isHolTo_mono' (GlobalTheory.CompanionTheory.Ar.Flat.Marking.isHolTo_pt C) hsub1 ho) C.k`. Take `⟨i, hi⟩` from `exists_index FU ho hc hne hs hy`. Establish `loc : ∀ z₀ ∈ punct n a ρ, ∃ N : Set (Fin n → ℂ), IsOpen N ∧ z₀ ∈ N ∧ N ⊆ punct n a ρ ∧ ∃ P : (Fin n → ℂ) → ((FU.Di i).La →+ (Fin C.g → ℂ)), (∀ x, DifferentiableOn ℂ (fun z => P z x) N) ∧ ∀ z ∈ N, Module.finrank ℤ (FU.Di i).La = 2 * C.g ∧ Function.Injective (P z) ∧ ((P z).range : …` using `fun z₀ h => by`. Take `⟨B', P₀, hB, hz, hsub, hP, hu⟩` from `hi z₀ h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨B', hB, hz, hsub, local_marking C FU hρ1 e i P₀ hB hsub hP hu⟩`. Establish `good : ∀ z ∈ punct n a ρ, ∃ Hm, Good C e z Hm` using `fun z hz => by`. Take `⟨N, -, hzN, -, P, -, hP⟩` from `loc z hz`. Take `⟨-, -, -, Hm, hg, -⟩` from `hP z hzN`. Conclude with `⟨Hm, hg⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `choose! Hf hHf using good`. Take `⟨z₁, hz₁⟩` from `hne`. Use `⟨i, Hf, ?_, fun z hz => hHf z hz, fun z₀ hz₀ => ?_⟩` and prove the remaining obligations. Take `⟨N, -, hzN, -, P, -, hP⟩` from `loc z₁ hz₁`. Conclude with `(hP z₁ hzN).1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hN, hz, hsub, P, hPd, hP⟩` from `loc z₀ hz₀`. Use `⟨N, hN, hz, hsub, P, hPd, fun z hzN => ?_⟩` and prove the remaining obligations. Take `⟨-, hinj, hrange, Hm, hg, him⟩` from `hP z hzN`. Establish `e1 : Hm = Hf z` using `isRiemannMatrix_unique C z hg.2.2.1 (hHf z (hsub hzN)).2.2.1`. Substitute `e1` using the available equality.
-
-Conclude with `⟨hinj, hrange, him⟩`.
+Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_marking : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (σ : KA l →+* ℂ) (n a : ℕ) (C : BdryChart Xo σ n a) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (FU : FamilyUnif Xo σ ty) (ρ : ℝ) (e : FamExp C.t.G C.M (ball 0 ρ) C.ψ), 0 < ρ → ρ ≤ 1 → ∃ (i : Fin FU.n) (Hf : (Fin n → ℂ) → Matrix (Fin C.g) (Fin C.g) ℂ), Module.finrank ℤ (FU.Di i).La = 2 * C.g ∧ (∀ z ∈ punct n a ρ, (Hf z).IsHermitian ∧ (∀ x : Fin C.g → ℂ, x ≠ 0 → 0 < (hermForm (Hf z) x x).re) ∧ C.IsRiem z (Hf z) ∧ ∀ (N : ℕ) (ζ : ℂˣ), 0 < N → ∀ x ∈ e.per z, ∀ x' ∈ e.per z, GlobalTheory.UU.CubWeil C.t.cub N (e.ex z ((N : ℂ)⁻¹ • x)) (e.ex z ((N : ℂ)⁻¹ • x')) (unitOn ζ) → (ζ : ℂ) = Complex.exp (-(2 * Real.pi * Complex.I) * ((hermForm (Hf z) x x').im : ℂ) / N)) ∧ ∀ z₀ ∈ punct n a ρ, ∃ N : Set (Fin n → ℂ), IsOpen N ∧ z₀ ∈ N ∧ N ⊆ punct n a ρ ∧ ∃ P : (Fin n → ℂ) → ((FU.Di i).La →+ (Fin C.g → ℂ)), (∀ x, DifferentiableOn ℂ (fun z => P z x) N) ∧ ∀ z ∈ N, Function.Injective (P z) ∧ ((P z).range : Set (Fin C.g → ℂ)) = e.per z ∧ ∀ x y, (hermForm (Hf z) (P z x) (P z y)).im = (FU.Di i).EF x y := by
   intro E _ _ _ H D l Xo σ n a C g ty FU ρ e hρ0 hρ1

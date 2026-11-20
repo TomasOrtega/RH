@@ -110,7 +110,7 @@ def RealInput : Prop := ∃ C : ℝ, 0 < C ∧ ForPair fun n e ε lam ε' _ B H 
     ∃ A : ℝ, ∀ g ∈ UJset ε, ‖⟪v, π g v⟫_ℂ‖ ≤ A * hsn g ^ (-(20 * ((n : ℝ) + 1) ^ 2))
 
 /- English proof (translation)
-Use extensionality with `a b`. Take `⟨a, rfl⟩` from `e.surjective a`. Take `⟨b, rfl⟩` from `e.surjective b`. Apply the tactic sequence `cases a <;> cases b <;> simp [embH, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem embH_one (e : Option (Fin n) ≃ Fin (n + 1)) : embH e 1 = 1 := by
   ext a b
@@ -119,7 +119,7 @@ theorem embH_one (e : Option (Fin n) ≃ Fin (n + 1)) : embH e 1 = 1 := by
   cases a <;> cases b <;> simp [embH, Matrix.one_apply]
 
 /- English proof (translation)
-Introduce `x y h h'`. Apply the tactic sequence `rcases x with x | x <;> rcases y with y | y <;> fin_cases x <;> fin_cases y <;> simp at h ⊢ <;> try linarith`. Use `h' (Sum.inl 1)` as an intermediate fact. Evaluate the numerical expressions using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Evaluate the numerical expressions.
 -/
 example : Interlaced (n := 1) ![true, false] ![5 / 2, 1 / 2] ![false] ![0] := by
   intro x y h h'
@@ -130,7 +130,7 @@ example : Interlaced (n := 1) ![true, false] ![5 / 2, 1 / 2] ![false] ![0] := by
 def ProjExists : Prop := ForPair fun _ e _ _ ε' _ _ _ _ _ _ _ _ π σ => ∃ j P, IsProj e ε' π σ j P
 
 /- English proof (translation)
-Use extensionality with `a b`. Take `⟨a, rfl⟩` from `e.surjective a`. Take `⟨b, rfl⟩` from `e.surjective b`. Rewrite using `[Matrix.mul_apply, ← e.sum_comp, Fintype.sum_option]`. Apply the tactic sequence `cases a <;> cases b <;> simp [embH, Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem embH_mul (e : Option (Fin n) ≃ Fin (n + 1)) (h h' : Mat n) : embH e (h * h') = embH e h * embH e h' := by
   ext a b

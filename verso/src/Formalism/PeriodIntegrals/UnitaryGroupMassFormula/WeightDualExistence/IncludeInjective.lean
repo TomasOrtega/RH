@@ -11,7 +11,7 @@ variable (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ)
 local notation3 "L⁺" => NumberField.maximalRealSubfield L
 
 /- English proof (translation)
-Take `⟨I, hbot, htop⟩` from `Ring.not_isField_iff_exists_ideal_bot_lt_and_lt_top.mp (NumberField.RingOfIntegers.not_isField L⁺)`. Take `⟨M, hM, hIM⟩` from `Ideal.exists_le_maximal I htop.ne`. Conclude with `⟨⟨M, hM.isPrime, fun h => by`. Rewrite `hIM` using `[h]`. Conclude with `hbot.ne' (le_bot_iff.mp hIM)⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_place : Nonempty (IsDedekindDomain.HeightOneSpectrum (𝓞 L⁺)) := by
   obtain ⟨I, hbot, htop⟩ := Ring.not_isField_iff_exists_ideal_bot_lt_and_lt_top.mp
@@ -33,18 +33,18 @@ instance nontrivial_AL : Nontrivial (AL L) :=
     (algebraMap (L⁺) (AFplus L)).injective
 
 /- English proof (translation)
-The claim follows from `(Algebra.TensorProduct.includeLeftRingHom : L →+* AL L).injective`.
+A detailed English derivation is pending.
 -/
 theorem include_injective :
     Function.Injective (Algebra.TensorProduct.includeLeftRingHom : L →+* AL L) :=
   (Algebra.TensorProduct.includeLeftRingHom : L →+* AL L).injective
 
 /- English proof (translation)
-Introduce `γ γ₀ hm`. Establish `hγ : ((γ : GAf L n) : GL (Fin n) (AL L)) ∈ (GQ0 L n).map (Matrix.GeneralLinearGroup.map (Algebra.TensorProduct.includeLeftRingHom : L →+* AL L))` using `γ.2`. Take `⟨γ₁, h₁, he⟩` from `hγ`. Establish `hmat : (γ₀ : Matrix (Fin n) (Fin n) L) = (γ₁ : Matrix (Fin n) (Fin n) L)`. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Apply `include_injective L` to reduce the goal to its premises. Establish `e1` using `congrFun (congrFun hm i) j`. Establish `e2` using `congrArg (fun g : GL (Fin n) (AL L) => (g : Matrix (Fin n) (Fin n) (AL L)) i j) he`. Simplify using `only [Matrix.map_apply] at e1 e2`. Rewrite using `[← e1]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e2]`. Both sides reduce to the same expression. Establish `: γ₀ = γ₁` using `Units.ext hmat`. Rewrite using `[this]`. Conclude with `h₁`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitaryOfMatch : UnitaryOfMatch L n := by
   intro γ γ₀ hm

@@ -15,13 +15,13 @@ noncomputable def incl (p : ℕ) [Fact p.Prime] : ℤ_[p] →+* ℂ_[p] :=
   (algebraMap ℚ_[p] ℂ_[p]).comp PadicInt.Coe.ringHom
 
 /- English proof (translation)
-The claim follows from `(continuous_algebraMap ℚ_[p] ℂ_[p]).comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_incl : Continuous (incl p) :=
   (continuous_algebraMap ℚ_[p] ℂ_[p]).comp continuous_subtype_val
 
 /- English proof (translation)
-Establish `h1 : binomC k x = incl p (Ring.choose x k)` using `rfl`. Establish `h2` using `Ring.descPochhammer_eq_factorial_smul_choose x k`. Rewrite `h2` using `[← Polynomial.aeval_eq_smeval]`. Rewrite using `[h1, h2, nsmul_eq_mul, map_mul, map_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem factorial_mul_binomC (k : ℕ) (x : ℤ_[p]) :
     (k.factorial : ℂ_[p]) * binomC k x
@@ -32,7 +32,7 @@ theorem factorial_mul_binomC (k : ℕ) (x : ℤ_[p]) :
   rw [h1, h2, nsmul_eq_mul, map_mul, map_natCast]
 
 /- English proof (translation)
-Use `letI : Module ℤ_[p] E := Module.compHom E (algebraMap ℤ_[p] ℚ_[p])`. Use `haveI : IsBoundedSMul ℤ_[p] E := IsBoundedSMul.of_norm_smul_le fun r x => norm_smul_le (r : ℚ_[p]) x`. Conclude with `⟨_, PadicInt.hasSum_mahler f, fun n => ⟨_, fun _ => rfl⟩⟩`.
+Equip the data with the indicated structure. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_mahler_expansion {E : Type*} [NormedAddCommGroup E] [NormedSpace ℚ_[p] E]
     [IsUltrametricDist E] [CompleteSpace E] (f : C(ℤ_[p], E)) :
@@ -47,13 +47,13 @@ variable {Z : Type} [TopologicalSpace Z] [CompactSpace Z]
 
 omit [CompactSpace Z] in
 /- English proof (translation)
-Establish `hmem : ∀ P : Polynomial ℤ, ∃ G ∈ S, ∀ z, G z = incl p (Polynomial.aeval (φ z) P)`. Introduce `P`. Proceed by induction on `P using Polynomial.induction_on' with`. Consider the case `add P Q hP hQ`. Take `⟨G, hG, hG'⟩` from `hP`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨G₂, hG₂, hG₂'⟩` from `hQ`. Conclude with `⟨G + G₂, S.add_mem hG hG₂, fun z => by simp [hG', hG₂']⟩`. Consider the case `monomial n a`. Use `⟨(a : ℂ_[p]) • X ^ n, S.smul_mem (S.pow_mem hS n) _, fun z => ?_⟩` and prove the remaining obligations. Simplify using `[hX, Polynomial.aeval_monomial]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take `⟨G, hG, hG'⟩` from `hmem (descPochhammer ℤ k)`. Establish `hk : (k.factorial : ℂ_[p]) ≠ 0` using `Nat.cast_ne_zero.mpr k.factorial_ne_zero`. Establish `: (binomC k).comp φ = (k.factorial : ℂ_[p])⁻¹ • G`. Use extensionality with `z`. Express the relevant statement in the definitionally equal form `binomC k (φ z) = (k.factorial : ℂ_[p])⁻¹ * G z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hG', ← factorial_mul_binomC, inv_mul_cancel_left₀ hk]`. Rewrite using `[this]`. Conclude with `S.smul_mem hG _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem binomC_comp_mem (S : Subalgebra ℂ_[p] C(Z, ℂ_[p])) (φ : C(Z, ℤ_[p]))
     (X : C(Z, ℂ_[p])) (hX : ∀ z, X z = incl p (φ z)) (hS : X ∈ S) (k : ℕ) :
@@ -89,17 +89,17 @@ noncomputable def evalAlong {Y : Type} [TopologicalSpace Y] [CompactSpace Y] [T2
       exact ((G (φ z)).norm_coe_le_norm _).trans (G.norm_coe_le_norm _))
 
 /- English proof (translation)
-Proceed by induction on `g with`. Consider the case `zero`. Introduce `φ _ F`. Establish `: F.comp φ = algebraMap ℂ_[p] C(Z, ℂ_[p]) (F 0)`. Use extensionality with `z`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Subsingleton.elim (φ z) 0]`. Rewrite using `[this]`. Conclude with `S.algebraMap_mem _`. Consider the case `succ g ih`. Introduce `φ hφ F`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht, ht'⟩` from `exists_mahler_expansion (curryFirst F)`. Set `φ0 : C(Z, ℤ_[p])` to `⟨fun z => φ z 0, by fun_prop⟩`. Set `ψ : C(Z, Fin g → ℤ_[p])` to `⟨fun z i => φ z i.succ, by fun_prop⟩`. Establish `h` using `(evalAlong φ0 ψ).hasSum ht`. Establish `e : evalAlong φ0 ψ (curryFirst F) = F.comp φ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `z`. Conclude with `congrArg F (Fin.cons_self_tail (φ z))`. Rewrite `h` using `[e]`. Use `hS.mem_of_tendsto h (Filter.Eventually.of_forall fun s => S.sum_mem fun n _ => ?_)` and prove the remaining obligations. Take `⟨a, ha⟩` from `ht' n`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `e2 : evalAlong φ0 ψ (t n) = (binomC n).comp φ0 * a.comp ψ`. Use extensionality with `z`. Express the relevant statement in the definitionally equal form `t n (φ0 z) (ψ z) = _`. Rewrite using `[ha]`. Express the relevant statement in the definitionally equal form `((mahler n (φ0 z) : ℤ_[p]) : ℚ_[p]) • a (ψ z) = _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression. Rewrite using `[e2]`. Take `⟨X, hX, hX'⟩` from `hφ 0`. Conclude with `S.mul_mem (binomC_comp_mem S φ0 X hX' hX n) (ih ψ (fun i => hφ i.succ) a)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem comp_mem (S : Subalgebra ℂ_[p] C(Z, ℂ_[p])) (hS : IsClosed (S : Set C(Z, ℂ_[p])))
     (g : ℕ) : ∀ (φ : C(Z, Fin g → ℤ_[p])),
@@ -137,15 +137,15 @@ theorem comp_mem (S : Subalgebra ℂ_[p] C(Z, ℂ_[p])) (hS : IsClosed (S : Set 
     exact S.mul_mem (binomC_comp_mem S φ0 X hX' hX n) (ih ψ (fun i => hφ i.succ) a)
 
 /- English proof (translation)
-Introduce `p r _ μ hμ`. Set `X : Fin r → C(Fin r → ℤ_[p], ℂ_[p])` to `fun i => ⟨fun a => incl p (a i), continuous_incl.comp (continuous_apply i)⟩`. Set `A : Subalgebra ℂ_[p] C(Fin r → ℤ_[p], ℂ_[p])` to `Algebra.adjoin ℂ_[p] (Set.range X)`. Establish `hA : ∀ f ∈ A, μ f = 0`. Introduce `f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hf' : f ∈ Submodule.span ℂ_[p] (Submonoid.closure (Set.range X) : Set _)`. Rewrite using `[← Algebra.adjoin_eq_span]`. Conclude with `hf`. Use `(Submodule.span_le (p := LinearMap.ker μ.toLinearMap)).mpr ?_ hf'` and prove the remaining obligations. Introduce `g hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: ∃ (m : ℕ) (k : Fin m → Fin r), ∀ a, g a = ∏ j, zc (a (k j))`. Proceed by induction on `hg using Submonoid.closure_induction_left with`. Consider the case `one => exact ⟨0, Fin.elim0, fun a => by simp⟩`. Consider the case `mul_left x hx y _ ih`. Take `⟨i, rfl⟩` from `hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨m, k, hk⟩` from `ih`. Use `⟨m + 1, Fin.cons i k, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_succ, ContinuousMap.mul_apply, hk]`. Both sides reduce to the same expression. Take `⟨m, k, hk⟩` from `this`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components.
 
-Conclude with `hμ m k g hk`. Use extensionality with `F`. Establish `hF` using `comp_mem A.topologicalClosure A.isClosed_topologicalClosure r (ContinuousMap.id _) (fun i => ⟨X i, A.le_topologicalClosure (Algebra.subset_adjoin ⟨i, rfl⟩), fun _ => rfl⟩) F`. Establish `hcl : closure (A : Set C(Fin r → ℤ_[p], ℂ_[p])) ⊆ {f | μ f = 0}` using `closure_minimal hA (isClosed_eq μ.continuous continuous_const)`. Conclude with `hcl hF`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_monomials : ∀ (p r : ℕ) [Fact p.Prime] (μ : C(Fin r → ℤ_[p], ℂ_[p]) →L[ℂ_[p]] ℂ_[p]), (∀ (m : ℕ) (k : Fin m → Fin r) (g : C(Fin r → ℤ_[p], ℂ_[p])), (∀ a, g a = ∏ j, zc (a (k j))) → μ g = 0) → μ = 0 := by
   intro p r _ μ hμ

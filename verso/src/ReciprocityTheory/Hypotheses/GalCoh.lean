@@ -100,7 +100,7 @@ def LocalEulerCharResAt (rho : Representation (ZMod (l ^ r)) (G F Ω) M)
         Nat.card (H2 (rho.comp (Dec (F := F) A).subtype)))
 
 /- English proof (translation)
-Introduce `hr hA hc` and use `h hr hA (hc.comp' continuous_subtype_val)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem LocalFinitenessAt.restrict {rho : Representation (ZMod (l ^ r)) (G F Ω) M}
     {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 F)}
@@ -108,7 +108,7 @@ theorem LocalFinitenessAt.restrict {rho : Representation (ZMod (l ^ r)) (G F Ω)
   fun hr hA hc => h hr hA (hc.comp' continuous_subtype_val)
 
 /- English proof (translation)
-Introduce `hr hA hc` and use `h hr hA (hc.comp' continuous_subtype_val)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem LocalTateDualityAt.restrict {rho : Representation (ZMod (l ^ r)) (G F Ω) M}
     {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 F)}
@@ -117,7 +117,7 @@ theorem LocalTateDualityAt.restrict {rho : Representation (ZMod (l ^ r)) (G F Ω
   fun hr hA hc => h hr hA (hc.comp' continuous_subtype_val)
 
 /- English proof (translation)
-Introduce `hr hA hl hI hc` and use `h hr hA hl (fun σ hσ => hI σ hσ) (hc.comp' continuous_subtype_val)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem UnramifiedOrthogonalityAt.restrict {rho : Representation (ZMod (l ^ r)) (G F Ω) M}
     {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 F)}
@@ -126,7 +126,7 @@ theorem UnramifiedOrthogonalityAt.restrict {rho : Representation (ZMod (l ^ r)) 
   fun hr hA hl hI hc => h hr hA hl (fun σ hσ => hI σ hσ) (hc.comp' continuous_subtype_val)
 
 /- English proof (translation)
-Introduce `hr hA hc` and use `h hr hA (hc.comp' continuous_subtype_val)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem LocalEulerCharAt.restrict {rho : Representation (ZMod (l ^ r)) (G F Ω) M}
     {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 F)}
@@ -147,7 +147,7 @@ def locFam (S : Finset (HeightOneSpectrum (𝓞 F)))
   fun v => locHom _ (Av v)
 
 /- English proof (translation)
-The claim follows from `continuous_locHom _ _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_locFam (S : Finset (HeightOneSpectrum (𝓞 F)))
     (Av : S → ValuationSubring Ω) (v : S) : Continuous (locFam S Av v) :=
@@ -268,28 +268,28 @@ variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAl
   [TopologicalSpace M] [DiscreteTopology M]
 
 /- English proof (translation)
-The claim follows from `(h F Ω l r M A _ v).restrict`.
+A detailed English derivation is pending.
 -/
 theorem LocalFiniteness.restrict (h : LocalFiniteness) (rho : Representation (ZMod (l ^ r)) (G F Ω) M)
     (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 F)) : LocalFinitenessResAt rho A v :=
   (h F Ω l r M A _ v).restrict
 
 /- English proof (translation)
-The claim follows from `(h F Ω l r M A _ v).restrict`.
+A detailed English derivation is pending.
 -/
 theorem LocalTateDuality.restrict (h : LocalTateDuality) (rho : Representation (ZMod (l ^ r)) (G F Ω) M)
     (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 F)) : LocalTateDualityResAt rho A v :=
   (h F Ω l r M A _ v).restrict
 
 /- English proof (translation)
-The claim follows from `(h F Ω l r M A _ v).restrict`.
+A detailed English derivation is pending.
 -/
 theorem UnramifiedOrthogonality.restrict (h : UnramifiedOrthogonality) (rho : Representation (ZMod (l ^ r)) (G F Ω) M)
     (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 F)) : UnramifiedOrthogonalityResAt rho A v :=
   (h F Ω l r M A _ v).restrict
 
 /- English proof (translation)
-The claim follows from `(h F Ω l r M A _ v).restrict`.
+A detailed English derivation is pending.
 -/
 theorem LocalEulerChar.restrict (h : LocalEulerChar) (rho : Representation (ZMod (l ^ r)) (G F Ω) M)
     (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 F)) : LocalEulerCharResAt rho A v :=

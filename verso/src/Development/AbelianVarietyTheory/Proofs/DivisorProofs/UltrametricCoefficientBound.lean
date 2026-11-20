@@ -13,7 +13,7 @@ namespace GlobalTheory.ChainPts.FrameNorm
 open GlobalTheory.VB (IsFrame)
 
 /- English proof (translation)
-Use `conv_lhs => rw [← b.sum_repr u]`. Simplify using `only [map_sum, map_smul, Finsupp.finsetSum_apply, Finsupp.smul_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem repr_eq_sum {R M ι : Type} [CommRing R] [AddCommGroup M] [Module R M] [Fintype ι]
     (b b' : Module.Basis ι R M) (u : M) (m : ι) : b'.repr u m = ∑ l, b.repr u l * b'.repr (b l) m := by
@@ -21,11 +21,11 @@ theorem repr_eq_sum {R M ι : Type} [CommRing R] [AddCommGroup M] [Module R M] [
   simp only [map_sum, map_smul, Finsupp.finsetSum_apply, Finsupp.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Consider the cases of `d`. Use `⟨fun m l => (he₁.basis inf_le_right).repr (resM F inf_le_left (e l)) m, fun U h₀ h h₁ m i => ?_⟩` and prove the remaining obligations. Simplify using `only [coef, ← IsFrame.repr_resM, resM_resM]`. Rewrite using `[repr_eq_sum (he.basis (h.trans inf_le_left))]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Split into cases according to the possible forms of the given data. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_comm, IsFrame.basis_apply]`. Use `⟨fun m l => (he.basis inf_le_left).repr (resM F inf_le_right (e₁ m)) l, fun U h₀ h h₁ m i => ?_⟩` and prove the remaining obligations. Simplify using `only [coef, ← IsFrame.repr_resM, resM_resM]`. Rewrite using `[repr_eq_sum (he.basis (h.trans inf_le_left))]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[IsFrame.basis_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_transition {X : Scheme.{0}} {F : X.Modules} {r : ℕ} (d : Bool) {V V₁ V' : X.Opens}
     {e : Fin r → Γ(F, V)} {e₁ : Fin r → Γ(F, V₁)} {s : Fin r → Γ(F, V')} (he : IsFrame e) (he₁ : IsFrame e₁)
@@ -48,13 +48,13 @@ def valHom {k : Type} [Field k] {X : Scheme.{0}} (x : Sp k ⟶ X) (U : X.Opens) 
   (Scheme.ΓSpecIso (CommRingCat.of k)).hom.hom.comp (x.appLE U ⊤ h).hom
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem valF_eq_valHom {k : Type} [Field k] {X : Scheme.{0}} (x : Sp k ⟶ X) (U : X.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U)
     (a : Γ(X, U)) : valF x U a = valHom x U h a := dif_pos h
 
 /- English proof (translation)
-Establish `h' : ⊤ ≤ x ⁻¹ᵁ U` using `fun q hq => e (h hq)`. Rewrite using `[valF, dif_pos h', ← Scheme.Hom.map_appLE x h (homOfLE e).op]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem valHom_resG {k : Type} [Field k] {X : Scheme.{0}} (x : Sp k ⟶ X) {U V : X.Opens} (e : V ≤ U)
     (h : ⊤ ≤ x ⁻¹ᵁ V) (a : Γ(X, U)) : valHom x V h (resG X e a) = valF x U a := by
@@ -63,9 +63,9 @@ theorem valHom_resG {k : Type} [Field k] {X : Scheme.{0}} (x : Sp k ⟶ X) {U V 
   rfl
 
 /- English proof (translation)
-Establish `h' : ⊤ ≤ (spMap (intO C).subtype ≫ w) ⁻¹ᵁ U` using `fun q _ => hw (Set.mem_univ (spMap (intO C).subtype q))`. Rewrite using `[valF, dif_pos h']`. Establish `e : (spMap (intO C).subtype ≫ w).appLE U ⊤ h' = w.appLE U ⊤ hw ≫ (spMap (intO C).subtype).appTop`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Conclude with `(Scheme.Hom.appLE_comp_appLE (spMap (intO C).subtype) w U ⊤ ⊤ hw le_rfl).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `n` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (intO C).subtype)`. Establish `n'` using `congrArg (fun q => q.hom ((w.appLE U ⊤ hw).hom a)) n`. Rewrite using `[e]`. Use `le_of_eq_of_le (congrArg norm n') ?_` and prove the remaining obligations. Conclude with `((Scheme.ΓSpecIso (CommRingCat.of ↥(intO C))).hom.hom ((w.appLE U ⊤ hw).hom a)).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem norm_valF_le_one {X : Scheme.{0}} (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C]
     (w : Sp ↥(intO C) ⟶ X) (U : X.Opens) (hw : ⊤ ≤ w ⁻¹ᵁ U) (a : Γ(X, U)) :
@@ -82,15 +82,15 @@ theorem norm_valF_le_one {X : Scheme.{0}} (C : Type) [NontriviallyNormedField C]
   exact ((Scheme.ΓSpecIso (CommRingCat.of ↥(intO C))).hom.hom ((w.appLE U ⊤ hw).hom a)).2
 
 /- English proof (translation)
-Distinguish the cases in `hx : ⊤ ≤ (spMap (intO C).subtype ≫ w) ⁻¹ᵁ (V₁ ⊓ V')`. Take `⟨B, hB⟩` from `exists_transition d he he₁ hs`. Establish `hw : ⊤ ≤ w ⁻¹ᵁ (V ⊓ V₁)` using `fun q hq => ⟨hV hq, hV₁ hq⟩`. Establish `hU : ⊤ ≤ (spMap (intO C).subtype ≫ w) ⁻¹ᵁ (V ⊓ (V₁ ⊓ V'))` using `fun q hq => ⟨hV (Set.mem_univ (spMap (intO C).subtype q)), hx hq⟩`. Establish `h₀ : V ⊓ (V₁ ⊓ V') ≤ V ⊓ V₁` using `inf_le_inf_left _ inf_le_left`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : V ⊓ (V₁ ⊓ V') ≤ V ⊓ V'` using `inf_le_inf_left _ inf_le_right`. Establish `h₁ : V ⊓ (V₁ ⊓ V') ≤ V₁ ⊓ V'` using `inf_le_right`. Establish `key : ∀ i, valF (spMap (intO C).subtype ≫ w) _ (coef d he₁ hs m i) = ∑ l, valF (spMap (intO C).subtype ≫ w) _ (B m l) * valF (spMap (intO C).subtype ≫ w) _ (coef d he hs l i)` using `fun i => by`. Rewrite using `[← valHom_resG _ h₁ hU, hB _ h₀ h h₁, map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, valHom_resG, valHom_resG]`. Establish `eq : ∑ i, cf i * valF (spMap (intO C).subtype ≫ w) _ (coef d he₁ hs m i) = ∑ l, valF (spMap (intO C).subtype ≫ w) _ (B m l) * ∑ i, cf i * valF (spMap (intO C).subtype ≫ w) _ (coef d he hs l i)`. Simplify using `only [key, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[eq]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun l _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (norm_valF_le_one C w _ hw _) (norm_nonneg _) (H l)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [valF, dif_neg hx, mul_zero, Finset.sum_const_zero, norm_zero, zero_le_one]`.
+A detailed English derivation is pending.
 -/
 theorem norm_le_of_norm_le {X : Scheme.{0}} {F : X.Modules} {r : ℕ} (d : Bool) {V V₁ V' : X.Opens}
     {e : Fin r → Γ(F, V)} {e₁ : Fin r → Γ(F, V₁)} {s : Fin r → Γ(F, V')} (he : IsFrame e) (he₁ : IsFrame e₁)
@@ -126,7 +126,7 @@ theorem norm_le_of_norm_le {X : Scheme.{0}} {F : X.Modules} {r : ℕ} (d : Bool)
   · simp only [valF, dif_neg hx, mul_zero, Finset.sum_const_zero, norm_zero, zero_le_one]
 
 /- English proof (translation)
-Introduce `d _ _ _ _ _ _ he he₁ hs C _ _ w hV hV₁ cf` and use `⟨norm_le_of_norm_le d he he₁ hs C w hV hV₁ cf, norm_le_of_norm_le d he₁ he hs C w hV₁ hV cf⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem norm_le_one_iff : ∀ {X : Scheme.{0}} {F : X.Modules} {r : ℕ} (d : Bool) {V V₁ V' : X.Opens} {e : Fin r → Γ(F, V)} {e₁ : Fin r → Γ(F, V₁)} {s : Fin r → Γ(F, V')} (he : GlobalTheory.VB.IsFrame e) (he₁ : GlobalTheory.VB.IsFrame e₁) (hs : GlobalTheory.VB.IsFrame s) (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C] (w : Sp ↥(intO C) ⟶ X), ⊤ ≤ w ⁻¹ᵁ V → ⊤ ≤ w ⁻¹ᵁ V₁ → ∀ cf : Fin r → C, (∀ l, ‖∑ i, cf i * valF (spMap (intO C).subtype ≫ w) _ (coef d he hs l i)‖ ≤ 1) ↔ ∀ l, ‖∑ i, cf i * valF (spMap (intO C).subtype ≫ w) _ (coef d he₁ hs l i)‖ ≤ 1 :=
   fun d _ _ _ _ _ _ he he₁ hs C _ _ w hV hV₁ cf =>

@@ -15,7 +15,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar Formalism.IndefR.p
 open GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.Mem.R3.Tr
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Mem.Top.Bl.RowWt.forcedContent_eq_over_same_choices` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FForcedContentEqOverSameChoices.lean&line=36#L36)
 -/

@@ -80,12 +80,12 @@ def skipOf (R : Ranks) (i : ℕ) : ℕ := if i + 1 < R.m then R.k else R.N i
 def fcOf (R : Ranks) (i : ℕ) : ℕ := if R.m ≤ i + 1 then R.k else R.N i
 
 /- English proof (translation)
-The claim follows from `if_neg (Nat.not_le.2 h)`.
+A detailed English derivation is pending.
 -/
 theorem fcOf_lt {R : Ranks} {i : ℕ} (h : i + 1 < R.m) : fcOf R i = R.N i := if_neg (Nat.not_le.2 h)
 
 /- English proof (translation)
-The claim follows from `if_pos h`.
+A detailed English derivation is pending.
 -/
 theorem fcOf_ge {R : Ranks} {i : ℕ} (h : R.m ≤ i + 1) : fcOf R i = R.k := if_pos h
 
@@ -126,19 +126,19 @@ structure FormsTied (D : D7) (u : D.what₂.Word) where
   DGam : (D.mem u).C.DGam = (D.mem D.u₀).C.DGam
 
 /- English proof (translation)
-The claim follows from `(T.upN i hi).upTie`.
+A detailed English derivation is pending.
 -/
 theorem FormsTied.up {u : D.what₂.Word} (T : FormsTied D u) (i : ℕ) (hi : i ≤ D.R.m) :
     UpTie (T.lv i hi) (T.cls i hi) (T.val i hi) := (T.upN i hi).upTie
 
 /- English proof (translation)
-The claim follows from `(T.dnN i hi).dnTie`.
+A detailed English derivation is pending.
 -/
 theorem FormsTied.dn {u : D.what₂.Word} (T : FormsTied D u) (i : ℕ) (hi : i ≤ D.R.m) :
     DnTie (T.lv i hi) (T.cls i hi) (T.val i hi) := (T.dnN i hi).dnTie
 
 /- English proof (translation)
-Rewrite using `[← (D.fm u).Fi_zero, ← lamT_zero]`. Conclude with `W.Fi φ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Mu0_iff {u : D.what₂.Word} {eV : (D.mem u).A.vT ≃ PlT D u} {K : ClsTied u 0 (Nat.zero_le _)}
     (W : ValTied u eV 0 (Nat.zero_le _) K) (φ : (D.mem u).C.cls 0 → (D.mem u).C.Y 0 → ℂ) :
@@ -147,7 +147,7 @@ theorem Mu0_iff {u : D.what₂.Word} {eV : (D.mem u).A.vT ≃ PlT D u} {K : ClsT
   rw [← (D.fm u).Fi_zero, ← lamT_zero]; exact W.Fi φ
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Rewrite using `[(D.fm u).rhoT_dil]`. Conclude with `W.dilT v a k hk c δ hδ g hg`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rhoT_eq {u : D.what₂.Word} {eV : (D.mem u).A.vT ≃ PlT D u} {K : ClsTied u 0 (Nat.zero_le _)}
     (W : ValTied u eV 0 (Nat.zero_le _) K) (v : (D.mem u).A.vT) (a : ((D.mem u).A.Fv v)ˣ) (k : ℤ)

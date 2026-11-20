@@ -29,13 +29,11 @@ def fixTrans {M : Type} [AddCommGroup M] (g : M → ℂ) : AddSubgroup M where
     exact this.symm
 
 /- English proof (translation)
-Establish `h : ∀ᶠ u in nhds (0 : M), ∀ x ∈ tsupport g, g (x + u) = g x ∧ g (x - u) = g x`. Apply `h2.isCompact.eventually_forall_of_forall_eventually` to reduce the goal to its premises. Introduce `x _`. Establish `a1` using `(h1.comp_continuous (show Continuous fun z : M × M => z.2 + z.1 by fun_prop)).eventually_eq (0, x)`. Establish `a2` using `(h1.comp_continuous (show Continuous fun z : M × M => z.2 - z.1 by fun_prop)).eventually_eq (0, x)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a3` using `(h1.comp_continuous (show Continuous fun z : M × M => z.2 by fun_prop)).eventually_eq (0, x)`. Use `filter_upwards [a1, a2, a3] with z b1 b2 b3`. Simplify using `only [Function.comp, add_zero, sub_zero] at b1 b2 b3`. Conclude with `⟨b1.trans b3.symm, b2.trans b3.symm⟩`. Establish `key : ∀ᶠ u in nhds (0 : M), ∀ x, g (x + u) = g x` using `by filter_upwards [h] with u hu x`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hx : x ∈ tsupport g`. Conclude with `(hu x hx).1`. Distinguish the cases in `hx' : x + u ∈ tsupport g`. Use `(hu _ hx').2` as an intermediate fact. Rewrite `this` using `[add_sub_cancel_right]`.
-
-Conclude with `this.symm`. Rewrite using `[image_eq_zero_of_notMem_tsupport hx, image_eq_zero_of_notMem_tsupport hx']`. Conclude with `AddSubgroup.isOpen_of_mem_nhds _ key`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_fixTrans {M : Type} [AddCommGroup M] [TopologicalSpace M] [IsTopologicalAddGroup M] {g : M → ℂ}
     (h1 : IsLocallyConstant g) (h2 : HasCompactSupport g) : IsOpen (fixTrans g : Set M) := by
@@ -60,13 +58,11 @@ theorem isOpen_fixTrans {M : Type} [AddCommGroup M] [TopologicalSpace M] [IsTopo
   exact AddSubgroup.isOpen_of_mem_nhds _ key
 
 /- English proof (translation)
-Set `V : Set K` to `{t | χ t = 1}`. Establish `hV : IsOpen V` using `hχ.isOpen_fiber 1`. Establish `h0 : (0 : K) ∈ V` using `AddChar.map_zero_eq_one χ`. Establish `hadd : ∀ s t, s ∈ V → t ∈ V → s + t ∈ V` using `fun s t hs ht => by show χ (s + t) = 1`. Rewrite using `[AddChar.map_add_eq_mul, show χ s = 1 from hs, show χ t = 1 from ht, one_mul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc1 : Continuous fun p : (κ → K) × (κ → K) => p.2 ⬝ᵥ p.1` using `continuous_snd.dotProduct continuous_fst`. Establish `hc2 : Continuous fun p : (κ → K) × (κ → K) => p.1 ⬝ᵥ p.2` using `continuous_fst.dotProduct continuous_snd`. Establish `N0 : ∀ᶠ b in nhds (0 : κ → K), ∀ z ∈ C, z ⬝ᵥ b ∈ V`. Use `hC.eventually_forall_of_forall_eventually fun z _ => ?_` and prove the remaining obligations. Conclude with `hc1.tendsto ((0 : κ → K), z) (hV.mem_nhds (by simpa using h0))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `N1 : {p : (κ → K) × (κ → K) | p.1 ⬝ᵥ p.2 ∈ V} ∈ nhds ((0 : κ → K), (0 : κ → K))` using `hc2.tendsto ((0 : κ → K), (0 : κ → K)) (hV.mem_nhds (by simpa using h0))`. Rewrite `N1` using `[nhds_prod_eq, Filter.mem_prod_iff]`. Take `⟨t₁, ht₁, t₂, ht₂, hsub⟩` from `N1`. Take `⟨H, hH⟩` from `NonarchimedeanAddGroup.is_nonarchimedean _ (Filter.inter_mem (Filter.inter_mem N0 ht₁) ht₂)`. Use `⟨H, fun z hz a ha b hb => hadd _ _ ((hH hb).1.1 z hz) ?_⟩` and prove the remaining obligations.
-
-Conclude with `hsub (Set.mk_mem_prod (hH ha).1.2 (hH hb).2)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_dot_ker {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K]
     (χ : AddChar K ℂ) (hχ : IsLocallyConstant χ) (κ : Type) [Fintype κ] [NonarchimedeanAddGroup (κ → K)]
@@ -94,7 +90,7 @@ theorem exists_dot_ker {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologic
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Use `Prod.ext ?_ rfl` and prove the remaining obligations. Use `show (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm 0 = 0`. Conclude with `map_zero _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem adeleJoin_zero_apply {κ : Type} (y : κ → FiniteAdeleRing (𝓞 F) F) (i : κ) :
     GlobalTheory.WeilCont.adeleJoin F 0 y i = ((0 : InfiniteAdeleRing F), y i) := by
@@ -103,11 +99,11 @@ theorem adeleJoin_zero_apply {κ : Type} (y : κ → FiniteAdeleRing (𝓞 F) F)
   exact map_zero _
 
 /- English proof (translation)
-Set `q1 : AdeleRing (𝓞 F) F →+* InfiniteAdeleRing F` to `RingHom.fst _ _`. Set `q2 : AdeleRing (𝓞 F) F →+* FiniteAdeleRing (𝓞 F) F` to `RingHom.snd _ _`. Establish `e1 : ∀ s : AdeleRing (𝓞 F) F, s.1 = q1 s` using `fun _ => rfl`. Establish `e2 : ∀ s : AdeleRing (𝓞 F) F, s.2 = q2 s` using `fun _ => rfl`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e1, dotProduct, map_sum]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, adeleJoin_zero_apply]`. Conclude with `mul_zero _`. Rewrite using `[e2, dotProduct, map_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, adeleJoin_zero_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem dotProduct_adeleJoin_zero {κ : Type} [Fintype κ] (v : κ → AdeleRing (𝓞 F) F)
     (y : κ → FiniteAdeleRing (𝓞 F) F) :
@@ -127,19 +123,17 @@ theorem dotProduct_adeleJoin_zero {κ : Type} [Fintype κ] (v : κ → AdeleRing
     rfl
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.HeisSchA.nonarch_finiteAdeleRing (F := F)`. Use `haveI : NonarchimedeanAddGroup (κ → FiniteAdeleRing (𝓞 F) F) := GlobalTheory.HeisSchA.nonarch_pi`. Take `⟨H, hH⟩` from `exists_dot_ker (GlobalTheory.HeisSchA.finChar ψ) (GlobalTheory.HeisSchA.finChar_isLocallyConstant ψ hψ) κ (tsupport g) hg.2.isCompact`. Set `c : FiniteAdeleRing (𝓞 F) F` to `(⅟(2 : AdeleRing (𝓞 F) F)).2`. Use `⟨fixTrans g ⊓ (H : AddSubgroup (κ → FiniteAdeleRing (𝓞 F) F)).comap (DistribSMul.toAddMonoidHom (κ → FiniteAdeleRing (𝓞 F) F) c), H, ?_, H.isOpen, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[AddSubgroup.coe_inf]`. Conclude with `(isOpen_fixTrans hg.1 hg.2).inter (H.isOpen.preimage (continuous_const_smul c))`. Introduce and unpack `x ⟨hx1, hx2⟩ y hy`. Use function extensionality and compare the values at `z`. Establish `hf : (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F ((z + GlobalTheory.WeilCont.adeleJoin F 0 x) i).1) = fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (z i).1`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[Pi.add_apply, adeleJoin_zero_apply]`. Conclude with `congrArg _ (add_zero (z i).1)`. Establish `hgz : (fun i => ((z + GlobalTheory.WeilCont.adeleJoin F 0 x) i).2) = (fun i => (z i).2) + x`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Pi.add_apply, adeleJoin_zero_apply]`. Both sides reduce to the same expression. Establish `hz : GlobalTheory.WeilM.pureA F f g (z + GlobalTheory.WeilCont.adeleJoin F 0 x) = GlobalTheory.WeilM.pureA F f g z`. Simplify using `only [GlobalTheory.WeilM.pureA]`. Rewrite using `[hf, hgz, hx1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `only [GlobalTheory.WeilM.schr]`. Rewrite using `[hz]`. Distinguish the cases in `hg0 : g (fun i => (z i).2) = 0`. Simplify using `only [GlobalTheory.WeilM.pureA, hg0, mul_zero]`. Establish `hzc : (fun i => (z i).2) ∈ tsupport g` using `subset_tsupport _ hg0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `harg : z ⬝ᵥ GlobalTheory.WeilCont.adeleJoin F 0 y + ⅟(2 : AdeleRing (𝓞 F) F) * (GlobalTheory.WeilCont.adeleJoin F 0 x ⬝ᵥ GlobalTheory.WeilCont.adeleJoin F 0 y) = ((0 : InfiniteAdeleRing F), (fun i => (z i).2) ⬝ᵥ y + (c • x) ⬝ᵥ y)`. Rewrite using `[dotProduct_adeleJoin_zero, dotProduct_adeleJoin_zero, smul_dotProduct]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show (0 : InfiniteAdeleRing F) + (⅟(2 : AdeleRing (𝓞 F) F)).1 * 0 = 0`. Rewrite using `[mul_zero, add_zero]`.
-
-Use `show (fun i => (z i).2) ⬝ᵥ y + c * ((fun i => (GlobalTheory.WeilCont.adeleJoin F 0 x i).2) ⬝ᵥ y) = _`. Both sides reduce to the same expression. Rewrite using `[harg]`. Establish `h1 : ψ ((0 : InfiniteAdeleRing F), (fun i => (z i).2) ⬝ᵥ y + (c • x) ⬝ᵥ y) = 1` using `hH _ hzc (c • x) hx2 y hy`. Rewrite using `[h1, one_mul]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fix_pure [Invertible (2 : AdeleRing (𝓞 F) F)] (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (hψ : Continuous ψ)
     (κ : Type) [Fintype κ] (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ)
@@ -191,17 +185,17 @@ theorem exists_fix_pure [Invertible (2 : AdeleRing (𝓞 F) F)] (ψ : AddChar (A
   rw [h1, one_mul]
 
 /- English proof (translation)
-Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Φ h`. Take `⟨f, g, hg, rfl⟩` from `h`. Conclude with `exists_fix_pure ψ hψ κ f g hg`. Consider the case `zero`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⊤, ⊤, isOpen_univ, isOpen_univ, fun x _ y _ => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `z`. Simplify using `[GlobalTheory.WeilM.schr]`. Consider the case `add Φ Ψ _ _ h1 h2`. Take `⟨L₁, L₂, o₁, o₂, h⟩` from `h1`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨M₁, M₂, p₁, p₂, h'⟩` from `h2`. Use `⟨L₁ ⊓ M₁, L₂ ⊓ M₂, by rw [AddSubgroup.coe_inf]; exact o₁.inter p₁, by rw [AddSubgroup.coe_inf]; exact o₂.inter p₂, fun x hx y hy => ?_⟩` and prove the remaining obligations. Establish `e1` using `h x hx.1 y hy.1`. Establish `e2` using `h' x hx.2 y hy.2`. Use function extensionality and compare the values at `z`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `a1` using `congrFun e1 z`. Establish `a2` using `congrFun e2 z`. Simplify using `only [GlobalTheory.WeilM.schr, Pi.add_apply] at a1 a2 ⊢`. Rewrite using `[mul_add, a1, a2]`. Consider the case `smul a Φ _ h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨L₁, L₂, o₁, o₂, h⟩` from `h`. Use `⟨L₁, L₂, o₁, o₂, fun x hx y hy => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `z`. Establish `a1` using `congrFun (h x hx y hy) z`. Simplify using `only [GlobalTheory.WeilM.schr, Pi.smul_apply, smul_eq_mul] at a1 ⊢`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_left_comm, a1]`.
+A detailed English derivation is pending.
 -/
 theorem exists_fix (F : Type) [Field F] [NumberField F] [Invertible (2 : AdeleRing (𝓞 F) F)]
     (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ) (hψ : Continuous ψ) (κ : Type) [Fintype κ]
@@ -238,7 +232,7 @@ theorem exists_fix (F : Type) [Field F] [NumberField F] [Invertible (2 : AdeleRi
     rw [mul_left_comm, a1]
 
 /- English proof (translation)
-Introduce `D ψ hψ κ _ Φ hΦ`. Conclude with `exists_fix D.host.F ψ hψ.1.1 κ Φ hΦ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem schr_fix_nbhd : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (κ : Type) [Fintype κ], ∀ Φ ∈ GlobalTheory.WeilM.schA D.host.F κ,

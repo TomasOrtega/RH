@@ -11,7 +11,7 @@ open ReciprocityTheory.ChartRestriction.G.Geo (ChartBundle chartRing)
 open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles (mseg mcIdeal chartMon joinCoord bcCoord pullDeg liftVar fnField ck rootNum SameGeneric LatLE IsPull IsPullBC IsSubQuot QuotIso IsFrobPres FlagModel modelDeg)
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `PositivityTheory.HtPt.Pflag.field_flag_indep` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FWeilBound%2FCoreStatements%2FHodgeTatePoints%2FPflagInd.lean&line=279#L279)
 -/

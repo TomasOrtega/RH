@@ -14,9 +14,9 @@ noncomputable section
 namespace GlobalTheory.LieHt.SemiFib
 
 /- English proof (translation)
-Use `F.semi.smooth` as an intermediate fact. Use `F.semi.geomConnected` as an intermediate fact. Establish `: ConnectedSpace F.G.left` using `GeometricallyConnected.connectedSpace F.G.hom F.G.hom.isOpenMap`. Set `x : F.P₀.A.left` to `eSec F.P₀.A (default : PrimeSpectrum K)`. Take `⟨n, hn⟩` from `exists_dim_of_preconnected F.G.hom (F.φ.base x)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `hn' : SmoothOfRelativeDimension n F.P₀.A.hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange n).of_isPullback F.fib.1 hn`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.H1.dim_unique _ F.P₀.smoothDim hn' x]`. Conclude with `hn`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smoothDim_model {K : Type} [Field K] [NumberField K] (F : SemiFib K) :
     SmoothOfRelativeDimension F.P₀.g F.G.hom := by
@@ -31,23 +31,21 @@ theorem smoothDim_model {K : Type} [Field K] [NumberField K] (F : SemiFib K) :
   exact hn
 
 /- English proof (translation)
-Use `F.semi.comm` as an intermediate fact. Use `F.semi.separated` as an intermediate fact. Use `F.P₀.isAb.comm` as an intermediate fact. Establish `hinj : Function.Injective (algebraMap (𝓞 K) K)` using `IsFractionRing.injective _ _`. Take `⟨n, r, hr, hQ⟩` from `exists_finite_cover _ (GlobalTheory.LieLoc.lie_locally_free (𝓞 K) F.G F.P₀.g F.smoothDim_model)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `choose hr0 e he using hQ`. Establish `hu : ∀ i, IsUnit (algebraMap (𝓞 K) K (r i))` using `fun i => ((map_ne_zero_iff _ hinj).2 (hr0 i)).isUnit`. Set `g : ∀ i, Localization.Away (r i) →+* K` to `fun i => IsLocalization.Away.lift (r i) (hu i)`. Establish `hg : ∀ i, (g i).comp (algebraMap (𝓞 K) _) = algebraMap (𝓞 K) K` using `fun i => IsLocalization.Away.lift_comp _ _`. Establish `hφ` using `fun i => isGrpPullback_pullback F.G (spMap (algebraMap (𝓞 K) (Localization.Away (r i))))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomm` using `fun i => PolPull.isCommMonObj_of_isGrpPullback (hφ i)`. Establish `hsm` using `fun i => MorphismProperty.of_isPullback (P := @Smooth) (hφ i).1 F.semi.smooth`. Use `choose ψ hψφ hψ using fun i => exists_lift (hg i) (hφ i) F.fib`. Use `choose M hdet hM using fun i => exists_matrix (hψ i) (hsm i) (he i) F.basis`. Establish `alg` using `LieComb.lieComb_algebra K F.P₀.A _ F.v F.basis.1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Use `⟨n, r, M, hr, fun i => ⟨hr0 i, hdet i⟩, fun c => ?_⟩` and prove the remaining obligations. Simplify using `only [← fun i => exists_comb_iff (r i) (g i) (hg i) (M i) c]`. Prove the components needed by the constructor for the conclusion. Introduce `hc i`. Proceed by induction on `hc using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Consider the case `mem c hc`. Take `⟨u, hu, w, hw, hc⟩` from `hc`. Take `⟨t, ht, -⟩` from `existsUnique_isVecOver (f := algebraMap (𝓞 K) (Localization.Away (r i))) (A' := (Over.pullback (spMap (algebraMap (𝓞 K) (Localization.Away (r i))))).obj F.G) (hφ i).1 u`. Take `⟨a, ha, -⟩` from `(he i).2 t (ht.isTangent (hφ i) hu)`. Establish `h` using `EllComp.isVecOver_cancel (hφ i).1 (hψ i).1 ht (by rw [hg, hψφ]; exact hw)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Treat this case separately. Treat this case separately.
 
-Conclude with `⟨a, (F.basis.2 w (alg.2.1 _ _ hc)).unique hc ((isVecOver_iff (hψ i) F.basis (hM i) ha w).1 h)⟩`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, rfl⟩` from `hx`. Take `⟨b, rfl⟩` from `hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a + b, by simp [add_smul, Finset.sum_add_distrib]⟩`. Consider the case `smul s x _ hx`. Take `⟨a, rfl⟩` from `hx`. Use `⟨fun j => algebraMap (𝓞 K) _ s * a j, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, mul_smul, ← RingHom.comp_apply, hg, algebraMap_smul]`. Introduce `hc choose a ha using hc`. Take `⟨w, hw, -⟩` from `alg.1 c`. Use `choose t ht using fun i => ((LieComb.lieComb_algebra _ _ _ (e i) (he i).1).1 (a i)).exists`.
-
-Establish `hwt : ∀ i, IsVecOver (g i) (ψ i) (t i) w` using `fun i => (isVecOver_iff (hψ i) F.basis (hM i) (ht i) w).2 (ha i ▸ hw)`. Take `⟨u, hu⟩` from `exists_glue _ hinj r hr g hg (w.left ≫ F.φ) (fun i => (t i).left ≫ pullback.fst _ _) (fun i => by rw [Category.assoc, (hφ i).1.w, ← Category.assoc, Over.w]) (fun i => by rw [← Category.assoc, ← hwt i, Category.assoc, hψφ])`. Conclude with `Submodule.subset_span ⟨u, isTangent_of_isVecOver hinj F.fib hu.symm (alg.2.1 _ _ hw), w, hu.symm, hw⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_cover_lieLat {K : Type} [Field K] [NumberField K] (F : SemiFib K) :
     ∃ (n : ℕ) (r : Fin n → 𝓞 K) (M : Fin n → Matrix (Fin F.P₀.g) (Fin F.P₀.g) K),
@@ -105,7 +103,7 @@ theorem exists_cover_lieLat {K : Type} [Field K] [NumberField K] (F : SemiFib K)
       ⟨u, isTangent_of_isVecOver hinj F.fib hu.symm (alg.2.1 _ _ hw), w, hu.symm, hw⟩
 
 /- English proof (translation)
-Introduce `K _ _ F`. Take `⟨n, r, M, hr, hM, hL⟩` from `F.exists_cover_lieLat`. Conclude with `GlobalTheory.CM.LieLattice.fg_and_span_eq_top F.lieLat r M hr (fun i => (hM i).2) hL`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem full_lieLat : ∀ (K : Type) [Field K] [NumberField K] (F : SemiFib K), Full F.lieLat := by
   intro K _ _ F

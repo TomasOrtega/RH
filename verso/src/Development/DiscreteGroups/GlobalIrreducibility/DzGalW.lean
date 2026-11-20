@@ -12,21 +12,19 @@ namespace DiscreteGroups.sglob.DzType
 variable {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (g : ℕ) [hg : Fact g.Prime]
 
 /- English proof (translation)
-Introduce `hg2`. Establish `hvF : ∀ y : 𝓞 E, Valued.v (algebraMap E (w.adicCompletion E) (y : E)) = w.intValuation y` using `fun y => by`. Establish `e : Valued.v (algebraMap E (w.adicCompletion E) (y : E)) = w.valuation E (y : E)` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' (R := 𝓞 E) w (y : E)`. Rewrite using `[e]`. Conclude with `HeightOneSpectrum.valuation_of_algebraMap w y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨π, hπ⟩` from `w.intValuation_exists_uniformizer`. Establish `hg2' : w.intValuation ((g : ℕ) : 𝓞 E) ≤ WithZero.exp (-(2 : ℕ) : ℤ)` using `(w.intValuation_le_pow_iff_mem _ 2).mpr hg2`. Use `set x := i.symm (algebraMap E (w.adicCompletion E) (π : E)) with hx`. Establish `hxπ : i x = algebraMap E (w.adicCompletion E) (π : E)` using `by rw [hx, RingEquiv.apply_symm_apply]`. Establish `hπ1 : Valued.v (algebraMap E (w.adicCompletion E) (π : E)) < 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hvF, hπ]`. Establish `h0 : WithZero.exp (-1 : ℤ) < WithZero.exp 0` using `WithZero.exp_lt_exp.mpr (by norm_num)`. Simplify using `using h0`. Establish `hxn : ‖x‖ < 1`. Rewrite using `[← DiscreteGroups.sglob.DzIso.norm_lt_iff i hi, hxπ, Valued.toNormedField.norm_lt_one_iff]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hπ1`. Establish `hxg : ‖x / (g : ℚ_[g])‖ ≤ 1`. Establish `h1 : ‖x‖ ≤ (g : ℝ) ^ (-1 : ℤ)`. Rewrite using `[Padic.norm_le_pow_iff_norm_lt_pow_add_one]`. Simplify using `using hxn`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[norm_div, Padic.norm_p, div_le_one (inv_pos.mpr (by exact_mod_cast hg.out.pos))]`. Simplify `h1` using `[zpow_neg, zpow_one]`. Establish `h2` using `DiscreteGroups.sglob.DzIso.norm_le_of_le i hi hxg`. Rewrite `h2` using `[Valued.toNormedField.norm_le_one_iff]`. Establish `e : algebraMap E (w.adicCompletion E) (π : E) = ((g : ℕ) : w.adicCompletion E) * i (x / (g : ℚ_[g]))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hxπ, ← map_natCast i g, ← map_mul, mul_div_cancel₀]`. Conclude with `hg.out.ne_zero` after adjusting the coercions. Establish `h3 : Valued.v (algebraMap E (w.adicCompletion E) (π : E)) ≤ WithZero.exp (-(2 : ℕ) : ℤ)`. Rewrite using `[e, map_mul]`. Establish `hgv : Valued.v ((g : ℕ) : w.adicCompletion E) = w.intValuation ((g : ℕ) : 𝓞 E)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← hvF]`. Simplify using the standard rewrite rules. Rewrite using `[hgv]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h3` using `[hvF, hπ, WithZero.exp_le_exp]`.
-
-Evaluate the numerical expressions using `at h3`.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem g_not_mem_sq (i : ℚ_[g] ≃+* w.adicCompletion E) (hi : Continuous i) :
     ((g : ℕ) : 𝓞 E) ∉ w.asIdeal ^ 2 := by

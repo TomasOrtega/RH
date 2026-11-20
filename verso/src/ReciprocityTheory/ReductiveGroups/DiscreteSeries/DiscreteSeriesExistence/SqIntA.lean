@@ -27,11 +27,9 @@ def graph (μ : Measure G) (ρ : G → (H →L[ℂ] H)) (w₀ : H) : Submodule �
     rw [h1, Pi.smul_apply, h2, map_smul, inner_smul_right, smul_eq_mul]
 
 /- English proof (translation)
-Use `IsSeqClosed.isClosed (fun {u} {p} hu hlim => ?_)` and prove the remaining obligations. Establish `h1 : Tendsto (fun n => (u n).fst) atTop (𝓝 p.fst)` using `((WithLp.fstL 2 ℂ H (Lp ℂ 2 μ)).continuous.tendsto p).comp hlim`. Establish `h2 : Tendsto (fun n => (u n).snd) atTop (𝓝 p.snd)` using `((WithLp.sndL 2 ℂ H (Lp ℂ 2 μ)).continuous.tendsto p).comp hlim`. Take `⟨ns, hns, hae⟩` from `(tendstoInMeasure_of_tendsto_Lp h2).exists_seq_tendsto_ae`. Establish `hall : ∀ᵐ g ∂μ, ∀ k, ((u k).snd : G → ℂ) g = ⟪w₀, ρ g (u k).fst⟫_ℂ` using `ae_all_iff.mpr (fun k => hu k)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `show ((p.snd : G → ℂ)) =ᵐ[μ] fun g => ⟪w₀, ρ g p.fst⟫_ℂ`. Use `filter_upwards [hae, hall] with g hg1 hg2`. Establish `h3 : Tendsto (fun i => ((u (ns i)).snd : G → ℂ) g) atTop (𝓝 ⟪w₀, ρ g p.fst⟫_ℂ)`. Repeatedly rewrite using `[hg2]`. Establish `h4 : Tendsto (fun i => (u (ns i)).fst) atTop (𝓝 p.fst)` using `h1.comp hns.tendsto_atTop`.
-
-Conclude with `(((innerSL ℂ w₀).comp (ρ g)).continuous.tendsto p.fst).comp h4`. Conclude with `tendsto_nhds_unique hg1 h3`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem graph_isClosed (ρ : G → (H →L[ℂ] H)) (w₀ : H) : IsClosed (graph μ ρ w₀ : Set (WithLp 2 (H × Lp ℂ 2 μ))) := by
   refine IsSeqClosed.isClosed (fun {u} {p} hu hlim => ?_)
@@ -56,7 +54,7 @@ variable (ρ : G → (H →L[ℂ] H)) (hR : ∀ h : G, MeasurePreserving (fun g 
 def rt (h : G) : Lp ℂ 2 μ →ₗᵢ[ℂ] Lp ℂ 2 μ := Lp.compMeasurePreservingₗᵢ ℂ (fun g => g * h) (hR h)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Lp.coeFn_compMeasurePreserving f (hR h)`. Consider the case `(unfold rt; exact Lp.coeFn_compMeasurePreserving f (hR h))`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem rt_ae (h : G) (f : Lp ℂ 2 μ) : (rt hR h f : G → ℂ) =ᵐ[μ] fun g => f (g * h) := by
   first
@@ -64,7 +62,7 @@ theorem rt_ae (h : G) (f : Lp ℂ 2 μ) : (rt hR h f : G → ℂ) =ᵐ[μ] fun g
   | (unfold rt; exact Lp.coeFn_compMeasurePreserving f (hR h))
 
 /- English proof (translation)
-Apply `Lp.ext` to reduce the goal to its premises. Use `(rt_ae hR h (rt hR h⁻¹ f)).trans (((hR h).quasiMeasurePreserving.ae_eq_comp (rt_ae hR h⁻¹ f)).trans (ae_of_all _ (fun g => ?_)))` and prove the remaining obligations. Use `show f (g * h * h⁻¹) = f g`. Rewrite using `[mul_inv_cancel_right]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rt_rt_inv (h : G) (f : Lp ℂ 2 μ) : rt hR h (rt hR h⁻¹ f) = f := by
   apply Lp.ext
@@ -79,7 +77,7 @@ def act (h : G) (p : WithLp 2 (H × Lp ℂ 2 μ)) : WithLp 2 (H × Lp ℂ 2 μ) 
 variable {ρ}
 
 /- English proof (translation)
-Rewrite using `[WithLp.prod_inner_apply, WithLp.prod_inner_apply]`. Use `show ⟪ρ h p.fst, ρ h q.fst⟫_ℂ + ⟪rt hR h p.snd, rt hR h q.snd⟫_ℂ = ⟪p.fst, q.fst⟫_ℂ + ⟪p.snd, q.snd⟫_ℂ`. Establish `e1 : ⟪ρ h p.fst, ρ h q.fst⟫_ℂ = ⟪p.fst, q.fst⟫_ℂ` using `({ toLinearMap := (ρ h : H →ₗ[ℂ] H), norm_map' := hiso h } : H →ₗᵢ[ℂ] H).inner_map_map p.fst q.fst`. Rewrite using `[e1, (rt hR h).inner_map_map p.snd q.snd]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_inner (hiso : ∀ g v, ‖ρ g v‖ = ‖v‖) (h : G) (p q : WithLp 2 (H × Lp ℂ 2 μ)) :
     ⟪act ρ hR h p, act ρ hR h q⟫_ℂ = ⟪p, q⟫_ℂ := by
@@ -90,9 +88,9 @@ theorem act_inner (hiso : ∀ g v, ‖ρ g v‖ = ‖v‖) (h : G) (p q : WithLp
   rw [e1, (rt hR h).inner_map_map p.snd q.snd]
 
 /- English proof (translation)
-Establish `e1 : ρ h (ρ h⁻¹ p.fst) = p.fst`. Use `congrArg (fun T : H →L[ℂ] H => T p.fst) (hmul h h⁻¹)` as an intermediate fact. Simplify using `only [mul_inv_cancel, hone, ContinuousLinearMap.one_apply, ContinuousLinearMap.comp_apply] at this`. Conclude with `this.symm`. Use `show WithLp.toLp 2 (ρ h (ρ h⁻¹ p.fst), rt hR h (rt hR h⁻¹ p.snd)) = p`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e1, rt_rt_inv]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem act_act_inv (hone : ρ 1 = 1) (hmul : ∀ a b, ρ (a * b) = (ρ a).comp (ρ b)) (h : G)
     (p : WithLp 2 (H × Lp ℂ 2 μ)) : act ρ hR h (act ρ hR h⁻¹ p) = p := by
@@ -105,9 +103,7 @@ theorem act_act_inv (hone : ρ 1 = 1) (hmul : ∀ a b, ρ (a * b) = (ρ a).comp 
   rfl
 
 /- English proof (translation)
-Establish `hp' : ((p.snd : G → ℂ)) =ᵐ[μ] fun g => ⟪w₀, ρ g p.fst⟫_ℂ` using `hp`. Use `show ((rt hR h p.snd : G → ℂ)) =ᵐ[μ] fun g => ⟪w₀, ρ g (ρ h p.fst)⟫_ℂ`. Use `(rt_ae hR h p.snd).trans (((hR h).quasiMeasurePreserving.ae_eq_comp hp').trans (ae_of_all _ (fun g => ?_)))` and prove the remaining obligations. Use `show ⟪w₀, ρ (g * h) p.fst⟫_ℂ = ⟪w₀, ρ g (ρ h p.fst)⟫_ℂ`. Rewrite using `[hmul]`.
-
-Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem act_mem (hmul : ∀ a b, ρ (a * b) = (ρ a).comp (ρ b)) (w₀ : H) (h : G) {p : WithLp 2 (H × Lp ℂ 2 μ)}
     (hp : p ∈ graph μ ρ w₀) : act ρ hR h p ∈ graph μ ρ w₀ := by
@@ -126,11 +122,11 @@ section Main
 variable {ρ : G → (H →L[ℂ] H)} (hR : ∀ h : G, MeasurePreserving (fun g => g * h) μ μ)
 
 /- English proof (translation)
-Establish `hmemP : ∀ z, (graph μ ρ w₀).starProjection z ∈ graph μ ρ w₀`. Introduce `z`. Use `first`. Consider the case `exact Submodule.starProjection_apply_mem _ z`. Consider the case `(rw [Submodule.starProjection_apply]; exact ((graph μ ρ w₀).orthogonalProjection z).2)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `horth : ∀ z, z - (graph μ ρ w₀).starProjection z ∈ (graph μ ρ w₀)ᗮ`. Introduce `z`. Use `first`. Consider the case `exact Submodule.sub_starProjection_mem_orthogonal z`. Consider the case `exact (graph μ ρ w₀).sub_starProjection_mem_orthogonal z`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Treat this case separately. Reduce the claim to the hypotheses of an applicable result.
 
-Consider the case `(rw [Submodule.starProjection_apply]; exact Submodule.sub_orthogonalProjection_mem_orthogonal z)`. Apply `Submodule.eq_starProjection_of_mem_of_inner_eq_zero (act_mem hR hmul w₀ h (hmemP y))` to reduce the goal to its premises. Introduce `z hz`. Rewrite using `[← act_act_inv hR hone hmul h z, inner_sub_left, act_inner hR hiso, act_inner hR hiso, ← inner_sub_left]`. Conclude with `Submodule.inner_left_of_mem_orthogonal (act_mem hR hmul w₀ h⁻¹ hz) (horth y)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_act (hone : ρ 1 = 1) (hmul : ∀ a b, ρ (a * b) = (ρ a).comp (ρ b)) (hiso : ∀ g v, ‖ρ g v‖ = ‖v‖)
     (w₀ : H) [(graph μ ρ w₀).HasOrthogonalProjection] (h : G) (y : WithLp 2 (H × Lp ℂ 2 μ)) :
@@ -164,9 +160,9 @@ theorem bop_apply (Γ : Submodule ℂ (WithLp 2 (H × Lp ℂ 2 μ))) [Γ.HasOrth
     bop Γ x = (Γ.starProjection (WithLp.toLp 2 (x, (0 : Lp ℂ 2 μ)))).fst := rfl
 
 /- English proof (translation)
-Rewrite using `[ContinuousLinearMap.star_eq_adjoint]`. Use `symm`. Rewrite using `[ContinuousLinearMap.eq_adjoint_iff]`. Introduce `x y`. Establish `hinv : ρ h (ρ h⁻¹ x) = x`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg (fun T : H →L[ℂ] H => T x) (hmul h h⁻¹)` as an intermediate fact. Simplify using `only [mul_inv_cancel, hone, ContinuousLinearMap.one_apply, ContinuousLinearMap.comp_apply] at this`. Conclude with `this.symm`. Establish `hI : ⟪ρ h (ρ h⁻¹ x), ρ h y⟫_ℂ = ⟪ρ h⁻¹ x, y⟫_ℂ` using `({ toLinearMap := (ρ h : H →ₗ[ℂ] H), norm_map' := hiso h } : H →ₗᵢ[ℂ] H).inner_map_map _ _`. Rewrite using `[← hI, hinv]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem star_eq (hone : ρ 1 = 1) (hmul : ∀ a b, ρ (a * b) = (ρ a).comp (ρ b)) (hiso : ∀ g v, ‖ρ g v‖ = ‖v‖)
     (h : G) : star (ρ h) = ρ h⁻¹ := by
@@ -185,67 +181,57 @@ theorem star_eq (hone : ρ 1 = 1) (hmul : ∀ a b, ρ (a * b) = (ρ a).comp (ρ 
 include hR in
 
 /- English proof (translation)
-Establish `schur : ∀ B : H →L[ℂ] H, IsSelfAdjoint B → (∀ g, Commute B (ρ g)) → ∃ c : ℝ, B = algebraMap ℝ (H →L[ℂ] H) c`. Introduce `B hB hc`. Establish `hker : ∀ X : H →L[ℂ] H, (∀ g, Commute X (ρ g)) → X = 0 ∨ Function.Injective X`. Introduce `X hX`. Establish `hinv : ∀ g, ∀ v ∈ LinearMap.ker (X : H →ₗ[ℂ] H), ρ g v ∈ LinearMap.ker (X : H →ₗ[ℂ] H)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `g v hv`. Rewrite `hv`, the goal using `[LinearMap.mem_ker, ContinuousLinearMap.coe_coe]`. Use `congrArg (fun Y : H →L[ℂ] H => Y v) (hX g).eq` as an intermediate fact. Simplify using `only [ContinuousLinearMap.mul_apply, hv, map_zero] at this`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hirr (LinearMap.ker (X : H →ₗ[ℂ] H)) X.isClosed_ker hinv with h | h` into its components or cases. Use `right`. Introduce `a b hab`. Establish `hm : a - b ∈ LinearMap.ker (X : H →ₗ[ℂ] H)` using `by rw [LinearMap.mem_ker, ContinuousLinearMap.coe_coe, map_sub, hab, sub_self]`. Rewrite `hm` using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `sub_eq_zero.mp ((Submodule.mem_bot ℂ).mp hm)`. Use `left`. Use extensionality with `v`. Establish `hv : v ∈ LinearMap.ker (X : H →ₗ[ℂ] H)` using `by rw [h]; trivial`. Rewrite `hv` using `[LinearMap.mem_ker, ContinuousLinearMap.coe_coe]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Rewrite using `[hv, ContinuousLinearMap.zero_apply]`. Establish `hcf : ∀ f : ℝ → ℝ, ∀ g, Commute (cfc f B) (ρ g)`. Introduce `f g`. Use `first`. Consider the case `exact (hc g).cfc_real f`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `exact hB.commute_cfc (hc g) f`. Consider the case `exact Commute.cfc_real (hc g) f`. Consider the case `exact (hc g).cfc (by rw [hB.star_eq]; exact hc g) f`. Establish `hsub : ∀ a ∈ spectrum ℝ B, ∀ b ∈ spectrum ℝ B, a = b`. Introduce `a ha b hb`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hab`. Use `wlog hlt : a < b generalizing a b`. Conclude with `this b hb a ha (Ne.symm hab) (lt_of_le_of_ne (not_lt.mp hlt) (Ne.symm hab))`. Take `⟨m, hm1, hm2⟩ : ∃ m : ℝ, a < m ∧ m < b` from `⟨(a + b) / 2, by linarith, by linarith⟩`. Establish `hf : Continuous (fun x : ℝ => max (x - m) 0)` using `(continuous_id.sub continuous_const).max continuous_const`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `hg : Continuous (fun x : ℝ => max (m - x) 0)` using `(continuous_const.sub continuous_id).max continuous_const`. Establish `hfne : cfc (fun x : ℝ => max (x - m) 0) B ≠ 0`. Introduce `h0`. Establish `h1 : max (b - m) 0 = 0` using `by first`. Consider the case `exact (eqOn_of_cfc_eq_cfc (h0.trans (cfc_zero ℝ B).symm) (hf := hf.continuousOn) (hg := continuousOn_const) (ha := hB)) hb`.
+Treat this case separately. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `exact (eqOn_of_cfc_eq_cfc (h0.trans (cfc_const_zero ℝ B).symm) (hf := hf.continuousOn) (hg := continuousOn_const) (ha := hB)) hb`. Consider the case `exact eqOn_of_cfc_eq_cfc (h0.trans (cfc_zero (R := ℝ) B).symm) (hf := hf.continuousOn) (ha := hB) hb`. Consider the case `exact eqOn_of_cfc_eq_cfc (h0.trans (cfc_const_zero (R := ℝ) B).symm) (hf := hf.continuousOn) (ha := hB) hb`. Establish `h2 : b - m ≤ 0` using `by rw [← h1]; exact le_max_left _ _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `hgne : cfc (fun x : ℝ => max (m - x) 0) B ≠ 0`. Introduce `h0`. Establish `h1 : max (m - a) 0 = 0` using `by first`. Consider the case `exact (eqOn_of_cfc_eq_cfc (h0.trans (cfc_zero ℝ B).symm) (hf := hg.continuousOn) (hg := continuousOn_const) (ha := hB)) ha`. Consider the case `exact (eqOn_of_cfc_eq_cfc (h0.trans (cfc_const_zero ℝ B).symm) (hf := hg.continuousOn) (hg := continuousOn_const) (ha := hB)) ha`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Consider the case `exact eqOn_of_cfc_eq_cfc (h0.trans (cfc_zero (R := ℝ) B).symm) (hf := hg.continuousOn) (ha := hB) ha`. Consider the case `exact eqOn_of_cfc_eq_cfc (h0.trans (cfc_const_zero (R := ℝ) B).symm) (hf := hg.continuousOn) (ha := hB) ha`. Establish `h2 : m - a ≤ 0` using `by rw [← h1]; exact le_max_left _ _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hfg : cfc (fun x : ℝ => max (x - m) 0) B * cfc (fun x : ℝ => max (m - x) 0) B = 0`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cfc_mul (fun x : ℝ => max (x - m) 0) (fun x : ℝ => max (m - x) 0) B (hf := hf.continuousOn) (hg := hg.continuousOn)]`. Establish `h3 : (fun x : ℝ => max (x - m) 0 * max (m - x) 0) = fun _ => (0 : ℝ)`. Use function extensionality and compare the values at `x`. Break down `le_total x m with h | h` into its components or cases. Rewrite using `[max_eq_right (by linarith : x - m ≤ 0), zero_mul]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[max_eq_right (by linarith : m - x ≤ 0), mul_zero]`. Rewrite using `[h3]`. Use `first`. Consider the case `exact cfc_const_zero ℝ B`. Consider the case `exact cfc_zero ℝ B`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Consider the case `simp`. Break down `hker _ (hcf (fun x : ℝ => max (x - m) 0)) with h1 | h1` into its components or cases. Conclude with `hfne h1`. Apply `hgne` to reduce the goal to its premises. Use extensionality with `v`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Apply `h1` to reduce the goal to its premises. Simplify using `only [ContinuousLinearMap.zero_apply, map_zero]`. Rewrite using `[← ContinuousLinearMap.mul_apply, hfg, ContinuousLinearMap.zero_apply]`. Distinguish the cases in `hne : (spectrum ℝ B).Nonempty`. Take `⟨c, hc'⟩` from `hne`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Use `⟨c, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `⟨0, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `haveI : CompleteSpace (graph μ ρ w₀) := (graph_isClosed ρ w₀).completeSpace_coe`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hmemP : ∀ z, (graph μ ρ w₀).starProjection z ∈ graph μ ρ w₀`. Introduce `z`. Use `first`. Consider the case `exact Submodule.starProjection_apply_mem _ z`. Consider the case `(rw [Submodule.starProjection_apply]; exact ((graph μ ρ w₀).orthogonalProjection z).2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hsa : ∀ u v : WithLp 2 (H × Lp ℂ 2 μ), ⟪(graph μ ρ w₀).starProjection u, v⟫_ℂ = ⟪u, (graph μ ρ w₀).starProjection v⟫_ℂ`. Introduce `u v`. Use `first`. Consider the case `exact Submodule.inner_starProjection_left_eq_right _ u v`. Consider the case `exact Submodule.inner_starProjection_left_eq_right u v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `(simp only [Submodule.starProjection_apply]; exact inner_orthogonalProjection_left_eq_right _ u v)`. Establish `hsym : ∀ x y : H, ⟪bop (graph μ ρ w₀) x, y⟫_ℂ = ⟪x, bop (graph μ ρ w₀) y⟫_ℂ`. Introduce `x y`. Establish `e0` using `hsa (WithLp.toLp 2 (x, (0 : Lp ℂ 2 μ))) (WithLp.toLp 2 (y, (0 : Lp ℂ 2 μ)))`. Rewrite `e0` using `[WithLp.prod_inner_apply, WithLp.prod_inner_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e1 : ⟪((graph μ ρ w₀).starProjection (WithLp.toLp 2 (x, (0 : Lp ℂ 2 μ)))).fst, y⟫_ℂ + ⟪((graph μ ρ w₀).starProjection (WithLp.toLp 2 (x, (0 : Lp ℂ 2 μ)))).snd, (0 : Lp ℂ 2 μ)⟫_ℂ = ⟪x, ((graph μ ρ w₀).starProjection (WithLp.toLp 2 (y, (0 : Lp ℂ 2 μ)))).fst⟫_ℂ + ⟪(0 : Lp ℂ 2 μ), (( …` using `e0`. Simplify using `only [inner_zero_right, inner_zero_left, add_zero] at e1`. Rewrite using `[bop_apply, bop_apply]`. Conclude with `e1`. Establish `hSA : IsSelfAdjoint (bop (graph μ ρ w₀))` using `by show star (bop (graph μ ρ w₀)) = bop (graph μ ρ w₀)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ContinuousLinearMap.star_eq_adjoint]`. Conclude with `((ContinuousLinearMap.eq_adjoint_iff _ _).mpr hsym).symm`. Establish `hcomm : ∀ g, Commute (bop (graph μ ρ w₀)) (ρ g)`. Introduce `g`. Use `show bop (graph μ ρ w₀) * ρ g = ρ g * bop (graph μ ρ w₀)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `ContinuousLinearMap.ext (fun x => ?_)` and prove the remaining obligations. Use `show bop (graph μ ρ w₀) (ρ g x) = ρ g (bop (graph μ ρ w₀) x)`. Establish `hu : (WithLp.toLp 2 (ρ g x, (0 : Lp ℂ 2 μ)) : WithLp 2 (H × Lp ℂ 2 μ)) = act ρ hR g (WithLp.toLp 2 (x, (0 : Lp ℂ 2 μ)))` using `by show _ = WithLp.toLp 2 (ρ g x, rt hR g 0)`. Rewrite using `[map_zero]`. Rewrite using `[bop_apply, bop_apply, hu, proj_act hR hone hmul hiso w₀ g]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hD : ∀ y : H, MemLp (fun g => ⟪w₀, ρ g (bop (graph μ ρ w₀) y)⟫_ℂ) 2 μ`. Introduce `y`. Establish `hm' : ((((graph μ ρ w₀).starProjection (WithLp.toLp 2 (y, (0 : Lp ℂ 2 μ)))).snd : G → ℂ)) =ᵐ[μ] fun g => ⟪w₀, ρ g ((graph μ ρ w₀).starProjection (WithLp.toLp 2 (y, (0 : Lp ℂ 2 μ)))).fst⟫_ℂ` using `hmemP (WithLp.toLp 2 (y, (0 : Lp ℂ 2 μ)))`. Rewrite using `[bop_apply]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `(Lp.memLp _).ae_eq hm'`. Establish `hz : (WithLp.toLp 2 (x₀, MemLp.toLp _ h0) : WithLp 2 (H × Lp ℂ 2 μ)) ∈ graph μ ρ w₀` using `by show ((MemLp.toLp _ h0 : Lp ℂ 2 μ) : G → ℂ) =ᵐ[μ] fun g => ⟪w₀, ρ g x₀⟫_ℂ`. Conclude with `MemLp.coeFn_toLp h0`. Establish `hne0 : bop (graph μ ρ w₀) x₀ ≠ 0`. Introduce `hB0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hf0 : ((graph μ ρ w₀).starProjection (WithLp.toLp 2 (x₀, (0 : Lp ℂ 2 μ)))).fst = 0`. Rewrite using `[← bop_apply]`. Conclude with `hB0`. Establish `hs0 : ((graph μ ρ w₀).starProjection (WithLp.toLp 2 (x₀, (0 : Lp ℂ 2 μ)))).snd = 0`. Apply `Lp.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ((((graph μ ρ w₀).starProjection (WithLp.toLp 2 (x₀, (0 : Lp ℂ 2 μ)))).snd : G → ℂ)) =ᵐ[μ] fun g => ⟪w₀, ρ g ((graph μ ρ w₀).starProjection (WithLp.toLp 2 (x₀, (0 : Lp ℂ 2 μ)))).fst⟫_ℂ` using `hmemP (WithLp.toLp 2 (x₀, (0 : Lp ℂ 2 μ)))`. Rewrite `h1` using `[hf0]`. Use `h1.trans ?_` and prove the remaining obligations. Use `filter_upwards [Lp.coeFn_zero ℂ 2 μ] with g hg`. Rewrite using `[hg, map_zero, inner_zero_right]`.
-
-Both sides reduce to the same expression. Establish `hPz : (graph μ ρ w₀).starProjection (WithLp.toLp 2 (x₀, MemLp.toLp _ h0)) = WithLp.toLp 2 (x₀, MemLp.toLp _ h0)` using `by first`. Consider the case `exact Submodule.starProjection_eq_self_iff.mpr hz`. Consider the case `exact (Submodule.starProjection_eq_self_iff _).mpr hz`. Consider the case `(rw [Submodule.starProjection_apply, Submodule.orthogonalProjection_mem_subspace_eq_self ⟨_, hz⟩])`.
-
-Establish `e0` using `hsa (WithLp.toLp 2 (x₀, (0 : Lp ℂ 2 μ))) (WithLp.toLp 2 (x₀, MemLp.toLp _ h0))`. Rewrite `e0` using `[hPz, WithLp.prod_inner_apply, WithLp.prod_inner_apply]`. Establish `e1 : ⟪((graph μ ρ w₀).starProjection (WithLp.toLp 2 (x₀, (0 : Lp ℂ 2 μ)))).fst, x₀⟫_ℂ + ⟪((graph μ ρ w₀).starProjection (WithLp.toLp 2 (x₀, (0 : Lp ℂ 2 μ)))).snd, MemLp.toLp _ h0⟫_ℂ = ⟪x₀, x₀⟫_ℂ + ⟪(0 : Lp ℂ 2 μ), MemLp.toLp _ h0⟫_ℂ` using `e0`. Rewrite `e1` using `[hf0, hs0]`. Simplify using `only [inner_zero_left, add_zero] at e1`.
-
-Conclude with `hx₀ (inner_self_eq_zero.mp e1.symm)`. Take `⟨c, hc⟩` from `schur (bop (graph μ ρ w₀)) hSA hcomm`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Apply `hne0` to reduce the goal to its premises.
-
-Rewrite using `[hc, map_zero, ContinuousLinearMap.zero_apply]`. Establish `hx : bop (graph μ ρ w₀) (c⁻¹ • x) = x`. Rewrite using `[hc, Algebra.algebraMap_eq_smul_one, ContinuousLinearMap.smul_apply, ContinuousLinearMap.one_apply, smul_smul, mul_inv_cancel₀ hc0, one_smul]`. Establish `hfin` using `hD (c⁻¹ • x)`. Rewrite `hfin` using `[hx]`.
-
-Conclude with `hfin`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem memLp_of_ne (hone : ρ 1 = 1) (hmul : ∀ a b, ρ (a * b) = (ρ a).comp (ρ b)) (hiso : ∀ g v, ‖ρ g v‖ = ‖v‖)
     (hirr : ∀ S : Submodule ℂ H, IsClosed (S : Set H) → (∀ g, ∀ v ∈ S, ρ g v ∈ S) → S = ⊥ ∨ S = ⊤)

@@ -12,11 +12,11 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 namespace GlobalTheory.CycIntegral
 
 /- English proof (translation)
-Take `⟨_, _, _, _, hopen⟩` from `hO`. Take `⟨a, ha, _⟩` from `P.χQ_cyc (g : GQ l) 0 1 (one_pow _)`. Establish `hn : ‖((P.χQ (g : GQ l) : ℚ_[l]ˣ) : ℚ_[l])‖ ≤ 1`. Establish `h1 : ((P.χQ (g : GQ l) : ℚ_[l]ˣ) : ℚ_[l]) = (((P.χQ (g : GQ l) : ℚ_[l]ˣ) : ℚ_[l]) - (a : ℚ_[l])) + (a : ℚ_[l])` using `by ring`. Rewrite using `[h1]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(Padic.nonarchimedean _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Simplify using `using ha`. Conclude with `Padic.norm_int_le_one (a : ℤ)` after adjusting the coercions. Establish `hmem` using `GlobalTheory.GoodCoeff.padicInt_mem (algebraMap O LL).range (by rw [RingHom.coe_range]; exact hopen) (⟨_, hn⟩ : ℤ_[l])`. Take `⟨b, hb⟩` from `RingHom.mem_range.1 hmem`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨b, ?_⟩` and prove the remaining obligations. Rewrite using `[hb]`. Simplify using `[cycLL, LocPrime.PD_χ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cyc_mem (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (LL : Type) [Field LL]
     [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL]
@@ -39,11 +39,11 @@ theorem cyc_mem (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (LL : T
   simp [cycLL, LocPrime.PD_χ]
 
 /- English proof (translation)
-Introduce `l _ P K LL _ _ _ O _ _ hO`. Take `⟨⟨hD, hV, hF⟩, _⟩` from `id hO`. Use `⟨⟨LinearMap.range (Algebra.linearMap O LL), ?_, ?_, ?_, ?_⟩, rfl⟩` and prove the remaining obligations. Introduce and unpack `g _ ⟨x, rfl⟩`. Take `⟨b, hb⟩` from `cyc_mem l P K LL O hO g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `⟨b * x, ?_⟩` and prove the remaining obligations. Use `show algebraMap O LL (b * x) = ((cycLL (P.PD K) LL g : LLˣ) : LL) • algebraMap O LL x`. Rewrite using `[map_mul, hb, smul_eq_mul]`. Rewrite using `[← Submodule.map_top]`. Conclude with `Submodule.FG.map _ Module.Finite.fg_top`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Module.Free.of_equiv (LinearEquiv.ofInjective (Algebra.linearMap O LL) (IsFractionRing.injective O LL))`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `h1 : (1 : LL) ∈ Submodule.span LL ((LinearMap.range (Algebra.linearMap O LL) : Submodule O LL) : Set LL)` using `Submodule.subset_span ⟨1, by simp⟩`. Simplify using `using Submodule.smul_mem _ x h1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem cyc_lattice : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∃ L1 : Lattice (O := O) (charRep (cycLL (P.PD K) LL)), L1.T = LinearMap.range (Algebra.linearMap O LL) := by
   intro l _ P K LL _ _ _ O _ _ hO

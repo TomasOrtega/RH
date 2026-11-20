@@ -29,14 +29,14 @@ def LeafInjGeo : Prop := ∀ {X' X Z : Scheme.{0}} (f : X' ⟶ X) [Etale f] (ι'
       g ≫ y₁ = g ≫ y₂ ∨ ∃ x : V ⟶ U.toScheme, x ≫ U.ι = (g ≫ y₁) ≫ f
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(isPullback_morphismRestrict f U).lift x y hx, (isPullback_morphismRestrict f U).lift_snd _ _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem excSheaf_cart_preimage {X' X T : Scheme.{0}} (f : X' ⟶ X) (U : X.Opens) (y : T ⟶ X') (x : T ⟶ U.toScheme)
     (hx : x ≫ U.ι = y ≫ f) : ∃ x' : T ⟶ (f ⁻¹ᵁ U).toScheme, x' ≫ (f ⁻¹ᵁ U).ι = y :=
   ⟨(isPullback_morphismRestrict f U).lift x y hx, (isPullback_morphismRestrict f U).lift_snd _ _ _⟩
 
 /- English proof (translation)
-Introduce `R _ X' X Z f _ ι' ι _ hp U' U hU h`. Substitute `h` using the available equality. Conclude with `hF R (yoneda.map (f ⁻¹ᵁ U).ι) (yoneda.map U.ι) (yoneda.map (f.resLE U (f ⁻¹ᵁ U) le_rfl)) (yoneda.map f) (by rw [← Functor.map_comp, ← Functor.map_comp, Scheme.Hom.resLE_comp_ι]) (fun T y x hx => excSheaf_cart_preimage f U y x hx) (fun T y => hS f ι' ι hp U hU y) (fun T y₁ y₂ h => …`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem LeafExcSheaf_of (hF : LeafFreeCok) (hS : LeafSurjGeo) (hI : LeafInjGeo) : LeafExcSheaf := by
   intro R _ X' X Z f _ ι' ι _ hp U' U hU h

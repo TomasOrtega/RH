@@ -11,7 +11,7 @@ open MvPolynomial
 namespace GlobalTheory.ExpFrame
 
 /- English proof (translation)
-Establish `e' : (⟨x, hx⟩ : U) = c • ∑ s ∈ S, (⟨v s, hv s⟩ : U)`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `using e`. Rewrite using `[e', LinearMap.map_smul_of_tower, map_sum]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_mk_smul_sum {O A : Type} [CommRing O] [Ring A] [Algebra O A] {V W : Type} [AddCommGroup V] [Module O V] [Module A V]
     [IsScalarTower O A V] [AddCommGroup W] [Module O W] [Module A W] [IsScalarTower O A W] (U : Submodule A V)
@@ -27,13 +27,11 @@ variable {O A G I : Type} [CommRing O] [Ring A] [Algebra O A] [Group G] (Γ : Su
   (tr : I → Finset G) (cst : I → O)
 
 /- English proof (translation)
-Proceed by induction on `t using MvPolynomial.induction_on with`. Consider the case `C c`. Introduce `f hf g`. Rewrite using `[hV.1 c f]`. Conclude with `U.smul_of_tower_mem c (hf g)`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add p q hp hq`. Introduce `f hf g`. Rewrite using `[add_smul]`. Conclude with `U.add_mem (hp f hf g) (hq f hf g)`. Consider the case `mul_X p i hp`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `f hf g`. Rewrite using `[mul_smul]`. Apply `hp` to reduce the goal to its premises. Introduce `g'`. Rewrite using `[hV.2 i f g']`.
-
-Conclude with `U.smul_of_tower_mem _ (U.sum_mem fun s _ => hf _)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hecke_values_mem {V : Type} [AddCommGroup V] [Module O V] [Module A V]
     [IsScalarTower O A V] [Module (MvPolynomial I O) (Forms O Γ jK V)]
@@ -61,19 +59,19 @@ theorem hecke_values_mem {V : Type} [AddCommGroup V] [Module O V] [Module A V]
     exact U.smul_of_tower_mem _ (U.sum_mem fun s _ => hf _)
 
 /- English proof (translation)
-Proceed by induction on `t using MvPolynomial.induction_on with`. Consider the case `C c`. Introduce `f φ hf hφ g h`. Establish `e : (⟨_, h⟩ : U) = c • ⟨(f : G → V) g, hf g⟩`. Apply `Subtype.ext` to reduce the goal to its premises.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [hV.1 c f]`. Both sides reduce to the same expression. Rewrite using `[e, LinearMap.map_smul_of_tower, ← hφ g, hW.1 c φ]`. Both sides reduce to the same expression. Consider the case `add p q hp hq`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately.
 
-Introduce `f φ hf hφ g h`. Establish `hp'` using `hecke_values_mem Γ jK tr cst hV U p f hf g`. Establish `hq'` using `hecke_values_mem Γ jK tr cst hV U q f hf g`. Establish `e : (⟨_, h⟩ : U) = ⟨_, hp'⟩ + ⟨_, hq'⟩`. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [add_smul]`. Both sides reduce to the same expression. Rewrite using `[e, map_add, ← hp f φ hf hφ g hp', ← hq f φ hf hφ g hq', add_smul]`. Both sides reduce to the same expression. Consider the case `mul_X p i hp`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately.
 
-Introduce `f φ hf hφ g h`. Establish `hX` using `hecke_values_mem Γ jK tr cst hV U (X i) f hf`. Establish `hφX : ∀ g', (((X i : MvPolynomial I O) • φ : Forms O Γ jK W) : G → W) g' = ψ ⟨_, hX g'⟩`. Introduce `g'`. Use `(hW.2 i φ g').trans (Eq.trans ?_ (map_mk_smul_sum U ψ (tr i) (cst i) (fun s => (f : G → V) (g' * s)) (fun s => hf _) _ (hX g') (hV.2 i f g')))` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg (fun z => cst i • z) (Finset.sum_congr rfl fun s _ => hφ (g' * s))`. Establish `h2 : ((p • ((X i : MvPolynomial I O) • f) : Forms O Γ jK V) : G → V) g ∈ U`. Rewrite using `[← mul_smul]`. Conclude with `h`. Establish `e : (⟨_, h⟩ : U) = ⟨_, h2⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [mul_smul]`. Rewrite using `[e, mul_smul]`. Conclude with `hp _ _ hX hφX g h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hecke_values_map {V W : Type} [AddCommGroup V] [Module O V] [Module A V]
     [IsScalarTower O A V] [Module (MvPolynomial I O) (Forms O Γ jK V)]
@@ -128,7 +126,7 @@ theorem hecke_values_map {V W : Type} [AddCommGroup V] [Module O V] [Module A V]
     exact hp _ _ hX hφX g h2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun U t f hf => hecke_values_mem Γ jK tr cst hV U t f hf, fun U ψ t f φ hf hf' hφ g => hecke_values_map Γ jK tr cst hV hW U ψ t f φ hf hφ g (hf' g)⟩`.
+Supply the required witnesses or components.
 -/
 theorem hecke_stable_nat (V W : Type) [AddCommGroup V] [Module O V] [Module A V]
     [IsScalarTower O A V] [Module (MvPolynomial I O) (Forms O Γ jK V)]
@@ -149,7 +147,7 @@ end
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `l _ ι _ _ N F lam jK i1 W i2 i3 i4 i5 i6 hV hW`. Use `@hecke_stable_nat F.O (alg F.O N lam) F.G F.I _ _ _ _ F.Γ F.K jK F.tr F.cst (NablaT F.O N lam) W _ _ _ _ _ _ _ _ _ _ ?_ ?_` and prove the remaining obligations. Conclude with `hV`. Conclude with `hW`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem heckeStable_heckeNat_of_isHecke : ∀ (l : ℕ) [Fact l.Prime] (ι : Type) [Fintype ι] [DecidableEq ι] (N : ℕ) (F : Frame l ι N) (lam : ι → ℕ → ℕ) (jK : F.K →* alg F.O N lam) [Module F.T (Forms F.O (A := alg F.O N lam) F.Γ jK (NablaT F.O N lam))] (W : Type) [AddCommGroup W] [Module F.O W] [Module (alg F.O N lam) W] [IsScalarTower F.O (alg F.O N lam) W] [Module F.T (Forms F.O (A := alg F.O N lam) F.Γ jK W)], F.IsHecke lam jK (NablaT F.O N lam) → F.IsHecke lam jK W → HeckeStable F.O (A := alg F.O N lam) F.Γ jK F.T (NablaT F.O N lam) ∧ HeckeNat F.O (A := alg F.O N lam) F.Γ jK F.T (NablaT F.O N lam) W := by
   intro l _ ι _ _ N F lam jK i1 W i2 i3 i4 i5 i6 hV hW

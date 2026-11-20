@@ -9,7 +9,7 @@ open ReciprocityTheory.ChartRestriction.G.Geo
 namespace FubiniStudyConjugationInvariant
 
 /- English proof (translation)
-Simplify using `[fsMetric, EuclideanSpace.norm_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fsMetric_conj {n : Type*} [Fintype n] (w : n → ℂ) :
     (fsMetric n).ρ (fun i => (starRingEnd ℂ) (w i)) = (fsMetric n).ρ w := by
@@ -18,7 +18,7 @@ theorem fsMetric_conj {n : Type*} [Fintype n] (w : n → ℂ) :
 end FubiniStudyConjugationInvariant
 
 /- English proof (translation)
-Introduce `K _ ι _ z`. Simplify using `only [fsMulti, HermLine.ofMetrics]`. Conclude with `Finset.prod_congr rfl fun k _ => by`. Rewrite using `[FubiniStudyConjugationInvariant.fsMetric_conj (fun i => z ⟨k, i⟩)]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FsConjInvariant.proof : FsConjInvariant.Statement := by
   intro K _ ι _ z

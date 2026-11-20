@@ -13,13 +13,13 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E]
 def CStab (I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) : Prop := ∀ x ∈ I, star x ∈ I
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨PI.CMT.conj o, PI.CMT.coe_conj o⟩`.
+Supply the required witnesses or components.
 -/
 theorem star_int (o : 𝓞 E) : ∃ o' : 𝓞 E, (o' : E) = star (o : E) :=
   ⟨PI.CMT.conj o, PI.CMT.coe_conj o⟩
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨o, rfl⟩` from `(FractionalIdeal.mem_one_iff _).mp hx`. Take `⟨o', ho'⟩` from `star_int o`. Conclude with `(FractionalIdeal.mem_one_iff _).mpr ⟨o', ho'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cstab_one : CStab (1 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) := by
   intro x hx
@@ -28,9 +28,9 @@ theorem cstab_one : CStab (1 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) := 
   exact (FractionalIdeal.mem_one_iff _).mpr ⟨o', ho'⟩
 
 /- English proof (translation)
-Introduce `x hx`. Use `FractionalIdeal.mul_induction_on (C := fun y => star y ∈ I * J) hx ?_ ?_` and prove the remaining obligations. Introduce `i hi j hj`. Rewrite using `[star_mul']`. Conclude with `FractionalIdeal.mul_mem_mul (hI i hi) (hJ j hj)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y z hy hz`. Rewrite using `[star_add]`. Conclude with `Submodule.add_mem _ hy hz`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cstab_mul {I J : FractionalIdeal (nonZeroDivisors (𝓞 E)) E} (hI : CStab I) (hJ : CStab J) :
     CStab (I * J) := by
@@ -44,9 +44,9 @@ theorem cstab_mul {I J : FractionalIdeal (nonZeroDivisors (𝓞 E)) E} (hI : CSt
     exact Submodule.add_mem _ hy hz
 
 /- English proof (translation)
-Introduce `x hx`. Distinguish the cases in `h0 : I = 0`. Rewrite `hx`, the goal using `[h0, inv_zero]`. Rewrite using `[(FractionalIdeal.mem_zero_iff _).mp hx, star_zero]`. Conclude with `(FractionalIdeal.mem_zero_iff _).mpr rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hx`, the goal using `[FractionalIdeal.mem_inv_iff h0]`. Introduce `y hy`. Establish `h1` using `cstab_one _ (hx (star y) (hI y hy))`. Rewrite `h1` using `[star_mul', star_star]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem cstab_inv {I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E} (hI : CStab I) : CStab I⁻¹ := by
   intro x hx
@@ -60,7 +60,7 @@ theorem cstab_inv {I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E} (hI : CStab
     rwa [star_mul', star_star] at h1
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using cstab_one`. Consider the case `succ n ih`. Rewrite using `[pow_succ]`. Conclude with `cstab_mul ih hI`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cstab_pow {I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E} (hI : CStab I) (n : ℕ) :
     CStab (I ^ n) := by
@@ -71,9 +71,9 @@ theorem cstab_pow {I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E} (hI : CStab
     exact cstab_mul ih hI
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `ofNat n`. Rewrite using `[Int.ofNat_eq_natCast, zpow_natCast]`. Conclude with `cstab_pow hI n`. Consider the case `negSucc n`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zpow_negSucc]`. Conclude with `cstab_inv (cstab_pow hI _)`.
+A detailed English derivation is pending.
 -/
 theorem cstab_zpow {I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E} (hI : CStab I) (n : ℤ) :
     CStab (I ^ n) := by
@@ -98,12 +98,12 @@ example (D : D7) (a : 𝓞 D.host.F) :
     ((algebraMap (𝓞 D.host.F) (𝓞 D.host.E) a : 𝓞 D.host.E) : D.host.E) = ((a : D.host.F) : D.host.E) := rfl
 
 /- English proof (translation)
-The claim follows from `D.sp.cm.fixed a`.
+A detailed English derivation is pending.
 -/
 example (D : D7) (a : D.host.E) : star a = a ↔ a ∈ (algebraMap D.host.F D.host.E).range := D.sp.cm.fixed a
 
 /- English proof (translation)
-Introduce `D`. Take `⟨x, y, hy, hxy⟩` from `PI.CMT.main D.host.E D.sp.cm.cmUnram 1 (by simp)`. Use `⟨x, ?_⟩` and prove the remaining obligations. Rewrite using `[← hy]`. Conclude with `hxy` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_reduction : TrStep := by
   intro D
@@ -113,7 +113,7 @@ theorem trace_reduction : TrStep := by
   exact_mod_cast hxy
 
 /- English proof (translation)
-Introduce `a b h`. Establish `h'` using `congrArg ((↑) : 𝓞 D.host.E → D.host.E) h`. Use `ext`. Simplify using `using h'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem alg_inj (D : D7) : Function.Injective (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) := by
   intro a b h
@@ -122,18 +122,18 @@ theorem alg_inj (D : D7) : Function.Injective (algebraMap (𝓞 D.host.F) (𝓞 
   simpa using h'
 
 /- English proof (translation)
-Rewrite using `[ddS, Ne, FractionalIdeal.coeIdeal_eq_zero, Ideal.map_eq_bot_iff_of_injective (alg_inj D)]`. Conclude with `differentIdeal_ne_bot`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ddS_ne (D : D7) : ddS D ≠ 0 := by
   rw [ddS, Ne, FractionalIdeal.coeIdeal_eq_zero, Ideal.map_eq_bot_iff_of_injective (alg_inj D)]
   exact differentIdeal_ne_bot
 
 /- English proof (translation)
-Establish `hfix : PI.CMT.conj.comp (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) = algebraMap (𝓞 D.host.F) (𝓞 D.host.E)`. Use extensionality with `a`. Rewrite using `[RingHom.comp_apply, PI.CMT.coe_conj]`. Use `(D.sp.cm.fixed _).2 ⟨(a : D.host.F), ?_⟩` and prove the remaining obligations. Both sides reduce to the same expression.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 
-Introduce `x hx`. Rewrite `hx`, the goal using `[ddS]`. Take `⟨y, hy, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).mp hx`. Use `(FractionalIdeal.mem_coeIdeal _).mpr ⟨PI.CMT.conj y, ?_, PI.CMT.coe_conj y⟩` and prove the remaining obligations. Rewrite using `[← hfix, ← Ideal.map_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mem_map_of_mem _ hy`.
+A detailed English derivation is pending.
 -/
 theorem ddS_cstab (D : D7) : CStab (ddS D) := by
   have hfix : PI.CMT.conj.comp (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) =
@@ -150,7 +150,7 @@ theorem ddS_cstab (D : D7) : CStab (ddS D) := by
   exact Ideal.mem_map_of_mem _ hy
 
 /- English proof (translation)
-Introduce `D a`. Conclude with `⟨zpow_ne_zero _ (ddS_ne D), cstab_zpow (ddS_cstab D) _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem adjoint_action_reduction : AaStep := by
   intro D a

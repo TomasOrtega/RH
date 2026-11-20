@@ -18,15 +18,13 @@ noncomputable def closedEmbeddingRangeEquiv {G G₁ : Type} [Group G] [Topologic
       (hemb.toHomeomorphOfSurjective ι.rangeRestrict_surjective).symm.continuous }
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ G₁ _ _ _ _ _ _ _ ι hι μ₁ _ _`. Establish `hclosed : IsClosed ((ι.range : Subgroup G) : Set G)`. Rewrite using `[MonoidHom.coe_range]`. Conclude with `hι.isClosed_range`. Set `e : G₁ ≃ₜ* ι.range` to `closedEmbeddingRangeEquiv ι hι`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : IsFiniteMeasureOnCompacts μ₁.inv := ⟨fun K hK => by rw [Measure.inv_apply]; exact hK.inv.measure_lt_top⟩`. Use `haveI : μ₁.inv.IsOpenPosMeasure := ⟨fun U hU hne => by`. Rewrite using `[Measure.inv_apply]`. Conclude with `hU.inv.measure_ne_zero μ₁ hne.inv⟩`. Use `haveI hinv : μ₁.inv.IsHaarMeasure := {}`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hν : (μ₁.inv.map e).IsHaarMeasure` using `ContinuousMulEquiv.isHaarMeasure_map μ₁.inv e`. Take `⟨β, hβ, hmass⟩` from `PI.WeilQuotMeas.UnitaryGroupMassFormula.stepBruhat G ι.range hclosed _ hν`. Use `⟨fun g => β g⁻¹, hβ.comp measurable_inv, fun g => ?_⟩` and prove the remaining obligations. Establish `hem : Measurable e` using `e.continuous.measurable`. Establish `hf : Measurable fun h : ι.range => β (g⁻¹ * (h : G))` using `hβ.comp (measurable_const.mul measurable_subtype_coe)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `hmass g⁻¹`. Establish `hcomp : Measurable fun a : G₁ => β (g⁻¹ * (e a : G))` using `hf.comp hem`. Rewrite `h1` using `[lintegral_map hf hem, Measure.inv, lintegral_map hcomp measurable_inv]`. Use `Eq.trans (lintegral_congr fun u => ?_) h1` and prove the remaining obligations. Establish `: ((e u⁻¹ : ι.range) : G) = (ι u)⁻¹` using `by show ι u⁻¹ = _`.
-
-Conclude with `map_inv ι u`. Use `show β (ι u * g)⁻¹ = β (g⁻¹ * ((e u⁻¹ : ι.range) : G))`. Rewrite using `[this, mul_inv_rev]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_weight_mass_one_right_coset :
     ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G] [LocallyCompactSpace G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] (G₁ : Type) [Group G₁] [TopologicalSpace G₁] [IsTopologicalGroup G₁] [LocallyCompactSpace G₁] [SecondCountableTopology G₁] [MeasurableSpace G₁] [BorelSpace G₁] (ι : G₁ →* G), IsClosedEmbedding ι → ∀ (μ₁ : Measure G₁) [μ₁.IsHaarMeasure] [μ₁.IsMulRightInvariant], ∃ w : G → ℝ≥0∞, Measurable w ∧ ∀ g, ∫⁻ u, w (ι u * g) ∂μ₁ = 1 := by

@@ -36,19 +36,19 @@ namespace GlobalTheory.ZH.GoodOut
 open GlobalTheory.Points
 
 /- English proof (translation)
-Establish `hfr : IsFractionRing R Ω` using `IsFractionRing.of_field _ _ fun z => by`. Take `⟨a, b, -, h⟩` from `IsFractionRing.div_surjective (A := o) z`. Conclude with `⟨algebraMap o R a, algebraMap o R b, h.symm⟩`. Use `(isIntegrallyClosed_iff Ω).2 fun {x} hx => ?_` and prove the remaining obligations. Set `I : Ideal R` to `(LinearMap.range (Algebra.linearMap R Ω)).comap (LinearMap.toSpanSingleton R Ω x)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Assume the negation of the conclusion as `hn`. Establish `hI : I ≠ ⊤` using `fun h => hn (by`. Take `⟨a, ha⟩ : (1 : R) ∈ I` from `h ▸ Submodule.mem_top`. Conclude with `⟨a, ha.trans (one_smul _ _)⟩)`. Take `⟨m, hm, hIm⟩` from `Ideal.exists_le_maximal I hI`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Set `p : Ideal o` to `m.comap (algebraMap o R)`. Establish `hp : p.IsPrime` using `Ideal.comap_isPrime _ _`. Establish `hp' : ∀ y : Ω, ∃ a s : o, s ∉ p ∧ (y = algebraMap o Ω a * (algebraMap o Ω s)⁻¹ ∨ y⁻¹ = algebraMap o Ω a * (algebraMap o Ω s)⁻¹)` using `fun y => by`. Distinguish the cases in `h0 : p = ⊥`. Take `⟨a, b, hb, h⟩` from `IsFractionRing.div_surjective (A := o) y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, b, h0 ▸ nonZeroDivisors.ne_zero hb, Or.inl (h.symm.trans (div_eq_mul_inv _ _))⟩`. Set `V` to `Localization.subalgebra.ofField Ω p.primeCompl p.primeCompl_le_nonZeroDivisors`. Use `IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain o h0 V` as an intermediate fact. Break down `ValuationRing.isInteger_or_isInteger V y with ⟨⟨_, a, s, hs, rfl⟩, h⟩ | ⟨⟨_, a, s, hs, rfl⟩, h⟩` into its components or cases. Conclude with `⟨a, s, hs, Or.inl h.symm⟩`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨a, s, hs, Or.inr h.symm⟩`. Use `hm.isPrime` as an intermediate fact. Set `T` to `Localization.subalgebra.ofField Ω m.primeCompl m.primeCompl_le_nonZeroDivisors`. Establish `: ValuationRing T` using `(ValuationRing.iff_isInteger_or_isInteger T Ω).2 fun y => by`. Take `⟨a, s, hs, h⟩` from `hp' y`.
+Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `h.imp (fun h => ⟨⟨y, algebraMap o R a, algebraMap o R s, hs, h⟩, rfl⟩) (fun h => ⟨⟨y⁻¹, algebraMap o R a, algebraMap o R s, hs, h⟩, rfl⟩)`. Take `⟨⟨_, a, s, hs, rfl⟩, h⟩` from `IsIntegrallyClosed.isIntegral_iff.1 (hx.tower_top (A := T))`. Use `hs (hIm ⟨a, ?_⟩)` and prove the remaining obligations. Establish `hs0 : algebraMap R Ω s ≠ 0` using `fun e => hs ((show s = 0 from Subtype.ext e) ▸ m.zero_mem)`. Use `show algebraMap R Ω a = s • x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[← h, Algebra.smul_def]`. Use `show _ = algebraMap R Ω s * (algebraMap R Ω a * (algebraMap R Ω s)⁻¹)`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem isIntegrallyClosed_overring {o Ω : Type} [CommRing o] [IsDedekindDomain o] [Field Ω] [Algebra o Ω]
     [IsFractionRing o Ω] (R : Subalgebra o Ω) : IsIntegrallyClosed R := by
@@ -89,7 +89,7 @@ theorem isIntegrallyClosed_overring {o Ω : Type} [CommRing o] [IsDedekindDomain
   field_simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨AlgebraicClosure z.asIdeal.ResidueField, inferInstance, inferInstance, (algebraMap z.asIdeal.ResidueField _).comp (algebraMap R z.asIdeal.ResidueField), fun _ => (map_eq_zero_iff (algebraMap z.asIdeal.ResidueField _) (RingHom.injective _)).trans Ideal.algebraMap_residueField_eq_ …`.
+Supply the required witnesses or components.
 -/
 theorem exists_hom_ker {R : Type} [CommRing R] (z : PrimeSpectrum R) :
     ∃ (K : Type) (_ : Field K) (_ : IsAlgClosed K) (f : R →+* K), ∀ t, f t = 0 ↔ t ∈ z.asIdeal :=
@@ -99,9 +99,9 @@ theorem exists_hom_ker {R : Type} [CommRing R] (z : PrimeSpectrum R) :
       Ideal.algebraMap_residueField_eq_zero⟩
 
 /- English proof (translation)
-Establish `key : ∀ P' : PolAV (Sp R), ∃ (D : DegData R (IsLocalRing.maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (U : Unif (IsLocalRing.maximalIdeal R) D A P'.A), LBIso U.LG.L P'.L ∧ ∀ y, PsiUnitOn D.toPre y U₁`. Introduce `P'`. Take `⟨A, eA, hA, hw⟩` from `GoodReductionUnif.exists_baseChange hL.polBaseChange (jK R) P'`. Take `⟨D, rfl, hX⟩` from `SelfUnif.exists_degData hL.cube (IsLocalRing.maximalIdeal R) P'`. Use `⟨D, A, ⟨SelfUnif.selfPre D A eA hA hw, fun k _ => SelfUnif.expBij D A eA hA hw hL.globalFns (IsAdicComplete.le_jacobson_bot _) k⟩, lbIso_refl D.toPre.P.isLB, fun y j V hV _ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `rfl : y = 0` from `Subsingleton.elim _ _`. Conclude with `PsiCoordLocal.psiUnitOn_zero D.toPre D.tau_bimult j V hV (Set.subset_univ _)`. Conclude with `key (StrictPull.polPull P ξ)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_unif (hL : Laws) {Z : Scheme.{0}} (P : PolAV Z) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R]
     [IsNoetherianRing R] [IsAdicComplete (IsLocalRing.maximalIdeal R) R] (ξ : Sp R ⟶ Z) (U₁ : Set (Sp R))
@@ -125,15 +125,15 @@ variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : ThetaSys o Ω
 open GlobalTheory.CechPic EndoExtend in
 
 /- English proof (translation)
-Use `hA.ded` as an intermediate fact. Use `hA.ft` as an intermediate fact. Use `hA.char` as an intermediate fact. Use `M.lft` as an intermediate fact. Establish `: IsLocallyNoetherian M.Z` using `LocallyOfFiniteType.isLocallyNoetherian M.s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `isPreimmersion_pt M` as an intermediate fact. Use `flat_pt M` as an intermediate fact. Use `Q.semi.smooth` as an intermediate fact. Use `Q.semi.geomConnected` as an intermediate fact. Establish `hL` using `Q.L.isLB`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨GlobalTheory.existsUnique_hom_extension_semiAbelian_normal GlobalTheory.existsUnique_hom_extension_semiAbelian _ _ M.pt ⟨hn, _, MinorModel.locallyOfFiniteType_int M, MinorModel.flat_int M _⟩ ‹_› ‹_› inferInstance inferInstance _ _ Q.semi Q.semi, fun n x x' hx ε ε' h => ?_⟩` and prove the remaining obligations. Use `geometricallyIntegral_of_smooth Q.G.hom` as an intermediate fact. Use `smooth_tensorObj_hom Q.G Q.G` as an intermediate fact. Use `geometricallyIntegral_tensorObj_hom Q.G Q.G` as an intermediate fact. Establish `h0 : CechPic.pull (eSec Q.G) (cls Q.L.L hL) = 0` using `(cls_eq_zero_iff (pull_isLB hL _)).2 ⟨Q.L.rig, Q.L.rigGen⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ (y : Fin n → (Q.G ⊗ Q.G ⟶ Q.G)) (δ : Fin n → ℤ), (∀ i, IsMonHom (y i)) → CechPic.pull (η[Q.G ⊗ Q.G]).left (cls _ (LB.isLB_linComb hL (fun i => (y i).left) δ)) = 0`. Introduce `y δ hy`. Rewrite using `[cls_linComb hL, map_sum]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, ← pull_comp, ← Over.comp_left, (hy i).one_hom]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg (_ • ·) h0).trans (smul_zero _)`. Use `(cls_eq_iff (LB.isLB_linComb hL _ _) (LB.isLB_linComb hL _ _)).1 (pic_ext M.pt hn (Q.G ⊗ Q.G) (η[Q.G ⊗ Q.G]).left (Over.w _) ((key x ε fun i => (hx i).1).trans (key x' ε' fun i => (hx i).2).symm) ?_)` and prove the remaining obligations. Conclude with `(cls_eq_iff (pull_isLB (LB.isLB_linComb hL _ _) _) (pull_isLB (LB.isLB_linComb hL _ _) _)).2 h`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem endo_and_isoExt [hA : ArithBase o Ω] {ρ : S.Real} {M : RatModel o Ω} {U₀ : M.Z.Opens} (Q : ZHPre ρ M U₀)
     (hn : Geo.Tor.IsNormalScheme M.Z) :
@@ -174,17 +174,17 @@ theorem endo_and_isoExt [hA : ArithBase o Ω] {ρ : S.Real} {M : RatModel o Ω} 
   exact (cls_eq_iff (pull_isLB (LB.isLB_linComb hL _ _) _) (pull_isLB (LB.isLB_linComb hL _ _) _)).2 h
 
 /- English proof (translation)
-Take `⟨K, _, _, f, hf⟩` from `exists_hom_ker z`. Set `x : Sp K ⟶ Sp S.R` to `spMap f`. Take `⟨j, hj, hr⟩` from `ρ.r_eq`. Establish `hM : S.r * S.N = ρ.n * ρ.n ^ (j - 1 + ρ.k * 2)`. Rewrite using `[hr, ρ.N_eq, ← pow_mul, ← pow_add, ← pow_succ']`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `hn : (ρ.n : K) ≠ 0`. Establish `h` using `(S.unit.map (f.comp (algebraMap o S.R))).ne_zero`. Rewrite `h` using `[map_natCast, hM, Nat.cast_mul]`.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `left_ne_zero_of_mul h`. Take `⟨θ, hθ, hv⟩` from `UnitTheta.exists_sec_of_baseOver S.R ρ.P ρ.th₁`. Take `⟨y₀, hy₀, e₀⟩` from `ThetaFibre.exists_mem_nonzeroLocus_fibre hL₂.secBaseChangeAny S.R ρ.P ρ.th₁ ρ.th₁_basis (x (IsLocalRing.closedPoint K))`. Set `u : Over.mk x ⟶ baseOver (Sp S.R)` to `Over.homMk x (by simp)`. Take `⟨y, hy, H⟩` from `UnitTheta.exists_good_point_of_sec hL.polBaseChange hL.goodPt _ ρ.P θ K x ρ.n ρ.n_prime.two_le hn ⟨_, hθ y₀ hy₀, _, e₀.symm⟩ (u ≫ ρ.pt a)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `ρ.P.isAb.comm` as an intermediate fact. Take `⟨h0, hsm⟩` from `ThetaReal.pt_nsmul ρ.pt ρ.pt_add`. Take `⟨c, hc, -⟩` from `ρ.pt_bij K x y (by rw [hM, pow_mul, hy, one_pow])`. Take `⟨a₀, -, uniq⟩` from `ρ.pt_bij K x 1 (one_pow _)`. Use `⟨c, (uniq _ (by beta_reduce; rw [hsm, MonObj.comp_pow, hc, hy])).trans (uniq _ (by beta_reduce; rw [h0, MonObj.comp_one])).symm, fun h => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : (u ≫ ρ.pt a * y).left = spMap f ≫ (ρ.pt (a + c)).left`. Rewrite using `[← hc, ρ.pt_add]`. Conclude with `congrArg CommaMorphism.left (MonObj.comp_mul u _ _).symm`. Rewrite `H` using `[e]`. Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 (H (x := IsLocalRing.closedPoint K) trivial)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk'` using `(le_preimage_iff _ _).2 hk`. Establish `hU` using `le_preimage_mono _ (Scheme.basicOpen_le _ _) hk'`. Use `((le_preimage_basicOpen_iff _ hU _).1 hk').ne_zero ?_` and prove the remaining obligations. Rewrite using `[hv _ _ _ (ρ.th_val (a + c)) K f k hU, (hf _).2 h, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_th_notMem (hL : Laws) (hL₂ : Laws2) (ρ : S.Real) (z : PrimeSpectrum S.R) (a : S.Gam) :
     ∃ c : S.Gam, ρ.n • c = 0 ∧ (⟨S.th (a + c), S.th_mem _⟩ : S.R) ∉ z.asIdeal := by
@@ -229,11 +229,11 @@ def comb (c : J → Γ(Z, W)) (j : B.ι) : Γ(X, p ⁻¹ᵁ W ⊓ B.U j) :=
   ∑ l, (p.appLE W _ inf_le_left).hom (c l) * resG X inf_le_right ((s l).f j)
 
 /- English proof (translation)
-Introduce `i j`. Establish `rr : ∀ {U V T : X.Opens} (h : V ≤ U) (h' : T ≤ V) (f : Γ(X, U)), resG X h' (resG X h f) = resG X (h'.trans h) f` using `fun h h' f => by`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression. Simplify using `only [comb, map_sum, map_mul, Finset.mul_sum, LocThetaConv.resG_appLE, rr]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm]`. Use `congr 1`. Establish `h` using `congrArg (resG X (le_inf (inf_le_left.trans inf_le_right) inf_le_right : p ⁻¹ᵁ W ⊓ B.U i ⊓ B.U j ≤ B.U i ⊓ B.U j)) ((s l).compat i j)`. Rewrite `h` using `[map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(rr _ _ _).symm.trans (h.trans (congrArg _ (rr _ _ _)))`.
+A detailed English derivation is pending.
 -/
 theorem comb_mem (c : J → Γ(Z, W)) : comb p s W c ∈ secOn B (p ⁻¹ᵁ W) := by
   intro i j
@@ -251,7 +251,7 @@ theorem comb_mem (c : J → Γ(Z, W)) : comb p s W c ∈ secOn B (p ⁻¹ᵁ W) 
   exact (rr _ _ _).symm.trans (h.trans (congrArg _ (rr _ _ _)))
 
 /- English proof (translation)
-Establish `h : ⊤ ≤ x ⁻¹ᵁ (p ⁻¹ᵁ W ⊓ B.U j)` using `fun y hy => ⟨hW hy, hj hy⟩`. Use `(valR_eq x _ h _).trans ((map_sum _ _ _).trans (Finset.sum_congr rfl fun l _ => (map_mul _ _ _).trans ?_))` and prove the remaining obligations. Conclude with `congrArg₂ (· * ·) ((valR_eq x _ h _).symm.trans (valR_appLE x p _ h _)) ((valR_eq x _ h _).symm.trans (valR_res x inf_le_right h _))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem valR_comb (c : J → Γ(Z, W)) {C : Type} [CommRing C] (x : Sp C ⟶ X) (j : B.ι)
     (hW : ⊤ ≤ (x ≫ p) ⁻¹ᵁ W) (hj : ⊤ ≤ x ⁻¹ᵁ B.U j) :
@@ -265,7 +265,7 @@ variable [DecidableEq J] (b c : Matrix J J Γ(Z, W)) (hc : c * b = 1)
 include hc
 
 /- English proof (translation)
-Establish `e : valR (x ≫ p) W = (valMap (x ≫ p) W hW).hom` using `funext (valR_eq _ W hW)`. Establish `h : (fun i => valR x _ (comb p s W (b i) j)) = (b.map (valR (x ≫ p) W)).mulVec fun l => valR x _ ((s l).f j)` using `funext fun i => valR_comb p s W _ x j hW hj`. Rewrite using `[h, Matrix.mulVec_mulVec, e, ← Matrix.map_mul, hc, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mulVec]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem mulVec_comb {C : Type} [CommRing C] (x : Sp C ⟶ X) (j : B.ι) (hW : ⊤ ≤ (x ≫ p) ⁻¹ᵁ W)
     (hj : ⊤ ≤ x ⁻¹ᵁ B.U j) :
@@ -276,9 +276,9 @@ theorem mulVec_comb {C : Type} [CommRing C] (x : Sp C ⟶ X) (j : B.ι) (hW : �
   rw [h, Matrix.mulVec_mulVec, e, ← Matrix.map_mul, hc, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mulVec]
 
 /- English proof (translation)
-Take `⟨l, hl⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hs.ge (Set.mem_univ (x (IsLocalRing.closedPoint K))))`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 hl`. Establish `hj'` using `(le_preimage_iff _ _).2 hj`. Establish `hU` using `le_preimage_mono _ (Scheme.basicOpen_le _ _) hj'`. Use `by_contra! h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `((le_preimage_basicOpen_iff _ hU _).1 hj').ne_zero ?_` and prove the remaining obligations. Rewrite using `[← congrFun (mulVec_comb p s W b c hc x j hW hU) l, show (fun i => valR x _ (comb p s W (b i) j)) = 0 from funext fun i => h i j, Matrix.mulVec_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_comb_ne_zero (hs : ⨆ i, nonzeroLocus (s i) = ⊤) {K : Type} [Field K] (x : Sp K ⟶ X)
     (hW : ⊤ ≤ (x ≫ p) ⁻¹ᵁ W) : ∃ i j, valF x _ (comb p s W (b i) j) ≠ 0 := by
@@ -293,9 +293,9 @@ theorem exists_comb_ne_zero (hs : ⨆ i, nonzeroLocus (s i) = ⊤) {K : Type} [F
   rfl
 
 /- English proof (translation)
-Set `v` to `(valMap x W hW).hom`. Establish `h0 : Matrix.vecMul a (b.map v) = 0` using `hs _ fun g j hg hj => by`. Use `Eq.trans ?_ (ha g j hg)` and prove the remaining obligations. Simplify using `only [Matrix.vecMul, dotProduct, Finset.sum_mul, Matrix.map_apply, _root_.mul_assoc]`. Rewrite using `[Finset.sum_comm]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun l _ => Eq.trans ?_ (congrArg (a l * ·) (valR_comb p s W (b l) g j (hg ▸ hW) hj)).symm` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, hg]`. Conclude with `Finset.sum_congr rfl fun m _ => by rw [valR_eq x W hW]`. Use `congrArg (Matrix.vecMul · (c.map v)) h0` as an intermediate fact. Rewrite `this` using `[Matrix.vecMul_vecMul, ← Matrix.map_mul, mul_eq_one_comm.1 hc, Matrix.map_one _ (map_zero v) (map_one v), Matrix.vecMul_one, Matrix.zero_vecMul]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem comb_indep {K : Type} [Field K] (x : Sp K ⟶ Z) (hW : ⊤ ≤ x ⁻¹ᵁ W)
     (hs : ∀ a : J → K, (∀ (g : Sp K ⟶ X) (j), g ≫ p = x → ⊤ ≤ g ⁻¹ᵁ B.U j →
@@ -315,19 +315,19 @@ theorem comb_indep {K : Type} [Field K] (x : Sp K ⟶ Z) (hW : ⊤ ≤ x ⁻¹�
     Matrix.vecMul_one, Matrix.zero_vecMul] at this
 
 /- English proof (translation)
-Take `⟨π, hπ, hcl, hπc⟩` from `CoordMap.exists_coordMap o X Z p t B (p ⁻¹ᵁ W) J (fun i => comb p s W (b i)) m e (fun i => comb_mem p s W _) (fun x hx => by`. Set `g` to `X.fromSpecResidueField x`. Establish `hg : ∀ w, g w = x` using `fun w => Scheme.fromSpecResidueField_apply _ _`. Take `⟨i, j, hij⟩` from `exists_comb_ne_zero p s W b c hc hs (K := X.residueField x) g (fun w _ => (congrArg (· ∈ p ⁻¹ᵁ W) (hg w)).mpr hx)`. Establish `hU : ⊤ ≤ g ⁻¹ᵁ (p ⁻¹ᵁ W ⊓ B.U j)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h0`. Conclude with `hij (dif_neg h0)`. Use `(le_preimage_basicOpen_iff (C := X.residueField x) g hU _).2 (Ne.isUnit hij) (x := IsLocalRing.closedPoint (X.residueField x)) trivial` as an intermediate fact. Conclude with `⟨i, j, hg (IsLocalRing.closedPoint (X.residueField x)) ▸ this⟩)`. Use `⟨m, e, π, hπ, ?_, hcl⟩` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `V` to `p ⁻¹ᵁ W`. Establish `: IsReduced V.toScheme` using `isReduced_of_isOpenImmersion V.ι`. Use `LinFrame.isImmersion_lift_of_linear_change o _ _ t (V.ι ≫ p) m π hπ fun y => ?_` and prove the remaining obligations. Establish `hy : (V.ι ≫ p) y ∈ W` using `y.2`. Set `Y` to `(V.ι ≫ p) ⁻¹ᵁ W`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: Nonempty Y.toScheme` using `⟨⟨y, hy⟩⟩`. Establish `: IsIntegral Y.toScheme` using `isIntegral_of_isOpenImmersion (Y.ι ≫ V.ι)`. Set `K : Type` to `Y.toScheme.residueField (genericPoint Y.toScheme)`. Set `ξ : Sp K ⟶ Y.toScheme` to `Y.toScheme.fromSpecResidueField (genericPoint Y.toScheme)`. Take `⟨j, hj⟩` from `exists_le_preimage_of_iSup_eq_top ((ξ ≫ Y.ι) ≫ V.ι) hB.cover`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hW : ⊤ ≤ (((ξ ≫ Y.ι) ≫ V.ι) ≫ p) ⁻¹ᵁ W` using `fun w _ => (ξ w).2`. Use `⟨W, R, inferInstance, W.ι ≫ t', Y.ι ≫ V.ι ≫ φ, c.submatrix e e, K, inferInstance, ξ, _, hy, inferInstance, ?_, ?_, ⟨?_⟩, Category.assoc ξ Y.ι π ▸ hπc K (ξ ≫ Y.ι) j hj, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, hφ, morphismRestrict_ι_assoc, Category.assoc]`. Rewrite using `[Matrix.det_submatrix_equiv_self]`. Conclude with `Matrix.isUnit_det_of_right_inverse hc`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `dense_iff_closure_eq.2 (top_unique ((genericPoint_spec Y.toScheme).ge.trans (closure_mono ?_)))` and prove the remaining obligations. Conclude with `Set.singleton_subset_iff.2 ⟨IsLocalRing.closedPoint K, Scheme.fromSpecResidueField_apply _ _⟩`. Establish `h` using `hcrd K ((ξ ≫ Y.ι) ≫ V.ι) (fun l => valR ((ξ ≫ Y.ι) ≫ V.ι) _ ((s l).f j)) ⟨j, 1, hj, fun l => by rw [Units.val_one, _root_.one_mul]⟩`. Establish `h'` using `mulVec_comb p s W b c hc _ j hW hj`. Simplify using `only [Category.assoc] at h h' ⊢`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Use `Eq.trans ?_ (congrFun h' (e i))` and prove the remaining obligations. Conclude with `e.sum_comp fun l => valR (ξ ≫ Y.ι ≫ V.ι ≫ p) W (c (e i) l) * valR (ξ ≫ Y.ι ≫ V.ι) _ (comb p s W (b l) j)`.
+A detailed English derivation is pending.
 -/
 theorem immersedBy_comb {o R : Type} [CommRing o] [CommRing R] [IsIntegral X] (hB : B.IsLB) (t : Z ⟶ Sp o)
     (t' : Z ⟶ Sp R) (hs : ⨆ i, nonzeroLocus (s i) = ⊤) {m : ℕ} (e : Fin (m + 1) ≃ J) (φ : X ⟶ PSpace R m)
@@ -384,18 +384,18 @@ variable {Z : Scheme.{0}} (P : PolAV Z)
 def sect : P.A.left ⟶ (baseOver Z ⊗ P.A).left := (lift (toUnit P.A) (𝟙 P.A) : P.A ⟶ baseOver Z ⊗ P.A).left
 
 /- English proof (translation)
-Rewrite using `[sect, ← Over.comp_left, lift_snd, Over.id_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sect_snd : sect P ≫ (snd (baseOver Z) P.A).left = 𝟙 _ := by
   rw [sect, ← Over.comp_left, lift_snd, Over.id_left]
 
 /- English proof (translation)
-The claim follows from `Over.w _`.
+A detailed English derivation is pending.
 -/
 theorem sect_hom : sect P ≫ (baseOver Z ⊗ P.A).hom = P.A.hom := Over.w _
 
 /- English proof (translation)
-The claim follows from `(congrArg (sect P ≫ ·) ((Category.comp_id _).symm.trans (Over.w (fst (baseOver Z) P.A)))).trans (sect_hom P)`.
+A detailed English derivation is pending.
 -/
 theorem sect_fst : sect P ≫ (fst (baseOver Z) P.A).left = P.A.hom :=
   (congrArg (sect P ≫ ·) ((Category.comp_id _).symm.trans (Over.w (fst (baseOver Z) P.A)))).trans (sect_hom P)
@@ -405,7 +405,7 @@ instance isIso_snd : IsIso (snd (baseOver Z) P.A).left := inferInstanceAs (IsIso
 instance isIso_sect : IsIso (sect P) := IsIso.of_isIso_fac_right (sect_snd P)
 
 /- English proof (translation)
-Rewrite using `[← cancel_mono (snd (baseOver Z) P.A).left, Category.assoc, sect_snd, Category.comp_id, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem snd_sect : (snd (baseOver Z) P.A).left ≫ sect P = 𝟙 _ := by
   rw [← cancel_mono (snd (baseOver Z) P.A).left, Category.assoc, sect_snd, Category.comp_id, Category.id_comp]
@@ -415,7 +415,7 @@ def tr {k : ℤ} (t : LB.Sec (LPow P.A P.L k (baseOver Z))) :
   chartSec (chartPullSame P.L _ _ _ (sect P) fun _ => (sect_snd P).symm) t
 
 /- English proof (translation)
-The claim follows from `valR_appLE x (sect P) _ hj _`.
+A detailed English derivation is pending.
 -/
 theorem valR_tr {k : ℤ} (t : LB.Sec (LPow P.A P.L k (baseOver Z))) {C : Type} [CommRing C] (x : Sp C ⟶ P.A.left)
     (j : Fin 1 → P.L.ι) (hj : ⊤ ≤ x ⁻¹ᵁ (LB.LinComb P.L (K := Fin 1) (fun _ => 𝟙 P.A.left) (fun _ => k)).U j) :
@@ -423,14 +423,14 @@ theorem valR_tr {k : ℤ} (t : LB.Sec (LPow P.A P.L k (baseOver Z))) {C : Type} 
   valR_appLE x (sect P) _ hj _
 
 /- English proof (translation)
-The claim follows from `nonzeroLocus_chartSec _ _ fun y _ _ => exists_chart (LB.isLB_linComb P.isLB _ _) y`.
+A detailed English derivation is pending.
 -/
 theorem nonzeroLocus_tr {k : ℤ} (t : LB.Sec (LPow P.A P.L k (baseOver Z))) :
     nonzeroLocus (tr P t) = sect P ⁻¹ᵁ nonzeroLocus t :=
   nonzeroLocus_chartSec _ _ fun y _ _ => exists_chart (LB.isLB_linComb P.isLB _ _) y
 
 /- English proof (translation)
-Establish `e : ∀ y, (snd (baseOver Z) P.A).left ((x ≫ sect P) y) = x y` using `fun y => by`. Rewrite using `[← Scheme.Hom.comp_apply, Category.assoc, sect_snd, Category.comp_id]`. Conclude with `⟨fun h y hy => Set.mem_iInter.2 fun i => (congrArg (· ∈ P.L.U (j i)) (e y)).mpr (Set.mem_iInter.1 (h hy) i), fun h y hy => Set.mem_iInter.2 fun i => (congrArg (· ∈ P.L.U (j i)) (e y)).mp (Set.mem_iInter.1 (h hy) i)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem le_chart_iff (k : ℤ) {Y : Scheme.{0}} (x : Y ⟶ P.A.left) (j : Fin 1 → P.L.ι) :
     ⊤ ≤ x ⁻¹ᵁ (LB.LinComb P.L (K := Fin 1) (fun _ => 𝟙 P.A.left) (fun _ => k)).U j ↔
@@ -443,7 +443,7 @@ theorem le_chart_iff (k : ℤ) {Y : Scheme.{0}} (x : Y ⟶ P.A.left) (j : Fin 1 
 end Transfer
 
 /- English proof (translation)
-Use `(congrArg (fun u => valR x _ (Units.val u)) (Fintype.prod_unique _)).trans ?_` and prove the remaining obligations. Use `(TuplePoint.valR_zpow_unit x h _ n).trans ?_` and prove the remaining obligations. Conclude with `congrArg (· ^ n) ((TuplePoint.valR_res_unit x _ h _).trans (TuplePoint.valR_pullU x g (B.U i ⊓ B.U j) (B.g _ _)))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem valR_pow_g {X Y : Scheme.{0}} {K : Type} [Field K] (x : Sp K ⟶ X) (B : LB Y) (g : X ⟶ Y) (n : ℤ) (i j : B.ι)
     (h : ⊤ ≤ x ⁻¹ᵁ (LB.wchart B (fun _ : Fin 1 => g) (fun _ => i) ⊓
@@ -459,15 +459,15 @@ variable (ρ : S.Real) (c : CubicalStr ρ.P.A ⟨ρ.P.L, ρ.rig, ρ.P.isLB, ρ.r
 open PreModel in
 
 /- English proof (translation)
-Introduce `K _ β g r jP jL h₁ h₂ hP hL hV`. Set `x : Sp K ⟶ ρ.P.A.left` to `g ≫ pullback.fst ρ.P.A.hom (⊤ : (Sp S.R).Opens).ι`. Establish `hr : r = x ≫ sect ρ.P`. Rewrite using `[← cancel_mono (snd (baseOver (Sp S.R)) ρ.P.A).left, Category.assoc, sect_snd, Category.comp_id]`. Conclude with `h₂`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx : x ≫ ρ.P.A.hom = spMap β ≫ (affModel S).pt` using `((Category.assoc _ _ _).trans (congrArg (g ≫ ·) pullback.condition)).trans h₁`. Establish `hW : ⊤ ≤ (x ≫ ρ.P.A.hom) ⁻¹ᵁ W` using `fun y _ => hV ⟨y, rfl⟩`. Establish `hne : (W : Set (affModel S).Z).Nonempty` using `⟨_, hW (x := IsLocalRing.closedPoint K) trivial⟩`. Establish `cP : ⊤ ≤ x ⁻¹ᵁ (LB.LinComb ρ.P.L (K` using `Fin 1) (fun _ => 𝟙 ρ.P.A.left) (fun _ => k)).U (fun _ => jP) := fun y _ => Set.mem_iInter.2 fun _ => hP ⟨y, rfl⟩`. Establish `cL : ⊤ ≤ x ⁻¹ᵁ (LB.LinComb ρ.P.L (K` using `Fin 1) (fun _ => 𝟙 ρ.P.A.left) (fun _ => k)).U (fun _ => jL) := fun y _ => Set.mem_iInter.2 fun _ => hL ⟨y, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `dP` using `(le_chart_iff ρ.P k x _).1 cP`. Establish `dL` using `(le_chart_iff ρ.P k x _).1 cL`. Establish `hw : valF g _ ((pre ρ c).w.s (fun _ => jP, fun _ => jL)).val = valR x _ (ρ.P.L.g jP jL).val` using `(TuplePoint.valR_linComb_g g ρ.P.L _ 1 (fun _ => jP) (fun _ => jL) fun z _ => ⟨Set.mem_iInter.2 fun _ => hP ⟨z, rfl⟩, Set.mem_iInter.2 fun _ => hL ⟨z, rfl⟩⟩).trans (zpow_one _)`. Use `Eq.trans ?_ (congrArg₂ (fun u v => u ^ k * v) hw (valR_comb (Z := Sp S.R) ρ.P.A.hom (fun i => tr ρ.P (t i)) W f x _ hW cL)).symm` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, hr]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, valR_tr ρ.P _ x _ cL, hx]`. Use `congrArg₂ (· * ·) ((congrArg β (h hne i).symm).trans (valR_spMap_comp β _ W ((affModel S).top_le_preimage_pt hne) _).symm) ?_` and prove the remaining obligations. Use `(Specialise.valR_compat (t i) _ dP dL).trans (congrArg (· * _) ?_)` and prove the remaining obligations. Use `(valR_pow_g _ ρ.P.L _ k jP jL fun y hy => ⟨dP hy, dL hy⟩).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, sect_snd, Category.comp_id]`.
+A detailed English derivation is pending.
 -/
 theorem genVal_comb (k : ℤ) {I : Type} [Fintype I] (t : I → LB.Sec (LPow ρ.P.A ρ.P.L k (baseOver (Sp S.R))))
     (W : (affModel S).Z.Opens) (f : I → Γ((affModel S).Z, W)) (a : I → Ω)
@@ -508,7 +508,7 @@ section Support
 open PreModel
 
 /- English proof (translation)
-Use `isFractionRing_R S` as an intermediate fact. Establish `: Algebra.FiniteType o S.R` using `(Subalgebra.fg_iff_finiteType _).1 S.fg`. Use `⟨⟨fun e => h ((show (⟨S.th a, S.th_mem a⟩ : S.R) = 0 from Subtype.ext e) ▸ zero_mem _), fun j => ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `(RatModel.mem_O_ofAffine (A := S.R) (z := z)).2 ⟨⟨_, S.th_mem j⟩, _, h, rfl⟩`. Conclude with `(RatModel.mem_O_ofAffine (A := S.R) (z := z)).2 ⟨1, _, h, by rw [map_one, one_div]; rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_supI_of_notMem {z : PrimeSpectrum S.R} {a : S.Gam} (h : (⟨S.th a, S.th_mem a⟩ : S.R) ∉ z.asIdeal) :
     a ∈ S.supI (affModel S) z ∧ (S.th a)⁻¹ ∈ (affModel S).O z := by
@@ -521,9 +521,9 @@ theorem mem_supI_of_notMem {z : PrimeSpectrum S.R} {a : S.Gam} (h : (⟨S.th a, 
 include ρ
 
 /- English proof (translation)
-Take `⟨j, hj, hr⟩` from `ρ.r_eq`. Establish `h` using `ThetaReal.closure_eq_top_of_meets_torsion_cosets _ ρ.n (j + ρ.k * 2) (S.r * S.N) ρ.n_prime.one_le (by have := ρ.two_le; omega) (by rw [hr, ρ.N_eq, ← pow_mul, ← pow_add]) (S.supI (affModel S) z) fun a => by`. Take `⟨y, hy, H⟩` from `exists_th_notMem hL hL₂ ρ z a`. Conclude with `⟨y, hy, (mem_supI_of_notMem H).1⟩`. Unfold `ThetaSys.TT ThetaSys.HH`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Replace the relevant objects with their definitions.
 
-Rewrite using `[h, PreInh.perp_top]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem TT_eq_bot (hL : Laws) (hL₂ : Laws2) (z : (affModel S).Z) : S.TT (affModel S) z = ⊥ := by
   obtain ⟨j, hj, hr⟩ := ρ.r_eq
@@ -535,9 +535,9 @@ theorem TT_eq_bot (hL : Laws) (hL₂ : Laws2) (z : (affModel S).Z) : S.TT (affMo
   rw [h, PreInh.perp_top]
 
 /- English proof (translation)
-Use `isFractionRing_R S` as an intermediate fact. Establish `: Algebra.FiniteType o S.R` using `(Subalgebra.fg_iff_finiteType _).1 S.fg`. Use `⟨RatModel.algebraMap_mem_O_ofAffine (A := S.R) z ⟨_, S.th_mem a⟩, ?_⟩` and prove the remaining obligations. Take `⟨y, -, H⟩` from `exists_th_notMem hL hL₂ ρ z 0`. Take `⟨h₁, h₂⟩` from `mem_supI_of_notMem H`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `mul_mem h₂ (h.2 (0 + y))` as an intermediate fact. Rewrite `this` using `[div_eq_mul_inv, inv_mul_cancel_left₀ h₁.1]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem th_mem_and_inv_mem (hL : Laws) (hL₂ : Laws2) {z : (affModel S).Z} {a : S.Gam}
     (h : a ∈ S.supI (affModel S) z) : S.th a ∈ (affModel S).O z ∧ (S.th a)⁻¹ ∈ (affModel S).O z := by
@@ -552,9 +552,9 @@ theorem th_mem_and_inv_mem (hL : Laws) (hL₂ : Laws2) {z : (affModel S).Z} {a :
 end Support
 
 /- English proof (translation)
-Apply the tactic sequence `refine le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_le.2 ?_) <;> rintro _ ⟨i, rfl⟩`. Establish `e : b i = (⟨u, h₁⟩ : O) • (Matrix.of fun i l => b i l / u) i`. Use function extensionality and compare the values at `fun l => (mul_div_cancel₀ (b i l) h₀).symm`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (Matrix.of fun i l => b i l / u) i = (⟨u⁻¹, h₂⟩ : O) • b i` using `funext fun l => div_eq_inv_mul (b i l) u`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_div (O : Subalgebra o Ω) {J : Type} (b : Matrix J J Ω) {u : Ω} (h₀ : u ≠ 0) (h₁ : u ∈ O) (h₂ : u⁻¹ ∈ O) :
     Submodule.span O (Set.range b) = Submodule.span O (Set.range (Matrix.of fun i l => b i l / u)) := by
@@ -570,33 +570,31 @@ theorem span_div (O : Subalgebra o Ω) {J : Type} (b : Matrix J J Ω) {u : Ω} (
 open PreModel in
 
 /- English proof (translation)
-Use `hA.ded` as an intermediate fact. Establish `: IsNoetherianRing S.R` using `isNoetherianRing_of_fg S.fg`. Take `⟨c⟩` from `(hL.cube (Sp S.R) ρ.P ⟨ρ.P.L, ρ.rig, ρ.P.isLB, ρ.rig_gen⟩ rfl).1`. Set `Q` to `pre ρ c`. Establish `hne : ((⊤ : (affModel S).Z.Opens) : Set (affModel S).Z).Nonempty` using `⟨genericPoint _, trivial⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨hSec, hAb, -⟩` from `pre_sec ρ c`. Take `⟨hEndo, hIso⟩` from `endo_and_isoExt Q (ZJ.isNormalScheme_sp S.R)`. Establish `hN : 4 ≤ S.N`. Establish `h : 2 ≤ ρ.n ^ ρ.k` using `ρ.n_prime.two_le.trans (Nat.le_self_pow (by have := ρ.two_le; omega) _)`. Rewrite using `[ρ.N_eq]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.pow_le_pow_left h 2`. Establish `himm` using `immBy_of_spans hL.ample ρ.P hN ρ.s fun σ => (ρ.s_basis σ).exists`. Establish `hcov : ⨆ i, nonzeroLocus (tr ρ.P (ρ.s i)) = ⊤`. Establish `h` using `himm.1`. Simplify using `only [Set.mem_univ, iSup_pos] at h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [nonzeroLocus_tr]`. Rewrite using `[← Scheme.Hom.preimage_iSup, h]`. Both sides reduce to the same expression. Establish `hmat : ∀ (W : (affModel S).Z.Opens) (x₀ : S.Gam) (b : Matrix S.J S.J Ω), (∀ z ∈ W, x₀ ∈ S.supI (affModel S) z ∧ (RatModel.Lat.const (affModel S) S.J).E z = Submodule.span ((affModel S).O z) (Set.range b)) → ∃ B C : Matrix S.J S.J Γ((affModel S).Z, W), C * B = 1 ∧ ∀ i, GenVal ρ (a …` using `Sp S.R) ρ.P.A.hom (fun i => tr ρ.P (ρ.s i)) W (B i)) := by`. Introduce `W x₀ b hb`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨B, C, h₁, h₂⟩` from `PreSec.exists_matrix (affModel S) W (Matrix.of fun i l => b i l / S.th x₀) fun z hz => (hb z hz).2.trans (span_div _ b (hb z hz).1.1 (th_mem_and_inv_mem ρ hL hL₂ (hb z hz).1).1 (th_mem_and_inv_mem ρ hL hL₂ (hb z hz).1).2)`. Conclude with `⟨B, C, h₁, fun i => genVal_comb ρ c _ _ W _ _ fun h => h₂ h i⟩`. Conclude with `⟨{ u₀ := Q.u₀ u₀_gen := Q.u₀_gen G := Q.G grp := Q.grp comm := Q.comm semi := Q.semi dim := Q.dim qproj := Q.qproj φ := Q.φ cart := Q.cart L := Q.L cub := Q.cub sym := Q.sym w := Q.w w_gen := Q.w_gen w_rig := Q.w_rig hypS := ρ.hypS endo := hEndo isoExt := fun n x x' hx ε ε' _ _ = …`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu, h⟩ : ∃ u : Γ((affModel S).Z, W), IsUnit u ∧ ((W : Set (affModel S).Z).Nonempty → valF (affModel S).pt W u = (S.th x₀)⁻¹) := by`. Distinguish the cases in `hW : (W : Set (affModel S).Z).Nonempty`.
+Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu⟩` from `(RatModel.mem_ringOn_iff_exists hW).1 (RatModel.mem_ringOn.2 fun z hz => (th_mem_and_inv_mem ρ hL hL₂ (hx z hz)).2)`. Take `⟨v, hv⟩` from `(RatModel.mem_ringOn_iff_exists hW).1 (RatModel.mem_ringOn.2 fun z hz => (th_mem_and_inv_mem ρ hL hL₂ (hx z hz)).1)`. Use `⟨u, IsUnit.of_mul_eq_one v ((affModel S).res_injective W hW ?_), fun _ => hu⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_one, RatModel.res_apply, RatModel.res_apply, hu, hv, inv_mul_cancel₀ (hx _ hW.some_mem).1]`. Conclude with `⟨1, isUnit_one, fun h => absurd h hW⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨comb (Z := Sp S.R) ρ.P.A.hom (fun _ : Unit => tr ρ.P ρ.th₁) W (fun _ => u), comb_mem _ _ _ _, genVal_comb ρ c 1 (fun _ : Unit => ρ.th₁) W _ _ fun hW _ => h hW, fun K _ _ x hxW => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, e⟩` from `ThetaFibre.exists_mem_nonzeroLocus_fibre hL₂.secBaseChangeAny S.R ρ.P ρ.th₁ ρ.th₁_basis (x (IsLocalRing.closedPoint K))`. Establish `hy' : (snd (baseOver (Sp S.R)) ρ.P.A).left y ∈ nonzeroLocus (tr ρ.P ρ.th₁)`. Rewrite using `[nonzeroLocus_tr]`. Conclude with `(congrArg (fun q => q y ∈ nonzeroLocus ρ.th₁) (snd_sect ρ.P)).mpr hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 hy'`. Use `ρ.P.isAb.smooth` as an intermediate fact. Take `⟨g, hg, hO⟩` from `LocThetaConv.exists_point (Y := Sp S.R) ρ.P.A.hom x _ _ hj e`. Establish `hU` using `le_preimage_mono _ (Scheme.basicOpen_le _ _) hO`. Establish `hW : ⊤ ≤ (g ≫ ρ.P.A.hom) ⁻¹ᵁ W` using `hg ▸ (top_le_preimage_iff _ _).2 hxW`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨g, j, hg, fun h0 => ?_⟩` and prove the remaining obligations. Establish `h1` using `(valR_comb (Z := Sp S.R) ρ.P.A.hom (fun _ : Unit => tr ρ.P ρ.th₁) W (fun _ => u) g j hW hU).symm.trans h0`. Rewrite `h1` using `[Fintype.sum_unique]`. Conclude with `mul_ne_zero ((valR_eq _ W hW u).trans_ne (hu.map _).ne_zero) ((le_preimage_basicOpen_iff _ hU _).1 hO).ne_zero h1`. Use `secOf := exists_secOn_genVal_of_bases o Ω S ρ _ _ _ Q hne fun W x₀ b hb => by`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨B, C, -, h⟩` from `hmat W x₀ b hb`. Conclude with `⟨_, fun i => ⟨comb_mem _ _ _ _, h i⟩⟩`. Use `sections := fun W x₀ b hb => by`. Take `⟨B, C, hC, h⟩` from `hmat W x₀ b hb`. Use `⟨_, fun i => ⟨comb_mem _ _ _ _, h i⟩, fun K _ _ x hx => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hW` using `(top_le_preimage_iff _ _).2 hx`. Use `⟨fun g hg => exists_comb_ne_zero (Z := Sp S.R) ρ.P.A.hom _ W B C hC hcov g ((congrArg (⊤ ≤ · ⁻¹ᵁ W) hg).mpr hW), comb_indep (Z := Sp S.R) ρ.P.A.hom _ W B C hC x hW fun a ha => ?_⟩` and prove the remaining obligations. Use `PreSec.indep_fibre hL.secBaseChange ρ.P (by omega) (by rw [ρ.card, ρ.g_eq]) ρ.s (fun σ => (ρ.s_basis σ).exists) x a fun r j hr hj => ?_` and prove the remaining obligations. Establish `e : (r ≫ (snd (baseOver (Sp S.R)) ρ.P.A).left) ≫ sect ρ.P = r`. Rewrite using `[Category.assoc, snd_sect, Category.comp_id]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hj'` using `(le_chart_iff ρ.P S.N (r ≫ (snd (baseOver (Sp S.R)) ρ.P.A).left) j).2 (e.symm ▸ hj)`. Use `Eq.trans ?_ (ha _ j (by rw [← sect_fst, ← Category.assoc, e, hr]) hj')` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun l _ => congrArg (a l * ·) ((valR_tr ρ.P (ρ.s l) _ _ hj').trans (by rw [e])).symm`. Use `imm := fun W x₀ b hb σ hσ => by`. Take `⟨B, C, hC, h⟩` from `hmat W x₀ b hb`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `rfl : σ = _` from `funext fun i => Q.eq_of_genVal hne _ _ _ _ _ _ (hσ i).2 (h i)`. Take `⟨m, hm⟩ : ∃ m, Fintype.card S.J = m + 1` from `Nat.exists_eq_succ_of_ne_zero Fintype.card_ne_zero`. Set `e : Fin (m + 1) ≃ S.J` to `(Fintype.equivFinOfCardEq hm).symm`. Take `⟨ψ, h₁, h₂, h₃⟩` from `ImmProj.exists_closedImmersion_of_immBy _ _ _ _ _ ρ.s m e himm`. Establish `: IsIntegral ρ.P.A.left` using `Q.isIntegral`.
-
-Use `immersedBy_comb (Z := Sp S.R) ρ.P.A.hom _ W B C hC (LB.isLB_linComb ρ.P.isLB _ _) (affModel S).s (𝟙 _) hcov e (sect ρ.P ≫ ψ) (by rw [Category.assoc, h₂, sect_hom, Category.comp_id]) ?_` and prove the remaining obligations. Introduce and unpack `K _ x v ⟨j, u, hj, hv⟩`. Rewrite using `[← Category.assoc]`. Conclude with `h₃ K _ v ⟨j, u, (le_chart_iff ρ.P _ x j).1 hj, fun l => (hv l).trans (congrArg (_ * ·) (valR_tr ρ.P (ρ.s l) x j hj))⟩ }⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_out (hL : Laws) (hL₂ : Laws2) [hA : ArithBase o Ω] [IsIntegrallyClosed S.R] :
     Nonempty (ZHOut ρ (affModel S) ⊤ (RatModel.Lat.const (affModel S) S.J)) := by
@@ -714,7 +712,7 @@ theorem nonempty_out (hL : Laws) (hL₂ : Laws2) [hA : ArithBase o Ω] [IsIntegr
         (hv l).trans (congrArg (_ * ·) (valR_tr ρ.P (ρ.s l) x j hj))⟩ }⟩
 
 /- English proof (translation)
-Introduce `hL hL₂`. Take `⟨o, Ω, _, _, _, hA, S, ρ, hg, -, hfr⟩` from `RealInhabitant.exists_real_dim_one_isFractionRing hL hL₂`. Use `hA.ded` as an intermediate fact. Use `isIntegrallyClosed_overring S.R` as an intermediate fact. Conclude with `⟨o, Ω, _, _, _, hA, S, ρ, _, ⊤, _, hg, ⟨genericPoint _, trivial⟩, nonempty_out ρ hL hL₂⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_out_dim_one : Laws → Laws2 → ∃ (o Ω : Type) (_ : CommRing o) (_ : Field Ω) (_ : Algebra o Ω) (_ : ArithBase o Ω) (S : ThetaSys o Ω) (ρ : S.Real) (M : RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J), S.g = 1 ∧ (U₀ : Set M.Z).Nonempty ∧ Nonempty (ZHOut ρ M U₀ EE) := by
   intro hL hL₂

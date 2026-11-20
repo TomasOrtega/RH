@@ -26,7 +26,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 
 include hπ0 hΔπ γ0 in
 /- English proof (translation)
-Establish `h` using `framepf_ι_letγ π' i (hπ0 i) (W.γ₀ δ) (γ0 δ hδ) PowerSeries.X (by simp) (by rw [PowerSeries.subst_X (PowerSeries.HasSubst.of_constantCoeff_zero' (hπ0 i))];`. Conclude with `congrFun (hΔπ δ hδ) i) g`. Rewrite `h` using `[PowerSeries.X_subst]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem framepf_hhx_ι_Δ (i : ZMod n) (g : PowerSeries O) (δ : W.Gam) (hδ : δ ∈ W.DelF) :
     W.γA δ (framepf_ι π' i g) = framepf_ι π' i g := by
@@ -38,9 +38,9 @@ theorem framepf_hhx_ι_Δ (i : ZMod n) (g : PowerSeries O) (δ : W.Gam) (hδ : �
 
 include hπ0 hΔπ γ0 in
 /- English proof (translation)
-Unfold `framepf_vec`. Use `Submodule.sum_mem _ fun m _ => ?_` and prove the remaining obligations. Rewrite using `[mem_NcS]`. Take `⟨hN, hΔ⟩` from `Bs.mem m`. Use `⟨(W.N T).smul_mem _ hN, fun δ hδ => ?_, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[gradNPf_γD_smul, framepf_hhx_ι_Δ π' hπ0 hΔπ γ0 _ _ δ hδ, hΔ δ hδ]`. Rewrite using `[smul_smul, framepf_letE_ι π' (c - 1) hπ0]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem framepf_hhx_vec_mem (H : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O)) (k : Fin Bs.r) :
     framepf_vec Bs π' (c - 1) H k ∈ NcS W T (c - 1) := by
@@ -53,7 +53,7 @@ theorem framepf_hhx_vec_mem (H : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O)) (
   · rw [smul_smul, framepf_letE_ι π' (c - 1) hπ0]
 
 /- English proof (translation)
-Unfold `framepf_hh`. Rewrite using `[LinearMap.comp_apply, Fintype.linearCombination_apply]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (framepf_hhx_vec_mem Bs π' c hπ0 hΔπ γ0 H k)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem framepf_hhx_mem (H : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O)) (ℓ : LcQ W T π' c) :
     framepf_hh Bs π' c hπ0 hΔπ hR2 γ0 hu H ℓ ∈ NcS W T (c - 1) := by
@@ -63,7 +63,7 @@ theorem framepf_hhx_mem (H : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O)) (ℓ 
 
 include hπ0 in
 /- English proof (translation)
-Proceed by induction on `M with`. Consider the case `zero => rw [pow_zero, pow_zero, one_smul, one_smul]`. Consider the case `succ M ih => rw [pow_succ', mul_smul, framepf_vec_X_smul Bs π' i hπ0, ih, smul_smul, ← pow_succ']`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem framepf_hhx_vec_pow (i : ZMod n) (Hm : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O)) (M : ℕ)
     (k : Fin Bs.r) :
@@ -74,7 +74,7 @@ theorem framepf_hhx_vec_pow (i : ZMod n) (Hm : Matrix (Fin Bs.r) (Fin Bs.r) (Pow
   | succ M ih => rw [pow_succ', mul_smul, framepf_vec_X_smul Bs π' i hπ0, ih, smul_smul, ← pow_succ']
 
 /- English proof (translation)
-Unfold `framepf_hh`. Rewrite using `[LinearMap.comp_apply, Fintype.linearCombination_apply]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem framepf_hhx_apply (H : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O)) (ℓ : LcQ W T π' c) :
     framepf_hh Bs π' c hπ0 hΔπ hR2 γ0 hu H ℓ =
@@ -84,9 +84,9 @@ theorem framepf_hhx_apply (H : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O)) (�
   rfl
 
 /- English proof (translation)
-Establish `e : W.γD T W.gam (framepf_hh Bs π' c hπ0 hΔπ hR2 γ0 hu H ℓ) - framepf_hh Bs π' c hπ0 hΔπ hR2 γ0 hu H ℓ = π' ^ M • framepf_hh Bs π' c hπ0 hΔπ hR2 γ0 hu Km ℓ`. Rewrite using `[framepf_hhx_apply, framepf_hhx_apply, map_sum, ← Finset.sum_sub_distrib, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, framepf_γ_vec Bs π' (c - 1) hπ0 Gs hGs0 hGs Γ hΓ, sub_eq_iff_eq_add.1 hH, framepf_vec_add Bs π' (c - 1) hπ0, framepf_hhx_vec_pow Bs π' hπ0, smul_add, add_sub_cancel_right, smul_comm]`. Establish `hm` using `(mem_NcS W T (c - 1) _).1 (framepf_hhx_mem Bs π' c hπ0 hΔπ hR2 γ0 hu Km ℓ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, mem_PiNS]`. Use `⟨⟨_, hm.1, rfl⟩, fun δ hδ => ?_⟩` and prove the remaining obligations. Rewrite using `[gradNPf_γD_smul, map_pow, hΔπ δ hδ, hm.2.1 δ hδ]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem framepf_hhx_γ (Gs : PowerSeries O) (hGs0 : PowerSeries.constantCoeff Gs = 0)
     (hGs : W.γ₀ W.gam (π' (c - 1)) = PowerSeries.subst (π' (c - 1)) Gs)
@@ -110,15 +110,13 @@ theorem framepf_hhx_γ (Gs : PowerSeries O) (hGs0 : PowerSeries.constantCoeff Gs
   rw [gradNPf_γD_smul, map_pow, hΔπ δ hδ, hm.2.1 δ hδ]
 
 /- English proof (translation)
-Use `set ℓ := mkL W T π' c z hz with hℓ`. Establish `hv : ∀ k, framepf_coordL Bs π' c hπ0 hΔπ hR2 γ0 ⟨_, framepf_hhx_vec_mem Bs π' c hπ0 hΔπ γ0 H k⟩ = lσ • Pi.single k 1`. Introduce `k`. Establish `e` using `framepf_gco_eq Bs π' c hπ0 hΔπ hR2 γ0 ⟨_, framepf_hhx_vec_mem Bs π' c hπ0 hΔπ γ0 H k⟩ (fun m => H m k) rfl`. Use function extensionality and compare the values at `m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[framepf_coordL_apply, e, hH]`. Distinguish the cases in `hmk : m = k`. Substitute `hmk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne hmk, Pi.single_eq_of_ne hmk]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hsum : (⟨_, framepf_hhx_mem Bs π' c hπ0 hΔπ hR2 γ0 hu H ℓ⟩ : ↥(NcS W T (c - 1))) = ∑ k, framepf_Lbas Bs π' c hπ0 hΔπ hR2 γ0 hu ℓ k • (⟨_, framepf_hhx_vec_mem Bs π' c hπ0 hΔπ γ0 H k⟩ : ↥(NcS W T (c - 1)))`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_sum]`. Conclude with `framepf_hhx_apply Bs π' c hπ0 hΔπ hR2 γ0 hu H ℓ`. Establish `key` using `(framepf_coordL_ker Bs π' c hπ0 hΔπ hR2 γ0 hu (⟨_, framepf_hhx_mem Bs π' c hπ0 hΔπ hR2 γ0 hu H ℓ⟩ - lσ • ⟨z, hz⟩)).1 (by`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_sub, map_smul, hsum, map_sum, ← framepf_Lbas_mk Bs π' c hπ0 hΔπ hR2 γ0 hu ⟨z, hz⟩]`. Simplify using `only [map_smul, hv]`. Establish `: Submodule.Quotient.mk (⟨z, hz⟩ : ↥(NcS W T (c - 1))) = ℓ` using `rfl`. Rewrite using `[this, sub_eq_zero]`. Use function extensionality and compare the values at `m`.
-
-Simplify using `[Finset.sum_apply, Pi.single_apply, mul_comm])`. Conclude with `key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem framepf_hhx_mod (lσ : O) (H Km : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O))
     (hH : H = PowerSeries.C lσ • (1 : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O)) +

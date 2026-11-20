@@ -13,19 +13,19 @@ open scoped IntermediateField
 namespace GlobalTheory.FieldSize
 
 /- English proof (translation)
-Establish `hq : Ideal.span {(n : 𝓞 K)} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hn.ne'` after adjusting the coercions. Establish `hE : IsEmpty (K →+* ℝ)` using `⟨fun φ => IsTotallyComplex.complexEmbedding_not_isReal (Complex.ofRealHom.comp φ) (by`. Rewrite using `[ComplexEmbedding.isReal_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Use the proof step `simp)⟩`. Establish `h1` using `GlobalTheory.FieldSize.RayDegree.finrank_le K M _ hq hR`. Rewrite `h1` using `[Fintype.card_eq_zero, pow_zero, mul_one, Ideal.absNorm_span_natCast, RingOfIntegers.rank, h2]`. Establish `hcl` using `GlobalTheory.classNumber_le_four_mul_abs_discr K h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn' : (0 : ℝ) < n` using `by exact_mod_cast hn`. Establish `hK : (0 : ℝ) < |((discr K : ℤ) : ℝ)|` using `abs_pos.2 (by exact_mod_cast discr_ne_zero K)`. Establish `hr : 0 < Module.finrank K M` using `Module.finrank_pos`. Establish `hr' : (0 : ℝ) < Module.finrank K M` using `by exact_mod_cast hr`. Establish `h3 : (Module.finrank K M : ℝ) ≤ 4 * |(discr K : ℝ)| * (n : ℝ) ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (Module.finrank K M : ℝ) ≤ (classNumber K : ℝ) * (n : ℝ) ^ 2` using `by exact_mod_cast h1`. Conclude with `this.trans (mul_le_mul_of_nonneg_right hcl (by positivity))`. Establish `h4 : (Module.finrank ℚ M : ℝ) = 2 * Module.finrank K M`. Rewrite using `[← Module.finrank_mul_finrank ℚ K M, h2]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h5` using `Real.log_le_log hr' h3`. Rewrite `h5` using `[Real.log_mul (by positivity) (by positivity), Real.log_pow]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h4, show 8 * |(discr K : ℝ)| = 2 * (4 * |(discr K : ℝ)|) by ring, Real.log_mul (by positivity) (by positivity), Real.log_mul (x := 2) (by positivity) (by positivity)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Move the coercions through the operations in `at h5`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h6` using `GlobalTheory.DifferentBound.natCast_mul_finrank_mem_differentIdeal K M n hn (fun 𝔭 h => hR.1 𝔭 (fun hd => h (by`. Rewrite using `[Ideal.dvd_span_singleton] at hd)))` and apply the resulting hypothesis. Establish `h7` using `GlobalTheory.log_rootDiscr_le_of_natCast_mem_differentIdeal K M _ (Nat.mul_pos hn hr) h6`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `h7` using `[h2, Nat.cast_mul, Real.log_mul (by positivity) (by positivity)]`. Move the coercions through the operations in `at h5 h7`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem log_sizes_of_isRay_natCast (K M : Type) [Field K] [NumberField K] [IsTotallyComplex K] [Field M]
     [NumberField M] [Algebra K M] [IsAbelianGalois K M] (h2 : Module.finrank ℚ K = 2) (n : ℕ) (hn : 0 < n)

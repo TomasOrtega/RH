@@ -11,13 +11,13 @@ section Abstract
 variable {R ι : Type} [Monoid R]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons σ L ih`. Establish `hp` using `List.pairwise_cons.mp h2`. Establish `hF : Commute (L.map f).prod (g σ)` using `Commute.list_prod_left _ _ (by`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `t ht`. Take `⟨τ, hτ, rfl⟩` from `List.mem_map.mp ht`. Conclude with `(hp.1 τ hτ).1)`. Establish `hG : Commute (f σ) (L.map g).prod` using `Commute.list_prod_right _ _ (by`. Introduce `t ht`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨τ, hτ, rfl⟩` from `List.mem_map.mp ht`. Conclude with `(hp.1 τ hτ).2)`. Establish `ih'` using `ih (fun τ hτ => h1 τ (List.mem_cons.mpr (Or.inr hτ))) hp.2`. Establish `e1` using `h1 σ (List.mem_cons.mpr (Or.inl rfl))`. Establish `key : X * (f σ * (L.map f).prod) * (g σ * (L.map g).prod) = g σ * (L.map g).prod * (f σ * (L.map f).prod) * X`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify to obtain the desired conclusion from the available facts.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify `key` using `only [List.map_cons, List.prod_cons]`.
+A detailed English derivation is pending.
 -/
 theorem exch_list (X : R) (f g : ι → R) (L : List ι)
     (h1 : ∀ σ ∈ L, X * f σ * g σ = g σ * f σ * X)
@@ -54,13 +54,13 @@ theorem exch_list (X : R) (f g : ι → R) (L : List ι)
     simpa only [List.map_cons, List.prod_cons] using key
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons σ L ih`. Establish `hp` using `List.pairwise_cons.mp h2`. Establish `hF : Commute (L.reverse.map f).prod (g σ)` using `Commute.list_prod_left _ _ (by`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `t ht`. Take `⟨τ, hτ, rfl⟩` from `List.mem_map.mp ht`. Conclude with `(hp.1 τ (List.mem_reverse.mp hτ)).1)`. Establish `hG : Commute (f σ) (L.map g).prod` using `Commute.list_prod_right _ _ (by`. Introduce `t ht`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨τ, hτ, rfl⟩` from `List.mem_map.mp ht`. Conclude with `(hp.1 τ hτ).2)`. Establish `ih'` using `ih (fun τ hτ => h1 τ (List.mem_cons.mpr (Or.inr hτ))) hp.2`. Establish `e1` using `h1 σ (List.mem_cons.mpr (Or.inl rfl))`. Establish `key : (L.reverse.map f).prod * f σ * X * (g σ * (L.map g).prod) = g σ * (L.map g).prod * X * ((L.reverse.map f).prod * f σ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify to obtain the desired conclusion from the available facts.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify `key` using `[List.reverse_cons, mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem exch_list_rev (X : R) (f g : ι → R) (L : List ι)
     (h1 : ∀ σ ∈ L, f σ * X * g σ = g σ * X * f σ)
@@ -97,11 +97,11 @@ theorem exch_list_rev (X : R) (f g : ι → R) (L : List ι)
     simpa [List.reverse_cons, mul_assoc] using key
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons σ L ih`. Establish `hp` using `List.pairwise_cons.mp h2`. Establish `hC : Commute (y σ) (L.map x).prod` using `Commute.list_prod_right _ _ (by`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `t ht`. Take `⟨τ, hτ, rfl⟩` from `List.mem_map.mp ht`. Conclude with `hp.1 τ hτ)`. Establish `key : x σ * y σ * ((L.map x).prod * (L.map y).prod) = x σ * (L.map x).prod * (y σ * (L.map y).prod)`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `key` using `only [List.map_cons, List.prod_cons, ih hp.2, mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem prod_mul_list (x y : ι → R) (L : List ι)
     (h2 : L.Pairwise fun σ τ => Commute (y σ) (x τ)) :
@@ -131,58 +131,58 @@ variable {K A S : Type} [Field K] [StarRing K] [Ring A] [StarRing A] [Algebra K 
   [Fintype S] [DecidableEq S]
 
 /- English proof (translation)
-Simplify using `[io, Matrix.scalar_apply, Matrix.diagonal_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem io_mul_apply (x : A) (b : SlopeTestRemainingChoices S A) (z z' : Ix S) : ((io x : SlopeTestRemainingChoices S A) * b) z z' = x * b z z' := by
   simp [io, Matrix.scalar_apply, Matrix.diagonal_mul]
 
 /- English proof (translation)
-Simplify using `[io, Matrix.scalar_apply, Matrix.mul_diagonal]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mul_io_apply (x : A) (b : SlopeTestRemainingChoices S A) (z z' : Ix S) : (b * (io x : SlopeTestRemainingChoices S A)) z z' = b z z' * x := by
   simp [io, Matrix.scalar_apply, Matrix.mul_diagonal]
 
 /- English proof (translation)
-Simplify using `[io]`.
+Simplify using the standard rewrite rules.
 -/
 theorem io_add (x y : A) : (io (x + y) : SlopeTestRemainingChoices S A) = io x + io y := by simp [io]
 
 /- English proof (translation)
-Simplify using `[io]`.
+Simplify using the standard rewrite rules.
 -/
 theorem io_mul (x y : A) : (io (x * y) : SlopeTestRemainingChoices S A) = io x * io y := by simp [io]
 
 /- English proof (translation)
-Simplify using `[io]`.
+Simplify using the standard rewrite rules.
 -/
 theorem io_neg (x : A) : (io (-x) : SlopeTestRemainingChoices S A) = -io x := by simp [io]
 
 /- English proof (translation)
-Simplify using `[io]`.
+Simplify using the standard rewrite rules.
 -/
 theorem io_zero : (io (0 : A) : SlopeTestRemainingChoices S A) = 0 := by simp [io]
 
 /- English proof (translation)
-Simplify using `[io]`.
+Simplify using the standard rewrite rules.
 -/
 theorem io_one : (io (1 : A) : SlopeTestRemainingChoices S A) = 1 := by simp [io]
 
 /- English proof (translation)
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [lift0, Matrix.map_apply, Matrix.mul_apply, Fin.sum_univ_two, io_add, io_mul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem lift_reduction_mul (M N : M2 A) : (lift0 (M * N) : M2 (SlopeTestRemainingChoices S A)) = lift0 M * lift0 N := by
   refine Matrix.ext fun i j => ?_
   simp only [lift0, Matrix.map_apply, Matrix.mul_apply, Fin.sum_univ_two, io_add, io_mul]
 
 /- English proof (translation)
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : i = j <;> simp [lift0, Matrix.one_apply, h, io_one, io_zero]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem liftMatrix_one : (lift0 (1 : M2 A) : M2 (SlopeTestRemainingChoices S A)) = 1 := by
   refine Matrix.ext fun i j => ?_
   by_cases h : i = j <;> simp [lift0, Matrix.one_apply, h, io_one, io_zero]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp [liftMatrix_one]`. Consider the case `cons M L ih => simp [lift_reduction_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem liftMatrix_list_prod (L : List (M2 A)) :
     (lift0 L.prod : M2 (SlopeTestRemainingChoices S A)) = (L.map lift0).prod := by
@@ -191,19 +191,19 @@ theorem liftMatrix_list_prod (L : List (M2 A)) :
   | cons M L ih => simp [lift_reduction_mul, ih]
 
 /- English proof (translation)
-Simplify using `[d0]`.
+Simplify using the standard rewrite rules.
 -/
 theorem diagScalar_mul (a b : SlopeTestRemainingChoices S A) : d0 (a * b) = d0 a * d0 b := by
   simp [d0]
 
 /- English proof (translation)
-Simplify using `[d0]`.
+Simplify using the standard rewrite rules.
 -/
 theorem d0_one : d0 (1 : SlopeTestRemainingChoices S A) = 1 := by
   simp [d0]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp [d0_one]`. Consider the case `cons M L ih => simp [diagScalar_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem diagScalar_list_prod (L : List (SlopeTestRemainingChoices S A)) : d0 L.prod = (L.map d0).prod := by
   induction L with
@@ -211,19 +211,19 @@ theorem diagScalar_list_prod (L : List (SlopeTestRemainingChoices S A)) : d0 L.p
   | cons M L ih => simp [diagScalar_mul, ih]
 
 /- English proof (translation)
-Simplify using `[d0, Matrix.mul_diagonal]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mul_diagScalar_apply (M : M2 (SlopeTestRemainingChoices S A)) (b : SlopeTestRemainingChoices S A) (i j : Fin 2) : (M * d0 b) i j = M i j * b := by
   simp [d0, Matrix.mul_diagonal]
 
 /- English proof (translation)
-Simplify using `[d0, Matrix.diagonal_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem diagScalar_mul_apply (M : M2 (SlopeTestRemainingChoices S A)) (b : SlopeTestRemainingChoices S A) (i j : Fin 2) : (d0 b * M) i j = b * M i j := by
   simp [d0, Matrix.diagonal_mul]
 
 /- English proof (translation)
-Use `show lift0 M * d0 b = d0 b * lift0 M`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Rewrite using `[mul_diagScalar_apply, diagScalar_mul_apply]`. Conclude with `(h i j).eq`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftMatrix_commute_diagScalar (M : M2 A) (b : SlopeTestRemainingChoices S A) (h : ∀ i j, Commute (io (M i j)) b) :
     Commute (lift0 M) (d0 b) := by
@@ -233,7 +233,7 @@ theorem liftMatrix_commute_diagScalar (M : M2 A) (b : SlopeTestRemainingChoices 
   exact (h i j).eq
 
 /- English proof (translation)
-Use `show (io x : SlopeTestRemainingChoices S A) * eU a i j = eU a i j * io x`. Use `Matrix.ext fun z z' => ?_` and prove the remaining obligations. Rewrite using `[io_mul_apply, mul_io_apply]`. Simplify using `only [eU, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem io_comm_eU (x : A) (a : S) (i j : Fin 2) : Commute (io x) (eU a i j : SlopeTestRemainingChoices S A) := by
   show (io x : SlopeTestRemainingChoices S A) * eU a i j = eU a i j * io x
@@ -243,13 +243,13 @@ theorem io_comm_eU (x : A) (a : S) (i j : Fin 2) : Commute (io x) (eU a i j : Sl
   split_ifs <;> simp
 
 /- English proof (translation)
-Conclude with `h.map (Matrix.scalar (Ix S))`.
+A detailed English derivation is pending.
 -/
 theorem io_comm_io {x y : A} (h : Commute x y) : Commute (io x : SlopeTestRemainingChoices S A) (io y) := by
   exact h.map (Matrix.scalar (Ix S))
 
 /- English proof (translation)
-Use `show (io (algebraMap K A k) : SlopeTestRemainingChoices S A) * b = b * io (algebraMap K A k)`. Use `Matrix.ext fun z z' => ?_` and prove the remaining obligations. Rewrite using `[io_mul_apply, mul_io_apply]`. Conclude with `Algebra.commutes k (b z z')`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem io_algebraMap_comm (k : K) (b : SlopeTestRemainingChoices S A) : Commute (io (algebraMap K A k)) b := by
   show (io (algebraMap K A k) : SlopeTestRemainingChoices S A) * b = b * io (algebraMap K A k)
@@ -258,7 +258,7 @@ theorem io_algebraMap_comm (k : K) (b : SlopeTestRemainingChoices S A) : Commute
   exact Algebra.commutes k (b z z')
 
 /- English proof (translation)
-Unfold `ins`. Use `Commute.sum_right _ _ _ fun i _ => Commute.sum_right _ _ _ fun j _ => ?_` and prove the remaining obligations. Conclude with `(io_comm_eU x a i j).mul_right (io_comm_io (h i j))`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem io_comm_ins (x : A) (a : S) (M : M2 A) (h : ∀ i j, Commute x (M i j)) :
     Commute (io x) (ins a (lift0 M) : SlopeTestRemainingChoices S A) := by
@@ -269,32 +269,32 @@ theorem io_comm_ins (x : A) (a : S) (M : M2 A) (h : ∀ i j, Commute x (M i j)) 
 def CC (τ : Site A) (b : SlopeTestRemainingChoices S A) : Prop := ∀ x ∈ ops τ, Commute (io x) b
 
 /- English proof (translation)
-Simplify using `[ops, hol]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_ops_p (τ : Site A) : τ.p ∈ ops τ := by simp [ops, hol]
 /- English proof (translation)
-Simplify using `[ops, hol]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_ops_c (τ : Site A) : τ.c ∈ ops τ := by simp [ops, hol]
 /- English proof (translation)
-Simplify using `[ops, hol]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_ops_ci (τ : Site A) : τ.ci ∈ ops τ := by simp [ops, hol]
 /- English proof (translation)
-Simplify using `[ops, hol]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_ops_sp (τ : Site A) : star τ.p ∈ ops τ := by simp [ops, hol]
 /- English proof (translation)
-Simplify using `[ops, hol]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_ops_sc (τ : Site A) : star τ.c ∈ ops τ := by simp [ops, hol]
 /- English proof (translation)
-Simplify using `[ops, hol]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_ops_sci (τ : Site A) : star τ.ci ∈ ops τ := by simp [ops, hol]
 
 /- English proof (translation)
-Establish `hp` using `h _ (mem_ops_p τ)`. Establish `hc` using `h _ (mem_ops_c τ)`. Establish `hci` using `h _ (mem_ops_ci τ)`. Establish `hY` using `hφ Y b`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Ts, Tm, hc, hci] <;> exact hY.add_left hp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem comm_Ts {R : Type} [Ring R] (φ : A →+* R) (hφ : ∀ (k : K) (r : R), Commute (φ (algebraMap K A k)) r)
     (τ : Site A) (b : R) (h : ∀ x ∈ ops τ, Commute (φ x) b) (Y : K) (i j : Fin 2) :
@@ -306,9 +306,9 @@ theorem comm_Ts {R : Type} [Ring R] (φ : A →+* R) (hφ : ∀ (k : K) (r : R),
   fin_cases i <;> fin_cases j <;> simp [Ts, Tm, hc, hci] <;> exact hY.add_left hp
 
 /- English proof (translation)
-Establish `hp` using `h _ (mem_ops_sp τ)`. Establish `hc` using `h _ (mem_ops_sc τ)`. Establish `hci` using `h _ (mem_ops_sci τ)`. Establish `hY : Commute (φ (star (algebraMap K A Y))) b`. Rewrite using `[← algebraMap_star_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hφ _ b`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Ts, Tm, hc, hci] <;> first | exact hY.add_left hp | exact (hφ (star Y) b).add_left hp`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem comm_Ts_star {R : Type} [Ring R] (φ : A →+* R)
     (hφ : ∀ (k : K) (r : R), Commute (φ (algebraMap K A k)) r)
@@ -331,9 +331,9 @@ variable {K A S : Type} [Field K] [StarRing K] [Ring A] [StarRing A] [Algebra K 
   [Fintype S] [DecidableEq S]
 
 /- English proof (translation)
-Unfold `vlet`. Apply `io_comm_ins` to reduce the goal to its premises. Introduce `i j`. Establish `hφ : ∀ (k : K) (r : A), Commute ((RingHom.id A) (algebraMap K A k)) r` using `fun k r => Algebra.commutes k r`. Distinguish the cases in `hl : l.plus = true`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hl]`. Conclude with `(comm_Ts (RingHom.id A) hφ σ x h l.pt i j).symm`. Rewrite using `[if_neg hl]`. Conclude with `(comm_Ts_star (RingHom.id A) hφ σ x h l.pt i j).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem io_comm_vlet (σ : Site A) (x : A) (h : ∀ y ∈ ops σ, Commute y x) (l : Letter K S) :
     Commute (io x) (vlet σ l : SlopeTestRemainingChoices S A) := by
@@ -349,9 +349,9 @@ theorem io_comm_vlet (σ : Site A) (x : A) (h : ∀ y ∈ ops σ, Commute y x) (
     exact (comm_Ts_star (RingHom.id A) hφ σ x h l.pt i j).symm
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil`. Simplify using `only [bT]`. Conclude with `Commute.one_right _`. Consider the case `cons l w ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [bT]`. Conclude with `(io_comm_vlet σ x h l).mul_right ih`.
+A detailed English derivation is pending.
 -/
 theorem io_comm_bT (σ : Site A) (x : A) (h : ∀ y ∈ ops σ, Commute y x) (w : List (Letter K S)) :
     Commute (io x) (bT σ w : SlopeTestRemainingChoices S A) := by
@@ -364,24 +364,24 @@ theorem io_comm_bT (σ : Site A) (x : A) (h : ∀ y ∈ ops σ, Commute y x) (w 
     exact (io_comm_vlet σ x h l).mul_right ih
 
 /- English proof (translation)
-Introduce `x hx` and use `io_comm_vlet σ x (fun y hy => h y hy x hx) l`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cc_vlet {σ τ : Site A} (h : SitesCommute σ τ) (l : Letter K S) :
     CC τ (vlet σ l : SlopeTestRemainingChoices S A) := fun x hx => io_comm_vlet σ x (fun y hy => h y hy x hx) l
 
 /- English proof (translation)
-Introduce `x hx` and use `io_comm_bT σ x (fun y hy => h y hy x hx) w`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cc_bT {σ τ : Site A} (h : SitesCommute σ τ) (w : List (Letter K S)) :
     CC τ (bT σ w : SlopeTestRemainingChoices S A) := fun x hx => io_comm_bT σ x (fun y hy => h y hy x hx) w
 
 /- English proof (translation)
-Introduce `x hx y hy` and use `(h y hy x hx).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sitesCommute_symm {σ τ : Site A} (h : SitesCommute σ τ) : SitesCommute τ σ := fun x hx y hy => (h y hy x hx).symm
 
 /- English proof (translation)
-Establish `hφ : ∀ (k : K) (r : SlopeTestRemainingChoices S A), Commute ((Matrix.scalar (Ix S) : A →+* SlopeTestRemainingChoices S A) (algebraMap K A k)) r` using `fun k r => io_algebraMap_comm k r`. Establish `h' : ∀ x ∈ ops τ, Commute ((Matrix.scalar (Ix S) : A →+* SlopeTestRemainingChoices S A) x) b` using `h`. Conclude with `liftMatrix_commute_diagScalar _ _ fun i j => comm_Ts _ hφ τ b h' Y i j`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem liftMatrix_transfer_commute_diagScalar {τ : Site A} {b : SlopeTestRemainingChoices S A} (h : CC τ b) (Y : K) :
     Commute (lift0 (Ts τ Y)) (d0 b) := by
@@ -392,7 +392,7 @@ theorem liftMatrix_transfer_commute_diagScalar {τ : Site A} {b : SlopeTestRemai
   exact liftMatrix_commute_diagScalar _ _ fun i j => comm_Ts _ hφ τ b h' Y i j
 
 /- English proof (translation)
-Establish `hφ : ∀ (k : K) (r : SlopeTestRemainingChoices S A), Commute ((Matrix.scalar (Ix S) : A →+* SlopeTestRemainingChoices S A) (algebraMap K A k)) r` using `fun k r => io_algebraMap_comm k r`. Establish `h' : ∀ x ∈ ops τ, Commute ((Matrix.scalar (Ix S) : A →+* SlopeTestRemainingChoices S A) x) b` using `h`. Conclude with `liftMatrix_commute_diagScalar _ _ fun i j => comm_Ts_star _ hφ τ b h' Y j i`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem liftMatrix_transfer_conjTranspose_commute {τ : Site A} {b : SlopeTestRemainingChoices S A} (h : CC τ b) (Y : K) :
     Commute (lift0 (Ts τ Y)ᴴ) (d0 b) := by
@@ -403,7 +403,7 @@ theorem liftMatrix_transfer_conjTranspose_commute {τ : Site A} {b : SlopeTestRe
   exact liftMatrix_commute_diagScalar _ _ fun i j => comm_Ts_star _ hφ τ b h' Y j i
 
 /- English proof (translation)
-Establish `e` using `exch_list (Xp w Y) (fun σ => lift0 (Ts σ Y)) (fun σ => d0 (bT σ w)) sites h1 (h2.imp fun {σ τ} hst => ⟨liftMatrix_transfer_commute_diagScalar (cc_bT hst w) Y, liftMatrix_transfer_commute_diagScalar (cc_bT (sitesCommute_symm hst) w) Y⟩)`. Rewrite using `[liftMatrix_list_prod, diagScalar_list_prod, List.map_map, List.map_map]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exchA_mat (sites : List (Site A)) (w : List (Letter K S)) (Y : K)
     (h1 : ∀ σ ∈ sites, Xp w Y * lift0 (Ts σ Y) * d0 (bT σ w) = d0 (bT σ w) * lift0 (Ts σ Y) * Xp w Y)
@@ -417,7 +417,7 @@ theorem exchA_mat (sites : List (Site A)) (w : List (Letter K S)) (Y : K)
   exact e
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp [liftMatrix_one]`. Consider the case `cons σ L ih`. Rewrite using `[List.map_cons, List.prod_cons, Matrix.conjTranspose_mul, lift_reduction_mul, ih, List.reverse_cons, List.map_append, List.prod_append]`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem lift0_conjT_prod_lemma (L : List (Site A)) (Y : K) :
     (lift0 ((L.map fun σ => Ts σ Y).prod)ᴴ : M2 (SlopeTestRemainingChoices S A)) =
@@ -430,7 +430,7 @@ private theorem lift0_conjT_prod_lemma (L : List (Site A)) (Y : K) :
     simp
 
 /- English proof (translation)
-Establish `e` using `exch_list_rev (Xm w Y) (fun σ => (lift0 (Ts σ Y)ᴴ : M2 (SlopeTestRemainingChoices S A))) (fun σ => d0 (bT σ w)) sites h1 (h2.imp fun {σ τ} hst => ⟨liftMatrix_transfer_conjTranspose_commute (cc_bT hst w) Y, liftMatrix_transfer_conjTranspose_commute (cc_bT (sitesCommute_symm hst) w …`. Rewrite using `[lift0_conjT_prod_lemma, diagScalar_list_prod, List.map_map]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exchB_mat (sites : List (Site A)) (w : List (Letter K S)) (Y : K)
     (h1 : ∀ σ ∈ sites,
@@ -445,7 +445,7 @@ theorem exchB_mat (sites : List (Site A)) (w : List (Letter K S)) (Y : K)
   exact e
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Simplify using `[h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mul_col_fix (B C : SlopeTestRemainingChoices S A) (z : Ix S) (h : ∀ z', C z' e1 = if z' = e1 then 1 else 0) :
     (B * C) z e1 = B z e1 := by
@@ -453,14 +453,14 @@ theorem mul_col_fix (B C : SlopeTestRemainingChoices S A) (z : Ix S) (h : ∀ z'
   simp [h]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Simplify using `[h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mul_col_zero (B C : SlopeTestRemainingChoices S A) (z : Ix S) (h : ∀ z', C z' e1 = 0) : (B * C) z e1 = 0 := by
   rw [Matrix.mul_apply]
   simp [h]
 
 /- English proof (translation)
-Rewrite using `[Matrix.sum_apply, Fin.sum_univ_two, mul_col_fix (B 0) (C 0) z (fun z' => by simp [h]), mul_col_zero (B 1) (C 1) z (fun z' => by simp [h]), add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_col_fix (B C : Fin 2 → SlopeTestRemainingChoices S A) (z : Ix S)
     (h : ∀ (k : Fin 2) (z' : Ix S), C k z' e1 = if k = 0 ∧ z' = e1 then 1 else 0) :
@@ -470,11 +470,11 @@ theorem sum_col_fix (B C : Fin 2 → SlopeTestRemainingChoices S A) (z : Ix S)
     mul_col_zero (B 1) (C 1) z (fun z' => by simp [h]), add_zero]
 
 /- English proof (translation)
-Introduce `K A S _ _ _ _ _ _ _ _ QQ sites w Y hOK hw hreg k z`. Establish `hM` using `exchA_mat sites w Y (fun σ hσ => hE1 K A S σ w Y (hOK.1 σ hσ).1 hw) hOK.2`. Establish `hfx` using `hfix K A S w Y hw.1 hreg`. Establish `hL : (Xp w Y * lift0 (sites.map fun σ => Ts σ Y).prod * d0 (sites.map fun σ => bT σ w).prod : M2 (SlopeTestRemainingChoices S A)) k 0 z e1 = ∑ l, ∑ z', (Xp w Y k l : SlopeTestRemainingChoices S A) z z' * (v0 sites Y l * uw sites w z')`. Rewrite using `[mul_diagScalar_apply, Matrix.mul_apply, Matrix.mul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.sum_apply, lift0, Matrix.map_apply, mul_io_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [mul_assoc, v0, uw]`. Establish `hR : (d0 (sites.map fun σ => bT σ w).prod * lift0 (sites.map fun σ => Ts σ Y).prod * Xp w Y : M2 (SlopeTestRemainingChoices S A)) k 0 z e1 = uw sites w z * v0 sites Y k`. Rewrite using `[Matrix.mul_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [diagScalar_mul_apply, lift0, Matrix.map_apply]`. Rewrite using `[sum_col_fix (fun j => (sites.map fun σ => bT σ w).prod * io ((sites.map fun σ => Ts σ Y).prod k j)) (fun j => Xp w Y j 0) z hfx]`. Simplify using `only [mul_io_apply, v0, uw]`. Conclude with `hL.symm.trans ((congrArg (fun M : M2 (SlopeTestRemainingChoices S A) => M k 0 z e1) hM).trans hR)`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exchVecA_of (hE1 : ExchangePlusFactor) (hfix : XpFix) : ExchVecA := by
   intro K A S _ _ _ _ _ _ _ _ QQ sites w Y hOK hw hreg k z
@@ -497,7 +497,7 @@ theorem exchVecA_of (hE1 : ExchangePlusFactor) (hfix : XpFix) : ExchVecA := by
   exact hL.symm.trans ((congrArg (fun M : M2 (SlopeTestRemainingChoices S A) => M k 0 z e1) hM).trans hR)
 
 /- English proof (translation)
-Rewrite using `[Matrix.sum_apply, Fin.sum_univ_two, mul_io_apply, mul_io_apply, mul_col_fix U (C 0) z (fun z' => by simp [h]), mul_col_zero U (C 1) z (fun z' => by simp [h])]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_row_fix (U : SlopeTestRemainingChoices S A) (C : Fin 2 → SlopeTestRemainingChoices S A) (x : Fin 2 → A) (z : Ix S)
     (h : ∀ (k : Fin 2) (z' : Ix S), C k z' e1 = if k = 0 ∧ z' = e1 then 1 else 0) :
@@ -507,11 +507,11 @@ theorem sum_row_fix (U : SlopeTestRemainingChoices S A) (C : Fin 2 → SlopeTest
   simp
 
 /- English proof (translation)
-Introduce `K A S _ _ _ _ _ _ _ _ QQ sites w Y hOK hw hreg hY l z`. Establish `hM` using `exchB_mat sites w Y (fun σ hσ => hE2 K A S σ w Y (hOK.1 σ hσ).1 hw hY) hOK.2`. Establish `hfx` using `hfix K A S w Y hw.1 hreg`. Establish `hL : (lift0 ((sites.map fun σ => Ts σ Y).prod)ᴴ * Xm w Y * d0 (sites.map fun σ => bT σ w).prod : M2 (SlopeTestRemainingChoices S A)) 0 l z e1 = ∑ k, ∑ z', star (v0 sites Y k) * (Xm w Y k l : SlopeTestRemainingChoices S A) z z' * uw sites w z'`. Rewrite using `[mul_diagScalar_apply, Matrix.mul_apply, Matrix.mul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.sum_apply, lift0, Matrix.map_apply, Matrix.conjTranspose_apply, io_mul_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [v0, uw]`. Establish `hR : (d0 (sites.map fun σ => bT σ w).prod * Xm w Y * lift0 ((sites.map fun σ => Ts σ Y).prod)ᴴ : M2 (SlopeTestRemainingChoices S A)) 0 l z e1 = uw sites w z * star (v0 sites Y l)`. Rewrite using `[Matrix.mul_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [diagScalar_mul_apply, lift0, Matrix.map_apply, Matrix.conjTranspose_apply]`. Rewrite using `[sum_row_fix _ (fun j => Xm w Y 0 j) (fun j => star ((sites.map fun σ => Ts σ Y).prod l j)) z hfx]`. Simplify using `only [v0, uw]`. Conclude with `hL.symm.trans ((congrArg (fun M : M2 (SlopeTestRemainingChoices S A) => M 0 l z e1) hM).trans hR)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exchVecB_of (hE2 : ExchangeMinusFactorStar) (hfix : XmFix) : ExchVecB := by
   intro K A S _ _ _ _ _ _ _ _ QQ sites w Y hOK hw hreg hY l z
@@ -534,7 +534,7 @@ theorem exchVecB_of (hE2 : ExchangeMinusFactorStar) (hfix : XmFix) : ExchVecB :=
   exact hL.symm.trans ((congrArg (fun M : M2 (SlopeTestRemainingChoices S A) => M 0 l z e1) hM).trans hR)
 
 /- English proof (translation)
-Use `liftMatrix_commute_diagScalar _ _ fun i j => Commute.list_prod_right _ _ fun b hb => ?_` and prove the remaining obligations. Take `⟨σ, hσ, rfl⟩` from `List.mem_map.mp hb`. Conclude with `io_comm_bT σ _ (fun y hy => (h σ hσ Y i j y hy).symm) w`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem QQ_comm (QQ : K → M2 A) (sites : List (Site A)) (w : List (Letter K S)) (Y : K)
     (h : ∀ σ ∈ sites, QQCommutes QQ σ) :
@@ -544,7 +544,7 @@ theorem QQ_comm (QQ : K → M2 A) (sites : List (Site A)) (w : List (Letter K S)
   exact io_comm_bT σ _ (fun y hy => (h σ hσ Y i j y hy).symm) w
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem cw_mat (X X' Q V VH U : M2 (SlopeTestRemainingChoices S A)) (hA : X' * V * U = U * V * X')
     (hB : VH * X * U = U * X * VH) (hQ : Commute Q U) :
@@ -558,17 +558,17 @@ theorem cw_mat (X X' Q V VH U : M2 (SlopeTestRemainingChoices S A)) (hA : X' * V
     _ = U * X * (VH * Q * V) * X' := by simp only [mul_assoc]
 
 /- English proof (translation)
-Introduce `K A S _ _ _ _ _ _ _ _ QQ sites w Y hOK hw hreg hY z`. Establish `hA` using `exchA_mat sites w Y (fun σ hσ => hE1 K A S σ w Y (hOK.1 σ hσ).1 hw) hOK.2`. Establish `hB` using `exchB_mat sites w Y (fun σ hσ => hE2 K A S σ w Y (hOK.1 σ hσ).1 hw hY) hOK.2`. Establish `hQ` using `QQ_comm QQ sites w Y (fun σ hσ => (hOK.1 σ hσ).2)`. Establish `hM` using `cw_mat _ _ _ _ _ _ hA hB hQ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hM` using `[← hT K A S QQ w Y]`. Establish `hfp` using `hfixp K A S w Y hw.1 hreg`. Establish `hfm` using `hfixm K A S w Y hw.1 hreg`. Establish `hCw : (lift0 ((sites.map fun σ => Ts σ Y).prod)ᴴ * TTw QQ w Y * lift0 (sites.map fun σ => Ts σ Y).prod : M2 (SlopeTestRemainingChoices S A)) 0 0 = Cw QQ sites w Y`. Simplify using `only [Matrix.mul_apply, Finset.sum_mul, lift0, Matrix.map_apply, Matrix.conjTranspose_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Both sides reduce to the same expression. Establish `hL : (lift0 ((sites.map fun σ => Ts σ Y).prod)ᴴ * TTw QQ w Y * lift0 (sites.map fun σ => Ts σ Y).prod * d0 (sites.map fun σ => bT σ w).prod : M2 (SlopeTestRemainingChoices S A)) 0 0 z e1 = ∑ z', Cw QQ sites w Y z z' * uw sites w z'`. Rewrite using `[mul_diagScalar_apply, hCw, Matrix.mul_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hR : ∀ n, ((lift0 ((sites.map fun σ => Ts σ Y).prod)ᴴ * lift0 (QQ Y) * lift0 (sites.map fun σ => Ts σ Y).prod) : M2 (SlopeTestRemainingChoices S A)) n 0 = io (∑ k, ∑ l, star ((sites.map fun σ => Ts σ Y).prod k n) * QQ Y k l * (sites.map fun σ => Ts σ Y).prod l 0)`. Introduce `n`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_two, lift0, Matrix.map_apply, Matrix.conjTranspose_apply, io_add, io_mul, add_mul]`. Normalize the expressions using the abelian group laws. Establish `hRow : (d0 (sites.map fun σ => bT σ w).prod * Xm w Y * (lift0 ((sites.map fun σ => Ts σ Y).prod)ᴴ * lift0 (QQ Y) * lift0 (sites.map fun σ => Ts σ Y).prod) : M2 (SlopeTestRemainingChoices S A)) 0 0 = ∑ n, (sites.map fun σ => bT σ w).prod * Xm w Y 0 n * io (∑ k, ∑ l, star ((sites.m …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_apply]`. Simplify using `only [diagScalar_mul_apply, hR]`. Establish `hRhs : (d0 (sites.map fun σ => bT σ w).prod * Xm w Y * (lift0 ((sites.map fun σ => Ts σ Y).prod)ᴴ * lift0 (QQ Y) * lift0 (sites.map fun σ => Ts σ Y).prod) * Xp w Y : M2 (SlopeTestRemainingChoices S A)) 0 0 z e1 = uw sites w z * C0 QQ sites Y`. Rewrite using `[Matrix.mul_apply]`. Use `(sum_col_fix (fun m => (d0 (sites.map fun σ => bT σ w).prod * Xm w Y * (lift0 ((sites.map fun σ => Ts σ Y).prod)ᴴ * lift0 (QQ Y) * lift0 (sites.map fun σ => Ts σ Y).prod) : M2 (SlopeTestRemainingChoices S A)) 0 m) (fun m => Xp w Y m 0) z hfp).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (d0 (sites.map fun σ => bT σ w).prod * Xm w Y * (lift0 ((sites.map fun σ => Ts σ Y).prod)ᴴ * lift0 (QQ Y) * lift0 (sites.map fun σ => Ts σ Y).prod) : M2 (SlopeTestRemainingChoices S A)) 0 0 z e1 = _`. Rewrite using `[hRow]`. Conclude with `sum_row_fix (sites.map fun σ => bT σ w).prod (fun n => Xm w Y 0 n) (fun n => ∑ k, ∑ l, star ((sites.map fun σ => Ts σ Y).prod k n) * QQ Y k l * (sites.map fun σ => Ts σ Y).prod l 0) z hfm`. Conclude with `hL.symm.trans ((congrArg (fun M : M2 (SlopeTestRemainingChoices S A) => M 0 0 z e1) hM).trans hRhs)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cwEigen_of (hE1 : ExchangePlusFactor) (hE2 : ExchangeMinusFactorStar) (hfixp : XpFix) (hfixm : XmFix) (hT : TTFactor) :
     CwEigen := by
@@ -615,11 +615,11 @@ variable {K A S : Type} [Field K] [StarRing K] [Ring A] [StarRing A] [Algebra K 
   [Fintype S] [DecidableEq S]
 
 /- English proof (translation)
-Simplify using `only [eU, Matrix.of_apply]`. Use `congr 1`. Apply `propext` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨h1, funext fun b => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hb : b = a`. Rewrite using `[hb]`. Simplify using `[h2]`. Simplify using `[Function.update_apply, hb, h3 b hb]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨h1, rfl⟩`. Conclude with `⟨h1, by simp, fun b hb => by simp [Function.update_apply, hb]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem eU_apply (a : S) (i j : Fin 2) (x y : Ix S) :
     (eU a i j : SlopeTestRemainingChoices S A) x y = if x a = i ∧ y = Function.update x a j then 1 else 0 := by
@@ -637,7 +637,7 @@ theorem eU_apply (a : S) (i j : Fin 2) (x y : Ix S) :
     exact ⟨h1, by simp, fun b hb => by simp [Function.update_apply, hb]⟩
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Simplify using `only [eU_apply]`. Apply the tactic sequence `by_cases h : x a = i <;> simp [h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eU_mul_apply (a : S) (i j : Fin 2) (B : SlopeTestRemainingChoices S A) (x y : Ix S) :
     ((eU a i j : SlopeTestRemainingChoices S A) * B) x y = if x a = i then B (Function.update x a j) y else 0 := by
@@ -646,7 +646,7 @@ theorem eU_mul_apply (a : S) (i j : Fin 2) (B : SlopeTestRemainingChoices S A) (
   by_cases h : x a = i <;> simp [h]
 
 /- English proof (translation)
-Use `show (eU c i j : SlopeTestRemainingChoices S A) * eU a k l = eU a k l * eU c i j`. Use `Matrix.ext fun x y => ?_` and prove the remaining obligations. Rewrite using `[eU_mul_apply, eU_mul_apply, eU_apply, eU_apply, Function.update_comm hc]`. Apply the tactic sequence `by_cases h1 : x c = i <;> by_cases h2 : x a = k <;>`. Simplify using `[Function.update_apply, hc, Ne.symm hc, h1, h2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eU_comm_of_ne {a c : S} (hc : c ≠ a) (i j k l : Fin 2) :
     Commute (eU c i j : SlopeTestRemainingChoices S A) (eU a k l) := by
@@ -657,7 +657,7 @@ theorem eU_comm_of_ne {a c : S} (hc : c ≠ a) (i j k l : Fin 2) :
     simp [Function.update_apply, hc, Ne.symm hc, h1, h2]
 
 /- English proof (translation)
-Unfold `ins`. Simplify using `only [Finset.sum_mul, Matrix.sum_apply, mul_assoc, eU_mul_apply, lift0, Matrix.map_apply, io_mul_apply]`. Rewrite using `[Finset.sum_comm]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ins_lift0_mul_apply (a : S) (M : M2 A) (B : SlopeTestRemainingChoices S A) (x y : Ix S) :
     ((ins a (lift0 M) : SlopeTestRemainingChoices S A) * B) x y = ∑ j, M (x a) j * B (Function.update x a j) y := by
@@ -668,7 +668,7 @@ theorem ins_lift0_mul_apply (a : S) (M : M2 A) (B : SlopeTestRemainingChoices S 
   simp
 
 /- English proof (translation)
-Unfold `vlet ins`. Use `Commute.sum_right _ _ _ fun k _ => Commute.sum_right _ _ _ fun m _ => ?_` and prove the remaining obligations. Conclude with `(eU_comm_of_ne ha i j k m).mul_right (io_comm_eU ((if l.plus then Ts σ l.pt else (Ts σ l.pt).map star) k m) a i j).symm`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem free_vlet (σ : Site A) (l : Letter K S) {a : S} (ha : a ≠ l.intersection_update_fsHerm_neg_one) (i j : Fin 2) :
     Commute (eU a i j : SlopeTestRemainingChoices S A) (vlet σ l) := by
@@ -678,9 +678,9 @@ theorem free_vlet (σ : Site A) (l : Letter K S) {a : S} (ha : a ≠ l.intersect
     (io_comm_eU ((if l.plus then Ts σ l.pt else (Ts σ l.pt).map star) k m) a i j).symm
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil`. Simplify using `only [bT]`. Conclude with `Commute.one_right _`. Consider the case `cons l w ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [List.map_cons, List.mem_cons, not_or] at ha`. Simplify using `only [bT]`. Conclude with `(free_vlet σ l ha.1 i j).mul_right (ih ha.2)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem free_bT (σ : Site A) (w : List (Letter K S)) {a : S} (ha : a ∉ w.map Letter.intersection_update_fsHerm_neg_one)
     (i j : Fin 2) : Commute (eU a i j : SlopeTestRemainingChoices S A) (bT σ w) := by
@@ -696,9 +696,7 @@ theorem free_bT (σ : Site A) (w : List (Letter K S)) {a : S} (ha : a ∉ w.map 
 def lm (l : Letter K S) (σ : Site A) : M2 A := if l.plus then Ts σ l.pt else (Ts σ l.pt).map star
 
 /- English proof (translation)
-Establish `hφ : ∀ (k : K) (r : A), Commute ((RingHom.id A) (algebraMap K A k)) r` using `fun k r => Algebra.commutes k r`. Distinguish the cases in `hl : l.plus = true`. Rewrite using `[if_pos hl]`. Conclude with `comm_Ts (RingHom.id A) hφ σ x h l.pt i j`. Rewrite using `[if_neg hl]`.
-
-Conclude with `comm_Ts_star (RingHom.id A) hφ σ x h l.pt i j`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ent_comm_lemma (σ : Site A) (l : Letter K S) (x : A)
     (h : ∀ y ∈ ops σ, Commute y x) (i j : Fin 2) :
@@ -712,7 +710,7 @@ private theorem ent_comm_lemma (σ : Site A) (l : Letter K S) (x : A)
     exact comm_Ts_star (RingHom.id A) hφ σ x h l.pt i j
 
 /- English proof (translation)
-Unfold `vlet ins`. Use `Commute.sum_left _ _ _ fun i _ => Commute.sum_left _ _ _ fun j _ => Commute.sum_right _ _ _ fun p _ => Commute.sum_right _ _ _ fun q _ => ?_` and prove the remaining obligations. Establish `hN : ∀ x ∈ ops σ, Commute x ((if l.plus then Ts τ l.pt else (Ts τ l.pt).map star) p q)` using `fun x hx => (ent_comm_lemma τ l x (fun y hy => (h x hx y hy).symm) p q).symm`. Establish `hMN` using `ent_comm_lemma σ l' _ hN i j`. Conclude with `((eU_comm_of_ne hne i j p q).mul_right (io_comm_eU ((if l.plus then Ts τ l.pt else (Ts τ l.pt).map star) p q) l'.intersection_update_fsHerm_neg_one i j).symm).mul_left ((io_comm_eU ((if l'.plus then Ts σ l'.pt else (Ts σ l'.pt).map star) i j) l.intersection_update_fsHerm_neg_one …`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem vlet_comm_lemma {σ τ : Site A} (h : SitesCommute σ τ) (l' l : Letter K S)
     (hne : l'.intersection_update_fsHerm_neg_one ≠ l.intersection_update_fsHerm_neg_one) : Commute (vlet σ l' : SlopeTestRemainingChoices S A) (vlet τ l) := by
@@ -728,9 +726,9 @@ private theorem vlet_comm_lemma {σ τ : Site A} (h : SitesCommute σ τ) (l' l 
       (io_comm_io hMN))
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil`. Simplify using `only [bT]`. Conclude with `Commute.one_left _`. Consider the case `cons l' w ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [List.map_cons, List.mem_cons, not_or] at ha`. Simplify using `only [bT]`. Conclude with `(vlet_comm_lemma h l' l (Ne.symm ha.1)).mul_left (ih ha.2)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bT_comm_vlet {σ τ : Site A} (h : SitesCommute σ τ) (w : List (Letter K S)) (l : Letter K S)
     (ha : l.intersection_update_fsHerm_neg_one ∉ w.map Letter.intersection_update_fsHerm_neg_one) : Commute (bT σ w : SlopeTestRemainingChoices S A) (vlet τ l) := by
@@ -744,9 +742,9 @@ theorem bT_comm_vlet {σ τ : Site A} (h : SitesCommute σ τ) (w : List (Letter
     exact (vlet_comm_lemma h l' l (Ne.symm ha.1)).mul_left (ih ha.2)
 
 /- English proof (translation)
-Proceed by induction on `sites generalizing x with`. Consider the case `nil => simp [Matrix.one_apply]`. Consider the case `cons σ sites ih`. Establish `hu : ∀ j : Fin 2, Function.update x l.intersection_update_fsHerm_neg_one j l.intersection_update_fsHerm_neg_one = j` using `fun j => by simp`. Establish `hu2 : ∀ j j' : Fin 2, Function.update (Function.update x l.intersection_update_fsHerm_neg_one j) l.intersection_update_fsHerm_neg_one j' = Function.update x l.intersection_update_fsHerm_neg_one j'` using `fun j j' => by simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : (vlet σ l : SlopeTestRemainingChoices S A) = ins l.intersection_update_fsHerm_neg_one (lift0 (lm l σ))` using `rfl`. Simplify using `only [List.map_cons, List.prod_cons, mul_assoc]`. Rewrite using `[hv, ins_lift0_mul_apply]`. Simplify using `only [ih, hu, hu2, Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem vlet_prod_mul_apply (sites : List (Site A)) (l : Letter K S) (B : SlopeTestRemainingChoices S A) (x y : Ix S) :
     ((sites.map fun σ => (vlet σ l : SlopeTestRemainingChoices S A)).prod * B) x y =
@@ -764,7 +762,7 @@ theorem vlet_prod_mul_apply (sites : List (Site A)) (l : Letter K S) (B : SlopeT
     rw [Finset.sum_comm]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons σ L ih`. Apply the tactic sequence `rw [List.map_cons, List.prod_cons, ih, mul_one] <;> simp only [bT]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem prod_one_lemma (L : List (Site A)) :
     (L.map fun σ => (bT σ ([] : List (Letter K S)) : SlopeTestRemainingChoices S A)).prod = 1 := by
@@ -774,23 +772,23 @@ private theorem prod_one_lemma (L : List (Site A)) :
     rw [List.map_cons, List.prod_cons, ih, mul_one] <;> simp only [bT]
 
 /- English proof (translation)
-Proceed by induction on `w generalizing z with`. Consider the case `nil`. Unfold `uw`. Rewrite using `[prod_one_lemma]`. Distinguish the cases in `hz : ∀ c, z c = 0`.
+Proceed by induction. Treat this case separately. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `hz' : z = e1` using `funext hz`. Substitute `hz'` using the available equality. Simplify using `[e1]`. Establish `hz' : z ≠ e1` using `fun h => hz fun c => by simp [h, e1]`. Simplify using `[Matrix.one_apply, hz', hz]`.
+Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Consider the case `cons l w' ih`. Establish `hnd : l.intersection_update_fsHerm_neg_one ∉ w'.map Letter.intersection_update_fsHerm_neg_one ∧ (w'.map Letter.intersection_update_fsHerm_neg_one).Nodup`. Simplify using `using hw`. Apply the tactic sequence `have ih' : ∀ z', uw sites w' z' = if ∀ c, c ∉ w'.map Letter.intersection_update_fsHerm_neg_one → z' c = 0 then (w'.map fun l => (sites.map (lm l)).prod (z' l.intersection_update_fsHerm_neg_one) 0).prod else 0 := fun z' => by first | exact ih hnd.2 z' | exact ih z' hnd.2`. Establish `hne : ∀ l' ∈ w', l'.intersection_update_fsHerm_neg_one ≠ l.intersection_update_fsHerm_neg_one` using `fun l' hl' h => hnd.1 (List.mem_map.mpr ⟨l', hl', h⟩)`.
+Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsplit : (sites.map fun σ => (bT σ (l :: w') : SlopeTestRemainingChoices S A)).prod = (sites.map fun σ => (vlet σ l : SlopeTestRemainingChoices S A)).prod * (sites.map fun σ => (bT σ w' : SlopeTestRemainingChoices S A)).prod` using `prod_mul_list (fun σ => (vlet σ l : SlopeTestRemainingChoices S A)) (fun σ => bT σ w') sites (hs.imp fun {σ τ} hst => bT_comm_vlet hst w' l hnd.1)`. Establish `hexp : uw sites (l :: w') z = ∑ j, (sites.map (lm l)).prod (z l.intersection_update_fsHerm_neg_one) j * uw sites w' (Function.update z l.intersection_update_fsHerm_neg_one j)`. Unfold `uw`. Rewrite using `[hsplit, vlet_prod_mul_apply]`. Establish `hval : ∀ j, (w'.map fun l' => (sites.map (lm l')).prod (Function.update z l.intersection_update_fsHerm_neg_one j l'.intersection_update_fsHerm_neg_one) 0).prod = (w'.map fun l' => (sites.map (lm l')).prod (z l'.intersection_update_fsHerm_neg_one) 0).prod` using `fun j => by`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congr 1`. Use `List.map_congr_left fun l' hl' => ?_` and prove the remaining obligations. Rewrite using `[Function.update_apply, if_neg (hne l' hl')]`. Establish `hc1 : ¬ ∀ c, c ∉ w'.map Letter.intersection_update_fsHerm_neg_one → Function.update z l.intersection_update_fsHerm_neg_one 1 c = 0` using `fun h => by`. Establish `h1` using `h l.intersection_update_fsHerm_neg_one hnd.1`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `at h1`. Establish `hc0 : (∀ c, c ∉ w'.map Letter.intersection_update_fsHerm_neg_one → Function.update z l.intersection_update_fsHerm_neg_one 0 c = 0) ↔ ∀ c, c ∉ (l :: w').map Letter.intersection_update_fsHerm_neg_one → z c = 0`. Prove the components needed by the constructor for the conclusion. Introduce `h c hc`. Simplify using `only [List.map_cons, List.mem_cons, not_or] at hc`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `h1` using `h c hc.2`. Rewrite `h1` using `[Function.update_apply, if_neg hc.1]`. Then use the resulting hypothesis. Introduce `h c hc`. Rewrite using `[Function.update_apply]`. Distinguish the cases in `hca : c = l.intersection_update_fsHerm_neg_one`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hca]`. Rewrite using `[if_neg hca]`. Conclude with `h c (by simp only [List.map_cons, List.mem_cons, not_or]; exact ⟨hca, hc⟩)`. Rewrite using `[hexp, Fin.sum_univ_two, ih', ih', if_neg hc1, mul_zero, add_zero, hval]`. Distinguish the cases in `hP : ∀ c, c ∉ (l :: w').map Letter.intersection_update_fsHerm_neg_one → z c = 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos (hc0.mpr hP), if_pos hP, List.map_cons, List.prod_cons]`. Rewrite using `[if_neg (fun h => hP (hc0.mp h)), if_neg hP, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem word_product_formula_general (sites : List (Site A)) (w : List (Letter K S))
     (hs : sites.Pairwise SitesCommute) (hw : (w.map Letter.intersection_update_fsHerm_neg_one).Nodup) (z : Ix S) :
@@ -851,11 +849,11 @@ theorem word_product_formula_general (sites : List (Site A)) (w : List (Letter K
     · rw [if_neg (fun h => hP (hc0.mp h)), if_neg hP, mul_zero]
 
 /- English proof (translation)
-Introduce `K A S _ _ _ _ _ _ _ _ QQ sites w hOK hw z`. Rewrite using `[word_product_formula_general sites w hOK.2 hw.1 z]`. Distinguish the cases in `hc : ∀ c, c ∉ w.map Letter.intersection_update_fsHerm_neg_one → z c = 0`. Rewrite using `[if_pos hc, if_pos hc]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `List.map_congr_left fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : l.plus = true`. Establish `e : lm l = fun σ : Site A => Ts σ l.pt` using `funext fun σ => if_pos h`. Rewrite using `[e, if_pos h]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e : lm l = fun σ : Site A => (Ts σ l.pt).map star` using `funext fun σ => if_neg h`. Rewrite using `[e, if_neg h]`. Rewrite using `[if_neg hc, if_neg hc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem uwProduct : UwProduct := by
   intro K A S _ _ _ _ _ _ _ _ QQ sites w hOK hw z
@@ -875,9 +873,9 @@ theorem uwProduct : UwProduct := by
 end Product
 
 /- English proof (translation)
-Introduce `K A S _ _ _ _ _ _ _ _ QQ w Y`. Proceed by induction on `w with`. Consider the case `nil => simp [TTw, Xm, Xp]`. Consider the case `cons l w ih`. Distinguish the cases in `h : l.plus = true`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Consider separately whether the proposition holds or fails.
 
-Simplify using `[TTw, Xm, Xp, h, ih, mul_assoc]`. Simplify using `[TTw, Xm, Xp, h, ih, mul_assoc]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem tTFactor : TTFactor := by
   intro K A S _ _ _ _ _ _ _ _ QQ w Y
@@ -891,22 +889,22 @@ theorem tTFactor : TTFactor := by
 end Formalism.FourierDecayAlt.P.Wd8
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.Wd8.exchVecA_of Formalism.FourierDecayAlt.P.exchange_plus_factor Formalism.FourierDecayAlt.P.positive_word_fixed`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.exchange_vector_positive : Formalism.FourierDecayAlt.Wd.ExchVecA := Formalism.FourierDecayAlt.P.Wd8.exchVecA_of Formalism.FourierDecayAlt.P.exchange_plus_factor Formalism.FourierDecayAlt.P.positive_word_fixed
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.Wd8.exchVecB_of Formalism.FourierDecayAlt.P.exchange_second_case Formalism.FourierDecayAlt.P.negative_word_fixed`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.exchange_vector_negative : Formalism.FourierDecayAlt.Wd.ExchVecB := Formalism.FourierDecayAlt.P.Wd8.exchVecB_of Formalism.FourierDecayAlt.P.exchange_second_case Formalism.FourierDecayAlt.P.negative_word_fixed
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.Wd8.cwEigen_of Formalism.FourierDecayAlt.P.exchange_plus_factor Formalism.FourierDecayAlt.P.exchange_second_case Formalism.FourierDecayAlt.P.positive_word_fixed Formalism.FourierDecayAlt.P.negative_word_fixed Formalism.FourierDecayAlt.P.Wd8.tTFactor`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.conjugate_word_eigen : Formalism.FourierDecayAlt.Wd.CwEigen := Formalism.FourierDecayAlt.P.Wd8.cwEigen_of Formalism.FourierDecayAlt.P.exchange_plus_factor Formalism.FourierDecayAlt.P.exchange_second_case
   Formalism.FourierDecayAlt.P.positive_word_fixed Formalism.FourierDecayAlt.P.negative_word_fixed Formalism.FourierDecayAlt.P.Wd8.tTFactor
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.Wd8.uwProduct`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.word_product_formula : Formalism.FourierDecayAlt.Wd.UwProduct := Formalism.FourierDecayAlt.P.Wd8.uwProduct

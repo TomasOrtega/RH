@@ -10,9 +10,9 @@ open CategoryTheory AlgebraicGeometry KaehlerDifferential DividedPowers Reciproc
 namespace GlobalTheory.PDForm
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨n, a, ha, rfl⟩` from `hx`. Rewrite using `[ι_mul]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨n, a, ha, rfl⟩)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x z _ _ hx hz => rw [add_mul]`. Conclude with `add_mem hx hz`. Consider the case `smul a x _ ih => rw [smul_eq_mul, mul_assoc]`. Conclude with `Ideal.mul_mem_left _ _ ih`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem rel_mul_mem_right {R B : Type} [CommRing R] [CommRing B] [Algebra R B] {J : Ideal B}
     (δ : DividedPowers J) {x : DR R B} (hx : x ∈ rel R δ) (y : DR R B) : x * y ∈ rel R δ := by
@@ -36,31 +36,31 @@ def pdGen : Set (DR R Q.P) :=
     (rel R η : Set (DR R Q.P))
 
 /- English proof (translation)
-The claim follows from `Set.mem_union_left _ (Set.mem_union_left _ ⟨n, α, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem pdGen_mem_one (n : ℕ) (α : DR R B) : Q.e n • h.mDR α ∈ pdGen η h :=
   Set.mem_union_left _ (Set.mem_union_left _ ⟨n, α, rfl⟩)
 
 /- English proof (translation)
-The claim follows from `Set.mem_union_left _ (Set.mem_union_right _ ⟨n, α, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem pdGen_mem_two (n : ℕ) (α : DR R B) : Q.e n • (ι1 (D R Q.P (Q.e 1)) * h.mDR α) ∈ pdGen η h :=
   Set.mem_union_left _ (Set.mem_union_right _ ⟨n, α, rfl⟩)
 
 /- English proof (translation)
-The claim follows from `Set.mem_union_right _ hx`.
+A detailed English derivation is pending.
 -/
 theorem pdGen_mem_rel {x : DR R Q.P} (hx : x ∈ rel R η) : x ∈ pdGen η h :=
   Set.mem_union_right _ hx
 
 /- English proof (translation)
-Establish `hb : b ∈ Submodule.span B (Set.range Q.e)` using `by rw [Q.e.span_eq]; trivial`. Proceed by induction on `hb using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨n, rfl⟩` from `hx`. Conclude with `fun α ↦ ⟨AddSubgroup.subset_closure (pdGen_mem_one η h n α), AddSubgroup.subset_closure (pdGen_mem_two η h n α)⟩`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 
-Consider the case `zero => intro α`. Simplify using `only [zero_smul]`. Conclude with `⟨zero_mem _, zero_mem _⟩`. Consider the case `add x y _ _ hx hy`. Introduce `α`.
+Treat this case separately. Simplify using the standard rewrite rules. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[add_smul, add_smul]`. Conclude with `⟨add_mem (hx α).1 (hy α).1, add_mem (hx α).2 (hy α).2⟩`. Consider the case `smul c x _ ih`. Introduce `α`. Establish `e1 : (c • x) • h.mDR α = x • h.mDR (c • α)`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[h.mDR_smul, Algebra.smul_def c x, mul_comm, mul_smul]`. Establish `e2 : (c • x) • (ι1 (D R Q.P (Q.e 1)) * h.mDR α) = x • (ι1 (D R Q.P (Q.e 1)) * h.mDR (c • α))`. Rewrite using `[h.mDR_smul, mul_smul_comm, Algebra.smul_def c x, mul_comm, mul_smul]`. Rewrite using `[e1, e2]`. Conclude with `ih (c • α)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_gen_mem (b : Q.P) : ∀ α : DR R B,
     b • h.mDR α ∈ AddSubgroup.closure (pdGen η h) ∧
@@ -86,13 +86,11 @@ theorem smul_gen_mem (b : Q.P) : ∀ α : DR R B,
     exact ih (c • α)
 
 /- English proof (translation)
-Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Break down `hx with (⟨n, α, rfl⟩ | ⟨n, α, rfl⟩) | hx` into its components or cases. Rewrite using `[smul_smul]`. Conclude with `(smul_gen_mem η h _ α).1`.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_smul]`. Conclude with `(smul_gen_mem η h _ α).2`. Use `AddSubgroup.subset_closure (pdGen_mem_rel η h ?_)` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`. Conclude with `Ideal.mul_mem_left _ _ hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`.
-
-Conclude with `neg_mem hx`.
+A detailed English derivation is pending.
 -/
 theorem smul_mem_closure (b : Q.P) {x : DR R Q.P} (hx : x ∈ AddSubgroup.closure (pdGen η h)) :
     b • x ∈ AddSubgroup.closure (pdGen η h) := by
@@ -108,15 +106,13 @@ theorem smul_mem_closure (b : Q.P) {x : DR R Q.P} (hx : x ∈ AddSubgroup.closur
   | neg x _ hx => rw [smul_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Establish `hb : b ∈ Submodule.span B (Set.range Q.e)` using `by rw [Q.e.span_eq]; trivial`. Proceed by induction on `hb using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨n, rfl⟩` from `hx`. Consider the cases of `n with`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero => rw [Q.e_zero, Derivation.map_one_eq_zero, map_zero]`. Conclude with `zero_mem _`. Consider the case `succ n`. Establish `hr : ι1 (D R Q.P (η.dpow (n + 1) (Q.e 1)) - η.dpow n (Q.e 1) • D R Q.P (Q.e 1)) ∈ rel R η` using `Ideal.subset_span ⟨n, Q.e 1, Q.e_one_mem_ext J, rfl⟩`. Rewrite `hr` using `[hs.var, hs.var]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e : ι1 (D R Q.P (Q.e (n + 1))) = ι1 (D R Q.P (Q.e (n + 1)) - Q.e n • D R Q.P (Q.e 1)) + Q.e n • (ι1 (D R Q.P (Q.e 1)) * h.mDR 1)`. Rewrite using `[map_one h.mDR, mul_one, map_sub, map_smul, sub_add_cancel]`. Rewrite using `[e]`. Conclude with `add_mem (AddSubgroup.subset_closure (pdGen_mem_rel η h hr)) (AddSubgroup.subset_closure (pdGen_mem_two η h n 1))`. Consider the case `zero => rw [map_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add, map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ ih`. Rewrite using `[Algebra.smul_def, Derivation.leibniz, map_add, map_smul, map_smul]`.
-
-Use `add_mem (smul_mem_closure η h _ ih) ?_` and prove the remaining obligations. Establish `e : ι1 (D R Q.P (algebraMap B Q.P c)) = h.mDR (ι1 (D R B c))` using `by rw [h.mDR_ι, h.m1_D]`. Rewrite using `[e]`. Conclude with `(smul_gen_mem η h x _).1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem D_mem_closure {δ : DividedPowers J} (hs : Q.IsStd δ η) (b : Q.P) :
     ι1 (D R Q.P b) ∈ AddSubgroup.closure (pdGen η h) := by
@@ -147,22 +143,18 @@ theorem D_mem_closure {δ : DividedPowers J} (hs : Q.IsStd δ η) (b : Q.P) :
 omit [IsScalarTower R B Q.P] in
 
 /- English proof (translation)
-Rewrite using `[← mul_assoc, map_mul, h.mDR_sgn, ← mul_assoc, ι_mul (D R Q.P (Q.e 1)) (sgn (h.mDR α)), sgn_sgn]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mDR_mul_dtau (α β : DR R B) :
     h.mDR α * (ι1 (D R Q.P (Q.e 1)) * h.mDR β) = ι1 (D R Q.P (Q.e 1)) * h.mDR (sgn α * β) := by
   rw [← mul_assoc, map_mul, h.mDR_sgn, ← mul_assoc, ι_mul (D R Q.P (Q.e 1)) (sgn (h.mDR α)), sgn_sgn]
 
 /- English proof (translation)
-Establish `base : ∀ α : DR R B, h.mDR α ∈ AddSubgroup.closure (pdGen η h)` using `fun α ↦ by`. Use `(smul_gen_mem η h 1 α).1` as an intermediate fact. Rewrite `this` using `[one_smul]`. Then use the resulting hypothesis. Establish `base2 : ∀ α : DR R B, ι1 (D R Q.P (Q.e 1)) * h.mDR α ∈ AddSubgroup.closure (pdGen η h)` using `fun α ↦ by`. Use `(smul_gen_mem η h 1 α).2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[one_smul]`. Then use the resulting hypothesis. Establish `relL : ∀ {z : DR R Q.P} (w : DR R Q.P), z ∈ rel R η → w * z ∈ AddSubgroup.closure (pdGen η h)` using `fun w hz ↦ AddSubgroup.subset_closure (pdGen_mem_rel η h (Ideal.mul_mem_left _ w hz))`. Break down `hx with (⟨m, α, rfl⟩ | ⟨m, α, rfl⟩) | hx` into its components or cases. Break down `hy with (⟨n, β, rfl⟩ | ⟨n, β, rfl⟩) | hy` into its components or cases. Rewrite using `[smul_mul_assoc, mul_smul_comm, ← map_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `smul_mem_closure η h _ (smul_mem_closure η h _ (base _))`. Rewrite using `[smul_mul_assoc, mul_smul_comm, mDR_mul_dtau]`. Conclude with `smul_mem_closure η h _ (smul_mem_closure η h _ (base2 _))`. Conclude with `relL _ hy`. Break down `hy with (⟨n, β, rfl⟩ | ⟨n, β, rfl⟩) | hy` into its components or cases.
-
-Rewrite using `[smul_mul_assoc, mul_smul_comm, mul_assoc, ← map_mul]`. Conclude with `smul_mem_closure η h _ (smul_mem_closure η h _ (base2 _))`. Rewrite using `[smul_mul_assoc, mul_smul_comm, mul_assoc, mDR_mul_dtau, ← mul_assoc, ExteriorAlgebra.ι_sq_zero, zero_mul, smul_zero, smul_zero]`. Conclude with `zero_mem _`. Conclude with `relL _ hy`.
-
-Conclude with `AddSubgroup.subset_closure (pdGen_mem_rel η h (rel_mul_mem_right η hx _))`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen_mul_gen {x y : DR R Q.P} (hx : x ∈ pdGen η h) (hy : y ∈ pdGen η h) :
     x * y ∈ AddSubgroup.closure (pdGen η h) := by
@@ -189,13 +181,11 @@ theorem gen_mul_gen {x y : DR R Q.P} (hx : x ∈ pdGen η h) (hy : y ∈ pdGen �
   · exact AddSubgroup.subset_closure (pdGen_mem_rel η h (rel_mul_mem_right η hx _))
 
 /- English proof (translation)
-Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy => exact gen_mul_gen η h hx hy`. Consider the case `zero => rw [mul_zero]`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [mul_add]`. Conclude with `add_mem hy hz`. Consider the case `neg y _ hy => rw [mul_neg]`. Conclude with `neg_mem hy`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => rw [zero_mul]`. Conclude with `zero_mem _`. Consider the case `add x z _ _ hx hz => rw [add_mul]`. Conclude with `add_mem hx hz`. Consider the case `neg x _ hx => rw [neg_mul]`.
-
-Conclude with `neg_mem hx`.
+A detailed English derivation is pending.
 -/
 theorem mul_mem_closure {x y : DR R Q.P} (hx : x ∈ AddSubgroup.closure (pdGen η h))
     (hy : y ∈ AddSubgroup.closure (pdGen η h)) : x * y ∈ AddSubgroup.closure (pdGen η h) := by
@@ -213,15 +203,15 @@ theorem mul_mem_closure {x y : DR R Q.P} (hx : x ∈ AddSubgroup.closure (pdGen 
 end Poly
 
 /- English proof (translation)
-Introduce `R B _ _ _ J δ Q _ _ η _ h hs _ _ _ p hrel hadd h1 h2 x`. Establish `hS : ∀ x, x ∈ AddSubgroup.closure (pdGen η h)` using `fun x ↦ by`. Proceed by induction on `x using indDR with`. Consider the case `h b`. Use `(smul_gen_mem η h b 1).1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Rewrite `this` using `[map_one, ← Algebra.algebraMap_eq_smul_one]`. Then use the resulting hypothesis. Consider the case `hd b => exact D_mem_closure η h hs b`. Consider the case `hm x y hx hy => exact mul_mem_closure η h hx hy`. Consider the case `ha x y hx hy => exact add_mem hx hy`. Establish `key : ∀ x ∈ AddSubgroup.closure (pdGen η h), p x ∧ p (-x)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Introduce `x hx`. Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Break down `hx with (⟨n, α, rfl⟩ | ⟨n, α, rfl⟩) | hx` into its components or cases. Conclude with `⟨h1 n α, by rw [← smul_neg, ← map_neg]; exact h1 n (-α)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨h2 n α, by rw [← smul_neg, ← mul_neg, ← map_neg]; exact h2 n (-α)⟩`. Conclude with `⟨hrel x hx, hrel _ (neg_mem hx)⟩`. Consider the case `zero => exact ⟨hrel 0 (zero_mem _), by rw [neg_zero]; exact hrel 0 (zero_mem _)⟩`. Consider the case `add x y _ _ hx hy => exact ⟨hadd _ _ hx.1 hy.1, by rw [neg_add]; exact hadd _ _ hx.2 hy.2⟩`. Consider the case `neg x _ hx => exact ⟨hx.2, by rw [neg_neg]; exact hx.1⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `(key x (hS x)).1`.
+A detailed English derivation is pending.
 -/
 theorem pdPoly_forms_induction : ∀ (R B : Type) [CommRing R] [CommRing B] [Algebra R B] (J : Ideal B)
     (δ : DividedPowers J) (Q : PDPoly B) [Algebra R Q.P] [IsScalarTower R B Q.P] (η : DividedPowers (Q.ext J))

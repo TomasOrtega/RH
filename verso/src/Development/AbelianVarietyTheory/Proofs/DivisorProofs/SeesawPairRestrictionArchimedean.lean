@@ -19,7 +19,7 @@ noncomputable section
 namespace GlobalTheory.MixWSiegel
 
 /- English proof (translation)
-Unfold `Darboux.rho`. Rewrite using `[← h]`. Use `congr 2`. Use extensionality with `i j`. Apply the tactic sequence `rcases j with j | j <;> erw [Matrix.mul_apply] <;> simp [diagCols, Matrix.one_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rho_diagCols {a b : ℕ} {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {JA : Matrix (Fin a) (Fin a) E} {JB : Matrix (Fin b) (Fin b) E} {κ : Type}
@@ -36,9 +36,7 @@ theorem rho_diagCols {a b : ℕ} {F E : Type} [Field F] [NumberField F] [Field E
   rcases j with j | j <;> erw [Matrix.mul_apply] <;> simp [diagCols, Matrix.one_apply]
 
 /- English proof (translation)
-Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`.
-
-Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`. Use `haveI : LocallyCompactSpace (AE F E) := e.isClosedEmbedding.locallyCompactSpace`. Use `letI : MeasurableSpace (Fin n → AE F E) := borel _`. Use `haveI : BorelSpace (Fin n → AE F E) := ⟨rfl⟩`. Conclude with `⟨Measure.addHaar, by unfold GlobalTheory.SiegelAvg.IsHaarB; infer_instance⟩`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem haar_exists (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ) :
     ∃ μ : @Measure (Fin n → AE F E) (borel _), GlobalTheory.SiegelAvg.IsHaarB μ := by
@@ -54,9 +52,9 @@ theorem haar_exists (F E : Type) [Field F] [NumberField F] [Field E] [NumberFiel
   exact ⟨Measure.addHaar, by unfold GlobalTheory.SiegelAvg.IsHaarB; infer_instance⟩
 
 /- English proof (translation)
-Establish `hd : ∀ z : Fin n → AE F E, Sum.elim z z = (diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) (AE F E)) *ᵥ z` using `fun z => by rw [diagCols, Matrix.fromRows_mulVec, Matrix.one_mulVec]`. Establish `ht : (t : Matrix (Fin n) (Fin n) (AE F E)) * ((t⁻¹ : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E)) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `hpt' : ((p : GL (Fin n ⊕ Fin n) (AE F E)) : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)) * (diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) (AE F E)) = (diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) (AE F E)) * (t : Matrix (Fin n) (Fin n) (AE F E))` using `hpt`. Establish `h1 : ((p : GL (Fin n ⊕ Fin n) (AE F E)) : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)) *ᵥ Sum.elim ((((t⁻¹ : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E))) *ᵥ y) ((((t⁻¹ : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E))) *ᵥ y) = Sum.elim y y`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hd, Matrix.mulVec_mulVec, hpt', ← Matrix.mulVec_mulVec, Matrix.mulVec_mulVec y (t : Matrix (Fin n) (Fin n) (AE F E)), ht, Matrix.one_mulVec, ← hd]`. Unfold `actB`. Rewrite using `[Matrix.vecMulVec_mul, Matrix.vecMul_transpose, h1]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem actB_vecMulVec_diag {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {n a : ℕ} {J : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)} (p : UG (cA σ) J)
@@ -81,13 +79,13 @@ theorem actB_vecMulVec_diag {F E : Type} [Field F] [NumberField F] [Field E] [Nu
   rw [Matrix.vecMulVec_mul, Matrix.vecMul_transpose, h1]
 
 /- English proof (translation)
-Introduce `hPr F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ d' hd' d₁' hd₁' dd hdd dd₁ hdd₁ omd hWS omd₁ hWS₁ ed hmap hheis hinv hadm hnz l₁ hl₁ hl₁inv hl₁0`. Take `⟨μ, hμ⟩` from `haar_exists F E n`. Establish `hψ : IsStd B.ψ` using `hP.base.std`. Establish `hconv` using `GlobalTheory.T.pair_restricts_adapted_plane hPr F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ d' hd' d₁' hd₁' dd hdd dd₁ hdd₁ ed hmap hheis hinv hadm hnz l₁ hl₁ hl₁inv μ hμ`. Establish `hA` using `GlobalTheory.T.pair_adapted_plane_induction hPr F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ d' hd' d₁' hd₁' dd hdd dd₁ hdd₁ ed hmap hheis hinv hadm hnz l₁ hl₁ hl₁inv μ hμ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN` using `GlobalTheory.T.pair_adapted_restriction_compat hPr F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ d' hd' d₁' hd₁' dd hdd dd₁ hdd₁ ed hmap hheis hinv hadm hnz l₁ hl₁ hl₁inv hl₁0 μ hμ`. Establish `hV` using `GlobalTheory.T.pair_adapted_restriction_compat_alt hPr F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ d' hd' d₁' hd₁' dd hdd dd₁ hdd₁ ed hmap hheis hinv hadm hnz l₁ hl₁ hl₁inv μ hμ`. Use `⟨_, hA, hV, hN, ?_⟩` and prove the remaining obligations. Introduce `p t hpt k hk Φ hΦ`. Take `⟨-, hS, -⟩` from `hWS`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hΦ'` using `hS.pres p Φ hΦ`. Use `letI : MeasurableSpace (Fin n → AE F E) := borel _`. Rewrite using `[GlobalTheory.SiegelAvg.avgForm_apply _ _ _ (hconv _ hΦ'), GlobalTheory.SiegelAvg.avgForm_apply _ _ _ (hconv _ hΦ)]`. Establish `hpw : ∀ y, (l₁ ∘ₗ ed) (GlobalTheory.SiegelAvg.starFam dd B.ψ (incV F H'.y) y (omd p Φ)) = k * (l₁ ∘ₗ ed) (GlobalTheory.SiegelAvg.starFam dd B.ψ (incV F H'.y) ((((t⁻¹ : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E))) *ᵥ y) Φ)` using `fun y => by`. Simplify using `only [LinearMap.comp_apply, GlobalTheory.SiegelAvg.starFam_apply]`.
+Establish an intermediate fact. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← actB_vecMulVec_diag p t hpt (incV F H'.y) y, ← hS.impl p _ Φ hΦ]`. Conclude with `hk _ (GlobalTheory.SchrKeepsSchA.schr_mem_schA F B.ψ hψ _ _ Φ hΦ)`. Repeatedly rewrite using `[hpw]`. Rewrite using `[integral_const_mul, GlobalTheory.T.integral_comp_gl_inv_haar F E n μ hμ t _ (hconv _ hΦ)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem avg_exists : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
@@ -151,21 +149,19 @@ theorem avg_exists : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Fiel
   ring
 
 /- English proof (translation)
-Introduce `hPr F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ d' hd' d₁' hd₁' dd hdd dd₁ hdd₁ omd hWS omd₁ hWS₁ ed hmap hheis hinv hadm hnz cd hcd p t hpt`. Take `⟨l₁, hl₁, hl₁inv, φ₀, hφ₀, hl₁0⟩` from `GlobalTheory.T.exists_diagonalLagrangian_invariant_form F B.ψ (Fin n × Fin d₁)`. Establish `hl₁' : ∀ (z : Matrix (Fin d₁) (Fin n) (AE F E)), ∀ φ ∈ schA F ((Fin n × Fin d₁) ⊕ (Fin n × Fin d₁)), l₁ (dd₁.rho B.ψ (z * (diagCols (Fin n))ᵀ) φ) = l₁ φ` using `fun z φ hφ => by`. Rewrite using `[rho_diagCols hdd₁ B.ψ z]`. Conclude with `hl₁inv _ _ φ hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨L, hL, hLinv, ⟨Φ₀, hΦ₀, hL0⟩, hLtr⟩` from `avg_exists hPr F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ d' hd' d₁' hd₁' dd hdd dd₁ hdd₁ omd hWS omd₁ hWS₁ ed hmap hheis hinv hadm hnz l₁ hl₁ hl₁' ⟨φ₀, hφ₀, hl₁0⟩`. Take `⟨-, -, hR⟩` from `hWS`. Take `⟨-, -, hR₁⟩` from `hWS₁`. Use `set m : ℝ≥0 := (adeleClass F).modu (Units.map (Algebra.norm (AF F) : AE F E →* AF F) (Matrix.GeneralLinearGroup.det t)) with hm`. Use `set χt : ℂ := ((χW (Matrix.GeneralLinearGroup.det t) : Circle) : ℂ) with hχt`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hk : ∀ Φ ∈ schA F ((Fin n × Fin d) ⊕ (Fin n × Fin d)), l₁ (ed (omd p Φ)) = (cd p * (χt * (((m : ℝ) ^ ((d₁ : ℝ) / 2) : ℝ) : ℂ))) * l₁ (ed Φ)` using `fun Φ hΦ => by`. Rewrite using `[hcd p Φ hΦ, map_smul, hR₁ l₁ hl₁ hl₁' p t hpt _ (hmap Φ hΦ), smul_eq_mul]`. Simplify using `only [Fintype.card_fin, hχt, hm]`. Expand and normalize the polynomial expressions, which then agree. Establish `e1` using `hLtr p t hpt _ hk Φ₀ hΦ₀`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e2` using `hR L hL hLinv p t hpt Φ₀ hΦ₀`. Rewrite `e2` using `[e1]`. Simplify using `only [Fintype.card_fin] at e2`. Establish `hm0 : (m : ℝ) ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `map_mul (adeleClass F).modu (Units.map (Algebra.norm (AF F) : AE F E →* AF F) (Matrix.GeneralLinearGroup.det t)) (Units.map (Algebra.norm (AF F) : AE F E →* AF F) (Matrix.GeneralLinearGroup.det t))⁻¹`. Rewrite `h1` using `[mul_inv_cancel, map_one, ← hm]`. Establish `: (m : ℝ) * ((adeleClass F).modu (Units.map (Algebra.norm (AF F) : AE F E →* AF F) (Matrix.GeneralLinearGroup.det t))⁻¹ : ℝ) = 1`. Conclude with `h1.symm` after adjusting the coercions. Rewrite `this` using `[h0, zero_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `zero_ne_one this`. Establish `hmpos : (0 : ℝ) < m` using `lt_of_le_of_ne m.2 (Ne.symm hm0)`. Establish `hd : (d : ℝ) / 2 = (d₁ : ℝ) / 2 + 1` using `by rw [hH.rank]; push_cast; ring`. Rewrite `e2` using `[hd, Real.rpow_add hmpos, Real.rpow_one]`. Establish `hχ0 : χt ≠ 0` using `by rw [hχt]; exact Circle.coe_ne_zero _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hp0 : (((m : ℝ) ^ ((d₁ : ℝ) / 2) : ℝ) : ℂ) ≠ 0`. Conclude with `(Real.rpow_pos_of_pos hmpos _).ne'` after adjusting the coercions. Establish `hm0' : ((m : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hm0`. Establish `key : (cd p - 1) * (χt * (((m : ℝ) ^ ((d₁ : ℝ) / 2) : ℝ) : ℂ) * ((m : ℝ) : ℂ) * L Φ₀) = 0`. Move the coercions through the operations in `at e2 ⊢`.
-
-Take the linear combination `e2`. Break down `mul_eq_zero.mp key with h | h` into its components or cases. Conclude with `sub_eq_zero.mp h`. It suffices to derive a contradiction. Conclude with `(mul_ne_zero (mul_ne_zero (mul_ne_zero hχ0 hp0) hm0') hL0) h`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. A detailed English derivation is pending.
 -/
 theorem siegel_scalar_eq_one : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →

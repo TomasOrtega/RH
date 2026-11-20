@@ -48,19 +48,19 @@ def LLim : Prop := ∀ (l : ℕ) [Fact l.Prime] (E : Spc) (n i : ℤ), (∀ j, N
   (∀ j, Function.Surjective (red (l ^ (j + 1)) (l ^ j) E n i)) → Nontrivial (HQ l E n i)
 
 /- English proof (translation)
-Simplify using `using (h.map (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom).map p.appTop.hom`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem unit_of {k : Type} [Field k] {X : Scheme.{0}} (p : X ⟶ S k) {q : ℕ} (h : IsUnit (q : k)) : IsUnit (q : Γ(X, ⊤)) := by
   simpa using (h.map (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom).map p.appTop.hom
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Substitute `hi` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cast_zero {q : ℕ} {E : Spc} {n i n' i' : ℤ} (hn : n = n') (hi : i = i') : Ht.cast hn hi (0 : Ht q E n i) = 0 := by
   subst hn; subst hi; rfl
 
 /- English proof (translation)
-Take `⟨tr, h⟩` from `e8 q k hq p d`. Establish `hs : Subsingleton (Ht q (sch.obj X) (2 * d - n) (d - i))` using `(a9 _ _).1 _ _ (by omega)`. Apply the tactic sequence `refine ⟨fun a a' => (h n i 0).unique (fun b => ?_) (fun b => ?_)⟩ <;>`. Rewrite using `[Subsingleton.elim b 0, map_zero, map_zero, cast_zero, map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem vanish (a9 : A9) (e8 : E8) (q : ℕ) [NeZero q] (k : Type) [Field k] [IsAlgClosed k] (hq : IsUnit (q : k))
     {X : Scheme.{0}} [IsIntegral X] (p : X ⟶ S k) [IsProper p] (d : ℕ) [SmoothOfRelativeDimension d p] (n i : ℤ)
@@ -71,7 +71,7 @@ theorem vanish (a9 : A9) (e8 : E8) (q : ℕ) [NeZero q] (k : Type) [Field k] [Is
     rw [Subsingleton.elim b 0, map_zero, map_zero, cast_zero, map_zero]
 
 /- English proof (translation)
-Establish `: ∀ y, pull R (sch.map a) F n (pull R (sch.map (inv a)) F n y) = y` using `fun y => by`. Rewrite using `[← pull_comp, ← Functor.map_comp, IsIso.hom_inv_id, CategoryTheory.Functor.map_id, pull_id]`. Conclude with `⟨fun y y' => by rw [← this y, ← this y', Subsingleton.elim (pull R (sch.map (inv a)) F n y)]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem sub_iso {R : Type} [CommRing R] {X Y : Scheme.{0}} (a : X ⟶ Y) [IsIso a] (F : Shv R) (n : ℤ)
     [h : Subsingleton (H R (sch.obj Y) F n)] : Subsingleton (H R (sch.obj X) F n) := by
@@ -80,21 +80,19 @@ theorem sub_iso {R : Type} [CommRing R] {X Y : Scheme.{0}} (a : X ⟶ Y) [IsIso 
   exact ⟨fun y y' => by rw [← this y, ← this y', Subsingleton.elim (pull R (sch.map (inv a)) F n y)]⟩
 
 /- English proof (translation)
-Introduce `hb l hl k _ _ hlk d`. Establish `hb'` using `hb`. Take `⟨⟨-, -, -, -, a5, -, -, -, -, a7, a8, a9, a10, a11⟩, ⟨-, -, b3, -, -⟩, ⟨c4, -, -⟩, -, -, -, -, -, e8⟩` from `hb'`. Establish `hu : ∀ j : ℕ, IsUnit ((l ^ j : ℕ) : k)` using `fun j => by`. Rewrite using `[Nat.cast_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(IsUnit.mk0 _ hlk).pow j`. Establish `hz : ∀ j : ℕ, NeZero (l ^ j)` using `fun j => ⟨pow_ne_zero _ hl.out.ne_zero⟩`. Use `hP k` as an intermediate fact. Use `hS k` as an intermediate fact. Use `hI k` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨hP k d, hS k d⟩, hI k d, fun t U hU => ?_⟩` and prove the remaining obligations. Establish `hnt : Nontrivial (V l (PN k d) (2 * d))`. Use `hLim l _ _ 0 (fun j => ?_) (fun j => ?_)` and prove the remaining obligations. Take `⟨tr, -⟩` from `e8 (l ^ j) k (hu j) (PNto k d) d`. Take `⟨ζ⟩` from `LateralTheory.E.LeafKumCut.prim_of_isAlgClosed (l ^ j) k (hu j)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he⟩` from `hT (l ^ j) k ζ 0 d`. Take `⟨w⟩` from `hL hb _ (PN k d) _ _ (fun U x => e U (x ≫ PNto k d)) (fun g x s => by rw [Category.assoc]; exact he g _ s) (2 * d)`. Conclude with `⟨w.trans tr⟩`. Take `⟨u, δ, h⟩` from `hB a7 a8 a10 a11 l j (sch.obj (PN k d)) 0 (fun W ⟨x⟩ => unit_of ((show W ⟶ PN k d from x) ≫ PNto k d) (IsUnit.mk0 _ hlk))`. Use `vanish a9 e8 (l ^ 1) k (hu 1) (PNto k d) d (2 * d + 1) 0 (by omega)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun y => ((h 1 (2 * d)).2.1 y).1 (Subsingleton.elim _ _)`. Take `⟨z, hz0⟩` from `exists_ne (0 : V l (PN k d) (2 * d))`. Take `⟨g, hg, hgU⟩` from `hM k d t`. Take `rfl : U = g ⁻¹ᵁ Std k d` from `TopologicalSpace.Opens.ext (hU.trans hgU.symm)`. Establish `h1 : ∀ j, Subsingleton (Ht (l ^ j) (sch.obj (Std k d).toScheme) (2 * d) 0)` using `fun j => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `d with`. Consider the case `zero`. Use `hE a5 a9 _ _ ⟨fun x => ?_⟩ _ _` and prove the remaining obligations. Take `⟨m, -⟩` from `TopologicalSpace.Opens.mem_iSup.1 x.2`. Conclude with `m.elim0`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `succ e`. Take `⟨f, hf⟩` from `hJ k e`. Use `vanish a9 e8 (l ^ j) k (hu j) (PNto k e) e (2 * (e + 1 : ℕ)) 0 (by omega)` as an intermediate fact. Conclude with `(hA b3 c4 (l ^ j) f hf (unit_of (PNto k e) (hu j)) 0 _).2.subsingleton`. Establish `h2 : ∀ j, Subsingleton (HtL l j (sch.obj (g ⁻¹ᵁ Std k d).toScheme) (2 * d) 0)` using `fun j => sub_iso (g ∣_ Std k d) _ _ (h := h1 j)`.
-
-Establish `h3 : Subsingleton (V l (g ⁻¹ᵁ Std k d).toScheme (2 * d))` using `inferInstance`. Conclude with `⟨z, hz0, Subsingleton.elim _ _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem goal_of (hP : LProper) (hS : LSmooth) (hI : LIntegral) (hM : LMove) (hJ : LProjn) (hA : AffineLineTwistInvariance) (hE : LEmpty)
     (hL : LLoc) (hLim : LLim) (hB : LateralTheory.KummerTheory.Bock) (hT : LateralTheory.E.LeafTwistPf.LeafTwSec) : LPd := by

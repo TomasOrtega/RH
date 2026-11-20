@@ -13,9 +13,9 @@ namespace GlobalTheory.CompanionTheory.AdelicFourier
 variable {K : Type*} [Field K] [NumberField K] {ι : Type*} [Fintype ι]
 
 /- English proof (translation)
-Establish `h : (vecLattice K ι : Set (ι → 𝔸[K])) = Set.univ.pi (fun _ => (AdeleRing.principalSubgroup (𝓞 K) K : Set 𝔸[K]))`. Use extensionality with `x`. Simplify using `only [SetLike.mem_coe, mem_vecLattice, Set.mem_pi, Set.mem_univ, true_implies, AdeleRing.principalSubgroup, Subring.coe_toAddSubgroup, RingHom.coe_range, Set.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ξ, rfl⟩ i`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨ξ i, rfl⟩`. Introduce `hx choose ξ hξ using hx`. Conclude with `⟨ξ, funext hξ⟩`. Rewrite using `[h]`. Conclude with `isClosed_set_pi fun _ _ => isClosed_principalSubgroup K`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_vecLattice : IsClosed (vecLattice K ι : Set (ι → 𝔸[K])) := by
   have h : (vecLattice K ι : Set (ι → 𝔸[K])) =
@@ -40,7 +40,7 @@ abbrev VecQuot (K : Type*) [Field K] [NumberField K] (ι : Type*) [Fintype ι] :
 def toQuot (x : ι → 𝔸[K]) : VecQuot K ι := Multiplicative.ofAdd (QuotientAddGroup.mk x)
 
 /- English proof (translation)
-Conclude with `continuous_ofAdd.comp continuous_quot_mk`.
+A detailed English derivation is pending.
 -/
 theorem continuous_toQuot : Continuous (toQuot : (ι → 𝔸[K]) → VecQuot K ι) := by
   exact continuous_ofAdd.comp continuous_quot_mk
@@ -74,14 +74,14 @@ Both sides reduce to the same expression.
 theorem toQuot_zero : toQuot (0 : ι → 𝔸[K]) = 1 := rfl
 
 /- English proof (translation)
-Unfold `toQuot`. Rewrite using `[(QuotientAddGroup.eq_zero_iff x).2 hx, ofAdd_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem toQuot_of_mem {x : ι → 𝔸[K]} (hx : x ∈ vecLattice K ι) : toQuot x = 1 := by
   unfold toQuot
   rw [(QuotientAddGroup.eq_zero_iff x).2 hx, ofAdd_zero]
 
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha, AddChar.map_add_eq_mul, ih]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem addChar_sum {A σ : Type*} [AddCommMonoid A] (φ : AddChar A Circle) (s : Finset σ)
     (v : σ → A) : φ (∑ i ∈ s, v i) = ∏ i ∈ s, φ (v i) := by
@@ -92,17 +92,15 @@ theorem addChar_sum {A σ : Type*} [AddCommMonoid A] (φ : AddChar A Circle) (s 
     rw [Finset.sum_insert ha, Finset.prod_insert ha, AddChar.map_add_eq_mul, ih]
 
 /- English proof (translation)
-Set `Φ : AddChar (ι → 𝔸[K]) Circle` to `{ toFun := fun x => χ (toQuot x) map_zero_eq_one' := by rw [toQuot_zero, map_one] map_add_eq_mul' := fun x y => by rw [toQuot_add, map_mul] }`. Establish `hΦ : Continuous Φ` using `χ.continuous.comp continuous_toQuot`. Establish `hi : ∀ i, ∃ ξ : K, ∀ a : 𝔸[K], Φ (Pi.single i a) = adelicChar K (algebraMap K 𝔸[K] ξ * a)`. Introduce `i`. Set `χi : AddChar 𝔸[K] Circle` to `{ toFun := fun a => Φ (Pi.single i a) map_zero_eq_one' := by rw [Pi.single_zero, AddChar.map_zero_eq_one] map_add_eq_mul' := fun x y => by rw [Pi.single_add, AddChar.map_add_eq_mul] }`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Establish `hχi : Continuous χi` using `hΦ.comp (continuous_pi fun j => by`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `only [Pi.single_eq_same]`. Conclude with `continuous_id`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `continuous_const)` using `[Pi.single_eq_of_ne h]`. Establish `hK : ∀ k : K, χi (algebraMap K 𝔸[K] k) = 1` using `fun k => by`. Establish `hm : (Pi.single i (algebraMap K 𝔸[K] k) : ι → 𝔸[K]) ∈ vecLattice K ι`. Use `⟨Pi.single i k, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne h]`. Use `show χ (toQuot _) = 1`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[toQuot_of_mem hm, map_one]`. Take `⟨ξ, hξ, -⟩` from `existsUnique_eq_adelicChar_mul χi hχi hK`. Conclude with `⟨ξ, hξ⟩`. Use `choose ξ hξ using hi`. Use `⟨ξ, fun x => ?_⟩` and prove the remaining obligations.
-
-Establish `hx : x = ∑ i, Pi.single i (x i)` using `(Finset.univ_sum_single x).symm`. Use `show Φ x = _`. Use `conv_lhs => rw [hx]`. Rewrite using `[addChar_sum, pair, addChar_sum]`. Conclude with `Finset.prod_congr rfl fun i _ => hξ i (x i)`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pair_of_char (χ : VecQuot K ι →ₜ* Circle) :
     ∃ ξ : ι → K, ∀ x, χ (toQuot x) = adelicChar K (pair ξ x) := by
@@ -142,9 +140,9 @@ theorem exists_pair_of_char (χ : VecQuot K ι →ₜ* Circle) :
   exact Finset.prod_congr rfl fun i _ => hξ i (x i)
 
 /- English proof (translation)
-Establish `hs : ∀ a b : ι → 𝔸[K], (QuotientAddGroup.leftRel (vecLattice K ι)) a b → f a = f b`. Introduce `a b hab`. Rewrite `hab` using `[QuotientAddGroup.leftRel_apply]`. Establish `e` using `hper _ hab a`. Establish `e2 : -a + b + a = b` using `by abel`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[e2]`. Conclude with `e.symm`. Use `⟨⟨fun q => conj (Quotient.liftOn' (Multiplicative.toAdd q) f hs), ?_⟩, fun x => rfl⟩` and prove the remaining obligations. Conclude with `Complex.continuous_conj.comp ((hc.quotient_liftOn' hs).comp continuous_toAdd)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_descend {f : (ι → 𝔸[K]) → ℂ} (hc : Continuous f)
     (hper : ∀ ξ ∈ vecLattice K ι, ∀ x, f (ξ + x) = f x) :
@@ -160,49 +158,41 @@ theorem continuous_descend {f : (ι → 𝔸[K]) → ℂ} (hc : Continuous f)
   exact Complex.continuous_conj.comp ((hc.quotient_liftOn' hs).comp continuous_toAdd)
 
 /- English proof (translation)
-Take `⟨C0, hC0⟩` from `(isCompact_closure_vecDomain (K := K) (ι := ι)).exists_bound_of_continuousOn hc.continuousOn`. Establish `hDfin : vecMeasure K ι (vecDomain K ι) < ⊤`. Rewrite using `[vecMeasure_vecDomain]`. Conclude with `ENNReal.one_lt_top`. Establish `hint : ∀ ψ : C(VecQuot K ι, ℂ), IntegrableOn (fun x => f x * ψ (toQuot x)) (vecDomain K ι) (vecMeasure K ι)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ψ`. Establish `hcψ : Continuous fun x => f x * ψ (toQuot x)` using `hc.mul (ψ.continuous.comp continuous_toQuot)`. Take `⟨C, hC⟩` from `(isCompact_closure_vecDomain (K := K) (ι := ι)).exists_bound_of_continuousOn hcψ.continuousOn`. Conclude with `Measure.integrableOn_of_bounded (M := C) hDfin.ne hcψ.aestronglyMeasurable ((ae_restrict_iff' measurableSet_vecDomain).2 (Filter.Eventually.of_forall fun x hx => hC x (subset_closure hx)))`. Use `set Λ : C(VecQuot K ι, ℂ) → ℂ := fun ψ => ∫ x in vecDomain K ι, f x * ψ (toQuot x) ∂vecMeasure K ι with hΛ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hΛchar : ∀ χ : VecQuot K ι →ₜ* Circle, Λ (charCM χ) = 0`. Introduce `χ`. Take `⟨ξ, hξ⟩` from `exists_pair_of_char χ`. Establish `h1` using `h0 (-ξ)`. Establish `hp : ∀ x, -pair (-ξ) x = pair ξ x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `x`. Simplify using `[pair, Finset.sum_neg_distrib]`. Simplify using `only [vecCoeff, hp] at h1`. Simplify using `only [hΛ, charCM_apply, hξ]`. Conclude with `h1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hΛadd : ∀ ψ ψ' : C(VecQuot K ι, ℂ), Λ (ψ + ψ') = Λ ψ + Λ ψ'`. Introduce `ψ ψ'`. Simplify using `only [hΛ, ContinuousMap.add_apply, mul_add]`. Conclude with `integral_add (hint ψ) (hint ψ')`. Establish `hΛsmul : ∀ (c : ℂ) (ψ : C(VecQuot K ι, ℂ)), Λ (c • ψ) = c • Λ ψ`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `c ψ`. Simplify using `only [hΛ, ContinuousMap.smul_apply, smul_eq_mul]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hspan : ∀ ψ ∈ Submodule.span ℂ (Set.range (charCM : (VecQuot K ι →ₜ* Circle) → C(VecQuot K ι, ℂ))), Λ ψ = 0`. Introduce `ψ hψ`. Proceed by induction on `hψ using Submodule.span_induction with`. Consider the case `mem x hx`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Take `⟨χ, rfl⟩` from `hx`. Conclude with `hΛchar χ`. Consider the case `zero => simp [hΛ]`. Consider the case `add x y _ _ hx hy => rw [hΛadd, hx, hy, add_zero]`. Consider the case `smul c x _ hx => rw [hΛsmul, hx, smul_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `set C : ℝ := |C0| + 1 with hCdef`. Establish `hCpos : 0 < C` using `by positivity`. Establish `hbound : ∀ ψ : C(VecQuot K ι, ℂ), ‖Λ ψ‖ ≤ C * ‖ψ‖`. Introduce `ψ`. Establish `h` using `norm_setIntegral_le_of_norm_le_const hDfin (C := C * ‖ψ‖) (f := fun x => f x * ψ (toQuot x)) (fun x hx => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Rewrite using `[norm_mul]`. Conclude with `mul_le_mul ((hC0 x (subset_closure hx)).trans (by linarith [le_abs_self C0])) (ψ.norm_coe_le_norm _) (norm_nonneg _) hCpos.le)`. Simplify `h` using `[Measure.real, vecMeasure_vecDomain]`. Take `⟨φ, hφ⟩` from `continuous_descend hc hper`. Establish `hΛφ : Λ φ = 0`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hmem : φ ∈ closure ((Submodule.span ℂ (Set.range (charCM : (VecQuot K ι →ₜ* Circle) → C(VecQuot K ι, ℂ))) : Set C(VecQuot K ι, ℂ)))`. Rewrite using `[← Submodule.topologicalClosure_coe, span_charCM_dense]`. Discharge the goal by the elementary cases of `trivial`. Use `norm_le_zero_iff.1 (le_of_forall_pos_le_add fun δ hδ => ?_)` and prove the remaining obligations. Take `⟨ψ, hψ, hd⟩` from `Metric.mem_closure_iff.1 hmem (δ / C) (div_pos hδ hCpos)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Establish `e : Λ φ = Λ (φ - ψ) + Λ ψ` using `by rw [← hΛadd, sub_add_cancel]`. Rewrite using `[e, hspan ψ hψ, add_zero, zero_add]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← dist_eq_norm]`. Conclude with `mul_le_mul_of_nonneg_left hd.le hCpos.le`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `_ = δ := by field_simp`. Establish `hsq : ∫ x in vecDomain K ι, (Complex.normSq (f x) : ℂ) ∂vecMeasure K ι = 0`. Rewrite using `[← hΛφ]`. Simplify using `only [hΛ, hφ]`. Use `congr 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[Complex.mul_conj]`. Establish `hsqR : ∫ x in vecDomain K ι, Complex.normSq (f x) ∂vecMeasure K ι = 0`. Establish `h3 : ((∫ x in vecDomain K ι, Complex.normSq (f x) ∂vecMeasure K ι : ℝ) : ℂ) = 0`. Rewrite using `[← integral_complex_ofReal]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Conclude with `hsq`. Conclude with `h3` after adjusting the coercions. Establish `hint2 : IntegrableOn (fun x => Complex.normSq (f x)) (vecDomain K ι) (vecMeasure K ι)`. Use `IntegrableOn.congr_fun (f := fun x => ‖f x * φ (toQuot x)‖) (hint φ).norm (fun x _ => ?_) measurableSet_vecDomain` and prove the remaining obligations. Simplify using `only`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Rewrite using `[hφ, Complex.mul_conj, Complex.norm_real, Real.norm_of_nonneg (Complex.normSq_nonneg _)]`. Establish `hae : (fun x => Complex.normSq (f x)) =ᵐ[(vecMeasure K ι).restrict (vecDomain K ι)] 0` using `(integral_eq_zero_iff_of_nonneg (fun x => Complex.normSq_nonneg _) hint2).1 hsqR`. Use `set U : Set (ι → 𝔸[K]) := {x | f x ≠ 0} with hU`. Establish `hUo : IsOpen U` using `isOpen_ne_fun hc continuous_const`. Establish `hUD : vecMeasure K ι (U ∩ vecDomain K ι) = 0`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2` using `ae_iff.1 hae`. Rewrite `h2` using `[Measure.restrict_apply' measurableSet_vecDomain]`. Use `h2 using 2` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Simplify using `[hU, Complex.normSq_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv : ∀ g : vecLattice K ι, g +ᵥ U = U`. Introduce `g`. Use extensionality with `x`. Rewrite using `[Set.mem_vadd_set]`. Prove the components needed by the constructor for the conclusion.
-
-Introduce and unpack `⟨y, hy, rfl⟩ show f ((g : ι → 𝔸[K]) + y) ≠ 0`. Rewrite using `[hper _ g.2]`. Conclude with `hy`. Introduce `hx`. Use `⟨-(g : ι → 𝔸[K]) + x, ?_, ?_⟩` and prove the remaining obligations.
-
-Use `show f (-(g : ι → 𝔸[K]) + x) ≠ 0`. Rewrite using `[hper _ (neg_mem g.2)]`. Conclude with `hx`. Use `show (g : ι → 𝔸[K]) + (-(g : ι → 𝔸[K]) + x) = x`. Normalize the expressions using the abelian group laws.
-
-Establish `hU0 : vecMeasure K ι U = 0` using `isAddFundamentalDomain_vecDomain.measure_zero_of_invariant U hinv hUD`. Establish `hUe : U = ∅` using `(hUo.measure_eq_zero_iff (vecMeasure K ι)).1 hU0`. Use function extensionality and compare the values at `x`. Assume the negation of the conclusion as `hx`. Establish `hxU : x ∈ U` using `hx`.
-
-Rewrite `hxU` using `[hUe]`. Conclude with `hxU`.
+Apply function extensionality and compare values at an arbitrary argument. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_vecCoeff_eq_zero {f : (ι → 𝔸[K]) → ℂ} (hc : Continuous f)
     (hper : ∀ ξ ∈ vecLattice K ι, ∀ x, f (ξ + x) = f x) (h0 : ∀ ξ, vecCoeff f ξ = 0) : f = 0 := by

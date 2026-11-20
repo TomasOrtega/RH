@@ -24,9 +24,9 @@ def HasChart (Z : Model Xo c β) (x : gen Z) : Prop :=
     IsMonomial P.D.toPre (bdParam k m d) (fun i => γ i) ∧ IsPartOfBasis γ
 
 /- English proof (translation)
-Set `e : MvPowerSeries (Fin (m + d)) k ≃+* ChartRing k m d` to `(MvPowerSeries.renameEquiv k finSumFinEquiv.symm).toRingEquiv`. Establish `h₁` using `GlobalTheory.CohenStructure.isIntegrallyClosed_mvPowerSeries k (m + d)`. Establish `: IsAdicComplete (maximalIdeal k) k`. Rewrite using `[maximalIdeal_eq_bot]`. Use `infer_instance`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h₂` using `GlobalTheory.CohenStructure.isAdicComplete_mvPowerSeries k (m + d)`. Conclude with `⟨isNoetherianRing_of_ringEquiv _ e, inferInstance, IsIntegrallyClosed.of_equiv e, GlobalTheory.CohenStructure.isAdicComplete_of_ringEquiv e⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem admissibleBase_chartRing (k : Type) [Field k] (m d : ℕ) :
     AdmBase (ChartRing k m d) (maximalIdeal (ChartRing k m d)) := by
@@ -40,9 +40,9 @@ theorem admissibleBase_chartRing (k : Type) [Field k] (m d : ℕ) :
     GlobalTheory.CohenStructure.isAdicComplete_of_ringEquiv e⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, _, m, d, ξ, t, P, γ, hx, h₁, h₂, h₃, h₄, h₅, h₆⟩`. Establish `: CharZero (ChartRing k m d)` using `(Spec.preimage (ξ ≫ genStr Z)).hom.charZero_iff (RingHom.injective _) |>.1 inferInstance`. Conclude with `⟨k, _, m, d, ξ, t, P, γ, hx, h₁, h₂, h₃, h₄, GlobalTheory.FlatTors.torsionIso_holds E H _ _ (admissibleBase_chartRing k m d) t P, h₅, h₆⟩`. Introduce and unpack `⟨k, _, m, d, ξ, t, P, γ, hx, h₁, h₂, h₃, h₄, -, h₅, h₆⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨k, _, m, d, ξ, t, P, γ, hx, h₁, h₂, h₃, h₄, h₅, h₆⟩`.
+Supply the required witnesses or components.
 -/
 theorem hasChart_iff (Z : Model Xo c β) (x : gen Z) : HasChart Z x ↔ HasToricChart Z x := by
   constructor
@@ -66,7 +66,7 @@ def ToroidalCharts : Prop :=
           ∀ x ∈ genBd Y, GlobalTheory.MumfordChart.HasChart Y x
 
 /- English proof (translation)
-Take `⟨Y, h₁, h₂, h₃⟩` from `h E H Dw hr l Xo c`. Conclude with `⟨Y, h₁, h₂, fun x hx => (GlobalTheory.MumfordChart.hasChart_iff Y x).1 (h₃ x hx)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ToroidalCharts.exists_model (h : ToroidalCharts) {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
     {Dw : Datum H} (hr : 1 ≤ Dw.p + Dw.q) {l : Geo.Tor.Level H} (Xo : Moduli Dw l) (c : Coeff l) :

@@ -12,7 +12,7 @@ noncomputable section
 namespace GlobalTheory.HoweLocal
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Continuous (fun a : Fv F v => ((0 : Ainf F), GlobalTheory.AdelicU.singleFin v a))`. Conclude with `continuous_const.prodMk (GlobalTheory.AdelicU.continuous_singleFin v)`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem continuous_liftV {F : Type} [Field F] [NumberField F] (v : Pl F) :
     Continuous (GlobalTheory.LatVac.liftV v) := by
@@ -20,13 +20,11 @@ theorem continuous_liftV {F : Type} [Field F] [NumberField F] (v : Pl F) :
   exact continuous_const.prodMk (GlobalTheory.AdelicU.continuous_singleFin v)
 
 /- English proof (translation)
-Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Set `b` to `Module.finBasis F E`. Set `bA` to `Algebra.TensorProduct.basis (Fv F v) b`. Establish `hsum : ∀ z : Fv F v ⊗[F] E, liftE v z = ∑ i, GlobalTheory.LatVac.liftV v (bA.repr z i) • ((1 : AF F) ⊗ₜ[F] b i)`. Introduce `z`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [← bA.sum_repr z]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Simplify using `only [liftE, TensorProduct.map_tmul, LinearMap.id_coe, id_eq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfun : (liftE (E` using `E) v : Fv F v ⊗[F] E → AE F E) = fun z => ∑ i, GlobalTheory.LatVac.liftV v (bA.repr z i) • ((1 : AF F) ⊗ₜ[F] b i) := funext hsum`. Rewrite using `[hfun]`. Use `haveI : ContinuousAdd (AE F E) := IsModuleTopology.toContinuousAdd (AF F) (AE F E)`. Use `continuous_finset_sum _ fun i _ => ?_` and prove the remaining obligations. Establish `hl : Continuous ((Finsupp.lapply i).comp bA.repr.toLinearMap : Fv F v ⊗[F] E →ₗ[Fv F v] Fv F v)` using `IsModuleTopology.continuous_of_linearMap _`.
-
-Conclude with `Continuous.smul ((continuous_liftV v).comp hl) (continuous_const : Continuous fun _ : Fv F v ⊗[F] E => ((1 : AF F) ⊗ₜ[F] b i : AE F E))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_liftE {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (v : Pl F) : Continuous (liftE (E := E) v) := by
@@ -54,9 +52,7 @@ theorem continuous_liftE {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
     (continuous_const : Continuous fun _ : Fv F v ⊗[F] E => ((1 : AF F) ⊗ₜ[F] b i : AE F E))
 
 /- English proof (translation)
-Use `haveI : ContinuousAdd (AE F E) := IsModuleTopology.toContinuousAdd (AF F) (AE F E)`. Use `haveI : IsTopologicalAddGroup (Fv F v ⊗[F] E) := IsModuleTopology.topologicalAddGroup (Fv F v) (Fv F v ⊗[F] E)`. Rewrite using `[Units.continuous_iff]`. Prove the components needed by the constructor for the conclusion. Express the relevant statement in the definitionally equal form `Continuous (fun z : (Fv F v ⊗[F] E)ˣ => 1 + liftE v ((z : Fv F v ⊗[F] E) - 1))`.
-
-Conclude with `continuous_const.add ((continuous_liftE v).comp (Units.continuous_val.sub continuous_const))`. Express the relevant statement in the definitionally equal form `Continuous (fun z : (Fv F v ⊗[F] E)ˣ => 1 + liftE v (((z⁻¹ : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E) - 1))`. Conclude with `continuous_const.add ((continuous_liftE v).comp (Units.continuous_coe_inv.sub continuous_const))`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem continuous_liftU (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (v : Pl F) :
     Continuous (GlobalTheory.HoweLocal.liftU (F := F) (E := E) v) := by

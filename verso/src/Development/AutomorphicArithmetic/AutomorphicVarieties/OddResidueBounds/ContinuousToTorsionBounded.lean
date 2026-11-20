@@ -4,9 +4,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Kumm
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Bern UpperTheory.V.B4 UpperTheory.V.B5 UpperTheory.V.Odd
 
 /- English proof (translation)
-Establish `hfin : (Set.range f).Finite` using `(isCompact_range hf).finite_of_discrete`. Use `choose k hk using (UpperTheory.V.Kum.qzBasic l).2.1`. Take `⟨r, hr⟩` from `(hfin.image k).bddAbove`. Use `⟨r, fun g => ?_⟩` and prove the remaining obligations. Establish `h1 : k (f g) ≤ r` using `hr ⟨f g, ⟨g, rfl⟩, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, rfl⟩` from `Nat.exists_eq_add_of_le' h1`. Establish `h2 : (l : ℤ_[l]) ^ k (f g) • f g = 0`. Rewrite using `[← Nat.cast_pow, Nat.cast_smul_eq_nsmul]`. Conclude with `hk _`. Rewrite using `[pow_add, mul_smul, h2, smul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem continuous_to_torsion_bounded {G : Type} [TopologicalSpace G] [CompactSpace G] (l : ℕ) [Fact l.Prime]
     (f : G → QZ l) (hf : Continuous f) : ∃ r : ℕ, ∀ g, (l : ℤ_[l]) ^ r • f g = 0 := by
@@ -22,9 +22,9 @@ private theorem continuous_to_torsion_bounded {G : Type} [TopologicalSpace G] [C
   rw [pow_add, mul_smul, h2, smul_zero]
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ l _ D e`. Establish `h : ∀ z : Z1 (qzTw D e), ∃ r : ℕ, ∀ g, (l : ℤ_[l]) ^ r • z.1 g = 0` using `fun z => continuous_to_torsion_bounded l z.1 z.2.1`. Use `⟨h, fun x => ?_⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨r, hr⟩` from `h z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨r, ?_⟩` and prove the remaining obligations. Establish `hz : (l : ℤ_[l]) ^ r • z = 0` using `Subtype.ext (funext hr)`. Rewrite using `[← Submodule.Quotient.mk_smul, hz, Submodule.Quotient.mk_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.V.Odd.Z1_H1_qz_twist_l_power_torsion :
     ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (l : ℕ) [Fact l.Prime] (D : LData E Ω l) (e : ℤ), (∀ z : Z1 (qzTw D e), ∃ r : ℕ, ∀ g, (l : ℤ_[l]) ^ r • z.1 g = 0) ∧ ∀ x : H1 (qzTw D e), ∃ r : ℕ, (l : ℤ_[l]) ^ r • x = 0 := by

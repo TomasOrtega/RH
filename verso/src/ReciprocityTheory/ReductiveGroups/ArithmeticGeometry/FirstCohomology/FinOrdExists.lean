@@ -13,21 +13,21 @@ namespace ReciprocityTheory.ChartRestriction.G.H1
 open ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.DVR
 
 /- English proof (translation)
-Introduce `V _ _ _ D F _ _ _ k hk p w hw`. Take `⟨Φ, hΦr⟩` from `hΦ V (maximalIdeal V) D F k hk p w hw`. Take `⟨c, hc, hcp⟩` from `hP V (maximalIdeal V) D F k hk p w hw`. Take `⟨ζ, hζ⟩` from `IsAlgClosed.exists_pow_nat_eq (c⁻¹) (by omega : 0 < k)`. Establish `hζc : ζ ^ k * c = 1` using `by rw [hζ, inv_mul_cancel₀ hc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hζ0 : ζ ≠ 0`. Introduce and unpack `rfl`. Rewrite `hζc` using `[zero_pow (by omega), zero_mul]`. Conclude with `zero_ne_one hζc`. Use `⟨ζ, hζ0, k, hk, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ss ts h`. Establish `hpow : (Φ ^ k) (ss 0) = c • ss 0`. Use `hcp (fun i => (Φ ^ (i : ℕ)) (ss 0)) (by` as an intermediate fact. Introduce `i`. Rewrite using `[hΦr]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.val_succ, Fin.coe_castSucc, pow_succ', Module.End.mul_apply])`. Rewrite `this` using `[isSmul_iff]`. Simplify using `using this`. Establish `key : ∀ n : ℕ, (hn : n ≤ k) → ss ⟨n, by omega⟩ = ζ ^ n • (Φ ^ n) (ss 0)`. Introduce `n`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `n with`. Consider the case `zero => intro _`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `hn`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `h ⟨n, by omega⟩`. Rewrite `h1` using `[hΦr]`. Rewrite `h2` using `[isSmul_iff]`. Establish `e : ss ⟨n + 1, by omega⟩ = ss (Fin.succ ⟨n, by omega⟩)` using `rfl`. Establish `e0 : ss ⟨n, by omega⟩ = ss (Fin.castSucc ⟨n, by omega⟩)` using `rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, h2, h1, ← e0, ih (by omega), LinearMap.map_smul, smul_smul, pow_succ' ζ n, pow_succ' Φ n, Module.End.mul_apply]`. Establish `hlast : ss (Fin.last k) = ss 0`. Use `key k le_rfl` as an intermediate fact. Establish `e : ss (Fin.last k) = ss ⟨k, by omega⟩` using `rfl`. Rewrite using `[e, this, hpow, smul_smul, hζc, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `α j`. Rewrite using `[hlast]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finOrdExists_of (hΦ : DVR.PhiFunStatement) (hP : PhiPowStatement) : FinOrdExistsStatement := by
   intro V _ _ _ D F _ _ _ k hk p w hw

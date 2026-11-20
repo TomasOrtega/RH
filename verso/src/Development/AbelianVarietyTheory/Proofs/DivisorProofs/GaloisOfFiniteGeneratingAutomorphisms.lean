@@ -3,19 +3,17 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K K' _ _ i hfin Γ _ s hs hfix`. Use `letI := i.toAlgebra`. Use `haveI : FiniteDimensional K K' := hfin`. Set `t : Γ → (K' ≃ₐ[K] K')` to `fun g => AlgEquiv.ofRingEquiv (f := s g) (hs g)`. Set `H : Subgroup (K' ≃ₐ[K] K')` to `Subgroup.closure (Set.range t)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hH : IntermediateField.fixedField H = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `y hy`. Establish `h1 : ∀ g, s g y = y` using `fun g => hy ⟨t g, Subgroup.subset_closure ⟨g, rfl⟩⟩`. Take `⟨x, rfl⟩` from `hfix y h1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `IntermediateField.algebraMap_mem _ x`. Establish `hG : IsGalois K K'`. Apply `IsGalois.of_fixedField_eq_bot` to reduce the goal to its premises. Rewrite using `[eq_bot_iff, ← hH]`. Conclude with `IntermediateField.fixedField_le le_top`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨hG, ?_⟩` and prove the remaining obligations. Introduce `σ hσ`. Establish `hHtop : H = ⊤`. Rewrite using `[← IntermediateField.fixingSubgroup_fixedField H, hH, IntermediateField.fixingSubgroup_bot]`. Set `σ' : K' ≃ₐ[K] K'` to `AlgEquiv.ofRingEquiv (f := σ) hσ`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : σ' ∈ Submonoid.closure (Set.range t)`. Rewrite using `[← Subgroup.closure_toSubmonoid_of_finite]`. Use `show σ' ∈ H`. Rewrite using `[hHtop]`. Conclude with `Subgroup.mem_top _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Set `φ : (K' ≃ₐ[K] K') →* (K' ≃+* K')` to `{ toFun := fun τ => τ.toRingEquiv map_one' := rfl map_mul' := fun _ _ => rfl }`. Establish `hmap` using `Submonoid.mem_map_of_mem φ hmem`. Rewrite `hmap` using `[MonoidHom.map_mclosure, ← Set.range_comp]`. Establish `hc : (φ ∘ t) = s`. Use function extensionality and compare the values at `g`.
-
-Use extensionality with `y`. Both sides reduce to the same expression. Establish `hσ' : φ σ' = σ` using `by ext y; rfl`. Rewrite `hmap` using `[hc, hσ']`. Then use the resulting hypothesis.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem galois_of_finite_generating_automorphisms : ∀ (K K' : Type) [Field K] [Field K'] (i : K →+* K'), i.Finite → ∀ (Γ : Type) [Finite Γ] (s : Γ → (K' ≃+* K')), (∀ g x, s g (i x) = i x) → (∀ y : K', (∀ g, s g y = y) → y ∈ i.range) → (letI := i.toAlgebra; IsGalois K K') ∧ ∀ σ : K' ≃+* K', (∀ x, σ (i x) = i x) → σ ∈ Submonoid.closure (Set.range s) := by
   intro K K' _ _ i hfin Γ _ s hs hfix

@@ -5,9 +5,9 @@ open UpperTheory.V.Af UpperTheory.V.Af.Gu
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `E _ _ _ a P t w ρ hρ`. Use `⟨_, hρ.twist (GlobalTheory.HeckeGal.Model.absPow E t), ?_⟩` and prove the remaining obligations. Use `(GlobalTheory.LocGL.IrrGL.tw_of ρ.ρ ρ.smooth ρ.irred _ (isSmoothChar_loc (GlobalTheory.HeckeGal.Model.absPow E t) w)).symm.trans ?_` and prove the remaining obligations. Unfold `GlobalTheory.LocGL.IrrGL.nu`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `GlobalTheory.HeightCounting.Blocks.loc_of_isAbsPow (GlobalTheory.HeckeGal.Model.absPow_isAbsPow E t) w`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.twist_local_components_compatible :
     TwistLoc := by

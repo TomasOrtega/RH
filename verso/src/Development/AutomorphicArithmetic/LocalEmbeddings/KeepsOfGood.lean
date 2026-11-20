@@ -26,23 +26,21 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨ψ0, hgen, hlev, -⟩` from `hlevels`. Set `P` to `(F.lvl false).P`. Set `Pb : Subgroup (G0g D.nd)` to `P.map c.toMonoidHom`. Establish `hPb : ∀ g, g ∈ Pb ↔ c.symm g ∈ P` using `fun g => Subgroup.mem_map_equiv`. Set `toP : Pb →* P` to `(c.symm.toMonoidHom.comp Pb.subtype).codRestrict P fun x => (hPb x).1 x.2`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `lam : Pb →* ℂˣ` to `(Units.map (D.what₂.embLL : D.what₂.LL →* ℂ)).comp ((F.lvl false).ψ⁻¹.comp toP)`. Set `ψC : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), AddChar (ZMod (D.host.g kv.1)) ℂ` to `fun kv => (ψ0 (plg kv).1).compAddMonoidHom ((iso kv).toAddMonoidHom.comp (-AddMonoidHom.id _))`. Establish `hmemP : ∀ x : G, x ∈ P ↔ ∀ kv, c x kv ∈ unitri D.R.r (ZMod (D.host.g kv.1))`. Introduce `x`. Establish `e1 : x ∈ P ↔ R.eG x ∈ (R.levR F false).H` using `by show _ ↔ R.eG.symm (R.eG x) ∈ P`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[MulEquiv.symm_apply_apply]`. Rewrite using `[e1, hlev, GlobalTheory.TypeBase.mem_lastZeroOrthImageSubspace_iff, ← plg.forall_congr_right]`. Use `forall_congr' fun kv => ?_` and prove the remaining obligations. Rewrite using `[hpin, GlobalTheory.TypeBase.bc_mem_unip_iff]`. Use `⟨Pb, lam, ψC, ⟨fun kv h => hgen (plg kv).1 (plg kv).2 (AddChar.ext _ _ fun y => ?_), fun g => ?_, fun g => ?_⟩, fun g => by rw [hPb, MulEquiv.symm_apply_apply], fun g h h' => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, rfl⟩` from `(iso kv).surjective y`. Use `DFunLike.congr_fun h (-x)` as an intermediate fact. Simplify `this` using `[ψC]`. Rewrite using `[hPb, hmemP]`. Use `forall_congr' fun kv => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[MulEquiv.apply_symm_apply, isUniUp_iff]`. Establish `hx : c.symm (g : G0g D.nd) ∈ P` using `(hPb _).1 g.2`. Establish `hxH : R.eG (c.symm g) ∈ (R.levR F false).H` using `by show R.eG.symm (R.eG _) ∈ P`. Rewrite using `[MulEquiv.symm_apply_apply]`. Conclude with `hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : (R.levR F false).chi ⟨_, hxH⟩ = Units.map (D.what₂.embLL : D.what₂.LL →* ℂ) ((F.lvl false).ψ ⟨R.eG.symm (R.eG (c.symm g)), hxH⟩)` using `rfl`. Rewrite `e1` using `[show (⟨R.eG.symm (R.eG (c.symm g)), hxH⟩ : P) = ⟨c.symm g, hx⟩ from Subtype.ext (MulEquiv.symm_apply_apply _ _)]`. Establish `key : ∀ X : LevelP R.Pg D.R.r ℂ, X = P0 R.Pg D.R.r ψ0 → ∀ y (hy : y ∈ X.H), ((X.chi ⟨y, hy⟩ : ℂˣ) : ℂ) = ∏ PP : R.Pg, ψ0 PP.1 (edgeSum supEdge (y PP))`. Introduce and unpack `X rfl y hy`. Conclude with `GlobalTheory.TypeBase.baseLevelCharacter_eq_prod_superdiagonalSum _ _ _ y hy`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `key _ hlev _ hxH`. Rewrite `h3` using `[e1]`. Establish `ht : toP g = ⟨c.symm g, hx⟩` using `rfl`. Use `show ((Units.map (D.what₂.embLL : D.what₂.LL →* ℂ) ((F.lvl false).ψ⁻¹ (toP g)) : ℂˣ) : ℂ) = _`. Rewrite using `[ht, MonoidHom.inv_apply, map_inv, Units.val_inv_eq_inv_val, h3, ← plg.prod_comp, ← Finset.prod_inv_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun kv _ => ?_` and prove the remaining obligations. Rewrite using `[hpin, MulEquiv.apply_symm_apply, GlobalTheory.TypeBase.edgeSum_bc, sum_entN]`. Use `show _ = ψ0 (plg kv).1 ((iso kv) (-(superDiag _)))`. Rewrite using `[map_neg, AddChar.map_neg_eq_inv]`. Both sides reduce to the same expression.
-
-Establish `ht : toP ⟨c g, h⟩ = ⟨g, h'⟩` using `Subtype.ext (c.symm_apply_apply g) show ((Units.map (D.what₂.embLL : D.what₂.LL →* ℂ) ((F.lvl false).ψ⁻¹ (toP ⟨c g, h⟩)) : ℂˣ) : ℂ) = _`. Rewrite using `[ht]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem whit_data (R : RealDat D A Ks) (F : Face D A) (hlevels : R.grp_levels F) (c : G ≃* G0g D.nd)
     (plg : (Σ k : Fin 2, D.nd.PlG k) ≃ R.Pg) (iso : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), ZMod (D.host.g kv.1) ≃+* kP (plg kv).1)
@@ -108,9 +106,9 @@ theorem whit_data (R : RealDat D A Ks) (F : Face D A) (hlevels : R.grp_levels F)
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `⟨Subgroup.pi {kv | kv.1 ≠ k} fun kv => unitri D.R.r (ZMod (D.host.g kv.1)), fun g => forall_congr' fun kv => imp_congr_right fun _ => (isUniUp_iff _).symm, fun u => ?_⟩` and prove the remaining obligations. Use `((ε.trans plg.symm).forall_congr fun v => ?_).symm` and prove the remaining obligations. Establish `he : plg ((ε.trans plg.symm) v) = ε v` using `plg.apply_symm_apply _`. Generalize the expression as in `(ε.trans plg.symm) v = kv at he`. Establish `hk : v.1 = kv.1` using `idx_eq (iso' v) (iso kv) (by rw [he])`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Use `show (v.1 ≠ k → _) ↔ (kv.1 ≠ k → _)`. Rewrite using `[hk]`. Use `imp_congr_right fun _ => ?_` and prove the remaining obligations. Use `show u v ∈ unitri D.R.r (ZMod (D.host.g v.1)) ↔ c (t u) kv ∈ unitri D.R.r (ZMod (D.host.g kv.1))`. Rewrite using `[← GlobalTheory.TypeBase.bc_mem_unip_iff (iso' v), ← GlobalTheory.TypeBase.bc_mem_unip_iff (iso kv), ← hpin, ← t1, he]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem half_data (R : RealDat D A Ks) (c : G ≃* G0g D.nd)
     (plg : (Σ k : Fin 2, D.nd.PlG k) ≃ R.Pg) (iso : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), ZMod (D.host.g kv.1) ≃+* kP (plg kv).1)
@@ -139,11 +137,11 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hA` using `hY.lev.2`. Establish `hM : Y.d.l₂.M = D.host.g 0 * D.host.g 1 * Y.d.pd` using `by rw [hY.lev.1.2.1, hJ.pins.2.1.1]`. Establish `hχ` using `fun σ hσ => GlobalTheory.AllWt.Model.chi_modelWt (Y.U σ) (hY.chiTriv σ hσ) G hG`. Take `⟨ι, hι, -, hpin⟩` from `hY.adPin`. Use `GlobalTheory.LevelKeeps.keepsCusp_of_isUnf hpq hA hG hY.unf (fun σ hσ k k' => ?_) (fun σ hσ => ?_) hχ` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hr, hW⟩` from `hY.modelW σ hσ`. Conclude with `⟨(hW k).1.trans (hW k').1.symm, (hW k).2.trans (hW k').2.symm⟩`. Take `⟨hr, hW⟩` from `hY.modelW σ hσ`. Take `⟨th, _, hth, hD⟩` from `hY.dictU σ hσ`. Take `⟨x₀, h0, _, g, e, F, ik, φ, th', hth', hL⟩` from `hpin σ hσ`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : th = th'` from `funext fun k => funext fun τ => GlobalTheory.LettersCheck.isInfEmb_unique τ.1 _ _ (hth k τ) (hth' k τ)`. Conclude with `GlobalTheory.LevelKeeps.mem_group (hY.unf σ hσ) hA ((hY.unf σ hσ).1 ▸ hpq) hr hW h0 (hM ▸ hY.levelK) hth hD fun h => by`. Take `⟨γ, -, -, -, h3⟩` from `hL.2 h`. Conclude with `⟨_, h3⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem keeps_of_good {T : CoreJ D} (hJ : LawsJ T) {j : ℕ} (hpq : 1 ≤ (T.Q.Dw j).p + (T.Q.Dw j).q) (Y : Deep T.toCore j) {e : ℕ}
     {o : ℝ} (hY : Y.Good e o) {G : WTZ D.host.E} (hG : Even G.2) : GlobalTheory.LevDesc.KeepsCusp Y.U G := by
@@ -164,9 +162,9 @@ theorem keeps_of_good {T : CoreJ D} (hJ : LawsJ T) {j : ℕ} (hpq : 1 ≤ (T.Q.D
       exact ⟨_, h3⟩
 
 /- English proof (translation)
-Substitute `hC` using the available equality. Establish `hb : ∀ k, (W.subtype ∘ₗ e.toLinearMap) (e.symm ⟨b k, h1 k⟩) = b k` using `fun k => by simp`. Use `⟨W.subtype ∘ₗ e.toLinearMap, fun k => e.symm ⟨b k, h1 k⟩, fun f h => rfl, hb, ?_, ?_⟩` and prove the remaining obligations. Conclude with `LinearIndependent.of_comp (W.subtype ∘ₗ e.toLinearMap) (by convert h2 using 1; exact funext hb)`. Use `Submodule.map_injective_of_injective (f := W.subtype ∘ₗ e.toLinearMap) (W.injective_subtype.comp e.injective) ?_` and prove the remaining obligations.
+Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.map_span, ← Set.range_comp, show (W.subtype ∘ₗ e.toLinearMap) ∘ (fun k => e.symm ⟨b k, h1 k⟩) = b from funext hb, h3, Submodule.map_top, LinearMap.range_comp, LinearEquiv.range, Submodule.map_top, Submodule.range_subtype]`.
+A detailed English derivation is pending.
 -/
 theorem basis_of_form {K M R V : Type} [Field K] [Field M] [Algebra K M] [AddCommGroup R] [Module K R] [AddCommGroup V]
     [Module K V] [Module M V] {C C' : Submodule K R} (hC : C' = C) {W : Submodule K V} (e : C ≃ₗ[K] W) {n : ℕ} (b : Fin n → V)
@@ -185,11 +183,11 @@ theorem basis_of_form {K M R V : Type} [Field K] [Field M] [Algebra K M] [AddCom
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨n, b, b1, b2, b3, b4, b5⟩` from `fw.ks i`. Take `⟨ε, b', e1, e2, e3, e4⟩` from `basis_of_form (M := D.what₂.LL) hC (fw.e i) b b1 b2 b3`. Establish `H` using `GlobalTheory.BadCount.RankRead.finrank_eq (M := ℂ) D.what₂.embLL (fun a => (RingHom.congr_fun (res_embLL T fw.alg_eq fw.laws.pins.2.2.1) a).trans (hj a).symm) ε π b' e4 (by simpa only [e2] using b4) (by simpa only [e2] using b5) (q1 n b' e3) (R.FW i).ρ (R.FW i).chi τ θ c s hs (fu …`. Take `⟨hv, h⟩` from `q2 γ f`. Establish `hf : (f : T.R ((i : ℕ) + 1)) ∈ T.cuspA ((i : ℕ) + 1) (wtA (κ i)) (κ i).n` using `hC ▸ f.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hf', h'⟩` from `hρ (θ γ) ⟨f, hf⟩`. Conclude with `⟨⟨_, hv⟩, by rw [e1 f hf, e1 ⟨_, hv⟩ hf']; exact h'.symm, h⟩)`. Use `q3 (Fc.lvl false).P (Fc.lvl false).ψ⁻¹ Q hQ lamb hlam (spType R Fc i) (fun _ => Iff.rfl)`. Use the proof step `(fun g => (idemOf A.X).coeff g) e0 he`. Establish `hM` using `GlobalTheory.GoodLat.Obj.mkFull_of_tie fw i`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨_, _, fun g v => GlobalTheory.BadCount.RankRead.twistExt_tmul _ _ _ _ _, (GlobalTheory.BadCount.RankRead.rkK_inf _ (fw.ks i) hM _).trans H.1, Eq.trans ?_ H.2⟩` and prove the remaining obligations. Rewrite using `[← GlobalTheory.BadCount.RankRead.rkK_inf _ (fw.ks i) hM, Submodule.restrictScalars_inf, ← inf_assoc]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rank_gen {T : CoreJ D} [Algebra T.Q.c.F D.what₂.LL] {R : RealDat D A T.Q.c.F}
     {κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)} {v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec}
@@ -234,11 +232,11 @@ theorem rank_gen {T : CoreJ D} [Algebra T.Q.c.F D.what₂.LL] {R : RealDat D A T
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hpq : 1 ≤ (T.Q.Dw j).p + (T.Q.Dw j).q`. Take `⟨hp, hq, -⟩` from `(GlobalTheory.LevGeo.laws_of_coreJ D T j hT hj).1.dat`. Take `⟨h1, h2⟩` from `hj`. Establish `hk` using `D.R.m_add_three_le_k`. Rewrite using `[hp, hq]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Ranks.sigW]`. Use linear arithmetic over natural numbers and integers. Establish `hA' : Y.d.l₂.A.Coprime Y.d.l₂.M` using `by rw [hY.lev.2]; exact Nat.coprime_one_left _`. Establish `hKC : GlobalTheory.LevDesc.KeepsCusp Y.U (wtZ a n)` using `keeps_of_good hT hpq Y hY ((Int.even_coe_nat _).2 hD.2)`. Take `⟨π, q1, q2, q3⟩` from `pull_data D T j Y e o hT hj hY a n hD G lev hact hk θ h1`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hτ` using `GlobalTheory.LevDesc.coe_cuspRep Y.U (wtZ a n) hpq hA' hKC`. Conclude with `⟨π, _, hτ, q1, fun γ v => (q2 γ v).imp fun hv h => Subtype.ext ((hτ γ _).trans h), fun v hv => q3 v fun γ hγ => (hτ γ v).symm.trans (congrArg Subtype.val (hv γ (h2 γ hγ)))⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem rep_data {T : CoreJ D} (hT : LawsJ T) {j : ℕ} (hj : InR D j) (Y : Deep T.toCore j) {e : ℕ} {o : ℝ} (hY : Y.Good e o)
     {a : (D.host.E →+* ℂ) × ℕ → ℕ} {n : ℕ} (hD : Dom a n) {G : Type} [Group G]

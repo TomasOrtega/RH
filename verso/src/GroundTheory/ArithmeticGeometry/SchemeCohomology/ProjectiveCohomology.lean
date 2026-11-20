@@ -25,7 +25,7 @@ def HZeroEquiv (k : ℕ) :
     iSup_stdOpen).symm.trans (cechHZeroEquiv' k)
 
 /- English proof (translation)
-Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by omega⟩`. Take `⟨e⟩` from `nonempty_cechH_equiv_H (A := A) (n := m + 1) k (m + 1)`. Conclude with `⟨e.symm.trans (cechHTopEquiv k m)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_HTop_equiv (k : ℤ) (hn : 0 < n) :
     Nonempty (Sheaf.H.{w'} (modulesAb (twistingSheaf (grading A n) k)) n ≃+ (NegMon n k →₀ A)) := by
@@ -34,9 +34,7 @@ theorem nonempty_HTop_equiv (k : ℤ) (hn : 0 < n) :
   exact ⟨e.symm.trans (cechHTopEquiv k m)⟩
 
 /- English proof (translation)
-Take `⟨e⟩` from `nonempty_cechH_equiv_H (A := A) (n := n) k q`. Establish `: Subsingleton (cechH (twistAb A n k) (cover A n) q)`. Break down `Nat.lt_or_gt_of_ne hqn with h | h` into its components or cases. Conclude with `subsingleton_cechH_of_lt hq0 h`. Conclude with `subsingleton_cechH_of_gt h`.
-
-Conclude with `e.symm.toEquiv.subsingleton`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem subsingleton_H (k : ℤ) {q : ℕ} (hq0 : 0 < q) (hqn : q ≠ n) :
     Subsingleton (Sheaf.H.{w'} (modulesAb (twistingSheaf (grading A n) k)) q) := by

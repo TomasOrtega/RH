@@ -4,13 +4,13 @@ open MeasureTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `q : Seminorm ℂ (SchwartzMap D ℂ)` to `(normSeminorm ℂ ℂ).comp T.toLinearMap`. Establish `hq : Continuous q` using `by show Continuous (fun φ => ‖T φ‖)`. Conclude with `continuous_norm.comp T.continuous`. Take `⟨s, C, -, hC⟩` from `Seminorm.bound_of_continuous (schwartz_withSeminorms ℂ D ℂ) q hq`. Use `⟨s.sup (fun i => max i.1 i.2), (C : ℝ), C.2, fun φ => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : ‖T φ‖ = q φ` using `rfl`. Establish `hnn : ∀ m n, 0 ≤ SchwartzMap.seminorm ℂ m n φ` using `fun m n => apply_nonneg _ _`. Establish `hsum : 0 ≤ ∑ m ∈ Finset.range (s.sup (fun i => max i.1 i.2) + 1), ∑ n ∈ Finset.range (s.sup (fun i => max i.1 i.2) + 1), SchwartzMap.seminorm ℂ m n φ` using `Finset.sum_nonneg fun m _ => Finset.sum_nonneg fun n _ => hnn m n`. Establish `h2 : (s.sup (schwartzSeminormFamily ℂ D ℂ)) φ ≤ ∑ m ∈ Finset.range (s.sup (fun i => max i.1 i.2) + 1), ∑ n ∈ Finset.range (s.sup (fun i => max i.1 i.2) + 1), SchwartzMap.seminorm ℂ m n φ`. Use `Seminorm.finset_sup_apply_le hsum fun i hi => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hle : max i.1 i.2 ≤ s.sup (fun i => max i.1 i.2)` using `Finset.le_sup (f := fun i : ℕ × ℕ => max i.1 i.2) hi`. Establish `hm : i.1 ∈ Finset.range (s.sup (fun i => max i.1 i.2) + 1)` using `Finset.mem_range.2 (Nat.lt_succ_of_le (le_trans (le_max_left _ _) hle))`. Establish `hn : i.2 ∈ Finset.range (s.sup (fun i => max i.1 i.2) + 1)` using `Finset.mem_range.2 (Nat.lt_succ_of_le (le_trans (le_max_right _ _) hle))`. Rewrite using `[SchwartzMap.schwartzSeminormFamily_apply]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h3 : q φ ≤ (C : ℝ) * (s.sup (schwartzSeminormFamily ℂ D ℂ)) φ`. Use `hC φ` as an intermediate fact. Simplify `this` using `[Seminorm.smul_apply, NNReal.smul_def]`. Rewrite using `[h1]`. Conclude with `h3.trans (mul_le_mul_of_nonneg_left h2 C.2)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem schwartz_clm_bound_finite_seminorm_sum {D : Type} [NormedAddCommGroup D] [NormedSpace ℝ D]
     (T : SchwartzMap D ℂ →L[ℂ] ℂ) :

@@ -14,7 +14,7 @@ open ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.R
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points GlobalTheory.CechPic GlobalTheory.ChartGlue GlobalTheory.Mix
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Mix.map_part_pull_of_genFinite` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMixedChernMeasureMapPullbackGenericallyFinite.lean&line=24#L24)
 -/

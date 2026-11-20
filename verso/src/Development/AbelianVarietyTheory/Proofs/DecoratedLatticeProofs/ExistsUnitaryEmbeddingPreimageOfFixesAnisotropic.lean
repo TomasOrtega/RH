@@ -13,15 +13,15 @@ open GlobalTheory.Unf GlobalTheory.Unf.FB
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨hL, hq⟩` from `hζ`. Take `⟨j0, hall⟩ : ∃ j0 : Fin L.rank, ∀ j : Fin L.rank, j = j0` from `⟨⟨0, by omega⟩, fun j => Fin.ext (by have := j.isLt; show j.val = 0; omega)⟩`. Establish `hζ0 : ζ j0 ≠ 0`. Introduce `h0`. Apply `hq` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: ζ = 0` using `funext fun j => by rw [hall j, h0]; rfl`. Simplify using `[this]`. Establish `hv : ratV (o.iB *ᵥ ζ) = o.jB *ᵥ ratV ζ`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec (incA D) o.iB ζ i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hk` using `[hv, Matrix.mulVec_mulVec]`. Establish `hM : (mt S k ⬝ o.jB - o.jB) *ᵥ ratV ζ = 0` using `by rw [Matrix.sub_mulVec, hk, sub_self]`. Rewrite using `[← sub_eq_zero]`. Use function extensionality and compare the values at `i j`. Rewrite using `[hall j]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `congrFun hM i`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.zero_apply] at h1`. Rewrite `h1` using `[Fintype.sum_eq_single j0 (fun j hj => absurd (hall j) hj)]`. Establish `hu : incA D (ζ j0) * incA D (ζ j0)⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel₀ hζ0, map_one]`. Establish `e : (mt S k ⬝ o.jB - o.jB) i j0 = (mt S k ⬝ o.jB - o.jB) i j0 * ratV ζ j0 * incA D (ζ j0)⁻¹`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc]`. Use `show _ = _ * (incA D (ζ j0) * _)`. Rewrite using `[hu, mul_one]`. Rewrite using `[e, h1, zero_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mt_jB_eq_of_fixes_lineVec (D : D7) (S A L : HSp D) (o : OrthDec S A L) (ζ : Fin L.rank → D.host.E)
     (hζ : IsLineVec L ζ) (k : GA D S) (hk : mt S k *ᵥ ratV (o.iB *ᵥ ζ) = ratV (o.iB *ᵥ ζ)) :
@@ -50,7 +50,7 @@ theorem mt_jB_eq_of_fixes_lineVec (D : D7) (S A L : HSp D) (o : OrthDec S A L) (
   rw [e, h1, zero_mul]; rfl
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem mat_eq_of_splitting {R : Type} [CommRing R] {n a b : ℕ} (M : Matrix (Fin n) (Fin n) R)
     (jA : Matrix (Fin n) (Fin a) R) (pA : Matrix (Fin a) (Fin n) R) (jB : Matrix (Fin n) (Fin b) R)
@@ -61,15 +61,13 @@ theorem mat_eq_of_splitting {R : Type} [CommRing R] {n a b : ℕ} (M : Matrix (F
     _ = jA * H * pA + jB * pB := by rw [hX, hfix]
 
 /- English proof (translation)
-Establish `hu : adj (mt S k) ⬝ (gA S ⬝ mt S k) = gA S` using `GlobalTheory.MixModel.mt_unitary S k`. Establish `hBA : adj o.jB ⬝ (gA S ⬝ (mt S k ⬝ o.jA)) = 0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[adj_mul, Matrix.mul_assoc, GlobalTheory.MixModel.cancel₃ hu o.jA]`. Use `_ = 0 := o.gram_BA`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpB : o.pB ⬝ (mt S k ⬝ o.jA) = 0`. Rewrite using `[o.pB_eq, Matrix.mul_assoc, Matrix.mul_assoc, hBA, Matrix.mul_zero]`. Establish `hX : mt S k ⬝ o.jA = o.jA ⬝ (o.pA ⬝ (mt S k ⬝ o.jA))`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.add_mul, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `_ = _ := by rw [hpB, Matrix.mul_zero, add_zero]`. Establish `e1 : adj (mt S k ⬝ o.jA) ⬝ (gA S ⬝ (mt S k ⬝ o.jA)) = gA A`. Rewrite using `[adj_mul, Matrix.mul_assoc, GlobalTheory.MixModel.cancel₃ hu o.jA]`. Conclude with `o.gram_AA`. Use `set H := o.pA ⬝ (mt S k ⬝ o.jA) with hHdef`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : adj (o.jA ⬝ H) ⬝ (gA S ⬝ (o.jA ⬝ H)) = adj H ⬝ (gA A ⬝ H)`. Rewrite using `[adj_mul, Matrix.mul_assoc, GlobalTheory.MixModel.cancel₃ o.gram_AA H]`. Rewrite `e2` using `[← hX]`. Establish `hH : adj H * (gA A * H) = gA A` using `e2.symm.trans e1`. Use `⟨GlobalTheory.MixModel.ofMat A H hH, GlobalTheory.MixModel.mt_injective S ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[o.mt_emb, GlobalTheory.MixModel.mt_ofMat, GlobalTheory.MixModel.mt_one, Matrix.mul_one]`. Conclude with `mat_eq_of_splitting (mt S k) o.jA o.pA o.jB o.pB H hX hfix o.sum_eq_one`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_emb_of_mt_jB_eq (D : D7) (S A B : HSp D) (o : OrthDec S A B) (k : GA D S)
     (hfix : mt S k ⬝ o.jB = o.jB) : ∃ h : GA D A, k = o.emb (h, 1) := by
@@ -99,7 +97,7 @@ theorem exists_emb_of_mt_jB_eq (D : D7) (S A B : HSp D) (o : OrthDec S A B) (k :
   exact mat_eq_of_splitting (mt S k) o.jA o.pA o.jB o.pB H hX hfix o.sum_eq_one
 
 /- English proof (translation)
-The claim follows from `exists_emb_of_mt_jB_eq D S A L o k (mt_jB_eq_of_fixes_lineVec D S A L o ζ hζ k hk)`.
+A detailed English derivation is pending.
 -/
 theorem exists_emb_of_fixes_lineVec (D : D7) (S A L : HSp D) (o : OrthDec S A L) (ζ : Fin L.rank → D.host.E)
     (hζ : IsLineVec L ζ) (k : GA D S) (hk : mt S k *ᵥ ratV (o.iB *ᵥ ζ) = ratV (o.iB *ᵥ ζ)) :

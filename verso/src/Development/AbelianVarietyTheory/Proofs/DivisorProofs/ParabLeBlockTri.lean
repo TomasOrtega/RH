@@ -13,7 +13,7 @@ variable {K : Type} [Field K] [Fintype K] [DecidableEq K] {r s : ℕ}
 def natBlocks (b : Fin r → Fin s) : Fin r → ℕ := fun i => (b i : ℕ)
 
 /- English proof (translation)
-Introduce `p hp`. Use `⟨fun i j hij => hp hij, fun i j hij => ?_⟩` and prove the remaining obligations. Conclude with `(inv_mem hp : p⁻¹ ∈ blockTri (κ := K) (natBlocks b)) hij`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem blockTri_le_parab (b : Fin r → Fin s) : blockTri (κ := K) (natBlocks b) ≤ parab K b := by
   intro p hp
@@ -21,21 +21,21 @@ theorem blockTri_le_parab (b : Fin r → Fin s) : blockTri (κ := K) (natBlocks 
   exact (inv_mem hp : p⁻¹ ∈ blockTri (κ := K) (natBlocks b)) hij
 
 /- English proof (translation)
-Introduce `p hp i j hij`. Conclude with `hp.1 i j hij`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem parab_le_blockTri (b : Fin r → Fin s) : parab K b ≤ blockTri (κ := K) (natBlocks b) := by
   intro p hp i j hij
   exact hp.1 i j hij
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Conclude with `Matrix.submatrix_one _ Subtype.val_injective`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem levi_one (b : Fin r → Fin s) (c : Fin s) : levi K b c 1 = 1 := by
   apply Units.ext
   exact Matrix.submatrix_one _ Subtype.val_injective
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Conclude with `blk_mul b c p.2.1 q.2.1`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem levi_mul (b : Fin r → Fin s) (c : Fin s) (p q : parab K b) :
     levi K b c (p * q) = levi K b c p * levi K b c q := by

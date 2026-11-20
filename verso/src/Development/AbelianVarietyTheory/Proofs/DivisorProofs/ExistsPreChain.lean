@@ -47,7 +47,7 @@ structure PreChain (o : ℕ) (Lie Om : AM B Λ) (π : Γ(B.X, ⊤)) where
 variable {p}
 
 /- English proof (translation)
-Take `⟨S, hS, ⟨e₁⟩, ⟨e₂⟩, ⟨e₃⟩⟩` from `Q.c3`. Use `haveI := hS.epi_g`. Set `j : Q.lw.E' ⟶ (Q.q 0).mod` to `(cokernel.π Q.wl ≫ e₁.inv) ≫ S.f ≫ e₂.hom`. Establish `e : cokernel Q.oo.ψ ≅ cokernel j` using `e₃.symm ≪≫ (hS.gIsCokernel.coconePointUniqueUpToIso (cokernelIsCokernel S.f)) ≪≫ (cokernelCompIsIso S.f e₂.hom).symm ≪≫ (cokernelEpiComp _ _).symm`. Conclude with `⟨{ Q with j := j j_kill := by simp only [j, ← Q.lw_wl, Category.assoc, cokernel.condition_assoc, zero_comp, comp_zero] ρ := cokernel.π Q.oo.ψ ≫ e.hom ρ_epi := epi_comp _ _ }, rfl, rfl⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem EqChain.exists_preChain {o : ℕ} (Q : EqChain p B Λ o) :
     ∃ P : PreChain p o Q.lw.E' Q.oo.E Q.π, P.q = Q.q ∧ P.l = Q.l := by
@@ -63,7 +63,7 @@ theorem EqChain.exists_preChain {o : ℕ} (Q : EqChain p B Λ o) :
     ρ_epi := epi_comp _ _ }, rfl, rfl⟩
 
 /- English proof (translation)
-Take `⟨O, _, _, _, _, _, Q, -, -, h1, h2⟩` from `Examples₂.exists_base_eqChain p o Λ χ`. Take `⟨P, hq, hl⟩` from `Q.exists_preChain`. Conclude with `⟨O, _, _, _, inferInstance, inferInstance, _, _, _, P, by rw [hq]; exact h1, by rw [hl]; exact h2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 example (p : ℕ) [Fact p.Prime] (o : ℕ) (Λ : Type) [CommRing Λ] (χ : Λ →+* ℤ) :
     ∃ (O : Type) (_ : CommRing O) (_ : IsDomain O) (_ : IsDiscreteValuationRing O) (_ : CharZero O)
@@ -179,9 +179,9 @@ abbrev pullS {X X' : Scheme.{0}} (g : X' ⟶ X) {k : X ⟶ Z.X} {F : X.Modules}
   pullbackSections g F (Scheme.Hom.comp_preimage g k _).le (s a i)
 
 /- English proof (translation)
-Take `⟨h0, vb, h1, h3⟩` from `k`. Use `⟨PullHT.isAdd_pullA g h0, vb.pullback g, PullHT.isLat_pull g h vb h1, fun a i c => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((Scheme.Modules.pullback g).map (F.ρ c : F.V ⟶ F.V)).app _ _ = _`. Rewrite using `[pullS, pullback_map_app_pullbackSections, h3, pullbackSections_smul]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Scheme.Hom.comp_app]`. Use `first`. Consider the case `(erw [Scheme.Hom.appLE_eq_app]; rfl)`. Consider the case `(simp only [Scheme.Hom.appLE] erw [show (homOfLE (le_refl (g ⁻¹ᵁ h ⁻¹ᵁ ↑(Z.U a)))).op = 𝟙 _ from rfl, CategoryTheory.Functor.map_id, Category.comp_id] rfl)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem IsEqLat.pull {B' : Vert.Model O} (g : B'.X ⟶ B.X) {d : Bool} {F : AM B (𝓞 E)}
     {s : ∀ a : Fin Z.m, Fin r → Γ(F.V, h ⁻¹ᵁ (Z.U a).1)} (k : IsEqLat Z h x d F s) :

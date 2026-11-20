@@ -8,7 +8,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 namespace GlobalTheory.MtInMain
 
 /- English proof (translation)
-Introduce `_` and use `GlobalTheory.MtId.sMt`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem prN_sMt : PrN → SMt := fun _ => GlobalTheory.MtId.sMt
 

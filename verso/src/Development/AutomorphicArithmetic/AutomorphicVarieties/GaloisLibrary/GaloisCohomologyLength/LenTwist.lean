@@ -5,15 +5,15 @@ import Development.AutomorphicArithmetic.CyclotomicBounds.ClassNumberBounds.Tota
 open NumberField IsDedekindDomain ReciprocityTheory.Gal Formalism.ConjugateSelfDual Formalism.GaloisCohomology UpperTheory.V.LDataCardLeFinrank
 
 /- English proof (translation)
-Introduce `l _ U tr`. Establish `e : ZlSub l = (1 : Submodule ℤ_[l] ℚ_[l])` using `Submodule.one_eq_range.symm`. Set `f : QZ l ≃ₗ[ℤ_[l]] KStar.TotallyRealRoots.QmodZ l` to `Submodule.quotEquivOfEq _ _ e`. Establish `hmap : (KStar.TotallyRealRoots.twistInv l (QZ l) U tr).map (f : QZ l →ₗ[ℤ_[l]] KStar.TotallyRealRoots.QmodZ l) = KStar.TotallyRealRoots.twistInv l (KStar.TotallyRealRoots.QmodZ l) U tr`. Use extensionality with `y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Submodule.mem_map, KStar.TotallyRealRoots.mem_twistInv]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩ u hu`. Rewrite using `[LinearEquiv.coe_coe, ← f.map_smul, hx u hu]`. Introduce `hy`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨f.symm y, fun u hu => ?_, by simp⟩` and prove the remaining obligations. Rewrite using `[← f.symm.map_smul, hy u hu]`. Set `g : KStar.TotallyRealRoots.twistInv l (QZ l) U tr ≃ₗ[ℤ_[l]] KStar.TotallyRealRoots.H0 l U tr` to `(f.submoduleMap _).trans (LinearEquiv.ofEq _ _ hmap)`. Establish `hnu : ¬IsUnit ((l : ℕ) : ℤ_[l])` using `PadicInt.irreducible_p.not_isUnit`. Establish `h` using `KStar.TotallyRealRoots.length_twistInvOver (O := ℤ_[l]) ℚ_[l] hnu U tr`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : IsDiscreteValuationRing.addVal ℤ_[l] (l : ℤ_[l]) = 1` using `IsDiscreteValuationRing.addVal_uniformizer PadicInt.irreducible_p`. Rewrite `h` using `[hv, mul_one]`. Establish `hsame : KStar.TotallyRealRoots.twistInvOver l ℤ_[l] (KStar.Selmer.FracMod ℤ_[l] ℚ_[l]) U tr = KStar.TotallyRealRoots.twistInv l (KStar.TotallyRealRoots.QmodZ l) U tr`. Use extensionality with `x`. Rewrite using `[KStar.TotallyRealRoots.mem_twistInv]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite `h` using `[hsame]`. Use `⟨?_, ⟨g⟩⟩` and prove the remaining obligations. Rewrite using `[g.length_eq]`. Conclude with `h`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.LDataCardLeFinrank.lenTwist :
     ∀ (l : ℕ) [Fact l.Prime] (U : Subgroup ℤ_[l]ˣ) (tr : ℕ), Module.length ℤ_[l] (KStar.TotallyRealRoots.twistInv l (QZ l) U tr) = KStar.TotallyRealRoots.nu l U tr ∧ Nonempty (KStar.TotallyRealRoots.twistInv l (QZ l) U tr ≃ₗ[ℤ_[l]] KStar.TotallyRealRoots.H0 l U tr) := by

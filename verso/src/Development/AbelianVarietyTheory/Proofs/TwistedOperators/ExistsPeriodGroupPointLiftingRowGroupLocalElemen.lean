@@ -20,9 +20,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hs : (e + cA D e) • (mt V y - 1) = mt V y - 1` using `Matrix.ext fun i j => h i j`. Establish `hδ : mt V δ * mt V δ⁻¹ = 1` using `by rw [← GlobalTheory.MixModel.mt_mul, mul_inv_cancel, GlobalTheory.MixModel.mt_one]`. Establish `key : mt V (δ * y * δ⁻¹) - 1 = mt V δ * (mt V y - 1) * mt V δ⁻¹`. Rewrite using `[GlobalTheory.MixModel.mt_mul, GlobalTheory.MixModel.mt_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hδ]`. Establish `h2 : (e + cA D e) • (mt V δ * (mt V y - 1) * mt V δ⁻¹) = mt V δ * (mt V y - 1) * mt V δ⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.smul_mul, ← Matrix.mul_smul, hs]`. Introduce `i j`. Rewrite using `[key]`. Conclude with `congrFun (congrFun h2 i) j`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem suppAt_conj {V : HSp D} {e : AE D} {y : GA D V} (h : SuppAt e V y) (δ : GA D V) : SuppAt e V (δ * y * δ⁻¹) := by
   have hs : (e + cA D e) • (mt V y - 1) = mt V y - 1 := Matrix.ext fun i j => h i j
@@ -38,7 +38,7 @@ theorem suppAt_conj {V : HSp D} {e : AE D} {y : GA D V} (h : SuppAt e V y) (δ :
 variable {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
 /- English proof (translation)
-Take `⟨e, he, hs, hl⟩` from `h`. Use `⟨e, he, suppAt_conj hs δ, fun w => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `locAt B t w.1 j hj (δ * y * δ⁻¹) = _`. Rewrite using `[map_mul, map_mul, map_inv]`. Conclude with `congrArg (fun z => locAt B t w.1 j hj δ * z * (locAt B t w.1 j hj δ)⁻¹) (hl w)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasLoc_conj (B : Frames G) (t : T) {j : ℕ} (hj : j ≤ D.R.m) {y : GA D (G.V (.grid D.R.m j))}
     {g : ∀ w : locPl G t, GL (Fin ((locGrid G t w.1).rank (D.R.m, j))) (Kw w.1)} (h : HasLoc t B hj y g)
@@ -51,7 +51,7 @@ theorem hasLoc_conj (B : Frames G) (t : T) {j : ℕ} (hj : j ≤ D.R.m) {y : GA 
   exact congrArg (fun z => locAt B t w.1 j hj δ * z * (locAt B t w.1 j hj δ)⁻¹) (hl w)
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `hy`. Establish `hy' : ∃ f, (toFrame hs hj y⁻¹).val = diagonal f` using `⟨Ring.inverse f, by rw [map_inv, Matrix.coe_units_inv, hf, Matrix.inv_diagonal]⟩`. Use `conj_rowR hs hj (g := fun _ => 1) hy' hx` as an intermediate fact. Establish `e1 : GlobalTheory.SplitFlip.diagGL (fun _ => (1 : kˣ)) = (1 : GL (Fin (Γ.rank (Γ.m, j))) k)` using `Units.ext (by rw [GlobalTheory.SplitFlip.diagGL_val]; exact diagonal_one)`. Rewrite `this` using `[e1, mul_one, inv_inv]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem conj_rowR' {k : Type} [Field k] {Γ : GlobalTheory.SplitFlip.Grid k} (hs : 1 ≤ Γ.s) {j : ℕ} (hj : j < Γ.m)
     {x y : GL (Fin (Γ.rank (Γ.m, j))) k} (hy : ∃ f, (toFrame hs hj y).val = diagonal f) (hx : x ∈ rowR hs hj) :
@@ -65,7 +65,7 @@ theorem conj_rowR' {k : Type} [Field k] {Γ : GlobalTheory.SplitFlip.Grid k} (hs
   rwa [e1, mul_one, inv_inv] at this
 
 /- English proof (translation)
-Establish `h : topRank Γ j + (Γ.m - 1 - j) = Γ.rank (Γ.m, j)` using `by have := topRank_add hs j; omega`. Conclude with `⟨_, submatrix_diagonal_equiv (fun i => (c i : k)) (frame h)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem sgn_diag {k : Type} [Field k] {Γ : GlobalTheory.SplitFlip.Grid k} (hs : 1 ≤ Γ.s) {j : ℕ} (hj : j < Γ.m)
     (c : Fin (Γ.rank (Γ.m, j)) → kˣ) : ∃ f, (toFrame hs hj (GlobalTheory.SplitFlip.diagGL c)).val = diagonal f := by
@@ -77,13 +77,13 @@ end GlobalTheory.RowLift
 open GlobalTheory.RowLift GlobalTheory.RowRep in
 
 /- English proof (translation)
-Take `⟨C1, hJ⟩` from `GlobalTheory.T.mem_fourierJacobiGroup_of_local_lattice_matrices`. Take `⟨C2, hB⟩` from `GlobalTheory.T.mem_besselGroup_of_local_lattice_matrices`. Use `⟨max C1 C2, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨x1, hx1⟩` from `hJ ε CF (le_trans (le_max_left _ _) hCF)`. Take `⟨x2, hx2⟩` from `hB ε CF (le_trans (le_max_right _ _) hCF)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨max x1 x2, fun D large₂ hε hx Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hch hsc => ?_⟩` and prove the remaining obligations. Introduce `s t j hjI hj hj' δ hδ l hl`. Take `⟨y, hy⟩` from `exists_hasLoc hS.core.lev ch.S.B t hj (fun w => sgnAt ch.G t s w.1 j * l w * (sgnAt ch.G t s w.1 j)⁻¹)`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Establish `hc` using `hasLoc_conj ch.S.B t hj hy δ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hm : ∀ w : locPl ch.G t, locAt ch.S.B t w.1 j hj δ * (sgnAt ch.G t s w.1 j * l w * (sgnAt ch.G t s w.1 j)⁻¹) * (locAt ch.S.B t w.1 j hj δ)⁻¹ ∈ rowR (G` using `locGrid ch.G t w.1) one_le_sLen (j := j) hj' := fun w => conj_rowR' one_le_sLen hj' (locAt_tilt ch.S.toGridChoice (Set.mem_univ t) w.2 hj hj' hδ) (conj_rowR' one_le_sLen hj' (sgn_diag one_le_sLen hj' _) (hl w))`. Unfold `rowGrp`. Use `split_ifs with h1 h2`. Conclude with `hx1 D large₂ hε (le_trans (le_max_left _ _) hx) Γ Pl0 T A Ks R F hS ch hch hsc t j _ hjI hj hj' _ (by have := (idx_le hjI); omega) _ _ hc hm`. Conclude with `hx2 D large₂ hε (le_trans (le_max_right _ _) hx) Γ Pl0 T A Ks R F hS ch hch hsc t j _ hjI hj hj' h2 _ _ hc hm`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. It suffices to derive a contradiction. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-It suffices to derive a contradiction. Use `idx_le hjI` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.RowLift.lift_rowR : Big fun {D} _ _ _ _ _ _ _ _ _ _ _ ch => ∀ (s : ℤˣ) t, ∀ j ∈ idx D, ∀ (hj : j ≤ D.R.m) (hj' : j < D.R.m)
     (δ : GA D (ch.G.V (.grid D.R.m j))), IsTilt ch.G j δ →

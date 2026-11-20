@@ -5,34 +5,34 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
 /- English proof (translation)
-Use `group`.
+A detailed English derivation is pending.
 -/
 private theorem grp_id {H : Type*} [Group H] (a b c ab bc abc : H) :
     (a * b * ab⁻¹) * (ab * c * abc⁻¹) = (a * (b * c * bc⁻¹) * a⁻¹) * (a * bc * abc⁻¹) := by
   group
 
 /- English proof (translation)
-Introduce `l _ k _ _ F C₀ n hF O _ _ C' _ _ _ C _ _ _ p B D u hK s t r`. Establish `hKm : RingHom.ker p ≤ maximalIdeal C'`. Introduce `y hy`. Rewrite using `[← res_eq_zero_iff O C', ← res_map p y, RingHom.mem_ker.mp hy, map_zero]`. Take `⟨hom, -, -, -⟩` from `pr_omk hF O C' C p B D hK`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩ : ∃ x : F.Γ → GG n C', ∀ a, x a = ⟨D.r a, F.del a⟩` from `⟨_, fun _ => rfl⟩`. Establish `hW : ∀ a b, x a * x b * (x (a * b))⁻¹ = GG.ofGL (D.r a * sgnAct n C' (F.del a) (D.r b) * (D.r (a * b))⁻¹)`. Introduce `a b`. Rewrite using `[hx, hx, hx]`. Apply `SemidirectProduct.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [SemidirectProduct.mul_left, SemidirectProduct.mul_right, SemidirectProduct.inv_left, SemidirectProduct.inv_right, SemidirectProduct.left_inl, GG.ofGL]`. Rewrite using `[← MulAut.mul_apply, ← map_mul, map_mul F.del a b, mul_inv_cancel, map_one, MulAut.one_apply]`. Simplify using `only [SemidirectProduct.mul_right, SemidirectProduct.inv_right, SemidirectProduct.right_inl, GG.ofGL, map_mul, mul_inv_cancel, mul_one]`. Establish `hz : ∀ a b, ((D.r a * sgnAct n C' (F.del a) (D.r b) * (D.r (a * b))⁻¹ : GL (Fin n) C') : Matrix (Fin n) (Fin n) C') = 1 + D.om (a, b)`. Introduce `a b`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[SetLift.om]`. Establish `hbar : (B.bar O).r s = GG.map (res O C' : C' →+* ResidueField O) (x s)`. Rewrite using `[hx]`. Apply `SemidirectProduct.ext` to reduce the goal to its premises. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Simplify using `[Box.map, GG.map, ← D.r_map s, res_map]`. Simplify using `[Box.map, GG.map, B.nu]`. Establish `key : ∀ a b : GG n C', a.right = 1 → (a * b).mat = a.mat * b.mat`. Introduce `a b ha`. Simplify using `only [GG.mat, SemidirectProduct.mul_left, ha, map_one, MulAut.one_apply, Units.val_mul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hofr : ∀ w : GL (Fin n) C', (GG.ofGL w).right = 1` using `fun w => rfl`. Establish `hmat : ∀ w : GL (Fin n) C', (GG.ofGL w).mat = (w : Matrix (Fin n) (Fin n) C')` using `fun w => rfl`. Establish `hW' : x s * x (t * r) * (x (s * t * r))⁻¹ = GG.ofGL (D.r s * sgnAct n C' (F.del s) (D.r (t * r)) * (D.r (s * (t * r)))⁻¹)`. Rewrite using `[mul_assoc s t r]`. Conclude with `hW s (t * r)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `grp_id (x s) (x t) (x r) (x (s * t)) (x (t * r)) (x (s * t * r))`. Rewrite `h` using `[hW s t, hW (s * t) r, hW t r, hW']`. Establish `hyr : (x s * GG.ofGL (D.r t * sgnAct n C' (F.del t) (D.r r) * (D.r (t * r))⁻¹) * (x s)⁻¹).right = 1`. Simplify using `only [SemidirectProduct.mul_right, SemidirectProduct.inv_right, GG.ofGL, SemidirectProduct.right_inl, mul_one, mul_inv_cancel]`. Establish `hM` using `congrArg GG.mat h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hM` using `[key _ _ (hofr _), key _ _ hyr, hmat, hmat, hmat]`. Take `⟨-, -, hE3⟩` from `pr_evk O C' n (RingHom.ker p) u hK hKm (D.om (t, r)) (hom (t, r))`. Take `⟨hAK, hAmap, hconj⟩` from `hE3 (x s)`. Rewrite `hM` using `[hconj _ (hz t r), hz s t, hz (s * t) r, hz s (t * r)]`. Take `⟨h1, -, -⟩` from `pr_evk O C' n (RingHom.ker p) u hK hKm (D.om (s, t)) (hom (s, t))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h12, h12add, -⟩` from `h1 (D.om (s * t, r)) (hom _)`. Take `⟨hA, -, -⟩` from `pr_evk O C' n (RingHom.ker p) u hK hKm ((x s).adFun (D.om (t, r))) hAK`. Take `⟨hA4, hA4add, -⟩` from `hA (D.om (s, t * r)) (hom _)`. Establish `hsum : D.om (s, t) + D.om (s * t, r) = (x s).adFun (D.om (t, r)) + D.om (s, t * r)`. Establish `e1 : (1 + D.om (s, t)) * (1 + D.om (s * t, r)) = 1 + (D.om (s, t) + D.om (s * t, r))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_mul, one_mul, mul_add, mul_one, h12]`. Normalize the expressions using the abelian group laws. Establish `e2 : (1 + (x s).adFun (D.om (t, r))) * (1 + D.om (s, t * r)) = 1 + ((x s).adFun (D.om (t, r)) + D.om (s, t * r))`. Rewrite using `[add_mul, one_mul, mul_add, mul_one, hA4]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hM` using `[e1, e2]`. Conclude with `add_left_cancel hM`. Express the relevant statement in the definitionally equal form `((B.bar O).r s).adFun ((D.om (t, r)).map (evK (RingHom.ker p) u)) + (D.om (s, t * r)).map (evK (RingHom.ker p) u) = (D.om (s * t, r)).map (evK (RingHom.ker p) u) + (D.om (s, t)).map (evK (RingHom.ker p) u)`. Rewrite using `[hbar, ← hAmap, ← hA4add, add_comm ((D.om (s * t, r)).map _), ← h12add, hsum]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.borelProjection_isTwoCocycle :
     ∀ {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] {F : Frame l k} {C₀ n : ℕ}, F.Ok C₀ → ∀ (O : Type) [CommRing O] [IsLocalRing O], ∀ (C' : Type) [CommRing C'] [Algebra O C'] [IsCO O C'] (C : Type) [CommRing C] [Algebra O C] [IsCO O C] (p : C' →ₐ[O] C) (B : Box F n C) (D : SetLift p B) (u : RingHom.ker p →ₗ[O] ResidueField O), maximalIdeal C' * RingHom.ker p = ⊥ → ∀ s t r, (B.bar O).ad s ((D.co u).1 (t, r)) + (D.co u).1 (s, t * r) = (D.co u).1 (s * t, r) + (D.co u).1 (s, t) := by

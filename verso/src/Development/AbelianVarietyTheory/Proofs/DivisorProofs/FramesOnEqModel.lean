@@ -11,11 +11,11 @@ open NumberField IsDedekindDomain Module Formalism.BasicNotions Formalism.L2.Pj 
   GlobalTheory.FlatLine AlgebraicGeometry GlobalTheory.CompHt GlobalTheory.FlatCore
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c r U x hL Z σ hσ`. Take `⟨q, hq⟩ : ∃ q : (U σ).Comp ≃ Comp Xo c, ∀ k (y : ((U σ).X k).dom) (s : Sp (CAt σ)), ptF ((U σ).un k y) s ∈ (q k).1` from `GlobalTheory.UnifComp.exists_equiv_comp E H Dw l Xo c σ r (Formalism.L2.PjFree.Unf.ofPj (U σ)) hσ (hL.unf σ hσ) (fun k => GlobalTheory.CompBij.frames_nonempty _) hL.geo`. Use `⟨q.symm Z, Set.ext fun ⟨k, y⟩ => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨hy, hl⟩`. Use `⟨?_, hy⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hk : q k = Z`. Assume the negation of the conclusion as `hne`. Set `s : Sp (CAt σ)` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum ℂ)`. Conclude with `Set.disjoint_left.1 (CompSplitPfD.cspD_comp_disj Xo c _ _ hne) (hq k ⟨y, hy⟩ s) (hl s)`. Conclude with `(Equiv.eq_symm_apply q).2 hk`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨hk, hy⟩`. Take `rfl : k = q.symm Z` from `hk`. Use `⟨hy, fun s => ?_⟩` and prove the remaining obligations. Use `hq (q.symm Z) ⟨y, hy⟩ s` as an intermediate fact. Rewrite `this` using `[Equiv.apply_symm_apply]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem framesOn_eq_model : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (x : ℝ), Laws U x → ∀ (Z : Comp Xo c) (σ : c.F →+* ℂ), GoodEmb c σ → ∃ k, framesOn (U σ) Z = {z | z.1 = k ∧ z.2 ∈ ((U σ).X z.1).dom} := by
   intro E _ _ _ H Dw l Xo c r U x hL Z σ hσ

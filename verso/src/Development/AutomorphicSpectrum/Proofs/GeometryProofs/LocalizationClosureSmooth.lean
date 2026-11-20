@@ -8,9 +8,9 @@ namespace GlobalTheory.CompanionTheory.Ar.FlagBun.Sm.Cell
 open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.FlagBun GlobalTheory.CompanionTheory.Ar.FlagBun.Sm
 
 /- English proof (translation)
-Use `letI := ψ.toAlgebra`. Use `haveI := hl`. Establish `h1 : ψ.Smooth` using `(Algebra.Smooth.of_isLocalization_Away f : Algebra.Smooth (MvPolynomial ι R) L)`. Establish `h2 : (algebraMap R (MvPolynomial ι R)).Smooth` using `RingHom.smooth_algebraMap.2 ⟨inferInstance, inferInstance⟩`. Rewrite `h2` using `[MvPolynomial.algebraMap_eq]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hg]`. Conclude with `RingHom.Smooth.comp h2 h1`.
+A detailed English derivation is pending.
 -/
 theorem smooth_of_away_mvPolynomial {R L ι : Type} [CommRing R] [CommRing L] [Finite ι]
     (g : R →+* L) (ψ : MvPolynomial ι R →+* L) (hg : ψ.comp MvPolynomial.C = g) (f : MvPolynomial ι R)
@@ -29,9 +29,9 @@ def evalSub {Ω K : Type} [Field Ω] [Field K] [Algebra Ω K] {ι : Type} (R : S
   MvPolynomial.eval₂Hom ((algebraMap Ω K).comp R.subtype) v
 
 /- English proof (translation)
-Establish `e : evalSub R v = (MvPolynomial.aeval v : MvPolynomial ι Ω →ₐ[Ω] K).toRingHom.comp (MvPolynomial.map R.subtype)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `[evalSub]`. Introduce `i`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[evalSub]`. Rewrite using `[e]`. Conclude with `fun p q hpq => MvPolynomial.map_injective _ R.subtype_injective (algebraicIndependent_iff_injective_aeval.1 hv hpq)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem evalSub_injective {Ω K : Type} [Field Ω] [Field K] [Algebra Ω K] {ι : Type} (R : Subring Ω)
     (v : ι → K) (hv : AlgebraicIndependent Ω v) : Function.Injective (evalSub R v) := by
@@ -47,13 +47,13 @@ theorem evalSub_injective {Ω K : Type} [Field Ω] [Field K] [Algebra Ω K] {ι 
     (algebraicIndependent_iff_injective_aeval.1 hv hpq)
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨a, rfl⟩`. Proceed by induction on `a using MvPolynomial.induction_on with`. Consider the case `C a`. Use `Subring.subset_closure (Or.inl ⟨a, a.2, ?_⟩)` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[evalSub]`. Consider the case `add p q hp hq`. Rewrite using `[map_add]`. Conclude with `add_mem hp hq`. Consider the case `mul_X p i hp`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul]`. Use `mul_mem hp (Subring.subset_closure (Or.inr ⟨i, ?_⟩))` and prove the remaining obligations. Simplify using `[evalSub]`. Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `x (⟨a, ha, rfl⟩ | ⟨i, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨MvPolynomial.C ⟨a, ha⟩, by simp [evalSub]⟩`. Conclude with `⟨MvPolynomial.X i, by simp [evalSub]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem evalSub_range {Ω K : Type} [Field Ω] [Field K] [Algebra Ω K] {ι : Type} (R : Subring Ω)
     (v : ι → K) : (evalSub R v).range =
@@ -77,17 +77,17 @@ theorem evalSub_range {Ω K : Type} [Field Ω] [Field K] [Algebra Ω K] {ι : Ty
     · exact ⟨MvPolynomial.X i, by simp [evalSub]⟩
 
 /- English proof (translation)
-Introduce `Ω K _ _ _ ι _ R v hv ℓ hℓ h0 h`. Establish `hr` using `evalSub_range R v`. Generalize the expression as in `Subring.closure (((R.map (algebraMap Ω K) : Subring K) : Set K) ∪ Set.range v) = B at *`. Substitute `hr` using the available equality. Establish `hinj` using `evalSub_injective R v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hmem : ∀ a, evalSub R v a ∈ locSub (evalSub R v).range ℓ` using `fun a => le_locSub _ _ ⟨a, rfl⟩`. Take `⟨f, hf⟩` from `hℓ`. Use `smooth_of_away_mvPolynomial _ ((evalSub R v).codRestrict _ hmem) ?_ f ?_` and prove the remaining obligations. Use extensionality with `a`. Express the relevant statement in the definitionally equal form `evalSub R v (MvPolynomial.C a) = algebraMap Ω K a`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `[evalSub]`. Use `letI := ((evalSub R v).codRestrict _ hmem).toAlgebra`. Establish `hval : ∀ a : MvPolynomial ι R, ((algebraMap (MvPolynomial ι R) (locSub (evalSub R v).range ℓ) a : locSub (evalSub R v).range ℓ) : K) = evalSub R v a` using `fun a => rfl`. Use `{ map_units := ?_, surj := ?_, exists_of_eq := ?_ }` and prove the remaining obligations. Introduce and unpack `⟨_, n, rfl⟩`.
+Simplify using the standard rewrite rules. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hu : IsUnit (algebraMap (MvPolynomial ι R) (locSub (evalSub R v).range ℓ) f)`. Use `IsUnit.of_mul_eq_one ⟨ℓ⁻¹, inv_mem_locSub _ _⟩ (Subtype.ext ?_)` and prove the remaining obligations. Simplify using `[hval, hf, h0]`. Simplify using `using hu.pow n`. Introduce and unpack `⟨z, hz⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
-Take `⟨k, hk⟩` from `(mem_locSub_iff (RingHom.mem_range.2 ⟨f, hf⟩) h0 z).1 hz`. Take `⟨a, ha⟩` from `RingHom.mem_range.1 hk`. Use `⟨⟨a, ⟨f ^ k, k, rfl⟩⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `[hval, hf, ha, mul_comm]`. Introduce `x y hxy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨1, by rw [hinj (congrArg Subtype.val hxy)]⟩`.
+Supply the required witnesses or components.
 -/
 theorem smooth_locSub_closure : ∀ {Ω K : Type} [Field Ω] [Field K] [Algebra Ω K] {ι : Type} [Finite ι] (R : Subring Ω) (v : ι → K), AlgebraicIndependent Ω v → ∀ ℓ : K, ℓ ∈ Subring.closure (((R.map (algebraMap Ω K) : Subring K) : Set K) ∪ Set.range v) → ℓ ≠ 0 → ∀ h : (∀ a ∈ R, algebraMap Ω K a ∈ locSub (Subring.closure (((R.map (algebraMap Ω K) : Subring K) : Set K) ∪ Set.range v)) ℓ), (((algebraMap Ω K).comp R.subtype).codRestrict (locSub (Subring.closure (((R.map (algebraMap Ω K) : Subring K) : Set K) ∪ Set.range v)) ℓ) (fun a => h a a.2)).Smooth := by
   intro Ω K _ _ _ ι _ R v hv ℓ hℓ h0 h

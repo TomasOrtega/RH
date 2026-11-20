@@ -38,9 +38,9 @@ section Main
 variable {V : Type} [AddCommGroup V] [Module ℂ V] {b : Fin r → ℕ}
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.BlockDecompositionExistence.leviWh_eq_one`. Consider the case `exact _root_.GlobalTheory.BlockDecompositionExistence.leviWh_eq_one`. Consider the case `(apply _root_.GlobalTheory.BlockDecompositionExistence.leviWh_eq_one <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.BlockDecompositionExistence.leviWh_eq_one <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.BlockDecompositionExistence.leviWh_eq_one <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.BlockDecompositionExistence.leviWh_eq_one ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem leviWh_eq_one : ∀ (F : Type) [Field F] [Fintype F] (ψ : AddChar F ℂ), ψ ≠ 1 → ∀ (r : ℕ) (V : Type)
     [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] (b : Fin r → ℕ)

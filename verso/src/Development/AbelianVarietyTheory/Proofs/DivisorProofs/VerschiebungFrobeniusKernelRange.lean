@@ -16,17 +16,17 @@ namespace GlobalTheory
 namespace PDiv
 
 /- English proof (translation)
-Establish `hc' : Function.Surjective c` using `fun z' => by`. Take `⟨t, rfl⟩` from `hc z'`. Proceed by induction on `t with`. Consider the case `zero => exact ⟨0, (map_zero c).trans (map_zero _).symm⟩`. Consider the case `add s t hs ht`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨x, hx⟩` from `hs`. Take `⟨y, hy⟩` from `ht`. Conclude with `⟨x + y, by rw [map_add, map_add, hx, hy]⟩`. Consider the case `tmul r z`. Take `⟨r, rfl⟩` from `residue_surjective r`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨r • z, by rw [map_smulₛₗ, liftSemi_tmul]; rfl⟩`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible R`. Use `Submodule.le_of_le_smul_of_le_jacobson_bot (I := maximalIdeal R) (IsNoetherian.noetherian _) (maximalIdeal_le_jacobson _) fun x hx => ?_` and prove the remaining obligations. Take `⟨z', hz'⟩` from `h (show f' (a x) = 0 by rw [← hf, LinearMap.mem_ker.1 hx, map_zero])`. Take `⟨z, rfl⟩` from `hc' z'`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h₁ : (1 : ResidueField R) ⊗ₜ[R] (x - g z) = 0` using `ha (by`. Rewrite using `[liftSemi_tmul, map_sub, hg, hz', sub_self, smul_zero, map_zero])`. Establish `h₂ : x - g z ∈ maximalIdeal R • (⊤ : Submodule R A)`. Rewrite using `[← LinearMap.ker_tensorProductMk]`. Conclude with `h₁`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h₂` using `[hϖ.maximalIdeal_eq, Submodule.ideal_span_singleton_smul]`. Take `⟨y, -, hy⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 h₂`. Establish `h₃ : f y = 0`. Establish `e : ϖ • f y = 0`. Rewrite using `[← map_smul, hy, map_sub, hfg, LinearMap.mem_ker.1 hx, sub_self]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(smul_eq_zero.1 e).resolve_left hϖ.ne_zero`. Rewrite using `[← sub_add_cancel x (g z), ← hy, add_comm]`. Conclude with `Submodule.add_mem_sup ⟨z, rfl⟩ (Submodule.smul_mem_smul hϖ.not_isUnit h₃)`.
+A detailed English derivation is pending.
 -/
 theorem ker_le_range_of_residueField {R A B C A' B' C' : Type} [CommRing R] [IsDomain R]
     [IsDiscreteValuationRing R] [AddCommGroup A] [Module R A] [Module.Finite R A]
@@ -78,7 +78,7 @@ open PDiv
 variable {p : ℕ} [Fact p.Prime] {R : Type} [CommRing R]
 
 /- English proof (translation)
-The claim follows from `Function.bijective_iff_has_inverse.2 ⟨rigExtMap e.inv, fun x => by rw [← LinearMap.comp_apply, ← rigExtMap_comp, e.inv_hom_id, rigExtMap_id]; rfl, fun x => by rw [← LinearMap.comp_apply, ← rigExtMap_comp, e.hom_inv_id, rigExtMap_id]; rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem rigExtMap_hom_bijective {G H : PDivGroup p R} (e : G ≅ H) :
     Function.Bijective (rigExtMap e.hom) :=
@@ -89,14 +89,14 @@ theorem rigExtMap_hom_bijective {G H : PDivGroup p R} (e : G ≅ H) :
 variable (h : (p : R) = 0) (G : PDivGroup p R)
 
 /- English proof (translation)
-Rewrite using `[← rigExtMap_relFrob_rig, SemiHom.rig_rigOfOmega]`. Conclude with `LinearMap.congr_fun (rigExtMap_relFrob_comp_rigOfOmega h G) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absFrob_rig_rigOfOmega (w : G.omega) : (absFrob h G).rig (G.rigOfOmega w) = 0 := by
   rw [← rigExtMap_relFrob_rig, SemiHom.rig_rigOfOmega]
   exact LinearMap.congr_fun (rigExtMap_relFrob_comp_rigOfOmega h G) _
 
 /- English proof (translation)
-Rewrite using `[← (absFrob h (frobTwist h G)).rig_naturality (absFrob h G) (verschiebung h G) (verschiebung h G) (fun n a => by simp only [absFrob_app, map_pow])]`. Take `⟨w, hw⟩` from `range_rigExtMap_verschiebung_le h G ⟨x, rfl⟩`. Rewrite using `[← hw, absFrob_rig_rigOfOmega]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem rigExtMap_verschiebung_absFrob_rig (x : G.RigExt) :
     rigExtMap (verschiebung h G) ((absFrob h G).rig x) = 0 := by
@@ -106,7 +106,7 @@ theorem rigExtMap_verschiebung_absFrob_rig (x : G.RigExt) :
   rw [← hw, absFrob_rig_rigOfOmega]
 
 /- English proof (translation)
-Rewrite using `[← SemiHom.rigExtMap_lift_comp_liftSemi, LinearMap.coe_comp]`. Conclude with `(rigExtMap_hom_bijective (frobTwistBaseChange h G h')).comp (liftSemi_rig_bijective S _ h (Or.inr hG))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftSemi_frobTwist_rig_bijective (S : Type) [CommRing S] [Algebra R S] (h' : (p : S) = 0)
     (hG : Module.Projective R (frobTwist h G).dual.omega) :
@@ -124,7 +124,7 @@ variable [IsDomain R] [IsDiscreteValuationRing R] (h' : (p : ResidueField R) = 0
 include bN bM
 
 /- English proof (translation)
-The claim follows from `ker_le_range_of_residueField _ _ _ _ ((G.toBase (ResidueField R)).frobTwist h h').rig (G.toBase (ResidueField R)).rig (G.toBase (ResidueField R)).rig (fun z => LinearMap.range_le_ker_iff.2 (rigExtMap_relFrob_comp_rigOfOmega h G) (range_rigExtMap_verschiebung_le h G ⟨z, rfl⟩)) (Se …`.
+A detailed English derivation is pending.
 -/
 theorem ker_relFrob_le_of_residueField (_ : Module.Finite R (frobTwist h G).RigExt)
     (_ : Module.Free R G.RigExt)
@@ -140,7 +140,7 @@ theorem ker_relFrob_le_of_residueField (_ : Module.Finite R (frobTwist h G).RigE
     bM.1 bN.2 k
 
 /- English proof (translation)
-The claim follows from `ker_le_range_of_residueField _ _ _ _ (G.toBase (ResidueField R)).rig ((G.toBase (ResidueField R)).frobTwist h h').rig ((G.toBase (ResidueField R)).frobTwist h h').rig e (SemiHom.rig_naturality _ _ _ _ ((G.toBase (ResidueField R)).app_verschiebung h h')) (SemiHom.rig_naturality _ …`.
+A detailed English derivation is pending.
 -/
 theorem ker_verschiebung_le_of_residueField (_ : Module.Finite R G.RigExt)
     (_ : Module.Free R (frobTwist h G).RigExt)
@@ -157,9 +157,9 @@ theorem ker_verschiebung_le_of_residueField (_ : Module.Finite R G.RigExt)
 end Residue
 
 /- English proof (translation)
-Use `le_antisymm ?_ (Submodule.span_le.2 ?_)` and prove the remaining obligations. Rewrite using `[LinearMap.range_eq_map (rigExtMap (relFrob h G)), ← hb, Submodule.map_span]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨j, rfl⟩, rfl⟩`. Conclude with `⟨_, (rigExtMap_relFrob_rig h G _).symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨_, rigExtMap_relFrob_rig h G x⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem range_relFrob_eq_span {ι : Type} (b : ι → G.RigExt)
     (hb : Submodule.span R (Set.range fun j => (frobProj h G).rig (b j)) = ⊤) :
@@ -176,13 +176,13 @@ theorem range_relFrob_eq_span {ι : Type} (b : ι → G.RigExt)
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Take `⟨-, -, f₁, -, -, -, f₂, f₃⟩` from `T.dieudonne_modules_free_finite hW p R h G`. Take `⟨-, -, g₁, -, -, -, g₂, g₃⟩` from `T.dieudonne_modules_free_finite hW p R h (frobTwist h G)`. Establish `h' : (p : ResidueField R) = 0` using `natCast_eq_zero_of_algebra h _`. Take `⟨-, -, -, k₁, k₂, k₃, -⟩` from `T.dieudonne_ranks_field_char_p hW p _ h' (G.baseChange (ResidueField R))`. Establish `bN` using `liftSemi_rig_bijective (ResidueField R) G h (Or.inr (@Module.Projective.of_free _ _ _ _ _ f₁))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `bM` using `liftSemi_frobTwist_rig_bijective h G (ResidueField R) h' (@Module.Projective.of_free _ _ _ _ _ g₁)`. Establish `e₁` using `range_rigExtMap_verschiebung_le h G`. Establish `e₂` using `LinearMap.range_le_ker_iff.2 (rigExtMap_relFrob_comp_rigOfOmega h G)`. Establish `e₃` using `ker_relFrob_le_of_residueField h G h' bN bM g₃ f₂ (k₂.trans k₁.symm).le`. Establish `e₄` using `range_relFrob_eq_span h G _ ((T.frobenius_pullback_basis hW p R h G).1 _ (Module.finBasis R G.RigExt)).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₅ : LinearMap.range (rigExtMap (relFrob h G)) ≤ LinearMap.ker (rigExtMap (verschiebung h G))`. Use `e₄.le.trans (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `rigExtMap_verschiebung_absFrob_rig h G x`. Establish `e₆` using `ker_verschiebung_le_of_residueField h G h' bN bM f₃ g₂ (fun z => LinearMap.mem_ker.1 (e₅ (LinearMap.mem_range_self _ z))) k₃.le`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨le_antisymm e₁ (le_trans e₂ e₃), le_antisymm (le_trans e₃ e₁) e₂, le_antisymm e₆ e₅, e₄⟩`.
+A detailed English derivation is pending.
 -/
 theorem exact_frobenius_verschiebung_of_isDiscreteValuationRing
     (hW : Published.BarsottiTateDieudonne.WittModule) (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R]

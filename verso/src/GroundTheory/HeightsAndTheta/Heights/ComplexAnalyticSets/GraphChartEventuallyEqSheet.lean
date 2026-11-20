@@ -27,7 +27,7 @@ theorem linVal_eq (u x : Fin n → ℂ) :
     GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.linVal u x = GroundTheory.Heights₂.Heights.linEval u x := rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem smoothNear_iff (S : Set (Fin n → ℂ)) (f : (Fin n → ℂ) → ℝ) :
     GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.SmoothNear S f ↔ GroundTheory.Heights₂.Heights.SmoothNear S f :=
@@ -48,7 +48,7 @@ theorem fibre_eq (J : Ideal (MvPolynomial (Fin n) ℂ)) (A : Matrix (Fin d) (Fin
       GroundTheory.Heights₂.Heights.ComplexSets.fibre J A w := rfl
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Simplify using `[GroundTheory.Heights₂.Heights.ComplexSets.projHom, GroundTheory.Heights₂.Heights.ComplexSets.pullback, GroundTheory.Heights₂.Heights.ComplexSets.linPoly, linForm]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem aeval_linForm_eq_projHom (J : Ideal (MvPolynomial (Fin n) ℂ))
     (A : Matrix (Fin d) (Fin n) ℂ) :
@@ -60,15 +60,15 @@ theorem aeval_linForm_eq_projHom (J : Ideal (MvPolynomial (Fin n) ℂ))
     GroundTheory.Heights₂.Heights.ComplexSets.linPoly, linForm]
 
 /- English proof (translation)
-Use `hJ.isPrime` as an intermediate fact. Set `f` to `(GroundTheory.Heights₂.Heights.ComplexSets.projHom J A).toRingHom`. Set `P` to `RingHom.ker f`. Set `g : MvPolynomial (Fin d) ℂ ⧸ P →+* MvPolynomial (Fin n) ℂ ⧸ J` to `RingHom.kerLift f`. Establish `hgf : g.comp (Ideal.Quotient.mk P) = f` using `RingHom.ext fun a => RingHom.kerLift_mk f a`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hg_fin : g.Finite` using `RingHom.Finite.of_comp_finite (f := Ideal.Quotient.mk P) (by rw [hgf]; exact hfin)`. Set `` to `g.toAlgebra`. Establish `: Algebra.IsIntegral (MvPolynomial (Fin d) ℂ ⧸ P) (MvPolynomial (Fin n) ℂ ⧸ J)` using `⟨hg_fin.to_isIntegral⟩`. Establish `h1 : ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ J) ≤ ringKrullDim (MvPolynomial (Fin d) ℂ ⧸ P)` using `Order.krullDim_le_of_strictMono (PrimeSpectrum.comap (algebraMap _ _)) fun _ _ hpq => Ideal.IsIntegral.comap_lt_comap (R := MvPolynomial (Fin d) ℂ ⧸ P) hpq`. Rewrite `h1` using `[hJ.dim]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hd : ringKrullDim (MvPolynomial (Fin d) ℂ) = (d : ℕ)`. Rewrite using `[MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field]`. Simplify using the standard rewrite rules. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `ha0`. Establish `haP : a ∈ P` using `ha`. Establish `h2` using `ringKrullDim_succ_le_of_surjective (Ideal.Quotient.mk P) Ideal.Quotient.mk_surjective (mem_nonZeroDivisors_of_ne_zero ha0) (Ideal.Quotient.eq_zero_iff_mem.mpr haP)`. Rewrite `h2` using `[hd]`. Establish `h3` using `(add_le_add_left h1 1).trans h2`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : d + 1 ≤ d` using `by exact_mod_cast h3`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem injective_projHom_of_finite {J : Ideal (MvPolynomial (Fin n) ℂ)}
     {A : Matrix (Fin d) (Fin n) ℂ} (hJ : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.IsAffVariety J d)
@@ -106,7 +106,7 @@ theorem injective_projHom_of_finite {J : Ideal (MvPolynomial (Fin n) ℂ)}
   omega
 
 /- English proof (translation)
-Unfold `GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.IsFiniteProj`. Rewrite using `[aeval_linForm_eq_projHom]`. Conclude with `⟨fun h => ⟨injective_projHom_of_finite hJ h, h⟩, fun h => h.finite⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isFiniteProj_iff {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin d) (Fin n) ℂ}
     (hJ : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.IsAffVariety J d) :
@@ -117,7 +117,7 @@ theorem isFiniteProj_iff {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin
   exact ⟨fun h => ⟨injective_projHom_of_finite hJ h, h⟩, fun h => h.finite⟩
 
 /- English proof (translation)
-Establish `h : ∀ j, AnalyticOnNhd ℂ (fun y => s y j) U` using `fun j => ReciprocityTheory.AnForm.Osgood.osgood d U _ hU (differentiableOn_pi.mp hs j)`. Conclude with `AnalyticOnNhd.pi h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem analyticOnNhd_of_differentiableOn {U : Set (Fin d → ℂ)} {s : (Fin d → ℂ) → Fin n → ℂ}
     (hU : IsOpen U) (hs : DifferentiableOn ℂ s U) : AnalyticOnNhd ℂ s U := by
@@ -128,9 +128,9 @@ theorem analyticOnNhd_of_differentiableOn {U : Set (Fin d → ℂ)} {s : (Fin d 
 variable {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin d) (Fin n) ℂ} {x : Fin n → ℂ}
 
 /- English proof (translation)
-Take `⟨hx, U, V, hU, hxU, hV, han, hbij, hsec⟩` from `h`. Take `⟨w, hwV, hw⟩` from `hbij.surjOn ⟨hx, hxU⟩`. Establish `hAx : A *ᵥ x = w` using `by rw [← hw]; exact hsec w hwV`. Use `⟨V, hV, by rw [hAx]; exact hwV, han.differentiableOn, by rw [hAx, hw], fun y hy => ⟨hsec y hy, (hbij.mapsTo hy).1⟩, U, hU.mem_nhds hxU, ?_⟩` and prove the remaining obligations. Introduce and unpack `x' ⟨hx'Z, hx'U⟩ _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨w', hw'V, hw'⟩` from `hbij.surjOn ⟨hx'Z, hx'U⟩`. Establish `hA' : A *ᵥ x' = w'` using `by rw [← hw']; exact hsec w' hw'V`. Rewrite using `[hA', hw']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isSheetAt_of_isGraphChart {σ : (Fin d → ℂ) → Fin n → ℂ}
     (h : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.IsGraphChart J A x σ) :
@@ -146,15 +146,13 @@ theorem isSheetAt_of_isGraphChart {σ : (Fin d → ℂ) → Fin n → ℂ}
   rw [hA', hw']
 
 /- English proof (translation)
-Take `⟨W, hW, hAxW, hsd, hsx, hsec, N, hN, hloc⟩` from `h`. Take `⟨U0, hU0N, hU0, hxU0⟩` from `mem_nhds_iff.mp hN`. Set `V` to `W ∩ s ⁻¹' U0`. Establish `hVo : IsOpen V` using `hsd.continuousOn.isOpen_inter_preimage hW hU0`. Establish `hAxV : A *ᵥ x ∈ V` using `⟨hAxW, by show s (A *ᵥ x) ∈ U0; rw [hsx]; exact hxU0⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxZ : x ∈ GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.zeroLocus J`. Use `(hsec _ hAxW).2` as an intermediate fact. Rewrite `this` using `[hsx]`. Conclude with `this`. Set `U` to `U0 ∩ (fun z => A *ᵥ z) ⁻¹' V`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hUo : IsOpen U` using `hU0.inter (hVo.preimage (Continuous.matrix_mulVec continuous_const continuous_id))`. Use `⟨hxZ, U, V, hUo, ⟨hxU0, hAxV⟩, hVo, analyticOnNhd_of_differentiableOn hVo (hsd.mono Set.inter_subset_left), ⟨?_, ?_, ?_⟩, fun w hw => (hsec w hw.1).1⟩` and prove the remaining obligations. Introduce `y hy`. Use `⟨(hsec y hy.1).2, hy.2, ?_⟩` and prove the remaining obligations. Use `show A *ᵥ s y ∈ V`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[(hsec y hy.1).1]`. Conclude with `hy`. Introduce `y hy y' hy' hyy'`. Use `congrArg (fun z => A *ᵥ z) hyy'` as an intermediate fact. Rewrite `this` using `[(hsec y hy.1).1, (hsec y' hy'.1).1]`. Then use the resulting hypothesis.
-
-Introduce and unpack `x' ⟨hx'Z, hx'U0, hx'V⟩`. Conclude with `⟨A *ᵥ x', hx'V, (hloc x' ⟨hx'Z, hU0N hx'U0⟩ hx'V.1).symm⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isGraphChart_of_isSheetAt {s : (Fin d → ℂ) → Fin n → ℂ}
     (h : GroundTheory.Heights₂.Heights.IsSheetAt J A x s) :
@@ -186,7 +184,7 @@ theorem isGraphChart_of_isSheetAt {s : (Fin d → ℂ) → Fin n → ℂ}
     exact ⟨A *ᵥ x', hx'V, (hloc x' ⟨hx'Z, hU0N hx'U0⟩ hx'V.1).symm⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨σ, h⟩ => ⟨σ, isSheetAt_of_isGraphChart h⟩, fun ⟨s, h⟩ => ⟨s, isGraphChart_of_isSheetAt h⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_graphChart_iff :
     (∃ σ, GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.IsGraphChart J A x σ) ↔
@@ -195,9 +193,9 @@ theorem exists_graphChart_iff :
     fun ⟨s, h⟩ => ⟨s, isGraphChart_of_isSheetAt h⟩⟩
 
 /- English proof (translation)
-Take `⟨-, U, V, hU, hxU, -, -, hbij, hsec⟩` from `hσ`. Take `⟨W, hW, hAxW, hsd, hsx, hssec, -⟩` from `hs`. Establish `hcont : ContinuousAt s (A *ᵥ x)` using `hsd.continuousOn.continuousAt (hW.mem_nhds hAxW)`. Establish `h1 : ∀ᶠ y in 𝓝 (A *ᵥ x), s y ∈ U` using `hcont.preimage_mem_nhds (by rw [hsx]; exact hU.mem_nhds hxU)`. Establish `h2 : ∀ᶠ y in 𝓝 (A *ᵥ x), y ∈ W` using `hW.mem_nhds hAxW`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [h1, h2] with y hyU hyW`. Take `⟨w, hwV, hw⟩` from `hbij.surjOn ⟨(hssec y hyW).2, hyU⟩`. Establish `hwy : w = y` using `by rw [← hsec w hwV, hw, (hssec y hyW).1]`. Rewrite `hw` using `[hwy]`. Conclude with `hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem graphChart_eventuallyEq_sheet {σ s : (Fin d → ℂ) → Fin n → ℂ}
     (hσ : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.IsGraphChart J A x σ)
@@ -215,9 +213,9 @@ theorem graphChart_eventuallyEq_sheet {σ s : (Fin d → ℂ) → Fin n → ℂ}
   exact hw
 
 /- English proof (translation)
-Establish `hH : ∀ k, ReciprocityTheory.AnForm.hessC (φ k) z = ReciprocityTheory.AnForm.hessC (ψ k) z`. Introduce `k`. Establish `h2 : fderiv ℝ (fderiv ℝ (φ k)) z = fderiv ℝ (fderiv ℝ (ψ k)) z` using `((h k).fderiv (𝕜 := ℝ)).fderiv_eq (𝕜 := ℝ)`. Unfold `ReciprocityTheory.AnForm.hessC`. Rewrite using `[h2]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `ReciprocityTheory.AnForm.maDens`. Simplify using `only [hH]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem maDens_congr_of_eventuallyEq {D : ℕ} {φ ψ : Fin D → (Fin D → ℂ) → ℝ} {z : Fin D → ℂ}
     (h : ∀ k, φ k =ᶠ[𝓝 z] ψ k) :
@@ -232,7 +230,7 @@ theorem maDens_congr_of_eventuallyEq {D : ℕ} {φ ψ : Fin D → (Fin D → ℂ
   simp only [hH]
 
 /- English proof (translation)
-The claim follows from `maDens_congr_of_eventuallyEq fun k => (graphChart_eventuallyEq_sheet hσ hs).fun_comp (φ k)`.
+A detailed English derivation is pending.
 -/
 theorem maDens_graphChart_eq_sheet {σ s : (Fin d → ℂ) → Fin n → ℂ}
     (hσ : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.IsGraphChart J A x σ)
@@ -244,9 +242,9 @@ theorem maDens_graphChart_eq_sheet {σ s : (Fin d → ℂ) → Fin n → ℂ}
 open Classical in
 
 /- English proof (translation)
-Unfold `GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.sheetDens`. Distinguish the cases in `h : ∃ σ, GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.IsGraphChart J A x σ`. Establish `h' : ∃ s, GroundTheory.Heights₂.Heights.IsSheetAt J A x s` using `exists_graphChart_iff.mp h`. Rewrite using `[dif_pos h, dif_pos h']`. Conclude with `maDens_graphChart_eq_sheet h.choose_spec h'.choose_spec φ`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h' : ¬ ∃ s, GroundTheory.Heights₂.Heights.IsSheetAt J A x s` using `fun h' => h (exists_graphChart_iff.mpr h')`. Rewrite using `[dif_neg h, dif_neg h']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sheetDens_eq (φ : Fin d → (Fin n → ℂ) → ℝ) (x : Fin n → ℂ) :
     GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.sheetDens J A φ x =
@@ -262,9 +260,9 @@ theorem sheetDens_eq (φ : Fin d → (Fin n → ℂ) → ℝ) (x : Fin n → ℂ
     rw [dif_neg h, dif_neg h']
 
 /- English proof (translation)
-Unfold `GroundTheory.Heights₂.Heights.chartDens GroundTheory.Heights₂.Heights.sheetSum`. Use `finsum_congr fun x => finsum_congr fun hx => ?_` and prove the remaining obligations. Rewrite using `[sheetDens_eq, hx.2]`. Distinguish the cases in `h : ∃ s, GroundTheory.Heights₂.Heights.IsSheetAt J A x s`. Rewrite using `[dif_pos h, dif_pos h]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg h, dif_neg h, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fibreSum_eq_chartDens (J : Ideal (MvPolynomial (Fin n) ℂ)) (A : Matrix (Fin d) (Fin n) ℂ)
     (g : (Fin n → ℂ) → ℝ) (φ : Fin d → (Fin n → ℂ) → ℝ) (w : Fin d → ℂ) :
@@ -279,7 +277,7 @@ theorem fibreSum_eq_chartDens (J : Ideal (MvPolynomial (Fin n) ℂ)) (A : Matrix
   · rw [dif_neg h, dif_neg h, mul_zero]
 
 /- English proof (translation)
-The claim follows from `|g x * GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.sheetDens J A φ x| = GroundTheory.Heights₂.Heights.chartAbsDens J A g φ w := by unfold GroundTheory.Heights₂.Heights.chartAbsDens GroundTheory.Heights₂.Heights.sheetSum refine finsum_congr fun x => finsum …`.
+A detailed English derivation is pending.
 -/
 theorem fibreAbsSum_eq_chartAbsDens (J : Ideal (MvPolynomial (Fin n) ℂ))
     (A : Matrix (Fin d) (Fin n) ℂ) (g : (Fin n → ℂ) → ℝ) (φ : Fin d → (Fin n → ℂ) → ℝ)
@@ -295,7 +293,7 @@ theorem fibreAbsSum_eq_chartAbsDens (J : Ideal (MvPolynomial (Fin n) ℂ))
   · rw [dif_neg h, dif_neg h, mul_zero, abs_zero]
 
 /- English proof (translation)
-Unfold `GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.projInt GroundTheory.Heights₂.Heights.chartInt`. Simplify using `only [fibreSum_eq_chartDens]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem projInt_eq (J : Ideal (MvPolynomial (Fin n) ℂ)) (A : Matrix (Fin d) (Fin n) ℂ)
     (g : (Fin n → ℂ) → ℝ) (φ : Fin d → (Fin n → ℂ) → ℝ) :
@@ -305,7 +303,7 @@ theorem projInt_eq (J : Ideal (MvPolynomial (Fin n) ℂ)) (A : Matrix (Fin d) (F
   simp only [fibreSum_eq_chartDens]
 
 /- English proof (translation)
-Unfold `GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.ProjIntegrable`. Simplify using `only [fibreAbsSum_eq_chartAbsDens]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem projIntegrable_iff (J : Ideal (MvPolynomial (Fin n) ℂ)) (A : Matrix (Fin d) (Fin n) ℂ)
     (g : (Fin n → ℂ) → ℝ) (φ : Fin d → (Fin n → ℂ) → ℝ) :
@@ -315,7 +313,7 @@ theorem projIntegrable_iff (J : Ideal (MvPolynomial (Fin n) ℂ)) (A : Matrix (F
   simp only [fibreAbsSum_eq_chartAbsDens]
 
 /- English proof (translation)
-Substitute `hpq` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem choose_congr {α : Sort*} {p q : α → Prop} (hpq : p = q) (hp : ∃ a, p a)
     (hq : ∃ a, q a) : hp.choose = hq.choose := by
@@ -323,11 +321,11 @@ theorem choose_congr {α : Sort*} {p q : α → Prop} (hpq : p = q) (hp : ∃ a,
   rfl
 
 /- English proof (translation)
-Establish `hp : (fun A : Matrix (Fin d) (Fin n) ℂ => GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.IsFiniteProj J A) = fun A => GroundTheory.Heights₂.Heights.ComplexSets.IsFiniteProjection J A`. Use function extensionality and compare the values at `fun A => propext (isFiniteProj_iff hJ)`. Unfold `GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.varIntegral GroundTheory.Heights₂.Heights.varInt`. Distinguish the cases in `h : ∃ A : Matrix (Fin d) (Fin n) ℂ, GroundTheory.Heights₂.Heights.ComplexSets.IsFiniteProjection J A`. Establish `h' : ∃ A : Matrix (Fin d) (Fin n) ℂ, GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.IsFiniteProj J A`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Take `⟨A, hA⟩` from `h`. Conclude with `⟨A, (isFiniteProj_iff hJ).mpr hA⟩`. Rewrite using `[dif_pos h, dif_pos h', projInt_eq, choose_congr hp h' h]`. Establish `h' : ¬ ∃ A : Matrix (Fin d) (Fin n) ℂ, GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.IsFiniteProj J A`. Introduce and unpack `⟨A, hA⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `h ⟨A, (isFiniteProj_iff hJ).mp hA⟩`. Rewrite using `[dif_neg h, dif_neg h']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem varIntegral_eq (J : Ideal (MvPolynomial (Fin n) ℂ)) (g : (Fin n → ℂ) → ℝ)
     (φ : Fin d → (Fin n → ℂ) → ℝ) (hJ : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.IsAffVariety J d) :

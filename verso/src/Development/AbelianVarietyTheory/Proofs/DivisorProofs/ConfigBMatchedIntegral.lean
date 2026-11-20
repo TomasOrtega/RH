@@ -20,21 +20,21 @@ open GlobalTheory.RealLift GlobalTheory.KInfPol GlobalTheory.TwPartStab
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Introduce `_ F E _ _ _ _ _ σ B a b G G₁ H H' hcfg X om om' R Rf om₁ om₁' R₁ Rf₁ hm _`. Establish `hB` using `hm.triple.base`. Establish `hM` using `hm.triple.geo.hM`. Establish `hw` using `hm.triple.weil`. Establish `hlat` using `hm.triple.geo.hW.lat`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL` using `actsLaws F (Fin a × Fin (a + (b + 2)))`. Establish `hop : ∀ k ∈ KInf σ G.W B.emb, ∃ A : SInf F (Fin a × Fin (a + (b + 2))) →ₗ[ℂ] SInf F (Fin a × Fin (a + (b + 2))), (∀ f : SInf F (Fin a × Fin (a + (b + 2))), Acts (evI F) (om (1, k)) f (A f)) ∧ ∃ T : R.Pi →ₗ[ℂ] R.Pi, ∀ g ∈ G.M.Pol B.ψ B.emb, R.p (A g) = T (R.p g)`. Introduce `k hk`. Take `⟨A, hA⟩` from `GlobalTheory.T.exists_archOperator_compact_unitaryW F E σ B _ _ G.V G.W G.M om X.β (X.β / X.α) hB hM hw k hk`. Use `⟨A, hA, descent R.p hm.real.quot.onto A fun f hf hpf => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0` using `hm.real.cpt k hk f hf 0 (zero_mem _) (A f) 0 (hA f) (acts_zero _) (by rw [hpf, map_zero])`. Rewrite using `[h0, map_zero]`. Introduce `k hk k₁ hk₁ hLk f hf f₁ hAct hpf`. Take `⟨A, hA, T, hT⟩` from `hop k hk`. Establish `e₁ : f₁ = A f` using `(hL f f₁ (A f)).2.2.2.1 _ hAct (hA f)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[e₁, hT f hf]`. Use `revert hpf`. It suffices to establish `h : twPart B G.M om R.p G₁.W H' X.β ((a : ℝ) / 2) (lowPartInf B G.M R.p) ≤ (twPart B G.M om R.p G₁.W H' X.β ((a : ℝ) / 2) (lowPartInf B G.M R.p)).comap T from fun hpf => h hpf`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `x ⟨hxV, hxE⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg, rfl⟩` from `hxV`. Establish `hgP : g ∈ G.M.Pol B.ψ B.emb` using `fockDeg_le_pol _ _ _ _ hg`. Use `Submodule.subset_span ⟨⟨A g, fockDeg_stable hB hw hk hA _ hg, hT g hgP⟩, ?_⟩` and prove the remaining obligations. Introduce `k' hk' t hLt f' hf' f₁' hAct' hpf'`. Take `⟨A', hA', T', hT'⟩` from `hop k' hk'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e' : f₁' = A' f'` using `(hL _ _ _).2.2.2.1 _ hAct' (hA' f')`. Rewrite using `[e', hT' f' hf', hpf', ← hT g hgP]`. Establish `hAgP : A g ∈ G.M.Pol B.ψ B.emb` using `GlobalTheory.T.polynomialFockSpace_stable_archimedeanMaximalCompact F E σ B _ _ G.V G.W G.M om X.β (X.β / X.α) hB hM hw k hk g hgP (A g) (hA g)`. Establish `hA'gP : A' g ∈ G.M.Pol B.ψ B.emb` using `GlobalTheory.T.polynomialFockSpace_stable_archimedeanMaximalCompact F E σ B _ _ G.V G.W G.M om X.β (X.β / X.α) hB hM hw k' hk' g hgP (A' g) (hA' g)`. Rewrite using `[← hT' _ hAgP]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcomm : k * k' = k' * k` using `levi_comm hlat hcfg.hH' hLk hLt`. Establish `c1` using `acts_mul hw k k' (hA g) (hA' (A g))`. Establish `c2` using `acts_mul hw k' k (hA' g) (hA (A' g))`. Rewrite `c2` using `[hcomm]`. Establish `e2 : A' (A g) = A (A' g)` using `(hL _ _ _).2.2.2.1 _ c1 c2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2, hT _ hA'gP, hxE k' hk' t hLt g hgP (A' g) (hA' g) rfl, map_smul, hT g hgP]`.
+A detailed English derivation is pending.
 -/
 theorem kStabL_twPart_beta : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b)

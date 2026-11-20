@@ -10,11 +10,9 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BSP
 
 /- English proof (translation)
-Use `letI : Algebra A C := h.toAlgebra`. Use `letI : Algebra A A' := k.toAlgebra`. Use `letI : Algebra C C' := k'.toAlgebra`. Use `letI : Algebra A' C' := h'.toAlgebra`. Use `letI : Algebra A C' := (h'.comp k).toAlgebra`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `haveI : IsScalarTower A A' C' := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : IsScalarTower A C C' := IsScalarTower.of_algebraMap_eq fun a => (RingHom.congr_fun e a).symm`. Use `haveI : IsLocalization (Submonoid.powers x) C := H`. Use `haveI : IsLocalization (Algebra.algebraMapSubmonoid A' (Submonoid.powers x)) C' := by`. Rewrite using `[Algebra.algebraMapSubmonoid, Submonoid.map_powers]`.
-
-Conclude with `H'`. Use `haveI : Algebra.IsPushout A A' C C' := Algebra.isPushout_of_isLocalization (Submonoid.powers x) C A' C'`. Conclude with `(CommRingCat.isPushout_iff_isPushout (R := A) (R' := C) (S := A') (S' := C')).2 (Algebra.IsPushout.symm inferInstance)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPushout_of_away {A C A' C' : Type} [CommRing A] [CommRing C] [CommRing A'] [CommRing C']
     (h : A →+* C) (k : A →+* A') (k' : C →+* C') (h' : A' →+* C') (e : k'.comp h = h'.comp k) (x : A)
@@ -39,11 +37,9 @@ theorem isPushout_of_away {A C A' C' : Type} [CommRing A] [CommRing C] [CommRing
     (Algebra.IsPushout.symm inferInstance)
 
 /- English proof (translation)
-Establish `hu : IsUnit (qmap h 1 (Ideal.Quotient.mk (adI B ^ 1) s))`. Use `letI := (qmap h 1).toAlgebra`. Use `haveI := H.away 1`. Conclude with `IsLocalization.Away.algebraMap_isUnit _`. Rewrite `hu` using `[qmap_mk]`.
+Establish an intermediate fact. Equip the data with the indicated structure. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := C.complete`. Establish `hj : adI C ^ 1 ≤ (⊥ : Ideal C.A).jacobson`. Rewrite using `[pow_one]`. Conclude with `IsAdicComplete.le_jacobson_bot _`. Use `haveI := isLocalHom_of_le_jacobson_bot _ hj`.
-
-Conclude with `IsUnit.of_map (Ideal.Quotient.mk _) _ hu`.
+A detailed English derivation is pending.
 -/
 theorem IsLoc.isUnit_of_complete {l : ℕ} {R : Type} [CommRing R] {B C : Obj l R} {s : B.A} {h : Hom B C}
     (H : IsLoc s h) : IsUnit (h.f s) := by
@@ -60,19 +56,17 @@ theorem IsLoc.isUnit_of_complete {l : ℕ} {R : Type} [CommRing R] {B C : Obj l 
   exact IsUnit.of_map (Ideal.Quotient.mk _) _ hu
 
 /- English proof (translation)
-Introduce and unpack `l _ R _ B C s h ⟨t, ht, hst⟩ H`. Use `⟨fun m => ?_, fun B' k => ?_⟩` and prove the remaining obligations. Use `letI := (qmap h m).toAlgebra haveI := H.away m`. Conclude with `IsLocalization.flat _ (Submonoid.powers (Ideal.Quotient.mk (adI B ^ m) s))`. Establish `hgen : GenAway B' (k.f s) (k.f t)`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨k.f_I t ht, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[← GlobalTheory.T.prism_hom_map_ideal_eq l R B B' k]`. Establish `hx' : x ∈ Ideal.span (k.f '' B.I)` using `hx`. Use `Submodule.span_induction (p := fun x _ => ∃ n : ℕ, k.f s ^ n * x ∈ Ideal.span {k.f t}) ?_ ?_ ?_ ?_ hx'` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `hst y hy`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 hn`. Use `⟨n, Ideal.mem_span_singleton'.2 ⟨k.f c, ?_⟩⟩` and prove the remaining obligations. Simplify `congrArg k.f hc` using `only [map_mul, map_pow]`. Conclude with `⟨0, by simp⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `a b _ _ ⟨n₁, h₁⟩ ⟨n₂, h₂⟩`. Use `⟨n₁ + n₂, ?_⟩` and prove the remaining obligations. Establish `hab : k.f s ^ (n₁ + n₂) * (a + b) = k.f s ^ n₂ * (k.f s ^ n₁ * a) + k.f s ^ n₁ * (k.f s ^ n₂ * b)` using `by ring`. Rewrite using `[hab]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ h₁) (Ideal.mul_mem_left _ _ h₂)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `a b _ ⟨n, hn⟩`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_eq_mul, mul_left_comm]`. Conclude with `Ideal.mul_mem_left _ _ hn`. Take `⟨C', h', hloc', -⟩` from `GlobalTheory.T.exists_isPrismLocalizationAway_of_generated l R B' (k.f s) (k.f t) hgen`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨k', hk'⟩` from `H.univ C' (h'.comp k) (show IsUnit (h'.f (k.f s)) from IsLoc.isUnit_of_complete hloc')`. Use `⟨C', k', h', hk', fun m => ?_⟩` and prove the remaining obligations. Use `isPushout_of_away (qmap h m) (qmap k m) (qmap k' m) (qmap h' m) ?_ (Ideal.Quotient.mk _ s) (H.away m) ?_` and prove the remaining obligations. Use `Ideal.Quotient.ringHom_ext (RingHom.ext fun a => ?_)` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, qmap_mk]`.
-
-Conclude with `congrArg (fun g : Hom B C' => Ideal.Quotient.mk (adI C' ^ m) (g.f a)) hk'`. Rewrite using `[qmap_mk]`. Conclude with `hloc'.away m`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stable_of_isLoc : ∀ (l : ℕ) [Fact l.Prime] (R : Type) [CommRing R] (B C : Obj l R) (s : B.A) (h : Hom B C),
     (∃ t ∈ B.I, ∀ x ∈ B.I, ∃ k : ℕ, s ^ k * x ∈ Ideal.span {t}) → IsLoc s h → Stable h := by

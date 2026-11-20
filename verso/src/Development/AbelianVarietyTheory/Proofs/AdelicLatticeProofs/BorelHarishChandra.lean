@@ -13,7 +13,7 @@ def Bdd (F : T → Matrix ι ι ℂ) : Prop := ∃ C : ℝ, ∀ t i j, ‖F t i 
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Take `⟨C, hC⟩` from `hF`. Establish `hK : IsCompact (Set.pi Set.univ fun _ : ι => Set.pi Set.univ fun _ : ι => Metric.closedBall (0 : ℂ) C)` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall _ _`. Take `⟨B, hB⟩` from `hK.bddAbove_image (f := f) hf.continuousOn`. Use `⟨B, fun t => hB ⟨F t, fun i _ j _ => ?_, rfl⟩⟩` and prove the remaining obligations. Simplify using `using hC t i j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Bdd.cont {F : T → Matrix ι ι ℂ} (hF : Bdd F) {f : Matrix ι ι ℂ → ℝ} (hf : Continuous f) :
     ∃ C : ℝ, ∀ t, f (F t) ≤ C := by
@@ -26,7 +26,7 @@ theorem Bdd.cont {F : T → Matrix ι ι ℂ} (hF : Bdd F) {f : Matrix ι ι ℂ
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Take `⟨C, hC⟩` from `hF.cont (f := fun y => ∑ i, ∑ j, ‖f y i j‖) (by fun_prop)`. Use `⟨C, fun t i j => le_trans ?_ (hC t)⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem Bdd.comp {F : T → Matrix ι ι ℂ} (hF : Bdd F) {f : Matrix ι ι ℂ → Matrix ι ι ℂ} (hf : Continuous f) :
     Bdd fun t => f (F t) := by
@@ -39,9 +39,9 @@ theorem Bdd.comp {F : T → Matrix ι ι ℂ} (hF : Bdd F) {f : Matrix ι ι ℂ
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Take `⟨C, hC⟩` from `hF`. Take `⟨D, hD⟩` from `hG`. Use `⟨∑ _k : ι, C * D, fun t i j => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[Matrix.mul_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hC t i k) (hD t k j) (norm_nonneg _) ((norm_nonneg _).trans (hC t i k))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Bdd.mul {F G : T → Matrix ι ι ℂ} (hF : Bdd F) (hG : Bdd G) : Bdd fun t => F t * G t := by
   obtain ⟨C, hC⟩ := hF
@@ -54,26 +54,26 @@ theorem Bdd.mul {F G : T → Matrix ι ι ℂ} (hF : Bdd F) (hG : Bdd G) : Bdd f
   exact mul_le_mul (hC t i k) (hD t k j) (norm_nonneg _) ((norm_nonneg _).trans (hC t i k))
 
 /- English proof (translation)
-The claim follows from `hF.comp (f := fun y => y.adjugate) (continuous_id.matrix_adjugate)`.
+A detailed English derivation is pending.
 -/
 theorem Bdd.adj {F : T → Matrix ι ι ℂ} (hF : Bdd F) : Bdd fun t => (F t).adjugate :=
   hF.comp (f := fun y => y.adjugate) (continuous_id.matrix_adjugate)
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-The claim follows from `hF.comp (f := fun y => yᴴ) (continuous_id.matrix_conjTranspose)`.
+A detailed English derivation is pending.
 -/
 theorem Bdd.ct {F : T → Matrix ι ι ℂ} (hF : Bdd F) : Bdd fun t => (F t)ᴴ :=
   hF.comp (f := fun y => yᴴ) (continuous_id.matrix_conjTranspose)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, fun t i j => entry_norm_bound_of_unitary (Matrix.mem_unitaryGroup_iff'.2 (hF t)) i j⟩`.
+Supply the required witnesses or components.
 -/
 theorem bdd_unitary {F : T → Matrix ι ι ℂ} (hF : ∀ t, (F t)ᴴ * F t = 1) : Bdd F :=
   ⟨1, fun t i j => entry_norm_bound_of_unitary (Matrix.mem_unitaryGroup_iff'.2 (hF t)) i j⟩
 
 /- English proof (translation)
-Use `hF.cont (f := fun y => nsq (act d v y)) ?_` and prove the remaining obligations. Simplify using `only [nsq, act, tpow, vecMul, dotProduct, of_apply]`. Use `fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Bdd.nsq_act {m : ℕ} (d : Fin m → ℕ) (v : TIdx ι d → ℂ) {F : T → Matrix ι ι ℂ} (hF : Bdd F) :
     ∃ C : ℝ, ∀ t, nsq (act d v (F t)) ≤ C := by
@@ -82,35 +82,33 @@ theorem Bdd.nsq_act {m : ℕ} (d : Fin m → ℕ) (v : TIdx ι d → ℂ) {F : T
   fun_prop
 
 /- English proof (translation)
-The claim follows from `Finset.single_le_sum (f := fun k => ‖v k‖ ^ 2) (fun _ _ => sq_nonneg _) (Finset.mem_univ k)`.
+A detailed English derivation is pending.
 -/
 theorem sq_le_nsq {κ : Type} [Fintype κ] (v : κ → ℂ) (k : κ) : ‖v k‖ ^ 2 ≤ nsq v :=
   Finset.single_le_sum (f := fun k => ‖v k‖ ^ 2) (fun _ _ => sq_nonneg _) (Finset.mem_univ k)
 
 /- English proof (translation)
-Establish `amul : ∀ (u : TIdx ι d → ℂ) (y z : Matrix ι ι ℂ), act d u (y * z) = act d (act d u y) z` using `fun u => ((GlobalTheory.ClassFin.tpow_act_algebra ι ℂ).2 m d u).2.1`. Establish `adiag : ∀ (u : TIdx ι d → ℂ) (a : ι → ℂ) (k : TIdx ι d), act d u (diagonal a) k = u k * ∏ j, a (k.2 j)` using `fun u => ((GlobalTheory.ClassFin.tpow_act_algebra ι ℂ).2 m d u).2.2.1`. Establish `aone : act d v 1 = v` using `((GlobalTheory.ClassFin.tpow_act_algebra ι ℂ).2 m d v).1`. Establish `heD : ∀ t, diagonal (e t) * D t = 1` using `fun t => mul_eq_one_comm.1 (hDe t)`. Establish `hKK : ∀ t, K t * (K t)ᴴ = 1` using `fun t => mul_eq_one_comm.1 (hK t)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hed : ∀ t, (diagonal (e t)).det = 1` using `fun t => by`. Use `congrArg Matrix.det (hDe t)` as an intermediate fact. Rewrite `this` using `[det_mul, hDd, one_mul, det_one]`. Then use the resulting hypothesis. Take `⟨C₁, hC₁⟩` from `((bdd_unitary hK).mul hN1).nsq_act d v`. Establish `hz : ∀ t, nsq (act d v (K t * D t * N t * diagonal (e t) * diagonal (e t))) ≤ ∑ _j : TIdx ι d, (C₁ / c) ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `t`. Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Establish `h3` using `(sq_le_nsq _ j).trans (hC₁ t)`. Rewrite `h3` using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, amul, adiag]`. Rewrite using `[amul, adiag, amul, adiag]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Break down `hw t j with h0 | h0` into its components or cases. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Check the signs of the components of the expression. Rewrite `h3` using `[norm_mul]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Check the signs of the components of the expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[norm_mul, norm_mul]`. Use `set W := ‖act d v (K t * D t * N t) j‖`. Use `set X := ‖∏ l, e t (j.2 l)‖`. Establish `hX : 0 ≤ X` using `norm_nonneg _`. Establish `hW : 0 ≤ W` using `norm_nonneg _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `pow_le_pow_left₀ (by positivity) ?_ 2` and prove the remaining obligations. Rewrite using `[le_div_iff₀ hc]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨C₂, hC₂⟩` from `h1 (∑ _j : TIdx ι d, (C₁ / c) ^ 2)`. Establish `hex` using `fun t => hC₂ _ (by simp only [det_mul, hKd, hDd, hNd, hed, mul_one]) (hz t)`.
+Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose h hd hv hb using hex`. Establish `hb' : Bdd fun t => h t * (K t * D t * N t * diagonal (e t) * diagonal (e t))` using `⟨C₂, hb⟩`. Establish `hω` using `hb'.mul hN2.adj`. Establish `eω : ∀ t, h t * (K t * D t * N t * diagonal (e t) * diagonal (e t)) * (D t * (D t * N t * diagonal (e t)) * diagonal (e t)).adjugate = h t * K t * diagonal (e t)`. Introduce `t`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : K t * D t * N t * diagonal (e t) * diagonal (e t) = K t * diagonal (e t) * (D t * (D t * N t * diagonal (e t)) * diagonal (e t))`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (diagonal (e t)) (D t), heD, Matrix.one_mul]`. Rewrite using `[e1, ← Matrix.mul_assoc, Matrix.mul_assoc _ _ (adjugate _), mul_adjugate]`. Simplify using `only [det_mul, hDd, hNd, hed, mul_one, one_smul, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [eω] at hω`. Establish `hh : ∀ t, h t * (h t).adjugate = 1` using `fun t => by rw [mul_adjugate, hd, one_smul]`. Establish `eadj : ∀ t, (h t * K t * diagonal (e t)).adjugate = D t * (K t)ᴴ * (h t).adjugate`. Introduce `t`. Establish `l : (h t * K t * diagonal (e t)).adjugate * (h t * K t * diagonal (e t)) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[adjugate_mul]`. Simplify using `only [det_mul, hd, hKd, hed, mul_one, one_smul]`. Establish `r : (h t * K t * diagonal (e t)) * (D t * (K t)ᴴ * (h t).adjugate) = 1`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (diagonal (e t)) (D t), heD, Matrix.one_mul, ← Matrix.mul_assoc (K t), hKK, Matrix.one_mul, hh]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `left_inv_eq_right_inv l r`. Take `⟨C₃, hC₃⟩` from `(hω.adj.ct.mul hN).nsq_act d v`. Use `⟨C₃, fun t => ?_⟩` and prove the remaining obligations. Establish `hfix : act d v ((h t).adjugate)ᴴ = v`. Use `h2 _ (by rw [det_adjugate, hd, one_pow]) ?_` and prove the remaining obligations.
-
-Use `conv_lhs => rw [← hv t]`. Rewrite using `[← amul, hh, aone]`. Use `hC₃ t` as an intermediate fact. Rewrite `this` using `[eadj, conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, hDh, Matrix.mul_assoc, amul, hfix]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core {m : ℕ} (d : Fin m → ℕ) (v : TIdx ι d → ℂ)
     (h1 : ∀ C : ℝ, ∃ C' : ℝ, ∀ y : Matrix ι ι ℂ, y.det = 1 → nsq (act d v y) ≤ C →
@@ -191,31 +189,25 @@ theorem core {m : ℕ} (d : Fin m → ℕ) (v : TIdx ι d → ℂ)
   exact this
 
 /- English proof (translation)
-Introduce `ι _ _ _ m d v h1 h2 C c hc`. Set `φ : Matrix ι ι ℝ →+* Matrix ι ι ℂ` to `Complex.ofRealHom.mapMatrix`. Establish `hφ : ∀ y : Matrix ι ι ℝ, y.map (fun r : ℝ => (r : ℂ)) = φ y` using `fun _ => rfl`. Establish `hφa : ∀ (y : Matrix ι ι ℝ) i j, φ y i j = (y i j : ℂ)` using `fun _ _ _ => rfl`. Establish `hφd : ∀ y : Matrix ι ι ℝ, y.det = 1 → (φ y).det = 1` using `fun y hy => by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← RingHom.map_det, hy, map_one]`. Establish `hφh : ∀ y : Matrix ι ι ℝ, (φ y)ᴴ = φ yᵀ` using `fun y => by`. Use extensionality with `i j`. Simplify using `[hφa]`. Establish `hφdiag : ∀ a : ι → ℝ, φ (diagonal a) = diagonal fun i => (a i : ℂ)` using `fun a => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply the tactic sequence `ext i j; by_cases hij : i = j <;> simp [hφa, diagonal_apply, hij]`. Simplify using `only [hφ, map_mul]`. Set `S` to `{p : Matrix ι ι ℝ × (ι → ℝ) × Matrix ι ι ℝ // IsSiegel C p.1 p.2.1 p.2.2 ∧ ∀ j, act d v (φ p.1 * φ (diagonal p.2.1) * φ p.2.2) j = 0 ∨ c ≤ ‖act d v (φ p.1 * φ (diagonal p.2.1) * φ p.2.2) j‖}`. Establish `ratio : ∀ t : S, ∀ i j, t.1.2.2 i j = 0 ∨ t.1.2.1 i * (t.1.2.1 j)⁻¹ ≤ max 1 C`. Introduce `t i j`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs` using `t.2.1`. Break down `lt_trichotomy i j with h | h | h` into its components or cases. Use `right`. Rewrite using `[← div_eq_mul_inv, div_le_iff₀ (hs.pos j)]`. Conclude with `(hs.le i j h).trans (mul_le_mul_of_nonneg_right (le_max_right _ _) (hs.pos j).le)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Use `right`. Substitute `h` using the available equality. Rewrite using `[mul_inv_cancel₀ (hs.pos i).ne']`. Conclude with `le_max_left _ _`. Use `left`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hs.lower i j h`. Establish `nrm : ∀ t : S, ∀ i, ‖(t.1.2.1 i : ℂ)‖ = t.1.2.1 i` using `fun t i => by`. Rewrite using `[Complex.norm_real, Real.norm_of_nonneg (t.2.1.pos i).le]`. Take `⟨C', hC'⟩` from `core (T := S) d v h1 h2 c hc (fun t => φ t.1.1) (fun t => φ t.1.2.2) (fun t => φ (diagonal t.1.2.1)) (fun t i => ((t.1.2.1 i : ℂ))⁻¹) (fun t => by rw [hφh, ← map_mul, t.2.1.orth, map_one]) (fun t => hφd _ t.2.1.det_k) (fun t => hφd _ (by`. Rewrite using `[det_of_upperTriangular (fun i j h => t.2.1.lower i j h)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `[t.2.1.diag]))`. Use the proof step `(fun t => hφd _ (by rw [det_diagonal, t.2.1.prod_eq]))`. Use the proof step `(fun t => by rw [hφh, diagonal_transpose])`. Use the proof step `(fun t => by`. Rewrite using `[hφdiag, diagonal_mul_diagonal, ← diagonal_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `mul_inv_cancel₀ (by exact_mod_cast (t.2.1.pos i).ne'))`. Use the proof step `⟨C, fun t i j => by beta_reduce; rw [hφa, Complex.norm_real]; exact t.2.1.bdd i j⟩`. Use the proof step `⟨max 1 C * max 1 C, fun t i j => by`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hφdiag, mul_diagonal, diagonal_mul, hφa, norm_mul, norm_inv, nrm]`. Break down `ratio t i j with h | h` into its components or cases. Rewrite using `[h]`. Simplify using the standard rewrite rules. Establish `hp` using `(t.2.1.pos i).le`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hq` using `(t.2.1.pos j).le`. Establish `hn : ‖(t.1.2.2 i j : ℂ)‖ ≤ max 1 C`. Rewrite using `[Complex.norm_real]`. Conclude with `(t.2.1.bdd i j).trans (le_max_right _ _)`. Combine the equalities or inequalities in the displayed calculation.
-
-Use the proof step `⟨max 1 C * max 1 C * max 1 C, fun t i j => by`. Simplify using `only [hφdiag, mul_diagonal, diagonal_mul, hφa, norm_mul, norm_inv, nrm]`. Break down `ratio t i j with h | h` into its components or cases. Rewrite using `[h]`. Simplify using the standard rewrite rules.
-
-Establish `hp` using `(t.2.1.pos i).le`. Establish `hq` using `(t.2.1.pos j).le`. Establish `hn : ‖(t.1.2.2 i j : ℂ)‖ ≤ max 1 C`. Rewrite using `[Complex.norm_real]`. Conclude with `(t.2.1.bdd i j).trans (le_max_right _ _)`.
-
-Combine the equalities or inequalities in the displayed calculation. Use the proof step `(fun t => t.2.2)`. Conclude with `⟨C', fun k a n hs hw => hC' ⟨(k, a, n), hs, hw⟩⟩`.
+Chain the equalities or inequalities of the calculation. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem borel_harishChandra : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] [LinearOrder ι] (m : ℕ) (d : Fin m → ℕ) (v : TIdx ι d → ℂ), (∀ C : ℝ, ∃ C' : ℝ, ∀ y : Matrix ι ι ℂ, y.det = 1 → nsq (act d v y) ≤ C → ∃ h : Matrix ι ι ℂ, h.det = 1 ∧ act d v h = v ∧ ∀ i j, ‖(h * y) i j‖ ≤ C') → (∀ g : Matrix ι ι ℂ, g.det = 1 → act d v g = v → act d v gᴴ = v) → ∀ C c : ℝ, 0 < c → ∃ C' : ℝ, ∀ (k : Matrix ι ι ℝ) (a : ι → ℝ) (n : Matrix ι ι ℝ), IsSiegel C k a n → (∀ j, act d v ((k * diagonal a * n).map (fun r : ℝ => (r : ℂ))) j = 0 ∨ c ≤ ‖act d v ((k * diagonal a * n).map (fun r : ℝ => (r : ℂ))) j‖) → nsq (act d v ((k * diagonal a * n).map (fun r : ℝ => (r : ℂ)))) ≤ C' := by
   intro ι _ _ _ m d v h1 h2 C c hc

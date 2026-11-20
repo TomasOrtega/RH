@@ -14,11 +14,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CompanionTheory.WeilSiegel.Frame
 
 /- English proof (translation)
-Introduce `D r V ψ θ μ lam ν φ hH t β hNF hx`. Take `⟨hr, hψ, hθ, hμ, hlam, hν, hφ, habs⟩` from `id hH`. Take `⟨x, hxr, hxg⟩` from `hx`. Establish `hCM : HeckeCharacterZeroLocus.SiegelWeilU.IsCMExt D.host.F D.host.E D.sp.cm.sig` using `Formalism.MainNotions.UnusedSlot34.isCMExt_D D`. Establish `hJ : HeckeCharacterZeroLocus.SiegelWeilU.IsHermND D.sp.cm.sig V.gram` using `isHermND_gram V`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨⟨𝓕, h𝓕⟩, -⟩` from `GlobalTheory.Mem.Vol.fundamentalDomain_adelicUnitary D.host.F D.host.E D.sp.cm.sig V.rank V.gram ν hν`. Establish `hfr : (framesE D.sp.cm.sig V.gram β.1).Nonempty`. Use `⟨fun a i => x i a, ?_⟩` and prove the remaining obligations. Rewrite using `[trM_mem_framesE_iff]`. Conclude with `⟨hxr, hxg⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨d, b, laminf, lamv, minf, m, h1, h2, h3, h4⟩` from `GlobalTheory.T.exists_tamagawa_measure_normalization D.host.F D.host.E D.sp.cm.sig hCM V.rank V.gram hJ r`. Establish `hS` using `GlobalTheory.T.siegelWeil_free_of_block_nonempty_frames D.host.F D.host.E D.sp.cm.sig hCM V.rank V.gram hJ r t β.1 (hermE_symm β) hNF hr hfr d b laminf lamv h1 h2 ν 𝓕 hν h𝓕 minf m h3 h4`. Take `⟨hi, he⟩` from `GlobalTheory.T.frame_integral_theta_measure_formula D r V θ hθ ν hν 𝓕 h𝓕 φ hφ habs β`. Rewrite using `[he]`. Conclude with `(GlobalTheory.T.block_coefficient_local_global_factor D r V ψ θ μ lam ν φ hH t β hNF d b laminf lamv minf m h1 h2 h3 h4 _ hS hi).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem siegel_frame : ∀ (D : D7) (r : ℕ) (V : HSp D) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (μ : Measure (Mx D V.rank r)) (lam : Measure (hermA D r)) (ν : Measure (GA D V)) (φ : Mx D V.rank r → ℂ), Hyp D r V ψ θ μ lam ν φ → ∀ (t : ℕ) (β : HermE D r), GlobalTheory.CompanionTheory.WeilSiegel.Deg.IsBlockNF t β → (∃ x : Matrix (Fin V.rank) (Fin r) D.host.E, x.rank = r ∧ gramQ V x = β.1) → IfrB V ν φ β = W ψ V μ lam φ β := by
   intro D r V ψ θ μ lam ν φ hH t β hNF hx

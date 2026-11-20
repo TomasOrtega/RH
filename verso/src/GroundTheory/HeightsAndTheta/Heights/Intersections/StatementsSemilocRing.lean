@@ -33,19 +33,19 @@ def fibreOver (v : (Σ k, ι k) → (Σ k', ι' k')) (P' : Ideal (MRing ι')) (W
 open Classical in
 
 /- English proof (translation)
-Introduce `m' hm' k'`. Rewrite `hm'` using `[support_rename_of_injective hv.2.1, Finset.mem_image]`. Take `⟨m, hm, rfl⟩` from `hm'`. Establish `hblock : ∀ (F : (Σ k', ι' k') → ℕ), ∑ i, F ⟨k', i⟩ = ∑ q, if q.1 = k' then F q else 0`. Introduce `F`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Fintype.sum_sigma, Finset.sum_eq_single k']`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[hb]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[hblock]`. Establish `h1 : (∑ q, if q.1 = k' then Finsupp.mapDomain v m q else 0) = ∑ p, if κ p.1 = k' then m p else 0`. Use `Finsupp.sum_mapDomain_index_inj (h := fun (q : Σ k', ι' k') (n : ℕ) => if q.1 = k' then n else 0) (s := m) hv.2.1` as an intermediate fact. Rewrite `this` using `[Finsupp.sum_fintype _ _ (by simp), Finsupp.sum_fintype _ _ (by simp)]`. Simplify `this` using `[hv.2.2.1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : (∑ p : Σ k, ι k, if κ p.1 = k' then m p else 0) = ∑ k, if κ k = k' then a k else 0`. Rewrite using `[Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `split_ifs with hk`. Conclude with `hf m hm k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Simplify using the standard rewrite rules. Use `h1.trans h2` and compare the differences between its conclusion and the goal. Distinguish the cases in `h : ∃ k, κ k = k'`. Take `⟨k, rfl⟩` from `h`. Rewrite using `[hv.1.extend_apply, Finset.sum_eq_single k]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[hv.1.ne hb]`. Simplify using the standard rewrite rules. Rewrite using `[Function.extend_apply' _ _ _ h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(Finset.sum_eq_zero fun k _ => ?_).symm` and prove the remaining obligations. Rewrite using `[if_neg fun hk => h ⟨k, hk⟩]`.
+A detailed English derivation is pending.
 -/
 theorem rename_isMultiHomog {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι' k')} (hv : IsBlockMap κ v)
     {f : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) :
@@ -91,7 +91,7 @@ abbrev quotMapZ (v : (Σ k, ι k) → (Σ k', ι' k')) (P' : Ideal (MRing ι')) 
 
 omit [Fintype K] [∀ k, Fintype (ι k)] [Fintype K'] [∀ k, Fintype (ι' k)] in
 /- English proof (translation)
-The claim follows from `Ideal.quotientMap_injective`.
+A detailed English derivation is pending.
 -/
 theorem quotMapZ_injective (v : (Σ k, ι k) → (Σ k', ι' k')) (P' : Ideal (MRing ι')) :
     Function.Injective (quotMapZ v P') :=
@@ -100,7 +100,7 @@ theorem quotMapZ_injective (v : (Σ k, ι k) → (Σ k', ι' k')) (P' : Ideal (M
 omit [Fintype K] [∀ k, Fintype (ι k)] [Fintype K'] [∀ k, Fintype (ι' k)] in
 
 /- English proof (translation)
-The claim follows from `Ideal.comap_isPrime _ _`.
+A detailed English derivation is pending.
 -/
 theorem imageZ_isPrime_of_prime (v : (Σ k, ι k) → (Σ k', ι' k')) (P' : Ideal (MRing ι')) [P'.IsPrime] :
     (imageZ v P').IsPrime :=
@@ -114,7 +114,7 @@ def fracMapZ (v : (Σ k, ι k) → (Σ k', ι' k')) (P' : Ideal (MRing ι')) [P'
 
 omit [Fintype K] [∀ k, Fintype (ι k)] [Fintype K'] [∀ k, Fintype (ι' k)] in
 /- English proof (translation)
-Use `imageZ_isPrime_of_prime v P'` as an intermediate fact. Unfold `fracMapZ`. Rewrite using `[IsFractionRing.lift_algebraMap]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fracMapZ_algebraMap (v : (Σ k, ι k) → (Σ k', ι' k')) (P' : Ideal (MRing ι')) [P'.IsPrime] (f : MRing ι) :
     fracMapZ v P' (algebraMap _ _ (Ideal.Quotient.mk (imageZ v P') f)) =
@@ -125,13 +125,13 @@ theorem fracMapZ_algebraMap (v : (Σ k, ι k) → (Σ k', ι' k')) (P' : Ideal (
   rfl
 
 /- English proof (translation)
-Use `imageZ_isPrime_of_prime v P'` as an intermediate fact. Establish `hle : locRing (imageZ v P') W ≤ (semiLocRing P' (fibreOver v P' W)).comap (fracMapZ v P')`. Rewrite using `[locRing, Subring.closure_le]`. Introduce and unpack `_ ⟨u, w, a, hw, hwW, hu, hwa, rfl⟩`. Rewrite using `[SetLike.mem_coe, Subring.mem_comap]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Establish `hw0 : rename v w ∉ P'`. Introduce `h`. Apply `nonZeroDivisors.ne_zero hw` to reduce the goal to its premises. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hw' : Ideal.Quotient.mk P' (rename v w) ∈ nonZeroDivisors (MRing ι' ⧸ P')` using `mem_nonZeroDivisors_of_ne_zero (by rwa [Ne, Ideal.Quotient.eq_zero_iff_mem])`. Apply `Subring.subset_closure` to reduce the goal to its premises. Use `⟨rename v u, rename v w, Function.extend κ a 0, hw', ?_, rename_isMultiHomog hv hu, rename_isMultiHomog hv hwa, ?_⟩` and prove the remaining obligations. Introduce and unpack `W' ⟨-, -, hW'⟩ hmem`. Apply `hwW` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hW']`. Conclude with `hmem`. Rewrite using `[IsFractionRing.mk'_eq_div, IsFractionRing.mk'_eq_div, map_div₀]`. Conclude with `congrArg₂ (· / ·) (fracMapZ_algebraMap v P' u) (fracMapZ_algebraMap v P' w)`. Conclude with `hle hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fracMapZ_mem {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι' k')} (hv : IsBlockMap κ v)
     (P' : Ideal (MRing ι')) [P'.IsPrime] (W : Ideal (MRing ι)) (x : FractionRing (MRing ι ⧸ imageZ v P'))
@@ -186,7 +186,7 @@ def blkW : (Σ k, ι k) → K → ℕ := fun p => Pi.single p.1 1
 open Classical in
 
 /- English proof (translation)
-Introduce `m hm k`. Rewrite using `[← h (mem_support_iff.mp hm), Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Finset.sum_apply, Fintype.sum_sigma, Finset.sum_eq_single k]`. Simplify using `[blkW]`. Introduce `b _ hb`. Simplify using `[blkW, Ne.symm hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -201,11 +201,11 @@ theorem isMultiHomog_of_wh {s : MRing ι} {a : K → ℕ} (h : IsWeightedHomogen
   · simp
 
 /- English proof (translation)
-Establish `h : IsWeightedHomogeneous (blkW (ι` using `ι)) (∏ k, (X ⟨k, i k⟩ : MRing ι) ^ α k) (∑ k, α k • blkW (ι := ι) ⟨k, i k⟩) := IsWeightedHomogeneous.prod _ _ _ fun k _ => (isWeightedHomogeneous_X ℤ _ _).pow (α k)`. Establish `e : (∑ k, α k • blkW (ι` using `ι) ⟨k, i k⟩) = α := by`. Use function extensionality and compare the values at `k`. Simplify using `only [blkW, Finset.sum_apply]`. Rewrite using `[Finset.sum_eq_single k]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules. Rewrite `h` using `[e]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `isMultiHomog_of_wh h`.
+A detailed English derivation is pending.
 -/
 theorem isMultiHomog_coordPow (i : ∀ k, ι k) (α : K → ℕ) :
     IsMultiHomog (∏ k, (X ⟨k, i k⟩ : MRing ι) ^ α k) α := by
@@ -226,7 +226,7 @@ theorem isMultiHomog_coordPow (i : ∀ k, ι k) (α : K → ℕ) :
 end SemilocRing
 
 /- English proof (translation)
-Use `choose i hi using hW`. Use `⟨∏ k, (X ⟨k, i k⟩ : MRing ι) ^ α k, SemilocRing.isMultiHomog_coordPow i α, fun h => ?_⟩` and prove the remaining obligations. Take `⟨k, -, hk⟩` from `hWp.prod_mem_iff.mp h`. Conclude with `hi k (hWp.mem_of_pow_mem _ hk)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_form_notMem {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {W : Ideal (MRing ι)}
     (hW : IsRelevant W) (hWp : W.IsPrime) (α : K → ℕ) : ∃ t : MRing ι, IsMultiHomog t α ∧ t ∉ W := by

@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.SplitDoublingNBlock
 open GlobalTheory.FinGL Formalism.L2.DIV Module
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.FinGL.MackeyCosets.finrank_eig_coind` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFinrankEigenCoindMackeyDoubleCosets.lean&line=114#L114)
 -/

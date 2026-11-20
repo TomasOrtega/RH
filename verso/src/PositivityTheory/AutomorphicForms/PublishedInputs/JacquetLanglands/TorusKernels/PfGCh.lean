@@ -7,7 +7,7 @@ open scoped NNReal
 namespace UpperTheory.Esk.CharacterExpansionLemmas
 
 /- English proof (translation)
-The claim follows from `| 0 => by simp [ch] | n + 1 => by obtain ⟨h0, h1, h2⟩ := key ν τ δ hτ hδ n have e : ch τ δ (n + 2) = τ * ch τ δ (n + 1) - δ * ch τ δ n := rfl have e2 : ch τ δ (n + 2) - τ ^ (n + 1) = τ * (ch τ δ (n + 1) - τ ^ n) - δ * ch τ δ n := by rw [e]; ring refine ⟨h1, ?_, ?_⟩ · rw [e] refin …`.
+A detailed English derivation is pending.
 -/
 theorem key (ν : Valuation ℂ ℝ≥0) (τ δ : ℂ) (hτ : ν τ ≤ 1) (hδ : ν δ ≤ 1) :
     ∀ n, ν (ch τ δ n) ≤ 1 ∧ ν (ch τ δ (n + 1)) ≤ 1 ∧ ν (ch τ δ (n + 1) - τ ^ n) ≤ ν δ
@@ -34,7 +34,7 @@ theorem key (ν : Valuation ℂ ℝ≥0) (τ δ : ℂ) (hτ : ν τ ≤ 1) (hδ 
 end UpperTheory.Esk.CharacterExpansionLemmas
 
 /- English proof (translation)
-Introduce `ν τ δ hτ hδ n` and use `⟨(UpperTheory.Esk.CharacterExpansionLemmas.key ν τ δ hτ hδ n).2.1, (UpperTheory.Esk.CharacterExpansionLemmas.key ν τ δ hτ hδ n).2.2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Esk.pf_GCh : UpperTheory.Esk.GCh := fun ν τ δ hτ hδ n =>
   ⟨(UpperTheory.Esk.CharacterExpansionLemmas.key ν τ δ hτ hδ n).2.1, (UpperTheory.Esk.CharacterExpansionLemmas.key ν τ δ hτ hδ n).2.2⟩

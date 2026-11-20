@@ -28,23 +28,19 @@ open GlobalTheory.FlatModel
 namespace GlobalTheory.FlatModel
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c hpq hA hgood hfac Z la p n hp hpla`. Set `l' : Level H` to `{ l with A := p ^ n, A_pos := pow_pos hp.pos n }`. Establish `hdvd : l.Dvd l'` using `⟨dvd_rfl, le_rfl, by rw [hA]; exact one_dvd _⟩`. Set `fam : ∀ l₀ : Level H, Moduli Dw l₀` to `fun l₀ => Classical.choice (GlobalTheory.T.moduliScheme_levelMaps_heckePoints'.1 E H Dw l₀ hpq)`. Set `Xo'` to `fam l'`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨c₁⟩ : Nonempty (Coeff l')` from `inferInstance`. Set `c₀ : Coeff l'` to `{ F := c.F ⊔ c₁.F fin := by`. Use `c.fin` as an intermediate fact. Use `c₁.fin` as an intermediate fact. Conclude with `IntermediateField.finiteDimensional_sup _ _`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `conj := fun τ a => (le_sup_right : c₁.F ≤ c.F ⊔ c₁.F) (c₁.conj τ a)`. Use `zeta_mem := (le_sup_right : c₁.F ≤ c.F ⊔ c₁.F) c₁.zeta_mem`. Use `le := c₁.le.trans le_sup_right }`. Take `⟨-, c', hc', hall⟩` from `GlobalTheory.GeomIrr.compNe_and_exists_fnAlgClosed E H Dw l' Xo' c₀ hpq`. Establish `hfac' : FnAlgClosed Xo' c'` using `hall c' le_rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : c.F ≤ c'.F` using `le_sup_left.trans hc'`. Establish `hpU : (p : c.F) ∈ (la.valuation c.F).valuationSubring.nonunits`. Rewrite using `[ValuationSubring.mem_nonunits_iff]`. Establish `h1 : la.valuation c.F (algebraMap (𝓞 c.F) c.F (p : 𝓞 c.F)) < 1` using `(HeightOneSpectrum.valuation_lt_one_iff_mem la _).2 hpla`. Rewrite `h1` using `[map_natCast]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Conclude with `((Valuation.isEquiv_valuation_valuationSubring (la.valuation c.F)).lt_one_iff_lt_one).1 h1`. Take `⟨W, hpW, hWU⟩` from `GlobalTheory.exists_valuationSubring_complex_comap_val_eq c.F _ p hpU`. Take `⟨Ysys, -⟩` from `GlobalTheory.T.compactifiedModuli_partOne.2 E H Dw hpq fam`. Set `Y : Model Xo' c' (c'.V W).subtype` to `Ysys p W hp hpW ⟨l', c', hgood p hp⟩`. Take `⟨r, hr, r₀, m, hr₀, hfin, het, hsurj⟩` from `GlobalTheory.T.exists_level_change_map E H Dw l l' Xo Xo' c c' hle hpq hdvd`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨ν₀, -⟩` from `GlobalTheory.ObjMaps.exists_sab_comp m Y.m0.toSABMap`. Take `⟨U, hUZ, hUirr, hUlift⟩` from `GlobalTheory.T.component_surjects_of_open_closed GlobalTheory.T.exists_component_surjects_clopen GlobalTheory.T.exists_lift_algebraically_closed_point E H Dw l l' Xo Xo' c c' hle (GlobalTheory.T.component_geometrically_irreducible E H Dw l Xo c hfac) (GlobalTheory.T.component_geo …`. Take `⟨Xw, hXj, hXp, hXU, hXg⟩` from `GlobalTheory.T.integral_model_component_irreducible E H Dw l' Xo' c' W Y p hp hpW U hUirr`. Use `⟨l', Xo', c', W, Y, r, hr₀ ▸ ν₀, hle, Xw, rfl, hr, fun x => ?_, hpW, ?_, hXj, hXp, fun z hz => hUZ z ((hXU z).1 hz), hXg, ?_⟩` and prove the remaining obligations. Rewrite using `[← Valuation.mem_valuationSubring_iff, ← hWU, ValuationSubring.mem_comap]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative.
 
-Both sides reduce to the same expression. Establish `h` using `hpW`. Rewrite `h`, the goal using `[ValuationSubring.mem_nonunits_iff_or]`. Break down `h with h | h` into its components or cases. Conclude with `absurd (by exact_mod_cast h) hp.ne_zero`.
-
-Conclude with `Or.inr fun h' => h (by simpa [Coeff.V] using h')`. Introduce `k _ _ fK x hx hxZ`. Take `⟨yy, h1, h2, h3⟩` from `hUlift k fK x hx hxZ`. Use `⟨yy, h1, h2, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨w, rfl⟩`.
-
-Conclude with `(hXU _).2 (h3 ⟨w, rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem coverSt_holds : CoverSt := by
   intro E _ _ _ H Dw l Xo c hpq hA hgood hfac Z la p n hp hpla

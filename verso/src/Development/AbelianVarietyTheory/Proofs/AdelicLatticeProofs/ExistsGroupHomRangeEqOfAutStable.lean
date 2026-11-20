@@ -7,9 +7,9 @@ open scoped Kronecker ComplexOrder TensorProduct
 namespace GlobalTheory.ClassFin
 
 /- English proof (translation)
-Introduce `ι _ _ Γ hΓ`. Set `H : Subgroup (Matrix.SpecialLinearGroup ι ℂ)` to `{ carrier := {g | (g : Matrix ι ι ℂ) ∈ Γ} one_mem' := hΓ.one_mem mul_mem' := fun {a b} ha hb => hΓ.mul_mem _ ha _ hb inv_mem' := fun {a} ha => hΓ.adj_mem _ ha }`. Set `ρ : H →* Matrix ι ι ℂ` to `{ toFun := fun g => ((g : Matrix.SpecialLinearGroup ι ℂ) : Matrix ι ι ℂ) map_one' := rfl map_mul' := fun _ _ => rfl }`. Use `⟨H, inferInstance, ρ, ?_⟩` and prove the remaining obligations. Use extensionality with `g`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Conclude with `a.2`. Introduce `hg`. Conclude with `⟨⟨⟨g, hΓ.det_eq g hg⟩, hg⟩, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem IsPre.exists_group_range :
     ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (Γ : Set (Matrix ι ι ℂ)), IsPre Γ →

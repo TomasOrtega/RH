@@ -18,7 +18,7 @@ open MvPolynomial
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Rewrite using `[Algebra.adjoin_range_eq_range_aeval]`. Conclude with `⟨f, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem dh_mem_adjoin (y : (Σ k, ι k) → Ω) (c : (k : K) → ι k) (f : MRing ι) :
     TiePrimes.dh y c f ∈ Algebra.adjoin ℤ (Set.range fun j : Σ k, ι k => y j / y ⟨j.1, c j.1⟩) := by
@@ -26,9 +26,9 @@ theorem dh_mem_adjoin (y : (Σ k, ι k) → Ω) (c : (k : K) → ι k) (f : MRin
   exact ⟨f, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨j, rfl⟩` from `hx`. Conclude with `hr j.1 j.2`. Consider the case `algebraMap r`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_intCast]`. Conclude with `intCast_mem A r`. Consider the case `add x y _ _ hx hy => exact A.add_mem hx hy`. Consider the case `mul x y _ _ hx hy => exact A.mul_mem hx hy`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem adjoin_le_subring (y : (Σ k, ι k) → Ω) (c : (k : K) → ι k) (A : Subring Ω)
     (hr : ∀ k i, y ⟨k, i⟩ / y ⟨k, c k⟩ ∈ A) {x : Ω}
@@ -44,9 +44,9 @@ theorem adjoin_le_subring (y : (Σ k, ι k) → Ω) (c : (k : K) → ι k) (A : 
   | mul x y _ _ hx hy => exact A.mul_mem hx hy
 
 /- English proof (translation)
-Unfold `Small.HasVal`. Use `⟨Pi.single k 1, Pi.single k 1, MvPolynomial.X ⟨k, i⟩, MvPolynomial.X ⟨k, c k⟩, TiePrimes.homog_X _, TiePrimes.homog_X _, fun k' => by simp, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.aeval_X, MvPolynomial.aeval_X, div_mul_cancel₀ _ (hyc k)]`. Rewrite using `[MvPolynomial.aeval_X]`. Conclude with `hzc k`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPolynomial.aeval_X, MvPolynomial.aeval_X, div_mul_cancel₀ _ (hzc k)]`.
+A detailed English derivation is pending.
 -/
 theorem hasVal_ratio (y : (Σ k, ι k) → Ω) {𝕜 : Type} [Field 𝕜] (z : (Σ k, ι k) → 𝕜)
     (c : (k : K) → ι k) (hzc : ∀ k, z ⟨k, c k⟩ ≠ 0) (hyc : ∀ k, y ⟨k, c k⟩ ≠ 0) (k : K) (i : ι k) :
@@ -61,9 +61,9 @@ theorem hasVal_ratio (y : (Σ k, ι k) → Ω) {𝕜 : Type} [Field 𝕜] (z : (
   · rw [MvPolynomial.aeval_X, MvPolynomial.aeval_X, div_mul_cancel₀ _ (hzc k)]
 
 /- English proof (translation)
-Establish `hc0 : aeval z (TiePrimes.cMon c d) ≠ 0`. Simplify using `only [TiePrimes.cMon, map_prod, map_pow, MvPolynomial.aeval_X]`. Conclude with `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hzc k)`. Unfold `Small.HasVal`. Use `⟨d, d, h, TiePrimes.cMon c d, hh, TiePrimes.homog_cMon c d, fun k => by simp, ?_, hc0, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[TiePrimes.aeval_eq_dh_mul y c hyc hh, TiePrimes.aeval_eq_dh_mul y c hyc (TiePrimes.homog_cMon c d), TiePrimes.dh_cMon y c hyc, one_mul]`. Conclude with `(div_mul_cancel₀ _ hc0).symm`.
+A detailed English derivation is pending.
 -/
 theorem hasVal_dh (y : (Σ k, ι k) → Ω) {𝕜 : Type} [Field 𝕜] (z : (Σ k, ι k) → 𝕜)
     (c : (k : K) → ι k) (hzc : ∀ k, z ⟨k, c k⟩ ≠ 0) (hyc : ∀ k, y ⟨k, c k⟩ ≠ 0) {h : MRing ι}
@@ -79,17 +79,15 @@ theorem hasVal_dh (y : (Σ k, ι k) → Ω) {𝕜 : Type} [Field 𝕜] (z : (Σ 
   · exact (div_mul_cancel₀ _ hc0).symm
 
 /- English proof (translation)
-Establish `hz' : (∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) ∧ ∀ f ∈ mCoordIdeal y, aeval z f = 0` using `hz`. Take `⟨dg, dh, g, h, hg, hh, hd, hy, hz0, hzw⟩` from `h1`. Take `⟨dg', dh', g', h', hg', hh', hd', hy', hz0', hzw'⟩` from `h2`. Establish `hdeq : dg = dh` using `funext fun k => by`. Use `hd k` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Pi.zero_apply, add_zero]`. Conclude with `this` after adjusting the coercions. Establish `hdeq' : dg' = dh'` using `funext fun k => by`. Use `hd' k` as an intermediate fact. Rewrite `this` using `[Pi.zero_apply, add_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `hm1` using `TiePrimes.homog_mul hg hh'`. Establish `hm2` using `TiePrimes.homog_mul hg' hh`. Rewrite `hm2` using `[hdeq', ← hdeq, add_comm]`. Establish `hneg` using `TiePrimes.homog_mul (TiePrimes.homog_C (K := K) (J := ι) (-1)) hm2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hneg` using `[zero_add]`. Establish `hF` using `TiePrimes.homog_add hm1 hneg`. Establish `hFy : aeval y (g * h' + MvPolynomial.C (-1) * (g' * h)) = 0`. Simplify using `only [map_add, map_mul, hy, hy', MvPolynomial.aeval_C, map_neg, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hFz` using `hz'.2 _ ((TiePrimes.mem_coord_iff y hF).2 hFy)`. Simplify using `only [map_add, map_mul, hzw, hzw', MvPolynomial.aeval_C, map_neg, map_one] at hFz`. Establish `hprod : (w - w') * (aeval z h * aeval z h') = 0` using `by linear_combination hFz`. Break down `mul_eq_zero.1 hprod with h0 | h0` into its components or cases. Conclude with `sub_eq_zero.1 h0`.
-
-Conclude with `absurd h0 (mul_ne_zero hz0 hz0')`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem hasVal_eq_of_hasVal_of_le {y : (Σ k, ι k) → Ω} {𝕜 : Type} [Field 𝕜] {z : (Σ k, ι k) → 𝕜}
     (hz : z ∈ Small.ptsOver 𝕜 (mCoordIdeal y)) {s : Ω} {w w' : 𝕜}
@@ -122,15 +120,15 @@ private theorem hasVal_eq_of_hasVal_of_le {y : (Σ k, ι k) → Ω} {𝕜 : Type
   · exact absurd h0 (mul_ne_zero hz0 hz0')
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ y 𝕜 _ z A ev hz hval c hzc hyc hr`. Use `⟨fun k i => hasVal_eq_of_hasVal_of_le hz (hval ⟨_, hr k i⟩) (hasVal_ratio y z c hzc hyc k i), ?_⟩` and prove the remaining obligations. Introduce `a`. Take `⟨dg, dh, g, h, hg, hh, hd, hy, hz0, hzw⟩` from `hval a`. Establish `hdeq : dg = dh` using `funext fun k => by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hd k` as an intermediate fact. Rewrite `this` using `[Pi.zero_apply, add_zero]`. Conclude with `this` after adjusting the coercions. Establish `hbA : TiePrimes.dh y c h ∈ A` using `adjoin_le_subring y c A hr (dh_mem_adjoin y c h)`. Establish `hc0 : aeval z (TiePrimes.cMon c dh) ≠ 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [TiePrimes.cMon, map_prod, map_pow, MvPolynomial.aeval_X]`. Conclude with `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hzc k)`. Use `⟨⟨_, hbA⟩, ?_, dh_mem_adjoin y c h, ?_⟩` and prove the remaining obligations. Rewrite using `[hasVal_eq_of_hasVal_of_le hz (hval ⟨_, hbA⟩) (hasVal_dh y z c hzc hyc hh)]`. Conclude with `div_ne_zero hz0 hc0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hab : (a : Ω) * TiePrimes.dh y c h = TiePrimes.dh y c g`. Establish `e1` using `TiePrimes.aeval_eq_dh_mul y c hyc hg`. Establish `e2` using `TiePrimes.aeval_eq_dh_mul y c hyc hh`. Rewrite `e1` using `[hdeq]`. Establish `hP : ∏ k, y ⟨k, c k⟩ ^ dh k ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hyc k)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `mul_right_cancel₀ hP` to reduce the goal to its premises. Rewrite using `[mul_assoc, ← e2, ← e1, hy]`. Use `show (a : Ω) * TiePrimes.dh y c h ∈ _`. Rewrite using `[hab]`. Conclude with `dh_mem_adjoin y c g`.
+A detailed English derivation is pending.
 -/
 theorem value_and_denominator : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] (y : (Σ k, ι k) → Ω) (𝕜 : Type) [Field 𝕜] (z : (Σ k, ι k) → 𝕜) (A : Subring Ω) (ev : A →+* 𝕜), z ∈ Small.ptsOver 𝕜 (mCoordIdeal y) → (∀ x : A, Small.HasVal y 0 (x : Ω) z (ev x)) → ∀ (c : (k : K) → ι k), (∀ k, z ⟨k, c k⟩ ≠ 0) → (∀ k, y ⟨k, c k⟩ ≠ 0) → ∀ (hr : ∀ k i, y ⟨k, i⟩ / y ⟨k, c k⟩ ∈ A), (∀ k i, ev ⟨_, hr k i⟩ = z ⟨k, i⟩ / z ⟨k, c k⟩) ∧ ∀ a : A, ∃ b : A, ev b ≠ 0 ∧ (b : Ω) ∈ Algebra.adjoin ℤ (Set.range fun j : Σ k, ι k => y j / y ⟨j.1, c j.1⟩) ∧ (a : Ω) * b ∈ Algebra.adjoin ℤ (Set.range fun j : Σ k, ι k => y j / y ⟨j.1, c j.1⟩) := by
   intro K _ ι _ Ω _ y 𝕜 _ z A ev hz hval c hzc hyc hr

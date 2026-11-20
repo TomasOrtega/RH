@@ -15,9 +15,9 @@ open NumberField IsDedekindDomain GlobalTheory.HTW GlobalTheory.HTW.Rec Formalis
 namespace GlobalTheory.HTW.Rec
 
 /- English proof (translation)
-Introduce `D L C₀ HW i w hw C hG r ρ π ε κ hR hA h2 hq hd hI`. Establish `hU : (D.nbr i w hw).Kw.1 ≤ MaximalUnramifiedExtension (D.nd.l i)` using `GlobalTheory.T.placeCompletion_le_maxUnramified_away_2qd D.nbr i w hw h2 hq hd`. Establish `hF : Formalism.MainNotions.LocalSituation.fontCore ((D.loc (D.nd.l i)).PD (D.nbr i w hw).Kw)` using `hA _ _`. Take `⟨g, hg, hread⟩` from `GlobalTheory.T.wachFunctor_letters_inverseFrobenius_orbit D (D.loc (D.nd.l i)) (D.nbr i w hw).Kw C.LL ((HW (D.nd.l i)).W (D.nbr i w hw).Kw 1 C.LL hG) (Br.cEw D.nbr i w hw) κ h2 hq hd (D.nbr i w hw).j_dense hU`. Use `⟨g, hg, GlobalTheory.T.localFieldDegree_eq_ramification_mul_inertia D.nbr i w hw, ?_, GlobalTheory.T.wordNum_recWord L C₀ (liftIdx D i) ε g _ hR hg⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `{ unram := hU split := fun ft => GlobalTheory.splits_of_conjugates_mem _ _ _ (GlobalTheory.good_conjugates_mem _ _ _ 1 hG) ft t1 := GlobalTheory.T.lattice_in_sum_twisted_duals_fits_word L C₀ (liftIdx D i) ε (D.loc (D.nd.l i)) (D.nbr i w hw).Kw C.LL ((HW (D.nd.l i)).W (D.nbr i w h …`.
+A detailed English derivation is pending.
 -/
 theorem wordBase_of_jumpIn : ∀ {D : D7} (L : SizeData₂ D) (C₀ : ℝ) (HW : HWOf D.loc) (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i)) (C : Enl D i w hw) (hG : Good (D.nbr i w hw).Kw 1 C.LL) r ρ π (ε : ℤˣ) (κ : D.host.E →+* ↥C.LL.1), Roomy L C₀ → Formalism.MainNotions.LocalSituation.adm7 D → D.nd.l i ∉ D.host.small → D.nd.l i ≠ D.host.q → D.nd.l i ≠ D.host.d → JumpIn (D.loc (D.nd.l i)) (K := (D.nbr i w hw).Kw) D (liftIdx D i) ε (Br.cEw D.nbr i w hw) κ (fun x => C.loc (rDuO D.nd i r x)) (C.loc (T2O D.nd i ρ π)) → ∃ g, IsOrbit g (DV.frobG D (D.nd.l i))⁻¹ ∧ C.WordBase r ρ π L HW hG (recWord L (liftIdx D i) ε g) := by
   intro D L C₀ HW i w hw C hG r ρ π ε κ hR hA h2 hq hd hI

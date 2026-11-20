@@ -11,19 +11,19 @@ open scoped Pointwise ENNReal Classical
 namespace GlobalTheory.MassRatioBound
 
 /- English proof (translation)
-Establish `hMb : 0 < Mb` using `(hpos 2).trans_le h2`. Establish `hB0 : 0 < B` using `by linarith`. Establish `hD0 : 0 < D` using `by linarith`. Establish `hm : ∀ n, 2 ≤ n → 0 < m (n + 1)`. Introduce `n hn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hpos (n + 1)` as an intermediate fact. Rewrite `this` using `[hrec n hn]`. Conclude with `(mul_pos_iff_of_pos_left (hpos n)).mp this`. Proceed by induction on `s, hs using Nat.le_induction with`. Consider the case `base`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Establish `e : 2 + t = t + 1 + 1` using `by omega`. Establish `a1` using `hlow (t + 1) (by omega)`. Establish `a2` using `hlow (t + 1 + 1) (by omega)`. Establish `p1` using `hm t ht`. Establish `p2` using `hm (t + 1) (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a3 : 1 ≤ (m (t + 1) * D * B ^ (t + 1)) * (m (t + 1 + 1) * D * B ^ (t + 1 + 1))` using `one_le_mul_of_one_le_of_one_le a1 a2`. Establish `a4 : B ^ (t + 1) * B ^ (t + 1 + 1) ≤ B ^ (2 * (t + 1 + 1))`. Rewrite using `[← pow_add]; exact pow_le_pow_right₀ hB (by omega)`. Rewrite using `[e, hrec (t + 1) (by omega), hrec t ht]`. Establish `pt` using `hpos t`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := by gcongr`. Consider the case `succ s hs ih`. Establish `e : s + 1 + t = s + t + 1` using `by omega`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a1` using `hcmp (s + 1) t (by omega) (by omega)`. Establish `p1` using `hm s hs`. Establish `p2` using `hm (s + t) (by omega)`. Establish `p3` using `hpos (s + t)`. Establish `a4 : B ^ (s * (s + t)) * B ^ t ≤ B ^ ((s + 1) * (s + t + 1))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← pow_add]; exact pow_le_pow_right₀ hB (by nlinarith)`. Rewrite `a1` using `[e]`. Rewrite using `[e, hrec s hs, hrec (s + t) (by omega)]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma core_two (ms m : ℕ → ℝ) (D B Mb : ℝ) (hD : 1 ≤ D) (hB : 1 ≤ B) (hpos : ∀ n, 0 < ms n)
     (hrec : ∀ n, 2 ≤ n → ms (n + 1) = ms n * m (n + 1))
@@ -75,11 +75,11 @@ lemma core_two (ms m : ℕ → ℝ) (D B Mb : ℝ) (hD : 1 ≤ D) (hB : 1 ≤ B)
       _ ≤ _ := by gcongr
 
 /- English proof (translation)
-Establish `hMb : 0 < Mb` using `(hpos 1).trans_le h1`. Establish `hB0 : 0 < B` using `by linarith`. Establish `hD0 : 0 < D` using `by linarith`. Establish `p1 : 0 < m (t + 1)`. Use `hpos (t + 1)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hrec t ht]`. Conclude with `(mul_pos_iff_of_pos_left (hpos t)).mp this`. Establish `a1` using `hlow (t + 1) (by omega)`. Establish `a4 : B ^ (t + 1) ≤ B ^ e` using `pow_le_pow_right₀ hB he`. Establish `a5 : D ≤ D * D` using `le_mul_of_one_le_right hD0.le hD`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `pt` using `hpos t`. Rewrite using `[hrec t ht]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma core_one (ms m : ℕ → ℝ) (D B Mb : ℝ) (hD : 1 ≤ D) (hB : 1 ≤ B) (hpos : ∀ n, 0 < ms n)
     (hrec : ∀ n, 2 ≤ n → ms (n + 1) = ms n * m (n + 1))
@@ -104,11 +104,9 @@ lemma core_one (ms m : ℕ → ℝ) (D B Mb : ℝ) (hD : 1 ≤ D) (hB : 1 ≤ B)
     _ ≤ _ := by gcongr
 
 /- English proof (translation)
-Take `⟨t, rfl⟩ : ∃ t, k = s + t` from `⟨k - s, by omega⟩`. Rewrite using `[Nat.add_sub_cancel_left]`. Distinguish the cases in `hs1 : s = 1`. Substitute `hs1` using the available equality. Rewrite using `[add_comm 1 t]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `core_one ms m D B Mb hD hB hpos hrec hlow h1 t (by omega) _ (by omega)`. Distinguish the cases in `ht1 : t = 1`. Substitute `ht1` using the available equality. Rewrite using `[mul_comm (ms s)]`. Conclude with `core_one ms m D B Mb hD hB hpos hrec hlow h1 s (by omega) _ (by nlinarith)`.
-
-Conclude with `core_two ms m D B Mb hD hB hpos hrec hlow hcmp h2 t (by omega) s (by omega)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma core (ms m : ℕ → ℝ) (D B Mb : ℝ) (hD : 1 ≤ D) (hB : 1 ≤ B) (hpos : ∀ n, 0 < ms n)
     (hrec : ∀ n, 2 ≤ n → ms (n + 1) = ms n * m (n + 1))
@@ -129,9 +127,9 @@ lemma core (ms m : ℕ → ℝ) (D B Mb : ℝ) (hD : 1 ≤ D) (hB : 1 ≤ B) (hp
   exact core_two ms m D B Mb hD hB hpos hrec hlow hcmp h2 t (by omega) s (by omega)
 
 /- English proof (translation)
-Establish `hf : (1 : ℝ) ≤ ((Nat.factorial (i - 1) : ℕ) : ℝ)`. Conclude with `Nat.factorial_pos _` after adjusting the coercions. Establish `hp` using `Real.pi_pos`. Establish `h4` using `Real.pi_le_four`. Establish `h : 2 ≤ v / Real.pi * 16`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ hp]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h' : (2 : ℝ) ≤ (v / Real.pi * 16) ^ i` using `h.trans (le_self_pow₀ (by linarith) (by omega))`. Rewrite using `[mul_assoc, ← mul_pow]`. Use the polynomial consequences of the given equalities and inequalities.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 lemma low_base (v : ℝ) (hv : 1 ≤ v) (i : ℕ) (hi : 1 ≤ i) :
     2 ≤ ((Nat.factorial (i - 1) : ℕ) : ℝ) * (v / Real.pi) ^ i * 16 ^ i := by
@@ -147,9 +145,9 @@ lemma low_base (v : ℝ) (hv : 1 ≤ v) (i : ℕ) (hi : 1 ≤ i) :
   nlinarith
 
 /- English proof (translation)
-Establish `hf : ((Nat.factorial (i - 1) : ℕ) : ℝ) ≤ ((Nat.factorial (i + t - 1) : ℕ) : ℝ)`. Conclude with `Nat.factorial_le (by omega)` after adjusting the coercions. Establish `hp` using `Real.pi_pos`. Establish `h4` using `Real.pi_le_four`. Establish `h : 4 ≤ v / Real.pi * 16`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ hp]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h' : (4 : ℝ) ≤ (v / Real.pi * 16) ^ t` using `h.trans (le_self_pow₀ (by linarith) (by omega))`. Establish `hv0 : 0 < v` using `by linarith`. Combine the equalities or inequalities in the displayed calculation.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 lemma cmp_base (v : ℝ) (hv : 1 ≤ v) (i t : ℕ) (ht : 1 ≤ t) :
     ((Nat.factorial (i - 1) : ℕ) : ℝ) * (v / Real.pi) ^ i * 4 ≤
@@ -168,23 +166,19 @@ lemma cmp_base (v : ℝ) (hv : 1 ≤ v) (i t : ℕ) (ht : 1 ≤ t) :
     _ = _ := by rw [mul_pow, pow_add]; ring
 
 /- English proof (translation)
-Introduce `hS K _ _ _ hCM hv k s Mb ms hk hs hsk hms h1 h2 _`. Establish `hstd : ∀ n, Formalism.HermitianLatticesTheory.mass (Formalism.HermitianLatticesTheory.massTelescope_form K n) (Formalism.HermitianLatticesTheory.massTelescope_lat K n) = ms n` using `fun n => hms n _ _ _ (Formalism.HermitianLatticesTheory.massTelescope_symm K n) (Formalism.HermitianLatticesTheory.massTelescope_ortho K n)`. Establish `hL` using `GlobalTheory.T.lValEta_mem_Icc_two_pow_fDeg K hCM`. Use `set v := Formalism.HermitianLatticesTheory.vInv K with hvdef`. Use `set f := Formalism.HermitianLatticesTheory.fDeg K with hfdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX : (1 : ℝ) ≤ (2 * v) ^ f` using `one_le_pow₀ (by linarith)`. Establish `hD : 1 ≤ Real.sqrt ((2 * v) ^ f)` using `Real.one_le_sqrt.mpr hX`. Establish `hDD : Real.sqrt ((2 * v) ^ f) * Real.sqrt ((2 * v) ^ f) = (2 * v) ^ f` using `Real.mul_self_sqrt (by linarith)`. Establish `hv0 : 0 < v` using `by linarith`. Establish `hp` using `Real.pi_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key` using `core ms (Formalism.HermitianLatticesTheory.massRatioRightSide K) (Real.sqrt ((2 * v) ^ f)) (16 ^ f) Mb hD (one_le_pow₀ (by norm_num)) (fun n => hstd n ▸ Formalism.HermitianLatticesTheory.massTelescope_std_pos K hCM n) (fun n hn => by`. Rewrite using `[← hstd, ← hstd]`. Conclude with `Formalism.HermitianLatticesTheory.massTelescope_step K hS hCM n hn)`. Use the proof step `?_ ?_ h1 h2 k s hk hs hsk`. Rewrite `key` using `[hDD, ← pow_mul, mul_comm f]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `key`. Introduce `i hi`. Establish `a` using `pow_le_pow_left₀ (by norm_num) (low_base v hv i (by omega)) f`. Establish `b` using `(hL i (by omega)).1`. Unfold `Formalism.HermitianLatticesTheory.massRatioRightSide`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[← hvdef, ← hfdef]`. Use `set D := Real.sqrt ((2 * v) ^ f)`. Establish `hD0 : 0 < D` using `by linarith`. Use `set A := ((Nat.factorial (i - 1) : ℕ) : ℝ) * (v / Real.pi) ^ i`. Establish `e : A ^ f / D * Formalism.HermitianLatticesTheory.lValEta K i * D * (16 ^ f) ^ i = (A * 16 ^ i) ^ f * Formalism.HermitianLatticesTheory.lValEta K i`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[mul_pow A, ← pow_mul, ← pow_mul, mul_comm f i]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul a b (by positivity) (le_trans (by positivity) a)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `i t hi ht`. Establish `a` using `pow_le_pow_left₀ (by positivity) (cmp_base v hv i t ht) f`. Establish `b` using `(hL i (by omega)).2`. Establish `c` using `(hL (i + t) (by omega)).1`. Unfold `Formalism.HermitianLatticesTheory.massRatioRightSide`.
-
-Rewrite using `[← hvdef, ← hfdef]`. Use `set D := Real.sqrt ((2 * v) ^ f)`. Establish `hD0 : 0 < D` using `by linarith`. Establish `hA : 0 ≤ ((Nat.factorial (i - 1) : ℕ) : ℝ) * (v / Real.pi) ^ i` using `by positivity`. Establish `hA' : 0 ≤ ((Nat.factorial (i + t - 1) : ℕ) : ℝ) * (v / Real.pi) ^ (i + t)` using `by positivity`.
-
-Use `set A := ((Nat.factorial (i - 1) : ℕ) : ℝ) * (v / Real.pi) ^ i`. Use `set A' := ((Nat.factorial (i + t - 1) : ℕ) : ℝ) * (v / Real.pi) ^ (i + t)`. Establish `e4 : (4 : ℝ) ^ f = 2 ^ f * 2 ^ f` using `by rw [← mul_pow]; norm_num`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem mass_mul_mass_le : Formalism.HermitianLatticesTheory.SiegelMassRatio → ∀ (K : Type) [Field K] [NumberField K] [StarRing K], Formalism.HermitianLatticesTheory.IsCMUnram K → 1 ≤ Formalism.HermitianLatticesTheory.vInv K → ∀ (k s : ℕ) (Mb : ℝ) (ms : ℕ → ℝ), 3 ≤ k → 1 ≤ s → s < k → (∀ (n : ℕ) (W : Type) [AddCommGroup W] [Module K W] [Module (𝓞 K) W] [IsScalarTower (𝓞 K) K W] (h : W →ₗ⋆[K] W →ₗ[K] K) (I : Submodule (𝓞 K) W), h.IsSymm → Formalism.HermitianLatticesTheory.IsOrthoLattice h I n → Formalism.HermitianLatticesTheory.mass h I = ms n) → ms 1 ≤ Mb → ms 2 ≤ Mb → 1 ≤ Mb → ms s * ms (k - s) ≤ ms k * (Mb * (2 * Formalism.HermitianLatticesTheory.vInv K) ^ (Formalism.HermitianLatticesTheory.fDeg K) * 16 ^ (s * k * (Formalism.HermitianLatticesTheory.fDeg K))) := by
   intro hS K _ _ _ hCM hv k s Mb ms hk hs hsk hms h1 h2 _

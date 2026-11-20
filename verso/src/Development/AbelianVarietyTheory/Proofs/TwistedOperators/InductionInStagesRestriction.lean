@@ -17,11 +17,11 @@ open GlobalTheory.RealInd.Stages Finset GlobalTheory.FlagMeas Formalism.REAL
 namespace GlobalTheory.RealInd.Stages
 
 /- English proof (translation)
-Introduce `n a b ε W W' U _ _ τ s' y hs F hF g`. Rewrite `hF` using `[mem_indFun_top]`. Take `⟨hc, hlaw⟩` from `hF`. Use `⟨?_, fun g' hg' => restr_of_not_mem F g hg', ?_⟩` and prove the remaining obligations. Conclude with `((hc.comp (continuous_mul_const g)).continuousOn).congr fun m hm => restr_of_mem F g hm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u hu m hm x t ht h1 h2 h3 g' hg'`. Establish `hM : u * m * t * g' ∈ leviOne ε W` using `(leviOne ε W).mul_mem ((leviOne ε W).mul_mem ((leviOne ε W).mul_mem h1 h2) h3) hg'`. Rewrite using `[restr_of_mem F g hM, restr_of_mem F g hg', mul_assoc (u * m * t) g' g, hlaw u hu m hm x t ht]`. Use `congr 2`. Establish `e : ∀ s r : Fin b → ℂ, pairing (fun _ => 1) (s + r) x = pairing (fun _ => 1) s x + pairing (fun _ => 1) r x`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s r`. Simplify using `only [pairing, Pi.add_apply, mul_add, add_mul, Finset.sum_add_distrib]`. Rewrite using `[e, e, hs x t ht h3]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restr_mem_indFun_stage : ∀ {n a b : ℕ} {ε : Fin n → Bool} {W : Flag n a} {W' : Flag n b} {U : Type} [NormedAddCommGroup U] [InnerProductSpace ℂ U] (τ : Matrix (Fin n) (Fin n) ℂ → (U →L[ℂ] U)) (s' : Fin b → ℂ) (y : Fin b → ℝ), (∀ x t, IsSplit ε W' x t → t ∈ leviOne ε W → pairing (fun _ => 1) s' x = pairing (fun _ => 1) (fun l => Complex.I * y l) x) → ∀ {F : UJ ε → U}, F ∈ indFun ⊤ (fun _ => 1) W' τ s' → ∀ g, restr (leviOne ε W) F g ∈ indFun (leviOne ε W) (fun _ => 1) W' τ (fun l => Complex.I * y l) := by
   intro n a b ε W W' U _ _ τ s' y hs F hF g

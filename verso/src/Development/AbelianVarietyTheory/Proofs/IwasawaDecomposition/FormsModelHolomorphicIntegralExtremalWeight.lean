@@ -12,19 +12,19 @@ open GlobalTheory.DefLift
 namespace GlobalTheory.DefLift
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R ho i`. Establish `hs : sg0 D A = D.what₂.embLL` using `sgAt_mk _ R.hv0`. Establish `hpq : ∀ τ, ((Wc D i).sig (tauE D τ)).1 + ((Wc D i).sig (tauE D τ)).2 = (Wc D i).rank` using `fun τ => GlobalTheory.IndefiniteRowSideFullHecke.HolomorphicLowestType.pW_add_qW i τ`. Establish `hc : ∀ ρ, Formalism.QuantumDeterminants.IsHCParam ((R.MW i (sg0 D A)).lam ρ)` using `fun ρ => by`. Establish `he` using `(R.MW i (sg0 D A)).enum ρ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨he.1, fun a => ?_⟩` and prove the remaining obligations. Take `⟨-, f, hf, hS⟩` from `he`. Establish `hp : Links.parAt (Wc D i) (sg0 D A) ρ = Formalism.L2.NTheta.holPar _ _ (Formalism.L2.NTheta.wtOf D (Wc D i) ρ)`. Rewrite using `[hs]`. Conclude with `GlobalTheory.ThetaFiresProbe.parAt_fixed _ ρ`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hS` using `[hp]`. Establish `hm : (f a, (R.MW i (sg0 D A)).ε ρ a) ∈ Formalism.L2.NTheta.holPar _ _ (Formalism.L2.NTheta.wtOf D (Wc D i) ρ)`. Rewrite using `[hS]`. Conclude with `Finset.mem_image_of_mem _ (Finset.mem_univ a)`. Take `⟨x, -, hx⟩` from `Finset.mem_image.1 hm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx1` using `congrArg Prod.fst hx`. Establish `hn : (((Wc D i).rank : ℕ) : ℝ) = (((Wc D i).sig (tauE D ρ)).1 : ℝ) + ((Wc D i).sig (tauE D ρ)).2`. Rewrite using `[← hpq ρ]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only at hx1`. Rewrite using `[hf a, ← hx1, hn]`. Break down `x with c | c` into its components or cases. Use `⟨Formalism.L2.NTheta.wtOf D (Wc D i) ρ (Sum.inl c) - ((Wc D i).sig (tauE D ρ)).2 - (c : ℕ), ?_⟩` and prove the remaining obligations. Simplify using `only [Formalism.L2.NTheta.holEnt, Sum.elim_inl]`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `⟨Formalism.L2.NTheta.wtOf D (Wc D i) ρ (Sum.inr c) - (c : ℕ), ?_⟩` and prove the remaining obligations. Simplify using `only [Formalism.L2.NTheta.holEnt, Sum.elim_inr]`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨fun ρ => ⟨hc ρ, _, (Nat.le_add_right _ _).trans (hpq ρ).le, fun a => ho i ρ a⟩, ?_⟩` and prove the remaining obligations. Use `choose w hw using fun ρ a => Formalism.QuantumDeterminants.low_k_integrable_holds _ ((R.MW i (sg0 D A)).ε ρ) _ (hc ρ).2 a`. Conclude with `⟨fun ρ c => w ρ (revNeg ((R.MW i (sg0 D A)).ε ρ) (arr (nNeg ((R.MW i (sg0 D A)).ε ρ)) c)), fun ρ c => (hw ρ _).symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem holShape_fixed : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), R.models_order → ∀ i, HolShape (R.MW i (sg0 D A)) ∧ ∃ w, WtIs (R.MW i (sg0 D A)) w := by
   intro D G _ _ Pl0 T A Ks _ _ _ R ho i

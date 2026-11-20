@@ -9,12 +9,12 @@ import Formalism.ThetaLogCoordinates.ResidueClassEstimates.VandermondeRankEstima
 namespace Formalism.InvariantFactorPaths.BranchingDimensions.Top
 
 /- English proof (translation)
-The claim follows from `pathWeightBound_of pathEntryBounds pathInterlacingCriterion logBinomialProperties logWeylDimensionEstimate logRankEstimate pathTailBounds logBinomialDeficit`.
+A detailed English derivation is pending.
 -/
 theorem lemma_t_one : PathWeightBound :=
   pathWeightBound_of pathEntryBounds pathInterlacingCriterion logBinomialProperties logWeylDimensionEstimate logRankEstimate pathTailBounds logBinomialDeficit
 /- English proof (translation)
-The claim follows from `weyl_dim_eq_gelfand_tsetlin branchingDimensionFormula`.
+A detailed English derivation is pending.
 -/
 theorem weylGT : ∀ (n : ℕ) (μ : Fin n → ℤ), Antitone μ → weylDim n (extW μ) = (Formalism.InvariantFactorPaths.GelfandTsetlinBases.dGT n μ : ℝ) :=
   weyl_dim_eq_gelfand_tsetlin branchingDimensionFormula

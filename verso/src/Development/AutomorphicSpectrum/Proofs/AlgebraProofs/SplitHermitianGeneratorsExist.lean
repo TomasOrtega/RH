@@ -15,23 +15,21 @@ namespace GlobalTheory.CompanionTheory.Ar.Flat.DegCurve
 open GlobalTheory.CompanionTheory.Ar.Crv GlobalTheory.CompanionTheory.Ar.Crv.SplitProj
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite A`. Establish `hpow : ∀ t : A, ∃ n : ℕ, 0 < n ∧ IsIdempotentElem (t ^ n)` using `fun t => by`. Choose the witnesses or unpack the hypotheses as in `⟨i, j, hij, h⟩ : ∃ i j : ℕ, i < j ∧ t ^ i = t ^ j := by`. Take `⟨i, j, hne, h⟩` from `Finite.exists_ne_map_eq_of_infinite (fun n : ℕ => t ^ n)`. Break down `lt_or_gt_of_ne hne with hl | hl` into its components or cases.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨i, j, hl, h⟩`. Conclude with `⟨j, i, hl, h.symm⟩`. Use `set d := j - i with hd`. Establish `hd0 : 0 < d` using `by omega`. Establish `hper : ∀ n a : ℕ, i ≤ a → t ^ (a + n * d) = t ^ a`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `n a ha`. Establish `h1 : ∀ a : ℕ, i ≤ a → t ^ (a + d) = t ^ a`. Introduce `a ha`. Take `⟨b, rfl⟩` from `Nat.exists_eq_add_of_le ha`. Establish `: i + b + d = j + b` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Rewrite using `[this, pow_add, pow_add, h]`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[show a + (n + 1) * d = (a + n * d) + d by ring, h1 _ (by omega), ih]`.
+Treat this case separately. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `⟨(i + 1) * d, by positivity, ?_⟩` and prove the remaining obligations. Unfold `IsIdempotentElem`. Rewrite using `[← pow_add]`. Conclude with `hper _ _ (by nlinarith)`. Use `choose N hN0 hN using hpow`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Set `S : Finset A` to `Finset.univ.filter (· ∈ m)`. Use `⟨∏ t ∈ S, (1 - t ^ N t), ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Finset.prod_induction _ IsIdempotentElem (fun a b ha hb => ha.mul hb) IsIdempotentElem.one fun t _ => (hN t).one_sub`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_one, map_prod, sub_eq_zero]`. Use `(Finset.prod_eq_one fun t ht => ?_).symm` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `htm : t ∈ m` using `(Finset.mem_filter.1 ht).2`. Establish `: t ^ N t ∈ m` using `Ideal.pow_mem_of_mem m htm _ (hN0 t)`. Rewrite using `[map_sub, map_one, Ideal.Quotient.eq_zero_iff_mem.2 this, sub_zero]`. Introduce `t ht`. Establish `hS : t ∈ S` using `Finset.mem_filter.2 ⟨Finset.mem_univ _, ht⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨N t, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_pow, ← Finset.mul_prod_erase S _ hS, mul_pow, mul_comm, ← mul_assoc]`. Establish `h0 : t ^ N t * (1 - t ^ N t) = 0`. Rewrite using `[mul_sub, mul_one, (hN t).eq, sub_self]`. Establish `h1 : t ^ N t * (1 - t ^ N t) ^ N t = 0`.
-
-Take `⟨n, hn⟩` from `Nat.exists_eq_succ_of_ne_zero (hN0 t).ne'`. Rewrite using `[hn, pow_succ' (1 - t ^ _), ← hn, ← mul_assoc, h0, zero_mul]`. Rewrite using `[h1, zero_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_idem (A : Type) [CommRing A] [Finite A] (m : Ideal A) :
     ∃ e : A, IsIdempotentElem e ∧ 1 - e ∈ m ∧ ∀ t ∈ m, IsNilpotent (e * t) := by
@@ -83,7 +81,7 @@ theorem exists_idem (A : Type) [CommRing A] [Finite A] (m : Ideal A) :
     rw [h1, zero_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `[frobVec, Matrix.mulVec, dotProduct, sum_pow_char, mul_pow]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem frobVec_mulVec {K : Type} [Field K] (p : ℕ) [Fact p.Prime] [CharP K p] {d : ℕ}
     (M : Matrix (Fin d) (Fin d) K) (u : Fin d → K) :
@@ -92,13 +90,13 @@ theorem frobVec_mulVec {K : Type} [Field K] (p : ℕ) [Fact p.Prime] [CharP K p]
   simp [frobVec, Matrix.mulVec, dotProduct, sum_pow_char, mul_pow]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨u, rfl⟩, rfl⟩`. Conclude with `⟨frobVec p u, by simp [Matrix.toLin'_apply, frobVec_mulVec]⟩`. Introduce and unpack `_ ⟨u, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Establish `hp : p ≠ 0` using `(Fact.out : p.Prime).ne_zero`. Establish `hs : ∀ j : Fin d, frobVec p (Pi.single j (1 : K)) = Pi.single j 1` using `fun j => by`. Use function extensionality and compare the values at `r`. Distinguish the cases in `h : r = j`. Substitute `h` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[frobVec]`. Simplify using `[frobVec, h, hp]`. Establish `hu : u = ∑ j, u j • (Pi.single j (1 : K) : Fin d → K)`. Use function extensionality and compare the values at `r`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[hu, map_sum]`. Use `sum_mem fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`. Use `Submodule.smul_mem _ _ (Submodule.subset_span ⟨M.mulVec (Pi.single j 1), ⟨_, rfl⟩, ?_⟩)` and prove the remaining obligations. Rewrite using `[frobVec_mulVec, hs, Matrix.toLin'_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem frobSub_range (K : Type) [Field K] (p : ℕ) [Fact p.Prime] [CharP K p] (d : ℕ)
     (M : Matrix (Fin d) (Fin d) K) :
@@ -124,11 +122,11 @@ theorem frobSub_range (K : Type) [Field K] (p : ℕ) [Fact p.Prime] [CharP K p] 
     rw [frobVec_mulVec, hs, Matrix.toLin'_apply]
 
 /- English proof (translation)
-Establish `hF : ∀ M : Matrix (Fin d) (Fin d) K, M.map (· ^ p) = (frobenius K p).mapMatrix M` using `fun M => by ext; simp [frobenius_def]`. Establish `hend : ∀ (ρ' : O →+* Matrix (Fin d) (Fin d) K) a, toEnd ρ' a = Matrix.toLin' (ρ' a)` using `fun _ _ => rfl`. Simplify using `only [hF]`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul c a`. Establish `h1 : LinearMap.toMatrix' (algebraMap k K c • Matrix.toLin' (ρ a)) = algebraMap k K c • ρ a`. Rewrite using `[map_smul, LinearMap.toMatrix'_toLin']`. Rewrite using `[frobT_tmul, act_tmul, act_tmul, hend, hend, map_pow, twist_apply, hF, h1, ← map_smul]`. Use `congr 1`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `r s`. Simplify using `only [Matrix.smul_apply, RingHom.mapMatrix_apply, Matrix.map_apply, smul_eq_mul, frobenius_def, mul_pow]`. Consider the case `add u w hu hw => simp only [map_add, hu, hw]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem twist_act (K k O : Type) [Field K] [Field k] [Algebra k K] [CommRing O] (p : ℕ)
     [Fact p.Prime] [CharP K p] [CharP k p] (d : ℕ) (ρ : O →+* Matrix (Fin d) (Fin d) K)
@@ -154,15 +152,15 @@ theorem twist_act (K k O : Type) [Field K] [Field k] [Algebra k K] [CommRing O] 
   | add u w hu hw => simp only [map_add, hu, hw]
 
 /- English proof (translation)
-Use `set W := ⨆ a : O, LinearMap.range (ρ a - algebraMap k K (χ a) • LinearMap.id) with hW`. Establish `hmem : ∀ (a : O) (v : V), ρ a v - algebraMap k K (χ a) • v ∈ W` using `fun a v => Submodule.mem_iSup_of_mem a ⟨v, by simp⟩`. Establish `h : ∀ (x : TensorProduct ℤ k O) (v : V), act k ρ x v - algebraMap k K (chiT χ x) • v ∈ W`. Introduce `x v`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `tmul c a`. Rewrite using `[act_tmul, chiT_tmul, map_mul, mul_smul, LinearMap.smul_apply, ← smul_sub]`. Conclude with `Submodule.smul_mem _ _ (hmem a v)`. Consider the case `add u w hu hw`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `add_mem hu hw` as an intermediate fact. Simplify using `only [map_add, LinearMap.add_apply, add_smul]`. Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Use `le_antisymm (iSup_le fun a => ?_) (iSup_le fun a => ?_)` and prove the remaining obligations.
+Apply an available result and prove the equalities needed to match it to the conclusion. Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨v, rfl⟩`. Establish `h0 : chiT χ (a : TensorProduct ℤ k O) = 0` using `a.2`. Simplify `h a v` using `[h0]`. Introduce and unpack `_ ⟨v, rfl⟩`. Establish `ht : (1 : k) ⊗ₜ[ℤ] a - (χ a) ⊗ₜ[ℤ] (1 : O) ∈ RingHom.ker (chiT χ)`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[RingHom.mem_ker, map_sub, chiT_tmul, chiT_tmul]`. Simplify using the standard rewrite rules. Use `Submodule.mem_iSup_of_mem ⟨_, ht⟩ ⟨v, ?_⟩` and prove the remaining obligations. Simplify using `[act_tmul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem idealV_ker (K k O V : Type) [Field K] [Field k] [Algebra k K] [CommRing O]
     [AddCommGroup V] [Module K V] (ρ : O →+* Module.End K V) (χ : O →+* k) :
@@ -195,15 +193,13 @@ theorem idealV_ker (K k O V : Type) [Field K] [Field k] [Algebra k K] [CommRing 
     simp [act_tmul]
 
 /- English proof (translation)
-Establish `hker : RingHom.ker χ ≠ ⊥`. Introduce `h`. Establish `hp : (p : O) ∈ RingHom.ker χ`. Rewrite using `[RingHom.mem_ker, map_natCast]`. Conclude with `CharP.cast_eq_zero K p`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hp` using `[h, Ideal.mem_bot]`. Conclude with `(Fact.out : p.Prime).ne_zero (by exact_mod_cast hp)`. Use `haveI : Finite (O ⧸ RingHom.ker χ) := Ideal.finiteQuotientOfFreeOfNeBot _ hker`. Use `haveI : Finite χ.range := Finite.of_equiv _ (RingHom.quotientKerEquivRange χ).toEquiv`. Establish `hinv : ∀ x ∈ χ.range, x⁻¹ ∈ χ.range`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `x hx`. Distinguish the cases in `h0 : x = 0`. Simplify using `[h0, zero_mem]`. Establish `hinj : Function.Injective (fun y : χ.range => (⟨x, hx⟩ : χ.range) * y)`. Introduce `y z h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: x * (y : K) = x * z` using `congrArg Subtype.val h`. Conclude with `Subtype.ext (mul_left_cancel₀ h0 this)`. Take `⟨y, hy⟩` from `(Finite.injective_iff_surjective.1 hinj) 1`. Establish `: x * (y : K) = 1` using `congrArg Subtype.val hy`. Rewrite using `[inv_eq_of_mul_eq_one_right this]`.
-
-Conclude with `y.2`. Use `⟨{ χ.range with inv_mem' := hinv }, ?_, fun a => ⟨a, rfl⟩⟩` and prove the remaining obligations. Conclude with `(inferInstance : Finite χ.range)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_finite_subfield (K O : Type) [Field K] [CommRing O] [IsDomain O]
     [Module.Free ℤ O] [Module.Finite ℤ O] [CharZero O] (p : ℕ) [Fact p.Prime] [CharP K p] (χ : O →+* K) :
@@ -232,11 +228,9 @@ theorem exists_finite_subfield (K O : Type) [Field K] [CommRing O] [IsDomain O]
   exact (inferInstance : Finite χ.range)
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => intro i y _`. Simplify using `using zero_mem _`. Consider the case `tmul c a`. Introduce `i y hy`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[act_tmul]`. Conclude with `smul_mem_of_isBun C hL i (hk i c) (hρ a i y hy)`. Consider the case `add u w hu hw`. Introduce `i y hy`. Rewrite using `[map_add]`.
-
-Conclude with `add_mem (hu i y hy) (hw i y hy)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_isHom {K : Type} [Field K] (C : ACurve K) {V : Type} [AddCommGroup V] [Module K V]
     {L : C.I → AddSubgroup V} (hL : IsBun C L) {O k : Type} [CommRing O] [Field k] [Algebra k K]
@@ -254,7 +248,7 @@ theorem act_isHom {K : Type} [Field K] (C : ACurve K) {V : Type} [AddCommGroup V
     exact add_mem (hu i y hy) (hw i y hy)
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul c a => simp [act_tmul, h]`. Consider the case `add u w hu hw => simp [hu, hw]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem act_comm {K : Type} [Field K] {V V' : Type} [AddCommGroup V] [Module K V]
     [AddCommGroup V'] [Module K V'] {O k : Type} [CommRing O] [Field k] [Algebra k K]
@@ -267,7 +261,7 @@ theorem act_comm {K : Type} [Field K] {V V' : Type} [AddCommGroup V] [Module K V
   | add u w hu hw => simp [hu, hw]
 
 /- English proof (translation)
-Establish `: τ e * τ e = τ e` using `by rw [← map_mul, he.eq]`. Conclude with `congrArg (fun f : Module.End K V => f x) this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem idem_apply {A K V : Type} [Field K] [CommRing A] [AddCommGroup V] [Module K V]
     (τ : A →+* Module.End K V) {e : A} (he : IsIdempotentElem e) (x : V) :
@@ -281,7 +275,7 @@ variable {K : Type} [Field K] {C : ACurve K} {p : ℕ} [Fact p.Prime] [CharP K p
   [CommRing O] [StarRing O] {d : ℕ} (D : ConjData C p O d) (k : Type) [Field k] [Algebra k K]
 
 /- English proof (translation)
-Use `GlobalTheory.T.filtered_exact_sequence_projector_bundles K C _ _ _ _ _ _ _ _ _ _ _ D.H_bun D.hodge (idem_apply _ hx) (idem_apply _ hx) (idem_apply _ hx) (fun y => ?_) (fun y => ?_) (act_isHom C D.H_bun hk _ D.ρH_hom x)` and prove the remaining obligations. Use `(act_comm (toEnd (conjT D.ρ)) D.ρH (LinearMap.inr K _ _) (fun a v => ?_) x y)` and prove the remaining obligations. Simplify using `[D.ρH_inr, toEnd_apply, conjT_apply]`. Use `(act_comm D.ρH (toEnd D.ρ) (LinearMap.fst K _ _) (fun a v => ?_) x y)` and prove the remaining obligations. Simplify using `[D.ρH_fst, toEnd_apply]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem hodge_part (hk : ∀ i (c : k), C.v i (algebraMap k K c) ≤ 1) (x : TensorProduct ℤ k O)
     (hx : IsIdempotentElem x) :
@@ -296,7 +290,7 @@ theorem hodge_part (hk : ∀ i (c : k), C.v i (algebraMap k K c) ≤ 1) (x : Ten
     simp [D.ρH_fst, toEnd_apply]
 
 /- English proof (translation)
-Use `GlobalTheory.T.filtered_exact_sequence_projector_bundles K C _ _ _ _ _ _ _ _ _ _ _ D.H_bun D.conj (idem_apply _ hx) (idem_apply _ hx) (idem_apply _ hx) (fun y => ?_) (fun y => ?_) (act_isHom C D.H_bun hk _ D.ρH_hom x)` and prove the remaining obligations. Use `(act_comm (toEnd (twist p D.ρ)) D.ρH D.α (fun a v => ?_) x y)` and prove the remaining obligations. Rewrite using `[toEnd_apply, twist_apply, D.α_act]`. Use `(act_comm D.ρH (toEnd (twist p (conjT D.ρ))) D.β (fun a v => ?_) x y)` and prove the remaining obligations. Rewrite using `[D.β_act, toEnd_apply, twist_apply, conjT_apply]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_part (hk : ∀ i (c : k), C.v i (algebraMap k K c) ≤ 1) (x : TensorProduct ℤ k O)
     (hx : IsIdempotentElem x) :
@@ -312,7 +306,7 @@ theorem conj_part (hk : ∀ i (c : k), C.v i (algebraMap k K c) ≤ 1) (x : Tens
     rw [D.β_act, toEnd_apply, twist_apply, conjT_apply]
 
 /- English proof (translation)
-Rewrite using `[twist_act K k O p n ρ x, ← frobSub_range K p n, Matrix.toLin'_toMatrix']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem range_twist [CharP k p] {n : ℕ} (ρ : O →+* Matrix (Fin n) (Fin n) K)
     (x : TensorProduct ℤ k O) :
@@ -321,7 +315,7 @@ theorem range_twist [CharP k p] {n : ℕ} (ρ : O →+* Matrix (Fin n) (Fin n) K
   rw [twist_act K k O p n ρ x, ← frobSub_range K p n, Matrix.toLin'_toMatrix']
 
 /- English proof (translation)
-Establish `hx' : IsIdempotentElem (frobT k O p x)`. Unfold `IsIdempotentElem`. Rewrite using `[← map_mul, hx.eq]`. Rewrite using `[conj_part D k hk _ hx', range_twist k, range_twist k, hodge_part D k hk x hx, GlobalTheory.CompanionTheory.Ar.Crv.SubFrob.subDeg_frob K C p d _ _ D.lie_bun, GlobalTheory.CompanionTheory.Ar.Crv.SubFrob.subDeg_frob K C p d _ _ (GlobalTheory.CompanionTheory.Ar.Crv.deg_shortExact K …`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem step [CharP k p] (hk : ∀ i (c : k), C.v i (algebraMap k K c) ≤ 1)
     (x : TensorProduct ℤ k O) (hx : IsIdempotentElem x) :
@@ -335,9 +329,9 @@ theorem step [CharP k p] (hk : ∀ i (c : k), C.v i (algebraMap k K c) ≤ 1)
       (GlobalTheory.CompanionTheory.Ar.Crv.deg_shortExact K C _ _ _ _ _ _ _ _ D.H_bun D.hodge).1, mul_add, add_comm]
 
 /- English proof (translation)
-Establish `h : ∀ (j : ℕ) (c : k) (a : O), (frobT k O p)^[j] (c ⊗ₜ[ℤ] a) = (c ^ p ^ j) ⊗ₜ[ℤ] a`. Introduce `j c a`. Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih => rw [Function.iterate_succ_apply', ih, frobT_tmul, pow_succ, pow_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact iterate_map_zero (frobT k O p) n`. Consider the case `tmul c a => rw [h, hn]`. Consider the case `add u w hu hw => rw [iterate_map_add (frobT k O p) n, hu, hw]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem frobT_iterate [CharP k p] (n : ℕ) (hn : ∀ c : k, c ^ p ^ n = c)
     (x : TensorProduct ℤ k O) : (frobT k O p)^[n] x = x := by
@@ -352,15 +346,15 @@ theorem frobT_iterate [CharP k p] (n : ℕ) (hn : ∀ c : k, c ^ p ^ n = c)
   | add u w hu hw => rw [iterate_map_add (frobT k O p) n, hu, hw]
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite k`. Take `⟨n, hp, hc⟩` from `FiniteField.card k p`. Establish `hn : ∀ c : k, c ^ p ^ (n : ℕ) = c` using `fun c => by rw [← hc]; exact FiniteField.pow_card c`. Establish `key : ∀ j : ℕ, IsIdempotentElem ((frobT k O p)^[j] x) ∧ subDeg C D.H (LinearMap.range (act k D.ρH ((frobT k O p)^[j] x))) = (p : ℤ) ^ j * subDeg C D.H (LinearMap.range (act k D.ρH x))`. Introduce `j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `j with`. Consider the case `zero => simpa using hx`. Consider the case `succ j ih`. Rewrite using `[Function.iterate_succ_apply']`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `IsIdempotentElem`. Rewrite using `[← map_mul, ih.1.eq]`. Rewrite using `[step D k hk _ ih.1, ih.2, pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Establish `h` using `(key n).2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[frobT_iterate k (n : ℕ) hn x]`. Establish `h1 : (1 : ℤ) < (p : ℤ) ^ (n : ℕ)` using `one_lt_pow₀ (by exact_mod_cast hp.one_lt) n.ne_zero`. Assume the negation of the conclusion as `h0`. Establish `: (p : ℤ) ^ (n : ℕ) = 1`. Use `mul_right_cancel₀ h0 (show (p : ℤ) ^ (n : ℕ) * _ = 1 * _ by rw [one_mul]; exact h.symm)` as an intermediate fact.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `this`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem vanish [Finite k] [CharP k p] (hk : ∀ i (c : k), C.v i (algebraMap k K c) ≤ 1)
     (x : TensorProduct ℤ k O) (hx : IsIdempotentElem x) :
@@ -397,7 +391,7 @@ variable {K : Type} [Field K] (C : ACurve K) {V : Type} [AddCommGroup V] [Module
   [FiniteDimensional K V]
 
 /- English proof (translation)
-Use `haveI : IsEmpty (Fin (Module.finrank K (⊥ : Submodule K V))) := by`. Rewrite using `[finrank_bot]`. Use `infer_instance`. Simplify using `[subDeg, deg, Module.Basis.det_apply, Matrix.det_isEmpty]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem subDeg_bot (L : C.I → AddSubgroup V) : subDeg C L ⊥ = 0 := by
   haveI : IsEmpty (Fin (Module.finrank K (⊥ : Submodule K V))) := by
@@ -405,7 +399,7 @@ theorem subDeg_bot (L : C.I → AddSubgroup V) : subDeg C L ⊥ = 0 := by
   simp [subDeg, deg, Module.Basis.det_apply, Matrix.det_isEmpty]
 
 /- English proof (translation)
-Use `iSup_eq_bot.2 fun a => ?_` and prove the remaining obligations. Establish `: (a : A) = 0` using `a.2`. Simplify using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem idealV_bot {A : Type} [CommRing A] (τ : A →+* Module.End K V) : idealV τ ⊥ = ⊥ := by
   refine iSup_eq_bot.2 fun a => ?_
@@ -413,9 +407,9 @@ theorem idealV_bot {A : Type} [CommRing A] (τ : A →+* Module.End K V) : ideal
   simp [this]
 
 /- English proof (translation)
-Use `le_antisymm (iSup_le fun a => ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, rfl⟩`. Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.1 a.2`. Use `⟨τ b v, ?_⟩` and prove the remaining obligations. Rewrite using `[← hb, mul_comm, map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Conclude with `le_iSup (fun a : (Ideal.span {e} : Ideal A) => LinearMap.range (τ a)) ⟨e, Ideal.mem_span_singleton_self e⟩`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem idealV_span {A : Type} [CommRing A] (τ : A →+* Module.End K V) (e : A) :
     idealV τ (Ideal.span {e}) = LinearMap.range (τ e) := by
@@ -428,15 +422,15 @@ theorem idealV_span {A : Type} [CommRing A] (τ : A →+* Module.End K V) (e : A
       ⟨e, Ideal.mem_span_singleton_self e⟩
 
 /- English proof (translation)
-Use `haveI : Finite (Ideal A) := Finite.of_injective (fun J : Ideal A => (J : Set A)) SetLike.coe_injective`. Establish `claim : ∀ J : Ideal A, J ≤ Ideal.span {e} → ∃ n : ℕ, subDeg C L (idealV τ J) = n * deg C (quot C L (idealV τ (RingHom.ker χ))) ∧ (J ≠ ⊥ → 0 < n)`. Introduce `J`. Proceed by induction on `J using WellFoundedLT.induction with`. Consider the case `ind J ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hJ`. Distinguish the cases in `h0 : J = ⊥`. Substitute `h0` using the available equality. Conclude with `⟨0, by rw [idealV_bot, subDeg_bot]; simp, fun h => absurd rfl h⟩`. Take `⟨J₁, t, l, hlt, ht, hJt, hm, hl0, hl1⟩` from `GlobalTheory.T.ideal_descending_one_dim_quotient k A χ e J he h1 hnil hJ h0`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn, -⟩` from `ih J₁ hlt (hlt.le.trans hJ)`. Use `⟨n + 1, ?_, fun _ => Nat.succ_pos n⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.algebra_action_bundle_filtration_step K C V L k A τ r χ J₁ J t l hL hτ hτk hk hfree hlt.le ht hJt hm hl0 hl1, hn]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `he0 : Ideal.span {e} ≠ ⊥`. Introduce `h`. Establish `: e = 0` using `Ideal.span_singleton_eq_bot.1 h`. Rewrite `h1` using `[this, map_zero]`. Conclude with `zero_ne_one h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨n, hn, hpos⟩` from `claim _ le_rfl`. Conclude with `⟨n, hpos he0, by rw [← idealV_span, hn]⟩`.
+A detailed English derivation is pending.
 -/
 theorem deg_count (L : C.I → AddSubgroup V) (k A : Type) [Field k] [Algebra k K] [CommRing A]
     [Algebra k A] [Finite A] (τ : A →+* Module.End K V) (r : ℕ) (χ : A →ₐ[k] k) (e : A)
@@ -476,9 +470,9 @@ theorem deg_count (L : C.I → AddSubgroup V) (k A : Type) [Field k] [Algebra k 
 end Count
 
 /- English proof (translation)
-Distinguish the cases in `h : c = 0`. Simplify using `[h]`. Take `⟨n, hn, hc⟩` from `isOfFinOrder_iff_pow_eq_one.1 (isOfFinOrder_of_finite (Units.mk0 c h))`. Establish `h1 : c ^ n = 1` using `by simpa using congrArg Units.val hc`. Establish `h2 : C.v i (algebraMap k K c) ^ n = 1` using `by rw [← map_pow, ← map_pow, h1]; simp`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(pow_eq_one_iff_of_nonneg (zero_le') hn.ne').1 h2 |>.le`.
+A detailed English derivation is pending.
 -/
 theorem v_le_one_of_finite {K : Type} [Field K] (C : ACurve K) (k : Type) [Field k] [Finite k]
     [Algebra k K] (i : C.I) (c : k) : C.v i (algebraMap k K c) ≤ 1 := by
@@ -492,15 +486,11 @@ theorem v_le_one_of_finite {K : Type} [Field K] (C : ACurve K) (k : Type) [Field
 open NumberField in
 
 /- English proof (translation)
-Introduce `E _ _ _ K _ C p _ _ d r D χ _ hfr`. Take `⟨k, hfin, hχ⟩` from `exists_finite_subfield K (𝓞 E) p χ`. Use `haveI : CharP k p := (RingHom.charP_iff (algebraMap k K) (algebraMap k K).injective p).2 inferInstance`. Set `χ₀ : 𝓞 E →+* k` to `χ.codRestrict k hχ`. Establish `hχ₀ : ∀ a, algebraMap k K (χ₀ a) = χ a` using `fun a => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk : ∀ i (c : k), C.v i (algebraMap k K c) ≤ 1` using `fun i c => v_le_one_of_finite C k i c`. Use `haveI : Finite (TensorProduct ℤ k (𝓞 E)) := Module.finite_of_finite k`. Take `⟨e, he, h1e, hnil⟩` from `exists_idem (TensorProduct ℤ k (𝓞 E)) (RingHom.ker (chiT χ₀))`. Establish `h1 : chiT χ₀ e = 1`. Establish `: chiT χ₀ (1 - e) = 0` using `h1e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[map_sub, map_one, sub_eq_zero]`. Conclude with `this.symm`. Take `⟨n, hn, hc⟩` from `deg_count C D.H k (TensorProduct ℤ k (𝓞 E)) (act k D.ρH) r (chiT χ₀) e D.H_bun (act_isHom C D.H_bun hk _ D.ρH_hom) (fun c x => by`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self_apply, act_tmul]`. Use the proof step `simp)`.
-
-Use `hk (fun i => GlobalTheory.T.module_basis_lattice_bundle_free K C _ D.H _ _ k (RingOfIntegers.basis E) D.ρH r i D.H_bun (hk i) (hfr i))`. Use `he h1 hnil`. Rewrite `hc` using `[vanish D k hk e he, idealV_ker K k (𝓞 E) _ D.ρH χ₀]`. Express the relevant statement in the definitionally equal form `_ = _ * deg C (quot C D.H (⨆ a : 𝓞 E, LinearMap.range (D.ρH a - χ a • LinearMap.id))) at hc`. Break down `mul_eq_zero.1 hc.symm with h | h` into its components or cases.
-
-Conclude with `absurd h (by exact_mod_cast hn.ne')`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem deg_quot_eq_zero : ∀ (E : Type) [Field E] [NumberField E] [StarRing (𝓞 E)] (K : Type) [Field K] (C : ACurve K) (p : ℕ) [Fact p.Prime] [CharP K p] (d r : ℕ) (D : ConjData C p (𝓞 E) d) (χ : 𝓞 E →+* K), (∀ a : 𝓞 E, ((Algebra.lmul ℤ (𝓞 E) a : Module.End ℤ (𝓞 E)).charpoly.map (Int.castRingHom K)).Splits) → (∀ i, ∃ x : Fin r → (Fin d → K) × (Fin d → K), LinearIndependent K (fun q : Fin r × Module.Free.ChooseBasisIndex ℤ (𝓞 E) => D.ρH (RingOfIntegers.basis E q.2) (x q.1)) ∧ ∀ y, y ∈ D.H i ↔ ∃ c : Fin r × Module.Free.ChooseBasisIndex ℤ (𝓞 E) → K, (∀ q, C.v i (c q) ≤ 1) ∧ y = ∑ q, c q • D.ρH (RingOfIntegers.basis E q.2) (x q.1)) → deg C (quot C D.H (⨆ a : 𝓞 E, LinearMap.range (D.ρH a - χ a • LinearMap.id))) = 0 := by
   intro E _ _ _ K _ C p _ _ d r D χ _ hfr

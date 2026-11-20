@@ -17,7 +17,7 @@ def ballSet (h : HermNorm n) (k : ℕ) : Set (Fin k × Fin n → ℂ) :=
   {u | ∀ i, h.norm (fun j => u (i, j)) < 1}
 
 /- English proof (translation)
-Establish `e : ballSet h k = ⋂ i, {u : Fin k × Fin n → ℂ | h.norm (fun j => u (i, j)) < 1}`. Use extensionality with `u`. Simplify using `[ballSet]`. Rewrite using `[e]`. Conclude with `MeasurableSet.iInter fun i => measurableSet_lt (measurable_groupNorm h i) measurable_const`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurableSet_ballSet (h : HermNorm n) : MeasurableSet (ballSet h k) := by
   have e : ballSet h k = ⋂ i, {u : Fin k × Fin n → ℂ | h.norm (fun j => u (i, j)) < 1} := by
@@ -26,7 +26,7 @@ theorem measurableSet_ballSet (h : HermNorm n) : MeasurableSet (ballSet h k) := 
   exact MeasurableSet.iInter fun i => measurableSet_lt (measurable_groupNorm h i) measurable_const
 
 /- English proof (translation)
-Introduce `u hu`. Simplify using `only [polydisc, mem_univ_pi, Metric.mem_closedBall, dist_zero_right]`. Introduce `ij`. Conclude with `(hC (fun j => u (ij.1, j)) ij.2).trans (mul_le_of_le_one_right hC0 (hu ij.1).le)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ballSet_subset_polydisc (h : HermNorm n) (C : ℝ) (hC0 : 0 ≤ C)
     (hC : ∀ (v : Fin n → ℂ) (j : Fin n), ‖v j‖ ≤ C * h.norm v) :
@@ -37,7 +37,7 @@ theorem ballSet_subset_polydisc (h : HermNorm n) (C : ℝ) (hC0 : 0 ≤ C)
   exact (hC (fun j => u (ij.1, j)) ij.2).trans (mul_le_of_le_one_right hC0 (hu ij.1).le)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `ij`. Simplify using `[normT]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem normT_univ (h : HermNorm n) (u : Fin k × Fin n → ℂ) :
     normT h Finset.univ u = fun ij => ((h.norm fun j => u (ij.1, j) : ℝ) : ℂ)⁻¹ * u ij := by
@@ -45,7 +45,7 @@ theorem normT_univ (h : HermNorm n) (u : Fin k × Fin n → ℂ) :
   simp [normT]
 
 /- English proof (translation)
-Take `⟨C, hC0, hC⟩` from `h.li_exists_coord_le`. Take `⟨h1, h2⟩` from `logNormT h C hC0 hC Finset.univ f hf`. Simplify using `only [normT_univ] at h1 h2`. Conclude with `⟨h1.mono_set (ballSet_subset_polydisc h C hC0 hC), ae_restrict_of_ae_restrict_of_subset (ballSet_subset_polydisc h C hC0 hC) h2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem integrableOn_log_mahler (h : HermNorm n) (f : MvPolynomial (Fin k × Fin n) ℂ) (hf : f ≠ 0) :
     IntegrableOn (fun u : Fin k × Fin n → ℂ =>
@@ -62,11 +62,11 @@ theorem integrableOn_log_mahler (h : HermNorm n) (f : MvPolynomial (Fin k × Fin
 end LogInt
 
 /- English proof (translation)
-Introduce `n k h f g hf hg`. Take `⟨i1, z1⟩` from `LogInt.integrableOn_log_mahler h f hf`. Take `⟨i2, z2⟩` from `LogInt.integrableOn_log_mahler h g hg`. Unfold `mahler sphereMean`. Express the relevant statement in the definitionally equal form `⨍ u in LogInt.ballSet h k, _ = (⨍ u in LogInt.ballSet h k, _) + ⨍ u in LogInt.ballSet h k, _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[setAverage_eq, setAverage_eq, setAverage_eq, ← smul_add, ← integral_add i1 i2]`. Use `congr 1`. Use `setIntegral_congr_ae (LogInt.measurableSet_ballSet h) ?_` and prove the remaining obligations. Use `(ae_restrict_iff' (LogInt.measurableSet_ballSet h)).mp (z1.and z2)` as an intermediate fact. Use `filter_upwards [this] with u hu hB`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `hu hB`. Rewrite using `[map_mul, norm_mul, Real.log_mul (norm_ne_zero_iff.mpr h1) (norm_ne_zero_iff.mpr h2)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mahlerMul : MahlerMul.Statement := by
   intro n k h f g hf hg

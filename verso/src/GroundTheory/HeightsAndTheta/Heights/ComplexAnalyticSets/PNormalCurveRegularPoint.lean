@@ -13,11 +13,11 @@ noncomputable section
 namespace NormalCurveRegularPoint
 
 /- English proof (translation)
-Proceed by induction on `g using MvPolynomial.induction_on generalizing z with`. Consider the case `C a => simp`. Consider the case `add p q hp hq`. Establish `hp'` using `(AnalyticOnNhd.eval_mvPolynomial (𝕜 := ℂ) p z trivial).differentiableAt`. Establish `hq'` using `(AnalyticOnNhd.eval_mvPolynomial (𝕜 := ℂ) q z trivial).differentiableAt`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_add]`. Rewrite using `[fderiv_fun_add hp' hq']`. Simplify using `[hp, hq]`. Consider the case `mul_X p j hp`. Establish `hp'` using `(AnalyticOnNhd.eval_mvPolynomial (𝕜 := ℂ) p z trivial).differentiableAt`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Establish `hX : DifferentiableAt ℂ (fun x : σ → ℂ => x j) z` using `differentiableAt_apply j z`. Simplify using `only [eval_mul, eval_X]`. Rewrite using `[fderiv_fun_mul hp' hX]`. Simplify using `[hp, Derivation.leibniz, pderiv_X, Pi.single_apply, fderiv_apply, mul_comm]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fderiv_eval_single {σ : Type} [Fintype σ] [DecidableEq σ] (g : MvPolynomial σ ℂ) (z : σ → ℂ) (i : σ) :
     fderiv ℂ (fun x : σ → ℂ => eval x g) z (Pi.single i 1) = eval z (pderiv i g) := by
@@ -40,17 +40,17 @@ theorem fderiv_eval_single {σ : Type} [Fintype σ] [DecidableEq σ] (g : MvPoly
 end NormalCurveRegularPoint
 
 /- English proof (translation)
-Introduce `σ _ I w hI hnorm hdim hw`. Take `⟨k, f, D, hk, hfI, hlin, hD, hgen⟩` from `hJ σ I w hI hnorm hdim hw`. Use `set W : Set (σ → ℂ) := {z | eval z D ≠ 0}`. Establish `hWo : IsOpen W` using `isOpen_ne_fun (continuous_eval D) continuous_const`. Establish `hder : ∀ j, (fun i : σ => fderiv ℂ (fun z : σ → ℂ => eval z (f j)) w (Pi.single i 1)) = fun i => eval w (pderiv i (f j))` using `fun j => funext fun i => NormalCurveRegularPoint.fderiv_eval_single (f j) w i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `Φ : ((σ → ℂ) →L[ℂ] ℂ) →ₗ[ℂ] (σ → ℂ)` to `{ toFun := fun L i => L (Pi.single i 1), map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Establish `hlin' : LinearIndependent ℂ (fun j => fderiv ℂ (fun z : σ → ℂ => eval z (f j)) w)`. Use `LinearIndependent.of_comp Φ ?_` and prove the remaining obligations. Use `hlin using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Conclude with `hder j`. Take `⟨d, A, O, V, g, hd, hO, hV, hwV, hVW, hg, hAg, hset⟩` from `IndefiniteRowSideFullHecke.ComplexSets.AnalyticImplicitChart.proof σ (Fin k) (fun j z => eval z (f j)) w W (fun j => AnalyticOnNhd.eval_mvPolynomial (f j) w trivial) (fun j => hw _ (hfI j)) hlin' (hWo.mem_nhds hD)`. Simplify using `only [Fintype.card_fin] at hd`. Take `rfl : d = 1` from `by omega`. Use `⟨A, O, V, g, hO, hV, hwV, hg, hAg, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[← hset]`. Use extensionality with `z`. Simplify using `only [Set.mem_inter_iff, Set.mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hz, hzV⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨hzV, fun j => hz _ (hfI j)⟩`. Introduce and unpack `⟨hzV, hzf⟩`. Use `⟨fun q hq => ?_, hzV⟩` and prove the remaining obligations. Establish `hspan : Ideal.span (Set.range f) ≤ RingHom.ker (eval z)`. Rewrite using `[Ideal.span_le]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `hzf j`. Establish `h0 : eval z (D * q) = 0` using `hspan (hgen q hq)`. Rewrite `h0` using `[eval_mul]`. Conclude with `(mul_eq_zero.mp h0).resolve_left (hVW hzV)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem NormalCurveRegularPoint.proof (hJ : NormalCurveJacobian.Statement) : NormalCurveRegularPoint.Statement := by
   classical

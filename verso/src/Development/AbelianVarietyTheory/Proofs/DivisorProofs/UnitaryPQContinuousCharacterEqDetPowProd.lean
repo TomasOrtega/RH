@@ -6,11 +6,11 @@ open scoped ComplexOrder
 namespace GlobalTheory.UpqChar
 
 /- English proof (translation)
-Establish `hcard : Fintype.card κ = Fintype.card ι`. Set `e : (κ → ℂ) ≃ₗ[ℂ] (ι → ℂ)` to `{ toFun := fun v => B *ᵥ v invFun := fun v => B' *ᵥ v map_add' := fun v w => Matrix.mulVec_add B v w map_smul' := fun a v => by simp [Matrix.mulVec_smul] left_inv := fun v => by simp [Matrix.mulVec_mulVec, h2] right_inv := fun v => by simp [Matrix.mulVec_mulVec, h1] }`. Simplify using `using e.finrank_eq`. Set `e : ι ≃ κ` to `Fintype.equivOfCardEq hcard.symm`. Establish `hC : B.submatrix id e * B'.submatrix e id = 1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Matrix.submatrix_mul_equiv, h1, Matrix.submatrix_id_id]`. Establish `hM : B * M * B' = B.submatrix id e * M.submatrix e e * B'.submatrix e id`. Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, Matrix.submatrix_id_id]`. Establish `hd : (B.submatrix id e).det * (B'.submatrix e id).det = 1`. Rewrite using `[← Matrix.det_mul, hC, Matrix.det_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hM, Matrix.det_mul, Matrix.det_mul, Matrix.det_submatrix_equiv_self]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem det_conj_rect {ι κ : Type} [Fintype ι] [Fintype κ] [DecidableEq ι] [DecidableEq κ]
     (B : Matrix ι κ ℂ) (B' : Matrix κ ι ℂ) (h1 : B * B' = 1) (h2 : B' * B = 1)
@@ -38,9 +38,9 @@ theorem det_conj_rect {ι κ : Type} [Fintype ι] [Fintype κ] [DecidableEq ι] 
     _ = M.det := by rw [hd, one_mul]
 
 /- English proof (translation)
-Establish `hone : f 1 = 1`. Establish `h` using `hmul 1 1`. Rewrite `h` using `[mul_one]`. Establish `hne : f 1 ≠ 0` using `fun h0 => by simpa [h0] using hn 1`. Conclude with `mul_left_cancel₀ hne (by rw [mul_one]; exact h.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : ∀ a, f a ∈ Submonoid.unitSphere ℂ` using `fun a => mem_sphere_zero_iff_norm.2 (hn a)`. Set `c : Matrix.unitaryGroup (Fin p) ℂ →* Circle` to `{ toFun := fun a => ⟨f a, hmem a⟩ map_one' := Circle.ext hone map_mul' := fun a b => Circle.ext (hmul a b) }`. Establish `hcont : Continuous c` using `Continuous.subtype_mk hc hmem`. Take `⟨m, hm⟩` from `GlobalTheory.T.unitaryGroup_continuous_char_eq_det_zpow p c hcont`. Conclude with `⟨m, fun a => hm a⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem char_unitary {p : ℕ} (f : Matrix.unitaryGroup (Fin p) ℂ → ℂ)
     (hmul : ∀ a b, f (a * b) = f a * f b) (hn : ∀ a, ‖f a‖ = 1) (hc : Continuous f) :
@@ -60,7 +60,7 @@ theorem char_unitary {p : ℕ} (f : Matrix.unitaryGroup (Fin p) ℂ → ℂ)
   exact ⟨m, fun a => hm a⟩
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `h'` using `congrFun (congrFun h i) j`. Simplify using `only [Matrix.neg_apply] at h'`. Simplify using `only [Matrix.zero_apply]`. Take the linear combination `h' / 2`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem matrix_eq_zero_of_eq_neg {ι κ : Type} (X : Matrix ι κ ℂ) (h : X = -X) : X = 0 := by
   ext i j
@@ -70,53 +70,47 @@ private theorem matrix_eq_zero_of_eq_neg {ι κ : Type} (X : Matrix ι κ ℂ) (
   linear_combination h' / 2
 
 /- English proof (translation)
-Introduce `n p q G s B B' hBB' hB'B hG hs c hmul hnorm hcont`. Take `⟨J, hJdef⟩ : ∃ J : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ, J = Matrix.fromBlocks 1 0 0 (-1)` from `⟨_, rfl⟩`. Rewrite `hG`, `hs` using `[← hJdef]`. Use `replace hs : s * B = B * J := hs`. Use `replace hG : Bᴴ * G * B = J := hG`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `replace hBB' : B * B' = 1 := hBB'`. Use `replace hB'B : B' * B = 1 := hB'B`. Establish `hconj : ∀ X Y : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ, (B * X * B') * (B * Y * B') = B * (X * Y) * B'`. Introduce `X Y`. Simplify using `only [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_assoc B' B, hB'B, Matrix.one_mul]`. Establish `hsJ : s = B * J * B'`. Rewrite using `[← hs, Matrix.mul_assoc, hBB', Matrix.mul_one]`. Establish `hGJ : G = B'ᴴ * J * B'`. Rewrite using `[← hG]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h0 : (B * B')ᴴ = 1` using `by rw [hBB', Matrix.conjTranspose_one]`. Rewrite `h0` using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hK : ∀ (a : Matrix (Fin p) (Fin p) ℂ) (d : Matrix (Fin q) (Fin q) ℂ), aᴴ * a = 1 → dᴴ * d = 1 → (B * Matrix.fromBlocks a 0 0 d * B')ᴴ * G * (B * Matrix.fromBlocks a 0 0 d * B') = G ∧ s * (B * Matrix.fromBlocks a 0 0 d * B') = (B * Matrix.fromBlocks a 0 0 d * B') * s`. Introduce `a d ha hd`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Establish `hm : (Matrix.fromBlocks a 0 0 d)ᴴ * J * Matrix.fromBlocks a 0 0 d = J`. Rewrite using `[hJdef, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Simplify using `[ha, hd]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = G := by rw [hG, hm, ← hGJ]`. Rewrite using `[hsJ, hconj, hconj, hJdef, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Simplify using the standard rewrite rules. Set `kA : Matrix.unitaryGroup (Fin p) ℂ → Matrix (Fin n) (Fin n) ℂ` to `fun a => B * (Matrix.fromBlocks (a : Matrix (Fin p) (Fin p) ℂ) 0 0 1 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) * B'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Set `kD : Matrix.unitaryGroup (Fin q) ℂ → Matrix (Fin n) (Fin n) ℂ` to `fun d => B * (Matrix.fromBlocks 1 0 0 (d : Matrix (Fin q) (Fin q) ℂ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) * B'`. Establish `hKA : ∀ a : Matrix.unitaryGroup (Fin p) ℂ, (kA a)ᴴ * G * kA a = G ∧ s * kA a = kA a * s`. Introduce `a`. Use `hK _ _ ?_ (by simp)` and prove the remaining obligations. Rewrite using `[← Matrix.star_eq_conjTranspose]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Matrix.mem_unitaryGroup_iff'.1 a.2`. Establish `hKD : ∀ d : Matrix.unitaryGroup (Fin q) ℂ, (kD d)ᴴ * G * kD d = G ∧ s * kD d = kD d * s`. Introduce `d`. Use `hK _ _ (by simp) ?_` and prove the remaining obligations. Rewrite using `[← Matrix.star_eq_conjTranspose]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Matrix.mem_unitaryGroup_iff'.1 d.2`. Establish `hkAmul : ∀ a b : Matrix.unitaryGroup (Fin p) ℂ, kA (a * b) = kA a * kA b`. Introduce `a b`. Use `show B * (Matrix.fromBlocks ((a * b : Matrix.unitaryGroup (Fin p) ℂ) : Matrix (Fin p) (Fin p) ℂ) 0 0 1 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) * B' = (B * (Matrix.fromBlocks (a : Matrix (Fin p) (Fin p) ℂ) 0 0 1 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) * B') * (B * (Matrix. …`. Rewrite using `[hconj, Matrix.fromBlocks_multiply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using the standard rewrite rules. Establish `hkDmul : ∀ a b : Matrix.unitaryGroup (Fin q) ℂ, kD (a * b) = kD a * kD b`. Introduce `a b`. Use `show B * (Matrix.fromBlocks 1 0 0 ((a * b : Matrix.unitaryGroup (Fin q) ℂ) : Matrix (Fin q) (Fin q) ℂ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) * B' = (B * (Matrix.fromBlocks 1 0 0 (a : Matrix (Fin q) (Fin q) ℂ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) * B') * (B * (Matrix. …`. Rewrite using `[hconj, Matrix.fromBlocks_multiply]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hkAc : Continuous kA` using `by show Continuous (fun a : Matrix.unitaryGroup (Fin p) ℂ => B * (Matrix.fromBlocks (a : Matrix (Fin p) (Fin p) ℂ) 0 0 1 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) * B') fun_prop`. Establish `hkDc : Continuous kD` using `by show Continuous (fun d : Matrix.unitaryGroup (Fin q) ℂ => B * (Matrix.fromBlocks 1 0 0 (d : Matrix (Fin q) (Fin q) ℂ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) * B') fun_prop`. Take `⟨x, hx⟩` from `char_unitary (fun a => c (kA a)) (fun a b => by show c (kA (a * b)) = c (kA a) * c (kA b)`. Rewrite using `[hkAmul]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Conclude with `hmul _ _ (hKA a).1 (hKA a).2 (hKA b).1 (hKA b).2)`. Use the proof step `(fun a => hnorm _ (hKA a).1 (hKA a).2) (hcont.comp_continuous hkAc hKA)`. Take `⟨y, hy⟩` from `char_unitary (fun d => c (kD d)) (fun a b => by show c (kD (a * b)) = c (kD a) * c (kD b)`. Rewrite using `[hkDmul]`. Conclude with `hmul _ _ (hKD a).1 (hKD a).2 (hKD b).1 (hKD b).2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use the proof step `(fun d => hnorm _ (hKD d).1 (hKD d).2) (hcont.comp_continuous hkDc hKD)`. Establish `hx' : ∀ a : Matrix.unitaryGroup (Fin p) ℂ, c (kA a) = (a : Matrix (Fin p) (Fin p) ℂ).det ^ x` using `hx`. Establish `hy' : ∀ d : Matrix.unitaryGroup (Fin q) ℂ, c (kD d) = (d : Matrix (Fin q) (Fin q) ℂ).det ^ y` using `hy`. Use `⟨x, y, fun k hk1 hk2 => ?_⟩` and prove the remaining obligations. Take `⟨m, hmdef⟩ : ∃ m, m = B' * k * B` from `⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk_eq : k = B * m * B'`. Combine the equalities or inequalities in the displayed calculation. Establish `hJm : J * m = m * J`. Establish `hJ : J = B' * s * B`. Rewrite using `[Matrix.mul_assoc, hs, ← Matrix.mul_assoc, hB'B, Matrix.one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hJ, hmdef]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc B B', hBB', Matrix.one_mul]`. Use `_ = B' * (k * s) * B := by rw [hk2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `_ = B' * k * B * (B' * s * B) := by`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc B B', hBB', Matrix.one_mul]`. Establish `hoff : m.toBlocks₁₂ = 0 ∧ m.toBlocks₂₁ = 0`. Establish `h` using `hJm`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[hJdef, ← Matrix.fromBlocks_toBlocks m, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply, Matrix.fromBlocks_inj]`. Take `⟨-, hb, hc, -⟩` from `h`. Simplify using `only [Matrix.one_mul, Matrix.zero_mul, Matrix.mul_one, Matrix.mul_zero, add_zero, zero_add, Matrix.neg_mul, Matrix.mul_neg] at hb hc`. Conclude with `⟨matrix_eq_zero_of_eq_neg _ hb, matrix_eq_zero_of_eq_neg _ hc.symm⟩`. Take `⟨a, d, hmad⟩ : ∃ a d, m = Matrix.fromBlocks a 0 0 d` from `⟨m.toBlocks₁₁, m.toBlocks₂₂, by rw [← hoff.1, ← hoff.2, Matrix.fromBlocks_toBlocks]⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmU : mᴴ * J * m = J`. Rewrite using `[← hG, hmdef]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Bᴴ * G * B := by rw [hBB', Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one, hk1]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `hmU` using `[hmad, hJdef, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply, Matrix.fromBlocks_inj]`. Take `⟨ha, -, -, hd⟩` from `hmU`. Simplify using `only [Matrix.conjTranspose_zero, Matrix.mul_one, Matrix.mul_zero, add_zero, zero_add, Matrix.neg_mul, Matrix.mul_neg, neg_inj] at ha hd`. Establish `ha' : a ∈ Matrix.unitaryGroup (Fin p) ℂ` using `Matrix.mem_unitaryGroup_iff'.2 (by rw [Matrix.star_eq_conjTranspose]; exact ha)`. Establish `hd' : d ∈ Matrix.unitaryGroup (Fin q) ℂ` using `Matrix.mem_unitaryGroup_iff'.2 (by rw [Matrix.star_eq_conjTranspose]; exact hd)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hkAD : k = kA ⟨a, ha'⟩ * kD ⟨d, hd'⟩`. Rewrite using `[hk_eq, hmad]`. Use `show B * Matrix.fromBlocks a 0 0 d * B' = (B * (Matrix.fromBlocks a 0 0 1 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) * B') * (B * (Matrix.fromBlocks 1 0 0 d : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) * B')`. Rewrite using `[hconj, Matrix.fromBlocks_multiply]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1 : (1 : Matrix (Fin n) (Fin n) ℂ) = B * (1 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) * B'` using `by rw [Matrix.mul_one, hBB']`. Establish `hJ1 : (1 / 2 : ℂ) • (1 + J) = (Matrix.fromBlocks (1 : Matrix (Fin p) (Fin p) ℂ) 0 0 0 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)`. Rewrite using `[hJdef]`. Apply the tactic sequence `ext (i | i) (j | j) <;> simp [Matrix.one_apply] <;> (try split_ifs) <;> norm_num`. Establish `hJ2 : (1 / 2 : ℂ) • (1 - J) = (Matrix.fromBlocks 0 0 0 (1 : Matrix (Fin q) (Fin q) ℂ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)`.
-
-Rewrite using `[hJdef]`. Apply the tactic sequence `ext (i | i) (j | j) <;> simp [Matrix.one_apply] <;> (try split_ifs) <;> norm_num`. Establish `hP1 : (1 / 2 : ℂ) • (1 + s) = B * (Matrix.fromBlocks (1 : Matrix (Fin p) (Fin p) ℂ) 0 0 0 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) * B'`. Rewrite using `[← hJ1, hsJ, h1, ← Matrix.add_mul, ← Matrix.mul_add, Matrix.mul_smul, Matrix.smul_mul]`. Establish `hP2 : (1 / 2 : ℂ) • (1 - s) = B * (Matrix.fromBlocks 0 0 0 (1 : Matrix (Fin q) (Fin q) ℂ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) * B'`.
-
-Rewrite using `[← hJ2, hsJ, h1, ← Matrix.sub_mul, ← Matrix.mul_sub, Matrix.mul_smul, Matrix.smul_mul]`. Establish `hE1 : (1 / 2 : ℂ) • (1 + s) * k + (1 / 2 : ℂ) • (1 - s) = B * (Matrix.fromBlocks a 0 0 1 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) * B'`. Rewrite using `[hP1, hP2, hk_eq, hmad, hconj, ← Matrix.add_mul, ← Matrix.mul_add, Matrix.fromBlocks_multiply, Matrix.fromBlocks_add]`. Simplify using the standard rewrite rules. Establish `hE2 : (1 / 2 : ℂ) • (1 - s) * k + (1 / 2 : ℂ) • (1 + s) = B * (Matrix.fromBlocks 1 0 0 d : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) * B'`.
-
-Rewrite using `[hP1, hP2, hk_eq, hmad, hconj, ← Matrix.add_mul, ← Matrix.mul_add, Matrix.fromBlocks_multiply, Matrix.fromBlocks_add]`. Simplify using the standard rewrite rules. Rewrite using `[hE1, hE2, det_conj_rect B B' hBB' hB'B, det_conj_rect B B' hBB' hB'B, Matrix.det_fromBlocks_zero₂₁, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, Matrix.det_one, mul_one, one_mul, hkAD, hmul _ _ (hKA _).1 (hKA _).2 (hKD _).1 (hKD _).2, hx', hy']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem char_Upq : ∀ (n p q : ℕ) (G s : Matrix (Fin n) (Fin n) ℂ) (B : Matrix (Fin n) (Fin p ⊕ Fin q) ℂ) (B' : Matrix (Fin p ⊕ Fin q) (Fin n) ℂ), B * B' = 1 → B' * B = 1 → Bᴴ * G * B = Matrix.fromBlocks 1 0 0 (-1) → s * B = B * Matrix.fromBlocks 1 0 0 (-1) → ∀ c : Matrix (Fin n) (Fin n) ℂ → ℂ, (∀ k k' : Matrix (Fin n) (Fin n) ℂ, kᴴ * G * k = G → s * k = k * s → k'ᴴ * G * k' = G → s * k' = k' * s → c (k * k') = c k * c k') → (∀ k : Matrix (Fin n) (Fin n) ℂ, kᴴ * G * k = G → s * k = k * s → ‖c k‖ = 1) → ContinuousOn c {k | kᴴ * G * k = G ∧ s * k = k * s} → ∃ x y : ℤ, ∀ k : Matrix (Fin n) (Fin n) ℂ, kᴴ * G * k = G → s * k = k * s → c k = ((1 / 2 : ℂ) • (1 + s) * k + (1 / 2 : ℂ) • (1 - s)).det ^ x * ((1 / 2 : ℂ) • (1 - s) * k + (1 / 2 : ℂ) • (1 + s)).det ^ y := by
   intro n p q G s B B' hBB' hB'B hG hs c hmul hnorm hcont

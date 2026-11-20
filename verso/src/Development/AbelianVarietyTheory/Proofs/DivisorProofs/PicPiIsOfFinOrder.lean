@@ -9,11 +9,11 @@ namespace PicPi
 variable {ι : Type} {R : ι → Type} [∀ i, CommRing (R i)] [DecidableEq ι]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `tmul r y`. Use `⟨(Pi.single i r : (j : ι) → R j) • y, ?_⟩` and prove the remaining obligations. Rewrite using `[← TensorProduct.smul_tmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[Algebra.smul_def, hA]`. Simplify using the standard rewrite rules. Consider the case `add a b ha hb`. Take `⟨ya, rfl⟩` from `ha`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨yb, rfl⟩` from `hb`. Conclude with `⟨ya + yb, by rw [TensorProduct.tmul_add]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_one_tmul (i : ι) (M : Type) [AddCommGroup M] [Module ((j : ι) → R j) M]
     [Algebra ((j : ι) → R j) (R i)]
@@ -33,11 +33,11 @@ theorem exists_one_tmul (i : ι) (M : Type) [AddCommGroup M] [Module ((j : ι) �
     exact ⟨ya + yb, by rw [TensorProduct.tmul_add]⟩
 
 /- English proof (translation)
-Set `φ : R i →ₗ[(j : ι) → R j] M →ₗ[(j : ι) → R j] M` to `LinearMap.mk₂ _ (fun r y => (Pi.single i r : (j : ι) → R j) • y) (fun r₁ r₂ y => by simp only [Pi.single_add, add_smul]) (fun s r y => by`. Establish `hs : (Pi.single i (s • r) : (j : ι) → R j) = s * Pi.single i r`. Use extensionality with `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[Algebra.smul_def, hA]`. Simplify using `[hj]`. Simplify using `only [hs, mul_smul])`. Use the proof step `(fun r y₁ y₂ => smul_add _ _ _)`. Use the proof step `(fun s r y => smul_comm _ _ _)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg (TensorProduct.lift φ) h` as an intermediate fact. Simplify `this` using `[φ]`.
+A detailed English derivation is pending.
 -/
 theorem single_smul_eq_zero (i : ι) (M : Type) [AddCommGroup M] [Module ((j : ι) → R j) M]
     [Algebra ((j : ι) → R j) (R i)]
@@ -61,25 +61,23 @@ theorem single_smul_eq_zero (i : ι) (M : Type) [AddCommGroup M] [Module ((j : �
 variable [Fintype ι]
 
 /- English proof (translation)
-Use `letI inst : ∀ i, Algebra ((j : ι) → R j) (R i) := fun i => (Pi.evalRingHom R i).toAlgebra`. Establish `hA : ∀ i, algebraMap ((j : ι) → R j) (R i) = Pi.evalRingHom R i` using `fun i => rfl`. Establish `e : ∀ i, (R i ⊗[(j : ι) → R j] M) ≃ₗ[R i] R i`. Introduce `i`. Establish `hi` using `h i`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hi` using `[← hA i, CommRing.Pic.mapRingHom_algebraMap, CommRing.Pic.mapAlgebra_apply, CommRing.Pic.mk_eq_one_iff]`. Conclude with `hi.some`. Use `choose m hm using fun i => exists_one_tmul i M (hA i) ((e i).symm 1)`. Set `m₀ : M` to `∑ i, (Pi.single i 1 : (j : ι) → R j) • m i`. Establish `hsurj : Function.Surjective (LinearMap.toSpanSingleton ((j : ι) → R j) M m₀)`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x`. Use `⟨fun i => e i ((1 : R i) ⊗ₜ x), ?_⟩` and prove the remaining obligations. Establish `key : ∀ i, (Pi.single i 1 : (j : ι) → R j) • x = (Pi.single i (e i ((1 : R i) ⊗ₜ x)) : (j : ι) → R j) • m i`. Introduce `i`. Use `set r := e i ((1 : R i) ⊗ₜ x) with hr`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (1 : R i) ⊗ₜ[(j : ι) → R j] x = (1 : R i) ⊗ₜ ((Pi.single i r : (j : ι) → R j) • m i)`. Apply `(e i).injective` to reduce the goal to its premises. Rewrite using `[← TensorProduct.smul_tmul]`. Establish `h0 : (Pi.single i r : (j : ι) → R j) • (1 : R i) = r`. Rewrite using `[Algebra.smul_def, hA i]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Rewrite using `[h0]`. Establish `h5 : (r ⊗ₜ[(j : ι) → R j] m i : R i ⊗[(j : ι) → R j] M) = r • ((1 : R i) ⊗ₜ m i)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[h5, map_smul, hm i, LinearEquiv.apply_symm_apply, smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (1 : R i) ⊗ₜ[(j : ι) → R j] (x - (Pi.single i r : (j : ι) → R j) • m i) = 0`. Rewrite using `[TensorProduct.tmul_sub, h1, sub_self]`. Establish `h3` using `single_smul_eq_zero i M (hA i) _ h2`. Rewrite `h3` using `[smul_sub, sub_eq_zero, smul_smul]`. Rewrite using `[h3, ← Pi.single_mul, one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[LinearMap.toSpanSingleton_apply, Finset.smul_sum]`. Establish `hs : ∀ i, (fun i => e i ((1 : R i) ⊗ₜ x) : (j : ι) → R j) • (Pi.single i 1 : (j : ι) → R j) • m i = (Pi.single i 1 : (j : ι) → R j) • x`. Introduce `i`. Rewrite using `[key i, smul_smul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use extensionality with `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hj]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Finset.sum_congr rfl (fun i _ => hs i), ← Finset.sum_smul]`. Establish `h1 : ∑ i, (Pi.single i 1 : (j : ι) → R j) = 1`. Simplify using `using Finset.univ_sum_single (1 : (j : ι) → R j)`. Rewrite using `[h1, one_smul]`. Establish `hbij` using `Module.Invertible.bijective_of_surjective hsurj`.
-
-Conclude with `CommRing.Pic.mk_eq_self.symm.trans (CommRing.Pic.mk_eq_one_iff.mpr ⟨(LinearEquiv.ofBijective _ hbij).symm⟩)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_one_of_forall (M : CommRing.Pic ((j : ι) → R j))
     (h : ∀ i, CommRing.Pic.mapRingHom (Pi.evalRingHom R i) M = 1) : M = 1 := by
@@ -136,9 +134,9 @@ theorem eq_one_of_forall (M : CommRing.Pic ((j : ι) → R j))
 end PicPi
 
 /- English proof (translation)
-Introduce `ι _ R _ hR M`. Use `haveI := Fintype.ofFinite ι`. Establish `hk : 0 < ∏ i, orderOf (CommRing.Pic.mapRingHom (Pi.evalRingHom R i) M)` using `Finset.prod_pos fun i _ => (hR i _).orderOf_pos`. Use `isOfFinOrder_iff_pow_eq_one.mpr ⟨_, hk, ?_⟩` and prove the remaining obligations. Apply `PicPi.eq_one_of_forall` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Rewrite using `[map_pow]`. Conclude with `orderOf_dvd_iff_pow_eq_one.mp (Finset.dvd_prod_of_mem _ (Finset.mem_univ i))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pic_pi_isOfFinOrder : ∀ (ι : Type) [Finite ι] (R : ι → Type) [∀ i, CommRing (R i)],
     (∀ i (M : CommRing.Pic (R i)), IsOfFinOrder M) →

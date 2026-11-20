@@ -18,7 +18,7 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc GlobalTheory.Me
 open scoped Formalism.Per
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.RingIface.tower l a`.
+A detailed English derivation is pending.
 -/
 theorem coreEx_alg_tower {l : ℕ} [Fact l.Prime] (a : Per.Ainf l) :
     algebraMap (Per.Ainf l) (Per.Acris l) a =
@@ -30,9 +30,9 @@ set_option allowUnsafeReducibility true in
 attribute [local irreducible] Per.Acris Per.Bcris
 
 /- English proof (translation)
-Establish `h0 : (l : Per.Acris0 l) * w = algebraMap (Per.Ainf l) (Per.Acris0 l) (mu e) ^ (l - 1)` using `Subtype.ext (by simpa using hw)`. Establish `hu : IsUnit (algebraMap (Per.Acris l) (Per.Bcris l) (algebraMap (Per.Ainf l) (Per.Acris l) (mu e)))`. Conclude with `GlobalTheory.CrisLoc.unit_of_root l e h1 h2`. Establish `h3` using `congrArg ((algebraMap (Per.Acris l) (Per.Bcris l)).comp (algebraMap (Per.Acris0 l) (Per.Acris l))) h0`. Rewrite `h3` using `[map_mul, map_natCast, map_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : (algebraMap (Per.Acris l) (Per.Bcris l)).comp (algebraMap (Per.Acris0 l) (Per.Acris l)) (algebraMap (Per.Ainf l) (Per.Acris0 l) (mu e)) = algebraMap (Per.Acris l) (Per.Bcris l) (algebraMap (Per.Ainf l) (Per.Acris l) (mu e))`. Rewrite using `[coreEx_alg_tower, RingHom.comp_apply]`. Rewrite `h3` using `[h4]`. Conclude with `isUnit_of_mul_isUnit_left (h3 ▸ hu.pow (l - 1))`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coreEx_isUnit_l {l : ℕ} [Fact l.Prime] (e : Per.Fl l) (h1 : e.untilt = 1) (h2 : e ≠ 1)
     (w : Per.Acris0 l)
@@ -54,19 +54,19 @@ theorem coreEx_isUnit_l {l : ℕ} [Fact l.Prime] (e : Per.Fl l) (h1 : e.untilt =
   exact isUnit_of_mul_isUnit_left (h3 ▸ hu.pow (l - 1))
 
 /- English proof (translation)
-Introduce `l _`. Take `⟨ζ, ε, z0, zs, z1, hr⟩` from `GlobalTheory.T.exists_compatible_rootsOfUnity_and_tilt_padic l`. Take `⟨o, ho⟩` from `GlobalTheory.T.exists_isBdRPlusSectionOfTheta l`. Take `⟨j, hj⟩` from `GlobalTheory.T.exists_canonical_acris_to_bdRPlus l`. Take `⟨ι, hι, hinj⟩` from `GlobalTheory.T.exists_injective_bcris_to_bdR l j hj`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h1 : ε.untilt = 1`. Establish `h` using `hr 0`. Rewrite `h` using `[z0, map_one]`. Conclude with `Subtype.ext h`. Establish `h2 : ε ≠ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `h'` using `hr 1`. Rewrite `h'` using `[h]`. Simplify using `only [rootT, Function.iterate_one, map_one] at h'`. Apply `z1` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(algebraMap (Om l) ℂ_[l]).injective` to reduce the goal to its premises. Rewrite using `[← h', map_one]`. Both sides reduce to the same expression. Take `⟨w, hw, -⟩` from `GlobalTheory.T.exists_teichmullerTiltMinusOne_pow_div_envelope l ε h1`. Establish `hA : ∀ a : Per.Ainf l, ι (Per.aB l a) = algebraMap (Per.BdRp l) (Per.BdR l) (aDp l a)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Establish `h` using `hι (algebraMap (Per.Ainf l) (Per.Acris l) a)`. Establish `h' : j (algebraMap (Per.Ainf l) (Per.Acris l) a) = aDp l a`. Rewrite using `[coreEx_alg_tower, hj.on0]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[h']`. Rewrite using `[GlobalTheory.RingIface.aB_apply]`. Conclude with `h`. Take `⟨u, hu⟩` from `GlobalTheory.T.exists_maxUnramified_embedding_into_Bcris l o ι ho hinj hA (coreEx_isUnit_l ε h1 h2 w hw)`. Take `⟨t, -, ht, -⟩` from `GlobalTheory.T.exists_log_teichmuller_acris_eq_mu_mul_unit l ε h1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨σ, hσ⟩` from `exists_frobenius_Kur l`. Take `⟨χ, hχ⟩` from `exists_cyclotomicChar l`. Conclude with `⟨⟨ζ, z0, zs, z1, ε, hr, o, ho, j, hj, ι, hι, u, hu, t, ht, σ, hσ, χ, hχ⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_core : ∀ (l : ℕ) [Fact l.Prime], Nonempty (Core l) := by
   intro l _

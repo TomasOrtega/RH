@@ -16,7 +16,7 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.CechPic
 namespace GlobalTheory.PrimeDivCartier
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.height_one_prime_principal_local R S p P hP hPp hP0 hmin`.
+A detailed English derivation is pending.
 -/
 theorem exists_local_generator (R S : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R]
     [CommRing S] [IsDomain S] [Algebra R S] (p P : Ideal R) [p.IsPrime]
@@ -26,7 +26,7 @@ theorem exists_local_generator (R S : Type) [CommRing R] [IsDomain R] [IsNoether
   GlobalTheory.T.height_one_prime_principal_local R S p P hP hPp hP0 hmin
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.codim_one_point_minimal_prime X U hU z hz h1`.
+A detailed English derivation is pending.
 -/
 theorem primeIdealOf_minimal (X : Scheme.{0}) [IsIntegral X] (U : X.Opens) (hU : IsAffineOpen U)
     (z : X) (hz : z ∈ U) (h1 : Order.coheight z = 1) :
@@ -35,7 +35,7 @@ theorem primeIdealOf_minimal (X : Scheme.{0}) [IsIntegral X] (U : X.Opens) (hU :
   GlobalTheory.T.codim_one_point_minimal_prime X U hU z hz h1
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.order_at_codim_one_eq_one X U hU z hz a t h1 ha0 ha ht hg`.
+A detailed English derivation is pending.
 -/
 theorem ord_eq_one (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (U : X.Opens)
     (hU : IsAffineOpen U) (z : X) (hz : z ∈ U) (a t : Γ(X, U)) (h1 : Order.coheight z = 1)
@@ -46,7 +46,7 @@ theorem ord_eq_one (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (U : 
   GlobalTheory.T.order_at_codim_one_eq_one X U hU z hz a t h1 ha0 ha ht hg
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.order_off_codim_one_eq_zero X U hU z hz a t h1 hg v hv hvt hvz`.
+A detailed English derivation is pending.
 -/
 theorem ord_eq_zero (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (U : X.Opens)
     (hU : IsAffineOpen U) (z : X) (hz : z ∈ U) (a t : Γ(X, U)) (h1 : Order.coheight z = 1)
@@ -58,15 +58,13 @@ theorem ord_eq_zero (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (U :
 open Classical in
 
 /- English proof (translation)
-Distinguish the cases in `hzx : z ⤳ x`. Take `⟨U, hU, hxU, -⟩` from `exists_isAffineOpen_mem_and_subset (X := X) (x := x) (U := ⊤) trivial`. Establish `hzU : z ∈ U` using `hzx.mem_open U.isOpen hxU`. Use `haveI : Nonempty U := ⟨⟨x, hxU⟩⟩`. Use `haveI : IsNoetherianRing Γ(X, U) := IsLocallyNoetherian.component_noetherian ⟨U, hU⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `letI : Algebra Γ(X, U) (X.presheaf.stalk x) := TopCat.Presheaf.algebra_section_stalk X.presheaf ⟨x, hxU⟩`. Use `haveI := hU.isLocalization_stalk ⟨x, hxU⟩`. Use `haveI := hu x`. Establish `hPp : (hU.primeIdealOf ⟨z, hzU⟩).asIdeal ≤ (hU.primeIdealOf ⟨x, hxU⟩).asIdeal`. Establish `h' : (⟨z, hzU⟩ : U) ⤳ ⟨x, hxU⟩` using `Topology.IsInducing.subtypeVal.specializes_iff.1 hzx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(PrimeSpectrum.le_iff_specializes _ _).2 (h'.map hU.isoSpec.hom.continuous)`. Take `⟨hP0, hmin⟩` from `primeIdealOf_minimal X U hU z hzU h1`. Take `⟨a, haP, ha0, t, htp, hg⟩` from `exists_local_generator Γ(X, U) (X.presheaf.stalk x) (hU.primeIdealOf ⟨x, hxU⟩).asIdeal (hU.primeIdealOf ⟨z, hzU⟩).asIdeal (hU.primeIdealOf ⟨z, hzU⟩).2 hPp hP0 hmin`. Establish `hf0 : fnOf U (gen_mem hxU) a ≠ 0` using `fun h => ha0 (fnOf_injective U (gen_mem hxU) (h.trans (map_zero _).symm))`. Use `⟨U ⊓ X.basicOpen t, ⟨hxU, ?_⟩, Units.mk0 _ hf0, fun v hv => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Conclude with `(Scheme.mem_basicOpen X t x hxU).2 ((IsLocalization.AtPrime.isUnit_to_map_iff _ _ t).2 htp)`. Simplify using `only [Units.val_mk0] split_ifs with hvz`. Substitute `hvz` using the available equality. Conclude with `ord_eq_one X U hU v hzU a t h1 ha0 haP (fun h => htp (hPp h)) hg`. Conclude with `ord_eq_zero X U hU z hzU a t h1 hg v hv.1 hv.2 hvz`.
-
-Use `⟨⟨(closure {z})ᶜ, isClosed_closure.isOpen_compl⟩, ?_, 1, fun v hv => ?_⟩` and prove the remaining obligations. Conclude with `fun h => hzx (specializes_iff_mem_closure.2 h)`. Establish `hvz : v ≠ z` using `fun e => hv (e ▸ subset_closure rfl)`. Rewrite using `[if_neg hvz, Units.val_one]`. Conclude with `(unitAt_one v).ord_eq_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_local_eqn (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X]
     (hu : ∀ x : X, UniqueFactorizationMonoid (X.presheaf.stalk x)) (z : X)
@@ -110,13 +108,13 @@ end GlobalTheory.PrimeDivCartier
 open GlobalTheory.PrimeDivCartier in
 
 /- English proof (translation)
-Introduce `X _ _ hu z h1`. Use `haveI : GlobalTheory.IsNormalScheme X := ⟨fun x => inferInstance, fun x => by haveI := hu x; exact UniqueFactorizationMonoid.instIsIntegrallyClosed⟩`. Use `choose U hxU π hπ using exists_local_eqn X hu z h1`. Establish `hunit : ∀ x y, y ∈ U x → UnitAt y ((π x : X.functionField) / π y)`. Introduce `x y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `(GlobalTheory.T.cartier_divisor_mult_characterize X (0 : CartierDiv X)).2.2.2 y (π x / π y) (fun v hv => by`. Establish `hvx : v ∈ U x` using `hv.mem_open (U x).isOpen hy`. Establish `hvy : v ∈ U y` using `hv.mem_open (U y).isOpen (hxU y)`. Establish `e` using `Scheme.ord_mul (X := X) (x := v) (Units.ne_zero (π x / π y)) (Units.ne_zero (π y))`. Rewrite `e` using `[← Units.val_mul, div_mul_cancel, hπ x v hvx, hπ y v hvy]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[(CartierDiv.isEqn_zero v).mult_eq, Units.val_one, (unitAt_one v).ord_eq_zero]`. Apply the tactic sequence `split_ifs at e <;> omega)`. Simplify using `using (CartierDiv.isEqn_zero y).iff_unitAt.1 h`. Set `D : CartierDiv X` to `show cartierGroup X from ⟨fun y => germOf y (π y), fun x => ⟨U x, hxU x, π x, fun y hy => germOf_eq_iff.2 (hunit x y hy)⟩⟩`. Establish `hD : ∀ y, D.IsEqn y (π y)` using `fun y => rfl`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨D, ?_, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[(hD z).mult_eq, hπ z z (hxU z), if_pos rfl]`. Rewrite using `[(hD v).mult_eq, hπ v v (hxU v), if_neg hv]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.primeDivisor_isCartier : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X],
     (∀ x : X, UniqueFactorizationMonoid (X.presheaf.stalk x)) → ∀ z : X, Order.coheight z = 1 →

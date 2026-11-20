@@ -5,17 +5,15 @@ open CategoryTheory AlgebraicGeometry Limits
 namespace GlobalTheory.EqualityOnPoints
 
 /- English proof (translation)
-Use `set l := pullback.lift a b h with hl`. Establish `hcl : IsClosed (l ⁻¹' Set.range (pullback.diagonal s))` using `(pullback.diagonal s).isClosedEmbedding.isClosed_range.preimage l.continuous`. Establish `he : i ≫ l = (i ≫ a) ≫ pullback.diagonal s`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[hl, Category.assoc, pullback.lift_fst, Category.assoc, pullback.diagonal_fst, Category.comp_id]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hl, Category.assoc, pullback.lift_snd, Category.assoc, pullback.diagonal_snd, Category.comp_id, hi]`. Establish `hsub : Set.range i ⊆ l ⁻¹' Set.range (pullback.diagonal s)`. Introduce and unpack `_ ⟨w, rfl⟩`. Use `⟨(i ≫ a) w, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, ← he, Scheme.Hom.comp_apply]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hall : l x ∈ Set.range (pullback.diagonal s)`. Establish `hcl'` using `hcl.closure_subset_iff.2 hsub`. Rewrite `hcl'` using `[i.denseRange.closure_range]`. Conclude with `hcl' (Set.mem_univ x)`. Take `⟨y, hy⟩` from `hall`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : a x = y`. Establish `e : (pullback.diagonal s ≫ pullback.fst s s) y = (l ≫ pullback.fst s s) x`. Rewrite using `[Scheme.Hom.comp_apply, Scheme.Hom.comp_apply, hy]`. Rewrite `e` using `[pullback.diagonal_fst, hl, pullback.lift_fst]`. Simplify using `using e.symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : b x = y`. Establish `e : (pullback.diagonal s ≫ pullback.snd s s) y = (l ≫ pullback.snd s s) x`. Rewrite using `[Scheme.Hom.comp_apply, Scheme.Hom.comp_apply, hy]`. Rewrite `e` using `[pullback.diagonal_snd, hl, pullback.lift_snd]`. Simplify using `using e.symm`.
-
-Rewrite using `[ha, hb]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_on_points {W X Y Z : Scheme.{0}} {a b : X ⟶ Y} (s : Y ⟶ Z) [IsSeparated s]
     (h : a ≫ s = b ≫ s) (i : W ⟶ X) [IsDominant i] (hi : i ≫ a = i ≫ b) (x : X) :

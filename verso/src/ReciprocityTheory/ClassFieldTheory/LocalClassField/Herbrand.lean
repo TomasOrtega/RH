@@ -9,7 +9,7 @@ universe u
 variable {k G : Type u} [CommRing k] [CommGroup G] [Fintype G] {M : Type u} [AddCommGroup M] [Module k M]
 
 /- English proof (translation)
-Establish `: φ.ker = H` using `by ext x; rw [AddMonoidHom.mem_ker, hk]`. Substitute `this` using the available equality. Conclude with `⟨(QuotientAddGroup.quotientKerEquivOfSurjective φ hφ).symm⟩`.
+Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem nonempty_of_surjective {X Y : Type*} [AddCommGroup X] [AddCommGroup Y] (H : AddSubgroup X)
     (φ : X →+ Y) (hφ : Surjective φ) (hk : ∀ x, φ x = 0 ↔ x ∈ H) : Nonempty (Y ≃+ X ⧸ H) := by
@@ -18,9 +18,9 @@ theorem nonempty_of_surjective {X Y : Type*} [AddCommGroup X] [AddCommGroup Y] (
   exact ⟨(QuotientAddGroup.quotientKerEquivOfSurjective φ hφ).symm⟩
 
 /- English proof (translation)
-Establish `: NeZero i` using `⟨hi0⟩`. Set `π` to `Rep.FiniteCyclicGroup.groupCohomologyπEven (Rep.of ρ) g hg i hi`. Establish `hπ : Surjective π.hom`. Rewrite using `[← ModuleCat.epi_iff_surjective]`. Simplify using `only [π, Rep.FiniteCyclicGroup.groupCohomologyπEven]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Conclude with `epi_comp' (@IsIso.epi_of_iso _ _ _ _ _ (Iso.isIso_inv _)) (epi_comp' inferInstance inferInstance)`. Use `nonempty_of_surjective _ (π.hom.toAddMonoidHom) hπ ?_` and prove the remaining obligations. Introduce `x`. Conclude with `Rep.FiniteCyclicGroup.groupCohomologyπEven_eq_zero_iff (Rep.of ρ) g hg i hi x`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem nonempty_groupCohomology_even (ρ : Representation k G M) (g : G)
     (hg : ∀ x, x ∈ Subgroup.zpowers g) (i : ℕ) (hi0 : i ≠ 0) (hi : Even i) :
@@ -36,9 +36,9 @@ theorem nonempty_groupCohomology_even (ρ : Representation k G M) (g : G)
   exact Rep.FiniteCyclicGroup.groupCohomologyπEven_eq_zero_iff (Rep.of ρ) g hg i hi x
 
 /- English proof (translation)
-Set `π` to `Rep.FiniteCyclicGroup.groupCohomologyπOdd (Rep.of ρ) g hg i hi`. Establish `hπ : Surjective π.hom`. Rewrite using `[← ModuleCat.epi_iff_surjective]`. Simplify using `only [π, Rep.FiniteCyclicGroup.groupCohomologyπOdd]`. Conclude with `epi_comp' (@IsIso.epi_of_iso _ _ _ _ _ (Iso.isIso_inv _)) (epi_comp' inferInstance inferInstance)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `nonempty_of_surjective _ (π.hom.toAddMonoidHom) hπ ?_` and prove the remaining obligations. Introduce `x`. Conclude with `Rep.FiniteCyclicGroup.groupCohomologyπOdd_eq_zero_iff (Rep.of ρ) g hg i hi x`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem nonempty_groupCohomology_odd (ρ : Representation k G M) (g : G)
     (hg : ∀ x, x ∈ Subgroup.zpowers g) (i : ℕ) (hi : Odd i) :

@@ -5,9 +5,9 @@ open scoped ComplexOrder
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `g Hm a b hH`. Establish `hS` using `hH.posSemidef`. Establish `key : ∀ x : Fin g → ℂ, @norm _ (Hm.toSeminormedAddCommGroup hS).toNorm (star x) = √((x ⬝ᵥ Hm.mulVec (star x)).re)`. Introduce `x`. Rewrite using `[@norm_eq_sqrt_re_inner ℂ _ _ (Hm.toSeminormedAddCommGroup hS) (Hm.toInnerProductSpace hS)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `√(RCLike.re ((Hm.mulVec (star x)) ⬝ᵥ star (star x))) = _`. Rewrite using `[star_star, dotProduct_comm, RCLike.re_to_complex]`. Establish `h` using `@norm_add_le _ (Hm.toSeminormedAddCommGroup hS).toSeminormedAddGroup (star a) (star b)`. Rewrite `h` using `[← star_add, key, key, key]`. Conclude with `h`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem posDef_herm_norm_triangle :
     ∀ (g : ℕ) (Hm : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g → ℂ), Hm.PosDef →

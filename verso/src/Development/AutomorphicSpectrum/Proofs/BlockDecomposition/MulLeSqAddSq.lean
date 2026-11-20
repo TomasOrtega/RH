@@ -14,7 +14,7 @@ attribute [local instance] borelH
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ}
 
 /- English proof (translation)
-Break down `le_total p q with h | h` into its components or cases. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Separate the alternatives or extract the components of the hypothesis. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 -/
 theorem mul_le_sq_add_sq (p q : ℝ≥0∞) : p * q ≤ p ^ 2 + q ^ 2 := by
   rcases le_total p q with h | h
@@ -26,7 +26,7 @@ theorem mul_le_sq_add_sq (p q : ℝ≥0∞) : p * q ≤ p ^ 2 + q ^ 2 := by
       _ ≤ _ := le_self_add
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Apply the tactic sequence `by_cases h1 : x.1 ∈ cutSet E a τ <;> by_cases h2 : x.2 ∈ cutSet E b τ <;>`. Simplify using `[lInt, chiT, h1, h2, Set.indicator, Set.mem_prod]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem lInt_eq {ι : Type} [Fintype ι] (D : Dom E a b) (k₁ k₂ : H E a b → ι → Hs (ι := ι) D) (τ : ℝ)
     (U : Hs (ι := ι) D →L[ℂ] Hs (ι := ι) D) :
@@ -37,7 +37,7 @@ theorem lInt_eq {ι : Type} [Fintype ι] (D : Dom E a b) (k₁ k₂ : H E a b �
     simp [lInt, chiT, h1, h2, Set.indicator, Set.mem_prod]
 
 /- English proof (translation)
-Establish `h1 : ‖inner ℂ u (U v)‖ₑ ≤ ‖u‖ₑ * ‖U v‖ₑ`. Simplify using `only [enorm_eq_nnnorm]`. Conclude with `nnnorm_inner_le_nnnorm (𝕜 := ℂ) u (U v)` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem enorm_inner_le {ι : Type} (D : Dom E a b) (U : Hs (ι := ι) D →L[ℂ] Hs (ι := ι) D) [Fintype ι]
     (u v : Hs (ι := ι) D) (C : ℝ≥0∞) (hu : ‖u‖ₑ ^ 2 ≤ C) (hv : ‖v‖ₑ ^ 2 ≤ C) :
@@ -53,19 +53,17 @@ theorem enorm_inner_le {ι : Type} (D : Dom E a b) (U : Hs (ι := ι) D →L[ℂ
     _ = ‖U‖ₑ * (2 * C) := by rw [two_mul]
 
 /- English proof (translation)
-Introduce `hM hC E _ _ _ a b D ι _ k₁ k₂ C₀ Ω hcont hC₀ hΩ hnorm`. Take `⟨C₁, N, hC₁, hcut⟩` from `hC E a b D Ω hΩ`. Use `⟨2 * Fintype.card ι * C₀.toReal * C₁, N, fun τ hτ U => ?_⟩` and prove the remaining obligations. Use `set S : Set (H E a b) := cutSet E a τ ×ˢ cutSet E b τ with hS`. Use `haveI : BorelSpace (H E a b) := ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSm : MeasurableSet S` using `((hM E a τ).1.prod (hM E b τ).1).measurableSet`. Establish `hg : Continuous fun x => ∑ i, inner ℂ (k₁ x i) (U (k₂ x i))` using `continuous_finset_sum _ fun i _ => (hcont i).1.inner (U.continuous.comp (hcont i).2)`. Establish `hmeas : AEStronglyMeasurable (lInt D k₁ k₂ τ U) D.ν`. Rewrite using `[lInt_eq]`. Conclude with `hg.aestronglyMeasurable.indicator hSm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set c : ℝ≥0∞ := Fintype.card ι * (‖U‖ₑ * (2 * C₀)) with hc`. Establish `hcr : c = ENNReal.ofReal (Fintype.card ι * (‖U‖ * (2 * C₀.toReal)))`. Rewrite using `[ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_natCast, ENNReal.ofReal_mul (norm_nonneg _), ofReal_norm, ENNReal.ofReal_mul (by norm_num), ENNReal.ofReal_toReal hC₀, ENNReal.ofReal_ofNat]`. Establish `hctop : c ≠ ⊤` using `by rw [hcr]; exact ENNReal.ofReal_ne_top`. Establish `hpt : ∀ x, ‖lInt D k₁ k₂ τ U x‖ₑ ≤ c * S.indicator (cnt (ratH E a b) Ω) x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Rewrite using `[lInt_eq]`. Distinguish the cases in `hx : x ∈ S`. Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem hx]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, hc]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem hx]`. Simplify using the standard rewrite rules. Establish `hA : 0 ≤ 2 * Fintype.card ι * C₀.toReal * C₁ * (1 + τ) ^ N * ‖U‖` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hle : ∫⁻ x, ‖lInt D k₁ k₂ τ U x‖ₑ ∂D.ν ≤ ENNReal.ofReal (2 * Fintype.card ι * C₀.toReal * C₁ * (1 + τ) ^ N * ‖U‖)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hcr, ← ENNReal.ofReal_mul (by positivity)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `⟨⟨hmeas, hle.trans_lt ENNReal.ofReal_lt_top⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_norm_eq_lintegral_enorm hmeas]`. Conclude with `ENNReal.toReal_le_of_le_ofReal hA hle`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lBound_of : Mahler → CutCount → LBound := by
   intro hM hC E _ _ _ a b D ι _ k₁ k₂ C₀ Ω hcont hC₀ hΩ hnorm

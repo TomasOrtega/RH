@@ -9,11 +9,11 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 namespace GlobalTheory.CompanionTheory.Ar.Fan.StarDepthDenominator
 
 /- English proof (translation)
-Introduce `O _ _ _ _ bar hb q ψ w hψ hw`. Take `⟨n, R, hR, hcls⟩` from `hb.classes q`. Establish `key : ∀ k : Fin n, ∃ D : ℕ, 0 < D ∧ ∀ x ∈ {x : ℝ | ∃ β ∈ balForms bar (R k), (∀ y, 0 ≤ β y y) ∧ haveI` using `(hR k).1; x = (starDepth bar ψ w).evalZ β}, ∃ z : ℤ, (D : ℝ) * x = z := fun k => by haveI := (hR k).1 haveI := (hR k).2.1`. Take `⟨-, h2, h3⟩` from `hw (R k) (hR k).2.2`. Take `⟨D, hD, hA⟩` from `GlobalTheory.PolFan.StarDen.module_den (hψ (R k) (hR k).2.2) h2 h3`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨D, hD, ?_⟩` and prove the remaining obligations. Introduce and unpack `x ⟨β, hβ, hp, rfl⟩`. Conclude with `hA β (GlobalTheory.T.balanced_nonneg_form_in_psd_cone O bar hb (R k) β hβ hp)`. Take `⟨D₀, hD₀, hall⟩` from `GlobalTheory.PolFan.StarDen.common_den _ key`. Use `⟨D₀, hD₀, fun X _ _ _ _ hX β hβ hp => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨k, ⟨f⟩⟩` from `hcls X hX`. Use `haveI := (hR k).1`. Establish `hval : (starDepth bar ψ w).evalZ (pull f.symm.toLinearMap β) = (starDepth bar ψ w).evalZ β` using `evalZ_pull _ f.symm.surjective β`. Rewrite using `[← hval]`. Conclude with `hall k _ ⟨_, pull_mem _ hβ, fun y => hp _, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem starDepth_den : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O),
     CMOrd O bar → ∀ (q : ℕ) (ψ w : InvFun O), IsPolyFan bar q ψ → IsCentreSet bar q ψ w → ∃ D₀ : ℕ, 0 < D₀ ∧

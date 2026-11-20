@@ -6,13 +6,13 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `O H K _ _ _ _ _ _ _ _ _ hred`. Establish `: IsReduced (K ⊗[O] H)` using `hred`. Establish `hcard : Nat.card (H →ₐ[O] K) = Module.finrank O H` using `natCard_algHom_eq_finrank_of_isReduced_baseChange O H K`. Establish `hfin : Finite (H →ₐ[O] K)`. Distinguish the cases in `h0 : Module.finrank O H = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `: IsEmpty (H →ₐ[O] K)`. Use `⟨fun f => ?_⟩` and prove the remaining obligations. Establish `hι : IsEmpty (Module.Free.ChooseBasisIndex O H)`. Rewrite using `[← Fintype.card_eq_zero_iff, ← Module.finrank_eq_card_chooseBasisIndex]`. Conclude with `h0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h10 : (1 : H) = 0` using `(Module.Free.chooseBasis O H).repr.injective (Subsingleton.elim _ _)`. Establish `h1` using `congrArg f h10`. Rewrite `h1` using `[map_one, map_zero]`. Conclude with `one_ne_zero h1`. Use `infer_instance`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.finite_of_card_ne_zero (hcard ▸ h0)`. Use `⟨hfin, hcard, fun h => ?_⟩` and prove the remaining obligations. Set `_` to `Fintype.ofFinite (H →ₐ[O] K)`. Rewrite using `[finsum_eq_sum_of_fintype]`. Conclude with `algebraMap_trace_eq_sum_algHom_of_card (R := O) (S := H) (L := K) (by rw [← Nat.card_eq_fintype_card, hcard]) (P := fun g => g) (fun _ _ e => e) h`.
+A detailed English derivation is pending.
 -/
 theorem finite_card_trace_algHom_of_isReduced_baseChange :
     ∀ (O H K : Type) [CommRing O] [Nontrivial O] [CommRing H] [Algebra O H] [Module.Free O H]

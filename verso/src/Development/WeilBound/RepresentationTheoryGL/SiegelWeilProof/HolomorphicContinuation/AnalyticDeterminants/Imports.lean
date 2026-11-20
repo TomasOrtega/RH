@@ -15,61 +15,57 @@ open PositivityTheory.Rg.Sw PositivityTheory.Rg.Sw.LVs PositivityTheory.Rg.Sw.LV
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `dec : ∀ B : Matrix (Fin n) (Fin n) ℂ, ∃ b₁ b₂ : Matrix (Fin n) (Fin n) ℂ, b₁ᴴ = b₁ ∧ b₂ᴴ = b₂ ∧ B = b₁ + Complex.I • b₂`. Introduce `B`. Establish `hI : Complex.I * -(Complex.I / 2) = 1 / 2`. Rewrite using `[mul_neg, mul_div_assoc', Complex.I_mul_I]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Use `⟨(1 / 2 : ℂ) • (B + Bᴴ), (-(Complex.I / 2)) • (B - Bᴴ), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[conjTranspose_smul, conjTranspose_add, conjTranspose_conjTranspose, add_comm]`. Use `congr 1`. Simplify using `[Complex.ext_iff]`. Rewrite using `[conjTranspose_smul, conjTranspose_sub, conjTranspose_conjTranspose]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (Bᴴ - B) = -(B - Bᴴ) by abel, smul_neg, ← neg_smul]`. Use `congr 1`. Simplify using `[Complex.ext_iff]`. Evaluate the numerical expressions. Rewrite using `[smul_smul, hI] module`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities.
 
-Establish `hU : ∀ B, (fromBlocks 0 B 0 0 : M2 n) ∈ W`. Introduce `B`. Take `⟨b₁, b₂, h₁, h₂, rfl⟩` from `dec B`. Establish `: (fromBlocks 0 (b₁ + Complex.I • b₂) 0 0 : M2 n) = fromBlocks 0 b₁ 0 0 + Complex.I • fromBlocks 0 b₂ 0 0`. Simplify using `[fromBlocks_smul, fromBlocks_add]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Conclude with `W.add_mem (hu b₁ h₁) (W.smul_mem _ (hu b₂ h₂))`. Establish `hL : ∀ C, (fromBlocks 0 0 C 0 : M2 n) ∈ W`. Introduce `C`. Take `⟨c₁, c₂, h₁, h₂, rfl⟩` from `dec C`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: (fromBlocks 0 0 (c₁ + Complex.I • c₂) 0 : M2 n) = fromBlocks 0 0 c₁ 0 + Complex.I • fromBlocks 0 0 c₂ 0`. Simplify using `[fromBlocks_smul, fromBlocks_add]`. Rewrite using `[this]`. Conclude with `W.add_mem (hl c₁ h₁) (W.smul_mem _ (hl c₂ h₂))`. Establish `hBr : ∀ B C : Matrix (Fin n) (Fin n) ℂ, (fromBlocks (-(B * C)) 0 0 (C * B) : M2 n) ∈ W`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `B C`. Take `⟨b₁, b₂, hb₁, hb₂, rfl⟩` from `dec B`. Take `⟨c₁, c₂, hc₁, hc₂, rfl⟩` from `dec C`. Establish `e : (fromBlocks (-((b₁ + Complex.I • b₂) * (c₁ + Complex.I • c₂))) 0 0 ((c₁ + Complex.I • c₂) * (b₁ + Complex.I • b₂)) : M2 n) = fromBlocks (-(b₁ * c₁)) 0 0 (c₁ * b₁) + Complex.I • fromBlocks (-(b₁ * c₂)) 0 0 (c₂ * b₁) + Complex.I • fromBlocks (-(b₂ * c₁)) 0 0 (c₁ * b₂) + (-1 : ℂ …`. Simplify using `only [fromBlocks_smul, fromBlocks_add, smul_zero, add_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `congr 1`. Apply the tactic sequence `simp only [Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul] match_scalars <;> first | ring1 | linear_combination Complex.I_sq | linear_combination -Complex.I_sq`. Apply the tactic sequence `simp only [Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul] match_scalars <;> first | ring1 | linear_combination Complex.I_sq | linear_combination -Complex.I_sq`. Rewrite using `[e]`. Conclude with `W.add_mem (W.add_mem (W.add_mem (hbr _ _ hb₁ hc₁) (W.smul_mem _ (hbr _ _ hb₁ hc₂))) (W.smul_mem _ (hbr _ _ hb₂ hc₁))) (W.smul_mem _ (hbr _ _ hb₂ hc₂))`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ιA : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] M2 n` to `{ toFun := fun A => fromBlocks A 0 0 0 map_add' := fun A B => by simp [fromBlocks_add] map_smul' := fun c A => by simp [fromBlocks_smul] }`. Set `ιD : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] M2 n` to `{ toFun := fun D => fromBlocks 0 0 0 D map_add' := fun A B => by simp [fromBlocks_add] map_smul' := fun c A => by simp [fromBlocks_smul] }`. Establish `sgl : ∀ (a b : Fin n) (c : ℂ), Matrix.single a b c = c • Matrix.single a b (1 : ℂ)`. Introduce `a b c`. Rewrite using `[Matrix.smul_single, smul_eq_mul, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `offA : ∀ a b : Fin n, a ≠ b → ιA (Matrix.single a b 1) ∈ W`. Introduce `a b hab`. Establish `h` using `hBr (Matrix.single a b 1) (Matrix.single b b 1)`. Rewrite `h` using `[Matrix.single_mul_single_of_ne (h := Ne.symm hab), Matrix.single_mul_single_same, mul_one]`. Establish `: ιA (Matrix.single a b 1) = -(fromBlocks (-(Matrix.single a b (1 : ℂ))) 0 0 0 : M2 n)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[ιA, fromBlocks_neg]`. Rewrite using `[this]`. Conclude with `W.neg_mem h`. Establish `offD : ∀ a b : Fin n, a ≠ b → ιD (Matrix.single a b 1) ∈ W`. Introduce `a b hab`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h` using `hBr (Matrix.single b b 1) (Matrix.single a b 1)`. Rewrite `h` using `[Matrix.single_mul_single_of_ne (h := Ne.symm hab), Matrix.single_mul_single_same, mul_one]`. Simplify `h` using `[ιD]`. Establish `dif : ∀ a k : Fin n, ιD (Matrix.single k k 1) - ιA (Matrix.single a a 1) ∈ W`. Introduce `a k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h` using `hBr (Matrix.single a k 1) (Matrix.single k a 1)`. Rewrite `h` using `[Matrix.single_mul_single_same, Matrix.single_mul_single_same, mul_one]`. Establish `: ιD (Matrix.single k k 1) - ιA (Matrix.single a a 1) = (fromBlocks (-(Matrix.single a a (1 : ℂ))) 0 0 (Matrix.single k k 1) : M2 n)`. Simplify using `[ιA, ιD, sub_eq_add_neg, fromBlocks_add, fromBlocks_neg]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `h`. Establish `one_sum : (∑ a : Fin n, Matrix.single a a (1 : ℂ)) = 1`. Use extensionality with `i j`. Rewrite using `[Matrix.sum_apply]`. Distinguish the cases in `h : i = j`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Substitute `h` using the available equality. Simplify using `[Matrix.single_apply]`. Simplify using `[Matrix.single_apply, Matrix.one_apply, h]`. Establish `hST : ∑ a, ιA (Matrix.single a a 1) + ∑ k, ιD (Matrix.single k k 1) ∈ W`. Rewrite using `[← map_sum, ← map_sum, one_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: ιA 1 + ιD 1 = (1 : M2 n)` using `by simp [ιA, ιD, fromBlocks_add, ← fromBlocks_one]`. Rewrite using `[this]`. Conclude with `h1`. Establish `hTS : ∑ k, ιD (Matrix.single k k 1) - ∑ a, ιA (Matrix.single a a 1) ∈ W`. Rewrite using `[← Finset.sum_sub_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `W.sum_mem fun k _ => dif k k`. Establish `hT : ∑ k, ιD (Matrix.single k k 1) ∈ W`. Establish `h2` using `W.add_mem hST hTS`. Establish `: ∑ k, ιD (Matrix.single k k 1) = (1 / 2 : ℂ) • ((∑ a, ιA (Matrix.single a a 1) + ∑ k, ιD (Matrix.single k k 1)) + (∑ k, ιD (Matrix.single k k 1) - ∑ a, ιA (Matrix.single a a 1)))` using `by module`. Rewrite using `[this]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `W.smul_mem _ h2`. Establish `hS : ∑ a, ιA (Matrix.single a a 1) ∈ W`. Use `W.sub_mem hST hT` as an intermediate fact. Simplify using `using this`. Establish `diagA : ∀ a : Fin n, ιA (Matrix.single a a 1) ∈ W`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `a`. Establish `hn : (Fintype.card (Fin n) : ℂ) ≠ 0`. Simplify using `only [Fintype.card_fin, ne_eq, Nat.cast_eq_zero]`. Conclude with `Fin.pos a |>.ne'`. Establish `hdiff : ∀ b : Fin n, ιA (Matrix.single a a 1) - ιA (Matrix.single b b 1) ∈ W`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `b`. Use `W.sub_mem (dif b a) (dif a a)` as an intermediate fact. Establish `e : ιD (Matrix.single a a 1) - ιA (Matrix.single b b 1) - (ιD (Matrix.single a a 1) - ιA (Matrix.single a a 1)) = ιA (Matrix.single a a 1) - ιA (Matrix.single b b 1)` using `by abel`. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Establish `hsum` using `W.add_mem (W.sum_mem fun b (_ : b ∈ Finset.univ) => hdiff b) hS`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `e : ∑ b, (ιA (Matrix.single a a 1) - ιA (Matrix.single b b 1)) + ∑ a, ιA (Matrix.single a a 1) = (Fintype.card (Fin n) : ℂ) • ιA (Matrix.single a a 1)`. Rewrite using `[Finset.sum_sub_distrib, sub_add_cancel, Finset.sum_const, Finset.card_univ, Nat.cast_smul_eq_nsmul]`. Rewrite `hsum` using `[e]`. Use `W.smul_mem ((Fintype.card (Fin n) : ℂ)⁻¹) hsum` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hn, one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `diagD : ∀ k : Fin n, ιD (Matrix.single k k 1) ∈ W`. Introduce `k`. Use `W.add_mem (dif k k) (diagA k)` as an intermediate fact. Simplify using `using this`. Establish `allA : ∀ A : Matrix (Fin n) (Fin n) ℂ, ιA A ∈ W`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Introduce `A`. Rewrite using `[Matrix.matrix_eq_sum_single A, map_sum]`. Use `W.sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `W.sum_mem fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sgl, map_smul]`. Use `W.smul_mem _ ?_` and prove the remaining obligations. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Conclude with `diagA i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Conclude with `offA i j hij`. Establish `allD : ∀ D : Matrix (Fin n) (Fin n) ℂ, ιD D ∈ W`. Introduce `D`. Rewrite using `[Matrix.matrix_eq_sum_single D, map_sum]`. Use `W.sum_mem fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_sum]`. Use `W.sum_mem fun j _ => ?_` and prove the remaining obligations. Rewrite using `[sgl, map_smul]`. Use `W.smul_mem _ ?_` and prove the remaining obligations. Distinguish the cases in `hij : i = j`.
-
-Substitute `hij` using the available equality. Conclude with `diagD i`. Conclude with `offD i j hij`. Rewrite using `[eq_top_iff]`. Introduce `M _`.
-
-Rewrite using `[← Matrix.fromBlocks_toBlocks M]`. Establish `e : (fromBlocks M.toBlocks₁₁ M.toBlocks₁₂ M.toBlocks₂₁ M.toBlocks₂₂ : M2 n) = ιA M.toBlocks₁₁ + fromBlocks 0 M.toBlocks₁₂ 0 0 + fromBlocks 0 0 M.toBlocks₂₁ 0 + ιD M.toBlocks₂₂`. Simplify using `[ιA, ιD, fromBlocks_add]`. Rewrite using `[e]`. Conclude with `W.add_mem (W.add_mem (W.add_mem (allA _) (hU _)) (hL _)) (allD _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_top (W : Submodule ℂ (M2 n))
     (hu : ∀ b : Matrix (Fin n) (Fin n) ℂ, bᴴ = b → (fromBlocks 0 b 0 0 : M2 n) ∈ W)

@@ -11,9 +11,9 @@ noncomputable section
 namespace GlobalTheory.PDivGroup
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.comp_apply, ← cotMap_comp]`. Take `⟨b, rfl⟩` from `AugCot.d_surjective _ x`. Rewrite using `[cotMap_d]`. Establish `h'` using `(kerIdeal_le_ker_iff g (π : A →ₐ[k] C)).1 h b`. Express the relevant statement in the definitionally equal form `dUnit k ((π : A →ₐ[k] C) (g b)) = 0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[h']`. Conclude with `AugCot.d_algebraMap _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cotMap_comp_eq_zero_of_kerIdeal_le {k A B C : Type} [Field k] [CommRing A] [CommRing B]
     [CommRing C] [Bialgebra k A] [Bialgebra k B] [Bialgebra k C] (g : B →ₐc[k] A)
@@ -28,21 +28,19 @@ theorem cotMap_comp_eq_zero_of_kerIdeal_le {k A B C : Type} [Field k] [CommRing 
   exact AugCot.d_algebraMap _ _
 
 /- English proof (translation)
-Introduce `p _ k _ _ G H q C _ _ _ _ π hπ`. Establish `hp : (p : k) = 0` using `CharP.cast_eq_zero k p`. Establish `part1 : kerIdeal (q.app 1) ≤ RingHom.ker π → ∀ w ∈ LinearMap.range (omegaMap G H q), cotMap π (w.1 1) = 0`. Introduce and unpack `h w ⟨v, rfl⟩`. Conclude with `cotMap_comp_eq_zero_of_kerIdeal_le (q.app 1) π h (v.1 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨part1, fun h1 h2 => ?_, fun H' f hf => ?_⟩` and prove the remaining obligations. Set `Φ : G.omega →ₗ[k] Cot k C` to `cotMap π ∘ₗ G.omegaLevel 1`. Establish `hΦ : Function.Surjective Φ` using `(cotMap_surjective hπ).comp (G.omegaLevel_one_bijective hp).2`. Establish `hker : LinearMap.ker Φ = LinearMap.range (omegaMap G H q)`. Use extensionality with `w`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `hw`. Establish `hw' : AugCot.map (π : G.A 1 →ₐ[k] C) (BialgHomClass.counitAlgHom_comp π) (w.1 1) = 0` using `hw`. Take `⟨x, hx⟩` from `(AugCot.exact_kerMap_map (π : G.A 1 →ₐ[k] C) (BialgHomClass.counitAlgHom_comp π) hπ (w.1 1)).1 hw'`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx2 : dUnit k (x : G.A 1) = w.1 1`. Rewrite using `[← hx]`. Conclude with `(AugCot.kerMap_apply _ _ x).symm`. Establish `hxm : (x : G.A 1) ∈ kerIdeal (q.app 1) ⊔ augIdeal k (G.A 1) ^ 2` using `h1 x.2`. Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.1 hxm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz0 : dUnit k z = 0`. Establish `hzI : z ∈ augIdeal k (G.A 1)` using `Ideal.pow_le_self two_ne_zero hz`. Establish `hεz : counitAlgHom k (G.A 1) z = 0` using `hzI`. Rewrite using `[dUnit, AugCot.d_eq_zero_iff, hεz, map_zero, sub_zero]`. Conclude with `hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨u, hu⟩` from `dUnit_mem_range_of_mem_kerIdeal (q.app 1) hy`. Take `⟨v, rfl⟩` from `(H.omegaLevel_one_bijective hp).2 u`. Use `⟨v, (G.omegaLevel_one_bijective hp).1 ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cotMap (q.app 1) (H.omegaLevel 1 v) = w.1 1`. Rewrite using `[hu, ← hx2, ← hyz]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `dUnit k y = dUnit k (y + z)`. Rewrite using `[show dUnit k (y + z) = dUnit k y + dUnit k z from map_add _ y z, hz0, add_zero]`. Introduce `hw`. Conclude with `part1 h2 w hw`. Rewrite using `[← hker]`.
-
-Conclude with `(Φ.quotKerEquivOfSurjective hΦ).finrank_eq`. Rewrite using `[cotMap_comp]`. Use `LinearMap.ext fun u => ?_` and prove the remaining obligations. Take `⟨v, rfl⟩` from `(H'.omegaLevel_one_bijective hp).2 u`. Conclude with `hf _ ⟨v, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cot_kernel_eq_coker_omegaMap : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p] (G H : PDivGroup p k) (q : G ⟶ H) (C : Type) [CommRing C] [HopfAlgebra k C] [IsCocomm k C] [Module.Finite k C] (π : G.A 1 →ₐc[k] C), Function.Surjective π → (kerIdeal (q.app 1) ≤ RingHom.ker π → ∀ w ∈ LinearMap.range (omegaMap G H q), cotMap π (w.1 1) = 0) ∧ (RingHom.ker π ≤ kerIdeal (q.app 1) ⊔ augIdeal k (G.A 1) ^ 2 → kerIdeal (q.app 1) ≤ RingHom.ker π → Module.finrank k (G.omega ⧸ LinearMap.range (omegaMap G H q)) = Module.finrank k (Cot k C)) ∧ ∀ (H' : PDivGroup p k) (f : G ⟶ H'), (∀ w ∈ LinearMap.range (omegaMap G H' f), cotMap π (w.1 1) = 0) → cotMap (π.comp (f.app 1)) = 0 := by
   intro p _ k _ _ G H q C _ _ _ _ π hπ

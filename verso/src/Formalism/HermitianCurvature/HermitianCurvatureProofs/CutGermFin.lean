@@ -6,7 +6,7 @@ namespace Formalism.FourierDecayAlt.P.CutBP
 open Formalism.FourierDecayAlt
 
 /- English proof (translation)
-The claim follows from `germCutPD_of_parts hA p nn χ F Y K N Cb hCb hF hχ hnn germ_continuity_all_levels hL hT germ_mean_property`.
+A detailed English derivation is pending.
 -/
 theorem germCutPD_of_data (hA : P5.ThmPActual) {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {P : M.Par}
@@ -16,7 +16,7 @@ theorem germCutPD_of_data (hA : P5.ThmPActual) {Wp Wq : Type} [NormedAddCommGrou
   germCutPD_of_parts hA p nn χ F Y K N Cb hCb hF hχ hnn germ_continuity_all_levels hL hT germ_mean_property
 
 /- English proof (translation)
-The claim follows from `block_growth_bound_of_germ_data hA p nn G Y K N Cb hCb hG hnn germ_continuity_all_levels hL hT germ_mean_property`.
+A detailed English derivation is pending.
 -/
 theorem block_growth_bound_of_compact_coef_of_germ_data (hA : P5.ThmPActual) {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {P : M.Par}

@@ -15,25 +15,23 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef.BoxMass
 
 /- English proof (translation)
-Introduce `F _ _ lam hlam lf hlf h1 S A hA`. Take `⟨-, hAfLC, hAfSC, hAfT2⟩` from `GlobalTheory.CompanionTheory.AdeleTop.adele_top F`. Establish `hloc` using `fun v => GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v`. Use `haveI : ∀ v, IsTopologicalRing (Fv F v) := fun v => (hloc v).1`. Use `haveI : ∀ v, LocallyCompactSpace (Fv F v) := fun v => (hloc v).2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : ∀ v, SecondCountableTopology (Fv F v) := fun v => (hloc v).2.2.1`. Use `haveI : ∀ v, BorelSpace (Fv F v) := fun v => ⟨rfl⟩`. Use `haveI : ∀ v, (lam v).IsAddHaarMeasure := fun v => (hlam v).1`. Use `haveI : BorelSpace (Af F) := ⟨rfl⟩`. Set `A' : ∀ v : HeightOneSpectrum (𝓞 F), Set (Unit → Fv F v)` to `fun v => {x | x () ∈ A v}`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `hA' : ∀ v, MeasurableSet (A' v)` using `fun v => measurable_pi_apply () (hA v)`. Set `T : Set (Unit → Af F)` to `{x | (∀ v ∈ S, (fun i => HeckeCharacterZeroLocus.SiegelWeilU.evalV F v (x i)) ∈ A' v) ∧ ∀ v, v ∉ S → ∀ i, HeckeCharacterZeroLocus.SiegelWeilU.evalV F v (x i) ∈ v.adicCompletionIntegers F}`. Establish `hT : T = (GlobalTheory.CompanionTheory.SW.AfBox.offS (F` using `F) Unit S : Set (Unit → Af F)) ∩ GlobalTheory.CompanionTheory.SW.AfBox.compS Unit S ⁻¹' (Set.pi Set.univ fun v : S => A' v.1) := by`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨hx1, hx2⟩`. Conclude with `⟨hx2, fun v _ => hx1 v.1 v.2⟩`. Introduce and unpack `⟨hx1, hx2⟩`. Conclude with `⟨fun v hv => hx2 ⟨v, hv⟩ (Set.mem_univ _), hx1⟩`. Establish `hTm : MeasurableSet T`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hT]`. Conclude with `(GlobalTheory.CompanionTheory.SW.AfBox.isOpen_offS Unit S).measurableSet.inter ((GlobalTheory.CompanionTheory.SW.AfBox.continuous_compS Unit S).measurable (MeasurableSet.univ_pi fun v => hA' v.1))`. Establish `hbox : Coef.boxA S A = (MeasurableEquiv.funUnique Unit (Af F)).symm ⁻¹' T`. Use extensionality with `y`. Simplify using `only [Coef.boxA, T, A', Set.mem_preimage, Set.mem_setOf_eq, MeasurableEquiv.funUnique_symm_apply]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨fun v hv => h1 v hv, fun v hv _ => h2 v hv⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨fun v hv => h1 v hv, fun v hv => h2 v hv ()⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmeas : MeasurableSet (Coef.boxA S A)`. Rewrite using `[hbox]`. Conclude with `(MeasurableEquiv.funUnique Unit (Af F)).symm.measurable hTm`. Use `⟨hmeas, ?_⟩` and prove the remaining obligations. Establish `hpb` using `GlobalTheory.CompanionTheory.SW.AfBox.pi_box F lam hlam lf hlf h1 Unit S A' hA'`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hmp` using `measurePreserving_funUnique lf Unit`. Establish `hT' : T = (MeasurableEquiv.funUnique Unit (Af F)) ⁻¹' Coef.boxA S A`. Rewrite using `[hbox, ← Set.preimage_comp]`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Function.comp_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Rewrite using `[show (MeasurableEquiv.funUnique Unit (Af F)).symm ((MeasurableEquiv.funUnique Unit (Af F)) x) = x from (MeasurableEquiv.funUnique Unit (Af F)).symm_apply_apply x]`. Express the relevant statement in the definitionally equal form `(Measure.pi fun _ : Unit => lf) T = _ at hpb`. Rewrite `hpb` using `[hT', hmp.measure_preimage hmeas.nullMeasurableSet]`. Rewrite using `[hpb]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations.
-
-Establish `hv : A' v = (MeasurableEquiv.funUnique Unit (Fv F v)) ⁻¹' A v`. Use extensionality with `x`. Both sides reduce to the same expression. Rewrite using `[hv, (measurePreserving_funUnique (lam v) Unit).measure_preimage (hA v).nullMeasurableSet]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem boxMass : ∀ (F : Type) [Field F] [NumberField F] (lam : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fv F v)), (∀ v, GlobalTheory.CompanionTheory.SW.IsStdV v (lam v)) → ∀ lf : Measure (Af F), lf.IsAddHaarMeasure → lf {x | ∀ v, x v ∈ v.adicCompletionIntegers F} = 1 → ∀ (S : Finset (HeightOneSpectrum (𝓞 F))) (A : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fv F v)), (∀ v, MeasurableSet (A v)) → MeasurableSet (Coef.boxA S A) ∧ lf (Coef.boxA S A) = ∏ v ∈ S, lam v (A v) := by
   intro F _ _ lam hlam lf hlf h1 S A hA

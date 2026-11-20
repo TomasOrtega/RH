@@ -1,6 +1,6 @@
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ChainRuleSmooth.GoodMonoProd
 
 /- English proof (translation)
-The claim follows from `CCRuleCW.ruleC`.
+A detailed English derivation is pending.
 -/
 theorem cCRuleC : Formalism.FourierDecayAlt.C2.RuleC := CCRuleCW.ruleC

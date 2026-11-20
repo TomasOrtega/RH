@@ -10,9 +10,9 @@ noncomputable section
 variable {k A : Type} [Field k] [CommRing A] [Algebra k[X] A] {n : ℕ}
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.NormFormBound.norm_degree`. Consider the case `exact _root_.GlobalTheory.NormFormBound.norm_degree`. Consider the case `(apply _root_.GlobalTheory.NormFormBound.norm_degree <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.NormFormBound.norm_degree <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.NormFormBound.norm_degree <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.NormFormBound.norm_degree ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem natDegree_norm_of_coord_degree : ∀ (k A : Type) [Field k] [Infinite k] [CommRing A] [IsDomain A] [Algebra k[X] A] (n : ℕ) (b : Module.Basis (Fin n) k[X] A), ∃ (c : ℕ) (lam : Fin n → k),
  (∀ (d : ℕ) (p : Fin n → k[X]), (∀ i, (p i).natDegree ≤ d) → (Algebra.norm k[X] (∑ i, p i • b i)).natDegree ≤ n * d + c) ∧

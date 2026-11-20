@@ -20,11 +20,11 @@ section Core
 variable {R : Type} [CommRing R] {m : ℕ}
 
 /- English proof (translation)
-Set `a` to `(krylov M v)⁻¹ *ᵥ (N *ᵥ v)`. Set `p : R[X]` to `∑ j : Fin m, monomial (j : ℕ) (a j)`. Establish `hp : aeval M p *ᵥ v = N *ᵥ v`. Establish `: krylov M v *ᵥ a = N *ᵥ v` using `by rw [mulVec_mulVec, mul_nonsing_inv _ hv, one_mulVec]`. Rewrite using `[← this]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i`. Simplify using `[p, krylov, map_sum, aeval_monomial, Matrix.sum_mulVec, Algebra.algebraMap_eq_smul_one, Matrix.smul_mulVec, Matrix.mulVec.eq_def (Matrix.of _), dotProduct, mul_comm]`. Establish `hc : Commute (aeval M p) M`. Use `congrArg (aeval M) (mul_comm p X)` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, aeval_X]`. Then use the resulting hypothesis.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `⟨p, ((isUnit_iff_isUnit_det _).2 hv).mul_right_cancel ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.Orb.mul_krylov_of_commute h, GlobalTheory.Orb.mul_krylov_of_commute hc, hp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_of_commute_cyclic {M N : Matrix (Fin m) (Fin m) R} (v : Fin m → R) (hv : IsUnit (krylov M v).det)
     (h : Commute N M) : ∃ p : R[X], N = aeval M p := by
@@ -46,14 +46,14 @@ def psi (c : R →+* R) (D : GL (Fin m) R) (x : Matrix (Fin m) (Fin m) R) : Matr
   D.val * GlobalTheory.Tw.Phi m R * (c.mapMatrix x)ᵀ * (GlobalTheory.Tw.Phi m R)ᵀ * (D⁻¹).val
 
 /- English proof (translation)
-The claim follows from `mul_eq_one_comm.1 (Phi_mul_transpose m R)`.
+A detailed English derivation is pending.
 -/
 theorem PhiT_mul_Phi : (GlobalTheory.Tw.Phi m R)ᵀ * GlobalTheory.Tw.Phi m R = 1 := mul_eq_one_comm.1 (Phi_mul_transpose m R)
 
 /- English proof (translation)
-Establish `h1 : (D⁻¹).val * D.val = 1` using `by rw [← Units.val_mul, inv_mul_cancel, Units.val_one]`. Simplify using `only [psi, map_mul, Matrix.transpose_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1, Matrix.mul_one, PhiT_mul_Phi, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = _ := by simp only [Matrix.mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem psi_mul (c : R →+* R) (D : GL (Fin m) R) (x y : Matrix (Fin m) (Fin m) R) :
     psi c D (x * y) = psi c D y * psi c D x := by
@@ -65,14 +65,14 @@ theorem psi_mul (c : R →+* R) (D : GL (Fin m) R) (x y : Matrix (Fin m) (Fin m)
     _ = _ := by simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [psi, map_add, Matrix.transpose_add, Matrix.mul_add, Matrix.add_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem psi_add (c : R →+* R) (D : GL (Fin m) R) (x y : Matrix (Fin m) (Fin m) R) :
     psi c D (x + y) = psi c D x + psi c D y := by
   simp only [psi, map_add, Matrix.transpose_add, Matrix.mul_add, Matrix.add_mul]
 
 /- English proof (translation)
-Establish `: c.mapMatrix (r • x) = c r • c.mapMatrix x` using `by ext i j; simp`. Simplify using `only [psi, this, Matrix.transpose_smul, Matrix.mul_smul, Matrix.smul_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem psi_smul (c : R →+* R) (D : GL (Fin m) R) (r : R) (x : Matrix (Fin m) (Fin m) R) :
     psi c D (r • x) = c r • psi c D x := by
@@ -80,14 +80,14 @@ theorem psi_smul (c : R →+* R) (D : GL (Fin m) R) (r : R) (x : Matrix (Fin m) 
   simp only [psi, this, Matrix.transpose_smul, Matrix.mul_smul, Matrix.smul_mul]
 
 /- English proof (translation)
-Simplify using `only [psi, map_one, Matrix.transpose_one, Matrix.mul_one]`. Rewrite using `[Matrix.mul_assoc D.val, Phi_mul_transpose, Matrix.mul_one, ← Units.val_mul, mul_inv_cancel, Units.val_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_one (c : R →+* R) (D : GL (Fin m) R) : psi c D 1 = 1 := by
   simp only [psi, map_one, Matrix.transpose_one, Matrix.mul_one]
   rw [Matrix.mul_assoc D.val, Phi_mul_transpose, Matrix.mul_one, ← Units.val_mul, mul_inv_cancel, Units.val_one]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp [psi_one]`. Consider the case `succ k ih => rw [pow_succ, psi_mul, ih, pow_succ']`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem psi_pow (c : R →+* R) (D : GL (Fin m) R) (x : Matrix (Fin m) (Fin m) R) (k : ℕ) :
     psi c D (x ^ k) = psi c D x ^ k := by
@@ -96,7 +96,7 @@ theorem psi_pow (c : R →+* R) (D : GL (Fin m) R) (x : Matrix (Fin m) (Fin m) R
   | succ k ih => rw [pow_succ, psi_mul, ih, pow_succ']
 
 /- English proof (translation)
-Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [map_add, psi_add, hp, hq, Polynomial.map_add, map_add]`. Consider the case `monomial k r`. Rewrite using `[aeval_monomial, Polynomial.map_monomial, aeval_monomial, Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul, psi_smul, psi_pow, Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_aeval (c : R →+* R) (D : GL (Fin m) R) (x : Matrix (Fin m) (Fin m) R) (p : R[X]) :
     psi c D (aeval x p) = aeval (psi c D x) (p.map c) := by
@@ -107,7 +107,7 @@ theorem psi_aeval (c : R →+* R) (D : GL (Fin m) R) (x : Matrix (Fin m) (Fin m)
       one_mul, psi_smul, psi_pow, Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul]
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, Units.val_mul, GlobalTheory.LocTwist.thetaGL_val, inv_inv]`. Simplify using `only [psi, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem psi_units (c : R →+* R) (D h : GL (Fin m) R) :
     psi c D h.val = (D * thetaGL m c h⁻¹ * D⁻¹).val := by
@@ -115,21 +115,21 @@ theorem psi_units (c : R →+* R) (D h : GL (Fin m) R) :
   simp only [psi, Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `hθ : ∀ g, thetaGL m c (thetaGL m c g) = g` using `GlobalTheory.LocTwist.thetaGL_thetaGL m c hc`. Establish `hpsiN : ∀ D : GL (Fin m) R, psi c D (D * thetaGL m c D).val = ((D * thetaGL m c D)⁻¹).val`. Introduce `D`. Rewrite using `[psi_units]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [_root_.mul_inv_rev, map_mul, map_inv, hθ]`. Use `group`. Establish `hmem : ∀ (D g : GL (Fin m) R), g ∈ twCent (thetaGL m c) D ↔ psi c D g.val = (g⁻¹).val`. Introduce `D g`. Rewrite using `[psi_units]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h' : g⁻¹ * D = D * thetaGL m c g⁻¹` using `(twCent (thetaGL m c) D).inv_mem h`. Use `congr 1`. Rewrite using `[← h']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `group`. Introduce `h`. Establish `h' : D * thetaGL m c g⁻¹ * D⁻¹ = g⁻¹` using `Units.ext h`. Establish `: g⁻¹ ∈ twCent (thetaGL m c) D`. Express the relevant statement in the definitionally equal form `g⁻¹ * D = D * thetaGL m c g⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Chain the equalities or inequalities of the calculation. Simplify to obtain the desired conclusion from the available facts.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `using (twCent (thetaGL m c) D).inv_mem this`. Introduce `g hg`. Establish `hcomm : g * (D₁ * thetaGL m c D₁) = (D₁ * thetaGL m c D₁) * g`. Establish `h1 : g * D₁ = D₁ * thetaGL m c g` using `hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : thetaGL m c g = D₁⁻¹ * g * D₁` using `by rw [mul_assoc, h1]; group`. Establish `h3` using `congrArg (thetaGL m c) h2`. Rewrite `h3` using `[hθ, map_mul, map_mul, map_inv, h2]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨p, hp⟩` from `aeval_of_commute_cyclic v hv (N := g.val) (by`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `g.val * (D₁ * thetaGL m c D₁).val = (D₁ * thetaGL m c D₁).val * g.val`. Rewrite using `[← Units.val_mul, ← Units.val_mul, hcomm])`. Establish `e1` using `psi_aeval c D₁ (D₁ * thetaGL m c D₁).val p`. Rewrite `e1` using `[hpsiN]`. Establish `e2` using `psi_aeval c D₂ (D₂ * thetaGL m c D₂).val p`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `e2` using `[hpsiN, ← hN]`. Rewrite `hg`, the goal using `[hmem]`. Rewrite using `[← hg, hp, e1, e2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twCent_le (c : R →+* R) (hc : ∀ x, c (c x) = x) (D₁ D₂ : GL (Fin m) R)
     (hN : D₁ * thetaGL m c D₁ = D₂ * thetaGL m c D₂) (v : Fin m → R)
@@ -183,16 +183,14 @@ section Global
 variable (E : Type) [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.ThetaPull.map_thetaGL (algebraMap E (Af E)) _ _ (fun x => (conjFin_algebraMap (IsCMField.complexConj E).toRingEquiv x).symm) g).symm`.
+A detailed English derivation is pending.
 -/
 theorem thF_ratF (m : ℕ) (g : GL (Fin m) E) : thF E m (ratF E m g) = ratF E m (thE E m g) :=
   (GlobalTheory.ThetaPull.map_thetaGL (algebraMap E (Af E)) _ _
     (fun x => (conjFin_algebraMap (IsCMField.complexConj E).toRingEquiv x).symm) g).symm
 
 /- English proof (translation)
-Establish `e : (twCent (thF E m) δ : Set (GL (Fin m) (Af E))) = {g | (g * δ).val = (δ * thF E m g).val}`. Use extensionality with `g`. Conclude with `Units.ext_iff`. Rewrite using `[e]`. Use `haveI : T2Space (Af E) := inferInstanceAs (T2Space (RestrictedProduct (fun v : HeightOneSpectrum (𝓞 E) => v.adicCompletion E) (fun v => (v.adicCompletionIntegers E : Set (v.adicCompletion E))) Filter.cofinite))`.
-
-Conclude with `isClosed_eq (Units.continuous_val.comp (continuous_id.mul continuous_const)) (Units.continuous_val.comp (continuous_const.mul (GlobalTheory.ThetaPull.continuous_thetaGL _ (continuous_conjFin _))))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_twCent_thF (m : ℕ) (δ : GL (Fin m) (Af E)) : IsClosed (twCent (thF E m) δ : Set (GL (Fin m) (Af E))) := by
   have e : (twCent (thF E m) δ : Set (GL (Fin m) (Af E))) = {g | (g * δ).val = (δ * thF E m g).val} := by
@@ -205,21 +203,21 @@ theorem isClosed_twCent_thF (m : ℕ) (δ : GL (Fin m) (Af E)) : IsClosed (twCen
     (Units.continuous_val.comp (continuous_const.mul (GlobalTheory.ThetaPull.continuous_thetaGL _ (continuous_conjFin _))))
 
 /- English proof (translation)
-Establish `hθE : ∀ g, thE E m (thE E m g) = g` using `GlobalTheory.ThetaPull.thetaGL_thetaGL _ (fun x => IsCMField.complexConj_apply_apply E x)`. Take `⟨x, hx⟩` from `GlobalTheory.Orb.IsRegSS.exists_conj (A := E) (M := (δ₁ * thE E m δ₁).val) hs h`. Establish `hx' : (δ₂ * thE E m δ₂) * x = x * (δ₁ * thE E m δ₁)` using `Units.ext hx`. Establish `hu : (x⁻¹ * δ₂ * thE E m x) * thE E m (x⁻¹ * δ₂ * thE E m x) = δ₁ * thE E m δ₁`. Simplify using `only [map_mul, map_inv, hθE]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hc : ∀ y, conjFin (IsCMField.complexConj E).toRingEquiv (conjFin (IsCMField.complexConj E).toRingEquiv y) = y` using `fun y => GlobalTheory.ThetaPull.cFin_cFin y`. Establish `hN : ratF E m δ₁ * thF E m (ratF E m δ₁) = ratF E m (x⁻¹ * δ₂ * thE E m x) * thF E m (ratF E m (x⁻¹ * δ₂ * thE E m x))`. Rewrite using `[thF_ratF, thF_ratF, ← map_mul, ← map_mul, hu]`. Take `⟨v, hv⟩` from `GlobalTheory.ClassParam.exists_cyclic_field _ hs`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hv' : IsUnit (GlobalTheory.ClassParam.krylov (ratF E m δ₁ * thF E m (ratF E m δ₁)).val (algebraMap E (Af E) ∘ v)).det`. Establish `h1` using `(IsUnit.mk0 _ hv).map (algebraMap E (Af E))`. Rewrite `h1` using `[RingHom.map_det, RingHom.mapMatrix_apply, GlobalTheory.ClassParam.krylov_map]`. Rewrite using `[thF_ratF, ← map_mul]`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `heq : twCent (thF E m) (ratF E m δ₁) = twCent (thF E m) (ratF E m (x⁻¹ * δ₂ * thE E m x))` using `le_antisymm (twCent_le _ hc _ _ hN _ hv') (twCent_le _ hc _ _ hN.symm _ (hN ▸ hv'))`. Use `set y := ratF E m x with hy`. Establish `hconj : ratF E m (x⁻¹ * δ₂ * thE E m x) = y⁻¹ * ratF E m δ₂ * thF E m y`. Rewrite using `[hy, thF_ratF, map_mul, map_mul, map_inv]`. Establish `hT : twCent (thF E m) (ratF E m δ₁) = (twCent (thF E m) (ratF E m δ₂)).map (MulAut.conj y⁻¹).toMonoidHom`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[heq, hconj, GlobalTheory.TwOrbConj.twCent_conj]`. Establish `hf : ∀ t : twCent (thF E m) (ratF E m δ₂), y⁻¹ * (t : GL (Fin m) (Af E)) * y ∈ twCent (thF E m) (ratF E m δ₁)`. Introduce `t`. Rewrite using `[hT]`. Conclude with `⟨t, t.2, by simp [MulAut.conj_apply]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hg : ∀ s : twCent (thF E m) (ratF E m δ₁), y * (s : GL (Fin m) (Af E)) * y⁻¹ ∈ twCent (thF E m) (ratF E m δ₂)`. Introduce `s`. Establish `hs' : (s : GL (Fin m) (Af E)) ∈ (twCent (thF E m) (ratF E m δ₂)).map (MulAut.conj y⁻¹).toMonoidHom` using `hT ▸ s.2`. Take `⟨t, ht, he⟩` from `hs'`. Establish `: (s : GL (Fin m) (Af E)) = y⁻¹ * t * y` using `by rw [← he]; simp [MulAut.conj_apply]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[this]`. Simplify `ht` using `[mul_assoc]`. Set `e : twCent (thF E m) (ratF E m δ₂) ≃ₜ* twCent (thF E m) (ratF E m δ₁)` to `{ toFun := fun t => ⟨y⁻¹ * t * y, hf t⟩ invFun := fun s => ⟨y * s * y⁻¹, hg s⟩ left_inv := fun t => Subtype.ext (by simp [mul_assoc]) right_inv := fun s => Subtype.ext (by simp [mul_assoc]) map_mul' := fun a b => Subtype.ext (by simp [mul_assoc]) continuous_toFun := Continuous.su …`. Establish `hyΓ : y ∈ (ratF E m).range` using `⟨x, rfl⟩`. Use `GlobalTheory.T.twistedCentralizerMass_eq_of_topEquiv _ _ (thF E m) (thF E m) _ _ (ratF E m δ₂) (ratF E m δ₁) (isClosed_twCent_thF E m _) (isClosed_twCent_thF E m _) e fun t => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(t : GL (Fin m) (Af E)) ∈ (ratF E m).range ↔ y⁻¹ * (t : GL (Fin m) (Af E)) * y ∈ (ratF E m).range`. Rewrite using `[Subgroup.mul_mem_cancel_right _ hyΓ, Subgroup.mul_mem_cancel_left _ ((ratF E m).range.inv_mem hyΓ)]`.
+A detailed English derivation is pending.
 -/
 theorem mass_eq_of_charpoly (m : ℕ) (δ₁ δ₂ : GL (Fin m) E)
     (h : (δ₂ * thE E m δ₂).val.charpoly = (δ₁ * thE E m δ₁).val.charpoly)
@@ -283,11 +281,11 @@ end Global
 end GlobalTheory.MassNorm
 
 /- English proof (translation)
-Introduce `E _ _ _ _ n δ hP`. Establish `hd : (δ * thE E n δ).val.charpoly.natDegree = n` using `hP.2.1`. Establish `hs : (δ * thE E n δ).val.charpoly.Separable` using `hP.2.2.1`. Generalize the expression as in `hPdef : (δ * thE E n δ).val.charpoly = P at hd hs ⊢`. Establish `hcast : ∀ (k : ℕ) (_ : k = n), (∃ δ' : GL (Fin k) E, (δ' * thE E k δ').val.charpoly = P) ∧ ∀ δ' : GL (Fin k) E, (δ' * thE E k δ').val.charpoly = P → mass (thF E k) (ratF E k).range (ratF E k δ') = mass (thF E n) (ratF E n).range (ratF E n δ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Introduce `k hk`. Substitute `hk` using the available equality. Conclude with `⟨⟨δ, hPdef⟩, fun δ' h' => GlobalTheory.MassNorm.mass_eq_of_charpoly E k δ δ' (h'.trans hPdef.symm) (hPdef ▸ hs)⟩`. Take `⟨hex, hm⟩` from `hcast _ hd`. Unfold `GlobalTheory.BCT.kap GlobalTheory.BCT.nfac`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos hex, hm _ hex.choose_spec, div_mul_cancel₀ _ (pow_ne_zero _ two_ne_zero)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem GlobalTheory.BCT.mass_eq_kap : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (n : ℕ) (δ : GL (Fin n) E), (δ * thE E n δ).val.charpoly ∈ Ell E n → mass (thF E n) (ratF E n).range (ratF E n δ) = kap (δ * thE E n δ).val.charpoly * 2 ^ nfac (δ * thE E n δ).val.charpoly := by
   intro E _ _ _ _ n δ hP

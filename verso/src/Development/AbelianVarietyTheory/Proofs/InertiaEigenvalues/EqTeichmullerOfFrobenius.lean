@@ -21,15 +21,15 @@ variable {O A E S : Type} [CommRing O] [CommRing A] [CommRing E] [CommRing S]
   [Algebra O A] [Algebra O E] [Algebra O S] [Algebra A E] [IsScalarTower O A E]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Per.AinfComplete.eq_zero_of_haus _ x fun n => Ideal.mem_span_singleton.2 (hx n)`.
+A detailed English derivation is pending.
 -/
 theorem sep_of_haus (y : S) [IsHausdorff (Ideal.span {y}) S] (x : S) (hx : ∀ n, y ^ n ∣ x) : x = 0 :=
   GlobalTheory.Per.AinfComplete.eq_zero_of_haus _ x fun n => Ideal.mem_span_singleton.2 (hx n)
 
 /- English proof (translation)
-Take `⟨L, hL⟩` from `h.prec' f (by`. Introduce `m n hmn`. Simplify using `only [Ideal.span_singleton_pow, smul_eq_mul, Ideal.mul_top, SModEq.sub_mem]`. Conclude with `Ideal.mem_span_singleton.2 (hf m n hmn))`. Use `⟨L, fun n => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hn` using `hL n`. Simplify using `only [Ideal.span_singleton_pow, smul_eq_mul, Ideal.mul_top, SModEq.sub_mem] at hn`. Conclude with `Ideal.mem_span_singleton.1 hn`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lim_of_precomplete (y : S) [h : IsPrecomplete (Ideal.span {y}) S] (f : ℕ → S)
     (hf : ∀ m n, m ≤ n → y ^ m ∣ f m - f n) : ∃ L, ∀ n, y ^ n ∣ f n - L := by
@@ -43,11 +43,11 @@ theorem lim_of_precomplete (y : S) [h : IsPrecomplete (Ideal.span {y}) S] (f : �
   exact Ideal.mem_span_singleton.1 hn
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero]`. Use `hs _ fun k => ?_` and prove the remaining obligations. Take `⟨a, m, hm⟩` from `hd x k`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton.1 hm`. Establish `h1` using `congrArg F hc`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `congrArg F' hc`. Rewrite `h1`, `h2` using `[map_sub, map_mul, map_mul, map_pow _ (p : E), map_natCast]`. Rewrite `h2` using `[← h, ← h]`. Establish `hu : IsUnit (F (algebraMap A E (π ^ m)))`. Rewrite using `[map_pow]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hπ.pow m).map F`. Rewrite using `[← hu.dvd_mul_right]`. Conclude with `⟨F c - F' c, by linear_combination h1 - h2⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ext_unique (p : ℕ) (π : A) (hπ : IsUnit (algebraMap A E π))
     (hd : ∀ (x : E) (k : ℕ), ∃ (a : A) (m : ℕ),
@@ -68,29 +68,29 @@ theorem ext_unique (p : ℕ) (π : A) (hπ : IsUnit (algebraMap A E π))
   exact ⟨F c - F' c, by linear_combination h1 - h2⟩
 
 /- English proof (translation)
-Set `Rel : ℕ → E → S → Prop` to `fun k x y => ∃ (a : A) (m : ℕ), (p : E) ^ k ∣ x * algebraMap A E π ^ m - algebraMap A E a ∧ (p : S) ^ k ∣ y * f π ^ m - f a`. Establish `uniq : ∀ k x y y', Rel k x y → Rel k x y' → (p : S) ^ k ∣ y - y'`. Introduce and unpack `k x y y' ⟨a, m, ⟨c, hc⟩, ⟨d, hd⟩⟩ ⟨a', m', ⟨c', hc'⟩, ⟨d', hd'⟩⟩`. Take `⟨b, hb⟩` from `hsat (a * π ^ m' - a' * π ^ m) k (Ideal.mem_span_singleton.2 ⟨c' * algebraMap A E π ^ m - c * algebraMap A E π ^ m', by`. Simplify using `only [map_sub, map_mul, map_pow]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take the linear combination `algebraMap A E π ^ m * hc' - algebraMap A E π ^ m' * hc⟩)`. Establish `h1` using `congrArg f hb`. Simplify using `only [map_sub, map_mul, map_pow, map_natCast] at h1`. Rewrite using `[← (hf.pow (m + m')).dvd_mul_right]`. Conclude with `⟨d * f π ^ m' - d' * f π ^ m + f b, by`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Take the linear combination `f π ^ m' * hd - f π ^ m * hd' + h1⟩`. Establish `mono : ∀ j k x y, j ≤ k → Rel k x y → Rel j x y`. Introduce and unpack `j k x y hjk ⟨a, m, h1, h2⟩`. Conclude with `⟨a, m, (pow_dvd_pow _ hjk).trans h1, (pow_dvd_pow _ hjk).trans h2⟩`. Establish `ex1 : ∀ k x, ∃ y, Rel k x y`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `k x`. Take `⟨a, m, h⟩` from `hd x k`. Take `⟨u, hu⟩` from `(hf.pow m).exists_left_inv`. Use `⟨f a * u, a, m, by simpa using Ideal.mem_span_singleton.1 h, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, hu]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `ex : ∀ x, ∃ y, ∀ k, Rel k x y`. Introduce `x`. Use `choose y hy using fun k => ex1 k x`. Take `⟨L, hL⟩` from `lim_of_precomplete (p : S) y fun m n hmn => uniq m x _ _ (hy m) (mono _ _ _ _ hmn (hy n))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨L, fun k => ?_⟩` and prove the remaining obligations. Take `⟨a, m, h1, h2⟩` from `hy k`. Use `⟨a, m, h1, ?_⟩` and prove the remaining obligations. Use `dvd_sub h2 ((hL k).mul_right (f π ^ m)) using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `choose F hF using ex`. Establish `eqF : ∀ x y, (∀ k, Rel k x y) → F x = y` using `fun x y h => by`. Rewrite using `[← sub_eq_zero]`. Conclude with `sep_of_haus (p : S) _ fun k => uniq k x _ _ (hF x k) (h k)`. Establish `hA : ∀ a, F (algebraMap A E a) = f a` using `fun a => eqF _ _ fun k => ⟨a, 0, by simp, by simp⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hadd : ∀ x x', F (x + x') = F x + F x'` using `fun x x' => eqF _ _ fun k => by`. Take `⟨a, m, h1, h2⟩` from `hF x k`. Take `⟨a', m', h1', h2'⟩` from `hF x' k`. Use `⟨a * π ^ m' + a' * π ^ m, m + m', ?_, ?_⟩` and prove the remaining obligations. Use `dvd_add (h1.mul_right (algebraMap A E π ^ m')) (h1'.mul_right (algebraMap A E π ^ m)) using 1` and compare the differences between its conclusion and the goal.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Simplify using `only [map_add, map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Use `dvd_add (h2.mul_right (f π ^ m')) (h2'.mul_right (f π ^ m)) using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_add, map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hmul : ∀ x x', F (x * x') = F x * F x'` using `fun x x' => eqF _ _ fun k => by`. Take `⟨a, m, h1, h2⟩` from `hF x k`. Take `⟨a', m', h1', h2'⟩` from `hF x' k`. Use `⟨a * a', m + m', ?_, ?_⟩` and prove the remaining obligations. Use `dvd_add (h1.mul_right (x' * algebraMap A E π ^ m')) (h1'.mul_left (algebraMap A E a)) using 1` and compare the differences between its conclusion and the goal.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `dvd_add (h2.mul_right (F x' * f π ^ m')) (h2'.mul_left (f a)) using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `⟨{ toFun := F map_one' := by simpa using hA 1 map_mul' := hmul map_zero' := by simpa using hA 0 map_add' := hadd commutes' := fun r => ?_ }, hA⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `F _ = _`. Rewrite using `[IsScalarTower.algebraMap_apply O A E, hA, f.commutes]`.
+A detailed English derivation is pending.
 -/
 theorem ext_exists (p : ℕ) (π : A)
     (hd : ∀ (x : E) (k : ℕ), ∃ (a : A) (m : ℕ),
@@ -165,20 +165,18 @@ def cst (O : Type) [CommRing O] (n : ℕ) : (ZMod n → O) →ₐ[O] LetA O n :=
   AlgHom.pi fun i => (Algebra.ofId O O⟦X⟧).comp (Pi.evalAlgHom O (fun _ : ZMod n => O) i)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[cst, Algebra.ofId_apply, PowerSeries.algebraMap_eq]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem cst_apply {n : ℕ} (o : ZMod n → O) : cst O n o = fun i => C (o i) := by
   funext i
   simp [cst, Algebra.ofId_apply, PowerSeries.algebraMap_eq]
 
 /- English proof (translation)
-Establish `key : ∀ (k : ℕ) (a : LetA O n), f letπ ^ k ∣ f a - f' a`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro a`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `succ k ih`. Introduce `a`. Establish `ha : a = cst O n (fun i => constantCoeff (a i)) + letπ * fun i => PowerSeries.mk fun j => coeff (j + 1) (a i)`. Use function extensionality and compare the values at `i`. Rewrite using `[cst_apply, add_comm]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `eq_X_mul_shift_add_const (a i)`. Rewrite using `[ha, map_add, map_add, map_mul, map_mul, hc, ← hπ, pow_succ', add_sub_add_left_eq_sub, ← mul_sub]`. Conclude with `mul_dvd_mul_left _ (ih _)`. Use `ext1 a`. Rewrite using `[← sub_eq_zero]`.
-
-Conclude with `hs _ fun k => key k a`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem let_unique {n : ℕ} (f f' : LetA O n →ₐ[O] S) (hπ : f letπ = f' letπ)
     (hc : ∀ o, f (cst O n o) = f' (cst O n o)) (hs : ∀ x : S, (∀ k, f letπ ^ k ∣ x) → x = 0) :
@@ -201,21 +199,21 @@ theorem let_unique {n : ℕ} (f f' : LetA O n →ₐ[O] S) (hπ : f letπ = f' l
   exact hs _ fun k => key k a
 
 /- English proof (translation)
-Take `⟨ev, hev⟩` from `GlobalTheory.Cyc.IoMap.algHom_exists (R := O) y (GlobalTheory.Per.AinfComplete.summ_of_precomplete y) (sep_of_haus y)`. Establish `h1 : ∑ i, u (Pi.single i 1) = 1`. Rewrite using `[← map_sum, Finset.univ_sum_single (fun _ : ZMod n => (1 : O))]`. Conclude with `map_one u`. Establish `h2 : ∀ i j, u (Pi.single i 1) * u (Pi.single j 1) = if i = j then u (Pi.single i 1) else 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j`. Rewrite using `[← map_mul]`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[← Pi.single_mul, one_mul]`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← map_zero u]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`. Simplify using `[hk]`. Establish `h3 : ∀ o : ZMod n → O, ∑ i, u (Pi.single i 1) * algebraMap O S (o i) = u o`. Introduce `o`. Use `conv_rhs => rw [← Finset.univ_sum_single o, map_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, ← Algebra.smul_def, ← map_smul, ← Pi.single_smul, smul_eq_mul, mul_one]`. Establish `h4 : ∀ r : O, ev (C r) = algebraMap O S r` using `fun r => by`. Rewrite using `[← ev.commutes, PowerSeries.algebraMap_eq]`. Use `⟨{ toFun := fun a => ∑ i, u (Pi.single i 1) * ev (a i) map_one' := by simpa using h1 map_mul' := fun a b => ?_ map_zero' := by simp map_add' := fun a b => by simp [mul_add, Finset.sum_add_distrib] commutes' := fun r => ?_ }, ?_, fun o => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single i]`. Rewrite using `[mul_mul_mul_comm, h2, if_pos rfl, Pi.mul_apply, map_mul]`. Introduce `j _ hj`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[mul_mul_mul_comm, h2, if_neg hj.symm, zero_mul]`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `∑ i, u (Pi.single i 1) * ev (algebraMap O O⟦X⟧ r) = _`. Rewrite using `[ev.commutes, ← Finset.sum_mul, h1, one_mul]`. Express the relevant statement in the definitionally equal form `∑ i, u (Pi.single i 1) * ev X = _`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Rewrite using `[hev, ← Finset.sum_mul, h1, one_mul]`. Express the relevant statement in the definitionally equal form `∑ i, u (Pi.single i 1) * ev (cst O n o i) = _`. Simplify using `only [cst_apply, h4, h3]`.
+A detailed English derivation is pending.
 -/
 theorem let_exists {n : ℕ} [NeZero n] (y : S) [IsAdicComplete (Ideal.span {y}) S]
     (u : (ZMod n → O) →ₐ[O] S) :
@@ -267,17 +265,17 @@ end General
 section Witt
 
 /- English proof (translation)
-Establish `h1 : ∀ k : ℕ, ∃ y : WittVector p R, y ^ p ^ k = x`. Set `σ` to `(WittVector.frobeniusEquiv p R).symm`. Establish `h2 : ∀ z : WittVector p R, WittVector.frobenius z = z ^ p → (σ z) ^ p = z ∧ WittVector.frobenius (σ z) = (σ z) ^ p`. Introduce `z hz`. Establish `: (σ z) ^ p = z`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← map_pow, ← hz]`. Conclude with `(WittVector.frobeniusEquiv p R).symm_apply_apply z`. Conclude with `⟨this, this.symm ▸ (WittVector.frobeniusEquiv p R).apply_symm_apply z⟩`. Establish `h3 : ∀ k : ℕ, ∃ y : WittVector p R, y ^ p ^ k = x ∧ WittVector.frobenius y = y ^ p`. Introduce `k`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `k with`. Consider the case `zero => exact ⟨x, by simp, hx⟩`. Consider the case `succ k ih`. Take `⟨y, hy, hy'⟩` from `ih`. Conclude with `⟨σ y, by rw [pow_succ', pow_mul, (h2 y hy').1, hy], (h2 y hy').2⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun k => (h3 k).imp fun _ h => h.1`. Rewrite using `[← sub_eq_zero]`. Use `sep_of_haus ((p : ℕ) : WittVector p R) _ fun k => ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `h1 k`. Establish `h4 : ((p : ℕ) : WittVector p R) ∣ y - WittVector.teichmuller p (y.coeff 0)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Ideal.mem_span_singleton, WittVector.mem_span_p_iff_coeff_zero_eq_zero]`. Express the relevant statement in the definitionally equal form `WittVector.constantCoeff (y - WittVector.teichmuller p (y.coeff 0)) = 0`. Rewrite using `[map_sub, WittVector.constantCoeff_apply, WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero, sub_self]`. Establish `h5` using `dvd_sub_pow_of_dvd_sub h4 k`. Establish `h6 : x.coeff 0 = y.coeff 0 ^ p ^ k`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hy]`. Conclude with `map_pow (WittVector.constantCoeff) y _`. Rewrite `h5` using `[hy, ← map_pow, ← h6]`. Conclude with `(pow_dvd_pow _ (Nat.le_succ k)).trans h5`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_teichmuller_of_frobenius {p : ℕ} [Fact p.Prime] {R : Type} [CommRing R] [CharP R p]
     [PerfectRing R p] (x : WittVector p R) (hx : WittVector.frobenius x = x ^ p) :
@@ -317,7 +315,7 @@ theorem eq_teichmuller_of_frobenius {p : ℕ} [Fact p.Prime] {R : Type} [CommRin
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [Nat.cast_succ, add_mul, one_mul, binomialSeries_add, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem binomialSeries_natMul (k : ℕ) (b : ℤ_[l]) :
     binomialSeries ℤ_[l] ((k : ℤ_[l]) * b) = binomialSeries ℤ_[l] b ^ k := by
@@ -326,11 +324,11 @@ theorem binomialSeries_natMul (k : ℕ) (b : ℤ_[l]) :
   | succ k ih => rw [Nat.cast_succ, add_mul, one_mul, binomialSeries_add, ih, pow_succ]
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `hc`. Establish `h1 : c = a + ((l ^ N : ℕ) : ℤ_[l]) * b` using `by push_cast; linear_combination hb`. Establish `h2 : ψ X ^ l ^ N = 0`. Rewrite `hz` using `[add_pow_char_pow, one_pow]`. Take the linear combination `hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Choose the witnesses or unpack the hypotheses as in `⟨h, hh⟩ : (X : ℤ_[l]⟦X⟧) ∣ binomialSeries ℤ_[l] b - 1 := by`. Rewrite using `[X_dvd_iff]`. Simplify using the standard rewrite rules. Establish `h3 : binomialSeries ℤ_[l] b = 1 + X * h` using `by linear_combination hh`. Rewrite using `[h1, binomialSeries_add, binomialSeries_natMul, binomialSeries_nat, h3]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_mul, map_pow, map_add, map_one]`. Rewrite using `[add_pow_char_pow, mul_pow, h2]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem binomial_eval {B : Type} [CommRing B] [CharP B l] (ψ : ℤ_[l]⟦X⟧ →+* B) (N a : ℕ) (c : ℤ_[l])
     (hc : (l : ℤ_[l]) ^ N ∣ c - a) (hz : (1 + ψ X) ^ l ^ N = 1) :
@@ -355,7 +353,7 @@ section Concrete
 variable {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P)
 
 /- English proof (translation)
-Proceed by induction on `s with`. Consider the case `zero => simp [LocAinf.εroot]`. Consider the case `succ s ih`. Rewrite using `[pow_succ', pow_mul, LocAinf.εroot, Function.iterate_succ_apply', frobeniusEquiv_symm_pow_p]`. Conclude with `ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem εroot_pow (s : ℕ) : AI.εroot s ^ l ^ s = AI.ε := by
   induction s with
@@ -365,13 +363,13 @@ theorem εroot_pow (s : ℕ) : AI.εroot s ^ l ^ s = AI.ε := by
     exact ih
 
 /- English proof (translation)
-Introduce `h` and use `AI.ε_ne_one (by rw [← εroot_pow AI s, h, one_pow])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem εroot_ne_one (s : ℕ) : AI.εroot s ≠ 1 := fun h =>
   AI.ε_ne_one (by rw [← εroot_pow AI s, h, one_pow])
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `(h.pow (l ^ s)).map (PreTilt.coeff 0)`. Rewrite `h1` using `[sub_pow_char_pow, εroot_pow, one_pow, map_sub, AI.ε_coeff, AI.ζ_zero, map_one, map_one, sub_self]`. Conclude with `not_isUnit_zero h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem εroot_sub_not_unit (s : ℕ) : ¬ IsUnit (AI.εroot s - 1) := by
   intro h
@@ -381,28 +379,28 @@ theorem εroot_sub_not_unit (s : ℕ) : ¬ IsUnit (AI.εroot s - 1) := by
   exact not_isUnit_zero h1
 
 /- English proof (translation)
-Rewrite using `[← AI.ε_coeff, LocAinf.εroot, PreTilt.coeff_iterate_frobeniusEquiv_symm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_εroot (s n : ℕ) : PreTilt.coeff n (AI.εroot s) =
     Ideal.Quotient.mk (Ideal.span {((l : ℕ) : OC l)}) (AI.ζ (n + s)) := by
   rw [← AI.ε_coeff, LocAinf.εroot, PreTilt.coeff_iterate_frobeniusEquiv_symm]
 
 /- English proof (translation)
-Establish `hφ` using `((GlobalTheory.Cyc.IoMap.main l _ (εroot_sub_not_unit AI s)).2 io hio).1`. Take `⟨hX, hmul, -⟩` from `GlobalTheory.T.cyclotomicPowerSeriesAlgHom_action_laws l ℤ_[l]`. Establish `hcyc : ∀ c, GlobalTheory.Cyc.cyc l ℤ_[l] c = binomialSeries ℤ_[l] c - 1` using `fun c => by`. Simplify using `[GlobalTheory.Cyc.cyc]`. Establish `h1 : GlobalTheory.Cyc.phi l ℤ_[l] (binomialSeries ℤ_[l] c) = binomialSeries ℤ_[l] c ^ l`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `hmul (l : ℤ_[l]) c X` as an intermediate fact. Rewrite `this` using `[hX, hX, hcyc, hcyc, map_sub, map_one, binomialSeries_natMul, sub_left_inj]`. Conclude with `this`. Establish `h2` using `eq_teichmuller_of_frobenius (io (binomialSeries ℤ_[l] c)) (by rw [← hφ, h1, map_pow])`. Rewrite using `[h2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Establish `hz : ∀ m, P.ζQ m ^ l ^ m = 1`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simpa using P.ζQ_zero`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ m ih => rw [pow_succ', pow_mul, P.ζQ_succ, ih]`. Establish `hz' : ∀ m, AI.ζ m ^ l ^ m = 1`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simpa using AI.ζ_zero`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ m ih => rw [pow_succ', pow_mul, AI.ζ_succ, ih]`. Use `Perfection.ext fun n => ?_` and prove the remaining obligations. Take `⟨a, ha, hga⟩` from `P.χQ_cyc g (n + s) _ (hz (n + s))`. Take `⟨y', h3, h4⟩` from `AI.actT_coeff g _ n _ (coeff_εroot AI s n)`. Establish `h5 : y' = AI.ζ (n + s) ^ a`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[h3, SubmonoidClass.coe_pow, AI.ζ_eq, AI.actC_ext, hga]`. Conclude with `map_pow (algebraMap (Om l) (PadicComplex l)) _ _`. Set `ψ : ℤ_[l]⟦X⟧ →+* ModP (OC l) l` to `(PreTilt.coeff n).comp ((WittVector.constantCoeff : Ainf l →+* OCb l).comp io.toRingHom)`. Establish `hψ : 1 + ψ X = Ideal.Quotient.mk (Ideal.span {((l : ℕ) : OC l)}) (AI.ζ (n + s))`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `1 + PreTilt.coeff n (WittVector.constantCoeff (io X)) = _`. Rewrite using `[show io X = _ from hio, GlobalTheory.Cyc.IoMap.constantCoeff_teich_sub, map_sub, map_one, coeff_εroot]`. Expand and normalize the polynomial expressions, which then agree. Establish `hdiv : (l : ℤ_[l]) ^ (n + s) ∣ c - a`. Rewrite using `[← Ideal.mem_span_singleton, ← PadicInt.norm_le_pow_iff_mem_span_pow, PadicInt.norm_def, PadicInt.coe_sub, PadicInt.coe_natCast, hc]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `ha`. Establish `h6` using `binomial_eval ψ (n + s) a c hdiv (by rw [hψ, ← map_pow, hz', map_one])`. Express the relevant statement in the definitionally equal form `ψ _ = PreTilt.coeff n _`. Rewrite using `[h6, hψ, h4, h5]`. Conclude with `(map_pow _ _ _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem io_binomial (s : ℕ) (g : GQ l) (c : ℤ_[l]) (hc : (c : ℚ_[l]) = (P.χQ g : ℚ_[l]))
     (io : ℤ_[l]⟦X⟧ →ₐ[ℤ_[l]] Ainf l) (hio : GlobalTheory.Cyc.IsIo (AI.εroot s) io) :
@@ -451,7 +449,7 @@ theorem io_binomial (s : ℕ) (g : GQ l) (c : ℤ_[l]) (hc : (c : ℚ_[l]) = (P.
   exact (map_pow _ _ _).symm
 
 /- English proof (translation)
-Establish `h1 : a * a ^ (Nat.totient m - 1) ≡ 1 [MOD m]`. Rewrite using `[← pow_succ', Nat.sub_add_cancel (Nat.totient_pos.2 hm)]`. Conclude with `Nat.ModEq.pow_totient h`. Rewrite using `[← pow_one y, ← pow_one y', ← pow_eq_pow_of_modEq h1 hy, ← pow_eq_pow_of_modEq h1 hy', pow_mul, pow_mul, he]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_pow_coprime {M : Type} [CommMonoid M] {y y' : M} {a m : ℕ} (hm : 0 < m)
     (h : Nat.Coprime a m) (hy : y ^ m = 1) (hy' : y' ^ m = 1) (he : y ^ a = y' ^ a) : y = y' := by
@@ -462,11 +460,11 @@ theorem eq_of_pow_coprime {M : Type} [CommMonoid M] {y y' : M} {a m : ℕ} (hm :
     pow_mul, he]
 
 /- English proof (translation)
-Use `Perfection.ext fun n => ?_` and prove the remaining obligations. Take `⟨y, h1, h2, h3⟩` from `h n`. Take `⟨y', h4, h5⟩` from `AI.actT_coeff g _ n _ h3`. Establish `h2' : (y : PadicComplex l) ^ m = 1` using `by simpa using congrArg Subtype.val h2`. Establish `: y' = y`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `eq_of_pow_coprime (a := l ^ n) hm (Nat.Coprime.pow_left n (((Fact.out : l.Prime).coprime_iff_not_dvd).2 hl)) ?_ h2' ?_` and prove the remaining obligations. Rewrite using `[h4, ← map_pow, h2', map_one]`. Rewrite using `[h4, ← map_pow, h1, AI.actC_ext, hg]`. Express the relevant statement in the definitionally equal form `PreTilt.coeff n _ = PreTilt.coeff n _`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[h5, h3, this]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem actT_tilt (g : GQ l) (c : Om l) (hg : g c = c) (m : ℕ) (hm : 0 < m) (hl : ¬ l ∣ m) (xb : OCb l)
     (h : IsTiltOf c m xb) : AI.actT g xb = xb := by
@@ -484,7 +482,7 @@ theorem actT_tilt (g : GQ l) (c : Om l) (hg : g c = c) (m : ℕ) (hm : 0 < m) (h
   rw [h5, h3, this]
 
 /- English proof (translation)
-Introduce `k`. Take `⟨y, h1, h2, h3⟩` from `h k`. Use `⟨y ^ j, ?_, by rw [← pow_mul, mul_comm, pow_mul, h2, one_pow], by rw [map_pow, h3, map_pow]⟩` and prove the remaining obligations. Rewrite using `[SubmonoidClass.coe_pow, ← pow_mul, mul_comm, pow_mul, h1]`. Conclude with `(map_pow (algebraMap (Om l) (PadicComplex l)) _ _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tilt_pow {c : Om l} {m : ℕ} {xb : OCb l} (h : IsTiltOf c m xb) (j : ℕ) :
     IsTiltOf (c ^ j) m (xb ^ j) := by
@@ -495,19 +493,17 @@ theorem tilt_pow {c : Om l} {m : ℕ} {xb : OCb l} (h : IsTiltOf c m xb) (j : �
   exact (map_pow (algebraMap (Om l) (PadicComplex l)) _ _).symm
 
 /- English proof (translation)
-Establish `hn : ∀ x : Om l, x ^ m = 1 → ‖x‖ = 1` using `fun x hx => by`. Use `congrArg norm hx` as an intermediate fact. Rewrite `this` using `[norm_pow, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hm.ne').1 this`. Establish `hb0 : b ≠ 0` using `fun h0 => by simpa [h0] using hn b hb`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Use `set z := a / b with hz`. Establish `hz1 : z ^ m = 1` using `by rw [hz, div_pow, ha, hb, div_one]`. Establish `hz2 : ‖z - 1‖ < 1`. Rewrite using `[hz, div_sub_one hb0, norm_div, hn b hb, div_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h`. Establish `hz3 : z - 1 ≠ 0` using `fun h0 => hne ((div_eq_one_iff_eq hb0).1 (sub_eq_zero.1 h0))`. Establish `hs : ∑ i ∈ Finset.range m, z ^ i = 0`. Use `geom_sum_mul z m` as an intermediate fact. Rewrite `this` using `[hz1, sub_self]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Conclude with `(mul_eq_zero.1 this).resolve_right hz3`. Establish `hp : ∀ i : ℕ, ‖z ^ i - 1‖ < 1`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => simp`.
+Treat this case separately. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ i ih`. Rewrite using `[show z ^ (i + 1) - 1 = z * (z ^ i - 1) + (z - 1) by ring]`. Use `lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max _ _) (max_lt ?_ hz2)` and prove the remaining obligations. Rewrite using `[norm_mul, hn z hz1, one_mul]`. Conclude with `ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `hq : ∀ k : ℕ, ‖∑ i ∈ Finset.range k, z ^ i - k‖ < 1`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`.
-
-Rewrite using `[Finset.sum_range_succ, show ∑ i ∈ Finset.range k, z ^ i + z ^ k - ((k + 1 : ℕ) : Om l) = (∑ i ∈ Finset.range k, z ^ i - k) + (z ^ k - 1) by push_cast; ring]`. Conclude with `lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max _ _) (max_lt ih (hp k))`. Establish `h1` using `hq m`. Rewrite `h1` using `[hs, zero_sub, norm_neg, ← map_natCast (algebraMap ℚ_[l] (Om l)), norm_algebraMap', Padic.norm_natCast_lt_one_iff]`. Conclude with `hl h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_norm_sub_lt {a b : Om l} {m : ℕ} (hm : 0 < m) (hl : ¬ l ∣ m) (ha : a ^ m = 1)
     (hb : b ^ m = 1) (h : ‖a - b‖ < 1) : a = b := by
@@ -548,11 +544,11 @@ theorem eq_of_norm_sub_lt {a b : Om l} {m : ℕ} (hm : 0 < m) (hl : ¬ l ∣ m) 
   exact hl h1
 
 /- English proof (translation)
-Establish `hc' : c ^ m = 1` using `Subtype.ext (by simpa using hc)`. Establish `hn : ‖(c : Om l)‖ = 1`. Use `congrArg norm hc` as an intermediate fact. Rewrite `this` using `[norm_pow, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hm.ne').1 this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `eq_of_norm_sub_lt hm hl ?_ ?_ (by simpa using P.PD_σ K c hn.le)` and prove the remaining obligations. Establish `: (P.PD K).σ c ^ m = 1` using `by rw [← map_pow, hc', map_one]`. Simplify using `using congrArg Subtype.val this`. Establish `: (c ^ l) ^ m = 1` using `by rw [← pow_mul, mul_comm, pow_mul, hc', one_pow]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using congrArg Subtype.val this`.
+A detailed English derivation is pending.
 -/
 theorem sigma_root (K : FinExt l) (c : ↥(K0 K)) (m : ℕ) (hm : 0 < m) (hl : ¬ l ∣ m)
     (hc : (c : Om l) ^ m = 1) : (P.PD K).σ c = c ^ l := by
@@ -575,7 +571,7 @@ def gRA (LL : FinExt l) (g : GQ l) : RA LL →ₐ[↥(OL LL)] RA LL :=
   Algebra.TensorProduct.map (AlgHom.id _ _) (AI.actWHom g).toAlgHom
 
 /- English proof (translation)
-Rewrite using `[φRA, Algebra.TensorProduct.map_tmul]`. Use `congr 1`. Conclude with `WittVector.map_teichmuller l (frobenius (OCb l) l) x`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem φRA_teich (LL : FinExt l) (x : OCb l) :
     φRA LL ((1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] WittVector.teichmuller l x) =
@@ -585,7 +581,7 @@ theorem φRA_teich (LL : FinExt l) (x : OCb l) :
   exact WittVector.map_teichmuller l (frobenius (OCb l) l) x
 
 /- English proof (translation)
-Rewrite using `[gRA, Algebra.TensorProduct.map_tmul]`. Use `congr 1`. Conclude with `WittVector.map_teichmuller l (AI.actT g).toRingHom x`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem gRA_teich (LL : FinExt l) (g : GQ l) (x : OCb l) :
     gRA AI LL g ((1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] WittVector.teichmuller l x) =
@@ -595,7 +591,7 @@ theorem gRA_teich (LL : FinExt l) (g : GQ l) (x : OCb l) :
   exact WittVector.map_teichmuller l (AI.actT g).toRingHom x
 
 /- English proof (translation)
-Establish `h : (inclWA l).comp (GlobalTheory.Cyc.IoMap.frobA l) = (frobW l).comp (inclWA l)`. Use `AlgHom.ext fun w => WittVector.ext fun k => ?_` and prove the remaining obligations. Conclude with `map_pow (algebraMap (OCb l) (Cb l)) (w.coeff k) l`. Rewrite using `[inclR, φRA, φRW, ← Algebra.TensorProduct.map_comp, ← Algebra.TensorProduct.map_comp, h]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inclR_φRA (LL : FinExt l) : (inclR LL).comp (φRA LL) = (φRW LL).comp (inclR LL) := by
   have h : (inclWA l).comp (GlobalTheory.Cyc.IoMap.frobA l) = (frobW l).comp (inclWA l) := by
@@ -604,7 +600,7 @@ theorem inclR_φRA (LL : FinExt l) : (inclR LL).comp (φRA LL) = (φRW LL).comp 
   rw [inclR, φRA, φRW, ← Algebra.TensorProduct.map_comp, ← Algebra.TensorProduct.map_comp, h]
 
 /- English proof (translation)
-Establish `h : (inclWA l).comp (AI.actWHom g).toAlgHom = (AI.actWCbHom g).toAlgHom.comp (inclWA l)`. Use `AlgHom.ext fun w => WittVector.ext fun k => ?_` and prove the remaining obligations. Conclude with `(autCb_alg l (AI.actT g) (w.coeff k)).symm`. Rewrite using `[inclR, gRA, LocAinf.gRW, ← Algebra.TensorProduct.map_comp, ← Algebra.TensorProduct.map_comp, h]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inclR_gRA (LL : FinExt l) (g : GQ l) :
     (inclR LL).comp (gRA AI LL g) = (AI.gRW LL g).comp (inclR LL) := by
@@ -614,14 +610,14 @@ theorem inclR_gRA (LL : FinExt l) (g : GQ l) :
   rw [inclR, gRA, LocAinf.gRW, ← Algebra.TensorProduct.map_comp, ← Algebra.TensorProduct.map_comp, h]
 
 /- English proof (translation)
-Rewrite using `[TensorProduct.tmul_sub, Algebra.TensorProduct.one_def]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tmul_sub_one (LL : FinExt l) (w : Ainf l) :
     (1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] (w - 1) = (1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] w - 1 := by
   rw [TensorProduct.tmul_sub, Algebra.TensorProduct.one_def]
 
 /- English proof (translation)
-The claim follows from `haveI := (GlobalTheory.HWL.TensorWitt.main l LL).2.2.2.2 e he sep_of_haus _ x hx`.
+A detailed English derivation is pending.
 -/
 theorem sepRA (LL : FinExt l) (e : OCb l) (he : ¬ IsUnit (e - 1)) (x : RA LL)
     (hx : ∀ k, ((1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] (WittVector.teichmuller l e - 1) : RA LL) ^ k ∣ x) : x = 0 :=
@@ -629,9 +625,7 @@ theorem sepRA (LL : FinExt l) (e : OCb l) (he : ¬ IsUnit (e - 1)) (x : RA LL)
   sep_of_haus _ x hx
 
 /- English proof (translation)
-Establish `h : IsUnit (inclW l (WittVector.teichmuller l e - 1))`. Apply `WittVector.isUnit_of_coeff_zero_ne_zero` to reduce the goal to its premises. Rewrite using `[inclW, WittVector.map_coeff, ← WittVector.constantCoeff_apply, GlobalTheory.Cyc.IoMap.constantCoeff_teich_sub]`. Introduce `hz`. Conclude with `sub_ne_zero.2 he ((IsFractionRing.injective (OCb l) (Cb l)) (hz.trans (map_zero _).symm))`.
-
-Conclude with `h.map (Algebra.TensorProduct.includeRight : WCb l →ₐ[ℤ_[l]] RW LL)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isUnit_inclR (LL : FinExt l) (e : OCb l) (he : e ≠ 1) :
     IsUnit (inclR LL ((1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] (WittVector.teichmuller l e - 1))) := by
@@ -644,13 +638,13 @@ theorem isUnit_inclR (LL : FinExt l) (e : OCb l) (he : e ≠ 1) :
   exact h.map (Algebra.TensorProduct.includeRight : WCb l →ₐ[ℤ_[l]] RW LL)
 
 /- English proof (translation)
-Set `f1 : ℤ_[l]⟦X⟧ →ₐ[ℤ_[l]] RA LL` to `{ toRingHom := f.toRingHom.comp (zlA LL n) commutes' := fun r => by`. Establish `: zlA LL n (algebraMap ℤ_[l] ℤ_[l]⟦X⟧ r) = algebraMap ↥(OL LL) (LetA ↥(OL LL) n) (algebraMap ℤ_[l] ↥(OL LL) r)`. Use function extensionality and compare the values at `i`. Simplify using `[zlA, PowerSeries.algebraMap_eq]`. Express the relevant statement in the definitionally equal form `f (zlA LL n _) = _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[this, f.commutes]`. Use `rfl }`. Set `f2 : ℤ_[l]⟦X⟧ →ₐ[ℤ_[l]] RA LL` to `(Algebra.TensorProduct.includeRight : Ainf l →ₐ[ℤ_[l]] RA LL).comp io`. Establish `e1 : f1 X = (1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] (WittVector.teichmuller l e - 1)`. Rewrite using `[← hf]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `f (zlA LL n X) = _`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[zlA, letπ]`. Establish `e2 : f2 X = (1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] (WittVector.teichmuller l e - 1)`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← show io X = _ from hio]`. Both sides reduce to the same expression. Use `GlobalTheory.Cyc.IoMap.algHom_unique f1 f2 (e1.trans e2.symm) (by rw [e1]; exact sepRA LL e he)` as an intermediate fact. Conclude with `DFunLike.congr_fun this a`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem io_zl (LL : FinExt l) (n : ℕ) (e : OCb l) (he : ¬ IsUnit (e - 1))
     (f : LetA ↥(OL LL) n →ₐ[↥(OL LL)] RA LL)
@@ -688,13 +682,13 @@ section Assemble
 variable {O S : Type} [CommRing O] [CommRing S] [Algebra O S] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← PowerSeries.algebraMap_eq]`. Conclude with `f.commutes r`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algHom_C (f : O⟦X⟧ →ₐ[O] O⟦X⟧) (r : O) : f (C r) = C r := by
   rw [← PowerSeries.algebraMap_eq]; exact f.commutes r
 
 /- English proof (translation)
-Rewrite using `[cst_apply, cst_apply]`. Use function extensionality and compare the values at `i`. Conclude with `algHom_C φ₀ _`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem letφ_cst (φ₀ : O⟦X⟧ →ₐ[O] O⟦X⟧) (o : ZMod n → O) :
     letφ φ₀ (cst O n o) = cst O n fun i => o (i - 1) := by
@@ -703,7 +697,7 @@ theorem letφ_cst (φ₀ : O⟦X⟧ →ₐ[O] O⟦X⟧) (o : ZMod n → O) :
   exact algHom_C φ₀ _
 
 /- English proof (translation)
-Rewrite using `[cst_apply]`. Use function extensionality and compare the values at `i`. Conclude with `algHom_C g₀ _`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem letγ_cst (g₀ : O⟦X⟧ →ₐ[O] O⟦X⟧) (o : ZMod n → O) : letγ g₀ (cst O n o) = cst O n o := by
   rw [cst_apply]
@@ -714,9 +708,9 @@ def shift (O : Type) [CommRing O] (n : ℕ) : (ZMod n → O) →ₐ[O] (ZMod n �
   AlgHom.pi fun i => Pi.evalAlgHom O (fun _ : ZMod n => O) (i - 1)
 
 /- English proof (translation)
-Establish `h1 : (f.comp (letφ φ₀)) letπ = t ^ p - 1`. Establish `: letφ φ₀ (letπ : LetA O n) = (1 + letπ) ^ p - 1` using `funext fun i => h0`. Rewrite using `[AlgHom.comp_apply, this, map_sub, map_pow, map_add, map_one, ht]`. Expand and normalize the polynomial expressions, which then agree. Use `let_unique _ _ ?_ (fun o => ?_) (by rw [h1]; exact hs)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h1, AlgHom.comp_apply, ht, map_sub, map_one, hφ]`. Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, letφ_cst, hu, hu]`. Conclude with `DFunLike.congr_fun hc o`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comm_φ (p : ℕ) (φ₀ : O⟦X⟧ →ₐ[O] O⟦X⟧) (h0 : φ₀ X = (1 + X) ^ p - 1) (f : LetA O n →ₐ[O] S)
     (u : (ZMod n → O) →ₐ[O] S) (hu : ∀ o, f (cst O n o) = u o) (φ : S →ₐ[O] S) (t : S)
@@ -732,9 +726,9 @@ theorem comm_φ (p : ℕ) (φ₀ : O⟦X⟧ →ₐ[O] O⟦X⟧) (h0 : φ₀ X = 
     exact DFunLike.congr_fun hc o
 
 /- English proof (translation)
-Establish `h1 : (f.comp (letγ g₀)) letπ = t' - 1`. Establish `: letγ g₀ (letπ : LetA O n) = (fun _ => b) - 1` using `funext fun i => h0`. Rewrite using `[AlgHom.comp_apply, this, map_sub, map_one, hb]`. Use `let_unique _ _ ?_ (fun o => ?_) (by rw [h1]; exact hs)` and prove the remaining obligations. Rewrite using `[h1, AlgHom.comp_apply, ht, map_sub, map_one, hg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, letγ_cst, hu]`. Conclude with `DFunLike.congr_fun hc o`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comm_γ (g₀ : O⟦X⟧ →ₐ[O] O⟦X⟧) (b : O⟦X⟧) (h0 : g₀ X = b - 1) (f : LetA O n →ₐ[O] S)
     (u : (ZMod n → O) →ₐ[O] S) (hu : ∀ o, f (cst O n o) = u o) (g : S →ₐ[O] S) (t t' : S)
@@ -762,9 +756,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {Γ : WGam PD LL O v n s}
 
 /- English proof (translation)
-Take `⟨F, hF⟩` from `ext_exists PD.p letπ R.EE_dense R.EE_sat (inclR.comp io) (by rw [AlgHom.comp_apply, hπ]; exact hu)`. Use `⟨⟨io, hπ, F, hF, ?_, fun g => ?_⟩, rfl⟩` and prove the remaining obligations. Use `ext_unique PD.p letπ R.EE_π R.EE_dense (sep_of_haus _) (F.comp R.φE) (φR.comp F) fun a => ?_` and prove the remaining obligations. Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, R.φE_ext, hF, hF]`. Conclude with `(congrArg inclR (DFunLike.congr_fun h1 a)).trans (DFunLike.congr_fun hφ (io a))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `ext_unique PD.p letπ R.EE_π R.EE_dense (sep_of_haus _) (F.comp (R.γE (Γ.resΓ g))) ((gR g).comp F) fun a => ?_` and prove the remaining obligations. Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, R.γE_ext, hF, hF]`. Conclude with `(congrArg inclR (DFunLike.congr_fun (h2 g) a)).trans (DFunLike.congr_fun (hg g) (io a))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem assemble (R : WSer Γ) {RA RW : Type} [CommRing RA] [CommRing RW] [Algebra O RA]
     [Algebra O RW] (inclR : RA →ₐ[O] RW) (φR : RW →ₐ[O] RW) (gR : G → (RW →ₐ[O] RW)) (πA : RA)

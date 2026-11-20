@@ -209,14 +209,14 @@ def Statement : Prop :=
       ChainInvariant ψ ν ∧ ChainInvariantLast ψ ν ∧ FirstVertexChains ψ ν
 
 /- English proof (translation)
-Simplify using `[superSum, framePos, Fintype.sum_sum_type]`.
+Simplify using the standard rewrite rules.
 -/
 example {F : Type} [Field F] (M : Matrix (Fin 1 ⊕ Fin 1) (Fin 1 ⊕ Fin 1) F) :
     superSum (framePos 1 1) M = M (.inl 0) (.inr 0) := by
   simp [superSum, framePos, Fintype.sum_sum_type]
 
 /- English proof (translation)
-Simplify using `[deltaR]`.
+Simplify using the standard rewrite rules.
 -/
 example {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {n : Type} [Fintype n] [DecidableEq n] (g : GL n k) : deltaR 1 g = 1 := by

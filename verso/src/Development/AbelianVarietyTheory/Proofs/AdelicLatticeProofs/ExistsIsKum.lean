@@ -6,9 +6,9 @@ open scoped WithZero TensorProduct
 namespace GlobalTheory.CNorm
 
 /- English proof (translation)
-Introduce `p F _ _ ζ δ hp hζ hδ`. Establish `: Fact (Irreducible (X ^ p - C δ))` using `⟨X_pow_sub_C_irreducible_of_prime hp hδ⟩`. Establish `: NeZero p` using `⟨hp.ne_zero⟩`. Use `⟨AdjoinRoot (X ^ p - C δ), inferInstance, inferInstance, AdjoinRoot.root _, autAdjoinRootXPowSubC p δ hζ.toRootsOfUnity, ?_⟩` and prove the remaining obligations. Use `⟨hp, hζ, hδ, ?_, ?_, AdjoinRoot.adjoinRoot_eq_top⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `AdjoinRoot.eval₂_root (X ^ p - C δ)`. Rewrite `h` using `[eval₂_sub, eval₂_X_pow, eval₂_C, sub_eq_zero]`. Rewrite using `[h, AdjoinRoot.algebraMap_eq]`. Rewrite using `[autAdjoinRootXPowSubC_root, Algebra.smul_def, IsPrimitiveRoot.val_toRootsOfUnity_coe]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_isKum : ∀ (p : ℕ) (F : Type) [Field F] [CharZero F] (ζ δ : F), p.Prime → IsPrimitiveRoot ζ p → (∀ r : F, r ^ p ≠ δ) → ∃ (E : Type) (_ : Field E) (_ : Algebra F E) (θ : E) (σ : E ≃ₐ[F] E), IsKum p ζ δ θ σ := by
   intro p F _ _ ζ δ hp hζ hδ

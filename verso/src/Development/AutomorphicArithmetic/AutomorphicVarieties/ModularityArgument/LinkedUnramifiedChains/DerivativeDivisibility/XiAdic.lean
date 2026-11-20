@@ -19,9 +19,9 @@ private def xiExt {l : ℕ} [Fact l.Prime] {k k' : Type} [Field k] [Field k'] {�
   ord := ρ.ord
 
 /- English proof (translation)
-Unfold `AdicCont at h ⊢`. Introduce `N`. Establish `h1 : Ideal.map φ (maximalIdeal R) ≤ maximalIdeal S` using `Ideal.map_le_iff_le_comap.mpr (fun a ha => Ideal.mem_comap.mpr (map_nonunit φ a ha))`. Establish `hle : maximalIdeal R ^ N ≤ Ideal.comap φ (maximalIdeal S ^ N)`. Rewrite using `[← Ideal.map_le_iff_le_comap, Ideal.map_pow]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.pow_right_mono h1 N`. Establish `hc` using `(h N).comp (Ideal.quotientMap (maximalIdeal S ^ N) φ hle)`. Use `hc using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Simplify using `only [Function.comp_apply, Ideal.quotientMap_mk]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem xi_adic {Γ R S : Type} [TopologicalSpace Γ] [CommRing R] [CommRing S] [IsLocalRing R]
     [IsLocalRing S] (φ : R →+* S) [IsLocalHom φ] {u : Γ → R} (h : AdicCont (maximalIdeal R) u) :
@@ -39,11 +39,11 @@ private theorem xi_adic {Γ R S : Type} [TopologicalSpace Γ] [CommRing R] [Comm
   simp only [Function.comp_apply, Ideal.quotientMap_mk]
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `residue_surjective u`. Establish `h1 : x - algebraMap O A a ∈ maximalIdeal A`. Rewrite using `[← residue_eq_zero_iff, map_sub, h, ResidueField.map_residue, sub_self]`. Establish `h2 : j x - j (algebraMap O A a) ∈ maximalIdeal O₁`. Rewrite using `[← map_sub]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `map_nonunit j _ h1`. Establish `h3 : residue O₁ (j x) = residue O₁ (j (algebraMap O A a))`. Rewrite using `[← sub_eq_zero, ← map_sub, residue_eq_zero_iff]`. Conclude with `h2`. Rewrite using `[hf, ← h3]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [res]`. Simplify using the standard rewrite rules. Rewrite using `[RingEquiv.symm_apply_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem xi_key {O A O₁ : Type} [CommRing O] [IsLocalRing O] [CommRing A] [IsLocalRing A]
     [CommRing O₁] [IsLocalRing O₁] [IsNoetherianRing O₁] [IsAdicComplete (maximalIdeal O₁) O₁]
@@ -67,11 +67,11 @@ private theorem xi_key {O A O₁ : Type} [CommRing O] [IsLocalRing O] [CommRing 
   rfl
 
 /- English proof (translation)
-Take `⟨hc, hb, hd⟩` from `h`. Use `⟨⟨fun i k => ?_, fun v i => ?_⟩, ⟨fun g i => ?_, fun v i g => ?_⟩, fun g i k hik => ?_⟩` and prove the remaining obligations. Conclude with `xi_adic j (hc.1 i k)`. Conclude with `xi_adic j (hc.2 v i)`. Express the relevant statement in the definitionally equal form `res O₁ O₁ (j (ρ.r g i i)) = _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[xi_key j f hf (ρ.r g i i) _ (hb.1 g i)]`. Simplify using `[Fr.Frame.ext, map_pow]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `res O₁ O₁ (j ((ρ.ψ v i g : Aˣ) : A)) = _`. Rewrite using `[xi_key j f hf _ _ (hb.2 v i g)]`.
+Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `[Fr.Frame.ext, map_pow]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `res O₁ O₁ (j (ρ.r g i k)) = 0`. Rewrite using `[xi_key j f hf (ρ.r g i k) 0 (by rw [map_zero]; exact hd g i k hik), map_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem xi_lift {l : ℕ} [Fact l.Prime] {O A O₁ : Type} [CommRing O] [IsLocalRing O] [CommRing A]
     [IsLocalRing A] [CommRing O₁] [IsLocalRing O₁] [IsNoetherianRing O₁]
@@ -96,9 +96,9 @@ private theorem xi_lift {l : ℕ} [Fact l.Prime] {O A O₁ : Type} [CommRing O] 
     rw [xi_key j f hf (ρ.r g i k) 0 (by rw [map_zero]; exact hd g i k hik), map_zero]
 
 /- English proof (translation)
-Set `j : A →+* c₁.O` to `{ toFun := fun x => ⟨x.1, hA x.1 x.2⟩ map_one' := rfl map_mul' := fun _ _ => rfl map_zero' := rfl map_add' := fun _ _ => rfl }`. Use `⟨j, fun x => rfl, ?_⟩` and prove the remaining obligations. Establish `hfin` using `c₁.fin`. Establish `hint : (algebraMap ℤ_[l] c₁.O).IsIntegral` using `algebraMap_isIntegral_iff.mpr (Algebra.IsIntegral.of_finite ℤ_[l] c₁.O)`. Establish `hcomp : j.comp ((algebraMap c.O A).comp (algebraMap ℤ_[l] c.O)) = algebraMap ℤ_[l] c₁.O` using `RingHom.ext fun x => Subtype.ext rfl`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj : j.IsIntegral` using `RingHom.IsIntegral.tower_top _ j (hcomp ▸ hint)`. Use `hj.isLocalHom (fun x y h => ?_)` and prove the remaining obligations. Establish `h'` using `congrArg (fun z : c₁.O => (z : PadicAlgCl l)) h`. Conclude with `Subtype.ext h'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem xi_loc {l : ℕ} [Fact l.Prime] (c c₁ : Coef l) (A : Subalgebra c.O (PadicAlgCl l))
     (hA : ∀ x ∈ A, x ∈ c₁.O) : ∃ j : A →+* c₁.O, (∀ x, (j x).1 = x.1) ∧ IsLocalHom j := by
@@ -120,9 +120,9 @@ private theorem xi_loc {l : ℕ} [Fact l.Prime] (c c₁ : Coef l) (A : Subalgebr
   exact Subtype.ext h'
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ ι c _ N _ e ψ η σ g₁ B M H L _ _ _ _ _ Φ k c₁ _ f R A _ _ _ hA ρ hρ`. Take `⟨j, hj, _⟩` from `xi_loc c c₁ A hA`. Establish `hf : ∀ a, f (residue c.O a) = residue c₁.O (j (algebraMap c.O A a))` using `fun a => R.hf a _ (hj (algebraMap c.O A a)).symm`. Take `⟨ξ, hξ, -⟩` from `R.S.univ c₁.O _ (xi_lift j f hf ρ hρ)`. Use `⟨ξ, fun g a b => ?_, fun v i g => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(congrArg (fun t : Fr.NRep _ _ c₁.O => (t.r g a b).1) hξ).trans (hj _)`. Conclude with `(congrArg (fun t : Fr.NRep _ _ c₁.O => ((t.ψ v i g : c₁.Oˣ) : c₁.O).1) hξ).trans (hj _)`.
+A detailed English derivation is pending.
 -/
 theorem xiEx :
     UpperTheory.V.J.XiEx := by

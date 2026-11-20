@@ -12,17 +12,17 @@ noncomputable section
 namespace GlobalTheory.CechCmp
 
 /- English proof (translation)
-Introduce `I _ X R _ s U hU hinf f hf`. Establish `hm : ∀ {S T : NE I}, S.set ⊆ T.set → ((op S : (NE I)ᵒᵖ) ⟶ op T)` using `fun h => (homOfLE (NE.le_iff.2 h)).op`. Establish `hsg : ∀ T : NE I, (NE.single T.pt).set ⊆ T.set` using `fun T => by`. Rewrite using `[NE.set_single]`. Conclude with `Set.singleton_subset_iff.2 T.pt_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `sub : ∀ {S T : (NE I)ᵒᵖ} (u v : S ⟶ T), u = v` using `fun u v => Quiver.Hom.unop_inj (Subsingleton.elim _ _)`. Use `⟨fun T => -f (op (NE.single T.unop.pt)) T (hm (hsg T.unop)), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `T T' φ`. Establish `hTT : T.unop.set ⊆ T'.unop.set` using `NE.le_iff.1 (leOfHom φ.unop)`. Establish `ha' : T.unop.pt ∈ T'.unop.set` using `hTT T.unop.pt_mem`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hab : (NE.pair T.unop.pt T'.unop.pt).set ⊆ T'.unop.set`. Rewrite using `[NE.set_pair]`. Conclude with `Set.insert_subset ha' (Set.singleton_subset_iff.2 T'.unop.pt_mem)`. Set `χ : op (NE.pair T.unop.pt T'.unop.pt) ⟶ T'` to `hm hab`. Set `ψa : op (NE.single T.unop.pt) ⟶ op (NE.pair T.unop.pt T'.unop.pt)` to `(homOfLE (NE.pair_le_single_left T.unop.pt T'.unop.pt)).op`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ψb : op (NE.single T'.unop.pt) ⟶ op (NE.pair T.unop.pt T'.unop.pt)` to `(homOfLE (NE.pair_le_single_right T.unop.pt T'.unop.pt)).op`. Establish `c1` using `Z1.comp ⟨f, hf⟩ (hm (hsg T.unop)) φ`. Establish `c2` using `Z1.comp ⟨f, hf⟩ ψa χ`. Establish `c3` using `Z1.comp ⟨f, hf⟩ ψb χ`. Rewrite `c1` using `[sub (hm (hsg T.unop) ≫ φ) (ψa ≫ χ)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : (hm (hsg T'.unop) : op (NE.single T'.unop.pt) ⟶ T') = ψb ≫ χ` using `sub _ _`. Establish `key : toPos s U hU hinf (toCech s U hU hinf f) T T' φ = mp (capF s U hU hinf) χ (f _ _ ψa) - mp (capF s U hU hinf) χ (f _ _ ψb)`. Apply `(cv s U hU hinf T').injective` to reduce the goal to its premises. Establish `h1 : U T.unop.pt ⊓ U T'.unop.pt ≤ cap U (NE.pair T.unop.pt T'.unop.pt)` using `(cap_pair U _ _).ge`. Establish `h2 : cap U T'.unop ≤ U T.unop.pt ⊓ U T'.unop.pt` using `le_inf (cap_le U ha') (cap_le U T'.unop.pt_mem)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[cv_toPos, toCech_apply, map_sub, cv_mp, cv_mp, GlobalTheory.KS.rsT_sub, GlobalTheory.KS.rsT_rsT h1 h2, GlobalTheory.KS.rsT_rsT h1 h2]`. Simplify using `only [amitsur_d0_apply, Pi.sub_apply, map_neg, key]`. Rewrite using `[e3]`. Simplify using `only at c1 c2 c3`. Take the linear combination `-c3 + c2 - c1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cechToPoset_posetToCech_sub_coboundary : ∀ (I : Type) [Finite I] (X : Scheme.{0}) (R : Type) [CommRing R]
     (s : X ⟶ Sp R) (U : I → X.Opens) (hU : ∀ i, IsAffineOpen (U i))

@@ -22,13 +22,13 @@ namespace GlobalTheory.LastRed
 variable {D : D7}
 
 /- English proof (translation)
-Simplify using `[symplOH, symplO, hO]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sympl_zero_l (S T : HSp D) (x : WO S T) : symplOH S T 0 x = 0 := by
   simp [symplOH, symplO, hO]
 
 /- English proof (translation)
-Simplify using `[symplOH, symplO, hO]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sympl_zero_r (S T : HSp D) (x : WO S T) : symplOH S T x 0 = 0 := by
   simp [symplOH, symplO, hO]
@@ -36,7 +36,7 @@ theorem sympl_zero_r (S T : HSp D) (x : WO S T) : symplOH S T x 0 = 0 := by
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-The claim follows from `(hΦ.cont.comp (cp.comp continuous_snd)).mul (hΞ.cont.comp ((ca.comp continuous_fst).add (cb.comp continuous_snd))) smooth n L L' hL hL' h0 h0' u v := by have h1 := hΦ.smooth n (p.comp L') (cp.comp hL') (fun t => fp _ (h0' t)) (p v) have h2 := hΞ.smooth n (a.comp L + b.comp L') (( …`.
+A detailed English derivation is pending.
 -/
 theorem biTheta_of_maps {ψ : AddChar (AF D.host.F) ℂ} {V₀ A S X T : HSp D} (a : WO A S →+ WO V₀ S) (b : WO S X →+ WO V₀ S)
     (p : WO S X →+ WO S T) (ca : Continuous a) (cb : Continuous b) (cp : Continuous p)
@@ -100,25 +100,21 @@ theorem biTheta_of_maps {ψ : AddChar (AF D.host.F) ℂ} {V₀ A S X T : HSp D} 
     rw [← h, map_add p, map_add b, ← add_assoc, AddChar.map_add_eq_mul, mul_mul_mul_comm, e, e']
 
 /- English proof (translation)
-Introduce `D ψ V₀ A L S X T L'' o o'' τ hτ Ξ Φ₂ hΞ hΦ`. Take `⟨kadd, kc, kr, -, ks, kz⟩` from `GlobalTheory.LinkKappa.kappa_props D L L'' S τ (-1) (by rw [hτ]; congr 1; push_cast; ring) (kap τ S) (fun _ => rfl)`. Set `κ : WO S L'' →+ WO L S` to `AddMonoidHom.mk' (kap τ S) kadd`. Set `a : WO A S →+ WO V₀ S` to `(o.resS S).symm.toAddMonoidHom.comp (AddMonoidHom.inl _ _)`. Set `q : WO S X →+ WO S L''` to `(AddMonoidHom.snd _ _).comp (o''.resT S).toAddMonoidHom`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `b : WO S X →+ WO V₀ S` to `(o.resS S).symm.toAddMonoidHom.comp ((AddMonoidHom.inr _ _).comp (κ.comp q))`. Set `p : WO S X →+ WO S T` to `(AddMonoidHom.fst _ _).comp (o''.resT S).toAddMonoidHom`. Establish `ha : ∀ u, a u = u ⬝ o.pA` using `fun u => by show (o.resS S).symm (u, 0) = _`. Rewrite using `[o.resS_symm_apply, Matrix.zero_mul, add_zero]`. Establish `hb : ∀ v, b v = kap τ S (o''.pB ⬝ v) ⬝ o.pB` using `fun v => by show (o.resS S).symm (0, kap τ S (o''.pB ⬝ v)) = _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[o.resS_symm_apply, Matrix.zero_mul, zero_add]`. Establish `hp : ∀ v, p v = o''.pA ⬝ v` using `fun _ => rfl`. Establish `hab : ∀ u v, a u + b v = (o.resS S).symm (u, kap τ S (o''.resT S v).2)` using `fun u v => by`. Rewrite using `[ha, hb]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e : lastBi o o'' τ Ξ Φ₂ = fun u v => Φ₂ (p v) * Ξ (a u + b v)`. Use function extensionality and compare the values at `u v`. Rewrite using `[hab]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `biTheta_of_maps a b p ?_ ?_ ?_ (fun γ => ?_) (fun γ => ?_) (fun γ => ?_) (fun x hx => ?_) (fun x hx => ?_) (fun x hx => ?_) (fun x hx => ?_) (fun x hx => ?_) (fun x hx => ?_) (fun u v u' v' => ?_) hΞ hΦ` and prove the remaining obligations. Conclude with `(o.continuous_resS_symm S).comp (continuous_id.prodMk continuous_const)`. Conclude with `(o.continuous_resS_symm S).comp (continuous_const.prodMk (kc.comp (continuous_snd.comp (o''.continuous_resT S))))`. Conclude with `continuous_fst.comp (o''.continuous_resT S)`. Take `⟨γ', h⟩` from `ratMx_mul (rat_mem γ) (rat_mem o.qA)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨γ', (ha _).trans h.symm⟩`. Take `⟨γ', h⟩` from `ratMx_mul (kr _ (ratMx_mul (rat_mem o''.qB) (rat_mem γ))) (rat_mem o.qB)`. Conclude with `⟨γ', (hb _).trans h.symm⟩`. Take `⟨γ', h⟩` from `ratMx_mul (rat_mem o''.qA) (rat_mem γ)`. Conclude with `⟨γ', (hp _).trans h.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha]`. Conclude with `map_mul_eq_zero_left _ hx _`. Rewrite using `[hb]`. Conclude with `map_mul_eq_zero_left _ ((kz _).2 (map_mul_eq_zero_right _ _ hx)) _`. Rewrite using `[hp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `map_mul_eq_zero_right _ _ hx`. Rewrite using `[ha]`. Conclude with `map_mul_eq_zero_left _ hx _`. Rewrite using `[hb]`. Conclude with `map_mul_eq_zero_left _ ((kz _).1 (map_mul_eq_zero_right _ _ hx)) _`.
-
-Rewrite using `[hp]`. Conclude with `map_mul_eq_zero_right _ _ hx`. Establish `k : ∀ w w', symplOH L S (kap τ S w) (kap τ S w') = symplOH S L'' w w'` using `fun w w' => by`. Rewrite using `[symplOH, symplOH, ks]`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hab, hab, o.symplOH_resS, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, o''.symplOH_resT S v v', k]`. Use `show symplOH S T (o''.resT S v).1 (o''.resT S v').1 + _ = _`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lastBi_biTheta : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (V₀ A L S X T L'' : HSp D) (o : OrthDec V₀ A L) (o'' : OrthDec X T L'') (τ : Matrix (Fin L.rank) (Fin L''.rank) D.host.E), τᴴ ⬝ (L.gram ⬝ τ) = (-(D.host.xi0 * star D.host.xi0)) • L''.gram → ∀ (Ξ : WO V₀ S → ℂ) (Φ₂ : WO S T → ℂ), IsThetaFunO ψ V₀ S Ξ → IsThetaFunO ψ S T Φ₂ → IsBiTheta ψ A S X (lastBi o o'' τ Ξ Φ₂) := by
   intro D ψ V₀ A L S X T L'' o o'' τ hτ Ξ Φ₂ hΞ hΦ
@@ -171,19 +167,15 @@ end GlobalTheory.LastRed
 namespace GlobalTheory.LastRed
 
 /- English proof (translation)
-Introduce `D S S₀ d v v₀ hμ f hf`. Use `haveI : BorelSpace (GA D S) := ⟨rfl⟩`. Use `haveI : BorelSpace (GA D S₀) := ⟨rfl⟩`. Use `haveI : IsTopologicalGroup (GA D S₀) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Use `haveI : Countable (GQ S₀) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma D.sp.cm.sig S₀.gram`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.measurableConstSMul_subgroup (GQ S₀)`. Use `haveI := v₀.haar`. Use `haveI := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.smulInvariant_subgroup (GQ S₀) v₀.μ`. Establish `hbkc : Continuous (GlobalTheory.WeilSrc.Zero.back d)` using `continuous_of_mt S₀ (by`. Simplify using `only [GlobalTheory.WeilSrc.Zero.back, mt_ofMat]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(continuous_const.matrix_mul (continuous_mt S)).matrix_mul continuous_const)`. Establish `hli : ∀ g, GlobalTheory.WeilSrc.Zero.back d (d.emb0 g) = g` using `fun g => d.wittDecomp_anisotropicEmbedding_injective (GlobalTheory.WeilSrc.Zero.witt_decomposition_zero_embedding_left_inverse d _)`. Set `e : GA D S₀ ≃ₜ GA D S` to `{ toFun := d.emb0, invFun := GlobalTheory.WeilSrc.Zero.back d, left_inv := hli, right_inv := GlobalTheory.WeilSrc.Zero.witt_decomposition_zero_embedding_left_inverse d, continuous_toFun := d.continuous_embed, continuous_invFun := hbkc }`. Set `em` to `e.toMeasurableEquiv`. Establish `hmap : Measure.map d.emb0 v₀.μ = Measure.map em v₀.μ` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hmem : ∀ γ : GQ S, GlobalTheory.WeilSrc.Zero.back d γ ∈ GQ S₀` using `fun γ => by`. Rewrite using `[mem_GQ_iff]`. Simplify using `only [GlobalTheory.WeilSrc.Zero.back, mt_ofMat]`. Conclude with `ratMx_mul (ratMx_mul (rat_mem _) ((mem_GQ_iff S γ).1 γ.2)) (rat_mem _)`. Establish `hfd : IsFundamentalDomain (GQ S₀) (em ⁻¹' v.𝓕) v₀.μ`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `v.fund`. Rewrite `h` using `[hμ, hmap]`. Use `h.preimage_of_equiv (em.measurable.measurePreserving v₀.μ).quasiMeasurePreserving (e := fun γ : GQ S => (⟨GlobalTheory.WeilSrc.Zero.back d γ, hmem γ⟩ : GQ S₀)) ⟨fun a b hab => ?_, fun γ₀ => ?_⟩ ?_` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use `congrArg (fun x : GQ S₀ => d.emb0 x) hab` as an intermediate fact.
-
-Simplify `this` using `[GlobalTheory.WeilSrc.Zero.witt_decomposition_zero_embedding_left_inverse]`. Conclude with `⟨⟨d.emb0 γ₀, d.wittDecomp_anisotropicEmbedding_mem_rationalPoints γ₀.2⟩, Subtype.ext (hli _)⟩`. Introduce `γ x show d.emb0 (GlobalTheory.WeilSrc.Zero.back d γ * x) = (γ : GA D S) * d.emb0 x`. Rewrite using `[map_mul, GlobalTheory.WeilSrc.Zero.witt_decomposition_zero_embedding_left_inverse]`. Rewrite using `[hμ, hmap, em.restrict_map, integral_map_equiv]`.
-
-Conclude with `hfd.setIntegral_eq v₀.fund (fun γ x => by show f (d.emb0 ((γ : GA D S₀) * x)) = f (d.emb0 x)`. Rewrite using `[map_mul]`. Conclude with `hf _ (d.wittDecomp_anisotropicEmbedding_mem_rationalPoints γ.2) _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_automorphic_rankZeroWittEmbedding : ∀ (D : D7) (S S₀ : HSp D) (d : HypDec S S₀ 0) (v : Vol S) (v₀ : Vol S₀), v.μ = Measure.map d.emb0 v₀.μ → ∀ f : GA D S → ℂ, (∀ γ ∈ GQ S, ∀ g, f (γ * g) = f g) → ∫ g in v.𝓕, f g ∂v.μ = ∫ g in v₀.𝓕, f (d.emb0 g) ∂v₀.μ := by
   intro D S S₀ d v v₀ hμ f hf
@@ -231,15 +223,15 @@ end GlobalTheory.LastRed
 namespace GlobalTheory.LastRed
 
 /- English proof (translation)
-Introduce `D ψ B J s Ψ`. Use function extensionality and compare the values at `w`. Establish `hS` using `(GlobalTheory.Unf.mixRankZero D ψ).1 B.V B.V₀ J.W B.d s.vS.μ s.vS.𝓕 s.vS.covol`. Establish `hT` using `(GlobalTheory.Unf.mixRankZero D ψ).2.1 B.V₀ J.W J.W₀ J.d s.vT.μ s.vT.𝓕 s.vT.covol`. Simplify using `only [flatBF, flat, flatAt, flatFun, evalAt, hS, hT]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hpsi : ∀ u : UX D 0, psiUni ψ u.1 = 1` using `fun u => by`. Simplify using `[psiUni, upSum, psiE]`. Simplify using `only [hpsi, star_one, one_mul, integral_const, smul_eq_mul]`. Take `⟨-, 𝓤, -, h𝓤⟩` from `s.vU.unit`. Establish `hsub : Subsingleton (UX D 0)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨fun x y => Subtype.ext (Units.ext (Subsingleton.elim _ _))⟩` and prove the remaining obligations. Establish `hne : 𝓤.Nonempty`. Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[Set.not_nonempty_iff_eq_empty]`. Simplify using `[hc] at h𝓤`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hU : 𝓤 = Set.univ`. Take `⟨x, hx⟩` from `hne`. Use extensionality with `y`. Simplify using `[Subsingleton.elim y x, hx]`. Establish `h1 : s.vU.ν Set.univ = 1` using `by rw [← hU, h𝓤]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Measure.real, h1]`.
+Simplify using the standard rewrite rules.
 -/
 theorem flatBF_rankZero : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (B : BesLev D 0) (J : JacLev D 0) (s : StepBF ψ B J) (Ψ : WO B.V J.W → ℂ), flatBF s Ψ = fun w => Ψ (B.d.ext0 J.W (J.d.inc0 B.V₀ w)) := by
   intro D ψ B J s Ψ
@@ -271,7 +263,7 @@ namespace GlobalTheory.LastRed
 variable {D : D7}
 
 /- English proof (translation)
-Establish `e : ((γ * g, γ' * h) : GA D S × GA D T) = (γ, γ') * (g, h)` using `rfl`. Rewrite using `[e, map_mul, Module.End.mul_apply]`. Conclude with `hom.om_aut γ hγ γ' hγ' _ (hom.om_pres _ _ hf)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_inv {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle} {om : Om S T}
     (hom : IsWeilDatumO ψ S T χS χT om) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) {γ : GA D S} (hγ : γ ∈ GQ S)
@@ -281,7 +273,7 @@ theorem ker_inv {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)
   exact hom.om_aut γ hγ γ' hγ' _ (hom.om_pres _ _ hf)
 
 /- English proof (translation)
-Simplify using `using ker_inv hom hf (one_mem (GQ S)) hγ' g h`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ker_inv_right {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle} {om : Om S T}
     (hom : IsWeilDatumO ψ S T χS χT om) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) {γ' : GA D T} (hγ' : γ' ∈ GQ T)
@@ -289,7 +281,7 @@ theorem ker_inv_right {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : 
   simpa using ker_inv hom hf (one_mem (GQ S)) hγ' g h
 
 /- English proof (translation)
-Simplify using `using ker_inv hom hf hγ (one_mem (GQ T)) g h`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ker_inv_left {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle} {om : Om S T}
     (hom : IsWeilDatumO ψ S T χS χT om) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) {γ : GA D S} (hγ : γ ∈ GQ S)
@@ -297,9 +289,9 @@ theorem ker_inv_left {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (
   simpa using ker_inv hom hf hγ (one_mem (GQ T)) g h
 
 /- English proof (translation)
-Use `⟨fun γ hγ g => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [liftS_apply]`. Use `congr 1`. Use function extensionality and compare the values at `h`. Rewrite using `[ker_inv_left hom hf hγ g h]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : Continuous (Function.uncurry fun (h : GA D T) (g : GA D S) => om (g, h) f 0 * G h)` using `((hom.om_cont f hf 0).comp (continuous_snd.prodMk continuous_fst)).mul (hG.2.comp continuous_fst)`. Conclude with `(GlobalTheory.CocompactParam.continuous_integral_param D T hT v (GA D S) (fun h g => om (g, h) f 0 * G h) hc (fun γ hγ h g => by rw [ker_inv_right hom hf hγ g h, hG.1 γ hγ h])).2.1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem liftS_contAut {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle} {om : Om S T}
     (hom : IsWeilDatumO ψ S T χS χT om) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (hT : CoCpt T) (v : Vol T)
@@ -315,9 +307,9 @@ theorem liftS_contAut {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : 
       (fun γ hγ h g => by rw [ker_inv_right hom hf hγ g h, hG.1 γ hγ h])).2.1
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [liftS_apply, rTrans]`. Establish `e : ∀ h, om (x, h) (om (g, b) f) 0 = om (x * g, h * b) f 0` using `fun h => by`. Establish `: om (x * g, h * b) = om (x, h) * om (g, b)`. Rewrite using `[← map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[this, Module.End.mul_apply]`. Simplify using `only [e]`. Conclude with `GlobalTheory.ChainOnto.setIntegral_fd_mul_right D T v.μ v.𝓕 v.haar v.fund (fun h => om (x * g, h) f 0 * G h) (fun γ hγ h => by rw [ker_inv_right hom hf hγ, hG γ hγ]) b`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem liftS_trans {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle} {om : Om S T}
     (hom : IsWeilDatumO ψ S T χS χT om) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (v : Vol T)
@@ -334,13 +326,13 @@ theorem liftS_trans {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (A
     (fun γ hγ h => by rw [ker_inv_right hom hf hγ, hG γ hγ]) b
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun γ hγ g => by simp only [rTrans]; rw [mul_assoc, hF.1 γ hγ], hF.2.comp (continuous_mul_right b)⟩`.
+Supply the required witnesses or components.
 -/
 theorem contAut_rTrans {V : HSp D} {F : GA D V → ℂ} (hF : IsContAut V F) (b : GA D V) : IsContAut V (rTrans b F) :=
   ⟨fun γ hγ g => by simp only [rTrans]; rw [mul_assoc, hF.1 γ hγ], hF.2.comp (continuous_mul_right b)⟩
 
 /- English proof (translation)
-Take `⟨K, hK, hKs⟩` from `h`. Use `⟨d.emb0 '' K, hK.image d.continuous_embed, fun g => ?_⟩` and prove the remaining obligations. Take `⟨g₀, rfl⟩` from `(GlobalTheory.WeilSrc.Zero.witt_decomposition_zero_embedding_bijective d).2 g`. Take `⟨γ, hγ, hγK⟩` from `hKs g₀`. Conclude with `⟨d.emb0 γ, d.wittDecomp_anisotropicEmbedding_mem_rationalPoints hγ, γ * g₀, hγK, map_mul _ _ _⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cocpt_zero {S S₀ : HSp D} (d : HypDec S S₀ 0) (h : CoCpt S₀) : CoCpt S := by
   obtain ⟨K, hK, hKs⟩ := h
@@ -350,11 +342,11 @@ theorem cocpt_zero {S S₀ : HSp D} (d : HypDec S S₀ 0) (h : CoCpt S₀) : CoC
   exact ⟨d.emb0 γ, d.wittDecomp_anisotropicEmbedding_mem_rationalPoints hγ, γ * g₀, hγK, map_mul _ _ _⟩
 
 /- English proof (translation)
-Establish `hstd` using `s.weil.std`. Take `⟨-, -, hthS, hwS⟩` from `GlobalTheory.WeilSrc.om0_ext0_eq_om_emb0_of_isWeilDatumO D ψ B.V B.V₀ J.W B.d hstd`. Take `⟨-, hthT, hwT⟩` from `GlobalTheory.TargetIsom.transport D ψ B.V₀ J.W J.W₀ J.d hstd`. Establish `hpull` using `GlobalTheory.WeilSrc.Zero.isWeilDatumO_pull B.d s.weil`. Establish `h1 : IsThetaFunO ψ B.V₀ J.W (fun w => Ψ (B.d.ext0 J.W w))` using `(hthS Ψ).2 hΨ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : IsThetaFunO ψ B.V₀ J.W₀ (fun w => Ψ (B.d.ext0 J.W (J.d.inc0 B.V₀ w)))` using `(hthT _).2 h1`. Rewrite using `[flatBF_rankZero D ψ B J s Ψ]`. Use `⟨h2, fun g h => ?_⟩` and prove the remaining obligations. Establish `e1` using `hwT s.χV s.χW (GlobalTheory.WeilSrc.Zero.pull B.d s.om) s.om₀ hpull s.weil₀ g h _ h1`. Establish `e2` using `hwS s.χV s.χW s.om (GlobalTheory.WeilSrc.Zero.pull B.d s.om) s.weil hpull g (J.d.emb0 h) Ψ hΨ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1]`. Simplify using `only`. Rewrite using `[e2]`. Simplify using `only [map_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem val_zero {ψ : AddChar (AF D.host.F) ℂ} {B : BesLev D 0} {J : JacLev D 0} (s : StepBF ψ B J)
     {Ψ : WO B.V J.W → ℂ} (hΨ : IsThetaFunO ψ B.V J.W Ψ) :
@@ -379,29 +371,27 @@ end GlobalTheory.LastRed
 namespace GlobalTheory.LastRed
 
 /- English proof (translation)
-Introduce `D c v t hc hvol ht hW hLL hSL j h Φ₁ Φ₂ φ F hΦ₁ hΦ₂ hφ hF`. Take `⟨hsom, hsvW⟩` from `ht.sBF j 0 h`. Establish `hWs : IsWeilDatumO c.ψ (c.V j) (c.V (j + 1)) (t.sBF j 0 h).χV (t.sBF j 0 h).χW (t.om j)`. Use `(t.sBF j 0 h).weil` as an intermediate fact. Rewrite `this` using `[hsom]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Take `⟨χA, χz, χS', χT, omz, omT, omz'', hχV, hWa, hWz, hWX, hWT, hWTb, hWz''⟩` from `hW.last j h`. Establish `hcS : CoCpt (c.V (j + 1))` using `cocpt_zero (c.jac j 0 h).d (c.jac j 0 h).cpt`. Establish `hG : IsContAut (c.V (j + 1)) (liftS (t.omT j h) c.volT.μ c.volT.𝓕 F Φ₂)` using `liftS_contAut hWTb hΦ₂ hc.cpt c.volT hF`. Use `⟨liftS_contAut hWs hΦ₁ hcS (c.vol (j + 1)) hG, fun g b bT => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e1 : liftS (t.omT j h) c.volT.μ c.volT.𝓕 (rTrans bT F) (t.omT j h (b, bT) Φ₂) = rTrans b (liftS (t.omT j h) c.volT.μ c.volT.𝓕 F Φ₂)` using `liftS_trans hWTb hΦ₂ c.volT hF.1 b bT`. Establish `e2 : liftS (t.om j) (c.vol (j + 1)).μ (c.vol (j + 1)).𝓕 (rTrans b (liftS (t.omT j h) c.volT.μ c.volT.𝓕 F Φ₂)) (t.om j (g, b) Φ₁) = rTrans g (liftS (t.om j) (c.vol (j + 1)).μ (c.vol (j + 1)).𝓕 (liftS (t.omT j h) c.volT.μ c.volT.𝓕 F Φ₂) Φ₁)` using `liftS_trans hWs hΦ₁ (c.vol (j + 1)) hG.1 g b`. Rewrite using `[← e2, ← e1]`. Set `lt : Last c.ψ c.T (c.B j 0 h)` to `{ J := c.J j 0 h, s := t.sBF j 0 h, cptS := hcS, cptT := hc.cpt, χS := χS', χT := χT, om := t.omT j h, weil := hWTb, vT := c.volT }`. Establish `hΦ₁'` using `hWs.om_pres (g, b) Φ₁ hΦ₁`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦ₂'` using `hWTb.om_pres (b, bT) Φ₂ hΦ₂`. Establish `hLL' : (c.B j 0 h).per c.ψ φ (liftS (t.om j) (c.vol (j + 1)).μ (c.vol (j + 1)).𝓕 (liftS (t.omT j h) c.volT.μ c.volT.𝓕 (rTrans bT F) (t.omT j h (b, bT) Φ₂)) (t.om j (g, b) Φ₁)) = lt.Q φ (t.om j (g, b) Φ₁) (t.omT j h (b, bT) Φ₂) (rTrans bT F)`. Use `hLL c.ψ c.T (c.B j 0 h) lt φ (t.om j (g, b) Φ₁) (t.omT j h (b, bT) Φ₂) (rTrans bT F) hφ (contAut_rTrans hF bT) hΦ₁' hΦ₂'` as an intermediate fact. Establish `e3 : ∀ G Φ, lt.s.lift G Φ = liftS (t.om j) (c.vol (j + 1)).μ (c.vol (j + 1)).𝓕 G Φ` using `fun G Φ => by show liftS (t.sBF j 0 h).om (t.sBF j 0 h).vW.μ (t.sBF j 0 h).vW.𝓕 G Φ = _`. Rewrite using `[hsom, hsvW]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[e3]`. Conclude with `this`. Rewrite using `[hLL']`. Establish `hstd : IsStdChar D c.ψ (-1)` using `hc.std`. Use `set s := t.sBF j 0 h with hs`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set Φ₁' := t.om j (g, b) Φ₁ with hΦ₁'def`. Use `set Φ₂' := t.omT j h (b, bT) Φ₂ with hΦ₂'def`. Establish `hΦ₁s : IsThetaFunO c.ψ (c.B j 0 h).V (c.J j 0 h).W Φ₁'` using `hΦ₁'`. Take `⟨hΞ, hval⟩` from `val_zero s hΦ₁s`. Take `⟨-, -, hthS, hwS⟩` from `GlobalTheory.WeilSrc.om0_ext0_eq_om_emb0_of_isWeilDatumO D c.ψ (c.V (j + 1)) (c.X (j + 1)) c.T (c.jac j 0 h).d hstd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦ₂'' : IsThetaFunO c.ψ (c.X (j + 1)) c.T (fun w => Φ₂' ((c.jac j 0 h).d.ext0 c.T w))` using `(hthS Φ₂').2 hΦ₂'`. Establish `hτ` using `(hW.tau j h).2`. Establish `hSL'` using `(hSL c.ψ (c.bes j 0 h).V₀ (c.X j) (c.bes j 0 h).L (c.X (j + 1)) (c.X (j + 1 + 1)) c.T c.Lz (c.bes j 0 h).o (c.oT (j + 1 + 1) h) (v.τ j h) (c.bes j 0 h).line.1 (hW.tau j h).1 hτ χA χz s.χW χS' χT s.om₀ (t.kom j) omz (t.kom (j + 1)) omT omz'' (hχV ▸ s.weil₀) hWa hWz hWX hWT hWz'' ( …`. Establish `hC` using `lastBi_biTheta D c.ψ (c.bes j 0 h).V₀ (c.X j) (c.bes j 0 h).L (c.X (j + 1)) (c.X (j + 1 + 1)) c.T c.Lz (c.bes j 0 h).o (c.oT (j + 1 + 1) h) (v.τ j h) hτ (flatBF s Φ₁') _ hΞ hΦ₂''`. Establish `hBA` using `(GlobalTheory.T.seeSawWeilBiAction_commutes D c.ψ (c.X j) (c.X (j + 1)) (c.X (j + 1 + 1)) χA s.χW χS' (χT * χz⁻¹) (t.kom j) (t.kom (j + 1)) hWa hWX _ hC).2.2.1`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show ∫ h' in c.volT.𝓕, rTrans bT F h' * (∫ x in s.vW.𝓕, t.omT j h (x, h') Φ₂' 0 * (∫ h₀ in (c.x j).vol.𝓕, φ h₀ * s.om (embA (c.bes j 0 h).d (c.bes j 0 h).o h₀, x) Φ₁' 0 ∂(c.x j).vol.μ) ∂s.vW.μ) ∂c.volT.μ = _`. Use `congr 1`. Use function extensionality and compare the values at `h'`. Use `congr 1`. Rewrite using `[hsvW]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_automorphic_rankZeroWittEmbedding D _ _ (c.jac j 0 h).d (c.vol (j + 1)) (c.x (j + 1)).vol (hvol j h) _ (fun γ hγ x => by`. Rewrite using `[ker_inv_left hWTb hΦ₂' hγ x h']`. Use `congr 1`. Use `congr 1`. Use function extensionality and compare the values at `h₀`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[ker_inv_right s.weil hΦ₁s hγ])]`. Simplify using `only [Comm.bl, biLift]`. Use `congr 1`. Use function extensionality and compare the values at `h₁`. Rewrite using `[← integral_const_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `congr 1`. Use function extensionality and compare the values at `h₀`. Establish `v1` using `hval ((c.bes j 0 h).o.emb (h₀, 1)) h₁`. Establish `v2` using `congrFun (hwS χS' χT (t.omT j h) omT hWTb hWT h₁ h' Φ₂' hΦ₂') 0`. Simplify using `only [map_zero] at v2`.
-
-Establish `v3` using `hSL' h₀ h₁ h'`. Establish `v4` using `hBA (h₀, h₁) (h₁, (c.oT (j + 1 + 1) h).emb (h', 1)) 0 0`. Rewrite using `[embA_apply, v1, ← v2]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (c : Comm D) (v : VCom c) (t : Tup c), c.Is → c.VolLast → t.Is → WeilOK (t := t) v → LastLaw D → SeeLast D → ∀ j (h : j + 2 * 0 + 2 = D.R.m) Φ₁ Φ₂ φ F, IsThetaFunO c.ψ _ _ Φ₁ → IsThetaFunO c.ψ _ _ Φ₂ → IsContAut (c.X j) φ → IsContAut c.T F → IsContAut (c.V j) (liftS (t.om j) (c.vol (j + 1)).μ (c.vol (j + 1)).𝓕 (liftS (t.omT j h) c.volT.μ c.volT.𝓕 F Φ₂) Φ₁) ∧ ∀ g b bT, (c.B j 0 h).per c.ψ φ (rTrans g (liftS (t.om j) (c.vol (j + 1)).μ (c.vol (j + 1)).𝓕 (liftS (t.omT j h) c.volT.μ c.volT.𝓕 F Φ₂) Φ₁)) = ∫ h' in c.volT.𝓕, rTrans bT F h' * c.bl j (t.kom j) (t.kom (j + 1)) φ (c.lst j h (v.τ j h) (t.sBF j 0 h) (t.om j (g, b) Φ₁) (t.omT j h (b, bT) Φ₂)) ((c.oT (j + 1 + 1) h).emb (h', 1)) ∂c.volT.μ := by
   intro D c v t hc hvol ht hW hLL hSL j h Φ₁ Φ₂ φ F hΦ₁ hΦ₂ hφ hF

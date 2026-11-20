@@ -7,23 +7,23 @@ open NumberField GlobalTheory.CuspRep GlobalTheory.CuspQuot GlobalTheory.AutGrow
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E _ _ _ a t ht i j hij`. Take `⟨C0, hC0, hb⟩` from `GlobalTheory.T.cone_coordinate_ratio_bounded a t ht`. Use `⟨C0 * C0 + C0, by positivity, ?_⟩` and prove the remaining obligations. Introduce `r d hr hcone hd`. Establish `hij' : i ≤ j` using `by rw [Fin.le_def]; omega`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hji : r j / r i ≤ C0` using `hb r hr hcone i j hij'`. Establish `hji0 : 0 ≤ r j / r i` using `(div_pos (hr j) (hr i)).le`. Use `⟨by nlinarith, fun z => ?_⟩` and prove the remaining obligations. Use `⟨fun p => (r p.1.2 / r p.1.1) • z p, ?_, ?_⟩` and prove the remaining obligations. Establish `hX : 0 ≤ (C0 * C0 + C0) * (r j / r i)` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun p => ?_` and prove the remaining obligations. Establish `hk : p.1.1 ≤ i` using `by rw [Fin.le_def]; have := p.2.1; omega`. Establish `hl : j ≤ p.1.2` using `by rw [Fin.le_def]; exact p.2.2`. Establish `h1 : r p.1.2 / r j ≤ C0` using `hb r hr hcone j p.1.2 hl`. Establish `h3 : r i / r p.1.1 ≤ C0` using `hb r hr hcone p.1.1 i hk`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : 0 < r p.1.2 / r p.1.1` using `div_pos (hr _) (hr _)`. Establish `heq : r p.1.2 / r p.1.1 = (r p.1.2 / r j) * (r j / r i) * (r i / r p.1.1)`. Use `hr j` as an intermediate fact. Use `hr i` as an intermediate fact. Use `hr p.1.1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Establish `hbd : r p.1.2 / r p.1.1 ≤ (C0 * C0 + C0) * (r j / r i)`. Rewrite using `[heq]`. Establish `e1 : 0 ≤ r p.1.2 / r j` using `(div_pos (hr _) (hr _)).le`. Establish `e3 : 0 ≤ r i / r p.1.1` using `(div_pos (hr _) (hr _)).le`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul (mul_le_mul_of_nonneg_right h1 hji0) h3 e3 (by positivity)` to reduce the goal to its premises. Use `_ ≤ (C0 * C0 + C0) * (r j / r i) := by nlinarith`. Rewrite using `[norm_smul, Real.norm_eq_abs, abs_of_pos hpos]`. Conclude with `mul_le_mul hbd (norm_le_pi_norm z p) (norm_nonneg _) hX`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `τ`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul, hd]`. Express the relevant statement in the definitionally equal form `(1 + nilM (τ • z)) * _ = _ * (1 + nilM (τ • fun p => (r p.1.2 / r p.1.1) • z p))`. Use extensionality with `k l w`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[add_mul, mul_add, one_mul, mul_one, Matrix.add_apply, Matrix.add_apply, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Use `congr 1`. Simplify using `only [nilM, Matrix.of_apply]`. Use `split_ifs with h`. Simplify using `only [Pi.add_apply, Pi.mul_apply, Pi.smul_apply, smul_eq_mul, Complex.real_smul, add_right_inj]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use `hr k` as an intermediate fact. Establish `hk0 : (r k : ℂ) ≠ 0` using `by exact_mod_cast this.ne'`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
+Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unip_mul_diag_cone : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (t : ℝ), 0 < t → ∀ i j : Fin a, (j : ℕ) = i + 1 → ∃ C : ℝ, 0 ≤ C ∧ ∀ (r : Fin a → ℝ) (d : GL (Fin a) (Cinf E)), (∀ i, 0 < r i) → (∀ i j : Fin a, (j : ℕ) = i + 1 → t * r j ≤ r i) → d.val = Matrix.diagonal (fun i => fun _ => (r i : ℂ)) → r j / r i ≤ C ∧ ∀ z : BlockIx a j → Cinf E, ∃ z' : BlockIx a j → Cinf E, ‖z'‖ ≤ C * (r j / r i) * ‖z‖ ∧ ∀ τ : ℝ, unip (τ • z) * d = d * unip (τ • z') := by
   intro E _ _ _ a t ht i j hij

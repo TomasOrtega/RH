@@ -3,11 +3,11 @@ import Mathlib
 namespace CrystallineSemistableComparison.Inj
 
 /- English proof (translation)
-Establish `hker : LinearMap.ker (LinearMap.pi f) = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `v hv`. Conclude with `hf v fun i => congrFun hv i`. Take `⟨ρ, hρ⟩` from `LinearMap.exists_leftInverse_of_injective (LinearMap.pi f) hker`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun i => g (ρ (Pi.single i 1)), fun v => ?_⟩` and prove the remaining obligations. Establish `h1 : v = ρ (LinearMap.pi f v)` using `by rw [← LinearMap.comp_apply, hρ, LinearMap.id_apply]`. Establish `h2 : LinearMap.pi f v = ∑ i, f i v • Pi.single i (1 : k)`. Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `conv_lhs => rw [h1, h2]`. Simplify using `[map_sum, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem dual_span {k V : Type*} [Field k] [AddCommGroup V] [Module k V] {ι : Type*} [Fintype ι] [DecidableEq ι]
     (f : ι → Module.Dual k V) (hf : ∀ v, (∀ i, f i v = 0) → v = 0) (g : Module.Dual k V) :
@@ -26,11 +26,9 @@ theorem dual_span {k V : Type*} [Field k] [AddCommGroup V] [Module k V] {ι : Ty
   simp [map_sum, mul_comm]
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `dual_span f hf (b.coord m')`. Establish `key : z m' = ∑ i, q (c i) * ∑ m, z m * q (f i (b m))`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[Module.Basis.coord_apply, Finsupp.single_apply]`. Use `_ = ∑ m, z m * q (∑ i, c i * f i (b m)) := by simp_rw [← hc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities.
 
-Use `_ = _ := by`. Repeatedly rewrite using `[map_sum, map_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun m _ => by ring`. Rewrite using `[key]`.
-
-Conclude with `sum_mem fun i _ => hS _ _ (hy i)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_abs {k B V : Type*} [Field k] [CommRing B] [AddCommGroup V] [Module k V] (q : k →+* B) (S : AddSubgroup B)
     (hS : ∀ x s, s ∈ S → q x * s ∈ S) {ι : Type*} [Fintype ι] (f : ι → Module.Dual k V)

@@ -5,15 +5,15 @@ open scoped InnerProductSpace
 namespace GlobalTheory.Core.Rk
 
 /- English proof (translation)
-Introduce `D u hS hd hT`. Establish `hT' : (2 : ℝ) < ((D.mem u).A.T : ℝ)` using `by exact_mod_cast hT`. Establish `hpos : (0 : ℝ) < ((D.mem u).A.T : ℝ) - 1` using `by linarith`. Use `set a : ℝ := -(1 / (((D.mem u).A.T : ℝ) - 1)) with ha`. Establish `ha1 : 1 / (((D.mem u).A.T : ℝ) - 1) < 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_lt_one hpos]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `ha0 : 0 < 1 / (((D.mem u).A.T : ℝ) - 1)` using `by positivity`. Establish `hb : -2 ≤ a` using `by rw [ha]; linarith`. Establish `hB` using `one_add_mul_le_pow hb D.R.f`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd' : (0 : ℝ) < (d0 D u : ℝ)` using `by exact_mod_cast hd`. Unfold `RamShare at hS`. Unfold `RamBig`. Establish `hbase : 0 < 1 - 1 / (((D.mem u).A.T : ℝ) - 1)` using `by linarith`. Establish `hp : 0 < (1 - 1 / (((D.mem u).A.T : ℝ) - 1)) ^ D.R.f` using `pow_pos hbase _`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `: (0 : ℝ) < (dU D u : ℝ)` using `by rw [hS]; exact mul_pos hd' hp`. Conclude with `this` after adjusting the coercions. Rewrite using `[hS]`. Establish `e1 : 1 + a = 1 - 1 / (((D.mem u).A.T : ℝ) - 1)` using `by rw [ha]; ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hB` using `[e1]`. Establish `e2 : 1 + (D.R.f : ℝ) * a = 1 - (D.R.f : ℝ) / (((D.mem u).A.T : ℝ) - 1)` using `by rw [ha]; ring`. Rewrite `hB` using `[e2]`. Rewrite using `[mul_comm ((d0 D u : ℝ))]`. Conclude with `mul_le_mul_of_nonneg_right hB hd'.le`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ramBig_of_ramShare : ∀ (D : D7) (u : D.what₂.Word), RamShare D u → 0 < d0 D u → 2 < (D.mem u).A.T →
     RamBig D u ((D.R.f : ℝ) / (((D.mem u).A.T : ℝ) - 1)) := by

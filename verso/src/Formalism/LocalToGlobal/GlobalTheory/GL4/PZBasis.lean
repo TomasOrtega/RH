@@ -18,27 +18,23 @@ open Formalism.REAL (fockF)
 section LI
 
 /- English proof (translation)
-Establish `hfun : ∀ a : κ, ∃ f : V →ₗ[K] K, ∀ a', f (v a') = if a' = a then 1 else 0`. Introduce `a`. Take `⟨g, hg⟩` from `LinearMap.exists_extend ((Finsupp.lapply a).comp hv.repr)`. Use `⟨g, fun a' => ?_⟩` and prove the remaining obligations. Establish `h` using `LinearMap.congr_fun hg ⟨v a', Submodule.subset_span (Set.mem_range_self a')⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, Finsupp.lapply_apply] at h`. Rewrite using `[h, hv.repr_eq_single a' _ rfl, Finsupp.single_apply]`. Rewrite using `[linearIndependent_iff']`. Introduce `s g hg a ha`. Take `⟨f, hf⟩` from `hfun a`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `set T : Finset ι := s.biUnion fun a' => (b.repr (v a')).support with hT`. Establish `hx_eq : ∀ x : V, (b.repr x).support ⊆ T → x = ∑ i ∈ T, b.repr x i • b i`. Introduce `x hx`. Use `conv_lhs => rw [← b.linearCombination_repr x]`. Rewrite using `[Finsupp.linearCombination_apply, Finsupp.sum_of_support_subset _ hx]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i _`. Conclude with `zero_smul K _`. Establish `hsub : ∀ a' ∈ s, (b.repr (v a')).support ⊆ T` using `fun a' ha' => Finset.subset_biUnion_of_mem (fun a' => (b.repr (v a')).support) ha'`. Establish `hexp : ∀ a' ∈ s, e (v a') = ∑ i ∈ T, σ (b.repr (v a') i) • e (b i)`. Introduce `a' ha'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `conv_lhs => rw [hx_eq (v a') (hsub a' ha')]`. Rewrite using `[map_sum]`. Simplify using `only [map_smulₛₗ]`. Establish `hfv : ∀ a' ∈ s, f (v a') = ∑ i ∈ T, b.repr (v a') i * f (b i)`. Introduce `a' ha'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `conv_lhs => rw [hx_eq (v a') (hsub a' ha')]`. Rewrite using `[map_sum]`. Simplify using `only [map_smul, smul_eq_mul]`. Establish `hcoef : ∀ i ∈ T, ∑ a' ∈ s, g a' * σ (b.repr (v a') i) = 0`. Establish `h2 : ∑ i ∈ T, (∑ a' ∈ s, g a' * σ (b.repr (v a') i)) • e (b i) = 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hg]`. Repeatedly rewrite using `[Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a' ha' => ?_` and prove the remaining obligations. Rewrite using `[hexp a' ha', Finset.smul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul]`. Conclude with `(linearIndependent_iff'.1 hb) T _ h2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_eq_single a]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf a, if_pos rfl, map_one, mul_one]`. Introduce `a' _ hne`. Rewrite using `[hf a', if_neg hne, map_zero, mul_zero]`. Introduce `h`. Conclude with `absurd ha h`.
-
-Use `_ = ∑ a' ∈ s, g a' * σ (∑ i ∈ T, b.repr (v a') i * f (b i)) := Finset.sum_congr rfl fun a' ha' => by rw [hfv a' ha']`. Use `_ = ∑ i ∈ T, σ (f (b i)) * ∑ a' ∈ s, g a' * σ (b.repr (v a') i) := by`. Simplify using `only [map_sum, map_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun a' _ => ?_` and prove the remaining obligations.
-
-Expand and normalize the polynomial expressions, which then agree. Use `_ = 0 := Finset.sum_eq_zero fun i hi => by rw [hcoef i hi, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem li_semilin_gen {K F V M ι κ : Type} [Field K] [Field F] [AddCommGroup V] [Module K V] [AddCommGroup M] [Module F M]
     (σ : K →+* F) (e : V →ₛₗ[σ] M) (b : Basis ι K V) (hb : LinearIndependent F fun i => e (b i))
@@ -105,20 +101,20 @@ def mapSL {K F σ : Type} [Field K] [Field F] (j : K →+* F) : MvPolynomial σ 
   map_smul' := fun c p => by rw [smul_eq_C_mul, map_mul, map_C, smul_eq_C_mul]
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.map_map, RingHom.ext_int ((algebraMap ℚ F).comp (Int.castRingHom ℚ)) (Int.castRingHom F)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_int_eq (F : Type) [Field F] [CharZero F] {σ : Type} (p : MvPolynomial σ ℤ) :
     MvPolynomial.map (algebraMap ℚ F) (MvPolynomial.map (Int.castRingHom ℚ) p) = MvPolynomial.map (Int.castRingHom F) p := by
   rw [MvPolynomial.map_map, RingHom.ext_int ((algebraMap ℚ F).comp (Int.castRingHom ℚ)) (Int.castRingHom F)]
 
 /- English proof (translation)
-Use `set v : Fin r → MvPolynomial (Fin N × Fin N) ℚ := fun i => MvPolynomial.map (Int.castRingHom ℚ) (e i : MvPolynomial (Fin N × Fin N) ℤ) with hvdef`. Establish `hvZ : LinearIndependent ℤ v`. Establish `h0 : LinearIndependent ℤ fun i => (e i : MvPolynomial (Fin N × Fin N) ℤ)` using `e.linearIndependent.map' M.subtype (Submodule.ker_subtype M)`. Conclude with `h0.map' (MvPolynomial.map (Int.castRingHom ℚ)).toAddMonoidHom.toIntLinearMap (LinearMap.ker_eq_bot.2 (MvPolynomial.map_injective _ Int.cast_injective))`. Establish `hvQ : LinearIndependent ℚ v` using `by first`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `exact (LinearIndependent.iff_fractionRing ℤ ℚ).1 hvZ`. Consider the case `exact (LinearIndependent.iff_fractionRing (R := ℤ) (K := ℚ)).1 hvZ`. Consider the case `exact hvZ.localization ℚ (nonZeroDivisors ℤ)`. Establish `hb : LinearIndependent F fun m => mapSL (σ` using `Fin N × Fin N) (algebraMap ℚ F) (MvPolynomial.basisMonomials (Fin N × Fin N) ℚ m) := by`. Establish `h` using `(MvPolynomial.basisMonomials (Fin N × Fin N) F).linearIndependent`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Treat this case separately.
 
-Use `h using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `all_goals first`. Consider the case `rfl`. Consider the case `(funext m; simp [mapSL, MvPolynomial.coe_basisMonomials])`. Establish `h` using `li_semilin_gen (algebraMap ℚ F) (mapSL (σ := Fin N × Fin N) (algebraMap ℚ F)) _ hb v hvQ`.
+Treat this case separately. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Treat this case separately. Treat this case separately.
 
-Use `h using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `all_goals first`. Consider the case `rfl`. Consider the case `(funext i; exact (map_int_eq F _).symm)`.
+A detailed English derivation is pending.
 -/
 theorem li_int (F : Type) [Field F] [CharZero F] {N r : ℕ} {M : Submodule ℤ (MvPolynomial (Fin N × Fin N) ℤ)}
     (e : Basis (Fin r) ℤ M) :
@@ -156,13 +152,11 @@ section One
 variable (F : Type) [Field F] [CharZero F] {N r : ℕ} {ν : Fin N → ℕ}
 
 /- English proof (translation)
-Rewrite using `[dualWeyl_eq_weyl F le_rfl ν hν]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `map_mem_weyl le_rfl ν _ (e i).2`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions.
 
-Unfold `weyl`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨w, rfl⟩`. Establish `hx : applyWord ℤ w (hw ℤ le_rfl ν) ∈ weyl ℤ N N le_rfl ν` using `Submodule.subset_span ⟨w, rfl⟩`. Establish `h` using `congrArg (fun y : weyl ℤ N N le_rfl ν => MvPolynomial.map (Int.castRingHom F) (y : MvPolynomial (Fin N × Fin N) ℤ)) (e.sum_repr (⟨applyWord ℤ w (hw ℤ le_rfl ν), hx⟩ : weyl ℤ N N le_rfl ν))`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, map_sum] at h`. Rewrite using `[SetLike.mem_coe]`. Use `show applyWord F w (hw F le_rfl ν) ∈ _`. Rewrite using `[← lclosedeq_hw_map (Int.castRingHom F), lclosedeq_applyWord_map, ← h]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[map_zsmul]`. Conclude with `zsmul_mem (Submodule.subset_span (Set.mem_range_self i)) _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_int (hν : Antitone ν) (e : Basis (Fin r) ℤ (weyl ℤ N N le_rfl ν)) :
     Submodule.span F (Set.range fun i => MvPolynomial.map (Int.castRingHom F) (e i : MvPolynomial (Fin N × Fin N) ℤ)) =
@@ -197,7 +191,7 @@ def prodZ (I : ∀ τ, Fin (r τ)) : MvPolynomial (ι × Fin n × Fin n) ℤ :=
   Formalism.MainNotions.flipTwoThree.ten fun τ => (e τ (I τ) : MvPolynomial (Fin n × Fin n) ℤ)
 
 /- English proof (translation)
-Unfold `prodZ Formalism.MainNotions.flipTwoThree.ten blockEmb`. Rewrite using `[map_prod]`. Conclude with `Finset.prod_congr rfl fun τ _ => MvPolynomial.map_rename _ _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_prodZ (F : Type) [Field F] (I : ∀ τ, Fin (r τ)) :
     MvPolynomial.map (Int.castRingHom F) (prodZ lam e I) =
@@ -207,15 +201,13 @@ theorem map_prodZ (F : Type) [Field F] (I : ∀ τ, Fin (r τ)) :
   exact Finset.prod_congr rfl fun τ _ => MvPolynomial.map_rename _ _ _
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨I, rfl⟩`. Conclude with `⟨fun τ => e τ (I τ), fun τ => (e τ (I τ)).2, rfl⟩`. Rewrite using `[Submodule.span_le]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨f, hf, rfl⟩`. Establish `hfτ : ∀ τ, f τ = ∑ i, (e τ).repr ⟨f τ, hf τ⟩ i • (e τ i : MvPolynomial (Fin n × Fin n) ℤ)`. Introduce `τ`. Use `congrArg Subtype.val ((e τ).sum_repr ⟨f τ, hf τ⟩)` as an intermediate fact. Rewrite `this` using `[Submodule.coe_sum]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`. Rewrite using `[SetLike.mem_coe]`. Unfold `Formalism.MainNotions.flipTwoThree.ten`. Rewrite using `[Finset.prod_congr rfl (fun τ _ => by rw [hfτ τ, map_sum]), Finset.prod_univ_sum, Fintype.piFinset_univ]`. Use `Submodule.sum_mem _ fun I _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: (∏ τ, rename (Prod.mk τ) ((e τ).repr ⟨f τ, hf τ⟩ (I τ) • (e τ (I τ) : MvPolynomial (Fin n × Fin n) ℤ))) = (∏ τ, (e τ).repr ⟨f τ, hf τ⟩ (I τ)) • prodZ lam e I`. Unfold `prodZ Formalism.MainNotions.flipTwoThree.ten`. Rewrite using `[← Finset.prod_smul]`. Conclude with `Finset.prod_congr rfl fun τ _ => map_zsmul _ _ _`. Rewrite using `[this]`.
-
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨I, rfl⟩)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prodZ_span : Submodule.span ℤ (Set.range (prodZ lam e)) = Submodule.span ℤ
     {p | ∃ f : ι → MvPolynomial (Fin n × Fin n) ℤ, (∀ τ, f τ ∈ delSq ℤ n (lam τ)) ∧ p = Formalism.MainNotions.flipTwoThree.ten f} := by
@@ -263,9 +255,9 @@ end Prod
 section Gram
 
 /- English proof (translation)
-Unfold `fockF fockS mfact`. Rewrite using `[Finset.sum_subset (Finset.subset_union_left (s₁ := f.support) (s₂ := g.support)) ?_, Finset.sum_subset (Finset.subset_union_right (s₁ := f.support) (s₂ := g.support)) ?_]`. Apply the tactic sequence `all_goals first`. Consider the case `exact Finset.sum_congr rfl fun m _ => by ring`. Consider the case `(intro m _ hm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `h0 : f.coeff m = 0` using `by simpa [MvPolynomial.mem_support_iff] using hm`. Simplify using `[h0])`. Consider the case `(intro m _ hm`. Establish `h0 : g.coeff m = 0` using `by simpa [MvPolynomial.mem_support_iff] using hm`. Simplify using `[h0])`.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fockF_eq_fockS {σ : Type} (f g : MvPolynomial σ ℂ) : fockF f g = fockS g f := by
   classical
@@ -282,9 +274,9 @@ theorem fockF_eq_fockS {σ : Type} (f g : MvPolynomial σ ℂ) : fockF f g = foc
        simp [h0])
 
 /- English proof (translation)
-Unfold `fockF fockQ`. Rewrite using `[Rat.cast_sum]`. Rewrite using `[Finset.sum_subset (Finset.subset_union_left (s₁ := (MvPolynomial.map (Int.castRingHom ℂ) p).support) (s₂ := (MvPolynomial.map (Int.castRingHom ℚ) q).support)) ?_, Finset.sum_subset (Finset.subset_union_right (s₁ := (MvPolynomial.map (Int.castRingHom ℂ) p).support) (s₂ := (MvPoly …`. Apply the tactic sequence `all_goals first`. Consider the case `(refine Finset.sum_congr rfl fun m _ => ?_`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [MvPolynomial.coeff_map, eq_intCast, star_intCast, Rat.cast_mul, Rat.cast_intCast, Rat.cast_natCast]`. Use the proof step `ring)`. Consider the case `(intro m _ hm`. Simplify using `only [MvPolynomial.mem_support_iff, not_not] at hm`. Simplify using `[hm])`.
+Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fockF_int {σ : Type} (p q : MvPolynomial σ ℤ) :
     fockF (MvPolynomial.map (Int.castRingHom ℂ) p) (MvPolynomial.map (Int.castRingHom ℂ) q) =
@@ -308,13 +300,13 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι] {n : ℕ} (lam : ι → DomWe
   (e : ∀ τ, Basis (Fin (r τ)) ℤ (weyl ℤ n n le_rfl (lam τ).natW))
 
 /- English proof (translation)
-Establish `h1 : fockF (MvPolynomial.map (Int.castRingHom ℂ) (prodZ lam e I')) (MvPolynomial.map (Int.castRingHom ℂ) (prodZ lam e I)) = ∏ τ, ((fockQ (MvPolynomial.map (Int.castRingHom ℚ) (e τ (I τ) : MvPolynomial (Fin n × Fin n) ℤ)) (MvPolynomial.map (Int.castRingHom ℚ) (e τ (I' τ) : MvPolyn …`. Rewrite using `[fockF_eq_fockS, map_prodZ, map_prodZ]`. Use `fockSTen ℂ ι n (fun s => MvPolynomial.map (Int.castRingHom ℂ) (e s (I s) : MvPolynomial (Fin n × Fin n) ℤ)) (fun s => MvPolynomial.map (Int.castRingHom ℂ) (e s (I' s) : MvPolynomial (Fin n × Fin n) ℤ))` as an intermediate fact. Unfold `Formalism.L2.DIV.ten at this`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← fockF_eq_fockS, fockF_int]`. Establish `h2 : ∀ τ, fockF (extremal ℂ n (lam τ)) (extremal ℂ n (lam τ)) = ((fockQ (hw ℚ le_rfl (lam τ).natW) (hw ℚ le_rfl (lam τ).natW) : ℚ) : ℂ)`. Introduce `τ`. Unfold `extremal`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[← lclosedeq_hw_map (Int.castRingHom ℂ), fockF_int, lclosedeq_hw_map]`. Unfold `nfAll`. Rewrite using `[h1, Finset.prod_congr rfl fun τ _ => h2 τ, ← Finset.prod_div_distrib]`. Establish `h3 : ∀ τ, (((fockQ (MvPolynomial.map (Int.castRingHom ℚ) (e τ (I τ) : MvPolynomial (Fin n × Fin n) ℤ)) (MvPolynomial.map (Int.castRingHom ℚ) (e τ (I' τ) : MvPolynomial (Fin n × Fin n) ℤ)) : ℚ) : ℂ) / ((fockQ (hw ℚ le_rfl (lam τ).natW) (hw ℚ le_rfl (lam τ).natW) : ℚ) : ℂ)) = (((st …`. Introduce `τ`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `stdGram`. Simplify using the standard rewrite rules. Rewrite using `[Finset.prod_congr rfl fun τ _ => h3 τ, ← Complex.ofReal_prod, Complex.ofReal_re]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem nfAll_prodZ (I I' : ∀ τ, Fin (r τ)) :
     (nfAll lam (MvPolynomial.map (Int.castRingHom ℂ) (prodZ lam e I')) (MvPolynomial.map (Int.castRingHom ℂ) (prodZ lam e I))).re =
@@ -346,7 +338,7 @@ theorem nfAll_prodZ (I I' : ∀ τ, Fin (r τ)) :
   rw [Finset.prod_congr rfl fun τ _ => h3 τ, ← Complex.ofReal_prod, Complex.ofReal_re]
 
 /- English proof (translation)
-Use extensionality with `I I'`. Conclude with `nfAll_prodZ lam e I I'`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem gramZ_zOf : gramZ lam (zOf lam e) = kron fun τ => (stdGram (lam τ).natW (e τ)).map (Rat.cast : ℚ → ℝ) := by
   ext I I'
@@ -355,9 +347,9 @@ theorem gramZ_zOf : gramZ lam (zOf lam e) = kron fun τ => (stdGram (lam τ).nat
 end Gram
 
 /- English proof (translation)
-Take `⟨r', ⟨e'⟩⟩` from `PI.SlopeSteps.nabla_operator_basis N ν`. Establish `h` using `(PI.SlopeSteps.gram_matrix_duality N ν r r' e e' hν).2`. Introduce `h0`. Establish `h1 : (PI.SlopeSteps.gramOf ν fun i => (e i : MvPolynomial (Fin N × Fin N) ℤ)).det = 0` using `h0`. Rewrite `h` using `[h1, zero_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one h`.
+A detailed English derivation is pending.
 -/
 theorem stdGram_det_ne {N r : ℕ} {ν : Fin N → ℕ} (hν : Antitone ν) (e : Basis (Fin r) ℤ (weyl ℤ N N le_rfl ν)) :
     (stdGram ν e).det ≠ 0 := by
@@ -369,7 +361,7 @@ theorem stdGram_det_ne {N r : ℕ} {ν : Fin N → ℕ} (hν : Antitone ν) (e :
   exact zero_ne_one h
 
 /- English proof (translation)
-Take `⟨_, r, e, hr, -⟩` from `PI.SlopeSteps.muStd_exists N ν hν`. Conclude with `⟨r, e, hr⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_weylBasis (N : ℕ) (ν : Fin N → ℕ) (hν : Antitone ν) :
     ∃ (r : ℕ) (_ : Basis (Fin r) ℤ (weyl ℤ N N le_rfl ν)), 0 < r := by
@@ -377,9 +369,9 @@ theorem exists_weylBasis (N : ℕ) (ν : Fin N → ℕ) (hν : Antitone ν) :
   exact ⟨r, e, hr⟩
 
 /- English proof (translation)
-Introduce `ι _ n lam`. Use `choose r e hr using fun τ => exists_weylBasis n (lam τ).natW (natW_anti (lam τ))`. Use `⟨zOf lam e, fun τ => -Real.log ((stdGram (lam τ).natW (e τ)).det : ℝ) / r τ, ⟨fun τ => ⟨0, hr τ⟩⟩, fun τ => ⟨r τ, e τ, hr τ, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hdet : ∀ τ, ((stdGram (lam τ).natW (e τ)).map (Rat.cast : ℚ → ℝ)).det = (((stdGram (lam τ).natW (e τ)).det : ℚ) : ℝ)` using `fun τ => (RingHom.map_det (Rat.castHom ℝ) _).symm`. Establish `h` using `log_kron (fun τ => (stdGram (lam τ).natW (e τ)).map (Rat.cast : ℚ → ℝ)) (fun τ => by rw [hdet τ]; exact_mod_cast stdGram_det_ne (natW_anti (lam τ)) (e τ)) hr`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gramZ_zOf, neg_div]`. Use `show -(Real.log (kron fun τ => (stdGram (lam τ).natW (e τ)).map (Rat.cast : ℚ → ℝ)).det / (Fintype.card (∀ τ, Fin (r τ)) : ℝ)) = _`. Rewrite using `[h, ← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl fun τ _ => by rw [hdet τ]; exact (neg_div _ _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem standard_basis_z : ZBasisStd := by
   classical
@@ -398,7 +390,7 @@ theorem standard_basis_z : ZBasisStd := by
   exact Finset.sum_congr rfl fun τ _ => by rw [hdet τ]; exact (neg_div _ _).symm
 
 /- English proof (translation)
-The claim follows from `colSlopeEq_of translate_span_eq standard_basis_z D h3`.
+A detailed English derivation is pending.
 -/
 theorem colSlopeEq_of_Q (D : D7) (h3 : QSlope D) : ColSlopeEq D := colSlopeEq_of translate_span_eq standard_basis_z D h3
 

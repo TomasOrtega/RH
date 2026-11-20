@@ -6,7 +6,7 @@ open scoped MatrixGroups TensorProduct
 open Matrix GlobalTheory.KZ GlobalTheory.KZ.ES
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.KZ.ES.exists_conj_of_same_trace` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FExistsGaloisConjValuationSubringSameTrace.lean&line=253#L253)
 -/

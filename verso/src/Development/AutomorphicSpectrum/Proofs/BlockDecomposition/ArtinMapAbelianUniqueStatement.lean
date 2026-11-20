@@ -7,7 +7,7 @@ open scoped nonZeroDivisors
 open scoped GlobalTheory.Idele
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.ArtinUniq.abRestrict_eq | exact GlobalTheory.CompanionTheory.ArtinUniq.abRestrict_eq | (intros; apply GlobalTheory.CompanionTheory.ArtinUniq.abRestrict_eq <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.artin_map_abelian_unique : ∀ (K : Type) [Field K] [NumberField K] [IsTotallyComplex K] (Art Art' : Neutral.B1.IdeleClassGroup K →* Field.absoluteGaloisGroupAbelianization K), Neutral.B1.IsGlobalArtinMap K Art → Neutral.B1.IsGlobalArtinMap K Art' → ∀ (L : IntermediateField K (AlgebraicClosure K)) (h : Neutral.B1.IsFiniteAbelian K L) (c : Neutral.B1.IdeleClassGroup K), Neutral.B1.abRestrict K L h (Art c) = Neutral.B1.abRestrict K L h (Art' c) := by
   first | exact @GlobalTheory.CompanionTheory.ArtinUniq.abRestrict_eq | exact GlobalTheory.CompanionTheory.ArtinUniq.abRestrict_eq | (intros; apply GlobalTheory.CompanionTheory.ArtinUniq.abRestrict_eq <;> assumption)

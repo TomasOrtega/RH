@@ -12,9 +12,9 @@ open scoped MatrixGroups TensorProduct in
 open Matrix in
 
 /- English proof (translation)
-Introduce `γ hγ`. Rewrite `hγ`, the goal using `[CongruenceSubgroup.Gamma_mem]`. Take `⟨h1, h2, h3, h4⟩` from `hγ`. Establish `e : ∀ z : ℤ, (z : ZMod M) = ZMod.castHom h (ZMod M) (z : ZMod M')` using `fun z => (map_intCast _ z).symm`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e, h1, map_one]`. Rewrite using `[e, h2, map_zero]`. Rewrite using `[e, h3, map_zero]`. Rewrite using `[e, h4, map_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.KZ.gamma_le_of_dvd {M M' : ℕ} (h : M ∣ M') :
     CongruenceSubgroup.Gamma M' ≤ CongruenceSubgroup.Gamma M := by
@@ -32,7 +32,7 @@ theorem _root_.GlobalTheory.KZ.gamma_le_of_dvd {M M' : ℕ} (h : M ∣ M') :
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
 
 /- English proof (translation)
-Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `x ⟨f, hf, rfl⟩`. Conclude with `⟨f, fun γ hγ => hf γ (gamma_le_of_dvd h hγ), rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem Tower.lev_mono (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] {M M' : ℕ} (h : M ∣ M') :
     X.Lev l M ≤ X.Lev l M' := by
@@ -41,13 +41,11 @@ theorem Tower.lev_mono (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] {M M' : ℕ} (
   exact ⟨f, fun γ hγ => hf γ (gamma_le_of_dvd h hγ), rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨1, one_pos, Submodule.zero_mem _⟩`. Consider the case `tmul a f`. Take `⟨M, hM, hf⟩` from `X.level (Additive.toMul f : X.Kˣ)`. Use `⟨M, hM, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmem : (1 : ℤ_[l]) ⊗ₜ[ℤ] f ∈ X.Lev l M` using `Submodule.subset_span ⟨Additive.toMul f, fun γ hγ => hf γ hγ, rfl⟩`. Establish `e : a ⊗ₜ[ℤ] f = a • ((1 : ℤ_[l]) ⊗ₜ[ℤ] f)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ a hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add y z hy hz`. Take `⟨M, hM, hy⟩` from `hy`. Take `⟨M', hM', hz⟩` from `hz`. Use `⟨M * M', Nat.mul_pos hM hM', Submodule.add_mem _ ?_ ?_⟩` and prove the remaining obligations. Conclude with `X.lev_mono l (dvd_mul_right M M') hy`.
-
-Conclude with `X.lev_mono l (dvd_mul_left M' M) hz`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Tower.exists_lev (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (y : X.Kl l) :
     ∃ M : ℕ, 0 < M ∧ y ∈ X.Lev l M := by
@@ -70,7 +68,7 @@ theorem Tower.exists_lev (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (y : X.Kl l)
     · exact X.lev_mono l (dvd_mul_left M' M) hz
 
 /- English proof (translation)
-Introduce `Ω _ _ ε X l _ K ι _ y hK`. Use `choose L hL hy using fun i => X.exists_lev l (y i)`. Use `⟨K * ∏ i, L i, Nat.mul_pos hK (Finset.prod_pos fun i _ => hL i), dvd_mul_right _ _, fun i => ?_⟩` and prove the remaining obligations. Use `X.lev_mono l ?_ (hy i)` and prove the remaining obligations. Conclude with `Dvd.dvd.mul_left (Finset.dvd_prod_of_mem L (Finset.mem_univ i)) K`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Tower.exists_lev_family : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) (l : ℕ)
     [Fact l.Prime] (K : ℕ) {ι : Type} [Fintype ι] (y : ι → X.Kl l), 0 < K →

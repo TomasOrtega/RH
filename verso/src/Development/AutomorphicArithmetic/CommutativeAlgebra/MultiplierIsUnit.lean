@@ -17,17 +17,17 @@ namespace UpperTheory.MultiplicativeUnitDivisibility
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Proceed by induction on `hv using AddSubgroup.closure_induction with`. Consider the case `mem v hv`. Take `⟨a, x, ha, rfl⟩` from `hv`. Proceed by induction on `hw using AddSubgroup.closure_induction with`. Consider the case `mem w hw`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Take `⟨a', x', ha', rfl⟩` from `hw`. Take `⟨k, hk⟩` from `hd x x'`. Use `⟨a * a' * (k : AfP p), isIntAf_mul (isIntAf_mul ha ha') (isIntAf_intCast k), ?_⟩` and prove the remaining obligations. Rewrite using `[EFA_tmul, hk]`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => exact ⟨0, isIntAf_zero, by simp⟩`. Consider the case `add u u' _ _ h h'`. Take `⟨c, hc, e⟩` from `h`. Take `⟨c', hc', e'⟩` from `h'`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c + c', isIntAf_add hc hc', by rw [map_add, e, e', mul_add]⟩`. Consider the case `neg u _ h`. Take `⟨c, hc, e⟩` from `h`. Conclude with `⟨-c, isIntAf_neg hc, by rw [map_neg, e, mul_neg]⟩`. Consider the case `zero => exact ⟨0, isIntAf_zero, by simp⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `add u u' _ _ h h'`. Take `⟨c, hc, e⟩` from `h`. Take `⟨c', hc', e'⟩` from `h'`. Conclude with `⟨c + c', isIntAf_add hc hc', by rw [map_add, LinearMap.add_apply, e, e', mul_add]⟩`. Consider the case `neg u _ h`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨c, hc, e⟩` from `h`. Conclude with `⟨-c, isIntAf_neg hc, by rw [map_neg, LinearMap.neg_apply, e, mul_neg]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem exists_dvd_EFA (D : Datum p) (d : ℤ) (hd : ∀ x y : D.La, d ∣ D.EF x y)
     {v w : AfP p ⊗[ℚ] VQ D} (hv : v ∈ LaHat D) (hw : w ∈ LaHat D) :
@@ -61,11 +61,11 @@ private theorem exists_dvd_EFA (D : Datum p) (d : ℤ) (hd : ∀ x y : D.La, d �
     exact ⟨-c, isIntAf_neg hc, by rw [map_neg, LinearMap.neg_apply, e, mul_neg]⟩
 
 /- English proof (translation)
-Establish `hF : 0 < Module.finrank ℚ D.F` using `Module.finrank_pos`. Establish `hr : 0 < Module.finrank ℤ D.La`. Rewrite using `[D.rankLa]`. Conclude with `Nat.mul_pos (Nat.mul_pos D.m_pos D.n_pos) hF`. Use `haveI := Module.nontrivial_of_finrank_pos hr`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x, hx⟩` from `_root_.exists_ne (0 : D.La)`. Establish `hne : D.EF x ≠ 0`. Introduce `h`. Apply `hx` to reduce the goal to its premises. Apply `D.nondeg` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h, map_zero]`. Take `⟨y, hy⟩` from `DFunLike.ne_iff.mp hne`. Conclude with `⟨x, y, by simpa using hy⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_ne (D : Datum p) : ∃ x y : D.La, D.EF x y ≠ 0 := by
   have hF : 0 < Module.finrank ℚ D.F := Module.finrank_pos
@@ -83,28 +83,28 @@ private theorem exists_ne (D : Datum p) : ∃ x y : D.La, D.EF x y ≠ 0 := by
   exact ⟨x, y, by simpa using hy⟩
 
 /- English proof (translation)
-Establish `h : IsUnit (d : ℚ)` using `(Int.cast_ne_zero.mpr hd).isUnit`. Simplify using `using h.map (algebraMap ℚ (AfP p))`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem isUnit_intCast {d : ℤ} (hd : d ≠ 0) : IsUnit (d : AfP p) := by
   have h : IsUnit (d : ℚ) := (Int.cast_ne_zero.mpr hd).isUnit
   simpa using h.map (algebraMap ℚ (AfP p))
 
 /- English proof (translation)
-Set `S : Set ℤ` to `{z | ∃ x y : D.La, D.EF x y = z}`. Take `⟨d, hdI⟩` from `(IsPrincipalIdealRing.principal (Ideal.span S)).principal`. Establish `hdvd : ∀ x y : D.La, d ∣ D.EF x y`. Introduce `x y`. Establish `hm : D.EF x y ∈ Ideal.span S` using `Ideal.subset_span ⟨x, y, rfl⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hm` using `[hdI]`. Take `⟨a, ha⟩` from `Submodule.mem_span_singleton.mp hm`. Conclude with `⟨a, by rw [← ha, smul_eq_mul, mul_comm]⟩`. Establish `hd0 : d ≠ 0`. Introduce and unpack `rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨x, y, hxy⟩` from `exists_ne D`. Apply `hxy` to reduce the goal to its premises. Take `⟨k, hk⟩` from `hdvd x y`. Rewrite using `[hk, zero_mul]`. Establish `key : ∀ z ∈ Ideal.span S, ∃ c : AfP p, IsIntAf c ∧ ((uSimR (AfP p) g : (AfP p)ˣ) : AfP p) * (z : AfP p) = (d : AfP p) * c`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `z hz`. Express the relevant statement in the definitionally equal form `z ∈ Submodule.span ℤ S at hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨x, y, rfl⟩` from `hz`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `EFA_actG L g (inAf D x) (inAf D y)`. Rewrite `h1` using `[EFA_inAf]`. Rewrite using `[← h1]`. Conclude with `exists_dvd_EFA D d hdvd (hg _ (inAf_mem D x)) (hg _ (inAf_mem D y))`. Consider the case `zero => exact ⟨0, isIntAf_zero, by simp⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b _ _ h1 h2`. Take `⟨c1, h1i, h1e⟩` from `h1`. Take `⟨c2, h2i, h2e⟩` from `h2`. Use `⟨c1 + c2, isIntAf_add h1i h2i, ?_⟩` and prove the remaining obligations. Rewrite using `[Int.cast_add, mul_add, h1e, h2e, mul_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `smul a b _ h`. Take `⟨c, hi, he⟩` from `h`. Use `⟨a * c, isIntAf_mul (isIntAf_intCast a) hi, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_eq_mul, Int.cast_mul, mul_left_comm, he]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, hce⟩` from `key d (by rw [hdI]; exact Submodule.mem_span_singleton_self d)`. Establish `hsc : ((uSimR (AfP p) g : (AfP p)ˣ) : AfP p) = c` using `(isUnit_intCast (p := p) hd0).mul_left_cancel (by rw [mul_comm]; exact hce)`. Rewrite using `[hsc]`. Conclude with `hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isIntAf_sim {D : Datum p} {G : HTGroup p} (L : Link D G) (g : G.GAf)
     (hg : ∀ v ∈ LaHat D, L.actG g v ∈ LaHat D) : IsIntAf ((uSimR (AfP p) g : (AfP p)ˣ) : AfP p) := by
@@ -151,21 +151,19 @@ private theorem isIntAf_sim {D : Datum p} {G : HTGroup p} (L : Link D G) (g : G.
   exact hc
 
 /- English proof (translation)
-Take `⟨m, rfl⟩` from `hd`. Establish `hm : IsIntAf ((m : AfP p) * t)`. Establish `hmi` using `isIntAf_intCast (p := p) (m : ℤ)`. Rewrite `hmi` using `[Int.cast_natCast]`. Conclude with `isIntAf_mul hmi ht`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hqz : Prime (q : ℤ)` using `Nat.prime_iff_prime_int.mp hq`. Establish `hq0 : (q : ℤ) ≠ 0` using `by exact_mod_cast hq.ne_zero`. Set `v0 : HeightOneSpectrum ℤ` to `⟨Ideal.span {(q : ℤ)}, (Ideal.span_singleton_prime hq0).mpr hqz, by rw [Ne, Ideal.span_singleton_eq_bot]; exact hq0⟩`. Establish `hv0p : v0.asIdeal ≠ Ideal.span {(p : ℤ)}`. Introduce `heq`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hmem : (q : ℤ) ∈ Ideal.span {(p : ℤ)}` using `heq ▸ Ideal.mem_span_singleton_self _`. Rewrite `hmem` using `[Ideal.mem_span_singleton]`. Establish `hpq : p ∣ q` using `Int.natCast_dvd_natCast.mp hmem`. Conclude with `hqp ((Nat.prime_dvd_prime_iff_eq Fact.out hq).mp hpq).symm`. Set `v : AwayP p` to `⟨v0, hv0p⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hev : (AfP.eval v) (c : AfP p) = (q : HeightOneSpectrum.adicCompletion ℚ v0) ^ k * (AfP.eval v) ((m : AfP p) * t)`. Rewrite using `[h, Nat.cast_mul, Nat.cast_pow, mul_assoc, map_mul, map_pow, map_natCast]`. Establish `hval : ∀ n : ℕ, Valued.v (n : HeightOneSpectrum.adicCompletion ℚ v0) = v0.intValuation (n : ℤ)`. Introduce `n`. Establish `h1` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation (K := ℚ) v0 (n : ℤ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[HeightOneSpectrum.valuation_of_algebraMap]`. Rewrite using `[← h1]`. Use `congr 1`. Simplify using the standard rewrite rules. Establish `hs : Valued.v ((AfP.eval v) ((m : AfP p) * t)) ≤ 1` using `(HeightOneSpectrum.mem_adicCompletionIntegers ℤ ℚ v0).mp (hm v)`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : v0.intValuation (c : ℤ) ≤ WithZero.exp (-(k : ℤ))`. Establish `hc` using `hval c`. Rewrite `hev` using `[map_natCast]`. Rewrite using `[← hc, hev, map_mul, map_pow, hval q, HeightOneSpectrum.intValuation_singleton v0 hq0 rfl]`. Use `(mul_le_of_le_one_right' hs).trans (le_of_eq ?_)` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← WithZero.exp_nsmul]`. Use `congr 1`. Simplify using the standard rewrite rules. Rewrite `hle` using `[HeightOneSpectrum.intValuation_le_pow_iff_dvd]`. Express the relevant statement in the definitionally equal form `Ideal.span {(q : ℤ)} ^ k ∣ Ideal.span {(c : ℤ)} at hle`.
-
-Rewrite `hle` using `[Ideal.span_singleton_pow, Ideal.span_singleton_dvd_span_singleton_iff_dvd]`. Conclude with `hle` after adjusting the coercions.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pow_dvd_of_isIntAf {q k c c' : ℕ} (hq : q.Prime) (hqp : q ≠ p) {t : AfP p} (ht : IsIntAf t)
     (h : (c : AfP p) = c' * t) (hd : q ^ k ∣ c') : q ^ k ∣ c := by
@@ -212,9 +210,9 @@ private theorem pow_dvd_of_isIntAf {q k c c' : ℕ} (hq : q.Prime) (hqp : q ≠ 
   exact_mod_cast hle
 
 /- English proof (translation)
-Rewrite using `[Nat.dvd_iff_prime_pow_dvd_dvd c c']`. Introduce `q k hq hqk`. Break down `Nat.eq_zero_or_pos k with rfl | hk` into its components or cases. Simplify using the standard rewrite rules. Establish `hqp : q ≠ p`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Establish `hqc : q ∣ c'` using `(dvd_pow_self q hk.ne').trans hqk`. Conclude with `hq.one_lt.ne' (Nat.Coprime.eq_one_of_dvd (Nat.Coprime.coprime_dvd_left hqc hc') dvd_rfl)`. Conclude with `pow_dvd_of_isIntAf hq hqp ht h hqk`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem dvd_of_isIntAf {c c' : ℕ} (hc' : c'.Coprime p) {t : AfP p} (ht : IsIntAf t)
     (h : (c : AfP p) = c' * t) : c' ∣ c := by
@@ -229,13 +227,13 @@ private theorem dvd_of_isIntAf {c c' : ℕ} (hc' : c'.Coprime p) {t : AfP p} (ht
     exact pow_dvd_of_isIntAf hq hqp ht h hqk
 
 /- English proof (translation)
-Introduce `p _ D G L`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `u hu`. Establish `hst : ∀ g ∈ L.KN 1, ∀ v ∈ LaHat D, L.actG g v ∈ LaHat D`. Introduce `g hg v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨w, hw, e⟩` from `hg.1 v hv`. Rewrite using `[e, one_smul]`. Conclude with `add_mem hv hw`. Establish `h1` using `isIntAf_sim L u (hst u hu)`. Establish `h2` using `isIntAf_sim L u⁻¹ (hst _ (inv_mem hu))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨((uSimR (AfP p) u⁻¹ : (AfP p)ˣ) : AfP p), h1, h2, ?_⟩` and prove the remaining obligations. Establish `h3 : (uSimR (AfP p) u⁻¹ : (AfP p)ˣ) = ((u : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).2)⁻¹` using `rfl`. Rewrite using `[h3]`. Conclude with `Units.mul_inv _`. Introduce `c c' t t' hc hc' ht ht' htt h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Nat.dvd_antisymm ?_ (dvd_of_isIntAf hc' ht h)` and prove the remaining obligations. Use `dvd_of_isIntAf hc ht' ?_` and prove the remaining obligations. Rewrite using `[h, mul_assoc, htt, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem main : MultUnit := by
   intro p _ D G L
@@ -260,6 +258,6 @@ private theorem main : MultUnit := by
 end UpperTheory.MultiplicativeUnitDivisibility
 
 /- English proof (translation)
-The claim follows from `UpperTheory.MultiplicativeUnitDivisibility.main`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.multiplier_is_unit : MultUnit := UpperTheory.MultiplicativeUnitDivisibility.main

@@ -11,15 +11,13 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.SW.LatCpt
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM d b n M v`. Use `haveI := GlobalTheory.AdelicUnitaryTop.properSpace_adicCompletion F v`. Use `haveI : LocallyCompactSpace (Fv F v) := inferInstance`. Use `haveI : SecondCountableTopology (Fv F v) := inferInstance`. Use `haveI : T2Space (Fv F v) := inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : IsTopologicalRing (Fv F v) := inferInstance`. Take `⟨-, -, -, -, -, -, hH, -, -, -⟩` from `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM (Fv F v)`. Establish `hcoord` using `hH d b`. Set `H : (Fin n → Fin M → Fv F v ⊗[F] E) ≃ₜ (Fin n → Fin M → Fin d → Fv F v)` to `Homeomorph.piCongrRight fun _ => Homeomorph.piCongrRight fun _ => hcoord.homeomorph`. Set `O : Set (Fv F v)` to `(v.adicCompletionIntegers F : Set (Fv F v))`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hOc : IsCompact O` using `GroundTheory.Global.isCompact_adicCompletionIntegers v`. Establish `hOo : IsOpen O` using `Valued.isOpen_valuationSubring _`. Set `P : Set (Fin n → Fin M → Fin d → Fv F v)` to `Set.univ.pi fun _ => Set.univ.pi fun _ => Set.univ.pi fun _ => O`. Establish `hE : (latV b v : Set (Fin n → Fin M → Fv F v ⊗[F] E)) = H ⁻¹' P`. Use extensionality with `Y`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [latV, Set.mem_setOf_eq, Set.mem_preimage, Set.mem_univ_pi, P, O, SetLike.mem_coe]`. Both sides reduce to the same expression. Establish `hPc : IsCompact P` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => hOc`. Establish `hPo : IsOpen P` using `isOpen_set_pi Set.finite_univ fun _ _ => isOpen_set_pi Set.finite_univ fun _ _ => isOpen_set_pi Set.finite_univ fun _ _ => hOo`. Rewrite using `[hE]`.
-
-Conclude with `⟨H.isCompact_preimage.2 hPc, hPo.preimage H.continuous⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem latV_compact_open : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (n M : ℕ) (v : HeightOneSpectrum (𝓞 F)), IsCompact (latV b v : Set (Fin n → Fin M → Fv F v ⊗[F] E)) ∧ IsOpen (latV b v : Set (Fin n → Fin M → Fv F v ⊗[F] E)) := by
   intro F E _ _ _ _ _ σ hCM d b n M v

@@ -12,17 +12,17 @@ open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Adel PositivityTheory.Rg
 open scoped InnerProductSpace Pointwise
 
 /- English proof (translation)
-Rewrite using `[(UpperTheory.ConvolutionTheory.Tf.commPrj K n μ U).2.1]`. Introduce `u hu`. Establish `key : ∀ u ∈ U, MultiplicityOne.finProj K n u ∈ D.U ∧ (AdelicGLn.prodEquiv K n (MultiplicityOne.finProj K n u : G1 K n)).1 = 1`. Introduce `u hu`. Establish `h1 : ((MultiplicityOne.finProj K n u : G1 K n) : AdelicGLn.AdelicGL K n) = finEmb K n u`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[MultiplicityOne.finProj_of_mem (maxCompact_le_normOneGL (finEmb_mem_maxCompact (hU hu)))]`. Establish `h2 : AdelicGLn.prodEquiv K n (finEmb K n u) = (1, u)` using `(AdelicGLn.prodEquiv K n).apply_symm_apply _`. Establish `h3 : (AdelicGLn.prodEquiv K n (MultiplicityOne.finProj K n u : G1 K n)).1 = 1` using `by rw [h1, h2]`. Use `⟨(hD.1 _ h3).2 ?_, h3⟩` and prove the remaining obligations. Rewrite using `[h1, h2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hu`. Use `set g := MultiplicityOne.finProj K n u with hg`. Take `⟨hgU, hg1⟩` from `key u hu`. Establish `hme : MeasurableEmbedding (fun k : G1 K n => g * k)` using `measurableEmbedding_mulLeft g`. Establish `hcomp` using `(D.inv g hgU).integral_comp hme (fun k => D.e k • rightRegularRep (Gam K n) μ k v)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Unfold `TypeDat.FixedByTypeProjector at hv`. Establish `hint : Integrable (fun k => D.e k • rightRegularRep (Gam K n) μ k v) D.ν ∨ v = 0`. Distinguish the cases in `h : Integrable (fun k => D.e k • rightRegularRep (Gam K n) μ k v) D.ν`. Conclude with `Or.inl h`. Rewrite `hv` using `[integral_undef h]`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Rewrite the indicated hypotheses using the stated equalities. Prove the second alternative. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Or.inr hv.symm`. Break down `hint with hint | h0` into its components or cases. Combine the equalities or inequalities in the displayed calculation. Use `integral_congr_ae (D.supp.mono fun k hk => ?_)` and prove the remaining obligations. Use `show rhoF μ u (D.e k • rightRegularRep (Gam K n) μ k v) = D.e (g * k) • rightRegularRep (Gam K n) μ (g * k) v`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hD.2.2 g hgU hg1 k hk, map_smul, UnitaryRep.map_mul_apply]`. Both sides reduce to the same expression. Use `_ = v := hcomp.trans hv`. Rewrite using `[h0, map_zero]`.
+A detailed English derivation is pending.
 -/
 private theorem fix_of_level {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]
     (D : TypeDat K n) (U : Subgroup (AdelicGLn.FiniteAdelicGL K n)) (hD : D.Level U)
@@ -59,9 +59,9 @@ private theorem fix_of_level {K : Type} [Field K] [NumberField K] {n : ℕ} (μ 
   · rw [h0, map_zero]
 
 /- English proof (translation)
-Establish `hs : ∀ x y, ⟪x, e y⟫_ℂ = ⟪e x, y⟫_ℂ` using `fun x y => (he.isSymmetric x y).symm`. Establish `a : P * e = P`. Use `ContinuousLinearMap.ext fun h => ?_` and prove the remaining obligations. Establish `: P (e h - h) = 0` using `(hP.2.2 _).2 ⟨fun u => by rw [inner_sub_right, hs, h1, sub_self], fun u => by rw [inner_sub_right, hs, h2, sub_self]⟩`. Rewrite `this` using `[map_sub, sub_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Use `⟨a, ?_⟩` and prove the remaining obligations. Use `congrArg star a` as an intermediate fact. Rewrite `this` using `[star_mul, he.star_eq, hP.1.star_eq]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem proj_absorb {H V W : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     [NormedAddCommGroup V] [InnerProductSpace ℂ V] [NormedAddCommGroup W] [InnerProductSpace ℂ W]
@@ -79,23 +79,21 @@ private theorem proj_absorb {H V W : Type} [NormedAddCommGroup H] [InnerProductS
   rwa [star_mul, he.star_eq, hP.1.star_eq] at this
 
 /- English proof (translation)
-Introduce `E _ _ _ μ _ θ 𝔢 𝔵 w hw i`. Establish `hc : IsCompact (𝔢.U : Set (AdelicGLn.FiniteAdelicGL E (2 + 2)))` using `(AdelicGLn.isCompact_integralFiniteGL E (2 + 2)).of_isClosed_subset (𝔢.U.isClosed_of_isOpen 𝔢.isOpen) 𝔢.le`. Establish `hp' : Pair (BW.mu1 E 2) 𝔵.τ₂ 𝔵.τ₁` using `⟨𝔵.pair.irr₂, 𝔵.pair.irr₁, 𝔵.pair.orth.symm⟩`. Set `m : Measure (AdelicGLn.FiniteAdelicGL E (2 + 2))` to `Measure.haar`. Use `set x := Cartan.diagPow (w.adicCompletion E) (2 + 2) fun a => if a ≤ i then 1 else 0 with hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use `set T := Hop μ w (GLnLocal.integralGL (w.adicCompletion E) (2 + 2)) x with hT`. Take `⟨hcomm, e, he, hO⟩` from `UpperTheory.ConvolutionTheory.Tf.hopLevel E (2 + 2) μ m w (GLnLocal.integralGL (w.adicCompletion E) (2 + 2)) x 𝔢.U (GLnLocal.isOpen_integralGL _ _) (GLnLocal.isCompact_integralGL _ _) 𝔢.isOpen hc (𝔢.max w hw) fun u hu => (mem_maxCompact.1 (finEmb_mem_maxCompact (𝔢.le hu))).2 w`. Establish `hbi : ∀ k ∈ 𝔢.U, ∀ h, e (k * h) = e h ∧ e (h * k) = e h`. Establish `hl : ∀ k ∈ 𝔢.U, ∀ h ∈ (𝔢.U : Set (AdelicGLn.FiniteAdelicGL E (2 + 2))) * {AdelicGLn.localEmbedding w x} * (𝔢.U : Set (AdelicGLn.FiniteAdelicGL E (2 + 2))), k * h ∈ (𝔢.U : Set (AdelicGLn.FiniteAdelicGL E (2 + 2))) * {AdelicGLn.localEmbedding w x} * (𝔢.U : Set (AdelicGLn.FiniteAdel …`. Introduce and unpack `k hk _ ⟨_, ⟨a, ha, y, hy, rfl⟩, b, hb, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨⟨_, ⟨k * a, 𝔢.U.mul_mem hk ha, y, hy, rfl⟩, b, hb, by simp only [mul_assoc]⟩, ⟨_, ⟨a, ha, y, hy, rfl⟩, b * k, 𝔢.U.mul_mem hb hk, by simp only [mul_assoc]⟩⟩`. Introduce `k hk h`. Rewrite using `[he, he, he]`. Distinguish the cases in `hh : h ∈ (𝔢.U : Set (AdelicGLn.FiniteAdelicGL E (2 + 2))) * {AdelicGLn.localEmbedding w x} * (𝔢.U : Set (AdelicGLn.FiniteAdelicGL E (2 + 2)))`. Rewrite using `[Set.indicator_of_mem hh, Set.indicator_of_mem (hl k hk h hh).1, Set.indicator_of_mem (hl k hk h hh).2]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨rfl, rfl⟩`. Rewrite using `[Set.indicator_of_notMem hh, Set.indicator_of_notMem, Set.indicator_of_notMem]`. Conclude with `⟨rfl, rfl⟩`. Introduce `h'`. Use `(hl _ (𝔢.U.inv_mem hk) _ h').2` as an intermediate fact.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[mul_inv_cancel_right]`. Conclude with `hh this`. Introduce `h'`. Use `(hl _ (𝔢.U.inv_mem hk) _ h').1` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_left]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hh this`. Establish `hfix` using `(UpperTheory.ConvolutionTheory.Tf.commPrj E (2 + 2) μ 𝔢.U).2.2.2.1`. Establish `f1 : ∀ u, prj (fixF μ 𝔢.U) (𝔵.A.J u) = 𝔵.A.J u` using `fun u => hfix _ (fix_of_level μ 𝔵.D 𝔢.U 𝔵.level 𝔢.le _ (ctZero E μ _ _ _ 𝔵.pair 𝔵.D _ _ 𝔵.A 𝔵.A' u).2.1)`. Establish `f2 : ∀ u, prj (fixF μ 𝔢.U) (𝔵.A'.J u) = 𝔵.A'.J u` using `fun u => hfix _ (fix_of_level μ 𝔵.D 𝔢.U 𝔵.level 𝔢.le _ (ctZero E μ _ _ _ hp' 𝔵.D _ _ 𝔵.A' 𝔵.A u).2.1)`. Establish `hsa : IsSelfAdjoint (prj (fixF μ 𝔢.U))` using `isSelfAdjoint_starProjection _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a1, a2⟩` from `proj_absorb 𝔵.A.J 𝔵.A'.J 𝔵.P _ 𝔵.isP hsa f1 f2`. Establish `hPc` using `(finAct E μ _ _ _ 𝔵.pair 𝔵.D _ _ 𝔵.A 𝔵.A' 𝔢.U 𝔵.level 𝔢.le m e hbi).2 𝔵.P 𝔵.isP`. Take `⟨s, ⟨u, κ, hκ, hact, hs⟩, -⟩` from `(finAct E μ _ _ _ hp' 𝔵.D _ _ 𝔵.A' 𝔵.A 𝔢.U 𝔵.level 𝔢.le m e hbi).1`. Establish `hA : Act 𝔵.A'.J T s` using `⟨u, κ, hκ, fun y => by`. Rewrite using `[← hact y, hO, ContinuousLinearMap.comp_apply, f2], hs⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hTP : T * 𝔵.P = 𝔵.P * T`. Rewrite `hPc` using `[hO]`. Establish `h1 : T * prj (fixF μ 𝔢.U) * 𝔵.P = 𝔵.P * (T * prj (fixF μ 𝔢.U))` using `hPc`. Rewrite `h1` using `[mul_assoc, a2, hcomm.eq, ← mul_assoc, a1]`. Then use the resulting hypothesis. Use `⟨⟨_, ((actLaws 𝔵.A'.J).2.2.1 T s hA).2 _⟩, ?_⟩` and prove the remaining obligations.
-
-Unfold `Tsph`. Rewrite using `[ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul]`. Conclude with `congrArg _ hTP`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.genTk :
     ∀ {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {μ : Measure (normOneGL E (2 + 2))} [μ.IsHaarMeasure] {θ : Twist μ} {𝔢 : Side θ 2} (𝔵 : Fam 𝔢) (w : Pl E), w ∉ 𝔢.S → ∀ i : Fin (2 + 2),

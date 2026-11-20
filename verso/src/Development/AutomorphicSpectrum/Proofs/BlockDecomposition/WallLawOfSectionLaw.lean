@@ -30,7 +30,7 @@ def cosMul {G : Type} [Group G] (P Γ : Subgroup G) (γ : Γ) : Cos P Γ ≃ Cos
     | h x => simp [Quotient.map_mk]
 
 /- English proof (translation)
-Establish `h : QuotientGroup.rightRel (P.subgroupOf Γ) (Quotient.out (Quotient.mk _ x : Cos P Γ)) x` using `Quotient.mk_out (s := QuotientGroup.rightRel (P.subgroupOf Γ)) x`. Rewrite `h` using `[QuotientGroup.rightRel_apply]`. Use `⟨((x * (Quotient.out (Quotient.mk _ x : Cos P Γ))⁻¹)⁻¹ : Γ), Subtype.property _, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Subgroup.mem_subgroupOf.mp (inv_mem h))`. Simplify using `[rep]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rep_mk {G : Type} [Group G] {P Γ : Subgroup G} (x : Γ) :
     ∃ δ : G, δ ∈ Γ ∧ δ ∈ P ∧ rep (Quotient.mk _ x : Cos P Γ) = δ * x := by
@@ -42,9 +42,9 @@ theorem rep_mk {G : Type} [Group G] {P Γ : Subgroup G} (x : Γ) :
   · simp [rep]
 
 /- English proof (translation)
-Rewrite using `[← Equiv.tsum_eq (cosMul P Γ ⟨γ, hγ⟩) (fun q : Cos P Γ => F (rep q * g))]`. Use `tsum_congr fun q => ?_` and prove the remaining obligations. Establish `hq : cosMul P Γ ⟨γ, hγ⟩ q = Quotient.mk _ (Quotient.out q * ⟨γ, hγ⟩)` using `by conv_lhs => rw [← Quotient.out_eq q]`. Both sides reduce to the same expression. Take `⟨δ, h1, h2, h3⟩` from `rep_mk (P := P) (Quotient.out q * (⟨γ, hγ⟩ : Γ))`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hq, h3, mul_assoc δ, hF δ h1 h2]`. Simplify using `[rep, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tsum_rep_mul {G : Type} [Group G] {X : Type} [AddCommMonoid X] [TopologicalSpace X]
     {P Γ : Subgroup G} (F : G → X) (hF : ∀ δ ∈ Γ, δ ∈ P → ∀ x, F (δ * x) = F x) {γ : G} (hγ : γ ∈ Γ) (g : G) :
@@ -59,9 +59,9 @@ theorem tsum_rep_mul {G : Type} [Group G] {X : Type} [AddCommMonoid X] [Topologi
   simp [rep, mul_assoc]
 
 /- English proof (translation)
-Use `PhragmenLindelof.vertical_strip hf.diffContOnCl ?_ ha hb h1 h2` and prove the remaining obligations. Use `⟨0, div_pos Real.pi_pos (sub_pos.2 hab), 0, ?_⟩` and prove the remaining obligations. Use `Asymptotics.IsBigO.of_bound B ?_` and prove the remaining obligations. Use `filter_upwards [mem_inf_of_right (mem_principal_self _)] with w hw`. Use `hB w hw.1.le hw.2.le` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem norm_le_of_strip {X : Type} [NormedAddCommGroup X] [NormedSpace ℂ X] {f : ℂ → X}
     (hf : Differentiable ℂ f) {a b B C : ℝ} (hab : a < b)
@@ -75,9 +75,9 @@ theorem norm_le_of_strip {X : Type} [NormedAddCommGroup X] [NormedSpace ℂ X] {
   simpa using this
 
 /- English proof (translation)
-Establish `hfa : AnalyticOnNhd ℂ f Set.univ` using `fun z _ => hf.analyticAt z`. Establish `hga : AnalyticOnNhd ℂ g Set.univ` using `fun z _ => hg.analyticAt z`. Use `hfa.eq_of_eventuallyEq hga (z₀ := ((R + 1 : ℝ) : ℂ)) ?_` and prove the remaining obligations. Establish `hopen : IsOpen {z : ℂ | R < z.re}` using `isOpen_lt continuous_const Complex.continuous_re`. Establish `hmem : ((R + 1 : ℝ) : ℂ) ∈ {z : ℂ | R < z.re}` using `by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [hopen.mem_nhds hmem] with z hz using h z hz`.
+A detailed English derivation is pending.
 -/
 theorem entire_eq {X : Type} [NormedAddCommGroup X] [NormedSpace ℂ X] [CompleteSpace X] {f g : ℂ → X}
     (hf : Differentiable ℂ f) (hg : Differentiable ℂ g) (R : ℝ) (h : ∀ z : ℂ, R < z.re → f z = g z) : f = g := by
@@ -89,7 +89,7 @@ theorem entire_eq {X : Type} [NormedAddCommGroup X] [NormedSpace ℂ X] [Complet
   filter_upwards [hopen.mem_nhds hmem] with z hz using h z hz
 
 /- English proof (translation)
-Use `mul_le_mul_of_nonneg_right ?_ hn` and prove the remaining obligations. Use polynomial arithmetic with `[mul_nonneg hA hq, mul_nonneg hB hp, mul_nonneg hB hq]`.
+Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem bound_left {A B p q n : ℝ} (hA : 0 ≤ A) (hB : 0 ≤ B) (hp : 0 ≤ p) (hq : 0 ≤ q) (hn : 0 ≤ n) :
     A * p * n ≤ (A + B) * (p + q) * n := by
@@ -97,7 +97,7 @@ theorem bound_left {A B p q n : ℝ} (hA : 0 ≤ A) (hB : 0 ≤ B) (hp : 0 ≤ p
   nlinarith [mul_nonneg hA hq, mul_nonneg hB hp, mul_nonneg hB hq]
 
 /- English proof (translation)
-Use `mul_le_mul_of_nonneg_right ?_ hn` and prove the remaining obligations. Use polynomial arithmetic with `[mul_nonneg hA hq, mul_nonneg hB hp, mul_nonneg hA hp]`.
+Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem bound_right {A B p q n : ℝ} (hA : 0 ≤ A) (hB : 0 ≤ B) (hp : 0 ≤ p) (hq : 0 ≤ q) (hn : 0 ≤ n) :
     B * q * n ≤ (A + B) * (p + q) * n := by
@@ -110,7 +110,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {W : Type} [NormedAddCommGrou
   {Γ K P : Subgroup G} {c : G → ℂ} {ρ : K →* (W →L[ℂ] W)} {η : G → ℝ} {w : W}
 
 /- English proof (translation)
-Take `⟨p, hp, k, hk, rfl⟩` from `hP.iwa x`. Establish `e` using `h w hw (δ * p) (mul_mem h2 hp) ⟨k, hk⟩`. Establish `e'` using `h w hw p hp ⟨k, hk⟩`. Simplify using `only at e e'`. Rewrite using `[← mul_assoc, e, e', hP.ch.mul δ h2 p hp, hP.ch.rat δ h1 h2, one_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sec_left (hP : IsPar Γ K P c)
     (h : ∀ w ∈ secSp K P c ρ, ∀ p ∈ P, ∀ k : K, sec K P c ρ (p * k) w = c p • ρ k⁻¹ w)
@@ -123,9 +123,9 @@ theorem sec_left (hP : IsPar Γ K P c)
   rw [← mul_assoc, e, e', hP.ch.mul δ h2 p hp, hP.ch.rat δ h1 h2, one_mul]
 
 /- English proof (translation)
-Take `⟨p, hp, k', hk', rfl⟩` from `hP.iwa x`. Establish `e` using `h w hw p hp (⟨k', hk'⟩ * k)`. Establish `e'` using `h w hw p hp ⟨k', hk'⟩`. Simplify using `only at e'`. Establish `e2 : p * k' * (k : G) = p * (((⟨k', hk'⟩ : K) * k : K) : G)` using `by simp [mul_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[e2, e, e', map_smul, mul_inv_rev, map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sec_right (hP : IsPar Γ K P c)
     (h : ∀ w ∈ secSp K P c ρ, ∀ p ∈ P, ∀ k : K, sec K P c ρ (p * k) w = c p • ρ k⁻¹ w)
@@ -140,7 +140,7 @@ theorem sec_right (hP : IsPar Γ K P c)
   rfl
 
 /- English proof (translation)
-Unfold `eis`. Use `tsum_rep_mul (fun x => Complex.exp (z * η x) • sec K P c ρ x w) ?_ hγ g` and prove the remaining obligations. Introduce `δ h1 h2 x`. Simplify using `only [sec_left hP h hw h1 h2 x, hη.left δ h2 x, hη.rat δ h1 h2, zero_add]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem eis_mul_left (hP : IsPar Γ K P c)
     (h : ∀ w ∈ secSp K P c ρ, ∀ p ∈ P, ∀ k : K, sec K P c ρ (p * k) w = c p • ρ k⁻¹ w)
@@ -152,7 +152,7 @@ theorem eis_mul_left (hP : IsPar Γ K P c)
   simp only [sec_left hP h hw h1 h2 x, hη.left δ h2 x, hη.rat δ h1 h2, zero_add]
 
 /- English proof (translation)
-Rewrite using `[norm_smul, Complex.norm_exp, hΛ, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_right (hb x w) (Real.exp_pos _).le`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_term_le {M : ℝ} (hb : ∀ g (w : W), ‖sec K P c ρ g w‖ ≤ M * ‖w‖) {l : G → ℝ} {Λ : G → ℂ}
     (hΛ : ∀ x, (Λ x).re = l x) (x : G) (w : W) :
@@ -161,7 +161,7 @@ theorem norm_term_le {M : ℝ} (hb : ∀ g (w : W), ‖sec K P c ρ g w‖ ≤ M
   exact mul_le_mul_of_nonneg_right (hb x w) (Real.exp_pos _).le
 
 /- English proof (translation)
-The claim follows from `Summable.of_norm_bounded ((hl g).mul_left (M * ‖w‖)) fun q => norm_term_le hb hΛ _ w`.
+A detailed English derivation is pending.
 -/
 theorem summable_term [CompleteSpace W] {M : ℝ} (hb : ∀ g (w : W), ‖sec K P c ρ g w‖ ≤ M * ‖w‖) {l : G → ℝ}
     (hl : Conv Γ P l) {Λ : G → ℂ} (hΛ : ∀ x, (Λ x).re = l x) (g : G) (w : W) :
@@ -169,7 +169,7 @@ theorem summable_term [CompleteSpace W] {M : ℝ} (hb : ∀ g (w : W), ‖sec K 
   Summable.of_norm_bounded ((hl g).mul_left (M * ‖w‖)) fun q => norm_term_le hb hΛ _ w
 
 /- English proof (translation)
-The claim follows from `tsum_of_norm_bounded ((hl g).hasSum.mul_left (M * ‖w‖)) fun q => norm_term_le hb hΛ _ w`.
+A detailed English derivation is pending.
 -/
 theorem norm_eis_le {M : ℝ} (hb : ∀ g (w : W), ‖sec K P c ρ g w‖ ≤ M * ‖w‖) {l : G → ℝ}
     (hl : Conv Γ P l) {Λ : G → ℂ} (hΛ : ∀ x, (Λ x).re = l x) (g : G) (w : W) :
@@ -177,15 +177,15 @@ theorem norm_eis_le {M : ℝ} (hb : ∀ g (w : W), ‖sec K P c ρ g w‖ ≤ M 
   tsum_of_norm_bounded ((hl g).hasSum.mul_left (M * ‖w‖)) fun q => norm_term_le hb hΛ _ w
 
 /- English proof (translation)
-The claim follows from `tsum_nonneg fun _ => (Real.exp_pos _).le`.
+A detailed English derivation is pending.
 -/
 theorem pos_nonneg (l : G → ℝ) (g : G) : 0 ≤ pos Γ P l g :=
   tsum_nonneg fun _ => (Real.exp_pos _).le
 
 /- English proof (translation)
-Establish `hs` using `summable_term (Γ := Γ) (l := fun g => z.re * η g) (Λ := fun x => z * η x) hb hc (by intro x; simp) g w`. Unfold `eis`. Rewrite using `[(ρ k⁻¹).map_tsum hs]`. Use `tsum_congr fun q => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `beta_reduce`. Rewrite using `[hη.right _ k k.2, sec_right hP h hw, map_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eis_mul_right [CompleteSpace W] (hP : IsPar Γ K P c)
     (h : ∀ w ∈ secSp K P c ρ, ∀ p ∈ P, ∀ k : K, sec K P c ρ (p * k) w = c p • ρ k⁻¹ w)
@@ -204,31 +204,27 @@ theorem eis_mul_right [CompleteSpace W] (hP : IsPar Γ K P c)
 end Sec
 
 /- English proof (translation)
-Introduce `hS`. Introduce `G _ _ _ _ _ W _ _ _ K ρ hK hρ Γ P P' c η η' β L R D Op H hP hP' hη hη' hβ hW`. Use `haveI : CompleteSpace W := FiniteDimensional.complete ℂ W`. Take `⟨h1, -, Ms, hb⟩` from `hS G W K ρ hK hρ Γ P c hP`. Take `⟨-, -, Ms', hb'⟩` from `hS G W K ρ hK hρ Γ P' c hP'`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hdiff : ∀ (g : G) (w : L), Differentiable ℂ fun z => H z g w` using `fun g w => (hW.hol g).clm_apply (differentiable_const _)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `z γ hγ g`. Use `ContinuousLinearMap.ext fun w => ?_` and prove the remaining obligations. Establish `e : (fun z => H z (γ * g) w) = fun z => H z g w`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `entire_eq (hdiff _ w) (hdiff _ w) R fun z hz => ?_` and prove the remaining obligations. Rewrite using `[hW.eqR z hz, hW.eqR z hz, eis_mul_left hP h1 hη (hW.le w.2) z hγ g]`. Conclude with `congrFun e z`. Introduce `z g k w`. Establish `e : (fun z => H z (g * k) w) = fun z => ρ k⁻¹ (H z g w)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `entire_eq (hdiff _ w) ((ρ k⁻¹).differentiable.comp (hdiff g w)) R fun z hz => ?_` and prove the remaining obligations. Rewrite using `[hW.eqR z hz, hW.eqR z hz, eis_mul_right hP h1 hb hη (hW.le w.2) z (hW.convR _ hz) g k, map_smul]`. Conclude with `congrFun e z`. Introduce `a b ha hb₀`. Take `⟨MD, hD⟩` from `hW.dEnt.2 a a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨MO, hO⟩` from `hW.op.2 b b hb₀`. Use `⟨|MD| * |Ms| + |Ms'| * |MO|, ?_⟩` and prove the remaining obligations. Introduce `z hz1 hz2 g`. Establish `hab : b < a` using `by linarith [hW.pos]`. Take `⟨U, hU, B, hB⟩` from `hW.bdd b a g`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : g ∈ U` using `mem_of_mem_nhds hU`. Establish `hp` using `pos_nonneg (Γ := Γ) (P := P) (fun x => a * η x) g`. Establish `hq` using `pos_nonneg (Γ := Γ) (P := P') (fun x => β x - b * η' x) g`. Establish `hA : 0 ≤ |MD| * |Ms|` using `by positivity`. Establish `hB' : 0 ≤ |Ms'| * |MO|` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `ContinuousLinearMap.opNorm_le_bound _ (by positivity) fun w => ?_` and prove the remaining obligations. Use `norm_le_of_strip (f := fun z => H z g w) (B := B * ‖w‖) (hdiff g w) hab ?_ ?_ ?_ hz1 hz2` and prove the remaining obligations. Introduce `u hu1 hu2`. Conclude with `((H u g).le_opNorm w).trans (mul_le_mul_of_nonneg_right (hB u hu1 hu2 g hg) (norm_nonneg _))`. Introduce `u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hO'` using `hO u hu.ge hu.le`. Establish `hu' : u.re < -R` using `by rw [hu]; exact hb₀`. Establish `e2` using `norm_eis_le (Γ := Γ) hb' (l := fun x => β x - b * η' x) (hW.convL b hb₀) (Λ := fun x => (β x : ℂ) - u * η' x) (by intro x; simp [hu]) g (Op u w : W)`. Establish `e3 : ‖(Op u w : W)‖ ≤ |MO| * ‖w‖`. Establish `: ‖(Op u w : W)‖ = ‖Op u w‖` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this]`. Conclude with `((Op u).le_opNorm w).trans (mul_le_mul_of_nonneg_right (hO'.trans (le_abs_self _)) (norm_nonneg _))`. Use `show ‖H u g w‖ ≤ _`. Rewrite using `[hW.eqL u hu' g w]`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `mul_le_mul_of_nonneg_right ?_ hq` and prove the remaining obligations. Conclude with `mul_le_mul (le_abs_self _) e3 (norm_nonneg _) (abs_nonneg _)`. Use `_ = |Ms'| * |MO| * _ * ‖w‖ := by ring`. Use `_ ≤ _ := bound_right hA hB' hp hq (norm_nonneg _)`. Introduce `u hu`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hD'` using `hD u hu.ge hu.le`. Establish `hu' : R < u.re` using `by rw [hu]; exact ha`. Establish `e2` using `norm_eis_le (Γ := Γ) hb (l := fun x => a * η x) (hW.convR a ha) (Λ := fun x => u * η x) (by intro x; simp [hu]) g (w : W)`. Use `show ‖H u g w‖ ≤ _`. Rewrite using `[hW.eqR u hu' g w, norm_smul]`.
-
-Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul (hD'.trans (le_abs_self _)) (e2.trans ?_) (norm_nonneg _) (abs_nonneg _)` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_right ?_ hp` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (le_abs_self _) (norm_nonneg _)`. Use `_ = |MD| * |Ms| * _ * ‖w‖ := by`.
-
-Establish `: ‖w‖ = ‖(w : W)‖` using `rfl`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := bound_left hA hB' hp hq (norm_nonneg _)`.
+A detailed English derivation is pending.
 -/
 theorem wallLaw_of_secLaw : SecLaw → WallLaw := by
   intro hS

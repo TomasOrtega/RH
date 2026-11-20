@@ -11,13 +11,13 @@ section Gen
 variable {F E : Type} [Field F] [Field E] [Algebra F E] [CharZero F]
 
 /- English proof (translation)
-Establish `hex : ∃ e : E, e ∉ (algebraMap F E).range`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hsurj : Function.Surjective (Algebra.linearMap F E)` using `fun e => by`. Take `⟨x, hx⟩` from `hne e`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨x, hx⟩`. Establish `hinj : Function.Injective (Algebra.linearMap F E)` using `(algebraMap F E).injective`. Establish `hfr` using `(LinearEquiv.ofBijective (Algebra.linearMap F E) ⟨hinj, hsurj⟩).finrank_eq`. Rewrite `hfr` using `[Module.finrank_self, h2]`. Evaluate the numerical expressions using `at hfr`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he⟩` from `hex`. Use `⟨e - σ e, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, hinv]`. Normalize the expressions using the abelian group laws. Introduce `h0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `he` to reduce the goal to its premises. Rewrite using `[← hfix]`. Conclude with `(sub_eq_zero.mp h0).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_delta (σ : E →ₐ[F] E) (hinv : ∀ e, σ (σ e) = e)
     (hfix : ∀ e, σ e = e ↔ e ∈ (algebraMap F E).range) (h2 : Module.finrank F E = 2) :
@@ -44,13 +44,11 @@ theorem exists_delta (σ : E →ₐ[F] E) (hinv : ∀ e, σ (σ e) = e)
 variable (σ : E →ₐ[F] E) (δ : E)
 
 /- English proof (translation)
-Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t h`. Establish `h' : σ (s • (1 : E) + t • δ) = 0` using `by rw [h, map_zero]`. Rewrite `h'` using `[map_add, map_smul, map_smul, map_one, hδ]`. Establish `hs : (2 : F) • (s • (1 : E)) = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[two_smul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hs0 : s = 0`. Rewrite `hs` using `[smul_smul, smul_eq_zero]`. Break down `hs with hs | hs` into its components or cases.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `mul_eq_zero.mp hs with h2' | h2'` into its components or cases. Conclude with `absurd h2' two_ne_zero`. Conclude with `h2'`. Conclude with `absurd hs one_ne_zero`. Substitute `hs0` using the available equality.
-
-Use `⟨rfl, ?_⟩` and prove the remaining obligations. Rewrite `h` using `[zero_smul, zero_add, smul_eq_zero]`. Conclude with `h.resolve_right hδ0`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linIndep_one_delta (hδ : σ δ = -δ) (hδ0 : δ ≠ 0) : LinearIndependent F ![(1 : E), δ] := by
   rw [LinearIndependent.pair_iff]
@@ -85,12 +83,12 @@ def bE : Module.Basis (Fin 2) F E :=
   basisOfLinearIndependentOfCardEqFinrank (linIndep_one_delta σ δ hδ hδ0) (by simp [h2])
 
 /- English proof (translation)
-Simplify using `[bE, coe_basisOfLinearIndependentOfCardEqFinrank]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bE_zero : bE σ δ hδ hδ0 h2 0 = 1 := by
   simp [bE, coe_basisOfLinearIndependentOfCardEqFinrank]
 /- English proof (translation)
-Simplify using `[bE, coe_basisOfLinearIndependentOfCardEqFinrank]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bE_one : bE σ δ hδ hδ0 h2 1 = δ := by
   simp [bE, coe_basisOfLinearIndependentOfCardEqFinrank]
@@ -100,7 +98,7 @@ def bR : Module.Basis (Fin 2) R (R ⊗[F] E) := Algebra.TensorProduct.basis R (b
 def mkE (a b : R) : R ⊗[F] E := a ⊗ₜ[F] (1 : E) + b ⊗ₜ[F] δ
 
 /- English proof (translation)
-Simplify using `only [mkE, bR, Algebra.TensorProduct.basis_apply, bE_zero, bE_one, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mkE_eq (a b : R) :
     mkE δ R a b = a • bR σ δ hδ hδ0 h2 R 0 + b • bR σ δ hδ hδ0 h2 R 1 := by
@@ -112,21 +110,21 @@ def cP : R ⊗[F] E →ₗ[R] R := (bR σ δ hδ hδ0 h2 R).coord 0
 def cQ : R ⊗[F] E →ₗ[R] R := (bR σ δ hδ hδ0 h2 R).coord 1
 
 /- English proof (translation)
-Rewrite using `[mkE_eq σ δ hδ hδ0 h2 R]`. Simplify using `[cP, Module.Basis.coord_apply, Finsupp.single_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem re_mk (a b : R) : cP σ δ hδ hδ0 h2 R (mkE δ R a b) = a := by
   rw [mkE_eq σ δ hδ hδ0 h2 R]
   simp [cP, Module.Basis.coord_apply, Finsupp.single_apply]
 
 /- English proof (translation)
-Rewrite using `[mkE_eq σ δ hδ hδ0 h2 R]`. Simplify using `[cQ, Module.Basis.coord_apply, Finsupp.single_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cQ_mkE (a b : R) : cQ σ δ hδ hδ0 h2 R (mkE δ R a b) = b := by
   rw [mkE_eq σ δ hδ hδ0 h2 R]
   simp [cQ, Module.Basis.coord_apply, Finsupp.single_apply]
 
 /- English proof (translation)
-Rewrite using `[mkE_eq σ δ hδ hδ0 h2 R]`. Establish `hx` using `(bR σ δ hδ hδ0 h2 R).sum_repr x`. Rewrite `hx` using `[Fin.sum_univ_two]`. Simplify `hx` using `[cP, cQ, Module.Basis.coord_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mkE_cP_cQ (x : R ⊗[F] E) :
     mkE δ R (cP σ δ hδ hδ0 h2 R x) (cQ σ δ hδ hδ0 h2 R x) = x := by
@@ -137,7 +135,7 @@ theorem mkE_cP_cQ (x : R ⊗[F] E) :
 
 include σ hδ hδ0 h2 in
 /- English proof (translation)
-Establish `h1` using `congrArg (cP σ δ hδ hδ0 h2 R) h`. Establish `h2'` using `congrArg (cQ σ δ hδ hδ0 h2 R) h`. Rewrite `h1` using `[re_mk, re_mk]`. Rewrite `h2'` using `[cQ_mkE, cQ_mkE]`. Conclude with `⟨h1, h2'⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mkE_inj {a b a' b' : R} (h : mkE (F := F) δ R a b = mkE (F := F) δ R a' b') : a = a' ∧ b = b' := by
   have h1 := congrArg (cP σ δ hδ hδ0 h2 R) h
@@ -156,7 +154,7 @@ variable (R : Type) [CommRing R] [Algebra F R]
 
 include hΔ in
 /- English proof (translation)
-Simplify using `only [mkE, add_mul, mul_add, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Rewrite using `[← hΔ, Algebra.algebraMap_eq_smul_one (A := E) Δ, TensorProduct.tmul_smul, TensorProduct.smul_tmul', Algebra.smul_def Δ (b * b'), TensorProduct.add_tmul, TensorProduct.add_tmul]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem mkE_mul (a b a' b' : R) :
     mkE (F := F) δ R a b * mkE (F := F) δ R a' b' =
@@ -167,19 +165,19 @@ theorem mkE_mul (a b a' b' : R) :
   abel
 
 /- English proof (translation)
-Simplify using `[mkE, Algebra.TensorProduct.one_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mkE_one : mkE (F := F) δ R 1 0 = 1 := by
   simp [mkE, Algebra.TensorProduct.one_def]
 
 /- English proof (translation)
-Simplify using `[mkE]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mkE_zero : mkE (F := F) δ R 0 0 = 0 := by
   simp [mkE]
 
 /- English proof (translation)
-Simplify using `only [mkE, TensorProduct.add_tmul]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem mkE_add (a b a' b' : R) :
     mkE (F := F) δ R a b + mkE (F := F) δ R a' b' = mkE (F := F) δ R (a + a') (b + b') := by
@@ -187,7 +185,7 @@ theorem mkE_add (a b a' b' : R) :
   abel
 
 /- English proof (translation)
-Simplify using `only [mkE, TensorProduct.sub_tmul]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem mkE_sub (a b a' b' : R) :
     mkE (F := F) δ R a b - mkE (F := F) δ R a' b' = mkE (F := F) δ R (a - a') (b - b') := by
@@ -195,7 +193,7 @@ theorem mkE_sub (a b a' b' : R) :
   abel
 
 /- English proof (translation)
-Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.TensorProduct.one_def, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Simplify using `[mkE]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem algebraMap_eq_mkE (a : R) : algebraMap R (R ⊗[F] E) a = mkE (F := F) δ R a 0 := by
   rw [Algebra.algebraMap_eq_smul_one, Algebra.TensorProduct.one_def, TensorProduct.smul_tmul', smul_eq_mul,
@@ -203,7 +201,7 @@ theorem algebraMap_eq_mkE (a : R) : algebraMap R (R ⊗[F] E) a = mkE (F := F) �
   simp [mkE]
 
 /- English proof (translation)
-Rewrite using `[← Algebra.smul_def]`. Simplify using `only [mkE, smul_add, TensorProduct.smul_tmul', smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem smul_mkE (r a b : R) : algebraMap R (R ⊗[F] E) r * mkE (F := F) δ R a b = mkE (F := F) δ R (r * a) (r * b) := by
   rw [← Algebra.smul_def]
@@ -211,7 +209,7 @@ theorem smul_mkE (r a b : R) : algebraMap R (R ⊗[F] E) r * mkE (F := F) δ R a
 
 include hδ in
 /- English proof (translation)
-Simplify using `only [mkE, map_add, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, map_one, hδ, TensorProduct.tmul_neg, TensorProduct.neg_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem conj_mkE (a b : R) :
     (Algebra.TensorProduct.map (AlgHom.id F R) σ) (mkE (F := F) δ R a b) = mkE (F := F) δ R a (-b) := by
@@ -220,7 +218,7 @@ theorem conj_mkE (a b : R) :
 
 include hΔ in
 /- English proof (translation)
-Rewrite using `[mkE_mul δ Δ hΔ R, show a * a + algebraMap F R Δ * (b * -b) = a * a - algebraMap F R Δ * (b * b) by ring, show a * -b + b * a = 0 by ring]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem mkE_norm (a b : R) :
     mkE (F := F) δ R a b * mkE (F := F) δ R a (-b) = mkE (F := F) δ R (a * a - algebraMap F R Δ * (b * b)) 0 := by
@@ -228,7 +226,7 @@ theorem mkE_norm (a b : R) :
     show a * -b + b * a = 0 by ring]
 
 /- English proof (translation)
-Rewrite using `[Algebra.TensorProduct.includeRight_apply, TensorProduct.tmul_add, ← Algebra.smul_def, Algebra.algebraMap_eq_smul_one (A := E) α, ← TensorProduct.smul_tmul, ← TensorProduct.smul_tmul, ← Algebra.algebraMap_eq_smul_one, ← Algebra.algebraMap_eq_smul_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem incl_eq_mkE (α β : F) :
     (Algebra.TensorProduct.includeRight : E →ₐ[F] R ⊗[F] E) (algebraMap F E α + algebraMap F E β * δ) =

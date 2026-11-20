@@ -23,7 +23,7 @@ variable {R : Ranks} {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
 include hH in
 
 /- English proof (translation)
-Simplify using `only [level_action_lattice_eq]`. Substitute `hy` using the available equality. Conclude with `class_eq_iff_translate_level_zero hk I hdet hH i i' Lt Lt' h h'`.
+Simplify using the standard rewrite rules. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem class_eq_iff_translate_level_one (i i' : compL L p) (y : GL (Fin R.k) (E ⊗[F] FiniteAdeleRing (𝓞 F) F))
     (hy : y = (repP L p i).1) (Lt Lt' : Fin nV → Submodule W (Fin (m + 1) → Qq))
@@ -39,7 +39,7 @@ set_option maxHeartbeats 2000000 in
 include hH in
 
 /- English proof (translation)
-The claim follows from `class_eq_iff_translate_level_one hS r lam0 dom hk I ψ hdet hH i i' _ rfl Lt Lt' h h'`.
+A detailed English derivation is pending.
 -/
 theorem clsC_iff (i i' : (gatOfLevelP L hS nV r lam0 dom hk I ψ e).comp)
     (Lt Lt' : (gatOfLevelP L hS nV r lam0 dom hk I ψ e).P.Tup)
@@ -53,7 +53,7 @@ theorem clsC_iff (i i' : (gatOfLevelP L hS nV r lam0 dom hk I ψ e).comp)
 include hH in
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `Quotient.exists_rep c`. Take `⟨i, g, hg⟩` from `(fibP I hdet hk hH).cls_surj (HA sp) (repP L p) (repP_mk L p) x`. Conclude with `⟨i, tupOf W g, tupOf_lat W g, (clsC_tupOf I hdet hk hH i g).trans hg⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem clsC_surj (c : ClassSet (HA sp) (KA L)) :
     ∃ (i : (gatOfLevelP L hS nV r lam0 dom hk I ψ e).comp) (Lt : (gatOfLevelP L hS nV r lam0 dom hk I ψ e).P.Tup),
@@ -65,11 +65,11 @@ theorem clsC_surj (c : ClassSet (HA sp) (KA L)) :
 include hH hdet in
 
 /- English proof (translation)
-Introduce `i`. Use `finite_classSet_U L` as an intermediate fact. Set `f : {Lt : (gatOfLevelP L hS nV r lam0 dom hk I ψ e).P.Tup // (gatOfLevelP L hS nV r lam0 dom hk I ψ e).P.IsLatTup Lt} → ClassSet (HA sp) (KA L)` to `fun Lt => clsC I hdet hk i Lt.1`. Set `s : Set.range f → (gatOfLevelP L hS nV r lam0 dom hk I ψ e).P.Tup` to `fun c => (Classical.choose c.2).1`. Establish `hs : ∀ c : Set.range f, f (Classical.choose c.2) = c.1` using `fun c => Classical.choose_spec c.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨(Set.finite_range s).toFinset, ?_, ?_⟩` and prove the remaining obligations. Introduce `L0 hL0`. Take `⟨c, rfl⟩` from `(Set.Finite.mem_toFinset _).1 hL0`. Conclude with `(Classical.choose c.2).2`. Introduce `Lt hLt`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `c : Set.range f` to `⟨f ⟨Lt, hLt⟩, Set.mem_range_self _⟩`. Use `⟨s c, (Set.Finite.mem_toFinset _).2 ⟨c, rfl⟩, ?_⟩` and prove the remaining obligations. Conclude with `((clsC_iff hS r lam0 dom hk I ψ e hdet hH i i (s c) Lt (Classical.choose c.2).2 hLt).1 (hs c)).2`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem finClasses : (gatOfLevelP L hS nV r lam0 dom hk I ψ e).FinClasses := by
   intro i

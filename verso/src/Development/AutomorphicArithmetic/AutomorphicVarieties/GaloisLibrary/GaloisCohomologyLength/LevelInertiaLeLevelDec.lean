@@ -16,7 +16,7 @@ def decImage (A : ValuationSubring Ω) : Subgroup ℤ_[l]ˣ := (Dec (F := F) A).
 def ineImage (A : ValuationSubring Ω) : Subgroup ℤ_[l]ˣ := (Ine (F := F) A).map (cycZ F Ω l)
 
 /- English proof (translation)
-The claim follows from `Subgroup.map_mono (Ine_le_Dec A)`.
+A detailed English derivation is pending.
 -/
 theorem ineImage_le_decImage (A : ValuationSubring Ω) : ineImage F l A ≤ decImage F l A := Subgroup.map_mono (Ine_le_Dec A)
 
@@ -33,7 +33,7 @@ theorem qzG_apply (e : ℤ) (g : G F Ω) (x : QZ l) :
     qzG F Ω l e g x = ((cycZ F Ω l g ^ (-e) : ℤ_[l]ˣ) : ℤ_[l]) • x := rfl
 
 /- English proof (translation)
-Use extensionality with `g x`. Simplify using `[qzG, qzTw, scalRep, ← D.hchi]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem qzTw_comp_toGS (D : LData F Ω l) (e : ℤ) : (qzTw D e).comp (toGS Ω _) = qzG F Ω l e := by
   ext g x
@@ -54,7 +54,7 @@ def ShaAbs (ρ : Representation R (G F Ω) M) (S : Set (HeightOneSpectrum (𝓞 
       LinearMap.ker (resH1 ρ (Ine (F := F) A).subtype continuous_subtype_val)
 
 /- English proof (translation)
-Simplify using `only [ShaAbs, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_ShaAbs (ρ : Representation R (G F Ω) M) (S : Set (HeightOneSpectrum (𝓞 F))) (x : H1 ρ) :
     x ∈ ShaAbs ρ S ↔
@@ -65,7 +65,7 @@ theorem mem_ShaAbs (ρ : Representation R (G F Ω) M) (S : Set (HeightOneSpectru
   simp only [ShaAbs, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker]
 
 /- English proof (translation)
-Simplify using `[resH1, Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero, mem_coboundaries1, restrictCocycles1]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem resH1_mk_eq_zero_iff_coboundary (ρ : Representation R (G F Ω) M) (z : Z1 ρ) (H : Subgroup (G F Ω)) :
     resH1 ρ H.subtype continuous_subtype_val (Submodule.Quotient.mk z) = 0 ↔
@@ -73,7 +73,7 @@ private theorem resH1_mk_eq_zero_iff_coboundary (ρ : Representation R (G F Ω) 
   simp [resH1, Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero, mem_coboundaries1, restrictCocycles1]
 
 /- English proof (translation)
-Simplify using `only [mem_ShaAbs, resH1_mk_eq_zero_iff_coboundary]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mk_mem_ShaAbs (ρ : Representation R (G F Ω) M) (S : Set (HeightOneSpectrum (𝓞 F))) (z : Z1 ρ) :
     (Submodule.Quotient.mk z : H1 ρ) ∈ ShaAbs ρ S ↔

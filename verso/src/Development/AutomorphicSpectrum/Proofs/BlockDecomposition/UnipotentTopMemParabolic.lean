@@ -17,7 +17,7 @@ theorem entry (n : ℕ) (w : Fin n → k) (a b : Fin (n + 1)) :
       (1 : Matrix (Fin (n + 1)) (Fin (n + 1)) k) a b + colMat k n w a b := rfl
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `(ext; simp [GlobalTheory.BZMir.Leib.ePG])`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ePG_true_eq (i t : ℕ) (b : Fin t) :
     ePG i t ⟨true, b⟩ = Fin.castSucc (Fin.natAdd i b) := by
@@ -26,7 +26,7 @@ theorem ePG_true_eq (i t : ℕ) (b : Fin t) :
   | (ext; simp [GlobalTheory.BZMir.Leib.ePG])
 
 /- English proof (translation)
-Establish `h : GlobalTheory.BZMir.Leib.ePG i t ⟨false, Fin.castSucc a⟩ = ((Equiv.sumCongr (finSumFinEquiv.symm : Fin (i + 1) ≃ Fin i ⊕ Fin 1) (Equiv.refl (Fin t))).trans ((Equiv.sumAssoc (Fin i) (Fin 1) (Fin t)).trans ((Equiv.sumCongr (Equiv.refl (Fin i)) (Equiv.sumComm (Fin 1) (Fin t))).tr …` using `rfl`. Rewrite using `[h]`. Use `ext`. Simplify using `[finSumFinEquiv_symm_apply_castSucc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem ePG_false_eq (i t : ℕ) (a : Fin i) :
     ePG i t ⟨false, Fin.castSucc a⟩ = Fin.castSucc (Fin.castAdd t a) := by
@@ -42,20 +42,20 @@ theorem ePG_false_eq (i t : ℕ) (a : Fin i) :
   simp [finSumFinEquiv_symm_apply_castSucc]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.CompanionTheory.BZPsiPG.TopCol.ePG_true_eq]`. Conclude with `Fin.castSucc_ne_last _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ePG_true_ne_last (i t : ℕ) (b : Fin t) : ePG i t ⟨true, b⟩ ≠ Fin.last (i + t) := by
   rw [GlobalTheory.CompanionTheory.BZPsiPG.TopCol.ePG_true_eq]
   exact Fin.castSucc_ne_last _
 
 /- English proof (translation)
-Use `show ((GlobalTheory.CompanionTheory.BZPsiPG.uM k (i + t) (GlobalTheory.CompanionTheory.BZPsiPG.topV k i t x) : GL (Fin (i + t + 1)) k)) ∈ GlobalTheory.SmGL.parab k (GlobalTheory.BZMir.Leib.ePG i t)`. Rewrite using `[GlobalTheory.SmGL.mem_parab_iff]`. Introduce `a b p q hba`. Apply the tactic sequence `cases a <;> cases b`. Apply the tactic sequence `all_goals first`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately.
 
-Consider the case `exact absurd hba (by decide)`. Consider the case `(simp at hba; done)`. Consider the case `skip`. Establish `hne : GlobalTheory.BZMir.Leib.ePG i t ⟨true, p⟩ ≠ GlobalTheory.BZMir.Leib.ePG i t ⟨false, q⟩`. Introduce `h`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Establish `h' : true = false` using `congrArg Sigma.fst ((GlobalTheory.BZMir.Leib.ePG i t).injective h)`. Consider the cases of `h'`. Establish `hr` using `GlobalTheory.CompanionTheory.BZPsiPG.TopCol.ePG_true_eq i t p`. Rewrite using `[GlobalTheory.CompanionTheory.BZPsiPG.TopCol.entry, Matrix.one_apply_ne hne, zero_add, hr]`. Simplify using `only [GlobalTheory.BZMir.colMat]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `split_ifs`. Rewrite using `[Fin.lastCases_castSucc]`. Simplify using `[GlobalTheory.CompanionTheory.BZPsiPG.topV]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mem (i t : ℕ) (x : Fin i → k) : uM k (i + t) (topV k i t x) ∈ HPG k i t := by
   show ((GlobalTheory.CompanionTheory.BZPsiPG.uM k (i + t) (GlobalTheory.CompanionTheory.BZPsiPG.topV k i t x) : GL (Fin (i + t + 1)) k)) ∈
@@ -80,13 +80,13 @@ theorem mem (i t : ℕ) (x : Fin i → k) : uM k (i + t) (topV k i t x) ∈ HPG 
   · rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`. Express the relevant statement in the definitionally equal form `((GlobalTheory.CompanionTheory.BZPsiPG.uM k (i + t) (GlobalTheory.CompanionTheory.BZPsiPG.topV k i t x) : GL (Fin (i + t + 1)) k) : Matrix (Fin (i + t + 1)) (Fin (i + t + 1)) k) (GlobalTheory.BZMir.Leib.ePG i t ⟨false, a⟩) (GlobalTheory.BZMir.Leib.ePG i t ⟨false, b⟩) = _`. Establish `h1 : (1 : Matrix (Fin (i + t + 1)) (Fin (i + t + 1)) k) (GlobalTheory.BZMir.Leib.ePG i t ⟨false, a⟩) (GlobalTheory.BZMir.Leib.ePG i t ⟨false, b⟩) = (1 : Matrix (Fin (i + 1)) (Fin (i + 1)) k) a b`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Simplify using `[Matrix.one_apply]`. Establish `h2 : GlobalTheory.BZMir.colMat k (i + t) (GlobalTheory.CompanionTheory.BZPsiPG.topV k i t x) (GlobalTheory.BZMir.Leib.ePG i t ⟨false, a⟩) (GlobalTheory.BZMir.Leib.ePG i t ⟨false, b⟩) = GlobalTheory.BZMir.colMat k i x a b`. Simplify using `only [GlobalTheory.BZMir.colMat, GlobalTheory.BZMir.Leib.ePG_false_eq_last_iff]`. Use `split_ifs with hb`. Proceed by induction on `a using Fin.lastCases with`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately.
 
-Consider the case `last => rw [GlobalTheory.BZMir.Leib.ePG_false_last, Fin.lastCases_last, Fin.lastCases_last]`. Consider the case `cast c`. Rewrite using `[GlobalTheory.CompanionTheory.BZPsiPG.TopCol.ePG_false_eq, Fin.lastCases_castSucc, Fin.lastCases_castSucc]`. Simplify using `[GlobalTheory.CompanionTheory.BZPsiPG.topV]`. Both sides reduce to the same expression.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.CompanionTheory.BZPsiPG.TopCol.entry, GlobalTheory.CompanionTheory.BZPsiPG.TopCol.entry, h1, h2]`.
+A detailed English derivation is pending.
 -/
 theorem fst (i t : ℕ) (x : Fin i → k) :
     (pgProj k i t ⟨uM k (i + t) (topV k i t x), mem i t x⟩).1 = uM k i x := by
@@ -116,9 +116,9 @@ theorem fst (i t : ℕ) (x : Fin i → k) :
     GlobalTheory.CompanionTheory.BZPsiPG.TopCol.entry, h1, h2]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`. Express the relevant statement in the definitionally equal form `((GlobalTheory.CompanionTheory.BZPsiPG.uM k (i + t) (GlobalTheory.CompanionTheory.BZPsiPG.topV k i t x) : GL (Fin (i + t + 1)) k) : Matrix (Fin (i + t + 1)) (Fin (i + t + 1)) k) (GlobalTheory.BZMir.Leib.ePG i t ⟨true, a⟩) (GlobalTheory.BZMir.Leib.ePG i t ⟨true, b⟩) = (1 : Matrix …`. Rewrite using `[GlobalTheory.CompanionTheory.BZPsiPG.TopCol.entry]`. Simplify using `only [GlobalTheory.BZMir.colMat, if_neg (GlobalTheory.CompanionTheory.BZPsiPG.TopCol.ePG_true_ne_last i t b), add_zero]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.one_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem snd (i t : ℕ) (x : Fin i → k) :
     (pgProj k i t ⟨uM k (i + t) (topV k i t x), mem i t x⟩).2 = 1 := by
@@ -133,7 +133,7 @@ theorem snd (i t : ℕ) (x : Fin i → k) :
   simp [Matrix.one_apply]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ i t x`. Conclude with `⟨GlobalTheory.CompanionTheory.BZPsiPG.TopCol.mem i t x, Prod.ext (GlobalTheory.CompanionTheory.BZPsiPG.TopCol.fst i t x) (GlobalTheory.CompanionTheory.BZPsiPG.TopCol.snd i t x)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem main : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (i t : ℕ)
     (x : Fin i → k), ∃ h : uM k (i + t) (topV k i t x) ∈ HPG k i t, pgProj k i t ⟨_, h⟩ = (uM k i x, 1) := by

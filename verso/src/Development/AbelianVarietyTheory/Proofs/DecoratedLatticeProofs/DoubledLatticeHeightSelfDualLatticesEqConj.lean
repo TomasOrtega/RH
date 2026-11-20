@@ -13,13 +13,13 @@ open GlobalTheory.Core.Rk.IP
 namespace GlobalTheory.Core.Rk.IP
 
 /- English proof (translation)
-Introduce `D A L L' hL hL'`. Take `⟨k, hk, hK⟩` from `GlobalTheory.T.exists_finiteAdelic_conj_selfDual_doublingCompact D A L L' hL hL'`. Use `⟨k, hk, fun a ha g => ?_⟩` and prove the remaining obligations. Use `hL.1` as an intermediate fact. Use `hL'.1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI` using `GlobalTheory.T.adelicIwasawa_doubledGroup_selfDualLattice D A L' a hL' ha`. Establish `hj : io A (k, k) ∈ siegel A` using `(io_mem_siegel A).2 rfl`. Take `⟨p, κ, hκ, hx⟩` from `hI (io A (g, 1))`. Establish `hκ' : (io A (k, k))⁻¹ * κ * io A (k, k) ∈ KAd D.sp.cm.sig (dblSp A).gram L a` using `(hK a κ).1 hκ`. Establish `e : io A (k⁻¹ * g * k, 1) = ((⟨io A (k, k), hj⟩⁻¹ * p * ⟨io A (k, k), hj⟩ : siegel A) : GA D (dblSp A)) * ((io A (k, k))⁻¹ * κ * io A (k, k))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : io A (k⁻¹ * g * k, 1) = (io A (k, k))⁻¹ * io A (g, 1) * io A (k, k)`. Rewrite using `[← map_inv, ← map_mul, ← map_mul]`. Simplify using the standard rewrite rules. Rewrite using `[h1, hx]`. Simplify using `[mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `hgtL`. Rewrite using `[e, hx, hgtAd_mul (isCMExt_host D) _ hκ, hgtAd_mul (isCMExt_host D) _ hκ']`. Use `congr 1`. Rewrite using `[map_mul, map_mul, map_inv, mul_comm, mul_inv_cancel_left]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem hgtL_eq_conj_of_selfDual : ∀ (D : D7) (A : HSp D) (L L' : Lat A), IsSelfDualC A L → IsSelfDualC A L' → ∃ k ∈ GfC A, ∀ (a : GL (Fin A.rank) (AE D)), IsMaj A a → ∀ g, hgtL A L' a g = hgtL A L a (k⁻¹ * g * k) := by
   intro D A L L' hL hL'

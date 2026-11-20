@@ -9,7 +9,7 @@ open GlobalTheory.FactorDepth
 namespace GlobalTheory.LatDRCrd
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical φ).2 (by rw [(RingHom.injective_iff_ker_eq_bot φ).1 h]; exact bot_le)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isDominant_spMap_of_injective {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S)
     (h : Function.Injective φ) : IsDominant (spMap φ) :=
@@ -17,7 +17,7 @@ theorem isDominant_spMap_of_injective {R S : Type} [CommRing R] [CommRing S] (φ
     rw [(RingHom.injective_iff_ker_eq_bot φ).1 h]; exact bot_le)⟩
 
 /- English proof (translation)
-Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [dualMap]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dualMap_comp' {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (φ : R →+* S) (ψ : S →+* T) :
     (dualMap ψ).comp (dualMap φ) = dualMap (ψ.comp φ) := by
@@ -25,21 +25,21 @@ theorem dualMap_comp' {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (φ 
   ext <;> simp [dualMap]
 
 /- English proof (translation)
-Introduce `E _ _ _ H X _ t L aff M crd h i C _ _ φ x w hx hw`. Establish `hx' : spMap (intO C).subtype ≫ (spMap φ ≫ (aff i).fromSpec) = x`. Rewrite using `[← Category.assoc, spMap_comp', hx]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨xO, hxO, vO, hv, rfl⟩ r`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `isDominant_spMap_of_injective (intO C).subtype Subtype.val_injective` as an intermediate fact. Take `rfl : xO = spMap φ ≫ (aff i).fromSpec` from `ext_of_isDominant (spMap (intO C).subtype) (hxO.trans hx'.symm)`. Rewrite using `[h.nat i _ C φ (intO C).subtype vO hv]`. Conclude with `(crd i _ φ vO r).2`. Introduce `hr`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Substitute `hx` using the available equality. Take `⟨n, v, D, ⟨hv, hb⟩, hD⟩` from `h.split i`. Take `⟨a, ha, -⟩` from `hb C _ w hw`. Establish `hvC` using `fun j => isTanAtG_map t ((intO C).subtype.comp φ) (hv j)`. Establish `hvO` using `fun j => isTanAtG_map t φ (hv j)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : spMap (RingHom.id Γ(X, L.U i)) = 𝟙 _` using `Spec.map_id _`. Establish `hc` using `h.comb i C _ n _ a w hvC ha`. Establish `hn : ∀ j, crd i C ((intO C).subtype.comp φ) (spMap (dualMap ((intO C).subtype.comp φ)) ≫ v j) = ((intO C).subtype.comp φ) ∘ crd i _ (RingHom.id _) (v j)` using `fun j => h.nat i _ C (RingHom.id _) ((intO C).subtype.comp φ) (v j) (by rw [h1, Category.id_comp]; exact hv j)`. Establish `hD'` using `hD.map ((intO C).subtype.comp φ)`. Establish `hmem : ∀ j, a j ∈ intO C` using `fun j => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : a j = ∑ r, ((intO C).subtype.comp φ) (D j r) * crd i C ((intO C).subtype.comp φ) w r`. Rewrite using `[hc]`. Simplify using `only [hn, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Establish `: ∀ j', ∑ r, ((intO C).subtype.comp φ) (D j r) * (a j' * (((intO C).subtype.comp φ) ∘ crd i _ (RingHom.id _) (v j')) r) = if j = j' then a j' else 0` using `fun j' => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `hD' j j'`. Simplify using `only [mul_left_comm _ (a j'), ← Finset.mul_sum]`. Use `(congrArg (a j' * ·) e).trans ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [this]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `Subring.sum_mem _ fun r _ => Subring.mul_mem _ (φ (D j r)).2 (hr r)`. Take `⟨wO, hwO, hcO⟩` from `exists_comb t hvO fun j => (⟨a j, hmem j⟩ : ↥(intO C))`. Use `⟨_, hx', wO, hwO, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hb` using `GlobalTheory.LatDRFree.comb_map t (intO C).subtype hcO`. Simplify using `only [← Category.assoc, spMap_comp', dualMap_comp'] at hb`. Conclude with `comb_unique t hvC hb ha`.
+A detailed English derivation is pending.
 -/
 theorem mem_latDR_iff_crd : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) [X.IsSeparated] (t : SAB H X) (L : FinLB X) (aff : ∀ i, IsAffineOpen (L.U i)) (M : ℕ) (crd : Crd t L M), IsLieEmb t L aff crd → ∀ (i : Fin L.n) (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C] (φ : Γ(X, L.U i) →+* ↥(intO C)) (x : Sp C ⟶ X) (w : Tn t C), spMap ((intO C).subtype.comp φ) ≫ (aff i).fromSpec = x → IsTanAtG t x w → (w ∈ latDR t x ↔ ∀ r, ‖crd i C ((intO C).subtype.comp φ) w r‖ ≤ 1) := by
   intro E _ _ _ H X _ t L aff M crd h i C _ _ φ x w hx hw

@@ -8,7 +8,7 @@ import Formalism.PeriodIntegrals.BesselMapUniq
 open MeasureTheory NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.L2.SG.HidaSetting Formalism.L2.SG.PoincareInHH.PoincareSetting Formalism.L2.SG.PackageTie2 Formalism.L2.SG.ColDict
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.St.SpectralData.exists_spectralData` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FExistsGlobalSetting.lean&line=71#L71)
 -/

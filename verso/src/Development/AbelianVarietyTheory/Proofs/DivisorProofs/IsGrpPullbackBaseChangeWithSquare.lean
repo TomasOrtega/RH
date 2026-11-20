@@ -11,11 +11,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.GrpPB
 
 /- English proof (translation)
-Use `⟨h₁.1.paste_horiz h₂.1, fun T₀ x y x₀ y₀ hx hy => ?_⟩` and prove the remaining obligations. Establish `wx : ∀ z : T₀ ⟶ P, (z.left ≫ ψ) ≫ G'.hom = (Over.mk (T₀.hom ≫ t)).hom` using `fun z => by`. Rewrite using `[Category.assoc, h₁.1.w, ← Category.assoc, Over.w z]`. Both sides reduce to the same expression. Set `x' : Over.mk (T₀.hom ≫ t) ⟶ G'` to `Over.homMk (x.left ≫ ψ) (wx x)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Set `y' : Over.mk (T₀.hom ≫ t) ⟶ G'` to `Over.homMk (y.left ≫ ψ) (wx y)`. Establish `e₁ : (x' * y').left = (x * y).left ≫ ψ` using `h₁.2 T₀ x y x' y' rfl rfl`. Set `e : Over.mk ((Over.mk (T₀.hom ≫ t)).hom ≫ f) ⟶ Over.mk (T₀.hom ≫ t ≫ f)` to `Over.homMk (𝟙 _) (by simp)`. Establish `e₂ : ((e ≫ x₀) * (e ≫ y₀)).left = (x' * y').left ≫ φ` using `h₂.2 _ x' y' (e ≫ x₀) (e ≫ y₀) (by simp [e, x', hx]) (by simp [e, y', hy])`. Rewrite `e₂` using `[← MonObj.comp_mul, Over.comp_left]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [e, Over.homMk_left, Category.id_comp] at e₂`. Rewrite using `[e₂, e₁, Category.assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem isGrpPullback_comp {S S' T : Scheme.{0}} {G : Over S} [GrpObj G] {G' : Over S'} [GrpObj G']
     {P : Over T} [GrpObj P] {f : S' ⟶ S} {t : T ⟶ S'} {φ : G'.left ⟶ G.left} {ψ : P.left ⟶ G'.left}
@@ -36,11 +36,11 @@ theorem isGrpPullback_comp {S S' T : Scheme.{0}} {G : Over S} [GrpObj G] {G' : O
   rw [e₂, e₁, Category.assoc]
 
 /- English proof (translation)
-Establish `hc` using `isGrpPullback_comp (isGrpPullback_pullback G' t) h`. Use `⟨hc, ?_⟩` and prove the remaining obligations. Use `set P := (Over.pullback t).obj G'`. Establish `w : ∀ q : P ⊗ P ⟶ P, (q.left ≫ pullback.fst G'.hom t ≫ φ) ≫ G.hom = (Over.mk ((P ⊗ P).hom ≫ t ≫ f)).hom` using `fun q => by`. Rewrite using `[Category.assoc, Category.assoc, ← Category.assoc _ φ, hc.1.w, ← Category.assoc, Over.w q]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Set `a : Over.mk ((P ⊗ P).hom ≫ t ≫ f) ⟶ G` to `Over.homMk _ (w (fst P P))`. Set `b : Over.mk ((P ⊗ P).hom ≫ t ≫ f) ⟶ G` to `Over.homMk _ (w (snd P P))`. Use `⟨(lift a b).left, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Over.comp_left, lift_fst]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[← Over.comp_left, lift_snd]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem baseChange_square {S S' T : Scheme.{0}} (G : Over S) [GrpObj G] (G' : Over S') [GrpObj G']
     (f : S' ⟶ S) (φ : G'.left ⟶ G.left) (h : IsGrpPullback G' G f φ) (t : T ⟶ S') :
@@ -59,7 +59,7 @@ theorem baseChange_square {S S' T : Scheme.{0}} (G : Over S) [GrpObj G] (G' : Ov
   · rw [← Over.comp_left, lift_snd]; rfl
 
 /- English proof (translation)
-The claim follows from `@baseChange_square`.
+A detailed English derivation is pending.
 -/
 example : ∀ {S S' T : Scheme.{0}} (G : Over S) [GrpObj G] (G' : Over S') [GrpObj G'] (f : S' ⟶ S) (φ : G'.left ⟶ G.left), IsGrpPullback G' G f φ → ∀ t : T ⟶ S', IsGrpPullback ((Over.pullback t).obj G') G (t ≫ f) (pullback.fst G'.hom t ≫ φ) ∧ ∃ φ₂ : (G2 ((Over.pullback t).obj G')).left ⟶ (G2 G).left, IsSquare (pullback.fst G'.hom t ≫ φ) φ₂ := @baseChange_square
 

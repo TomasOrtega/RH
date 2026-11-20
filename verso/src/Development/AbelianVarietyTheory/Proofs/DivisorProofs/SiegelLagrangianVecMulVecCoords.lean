@@ -11,11 +11,11 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace GlobalTheory.SiegelConv
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j'`. Simplify using `only [vecOf]`. Distinguish the cases in `h : j' = j`. Substitute `h` using the available equality. Rewrite using `[Finset.sum_eq_single i]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Pi.single_apply, hb]`. Simplify using the standard rewrite rules. Rewrite using `[Pi.single_eq_of_ne h]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Simplify using `[Pi.single_apply, h]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem vecOf_single_basis (F : Type) [Field F] {E : Type} [Field E] [Algebra F E] [Module.Finite F E] {n : ℕ}
     (j : Fin n) (i : Fin (Module.finrank F E)) :
@@ -33,13 +33,13 @@ theorem vecOf_single_basis (F : Type) [Field F] {E : Type} [Field E] [Algebra F 
     simp [Pi.single_apply, h]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n d κ _ De D hD w t`. Establish `key : Matrix.vecMulVec (incV F w) (Sum.elim (basisMap F E n t) (basisMap F E n t)) = ∑ k, t k • incM F (vvMap F (n` using `n) w (Pi.single k 1)) := by`. Use extensionality with `a b`. Rewrite using `[Matrix.sum_apply]`. Simplify using `only [Matrix.smul_apply, incM, Matrix.map_apply, vvMap, LinearMap.coe_mk, AddHom.coe_mk, Matrix.vecMulVec_apply, incV]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Fintype.sum_prod_type]`. Apply the tactic sequence `rcases b with j' | j' <;>`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, vecOf_single_basis, basisMap, Finset.mul_sum]`. Rewrite using `[Finset.sum_eq_single j']`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Pi.single_eq_same, map_mul, mul_smul_comm]`. Introduce `b _ hb`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.single_eq_of_ne (Ne.symm hb)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[key, map_sum]`. Simplify using `only [map_smul, hD, extA, LinearMap.coe_comp, Function.comp_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem De_vecMulVec_basisMap : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n d : ℕ) (κ : Type) [Fintype κ]
     (De : Matrix (Fin d) (Fin n ⊕ Fin n) (AE F E) →ₗ[AF F] (κ → AF F) × (κ → AF F))

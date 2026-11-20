@@ -10,9 +10,9 @@ open NumberField ReciprocityTheory.ChartRestriction.G.FD Formalism.L2.PjFree
 namespace GlobalTheory.NetMulti
 
 /- English proof (translation)
-Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `zero => exact fun k => (siegelSpaceAlgebra_holds (E := E) r (X k) (la k) (la k) 0).1.1`. Consider the case `add x y _ _ hx hy`. Conclude with `fun k => (siegelSpaceAlgebra_holds (E := E) r (X k) (la k) (la k) 0).1.2.1 _ (hx k) _ (hy k)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Consider the case `smul a x _ hx => exact fun k => (siegelSpaceAlgebra_holds (E := E) r (X k) (la k) (la k) 0).1.2.2 a _ (hx k)`.
+Treat this case separately.
 -/
 theorem component_mem_SS {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {Comp : Type}
     (X : Comp → Data E r) (la : ∀ k, Wt (X k).Ψ r) {P : FDSec X} (h : P ∈ holSub X la) :
@@ -25,7 +25,7 @@ theorem component_mem_SS {E : Type} [Field E] [NumberField E] [IsCMField E] {r :
   | smul a x _ hx => exact fun k => (siegelSpaceAlgebra_holds (E := E) r (X k) (la k) (la k) 0).1.2.2 a _ (hx k)
 
 /- English proof (translation)
-Establish `h : (1 : ℤ) ≤ |discr E|` using `Int.one_le_abs (discr_ne_zero E)`. Unfold `dE`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem one_le_absDisc (E : Type) [Field E] [NumberField E] [IsCMField E] : 1 ≤ dE E := by
   have h : (1 : ℤ) ≤ |discr E| := Int.one_le_abs (discr_ne_zero E)
@@ -33,27 +33,23 @@ theorem one_le_absDisc (E : Type) [Field E] [NumberField E] [IsCMField E] : 1 �
   exact_mod_cast h
 
 /- English proof (translation)
-Introduce `E _ _ _ r Comp _ _ Xx la M w L hr hL hM hw hsp hT lf lr lM lw ld lk lC`. Establish `hf : (1 : ℝ) ≤ fdeg E` using `one_le_field_half_degree`. Establish `hr1 : (1 : ℝ) ≤ r` using `by exact_mod_cast hr`. Establish `hnet` using `fun k => GlobalTheory.exists_finite_net (Xx k) (la k) M w (by linarith) (hsp k) hw (hT k)`. Use `choose N hN₁ hN₂ hN₃ _ hN₄ using hnet`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Z : ℝ := fdeg E * r * L with hZ`. Establish `hZ1 : 1 ≤ Z` using `one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le hf hr1) hL`. Establish `hcard : ∀ k, 16 * ((N k).card : ℝ) ≤ Real.exp (1000 * Z ^ 3)`. Introduce `k`. Establish `hpos : (0 : ℝ) < (N k).card` using `by exact_mod_cast (hN₁ k).card_pos`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk0 : Real.log (Xx k).k0 ≤ 4 * L`. Use `Real.log_le_sub_one_of_pos (Xx k).minWeight_pos` as an intermediate fact. Combine the linear relations using `[(Xx k).k0_le]`. Establish `h` using `GlobalTheory.NetSize.net_size_cubic (fdeg E) r L M w (Xx k).k0 (dE E) (∑ τ, ∑ i, |(la k τ i : ℝ)|) (Xx k).NA (Xx k).NC (Xx k).g hf hr1 hL hM hw (Xx k).minWeight_pos (one_le_absDisc E) (by positivity) (by exact_mod_cast (Xx k).NA_pos) (by exact_mod_cast (Xx k).NC_pos) (by exact_mo …`. Rewrite using `[← Real.log_le_iff_le_exp (by positivity), Real.log_mul (by norm_num) hpos.ne']`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Introduce a local definition for the expression.
 
-Combine the linear relations using `[hN₄ k]`. Set `NN : Finset (FPt (fun k => (Xx k).toData))` to `Finset.univ.sigma fun k => (N k).subtype (· ∈ (Xx k).dom)`. Establish `hmem : ∀ k, ∀ y (hy : y ∈ N k), (⟨k, ⟨y, hN₂ k y hy⟩⟩ : FPt (fun k => (Xx k).toData)) ∈ NN` using `fun k y hy => Finset.mem_sigma.2 ⟨Finset.mem_univ _, Finset.mem_subtype.2 hy⟩`. Establish `hne : NN.Nonempty`. Take `⟨k⟩` from `‹Nonempty Comp›`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨y, hy⟩` from `hN₁ k`. Conclude with `⟨_, hmem k y hy⟩`. Establish `hpos : (0 : ℝ) < NN.card` using `by exact_mod_cast hne.card_pos`. Use `⟨NN, hne, fun P hP => ?_, ?_⟩` and prove the remaining obligations. Use `set S : ℝ := ∑ p ∈ NN, (((fun k => (Xx k).toData) p.1).pnorm (la p.1) (P p.1) p.2) ^ 2 with hS`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : 4 * Real.sqrt NN.card * Real.sqrt ((NN.card : ℝ)⁻¹ * S) = 4 * Real.sqrt S`. Rewrite using `[mul_assoc, ← Real.sqrt_mul hpos.le, mul_inv_cancel_left₀ hpos.ne']`. Rewrite using `[e]`. Unfold `supN supE`. Use `ENNReal.toReal_le_of_le_ofReal (by positivity) (iSup_le fun p => ?_)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Take `⟨y, hy, h⟩` from `hN₃ p.1 (P p.1) (component_mem_SS _ la hP p.1) p.2 p.2.2`. Use `h.trans (mul_le_mul_of_nonneg_left (Real.le_sqrt_of_sq_le ?_) (by norm_num))` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun p : FPt (fun k => (Xx k).toData) => (((fun k => (Xx k).toData) p.1).pnorm (la p.1) (P p.1) p.2) ^ 2) (fun _ _ => sq_nonneg _) (hmem p.1 y hy)`. Establish `h1 : (NN.card : ℝ) ≤ ∑ k, ((N k).card : ℝ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.card_sigma]`. Use `push_cast`. Use `Finset.sum_le_sum fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.card_subtype]`. Conclude with `Finset.card_filter_le _ _` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hC : (0 : ℝ) < Fintype.card Comp` using `by exact_mod_cast Fintype.card_pos`. Establish `h2 : 16 * (NN.card : ℝ) ≤ Fintype.card Comp * Real.exp (1000 * Z ^ 3)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Finset.mul_sum]`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Use `_ ≤ ∑ _k : Comp, Real.exp (1000 * Z ^ 3) := Finset.sum_le_sum fun k _ => hcard k`. Use `_ = _ := by rw [Finset.sum_const, nsmul_eq_mul, Finset.card_univ]`. Establish `h3` using `Real.log_le_log (by positivity) h2`. Rewrite `h3` using `[Real.log_mul hC.ne' (Real.exp_pos _).ne', Real.log_exp]`. Establish `h4 : Z ^ 2 ≤ Z ^ 3` using `pow_le_pow_right₀ hZ1 (by norm_num)`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_net_all_components : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (Comp : Type) [Fintype Comp] [Nonempty Comp] (Xx : Comp → DataX E r) (la : ∀ k, Wt (Xx k).Ψ r) (M w L : ℝ), 1 ≤ r → 1 ≤ L → 1 ≤ M → 0 < w → (∀ k, (∑ τ, (Xx k).spread (la k) τ) ≤ w) → (∀ k, ∀ v ∈ (Xx k).L', herm (Xx k).Gm v v = 0 → ∀ b : E, cc b = b → IsIntegral ℤ b → ∃ γ ∈ (Xx k).Γ, (Xx k).χ (la k) γ = 1 ∧ ∀ τ : (Xx k).Ψ, (γ : Matrix (Fin r) (Fin r) E).map τ.1 = (Xx k).flowMat v τ ((M : ℂ) * τ.1 b)) → Real.log (fdeg E) ≤ 2 * L → Real.log r ≤ L → Real.log M ≤ 30 * L → Real.log w ≤ 3 * L → Real.log (dE E) ≤ 4 * fdeg E * L → (∀ k, Real.log (1 + ∑ τ, ∑ i, |(la k τ i : ℝ)|) ≤ 3 * L ∧ Real.log (Xx k).NA ≤ 30 * fdeg E * L ∧ Real.log (Xx k).NC ≤ 30 * fdeg E * L ∧ Real.log (Xx k).g ≤ 30 * fdeg E * L) → Real.log (Fintype.card Comp) ≤ 41 * (fdeg E * r * L) ^ 2 → ∃ NN : Finset (FPt (fun k => (Xx k).toData)), NN.Nonempty ∧ (∀ P ∈ holSub (fun k => (Xx k).toData) la, supN (fun k => (Xx k).toData) la P ≤ 4 * Real.sqrt NN.card * Real.sqrt ((NN.card : ℝ)⁻¹ * ∑ p ∈ NN, (((fun k => (Xx k).toData) p.1).pnorm (la p.1) (P p.1) p.2) ^ 2)) ∧ Real.log (16 * NN.card) ≤ 1041 * (fdeg E * r * L) ^ 3 := by
   intro E _ _ _ r Comp _ _ Xx la M w L hr hL hM hw hsp hT lf lr lM lw ld lk lC

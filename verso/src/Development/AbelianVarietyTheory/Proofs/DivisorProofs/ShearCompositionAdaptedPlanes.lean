@@ -26,11 +26,11 @@ namespace GlobalTheory.RationalShear
 open GlobalTheory.MidLineParam
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d d₁ e J H' H₂ h1 h2 nn hn c`. Take `⟨hx, hx2, hy2, hy, hι⟩` from `hn (inclR (F := F) (AF F) c)`. Use `mem_ratU_of_mulVec _ fun v => ?_` and prove the remaining obligations. Take `⟨a, b, u, rfl⟩` from `h1 v`. Take `⟨a', b', u', rfl⟩` from `h2 u`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hc : cA σ (inclR (F` using `F) (AF F) c) = inclR (F := F) (AF F) (σ c) := GlobalTheory.PlaneLevi.cA_inclR σ c`. Establish `hu : mat (nn (inclR (F` using `F) (AF F) c)) *ᵥ incV F (H'.ι *ᵥ (H₂.ι *ᵥ u')) = incV F (H'.ι *ᵥ (H₂.ι *ᵥ u')) := by`. Rewrite using `[Matrix.mulVec_mulVec, ← incM_mulVec, Matrix.mulVec_mulVec, hι]`. Use `⟨a • H'.x + (a' • (H'.ι *ᵥ H₂.x + c • H'.x) + H'.ι *ᵥ (H₂.ι *ᵥ u') + b' • (H'.ι *ᵥ H₂.y)) + b • (H'.y - σ c • (H'.ι *ᵥ H₂.y)), ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_add H'.ι, Matrix.mulVec_add H'.ι, Matrix.mulVec_smul H'.ι, Matrix.mulVec_smul H'.ι]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [incV_add, incV_sub, incV_smul]`. Simplify using `only [Matrix.mulVec_add, Matrix.mulVec_smul]`. Rewrite using `[hx, hx2, hy2, hy, hu, hc]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem shear_mem_ratU : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (d d₁ e : ℕ)
     (J : Matrix (Fin d) (Fin d) E) (H' : Plane E d d₁) (H₂ : Plane E d₁ e),

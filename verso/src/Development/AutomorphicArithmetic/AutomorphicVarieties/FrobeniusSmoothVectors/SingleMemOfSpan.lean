@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact hs y hy`. Consider the case `zero => rw [AddMonoidAlgebra.single_zero]`. Conclude with `A.zero_mem`. Consider the case `add y z _ _ hy hz => rw [AddMonoidAlgebra.single_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `A.add_mem hy hz`. Consider the case `smul c y _ hy => rw [← AddMonoidAlgebra.smul_single]`. Conclude with `A.smul_mem hy c`.
+A detailed English derivation is pending.
 -/
 private theorem single_mem_of_span {C K : Type} [CommRing C] [CommRing K] [Algebra C K]
     (A : Subalgebra C (AddMonoidAlgebra K ℤ)) (j : ℤ) (s : Set K)
@@ -18,23 +18,21 @@ private theorem single_mem_of_span {C K : Type} [CommRing C] [CommRing K] [Algeb
   | smul c y _ hy => rw [← AddMonoidAlgebra.smul_single]; exact A.smul_mem hy c
 
 /- English proof (translation)
-Introduce `l _ k _ F n C _ K _ _ ρ h`. Use `choose S hS using h`. Use `set G : Set (AddMonoidAlgebra K ℤ) := ⋃ i, ⋃ j, (fun x => AddMonoidAlgebra.single (w n i - w n j) x) '' (S i j : Set K) with hG`. Establish `hGfin : G.Finite` using `Set.finite_iUnion fun i => Set.finite_iUnion fun j => (S i j).finite_toSet.image _`. Establish `hGmem : ∀ i j x, x ∈ (S i j : Set K) → AddMonoidAlgebra.single (w n i - w n j) x ∈ Algebra.adjoin C G` using `fun i j x hx => Algebra.subset_adjoin (Set.mem_iUnion.2 ⟨i, Set.mem_iUnion.2 ⟨j, ⟨x, hx, rfl⟩⟩⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hent : ∀ g i j, AddMonoidAlgebra.single (w n i - w n j) (ρ.r g i j) ∈ Algebra.adjoin C G` using `fun g i j => single_mem_of_span (Algebra.adjoin C G) _ (S i j) (hGmem i j) (by rw [hS i j]; exact Submodule.subset_span ⟨g, rfl⟩)`. Establish `hlist : ∀ L : List (F.G0 × Fin n × Fin n), AddMonoidAlgebra.single ((L.map fun s => w n s.2.1 - w n s.2.2).sum) ((L.map fun s => ρ.r s.1 s.2.1 s.2.2).prod) ∈ Algebra.adjoin C G`. Introduce `L`. Proceed by induction on `L with`. Consider the case `nil`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [List.map_nil, List.sum_nil, List.prod_nil]`. Rewrite using `[← AddMonoidAlgebra.one_def]`. Conclude with `(Algebra.adjoin C G).one_mem`. Consider the case `cons s L ih`. Simplify using `only [List.map_cons, List.sum_cons, List.prod_cons]`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← AddMonoidAlgebra.single_mul_single]`. Conclude with `mul_mem (hent _ _ _) ih`. Establish `hmon : ∀ j, ∀ x ∈ ρ.mon j, AddMonoidAlgebra.single j x ∈ Algebra.adjoin C G`. Introduce and unpack `j x ⟨L, hL, rfl⟩`. Rewrite using `[← hL]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hlist L`. Establish `hpart : ∀ j x, x ∈ ρ.part C j → AddMonoidAlgebra.single j x ∈ Algebra.adjoin C G` using `fun j x hx => single_mem_of_span _ j _ (hmon j) hx`. Establish `heq : Algebra.adjoin C G = lauSub (ρ.part C)`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Algebra.adjoin_le_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `y hy`. Take `⟨i, hy⟩` from `Set.mem_iUnion.1 hy`. Take `⟨j, hy⟩` from `Set.mem_iUnion.1 hy`. Take `⟨x, hx, rfl⟩` from `hy`. Apply `single_mem_lauSub` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx' : x ∈ Submodule.span C (Set.range fun g => ρ.r g i j)`. Rewrite using `[← hS i j]`. Conclude with `Submodule.subset_span hx`. Use `Submodule.span_le.mpr ?_ hx'` and prove the remaining obligations. Introduce and unpack `_ ⟨g, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `NRep.r_mem_part C ρ g i j`. Introduce `p hp`. Establish `hp' : ∀ j, p.coeff j ∈ ρ.part C j` using `hp`. Establish `hsum : p = p.coeff.sum fun j x => AddMonoidAlgebra.single j x`. Apply `AddMonoidAlgebra.ext` to reduce the goal to its premises.
-
-Rewrite using `[Finsupp.sum, AddMonoidAlgebra.coeff_sum]`. Conclude with `(Finsupp.sum_single _).symm`. Rewrite using `[hsum]`. Conclude with `Subalgebra.sum_mem _ fun j _ => hpart j _ (hp' j)`. Conclude with `⟨(Subalgebra.fg_top _).mpr ⟨hGfin.toFinset, by rw [Set.Finite.coe_toFinset]; exact heq⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.alg_ft :
     ∀ {l : ℕ} [Fact l.Prime] {k : Type} [Field k] {F : Frame l k} {n : ℕ} (C : Type) [CommRing C] {K : Type} [CommRing K] [Algebra C K] (ρ : NRep F n K), (∀ i j, (Submodule.span C (Set.range fun g => ρ.r g i j)).FG) → Algebra.FiniteType C (lauSub (ρ.part C)) := by

@@ -13,19 +13,19 @@ namespace GlobalTheory.EigProj
 open Polynomial
 
 /- English proof (translation)
-Introduce `E _ _ b σ`. Establish `hint : IsIntegral ℚ b` using `Algebra.IsIntegral.isIntegral b`. Establish `hcomp : σ.comp (algebraMap ℚ E) = algebraMap ℚ ℂ` using `Subsingleton.elim _ _`. Establish `hroot : (minpoly ℚ b).eval₂ (algebraMap ℚ ℂ) (σ b) = 0`. Rewrite using `[← hcomp, ← Polynomial.hom_eval₂, ← Polynomial.aeval_def, minpoly.aeval, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : σ b ∈ algebraicClosure ℚ ℂ`. Conclude with `mem_algebraicClosure_iff.2 (hint.map (σ.toRatAlgHom)).isAlgebraic`. Use `set β : Qb := ⟨σ b, hmem⟩ with hβ`. Establish `hι : algebraMap Qb ℂ β = σ b` using `rfl`. Establish `hcompQ : (algebraMap Qb ℂ).comp (algebraMap ℚ Qb) = algebraMap ℚ ℂ` using `Subsingleton.elim _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hrootQ : (minpoly ℚ b).eval₂ (algebraMap ℚ Qb) β = 0`. Apply `(algebraMap Qb ℂ).injective` to reduce the goal to its premises. Rewrite using `[Polynomial.hom_eval₂, hcompQ, hι, hroot, map_zero]`. Use `set fQ := (minpoly ℚ b).map (algebraMap ℚ Qb) with hfQ`. Establish `hfQroot : fQ.IsRoot β`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Polynomial.IsRoot, hfQ, Polynomial.eval_map]`. Conclude with `hrootQ`. Use `set g := fQ /ₘ (X - C β) with hg`. Establish `hfac : (X - C β) * g = fQ` using `(Polynomial.mul_divByMonic_eq_iff_isRoot).2 hfQroot`. Establish `hsep : (minpoly ℚ b).Separable` using `Algebra.IsSeparable.isSeparable ℚ b`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hder` using `hsep.eval₂_derivative_ne_zero (algebraMap ℚ Qb) hrootQ`. Establish `hgβ : g.eval β ≠ 0`. Introduce `h0`. Apply `hder` to reduce the goal to its premises. Establish `: (derivative (minpoly ℚ b)).eval₂ (algebraMap ℚ Qb) β = (derivative fQ).eval β`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hfQ, Polynomial.derivative_map, Polynomial.eval_map]`. Rewrite using `[this, ← hfac, derivative_mul]`. Simplify using `[h0]`. Use `⟨C (g.eval β)⁻¹ * g, (algebraMap Qb ℂ (g.eval β))⁻¹, ?_, ?_⟩` and prove the remaining obligations. Establish `key : (X - C β) * (C (g.eval β)⁻¹ * g) = C (g.eval β)⁻¹ * fQ` using `by rw [← hfac]; ring`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg (Polynomial.map (algebraMap Qb ℂ)) key` as an intermediate fact. Simplify using `only [Polynomial.map_mul, Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C, hι, map_inv₀] at this`. Simplify using `only [Polynomial.map_mul, Polynomial.map_C, map_inv₀]`. Rewrite using `[this, hfQ, Polynomial.map_map, hcompQ]`. Rewrite using `[Polynomial.eval_map, ← hι, Polynomial.eval₂_at_apply, Polynomial.eval_mul, Polynomial.eval_C, inv_mul_cancel₀ hgβ, map_one]`.
+A detailed English derivation is pending.
 -/
 theorem eigProj_poly : ∀ (E : Type) [Field E] [NumberField E] (b : E) (σ : E →+* ℂ), ∃ (Q : Polynomial Qb) (c : ℂ),
     (Polynomial.X - Polynomial.C (σ b)) * Q.map (algebraMap Qb ℂ) = Polynomial.C c * (minpoly ℚ b).map (algebraMap ℚ ℂ) ∧

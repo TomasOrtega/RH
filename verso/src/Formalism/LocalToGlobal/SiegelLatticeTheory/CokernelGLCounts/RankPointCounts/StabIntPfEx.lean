@@ -21,25 +21,23 @@ def CondX (w : Point D.host.E (D.R.rS + 1)) (X : MatR D) : Prop :=
       X (pinv w c) (pinv w a) - D.conjF (bt D X⁻¹ a c) ∈ qdPow D (c.val - a.val)
 
 /- English proof (translation)
-Take `⟨hXb, hX, hXB⟩` from `X_of_st w hβ hb hW`. Use `set X := (ptMat w)⁻¹ * β * ptMat w with hXdef`. Establish `hbX : b = X⁻¹`. Rewrite using `[hXb, Matrix.nonsing_inv_nonsing_inv _ (by rw [upU_det hb]; exact isUnit_one)]`. Establish `hβX : β = ptMat w * X * (ptMat w)⁻¹`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu` using `ptMat_isUnit w`. Rewrite using `[hXdef, show ptMat w * ((ptMat w)⁻¹ * β * ptMat w) * (ptMat w)⁻¹ = (ptMat w * (ptMat w)⁻¹) * β * (ptMat w * (ptMat w)⁻¹) by simp only [Matrix.mul_assoc], Matrix.mul_nonsing_inv _ hu, Matrix.one_mul, Matrix.mul_one]`. Establish `hβij : ∀ i j, β i j = cv w i * X (pinv w i) (pinv w j) * (cv w j)⁻¹`. Introduce `i j`. Rewrite using `[hβX, conj'_apply]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hXiB : IsBlockDiagonalMatrix w X⁻¹`. Establish `hβi : IsLoUni β⁻¹`. Use `loU_inv (show LoU β from hβ)` as an intermediate fact. Conclude with `this`. Establish `hW' : β⁻¹ * ptMat w * X = ptMat w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu` using `ptMat_isUnit w`. Establish `hβd : IsUnit β.det` using `by rw [loU_det (show LoU β from hβ)]; exact isUnit_one`. Rewrite using `[hXdef, show β⁻¹ * ptMat w * ((ptMat w)⁻¹ * β * ptMat w) = β⁻¹ * (ptMat w * (ptMat w)⁻¹) * β * ptMat w by`. Simplify using `only [Matrix.mul_assoc], Matrix.mul_nonsing_inv _ hu, Matrix.mul_one, Matrix.nonsing_inv_mul _ hβd,`. Use the proof step `Matrix.one_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h1, -, h3⟩` from `X_of_st w hβi hX hW'`. Establish `hXi : (ptMat w)⁻¹ * β⁻¹ * ptMat w = X⁻¹` using `h1`. Rewrite using `[← hXi]`. Conclude with `h3`. Rewrite using `[hbX]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h a c hac hs`. Take `⟨h1, h2, h3⟩` from `h c a hac`. Establish `hcv : cv w c = cv w a` using `(pval_eq_blk w a c hs).symm`. Establish `key : ∀ x : D.host.E, cv w a * (x * (cv w a)⁻¹) = x` using `fun x => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mul_comm x, ← mul_assoc, mul_inv_cancel₀ (cv_ne w a), one_mul]`. Rewrite `h1`, `h3` using `[hβij, hcv, mul_assoc, key]`. Conclude with `⟨h1, h2, h3⟩`. Introduce `h i j hji`. Distinguish the cases in `hs : blkOf w.1 j.val = blkOf w.1 i.val`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h1, h2, h3⟩` from `h j i hji hs`. Establish `hcv : cv w i = cv w j` using `(pval_eq_blk w j i hs).symm`. Establish `key : ∀ x : D.host.E, cv w j * (x * (cv w j)⁻¹) = x` using `fun x => by`. Rewrite using `[mul_comm x, ← mul_assoc, mul_inv_cancel₀ (cv_ne w j), one_mul]`. Rewrite using `[hβij, hcv, mul_assoc, key]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `⟨h1, h2, h3⟩`. Establish `hs' : blkOf w.1 (pinv w i).val ≠ blkOf w.1 (pinv w j).val`. Rewrite using `[blkOf_pinv, blkOf_pinv]`. Conclude with `fun e => hs e.symm`. Establish `hb0 : X⁻¹ j i = 0` using `hXiB j i hs`.
-
-Establish `hbt : bt D X⁻¹ j i = 0` using `by simp [bt, hb0]`. Rewrite using `[hβij, hXB _ _ hs', mul_zero, zero_mul, hbt, map_zero, sub_zero]`. Conclude with `⟨FractionalIdeal.zero_mem _, FractionalIdeal.zero_mem _, FractionalIdeal.zero_mem _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem entryShape_iff (w : Point D.host.E (D.R.rS + 1)) {β b : MatR D} (hβ : IsLoUni β) (hb : IsUpUni b)
     (hW : β * ptMat w * b = ptMat w) :
@@ -94,9 +92,9 @@ theorem entryShape_iff (w : Point D.host.E (D.R.rS + 1)) {β b : MatR D} (hβ : 
       exact ⟨FractionalIdeal.zero_mem _, FractionalIdeal.zero_mem _, FractionalIdeal.zero_mem _⟩
 
 /- English proof (translation)
-Rewrite using `[stabIntShape D δ M hA u u' w β]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, b', hb', hW', hE⟩`. Conclude with `(entryShape_iff w hβ hb' hW').1 hE`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨hβ, b, hb, hW, (entryShape_iff w hβ hb hW).2 h⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_stabInt_iff_X (δ : ∀ p : PlF D, (D.s.atP p).Fp)
     (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (hA : ∀ p, Agree δ M p) (u u' : D.what₂.Word)

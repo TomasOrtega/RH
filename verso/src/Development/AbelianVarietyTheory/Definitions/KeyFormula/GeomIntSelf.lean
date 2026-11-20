@@ -74,9 +74,9 @@ def PolFam : Prop :=
       ∀ (P₀ : Out.PolAV (Sp K)) (φ₀ : P₀.A.left ⟶ Q.A.left), PolPB P₀ Q (spMap s₀.toRingHom) φ₀ → PotKnown K P₀
 
 /- English proof (translation)
-Establish `h₁ : (fun i => (((a + b) (Sum.inl i) : ℤ) : ℂ)) = (fun i => (a (.inl i) : ℂ)) + fun i => (b (.inl i) : ℂ)`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Establish `h₂ : (fun i => (((a + b) (Sum.inr i) : ℤ) : ℂ)) = (fun i => (a (.inr i) : ℂ)) + fun i => (b (.inr i) : ℂ)`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using the standard rewrite rules. Unfold `per`. Rewrite using `[h₁, h₂, Matrix.mulVec_add]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem per_add {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g ⊕ Fin g → ℤ) :
     per τ (a + b) = per τ a + per τ b := by

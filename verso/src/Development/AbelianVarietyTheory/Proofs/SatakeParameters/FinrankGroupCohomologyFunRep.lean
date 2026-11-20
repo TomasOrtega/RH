@@ -13,7 +13,7 @@ def matVecRep {H : Type} [Group H] {d : ℕ} (ξ : H →* Matrix (Fin d) (Fin d)
   (Matrix.toLinAlgEquiv' : Matrix (Fin d) (Fin d) ℂ ≃ₐ[ℂ] Module.End ℂ (Fin d → ℂ)).toRingEquiv.toMonoidHom.comp ξ
 
 /- English proof (translation)
-Simplify using `[matVecRep, Matrix.toLinAlgEquiv'_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem matVecRep_apply {H : Type} [Group H] {d : ℕ} (ξ : H →* Matrix (Fin d) (Fin d) ℂ) (h : H) (v : Fin d → ℂ) :
     matVecRep ξ h v = ξ h *ᵥ v := by
@@ -27,7 +27,7 @@ abbrev stabRep (y : Y) : Rep ℂ (MulAction.stabilizer Γ y) :=
   Rep.of (matVecRep (ξ.comp (MulAction.stabilizer Γ y).subtype))
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_mulVec, ← map_mul, mul_inv_cancel, map_one, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem xi_mulVec_inv (g : Γ) (v : Fin d → ℂ) : ξ g *ᵥ (ξ g⁻¹ *ᵥ v) = v := by
   rw [Matrix.mulVec_mulVec, ← map_mul, mul_inv_cancel, map_one, Matrix.one_mulVec]
@@ -52,15 +52,15 @@ def toCoind (y : Y) : Rep.of (funRep Y ξ) ⟶ Rep.coind (MulAction.stabilizer �
         rw [Matrix.mulVec_mulVec, ← map_mul, mul_inv_rev, mul_smul] }
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `f f' hff`. Use function extensionality and compare the values at `x`. Take `⟨j, g, rfl⟩` from `hcov x`. Establish `h1` using `congrArg (fun F => F.1 g⁻¹) (congrFun hff j)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `ξ g⁻¹ *ᵥ f (g⁻¹⁻¹ • y j) = ξ g⁻¹ *ᵥ f' (g⁻¹⁻¹ • y j) at h1`. Rewrite `h1` using `[inv_inv]`. Rewrite using `[← xi_mulVec_inv ξ g (f (g • y j)), h1, xi_mulVec_inv]`. Introduce `F choose J G hJG using hcov`. Use `⟨fun x => ξ (G x) *ᵥ (F (J x)).1 (G x)⁻¹, funext fun j => Subtype.ext (funext fun h => ?_)⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `ξ h *ᵥ (ξ (G (h⁻¹ • y j)) *ᵥ (F (J (h⁻¹ • y j))).1 (G (h⁻¹ • y j))⁻¹) = (F j).1 h`. Establish `key : ∀ j' (g : Γ), g • y j' = h⁻¹ • y j → ξ h *ᵥ (ξ g *ᵥ (F j').1 g⁻¹) = (F j).1 h`. Introduce `j' g hg`. Establish `hst : (h * g) • y j' = y j` using `by rw [mul_smul, hg, smul_inv_smul]`. Take `rfl` from `hdis j' j (h * g) hst`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hmem : h * g ∈ MulAction.stabilizer Γ (y j')` using `hst`. Establish `hc` using `(F j').2 ⟨h * g, hmem⟩ g⁻¹`. Express the relevant statement in the definitionally equal form `(F j').1 ((h * g) * g⁻¹) = matVecRep (ξ.comp (MulAction.stabilizer Γ (y j')).subtype) ⟨h * g, hmem⟩ ((F j').1 g⁻¹) at hc`. Rewrite `hc` using `[mul_inv_cancel_right, matVecRep_apply, MonoidHom.comp_apply, Subgroup.coe_subtype]`. Rewrite using `[hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `ξ h *ᵥ (ξ g *ᵥ _) = ξ (h * g) *ᵥ _`. Rewrite using `[map_mul, Matrix.mulVec_mulVec]`. Conclude with `key _ _ (hJG _)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toCoind_pi_bijective {ι : Type} (y : ι → Y) (hcov : ∀ x : Y, ∃ j, ∃ g : Γ, g • y j = x)
     (hdis : ∀ i j (g : Γ), g • y i = y j → i = j) :

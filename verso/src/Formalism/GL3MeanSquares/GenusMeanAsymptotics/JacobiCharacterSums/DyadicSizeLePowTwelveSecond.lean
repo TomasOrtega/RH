@@ -7,11 +7,11 @@ noncomputable section
 namespace Formalism.HermitianLattices.Ext.PrimesInProgressions.Dens
 
 /- English proof (translation)
-Establish `h` using `(Real.isLittleO_pow_log_id_atTop (n := 10)).bound (c := 1 / (c ^ 2 + 1)) (by positivity)`. Take `⟨x₀, hx₀⟩` from `Filter.eventually_atTop.1 h`. Use `⟨⌈x₀⌉₊, fun q hq => ?_⟩` and prove the remaining obligations. Establish `hqx : x₀ ≤ (q : ℝ)` using `(Nat.le_ceil x₀).trans (by exact_mod_cast hq)`. Establish `h1` using `hx₀ q hqx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq0 : (0 : ℝ) ≤ q` using `Nat.cast_nonneg q`. Simplify using `only [id, Real.norm_eq_abs, abs_of_nonneg hq0] at h1`. Establish `h2 : Real.log q ^ 10 ≤ 1 / (c ^ 2 + 1) * q` using `(le_abs_self _).trans h1`. Establish `h3 : (c ^ 2 + 1) * Real.log q ^ 10 ≤ q`. Establish `hp : (0 : ℝ) < c ^ 2 + 1` using `by positivity`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h4 : (c * Real.log q ^ 5) ^ 2 ≤ q`. Establish `: (0 : ℝ) ≤ Real.log q ^ 10` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `(le_abs_self _).trans (Real.abs_le_sqrt h4)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem log_pow_five_le_sqrt (c : ℝ) : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q → c * Real.log q ^ 5 ≤ Real.sqrt q := by
   have h := (Real.isLittleO_pow_log_id_atTop (n := 10)).bound
@@ -33,7 +33,7 @@ theorem log_pow_five_le_sqrt (c : ℝ) : ∃ q₀ : ℕ, ∀ q : ℕ, q₀ ≤ q
   exact (le_abs_self _).trans (Real.abs_le_sqrt h4)
 
 /- English proof (translation)
-Rewrite using `[Real.le_log_iff_exp_le (by linarith)]`. Use `Real.exp_one_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem one_le_log_of_three_le_second {x : ℝ} (hx : 3 ≤ x) : 1 ≤ Real.log x := by
   rw [Real.le_log_iff_exp_le (by linarith)]
@@ -41,11 +41,11 @@ theorem one_le_log_of_three_le_second {x : ℝ} (hx : 3 ≤ x) : 1 ≤ Real.log 
   linarith
 
 /- English proof (translation)
-Establish `hq' : (3 : ℝ) ≤ q` using `by exact_mod_cast hq`. Establish `h1 : 2 ^ Nat.log 2 q ≤ q` using `Nat.pow_log_le_self 2 (by omega)`. Establish `h2 : ((2 : ℝ)) ^ Nat.log 2 q ≤ q` using `by exact_mod_cast h1`. Establish `h3 : (Nat.log 2 q : ℝ) * Real.log 2 ≤ Real.log q`. Rewrite using `[← Real.log_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Real.log_le_log (by positivity) h2`. Establish `h4` using `Real.log_two_gt_d9`. Establish `h5` using `one_le_log_of_three_le_second hq'`. Establish `h6 : (0 : ℝ) ≤ (Nat.log 2 q : ℝ)` using `Nat.cast_nonneg _`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem dyadic_index_le_log_second (q : ℕ) (hq : 3 ≤ q) : ((8 * (Nat.log 2 q + 1) : ℕ) : ℝ) ≤ 24 * Real.log q := by
   have hq' : (3 : ℝ) ≤ q := by exact_mod_cast hq
@@ -61,7 +61,7 @@ theorem dyadic_index_le_log_second (q : ℕ) (hq : 3 ≤ q) : ((8 * (Nat.log 2 q
   nlinarith
 
 /- English proof (translation)
-Establish `h1 : 2 ^ Nat.log 2 q ≤ q` using `Nat.pow_log_le_self 2 (by omega)`. Establish `h2 : 2 ^ (8 * (Nat.log 2 q + 1)) = 256 * (2 ^ Nat.log 2 q) ^ 8`. Rewrite using `[← pow_mul]; rw [show 8 * (Nat.log 2 q + 1) = 8 + Nat.log 2 q * 8 by ring, pow_add]; norm_num`. Rewrite using `[h2]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem dyadic_size_le_pow_twelve_second (q : ℕ) (hq : 256 ≤ q) : q ^ 3 * 2 ^ (8 * (Nat.log 2 q + 1)) ≤ q ^ 12 := by
   have h1 : 2 ^ Nat.log 2 q ≤ q := Nat.pow_log_le_self 2 (by omega)
@@ -72,11 +72,11 @@ theorem dyadic_size_le_pow_twelve_second (q : ℕ) (hq : 256 ≤ q) : q ^ 3 * 2 
     _ = q ^ 12 := by ring
 
 /- English proof (translation)
-Establish `hL : 0 < Lq` using `by nlinarith`. Establish `h1 : 2 * u * l ^ 3 * K ≤ 2 * (1 / (q * s)) * (13 * Lq) ^ 3 * (48 * q)`. Establish `: 0 ≤ 1 / (q * s)` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : 2 * (1 / (q * s)) * (13 * Lq) ^ 3 * (48 * q) = 210912 * Lq ^ 3 / s` using `by field_simp; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h3 : 1 / (4608 * Lq ^ 2) ≤ (1 / (2 * J)) ^ 2 / 2`. Establish `: (1 / (2 * J)) ^ 2 / 2 = 1 / (8 * J ^ 2)` using `by field_simp; ring`. Rewrite using `[this]`. Apply `one_div_le_one_div_of_le (by positivity)` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h4 : 210912 * Lq ^ 3 / s ≤ 1 / (4608 * Lq ^ 2)`. Rewrite using `[div_le_div_iff₀ hs (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem second_small_condition (u l K J q s Lq : ℝ) (hq : 0 < q) (hs : 0 < s) (hu : u ≤ 1 / (q * s))
     (hl0 : 0 ≤ l) (hl : l ≤ 13 * Lq) (hK0 : 0 ≤ K) (hK : K ≤ 48 * q) (hJ0 : 0 < J) (hJ : J ≤ 24 * Lq)
@@ -99,9 +99,9 @@ theorem second_small_condition (u l K J q s Lq : ℝ) (hq : 0 < q) (hs : 0 < s) 
   linarith
 
 /- English proof (translation)
-Establish `hq' : (1 : ℝ) ≤ q` using `by exact_mod_cast hq`. Establish `hq3 : (1 : ℝ) ≤ (q : ℝ) ^ 3` using `one_le_pow₀ hq'`. Establish `hU' : (q : ℝ) ^ 3 ≤ U` using `by exact_mod_cast hU`. Establish `h1 : (U : ℝ) ^ (1 - 2 * σ) ≤ (U : ℝ) ^ (-(1 / 2) : ℝ)` using `Real.rpow_le_rpow_of_exponent_le (by linarith) (by linarith)`. Establish `h2 : (U : ℝ) ^ (-(1 / 2) : ℝ) ≤ ((q : ℝ) ^ 3) ^ (-(1 / 2) : ℝ)` using `Real.rpow_le_rpow_of_nonpos (by positivity) hU' (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ((q : ℝ) ^ 3) ^ (-(1 / 2) : ℝ) = 1 / ((q : ℝ) * Real.sqrt q)`. Rewrite using `[Real.rpow_neg (by positivity), ← Real.sqrt_eq_rpow, one_div]`. Use `congr 1`. Rewrite using `[show (q : ℝ) ^ 3 = (q : ℝ) ^ 2 * q by ring, Real.sqrt_mul (by positivity), Real.sqrt_sq (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem rpow_neg_exponent_bound_second (q U : ℕ) (σ : ℝ) (hq : 1 ≤ q) (hσ : 3 / 4 ≤ σ) (hU : q ^ 3 ≤ U) :
     (U : ℝ) ^ (1 - 2 * σ) ≤ 1 / ((q : ℝ) * Real.sqrt q) := by
@@ -120,13 +120,13 @@ theorem rpow_neg_exponent_bound_second (q U : ℕ) (σ : ℝ) (hq : 1 ≤ q) (h�
   linarith
 
 /- English proof (translation)
-Establish `hU' : (U : ℝ) ≤ (2 * x) ^ 12`. Combine the equalities or inequalities in the displayed calculation. Establish `h1 : (U : ℝ) ^ (2 - 2 * σ) ≤ ((2 * x) ^ 12) ^ (2 - 2 * σ)` using `Real.rpow_le_rpow (Nat.cast_nonneg _) hU' (by linarith)`. Establish `h2 : ((2 * x) ^ 12) ^ (2 - 2 * σ) = (2 * x) ^ (24 * (1 - σ))`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul (by positivity)]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : (2 * x) ^ (24 * (1 - σ)) = 2 ^ (24 * (1 - σ)) * x ^ (24 * (1 - σ))` using `Real.mul_rpow (by norm_num) hx.le`. Establish `h4 : (2 : ℝ) ^ (24 * (1 - σ)) ≤ 64`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (2 : ℝ) ^ (6 : ℝ) = 64`. Rewrite using `[show (6 : ℝ) = ((6 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]; norm_num`. Rewrite using `[← this]`. Conclude with `Real.rpow_le_rpow_of_exponent_le (by norm_num) (by linarith)`. Establish `h5 : 0 ≤ x ^ (24 * (1 - σ))` using `by positivity`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h2, h3]`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem rpow_pos_exponent_bound_second (q U : ℕ) (x σ : ℝ) (hx : 0 < x) (hqx : (q : ℝ) ≤ 2 * x) (hσ : 3 / 4 ≤ σ)
     (hσ1 : σ ≤ 1) (hU : U ≤ q ^ 12) : (U : ℝ) ^ (2 - 2 * σ) ≤ 64 * x ^ (24 * (1 - σ)) := by

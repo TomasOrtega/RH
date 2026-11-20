@@ -8,7 +8,7 @@ open scoped Matrix TensorProduct Classical
 open UpperTheory.Gal.W2
 
 /- English proof (translation)
-Use `show (algebraMap K (PadicAlgCl p) a) ∈ ReciprocityTheory.DiscreteGroups.LocalClassField.Obar p ↔ _`. Conclude with `ReciprocityTheory.DiscreteGroups.LocalClassField.mem_Obar_iff`.
+A detailed English derivation is pending.
 -/
 private theorem mem_intK_iff {p : ℕ} [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (a : K) :
     a ∈ GlobalTheory.LKLoc.intK p K ↔ ‖(a : PadicAlgCl p)‖ ≤ 1 := by
@@ -16,15 +16,15 @@ private theorem mem_intK_iff {p : ℕ} [Fact p.Prime] (K : IntermediateField ℚ
   exact ReciprocityTheory.DiscreteGroups.LocalClassField.mem_Obar_iff
 
 /- English proof (translation)
-Introduce `p _ G g`. Rewrite using `[GlobalTheory.HeckeP.inclG_mem_KHT_iff]`. Unfold `UpperTheory.Gal.W2.IntPt`. Establish `hunit : (‖(g.1 : ℚ_[p])‖ ≤ 1 ∧ ‖((g.1⁻¹ : ℚ_[p]ˣ) : ℚ_[p])‖ ≤ 1) ↔ ‖(g.1 : ℚ_[p])‖ = 1`. Rewrite using `[Units.val_inv_eq_inv_val, norm_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpos : 0 < ‖(g.1 : ℚ_[p])‖` using `norm_pos_iff.2 g.1.ne_zero`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `le_antisymm h1 (by simpa using (inv_le_one₀ hpos).1 h2)`. Introduce `h`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Simplify using the standard rewrite rules. Rewrite using `[hunit]`. Apply `and_congr_right'` to reduce the goal to its premises. Apply `forall_congr'` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w`. Unfold `GlobalTheory.LKLoc.KintK`. Rewrite using `[GlobalTheory.HeckeP.mem_range_map_subtype]`. Simplify using `only [mem_intK_iff]`. Rewrite using `[← forall_and]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `forall_congr'` to reduce the goal to its premises. Introduce `i`. Rewrite using `[← forall_and]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.kpMem_of :
     UpperTheory.Gal.W2.KpMem := by

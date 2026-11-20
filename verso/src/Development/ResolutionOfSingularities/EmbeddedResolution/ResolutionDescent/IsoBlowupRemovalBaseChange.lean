@@ -15,9 +15,9 @@ open CategoryTheory AlgebraicGeometry
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx⟩ rfl`. Rewrite `hx` using `[Scheme.IdealSheafData.support_top]`. Conclude with `hx`. Introduce `hne`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `hne ((Scheme.IdealSheafData.support_eq_bot_iff I).mp (SetLike.ext fun x => iff_of_false (hc x) (fun hmem => hmem)))`.
+A detailed English derivation is pending.
 -/
 private theorem support_nonempty_iff_ne_top {A : Scheme.{u}} (I : A.IdealSheafData) :
     (∃ x, x ∈ I.support) ↔ I ≠ ⊤ := by
@@ -32,9 +32,9 @@ private theorem support_nonempty_iff_ne_top {A : Scheme.{u}} (I : A.IdealSheafDa
       (SetLike.ext fun x => iff_of_false (hc x) (fun hmem => hmem)))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hJ`. Establish `h1 : (J.comap e.hom).comap e.inv = J`. Rewrite using `[← Scheme.IdealSheafData.comap_comp, e.inv_hom_id, Scheme.IdealSheafData.comap_id]`. Rewrite using `[← h1, hJ]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce and unpack `rfl`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 private theorem comap_isoHom_eq_top_iff {A B : Scheme.{u}} (e : A ≅ B) (J : B.IdealSheafData) :
     J.comap e.hom = ⊤ ↔ J = ⊤ := by
@@ -52,7 +52,7 @@ namespace SequenceOfBlowups
 variable {X : Scheme.{u}}
 
 /- English proof (translation)
-Establish `h0 : s.withoutIsoBlowups.isoZero.hom = s.projectionToBase (s.nontrivialIndex 0)` using `s.objNontrivialIndexZeroIso_hom`. Rewrite using `[projectionToBase_def, withoutIsoBlowups_transitionMap, h0]`. Conclude with `s.transitionMap_comp_projectionToBase (s.nontrivialIndex_monotone (Nat.zero_le j))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem withoutIsoBlowups_projectionToBase (s : SequenceOfBlowups X) (j : ℕ) :
     s.withoutIsoBlowups.projectionToBase j = s.projectionToBase (s.nontrivialIndex j) := by
@@ -61,9 +61,9 @@ theorem withoutIsoBlowups_projectionToBase (s : SequenceOfBlowups X) (j : ℕ) :
   exact s.transitionMap_comp_projectionToBase (s.nontrivialIndex_monotone (Nat.zero_le j))
 
 /- English proof (translation)
-Establish `hex : ∃ n, i < s.nontrivialIndex n` using `⟨s.lengthWithoutIsoBlowups, by rw [s.nontrivialIndex_lengthWithoutIsoBlowups]; exact hi⟩`. Take `⟨n, hn1, hn2, hn3⟩ : ∃ n, i < s.nontrivialIndex n ∧ (∀ m, m < n → ¬ (i < s.nontrivialIndex m)) ∧ n ≤ s.lengthWithoutIsoBlowups` from `⟨Nat.find hex, Nat.find_spec hex, fun m hm => Nat.find_min hex hm, Nat.find_le (by rw [s.nontrivialIndex_lengthWithoutIsoBlowups]; exact hi)⟩`. Consider the cases of `n with`. Consider the case `zero => exact absurd (s.center_eq_top_of_lt_nontrivialIndex_zero hn1) h`. Consider the case `succ m`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Establish `hmi : s.nontrivialIndex m ≤ i` using `not_lt.mp (hn2 m (Nat.lt_succ_self m))`. Use `⟨m, by omega, ?_⟩` and prove the remaining obligations. Break down `eq_or_lt_of_le hmi with heq | hlt` into its components or cases. Conclude with `heq`. Conclude with `absurd (s.center_eq_top_of_nontrivialIndex_lt hlt hn1) h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem exists_nontrivialIndex_eq_of_center_ne_top (s : SequenceOfBlowups X) {i : ℕ} (hi : i < s.length)
     (h : s.center i ≠ ⊤) :
@@ -88,23 +88,21 @@ end SequenceOfBlowups
 namespace IsStrictPullbackBlowupSeq
 
 /- English proof (translation)
-Take `⟨hlen, σ, hzero, hstep, hcen⟩` from `h`. Establish `hstructPB : ∀ (i : ℕ) (hi : i ≤ t.length), IsPullback (σ i hi) (t.projectionToBase i) (s.projectionToBase i) φ` using `isPullback_projectionToBase_of_isPullback_blowupMorphism φ t s t.length σ hzero hstep`. Establish `hdownPB : ∀ (a b : ℕ) (hab : a ≤ b) (hb : b ≤ t.length), IsPullback (σ b hb) (t.transitionMap hab) (s.transitionMap hab) (σ a (hab.trans hb))` using `isPullback_transitionMap_of_isPullback_blowupMorphism t s t.length σ hstep`. Choose the witnesses or unpack the hypotheses as in `⟨e, he1, he2⟩ : ∃ e : ∀ i : ℕ, i ≤ t.withoutIsoBlowups.length → (t.withoutIsoBlowups.schemeAt i ≅ Limits.pullback φ (s.projectionToBase (t.nontrivialIndex i))), (∀ (i : ℕ) (hi : i ≤ t.withoutIsoBlowups.length), (e i hi).hom ≫ Limits.pullback.fst φ (s.projectionToBase (t.nontrivia …`. Use `⟨fun i hi => ((hstructPB (t.nontrivialIndex i) (t.nontrivialIndex_le_length (show i ≤ t.lengthWithoutIsoBlowups from hi))).flip).isoPullback, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i hi`. Conclude with `((hstructPB (t.nontrivialIndex i) (t.nontrivialIndex_le_length (show i ≤ t.lengthWithoutIsoBlowups from hi))).flip).isoPullback_hom_fst`. Introduce `i hi`. Conclude with `((hstructPB (t.nontrivialIndex i) (t.nontrivialIndex_le_length (show i ≤ t.lengthWithoutIsoBlowups from hi))).flip).isoPullback_hom_snd`. Use `⟨t.nontrivialIndex, e, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i hi`. Establish `h1` using `t.nontrivialIndex_lt_length hi`. Use linear arithmetic over natural numbers and integers. Introduce `i j _ hij`. Conclude with `t.nontrivialIndex_strictMono hij`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `t.nontrivialIndex_lengthWithoutIsoBlowups.trans hlen`. Introduce `i hi`. Establish `hi' : i < t.length` using `by omega`. Establish `hcomap : ((s.center i).comap (Limits.pullback.snd φ (s.projectionToBase i))).comap (((hstructPB i hi'.le).flip).isoPullback.hom) = t.center i`. Rewrite using `[← Scheme.IdealSheafData.comap_comp, ((hstructPB i hi'.le).flip).isoPullback_hom_snd]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hcen i hi').symm`. Rewrite using `[support_nonempty_iff_ne_top]`. Prove the components needed by the constructor for the conclusion. Introduce `hne`. Use `t.exists_nontrivialIndex_eq_of_center_ne_top hi' ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `htop`. Conclude with `hne ((comap_isoHom_eq_top_iff _ _).mp (hcomap.trans htop))`. Introduce and unpack `⟨j, hj, rfl⟩`. Introduce `htop`. Use `t.center_nontrivialIndex_ne_top hj ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← hcomap, htop]`. Simplify using the standard rewrite rules. Introduce `i hi`. Rewrite using `[he1 i hi, t.withoutIsoBlowups_projectionToBase]`. Introduce `i hi hr`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hbi : t.nontrivialIndex (i + 1) ≤ t.length` using `t.nontrivialIndex_le_length (show i + 1 ≤ t.lengthWithoutIsoBlowups from hi)`. Apply `Limits.pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, he1, s.pullbackTransitionMap_fst, he1, t.withoutIsoBlowups_blowupMorphism i]`. Conclude with `t.transitionMap_comp_projectionToBase (t.nontrivialIndex_monotone (Nat.le_succ i))`. Rewrite using `[Category.assoc, Category.assoc, he2, s.pullbackTransitionMap_snd, ← Category.assoc, he2, t.withoutIsoBlowups_blowupMorphism i]`.
-
-Conclude with `(hdownPB (t.nontrivialIndex i) (t.nontrivialIndex (i + 1)) (t.nontrivialIndex_monotone (Nat.le_succ i)) hbi).w.symm`. Introduce `i hi`. Rewrite using `[he2 i hi.le]`. Conclude with `hcen (t.nontrivialIndex i) (t.nontrivialIndex_lt_length hi)`.
+A detailed English derivation is pending.
 -/
 theorem isPullbackSequenceOfBlowups_withoutIsoBlowups {X' X : Scheme.{u}} {φ : X' ⟶ X}
     {t : SequenceOfBlowups X'} {s : SequenceOfBlowups X}

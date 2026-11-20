@@ -20,29 +20,29 @@ section
 variable {B B' : Type} [CommRing B] [CommRing B'] {y : Sp B ⟶ Y} {U V : Y.Opens}
 
 /- English proof (translation)
-The claim follows from `fun p _ ↦ h (Set.mem_univ ((spMap ρ) p))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Inn.map (h : Inn y U) (ρ : B →+* B') : Inn (spMap ρ ≫ y) U :=
   fun p _ ↦ h (Set.mem_univ ((spMap ρ) p))
 
 /- English proof (translation)
-The claim follows from `fun _ hp ↦ e (h hp)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Inn.mono (h : Inn y U) (e : U ≤ V) : Inn y V := fun _ hp ↦ e (h hp)
 
 /- English proof (translation)
-The claim follows from `fun _ hp ↦ ⟨h hp, h' hp⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem Inn.inf (h : Inn y U) (h' : Inn y V) : Inn y (U ⊓ V) := fun _ hp ↦ ⟨h hp, h' hp⟩
 
 /- English proof (translation)
-The claim follows from `valR_res y e h f.val`.
+A detailed English derivation is pending.
 -/
 theorem valR_resU (e : V ≤ U) (h : Inn y V) (f : Γ(Y, U)ˣ) : valR y V (res e f).val = valR y U f.val :=
   valR_res y e h f.val
 
 /- English proof (translation)
-Rewrite using `[← valR_mul _ _ h, Units.inv_mul, valR_one _ _ h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem valR_inv_mul (h : Inn y U) (f : Γ(Y, U)ˣ) : valR y U (f⁻¹).val * valR y U f.val = 1 := by
   rw [← valR_mul _ _ h, Units.inv_mul, valR_one _ _ h]
@@ -57,7 +57,7 @@ def zs (Y : Scheme.{0}) : Y ⟶ Sp ℤ := specZIsTerminal.from Y
   w := specZIsTerminal.hom_ext _ _
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `GlobalTheory.T.exists_section_of_natural_on_algebraPoints_of_cover ℤ Y (zs Y) J W U h1 h2 (fun P ↦ F P.B P.x) fun j P Q φ hP ↦ by`. Use `hF j P.B Q.B (φ.ρ : P.B →+* Q.B) P.x hP` as an intermediate fact. Rewrite `this` using `[φ.pt]`. Conclude with `this`. Conclude with `⟨f, fun j B _ y h ↦ hf j (zPt B y) h⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_sec_cover {J : Type} (W : J → Y.Opens) (U : Y.Opens) (h1 : ∀ j, W j ≤ U) (h2 : U ≤ ⨆ j, W j)
     (F : ∀ (B : Type) [CommRing B], (Sp B ⟶ Y) → B)
@@ -71,7 +71,7 @@ theorem exists_sec_cover {J : Type} (W : J → Y.Opens) (U : Y.Opens) (h1 : ∀ 
   exact ⟨f, fun j B _ y h ↦ hf j (zPt B y) h⟩
 
 /- English proof (translation)
-The claim follows from `eq_of_valR_eq_on_cover (zs Y) W hW V f g fun P j h h' ↦ H j P.B P.x h h'`.
+A detailed English derivation is pending.
 -/
 theorem sec_ext_cover {J : Type} (W : J → Y.Opens) (hW : ⨆ j, W j = ⊤) (V : Y.Opens) (f g : Γ(Y, V))
     (H : ∀ (j : J) (B : Type) [CommRing B] (y : Sp B ⟶ Y), Inn y V → Inn y (W j) → valR y V f = valR y V g) :
@@ -79,14 +79,14 @@ theorem sec_ext_cover {J : Type} (W : J → Y.Opens) (hW : ⨆ j, W j = ⊤) (V 
   eq_of_valR_eq_on_cover (zs Y) W hW V f g fun P j h h' ↦ H j P.B P.x h h'
 
 /- English proof (translation)
-The claim follows from `sec_ext_cover (fun _ : Unit ↦ ⊤) (by simp) V f g fun _ B _ y h _ ↦ H B y h`.
+A detailed English derivation is pending.
 -/
 theorem sec_ext (V : Y.Opens) (f g : Γ(Y, V))
     (H : ∀ (B : Type) [CommRing B] (y : Sp B ⟶ Y), Inn y V → valR y V f = valR y V g) : f = g :=
   sec_ext_cover (fun _ : Unit ↦ ⊤) (by simp) V f g fun _ B _ y h _ ↦ H B y h
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `exists_sec_cover (fun _ : Unit ↦ U) U (fun _ ↦ le_rfl) (by simp) F fun _ ↦ hF`. Conclude with `⟨f, hf ()⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_sec (U : Y.Opens) (F : ∀ (B : Type) [CommRing B], (Sp B ⟶ Y) → B)
     (hF : ∀ (B B' : Type) [CommRing B] [CommRing B'] (ρ : B →+* B') (y : Sp B ⟶ Y), Inn y U →
@@ -96,11 +96,11 @@ theorem exists_sec (U : Y.Opens) (F : ∀ (B : Type) [CommRing B], (Sp B ⟶ Y) 
   exact ⟨f, hf ()⟩
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `exists_sec U (fun B _ y ↦ (F B y).val) hF`. Take `⟨b, hb⟩` from `exists_sec U (fun B _ y ↦ ((F B y)⁻¹).val) fun B B' _ _ ρ y h ↦ by`. Establish `e1` using `hF B B' ρ y h`. Establish `e2 : ((F B' (spMap ρ ≫ y))⁻¹).val * (F B' (spMap ρ ≫ y)).val = 1` using `Units.inv_mul _`. Establish `e3 : ρ ((F B y)⁻¹).val * ρ (F B y).val = 1` using `by rw [← map_mul, Units.inv_mul, map_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `((F B' (spMap ρ ≫ y))⁻¹).val = ρ ((F B y)⁻¹).val`. Rewrite `e2` using `[e1]`. Take the linear combination `ρ ((F B y)⁻¹).val * e2 - ((F B' (spMap ρ ≫ y))⁻¹).val * e3`. Establish `hab : a * b = 1` using `sec_ext U _ _ fun B _ y h ↦ by`. Rewrite using `[valR_mul _ _ h, valR_one _ _ h, ← ha B y h, ← hb B y h]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Units.mul_inv _`. Conclude with `⟨⟨a, b, hab, (mul_comm _ _).trans hab⟩, ha⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_unit (U : Y.Opens) (F : ∀ (B : Type) [CommRing B], (Sp B ⟶ Y) → Bˣ)
     (hF : ∀ (B B' : Type) [CommRing B] [CommRing B'] (ρ : B →+* B') (y : Sp B ⟶ Y), Inn y U →
@@ -132,9 +132,9 @@ def Rel (N : LB Y) (κ : Kap Y) : Prop :=
 variable {N N' : LB Y} {κ κ' κ'' : Kap Y}
 
 /- English proof (translation)
-Take `⟨w, h1, h2⟩` from `h`. Use `⟨fun i B _ y ↦ w i B y * u B y, fun i j B _ y hi hj ↦ ?_, fun i B B' _ _ ρ y hi ↦ ?_⟩` and prove the remaining obligations. Simplify using `only [Units.val_mul]`. Rewrite using `[h1 i j B y hi hj, mul_assoc]`. Simplify using `only [Units.val_mul, map_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h2 i B B' ρ y hi]`. Take the linear combination `-ρ (w i B y).val * e B B' ρ y`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem Rel.twist (h : Rel N κ) (u : ∀ (B : Type) [CommRing B], (Sp B ⟶ Y) → Bˣ)
     (e : ∀ (B B' : Type) [CommRing B] [CommRing B'] (ρ : B →+* B') (y : Sp B ⟶ Y),
@@ -148,7 +148,7 @@ theorem Rel.twist (h : Rel N κ) (u : ∀ (B : Type) [CommRing B], (Sp B ⟶ Y) 
     linear_combination -ρ (w i B y).val * e B B' ρ y
 
 /- English proof (translation)
-The claim follows from `h.twist (fun _ _ _ ↦ 1) fun B B' _ _ ρ y ↦ by rw [e, Units.val_one, Units.val_one, map_one]`.
+A detailed English derivation is pending.
 -/
 theorem Rel.congr (h : Rel N κ)
     (e : ∀ (B B' : Type) [CommRing B] [CommRing B'] (ρ : B →+* B') (y : Sp B ⟶ Y), κ' B B' ρ y = κ B B' ρ y) :
@@ -156,9 +156,9 @@ theorem Rel.congr (h : Rel N κ)
   h.twist (fun _ _ _ ↦ 1) fun B B' _ _ ρ y ↦ by rw [e, Units.val_one, Units.val_one, map_one]
 
 /- English proof (translation)
-Take `⟨w, h1, h2⟩` from `h`. Use `choose t ht using fun i ↦ exists_unit (N.U i) (w i) fun B B' _ _ ρ y hi ↦ by`. Rewrite using `[h2 i B B' ρ y hi, e, mul_one]`. Use `⟨⟨t⟩, fun i j ↦ Units.ext (sec_ext _ _ _ fun B _ y hy ↦ ?_)⟩` and prove the remaining obligations. Establish `hi` using `hy.mono inf_le_left`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj` using `hy.mono inf_le_right`. Rewrite using `[Units.val_mul, valR_mul _ _ hy, valR_resU _ hy, valR_resU _ hy]`. Conclude with `(ht i B y hi).symm.trans ((h1 i j B y hi hj).trans (congrArg _ (ht j B y hj)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Rel.triv (h : Rel N κ)
     (e : ∀ (B B' : Type) [CommRing B] [CommRing B'] (ρ : B →+* B') (y : Sp B ⟶ Y), κ B B' ρ y = 1) :
@@ -173,23 +173,23 @@ theorem Rel.triv (h : Rel N κ)
   exact (ht i B y hi).symm.trans ((h1 i j B y hi hj).trans (congrArg _ (ht j B y hj)))
 
 /- English proof (translation)
-Take `⟨w, h1, h2⟩` from `h`. Take `⟨w', h1', h2'⟩` from `h'`. Use `⟨fun p B _ y ↦ w p.1 B y * (w' p.2 B y)⁻¹, fun p q B _ y hp hq ↦ ?_, fun p B B' _ _ ρ y hp ↦ ?_⟩` and prove the remaining obligations. Establish `hp' : Inn y (N.U p.1 ⊓ N'.U p.2)` using `hp`. Establish `hq' : Inn y (N.U q.1 ⊓ N'.U q.2)` using `hq`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy : Inn y (N.U p.1 ⊓ N'.U p.2 ⊓ (N.U q.1 ⊓ N'.U q.2))` using `hp'.inf hq'`. Establish `a1` using `h1 p.1 q.1 B y (hp'.mono inf_le_left) (hq'.mono inf_le_left)`. Establish `a2` using `h1' p.2 q.2 B y (hp'.mono inf_le_right) (hq'.mono inf_le_right)`. Establish `a3` using `valR_inv_mul ((hp'.mono inf_le_right).inf (hq'.mono inf_le_right)) (N'.g p.2 q.2)`. Establish `a4 : ((w' p.2 B y)⁻¹).val * (w' p.2 B y).val = 1` using `Units.inv_mul _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a5 : ((w' q.2 B y)⁻¹).val * (w' q.2 B y).val = 1` using `Units.inv_mul _`. Establish `a6 : valR y ((LB.div N N').U p ⊓ (LB.div N N').U q) ((LB.div N N').g p q).val = valR y (N.U p.1 ⊓ N.U q.1) (N.g p.1 q.1).val * valR y (N'.U p.2 ⊓ N'.U q.2) ((N'.g p.2 q.2)⁻¹).val`. Use `(valR_mul y _ hy _ _).trans (congrArg₂ (· * ·) (valR_resU _ hy _) ?_)` and prove the remaining obligations. Conclude with `valR_resU (le_inf (inf_le_left.trans inf_le_right) (inf_le_right.trans inf_le_right)) hy (N'.g p.2 q.2)⁻¹`. Rewrite using `[a6]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Units.val_mul]`. Rewrite `a4` using `[a2]`. Rewrite using `[a1]`. Generalize the expression as in `valR y (N.U p.1 ⊓ N.U q.1) (N.g p.1 q.1).val = G at *`. Generalize the expression as in `valR y (N'.U p.2 ⊓ N'.U q.2) ((N'.g p.2 q.2)⁻¹).val = Gi at *`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `valR y (N'.U p.2 ⊓ N'.U q.2) (N'.g p.2 q.2).val = G' at *`. Generalize the expression as in `((w' p.2 B y)⁻¹).val = a at *`. Generalize the expression as in `((w' q.2 B y)⁻¹).val = b at *`. Generalize the expression as in `(w' q.2 B y).val = c at *`. Generalize the expression as in `(w q.1 B y).val = d at *`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `k : a = Gi * b` using `by linear_combination (-a * b * c) * a3 - a * a5 + Gi * b * a4`. Rewrite using `[k]`. Expand and normalize the polynomial expressions, which then agree. Establish `hp' : Inn y (N.U p.1 ⊓ N'.U p.2)` using `hp`. Establish `a1` using `h2 p.1 B B' ρ y (hp'.mono inf_le_left)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2` using `h2' p.2 B B' ρ y (hp'.mono inf_le_right)`. Establish `a4 : ((w' p.2 B' (spMap ρ ≫ y))⁻¹).val * (w' p.2 B' (spMap ρ ≫ y)).val = 1` using `Units.inv_mul _`. Establish `a5 : ρ ((w' p.2 B y)⁻¹).val * ρ (w' p.2 B y).val = 1` using `by rw [← map_mul, Units.inv_mul, map_one]`. Simplify using `only [Units.val_mul, map_mul]`. Rewrite `a4` using `[a2]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[a1, ← e]`. Generalize the expression as in `((w' p.2 B' (spMap ρ ≫ y))⁻¹).val = a' at *`. Generalize the expression as in `ρ ((w' p.2 B y)⁻¹).val = a at *`. Generalize the expression as in `ρ (w' p.2 B y).val = c at *`. Establish `k : a' * κ' B B' ρ y = a` using `by linear_combination a * a4 - a' * κ' B B' ρ y * a5`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← k]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem Rel.div (h : Rel N κ) (h' : Rel N' κ')
     (e : ∀ (B B' : Type) [CommRing B] [CommRing B'] (ρ : B →+* B') (y : Sp B ⟶ Y),
@@ -238,7 +238,7 @@ theorem Rel.div (h : Rel N κ) (h' : Rel N' κ')
     rw [← k]; ring
 
 /- English proof (translation)
-Use `(cls_eq_zero_iff (LB.isLB_div hN hN')).2 ((h.div (κ'' := fun _ _ _ _ _ _ ↦ 1) h' fun _ _ _ _ _ _ ↦ one_mul _).triv fun _ _ _ _ _ _ ↦ rfl)` as an intermediate fact. Rewrite `this` using `[cls_div hN hN', sub_eq_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem Rel.cls_eq (hN : N.IsLB) (hN' : N'.IsLB) (h : Rel N κ) (h' : Rel N' κ) : cls N hN = cls N' hN' := by
   have := (cls_eq_zero_iff (LB.isLB_div hN hN')).2
@@ -246,9 +246,9 @@ theorem Rel.cls_eq (hN : N.IsLB) (hN' : N'.IsLB) (h : Rel N κ) (h' : Rel N' κ)
   rwa [cls_div hN hN', sub_eq_zero] at this
 
 /- English proof (translation)
-Take `⟨w, h1, h2⟩` from `h`. Establish `hin : ∀ (j : PUnit → N.ι) (B : Type) [CommRing B] (y : Sp B ⟶ Y'), Inn y ((N.pull ψ).U j) → Inn (y ≫ ψ) (N.U (j PUnit.unit))` using `fun j B _ y h p _ ↦ LB.wchart_le N (K := PUnit) (fun _ ↦ ψ) j PUnit.unit (h (Set.mem_univ p))`. Use `⟨fun j B _ y ↦ w (j PUnit.unit) B (y ≫ ψ), fun i j B _ y hi hj ↦ ?_, fun i B B' _ _ ρ y hi ↦ ?_⟩` and prove the remaining obligations. Use `(h1 _ _ B _ (hin i B y hi) (hin j B y hj)).trans (congrArg (· * _) ?_)` and prove the remaining obligations. Establish `a` using `(hin i B y hi).inf (hin j B y hj)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `b` using `hi.inf hj`. Conclude with `(valR_eq _ _ a _).trans ((GlobalTheory.DeRham.evalAt_pull_g N ψ y i j a b).trans (valR_eq y _ b _).symm)`. Use `h2 _ B B' ρ _ (hin i B y hi)` as an intermediate fact. Rewrite `this` using `[← Category.assoc]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Rel.pull (h : Rel N κ) (ψ : Y' ⟶ Y) : Rel (N.pull ψ) fun B B' _ _ ρ y ↦ κ B B' ρ (y ≫ ψ) := by
   obtain ⟨w, h1, h2⟩ := h
@@ -265,17 +265,17 @@ theorem Rel.pull (h : Rel N κ) (ψ : Y' ⟶ Y) : Rel (N.pull ψ) fun B B' _ _ �
     exact this
 
 /- English proof (translation)
-Use `choose g hg using fun i j ↦ exists_unit (U i ⊓ U j) (fun B _ y ↦ w i B y * (w j B y)⁻¹) fun B B' _ _ ρ y h ↦ by`. Establish `a1` using `h2 i B B' ρ y (h.mono inf_le_left)`. Establish `a2` using `h2 j B B' ρ y (h.mono inf_le_right)`. Establish `a4 : ((w j B' (spMap ρ ≫ y))⁻¹).val * (w j B' (spMap ρ ≫ y)).val = 1` using `Units.inv_mul _`. Establish `a5 : ρ ((w j B y)⁻¹).val * ρ (w j B y).val = 1` using `by rw [← map_mul, Units.inv_mul, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Units.val_mul, map_mul]`. Rewrite `a4` using `[a2]`. Rewrite using `[a1]`. Generalize the expression as in `((w j B' (spMap ρ ≫ y))⁻¹).val = a' at *`. Generalize the expression as in `ρ ((w j B y)⁻¹).val = a at *`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `ρ (w j B y).val = c at *`. Establish `k : a' * κ B B' ρ y = a` using `by linear_combination a * a4 - a' * κ B B' ρ y * a5`. Rewrite using `[← k]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨g, ⟨hU, fun i ↦ Units.ext (sec_ext _ _ _ fun B _ y hy ↦ ?_), fun i j k ↦ Units.ext (sec_ext _ _ _ fun B _ y hy ↦ ?_)⟩, w, fun i j B _ y hi hj ↦ ?_, h2⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hy' : Inn y (U i)` using `hy`. Use `(valR_resU _ hy' _).trans (Eq.trans ?_ (valR_one y _ hy').symm)` and prove the remaining obligations. Rewrite using `[← hg i i B y (hy'.inf hy'), mul_inv_cancel, Units.val_one]`. Establish `hy' : Inn y (U i ⊓ U j ⊓ U k)` using `hy`. Establish `hi : Inn y (U i)` using `hy'.mono (inf_le_left.trans inf_le_left)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj : Inn y (U j)` using `hy'.mono (inf_le_left.trans inf_le_right)`. Establish `hk : Inn y (U k)` using `hy'.mono inf_le_right`. Use `(valR_mul y _ hy' _ _).trans ((congrArg₂ (· * ·) (valR_resU _ hy' _) (valR_resU _ hy' _)).trans (Eq.trans ?_ (valR_resU _ hy' _).symm))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `valR y (U i ⊓ U j) (g i j).val * valR y (U j ⊓ U k) (g j k).val = valR y (U i ⊓ U k) (g i k).val`. Rewrite using `[← hg i j B y (hi.inf hj), ← hg j k B y (hj.inf hk), ← hg i k B y (hi.inf hk), ← Units.val_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `group`. Express the relevant statement in the definitionally equal form `_ = valR y (U i ⊓ U j) (g i j).val * _`. Rewrite using `[← hg i j B y (hi.inf hj), ← Units.val_mul, inv_mul_cancel_right]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rel {I : Type} (U : I → Y.Opens) (hU : ⨆ i, U i = ⊤) (κ : Kap Y)
     (w : I → ∀ (B : Type) [CommRing B], (Sp B ⟶ Y) → Bˣ)
@@ -314,15 +314,15 @@ theorem exists_rel {I : Type} (U : I → Y.Opens) (hU : ⨆ i, U i = ⊤) (κ : 
     rw [← hg i j B y (hi.inf hj), ← Units.val_mul, inv_mul_cancel_right]
 
 /- English proof (translation)
-Take `⟨w, h1, h2⟩` from `h`. Take `⟨t, ht⟩` from `ht`. Use `⟨fun i B _ y ↦ (w i B y).val * valR y (N.U i) ((t.s i)⁻¹).val, fun i B _ y ↦ ((w i B y)⁻¹).val * valR y (N.U i) (t.s i).val, fun i B _ y hi ↦ ?_, fun i j B _ y hi hj ↦ ?_, fun i B B' _ _ ρ y hi ↦ ?_⟩` and prove the remaining obligations. Establish `a` using `valR_inv_mul hi (t.s i)`. Establish `b : (w i B y).val * ((w i B y)⁻¹).val = 1` using `Units.mul_inv _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take the linear combination `(w i B y).val * ((w i B y)⁻¹).val * a + b`. Establish `a` using `valR_inv_mul hi (t.s i)`. Establish `b` using `valR_inv_mul hj (t.s j)`. Establish `hy` using `hi.inf hj`. Establish `c` using `congrArg (fun u : Γ(Y, N.U i ⊓ N.U j)ˣ ↦ valR y (N.U i ⊓ N.U j) u.val) (ht i j)`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Units.val_mul] at c`. Rewrite `c` using `[valR_mul _ _ hy, valR_resU _ hy, valR_resU _ hy]`. Establish `d` using `h1 i j B y hi hj`. Rewrite `a` using `[c]`. Simplify using `only`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[d]`. Generalize the expression as in `valR y (N.U i ⊓ N.U j) (N.g i j).val = G at *`. Generalize the expression as in `valR y (N.U i) ((t.s i)⁻¹).val = p at *`. Generalize the expression as in `valR y (N.U j) ((t.s j)⁻¹).val = q at *`. Generalize the expression as in `valR y (N.U j) (t.s j).val = r at *`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Establish `k : G * p = q` using `by linear_combination q * a - G * p * b`. Rewrite using `[← k]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only`. Rewrite using `[h2 i B B' ρ y hi, valR_spMap_comp _ _ _ hi, map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

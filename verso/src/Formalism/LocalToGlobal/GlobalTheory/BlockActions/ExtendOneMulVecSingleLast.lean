@@ -16,9 +16,9 @@ def blk1 (g : Matrix (Fin n) (Fin n) R) : Matrix (Fin (n + 1)) (Fin (n + 1)) R :
 def inclusionAlt : Matrix (Fin (n + 1)) (Fin n) R := of fun a b => if a = Fin.castSucc b then 1 else 0
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [mul_apply, inclusionAlt, of_apply, mul_ite, mul_one, mul_zero, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`. Establish `hne : ∀ x : Fin n, ¬ (Fin.last n = Fin.castSucc x)` using `fun x hx => (Fin.castSucc_lt_last x).ne' hx`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Simplify using `[blk1, hne, finSumFinEquiv_symm_last]`. Consider the case `cast i`. Simplify using `[blk1, Fin.castSucc_inj]`.
+Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem extendOne_mul_inclusion (g : Matrix (Fin n) (Fin n) R) : blk1 g * inclusionAlt = inclusionAlt * g := by
   ext i j
@@ -32,7 +32,7 @@ theorem extendOne_mul_inclusion (g : Matrix (Fin n) (Fin n) R) : blk1 g * inclus
     simp [blk1, Fin.castSucc_inj]
 
 /- English proof (translation)
-Use extensionality with `i`. Rewrite using `[Matrix.mulVec_single_one]`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => simp [blk1]`. Consider the case `cast i => simp [blk1, Fin.castSucc_ne_last]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem extendOne_mulVec_single_last (g : Matrix (Fin n) (Fin n) R) : blk1 g *ᵥ Pi.single (Fin.last n) 1 = Pi.single (Fin.last n) 1 := by
   ext i
@@ -42,7 +42,7 @@ theorem extendOne_mulVec_single_last (g : Matrix (Fin n) (Fin n) R) : blk1 g *�
   | cast i => simp [blk1, Fin.castSucc_ne_last]
 
 /- English proof (translation)
-Simplify using `[blk1, Matrix.det_submatrix_equiv_self, Matrix.det_fromBlocks_zero₂₁]`.
+Simplify using the standard rewrite rules.
 -/
 theorem det_extendOne (g : Matrix (Fin n) (Fin n) R) : (blk1 g).det = g.det := by
   simp [blk1, Matrix.det_submatrix_equiv_self, Matrix.det_fromBlocks_zero₂₁]
@@ -52,7 +52,7 @@ def extM {E : Type} [Field E] (φ : E →+* R) (B : Matrix (Fin (n + 1)) (Fin (n
   B.map φ * blk1 g * (B.map φ)⁻¹
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [inclusionAlt, map_apply, of_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eN_map {E : Type} [Field E] (φ : E →+* R) : (inclusionAlt : Matrix (Fin (n + 1)) (Fin n) E).map φ = inclusionAlt := by
   ext a b
@@ -60,17 +60,15 @@ theorem eN_map {E : Type} [Field E] (φ : E →+* R) : (inclusionAlt : Matrix (F
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hBu : IsUnit (B.map φ).det`. Establish `e1 : (B.map φ).det = φ B.det` using `(RingHom.map_det φ B).symm`. Rewrite using `[e1]`. Conclude with `hB.map φ`. Establish `hinv : (B.map φ)⁻¹ * B.map φ = 1` using `Matrix.nonsing_inv_mul _ hBu`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : A.map φ = B.map φ * inclusionAlt`. Rewrite using `[← hBA, Matrix.map_mul, eN_map]`. Establish `hz : (fun a => φ (z a)) = B.map φ *ᵥ Pi.single (Fin.last n) 1`. Rewrite using `[← hBz]`. Use extensionality with `a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mulVec, dotProduct, map_apply, map_sum, map_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `congr 1`. Distinguish the cases in `hk : k = Fin.last n`. Substitute `hk` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hk]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hA, extM, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (B.map φ)⁻¹, hinv, Matrix.one_mul, extendOne_mul_inclusion, ← Matrix.mul_assoc]`. Rewrite using `[hz, extM, Matrix.mulVec_mulVec, Matrix.mul_assoc _ _ (B.map φ), hinv, Matrix.mul_one, ← Matrix.mulVec_mulVec, extendOne_mulVec_single_last]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hg`. Rewrite using `[extM, Matrix.det_mul, Matrix.det_mul]`. Use `(hBu.mul ?_).mul ?_` and prove the remaining obligations. Rewrite using `[det_extendOne]`. Conclude with `hg`.
-
-Conclude with `Matrix.isUnit_nonsing_inv_det _ hBu`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extM_spec {E : Type} [Field E] (φ : E →+* R) (A : Matrix (Fin (n + 1)) (Fin n) E) (z : Fin (n + 1) → E)
     (B : Matrix (Fin (n + 1)) (Fin (n + 1)) E) (hBA : B * inclusionAlt = A) (hBz : B *ᵥ Pi.single (Fin.last n) 1 = z) (hB : IsUnit B.det)
@@ -105,9 +103,9 @@ theorem extM_spec {E : Type} [Field E] (φ : E →+* R) (A : Matrix (Fin (n + 1)
     · exact Matrix.isUnit_nonsing_inv_det _ hBu
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Use `set B : Matrix (Fin (n + 1)) (Fin (n + 1)) E := Matrix.of (fun a (b : Fin (n + 1)) => if hb : (b : ℕ) < n then A a ⟨b, hb⟩ else z a) with hBdef`. Establish `hBA : B * inclusionAlt = A`. Use extensionality with `a b`. Simplify using `only [mul_apply, inclusionAlt, of_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, hBdef, Fin.coe_castSucc, b.isLt, dif_pos]`.
+Substitute using the available equality. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hBz : B *ᵥ Pi.single (Fin.last n) 1 = z`. Use extensionality with `a`. Rewrite using `[Matrix.mulVec_single_one]`. Simplify using `[hBdef]`. Conclude with `⟨extM φ B g, extM_spec φ A z B hBA hBz hB g⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ext_general {E : Type} [Field E] (φ : E →+* R) {N : ℕ} (hN : n + 1 = N) (A : Matrix (Fin N) (Fin n) E) (z : Fin N → E)
     (hB : IsUnit (Matrix.of (fun a (b : Fin N) => if hb : (b : ℕ) < n then A a ⟨b, hb⟩ else z a)).det)

@@ -71,7 +71,7 @@ def XiAt (J : CoreJ D) (j : ℕ) {n : ℕ} (d : DeltaDat (J.Q.Xo j) J.Q.c n) (xi
       (LinearMap.funLeft (𝓞 D.host.E) D.host.E (Fin.cast hr) ∘ₗ J.iota j) (J.x₀ j J.σ₀) fun _ => xi
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem xiVal_iff_xiAt (T : Full D) (j n : ℕ) : T.XiVal j n ↔ XiAt T.J j (T.dδ j n) T.xi := Iff.rfl
 
@@ -80,7 +80,7 @@ def ChiOK (D : D7) (chi₀ : ℕ → (AE D)ˣ →* Circle) : Prop :=
     ∀ x, FinUnit x → ((chi₀ j x : Circle) : ℂ) ∈ FO D
 
 /- English proof (translation)
-Introduce `_ _` and use `⟨⟨continuous_const, fun _ => rfl⟩, fun _ => rfl, fun _ _ => by simpa using (FO D).one_mem⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem chiOK_one (D : D7) : ChiOK D (fun _ => 1) := fun _ _ =>
   ⟨⟨continuous_const, fun _ => rfl⟩, fun _ => rfl, fun _ _ => by simpa using (FO D).one_mem⟩

@@ -5,7 +5,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.S
 open NumberField Matrix GlobalTheory.CuspRep GroundTheory.Automorphic GroundTheory.Automorphic.AutomorphicForm UpperTheory.V UpperTheory.V.Fb
 
 /- English proof (translation)
-Unfold `TR.height`. Establish `h1` using `norm_nonneg (TR.toL y.val)`. Establish `h2` using `norm_nonneg (TR.toL (y⁻¹).val)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private theorem one_le_ht {E : Type} [Field E] [NumberField E] {a : ℕ} (y : GL (Fin a) (TR.Rinf E)) :
     1 ≤ TR.height y := by
@@ -15,13 +15,13 @@ private theorem one_le_ht {E : Type} [Field E] [NumberField E] {a : ℕ} (y : GL
   linarith
 
 /- English proof (translation)
-Use `hΩ.induction_on (p := fun S => ∃ (C : ℝ) (N : ℕ), 0 ≤ C ∧ ∀ l ∈ S, ∀ y, ‖φ.1 (finGL E a l * TR.infGL E a y)‖ ≤ C * TR.height y ^ N) ⟨0, 0, le_rfl, fun _ h => h.elim⟩ ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `S T hST ⟨C, N, h0, h⟩`. Conclude with `⟨C, N, h0, fun l hl => h l (hST hl)⟩`. Introduce and unpack `S T ⟨C, N, h0, h⟩ ⟨D, M, h1, h'⟩`. Use `⟨max C D, max N M, le_max_of_le_left h0, fun l hl y => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hy` using `one_le_ht y`. Break down `hl with hl | hl` into its components or cases. Conclude with `(h l hl y).trans (mul_le_mul (le_max_left _ _) (pow_le_pow_right₀ hy (le_max_left _ _)) (pow_nonneg (zero_le_one.trans hy) _) (le_max_of_le_left h0))`. Conclude with `(h' l hl y).trans (mul_le_mul (le_max_right _ _) (pow_le_pow_right₀ hy (le_max_right _ _)) (pow_nonneg (zero_le_one.trans hy) _) (le_max_of_le_left h0))`. Introduce `k _`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨C, N, h⟩` from `hg (finGL E a k)`. Establish `ho : IsOpen ((fun l : AdelicGLn.FiniteAdelicGL E a => k⁻¹ * l) ⁻¹' {k | TR.finRep E a k φ = φ})` using `hU.preimage (continuous_const.mul continuous_id)`. Use `⟨_, mem_nhdsWithin_of_mem_nhds (ho.mem_nhds ?_), |C|, N, abs_nonneg C, fun l hl y => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `TR.finRep E a (k⁻¹ * k) φ = φ`. Rewrite using `[inv_mul_cancel, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `e : φ.1 (finGL E a k * TR.infGL E a y * finGL E a (k⁻¹ * l)) = φ.1 (finGL E a k * TR.infGL E a y)` using `congrFun (congrArg Subtype.val hl) _`. Rewrite `e` using `[mul_assoc, TR.infGL_comm, ← mul_assoc, ← map_mul, mul_inv_cancel_left]`. Rewrite using `[e]`. Conclude with `(h y).trans (mul_le_mul_of_nonneg_right (le_abs_self C) (pow_nonneg (zero_le_one.trans (one_le_ht y)) _))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem unif {E : Type} [Field E] [NumberField E] [IsTotallyReal E] {a : ℕ} (φ : TR.Sm E a)
     (hU : IsOpen {k | TR.finRep E a k φ = φ})
@@ -55,13 +55,13 @@ private theorem unif {E : Type} [Field E] [NumberField E] [IsTotallyReal E] {a :
       exact (h y).trans (mul_le_mul_of_nonneg_right (le_abs_self C) (pow_nonneg (zero_le_one.trans (one_le_ht y)) _))
 
 /- English proof (translation)
-Introduce `E _ _ _ a φ hl hU hg`. Take `⟨ω, hω, hB, t, ht, hred⟩` from `Reduction.exists_siegelSet (K := E) a`. Take `⟨Ω, hΩ, hfin⟩` from `UpperTheory.siegelSet_inter_translate_finite E a ω hω t`. Take `⟨D, M, hD⟩` from `UpperTheory.siegelSet_height_bound E a ω hω hB t ht`. Take `⟨C, N, h0, hC⟩` from `unif φ hU hg hΩ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨C * (3 * D) ^ N, M * N, fun g => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ⟩` from `hred g`. Establish `h1` using `hC _ (hfin _ hγ) (GeneralLinearGroup.map (TR.pInf E) (AdelicGLn.diagonal E a γ * g))`. Establish `h2` using `UpperTheory.adelicHeight_ge_archOpNorm E a (AdelicGLn.diagonal E a γ * g)`. Establish `h3` using `hD g γ hγ`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : finGL E a (finPart (AdelicGLn.diagonal E a γ * g)) * TR.infGL E a (GeneralLinearGroup.map (TR.pInf E) (AdelicGLn.diagonal E a γ * g)) = ratGL E a γ * g` using `(TR.infGL_comm _ _).symm.trans (TR.infGL_mul_finGL (AdelicGLn.diagonal E a γ * g))`. Rewrite `h1` using `[e, hl]`. Use `h1.trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc C, pow_mul, ← mul_pow]`. Use `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (zero_le_one.trans (one_le_ht _)) ?_ N) h0` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_assoc]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem UpperTheory.moderateGrowth_totallyRealModel_of_moderateGrowth :
     UpperTheory.V.Fb.GrowthTo := by

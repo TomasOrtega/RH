@@ -10,11 +10,11 @@ namespace GlobalTheory.EffBound
 open GlobalTheory.CechPic
 
 /- English proof (translation)
-Introduce `R _ X Y f H m s hH hva φ hY`. Take `⟨y⟩` from `hY`. Establish `hy : φ y ∈ ⨆ i, nonzeroLocus (s i)` using `by rw [hva.1]; trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hy`. Establish `hy' : y ∈ nonzeroLocus (GlobalTheory.secPull (s i) φ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.nonzeroLocus_secPull]`. Conclude with `hi`. Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 hy'`. Establish `hne : (GlobalTheory.secPull (s i) φ).f k ≠ 0`. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hk` using `[h0, Scheme.basicOpen_zero]`. Conclude with `hk`. Rewrite using `[← cls_pull hH φ (pull_isLB hH φ)]`. Conclude with `eff_of_sec _ _ _ k hne`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eff_pull_of_veryAmpleBy : ∀ (R : Type) [CommRing R] {X Y : Scheme.{0}} (f : X ⟶ Spec (CommRingCat.of R)) (H : LB X) (m : ℕ) (s : Fin (m + 1) → LB.Sec H) (hH : H.IsLB), GlobalTheory.AbLaw.VeryAmpleBy f H s → ∀ (φ : Y ⟶ X), Nonempty Y → GlobalTheory.EffBound.Eff (GlobalTheory.CechPic.pull φ (GlobalTheory.CechPic.cls H hH)) := by
   intro R _ X Y f H m s hH hva φ hY

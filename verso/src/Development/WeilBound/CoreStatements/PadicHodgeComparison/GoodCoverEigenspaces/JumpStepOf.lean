@@ -24,7 +24,7 @@ structure LowData (C : Cover H θ O) : Type 1 where
   lies : ∀ g, C.Lies g (s g) (t g) (m g)
 
 /- English proof (translation)
-Use `choose T s t d m h1 h2 h3 using h`. Conclude with `⟨⟨T, s, t, d, m, h1, h2, h3⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lowData_ex (C : Cover H θ O) (h : C.Good) : Nonempty (LowData C) := by
   choose T s t d m h1 h2 h3 using h
@@ -114,7 +114,7 @@ def JumpCore : Prop :=
           ∀ b : ℕ, HOcc (bcAlong H (ι.toRingHom.comp τ)) (fun g => ι (θ g)) b → (b : ℤ) ∈ J
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ l _ ι H θ hN dd ρ hc hP w hw hG P AI hT A hA O _ _ _ Bw hj τ LL' τ' hτ`. Take `⟨ρ₀, hM, hGr⟩` from `id hP`. Take `⟨C, hO, -⟩` from `id hG`. Take `⟨J, h1, h2⟩` from `hJ E Ω l ι H θ hN dd ρ₀ ρ hM hGr w hG P AI hT A hA O Bw hj (hC E Ω l H θ hN dd ρ hc hP w hw C hO P AI hT A hA O Bw hj) τ LL' τ' hτ`. Conclude with `⟨J, h1, fun j ⟨b, hb, ho⟩ => hb ▸ h2 b ho⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem jumpStep_of (hJ : JumpCore) (hC : CrysStep) : JumpStep := by
   intro E Ω _ _ _ _ _ l _ ι H θ hN dd ρ hc hP w hw hG P AI hT A hA O _ _ _ Bw hj τ LL' τ' hτ

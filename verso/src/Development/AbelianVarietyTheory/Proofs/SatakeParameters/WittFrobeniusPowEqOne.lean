@@ -6,19 +6,17 @@ namespace GlobalTheory
 open WittVector
 
 /- English proof (translation)
-Consider the cases of `nonempty_fintype ι`. Establish `coord : ∀ (J : Ideal R) (x : ι → R), x ∈ (J • ⊤ : Submodule R (ι → R)) ↔ ∀ i, x i ∈ (J • ⊤ : Submodule R R)`. Introduce `J x`. Prove the components needed by the constructor for the conclusion. Introduce `hx i`.
+Split into cases according to the possible forms of the given data. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `Submodule.mem_map_of_mem (f := (LinearMap.proj i : (ι → R) →ₗ[R] R)) hx`. Rewrite `h1` using `[Submodule.map_smul'']`. Conclude with `Submodule.smul_mono le_rfl le_top h1`. Introduce `hx`. Establish `hsum : x = ∑ i, (x i) • (Pi.single i (1 : R) : ι → R)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite using `[hsum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Establish `hi : x i ∈ J` using `by simpa using hx i`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.smul_mem_smul hi Submodule.mem_top`. Use `⟨fun f hf => ?_⟩` and prove the remaining obligations. Establish `hc : ∀ i, ∃ L : R, ∀ n, f n i ≡ L [SMOD (I ^ n • ⊤ : Submodule R R)]`. Introduce `i`. Use `IsPrecomplete.prec inferInstance (f := fun n => f n i) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `m n hmn`. Use `hf hmn` as an intermediate fact. Rewrite `this` using `[SModEq.sub_mem, coord]`. Rewrite using `[SModEq.sub_mem]`. Conclude with `this i`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose L hL using hc`. Use `⟨L, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[SModEq.sub_mem, coord]`. Introduce `i`. Use `hL i n` as an intermediate fact.
-
-Rewrite `this` using `[SModEq.sub_mem]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isPrecomplete_pi {R : Type*} [CommRing R] (I : Ideal R) [IsPrecomplete I R]
     (ι : Type*) [Finite ι] : IsPrecomplete I (ι → R) := by

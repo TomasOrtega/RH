@@ -24,9 +24,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Use `secondCountable k` as an intermediate fact. Use `t2Space k` as an intermediate fact. Set `e : (n → k) ≃ₜ Matrix Unit n k` to `{ toFun := fun η => Matrix.of fun _ r => η r invFun := fun M => M () left_inv := fun _ => rfl right_inv := fun M => by ext i j; rfl continuous_toFun := by fun_prop continuous_invFun := by fun_prop }`. Establish `h1 : Continuous fun η : n → k => Φ (Matrix.of fun _ r => η r)` using `hΦ.1.continuous.comp e.continuous`. Establish `h2 : HasCompactSupport fun η : n → k => Φ (Matrix.of fun _ r => η r)` using `hΦ.2.comp_homeomorph e`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Continuous.integrable_of_hasCompactSupport (h1.mul ?_) h2.mul_right` and prove the remaining obligations. Conclude with `continuous_subtype_val.comp (hψ.comp (by fun_prop))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem integrable_row (ψk : AddChar k Circle) (hψ : Continuous ψk) (ν : Measure k) [ν.IsAddHaarMeasure]
     {Φ : Matrix Unit n k → ℂ} (hΦ : Φ ∈ SB (Matrix Unit n k)) (x : Matrix n Unit k) :
@@ -46,7 +46,7 @@ theorem integrable_row (ψk : AddChar k Circle) (hψ : Continuous ψk) (ν : Mea
   exact continuous_subtype_val.comp (hψ.comp (by fun_prop))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [finv, Pi.add_apply, add_mul]`. Rewrite using `[integral_add (integrable_row ψk hψ ν hΦ x) (integrable_row ψk hψ ν hΨ x), mul_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem finv_add (ψk : AddChar k Circle) (hψ : Continuous ψk) (ν : Measure k) [ν.IsAddHaarMeasure] (C : ℂ)
     {Φ Ψ : Matrix Unit n k → ℂ} (hΦ : Φ ∈ SB (Matrix Unit n k)) (hΨ : Ψ ∈ SB (Matrix Unit n k)) :
@@ -56,7 +56,7 @@ theorem finv_add (ψk : AddChar k Circle) (hψ : Continuous ψk) (ν : Measure k
   rw [integral_add (integrable_row ψk hψ ν hΦ x) (integrable_row ψk hψ ν hΨ x), mul_add]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [finv, Pi.smul_apply, smul_eq_mul, mul_assoc, integral_const_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem finv_smul (ψk : AddChar k Circle) (ν : Measure k) (C a : ℂ) (Φ : Matrix Unit n k → ℂ) :
     finv ψk ν C (a • Φ) = a • finv ψk ν C Φ := by
@@ -65,13 +65,13 @@ theorem finv_smul (ψk : AddChar k Circle) (ν : Measure k) (C a : ℂ) (Φ : Ma
   ring
 
 /- English proof (translation)
-Use `secondCountable k` as an intermediate fact. Simplify using `only [finv, h]`. Rewrite using `[mul_left_comm]`. Use `congr 1`. Rewrite using `[← integral_const_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [← integral_add_right_eq_self _ (fun r => -(x () r))]`. Use `congr 1`. Use function extensionality and compare the values at `η`. Establish `e1 : (Matrix.of fun _ r => (η + fun r => -(x () r)) r : Matrix Unit n k) + x = Matrix.of fun _ r => η r`. Use extensionality with `i j`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[Subsingleton.elim i ()]`. Rewrite using `[e1]`. Establish `e2 : (η + fun r => -(x () r)) ⬝ᵥ (fun r => a r ()) = (η ⬝ᵥ fun r => a r ()) + -(∑ r, x () r * a r ())`. Simplify using `only [dotProduct, Pi.add_apply, add_mul, Finset.sum_add_distrib, neg_mul, Finset.sum_neg_distrib]`. Rewrite using `[e2, AddChar.map_add_eq_mul, Circle.coe_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem finv_trans (ψk : AddChar k Circle) (ν : Measure k) [ν.IsAddHaarMeasure] (C : ℂ) (x : Matrix Unit n k)
     {Φ Φ' : Matrix Unit n k → ℂ} (h : ∀ t, Φ' t = Φ (t + x)) (a : Matrix n Unit k) :
@@ -93,9 +93,9 @@ theorem finv_trans (ψk : AddChar k Circle) (ν : Measure k) [ν.IsAddHaarMeasur
   ring
 
 /- English proof (translation)
-Simplify using `only [finv, h]`. Use `congr 1`. Use `congr 1`. Use function extensionality and compare the values at `η`. Establish `e : (η ⬝ᵥ fun r => (a + t₀) r ()) = (η ⬝ᵥ fun r => a r ()) + ∑ r, η r * t₀ r ()`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `[dotProduct, mul_add, Finset.sum_add_distrib]`. Rewrite using `[e, AddChar.map_add_eq_mul, Circle.coe_mul]`. Simplify using `only [Matrix.of_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem finv_mod (ψk : AddChar k Circle) (ν : Measure k) (C : ℂ) (t₀ : Matrix n Unit k)
     {Φ Φ' : Matrix Unit n k → ℂ} (h : ∀ t, Φ' t = (ψk (∑ r, t () r * t₀ r ()) : ℂ) * Φ t) (a : Matrix n Unit k) :
@@ -116,7 +116,7 @@ namespace GlobalTheory.KappaModel
 open GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule (ofAdj)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `only [heisO, symplOH, hs, hadd]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem heis_comp {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (L S L'' : HSp D) (κ : WO S L'' → WO L S)
     (hadd : ∀ w w', κ (w + w') = κ w + κ w') (hs : ∀ w w', symplO L S (κ w) (κ w') = symplO S L'' w w')
@@ -126,9 +126,9 @@ theorem heis_comp {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (L S L'' : HSp D) (�
   simp only [heisO, symplOH, hs, hadd]
 
 /- English proof (translation)
-Set `i₀ : Fin N` to `⟨0, by omega⟩`. Establish `hu : ∀ i : Fin N, i = i₀` using `fun i => Fin.ext (by omega)`. Establish `h0 : z₀ i₀ ≠ 0` using `fun h => hz (funext fun i => by rw [hu i]; exact h)`. Use `⟨⟨Matrix.of fun r _ => z₀ r, Matrix.of fun _ _ => (z₀ i₀)⁻¹, ?_, ?_⟩, fun _ => rfl⟩` and prove the remaining obligations. Use extensionality with `i j`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Rewrite using `[hu i, hu j, Matrix.mul_apply, Matrix.one_apply_eq]`. Simplify using `[h0]`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Subsingleton.elim i j, Matrix.one_apply_eq, Fintype.sum_eq_single i₀ fun x hx => absurd (hu x) hx]`. Simplify using `[h0]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_frame_col {k : Type} [Field k] {N : ℕ} (hN : N = 1) (z₀ : Fin N → k) (hz : z₀ ≠ 0) :
     ∃ F : Frame k N Unit, ∀ r, F.β r () = z₀ r := by

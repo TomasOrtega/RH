@@ -5,13 +5,13 @@ open CategoryTheory TensorProduct ChangeOfRings
 namespace GlobalTheory.CompanionTheory.ModuleReduction
 
 /- English proof (translation)
-Establish `hex : Function.Exact (LinearMap.mulLeft A ξ) g`. Introduce `a`. Rewrite using `[hk a]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨b, rfl⟩`. Introduce and unpack `⟨b, rfl⟩`. Conclude with `⟨b, rfl⟩`. Establish `hex'` using `rTensor_exact N hex hg`. Establish `h1 : (LinearMap.rTensor N g) ((1 : A) ⊗ₜ[A] m) = 0`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using h`. Take `⟨t, ht⟩` from `(hex' _).1 h1`. Establish `key : ∀ t : A ⊗[A] N, TensorProduct.lid A N (LinearMap.rTensor N (LinearMap.mulLeft A ξ) t) = ξ • TensorProduct.lid A N t`. Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `tmul a n => simp [mul_smul]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, smul_add]`. Use `⟨TensorProduct.lid A N t, ?_⟩` and prove the remaining obligations. Rewrite using `[← key, ht]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -43,29 +43,27 @@ theorem mem_smul_of_tmul_eq_zero {A Q N : Type} [CommRing A] [AddCommGroup Q] [M
   simp
 
 /- English proof (translation)
-Set `Q` to `(ModuleCat.restrictScalars θ).obj (ModuleCat.of O O)`. Set `one : Q` to `(1 : O)`. Set `g : A →ₗ[A] Q` to `LinearMap.toSpanSingleton A Q one`. Establish `hgθ : ∀ a, (g a : O) = θ a` using `fun a => mul_one (θ a)`. Establish `hsm : ∀ (X : 𝒞) (a : A) (m : M.obj X), (1 : O) ⊗ₜ[A,θ] (a • m) = (θ a) ⊗ₜ[A,θ] m`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `X a m`. Establish `h` using `TensorProduct.smul_tmul (R := A) (R' := A) a one m`. Establish `e : a • one = (θ a : O)` using `hgθ a`. Rewrite `h` using `[e]`. Conclude with `h.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `r : ∀ X : 𝒞, M.obj X →ₛₗ[θ] (M ⋙ ModuleCat.extendScalars θ).obj X` to `fun X => { toFun := fun m => (1 : O) ⊗ₜ[A,θ] m map_add' := fun a b => TensorProduct.tmul_add _ _ _ map_smul' := fun a m => by`. Use `(hsm X a m).trans ?_` and prove the remaining obligations. Use `ModuleCat.ExtendScalars.smul_tmul θ (M := M.obj X) (θ a) (1 : O) m` as an intermediate fact. Rewrite `this` using `[mul_one]`. Conclude with `this.symm }`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨M ⋙ ModuleCat.extendScalars θ, r, fun X => ⟨?_, fun m => ⟨?_, ?_⟩⟩, ?_⟩` and prove the remaining obligations. Introduce `y`. Express the relevant statement in the definitionally equal form `Q ⊗[A] (M.obj X) at y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, map_zero _⟩`.
+Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `tmul o n`. Take `⟨a, ha⟩` from `hθ o`. Use `⟨a • n, ?_⟩` and prove the remaining obligations. Use `(hsm X a n).trans ?_` and prove the remaining obligations. Rewrite using `[ha]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately.
 
-Both sides reduce to the same expression. Consider the case `add x y hx hy`. Take `⟨u, hu⟩` from `hx`. Take `⟨v, hv⟩` from `hy`. Use `⟨u + v, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[map_add, hu, hv]`. Both sides reduce to the same expression. Introduce `h`. Use `mem_smul_of_tmul_eq_zero g ?_ ξ ?_ m ?_` and prove the remaining obligations. Introduce `q`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨a, ha⟩` from `hθ q`. Conclude with `⟨a, (hgθ a).trans ha⟩`. Introduce `a`. Establish `: g a = 0 ↔ θ a = 0`. Rewrite using `[← hgθ a]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[this, ← RingHom.mem_ker, hker, Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, rfl⟩`. Conclude with `⟨b, mul_comm _ _⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨b, rfl⟩`. Conclude with `⟨b, mul_comm _ _⟩`. Establish `e : g 1 = one` using `one_smul A one`. Rewrite using `[e]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨n, rfl⟩`. Establish `: θ ξ = 0`. Rewrite using `[← RingHom.mem_ker, hker]`. Conclude with `Ideal.mem_span_singleton_self ξ`. Express the relevant statement in the definitionally equal form `(1 : O) ⊗ₜ[A,θ] (ξ • n) = 0`.
-
-Rewrite using `[hsm X ξ n, this]`. Conclude with `TensorProduct.zero_tmul (R := A) Q n`. Introduce `X Y f m`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_reduction (A O : Type) [CommRing A] [CommRing O] (θ : A →+* O)
     (hθ : Function.Surjective θ) (ξ : A) (hker : RingHom.ker θ = Ideal.span {ξ})

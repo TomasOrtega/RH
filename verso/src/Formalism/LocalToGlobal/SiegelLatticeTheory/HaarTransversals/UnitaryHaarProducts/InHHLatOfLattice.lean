@@ -19,7 +19,7 @@ variable {D : D7} (X : HidaSetting D)
 def gv (v : Fin X.B.I.n → X.B.I.E) : (VS D).V := X.bas.equivFun.symm (fun i => X.ιE (v i))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `show X.ιE.symm (X.bas.repr (X.bas.equivFun.symm (fun i => X.ιE (v i))) i) = v i`. Rewrite using `[← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply, RingEquiv.symm_apply_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem crd_gv (v : Fin X.B.I.n → X.B.I.E) : X.crd (gv X v) = v := by
   funext i
@@ -27,7 +27,7 @@ theorem crd_gv (v : Fin X.B.I.n → X.B.I.E) : X.crd (gv X v) = v := by
   rw [← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply, RingEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Use `show X.bas.equivFun.symm (fun i => X.ιE (X.ιE.symm (X.bas.repr y i))) = y`. Simplify using `only [RingEquiv.apply_symm_apply, ← Module.Basis.equivFun_apply]`. Conclude with `X.bas.equivFun.symm_apply_apply y`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gv_crd (y : (VS D).V) : gv X (X.crd y) = y := by
   show X.bas.equivFun.symm (fun i => X.ιE (X.ιE.symm (X.bas.repr y i))) = y
@@ -96,11 +96,11 @@ end LatticeCoordinateLemmas
 open LatticeCoordinateLemmas in
 
 /- English proof (translation)
-Introduce `h`. Use `haveI : RingHomSurjective (sO' X) := ⟨(RingOfIntegers.mapRingEquiv X.ιE).surjective⟩`. Use `haveI : RingHomSurjective (sE X) := ⟨X.ιE.surjective⟩`. Take `⟨hfg, hspan⟩` from `PIW.AdelClassFin.mLat_of PIW.AdelClassFin.lattice_intersection' PIW.AdelClassFin.lattice_denominator X.B.I ((h : X.B.I.Gf) * X.xu u)`. Use `⟨(PIW.AdelClassFin.abelian₂ X.B.I ((h : X.B.I.Gf) * X.xu u)).map (gvO X), ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, rfl⟩ show X.B.I.fmat ((h : X.B.I.Gf) * X.xu u)⁻¹ *ᵥ incl X.B.I (X.crd (gv X v)) ∈ X.B.I.Lf`. Rewrite using `[crd_gv]`. Conclude with `hv`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hy`. Conclude with `⟨X.crd y, hy, gv_crd X y⟩`. Use `⟨hfg.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.map_coe, show ⇑(gvO X) = ⇑(gvE X) from rfl, Submodule.span_image, hspan, Submodule.map_top, LinearMap.range_eq_top]`. Conclude with `fun y => ⟨X.crd y, gv_crd X y⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem latOfLattice_holds {D : D7} (X : HidaSetting D) (u : D.what₂.Word) : LatOfLattice X u := by
   intro h

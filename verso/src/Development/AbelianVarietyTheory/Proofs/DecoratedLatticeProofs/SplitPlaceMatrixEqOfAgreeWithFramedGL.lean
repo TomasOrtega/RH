@@ -15,15 +15,15 @@ namespace GlobalTheory.AdForm.OffPlace
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `hv : compAt D p.v a = 0`. Rewrite `ha` using `[idOff, Submodule.mem_iInf]`. Conclude with `ha ⟨p.v, rfl⟩`. Take `⟨ε, hε, hsum⟩` from `p.above`. Take `⟨hee, hec, -⟩` from `p.split`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨α, hα, hαv, hαw⟩` from `hε`. Establish `hparts` using `placeIdempotent_infinite_and_finite_components D p.v ε α hα`. Establish `hεa : algebraMap (AF D.host.F) (AE D) ε * a = 0`. Apply `CMAdele_eq_zero_of_infinite_and_finite_components_zero` to reduce the goal to its premises. Rewrite using `[map_mul, hparts.1, zero_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w`. Rewrite using `[map_mul, hparts.2 w]`. Distinguish the cases in `hw : w = p.v`. Substitute `hw` using the available equality. Rewrite using `[hv, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hαw w hw, TensorProduct.zero_tmul, zero_mul]`. Establish `hea : p.e * a = 0`. Establish `: p.e * algebraMap (AF D.host.F) (AE D) ε = p.e`. Rewrite using `[← hsum, mul_add, hee, hec, add_zero]`. Rewrite using `[← this, mul_assoc, hεa, mul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← p.pr_sec (p.pr a), p.sec_pr, hea, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem pr_of_idOff (p : SplitPt D k) {a : Formalism.L2.Theta.AE D} (ha : a ∈ idOff D (· = p.v)) : p.pr a = 0 := by
 
@@ -52,15 +52,15 @@ theorem pr_of_idOff (p : SplitPt D k) {a : Formalism.L2.Theta.AE D} (ha : a ∈ 
   rw [← p.pr_sec (p.pr a), p.sec_pr, hea, map_zero]
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ p S n _ _ β κ g h`. Use `set γ := κ * (β.gl g)⁻¹ with hγ`. Establish `hq : (mt S γ).map (Ideal.Quotient.mk (idOff D (· = p.v))) = 1`. Rewrite `h` using `[grpOff, congGrp, MonoidHom.mem_ker]`. Use `congrArg (fun M : GL (Fin S.rank) (AE D ⧸ idOff D (· = p.v)) => M.val) h` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[Formalism.L2.Theta.mt]`. Establish `hγ1 : (mt S γ).map p.pr = 1`. Use extensionality with `i j`. Establish `hij` using `congrFun (congrFun hq i) j`. Establish `hmem : mt S γ i j - (1 : Matrix (Fin S.rank) (Fin S.rank) (AE D)) i j ∈ idOff D (· = p.v)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Ideal.Quotient.eq]`. Rewrite `hij` using `[Matrix.map_apply]`. Rewrite using `[hij, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `h0` using `pr_of_idOff p hmem`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[map_sub, sub_eq_zero]`. Rewrite using `[Matrix.map_apply, h0, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hκ : κ = γ * β.gl g` using `by rw [hγ, inv_mul_cancel_right]`. Establish `hmt : mt S κ = mt S γ * mt S (β.gl g)`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hκ]`. Simplify using `only [Formalism.L2.Theta.mt, map_mul, Units.val_mul]`. Rewrite using `[hmt, Matrix.map_mul, hγ1, one_mul, β.gl_mat g]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_pr_of_off : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : SplitPt D k) (S : HSp D) (n : Type) [Fintype n] [DecidableEq n] (β : Frame p S n) (κ : GA D S) (g : GL n k), κ * (β.gl g)⁻¹ ∈ grpOff S (· = p.v) → (mt S κ).map p.pr = β.b * g.val * β.b' := by
   intro D k _ _ _ _ p S n _ _ β κ g h

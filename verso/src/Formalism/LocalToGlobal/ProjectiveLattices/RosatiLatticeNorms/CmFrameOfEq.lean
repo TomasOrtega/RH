@@ -13,7 +13,7 @@ open scoped ComplexConjugate
 variable {D : D7}
 
 /- English proof (translation)
-Substitute `hX` using the available equality. Take `⟨x, lam, hx, hL, hP, -⟩` from `cm_frame Xx la P z0 M w hSS hM hw hw1 hr htr hz0 hhalf hpos`. Conclude with `⟨x, lam, hx, hL, hP⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cm_frame_of_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (Xx : DataX E r) (Y : Data E r)
     (hX : Xx.toData = Y) (la : Wt Y.Ψ r) (P : Frame Y.Ψ r → ℂ) (z0 : Frame Y.Ψ r) (M w : ℝ)
@@ -45,11 +45,11 @@ def LamTieSt (T : Formalism.L2.Pj.Core D) (h : LawsCore T) (j : ℕ) (w : Weight
         ((recB h).supN j w (σ.comp (algebraMap T.Q.c.F o.K₁)) F) σ
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hΨ, h', -⟩` from `hG`. Establish `key : ∀ k, (L.ℓ k).Good ∧ (L.ℓ k).ndeg = logOm / 2`. Introduce `k`. Establish `h` using `hL.2.2.2 k`. Break down `hs : L.src k with q | q` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [hs] at h`. Rewrite using `[h]`. Conclude with `⟨(hΨ q.2).1, hdeg.1 q.2⟩`. Simplify using `only [hs] at h`. Rewrite using `[h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨(h' q.2).1, hdeg.2 q.2⟩`. Conclude with `⟨fun k => (key k).1, fun k => (key k).2⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem LamLetters.lines {E : Type} [Field E] [NumberField E] [IsCMField E] [StarRing (𝓞 E)] {H : Host E} {l : Level H}
     {c : Coeff l} {nΨ n' f : ℕ} {o : LamObj c nΨ n'} {La logOm : ℝ} (hG : LamObjGood o f La) (L : LamLetters o)
@@ -74,23 +74,21 @@ def laOf {T : Formalism.L2.Pj.Core D} {j : ℕ} (Xx : (T.U j T.σ₀).Comp → D
     (3 * frameRadius wf D.R.r / 5)
 
 /- English proof (translation)
-Use `letI := T.Q.H.starRing`. Introduce `F hF hF0`. Establish `hFC : F.1 ∈ T.C j w` using `cutR_le T.C j w F.2`. Establish `hhol : rdU (T.U j T.σ₀) F.1 ∈ holSub (T.U j T.σ₀).X (laU (T.U j T.σ₀) (wtA w) w.n)` using `((mem_cusp _ _ _ _ _ F.1).1 hFC).2 T.σ₀ T.good_σ₀`. Establish `hSS` using `holSub_SS hM5 (T.U j T.σ₀).X (laU (T.U j T.σ₀) (wtA w) w.n) hhol`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : supE (T.U j T.σ₀).X (laU (T.U j T.σ₀) (wtA w) w.n) (rdU (T.U j T.σ₀) F.1) ≠ ⊤` using `supE_cusp_ne_top T.good_σ₀ hFC`. Establish `hF1 : F.1 ≠ 0` using `fun h0 => hF0 (Subtype.ext h0)`. Establish `hpos : 0 < supN (T.U j T.σ₀).X (laU (T.U j T.σ₀) (wtA w) w.n) (rdU (T.U j T.σ₀) F.1)`. Break down `(ENNReal.toReal_nonneg : 0 ≤ (supE (T.U j T.σ₀).X (laU (T.U j T.σ₀) (wtA w) w.n) (rdU (T.U j T.σ₀) F.1)).toReal).lt_or_eq with hlt | heq` into its components or cases. Conclude with `hlt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `absurd (h.supDef j hj (wtA w) w.n (dom_wtA w) T.σ₀ T.good_σ₀ F.1 hFC heq.symm) hF1`. Take `⟨k, z0, hz0, hlt⟩` from `half_max (T.U j T.σ₀).X (laU (T.U j T.σ₀) (wtA w) w.n) (rdU (T.U j T.σ₀) F.1) hpos hfin`. Establish `hhalf : ∀ x ∈ ((T.U j T.σ₀).X k).dom, ((T.U j T.σ₀).X k).pnorm (laU (T.U j T.σ₀) (wtA w) w.n k) (rdU (T.U j T.σ₀) F.1 k) x ≤ 2 * ((T.U j T.σ₀).X k).pnorm (laU (T.U j T.σ₀) (wtA w) w.n k) (rdU (T.U j T.σ₀) F.1 k) z0` using `fun x hx => (pnorm_le_supN _ _ _ hfin k x hx).trans hlt.le`. Establish `hposz : 0 < ((T.U j T.σ₀).X k).pnorm (laU (T.U j T.σ₀) (wtA w) w.n k) (rdU (T.U j T.σ₀) F.1 k) z0`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, lam, hx, hLB, hPx⟩` from `cm_frame_of_eq (Xx k) ((T.U j T.σ₀).X k) (hX k) _ _ z0 M wf (hSS k) hM (hwf k) hwf1 hr (htr k) hz0 hhalf hposz`. Take `⟨o, L, σ₁, y, eY, hcl⟩` from `hPt (laOf Xx M wf k) h hj k ⟨x, hx⟩ (Xx k) (hX k) (hAA k) lam hLB`. Take `⟨a, G, hG0, hsa, hloc, harch⟩` from `hTie k k ⟨x, hx⟩ o L σ₁ y eY hcl F hF hF0 hPx`. Take `⟨hGood, hL, hmr, -, -, -, -, -⟩` from `hcl`. Establish `hdeg` using `hDeg T.Q.l T.Q.c (fun _ => rfl) _ _ D.R.f o (laOf Xx M wf k) hGood`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hdet` using `hInd D.host.E T.Q.H T.Q.l T.Q.c (fun _ => rfl) _ _ D.R.f o (laOf Xx M wf k) hGood L hL`. Take `⟨hlg, hnd⟩` from `L.lines hGood hL hdeg`. Establish `hGood'` using `hGood`. Take `⟨-, -, -, -, -, -, -, -, hgB, -, -, -, -, -, -, -, -, -, hTg, hLg, hkl, hka, -⟩` from `hGood'`. Establish `hSpos : ∀ σ : o.K₁ →+* ℂ, 0 < (recB h).supN j w (σ.comp (algebraMap T.Q.c.F o.K₁)) F`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `σ`. Break down `((recB h).supN_nonneg j w (σ.comp (algebraMap T.Q.c.F o.K₁)) F).lt_or_eq with hlt | heq` into its components or cases. Conclude with `hlt`. Conclude with `absurd (((recB h).supN_eq_zero j w _ F).1 heq.symm) hF0`. Establish `h5` using `lambda_lower_bound hKey hLH o.K₁ o.xB o.Tl o.LamL (D.host.E →+* ℂ) L.m L.e L.ℓ L.U G a w.n D.R.r (laOf Xx M wf k) large₂.logOm (fun σ => (recB h).supN j w (σ.comp (algebraMap T.Q.c.F o.K₁)) F) hTg hLg hkl hka hlg hnd hdet hG0 (hLa1 k) (by exact_mod_cast hr) hmr hSpos hloc harch`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `beta_reduce at h5`. Establish `h2` using `mean_restrict (K := T.Q.c.F) (L := o.K₁) (fun τ => Real.log ((recB h).supN j w τ F))`. Use `beta_reduce at h2`. Rewrite `h5` using `[h2]`. Establish `h3 : WeightFamilies.meanLogSup (recB h) F = (∑ τ : T.Q.c.F →+* ℂ, Real.log ((recB h).supN j w τ F)) / (Module.finrank ℚ T.Q.c.F : ℝ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[WeightFamilies.meanLogSup, NumberField.Embeddings.card T.Q.c.F ℂ]`. Rewrite using `[h3]`. Establish `hgR : (o.xB.P.g : ℝ) = ((D.R.f * ((T.Q.Dw j).p + (T.Q.Dw j).q) : ℕ) : ℝ)` using `by rw [hgB]`. Establish `hr'` using `hroom k _ hsa`. Rewrite `h5` using `[hgR]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem lamw_link (T : Formalism.L2.Pj.Core D) (h : LawsCore T) (large₂ : SizeData₂ D) (j : ℕ) (hj : InR D j)
     (w : WeightFamilies.Wt D j) (C A : ℝ) (hM5 : SiegelSpaceAlgebra (E := D.host.E)) (hKey : KeyCore)

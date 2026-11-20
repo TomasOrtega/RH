@@ -12,9 +12,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.LocMod.OutsideOrth
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ p P PP e hPP hp he`. Take `⟨⟨es, hes, rfl⟩, -⟩` from `he`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_eq_zero fun P' hP' => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Formalism.IndefR.Fin.idem_orth (Formalism.IndefR.Fin.idemAt_split hp) hp (hes P' hP') (fun h => hPP (h ▸ hP'))`.
+A detailed English derivation is pending.
 -/
 theorem mul_eq_zero : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : Place D k) (P : Finset (Formalism.L2.DIV.Pl D.host.E)) (PP : Formalism.L2.DIV.Pl D.host.E) (e : AE D),

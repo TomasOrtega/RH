@@ -9,11 +9,11 @@ open KaehlerDifferential GlobalTheory.CechDR GlobalTheory.PD GlobalTheory.WH Glo
 open scoped TensorProduct
 
 /- English proof (translation)
-Simplify using `only [vol0, ExteriorAlgebra.ιMulti_apply]`. Rewrite using `[map_list_prod]`. Use `congr 1`. Simplify using `only [List.map_ofFn]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `j`. Establish `h1 : ∀ w : Ω[K⁄ℂ], mapDR ℂ K K' (ExteriorAlgebra.ι K w) = map1 ℂ K K' w` using `fun w => by`. Simplify using `[mapDR]`. Establish `h2 : ∀ a : K, map1 ℂ K K' (D ℂ K a) = ExteriorAlgebra.ι K' (D ℂ K' (algebraMap K K' a))` using `fun a => by`. Simplify using `[map1, ι1, KaehlerDifferential.map_D]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp, h1, map_smul, h2, map_inv₀]`. Rewrite using `[← algebraMap_smul K' ((algebraMap F K (x j.succ / x 0))⁻¹), map_inv₀, ← IsScalarTower.algebraMap_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem kahlerMap_volumeForm {F K K' : Type} [Field F] [Field K] [Field K'] [Algebra ℂ F] [Algebra ℂ K] [Algebra ℂ K']
     [Algebra F K] [IsScalarTower ℂ F K] [Algebra K K'] [IsScalarTower ℂ K K'] [Algebra F K'] [IsScalarTower F K K']
@@ -33,21 +33,19 @@ private theorem kahlerMap_volumeForm {F K K' : Type} [Field F] [Field K] [Field 
   rw [← algebraMap_smul K' ((algebraMap F K (x j.succ / x 0))⁻¹), map_inv₀, ← IsScalarTower.algebraMap_apply]
 
 /- English proof (translation)
-Introduce `F K K' _ _ _ _ _ _ _ _ _ _ _ _ _ d x j2 hY τ hτ ρ hρ`. Use `haveI : FiniteDimensional F K := hY.covZ.fin`. Use `haveI : FiniteDimensional F K' := hY.covY.fin`. Use `haveI : FiniteDimensional K K' := FiniteDimensional.right F K K'`. Establish `hTr` using `(GlobalTheory.T.deRhamFormTrace_exists_unique ℂ K K').1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `second : ∀ h : K', trF ℂ τ ρ (trDR ℂ K K' (h • vol0 ℂ K' (xv x))) = ρ (Algebra.trace F K' h)`. Introduce `h`. Rewrite using `[← kahlerMap_volumeForm (K := K) (K' := K') (xv x), hTr h (vol0 ℂ K (xv x))]`. Simplify using `only [trF, LinearMap.comp_apply, LinearMap.restrictScalars_apply, map_smul, hτ.1, smul_eq_mul, mul_one]`. Rewrite using `[Algebra.trace_trace]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `⟨fun w y => ((GlobalTheory.T.deRhamFormTrace_projection_formula ℂ K K') w y).1, second, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y', hy', rfl⟩`. Take `⟨⟨τ', hτ'⟩, hvol⟩` from `GlobalTheory.T.exists_topDegreeCoefficientForm_and_eq_on_top_forms ℂ F K' d (xv x) hY.covY`. Establish `key : ∀ i : Fin (d + 1), trF ℂ τ ρ (trDR ℂ K K' (y' (Finset.univ.erase i))) = 0`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hm : y' (Finset.univ.erase i) ∈ (if (Finset.univ.erase i : Finset (Fin (d + 1))).Nonempty ∧ (((Finset.univ.erase i : Finset (Fin (d + 1))).card : ℕ) : ℤ) = ((d : ℤ) - 1) + 1 then omB ℂ K' (rB ℂ K' (xv x) (Finset.univ.erase i)) d else ⊥ : Submodule ℂ (DR ℂ K'))` using `hy' (Finset.univ.erase i) (Set.mem_univ _)`. Distinguish the cases in `hne : (Finset.univ.erase i : Finset (Fin (d + 1))).Nonempty`. Establish `hc : (((Finset.univ.erase i : Finset (Fin (d + 1))).card : ℕ) : ℤ) = ((d : ℤ) - 1) + 1`. Simplify using the standard rewrite rules. Rewrite `hm` using `[if_pos ⟨hne, hc⟩]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hle : omB ℂ K' (rB ℂ K' (xv x) (Finset.univ.erase i)) d ≤ (⋀[K']^d Ω[K'⁄ℂ]).restrictScalars ℂ`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨b, -, v, -, rfl⟩`. Use `(⋀[K']^d Ω[K'⁄ℂ]).smul_mem b ?_` and prove the remaining obligations. Rewrite using `[← ExteriorAlgebra.ιMulti_span_fixedDegree]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Submodule.subset_span ⟨_, rfl⟩`. Rewrite using `[hvol τ' hτ' _ (hle hm), second]`. Establish `h1` using `(GlobalTheory.T.complementaryModule_standardOpens_iff ℂ F K' d (xv x) hY.covY τ' hτ' _ hne (τ' (y' (Finset.univ.erase i)))).2 ⟨_, hm, rfl⟩ 1 (one_mem _)`. Rewrite `h1` using `[mul_one]`. Conclude with `GlobalTheory.T.residue_functional_vanishes_on_omega_forms ℂ F d (xv x) hY.covY.pd ρ hρ i _ hne (by simp) _ h1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Rewrite `hm` using `[if_neg (fun h => hne h.1)]`. Rewrite using `[(Submodule.mem_bot ℂ).1 hm]`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `trF ℂ τ ρ (trDR ℂ K K' (∑ i ∈ Finset.univ, _ • y' (Finset.univ.erase i))) = 0`. Simplify using `only [map_sum]`.
-
-Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, map_zsmul, key i, smul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.productCup_of_system.trTop_of :
     TrTop := by

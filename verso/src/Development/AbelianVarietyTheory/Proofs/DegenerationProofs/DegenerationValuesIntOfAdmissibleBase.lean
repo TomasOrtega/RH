@@ -15,9 +15,9 @@ def evR {S : Type} [CommRing S] {Y : Scheme.{0}} (r : Sp S ⟶ Y) (U : Y.Opens) 
   (Scheme.ΓSpecIso (CommRingCat.of S)).hom.hom.comp (r.appLE U ⊤ h).hom
 
 /- English proof (translation)
-Establish `e : (spMap f ≫ r).appLE U ⊤ h' = r.appLE U ⊤ h ≫ (spMap f).appTop`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Conclude with `(Scheme.Hom.appLE_comp_appLE (spMap f) r U ⊤ ⊤ h le_rfl).symm`. Establish `n` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom f)`. Use `congrArg (fun q => q.hom ((r.appLE U ⊤ h).hom a)) n` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [evR, e]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem evR_comp {S S' : Type} [CommRing S] [CommRing S'] (f : S →+* S') {Y : Scheme.{0}} (r : Sp S ⟶ Y) (U : Y.Opens)
     (h : ⊤ ≤ r ⁻¹ᵁ U) (h' : ⊤ ≤ (spMap f ≫ r) ⁻¹ᵁ U) (a : Γ(Y, U)) :
@@ -31,28 +31,26 @@ theorem evR_comp {S S' : Type} [CommRing S] [CommRing S'] (f : S →+* S') {Y : 
   exact this
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem valF_eq {F : Type} [Field F] {Y : Scheme.{0}} (r : Sp F ⟶ Y) (U : Y.Opens) (h : ⊤ ≤ r ⁻¹ᵁ U) (a : Γ(Y, U)) :
     valF r U a = evR r U h a := dif_pos h
 
 /- English proof (translation)
-Introduce `x _` and use `h (Set.mem_univ ((spMap f) x))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_comp {S S' : Type} [CommRing S] [CommRing S'] (f : S →+* S') {Y : Scheme.{0}} (r : Sp S ⟶ Y) (U : Y.Opens)
     (h : ⊤ ≤ r ⁻¹ᵁ U) : ⊤ ≤ (spMap f ≫ r) ⁻¹ᵁ U := fun x _ => h (Set.mem_univ ((spMap f) x))
 
 /- English proof (translation)
-Rewrite using `[valF_eq _ _ (le_comp f r U h), evR_comp f r U h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem valF_comp {S F : Type} [CommRing S] [Field F] (f : S →+* F) {Y : Scheme.{0}} (r : Sp S ⟶ Y) (U : Y.Opens)
     (h : ⊤ ≤ r ⁻¹ᵁ U) (a : Γ(Y, U)) : valF (spMap f ≫ r) U a = f (evR r U h a) := by
   rw [valF_eq _ _ (le_comp f r U h), evR_comp f r U h]
 
 /- English proof (translation)
-Establish `: IsDominant (spMap S.subtype)`. Prove the components needed by the constructor for the conclusion. Conclude with `(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical S.subtype).2 (by`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot _).1 Subtype.val_injective]`. Conclude with `bot_le)`.
-
-Conclude with `ext_of_isDominant _ h`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext_unique {F : Type} [Field F] (S : ValuationSubring F) {Y : Scheme.{0}} [Y.IsSeparated] {a b : Sp S ⟶ Y}
     (h : spMap S.subtype ≫ a = spMap S.subtype ≫ b) : a = b := by
@@ -63,7 +61,7 @@ theorem ext_unique {F : Type} [Field F] (S : ValuationSubring F) {Y : Scheme.{0}
   exact ext_of_isDominant _ h
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `hx.exists_right_inv`. Establish `: ‖f x‖ * ‖f y‖ = 1` using `by rw [← norm_mul, ← map_mul, hy, map_one, norm_one]`. Establish `h1` using `hf x`. Establish `h2` using `hf y`. Use polynomial arithmetic with `[norm_nonneg (f x), norm_nonneg (f y)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem norm_unit {C S : Type} [NormedField C] [CommRing S] (f : S →+* C) (hf : ∀ x, ‖f x‖ ≤ 1) {x : S}
     (hx : IsUnit x) : ‖f x‖ = 1 := by
@@ -86,13 +84,11 @@ def ball {C S : Type} [NormedField C] [IsUltrametricDist C] [CommRing S] (f : S 
     exact (mul_le_of_le_one_left (norm_nonneg _) (hf c)).trans hx
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `hI`. Choose the witnesses or unpack the hypotheses as in `⟨t, h0, h1, ht⟩ : ∃ t : ℝ, 0 ≤ t ∧ t < 1 ∧ ∀ x ∈ s, ‖f x‖ ≤ t := by`. Use `⟨(s.sup fun x => ‖f x‖₊ : NNReal), NNReal.coe_nonneg _, ?_, fun x hx => ?_⟩` and prove the remaining obligations. Establish `: (s.sup fun x => ‖f x‖₊ : NNReal) < 1` using `(Finset.sup_lt_iff (by simp)).2 fun x hx => h x (Ideal.subset_span hx)`. Conclude with `this` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Finset.le_sup (f := fun x => ‖f x‖₊) hx` after adjusting the coercions. Establish `hI : Ideal.span (s : Set S) ≤ ball f hf t h0` using `Ideal.span_le.2 ht`. Use `⟨t, h0, h1, fun n => ?_⟩` and prove the remaining obligations. Proceed by induction on `n with`. Consider the case `zero => intro x _`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Simplify using `using hf x`. Consider the case `succ n ih`. Establish `: Ideal.span (s : Set S) ^ n * Ideal.span (s : Set S) ≤ ball f hf (t ^ (n + 1)) (by positivity)` using `Ideal.mul_le.2 fun a ha b hb => by show ‖f (a * b)‖ ≤ _`. Rewrite using `[map_mul, norm_mul, pow_succ]`. Conclude with `mul_le_mul (ih a ha) (hI hb) (norm_nonneg _) (by positivity)`.
-
-Introduce `x hx`. Rewrite `hx` using `[pow_succ]`. Conclude with `this hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_radius {C S : Type} [NormedField C] [IsUltrametricDist C] [CommRing S] (f : S →+* C) (hf : ∀ x, ‖f x‖ ≤ 1)
     (I : Ideal S) (hI : I.FG) (h : ∀ x ∈ I, ‖f x‖ < 1) :
@@ -119,11 +115,11 @@ theorem exists_radius {C S : Type} [NormedField C] [IsUltrametricDist C] [CommRi
     exact this hx
 
 /- English proof (translation)
-Establish `pos : ∀ χ, 0 < ‖(N.ψ χ : C)‖` using `fun χ => norm_pos_iff.2 (N.ψ χ).ne_zero`. Set `f : N.X → ℝ` to `fun χ => -Real.log ‖(N.ψ χ : C)‖`. Establish `ef : ∀ χ, ‖(N.ψ χ : C)‖ = Real.exp (-f χ)` using `fun χ => by simp [f, Real.exp_log (pos χ)]`. Establish `f0 : f 0 = 0` using `by simp [f, N.ψ_zero]`. Establish `he : ∀ x, f (-x) = f x` using `fun x => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (fun u : Cˣ => ‖(u : C)‖) (N.even x)` as an intermediate fact. Simplify using `only [Units.val_mul, norm_mul, hσ, _root_.mul_one] at this`. Simplify using `only [f, this]`. Establish `hc : HasConstSecondDiff f` using `(hasConstSecondDiff_iff f).2 fun a b c => by`. Use `congrArg (fun u : Cˣ => ‖(u : C)‖) (N.bimult a b c)` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Units.val_mul, Units.val_div_eq_div_val, norm_mul, norm_div, hθ, _root_.mul_one, ef, ← Real.exp_sub, ← Real.exp_add, Real.exp_eq_exp] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨hc.quadraticMap he, hθ, hσ, hth, fun χ => by simp [f0, ef], ?_⟩` and prove the remaining obligations. Establish `: Filter.Tendsto f Filter.cofinite Filter.atTop` using `Filter.tendsto_neg_atBot_atTop.comp (Real.tendsto_log_nhdsGT_zero.comp (tendsto_nhdsWithin_iff.2 ⟨hψ, Filter.Eventually.of_forall pos⟩))`. Conclude with `this.congr fun χ => by simp [f0]`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_int {C : Type} [NormedField C] (N : NumD C) (hθ : ∀ x y u, ‖(N.θ x y u : C)‖ = 1)
     (hσ : ∀ x, ‖(N.σ x : C)‖ = 1) (hth : ∀ x, ‖N.th x‖ ≤ 1)
@@ -152,7 +148,7 @@ variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F
   {N : NumD F} {ν : NumOf D F N} {S : ValuationSubring F}
 
 /- English proof (translation)
-Use `D.P.isAb.proper` as an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite using `[← terminal.comp_from D.P.A.hom]`. Use `infer_instance`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSeparated_left (D : DegPre R) : D.P.A.left.IsSeparated := by
   have := D.P.isAb.proper
@@ -161,7 +157,7 @@ theorem isSeparated_left (D : DegPre R) : D.P.A.left.IsSeparated := by
   infer_instance
 
 /- English proof (translation)
-Take `⟨x₁, e, h₁⟩` from `hI (Over.homMk (spMap S.subtype ≫ x₀) h)`. Use `isSeparated_left D` as an intermediate fact. Take `rfl : x₁ = x₀` from `ext_unique S e`. Conclude with `h₁`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem le_chart (hI : ν.Integral S) (x₀ : Sp S ⟶ D.P.A.left)
     (h : (spMap S.subtype ≫ x₀) ≫ D.P.A.hom = (TF (R := R) F).hom) :
@@ -172,7 +168,7 @@ theorem le_chart (hI : ν.Integral S) (x₀ : Sp S ⟶ D.P.A.left)
   exact h₁
 
 /- English proof (translation)
-Introduce `y hy` and use `Set.mem_iInter.2 fun k => by have := le_chart hI (r₀ ≫ φ k) (by simpa only [Category.assoc] using h k) hy rw [← Category.assoc] at this exact this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_wchart (hI : ν.Integral S) {Y : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Y ⟶ D.P.A.left))
     (r₀ : Sp S ⟶ Y) (h : ∀ k, (spMap S.subtype ≫ r₀) ≫ φ k ≫ D.P.A.hom = (TF (R := R) F).hom) :
@@ -183,7 +179,7 @@ theorem le_wchart (hI : ν.Integral S) {Y : Scheme.{0}} {K : Type} [Fintype K] (
     exact this
 
 /- English proof (translation)
-Take `⟨x₁, e, -⟩` from `hI x`. Use `⟨Over.homMk x₁ (ext_unique S ?_), Over.OverMorphism.ext e⟩` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ D.P.A.hom) e).trans ((Over.w x).trans hg.symm))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_ext (hI : ν.Integral S) (g : R →+* S) (hg : spMap S.subtype ≫ spMap g = (TF (R := R) F).hom)
     (x : TF (R := R) F ⟶ D.P.A) :
@@ -199,7 +195,7 @@ variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {C : Type} [NormedF
   {N : NumD C} {ν : NumOf D C N} {S : ValuationSubring C}
 
 /- English proof (translation)
-Substitute `e` using the available equality. Use `(congrArg norm (valF_comp S.subtype r₀ _ (le_wchart hI φ r₀ h) _)).trans ?_` and prove the remaining obligations. Conclude with `norm_unit S.subtype (fun x => (hS _).1 x.2) ((Units.isUnit _).map _)`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem norm_vF (hS : ∀ x, x ∈ S ↔ ‖x‖ ≤ 1) (hI : ν.Integral S) {Y : Scheme.{0}} {K : Type} [Fintype K]
     {φ : K → (Y ⟶ D.P.A.left)} {ε : K → ℤ} (t : LB.Gen (LB.LinComb D.P.L φ ε)) (r : Sp C ⟶ Y)
@@ -210,7 +206,7 @@ theorem norm_vF (hS : ∀ x, x ∈ S ↔ ‖x‖ ≤ 1) (hI : ν.Integral S) {Y 
   exact norm_unit S.subtype (fun x => (hS _).1 x.2) ((Units.isUnit _).map _)
 
 /- English proof (translation)
-Substitute `e` using the available equality. Use `(congrArg norm (valF_comp S.subtype r₀ _ (le_wchart hI φ r₀ h) _)).trans_le ?_` and prove the remaining obligations. Conclude with `(hS _).1 (Subtype.prop _)`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem norm_sF (hS : ∀ x, x ∈ S ↔ ‖x‖ ≤ 1) (hI : ν.Integral S) {Y : Scheme.{0}} {K : Type} [Fintype K]
     {φ : K → (Y ⟶ D.P.A.left)} {ε : K → ℤ} (s : LB.Sec (LB.LinComb D.P.L φ ε)) (r : Sp C ⟶ Y)
@@ -221,21 +217,19 @@ theorem norm_sF (hS : ∀ x, x ∈ S ↔ ‖x‖ ≤ 1) (hI : ν.Integral S) {Y 
   exact (hS _).1 (Subtype.prop _)
 
 /- English proof (translation)
-Establish `h0 : 0 ≤ t` using `by simpa using ht 0 J.zero_mem`. Establish `e : spMap S.subtype ≫ spMap g ≫ (D.c χ).left = jFK (R` using `R) C ≫ D.xK χ := by`. Rewrite using `[← Category.assoc, hg]`. Conclude with `Category.assoc _ _ _`. Establish `h1` using `le_chart hI (spMap g ≫ (D.c χ).left) (by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `w : (D.c χ).left ≫ D.P.A.hom = 𝟙 _` using `Over.w (D.c χ)`. Rewrite using `[Category.assoc, Category.assoc, w]`. Conclude with `(congrArg (spMap S.subtype ≫ ·) (Category.comp_id _)).trans hg)`. Rewrite `h1` using `[e]`. Take `⟨_, ⟨V, hV, rfl⟩, hm, hle⟩` from `(Sp R).isBasis_affineOpens.exists_subset_of_mem_open (a := spMap g (IsLocalRing.closedPoint S)) (u := ((D.c χ).left ⁻¹ᵁ D.P.L.U (ν.J (jFK (R := R) C ≫ D.xK χ)) : (Sp R).Opens)) (h1 (Set.mem_univ _)) (TopologicalSpace.Opens.isOpen _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hV0 : ⊤ ≤ spMap g ⁻¹ᵁ V` using `((IsLocalRing.closed_point_mem_iff (U := spMap g ⁻¹ᵁ V)).1 hm).ge`. Establish `hle' : jK R ⁻¹ᵁ V ≤ (LB.LinComb D.P.L (K` using `PUnit) (fun _ => D.xK χ) (fun _ => -1)).U (fun _ => ν.J (jFK (R := R) C ≫ D.xK χ)) := fun y hy => Set.mem_iInter.2 fun k => hle hy`. Take `⟨r, hr, er⟩` from `hJ (fun _ => ν.J (jFK (R := R) C ≫ D.xK χ)) V hV hle hle'`. Establish `hV1` using `le_comp S.subtype _ _ hV0`. Establish `hV2 : ⊤ ≤ (jFK (R` using `R) C ≫ jK R) ⁻¹ᵁ V := by rw [hg] at hV1; exact hV1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW : ⊤ ≤ jFK (R` using `R) C ⁻¹ᵁ LB.wchart D.P.L (K := PUnit) (fun _ => D.xK χ) (fun _ => ν.J (jFK (R := R) C ≫ D.xK χ)) := fun y hy => hle' (hV2 hy)`. Establish `key : vF (D.psi χ) (jFK (R` using `R) C) ν.J = S.subtype (evR (spMap g) V hV0 r) := by`. Rewrite using `[← valF_comp, hg]`. Use `(valF_eq _ _ hW _).trans (Eq.trans ?_ (valF_eq _ _ hV2 r).symm)` and prove the remaining obligations. Establish `a1 : (jFK (R` using `R) C ≫ jK R).appLE V ⊤ hV2 = (jK R).app V ≫ (jFK (R := R) C).appLE (jK R ⁻¹ᵁ V) ⊤ hV2 := Scheme.Hom.comp_appLE _ _ _ _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2` using `(jFK (R := R) C).map_appLE (U := jK R ⁻¹ᵁ V) (V := ⊤) hV2 (homOfLE hle').op`. Establish `a3` using `congrArg (fun q => q.hom ((D.psi χ).s fun _ => ν.J (jFK (R := R) C ≫ D.xK χ)).val) a2`. Establish `a4` using `congrArg (fun q => q.hom r) a1`. Use `congrArg (Scheme.ΓSpecIso (CommRingCat.of C)).hom.hom (a3.symm.trans (Eq.trans ?_ a4.symm))` and prove the remaining obligations. Conclude with `congrArg ((jFK (R := R) C).appLE (jK R ⁻¹ᵁ V) ⊤ hV2).hom er.symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[key]`. Establish `: J.map (DegPre.toOpen V) ≤ ball (S.subtype.comp (evR (spMap g) V hV0)) (fun x => (hS _).1 (Subtype.prop _)) t h0` using `Ideal.map_le_iff_le_comap.2 fun x hx => by`. Establish `: evR (spMap g) V hV0 (DegPre.toOpen V x) = g x`. Establish `a2` using `(spMap g).map_appLE hV0 (homOfLE (le_top : V ≤ ⊤)).op`. Establish `a3` using `congrArg (fun q => q.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom x)) a2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(congrArg (Scheme.ΓSpecIso (CommRingCat.of S)).hom.hom a3).trans ?_` and prove the remaining obligations. Establish `n` using `congrArg (fun q => q.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom x)) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom g))`. Rewrite `n` using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Use `n.trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
-
-Use `show ‖S.subtype (evR (spMap g) V hV0 (DegPre.toOpen V x))‖ ≤ t`. Rewrite using `[this]`. Conclude with `ht x hx`. Conclude with `this hr`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_psi [IsUltrametricDist C] (hS : ∀ x, x ∈ S ↔ ‖x‖ ≤ 1) (hI : ν.Integral S) (g : R →+* S)
     (hg : spMap S.subtype ≫ spMap g = (TF (R := R) C).hom) (χ : D.X) (J : Ideal R) (hJ : D.PsiIn χ J) (t : ℝ)
@@ -288,19 +282,17 @@ theorem norm_psi [IsUltrametricDist C] (hS : ∀ x, x ∈ S ↔ ‖x‖ ≤ 1) (
 end Norm
 
 /- English proof (translation)
-Introduce `R _ _ _ I hR D C _ _ _ hC N ν ⟨S, hS, hI⟩`. Set `f : R →+* C` to `(algebraMap (FractionRing R) C).comp (algebraMap R _)`. Set `g : R →+* S` to `f.codRestrict S fun x => (hS _).2 (hC.1 x)`. Establish `hg : spMap S.subtype ≫ spMap g = (TF (R` using `R) C).hom := by show Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hrig : ‖vF (L` using `D.toPre.P.L) (φ := fun _ : PUnit => eSec D.toPre.P.A) (ε := fun _ => 1) D.toPre.rig (TF (R := R) C).hom ν.J‖ = 1 := norm_vF hS hI _ _ (spMap g) hg fun _ => (congrArg ((TF (R := R) C).hom ≫ ·) (Over.w η[D.toPre.P.A])).trans (Category.comp_id _)`. Use `exists_int N (fun x y u => ?_) (fun x => ?_) (fun x => ?_) ?_` and prove the remaining obligations. Take `⟨x₀, hx⟩` from `exists_ext hI g hg (ν.eA x)`. Take `⟨y₀, hy⟩` from `exists_ext hI g hg (ν.eA y)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u₀, hu⟩` from `exists_ext hI g hg (ν.eA u)`. Rewrite using `[ν.θ_eq]`. Use `norm_vF hS hI _ _ (lift x₀ (lift y₀ u₀)).left ?_ fun k => ?_` and prove the remaining obligations. Rewrite using `[← hx, ← hy, ← hu, ← comp_lift, ← comp_lift]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `(congrArg (_ ≫ ·) (Over.w _)).trans (Over.w _)`. Take `⟨x₀, hx⟩` from `exists_ext hI g hg (ν.eA x)`. Rewrite using `[ν.σ_eq]`. Use `norm_vF hS hI _ _ x₀.left (congrArg CommaMorphism.left hx) fun k => ?_` and prove the remaining obligations. Use `fin_cases k`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(congrArg (_ ≫ ·) (Over.w ι[D.toPre.P.A])).trans (Over.w _)`. Conclude with `(congrArg (_ ≫ ·) (Category.id_comp _)).trans (Over.w _)`. Take `⟨x₀, hx⟩` from `exists_ext hI g hg (ν.eA x)`. Use `congrArg norm (ν.th_eq x)` as an intermediate fact. Rewrite `this` using `[norm_mul, hrig, _root_.mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this]`. Conclude with `norm_sF hS hI _ _ x₀.left (congrArg CommaMorphism.left hx) fun k => (congrArg (_ ≫ ·) (Category.id_comp _)).trans (Over.w _)`. Use `hR.1` as an intermediate fact. Take `⟨t, h0, h1, ht⟩` from `exists_radius f hC.1 I (IsNoetherian.noetherian I) hC.2`. Use `Metric.tendsto_nhds.2 fun δ hδ => ?_` and prove the remaining obligations.
-
-Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one hδ h1`. Use `Filter.eventually_cofinite.2 (((D.psi_tendsto n).preimage ν.eX.injective.injOn).subset fun χ hχ h => hχ ?_)` and prove the remaining obligations. Rewrite using `[dist_zero_right, norm_norm, ν.ψ_eq, norm_mul, hrig, _root_.mul_one]`. Conclude with `(norm_psi hS hI g hg _ _ h _ (ht n)).trans_lt hn`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (I : Ideal R), AdmBase R I → ∀ (D : DegData R I) (C : Type) [NormedField C] [IsUltrametricDist C] [Algebra (FractionRing R) C], CExt R I C → ∀ (N : NumD C) (ν : NumOf D.toPre C N), ν.IntN → ∃ q, N.Int q := by
   intro R _ _ _ I hR D C _ _ _ hC N ν ⟨S, hS, hI⟩

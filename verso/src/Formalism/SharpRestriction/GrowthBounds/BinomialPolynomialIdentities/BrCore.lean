@@ -10,21 +10,21 @@ namespace Formalism.MainNotions.G.ColumnFamilies
 
 section B1
 /- English proof (translation)
-The claim follows from `Formalism.InvariantFactorPaths.ColumnFamilies.Top.lemmaA`.
+A detailed English derivation is pending.
 -/
 theorem path_pair_correspondence (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.CovariantDegrees.PathPairCorrespondence D := Formalism.InvariantFactorPaths.ColumnFamilies.Top.lemmaA
 end B1
 
 section B2
 /- English proof (translation)
-The claim follows from `Formalism.InvariantFactorPaths.ColumnFamilies.Top.sBasis`.
+A detailed English derivation is pending.
 -/
 theorem admissible_standard_basis (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.CovariantDegrees.admB2 D := Formalism.InvariantFactorPaths.ColumnFamilies.Top.sBasis
 end B2
 
 section B9
 /- English proof (translation)
-Introduce `n _ mu R _ _ hR` and use `Formalism.InvariantFactorPaths.ColumnFamilies.highest_weight_corollary_one n mu R hR`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem global_sections_schur (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.CovariantDegrees.GlobalSectionsSchur D := fun n _ mu R _ _ hR =>
   Formalism.InvariantFactorPaths.ColumnFamilies.highest_weight_corollary_one n mu R hR
@@ -32,7 +32,7 @@ end B9
 
 section lowerOffDiagonalCoeff
 /- English proof (translation)
-Introduce `n _ mu hmu` and use `Formalism.InvariantFactorPaths.ColumnFamilies.highest_weight_corollary_two n mu hmu`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem bracket_polynomial_span (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.CovariantDegrees.BracketPolynomialSpan D := fun n _ mu hmu =>
   Formalism.InvariantFactorPaths.ColumnFamilies.highest_weight_corollary_two n mu hmu
@@ -57,9 +57,7 @@ end Mod
 
 section B6
 /- English proof (translation)
-Introduce `n _`. Take `⟨h1, h2, h3⟩` from `Formalism.InvariantFactorPaths.ColumnFamilies.Top.closure_first_part n`. Use `⟨fun M hc hA => ?_, fun M mu β hmu hS => ?_, fun M M' ε hε e he hM => ?_⟩` and prove the remaining obligations. Conclude with `(h1 (br_toC M) hc hA).map br_cfOfC`. Conclude with `(h2 (br_toC M) mu β hmu hS).map br_cfOfC`.
-
-Conclude with `(h3 (br_toC M) (br_toC M') ε hε e he (hM.map br_cfToC)).map br_cfOfC`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem column_family_closure (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.CovariantDegrees.ColumnFamilyClosure D := by
   intro n _

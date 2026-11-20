@@ -15,27 +15,25 @@ variable {Γ V S : Type} [Group Γ] [NormedAddCommGroup V] [NormedSpace ℝ V] {
 end
 
 /- English proof (translation)
-Introduce `Γ V S _ _ _ d G u hu q`. Establish `hu'` using `hu`. Take `⟨hsm, hfin, hone⟩` from `hu`. Establish `hfs : ∀ (c : Γ → G.Om q) s p, Function.HasFiniteSupport (fun g => u (G.σ g⁻¹ s) (G.ρ g⁻¹ p) • (c g).1 s p)`. Introduce `c s p`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hp : p ∈ G.Y`. Take `⟨N, hN, hNfin⟩` from `hfin s p hp`. Use `hNfin.subset ?_` and prove the remaining obligations. Introduce `g hg`. Use `⟨p, mem_of_mem_nhds hN, ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h0`. Apply `hg` to reduce the goal to its premises. Simplify using `only [h0, zero_smul]`. Use `Set.finite_empty.subset ?_` and prove the remaining obligations. Introduce `g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hg` to reduce the goal to its premises. Simplify using `only [((c g).2 _).2 _ hp, smul_zero]`. Set `A : (Γ → G.Om q) →ₗ[ℂ] G.Om q` to `{ toFun := fun c => ⟨fun s p => ∑ᶠ γ, u (G.σ γ⁻¹ s) (G.ρ γ⁻¹ p) • (c γ).1 s p, avgMem Γ V S d G u hu' q c⟩ map_add' := by`. Introduce `a b`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `s p`. Use `show ∑ᶠ γ, u (G.σ γ⁻¹ s) (G.ρ γ⁻¹ p) • (a γ + b γ).1 s p = ∑ᶠ γ, u (G.σ γ⁻¹ s) (G.ρ γ⁻¹ p) • (a γ).1 s p + ∑ᶠ γ, u (G.σ γ⁻¹ s) (G.ρ γ⁻¹ p) • (b γ).1 s p`. Simplify using `only [Submodule.coe_add, Pi.add_apply, smul_add]`. Conclude with `finsum_add_distrib (hfs a s p) (hfs b s p)`. Use the proof step `map_smul' := by`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `z a`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `s p`. Use `show ∑ᶠ γ, u (G.σ γ⁻¹ s) (G.ρ γ⁻¹ p) • (z • a γ).1 s p = z • ∑ᶠ γ, u (G.σ γ⁻¹ s) (G.ρ γ⁻¹ p) • (a γ).1 s p`. Establish `hm` using `map_finsum (DistribMulAction.toAddMonoidHom (V [⋀^Fin q]→L[ℝ] (Fin d → ℂ)) z) (hfs a s p)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [DistribMulAction.toAddMonoidHom_apply] at hm`. Rewrite using `[hm]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Simplify using `only [Submodule.coe_smul, Pi.smul_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[smul_comm] }`. Use `⟨A, ?_, ?_⟩` and prove the remaining obligations. Introduce `x`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `s p`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `show ∑ᶠ γ, u (G.σ γ⁻¹ s) (G.ρ γ⁻¹ p) • x.1 s p = x.1 s p`. Distinguish the cases in `hp : p ∈ G.Y`. Rewrite using `[← finsum_smul, hone s p hp, one_smul]`. Establish `hx0 : x.1 s p = 0` using `(x.2 s).2 p hp`. Simplify using `[hx0]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Introduce `γ c`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `s p`. Use `show G.tr q γ (∑ᶠ g, u (G.σ g⁻¹ (G.σ γ⁻¹ s)) (G.ρ g⁻¹ (G.ρ γ⁻¹ p)) • (c g).1 (G.σ γ⁻¹ s) (G.ρ γ⁻¹ p)) = ∑ᶠ g, u (G.σ g⁻¹ s) (G.ρ g⁻¹ p) • G.tr q γ ((c (γ⁻¹ * g)).1 (G.σ γ⁻¹ s) (G.ρ γ⁻¹ p))`. Rewrite using `[map_finsum (G.tr q γ) (hfs c _ _)]`.
-
-Use `conv_rhs => rw [← finsum_comp_equiv (Equiv.mulLeft γ)]`. Use `congr 1`. Use function extensionality and compare the values at `h`. Simplify using `[_root_.mul_inv_rev, map_mul, Equiv.Perm.mul_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem average : Average := by
   intro Γ V S _ _ _ d G u hu q

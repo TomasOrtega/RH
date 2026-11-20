@@ -9,19 +9,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.SpecPi
 
 /- English proof (translation)
-Introduce `R _ n D _ _`. Set `S` to `sigmaSpec (fun i => CommRingCat.of (D i))`. Establish `hS : ∀ i, Sigma.ι (fun i => Spec (CommRingCat.of (D i))) i ≫ S = spMap (Pi.evalRingHom D i)` using `fun i => ι_sigmaSpec _ i`. Establish `hinv : ∀ y, (inv S) (S y) = y` using `fun y => by`. Rewrite using `[← Scheme.Hom.comp_apply, IsIso.hom_inv_id]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hsurj : ∀ x, S ((inv S) x) = x` using `fun x => by`. Rewrite using `[← Scheme.Hom.comp_apply, IsIso.inv_hom_id]`. Both sides reduce to the same expression. Use `⟨fun i => (spMap (Pi.evalRingHom D i)).opensRange, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[eq_top_iff]`. Introduce and unpack `x -`. Establish `hcov : ∀ y : ↥(∐ fun i => Spec (CommRingCat.of (D i))), ∃ k, ∃ z : Sp (D k), (Sigma.ι (fun i => Spec (CommRingCat.of (D i))) k) z = y` using `fun y => ⟨_, (sigmaOpenCover (fun i => Spec (CommRingCat.of (D i)))).covers y⟩`. Take `⟨k, z, hz⟩` from `hcov ((inv S) x)`. Rewrite using `[TopologicalSpace.Opens.mem_iSup]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨k, z, ?_⟩` and prove the remaining obligations. Rewrite using `[← hS k, Scheme.Hom.comp_apply, hz, hsurj]`. Introduce `i j hij`. Rewrite using `[disjoint_iff, eq_bot_iff]`. Introduce and unpack `x ⟨⟨a, ha⟩, ⟨b, hb⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite `ha`, `hb` using `[← hS, Scheme.Hom.comp_apply]`. Establish `e` using `congrArg (inv S) (ha.trans hb.symm)`. Rewrite `e` using `[hinv, hinv]`. Take `⟨rfl⟩` from `(sigmaι_eq_iff _ _ _ _ _).mp e`. Conclude with `absurd rfl hij`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Use `⟨Over.isoMk (spMap (Pi.evalRingHom D i)).isoOpensRange.symm ?_⟩` and prove the remaining obligations. Simplify using `only [Over.mk_hom, Iso.symm_hom]`. Rewrite using `[← Scheme.Hom.isoOpensRange_inv_comp, Category.assoc]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem specPi_cover : ∀ (R : Type) [CommRing R] (n : ℕ) (D : Fin n → Type) [∀ i, CommRing (D i)] [∀ i, Algebra R (D i)], ∃ V : Fin n → (Sp (∀ i, D i)).Opens, (⨆ i, V i = ⊤) ∧ (Pairwise fun i i' => Disjoint (V i) (V i')) ∧ ∀ i, Nonempty (Over.mk ((V i).ι ≫ spMap (algebraMap R (∀ i, D i))) ≅ Over.mk (spMap (algebraMap R (D i)))) := by
   intro R _ n D _ _

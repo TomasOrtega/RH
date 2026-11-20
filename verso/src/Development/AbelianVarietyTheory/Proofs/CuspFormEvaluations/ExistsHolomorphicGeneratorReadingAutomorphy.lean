@@ -16,7 +16,7 @@ open ReciprocityTheory.ChartRestriction.G.TB.ValAt
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.prod_insert ha]`. Conclude with `(h a).mul ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiableAt_prod {E K : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (s : Finset K)
     (f : K → E → ℂ) (z : E) (h : ∀ k, DifferentiableAt ℂ (f k) z) :
@@ -29,7 +29,7 @@ theorem differentiableAt_prod {E K : Type} [NormedAddCommGroup E] [NormedSpace �
     exact (h a).mul ih
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h p`. Conclude with `h (show p ∈ (⊤ : (Sp ℂ).Opens) from trivial)`. Introduce `h p _`. Conclude with `h p`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem preimage_eq_univ_iff_forall_mem {W : Scheme.{0}} (x : Sp ℂ ⟶ W) (U : W.Opens) :
     ⊤ ≤ x ⁻¹ᵁ U ↔ ∀ p, x p ∈ U := by
@@ -44,9 +44,9 @@ section LC
 variable {X Y : Scheme.{0}} (L : LB X) {K : Type} [Fintype K]
 
 /- English proof (translation)
-Simplify using `only [preimage_eq_univ_iff_forall_mem]`. Unfold `LB.wchart`. Prove the components needed by the constructor for the conclusion. Introduce `h k p`. Conclude with `Set.mem_iInter.1 (h p) k`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h p`. Conclude with `Set.mem_iInter.2 fun k => h k p`.
+A detailed English derivation is pending.
 -/
 theorem top_le_wchart_iff (φ : K → (Y ⟶ X)) (j : K → L.ι) (x : Sp ℂ ⟶ Y) :
     ⊤ ≤ x ⁻¹ᵁ LB.wchart L φ j ↔ ∀ k, ⊤ ≤ (x ≫ φ k) ⁻¹ᵁ L.U (j k) := by
@@ -59,7 +59,7 @@ theorem top_le_wchart_iff (φ : K → (Y ⟶ X)) (j : K → L.ι) (x : Sp ℂ �
     exact Set.mem_iInter.2 fun k => h k p
 
 /- English proof (translation)
-Rewrite `h`, `h'`, the goal using `[preimage_eq_univ_iff_forall_mem]`. Introduce `p`. Conclude with `TopologicalSpace.Opens.mem_inf.2 ⟨h p, h' p⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem top_le_inf {x : Sp ℂ ⟶ Y} {U V : Y.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) (h' : ⊤ ≤ x ⁻¹ᵁ V) :
     ⊤ ≤ x ⁻¹ᵁ (U ⊓ V) := by
@@ -68,7 +68,7 @@ theorem top_le_inf {x : Sp ℂ ⟶ Y} {U V : Y.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U)
   exact TopologicalSpace.Opens.mem_inf.2 ⟨h p, h' p⟩
 
 /- English proof (translation)
-Rewrite using `[Units.coe_prod]`. Conclude with `map_prod (valHom x U h) _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_prod (x : Sp ℂ ⟶ Y) (U : Y.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (u : K → Γ(Y, U)ˣ) :
     valAt' x U (∏ k, u k).val = ∏ k, valAt' x U (u k).val := by
@@ -76,9 +76,9 @@ theorem val_prod (x : Sp ℂ ⟶ Y) (U : Y.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (u 
   exact map_prod (valHom x U h) _ _
 
 /- English proof (translation)
-Unfold `valAt'`. Distinguish the cases in `h : ⊤ ≤ x ⁻¹ᵁ (ψ ⁻¹ᵁ U)`. Establish `h' : ⊤ ≤ (x ≫ ψ) ⁻¹ᵁ U` using `h`. Rewrite using `[dif_pos h, dif_pos h']`. Unfold `valAt`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[Scheme.Hom.comp_appLE]`. Both sides reduce to the same expression. Establish `h' : ¬ ⊤ ≤ (x ≫ ψ) ⁻¹ᵁ U` using `h`. Rewrite using `[dif_neg h, dif_neg h']`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem valAt'_app_hom_eq_valAt'_comp {W V : Scheme.{0}} (x : Sp ℂ ⟶ V) (ψ : V ⟶ W) (U : W.Opens) (f : Γ(W, U)) :
     valAt' x (ψ ⁻¹ᵁ U) ((ψ.app U).hom f) = valAt' (x ≫ ψ) U f := by
@@ -93,7 +93,7 @@ private theorem valAt'_app_hom_eq_valAt'_comp {W V : Scheme.{0}} (x : Sp ℂ ⟶
     rw [dif_neg h, dif_neg h']
 
 /- English proof (translation)
-Unfold `pullU`. Rewrite using `[Units.coe_map]`. Conclude with `valAt'_app_hom_eq_valAt'_comp x ψ U u.val`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem valAt'_pullU_eq_valAt'_comp {W V : Scheme.{0}} (x : Sp ℂ ⟶ V) (ψ : V ⟶ W) (U : W.Opens) (u : Γ(W, U)ˣ) :
     valAt' x (ψ ⁻¹ᵁ U) (pullU ψ U u).val = valAt' (x ≫ ψ) U u.val := by
@@ -102,7 +102,7 @@ private theorem valAt'_pullU_eq_valAt'_comp {W V : Scheme.{0}} (x : Sp ℂ ⟶ V
   exact valAt'_app_hom_eq_valAt'_comp x ψ U u.val
 
 /- English proof (translation)
-Unfold `res`. Rewrite using `[Units.coe_map]`. Conclude with `valAt'_res x hVU h u.val`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem valAt'_res_unit_eq {W : Scheme.{0}} (x : Sp ℂ ⟶ W) {U V : W.Opens} (hVU : V ≤ U) (h : ⊤ ≤ x ⁻¹ᵁ V)
     (u : Γ(W, U)ˣ) : valAt' x V (res hVU u).val = valAt' x U u.val := by
@@ -111,7 +111,7 @@ private theorem valAt'_res_unit_eq {W : Scheme.{0}} (x : Sp ℂ ⟶ W) {U V : W.
   exact valAt'_res x hVU h u.val
 
 /- English proof (translation)
-Establish `e` using `congrArg Units.val (map_zpow (Units.map (valHom x U h).toMonoidHom) u n)`. Rewrite `e` using `[Units.coe_map, Units.val_zpow_eq_zpow_val, Units.coe_map]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem valAt'_unit_zpow' {W : Scheme.{0}} (x : Sp ℂ ⟶ W) (U : W.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (u : Γ(W, U)ˣ)
     (n : ℤ) : valAt' x U (u ^ n).val = valAt' x U u.val ^ n := by
@@ -120,9 +120,9 @@ private theorem valAt'_unit_zpow' {W : Scheme.{0}} (x : Sp ℂ ⟶ W) (U : W.Ope
   exact e
 
 /- English proof (translation)
-Unfold `LB.LinComb`. Simplify using `only`. Rewrite using `[val_prod p _ h]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[valAt'_unit_zpow' p _ h]`.
+Replace the relevant objects with their definitions. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `(valAt'_res_unit_eq p _ h _).trans (valAt'_pullU_eq_valAt'_comp p (φ k) (L.U (j k) ⊓ L.U (j' k)) (L.g (j k) (j' k)))`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem val_linComb_g (φ : K → (Y ⟶ X)) (ε : K → ℤ) (p : Sp ℂ ⟶ Y) (j j' : K → L.ι)
     (h : ⊤ ≤ p ⁻¹ᵁ (LB.wchart L φ j ⊓ LB.wchart L φ j')) :
@@ -137,9 +137,9 @@ theorem val_linComb_g (φ : K → (Y ⟶ X)) (ε : K → ℤ) (p : Sp ℂ ⟶ Y)
   exact (valAt'_res_unit_eq p _ h _).trans (valAt'_pullU_eq_valAt'_comp p (φ k) (L.U (j k) ⊓ L.U (j' k)) (L.g (j k) (j' k)))
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun u => valAt' p (LB.wchart L φ j ⊓ LB.wchart L φ j') (Units.val u)) (ht j j')`. Simplify using `only [Units.val_mul] at e`. Establish `e1` using `valAt'_res_unit_eq p (inf_le_left : LB.wchart L φ j ⊓ LB.wchart L φ j' ≤ LB.wchart L φ j) h (t.s j)`. Establish `e2` using `valAt'_res_unit_eq p (inf_le_right : LB.wchart L φ j ⊓ LB.wchart L φ j' ≤ LB.wchart L φ j') h (t.s j')`. Establish `e3` using `val_linComb_g L φ ε p j j' h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `e1.symm.trans (e.trans ((valAt'_mul _ _ _ _).trans (congrArg₂ (· * ·) e3 e2)))`.
+A detailed English derivation is pending.
 -/
 theorem val_isGen (φ : K → (Y ⟶ X)) (ε : K → ℤ) (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen)
     (p : Sp ℂ ⟶ Y) (j j' : K → L.ι) (h : ⊤ ≤ p ⁻¹ᵁ (LB.wchart L φ j ⊓ LB.wchart L φ j')) :
@@ -154,9 +154,9 @@ theorem val_isGen (φ : K → (Y ⟶ X)) (ε : K → ℤ) (t : LB.Gen (LB.LinCom
   exact e1.symm.trans (e.trans ((valAt'_mul _ _ _ _).trans (congrArg₂ (· * ·) e3 e2)))
 
 /- English proof (translation)
-Establish `hp : ∀ k, ∃ i, (x ≫ φ k) (default : PrimeSpectrum ℂ) ∈ L.U i` using `fun k => by`. Establish `h0 : (x ≫ φ k) (default : PrimeSpectrum ℂ) ∈ (⨆ i, L.U i)`. Rewrite using `[hL.cover]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `TopologicalSpace.Opens.mem_iSup.1 h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose j hj using hp`. Use `⟨j, (top_le_wchart_iff L φ j x).2 fun k => (preimage_eq_univ_iff_forall_mem _ _).2 fun p => ?_⟩` and prove the remaining obligations. Rewrite using `[Subsingleton.elim (α := PrimeSpectrum ℂ) p default]`. Conclude with `hj k`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_chart (hL : L.IsLB) (φ : K → (Y ⟶ X)) (x : Sp ℂ ⟶ Y) :
     ∃ j : K → L.ι, ⊤ ≤ x ⁻¹ᵁ LB.wchart L φ j := by
@@ -178,7 +178,7 @@ variable {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : RigLB A} {x0 : Sp ℂ ⟶
   {Z : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Z ⟶ A.left)) (ε : K → ℤ) (t : LB.Gen (LB.LinComb L.L φ ε))
 
 /- English proof (translation)
-Establish `h` using `(top_le_wchart_iff L.L φ j q).1 hj k`. Rewrite `h` using `[hq k]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem top_le_chart {q : Sp ℂ ⟶ Z} {p : K → Fin g → ℂ} (hq : ∀ k, q ≫ φ k = (Φ.e (p k)).left) {j : K → L.L.ι}
     (hj : ⊤ ≤ q ⁻¹ᵁ LB.wchart L.L φ j) (k : K) : ⊤ ≤ (Φ.e (p k)).left ⁻¹ᵁ L.L.U (j k) := by
@@ -186,7 +186,7 @@ theorem top_le_chart {q : Sp ℂ ⟶ Z} {p : K → Fin g → ℂ} (hq : ∀ k, q
   rwa [hq k] at h
 
 /- English proof (translation)
-Use `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ ?_` and prove the remaining obligations. Conclude with `Φ.fr_ne _ _ (top_le_chart Φ φ hq hj k)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem prod_fr_ne {q : Sp ℂ ⟶ Z} {p : K → Fin g → ℂ} (hq : ∀ k, q ≫ φ k = (Φ.e (p k)).left) {j : K → L.L.ι}
     (hj : ⊤ ≤ q ⁻¹ᵁ LB.wchart L.L φ j) : ∏ k, Φ.fr (j k) (p k) ^ ε k ≠ 0 := by
@@ -194,9 +194,9 @@ theorem prod_fr_ne {q : Sp ℂ ⟶ Z} {p : K → Fin g → ℂ} (hq : ∀ k, q �
   exact Φ.fr_ne _ _ (top_le_chart Φ φ hq hj k)
 
 /- English proof (translation)
-Use `⟨hq, fun j hj => ?_⟩` and prove the remaining obligations. Establish `hg : ∀ k, valAt' (q ≫ φ k) (L.L.U (j k) ⊓ L.L.U (j' k)) (L.L.g (j k) (j' k)).val = Φ.fr (j k) (p k) / Φ.fr (j' k) (p k)` using `fun k => by`. Rewrite using `[hq k, eq_div_iff (Φ.fr_ne _ _ (top_le_chart Φ φ hq hj' k))]`. Conclude with `(Φ.fr_g _ _ _ (top_le_inf (top_le_chart Φ φ hq hj k) (top_le_chart Φ φ hq hj' k))).symm`. Establish `hA` using `prod_fr_ne Φ φ ε hq hj`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB` using `prod_fr_ne Φ φ ε hq hj'`. Rewrite using `[val_isGen L.L φ ε t ht q j j' (top_le_inf hj hj')]`. Simplify using `only [hg, div_zpow, Finset.prod_div_distrib]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem genRd_of_chart (ht : t.IsGen) {q : Sp ℂ ⟶ Z} {p : K → Fin g → ℂ} (hq : ∀ k, q ≫ φ k = (Φ.e (p k)).left)
     {j' : K → L.L.ι} (hj' : ⊤ ≤ q ⁻¹ᵁ LB.wchart L.L φ j') :
@@ -213,7 +213,7 @@ theorem genRd_of_chart (ht : t.IsGen) {q : Sp ℂ ⟶ Z} {p : K → Fin g → �
   field_simp
 
 /- English proof (translation)
-Rewrite using `[eq_div_iff (prod_fr_ne Φ φ ε hu.1 hj)]`. Conclude with `(hu.2 j hj).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genRd_eq {q : Sp ℂ ⟶ Z} {p : K → Fin g → ℂ} {u : ℂ} (hu : Φ.GenRd φ ε t q p u)
     {j : K → L.L.ι} (hj : ⊤ ≤ q ⁻¹ᵁ LB.wchart L.L φ j) :
@@ -222,7 +222,7 @@ theorem genRd_eq {q : Sp ℂ ⟶ Z} {p : K → Fin g → ℂ} {u : ℂ} (hu : Φ
   exact (hu.2 j hj).symm
 
 /- English proof (translation)
-The claim follows from `(u.isUnit.map (valHom x U h)).ne_zero`.
+A detailed English derivation is pending.
 -/
 private theorem valAt'_unit_val_ne_zero {W : Scheme.{0}} (x : Sp ℂ ⟶ W) (U : W.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U)
     (u : Γ(W, U)ˣ) : valAt' x U u.val ≠ 0 :=
@@ -231,23 +231,21 @@ private theorem valAt'_unit_val_ne_zero {W : Scheme.{0}} (x : Sp ℂ ⟶ W) (U :
 end Rd
 
 /- English proof (translation)
-Introduce `S A _ _ L x0 g Φ Z K _ φ ε t ht N q p hq hp hqp`. Establish `hL : L.L.IsLB` using `L.isLB`. Establish `hJ : ∀ z, ∃ j : K → L.L.ι, ⊤ ≤ q z ⁻¹ᵁ LB.wchart L.L φ j` using `fun z => exists_chart L.L hL φ (q z)`. Use `choose J hJ using hJ`. Establish `hgen : ∀ z, Φ.GenRd φ ε t (q z) (fun k => p k z) (valAt' (q z) (LB.wchart L.L φ (J z)) (t.s (J z)).val / ∏ k, Φ.fr (J z k) (p k z) ^ ε k)` using `fun z => genRd_of_chart Φ φ ε t ht (fun k => hqp z k) (hJ z)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun z => valAt' (q z) (LB.wchart L.L φ (J z)) (t.s (J z)).val / ∏ k, Φ.fr (J z k) (p k z) ^ ε k, ?_, ?_, hgen, fun z u hu => genRd_eq Φ φ ε t hu (hJ z), ?_⟩` and prove the remaining obligations. Introduce `z0`. Establish `hO` using `(hq (LB.wchart L.L φ (J z0)) (t.s (J z0)).val).1`. Establish `hz0 : z0 ∈ {z | ⊤ ≤ q z ⁻¹ᵁ LB.wchart L.L φ (J z0)}` using `hJ z0`. Establish `hnum : DifferentiableAt ℂ (fun z => valAt' (q z) (LB.wchart L.L φ (J z0)) (t.s (J z0)).val) z0` using `((hq (LB.wchart L.L φ (J z0)) (t.s (J z0)).val).2 z0 hz0).differentiableAt (hO.mem_nhds hz0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfac : ∀ k, DifferentiableAt ℂ (fun z => Φ.fr (J z0 k) (p k z) ^ ε k) z0` using `fun k => by`. Establish `hc` using `top_le_chart Φ φ (fun k => hqp z0 k) (hJ z0) k`. Establish `hO'` using `(Φ.hol (L.L.U (J z0 k)) 1).1`. Establish `hfr : DifferentiableAt ℂ (Φ.fr (J z0 k)) (p k z0)` using `(Φ.fr_hol (J z0 k) (p k z0) hc).differentiableAt (hO'.mem_nhds hc)`. Conclude with `(hfr.comp z0 ((hp k) z0)).zpow (Or.inl (Φ.fr_ne _ _ hc))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hden` using `differentiableAt_prod (Finset.univ : Finset K) (fun k z => Φ.fr (J z0 k) (p k z) ^ ε k) z0 hfac`. Establish `hne` using `prod_fr_ne Φ φ ε (fun k => hqp z0 k) (hJ z0)`. Establish `hinv : DifferentiableAt ℂ (fun z => (∏ k, Φ.fr (J z0 k) (p k z) ^ ε k)⁻¹) z0` using `hden.inv hne`. Establish `hw : DifferentiableAt ℂ (fun z => valAt' (q z) (LB.wchart L.L φ (J z0)) (t.s (J z0)).val / ∏ k, Φ.fr (J z0 k) (p k z) ^ ε k) z0`. Simplify `hnum.mul hinv` using `only [div_eq_mul_inv, Pi.mul_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hw.congr_of_eventuallyEq (Filter.eventually_of_mem (hO.mem_nhds hz0) fun z hz => ?_)` and prove the remaining obligations. Conclude with `genRd_eq Φ φ ε t (hgen z) hz`. Introduce `z`. Conclude with `div_ne_zero (valAt'_unit_val_ne_zero _ _ (hJ z) _) (prod_fr_ne Φ φ ε (fun k => hqp z k) (hJ z))`. Introduce `z z' a hzz ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz' : ⊤ ≤ q z' ⁻¹ᵁ LB.wchart L.L φ (J z)`. Rewrite using `[hzz]`. Conclude with `hJ z`. Establish `hA` using `prod_fr_ne Φ φ ε (fun k => hqp z' k) hz'`. Establish `hper : ∀ k, Φ.fr (J z k) (p k z) = Φ.fac (a k) (p k z) * Φ.fr (J z k) (p k z + a k)` using `fun k => Φ.fr_per (a k) (ha k).1 (J z k) (p k z) (top_le_chart Φ φ (fun k => hqp z k) (hJ z) k)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hC` using `prod_fr_ne Φ φ ε (fun k => hqp z k) (hJ z)`. Establish `hB : ∏ k, Φ.fac (a k) (p k z) ^ ε k ≠ 0`. Use `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ ?_` and prove the remaining obligations. Introduce `h0`. Establish `h1` using `Φ.fr_ne _ _ (top_le_chart Φ φ (fun k => hqp z k) (hJ z) k)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Rewrite `h1` using `[hper k, h0, zero_mul]`. Conclude with `h1 rfl`. Use `show valAt' (q z') (LB.wchart L.L φ (J z')) (t.s (J z')).val / ∏ k, Φ.fr (J z' k) (p k z') ^ ε k = _`. Rewrite using `[genRd_eq Φ φ ε t (hgen z') hz', hzz]`. Simplify using `only [(ha _).2] at hA ⊢`.
-
-Simplify using `only [hper, mul_zpow, Finset.prod_mul_distrib]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem exists_reading : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A] (L : RigLB A) (x0 : Sp ℂ ⟶ S) (g : ℕ) (Φ : AnFr A L x0 g), ∀ (Z : Scheme.{0}) (K : Type) [Fintype K] (φ : K → (Z ⟶ A.left)) (ε : K → ℤ) (t : LB.Gen (LB.LinComb L.L φ ε)), t.IsGen → ∀ (N : ℕ) (q : (Fin N → ℂ) → (Sp ℂ ⟶ Z)) (p : K → (Fin N → ℂ) → Fin g → ℂ), IsHolFam q → (∀ k, Differentiable ℂ (p k)) → (∀ z k, q z ≫ φ k = (Φ.e (p k z)).left) → ∃ v : (Fin N → ℂ) → ℂ, Differentiable ℂ v ∧ (∀ z, v z ≠ 0) ∧ (∀ z, Φ.GenRd φ ε t (q z) (fun k => p k z) (v z)) ∧ (∀ z u, Φ.GenRd φ ε t (q z) (fun k => p k z) u → u = v z) ∧ ∀ z z' (a : K → Fin g → ℂ), q z' = q z → (∀ k, a k ∈ Φ.lat ∧ p k z' = p k z + a k) → v z' = v z * ∏ k, Φ.fac (a k) (p k z) ^ ε k := by
   intro S A _ _ L x0 g Φ Z K _ φ ε t ht N q p hq hp hqp

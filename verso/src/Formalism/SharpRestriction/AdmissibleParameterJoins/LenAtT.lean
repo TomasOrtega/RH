@@ -6,13 +6,13 @@ namespace Formalism.MainNotions.J
 open Formalism.BasicNotions
 
 /- English proof (translation)
-Introduce `u w hw` and use `D.lenLoc_atT hAtT u w hw`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lenAtT (D : D7) (L : SizeData₂ D) (hAtT : NuAtTDef D L) : LenAtT D L :=
   fun u w hw => D.lenLoc_atT hAtT u w hw
 
 /- English proof (translation)
-Introduce `u w y hy` and use `D.locSpan u w y hy`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem locSpan (D : D7) : LocSpan D := fun u w y hy => D.locSpan u w y hy
 

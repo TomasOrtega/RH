@@ -11,9 +11,9 @@ set_option linter.unusedSectionVars false
 variable {𝕜 : Type*} [RCLike 𝕜] {n : Type*} [Fintype n] [LinearOrder n]
 
 /- English proof (translation)
-Rewrite using `[mul_apply, Finset.sum_eq_single i]`. Introduce `k _ hk`. Break down `lt_or_gt_of_ne hk with h | h` into its components or cases. Rewrite using `[hA h, zero_mul]`. Rewrite using `[hB h, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mul_apply_self_of_isUpperTriangular {A B : Matrix n n 𝕜} (hA : A.IsUpperTriangular)
     (hB : B.IsUpperTriangular) (i : n) : (A * B) i i = A i i * B i i := by
@@ -25,9 +25,9 @@ theorem mul_apply_self_of_isUpperTriangular {A B : Matrix n n 𝕜} (hA : A.IsUp
   · intro h; exact absurd (Finset.mem_univ i) h
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i j hij`. Use `h (i := j) (j := i) (OrderDual.toDual_lt_toDual.1 hij)` as an intermediate fact. Simplify `this` using `[conjTranspose_apply]`. Introduce `h i j hij`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `h (show OrderDual.toDual i < OrderDual.toDual j from hij)` as an intermediate fact. Simplify using `[conjTranspose_apply, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem isUpperTriangular_conjTranspose_iff {A : Matrix n n 𝕜} :
     Aᴴ.IsUpperTriangular ↔ A.IsLowerTriangular := by
@@ -40,17 +40,15 @@ theorem isUpperTriangular_conjTranspose_iff {A : Matrix n n 𝕜} :
     simp [conjTranspose_apply, this]
 
 /- English proof (translation)
-Establish `h1 : tᴴ * t = 1` using `ht.1`. Set `: Invertible t` to `invertibleOfLeftInverse t tᴴ h1`. Establish `hinv : t⁻¹ = tᴴ` using `inv_eq_left_inv h1`. Establish `hinvU : t⁻¹.IsUpperTriangular` using `blockTriangular_inv_of_blockTriangular hu`. Rewrite `hinvU` using `[hinv, isUpperTriangular_conjTranspose_iff]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hdiag : ∀ i j, i ≠ j → t i j = 0`. Introduce `i j hij`. Break down `lt_or_gt_of_ne hij with h | h` into its components or cases. Conclude with `hinvU (show OrderDual.toDual j < OrderDual.toDual i from h)`. Conclude with `hu h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hii : ∀ i, t i i = 1`. Introduce `i`. Establish `e` using `congrFun (congrFun h1 i) i`. Rewrite `e` using `[mul_apply, Finset.sum_eq_single i (fun k _ hk => by rw [hdiag k i hk, mul_zero]) (fun h => absurd (Finset.mem_univ i) h), one_apply_eq, conjTranspose_apply]`. Take `⟨hre, him⟩` from `RCLike.pos_iff.1 (hpos i)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hr : t i i = (RCLike.re (t i i) : 𝕜)`. Rewrite using `[← RCLike.re_add_im (t i i), him]`. Simplify using the standard rewrite rules. Rewrite `e` using `[hr, RCLike.star_def, RCLike.conj_ofReal, ← RCLike.ofReal_mul, ← RCLike.ofReal_one, RCLike.ofReal_inj]`. Rewrite using `[hr, ← RCLike.ofReal_one, RCLike.ofReal_inj]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. By extensionality, compare the relevant components.
 
-Use the polynomial consequences of the given equalities and inequalities. Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Rewrite using `[hii, one_apply_eq]`.
-
-Rewrite using `[hdiag i j h, one_apply_ne h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_one_of_mem_unitaryGroup_of_isUpperTriangular {t : Matrix n n 𝕜}
     (ht : t ∈ unitaryGroup n 𝕜) (hu : t.IsUpperTriangular) (hpos : ∀ i, 0 < t i i) : t = 1 := by
@@ -86,15 +84,15 @@ section Existence
 variable [WellFoundedLT n] [LocallyFiniteOrderBot n]
 
 /- English proof (translation)
-Establish `hLi : (LDL.lowerInv hS).IsLowerTriangular` using `fun i j hij => LDL.lowerInv_triangular hS (OrderDual.toDual_lt_toDual.1 hij)`. Establish `hL : (LDL.lower hS).IsLowerTriangular` using `blockTriangular_inv_of_blockTriangular hLi`. Establish `hD : (LDL.diag hS).PosDef`. Rewrite using `[LDL.diag_eq_lowerInv_conj]`. Conclude with `hS.mul_mul_conjTranspose_same (vecMul_injective_iff_isUnit.2 (isUnit_of_invertible (LDL.lowerInv hS)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpos : ∀ i, 0 < LDL.diagEntries hS i` using `fun i => by`. Simplify `hD.diag_pos (i := i)` using `[LDL.diag]`. Use `set d : n → ℝ := fun i => RCLike.re (LDL.diagEntries hS i)`. Establish `hd : ∀ i, LDL.diagEntries hS i = (d i : 𝕜)` using `fun i => by`. Take `⟨_, him⟩` from `RCLike.pos_iff.1 (hpos i)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← RCLike.re_add_im (LDL.diagEntries hS i), him]`. Simplify using `[d]`. Establish `hd0 : ∀ i, 0 ≤ d i` using `fun i => (RCLike.pos_iff.1 (hpos i)).1.le`. Use `⟨diagonal (fun i => (Real.sqrt (d i) : 𝕜)) * (LDL.lower hS)ᴴ, (blockTriangular_diagonal _).mul (isUpperTriangular_conjTranspose_iff.2 hL), ?_⟩` and prove the remaining obligations. Establish `hsq : (diagonal (fun i => (Real.sqrt (d i) : 𝕜)))ᴴ * diagonal (fun i => (Real.sqrt (d i) : 𝕜)) = LDL.diag hS`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[diagonal_conjTranspose, diagonal_mul_diagonal, LDL.diag]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[hd i, Pi.star_apply, RCLike.star_def, RCLike.conj_ofReal, ← RCLike.ofReal_mul, Real.mul_self_sqrt (hd0 i)]`. Rewrite using `[conjTranspose_mul, conjTranspose_conjTranspose]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = S := by rw [hsq, LDL.lower_conj_diag]`.
+A detailed English derivation is pending.
 -/
 theorem exists_isUpperTriangular_conjTranspose_mul_self {S : Matrix n n 𝕜} (hS : S.PosDef) :
     ∃ R : Matrix n n 𝕜, R.IsUpperTriangular ∧ Rᴴ * R = S := by
@@ -135,7 +133,7 @@ section Existence2
 variable [WellFoundedLT n] [LocallyFiniteOrderBot n]
 
 /- English proof (translation)
-Rewrite using `[star_div₀, RCLike.star_def, RCLike.conj_ofReal, div_mul_div_comm, RCLike.conj_mul, ← sq]`. Conclude with `div_self (pow_ne_zero 2 (by simpa using hx))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem star_mul_self_norm_div {x : 𝕜} (hx : x ≠ 0) :
     star ((‖x‖ : 𝕜) / x) * ((‖x‖ : 𝕜) / x) = 1 := by
@@ -143,11 +141,11 @@ theorem star_mul_self_norm_div {x : 𝕜} (hx : x ≠ 0) :
   exact div_self (pow_ne_zero 2 (by simpa using hx))
 
 /- English proof (translation)
-Take `⟨R, hR, hRS⟩` from `exists_isUpperTriangular_conjTranspose_mul_self hS`. Establish `hdet : S.det ≠ 0` using `(isUnit_iff_isUnit_det S).1 hS.isUnit |>.ne_zero`. Establish `hRi : ∀ i, R i i ≠ 0`. Establish `: R.det ≠ 0`. Introduce `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hdet` to reduce the goal to its premises. Rewrite using `[← hRS, det_mul, h, mul_zero]`. Rewrite `this` using `[det_of_isUpperTriangular hR]`. Conclude with `fun i => Finset.prod_ne_zero_iff.1 this i (Finset.mem_univ i)`. Use `⟨diagonal (fun i => (‖R i i‖ : 𝕜) / R i i) * R, fun i => ‖R i i‖, (blockTriangular_diagonal _).mul hR, fun i => norm_pos_iff.2 (hRi i), fun i => ?_, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[diagonal_mul, div_mul_cancel₀ _ (hRi i)]`. Rewrite using `[conjTranspose_mul, Matrix.mul_assoc, ← Matrix.mul_assoc (diagonal _)ᴴ, diagonal_conjTranspose, diagonal_mul_diagonal]`. Establish `: (fun i => (star (fun i => (‖R i i‖ : 𝕜) / R i i)) i * ((‖R i i‖ : 𝕜) / R i i)) = fun _ => 1` using `funext fun i => star_mul_self_norm_div (hRi i)`. Rewrite using `[this, diagonal_one, Matrix.one_mul, hRS]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_cholesky {S : Matrix n n 𝕜} (hS : S.PosDef) :
     ∃ B : Matrix n n 𝕜, ∃ a : n → ℝ, B.IsUpperTriangular ∧ (∀ i, 0 < a i) ∧
@@ -169,13 +167,13 @@ theorem exists_cholesky {S : Matrix n n 𝕜} (hS : S.PosDef) :
     rw [this, diagonal_one, Matrix.one_mul, hRS]
 
 /- English proof (translation)
-Take `⟨B, a, hB, ha, hBd, hBS⟩` from `exists_cholesky (posDef_conjTranspose_mul_self_GL g)`. Establish `hBdet : IsUnit B.det`. Rewrite using `[det_of_isUpperTriangular hB]`. Conclude with `IsUnit.mk0 _ (Finset.prod_ne_zero_iff.2 fun i _ => by`. Rewrite using `[hBd i]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(ha i).ne')` after adjusting the coercions. Establish `hau : diagonal (fun i => (a i : 𝕜)) * (diagonal (fun i => ((a i : 𝕜))⁻¹) * B) = B`. Rewrite using `[← Matrix.mul_assoc, diagonal_mul_diagonal]`. Establish `: (fun i => (a i : 𝕜) * (a i : 𝕜)⁻¹) = fun _ => 1`. Use function extensionality and compare the values at `fun i => mul_inv_cancel₀ (by exact_mod_cast (ha i).ne')`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, diagonal_one, Matrix.one_mul]`. Establish `hk : (g : Matrix n n 𝕜) * B⁻¹ ∈ unitaryGroup n 𝕜`. Rewrite using `[mem_unitaryGroup_iff', star_eq_conjTranspose, conjTranspose_mul, conjTranspose_nonsing_inv]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.nonsing_inv_mul _ (by rw [det_conjTranspose]; exact hBdet.star), Matrix.mul_nonsing_inv _ hBdet, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨_, hk⟩, a, ha, diagonal (fun i => ((a i : 𝕜))⁻¹) * B, (blockTriangular_diagonal _).mul hB, fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[diagonal_mul, hBd i, inv_mul_cancel₀ (by exact_mod_cast (ha i).ne')]`. Rewrite using `[Matrix.mul_assoc, hau] show (g : Matrix n n 𝕜) = (g : Matrix n n 𝕜) * B⁻¹ * B`. Rewrite using `[Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hBdet, Matrix.mul_one]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_KAN (g : GL n 𝕜) :
     ∃ k : unitaryGroup n 𝕜, ∃ a : n → ℝ, (∀ i, 0 < a i) ∧ ∃ u : Matrix n n 𝕜,
@@ -212,7 +210,7 @@ end Existence2
 section Uniqueness
 
 /- English proof (translation)
-Rewrite using `[det_of_isUpperTriangular ((blockTriangular_diagonal _).mul hu)]`. Conclude with `IsUnit.mk0 _ (Finset.prod_ne_zero_iff.2 fun i _ => by`. Rewrite using `[diagonal_mul, hu1, mul_one]`. Conclude with `(ha i).ne')` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_det_diagonal_mul_of_unitriangular {a : n → ℝ} (ha : ∀ i, 0 < a i)
     {u : Matrix n n 𝕜} (hu : u.IsUpperTriangular) (hu1 : ∀ i, u i i = 1) :
@@ -222,27 +220,23 @@ theorem isUnit_det_diagonal_mul_of_unitriangular {a : n → ℝ} (ha : ∀ i, 0 
     rw [diagonal_mul, hu1, mul_one]; exact_mod_cast (ha i).ne')
 
 /- English proof (translation)
-Use `set B := diagonal (fun i => (a i : 𝕜)) * u with hBdef`. Use `set B' := diagonal (fun i => (a' i : 𝕜)) * u' with hB'def`. Establish `hB : B.IsUpperTriangular` using `(blockTriangular_diagonal _).mul hu`. Establish `hB' : B'.IsUpperTriangular` using `(blockTriangular_diagonal _).mul hu'`. Establish `hBd : ∀ i, B i i = a i` using `fun i => by rw [hBdef, diagonal_mul, hu1, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBd' : ∀ i, B' i i = a' i` using `fun i => by rw [hB'def, diagonal_mul, hu1', mul_one]`. Establish `hBu : IsUnit B.det` using `isUnit_det_diagonal_mul_of_unitriangular ha hu hu1`. Establish `hk' : star (k' : Matrix n n 𝕜) * k' = 1` using `mem_unitaryGroup_iff'.1 k'.2`. Establish `h2 : (k : Matrix n n 𝕜) * B = k' * B'`. Simplify `h` using `only [hBdef, hB'def, Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set t := star (k' : Matrix n n 𝕜) * k with ht`. Establish `htB : t * B = B'`. Rewrite using `[ht, Matrix.mul_assoc, h2, ← Matrix.mul_assoc, hk', Matrix.one_mul]`. Establish `htB' : t = B' * B⁻¹`. Rewrite using `[← htB, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hBu, Matrix.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `htU : t.IsUpperTriangular`. Rewrite using `[htB']`. Set `: Invertible B` to `invertibleOfIsUnitDet B hBu`. Conclude with `hB'.mul (blockTriangular_inv_of_blockTriangular hB)`. Establish `htmem : t ∈ unitaryGroup n 𝕜` using `Submonoid.mul_mem _ (Unitary.star_mem k'.2) k.2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `htpos : ∀ i, 0 < t i i`. Introduce `i`. Establish `e` using `congrFun (congrFun htB i) i`. Rewrite `e` using `[mul_apply_self_of_isUpperTriangular htU hB, hBd, hBd']`. Establish `hai : (a i : 𝕜) ≠ 0` using `by exact_mod_cast (ha i).ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: t i i = ((a' i / a i : ℝ) : 𝕜)`. Rewrite using `[RCLike.ofReal_div, ← e, mul_div_cancel_right₀ _ hai]`. Rewrite using `[this]`. Conclude with `RCLike.ofReal_pos.2 (div_pos (ha' i) (ha i))`. Establish `ht1` using `eq_one_of_mem_unitaryGroup_of_isUpperTriangular htmem htU htpos`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hkk : k = k'`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hk'' : (k' : Matrix n n 𝕜) * star (k' : Matrix n n 𝕜) = 1` using `mem_unitaryGroup_iff.1 k'.2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_assoc, hk'', Matrix.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ = k' := by rw [← ht, ht1, Matrix.mul_one]`. Establish `hBB : B = B'` using `by rw [← htB, ht1, Matrix.one_mul]`. Establish `haa : a = a'` using `funext fun i => by`. Use `congrFun (congrFun hBB i) i` as an intermediate fact. Rewrite `this` using `[hBd, hBd']`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `this` after adjusting the coercions. Use `⟨hkk, haa, ?_⟩` and prove the remaining obligations. Substitute `haa` using the available equality. Establish `hinv : diagonal (fun i => ((a i : 𝕜))⁻¹) * diagonal (fun i => (a i : 𝕜)) = 1`. Rewrite using `[diagonal_mul_diagonal]`.
-
-Establish `: (fun i => ((a i : 𝕜))⁻¹ * (a i : 𝕜)) = fun _ => 1`. Use function extensionality and compare the values at `fun i => inv_mul_cancel₀ (by exact_mod_cast (ha i).ne')`. Rewrite using `[this, diagonal_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hBdef, ← Matrix.mul_assoc, hinv, Matrix.one_mul]`.
-
-Use `_ = diagonal (fun i => ((a i : 𝕜))⁻¹) * B' := by rw [hBB]`. Use `_ = u' := by rw [hB'def, ← Matrix.mul_assoc, hinv, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem KAN_unique {k k' : unitaryGroup n 𝕜} {a a' : n → ℝ} {u u' : Matrix n n 𝕜}
     (ha : ∀ i, 0 < a i) (ha' : ∀ i, 0 < a' i) (hu : u.IsUpperTriangular)
@@ -320,7 +314,7 @@ abbrev UpperUnitriangular (n 𝕜 : Type*) [RCLike 𝕜] [LinearOrder n] :=
   {u : Matrix n n 𝕜 // u.IsUpperTriangular ∧ ∀ i, u i i = 1}
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_assoc, det_mul]`. Conclude with `(UnitaryGroup.det_isUnit x.1).mul (isUnit_det_diagonal_mul_of_unitriangular x.2.1.2 x.2.2.2.1 x.2.2.2.2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_det_iwasawa (x : unitaryGroup n 𝕜 × PosDiag n × UpperUnitriangular n 𝕜) :
     IsUnit ((x.1 : Matrix n n 𝕜) * diagonal (fun i => (x.2.1.1 i : 𝕜)) * x.2.2.1).det := by
@@ -342,7 +336,7 @@ Both sides reduce to the same expression.
       (x.1 : Matrix n n 𝕜) * diagonal (fun i => (x.2.1.1 i : 𝕜)) * x.2.2.1 := rfl
 
 /- English proof (translation)
-Introduce `g`. Take `⟨k, a, ha, u, hu, hu1, h⟩` from `exists_KAN g`. Conclude with `⟨(k, ⟨a, ha⟩, ⟨u, hu, hu1⟩), Units.ext h.symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem iwasawaMul_surjective : Function.Surjective (iwasawaMul (n := n) (𝕜 := 𝕜)) := by
   intro g
@@ -350,7 +344,7 @@ theorem iwasawaMul_surjective : Function.Surjective (iwasawaMul (n := n) (𝕜 :
   exact ⟨(k, ⟨a, ha⟩, ⟨u, hu, hu1⟩), Units.ext h.symm⟩
 
 /- English proof (translation)
-Introduce and unpack `⟨k, ⟨a, ha⟩, ⟨u, hu, hu1⟩⟩ ⟨k', ⟨a', ha'⟩, ⟨u', hu', hu1'⟩⟩ h`. Take `⟨h1, h2, h3⟩` from `KAN_unique ha ha' hu hu' hu1 hu1' (congrArg Units.val h)`. Substitute `h1 h2 h3` using the available equality. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem iwasawaMul_injective : Function.Injective (iwasawaMul (n := n) (𝕜 := 𝕜)) := by
   rintro ⟨k, ⟨a, ha⟩, ⟨u, hu, hu1⟩⟩ ⟨k', ⟨a', ha'⟩, ⟨u', hu', hu1'⟩⟩ h
@@ -361,9 +355,9 @@ noncomputable def iwasawaEquiv : unitaryGroup n 𝕜 × PosDiag n × UpperUnitri
   Equiv.ofBijective iwasawaMul ⟨iwasawaMul_injective, iwasawaMul_surjective⟩
 
 /- English proof (translation)
-Establish `: ProperSpace (Matrix n n 𝕜)` using `FiniteDimensional.proper 𝕜 _`. Use `Metric.isCompact_of_isClosed_isBounded isClosed_unitary ?_` and prove the remaining obligations. Use `(Metric.isBounded_iff_subset_closedBall (0 : Matrix n n 𝕜)).2 ⟨‖(1 : Matrix n n 𝕜)‖, ?_⟩` and prove the remaining obligations. Introduce `U hU`. Rewrite using `[Metric.mem_closedBall, dist_zero_right]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `CStarRing.norm_mem_unitary_mul (1 : Matrix n n 𝕜) hU` as an intermediate fact. Rewrite `this` using `[Matrix.mul_one]`. Conclude with `this.le`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_unitaryGroup : IsCompact (unitaryGroup n 𝕜 : Set (Matrix n n 𝕜)) := by
   have : ProperSpace (Matrix n n 𝕜) := FiniteDimensional.proper 𝕜 _
@@ -390,7 +384,7 @@ variable [WellFoundedLT n] [LocallyFiniteOrderBot n]
 noncomputable def iwasawaK (g : GL n 𝕜) : unitaryGroup n 𝕜 := (iwasawaEquiv.symm g).1
 
 /- English proof (translation)
-Use `conv_lhs => rw [← iwasawaEquiv.apply_symm_apply g]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem iwasawaEquiv_symm_spec (g : GL n 𝕜) :
     (g : Matrix n n 𝕜) = ((iwasawaEquiv.symm g).1 : Matrix n n 𝕜) *
@@ -399,7 +393,7 @@ theorem iwasawaEquiv_symm_spec (g : GL n 𝕜) :
   rfl
 
 /- English proof (translation)
-Establish `hk : ((iwasawaK g : Matrix n n 𝕜))ᴴ * iwasawaK g = 1` using `(iwasawaK g).2.1`. Use `conv_lhs => rw [iwasawaEquiv_symm_spec g]`. Rewrite using `[iwasawaK, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← iwasawaK, hk, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iwasawaK_conjTranspose_mul (g : GL n 𝕜) :
     ((iwasawaK g : Matrix n n 𝕜))ᴴ * g =
@@ -414,13 +408,11 @@ def iwasawaClosedSet : Set (unitaryGroup n 𝕜 × GL n 𝕜) :=
       RCLike.im (((p.1 : Matrix n n 𝕜)ᴴ * p.2) i i) = 0}
 
 /- English proof (translation)
-Establish `hc : Continuous (fun p : unitaryGroup n 𝕜 × GL n 𝕜 => (p.1 : Matrix n n 𝕜)ᴴ * p.2)` using `(continuous_subtype_val.comp continuous_fst).matrix_conjTranspose.mul (Units.continuous_val.comp continuous_snd)`. Establish `h1 : IsClosed (⋂ i, ⋂ j, {p : unitaryGroup n 𝕜 × GL n 𝕜 | j < i → ((p.1 : Matrix n n 𝕜)ᴴ * p.2) i j = 0})`. Use `isClosed_iInter fun i => isClosed_iInter fun j => ?_` and prove the remaining obligations. Distinguish the cases in `h : j < i`. Simplify using `only [h, forall_const]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Conclude with `isClosed_eq (hc.matrix_elem i j) continuous_const`. Simplify using `only [h, IsEmpty.forall_iff, ofPred_true, isClosed_univ]`. Establish `h2 : IsClosed (⋂ i, ({p : unitaryGroup n 𝕜 × GL n 𝕜 | 0 ≤ RCLike.re (((p.1 : Matrix n n 𝕜)ᴴ * p.2) i i)} ∩ {p | RCLike.im (((p.1 : Matrix n n 𝕜)ᴴ * p.2) i i) = 0}))`. Use `isClosed_iInter fun i => IsClosed.inter ?_ ?_` and prove the remaining obligations. Conclude with `isClosed_le continuous_const (RCLike.continuous_re.comp (hc.matrix_elem i i))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `isClosed_eq (RCLike.continuous_im.comp (hc.matrix_elem i i)) continuous_const`. Establish `e : iwasawaClosedSet (n` using `n) (𝕜 := 𝕜) = (⋂ i, ⋂ j, {p : unitaryGroup n 𝕜 × GL n 𝕜 | j < i → ((p.1 : Matrix n n 𝕜)ᴴ * p.2) i j = 0}) ∩ (⋂ i, ({p : unitaryGroup n 𝕜 × GL n 𝕜 | 0 ≤ RCLike.re (((p.1 : Matrix n n 𝕜)ᴴ * p.2) i i)} ∩ {p | RCLike.im (((p.1 : Matrix n n 𝕜)ᴴ * p.2) i i) = 0})) := by`. Use extensionality with `p`. Simplify using `only [iwasawaClosedSet, mem_iInter, mem_ofPred_eq, mem_inter_iff, IsUpperTriangular, BlockTriangular, id]`. Rewrite using `[e]`.
-
-Conclude with `h1.inter h2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_iwasawaClosedSet : IsClosed (iwasawaClosedSet (n := n) (𝕜 := 𝕜)) := by
   have hc : Continuous (fun p : unitaryGroup n 𝕜 × GL n 𝕜 => (p.1 : Matrix n n 𝕜)ᴴ * p.2) :=
@@ -450,9 +442,7 @@ theorem isClosed_iwasawaClosedSet : IsClosed (iwasawaClosedSet (n := n) (𝕜 :=
   exact h1.inter h2
 
 /- English proof (translation)
-Use `⟨?_, fun i => ?_⟩` and prove the remaining obligations. Use `show ((iwasawaK g : Matrix n n 𝕜)ᴴ * g).IsUpperTriangular`. Rewrite using `[iwasawaK_conjTranspose_mul]`. Conclude with `(blockTriangular_diagonal _).mul (iwasawaEquiv.symm g).2.2.2.1`. Use `show 0 ≤ RCLike.re (((iwasawaK g : Matrix n n 𝕜)ᴴ * g) i i) ∧ _`.
-
-Rewrite using `[iwasawaK_conjTranspose_mul, diagonal_mul, (iwasawaEquiv.symm g).2.2.2.2 i, mul_one]`. Simplify using `only [RCLike.ofReal_re, RCLike.ofReal_im, and_true]`. Conclude with `((iwasawaEquiv.symm g).2.1.2 i).le`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_iwasawaClosedSet (g : GL n 𝕜) : (iwasawaK g, g) ∈ iwasawaClosedSet (n := n) := by
   refine ⟨?_, fun i => ?_⟩
@@ -465,19 +455,17 @@ theorem mem_iwasawaClosedSet (g : GL n 𝕜) : (iwasawaK g, g) ∈ iwasawaClosed
     exact ((iwasawaEquiv.symm g).2.1.2 i).le
 
 /- English proof (translation)
-Take `⟨hU, hpos⟩` from `h`. Use `set R := (y : Matrix n n 𝕜)ᴴ * g with hR`. Establish `hyy : (y : Matrix n n 𝕜) * (y : Matrix n n 𝕜)ᴴ = 1` using `y.2.2`. Establish `hRdet : R.det ≠ 0`. Rewrite using `[hR, det_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_ne_zero (by rw [det_conjTranspose]; exact (UnitaryGroup.det_isUnit y).star.ne_zero) ((isUnit_iff_isUnit_det _).1 g.isUnit).ne_zero`. Establish `hRi : ∀ i, R i i ≠ 0`. Rewrite `hRdet` using `[det_of_isUpperTriangular hU]`. Conclude with `fun i => Finset.prod_ne_zero_iff.1 hRdet i (Finset.mem_univ i)`. Use `set a : n → ℝ := fun i => RCLike.re (R i i)`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hRa : ∀ i, R i i = (a i : 𝕜)` using `fun i => by`. Rewrite using `[← RCLike.re_add_im (R i i), (hpos i).2]`. Simplify using `[a]`. Establish `ha : ∀ i, 0 < a i` using `fun i => lt_of_le_of_ne (hpos i).1 (fun h => hRi i (by`. Rewrite using `[hRa i, ← h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `simp))`. Establish `hinv : diagonal (fun i => (a i : 𝕜)) * diagonal (fun i => ((a i : 𝕜))⁻¹) = 1`. Rewrite using `[diagonal_mul_diagonal]`. Establish `: (fun i => (a i : 𝕜) * ((a i : 𝕜))⁻¹) = fun _ => 1`. Use function extensionality and compare the values at `fun i => mul_inv_cancel₀ (by exact_mod_cast (ha i).ne')`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, diagonal_one]`. Establish `hu : (diagonal (fun i => ((a i : 𝕜))⁻¹) * R).IsUpperTriangular` using `(blockTriangular_diagonal _).mul hU`. Establish `hu1 : ∀ i, (diagonal (fun i => ((a i : 𝕜))⁻¹) * R) i i = 1` using `fun i => by`. Rewrite using `[diagonal_mul, hRa i, inv_mul_cancel₀ (by exact_mod_cast (ha i).ne')]`. Establish `hg : iwasawaMul (y, ⟨a, ha⟩, ⟨_, hu, hu1⟩) = g`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[coe_iwasawaMul]`. Use `show (y : Matrix n n 𝕜) * diagonal (fun i => (a i : 𝕜)) * (diagonal (fun i => ((a i : 𝕜))⁻¹) * R) = g`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (diagonal _), hinv, Matrix.one_mul, hR, ← Matrix.mul_assoc, hyy, Matrix.one_mul]`. Establish `: iwasawaEquiv.symm g = (y, ⟨a, ha⟩, ⟨_, hu, hu1⟩)`.
-
-Rewrite using `[Equiv.symm_apply_eq]`. Conclude with `hg.symm`. Rewrite using `[iwasawaK, this]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_iwasawaK_of_mem {y : unitaryGroup n 𝕜} {g : GL n 𝕜}
     (h : (y, g) ∈ iwasawaClosedSet (n := n)) : y = iwasawaK g := by
@@ -517,11 +505,11 @@ theorem eq_iwasawaK_of_mem {y : unitaryGroup n 𝕜} {g : GL n 𝕜}
   rw [iwasawaK, this]
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `g₀`. Apply `tendsto_nhds_of_unique_mapClusterPt` to reduce the goal to its premises. Introduce `y hy`. Apply `eq_iwasawaK_of_mem` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hsub : range (fun g : GL n 𝕜 => (iwasawaK g, g)) ⊆ iwasawaClosedSet (n` using `n) := by`. Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `mem_iwasawaClosedSet g`. Apply `isClosed_iwasawaClosedSet.closure_subset_iff.2 hsub` to reduce the goal to its premises. Rewrite using `[mem_closure_iff_nhds]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t ht`. Take `⟨U, hU, V, hV, hUV⟩` from `mem_nhds_prod_iff.1 ht`. Take `⟨g, hgU, hgV⟩` from `((mapClusterPt_iff_frequently.1 hy) U hU).and_eventually hV |>.exists`. Conclude with `⟨(iwasawaK g, g), hUV ⟨hgU, hgV⟩, g, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem continuous_iwasawaK : Continuous (iwasawaK : GL n 𝕜 → unitaryGroup n 𝕜) := by
   rw [continuous_iff_continuousAt]
@@ -548,7 +536,7 @@ open Filter Set
 variable [WellFoundedLT n] [LocallyFiniteOrderBot n]
 
 /- English proof (translation)
-Rewrite using `[iwasawaK_conjTranspose_mul, diagonal_mul, (iwasawaEquiv.symm g).2.2.2.2 i, mul_one, RCLike.ofReal_re]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem iwasawaEquiv_symm_A (g : GL n 𝕜) (i : n) :
     (iwasawaEquiv.symm g).2.1.1 i = RCLike.re ((((iwasawaK g : Matrix n n 𝕜))ᴴ * g) i i) := by
@@ -556,7 +544,7 @@ theorem iwasawaEquiv_symm_A (g : GL n 𝕜) (i : n) :
     RCLike.ofReal_re]
 
 /- English proof (translation)
-Rewrite using `[iwasawaK_conjTranspose_mul, ← Matrix.mul_assoc, diagonal_mul_diagonal]`. Establish `: (fun i => (((iwasawaEquiv.symm g).2.1.1 i : 𝕜))⁻¹ * ((iwasawaEquiv.symm g).2.1.1 i : 𝕜)) = fun _ => 1` using `funext fun i => inv_mul_cancel₀ (by exact_mod_cast ((iwasawaEquiv.symm g).2.1.2 i).ne')`. Rewrite using `[this, diagonal_one, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem iwasawaEquiv_symm_N (g : GL n 𝕜) :
     (iwasawaEquiv.symm g).2.2.1 = diagonal (fun i => (((iwasawaEquiv.symm g).2.1.1 i : 𝕜))⁻¹) *
@@ -608,7 +596,7 @@ Both sides reduce to the same expression.
       (x.1 : Matrix n n 𝕜) * diagonal (fun i => (x.2.1.1 i : 𝕜)) * x.2.2.1 := rfl
 
 /- English proof (translation)
-Use `⟨iwasawaHomeomorph.symm g, congrArg Units.val (iwasawaHomeomorph.apply_symm_apply g), ?_⟩` and prove the remaining obligations. Introduce `x hx`. Apply `iwasawaHomeomorph.injective` to reduce the goal to its premises. Rewrite using `[Homeomorph.apply_symm_apply]`. Conclude with `Units.ext hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iwasawa_decomposition (g : GL n 𝕜) :
     ∃! x : unitaryGroup n 𝕜 × PosDiag n × UpperUnitriangular n 𝕜,

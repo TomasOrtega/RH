@@ -11,7 +11,7 @@ open scoped SchwartzMap FourierTransform RealInnerProductSpace ContDiff Topology
 open UpperTheory.V UpperTheory.V.Af.StrongMultiplicityOne
 
 /- English proof (translation)
-Introduce `E _ _ _ n π`. Use `⟨Cm.carrier π, Cm.stab_carrier π, (Cm.stab_carrier π).isIrreducible_iff.1 (Cm.isIrreducible_toModule π), fun f => ⟨fun ⟨ψ, hψ, e⟩ => ⟨_, hψ, e⟩, fun ⟨φ, hφ, e⟩ => ?_⟩⟩` and prove the remaining obligations. Rewrite `hφ` using `[← Cm.map_carrier]`. Take `⟨ψ, hψ, rfl⟩` from `hφ`. Conclude with `⟨ψ, hψ, e⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Af.StrongMultiplicityOne.carrier :
     UpperTheory.V.Af.StrongMultiplicityOne.Carrier := by

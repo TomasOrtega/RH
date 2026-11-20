@@ -15,7 +15,7 @@ variable {L : Type} [Field L] [NumberField L]
 def xP (s : ℝ) (P : HeightOneSpectrum (𝓞 L)) : ℝ := (Ideal.absNorm P.asIdeal : ℝ) ^ (-s)
 
 /- English proof (translation)
-Establish `hN` using `NumberField.HeightOneSpectrum.one_lt_absNorm P`. Unfold `xP`. Conclude with `Real.rpow_pos_of_pos (by exact_mod_cast (by omega : 0 < Ideal.absNorm P.asIdeal)) _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem absNorm_rpow_neg_pos (s : ℝ) (P : HeightOneSpectrum (𝓞 L)) : 0 < xP s P := by
   have hN := NumberField.HeightOneSpectrum.one_lt_absNorm P
@@ -23,14 +23,14 @@ theorem absNorm_rpow_neg_pos (s : ℝ) (P : HeightOneSpectrum (𝓞 L)) : 0 < xP
   exact Real.rpow_pos_of_pos (by exact_mod_cast (by omega : 0 < Ideal.absNorm P.asIdeal)) _
 
 /- English proof (translation)
-Establish `hN` using `NumberField.HeightOneSpectrum.one_lt_absNorm P`. Conclude with `Real.rpow_lt_one_of_one_lt_of_neg (by exact_mod_cast hN) (by linarith)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem absNorm_rpow_neg_lt_one {s : ℝ} (hs : 1 < s) (P : HeightOneSpectrum (𝓞 L)) : xP s P < 1 := by
   have hN := NumberField.HeightOneSpectrum.one_lt_absNorm P
   exact Real.rpow_lt_one_of_one_lt_of_neg (by exact_mod_cast hN) (by linarith)
 
 /- English proof (translation)
-Unfold `xP`. Rewrite using `[Complex.ofReal_cpow (Nat.cast_nonneg _)]`. Use `push_cast`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem cpow_eq_xP (s : ℝ) (P : HeightOneSpectrum (𝓞 L)) :
     ((Ideal.absNorm P.asIdeal : ℕ) : ℂ) ^ (-(s : ℂ)) = ((xP s P : ℝ) : ℂ) := by
@@ -40,19 +40,19 @@ theorem cpow_eq_xP (s : ℝ) (P : HeightOneSpectrum (𝓞 L)) :
   rfl
 
 /- English proof (translation)
-The claim follows from `hu _`.
+A detailed English derivation is pending.
 -/
 theorem norm_val {ψ : HChar L} (hu : ψ.IsUnitary) (P : HeightOneSpectrum (𝓞 L)) :
     ‖((ψ.val P : ℂˣ) : ℂ)‖ = 1 := hu _
 
 /- English proof (translation)
-Establish `h0` using `absNorm_rpow_neg_pos s P`. Establish `h1` using `absNorm_rpow_neg_lt_one hs P`. Unfold `GlobalTheory.CMVal.eulerFactor`. Use `split_ifs with hP`. Rewrite using `[cpow_eq_xP, norm_inv] set c : ℂ := ((ψ.val P : ℂˣ) : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : ‖c‖ = 1` using `norm_val hu P`. Establish `hle : ‖1 - c * ((xP s P : ℝ) : ℂ)‖ ≤ 1 + xP s P`. Use `(norm_sub_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_one, norm_mul, hc, Complex.norm_real, Real.norm_of_nonneg h0.le, one_mul]`. Establish `hge : 1 - xP s P ≤ ‖1 - c * ((xP s P : ℝ) : ℂ)‖`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `norm_sub_norm_le (1 : ℂ) (c * ((xP s P : ℝ) : ℂ))` as an intermediate fact. Rewrite `this` using `[norm_one, norm_mul, hc, Complex.norm_real, Real.norm_of_nonneg h0.le, one_mul]`. Conclude with `this`. Establish `hpos : 0 < ‖1 - c * ((xP s P : ℝ) : ℂ)‖` using `by linarith`. Rewrite using `[Real.exp_neg]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `he` using `Real.add_one_le_exp (xP s P)`. Conclude with `inv_anti₀ hpos (by linarith)`. Rewrite using `[norm_one]`. Conclude with `Real.exp_le_one_iff.2 (by linarith)`.
+A detailed English derivation is pending.
 -/
 theorem exp_neg_le_norm_eulerFactor {ψ : HChar L} (hu : ψ.IsUnitary) {s : ℝ} (hs : 1 < s)
     (P : HeightOneSpectrum (𝓞 L)) :
@@ -79,9 +79,9 @@ theorem exp_neg_le_norm_eulerFactor {ψ : HChar L} (hu : ψ.IsUnitary) {s : ℝ}
     exact Real.exp_le_one_iff.2 (by linarith)
 
 /- English proof (translation)
-Establish `h0` using `absNorm_rpow_neg_pos s P`. Establish `hl` using `absNorm_rpow_neg_lt_one hs P`. Unfold `GlobalTheory.CMVal.eulerFactor`. Rewrite using `[if_pos hP, cpow_eq_xP, h1, Units.val_one, one_mul, ← Complex.ofReal_one, ← Complex.ofReal_sub, ← Complex.ofReal_inv, Complex.norm_real, Real.norm_of_nonneg (inv_nonneg.2 (by linarith))]`. Establish `he` using `Real.add_one_le_exp (-xP s P)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem exp_le_norm_eulerFactor {ψ : HChar L} {s : ℝ} (hs : 1 < s) {P : HeightOneSpectrum (𝓞 L)}
     (hP : ψ.UnrAt P) (h1 : ψ.val P = 1) :
@@ -96,15 +96,13 @@ theorem exp_le_norm_eulerFactor {ψ : HChar L} {s : ℝ} (hs : 1 < s) {P : Heigh
     _ ≤ (1 - xP s P)⁻¹ := inv_anti₀ (by linarith) (by linarith)
 
 /- English proof (translation)
-Establish `hsum : Summable (xP (L` using `L) s) := GlobalTheory.HeckeOne.sumN (K := L) s hs`. Establish `hx : HasSum (xP (L` using `L) s) (NumberField.Set.primeIdealZetaSum (Set.univ : Set (HeightOneSpectrum (𝓞 L))) s) := by`. Rewrite using `[NumberField.Set.primeIdealZetaSum_def, tsum_univ (fun P : HeightOneSpectrum (𝓞 L) => (Ideal.absNorm P.asIdeal : ℝ) ^ (-s))]`. Conclude with `hsum.hasSum`. Establish `hS' : HasSum (S.indicator (xP (L` using `L) s)) (NumberField.Set.primeIdealZetaSum S s) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[NumberField.Set.primeIdealZetaSum_def, tsum_subtype S (fun P : HeightOneSpectrum (𝓞 L) => (Ideal.absNorm P.asIdeal : ℝ) ^ (-s))]`. Conclude with `(hsum.indicator S).hasSum`. Use `set e : HeightOneSpectrum (𝓞 L) → ℝ := fun P => if P ∈ S then xP s P else -xP s P with he`. Establish `he' : HasSum e (2 * NumberField.Set.primeIdealZetaSum S s - NumberField.Set.primeIdealZetaSum (Set.univ : Set (HeightOneSpectrum (𝓞 L))) s)`. Establish `hfun : e = fun P => 2 * S.indicator (xP s) P - xP s P`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `P`. Distinguish the cases in `hP : P ∈ S`. Simplify using `[he, hP]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[he, hP]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hfun]`. Conclude with `(hS'.mul_left 2).sub hx`. Establish `hE` using `he'.rexp`. Establish `hN` using `ha.norm`. Use `le_of_tendsto_of_tendsto' hE hN fun F => ?_` and prove the remaining obligations.
-
-Use `Finset.prod_le_prod (fun P _ => (Real.exp_pos _).le) fun P _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, he]`. Use `split_ifs with hP`. Conclude with `exp_le_norm_eulerFactor hs (hS P hP).1 (hS P hP).2`. Conclude with `exp_neg_le_norm_eulerFactor hu hs P`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exp_le_norm_of_hasProd {ψ : HChar L} (hu : ψ.IsUnitary) {S : Set (HeightOneSpectrum (𝓞 L))}
     (hS : ∀ P ∈ S, ψ.UnrAt P ∧ ψ.val P = 1) {s : ℝ} (hs : 1 < s) {a : ℂ}
@@ -142,13 +140,13 @@ theorem exp_le_norm_of_hasProd {ψ : HChar L} (hu : ψ.IsUnitary) {S : Set (Heig
   · exact exp_neg_le_norm_eulerFactor hu hs P
 
 /- English proof (translation)
-Introduce `L _ _ χ hχ hu S hS hv`. Assume the negation of the conclusion as `hne`. Set `ψ : HChar L` to `⟨χ, hχ⟩`. Establish `hψ : ψ ≠ 1` using `fun h => hne (congrArg Subtype.val h)`. Take `⟨Λ, ⟨han, hprod⟩, hΛ1⟩` from `(GlobalTheory.Published.HeckeLEntireAndNonzeroAtOne_holds L ψ hu).2 hψ`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hSv : ∀ P ∈ S, ψ.UnrAt P ∧ ψ.val P = 1` using `fun P hP => ⟨(GlobalTheory.HeckeSplit.unrAt_iff L ψ P).1 (hv P hP).1, (hv P hP).2 _ (Formalism.L2.Host.unif_spec P)⟩`. Establish `hc : Tendsto (fun x : ℝ => (x : ℂ)) (𝓝[>] 1) (𝓝 1)` using `(Complex.continuous_ofReal.tendsto' 1 1 (by simp)).mono_left nhdsWithin_le_nhds`. Establish `hlim : Tendsto (fun s : ℝ => ‖Λ s‖) (𝓝[>] 1) (𝓝 ‖Λ 1‖)` using `(han.continuousAt.tendsto.comp hc).norm`. Establish `hall` using `GroundTheory.Global.tendsto_primeIdealZetaSum_univ_atTop L`. Establish `hr : ∀ᶠ s in 𝓝[>] (1 : ℝ), 3 / 4 < NumberField.Set.primeIdealZetaSum S s / NumberField.Set.primeIdealZetaSum (Set.univ : Set (HeightOneSpectrum (𝓞 L))) s` using `hS.eventually (lt_mem_nhds (by norm_num))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : Tendsto (fun s : ℝ => 2 * NumberField.Set.primeIdealZetaSum S s - NumberField.Set.primeIdealZetaSum (Set.univ : Set (HeightOneSpectrum (𝓞 L))) s) (𝓝[>] 1) atTop`. Use `tendsto_atTop_mono' _ ?_ (hall.atTop_div_const (by norm_num : (0 : ℝ) < 2))` and prove the remaining obligations. Use `filter_upwards [hr, hall.eventually_gt_atTop 0] with s h1 h2`. Rewrite `h1` using `[lt_div_iff₀ h2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hbig : Tendsto (fun s : ℝ => ‖Λ s‖) (𝓝[>] 1) atTop`. Use `tendsto_atTop_mono' _ ?_ (Real.tendsto_exp_atTop.comp hT)` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with s hs`. Conclude with `exp_le_norm_of_hasProd (ψ := ψ) hu hSv hs (hprod s (by simpa using hs))`. Conclude with `not_tendsto_atTop_of_tendsto_nhds hlim hbig`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem trivialOfDensityOne : GlobalTheory.IndefiniteRowSideFullHecke.TrivialOfDensityOneCharacters.TrivialOfDensityOne := by
   intro L _ _ χ hχ hu S hS hv

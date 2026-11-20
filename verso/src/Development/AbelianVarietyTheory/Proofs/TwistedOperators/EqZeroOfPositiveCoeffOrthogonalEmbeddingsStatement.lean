@@ -5,7 +5,7 @@ import Formalism.LocalToGlobal.BesselHermitianTheta.DefsReal
 open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.PosTrace.eq_zero_of_pos_of_orth` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FEqZeroOfPositiveCoeffOrthogonalEmbeddings.lean&line=179#L179)
 -/

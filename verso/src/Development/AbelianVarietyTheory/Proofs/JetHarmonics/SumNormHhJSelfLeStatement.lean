@@ -5,7 +5,7 @@ open Finset BranchingSupport Formalism.REAL Formalism.QuantumDeterminants
 open scoped InnerProductSpace
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.sum_norm_hhJ_self_le` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FJetHarmonics%2FSumNormHhJSelfLe.lean&line=36#L36)
 -/

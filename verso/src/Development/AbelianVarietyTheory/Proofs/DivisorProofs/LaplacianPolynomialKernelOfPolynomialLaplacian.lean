@@ -31,11 +31,11 @@ def glLap : Module.End ℂ ((glH E a).smoothFuns (F := ℂ)) :=
       (glH E a).rightDerivEnd ⟨Matrix.single i j (atEmb τ Complex.I), Submodule.mem_top⟩ ^ 2)
 
 /- English proof (translation)
-Establish `hp : ∀ n : ℕ, ∀ x, Φ ((A ^ n) x) = (B ^ n) (Φ x)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro x`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Both sides reduce to the same expression.
 
-Consider the case `succ n ih => intro x`. Rewrite using `[pow_succ', pow_succ', Module.End.mul_apply, Module.End.mul_apply, h, ih]`. Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp' hq' => simp only [map_add, LinearMap.add_apply, hp', hq']`. Consider the case `monomial n c`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `only [Polynomial.aeval_monomial, Module.End.mul_apply, Module.algebraMap_end_apply, map_smul, hp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem aeval_intertwine {M N : Type*} [AddCommGroup M] [Module ℂ M] [AddCommGroup N] [Module ℂ N]
     (Φ : M →ₗ[ℂ] N) (A : Module.End ℂ M) (B : Module.End ℂ N) (h : ∀ x, Φ (A x) = B (Φ x))
@@ -51,9 +51,7 @@ theorem aeval_intertwine {M N : Type*} [AddCommGroup M] [Module ℂ M] [AddCommG
     simp only [Polynomial.aeval_monomial, Module.End.mul_apply, Module.algebraMap_end_apply, map_smul, hp]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty]`. Conclude with `contDiffOn_const (c := (0 : ℂ))`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi]`.
-
-Conclude with `(hg i (Finset.mem_insert_self _ _)).add (ih fun j hj => hg j (Finset.mem_insert_of_mem hj))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contDiffOn_finsum {ι : Type*} (s : Finset ι) (g : ι → Lie E a → ℂ)
     (hg : ∀ i ∈ s, ContDiffOn ℝ ∞ (g i) (invSet E a)) : ContDiffOn ℝ ∞ (∑ i ∈ s, g i) (invSet E a) := by
@@ -65,7 +63,7 @@ theorem contDiffOn_finsum {ι : Type*} (s : Finset ι) (g : ι → Lie E a → �
     exact (hg i (Finset.mem_insert_self _ _)).add (ih fun j hj => hg j (Finset.mem_insert_of_mem hj))
 
 /- English proof (translation)
-Rewrite using `[IsExpLieAlgebra.coe_rightDerivEnd, hg]`. Conclude with `((GlobalTheory.T.isSmoothFun_and_rightDeriv_eq_leftInvariantVectorField E a f hf).2 X).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rightDeriv_glF {f : Lie E a → ℂ} (hf : ContDiffOn ℝ ∞ f (invSet E a)) (X : glL E a)
     (g : (glH E a).smoothFuns (F := ℂ)) (hg : g.1 = fun y : glG E a => f (toL y.1.val)) :
@@ -74,9 +72,9 @@ theorem rightDeriv_glF {f : Lie E a → ℂ} (hf : ContDiffOn ℝ ∞ f (invSet 
   exact ((GlobalTheory.T.isSmoothFun_and_rightDeriv_eq_leftInvariantVectorField E a f hf).2 X).2
 
 /- English proof (translation)
-Establish `key : ∀ X : glL E a, ((glH E a).rightDerivEnd X ((glH E a).rightDerivEnd X g)).1 = fun y : glG E a => vecF E a (toL X.1) (vecF E a (toL X.1) f) (toL y.1.val)` using `fun X => rightDeriv_glF ((GlobalTheory.T.isSmoothFun_and_rightDeriv_eq_leftInvariantVectorField E a f hf).2 X).1 X _ (rightDeriv_glF hf X g hg)`. Establish `hv : ∀ X : Lie E a, ContDiffOn ℝ ∞ (vecF E a X f) (invSet E a)` using `fun X => ((GlobalTheory.T.isSmoothFun_and_rightDeriv_eq_leftInvariantVectorField E a f hf).2 ⟨Matrix.of X, Submodule.mem_top⟩).1`. Establish `hvv : ∀ X : Lie E a, ContDiffOn ℝ ∞ (vecF E a X (vecF E a X f)) (invSet E a)` using `fun X => ((GlobalTheory.T.isSmoothFun_and_rightDeriv_eq_leftInvariantVectorField E a _ (hv X)).2 ⟨Matrix.of X, Submodule.mem_top⟩).1`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [glLap, LinearMap.sum_apply, LinearMap.add_apply, sq, Module.End.mul_apply, Submodule.coe_sum, Submodule.coe_add, key]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `y`. Simplify using `only [lapF, Finset.sum_apply, Pi.add_apply]`. Unfold `lapF`. Conclude with `contDiffOn_finsum _ _ fun τ _ => contDiffOn_finsum _ _ fun i _ => contDiffOn_finsum _ _ fun j _ => (hvv _).add (hvv _)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem glLap_glF {f : Lie E a → ℂ} (hf : ContDiffOn ℝ ∞ f (invSet E a))
     (g : (glH E a).smoothFuns (F := ℂ)) (hg : g.1 = fun y : glG E a => f (toL y.1.val)) :
@@ -98,9 +96,9 @@ theorem glLap_glF {f : Lie E a → ℂ} (hf : ContDiffOn ℝ ∞ f (invSet E a))
       (hvv _).add (hvv _)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => intro f hf g hg`. Conclude with `⟨hg, hf⟩`. Consider the case `succ k ih`. Introduce `f hf g hg`.
+Proceed by induction. Treat this case separately. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨h1, h2⟩` from `glLap_glF hf g hg`. Rewrite using `[pow_succ, Module.End.mul_apply, Function.iterate_succ_apply]`. Conclude with `ih h2 _ h1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glLap_pow_glF (k : ℕ) : ∀ {f : Lie E a → ℂ}, ContDiffOn ℝ ∞ f (invSet E a) →
     ∀ (g : (glH E a).smoothFuns (F := ℂ)), g.1 = (fun y : glG E a => f (toL y.1.val)) →
@@ -115,9 +113,9 @@ theorem glLap_pow_glF (k : ℕ) : ∀ {f : Lie E a → ℂ}, ContDiffOn ℝ ∞ 
     exact ih h2 _ h1
 
 /- English proof (translation)
-Establish `key : ∀ (i j : Fin a) (z : Cinf E) (ψ : Sm E a), (glH E a).rightDerivEnd ⟨Matrix.single i j z, Submodule.mem_top⟩ ⟨glRes ψ.1 x, (GlobalTheory.T.realPointsRestriction_smooth_rightDeriv_eq E a ψ x).1⟩ = ⟨glRes (lieS E a i j z ψ).1 x, (GlobalTheory.T.realPointsRestriction_smooth_rig …`. Introduce `i j z ψ`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[IsExpLieAlgebra.coe_rightDerivEnd, (GlobalTheory.T.realPointsRestriction_smooth_rightDeriv_eq E a ψ x).2, lieS_apply]`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [glLap, lapOp, LinearMap.sum_apply, LinearMap.add_apply, sq, Module.End.mul_apply, key, Submodule.coe_sum, Submodule.coe_add]`. Use function extensionality and compare the values at `y`. Simplify using `only [glRes, Finset.sum_apply, Pi.add_apply, Submodule.coe_sum, Submodule.coe_add]`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem glLap_glRes (φ : Sm E a) (x : GA E a) :
     glLap E a ⟨glRes φ.1 x, (GlobalTheory.T.realPointsRestriction_smooth_rightDeriv_eq E a φ x).1⟩ = ⟨glRes (lapOp E a φ).1 x, (GlobalTheory.T.realPointsRestriction_smooth_rightDeriv_eq E a _ x).1⟩ := by
@@ -134,17 +132,17 @@ theorem glLap_glRes (φ : Sm E a) (x : GA E a) :
   simp only [glRes, Finset.sum_apply, Pi.add_apply, Submodule.coe_sum, Submodule.coe_add]
 
 /- English proof (translation)
-Introduce `E _ _ _ a p hp`. Take `⟨d, b, hb⟩` from `GlobalTheory.T.exists_realBasis_glLieAlgebra_sum_sq_elementary E a`. Establish `hΔ : (∑ i, (glH E a).rightDerivEnd (F` using `ℂ) (b i) * (glH E a).rightDerivEnd (F := ℂ) (b i)) = glLap E a := by`. Rewrite using `[glLap]`. Simplify using `only [sq]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hb _ (glRho E a)`. Use `⟨d, b, p * Polynomial.C p.leadingCoeff⁻¹, Polynomial.monic_mul_leadingCoeff_inv hp, ?_, ?_⟩` and prove the remaining obligations. Establish `hP : ∀ g, Polynomial.aeval (glLap E a) (p * Polynomial.C p.leadingCoeff⁻¹) g = p.leadingCoeff⁻¹ • Polynomial.aeval (glLap E a) p g`. Introduce `g`. Rewrite using `[Polynomial.aeval_mul, Polynomial.aeval_C, Module.End.mul_apply, Module.algebraMap_end_apply, map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f hf h0`. Rewrite using `[mem_solG]`. Use `⟨(GlobalTheory.T.isSmoothFun_and_rightDeriv_eq_leftInvariantVectorField E a f hf).1, ?_⟩` and prove the remaining obligations. Rewrite using `[hΔ, hP]`. Establish `hk : ∀ k : ℕ, ((glLap E a ^ k) ⟨_, (GlobalTheory.T.isSmoothFun_and_rightDeriv_eq_leftInvariantVectorField E a f hf).1⟩).1 = (fun y : glG E a => (lapF E a)^[k] f (toL y.1.val))` using `fun k => (glLap_pow_glF k hf _ rfl).1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the argument to an intermediate assertion.
 
-It suffices to establish `h : Polynomial.aeval (glLap E a) p ⟨_, (GlobalTheory.T.isSmoothFun_and_rightDeriv_eq_leftInvariantVectorField E a f hf).1⟩ = 0 by rw [h, smul_zero]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Polynomial.aeval_eq_sum_range, LinearMap.sum_apply, Submodule.coe_sum]`. Use function extensionality and compare the values at `y`. Simplify using `only [Finset.sum_apply, LinearMap.smul_apply, Submodule.coe_smul, Pi.smul_apply, hk, Submodule.coe_zero, Pi.zero_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `h0 _ (val_mem_invSet y.1)` as an intermediate fact. Simplify `this` using `only [polyF, Finset.sum_apply, Pi.smul_apply]`. Introduce `φ hφ x`. Rewrite using `[mem_solG]`. Use `⟨(GlobalTheory.T.realPointsRestriction_smooth_rightDeriv_eq E a φ x).1, ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hΔ, Polynomial.aeval_mul, Polynomial.aeval_C, Module.End.mul_apply, Module.algebraMap_end_apply, map_smul]`. Set `Φ : Sm E a →ₗ[ℂ] (glH E a).smoothFuns (F` to `ℂ) := { toFun := fun ψ => ⟨glRes ψ.1 x, (GlobalTheory.T.realPointsRestriction_smooth_rightDeriv_eq E a ψ x).1⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `e` using `aeval_intertwine Φ (lapOp E a) (glLap E a) (fun ψ => (glLap_glRes ψ x).symm) p φ`. Express the relevant statement in the definitionally equal form `p.leadingCoeff⁻¹ • Polynomial.aeval (glLap E a) p (Φ φ) = 0`. Rewrite using `[← e, hφ, map_zero, smul_zero]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem solG_of_polyLap : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ), ∀ p : Polynomial ℂ, p ≠ 0 → ∃ (d : ℕ) (b : Module.Basis (Fin d) ℝ (glL E a)) (P : Polynomial ℂ), P.Monic ∧ (∀ f : Lie E a → ℂ, ContDiffOn ℝ ∞ f (invSet E a) → (∀ y ∈ invSet E a, polyF E a p f y = 0) → (fun y : glG E a => f (toL y.1.val)) ∈ solG (glH E a) b P) ∧ ∀ φ : Sm E a, Polynomial.aeval (lapOp E a) p φ = 0 → ∀ x, glRes φ.1 x ∈ solG (glH E a) b P := by
   intro E _ _ _ a p hp

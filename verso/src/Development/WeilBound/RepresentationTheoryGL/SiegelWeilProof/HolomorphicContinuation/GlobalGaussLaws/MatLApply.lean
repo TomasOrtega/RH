@@ -29,7 +29,7 @@ theorem matL_apply (M : Matrix (Fin m) (Fin m) ℂ) (y : Fin m → Fin n → ℂ
     matL M y a i = ∑ c, M a c * y c i := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a i`. Simplify using `only [matL_apply, Matrix.mul_apply, Finset.sum_mul, Finset.mul_sum, mul_assoc]`. Conclude with `Finset.sum_comm`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem matL_mul (M N : Matrix (Fin m) (Fin m) ℂ) (y : Fin m → Fin n → ℂ) : matL (M * N) y = matL M (matL N y) := by
   funext a i
@@ -37,20 +37,20 @@ theorem matL_mul (M N : Matrix (Fin m) (Fin m) ℂ) (y : Fin m → Fin n → ℂ
   exact Finset.sum_comm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a i`. Simplify using `[matL_apply, Matrix.one_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem matL_one (y : Fin m → Fin n → ℂ) : matL (1 : Matrix (Fin m) (Fin m) ℂ) y = y := by
   funext a i
   simp [matL_apply, Matrix.one_apply]
 
 /- English proof (translation)
-Use `letI : NormedAddCommGroup (Matrix (Fin m) (Fin m) ℂ) := Matrix.linftyOpNormedAddCommGroup`. Use `letI : NormedSpace ℝ (Matrix (Fin m) (Fin m) ℂ) := Matrix.linftyOpNormedSpace`. Use `letI : NormedRing (Matrix (Fin m) (Fin m) ℂ) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℝ (Matrix (Fin m) (Fin m) ℂ) := Matrix.linftyOpNormedAlgebra`. Set `Lm : Matrix (Fin m) (Fin m) ℂ →ₗ[ℝ] ((Fin m → Fin n → ℂ) →L[ℝ] (Fin m → Fin n → ℂ))` to `{ toFun := matL map_add' := fun M N => by ext y a i; simp [matL_apply, add_mul, Finset.sum_add_distrib] map_smul' := fun r M => by`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use extensionality with `y a i`. Simplify using `only [matL_apply, Matrix.smul_apply, RingHom.id_apply, ContinuousLinearMap.smul_apply, Pi.smul_apply, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.real_smul, Complex.real_smul]`. Use `ring }`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hexp : ContDiff ℝ ∞ (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X))`. Establish `e : (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X)) = NormedSpace.exp ∘ (fun t : ℝ => t • X)`. Use function extensionality and compare the values at `t`. Simplify using `only [Function.comp_apply, Complex.coe_smul]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(contDiff_iff_contDiffAt.2 fun x => (NormedSpace.exp_analytic (𝕂 := ℝ) x).contDiffAt).comp (contDiff_id.smul contDiff_const)`. Conclude with `(LinearMap.toContinuousLinearMap Lm).contDiff.comp hexp`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_A (X : Matrix (Fin m) (Fin m) ℂ) :
     ContDiff ℝ ∞ (fun t : ℝ => matL (n := n) (NormedSpace.exp ((t : ℂ) • X))) := by
@@ -76,13 +76,13 @@ theorem contDiff_A (X : Matrix (Fin m) (Fin m) ℂ) :
   exact (LinearMap.toContinuousLinearMap Lm).contDiff.comp hexp
 
 /- English proof (translation)
-Use `letI : NormedAddCommGroup (Matrix (Fin m) (Fin m) ℂ) := Matrix.linftyOpNormedAddCommGroup`. Use `letI : NormedSpace ℝ (Matrix (Fin m) (Fin m) ℂ) := Matrix.linftyOpNormedSpace`. Use `letI : NormedRing (Matrix (Fin m) (Fin m) ℂ) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℝ (Matrix (Fin m) (Fin m) ℂ) := Matrix.linftyOpNormedAlgebra`. Set `ent : Matrix (Fin m) (Fin m) ℂ →ₗ[ℝ] ℂ` to `{ toFun := fun M => M a c, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Establish `h` using `(hasDerivAt_exp_smul_const (𝕂 := ℝ) X (0 : ℝ))`. Establish `h2` using `(LinearMap.toContinuousLinearMap ent).hasFDerivAt.comp_hasDerivAt (0 : ℝ) h`. Establish `e : (fun t : ℝ => (NormedSpace.exp ((t : ℂ) • X)) a c) = (LinearMap.toContinuousLinearMap ent) ∘ (fun u : ℝ => NormedSpace.exp (u • X))`. Use function extensionality and compare the values at `t`. Simplify using `only [Function.comp_apply, Complex.coe_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `h3 : HasDerivAt (fun t : ℝ => (NormedSpace.exp ((t : ℂ) • X)) a c) ((LinearMap.toContinuousLinearMap ent) (NormedSpace.exp ((0 : ℝ) • X) * X)) 0`. Rewrite using `[e]`. Conclude with `h2`. Establish `h4 : (LinearMap.toContinuousLinearMap ent) (NormedSpace.exp ((0 : ℝ) • X) * X) = X a c`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zero_smul, NormedSpace.exp_zero, one_mul]`. Both sides reduce to the same expression. Rewrite `h3` using `[h4]`. Conclude with `h3`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_entry (X : Matrix (Fin m) (Fin m) ℂ) (a c : Fin m) :
     HasDerivAt (fun t : ℝ => (NormedSpace.exp ((t : ℂ) • X)) a c) (X a c) 0 := by
@@ -106,11 +106,11 @@ theorem hasDerivAt_entry (X : Matrix (Fin m) (Fin m) ℂ) (a c : Fin m) :
   exact h3
 
 /- English proof (translation)
-Take `⟨g0, hg0⟩` from `GlobalTheory.CompanionTheory.PolyGaussSchwartz.exists_gauss (m := m) (n := n)`. Use `set s : ℝ := Real.sqrt (c / (2 * Real.pi)) with hs`. Establish `hs0 : s ≠ 0` using `(Real.sqrt_pos.2 (by positivity)).ne'`. Set `L : (Fin m → Fin n → ℂ) ≃L[ℝ] (Fin m → Fin n → ℂ)` to `(LinearEquiv.smulOfNeZero ℝ (Fin m → Fin n → ℂ) s hs0).toContinuousLinearEquiv`. Use `⟨SchwartzMap.compCLMOfContinuousLinearEquiv ℂ L g0, fun u => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply, hg0]`. Establish `key : 2 * Real.pi * ∑ a, ∑ i, ‖(L u) a i‖ ^ 2 = c * ∑ a, ∑ i, ‖u a i‖ ^ 2`. Establish `h1 : ∀ a i, ‖(L u) a i‖ ^ 2 = s ^ 2 * ‖u a i‖ ^ 2` using `fun a i => by`. Express the relevant statement in the definitionally equal form `‖(s • u) a i‖ ^ 2 = _`. Rewrite using `[Pi.smul_apply, Pi.smul_apply, norm_smul, mul_pow, Real.norm_eq_abs, sq_abs]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [h1, ← Finset.mul_sum]`. Rewrite using `[hs, Real.sq_sqrt (by positivity)]`. Clear the denominators using the available nonvanishing facts. Unfold `gs`. Rewrite using `[key]`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_gs (c : ℝ) (hc : 0 < c) : ∃ g : SchwartzMap (Fin m → Fin n → ℂ) ℂ, ∀ u, g u = gs c u := by
   obtain ⟨g0, hg0⟩ := GlobalTheory.CompanionTheory.PolyGaussSchwartz.exists_gauss (m := m) (n := n)
@@ -131,7 +131,7 @@ theorem exists_gs (c : ℝ) (hc : 0 < c) : ∃ g : SchwartzMap (Fin m → Fin n 
   rw [key]
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `exists_gs (m := m) (n := n) c hc`. Use `⟨SchwartzMap.smulLeftCLM ℂ (fun u => MvPolynomial.eval (fun k => GlobalTheory.CompanionTheory.PolyGaussSchwartz.coord k u) P) g, fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[SchwartzMap.smulLeftCLM_apply_apply (GlobalTheory.CompanionTheory.PolyGaussSchwartz.eval_temperate P), hg, smul_eq_mul]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_fP (c : ℝ) (hc : 0 < c) (P : PX m n) :
     ∃ φ : SchwartzMap (Fin m → Fin n → ℂ) ℂ, ∀ u, φ u = fP c P u := by

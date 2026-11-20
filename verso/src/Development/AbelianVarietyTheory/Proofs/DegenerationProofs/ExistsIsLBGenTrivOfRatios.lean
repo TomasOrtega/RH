@@ -10,7 +10,7 @@ namespace GlobalTheory.ZH.RatModel
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (M : RatModel o Ω)
 
 /- English proof (translation)
-Distinguish the cases in `hU : (U : Set M.Z).Nonempty`. Conclude with `M.res_injective U hU (h hU)`. Take `rfl : U = ⊥` from `SetLike.coe_injective (Set.not_nonempty_iff_eq_empty.1 hU)`. Conclude with `Subsingleton.elim _ _`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eq_of_res_eq_of_nonempty {U : M.Z.Opens} {f g : Γ(M.Z, U)}
     (h : ∀ hU : (U : Set M.Z).Nonempty, M.res U hU f = M.res U hU g) : f = g := by
@@ -20,9 +20,9 @@ theorem eq_of_res_eq_of_nonempty {U : M.Z.Opens} {f g : Γ(M.Z, U)}
     exact Subsingleton.elim _ _
 
 /- English proof (translation)
-Distinguish the cases in `hU : (U : Set M.Z).Nonempty`. Take `⟨a, ha⟩` from `(mem_ringOn_iff_exists hU).1 (mem_ringOn.2 h)`. Take `⟨b, hb⟩` from `(mem_ringOn_iff_exists hU).1 (mem_ringOn.2 h')`. Establish `hab : a * b = 1` using `M.res_injective U hU (by`. Rewrite using `[map_mul, map_one, res_apply, res_apply, ha, hb, mul_inv_cancel₀ hx])`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨⟨a, b, hab, (mul_comm _ _).trans hab⟩, fun _ => (M.res_apply U hU a).trans ha⟩`. Conclude with `⟨1, fun h => (hU h).elim⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_unit_res_eq {U : M.Z.Opens} {x : Ω} (hx : x ≠ 0) (h : ∀ z ∈ U, x ∈ M.O z)
     (h' : ∀ z ∈ U, x⁻¹ ∈ M.O z) :
@@ -36,11 +36,11 @@ theorem exists_unit_res_eq {U : M.Z.Opens} {x : Ω} (hx : x ≠ 0) (h : ∀ z �
   · exact ⟨1, fun h => (hU h).elim⟩
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ M ι U d hU hd hr`. Establish `key : ∀ k k', ∃ g : Γ(M.Z, U k ⊓ U k')ˣ, ∀ h : ((U k ⊓ U k' : M.Z.Opens) : Set M.Z).Nonempty, M.res _ h (g : Γ(M.Z, U k ⊓ U k')) = d k' / d k` using `fun k k' => M.exists_unit_res_eq (div_ne_zero (hd k') (hd k)) (hr k k') fun z hz => by`. Rewrite using `[inv_div]`. Conclude with `hr k' k z ⟨hz.2, hz.1⟩`. Use `choose g hg using key`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hres : ∀ k k' {V : M.Z.Opens} (h : V ≤ U k ⊓ U k') (hV : (V : Set M.Z).Nonempty), M.res V hV ((Semi.res h (g k k') : Γ(M.Z, V)ˣ) : Γ(M.Z, V)) = d k' / d k` using `fun k k' V h hV => (M.res_resG h hV _).trans (hg k k' _)`. Use `⟨g, ⟨hU, fun i => Units.ext (M.eq_of_res_eq_of_nonempty fun hV => ?_), fun i j k => Units.ext (M.eq_of_res_eq_of_nonempty fun hV => ?_)⟩, ⟨hd, fun k k' h => (M.res_apply _ h _).symm.trans (hg k k' h)⟩⟩` and prove the remaining obligations. Use `(hres i i _ hV).trans ?_` and prove the remaining obligations. Rewrite using `[div_self (hd i), Units.val_one, map_one]`. Rewrite using `[Units.val_mul, map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(congrArg₂ (· * ·) (hres i j _ hV) (hres j k _ hV)).trans (Eq.trans ?_ (hres i k _ hV).symm)` and prove the remaining obligations. Use `hd i` as an intermediate fact. Use `hd j` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_isLB_genTriv_of_ratios : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (M : RatModel o Ω) (ι : Type) (U : ι → M.Z.Opens) (d : ι → Ω), ⨆ k, U k = ⊤ → (∀ k, d k ≠ 0) → (∀ k k', ∀ z ∈ U k ⊓ U k', d k' / d k ∈ M.O z) → ∃ g : ∀ k k', Γ(M.Z, U k ⊓ U k')ˣ, (⟨ι, U, g⟩ : LB M.Z).IsLB ∧ M.GenTriv ⟨ι, U, g⟩ d := by
   intro o Ω _ _ _ M ι U d hU hd hr

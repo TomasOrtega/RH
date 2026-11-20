@@ -49,7 +49,7 @@ def IsModelU {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) (Λ : AddSubgro
   IsIntP W.a₁ ∧ IsIntP W.a₂ ∧ IsIntP W.a₃ ∧ IsIntP W.a₄ ∧ IsIntP W.a₆ ∧ ‖W.Δ‖ = 1
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h6, hd⟩` from `h`. Use `show IsIntP _ ∧ IsIntP _ ∧ IsIntP _ ∧ IsIntP _ ∧ IsIntP _ ∧ ‖_‖ = 1`. Apply the tactic sequence `exact ⟨h1, h2, h3, h4, h6, by first | rw [hd, norm_one] | simp [hd]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem IsModel.toU {p : ℕ} [Fact p.Prime] {lam : Qbar →+* ℂ_[p]} {Λ : AddSubgroup ℂ}
     {C : WeierstrassCurve.VariableChange ℂ_[p]} (h : IsModel lam Λ C) : IsModelU lam Λ C := by
@@ -460,7 +460,7 @@ def NormOnePowerPrincipal (D : D7) : Prop :=
     𝔞 ^ h = Submodule.span (𝓞 D.host.E) {(z : D.host.E)}
 
 /- English proof (translation)
-The claim follows from `| 0 => by simp | n + 1 => by rw [pow_succ, hm, idl_pow hm x n, ← pow_succ]`.
+A detailed English derivation is pending.
 -/
 theorem idl_pow {D : D7} {idl : D.Dt ⧸ D.UO → IdE D} (hm : ∀ x y, idl (x * y) = idl x * idl y)
     (x : D.Dt ⧸ D.UO) : ∀ n : ℕ, idl (x ^ (n + 1)) = idl x ^ (n + 1)
@@ -468,9 +468,9 @@ theorem idl_pow {D : D7} {idl : D.Dt ⧸ D.UO → IdE D} (hm : ∀ x y, idl (x *
   | n + 1 => by rw [pow_succ, hm, idl_pow hm x n, ← pow_succ]
 
 /- English proof (translation)
-Take `⟨hinj, hN1, hm, hz, -⟩` from `h`. Introduce `t`. Take `⟨n, z, hn, hnz⟩` from `hn (idl (QuotientGroup.mk t)) ((hN1 _).2 ⟨_, rfl⟩)`. Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by omega⟩`. Establish `hq : (QuotientGroup.mk (D.e1Dt z) : D.Dt ⧸ D.UO) = QuotientGroup.mk (t ^ (m + 1))`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[hz, ← hnz, QuotientGroup.mk_pow, idl_pow hm]`. Use `⟨m + 1, z, ?_⟩` and prove the remaining obligations. Unfold `PowRat`. Conclude with `⟨hn, (D.e1Dt z)⁻¹ * t ^ (m + 1), QuotientGroup.eq.mp hq, (mul_inv_cancel_left _ _).symm⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem powRatAll_of (D : D7) (idl : D.Dt ⧸ D.UO → IdE D) (h : RelDetPinned D idl) (hn : NormOnePowerPrincipal D) :
     PowRatAll D := by
@@ -501,21 +501,21 @@ def CarriesTupleCharacters (D : D7) {u : D.what₂.Word} (C : ColumnChain D.R D.
     ∀ c, C.rhoDet' i c = ((rhoOf' D mt i (dt (i + 1) c) : ℂˣ) : ℂ)
 
 /- English proof (translation)
-Conclude with `D.rhoDet_eq_inv_muTilde_chiD_pow u i c`.
+A detailed English derivation is pending.
 -/
 theorem rhoDet_eq (D : D7) (u : D.what₂.Word) (i : ℕ) (c : (D.mem u).C.cls i) :
     (D.mem u).C.rhoDet i c = ((rhoCh D i (D.detCls u i c) : ℂˣ) : ℂ) := by
   exact D.rhoDet_eq_inv_muTilde_chiD_pow u i c
 
 /- English proof (translation)
-Conclude with `D.rhoDetPrime_eq_muTilde_mul_chi_pow u i c`.
+A detailed English derivation is pending.
 -/
 theorem rhoDet'_eq (D : D7) (u : D.what₂.Word) (i : ℕ) (c : (D.mem u).C.cls (i + 1)) :
     (D.mem u).C.rhoDet' i c = ((rhoCh' D i (D.detCls u (i + 1) c) : ℂˣ) : ℂ) := by
   exact D.rhoDetPrime_eq_muTilde_mul_chi_pow u i c
 
 /- English proof (translation)
-Introduce `i _`. Conclude with `⟨fun c => rhoDet_eq D u i c, fun c => rhoDet'_eq D u i c⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem member_chain_has_characters (D : D7) (u : D.what₂.Word) : CarriesTupleCharacters D (D.mem u).C D.muTil (D.detCls u) := by
   intro i _
@@ -536,7 +536,7 @@ def rhoThreeOf (D : D7) {u : D.what₂.Word} (C : ColumnChain D.R D.what₂.Tau 
 def rhoThree (D : D7) : Prop := ∀ u : D.what₂.Word, rhoThreeOf D (D.mem u).C D.muTil
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `h i hi`. Simplify using `only [Formalism.BasicNotions.ColumnChain.K, Formalism.ThetaLiftIndependence.kerOpM, Formalism.BasicNotions.ColumnChain.Kmap, Formalism.BasicNotions.ColumnChain.wt, LinearMap.smul_apply, LinearMap.comp_apply, h1, h2]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem lift_eqC (D : D7) {u : D.what₂.Word} (C : ColumnChain D.R D.what₂.Tau (D.hcW u)) (mt : ℕ → D.Dt →* ℂˣ)
     (dt : ∀ i, C.cls i → D.Dt) (h : CarriesTupleCharacters D C mt dt) (i : ℕ) (hi : i < D.R.m) (φ : C.cls i → C.Y i → ℂ)
@@ -549,7 +549,7 @@ theorem lift_eqC (D : D7) {u : D.what₂.Word} (C : ColumnChain D.R D.what₂.Ta
     LinearMap.smul_apply, LinearMap.comp_apply, h1, h2]
 
 /- English proof (translation)
-Simplify using `only [Formalism.BasicNotions.ColumnChain.K, Formalism.ThetaLiftIndependence.kerOpM, Formalism.BasicNotions.ColumnChain.Kmap, Formalism.BasicNotions.ColumnChain.wt, LinearMap.smul_apply, LinearMap.comp_apply, rhoDet_eq, rhoDet'_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lift_eq (D : D7) (u : D.what₂.Word) (i : ℕ) (φ : (D.mem u).C.cls i → (D.mem u).C.Y i → ℂ)
     (c' : (D.mem u).C.cls (i + 1)) :
@@ -609,9 +609,9 @@ def liftTie (D : D7) (T : Tor D) (e : FamE D) {u : D.what₂.Word} {C : ColumnCh
       applyAt0 D (polD D O.dgen Q (O.frm (i + 1) y')) (O.Th i c c')
 
 /- English proof (translation)
-Take `⟨-, h2⟩` from `h`. Rewrite using `[lift_eqC D C O.mt O.dt O.c13 i hi φ c', Finset.sum_apply]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Establish `key` using `h2 c c' (Q c) y'`. Rewrite using `[hQ c]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul, Formalism.BasicNotions.ColumnChain.divDe, Formalism.BasicNotions.mulFun, LinearMap.coe_mk, AddHom.coe_mk, key]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lift_formula (D : D7) (T : Tor D) (e : FamE D) {u : D.what₂.Word}
     {C : ColumnChain D.R D.what₂.Tau (D.hcW u)} (O : LiftObj D C) (i : ℕ) (hi : i < D.R.m) (h : liftTie D T e O i)
@@ -669,9 +669,9 @@ def relDetP (D : D7) : Prop :=
       D.relDet N L₀ L ^ h = QuotientGroup.mk (D.e1Dt z)
 
 /- English proof (translation)
-Take `⟨hinj, -, hm, hz, hdet⟩` from `h`. Introduce `p _ lam N L L₀ hL`. Take `⟨n, z, hn, hp, hnz⟩` from `hd p lam N L L₀ hL`. Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by omega⟩`. Use `⟨m + 1, z, hn, hp, hinj ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[idl_pow hm, hdet, hnz, hz]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem relDetP_of_relDetPinned (D : D7) (idl : D.Dt ⧸ D.UO → IdE D) (h : RelDetPinned D idl) (hd : detIdP D) :
     relDetP D := by
@@ -714,7 +714,7 @@ def rhoUse (D : D7) : Prop :=
     repUnitsOf D mt ∧ rhoValOf D C mt ∧ brRhoOf D C mt
 
 /- English proof (translation)
-Take `⟨n, z, hz⟩` from `ha t`. Conclude with `h p lam h2 hp t n z hz`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem chiUnitAll (D : D7) (h : chiUnitInert D) (ha : PowRatAll D) (p : ℕ) [Fact p.Prime]
     (lam : Qbar →+* ℂ_[p]) (h2 : p ≠ 2) (hp : InertK D p) (t : D.Dt) :
@@ -723,7 +723,7 @@ theorem chiUnitAll (D : D7) (h : chiUnitInert D) (ha : PowRatAll D) (p : ℕ) [F
   exact h p lam h2 hp t n z hz
 
 /- English proof (translation)
-Take `⟨hinj, -, hm, -, hdet⟩` from `h`. Establish `hx : D.relDet N L L'' = x ^ (i + 1)` using `hinj (by rw [hdet, hi, idl_pow hm])`. Rewrite using `[hx, map_pow]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem chiQ_move (D : D7) (idl : D.Dt ⧸ D.UO → IdE D) (h : RelDetPinned D idl) (N : ℕ)
     (L L'' : (letI := D.host.cmStar; SDLat D.host.E N)) (x : D.Dt ⧸ D.UO) (i : ℕ)
@@ -828,7 +828,7 @@ def PhiHat (D : D7) (T : Tor D) (δ : ℂ) {N N' r : ℕ} (p n : ℕ) [Fact p.Pr
     (kap D T (vecN D T δ p n b a) (liftY D T δ p n ε b y))⁻¹
 
 /- English proof (translation)
-Simplify using `only [XiF, PhiHat, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem xi_formula (D : D7) (T : Tor D) (δ : ℂ) {N N' r : ℕ} (p n : ℕ) [Fact p.Prime] (ε : 𝓞 D.host.K)
     (b : Fin r → Matrix (Fin N') (Fin N) D.host.E) (Φ : LocallyConstant (Fin r → ℤ_[p]) ℂ)
@@ -980,7 +980,7 @@ def Adm3s (D : D7) : Prop := admJ D ∧ InducedCMType D ∧ HostFieldConditions 
 def Stmt (D : D7) : Prop := Adm3s D → aux₃ D
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, hn, -, hd, -⟩` from `h`. Introduce and unpack `⟨idl, hi⟩`. Conclude with `⟨relDetP_of_relDetPinned D idl hi hd, powRatAll_of D idl hi hn⟩`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem relative_determinant_of_split_model (D : D7) (h : SplitModelProperties D) : Pinned D → relDetP D ∧ PowRatAll D := by
   obtain ⟨-, -, -, -, -, hn, -, hd, -⟩ := h
@@ -988,7 +988,7 @@ theorem relative_determinant_of_split_model (D : D7) (h : SplitModelProperties D
   exact ⟨relDetP_of_relDetPinned D idl hi hd, powRatAll_of D idl hi hn⟩
 
 /- English proof (translation)
-Take `⟨-, -, ⟨hu, -⟩, -⟩` from `h`. Conclude with `(hu u (D.mem u).C D.muTil (h3 u)).1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem repUnits_of (D : D7) (h : aux₃ D) (u : D.what₂.Word) (h3 : rhoThree D) : repUnits D := by
   obtain ⟨-, -, ⟨hu, -⟩, -⟩ := h
@@ -1005,7 +1005,7 @@ def TwistedThetaTheorem (D : D7) (C : ℝ) (X : Ideal (𝓞 D.host.K) → ℂ �
 def ConclusionE (D : D7) (C : ℝ) : Prop := TwistedThetaTheorem D C fun _ _ _ => True
 
 /- English proof (translation)
-Introduce `cc hcc δ hδ`. Take `⟨h1, h2, h3⟩` from `h cc hcc δ hδ`. Use `⟨h1, h2, fun χ hχ => ?_⟩` and prove the remaining obligations. Take `⟨e, he, hf, hx⟩` from `h3 χ hχ`. Conclude with `⟨e, he, hf, hX _ _ _ hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem TwistedThetaTheorem.mono {D : D7} {C : ℝ} {X X' : Ideal (𝓞 D.host.K) → ℂ → FamE D → Prop}
     (hX : ∀ cc δ e, X cc δ e → X' cc δ e) (h : TwistedThetaTheorem D C X) : TwistedThetaTheorem D C X' := by
@@ -1016,7 +1016,7 @@ theorem TwistedThetaTheorem.mono {D : D7} {C : ℝ} {X X' : Ideal (𝓞 D.host.K
   exact ⟨e, he, hf, hX _ _ _ hx⟩
 
 /- English proof (translation)
-Introduce `cc hcc δ hδ`. Take `⟨h1, h2, h3⟩` from `h cc hcc δ hδ`. Use `⟨h1, h2, fun χ hχ => ?_⟩` and prove the remaining obligations. Take `⟨e, he, -⟩` from `h3 χ hχ`. Conclude with `⟨e, he⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem TwistedThetaTheorem.toTaylorLogMetric {D : D7} {C : ℝ} {X : Ideal (𝓞 D.host.K) → ℂ → FamE D → Prop} (h : TwistedThetaTheorem D C X) :
     TaylorLogMetric.aux₃ D C := by
@@ -1027,15 +1027,15 @@ theorem TwistedThetaTheorem.toTaylorLogMetric {D : D7} {C : ℝ} {X : Ideal (�
   exact ⟨e, he⟩
 
 /- English proof (translation)
-Take `⟨hinj, hN1, hm, hz, hdet⟩` from `hi`. Take `⟨χ, hχ⟩ : ∃ χ : IdE D → ℂ, ∀ x, χ (idl x) = ((chiQ D x : ℂˣ) : ℂ)` from `⟨fun 𝔞 => if h𝔞 : ∃ x, idl x = 𝔞 then ((chiQ D h𝔞.choose : ℂˣ) : ℂ) else 0, fun x => by`. Establish `hex : ∃ y, idl y = idl x` using `⟨x, rfl⟩`. Simplify using `only`. Rewrite using `[dif_pos hex, hinj hex.choose_spec]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hC : IsChi D χ`. Simplify using `only [IsChi]`. Use `⟨fun 𝔞 𝔟 ha hb => ?_, fun z => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `(hN1 𝔞).1 ha`. Take `⟨y, rfl⟩` from `(hN1 𝔟).1 hb`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hm]`. Simplify using `only [hχ, map_mul, Units.val_mul]`. Rewrite using `[← hz, hχ]`. Simplify using `only [chiQ, QuotientGroup.lift_mk]`. Conclude with `D.rest_detCharacter_on_unitary_eq z`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, h3⟩` from `h cc hcc δ hδ`. Take `⟨e, ⟨hv, ht, heq, hin, hmo, hmc, hs⟩, hf, hx⟩` from `h3 χ hC`. Take `⟨q1, q2, q3⟩` from `heq`. Establish `hR : RelativeDeterminantEquation D (tor0 D cc δ) e`. Simplify using `only [RelativeDeterminantEquation]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨q1, fun N N' L L' L'' hN hN' => ?_, fun N N' L L₁ L' hN hN' => ?_⟩` and prove the remaining obligations. Rewrite using `[q2 N N' L L' L'' hN hN', ← hdet, hχ, Units.val_zpow_eq_zpow_val]`. Rewrite using `[q3 N N' L L₁ L' hN hN', ← hdet, hχ, Units.val_zpow_eq_zpow_val]`. Conclude with `⟨e, hv, ht, hR, hin, hmo, hmc, hs, hf, hx⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem TwistedThetaTheorem.rec {D : D7} {C : ℝ} {X : Ideal (𝓞 D.host.K) → ℂ → FamE D → Prop} (h : TwistedThetaTheorem D C X)
     (idl : D.Dt ⧸ D.UO → IdE D) (hi : RelDetPinned D idl) (cc : Ideal (𝓞 D.host.K)) (hcc : IsCurveIdeal D cc) (δ : ℂ)

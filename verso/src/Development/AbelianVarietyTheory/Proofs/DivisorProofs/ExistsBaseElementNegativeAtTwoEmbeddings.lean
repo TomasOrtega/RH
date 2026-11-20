@@ -12,7 +12,7 @@ section Field
 variable {L : Type} [Field L] [NumberField L]
 
 /- English proof (translation)
-Set `φ` to `(Classical.arbitrary (InfinitePlace L)).embedding`. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[hc, hc, Complex.conj_conj]`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_involutive (σ : L →+* L)
     (hc : ∀ (φ : L →+* ℂ) (x : L), φ (σ x) = (starRingEnd ℂ) (φ x)) (x : L) : σ (σ x) = x := by
@@ -21,7 +21,7 @@ theorem conj_involutive (σ : L →+* L)
   rw [hc, hc, Complex.conj_conj]
 
 /- English proof (translation)
-Use `⟨fun w => InfinitePlace.not_isReal_iff_isComplex.1 fun hr => hσ ?_⟩` and prove the remaining obligations. Rewrite `hr` using `[InfinitePlace.isReal_iff, ComplexEmbedding.isReal_iff]`. Use `RingHom.ext fun x => w.embedding.injective ?_` and prove the remaining obligations. Rewrite using `[hc, RingHom.id_apply, ← ComplexEmbedding.conjugate_coe_eq, hr]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isTotallyComplex_of_conj (σ : L →+* L) (hσ : σ ≠ RingHom.id L)
     (hc : ∀ (φ : L →+* ℂ) (x : L), φ (σ x) = (starRingEnd ℂ) (φ x)) : IsTotallyComplex L := by
@@ -35,7 +35,7 @@ end Field
 variable {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
 
 /- English proof (translation)
-Rewrite using `[ComplexEmbedding.isReal_iff]`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, RingHom.comp_apply, ← hc, hK]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isReal_comp (σ : L →+* L) (hK : ∀ x : K, σ (algebraMap K L x) = algebraMap K L x)
     (hc : ∀ (φ : L →+* ℂ) (x : L), φ (σ x) = (starRingEnd ℂ) (φ x)) (φ : L →+* ℂ) :
@@ -45,7 +45,7 @@ theorem isReal_comp (σ : L →+* L) (hK : ∀ x : K, σ (algebraMap K L x) = al
   rw [ComplexEmbedding.conjugate_coe_eq, RingHom.comp_apply, ← hc, hK]
 
 /- English proof (translation)
-Use `⟨fun w => ?_⟩` and prove the remaining obligations. Take `⟨W, rfl⟩` from `InfinitePlace.comap_surjective (k := K) (K := L) w`. Use `show (W.comap (algebraMap K L)).IsReal`. Rewrite using `[← W.mk_embedding, InfinitePlace.comap_mk, InfinitePlace.isReal_mk_iff]`. Conclude with `isReal_comp σ hK hc _`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTotallyReal_of_conj [Algebra.IsAlgebraic K L] (σ : L →+* L)
     (hK : ∀ x : K, σ (algebraMap K L x) = algebraMap K L x)
@@ -57,25 +57,23 @@ theorem isTotallyReal_of_conj [Algebra.IsAlgebraic K L] (σ : L →+* L)
   exact isReal_comp σ hK hc _
 
 /- English proof (translation)
-Establish `hss` using `conj_involutive σ hc`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : ∃ s, σ s ≠ s := by`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Conclude with `hσ (RingHom.ext hne)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set t := s - σ s with ht`. Establish `hσt : σ t = -t` using `by rw [ht, map_sub, hss]; ring`. Establish `ht0 : t ≠ 0` using `sub_ne_zero.2 (Ne.symm hs)`. Establish `hli : LinearIndependent K ![(1 : L), t]`. Rewrite using `[LinearIndependent.pair_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `a b hab`. Establish `h2` using `congrArg σ hab`. Simplify using `only [Algebra.smul_def, map_add, map_mul, hK, hσt, map_one, map_zero, mul_one] at h2 hab`. Establish `hb2 : (2 : L) * (algebraMap K L b * t) = 0` using `by linear_combination hab - h2`. Establish `hb : b = 0` using `by simpa [ht0] using hb2`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Substitute `hb` using the available equality. Simplify using `only [map_zero, zero_mul, add_zero, FaithfulSMul.algebraMap_eq_zero_iff] at hab`. Conclude with `⟨hab, rfl⟩`. Establish `hdec : ∀ x : L, ∃ a b : K, x = algebraMap K L a + algebraMap K L b * t`. Introduce `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Set `B` to `basisOfLinearIndependentOfCardEqFinrank hli (by simp [hd])`. Use `⟨B.repr x 0, B.repr x 1, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← B.sum_repr x]`. Simplify using `[B, Fin.sum_univ_two, Algebra.smul_def]`. Establish `hφK : ∀ a : K, φ (algebraMap K L a) = ε (algebraMap K L a)` using `fun a => RingHom.congr_fun h a`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a, b, hab⟩` from `hdec (t * t)`. Establish `hb : b = 0`. Establish `h2 : σ (t * t) = t * t` using `by rw [map_mul, hσt, neg_mul_neg]`. Rewrite `h2` using `[hab]`. Simplify using `only [map_add, map_mul, hK, hσt] at h2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `hb2 : (2 : L) * (algebraMap K L b * t) = 0` using `by linear_combination -h2`. Simplify `hb2` using `[ht0]`. Substitute `hb` using the available equality. Simplify using `only [map_zero, zero_mul, add_zero] at hab`. Establish `hsq : φ t * φ t = ε t * ε t` using `by rw [← map_mul, ← map_mul, hab, hφK]`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfac : (φ t - ε t) * (φ t + ε t) = 0` using `by linear_combination hsq`. Break down `mul_eq_zero.1 hfac with h1 | h1` into its components or cases. Use `left`. Establish `hφt : φ t = ε t` using `sub_eq_zero.1 h1`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨a', b', rfl⟩` from `hdec x`. Simplify using `only [map_add, map_mul, hφK, hφt]`. Use `right`. Establish `hφt : φ t = -ε t` using `eq_neg_of_add_eq_zero_left h1`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations.
-
-Take `⟨a', b', rfl⟩` from `hdec x`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, ← hc]`. Simplify using `only [map_add, map_mul, hφK, hφt, hK, hσt, map_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_or_eq_conjugate (hd : Module.finrank K L = 2) (σ : L →+* L) (hσ : σ ≠ RingHom.id L)
     (hK : ∀ x : K, σ (algebraMap K L x) = algebraMap K L x)
@@ -138,23 +136,19 @@ namespace GlobalTheory.QuadSigns
 open scoped TensorProduct
 
 /- English proof (translation)
-Use `haveI : Algebra.IsQuadraticExtension K L := ⟨hd⟩`. Use `haveI : FiniteDimensional K L := Module.finite_of_finrank_pos (by omega)`. Establish `hKr : IsTotallyReal K` using `isTotallyReal_of_conj σ hK hc`. Establish `hLc : IsTotallyComplex L` using `isTotallyComplex_of_conj σ hσ hc`. Establish `hover : ∀ φ ψ : L →+* ℂ, InfinitePlace.mk (φ.comp (algebraMap K L)) = InfinitePlace.mk (ψ.comp (algebraMap K L)) → φ = ψ ∨ φ = ComplexEmbedding.conjugate ψ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `φ ψ hm`. Apply `eq_or_eq_conjugate hd σ hσ hK hc` to reduce the goal to its premises. Break down `InfinitePlace.mk_eq_iff.1 hm with hh | hh` into its components or cases. Conclude with `hh`. Rewrite `hh` using `[ComplexEmbedding.isReal_iff.1 (isReal_comp σ hK hc φ)]`. Then use the resulting hypothesis.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Use `set w₁ := InfinitePlace.mk (ε.comp (algebraMap K L)) with hw₁`. Use `set w₂ := InfinitePlace.mk (ε'.comp (algebraMap K L)) with hw₂`. Establish `hw : w₁ ≠ w₂`. Introduce `he`. Break down `hover ε ε' he with hh | hh` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1 hh`. Conclude with `h2 hh`. Take `⟨h, hneg, hpos, hfin⟩` from `GlobalTheory.QuadRecip.exists_signs_of_even K L hKr hLc {w₁, w₂} (by rw [Finset.card_pair hw]; decide)`. Establish `hsign : ∀ φ : L →+* ℂ, (φ (algebraMap K L (h : K))).re = InfinitePlace.embedding_of_isReal (hKr.isReal (InfinitePlace.mk (φ.comp (algebraMap K L)))) (h : K)`. Introduce `φ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `InfinitePlace.embedding_of_isReal_apply (hKr.isReal (InfinitePlace.mk (φ.comp (algebraMap K L)))) (h : K)` as an intermediate fact. Rewrite `this` using `[InfinitePlace.embedding_mk_eq_of_isReal (isReal_comp σ hK hc φ), RingHom.comp_apply]`. Rewrite using `[← this, Complex.ofReal_re]`. Use `⟨h, h.ne_zero, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hsign]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hneg _ (by simp [w₁])`. Rewrite using `[hsign]`. Conclude with `hneg _ (by simp [w₂])`. Introduce `φ n1 n2 n3 n4`. Rewrite using `[hsign]`.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `hpos _ ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_insert, Finset.mem_singleton, not_or]`. Prove the components needed by the constructor for the conclusion. Introduce `he`. Break down `hover φ ε he with hh | hh` into its components or cases.
-
-Conclude with `n1 hh`. Conclude with `n2 hh`. Introduce `he`. Break down `hover φ ε' he with hh | hh` into its components or cases. Conclude with `n3 hh`.
-
-Conclude with `n4 hh`. Introduce `v`. Take `⟨z, hz⟩` from `GlobalTheory.QuadSymbol.mem_normGroup_iff.1 (hfin v)`. Conclude with `⟨z, hz⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_signs (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
     (hd : Module.finrank K L = 2) (σ : L →+* L) (hσ : σ ≠ RingHom.id L)

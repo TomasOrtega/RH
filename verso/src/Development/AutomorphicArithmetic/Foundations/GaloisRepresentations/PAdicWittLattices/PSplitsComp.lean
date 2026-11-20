@@ -5,11 +5,11 @@ open UpperTheory.Gal.Int.Geo (FEt Cover gen piece IsHEig)
 universe u v
 
 /- English proof (translation)
-Introduce `hS hP Y P Z W κ s _ _ _ _ c I J _ _ τ σ hτ hσ`. Establish `hτc : ∀ i, τ i ≫ s = c` using `hτ.1`. Establish `hσc : ∀ i j, σ i j ≫ κ = τ i` using `fun i => (hσ i).1`. Use `hS (κ ≫ s) c (I × J) (fun x => σ x.1 x.2) (fun x => by rw [← Category.assoc, hσc, hτc]) ?_` and prove the remaining obligations. Introduce `Ω _ _ x y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨i, hi, hiu⟩` from `hP s c I τ hτ Ω x (y ≫ κ) (by simpa using hy)`. Take `⟨j, hj, hju⟩` from `hP κ (τ i) J (σ i) (hσ i) Ω x y hi.symm`. Use `⟨(i, j), hj, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨i', j'⟩ h'`. Establish `h'' : x ≫ σ i' j' = y` using `h'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hi' : i' = i` using `hiu i' (by show x ≫ τ i' = y ≫ κ`. Rewrite using `[← hσc i' j', ← Category.assoc, h''])`. Substitute `hi'` using the available equality. Establish `hj' : j' = j` using `hju j' h''`. Substitute `hj'` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
 Both sides reduce to the same expression.
 -/

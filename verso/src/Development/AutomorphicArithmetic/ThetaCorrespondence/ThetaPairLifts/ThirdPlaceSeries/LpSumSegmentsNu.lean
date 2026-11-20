@@ -15,7 +15,7 @@ end GlobalTheory.NuShift
 namespace GlobalTheory
 open GlobalTheory.NuShift
 /- English proof (translation)
-The claim follows from `GlobalTheory.LocalData.isLocalField w ∀ (h : IsPlaceOver A w) (rc : IrrGL (w.adicCompletion E) → WD h), _root_.UpperTheory.Zero.LLC.IsRecT h rc → ∀ (l : List (Segment (w.adicCompletion E))) (c : ℝ), sumList ((l.map fun Γ => Γ.nu (c : ℂ)).map fun Δ => ((rc Δ.first).lpTw (((Δ.len : …`.
+A detailed English derivation is pending.
 -/
 theorem lpSum_segments_nu_alt : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)),

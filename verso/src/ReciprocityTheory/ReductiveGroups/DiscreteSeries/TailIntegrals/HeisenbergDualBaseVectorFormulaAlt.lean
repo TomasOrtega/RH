@@ -13,13 +13,13 @@ section entries
 variable (k r' : ℕ)
 
 /- English proof (translation)
-Rewrite using `[bvec, mulVec_single_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem entry_eq {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (p q : Fin n) : M p q = (M *ᵥ bvec q) p := by
   rw [bvec, mulVec_single_one]; rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Rewrite using `[last_basis_apply, bvec, Pi.single_apply]`. Apply the tactic sequence `split_ifs with h1 h2 h2 <;> first | rfl | (exfalso; exact h2 (Fin.ext h1)) | (exfalso; exact h1 (congrArg Fin.val h2))`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dual_base_vector_eq_single : es0 k r' = bvec (⟨2 * (1 + r') + k, by omega⟩ : Fin (2 * (1 + r') + k + 1)) := by
   funext p
@@ -27,7 +27,7 @@ theorem dual_base_vector_eq_single : es0 k r' = bvec (⟨2 * (1 + r') + k, by om
   split_ifs with h1 h2 h2 <;> first | rfl | (exfalso; exact h2 (Fin.ext h1)) | (exfalso; exact h1 (congrArg Fin.val h2))
 
 /- English proof (translation)
-Rewrite using `[show heis0 k r' x = heisG k r' (liftVec k 1 r' x.1) (hb k r' x.1 x.2) from rfl, hHA, hermitian_form_base_vector_right, liftVec_out k r' z _ (Or.inr rfl), zero_smul, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem heis_liftVec (hHA : HeisAct) (x : HPar k r') (z : Fin (2 * r' + k + 1) → ℂ) :
     heis0 k r' x *ᵥ liftVec k 1 r' z =
@@ -36,7 +36,7 @@ theorem heis_liftVec (hHA : HeisAct) (x : HPar k r') (z : Fin (2 * r' + k + 1) �
     liftVec_out k r' z _ (Or.inr rfl), zero_smul, add_zero]
 
 /- English proof (translation)
-Rewrite using `[show heis0 k r' x = heisG k r' (liftVec k 1 r' x.1) (hb k r' x.1 x.2) from rfl, hHA, hermitian_dual_base_vector_left, liftVec_out k r' x.1 _ (Or.inl rfl), star_zero, zero_smul, sub_zero, hermitian_form_base_vector_right, last_basis_apply, if_pos rfl, one_smul]`. Conclude with `(add_assoc _ _ _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heisenberg_dual_base_vector_formula (hHA : HeisAct) (x : HPar k r') :
     heis0 k r' x *ᵥ es0 k r' = es0 k r' + liftVec k 1 r' x.1 + hb k r' x.1 x.2 • e0 k r' := by
@@ -48,7 +48,7 @@ theorem heisenberg_dual_base_vector_formula (hHA : HeisAct) (x : HPar k r') :
 variable (c : ℂ) (g : Mat k r') (x : HPar k r')
 
 /- English proof (translation)
-Rewrite using `[entry_eq (w0 k r' c * heis0 k r' x * ιLev k 1 r' g), ← mulVec_mulVec, ← mulVec_mulVec, bvec_lev, ιLev_liftVec, heis_liftVec k r' hHA, reflection_mulVec_levelPos, Pi.sub_apply, Pi.smul_apply, liftVec_lev, goodRowsProjector_apply_eq_sum, if_neg (by rw [levPos_val]; omega), smul_ze …`. Both sides reduce to the same expression.
+Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem conj_gg (hHA : HeisAct) (i j : Fin (2 * r' + k + 1)) :
     (w0 k r' c * heis0 k r' x * ιLev k 1 r' g) (levPos k 1 r' i) (levPos k 1 r' j) = g i j := by
@@ -58,7 +58,7 @@ theorem conj_gg (hHA : HeisAct) (i j : Fin (2 * r' + k + 1)) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[entry_eq (w0 k r' c * heis0 k r' x * ιLev k 1 r' g), ← mulVec_mulVec, ← mulVec_mulVec, ← dual_base_vector_eq_single, levelEmbedding_mulVec_es0, heisenberg_dual_base_vector_formula k r' hHA, reflection_mulVec_levelPos, Pi.add_apply, Pi.add_apply, Pi.smul_apply, liftVec_lev, goodR …`. Simplify using the standard rewrite rules.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conj_y (hHA : HeisAct) (i : Fin (2 * r' + k + 1)) :
     (w0 k r' c * heis0 k r' x * ιLev k 1 r' g) (levPos k 1 r' i) ⟨2 * (1 + r') + k, by omega⟩ = x.1 i := by
@@ -68,7 +68,7 @@ theorem conj_y (hHA : HeisAct) (i : Fin (2 * r' + k + 1)) :
   simp
 
 /- English proof (translation)
-Rewrite using `[entry_eq (w0 k r' c * heis0 k r' x * ιLev k 1 r' g), ← mulVec_mulVec, ← mulVec_mulVec, ← dual_base_vector_eq_single, levelEmbedding_mulVec_es0, heisenberg_dual_base_vector_formula k r' hHA, rankOneMatrix_last_coord, Pi.add_apply, Pi.add_apply, Pi.smul_apply, liftVec_out k r' x.1 …`. Simplify using the standard rewrite rules.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conj_cb (hHA : HeisAct) :
     (w0 k r' c * heis0 k r' x * ιLev k 1 r' g) ⟨2 * (1 + r') + k, by omega⟩ ⟨2 * (1 + r') + k, by omega⟩ =
@@ -79,7 +79,7 @@ theorem conj_cb (hHA : HeisAct) :
   simp
 
 /- English proof (translation)
-Rewrite using `[bvec_lev, heis_liftVec k r' hHA, mulVec_sub, mulVec_smul, ιLev_liftVec, levi_embedding_mulVec_e0]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem un_col (hHA : HeisAct) (j : Fin (2 * r' + k + 1)) :
     ιLev k 1 r' g *ᵥ (heis0 k r' x *ᵥ bvec (levPos k 1 r' j)) =
@@ -88,7 +88,7 @@ theorem un_col (hHA : HeisAct) (j : Fin (2 * r' + k + 1)) :
   rw [bvec_lev, heis_liftVec k r' hHA, mulVec_sub, mulVec_smul, ιLev_liftVec, levi_embedding_mulVec_e0]
 
 /- English proof (translation)
-Rewrite using `[entry_eq (w0 k r' c * ιLev k 1 r' g * heis0 k r' x), ← mulVec_mulVec, ← mulVec_mulVec, un_col k r' g x hHA, reflection_mulVec_levelPos, Pi.sub_apply, Pi.smul_apply, liftVec_lev, goodRowsProjector_apply_eq_sum, if_neg (by rw [levPos_val]; omega), smul_zero, sub_zero, bvec, mulVec …`. Both sides reduce to the same expression.
+Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem un_gg (hHA : HeisAct) (i j : Fin (2 * r' + k + 1)) :
     (w0 k r' c * ιLev k 1 r' g * heis0 k r' x) (levPos k 1 r' i) (levPos k 1 r' j) = g i j := by
@@ -98,7 +98,7 @@ theorem un_gg (hHA : HeisAct) (i j : Fin (2 * r' + k + 1)) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[entry_eq (w0 k r' c * ιLev k 1 r' g * heis0 k r' x), ← mulVec_mulVec, ← mulVec_mulVec, un_col k r' g x hHA, rankOneMatrix_last_coord, Pi.sub_apply, Pi.smul_apply, liftVec_out k r' _ _ (Or.inl rfl), goodRowsProjector_apply_eq_sum, if_pos rfl]`. Simplify using the standard rewrite rules.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem un_row (hHA : HeisAct) (j : Fin (2 * r' + k + 1)) :
     (w0 k r' c * ιLev k 1 r' g * heis0 k r' x) ⟨2 * (1 + r') + k, by omega⟩ (levPos k 1 r' j) =
@@ -108,7 +108,7 @@ theorem un_row (hHA : HeisAct) (j : Fin (2 * r' + k + 1)) :
   simp
 
 /- English proof (translation)
-Establish `hv : ιLev k 1 r' g *ᵥ (heis0 k r' x *ᵥ es0 k r') = es0 k r' + liftVec k 1 r' (g *ᵥ x.1) + hb k r' x.1 x.2 • e0 k r'`. Rewrite using `[heisenberg_dual_base_vector_formula k r' hHA, mulVec_add, mulVec_add, mulVec_smul, levelEmbedding_mulVec_es0, ιLev_liftVec, levi_embedding_mulVec_e0]`. Rewrite using `[entry_eq (w0 k r' c * ιLev k 1 r' g * heis0 k r' x), ← mulVec_mulVec, ← mulVec_mulVec, ← dual_base_vector_eq_single, hv, rankOneMatrix_last_coord, Pi.add_apply, Pi.add_apply, Pi.smul_apply, liftVec_out k r' _ _ (Or.inl rfl), goodRowsProjector_apply_eq_sum, last_basis_apply, if_n …`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem un_cb (hHA : HeisAct) :
     (w0 k r' c * ιLev k 1 r' g * heis0 k r' x) ⟨2 * (1 + r') + k, by omega⟩ ⟨2 * (1 + r') + k, by omega⟩ =
@@ -127,9 +127,9 @@ section bounds
 variable (k r' : ℕ)
 
 /- English proof (translation)
-Distinguish the cases in `hA : i.val + 1 < 1 + r' ∨ 1 + r' + k < i.val + 1`. Use `⟨⟨2 * (1 + r') + k - (i.val + 1) - 1, by omega⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[herm_bvec, norm_star, hpk_mulVec', if_pos (by rw [levPos_val]; simp only; omega), liftVec_apply, dif_pos (by simp only [levPos_val]; omega)]`. Conclude with `congrArg (fun t => ‖y t‖) (Fin.ext (by simp only [levPos_val]; omega))`. Use `⟨i, ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[herm_bvec, norm_star, hpk_mulVec', if_neg (by rw [levPos_val]; omega)]`. Apply the tactic sequence `split_ifs <;> simp [liftVec_lev]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_perm (y : Fin (2 * r' + k + 1) → ℂ) (i : Fin (2 * r' + k + 1)) :
     ∃ j : Fin (2 * r' + k + 1),
@@ -144,12 +144,12 @@ theorem exists_perm (y : Fin (2 * r' + k + 1) → ℂ) (i : Fin (2 * r' + k + 1)
     split_ifs <;> simp [liftVec_lev]
 
 /- English proof (translation)
-The claim follows from `Real.sqrt_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem gN_nonneg' {n : ℕ} (M : Mat k n) : 0 ≤ gN M := Real.sqrt_nonneg _
 
 /- English proof (translation)
-Rewrite using `[← Real.sqrt_sq (norm_nonneg (M p q)), Complex.sq_norm]`. Unfold `gN`. Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 -/
 theorem gN_entry {n : ℕ} (M : Mat k n) (p q : Fin (2 * n + k + 1)) : ‖M p q‖ ≤ gN M := by
   rw [← Real.sqrt_sq (norm_nonneg (M p q)), Complex.sq_norm]
@@ -163,7 +163,7 @@ theorem gN_entry {n : ℕ} (M : Mat k n) (p q : Fin (2 * n + k + 1)) : ‖M p q�
           (fun i _ => Finset.sum_nonneg fun j _ => Complex.normSq_nonneg _) (Finset.mem_univ p)
 
 /- English proof (translation)
-Unfold `gN`. Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 -/
 theorem gN_sub (M : Mat k (1 + r')) (g : Mat k r')
     (h : ∀ i j, M (levPos k 1 r' i) (levPos k 1 r' j) = g i j) : gN g ≤ gN M := by
@@ -179,12 +179,12 @@ theorem gN_sub (M : Mat k (1 + r')) (g : Mat k r')
           fun p => Finset.sum_nonneg fun q _ => Complex.normSq_nonneg _
 
 /- English proof (translation)
-Simplify using `[hb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hb_im (y : Fin (2 * r' + k + 1) → ℂ) (s : ℝ) : (hb k r' y s).im = s := by simp [hb]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Use `Complex.abs_im_le_norm (hb k r' x.1 x.2)` as an intermediate fact. Rewrite `this` using `[hb_im]`. Then use the resulting hypothesis. Use `_ = ‖M ⟨2 * (1 + r') + k, by omega⟩ ⟨2 * (1 + r') + k, by omega⟩‖ := by rw [h, norm_mul]`. Apply the tactic sequence `_ ≤ gN M := gN_entry k _ _ _`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem cs_le (c : ℂ) (x : HPar k r') (M : Mat k (1 + r'))
     (h : M ⟨2 * (1 + r') + k, by omega⟩ ⟨2 * (1 + r') + k, by omega⟩ = c * hb k r' x.1 x.2) :
@@ -199,7 +199,7 @@ theorem cs_le (c : ℂ) (x : HPar k r') (M : Mat k (1 + r'))
 variable (c : ℂ) (g : Mat k r') (x : HPar k r')
 
 /- English proof (translation)
-Use `⟨gN_sub k r' _ g (conj_gg k r' c g x hHA), ?_, cs_le k r' c x _ (conj_cb k r' c g x hHA)⟩` and prove the remaining obligations. Use `(pi_norm_le_iff_of_nonneg (gN_nonneg' k _)).2 fun i => ?_` and prove the remaining obligations. Rewrite using `[← conj_y k r' c g x hHA i]`. Apply the tactic sequence `exact gN_entry k _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pt_conj (hHA : HeisAct) :
     gN g ≤ gN (w0 k r' c * heis0 k r' x * ιLev k 1 r' g) ∧
@@ -211,9 +211,9 @@ theorem pt_conj (hHA : HeisAct) :
   exact gN_entry k _ _ _
 
 /- English proof (translation)
-Use `⟨gN_sub k r' _ g (un_gg k r' c g x hHA), ?_, cs_le k r' c x _ (un_cb k r' c g x hHA)⟩` and prove the remaining obligations. Rewrite using `[← norm_smul]`. Use `(pi_norm_le_iff_of_nonneg (gN_nonneg' k _)).2 fun i => ?_` and prove the remaining obligations. Take `⟨j, hj⟩` from `exists_perm k r' x.1 i`. Rewrite using `[Pi.smul_apply, smul_eq_mul, norm_mul, ← hj, ← norm_mul, ← norm_neg, ← un_row k r' c g x hHA j]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `exact gN_entry k _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem pt_un (hHA : HeisAct) :
     gN g ≤ gN (w0 k r' c * ιLev k 1 r' g * heis0 k r' x) ∧

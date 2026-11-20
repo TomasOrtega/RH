@@ -11,9 +11,9 @@ open scoped Classical
 namespace UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm
 
 /- English proof (translation)
-Take `⟨C, N, h⟩` from `h`. Use `squeeze_zero_norm h ?_` and prove the remaining obligations. Establish `h1` using `(tendsto_pow_const_mul_const_pow_of_abs_lt_one N (r := (1 / 2 : ℝ)) (by norm_num [abs_of_pos])).comp (tendsto_add_atTop_nat 1)`. Establish `h2` using `h1.const_mul (C * 2)`. Rewrite `h2` using `[mul_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `h2.congr fun k => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Nat.cast_add, Nat.cast_one, pow_succ]`. Rewrite using `[add_comm (k : ℝ) 1]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem small_tendsto {x : ℕ → ℂ} (h : Small (1 / 2) x) : Tendsto x atTop (𝓝 0) := by
   obtain ⟨C, N, h⟩ := h
@@ -28,7 +28,7 @@ theorem small_tendsto {x : ℕ → ℂ} (h : Small (1 / 2) x) : Tendsto x atTop 
   ring
 
 /- English proof (translation)
-Take `⟨b, hb, rfl⟩` from `h`. Use `Eq.trans ?_ D.sum` and prove the remaining obligations. Rewrite using `[Multiset.card_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => (hb i).card`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sat_card {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} {D : CD E n} {w : Pl E} {B : Multiset ℂˣ}
     (h : D.Sat w B) : B.card = n := by
@@ -38,7 +38,7 @@ theorem sat_card {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} {D
   exact Finset.sum_congr rfl fun i _ => (hb i).card
 
 /- English proof (translation)
-Establish `h1 : ∀ᶠ w : Pl E in cofinite, w ∉ Z` using `Z.eventually_cofinite_notMem`. Establish `h2 : ∀ᶠ w : Pl E in cofinite, w ∉ Z.image cPl` using `(Z.image cPl).eventually_cofinite_notMem`. Use `filter_upwards [h1, h2] with w a b`. Conclude with `⟨a, fun h => b (Finset.mem_image.2 ⟨_, h, ((hP E).2.1 w).1⟩)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem off_cofinite {E : Type} [Field E] [NumberField E] [IsCMField E] (hP : Places) (Z : Finset (Pl E)) :
     ∀ᶠ w : Pl E in cofinite, Off Z w := by

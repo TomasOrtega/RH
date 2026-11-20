@@ -7,7 +7,7 @@ import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.IdealLattice
 namespace Formalism.MainNotions.Ext
 
 /- English proof (translation)
-The claim follows from `ideal_lattice_basis`.
+A detailed English derivation is pending.
 -/
 theorem idealLattice_holds : IdealLattice := ideal_lattice_basis
 

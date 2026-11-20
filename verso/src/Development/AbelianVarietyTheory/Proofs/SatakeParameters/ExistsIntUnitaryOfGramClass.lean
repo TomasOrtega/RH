@@ -15,41 +15,37 @@ open Matrix
 namespace GlobalTheory.Hk3.HoweG
 
 /- English proof (translation)
-Introduce `L _ _ _ ϖ σ q n n' JS JT hU hq hJS hJT hS hT x y _hG hA hGr hidx`. Establish `hvϖ` using `hU.2.2.2.1`. Establish `hϖ0 : ϖ ≠ 0`. Introduce `h`. Rewrite `hvϖ` using `[h, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `WithZero.zero_ne_coe hvϖ`. Establish `hϖint : ϖ ∈ Formalism.UG.intL L`. Unfold `Formalism.UG.intL`. Rewrite using `[Valuation.mem_integer_iff, hvϖ]`. Conclude with `(show Multiplicative.ofAdd (-1 : ℤ) ≤ 1 by decide)` after adjusting the coercions.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `mulVec_int : ∀ {a b : ℕ} (M : Matrix (Fin a) (Fin b) L) (v : Fin b → L), (∀ i j, M i j ∈ Formalism.UG.intL L) → (∀ j, v j ∈ Formalism.UG.intL L) → ∀ i, (M *ᵥ v) i ∈ Formalism.UG.intL L`. Introduce `a b M v hM hv i`. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `(Formalism.UG.intL L).sum_mem fun j _ => (Formalism.UG.intL L).mul_mem (hM i j) (hv j)`. Take `⟨V, hV, a, hxV⟩` from `GlobalTheory.T.exists_elementaryDivisors_integral_preimage_lattice L ϖ hvϖ n n' x`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨g0, hg0⟩` from `hV`. Establish `hVint : ∀ i j, (V : Matrix (Fin n) (Fin n) L) i j ∈ Formalism.UG.intL L`. Introduce `i j`. Rewrite using `[← hg0]`. Conclude with `((g0 : Matrix (Fin n) (Fin n) (Formalism.UG.intL L)) i j).2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hVinv : ∀ i j, ((V⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j ∈ Formalism.UG.intL L`. Introduce `i j`. Rewrite using `[← hg0, ← map_inv]`. Conclude with `(((g0⁻¹ : GL (Fin n) (Formalism.UG.intL L)) : Matrix (Fin n) (Fin n) (Formalism.UG.intL L)) i j).2`. Use `set Vm : Matrix (Fin n) (Fin n) L := (V : Matrix (Fin n) (Fin n) L) with hVm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Establish `hyV : ∀ c : Fin n → L, (∀ j, c j ∈ Formalism.UG.intL L) → ((∀ i, (y *ᵥ (Vm *ᵥ c)) i ∈ Formalism.UG.intL L) ↔ ∀ j, GlobalTheory.Hk3.IntWitt.DvdPow ϖ (a j) (c j))`. Introduce `c hc`. Establish `hu : ∀ i, (Vm *ᵥ c) i ∈ Formalism.UG.intL L` using `mulVec_int Vm c hVint hc`. Rewrite using `[← hxV c hc]`. Conclude with `⟨fun h => GlobalTheory.T.latticeKernel_le_of_matrixLatticeIndex_eq L ϖ σ q hU n n' x y hA.1 hidx _ hu h, fun h => hA.1 _ hu h⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Set `ej : Fin n → Fin n → L` to `fun j => Pi.single j (ϖ ^ a j)`. Establish `hej_int : ∀ j k, ej j k ∈ Formalism.UG.intL L`. Introduce `j k`. Distinguish the cases in `h : k = j`. Substitute `h` using the available equality.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify `(Formalism.UG.intL L).pow_mem hϖint (a k)` using `[ej]`. Simplify using `[ej, Pi.single_apply, h]`. Establish `hej_dvd : ∀ j k, GlobalTheory.Hk3.IntWitt.DvdPow ϖ (a k) (ej j k)`. Introduce `j k`. Distinguish the cases in `h : k = j`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `h; exact ⟨1, (Formalism.UG.intL L).one_mem, by simp [ej]⟩` using the available equality. Simplify `GlobalTheory.Hk3.IntWitt.dvdPow_zero ϖ (a k)` using `[ej, Pi.single_apply, h]`. Set `zx : {j : Fin n // 0 < a j} → Fin n' → L` to `fun j => x *ᵥ (Vm *ᵥ ej j)`. Set `zy : {j : Fin n // 0 < a j} → Fin n' → L` to `fun j => y *ᵥ (Vm *ᵥ ej j)`. Establish `hzx : ∀ j r, zx j r ∈ Formalism.UG.intL L` using `fun j => (hxV _ (hej_int j)).mpr (hej_dvd j)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hzy : ∀ j r, zy j r ∈ Formalism.UG.intL L` using `fun j => (hyV _ (hej_int j)).mpr (hej_dvd j)`. Establish `hix : GlobalTheory.Hk3.IntWitt.IndepMod ϖ zx` using `GlobalTheory.T.elementaryDivisor_columns_independentModUniformizer L ϖ hvϖ n n' x Vm a hxV`. Establish `hiy : GlobalTheory.Hk3.IntWitt.IndepMod ϖ zy` using `GlobalTheory.T.elementaryDivisor_columns_independentModUniformizer L ϖ hvϖ n n' y Vm a hyV`. Establish `hgr` using `GlobalTheory.T.gramClass_elementaryDivisor_columns_congr L ϖ σ q hU n n' JT x y Vm a hVint hxV hGr`. Take `⟨h, hh, hcong⟩` from `GlobalTheory.T.integralWittTheorem_mod_uniformizerPow L ϖ σ q hU hq n' JT hJT hT {j : Fin n // 0 < a j} (fun j => a j) zx zy (fun j => j.2) hzx hzy hix hiy (fun i j => hgr i j)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨h, hh, ?_⟩` and prove the remaining obligations. Use `set H : Matrix (Fin n') (Fin n') L := ((h : GL (Fin n') L) : Matrix (Fin n') (Fin n') L) with hH`. Establish `hHint : ∀ i j, H i j ∈ Formalism.UG.intL L`. Take `⟨h0, hh0⟩` from `hh`. Introduce `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hH, ← hh0]`. Conclude with `((h0 : Matrix (Fin n') (Fin n') (Formalism.UG.intL L)) i j).2`. Use `set M := y - H * x with hM`. Establish `hMv : ∀ w : Fin n → L, M *ᵥ w = y *ᵥ w - H *ᵥ (x *ᵥ w)`. Introduce `w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hM, Matrix.sub_mulVec, Matrix.mulVec_mulVec]`. Establish `hcol : ∀ j i, (M *ᵥ (Vm *ᵥ Pi.single j 1)) i ∈ Formalism.UG.intL L`. Introduce `j i`. Distinguish the cases in `ha : a j = 0`. Establish `he : Pi.single j (1 : L) = ej j` using `by simp [ej, ha]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he, hMv]`. Conclude with `(Formalism.UG.intL L).sub_mem ((hyV _ (hej_int j)).mpr (hej_dvd j) i) (mulVec_int H _ hHint ((hxV _ (hej_int j)).mpr (hej_dvd j)) i)`. Establish `hpos : 0 < a j` using `Nat.pos_of_ne_zero ha`. Take `⟨b, hb, hbe⟩` from `hcong ⟨j, hpos⟩ i`. Establish `he : ej j = ϖ ^ a j • Pi.single j (1 : L)`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use function extensionality and compare the values at `k`. Simplify using `[ej, Pi.single_apply]`. Establish `key : ϖ ^ a j * (M *ᵥ (Vm *ᵥ Pi.single j 1)) i = ϖ ^ a j * (-b)`. Establish `: (M *ᵥ (Vm *ᵥ ej j)) i = -((H *ᵥ zx ⟨j, hpos⟩) i - zy ⟨j, hpos⟩ i)`. Rewrite using `[hMv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [zx, zy, Pi.sub_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `this` using `[he, Matrix.mulVec_smul, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[this, hbe]`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `mul_left_cancel₀ (pow_ne_zero _ hϖ0) key` as an intermediate fact. Rewrite using `[this]`. Conclude with `(Formalism.UG.intL L).neg_mem hb`. Introduce `i r`. Establish `hMe : M = (M * Vm) * ((V⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)`.
-
-Rewrite using `[Matrix.mul_assoc, hVm, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one]`. Rewrite using `[hMe, Matrix.mul_apply]`. Use `(Formalism.UG.intL L).sum_mem fun k _ => (Formalism.UG.intL L).mul_mem ?_ (hVinv k r)` and prove the remaining obligations. Establish `hc` using `hcol k i`. Rewrite `hc` using `[Matrix.mulVec_mulVec, Matrix.mulVec_single_one, Matrix.col_apply]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_intUnitary_of_gramClass : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L) (σ : L →+* L) (q n n' : ℕ)
     (JS : GL (Fin n) L) (JT : GL (Fin n') L), Formalism.UG.IsUnramInv ϖ σ q → Odd q →

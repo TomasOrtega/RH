@@ -15,25 +15,23 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor hiding spMap spMap_comp
 open scoped CategoryTheory.Obj
 
 /- English proof (translation)
-Take `⟨n, g, hgC, hg⟩` from `hB.exists_etale_mvPolynomial`. Use `letI : Algebra (MvPolynomial (Fin n) R) B := g.toAlgebra`. Use `haveI : IsScalarTower R (MvPolynomial (Fin n) R) B := IsScalarTower.of_algebraMap_eq' hgC.symm`. Use `haveI : Algebra.Etale (MvPolynomial (Fin n) R) B := hg`. Establish `hπ : ∀ m : ℕ, ∃ π : B →ₐ[R] JetR R (Fin n) m, (jetAug R (Fin n) m).comp π = ε' ∧ ∀ j, π (sX R j) = algebraMap R _ (ε' (sX R j)) + zR m j` using `fun m => etale_exists (n := n) ε' (jetAug R (Fin n) m) (ker_jetAug_nil (Fin n) m) _ (fun j => by`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_add, AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply, jetAug_zR, add_zero])`. Use `choose π hπaug hπX using hπ`. Use `⟨n, π, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `m`. Use `etale_ext (n := n) ε' (jetAug R (Fin n) m) (ker_jetAug_nil (Fin n) m) _ _ ?_ ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← AlgHom.comp_assoc, jetAug_comp_trunc]`. Conclude with `hπaug (m + 1)`. Conclude with `hπaug m`. Introduce `j`. Rewrite using `[AlgHom.comp_apply, hπX, hπX, map_add, AlgHom.commutes]`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Both sides reduce to the same expression. Introduce `m`. Use `etale_ext (n := n) ε' (jetAug R (Fin n) 0) (ker_jetAug_nil (Fin n) 0) _ _ ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[← AlgHom.comp_assoc, jetAug_comp_zero]`. Conclude with `hπaug m`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `s`. Simplify using the standard rewrite rules. Introduce `j`. Rewrite using `[AlgHom.comp_apply, hπX, map_add, AlgHom.commutes, AlgHom.comp_apply, jetZero_zR, add_zero]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Introduce `A _ _ aug m hJ φ' hφ'aug`. Establish `hJn` using `nil_of_pow _ hJ`. Establish `hmem : ∀ j : Fin n, φ' (sX (S` using `B) R j) - algebraMap R A (ε' (sX (S := B) R j)) ∈ RingHom.ker aug := by`. Introduce `j`. Rewrite using `[RingHom.mem_ker, map_sub, AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply, ← AlgHom.comp_apply, hφ'aug, sub_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Set `ψ` to `jetLift R (RingHom.ker aug) hJ (fun j : Fin n => φ' (sX (S := B) R j) - algebraMap R A (ε' (sX (S := B) R j))) hmem`. Establish `hψaug : aug.comp ψ = jetAug R (Fin n) m` using `jet_ext fun j => by`. Rewrite using `[AlgHom.comp_apply, jetLift_zR, jetAug_zR]`. Conclude with `hmem j`. Establish `hψπ : ψ.comp (π m) = φ'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Use `etale_ext (n := n) ε' aug hJn _ _ ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[← AlgHom.comp_assoc, hψaug]`. Conclude with `hπaug m`. Conclude with `hφ'aug`. Introduce `j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AlgHom.comp_apply, hπX, map_add, AlgHom.commutes, jetLift_zR, add_sub_cancel]`. Use `⟨ψ, ⟨hψaug, hψπ⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `ψ₂ ⟨_, h4⟩`. Apply `jet_ext` to reduce the goal to its premises. Introduce `j`.
-
-Rewrite using `[jetLift_zR]`. Use `AlgHom.congr_fun h4 (sX R j)` as an intermediate fact. Rewrite `this` using `[AlgHom.comp_apply, hπX, map_add, AlgHom.commutes]`. Rewrite using `[← this, add_sub_cancel_left]`.
+A detailed English derivation is pending.
 -/
 theorem algChart_of_isStandardSmooth {R : Type} [CommRing R] (B : Type) [CommRing B] [Algebra R B]
     (hB : (algebraMap R B).IsStandardSmooth) (ε' : B →ₐ[R] R) :
@@ -98,13 +96,13 @@ theorem algChart_of_isStandardSmooth {R : Type} [CommRing R] (B : Type) [CommRin
     rw [← this, add_sub_cancel_left]
 
 /- English proof (translation)
-Take `⟨n, π, htr, hze, huniv⟩` from `algChart_of_isStandardSmooth Γ(G.left, C.U) hC (eps C)`. Use `⟨n, fun m => pt C (π m), fun m => ?_, fun m => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[spMap_pt, htr]`. Rewrite using `[spMap_pt, hze, pt_eps]`. Introduce `A _ _ aug m hJ y hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hJn` using `nil_of_pow _ hJ`. Establish `hy' : spMap aug ≫ y = pt C ((Algebra.ofId R R).comp (eps C))` using `by rw [pt_eps]; exact hy`. Take `⟨φ, rfl⟩` from `exists_pt C y (le_preimage_of_nil C aug (aug_surj aug) (elt_nil _ hJn) y _ hy')`. Establish `hφ : aug.comp φ = eps C`. Use `pt_injective C ((spMap_pt C aug φ).symm.trans hy')` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Use extensionality with `b`. Both sides reduce to the same expression. Take `⟨ψ, ⟨hψ1, hψ2⟩, hψu⟩` from `huniv A aug m hJ φ hφ`. Use `⟨ψ, ⟨hψ1, by rw [spMap_pt, hψ2]⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `ψ₂ ⟨h1, h2⟩`. Rewrite `h2` using `[spMap_pt]`. Conclude with `hψu ψ₂ ⟨h1, (pt_injective C h2).symm⟩`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem univChart_of_chart {R : Type} [CommRing R] (G : Over (Spec (CommRingCat.of R))) [GrpObj G] (C : Chart G)
     (hC : (alg0 C).IsStandardSmooth) :
@@ -129,33 +127,31 @@ theorem univChart_of_chart {R : Type} [CommRing R] (G : Over (Spec (CommRingCat.
     exact hψu ψ₂ ⟨h1, (pt_injective C h2).symm⟩
 
 /- English proof (translation)
-Establish `hin : ∀ m, ∃ π : Γ(G.left, C.U) →ₐ[R] JetR R (Fin n) m, x m = pt C π` using `fun m => exists_pt C (x m) (le_preimage_of_nil C (jetAug R (Fin n) m) (aug_surj _) (elt_nil _ (ker_jetAug_nil (Fin n) m)) (x m) ((Algebra.ofId R R).comp (eps C)) ((spMap_jetAug_alt hx m).trans (pt_eps C R).symm))`. Use `choose π hπ using hin`. Establish `hoe : (Algebra.ofId R R).comp (eps C) = eps C` using `AlgHom.ext fun _ => rfl`. Establish `hπa : ∀ m, (jetAug R (Fin n) m).comp (π m) = eps C` using `fun m => by`. Rewrite using `[← hoe]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `pt_injective C` to reduce the goal to its premises. Rewrite using `[← spMap_pt, ← hπ, spMap_jetAug_alt hx, pt_eps]`. Establish `hπtr : ∀ m, (jetTruncR R (Fin n) m).comp (π (m + 1)) = π m` using `fun m => pt_injective C (by rw [← spMap_pt, ← hπ, ← hπ, hx.1 m])`. Establish `hπ0 : ∀ m, (jetZeroR R (Fin n) m).comp (π m) = (Algebra.ofId R _).comp (eps C)` using `fun m => pt_injective C (by rw [← spMap_pt, ← hπ, hx.2.1 m, pt_eps])`. Establish `huniv : ∀ m, IsUnivRing (eps C) m (π m)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m A _ _ aug hJ h hh`. Establish `hy : spMap aug ≫ pt C h = 1` using `by rw [spMap_pt, hh, ← hoe, pt_eps]`. Take `⟨ψ, ⟨h1, h2⟩, hu⟩` from `hx.2.2 A aug m hJ (pt C h) hy`. Use `⟨ψ, ⟨h1, pt_injective C (by rw [← spMap_pt, ← hπ]; exact h2)⟩, fun ψ₂ hψ₂ => hu ψ₂ ⟨hψ₂.1, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hπ, spMap_pt, ← hψ₂.2]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun m => pullR G (pt C ((jetMapA n m).comp (π m))), ⟨fun m => ?_, fun m => ?_, ?_⟩, fun c => ?_⟩` and prove the remaining obligations. Apply `pushR_inj G` to reduce the goal to its premises. Rewrite using `[pushR_spMap, pushR_pullR, pushR_pullR, spMap_pt, ← hπtr m, ← AlgHom.comp_assoc, ← AlgHom.comp_assoc]`. Use `congr 2`. Apply `jet_ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Use `show jetTruncR R' (Fin n) m (jetMapA n (m + 1) (zR (m + 1) j)) = jetMapA n m (zR m j)`. Rewrite using `[jetMapA_zR, jetMapA_zR]`. Both sides reduce to the same expression. Apply `pushR_inj G` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[pushR_spMap, pushR_pullR, spMap_pt, pushR_one, ← pt_eps C (JetR R' (Fin n) 0)]`. Use `congr 1`. Establish `e : ((jetZeroR R' (Fin n) m).restrictScalars R).comp (jetMapA n m) = (jetMapA n 0).comp (jetZeroR R (Fin n) m)`. Apply `jet_ext` to reduce the goal to its premises. Introduce `j`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `show jetZeroR R' (Fin n) m (jetMapA n m (zR m j)) = jetMapA n 0 (zR 0 j)`. Rewrite using `[jetMapA_zR, jetMapA_zR]`. Both sides reduce to the same expression. Rewrite using `[← AlgHom.comp_assoc, e, AlgHom.comp_assoc, hπ0, ← AlgHom.comp_assoc]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `AlgHom.ext fun r => (jetMapA n 0).commutes r`. Introduce `A _ _ aug m hJ y hy`. Set `_ : Algebra R A` to `((algebraMap R' A).comp (algebraMap R R')).toAlgebra`. Establish `_ : IsScalarTower R R' A` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `hz : spMap (aug.restrictScalars R) ≫ pushR G y = pt C ((Algebra.ofId R R').comp (eps C))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← pushR_spMap, hy, pushR_one, pt_eps]`. Take `⟨h, hh⟩` from `exists_pt C (pushR G y) (le_preimage_of_nil C (aug.restrictScalars R) (aug_surj aug) (fun a ha => elt_nil _ (nil_of_pow _ hJ) a ha) _ _ hz)`. Establish `hha : (aug.restrictScalars R).comp h = (Algebra.ofId R R').comp (eps C)` using `pt_injective C (by rw [← spMap_pt, ← hh, hz])`. Take `⟨ψ, ⟨h1, h2⟩, hu⟩` from `isUnivRing_bc (eps C) m (π m) (huniv m) (hπa m) A aug hJ h hha`. Establish `key : ∀ ψ' : JetR R' (Fin n) m →ₐ[R'] A, y = spMap ψ' ≫ pullR G (pt C ((jetMapA n m).comp (π m))) ↔ h = (ψ'.restrictScalars R).comp ((jetMapA n m).comp (π m))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `ψ'`. Prove the components needed by the constructor for the conclusion. Introduce `e`. Apply `pt_injective C` to reduce the goal to its premises. Rewrite using `[← hh, e, pushR_spMap, pushR_pullR, spMap_pt]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Introduce `e`. Apply `pushR_inj G` to reduce the goal to its premises. Rewrite using `[hh, e, pushR_spMap, pushR_pullR, spMap_pt]`. Conclude with `⟨ψ, ⟨h1, (key ψ).mpr h2⟩, fun ψ₂ hψ₂ => hu ψ₂ ⟨hψ₂.1, (key ψ₂).mp hψ₂.2⟩⟩`. Establish `e1 : pushR G (tvec (x` using `fun m => pullR G (pt C ((jetMapA n m).comp (π m)))) (algebraMap R R' ∘ c)) = pt C (((dualLift (algebraMap R R' ∘ c)).restrictScalars R).comp ((jetMapA n 1).comp (π 1))) := by show pushR G (spMap _ ≫ _) = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[pushR_spMap, pushR_pullR, spMap_pt]`. Establish `e2 : spMap (dualMapA R R') ≫ tvec (x` using `x) c = pt C ((dualMapA R R').comp ((dualLift c).comp (π 1))) := by show spMap _ ≫ spMap _ ≫ x 1 = _`. Rewrite using `[hπ 1, spMap_pt, spMap_pt]`. Establish `e3 : (dualMapA R R').comp ((dualLift c).comp (π 1)) = ((dualLift (algebraMap R R' ∘ c)).restrictScalars R).comp ((jetMapA n 1).comp (π 1))`. Rewrite using `[← AlgHom.comp_assoc, ← AlgHom.comp_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Apply `jet_ext` to reduce the goal to its premises. Introduce `j`. Use `show dualMapA R R' (dualLift c (zR 1 j)) = dualLift (algebraMap R R' ∘ c) (jetMapA n 1 (zR 1 j))`. Rewrite using `[jetMapA_zR, dualLift_zR, dualLift_zR, dualMapA_inr]`.
-
-Both sides reduce to the same expression. Rewrite using `[← pushR_left, e1, ← e3, ← e2]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem univChart_baseChange_of_chart {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R']
     (G : Over (Spec (CommRingCat.of R))) [GrpObj G] (C : Chart G) (n : ℕ) (x : ∀ m : ℕ, sp (R₀ := R) (JetR R (Fin n) m) ⟶ G)
@@ -247,11 +243,11 @@ theorem univChart_baseChange_of_chart {R R' : Type} [CommRing R] [CommRing R'] [
     rfl
 
 /- English proof (translation)
-Take `⟨U, hU, V, hV, hxV, e, h⟩` from `Smooth.exists_isStandardSmooth p (s x)`. Establish `hps : ∀ y : X, p (s y) = y` using `fun y => by rw [← Scheme.Hom.comp_apply, hs]; rfl`. Establish `hxU : x ∈ U` using `by have := e hxV; rwa [← hps x]`. Take `⟨r, hr, hxr⟩` from `hU.exists_basicOpen_le (V := W ⊓ s ⁻¹ᵁ V) ⟨x, hx, hxV⟩ hxU`. Use `hV.isLocalization_basicOpen (p.appLE U V e r)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hU.isLocalization_basicOpen r` as an intermediate fact. Use `⟨X.basicOpen r, hU.basicOpen r, Y.basicOpen (p.appLE U V e r), hV.basicOpen _, by simp [Scheme.Hom.appLE], hxr, hr.trans inf_le_left, fun y hy => ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : s y ∈ V` using `(hr hy).2`. Establish `h2 : s y ∈ p ⁻¹ᵁ X.basicOpen r` using `by show p (s y) ∈ X.basicOpen r`. Rewrite using `[hps]` and apply the resulting hypothesis.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Use `show s y ∈ Y.basicOpen (p.appLE U V e r)`. Simplify `And.intro h1 h2` using `[Scheme.Hom.appLE, ← Scheme.preimage_basicOpen]`. Rewrite using `[hU.appLE_eq_away_map p hV]`. Conclude with `RingHom.isStandardSmooth_localizationPreserves.away _ _ _ _ h`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isStandardSmooth_section {X Y : Scheme.{0}} (p : Y ⟶ X) [Smooth p] (s : X ⟶ Y) (hs : s ≫ p = 𝟙 X)
     (x : X) (W : X.Opens) (hx : x ∈ W) :
@@ -275,9 +271,9 @@ theorem exists_isStandardSmooth_section {X Y : Scheme.{0}} (p : Y ⟶ X) [Smooth
     exact RingHom.isStandardSmooth_localizationPreserves.away _ _ _ _ h
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun z => z.left) (map_one (pushHom h (𝟙_ (Over S'))))`. Establish `e₁ : (1 : 𝟙_ (Over S') ⟶ G') = η[G']` using `by rw [Hom.one_def]; simp`. Rewrite `e` using `[e₁]`. Use `e.trans ?_` and prove the remaining obligations. Use `show (toUnit _ ≫ η[G]).left = _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem unit_comp_of_isGrpPullback {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G']
     {f : S' ⟶ S} {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) :
@@ -290,13 +286,13 @@ theorem unit_comp_of_isGrpPullback {S S' : Scheme.{0}} {G : Over S} {G' : Over S
   simp
 
 /- English proof (translation)
-Use `haveI : IsOpenImmersion φ := MorphismProperty.of_isPullback hφ.1.flip inferInstance`. Establish `hr : V ≤ φ.opensRange`. Introduce `y hy`. Establish `h1 : G.hom y ∈ Set.range hU.fromSpec` using `by rw [hU.range_fromSpec]; exact e hy`. Establish `h2 : y ∈ Set.range (pullback.fst G.hom hU.fromSpec)` using `by rwa [Scheme.Pullback.range_fst]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨z, rfl⟩` from `h2`. Conclude with `⟨hφ.1.isoPullback.inv z, by rw [← Scheme.Hom.comp_apply, hφ.1.isoPullback_inv_fst]⟩`. Set `C : Chart G₀` to `⟨φ ⁻¹ᵁ V, hV.preimage_of_isOpenImmersion φ hr, fun y _ => by show φ ((η[G₀]).left y) ∈ V`. Rewrite using `[← Scheme.Hom.comp_apply, unit_comp_of_isGrpPullback hφ, Scheme.Hom.comp_apply]`. Conclude with `hs (hU.range_fromSpec.subset (Set.mem_range_self _))⟩`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨C, ?_⟩` and prove the remaining obligations. Establish `key : CommRingCat.ofHom (alg0 C) = G.hom.appLE U V e ≫ φ.appLE V (φ ⁻¹ᵁ V) le_rfl`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[← cancel_mono hU.fromSpec, ← fromSpec_over C, Spec.map_comp, Category.assoc, Category.assoc, IsAffineOpen.SpecMap_appLE_fromSpec G.hom hU hV e, ← Category.assoc (Spec.map _), IsAffineOpen.SpecMap_appLE_fromSpec φ hV C.hU le_rfl, Category.assoc, hφ.1.w]`. Use `haveI := φ.isIso_app V hr`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `k2 : alg0 C = (φ.app V).hom.comp (G.hom.appLE U V e).hom`. Rewrite using `[Scheme.Hom.app_eq_appLE]`. Conclude with `congrArg CommRingCat.Hom.hom key`. Rewrite using `[k2]`. Conclude with `RingHom.isStandardSmooth_respectsIso.1 _ (asIso (φ.app V)).commRingCatIsoToRingEquiv h`.
+A detailed English derivation is pending.
 -/
 theorem exists_chart_pullback {X : Scheme.{0}} (G : Over X) [GrpObj G] {U : X.Opens} (hU : IsAffineOpen U)
     {V : G.left.Opens} (hV : IsAffineOpen V) (e : V ≤ G.hom ⁻¹ᵁ U) (hs : U ≤ (η[G]).left ⁻¹ᵁ V)
@@ -335,13 +331,13 @@ open AlgebraicGeometry CategoryTheory Limits ReciprocityTheory.ChartRestriction.
 open scoped CategoryTheory.Obj
 
 /- English proof (translation)
-Take `⟨U, hU, V, hV, e, hxU, hUW, hs, h⟩` from `LieChart.exists_isStandardSmooth_section G.hom (η[G]).left (Over.w η[G]) x W hx`. Set `i : Spec (CommRingCat.of Γ(X, U)) ⟶ X` to `hU.fromSpec`. Set `G₀ : Over (Spec (CommRingCat.of Γ(X, U)))` to `(Over.pullback i).obj G`. Establish `hφ₀ : IsGrpPullback G₀ G i (pullback.fst G.hom i)` using `isGrpPullback_pullback G i`. Take `⟨C, hC⟩` from `LieChart.exists_chart_pullback G hU hV e hs h G₀ _ hφ₀`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨n, y, hy⟩` from `LieChart.univChart_of_chart G₀ C hC`. Use `⟨U, hU, hxU, hUW, n, fun j => (ReciprocityTheory.ChartRestriction.G.Chart.tvec (x := y) (Pi.single j 1)).left ≫ pullback.fst G.hom i, ?_⟩` and prove the remaining obligations. Introduce `R' _ f G' _ φ hφ`. Set `_` to `f.toAlgebra`. Take `⟨y', hy', e'⟩` from `LieChart.univChart_baseChange_of_chart (R' := R') G₀ C n y hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, haφ⟩` from `grpPullback_iso hφ ((isGrpPullback_pullback G₀ (ReciprocityTheory.ChartRestriction.G.Chart.fB Γ(X, U) R')).comp hφ₀)`. Use `⟨fun j => ReciprocityTheory.ChartRestriction.G.Chart.tvec (x := y') (Pi.single j 1) ≫ a.inv, fun j => ?_, ?_⟩` and prove the remaining obligations. Establish `s : (algebraMap Γ(X, U) R' ∘ Pi.single j (1 : Γ(X, U)) : Fin n → R') = Pi.single j 1`. Apply the tactic sequence `funext i; by_cases hij : i = j <;> simp [hij, Pi.single_apply]`. Use `e' (Pi.single j 1)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite `this` using `[s]`. Rewrite using `[← haφ, ← Category.assoc, ← Over.comp_left, Category.assoc, a.inv_hom_id, Category.comp_id, ← Category.assoc, this, Category.assoc]`. Use `ReciprocityTheory.ChartRestriction.G.Chart.isLieBasis_iso a ?_` and prove the remaining obligations. Simplify using `only [Category.assoc, Iso.inv_hom_id, Category.comp_id]`. Conclude with `ReciprocityTheory.ChartRestriction.G.Chart.basis_of_chart hy'`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_affine_lieBasis_baseChange (X : Scheme.{0}) (G : Over X) [GrpObj G] [Smooth G.hom] (x : X)
     (W : X.Opens) (hx : x ∈ W) :

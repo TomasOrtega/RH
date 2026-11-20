@@ -8,7 +8,7 @@ open Finset Formalism.HermitianLattices.GL2PrimeSums
 namespace GlobalTheory.Mem.An
 
 /- English proof (translation)
-The claim follows from `|(M.totient : ℝ) * (((Icc 1 ⌊Y⌋₊).filter (fun p => p.Prime ∧ p ≡ b [MOD M])).card : ℝ) - Emain θ β Y| ≤ rhoErr Cr cr B Y * Emain θ β Y := by obtain ⟨c₂, c₃, CA, cS, h2, h3, hA, hS, H⟩ := h have hs3 : 0 < Real.sqrt c₃ := Real.sqrt_pos.2 h3 refine ⟨c₂, CA, min c₃ (Real.sqrt c₃), cS …`.
+A detailed English derivation is pending.
 -/
 theorem tzRat_class_bound (h : TZRat) :
     ∃ C₀ Cr cr cb : ℝ, 0 < C₀ ∧ 0 < Cr ∧ 0 < cr ∧ 0 < cb ∧
@@ -87,13 +87,13 @@ theorem tzRat_class_bound (h : TZRat) :
     exact ⟨0, 0, by simp, fun h => absurd rfl h, key 0 0 (Or.inl ⟨rfl, hex⟩)⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Apply `Finset.card_le_card` to reduce the goal to its premises. Introduce `p hp`. Rewrite `hp`, the goal using `[Finset.mem_filter]`. Conclude with `⟨hp.1, hp.2.1, hp.2.2.of_mul_left 2⟩`.
+Prove the components needed by the constructor for the conclusion. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `le_trans (Finset.card_le_card ?_) (Finset.card_insert_le 2 _)` and prove the remaining obligations. Introduce `p hp`. Rewrite `hp` using `[Finset.mem_filter]`. Rewrite using `[Finset.mem_insert, Finset.mem_filter]`. Distinguish the cases in `h2 : p = 2`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `Or.inl h2`. Use `right`. Use `⟨hp.1, hp.2.1, ?_⟩` and prove the remaining obligations. Establish `hc : Nat.Coprime 2 n` using `(Nat.coprime_two_left).2 hn`. Rewrite using `[← Nat.modEq_and_modEq_iff_modEq_mul hc]`.
+Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, hp.2.2⟩` and prove the remaining obligations. Establish `hpo : Odd p` using `hp.2.1.odd_of_ne_two h2`. Establish `hao : Odd a` using `(Nat.coprime_two_right).1 (Nat.Coprime.coprime_mul_right_right ha)`. Unfold `Nat.ModEq`. Rewrite using `[Nat.odd_iff.1 hpo, Nat.odd_iff.1 hao]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_primes_mod_half (n a N : ℕ) (hn : Odd n) (ha : Nat.Coprime a (2 * n)) :
     ((Icc 1 N).filter (fun p => p.Prime ∧ p ≡ a [MOD 2 * n])).card ≤
@@ -122,17 +122,17 @@ theorem card_primes_mod_half (n a N : ℕ) (hn : Odd n) (ha : Nat.Coprime a (2 *
       rw [Nat.odd_iff.1 hpo, Nat.odd_iff.1 hao]
 
 /- English proof (translation)
-Take `⟨C₀, Cr, cr, cb, h0, h1, h2, h3, H⟩` from `tzRat_class_bound h`. Use `⟨C₀, Cr, cr, cb, h0, h1, h2, h3, ?_⟩` and prove the remaining obligations. Introduce `m a hm ha`. Establish `hm3 : (3 : ℝ) ≤ m` using `by exact_mod_cast hm`. Establish `hl : 1 ≤ 3 * Real.log (4 * (m : ℝ))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Real.log 2 ≤ Real.log (4 * (m : ℝ))` using `Real.log_le_log (by norm_num) (by linarith)`. Establish `h2` using `Real.log_two_gt_d9`. Combine the linear equalities and inequalities to obtain the conclusion. Distinguish the cases in `h4 : m % 4 = 2`. Take `⟨n, rfl⟩ : ∃ n, m = 2 * n` from `⟨m / 2, by omega⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `hn : Odd n` using `Nat.odd_iff.2 (by omega)`. Establish `hn0 : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Take `⟨θ, β, hθ, hβ, hE⟩` from `H n a (4 * ((2 * n : ℕ) : ℝ)) (by omega) (by omega) (Nat.Coprime.coprime_mul_left_right ha) (by push_cast; linarith)`. Use `⟨θ, β, fun Y => (((Icc 1 ⌊Y⌋₊).filter (fun p => p.Prime ∧ p ≡ a [MOD n])).card : ℝ) - (((Icc 1 ⌊Y⌋₊).filter (fun p => p.Prime ∧ p ≡ a [MOD 2 * n])).card : ℝ), hθ, hβ, ?_, ?_⟩` and prove the remaining obligations. Introduce `Y`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨k1, k2⟩` from `card_primes_mod_half n a ⌊Y⌋₊ hn ha`. Establish `k1'` using `(Nat.cast_le (α := ℝ)).2 k1`. Establish `k2'` using `(Nat.cast_le (α := ℝ)).2 k2`. Rewrite `k2'` using `[Nat.cast_add, Nat.cast_one]`. Apply the tactic sequence `constructor <;> linarith`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `Y hY`. Rewrite using `[Nat.totient_two_mul_of_odd hn, add_sub_cancel]`. Conclude with `hE Y hY`. Take `⟨θ, β, hθ, hβ, hE⟩` from `H m a (4 * (m : ℝ)) hm h4 ha (by linarith)`. Use `⟨θ, β, fun _ => 0, hθ, hβ, fun _ => ⟨le_rfl, by linarith⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Y hY`. Rewrite using `[add_zero]`. Conclude with `hE Y hY`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tzRat_ratClass (h : TZRat) :
     ∃ C₀ Cr cr cb : ℝ, 0 < C₀ ∧ 0 < Cr ∧ 0 < cr ∧ 0 < cb ∧ Formalism.HermitianLattices.GlobalBoundRefinements.PrimeCountAsymptoticInProgressions C₀ Cr cr cb := by
@@ -168,7 +168,7 @@ theorem tzRat_ratClass (h : TZRat) :
     exact hE Y hY
 
 /- English proof (translation)
-Take `⟨C₀, Cr, cr, cb, h0, h1, h2, h3, H⟩` from `tzRat_ratClass h`. Take `⟨C₀', c, hC, hc, H'⟩` from `Formalism.HermitianLattices.GlobalBoundRefinements.shortIntervalImpliesProgressions_statement Formalism.HermitianLattices.GlobalBoundRefinements.shortIntervalLowerBound C₀ Cr cr cb h0 h1 h2 h3 H`. Conclude with `⟨C₀', Cr, cr, c, hC, h1, h2, hc, H'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem primesAPInterval_of_tzRat (h : TZRat) :
     ∃ C₀ Cr cr c : ℝ, 0 < C₀ ∧ 0 < Cr ∧ 0 < cr ∧ 0 < c ∧ PrimesAPInterval C₀ Cr cr c := by

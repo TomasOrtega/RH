@@ -8,11 +8,11 @@ open UniformSpace Topology Filter
 noncomputable section
 
 /- English proof (translation)
-Use `⟨continuous_iff_continuousAt.2 fun ⟨g₀, x₀⟩ => ?_⟩` and prove the remaining obligations. Rewrite using `[ContinuousAt, Metric.tendsto_nhds]`. Introduce `ε hε`. Take `⟨d, hd, hxd⟩` from `Metric.mem_closure_iff.1 (hD x₀) (ε / 4) (by positivity)`. Establish `h1 : ∀ᶠ g in 𝓝 g₀, dist (g • d) (g₀ • d) < ε / 4` using `Metric.tendsto_nhds.1 ((horb d hd).tendsto g₀) _ (by positivity)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : ∀ᶠ x in 𝓝 x₀, dist x x₀ < ε / 4` using `Metric.ball_mem_nhds _ (by positivity)`. Use `filter_upwards [h1.prod_nhds h2] with q hq`. Take `⟨hg, hx⟩` from `hq`. Establish `e1 : dist (q.1 • q.2) (q.1 • d) = dist q.2 d` using `(hiso q.1).dist_eq q.2 d`. Establish `e2 : dist (g₀ • d) (g₀ • x₀) = dist d x₀` using `(hiso g₀).dist_eq d x₀`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : dist q.2 d ≤ dist q.2 x₀ + dist x₀ d` using `dist_triangle _ _ _`. Establish `e4 : dist d x₀ = dist x₀ d` using `dist_comm _ _`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem continuousSMul_of_isometry_of_dense {G X : Type*} [Monoid G] [TopologicalSpace G]
     [PseudoMetricSpace X] [MulAction G X] (D : Set X) (hD : Dense D)
@@ -39,20 +39,20 @@ theorem continuousSMul_of_isometry_of_dense {G X : Type*} [Monoid G] [Topologica
 variable {p : ℕ} [Fact p.Prime] {K : IntermediateField ℚ_[p] (PadicAlgCl p)}
 
 /- English proof (translation)
-The claim follows from `(spectralNorm_eq_of_equiv (σ.restrictScalars ℚ_[p]) x).symm`.
+A detailed English derivation is pending.
 -/
 theorem spectralNorm_gal_apply (σ : Gal(PadicAlgCl p/K)) (x : PadicAlgCl p) :
     spectralNorm ℚ_[p] (PadicAlgCl p) (σ x) = spectralNorm ℚ_[p] (PadicAlgCl p) x :=
   (spectralNorm_eq_of_equiv (σ.restrictScalars ℚ_[p]) x).symm
 
 /- English proof (translation)
-The claim follows from `spectralNorm_gal_apply σ x`.
+A detailed English derivation is pending.
 -/
 theorem norm_gal_apply (σ : Gal(PadicAlgCl p/K)) (x : PadicAlgCl p) : ‖σ x‖ = ‖x‖ :=
   spectralNorm_gal_apply σ x
 
 /- English proof (translation)
-The claim follows from `AddMonoidHomClass.isometry_of_norm σ (norm_gal_apply σ)`.
+A detailed English derivation is pending.
 -/
 theorem isometry_gal (σ : Gal(PadicAlgCl p/K)) : Isometry σ :=
   AddMonoidHomClass.isometry_of_norm σ (norm_gal_apply σ)
@@ -63,9 +63,9 @@ instance : UniformContinuousConstSMul Gal(PadicAlgCl p/K) (PadicAlgCl p) :=
 instance : Algebra.IsIntegral K (PadicAlgCl p) := Algebra.IsIntegral.tower_top ℚ_[p]
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.2 fun σ₀ => tendsto_nhds_of_eventually_eq ?_` and prove the remaining obligations. Set `S` to `MulAction.stabilizer Gal(PadicAlgCl p/K) y`. Establish `hS : (S : Set Gal(PadicAlgCl p/K)) ∈ 𝓝 (σ₀⁻¹ * σ₀)`. Rewrite using `[inv_mul_cancel]`. Conclude with `(stabilizer_isOpen_of_isIntegral y).mem_nhds S.one_mem`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `filter_upwards [(continuous_const.mul continuous_id).continuousAt.preimage_mem_nhds hS] with σ hσ`. Establish `h : (σ₀⁻¹ * σ) • y = y` using `hσ`. Rewrite `h` using `[mul_smul, inv_smul_eq_iff]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_gal_apply (y : PadicAlgCl p) :
     Continuous fun σ : Gal(PadicAlgCl p/K) => σ • y := by
@@ -85,7 +85,7 @@ instance : ContinuousSMul Gal(PadicAlgCl p/K) (PadicAlgCl p) :=
     (fun y _ => continuous_gal_apply y)
 
 /- English proof (translation)
-The claim follows from `(Completion.coe_smul σ y).symm`.
+A detailed English derivation is pending.
 -/
 theorem gal_smul_coe (σ : Gal(PadicAlgCl p/K)) (y : PadicAlgCl p) :
     σ • (y : ℂ_[p]) = ((σ y : PadicAlgCl p) : ℂ_[p]) :=
@@ -104,7 +104,7 @@ instance instMulSemiringActionCp : MulSemiringAction Gal(PadicAlgCl p/K) ℂ_[p]
           Completion.coe_mul] }
 
 /- English proof (translation)
-Use `Completion.induction_on x (isClosed_eq (continuous_norm.comp (continuous_const_smul σ)) continuous_norm) fun a => ?_` and prove the remaining obligations. Rewrite using `[gal_smul_coe, PadicComplex.norm_extends, PadicComplex.norm_extends, norm_gal_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_smul_gal (σ : Gal(PadicAlgCl p/K)) (x : ℂ_[p]) : ‖σ • x‖ = ‖x‖ := by
   refine Completion.induction_on x
@@ -112,7 +112,7 @@ theorem norm_smul_gal (σ : Gal(PadicAlgCl p/K)) (x : ℂ_[p]) : ‖σ • x‖ 
   rw [gal_smul_coe, PadicComplex.norm_extends, PadicComplex.norm_extends, norm_gal_apply]
 
 /- English proof (translation)
-The claim follows from `Isometry.of_dist_eq fun x y => by rw [dist_eq_norm, dist_eq_norm, ← smul_sub, norm_smul_gal]`.
+A detailed English derivation is pending.
 -/
 theorem isometry_smul_gal (σ : Gal(PadicAlgCl p/K)) : Isometry fun x : ℂ_[p] => σ • x :=
   Isometry.of_dist_eq fun x y => by
@@ -126,7 +126,7 @@ instance : ContinuousSMul Gal(PadicAlgCl p/K) ℂ_[p] :=
       exact (Completion.continuous_coe _).comp (continuous_gal_apply y))
 
 /- English proof (translation)
-Rewrite using `[gal_smul_coe]`. Conclude with `congrArg _ (σ.commutes k)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gal_smul_coe_of_mem (σ : Gal(PadicAlgCl p/K)) (k : K) :
     σ • ((k : PadicAlgCl p) : ℂ_[p]) = ((k : PadicAlgCl p) : ℂ_[p]) := by
@@ -134,7 +134,7 @@ theorem gal_smul_coe_of_mem (σ : Gal(PadicAlgCl p/K)) (k : K) :
   exact congrArg _ (σ.commutes k)
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply ℚ_[p] (PadicAlgCl p) ℂ_[p]]`. Express the relevant statement in the definitionally equal form `σ • ((algebraMap ℚ_[p] (PadicAlgCl p) q : PadicAlgCl p) : ℂ_[p]) = _`. Rewrite using `[gal_smul_coe]`. Conclude with `congrArg _ ((σ.restrictScalars ℚ_[p]).commutes q)`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gal_smul_algebraMap (σ : Gal(PadicAlgCl p/K)) (q : ℚ_[p]) :
     σ • algebraMap ℚ_[p] ℂ_[p] q = algebraMap ℚ_[p] ℂ_[p] q := by
@@ -156,7 +156,7 @@ Both sides reduce to the same expression.
 theorem galCp_apply (σ : Gal(PadicAlgCl p/K)) (x : ℂ_[p]) : galCp σ x = σ • x := rfl
 
 /- English proof (translation)
-The claim follows from `gal_smul_coe σ y`.
+A detailed English derivation is pending.
 -/
 theorem galCp_coe (σ : Gal(PadicAlgCl p/K)) (y : PadicAlgCl p) :
     galCp σ (y : ℂ_[p]) = ((σ y : PadicAlgCl p) : ℂ_[p]) :=
@@ -169,31 +169,31 @@ theorem galCp_symm_apply (σ : Gal(PadicAlgCl p/K)) (x : ℂ_[p]) :
     (galCp σ).symm x = σ⁻¹ • x := rfl
 
 /- English proof (translation)
-The claim follows from `norm_smul_gal σ x`.
+A detailed English derivation is pending.
 -/
 theorem norm_galCp (σ : Gal(PadicAlgCl p/K)) (x : ℂ_[p]) : ‖galCp σ x‖ = ‖x‖ :=
   norm_smul_gal σ x
 
 /- English proof (translation)
-The claim follows from `isometry_smul_gal σ`.
+A detailed English derivation is pending.
 -/
 theorem isometry_galCp (σ : Gal(PadicAlgCl p/K)) : Isometry (galCp σ) :=
   isometry_smul_gal σ
 
 /- English proof (translation)
-The claim follows from `(isometry_galCp σ).continuous`.
+A detailed English derivation is pending.
 -/
 theorem continuous_galCp (σ : Gal(PadicAlgCl p/K)) : Continuous (galCp σ) :=
   (isometry_galCp σ).continuous
 
 /- English proof (translation)
-The claim follows from `(isometry_smul_gal σ⁻¹).continuous`.
+A detailed English derivation is pending.
 -/
 theorem continuous_galCp_symm (σ : Gal(PadicAlgCl p/K)) : Continuous (galCp σ).symm :=
   (isometry_smul_gal σ⁻¹).continuous
 
 /- English proof (translation)
-The claim follows from `Completion.ext hf (continuous_galCp σ) fun y => by rw [h, galCp_coe]`.
+A detailed English derivation is pending.
 -/
 theorem eq_galCp_of_continuous (σ : Gal(PadicAlgCl p/K)) (f : ℂ_[p] → ℂ_[p])
     (hf : Continuous f) (h : ∀ y : PadicAlgCl p, f y = ((σ y : PadicAlgCl p) : ℂ_[p])) :
@@ -209,19 +209,19 @@ Both sides reduce to the same expression.
 theorem galCpHom_apply (σ : Gal(PadicAlgCl p/K)) : galCpHom σ = galCp σ := rfl
 
 /- English proof (translation)
-The claim follows from `map_mul galCpHom σ τ`.
+A detailed English derivation is pending.
 -/
 theorem galCp_mul (σ τ : Gal(PadicAlgCl p/K)) : galCp (σ * τ) = (galCp τ).trans (galCp σ) :=
   map_mul galCpHom σ τ
 
 /- English proof (translation)
-The claim follows from `map_one galCpHom`.
+A detailed English derivation is pending.
 -/
 theorem galCp_one : galCp (1 : Gal(PadicAlgCl p/K)) = RingEquiv.refl ℂ_[p] :=
   map_one galCpHom
 
 /- English proof (translation)
-Rewrite using `[PadicComplex.norm_eq_norm, Valuation.norm_def, ← NNReal.coe_one, NNReal.coe_le_coe, ← map_one (Valuation.RankOne.hom (PadicComplex.valued p).v), (Valuation.RankOne.strictMono _).le_iff_le, Valuation.restrict_le_one_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_padicComplexInt_iff (x : ℂ_[p]) : x ∈ 𝓞_ℂ_[p] ↔ ‖x‖ ≤ 1 := by
   rw [PadicComplex.norm_eq_norm, Valuation.norm_def, ← NNReal.coe_one, NNReal.coe_le_coe,
@@ -230,14 +230,14 @@ theorem mem_padicComplexInt_iff (x : ℂ_[p]) : x ∈ 𝓞_ℂ_[p] ↔ ‖x‖ �
   rfl
 
 /- English proof (translation)
-Rewrite using `[mem_padicComplexInt_iff, mem_padicComplexInt_iff, norm_smul_gal]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gal_smul_mem_padicComplexInt_iff (σ : Gal(PadicAlgCl p/K)) (x : ℂ_[p]) :
     σ • x ∈ 𝓞_ℂ_[p] ↔ x ∈ 𝓞_ℂ_[p] := by
   rw [mem_padicComplexInt_iff, mem_padicComplexInt_iff, norm_smul_gal]
 
 /- English proof (translation)
-Use extensionality with `x`. Use `⟨?_, fun hx => ⟨σ⁻¹ • x, ?_, smul_inv_smul σ x⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `(gal_smul_mem_padicComplexInt_iff σ y).2 hy`. Conclude with `(gal_smul_mem_padicComplexInt_iff σ⁻¹ x).2 hx`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem gal_smul_padicComplexInt (σ : Gal(PadicAlgCl p/K)) :
     (fun x : ℂ_[p] => σ • x) '' (𝓞_ℂ_[p] : Set ℂ_[p]) = 𝓞_ℂ_[p] := by

@@ -8,35 +8,33 @@ namespace Formalism.MainNotions.ColumnSystems.Pf
 open Formalism.MainNotions.G
 
 /- English proof (translation)
-Establish `hk0 : 0 < k` using `by linarith`. Establish `hY0 : 0 < Y` using `by linarith`. Establish `hN0 : 0 < N` using `by linarith`. Establish `hN10 : 0 < N1` using `by linarith`. Establish `hQ0 : 0 < Q` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : 0 < a` using `lt_of_lt_of_le (mul_pos hk0 hb) hkb`. Establish `hba : b' ≤ a` using `le_trans (le_mul_of_one_le_left hb.le hk) hkb`. Establish `hkY : k * Y ≤ p`. Use `le_trans ?_ hp` and prove the remaining obligations. Conclude with `mul_le_mul (le_self_pow₀ hk two_ne_zero) (le_self_pow₀ hY two_ne_zero) hY0.le (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hp1 : 1 ≤ p` using `le_trans (one_le_mul_of_one_le_of_one_le hk hY) hkY`. Establish `hp0 : 0 < p` using `by linarith`. Establish `hpp : p ≤ p ^ 2` using `le_self_pow₀ hp1 two_ne_zero`. Establish `hYp : Y ≤ p` using `le_trans (le_mul_of_one_le_left hY0.le hk) hkY`. Establish `y1 : 1 / Y ≤ N1 / Y` using `div_le_div_of_nonneg_right hN1 hY0.le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t1 : Real.exp (-La / 8) ≤ N1 / Y`. Establish `e : Real.exp (-La / 8) ≤ Real.exp (-(Real.log (N * Y)))` using `Real.exp_le_exp.mpr (by linarith)`. Rewrite `e` using `[Real.exp_neg, Real.exp_log (by positivity)]`. Establish `: (N * Y)⁻¹ ≤ 1 / Y`. Rewrite using `[one_div]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `inv_anti₀ hY0 (le_mul_of_one_le_left hY0.le hN)`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨β, hβ⟩ : ∃ β, β = b' / Y` from `⟨_, rfl⟩`. Establish `hβ0 : 0 < β` using `by rw [hβ]; positivity`. Establish `c1 : k ^ 3 * Q ^ 2 * c ≤ β` using `by rw [hβ, le_div_iff₀ hY0]; exact hHc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c2 : k ^ 3 * Q ≤ β` using `by rw [hβ, le_div_iff₀ hY0]; exact hHb`. Establish `k23 : k ^ 2 ≤ k ^ 3` using `pow_le_pow_right₀ hk (by norm_num)`. Establish `k13 : k ≤ k ^ 3` using `le_self_pow₀ hk (by norm_num)`. Establish `Q12 : Q ≤ Q ^ 2` using `le_self_pow₀ hQ two_ne_zero`. Establish `d1 : k ^ 2 * Q ^ 2 * c ≤ β` using `le_trans (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right k23 (by positivity)) hc) c1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d2 : k * Q * c ≤ β` using `le_trans (mul_le_mul_of_nonneg_right (mul_le_mul k13 Q12 hQ0.le (by positivity)) hc) c1`. Establish `d3 : k ^ 2 * Q ≤ β` using `le_trans (mul_le_mul_of_nonneg_right k23 hQ0.le) c2`. Establish `t2 : k * Q * (m0G4 Cm k N1 Q c + N1 * k) / b' ≤ (Cm + 13) * (N1 / Y)`. Rewrite using `[div_le_iff₀ hb]`. Establish `e1 : (Cm + 13) * (N1 / Y) * b' = (Cm + 13) * N1 * β` using `by rw [hβ]; ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : k * Q * (m0G4 Cm k N1 Q c + N1 * k) = Cm * N1 * (k ^ 2 * Q ^ 2 * c) + 12 * (k * Q * c) + N1 * (k ^ 2 * Q)` using `by unfold m0G4 m1G4; ring`. Rewrite using `[e1, e2]`. Establish `f1 : Cm * N1 * (k ^ 2 * Q ^ 2 * c) ≤ Cm * N1 * β` using `mul_le_mul_of_nonneg_left d1 (by positivity)`. Establish `f3 : N1 * (k ^ 2 * Q) ≤ N1 * β` using `mul_le_mul_of_nonneg_left d3 hN10.le`. Establish `f2 : β ≤ N1 * β` using `le_mul_of_one_le_left hβ0.le hN1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨α, hα⟩ : ∃ α, α = a / Y` from `⟨_, rfl⟩`. Establish `hα0 : 0 < α` using `by rw [hα]; positivity`. Establish `hβα : β ≤ α` using `by rw [hβ, hα]; exact div_le_div_of_nonneg_right hba hY0.le`. Establish `g1 : k * (a / p ^ 2) ≤ α`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← mul_div_assoc, hα, div_le_div_iff₀ (by positivity) hY0]`. Combine the equalities or inequalities in the displayed calculation. Establish `g2 : k * (b' / p) ≤ α`. Rewrite using `[← mul_div_assoc, hα, div_le_div_iff₀ hp0 hY0]`. Conclude with `mul_le_mul hkb hYp hY0.le ha.le`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `g3 : k * (La * N1 * a / (p * k)) ≤ N1 * α`. Establish `e : k * (La * N1 * a / (p * k)) = La * N1 * a / p` using `by field_simp`. Rewrite using `[e, hα, ← mul_div_assoc, div_le_div_iff₀ hp0 hY0]`. Combine the equalities or inequalities in the displayed calculation. Establish `g4 : k * (La * b' / k) ≤ α`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `e : k * (La * b' / k) = La * b'` using `by field_simp`. Rewrite using `[e, hα, le_div_iff₀ hY0]`. Combine the linear relations using `[hLaY]`. Establish `g5 : k * (k ^ 2 * N1 * Q ^ 2 * c) ≤ N1 * α`. Establish `e : k * (k ^ 2 * N1 * Q ^ 2 * c) = N1 * (k ^ 3 * Q ^ 2 * c)` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `mul_le_mul_of_nonneg_left (le_trans c1 hβα) hN10.le`. Establish `t4 : k * errorTermBound CE1 CE2 p k N1 Q c a b' La / a ≤ (4 * CE1 + CE2) * (N1 / Y)`. Rewrite using `[div_le_iff₀ ha]`. Establish `e1 : (4 * CE1 + CE2) * (N1 / Y) * a = (4 * CE1 + CE2) * (N1 * α)` using `by rw [hα]; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : k * errorTermBound CE1 CE2 p k N1 Q c a b' La = CE1 * (k * (a / p ^ 2) + k * (b' / p) + k * (La * N1 * a / (p * k)) + k * (La * b' / k)) + CE2 * (k * (k ^ 2 * N1 * Q ^ 2 * c))` using `by unfold errorTermBound; ring`. Rewrite using `[e1, e2]`. Establish `f0 : α ≤ N1 * α` using `le_mul_of_one_le_left hα0.le hN1`. Establish `f1 : CE1 * (k * (a / p ^ 2) + k * (b' / p) + k * (La * N1 * a / (p * k)) + k * (La * b' / k)) ≤ CE1 * (4 * (N1 * α))` using `mul_le_mul_of_nonneg_left (by linarith) h1`. Establish `f2 : CE2 * (k * (k ^ 2 * N1 * Q ^ 2 * c)) ≤ CE2 * (N1 * α)` using `mul_le_mul_of_nonneg_left g5 h2`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem kap_core {p k N N1 La Q c a b' Y CE1 CE2 Cm : ℝ} (hk : 1 ≤ k) (hY : 1 ≤ Y) (hN : 1 ≤ N) (hN1 : 1 ≤ N1)
     (_hLa : 0 ≤ La) (hQ : 1 ≤ Q) (hc : 0 ≤ c) (hb : 0 < b') (hp : k ^ 2 * Y ^ 2 ≤ p)
@@ -126,13 +124,13 @@ theorem kap_core {p k N N1 La Q c a b' Y CE1 CE2 Cm : ℝ} (hk : 1 ≤ k) (hY : 
   linarith
 
 /- English proof (translation)
-Apply `TransportedAlt.of_explicit (fun _ => 1) (fun _ _ => 1) (fun Cc _ CE1 CE2 _ => T2 CE1 CE2 Cc 1)` to reduce the goal to its premises. Introduce `C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc hCc hC0 _ h1 h2 h3 _ _ _ _ _ _ _ _ t1 t2 t3 t4 t5 Ckap hCkap`. Use `⟨Ckap * (Cm + 4 * CE1 + CE2 + 15), by positivity, ?_⟩` and prove the remaining obligations. Introduce `X hD hI hc`. Establish `S` using `std_of hCc hC0 h1 h2 le_rfl t1 t2 t3 t4 t5 hD hI hc`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hk5` using `S.k5`. Establish `hN2` using `S.N2`. Establish `hLaY : X.La C0 * X.Y * X.b' ≤ X.a`. Use `le_trans ?_ S.kYLab` and prove the remaining obligations. Establish `hY0 : 0 < X.Y` using `by have := S.Y1; linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hLa0 : 0 < X.La C0` using `by have := S.La1; linarith`. Establish `hb` using `S.bpos`. Establish `: 1 * (X.Y * X.La C0 * X.b') ≤ X.k * (X.Y * X.La C0 * X.b')` using `mul_le_mul_of_nonneg_right (by linarith) (by positivity)`. Combine the linear relations using `[this]`. Establish `core` using `kap_core (p := X.p) (k := X.k) (N := X.N) (N1 := X.N1) (La := X.La C0) (Q := X.Q) (c := X.c) (a := X.a) (b' := X.b') (Y := X.Y) (CE1 := CE1) (CE2 := CE2) (Cm := Cm) (by linarith) S.Y1 (by linarith) S.one_le_level_alt (by have := S.La1; linarith) S.Q1 (by positivity) S.bpos S.pk S …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hN0 : 0 ≤ X.N` using `by linarith`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem rest2 (D : Formalism.BasicNotions.D7) : FamilyFourthBound D := by
   apply TransportedAlt.of_explicit (fun _ => 1) (fun _ _ => 1) (fun Cc _ CE1 CE2 _ => T2 CE1 CE2 Cc 1)

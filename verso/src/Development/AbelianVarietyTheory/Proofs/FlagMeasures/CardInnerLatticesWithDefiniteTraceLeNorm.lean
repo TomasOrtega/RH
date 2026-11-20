@@ -14,7 +14,7 @@ variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [M
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `Submodule.mem_one.1 h`. Establish `h1 : IsIntegral ℤ (star (algebraMap (𝓞 K) K a))` using `map_isIntegral_int (starRingEnd K) a.isIntegral_coe`. Conclude with `Submodule.mem_one.2 ⟨⟨_, h1⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem star_mem {t : K} (h : t ∈ (1 : Submodule (𝓞 K) K)) : star t ∈ (1 : Submodule (𝓞 K) K) := by
   obtain ⟨a, rfl⟩ := Submodule.mem_one.1 h
@@ -28,43 +28,43 @@ def Good (H : HermSpace K V) (S : Submodule K V) (z : V) (M : Submodule (𝓞 K)
 variable {H : HermSpace K V} {S : Submodule K V} {z : V} {M : Submodule (𝓞 K) V}
 
 /- English proof (translation)
-Simplify using `using (h.2.2 1).2 (Submodule.mem_one.2 ⟨1, map_one _⟩)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Good.z_mem (h : Good H S z M) : z ∈ M := by
   simpa using (h.2.2 1).2 (Submodule.mem_one.2 ⟨1, map_one _⟩)
 
 /- English proof (translation)
-The claim follows from `((mem_dual_iff H M x).1 (h.1.symm ▸ hx)).2 y hy`.
+A detailed English derivation is pending.
 -/
 theorem Good.int (h : Good H S z M) {x y : V} (hx : x ∈ M) (hy : y ∈ M) :
     H.B x y ∈ (1 : Submodule (𝓞 K) K) :=
   ((mem_dual_iff H M x).1 (h.1.symm ▸ hx)).2 y hy
 
 /- English proof (translation)
-The claim follows from `h.2.1 ▸ Submodule.subset_span hx`.
+A detailed English derivation is pending.
 -/
 theorem Good.mem_S (h : Good H S z M) {x : V} (hx : x ∈ M) : x ∈ S :=
   h.2.1 ▸ Submodule.subset_span hx
 
 /- English proof (translation)
-The claim follows from `h.1 ▸ (mem_dual_iff H M x).2 ⟨h.2.1.symm ▸ hx, hB⟩`.
+A detailed English derivation is pending.
 -/
 theorem Good.mem_of (h : Good H S z M) {x : V} (hx : x ∈ S)
     (hB : ∀ y ∈ M, H.B x y ∈ (1 : Submodule (𝓞 K) K)) : x ∈ M :=
   h.1 ▸ (mem_dual_iff H M x).2 ⟨h.2.1.symm ▸ hx, hB⟩
 
 /- English proof (translation)
-Set `J : Ideal (𝓞 K)` to `(M.map ((H.B.flip z).restrictScalars (𝓞 K))).comap (Algebra.linearMap (𝓞 K) K)`. Establish `hJ : ∀ a : 𝓞 K, a ∈ J ↔ ∃ y ∈ M, H.B y z = algebraMap (𝓞 K) K a` using `fun a => by`. Simplify using `[J]`. Establish `hne : J ≠ ⊥`. Introduce `h0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, ha⟩` from `Submodule.mem_one.1 (h.int h.z_mem h.z_mem)`. Establish `: a ∈ J` using `(hJ a).2 ⟨z, h.z_mem, ha.symm⟩`. Rewrite `this` using `[h0, Ideal.mem_bot]`. Conclude with `hz (by rw [← ha, this, map_zero])`. Establish `htop : J = ⊤`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hJ1`. Take `⟨x, hx, hx1⟩` from `FractionalIdeal.exists_notMem_one_of_ne_bot (K := K) hne hJ1`. Apply `hx1` to reduce the goal to its premises. Rewrite `hx` using `[FractionalIdeal.mem_inv_iff (by simpa using hne)]`. Establish `h2 : star x • z ∈ M`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `h.mem_of (S.smul_mem _ (h.mem_S h.z_mem)) fun y hy => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `Submodule.mem_one.1 (h.int hy h.z_mem)`. Establish `h3` using `hx (algebraMap (𝓞 K) K a) (FractionalIdeal.mem_coeIdeal_of_mem _ ((hJ a).2 ⟨y, hy, ha.symm⟩))`. Establish `h4 : x * algebraMap (𝓞 K) K a ∈ (1 : Submodule (𝓞 K) K)`. Take `⟨b, hb⟩` from `(FractionalIdeal.mem_one_iff _).1 h3`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Submodule.mem_one.2 ⟨b, hb⟩`. Establish `h5` using `star_mem h4`. Rewrite `h5` using `[ha, star_mul', H.herm]`. Simplify using `using h5`. Establish `h6` using `star_mem ((h.2.2 _).1 h2)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h6` using `[star_star]`. Take `⟨b, hb⟩` from `Submodule.mem_one.1 h6`. Conclude with `(FractionalIdeal.mem_one_iff _).2 ⟨b, hb⟩`. Take `⟨y, hy, e⟩` from `(hJ 1).1 (htop ▸ Submodule.mem_top)`. Conclude with `⟨y, hy, by rw [e, map_one]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Good.exists_one (h : Good H S z M) (hz : H.B z z ≠ 0) : ∃ y ∈ M, H.B y z = 1 := by
   let J : Ideal (𝓞 K) :=
@@ -101,7 +101,7 @@ theorem Good.exists_one (h : Good H S z M) (hz : H.B z z ≠ 0) : ∃ y ∈ M, H
   exact ⟨y, hy, by rw [e, map_one]⟩
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Submodule.mem_one.1 (h.int hm h.z_mem)`. Use `⟨a, M.sub_mem hm (M.smul_mem a hy), ?_⟩` and prove the remaining obligations. Rewrite using `[← algebraMap_smul K a y, map_sub, map_smul, LinearMap.sub_apply, LinearMap.smul_apply, hy1, ← ha]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Good.proj (h : Good H S z M) {y m : V} (hy : y ∈ M) (hy1 : H.B y z = 1) (hm : m ∈ M) :
     ∃ a : 𝓞 K, m - a • y ∈ M ∧ H.B (m - a • y) z = 0 := by
@@ -111,29 +111,27 @@ theorem Good.proj (h : Good H S z M) {y m : V} (hy : y ∈ M) (hy1 : H.B y z = 1
   simp
 
 /- English proof (translation)
-Establish `hz0 : H.B z z ≠ 0` using `by rw [hz]; simpa using hT`. Take `⟨y₁, hy₁, e₁⟩` from `h₁.exists_one hz0`. Establish `e₁' : H.B z y₁ = 1` using `by rw [← H.herm, e₁, star_one]`. Use `set 𝓢 := {M : Submodule (𝓞 K) V | Good H S z M ∧ ∀ y, H.B y z = 0 → (y ∈ M ↔ y ∈ M₁)} with h𝓢`. Establish `key : ∀ M : Submodule (𝓞 K) V, ∃ (y : V) (u : K) (a : 𝓞 K), M ∈ 𝓢 → y ∈ M ∧ H.B y z = 1 ∧ y + u • z ∈ M₁ ∧ algebraMap (𝓞 K) K a = 1 - u * T`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `M`. Distinguish the cases in `hM : M ∈ 𝓢`. Use `swap`. Conclude with `⟨0, 0, 0, fun h => absurd h hM⟩`. Take `⟨y, hy, e⟩` from `hM.1.exists_one hz0`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm : y + (-H.B y y₁) • z ∈ M₁`. Use `h₁.mem_of (S.add_mem (hM.1.mem_S hy) (S.smul_mem _ (h₁.mem_S h₁.z_mem))) fun m hm => ?_` and prove the remaining obligations. Take `⟨a, ha, ha0⟩` from `h₁.proj hy₁ e₁ hm`. Establish `h2` using `hM.1.int hy ((hM.2 _ ha0).2 ha)`. Establish `h3 : H.B z (m - a • y₁) = 0` using `by rw [← H.herm, ha0, star_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Establish `h4 : m = (m - a • y₁) + (algebraMap (𝓞 K) K a) • y₁` using `by rw [algebraMap_smul]; abel`. Generalize the expression as in `m - a • y₁ = m₀ at h2 h3 h4`. Rewrite using `[h4]`. Simplify using `only [map_add, LinearMap.add_apply, map_smul, LinearMap.smul_apply, LinearMap.map_smulₛₗ, h3, e₁', smul_eq_mul]`. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨a, ha⟩` from `Submodule.mem_one.1 (h₁.int hm h₁.z_mem)`. Use `⟨y, -H.B y y₁, a, fun _ => ⟨hy, e, hm, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[ha, map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply, e, hz, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `choose y u a hyu using key`. Set `I : Ideal (𝓞 K)` to `Ideal.span {(T : 𝓞 K)}`. Establish `hle : ∀ M ∈ 𝓢, ∀ M' ∈ 𝓢, Ideal.Quotient.mk I (a M) = Ideal.Quotient.mk I (a M') → M ≤ M'`. Introduce `M hM M' hM' e`. Take `⟨p1, p2, p3, p4⟩` from `hyu M hM`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨q1, q2, q3, q4⟩` from `hyu M' hM'`. Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.1 (Ideal.Quotient.eq.1 e)`. Establish `hb' : algebraMap (𝓞 K) K b = u M' - u M`. Use `congrArg (algebraMap (𝓞 K) K) hb` as an intermediate fact. Rewrite `this` using `[map_sub, map_mul, map_natCast, p4, q4]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hT' : (T : K) ≠ 0` using `by exact_mod_cast hT`. Apply `mul_right_cancel₀ hT'` to reduce the goal to its premises. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Establish `h5 : y M - y M' ∈ M₁`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `M₁.add_mem (M₁.sub_mem p3 q3) (M₁.smul_mem b h₁.z_mem)` as an intermediate fact. Rewrite `this` using `[← algebraMap_smul K b z, hb', sub_smul]`. Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Establish `h6 : H.B (y M - y M') z = 0` using `by rw [map_sub, LinearMap.sub_apply, p2, q2, sub_self]`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h7 : y M ∈ M'` using `by simpa using M'.add_mem ((hM'.2 _ h6).2 h5) q1`. Introduce `m hm`. Take `⟨c, hc, hc0⟩` from `hM.1.proj p1 p2 hm`. Simplify using `using M'.add_mem ((hM'.2 _ hc0).2 ((hM.2 _ hc0).1 hc)) (M'.smul_mem c h7)`. Establish `hI : I ≠ ⊥`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hT` after adjusting the coercions. Use `haveI : Finite (𝓞 K ⧸ I) := Ideal.finiteQuotientOfFreeOfNeBot I hI`. Establish `h8 : 𝓢.encard ≤ (Set.univ : Set (𝓞 K ⧸ I)).encard` using `Set.encard_le_encard_of_injOn (f := fun M => Ideal.Quotient.mk I (a M)) (fun _ _ => Set.mem_univ _) fun M hM M' hM' e => le_antisymm (hle M hM M' hM' e) (hle M' hM' M hM e.symm)`. Use `h8.trans (le_of_eq ?_)` and prove the remaining obligations.
-
-Rewrite using `[Set.encard_univ, ENat.card_eq_coe_natCard, ← Submodule.cardQuot_apply, ← Ideal.absNorm_apply, Ideal.absNorm_span_natCast, RingOfIntegers.rank]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem count (T : ℕ) (hT : T ≠ 0) (hz : H.B z z = -(T : K)) (M₁ : Submodule (𝓞 K) V) (h₁ : Good H S z M₁) :
     {M : Submodule (𝓞 K) V | Good H S z M ∧ ∀ y, H.B y z = 0 → (y ∈ M ↔ y ∈ M₁)}.encard ≤
@@ -200,11 +198,11 @@ theorem count (T : ℕ) (hT : T ≠ 0) (hz : H.B z z = -(T : K)) (M₁ : Submodu
     Ideal.absNorm_span_natCast, RingOfIntegers.rank]
 
 /- English proof (translation)
-Use `⟨fun h => ⟨h, ?_⟩, fun h => h.1⟩` and prove the remaining obligations. Establish `hc : star N.c ≠ 0`. Introduce `h0`. Use `N.c_norm` as an intermediate fact. Rewrite `this` using `[h0, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one this`. Establish `e : N.F'.z = N.c • N.F.z` using `N.same (Fin.last r) N.j_le`. Establish `hy2 : H.B y N.F.z = 0`. Rewrite `hy` using `[e, LinearMap.map_smulₛₗ, smul_eq_mul]`. Conclude with `(mul_eq_zero.1 hy).resolve_left hc`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : ∀ x ∈ N.F'.X ⊔ N.F.X, H.B y x = 0` using `(mem_perp_iff H _ y).1 h.1`. Use `(mem_perp_iff H _ y).2 fun x hx => ?_` and prove the remaining obligations. Take `⟨p, hp, q, hq, rfl⟩` from `Submodule.mem_sup.1 hx`. Take `⟨s, t, rfl⟩` from `Submodule.mem_span_pair.1 hq`. Simplify using `[h1 p hp, hy, hy2, LinearMap.map_smulₛₗ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_lattice_zeroTorus {r : ℕ} (N : NF H r) (Λ : Submodule (𝓞 K) V) (y : V) (hy : H.B y N.F'.z = 0) :
     y ∈ latL N.F' N.F Λ ↔ y ∈ flagPairDefinitePartLattice N.F' N.F Λ := by
@@ -227,15 +225,15 @@ theorem mem_lattice_zeroTorus {r : ℕ} (N : NF H r) (Λ : Submodule (𝓞 K) V)
 end GlobalTheory.DegCnt.GlueZ
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ _ _ _ H hK r N g Λ hg hΛ`. Establish `good : ∀ Λ', N.IsTerm g Λ' → GlueZ.Good H (uPerp N.F N.F') N.F'.z (latL N.F' N.F Λ')` using `fun Λ' h => by`. Take `⟨-, h2, -, h4, -⟩` from `GlobalTheory.T.hermFramePair_innerLattices_unimodular_primitive K V H hK r N g Λ' hg h`. Conclude with `⟨h2.2, h2.1.2, h4⟩`. Establish `hT : N.T ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `h0`. Apply `N.F'.hT` to reduce the goal to its premises. Rewrite using `[N.hT', h0, Nat.cast_zero]`. Establish `hz : H.B N.F'.z N.F'.z = -(N.T : K)` using `N.hT' ▸ N.F'.zz`. Establish `h1` using `GlueZ.count N.T hT hz _ (good Λ hΛ)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : {L' : Submodule (𝓞 K) V | ∃ Λ', N.IsTerm g Λ' ∧ L' = latL N.F' N.F Λ' ∧ flagPairDefinitePartLattice N.F' N.F Λ' = flagPairDefinitePartLattice N.F' N.F Λ}.encard ≤ (N.T ^ Module.finrank ℚ K : ℕ)`. Use `(Set.encard_le_encard ?_).trans h1` and prove the remaining obligations. Introduce and unpack `_ ⟨Λ', h, rfl, e⟩`. Conclude with `⟨good Λ' h, fun y hy => by rw [GlueZ.mem_lattice_zeroTorus N Λ' y hy, GlueZ.mem_lattice_zeroTorus N Λ y hy, e]⟩`. Use `haveI := hK.1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h3 : Module.finrank ℚ K = Formalism.HermitianLatticesTheory.fDeg K * 2`. Rewrite using `[IsTotallyComplex.finrank, Formalism.HermitianLatticesTheory.fDeg, InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, IsTotallyComplex.nrRealPlaces_eq_zero]`. Expand and normalize the polynomial expressions, which then agree. Use `(ENat.toENNReal_le.2 h2).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[NF.NT, ← pow_mul, ← h3, ← Nat.cast_pow, ENNReal.ofReal_natCast]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.DegCnt.GlueZ.main : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (H : HermSpace K V), Formalism.HermitianLatticesTheory.IsCMUnram K → ∀ (r : ℕ) (N : NF H r), ∀ (g : ℕ) (Λ : Submodule (𝓞 K) V), 1 ≤ g → N.IsTerm g Λ → ((({L' : Submodule (𝓞 K) V | ∃ Λ', N.IsTerm g Λ' ∧ L' = latL N.F' N.F Λ' ∧ flagPairDefinitePartLattice N.F' N.F Λ' = flagPairDefinitePartLattice N.F' N.F Λ}).encard : ℕ∞) : ℝ≥0∞) ≤ ENNReal.ofReal (N.NT ^ 2) := by
   intro K V _ _ _ _ _ _ _ _ H hK r N g Λ hg hΛ

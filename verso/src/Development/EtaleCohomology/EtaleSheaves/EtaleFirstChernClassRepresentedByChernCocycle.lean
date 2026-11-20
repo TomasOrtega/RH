@@ -22,13 +22,13 @@ import Development.EtaleCohomology.TateTwists.HoldsOf
 namespace LateralTheory.E.LeafA6nat_xy7V2Cut
 
 /- English proof (translation)
-Introduce `q _` and use `⟨_, LateralTheory.Fin.EtaleKummerTriangleExists.intersectionNumber_baseChange q⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem kumTExists : LateralTheory.E.CupProductRingLaws.LeafKumTExists := fun q _ =>
   ⟨_, LateralTheory.Fin.EtaleKummerTriangleExists.intersectionNumber_baseChange q⟩
 
 /- English proof (translation)
-The claim follows from `LateralTheory.E.LeafOneSpecPf.LeafOneSpec_of (LateralTheory.E.LeafOneExistsPf.CocycleOfSec.LeafOneExists_of_unit LateralTheory.E.UnitSections.LeafUnitSec_of) LateralTheory.E.LeafPrimCoverPf.LeafPrimCover_of`.
+A detailed English derivation is pending.
 -/
 theorem oneSpec : LateralTheory.E.CupProductRingLaws.LeafOneSpec :=
   LateralTheory.E.LeafOneSpecPf.LeafOneSpec_of
@@ -36,7 +36,7 @@ theorem oneSpec : LateralTheory.E.CupProductRingLaws.LeafOneSpec :=
     LateralTheory.E.LeafPrimCoverPf.LeafPrimCover_of
 
 /- English proof (translation)
-The claim follows from `have hr := LateralTheory.E.LeafRootLocPf.LeafRootLoc_of LateralTheory.E.ChernClassRootLocalization.etale_first_chern_class_represented_of_cocycle_exists_and_evaluations_unique (LateralTheory.E.ChernClassEvaluation.etale_kummer_chern_cocycle_exists_of_evaluation_values_and_closedn …`.
+A detailed English derivation is pending.
 -/
 theorem etaleFirstChernClass_represented_by_chern_cocycle : LateralTheory.E.CupProductRingLaws.EtaleFirstChernClassRepresentedByChernCocycle :=
   have hr := LateralTheory.E.LeafRootLocPf.LeafRootLoc_of
@@ -47,13 +47,13 @@ theorem etaleFirstChernClass_represented_by_chern_cocycle : LateralTheory.E.CupP
     hr
 
 /- English proof (translation)
-Introduce `q _` and use `((LateralTheory.Fix.EtaleKummerClassExplicitCocycle.holds_of LateralTheory.Fin.EtaleKummerTriangleExists.intersectionNumber_baseChange) q).2.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem natKum : LateralTheory.E.CupProductRingLaws.LeafNatKum := fun q _ =>
   ((LateralTheory.Fix.EtaleKummerClassExplicitCocycle.holds_of LateralTheory.Fin.EtaleKummerTriangleExists.intersectionNumber_baseChange) q).2.1
 
 /- English proof (translation)
-Introduce `q _` and use `⟨LateralTheory.E.LeafNatCupPf.LeafNatCup_of LateralTheory.Fix.CupProductTensor.cupSpec q, LateralTheory.E.LeafNatOnePf.LeafNatOne_of oneSpec q, LateralTheory.E.FirstChernNaturality.etale_first_chern_class_natural_of_spec etaleFirstChernClass_represented_by_chern_cocycle q, natKum …`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem goal_of : LateralTheory.E.D2.LeafA6nat := fun q _ =>
   ⟨LateralTheory.E.LeafNatCupPf.LeafNatCup_of LateralTheory.Fix.CupProductTensor.cupSpec q,

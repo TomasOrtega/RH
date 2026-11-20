@@ -27,7 +27,7 @@ def IsPull {T T' : Over Z} (h : T' ⟶ T) (a : LB.Sec (LPow G L (N : ℤ) T)) (s
     sv G L N s r z J = sv G L N a (r ≫ (h ▷ G).left) z J
 
 /- English proof (translation)
-Introduce `z J hJ`. Substitute `e` using the available equality. Rewrite using `[Fin.sum_univ_one, gs_top, map_one, _root_.one_mul]`. Use `(hs _ (𝟙 _) z J hJ).trans (Eq.trans ?_ (ha _ _ z J hJ).symm)` and prove the remaining obligations. Rewrite using `[Category.id_comp, comp_whiskerRight, Over.comp_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsPull.lin {T T' T'' : Over Z} {h : T' ⟶ T} {k : T'' ⟶ T} (g : T'' ⟶ T') (e : g ≫ h = k)
     {a : LB.Sec (LPow G L (N : ℤ) T)} {a' : LB.Sec (LPow G L (N : ℤ) T')} {s : LB.Sec (LPow G L (N : ℤ) T'')}
@@ -39,9 +39,9 @@ theorem IsPull.lin {T T' T'' : Over Z} {h : T' ⟶ T} {k : T'' ⟶ T} (g : T'' �
   rw [Category.id_comp, comp_whiskerRight, Over.comp_left]
 
 /- English proof (translation)
-Introduce `s`. Establish `key : ∀ c, Lin G L N (𝟙 _) b' c s ↔ Lin G L N h b c s` using `fun c => forall_congr' fun z => forall_congr' fun J => forall_congr' fun hJ => by`. Use `Eq.congr_right (Finset.sum_congr rfl fun i _ => congrArg _ ?_)` and prove the remaining obligations. Use `(hb i _ _ z J hJ).trans ?_` and prove the remaining obligations. Rewrite using `[← Over.comp_left, ← comp_whiskerRight, Category.id_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Simplify `H s` using `only [key]`.
+Both sides reduce to the same expression. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem basisAlong_id {T T' : Over Z} {h : T' ⟶ T} {n : ℕ} {b : Fin n → LB.Sec (LPow G L (N : ℤ) T)}
     {b' : Fin n → LB.Sec (LPow G L (N : ℤ) T')} (hb : ∀ i, IsPull h (b i) (b' i)) (H : BasisAlong G L N h b) :
@@ -56,9 +56,9 @@ theorem basisAlong_id {T T' : Over Z} {h : T' ⟶ T} {n : ℕ} {b : Fin n → LB
   simpa only [key] using H s
 
 /- English proof (translation)
-Take `⟨yx⟩` from `exists_lift x ⊤ (fun _ => trivial)`. Use `choose f hf using fun i => exists_pull hL yx (b i)`. Use `⟨f, fun W _ _ _ _ φ gam _ χ h => ?_⟩` and prove the remaining obligations. Take `⟨χ₀, rfl⟩ : ∃ χ₀ : Sp W ⟶ (⊤ : Z.Opens).toScheme, χ₀ ≫ (⊤ : Z.Opens).ι = χ` from `(exists_lift χ ⊤ (fun _ => trivial)).elim fun y => ⟨y.left, Over.w y⟩`. Take `⟨y⟩` from `exists_lift (jK W ≫ χ₀ ≫ (⊤ : Z.Opens).ι) ⊤ (fun _ => trivial)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose b' hb' using fun i => exists_pull hL (Over.homMk χ₀ rfl : Over.mk (χ₀ ≫ (⊤ : Z.Opens).ι) ⟶ Over.mk (⊤ : Z.Opens).ι) (b i)`. Use `⟨b', basisAlong_id hb' (hb W χ₀), fun i => ?_⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `exists_pull hL y (b i)`. Conclude with `⟨s, IsPull.lin _ (hom_unique _ _) (hf i) hs, IsPull.lin _ (hom_unique _ _) (hb' i) hs⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isFrame (hL : L.IsLB) {n : ℕ} (b : Fin n → LB.Sec (LPow G L (N : ℤ) (Over.mk (⊤ : Z.Opens).ι)))
     (hb : ∀ (W : Type) [CommRing W] (χ : Sp W ⟶ (⊤ : Z.Opens).toScheme),
@@ -78,7 +78,7 @@ theorem exists_isFrame (hL : L.IsLB) {n : ℕ} (b : Fin n → LB.Sec (LPow G L (
   exact ⟨s, IsPull.lin _ (hom_unique _ _) (hf i) hs, IsPull.lin _ (hom_unique _ _) (hb' i) hs⟩
 
 /- English proof (translation)
-Introduce `hL _ R _ _ _ _ P N hN`. Use `⟨⟨(PolFrames.exists_ampFrames_local N hL.secBaseChange R P hN).choose⟩, N ^ P.g, ?_⟩` and prove the remaining obligations. Take `⟨U, hU, b, hb⟩` from `PolFrames.exists_local_basisAlong N hL.secBaseChange P hN (IsLocalRing.closedPoint R)`. Take `rfl : U = ⊤` from `DVR.eq_top_of_closedPoint_mem U hU`. Conclude with `exists_isFrame P.isLB b hb (jK R)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ampFrames_and_isFrame : Laws → Laws2 → ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R]
     (P : PolAV (Sp R)) (N : ℕ), 1 ≤ N →

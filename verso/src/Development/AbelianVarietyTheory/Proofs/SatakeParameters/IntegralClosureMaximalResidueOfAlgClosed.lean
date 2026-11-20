@@ -5,29 +5,27 @@ open GlobalTheory.EtC
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k K _ _ _ φ D m₀ hφD hm₀ hres hfrac`. Set `A` to `integralClosure D K`. Establish `hφA : ∀ c : k, φ c ∈ A` using `fun c => isIntegral_algebraMap (R := D) (x := (⟨φ c, hφD ⟨c, rfl⟩⟩ : D))`. Establish `hker : RingHom.ker (algebraMap D A) ≤ m₀`. Introduce `d hd`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : (algebraMap D A d : K) = 0` using `by rw [RingHom.mem_ker.mp hd]; rfl`. Establish `: d = 0` using `Subtype.ext h0`. Simplify using `[this]`. Take `⟨𝔪, h𝔪max, h𝔪comap⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral (S := A) m₀ hker`. Set `φA : k →+* A` to `φ.codRestrict A hφA`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `ψ : k →+* A ⧸ 𝔪` to `(Ideal.Quotient.mk 𝔪).comp φA`. Establish `hcoef : ∀ d : D, algebraMap D (A ⧸ 𝔪) d ∈ Set.range ψ`. Introduce `d`. Take `⟨c, hc, hdc⟩` from `hres d`. Use `⟨c, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmem : algebraMap D A (d - ⟨φ c, hc⟩) ∈ 𝔪`. Rewrite using `[← Ideal.mem_comap, h𝔪comap]`. Conclude with `hdc`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk 𝔪 (φA c) = Ideal.Quotient.mk 𝔪 (algebraMap D A d)`. Use `symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Use symmetry to reverse the relation. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hmem` using `[map_sub]`. Conclude with `Ideal.Quotient.eq.mpr hmem`. Establish `hres' : ∀ r : A, ∃ c : k, r - φA c ∈ 𝔪`. Introduce `r`. Use `letI : Field (A ⧸ 𝔪) := Ideal.Quotient.field 𝔪`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `letI : Algebra k (A ⧸ 𝔪) := ψ.toAlgebra`. Establish `hr : IsIntegral D (Ideal.Quotient.mkₐ D 𝔪 r)` using `(Algebra.IsIntegral.isIntegral (R := D) r).map (Ideal.Quotient.mkₐ D 𝔪)`. Take `⟨f, hfm, hf⟩` from `hr`. Establish `hlift : f.map (algebraMap D (A ⧸ 𝔪)) ∈ Polynomial.lifts ψ`. Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `n`. Rewrite using `[Polynomial.coeff_map]`. Conclude with `hcoef _`. Take `⟨q, hq, -, hqm⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic hlift (hfm.map _)`. Establish `hint : IsIntegral k (Ideal.Quotient.mk 𝔪 r)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨q, hqm, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_eq_eval_map]`. Express the relevant statement in the definitionally equal form `Polynomial.eval _ (q.map ψ) = 0`. Rewrite using `[hq, ← Polynomial.eval₂_eq_eval_map]`. Conclude with `hf`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `IsAlgClosed.degree_eq_one_of_irreducible k (minpoly.irreducible hint)`. Take `⟨c, hc⟩` from `minpoly.mem_range_of_degree_eq_one k _ h1`. Conclude with `⟨c, Ideal.Quotient.eq.mp hc.symm⟩`. Use `⟨A.toSubring, 𝔪, ?_, h𝔪max, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨c, rfl⟩`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hφA c`. Introduce `r`. Take `⟨c, hc⟩` from `hres' r`. Conclude with `⟨c, hφA c, hc⟩`. Introduce `x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨d, hd, hint⟩` from `hfrac x`. Use `⟨⟨(d : K), Subalgebra.algebraMap_mem A d⟩, ?_, hint⟩` and prove the remaining obligations. Introduce `h`. Apply `hd` to reduce the goal to its premises. Conclude with `Subtype.ext (by simpa using congrArg Subtype.val h)`.
-
-Introduce `x hx`. Establish `hx' : IsIntegral A x` using `hx`. Conclude with `isIntegral_trans x hx'`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integralClosure_maximal_residue_algClosed : ∀ (k K : Type) [Field k] [IsAlgClosed k] [Field K] (φ : k →+* K) (D : Subring K) (m₀ : Ideal D),
     φ.range ≤ D → m₀.IsMaximal → (∀ r : D, ∃ c : k, ∃ h : φ c ∈ D, r - ⟨φ c, h⟩ ∈ m₀) →

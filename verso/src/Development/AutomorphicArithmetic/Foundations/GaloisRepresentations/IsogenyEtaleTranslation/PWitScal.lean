@@ -9,9 +9,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open UpperTheory.Gal.Int.Geo (Lv IsTrans Integ)
 
 /- English proof (translation)
-Establish `h0 : I.ev n 0 = 1`. Use `I.add n 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_mul.1 this`. Proceed by induction on `d with`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => rw [zero_smul, pow_zero, h0]`. Consider the case `succ d ih => rw [succ_nsmul, I.add, ih, pow_succ]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem ev_nsmul {G : GDatum} {k : Type} [Field k] {Q : Type} [Group Q] {act : G.O → Q → Q}
     {e : ℕ → Q → Q → kˣ → Prop} (I : GTateIso G k Q act e) (n : ℕ) (hn : 0 < n) (d : ℕ) (x : G.La) :
@@ -25,7 +25,7 @@ private theorem ev_nsmul {G : GDatum} {k : Type} [Field k] {Q : Type} [Group Q] 
   | succ d ih => rw [succ_nsmul, I.add, ih, pow_succ]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[MonObj.comp_pow, Category.comp_id, MonObj.one_eq_one, one_pow]`. Rewrite using `[MonObj.comp_pow, Category.comp_id, MonObj.mul_eq_mul, MonObj.comp_mul, tensorHom_fst, tensorHom_snd, MonObj.comp_pow, MonObj.comp_pow, Category.comp_id, Category.comp_id, mul_pow]`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem isMonHom_pow {S : Scheme.{0}} (A : Over S) [GrpObj A] [IsCommMonObj A] (n : ℕ) :
     IsMonHom ((𝟙 A) ^ n : A ⟶ A) := by
@@ -35,21 +35,19 @@ private theorem isMonHom_pow {S : Scheme.{0}} (A : Over S) [GrpObj A] [IsCommMon
       tensorHom_snd, MonObj.comp_pow, MonObj.comp_pow, Category.comp_id, Category.comp_id, mul_pow]
 
 /- English proof (translation)
-The claim follows from `MonObj.pow_comp x n f`.
+A detailed English derivation is pending.
 -/
 private theorem pow_comp_hom {S : Scheme.{0}} {A B Z : Over S} [MonObj A] [MonObj B] (f : A ⟶ B) [IsMonHom f]
     (x : Z ⟶ A) (n : ℕ) : (x ^ n) ≫ f = (x ≫ f) ^ n := MonObj.pow_comp x n f
 
 /- English proof (translation)
-Introduce `hR p _ D G L gb N X d z hd hdp hz`. Take `⟨-, hact, hmul⟩` from `hz`. Establish `hid : ∃ m : GObjMap X.univ X.univ (𝟙 X.X), m.φ = 𝟙 _` using `⟨{ φ := 𝟙 _, φ₂ := 𝟙 _, cart := GlobalTheory.SiegLower.isGrpPullback_id X.univ.A, sq := ⟨by simp, by simp⟩, act := fun c => by simp, pol := GlobalTheory.SiegLower.lbIso_pull_id X.univ.isLB, eta := fun y => by simp }, rfl⟩`. Take `⟨m, hm⟩` from `hid`. Establish `hmon : IsMonHom ((𝟙 X.univ.A) ^ d)` using `isMonHom_pow _ d`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcomm : ∀ c : D.O, X.univ.act.act c ≫ ((𝟙 X.univ.A) ^ d) = ((𝟙 X.univ.A) ^ d) ≫ X.univ.act.act c`. Introduce `c`. Use `haveI := X.univ.act.hom c`. Rewrite using `[MonObj.comp_pow, pow_comp_hom, Category.comp_id, Category.id_comp]`. Use `⟨Category.id_comp _, X.univ, (𝟙 X.univ.A) ^ d, m, ?_, by rw [hm]; simp⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hmon, hcomm, ⟨𝟙 _, d, inferInstance, fun c => ?_, Category.comp_id _, Category.id_comp _, hdp⟩, ⟨d ^ 2, hdp.pow_left 2, ⟨GlobalTheory.T.lbIso_lbPow_sq_pull_sq2_of_isGen_of_relAmple _ _ X.univ.ab X.univ.P X.univ.isLB X.univ.rig₁ X.univ.rig₂ X.univ.ample d⟩, hmul⟩, fun k _ _ t β h …` and prove the remaining obligations. Rewrite using `[Category.comp_id, Category.id_comp]`. Take `⟨I, hI⟩` from `X.univ.geom k t β ht`. Use `⟨I, I, hI, hI, fun n hn hnp x y => ?_⟩` and prove the remaining obligations. Establish `h1` using `(hR p D G L ℂ gb X.X X.s _ _ _ X.univ X.univ X.univ k t I I I (𝟙 _) (𝟙 _) 1 1 inferInstance inferInstance (UpperTheory.Gal.Int.Geo.integ_of_mem (one_mem _))).1 n hn hnp (d • x) y`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : I.ev n x ≫ ((𝟙 X.univ.A) ^ d) = I.ev n (d • x) ≫ 𝟙 _`. Rewrite using `[MonObj.comp_pow, Category.comp_id, Category.comp_id]`. Conclude with `(ev_nsmul I n hn d x).symm`. Establish `hin : inAf D (d • x) = d • inAf D x` using `GlobalTheory.AdelicSim.inAf_nsmul D d x`. Rewrite using `[hev, h1]`.
-
-Simplify using `only [map_one, Module.End.one_apply, hin, hact]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.FixZ.witScal_of :
     UpperTheory.Gal.G3.RelComp → UpperTheory.Gal.FixZ.WitScal := by

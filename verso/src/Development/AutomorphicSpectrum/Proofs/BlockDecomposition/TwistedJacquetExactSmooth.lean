@@ -8,29 +8,27 @@ open GlobalTheory.PRep GlobalTheory.BZMir
 namespace GlobalTheory.CompanionTheory.PRep.TwExact
 
 /- English proof (translation)
-Introduce `G V₁ V₂ V₃ _ _ _ _ _ _ _ _ _ ρ₁ ρ₂ ρ₃ h₁ h₂ h₃ N θ hθ hN f g hf hg hfg`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `y hy`. Rewrite `hy` using `[LinearMap.mem_range]`. Take `⟨x, rfl⟩` from `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective (GlobalTheory.PRep.twKer ρ₁ N θ) x`. Rewrite using `[LinearMap.mem_ker]`. Establish `hv : g (f v) = 0`. Establish `h0 : f v ∈ LinearMap.ker g` using `hfg ▸ LinearMap.mem_range_self f v`. Conclude with `LinearMap.mem_ker.mp h0`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [GlobalTheory.BZMir.twMap, Submodule.mapQ_apply, hv, Submodule.Quotient.mk_zero]`. Introduce `x hx`. Take `⟨w, rfl⟩` from `Submodule.Quotient.mk_surjective (GlobalTheory.PRep.twKer ρ₂ N θ) x`. Rewrite `hx` using `[LinearMap.mem_ker]`. Simplify using `only [GlobalTheory.BZMir.twMap, Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero] at hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hKinv : ∀ x : G, LinearMap.ker g ≤ (LinearMap.ker g).comap (ρ₂ x)`. Introduce `x u hu`. Rewrite using `[Submodule.mem_comap, LinearMap.mem_ker, hg, LinearMap.mem_ker.mp hu, map_zero]`. Set `ρq : Representation ℂ G (V₂ ⧸ LinearMap.ker g)` to `{ toFun := fun x => (LinearMap.ker g).mapQ (LinearMap.ker g) (ρ₂ x) (hKinv x) map_one' := by`. Use extensionality with `u`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use the proof step `map_mul' := by`. Introduce `x y`. Use extensionality with `u`. Simplify using `[Module.End.mul_apply] }`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hq : GlobalTheory.PRep.IsSmooth ρq`. Introduce `u`. Take `⟨w0, rfl⟩` from `Submodule.Quotient.mk_surjective _ u`. Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce `x0 hx0`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨(fun y => x0 * y) '' {y | ρ₂ y w0 = w0}, ?_, isOpenMap_mul_left x0 _ (h₂ w0), ⟨1, by simp, by simp⟩⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Rewrite `hy`, `hx0`, the goal using `[Set.mem_ofPred_eq]`. Establish `e1 : ρq y (Submodule.Quotient.mk w0) = Submodule.Quotient.mk (ρ₂ y w0)` using `rfl`. Rewrite using `[map_mul, Module.End.mul_apply, e1, hy, hx0]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `gb : (V₂ ⧸ LinearMap.ker g) →ₗ[ℂ] V₃` to `(LinearMap.ker g).liftQ g le_rfl`. Establish `hgb_inj : Function.Injective gb`. Introduce `a b hab`. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ a`. Take `⟨b, rfl⟩` from `Submodule.Quotient.mk_surjective _ b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hab' : g a = g b` using `hab`. Rewrite using `[Submodule.Quotient.eq, LinearMap.mem_ker, map_sub, hab', sub_self]`. Establish `hgb_eq : ∀ (x : G) (u : V₂ ⧸ LinearMap.ker g), gb (ρq x u) = ρ₃ x (gb u)`. Introduce `x u`. Take `⟨w0, rfl⟩` from `Submodule.Quotient.mk_surjective _ u`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hg x w0`. Establish `hmem : (Submodule.Quotient.mk w : V₂ ⧸ LinearMap.ker g) ∈ GlobalTheory.PRep.twKer ρq N θ` using `GlobalTheory.CompanionTheory.PRep.JacExact.twKer_reflect ρq ρ₃ hq h₃ N θ hθ hN gb hgb_inj hgb_eq _ hx`. Rewrite `hmem` using `[GlobalTheory.CompanionTheory.PRep.twKer_map_closed ρ₂ ρq N θ (LinearMap.ker g).mkQ (Submodule.mkQ_surjective _) (fun x v => rfl)]`. Take `⟨w', hw', hw'eq⟩` from `hmem`. Rewrite `hw'eq` using `[Submodule.mkQ_apply, Submodule.Quotient.eq, ← hfg, LinearMap.mem_range]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨v, hv⟩` from `hw'eq`. Rewrite using `[LinearMap.mem_range]`. Use `⟨Submodule.Quotient.mk (-v), ?_⟩` and prove the remaining obligations. Simplify using `only [GlobalTheory.BZMir.twMap, Submodule.mapQ_apply, map_neg, hv]`. Rewrite using `[Submodule.Quotient.eq]`.
-
-Establish `e2 : -(w' - w) - w = -w'` using `by abel`. Rewrite using `[e2]`. Conclude with `Submodule.neg_mem _ hw'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twMap_range_eq_ker : ∀ {G V₁ V₂ V₃ : Type} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [AddCommGroup V₁] [Module ℂ V₁] [AddCommGroup V₂] [Module ℂ V₂]

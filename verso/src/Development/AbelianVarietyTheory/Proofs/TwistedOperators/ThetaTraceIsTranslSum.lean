@@ -18,7 +18,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 variable {Xo : Moduli Dw l} {K : Type} [CommRing K]
 
 /- English proof (translation)
-Use `gx_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[lift_l_fst]`. Conclude with `(over_iff _).2 (pullback.lift_snd _ _ _)`. Rewrite using `[lift_l_snd, conj_apply, Category.assoc, Category.assoc, swap_inv_snd, Over.comp_left, ← swap_hom_fst, Category.assoc]`. Conclude with `congrArg _ (pullback.lift_fst _ _ _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_pullback_map (x : Sp K ⟶ Xo.X) (g : Xo.univ.t.G ⟶ Xo.univ.t.G) :
     conj x x ((Over.pullback x).map g).left =
@@ -31,7 +31,7 @@ theorem conj_pullback_map (x : Sp K ⟶ Xo.X) (g : Xo.univ.t.G ⟶ Xo.univ.t.G) 
     exact congrArg _ (pullback.lift_fst _ _ _)
 
 /- English proof (translation)
-Simplify using `only [conj_apply, Category.assoc, Iso.inv_hom_id_assoc]`. Rewrite using `[Over.comp_left]`. Simplify using `only [Category.assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conj_comp_left {x x' x'' : Sp K ⟶ Xo.X} (f : Fib Xo x ⟶ Fib Xo x') (g : Fib Xo x' ⟶ Fib Xo x'') :
     conj x x'' (f ≫ g).left = conj x x' f.left ≫ conj x' x'' g.left := by
@@ -40,7 +40,7 @@ theorem conj_comp_left {x x' x'' : Sp K ⟶ Xo.X} (f : Fib Xo x ⟶ Fib Xo x') (
   simp only [Category.assoc]
 
 /- English proof (translation)
-Establish `e : (Over.pullback x).map (𝟙 Xo.univ.t.G ^ n) = 𝟙 (Fib Xo x) ^ n`. Use `map_pow (Over.pullback x).homMonoidHom (𝟙 Xo.univ.t.G) n` as an intermediate fact. Rewrite using `[← (Over.pullback x).map_id]`. Conclude with `this`. Rewrite using `[← e, conj_pullback_map, MonObj.comp_pow, Category.comp_id, mulT]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_id_pow (x : Sp K ⟶ Xo.X) (n : ℕ) :
     conj x x (𝟙 (Fib Xo x) ^ n).left = (mulT Xo.univ.t.G (Over.mk x) n).left := by
@@ -51,7 +51,7 @@ theorem conj_id_pow (x : Sp K ⟶ Xo.X) (n : ℕ) :
   rw [← e, conj_pullback_map, MonObj.comp_pow, Category.comp_id, mulT]
 
 /- English proof (translation)
-Establish `e : (Over.pullback x).map (𝟙 Xo.univ.t.G)⁻¹ = (𝟙 (Fib Xo x))⁻¹`. Rewrite using `[Functor.map_inv', CategoryTheory.Functor.map_id]`. Rewrite using `[← e, conj_pullback_map, GrpObj.comp_inv, Category.comp_id, negT]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem conj_id_inv (x : Sp K ⟶ Xo.X) :
     conj x x (𝟙 (Fib Xo x))⁻¹.left = (negT Xo.univ.t.G (Over.mk x)).left := by
@@ -61,7 +61,7 @@ theorem conj_id_inv (x : Sp K ⟶ Xo.X) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[← conj_id_inv, ← conj_id_inv, ← conj_comp_left, ← conj_comp_left, GrpObj.inv_comp, GrpObj.comp_inv, Category.id_comp, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem negT_comm_conj {x x' : Sp K ⟶ Xo.X} (f : Fib Xo x ⟶ Fib Xo x') [IsMonHom f] :
     (negT Xo.univ.t.G (Over.mk x)).left ≫ conj x x' f.left =
@@ -70,7 +70,7 @@ theorem negT_comm_conj {x x' : Sp K ⟶ Xo.X} (f : Fib Xo x ⟶ Fib Xo x') [IsMo
     Category.id_comp, Category.comp_id]
 
 /- English proof (translation)
-Rewrite using `[← mem_transKer_mulT, mem_transKer, ← conj_id_pow, ← h, conj_comp_left, ← Category.assoc, mem_transKer.1 hc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_eq_one_of_mem_transKer_conj {x x' : Sp K ⟶ Xo.X} {f : Fib Xo x ⟶ Fib Xo x'} {f' : Fib Xo x' ⟶ Fib Xo x}
     {n : ℕ} (h : f ≫ f' = 𝟙 _ ^ n) {c : Over.mk x ⟶ Xo.univ.t.G} (hc : c ∈ transKer Xo.univ.t.G (conj x x' f.left)) :
@@ -78,9 +78,9 @@ theorem pow_eq_one_of_mem_transKer_conj {x x' : Sp K ⟶ Xo.X} {f : Fib Xo x ⟶
   rw [← mem_transKer_mulT, mem_transKer, ← conj_id_pow, ← h, conj_comp_left, ← Category.assoc, mem_transKer.1 hc]
 
 /- English proof (translation)
-Take `⟨β, s₁, t, n, U, F, hβ, hs, ht, hr, hU, hF, hsum⟩` from `h`. Use `hf.1` as an intermediate fact. Use `⟨t, ⟨β, s', hβ, hs', ht⟩, n, F, fun i => ?_, hsum⟩` and prove the remaining obligations. Establish `hk : (U i).pt ^ (p ^ 2) = 1` using `pow_eq_one_of_mem_transKer_conj hf.2.2.1 (hU i).1`. Take `⟨α₀, α, h₁, h₂, h₃, h₄⟩` from `hs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨_, (U i).pt, α₀, α, s₁, U i, rfl, hk, h₁, h₂, h₃, h₄, (hU i).symLift hβ.2.1 Xo.univ.t.sym (negT_comm_conj f) hk, hF i⟩`.
+Supply the required witnesses or components.
 -/
 theorem thetaTrace_isTranslSum (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H)
     (l : Level H) (Xo : Moduli Dw l) (K : Type) [Field K] (x x' : Sp K ⟶ Xo.X) (f : Fib Xo x ⟶ Fib Xo x')

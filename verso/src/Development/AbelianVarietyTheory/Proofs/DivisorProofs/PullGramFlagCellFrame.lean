@@ -15,13 +15,13 @@ noncomputable section
 namespace GlobalTheory.FlagCell2
 
 /- English proof (translation)
-Introduce `F _ σ X Y ι _ m E E' φ f hf hR _c A u H hH z hz`. Take `⟨hA, hB⟩` from `hz`. Use function extensionality and compare the values at `τ`. Rewrite using `[(GlobalTheory.T.pulled_back_gram_matrices_independent_of_frame F σ X Y ι m E E' φ f hf hR H hH z).2 A hA _ hB τ]`. Establish `hd : ∀ τ, ((A.map φ) τ).det ≠ 0` using `fun τ => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `((A τ).map φ).det ≠ 0`. Use `RingHom.map_det (φ : X.Fn →+* Y.Fn) (A τ)` as an intermediate fact. Rewrite `this` using `[RingHom.mapMatrix_apply]`. Express the relevant statement in the definitionally equal form `((A τ).map (φ : X.Fn →+* Y.Fn)).det ≠ 0`. Rewrite using `[← this]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(map_ne_zero _).2 (Fr.det_ne hA τ)`. Establish `e : upM u * A.map φ * (A.map φ)⁻¹ = upM u` using `by rw [mul_assoc, Mat.mul_inv hd, mul_one]`. Take `⟨ψ, hψ⟩` from `exists_ratVal_hom (X := Y) (σ := σ) z`. Establish `h0 : ratVal (0 : Y.Fn) z = 0` using `by simpa using hψ 0`. Establish `h1 : ratVal (1 : Y.Fn) z = 1` using `by simpa using hψ 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : (upM u).map (ratVal · z) τ = upM (fun j => ratVal (u j) z) τ`. Use extensionality with `a b`. Simplify using `only [Mat.map, upM, upU, Matrix.map_apply, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> simp [h0, h1]`. Rewrite using `[e, hv]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pullGram_cell : ∀ (F : Type) [Field F] (σ : F →+* ℂ) (X Y : Var F) (ι : Type) [Fintype ι] (m : ι → ℕ) (E : Fr (ratOf X) m 0) (E' : Fr (ratOf Y) m m) (φ : X.Fn →ₐ[F] Y.Fn) (f : Y.X ⟶ X.X) (hf : f ≫ X.str = Y.str), Refines E E' φ f → ∀ (c : AlgChart X.str σ X.dim) (A : Mat m X.Fn) (u : Cell m → Y.Fn), ∀ H : Mat m X.Fn → CxPts X.str σ → Mat m ℂ, IsMetricOn E ⊤ H → ∀ z : CxPts Y.str σ, InCell E E' φ f A u (under z) → pullGram E H φ f hf (upM u * A.map φ) z = fun τ => upM (fun j => ratVal (u j) z) τ * H A (ptMap σ f hf z) τ * (upM (fun j => ratVal (u j) z) τ)ᴴ := by
   intro F _ σ X Y ι _ m E E' φ f hf hR _c A u H hH z hz

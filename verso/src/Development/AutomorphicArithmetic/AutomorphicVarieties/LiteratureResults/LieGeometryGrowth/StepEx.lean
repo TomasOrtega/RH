@@ -16,44 +16,42 @@ open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af
 open UpperTheory.V.Lit.Geo
 
 /- English proof (translation)
-Simplify using `[trF, Finset.mul_sum]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem trF_smul {E : Type} [Field E] [NumberField E] {a : ℕ} (s : ℝ) (X Y : Matrix (Fin a) (Fin a) (Cinf E)) :
     trF X (s • Y) = s * trF X Y := by
   simp [trF, Finset.mul_sum]
 
 /- English proof (translation)
-Introduce `E _ _ _ a ha U hU`. Take `⟨L, hL, hUL⟩` from `UpperTheory.unitaryGroup_lieAlgebra_eq_skewHermitian E a U hU`. Take `⟨ε₁, C₁, hε₁, hroot⟩` from `UpperTheory.unitarySimilitudeGroup_isSmooth_cmDatum E a`. Take `⟨hI1, hI2, hI3⟩` from `UpperTheory.lattice_point_count_bound E a ha L`. Establish `hK` using `UpperTheory.hermitian_gaussian_moment_bound E a ha L hL`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hT, hM⟩` from `UpperTheory.hermitian_space_geometric_estimate E a ha L hL`. Take `⟨hS1, φ, hφ, hS2⟩` from `UpperTheory.realLieGroup_charts_smooth E a ha L hL`. Take `⟨hB1, hB2⟩` from `UpperTheory.lieDerivative_isDerivation_smoothFunctions E a {f | ∃ P ∈ poly E a, f = mean L P} (by`. Introduce and unpack `_ ⟨P, hP, rfl⟩`. Conclude with `⟨(hM P hP).2, hS1 P hP⟩)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Take `⟨hD1, ⟨B, hB, hD2⟩, hD3⟩` from `UpperTheory.hermitian_trace_form_estimate E a ha L hL`. Take `⟨C₂, ε₂, hC₂, hε₂, hTay⟩` from `UpperTheory.hermitian_trace_form_entry_estimate E a ha L hL`. Take `⟨C₃, hC₃⟩` from `UpperTheory.hermitian_space_log_estimate E a ha L hL`. Take `⟨C₄, hC₄⟩` from `UpperTheory.hermitian_space_point_log_estimate E a ha L hL`. Take `⟨c₀, f₀, hc₀, hG⟩` from `UpperTheory.traceForm_posDef_of_totallyReal E a ha L hL`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨δ, hδ, hδ1, hδ2, hδ3⟩ : ∃ δ : ℝ, 0 < δ ∧ δ * B ≤ ε₁ ∧ δ * B ≤ ε₂ ∧ C₂ * (δ * B) ^ 2 ≤ δ * c₀ := by`. Establish `hp : 0 < C₂ * B ^ 2 + 1` using `by positivity`. Use `⟨min (min (ε₁ / B) (ε₂ / B)) (c₀ / (C₂ * B ^ 2 + 1)), by positivity, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(le_div_iff₀ hB).1 ((min_le_left _ _).trans (min_le_left _ _))`. Conclude with `(le_div_iff₀ hB).1 ((min_le_left _ _).trans (min_le_right _ _))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set d := min (min (ε₁ / B) (ε₂ / B)) (c₀ / (C₂ * B ^ 2 + 1))`. Establish `h0 : 0 < d` using `by positivity`. Establish `h1 : d * (C₂ * B ^ 2 + 1) ≤ c₀` using `(le_div_iff₀ hp).1 (min_le_right _ _)`. Use the polynomial consequences of the given equalities and inequalities. Establish `hf0 : ∀ g, 0 ≤ fn L g` using `fun g => Real.log_nonneg (hT g).1`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hq0 : ∀ g : GA E a, 0 ≤ Real.log (qht g)` using `fun g => Real.log_nonneg (le_ciInf fun _ => GroundTheory.Automorphic.AutomorphicForm.one_le_height _)`. Establish `hn : ∀ g (t : ℝ), |t| ≤ 1 → ‖toL (t • ((-δ) • dev L g).1)‖ ≤ δ * B` using `fun g t ht => by`. Express the relevant statement in the definitionally equal form `‖t • (-δ) • toL (dev L g).1‖ ≤ _`. Rewrite using `[norm_smul, norm_smul, norm_neg, Real.norm_eq_abs, Real.norm_eq_abs, abs_of_pos hδ]`. Establish `h1` using `mul_le_mul_of_nonneg_left (hD2 g).2.1 hδ.le`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `h2 : 0 ≤ δ * ‖toL (dev L g).1‖` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `key : ∀ g (t : ℝ) (h : GL (Fin a) (Cinf E)), |t| ≤ 1 → h.val * star h.val = 1 + t • ((-δ) • dev L g).1 → |fn L (g * infGL E a h) - fn L g - Real.pi * t * δ * trF (dev L g).1 (dev L g).1| ≤ δ * c₀` using `fun g t h ht hh => by`. Establish `h0 : ell E a (toL (t • ((-δ) • dev L g).1)) = 0`. Express the relevant statement in the definitionally equal form `ell E a (t • (-δ) • toL (dev L g).1) = 0`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_smul, map_smul, (hD3 g).1, smul_zero, smul_zero]`. Establish `h1` using `hTay g _ h h0 ((hn g t ht).trans hδ2) hh`. Establish `h2 : trF (mom L g).1 (t • ((-δ) • dev L g).1) = -(t * δ * trF (dev L g).1 (dev L g).1)`. Express the relevant statement in the definitionally equal form `trF (mom L g).1 (t • (-δ) • (dev L g).1) = _`. Rewrite using `[trF_smul, trF_smul, (hD3 g).2]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[h2]`. Establish `h3` using `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (norm_nonneg _) (hn g t ht) 2) hC₂`. Use `le_trans (le_of_eq ?_) (h1.trans (h3.trans hδ3))` and prove the remaining obligations. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hπ : 0 ≤ Real.pi - 2` using `by linarith [Real.pi_gt_three]`. Use `⟨fn L, fun g => (-δ) • dev L g, max (max C₁ (Real.pi * δ * B + δ * c₀)) (max C₃ C₄), δ * c₀, f₀, ⟨mul_pos hδ hc₀, ⟨φ, hφ, hB2 φ hS2⟩, fun γ t g => (hI1 γ t g).1, fun k g => ?_, fun u hu g => (hI2 U hU hUL u hu g).1, hf0, fun g => ?_, fun g => ?_, fun i j w => ?_, fun γ t g => ?_, …` and prove the remaining obligations. Rewrite using `[fn, hI3, fn]`. Conclude with `(hC₃ g).trans (mul_le_mul_of_nonneg_right (le_max_of_le_right (le_max_left _ _)) (by linarith [hq0 g]))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hC₄ g).trans (mul_le_mul_of_nonneg_right (le_max_of_le_right (le_max_right _ _)) (by linarith [hf0 g]))`. Take `⟨ψ, h1, h2⟩` from `hB1 _ (Subalgebra.smul_mem _ (hD1 i j w) ((-δ : ℝ) : ℂ))`. Conclude with `⟨ψ, fun g => by rw [h1]; rfl, h2⟩`. Rewrite using `[(hI1 γ t g).2]`. Rewrite using `[← hK k g]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Subtype.ext (by simp [adHerm])`. Rewrite using `[(hI2 U hU hUL u hu g).2]`. Take `⟨h, h1, h2, h3⟩` from `hroot (t • (-δ) • dev L g) ((hn g t ht).trans hδ1)`. Conclude with `⟨h, h1, h2.trans (le_max_of_le_left (le_max_left _ _)), h3.trans (le_max_of_le_left (le_max_left _ _))⟩`. Establish `h1` using `(abs_le.1 (key g 1 h (by simp) (by rwa [one_smul]))).1`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `mul_le_mul_of_nonneg_left (hG g hg) hδ.le`. Establish `h3` using `mul_pos hδ hc₀`. Use the polynomial consequences of the given equalities and inequalities. Establish `h1` using `(abs_le.1 (key g (-1) h (by simp) (by rwa [neg_one_smul, ← sub_eq_add_neg]))).2`. Establish `h2` using `mul_le_mul_of_nonneg_left (hG g hg) hδ.le`.
+Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `mul_pos hδ hc₀`. Use the polynomial consequences of the given equalities and inequalities. Use `le_max_of_le_left (le_max_of_le_right ?_)` and prove the remaining obligations. Establish `h1` using `key g t h ht hh`. Establish `h2 : |Real.pi * t * δ * trF (dev L g).1 (dev L g).1| ≤ Real.pi * δ * B`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[abs_mul, abs_mul, abs_mul, abs_of_pos Real.pi_pos, abs_of_pos hδ]`. Use `(hD2 g).2.2` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Use `Real.pi_pos` as an intermediate fact. Use `gcongr`.
-
-Use `_ = _ := by ring`. Establish `h3` using `abs_add_le (fn L (g * infGL E a h) - fn L g - Real.pi * t * δ * trF (dev L g).1 (dev L g).1) (Real.pi * t * δ * trF (dev L g).1 (dev L g).1)`. Rewrite `h3` using `[sub_add_cancel]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Lit.Geo.stepEx :
     StepEx := by

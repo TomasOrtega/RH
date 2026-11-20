@@ -14,11 +14,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.SUVol.Degenerate
 
 /- English proof (translation)
-Use `⟨fun g g' => ?_⟩` and prove the remaining obligations. Establish `key : ∀ g : realSU Ψ G, g = 1`. Introduce `g`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `τ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Break down `h with h | h` into its components or cases. Conclude with `absurd (Finset.card_pos.2 ⟨τ.1, τ.2⟩) (by omega)`. Substitute `h` using the available equality. Apply `Units.ext` to reduce the goal to its premises. Establish `hd` using `(g.2 τ).1`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hd` using `[Matrix.det_unique]`. Use extensionality with `a b`. Rewrite using `[Subsingleton.elim a default, Subsingleton.elim b default]`. Simplify using `using hd`. Rewrite using `[key g, key g']`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem realSU_subsingleton {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
     (Ψ : Finset (E →+* ℂ)) (G : Matrix (Fin r) (Fin r) E) (h : Ψ.card = 0 ∨ r = 1) :
@@ -40,9 +40,9 @@ theorem realSU_subsingleton {E : Type} [Field E] [NumberField E] [IsCMField E] {
   rw [key g, key g']
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Break down `h with h | h` into its components or cases. Conclude with `absurd (Finset.card_pos.2 ⟨τ.1, τ.2⟩) (by omega)`. Substitute `h` using the available equality. Establish `ht` using `(hX τ).1`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ht` using `[Matrix.trace_fin_one]`. Use function extensionality and compare the values at `a b`. Rewrite using `[Subsingleton.elim a 0, Subsingleton.elim b 0]`. Simplify using `using ht`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem realLie_eq_zero {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
     (Ψ : Finset (E →+* ℂ)) (G : Matrix (Fin r) (Fin r) E) (h : Ψ.card = 0 ∨ r = 1)
@@ -58,11 +58,11 @@ theorem realLie_eq_zero {E : Type} [Field E] [NumberField E] [IsCMField E] {r : 
     simpa using ht
 
 /- English proof (translation)
-Use extensionality with `⟨τ, a, b⟩`. Establish `h1` using `congrFun hY τ`. Establish `hu : IsUnit (mat x τ).det` using `isUnit_iff_ne_zero.2 (hdet τ)`. Establish `h2 : Matrix.of (fun a b => Y (τ, a, b)) = 0`. Establish `e : (mat x τ)⁻¹ * (mat x τ * Matrix.of (fun a b => Y (τ, a, b)) * (mat x τ)⁻¹) * mat x τ = Matrix.of (fun a b => Y (τ, a, b))`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu, Matrix.one_mul, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu, Matrix.mul_one]`. Rewrite using `[← e]`. Establish `h1' : (mat x τ * Matrix.of (fun a b => Y (τ, a, b)) * (mat x τ)⁻¹ : Matrix (Fin r) (Fin r) ℂ) = 0` using `h1`. Rewrite using `[h1', Matrix.mul_zero, Matrix.zero_mul]`. Use `congrFun (congrFun h2 a) b` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem fromFrame_eq_zero {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
     {Ψ : Finset (E →+* ℂ)} (x : Frame Ψ r) (hdet : ∀ τ, (mat x τ).det ≠ 0)
@@ -86,25 +86,21 @@ end GlobalTheory.SUVol.Degenerate
 open GlobalTheory.SUVol.Degenerate in
 
 /- English proof (translation)
-Introduce `E _ _ _ r Ψ G x hr hdet hc S`. Establish `h : Ψ.card = 0 ∨ r = 1`. Break down `Nat.mul_eq_zero.1 hc with h | h` into its components or cases. Conclude with `Or.inl h`. Use `right`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Establish an intermediate fact.
 
-Establish `: r ^ 2 ≤ 1` using `by omega`. Use the polynomial consequences of the given equalities and inequalities. Use `haveI := realSU_subsingleton Ψ G h`. Use `haveI : CompactSpace (realSU Ψ G) := Finite.compactSpace`. Use `set K := (realLie Ψ G).comap (fromFrame x) with hK`.
+Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `haveI hKs : Subsingleton K := by`. Use `⟨fun Y Y' => ?_⟩` and prove the remaining obligations. Establish `hz : ∀ Y : K, Y = 0` using `fun Y => by`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `fromFrame_eq_zero x hdet Y.1 (realLie_eq_zero Ψ G h _ Y.2)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hz Y, hz Y']`. Establish `hν : ∀ s, riemLie Ψ G x s ≤ 1`. Introduce `s`. Use `set b := (stdOrthonormalBasis ℝ K).toBasis`. Establish `hb : b.addHaar Set.univ = 1`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Module.Basis.addHaar, ← Set.Nonempty.eq_univ (b.parallelepiped).nonempty]`. Conclude with `Measure.addHaarMeasure_self`. Combine the equalities or inequalities in the displayed calculation. Unfold `riemLie`. Distinguish the cases in `hm : AEMeasurable (fun Y : K => fromFrame x Y.1) b.addHaar`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Rewrite using `[Measure.map_apply_of_aemeasurable hm MeasurableSet.univ, Set.preimage_univ, hb]`. Rewrite using `[Measure.map_of_not_aemeasurable hm]`. Simplify using the standard rewrite rules. Use `set μ := (Measure.haar : Measure (realSU Ψ G))`. Establish `hu0 : μ Set.univ ≠ 0` using `(isOpen_univ.measure_ne_zero μ Set.univ_nonempty)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hut : μ Set.univ ≠ ⊤` using `(isCompact_univ.measure_lt_top).ne`. Establish `hball : ∀ ε : ℝ, 0 < ε → grpBall (realSU Ψ G) ε = Set.univ`. Introduce `ε hε`. Use extensionality with `g`. Simplify using `only [Set.mem_univ, iff_true]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Subsingleton.elim g 1]`. Introduce `τ a b`. Simplify using `using hε`. Establish `hlim : Filter.limsup (fun ε : ℝ => riemLie Ψ G x (tanBall Ψ r ε) / μ (grpBall (realSU Ψ G) ε)) (nhdsWithin 0 (Set.Ioi 0)) ≤ 1 / μ Set.univ`. Use `Filter.limsup_le_of_le (h := ?_)` and prove the remaining obligations.
-
-Use `filter_upwards [self_mem_nhdsWithin] with ε hε`. Rewrite using `[hball ε hε]`. Conclude with `ENNReal.div_le_div_right (hν _) _`. Use `show riemHaar Ψ G x S ≤ 1`. Unfold `riemHaar tangentHaar`.
-
-Rewrite using `[Measure.smul_apply, smul_eq_mul]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SUVol.Degenerate.riemHaar_le_one : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (Ψ : Finset (E →+* ℂ)) (G : Matrix (Fin r) (Fin r) E) (x : Frame Ψ r), 1 ≤ r → (∀ τ, (mat x τ).det ≠ 0) → Ψ.card * (r ^ 2 - 1) = 0 → ∀ S : Set (realSU Ψ G), riemHaar Ψ G x S ≤ 1 := by
   intro E _ _ _ r Ψ G x hr hdet hc S

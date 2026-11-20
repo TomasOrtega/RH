@@ -9,7 +9,7 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.DualOm
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.G Formalism.MainNotions.FormalGroupSystem Formalism.FrobeniusOrbits GlobalTheory.TwU Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.TwU.orbitBound_overSecondEmbedding_anyBasePoint_alt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FOrbitBoundOverSecondEmbeddingAnyBasePoint.lean&line=16#L16)
 -/

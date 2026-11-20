@@ -14,7 +14,7 @@ open GlobalTheory.OneMapRef GlobalTheory.WeilParts
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.OneMapRef.SplitProj.zak_om_split` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FSplitFinitePointMovesVacuumToProjection.lean&line=348#L348)
 -/

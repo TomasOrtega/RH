@@ -15,7 +15,7 @@ def OrbitChartMax.Statement : Prop :=
         (chartPoint x c V).IsMaximal
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨samplePoint_blockNonzero, isSectionOn_chartMonomial _ _ _ (fun _ ↦ by simp [samplePoint]) 1 (fun _ ↦ rfl), fun _ ↦ by simp [samplePoint]⟩`.
+Supply the required witnesses or components.
 -/
 example : BlockNonzero samplePoint ∧
     Geo.IsSectionOn (orbitIdeal samplePoint) (HermLine.standard _).toGeo

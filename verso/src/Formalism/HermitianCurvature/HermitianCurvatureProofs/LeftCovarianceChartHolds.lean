@@ -10,13 +10,13 @@ noncomputable section
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Introduce `k r d O U κ Φ hC x hx ξ Ξ₀ _hΞ₀ hcov X hX`. Establish `hg : κ x ∈ B.GV k r` using `(hC.2.2.2.2.1 x hx).1`. Take `⟨hgi, hig, hHg, hgH⟩` from `gv_facts hg`. Establish `hY : B.inLie k r ((κ x)⁻¹ * X * κ x)`. Unfold `B.inLie at hX ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `e1 : ((κ x)⁻¹ * X * κ x)ᴴ * Hpk k r = (κ x)ᴴ * (Xᴴ * Hpk k r) * κ x`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← hHg]`. Establish `e2 : Hpk k r * ((κ x)⁻¹ * X * κ x) = (κ x)ᴴ * (Hpk k r * X) * κ x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [← Matrix.mul_assoc]`. Rewrite using `[← hgH]`. Rewrite using `[e1, e2, ← Matrix.add_mul, ← Matrix.mul_add, hX, Matrix.mul_zero, Matrix.zero_mul]`. Establish `hV : VL κ Φ X x = VR κ Φ ((κ x)⁻¹ * X * κ x) x` using `by show fderiv ℝ Φ (κ x) (X * κ x) = fderiv ℝ Φ (κ x) (κ x * ((κ x)⁻¹ * X * κ x))`. Rewrite using `[show κ x * ((κ x)⁻¹ * X * κ x) = X * κ x by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hig, Matrix.one_mul]]`. Establish `ht : Matrix.trace (Ξ₀ * ((κ x)⁻¹ * X * κ x)) = Matrix.trace (κ x * Ξ₀ * (κ x)⁻¹ * X)`. Rewrite using `[← Matrix.mul_assoc, Matrix.trace_mul_comm]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[hV, hcov _ hY, ht]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem left_covariance_chart_holds : CovL := by
   intro k r d O U κ Φ hC x hx ξ Ξ₀ _hΞ₀ hcov X hX

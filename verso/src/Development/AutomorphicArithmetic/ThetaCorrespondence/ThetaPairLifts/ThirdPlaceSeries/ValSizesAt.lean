@@ -14,11 +14,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 namespace GlobalTheory.Fam.MemberData
 /- English proof (translation)
-Use `⟨1, one_pos, fun eps C8 C5 c6 Cb he _ h52 _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun C hC _ _ => ?_⟩⟩` and prove the remaining obligations. Take `⟨c1, h1⟩` from `szRow_sizesAt eps he h52 C hC`. Use `⟨c1, fun cD hcD => ?_⟩` and prove the remaining obligations. Take `⟨c2, h2⟩` from `h1 cD hcD`. Use `⟨c2, fun ch hch _ => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x0, h3⟩` from `h2 ch hch`. Use `⟨x0, fun K hK hx β _ c b _ => ?_⟩` and prove the remaining obligations. Take `⟨e1, e2, e3, e4, -⟩` from `hK`. Establish `hv : Val C cD ch β.O.L` using `val_congr e1 e2 e3 (β.p.pt_val β.val)`. Establish `hs : β.O.L.sc = K.s` using `β.sc`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hC, hv, h3 β.D β.O.L ?_ ?_ hv⟩` and prove the remaining obligations. Rewrite using `[hs]`. Conclude with `e4`. Rewrite using `[hs]`. Conclude with `hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_sizes_at_alt (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL) : GlobalTheory.Fc.RowE (Bl.IsGoodE p.s) (_root_.GlobalTheory.Mem.Top.Bl.BundleLinkage p)
     (fun κ _ O _ _ => Std κ.C ∧ Val κ.C κ.cD κ.ch O.L ∧ SizesAt O.L) := by
@@ -36,7 +36,7 @@ theorem val_sizes_at_alt (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (p : _roo
   · rw [hs]; exact e4
   · rw [hs]; exact hx
 /- English proof (translation)
-Introduce `hL p` and use `((_root_.GlobalTheory.Fam.MemberData.val_sizes_at_alt hL p).and (_root_.GlobalTheory.Fam.MemberCount.rankMu_of_good_linked hL p)).imp fun _ _ β _ _ _ _ _ H => dataNW_of_val H.1.1 β.O.L H.1.2.1 H.1.2.2 H.2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem dataNW_of_isGoodE_of_isLinked : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL),
     GlobalTheory.Fc.RowE (Bl.IsGoodE p.s) (_root_.GlobalTheory.Mem.Top.Bl.BundleLinkage p) (fun _ D _ _ _ => GlobalTheory.Core.Deg.DataNW D) := fun hL p =>

@@ -15,7 +15,7 @@ def ratioField (x : Cone n (AlgebraicClosure ℚ)) : IntermediateField ℚ (Alge
     (Set.range fun p : (k : ι) × Fin (n k + 1) × Fin (n k + 1) ↦ x p.1 p.2.1 / x p.1 p.2.2)
 
 /- English proof (translation)
-Use `IntermediateField.adjoin_le_iff.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `div_mem (IntermediateField.subset_adjoin ℚ _ ⟨⟨p.1, p.2.1⟩, rfl⟩) (IntermediateField.subset_adjoin ℚ _ ⟨⟨p.1, p.2.2⟩, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem ratioField_le_coordField (x : Cone n (AlgebraicClosure ℚ)) :
     ratioField x ≤ coordField x := by
@@ -25,7 +25,7 @@ theorem ratioField_le_coordField (x : Cone n (AlgebraicClosure ℚ)) :
     (IntermediateField.subset_adjoin ℚ _ ⟨⟨p.1, p.2.2⟩, rfl⟩)
 
 /- English proof (translation)
-The claim follows from `IntermediateField.subset_adjoin ℚ _ ⟨⟨k, i, j⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem div_mem_ratioField (x : Cone n (AlgebraicClosure ℚ)) (k : ι) (i j : Fin (n k + 1)) :
     x k i / x k j ∈ ratioField x :=
@@ -46,7 +46,7 @@ def orbitCenter (x : Cone n (AlgebraicClosure ℚ)) (v : FinitePlace (coordField
 variable [DecidableEq ι]
 
 /- English proof (translation)
-Use `Ideal.subset_span ⟨coordDeg n ⟨k, i⟩, (geoMultiHomog_iff _ _).mpr (isWeightedHomogeneous_X ℤ (coordDeg n) ⟨k, i⟩), ?_⟩` and prove the remaining obligations. Simplify `hi` using `[evalCone, coordDeg, Pi.single_apply, pow_ite]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem X_mem_orbitCenter (x : Cone n (AlgebraicClosure ℚ)) (v : FinitePlace (coordField x))
     (k : ι) (i : Fin (n k + 1)) (hi : v (coordVec x k i) < ⨆ j, v (coordVec x k j)) :
@@ -56,7 +56,7 @@ theorem X_mem_orbitCenter (x : Cone n (AlgebraicClosure ℚ)) (v : FinitePlace (
   simpa [evalCone, coordDeg, Pi.single_apply, pow_ite] using hi
 
 /- English proof (translation)
-Use `div_mem_ratioField samplePoint () 0 1 using 1` and compare the differences between its conclusion and the goal. Simplify using `[samplePoint]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 -/
 example : (1 / 2 : AlgebraicClosure ℚ) ∈ ratioField samplePoint := by
   convert div_mem_ratioField samplePoint () 0 1 using 1

@@ -12,25 +12,23 @@ open PositivityTheory.Mix.Adapt
 
 set_option maxHeartbeats 400000 in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d d₁ r s r' s' i₀ i₁ X W W₁ H' M M₁ hB hX hW hM hH' hM₁`. Take `⟨Q', h'⟩` from `frOK_skew hB hH' hW`. Set `w : Matrix (Fin n) (Fin d) (AE F E) →ₗ[AF F] Matrix (Fin n) (Fin d₁ ⊕ Fin 2) (AE F E)` to `{ toFun := fun z => incM F (1 : Matrix (Fin n) (Fin n) E) * z * (incM F Q')ᵀ map_add' := fun z z' => by rw [Matrix.mul_add, Matrix.add_mul] map_smul' := fun c z => by rw [Matrix.mul_smul, Matrix.smul_mul]; rfl }`. Establish `hw : ∀ z, w z = incM F (1 : Matrix (Fin n) (Fin n) E) * z * (incM F Q')ᵀ` using `fun _ => rfl`. Establish `hc` using `cA_cA (σ := σ) hB`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi : ∀ z, w (z * (incM F H'.ι)ᵀ) = Matrix.fromCols z 0` using `fun z => by`. Rewrite using `[hw, incM_one', Matrix.one_mul, Matrix.mul_assoc, ← Matrix.transpose_mul, h'.qi]`. Apply the tactic sequence `ext i (j | j) <;> simp [Matrix.mul_apply, Matrix.one_apply]`. Establish `h1 : ∀ u ∈ X.L, (1 : Matrix (Fin n) (Fin n) E) *ᵥ u ∈ X.L` using `fun u hu => by rwa [Matrix.one_mulVec]`. Take `⟨C0, c0, f0⟩` from `h'.msk 0 1 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ε, Ma, e, p, q, hMa, hco, hp, hq, he, T, hT, hev⟩` from `exists_modelS hB hX hW hM hM₁ (κ := Fin n) (by simp [hH'.rank]; ring) (fun z i => w z i (.inr 1)) (fun z => DR (cA σ) (incM F X.J) (w z)) (fun z => (w z).submatrix id .inl) ⟨fun z z' => by ext; simp, fun c z => by ext; simp⟩ ⟨fun z z' => by ext; simp only [map_add, DR, Pi.add_app …`. Establish `g'` using `h'.gram`. Rewrite `g'` using `[Int.cast_neg, Int.cast_one]`. Rewrite using `[hTens_fr _ _ (Matrix.one_mul 1) h'.pq, g', Matrix.transpose_one, Matrix.one_mul (incM F X.J), Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one, splitR _ hc (fun i j => by simpa using inc_herm (F := F) (η := 1) (J := X.J) (fun i j => by simp [hX.herm]) i j)]`. Simplify using `only [hw, incM_one'])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use the proof step `(fun x => by`. Simplify using `only [hw, w_inc]`. Generalize the expression as in `(1 : Matrix (Fin n) (Fin n) E) * x * Q'ᵀ = y`. Conclude with `⟨⟨fun i => y i (.inr 1), rfl⟩, ⟨_, DR_inc X.J y⟩, y.submatrix id .inl, rfl⟩)`. Use `1 H'.ι (iso0 n H') (fun z => by`.
+Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Supply the required witnesses or components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Simplify using `only [incM_one', Matrix.one_mul, hi]`. Conclude with `⟨by ext; simp, by ext; simp⟩)`. Use the proof step `(by`. Introduce and unpack `u ⟨y, rfl⟩`. Simplify using `only [hw, w_vec, h'.qx]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨by ext; simp [Matrix.vecMulVec_apply], by ext; simp [Matrix.vecMulVec_apply]⟩)`. Use the proof step `(fun v γ hγ => ⟨lat_map (X₁ := X) (W₁ := W₁) h1 h'.low hγ, _, lat_map h1 c0 hγ, by`. Simplify using `only [hw, w_msk (m := 1) (show incM F (1 : Matrix (Fin n) (Fin n) E) * incM F 1 = 1 * incM F 1 by`. Rewrite using `[incM_one', Matrix.one_mul]) f0]`. Generalize the expression as in `incM F (1 : Matrix (Fin n) (Fin n) E) * γ * (incM F Q')ᵀ = y`.
+Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `ext`. Simplify using `[mask]`. Use `ext`. Simplify using `[mask]`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `ext`. Simplify using `[DR, mask]⟩)`. Use `⟨_, inferInstance, ε, Ma, e, T, hMa, he, fun z => ?_, fun y => ⟨q (Matrix.vecMulVec y (incV F H'.x)), ?_⟩, fun y => ⟨p (Matrix.vecMulVec y (incV F H'.y)), ?_⟩, hT, hev⟩` and prove the remaining obligations. Rewrite using `[hco, hp _ (by ext; simp [hi]), hq _ (by ext; simp [hi, DR]), show (w (z * (incM F H'.ι)ᵀ)).submatrix id Sum.inl = z by ext; simp [hi]]`. Establish `e1 : w (Matrix.vecMulVec y (incV F H'.x)) = Matrix.vecMulVec y (Pi.single (.inr 0) 1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw, w_vec, h'.qx, incM_one', Matrix.one_mulVec]`. Rewrite using `[hco, hp _ (by ext; simp [e1, Matrix.vecMulVec_apply]), show (w (Matrix.vecMulVec y (incV F H'.x))).submatrix id Sum.inl = 0 by ext; simp [e1, Matrix.vecMulVec_apply], map_zero]`. Conclude with `Prod.ext (glue_zero ε) rfl`. Establish `e1 : w (Matrix.vecMulVec y (incV F H'.y)) = Matrix.vecMulVec y (Pi.single (.inr 1) 1)`. Rewrite using `[hw, w_vec, h'.qy, incM_one', Matrix.one_mulVec]`.
-
-Rewrite using `[hco, hq _ (by ext; simp [e1, DR, Matrix.vecMulVec_apply]), show (w (Matrix.vecMulVec y (incV F H'.y))).submatrix id Sum.inl = 0 by ext; simp [e1, Matrix.vecMulVec_apply], map_zero]`. Conclude with `Prod.ext rfl (glue_zero ε)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_model0 : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d d₁ r s r' s' i₀ i₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (M : Model σ X W)

@@ -19,14 +19,14 @@ def physM (ε : Fin n → Bool) (k : Matrix (Fin n) (Fin n) ℂ) :
   fun x y => k x.1.1 y.1.1 * star (k x.1.2 y.1.2)
 
 /- English proof (translation)
-Simplify using `[physM, adMat, x.2, y.2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem physM_eq_adMat (k : Matrix (Fin n) (Fin n) ℂ) (x y : {x : Fin n × Fin n // IsPhys ε x}) :
     physM ε k x y = adMat ε k x.1 y.1 := by
   simp [physM, adMat, x.2, y.2]
 
 /- English proof (translation)
-Use extensionality with `x y`. Rewrite using `[physM_eq_adMat, adMat_mul ha hb, Matrix.mul_apply, Matrix.mul_apply, ← Fintype.sum_subtype_add_sum_subtype (IsPhys ε)]`. Establish `h0 : ∑ z : {z : Fin n × Fin n // ¬ IsPhys ε z}, adMat ε a x.1 z * adMat ε b z y.1 = 0` using `Finset.sum_eq_zero fun z _ => by simp [adMat, x.2, z.2]`. Rewrite using `[h0, add_zero]`. Simplify using `only [physM_eq_adMat]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem physM_mul {a b : Matrix (Fin n) (Fin n) ℂ} (ha : a ∈ Kset ε) (hb : b ∈ Kset ε) :
     physM ε (a * b) = physM ε a * physM ε b := by
@@ -39,9 +39,9 @@ theorem physM_mul {a b : Matrix (Fin n) (Fin n) ℂ} (ha : a ∈ Kset ε) (hb : 
   simp only [physM_eq_adMat]
 
 /- English proof (translation)
-Use extensionality with `x y`. Rewrite using `[physM_eq_adMat, adMat_one]`. Distinguish the cases in `h : x = y`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `h' : x.1 ≠ y.1` using `fun e => h (Subtype.ext e)`. Simplify using `[h, h']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem physM_one : physM ε (1 : Matrix (Fin n) (Fin n) ℂ) = 1 := by
   ext x y
@@ -52,18 +52,18 @@ theorem physM_one : physM ε (1 : Matrix (Fin n) (Fin n) ℂ) = 1 := by
     simp [h, h']
 
 /- English proof (translation)
-Unfold `physDet`. Use `congr 1`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem physDet_eq (k : Matrix (Fin n) (Fin n) ℂ) : physDet ε k = (1 - physM ε k).det := by
   unfold physDet
   congr 1
 
 /- English proof (translation)
-Establish `ha : toMK k'⁻¹ ∈ Kset ε` using `(k'⁻¹).2`. Establish `hb : toMK k ∈ Kset ε` using `k.2`. Establish `hc : toMK k' ∈ Kset ε` using `k'.2`. Establish `hab : toMK k'⁻¹ * toMK k ∈ Kset ε` using `(k'⁻¹ * k).2`. Establish `hac : physM ε (toMK k'⁻¹) * physM ε (toMK k') = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← physM_mul ha hc, show toMK k'⁻¹ * toMK k' = toMK (k'⁻¹ * k') from rfl, inv_mul_cancel]`. Conclude with `physM_one`. Rewrite using `[physDet_eq, physDet_eq, show toMK (k'⁻¹ * k * k') = toMK k'⁻¹ * toMK k * toMK k' from rfl, physM_mul hab hc, physM_mul ha hb]`. Establish `e : 1 - physM ε (toMK k'⁻¹) * physM ε (toMK k) * physM ε (toMK k') = physM ε (toMK k'⁻¹) * (1 - physM ε (toMK k)) * physM ε (toMK k')`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hac]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, det_mul, det_mul, mul_comm (det (physM ε (toMK k'⁻¹))), mul_assoc, ← det_mul, hac, det_one, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem physDet_conj (k k' : KG ε) : physDet ε (toMK (k'⁻¹ * k * k')) = physDet ε (toMK k) := by
   have ha : toMK k'⁻¹ ∈ Kset ε := (k'⁻¹).2
@@ -81,9 +81,9 @@ theorem physDet_conj (k k' : KG ε) : physDet ε (toMK (k'⁻¹ * k * k')) = phy
   rw [e, det_mul, det_mul, mul_comm (det (physM ε (toMK k'⁻¹))), mul_assoc, ← det_mul, hac, det_one, mul_one]
 
 /- English proof (translation)
-Establish `hmul : ∀ a b : KG ε, (T (toMK (a * b)) : W →ₗ[ℂ] W) = (T (toMK a) : W →ₗ[ℂ] W) * (T (toMK b))`. Introduce `a b`. Rewrite using `[show toMK (a * b) = toMK a * toMK b from rfl, hT.1.2 _ a.2 _ b.2]`. Both sides reduce to the same expression. Establish `h1 : (T (toMK (1 : KG ε)) : W →ₗ[ℂ] W) = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[show toMK (1 : KG ε) = 1 from rfl, hT.1.1]`. Both sides reduce to the same expression. Unfold `trK`. Rewrite using `[hmul, hmul, LinearMap.trace_mul_comm, ← mul_assoc, ← hmul k' k'⁻¹, mul_inv_cancel, h1, one_mul]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem trK_conj {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDimensional ℂ W]
     (T : Matrix (Fin n) (Fin n) ℂ → (W →L[ℂ] W)) (hT : Formalism.MainNotions.S.IsURepOn (Formalism.REAL.Kset ε) T) (k k' : KG ε) :
@@ -103,7 +103,7 @@ end GlobalTheory.PsCo.PcEF.PhysicalMatrixDeterminant
 namespace GlobalTheory.PsCo.PcEF
 
 /- English proof (translation)
-Introduce `n ε k k'`. Use `⟨PhysicalMatrixDeterminant.physDet_conj k k', ?_⟩` and prove the remaining obligations. Introduce `W _ _ _ T hT`. Conclude with `PhysicalMatrixDeterminant.trK_conj T hT k k'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem adjointDetTrace_classFunction : ClassFn := by
   intro n ε k k'

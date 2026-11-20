@@ -15,9 +15,9 @@ namespace GlobalTheory.JointHarm.Sph
 variable {n : ℕ} {ε : Fin n → Bool} {μ : Fin n → ℝ}
 
 /- English proof (translation)
-Establish `ha : AnalyticOnNhd ℂ f Set.univ` using `hf.differentiableOn.analyticOnNhd isOpen_univ`. Use `ha.eqOn_zero_of_preconnected_of_frequently_eq_zero isPreconnected_univ (Set.mem_univ 0) ?_ (Set.mem_univ z)` and prove the remaining obligations. Establish `ht : Filter.Tendsto (fun t : ℝ => (t : ℂ)) (nhdsWithin 0 {0}ᶜ) (nhdsWithin 0 {0}ᶜ)`. Use `tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within _ ?_ ?_` and prove the remaining obligations. Use `Complex.continuous_ofReal.tendsto 0` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `using this.mono_left nhdsWithin_le_nhds`. Use `filter_upwards [self_mem_nhdsWithin] with t ht`. Simplify using `using ht`. Conclude with `ht.frequently (Filter.Eventually.of_forall h).frequently`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem entire_eq_zero {f : ℂ → ℂ} (hf : Differentiable ℂ f) (h : ∀ t : ℝ, f t = 0) (z : ℂ) : f z = 0 := by
   have ha : AnalyticOnNhd ℂ f Set.univ := hf.differentiableOn.analyticOnNhd isOpen_univ
@@ -32,7 +32,7 @@ theorem entire_eq_zero {f : ℂ → ℂ} (hf : Differentiable ℂ f) (h : ∀ t 
   exact ht.frequently (Filter.Eventually.of_forall h).frequently
 
 /- English proof (translation)
-Use `⟨?_, by simp [Formalism.REAL.Jm, Matrix.diagonal_mul_diagonal, mul_comm]⟩` and prove the remaining obligations. Rewrite using `[Matrix.isUnit_iff_isUnit_det, Matrix.det_diagonal, isUnit_iff_ne_zero, Finset.prod_ne_zero_iff]`. Conclude with `fun a _ => hd a`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem diag_mem {d : Fin n → ℂ} (hd : ∀ a, d a ≠ 0) : Matrix.diagonal d ∈ GlobalTheory.Dec.KC ε := by
   refine ⟨?_, by simp [Formalism.REAL.Jm, Matrix.diagonal_mul_diagonal, mul_comm]⟩
@@ -40,14 +40,14 @@ theorem diag_mem {d : Fin n → ℂ} (hd : ∀ a, d a ≠ 0) : Matrix.diagonal d
   exact fun a _ => hd a
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ha.1.mul hb.1, by rw [Matrix.mul_assoc, hb.2, ← Matrix.mul_assoc, ha.2, Matrix.mul_assoc]⟩`.
+Supply the required witnesses or components.
 -/
 theorem mul_mem {a b : Matrix (Fin n) (Fin n) ℂ} (ha : a ∈ GlobalTheory.Dec.KC ε) (hb : b ∈ GlobalTheory.Dec.KC ε) :
     a * b ∈ GlobalTheory.Dec.KC ε :=
   ⟨ha.1.mul hb.1, by rw [Matrix.mul_assoc, hb.2, ← Matrix.mul_assoc, ha.2, Matrix.mul_assoc]⟩
 
 /- English proof (translation)
-Use `⟨by simpa [Matrix.star_eq_conjTranspose] using ha.1.star, ?_⟩` and prove the remaining obligations. Use `congrArg Matrix.conjTranspose ha.2` as an intermediate fact. Simplify using `only [Matrix.conjTranspose_mul, Formalism.REAL.Jm_conjTranspose] at this`. Conclude with `this.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ct_mem {a : Matrix (Fin n) (Fin n) ℂ} (ha : a ∈ GlobalTheory.Dec.KC ε) : aᴴ ∈ GlobalTheory.Dec.KC ε := by
   refine ⟨by simpa [Matrix.star_eq_conjTranspose] using ha.1.star, ?_⟩
@@ -61,7 +61,7 @@ variable {P : Type} [AddCommGroup P] [Module ℂ P] {B : P →ₗ⋆[ℂ] P →�
   {π : Matrix (Fin n) (Fin n) ℂ → Module.End ℂ P}
 
 /- English proof (translation)
-Establish `h1 : Differentiable ℂ fun z => (fun i j => c z i j : Fin n → Fin n → ℂ)` using `differentiable_pi.2 fun i => differentiable_pi.2 fun j => hc i j`. Use `(h.2.2.2.2 x y).comp (s := Set.univ) h1.differentiableOn (fun z _ => hm z)` as an intermediate fact. Conclude with `differentiableOn_univ.1 this`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem diff_curve (h : IsHolRep ε B π) {c : ℂ → Matrix (Fin n) (Fin n) ℂ}
     (hc : ∀ i j, Differentiable ℂ fun z => c z i j) (hm : ∀ z, c z ∈ GlobalTheory.Dec.KC ε) (x y : P) :
@@ -72,15 +72,15 @@ theorem diff_curve (h : IsHolRep ε B π) {c : ℂ → Matrix (Fin n) (Fin n) �
   exact differentiableOn_univ.1 this
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero]`. Apply `h.1` to reduce the goal to its premises. Generalize the expression as in `hw : π (Matrix.diagonal fun a => Complex.exp (s a : ℂ)) x - Complex.exp ((∑ a, μ a * s a : ℝ) : ℂ) • x = w`. Establish `hd` using `diff_curve h (c := fun z => Matrix.diagonal fun a => Complex.exp (z * s a * Complex.I)) (fun i j => by`. Distinguish the cases in `e : i = j`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Substitute `e` using the available equality. Simplify using `only [Matrix.diagonal_apply_eq]`. Use `fun_prop`. Simplify using `only [Matrix.diagonal_apply_ne _ e]`. Use the proof step `fun_prop)`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `(fun z => diag_mem fun a => Complex.exp_ne_zero _) w x`. Establish `h0` using `entire_eq_zero (f := fun z => B w (π (Matrix.diagonal fun a => Complex.exp (z * s a * Complex.I)) x) - Complex.exp (z * ((∑ a, μ a * s a : ℝ) : ℂ) * Complex.I) * B w x) (hd.sub (by fun_prop)) (fun t => by`. Use `hx.2 (fun a => t * s a)` as an intermediate fact. Establish `e : (∑ a, μ a * (t * s a)) = t * ∑ a, μ a * s a`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun a _ => by ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[e]`. Simplify using `only [Complex.ofReal_mul] at this`. Simplify using `only [this, map_smul, smul_eq_mul, sub_self]) (-Complex.I)`. Establish `e : ∀ u : ℂ, -Complex.I * u * Complex.I = u` using `fun u => by`. Take the linear combination `(-u) * Complex.I_mul_I`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [e] at h0`. Use `conv_lhs => enter [2]`. Rewrite using `[← hw]`. Rewrite using `[map_sub, map_smul, smul_eq_mul, h0]`.
+A detailed English derivation is pending.
 -/
 theorem real_torus (h : IsHolRep ε B π) {x : P} (hx : IsBottom ε π μ x) (s : Fin n → ℝ) :
     π (Matrix.diagonal fun a => Complex.exp (s a : ℂ)) x = Complex.exp ((∑ a, μ a * s a : ℝ) : ℂ) • x := by
@@ -110,9 +110,9 @@ theorem real_torus (h : IsHolRep ε B π) {x : P} (hx : IsBottom ε π μ x) (s 
   rw [map_sub, map_smul, smul_eq_mul, h0]
 
 /- English proof (translation)
-Establish `hne : ∀ i, b i i ≠ 0` using `fun i => by rw [hp i]; exact Complex.exp_ne_zero _`. Establish `hu : Matrix.diagonal (fun a => (b a a)⁻¹) * b ∈ GlobalTheory.Dec.KC ε` using `mul_mem (diag_mem fun a => inv_ne_zero (hne a)) hb`. Establish `hlu : IsLoUni (Matrix.diagonal (fun a => (b a a)⁻¹) * b)` using `fun i j => ⟨fun hij => by rw [Matrix.diagonal_mul, hl i j hij, mul_zero], fun hij => by subst hij; rw [Matrix.diagonal_mul, inv_mul_cancel₀ (hne i)]⟩`. Establish `e : b = Matrix.diagonal (fun a => Complex.exp (Real.log (b a a).re : ℝ)) * (Matrix.diagonal (fun a => (b a a)⁻¹) * b)`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[Matrix.diagonal_mul, Matrix.diagonal_mul, ← hp i, mul_inv_cancel_left₀ (hne i)]`. Use `conv_lhs => rw [e]`. Rewrite using `[h.2.2.1 _ (diag_mem fun a => Complex.exp_ne_zero _) _ hu, Module.End.mul_apply, hx.1 _ hu hlu, real_torus h hx]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem borel {b : Matrix (Fin n) (Fin n) ℂ} (hb : b ∈ GlobalTheory.Dec.KC ε) (hl : GlobalTheory.Dec.IsLo b)
     (hp : ∀ i, b i i = Complex.exp (Real.log (b i i).re : ℝ))
@@ -137,9 +137,9 @@ end One
 open scoped ComplexOrder in
 
 /- English proof (translation)
-Take `⟨k, b, hk, hb, hl, hp, rfl⟩` from `GlobalTheory.Dec.IwKC.exists_decomp ε hg`. Establish `hp' : ∀ i, b i i = Complex.exp (Real.log (b i i).re : ℝ)` using `fun i => by`. Use `Complex.pos_iff.1 (hp i)` as an intermediate fact. Rewrite using `[← Complex.ofReal_exp, Real.exp_log this.1]`. Conclude with `Complex.ext rfl (by simpa using this.2.symm)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨star (Complex.exp ((∑ a, μ a * Real.log (b a a).re : ℝ) : ℂ)) * Complex.exp ((∑ a, μ a * Real.log (b a a).re : ℝ) : ℂ), fun P _ _ B π x y h hx hy => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.Dec.IwKC.gram_unitary_mul hk.1, h.2.2.1 _ (ct_mem hb) _ hb, Module.End.mul_apply, ← h.2.2.2.1 _ hb, borel hb hl hp' h hx, borel hb hl hp' h hy]`. Simplify using `only [map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, RingHom.id_apply, starRingEnd_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem gram {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ GlobalTheory.Dec.KC ε) (μ : Fin n → ℝ) :
     ∃ c : ℂ, ∀ (P : Type) [AddCommGroup P] [Module ℂ P] (B : P →ₗ⋆[ℂ] P →ₗ[ℂ] ℂ)
@@ -162,7 +162,7 @@ section Exp
 open scoped Matrix.Norms.Operator
 
 /- English proof (translation)
-Use `⟨Matrix.isUnit_exp _, ?_⟩` and prove the remaining obligations. Establish `: Commute (z • H) (Formalism.REAL.Jm ε)` using `Commute.smul_left hJ z`. Conclude with `this.exp_left.eq`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exp_mem {H : Matrix (Fin n) (Fin n) ℂ} (hJ : H * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * H) (z : ℂ) :
     NormedSpace.exp (z • H) ∈ GlobalTheory.Dec.KC ε := by
@@ -171,7 +171,7 @@ theorem exp_mem {H : Matrix (Fin n) (Fin n) ℂ} (hJ : H * Formalism.REAL.Jm ε 
   exact this.exp_left.eq
 
 /- English proof (translation)
-Establish `h1 : Differentiable ℂ fun z : ℂ => NormedSpace.exp (z • H)` using `fun z => (hasDerivAt_exp_smul_const H z).differentiableAt`. Conclude with `(LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℂ ℂ i j)).differentiable.comp h1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exp_diff (H : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
     Differentiable ℂ fun z : ℂ => NormedSpace.exp (z • H) i j := by
@@ -180,7 +180,7 @@ theorem exp_diff (H : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
   exact (LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℂ ℂ i j)).differentiable.comp h1
 
 /- English proof (translation)
-Rewrite using `[← Matrix.exp_conjTranspose, Matrix.conjTranspose_smul, hH]`. Establish `e : star ((t : ℂ) / 2) = (t : ℂ) / 2` using `by simp`. Rewrite using `[e, ← Matrix.exp_add_of_commute _ _ (Commute.refl _), ← add_smul, add_halves]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exp_gram {H : Matrix (Fin n) (Fin n) ℂ} (hH : Hᴴ = H) (t : ℝ) :
     NormedSpace.exp ((t : ℂ) • H) =
@@ -192,15 +192,13 @@ theorem exp_gram {H : Matrix (Fin n) (Fin n) ℂ} (hH : Hᴴ = H) (t : ℝ) :
 end Exp
 
 /- English proof (translation)
-Introduce `k hk`. Take `⟨Y, ⟨hG, hY⟩, rfl, -⟩` from `Formalism.REAL.compact_exists_log_bounded ε k hk`. Establish `hs : Yᴴ = -Y`. Establish `h1 : (Yᴴ + Y) * Formalism.REAL.Jm ε = 0`. Rewrite using `[Matrix.add_mul, hY]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hG`. Establish `h2` using `congrArg (· * Formalism.REAL.Jm ε) h1`. Simplify using `only [Matrix.mul_assoc, Formalism.REAL.Jm_mul_self, Matrix.mul_one, Matrix.zero_mul] at h2`. Conclude with `eq_neg_of_add_eq_zero_left h2`. Establish `hH : ((-Complex.I) • Y)ᴴ = (-Complex.I) • Y`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.conjTranspose_smul, hs]`. Simplify using the standard rewrite rules. Establish `hJ : ((-Complex.I) • Y) * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * ((-Complex.I) • Y)`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, hY]`. Establish `h0` using `entire_eq_zero (f := fun z => B x (π (NormedSpace.exp (z • (-Complex.I) • Y)) y) * B' x' y' - B x y * B' x' (π' (NormedSpace.exp (z • (-Complex.I) • Y)) y')) (((diff_curve h (exp_diff _) (exp_mem hJ) x y).mul_const _).sub ((diff_curve h' (exp_diff _) (exp_mem hJ) x' y').const_mul …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨c, hc⟩` from `gram (exp_mem hJ ((t : ℂ) / 2)) μ`. Simplify using `only [exp_gram hH t, hc P B π x y h hx hy, hc P' B' π' x' y' h' hx' hy']`. Use the proof step `ring) Complex.I`. Establish `e : Complex.I • (-Complex.I) • Y = Y` using `by rw [smul_smul]; simp`. Simplify using `only [e] at h0`.
-
-Conclude with `sub_eq_zero.1 h0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coeff_eq (n : ℕ) (ε : Fin n → Bool) (μ : Fin n → ℝ) (P : Type) [AddCommGroup P] [Module ℂ P]
     (B : P →ₗ⋆[ℂ] P →ₗ[ℂ] ℂ) (π : Matrix (Fin n) (Fin n) ℂ → Module.End ℂ P) (P' : Type) [AddCommGroup P']

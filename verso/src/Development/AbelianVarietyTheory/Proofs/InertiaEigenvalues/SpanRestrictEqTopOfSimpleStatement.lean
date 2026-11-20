@@ -5,7 +5,7 @@ import Formalism.SharpRestriction.LevelLetterCocycles.QuotientHomNonvanishingBou
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Proof.span_restrict_eq_top_of_simple.span_restrict_eq_top_of_irreducible` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FSpanRestrictEqTopOfSimple.lean&line=62#L62)
 -/

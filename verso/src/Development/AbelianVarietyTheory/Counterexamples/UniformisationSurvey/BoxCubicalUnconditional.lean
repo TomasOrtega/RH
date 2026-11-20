@@ -17,14 +17,14 @@ namespace GlobalTheory.PowerExamples
 variable {S : Scheme.{0}}
 
 /- English proof (translation)
-The claim follows from `p.lim.hom_ext fun ⟨i⟩ => h i`.
+A detailed English derivation is pending.
 -/
 theorem hom_ext {G' G : Over S} [GrpObj G'] [GrpObj G] {j : ℕ} (p : IsPowGrp G' G j) {T : Over S}
     {x y : T ⟶ G'} (h : ∀ i, x ≫ p.pr i = y ≫ p.pr i) : x = y :=
   p.lim.hom_ext fun ⟨i⟩ => h i
 
 /- English proof (translation)
-The claim follows from `hom_ext p fun i => by have := p.hom i rw [Category.assoc, IsMonHom.mul_hom, ← BraidedCategory.braiding_naturality_assoc, IsCommMonObj.mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem comm_of_pow {G' G : Over S} [GrpObj G'] [GrpObj G] [IsCommMonObj G] {j : ℕ}
     (p : IsPowGrp G' G j) : IsCommMonObj G' where
@@ -34,9 +34,9 @@ theorem comm_of_pow {G' G : Over S} [GrpObj G'] [GrpObj G] [IsCommMonObj G] {j :
       IsCommMonObj.mul_comm]
 
 /- English proof (translation)
-Establish `he : ∀ i, (p.lim.conePointUniqueUpToIso q.lim).hom ≫ q.pr i = p.pr i` using `fun i => p.lim.conePointUniqueUpToIso_hom_comp q.lim ⟨i⟩`. Use `⟨p.lim.conePointUniqueUpToIso q.lim, ⟨hom_ext q fun i => ?_, hom_ext q fun i => ?_⟩, he⟩` and prove the remaining obligations. Use `p.hom i` as an intermediate fact. Use `q.hom i erw [Category.assoc, he i, IsMonHom.one_hom, IsMonHom.one_hom]` as an intermediate fact. Use `p.hom i` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `q.hom i erw [Category.assoc, he i, IsMonHom.mul_hom, Category.assoc, IsMonHom.mul_hom (q.pr i), ← Category.assoc, tensorHom_comp_tensorHom, he i]` as an intermediate fact.
+Establish an intermediate fact.
 -/
 theorem pow_unique {G₁ G₂ G : Over S} [GrpObj G₁] [GrpObj G₂] [GrpObj G] {j : ℕ}
     (p : IsPowGrp G₁ G j) (q : IsPowGrp G₂ G j) :

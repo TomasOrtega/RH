@@ -6,11 +6,11 @@ open MvPolynomial GroundTheory.Heights₂.Heights.NumbersDVR GlobalTheory.Compan
 namespace PositivityTheory.HtPt.Teich
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hsub : x - y ≠ 0` using `sub_ne_zero.mpr hne`. Establish `hgeom` using `geom_sum₂_mul x y q`. Rewrite `hgeom` using `[hx, hy]`. Establish `hS : (∑ i ∈ Finset.range q, x ^ i * y ^ (q - 1 - i)) = 1`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hmul : (∑ i ∈ Finset.range q, x ^ i * y ^ (q - 1 - i)) * (x - y) = 1 * (x - y)`. Rewrite using `[hgeom, one_mul]`. Conclude with `mul_right_cancel₀ hsub hmul`. Establish `hres` using `congrArg (IsLocalRing.residue O) hS`. Rewrite `hres` using `[map_sum, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, map_pow, ← h] at hres`. Rewrite `hres` using `[geom_sum₂_self, hq, zero_mul]`. Conclude with `zero_ne_one hres`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_pow_eq_self {O : Type} [CommRing O] [IsDomain O] [IsLocalRing O] (q : ℕ)
     (hq : (q : IsLocalRing.ResidueField O) = 0) {x y : O} (hx : x ^ q = x) (hy : y ^ q = y)
@@ -30,7 +30,7 @@ theorem eq_of_pow_eq_self {O : Type} [CommRing O] [IsDomain O] [IsLocalRing O] (
   exact zero_ne_one hres
 
 /- English proof (translation)
-Rewrite using `[← map_natCast σ, FiniteField.cast_card_eq_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_eq_zero {O : Type} [CommRing O] [IsLocalRing O] {F : Type} [Field F] [Fintype F]
     (σ : F →+* IsLocalRing.ResidueField O) :
@@ -38,15 +38,15 @@ theorem card_eq_zero {O : Type} [CommRing O] [IsLocalRing O] {F : Type} [Field F
   rw [← map_natCast σ, FiniteField.cast_card_eq_zero, map_zero]
 
 /- English proof (translation)
-Establish `hQ1 : 1 < Fintype.card F` using `Fintype.one_lt_card`. Take `⟨m, hm⟩ : ∃ m, Fintype.card F = m + 1` from `⟨Fintype.card F - 1, by omega⟩`. Rewrite `hζ` using `[hm, Nat.add_sub_cancel]`. Use `haveI : NeZero m := ⟨by omega⟩`. Establish `hQres` using `PositivityTheory.HtPt.Teich.card_eq_zero (O := O) σ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfix : ∀ k : ℕ, (ζ ^ k) ^ Fintype.card F = ζ ^ k`. Introduce `k`. Rewrite using `[hm, pow_succ, ← pow_mul, mul_comm k m, pow_mul, hζ.pow_eq_one, one_pow, one_mul]`. Establish `hprim : IsPrimitiveRoot (IsLocalRing.residue O ζ) m`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_pow, hζ.pow_eq_one, map_one]`. Introduce `l hl`. Apply `hζ.dvd_of_pow_eq_one` to reduce the goal to its premises. Apply `PositivityTheory.HtPt.Teich.eq_of_pow_eq_self _ hQres (hfix l) (one_pow _)` to reduce the goal to its premises. Rewrite using `[map_pow, hl, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `ha : a = 0`. Use `⟨0, zero_pow (by omega), ?_⟩` and prove the remaining obligations. Rewrite using `[ha, map_zero, map_zero]`. Establish `hpow` using `FiniteField.pow_card_sub_one_eq_one a ha`. Rewrite `hpow` using `[hm, Nat.add_sub_cancel]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : (σ a) ^ m = 1` using `by rw [← map_pow, hpow, map_one]`. Take `⟨i, -, hi⟩` from `hprim.eq_pow_of_pow_eq_one h1`. Conclude with `⟨ζ ^ i, hfix i, by rw [map_pow, hi]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_lift {O : Type} [CommRing O] [IsDomain O] [IsLocalRing O] {F : Type} [Field F]
     [Fintype F] (ζ : O) (hζ : IsPrimitiveRoot ζ (Fintype.card F - 1))
@@ -77,11 +77,11 @@ theorem exists_lift {O : Type} [CommRing O] [IsDomain O] [IsLocalRing O] {F : Ty
     exact ⟨ζ ^ i, hfix i, by rw [map_pow, hi]⟩
 
 /- English proof (translation)
-Introduce `O _ _ _ F _ _ p _ _ ζ hζ σ`. Establish `hQ : ((Fintype.card F : ℕ) : IsLocalRing.ResidueField O) = 0` using `PositivityTheory.HtPt.Teich.card_eq_zero σ`. Establish `huniq : ∀ {x y : O}, x ^ Fintype.card F = x → y ^ Fintype.card F = y → IsLocalRing.residue O x = IsLocalRing.residue O y → x = y` using `fun hx hy h => PositivityTheory.HtPt.Teich.eq_of_pow_eq_self _ hQ hx hy h`. Establish `hfixχ : ∀ (χ : F →*₀ O) (a : F), χ a ^ Fintype.card F = χ a` using `fun χ a => by`. Rewrite using `[← map_pow, FiniteField.pow_card]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `choose L hL hLres using PositivityTheory.HtPt.Teich.exists_lift ζ hζ σ`. Set `χ : F →*₀ O` to `{ toFun := L map_zero' := huniq (hL 0) (zero_pow Fintype.card_ne_zero) (by rw [hLres, map_zero, map_zero]) map_one' := huniq (hL 1) (one_pow _) (by rw [hLres, map_one, map_one]) map_mul' := fun a b => huniq (hL (a * b)) (by rw [mul_pow, hL a, hL b]) (by rw [hLres, map_mul, map_mu …`. Use `⟨χ, hLres, fun χ' hχ' => ?_⟩` and prove the remaining obligations. Conclude with `MonoidWithZeroHom.ext fun a => huniq (hfixχ χ' a) (hL a) ((hχ' a).trans (hLres a).symm)`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `σ' χ χ' hσ' hχ hχ' a`. Use `huniq (hfixχ χ' a) (by rw [← pow_mul, mul_comm p, pow_mul, hfixχ χ a]) ?_` and prove the remaining obligations. Rewrite using `[hχ', hσ', map_pow, hχ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glue_teich : ∀ (O : Type) [CommRing O] [IsDomain O] [IsLocalRing O] (F : Type) [Field F] [Fintype F] (p : ℕ) [Fact p.Prime] [CharP F p] (ζ : O), IsPrimitiveRoot ζ (Fintype.card F - 1) → ∀ σ : F →+* IsLocalRing.ResidueField O, (∃! χ : F →*₀ O, ∀ a, IsLocalRing.residue O (χ a) = σ a) ∧ ∀ (σ' : F →+* IsLocalRing.ResidueField O) (χ χ' : F →*₀ O), (∀ a, σ' a = σ a ^ p) → (∀ a, IsLocalRing.residue O (χ a) = σ a) → (∀ a, IsLocalRing.residue O (χ' a) = σ' a) → ∀ a, χ' a = χ a ^ p := by
   intro O _ _ _ F _ _ p _ _ ζ hζ σ

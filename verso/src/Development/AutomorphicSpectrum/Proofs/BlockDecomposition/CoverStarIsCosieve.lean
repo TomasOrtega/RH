@@ -11,7 +11,7 @@ universe w
 namespace GlobalTheory.CompanionTheory.OmGlob
 
 /- English proof (translation)
-Introduce `_ _ φ h` and use `Site.inU_hom φ.hom h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem vk_cosieve {K : Type} [CommRing K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) (U : Cov q) (a : ℕ) (α : U.ι) :
     Cosieve (Vk q U a α) :=

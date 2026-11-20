@@ -7,15 +7,13 @@ namespace PositivityTheory.SiegelWeilFormula.MOne
 open PositivityTheory.PfSWUS.Loc
 
 /- English proof (translation)
-Use `choose s hs using ha`. Set `e : A → R ⧸ lev ϖ 1` to `fun y => Ideal.Quotient.mk (lev ϖ 1) (φ (s y))`. Establish `hinj : Function.Injective e`. Introduce `y y' h`. Establish `h'` using `Ideal.Quotient.eq.mp h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hs y, ← hs y']`. Conclude with `(hker _ _).mpr h'`. Establish `himg : e '' {y | PA y} = Ideal.Quotient.mk (lev ϖ 1) '' {x | PR x}`. Use extensionality with `c`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨y, hy, rfl⟩`. Use `⟨φ (s y), ?_, rfl⟩` and prove the remaining obligations. Establish `hy' : PA (a (s y))`. Rewrite using `[hs y]`. Conclude with `hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hP _).mp hy'`. Introduce and unpack `⟨x, hx, rfl⟩`. Take `⟨w, rfl⟩` from `hφ x`. Use `⟨a w, (hP w).mpr hx, ?_⟩` and prove the remaining obligations. Conclude with `Ideal.Quotient.eq.mpr ((hker _ _).mp (hs (a w)))`.
-
-Rewrite using `[← himg, Nat.card_image_of_injective hinj]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem card_bridge {W A R : Type} [CommRing R] (ϖ : R) (a : W → A) (ha : Function.Surjective a) (φ : W → R)
     (hφ : Function.Surjective φ) (hker : ∀ w w', a w = a w' ↔ φ w - φ w' ∈ lev ϖ 1) (PA : A → Prop) (PR : R → Prop)
@@ -46,15 +44,15 @@ theorem card_bridge {W A R : Type} [CommRing R] (ϖ : R) (a : W → A) (ha : Fun
   rfl
 
 /- English proof (translation)
-Unfold `solCount`. Establish `hinj : Function.Injective (fun y : Matrix (Fin 1) (Fin 1) (R ⧸ lev ϖ 1) => y 0 0)`. Introduce `y y' h`. Use extensionality with `a b`. Take `rfl : a = 0` from `Subsingleton.elim _ _`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Take `rfl : b = 0` from `Subsingleton.elim _ _`. Conclude with `h`. Rewrite using `[← Nat.card_image_of_injective hinj, Set.image_image]`. Use `congrArg (fun s : Set (R ⧸ lev ϖ 1) => Nat.card s) ?_` and prove the remaining obligations. Use extensionality with `c`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨X, hX, rfl⟩`. Use `⟨X 0 0, ?_, rfl⟩` and prove the remaining obligations. Establish `h00` using `congrFun (congrFun hX 0) 0`. Simplify `h00` using `[red, cT, Matrix.mul_apply]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨x, hx, rfl⟩`. Use `⟨Matrix.of fun _ _ => x, ?_, rfl⟩` and prove the remaining obligations. Simplify using `only [Set.mem_ofPred_eq]`. Use extensionality with `a b`. Take `rfl : a = 0` from `Subsingleton.elim _ _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : b = 0` from `Subsingleton.elim _ _`. Simplify `hx` using `[red, cT, Matrix.mul_apply]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem solCount_one_one {R : Type} [CommRing R] (σ : R →+* R) (ϖ : R) (j t : R) :
     solCount σ ϖ (Matrix.of fun _ _ => j : Matrix (Fin 1) (Fin 1) R) (Matrix.of fun _ _ => t : Matrix (Fin 1) (Fin 1) R) 1 =

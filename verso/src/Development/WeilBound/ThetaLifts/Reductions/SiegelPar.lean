@@ -33,7 +33,7 @@ structure IsTorus (a : (Fin r → ℝ) → GAd σ J) : Prop where
     (matHom _ σ J (a t)).1 *ᵥ incV F z = incV F z
 
 /- English proof (translation)
-Take `⟨a, h1, h2, h3, h4⟩` from `exists_torus h hJ hW`. Conclude with `⟨a, ⟨h1, h2, h3, fun t => (h4 t).1, fun t => (h4 t).2.1, fun t => (h4 t).2.2⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isTorus (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) :
     ∃ a, IsTorus σ J X Y a := by
@@ -41,13 +41,13 @@ theorem exists_isTorus (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFra
   exact ⟨a, ⟨h1, h2, h3, fun t => (h4 t).1, fun t => (h4 t).2.1, fun t => (h4 t).2.2⟩⟩
 
 /- English proof (translation)
-The claim follows from `mul_mem_minimal_parabolic hp hq`.
+A detailed English derivation is pending.
 -/
 theorem mul_mem_minPar {p q : GAd σ J} (hp : p ∈ minPar σ J X) (hq : q ∈ minPar σ J X) : p * q ∈ minPar σ J X :=
   mul_mem_minimal_parabolic hp hq
 
 /- English proof (translation)
-The claim follows from `inv_mem_minimal_parabolic h hJ hW hp`.
+A detailed English derivation is pending.
 -/
 theorem inv_mem_minPar (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) {p : GAd σ J}
     (hp : p ∈ minPar σ J X) : p⁻¹ ∈ minPar σ J X :=
@@ -62,19 +62,19 @@ def minParSub (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X
   inv_mem' := inv_mem_minPar h hJ hW
 
 /- English proof (translation)
-The claim follows from `isClosed_minimal_parabolic h hJ hW`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_minPar (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) :
     IsClosed (minPar σ J X) :=
   isClosed_minimal_parabolic h hJ hW
 
 /- English proof (translation)
-Introduce `_ ⟨B, hB, e, _⟩` and use `⟨B, hB, e⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem minParOne_subset : minParOne σ J X ⊆ minPar σ J X := fun _ ⟨B, hB, e, _⟩ => ⟨B, hB, e⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, Matrix.blockTriangular_diagonal _, ha.onX t⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsTorus.mem {a : (Fin r → ℝ) → GAd σ J} (ha : IsTorus σ J X Y a) (t : Fin r → ℝ) : a t ∈ minPar σ J X :=
   ⟨_, Matrix.blockTriangular_diagonal _, ha.onX t⟩
@@ -84,7 +84,7 @@ def IsTorus.sub {a : (Fin r → ℝ) → GAd σ J} (ha : IsTorus σ J X Y a) (h 
   ⟨a t, ha.mem t⟩
 
 /- English proof (translation)
-The claim follows from `exists_torus_section h hJ hW (minParSub X h hJ hW) (fun _ => Iff.rfl) ha.add ha.onX (ha.sub h hJ hW) (fun _ => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem exists_tau (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) {a : (Fin r → ℝ) → GAd σ J}
     (ha : IsTorus σ J X Y a) :
@@ -94,7 +94,7 @@ theorem exists_tau (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame �
   exists_torus_section h hJ hW (minParSub X h hJ hW) (fun _ => Iff.rfl) ha.add ha.onX (ha.sub h hJ hW) (fun _ => rfl)
 
 /- English proof (translation)
-The claim follows from `PMod.map_mul_torus_of h hJ hW (minParSub X h hJ hW) (isClosed_minPar h hJ hW) (fun _ hp => hp) (fun _ hp => hp) ha.add ha.onX ha.onY ha.onV ha.mem ν s`.
+A detailed English derivation is pending.
 -/
 theorem map_mul_torus (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) {a : (Fin r → ℝ) → GAd σ J}
     (ha : IsTorus σ J X Y a) (ν : Measure (minParSub X h hJ hW)) [ν.IsHaarMeasure] (s : Fin r → ℝ) :
@@ -103,7 +103,7 @@ theorem map_mul_torus (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFram
     ha.add ha.onX ha.onY ha.onV ha.mem ν s
 
 /- English proof (translation)
-The claim follows from `commute_of_good_position h hJ hW (ha.tor t).1 (ha.onX t) (ha.onY t) (ha.onV t) hK hG hm hmK`.
+A detailed English derivation is pending.
 -/
 theorem commute_of_goodPosition (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y)
     {a : (Fin r → ℝ) → GAd σ J} (ha : IsTorus σ J X Y a) {K : Subgroup (GAd σ J)} (hK : IsCompact (K : Set (GAd σ J)))

@@ -13,13 +13,13 @@ namespace PositivityTheory.ThKW
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-The claim follows from `LatB.exists_w hB.cm hB.unram`.
+A detailed English derivation is pending.
 -/
 theorem exists_integral_trace_one (σ : E →ₐ[F] E) (B : Base F E) (hB : B.IsGood σ) : ∃ w : 𝓞 E, w + sgOF σ w = 1 :=
   LatB.exists_w hB.cm hB.unram
 
 /- English proof (translation)
-Use `haveI := hB.galois`. Conclude with `LatB.exists_goodNorm hB.cm hB.unram`.
+A detailed English derivation is pending.
 -/
 theorem exists_good_norm_character (σ : E →ₐ[F] E) (B : Base F E) (hB : B.IsGood σ) : ∃ lam : ℕ →* ℂ, GoodNorm (sgOF σ) lam ∧
     ∀ n : ℕ, n ≠ 0 → (∀ q : ℕ, q.Prime → InertQF σ q → ¬ q ∣ n) → lam n = (Real.sqrt n : ℂ) := by
@@ -27,7 +27,7 @@ theorem exists_good_norm_character (σ : E →ₐ[F] E) (B : Base F E) (hB : B.I
   exact LatB.exists_goodNorm hB.cm hB.unram
 
 /- English proof (translation)
-Introduce `e he a ha`. Take `⟨hf, hfc, hcc⟩` from `LatB.split_parts he`. Conclude with `⟨LatB.idem_smul_mem he.1 hf ha, LatB.idem_smul_mem hcc hfc ha⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem lattice_stable_under_idempotents (σ : E →ₐ[F] E) (B : Base F E) (hB : B.IsGood σ) {nS nT : ℕ}
     (Λ : Submodule (𝓞 E) (Matrix (Fin nT) (Fin nS) E)) : ∀ e, IsSplitIdemF σ e → ∀ a ∈ latF F E nS nT Λ,
@@ -37,7 +37,7 @@ theorem lattice_stable_under_idempotents (σ : E →ₐ[F] E) (B : Base F E) (hB
   exact ⟨LatB.idem_smul_mem he.1 hf ha, LatB.idem_smul_mem hcc hfc ha⟩
 
 /- English proof (translation)
-The claim follows from `LatB.idx_main hB.cm hfin`.
+A detailed English derivation is pending.
 -/
 theorem lattice_index_prime_to_inert (σ : E →ₐ[F] E) (B : Base F E) (hB : B.IsGood σ) {nS nT : ℕ}
     (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E)

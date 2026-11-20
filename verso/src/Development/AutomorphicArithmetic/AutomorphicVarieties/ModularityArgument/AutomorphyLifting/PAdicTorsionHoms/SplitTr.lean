@@ -30,22 +30,22 @@ variable {k k' : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarc
   [Field k'] [ValuativeRel k'] [TopologicalSpace k'] [IsNonarchimedeanLocalField k']
 
 /- English proof (translation)
-The claim follows from `IsOpen.preimage (f := Units.map i.symm.toRingHom.toMonoidHom) (Continuous.units_map _ hi') h`.
+A detailed English derivation is pending.
 -/
 private theorem smooth_comp (i : k ≃+* k') (hi' : Continuous i.symm) {χ : kˣ →* ℂˣ} (h : IsSmoothChar χ) :
     IsSmoothChar (χ.comp (Units.map i.symm.toRingHom.toMonoidHom)) :=
   IsOpen.preimage (f := Units.map i.symm.toRingHom.toMonoidHom) (Continuous.units_map _ hi') h
 
 /- English proof (translation)
-Take `⟨s, hS, h1, hU⟩` from `h`. Establish `hρ : HasSupport ρ s` using `hS.of_equiv (IrrGL.equivOf ρ hs hr).symm`. Establish `hg : ∀ g : GL (Fin n) k', GeneralLinearGroup.map i.toRingHom (GeneralLinearGroup.map i.symm.toRingHom g) = g` using `fun g => Units.ext (Matrix.ext fun _ _ => i.apply_symm_apply _)`. Set `φ : Representation.Equiv (ρ.comp (GeneralLinearGroup.map (n` to `Fin n) i.symm.toRingHom)) ρ' := GlobalTheory.LocGL.equivOfBijective ⟨e.toLinearMap, fun g => LinearMap.ext fun x => by`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `e (ρ (GeneralLinearGroup.map i.symm.toRingHom g) x) = ρ' g (e x)`. Rewrite using `[he, hg]⟩ e.bijective`. Establish `h3` using `(GlobalTheory.SuppIne.hasSupport_comp i hi hi' hρ).of_equiv φ`. Use `⟨s.map (GlobalTheory.SuppIne.trGL i hi'), h3.of_equiv (IrrGL.equivOf ρ' hs' hr'), ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨z, hz, rfl⟩` from `Multiset.mem_map.1 hy`. Conclude with `h1 z hz`. Introduce `y hy z hz heq`. Take `⟨y0, hy0, rfl⟩` from `Multiset.mem_map.1 hy`. Take `⟨z0, hz0, rfl⟩` from `Multiset.mem_map.1 hz`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨χ, hχ, rfl⟩` from `GlobalTheory.RoadU.PlainChars.exists_eq_ofChar y0 (h1 y0 hy0)`. Take `⟨ψ, hψ, rfl⟩` from `GlobalTheory.RoadU.PlainChars.exists_eq_ofChar z0 (h1 z0 hz0)`. Rewrite `heq` using `[GlobalTheory.DegOneChar.trGL_ofChar i hi' χ hχ (smooth_comp i hi' hχ), GlobalTheory.DegOneChar.trGL_ofChar i hi' ψ hψ (smooth_comp i hi' hψ), IrrGL.nu, IrrGL.tw_ofChar, IrrGL.ofChar_inj]`. Use `hU _ hy0 _ hz0 ?_` and prove the remaining obligations. Rewrite using `[IrrGL.nu, IrrGL.tw_ofChar, IrrGL.ofChar_inj]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `MonoidHom.ext fun t => ?_` and prove the remaining obligations. Establish `h4` using `DFunLike.congr_fun heq (Units.map i.toRingHom.toMonoidHom t)`. Establish `h5 : Units.map i.symm.toRingHom.toMonoidHom (Units.map i.toRingHom.toMonoidHom t) = t` using `Units.ext (i.symm_apply_apply _)`. Rewrite `h4` using `[MonoidHom.mul_apply, MonoidHom.comp_apply, MonoidHom.comp_apply, h5, GlobalTheory.LocalFieldIso.absPow_map i hi]`. Conclude with `h4`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem plainTor_of_iso (i : k ≃+* k') (hi : Continuous i) (hi' : Continuous i.symm) {n : ℕ} {V W : Type}
     [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
@@ -93,9 +93,7 @@ section Fixed
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
 
 /- English proof (translation)
-Use `haveI : (Valued.v : Valuation (v.adicCompletion F) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Use `haveI : (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Establish `hy' : Valued.v y ≤ 1` using `hy`. Express the relevant statement in the definitionally equal form `Valued.v (i.symm y) ≤ 1`. Rewrite `hy'`, the goal using `[← (ValuativeRel.isEquiv (ValuativeRel.valuation _) Valued.v).le_one_iff_le_one]`.
-
-Conclude with `(GlobalTheory.LocalFieldIso.valuation_map_le_one_iff i.symm hi' y).2 hy'`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem integers_symm {v : HeightOneSpectrum (𝓞 F)} {w : HeightOneSpectrum (𝓞 E)}
     (i : v.adicCompletion F ≃+* w.adicCompletion E) (hi' : Continuous i.symm) {y : w.adicCompletion E}
@@ -110,11 +108,9 @@ private theorem integers_symm {v : HeightOneSpectrum (𝓞 F)} {w : HeightOneSpe
   exact (GlobalTheory.LocalFieldIso.valuation_map_le_one_iff i.symm hi' y).2 hy'
 
 /- English proof (translation)
-Take `⟨x, h0, hx⟩` from `h`. Use `⟨e x, (map_ne_zero_iff e e.injective).2 h0, fun u hu => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `GlobalTheory.AdelicU.mem_GLint_iff.1 hu`. Establish `hm : GeneralLinearGroup.map (n` using `Fin n) i.symm.toRingHom u ∈ GlobalTheory.LFun.KGL v n := by`. Use `GlobalTheory.AdelicU.mem_GLint_iff.2 ⟨fun a b => integers_symm i hi' (h1 a b), fun a b => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← map_inv]`. Conclude with `integers_symm i hi' (h2 a b)`. Establish `hg : GeneralLinearGroup.map i.toRingHom (GeneralLinearGroup.map (n` using `Fin n) i.symm.toRingHom u) = u := Units.ext (Matrix.ext fun _ _ => i.apply_symm_apply _)`. Use `he (GeneralLinearGroup.map (n := Fin n) i.symm.toRingHom u) x` as an intermediate fact. Rewrite `this` using `[hx _ hm, hg]`.
-
-Conclude with `this.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hasFixed_of_iso {v : HeightOneSpectrum (𝓞 F)} {w : HeightOneSpectrum (𝓞 E)}
     (i : v.adicCompletion F ≃+* w.adicCompletion E) (hi' : Continuous i.symm) {n : ℕ} {V W : Type}
@@ -142,15 +138,15 @@ end UpperTheory.V.Z.Win.SplitTorusFixedPoints
 
 open UpperTheory.V.Z.Win.SplitTorusFixedPoints in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ n _ π P hBC v w i hi`. Establish `hi' : Continuous i.symm` using `GlobalTheory.LocalFieldIso.continuous_symm i hi.1`. Establish `hsplit` using `hBC.split v w i hi.1 hi.2`. Use `⟨⟨fun h σ' hσ' => ?_, fun h σ hσ => ?_⟩, fun ⟨B, hB⟩ => ?_⟩` and prove the remaining obligations. Take `⟨σ, hσ⟩` from `UpperTheory.V.Af.RealLocalComponent.exists_comp admissibleReal π v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he⟩` from `hsplit σ σ' hσ hσ'`. Conclude with `plainTor_of_iso i hi.1 hi' _ _ _ _ e he (h σ hσ)`. Take `⟨σ', hσ', -⟩` from `GlobalTheory.CuspRep.LocEx.exists_isLocComp CuspFormAutomorphicBounds.automorphicFormsFiniteGL E n P w`. Take `⟨e, he⟩` from `hsplit σ σ' hσ hσ'`. Use `plainTor_of_iso i.symm hi' hi.1 _ _ _ _ e.symm (fun g x => ?_) (h σ' hσ')` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `e.injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply, he, LinearEquiv.apply_symm_apply]`. Use `congr 2`. Conclude with `(Units.ext (Matrix.ext fun _ _ => (i.apply_symm_apply _).symm) : g = Matrix.GeneralLinearGroup.map i.toRingHom (Matrix.GeneralLinearGroup.map i.symm.toRingHom g))`. Take `⟨σ, hσ⟩` from `UpperTheory.V.Af.RealLocalComponent.exists_comp admissibleReal π v`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨σ', hσ', -⟩` from `GlobalTheory.CuspRep.LocEx.exists_isLocComp CuspFormAutomorphicBounds.automorphicFormsFiniteGL E n P w`. Take `⟨e, he⟩` from `hsplit σ σ' hσ hσ'`. Establish `h1` using `((satLocFree F n v σ).2 _ π.finPart (UpperTheory.V.Af.RealLocalComponent.isotypic π v σ hσ) B).1 hB`. Take `⟨x, hx⟩` from `h1.exists_vec`. Establish `h2 : HasFixed σ.ρ (GlobalTheory.LFun.KGL v n)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨y, hy, hy0⟩` from `(Submodule.ne_bot_iff _).1 h1.1`. Conclude with `⟨y, hy0, fun k hk => GlobalTheory.LGrp.mem_fixed.1 hy k hk⟩`. Take `⟨B', hB'⟩` from `(satLocFree E n w σ').1 (hasFixed_of_iso i hi' e he h2)`. Conclude with `⟨B', (CG.hasSat_mk _ _ _).2 (((satLocFree E n w σ').2 _ P.finPart (isotypic P w σ' hσ') B').2 hB')⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Win.splitTr :
     SplitTr := by

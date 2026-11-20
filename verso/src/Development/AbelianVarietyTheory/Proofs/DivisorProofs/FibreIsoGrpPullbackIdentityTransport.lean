@@ -12,9 +12,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.FibreTransport
 
 /- English proof (translation)
-Substitute `hf` using the available equality. Use `⟨h₂.1.lift φ₁ G₁.hom h₁.1.w, IsGrpPullback.cancel h₂ ?_ ?_, h₂.1.lift_fst _ _ _⟩` and prove the remaining obligations. Rewrite using `[h₂.1.lift_fst, Category.id_comp]`. Conclude with `h₁`. Rewrite using `[h₂.1.lift_snd]`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem exists_compare {S S' : Scheme.{0}} {G : Over S} [GrpObj G] {G₁ G₂ : Over S'} [GrpObj G₁] [GrpObj G₂]
     {f₁ f₂ : S' ⟶ S} {φ₁ : G₁.left ⟶ G.left} {φ₂ : G₂.left ⟶ G.left} (h₁ : IsGrpPullback G₁ G f₁ φ₁)
@@ -26,9 +26,9 @@ theorem exists_compare {S S' : Scheme.{0}} {G : Over S} [GrpObj G] {G₁ G₂ : 
   · rw [h₂.1.lift_snd]; simp
 
 /- English proof (translation)
-Use `haveI : IsIso e.left := inferInstanceAs (IsIso ((Over.forget S).map e))`. Use `⟨IsPullback.of_horiz_isIso ⟨by simp⟩, fun T x y x₀ y₀ hx hy => ?_⟩` and prove the remaining obligations. Set `k : Over.mk (T.hom ≫ 𝟙 S) ⟶ T` to `Over.homMk (𝟙 T.left) (by simp)`. Establish `ex : x₀ = k ≫ x ≫ e` using `Over.OverMorphism.ext (by simp [k, hx])`. Establish `ey : y₀ = k ≫ y ≫ e` using `Over.OverMorphism.ext (by simp [k, hy])`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ex, ey, ← MonObj.comp_mul, ← MonObj.mul_comp]`. Simplify using `[k]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isGrpPullback_of_isIso {S : Scheme.{0}} {G₁ G₂ : Over S} [GrpObj G₁] [GrpObj G₂] (e : G₁ ⟶ G₂)
     [IsMonHom e] [IsIso e] : IsGrpPullback G₁ G₂ (𝟙 S) e.left := by
@@ -41,13 +41,13 @@ theorem isGrpPullback_of_isIso {S : Scheme.{0}} {G₁ G₂ : Over S} [GrpObj G�
   simp [k]
 
 /- English proof (translation)
-Introduce `V V₁ K _ _ _ B _ ρ ev σ f₁ hm hi`. Establish `sp : ∀ t : V₁ →+* K, spMap (t.comp ρ) = spMap t ≫ spMap ρ` using `fun t => by`. Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression. Establish `two : ∀ t : V₁ →+* K, IsGrpPullback ((Over.pullback (spMap t)).obj ((Over.pullback (spMap ρ)).obj B)) B (spMap t ≫ spMap ρ) (pullback.fst ((Over.pullback (spMap ρ)).obj B).hom (spMap t) ≫ pullback.fst B.hom (spMap ρ))` using `fun t => (isGrpPullback_pullback _ (spMap t)).comp (isGrpPullback_pullback B (spMap ρ))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Take `⟨e₀, h₀, w₀⟩` from `exists_compare (isGrpPullback_pullback B (spMap (ev.comp ρ))) (two ev) (sp ev)`. Take `⟨e₁, h₁, w₁⟩` from `exists_compare (two (σ.toRingHom.comp ev)) (isGrpPullback_pullback B (spMap (σ.toRingHom.comp (ev.comp ρ)))) (sp (σ.toRingHom.comp ev)).symm`. Use `⟨e₀ ≫ f₁.left ≫ e₁, ?_, fun T x y hy₁ hy₂ => ?_⟩` and prove the remaining obligations. Use `h₀.comp ((isGrpPullback_of_isIso f₁).comp h₁)` as an intermediate fact. Rewrite `this` using `[Category.id_comp, Category.id_comp]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hx : x = y ≫ e₀`. Use `(two ev).1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, w₀]`. Conclude with `hy₁.symm`. Rewrite using `[Category.assoc, h₀.1.w, Category.comp_id]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy₂.symm`. Rewrite using `[hx, Category.assoc, Category.assoc, Category.assoc, w₁]`.
+A detailed English derivation is pending.
 -/
 theorem transport : ∀ (V V₁ K : Type) [CommRing V] [CommRing V₁] [Field K] (B : Over (Sp V)) [GrpObj B] (ρ : V →+* V₁) (ev : V₁ →+* K) (σ : K ≃+* K) (f₁ : (Over.pullback (spMap ev)).obj ((Over.pullback (spMap ρ)).obj B) ⟶ (Over.pullback (spMap (σ.toRingHom.comp ev))).obj ((Over.pullback (spMap ρ)).obj B)), IsMonHom f₁ → IsIso f₁ → ∃ f : ((Over.pullback (spMap (ev.comp ρ))).obj B).left ⟶ ((Over.pullback (spMap (σ.toRingHom.comp (ev.comp ρ)))).obj B).left, IsGrpPullback ((Over.pullback (spMap (ev.comp ρ))).obj B) ((Over.pullback (spMap (σ.toRingHom.comp (ev.comp ρ)))).obj B) (𝟙 _) f ∧ ∀ (T : Scheme.{0}) (x : T ⟶ ((Over.pullback (spMap ev)).obj ((Over.pullback (spMap ρ)).obj B)).left) (y : T ⟶ ((Over.pullback (spMap (ev.comp ρ))).obj B).left), y ≫ pullback.fst B.hom (spMap (ev.comp ρ)) = x ≫ pullback.fst ((Over.pullback (spMap ρ)).obj B).hom (spMap ev) ≫ pullback.fst B.hom (spMap ρ) → y ≫ pullback.snd B.hom (spMap (ev.comp ρ)) = x ≫ pullback.snd ((Over.pullback (spMap ρ)).obj B).hom (spMap ev) → x ≫ f₁.left ≫ pullback.fst ((Over.pullback (spMap ρ)).obj B).hom (spMap (σ.toRingHom.comp ev)) ≫ pullback.fst B.hom (spMap ρ) = y ≫ f ≫ pullback.fst B.hom (spMap (σ.toRingHom.comp (ev.comp ρ))) := by
   intro V V₁ K _ _ _ B _ ρ ev σ f₁ hm hi

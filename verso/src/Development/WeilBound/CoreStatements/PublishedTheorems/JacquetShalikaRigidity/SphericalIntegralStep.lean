@@ -19,7 +19,7 @@ open Formalism.UG GlobalTheory.CuspRep.CuspidalL2GL GlobalTheory.AutomorphicL2Un
 variable {E : Type} [Field E] [NumberField E] {k : ℕ}
 
 /- English proof (translation)
-Establish `: (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible` using `Valuation.Compatible.ofValuation _`. Conclude with `(ValuativeRel.isEquiv (ValuativeRel.valuation _) Valued.v).le_one_iff_le_one`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem le_one (w : Pl E) (x : w.adicCompletion E) :
     ValuativeRel.valuation (w.adicCompletion E) x ≤ 1 ↔ Valued.v x ≤ 1 := by
@@ -28,16 +28,16 @@ theorem le_one (w : Pl E) (x : w.adicCompletion E) :
   exact (ValuativeRel.isEquiv (ValuativeRel.valuation _) Valued.v).le_one_iff_le_one
 
 /- English proof (translation)
-The claim follows from `(le_one w x).1 ((Valuation.mem_integer_iff _ _).1 h)`.
+A detailed English derivation is pending.
 -/
 theorem mem_Ov (w : Pl E) {x : w.adicCompletion E} (h : x ∈ (ValuativeRel.valuation (w.adicCompletion E)).integer) :
     x ∈ Ov E w :=
   (le_one w x).1 ((Valuation.mem_integer_iff _ _).1 h)
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `(GLnLocal.mem_integralGL_iff _ _).1 hx`. Establish `hi : Function.Injective fun A : Matrix (Fin k) (Fin k) (Ov E w) => A.map (Ov E w).subtype` using `Matrix.map_injective Subtype.val_injective`. Use `⟨⟨Matrix.of fun i j => ⟨_, mem_Ov w (h1 i j)⟩, Matrix.of fun i j => ⟨(x⁻¹ : GL (Fin k) (w.adicCompletion E)).1 i j, mem_Ov w (h2 i j)⟩, hi ?_, hi ?_⟩, Units.ext rfl⟩` and prove the remaining obligations. Simplify using `only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `x.mul_inv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `x.inv_mul`.
+A detailed English derivation is pending.
 -/
 theorem int_KGL (w : Pl E) {x : GL (Fin k) (w.adicCompletion E)}
     (hx : x ∈ GLnLocal.integralGL (w.adicCompletion E) k) : x ∈ KGL w k := by
@@ -51,7 +51,7 @@ theorem int_KGL (w : Pl E) {x : GL (Fin k) (w.adicCompletion E)}
     exact x.inv_mul
 
 /- English proof (translation)
-Break down `h with rfl | h` into its components or cases. Conclude with `map_zero _`. Conclude with `GlobalTheory.LGrp.mem_fixed.1 h.2.1 x (int_KGL w hx)`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem fix {w : Pl E} {B : Multiset ℂˣ} {φ : XB E k} (h : SatFn w B φ) {x : GL (Fin k) (w.adicCompletion E)}
     (hx : x ∈ GLnLocal.integralGL (w.adicCompletion E) k) : Rt E k (fl k w x) φ = φ := by
@@ -62,19 +62,17 @@ theorem fix {w : Pl E} {B : Multiset ℂˣ} {φ : XB E k} (h : SatFn w B φ) {x 
 variable [IsTotallyComplex E]
 
 /- English proof (translation)
-Take `⟨-, -, h3, h4, h5, -⟩` from `hG E k`. Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty`. Use `⟨1, by rw [mul_one], by rw [map_one, hinf], fun w hw => ?_, fun w _ _ => map_one _⟩` and prove the remaining obligations. Break down `hw with hw | hw` into its components or cases.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[map_one, hS w hw]`. Simplify using `at hw`. Consider the case `insert w T hwT ih`. Take `⟨h, hf0, hi, hl, ho⟩` from `ih`. Distinguish the cases in `hwS : w ∈ S`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Use `⟨h, hf0, hi, fun v hv => ?_, fun v hv hv' => ho v hv fun h' => hv' (Finset.mem_insert_of_mem h')⟩` and prove the remaining obligations. Break down `hv with hv | hv` into its components or cases. Conclude with `hl v (Or.inl hv)`. Break down `Finset.mem_insert.1 hv with rfl | hv` into its components or cases. Conclude with `hl v (Or.inl hwS)`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hl v (Or.inr hv)`. Use `⟨h * fl k w (cLoc w κ), ?_, ?_, fun v hv => ?_, fun v hv hv' => ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (fun ψ : XB E k => ψ (g * h)) (hfix w hwS _ (hint w))`. Simplify using `only [Rt_apply] at e`. Rewrite using `[← mul_assoc, e, hf0]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[map_mul, h3, mul_one, hi]`. Rewrite using `[map_mul]`. Distinguish the cases in `hvw : v = w`. Substitute `hvw` using the available equality. Rewrite using `[h4, ho v hwS hwT, one_mul]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite using `[h5 _ _ _ hvw, mul_one]`. Break down `hv with hv | hv` into its components or cases. Conclude with `hl v (Or.inl hv)`. Conclude with `hl v (Or.inr ((Finset.mem_insert.1 hv).resolve_left hvw))`. Establish `hvw : v ≠ w` using `fun e => hv' (e ▸ Finset.mem_insert_self w T)`.
-
-Rewrite using `[map_mul, h5 _ _ _ hvw, mul_one]`. Conclude with `ho v hv fun h' => hv' (Finset.mem_insert_of_mem h')`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step (hG : jumpWindows.G0) (S : Finset (Pl E)) (φ : XB E k) (g κ : GA E k)
     (hfix : ∀ w, w ∉ S → ∀ x ∈ GLnLocal.integralGL (w.adicCompletion E) k, Rt E k (fl k w x) φ = φ)
@@ -119,11 +117,11 @@ theorem step (hG : jumpWindows.G0) (S : Finset (Pl E)) (φ : XB E k) (g κ : GA 
 open jumpWindows.GeneralLinearEntryConvergence in
 
 /- English proof (translation)
-Introduce `g κ hinf hS hint`. Use `choose H hH using step hG S φ g κ hfix hinf hS hint`. Establish `hT : Tendsto H atTop (𝓝 κ)`. Apply the tactic sequence `refine tendsto_gl κ H (tendsto_entry S κ H (fun T => (hH T).2.1) (fun T => (hH T).2.2.1) (fun T => (hH T).2.2.2)) (tendsto_entry S κ⁻¹ (fun T => (H T)⁻¹) (fun T => ?_) (fun T w hw => ?_) (fun T w hw hw' => ?_))`. Rewrite using `[map_inv, map_inv, (hH T).2.1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_inv, map_inv, (hH T).2.2.1 w hw]`. Rewrite using `[map_inv, (hH T).2.2.2 w hw hw', inv_one]`. Establish `hc : Continuous fun x : GA E k => φ (g * x)` using `φ.continuous.comp (continuous_const.mul continuous_id)`. Establish `h1` using `(hc.tendsto κ).comp hT`. Establish `h2 : Tendsto ((fun x : GA E k => φ (g * x)) ∘ H) atTop (𝓝 (φ g))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (fun x : GA E k => φ (g * x)) ∘ H = fun _ => φ g` using `funext fun T => (hH T).1`. Rewrite using `[e]`. Conclude with `tendsto_const_nhds`. Conclude with `tendsto_nhds_unique h1 h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sph (hG : jumpWindows.G0) (S : Finset (Pl E)) (φ : XB E k)
     (hfix : ∀ w, w ∉ S → ∀ x ∈ GLnLocal.integralGL (w.adicCompletion E) k, Rt E k (fl k w x) φ = φ) :
@@ -148,15 +146,15 @@ theorem sph (hG : jumpWindows.G0) (S : Finset (Pl E)) (φ : XB E k)
 end SphericalFunctionIntegral
 
 /- English proof (translation)
-Introduce `hG0 hG5 hC0 hK7 E _ _ _ k ψ hψ S hcond α φ hgood hsat`. Take `⟨-, hrt, -, hreg⟩` from `hG5 E k ψ hψ`. Establish `hfix : ∀ w, w ∉ S → ∀ x ∈ GLnLocal.integralGL (w.adicCompletion E) k, Rt E k (fl k w x) φ = φ` using `fun w hw x hx => SphericalFunctionIntegral.fix (hsat ⟨w, hw⟩) hx`. Establish `hφ` using `SphericalFunctionIntegral.sph hG0 S φ hfix`. Establish `hcont` using `(hreg φ hgood).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hφ, fun g κ hinf hS hint => ?_, fun g hg => ⟨fun g₀ hi hS hIn h0 => ?_, fun w hw => ?_⟩⟩` and prove the remaining obligations. Establish `e : Rt E k κ φ = φ`. Use extensionality with `x`. Simplify using `only [Rt_apply]`. Conclude with `hφ x κ hinf hS hint`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hrt, e]`. Use `hg (jumpWindows.convergence_entries_general_linear hG0 E k S (Wh ψ φ) hcont (fun w hw h hh h0 u => ?_) g g₀ hi hS hIn h0)` and prove the remaining obligations. Take `⟨χ, -, -, hK⟩` from `hK7 E k ψ hψ w (hcond w hw)`. Rewrite using `[hK (α ⟨w, hw⟩) φ hgood (hsat ⟨w, hw⟩) h hh u, h0, zero_mul]`. Take `⟨χ, -, -, hK⟩` from `hK7 E k ψ hψ w (hcond w hw)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g', hg', e, -, -⟩` from `(hC0 E k S).2.2.2.2.2.2 w g`. Establish `h1` using `hK (α ⟨w, hw⟩) φ hgood (hsat ⟨w, hw⟩) g' hg' (cLoc w g)`. Rewrite `h1` using `[← e]`. Rewrite `hg` using `[h1]`. Establish `h2` using `right_ne_zero_of_mul hg`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hA`. Apply `h2` to reduce the goal to its premises. Rewrite using `[sphericalWhittaker, if_neg hA]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spherical_function_of : jumpWindows.G0 → jumpWindows.G5 → C0 → K7 → K8 := by
   intro hG0 hG5 hC0 hK7 E _ _ _ k ψ hψ S hcond α φ hgood hsat

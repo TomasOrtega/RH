@@ -7,11 +7,11 @@ namespace LateralTheory.CohomologicalPurity.ChartCut
 open RingHom in
 
 /- English proof (translation)
-Set `B` to `Localization.Away (algebraMap S (Localization.Away u) v)`. Establish `h2 : ((algebraMap (Localization.Away u) B).comp ((algebraMap S (Localization.Away u)).comp ψ)).IsStandardSmoothOfRelativeDimension n` using `zero_add n ▸ (IsStandardSmoothOfRelativeDimension.algebraMap_isLocalizationAway (algebraMap S (Localization.Away u) v)).comp h`. Establish `hB : IsLocalization.Away (u * v) B` using `inferInstance`. Set `eT : B ≃ₐ[S] T` to `IsLocalization.algEquiv (Submonoid.powers (u * v)) B T`. Establish `h3 : ((algebraMap S B).comp ψ).IsStandardSmoothOfRelativeDimension n`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[IsScalarTower.algebraMap_eq S (Localization.Away u) B, RingHom.comp_assoc]`. Conclude with `h2`. Establish `h4` using `(isStandardSmoothOfRelativeDimension_respectsIso (n := n)).left _ eT.toRingEquiv h3`. Establish `hT : algebraMap S T = (eT.toRingEquiv.toRingHom).comp (algebraMap S B)`. Use extensionality with `x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(eT.commutes x).symm`. Rewrite using `[hT, RingHom.comp_assoc]`. Conclude with `h4`.
+A detailed English derivation is pending.
 -/
 theorem shrink_away {n : ℕ} {R S : Type} [CommRing R] [CommRing S] (ψ : R →+* S) (u v : S)
     (T : Type) [CommRing T] [Algebra S T] [IsLocalization.Away (u * v) T]
@@ -32,19 +32,17 @@ theorem shrink_away {n : ℕ} {R S : Type} [CommRing R] [CommRing S] (ψ : R →
   rw [hT, RingHom.comp_assoc]; exact h4
 
 /- English proof (translation)
-Introduce `e d R A _ _ φ I p hp hIp ⟨h1, h2⟩`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha1, hap⟩ : ∃ a : A, ((algebraMap A (Localization.Away a)).comp φ).IsStandardSmoothOfRelativeDimension (e + d) ∧ a ∉ p := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Apply `hp.ne_top` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_top_iff, ← h1.span_eq_top, Ideal.span_le]`. Introduce `g hg`. Conclude with `hcon g hg`. Establish `hq : (p.map (Ideal.Quotient.mk I)).IsPrime` using `Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by rw [Ideal.mk_ker]; exact hIp)`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc1, hcq⟩ : ∃ c : A ⧸ I, ((algebraMap (A ⧸ I) (Localization.Away c)).comp ((Ideal.Quotient.mk I).comp φ)).IsStandardSmoothOfRelativeDimension e ∧ c ∉ p.map (Ideal.Quotient.mk I) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Apply `hq.ne_top` to reduce the goal to its premises. Rewrite using `[eq_top_iff, ← h2.span_eq_top, Ideal.span_le]`. Introduce `g hg`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hcon g hg`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective c`. Establish `hbp : b ∉ p` using `fun hb => hcq (Ideal.mem_map_of_mem _ hb)`. Use `⟨a * b, fun h => (hp.mem_or_mem h).elim hap hbp, ?_⟩` and prove the remaining obligations. Introduce `A' _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨shrink_away φ a b A' ha1, ?_⟩` and prove the remaining obligations. Establish `hloc : IsLocalization (Algebra.algebraMapSubmonoid (A ⧸ I) (Submonoid.powers (a * b))) (A' ⧸ I.map (algebraMap A A'))` using `inferInstance`. Establish `key : Algebra.algebraMapSubmonoid (A ⧸ I) (Submonoid.powers (a * b)) = Submonoid.powers (Ideal.Quotient.mk I b * Ideal.Quotient.mk I a)`. Rewrite using `[Algebra.algebraMapSubmonoid, Submonoid.map_powers, mul_comm a b, map_mul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: IsLocalization.Away (Ideal.Quotient.mk I b * Ideal.Quotient.mk I a) (A' ⧸ I.map (algebraMap A A'))`. Unfold `IsLocalization.Away`. Rewrite using `[← key]`. Conclude with `hloc`. Establish `hcomp : (Ideal.Quotient.mk (I.map (algebraMap A A'))).comp ((algebraMap A A').comp φ) = (algebraMap (A ⧸ I) (A' ⧸ I.map (algebraMap A A'))).comp ((Ideal.Quotient.mk I).comp φ)`.
-
-Use extensionality with `x`. Both sides reduce to the same expression. Rewrite using `[hcomp]`. Conclude with `shrink_away _ _ (Ideal.Quotient.mk I a) _ hc1`.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LeafShrink_of : LeafShrink := by
   intro e d R A _ _ φ I p hp hIp ⟨h1, h2⟩

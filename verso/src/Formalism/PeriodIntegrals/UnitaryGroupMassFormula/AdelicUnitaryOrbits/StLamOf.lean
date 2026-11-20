@@ -16,9 +16,9 @@ def QuadGen : Prop :=
       ∀ e : E, ∃ p q : F, e = algebraMap F E p + algebraMap F E q * θ
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single i]`. Combine the equalities or inequalities in the displayed calculation. Introduce `j _ hji`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem glue_mul {S : Type} [CommRing S] {k : ℕ} (e : Fin k → S) (hid : ∀ i, e i * e i = e i)
     (hor : ∀ i j, i ≠ j → e i * e j = 0) (X Y : Fin k → S) :
@@ -35,7 +35,7 @@ theorem glue_mul {S : Type} [CommRing S] {k : ℕ} (e : Fin k → S) (hid : ∀ 
     exact absurd (Finset.mem_univ i) h
 
 /- English proof (translation)
-Take the linear combination `(2 * B * q * b - p ^ 2 * b ^ 2 - q ^ 2 * a ^ 2 + q ^ 2 * b ^ 2 * (Θ ^ 2 + D)) * h`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem norm_id {S : Type} [CommRing S] (B p q a b D Θ : S) (h : Θ ^ 2 = D) :
     (B - (p - q * Θ) * (a + b * Θ)) * (B - (p + q * Θ) * (a - b * Θ)) =
@@ -43,42 +43,38 @@ theorem norm_id {S : Type} [CommRing S] (B p q a b D Θ : S) (h : Θ ^ 2 = D) :
   linear_combination (2 * B * q * b - p ^ 2 * b ^ 2 - q ^ 2 * a ^ 2 + q ^ 2 * b ^ 2 * (Θ ^ 2 + D)) * h
 
 /- English proof (translation)
-Take the linear combination `(-q ^ 2) * h`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem norm_one {S : Type} [CommRing S] (p q D Θ : S) (h : Θ ^ 2 = D) :
     (p + q * Θ) * (p - q * Θ) = p ^ 2 - D * q ^ 2 := by
   linear_combination (-q ^ 2) * h
 
 /- English proof (translation)
-Set `p : Fin 4 → R` to `![1, -1, P, -P]`. Set `q : Fin 4 → R` to `![0, 0, Q, -Q]`. Establish `hnorm : ∀ i, p i ^ 2 - D * q i ^ 2 = 1`. Introduce `i`. Apply the tactic sequence `fin_cases i <;> simp [p, q] <;> linear_combination hPQ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Take `⟨f, hf⟩ : ∃ f : Fin 4 → R, ∀ i, f i = (Bt - p i * a + q i * b * D) ^ 2 - D * (q i * a - p i * b) ^ 2` from `⟨_, fun _ => rfl⟩`. Establish `hspan : Ideal.span (Set.range f) = ⊤` using `by set I := Ideal.span (Set.range f) with hI`. Establish `hm : ∀ i, f i ∈ I` using `fun i => Ideal.subset_span ⟨i, rfl⟩`. Establish `e0 : f 0 = (Bt - 1 * a + 0 * b * D) ^ 2 - D * (0 * a - 1 * b) ^ 2` using `(hf 0).trans rfl`. Establish `e1 : f 1 = (Bt - (-1) * a + 0 * b * D) ^ 2 - D * (0 * a - (-1) * b) ^ 2` using `(hf 1).trans rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : f 2 = (Bt - P * a + Q * b * D) ^ 2 - D * (Q * a - P * b) ^ 2` using `(hf 2).trans rfl`. Establish `e3 : f 3 = (Bt - (-P) * a + (-Q) * b * D) ^ 2 - D * ((-Q) * a - (-P) * b) ^ 2` using `(hf 3).trans rfl`. Establish `ha : a ∈ I`. Establish `h : a = (i4 * Bi) * (f 1 - f 0)`. Rewrite using `[e0, e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(-a) * h4 + (-4 * a * i4) * hB`. Rewrite using `[h]`. Conclude with `I.mul_mem_left _ (sub_mem (hm 1) (hm 0))`. Establish `hx : P * a - Q * b * D ∈ I`. Establish `h : P * a - Q * b * D = (i4 * Bi) * (f 3 - f 2)`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2, e3]`. Take the linear combination `(-(P * a - Q * b * D)) * h4 + (-4 * (P * a - Q * b * D) * i4) * hB`. Rewrite using `[h]`. Conclude with `I.mul_mem_left _ (sub_mem (hm 3) (hm 2))`. Establish `hb : b ∈ I`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `h : b = K * (P * a - (P * a - Q * b * D))`. Take the linear combination `(-b) * hK`. Rewrite using `[h]`. Conclude with `I.mul_mem_left _ (sub_mem (I.mul_mem_left _ ha) hx)`. Establish `h1 : (1 : R) = Bi ^ 2 * f 0 + (Bi ^ 2 * (2 * Bt - a)) * a + (Bi ^ 2 * D * b) * b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[e0]`. Take the linear combination `(-(Bt * Bi + 1)) * hB`. Establish `hmem : Bi ^ 2 * f 0 + (Bi ^ 2 * (2 * Bt - a)) * a + (Bi ^ 2 * D * b) * b ∈ I` using `add_mem (add_mem (I.mul_mem_left _ (hm 0)) (I.mul_mem_left _ ha)) (I.mul_mem_left _ hb)`. Rewrite `hmem` using `[← h1]`. Conclude with `(Ideal.eq_top_iff_one _).mpr hmem`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨e, hid, hor, hsum1, hunit⟩` from `hU 4 f hspan`. Establish `hidS : ∀ i, ι (e i) * ι (e i) = ι (e i)` using `fun i => by rw [← map_mul, hid i]`. Establish `horS : ∀ i j, i ≠ j → ι (e i) * ι (e j) = 0` using `fun i j h => by`. Rewrite using `[← map_mul, hor i j h, map_zero]`. Establish `hE1 : ∑ i, ι (e i) = 1` using `by rw [← map_sum, hsum1, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hsl : s (∑ i, ι (e i) * (ι (p i) + ι (q i) * Θ)) = ∑ i, ι (e i) * (ι (p i) - ι (q i) * Θ)`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_add, map_mul, hsι, hsι, hsι, hsΘ]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hn : ∀ i, (ι (p i) + ι (q i) * Θ) * (ι (p i) - ι (q i) * Θ) = 1` using `fun i => by`. Rewrite using `[norm_one _ _ _ _ hΘ, ← map_pow, ← map_pow, ← map_mul, ← map_sub, hnorm i, map_one]`. Use `⟨∑ i, ι (e i) * (ι (p i) + ι (q i) * Θ), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hsl, glue_mul _ hidS horS]`. Simplify using `only [hn, mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hE1`. Rewrite using `[hsl] set w := ι a + ι b * Θ with hw`. Establish `hz : ι Bt - (∑ i, ι (e i) * (ι (p i) - ι (q i) * Θ)) * w = ∑ i, ι (e i) * (ι Bt - (ι (p i) - ι (q i) * Θ) * w)`. Establish `h : ∑ i, ι (e i) * (ι Bt - (ι (p i) - ι (q i) * Θ) * w) = (∑ i, ι (e i)) * ι Bt - (∑ i, ι (e i) * (ι (p i) - ι (q i) * Θ)) * w`. Rewrite using `[Finset.sum_mul, Finset.sum_mul, ← Finset.sum_sub_distrib]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Rewrite using `[h, hE1, one_mul]`. Rewrite using `[hz]`. Establish `hsz : s (∑ i, ι (e i) * (ι Bt - (ι (p i) - ι (q i) * Θ) * w)) = ∑ i, ι (e i) * (ι Bt - (ι (p i) + ι (q i) * Θ) * (ι a - ι b * Θ))`. Rewrite using `[map_sum]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [hw, map_mul, map_sub, map_add, hsι, hsΘ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hprod : (∑ i, ι (e i) * (ι Bt - (ι (p i) - ι (q i) * Θ) * w)) * s (∑ i, ι (e i) * (ι Bt - (ι (p i) - ι (q i) * Θ) * w)) = ι (∑ i, e i * f i)`. Rewrite using `[hsz, glue_mul _ hidS horS, map_sum]`.
-
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hw, norm_id _ _ _ _ _ _ _ hΘ, hf i, map_mul]`. Simplify using `only [map_sub, map_add, map_mul, map_pow]`. Establish `hu` using `hunit.map ι`. Rewrite `hu` using `[← hprod]`.
-
-Conclude with `isUnit_of_mul_isUnit_left hu`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core {R S : Type} [CommRing R] [CommRing S] (ι : R →+* S) (s : S →+* S) (Θ : S) (D Bt P Q a b : R)
     (hΘ : Θ ^ 2 = ι D) (hsΘ : s Θ = -Θ) (hsι : ∀ r, s (ι r) = ι r) (hPQ : P ^ 2 - D * Q ^ 2 = 1)
@@ -172,7 +168,7 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E)
 variable (R : Type) [CommRing R] [Algebra F R]
 
 /- English proof (translation)
-Rewrite using `[Algebra.TensorProduct.algebraMap_apply]`. Simplify using `[sigR]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sigR_algebraMap (r : R) :
     sigR R σ (algebraMap R (R ⊗[F] E) r) = algebraMap R (R ⊗[F] E) r := by
@@ -180,17 +176,17 @@ theorem sigR_algebraMap (r : R) :
   simp [sigR]
 
 /- English proof (translation)
-Simplify using `[sigR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sigR_tmul (r : R) (x : E) : sigR R σ (r ⊗ₜ x) = r ⊗ₜ σ x := by
   simp [sigR]
 
 /- English proof (translation)
-Establish `hidR : ∀ x : R, algebraMap R R x = x` using `fun _ => rfl`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, 0, by simp⟩`. Consider the case `tmul r x`. Take `⟨p, q, rfl⟩` from `hspan x`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨p • r, q • r, ?_⟩` and prove the remaining obligations. Simplify using `only [Algebra.TensorProduct.algebraMap_apply, hidR, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul, TensorProduct.tmul_add]`. Rewrite using `[TensorProduct.smul_tmul, TensorProduct.smul_tmul, Algebra.smul_def, Algebra.smul_def, mul_one]`. Consider the case `add x y hx hy`. Take `⟨a1, b1, rfl⟩` from `hx`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨a2, b2, rfl⟩` from `hy`. Use `⟨a1 + a2, b1 + b2, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_add]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem decomp (θ : E) (hspan : ∀ e : E, ∃ p q : F, e = algebraMap F E p + algebraMap F E q * θ)
     (z : R ⊗[F] E) : ∃ a b : R, z = algebraMap R (R ⊗[F] E) a + algebraMap R (R ⊗[F] E) b * (1 ⊗ₜ θ) := by
@@ -213,17 +209,17 @@ theorem decomp (θ : E) (hspan : ∀ e : E, ∃ p q : F, e = algebraMap F E p + 
 end Tensor
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ σ hfin hfix R _ _ hU t β hβ`. Take `⟨θ, d, hθ, hσθ, hd, hspan⟩` from `hQ F E σ hfin hfix`. Take `⟨a, b, rfl⟩` from `decomp R θ hspan t`. Choose the witnesses or unpack the hypotheses as in `⟨T, hT0, hTd⟩ : ∃ T : F, T ≠ 0 ∧ T ^ 2 - d ≠ 0 := by`. Distinguish the cases in `h1 : d = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Use `⟨2, two_ne_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[h1]`. Evaluate the numerical expressions. Use `⟨1, one_ne_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[one_pow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_ne_zero.mpr (Ne.symm h1)`. Choose the witnesses or unpack the hypotheses as in `⟨P, Q, hPQ, hQ0⟩ : ∃ P Q : F, P ^ 2 - d * Q ^ 2 = 1 ∧ Q ≠ 0 := by`. Use `⟨(T ^ 2 + d) / (T ^ 2 - d), 2 * T / (T ^ 2 - d), ?_, ?_⟩` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Conclude with `div_ne_zero (mul_ne_zero two_ne_zero hT0) hTd`. Establish `hidR : ∀ x : R, algebraMap R R x = x` using `fun _ => rfl`. Establish `hβS : algebraMap F (R ⊗[F] E) β = algebraMap R (R ⊗[F] E) (algebraMap F R β)`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.algebraMap_apply, hidR]`. Rewrite using `[hβS]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `core (algebraMap R (R ⊗[F] E)) (sigR R σ) (1 ⊗ₜ θ) (algebraMap F R d) (algebraMap F R β) (algebraMap F R P) (algebraMap F R Q) a b ?_ ?_ ?_ ?_ (algebraMap F R β⁻¹) (algebraMap F R (Q * d)⁻¹) (algebraMap F R (1 / 4)) ?_ ?_ ?_ hU` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.tmul_pow, one_pow, hθ, Algebra.TensorProduct.algebraMap_apply, hidR, Algebra.algebraMap_eq_smul_one d, Algebra.algebraMap_eq_smul_one d, TensorProduct.smul_tmul]`. Rewrite using `[sigR_tmul, hσθ, TensorProduct.tmul_neg]`. Conclude with `fun r => sigR_algebraMap σ R r`. Rewrite using `[← map_pow, ← map_pow, ← map_mul, ← map_sub, hPQ, map_one]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul, mul_inv_cancel₀ hβ, map_one]`. Rewrite using `[← map_mul, ← map_mul, mul_inv_cancel₀ (mul_ne_zero hQ0 hd), map_one]`. Establish `h4 : (4 : R) = algebraMap F R 4` using `(map_ofNat (algebraMap F R) 4).symm`. Rewrite using `[h4, ← map_mul]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem stLam_of (hQ : QuadGen) : StLam := by
   intro F E _ _ _ _ σ hfin hfix R _ _ hU t β hβ
@@ -267,31 +263,29 @@ end PIW.AdelicOrbitU
 namespace PIW.AdelicOrbitU
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ σ hfin hfix`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_eq_succ hfin`. Use `haveI : CharZero E := charZero_of_injective_algebraMap (algebraMap F E).injective`. Choose the witnesses or unpack the hypotheses as in `⟨e, he⟩ : ∃ e : E, e ∉ (algebraMap F E).range := by`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `push_neg at h`. Establish `hle : Module.finrank F E ≤ 1`. Use `finrank_le_one (1 : E) fun w => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `h w`. Conclude with `⟨c, by rw [← hc, Algebra.algebraMap_eq_smul_one]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `hli : LinearIndependent F ![(1 : E), e]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Distinguish the cases in `ht : t = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Substitute `ht` using the available equality. Rewrite `hst` using `[zero_smul, add_zero, smul_eq_zero]`. Conclude with `⟨hst.resolve_right one_ne_zero, rfl⟩`. It suffices to derive a contradiction. Apply `he` to reduce the goal to its premises.
+It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `RingHom.mem_range.mpr ⟨-s * t⁻¹, ?_⟩` and prove the remaining obligations. Rewrite `hst` using `[Algebra.smul_def, Algebra.smul_def, mul_one]`. Establish `hT : algebraMap F E t ≠ 0` using `(map_ne_zero _).mpr ht`. Establish `h'` using `mul_inv_cancel₀ hT`. Rewrite using `[map_mul, map_neg, map_inv₀]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take the linear combination `(-(algebraMap F E t)⁻¹) * hst + e * h'`. Establish `hcard : Fintype.card (Fin 2) = Module.finrank F E` using `by rw [hfin, Fintype.card_fin]`. Take `⟨Bs, hBs⟩ : ∃ Bs : Module.Basis (Fin 2) F E, ⇑Bs = ![(1 : E), e]` from `⟨basisOfLinearIndependentOfCardEqFinrank hli hcard, coe_basisOfLinearIndependentOfCardEqFinrank hli hcard⟩`. Establish `hspan : ∀ x : E, ∃ c0 c1 : F, x = algebraMap F E c0 + algebraMap F E c1 * e`. Introduce `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨Bs.repr x 0, Bs.repr x 1, ?_⟩` and prove the remaining obligations. Use `nth_rewrite 1 [← Bs.sum_repr x]`. Rewrite using `[Fin.sum_univ_two, hBs]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Algebra.smul_def, mul_one]`. Take `⟨v, u, hsq⟩` from `hspan (e ^ 2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hse : σ e ≠ e` using `fun h => he ((hfix e).mp h)`. Establish `hσsq : σ e ^ 2 = algebraMap F E v + algebraMap F E u * σ e`. Rewrite using `[← map_pow, hsq, map_add, map_mul, AlgHom.commutes, AlgHom.commutes]`. Establish `hsum : σ e = algebraMap F E u - e`. Establish `h0 : (σ e - e) * (σ e + e - algebraMap F E u) = 0`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `hσsq - hsq`. Break down `mul_eq_zero.mp h0 with h | h` into its components or cases. Conclude with `absurd (sub_eq_zero.mp h) hse`. Take the linear combination `h`. Establish `hθsq : (2 * e - algebraMap F E u) ^ 2 = algebraMap F E (4 * v + u ^ 2)`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [map_add, map_mul, map_pow, map_ofNat]`. Take the linear combination `4 * hsq`. Use `⟨2 * e - algebraMap F E u, 4 * v + u ^ 2, hθsq, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_mul, map_ofNat, AlgHom.commutes, hsum]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `hd0`. Rewrite `hθsq` using `[hd0, map_zero]`. Establish `h2 : 2 * e - algebraMap F E u = 0` using `(pow_eq_zero_iff two_ne_zero).mp hθsq`. Apply `hse` to reduce the goal to its premises. Rewrite using `[hsum]`.
+Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `-1 * h2`. Introduce `x`. Take `⟨c0, c1, hx⟩` from `hspan x`. Use `⟨c0 + c1 * u / 2, c1 / 2, ?_⟩` and prove the remaining obligations. Rewrite using `[hx]`.
-
-Simplify using `only [map_add, map_mul, map_div₀, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem quadGen : QuadGen := by
   intro F E _ _ _ _ σ hfin hfix
@@ -360,7 +354,7 @@ theorem quadGen : QuadGen := by
     ring
 
 /- English proof (translation)
-The claim follows from `stLam_of quadGen`.
+A detailed English derivation is pending.
 -/
 theorem stLam : StLam := stLam_of quadGen
 

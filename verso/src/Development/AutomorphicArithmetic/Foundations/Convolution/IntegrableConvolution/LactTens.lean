@@ -19,7 +19,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E ≃ₐ[F] E} {m : ℕ} {D : InfD σ m} {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ k), Function.update_self]`. Use `congr 1`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hi)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem prod_upd (φ : Fin (m + 1) → TI F n) (k : Fin (m + 1)) (x : TI F n)
     (c : Fin (m + 1) → archGroup F n) :
@@ -30,7 +30,7 @@ private theorem prod_upd (φ : Fin (m + 1) → TI F n) (k : Fin (m + 1)) (x : TI
   rw [Function.update_of_ne (Finset.ne_of_mem_erase hi)]
 
 /- English proof (translation)
-Introduce `g`. Establish `h1` using `hx g`. Establish `h2` using `hy g`. Rewrite `h1`, `h2`, the goal using `[prod_upd]`. Simplify using `only [CompactlySupportedContinuousMap.add_apply, CompactlySupportedContinuousMap.smul_apply, smul_eq_mul, h1, h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -48,7 +48,7 @@ private theorem tens_lin {φ : Fin (m + 1) → TI F n} {k : Fin (m + 1)} {x y : 
 end
 
 /- English proof (translation)
-Take `⟨j', hj', h⟩` from `Classical.epsilon_spec (p := fun z : UC K n => ∃ j, IsJ τ j ∧ z = j ((HarishChandra.harishChandraEquiv (n := n)).symm ⟨MvPolynomial.esymm (Fin n) ℂ (i + 1), MvPolynomial.esymm_isSymmetric (Fin n) ℂ (i + 1)⟩ : Subalgebra.center ℂ (HarishChandra.U n))) ⟨_, j, hj, rfl⟩`. Rewrite `h` using `[hu j' hj']`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem zc_eq {K : Type} [Field K] [NumberField K] {n : ℕ} {τ : K →+* ℂ}
     {j : HarishChandra.U n →ₐ[ℂ] UC K n} (hj : IsJ τ j)
@@ -66,27 +66,25 @@ private theorem zc_eq {K : Type} [Field K] [NumberField K] {n : ℕ} {τ : K →
 end UpperTheory.ConvolutionTheory.L1
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ σ m D n τ k hk φ₀ β₀ hs₀ ht₀ i`. Take `⟨⟨jE, hjE, uE⟩, -⟩` from `UpperTheory.ConvolutionTheory.L1.jUnique E n τ`. Take `⟨⟨jF, hjF, uF⟩, -⟩` from `UpperTheory.ConvolutionTheory.L1.jUnique F n (τ.comp (algebraMap F E))`. Establish `key : ∀ u : HarishChandra.U n, ∀ (φ : Fin (m + 1) → TI F n) (β : TI E n), (∀ i, SmoothT (φ i)) → IsTens D φ β → IsTens D (Function.update φ k (lact (jF u) (φ k))) (lact (jE u) β)`. Establish `sm : ∀ (φ : Fin (m + 1) → TI F n) (β : TI E n), (∀ i, SmoothT (φ i)) → IsTens D φ β → SmoothT β` using `fun φ β hs ht => (UpperTheory.ConvolutionTheory.L1.tensSmooth F E σ m D n φ β ht).1 hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `halg : ∀ r : ℂ, ∀ (φ : Fin (m + 1) → TI F n) (β : TI E n), (∀ i, SmoothT (φ i)) → IsTens D φ β → IsTens D (Function.update φ k (lact (jF (algebraMap ℂ _ r)) (φ k))) (lact (jE (algebraMap ℂ _ r)) β)`. Introduce `r φ β hs ht`. Take `⟨-, h1, -, -, hc⟩` from `UpperTheory.ConvolutionTheory.L1.lactLaws E n β (sm φ β hs ht)`. Take `⟨-, h1', -, -, hc'⟩` from `UpperTheory.ConvolutionTheory.L1.lactLaws F n (φ k) (hs k)`. Rewrite using `[AlgHom.commutes, AlgHom.commutes, Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, hc, hc', h1, h1']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `g`. Establish `h` using `ht g`. Rewrite using `[prod_upd, CompactlySupportedContinuousMap.smul_apply, CompactlySupportedContinuousMap.smul_apply, h, ← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ k), smul_eq_mul, smul_eq_mul, mul_assoc]`. Establish `hadd : ∀ a b : HarishChandra.U n, (∀ (φ : Fin (m + 1) → TI F n) (β : TI E n), (∀ i, SmoothT (φ i)) → IsTens D φ β → IsTens D (Function.update φ k (lact (jF a) (φ k))) (lact (jE a) β)) → (∀ (φ : Fin (m + 1) → TI F n) (β : TI E n), (∀ i, SmoothT (φ i)) → IsTens D φ β → IsTens D (Fu …`. Introduce `a b ha hb φ β hs ht`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨-, -, -, hp, -⟩` from `UpperTheory.ConvolutionTheory.L1.lactLaws E n β (sm φ β hs ht)`. Take `⟨-, -, -, hp', -⟩` from `UpperTheory.ConvolutionTheory.L1.lactLaws F n (φ k) (hs k)`. Rewrite using `[map_add, map_add, hp, hp']`. Simplify using `using tens_lin (D := D) 1 1 (ha φ β hs ht) (hb φ β hs ht)`. Establish `hmul : ∀ a b : HarishChandra.U n, (∀ (φ : Fin (m + 1) → TI F n) (β : TI E n), (∀ i, SmoothT (φ i)) → IsTens D φ β → IsTens D (Function.update φ k (lact (jF a) (φ k))) (lact (jE a) β)) → (∀ (φ : Fin (m + 1) → TI F n) (β : TI E n), (∀ i, SmoothT (φ i)) → IsTens D φ β → IsTens D (Fu …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `a b ha hb φ β hs ht`. Take `⟨-, -, hm, -, -⟩` from `UpperTheory.ConvolutionTheory.L1.lactLaws E n β (sm φ β hs ht)`. Take `⟨hsu, -, hm', -, -⟩` from `UpperTheory.ConvolutionTheory.L1.lactLaws F n (φ k) (hs k)`. Establish `hs' : ∀ i, SmoothT (Function.update φ k (lact (jF b) (φ k)) i)`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h : i = k`. Substitute `h` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `hsu _`. Rewrite using `[Function.update_of_ne h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hs i`. Use `ha _ _ hs' (hb φ β hs ht)` as an intermediate fact. Rewrite `this` using `[Function.update_self, Function.update_idem]`. Rewrite using `[map_mul, map_mul, hm, hm']`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `hgen : ∀ (p : Fin n × Fin n) (φ : Fin (m + 1) → TI F n) (β : TI E n), (∀ i, SmoothT (φ i)) → IsTens D φ β → IsTens D (Function.update φ k (lact (jF (HarishChandra.e p)) (φ k))) (lact (jE (HarishChandra.e p)) β)`. Introduce and unpack `⟨a, b⟩ φ β hs ht`. Take `⟨-, -, -, hp, hc⟩` from `UpperTheory.ConvolutionTheory.L1.lactLaws E n β (sm φ β hs ht)`. Take `⟨-, -, -, hp', hc'⟩` from `UpperTheory.ConvolutionTheory.L1.lactLaws F n (φ k) (hs k)`. Establish `form : ∀ {K : Type} [Field K] [NumberField K] (t : K →+* ℂ), (2⁻¹ : ℂ) ⊗ₜ[ℝ] elem t a b 1 - (2⁻¹ * Complex.I) ⊗ₜ[ℝ] elem t a b Complex.I = (2⁻¹ : ℂ) • ((1 : ℂ) ⊗ₜ[ℝ] elem t a b 1) + (-(2⁻¹ * Complex.I)) • ((1 : ℂ) ⊗ₜ[ℝ] elem t a b Complex.I)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `K _ _ t`. Rewrite using `[TensorProduct.smul_tmul', TensorProduct.smul_tmul', smul_eq_mul, smul_eq_mul, mul_one, mul_one, TensorProduct.neg_tmul, sub_eq_add_neg]`. Rewrite using `[hjE a b, hjF a b, form, form, hp, hp', hc, hc, hc', hc']`. Conclude with `tens_lin (D := D) _ _ (UpperTheory.ConvolutionTheory.L1.lactGen F E σ m D n τ k hk φ β hs ht a b 1) (UpperTheory.ConvolutionTheory.L1.lactGen F E σ m D n τ k hk φ β hs ht a b Complex.I)`. Introduce `u`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `HarishChandra.U.induction halg ?_ hmul hadd u` and prove the remaining obligations. Introduce `x`. Rewrite using `[HarishChandra.ι_eq_sum_e]`. Use `Finset.sum_induction _ (fun v => ∀ (φ : Fin (m + 1) → TI F n) (β : TI E n), (∀ i, SmoothT (φ i)) → IsTens D φ β → IsTens D (Function.update φ k (lact (jF v) (φ k))) (lact (jE v) β)) hadd ?_ ?_` and prove the remaining obligations. Simplify using `using halg 0`.
-
-Introduce `p _`. Rewrite using `[Algebra.smul_def]`. Conclude with `hmul _ _ (halg _) (hgen p)`. Rewrite using `[UpperTheory.ConvolutionTheory.L1.zc_eq hjE uE i, UpperTheory.ConvolutionTheory.L1.zc_eq hjF uF i]`. Conclude with `key _ φ₀ β₀ hs₀ ht₀`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.L1.lactTens :
     UpperTheory.ConvolutionTheory.L1.LactTens := by

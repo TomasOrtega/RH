@@ -26,7 +26,7 @@ def Pres (Λ : Submodule (𝓞 E) S.V) (f : Fin n → S.V) (g : Matrix (Fin n) (
   ∀ x, Xi Λ f x → Xi Λ f (g *ᵥ x)
 
 /- English proof (translation)
-Rewrite using `[map_sum]`. Simplify using `only [LinearEquiv.map_smul, hu, Finset.smul_sum, smul_smul, Matrix.mulVec, dotProduct, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by rw [mul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_sum (f : Fin n → S.V) (s : S.V ≃ₗ[E] S.V) (uu : Matrix (Fin n) (Fin n) E)
     (hu : ∀ b, s (f b) = ∑ c, uu c b • f c) (y : Fin n → E) :
@@ -38,24 +38,22 @@ theorem comp_sum (f : Fin n → S.V) (s : S.V ≃ₗ[E] S.V) (uu : Matrix (Fin n
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by rw [mul_comm]
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `using hx`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pres_one (Λ : Submodule (𝓞 E) S.V) (f : Fin n → S.V) : Pres Λ f 1 := by
   intro x hx; simpa using hx
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite using `[← Matrix.mulVec_mulVec]`. Conclude with `hA _ (hB _ hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pres_mul (Λ : Submodule (𝓞 E) S.V) (f : Fin n → S.V) {A B : Matrix (Fin n) (Fin n) E}
     (hA : Pres Λ f A) (hB : Pres Λ f B) : Pres Λ f (A * B) := by
   intro x hx; rw [← Matrix.mulVec_mulVec]; exact hA _ (hB _ hx)
 
 /- English proof (translation)
-Use `⟨fun x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Unfold `Xi at hx ⊢`. Rewrite using `[comp_sum f s uu hu x, ← hs]`. Conclude with `Submodule.mem_map_of_mem hx`. Unfold `Xi at hx ⊢`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[← hs]`. Take `⟨w, hw, hsw⟩` from `Submodule.mem_map.mp hx`. Establish `h1 : s (∑ c, (uu⁻¹ *ᵥ x) c • f c) = s w`. Rewrite using `[← comp_sum f s uu hu, Matrix.mulVec_mulVec, mul_nonsing_inv _ hdet, Matrix.one_mulVec]`. Conclude with `hsw.symm`.
-
-Rewrite using `[s.injective h1]`. Conclude with `hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pres_of_aut (Λ : Submodule (𝓞 E) S.V) (f : Fin n → S.V) (s : S.V ≃ₗ[E] S.V)
     (hs : Formalism.HermitianLatticesTheory.gmap s Λ = Λ) (uu : Matrix (Fin n) (Fin n) E) (hu : ∀ b, s (f b) = ∑ c, uu c b • f c)
@@ -77,45 +75,41 @@ end Gen
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `hyps _ t w F' L U _ _ hN _`. Take `⟨_, _, hL, _, _⟩` from `hN`. Establish `hT : ((Tu D u : ℕ) : D.host.E) ≠ 0`. Use `hyps.2.2.2.1.1.pos` as an intermediate fact. Conclude with `this.ne'` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlat : Submodule.IsLattice D.host.E t.lam` using `(hyps.2.2.2.2.2.1 t.lam t.mem).1.1`. Establish `hf` using `frame_indep F0 hT`. Establish `hLi : L⁻¹ * L = 1` using `nonsing_inv_mul _ (by rw [lo_det hL]; exact isUnit_one)`. Establish `hLL : L * L⁻¹ = 1` using `mul_nonsing_inv _ (by rw [lo_det hL]; exact isUnit_one)`. Establish `key : ∀ a ∈ stabAut D u u' F0 what₂ t F' L, ∃ g : GLR D, Pres t.lam F0.fvec (g : MatR D) ∧ Pres t.lam F0.fvec ((g⁻¹ : GLR D) : MatR D) ∧ (a : MatR D) = L⁻¹ * (g : MatR D).conjTranspose * L`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha`. Proceed by induction on `ha using Subgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨s, ⟨hsF, _⟩, uu, huu, hx⟩` from `hx`. Take `⟨⟨_, hgm⟩, hf1, hf2⟩` from `hsF`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨uu0, huu0, hu0⟩` from `tri_exists F0 s hf1 hf2`. Establish `heq : uu = uu0` using `coef_unique hf (fun b => s (F0.fvec b)) uu uu0 huu hu0`. Substitute `heq` using the available equality. Establish `hdet : IsUnit uu.det` using `by rw [up_det huu0]; exact isUnit_one`. Take `⟨h1, h2⟩` from `pres_of_aut t.lam F0.fvec s hgm uu huu hdet`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Matrix.nonsingInvUnit uu hdet, h1, ?_, hx⟩` and prove the remaining obligations. Rewrite using `[Matrix.coe_units_inv]`. Conclude with `h2`. Consider the case `one`. Use `⟨1, pres_one _ _, by simpa using pres_one t.lam F0.fvec, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using `[hLi]`. Consider the case `mul x y _ _ hx hy`. Take `⟨g1, h11, h12, e1⟩` from `hx`. Take `⟨g2, h21, h22, e2⟩` from `hy`. Use `⟨g2 * g1, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_mul]`. Conclude with `pres_mul _ _ h21 h11`. Rewrite using `[_root_.mul_inv_rev, Units.val_mul]`. Conclude with `pres_mul _ _ h12 h22`. Rewrite using `[Units.val_mul, Units.val_mul, e1, e2, Matrix.conjTranspose_mul]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = L⁻¹ * ((g1 : MatR D).conjTranspose * (g2 : MatR D).conjTranspose) * L := by`. Rewrite using `[hLL, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Consider the case `inv x _ hx`. Take `⟨g, h1, h2, e⟩` from `hx`. Use `⟨g⁻¹, h2, by rw [inv_inv]; exact h1, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.coe_units_inv, e]`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hg : ((g⁻¹ : GLR D) : MatR D).conjTranspose * (g : MatR D).conjTranspose = 1`. Rewrite using `[← Matrix.conjTranspose_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = L⁻¹ * (((g⁻¹ : GLR D) : MatR D).conjTranspose * (g : MatR D).conjTranspose) * L := by`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hLL, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hg, Matrix.mul_one, hLi]`. Take `⟨φ, hφ⟩` from `coord_exists hf`. Take `⟨m1, hm1, hb1⟩` from `lat_fun_bdd t.lam hlat φ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `hmc : ∀ c, ∃ m : ℕ, m ≠ 0 ∧ (m : D.host.E) • F0.fvec c ∈ t.lam` using `fun c => lat_smul_mem t.lam hlat _`. Use `choose mc hmc0 hmcL using hmc`. Use `set m2 : ℕ := ∏ c, mc c with hm2`. Establish `hm20 : m2 ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun c _ => hmc0 c`. Establish `hm2L : ∀ c, (m2 : D.host.E) • F0.fvec c ∈ t.lam`.
+Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `c`. Establish `: (m2 : D.host.E) • F0.fvec c = ((∏ j ∈ Finset.univ.erase c, mc j : ℕ) : D.host.E) • ((mc c : D.host.E) • F0.fvec c)`. Rewrite using `[smul_smul, hm2, ← Finset.mul_prod_erase Finset.univ mc (Finset.mem_univ c)]`. Use `push_cast`. Put the polynomial expressions in normal form.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[this]`. Conclude with `nat_smul_mem _ _ (hmcL c)`. Establish `hcoord : ∀ y : Fin (D.R.rS + 1) → D.host.E, ∀ i, φ i (∑ c, y c • F0.fvec c) = y i`. Introduce `y i`. Simplify using `[map_sum, hφ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Take `⟨mL, hmL, hbL⟩` from `den_mat L`. Take `⟨mL', hmL', hbL'⟩` from `den_mat L⁻¹`. Use `⟨mL' * (m1 * m2) * mL, by positivity, ?_⟩` and prove the remaining obligations. Introduce `a ha i j`. Take `⟨g, hg, _, hag⟩` from `key a ha`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hgb : ∀ i j, IntE (((m1 * m2 : ℕ) : D.host.E) * (g : MatR D) i j)`. Introduce `i j`. Set `x : Fin (D.R.rS + 1) → D.host.E` to `fun k => if k = j then (m2 : D.host.E) else 0`. Establish `hx : Xi t.lam F0.fvec x`. Unfold `Xi`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [x, ite_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Conclude with `hm2L j`. Establish `h1` using `hb1 _ (hg x hx) i`. Rewrite `h1` using `[hcoord]`. Establish `h2 : ((g : MatR D) *ᵥ x) i = (g : MatR D) i j * (m2 : D.host.E)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[x, Matrix.mulVec, dotProduct]`. Rewrite `h1` using `[h2]`. Establish `h3 : ((m1 * m2 : ℕ) : D.host.E) * (g : MatR D) i j = (m1 : D.host.E) * ((g : MatR D) i j * (m2 : D.host.E))` using `by push_cast; ring`. Rewrite using `[h3]`. Conclude with `h1`.
-
-Establish `hgt : ∀ i j, IntE (((m1 * m2 : ℕ) : D.host.E) * (g : MatR D).conjTranspose i j)`. Introduce `i j`. Use `intE_star (hgb j i)` as an intermediate fact. Rewrite `this` using `[star_mul', star_natCast]`. Simplify `this` using `[Matrix.conjTranspose_apply]`.
-
-Establish `h4` using `intE_matmul (intE_matmul hbL' hgt) hbL i j`. Rewrite using `[hag]`. Conclude with `h4`.
+A detailed English derivation is pending.
 -/
 theorem volume_index_b_bounded (D : D7) (u u' : D.what₂.Word)
     (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E))

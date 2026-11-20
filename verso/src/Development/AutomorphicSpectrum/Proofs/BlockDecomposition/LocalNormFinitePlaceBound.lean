@@ -13,13 +13,13 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.GodementH
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ J _ v u δ z c hz hc`. Establish `e2 : ∀ (τ : E →ₐ[F] FvBar F v) (w : Fv F v ⊗[F] E), finEmb F v τ (sigR (Fv F v) σ w) = finEmb F v (τ.comp σ) w`. Introduce `τ w`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul a b => simp [sigR]`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`. Establish `hN` using `congrArg (fun y => absBar F v (finEmb F v (embBar F E v) y)) (GlobalTheory.Doubling.algebraMap_norm_eq hσ (R := Fv F v) δ.1)`. Simplify using `only [map_mul, absBar_mul, e2, AlgHom.commutes, absBar_algebraMap] at hN`. Establish `key : ∀ τ : E →ₐ[F] FvBar F v, absBar F v (finEmb F v τ δ.1) * supBar v τ u ≤ c`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `τ`. Unfold `supBar`. Rewrite using `[NNReal.mul_finset_sup]`. Use `Finset.sup_le fun f _ => ?_` and prove the remaining obligations. Use `le_trans (le_of_eq ?_) ((le_absFin F v τ (z f)).trans (hc f))` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hz f, map_mul, absBar_mul, finEmb_tmul, map_one, one_mul, mul_comm]`. Rewrite using `[GlobalTheory.Doubling.absEv_apply, hN]`. Unfold `locFin`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 theorem absEv_mul_locFin_le : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (J : Type) [Fintype J] (v : Pl F) (u : J → E) (δ : (Fv F v ⊗[F] E)ˣ) (z : J → Fv F v ⊗[F] E) (c : ℝ≥0),
     (∀ f, z f = ((1 : Fv F v) ⊗ₜ[F] u f) * δ.1) → (∀ f, absFin F v (z f) ≤ c) →

@@ -19,7 +19,7 @@ theorem cj_apply {n n' : Type*} (σ : k ≃+* k) (X : Matrix n n' k) (i : n') (j
     cj σ X i j = σ (X j i) := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[cj_apply, Matrix.mul_apply, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cj_mul {n n' n'' : Type*} [Fintype n'] (σ : k ≃+* k) (X : Matrix n n' k)
     (Y : Matrix n' n'' k) : cj σ (X * Y) = cj σ Y * cj σ X := by
@@ -27,7 +27,7 @@ theorem cj_mul {n n' n'' : Type*} [Fintype n'] (σ : k ≃+* k) (X : Matrix n n'
   simp [cj_apply, Matrix.mul_apply, mul_comm]
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[cj_apply]`. Simplify using `[cj_apply, Matrix.one_apply_ne h, Matrix.one_apply_ne (Ne.symm h)]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem cj_one {n : Type*} [DecidableEq n] (σ : k ≃+* k) : cj σ (1 : Matrix n n k) = 1 := by
   ext i j
@@ -36,23 +36,21 @@ theorem cj_one {n : Type*} [DecidableEq n] (σ : k ≃+* k) : cj σ (1 : Matrix 
   · simp [cj_apply, Matrix.one_apply_ne h, Matrix.one_apply_ne (Ne.symm h)]
 
 /- English proof (translation)
-Use `set u : n → k := x - y with hu`. Use `set a : k := ∑ i, σ (u i) * x i with ha`. Establish `ha1 : a = 1 - ∑ i, σ (y i) * x i`. Simplify using `only [ha, hu, Pi.sub_apply, map_sub, sub_mul, Finset.sum_sub_distrib, hx]`. Establish `ha0 : a ≠ 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ha1]`. Conclude with `sub_ne_zero.mpr (Ne.symm hxy)`. Establish `hsa0 : σ a ≠ 0` using `by simpa using ha0`. Establish `hsa : σ a = 1 - ∑ i, σ (x i) * y i`. Rewrite using `[ha1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[map_sum, hσ, mul_comm]`. Establish `hn : ∑ i, σ (u i) * u i = a + σ a`. Rewrite using `[hsa, ha1]`. Simplify using `only [hu, Pi.sub_apply, map_sub, sub_mul, mul_sub, Finset.sum_sub_distrib, hx, hy]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use `set P : Matrix n n k := vecMulVec u (fun i => σ (u i)) with hP`. Establish `hPP : P * P = (a + σ a) • P`. Rewrite using `[hP, Matrix.vecMulVec_mul_vecMulVec, ← hn]`. Use extensionality with `i j`. Simplify using `only [vecMulVec_apply, Pi.smul_apply, Matrix.smul_apply, smul_eq_mul, dotProduct]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hcP : cj σ P = P`. Use extensionality with `i j`. Simplify using `[cj_apply, hP, vecMulVec_apply, hσ, mul_comm]`. Use `⟨1 - a⁻¹ • P, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : cj σ (1 - a⁻¹ • P) = 1 - (σ a)⁻¹ • P`. Use extensionality with `i j`. Use `congrFun (congrFun hcP i) j` as an intermediate fact. Establish `h1` using `congrFun (congrFun (cj_one (n := n) σ) i) j`. Simplify using `only [cj_apply, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul, map_sub, map_mul, map_inv₀] at this h1 ⊢`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[this, h1]`. Rewrite using `[hc, sub_mul, mul_sub, mul_sub, one_mul, one_mul, mul_one, smul_mul_smul_comm, hPP]`. Establish `: (σ a)⁻¹ * a⁻¹ * (a + σ a) = a⁻¹ + (σ a)⁻¹`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[smul_smul, this, add_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.smul_mulVec, hP, Matrix.vecMulVec_mulVec]`. Establish `: (fun i => σ (u i)) ⬝ᵥ x = a` using `rfl`. Rewrite using `[this]`.
-
-Use extensionality with `i`. Simplify using `[hu, ha0]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_refl {n : Type*} [Fintype n] [DecidableEq n] (σ : k ≃+* k)
     (hσ : ∀ x, σ (σ x) = x) (x y : n → k) (hx : ∑ i, σ (x i) * x i = 1)
@@ -101,7 +99,7 @@ theorem exists_refl {n : Type*} [Fintype n] [DecidableEq n] (σ : k ≃+* k)
     simp [hu, ha0]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[cj_apply, hσ]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cj_cj {n n' : Type*} (σ : k ≃+* k) (hσ : ∀ x, σ (σ x) = x) (X : Matrix n n' k) :
     cj σ (cj σ X) = X := by
@@ -109,23 +107,23 @@ theorem cj_cj {n n' : Type*} (σ : k ≃+* k) (hσ : ∀ x, σ (σ x) = x) (X : 
   simp [cj_apply, hσ]
 
 /- English proof (translation)
-Establish `he : ∑ i, σ ((Pi.single 0 1 : Fin (m + 1) → k) i) * (Pi.single 0 1 : Fin (m + 1) → k) i = 1`. Apply the tactic sequence `rw [Finset.sum_eq_single 0] <;> simp +contextual`. Establish `hs : ∀ y : Fin (m + 1) → k, ∑ i, σ (y i) * (Pi.single 0 1 : Fin (m + 1) → k) i = σ (y 0)`. Introduce `y`. Apply the tactic sequence `rw [Finset.sum_eq_single 0] <;> simp +contextual`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Distinguish the cases in `h1 : σ (x 0) = 1`. Take `⟨t, ht⟩` from `hne`. Establish `ht0 : t ≠ 0`. Introduce and unpack `rfl`. Simplify using `at ht`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Establish `hst0 : σ t ≠ 0` using `by simpa using ht0`. Use `set ζ : k := σ t / t with hζ`. Establish `hζ0 : ζ ≠ 0` using `div_ne_zero hst0 ht0`. Establish `hsζ : σ ζ = t / σ t` using `by simp [hζ, hσ]`. Establish `hN : σ ζ * ζ = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsζ, hζ]`. Clear the denominators using the available nonvanishing facts. Establish `hsζ1 : σ ζ ≠ 1`. Rewrite using `[hsζ]`. Introduce `h`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[div_eq_one_iff_eq hst0]`. Conclude with `ht h.symm`. Take `⟨g, hg, hgx⟩` from `exists_refl σ hσ (Pi.single 0 1) (fun i => ζ * x i) he (by`. Establish `: ∀ i, σ (ζ * x i) * (ζ * x i) = (σ ζ * ζ) * (σ (x i) * x i)`. Introduce `i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [this, ← Finset.mul_sum, hx, hN, mul_one])`. Use the proof step `(by rw [hs, map_mul, h1, mul_one]; exact hsζ1)`. Use `⟨ζ⁻¹ • g, ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hc : cj σ (ζ⁻¹ • g) = (σ ζ)⁻¹ • cj σ g`. Use extensionality with `i j`. Simplify using `[cj_apply]`. Rewrite using `[hc, smul_mul_smul_comm, hg, ← mul_inv, hN, inv_one, one_smul]`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congrFun hgx i` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_single_one]`. Simplify using `only [Matrix.col_apply] at this`. Simplify using `[this, hζ0]`. Take `⟨g, hg, hgx⟩` from `exists_refl σ hσ (Pi.single 0 1) x he hx (by rw [hs]; exact h1)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨g, hg, fun i => ?_⟩` and prove the remaining obligations. Use `congrFun hgx i` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_single_one]`. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_col {m : ℕ} (σ : k ≃+* k) (hσ : ∀ x, σ (σ x) = x) (hne : ∃ x, σ x ≠ x)
     (x : Fin (m + 1) → k) (hx : ∑ i, σ (x i) * x i = 1) :
@@ -198,16 +196,16 @@ Both sides reduce to the same expression.
     emb Y i.succ j.succ = Y i j := rfl
 
 /- English proof (translation)
-Simplify using `[Matrix.one_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem one_succ_succ {m : ℕ} (i j : Fin m) :
     (1 : Matrix (Fin (m + 1)) (Fin (m + 1)) k) i.succ j.succ = (1 : Matrix (Fin m) (Fin m) k) i j := by
   simp [Matrix.one_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `refine Fin.cases ?_ (fun i' => ?_) i <;> refine Fin.cases ?_ (fun j' => ?_) j`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_succ, cj_apply]`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_succ, cj_apply, (Fin.succ_ne_zero j').symm]`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_succ, cj_apply, Fin.succ_ne_zero i']`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `congrFun (congrFun h i') j'` as an intermediate fact. Rewrite using `[one_succ_succ, ← this]`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_succ, cj_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem emb_unitary {m : ℕ} (σ : k ≃+* k) (Y : Matrix (Fin m) (Fin m) k) (h : cj σ Y * Y = 1) :
     cj σ (emb Y) * emb Y = 1 := by
@@ -221,13 +219,13 @@ theorem emb_unitary {m : ℕ} (σ : k ≃+* k) (Y : Matrix (Fin m) (Fin m) k) (h
     simp [Matrix.mul_apply, Fin.sum_univ_succ, cj_apply]
 
 /- English proof (translation)
-Establish `hrow : ∀ j : Fin m, Z 0 j.succ = 0`. Introduce `j`. Use `congrFun (congrFun h 0) j.succ` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, Fin.sum_univ_succ, cj_apply, h0, hs, Matrix.one_apply, (Fin.succ_ne_zero j).symm]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `i j`. Apply the tactic sequence `refine Fin.cases ?_ (fun i' => ?_) i <;> refine Fin.cases ?_ (fun j' => ?_) j`. Simplify using `[h0]`. Simplify using `[hrow]`. Simplify using `[hs]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use extensionality with `i j`. Use `congrFun (congrFun h i.succ) j.succ` as an intermediate fact. Rewrite `this` using `[one_succ_succ]`. Rewrite using `[← this]`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.mul_apply, Fin.sum_univ_succ, cj_apply, hrow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eq_emb {m : ℕ} (σ : k ≃+* k) (Z : Matrix (Fin (m + 1)) (Fin (m + 1)) k)
     (h : cj σ Z * Z = 1) (h0 : Z 0 0 = 1) (hs : ∀ i : Fin m, Z i.succ 0 = 0) :
@@ -252,23 +250,21 @@ theorem eq_emb {m : ℕ} (σ : k ≃+* k) (Z : Matrix (Fin (m + 1)) (Fin (m + 1)
     simp [Matrix.mul_apply, Fin.sum_univ_succ, cj_apply, hrow]
 
 /- English proof (translation)
-Use `choose g hg hgc using fun x : {x : Fin (m + 1) → k // ∑ i, σ (x i) * x i = 1} => exists_col σ hσ hne x.1 x.2`. Establish `hg' : ∀ x, g x * cj σ (g x) = 1` using `fun x => mul_eq_one_comm.mp (hg x)`. Establish `hcol : ∀ x (Y : Matrix (Fin m) (Fin m) k) i, (g x * emb Y) i 0 = x.1 i`. Introduce `x Y i`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_succ, hgc]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `Φ : {x : Fin (m + 1) → k // ∑ i, σ (x i) * x i = 1} × {X : Matrix (Fin m) (Fin m) k // cj σ X * X = 1} → {X : Matrix (Fin (m + 1)) (Fin (m + 1)) k // cj σ X * X = 1}` to `fun p => ⟨g p.1 * emb p.2.1, by`. Rewrite using `[cj_mul, Matrix.mul_assoc, ← Matrix.mul_assoc (cj σ (g p.1)), hg, Matrix.one_mul]`. Conclude with `emb_unitary σ _ p.2.2⟩`. Establish `hΦ : Function.Bijective Φ`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨x, Y⟩ ⟨x', Y'⟩ h`. Establish `h1 : g x * emb Y.1 = g x' * emb Y'.1` using `congrArg Subtype.val h`. Establish `hxx : x = x'`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Rewrite using `[← hcol x Y.1 i, h1, hcol]`. Substitute `hxx` using the available equality. Establish `h2 : emb Y.1 = emb Y'.1`. Use `congrArg (fun M => cj σ (g x) * M) h1` as an intermediate fact. Simplify `this` using `only [← Matrix.mul_assoc, hg, Matrix.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hYY : Y = Y'`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `i j`. Conclude with `congrFun (congrFun h2 i.succ) j.succ`. Rewrite using `[hYY]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `⟨X, hX⟩`. Establish `hx : ∑ i, σ (X i 0) * X i 0 = 1`. Use `congrFun (congrFun hX 0) 0` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, cj_apply]`. Use `set x : {x : Fin (m + 1) → k // ∑ i, σ (x i) * x i = 1} := ⟨fun i => X i 0, hx⟩ with hxdef`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set Z := cj σ (g x) * X with hZ`. Establish `hZu : cj σ Z * Z = 1`. Rewrite using `[hZ, cj_mul, cj_cj σ hσ, Matrix.mul_assoc, ← Matrix.mul_assoc (g x), hg', Matrix.one_mul, hX]`. Establish `hZc : ∀ i, Z i 0 = (1 : Matrix (Fin (m + 1)) (Fin (m + 1)) k) i 0`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hg x, hZ]`. Simplify using `only [Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[hgc x l]`. Take `⟨hE, hU⟩` from `eq_emb σ Z hZu (by rw [hZc]; simp) (fun i => by rw [hZc]; simp [Fin.succ_ne_zero i])`.
-
-Use `⟨(x, ⟨_, hU⟩), Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `g x * emb (Z.submatrix Fin.succ Fin.succ) = X`. Rewrite using `[← hE, hZ, ← Matrix.mul_assoc, hg', Matrix.one_mul]`. Rewrite using `[← Nat.card_prod]`. Conclude with `(Nat.card_congr (Equiv.ofBijective Φ hΦ)).symm`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_succ {m : ℕ} (σ : k ≃+* k) (hσ : ∀ x, σ (σ x) = x) (hne : ∃ x, σ x ≠ x) :
     Nat.card {X : Matrix (Fin (m + 1)) (Fin (m + 1)) k // cj σ X * X = 1} =
@@ -331,19 +327,19 @@ end Formalism.HermitianLattices.Ext.L3.FiniteUnitaryColumns
 namespace Formalism.HermitianLattices.Ext.L3
 
 /- English proof (translation)
-Establish `hq0 : (q : ℝ) ≠ 0`. Establish `h1 : 0 < Fintype.card k` using `Fintype.card_pos`. Rewrite `h1` using `[hq]`. Establish `: q ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Simplify using `at h1`. Conclude with `this` after adjusting the coercions. Proceed by induction on `m with`. Consider the case `zero`. Establish `: Nat.card {X : Matrix (Fin 0) (Fin 0) k // (X.map σ).transpose * X = 1} = 1`.
+Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.card_eq_one_iff_unique]`. Conclude with `⟨⟨fun a b => Subtype.ext (Subsingleton.elim _ _)⟩, ⟨⟨1, Subsingleton.elim _ _⟩⟩⟩`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Consider the case `succ m ih`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Establish `h1` using `FiniteUnitaryColumns.card_succ (m := m) σ hσ hne`. Establish `h2` using `card_herm_norm_eq σ hσ hne q hq (m + 1) (by omega) 1 (map_one σ) one_ne_zero`. Establish `h2' : (Nat.card {x : Fin (m + 1) → k // ∑ i, σ (x i) * x i = 1} : ℝ) = (q : ℝ) ^ m * ((q : ℝ) ^ (m + 1) - (-1) ^ (m + 1))`. Use `congrArg (fun z : ℤ => (z : ℝ)) h2` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h1' : (Nat.card {X : Matrix (Fin (m + 1)) (Fin (m + 1)) k // (X.map σ).transpose * X = 1} : ℝ) = (Nat.card {x : Fin (m + 1) → k // ∑ i, σ (x i) * x i = 1} : ℝ) * (Nat.card {X : Matrix (Fin m) (Fin m) k // (X.map σ).transpose * X = 1} : ℝ)`. Conclude with `h1` after adjusting the coercions. Rewrite using `[h1', h2', ih, Finset.prod_Icc_succ_top (by omega)]`. Establish `h3 : (q : ℝ) ^ ((m + 1) ^ 2) = (q : ℝ) ^ (m ^ 2) * ((q : ℝ) ^ m * (q : ℝ) ^ (m + 1))`. Rewrite using `[← pow_add, ← pow_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `h4 : (q : ℝ) ^ (m + 1) * (1 - (-(q : ℝ))⁻¹ ^ (m + 1)) = (q : ℝ) ^ (m + 1) - (-1) ^ (m + 1)`. Establish `: (-(q : ℝ))⁻¹ = (-1) * (q : ℝ)⁻¹`. Rewrite using `[neg_mul, one_mul, inv_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, mul_pow, mul_sub, mul_one, mul_left_comm, ← mul_pow, mul_inv_cancel₀ hq0, one_pow, mul_one]`. Rewrite using `[h3, ← h4]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem card_unitary_fin {k : Type*} [Field k] [Fintype k] (σ : k ≃+* k) (hσ : ∀ x, σ (σ x) = x)
     (hne : ∃ x, σ x ≠ x) (q : ℕ) (hq : Fintype.card k = q ^ 2) (m : ℕ) :
@@ -390,13 +386,13 @@ theorem card_unitary_fin {k : Type*} [Field k] [Fintype k] (σ : k ≃+* k) (hσ
     ring
 
 /- English proof (translation)
-Substitute `hq` using the available equality. Use `set q : ℕ := Fintype.card k with hqd`. Establish `hq1 : 1 ≤ q` using `Fintype.card_pos`. Establish `hq0 : (q : ℝ) ≠ 0`. Establish `: q ≠ 0` using `by omega`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this` after adjusting the coercions. Rewrite using `[Matrix.card_GL_field, Fin.prod_univ_eq_prod_range (fun i => q ^ m - q ^ i) m, Nat.cast_prod]`. Establish `h1 : ∀ i ∈ Finset.range m, ((q ^ m - q ^ i : ℕ) : ℝ) = (q : ℝ) ^ m * (1 - (q : ℝ)⁻¹ ^ (m - 1 - i + 1))`. Introduce `i hi`. Establish `him : i < m` using `Finset.mem_range.mp hi`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Nat.cast_sub (Nat.pow_le_pow_right hq1 him.le), Nat.cast_pow, Nat.cast_pow, mul_sub, mul_one]`. Use `congr 1`. Establish `: m = i + (m - 1 - i + 1)` using `by omega`. Use `conv_rhs => rw [this, pow_add]`. Establish `h5 : m - 1 - i + 1 = i + (m - 1 - i + 1) - 1 - i + 1` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← h5, mul_assoc, ← mul_pow, mul_inv_cancel₀ hq0, one_pow, mul_one]`. Rewrite using `[Finset.prod_congr rfl h1, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_range, ← pow_mul, ← sq, Finset.prod_range_reflect (fun j => 1 - (q : ℝ)⁻¹ ^ (j + 1)) m]`. Use `congr 1`. Rewrite using `[Finset.range_eq_Ico, Finset.prod_Ico_add' (fun j => 1 - (q : ℝ)⁻¹ ^ j) 0 m 1]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem card_GL_fin {k : Type*} [Field k] [Fintype k] (q : ℕ) (hq : Fintype.card k = q) (m : ℕ) :
     (Nat.card (GL (Fin m) k) : ℝ) = (q : ℝ) ^ (m ^ 2) * ∏ j ∈ Finset.Icc 1 m, (1 - (q : ℝ)⁻¹ ^ j) := by

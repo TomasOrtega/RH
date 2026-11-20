@@ -15,7 +15,7 @@ open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Sl
 namespace GlobalTheory.CompanionTheory.Ar.Sl
 
 /- English proof (translation)
-Introduce `hS` and use `GlobalTheory.T.slope_bound_of_large_degree_line hS (GlobalTheory.T.key_degree_of_bad_reduction GlobalTheory.T.key_bad_reduction_holds)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem slopeBound_and_lemmaS_of_siegel :
     LineOfLargeDegree.Statement → SlopeBoundSt ∧ Prov.LemmaS := fun hS =>

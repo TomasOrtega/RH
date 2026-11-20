@@ -30,9 +30,9 @@ def unitPermNonzero {E : Type} [Field E] (q : Eˣ) :
     simp
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ φ A q y`. Unfold `Th`. Rewrite using `[← Equiv.tsum_eq (unitPermNonzero q) (fun X => Psi φ A (fun a i => (y : AF F ⊗[F] E) * inclR (AF F) (X.1 a i)))]`. Use `tsum_congr fun X => ?_` and prove the remaining obligations. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `a i`. Establish `hq : ((ofE q : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) = inclR (AF F) (q : E)` using `rfl`. Establish `hX : ((unitPermNonzero q X).1 a i) = (q : E) * X.1 a i` using `rfl`. Rewrite using `[Units.val_mul, hq, hX, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Th_ofE_mul : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Algebra F E] (φ : (Fin 1 → Fin 1 → Ainf F ⊗[F] E) → ℝ) (A : ∀ v : HeightOneSpectrum (𝓞 F), Set (Fin 1 → Fin 1 → Fv F v ⊗[F] E)) (q : Eˣ) (y : (AF F ⊗[F] E)ˣ), Th φ A (ofE q * y) = Th φ A y := by
   intro F E _ _ _ _ φ A q y

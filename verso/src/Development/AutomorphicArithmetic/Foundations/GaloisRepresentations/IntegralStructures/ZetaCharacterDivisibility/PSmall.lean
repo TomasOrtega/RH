@@ -16,9 +16,9 @@ open UpperTheory.Gal.Int.Div
 namespace UpperTheory.Gal.Int.Div
 
 /- English proof (translation)
-Introduce `a q B hq hB`. Establish `hz : ((((q : ℝ) ^ (((a : ℝ) - 1) / 2) : ℝ) : ℂ)) ≠ 0`. Establish `: (0 : ℝ) < (q : ℝ) ^ (((a : ℝ) - 1) / 2)` using `Real.rpow_pos_of_pos (by positivity) _`. Conclude with `this.ne'` after adjusting the coercions. Use `UpperTheory.Gal.crystallineComparison.genScale_of B _ hz hB` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `[algSat, Multiset.bind_def, Multiset.pure_def]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem algGen_of : AlgGen := by
   intro a q B hq hB
@@ -30,9 +30,9 @@ theorem algGen_of : AlgGen := by
   simp [algSat, Multiset.bind_def, Multiset.pure_def]
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ _ l _ ι a U ψ hψ w hw hl B hB A hA`. Take `⟨J, hJ, -⟩` from `hψ.2 w hw B hB`. Take `⟨h1, h2⟩` from `hJ hl A hA`. Use `⟨fun s hs => ?_, fun σ hσ => ?_⟩` and prove the remaining obligations. Use `congrArg (fun g : GL (Fin 1) (Qbar l) => g.val 0 0) (h1 s hs)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Units.ext (by simpa [rk1] using this)`. Use `congrArg (fun p : ℂ[X] => p.coeff 0) (h2 σ hσ)` as an intermediate fact. Simplify `this` using `[rk1, Matrix.charpoly, Matrix.det_fin_one]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem detFrob_of : DetFrob := by
   intro E Ω _ _ _ _ _ _ l _ ι a U ψ hψ w hw hl B hB A hA
@@ -45,9 +45,9 @@ theorem detFrob_of : DetFrob := by
     simpa [rk1, Matrix.charpoly, Matrix.det_fin_one] using this
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ _ l _ ι a dd U ψ hψ r ρ hin hdet w hw hl B hB hg he A hA`. Take `⟨-, i1, i2⟩` from `h1 _ _ a dd r ρ hin`. Take `⟨e1, e2⟩` from `he A hA`. Use `⟨fun s hs => i1 s (e1 s hs), fun σ hσ => ?_⟩` and prove the remaining obligations. Establish `hc : B.card = a` using `hB.choose_spec.2.card`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `h2 l ι a _ _ (by simp [algSat, hc]) (h3 a _ B (GlobalTheory.LFun.qV_ne_zero w) hg) (i2 σ⁻¹ _ (e2 σ hσ)) ?_` and prove the remaining obligations. Rewrite using `[hdet]`. Conclude with `(h4 E Ω l ι a U ψ hψ w hw hl B hB A hA).2 σ hσ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frobSeed_of (h1 : InFacts) (h2 : GenPin) (h3 : AlgGen) (h4 : DetFrob) : FrobeniusCondition := by
   intro E Ω _ _ _ _ _ _ l _ ι a dd U ψ hψ r ρ hin hdet w hw hl B hB hg he A hA
@@ -60,19 +60,19 @@ theorem frobSeed_of (h1 : InFacts) (h2 : GenPin) (h3 : AlgGen) (h4 : DetFrob) : 
   exact (h4 E Ω l ι a U ψ hψ w hw hl B hB A hA).2 σ hσ
 
 /- English proof (translation)
-Introduce `E _ _ _ a ha U hU`. Take `⟨ζ, z1, z2, z3, z4, z5⟩` from `h1 E a`. Take `⟨χ, hχ⟩` from `h4 E a U hU ζ z2 z3 z4 fun z => h3 E a U hU _ (z3 z)`. Take `⟨φ, hφ, hφ0⟩` from `(Submodule.ne_bot_iff _).1 hU.ne_bot`. Take `⟨n, hn⟩` from `h5 E χ fun z hz => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `hχ z φ hφ` as an intermediate fact. Rewrite `this` using `[z5 z hz, map_one]`. Use `Units.ext (smul_left_injective ℂ hφ0 ?_)` and prove the remaining obligations. Simplify using `using this.symm`. Use `⟨χ, n, hn, fun w hw B hB => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨σ, ⟨hirr, f, hf0, hfU, hfe⟩, hS⟩` from `hB`. Take `⟨x, hx0, hx1, hx2⟩` from `h6 E a w σ B hS`. Take `⟨e, he⟩` from `GlobalTheory.locU_equiv_GL E a w hw`. Establish `hker : LinearMap.ker f = ⊥` using `((GlobalTheory.CuspRep.isIrreducible_iff σ.ρ).1 hirr).2 _ (fun g v hv => by`. Rewrite `hv`, the goal using `[LinearMap.mem_ker]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h1` using `hfe (e.symm g) v`. Rewrite `h1` using `[MonoidHom.comp_apply, Subgroup.subtype_apply, ← he, e.apply_symm_apply]`. Rewrite using `[h1, hv, map_zero]) |>.resolve_right fun h => hf0 (LinearMap.ker_eq_top.1 h)`. Establish `hfx : f x ≠ 0` using `(map_ne_zero_iff f (LinearMap.ker_eq_bot.1 hker)).2 hx0`. Establish `key : ∀ u : (w.adicCompletion E)ˣ, f (σ.ρ (Matrix.GeneralLinearGroup.scalar (Fin a) u) x) = ((χ.loc w u : ℂˣ) : ℂ) • f x` using `fun u => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨m1, m2⟩` from `h2 E a ζ z1 w hw u`. Use `hfe ⟨_, m1⟩ x` as an intermediate fact. Rewrite `this` using `[MonoidHom.comp_apply, Subgroup.subtype_apply, m2]`. Conclude with `this.trans (hχ _ _ (hfU x))`. Use `⟨fun u hu => ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `key u` as an intermediate fact. Rewrite `this` using `[hx1 u hu]`. Use `Units.ext (smul_left_injective ℂ hfx ?_)` and prove the remaining obligations. Simplify using `using this.symm`. Use `key (atFin w (unif w))` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hx2 _ (unif_spec w), map_smul]`. Conclude with `Units.ext (smul_left_injective ℂ hfx this.symm)`.
+A detailed English derivation is pending.
 -/
 theorem centU_of (h1 : ZetaEx) (h2 : ZetaLoc) (h3 : SchurU) (h4 : CharOfZeta) (h5 : AlgOfFix) (h6 : SatCent) : CentU := by
   intro E _ _ _ a ha U hU

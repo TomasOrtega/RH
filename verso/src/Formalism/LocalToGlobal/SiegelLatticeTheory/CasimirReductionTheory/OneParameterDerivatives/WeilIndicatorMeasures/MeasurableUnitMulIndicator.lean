@@ -12,7 +12,7 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   [BorelSpace G] {H : Subgroup G}
 
 /- English proof (translation)
-Conclude with `measurable_fst.mul (measurable_subtype_coe.comp measurable_snd)`.
+A detailed English derivation is pending.
 -/
 lemma measurable_mulH : Measurable (fun p : G × H => p.1 * (p.2 : G)) := by
   exact measurable_fst.mul (measurable_subtype_coe.comp measurable_snd)
@@ -20,14 +20,14 @@ lemma measurable_mulH : Measurable (fun p : G × H => p.1 * (p.2 : G)) := by
 noncomputable def fib (κ : Measure H) (f : G → ℝ≥0∞) (g : G) : ℝ≥0∞ := ∫⁻ h, f (g * h) ∂κ
 
 /- English proof (translation)
-Conclude with `(hf.comp measurable_mulH).lintegral_prod_right'`.
+A detailed English derivation is pending.
 -/
 lemma measurable_fib (κ : Measure H) [SFinite κ] {f : G → ℝ≥0∞} (hf : Measurable f) :
     Measurable (fib κ f) := by
   exact (hf.comp measurable_mulH).lintegral_prod_right'
 
 /- English proof (translation)
-Unfold `fib`. Establish `key` using `lintegral_mul_left_eq_self (μ := κ) (fun h : H => f (g * (h : G))) h₀`. Simplify `key` using `[mul_assoc]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma fib_mul (κ : Measure H) [κ.IsMulLeftInvariant] (f : G → ℝ≥0∞) (g : G) (h₀ : H) :
     fib κ f (g * h₀) = fib κ f g := by
@@ -36,19 +36,17 @@ lemma fib_mul (κ : Measure H) [κ.IsMulLeftInvariant] (f : G → ℝ≥0∞) (g
   simpa [mul_assoc] using key
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact measurable_quotient_mk'' | exact measurable_quotient_mk' | exact fun s hs => hs`.
+A detailed English derivation is pending.
 -/
 lemma measurable_mk : Measurable ((↑) : G → G ⧸ H) := by
   first | exact measurable_quotient_mk'' | exact measurable_quotient_mk' | exact fun s hs => hs
 
 /- English proof (translation)
-Distinguish the cases in `hne : ∃ h₀ : H, y * (h₀ : G) ∈ E`. Take `⟨h₀, hh₀⟩` from `hne`. Combine the equalities or inequalities in the displayed calculation. Apply `measure_mono` to reduce the goal to its premises. Introduce `h hh`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hh' : y * (h : G) ∈ E` using `hh`. Use `show ((h₀⁻¹ * h : H) : G) ∈ E⁻¹ * E`. Rewrite using `[Set.mem_mul]`. Use `⟨(y * h₀)⁻¹, by rw [Set.mem_inv, inv_inv]; exact hh₀, y * h, hh', ?_⟩` and prove the remaining obligations. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Use `group`. Use `_ = κ {h : H | (h : G) ∈ E⁻¹ * E} := measure_preimage_mul κ _ _`. Use `push_neg at hne`. Establish `h0 : κ {h : H | y * h ∈ E} = 0` using `measure_mono_null (fun h hh => (hne h hh).elim) measure_empty`. Rewrite using `[h0]`.
-
-Apply the tactic sequence `first | exact zero_le _ | exact zero_le | simp`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma measure_coset_le (κ : Measure H) [κ.IsMulLeftInvariant] (y : G) (E : Set G) :
     κ {h : H | y * h ∈ E} ≤ κ {h : H | (h : G) ∈ E⁻¹ * E} := by
@@ -72,11 +70,9 @@ lemma measure_coset_le (κ : Measure H) [κ.IsMulLeftInvariant] (y : G) (E : Set
     first | exact zero_le _ | exact zero_le | simp
 
 /- English proof (translation)
-Establish `hc : IsCompact (E⁻¹ * E)` using `hE.inv.mul hE`. Establish `hc2 : IsCompact {h : H | (h : G) ∈ E⁻¹ * E}` using `by first`. Consider the case `exact hH.isClosedEmbedding_subtypeVal.isCompact_preimage hc`. Consider the case `exact hH.closedEmbedding_subtype_val.isCompact_preimage hc`. Consider the case `(rw [Subtype.isCompact_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `e : ((↑) : H → G) '' {h : H | (h : G) ∈ E⁻¹ * E} = (E⁻¹ * E) ∩ (H : Set G)`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `hc.inter_right hH)`.
-
-Conclude with `hc2.measure_lt_top`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma measure_coset_lt_top (hH : IsClosed (H : Set G)) (κ : Measure H)
     [IsFiniteMeasureOnCompacts κ] {E : Set G} (hE : IsCompact E) :
@@ -95,7 +91,7 @@ lemma measure_coset_lt_top (hH : IsClosed (H : Set G)) (κ : Measure H)
   exact hc2.measure_lt_top
 
 /- English proof (translation)
-Establish `h1 : ((↑) : H → G) ⁻¹' V ∈ 𝓝 (1 : H)` using `continuous_subtype_val.continuousAt.preimage_mem_nhds hV`. Use `first`. Consider the case `exact measure_pos_of_mem_nhds κ h1`. Consider the case `exact (measure_pos_of_nonempty_interior κ ⟨1, mem_interior_iff_mem_nhds.2 h1⟩)`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma measure_nhds_pos (κ : Measure H) [IsOpenPosMeasure κ] {V : Set G} (hV : V ∈ 𝓝 (1 : G)) :
     0 < κ {h : H | (h : G) ∈ V} := by
@@ -106,31 +102,29 @@ lemma measure_nhds_pos (κ : Measure H) [IsOpenPosMeasure κ] {V : Set G} (hV : 
   | exact (measure_pos_of_nonempty_interior κ ⟨1, mem_interior_iff_mem_nhds.2 h1⟩)
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨φ, hφ, hpos, hfin⟩ : ∃ φ : G → ℝ≥0∞, Measurable φ ∧ (∀ x, 0 < fib κ φ x) ∧ (∀ x, fib κ φ x < ∞) := by`. Take `⟨V, hVc, hV1⟩` from `exists_compact_mem_nhds (1 : G)`. Establish `hVm : MeasurableSet V` using `hVc.isClosed.measurableSet`. Set `d` to `TopologicalSpace.denseSeq G`. Establish `hd : DenseRange d` using `TopologicalSpace.denseRange_denseSeq G`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hS : ∀ y : G, MeasurableSet {h : H | y * (h : G) ∈ V}` using `fun y => hVm.preimage ((measurable_const_mul y).comp measurable_subtype_coe)`. Establish `hfib : ∀ x, fib κ (fun x => ∑' n, (2⁻¹ : ℝ≥0∞) ^ n * V.indicator 1 ((d n)⁻¹ * x)) x = ∑' n, (2⁻¹ : ℝ≥0∞) ^ n * κ {h : H | (d n)⁻¹ * x * (h : G) ∈ V}`. Introduce `x`. Establish `hm1 : ∀ n, Measurable (fun h : H => V.indicator (1 : G → ℝ≥0∞) ((d n)⁻¹ * (x * (h : G))))` using `fun n => (measurable_one.indicator hVm).comp ((measurable_const_mul _).comp ((measurable_const_mul x).comp measurable_subtype_coe))`. Establish `hm : ∀ n, Measurable (fun h : H => (2⁻¹ : ℝ≥0∞) ^ n * V.indicator (1 : G → ℝ≥0∞) ((d n)⁻¹ * (x * (h : G))))` using `fun n => measurable_const.mul (hm1 n)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show ∫⁻ h, ∑' n, (2⁻¹ : ℝ≥0∞) ^ n * V.indicator (1 : G → ℝ≥0∞) ((d n)⁻¹ * (x * (h : G))) ∂κ = _`. Rewrite using `[lintegral_tsum (fun n => (hm n).aemeasurable)]`. Use `congr 1`. Use function extensionality and compare the values at `n`. Rewrite using `[lintegral_const_mul _ (hm1 n)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[← lintegral_indicator_one (hS ((d n)⁻¹ * x))]`. Use `congr 1`. Use function extensionality and compare the values at `h`. Simplify using `only [Function.comp_apply, Set.indicator_apply, Set.mem_setOf_eq, Pi.one_apply, mul_assoc]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply the tactic sequence `first | rfl | simp [Set.indicator_apply]`. Establish `hC : κ {h : H | (h : G) ∈ V⁻¹ * V} < ∞` using `measure_coset_lt_top hH κ hVc`. Use `⟨fun x => ∑' n, (2⁻¹ : ℝ≥0∞) ^ n * V.indicator 1 ((d n)⁻¹ * x), ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Measurable.ennreal_tsum (fun n => measurable_const.mul ((measurable_one.indicator hVm).comp (measurable_const_mul _)))`. Introduce `x`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hfib x]`. Establish `hopen : IsOpen {g : G | g⁻¹ * x ∈ interior V}` using `isOpen_interior.preimage (continuous_inv.mul continuous_const)`. Take `⟨n, hn⟩` from `hd.exists_mem_open hopen ⟨x, by simpa using mem_interior_iff_mem_nhds.2 hV1⟩`. Establish `hn' : (d n)⁻¹ * x ∈ interior V` using `hn`. Establish `hnb : {z : G | (d n)⁻¹ * x * z ∈ V} ∈ 𝓝 (1 : G)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hc : ContinuousAt (fun z : G => (d n)⁻¹ * x * z) 1` using `(continuous_const.mul continuous_id).continuousAt`. Establish `hV' : V ∈ 𝓝 ((fun z : G => (d n)⁻¹ * x * z) 1)`. Simplify using `using mem_interior_iff_mem_nhds.1 hn'`. Conclude with `hc.preimage_mem_nhds hV'`. Establish `hpos'` using `measure_nhds_pos κ hnb`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Introduce `x`. Rewrite using `[hfib x]`. Establish `hle : ∑' n, (2⁻¹ : ℝ≥0∞) ^ n * κ {h : H | (d n)⁻¹ * x * (h : G) ∈ V} ≤ ∑' n, (2⁻¹ : ℝ≥0∞) ^ n * κ {h : H | (h : G) ∈ V⁻¹ * V}`. Establish `hn : ∀ n : ℕ, (2⁻¹ : ℝ≥0∞) ^ n * κ {h : H | (d n)⁻¹ * x * (h : G) ∈ V} ≤ (2⁻¹ : ℝ≥0∞) ^ n * κ {h : H | (h : G) ∈ V⁻¹ * V}`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Introduce `n`. Use `first`. Consider the case `exact mul_le_mul_of_nonneg_left (measure_coset_le κ _ V) (by simp)`. Consider the case `exact mul_le_mul_left (measure_coset_le κ _ V) _`. Use `first`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `exact ENNReal.tsum_le_tsum hn`. Consider the case `exact tsum_le_tsum hn ENNReal.summable ENNReal.summable`. Consider the case `exact Summable.tsum_le_tsum hn ENNReal.summable ENNReal.summable`. Use `lt_of_le_of_lt hle ?_` and prove the remaining obligations. Rewrite using `[ENNReal.tsum_mul_right, ENNReal.tsum_geometric]`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `first`. Consider the case `exact ENNReal.mul_lt_top (by simp) hC`. Consider the case `exact ENNReal.mul_lt_top (by simp) hC.ne`. Use `⟨fun x => φ x * (fib κ φ x)⁻¹, ?_, ?_⟩` and prove the remaining obligations. Use `first`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `exact hφ.mul (measurable_fib κ hφ).inv`. Consider the case `exact hφ.mul (ENNReal.continuous_inv.measurable.comp (measurable_fib κ hφ))`. Introduce `x`. Establish `e : ∀ h : H, φ (x * h) * (fib κ φ (x * h))⁻¹ = φ (x * h) * (fib κ φ x)⁻¹` using `fun h => by`. Rewrite using `[fib_mul]`.
-
-Use `show ∫⁻ h, φ (x * h) * (fib κ φ (x * h))⁻¹ ∂κ = 1`. Repeatedly rewrite using `[e]`. Establish `hφx : Measurable (fun h : H => φ (x * (h : G)))` using `hφ.comp ((measurable_const_mul x).comp measurable_subtype_coe)`. Rewrite using `[lintegral_mul_const _ hφx]`. Conclude with `ENNReal.mul_inv_cancel (hpos x).ne' (hfin x).ne`.
+A detailed English derivation is pending.
 -/
 lemma exists_fib_eq_one (hH : IsClosed (H : Set G)) (κ : Measure H) [SFinite κ]
     [κ.IsMulLeftInvariant] [IsFiniteMeasureOnCompacts κ] [IsOpenPosMeasure κ] :

@@ -13,11 +13,11 @@ open GlobalTheory.Mum
 namespace GlobalTheory.ZConn
 
 /- English proof (translation)
-Rewrite using `[preconnectedSpace_iff_clopen]`. Introduce `s hs`. Take `⟨e, he, hes⟩` from `GlobalTheory.exists_idempotent_basicOpen_eq_of_isClopen Z s hs`. Break down `IsLocalRing.isUnit_or_isUnit_one_sub_self e with hu | hu` into its components or cases. Use `right`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hes, Z.basicOpen_of_isUnit hu]`. Simplify using the standard rewrite rules. Use `left`. Establish `h0 : e = 0`. Establish `: e * (1 - e) = 0` using `by rw [mul_sub, _root_.mul_one, he, sub_self]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hu.mul_left_eq_zero.1 this`. Rewrite using `[← hes, h0, Z.basicOpen_zero]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem preconnectedSpace_of_isLocalRing (Z : Scheme.{0}) [IsLocalRing Γ(Z, ⊤)] : PreconnectedSpace Z := by
   rw [preconnectedSpace_iff_clopen]
@@ -35,11 +35,9 @@ theorem preconnectedSpace_of_isLocalRing (Z : Scheme.{0}) [IsLocalRing Γ(Z, ⊤
     simp
 
 /- English proof (translation)
-Set `L` to `Localization.AtPrime P.asIdeal`. Establish `fg : (maximalIdeal L).FG` using `IsNoetherian.noetherian _`. Use `haveI hloc : IsLocalRing (AdicCompletion (maximalIdeal L) L) := AdicCompletion.isLocalRing_of_fg fg`. Use `haveI : IsNoetherianRing (AdicCompletion (maximalIdeal L) L) := GlobalTheory.AdicNoeth.isNoetherianRing_adicCompletion _ _`. Establish `hm` using `AdicCompletion.maximalIdeal_eq_map_of_fg fg`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `ψ` to `algebraMap L (AdicCompletion (maximalIdeal L) L)`. Use `haveI : IsLocalHom ψ := ((IsLocalRing.local_hom_TFAE ψ).out 0 2).mpr hm.symm.le`. Use `⟨AdicCompletion (maximalIdeal L) L, inferInstance, inferInstance, hloc, ψ.comp (algebraMap R L), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hm]`. Conclude with `AdicCompletion.isAdicComplete_self _ fg`.
-
-Conclude with `RingHom.Flat.comp (RingHom.flat_algebraMap_iff.2 inferInstance) (RingHom.flat_algebraMap_iff.2 (AdicCompletion.flat_of_isNoetherian _))`. Rewrite using `[← Ideal.comap_comap, IsLocalRing.maximalIdeal_comap ψ]`. Conclude with `Localization.AtPrime.comap_maximalIdeal`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_complete_flat (R : Type) [CommRing R] [IsNoetherianRing R] (P : PrimeSpectrum R) :
     ∃ (A : Type) (_ : CommRing A) (_ : IsNoetherianRing A) (_ : IsLocalRing A) (φ : R →+* A),
@@ -59,31 +57,25 @@ theorem exists_complete_flat (R : Type) [CommRing R] [IsNoetherianRing R] (P : P
     exact Localization.AtPrime.comap_maximalIdeal
 
 /- English proof (translation)
-Introduce `X Y a hY ha hbij y`. Take `⟨_, ⟨U, hU, rfl⟩, hyU, -⟩` from `Y.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ y) isOpen_univ`. Use `haveI : IsNoetherianRing Γ(Y, U) := hY.component_noetherian ⟨U, hU⟩`. Set `e` to `hU.isoSpec`. Set `P : PrimeSpectrum Γ(Y, U)` to `e.hom ⟨y, hyU⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨A, _, _, _, φ, hAc, hφ, hφP⟩` from `exists_complete_flat Γ(Y, U) P`. Set `π : (a ⁻¹ᵁ U).toScheme ⟶ Sp Γ(Y, U)` to `(a ∣_ U) ≫ e.hom`. Set `g : Sp A ⟶ Sp Γ(Y, U)` to `Spec.map (CommRingCat.ofHom φ)`. Use `haveI : Flat g := HasRingHomProperty.Spec_iff.2 hφ`. Use `haveI : IsProper π := inferInstance`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hres : Function.Bijective ((a ∣_ U).app ⊤).hom`. Rewrite using `[morphismRestrict_app]`. Establish `h1` using `hbij ((Scheme.Opens.ι U) ''ᵁ ⊤)`. Establish `h2` using `ConcreteCategory.bijective_of_isIso (X.presheaf.map (eqToHom (image_morphismRestrict_preimage a U ⊤)).op)`. Conclude with `h2.comp h1`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hπ : Function.Bijective π.appTop.hom`. Express the relevant statement in the definitionally equal form `Function.Bijective ((a ∣_ U) ≫ e.hom).appTop.hom`. Rewrite using `[Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.coe_comp]`. Use `haveI : IsIso e.hom.appTop := inferInstanceAs (IsIso (e.hom.app ⊤))`. Conclude with `hres.comp (ConcreteCategory.bijective_of_isIso _)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp` using `GlobalTheory.T.app_bijective_of_flat_baseChange_globalFunctions Γ(Y, U) _ _ _ π g (pullback.snd π g) (pullback.fst π g) inferInstance inferInstance hπ inferInstance (IsPullback.of_hasPullback π g).flip`. Set `Z : Scheme.{0}` to `pullback π g`. Set `ψ : A →+* Γ(Z, ⊤)` to `((pullback.snd π g).app ⊤).hom.comp (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom`. Establish `hψ : Function.Bijective ψ` using `(hp ⊤).comp (ConcreteCategory.bijective_of_isIso _)`. Use `haveI : Nontrivial Γ(Z, ⊤) := hψ.1.nontrivial`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : IsLocalHom ψ := IsLocalHom.of_surjective ψ hψ.2`. Use `haveI : IsLocalRing Γ(Z, ⊤) := IsLocalRing.of_surjective ψ hψ.2`. Use `haveI : PreconnectedSpace Z := preconnectedSpace_of_isLocalRing Z`. Establish `hfib` using `GlobalTheory.T.isPreconnected_closedFibre_proper_completeLocalNoetherian A hAc Z (pullback.snd π g) inferInstance inferInstance`. Establish `hg : g (closedPoint A) = P` using `PrimeSpectrum.ext hφP`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `einj : Function.Injective e.hom` using `e.hom.isOpenEmbedding.injective`. Establish `key : {x : X | a x = y} = (pullback.fst π g ≫ (a ⁻¹ᵁ U).ι) '' {z | pullback.snd π g z = closedPoint A}`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hxU : x ∈ a ⁻¹ᵁ U` using `by show a x ∈ U`. Rewrite using `[hx]`. Conclude with `hyU`. Set `x' : (a ⁻¹ᵁ U).toScheme` to `⟨x, hxU⟩`. Establish `h1 : (a ∣_ U) x' = ⟨y, hyU⟩` using `Subtype.ext ((morphismRestrict_base_coe a U x').trans hx)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : π x' = g (closedPoint A)`. Rewrite using `[hg]`. Express the relevant statement in the definitionally equal form `((a ∣_ U) ≫ e.hom) x' = P`. Rewrite using `[Scheme.Hom.comp_apply, h1]`. Take `⟨z, hz1, hz2⟩` from `Scheme.exists_preimage_of_isPullback (IsPullback.of_hasPullback π g) x' (closedPoint A) h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨z, hz2, ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.Hom.comp_apply, hz1]`. Both sides reduce to the same expression. Introduce and unpack `⟨z, hz, rfl⟩`. Establish `h3 : π (pullback.fst π g z) = g (pullback.snd π g z)`.
-
-Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, pullback.condition]`. Rewrite `h3` using `[hz, hg]`. Establish `h4 : (a ∣_ U) (pullback.fst π g z) = ⟨y, hyU⟩` using `einj (by`. Rewrite using `[← Scheme.Hom.comp_apply]`. Conclude with `h3)`.
-
-Use `show a ((pullback.fst π g ≫ (a ⁻¹ᵁ U).ι) z) = y`. Rewrite using `[Scheme.Hom.comp_apply]`. Express the relevant statement in the definitionally equal form `a (pullback.fst π g z).1 = y`. Rewrite using `[← morphismRestrict_base_coe a U, h4]`. Rewrite using `[key]`.
-
-Conclude with `hfib.image _ (pullback.fst π g ≫ (a ⁻¹ᵁ U).ι).continuous.continuousOn`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPreconnected_fibre : ∀ (X Y : Scheme.{0}) (a : X ⟶ Y), IsLocallyNoetherian Y → IsProper a →
     (∀ V : Y.Opens, Function.Bijective (a.app V).hom) → ∀ y : Y, _root_.IsPreconnected {x : X | a x = y} := by

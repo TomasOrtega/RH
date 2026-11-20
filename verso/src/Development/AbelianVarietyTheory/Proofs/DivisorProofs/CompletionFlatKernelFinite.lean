@@ -4,19 +4,17 @@ open TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `A _ f M _ _ hflat hproj n π hπ`. Use `set B := AdicCompletion (Ideal.span {f}) A`. Set `φ : B ⊗[A] (Fin n → A) →ₗ[B] B ⊗[A] M` to `AlgebraTensorModule.lTensor B B π`. Set `ψ : B ⊗[A] (LinearMap.ker π) →ₗ[B] B ⊗[A] (Fin n → A)` to `AlgebraTensorModule.lTensor B B (LinearMap.ker π).subtype`. Establish `hexact : Function.Exact (LinearMap.ker π).subtype π`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Simplify using the standard rewrite rules. Establish `hψinj : Function.Injective ψ` using `LinearMap.lTensor_injective_of_exact_of_flat π hπ _ (LinearMap.ker π).injective_subtype hexact B`. Establish `hψex : Function.Exact ψ φ` using `lTensor_exact B hexact hπ`. Establish `hφsurj : Function.Surjective φ` using `LinearMap.lTensor_surjective B hπ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs⟩` from `Module.projective_lifting_property φ LinearMap.id hφsurj`. Set `p : B ⊗[A] (Fin n → A) →ₗ[B] B ⊗[A] (Fin n → A)` to `LinearMap.id - s ∘ₗ φ`. Establish `hp : ∀ x, p x ∈ LinearMap.ker φ`. Introduce `x`. Use `LinearMap.congr_fun hs (φ x)` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.mem_ker, p, LinearMap.sub_apply, LinearMap.id_apply, LinearMap.comp_apply, map_sub]`. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply] at this`. Rewrite using `[this, sub_self]`. Establish `hker : Module.Finite B (LinearMap.ker φ)`. Use `Module.Finite.of_surjective (p.codRestrict (LinearMap.ker φ) hp) ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨y, hy⟩`. Use `⟨y, ?_⟩` and prove the remaining obligations. Use `ext`. Simplify using `only [LinearMap.codRestrict_apply, p, LinearMap.sub_apply, LinearMap.id_apply, LinearMap.comp_apply]`. Rewrite using `[LinearMap.mem_ker.mp hy, map_zero, sub_zero]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hrange : LinearMap.range ψ = LinearMap.ker φ`. Use extensionality with `y`. Rewrite using `[LinearMap.mem_range, LinearMap.mem_ker]`. Conclude with `(hψex y).symm`. Set `e : B ⊗[A] (LinearMap.ker π) ≃ₗ[B] LinearMap.ker φ` to `(LinearEquiv.ofInjective ψ hψinj).trans (LinearEquiv.ofEq _ _ hrange)`.
-
-Conclude with `Module.Finite.equiv e.symm`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem adicCompletion_tensor_ker_finite : ∀ (A : Type) [CommRing A] (f : A) (M : Type) [AddCommGroup M] [Module A M],
   Module.Flat A M →

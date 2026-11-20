@@ -11,7 +11,7 @@ open scoped nonZeroDivisors
 namespace GlobalTheory.Mem.An
 
 /- English proof (translation)
-Unfold `zsumR`. Conclude with `finsum_mem_eq_finite_toFinset_sum _ h`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem zsumR_eq_sum_toFinset {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (t T : ℝ) (f : ℂ → ℝ)
     (h : (zerosIn χ t T).Finite) :
@@ -22,9 +22,9 @@ theorem zsumR_eq_sum_toFinset {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ 
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[zsumR_eq_sum_toFinset χ t T _ h]`. Simplify using `only [mul_ite, mul_one, mul_zero]`. Rewrite using `[← Finset.sum_filter]`. Apply `Finset.sum_le_sum_of_subset_of_nonneg` to reduce the goal to its premises. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hx` using `[Finset.mem_filter]`. Conclude with `h.mem_toFinset.mpr hx.2`. Introduce `x _ _`. Conclude with `Nat.cast_nonneg _`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sum_indicator_le_zsumR {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (t T : ℝ) (S : Finset ℂ)
     (h : (zerosIn χ t T).Finite) :
@@ -42,21 +42,19 @@ theorem sum_indicator_le_zsumR {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ
 open Classical in
 
 /- English proof (translation)
-Establish `hnn : ∀ j : ℕ, (0 : ℝ) ≤ (j : ℝ)⁻¹ * ((if ρ ∈ zerosIn χ (j : ℝ) 1 then 1 else 0) + (if ρ ∈ zerosIn χ (-(j : ℝ)) 1 then 1 else 0))`. Introduce `j`. Apply `mul_nonneg (inv_nonneg.mpr (Nat.cast_nonneg j))` to reduce the goal to its premises. Apply the tactic sequence `apply add_nonneg <;> split_ifs <;> norm_num`. Distinguish the cases in `h1 : 1 < |ρ.im|`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos h1]`. Take `⟨hre0, hre1, hT, hL⟩` from `hρ`. Rewrite `hT` using `[sub_zero]`. Establish `hk1 : 1 ≤ ⌊|ρ.im|⌋₊` using `Nat.le_floor (by rw [Nat.cast_one]; exact h1.le)`. Establish `hkT : ⌊|ρ.im|⌋₊ ≤ ⌊T⌋₊` using `Nat.floor_mono hT`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkle : (⌊|ρ.im|⌋₊ : ℝ) ≤ |ρ.im|` using `Nat.floor_le (abs_nonneg _)`. Establish `hklt : |ρ.im| < ⌊|ρ.im|⌋₊ + 1` using `Nat.lt_floor_add_one _`. Establish `hkpos : (0 : ℝ) < ⌊|ρ.im|⌋₊` using `by exact_mod_cast hk1`. Establish `hind : (1 : ℝ) ≤ (if ρ ∈ zerosIn χ (⌊|ρ.im|⌋₊ : ℝ) 1 then 1 else 0) + (if ρ ∈ zerosIn χ (-(⌊|ρ.im|⌋₊ : ℝ)) 1 then 1 else 0)`. Break down `le_or_gt 0 ρ.im with him | him` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hmem : ρ ∈ zerosIn χ (⌊|ρ.im|⌋₊ : ℝ) 1`. Use `⟨hre0, hre1, ?_, hL⟩` and prove the remaining obligations. Establish `hab : |ρ.im| = ρ.im` using `abs_of_nonneg him`. Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[if_pos hmem]`. Apply the tactic sequence `split_ifs <;> norm_num`. Establish `hmem : ρ ∈ zerosIn χ (-(⌊|ρ.im|⌋₊ : ℝ)) 1`. Use `⟨hre0, hre1, ?_, hL⟩` and prove the remaining obligations. Establish `hab : |ρ.im| = -ρ.im` using `abs_of_neg him`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith`. Rewrite using `[if_pos hmem]`. Apply the tactic sequence `split_ifs <;> norm_num`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[one_div]`. Conclude with `inv_anti₀ hkpos (hkle.trans (Complex.abs_im_le_norm ρ))`. Use `_ ≤ ((⌊|ρ.im|⌋₊ : ℕ) : ℝ)⁻¹ * ((if ρ ∈ zerosIn χ (⌊|ρ.im|⌋₊ : ℝ) 1 then 1 else 0) + (if ρ ∈ zerosIn χ (-(⌊|ρ.im|⌋₊ : ℝ)) 1 then 1 else 0)) := le_mul_of_one_le_right (inv_nonneg.mpr hkpos.le) hind`. Use `_ ≤ _ := Finset.single_le_sum (fun j _ => hnn j) (Finset.mem_Icc.mpr ⟨hk1, hkT⟩)`. Rewrite using `[if_neg h1]`.
-
-Conclude with `Finset.sum_nonneg (fun j _ => hnn j)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem recip_le_sum_windows {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (T : ℝ) (ρ : ℂ)
     (hρ : ρ ∈ zerosIn χ 0 T) :
@@ -105,39 +103,35 @@ theorem recip_le_sum_windows {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q
     exact Finset.sum_nonneg (fun j _ => hnn j)
 
 /- English proof (translation)
-Introduce and unpack `⟨C0, hC0⟩`. Use `set D := max C0 0 with hD`. Establish `hD0 : 0 ≤ D` using `le_max_right _ _`. Establish `hZ : ∀ (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q), χ.IsPrimitive → ∀ t : ℝ, zsumR χ t 1 (fun _ => 1) ≤ D * Real.log (q * (|t| + 2))`. Introduce `q _ χ hχ t`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hC0 q χ hχ t).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (Real.log_nonneg ?_))` and prove the remaining obligations. Establish `: (1 : ℝ) ≤ q` using `by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne q)`. Use polynomial arithmetic with `[abs_nonneg t]`. Use `⟨12 * D, ?_⟩` and prove the remaining obligations. Introduce `q _ χ hχ T hT`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hq : (1 : ℝ) ≤ q` using `by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne q)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨hfin, _⟩` from `GlobalTheory.T.dirichletLZerosInWindow_finite_and_pos_order q χ 0 T`. Establish `hfin' : ∀ t : ℝ, (zerosIn χ t 1).Finite` using `fun t => (GlobalTheory.T.dirichletLZerosInWindow_finite_and_pos_order q χ t 1).1`. Establish `hN1 : 1 ≤ ⌊T⌋₊` using `Nat.le_floor (by rw [Nat.cast_one]; linarith)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNT : (⌊T⌋₊ : ℝ) ≤ T` using `Nat.floor_le (by linarith)`. Establish `hNpos : (0 : ℝ) < ⌊T⌋₊` using `by exact_mod_cast hN1`. Rewrite using `[zsumR_eq_sum_toFinset χ 0 T _ hfin]`. Establish `hsplit : ∀ k : ℕ, ∑ ρ ∈ hfin.toFinset, (zmult χ ρ : ℝ) * ((k : ℝ)⁻¹ * ((if ρ ∈ zerosIn χ (k : ℝ) 1 then 1 else 0) + (if ρ ∈ zerosIn χ (-(k : ℝ)) 1 then 1 else 0))) = (k : ℝ)⁻¹ * (∑ ρ ∈ hfin.toFinset, (zmult χ ρ : ℝ) * (if ρ ∈ zerosIn χ (k : ℝ) 1 then 1 else 0) + ∑ ρ ∈ hfin.toFins …`. Introduce `k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_add_distrib, Finset.mul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `ρ _`. Expand and normalize the polynomial expressions, which then agree. Establish `hLA : 0 ≤ Real.log (q * (T + 2))` using `Real.log_nonneg (by nlinarith)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `ρ hρ`. Conclude with `mul_le_mul_of_nonneg_left (recip_le_sum_windows χ T ρ (hfin.mem_toFinset.mp hρ)) (Nat.cast_nonneg _)`. Use `_ = ∑ k ∈ Icc 1 ⌊T⌋₊, ∑ ρ ∈ hfin.toFinset, (zmult χ ρ : ℝ) * ((k : ℝ)⁻¹ * ((if ρ ∈ zerosIn χ (k : ℝ) 1 then 1 else 0) + (if ρ ∈ zerosIn χ (-(k : ℝ)) 1 then 1 else 0))) := by`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Repeatedly rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_comm`. Use `_ ≤ ∑ k ∈ Icc 1 ⌊T⌋₊, (k : ℝ)⁻¹ * (2 * D * Real.log (q * (T + 2))) := by`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `k hk`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hk'` using `Finset.mem_Icc.mp hk`. Establish `hkT : (k : ℝ) ≤ T` using `(Nat.cast_le.mpr hk'.2).trans hNT`. Rewrite using `[hsplit k]`. Apply `mul_le_mul_of_nonneg_left _ (inv_nonneg.mpr (Nat.cast_nonneg k))` to reduce the goal to its premises. Establish `e1` using `(sum_indicator_le_zsumR χ (k : ℝ) 1 hfin.toFinset (hfin' _)).trans (hZ q χ hχ k)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `e2` using `(sum_indicator_le_zsumR χ (-(k : ℝ)) 1 hfin.toFinset (hfin' _)).trans (hZ q χ hχ (-(k : ℝ)))`. Rewrite `e2` using `[abs_neg]`. Establish `hlog : Real.log (q * (|(k : ℝ)| + 2)) ≤ Real.log (q * (T + 2))`. Apply `Real.log_le_log (by nlinarith [abs_nonneg (k : ℝ)])` to reduce the goal to its premises. Rewrite using `[abs_of_nonneg (Nat.cast_nonneg k)]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use the polynomial consequences of the given equalities and inequalities. Use `mul_le_mul_of_nonneg_left hlog hD0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = 2 * D * Real.log (q * (T + 2)) * ∑ k ∈ Icc 1 ⌊T⌋₊, (k : ℝ)⁻¹ := by`. Rewrite using `[Finset.mul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `k _`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ 2 * D * Real.log (q * (T + 2)) * (1 + Real.log T) := by`. Apply `mul_le_mul_of_nonneg_left _ (mul_nonneg (by linarith) hLA)` to reduce the goal to its premises.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `harmonic_le_one_add_log ⌊T⌋₊`. Simplify using `only [harmonic_eq_sum_Icc, Rat.cast_sum, Rat.cast_inv, Rat.cast_natCast] at h`. Use `Real.log_le_log hNpos hNT` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ ≤ 12 * D * Real.log (q * T) ^ 2 := by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hqT : 2 ≤ (q : ℝ) * T` using `by nlinarith`. Establish `hu : Real.log 2 ≤ Real.log (q * T)` using `Real.log_le_log (by norm_num) hqT`. Establish `hl2` using `Real.log_two_gt_d9`. Establish `hA : Real.log (q * (T + 2)) ≤ 2 * Real.log (q * T)`. Establish `h` using `Real.log_le_log (by nlinarith : (0 : ℝ) < q * (T + 2)) (by nlinarith : (q : ℝ) * (T + 2) ≤ 2 * (q * T))`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `h` using `[Real.log_mul (by norm_num : (2 : ℝ) ≠ 0) (ne_of_gt (by nlinarith : (0 : ℝ) < q * T))]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hB : 1 + Real.log T ≤ 3 * Real.log (q * T)`. Use `Real.log_le_log (by linarith : (0 : ℝ) < T) (by nlinarith : T ≤ (q : ℝ) * T)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hB0 : 0 ≤ 1 + Real.log T`. Use `Real.log_nonneg (by linarith : (1 : ℝ) ≤ T)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h` using `mul_le_mul hA hB hB0 (by linarith)`. Establish `h'` using `mul_le_mul_of_nonneg_left h (by linarith : (0 : ℝ) ≤ 2 * D)`.
-
-Combine the equalities or inequalities in the displayed calculation. Establish `h` using `hZ q χ hχ 0`. Rewrite `h` using `[abs_zero, zero_add]`. Use `h.trans ?_` and prove the remaining obligations. Establish `h1 : Real.log (q * 2) ≤ Real.log (3 * q)` using `Real.log_le_log (by linarith) (by linarith)`.
-
-Establish `h2 : 0 ≤ Real.log (3 * q)` using `Real.log_nonneg (by linarith)`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h1 hD0, mul_nonneg hD0 h2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem zsumR_recip_le : GlobalTheory.Mem.An.ZeroCount → ∃ C : ℝ, ∀ (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q), χ.IsPrimitive → ∀ T : ℝ, 2 ≤ T → zsumR χ 0 T (fun ρ => if 1 < |ρ.im| then 1 / ‖ρ‖ else 0) ≤ C * Real.log (q * T) ^ 2 ∧ zsumR χ 0 1 (fun _ => 1) ≤ C * Real.log (3 * q) := by
   classical

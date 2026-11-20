@@ -6,19 +6,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.Top UpperTheory.V.HV
 
 /- English proof (translation)
-Introduce `h t hbig O _ _ ψ hψ l e hl hl2 he het`. Establish `hB` using `bchiFacts h t hbig`. Establish `hC` using `hostComp h O ψ hψ`. Use `⟨fun hnB => ?_, fun hinB => ?_⟩` and prove the remaining obligations. Take `⟨_, hlo, hlq, _, _, _, _, hE⟩` from `hB.2.2.2.2 l hl hl2 hnB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hCl` using `hC.2.2 l hl hl2`. Establish `hord : ¬ l ∣ orderOf ψ`. Introduce `hd`. Establish `hd'` using `hd.trans hC.1`. Break down `(Nat.Prime.dvd_mul hl).1 hd' with h2 | h2` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hl2 ((Nat.prime_dvd_prime_iff_eq hl Nat.prime_two).1 (hl.dvd_of_dvd_pow h2))`. Conclude with `hlo h2`. Establish `hP` using `(partOrd _ l hl ψ hC.2.1).2.2.2.2.2.1 hord`. Establish `hth : th0 l ψ = ψ` using `hP.2`. Establish `hchi : l - 1 ∣ 2 * e → chiP l ψ = ψ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hdiv`. Establish `hc1 : comp l ψ = 1` using `hCl.2.2.2 (hE e he het hdiv).2.2`. Use `show th0 l ψ * (comp l (th0 l ψ))⁻¹ = ψ`. Rewrite using `[hth, hc1, inv_one, mul_one]`. Use `⟨hord, hCl.2.2.1 hlq, hth, hP.1, hchi, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Prove the second alternative.
 
-Distinguish the cases in `hdiv : l - 1 ∣ 2 * e`. Distinguish the cases in `h1 : ψ = 1`. Conclude with `Or.inr (Or.inl ⟨hnB, hdiv, h1⟩)`. Distinguish the cases in `hodd : Odd (orderOf ψ)`. Conclude with `Or.inr (Or.inr (Or.inr ⟨hnB, hdiv, hodd, h1⟩))`.
+Consider separately whether the proposition holds or fails. Prove the second alternative. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the first alternative.
 
-Use `Or.inr (Or.inr (Or.inl ⟨(hE e he het hdiv).1, ?_, Or.inr hdiv⟩)) show Even (orderOf (chiP l ψ))` and prove the remaining obligations. Rewrite using `[hchi hdiv]`. Conclude with `Nat.not_odd_iff_even.mp hodd`. Conclude with `Or.inl ⟨hnB, hdiv⟩`. Distinguish the cases in `he1 : e = 1`.
+Consider separately whether the proposition holds or fails. Prove the second alternative. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Conclude with `Or.inr (Or.inr ⟨hinB, he1⟩)`. Establish `h2e : 2 ≤ e` using `by omega`. Distinguish the cases in `hev : Even (orderOf (chiP l ψ))`. Conclude with `Or.inl ⟨h2e, hev, Or.inl hinB⟩`. Conclude with `Or.inr (Or.inl ⟨hinB, h2e, Nat.not_even_iff_odd.mp hev⟩)`.
+Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.HV.cases :
     ∀ (h : Host) (t : ℕ), h.Big t → ∀ (O : Type) [CommRing O] [IsDomain O] (ψ : DirichletCharacter O h.N), h.IsChar ψ → ∀ l e : ℕ, l.Prime → l ≠ 2 → 0 < e → e < t →

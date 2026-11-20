@@ -9,7 +9,7 @@ section
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Unfold `chart`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem chart_conj_mul (f h : GA E a → ℂ) (g : GA E a) :
     chart (fun x => starRingEnd ℂ (f x) * h x) g = fun y => Complex.conjCLE (chart f g y) * chart h g y := by
@@ -20,11 +20,11 @@ private theorem chart_conj_mul (f h : GA E a → ℂ) (g : GA E a) :
 end
 
 /- English proof (translation)
-Introduce `E _ _ _ a φ ψ`. Use `⟨⟨fun x => starRingEnd ℂ (φ.1 x) * ψ.1 x, fun g => ?_⟩, fun _ => rfl, fun X g => ?_⟩` and prove the remaining obligations. Rewrite using `[chart_conj_mul]`. Conclude with `(Complex.conjCLE.contDiff.comp_contDiffOn (φ.2 g)).mul (ψ.2 g)`. Establish `hv : ∀ f : GA E a → ℂ, chart f g (oneL E a) = f g` using `fun f => by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using chart_val f g 1`. Express the relevant statement in the definitionally equal form `fderiv ℝ (chart (fun x => starRingEnd ℂ (φ.1 x) * ψ.1 x) g) (oneL E a) X = starRingEnd ℂ (fderiv ℝ (chart φ.1 g) (oneL E a) X) * ψ.1 g + starRingEnd ℂ (φ.1 g) * fderiv ℝ (chart ψ.1 g) (oneL E a) X`. Establish `h1` using `(Complex.conjCLE.toContinuousLinearMap.hasFDerivAt.comp (oneL E a) (differentiableAt_chart φ.2 g).hasFDerivAt).fun_mul (differentiableAt_chart ψ.2 g).hasFDerivAt`. Rewrite using `[chart_conj_mul]`. Use `(congrArg (fun L => L X) h1.fderiv).trans ?_` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[hv, mul_comm, add_comm]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Lit.Geo.Pf.prodEx :
     UpperTheory.V.Lit.Geo.Pf.ProdEx := by

@@ -18,9 +18,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Small.Free
 
 /- English proof (translation)
-Rewrite using `[← Real.exp_mul]`. Establish `hx : 0 < (s ^ 2)⁻¹ / 3` using `by positivity`. Establish `h1 : -(s ^ 2)⁻¹ * ((1 : ℝ) / 3) = -((s ^ 2)⁻¹ / 3)` using `by ring`. Rewrite using `[h1, Real.exp_neg]`. Establish `h2 : (s ^ 2)⁻¹ / 3 ≤ Real.exp ((s ^ 2)⁻¹ / 3)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the linear relations using `[Real.add_one_le_exp ((s ^ 2)⁻¹ / 3)]`. Establish `h3 : (Real.exp ((s ^ 2)⁻¹ / 3))⁻¹ ≤ ((s ^ 2)⁻¹ / 3)⁻¹` using `inv_anti₀ hx h2`. Establish `h4 : ((s ^ 2)⁻¹ / 3)⁻¹ = 3 * s ^ 2`. Clear the denominators using the available nonvanishing facts. Rewrite `h3` using `[h4]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -39,7 +39,7 @@ theorem rpow_third_le {s : ℝ} (hs : 0 < s) (hs1 : s ≤ 1) :
   nlinarith
 
 /- English proof (translation)
-Unfold `epsT`. Establish `h1 : Real.log (1 / Real.exp (-(s ^ 2)⁻¹)) = (s ^ 2)⁻¹`. Rewrite using `[one_div, ← Real.exp_neg, neg_neg, Real.log_exp]`. Rewrite using `[h1, Real.log_inv, Real.log_pow]`. Use `push_cast`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -53,13 +53,13 @@ theorem epsT_scale (C : ℝ) {s : ℝ} (hs : 0 < s) :
   field_simp
 
 /- English proof (translation)
-Use `set η : ℝ := ε / (2 * (M + 1)) with hη`. Establish `hη0 : 0 < η` using `by positivity`. Use `⟨M * (-Real.log η), fun r hr => ?_⟩` and prove the remaining obligations. Establish `h1 : Real.log (η * r) ≤ η * r - 1` using `Real.log_le_sub_one_of_pos (by positivity)`. Rewrite `h1` using `[Real.log_mul hη0.ne' hr.ne']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : Real.log r ≤ η * r - Real.log η` using `by linarith`. Establish `h3 : M * η ≤ ε / 2`. Rewrite using `[hη]`. Establish `: M * (ε / (2 * (M + 1))) = ε / 2 * (M / (M + 1))`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Establish `h4 : M / (M + 1) ≤ 1`. Rewrite using `[div_le_one (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `h5` using `mul_le_mul_of_nonneg_left h2 hM`. Establish `h6` using `mul_le_mul_of_nonneg_right h3 hr.le`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem exists_mul_log_le (M ε : ℝ) (hM : 0 ≤ M) (hε : 0 < ε) :
     ∃ K : ℝ, ∀ r : ℝ, 0 < r → M * Real.log r ≤ ε / 2 * r + K := by
@@ -83,15 +83,15 @@ theorem exists_mul_log_le (M ε : ℝ) (hM : 0 ≤ M) (hε : 0 < ε) :
   nlinarith
 
 /- English proof (translation)
-Use `set B : ℝ := 2 * A * |C| with hB`. Establish `hB0 : 0 ≤ B` using `by positivity`. Establish `hη : 0 < δ / (B + 1)` using `by positivity`. Take `⟨d, hd, hd'⟩` from `Metric.continuous_iff.1 Real.continuous_mul_log 0 _ hη`. Use `⟨d / 2, by positivity, fun s hs hsd => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `hd' s (by`. Rewrite using `[Real.dist_eq, sub_zero, abs_of_pos hs]`. Use the proof step `linarith)`. Rewrite `h1` using `[Real.dist_eq, zero_mul, sub_zero]`. Rewrite using `[epsT_scale C hs]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : |C * (-2 * Real.log s) * s ^ 2| = 2 * |C| * |s * Real.log s| * s`. Rewrite using `[abs_mul, abs_mul, abs_mul, abs_mul, abs_neg, abs_of_pos (by norm_num : (0 : ℝ) < 2), abs_of_pos hs, abs_of_pos (by positivity : 0 < s ^ 2)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2]`. Establish `h3 : B * |s * Real.log s| ≤ δ`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : (B + 1) * |s * Real.log s| ≤ δ`. Use `(lt_div_iff₀' (by positivity : 0 < B + 1)).1 h1` as an intermediate fact. Conclude with `this.le`. Use polynomial arithmetic with `[abs_nonneg (s * Real.log s)]`. Establish `h5 : A * (2 * |C| * |s * Real.log s| * s) = (B * |s * Real.log s|) * s`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hB]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h5]`. Conclude with `mul_le_mul_of_nonneg_right h3 hs.le`.
+A detailed English derivation is pending.
 -/
 theorem exists_eps_small (A C δ : ℝ) (hA : 0 ≤ A) (hδ : 0 < δ) :
     ∃ s₁ : ℝ, 0 < s₁ ∧ ∀ s, 0 < s → s ≤ s₁ → A * |epsT C (Real.exp (-(s ^ 2)⁻¹))| ≤ δ * s := by
@@ -121,9 +121,9 @@ theorem exists_eps_small (A C δ : ℝ) (hA : 0 ≤ A) (hδ : 0 < δ) :
   exact mul_le_mul_of_nonneg_right h3 hs.le
 
 /- English proof (translation)
-Establish `h2 : s ^ 2 ≤ 1 / (|Real.log t₀| + 1)` using `by nlinarith`. Establish `h3 : 0 < s ^ 2` using `by positivity`. Establish `h4 : |Real.log t₀| + 1 ≤ (s ^ 2)⁻¹`. Rewrite using `[le_inv_comm₀ (by positivity) h3]`. Simplify using `using h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[← Real.exp_log ht₀]`. Use `Real.exp_le_exp.2 ?_` and prove the remaining obligations. Combine the linear relations using `[neg_abs_le (Real.log t₀), le_abs_self (Real.log t₀)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem scale_le {t₀ s : ℝ} (ht₀ : 0 < t₀) (hs : 0 < s) (hs1 : s ≤ 1)
     (hs2 : s ≤ 1 / (|Real.log t₀| + 1)) : Real.exp (-(s ^ 2)⁻¹) ≤ t₀ := by
@@ -139,7 +139,7 @@ theorem scale_le {t₀ s : ℝ} (ht₀ : 0 < t₀) (hs : 0 < s) (hs1 : s ≤ 1)
 variable {e : ℕ} {σ : Type}
 
 /- English proof (translation)
-Use `S.norm_le y` as an intermediate fact. Unfold `rW`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem exp_one_le_rW (S : PB.AnSys e σ) (y : S.X) : Real.exp 1 ≤ rW S.L S.s y := by
   have := S.norm_le y
@@ -147,13 +147,13 @@ theorem exp_one_le_rW (S : PB.AnSys e σ) (y : S.X) : Real.exp 1 ≤ rW S.L S.s 
   linarith
 
 /- English proof (translation)
-The claim follows from `(Real.le_log_iff_exp_le (lt_of_lt_of_le (Real.exp_pos 1) (exp_one_le_rW S y))).2 (exp_one_le_rW S y)`.
+A detailed English derivation is pending.
 -/
 theorem one_le_log_rW (S : PB.AnSys e σ) (y : S.X) : (1 : ℝ) ≤ Real.log (rW S.L S.s y) :=
   (Real.le_log_iff_exp_le (lt_of_lt_of_le (Real.exp_pos 1) (exp_one_le_rW S y))).2 (exp_one_le_rW S y)
 
 /- English proof (translation)
-The claim follows from `|S.ph a y| ≤ |S.C₅| * Real.log (rW S.L S.s y) := by obtain ⟨h1, h2⟩ := (S.sing a).2.2.2 y hy have hl : (1 : ℝ) ≤ Real.log (rW S.L S.s y) := one_le_log_rW S y have hc : S.C₅ ≤ |S.C₅| := le_abs_self _ have hc' : -S.C₅ ≤ |S.C₅| := neg_le_abs _ rw [abs_le] constructor <;> nlinarith [ …`.
+A detailed English derivation is pending.
 -/
 theorem abs_ph_le (S : PB.AnSys e σ) (a : σ) {y : S.X} (hy : y ∈ S.open') :
     |S.ph a y| ≤ |S.C₅| * Real.log (rW S.L S.s y) := by
@@ -165,7 +165,7 @@ theorem abs_ph_le (S : PB.AnSys e σ) (a : σ) {y : S.X} (hy : y ∈ S.open') :
   constructor <;> nlinarith [abs_nonneg S.C₅]
 
 /- English proof (translation)
-Take `⟨-, -, h3, -, -, -, h7, -⟩` from `(S.reg a).2.2 t ht ht'`. Establish `hr : 0 ≤ rW S.L S.s y` using `(Real.exp_pos 1).le.trans (exp_one_le_rW S y)`. Use `⟨sub_nonneg.2 (h3 y hy), ?_⟩` and prove the remaining obligations. Establish `h8` using `h7 y hy`. Establish `h9 : epsT S.C t * rW S.L S.s y ≤ |epsT S.C t| * rW S.L S.s y` using `mul_le_mul_of_nonneg_right (le_abs_self _) hr`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -182,23 +182,21 @@ theorem phT_sub_ph_bound (S : PB.AnSys e σ) (a : σ) {t : ℝ} (ht : 0 < t) (ht
   linarith
 
 /- English proof (translation)
-Use `set M : ℝ := (∑ a, |n a|) * |S.C₅| with hM`. Establish `hM0 : 0 ≤ M` using `mul_nonneg (Finset.sum_nonneg fun _ _ => abs_nonneg _) (abs_nonneg _)`. Take `⟨K, hK⟩` from `exists_mul_log_le M ε hM0 hε`. Take `⟨s₁, hs₁, hsm⟩` from `exists_eps_small |abelian₂| S.C (ε / 2) (abs_nonneg _) (by positivity)`. Use `⟨CE + K + 3 * |abelian₂|, min s₁ (min 1 (1 / (|Real.log S.t₀| + 1))), lt_min hs₁ (lt_min one_pos (by positivity)), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hs hsle c hc y hy`. Establish `hsA : s ≤ s₁` using `hsle.trans (min_le_left _ _)`. Establish `hsB : s ≤ 1` using `hsle.trans ((min_le_right _ _).trans (min_le_left _ _))`. Establish `hsC : s ≤ 1 / (|Real.log S.t₀| + 1)` using `hsle.trans ((min_le_right _ _).trans (min_le_right _ _))`. Establish `ht : Real.exp (-(s ^ 2)⁻¹) ≤ S.t₀` using `scale_le ht₀ hs hsB hsC`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht0 : 0 < Real.exp (-(s ^ 2)⁻¹)` using `Real.exp_pos _`. Use `set t := Real.exp (-(s ^ 2)⁻¹) with htdef`. Use `set r := rW S.L S.s y with hr`. Establish `hr0 : 0 < r` using `lt_of_lt_of_le (Real.exp_pos 1) (exp_one_le_rW S y)`. Use `set Er : ℝ := t ^ ((1 : ℝ) / 3) + |epsT S.C t| * r with hEr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hEr0 : 0 ≤ Er` using `by positivity`. Establish `h1 : ∑ a, c a * (S.phT a t y - S.ph a y) ≤ |abelian₂| * Er`. Establish `h2 : ∑ a, c a * (S.phT a t y - S.ph a y) ≤ ∑ a, |c a| * Er`. Use `Finset.sum_le_sum fun a _ => ?_` and prove the remaining obligations. Take `⟨h3, h4⟩` from `phT_sub_ph_bound S a ht0 ht hy`.
+Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite `h2` using `[← Finset.sum_mul]`. Conclude with `h2.trans (mul_le_mul_of_nonneg_right (hc.trans (le_abs_self _)) hEr0)`. Establish `h5 : -∑ a, n a * S.ph a y ≤ M * Real.log r`. Rewrite using `[← Finset.sum_neg_distrib, hM, Finset.sum_mul, Finset.sum_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.sum_le_sum fun a _ => ?_` and prove the remaining obligations. Establish `h6` using `abs_ph_le S a hy`. Combine the equalities or inequalities in the displayed calculation. Establish `h7` using `hK r hr0`. Establish `h8` using `hE y hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h9 : ∑ a, c a * S.phT a t y - ∑ a, (c a + s * n a) * S.ph a y = ∑ a, c a * (S.phT a t y - S.ph a y) - s * ∑ a, n a * S.ph a y`. Rewrite using `[Finset.mul_sum, ← Finset.sum_sub_distrib, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun a _ => by ring`. Establish `h10` using `rpow_third_le hs hsB`. Establish `h11` using `hsm s hs hsA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h12 : |abelian₂| * t ^ ((1 : ℝ) / 3) ≤ |abelian₂| * (3 * s)` using `mul_le_mul_of_nonneg_left h10 (abs_nonneg _)`. Establish `h13 : |abelian₂| * |epsT S.C t| * r ≤ ε / 2 * s * r` using `mul_le_mul_of_nonneg_right h11 hr0.le`. Establish `h14 : s * lE y ≤ s * (-ε * r + CE)` using `mul_le_mul_of_nonneg_left h8 hs.le`. Establish `h15 : s * -∑ a, n a * S.ph a y ≤ s * (ε / 2 * r + K)` using `mul_le_mul_of_nonneg_left (h5.trans h7) hs.le`. Establish `h16 : |abelian₂| * Er = |abelian₂| * t ^ ((1 : ℝ) / 3) + |abelian₂| * |epsT S.C t| * r`.
-
-Rewrite using `[hEr]`. Expand and normalize the polynomial expressions, which then agree. Use the polynomial consequences of the given equalities and inequalities.
+Expand and normalize the polynomial expressions, which then agree. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem regular_bound [Fintype σ] (S : PB.AnSys e σ) (n : σ → ℝ) (lE : S.X → ℝ) (ε CE abelian₂ : ℝ) (hε : 0 < ε)
     (ht₀ : 0 < S.t₀) (hE : ∀ y ∈ S.open', lE y ≤ -ε * rW S.L S.s y + CE) :
@@ -263,71 +261,65 @@ end GlobalTheory.CompanionTheory.Ar.Small.Free
 namespace GlobalTheory.CompanionTheory.Ar.Small
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O _ β Y S RM Sys Fx Or lam nu n' hn hn'`. Take `⟨n₀, N₀, hn₀, hN₀, hε0, hεm⟩` from `GlobalTheory.T.root_origin_weight_identity E H D l Xo c O β Y S RM Sys Fx Or nu hn`. Establish `hkA : RM.kA = Fx.kA` using `Or.kA_eq`. Establish `hk0 : 0 < Fx.kA` using `hkA ▸ RM.kA_pos`. Establish `hq0 : 0 < Fx.kA * Fx.q'` using `Nat.mul_pos hk0 Fx.q'_pos`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq0R : (0 : ℝ) < ((Fx.kA * Fx.q' : ℕ) : ℝ)` using `by exact_mod_cast hq0`. Establish `hkR : (Fx.kA : ℝ) ≠ 0` using `by exact_mod_cast hk0.ne'`. Establish `hns : ∀ r, n₀ (some r) = -Fx.n r`. Introduce `r`. Establish `h1` using `hn₀ (some r)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `hn r`. Establish `: (n₀ (some r) : ℝ) = ((-Fx.n r : ℤ) : ℝ)`. Rewrite using `[h1]`. Move the coercions through the operations in `at h2 ⊢`. Rewrite using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[RootModel.coef]`. Conclude with `this` after adjusting the coercions. Establish `hnn : n₀ none = -(Fx.q' : ℤ)`. Establish `h1` using `hn₀ none`. Establish `: (n₀ none : ℝ) = ((-(Fx.q' : ℤ) : ℤ) : ℝ)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Simplify using `only [RootModel.coef, hkA]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Conclude with `this` after adjusting the coercions.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `set ε : RM.Ω := (N₀ : RM.Ω) * Or.g Fx.sE * ∏ r, Or.e r ^ Fx.n r with hε`. Set `m : Option (RootIx D) → ℤ` to `fun o => o.elim (-(Fx.q' : ℤ)) fun r => Fx.n r - if h : (r.2 : ℕ) + 1 < D.p + D.q then Fx.n (r.1, ⟨r.2 + 1, h⟩) else 0`. Establish `hm : ∀ r : RootIx D, (m (some r) : ℝ) = (Fx.kA * Fx.q' : ℕ) * fundCo (nu r.1) r.2`. Introduce `r`. Simplify using `only [m, Option.elim, fundCo]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `split_ifs with h`. Use `push_cast`. Establish `e1` using `hn r`. Establish `e2` using `hn (r.1, ⟨r.2 + 1, h⟩)`. Move the coercions through the operations in `at e1 e2`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[e1, e2]`. Expand and normalize the polynomial expressions, which then agree. Establish `e1` using `hn r`. Move the coercions through the operations in `at e1 ⊢`. Rewrite using `[e1]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hmn : m none = -(Fx.q' : ℤ)` using `rfl`. Use `set Eh : HermLine RM.ι := combLine Or.Re.ref m with hEh`. Establish `hEa : Eh.a = (combLine (RM.line 1) n₀).a` using `GlobalTheory.T.root_origin_multiplicity_bound E H D l Xo c O β Y S RM Sys Fx Or nu n₀ m hn hns hnn hm hmn`. Establish `hEs : IsSmoothHerm Eh` using `isSmoothHerm_comb Or.Re.ref_smooth m`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hrep` using `GlobalTheory.T.root_origin_degree_count E H D l Xo c O β Y S RM Sys Fx Or n₀ N₀ hns hnn hε0`. Establish `hbd` using `GlobalTheory.T.root_origin_degree_count_alt E H D l Xo c O β Y S RM Sys Fx Or n₀ N₀ hns hnn hε0`. Take `⟨δ, C₁, hδ, hdec⟩` from `GlobalTheory.T.local_multihomog_quotient_exists RM.K RM.ι RM.Ω RM.y Or.Re.J _ Or.Re.R _ Sys Or.Re.π Or.Re.holo Eh hEs ε (fun x => by`. Take `⟨dg, dh, G, Hf, h1, h2, h3, h4, -, h6⟩` from `hrep _ (Or.Re.R.mem x x (Or.Re.R.mem_U x))`. Conclude with `⟨dg, dh, G, Hf, h1, h2, by rw [hEa]; exact h3, h4, h6⟩)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use the proof step `(fun x dg dh G Hf h1 h2 h3 h4 h5 h6 => hbd x dg dh G Hf h1 h2 (by rw [hEa] at h3; exact h3) h4 h5 h6)`. Take `⟨z₀, hz₀, hz₀J⟩` from `GroundTheory.Heights₂.Heights.HilbertSamuel.exists_mcPts_not_mem_mcPts Or.Re.arith Or.Re.R.nondeg`. Take `⟨dg₁, dh₁, G₁, H₁, hG₁, hH₁, hd₁, hy₁, hy₁', hz₁⟩` from `hrep z₀ hz₀`. Take `⟨T, hT, hJT⟩` from `Or.Re.R.homog`. Choose the witnesses or unpack the hypotheses as in `⟨f, hfT, hfP⟩ : ∃ f ∈ T, f ∉ RM.P := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `Or.Re.R.nondeg (hJT ▸ Ideal.span_le.2 hc)`. Take `⟨df, hf⟩` from `hT f hfT`. Establish `hfJ : f ∈ Or.Re.J` using `hJT ▸ Ideal.subset_span hfT`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hPprime : (mCoordIdeal RM.y).IsPrime` using `RingHom.ker_isPrime _`. Establish `hG₁P : G₁ ∉ mCoordIdeal RM.y` using `fun h => by`. Use `aeval_eq_zero_of_mem RM.y h` as an intermediate fact. Rewrite `this` using `[hy₁]`. Conclude with `(mul_ne_zero hε0 hy₁') this`.
+Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hH₁P : H₁ ∉ mCoordIdeal RM.y` using `fun h => hy₁' (aeval_eq_zero_of_mem RM.y h)`. Establish `hu : IsFormOff (mCoordIdeal RM.y) (f * (G₁ * H₁))`. Use `⟨⟨_, isMultiHomog_mul hf (isMultiHomog_mul hG₁ hH₁)⟩, fun h => ?_⟩` and prove the remaining obligations. Break down `hPprime.mem_or_mem h with h | h` into its components or cases. Conclude with `hfP h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `hPprime.mem_or_mem h with h | h` into its components or cases. Conclude with `hG₁P h`. Conclude with `hH₁P h`. Set `nA : Option (RootIx D) → ℝ` to `fun o => o.elim 0 fun r => fundCo (nu r.1) r.2`. Set `lE : Sys.X → ℝ` to `fun y => -(δ / ((Fx.kA * Fx.q' : ℕ) : ℝ)) * rW Sys.L Sys.s y + C₁ / ((Fx.kA * Fx.q' : ℕ) : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `abelian₂ : ℝ` to `∑ r : RootIx D, (|fundCo (lam r.1) r.2| + |fundCo (nu r.1) r.2|)`. Establish `ht₀ : 0 < Sys.t₀` using `(Sys.reg none).1`. Take `⟨C', s₁, hs₁, hA⟩` from `Free.regular_bound Sys nA lE (δ / ((Fx.kA * Fx.q' : ℕ) : ℝ)) (C₁ / ((Fx.kA * Fx.q' : ℕ) : ℝ)) abelian₂ (div_pos hδ hq0R) ht₀ (fun y _ => le_refl _)`. Use `set L₀ := -Real.log Sys.t₀ with hL₀`. Use `⟨Fx.kA * Fx.q', n₀, ε, f * (G₁ * H₁), max C' 0, min s₁ (min 1 (1 / (|L₀| + 1))), hq0, hn₀, hε0, hεm, hu, le_max_right _ _, lt_min hs₁ (lt_min one_pos (by positivity)), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions.
 
-Introduce `s hs hsle z hz huz v hv hv0`. Establish `hsA : s ≤ s₁` using `hsle.trans (min_le_left _ _)`. Establish `hsC : s ≤ 1` using `hsle.trans ((min_le_right _ _).trans (min_le_left _ _))`. Establish `hsD : s ≤ 1 / (|L₀| + 1)` using `hsle.trans ((min_le_right _ _).trans (min_le_right _ _))`. Establish `hscale : scale s ≤ Sys.t₀`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `h1 : L₀ ≤ (s ^ 2)⁻¹`. Establish `h2 : s ^ 2 ≤ 1 / (|L₀| + 1)` using `by nlinarith`. Establish `h3 : 0 < s ^ 2` using `by positivity`. Establish `h4 : |L₀| + 1 ≤ (s ^ 2)⁻¹`. Rewrite using `[le_inv_comm₀ (by positivity) h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `using h2`. Combine the linear relations using `[le_abs_self L₀]`. Unfold `scale`. Rewrite using `[← Real.exp_log ht₀]`. Use `Real.exp_le_exp.2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [map_mul, mul_ne_zero_iff] at huz`. Take `⟨hfz, hGz, hHz⟩` from `huz`. Establish `hzJ : z ∉ mcPts Or.Re.J` using `fun hh => hfz (by`. Use `hh.2 f hfJ` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[eval_map]`. Rewrite using `[aeval_def, algebraMap_int_eq]`. Conclude with `this)`. Take `⟨x, cc, hcc, hx⟩` from `Or.Re.R.surj z hz hzJ`. Establish `hGx : aeval (Or.Re.R.lift x x) G₁ ≠ (0 : ℂ)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hx, aeval_scale hG₁]`. Conclude with `mul_ne_zero (Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hcc k)) hGz`. Establish `hHx : aeval (Or.Re.R.lift x x) H₁ ≠ (0 : ℂ)`. Rewrite using `[hx, aeval_scale hH₁]`. Conclude with `mul_ne_zero (Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hcc k)) hHz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hπ : Or.Re.π x ∈ Sys.open'` using `hbd x dg₁ dh₁ G₁ H₁ hG₁ hH₁ hd₁ hy₁ hGx hHx`. Establish `hv' : HasVal RM.y Eh.a ε (Or.Re.R.lift x x) (v * ∏ k, cc k ^ (combLine (RM.line 1) n₀).a k)`. Rewrite using `[hEa, hx]`. Conclude with `hasVal_scale cc hcc hv`. Establish `hv'0 : v * ∏ k, cc k ^ (combLine (RM.line 1) n₀).a k ≠ 0` using `mul_ne_zero hv0 (Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hcc k))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hD` using `hdec x hπ _ hv' hv'0`. Establish `hO` using `GlobalTheory.T.root_origin_weight_comparison_shift E H D l Xo c O β Y S RM Sys Fx Or lam nu n' n₀ (Fx.kA * Fx.q') s (scale s) cc z v hq0 hn' hn₀ hcc hz.1 hv0`. Rewrite `hO` using `[← hx]`. Establish `hI` using `GlobalTheory.T.root_origin_weight_comparison E H D l Xo c O β Y S RM Sys Fx Or lam nu n' s x hn' hscale hπ`. Set `co : Option (RootIx D) → ℝ` to `fun o => o.elim 0 fun r => fundCo ((lam - s • nu) r.1) r.2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hco : ∀ r : RootIx D, fundCo ((lam - s • nu) r.1) r.2 = fundCo (lam r.1) r.2 - s * fundCo (nu r.1) r.2`. Introduce `r`. Establish `: (lam - s • nu) r.1 = lam r.1 - s • nu r.1` using `rfl`. Rewrite using `[this, fundCo_sub, fundCo_smul]`. Establish `hLam : ∑ o, |co o| ≤ abelian₂`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fintype.sum_option]`. Simplify using `only [co, Option.elim, abs_zero, zero_add]`. Use `Finset.sum_le_sum fun r _ => ?_` and prove the remaining obligations. Rewrite using `[hco]`. Establish `h1 : |s * fundCo (nu r.1) r.2| ≤ |fundCo (nu r.1) r.2|`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[abs_mul, abs_of_pos hs]`. Use polynomial arithmetic with `[abs_nonneg (fundCo (nu r.1) r.2)]`. Rewrite using `[sub_eq_add_neg]`. Use `(abs_add_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[abs_neg]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hAe` using `hA s hs hsA co hLam _ hπ`. Rewrite `hAe` using `[Fintype.sum_option, Fintype.sum_option]`. Simplify using `only [co, nA, Option.elim, zero_mul, mul_zero, add_zero, zero_add] at hAe`. Establish `hlog : Real.log (Eh.h (Or.Re.R.lift x x)) = ∑ r : RootIx D, (m (some r) : ℝ) * Real.log ((Or.Re.ref (some r)).h (Or.Re.R.lift x x)) - Fx.q' * Real.log (RM.A.h (Or.Re.R.lift x x))`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hwb` using `(Or.Re.R.mem x x (Or.Re.R.mem_U x)).1`. Use `show Real.log (∏ o, (Or.Re.ref o).h (Or.Re.R.lift x x) ^ m o) = _`. Rewrite using `[Real.log_prod (fun o _ => zpow_ne_zero _ ((Or.Re.ref o).pos _ hwb).ne'), Fintype.sum_option]`. Simplify using `only [Real.log_zpow]`. Rewrite using `[Or.ref_none.2 _ (Or.Re.R.mem x x (Or.Re.R.mem_U x)), hmn]`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hsum : ∑ r : RootIx D, (m (some r) : ℝ) * Real.log ((Or.Re.ref (some r)).h (Or.Re.R.lift x x)) = ((Fx.kA * Fx.q' : ℕ) : ℝ) * ∑ r : RootIx D, fundCo (nu r.1) r.2 * Real.log ((Or.Re.ref (some r)).h (Or.Re.R.lift x x))`. Simplify using `only [hm, Finset.mul_sum, mul_assoc]`. Establish `hq'R : (Fx.q' : ℝ) ≠ 0` using `by exact_mod_cast Fx.q'_pos.ne'`.
-
-Establish `hq : s / ((Fx.kA * Fx.q' : ℕ) : ℝ) * Real.log (Eh.h (Or.Re.R.lift x x)) = s * ∑ r : RootIx D, fundCo (nu r.1) r.2 * Real.log ((Or.Re.ref (some r)).h (Or.Re.R.lift x x)) - s / RM.kA * Real.log (RM.A.h (Or.Re.R.lift x x))`. Rewrite using `[hlog, hsum, hkA]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `hmul` using `mul_le_mul_of_nonneg_left hD (by positivity : 0 ≤ s / ((Fx.kA * Fx.q' : ℕ) : ℝ))`.
-
-Rewrite `hmul` using `[mul_sub]`. Establish `hlE : s * lE (Or.Re.π x) = s / ((Fx.kA * Fx.q' : ℕ) : ℝ) * (-δ * rW Sys.L Sys.s (Or.Re.π x) + C₁)`. Simplify using `only [lE]`. Clear the denominators using the available nonvanishing facts. Establish `hsumeq : ∑ r : RootIx D, (fundCo ((lam - s • nu) r.1) r.2 + s * fundCo (nu r.1) r.2) * Sys.ph (some r) (Or.Re.π x) = ∑ r : RootIx D, fundCo (lam r.1) r.2 * Sys.ph (some r) (Or.Re.π x)` using `Finset.sum_congr rfl fun r _ => by rw [hco]; ring`.
-
-Establish `hsc : Real.exp (-(s ^ 2)⁻¹) = scale s` using `rfl`. Rewrite `hAe` using `[hsumeq, hsc]`. Establish `hC : C' * s ≤ max C' 0 * s` using `mul_le_mul_of_nonneg_right (le_max_left _ _) hs.le`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem root_origin_weight_free : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (RM : RootModel (CMType H) (D.p + D.q)) (Sys : PB.AnSys (dimFl (CMType H) (D.p + D.q)) (Option (RootIx D))) (Fx : FixedData Y Sys) (Or : RootOrigin Y S RM Fx) (lam nu : Wt (CMType H) (D.p + D.q)) (n' : Option (RootIx D) → ℤ), (∀ r, (Fx.n r : ℝ) = (Fx.kA * Fx.q' : ℕ) * nu r.1 r.2) → (∀ j, (n' j : ℝ) = RM.coef lam 0 j) → ∃ (q₀ : ℕ) (n₀ : Option (RootIx D) → ℤ) (ε : RM.Ω) (u : MRing RM.ι) (C s₀ : ℝ), 0 < q₀ ∧ (∀ j, (n₀ j : ℝ) = q₀ * RM.coef nu (-1) j) ∧ ε ≠ 0 ∧ ε ∈ chartLatNm RM.y (combLine (RM.line 1) n₀).a 1 ∧ IsFormOff (mCoordIdeal RM.y) u ∧ 0 ≤ C ∧ 0 < s₀ ∧ ∀ s : ℝ, 0 < s → s ≤ s₀ → ∀ z ∈ mcPts (mCoordIdeal RM.y), aeval z u ≠ 0 → ∀ x : ℂ, HasVal RM.y (combLine (RM.line 1) n₀).a ε z x → x ≠ 0 → s / q₀ * Real.log ‖x‖ + RM.weight (scale s) (lam - s • nu) s z ≤ C * s + Real.log (∏ r, (Or.sing r).h z ^ n' (some r)) := by
   intro E _ _ _ H D l Xo c O _ β Y S RM Sys Fx Or lam nu n' hn hn'

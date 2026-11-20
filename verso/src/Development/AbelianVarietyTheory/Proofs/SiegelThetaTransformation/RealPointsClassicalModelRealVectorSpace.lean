@@ -20,9 +20,9 @@ open GlobalTheory.FockCompare
 variable {D : D7}
 
 /- English proof (translation)
-Set `e0 : AF D.host.F` to `((1 : Ainf D.host.F), (0 : Af D.host.F))`. Set `e : AE D` to `e0 ⊗ₜ[D.host.F] (1 : D.host.E)`. Establish `hi : infPart D e = 1`. Simplify using `only [infPart, e, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul, AlgHom.coe_id, id_eq]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `hf : finPart D e = 0`. Simplify using `only [finPart, e, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul, AlgHom.coe_id, id_eq]`. Conclude with `TensorProduct.zero_tmul _ _`. Establish `he : e * a = 0` using `h.ext _ (by rw [map_mul, hf, zero_mul]) fun τ => by rw [map_mul, hi, one_mul]; exact ha τ`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem infPart_eq_zero {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} (h : Chart θ σ) (a : AE D)
     (ha : ∀ τ, θ τ (infPart D a) = 0) : infPart D a = 0 := by
@@ -67,21 +67,21 @@ theorem realPt_apply (C : Ctx S T) (w : WO S T) (s : C.X.Ψ) (k : Fin S.rank) (a
     C.realPt w s k a = conj (C.θ (C.m.e.symm s) (infPart D (w a k))) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s k a`. Simplify using `only [realPt_apply, Matrix.sub_apply, map_sub, Pi.sub_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem realPt_sub (C : Ctx S T) (w w' : WO S T) : C.realPt (w - w') = C.realPt w - C.realPt w' := by
   funext s k a
   simp only [realPt_apply, Matrix.sub_apply, map_sub, Pi.sub_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s k a`. Simplify using `only [realPt_apply, Matrix.add_apply, map_add, Pi.add_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem realPt_add (C : Ctx S T) (w w' : WO S T) : C.realPt (w + w') = C.realPt w + C.realPt w' := by
   funext s k a
   simp only [realPt_apply, Matrix.add_apply, map_add, Pi.add_apply]
 
 /- English proof (translation)
-Unfold `actO`. Rewrite using `[Matrix.map_mul, Matrix.map_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_actO {B : Type} [CommRing B] (f : AE D →+* B) (h : GA D S) (g : GA D T) (w : WO S T) :
     (actO S T h g w).map f = (mt T g).map f * w.map f * (mt S h⁻¹).map f := by
@@ -89,9 +89,9 @@ theorem map_actO {B : Type} [CommRing B] (f : AE D →+* B) (h : GA D S) (g : GA
   rw [Matrix.map_mul, Matrix.map_mul]
 
 /- English proof (translation)
-Unfold `IsLineAt at hL hL'`. Use `Matrix.ext fun a k => sub_eq_zero.mp (h.ext _ ?_ fun τ' => ?_)` and prove the remaining obligations. Establish `h1` using `congrFun (congrFun (hL.2.1 t) a) k`. Establish `h2` using `congrFun (congrFun (hL'.2.1 t) a) k`. Simplify using `only [Matrix.map_apply, Matrix.zero_apply] at h1 h2`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_sub, h1, h2, sub_zero]`. Establish `h1` using `congrFun (congrFun (hL.2.2 t τ') a) k`. Establish `h2` using `congrFun (congrFun (hL'.2.2 t τ') a) k`. Simplify using `only [compAt, Matrix.map_apply] at h1 h2`. Rewrite using `[map_sub, map_sub, h1, h2, sub_self]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem isLineAt_apply_unique {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} (h : Chart θ σ) {m n : ℕ}
     {τ : D.what₂.Tau} {z : Matrix (Fin m) (Fin n) ℂ} {L L' : ℝ →+ Mx D m n}
@@ -108,31 +108,29 @@ private theorem isLineAt_apply_unique {θ : InfFam D} {σ : (D.what₂.Tau → �
     rw [map_sub, map_sub, h1, h2, sub_self]
 
 /- English proof (translation)
-Introduce `D S T C`. Take `⟨σ, hσ⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart C.inf`. Establish `hRfin : ∀ v a k, finPart D (realOf C σ v a k) = 0` using `fun v a k => hσ.fin fun τ => conj (v (C.m.e τ) k a)`. Establish `hRcomp : ∀ v a k τ, C.θ τ (infPart D (realOf C σ v a k)) = conj (v (C.m.e τ) k a)` using `fun v a k τ => hσ.comp (fun τ => conj (v (C.m.e τ) k a)) τ`. Establish `hRreal : ∀ v, IsRealPt (realOf C σ v)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `v`. Use `show (realOf C σ v).map (finPart D) = 0`. Use `Matrix.ext fun a k => ?_` and prove the remaining obligations. Rewrite using `[Matrix.map_apply, hRfin]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hReal : ∀ v, C.realPt (realOf C σ v) = v`. Introduce `v`. Use function extensionality and compare the values at `s k a`. Rewrite using `[realPt_apply, hRcomp]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hRcont : Continuous (realOf C σ)`. Use `continuous_pi fun a => continuous_pi fun k => ?_` and prove the remaining obligations. Conclude with `hσ.cont.comp (continuous_pi fun τ => Complex.continuous_conj.comp ((continuous_apply a).comp ((continuous_apply k).comp (continuous_apply (C.m.e τ)))))`. Use `⟨realOf C σ, hRcont, ?_, fun w w' => realPt_add C w w', fun v => ⟨hRreal v, hReal v⟩, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `continuous_pi fun s => continuous_pi fun k => continuous_pi fun a => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [realPt_apply]`. Conclude with `Complex.continuous_conj.comp ((GlobalTheory.FockCompare.continuous_comp C.inf _).comp ((continuous_apply k).comp (continuous_apply a)))`. Introduce `w hw`. Establish `hw' : w.map (finPart D) = 0` using `hw`. Use `Matrix.ext fun a k => sub_eq_zero.mp (hσ.ext _ ?_ fun τ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : finPart D (w a k) = 0` using `by simpa using congrFun (congrFun hw' a) k`. Rewrite using `[map_sub, hRfin, h1, sub_zero]`. Rewrite using `[map_sub, map_sub, hRcomp, realPt_apply]`. Simplify using the standard rewrite rules. Introduce `w`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (w - realOf C σ (C.realPt w)).map (infPart D) = 0`. Use `Matrix.ext fun a k => ?_` and prove the remaining obligations. Rewrite using `[Matrix.map_apply, Matrix.zero_apply, Matrix.sub_apply]`. Use `infPart_eq_zero hσ _ fun τ => ?_` and prove the remaining obligations. Rewrite using `[map_sub, map_sub, hRcomp, realPt_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using the standard rewrite rules. Introduce `u hu`. Establish `hu' : u.map (infPart D) = 0` using `hu`. Use function extensionality and compare the values at `s k a`. Establish `h1 : infPart D (u a k) = 0` using `by simpa using congrFun (congrFun hu' a) k`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `[realPt_apply, h1]`. Introduce `τ z t`. Establish `hL : IsLineAt C.θ τ z ((realOf C σ).comp ((smulAddHom ℝ (WR C.X S.rank)).flip (Pi.single (C.m.e τ) fun k a => conj (z a k))))`. Unfold `IsLineAt`. Use `⟨hRcont.comp (continuous_id.smul continuous_const), fun t => hRreal _, fun t τ' => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `Matrix.ext fun a k => ?_` and prove the remaining obligations. Simplify using `only [compAt, Matrix.map_apply, AddMonoidHom.coe_comp, Function.comp_apply, AddMonoidHom.flip_apply, smulAddHom_apply]`. Rewrite using `[hRcomp]`. Distinguish the cases in `hτ : τ' = τ`. Substitute `hτ` using the available equality.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `[Complex.real_smul]`. Simplify using `[hτ]`. Establish `hE : IsLineAt C.θ τ z (lineAt C.θ τ z)`. Unfold `lineAt`. Conclude with `Classical.epsilon_spec ⟨_, hL⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `isLineAt_apply_unique hσ hE hL t`. Introduce `h g w`. Use `⟨fun hw => ?_, fun hw => ?_, fun τ => map_actO ((C.θ τ).comp (infPart D)) h g w⟩` and prove the remaining obligations. Establish `hw' : w.map (finPart D) = 0` using `hw show (actO S T h g w).map (finPart D) = 0`. Rewrite using `[map_actO, hw', Matrix.mul_zero, Matrix.zero_mul]`.
-
-Establish `hw' : w.map (infPart D) = 0` using `hw show (actO S T h g w).map (infPart D) = 0`. Rewrite using `[map_actO, hw', Matrix.mul_zero, Matrix.zero_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem real_points : ∀ (D : D7) (S T : HSp D) (C : Ctx S T), ∃ R : WR C.X S.rank →+ WO S T, Continuous R ∧ Continuous C.realPt ∧ (∀ w w', C.realPt (w + w') = C.realPt w + C.realPt w') ∧ (∀ v, IsRealPt (R v) ∧ C.realPt (R v) = v) ∧ (∀ w, IsRealPt w → R (C.realPt w) = w) ∧ (∀ w, IsFinPt (w - R (C.realPt w))) ∧ (∀ u, IsFinPt u → C.realPt u = 0) ∧ (∀ (τ : D.what₂.Tau) (z : Matrix (Fin T.rank) (Fin S.rank) ℂ) (t : ℝ), lineAt C.θ τ z t = R (t • (Pi.single (C.m.e τ) (fun k a => conj (z a k)) : WR C.X S.rank))) ∧ ∀ (h : GA D S) (g : GA D T) (w : WO S T), (IsRealPt w → IsRealPt (actO S T h g w)) ∧ (IsFinPt w → IsFinPt (actO S T h g w)) ∧ ∀ τ, compAt C.θ τ (actO S T h g w) = compAt C.θ τ (mt T g) * compAt C.θ τ w * compAt C.θ τ (mt S h⁻¹) := by
   intro D S T C

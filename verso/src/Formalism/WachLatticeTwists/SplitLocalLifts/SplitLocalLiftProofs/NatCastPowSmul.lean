@@ -8,7 +8,7 @@ namespace Formalism.RepresentationBoundsCohomology.JL
 open Formalism.CoboundaryTransfers Formalism.RepresentationBoundsCohomology.N2
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul O ((ℓ : ℤ_[ℓ]) ^ e) x, map_pow, map_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem natCast_pow_smul (ℓ : ℕ) [Fact ℓ.Prime] {O : Type*} [CommRing O] [Algebra ℤ_[ℓ] O]
     {H : Type*} [AddCommGroup H] [Module O H] [Module ℤ_[ℓ] H] [IsScalarTower ℤ_[ℓ] O H]
@@ -16,9 +16,9 @@ theorem natCast_pow_smul (ℓ : ℕ) [Fact ℓ.Prime] {O : Type*} [CommRing O] [
   rw [← algebraMap_smul O ((ℓ : ℤ_[ℓ]) ^ e) x, map_pow, map_natCast]
 
 /- English proof (translation)
-Introduce `ℓ _ O _ _ H₁ H₂ _ _ _ _ _ _ _ _ Hf₁ Hf₂ g e`. Prove the components needed by the constructor for the conclusion. Introduce `h κ hκ`. Take `⟨κ₁, h₁, h₂⟩` from `h κ hκ`. Conclude with `⟨κ₁, h₁, by rw [← natCast_pow_smul ℓ]; exact h₂⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `h κ hκ`. Take `⟨κ₁, h₁, h₂⟩` from `h κ hκ`. Conclude with `⟨κ₁, h₁, by rw [natCast_pow_smul ℓ (O := O)]; exact h₂⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem scal : StatScal := by
   intro ℓ _ O _ _ H₁ H₂ _ _ _ _ _ _ _ _ Hf₁ Hf₂ g e
@@ -31,7 +31,7 @@ theorem scal : StatScal := by
     exact ⟨κ₁, h₁, by rw [natCast_pow_smul ℓ (O := O)]; exact h₂⟩
 
 /- English proof (translation)
-Introduce `O _ ℓ H₁ H₂ _ _ _ _ Hf₁ Hf₂ g e e' hee h κ hκ`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hee`. Rewrite using `[pow_add, mul_comm, mul_smul]`. Conclude with `Submodule.smul_mem _ _ (h κ hκ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mono : StatMono := by
   intro O _ ℓ H₁ H₂ _ _ _ _ Hf₁ Hf₂ g e e' hee h κ hκ
@@ -40,7 +40,7 @@ theorem mono : StatMono := by
   exact Submodule.smul_mem _ _ (h κ hκ)
 
 /- English proof (translation)
-Take `⟨A, _, _, B, M, u, s, H, jumps, D₀, D₁, D₂, _, _, _, _, _, _, _, _, _, _, _, _, W₀, W₁, W₂, S, cl₁, cl₂, I, _, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21, rfl⟩` from `h`. Conclude with `lifting_theorem.1 ℓ A B M u s H jumps a1 a2 a3 a4 a5 a6 a7 D₀ D₁ D₂ W₀ W₁ W₂ S H₁ H₂ cl₁ cl₂ Hf₁ Hf₂ g I a8 a9 a10 a11 a12 a13 a14 a15 a16 a17 a18 a19 a20 a21`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem prodB_lift (ℓ : ℕ) [Fact ℓ.Prime] {H₁ H₂ : Type} [AddCommGroup H₁] [Module ℤ_[ℓ] H₁]
     [AddCommGroup H₂] [Module ℤ_[ℓ] H₂] (Hf₁ : Submodule ℤ_[ℓ] H₁) (Hf₂ : Submodule ℤ_[ℓ] H₂)
@@ -52,7 +52,7 @@ theorem prodB_lift (ℓ : ℕ) [Fact ℓ.Prime] {H₁ H₂ : Type} [AddCommGroup
     g I a8 a9 a10 a11 a12 a13 a14 a15 a16 a17 a18 a19 a20 a21
 
 /- English proof (translation)
-Take `⟨h2, A, _, _, B, M, u, H, jumps, c, D₀, D₁, D₂, _, _, _, _, _, _, _, _, _, _, _, _, W₀, W₁, W₂, S, δ, cl₁, cl₂, I, _, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, rfl⟩` from `h`. Conclude with `lifting_theorem.2.1 ℓ h2 A B M u H jumps c a1 a2 a3 a4 a5 D₀ D₁ D₂ W₀ W₁ W₂ S δ H₁ H₂ cl₁ cl₂ Hf₁ Hf₂ g I a6 a7 a8 a9 a10 a11 a12 a13 a14 a15 a16 a17 a18 a19`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem prodA_lift (ℓ : ℕ) [Fact ℓ.Prime] {H₁ H₂ : Type} [AddCommGroup H₁] [Module ℤ_[ℓ] H₁]
     [AddCommGroup H₂] [Module ℤ_[ℓ] H₂] (Hf₁ : Submodule ℤ_[ℓ] H₁) (Hf₂ : Submodule ℤ_[ℓ] H₂)
@@ -64,9 +64,9 @@ theorem prodA_lift (ℓ : ℕ) [Fact ℓ.Prime] {H₁ H₂ : Type} [AddCommGroup
     Hf₂ g I a6 a7 a8 a9 a10 a11 a12 a13 a14 a15 a16 a17 a18 a19
 
 /- English proof (translation)
-Introduce `ℓ _ H₁ H₂ _ _ _ _ Hf₁ Hf₂ g e h`. Break down `h with h | h | h` into its components or cases. Conclude with `prodB_lift ℓ Hf₁ Hf₂ g e h`. Conclude with `prodA_lift ℓ Hf₁ Hf₂ g e h`. Take `⟨K₁, K₂, _, _, _, _, Kf₁, Kf₂, hh, res₂, cor₁, cor₂, n, E, b1, b2, b3, b4, b5, b6, rfl⟩` from `h`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Use `lifting_theorem.2.2 ℓ K₁ K₂ H₁ H₂ Kf₁ Kf₂ Hf₁ Hf₂ hh g res₂ cor₁ cor₂ n E b1 b2 b3 b4 b5 ?_` and prove the remaining obligations. Break down `b6 with b6 | b6` into its components or cases. Conclude with `prodB_lift ℓ Kf₁ Kf₂ hh E b6`. Conclude with `prodA_lift ℓ Kf₁ Kf₂ hh E b6`.
+A detailed English derivation is pending.
 -/
 theorem src : StatSrc := by
   intro ℓ _ H₁ H₂ _ _ _ _ Hf₁ Hf₂ g e h
@@ -80,7 +80,7 @@ theorem src : StatSrc := by
     · exact prodA_lift ℓ Kf₁ Kf₂ hh E b6
 
 /- English proof (translation)
-Introduce `ℓ _ O _ _ H₁ H₂ _ _ _ _ _ _ _ _ Hf₁ Hf₂ g e' h`. Take `⟨e, he, h⟩` from `h`. Conclude with `mono O ℓ H₁ H₂ Hf₁ Hf₂ g e e' he ((scal ℓ O H₁ H₂ Hf₁ Hf₂ g e).1 (src ℓ H₁ H₂ _ _ _ e h))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem srcO : StatSrcO := by
   intro ℓ _ O _ _ H₁ H₂ _ _ _ _ _ _ _ _ Hf₁ Hf₂ g e' h

@@ -6,29 +6,25 @@ open scoped MatrixGroups NNReal
 open GlobalTheory.KZ GlobalTheory.Glue GlobalTheory.K5 GlobalTheory.KummerEisensteinGalois
 
 /- English proof (translation)
-Introduce `p _ Ω _ _ v ψ E F π κ hE hp0 hp1 hπE hκ hψ hunr b htot`. Use `set a := algebraMap (Lau p) (O0 p) with ha`. Use `set Y : Fin E → Ω := fun s => ∑ j, κ j * ψ (a (b j s)) with hY`. Establish `hsum : (∑ j, ∑ s : Fin E, κ j * π ^ (s : ℕ) * ψ (a (b j s))) = ∑ s : Fin E, π ^ (s : ℕ) * Y s`. Rewrite using `[Finset.sum_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun s _ => ?_)` and prove the remaining obligations. Rewrite using `[hY, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl (fun j _ => by ring)`. Rewrite `htot` using `[hsum]`. Establish `hπpos : 0 < v π`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Break down `eq_or_ne (v π) 0 with h | h` into its components or cases. It suffices to derive a contradiction. Establish `: v π ^ E = 0` using `by rw [h]; exact zero_pow (by omega)`. Rewrite `this` using `[hπE]`. Conclude with `absurd this hp0.ne'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `pos_iff_ne_zero.mpr h`. Establish `hπ1 : v π < 1`. Assume the negation of the conclusion as `h`. Use `replace h := not_lt.mp h`. Establish `: 1 ≤ v π ^ E` using `one_le_pow₀ h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[hπE]`. Conclude with `absurd hp1 (not_lt.mpr this)`. Establish `hπle : v π ≤ 1` using `hπ1.le`. Establish `hY1 : ∀ s, v (Y s) ≤ 1`. Introduce `s`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `Valuation.map_sum_le v (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hYp : ∀ s, (∀ j, (p : Lau p) ∣ b j s) → v (Y s) ≤ v (p : Ω)`. Introduce `s hs`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `Valuation.map_sum_le v (fun j _ => ?_)` and prove the remaining obligations. Take `⟨c, hc⟩` from `hs j`. Rewrite using `[hc, map_mul, map_mul, map_natCast, map_mul, map_natCast, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `step : ∀ s : Fin E, (∀ s' : Fin E, s' < s → ∀ j, (p : Lau p) ∣ b j s') → ∀ j, (p : Lau p) ∣ b j s`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `s ih`. Establish `hsE : (s : ℕ) + 1 ≤ E` using `s.isLt`. Establish `hpB : v (p : Ω) ≤ v π ^ ((s : ℕ) + 1)`. Rewrite using `[← hπE]`. Conclude with `pow_le_pow_of_le_one zero_le hπle hsE`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hrest : v (∑ s' ∈ Finset.univ.erase s, π ^ (s' : ℕ) * Y s') ≤ v π ^ ((s : ℕ) + 1)`. Use `Valuation.map_sum_le v (fun s' hs' => ?_)` and prove the remaining obligations. Establish `hne : s' ≠ s` using `Finset.ne_of_mem_erase hs'`. Rewrite using `[map_mul, map_pow]`. Break down `lt_or_gt_of_ne hne with hlt | hgt` into its components or cases.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hgt' : (s : ℕ) + 1 ≤ (s' : ℕ)` using `hgt`. Combine the equalities or inequalities in the displayed calculation. Establish `hsplit : π ^ (s : ℕ) * Y s = (∑ s' : Fin E, π ^ (s' : ℕ) * Y s') - ∑ s' ∈ Finset.univ.erase s, π ^ (s' : ℕ) * Y s'`. Rewrite using `[← Finset.add_sum_erase Finset.univ (fun s' : Fin E => π ^ (s' : ℕ) * Y s') (Finset.mem_univ s)]`.
-
-Expand and normalize the polynomial expressions, which then agree. Establish `hmain : v (π ^ (s : ℕ) * Y s) ≤ v π ^ ((s : ℕ) + 1)`. Rewrite using `[hsplit]`. Use `(Valuation.map_sub v _ _).trans (max_le (htot.trans hpB) hrest)` and prove the remaining obligations. Rewrite `hmain` using `[map_mul, map_pow, pow_succ]`.
-
-Establish `hYs : v (Y s) ≤ v π` using `le_of_mul_le_mul_left hmain (pow_pos hπpos _)`. Conclude with `hunr (fun j => b j s) (lt_of_le_of_lt hYs hπ1)`. Introduce `j s`. Conclude with `WellFoundedLT.induction s (fun s ih => step s ih) j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.KZ.ramified_divisible_of_unramified : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Algebra (O0 p) Ω] (v : Valuation Ω ℝ≥0) (ψ : O0 p →+* Ω) (E F : ℕ) (π : Ω) (κ : Fin F → Ω), 1 ≤ E → 0 < v (p : Ω) → v (p : Ω) < 1 → v π ^ E = v (p : Ω) → (∀ j, v (κ j) ≤ 1) → (∀ y, v (ψ y) ≤ 1) → (∀ b : Fin F → Lau p, v (∑ j, κ j * ψ (algebraMap (Lau p) (O0 p) (b j))) < 1 → ∀ j, (p : Lau p) ∣ b j) → ∀ b : Fin F → Fin E → Lau p, v (∑ j, ∑ s : Fin E, κ j * π ^ (s : ℕ) * ψ (algebraMap (Lau p) (O0 p) (b j s))) ≤ v (p : Ω) → ∀ j s, (p : Lau p) ∣ b j s := by
   intro p _ Ω _ _ v ψ E F π κ hE hp0 hp1 hπE hκ hψ hunr b htot

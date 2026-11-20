@@ -15,11 +15,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.HalfLift
 
 /- English proof (translation)
-Establish `hle : ∀ f : Dw.La →ₗ[𝓞 E] Dw.La, l.Mb • (⊤ : Submodule (𝓞 E) Dw.La) ≤ (l.Mb • (⊤ : Submodule (𝓞 E) Dw.La)).comap f` using `fun f => by`. Rewrite using `[← Submodule.map_le_iff_le_comap, Submodule.map_smul'']`. Conclude with `Submodule.smul_mono le_rfl le_top`. Take `⟨s, h1, h2, -⟩` from `GlobalTheory.LevelIsometry.exists_isometry_inducing E H Dw l (LinearEquiv.ofLinear (Submodule.mapQ _ _ g (hle g)) (Submodule.mapQ _ _ g' (hle g')) (Submodule.linearMap_qext _ (LinearMap.ext fun a => (Submodule.Quotient.eq _).2 (h a).2)) (Submodule.linearMap_qext _ (LinearMap.ext …`. Use `⟨s, h1, fun a ha => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `key : ∀ x, s.f l.M x - g x ∈ l.Mb • (⊤ : Submodule (𝓞 E) Dw.La)` using `fun x => (Submodule.Quotient.eq _).1 (h2 x)`. Use `Submodule.smul_induction_on ha (fun r hr y _ => ?_) fun y z hy hz => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_smul, ← smul_sub]`. Conclude with `GlobalTheory.LevelIsometry.modN_smul_of_mem_smul Dw l hr (key y)`. Rewrite using `[map_add, map_add, add_sub_add_comm]`.
-
-Conclude with `GlobalTheory.SimAlg.modN_add hy hz`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isometry_agreeing {E : Type} [Field E] [NumberField E] [IsCMField E]
     {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (Dw : Datum H) (l : Level H) (g g' : Dw.La →ₗ[𝓞 E] Dw.La)
@@ -45,7 +43,7 @@ theorem exists_isometry_agreeing {E : Type} [Field E] [NumberField E] [IsCMField
     exact GlobalTheory.SimAlg.modN_add hy hz
 
 /- English proof (translation)
-Rewrite using `[smul_add]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem add_sub_eq_nsmul {A : Type} [AddCommGroup A] (N : ℕ) (x e w : A) :
     x + N • e + N • w - x = N • (e + w) := by
@@ -53,15 +51,15 @@ theorem add_sub_eq_nsmul {A : Type} [AddCommGroup A] (N : ℕ) (x e w : A) :
   abel
 
 /- English proof (translation)
-Introduce `D H Dw l V ι hι g g' h`. Take `⟨s, hν, hs⟩` from `exists_isometry_agreeing Dw l g g' h`. Apply the tactic sequence `obtain ⟨κ, hκ, hκs⟩ := GlobalTheory.ShortMove.exists_adelic_of_isometry D V H Dw ι hι.emb hι.isom s hν`. Take `⟨b, hb, u, hu, e⟩` from `(GlobalTheory.UnitarySplit.real_finite_split D V).1 κ`. Establish `hb' : finHom V b = 1` using `hb`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hf : finHom V u = finHom V κ` using `by rw [e, map_mul, hb', one_mul]`. Take `⟨-, m2, -, m4⟩` from `GlobalTheory.Member.latG_move D V`. Establish `hL : latG V 1 = latG V u` using `GlobalTheory.Member.LatMove.lat_eq_of_hat_eq V (hκ.symm.trans (m2 u κ hf).2.symm)`. Establish `hc` using `m4 1 u hL`. Rewrite `hc` using `[inv_one, one_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨u, hu, GlobalTheory.MarkDet.gLat_eq_of_finCong hc, fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨c, hc'⟩` from `hs a ha`. Take `⟨w, hw, ew⟩` from `hκs l.M (lt_of_lt_of_le (by norm_num) l.three_le) a`. Establish `hm : finVec V (ι c) ∈ latGHat V 1` using `(GlobalTheory.Member.LatMove.mem_lat_iff V 1 _).1 (hι.emb.2 ▸ LinearMap.mem_range_self ι c)`. Use `⟨finVec V (ι c) + w, add_mem hm hw, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : finVec V (ι (s.f l.M a)) = finVec V (ι (g a)) + l.M • finVec V (ι c)`. Rewrite using `[sub_eq_iff_eq_add'.1 hc', map_add, map_nsmul]`. Use function extensionality and compare the values at `i`. Simplify using `only [finVec, Pi.add_apply, Pi.smul_apply, TensorProduct.tmul_add]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `map_nsmul (TensorProduct.mk D.host.F (Af D.host.F) D.host.E 1) _ _`. Rewrite using `[hf, ew, h2]`. Conclude with `add_sub_eq_nsmul _ _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unitary_inducing : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H) (V : HSp D) (ι : Dw.La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E)), GlobalTheory.Member.IotaOK Dw V ι → ∀ g g' : Dw.La →ₗ[𝓞 D.host.E] Dw.La, (∀ a, g' (g a) - a ∈ l.Mb • (⊤ : Submodule (𝓞 D.host.E) Dw.La) ∧ g (g' a) - a ∈ l.Mb • (⊤ : Submodule (𝓞 D.host.E) Dw.La)) → ∃ u ∈ GfC V, gLat V u = latHat V ∧ ∀ a ∈ l.Mb.map (H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) • (⊤ : Submodule (𝓞 D.host.E) Dw.La), ∃ w ∈ latGHat V 1, (finHom V u).1.mulVec (finVec V (ι a)) - finVec V (ι (g a)) = (l.M : ℕ) • w := by
   intro D H Dw l V ι hι g g' h

@@ -7,11 +7,11 @@ namespace Formalism.FourierDecayAlt.P.CutMP.SmoothTransferRegularity
 noncomputable section
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_add, coeff_sum, Finset.sum_eq_single Finset.univ]`. Simplify using the standard rewrite rules. Introduce `S _ hS`. Establish `hH : ((∏ i ∈ S, h i) * ∏ i ∈ univ \ S, c i).IsHomogeneous S.card`. Use `(IsHomogeneous.prod S h (fun _ => 1) (fun i _ => hh i)).mul (IsHomogeneous.prod (univ \ S) c (fun _ => 0) (fun i _ => hc i))` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Apply `hH.coeff_eq_zero` to reduce the goal to its premises. Rewrite using `[hd]`. Introduce `hcard`. Conclude with `hS (Finset.eq_univ_of_card S hcard.symm)`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hn`. Conclude with `absurd (Finset.mem_powerset.mpr (Finset.subset_univ _)) hn`.
+A detailed English derivation is pending.
 -/
 theorem detShift_prod_coeff {σ ι : Type*} [Fintype ι] (h c : ι → MvPolynomial σ ℂ)
     (hh : ∀ i, (h i).IsHomogeneous 1) (hc : ∀ i, (c i).IsHomogeneous 0)
@@ -35,7 +35,7 @@ theorem detShift_prod_coeff {σ ι : Type*} [Fintype ι] (h c : ι → MvPolynom
 def detShiftSub : Fin 2 → Polynomial ℂ := ![Polynomial.X, -1]
 
 /- English proof (translation)
-Rewrite using `[aeval_monomial, Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Fin.prod_univ_two]`. Simplify using `[detShiftSub, Polynomial.algebraMap_eq, map_mul, map_pow, map_neg]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem detShift_aeval_monomial (d : Fin 2 →₀ ℕ) (a : ℂ) :
     aeval detShiftSub (monomial d a) = Polynomial.C (a * (-1) ^ d 1) * Polynomial.X ^ d 0 := by
@@ -44,17 +44,15 @@ theorem detShift_aeval_monomial (d : Fin 2 →₀ ℕ) (a : ℂ) :
   ring
 
 /- English proof (translation)
-Use `set D : Fin 2 →₀ ℕ := Finsupp.single (0 : Fin 2) (t - j) + Finsupp.single (1 : Fin 2) j with hD`. Establish `hD0 : D 0 = t - j` using `by simp [hD]`. Establish `hD1 : D 1 = j` using `by simp [hD]`. Establish `hterm : ∀ d : Fin 2 →₀ ℕ, (aeval detShiftSub (monomial d (coeff d Q))).coeff (t - j) = if t - j = d 0 then coeff d Q * (-1) ^ d 1 else 0`. Introduce `d`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[detShift_aeval_monomial, Polynomial.coeff_C_mul_X_pow]`. Use `conv_lhs => rw [Q.as_sum]`. Rewrite using `[map_sum, Polynomial.finsetSum_coeff, Finset.sum_eq_single D]`. Rewrite using `[hterm, hD0, hD1, if_pos rfl, mul_comm]`. Introduce `d hd hne`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction.
 
-Rewrite using `[hterm]`. Use `split_ifs with h0`. It suffices to derive a contradiction. Establish `hdeg : d.degree = t`. Assume the negation of the conclusion as `hne'`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Conclude with `(mem_support_iff.mp hd) (hQ.coeff_eq_zero hne')`. Rewrite `hdeg` using `[Finsupp.degree_eq_sum, Fin.sum_univ_two]`. Apply `hne` to reduce the goal to its premises. Use extensionality with `i`. Use `fin_cases i`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hD0, ← h0]`. Simplify using `only [Fin.mk_one, Fin.isValue, hD1]`. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Introduce `hn`.
-
-Rewrite using `[hterm, notMem_support_iff.mp hn]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem detShift_aeval_coeff (Q : MvPolynomial (Fin 2) ℂ) (t j : ℕ) (hj : j ≤ t)
     (hQ : Q.IsHomogeneous t) :
@@ -91,7 +89,7 @@ theorem detShift_aeval_coeff (Q : MvPolynomial (Fin 2) ℂ) (t j : ℕ) (hj : j 
     simp
 
 /- English proof (translation)
-Apply the tactic sequence `split_ifs <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem detShift_factor {t : ℕ} (M : Matrix (Fin t) (Fin t) ℂ) (σ : Equiv.Perm (Fin t)) (i : Fin t) :
     ((if σ i = i then X 0 - C ((i : ℕ) : ℂ) else 0) + X 1 * C (M (σ i) i) : MvPolynomial (Fin 2) ℂ) =
@@ -100,9 +98,7 @@ theorem detShift_factor {t : ℕ} (M : Matrix (Fin t) (Fin t) ℂ) (σ : Equiv.P
   split_ifs <;> ring
 
 /- English proof (translation)
-Apply `IsHomogeneous.add` to reduce the goal to its premises. Use `split_ifs`. Conclude with `isHomogeneous_X _ _`. Conclude with `isHomogeneous_zero _ _ _`. Rewrite using `[mul_comm]`.
-
-Conclude with `isHomogeneous_C_mul_X _ _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detShift_hom {t : ℕ} (M : Matrix (Fin t) (Fin t) ℂ) (σ : Equiv.Perm (Fin t)) (i : Fin t) :
     ((if σ i = i then X 0 else 0) + X 1 * C (M (σ i) i) : MvPolynomial (Fin 2) ℂ).IsHomogeneous 1 := by
@@ -114,7 +110,7 @@ theorem detShift_hom {t : ℕ} (M : Matrix (Fin t) (Fin t) ℂ) (σ : Equiv.Perm
     exact isHomogeneous_C_mul_X _ _
 
 /- English proof (translation)
-Use `split_ifs`. Conclude with `(isHomogeneous_C _ _).neg`. Conclude with `isHomogeneous_zero _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem detShift_const {t : ℕ} (σ : Equiv.Perm (Fin t)) (i : Fin t) :
     ((if σ i = i then -C ((i : ℕ) : ℂ) else 0) : MvPolynomial (Fin 2) ℂ).IsHomogeneous 0 := by
@@ -123,9 +119,9 @@ theorem detShift_const {t : ℕ} (σ : Equiv.Perm (Fin t)) (i : Fin t) :
   · exact isHomogeneous_zero _ _ _
 
 /- English proof (translation)
-Rewrite using `[Matrix.charpoly, Matrix.det_apply', map_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_intCast, map_prod]`. Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : σ i = i`. Rewrite using `[h]`. Simplify using `[detShiftSub, Matrix.charmatrix_apply_eq, Polynomial.algebraMap_eq]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[detShiftSub, h, Polynomial.algebraMap_eq]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 -/
 theorem detShift_subst {t : ℕ} (M : Matrix (Fin t) (Fin t) ℂ) :
     aeval detShiftSub (∑ σ : Equiv.Perm (Fin t), ((Equiv.Perm.sign σ : ℤ) : MvPolynomial (Fin 2) ℂ) *
@@ -142,15 +138,13 @@ theorem detShift_subst {t : ℕ} (M : Matrix (Fin t) (Fin t) ℂ) :
   · simp [detShiftSub, h, Polynomial.algebraMap_eq]
 
 /- English proof (translation)
-Introduce `t M j hj`. Use `set D : Fin 2 →₀ ℕ := Finsupp.single (0 : Fin 2) (t - j) + Finsupp.single (1 : Fin 2) j with hD`. Use `set Q : MvPolynomial (Fin 2) ℂ := ∑ σ : Equiv.Perm (Fin t), ((Equiv.Perm.sign σ : ℤ) : MvPolynomial (Fin 2) ℂ) * ∏ i : Fin t, ((if σ i = i then X 0 else 0) + X 1 * C (M (σ i) i)) with hQdef`. Establish `hdeg : D.degree = t`. Rewrite using `[hD, map_add, Finsupp.degree_single, Finsupp.degree_single]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hQ : Q.IsHomogeneous t`. Apply `IsHomogeneous.sum` to reduce the goal to its premises. Introduce `σ _`. Rewrite using `[← map_intCast (C : ℂ →+* MvPolynomial (Fin 2) ℂ)]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using (isHomogeneous_C (Fin 2) (((Equiv.Perm.sign σ : ℤ) : ℂ))).mul (IsHomogeneous.prod (univ : Finset (Fin t)) _ (fun _ => 1) (fun i _ => detShift_hom M σ i))`. Establish `hPQ : coeff D (∑ σ : Equiv.Perm (Fin t), ((Equiv.Perm.sign σ : ℤ) : MvPolynomial (Fin 2) ℂ) * ∏ i : Fin t, ((if σ i = i then X 0 - C ((i : ℕ) : ℂ) else 0) + X 1 * C (M (σ i) i))) = coeff D Q`. Rewrite using `[hQdef, coeff_sum, coeff_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[← map_intCast (C : ℂ →+* MvPolynomial (Fin 2) ℂ), coeff_C_mul, coeff_C_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion repeatedly using the stated equalities.
 
-Use `congr 1`. Repeatedly rewrite using `[detShift_factor M σ]`. Conclude with `detShift_prod_coeff _ _ (detShift_hom M σ) (detShift_const σ) D (by simp [hdeg])`. Rewrite using `[hPQ]`. Establish `hC` using `detShift_aeval_coeff Q t j hj hQ`.
-
-Rewrite `hC` using `[hQdef, detShift_subst]`. Rewrite using `[hC, ← hQdef, ← mul_assoc, ← mul_pow, show ((-1 : ℂ) * -1) = 1 by norm_num, one_pow, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem determinant_shift_coefficient : DetShiftCoeff := by
   intro t M j hj

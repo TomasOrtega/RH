@@ -22,23 +22,21 @@ theorem galDiff_apply {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R'] (x
     (σ : GlobalTheory.Mum.Gal (algebraMap R R')) : galDiff R R' x σ = σ.1 x - x := rfl
 
 /- English proof (translation)
-Introduce `hinj hgal`. Use `haveI : Finite (GlobalTheory.Mum.Gal (algebraMap R R')) := hgal.1`. Use `haveI : Fintype (GlobalTheory.Mum.Gal (algebraMap R R')) := Fintype.ofFinite _`. Set `incl : R →ₗ[R] R'` to `Algebra.linearMap R R'`. Establish `hex : Function.Exact incl (galDiff R R')`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Take `⟨r, hr⟩` from `hgal.2 y (fun σ hσ => by`. Use `congrFun hy ⟨σ, hσ⟩` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `this` using `[galDiff_apply]`. Simplify `this)` using `[sub_eq_zero]`. Conclude with `⟨r, hr⟩`. Introduce and unpack `⟨r, rfl⟩`. Use function extensionality and compare the values at `σ`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[incl, galDiff_apply, σ.2 r]`. Establish `hmap : ∀ x : O, LinearMap.lTensor O incl ((TensorProduct.rid R O).symm x) = algebraMap O (TensorProduct R O R') x`. Introduce `x`. Simplify using `[incl, Algebra.TensorProduct.algebraMap_apply]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `a b hab`. Rewrite `hab` using `[← hmap, ← hmap]`. Conclude with `(TensorProduct.rid R O).symm.injective (Module.Flat.lTensor_preserves_injective_linearMap incl hinj hab)`. Introduce `t ht`. Establish `hcomp : ∀ u : TensorProduct R O R', ∀ σ, TensorProduct.piRight R R O (fun _ : GlobalTheory.Mum.Gal (algebraMap R R') => R') (LinearMap.lTensor O (galDiff R R') u) σ = galTensor O σ u - u`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `u σ`. Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y`. Rewrite using `[LinearMap.lTensor_tmul, TensorProduct.piRight_apply, TensorProduct.piRightHom_tmul]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `show x ⊗ₜ[R] galDiff R R' y σ = _`. Rewrite using `[galDiff_apply, galTensor_tmul, TensorProduct.tmul_sub]`. Consider the case `add u v hu hv`. Rewrite using `[map_add, map_add, Pi.add_apply, hu, hv, map_add]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : LinearMap.lTensor O (galDiff R R') t = 0`. Apply `(TensorProduct.piRight R R O (fun _ : GlobalTheory.Mum.Gal (algebraMap R R') => R')).injective` to reduce the goal to its premises. Use function extensionality and compare the values at `σ`. Rewrite using `[hcomp, ht σ, sub_self, map_zero, Pi.zero_apply]`. Take `⟨y, hy⟩` from `(Module.Flat.lTensor_exact O hex t).1 h0`.
-
-Use `⟨TensorProduct.rid R O y, ?_⟩` and prove the remaining obligations. Rewrite using `[← hmap, LinearEquiv.symm_apply_apply, hy]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flat_tensor_invariants (R R' O : Type) [CommRing R] [CommRing R'] [Algebra R R'] [CommRing O] [Algebra R O]
     [Module.Flat R O] :
@@ -97,7 +95,7 @@ theorem flat_tensor_invariants (R R' O : Type) [CommRing R] [CommRing R'] [Algeb
 end GlobalTheory.InvAlg
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.InvAlg.flat_tensor_invariants`.
+A detailed English derivation is pending.
 -/
 example : ∀ (R R' O : Type) [CommRing R] [CommRing R'] [Algebra R R'] [CommRing O] [Algebra R O] [Module.Flat R O],
     Function.Injective (algebraMap R R') → GlobalTheory.Mum.IsGal (algebraMap R R') →

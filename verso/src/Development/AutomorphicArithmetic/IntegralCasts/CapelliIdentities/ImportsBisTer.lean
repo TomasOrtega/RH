@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `V _ _ B hsymm hpos x y`. Set `c : PreInnerProductSpace.Core ℂ V` to `{ inner := fun u v => B u v conj_inner_symm := fun u v => hsymm v u re_inner_nonneg := fun u => hpos u add_left := fun u v w => by simp smul_left := fun u v r => by simp }`. Establish `h : ‖B x y‖ * ‖B y x‖ ≤ (B x x).re * (B y y).re` using `InnerProductSpace.Core.inner_mul_inner_self_le (c := c) x y`. Establish `h2 : ‖B y x‖ = ‖B x y‖`. Rewrite using `[← hsymm x y]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `RCLike.norm_conj _`. Rewrite `h` using `[h2]`. Rewrite using `[sq]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.DYhd3.main :
     ∀ {V : Type} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (B : V →ₗ⋆[ℂ] V →ₗ[ℂ] ℂ),

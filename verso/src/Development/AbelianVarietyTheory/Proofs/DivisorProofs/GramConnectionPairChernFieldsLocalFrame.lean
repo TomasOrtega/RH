@@ -16,17 +16,17 @@ open scoped Matrix ContDiff ComplexOrder
 namespace GlobalTheory.ChernCalc
 
 /- English proof (translation)
-Introduce `M _ n A r _ _ G G' hG x k`. Take `⟨⟨i, y⟩, hy⟩` from `x`. Establish `hyt : A.e i y ∈ (A.e i).target` using `(A.e i).map_source hy`. Establish `hsymm : (A.e i).symm (A.e i y) = y` using `(A.e i).left_inv hy`. Establish `hcont : Tendsto (A.e i).symm (𝓝 (A.e i y)) (𝓝 y)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(A.e i).continuousAt_symm hyt` as an intermediate fact. Rewrite `this` using `[ContinuousAt, hsymm]`. Then use the resulting hypothesis. Take `⟨⟨hGu, hGs⟩, ⟨hG'u, hG's⟩⟩` from `hG.smooth y`. Establish `e1` using `hGs i hy`. Establish `e2` using `hG's i hy`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `u1` using `e1.self_of_nhds.eventually_isUnit (by simpa only [hsymm] using hGu)`. Establish `u2` using `e2.self_of_nhds.eventually_isUnit (by simpa only [hsymm] using hG'u)`. Use `filter_upwards [(A.e i).open_target.mem_nhds hyt, hcont.eventually (hG.trans y), e1, e2, u1, u2] with v hv htr h1 h2 h3 h4`. Take `⟨T, K, K', hT, hK, hK', hw⟩` from `htr`. Establish `hz : (A.e i).symm v ∈ (A.e i).source` using `(A.e i).map_target hv`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzv : A.e i ((A.e i).symm v) = v` using `(A.e i).right_inv hv`. Establish `hct : Tendsto (A.e i).symm (𝓝 v) (𝓝 ((A.e i).symm v))` using `(A.e i).continuousAt_symm hv`. Establish `dT` using `hT.2 i hz`. Establish `dK` using `hK.2 i hz`. Establish `dK'` using `hK'.2 i hz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `dT`, `dK`, `dK'` using `[hzv]`. Establish `key` using `GlobalTheory.T.chernTransgression_forms_frame_invariant n r (fun u => G y ((A.e i).symm u)) (fun u => G' y ((A.e i).symm u)) (fun u => G ((A.e i).symm v) ((A.e i).symm u)) (fun u => G' ((A.e i).symm v) ((A.e i).symm u)) (fun u => T ((A.e i).symm u)) (fun u => K ((A.e i).symm u)) …`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[HolAtlas.loc, dif_pos hv] show ((powAt (fun u => G ((A.e i).symm v) ((A.e i).symm u)) (A.e i ((A.e i).symm v)) k : Ev n) : Alt n) = _`. Rewrite using `[hzv, key.1]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[HolAtlas.loc, dif_pos hv] show ((chernAt (fun u => G ((A.e i).symm v) ((A.e i).symm u)) (A.e i ((A.e i).symm v)) k : Ev n) : Alt n) = _`. Rewrite using `[hzv, key.2.1]`. Rewrite using `[HolAtlas.loc, dif_pos hv] show transAt (fun u => G ((A.e i).symm v) ((A.e i).symm u)) (fun u => G' ((A.e i).symm v) ((A.e i).symm u)) (A.e i ((A.e i).symm v)) k = _`. Rewrite using `[hzv, key.2.2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem loc_fields_near : ∀ (M : Type) [TopologicalSpace M] (n : ℕ) (A : HolAtlas M n) (r : Type) [Fintype r] [DecidableEq r] (G G' : M → M → Matrix r r ℂ), IsGramPair A G G' → ∀ (x : A.Pt) (k : ℕ), ∀ᶠ v in 𝓝 x.crd, A.loc (fld A (powFld A G k)) x.1.1 v = powAt (fun u => G x.pt (x.ch.symm u)) v k ∧ A.loc (fld A (chernFld A G k)) x.1.1 v = chernAt (fun u => G x.pt (x.ch.symm u)) v k ∧ A.loc (transFld A G G' k) x.1.1 v = transAt (fun u => G x.pt (x.ch.symm u)) (fun u => G' x.pt (x.ch.symm u)) v k := by
   intro M _ n A r _ _ G G' hG x k

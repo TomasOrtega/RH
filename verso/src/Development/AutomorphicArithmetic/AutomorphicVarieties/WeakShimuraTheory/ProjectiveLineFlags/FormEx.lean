@@ -8,7 +8,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Establish `hT : C.transpose * J = -(J * C)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.transpose_mul, hJ, Matrix.mul_neg, hT, neg_neg]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 private theorem transpose_form_mul_involution {R : Type} [CommRing R] (J C : M4 R) (hJ : J.transpose = -J) (hC : C * C = 1)
     (h : C.transpose * J * C = -J) : (J * C).transpose = J * C := by
@@ -19,9 +19,9 @@ private theorem transpose_form_mul_involution {R : Type} [CommRing R] (J C : M4 
   rw [Matrix.transpose_mul, hJ, Matrix.mul_neg, hT, neg_neg]
 
 /- English proof (translation)
-Establish `hA : A.transpose * (J * C) * (C * A * C) = ν • (J * C)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = (ν • J) * C := by rw [hC, Matrix.mul_one, h]`. Use `_ = ν • (J * C) := Matrix.smul_mul _ _ _`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Matrix.transpose_smul, Matrix.smul_mul, Matrix.mul_smul, Matrix.smul_mul, hA, smul_smul, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem hermOrthExt_gram_entry_eq_single_and_frame_gram_eq_zero {R : Type} [CommRing R] (J C A : M4 R) (hC : C * C = 1) (x y ν : R)
     (h : A.transpose * J * A = ν • J) :
@@ -36,7 +36,7 @@ private theorem hermOrthExt_gram_entry_eq_single_and_frame_gram_eq_zero {R : Typ
   ring
 
 /- English proof (translation)
-Establish `h3 : ((1 : ℤ) - ((4 : ℕ) : ℤ)) = -3` using `by norm_num`. Rewrite using `[h3, zpow_neg, zpow_ofNat]`. Rewrite using `[eq_comm]`. Conclude with `Units.eq_inv_of_mul_eq_one_left (by simpa [mul_comm] using h)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem unit_aux {R : Type} [CommRing R] (e : Rˣ) (z : R) (h : z * (e : R) ^ 3 = 1) :
     ((e ^ (1 - ((4 : ℕ) : ℤ)) : Rˣ) : R) = z := by
@@ -46,20 +46,20 @@ private theorem unit_aux {R : Type} [CommRing R] (e : Rˣ) (z : R) (h : z * (e :
   exact Units.eq_inv_of_mul_eq_one_left (by simpa [mul_comm] using h)
 
 /- English proof (translation)
-Conclude with `⟨J * ⟨C, C, hC, hC⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 private theorem exists_gl4_form_mul_involution {R : Type} [CommRing R] (J : (M4 R)ˣ) (C : M4 R) (hC : C * C = 1) :
     ∃ P : GL (Fin 4) R, (P : Matrix (Fin 4) (Fin 4) R) = (J : M4 R) * C := by
   exact ⟨J * ⟨C, C, hC, hC⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D T hF hD c' h K R _ _ Q ρ hQ hρ`. Take `⟨J, hJ, hG⟩` from `P1.gspForm R`. Take `⟨cF, hc, hcc⟩` from `P1.ccEx D T K.s`. Take `⟨h2, hν⟩` from `(X1.thFacts D T hF hD).2.2.1 cF hc`. Take `⟨e1, -, -, e4⟩` from `P1.levEps K.V`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hC : Q.r cF * Q.r cF = 1` using `by rw [← map_mul, h2, map_one]`. Establish `hCJ : (Q.r cF).transpose * (J : M4 R) * Q.r cF = -(J : M4 R)`. Rewrite using `[hG _ _ (hQ.mult cF), hν]`. Simplify using the standard rewrite rules. Take `⟨P, hP⟩` from `exists_gl4_form_mul_involution J _ hC`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `⟨P, by rw [hP]; exact transpose_form_mul_involution _ _ hJ hC hCJ, fun x => ?_⟩` and prove the remaining obligations. Take `⟨g, rfl⟩` from `(phiKer K.V).1 x`. Take `⟨g', hg, hg'⟩` from `hcc g`. Establish `hk` using `congrArg (algebraMap c'.O R) (K.conj g g' hg).1`. Establish `h3 : Q.r (resLe T.F_le g') = Q.r cF * Q.r (resLe T.F_le g) * Q.r cF`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hg', inv_eq_of_mul_eq_one_right h2, map_mul, map_mul]`. Establish `h4` using `hermOrthExt_gram_entry_eq_single_and_frame_gram_eq_zero _ _ _ hC (algebraMap c'.O R (K.κ g)) (algebraMap c'.O R (K.κ g')) _ (hG _ _ (hQ.mult (resLe T.F_le g)))`. Rewrite `hk` using `[map_mul, map_mul, map_mul, map_pow, map_one, ← e4 c'.O R g]`. Rewrite using `[e1 g g' hg, hρ g, hρ g', h3, unit_aux _ _ hk, hP]`. Conclude with `h4`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.P1.formEx :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c) (T : Tower D), T.Fit → T.Deep → ∀ (c' : Coef l) (h : c.O ≤ c'.O) (K : Link T c' h) (R : Type) [CommRing R] [Algebra c'.O R] (Q : PD T.ι (G T.F Ω) R) (ρ : K.V.frame.G₀ →* GL (Fin 4) R), (T.fr ∅).IsPair ((algebraMap c'.O R).comp (inc h)) Q → K.IsRho ρ Q →

@@ -11,7 +11,7 @@ open NumberField Formalism.BasicNotions Classical Formalism.MainNotions Formalis
 namespace GlobalTheory.MomTop
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.MomT.jetMoments_of_unitPeriod (GlobalTheory.T.unitPeriodTranslates_moments_finite GlobalTheory.MomEq.eq_and_alg.1 GlobalTheory.MomEq.eq_and_alg.2) GlobalTheory.MomEq.eq_and_alg.1 GlobalTheory.MomLat.latticeFactsAll`.
+A detailed English derivation is pending.
 -/
 theorem jetMoments : GlobalTheory.IndefiniteRowSideFullHecke.JetSumTable.JetMoments :=
   GlobalTheory.MomT.jetMoments_of_unitPeriod

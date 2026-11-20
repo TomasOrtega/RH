@@ -13,9 +13,9 @@ open Formalism.L2.SG.RealObj Formalism.L2.SG.HidaSetting Formalism.REAL Formalis
 variable {n r k : ℕ} {ε : Fin n → Bool} {e p : Fin r → Fin n → ℂ} {z : Fin n → ℂ} {T : ℝ}
 
 /- English proof (translation)
-Rewrite using `[hJ_syn]`. Establish `h1 : ∀ a, hJ ε (syn e p z w T α β γ δ) (e a) = conj (β a)` using `fun a => by rw [UnitaryIsometries.hJ_conj, syn_e F]`. Establish `h2 : ∀ a, hJ ε (syn e p z w T α β γ δ) (p a) = conj (α a)` using `fun a => by rw [UnitaryIsometries.hJ_conj, syn_p F]`. Establish `h3 : hJ ε (syn e p z w T α β γ δ) z = conj γ` using `by rw [UnitaryIsometries.hJ_conj, synthesized_vector_z_pairing F]`. Establish `h4 : ∀ j, hJ ε (syn e p z w T α β γ δ) (w j) = conj (δ j)` using `fun j => by rw [UnitaryIsometries.hJ_conj, syn_w F]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [h1, h2, h3, h4]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hJ_syn_syn {w : Fin k → Fin n → ℂ} (F : Frm ε e p z w T) (α β : Fin r → ℂ) (γ : ℂ) (δ : Fin k → ℂ)
     (α' β' : Fin r → ℂ) (γ' : ℂ) (δ' : Fin k → ℂ) :
@@ -42,7 +42,7 @@ def frM (e p : Fin r → Fin n → ℂ) (z : Fin n → ℂ) (w y : Fin k → Fin
   LinearMap.toMatrix' (frL (ε := ε) e p z w y T)
 
 /- English proof (translation)
-Rewrite using `[frM, LinearMap.toMatrix'_mulVec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem frM_apply (w y : Fin k → Fin n → ℂ) (v : Fin n → ℂ) :
     frM (ε := ε) e p z w y T *ᵥ v =
@@ -51,7 +51,7 @@ theorem frM_apply (w y : Fin k → Fin n → ℂ) (v : Fin n → ℂ) :
   rfl
 
 /- English proof (translation)
-Introduce `v v'`. Rewrite using `[frM_apply, frM_apply, hJ_syn_syn Fy]`. Use `conv_rhs => rw [recon Fw hdim v, recon Fw hdim v', hJ_syn_syn Fw]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frM_isIsom {w y : Fin k → Fin n → ℂ} (Fw : Frm ε e p z w T) (Fy : Frm ε e p z y T)
     (hdim : n = 2 * r + 1 + k) : UnitaryIsometries.IsIsom ε (frM (ε := ε) e p z w y T) := by
@@ -60,7 +60,7 @@ theorem frM_isIsom {w y : Fin k → Fin n → ℂ} (Fw : Frm ε e p z w T) (Fy :
   conv_rhs => rw [recon Fw hdim v, recon Fw hdim v', hJ_syn_syn Fw]
 
 /- English proof (translation)
-Rewrite using `[frM_apply]`. Use `conv_rhs => rw [recon Fw hdim v]`. Simplify using `only [syn, hv, zero_smul, Finset.sum_const_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frM_fix {w y : Fin k → Fin n → ℂ} (Fw : Frm ε e p z w T) (hdim : n = 2 * r + 1 + k) {v : Fin n → ℂ}
     (hv : ∀ j, hJ ε (w j) v = 0) : frM (ε := ε) e p z w y T *ᵥ v = v := by
@@ -69,7 +69,7 @@ theorem frM_fix {w y : Fin k → Fin n → ℂ} (Fw : Frm ε e p z w T) (hdim : 
   simp only [syn, hv, zero_smul, Finset.sum_const_zero]
 
 /- English proof (translation)
-Rewrite using `[frM_apply]`. Simplify using `only [syn, Fw.pw, Fw.ew, Fw.zw, Fw.ww, zero_smul, Finset.sum_const_zero, zero_add, neg_zero, zero_div, ite_smul, one_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem frM_w {w y : Fin k → Fin n → ℂ} (Fw : Frm ε e p z w T) (j : Fin k) :
     frM (ε := ε) e p z w y T *ᵥ w j = y j := by
@@ -78,9 +78,9 @@ theorem frM_w {w y : Fin k → Fin n → ℂ} (Fw : Frm ε e p z w T) (j : Fin k
     ite_smul, one_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Introduce `x hx j`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨b, _, rfl⟩` from `hy`. Conclude with `F.ew b j`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => exact UnitaryIsometries.hJ_zero_left ε _`. Consider the case `add x y _ _ hx hy => rw [UnitaryIsometries.hJ_add_left, hx, hy, add_zero]`. Consider the case `smul c x _ hx => rw [UnitaryIsometries.hJ_smul_left, hx, mul_zero]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem span_perp {w : Fin k → Fin n → ℂ} (F : Frm ε e p z w T) (a : ℕ) :
     ∀ x ∈ spanLt e a, ∀ j, hJ ε x (w j) = 0 := by
@@ -94,7 +94,7 @@ theorem span_perp {w : Fin k → Fin n → ℂ} (F : Frm ε e p z w T) (a : ℕ)
   | smul c x _ hx => rw [UnitaryIsometries.hJ_smul_left, hx, mul_zero]
 
 /- English proof (translation)
-Unfold `spanLt`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Conclude with `⟨b, b.2, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem spanLt_le (a : ℕ) (h : a ≤ r) : spanLt e a ≤ spanLt e r := by
   unfold spanLt
@@ -103,33 +103,29 @@ theorem spanLt_le (a : ℕ) (h : a ≤ r) : spanLt e a ≤ spanLt e r := by
   exact ⟨b, b.2, rfl⟩
 
 /- English proof (translation)
-Use `set M := Formalism.MainNotions.S.uMat s with hM`. Establish `hsi : s⁻¹ ∈ UnitaryIsometries.RI.SG ε e z` using `(UnitaryIsometries.RI.SG ε e z).inv_mem hs`. Establish `hiso` using `UnitaryIsometries.isIsom_uMat ε s`. Establish `hback : ∀ v : Fin n → ℂ, M *ᵥ (Formalism.MainNotions.S.uMat s⁻¹ *ᵥ v) = v` using `fun v => by`. Rewrite using `[mulVec_mulVec, hM, uMat_mul_inv, one_mulVec]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hMe : ∀ a j, hJ ε (e a) (M *ᵥ w j) = 0`. Introduce `a j`. Rewrite using `[← hback (e a), hiso]`. Establish `hx` using `hsi.1 a`. Establish `hdec : Formalism.MainNotions.S.uMat s⁻¹ *ᵥ e a = e a + (Formalism.MainNotions.S.uMat s⁻¹ - 1) *ᵥ e a`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.sub_mulVec, one_mulVec]`. Normalize the expressions using the abelian group laws. Rewrite using `[hdec, UnitaryIsometries.hJ_add_left, Fw.ew, span_perp Fw a.1 _ hx j, add_zero]`. Establish `hMz : ∀ j, hJ ε z (M *ᵥ w j) = 0`. Introduce `j`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hback z, hiso]`. Establish `hx` using `hsi.2`. Establish `hdec : Formalism.MainNotions.S.uMat s⁻¹ *ᵥ z = z + (Formalism.MainNotions.S.uMat s⁻¹ - 1) *ᵥ z`. Rewrite using `[Matrix.sub_mulVec, one_mulVec]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdec, UnitaryIsometries.hJ_add_left, Fw.zw, span_perp Fw r _ hx j, add_zero]`. Use `set y : Fin k → Fin n → ℂ := fun j => M *ᵥ w j - ∑ a, hJ ε (p a) (M *ᵥ w j) • e a with hy`. Establish `hpe : ∀ a b, hJ ε (p a) (e b) = if b = a then 1 else 0` using `fun a b => hJ_swapδ Fw.ep b a`. Establish `hwe : ∀ j b, hJ ε (M *ᵥ w j) (e b) = 0` using `fun j b => hJ_swap0 (hMe b j)`. Establish `Fy : Frm ε e p z y T`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨Fw.ee, Fw.ep, Fw.pp, Fw.ez, Fw.pz, Fw.zz, fun a j => ?_, fun a j => ?_, fun j => ?_, fun i j => ?_, Fw.T_ne⟩` and prove the remaining obligations. Simplify using `only [hy, UnitaryIsometries.hJ_sub_right, UnitaryIsometries.hJ_sum_right, Fw.ee, mul_zero, Finset.sum_const_zero, sub_zero, hMe]`. Simplify using `only [hy, UnitaryIsometries.hJ_sub_right, UnitaryIsometries.hJ_sum_right, hpe, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true, sub_self]`. Establish `hze : ∀ b, hJ ε z (e b) = 0` using `fun b => hJ_swap0 (Fw.ez b)`. Simplify using `only [hy, UnitaryIsometries.hJ_sub_right, UnitaryIsometries.hJ_sum_right, hze, mul_zero, Finset.sum_const_zero, sub_zero, hMz]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hy, UnitaryIsometries.hJ_sub_right, UnitaryIsometries.hJ_sub_left, UnitaryIsometries.hJ_sum_right, UnitaryIsometries.hJ_sum_left, hwe, Fw.ee, hMe, mul_zero, Finset.sum_const_zero, sub_zero]`. Rewrite using `[hM]`. Conclude with `(hiso _ _).trans (Fw.ww i j)`. Establish `hI` using `frM_isIsom Fw Fy hdim`. Use `set hU := UnitaryIsometries.toUJ ε hI with hUdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hUm : Formalism.MainNotions.S.uMat hU = frM (ε` using `ε) e p z w y T := UnitaryIsometries.uMat_toUJ ε hI`. Establish `hUe : ∀ a, Formalism.MainNotions.S.uMat hU *ᵥ e a = e a` using `fun a => by`. Rewrite using `[hUm]`. Conclude with `frM_fix Fw hdim fun j => hJ_swap0 (Fw.ew a j)`. Establish `hUp : ∀ a, Formalism.MainNotions.S.uMat hU *ᵥ p a = p a` using `fun a => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hUm]`. Conclude with `frM_fix Fw hdim fun j => hJ_swap0 (Fw.pw a j)`. Establish `hUz : Formalism.MainNotions.S.uMat hU *ᵥ z = z`. Rewrite using `[hUm]`. Conclude with `frM_fix Fw hdim fun j => hJ_swap0 (Fw.zw j)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hUH : hU ∈ HG ε e p z` using `⟨hUe, hUp, hUz⟩`. Establish `hUw : ∀ j, Formalism.MainNotions.S.uMat hU⁻¹ *ᵥ y j = w j` using `fun j => by`. Rewrite using `[← frM_w (y := y) Fw j, ← hUm, mulVec_mulVec, uMat_inv_mul, one_mulVec]`. Use `⟨s * hU⁻¹, ?_, hU, hUH, by group⟩` and prove the remaining obligations. Establish `hmv : ∀ v, (Formalism.MainNotions.S.uMat (s * hU⁻¹) - 1) *ᵥ v = M *ᵥ (Formalism.MainNotions.S.uMat hU⁻¹ *ᵥ v) - v` using `fun v => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[uMat_mul, Matrix.sub_mulVec, one_mulVec, ← mulVec_mulVec]`. Establish `hme : ∀ a, (Formalism.MainNotions.S.uMat (s * hU⁻¹) - 1) *ᵥ e a = (M - 1) *ᵥ e a` using `fun a => by`. Rewrite using `[hmv, inv_fix ε (hUe a), Matrix.sub_mulVec, one_mulVec]`. Establish `hmz : (Formalism.MainNotions.S.uMat (s * hU⁻¹) - 1) *ᵥ z = (M - 1) *ᵥ z`. Rewrite using `[hmv, inv_fix ε hUz, Matrix.sub_mulVec, one_mulVec]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hmy : ∀ j, (Formalism.MainNotions.S.uMat (s * hU⁻¹) - 1) *ᵥ y j ∈ spanLt e r` using `fun j => by`. Rewrite using `[hmv, hUw, hy, sub_sub_cancel]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, a.2, rfl⟩)`. Use `⟨⟨fun a => ?_, ?_⟩, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[hme]`.
-
-Conclude with `hs.1 a`. Rewrite using `[hmz]`. Conclude with `hs.2`. Rewrite using `[recon Fy hdim v]`. Simplify using `only [syn, mulVec_add, mulVec_sum, mulVec_smul, hv, zero_smul, Finset.sum_const_zero, add_zero]`.
-
-Use `Submodule.add_mem _ (Submodule.add_mem _ (Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ ?_) (Submodule.smul_mem _ _ ?_)) (Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (hmy j))` and prove the remaining obligations. Rewrite using `[hme]`. Conclude with `spanLt_le a.1 (le_of_lt a.2) (hs.1 a)`. Rewrite using `[hmz]`. Conclude with `hs.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_NH {w : Fin k → Fin n → ℂ} (Fw : Frm ε e p z w T) (hdim : n = 2 * r + 1 + k) {s : UJ ε}
     (hs : s ∈ UnitaryIsometries.RI.SG ε e z) : ∃ m ∈ NG ε e z, ∃ h ∈ HG ε e p z, s = m * h := by

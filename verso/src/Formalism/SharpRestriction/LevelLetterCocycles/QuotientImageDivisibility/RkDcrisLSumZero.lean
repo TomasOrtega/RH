@@ -21,7 +21,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [DcrisL, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma mem_DcrisL_iff' (T : LocLat G Qp LL O) (σ : K₀ →ₐ[Qp] LL) (x : T.V ⊗[Qp] B) :
     x ∈ DcrisL PD T.ρ σ ↔ x ∈ Dcris PD T.ρ ∧
@@ -30,7 +30,7 @@ private lemma mem_DcrisL_iff' (T : LocLat G Qp LL O) (σ : K₀ →ₐ[Qp] LL) (
     LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]
 
 /- English proof (translation)
-Simplify using `only [DdRE, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma mem_DdRE_iff' (T : LocLat G Qp LL O) (τ : K →ₐ[Qp] LL) (y : T.V ⊗[Qp] BdR) :
     y ∈ DdRE PD T.ρ τ ↔ y ∈ DdR PD T.ρ ∧
@@ -39,9 +39,9 @@ private lemma mem_DdRE_iff' (T : LocLat G Qp LL O) (τ : K →ₐ[Qp] LL) (y : T
     LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]
 
 /- English proof (translation)
-Establish `h : ∀ x, ιV PD (LL` using `LL) (V := T.V) x = LinearMap.lTensor T.V (PD.ι.toLinearMap.restrictScalars Qp) x := by`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => first | rfl | simp [ιV]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`. Introduce `x y hxy`. Rewrite `hxy` using `[h, h]`. Conclude with `Module.Flat.lTensor_preserves_injective_linearMap _ (by exact PD.ι_inj) hxy`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma iotaV_injective (T : LocLat G Qp LL O) : Function.Injective (ιV PD (LL := LL) (V := T.V)) := by
   have h : ∀ x, ιV PD (LL := LL) (V := T.V) x =
@@ -56,7 +56,7 @@ private lemma iotaV_injective (T : LocLat G Qp LL O) : Function.Injective (ιV P
   exact Module.Flat.lTensor_preserves_injective_linearMap _ (by exact PD.ι_inj) hxy
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [ιV, mulVB, mulVdR, ← IsScalarTower.algebraMap_apply]`. Consider the case `add a b ha hb => rw [map_add, map_add, map_add, map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private lemma iotaV_mulVB_comm (T : LocLat G Qp LL O) (c : K₀) (x : T.V ⊗[Qp] B) :
     ιV PD (LL := LL) (V := T.V) (mulVB (K₀ := K₀) (B := B) (V := T.V) (LL := LL) c x) =
@@ -68,7 +68,7 @@ private lemma iotaV_mulVB_comm (T : LocLat G Qp LL O) (c : K₀) (x : T.V ⊗[Qp
   | add a b ha hb => rw [map_add, map_add, map_add, map_add, ha, hb]
 
 /- English proof (translation)
-Set `e : K₀ ≃ₐ[Qp] K` to `AlgEquiv.ofBijective (IsScalarTower.toAlgHom Qp K₀ K) hK`. Use `⟨σ.comp (e.symm : K →ₐ[Qp] K₀), ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Establish `hx : (IsScalarTower.toAlgHom Qp K₀ K) x = e x` using `rfl`. Simplify using `only [AlgHom.comp_apply, hx, AlgEquiv.coe_algHom, AlgEquiv.symm_apply_apply]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem rk_lift (hK : Function.Bijective (algebraMap K₀ K)) (σ : K₀ →ₐ[Qp] LL) :
     ∃ τ : K →ₐ[Qp] LL, τ.comp (IsScalarTower.toAlgHom Qp K₀ K) = σ := by
@@ -82,13 +82,13 @@ variable [NeZero n] (W : LocWach PD LL O v n)
 
 include W in
 /- English proof (translation)
-Establish `hD` using `(hQ hK T.V T.ρ hT).1`. Use extensionality with `y`. Rewrite using `[Submodule.mem_map, mem_DdRE_iff']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite `hx` using `[mem_DcrisL_iff']`. Use `⟨?_, fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[← hD]`. Conclude with `Submodule.mem_map_of_mem hx.1`. Take `⟨c₀, rfl⟩` from `hK.2 c`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← iotaV_mulVB_comm, hx.2 c₀, map_smul]`. Apply the tactic sequence `first | rfl | simp`. Introduce and unpack `⟨hyD, hyc⟩`. Rewrite `hyD` using `[← hD, Submodule.mem_map]`. Take `⟨x, hxD, rfl⟩` from `hyD`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨x, (mem_DcrisL_iff' T _ x).mpr ⟨hxD, fun c₀ => ?_⟩, rfl⟩` and prove the remaining obligations. Apply `iotaV_injective (PD := PD) T` to reduce the goal to its premises. Rewrite using `[iotaV_mulVB_comm, hyc, map_smul]`. Apply the tactic sequence `first | rfl | simp`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rk_DcrisL_map (hK : Function.Bijective (algebraMap K₀ K)) (hQ : Formalism.MainNotions.RamifiedCoefficientChains.DdREqDcris PD LL)
     (T : LocLat G Qp LL O) (hT : IsCrys PD T.ρ) (τ : K →ₐ[Qp] LL) :
@@ -115,9 +115,9 @@ theorem rk_DcrisL_map (hK : Function.Bijective (algebraMap K₀ K)) (hQ : Formal
 
 include W in
 /- English proof (translation)
-Take `⟨τ, hτ⟩` from `rk_lift hK σ`. Rewrite using `[← hτ]`. Establish `hmap` using `rk_DcrisL_map W hK hQ T hT τ`. Establish `hE` using `(hQ hK T.V T.ρ hT).2 τ`. Rewrite using `[← hE.2.1, ← hmap]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Submodule.equivMapOfInjective _ (iotaV_injective (PD := PD) T) _).finrank_eq`.
+A detailed English derivation is pending.
 -/
 theorem rk_finrank_DcrisL (hK : Function.Bijective (algebraMap K₀ K)) (hQ : Formalism.MainNotions.RamifiedCoefficientChains.DdREqDcris PD LL)
     (T : LocLat G Qp LL O) (hT : IsCrys PD T.ρ) (σ : K₀ →ₐ[Qp] LL) :

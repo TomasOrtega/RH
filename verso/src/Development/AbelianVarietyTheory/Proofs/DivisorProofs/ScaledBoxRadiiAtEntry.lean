@@ -20,9 +20,7 @@ theorem box_eq_ebox {A D : Type} (ϖ : kˣ) (C : Matrix A D k) (e : A → ℕ) :
     GlobalTheory.RankCoinv.box ϖ C e = ebox ϖ C (fun i _ => e i) := rfl
 
 /- English proof (translation)
-Use extensionality with `Y`. Use `⟨fun hY i j => ?_, fun hY i j => ?_⟩` and prove the remaining obligations. Rewrite using `[show Y i j - C i j = (Y i j - X i j) + (X i j - C i j) by ring]`. Conclude with `Valuation.map_add_le _ (hY i j) (hX i j)`. Rewrite using `[show Y i j - X i j = (Y i j - C i j) - (X i j - C i j) by ring]`.
-
-Conclude with `Valuation.map_sub_le _ (hY i j) (hX i j)`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ebox_eq_of_mem {A D : Type} {ϖ : kˣ} {C X : Matrix A D k} {r : A → D → ℕ} (hX : X ∈ ebox ϖ C r) :
     ebox ϖ X r = ebox ϖ C r := by
@@ -42,9 +40,7 @@ def pv {n d : ℕ} (Bf : fullRk k n d →ₗ[ℂ] fullRk k n d →ₗ⋆[ℂ] �
   else 0
 
 /- English proof (translation)
-Establish `m₁ : B₁.indicator (1 : Matrix (Fin n) (Fin d) k → ℂ) ∈ fullRk k n d` using `h₁ ▸ Ψ₁.2`. Establish `m₂ : B₂.indicator (1 : Matrix (Fin n) (Fin d) k → ℂ) ∈ fullRk k n d` using `h₂ ▸ Ψ₂.2`. Rewrite using `[pv, dif_pos ⟨m₁, m₂⟩]`. Use `congr 1`. Conclude with `congrArg Bf (Subtype.ext h₁.symm)`.
-
-Conclude with `Subtype.ext h₂.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem pv_eq {n d : ℕ} (Bf : fullRk k n d →ₗ[ℂ] fullRk k n d →ₗ⋆[ℂ] ℂ) {B₁ B₂ : Set (Matrix (Fin n) (Fin d) k)}
     (Ψ₁ Ψ₂ : fullRk k n d) (h₁ : Ψ₁.1 = B₁.indicator 1) (h₂ : Ψ₂.1 = B₂.indicator 1) : pv Bf B₁ B₂ = Bf Ψ₁ Ψ₂ := by
@@ -83,7 +79,7 @@ theorem dgl_val {m : ℕ} (i₀ : Fin m) (t : kˣ) :
     (dgl i₀ t).1 = diagonal (Function.update (1 : Fin m → k) i₀ (t : k)) := rfl
 
 /- English proof (translation)
-Use `ext`. Simplify using `only [gdet, Matrix.GeneralLinearGroup.val_det_apply, dgl_val, det_diagonal]`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ i₀)]`. Rewrite using `[Finset.prod_eq_one (fun i hi => by simp [Function.update_apply, (Finset.ne_of_mem_erase hi)])]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gdet_dgl {m : ℕ} (i₀ : Fin m) (t : kˣ) : gdet (dgl i₀ t) = t := by
   ext

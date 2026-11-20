@@ -6,7 +6,7 @@ open Formalism.BasicNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual 
 namespace GlobalTheory.CoeffEmbedding
 
 /- English proof (translation)
-Introduce `{R H what₂} N A i` and use `continuous_iotaOQ R H what₂ N A i`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem continuous_iotaOQ_of_data : ∀ {R : Ranks} {H : Host R} {what₂ : Rows.Data R}
     (N : NData R H what₂) (A : NAut N) (i : N.Loc), Continuous (iotaOQ N A i) :=

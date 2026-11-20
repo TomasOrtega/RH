@@ -12,7 +12,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.QPl
 
 /- English proof (translation)
-Use `haveI : CompactSpace (KO k n) := isCompact_iff_compactSpace.1 (GlobalTheory.SplitFlip.isCompact_KO (k := k) (n := n))`. Use `haveI : Finite (KO k n ⧸ J.subgroupOf (KO k n)) := Subgroup.quotient_finite_of_isOpen _ (hJ.preimage continuous_subtype_val)`. Conclude with `Subgroup.index_ne_zero_of_finite`.
+A detailed English derivation is pending.
 -/
 theorem relIndex_KO_ne_zero {k n : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [Fintype n] [DecidableEq n] (J : Subgroup (GL n k)) (hJ : IsOpen (J : Set (GL n k))) : J.relIndex (KO k n) ≠ 0 := by
@@ -22,9 +22,7 @@ theorem relIndex_KO_ne_zero {k n : Type} [Field k] [ValuativeRel k] [Topological
   exact Subgroup.index_ne_zero_of_finite
 
 /- English proof (translation)
-Introduce `D c v χ Q`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Q.idx_mid (Q.s + 1) 0 rfl]`. Conclude with `relIndex_KO_ne_zero _ (Q.reg.2.2 _ _ _).1`. Rewrite using `[Q.idx_top]`.
-
-Conclude with `relIndex_KO_ne_zero _ Q.openT`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem QAt.idx_last_ne_zero : ∀ (D : D7) (c : Comm D) (v : VCom c) (χ : ℕ → (AE D)ˣ →* Circle) (Q : QAt v χ), Q.idx (Q.s + 1) ≠ 0 ∧ Q.idx (Q.s + 1 + 1) ≠ 0 := by
   intro D c v χ Q

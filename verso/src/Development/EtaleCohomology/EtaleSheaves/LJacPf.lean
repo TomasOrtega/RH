@@ -3,11 +3,11 @@ import Development.EtaleCohomology.EtaleSheaves.HensIdemCut
 namespace LateralTheory.E.LJacPf
 
 /- English proof (translation)
-Introduce `A _ I hH B _ φ hφ`. Use `letI := φ.toAlgebra`. Establish `: Algebra.IsIntegral A B` using `⟨hφ⟩`. Establish `hI : I ≤ Ideal.jacobson ⊥` using `hH.jac`. Rewrite using `[Ideal.jacobson]`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `le_sInf ?_` and prove the remaining obligations. Introduce and unpack `m ⟨-, hm⟩`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Establish `: (m.comap (algebraMap A B)).IsMaximal` using `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal m`. Use `hI.trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Ideal.jacobson]`. Conclude with `sInf_le ⟨bot_le, this⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LJac_of : LateralTheory.E.HensIdemCut.LJac := by
   intro A _ I hH B _ φ hφ

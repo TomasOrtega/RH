@@ -2,11 +2,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 open UpperTheory.V.Lit.Geo
 
 /- English proof (translation)
-Set `b` to `Module.finBasis ℝ V`. Set `c : Fin (Module.finrank ℝ V) → (V →L[ℝ] ℝ)` to `fun j => LinearMap.toContinuousLinearMap (b.coord j)`. Use `⟨Finset.univ.image fun I : Fin q → Fin (Module.finrank ℝ V) => fun i => e.symm (b (I i)), ∑ I : Fin q → Fin (Module.finrank ℝ V), ∏ i, ‖c (I i)‖, by positivity, fun m M hM hT X => ?_⟩` and prove the remaining obligations. Establish `hX : X = fun i => ∑ j, c j (e (X i)) • e.symm (b j)`. Use function extensionality and compare the values at `i`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `e.injective` to reduce the goal to its premises. Simplify using `only [map_sum, map_smul, LinearEquiv.apply_symm_apply]`. Conclude with `(b.sum_repr _).symm`. Establish `h1 : m X = ∑ I : Fin q → Fin (Module.finrank ℝ V), (∏ i, c (I i) (e (X i))) • m fun i => e.symm (b (I i))` using `by conv_lhs => rw [hX]`. Rewrite using `[m.map_sum]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun I _ => m.map_smul_univ _ _`. Rewrite using `[h1, Finset.sum_mul, Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun I _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_smul, norm_prod, mul_right_comm, ← Finset.prod_mul_distrib]`. Use `mul_le_mul (Finset.prod_le_prod (fun _ _ => norm_nonneg _) fun i _ => (c (I i)).le_opNorm _) (hT _ (Finset.mem_image_of_mem _ (Finset.mem_univ I))) (norm_nonneg _) (by positivity)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem absBd {V W F : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     [AddCommGroup W] [Module ℝ W] [NormedAddCommGroup F] [NormedSpace ℝ F] (e : W ≃ₗ[ℝ] V) (q : ℕ) :
@@ -34,7 +34,7 @@ private theorem absBd {V W F : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] 
     (hT _ (Finset.mem_image_of_mem _ (Finset.mem_univ I))) (norm_nonneg _) (by positivity)
 
 /- English proof (translation)
-Introduce `E _ _ _ a Ξ q`. Take `⟨T, B, hB, h⟩` from `absBd (F := Fin Ξ.d → ℂ) (UpperTheory.V.Lit.Dr.hv (E := E) (a := a)) q`. Use `⟨T, B, hB, fun α g M hM hT X => ?_⟩` and prove the remaining obligations. Conclude with `h ((((LinearMap.proj _).comp UpperTheory.V.Lit.Dr.ev).restrictScalars ℝ).compMultilinearMap α.toMultilinearMap) M hM hT X`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Lit.Geo.bdBasis :
     BdBasis := by

@@ -23,18 +23,18 @@ def pairCountExponentShift (D : D7) (c Ch : ℝ) : ℝ :=
 def pairCountExponent (D : D7) (c : ℝ) (s : ℕ) : ℝ := c * ((s : ℝ) + D.R.m) * D.R.m + c * cF D.R.f
 
 /- English proof (translation)
-Unfold `gg gS`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rows_gg_eq (D : D7) : gg D = (gS D : ℝ) := by unfold gg gS; push_cast; ring
 
 /- English proof (translation)
-Unfold `Tr`. Conclude with `(D.mem w).A.T_prime.pos` after adjusting the coercions.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem rows_Tr_pos (D : D7) (w : D.what₂.Word) : 0 < Tr D w := by
   unfold Tr; exact_mod_cast (D.mem w).A.T_prime.pos
 
 /- English proof (translation)
-Unfold `NT`. Conclude with `pow_pos (rows_Tr_pos D w) _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem rows_NT_pos (D : D7) (w : D.what₂.Word) : 0 < NT D w := by
   unfold NT; exact pow_pos (rows_Tr_pos D w) _
@@ -51,9 +51,9 @@ def termReducedGramMatrix {C' Cl Cg cb Cu cT CT C0 A c : ℝ} (hH : Cnt.Hyp D la
   if h : D.s.Gterm t ≠ 0 ∧ D.s.relevant t then Classical.choose (rows_reduced_exists Y hH hHH t h.1 h.2) else 0
 
 /- English proof (translation)
-Establish `h` using `Classical.choose_spec (rows_reduced_exists Y hH hHH t hG hrel)`. Establish `e : termReducedGramMatrix Y hH hHH t = Classical.choose (rows_reduced_exists Y hH hHH t hG hrel)`. Unfold `termReducedGramMatrix`. Rewrite using `[dif_pos ⟨hG, hrel⟩]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨h.1, t, hG, hrel, h.1, h.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem rows_Zr_spec {C' Cl Cg cb Cu cT CT C0 A c : ℝ} (hH : Cnt.Hyp D large₂ u u' C' Cl Cg cb Cu cT CT C0 A)
     (hHH : UnitaryVolumeMass.stHH D large₂ u u' C' Cl Cg cb Cu cT CT C0 A c) (t : D.s.Term u u') (hG : D.s.Gterm t ≠ 0)
@@ -66,7 +66,7 @@ theorem rows_Zr_spec {C' Cl Cg cb Cu cT CT C0 A c : ℝ} (hH : Cnt.Hyp D large�
   exact ⟨h.1, t, hG, hrel, h.1, h.2⟩
 
 /- English proof (translation)
-Take `⟨h1, _, _, _⟩` from `hT t hG hrel`. Take `⟨hz, hz', hTz, hTz', hR⟩` from `h1 τ`. Rewrite using `[← d_Gf_eq Y hrd t τ]`. Conclude with `lt_of_le_of_ne (Formalism.QuantumDeterminants.gNonneg D.R.k D.R.rS _ _ hz hz' (hTz ▸ rows_Tr_pos D u) (hTz' ▸ rows_Tr_pos D u') _ hR.1) (Ne.symm hR.2.2)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rows_Gz_pos (hT : TermPtsTie X Y) (hrd : 0 < D.host.rdE) (t : D.s.Term u u') (hG : D.s.Gterm t ≠ 0)
     (hrel : D.s.relevant t) (τ : D.what₂.Tau) : 0 < Gz D (Tu D u) (Tu D u') (termGramMatrix X t) τ := by
@@ -77,11 +77,11 @@ theorem rows_Gz_pos (hT : TermPtsTie X Y) (hrd : 0 < D.host.rdE) (t : D.s.Term u
     (Ne.symm hR.2.2)
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, _, _, _, _, _, _, h12, _, h14, _⟩` from `hH.1`. Establish `hb` using `d_two_le_b D large₂`. Establish `hk : (1 : ℝ) ≤ D.R.k`. Use `D.R.m_add_three_le_k` as an intermediate fact. Conclude with `(by omega : 1 ≤ D.R.k)` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : (2 : ℝ) ≤ ((D.R.k : ℝ) * large₂.sc.b) ^ 8`. Establish `: (2 : ℝ) ≤ (D.R.k : ℝ) * large₂.sc.b` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation. Establish `g1 : (2 : ℝ) ≤ D.host.g 0` using `h0.trans h12`. Establish `g2 : (2 : ℝ) ≤ D.host.g 1` using `h0.trans h14`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `gg`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem two_le_gg_of_count_hypotheses {C' Cl Cg cb Cu cT CT C0 : ℝ} (hH : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) : 2 ≤ gg D := by
   obtain ⟨_, _, _, _, _, _, _, _, _, _, _, h12, _, h14, _⟩ := hH.1
@@ -99,7 +99,7 @@ theorem two_le_gg_of_count_hypotheses {C' Cl Cg cb Cu cT CT C0 : ℝ} (hH : Cnt.
   nlinarith
 
 /- English proof (translation)
-Take `⟨t, hG, hrel, hE, _⟩` from `hZ`. Rewrite using `[gramProductG0_equiv_invariant hE]`. Unfold `wordPairGramProduct`. Establish `hg : 0 < (gS D : ℝ)` using `by rw [← rows_gg_eq]; linarith [two_le_gg_of_count_hypotheses hH]`. Conclude with `mul_pos (Finset.prod_pos fun τ _ => rows_Gz_pos Y hT (d_rdE_pos hH) t hG hrel τ) (by positivity)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gramProductG0_pos {C' Cl Cg cb Cu cT CT C0 c : ℝ} (hH : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) (hT : TermPtsTie X Y)
     {Z : GramM D} (hZ : wordPairGramGood X u u' large₂ c Z) : 0 < wordPairGramProduct D u u' Z := by
@@ -110,7 +110,7 @@ theorem gramProductG0_pos {C' Cl Cg cb Cu cT CT C0 c : ℝ} (hH : Cnt.Hyp0 D lar
   exact mul_pos (Finset.prod_pos fun τ _ => rows_Gz_pos Y hT (d_rdE_pos hH) t hG hrel τ) (by positivity)
 
 /- English proof (translation)
-Unfold `HHZ`. Establish `hb` using `d_two_le_b D large₂`. Establish `h1 : 1 ≤ (large₂.sc.b ^ (c * (D.R.m : ℝ) ^ 2 * D.R.f)) ^ (c * (D.R.m : ℝ))` using `Real.one_le_rpow (Real.one_le_rpow (by linarith) (by positivity)) (by positivity)`. Establish `h2 : 1 ≤ sizeZ D large₂.sc.b c Z ^ 4` using `one_le_pow₀ (rows_one_le_sizeZ _ _ _)`. Use the polynomial consequences of the given equalities and inequalities.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem rows_one_le_HHZ (D : D7) (large₂ : SizeData₂ D) {c : ℝ} (hc : 0 ≤ c) (Z : GramM D) : 1 ≤ HHZ D large₂.sc.b c Z := by
   unfold HHZ
@@ -121,11 +121,11 @@ theorem rows_one_le_HHZ (D : D7) (large₂ : SizeData₂ D) {c : ℝ} (hc : 0 �
   nlinarith
 
 /- English proof (translation)
-Take `⟨t, hG, hrel, hE, _⟩` from `hZ`. Rewrite using `[gramProductG0_equiv_invariant hE, rows_HHZ_inv hE]`. Establish `hR : RelZ D (ZhatL (lf D Y.F0) (X.fl' t))`. Establish `h` using `X.pt_cell t hG hrel`. Rewrite `h` using `[Y.fl_eq t]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨_, h⟩`. Take `⟨_, h2, _⟩` from `hHH hH Y.F0 Y.flag_e_eq_hyperbolic Y.formsAtZero (X.abelian₂ t) (Y.isRows.1 _ (Y.Lam_mem t)) (X.fl' t) (rows_isTermF Y t hG) hR`. Rewrite `h2` using `[← Y.fl_eq t]`. Establish `hg` using `two_le_gg_of_count_hypotheses hH.1`. Rewrite `hg` using `[rows_gg_eq]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hp : ∀ τ, 0 < Gz D (Tu D u) (Tu D u') (termGramMatrix X t) τ` using `fun τ => rows_Gz_pos Y hT (d_rdE_pos hH.1) t hG hrel τ`. Establish `h3 : ∏ τ, Gz D (Tu D u) (Tu D u') (termGramMatrix X t) τ ≤ HHZ D large₂.sc.b c (termGramMatrix X t)` using `le_trans (Finset.prod_le_prod (fun τ _ => (hp τ).le) fun τ _ => le_max_right _ _) h2`. Unfold `wordPairGramProduct`. Establish `h4 : ((gS D : ℝ)⁻¹) ^ (D.R.m * D.R.f) ≤ 1` using `pow_le_one₀ (by positivity) (inv_le_one_of_one_le₀ (by linarith))`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem gramProductG0_le_height {C' Cl Cg cb Cu cT CT C0 A c : ℝ} (hH : Cnt.Hyp D large₂ u u' C' Cl Cg cb Cu cT CT C0 A)
     (hHH : UnitaryVolumeMass.stHH D large₂ u u' C' Cl Cg cb Cu cT CT C0 A c) (hT : TermPtsTie X Y)
@@ -152,15 +152,13 @@ theorem gramProductG0_le_height {C' Cl Cg cb Cu cT CT C0 A c : ℝ} (hH : Cnt.Hy
     _ ≤ _ := by rw [mul_one]; exact h3
 
 /- English proof (translation)
-Unfold `massS massU`. Conclude with `d_mass_nonneg _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem rows_massS_nonneg (D : D7) (j : ℕ) : 0 ≤ massS D j := by
   unfold massS massU; exact d_mass_nonneg _ _
 
 /- English proof (translation)
-Unfold `XiS Xi`. Establish `hN` using `(rows_NT_pos D w).le`. Use `split_ifs`. Conclude with `div_nonneg (mul_nonneg (rows_massS_nonneg D _) (rows_massS_nonneg D _)) (rows_massS_nonneg D _)`. Check the signs of the components of the expression.
-
-Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem rows_XiS_nonneg (D : D7) (w : D.what₂.Word) {HH c : ℝ} (hHH : 0 ≤ HH) (hc : 0 ≤ c) (s : ℕ) : 0 ≤ XiS D w HH c s := by
   unfold XiS Xi
@@ -171,11 +169,11 @@ theorem rows_XiS_nonneg (D : D7) (w : D.what₂.Word) {HH c : ℝ} (hHH : 0 ≤ 
   · exact le_rfl
 
 /- English proof (translation)
-Establish `hσ0 : 0 < σ` using `by linarith`. Establish `h1 : 1 ≤ σ ^ (4 * (c * D.R.k))` using `Real.one_le_rpow hσ (by positivity)`. Establish `hN` using `(rows_NT_pos D w).le`. Unfold `XiS Xi`. Use `split_ifs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Conclude with `le_mul_of_one_le_right (div_nonneg (mul_nonneg (rows_massS_nonneg D _) (rows_massS_nonneg D _)) (rows_massS_nonneg D _)) h1`. Establish `e : (HH * NT D w) ^ (c * D.R.k) ≤ (P2 * NT D w) ^ (c * D.R.k) * σ ^ (4 * (c * D.R.k))`. Combine the equalities or inequalities in the displayed calculation. Apply `Real.rpow_le_rpow (by positivity) _ (by positivity)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Use `_ = (P2 * NT D w) ^ (c * D.R.k) * σ ^ (4 * (c * D.R.k)) := by`. Rewrite using `[Real.mul_rpow (by positivity) (by positivity), ← Real.rpow_natCast σ 4, ← Real.rpow_mul hσ0.le]`. Evaluate the numerical expressions. Combine the equalities or inequalities in the displayed calculation. Simplify using the standard rewrite rules.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rows_Xi_le (D : D7) (w : D.what₂.Word) {HH P2 σ c : ℝ} (hHH : 0 ≤ HH) (hP2 : 0 ≤ P2) (hσ : 1 ≤ σ) (hc : 0 ≤ c)
     (h : HH ≤ P2 * σ ^ 4) (s : ℕ) : XiS D w HH c s ≤ XiS D w P2 c s * σ ^ (4 * (c * D.R.k)) := by
@@ -201,9 +199,9 @@ theorem rows_Xi_le (D : D7) (w : D.what₂.Word) {HH P2 σ c : ℝ} (hHH : 0 ≤
   · simp
 
 /- English proof (translation)
-Unfold `wordSublatticeTripleBound`. Establish `h1` using `rows_one_le_HHZ D large₂ hc Z'`. Establish `h2` using `rows_one_le_HHZ D large₂ hc Z''`. Establish `hN` using `rows_NT_pos D w`. Establish `hX` using `rows_XiS_nonneg D w (HH := HHZ D large₂.sc.b c Z' * HHZ D large₂.sc.b c Z'') (by nlinarith) hc s`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : 0 ≤ HHZ D large₂.sc.b c Z' * HHZ D large₂.sc.b c Z''` using `by nlinarith`. Check the signs of the components of the expression.
+Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem rows_c3B_nonneg (D : D7) (large₂ : SizeData₂ D) (w : D.what₂.Word) {c : ℝ} (hc : 0 ≤ c) (Z' Z'' : GramM D) (s : ℕ) {De : ℝ}
     (hDe : 0 ≤ De) : 0 ≤ wordSublatticeTripleBound D large₂ w c Z' Z'' s De := by

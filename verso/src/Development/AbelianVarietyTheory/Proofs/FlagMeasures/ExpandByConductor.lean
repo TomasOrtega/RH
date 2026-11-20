@@ -16,7 +16,7 @@ open ValuativeRel MeasureTheory in
 open scoped Pointwise ENNReal Classical in
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 /- English proof (translation)
-Use extensionality with `y`. Simplify using `only [LinearMap.mem_ker, LinearMap.coe_comp, Function.comp_apply, LinearMap.mulLeft_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Ideal.mem_span_singleton]`. Rewrite using `[pow_add, mul_comm (ϖ ^ n), mul_dvd_mul_iff_left (pow_ne_zero _ hϖ.ne_zero)]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem ker_mkQ_comp_mulLeft_pow_eq_span {ϖ : 𝒪[F]} (hϖ : Irreducible ϖ) (n k : ℕ) :
     ((Submodule.mkQ (Ideal.span {ϖ ^ (n + k)})).comp (LinearMap.mulLeft 𝒪[F] (ϖ ^ k))).ker =
@@ -30,15 +30,15 @@ open ValuativeRel MeasureTheory in
 open scoped Pointwise ENNReal Classical in
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 /- English proof (translation)
-Rewrite using `[add_comm n 1]`. Use `set f := (Submodule.mkQ (Ideal.span {ϖ ^ (1 + n)})).comp (LinearMap.mulLeft 𝒪[F] (ϖ ^ n))`. Establish `hS : Nat.card (LinearMap.range f) = _root_.GlobalTheory.HL.resQ ϖ`. Unfold `_root_.GlobalTheory.HL.resQ`. Establish `hk` using `ker_mkQ_comp_mulLeft_pow_eq_span hϖ 1 n`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hk` using `[pow_one]`. Rewrite using `[← hk]`. Conclude with `(Nat.card_congr (f.quotKerEquivRange).toEquiv).symm`. Use `set g := (Submodule.mkQ (LinearMap.range f)).comp (Submodule.mkQ (Ideal.span {ϖ ^ (1 + n)}))`. Establish `hg : Function.Surjective g` using `(Submodule.mkQ_surjective _).comp (Submodule.mkQ_surjective _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hker : g.ker = Ideal.span {ϖ ^ n}`. Use extensionality with `y`. Simplify using `only [g, f, LinearMap.mem_ker, LinearMap.coe_comp, Function.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, LinearMap.mem_range, LinearMap.mulLeft_apply, Ideal.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hz` using `[Submodule.Quotient.eq, Ideal.mem_span_singleton]`. Establish `h2 : ϖ ^ n ∣ ϖ ^ (1 + n)` using `pow_dvd_pow _ (by omega)`. Establish `h4 : ϖ ^ n ∣ ϖ ^ n * z` using `dvd_mul_right _ _`. Simplify using `using (dvd_sub h4 (h2.trans hz))`. Introduce and unpack `⟨z, rfl⟩`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨z, rfl⟩`. Establish `e` using `(g.quotKerEquivOfSurjective hg).toEquiv`. Rewrite `e` using `[hker]`. Rewrite using `[Submodule.card_eq_card_quotient_mul_card (LinearMap.range f), hS, Nat.card_congr e]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem card_quotient_pow_succ_eq_resQ_mul {ϖ : 𝒪[F]} (hϖ : Irreducible ϖ) (n : ℕ) :
     Nat.card (𝒪[F] ⧸ Ideal.span {ϖ ^ (n + 1)}) =
@@ -75,7 +75,7 @@ open ValuativeRel MeasureTheory in
 open scoped Pointwise ENNReal Classical in
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Simplify using `only [pow_zero, Ideal.span_singleton_one]`. Conclude with `Nat.card_unique`. Consider the case `succ n ih => rw [card_quotient_pow_succ_eq_resQ_mul hϖ, ih, pow_succ, mul_comm]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem card_quotient_pow_eq_resQ_pow {ϖ : 𝒪[F]} (hϖ : Irreducible ϖ) (n : ℕ) :
     Nat.card (𝒪[F] ⧸ Ideal.span {ϖ ^ n}) = _root_.GlobalTheory.HL.resQ ϖ ^ n := by
@@ -89,7 +89,7 @@ open ValuativeRel MeasureTheory in
 open scoped Pointwise ENNReal Classical in
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.HL.resQ`. Establish `h` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ`. Rewrite using `[← h]`. Conclude with `Nat.card_pos (α := 𝓀[F])`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem resQ_pos_flag_measures {ϖ : 𝒪[F]} (hϖ : Irreducible ϖ) :
     0 < _root_.GlobalTheory.HL.resQ ϖ := by
@@ -102,7 +102,7 @@ open ValuativeRel MeasureTheory in
 open scoped Pointwise ENNReal Classical in
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 /- English proof (translation)
-The claim follows from `Nat.finite_of_card_ne_zero (by rw [card_quotient_pow_eq_resQ_pow hϖ]; exact pow_ne_zero _ (resQ_pos_flag_measures hϖ).ne')`.
+A detailed English derivation is pending.
 -/
 private theorem finite_quotient_span_pow' {ϖ : 𝒪[F]} (hϖ : Irreducible ϖ) (n : ℕ) :
     Finite (𝒪[F] ⧸ Ideal.span {ϖ ^ n}) :=
@@ -112,9 +112,9 @@ open ValuativeRel MeasureTheory in
 open scoped Pointwise ENNReal Classical in
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 /- English proof (translation)
-Rewrite `h` using `[Ideal.Quotient.eq, Ideal.mem_span_singleton']`. Take `⟨w, hw⟩` from `h`. Establish `hy : (y : F) = y' + w * (ϖ : F) ^ a`. Use `congrArg (fun z : 𝒪[F] => (z : F)) hw` as an intermediate fact. Move the coercions through the operations in `at this`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Take the linear combination `-this`. Establish `h1 : ψ (c * (ϖ : F) ^ a * w) = 1` using `(hψ _).2 hc w`. Rewrite using `[hy, show ((y' : F) + w * (ϖ : F) ^ a) * c = y' * c + c * (ϖ : F) ^ a * w by ring, AddChar.map_add_eq_mul, h1, mul_one]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 private theorem addChar_mul_eq_of_quotient_eq {ϖ : 𝒪[F]} {ψ : AddChar F ℂ}
     (hψ : ∀ x : F, (∀ y : 𝒪[F], ψ (x * y) = 1) ↔ x ∈ 𝒪[F]) {a : ℕ} {c : F}
@@ -135,7 +135,7 @@ open ValuativeRel MeasureTheory in
 open scoped Pointwise ENNReal Classical in
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 /- English proof (translation)
-The claim follows from `(Ideal.Quotient.mk_surjective r).choose_spec`.
+A detailed English derivation is pending.
 -/
 private theorem mk_rep_eq (ϖ : 𝒪[F]) (a : ℕ)
     (r : 𝒪[F] ⧸ Ideal.span {ϖ ^ a}) :
@@ -146,7 +146,7 @@ open ValuativeRel MeasureTheory in
 open scoped Pointwise ENNReal Classical in
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 /- English proof (translation)
-Simplify using `using (hψ c).2 hc 1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem addChar_eq_one_of_mem_integer {ψ : AddChar F ℂ}
     (hψ : ∀ x : F, (∀ y : 𝒪[F], ψ (x * y) = 1) ↔ x ∈ 𝒪[F]) {c : F} (hc : c ∈ 𝒪[F]) :
@@ -157,15 +157,13 @@ open ValuativeRel MeasureTheory in
 open scoped Pointwise ENNReal Classical in
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 /- English proof (translation)
-Establish `hadd : ∀ r s, ψ (_root_.GlobalTheory.HL.CharCond.rep ϖ a (r + s) * c) = ψ (_root_.GlobalTheory.HL.CharCond.rep ϖ a r * c) * ψ (_root_.GlobalTheory.HL.CharCond.rep ϖ a s * c)`. Introduce `r s`. Rewrite using `[← AddChar.map_add_eq_mul, ← add_mul]`. Use `addChar_mul_eq_of_quotient_eq hψ hc (y := _root_.GlobalTheory.HL.CharCond.rep ϖ a (r + s)) (y' := _root_.GlobalTheory.HL.CharCond.rep ϖ a r + _root_.GlobalTheory.HL.CharCond.rep ϖ a s) (by rw [map_add, mk_rep_eq, mk_rep_eq, mk_rep_eq])` as an intermediate fact. Rewrite using `[this]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression. Use `split_ifs with hcO`. Establish `: ∀ r, ψ (_root_.GlobalTheory.HL.CharCond.rep ϖ a r * c) = 1` using `fun r => addChar_eq_one_of_mem_integer hψ (mul_mem (_root_.GlobalTheory.HL.CharCond.rep ϖ a r).2 hcO)`. Simplify using `[this]`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hne : ¬ ∀ y : 𝒪[F], ψ (c * y) = 1` using `fun h => hcO ((hψ c).1 h) push_neg at hne`. Take `⟨y, hy⟩` from `hne`. Use `set m : 𝒪[F] ⧸ Ideal.span {ϖ ^ a} := Ideal.Quotient.mk _ y`. Establish `hm : ψ (_root_.GlobalTheory.HL.CharCond.rep ϖ a m * c) ≠ 1`. Rewrite using `[addChar_mul_eq_of_quotient_eq hψ hc (y' := y) (mk_rep_eq ϖ a m), mul_comm]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy`. Establish `hshift : ∑ r, ψ (_root_.GlobalTheory.HL.CharCond.rep ϖ a r * c) = (∑ r, ψ (_root_.GlobalTheory.HL.CharCond.rep ϖ a r * c)) * ψ (_root_.GlobalTheory.HL.CharCond.rep ϖ a m * c)`. Rewrite using `[Finset.sum_mul]`. Repeatedly rewrite using `[← hadd]`. Conclude with `(Fintype.sum_equiv (Equiv.addRight m) _ _ (fun r => rfl)).symm`.
-
-Establish `h2 : (∑ r, ψ (_root_.GlobalTheory.HL.CharCond.rep ϖ a r * c)) * (1 - ψ (_root_.GlobalTheory.HL.CharCond.rep ϖ a m * c)) = 0`. Rewrite using `[mul_sub, mul_one, ← hshift, sub_self]`. Conclude with `(mul_eq_zero.1 h2).resolve_right (sub_ne_zero.2 (Ne.symm hm))`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sum_addChar_rep_mul_eq_ite {ϖ : 𝒪[F]} {ψ : AddChar F ℂ}
     (hψ : ∀ x : F, (∀ y : 𝒪[F], ψ (x * y) = 1) ↔ x ∈ 𝒪[F]) (a : ℕ)
@@ -210,11 +208,11 @@ open ValuativeRel MeasureTheory in
 open scoped Pointwise ENNReal Classical in
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 /- English proof (translation)
-Take `⟨w, rfl⟩` from `h1`. Establish `hw : ¬ ϖ ∣ w` using `fun h => h2 (by rw [pow_succ]; exact mul_dvd_mul_left _ h)`. Establish `hu : IsUnit w`. Assume the negation of the conclusion as `hn`. Apply `hw` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hmax : w ∈ IsLocalRing.maximalIdeal 𝒪[F]` using `(IsLocalRing.mem_maximalIdeal _).2 hn`. Rewrite `hmax` using `[(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ, Ideal.mem_span_singleton]`. Then use the resulting hypothesis. Establish `hϖ0 : (ϖ : F) ≠ 0` using `fun h => hϖ.ne_zero (Subtype.ext h)`. Use `⟨hu.unit, ?_⟩` and prove the remaining obligations. Rewrite using `[IsUnit.unit_spec, hi]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem exists_unit_of_exact_valuation_level {ϖ : 𝒪[F]} (hϖ : Irreducible ϖ) {k i a : ℕ}
     (hi : a = k + i) {y : 𝒪[F]} (h1 : ϖ ^ k ∣ y) (h2 : ¬ ϖ ^ (k + 1) ∣ y) :
@@ -238,15 +236,13 @@ open ValuativeRel MeasureTheory in
 open scoped Pointwise ENNReal Classical in
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 /- English proof (translation)
-Take `⟨n, rfl⟩ : ∃ n, a = n + k` from `⟨a - k, by omega⟩`. Use `set f := (Submodule.mkQ (Ideal.span {ϖ ^ (n + k)})).comp (LinearMap.mulLeft 𝒪[F] (ϖ ^ k))`. Establish `hmem : ∀ r, ϖ ^ k ∣ _root_.GlobalTheory.HL.CharCond.rep ϖ (n + k) r ↔ r ∈ LinearMap.range f`. Introduce `r`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨y, hy⟩`. Use `⟨y, ?_⟩` and prove the remaining obligations. Simplify using `only [f, LinearMap.coe_comp, Function.comp_apply, LinearMap.mulLeft_apply, Submodule.mkQ_apply]`. Rewrite using `[← hy]`. Conclude with `mk_rep_eq ϖ (n + k) r`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨y, rfl⟩`. Establish `h` using `mk_rep_eq ϖ (n + k) (f y)`. Establish `hfy : f y = Ideal.Quotient.mk (Ideal.span {ϖ ^ (n + k)}) (ϖ ^ k * y)` using `rfl`. Rewrite `h` using `[hfy, Ideal.Quotient.eq, Ideal.mem_span_singleton]`. Establish `h3 : ϖ ^ k ∣ _` using `(pow_dvd_pow ϖ (Nat.le_add_left k n)).trans h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : ϖ ^ k ∣ ϖ ^ k * y` using `dvd_mul_right _ _`. Establish `h5` using `dvd_add h3 h4`. Rewrite `h5` using `[sub_add_cancel]`. Conclude with `h5`. Rewrite using `[← Fintype.card_subtype, ← Nat.card_eq_fintype_card, Nat.card_congr (Equiv.subtypeEquivRight hmem), Nat.add_sub_cancel]`.
-
-Express the relevant statement in the definitionally equal form `Nat.card (LinearMap.range f) = _`. Rewrite using `[← Nat.card_congr (f.quotKerEquivRange).toEquiv, ker_mkQ_comp_mulLeft_pow_eq_span hϖ n k, card_quotient_pow_eq_resQ_pow hϖ]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem card_filter_pow_dvd_rep_eq_resQ_pow {ϖ : 𝒪[F]} (hϖ : Irreducible ϖ) {k a : ℕ} (hk : k ≤ a)
     [Fintype (𝒪[F] ⧸ Ideal.span {ϖ ^ a})] :
@@ -283,45 +279,41 @@ open scoped Pointwise ENNReal Classical in
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] in
 
 /- English proof (translation)
-Introduce `F _ _ _ _ ϖ hϖ ψ hψ U R Q χ a B hB`. Use `haveI := finite_quotient_span_pow' hϖ a`. Use `letI : Fintype (𝒪[F] ⧸ Ideal.span {ϖ ^ a}) := Fintype.ofFinite _`. Establish `hϖ0 : (ϖ : F) ≠ 0` using `fun h => hϖ.ne_zero (Subtype.ext h)`. Use `set q := _root_.GlobalTheory.HL.resQ ϖ with hqdef`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set rep := _root_.GlobalTheory.HL.CharCond.rep ϖ a with hrep`. Use `set g : (𝒪[F] ⧸ Ideal.span {ϖ ^ a}) → ℂ := fun r => ∑ u ∈ R, ψ ((rep r : F) / (ϖ : F) ^ a * Q u) * χ u with hg`. Establish `hcard : Fintype.card (𝒪[F] ⧸ Ideal.span {ϖ ^ a}) = q ^ a`. Rewrite using `[← Nat.card_eq_fintype_card, card_quotient_pow_eq_resQ_pow hϖ]`. Establish `hsumall : ∑ r, g r = (∑ u ∈ R.filter (fun u => ϖ ^ a ∣ Q u), χ u) * (q : ℂ) ^ a`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hinner : ∀ u, ∑ r, ψ ((rep r : F) / (ϖ : F) ^ a * Q u) = if ϖ ^ a ∣ Q u then (q : ℂ) ^ a else 0`. Introduce `u`. Establish `hc : ((Q u : F) / (ϖ : F) ^ a) * (ϖ : F) ^ a ∈ 𝒪[F]`. Rewrite using `[div_mul_cancel₀ _ (pow_ne_zero _ hϖ0)]`. Conclude with `(Q u).2`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `sum_addChar_rep_mul_eq_ite hψ a hc`. Establish `hiff : ((Q u : F) / (ϖ : F) ^ a ∈ 𝒪[F]) ↔ ϖ ^ a ∣ Q u`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨⟨_, h⟩, Subtype.ext ?_⟩` and prove the remaining obligations.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Introduce and unpack `⟨w, hw⟩`. Rewrite using `[hw]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_div_cancel_left₀ _ (pow_ne_zero _ hϖ0)]`. Conclude with `w.2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e, hcard]`. Distinguish the cases in `h : ϖ ^ a ∣ Q u`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos (hiff.2 h), if_pos h]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[if_neg (fun h' => h (hiff.1 h')), if_neg h]`. Simplify using `only [hg]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.sum_mul, hinner]`. Rewrite using `[Finset.sum_filter, Finset.sum_mul]`. Use `Finset.sum_congr rfl (fun u _ => ?_)` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> ring`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hzero : g 0 = ∑ u ∈ R, χ u`. Use `Finset.sum_congr rfl (fun u _ => ?_)` and prove the remaining obligations. Establish `h0` using `mk_rep_eq ϖ a 0`. Rewrite `h0` using `[Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton']`. Take `⟨w, hw⟩` from `h0`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (rep 0 : F) / (ϖ : F) ^ a * Q u = ((w * Q u : 𝒪[F]) : F)`. Rewrite using `[hrep, ← hw]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this, addChar_eq_one_of_mem_integer hψ (w * Q u).2, one_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `set D : ℕ → Finset (𝒪[F] ⧸ Ideal.span {ϖ ^ a}) := fun k => Finset.univ.filter (fun r => ϖ ^ k ∣ rep r) with hD`. Establish `hDa : D a = {0}`. Use extensionality with `r`. Simplify using `only [hD, Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton]`. Rewrite using `[← Ideal.mem_span_singleton, ← Ideal.Quotient.eq_zero_iff_mem, hrep, mk_rep_eq]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `hD0 : D 0 = Finset.univ`. Use extensionality with `r`. Simplify using `[hD]`. Establish `key : ∀ j, j ≤ a → ‖∑ r ∈ D (a - j), g r - g 0‖ ≤ ∑ i ∈ Finset.Icc 1 j, ((q : ℝ) ^ i - (q : ℝ) ^ (i - 1)) * B i`. Introduce `j`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Proceed by induction on `j with`. Consider the case `zero => intro _`. Simplify using `[hDa]`. Consider the case `succ j ih`. Introduce `hj`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set k := a - (j + 1) with hk`. Establish `hkj : a - j = k + 1` using `by omega`. Establish `hsub : D (k + 1) ⊆ D k`. Introduce `r hr`. Simplify using `only [hD, Finset.mem_filter, Finset.mem_univ, true_and] at hr ⊢`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(pow_dvd_pow ϖ (Nat.le_succ k)).trans hr`. Rewrite `ih` using `[hkj]`. Establish `ih'` using `ih (by omega)`. Rewrite using `[← Finset.sum_sdiff hsub, add_sub_assoc, Finset.sum_Icc_succ_top (by omega)]`. Establish `hlev : ∀ r ∈ D k \ D (k + 1), ‖g r‖ ≤ B (j + 1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `r hr`. Simplify using `only [hD, Finset.mem_sdiff, Finset.mem_filter, Finset.mem_univ, true_and] at hr`. Take `⟨u₀, hu₀⟩` from `exists_unit_of_exact_valuation_level hϖ (k := k) (i := j + 1) (a := a) (by omega) hr.1 hr.2`. Conclude with `hB (j + 1) (by omega) hj _ u₀ hu₀`. Establish `hcd : ((D k \ D (k + 1)).card : ℝ) = (q : ℝ) ^ (j + 1) - (q : ℝ) ^ (j + 1 - 1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[Finset.card_sdiff_of_subset hsub]`. Establish `c1 : (D k).card = q ^ (j + 1)`. Rewrite using `[hD]; simp only; rw [card_filter_pow_dvd_rep_eq_resQ_pow hϖ (by omega)]; congr 1; omega`. Establish `c2 : (D (k + 1)).card = q ^ j`. Rewrite using `[hD]; simp only; rw [card_filter_pow_dvd_rep_eq_resQ_pow hϖ (by omega)]; congr 1; omega`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[c1, c2, Nat.add_sub_cancel]`. Establish `: q ^ j ≤ q ^ (j + 1)` using `Nat.pow_le_pow_right (resQ_pos_flag_measures hϖ) (Nat.le_succ j)`. Move the coercions through the operations in `[this]`. Expand and normalize the polynomial expressions, which then agree. Establish `hbound : ‖∑ r ∈ D k \ D (k + 1), g r‖ ≤ ((q : ℝ) ^ (j + 1) - (q : ℝ) ^ (j + 1 - 1)) * B (j + 1)`.
-
-Rewrite using `[← hcd]`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Use `Finset.sum_le_card_nsmul _ _ _ hlev` as an intermediate fact. Rewrite `this` using `[nsmul_eq_mul]`. Then use the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation.
-
-Use `key a le_rfl` as an intermediate fact. Rewrite `this` using `[Nat.sub_self, hD0, hzero, hsumall]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HL.CharCond.expand_by_conductor : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (ϖ : 𝒪[F]), Irreducible ϖ → ∀ ψ : AddChar F ℂ, (∀ x : F, (∀ y : 𝒪[F], ψ (x * y) = 1) ↔ x ∈ 𝒪[F]) → ∀ {U : Type} (R : Finset U) (Q : U → 𝒪[F]) (χ : U → ℂ) (a : ℕ) (B : ℕ → ℝ), (∀ i, 1 ≤ i → i ≤ a → ∀ (t : F) (u₀ : (𝒪[F])ˣ), t * (ϖ : F) ^ i = ((u₀ : 𝒪[F]) : F) → ‖∑ u ∈ R, ψ (t * Q u) * χ u‖ ≤ B i) → ‖(∑ u ∈ R.filter (fun u => ϖ ^ a ∣ Q u), χ u) * (_root_.GlobalTheory.HL.resQ ϖ : ℂ) ^ a - ∑ u ∈ R, χ u‖ ≤ ∑ i ∈ Finset.Icc 1 a, ((_root_.GlobalTheory.HL.resQ ϖ : ℝ) ^ i - (_root_.GlobalTheory.HL.resQ ϖ : ℝ) ^ (i - 1)) * B i := by
   intro F _ _ _ _ ϖ hϖ ψ hψ U R Q χ a B hB

@@ -12,7 +12,7 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Form
 variable {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Unfold `Dmin`. Conclude with `Matrix.det_isEmpty`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem dmin_zero (z z' : Fin (2 * r + k + 1) → ℂ) (g : Q.Mx k r) (h : 0 < r + 2) :
     Dmin k r z z' g ⟨0, h⟩ = 1 := by
@@ -20,7 +20,7 @@ theorem dmin_zero (z z' : Fin (2 * r + k + 1) → ℂ) (g : Q.Mx k r) (h : 0 < r
   exact Matrix.det_isEmpty
 
 /- English proof (translation)
-Unfold `qminorOp`. Rewrite using `[Finset.sum_apply, Fintype.sum_unique]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem qminorOp_zero (a b : Fin 0 → Fin (2 * r + k + 1)) (u : ℂ) (f : Q.Mx k r → E) (g : Q.Mx k r) :
     qminorOp (EabH (Hpk k r)) a b u f g = f g := by
@@ -29,14 +29,14 @@ theorem qminorOp_zero (a b : Fin 0 → Fin (2 * r + k + 1)) (u : ℂ) (f : Q.Mx 
   simp
 
 /- English proof (translation)
-Unfold `C3.AAop`. Rewrite using `[Fintype.sum_unique, if_pos (Subsingleton.strictMono _), Matrix.det_isEmpty, one_smul, qminorOp_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem AAop_zero (h : 0 ≤ r) (u : ℂ) (f : Q.Mx k r → E) (g : Q.Mx k r) : C3.AAop k r 0 h u f g = f g := by
   unfold C3.AAop
   rw [Fintype.sum_unique, if_pos (Subsingleton.strictMono _), Matrix.det_isEmpty, one_smul, qminorOp_zero]
 
 /- English proof (translation)
-Unfold `qminorOp`. Rewrite using `[Finset.sum_apply, Fintype.sum_unique]`. Simplify using `[QuantumDeterminants.Top]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem qminorOp_one (a b : Fin 1 → Fin (2 * r + k + 1)) (u : ℂ) (f : Q.Mx k r → E) (g : Q.Mx k r) :
     qminorOp (EabH (Hpk k r)) a b u f g =
@@ -46,13 +46,13 @@ theorem qminorOp_one (a b : Fin 1 → Fin (2 * r + k + 1)) (u : ℂ) (f : Q.Mx k
   simp [QuantumDeterminants.Top]
 
 /- English proof (translation)
-Unfold `C3.AAop`. Establish `hent : ∀ c : Fin 1 → Fin (2 * r + k + 1), (Matrix.of fun a l : Fin 1 => herm (Hpk k r) (x *ᵥ bvec (c l)) (bvec (eI k r (Fin.castLE h a)))).det = if (c 0).val = 0 then τ else 0`. Introduce `c`. Rewrite using `[Matrix.det_unique]`. Conclude with `hnf (c 0)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single (fun _ => eI k r ⟨0, by omega⟩)]`. Rewrite using `[if_pos (Subsingleton.strictMono _), hent, if_pos (by simp [eI]), qminorOp_one, if_pos (by simp [C3.xR, eI])]`. Simplify using `[C3.xR, eI, Q.EH]`. Introduce `c _ hc split_ifs with hm`. Rewrite using `[hent, if_neg, zero_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Apply `hc` to reduce the goal to its premises. Use function extensionality and compare the values at `l`. Rewrite using `[Subsingleton.elim l 0]`. Use `ext`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h0` using `[eI]`. Both sides reduce to the same expression. Introduce `hc`. Conclude with `absurd (Finset.mem_univ _) hc`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem AAop_one (h : 1 ≤ r) (x : Q.Mx k r) (τ : ℂ)
     (hnf : ∀ p : Fin (2 * r + k + 1), PBG.xi0 x ⟨0, by omega⟩ p = if p.val = 0 then τ else 0)
@@ -90,17 +90,17 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.P.LevelPointCoordinates Formalism.FourierDecayAlt.P.CutHL Formalism.FourierDecayAlt.P.CutHLPZ
 
 /- English proof (translation)
-Introduce `hNf hDm hT k r j hj z z' E _ _ Dm Φ Z γ τ hj0 hH Y`. Substitute `hj0` using the available equality. Take `⟨_, _, hDo, _, hR, hZ, hτ, hγ, hx⟩` from `hH`. Establish `hnf` using `(hNf k r 0 hj Z τ γ hZ hτ hγ).1`. Establish `hT'` using `hT E k r 0 hj Dm Φ Z τ γ hDo hR.1 hZ hτ hγ hx`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD1` using `(hDm k r 0 hj z z' Z τ γ hZ hτ hγ).2`. Rewrite `hD1` using `[Matrix.det_isEmpty, one_mul]`. Establish `hv0 : ∀ g, D.vLet k r z z' 0 (by omega) (true, Y) 0 Φ g = Φ g`. Introduce `g`. Rewrite using `[PBG.letter_plus_component_zero, dmin_zero, inv_one, one_smul, AAop_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hv1 : ∀ g, D.vLet k r z z' 0 (by omega) (true, Y) 1 Φ g = 0`. Introduce `g`. Unfold `D.vLet`. Simplify using the standard rewrite rules. Establish `hA` using `AAop_one (k := k) (r := r) (E := E) hj (x0 k r 0 hj Z τ γ) τ (fun p => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hnf ⟨0, by omega⟩ p (by simp)]`. Distinguish the cases in `hp : p.val = 0`. Rewrite using `[if_pos (by omega), if_pos hp, hp]; simp [C3.Zb]`. Rewrite using `[if_neg (by omega), if_neg hp])`. Use the proof step `((Y : ℂ) + ((2 * r + k : ℕ) : ℂ) / 2) Φ`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hu : ((Y : ℂ) + ((2 * r + k : ℕ) : ℂ) / 2) = (Y : ℂ) + levelZeroKernel k r 0`. Unfold `levelZeroKernel`. Rewrite using `[Nat.sub_zero]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hA` using `[hu]`. Unfold `Eq1`. Simplify using `only [hv0, hv1]`. Rewrite using `[PBG.letter_plus_component_zero, hD1, hu, hA, ← hT', smul_smul, inv_mul_cancel₀ hτ, one_smul, smul_zero, sub_zero]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem plus_zero_of_parts : CutHL.PlusZeroOfParts := by
   intro hNf hDm hT k r j hj z z' E _ _ Dm Φ Z γ τ hj0 hH Y

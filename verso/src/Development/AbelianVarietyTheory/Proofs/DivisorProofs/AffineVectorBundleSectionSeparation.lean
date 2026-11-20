@@ -10,17 +10,15 @@ set_option autoImplicit false
 open GlobalTheory.Twist (resM resM_resM) in
 
 /- English proof (translation)
-Use `haveI := hF.dual.isQuasicoherent`. Establish `key : ∀ x : X, ∃ f : Γ(X, ⊤), x ∈ X.basicOpen f ∧ resM F (X.basicOpen_le f) z = 0`. Introduce `x`. Take `⟨U, e, hxU, he⟩` from `hF x`. Take `⟨f, hfU, hxf⟩` from `(isAffineOpen_top X).exists_basicOpen_le ⟨x, hxU⟩ (by trivial)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨f, hxf, ?_⟩` and prove the remaining obligations. Establish `hqs : IsQuasiSeparated ((⊤ : X.Opens) : Set X)`. Simplify using `using (isQuasiSeparated_univ (α := X))`. Establish `hext : ∀ i, ∃ (n : ℕ) (t : Γ(dual F, ⊤)), X.presheaf.map (homOfLE (X.basicOpen_le f)).op f ^ n • resM (dual F) hfU (he.coord i) = (dual F).presheaf.map (homOfLE (X.basicOpen_le f)).op t` using `fun i => QCoh.exists_pow_res_smul_eq_res_of_qcqs (dual F) (U := ⊤) (by simpa using isCompact_univ) hqs f _`. Use `choose n t ht using hext`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc : ∀ i, (he.basis hfU).repr (resM F (X.basicOpen_le f) z) i = 0`. Introduce `i`. Establish `h1 : dualApp (t i) le_top z = 0` using `H (homGlobalEquiv F _ (t i))`. Establish `h2 : dualApp (resM (dual F) (X.basicOpen_le f) (t i)) le_rfl (resM F (X.basicOpen_le f) z) = 0`. Establish `h4` using `dualApp_resM (t i) (le_top : (⊤ : X.Opens) ≤ ⊤) (X.basicOpen_le f) z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h4` using `[h1, map_zero]`. Rewrite using `[dualApp_res]`. Conclude with `h4`. Establish `h3` using `ht i`. Express the relevant statement in the definitionally equal form `_ = resM (dual F) (X.basicOpen_le f) (t i) at h3`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h2` using `[← h3, dualApp_smul, LinearMap.smul_apply, dualApp_res, IsFrame.dualApp_coord, GlobalTheory.LB.resG_self]`. Establish `hu : IsUnit (X.presheaf.map (homOfLE (X.basicOpen_le f)).op f ^ n i)` using `(QCoh.isUnit_res_of_le_basicOpen f (X.basicOpen_le f) le_rfl).pow _`. Conclude with `(hu.smul_eq_zero).1 h2`. Conclude with `(he.basis hfU).repr.map_eq_zero_iff.1 (Finsupp.ext hc)`. Use `choose f hxf hf using key`.
-
-Use `QCoh.section_eq_of_cover F (fun x => X.basicOpen (f x)) (fun x => X.basicOpen_le (f x)) (fun x _ => TopologicalSpace.Opens.mem_iSup.2 ⟨x, hxf x⟩) z 0 fun x => ?_` and prove the remaining obligations. Conclude with `(hf x).trans (map_zero _).symm`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_hom_app_eq_zero (X : Scheme.{0}) [IsAffine X] (F : X.Modules) (r : ℕ)
     (hF : GlobalTheory.VB.IsVB F r) (z : Γ(F, ⊤))

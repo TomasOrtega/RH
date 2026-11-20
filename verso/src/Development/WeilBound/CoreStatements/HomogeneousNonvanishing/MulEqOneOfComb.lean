@@ -12,7 +12,7 @@ open GlobalTheory GlobalTheory.CxPts GlobalTheory.ZH GlobalTheory.ZH.RatModel Gl
 namespace PositivityTheory.UnitarySelfGeneration.UnitProductCombination
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `e` using `congrArg (fun v => b.repr v i) (h j)`. Simplify using `only [map_sum, map_smul, Module.Basis.repr_self, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.coe_smul, Pi.smul_apply, Finsupp.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at e`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify using `only [mul_comm (g i _), ← e, eq_comm]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mul_eq_one_of_comb {K V : Type} [Field K] [AddCommGroup V] [Module K V] {N n : ℕ}
     (b : Module.Basis (Fin N) K V) (g : Matrix (Fin N) (Fin n) K) (c : Matrix (Fin n) (Fin N) K)
@@ -26,11 +26,9 @@ theorem mul_eq_one_of_comb {K V : Type} [Field K] [AddCommGroup V] [Module K V] 
   simp only [mul_comm (g i _), ← e, eq_comm]
 
 /- English proof (translation)
-Establish `e : ∀ j m, ∑ k, σ (g j k) * σ (c k m) = if j = m then 1 else 0` using `fun j m => by`. Use `congrArg σ (congrFun (congrFun h j) m)` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, map_sum, Matrix.one_apply, apply_ite σ, map_one, map_zero]`. Simplify `this` using `only [map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => by ring`.
-
-Use `_ = _ := by simp [e]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_eq {K : Type} [Field K] (σ : K →+* ℂ) {N n : ℕ} {g : Matrix (Fin N) (Fin n) K}
     {c : Matrix (Fin n) (Fin N) K} (h : g * c = 1) (A : Matrix (Fin N) (Fin N) ℂ) (x : Fin N → ℂ) (a : Fin N) :
@@ -49,13 +47,11 @@ theorem sum_eq {K : Type} [Field K] (σ : K →+* ℂ) {N n : ℕ} {g : Matrix (
     _ = _ := by simp [e]
 
 /- English proof (translation)
-Establish `hgc` using `mul_eq_one_of_comb b g c fun j => by simpa only [hgw] using hcb j`. Use `HermLB.isometric_of_eqOn fun σ' l y hl => ?_` and prove the remaining obligations. Take `⟨σ, rfl⟩ : ∃ σ : K →+* ℂ, σ.comp (algebraMap (𝓞 K) K) = σ'` from `⟨_, GlobalTheory.TrueGeo.OfLattice.extEmb_comp σ'⟩`. Use `replace hl : y ∈ ptsIn M.s _ (L.B.U l) := hl`. Establish `hz` using `mem_ptsIn.1 hl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `PositivityTheory.Xgn.A_xgz_height_r_vol_up_model_nef.exists_coord y.2 ev (e l) b hW fun v hvW => by`. Rewrite using `[← hv ⟨v, hvW⟩ l ⟨_, hz⟩]`. Conclude with `valF_mem_O hz _`. Establish `hr : Set.range y.1 ⊆ L.B.U l` using `(GlobalTheory.ZH.top_le_preimage_iff _ _).1 hl`. Establish `hsk : ∀ k, valR y.1 (L.B.U l) ((s (gw k)).f l) = ∑ j, σ (g j k) * x j` using `fun k => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `((val_eq hr (hv (gw k) l ⟨_, hz⟩)).symm.trans (hx _)).trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hgw, b.repr_sum_self]`. Use `congrArg (· + 2 * t) ((hφ σ l y).trans (Eq.trans ?_ (Weight.fsBasis_φ L.isLB (fun k => s (gw k)) hs _ (hdet _) l y).symm))` and prove the remaining obligations. Simplify using `only [hsk, hMt, sum_eq σ hgc]`.
-
-Rewrite using `[GlobalTheory.Adelic.archSize, Real.sq_sqrt (by positivity)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isometric_fs {K V Ω : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
     [IsScalarTower (𝓞 K) K V] [Field Ω] [Algebra K Ω] (M : RatModel (𝓞 K) Ω) (L : HermLB M.s)

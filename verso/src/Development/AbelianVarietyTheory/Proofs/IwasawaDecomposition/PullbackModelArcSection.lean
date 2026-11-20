@@ -16,7 +16,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {Xo : Moduli D l} {c : Coeff l} {W : ValuationSubring ℂ}
 
 /- English proof (translation)
-Establish `: IsPreimmersion (spMap V.subtype)` using `IsPreimmersion.of_isLocalization (nonZeroDivisors V) (S := c.F)`. Establish `h1 : IsPreimmersion (pullback.fst Y.s (spMap V.subtype))` using `MorphismProperty.of_isPullback (P := @IsPreimmersion) (IsPullback.of_hasPullback _ _).flip this`. Use `Y.jQ_open` as an intermediate fact. Unfold `Model.j`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem mono_j_of_valuationSubring (V : ValuationSubring c.F) (Y : Model Xo c V.subtype) : Mono Y.j := by
   have : IsPreimmersion (spMap V.subtype) := IsPreimmersion.of_isLocalization (nonZeroDivisors V) (S := c.F)
@@ -27,27 +27,25 @@ theorem mono_j_of_valuationSubring (V : ValuationSubring c.F) (Y : Model Xo c V.
   infer_instance
 
 /- English proof (translation)
-Use `haveI : NumberField c.F := { to_finiteDimensional := c.fin }`. Establish `hβ : (c.V W).subtype.comp bV = algebraMap (𝓞 c.F) c.F` using `RingHom.ext hbV`. Establish `hsp : spMap (c.V W).subtype ≫ spMap bV = spMap (algebraMap (𝓞 c.F) c.F)`. Rewrite using `[← hβ]`. Conclude with `(Geo.Tor.spMap_comp _ _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨φ, hφ⟩ : ∃ φ : c.V W →+* K, x ≫ pullback.snd Z.s (spMap bV) = spMap φ` from `⟨(Spec.preimage (x ≫ pullback.snd Z.s (spMap bV))).hom, (Spec.map_preimage (x ≫ pullback.snd Z.s (spMap bV))).symm⟩`. Take `⟨q, hq⟩` from `hx`. Establish `e0 : (x ≫ pullback.fst Z.s (spMap bV)) ≫ Z.s = spMap (φ.comp bV)`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hφ, Geo.Tor.spMap_comp]`. Establish `hinj : Function.Injective (φ.comp bV)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨r, e1⟩ : ∃ r : PrimeSpectrum c.F, PrimeSpectrum.comap (φ.comp bV) default = PrimeSpectrum.comap (algebraMap (𝓞 c.F) c.F) r := by`. Establish `e2 : ((x ≫ pullback.fst Z.s (spMap bV)) ≫ Z.s) (default : PrimeSpectrum K) = (Z.j ≫ Z.s) q` using `(congrArg Z.s hq).symm`. Rewrite `e2` using `[e0, Model.j_s]`. Conclude with `⟨_, e2⟩`. Use `(injective_iff_map_eq_zero _).2 fun v hv => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : v ∈ (PrimeSpectrum.comap (φ.comp bV) default).asIdeal`. Rewrite using `[PrimeSpectrum.comap_asIdeal, Ideal.mem_comap, hv]`. Conclude with `zero_mem _`. Rewrite `h1` using `[e1, PrimeSpectrum.comap_asIdeal, Ideal.mem_comap, Ideal.eq_bot_of_prime r.asIdeal]`. Conclude with `RingOfIntegers.ext h1`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Set `ψ : c.F →+* K` to `IsFractionRing.lift hinj`. Establish `hψ : ∀ a, ψ (algebraMap (𝓞 c.F) c.F a) = φ (bV a)` using `fun a => IsFractionRing.lift_algebraMap hinj a`. Establish `hψφ : ψ.comp (c.V W).subtype = φ`. Use extensionality with `v`. Take `⟨a, b, hb, e⟩` from `IsFractionRing.div_surjective (A := 𝓞 c.F) (v : c.F)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `hb0 : algebraMap (𝓞 c.F) c.F b ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hb`. Establish `h2 : (v : c.F) * algebraMap (𝓞 c.F) c.F b = algebraMap (𝓞 c.F) c.F a`. Rewrite using `[← e]`. Clear the denominators using the available nonvanishing facts. Establish `e' : v * bV b = bV a` using `Subtype.ext (by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h2` as an intermediate fact. Simplify `this)` using `[hbV]`. Establish `h1 : φ v * φ (bV b) = φ (bV a)` using `by rw [← map_mul, e']`. Establish `h3 : ψ (v : c.F) * φ (bV b) = φ (bV a)` using `by rw [← hψ, ← hψ, ← map_mul, h2]`. Establish `hne : φ (bV b) ≠ 0` using `fun h => hb0 (by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: b = 0` using `hinj (by simpa using h)`. Simplify using `[this])`. Conclude with `mul_right_cancel₀ hne (h3.trans h1.symm)`. Establish `hs : (x ≫ pullback.fst Z.s (spMap bV)) ≫ Z.s = spMap ψ ≫ spMap (algebraMap (𝓞 c.F) c.F)`. Rewrite using `[e0, ← hsp, ← Category.assoc, ← Geo.Tor.spMap_comp, hψφ, Geo.Tor.spMap_comp]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `z' : Sp K ⟶ pullback Z.s (spMap (algebraMap (𝓞 c.F) c.F))` to `pullback.lift _ _ hs`. Establish `hz₁ : z' ≫ pullback.fst _ _ = x ≫ pullback.fst Z.s (spMap bV)` using `pullback.lift_fst _ _ _`. Establish `hz₂ : z' ≫ pullback.snd _ _ = spMap ψ` using `pullback.lift_snd _ _ _`. Use `Z.jQ_open` as an intermediate fact. Establish `hr : Set.range z' ⊆ Set.range Z.jQ`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨p, rfl⟩`. Take `rfl : p = (default : PrimeSpectrum K)` from `Subsingleton.elim (α := PrimeSpectrum K) _ _`. Rewrite using `[← Z.ab_gen]`. Establish `h₁ : Z.jQ q ∈ pullback.fst Z.s (spMap (algebraMap (𝓞 c.F) c.F)) ⁻¹' abLocus Z.t.G` using `Z.ab_gen ▸ ⟨q, rfl⟩`. Establish `h₂ : Z.j q ∈ abLocus Z.t.G` using `h₁`.
-
-Rewrite `h₂` using `[hq, ← hz₁]`. Conclude with `h₂`. Use `⟨IsOpenImmersion.lift Z.jQ z' hr, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Model.j, ← Category.assoc, IsOpenImmersion.lift_fac, hz₁]`. Rewrite using `[← Z.jQ_over, ← Category.assoc, IsOpenImmersion.lift_fac, hz₂, hφ, ← Geo.Tor.spMap_comp, hψφ]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_factor (Z : Model Xo c (algebraMap (𝓞 c.F) c.F)) (bV : 𝓞 c.F →+* c.V W)
     (hbV : ∀ x, ((bV x : c.V W) : c.F) = (x : c.F)) {K : Type} [Field K] (x : Sp K ⟶ pullback Z.s (spMap bV))
@@ -116,19 +114,19 @@ theorem exists_factor (Z : Model Xo c (algebraMap (𝓞 c.F) c.F)) (bV : 𝓞 c.
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c p W hp hW Z Y bV hbV f t m₁ m₂ hover hj hc R _ _ g₁ g₂ hgen hgf`. Establish `hrange` using `GlobalTheory.T.pullback_model_arc_comparison E H D l Xo c p W hp hW Z Y bV hbV f t m₁ m₂ hover hj hc`. Establish `hη : (jK R (default : PrimeSpectrum (FractionRing R))).asIdeal = ⊥`. Rewrite using `[Subsingleton.elim (default : PrimeSpectrum (FractionRing R)) ⊥]`. Conclude with `(RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective R (FractionRing R))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h₁ : ((jK R ≫ g₁) ≫ pullback.fst Z.s (spMap bV)) (default : PrimeSpectrum (FractionRing R)) ∈ Set.range Z.j` using `hgen _ hη`. Establish `hf : f ((jK R ≫ g₂) (default : PrimeSpectrum (FractionRing R))) = f ((jK R ≫ g₁) (default : PrimeSpectrum (FractionRing R)))` using `congrArg (fun u : Sp R ⟶ Y.X => u (jK R (default : PrimeSpectrum (FractionRing R)))) hgf.symm`. Establish `h₂ : ((jK R ≫ g₂) ≫ pullback.fst Z.s (spMap bV)) (default : PrimeSpectrum (FractionRing R)) ∈ Set.range Z.j` using `(hrange _).2 (hf ▸ (hrange _).1 h₁)`. Take `⟨y₁, a₁, b₁⟩` from `exists_factor Z bV hbV (jK R ≫ g₁) h₁`. Take `⟨y₂, a₂, b₂⟩` from `exists_factor Z bV hbV (jK R ≫ g₂) h₂`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hβ : (c.V W).subtype.comp bV = algebraMap (𝓞 c.F) c.F` using `RingHom.ext hbV`. Establish `hsp : spMap (c.V W).subtype ≫ spMap bV = spMap (algebraMap (𝓞 c.F) c.F)`. Rewrite using `[← hβ]`. Conclude with `(Geo.Tor.spMap_comp _ _).symm`. Set `a : Xo.XF c ⟶ pullback Z.s (spMap bV)` to `pullback.lift Z.j (pullback.snd _ _ ≫ spMap (c.V W).subtype) (by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Model.j_s, Category.assoc, hsp])`. Establish `ha : a ≫ f = Y.j` using `hj a (pullback.lift_fst _ _ _)`. Establish `key : ∀ (y : Sp (FractionRing R) ⟶ Xo.XF c) (x : Sp (FractionRing R) ⟶ pullback Z.s (spMap bV)), y ≫ Z.j = x ≫ pullback.fst Z.s (spMap bV) → (y ≫ pullback.snd _ _) ≫ spMap (c.V W).subtype = x ≫ pullback.snd Z.s (spMap bV) → y ≫ a = x`. Introduce `y x e₁ e₂`. Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, pullback.lift_fst, e₁]`. Rewrite using `[Category.assoc, pullback.lift_snd, ← Category.assoc, e₂]`. Establish `k₁` using `key y₁ _ a₁ b₁`. Establish `k₂` using `key y₂ _ a₂ b₂`. Use `mono_j_of_valuationSubring (c.V W) Y` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy : y₁ = y₂`. Rewrite using `[← cancel_mono Y.j, ← ha, ← Category.assoc, ← Category.assoc, k₁, k₂, Category.assoc, Category.assoc, hgf]`. Use `isProper_toroidalModel_structureMap Z` as an intermediate fact. Establish `: IsDominant (jK R)` using `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).2 (((RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective R (FractionRing R))).le.trans bot_le)⟩`. Use `ext_of_isDominant_of_isSeparated (pullback.snd Z.s (spMap bV)) ?_ (jK R) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hover, ← Category.assoc, ← Category.assoc, hgf]`. Rewrite using `[← k₁, ← k₂, hy]`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_comp_eq_of_generic : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l)
     (c : Coeff l) (p : ℕ) (W : ValuationSubring ℂ), p.Prime → (p : ℂ) ∈ W.nonunits →

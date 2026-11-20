@@ -23,27 +23,23 @@ namespace GlobalTheory.SecRingNonZeroDiv
 open GlobalTheory.CompHt GlobalTheory.FlagTan
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c e F hF hZ f hf hFf`. Establish `hG : GenFrEx Xo c` using `(Reg.genFrEx_and_genFromTest E H Dw l Xo c).1`. Establish `hFZ : ∀ Z : Comp Xo c, genVal Z F ≠ 0`. Introduce `Z h0`. Take `⟨y, hy, hne⟩` from `hZ Z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hne ((genVal_eq_zero_iff E H Dw l Xo c Z e F hF).1 h0 ℂ y hy)`. Establish `hf' : f ∈ ⨆ e, secZ Xo c e` using `by rw [← GlobalTheory.LevDesc.toSubmodule_secRing]; exact hf`. Take `⟨a, ha, rfl⟩` from `(Submodule.mem_iSup_iff_exists_finsupp _ f).1 hf'`. Establish `key : ∀ Z : Comp Xo c, ∀ d ∈ a.support, genVal Z (a d) = 0`. Introduce `Z`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Use `haveI : CharZero (Om Z) := charZero_of_injective_algebraMap (algebraMap c.F (Om Z)).injective`. Set `χ : (Ix Dw → ℤ) → ((Ix Dw → (Om Z)ˣ) →* Om Z)` to `fun d => { toFun := fun t => ((∏ i, t i ^ d i : (Om Z)ˣ) : Om Z) map_one' := by simp map_mul' := fun t s => by simp [mul_zpow, Finset.prod_mul_distrib] }`. Establish `hχ : Function.Injective χ`. Introduce `d d' hdd`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `u : (Om Z)ˣ` to `Units.mk0 2 two_ne_zero`. Establish `hp : ∀ d : Ix Dw → ℤ, χ d (Pi.mulSingle i u) = (2 : Om Z) ^ d i`. Introduce `d`. Use `show ((∏ j, (Pi.mulSingle i u : Ix Dw → (Om Z)ˣ) j ^ d j : (Om Z)ˣ) : Om Z) = _`. Rewrite using `[Finset.prod_eq_single i]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[u, Units.val_zpow_eq_zpow_val]`. Introduce `j _ hj`. Simplify using `[Pi.mulSingle_eq_of_ne hj]`. Simplify using the standard rewrite rules. Establish `h1 : (2 : Om Z) ^ d i = (2 : Om Z) ^ d' i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hp, ← hp, hdd]`. Establish `h2 : (((2 : ℚ) ^ d i : ℚ) : Om Z) = (((2 : ℚ) ^ d' i : ℚ) : Om Z)`. Rewrite using `[Rat.cast_zpow, Rat.cast_zpow, Rat.cast_ofNat]`. Conclude with `h1`. Conclude with `zpow_right_injective₀ (by norm_num : (0 : ℚ) < 2) (by norm_num) (Rat.cast_injective h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hli : LinearIndependent (Om Z) (fun d => (χ d : (Ix Dw → (Om Z)ˣ) → Om Z))` using `(linearIndependent_monoidHom _ (Om Z)).comp χ hχ`. Establish `hsum : ∑ d ∈ a.support, genVal Z (a d) • (χ d : (Ix Dw → (Om Z)ˣ) → Om Z) = 0`. Use function extensionality and compare the values at `t`. Take `⟨y', hy'⟩` from `SecSeparation.exists_frBor (genFr hG Z) t`. Establish `h1 : evR Xo c (F * a.sum fun _ x => x) y' = 0` using `by rw [hFf]; exact evalAt_zero _ _ y'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : evR Xo c (F * a.sum fun _ x => x) y' = evR Xo c F y' * evR Xo c (a.sum fun _ x => x) y'` using `evalAt_mul _ _ _ _ y'`. Establish `h3 : evR Xo c F y' ≠ 0`. Rewrite using `[evR_frBor hF hy']`. Conclude with `mul_ne_zero (Units.ne_zero _) (hFZ Z)`. Establish `h4 : evR Xo c (a.sum fun _ x => x) y' = 0` using `(mul_eq_zero.1 (h2.symm.trans h1)).resolve_left h3`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h5 : evR Xo c (a.sum fun _ x => x) y' = ∑ d ∈ a.support, evR Xo c (a d) y'` using `map_sum (evalL (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) y') _ _`. Rewrite `h4` using `[h5]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply]`. Rewrite using `[← h4]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[evR_frBor (ha d) hy', mul_comm]`. Both sides reduce to the same expression. Introduce `d hd`. Conclude with `linearIndependent_iff'.1 hli a.support (fun d => genVal Z (a d)) hsum d hd`. Use `Finset.sum_eq_zero fun d hd => ?_` and prove the remaining obligations.
-
-Conclude with `secZ_eq_zero_of_genVal (ha d) fun Z => key Z d hd`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_mul_eq_zero : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (e : Ix Dw → ℤ) (F : Rul Xo c), F ∈ secZ Xo c e → (∀ Z : Comp Xo c, ∃ y : FrPt Xo c ℂ, LiesOn Z y ∧ evR Xo c F y ≠ 0) → ∀ f ∈ secRing Xo c, F * f = 0 → f = 0 := by
   intro E _ _ _ H Dw l Xo c e F hF hZ f hf hFf

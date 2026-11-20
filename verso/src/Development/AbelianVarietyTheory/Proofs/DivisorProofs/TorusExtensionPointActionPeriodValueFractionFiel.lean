@@ -15,17 +15,15 @@ noncomputable section
 namespace GlobalTheory.Mum.Two
 
 /- English proof (translation)
-Introduce `R _ _ D₀ D' pr h F _ _ y y₀ g g' hg hg' ha χ u hu z J hJ`. Establish `hsurj : Surjective (jFK (R` using `R) F) := GlobalTheory.Balanced.surjective_spMap _`. Establish `hflat : Flat (jFK (R` using `R) F) := (inferInstance : Flat (spMap (algebraMap (FractionRing R) F)))`. Establish `hb : g.b.left = jFK (R` using `R) F ≫ ptK (D'.c y) := by`. Rewrite using `[hg.1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : toUnit (TF (R` using `R) F) = (Over.homMk (jFK (R := R) F) rfl : TF (R := R) F ⟶ TK R) ≫ toUnit (TK R) := toUnit_unique _ _`. Use `show (toUnit (TF (R := R) F) ≫ D'.c y).left = _`. Rewrite using `[e, Category.assoc, Over.comp_left]`. Both sides reduce to the same expression. Establish `step1 : ∀ (z' : (TF (R` using `R) F).left) (J' : _), Good (JN D' D₀) z' J' → val (D₀.tau y₀ χ) (jFK (R := R) F) z' (rr J') = val (D'.tau y (h χ)) (jFK (R := R) F) z' (rl J') * val u (jFK (R := R) F ≫ ptK (D'.c y)) z' J' := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z' J' hJ'`. Establish `g₀` using `(isPart_inr D'.P.L D₀.P.L).good hJ'`. Establish `g₁` using `(isPart_inl D'.P.L D₀.P.L).good hJ'`. Establish `e` using `ha.2 χ u hu z' J' hJ'`. Rewrite `e` using `[val_corr g₀ (hg'.2 χ), val_corr g₁ (hg.2 (h χ)), val_pull g₀, val_pull g₁, hb]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Category.id_comp] at e`. Conclude with `e`. Establish `p₀` using `isPart_inr D'.P.L D₀.P.L`. Establish `p₁` using `isPart_inl D'.P.L D₀.P.L`. Set `t₀` to `p₀.gen (D₀.tau y₀ χ)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `t₂` to `LB.mulGen (JN D' D₀) _ _ _ _ (p₁.gen (D'.tau y (h χ))) (LB.pullGen (JN D' D₀) _ _ u (ptK (D'.c y)))`. Establish `key` using `GlobalTheory.Balanced.val_descend (jn_isLB D' D₀) t₀ t₂ (jFK (R := R) F) (fun z' J' hJ' => by`. Rewrite using `[p₀.val_gen _ _ _ hJ', val_mul hJ', p₁.val_gen _ _ _ hJ', val_pull hJ']`. Conclude with `step1 z' J' hJ') z J hJ`. Rewrite `key` using `[p₀.val_gen _ _ _ hJ, val_mul hJ, p₁.val_gen _ _ _ hJ, val_pull hJ, Category.id_comp]`.
-
-Conclude with `key`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_val_frac : ∀ (R : Type) [CommRing R] [IsDomain R] (D₀ D' : DegPre R) (pr : D'.P.A ⟶ D₀.P.A) (h : D₀.X →+ D'.X) (F : Type) [Field F] [Algebra (FractionRing R) F] (y : D'.X) (y₀ : D₀.X) (g : GtPtF D' F) (g' : GtPtF D₀ F), GtPtF.IsIota y g → GtPtF.IsIota y₀ g' → Act D' D₀ pr h g g' → ∀ (χ : D₀.X) (u : LB.Gen (CmpLB D' D₀ pr (h χ) χ)), Nrm u → ∀ (z : (TK R).left) (J : ((TK R).left ⟶ (D'.P.A.left ⨿ D₀.P.A.left : Scheme.{0})) → (JN D' D₀).ι), Good (JN D' D₀) z J → val (D₀.tau y₀ χ) (𝟙 _) z (rr J) = val (D'.tau y (h χ)) (𝟙 _) z (rl J) * val u (ptK (D'.c y)) z J := by
   intro R _ _ D₀ D' pr h F _ _ y y₀ g g' hg hg' ha χ u hu z J hJ

@@ -31,7 +31,7 @@ def coW (f : Frame X.Ψ r) (τ : X.Ψ) : Matrix (Fin j) (Fin j) ℂ :=
 def coOm (f : Frame X.Ψ r) (τ : X.Ψ) : Matrix (Fin (r - j)) (Fin (r - j)) ℂ := (frameCo X hj f τ).toBlocks₂₂
 
 /- English proof (translation)
-Rewrite using `[fromBlocks_multiply, coW, coOm]`. Use `conv_lhs => rw [← fromBlocks_toBlocks (frameCo X hj f τ)]`. Simplify using `[moeb_zero, nonsing_inv_mul_cancel_right _ _ (frameCo_isUnit₂₂ X hj hp hf τ)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frameCo_eq (hp : X.p0 = r - j) {f : Frame X.Ψ r} (hf : f ∈ X.dom) (τ : X.Ψ) :
     frameCo X hj f τ = fromBlocks 1 (moeb (frameCo X hj f τ) 0) 0 1 *
@@ -41,13 +41,13 @@ theorem frameCo_eq (hp : X.p0 = r - j) {f : Frame X.Ψ r} (hf : f ∈ X.dom) (τ
   simp [moeb_zero, nonsing_inv_mul_cancel_right _ _ (frameCo_isUnit₂₂ X hj hp hf τ)]
 
 /- English proof (translation)
-The claim follows from `frameCo_isUnit₂₂ X hj hp hf τ`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_coOm (hp : X.p0 = r - j) {f : Frame X.Ψ r} (hf : f ∈ X.dom) (τ : X.Ψ) : IsUnit (coOm X hj f τ).det :=
   frameCo_isUnit₂₂ X hj hp hf τ
 
 /- English proof (translation)
-Establish `h : IsUnit (frameCo X hj f τ).det`. Rewrite using `[frameCo, det_reindex_self, det_mul]`. Conclude with `(isUnit_nonsing_inv_det _ (det_x0F X τ).isUnit).mul (hf τ).1.isUnit`. Rewrite `h` using `[frameCo_eq X hj hp hf, det_mul, det_fromBlocks_zero₁₂]`. Conclude with `isUnit_of_mul_isUnit_left (isUnit_of_mul_isUnit_right h)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_coW (hp : X.p0 = r - j) {f : Frame X.Ψ r} (hf : f ∈ X.dom) (τ : X.Ψ) : IsUnit (coW X hj f τ).det := by
   have h : IsUnit (frameCo X hj f τ).det := by
@@ -57,7 +57,7 @@ theorem isUnit_coW (hp : X.p0 = r - j) {f : Frame X.Ψ r} (hf : f ∈ X.dom) (τ
   exact isUnit_of_mul_isUnit_left (isUnit_of_mul_isUnit_right h)
 
 /- English proof (translation)
-Establish `e : frameCo X hj (x0F X) τ = fromBlocks 1 0 0 1`. Rewrite using `[frameCo, nonsing_inv_mul _ (det_x0F X τ).isUnit, fromBlocks_one, reindex_apply, submatrix_one_equiv]`. Rewrite using `[coW, coOm, e, toBlocks_fromBlocks₁₁, toBlocks_fromBlocks₂₁, toBlocks_fromBlocks₂₂]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem co_x0F (τ : X.Ψ) : coW X hj (x0F X) τ = 1 ∧ coOm X hj (x0F X) τ = 1 := by
   have e : frameCo X hj (x0F X) τ = fromBlocks 1 0 0 1 := by
@@ -66,9 +66,9 @@ theorem co_x0F (τ : X.Ψ) : coW X hj (x0F X) τ = 1 ∧ coOm X hj (x0F X) τ = 
   simp
 
 /- English proof (translation)
-Take `⟨g, hg, e⟩` from `exists_upq_of_orth X hj hp hf τ`. Establish `h1` using `hP_inv_moeb hg (zero_mem_hcDom _ _)`. Establish `h2` using `hQ_moeb hg (zero_mem_hcDom _ _)`. Rewrite `h1` using `[jW, e]`. Rewrite `h2` using `[kapQ, e, Matrix.mul_zero, zero_add]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨h1.trans (by simp [hP]), h2.trans (by simp [hQ])⟩`.
+Supply the required witnesses or components.
 -/
 theorem hodge_co (hp : X.p0 = r - j) {f : Frame X.Ψ r} (hf : IsOrth X f) (τ : X.Ψ) :
     (coW X hj f τ)ᴴ * (hP (moeb (frameCo X hj f τ) 0))⁻¹ * coW X hj f τ = 1 ∧
@@ -94,13 +94,13 @@ Both sides reduce to the same expression.
 theorem Lv.relab_σ₀ (κ : Lv A) (τ : D.host.E →+* ℂ) : Formalism.L2.PjFree.relab κ.c κ.σ₀ τ = τ := rfl
 
 /- English proof (translation)
-The claim follows from `(if_pos (L.ψ t).2).trans S.p_eq`.
+A detailed English derivation is pending.
 -/
 theorem Sig.mult_psi (S : Sig A N j) (L : CmList A) (t : D.what₂.Tau) : S.Dw.mult (L.ψ t).1 = j :=
   (if_pos (L.ψ t).2).trans S.p_eq
 
 /- English proof (translation)
-The claim follows from `(if_neg (GlobalTheory.AllWt.conj_not_mem (L.ψ t))).trans (by have := S.p_eq; have := S.rank_eq; omega)`.
+A detailed English derivation is pending.
 -/
 theorem Sig.mult_conj (S : Sig A N j) (L : CmList A) (t : D.what₂.Tau) : S.Dw.mult (conjEmb (L.ψ t).1) = N - j :=
   (if_neg (GlobalTheory.AllWt.conj_not_mem (L.ψ t))).trans (by have := S.p_eq; have := S.rank_eq; omega)
@@ -114,14 +114,14 @@ abbrev fd : Data D.host.E N := (s.U κ.σ₀).X k
 include s in
 
 /- English proof (translation)
-The claim follows from `le_of_isUnf _ s.isUnf S.p_eq`.
+A detailed English derivation is pending.
 -/
 theorem j_le : j ≤ N := le_of_isUnf _ s.isUnf S.p_eq
 
 abbrev lab : D.what₂.Tau ≃ (s.fd k).Ψ := cmEquiv _ s.isUnf L.ψ k
 
 /- English proof (translation)
-The claim follows from `first_index_eq_of_unfolded _ s.isUnf S.p_eq k`.
+A detailed English derivation is pending.
 -/
 theorem p0_eq : (s.fd k).p0 = N - j := first_index_eq_of_unfolded _ s.isUnf S.p_eq k
 
@@ -140,12 +140,12 @@ def frameOver (z : Pt D.what₂.Tau j (N - j)) : (s.fd k).dom :=
 def toCpt (z : Pt D.what₂.Tau j (N - j)) : CxPts (genStr s.T.Z) κ.σ₀ := s.framePt k (s.frameOver L k z)
 
 /- English proof (translation)
-The claim follows from `domPt_mem _ _ _ (s.p0_eq k) f.2`.
+A detailed English derivation is pending.
 -/
 theorem zOf_mem (f : (s.fd k).dom) : s.zOf L k f ∈ DomI D.what₂.Tau j (N - j) := domPt_mem _ _ _ (s.p0_eq k) f.2
 
 /- English proof (translation)
-Establish `h : ∃ f, s.zOf L k f = z`. Take `⟨f, hf, e⟩` from `FrameOnto.frame_onto _ N j (s.fd k) s.j_le _ (s.lab L k) (s.p0_eq k) z hz`. Conclude with `⟨⟨f, hf⟩, e⟩`. Rewrite using `[frameOver, dif_pos h]`. Conclude with `h.choose_spec`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zOf_frameOver {z : Pt D.what₂.Tau j (N - j)} (hz : z ∈ DomI D.what₂.Tau j (N - j)) :
     s.zOf L k (s.frameOver L k z) = z := by
@@ -156,7 +156,7 @@ theorem zOf_frameOver {z : Pt D.what₂.Tau j (N - j)} (hz : z ∈ DomI D.what�
   exact h.choose_spec
 
 /- English proof (translation)
-The claim follows from `cxPt_congr (PointWell.pt_eq_of_ptOfFrame_eq _ _ _ _ _ _ _ N j _ s.isUnf S.p_eq _ (lt_of_lt_of_le two_pos S.two_le) L.ψ (invariantB _ _ (first_index_eq_of_unfolded _ s.isUnf S.p_eq) _) (fun _ _ => 1) κ.good_σ₀ k k f f' (congrArg (Sigma.mk k) (Quot.sound ⟨g, hg, h⟩)))`.
+A detailed English derivation is pending.
 -/
 theorem framePt_eq {f f' : (s.fd k).dom} {g : D.what₂.Tau → GL (Fin j ⊕ Fin (N - j)) ℂ}
     (hg : g ∈ gammaU (s.fd k) s.j_le (s.lab L k))
@@ -166,14 +166,14 @@ theorem framePt_eq {f f' : (s.fd k).dom} {g : D.what₂.Tau → GL (Fin j ⊕ Fi
     (congrArg (Sigma.mk k) (Quot.sound ⟨g, hg, h⟩)))
 
 /- English proof (translation)
-The claim follows from `s.framePt_eq L k (one_mem _) ((funext fun _ => PointWell.moeb_one _).trans (s.zOf_frameOver L k (s.zOf_mem L k f)))`.
+A detailed English derivation is pending.
 -/
 theorem toCpt_zOf (f : (s.fd k).dom) : s.toCpt L k (s.zOf L k f) = s.framePt k f :=
   s.framePt_eq L k (one_mem _)
     ((funext fun _ => PointWell.moeb_one _).trans (s.zOf_frameOver L k (s.zOf_mem L k f)))
 
 /- English proof (translation)
-The claim follows from `(s.framePt_eq L k hg (by rw [s.zOf_frameOver L k hz, s.zOf_frameOver L k (z := moebI g z) fun t => moeb_mem (gammaU_le _ _ _ (s.p0_eq k) hg t trivial) (hz t)])).symm`.
+A detailed English derivation is pending.
 -/
 theorem toCpt_moeb {g : D.what₂.Tau → GL (Fin j ⊕ Fin (N - j)) ℂ}
     (hg : g ∈ gammaU (s.fd k) s.j_le (s.lab L k)) {z : Pt D.what₂.Tau j (N - j)}
@@ -183,7 +183,7 @@ theorem toCpt_moeb {g : D.what₂.Tau → GL (Fin j ⊕ Fin (N - j)) ℂ}
       fun t => moeb_mem (gammaU_le _ _ _ (s.p0_eq k) hg t trivial) (hz t)])).symm
 
 /- English proof (translation)
-The claim follows from `not_liesIn_cxPt _`.
+A detailed English derivation is pending.
 -/
 theorem not_liesIn_toCpt (z : Pt D.what₂.Tau j (N - j)) : ¬ LiesIn (s.toCpt L k z) (genBd s.T.Z) := not_liesIn_cxPt _
 
@@ -201,22 +201,22 @@ def ToroidalCompactificationData.gramOm (k : s.Comp) (f : (s.fd k).dom) (t : D.w
       (fun a => Fin.cast (S.mult_conj L t).symm a.rev) (fun a => Fin.cast (S.mult_conj L t).symm a.rev)
 
 /- English proof (translation)
-The claim follows from `(x.gram_posDef _ _).submatrix (Fin.cast_injective _)`.
+A detailed English derivation is pending.
 -/
 theorem ToroidalCompactificationData.gramW_posDef (k : s.Comp) (f : (s.fd k).dom) (t : D.what₂.Tau) : (x.gramW L k f t).PosDef :=
   (x.gram_posDef _ _).submatrix (Fin.cast_injective _)
 
 /- English proof (translation)
-The claim follows from `((dualGram_posDef (x.gram_posDef _ _)).submatrix ((Fin.cast_injective _).comp Fin.rev_injective)).smul (pow_pos (Complex.zero_lt_real.2 (hodgeC_pos _ _ t)) 2)`.
+A detailed English derivation is pending.
 -/
 theorem ToroidalCompactificationData.gramOm_posDef (k : s.Comp) (f : (s.fd k).dom) (t : D.what₂.Tau) : (x.gramOm L k f t).PosDef :=
   ((dualGram_posDef (x.gram_posDef _ _)).submatrix ((Fin.cast_injective _).comp Fin.rev_injective)).smul
     (pow_pos (Complex.zero_lt_real.2 (hodgeC_pos _ _ t)) 2)
 
 /- English proof (translation)
-Establish `h0 : (hodgeC (s.fd k) (s.lab L k) t : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (hodgeC_pos _ _ t).ne'`. Prove the components needed by the constructor for the conclusion. Use extensionality with `a b`. Simplify using `[ToroidalCompactificationData.gramW, h, one_apply]`. Use extensionality with `a b`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Rewrite using `[ToroidalCompactificationData.gramOm, h, dualGram_smul_one h0]`. Simplify using `[one_apply, sq, h0]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ToroidalCompactificationData.gram_hodge (k : s.Comp) (f : (s.fd k).dom) (t : D.what₂.Tau)
     (h : ∀ τ, x.gram (s.framePt k f) (s.lieFrame k f) τ = (hodgeC (s.fd k) (s.lab L k) t : ℂ) • 1) :
@@ -239,7 +239,7 @@ def ToroidalCompactificationData.metOm (k : s.Comp) (z : Pt D.what₂.Tau j (N -
     (coOm (s.fd k) s.j_le (s.frameOver L k z).1 (s.lab L k t))⁻¹
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(x.gramW_posDef L k _ t).conjTranspose_mul_mul_same (mulVec_injective_of_isUnit (isUnit_nonsing_inv_iff.2 ((isUnit_iff_isUnit_det _).2 (isUnit_coW _ _ (s.p0_eq k) (s.frameOver L k z).2 _)))), (x.gramOm_posDef L k _ t).conjTranspose_mul_mul_same (mulVec_injective_of_isUnit (isUni …`.
+Supply the required witnesses or components.
 -/
 theorem ToroidalCompactificationData.met_posDef (k : s.Comp) (z : Pt D.what₂.Tau j (N - j)) (t : D.what₂.Tau) :
     (x.metW L k z t).PosDef ∧ (x.metOm L k z t).PosDef :=
@@ -262,7 +262,7 @@ structure IsBdOf (B : s.Bd L) : Prop where
 def bdOf (h : ∃ B, IsBdOf x L B) : s.Bd L := h.choose
 
 /- English proof (translation)
-The claim follows from `h.choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem isBdOf_bdOf (h : ∃ B, IsBdOf x L B) : IsBdOf x L (bdOf x L h) := h.choose_spec
 
@@ -272,36 +272,36 @@ variable {x L} {B B' : s.Bd L} (h : IsBdOf x L B) (k : s.Comp) {z : Pt D.what₂
 include h
 
 /- English proof (translation)
-Rewrite using `[h.nrm k i _ (s.zOf_mem L k f), s.toCpt_zOf]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nrm_zOf (i : Fin (B k).m) (f : (s.fd k).dom) :
     (B k).nrm i (s.zOf L k f) = x.nrm κ.σ₀ (Fin.cast (h.m_eq k) i) (s.framePt k f) := by
   rw [h.nrm k i _ (s.zOf_mem L k f), s.toCpt_zOf]
 
 /- English proof (translation)
-Rewrite using `[BdData.r, OddPrimesWithRootsOfUnity.r, Fintype.prod_equiv (finCongr (h.m_eq k)) _ (fun i => x.nrm κ.σ₀ i (s.toCpt L k z)) fun i => h.nrm k i z hz]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem r_eq (hz : z ∈ DomI D.what₂.Tau j (N - j)) : (B k).r z = x.r κ.σ₀ (s.toCpt L k z) := by
   rw [BdData.r, OddPrimesWithRootsOfUnity.r, Fintype.prod_equiv (finCongr (h.m_eq k)) _ (fun i => x.nrm κ.σ₀ i (s.toCpt L k z))
     fun i => h.nrm k i z hz]
 
 /- English proof (translation)
-Introduce `h0` and use `hb.ne_empty (x.m_eq_zero_iff.1 ((h.m_eq k).symm.trans h0))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem m_ne_zero (hb : (genBd s.T.Z : Set (gen s.T.Z : Scheme.{0})).Nonempty) : (B k).m ≠ 0 :=
   fun h0 => hb.ne_empty (x.m_eq_zero_iff.1 ((h.m_eq k).symm.trans h0))
 
 /- English proof (translation)
-The claim follows from `(h.nrm k i z hz).trans (h'.nrm k (Fin.cast ((h.m_eq k).trans (h'.m_eq k).symm) i) z hz).symm`.
+A detailed English derivation is pending.
 -/
 theorem nrm_unique (h' : IsBdOf x L B') (hz : z ∈ DomI D.what₂.Tau j (N - j)) (i : Fin (B k).m) :
     (B k).nrm i z = (B' k).nrm (Fin.cast ((h.m_eq k).trans (h'.m_eq k).symm) i) z :=
   (h.nrm k i z hz).trans (h'.nrm k (Fin.cast ((h.m_eq k).trans (h'.m_eq k).symm) i) z hz).symm
 
 /- English proof (translation)
-Establish `key : ∀ {n : Type} [Fintype n] [DecidableEq n] {T M G : Matrix n n ℂ}, IsUnit T.det → Tᴴ * M * T = G → M = (T⁻¹)ᴴ * G * T⁻¹` using `fun hT e => by`. Rewrite using `[← e, Matrix.mul_assoc, mul_nonsing_inv_cancel_right _ _ hT, ← Matrix.mul_assoc, ← conjTranspose_mul, mul_nonsing_inv _ hT, conjTranspose_one, Matrix.one_mul]`. Establish `h1` using `h.metW k (s.frameOver L k z) t`. Establish `h2` using `h.metOm k (s.frameOver L k z) t`. Rewrite `h1`, `h2` using `[s.zOf_frameOver L k hz]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨key (isUnit_coW _ _ (s.p0_eq k) (s.frameOver L k z).2 _) h1, key (isUnit_coOm _ _ (s.p0_eq k) (s.frameOver L k z).2 _) h2⟩`.
+Supply the required witnesses or components.
 -/
 theorem met_eq (hz : z ∈ DomI D.what₂.Tau j (N - j)) (t : D.what₂.Tau) :
     (B k).metW z t = x.metW L k z t ∧ (B k).metOm z t = x.metOm L k z t := by
@@ -316,9 +316,9 @@ theorem met_eq (hz : z ∈ DomI D.what₂.Tau j (N - j)) (t : D.what₂.Tau) :
     key (isUnit_coOm _ _ (s.p0_eq k) (s.frameOver L k z).2 _) h2⟩
 
 /- English proof (translation)
-Take `⟨W, φ, hW, hφ⟩` from `(x.kae_kaehler κ.σ₀).1 (s.toCpt L k z)`. Establish `e : ∀ ξ, ((B k).kae z - (B' k).kae z) ξ ξ = 0` using `fun ξ => sub_eq_zero.2 (Complex.ext ((h.kae k W φ hφ z hz hW ξ).trans (h'.kae k W φ hφ z hz hW ξ).symm) ((Complex.conj_eq_iff_im.1 ((B k).kae_herm z hz ξ ξ).symm).trans (Complex.conj_eq_iff_im.1 ((B' k).kae_herm z hz ξ ξ).symm).symm))`. Rewrite using `[← sub_eq_zero]`. Generalize the expression as in `(B k).kae z - (B' k).kae z = b at e`. Use `LinearMap.ext₂ fun ξ ζ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1` using `e (ξ + ζ)`. Establish `e2` using `e (ξ + Complex.I • ζ)`. Simplify using `only [map_add, map_smul, map_smulₛₗ, LinearMap.add_apply, LinearMap.smul_apply, e, smul_eq_mul, Complex.conj_I, RingHom.id_apply] at e1 e2`. Use `show b ξ ζ = 0`. Take the linear combination `(1 / 2) * e1 + (Complex.I / 2) * e2 + ((b ξ ζ - b ζ ξ) / 2) * Complex.I_mul_I`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem kae_unique (h' : IsBdOf x L B') (hz : z ∈ DomI D.what₂.Tau j (N - j)) : (B k).kae z = (B' k).kae z := by
   obtain ⟨W, φ, hW, hφ⟩ := (x.kae_kaehler κ.σ₀).1 (s.toCpt L k z)

@@ -7,7 +7,7 @@ open MeasureTheory Matrix
 open scoped Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.OrbDesc.blockUni_conj_mem | exact GlobalTheory.OrbDesc.blockUni_conj_mem | (intros; apply GlobalTheory.OrbDesc.blockUni_conj_mem <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.conj_mem_blockUpperUnipotentRadical : ∀ (K : Type) [Field K] (ι : Type) [Fintype ι] [DecidableEq ι] (a b : ℕ) (e : ι ≃ Fin a ⊕ Fin b),
   ∀ p ∈ GlobalTheory.OrbDesc.blockPar (K := K) e, ∀ n ∈ GlobalTheory.OrbDesc.blockUni e, p * n * p⁻¹ ∈ GlobalTheory.OrbDesc.blockUni e := by

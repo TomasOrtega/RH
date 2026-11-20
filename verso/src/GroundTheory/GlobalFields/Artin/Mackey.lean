@@ -16,7 +16,7 @@ variable {G : Type*} [Group G]
 section ExtendByZero
 
 /- English proof (translation)
-Rewrite using `[Subgroup.mem_pointwise_smul_iff_inv_smul_mem, ← map_inv, MulAut.smul_def, MulAut.conj_apply, inv_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_conj_smul_iff (H : Subgroup G) (a g : G) :
     g ∈ (MulAut.conj a • H : Subgroup G) ↔ a⁻¹ * g * a ∈ H := by
@@ -24,7 +24,7 @@ theorem mem_conj_smul_iff (H : Subgroup G) (a g : G) :
     inv_inv]
 
 /- English proof (translation)
-Rewrite using `[mem_conj_smul_iff, inv_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_conj_inv_smul_iff (H : Subgroup G) (x g : G) :
     g ∈ (MulAut.conj x⁻¹ • H : Subgroup G) ↔ x * g * x⁻¹ ∈ H := by
@@ -36,7 +36,7 @@ def extendByZero (H : Subgroup G) (f : H → ℂ) (g : G) : ℂ :=
   if h : g ∈ H then f ⟨g, h⟩ else 0
 
 /- English proof (translation)
-Unfold `extendByZero`. Rewrite using `[dif_pos hg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem extendByZero_of_mem (H : Subgroup G) (f : H → ℂ) {g : G} (hg : g ∈ H) :
     extendByZero H f g = f ⟨g, hg⟩ := by
@@ -44,7 +44,7 @@ theorem extendByZero_of_mem (H : Subgroup G) (f : H → ℂ) {g : G} (hg : g ∈
   rw [dif_pos hg]
 
 /- English proof (translation)
-Unfold `extendByZero`. Rewrite using `[dif_neg hg]`. Use the proof step `@[simp]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extendByZero_of_notMem (H : Subgroup G) (f : H → ℂ) {g : G} (hg : g ∉ H) :
     extendByZero H f g = 0 := by
@@ -53,15 +53,15 @@ theorem extendByZero_of_notMem (H : Subgroup G) (f : H → ℂ) {g : G} (hg : g 
 
 @[simp]
 /- English proof (translation)
-The claim follows from `extendByZero_of_mem H f h.2`.
+A detailed English derivation is pending.
 -/
 theorem extendByZero_coe (H : Subgroup G) (f : H → ℂ) (h : H) : extendByZero H f h = f h :=
   extendByZero_of_mem H f h.2
 
 /- English proof (translation)
-Distinguish the cases in `hg : g ∈ H`. Establish `hm : h * g * h⁻¹ ∈ H` using `H.mul_mem (H.mul_mem hh hg) (H.inv_mem hh)`. Rewrite using `[extendByZero_of_mem H f hm, extendByZero_of_mem H f hg, ← hf ⟨g, hg⟩ ⟨h, hh⟩]`. Both sides reduce to the same expression. Establish `hm : h * g * h⁻¹ ∉ H` using `fun hm ↦ hg (by`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `H.mul_mem (H.mul_mem (H.inv_mem hh) hm) hh` as an intermediate fact. Simplify `this)` using `[mul_assoc]`. Rewrite using `[extendByZero_of_notMem H f hm, extendByZero_of_notMem H f hg]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem extendByZero_conj {H : Subgroup G} {f : H → ℂ} (hf : IsClassFun f) {h : G} (hh : h ∈ H)
     (g : G) : extendByZero H f (h * g * h⁻¹) = extendByZero H f g := by
@@ -75,13 +75,11 @@ theorem extendByZero_conj {H : Subgroup G} {f : H → ℂ} (hf : IsClassFun f) {
     rw [extendByZero_of_notMem H f hm, extendByZero_of_notMem H f hg]
 
 /- English proof (translation)
-Rewrite using `[indFun_apply]`. Use `congr 1`. Use `Finset.sum_congr rfl fun t _ ↦ ?_` and prove the remaining obligations. Distinguish the cases in `hm : t⁻¹ * s * t ∈ H`. Rewrite using `[extendByZero_of_mem H f hm, Finset.sum_eq_single ⟨_, hm⟩]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `b _ hb`. Rewrite using `[if_neg]`. Introduce `hb'`. Conclude with `hb (Subtype.ext hb')`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[extendByZero_of_notMem H f hm]`. Use `Finset.sum_eq_zero fun b _ ↦ ?_` and prove the remaining obligations. Rewrite using `[if_neg]`. Introduce `hb'`.
-
-Conclude with `hm (hb' ▸ b.2)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem indFun_subtype_apply [Fintype G] (H : Subgroup G) [Fintype H] (f : H → ℂ) (s : G) :
     indFun H.subtype f s = (Nat.card H : ℂ)⁻¹ * ∑ t : G, extendByZero H f (t⁻¹ * s * t) := by
@@ -112,27 +110,21 @@ variable [Fintype G]
 open Classical in
 
 /- English proof (translation)
-Use `set E : Subgroup D := (MulAut.conj x⁻¹ • H : Subgroup G).subgroupOf D with hEdef`. Establish `hE : ∀ c : D, c ∈ E ↔ x * c * x⁻¹ ∈ H` using `fun c ↦ by`. Rewrite using `[hEdef, Subgroup.mem_subgroupOf, mem_conj_inv_smul_iff]`. Establish `hfib : ∀ u : G, (Finset.univ.filter (fun p : H × D ↦ (p.1 : G) * x * p.2 = u)).card = if DoubleCoset.mk H D u = DoubleCoset.mk H D x then Nat.card E else 0`. Introduce `u`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `split_ifs with hu`. Take `⟨h0, hh0, e0, he0, rfl⟩` from `(DoubleCoset.eq H D x u).1 hu.symm`. Rewrite using `[Nat.card_eq_fintype_card, ← Finset.card_univ]`. Use `Finset.card_bij' (fun p _ ↦ ⟨⟨e0 * (p.2 : G)⁻¹, D.mul_mem he0 (D.inv_mem p.2.2)⟩, ?_⟩) (fun c _ ↦ (⟨h0 * (x * ((c : D) : G) * x⁻¹), H.mul_mem hh0 ((hE c).1 c.2)⟩, ⟨((c : D) : G)⁻¹ * e0, D.mul_mem (D.inv_mem (c : D).2) he0⟩)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Name the introduced variables `p hp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hp` using `[Finset.mem_filter]`. Rewrite using `[hE]`. Establish `hp1 : (p.1 : G) = h0 * x * e0 * (p.2 : G)⁻¹ * x⁻¹`. Rewrite using `[← hp.2]`. Use `group`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: x * (e0 * (p.2 : G)⁻¹) * x⁻¹ = h0⁻¹ * p.1`. Rewrite using `[hp1]`. Use `group`. Rewrite using `[show ((⟨e0 * (p.2 : G)⁻¹, D.mul_mem he0 (D.inv_mem p.2.2)⟩ : D) : G) = e0 * (p.2 : G)⁻¹ from rfl, this]`. Conclude with `H.mul_mem (H.inv_mem hh0) p.1.2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `p _`. Conclude with `Finset.mem_univ _`. Introduce `c _`. Rewrite using `[Finset.mem_filter]`. Use `⟨Finset.mem_univ _, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `group`. Introduce `p hp`. Rewrite `hp` using `[Finset.mem_filter]`. Use `ext`. Express the relevant statement in the definitionally equal form `h0 * (x * (e0 * (p.2 : G)⁻¹) * x⁻¹) = p.1`.
+Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hp1 : (p.1 : G) = h0 * x * e0 * (p.2 : G)⁻¹ * x⁻¹`. Rewrite using `[← hp.2]`. Use `group`. Rewrite using `[hp1]`. Use `group`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(e0 * (p.2 : G)⁻¹)⁻¹ * e0 = p.2 group`. Introduce `c _`. Use `ext`. Express the relevant statement in the definitionally equal form `e0 * (((c : D) : G)⁻¹ * e0)⁻¹ = ((c : D) : G)`. Use `group`.
-
-Rewrite using `[Finset.card_eq_zero, Finset.filter_eq_empty_iff]`. Introduce `p _ hp`. Apply `hu` to reduce the goal to its premises. Conclude with `((DoubleCoset.eq H D x u).2 ⟨p.1, p.1.2, p.2, p.2.2, hp.symm⟩).symm`. Combine the equalities or inequalities in the displayed calculation.
-
-Use `Finset.sum_congr rfl fun u _ ↦ ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl fun p hp ↦ by rw [(Finset.mem_filter.1 hp).2], Finset.sum_const, nsmul_eq_mul, hfib u]`. Apply the tactic sequence `split_ifs <;> simp`. Use `_ = (Nat.card E : ℂ) * ∑ u ∈ Finset.univ.filter (fun u ↦ DoubleCoset.mk H D u = DoubleCoset.mk H D x), F u := by`. Rewrite using `[Finset.sum_filter, Finset.mul_sum]`.
-
-Use `Finset.sum_congr rfl fun u _ ↦ ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem sum_mul_mul_eq (H D : Subgroup G) [Fintype H] [Fintype D] (x : G) (F : G → ℂ) :
     ∑ h : H, ∑ e : D, F (h * x * e) =
@@ -215,7 +207,7 @@ def conjFun (H D : Subgroup G) (x : G) (f : H → ℂ) :
     (mem_conj_inv_smul_iff H x _).1 (Subgroup.mem_subgroupOf.1 d.2)⟩
 
 /- English proof (translation)
-Distinguish the cases in `hy : y ∈ (MulAut.conj x⁻¹ • H : Subgroup G).subgroupOf D`. Rewrite using `[extendByZero_of_mem _ _ hy, extendByZero_of_mem H f ((mem_conj_inv_smul_iff H x _).1 (Subgroup.mem_subgroupOf.1 hy))]`. Both sides reduce to the same expression. Establish `hy' : x * (y : G) * x⁻¹ ∉ H` using `fun h ↦ hy (Subgroup.mem_subgroupOf.2 ((mem_conj_inv_smul_iff H x _).2 h))`. Rewrite using `[extendByZero_of_notMem _ _ hy, extendByZero_of_notMem H f hy']`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem extendByZero_conjFun (H D : Subgroup G) (x : G) (f : H → ℂ) (y : D) :
     extendByZero _ (conjFun H D x f) y = extendByZero H f (x * y * x⁻¹) := by
@@ -232,17 +224,15 @@ variable [Fintype G]
 open Classical in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `d`. Rewrite using `[Function.comp_apply, Finset.sum_apply, indFun_subtype_apply]`. Repeatedly rewrite using `[indFun_subtype_apply, extendByZero_conjFun]`. Establish `h1 : ∑ t : G, extendByZero H f (t⁻¹ * D.subtype d * t) = ∑ u : G, extendByZero H f (u * d * u⁻¹)` using `Fintype.sum_equiv (Equiv.inv G) _ _ (fun t ↦ by simp)`. Rewrite using `[h1, ← Finset.sum_fiberwise Finset.univ (DoubleCoset.mk H D), Finset.mul_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun q _ ↦ ?_` and prove the remaining obligations. Establish `key` using `sum_mul_mul_eq H D (x q) (fun u ↦ extendByZero H f (u * d * u⁻¹))`. Rewrite `key` using `[hx q]`. Use `set E : Subgroup D := (MulAut.conj (x q)⁻¹ • H : Subgroup G).subgroupOf D`. Establish `hE0 : (Nat.card E : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH0 : (Nat.card H : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`. Establish `h2 : ∀ (h : H) (e : D), extendByZero H f ((h * x q * e) * d * (h * x q * e)⁻¹) = extendByZero H f (x q * ((e * d * e⁻¹ : D) : G) * (x q)⁻¹)`. Introduce `h e`. Rewrite using `[← extendByZero_conj hf h.2 (x q * ((e * d * e⁻¹ : D) : G) * (x q)⁻¹)]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv]`. Use `group`. Establish `h3 : ∑ h : H, ∑ e : D, extendByZero H f ((h * x q * e) * d * (h * x q * e)⁻¹) = Nat.card H * ∑ t : D, extendByZero H f (x q * ((t⁻¹ * d * t : D) : G) * (x q)⁻¹)`. Repeatedly rewrite using `[h2]`. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul, Nat.card_eq_fintype_card]`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congr 1`. Conclude with `Fintype.sum_equiv (Equiv.inv D) _ _ (fun e ↦ by simp)`. Rewrite `key` using `[h3]`. Establish `hS : ∑ u ∈ Finset.univ.filter (fun u ↦ DoubleCoset.mk H D u = q), extendByZero H f (u * d * u⁻¹) = (Nat.card E : ℂ)⁻¹ * (Nat.card H * ∑ t : D, extendByZero H f (x q * ((t⁻¹ * d * t : D) : G) * (x q)⁻¹))`. Rewrite using `[key, inv_mul_cancel_left₀ hE0]`.
-
-Rewrite using `[hS, mul_left_comm, inv_mul_cancel_left₀ hH0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem indFun_comp_subtype_eq_sum (H D : Subgroup G) [Fintype H] [Fintype D] {f : H → ℂ}
     (hf : IsClassFun f) (x : DoubleCoset.Quotient (H : Set G) D → G)

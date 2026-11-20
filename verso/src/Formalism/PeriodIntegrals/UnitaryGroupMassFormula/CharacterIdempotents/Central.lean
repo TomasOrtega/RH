@@ -11,7 +11,7 @@ open PI.CharIdem
 variable {G : Type} [Group G] [Fintype G]
 
 /- English proof (translation)
-Unfold `PI.CharIdem.charIdem`. Simplify using `[Finsupp.single_apply]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem coeff_charIdem (V : FDRep ℂ G) (g : G) :
     (charIdem V).coeff g =
@@ -21,9 +21,9 @@ theorem coeff_charIdem (V : FDRep ℂ G) (g : G) :
   simp [Finsupp.single_apply]
 
 /- English proof (translation)
-Unfold `PI.CharIdem.charIdem`. Rewrite using `[Finset.sum_mul, Finset.mul_sum]`. Simplify using `only [MonoidAlgebra.single_mul_single, mul_one, one_mul]`. Set `e : G ≃ G` to `⟨fun g => h⁻¹ * g * h, fun g => h * g * h⁻¹, fun g => by group, fun g => by group⟩`. Use `Fintype.sum_equiv e _ _ (fun g => ?_)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `he : h * e g = g * h` using `by show h * (h⁻¹ * g * h) = g * h group`. Establish `hi : (e g)⁻¹ = h⁻¹ * g⁻¹ * h⁻¹⁻¹` using `by show (h⁻¹ * g * h)⁻¹ = h⁻¹ * g⁻¹ * h⁻¹⁻¹ group`. Rewrite using `[he, hi, FDRep.char_conj]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem charIdem_mul_single_one_comm (V : FDRep ℂ G) (h : G) :
     PI.CharIdem.charIdem V * MonoidAlgebra.single h (1 : ℂ) = MonoidAlgebra.single h (1 : ℂ) * PI.CharIdem.charIdem V := by
@@ -41,9 +41,9 @@ private theorem charIdem_mul_single_one_comm (V : FDRep ℂ G) (h : G) :
   rw [he, hi, FDRep.char_conj]
 
 /- English proof (translation)
-Use `MonoidAlgebra.induction_on (motive := fun y => PI.CharIdem.charIdem V * y = y * PI.CharIdem.charIdem V) x ?_ ?_ ?_` and prove the remaining obligations. Introduce `g`. Simplify `charIdem_mul_single_one_comm V g` using `[MonoidAlgebra.of_apply]`. Introduce `a b ha hb`. Rewrite using `[mul_add, add_mul, ha, hb]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `r a ha`. Rewrite using `[mul_smul_comm, smul_mul_assoc, ha]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem idempotent_mul_comm (V : FDRep ℂ G) (x : MonoidAlgebra ℂ G) :
     charIdem V * x = x * charIdem V := by
@@ -56,7 +56,7 @@ theorem idempotent_mul_comm (V : FDRep ℂ G) (x : MonoidAlgebra ℂ G) :
     rw [mul_smul_comm, smul_mul_assoc, ha]
 
 /- English proof (translation)
-Introduce `G _ _ V x`. Conclude with `idempotent_mul_comm V x`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem central : Central := by
   intro G _ _ V x

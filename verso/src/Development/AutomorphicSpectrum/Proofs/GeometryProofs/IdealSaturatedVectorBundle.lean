@@ -8,9 +8,9 @@ import Development.WeilBound.CoreStatements.HodgeTatePoints.NearMemSpan
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
 /- English proof (translation)
-Take `⟨g, rfl⟩` from `hw`. Take `⟨W, hq, s, rfl⟩` from `X.presheaf.exists_germ_eq g`. Use `⟨W, hq, fun q' hq' => ⟨X.presheaf.germ W q'.1 hq' s, ?_⟩⟩` and prove the remaining obligations. Establish `key : ∀ (y : X) (hy : y ∈ W) (h : genPt ξ ⤳ y), X.presheaf.germ W y hy ≫ X.presheaf.stalkSpecializes h ≫ Scheme.stalkClosedPointTo ξ = X.presheaf.germ W (genPt ξ) (h.mem_open W.isOpen hy) ≫ Scheme.stalkClosedPointTo ξ`. Introduce `y hy h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `TopCat.Presheaf.germ_stalkSpecializes_assoc X.presheaf hy h _`. Simplify using `only [genMap]`. Rewrite using `[← CommRingCat.comp_apply, ← CommRingCat.comp_apply]`. Use `erw [key q'.1 hq' q'.2, key q.1 hq q.2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_open_forall_mem_regAt' {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Sp Ω ⟶ X) (q : Cpt ξ) (w : Ω)
     (hw : w ∈ regAt ξ q) : ∃ W : X.Opens, q.1 ∈ W ∧ ∀ q' : Cpt ξ, q'.1 ∈ W → w ∈ regAt ξ q' := by
@@ -27,21 +27,19 @@ private theorem exists_open_forall_mem_regAt' {X : Scheme.{0}} {Ω : Type} [Fiel
   erw [key q'.1 hq' q'.2, key q.1 hq q.2]
 
 /- English proof (translation)
-Take `⟨x, hx𝔡, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h𝔡`. Take `⟨𝔞, h𝔞⟩ : 𝔡 ∣ Ideal.span {x}` from `Ideal.dvd_iff_le.mpr ((Ideal.span_singleton_le_iff_mem _).mpr hx𝔡)`. Establish `hσx : σ x ≠ 0` using `fun h => hx0 (hinj (by rw [h, map_zero]))`. Establish `hgood : ∀ n ∈ 𝔞, ∀ d' ∈ 𝔡, ∃ o : O, σ d' * (σ n / σ x) = σ o`. Introduce `n hn d' hd'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmem : d' * n ∈ Ideal.span {x}` using `h𝔞 ▸ Ideal.mul_mem_mul hd' hn`. Take `⟨o, ho⟩` from `Ideal.mem_span_singleton'.mp hmem`. Use `⟨o, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_div_assoc, ← map_mul, ← ho, map_mul, mul_div_cancel_right₀ _ hσx]`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hne`. Set `C : O → Prop` to `fun y => ∃ h : σ y / σ x ∈ R, (⟨_, h⟩ : R) ∈ IsLocalRing.maximalIdeal R`. Establish `hx : x ∈ 𝔡 * 𝔞` using `h𝔞 ▸ Ideal.mem_span_singleton_self x`. Establish `hC : C x`. Use `Submodule.mul_induction_on hx ?_ ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m hm n hn`. Take `⟨o, ho⟩` from `hgood n hn m hm`. Establish `hR : σ (m * n) / σ x ∈ R`. Rewrite using `[map_mul, mul_div_assoc, ho]`. Conclude with `hσ o`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `⟨hR, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hnot`. Establish `hu : IsUnit (⟨_, hR⟩ : R)`. Assume the negation of the conclusion as `h'`. Conclude with `hnot ((IsLocalRing.mem_maximalIdeal _).mpr h')`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨w, hw⟩` from `hu.exists_right_inv`. Use `hne m hm (σ n / σ x) (hgood n hn) w w.2 ?_` and prove the remaining obligations. Use `congrArg Subtype.val hw` as an intermediate fact. Simplify `this` using `[map_mul, mul_div_assoc]`. Introduce and unpack `a b ⟨ha, ha'⟩ ⟨hb, hb'⟩`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hab : σ (a + b) / σ x ∈ R` using `by rw [map_add, add_div]; exact add_mem ha hb`. Use `⟨hab, ?_⟩` and prove the remaining obligations. Establish `: (⟨_, hab⟩ : R) = ⟨_, ha⟩ + ⟨_, hb⟩` using `by ext; simp [map_add, add_div]`. Rewrite using `[this]`. Conclude with `add_mem ha' hb'`.
-
-Take `⟨h1, h2⟩` from `hC`. Establish `: (⟨_, h1⟩ : R) = 1` using `by ext; simp [div_self hσx]`. Rewrite `h2` using `[this]`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal R).ne_top ((Ideal.eq_top_iff_one _).mpr h2)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_mul_eq_one_of_dedekind_ideal_ne_bot {Ω : Type} [Field Ω] (O : Type) [CommRing O] [IsDedekindDomain O] (σ : O →+* Ω)
     (𝔡 : Ideal O) (R : Subring Ω) [IsLocalRing R] (hσ : ∀ a, σ a ∈ R) (hinj : Function.Injective σ)
@@ -88,25 +86,23 @@ private theorem exists_mul_eq_one_of_dedekind_ideal_ne_bot {Ω : Type} [Field Ω
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `X Ω _ ξ Li _ _ O _ _ σ 𝔡 L T r V hinj h𝔡 hσ hL p hp`. Take `⟨U₀, hpU₀, b, hbV, hb⟩` from `hL p hp`. Use `haveI : IsLocalRing (regAt ξ p) := IsLocalRing.of_surjective' (genMap ξ p).rangeRestrict (genMap ξ p).rangeRestrict_surjective`. Take `⟨d, hd, u, hu, v, hv, hdu⟩` from `exists_mul_eq_one_of_dedekind_ideal_ne_bot O σ 𝔡 (regAt ξ p) (hσ p hp) hinj h𝔡`. Take `⟨W₂, hpW₂, hW₂⟩` from `exists_open_forall_mem_regAt' ξ p v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hu0 : u ≠ 0` using `by rintro rfl; simp at hdu`. Use `⟨U₀ ⊓ W₂, ⟨hpU₀, hpW₂⟩, fun i => u • b i, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hbV]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Establish `: b i = u⁻¹ • (u • b i)` using `by rw [smul_smul, inv_mul_cancel₀ hu0, one_smul]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Introduce `q hq hqU`. Take `⟨hli, hLq⟩` from `hb q hq hqU.1`. Establish `hvq : v ∈ regAt ξ q` using `hW₂ q hqU.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `hli.units_smul (fun _ => Units.mk0 u hu0)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `[Units.smul_def]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `e ⟨heV, he⟩`. Establish `h1 : σ d • e ∈ L q` using `he d hd`. Rewrite `h1` using `[hLq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : (⟨v, hvq⟩ : regAt ξ q) • (σ d • e) ∈ Submodule.span (regAt ξ q) (Set.range b)` using `Submodule.smul_mem _ _ h1`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun _).mp h2`. Establish `he' : e = u • ((⟨v, hvq⟩ : regAt ξ q) • (σ d • e))`. Rewrite using `[Subring.smul_def, smul_smul, smul_smul]`. Rewrite using `[show u * v * σ d = 1 by rw [← hdu]; ring, one_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SetLike.mem_coe, he', ← hc, Finset.smul_sum]`. Use `Submodule.sum_mem _ (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Subring.smul_def, smul_comm]`. Conclude with `Submodule.smul_mem _ (c i) (Submodule.subset_span ⟨i, rfl⟩)`. Rewrite using `[Submodule.span_le]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨?_, fun d' hd' => ?_⟩` and prove the remaining obligations. Rewrite using `[← hbV]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
-
-Take `⟨o, ho⟩` from `hu d' hd'`. Establish `hbi : b i ∈ L q` using `by rw [hLq]; exact Submodule.subset_span ⟨i, rfl⟩`. Rewrite using `[smul_smul, ho]`. Conclude with `Submodule.smul_mem (L q) (⟨σ o, hσ q hq o⟩ : regAt ξ q) hbi`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.CompanionTheory.Relay.ideal_saturated_vector_bundle : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (Li : Type) [AddCommGroup Li] [Module Ω Li] (O : Type) [CommRing O] [IsDedekindDomain O] (σ : O →+* Ω) (𝔡 : Ideal O) (L : Lat ξ Li) (T : Set (Cpt ξ)) (r : ℕ) (V : Submodule Ω Li), Function.Injective σ → 𝔡 ≠ ⊥ → (∀ q ∈ T, ∀ a, σ a ∈ regAt ξ q) → L.IsVBOn T r V → Lat.IsVBOn (fun q => Submodule.span (regAt ξ q) {e | e ∈ V ∧ ∀ d ∈ 𝔡, σ d • e ∈ L q} : Lat ξ Li) T r V := by
   intro X Ω _ ξ Li _ _ O _ _ σ 𝔡 L T r V hinj h𝔡 hσ hL p hp

@@ -9,15 +9,15 @@ namespace PIW.AdelClassFin
 open scoped Matrix
 
 /- English proof (translation)
-Introduce `E _ k m P R hPR`. Establish `hsurj : Function.Surjective (Matrix.toLin' P)` using `fun v => ⟨R *ᵥ v, by rw [Matrix.toLin'_apply, Matrix.mulVec_mulVec, hPR, Matrix.one_mulVec]⟩`. Establish `hsum` using `LinearMap.finrank_range_add_finrank_ker (Matrix.toLin' P)`. Establish `hrank : Module.finrank E (LinearMap.range (Matrix.toLin' P)) = k`. Rewrite using `[LinearMap.range_eq_top.mpr hsurj, finrank_top, Module.finrank_fin_fun]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hsum` using `[hrank, Module.finrank_fin_fun]`. Establish `hker : Module.finrank E (LinearMap.ker (Matrix.toLin' P)) = m - k` using `by omega`. Use `⟨by omega, ?_⟩` and prove the remaining obligations. Set `b : Module.Basis (Fin (m - k)) E (LinearMap.ker (Matrix.toLin' P))` to `Module.finBasisOfFinrankEq E _ hker`. Establish `hU : ∀ y : Fin (m - k) → E, (Matrix.of fun i j => (b j : Fin m → E) i) *ᵥ y = ((b.equivFun.symm y : LinearMap.ker (Matrix.toLin' P)) : Fin m → E)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `y`. Use extensionality with `i`. Rewrite using `[Module.Basis.equivFun_symm_apply]`. Simplify using `[Matrix.mulVec, dotProduct, mul_comm]`. Use `⟨Matrix.of fun i j => (b j : Fin m → E) i, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `i j`. Establish `h` using `congrFun (LinearMap.mem_ker.mp (b j).2) i`. Rewrite `h` using `[Matrix.toLin'_apply]`. Conclude with `h`. Introduce `y y' h`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [hU] at h`. Conclude with `b.equivFun.symm.injective (Subtype.ext h)`. Introduce `w hw`. Use `⟨b.equivFun ⟨w, LinearMap.mem_ker.mpr (by rw [Matrix.toLin'_apply]; exact hw)⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hU, LinearEquiv.symm_apply_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spComp : SpComp := by
   intro E _ k m P R hPR

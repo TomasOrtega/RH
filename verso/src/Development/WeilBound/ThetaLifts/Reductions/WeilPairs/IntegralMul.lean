@@ -20,7 +20,7 @@ section
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {nS nT : ℕ}
 
 /- English proof (translation)
-Simplify using `only [hOF, Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.map_apply, Matrix.transpose_apply, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun d _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hOF_eq_trace {m : ℕ} (JS : Matrix (Fin nS) (Fin nS) E) (J : Matrix (Fin m) (Fin m) E) (x y : WOF F E nS m) :
     hOF σ JS J x y = (JS⁻¹.map (incAF F E) * ((y.map (cAF σ))ᵀ * J.map (incAF F E) * x)).trace := by
@@ -32,7 +32,7 @@ theorem hOF_eq_trace {m : ℕ} (JS : Matrix (Fin nS) (Fin nS) E) (J : Matrix (Fi
   ring
 
 /- English proof (translation)
-Establish `e : GlobalTheory.WeilSchrodinger.DblTargetF.dblG J = (dbl J).submatrix finSumFinEquiv.symm finSumFinEquiv.symm` using `rfl`. Rewrite using `[e, dCdE, Matrix.transpose_submatrix, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, Matrix.submatrix_id_id, diagCols, dbl, Matrix.transpose_fromRows, Matrix.fromCols_mul_fromBlocks, Matrix.fromCols_mul_fromRows]`. Simplify using `only [Matrix.transpose_one, Matrix.one_mul, Matrix.mul_zero, add_zero, zero_add, neg_mul_neg, Matrix.neg_mul, Matrix.mul_neg, neg_neg, Matrix.mul_smul, Matrix.mul_nonsing_inv _ (Ne.isUnit hJ), ← add_smul]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 -/
 theorem dC_dual (J : Matrix (Fin nT) (Fin nT) E) (hJ : J.det ≠ 0) :
     (dC E nT)ᵀ * GlobalTheory.WeilSchrodinger.DblTargetF.dblG J * dCdE J = 1 := by
@@ -44,7 +44,7 @@ theorem dC_dual (J : Matrix (Fin nT) (Fin nT) E) (hJ : J.det ≠ 0) :
   norm_num
 
 /- English proof (translation)
-Use extensionality with `i j`. Take `⟨k, rfl⟩` from `finSumFinEquiv.surjective i`. Simplify using `only [dC, diagCols, Matrix.map_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, id]`. Apply the tactic sequence `rcases k with k | k <;> simp [Matrix.one_apply, apply_ite φ]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dC_map {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (n : ℕ) : (dC R n).map φ = dC S n := by
   ext i j
@@ -53,9 +53,9 @@ theorem dC_map {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (n : ℕ)
   rcases k with k | k <;> simp [Matrix.one_apply, apply_ite φ]
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun M : Matrix (Fin nT) (Fin nT) E => M.map (incAF F E)) (dC_dual J hJ)`. Simplify using `only [Matrix.map_mul, Matrix.transpose_map, dC_map] at h`. Rewrite `h` using `[Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[hOF_eq_trace, Matrix.map_mul, dC_map, Matrix.transpose_mul]`. Use `congr 2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc _ (dCd F J), ← Matrix.mul_assoc (dC _ nT)ᵀ, ← Matrix.mul_assoc (dC _ nT)ᵀ]`. Rewrite using `[show (dC (AF F ⊗[F] E) nT)ᵀ * (GlobalTheory.WeilSchrodinger.DblTargetF.dblG J).map (incAF F E) * dCd F J = 1 from h, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem hOF_dual (JS : Matrix (Fin nS) (Fin nS) E) (J : Matrix (Fin nT) (Fin nT) E) (hJ : J.det ≠ 0) (v y : WOF F E nS nT) :
     hOF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG J) (dCd F J * v) (dC (AF F ⊗[F] E) nT * y) =
@@ -70,7 +70,7 @@ theorem hOF_dual (JS : Matrix (Fin nS) (Fin nS) E) (J : Matrix (Fin nT) (Fin nT)
     Matrix.one_mul]
 
 /- English proof (translation)
-Unfold `phase symplOF`. Rewrite using `[hOF_dual JS J hJ, hOF_dual JS J hJ, Matrix.map_mul, Matrix.transpose_mul, Matrix.mul_assoc, ← Matrix.mul_assoc _ (s.1.map (cAF σ))ᵀ, ← Matrix.transpose_mul, ← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one, Matrix.one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem phase_move (JS : Matrix (Fin nS) (Fin nS) E) (J : Matrix (Fin nT) (Fin nT) E) (hJ : J.det ≠ 0) (ξ₀ : E)
     (ψ : AddChar (AF F) ℂ) (s : GL (Fin nT) (AF F ⊗[F] E)) (y w : WOF F E nS nT) :
@@ -90,21 +90,19 @@ def vecE : WOF F E nS nT ≃+ (Fin (nT * nS) → AF F ⊗[F] E) where
   map_add' _ _ := rfl
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.T.rationalMatrices_discrete_cocompact_adelicMatrixSpace F E nS nT`. Use `GlobalTheory.HeisThetaF.isTopologicalRing_AEF (F := F) (E := E)` as an intermediate fact. Establish `: BorelSpace (WOF F E nS nT)` using `⟨rfl⟩`. Use `letI : MeasurableSpace (Fin (nT * nS) → AF F ⊗[F] E) := borel _`. Establish `: BorelSpace (Fin (nT * nS) → AF F ⊗[F] E)` using `⟨rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `c1 : Continuous (vecE F E nS nT)` using `continuous_pi fun k => (continuous_apply (finProdFinEquiv.symm k).2).comp (continuous_apply (finProdFinEquiv.symm k).1)`. Establish `c2 : Continuous (vecE F E nS nT).symm` using `continuous_pi fun i => continuous_pi fun j => continuous_apply _`. Set `eh : WOF F E nS nT ≃ₜ (Fin (nT * nS) → AF F ⊗[F] E)` to `.mk (vecE F E nS nT).toEquiv c1 c2`. Set `em` to `eh.toMeasurableEquiv`. Set `K : Matrix (Fin nT) (Fin nT) (AF F ⊗[F] E) → Matrix (Fin (nT * nS)) (Fin (nT * nS)) (AF F ⊗[F] E)` to `fun M => (M ⊗ₖ (1 : Matrix (Fin nS) (Fin nS) (AF F ⊗[F] E))).submatrix finProdFinEquiv.symm finProdFinEquiv.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hK : ∀ M M', M * M' = 1 → K M * K M' = 1` using `fun M M' h => by`. Simplify using `only [K]`. Rewrite using `[Matrix.submatrix_mul_equiv, ← Matrix.mul_kronecker_mul, h, Matrix.mul_one, Matrix.one_kronecker_one, Matrix.submatrix_one_equiv]`. Set `t : GL (Fin (nT * nS)) (AF F ⊗[F] E)` to `⟨K A.1, K (A⁻¹).1, hK _ _ A.mul_inv, hK _ _ A.inv_mul⟩`. Establish `hd : Matrix.GeneralLinearGroup.det t = Matrix.GeneralLinearGroup.det A ^ nS`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `ext`. Rewrite using `[Units.val_pow_eq_pow_val, Matrix.GeneralLinearGroup.val_det_apply, Matrix.GeneralLinearGroup.val_det_apply]`. Use `show (K A.1).det = _`. Simplify using `only [K]`. Rewrite using `[Matrix.det_submatrix_equiv_self, Matrix.det_kronecker, Matrix.det_one, one_pow, mul_one, Fintype.card_fin]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hv : ∀ w : WOF F E nS nT, (vecE F E nS nT).symm (t.1 *ᵥ vecE F E nS nT w) = A.1 * w` using `fun w => by`. Use extensionality with `i j`. Use `show ∑ k, K A.1 (finProdFinEquiv (i, j)) k * vecE F E nS nT w k = ∑ k, A.1 i k * w k j`. Rewrite using `[← finProdFinEquiv.sum_comp, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `show ∑ b, K A.1 (finProdFinEquiv (i, j)) (finProdFinEquiv (a, b)) * w (finProdFinEquiv.symm (finProdFinEquiv (a, b))).1 (finProdFinEquiv.symm (finProdFinEquiv (a, b))).2 = _`. Simplify using `only [K, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.kroneckerMap_apply, Matrix.one_apply]`. Simplify using the standard rewrite rules. Establish `h` using `GlobalTheory.T.integral_adelicGL_mulVec_haar_eq_modulus_det F E _ t (ν.map em) ((vecE F E nS nT).isAddHaarMeasure_map ν c1 c2) (fun u => g ((vecE F E nS nT).symm u))`. Rewrite `h` using `[integral_map_equiv, integral_map_equiv, hd, map_pow, map_pow, NNReal.coe_pow]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `Eq.trans ?_ (h.trans ?_)` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `w`. Conclude with `congrArg g (hv w).symm`. Use `congr 2`.
-
-Use function extensionality and compare the values at `w`. Conclude with `congrArg g ((vecE F E nS nT).symm_apply_apply w)`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem integral_mul (ν : Measure (WOF F E nS nT)) (hν : ν.IsAddHaarMeasure) (A : GL (Fin nT) (AF F ⊗[F] E))
     (g : WOF F E nS nT → ℂ) : ∫ w, g (A.1 * w) ∂ν =
@@ -156,23 +154,21 @@ theorem integral_mul (ν : Measure (WOF F E nS nT)) (hν : ν.IsAddHaarMeasure) 
 end
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ hξ hσ ν 𝓕 hν h𝓕 s N hN hI`. Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.T.rationalMatrices_discrete_cocompact_adelicMatrixSpace F E nS nT`. Use `GlobalTheory.HeisThetaF.isTopologicalRing_AEF (F := F) (E := E)` as an intermediate fact. Establish `: BorelSpace (WOF F E nS nT)` using `⟨rfl⟩`. Establish `hA : ∀ M M' : Matrix (Fin nT) (Fin nT) (AF F ⊗[F] E), M * M' = 1 → (M'.map (cAF σ))ᵀ * (M.map (cAF σ))ᵀ = 1` using `fun M M' h => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.transpose_mul, ← Matrix.map_mul, h, Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one]`. Set `A : GL (Fin nT) (AF F ⊗[F] E)` to `⟨(s.1.map (cAF σ))ᵀ, ((s⁻¹).1.map (cAF σ))ᵀ, hA _ _ s.inv_mul, hA _ _ s.mul_inv⟩`. Set `e : WOF F E nS nT ≃+ WOF F E nS nT` to `{ toFun := fun w => A.1 * w invFun := fun w => (A⁻¹).1 * w left_inv := fun w => by simp only [← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul] right_inv := fun w => by simp only [← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul] map_add' := fun v w => Matrix.mul_add _ v w }`. Establish `c1 : Continuous e` using `continuous_const.matrix_mul continuous_id`. Establish `c2 : Continuous e.symm` using `continuous_const.matrix_mul continuous_id`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hN.comp c1, ?_, fun y => ?_⟩` and prove the remaining obligations. Establish `: (ν.map e).IsAddHaarMeasure` using `e.isAddHaarMeasure_map ν c1 c2`. Take `⟨c, hc⟩ : ∃ c : NNReal, ν.map e = c • ν` from `⟨_, Measure.isAddLeftInvariant_eq_smul _ ν⟩`. Establish `h1 : Integrable N (ν.map e)`. Rewrite using `[hc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hI.smul_measure_nnreal`. Conclude with `(integrable_map_measure hN.aestronglyMeasurable c1.measurable.aemeasurable).1 h1`. Establish `h` using `integral_mul ν hν A (fun v => phase σ JS JT ξ₀ B.ψ ((s⁻¹).1 * y) v * N v)`. Establish `hn : Units.map (Algebra.norm (AF F) : AF F ⊗[F] E →* AF F) (Matrix.GeneralLinearGroup.det A) = Units.map (Algebra.norm (AF F) : AF F ⊗[F] E →* AF F) (Matrix.GeneralLinearGroup.det s)`. Use `Units.ext (GlobalTheory.SplitDetCharF.tensor_inj (F := F) (E := E) ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Proceed by induction.
 
-Establish `hcc : ∀ z : AF F ⊗[F] E, cAF σ (cAF σ z) = z` using `fun z => by`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero]`. Consider the case `tmul a x => exact congrArg (a ⊗ₜ[F] ·) (GlobalTheory.SplitDetCharF.sig_invol hB.cm x)`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : A.1.det = cAF σ s.1.det` using `by show ((s.1.map (cAF σ))ᵀ).det = _`. Rewrite using `[Matrix.det_transpose, RingHom.map_det]`. Both sides reduce to the same expression. Use `show algebraMap _ _ (Algebra.norm (AF F) A.1.det) = algebraMap _ _ (Algebra.norm (AF F) s.1.det)`. Rewrite using `[GlobalTheory.SplitDetCharF.algebraMap_norm hB.cm, GlobalTheory.SplitDetCharF.algebraMap_norm hB.cm, hd, hcc, mul_comm]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[hn]`. Use `set m : ℝ := (distribHaarChar (AF F) (Units.map (Algebra.norm (AF F) : AF F ⊗[F] E →* AF F) (Matrix.GeneralLinearGroup.det s)) : ℝ) with hm`. Establish `hm0 : 0 < m` using `NNReal.coe_pos.2 distribHaarChar_pos`. Establish `hf : mfac F E nS s ^ 2 = m ^ nS` using `by show (m ^ ((Fintype.card (Fin nS) : ℝ) / 2)) ^ 2 = _`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hm0.le, Fintype.card_fin, ← Real.rpow_natCast]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : (fun w : WOF F E nS nT => phase σ JS JT ξ₀ B.ψ ((s⁻¹).1 * y) (A.1 * w) * N (A.1 * w)) = fun w => phase σ JS JT ξ₀ B.ψ y w * N ((s.1.map (cAF σ))ᵀ * w)` using `funext fun w => by`. Rewrite using `[← phase_move JS JT hT.2 ξ₀ B.ψ s y w]`.
-
-Rewrite `h` using `[h2]`. Rewrite using `[h, ← Complex.ofReal_pow, hf, ← mul_assoc, ← Complex.ofReal_mul, mul_inv_cancel₀ (pow_pos hm0 _).ne', Complex.ofReal_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem change : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

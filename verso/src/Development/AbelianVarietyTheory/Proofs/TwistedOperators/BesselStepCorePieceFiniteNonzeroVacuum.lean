@@ -21,15 +21,13 @@ namespace GlobalTheory.AscFin.CorePiece
 variable {D : D7}
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨β, hβi, hβ, a, ha, x, hx, rfl⟩` from `hz`. Use `set u : Fin S.rank → AE D := fun i => pairA D.host.F 0 β ⊗ₜ[D.host.F] (1 * x i) with hu`. Establish `hu' : u ∈ latV S L P` using `AddSubgroup.subset_closure ⟨β, hβi, hβ, 1, rfl, x, hx, rfl⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq : d.p0 *ᵥ (fun i => pairA D.host.F 0 β ⊗ₜ[D.host.F] (a * x i)) = fun k => ((1 : AF D.host.F) ⊗ₜ[D.host.F] a) * (d.p0 *ᵥ u) k`. Use function extensionality and compare the values at `k`. Simplify using `only [Matrix.mulVec, dotProduct, Finset.mul_sum, hu]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h1 : pairA D.host.F 0 β ⊗ₜ[D.host.F] (a * x i) = ((1 : AF D.host.F) ⊗ₜ[D.host.F] a) * (pairA D.host.F 0 β ⊗ₜ[D.host.F] (1 * x i))`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, one_mul]`. Rewrite using `[h1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq]`. Conclude with `GlobalTheory.FinPl.VacFlat.smul_mem_latA ha (GlobalTheory.FinPl.ExtZeroAt.wittProjectionZero_mem_latticeCompletion_of_splits d hL₀ hm hu')`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => rw [Matrix.mulVec_zero]`. Conclude with `zero_mem _`. Consider the case `add z z' _ _ hz hz' => rw [Matrix.mulVec_add]`. Conclude with `add_mem hz hz'`. Consider the case `neg z _ hz => rw [Matrix.mulVec_neg]`.
-
-Conclude with `neg_mem hz`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem proj_mem_adelic_lattice_of_mono {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) {L : Lat S} {L₀ : Lat S₀} {P : GlobalTheory.FinPl.Pl D → Prop}
     (hL₀ : Submodule.IsLattice D.host.E L₀) (hm : ∀ v, P v → MonoAt d L L₀ v) {z : Fin S.rank → AE D}
@@ -55,13 +53,13 @@ theorem proj_mem_adelic_lattice_of_mono {S S₀ : HSp D} {ρ : ℕ} (d : HypDec 
   | neg z _ hz => rw [Matrix.mulVec_neg]; exact neg_mem hz
 
 /- English proof (translation)
-Establish `hE : dV.ext0 W (dW.inc0 V₀ u) = dW.j0 * u * dV.p0`. Rewrite using `[HypDec.matrixExtendByZero_apply, HypDec.wittDecomp_inclAnisotropicHom_apply]`. Rewrite `hu` using `[hE]`. Establish `hx` using `GlobalTheory.FinPl.LatMem.latO_mxAt hu`. Establish `hu0 : dW.p0 * (dW.j0 * u * dV.p0) * dV.j0 = u`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [← Matrix.mul_assoc, HypDec.p0_j0, Matrix.one_mul]`. Simplify using `only [Matrix.mul_assoc, HypDec.p0_j0, Matrix.mul_one]`. Use `(GlobalTheory.FinPl.LatMem.mem_latO_iff D V₀ W₀ LV₀ LW₀ hV₀ hW₀ _ u).2 ⟨?_, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[← hu0]`. Introduce `i j`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.mul_apply]`. Use `sum_mem fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.sum_mul]`. Use `sum_mem fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_left _ _ (Ideal.mul_mem_right _ _ (hx k l))`. Establish `key : (show Matrix (Fin W₀.rank) (Fin V₀.rank) (AE D) from u) *ᵥ y = dW.p0 *ᵥ ((dW.j0 * u * dV.p0) *ᵥ (dV.j0 *ᵥ y))`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hu0]`. Rewrite using `[key]`. Conclude with `proj_mem_adelic_lattice_of_mono dW hW₀.1 (fun v _ => hmW v) (GlobalTheory.FinPl.LatMem.latO_maps hV hu (GlobalTheory.FinPl.ExtZeroAt.wittCoreInclusion_mem_latticeCompletionAtPlace dV hV.1 (fun v _ => hmV v) hy))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_lattice_of_extend_inclusion {V V₀ W W₀ : HSp D} {ρ σ : ℕ} (dV : HypDec V V₀ ρ) (dW : HypDec W W₀ σ)
     {LV : Lat V} {LV₀ : Lat V₀} {LW : Lat W} {LW₀ : Lat W₀}
@@ -93,9 +91,9 @@ theorem mem_lattice_of_extend_inclusion {V V₀ W W₀ : HSp D} {ρ σ : ℕ} (d
       (GlobalTheory.FinPl.LatMem.latO_maps hV hu (GlobalTheory.FinPl.ExtZeroAt.wittCoreInclusion_mem_latticeCompletionAtPlace dV hV.1 (fun v _ => hmV v) hy))
 
 /- English proof (translation)
-Introduce `D hOff T L μ0 hL sc G W M hM F hF ρ h`. Take `⟨-, hB, -⟩` from `GlobalTheory.T.grid_lattices_compact_selfDual_splitting D hOff T L μ0 hL sc G W M hM F hF`. Take `⟨hsd0, hmono, -, -⟩` from `hB ρ h`. Establish `hV : IsSelfDualC (G.V (.grid (2 * ρ + 2) 0)) (G.Λ (.grid (2 * ρ + 2) 0))` using `(G.isV (X := .grid (2 * ρ + 2) 0) ⟨h, Nat.zero_le _⟩ (fun j hj => by injection hj with h1 h2; omega)).sd`. Establish `hW₀ : IsSelfDualC (G.V (.core (2 * ρ + 1))) (G.Λ (.core (2 * ρ + 1)))` using `(G.isV (X := .core (2 * ρ + 1)) (show 2 * ρ + 1 ≤ D.R.m by omega) (fun j hj => Node.noConfusion hj)).sd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : (pcBF W F ρ h).Γ₀ ≤ latO (F.V₀ ρ) (G.V (.core (2 * ρ + 1))) (lat0 F ρ h : Set _) (G.Λ (.core (2 * ρ + 1)) : Set _) fun _ => True`. Introduce `u hu`. Use `mem_lattice_of_extend_inclusion (F.dB ρ h) (F.dJ ρ h) hV hsd0 hW₀ (fun v => (hmono v).1) (fun v => (hmono v).2) ?_` and prove the remaining obligations. Conclude with `GlobalTheory.RowLoc.mem_latO_negSp.1 (AddSubgroup.mem_comap.1 hu).1`. Conclude with `⟨fun u hu => GlobalTheory.FinPl.LatMem.latO_mxAt (hle hu), GlobalTheory.T.exists_ne_zero_latticeVacuum_selfDual D W.ψ W.ψ_std _ _ _ _ hsd0 hW₀ _ hle⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem core_fin_vac : OnStd fun {D} _ _ {sc} {G} W F => ∀ ρ (h : 2 * ρ + 2 ≤ D.R.m),
     (∀ u ∈ (pcBF W F ρ h).Γ₀, MxAt (fun _ => True) (show Mx D (G.V (.core (2 * ρ + 1))).rank (F.V₀ ρ).rank from u)) ∧

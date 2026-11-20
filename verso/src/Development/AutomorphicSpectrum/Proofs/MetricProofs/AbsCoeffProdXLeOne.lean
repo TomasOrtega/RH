@@ -7,7 +7,7 @@ open MvPolynomial GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Hei
 namespace GlobalTheory.CompanionTheory.Ar.PB
 
 /- English proof (translation)
-The claim follows from `|coeff m (∏ j, X (w j) : MvPolynomial σ ℝ)| ≤ 1 := by classical have h : (∏ j, X (w j) : MvPolynomial σ ℝ) = monomial (∑ j, Finsupp.single (w j) 1) 1 := by rw [monomial_sum_one] rfl rw [h, coeff_monomial] split_ifs <;> simp`.
+A detailed English derivation is pending.
 -/
 theorem abs_coeff_prod_X_le_one {σ : Type} {n : ℕ} (w : Fin n → σ) (m : σ →₀ ℕ) :
     |coeff m (∏ j, X (w j) : MvPolynomial σ ℝ)| ≤ 1 := by
@@ -19,15 +19,13 @@ theorem abs_coeff_prod_X_le_one {σ : Type} {n : ℕ} (w : Fin n → σ) (m : σ
   split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `σ _ n a b M h`. Prove the components needed by the constructor for the conclusion. Introduce `m`. Simplify using `only [formPoly, coeff_sum, coeff_C_mul]`. Rewrite using `[← Finset.sum_sub_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `(Finset.abs_sum_le_sum_abs _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun w _ => ?_` and prove the remaining obligations. Rewrite using `[← sub_mul, abs_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `_ = (Fintype.card σ : ℝ) ^ n * M := by`. Simplify using the standard rewrite rules. Introduce `c`. Simplify using `only [formPoly, map_sum, map_mul, eval_C, map_prod, eval_X]`. Rewrite using `[← Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Finset.abs_sum_le_sum_abs _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun w _ => ?_` and prove the remaining obligations. Rewrite using `[← sub_mul, abs_mul, Finset.abs_prod, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_left (h w) (Finset.prod_nonneg fun _ _ => abs_nonneg _)`.
-
-Use `_ = (∑ x, |c x|) ^ n * M := by`. Rewrite using `[← Finset.sum_mul, Fintype.sum_pow]`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formPoly_sub_bound : ∀ (σ : Type) [Fintype σ] (n : ℕ) (a b : (Fin n → σ) → ℝ) (M : ℝ),
     (∀ w, |a w - b w| ≤ M) →

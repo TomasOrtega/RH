@@ -11,9 +11,9 @@ namespace PositivityTheory.SiegelWeilFormula.KFP
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Establish `hpi : (Real.pi : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 Real.pi_ne_zero`. Rewrite using `[Complex.ofReal_exp, Complex.ofReal_exp, ← Complex.exp_add, ← Complex.exp_add, ← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Take the linear combination `((t : ℂ) ^ 2 * N) * Complex.I_sq`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem exp_alg (s t N a U : ℝ) :
     Complex.exp (2 * Real.pi * Complex.I * s * t * N - 4 * Real.pi * Complex.I * t * (a + s * N) +
@@ -31,19 +31,19 @@ theorem exp_alg (s t N a U : ℝ) :
 variable {d : SD σ}
 
 /- English proof (translation)
-Take `⟨νf, hνf, hν⟩` from `exists_nuf R`. Use `⟨1, 1 / (16 * Real.pi), -(4 * Real.pi), Measure.map (jnp R) ((volume : Measure (Vw d)).prod νf), νf, one_ne_zero, neg_ne_zero.2 (by positivity), hν, hνf, ?_⟩` and prove the remaining obligations. Introduce `g hg' Ω hΩ hTΩ Φ hΦ W hW z`. Use `set w := arc R W with hw`. Set `e : Vw d → ℂ` to `ev w z`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `b : Vw d → ℂ` to `bv w z`. Establish `hTv : ∀ X, d.T (d.dd.rho d.B.ψ (vline R W z) Ω) X = b (arc R X) * g (fin d X)` using `T_vline hH R hΩ hTΩ hW z`. Establish `hb : Continuous b` using `continuous_bv w z`. Establish `hb1 : ∀ u, ‖b u‖ ≤ 1` using `norm_bv_le w z`. Establish `hTΦ : d.T Φ ∈ d.schM` using `(hT.1 F E σ d).1 Φ hΦ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : B (Measure.map (jnp R) ((volume : Measure (Vw d)).prod νf)) Φ (d.dd.rho d.B.ψ (vline R W z) Ω) = ∫ u, star (b u) * hg R νf (d.T Φ) g u`. Simplify using `only [B, hTv]`. Conclude with `integral_jnp R hνf hTΦ hg' hb hb1`. Rewrite using `[e1]`. Establish `key : ∀ u, star (b u) * hg R νf (d.T Φ) g u = ((Real.exp (-(1 / (16 * Real.pi) * ‖z‖ ^ 2 * ‖(-(4 * Real.pi)) • w‖ ^ 2)) : ℝ) : ℂ) * Complex.exp (-(z ^ 2 * (‖(-(4 * Real.pi)) • w‖ ^ 2 : ℝ) / (16 * Real.pi))) * (hg R νf (d.T Φ) g u * Real.exp (-(2 * Real.pi * ‖u‖ ^ 2)) * Complex.ex …`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `u`. Establish `hz : z = z.re + z.im * Complex.I` using `(Complex.re_add_im z).symm`. Establish `h1` using `exp_alg z.re z.im (‖w‖ ^ 2) ⟪w, u⟫_ℝ (‖u‖ ^ 2)`. Rewrite `h1` using `[← hz]`. Establish `hn : ‖(-(4 * Real.pi)) • w‖ ^ 2 = 16 * Real.pi ^ 2 * ‖w‖ ^ 2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[norm_smul, mul_pow, Real.norm_eq_abs, sq_abs]`. Expand and normalize the polynomial expressions, which then agree. Establish `hi : ⟪(-(4 * Real.pi)) • w, u⟫_ℝ = -(4 * Real.pi) * ⟪w, u⟫_ℝ` using `real_inner_smul_left _ _ _`. Establish `hzn : ‖z‖ ^ 2 = z.re ^ 2 + z.im ^ 2` using `by rw [Complex.sq_norm, Complex.normSq_apply]; ring`. Simplify using `only [b, bv, star_star, hn, hi, hzn]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Both sides reduce to the same expression.
 
-Establish `h2 : ev w z u = 2 * Real.pi * Complex.I * z.re * z.im * ((‖w‖ ^ 2 : ℝ) : ℂ) - 4 * Real.pi * Complex.I * z.im * (⟪w, u⟫_ℝ + z.re * ((‖w‖ ^ 2 : ℝ) : ℂ)) + ((-(2 * Real.pi * (‖u‖ ^ 2 + 2 * z.re * ⟪w, u⟫_ℝ + z.re ^ 2 * ‖w‖ ^ 2)) : ℝ) : ℂ)`. Both sides reduce to the same expression. Rewrite using `[h2, h1]`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[key]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[integral_const_mul]`. Simplify using `only [one_mul, Complex.ofReal_exp]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem B_vline (hT : TAll) (hU : TUnit) (hH : THeis) (hA : AuxiliaryPrimeFunction) (hF : FockMem) (R : RD d) :
     ∃ (C : ℂ) (c s : ℝ) (ν : Measure (Mx F E d.m d.n)) (νf : Measure (Yf d)), C ≠ 0 ∧ s ≠ 0 ∧

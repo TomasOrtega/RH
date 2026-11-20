@@ -12,17 +12,17 @@ open scoped Matrix
 namespace GlobalTheory.Ord2
 
 /- English proof (translation)
-Introduce `hL l _ Ω _ _ _ S A W c hS hW hO hN`. Establish `hH : Finite (H1 (resRep c W hO S hN))` using `(hL.gf ℚ Ω l 1 (ResPlane c) S (resRep c W hO S hN) one_pos hS (GlobalTheory.T.continuous_residuePlaneGaloisRep_unramifiedOutside l Ω S W c hO hN hW)).2.1`. Establish `key : ∀ x : {x : DivSel c W S A // l • x = 0}, ∃ (z : G ℚ Ω → Fin 2 → Qbar l) (hz : z ∈ divSelCoc c W S A) (y : Fin 2 → Qbar l), VecE c y ∧ (∀ s i, (l : Qbar l) * z s i - (mat W s *ᵥ y - y) i ∈ c.O) ∧ (QuotientAddGroup.mk ⟨z, hz⟩ : DivSel c W S A) = x.1`. Introduce and unpack `⟨x, hx⟩`. Take `⟨⟨z, hz⟩, rfl⟩` from `QuotientAddGroup.mk_surjective x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite `hx` using `[← QuotientAddGroup.mk_nsmul, QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf]`. Take `⟨y, hy, hzy⟩` from `hx`. Use `⟨z, hz, y, hy, fun s i => ?_, rfl⟩` and prove the remaining obligations. Use `hzy s i` as an intermediate fact. Simplify `this` using `only [AddSubgroup.coe_nsmul, Pi.smul_apply, nsmul_eq_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `choose z hz y hy hzy hx using key`. Use `Finite.of_injective (fun x => (Submodule.Quotient.mk ⟨descS S (resCoc c W (z x) (y x)), GlobalTheory.T.reduced_selmer_cochain_mem_continuous_cocycles_of_cont l Ω S A W c hO hN hW (z x) (hz x) (y x) (hy x) (hzy x)⟩ : H1 (resRep c W hO S hN))) ?_` and prove the remaining obligations. Introduce `x x' h`. Rewrite `h` using `[Submodule.Quotient.eq, Submodule.mem_comap, (mem_coboundaries1 _ _)]`. Take `⟨m, hm⟩` from `h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hd` using `GlobalTheory.T.divCoboundary_of_reducedCocycles_cohomologous l Ω W c hO (z x) (z x') (y x) (y x') (hy x) (hy x') (hzy x) (hzy x') ⟨m, fun s => by`. Use `hm (toGS Ω (S : Set Pl) s)` as an intermediate fact. Simplify using `only [Submodule.coe_subtype, Submodule.coe_sub, Pi.sub_apply] at this`. Rewrite `this` using `[descS_resCoc_toGS c W S A hO hN (hz x) (y x) (hzy x) s, descS_resCoc_toGS c W S A hO hN (hz x') (y x') (hzy x') s]`. Rewrite using `[this, resRep_toGS]⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hx x, ← hx x', QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`. Establish `: (↑(-(⟨z x, hz x⟩ : divSelCoc c W S A) + ⟨z x', hz x'⟩) : G ℚ Ω → Fin 2 → Qbar l) = -(z x - z x')`. Simplify using `only [AddSubgroup.coe_add, AddSubgroup.coe_neg]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `(divCob c W).neg_mem hd`.
+A detailed English derivation is pending.
 -/
 theorem finite_lTorsion_divSel : GlobalTheory.Mem.LiteralAutomorphy.LitCoh → ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (S : Finset Pl) (A : ValuationSubring Ω) (W : R2 Ω l) (c : Coef l), ContainsAbove S l → Continuous W → (∀ s i j, mat W s i j ∈ c.O) → (∀ a ∈ (toGS Ω (S : Set Pl)).ker, W a = 1) → Finite {x : DivSel c W S A // l • x = 0} := by
   intro hL l _ Ω _ _ _ S A W c hS hW hO hN

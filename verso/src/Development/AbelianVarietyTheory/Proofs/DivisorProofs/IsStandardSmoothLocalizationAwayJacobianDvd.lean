@@ -10,15 +10,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Pinch
 
 /- English proof (translation)
-Use `set A := MvPolynomial ν R ⧸ Ideal.span (Set.range F)`. Use `set T := Localization.Away (Ideal.Quotient.mk (Ideal.span (Set.range F)) h)`. Set `P` to `Algebra.PreSubmersivePresentation.naive (v := F) m hm`. Set `Q` to `Algebra.SubmersivePresentation.localizationAway T (Ideal.Quotient.mk (Ideal.span (Set.range F)) h)`. Establish `hPjac : P.jacobian = Ideal.Quotient.mk (Ideal.span (Set.range F)) (Matrix.of fun s t : σ ↦ MvPolynomial.pderiv (m s) (F t)).det`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[P.jacobian_eq_jacobiMatrix_det, Algebra.Generators.algebraMap_apply]`. Establish `hM : P.jacobiMatrix = Matrix.of fun s t : σ ↦ MvPolynomial.pderiv (m s) (F t)`. Use extensionality with `i j`. Simplify using `[P]`. Rewrite using `[hM]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: MvPolynomial.aeval P.val = Ideal.Quotient.mkₐ R (Ideal.span (Set.range F))` using `MvPolynomial.algHom_ext fun v => by simp [P]`. Rewrite using `[this]`. Both sides reduce to the same expression. Set `P' : Algebra.SubmersivePresentation R T (Unit ⊕ ν) (Unit ⊕ σ)` to `{ __ := Q.toPreSubmersivePresentation.comp P jacobian_isUnit := by`. Rewrite using `[Algebra.PreSubmersivePresentation.comp_jacobian_eq_jacobian_smul_jacobian, Algebra.smul_def]`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `IsUnit.mul ?_ Q.jacobian_isUnit` and prove the remaining obligations. Rewrite using `[hPjac]`. Conclude with `isUnit_of_dvd_unit (map_dvd _ (map_dvd _ hdvd)) (IsLocalization.Away.algebraMap_isUnit _) }`. Use `P'.isStandardSmoothOfRelativeDimension ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Q.toPreSubmersivePresentation.comp P).dimension = _`.
-
-Rewrite using `[Algebra.PreSubmersivePresentation.dimension_comp_eq_dimension_add_dimension]`. Simplify using `[Algebra.Presentation.dimension, P]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isStandardSmoothOfRelativeDimension_localizationAway_of_det_dvd
     (R ν σ : Type) [CommRing R] [Finite ν] [Fintype σ] [DecidableEq σ] (m : σ → ν)

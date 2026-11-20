@@ -24,15 +24,13 @@ namespace GlobalTheory.FlagSwitch
 open Limits GlobalTheory.TwoLat.Gen
 
 /- English proof (translation)
-Establish `hπ'` using `FlagBaseChange.isFlagBundle_pullFlag B F.Y X F.π ρ Unit _ _ _ F.univ`. Establish `hπ` using `W.univ`. Take `⟨u, ⟨wu, cu⟩, -⟩` from `hπ' W.Y W.π fun _ => W.fl`. Take `⟨s, ⟨ws, cs⟩, -⟩` from `hπ _ (pullback.snd F.π ρ) fun _ => FlagBaseChange.pullFlag F.π ρ F.fl`. Establish `hus : u ≫ s = 𝟙 _`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨z, -, hz⟩` from `hπ W.Y W.π fun _ => W.fl`. Establish `w₃ : (u ≫ s) ≫ W.π = W.π` using `by rw [Category.assoc, ws, wu]`. Conclude with `(hz _ ⟨w₃, flagCompat_comp _ _ _ _ s ws cs _ _ u wu cu w₃⟩).trans (hz _ ⟨Category.id_comp _, flagCompat_id _ _ _⟩).symm`. Establish `hsu : s ≫ u = 𝟙 _`. Take `⟨z, -, hz⟩` from `hπ' _ (pullback.snd F.π ρ) fun _ => FlagBaseChange.pullFlag F.π ρ F.fl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `w₃ : (s ≫ u) ≫ pullback.snd F.π ρ = pullback.snd F.π ρ` using `by rw [Category.assoc, wu, ws]`. Conclude with `(hz _ ⟨w₃, flagCompat_comp _ _ _ _ u wu cu _ _ s ws cs w₃⟩).trans (hz _ ⟨Category.id_comp _, flagCompat_id _ _ _⟩).symm`. Establish `: IsIso u` using `⟨s, hus, hsu⟩`. Use `⟨u ≫ pullback.fst F.π ρ, ?_, ?_⟩` and prove the remaining obligations. Conclude with `IsPullback.of_iso_pullback ⟨by rw [Category.assoc, pullback.condition, reassoc_of% wu]⟩ (asIso u) rfl wu`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k _ q p w h H v i`. Establish `w₁ : pullback.fst F.π ρ ≫ F.π ≫ q = pullback.snd F.π ρ ≫ p` using `by rw [pullback.condition_assoc, w]`. Establish `w₂ : u ≫ pullback.snd F.π ρ ≫ p = W.π ≫ p` using `by rw [reassoc_of% wu]`. Establish `e₁` using `VMetric.isometric_grLB_of_steps_pull p _ W.π _ g _ (H.pull ρ w) _ W.fl u wu (cu ()) w₂ i`. Establish `e₂` using `isometric_grLB_pull_ofIso (H.pull F.π rfl) ((H.pull ρ w).pull (pullback.snd F.π ρ) rfl) w₁ (isIsometry_sqIso pullback.condition h rfl w w₁ rfl) F.fl i`.
-
-Conclude with `((HermLB.isometric_of_refines (HermLB.refines_pull_pull _ _ w₁ u w₂ v)).symm.trans (e₂.pull u w₂)).trans e₁.symm`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_isPullback {B X : Scheme.{0}} {L : B.Modules} {g : ℕ} (F : FlagSp L g) (ρ : X ⟶ B)
     (W : FlagSp ((Scheme.Modules.pullback ρ).obj L) g) : ∃ t : W.Y ⟶ F.Y, IsPullback t W.π F.π ρ ∧
@@ -67,11 +65,11 @@ theorem exists_isPullback {B X : Scheme.{0}} {L : B.Modules} {g : ℕ} (F : Flag
       (e₂.pull u w₂)).trans e₁.symm
 
 /- English proof (translation)
-Establish `: IsIntegral (pullback a ρ)` using `IsIntegral.of_isIso sq.isoPullback.hom`. Take `⟨z, hz₁, hz₂⟩` from `Scheme.Pullback.exists_preimage_pullback (f := a) (g := ρ) _ _ (ha.trans hρ.symm)`. Establish `h₁` using `LineBundleBaseChange.map_genericPoint_of_mem _ z hz₁`. Establish `h₂` using `LineBundleBaseChange.map_genericPoint_of_mem _ z hz₂`. Establish `h₃ : sq.isoPullback.hom (genericPoint P) = genericPoint (pullback a ρ : Scheme.{0})`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `LineBundleBaseChange.map_genericPoint_of_mem _ (sq.isoPullback.inv (genericPoint _)) ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hF` using `GlobalTheory.PullbackGenericTensor.isField_tensor GlobalTheory.isField_of_spec_singleton_stalk_isField a ρ (GlobalTheory.isPreimmersion_SpecTensorTo _ _ _) (h₂ ▸ hd)`. Rewrite using `[← sq.isoPullback_hom_fst]`. Use `⟨by rw [Scheme.Hom.comp_apply, h₃, h₁], ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[CurveDegreesCompare.residueDegree_comp, GlobalTheory.Published.residueDegree_of_isClosedImmersion sq.isoPullback.hom, mul_one, h₃, GlobalTheory.FieldTensorDegree.residueDegree_fst_eq_finrank a ρ _ hF, GlobalTheory.ResidueTensorRank.finrank_tensorInl]`. Express the relevant statement in the definitionally equal form `ρ.residueDegree (pullback.snd a ρ (genericPoint _)) = _`. Rewrite using `[h₂]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem generic_of_isPullback {P Z X Y : Scheme.{0}} [IsIntegral P] [IsIntegral Z] [IsIntegral X] [IsIntegral Y]
     {γ : P ⟶ Z} {b : P ⟶ X} {a : Z ⟶ Y} {ρ : X ⟶ Y} (sq : IsPullback γ b a ρ)
@@ -95,7 +93,7 @@ theorem generic_of_isPullback {P Z X Y : Scheme.{0}} [IsIntegral P] [IsIntegral 
   rw [h₂]
 
 /- English proof (translation)
-Use `h.isIntegral` as an intermediate fact. Use `h.flat` as an intermediate fact. Use `⟨h.isDomain, h.finite, IsIntegral.of_isIso (inv e), ProjSpace.isProjOver_comp_of_isClosedImmersion e h.isProjOver, by rw [Category.assoc]; infer_instance, ?_⟩` and prove the remaining obligations. Rewrite using `[← h.dim_eq]`. Conclude with `(Scheme.homeoOfIso (asIso e)).isHomeomorph.topologicalKrullDim_eq`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isArithVar_of_isIso {k : Type} [CommRing k] {X Y : Scheme.{0}} {p : X ⟶ Sp k} {D : ℕ} (h : IsArithVar p D)
     (e : Y ⟶ X) [IsIso e] : IsArithVar (e ≫ p) D := by
@@ -107,19 +105,19 @@ theorem isArithVar_of_isIso {k : Type} [CommRing k] {X Y : Scheme.{0}} {p : X �
   exact (Scheme.homeoOfIso (asIso e)).isHomeomorph.topologicalKrullDim_eq
 
 /- English proof (translation)
-Introduce `k _ B Y X _ _ _ q π ρ p w d D hq hπ hρ ι _ E r h H fl hfl L g hL HL F W _`. Use `hπ.isLocallyNoetherian` as an intermediate fact. Use `hρ.1.isLocallyNoetherian` as an intermediate fact. Set `F₁ : FlagSp ((Scheme.Modules.pullback π).obj L) g` to `⟨pullback F.π π, pullback.snd F.π π, FlagBaseChange.pullFlag F.π π F.fl, FlagBaseChange.isFlagBundle_pullFlag B F.Y Y F.π π Unit _ _ _ F.univ⟩`. Take `⟨t, sq, ht⟩` from `exists_isPullback F₁ ρ W`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `let σ := pullbackSymmetry F.π π`. Set `γ : W.Y ⟶ pullback π F.π` to `t ≫ σ.hom`. Establish `sq' : IsPullback γ W.π (pullback.fst π F.π) ρ` using `sq.of_iso (Iso.refl _) σ (Iso.refl _) (Iso.refl _) (by simp [γ]) (by simp) (by simp [σ, F₁]) (by simp)`. Establish `w₁ : pullback.fst π F.π ≫ π ≫ q = pullback.snd π F.π ≫ F.π ≫ q` using `pullback.condition_assoc q`. Establish `v : γ ≫ pullback.snd π F.π ≫ F.π ≫ q = W.π ≫ p` using `by rw [← w₁, reassoc_of% sq'.w, w]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hZ : IsArithVar (pullback.snd π F.π ≫ F.π ≫ q) (D + g.choose 2)`. Use `isArithVar_of_isIso ((FlagTop.main k Y _ D hπ _ g (hL.isVB.pullback π)).2 F₁).1 σ.inv` as an intermediate fact. Rewrite `this` using `[← Category.assoc, show σ.inv ≫ F₁.π = pullback.fst π F.π by simp [σ, F₁], w₁]`. Then use the resulting hypothesis. Establish `hW` using `((FlagTop.main k X _ D hρ.1 _ g ((hL.isVB.pullback π).pullback ρ)).2 W).1`. Use `hZ.isIntegral` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : pullback.fst π F.π (genericPoint (pullback π F.π : Scheme.{0})) = genericPoint Y`. Take `⟨y, hy⟩` from `FlagSurj.isFlagBundle_surjective Y F₁.Y F₁.π Unit _ _ _ (fun _ => hL.isVB.pullback π) F₁.univ (genericPoint Y)`. Use `LineBundleBaseChange.map_genericPoint_of_mem _ (σ.hom y) ?_` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, ← hy]`. Simplify using `[σ, F₁]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨g₁, g₂⟩` from `generic_of_isPullback sq' ha hρ.2.1 hρ.2.2`. Use `⟨pullback π F.π, inferInstance, pullback.snd π F.π, fun a => FlagBaseChange.pullFlag π F.π (fl a), γ, v, fun N => ?_, FlagBaseChange.isFlagBundle_pullFlag B Y F.Y π F.π ι E r fl hfl, hZ, ⟨by rwa [v, ← w], g₁, g₂ ▸ hρ.2.2⟩, g₂, fun a i => ?_, fun i => ?_, fun a N n => ?_⟩` and prove the remaining obligations. Conclude with `((isometric_sq pullback.condition N rfl rfl w₁ rfl).pull γ v).symm.trans (isometric_sq sq'.w _ w₁ w v rfl)`. Conclude with `((isometric_grLB_pull_ofIso _ _ w₁ (isIsometry_sqIso pullback.condition (h a) rfl rfl w₁ rfl) (fl a) i).pull γ v).symm.trans (isometric_sq sq'.w _ w₁ w v rfl)`. Establish `w₂ : pullback.fst F.π π ≫ F.π ≫ q = pullback.snd F.π π ≫ π ≫ q` using `pullback.condition_assoc q`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `v₂ : t ≫ F₁.π ≫ π ≫ q = W.π ≫ p` using `by rw [reassoc_of% sq.w, w]`. Establish `e : γ ≫ pullback.snd π F.π = t ≫ pullback.fst F.π π` using `by simp [γ, σ]`. Conclude with `(isometric_sq e _ rfl w₂ v v₂).trans (((isometric_grLB_pull_ofIso _ _ w₂ (isIsometry_sqIso pullback.condition hL rfl rfl w₂ rfl) F.fl i).pull t v₂).trans (ht w (HL.pull π rfl) v₂ i))`. Establish `I` using `IsometryPullback.isIsometry_trans (IsometryPullback.isIsometry_symm (isIsometry_sqIso sq'.w ((h a).pull π rfl) w₁ w v rfl)) (IsometryPullback.isIsometry_pull (isIsometry_sqIso pullback.condition (h a) rfl rfl w₁ rfl) γ v)`. Use `(bcPair_eq_of_compat ((((H a).pull F.π rfl).pull _ rfl).pull γ v) I (fun i => ?_) N n).symm` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(sqIso sq'.w).inv.app ((fl a).F i), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ≫ (Scheme.Modules.pullback γ).map ((Scheme.Modules.pullback (pullback.fst π F.π)).map ((fl a).ι i) ≫ (sqIso pullback.condition).hom.app (E a)) = (Scheme.Modules.pullback ρ ⋙ Scheme.Modules.pullback W.π).map ((fl a).ι i) ≫ (sqIso sq'.w).inv.app _ ≫ (Scheme.Modules.pullback γ).ma …`. Rewrite using `[NatTrans.naturality_assoc, Functor.map_comp]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem main : ∀ (k : Type) [CommRing k] (B Y X : Scheme.{0}) [IsIntegral B] [IsIntegral Y] [IsIntegral X] (q : B ⟶ Sp k) (π : Y ⟶ B) (ρ : X ⟶ Y) (p : X ⟶ Sp k) (w : ρ ≫ π ≫ q = p) (d D : ℕ), IsArithVar q d → IsArithVar (π ≫ q) D → FlagChain.IsCov (π ≫ q) D ρ → ∀ (ι : Type) [Fintype ι] (E : ι → B.Modules) (r : ι → ℕ) (h : ∀ a, VMetric q (E a) (r a)) (H : ∀ a, (h a).IsCInf) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a)), IsFlagBundle π E r fl → ∀ (L : B.Modules) (g : ℕ) (hL : VMetric q L g) (HL : hL.IsCInf) (F : FlagSp L g) (W : FlagSp ((Scheme.Modules.pullback ρ).obj ((Scheme.Modules.pullback π).obj L)) g) [IsIntegral W.Y], ∃ (Z : Scheme.{0}) (_ : IsIntegral Z) (π₂ : Z ⟶ F.Y) (fz : ∀ a, Vert.Flag ((Scheme.Modules.pullback π₂).obj ((Scheme.Modules.pullback F.π).obj (E a))) (r a)) (γ : W.Y ⟶ Z) (v : γ ≫ π₂ ≫ F.π ≫ q = W.π ≫ p), (∀ N : HermLB q, (((N.pull F.π rfl).pull π₂ rfl).pull γ v).Isometric (((N.pull π rfl).pull ρ w).pull W.π rfl)) ∧ IsFlagBundle π₂ (fun a => (Scheme.Modules.pullback F.π).obj (E a)) r fz ∧ IsArithVar (π₂ ≫ F.π ≫ q) (D + g.choose 2) ∧ FlagChain.IsCov (π₂ ≫ F.π ≫ q) (D + g.choose 2) γ ∧ γ.residueDegree (genericPoint W.Y) = ρ.residueDegree (genericPoint X) ∧ (∀ a i, ((VMetric.grLB (fz a) i (((H a).pull F.π rfl).pull π₂ rfl)).pull γ v).Isometric (((VMetric.grLB (fl a) i ((H a).pull π rfl)).pull ρ w).pull W.π rfl)) ∧ (∀ i, (((VMetric.grLB F.fl i (HL.pull F.π rfl)).pull π₂ rfl).pull γ v).Isometric (VMetric.grLB W.fl i (((HL.pull π rfl).pull ρ w).pull W.π rfl))) ∧ ∀ a (N : HermLB (W.π ≫ p)) (n : ℕ), bcPair ((((h a).pull F.π rfl).pull π₂ rfl).pull γ v) ((fz a).pull γ) N n = bcPair ((((h a).pull π rfl).pull ρ w).pull W.π rfl) (((fl a).pull ρ).pull W.π) N n := by
   intro k _ B Y X _ _ _ q π ρ p w d D hq hπ hρ ι _ E r h H fl hfl L g hL HL F W _

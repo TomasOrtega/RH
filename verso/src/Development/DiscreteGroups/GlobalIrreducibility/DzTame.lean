@@ -12,7 +12,7 @@ namespace DiscreteGroups.sglob.DzType
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {A : ValuationSubring Ω}
 
 /- English proof (translation)
-Establish `hb' : σ b ≠ 0` using `(map_ne_zero σ).mpr hb`. Establish `h1 : 0 < A.valuation b` using `(Valuation.pos_iff _).mpr hb`. Establish `h2 : 0 < A.valuation (σ b)` using `(Valuation.pos_iff _).mpr hb'`. Rewrite using `[← div_lt_one₀ h1, ← div_lt_one₀ h2, ← map_div₀ A.valuation (σ a), ← map_div₀ A.valuation a, ← map_div₀ σ]`. Conclude with `valuation_apply_lt_one_iff hσ (a / b)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_lt_iff_of_dec {σ : G E Ω} (hσ : σ ∈ Dec (F := E) A) {a b : Ω} (hb : b ≠ 0) :
     A.valuation (σ a) < A.valuation (σ b) ↔ A.valuation a < A.valuation b := by
@@ -23,17 +23,15 @@ theorem val_lt_iff_of_dec {σ : G E Ω} (hσ : σ ∈ Dec (F := E) A) {a b : Ω}
   exact valuation_apply_lt_one_iff hσ (a / b)
 
 /- English proof (translation)
-Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Simplify using the standard rewrite rules. Establish `key : ∀ τ ∈ Dec (F` using `E) A, ∀ y : Ω, y ≠ 0 → A.valuation (τ y) < A.valuation y → False := by`. Introduce `τ hτ y hy hlt`. Establish `hne : ∀ k : ℕ, (τ ^ k) y ≠ 0` using `fun k => (map_ne_zero _).mpr hy`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hdec : ∀ k : ℕ, A.valuation ((τ ^ (k + 1)) y) < A.valuation ((τ ^ k) y)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simpa using hlt`. Consider the case `succ k ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Use `(val_lt_iff_of_dec hτ (hne k)).mpr ih` as an intermediate fact. Simplify `this` using `only [← AlgEquiv.mul_apply, ← pow_succ']`. Establish `hanti : StrictAnti fun k : ℕ => A.valuation ((τ ^ k) y)` using `strictAnti_nat_of_succ_lt hdec`. Establish `hinj : Function.Injective fun k : ℕ => (τ ^ k) y` using `fun i j hij => hanti.injective (by simp only at hij ⊢; rw [hij])`. Establish `hint : IsIntegral E y` using `(Algebra.IsAlgebraic.isAlgebraic (R := E) y).isIntegral`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin` using `(minpoly E y).rootSet_finite Ω`. Apply `Set.infinite_of_injective_forall_mem hinj (s := (minpoly E y).rootSet Ω) ?_ hfin` to reduce the goal to its premises. Introduce `k`. Rewrite using `[Polynomial.mem_rootSet]`. Use `⟨minpoly.ne_zero hint, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[show (τ ^ k) y = ((τ ^ k : G E Ω) : Ω →ₐ[E] Ω) y from rfl, Polynomial.aeval_algHom_apply, minpoly.aeval, map_zero]`. Break down `lt_trichotomy (A.valuation (σ x)) (A.valuation x) with h | h | h` into its components or cases. Conclude with `(key σ hσ x hx h).elim`. Conclude with `h`. Use `(key σ⁻¹ ((Dec (F := E) A).inv_mem hσ) (σ x) ((map_ne_zero σ).mpr hx) ?_).elim` and prove the remaining obligations.
-
-Rewrite using `[show (σ⁻¹ : G E Ω) (σ x) = x by simp]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem val_apply_eq {σ : G E Ω} (hσ : σ ∈ Dec (F := E) A) (x : Ω) : A.valuation (σ x) = A.valuation x := by
   classical
@@ -67,17 +65,15 @@ theorem val_apply_eq {σ : G E Ω} (hσ : σ ∈ Dec (F := E) A) (x : Ω) : A.va
     rwa [show (σ⁻¹ : G E Ω) (σ x) = x by simp]
 
 /- English proof (translation)
-Rewrite using `[map_div₀, val_apply_eq hσ, div_self ((Valuation.ne_zero_iff _).mpr hx)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem val_ratio {σ : G E Ω} (hσ : σ ∈ Dec (F := E) A) {x : Ω} (hx : x ≠ 0) : A.valuation (σ x / x) = 1 := by
   rw [map_div₀, val_apply_eq hσ, div_self ((Valuation.ne_zero_iff _).mpr hx)]
 
 /- English proof (translation)
-Use `set y := ψ x / x with hy`. Establish `hy1 : A.valuation y = 1` using `val_ratio hψ hx`. Establish `hy0 : y ≠ 0` using `by intro h; rw [h, map_zero] at hy1; exact zero_ne_one hy1`. Establish `hψx : ψ x = x * y` using `by rw [hy]; field_simp`. Establish `hσx0 : σ x ≠ 0` using `(map_ne_zero σ).mpr hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσy0 : σ y ≠ 0` using `(map_ne_zero σ).mpr hy0`. Establish `e : σ (ψ x) / ψ x - σ x / x = (σ x / x) * ((σ y - y) / y)`. Rewrite using `[hψx, map_mul]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e, map_mul, val_ratio (Ine_le_Dec A hσ) hx, one_mul, map_div₀, hy1, div_one]`.
-
-Conclude with `hσ.2 y hy1.le`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratio_cong {σ ψ : G E Ω} (hσ : σ ∈ Ine (F := E) A) (hψ : ψ ∈ Dec (F := E) A) {x : Ω} (hx : x ≠ 0) :
     A.valuation (σ (ψ x) / ψ x - σ x / x) < 1 := by
@@ -104,7 +100,7 @@ def ratioUnit {σ : G E Ω} (hσ : σ ∈ Dec (F := E) A) {x : Ω} (hx : x ≠ 0
     apply Subtype.ext; show x / σ x * (σ x / x) = 1; field_simp
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff, ValuationSubring.valuation_lt_one_iff]`. Simplify using `using h`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem res_eq_of_cong {a b : A} (h : A.valuation ((a : Ω) - b) < 1) :
     IsLocalRing.residue A a = IsLocalRing.residue A b := by
@@ -136,9 +132,9 @@ def tameSym {x : Ω} (hx : x ≠ 0) : Ine (F := E) A →* (IsLocalRing.ResidueFi
     exact ratio_cong σ.2 (Ine_le_Dec A τ.2) hx
 
 /- English proof (translation)
-Use `⟨σ.2, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg Units.val (h x hx)`. Express the relevant statement in the definitionally equal form `IsLocalRing.residue A ⟨(σ : G E Ω) x / x, _⟩ = IsLocalRing.residue A 1 at h1`. Rewrite `h1` using `[← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff, ValuationSubring.valuation_lt_one_iff]`. Establish `h2 : A.valuation ((σ : G E Ω) x / x - 1) < 1` using `by simpa using h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hv : 0 < A.valuation x` using `(Valuation.pos_iff _).mpr hx`. Establish `e : (σ : G E Ω) x - x = ((σ : G E Ω) x / x - 1) * x` using `by field_simp`. Rewrite using `[e, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem isWild_of_tameSym {σ : Ine (F := E) A} (h : ∀ (x : Ω) (hx : x ≠ 0), tameSym hx σ = 1) :
     Formalism.MainNotions.BlochKatoReduction.IsWild A (σ : G E Ω) := by
@@ -155,7 +151,7 @@ theorem isWild_of_tameSym {σ : Ine (F := E) A} (h : ∀ (x : Ω) (hx : x ≠ 0)
     _ = A.valuation x := one_mul _
 
 /- English proof (translation)
-Use `isWild_of_tameSym fun x hx => ?_` and prove the remaining obligations. Simplify using `only [map_mul, map_inv]`. Rewrite using `[mul_comm (tameSym hx s) (tameSym hx t)]`. Use `group`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isWild_commutator (s t : Ine (F := E) A) :
     Formalism.MainNotions.BlochKatoReduction.IsWild A ((s * t * s⁻¹ * t⁻¹ : Ine (F := E) A) : G E Ω) := by
@@ -165,15 +161,13 @@ theorem isWild_commutator (s t : Ine (F := E) A) :
   group
 
 /- English proof (translation)
-Use `isWild_of_tameSym fun x hx => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_inv, map_pow, mul_inv_eq_one]`. Use `ext`. Use `show IsLocalRing.residue A ⟨(φ * (s : G E Ω) * φ⁻¹) x / x, _⟩ = (IsLocalRing.residue A ⟨(s : G E Ω) x / x, _⟩) ^ q`. Rewrite using `[← map_pow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `res_eq_of_cong` to reduce the goal to its premises. Use `show A.valuation ((φ * (s : G E Ω) * φ⁻¹) x / x - ((s : G E Ω) x / x) ^ q) < 1`. Establish `hφD : φ ∈ Dec (F` using `E) A := hφ.1`. Establish `hφiD : φ⁻¹ ∈ Dec (F` using `E) A := (Dec (F := E) A).inv_mem hφD`. Use `set y := (φ⁻¹ : G E Ω) x with hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy0 : y ≠ 0` using `(map_ne_zero _).mpr hx`. Establish `hxy : x = φ y` using `by rw [hy, mul_inv_apply]`. Establish `e1 : (φ * (s : G E Ω) * φ⁻¹) x / x = φ ((s : G E Ω) y / y)`. Rewrite using `[AlgEquiv.mul_apply, AlgEquiv.mul_apply, ← hy, map_div₀]`. Use `conv_lhs => rw [show x = φ y from hxy]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : A.valuation ((s : G E Ω) y / y) ≤ 1` using `(val_ratio (Ine_le_Dec A s.2) hy0).le`. Establish `c1 : A.valuation (φ ((s : G E Ω) y / y) - ((s : G E Ω) y / y) ^ q) < 1` using `hφ.2 _ hz`. Establish `c2 : A.valuation ((s : G E Ω) y / y - (s : G E Ω) x / x) < 1` using `ratio_cong s.2 hφiD hx`. Establish `c3` using `cong_pow hz (val_ratio (Ine_le_Dec A s.2) hx).le c2 q`. Rewrite using `[e1]`.
-
-Conclude with `cong_trans c1 c3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isWild_frob {q : ℕ} {φ : G E Ω} (hφ : IsFrob A q φ) (s : Ine (F := E) A) :
     Formalism.MainNotions.BlochKatoReduction.IsWild A (((⟨φ * s * φ⁻¹, conj_mem_Ine hφ.1 s.2⟩ : Ine (F := E) A) * (s ^ q)⁻¹ :

@@ -15,21 +15,19 @@ namespace PositivityTheory.Rg.Sw.Glob
 open GaussH
 
 /- English proof (translation)
-Introduce `hTI hN hM hV hMul hGZ hLNe D n V ψ χ θ μ ω H l s ν τ ε fr ι hcx L hL`. Take `⟨e, hLev⟩` from `hM D n V ψ χ θ μ ω H l s ν τ ε fr ι hcx L hL`. Use `⟨e, fun y Z hZ => ?_⟩` and prove the remaining obligations. Establish `hc : 0 < cLoc l τ`. Unfold `cLoc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `mul_pos (mul_pos two_pos Real.pi_pos) (abs_pos.2 (hLNe D ψ θ l hcx.hψ hcx.hθ hcx.hl τ))`. Establish `hI` using `isSiegel_I (n := n)`. Establish `hGi : IsSch (gZf ε (tLoc l τ) (cLoc l τ) (Complex.I • 1))` using `hGZ V.rank n ε _ _ hc (abs_tLoc l τ) _ hI`. Take `⟨q, hq21, hqZ⟩` from `siegelOrb n Z hZ`. Take `⟨p0, k, hyq, hp0, hk⟩` from `iwaGR n (y * q)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1` using `pLaw hN hMul hcx hL hLev q hq21 (Complex.I • 1) hGi`. Rewrite `e1` using `[hqZ]`. Use `set p := cnt (epsT (tLoc l τ) ε) true`. Use `set p' := cnt (epsT (tLoc l τ) ε) false`. Establish `hjq : jF e p p' q (Complex.I • 1) ≠ 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[siegelP_jF q hq21]`. Take `⟨hA, -, -⟩` from `siegelP_data q hq21`. Conclude with `mul_ne_zero (zpow_ne_zero _ hA.ne_zero) (zpow_ne_zero _ (hA.star).ne_zero)`. Establish `hGZeq : gZf ε (tLoc l τ) (cLoc l τ) Z = fun u => (jF e p p' q (Complex.I • 1))⁻¹ * L q (gZf ε (tLoc l τ) (cLoc l τ) (Complex.I • 1)) u`. Use function extensionality and compare the values at `u`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1]`. Clear the denominators using the available nonvanishing facts. Establish `hVk` using `hV D n V ψ χ θ μ ω H l s ν τ ε fr ι hcx L hL e hLev k hk`. Simplify using `only [vac] at hVk`. Rewrite using `[hGZeq, locLin hTI hcx hL y _ (hL.1 q _ hGi), ← hMul D n V ψ χ θ μ ω H l s ν τ ε fr ι hcx L hL y q _ hGi, hyq, hMul D n V ψ χ θ μ ω H l s ν τ ε fr ι hcx L hL p0 k _ hGi, hVk, locLin hTI hcx hL p0 _ hGi, pLaw hN hMul hcx hL hLev p0 hp0 (Complex.I • 1) hGi]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `cy` using `(cocycleZ n e p p' y q (Complex.I • 1) hI).2.2.2`. Establish `cp` using `(cocycleZ n e p p' p0 k (Complex.I • 1) hI).2.2.2`. Rewrite `cy` using `[hqZ]`. Rewrite `cp` using `[actZ_K hk]`. Rewrite `cy` using `[hyq]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hact : actZ p0 (Complex.I • 1) = actZ y Z` using `cp.1.symm.trans cy.1`. Establish `hrel : jF e p p' y Z * jF e p p' q (Complex.I • 1) = jF e p p' p0 (Complex.I • 1) * jF e p p' k (Complex.I • 1)` using `cy.2.symm.trans cp.2`. Establish `hjy : jF e p p' y Z = jF e p p' p0 (Complex.I • 1) * jF e p p' k (Complex.I • 1) * (jF e p p' q (Complex.I • 1))⁻¹`. Rewrite using `[← hrel]`. Clear the denominators using the available nonvanishing facts.
-
-Use function extensionality and compare the values at `u`. Rewrite using `[hact, hjy]`. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem gaussLaw_of : TensInj → LawN → LawM → VacK → LocMul → GZSch → LNe → GaussLaw := by
   intro hTI hN hM hV hMul hGZ hLNe D n V ψ χ θ μ ω H l s ν τ ε fr ι hcx L hL

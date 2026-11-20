@@ -19,9 +19,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {ψ : AddChar k Circle} {χ : kˣ →* ℂˣ} {t : ℝ}
 
 /- English proof (translation)
-Take `⟨c, a, R, hc, ha, hR, rfl⟩` from `h`. Take `⟨c', a', R', hc', ha', hR', rfl⟩` from `h'`. Take `rfl` from `ha.unique ha'`. Establish `h1 : valuation k (c' : k) = valuation k (c : k)` using `le_antisymm ((hc _).1 ((hc' _).2 le_rfl)) ((hc' _).1 ((hc _).2 le_rfl))`. Establish `h2` using `valuation_eq_iff_ord.1 h1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hR'` using `[IsShellReps, h2, h1]`. Use `hR.sum_eq hR' (gaussTerm_eq hc ha (x := 1) (by simp))` as an intermediate fact. Simplify using `only [one_mul] at this`. Rewrite using `[this, GlobalTheory.LGrp.nabs_eq_zpow, GlobalTheory.LGrp.nabs_eq_zpow, h2]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem tate_unique {e e' : ℂ} (h : IsTateMeas ψ t χ e) (h' : IsTateMeas ψ t χ e') : e = e' := by
   obtain ⟨c, a, R, hc, ha, hR, rfl⟩ := h
@@ -36,7 +36,7 @@ theorem tate_unique {e e' : ℂ} (h : IsTateMeas ψ t χ e) (h' : IsTateMeas ψ 
   rw [this, GlobalTheory.LGrp.nabs_eq_zpow, GlobalTheory.LGrp.nabs_eq_zpow, h2]
 
 /- English proof (translation)
-Take `⟨c', a, R, hc', ha, hR, he⟩` from `isTateEps_of_isUnram hψ hχ`. Take `rfl` from `ha.unique (hasExponent_zero_iff.2 hχ)`. Establish `h1 : valuation k (c' : k) = valuation k (c : k)` using `le_antisymm ((hψ _).1 ((hc' _).2 le_rfl)) ((hc' _).1 ((hψ _).2 le_rfl))`. Use `⟨c', 0, R, hc', ha, hR, ?_⟩` and prove the remaining obligations. Rewrite using `[he, GlobalTheory.LGrp.nabs_eq_zpow, GlobalTheory.LGrp.nabs_eq_zpow, valuation_eq_iff_ord.1 h1]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -51,9 +51,9 @@ theorem tate_unram {c : kˣ} (hψ : HasConductor ψ c) (hχ : IsUnram χ) :
   simp
 
 /- English proof (translation)
-Take `⟨⟨e, he, -⟩, hne⟩` from `existsUnique_isTateEps ψ hψ h1 χ hχ`. Establish `h0` using `hne e he`. Take `⟨c, a, R, hc, ha, hR, rfl⟩` from `he`. Establish `hn : (0 : ℝ) < nabs k c`. Unfold `nabs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `MeasureTheory.distribHaarChar_pos` after adjusting the coercions. Use `⟨Units.mk0 _ (mul_ne_zero (Complex.ofReal_ne_zero.2 (mul_pos ht hn).ne') (right_ne_zero_of_mul h0)), c, a, R, hc, ha, hR, rfl⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tate_exists (hψ : Continuous ψ) (h1 : ψ ≠ 1) (hχ : IsSmoothChar χ) (ht : 0 < t) :
     ∃ e : ℂˣ, IsTateMeas ψ t χ e := by
@@ -66,7 +66,7 @@ theorem tate_exists (hψ : Continuous ψ) (h1 : ψ ≠ 1) (hχ : IsSmoothChar χ
     c, a, R, hc, ha, hR, rfl⟩
 
 /- English proof (translation)
-Take `⟨c, a, R, hc, ha, hR, rfl⟩` from `h`. Conclude with `⟨c, a, R, hc, ha, hR, by push_cast; ring⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem tate_scale {e : ℂ} (h : IsTateMeas ψ t χ e) (s : ℝ) : IsTateMeas ψ (s * t) χ (s * e) := by
   obtain ⟨c, a, R, hc, ha, hR, rfl⟩ := h
@@ -77,7 +77,7 @@ end Tate
 variable {Ω : Type} [Field Ω] {A : ValuationSubring Ω}
 
 /- English proof (translation)
-The claim follows from `tate_unique (hε.char L v h ψ hψ h1 t ht a ha χ (isSmoothChar_of_isUnram hχ)) (tate_unram hc hχ)`.
+A detailed English derivation is pending.
 -/
 theorem eps_unram {ε : EpsMeasFamily A} (hε : IsDeligneMeas ε) {L : Type} [Field L] [NumberField L] [Algebra L Ω]
     [IsAlgClosure L Ω] {v : HeightOneSpectrum (𝓞 L)} {h : IsPlaceOver A v} {ψ : AddChar (v.adicCompletion L) Circle}
@@ -88,7 +88,7 @@ theorem eps_unram {ε : EpsMeasFamily A} (hε : IsDeligneMeas ε) {L : Type} [Fi
   tate_unique (hε.char L v h ψ hψ h1 t ht a ha χ (isSmoothChar_of_isUnram hχ)) (tate_unram hc hχ)
 
 /- English proof (translation)
-The claim follows from `hε.ind L L v v h h (isLocalExt_self h) ψ ψ hψ h1 hψ (fun z => by simp) t t' ht ht' x y x y (induces_self x) (induces_self y) hd`.
+A detailed English derivation is pending.
 -/
 theorem eps_degree_zero {ε : EpsMeasFamily A} (hε : IsDeligneMeas ε) {L : Type} [Field L] [NumberField L] [Algebra L Ω]
     [IsAlgClosure L Ω] {v : HeightOneSpectrum (𝓞 L)} {h : IsPlaceOver A v} {ψ : AddChar (v.adicCompletion L) Circle}
@@ -100,13 +100,11 @@ theorem eps_degree_zero {ε : EpsMeasFamily A} (hε : IsDeligneMeas ε) {L : Typ
 def powFam : EpsMeasFamily A := fun _ _ _ _ _ _ _ _ t x => WD.unitOf (t : ℂ) ^ x.lpDim
 
 /- English proof (translation)
-Take `⟨n, a, rfl⟩` from `x.exists_rep`. Take `⟨m, b, rfl⟩` from `y.exists_rep`. Simplify using `[powFam, pow_add]`. Use `scale L _ _ _ _ v h ψ _ _ t ht a ha x := by`. Establish `h1 : (t : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 ht.ne'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ((a * t : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (mul_pos ha ht).ne'`. Simplify using `only [powFam, Units.val_pow_eq_pow_val, WD.coe_unitOf h1, WD.coe_unitOf h2]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `ind K L _ _ _ _ _ _ _ _ _ _ v v' h h' _ ψ ψ' _ _ _ _ t t' _ _ x₁ x₂ y₁ y₂ i₁ i₂ hd := by`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨m, n, a, b, j, rfl, rfl, hn, -⟩` from `i₁`. Take `⟨m', n', a', b', j', rfl, rfl, hn', -⟩` from `i₂`. Establish `: m = m'` using `by simpa using hd`. Substitute `this` using the available equality. Simplify using `[powFam, hn, hn']`.
-
-Use `char L _ _ _ _ v h ψ _ _ t _ a ha := absurd ha (H L v h a)`.
+Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem powFam_isDeligneMeas
     (H : ∀ (L : Type) [Field L] [NumberField L] [Algebra L Ω] [IsAlgClosure L Ω] (v : HeightOneSpectrum (𝓞 L))
@@ -130,9 +128,7 @@ theorem powFam_isDeligneMeas
   char L _ _ _ _ v h ψ _ _ t _ a ha := absurd ha (H L v h a)
 
 /- English proof (translation)
-Use `⟨powFam, powFam_isDeligneMeas fun L _ _ _ _ v h _ _ => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot v.ne_bot`. Use `(valuation_lt_one_iff' _ _).1 ((h x).2 hx)` as an intermediate fact. Break down `this.2 with h0 | h0` into its components or cases. Conclude with `hx0 (by simpa using h0)`.
-
-Conclude with `h0 trivial`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem trivial_place : ∃ ε : EpsMeasFamily (⊤ : ValuationSubring Ω), IsDeligneMeas ε := by
   refine ⟨powFam, powFam_isDeligneMeas fun L _ _ _ _ v h _ _ => ?_⟩
@@ -143,7 +139,7 @@ theorem trivial_place : ∃ ε : EpsMeasFamily (⊤ : ValuationSubring Ω), IsDe
   · exact h0 trivial
 
 /- English proof (translation)
-Introduce `Ω _ A`. Distinguish the cases in `H : ∀ (L : Type) [Field L] [NumberField L] [Algebra L Ω] [IsAlgClosure L Ω] (v : HeightOneSpectrum (𝓞 L)) (h : IsPlaceOver A v) (a : Weil h →* (v.adicCompletion L)ˣ), ¬ IsLocalArtin h a`. Conclude with `⟨powFam, powFam_isDeligneMeas H⟩`. Assume the negation of the conclusion as `hn`. Conclude with `H fun L _ _ _ _ v h _ _ => hn (MeasModel.exists_of_localLanglands hL L v h).2`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem of_localLanglands (hL : GlobalTheory.Published.LocalLanglandsGL) : GlobalTheory.Published.DeligneLocalConstants := by
   intro Ω _ A
@@ -154,7 +150,7 @@ theorem of_localLanglands (hL : GlobalTheory.Published.LocalLanglandsGL) : Globa
     exact H fun L _ _ _ _ v h _ _ => hn (MeasModel.exists_of_localLanglands hL L v h).2
 
 /- English proof (translation)
-Introduce `H`. Use `eps_unram H hψ h1 one_pos ha hc (χ := 1) (fun _ _ => rfl)` as an intermediate fact. Simplify using `[powFam, WD.lpOfChar, WD.coe_unitOf] at this`. Conclude with `hc1 (by exact_mod_cast this.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem not_powFam {L : Type} [Field L] [NumberField L] [Algebra L Ω]
     [IsAlgClosure L Ω] {v : HeightOneSpectrum (𝓞 L)} {h : IsPlaceOver A v} {ψ : AddChar (v.adicCompletion L) Circle}

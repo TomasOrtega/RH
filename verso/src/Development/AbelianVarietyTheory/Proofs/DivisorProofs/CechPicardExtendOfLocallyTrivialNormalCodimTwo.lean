@@ -22,7 +22,7 @@ open GlobalTheory.GlueLineBundle TopologicalSpace
 variable {X : Scheme.{0}}
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[gm_val f y U hy, Units.coe_map, gm_val (𝟙 X) (f y) U hy]`. Use `show _ = (f.stalkMap y).hom ((X.presheaf.germ U (f y) hy).hom a.val)`. Rewrite using `[Scheme.Hom.germ_stalkMap_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gm_eq_map {Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (U : X.Opens) (hy : f y ∈ U) (a : Γ(X, U)ˣ) :
     gm f y U a = Units.map (f.stalkMap y).hom.toMonoidHom (gm (𝟙 X) (f y) U a) := by
@@ -32,7 +32,7 @@ theorem gm_eq_map {Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (U : X.Opens) (hy : f y
   rw [Scheme.Hom.germ_stalkMap_apply]
 
 /- English proof (translation)
-The claim follows from `Units.map_injective (f := (j.stalkMap y).hom.toMonoidHom) (asIso (j.stalkMap y)).commRingCatIsoToRingEquiv.injective`.
+A detailed English derivation is pending.
 -/
 theorem map_stalk_inj {Y : Scheme.{0}} (j : Y ⟶ X) [IsOpenImmersion j] (y : Y) :
     Function.Injective (Units.map (j.stalkMap y).hom.toMonoidHom) :=
@@ -40,7 +40,7 @@ theorem map_stalk_inj {Y : Scheme.{0}} (j : Y ⟶ X) [IsOpenImmersion j] (y : Y)
     (asIso (j.stalkMap y)).commRingCatIsoToRingEquiv.injective
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `hb.2 u.val`. Take `⟨b, hb'⟩` from `hb.2 u.inv`. Establish `e1 : a * b = 1` using `hb.1 (by rw [map_mul, map_one, ha, hb']; exact u.val_inv)`. Conclude with `⟨⟨a, b, e1, (mul_comm _ _).trans e1⟩, Units.ext ha⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_res_eq {U V : X.Opens} (h : V ≤ U) (hb : Function.Bijective (resG X h)) (u : Γ(X, V)ˣ) :
     ∃ a : Γ(X, U)ˣ, res h a = u := by
@@ -50,9 +50,9 @@ theorem exists_res_eq {U V : X.Opens} (h : V ≤ U) (hb : Function.Bijective (re
   exact ⟨⟨a, b, e1, (mul_comm _ _).trans e1⟩, Units.ext ha⟩
 
 /- English proof (translation)
-Establish `e : res (inf_le_left : V ⊓ W ≤ V) a = res inf_le_left b`. Apply `unit_ext_imm` to reduce the goal to its premises. Introduce `x hx`. Establish `hxW : x ∈ W` using `hx.2`. Establish `hxV : x ∈ V` using `hx.1`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx' : W.ι ⟨x, hxW⟩ ∈ V ⊓ W` using `hx`. Use `⟨_, W.ι, inferInstance, ⟨x, hxW⟩, rfl, ?_⟩` and prove the remaining obligations. Conclude with `(gm_res W.ι _ inf_le_left hx' a).trans ((h _ hxV).trans (gm_res W.ι _ inf_le_left hx' b).symm)`. Conclude with `Units.ext ((hW V).1 (congrArg Units.val e))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem eq_of_gm_ι (W : X.Opens) (hW : ∀ V : X.Opens, Function.Bijective (resG X (inf_le_left : V ⊓ W ≤ V)))
     {V : X.Opens} {a b : Γ(X, V)ˣ} (h : ∀ w : W.toScheme, W.ι w ∈ V → gm W.ι w V a = gm W.ι w V b) : a = b := by
@@ -73,15 +73,13 @@ open GlobalTheory.GlueLineBundle TopologicalSpace
 variable {X : Scheme.{0}}
 
 /- English proof (translation)
-Use `revert t`. Use `set ι₁ := X.homOfLE (inf_le_right : N ⊓ W ≤ W) with hι₁`. Introduce `t ht`. Establish `pre : ∀ z : W.toScheme, W.ι z ∈ N → ∃ a : (N ⊓ W : X.Opens).toScheme, ι₁ a = z` using `fun z hz => ⟨⟨z.1, hz, z.2⟩, Subtype.ext (Scheme.homOfLE_apply _ _)⟩`. Establish `hle : ∀ k, W.ι ⁻¹ᵁ N ⊓ M.U k ≤ ι₁ ''ᵁ (M.pull ι₁).U (fun _ => k)` using `fun k z hz => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, rfl⟩` from `pre z hz.1`. Conclude with `ι₁.apply_mem_image_iff.2 (mem_pull.2 hz.2)`. Use `⟨fun k => res (hle k) (imU ι₁ _ (t.s fun _ => k)), fun z k k' hz hk hk' => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `pre z hz`. Establish `ev : ∀ k, ι₁ a ∈ M.U k → gm ι₁ a (W.ι ⁻¹ᵁ N ⊓ M.U k) (res (hle k) (imU ι₁ _ (t.s fun _ => k))) = gm (𝟙 _) a _ (t.s fun _ => k)` using `fun k hk => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hm : ι₁ a ∈ W.ι ⁻¹ᵁ N ⊓ M.U k` using `⟨hz, hk⟩`. Rewrite using `[gm_res ι₁ a (hle k) hm]`. Use `gm_imU ι₁ (𝟙 _) a ((M.pull ι₁).U fun _ => k) (mem_pull.2 hk) (t.s fun _ => k)` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`. Then use the resulting hypothesis. Establish `eg : gm ι₁ a (M.U k ⊓ M.U k') (M.g k k') = gm (𝟙 _) a _ ((M.pull ι₁).g (fun _ => k) (fun _ => k'))`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `gm_pull_g M ι₁ (𝟙 _) a (fun _ => k) (fun _ => k') (mem_pull.2 hk) (mem_pull.2 hk')` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`. Conclude with `this.symm`. Establish `m1 : ι₁ a ∈ W.ι ⁻¹ᵁ N ⊓ M.U k` using `⟨hz, hk⟩`. Establish `m2 : ι₁ a ∈ M.U k ⊓ M.U k'` using `⟨hk, hk'⟩`.
-
-Establish `m3 : ι₁ a ∈ W.ι ⁻¹ᵁ N ⊓ M.U k'` using `⟨hz, hk'⟩`. Apply `map_stalk_inj ι₁ a` to reduce the goal to its premises. Use `beta_reduce`. Rewrite using `[map_mul, ← gm_eq_map ι₁ a _ m1, ← gm_eq_map ι₁ a _ m2, ← gm_eq_map ι₁ a _ m3, ev k hk, ev k' hk', eg]`. Conclude with `(isGen_iff_germ t).1 ht a (fun _ => k) (fun _ => k') (mem_pull.2 hk) (mem_pull.2 hk')`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sigma (W : X.Opens) {M : LB W.toScheme} (N : X.Opens)
     (t : LB.Gen (M.pull (X.homOfLE (inf_le_right : N ⊓ W ≤ W)))) (ht : t.IsGen) :
@@ -123,7 +121,7 @@ open GlobalTheory.GlueLineBundle TopologicalSpace
 variable {X : Scheme.{0}}
 
 /- English proof (translation)
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem mul_ringHom_units_ratio {G : Type} [CommGroup G] (g a b : G) : g * a * (g * b)⁻¹ = a * b⁻¹ := by
   apply Additive.ofMul.injective
@@ -131,13 +129,13 @@ theorem mul_ringHom_units_ratio {G : Type} [CommGroup G] (g a b : G) : g * a * (
   abel
 
 /- English proof (translation)
-Set `O : M.ι → W.toScheme.Opens` to `fun k => W.ι ⁻¹ᵁ N x ⊓ W.ι ⁻¹ᵁ N y ⊓ M.U k`. Establish `l0 : ∀ k, O k ≤ W.ι ⁻¹ᵁ N x ⊓ W.ι ⁻¹ᵁ N y` using `fun k => inf_le_left`. Establish `lx : ∀ k, O k ≤ W.ι ⁻¹ᵁ N x ⊓ M.U k` using `fun k z hz => ⟨hz.1.1, hz.2⟩`. Establish `ly : ∀ k, O k ≤ W.ι ⁻¹ᵁ N y ⊓ M.U k` using `fun k z hz => ⟨hz.1.2, hz.2⟩`. Establish `ev : ∀ k (z : W.toScheme) (hz : z ∈ O k), gm (𝟙 _) z (O k) (res (ly k) (σ y k) * (res (lx k) (σ x k))⁻¹) = gm (𝟙 _) z _ (σ y k) * (gm (𝟙 _) z _ (σ x k))⁻¹` using `fun k z hz => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_inv, gm_res _ z (ly k) hz, gm_res _ z (lx k) hz]`. Take `⟨r, hr⟩` from `glue_unit _ O l0 (fun z hz => by`. Take `⟨k, hk⟩` from `exists_chart hM z`. Conclude with `Opens.mem_iSup.2 ⟨k, show z ∈ O k from ⟨hz, hk⟩⟩) (fun k => res (ly k) (σ y k) * (res (lx k) (σ x k))⁻¹)`. Use the proof step `(fun k k' z hz => by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : z ∈ O k` using `hz.1`. Establish `h2 : z ∈ O k'` using `hz.2`. Establish `hx : W.ι z ∈ N x` using `h1.1.1`. Establish `hy : W.ι z ∈ N y` using `h1.1.2`. Establish `hk : z ∈ M.U k` using `h1.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hk' : z ∈ M.U k'` using `h2.2`. Rewrite using `[ev k z h1, ev k' z h2, hσ x z k k' hx hk hk', hσ y z k k' hy hk hk', mul_ringHom_units_ratio])`. Use `⟨r, fun z k hx hy hk => ?_⟩` and prove the remaining obligations. Establish `hz : z ∈ O k` using `⟨⟨hx, hy⟩, hk⟩`. Rewrite using `[← gm_res _ z (l0 k) hz, hr k, ev k z hz]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ratio (W : X.Opens) {M : LB W.toScheme} (hM : M.IsLB) {I : Type} (N : I → X.Opens)
     (σ : ∀ x k, Γ(W.toScheme, W.ι ⁻¹ᵁ N x ⊓ M.U k)ˣ)
@@ -169,11 +167,11 @@ theorem exists_ratio (W : X.Opens) {M : LB W.toScheme} (hM : M.IsLB) {I : Type} 
   rw [← gm_res _ z (l0 k) hz, hr k, ev k z hz]
 
 /- English proof (translation)
-Establish `hle : P ⊓ Q ⊓ W ≤ W.ι ''ᵁ (W.ι ⁻¹ᵁ P ⊓ W.ι ⁻¹ᵁ Q)` using `fun p hp => by`. Establish `hpW : p ∈ W` using `hp.2`. Establish `hpP : p ∈ P` using `hp.1.1`. Establish `hpQ : p ∈ Q` using `hp.1.2`. Establish `hm : (⟨p, hpW⟩ : W.toScheme) ∈ W.ι ⁻¹ᵁ P ⊓ W.ι ⁻¹ᵁ Q` using `⟨hpP, hpQ⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `W.ι.apply_mem_image_iff.2 hm`. Take `⟨g, hg⟩` from `exists_res_eq (inf_le_left : P ⊓ Q ⊓ W ≤ P ⊓ Q) (hW _) (res hle (imU W.ι _ r))`. Use `⟨g, fun z hP hQ => ?_⟩` and prove the remaining obligations. Establish `hz : W.ι z ∈ P ⊓ Q ⊓ W` using `⟨⟨hP, hQ⟩, z.2⟩`. Rewrite using `[← gm_res W.ι z inf_le_left hz, hg, gm_res W.ι z hle hz]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `gm_imU W.ι (𝟙 _) z _ (show z ∈ W.ι ⁻¹ᵁ P ⊓ W.ι ⁻¹ᵁ Q from ⟨hP, hQ⟩) r` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_ext (W : X.Opens) (hW : ∀ V : X.Opens, Function.Bijective (resG X (inf_le_left : V ⊓ W ≤ V)))
     (P Q : X.Opens) (r : Γ(W.toScheme, W.ι ⁻¹ᵁ P ⊓ W.ι ⁻¹ᵁ Q)ˣ) :
@@ -197,7 +195,7 @@ namespace GlobalTheory.ExtendClass
 open GlobalTheory.GlueLineBundle TopologicalSpace
 
 /- English proof (translation)
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem commGroup_cocycle_mul_inv_mul_mul_inv {G : Type} [CommGroup G] (a b c : G) : b * a⁻¹ * (c * b⁻¹) = c * a⁻¹ := by
   apply Additive.ofMul.injective
@@ -205,7 +203,7 @@ theorem commGroup_cocycle_mul_inv_mul_mul_inv {G : Type} [CommGroup G] (a b c : 
   abel
 
 /- English proof (translation)
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem commGroup_inv_eq_conj_twist_identity {G : Type} [CommGroup G] (a b g : G) : a⁻¹ = g * b * a⁻¹ * g⁻¹ * b⁻¹ := by
   apply Additive.ofMul.injective
@@ -217,25 +215,21 @@ end GlobalTheory.ExtendClass
 open GlobalTheory.GlueLineBundle TopologicalSpace GlobalTheory.ExtendClass in
 
 /- English proof (translation)
-Introduce `X _ hX W hW c hc`. Take `⟨M, hM, rfl⟩` from `cls_surj c`. Establish `hbij : ∀ V : X.Opens, Function.Bijective (resG X (inf_le_left : V ⊓ W ≤ V))` using `((extension_over_codim_two X hX).1 W hW).1`. Use `choose N hN ht using hc`. Establish `ht' : ∀ x, ∃ t : LB.Gen (M.pull (X.homOfLE (inf_le_right : N x ⊓ W ≤ W))), t.IsGen` using `fun x => (cls_eq_zero_iff (pull_isLB hM _)).1 (ht x)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `choose t htg using ht'`. Use `choose σ hσ using fun x => exists_sigma W (N x) (t x) (htg x)`. Use `choose r hr using exists_ratio W hM N σ hσ`. Use `choose g hg using fun x y => exists_ext W hbij (N x) (N y) (r x y)`. Set `L : LB X` to `⟨↥X, N, g⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hgr : ∀ x y (z : W.toScheme) k, W.ι z ∈ N x → W.ι z ∈ N y → z ∈ M.U k → gm W.ι z (N x ⊓ N y) (g x y) = gm (𝟙 _) z _ (σ y k) * (gm (𝟙 _) z _ (σ x k))⁻¹` using `fun x y z k hx hy hk => (hg x y z hx hy).trans (hr x y z k hx hy hk)`. Establish `hL : L.IsLB` using `{ cover := top_le_iff.1 fun x _ => Opens.mem_iSup.2 ⟨x, hN x⟩ g_self := fun x => eq_of_gm_ι W hbij fun z hz => by`. Take `⟨k, hk⟩` from `exists_chart hM z`. Simplify using `only [L]`. Rewrite using `[gm_res W.ι z _ hz, map_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hgr x x z k hz hz hk).trans (mul_inv_cancel _)`. Use `cocycle := fun x y w => eq_of_gm_ι W hbij fun z hz => by`. Take `⟨k, hk⟩` from `exists_chart hM z`. Establish `hx : W.ι z ∈ N x` using `hz.1.1`. Establish `hy : W.ι z ∈ N y` using `hz.1.2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hw : W.ι z ∈ N w` using `hz.2`. Establish `h1 : W.ι z ∈ N x ⊓ N y` using `⟨hx, hy⟩`. Establish `h2 : W.ι z ∈ N y ⊓ N w` using `⟨hy, hw⟩`. Establish `h3 : W.ι z ∈ N x ⊓ N w` using `⟨hx, hw⟩`. Simplify using `only [L] at hz ⊢`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[map_mul, gm_res W.ι z _ hz, gm_res W.ι z _ hz, gm_res W.ι z _ hz]`. Rewrite using `[hgr x y z k hx hy hk, hgr y w z k hy hw hk, hgr x w z k hx hw hk, commGroup_cocycle_mul_inv_mul_mul_inv] }`. Establish `hle : ∀ p : (PUnit → L.ι) × M.ι, (L.pull W.ι).U p.1 ⊓ M.U p.2 ≤ W.ι ⁻¹ᵁ N (p.1 PUnit.unit) ⊓ M.U p.2` using `fun p z hz => ⟨mem_pull.1 hz.1, hz.2⟩`. Set `w : LB.Iso M (L.pull W.ι)` to `⟨fun p => res (hle p) (σ (p.1 PUnit.unit) p.2)⁻¹⟩`. Establish `ew : ∀ (p : (PUnit → L.ι) × M.ι) (z : W.toScheme) (hz : z ∈ (L.pull W.ι).U p.1 ⊓ M.U p.2), gm (𝟙 _) z _ (w.s p) = (gm (𝟙 _) z _ (σ (p.1 PUnit.unit) p.2))⁻¹` using `fun p z hz => (gm_res _ z (hle p) hz _).trans (map_inv _ _)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : w.IsGen`. Introduce and unpack `⟨J, k⟩ ⟨J', k'⟩`. Apply `unit_ext` to reduce the goal to its premises. Introduce `z hz`. Establish `hj : W.ι z ∈ L.U (J PUnit.unit)` using `mem_pull.1 hz.1.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hj' : W.ι z ∈ L.U (J' PUnit.unit)` using `mem_pull.1 hz.2.1`. Establish `hk : z ∈ M.U k` using `hz.1.2`. Establish `hk' : z ∈ M.U k'` using `hz.2.2`. Establish `e` using `gm_div_g (L := L) (L' := M) (F := W.ι) (𝟙 _) z (J PUnit.unit) (J' PUnit.unit) k k' hj hj' hk hk'`. Rewrite `e` using `[Category.id_comp]`.
-
-Establish `e' : gm (𝟙 _) z _ ((LB.div (L.pull W.ι) M).g (J, k) (J', k')) = _` using `e`. Use `(gm_res _ z inf_le_left hz _).trans ?_` and prove the remaining obligations. Rewrite using `[map_mul, gm_res _ z inf_le_right hz, e', ew _ z hz.1, ew _ z hz.2]`. Use `show _ = gm W.ι z (N (J PUnit.unit) ⊓ N (J' PUnit.unit)) (g (J PUnit.unit) (J' PUnit.unit)) * _ * _`. Rewrite using `[hgr _ _ z k hj hj' hk, hσ (J' PUnit.unit) z k k' hj' hk hk']`.
-
-Conclude with `commGroup_inv_eq_conj_twist_identity _ _ _`. Use `⟨cls L hL, ?_⟩` and prove the remaining obligations. Rewrite using `[← cls_pull hL W.ι (pull_isLB hL _)]`. Conclude with `(cls_eq_iff _ _).2 (LBIso.symm ⟨w, hw⟩)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.extend_class_of_locally_trivial : ∀ (X : Scheme.{0}) [IsLocallyNoetherian X], ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X → ∀ W : X.Opens, (∀ z : X, ringKrullDim ((X).presheaf.stalk z) ≤ 1 → z ∈ W) → ∀ c : Pic W.toScheme, (∀ x : X, ∃ N : X.Opens, x ∈ N ∧ GlobalTheory.CechPic.pull (X.homOfLE (inf_le_right : N ⊓ W ≤ W)) c = 0) → ∃ c' : Pic X, GlobalTheory.CechPic.pull W.ι c' = c := by
   intro X _ hX W hW c hc

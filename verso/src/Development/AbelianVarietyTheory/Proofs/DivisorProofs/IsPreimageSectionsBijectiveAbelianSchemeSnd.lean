@@ -13,9 +13,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.PicGlue
 
 /- English proof (translation)
-Establish `: IsIso (g.app V)` using `(ConcreteCategory.isIso_iff_bijective _).2 h`. Establish `: IsIso (f.app (g ⁻¹ᵁ V))` using `inferInstance`. Establish `: IsIso ((f ≫ g).app V)`. Rewrite using `[Scheme.Hom.comp_app]`. Conclude with `IsIso.comp_isIso' ‹_› ‹_›`.
-
-Conclude with `ConcreteCategory.bijective_of_isIso _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijective_app_iso_comp {X Y Z : Scheme.{0}} (f : X ⟶ Y) [IsIso f] (g : Y ⟶ Z) (V : Z.Opens)
     (h : Function.Bijective (g.app V).hom) : Function.Bijective ((f ≫ g).app V).hom := by
@@ -26,9 +24,9 @@ theorem bijective_app_iso_comp {X Y Z : Scheme.{0}} (f : X ⟶ Y) [IsIso f] (g :
   exact ConcreteCategory.bijective_of_isIso _
 
 /- English proof (translation)
-Introduce `S A T _ hA V`. Establish `e : (snd A T).left = (β_ A T).hom.left ≫ (fst T A).left`. Rewrite using `[← Over.comp_left, braiding_hom_fst]`. Establish `: IsIso (β_ A T).hom.left` using `inferInstanceAs (IsIso ((Over.forget S).map (β_ A T).hom))`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `bijective_app_iso_comp _ _ V (GlobalTheory.CubeLawCompare.bijective_app_fst GlobalTheory.SemiRigid.globalFns hA T V)`.
+A detailed English derivation is pending.
 -/
 theorem fnBij_snd : ∀ (S : Scheme.{0}) (A T : Over S) [GrpObj A], IsAbelianScheme A → FnBij (snd A T).left := by
   intro S A T _ hA V

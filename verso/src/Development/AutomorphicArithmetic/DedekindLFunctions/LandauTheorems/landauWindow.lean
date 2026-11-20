@@ -18,11 +18,11 @@ noncomputable section
 namespace Deduction
 
 /- English proof (translation)
-Take `⟨η, hη, U₀, hU₀⟩` from `landau_growth_contra (C := |M| + |C|) hc hd hde`. Take `⟨U, hU, k, hk, hle⟩` from `H η hη (max U₀ 0)`. Establish `h1` using `hU₀ U ((le_max_left _ _).trans hU) k hk`. Establish `hU0 : 0 ≤ U` using `(le_max_right _ _).trans hU`. Establish `he : 0 < e` using `hd.trans hde`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hek : 0 < e ^ k` using `pow_pos he k`. Establish `hexp : 1 ≤ Real.exp (η * U)` using `Real.one_le_exp (by positivity)`. Establish `h2 : M / e ^ k ≤ |M| * Real.exp (η * U) / e ^ k`. Apply `div_le_div_of_nonneg_right _ hek.le` to reduce the goal to its premises. Conclude with `(le_abs_self M).trans (le_mul_of_one_le_right (abs_nonneg M) hexp)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h3 : C * Real.exp (η * U) / E ^ k ≤ |C| * Real.exp (η * U) / e ^ k`. Apply `div_le_div₀ (by positivity) _ hek (pow_le_pow_left₀ he.le heE k)` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_right (le_abs_self C) (Real.exp_pos _).le`. Establish `h4 : (|M| + |C|) * Real.exp (η * U) / e ^ k = |M| * Real.exp (η * U) / e ^ k + |C| * Real.exp (η * U) / e ^ k` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem landau_window_contra {c d e E M C : ℝ} (hc : 0 < c) (hd : 0 < d) (hde : d < e) (heE : e ≤ E)
     (H : ∀ η : ℝ, 0 < η → ∀ U₀ : ℝ, ∃ U : ℝ, U₀ ≤ U ∧ ∃ k : ℕ, U ≤ k ∧
@@ -45,15 +45,15 @@ theorem landau_window_contra {c d e E M C : ℝ} (hc : 0 < c) (hd : 0 < d) (hde 
   linarith
 
 /- English proof (translation)
-Take `⟨σ, hσ, C, hC⟩` from `landau_tails hδ`. Take `⟨C₀, hC₀⟩` from `hP.growth`. Establish `hC₀0 : 0 ≤ C₀`. Use `hC₀ 0 le_rfl` as an intermediate fact. Simplify using `only [mul_zero, Real.exp_zero, mul_one] at this`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(abs_nonneg _).trans this`. Use `⟨σ, hσ, 2 + 2 * C₀ * |C|, fun η hη U₀ => ?_⟩` and prove the remaining obligations. Take `⟨U, hU, R, hR1, hR2, hR3⟩` from `hW η hη (max U₀ 1)`. Establish `hU1 : 1 ≤ U` using `(le_max_right _ _).trans hU`. Take `⟨k, hk, hk'⟩` from `hC U hU1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨U, (le_max_left _ _).trans hU, k, hk, fun γ => ?_⟩` and prove the remaining obligations. Establish `h` using `landau_window_ineq hP.meas hC₀ hσ (by linarith : θ < σ) (by linarith : 0 < U) hR1 hR2 k γ`. Rewrite using `[landau_coeff hP k (s := (σ : ℂ) + γ * I) (by simpa using hσ), landau_coeff hP k (s := (σ : ℂ)) (by simpa using hσ)]`. Establish `hst : 0 < σ - θ` using `by linarith`. Establish `hstk : 0 < (σ - θ) ^ k` using `pow_pos hst k`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hexp : 1 ≤ Real.exp (η * U)` using `Real.one_le_exp (by positivity)`. Establish `h1 : 2 * (1 / (σ - θ) ^ k) * (∫ u in Icc U ((1 + δ) * U), R u * Real.exp (-θ * u)) ≤ 2 * (1 / (σ - θ) ^ k) * Real.exp (η * U)` using `mul_le_mul_of_nonneg_left hR3 (by positivity)`. Establish `h2 : C / σ ^ k ≤ |C| * Real.exp (η * U) / (σ - θ) ^ k`. Apply `div_le_div₀ (by positivity) _ hstk (pow_le_pow_left₀ hst.le (by linarith) k)` to reduce the goal to its premises. Conclude with `(le_abs_self C).trans (le_mul_of_one_le_right (abs_nonneg C) hexp)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `mul_le_mul_of_nonneg_left (hk'.trans h2) (by positivity : 0 ≤ 2 * C₀)`. Establish `h4 : (2 + 2 * C₀ * |C|) * Real.exp (η * U) / (σ - θ) ^ k = 2 * (1 / (σ - θ) ^ k) * Real.exp (η * U) + 2 * C₀ * (|C| * Real.exp (η * U) / (σ - θ) ^ k)` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem landau_window_key {g : ℝ → ℝ} {Φ : ℂ → ℂ} {Z : Set ℂ} (hP : PoleData g Φ Z) {θ δ : ℝ}
     (hθ : 0 < θ) (hθ1 : θ < 1) (hδ : 0 < δ) (hW : WindowHypU g θ δ) :
@@ -91,7 +91,7 @@ theorem landau_window_key {g : ℝ → ℝ} {Φ : ℂ → ℂ} {Z : Set ℂ} (hP
   linarith
 
 /- English proof (translation)
-Establish `h1 : ‖w - z‖ < r` using `by simpa [dist_eq_norm] using hw`. Establish `h2 : |(w - z).re| ≤ ‖w - z‖` using `Complex.abs_re_le_norm _`. Establish `h3` using `(abs_lt.mp (h2.trans_lt h1)).1`. Simplify using `only [Complex.sub_re] at h3`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem landau_window_re_pos {z w : ℂ} {r : ℝ} (hr : r ≤ z.re) (hw : w ∈ Metric.ball z r) :
     0 < w.re := by
@@ -102,35 +102,33 @@ theorem landau_window_re_pos {z w : ℂ} {r : ℝ} (hr : r ≤ z.re) (hw : w ∈
   linarith
 
 /- English proof (translation)
-Introduce `ρ₀ h₀`. Assume the negation of the conclusion as `hρ₀`. Rewrite `hρ₀` using `[not_le]`. Take `⟨σ, hσ, C, hkey⟩` from `landau_window_key hP hθ hθ1 hδ hW`. Establish `hle : ∀ ρ ∈ Z, ρ.re < σ` using `fun ρ hρ => (landau_pole_re_le hP ρ hρ).trans_lt hσ`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Break down `landau_dichotomy hP.iso hle hθ (by linarith) h₀ hρ₀ with ⟨D, hD, hfree, ρ₁, h₁, hρ₁⟩ | ⟨β, hβZ, hβ, r, hr1, hr2, huniq⟩` into its components or cases. Take `⟨γ, ρ, hρ, r, hr1, hr2, huniq⟩` from `landau_nearest hP.iso hle (by linarith : D < σ) h₁ hρ₁`. Take `⟨c, hc, -, hp⟩` from `hP.pole ρ hρ`. Use `set z : ℂ := (σ : ℂ) + γ * I with hz`. Establish `hzre : z.re = σ` using `by simp [hz]`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : ρ ≠ z`. Introduce `h`. Use `hle ρ hρ` as an intermediate fact. Rewrite `this` using `[h, hzre]`. Conclude with `lt_irrefl _ this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : 0 < ‖z - ρ‖` using `norm_pos_iff.2 (sub_ne_zero.2 hne.symm)`. Use `set d := ‖z - ρ‖ with hddef`. Establish `hball : ρ ∈ Metric.ball z r`. Rewrite using `[Metric.mem_ball, dist_comm, dist_eq_norm]`. Conclude with `hr1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `hdiff : DifferentiableOn ℂ Φ (Metric.ball z r \ {ρ})`. Use `hP.diff.mono ?_` and prove the remaining obligations. Introduce and unpack `w ⟨hw, hw'⟩`. Conclude with `⟨landau_window_re_pos (by rw [hzre]; linarith) hw, fun hZ => hw' (huniq w hZ hw)⟩`. Establish `hdiff' : DifferentiableOn ℂ Φ (Metric.ball (σ : ℂ) D)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `hP.diff.mono ?_` and prove the remaining obligations. Introduce `w hw`. Conclude with `⟨landau_window_re_pos (by rw [Complex.ofReal_re]; linarith) hw, fun hZ => hfree w hZ hw⟩`. Take `⟨M, hM⟩` from `landau_pole_asym (r' := (d + r) / 2) hball hne hdiff hp (by linarith) (by linarith)`. Take `⟨M', hM'⟩` from `landau_cauchy (r' := (d + r) / 2) hdiff' (by linarith) (by linarith)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `landau_window_contra (c := ‖c‖ / d) (d := d) (e := (d + r) / 2) (E := σ - θ) (M := M + M') (C := C) (div_pos (norm_pos_iff.2 hc) hd) hd (by linarith) (by linarith) fun η hη U₀ => ?_` and prove the remaining obligations. Take `⟨U, hU, k, hk, hb⟩` from `hkey η hη U₀`. Use `⟨U, hU, k, hk, ?_⟩` and prove the remaining obligations. Establish `h1` using `hb γ`. Establish `h2` using `hM k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `hM' k`. Establish `h4 : ‖c / (z - ρ) ^ (k + 1)‖ = ‖c‖ / d / d ^ k`. Rewrite using `[norm_div, norm_pow, pow_succ', div_div]`. Establish `h5 : ‖(-1) ^ k * iteratedDeriv k Φ (σ : ℂ) / (k.factorial : ℂ)‖ = ‖iteratedDeriv k Φ (σ : ℂ) / (k.factorial : ℂ)‖`. Rewrite using `[mul_div_assoc, norm_mul, norm_pow, norm_neg, norm_one, one_pow, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h6` using `(abs_le.mp (Complex.abs_re_le_norm ((-1) ^ k * iteratedDeriv k Φ (σ : ℂ) / (k.factorial : ℂ)))).1`. Establish `h7` using `norm_sub_norm_le (c / (z - ρ) ^ (k + 1)) ((-1) ^ k * iteratedDeriv k Φ z / (k.factorial : ℂ))`. Rewrite `h7` using `[norm_sub_rev]`. Rewrite using `[add_div]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨c, -, hc, hp⟩` from `hP.pole β hβZ`. Take `⟨hc1, hc2⟩` from `hc (Complex.ofReal_im β)`. Establish `hd : 0 < σ - β`. Use `hle β hβZ` as an intermediate fact. Rewrite `this` using `[Complex.ofReal_re]`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hne : (β : ℂ) ≠ (σ : ℂ)`. Introduce `h`. Establish `: β = σ` using `by exact_mod_cast h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hball : (β : ℂ) ∈ Metric.ball (σ : ℂ) r`. Rewrite using `[Metric.mem_ball, dist_comm, dist_eq_norm, ← Complex.ofReal_sub, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hd]`. Conclude with `hr1`. Establish `hdiff : DifferentiableOn ℂ Φ (Metric.ball (σ : ℂ) r \ {(β : ℂ)})`. Use `hP.diff.mono ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `w ⟨hw, hw'⟩`. Conclude with `⟨landau_window_re_pos (by rw [Complex.ofReal_re]; linarith) hw, fun hZ => hw' (huniq w hZ hw)⟩`. Take `⟨M, hM⟩` from `landau_pole_asym (r' := (σ - β + r) / 2) hball hne hdiff hp (by linarith) (by linarith)`. Use `landau_window_contra (c := c.re / (σ - β)) (d := σ - β) (e := (σ - β + r) / 2) (E := σ - θ) (M := M) (C := C) (div_pos hc1 hd) hd (by linarith) (by linarith) fun η hη U₀ => ?_` and prove the remaining obligations. Take `⟨U, hU, k, hk, hb⟩` from `hkey η hη U₀`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨U, hU, k, hk, ?_⟩` and prove the remaining obligations. Establish `h1` using `hb 0`. Establish `h2` using `hM k`. Establish `h4 : (c / ((σ : ℂ) - β) ^ (k + 1)).re = c.re / (σ - β) / (σ - β) ^ k`. Rewrite using `[← Complex.ofReal_sub, ← Complex.ofReal_pow, Complex.div_ofReal_re, pow_succ', div_div]`.
-
-Establish `h6` using `(abs_le.mp (Complex.abs_re_le_norm ((-1) ^ k * iteratedDeriv k Φ (σ : ℂ) / (k.factorial : ℂ) - c / ((σ : ℂ) - β) ^ (k + 1)))).1`. Rewrite `h6` using `[Complex.sub_re, h4]`. Establish `h7` using `norm_nonneg ((-1) ^ k * iteratedDeriv k Φ ((σ : ℂ) + (0 : ℝ) * I) / (k.factorial : ℂ))`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem landau_window {g : ℝ → ℝ} {Φ : ℂ → ℂ} {Z : Set ℂ} (hP : PoleData g Φ Z) {θ δ : ℝ}
     (hθ : 0 < θ) (hθ1 : θ < 1) (hδ : 0 < δ) (hW : WindowHypU g θ δ) : ∀ ρ ∈ Z, ρ.re ≤ θ := by

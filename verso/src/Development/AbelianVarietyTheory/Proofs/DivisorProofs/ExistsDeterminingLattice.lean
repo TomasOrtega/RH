@@ -10,11 +10,11 @@ namespace GlobalTheory.DecoClassCount
 open scoped TensorProduct in
 
 /- English proof (translation)
-Establish `: IsArtinianRing (R ⧸ I)` using `isArtinian_of_finite`. Take `⟨b⟩` from `Module.nonempty_basis_of_flat_of_finrank_eq (R ⧸ I) ((R ⧸ I) ⊗[R] N) (Module.finrank R N) (fun P => by`. Use `P.isMaximal` as an intermediate fact. Set `: Field ((R ⧸ I) ⧸ P.asIdeal)` to `Ideal.Quotient.field _`. Rewrite using `[(TensorProduct.AlgebraTensorModule.cancelBaseChange R (R ⧸ I) ((R ⧸ I) ⧸ P.asIdeal) ((R ⧸ I) ⧸ P.asIdeal) N).finrank_eq]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `Module.rankAtStalk_baseChange (R := R) (M := N) (S := (R ⧸ I) ⧸ P.asIdeal) ⊥`. Rewrite `h1` using `[Module.rankAtStalk_eq_finrank_of_free, Module.rankAtStalk_eq, Ideal.finrank_fiber_eq_finrank]`. Conclude with `h1)`. Use `⟨(TensorProduct.quotTensorEquivQuotSMul N I) ∘ b, ?_⟩` and prove the remaining obligations. Establish `h1 : Submodule.span R (Set.range b) = ⊤`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Submodule.restrictScalars_span R (R ⧸ I) Ideal.Quotient.mk_surjective, b.span_eq, Submodule.restrictScalars_top]`. Establish `h2` using `congrArg (Submodule.map (TensorProduct.quotTensorEquivQuotSMul N I).toLinearMap) h1`. Rewrite `h2` using `[Submodule.map_span, Submodule.map_top, LinearEquiv.range]`. Rewrite using `[Set.range_comp]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_span_quot {R N : Type} [CommRing R] [IsDomain R] [AddCommGroup N] [Module R N]
     [Module.Finite R N] [Module.Projective R N] (I : Ideal R) [Finite (R ⧸ I)] :
@@ -40,11 +40,11 @@ theorem exists_span_quot {R N : Type} [CommRing R] [IsDomain R] [AddCommGroup N]
   exact h2
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `exists_span_quot (R := R) (N := N) I`. Use `choose u hu using fun i => Submodule.Quotient.mk_surjective _ (v i)`. Establish `hk : ∀ f : N →ₗ[R] R ⧸ I, (I • ⊤ : Submodule R N) ≤ LinearMap.ker f`. Introduce `f`. Use `Submodule.smul_le.2 fun a ha x _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.mem_ker, map_smul, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem.2 ha, zero_mul]`. Use `⟨u, fun f g hfg => ?_⟩` and prove the remaining obligations. Establish `: Submodule.liftQ _ f (hk f) = Submodule.liftQ _ g (hk g)` using `LinearMap.ext_on_range hv fun i => by`. Rewrite using `[← hu i]`. Conclude with `hfg i`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 
-Use extensionality with `x`. Simplify using `using LinearMap.congr_fun this (Submodule.Quotient.mk x)`.
+A detailed English derivation is pending.
 -/
 theorem exists_determining {R N : Type} [CommRing R] [IsDomain R] [AddCommGroup N] [Module R N]
     [Module.Finite R N] [Module.Projective R N] (I : Ideal R) [Finite (R ⧸ I)] :
@@ -65,9 +65,9 @@ theorem exists_determining {R N : Type} [CommRing R] [IsDomain R] [AddCommGroup 
   simpa using LinearMap.congr_fun this (Submodule.Quotient.mk x)
 
 /- English proof (translation)
-Establish `: IsLocalizedModule (nonZeroDivisors (𝓞 K)) p.subtype`. Use `⟨fun s => ?_, fun y => ?_, fun {a b} hab => ⟨1, by simpa using hab⟩⟩` and prove the remaining obligations. Use `isLocalizedModule_id (nonZeroDivisors (𝓞 K)) V K` as an intermediate fact. Conclude with `IsLocalizedModule.map_units (S := nonZeroDivisors (𝓞 K)) (LinearMap.id : V →ₗ[𝓞 K] V) s`. Establish `hy : y ∈ Submodule.span K (p : Set V)` using `h ▸ Submodule.mem_top`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `multiple_mem_span_of_mem_localization_span (nonZeroDivisors (𝓞 K)) K _ y hy`. Rewrite `ht` using `[Submodule.span_eq]`. Conclude with `⟨(⟨_, ht⟩, t), rfl⟩`. Rewrite using `[← IsLocalizedModule.finrank_eq (nonZeroDivisors (𝓞 K)) p.subtype le_rfl, IsFractionRing.finrank_right_eq (𝓞 K) K V]`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_of_span_top {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V]
     [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (p : Submodule (𝓞 K) V)
@@ -93,11 +93,11 @@ def IsLocForm (P : HeightOneSpectrum (𝓞 E)) (N : Submodule (𝓞 E) (Sp E n))
 omit [StarRing E] in
 
 /- English proof (translation)
-Establish `: Module.Finite (𝓞 E) N` using `Module.Finite.iff_fg.2 (Submodule.IsLattice.fg (self := hN))`. Establish `: Module.FinitePresentation (𝓞 E) N` using `Module.finitePresentation_of_finite _ _`. Establish `: Module.Flat (𝓞 E) N` using `inferInstance`. Establish `: Module.Projective (𝓞 E) N` using `Module.Flat.projective_of_finitePresentation`. Establish `: Finite (𝓞 E ⧸ P.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot _ P.ne_bot`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : Module.finrank (𝓞 E) N = n`. Simplify using `using finrank_of_span_top N hN.span_eq_top`. Take `⟨v, hv⟩` from `exists_determining (R := 𝓞 E) (N := N) P.asIdeal`. Establish `hle : N ≤ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal N` using `fun x hx => ⟨1, P.asIdeal.primeCompl.one_mem, by simpa using hx⟩`. Set `lin : ∀ φ, IsLocForm P N φ → (N →ₗ[𝓞 E] 𝓞 E ⧸ P.asIdeal)` to `fun φ hφ => { toFun := fun x => φ x map_add' := fun x y => hφ.1 x (hle x.2) y (hle y.2) map_smul' := fun a x => hφ.2 a x (hle x.2) }`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `⟨fun i => v (Fin.cast hr.symm i), fun φ ψ hφ hψ h x hx => ?_⟩` and prove the remaining obligations. Use `hv (lin φ hφ) (lin ψ hψ) fun i => h (Fin.cast hr i)` as an intermediate fact. Conclude with `LinearMap.congr_fun this ⟨x, hx⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_determining_lattice (P : HeightOneSpectrum (𝓞 E)) (N : Submodule (𝓞 E) (Sp E n))
     (hN : Submodule.IsLattice E N) :
@@ -122,19 +122,17 @@ theorem exists_determining_lattice (P : HeightOneSpectrum (𝓞 E)) (N : Submodu
   exact LinearMap.congr_fun this ⟨x, hx⟩
 
 /- English proof (translation)
-Break down `Set.eq_empty_or_nonempty {d : DecoSet E n ST SG | d.1.N = N} with he | ⟨d0, hd0⟩` into its components or cases. Rewrite using `[he]`. Simplify using the standard rewrite rules. Establish `hlat : Submodule.IsLattice E N`. Use `d0.2.lat` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[show d0.1.N = N from hd0]`. Then use the resulting hypothesis. Use `choose v hv using fun P => exists_determining_lattice P N hlat`. Use `haveI hfin : ∀ P : HeightOneSpectrum (𝓞 E), Finite (𝓞 E ⧸ P.asIdeal) := fun P => Ideal.finiteQuotientOfFreeOfNeBot _ P.ne_bot`. Set `Φ : DecoSet E n ST SG → (∀ P : ST, Fin n → 𝓞 E ⧸ P.1.asIdeal) × (∀ w : SG, Fin n → Fin n → 𝓞 E ⧸ w.1.asIdeal)` to `fun d => (fun P i => d.1.f P (v P.1 i), fun w i => d.1.be w (v w.1 i))`. Establish `hinj : Set.InjOn Φ {d : DecoSet E n ST SG | d.1.N = N}`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `d hd d' hd' hdd`. Use `replace hd : d.1.N = N := hd`. Use `replace hd' : d'.1.N = N := hd'`. Establish `hf : ∀ e : DecoSet E n ST SG, e.1.N = N → ∀ P : ST, IsLocForm P.1 N (e.1.f P)`. Introduce and unpack `e rfl P`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨e.2.f_add P, e.2.f_smul P⟩`. Establish `hb : ∀ e : DecoSet E n ST SG, e.1.N = N → ∀ (w : SG) (j : Fin n), IsLocForm w.1 N fun x => e.1.be w x j`. Introduce and unpack `e rfl w j`. Conclude with `⟨fun x hx y hy => congrFun (e.2.be_add w x hx y hy) j, fun a x hx => congrFun (e.2.be_smul w a x hx) j⟩`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `d.2.ext_on d'.2 (hd.trans hd'.symm) (fun P x hx => ?_) (fun w x hx => ?_)` and prove the remaining obligations. Conclude with `hv P.1 _ _ (hf d hd P) (hf d' hd' P) (fun i => congrFun (congrFun (congrArg Prod.fst hdd) P) i) x (hd ▸ hx)`. Use function extensionality and compare the values at `j`. Conclude with `hv w.1 _ _ (hb d hd w j) (hb d' hd' w j) (fun i => congrFun (congrFun (congrFun (congrArg Prod.snd hdd) w) i) j) x (hd ▸ hx)`. Use `⟨Set.Finite.of_finite_image (Set.toFinite _) hinj, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hle` using `Set.ncard_le_ncard_of_injOn Φ (t := Set.univ) (fun _ _ => Set.mem_univ _) hinj (Set.toFinite _)`. Use `hle.trans (le_of_eq ?_)` and prove the remaining obligations. Establish `hc : ∀ P : HeightOneSpectrum (𝓞 E), Nat.card (𝓞 E ⧸ P.asIdeal) = Ideal.absNorm P.asIdeal` using `fun P => by rw [Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Rewrite using `[Set.ncard_univ, Nat.card_prod, Nat.card_pi, Nat.card_pi]`. Simplify using `only [Nat.card_fun, hc, Nat.card_eq_fintype_card, Fintype.card_fin, ← pow_mul, ← sq]`.
-
-Rewrite using `[Finset.prod_coe_sort ST (fun P => Ideal.absNorm P.asIdeal ^ n), Finset.prod_coe_sort SG (fun P => Ideal.absNorm P.asIdeal ^ (n ^ 2))]`.
+A detailed English derivation is pending.
 -/
 theorem card_fibre_le (ST SG : Finset (HeightOneSpectrum (𝓞 E))) (N : Submodule (𝓞 E) (Sp E n)) :
     {d : DecoSet E n ST SG | d.1.N = N}.Finite ∧ {d : DecoSet E n ST SG | d.1.N = N}.ncard ≤
@@ -182,21 +180,19 @@ theorem card_fibre_le (ST SG : Finset (HeightOneSpectrum (𝓞 E))) (N : Submodu
     Finset.prod_coe_sort SG (fun P => Ideal.absNorm P.asIdeal ^ (n ^ 2))]
 
 /- English proof (translation)
-Introduce `X hX n ST SG`. Establish `hΓ : ∀ g : UF X.E n, (g, (1 : GLG X.E n SG)) ∈ (⊤ : Subgroup (UF X.E n)).prod (⊥ : Subgroup (GLG X.E n SG))` using `fun g => ⟨Subgroup.mem_top _, Subgroup.one_mem _⟩`. Use `⟨DecoSet.finite_orbits (posStar_of_conj hX.conjE) _ hΓ, ?_⟩` and prove the remaining obligations. Use `hX.realF` as an intermediate fact. Use `hX.cplxE` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Algebra.IsQuadraticExtension X.F X.E` using `⟨hX.rankE⟩`. Establish `: IsCMField X.E` using `IsCMField.ofCMExtension X.F X.E`. Establish `hs : ∀ x : X.E, star x = IsCMField.complexConj X.E x`. Introduce `x`. Set `φ : X.E →+* ℂ` to `(IsAlgClosed.lift : X.E →ₐ[ℚ] ℂ).toRingHom`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[hX.conjE, IsCMField.complexEmbedding_complexConj]`. Take `⟨Rs, hR, H⟩` from `GlobalTheory.exists_finset_decoSet_lattice_reps X.E hs n`. Set `fib : Submodule (𝓞 X.E) (Sp X.E n) → Finset (DecoSet X.E n ST SG)` to `fun N => (card_fibre_le ST SG N).1.toFinset`. Set `B : ℕ` to `(∏ P ∈ ST, Ideal.absNorm P.asIdeal ^ n) * ∏ w ∈ SG, Ideal.absNorm w.asIdeal ^ (n ^ 2)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hfib : ∀ N, (fib N).card ≤ B` using `fun N => by`. Rewrite using `[← Set.ncard_eq_toFinset_card _ (card_fibre_le ST SG N).1]`. Conclude with `(card_fibre_le ST SG N).2`. Establish `hS : (Rs.biUnion fib).card ≤ Rs.card * B` using `Finset.card_biUnion_le_card_mul _ _ _ fun N _ => hfib N`. Establish `hsurj : Function.Surjective (fun d : ↥(Rs.biUnion fib) => (Quotient.mk'' d.1 : MulAction.orbitRel.Quotient ((⊤ : Subgroup (UF X.E n)).prod (⊥ : Subgroup (GLG X.E n SG))) (DecoSet X.E n ST SG)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c`. Proceed by induction on `c using Quotient.inductionOn' with`. Consider the case `h d`. Take `⟨g, hg⟩` from `H ST SG d`. Use `⟨⟨(g, (1 : GLG X.E n SG)) • d, Finset.mem_biUnion.2 ⟨_, hg, ?_⟩⟩, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(Set.Finite.mem_toFinset _).2 rfl`. Apply `Quotient.sound'` to reduce the goal to its premises. Rewrite using `[MulAction.orbitRel_apply]`. Conclude with `⟨⟨(g, 1), hΓ g⟩, rfl⟩`. Establish `h1` using `Nat.card_le_card_of_surjective _ hsurj`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[Nat.card_eq_fintype_card (α := ↥(Rs.biUnion fib)), Fintype.card_coe]`. Establish `h2 : ((Rs.card * B : ℕ) : ℝ) = Rs.card * (∏ P ∈ ST, (Ideal.absNorm P.asIdeal : ℝ) ^ n) * ∏ w ∈ SG, (Ideal.absNorm w.asIdeal : ℝ) ^ (n ^ 2)`. Simplify using `only [B]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `(Nat.cast_le.2 (h1.trans hS)).trans (h2.le.trans ?_)` and prove the remaining obligations. Use `gcongr`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem card_classes_le : ∀ (X : Fields), X.Ok → ∀ (n : ℕ) (ST SG : Finset (HeightOneSpectrum (𝓞 X.E))), Finite (MulAction.orbitRel.Quotient ((⊤ : Subgroup (UF X.E n)).prod (⊥ : Subgroup (GLG X.E n SG))) (DecoSet X.E n ST SG)) ∧ (Nat.card (MulAction.orbitRel.Quotient ((⊤ : Subgroup (UF X.E n)).prod (⊥ : Subgroup (GLG X.E n SG))) (DecoSet X.E n ST SG)) : ℝ) ≤ (3 * ((Module.finrank ℚ X.E : ℝ) ^ 2 * (n : ℝ) ^ 4 * (|(discr X.E : ℝ)| ^ ((1 : ℝ) / (Module.finrank ℚ X.E : ℝ))) ^ 2)) ^ (3 * Module.finrank ℚ X.E * n ^ 2) * (∏ P ∈ ST, (Ideal.absNorm P.asIdeal : ℝ) ^ n) * ∏ w ∈ SG, (Ideal.absNorm w.asIdeal : ℝ) ^ (n ^ 2) := by
   intro X hX n ST SG

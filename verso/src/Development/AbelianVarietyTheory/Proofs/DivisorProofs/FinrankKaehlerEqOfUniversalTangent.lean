@@ -5,35 +5,35 @@ open TrivSqZeroExt
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R A k _ _ _ _ n d _ _ hn φ ψ hfst hR huniv`. Use `haveI : Nontrivial A := φ.domain_nontrivial`. Use `letI : Algebra A k := φ.toAlgebra`. Use `letI : Algebra R k := (φ.comp (algebraMap R A)).toAlgebra`. Use `haveI : IsScalarTower R A k := IsScalarTower.of_algebraMap_eq (fun r => rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hψf : ∀ a, (ψ a).fst = φ a` using `fun a => by`. Simplify using `using RingHom.congr_fun hfst a`. Establish `hψR : ∀ r, (ψ (algebraMap R A r)).snd = 0` using `fun r => by`. Use `congrArg TrivSqZeroExt.snd (RingHom.congr_fun hR r)` as an intermediate fact. Simplify `this` using `[TrivSqZeroExt.algebraMap_eq_inl]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsA : ∀ (a : A) (x : k), a • x = φ a * x` using `fun a x => rfl`. Establish `hsR : ∀ (r : R) (x : k), r • x = φ (algebraMap R A r) * x` using `fun r x => rfl`. Set `E : Derivation R A (Fin d → k)` to `Derivation.mk' { toFun := fun a => (ψ a).snd map_add' := fun a b => by simp map_smul' := fun r a => by`. Use function extensionality and compare the values at `i`. Simplify using `[Algebra.smul_def, hψR, hψf, hsR, RingHom.algebraMap_toAlgebra] }`.
+Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use the proof step `(fun a b => by`. Use function extensionality and compare the values at `i`. Simplify using `[hψf, hsA, mul_comm])`. Establish `hE : ∀ a, E a = (ψ a).snd` using `fun a => rfl`. Set `El : Ω[A⁄R] →ₗ[A] (Fin d → k)` to `E.liftKaehlerDifferential`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `hEl : ∀ a, El (KaehlerDifferential.D R A a) = (ψ a).snd` using `fun a => by`. Simplify using `[El, hE]`. Set `b : Module.Basis (Fin n) A (Ω[A⁄R])` to `Module.finBasisOfFinrankEq A _ hn`. Establish `hcA : ∀ (c : (Fin d → k) →ₗ[k] k) (a : A) (x : Fin d → k), c (a • x) = a • c x` using `fun c a x => by`. Establish `: a • x = φ a • x` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Rewrite using `[this, c.map_smul]`. Both sides reduce to the same expression. Set `cA : ((Fin d → k) →ₗ[k] k) → ((Fin d → k) →ₗ[A] k)` to `fun c => { toFun := c, map_add' := c.map_add, map_smul' := hcA c }`. Establish `hcA' : ∀ c x, cA c x = c x` using `fun _ _ => rfl`. Establish `hc1 : ∀ c : (Fin d → k) →ₗ[k] k, (TrivSqZeroExt.fstHom k k k).toRingHom.comp ((TrivSqZeroExt.map c).toRingHom.comp ψ) = φ` using `fun c => by`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `a`. Simplify using `[hψf]`. Establish `hc2 : ∀ c : (Fin d → k) →ₗ[k] k, ((TrivSqZeroExt.map c).toRingHom.comp ψ).comp (algebraMap R A) = (algebraMap k (DualNumber k)).comp (φ.comp (algebraMap R A))` using `fun c => by`. Use extensionality with `r`. Simplify using `[hψf, TrivSqZeroExt.algebraMap_eq_inl]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `[hψR, TrivSqZeroExt.algebraMap_eq_inl]`. Set `L : ((Fin d → k) →ₗ[k] k) →ₗ[k] (Fin n → k)` to `LinearMap.pi (fun i => LinearMap.applyₗ (R := k) (El (b i)))`. Establish `hL : ∀ c i, L c i = c (El (b i))` using `fun _ _ => rfl`. Establish `hinj : Function.Injective L`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `c hc`. Establish `h0 : (cA c).comp El = 0` using `b.ext fun i => by`. Simplify `congrFun hc i` using `[hL, hcA']`. Establish `h0' : ∀ a, c (ψ a).snd = 0` using `fun a => by`. Use `LinearMap.congr_fun h0 (KaehlerDifferential.D R A a)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify `this` using `[hEl, hcA']`. Establish `heq : (TrivSqZeroExt.map c).toRingHom.comp ψ = (TrivSqZeroExt.map 0).toRingHom.comp ψ`. Use extensionality with `a`. Simplify using the standard rewrite rules. Simplify using `[h0']`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Conclude with `(huniv _ (hc1 c) (hc2 c)).unique rfl heq`. Establish `hsurj : Function.Surjective L`. Introduce `f`. Set `g : Ω[A⁄R] →ₗ[A] k` to `b.constr A f`. Set `Df : Derivation R A k` to `g.compDer (KaehlerDifferential.D R A)`.
+Introduce a local definition for the expression. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `let v : A →+* DualNumber k := { toFun := fun a => TrivSqZeroExt.inl (φ a) + TrivSqZeroExt.inr (Df a) map_one' := by ext <;> simp map_mul' := fun a a' => by ext <;> simp [hsA, mul_comm, add_comm] map_zero' := by ext <;> simp map_add' := fun a a' => by ext <;> simp [add_add_add_com …`. Establish `hv1 : (TrivSqZeroExt.fstHom k k k).toRingHom.comp v = φ`. Use extensionality with `a`. Simplify using `[v]`. Establish `hv2 : v.comp (algebraMap R A) = (algebraMap k (DualNumber k)).comp (φ.comp (algebraMap R A))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use extensionality with `r`. Simplify using `[v, TrivSqZeroExt.algebraMap_eq_inl]`. Simplify using `[v, TrivSqZeroExt.algebraMap_eq_inl]`. Take `⟨c, hc, -⟩` from `huniv v hv1 hv2`. Establish `key : ∀ a, Df a = c (ψ a).snd` using `fun a => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg TrivSqZeroExt.snd (RingHom.congr_fun hc a)` as an intermediate fact. Simplify `this` using `[v]`. Establish `hg : (cA c).comp El = g` using `Derivation.liftKaehlerDifferential_unique _ _ (Derivation.ext fun a => by simp [hEl, hcA', ← key, Df])`. Use `⟨c, funext fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[hL, ← hcA' c, ← LinearMap.comp_apply, hg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[g]`. Establish `e` using `(LinearEquiv.ofBijective L ⟨hinj, hsurj⟩).finrank_eq`. Rewrite `e` using `[Module.finrank_linearMap, Module.finrank_fin_fun, Module.finrank_fin_fun, Module.finrank_self]`. Simplify using `using e`.
+A detailed English derivation is pending.
 -/
 theorem finrank_kaehler_eq_of_universal_tangent :
     ∀ (R A k : Type) [CommRing R] [CommRing A] [Algebra R A] [Field k] (n d : ℕ)

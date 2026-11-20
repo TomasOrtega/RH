@@ -17,7 +17,7 @@ noncomputable section
 namespace GlobalTheory.LogPair
 
 /- English proof (translation)
-Simplify using `only [resG]`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem resG_resG' {X : Scheme.{0}} {U V W : X.Opens} (h1 : V ≤ U) (h2 : W ≤ V) (z : Γ(X, U)) :
     resG X h2 (resG X h1 z) = resG X (h2.trans h1) z := by
@@ -26,22 +26,22 @@ theorem resG_resG' {X : Scheme.{0}} {U V W : X.Opens} (h1 : V ≤ U) (h2 : W ≤
   rfl
 
 /- English proof (translation)
-Apply the tactic sequence `cases o <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem resG_elim {X : Scheme.{0}} {U W : X.Opens} (h : W ≤ U) {d : ℕ} (t : Fin d → Γ(X, U))
     (o : Option (Fin d)) : resG X h (o.elim 1 t) = o.elim 1 (fun a => resG X h (t a)) := by
   cases o <;> simp
 
 /- English proof (translation)
-Introduce `R _ X f d s L σ L' σ' hR hL' hS`. Use `⟨hL', fun x => ?_⟩` and prove the remaining obligations. Take `⟨C, hxC⟩` from `hR.chart x`. Use `choose U a b ha hb v hxU hv using fun i => hS i x`. Set `V : X.Opens` to `C.U ⊓ ⟨⋂ i, (U i : Set X), isOpen_iInter_of_finite fun i => (U i).isOpen⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hxV : x ∈ V` using `⟨hxC, Set.mem_iInter.2 hxU⟩`. Take `⟨_, ⟨W, hW, rfl⟩, hxW, hWV⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open hxV V.isOpen`. Establish `hWC : W ≤ C.U` using `fun y hy => (hWV hy).1`. Establish `hWU : ∀ i, W ≤ U i` using `fun i y hy => Set.mem_iInter.1 (hWV hy).2 i`. Establish `hWca : ∀ i, W ≤ (L i).U (C.c i) ⊓ (L i).U (a i)` using `fun i => le_inf (hWC.trans (C.le i)) ((hWU i).trans (ha i))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `G : ∀ i, Γ(X, W)ˣ` to `fun i => Units.map (resG X (hWca i)).toMonoidHom ((L i).g (C.c i) (a i)) * Units.map (resG X (hWU i)).toMonoidHom (v i)`. Use `⟨{ U := W affine := hW t := fun j => resG X hWC (C.t j) etale := GlobalTheory.T.isEtaleCoordinatesOnOpen_restrict_affineOpen R X f C.U W hWC d C.t C.affine hW C.etale c := b le := fun i => (hWU i).trans (hb i) e := C.e inj := C.inj u := fun i => Units.map (resG X hWC).toMonoidHom …` and prove the remaining obligations. Establish `h1` using `congrArg (resG X hWC) (C.eq i)`. Rewrite `h1` using `[resG_resG', map_mul, resG_elim]`. Establish `h2` using `congrArg (resG X (hWca i)) ((σ i).compat (C.c i) (a i))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [resG_resG', map_mul] at h2`. Establish `h3` using `congrArg (resG X (hWU i)) (hv i)`. Simplify using `only [resG_resG', map_mul] at h3`. Establish `hG : (((G i)⁻¹ : Γ(X, W)ˣ) : Γ(X, W)) * (G i : Γ(X, W)) = 1` using `Units.inv_mul _`. Establish `hG' : (G i : Γ(X, W)) = resG X (hWca i) ((L i).g (C.c i) (a i) : Γ(X, (L i).U (C.c i) ⊓ (L i).U (a i))) * resG X (hWU i) (v i : Γ(X, U i))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [G, Units.val_mul, Units.coe_map, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe]`. Use `show _ = ((Units.map (resG X hWC).toMonoidHom (C.u i) * (G i)⁻¹ : Γ(X, W)ˣ) : Γ(X, W)) * _`. Rewrite using `[Units.val_mul, Units.coe_map]`. Rewrite `hG` using `[hG']`. Take the linear combination `(((G i)⁻¹ : Γ(X, W)ˣ) : Γ(X, W)) * h1 - (((G i)⁻¹ : Γ(X, W)ˣ) : Γ(X, W)) * h2 - (((G i)⁻¹ : Γ(X, W)ˣ) : Γ(X, W)) * resG X (hWca i) ((L i).g (C.c i) (a i) : Γ(X, (L i).U (C.c i) ⊓ (L i).U (a i))) * h3 - resG X (le_trans (hWU i) (hb i)) ((σ' i).f (b i)) * hG`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem relSnc_of_sameDiv : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (f : X ⟶ Sp R) (d : ℕ) (s : ℕ)
     (L : Fin s → LB X) (σ : ∀ i, (L i).Sec) (L' : Fin s → LB X) (σ' : ∀ i, (L' i).Sec),

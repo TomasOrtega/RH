@@ -10,7 +10,7 @@ namespace GlobalTheory.KJInf
 variable {ι : Type} [Fintype ι] {a b : ℕ}
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem sum_three_fintype_reverse {α β γ M : Type} [Fintype α] [Fintype β] [Fintype γ] [AddCommMonoid M] (f : α → β → γ → M) :
     ∑ x, ∑ y, ∑ z, f x y z = ∑ z, ∑ y, ∑ x, f x y z := by
@@ -19,7 +19,7 @@ theorem sum_three_fintype_reverse {α β γ M : Type} [Fintype α] [Fintype β] 
     _ = ∑ z, ∑ y, ∑ x, f x y z := Finset.sum_congr rfl fun _ _ => Finset.sum_comm
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem sum_four_fintype_permute {α β γ δ M : Type} [Fintype α] [Fintype β] [Fintype γ] [Fintype δ] [AddCommMonoid M] (f : α → β → γ → δ → M) :
     ∑ k, ∑ j, ∑ i, ∑ l, f k j i l = ∑ i, ∑ l, ∑ j, ∑ k, f k j i l := by
@@ -28,9 +28,9 @@ theorem sum_four_fintype_permute {α β γ δ M : Type} [Fintype α] [Fintype β
     _ = ∑ i, ∑ l, ∑ j, ∑ k, f k j i l := Finset.sum_congr rfl fun _ _ => Finset.sum_comm
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, subY, lft, aeval_X, aeval_X, map_sum, map_sum]`. Simplify using `only [map_mul, mvZ, subY, aeval_X, algHom_C, algebraMap_eq, map_sum]`. Simplify using `only [Matrix.mul_apply, map_sum, map_mul, Finset.mul_sum, Finset.sum_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[sum_three_fintype_reverse]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mvZ_subY_comp (hab : a ≤ b) (g : ι → Matrix (Fin a) (Fin a) ℂ) (h y' : ι → Matrix (Fin b) (Fin b) ℂ) :
     (mvZ g h).comp (subY hab y') = (subY hab (fun τ => h τ * y' τ)).comp (lft g) := by
@@ -44,9 +44,9 @@ theorem mvZ_subY_comp (hab : a ≤ b) (g : ι → Matrix (Fin a) (Fin a) ℂ) (h
   ring
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Rewrite using `[AlgHom.comp_apply]`. Simplify using `only [map_mul, mvZ, aeval_X, algHom_C, algebraMap_eq, map_sum]`. Simplify using `only [Matrix.mul_apply, map_sum, map_mul, Finset.mul_sum, Finset.sum_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[sum_four_fintype_permute]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mvZ_mvZ_comp (g g' : ι → Matrix (Fin a) (Fin a) ℂ) (h h' : ι → Matrix (Fin b) (Fin b) ℂ) :
     (mvZ g h).comp (mvZ g' h') = mvZ (fun τ => g' τ * g τ) (fun τ => h τ * h' τ) := by
@@ -60,9 +60,9 @@ theorem mvZ_mvZ_comp (g g' : ι → Matrix (Fin a) (Fin a) ℂ) (h h' : ι → M
   ring
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Rewrite using `[AlgHom.comp_apply]`. Simplify using `only [map_mul, lft, aeval_X, algHom_C, algebraMap_eq, map_sum]`. Simplify using `only [Matrix.mul_apply, map_sum, map_mul, Finset.mul_sum, Finset.sum_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lft_lft_comp (g g' : ι → Matrix (Fin a) (Fin a) ℂ) :
     (lft g).comp (lft g') = lft (fun τ => g' τ * g τ) := by
@@ -76,7 +76,7 @@ theorem lft_lft_comp (g g' : ι → Matrix (Fin a) (Fin a) ℂ) :
   ring
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `[mvZ, Matrix.one_apply, apply_ite C, ite_mul, Finset.sum_ite_eq, Finset.sum_ite_eq']`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem mvZ_one : mvZ (ι := ι) (a := a) (b := b) (fun _ => 1) (fun _ => 1) = AlgHom.id ℂ _ := by
   apply MvPolynomial.algHom_ext
@@ -84,7 +84,7 @@ theorem mvZ_one : mvZ (ι := ι) (a := a) (b := b) (fun _ => 1) (fun _ => 1) = A
   simp [mvZ, Matrix.one_apply, apply_ite C, ite_mul, Finset.sum_ite_eq, Finset.sum_ite_eq']
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `[lft, Matrix.one_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem lft_one : lft (ι := ι) (a := a) (fun _ => 1) = AlgHom.id ℂ _ := by
   apply MvPolynomial.algHom_ext
@@ -95,7 +95,7 @@ def scaleFP (t : ι → ℂ) : FP ι a b →ₐ[ℂ] FP ι a b :=
   aeval fun v => C (t v.1) * X v
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [subY, scaleFP, AlgHom.comp_apply, aeval_X, map_sum, map_mul, algHom_C, Matrix.smul_apply, smul_eq_mul, C_mul, algebraMap_eq]`. Use `Finset.sum_congr rfl fun β _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem subY_smul (hab : a ≤ b) (t : ι → ℂ) (y' : ι → Matrix (Fin b) (Fin b) ℂ) :
     subY hab (fun τ => t τ • y' τ) = (scaleFP t).comp (subY hab y') := by
@@ -107,7 +107,7 @@ theorem subY_smul (hab : a ≤ b) (t : ι → ℂ) (y' : ι → Matrix (Fin b) (
   ring
 
 /- English proof (translation)
-Rewrite using `[scaleFP, aeval_monomial, map_one, one_mul, ← C_mul', ← prod_X_pow_eq_monomial]`. Simplify using `only [Finsupp.prod, mul_pow, Finset.prod_mul_distrib, map_prod, map_pow]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem scaleVariables_monomial (t : ι → ℂ) (m : (ι × Fin b × Fin a) →₀ ℕ) :
     scaleFP t (monomial m (1 : ℂ)) = (m.prod fun k n => t k.1 ^ n) • monomial m (1 : ℂ) := by
@@ -115,7 +115,7 @@ theorem scaleVariables_monomial (t : ι → ℂ) (m : (ι × Fin b × Fin a) →
   simp only [Finsupp.prod, mul_pow, Finset.prod_mul_distrib, map_prod, map_pow]
 
 /- English proof (translation)
-Establish `e : (monomial m (1 : ℂ) : FP ι a b) = basisMonomials (ι × Fin b × Fin a) ℂ m`. Rewrite using `[coe_basisMonomials]`. Rewrite using `[e, jetL, Module.Basis.constr_basis]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem jetL_monomial_one (c : ι → ℂ) (G : VCx ι a b → ℂ) (m : (ι × Fin b × Fin a) →₀ ℕ) :
     jetL c G (monomial m (1 : ℂ)) = jetC c G m := by
@@ -124,7 +124,7 @@ theorem jetL_monomial_one (c : ι → ℂ) (G : VCx ι a b → ℂ) (m : (ι × 
   rw [e, jetL, Module.Basis.constr_basis]
 
 /- English proof (translation)
-Use `(basisMonomials (ι × Fin b × Fin a) ℂ).ext fun m => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, AlgHom.toLinearMap_apply, coe_basisMonomials]`. Rewrite using `[scaleVariables_monomial, map_smul, jetL_monomial_one, jetL_monomial_one, smul_eq_mul, jetC, jetC, ← mul_assoc]`. Use `congr 1`. Simplify using `only [Finsupp.prod, mul_pow, Finset.prod_mul_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -138,7 +138,7 @@ theorem jetL_comp_scale (c t : ι → ℂ) (G : VCx ι a b → ℂ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[evalAt, frDet, RingHom.map_det]`. Use `congr 1`. Use extensionality with `α s`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem evalAt_frDet (y : ι → Matrix (Fin a) (Fin a) ℂ) (τ : ι) :
     evalAt y (frDet ℂ a τ : PY ι a) = (y τ).det := by
@@ -148,7 +148,7 @@ theorem evalAt_frDet (y : ι → Matrix (Fin a) (Fin a) ℂ) (τ : ι) :
   simp
 
 /- English proof (translation)
-Unfold `evalAt`. Rewrite using `[map_mul, map_prod]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun τ _ => evalAt_frDet y τ`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem evalAt_mul_prod (y : ι → Matrix (Fin a) (Fin a) ℂ) (F : PY ι a) :
     evalAt y (F * ∏ τ, (frDet ℂ a τ : PY ι a)) = evalAt y F * ∏ τ, (y τ).det := by
@@ -158,7 +158,7 @@ theorem evalAt_mul_prod (y : ι → Matrix (Fin a) (Fin a) ℂ) (F : PY ι a) :
   exact Finset.prod_congr rfl fun τ _ => evalAt_frDet y τ
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : (1 : PY ι a) * ∏ τ, (frDet ℂ a τ : PY ι a) = 0` using `by rw [one_mul, h]`. Establish `h2` using `congrArg (evalAt (fun _ : ι => (1 : Matrix (Fin a) (Fin a) ℂ))) h1`. Rewrite `h2` using `[evalAt_mul_prod]`. Simplify using `[evalAt] at h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem frDet_prod_ne_zero : (∏ τ, (frDet ℂ a τ : PY ι a)) ≠ 0 := by
   intro h
@@ -168,11 +168,11 @@ theorem frDet_prod_ne_zero : (∏ τ, (frDet ℂ a τ : PY ι a)) ≠ 0 := by
   simp [evalAt] at h2
 
 /- English proof (translation)
-Establish `h0 : F * ∏ τ, (frDet ℂ a τ : PY ι a) = 0`. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `x`. Establish `key : eval x (F * ∏ τ, (frDet ℂ a τ : PY ι a)) = evalAt (fun τ => Matrix.of fun α s => x (τ, α, s)) (F * ∏ τ, (frDet ℂ a τ : PY ι a))` using `rfl`. Rewrite using `[map_zero, key, evalAt_mul_prod]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hI : IsInv (fun τ => Matrix.of fun α s => x (τ, α, s))`. Rewrite using `[hF _ hI, zero_mul]`. Simplify using `only [IsInv, not_forall] at hI`. Take `⟨τ, hτ⟩` from `hI`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ τ) (by simpa using hτ), mul_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mul_eq_zero.mp h0).resolve_right frDet_prod_ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_invertible (F : PY ι a) (hF : ∀ y, IsInv y → evalAt y F = 0) : F = 0 := by
   have h0 : F * ∏ τ, (frDet ℂ a τ : PY ι a) = 0 := by
@@ -189,9 +189,9 @@ theorem eq_zero_of_invertible (F : PY ι a) (hF : ∀ y, IsInv y → evalAt y F 
   exact (mul_eq_zero.mp h0).resolve_right frDet_prod_ne_zero
 
 /- English proof (translation)
-Simplify using `only [evalAt, lft]`. Proceed by induction on `F using MvPolynomial.induction_on with`. Consider the case `C r => simp`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p v hp`.
+Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Simplify using `only [map_mul, hp, aeval_X, eval_X, map_sum, eval_C, Matrix.mul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evalAt_lft_eq (g y : ι → Matrix (Fin a) (Fin a) ℂ) (F : PY ι a) :
     evalAt y (lft g F) = evalAt (fun τ => g τ * y τ) F := by
@@ -203,11 +203,11 @@ theorem evalAt_lft_eq (g y : ι → Matrix (Fin a) (Fin a) ℂ) (F : PY ι a) :
     simp only [map_mul, hp, aeval_X, eval_X, map_sum, eval_C, Matrix.mul_apply]
 
 /- English proof (translation)
-Introduce `ι _ a b hab`. Use `⟨fun g h y' F => ?_, fun g g' h h' P => ?_, fun P => ?_, fun g g' F => ?_, fun F => ?_, fun g y F => evalAt_lft_eq g y F, fun F hF => eq_zero_of_invertible F hF, fun c t G y' F => ?_⟩` and prove the remaining obligations. Use `DFunLike.congr_fun (mvZ_subY_comp hab g h y') F` as an intermediate fact. Simplify `this` using `only [AlgHom.comp_apply]`. Use `DFunLike.congr_fun (mvZ_mvZ_comp g g' h h') P` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `only [AlgHom.comp_apply]`. Rewrite using `[mvZ_one, AlgHom.id_apply]`. Use `DFunLike.congr_fun (lft_lft_comp g g') F` as an intermediate fact. Simplify `this` using `only [AlgHom.comp_apply]`. Rewrite using `[lft_one, AlgHom.id_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[subY_smul, AlgHom.comp_apply, ← AlgHom.toLinearMap_apply, ← LinearMap.comp_apply, jetL_comp_scale]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem substIdentities : ∀ (ι : Type) [Fintype ι] (a b : ℕ) (hab : a ≤ b), (∀ (g : ι → Matrix (Fin a) (Fin a) ℂ) (h y' : ι → Matrix (Fin b) (Fin b) ℂ) (F : PY ι a), mvZ g h (subY hab y' F) = subY hab (fun τ => h τ * y' τ) (lft g F)) ∧ (∀ (g g' : ι → Matrix (Fin a) (Fin a) ℂ) (h h' : ι → Matrix (Fin b) (Fin b) ℂ) (P : FP ι a b), mvZ g h (mvZ g' h' P) = mvZ (fun τ => g' τ * g τ) (fun τ => h τ * h' τ) P) ∧ (∀ P : FP ι a b, mvZ (fun _ => 1) (fun _ => 1) P = P) ∧ (∀ (g g' : ι → Matrix (Fin a) (Fin a) ℂ) (F : PY ι a), lft g (lft g' F) = lft (fun τ => g' τ * g τ) F) ∧ (∀ F : PY ι a, lft (fun _ => 1) F = F) ∧ (∀ (g y : ι → Matrix (Fin a) (Fin a) ℂ) (F : PY ι a), evalAt y (lft g F) = evalAt (fun τ => g τ * y τ) F) ∧ (∀ F : PY ι a, (∀ y, IsInv y → evalAt y F = 0) → F = 0) ∧ ∀ (c t : ι → ℂ) (G : VCx ι a b → ℂ) (y' : ι → Matrix (Fin b) (Fin b) ℂ) (F : PY ι a), jetL c G (subY hab (fun τ => t τ • y' τ) F) = jetL (fun τ => c τ * t τ) G (subY hab y' F) := by
   intro ι _ a b hab

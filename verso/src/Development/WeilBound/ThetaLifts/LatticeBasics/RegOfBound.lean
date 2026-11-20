@@ -10,23 +10,21 @@ open scoped BoundedContinuousFunction
 variable {X : Type} {h : X → ℝ}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Use `choose s hs g hg using fun n : ℕ => hn (n * 2 ^ n) n`. Establish `h0 : ∀ x, 0 < h x` using `fun x => one_pos.trans_le (h1 x)`. Set `w : ℕ → ℝ` to `fun n => (1 / 2) ^ n / h (g n) ^ n`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `w0 : ∀ n, 0 < w n` using `fun n => div_pos (by positivity) (pow_pos (h0 _) _)`. Establish `est : ∀ N : ℕ, ∃ K : ℝ, ∀ (f : X → ℂ) (C : ℝ), (∀ x, ‖f x‖ ≤ C * h x ^ N) → ∀ (c : ℕ →ᵇ ℂ) n, ‖c n * (w n * f (g n))‖ ≤ C * K * ‖c‖ * (1 / 2) ^ n` using `fun N => by`. Use `⟨1 + ∑ m ∈ Finset.range N, h (g m) ^ N, fun f C hf c n => ?_⟩` and prove the remaining obligations. Establish `C0 : 0 ≤ C` using `nonneg_of_mul_nonneg_left ((norm_nonneg _).trans (hf (g n))) (pow_pos (h0 _) _)`. Establish `S0 : 0 ≤ ∑ m ∈ Finset.range N, h (g m) ^ N` using `Finset.sum_nonneg fun m _ => (pow_pos (h0 _) _).le`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `k : h (g n) ^ N / h (g n) ^ n ≤ 1 + ∑ m ∈ Finset.range N, h (g m) ^ N`. Distinguish the cases in `hN : n < N`. Use `(div_le_self (pow_pos (h0 _) _).le (one_le_pow₀ (h1 _))).trans (le_add_of_nonneg_of_le zero_le_one ?_)` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun m => h (g m) ^ N) (fun m _ => (pow_pos (h0 _) _).le) (Finset.mem_range.2 hN)`. Conclude with `((div_le_one (pow_pos (h0 _) _)).2 (pow_le_pow_right₀ (h1 _) (not_lt.1 hN))).trans (le_add_of_nonneg_right S0)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[norm_mul, norm_mul, Complex.norm_real, Real.norm_of_nonneg (w0 n).le]`. Combine the equalities or inequalities in the displayed calculation. Establish `sm : ∀ (f : V) (c : ℕ →ᵇ ℂ), Summable fun n => c n * (w n * f.1 (g n))` using `fun f c => by`. Take `⟨C, N, hf⟩` from `hV f.1 f.2`. Take `⟨K, hK⟩` from `est N`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `.of_norm_bounded (summable_geometric_two.mul_left _) (hK f C hf c)`. Establish `bd : ∀ N : ℕ, ∃ K : ℝ, ∀ (f : X → ℂ) (C : ℝ), (∀ x, ‖f x‖ ≤ C * h x ^ N) → ∀ c : ℕ →ᵇ ℂ, ‖∑' n, c n * (w n * f (g n))‖ ≤ C * K * 2 * ‖c‖` using `fun N => (est N).imp fun K hK f C hf c => (tsum_of_norm_bounded (hasSum_geometric_two.mul_left _) (hK f C hf c)).trans_eq (by ring)`. Set `B : V →ₗ[ℂ] (ℕ →ᵇ ℂ) →ₗ[ℂ] ℂ` to `LinearMap.mk₂ ℂ (fun f c => ∑' n, c n * (w n * f.1 (g n))) (fun f f' c => by rw [← (sm f c).tsum_add (sm f' c)]; simp [mul_add]) (fun a f c => by rw [smul_eq_mul, ← tsum_mul_left]; exact tsum_congr fun n => by simp; ring) (fun f c c' => by rw [← (sm f c).tsum_add (sm f c')]; simp …`. Establish `ct : ∀ f : V, ∃ C, ∀ c, ‖B f c‖ ≤ C * ‖c‖` using `fun f => by`. Take `⟨C, N, hf⟩` from `hV f.1 f.2`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨K, hK⟩` from `bd N`. Conclude with `⟨_, hK f C hf⟩`. Take `⟨M, hM⟩` from `banach_steinhaus (g := fun n : ℕ => (B (H (s n))).mkContinuousOfExistsBound (ct _)) fun c => by`. Take `⟨C, hC⟩` from `hb (B.flip c) fun N => (bd N).elim fun K hK => ⟨_, fun f hf => hK f 1 (by simpa using hf) c⟩`. Conclude with `⟨C, fun n => hC _ (hs n)⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Take `⟨n, hn⟩` from `exists_nat_gt (max M 0)`. Set `c : ℕ →ᵇ ℂ` to `BoundedContinuousFunction.ofNormedAddCommGroupDiscrete (Pi.single n 1) 1 fun m => by`. Apply the tactic sequence `by_cases e : m = n <;> simp [e]`. Apply the tactic sequence `have c1 : ‖c‖ ≤ 1 := (BoundedContinuousFunction.norm_le zero_le_one).2 fun m => by by_cases e : m = n <;> simp [c, e]`. Establish `e1 : ‖B (H (s n)) c‖ ≤ max M 0` using `(ContinuousLinearMap.le_of_opNorm_le _ ((hM n).trans (le_max_left M 0)) c).trans (mul_le_of_le_one_right (le_max_right _ _) c1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e2 : B (H (s n)) c = w n * (H (s n)).1 (g n)` using `(tsum_eq_single n fun m e => by simp [c, e]).trans (by simp [c])`. Rewrite `e1` using `[e2, norm_mul, Complex.norm_real, Real.norm_of_nonneg (w0 n).le]`. Establish `e3 : w n * (n * 2 ^ n * h (g n) ^ n) = n`. Use `(h0 (g n)).ne'` as an intermediate fact. Simplify using `only [w, one_div, inv_pow]`.
-
-Clear the denominators using the available nonvanishing facts. Combine the linear relations using `[mul_lt_mul_of_pos_left (hg n) (w0 n)]`.
+Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem unif_bound (h1 : ∀ x, 1 ≤ h x) {V : Submodule ℂ (X → ℂ)} (hV : ∀ f ∈ V, ∃ (C : ℝ) (N : ℕ), ∀ x, ‖f x‖ ≤ C * h x ^ N)
     {D : Set ℂ} {H : ℂ → V} (hb : ∀ μ : V →ₗ[ℂ] ℂ, (∀ N : ℕ, ∃ C : ℝ, ∀ f : V, (∀ x, ‖f.1 x‖ ≤ h x ^ N) → ‖μ f‖ ≤ C) →
@@ -98,13 +96,13 @@ variable (h g s₀) in
 def Reg : Prop := ∃ S ∈ 𝓝 s₀, RegOn h g S
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun x => (a.hol x).mono e, a.cont.mono (Set.prod_mono e subset_rfl), a.grow.imp fun _ => .imp fun _ b s hs => b s (e hs)⟩`.
+Supply the required witnesses or components.
 -/
 theorem RegOn.mono (a : RegOn h g S) (e : S' ⊆ S) : RegOn h g S' :=
   ⟨fun x => (a.hol x).mono e, a.cont.mono (Set.prod_mono e subset_rfl), a.grow.imp fun _ => .imp fun _ b s hs => b s (e hs)⟩
 
 /- English proof (translation)
-Take `⟨S, hS, a⟩` from `a`. Establish `b` using `a.mono (Set.inter_subset_left (t := {s | g' s = g s}))`. Conclude with `⟨_, inter_mem hS e, fun x => (b.hol x).congr fun s hs => congrFun hs.2 x, b.cont.congr fun y hy => congrFun hy.1.2 y.2, b.grow.imp fun _ => .imp fun _ b s hs x => by rw [hs.2]; exact b s hs x⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem Reg.congr (a : Reg h g s₀) (e : g' =ᶠ[𝓝 s₀] g) : Reg h g' s₀ := by
   obtain ⟨S, hS, a⟩ := a
@@ -113,23 +111,23 @@ theorem Reg.congr (a : Reg h g s₀) (e : g' =ᶠ[𝓝 s₀] g) : Reg h g' s₀ 
     b.grow.imp fun _ => .imp fun _ b s hs x => by rw [hs.2]; exact b s hs x⟩
 
 /- English proof (translation)
-The claim follows from `let ⟨S, hS, a⟩ := a (eventually_mem_nhds_iff.2 hS).mono fun _ hs => ⟨S, hs, a⟩`.
+A detailed English derivation is pending.
 -/
 theorem Reg.eventually (a : Reg h g s₀) : ∀ᶠ s in 𝓝 s₀, Reg h g s :=
   let ⟨S, hS, a⟩ := a
   (eventually_mem_nhds_iff.2 hS).mono fun _ hs => ⟨S, hs, a⟩
 
 /- English proof (translation)
-The claim follows from `let ⟨_, hS, a⟩ := a a.cont.continuousAt (prod_mem_nhds hS univ_mem)`.
+A detailed English derivation is pending.
 -/
 theorem Reg.contAt (a : Reg h g s₀) (x : X) : ContinuousAt (fun y : ℂ × X => g y.1 y.2) (s₀, x) :=
   let ⟨_, hS, a⟩ := a
   a.cont.continuousAt (prod_mem_nhds hS univ_mem)
 
 /- English proof (translation)
-Take `⟨S, hS, a⟩` from `a`. Establish `e : ∀ᶠ s in 𝓝 s₀, ‖c s‖ < ‖c s₀‖ + 1` using `hc.continuousAt.norm.eventually (gt_mem_nhds (lt_add_one _))`. Use `⟨_, inter_mem hS (hc.eventually_analyticAt.and e), fun x => DifferentiableOn.mul (fun s hs => hs.2.1.differentiableAt.differentiableWithinAt) ((a.hol (u x)).mono Set.inter_subset_left), ContinuousOn.mul (fun y hy => (hy.1.2.1.continuousAt.comp continuous_fst.continuousAt).continu …` and prove the remaining obligations. Take `⟨C, N, hC⟩` from `a.grow`. Use `⟨(‖c s₀‖ + 1) * (max C 0 * b ^ N), N, fun s hs x => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0` using `zero_le_one.trans (h1 (u x))`. Rewrite using `[norm_mul, mul_assoc, mul_assoc, ← mul_pow]`. Conclude with `mul_le_mul hs.2.2.le ((hC s hs.1 _).trans (mul_le_mul (le_max_left _ _) (pow_le_pow_left₀ h0 (hb x) N) (pow_nonneg h0 _) (le_max_right _ _))) (norm_nonneg _) (by positivity)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Reg.mul (h1 : ∀ x, 1 ≤ h x) (a : Reg h g s₀) {c : ℂ → ℂ} (hc : AnalyticAt ℂ c s₀) {u : X → X} (hu : Continuous u) {b : ℝ}
     (hb : ∀ x, h (u x) ≤ b * h x) : Reg h (fun s x => c s * g s (u x)) s₀ := by
@@ -147,11 +145,9 @@ theorem Reg.mul (h1 : ∀ x, 1 ≤ h x) (a : Reg h g s₀) {c : ℂ → ℂ} (hc
     (le_max_right _ _))) (norm_nonneg _) (by positivity)
 
 /- English proof (translation)
-Use `⟨interior S, interior_mem_nhds.2 hS, fun x => (hd x).mono interior_subset, fun y hy => ContinuousAt.continuousWithinAt ?_, hg.imp fun _ => .imp fun _ b s hs => b s (interior_subset hs)⟩` and prove the remaining obligations. Take `⟨C, N, hC⟩` from `hg`. Take `⟨r, r0, hr⟩` from `Metric.mem_nhds_iff.1 (mem_interior_iff_mem_nhds.1 hy.1)`. Establish `: Tendsto (fun z : ℂ × X => g z.1 z.2 - g y.1 z.2) (𝓝 y) (𝓝 0)`. Use `squeeze_zero_norm' (a := fun z => 2 * (C * h z.2 ^ N) / r * dist z.1 y.1) ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [continuous_fst.continuousAt.eventually (ball_mem_nhds y.1 r0)] with z hz`. Rewrite using `[← dist_eq_norm]`. Use `Complex.dist_le_div_mul_dist_of_mapsTo_ball (f := (g · z.2)) ((hd z.2).mono hr) (fun s hs => ?_) hz` and prove the remaining obligations. Rewrite using `[mem_closedBall, dist_eq_norm, two_mul]`. Conclude with `(norm_sub_le _ _).trans (add_le_add (hC s (hr hs) _) (hC _ (hr (mem_ball_self r0)) _))`.
-
-Conclude with `Continuous.tendsto' (by fun_prop) _ _ (by simp)`. Simplify `this.add ((hc _ (interior_subset hy.1)).comp continuous_snd).continuousAt` using `[ContinuousAt]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem reg_of_bound (hh : Continuous h) (hS : S ∈ 𝓝 s₀) (hd : ∀ x, DifferentiableOn ℂ (g · x) S) (hc : ∀ s ∈ S, Continuous (g s))
     (hg : ∃ (C : ℝ) (N : ℕ), ∀ s ∈ S, ∀ x, ‖g s x‖ ≤ C * h x ^ N) : Reg h g s₀ := by
@@ -170,7 +166,7 @@ theorem reg_of_bound (hh : Continuous h) (hS : S ∈ 𝓝 s₀) (hd : ∀ x, Dif
   simpa [ContinuousAt] using this.add ((hc _ (interior_subset hy.1)).comp continuous_snd).continuousAt
 
 /- English proof (translation)
-Use `filter_upwards [mem_nhdsWithin_of_mem_nhds a.eventually, self_mem_nhdsWithin, mem_nhdsWithin_of_mem_nhds (eventually_nhdsWithin_iff.1 e).eventually_nhds] with s b hs e`. Use `(b.mul h1 (c := fun z => ((z - s₀) ^ k)⁻¹) (AnalyticAt.inv (by fun_prop) (pow_ne_zero _ (sub_ne_zero.2 hs))) continuous_id (b := 1) (by simp)).congr ?_` and prove the remaining obligations. Use `filter_upwards [e, isOpen_ne.mem_nhds hs] with z hz hz'`. Use function extensionality and compare the values at `x`. Rewrite using `[id, hz hz', inv_mul_cancel_left₀ (pow_ne_zero _ (sub_ne_zero.2 hz'))]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Reg.punct (h1 : ∀ x, 1 ≤ h x) {k : ℕ} (a : Reg h g' s₀) (e : ∀ᶠ s in 𝓝[≠] s₀, ∀ x, g' s x = (s - s₀) ^ k * g s x) :
     ∀ᶠ s in 𝓝[≠] s₀, Reg h g s := by
@@ -183,13 +179,11 @@ theorem Reg.punct (h1 : ∀ x, 1 ≤ h x) {k : ℕ} (a : Reg h g' s₀) (e : ∀
   rw [id, hz hz', inv_mul_cancel_left₀ (pow_ne_zero _ (sub_ne_zero.2 hz'))]
 
 /- English proof (translation)
-Take `⟨S', hS', b⟩` from `id a`. Take `⟨ρ, ρ0, hρ⟩` from `nhds_basis_closedBall.mem_iff.1 (inter_mem (inter_mem hS hS') (eventually_nhdsWithin_iff.1 (e.and (a.punct h1 e))))`. Establish `dc : ∀ x, DiffContOnCl ℂ (g · x) (ball s₀ ρ)` using `fun x => (hd x).diffContOnCl_ball fun z hz => (hρ hz).1.1`. Establish `sp : ∀ z ∈ sphere s₀ ρ, z ≠ s₀` using `fun z hz => ne_of_mem_sphere hz ρ0.ne'`. Take `⟨C, N, hC⟩` from `b.grow`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨_, ball_mem_nhds s₀ ρ0, fun x => (dc x).differentiableOn, fun y hy => ContinuousAt.continuousWithinAt ?_, C / ρ ^ k, N, fun z hz x => Complex.norm_le_of_forall_mem_frontier_norm_le isBounded_ball (dc x) (fun w hw => ?_) (subset_closure hz)⟩` and prove the remaining obligations. Distinguish the cases in `e0 : y.1 = s₀`. Rewrite using `[show y = (s₀, y.2) from Prod.ext e0 rfl]`. Conclude with `contAt_of_sphere ρ0 dc (fun z hz => (((hρ (sphere_subset_closedBall hz.1)).2 (sp _ hz.1)).2.contAt z.2).continuousWithinAt) _`. Conclude with `((hρ (ball_subset_closedBall hy.1)).2 e0).2.contAt y.2`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hw` using `[frontier_ball _ ρ0.ne']`. Establish `c` using `hρ (sphere_subset_closedBall hw)`. Use `hC w c.1.2 x` as an intermediate fact. Rewrite `this` using `[(c.2 (sp w hw)).1, norm_mul, norm_pow, mem_sphere_iff_norm.1 hw]`. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀' (pow_pos ρ0 k)]`.
-
-Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Reg.remove (h1 : ∀ x, 1 ≤ h x) {k : ℕ} (a : Reg h g' s₀) (e : ∀ᶠ s in 𝓝[≠] s₀, ∀ x, g' s x = (s - s₀) ^ k * g s x)
     (hS : S ∈ 𝓝 s₀) (hd : ∀ x, DifferentiableOn ℂ (g · x) S) : Reg h g s₀ := by
@@ -213,7 +207,7 @@ theorem Reg.remove (h1 : ∀ x, 1 ≤ h x) {k : ℕ} (a : Reg h g' s₀) (e : �
     exact this
 
 /- English proof (translation)
-Take `⟨t, ht, -, hc⟩` from `isLindelof_univ.elim_nhds_subcover (fun s => insert s U) fun s _ => insert_mem_nhds_iff.2 (hU s)`. Establish `: (Uᶜ).Countable` using `ht.mono fun z hz => by`. Take `⟨s, hs, e⟩` from `Set.mem_iUnion₂.1 (hc (Set.mem_univ z))`. Conclude with `e.resolve_right hz ▸ hs`. Simplify using `using (this.isConnected_compl_of_one_lt_rank (by simp)).isPreconnected`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem preconn {U : Set ℂ} (hU : ∀ s, ∀ᶠ z in 𝓝[≠] s, z ∈ U) : IsPreconnected U := by
   obtain ⟨t, ht, -, hc⟩ := isLindelof_univ.elim_nhds_subcover (fun s => insert s U) fun s _ => insert_mem_nhds_iff.2 (hU s)

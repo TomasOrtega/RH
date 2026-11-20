@@ -10,7 +10,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.BCT.LocGlue
 
 /- English proof (translation)
-Take `⟨g0, rfl⟩` from `hg`. Use `⟨(g0.val i j).2, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `((g0⁻¹).val i j).2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem entry_mem {E : Type} [Field E] [NumberField E] {n : ℕ} {v : HeightOneSpectrum (𝓞 E)}
     {g : GL (Fin n) (v.adicCompletion E)} (hg : g ∈ GlobalTheory.LFun.KGL v n) (i j : Fin n) :
@@ -21,11 +21,11 @@ theorem entry_mem {E : Type} [Field E] [NumberField E] {n : ℕ} {v : HeightOneS
   exact ((g0⁻¹).val i j).2
 
 /- English proof (translation)
-Introduce `E _ _ n g hg`. Establish `hent : ∀ i j, ∀ᶠ v in cofinite, (g v).val i j ∈ v.adicCompletionIntegers E ∧ ((g v)⁻¹ : GL (Fin n) (v.adicCompletion E)).val i j ∈ v.adicCompletionIntegers E` using `fun i j => hg.mono fun v hv => entry_mem hv i j`. Set `M : Matrix (Fin n) (Fin n) (Af E)` to `fun i j => ⟨fun v => (g v).val i j, (hent i j).mono fun v h => h.1⟩`. Set `N : Matrix (Fin n) (Fin n) (Af E)` to `fun i j => ⟨fun v => ((g v)⁻¹ : GL (Fin n) (v.adicCompletion E)).val i j, (hent i j).mono fun v h => h.2⟩`. Establish `hM : ∀ v, RingHom.mapMatrix (pLoc E v) M = (g v).val` using `fun v => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hN : ∀ v, RingHom.mapMatrix (pLoc E v) N = ((g v)⁻¹ : GL (Fin n) (v.adicCompletion E)).val` using `fun v => rfl`. Establish `hMN : M * N = 1` using `GlobalTheory.SplitPts.matAf_ext fun v => by`. Rewrite using `[map_mul, map_one, hM, hN, Units.mul_inv]`. Establish `hNM : N * M = 1` using `GlobalTheory.SplitPts.matAf_ext fun v => by`. Rewrite using `[map_mul, map_one, hM, hN, Units.inv_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨⟨M, N, hMN, hNM⟩, fun v => Units.ext (hM v)⟩`.
+Supply the required witnesses or components.
 -/
 theorem glue : ∀ (E : Type) [Field E] [NumberField E] (n : ℕ) (g : ∀ v : HeightOneSpectrum (𝓞 E), GL (Fin n) (v.adicCompletion E)), (∀ᶠ v in cofinite, g v ∈ GlobalTheory.LFun.KGL v n) → ∃ k : GL (Fin n) (Af E), ∀ v, GeneralLinearGroup.map (pLoc E v) k = g v := by
   intro E _ _ n g hg
@@ -44,11 +44,11 @@ theorem glue : ∀ (E : Type) [Field E] [NumberField E] (n : ℕ) (g : ∀ v : H
   exact ⟨⟨M, N, hMN, hNM⟩, fun v => Units.ext (hM v)⟩
 
 /- English proof (translation)
-Introduce `E _ _ n v u f hf g hg`. Take `⟨g0, rfl⟩` from `hg`. Set `r : Formalism.UG.Ov E v →+* Formalism.UG.Ov E u` to `f.restrict _ _ fun x hx => by`. Express the relevant statement in the definitionally equal form `_ ∈ u.adicCompletionIntegers E`. Express the relevant statement in the definitionally equal form `x ∈ v.adicCompletionIntegers E at hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `hx`, the goal using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Rewrite using `[hf]`. Conclude with `hx`. Use `⟨invT n _ (GeneralLinearGroup.map r g0), ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem intst : ∀ (E : Type) [Field E] [NumberField E] (n : ℕ) (v u : HeightOneSpectrum (𝓞 E)) (f : v.adicCompletion E →+* u.adicCompletion E), (∀ x, Valued.v (f x) = Valued.v x) → ∀ g ∈ GlobalTheory.LFun.KGL v n, invT n _ (GeneralLinearGroup.map f g) ∈ GlobalTheory.LFun.KGL u n := by
   intro E _ _ n v u f hf g hg
@@ -65,11 +65,11 @@ theorem intst : ∀ (E : Type) [Field E] [NumberField E] (n : ℕ) (v u : Height
   rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ n Y u hu`. Establish `key : ∀ (v : HeightOneSpectrum (𝓞 E)) (_ : v = u) (f : v.adicCompletion E →+* u.adicCompletion E), Continuous f → (∀ k : E, f (algebraMap E _ k) = algebraMap E _ (IsCMField.complexConj E k)) → GeneralLinearGroup.map f (Y v) = GeneralLinearGroup.map (cj u) (Y u)`. Introduce and unpack `v rfl f hf hext`. Establish `hex : ∃ s : v.adicCompletion E →+* v.adicCompletion E, Continuous s ∧ ∀ x : E, s (algebraMap E _ x) = algebraMap E _ (IsCMField.complexConj E x)` using `⟨f, hf, hext⟩`. Establish `hcj : cj v = hex.choose` using `by unfold cj; rw [dif_pos hex]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfs : (f : v.adicCompletion E → v.adicCompletion E) = hex.choose` using `(HeightOneSpectrum.denseRange_algebraMap (K := E) v).equalizer hf hex.choose_spec.1 (funext fun k => (hext k).trans (hex.choose_spec.2 k).symm)`. Rewrite using `[hcj]`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Conclude with `congrFun hfs ((Y v).val i j)`. Establish `hcu : conjSrc (GlobalTheory.SplitPts.conjE E) u = u`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Conclude with `hu ⟨_, h, (GlobalTheory.Mem.Chr.under_eq_iff_conjPl (IsCMField.complexConj E) (Algebra.IsQuadraticExtension.finrank_eq_two _ _) (IsCMField.complexConj_ne_one E) u _).2 (Or.inr (GlobalTheory.SplitPts.conjPl_self_conjSrc u))⟩`. Conclude with `key _ hcu _ (conjLoc_spec _ u).1 (conjLoc_spec _ u).2.1`.
+A detailed English derivation is pending.
 -/
 theorem ns : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (Y : ∀ v : HeightOneSpectrum (𝓞 E), GL (Fin n) (v.adicCompletion E)) (u : HeightOneSpectrum (𝓞 E)), ¬ IsSplitAt u → GeneralLinearGroup.map (conjLoc (GlobalTheory.SplitPts.conjE E) u) (Y (conjSrc (GlobalTheory.SplitPts.conjE E) u)) = GeneralLinearGroup.map (cj u) (Y u) := by
   intro E _ _ _ n Y u hu
@@ -94,11 +94,9 @@ theorem ns : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (Y
   exact key _ hcu _ (conjLoc_spec _ u).1 (conjLoc_spec _ u).2.1
 
 /- English proof (translation)
-Introduce `E _ _ _ n Y u`. Establish `key : ∀ (v : HeightOneSpectrum (𝓞 E)) (_ : v = u) (f : v.adicCompletion E →+* u.adicCompletion E), Continuous f → (∀ k : E, f (algebraMap E _ k) = algebraMap E _ k) → GeneralLinearGroup.map f (Y v) = Y u`. Introduce and unpack `v rfl f hf hext`. Establish `hfs : (f : v.adicCompletion E → v.adicCompletion E) = id` using `(HeightOneSpectrum.denseRange_algebraMap (K := E) v).equalizer hf continuous_id (funext fun k => hext k)`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrFun hfs ((Y v).val i j)`. Establish `h` using `key _ (GlobalTheory.SplitPts.conjSrc_conjSrc_cm u) ((conjLoc (GlobalTheory.SplitPts.conjE E) u).comp (conjLoc (GlobalTheory.SplitPts.conjE E) (conjSrc (GlobalTheory.SplitPts.conjE E) u))) ((conjLoc_spec _ u).1.comp (conjLoc_spec _ _).1) fun k => by`. Rewrite using `[RingHom.comp_apply, (conjLoc_spec _ _).2.1, (conjLoc_spec _ _).2.1]`. Conclude with `congrArg _ (IsCMField.complexConj_apply_apply E k)`. Rewrite using `[← h]`.
-
-Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem twice : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (Y : ∀ v : HeightOneSpectrum (𝓞 E), GL (Fin n) (v.adicCompletion E)) (u : HeightOneSpectrum (𝓞 E)), GeneralLinearGroup.map (conjLoc (GlobalTheory.SplitPts.conjE E) u) (GeneralLinearGroup.map (conjLoc (GlobalTheory.SplitPts.conjE E) (conjSrc (GlobalTheory.SplitPts.conjE E) u)) (Y (conjSrc (GlobalTheory.SplitPts.conjE E) (conjSrc (GlobalTheory.SplitPts.conjE E) u)))) = Y u := by
   intro E _ _ _ n Y u
@@ -120,29 +118,25 @@ theorem twice : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ)
 end GlobalTheory.BCT.LocGlue
 
 /- English proof (translation)
-Introduce `E _ _ _ _ n S hS y hy`. Use `set c := GlobalTheory.SplitPts.conjE E with hc`. Establish `hnotS : ∀ v, v ∉ S → conjSrc c v ∈ S`. Introduce `v hv`. Take `⟨s, ⟨hsS, hsv⟩, -⟩` from `hS v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hne : v ≠ s` using `fun e => hv (e ▸ hsS)`. Establish `hsp : IsSplitAt s` using `⟨v, hne, hsv.symm⟩`. Take `⟨-, -, hover⟩` from `GlobalTheory.SplitPts.over_split hsp`. Break down `hover v hsv.symm with h | h` into its components or cases. Conclude with `absurd h hne`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h, GlobalTheory.SplitPts.conjSrc_conjSrc_cm]`. Conclude with `hsS`. Establish `hSsplit : ∀ v ∈ S, IsSplitAt v → conjSrc c v ∉ S`. Introduce `v hv hsp h`. Take `⟨hne, hund, -⟩` from `GlobalTheory.SplitPts.over_split hsp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hne ((hS v).unique ⟨h, hund⟩ ⟨hv, rfl⟩)`. Set `z : ∀ v : Pl E, GLw n v` to `fun v => if v ∈ S then (y v).1 else invT n _ (GeneralLinearGroup.map (conjLoc c v) (y (conjSrc c v)).1)`. Establish `hz_in : ∀ v ∈ S, z v = (y v).1` using `fun v hv => if_pos hv`. Establish `hz_out : ∀ v, v ∉ S → z v = invT n _ (GeneralLinearGroup.map (conjLoc c v) (y (conjSrc c v)).1)` using `fun v hv => if_neg hv`. Establish `hint : ∀ᶠ v in cofinite, z v ∈ GlobalTheory.LFun.KGL v n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ∀ᶠ v in cofinite, (y v).1 ∈ GlobalTheory.LFun.KGL v n` using `hy.mono fun v hv => Subgroup.mem_subgroupOf.1 hv`. Establish `h2` using `(conjSrc_injective c).tendsto_cofinite.eventually h1`. Use `filter_upwards [h1, h2] with v a1 a2`. Distinguish the cases in `hv : v ∈ S`. Rewrite using `[hz_in v hv]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `a1`. Rewrite using `[hz_out v hv]`. Conclude with `GlobalTheory.BCT.LocGlue.intst E n _ v (conjLoc c v) (conjLoc_spec c v).2.2 _ a2`. Take `⟨k, hk⟩` from `GlobalTheory.BCT.LocGlue.glue E n z hint`. Establish `hk' : ∀ u, ((GeneralLinearGroup.map (pLoc E (conjSrc c u)) k).val.map (conjLoc c u))ᵀ * (GeneralLinearGroup.map (pLoc E u) k).val = 1`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Introduce `u`. Rewrite using `[hk, hk]`. Use `show ((GeneralLinearGroup.map (conjLoc c u) (z (conjSrc c u))).val)ᵀ * (z u).val = 1`. Distinguish the cases in `hu : u ∈ S`. Distinguish the cases in `hsp : IsSplitAt u`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hz_out _ (hSsplit u hu hsp), hz_in u hu, GlobalTheory.SplitPts.invT_map, GlobalTheory.BCT.LocGlue.twice E n (fun v => (y v).1) u]`. Express the relevant statement in the definitionally equal form `((((y u).1)⁻¹ : GLw n u).val)ᵀᵀ * (y u).1.val = 1`. Rewrite using `[Matrix.transpose_transpose, Units.inv_mul]`. Establish `hcu : conjSrc c u = u`. Assume the negation of the conclusion as `h`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hsp ⟨_, h, (GlobalTheory.Mem.Chr.under_eq_iff_conjPl (IsCMField.complexConj E) (Algebra.IsQuadraticExtension.finrank_eq_two _ _) (IsCMField.complexConj_ne_one E) u _).2 (Or.inr (GlobalTheory.SplitPts.conjPl_self_conjSrc u))⟩`. Rewrite using `[hz_in _ (by rw [hcu]; exact hu), hz_in u hu, GlobalTheory.BCT.LocGlue.ns E n (fun v => (y v).1) u hsp]`. Establish `key : ∀ g : GLw n u, g ∈ UL n u → g ∈ UJ (cj u) 1`. Introduce `g hg`. Unfold `UL at hg`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hg` using `[if_neg hsp]`. Then use the resulting hypothesis. Establish `hUL : (y u).1 ∈ UJ (cj u) 1` using `key _ (y u).2`. Establish `h3 : cT (cj u) (y u).1.val * 1 * (y u).1.val = 1` using `hUL`. Rewrite `h3` using `[Matrix.mul_one]`. Conclude with `h3`.
-
-Rewrite using `[hz_out u hu, hz_in _ (hnotS u hu)]`. Express the relevant statement in the definitionally equal form `((GeneralLinearGroup.map (conjLoc c u) (y (conjSrc c u)).1).val)ᵀ * (((GeneralLinearGroup.map (conjLoc c u) (y (conjSrc c u)).1)⁻¹ : GLw n u).val)ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, Units.inv_mul, Matrix.transpose_one]`. Set `x : finU E n` to `⟨⟨finGL E n k, GlobalTheory.SplitPts.finGL_mem_UA k hk'⟩, MonoidHom.mem_ker.2 (pInf_finGL k)⟩`. Use `⟨x, fun w hw => ?_⟩` and prove the remaining obligations.
-
-Use `show toSub (UL n w) (cLoc w ⟨finGL E n k, GlobalTheory.SplitPts.finGL_mem_UA k hk'⟩) = y w`. Rewrite using `[GlobalTheory.SplitPts.cLoc_finGL, hk, hz_in w hw]`. Unfold `toSub`. Rewrite using `[dif_pos (y w).2]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.BCT.exists_finU_of_loc : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ n : ℕ, ∀ S : Set (Pl E), IsSection S → ∀ y : ∀ w : Pl E, UL n w, (∀ᶠ w in cofinite, y w ∈ KL n w) → ∃ x : finU E n, ∀ w ∈ S, toSub (UL n w) (cLoc w (x : UA E n)) = y w := by
   intro E _ _ _ _ n S hS y hy

@@ -15,7 +15,7 @@ def constHom (M : RatModel o Ω) (U : M.Z.Opens) : o →+* Γ(M.Z, U) :=
   (M.s.appLE ⊤ U (fun _ _ => trivial)).hom.comp (Scheme.ΓSpecIso (CommRingCat.of o)).inv.hom
 
 /- English proof (translation)
-Use `M.lft` as an intermediate fact. Establish `h1 : (M.s.appLE ⊤ U (fun _ _ => trivial)).hom.FiniteType` using `M.s.finiteType_appLE (isAffineOpen_top _) hU _`. Establish `h2 : (Scheme.ΓSpecIso (CommRingCat.of o)).inv.hom.FiniteType` using `RingHom.FiniteType.of_surjective _ (Scheme.ΓSpecIso (CommRingCat.of o)).symm.commRingCatIsoToRingEquiv.surjective`. Conclude with `h1.comp h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finiteType_constHom (M : RatModel o Ω) {U : M.Z.Opens} (hU : IsAffineOpen U) :
     (M.constHom U).FiniteType := by
@@ -30,15 +30,15 @@ theorem finiteType_constHom (M : RatModel o Ω) {U : M.Z.Opens} (hU : IsAffineOp
 variable {Ω' : Type} [Field Ω'] [Algebra o Ω']
 
 /- English proof (translation)
-Take `⟨U, hU, hzU, -⟩` from `exists_isAffineOpen_mem_and_subset (U := (⊤ : M.Z.Opens)) (x := z) trivial`. Establish `hUne : (U : Set M.Z).Nonempty` using `⟨z, hzU⟩`. Use `letI := (M.constHom U).toAlgebra`. Take `⟨s, hs⟩` from `(M.finiteType_constHom hU).out`. Set `V : M'.Z.Opens` to `⟨⋂ f ∈ s, {w | φ (valF M.pt U f) ∈ M'.O w}, isOpen_biInter_finset fun f _ => M'.isOpen_setOf_mem_O _⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hzV : z' ∈ V` using `Set.mem_iInter₂.2 fun f _ => hz _ (valF_mem_O hzU f)`. Establish `hsV : ∀ f ∈ s, φ (valF M.pt U f) ∈ M'.ringOn V` using `fun f hf => mem_ringOn.2 fun w hw => Set.mem_iInter₂.1 hw f hf`. Establish `key : ∀ f : Γ(M.Z, U), φ (valF M.pt U f) ∈ M'.ringOn V`. Introduce `f`. Establish `hf : f ∈ Algebra.adjoin o (s : Set Γ(M.Z, U))` using `hs ▸ Algebra.mem_top`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Proceed by induction on `hf using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact hsV x hx`. Consider the case `algebraMap r`. Establish `e : valF M.pt U (algebraMap o Γ(M.Z, U) r) = algebraMap o Ω r` using `M.valF_constFn hUne r`. Rewrite using `[e, AlgHom.commutes]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subalgebra.algebraMap_mem _ r`. Consider the case `add x y _ _ hx hy`. Rewrite using `[← M.res_apply U hUne, map_add, map_add, res_apply, res_apply]`. Conclude with `add_mem hx hy`. Consider the case `mul x y _ _ hx hy`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← M.res_apply U hUne, map_mul, map_mul, res_apply, res_apply]`. Conclude with `mul_mem hx hy`. Use `⟨V, U, hzV, hU, hUne, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨f, rfl⟩` from `(mem_ringOn_iff_exists hUne).1 hx`. Conclude with `key f`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_nbhd_of_map_O (M : RatModel o Ω) (M' : RatModel o Ω') (φ : Ω →ₐ[o] Ω') {z' : M'.Z} {z : M.Z}
     (hz : ∀ a ∈ M.O z, φ a ∈ M'.O z') :
@@ -73,7 +73,7 @@ theorem exists_nbhd_of_map_O (M : RatModel o Ω) (M' : RatModel o Ω') (φ : Ω 
   exact key f
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ M Ω' _ _ M' φ h`. Use `exists_isHom_of_local fun z' => ?_` and prove the remaining obligations. Take `⟨z, hz⟩` from `h z'`. Conclude with `exists_nbhd_of_map_O M M' φ hz`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_isHom_of_map_O :
     ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (M : RatModel o Ω) (Ω' : Type) [Field Ω'] [Algebra o Ω']

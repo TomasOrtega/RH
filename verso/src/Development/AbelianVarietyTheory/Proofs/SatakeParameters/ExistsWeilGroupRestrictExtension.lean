@@ -11,7 +11,7 @@ section
 variable {K L Ω : Type} [Field Ω] [Field K] [NumberField K] [Algebra K Ω] [Field L] [NumberField L] [Algebra L Ω] [Algebra K L] [IsScalarTower K L Ω]
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[Ideal.mem_comap, ← h x, ← h' (algebraMap (𝓞 K) (𝓞 L) x)]`. Establish `: ((algebraMap (𝓞 K) (𝓞 L) x : 𝓞 L) : L) = algebraMap K L (x : K)` using `rfl`. Rewrite using `[this, ← IsScalarTower.algebraMap_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem comap_eq_of_placeOver {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 K)} {v' : HeightOneSpectrum (𝓞 L)}
     (h : IsPlaceOver A v) (h' : IsPlaceOver A v') :
@@ -24,11 +24,9 @@ theorem comap_eq_of_placeOver {A : ValuationSubring Ω} {v : HeightOneSpectrum (
 end
 
 /- English proof (translation)
-Use `haveI := v.isMaximal`. Use `haveI := v'.isMaximal`. Use `letI : Field (𝓞 K ⧸ v.asIdeal) := Ideal.Quotient.field _`. Use `letI : Field (𝓞 L ⧸ v'.asIdeal) := Ideal.Quotient.field _`. Use `haveI : Finite (𝓞 K ⧸ v.asIdeal) := v.asIdeal.finiteQuotientOfFreeOfNeBot v.ne_bot`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `haveI : Finite (𝓞 L ⧸ v'.asIdeal) := v'.asIdeal.finiteQuotientOfFreeOfNeBot v'.ne_bot`. Use `letI : Fintype (𝓞 K ⧸ v.asIdeal) := Fintype.ofFinite _`. Use `letI : Fintype (𝓞 L ⧸ v'.asIdeal) := Fintype.ofFinite _`. Use `letI : Algebra (𝓞 K ⧸ v.asIdeal) (𝓞 L ⧸ v'.asIdeal) := (Ideal.quotientMap v'.asIdeal (algebraMap (𝓞 K) (𝓞 L)) hc.ge).toAlgebra`. Use `⟨Module.finrank (𝓞 K ⧸ v.asIdeal) (𝓞 L ⧸ v'.asIdeal), ?_⟩` and prove the remaining obligations.
-
-Simplify using `only [normV, Nat.card_eq_fintype_card]`. Conclude with `Module.card_eq_pow_finrank`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem normV_eq_pow {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
     (v : HeightOneSpectrum (𝓞 K)) (v' : HeightOneSpectrum (𝓞 L))
@@ -55,13 +53,13 @@ section
 variable {K L Ω : Type} [Field Ω] [Field K] [NumberField K] [Algebra K Ω] [Field L] [NumberField L] [Algebra L Ω] [Algebra K L] [IsScalarTower K L Ω]
 
 /- English proof (translation)
-The claim follows from `hσ`.
+A detailed English derivation is pending.
 -/
 theorem restrictScalars_mem_Dec {A : ValuationSubring Ω} {σ : G L Ω} (hσ : σ ∈ Dec (F := L) A) :
     (σ.restrictScalars K : G K Ω) ∈ Dec (F := K) A := hσ
 
 /- English proof (translation)
-Use `⟨restrictScalars_mem_Dec hσ.1, fun x hx => ?_⟩` and prove the remaining obligations. Use `hσ.2 x hx` as an intermediate fact. Rewrite `this` using `[← pow_mul, ← pow_mul]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actsAs_restrictScalars {A : ValuationSubring Ω} {σ : G L Ω} {q f a b : ℕ} (hσ : ActsAs A (q ^ f) σ a b) :
     ActsAs A q (σ.restrictScalars K : G K Ω) (f * a) (f * b) := by
@@ -71,7 +69,7 @@ theorem actsAs_restrictScalars {A : ValuationSubring Ω} {σ : G L Ω} {q f a b 
   exact this
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem restrictScalars_mem_Ine_iff {A : ValuationSubring Ω} {σ : G L Ω} :
     (σ.restrictScalars K : G K Ω) ∈ Ine (F := K) A ↔ σ ∈ Ine (F := L) A := Iff.rfl
@@ -79,9 +77,9 @@ theorem restrictScalars_mem_Ine_iff {A : ValuationSubring Ω} {σ : G L Ω} :
 end
 
 /- English proof (translation)
-Introduce `K L Ω _ _ _ _ _ _ _ _ _ _ _ A v v' h h' σ'`. Take `⟨f, hf⟩` from `normV_eq_pow v v' (comap_eq_of_placeOver h h')`. Take `⟨a, b, hab⟩` from `(mem_Weil h').mp σ'.2`. Rewrite `hab` using `[hf]`. Use `⟨⟨(σ' : G L Ω).restrictScalars K, (mem_Weil h).mpr ⟨_, _, actsAs_restrictScalars hab⟩⟩, fun z => rfl, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[deg_eq_zero_iff, deg_eq_zero_iff]`. Conclude with `restrictScalars_mem_Ine_iff`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_weil_restrict : ∀ (K L Ω : Type) [Field Ω] [Field K] [NumberField K] [Algebra K Ω] [IsAlgClosure K Ω] [Field L] [NumberField L] [Algebra L Ω] [IsAlgClosure L Ω] [Algebra K L] [IsScalarTower K L Ω] (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 K)) (v' : HeightOneSpectrum (𝓞 L)) (h : IsPlaceOver A v) (h' : IsPlaceOver A v') (σ' : Weil h'), ∃ σ : Weil h, (∀ z : Ω, (σ : G K Ω) z = (σ' : G L Ω) z) ∧ (deg σ = 0 ↔ deg σ' = 0) := by
   intro K L Ω _ _ _ _ _ _ _ _ _ _ _ A v v' h h' σ'

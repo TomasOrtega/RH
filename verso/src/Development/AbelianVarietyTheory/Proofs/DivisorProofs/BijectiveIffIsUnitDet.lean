@@ -18,7 +18,7 @@ theorem stdBasis_repr_apply' (M : Matrix ι ι A) (k l : ι) :
     (Matrix.stdBasis A ι ι).repr M (k, l) = M k l := rfl
 
 /- English proof (translation)
-Simplify using `[Basis.equiv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem repr_equiv_apply {M N : Type*} [AddCommGroup M] [Module A M] [AddCommGroup N] [Module A N]
     {κ : Type*} (b₁ : Basis κ A M) (b₂ : Basis κ A N) (x : M) :
@@ -26,7 +26,7 @@ theorem repr_equiv_apply {M N : Type*} [AddCommGroup M] [Module A M] [AddCommGro
   simp [Basis.equiv]
 
 /- English proof (translation)
-Rewrite using `[structMat, LinearMap.toMatrix_apply]`. Simplify using `[Basis.end_repr_apply, Basis.tensorProduct_apply, LinearMap.toMatrix_apply, stdBasis_repr_apply']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem structMat_apply (b : Basis ι A Λ) (k l i j : ι) :
     structMat b (k, l) (i, j) = b.repr (b i * b l * b j) k := by
@@ -34,13 +34,11 @@ theorem structMat_apply (b : Basis ι A Λ) (k l i j : ι) :
   simp [Basis.end_repr_apply, Basis.tensorProduct_apply, LinearMap.toMatrix_apply, stdBasis_repr_apply']
 
 /- English proof (translation)
-Use `set c := b.tensorProduct b.mulOpposite`. Use `set f := (AlgHom.mulLeftRight A Λ).toLinearMap`. Use `haveI := Module.Free.of_basis c`. Use `haveI := Module.Finite.of_basis c`. Set `e : Module.End A Λ ≃ₗ[A] Λ ⊗[A] Λᵐᵒᵖ` to `b.end.equiv c (Equiv.refl _)`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hM : structMat b = LinearMap.toMatrix c c (e.toLinearMap ∘ₗ f)`. Use extensionality with `p q`. Rewrite using `[structMat, LinearMap.toMatrix_apply, LinearMap.toMatrix_apply]`. Rewrite using `[LinearMap.comp_apply, LinearEquiv.coe_coe, repr_equiv_apply]`. Rewrite using `[hM, LinearMap.det_toMatrix, ← LinearMap.isUnit_iff_isUnit_det, Module.End.isUnit_iff]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `e.bijective.comp h`. Introduce `h`. Use `e.symm.bijective.comp h` as an intermediate fact.
-
-Simplify `this` using `[Function.comp_def, f]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem bijective_iff_isUnit_det (b : Basis ι A Λ) :
     Function.Bijective (AlgHom.mulLeftRight A Λ) ↔ IsUnit (structMat b).det := by

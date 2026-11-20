@@ -10,21 +10,21 @@ namespace PI.KLW.Ind
 open PI.KLW
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, Nat.coprime_one_left p, by rw [mul_zero]; exact zero_mem _⟩`.
+Supply the required witnesses or components.
 -/
 theorem rp_zero {K : Type} [Field K] [NumberField K] (p : ℕ) : Rp K p 0 :=
   ⟨1, Nat.coprime_one_left p, by rw [mul_zero]; exact zero_mem _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, Nat.coprime_one_left p, by rw [Nat.cast_one, mul_one]; exact one_mem _⟩`.
+Supply the required witnesses or components.
 -/
 theorem rp_one {K : Type} [Field K] [NumberField K] (p : ℕ) : Rp K p 1 :=
   ⟨1, Nat.coprime_one_left p, by rw [Nat.cast_one, mul_one]; exact one_mem _⟩
 
 /- English proof (translation)
-Take `⟨s, hs, hsx⟩` from `hx`. Take `⟨t, ht, hty⟩` from `hy`. Use `⟨s * t, Nat.Coprime.mul_left hs ht, ?_⟩` and prove the remaining obligations. Establish `e : ((s * t : ℕ) : K) * (x + y) = (t : K) * ((s : K) * x) + (s : K) * ((t : K) * y)` using `by push_cast; ring`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem (mul_mem (natCast_mem _ t) hsx) (mul_mem (natCast_mem _ s) hty)`.
+A detailed English derivation is pending.
 -/
 theorem rp_add {K : Type} [Field K] [NumberField K] {p : ℕ} {x y : K} (hx : Rp K p x)
     (hy : Rp K p y) : Rp K p (x + y) := by
@@ -37,9 +37,9 @@ theorem rp_add {K : Type} [Field K] [NumberField K] {p : ℕ} {x y : K} (hx : Rp
   exact add_mem (mul_mem (natCast_mem _ t) hsx) (mul_mem (natCast_mem _ s) hty)
 
 /- English proof (translation)
-Take `⟨s, hs, hsx⟩` from `hx`. Take `⟨t, ht, hty⟩` from `hy`. Use `⟨s * t, Nat.Coprime.mul_left hs ht, ?_⟩` and prove the remaining obligations. Establish `e : ((s * t : ℕ) : K) * (x * y) = ((s : K) * x) * ((t : K) * y)` using `by push_cast; ring`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_mem hsx hty`.
+A detailed English derivation is pending.
 -/
 theorem rp_mul {K : Type} [Field K] [NumberField K] {p : ℕ} {x y : K} (hx : Rp K p x)
     (hy : Rp K p y) : Rp K p (x * y) := by
@@ -52,7 +52,7 @@ theorem rp_mul {K : Type} [Field K] [NumberField K] {p : ℕ} {x y : K} (hx : Rp
   exact mul_mem hsx hty
 
 /- English proof (translation)
-Take `⟨s, hs, hsx⟩` from `hx`. Conclude with `⟨s, hs, by rw [mul_neg]; exact neg_mem hsx⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rp_neg {K : Type} [Field K] [NumberField K] {p : ℕ} {x : K} (hx : Rp K p x) :
     Rp K p (-x) := by
@@ -60,63 +60,63 @@ theorem rp_neg {K : Type} [Field K] [NumberField K] {p : ℕ} {x : K} (hx : Rp K
   exact ⟨s, hs, by rw [mul_neg]; exact neg_mem hsx⟩
 
 /- English proof (translation)
-Simplify using `only [hf, Pi.add_apply, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hf_add_left {K : Type} [Field K] (c : K →+* K) {ι : Type} [Fintype ι] (v v' w : ι → K) :
     hf c (v + v') w = hf c v w + hf c v' w := by
   simp only [hf, Pi.add_apply, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [hf, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hf_add_right {K : Type} [Field K] (c : K →+* K) {ι : Type} [Fintype ι] (v w w' : ι → K) :
     hf c v (w + w') = hf c v w + hf c v w' := by
   simp only [hf, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [hf, Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hf_sub_left {K : Type} [Field K] (c : K →+* K) {ι : Type} [Fintype ι] (v v' w : ι → K) :
     hf c (v - v') w = hf c v w - hf c v' w := by
   simp only [hf, Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `only [hf, Pi.sub_apply, map_sub, mul_sub, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hf_sub_right {K : Type} [Field K] (c : K →+* K) {ι : Type} [Fintype ι] (v w w' : ι → K) :
     hf c v (w - w') = hf c v w - hf c v w' := by
   simp only [hf, Pi.sub_apply, map_sub, mul_sub, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `only [hf, Pi.neg_apply, neg_mul, Finset.sum_neg_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hf_neg_left {K : Type} [Field K] (c : K →+* K) {ι : Type} [Fintype ι] (v w : ι → K) :
     hf c (-v) w = -hf c v w := by
   simp only [hf, Pi.neg_apply, neg_mul, Finset.sum_neg_distrib]
 
 /- English proof (translation)
-Simplify using `only [hf, Pi.neg_apply, map_neg, mul_neg, Finset.sum_neg_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hf_neg_right {K : Type} [Field K] (c : K →+* K) {ι : Type} [Fintype ι] (v w : ι → K) :
     hf c v (-w) = -hf c v w := by
   simp only [hf, Pi.neg_apply, map_neg, mul_neg, Finset.sum_neg_distrib]
 
 /- English proof (translation)
-Simplify using `only [hf, Pi.zero_apply, zero_mul, Finset.sum_const_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hf_zero_left {K : Type} [Field K] (c : K →+* K) {ι : Type} [Fintype ι] (w : ι → K) :
     hf c 0 w = 0 := by
   simp only [hf, Pi.zero_apply, zero_mul, Finset.sum_const_zero]
 
 /- English proof (translation)
-Simplify using `only [hf, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hf_smul_left {K : Type} [Field K] (c : K →+* K) {ι : Type} [Fintype ι] (k : K)
     (v w : ι → K) : hf c (k • v) w = k * hf c v w := by
   simp only [hf, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [hf, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hf_smul_right {K : Type} [Field K] (c : K →+* K) {ι : Type} [Fintype ι] (k : K)
     (v w : ι → K) : hf c v (k • w) = c k * hf c v w := by
@@ -124,7 +124,7 @@ theorem hf_smul_right {K : Type} [Field K] (c : K →+* K) {ι : Type} [Fintype 
   exact Finset.sum_congr rfl fun i _ => by ring
 
 /- English proof (translation)
-Simplify using `only [hf, map_sum, map_mul, hc]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hf_conj {K : Type} [Field K] (c : K →+* K) (hc : ∀ x, c (c x) = x) {ι : Type} [Fintype ι]
     (v w : ι → K) : c (hf c v w) = hf c w v := by
@@ -132,9 +132,9 @@ theorem hf_conj {K : Type} [Field K] (c : K →+* K) (hc : ∀ x, c (c x) = x) {
   exact Finset.sum_congr rfl fun i _ => mul_comm _ _
 
 /- English proof (translation)
-Unfold `hf`. Rewrite using `[Finset.sum_eq_single i0]`. Rewrite using `[Pi.single_eq_same, map_one, mul_one]`. Introduce `b _ hb`. Rewrite using `[Pi.single_eq_of_ne hb, map_zero, mul_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hf_single_right {K : Type} [Field K] (c : K →+* K) {ι : Type} [Fintype ι] [DecidableEq ι]
     (i0 : ι) (v : ι → K) : hf c v (Pi.single i0 1) = v i0 := by
@@ -147,9 +147,9 @@ theorem hf_single_right {K : Type} [Field K] (c : K →+* K) {ι : Type} [Fintyp
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Unfold `hf`. Rewrite using `[Finset.sum_eq_single i0]`. Rewrite using `[Pi.single_eq_same, one_mul]`. Introduce `b _ hb`. Rewrite using `[Pi.single_eq_of_ne hb, zero_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hf_single_left {K : Type} [Field K] (c : K →+* K) {ι : Type} [Fintype ι] [DecidableEq ι]
     (i0 : ι) (w : ι → K) : hf c (Pi.single i0 1) w = c (w i0) := by
@@ -162,21 +162,21 @@ theorem hf_single_left {K : Type} [Field K] (c : K →+* K) {ι : Type} [Fintype
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Rewrite using `[hf_single_right, Pi.single_eq_same]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hf_single_single {K : Type} [Field K] (c : K →+* K) {ι : Type} [Fintype ι]
     [DecidableEq ι] (i0 : ι) : hf c (Pi.single i0 (1 : K)) (Pi.single i0 1) = 1 := by
   rw [hf_single_right, Pi.single_eq_same]
 
 /- English proof (translation)
-The claim follows from `(hL 0).2 fun w _ => by rw [hf_zero_left]; exact rp_zero p`.
+A detailed English derivation is pending.
 -/
 theorem zero_mem_of {K : Type} [Field K] [NumberField K] {c : K →+* K} {p : ℕ} {ι : Type}
     [Fintype ι] {L : Set (ι → K)} (hL : Unimod K c p L) : (0 : ι → K) ∈ L :=
   (hL 0).2 fun w _ => by rw [hf_zero_left]; exact rp_zero p
 
 /- English proof (translation)
-The claim follows from `(hL _).2 fun w hw => by rw [hf_add_left, hf_smul_left] exact rp_add ((hL a).1 ha w hw) (rp_mul hr ((hL b).1 hb w hw))`.
+A detailed English derivation is pending.
 -/
 theorem add_smul_mem {K : Type} [Field K] [NumberField K] {c : K →+* K} {p : ℕ} {ι : Type}
     [Fintype ι] {L : Set (ι → K)} (hL : Unimod K c p L) {a b : ι → K} (ha : a ∈ L) (hb : b ∈ L)
@@ -186,7 +186,7 @@ theorem add_smul_mem {K : Type} [Field K] [NumberField K] {c : K →+* K} {p : �
     exact rp_add ((hL a).1 ha w hw) (rp_mul hr ((hL b).1 hb w hw))
 
 /- English proof (translation)
-Establish `h` using `add_smul_mem hL (zero_mem_of hL) hb (rp_neg (rp_one p))`. Rewrite `h` using `[zero_add, neg_one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem neg_mem_of {K : Type} [Field K] [NumberField K] {c : K →+* K} {p : ℕ} {ι : Type}
     [Fintype ι] {L : Set (ι → K)} (hL : Unimod K c p L) {b : ι → K} (hb : b ∈ L) : -b ∈ L := by
@@ -194,7 +194,7 @@ theorem neg_mem_of {K : Type} [Field K] [NumberField K] {c : K →+* K} {p : ℕ
   rwa [zero_add, neg_one_smul] at h
 
 /- English proof (translation)
-Introduce `v w hvw`. Use function extensionality and compare the values at `i`. Establish `h` using `hf' (v - w) (Pi.single i 1)`. Rewrite `h` using `[map_sub, hvw, sub_self, hf_zero_left, hf_single_right, Pi.sub_apply]`. Conclude with `sub_eq_zero.mp h.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isom_injective {K : Type} [Field K] (c : K →+* K) {ι : Type} [Fintype ι]
     (f : (ι → K) →ₗ[K] (ι → K)) (hf' : ∀ v w, hf c (f v) (f w) = hf c v w) :
@@ -212,7 +212,7 @@ def mkU {K : Type} [Field K] (c : K →+* K) {ι : Type} [Fintype ι]
   LinearEquiv.ofInjectiveEndo f (isom_injective c f hf')
 
 /- English proof (translation)
-Unfold `mkU`. Rewrite using `[LinearEquiv.coe_ofInjectiveEndo]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mkU_apply {K : Type} [Field K] (c : K →+* K) {ι : Type} [Fintype ι]
     (f : (ι → K) →ₗ[K] (ι → K)) (hf' : ∀ v w, hf c (f v) (f w) = hf c v w) (v : ι → K) :
@@ -221,7 +221,7 @@ theorem mkU_apply {K : Type} [Field K] (c : K →+* K) {ι : Type} [Fintype ι]
   rw [LinearEquiv.coe_ofInjectiveEndo]
 
 /- English proof (translation)
-Introduce `v w` and use `by rw [mkU_apply, mkU_apply]; exact hf' v w`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mkU_unitary {K : Type} [Field K] (c : K →+* K) {ι : Type} [Fintype ι]
     (f : (ι → K) →ₗ[K] (ι → K)) (hf' : ∀ v w, hf c (f v) (f w) = hf c v w) :
@@ -229,14 +229,14 @@ theorem mkU_unitary {K : Type} [Field K] (c : K →+* K) {ι : Type} [Fintype ι
   rw [mkU_apply, mkU_apply]; exact hf' v w
 
 /- English proof (translation)
-Introduce `v w` and use `by rw [← hu (u.symm v) (u.symm w), LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unitary_symm {K : Type} [Field K] {c : K →+* K} {ι : Type} [Fintype ι]
     {u : (ι → K) ≃ₗ[K] (ι → K)} (hu : IsUnitary c u) : IsUnitary c u.symm := fun v w => by
   rw [← hu (u.symm v) (u.symm w), LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Introduce `v w` and use `by rw [LinearEquiv.trans_apply, LinearEquiv.trans_apply, hu', hu]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unitary_trans {K : Type} [Field K] {c : K →+* K} {ι : Type} [Fintype ι]
     {u u' : (ι → K) ≃ₗ[K] (ι → K)} (hu : IsUnitary c u) (hu' : IsUnitary c u') :

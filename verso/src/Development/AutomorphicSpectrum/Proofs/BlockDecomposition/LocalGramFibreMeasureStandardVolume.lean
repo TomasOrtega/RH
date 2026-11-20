@@ -9,13 +9,9 @@ open NumberField IsDedekindDomain MeasureTheory Formalism.MainNotions.GlobalTheo
 open scoped TensorProduct ENNReal
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ M J hJ n _ d b v lv hlv mv hm c _ A hAc hAo`. Establish `hR` using `GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v`. Take `⟨h1, h2, h3, h4, -⟩` from `id hR`. Use `haveI := h1`. Use `haveI := h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := h3`. Use `haveI := h4`. Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Take `⟨a1, a2, a3, a4, -, -, -, a8, -, -⟩` from `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ (Fv F v)`. Use `haveI := a1`.
-
-Use `haveI := a2`. Use `haveI := a3`. Use `haveI := a4`. Use `haveI := a8 n M`. Take `⟨-, hW, hH⟩` from `GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hσ (Fv F v) d b lv hlv.1`.
-
-Use `haveI := (GlobalTheory.CompanionTheory.SW.LocFin.fibre_loc_fin F E σ hσ M J hJ (Fv F v) hR n _ _ mv (hW n M) (hH n) hm c).1`. Conclude with `⟨hAo.measurableSet, hAc.measure_lt_top.ne⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.SiegelND.Coef.finV_compactOpenN : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (hJ : IsHermND σ J) (n : ℕ), 2 * n < M → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F)) (lv : Measure (Fv F v)), GlobalTheory.CompanionTheory.SW.IsStdV v lv → ∀ mv : HermR (Fv F v) σ n → Measure (Fin n → Fin M → Fv F v ⊗[F] E), GlobalTheory.CompanionTheory.SW.IsGramFib (Fv F v) σ J n (GlobalTheory.CompanionTheory.SW.coordW (Fv F v) b lv n M) (GlobalTheory.CompanionTheory.SW.coordHerm (Fv F v) σ b lv n) mv → ∀ c : HermR (Fv F v) σ n, IsUnit (c : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)).det → ∀ A : Set (Fin n → Fin M → Fv F v ⊗[F] E), IsCompact A → IsOpen A → MeasurableSet A ∧ mv c A ≠ ⊤ := by
   intro F E _ _ _ _ _ σ hσ M J hJ n _ d b v lv hlv mv hm c _ A hAc hAo

@@ -21,7 +21,7 @@ structure St (p : ℕ) {A : Type} [CommRing A] (r : ℕ → A) : Type 1 where
 attribute [instance] St.ring St.alg
 
 /- English proof (translation)
-Take `⟨B, _, _, hB, hc, h1, h2, h3⟩` from `cov_step p s.G (fun k => algebraMap A s.G (r k)) s.pf (fun k => by rw [← map_pow, hr k])`. Use `letI : Algebra A B := ((algebraMap s.G B).comp (algebraMap A s.G)).toAlgebra`. Use `haveI : IsScalarTower A s.G B := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Conclude with `⟨⟨B, hB, Leaf.cov_comp p A s.G B r hA s.pf hr s.cov hc⟩, IsScalarTower.toAlgHom A s.G B, h1, h2, h3⟩`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem St.next (p : ℕ) [Fact p.Prime] {A : Type} [CommRing A] {r : ℕ → A} (hA : Pf p A) (hr : IsRt p r) (s : St p r) :
     ∃ (s' : St p r) (f : s.G →ₐ[A] s'.G), AICm (f : s.G →+* s'.G) ∧ VALm (algebraMap A s.G (r 0)) (f : s.G →+* s'.G) ∧
@@ -33,7 +33,7 @@ theorem St.next (p : ℕ) [Fact p.Prime] {A : Type} [CommRing A] {r : ℕ → A}
   exact ⟨⟨B, hB, Leaf.cov_comp p A s.G B r hA s.pf hr s.cov hc⟩, IsScalarTower.toAlgHom A s.G B, h1, h2, h3⟩
 
 /- English proof (translation)
-Introduce `p _ A _ r hA hr`. Use `choose nx f h using St.next p hA hr`. Set `s : ℕ → St p r` to `fun n => Nat.rec ⟨A, hA, (Leaf.cov_mono p A r).1⟩ (fun _ t => nx t) n`. Conclude with `⟨fun n => (s n).G, fun n => (s n).ring, fun n => (s n).alg, fun n => f (s n), fun n => ⟨(s n).pf, (s n).cov, h (s n)⟩, Function.bijective_id⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem tower_seq : ∀ (p : ℕ) [Fact p.Prime] (A : Type) [CommRing A] (r : ℕ → A), Pf p A → IsRt p r → ∃ (G : ℕ → Type) (_ : ∀ n, CommRing (G n)) (_ : ∀ n, Algebra A (G n)) (f : ∀ n, G n →ₐ[A] G (n + 1)), (∀ n, Pf p (G n) ∧ Cov p r (G n) ∧ AICm (f n : G n →+* G (n + 1)) ∧ VALm (algebraMap A (G n) (r 0)) (f n : G n →+* G (n + 1)) ∧ Splits p (algebraMap A (G n) (r 0)) (f n : G n →+* G (n + 1))) ∧ Function.Bijective (algebraMap A (G 0)) := by
   intro p _ A _ r hA hr
@@ -43,15 +43,15 @@ theorem tower_seq : ∀ (p : ℕ) [Fact p.Prime] (A : Type) [CommRing A] (r : �
     fun n => ⟨(s n).pf, (s n).cov, h (s n)⟩, Function.bijective_id⟩
 
 /- English proof (translation)
-Introduce `p _ A _ r hA hr`. Take `⟨G, _, _, f, h, h0⟩` from `tower_seq p A r hA hr`. Take `⟨L, _, _, ι, hι⟩` from `Leaf.colim_ex A G f`. Establish `hp` using `Leaf.colim_pf p A G f L ι hι`. Establish `ht` using `Leaf.colim_test A (r 0) G f L ι hι (fun n => (h n).2.2.1) (fun n => (h n).2.2.2.1)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨L, inferInstance, inferInstance, hp.1 fun n => (h n).1, Leaf.cov_cmp p A L r fun m n a c hs => ?_, ht.1, ht.2, ?_⟩` and prove the remaining obligations. Take `⟨N, hN⟩` from `hp.2 m n a c hs`. Conclude with `⟨G N, inferInstance, inferInstance, (h N).2.1, hN⟩`. Introduce `T _ x hT h1 h2`. Establish `step : ∀ n (y : {y : G n →+* T // y.comp (algebraMap A (G n)) = x}), ∃ y' : {y : G (n + 1) →+* T // y.comp (algebraMap A (G (n + 1))) = x}, ∀ z, y'.1 (f n z) = y.1 z`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `n y`. Take `⟨y', hy'⟩` from `(h n).2.2.2.2 T y.1 hT h1 (by rw [← RingHom.comp_apply, y.2]; exact h2)`. Establish `e : ∀ z, y' (f n z) = y.1 z` using `fun z => RingHom.congr_fun hy' z`. Use `⟨⟨y', RingHom.ext fun a => ?_⟩, e⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, ← (f n).commutes, e, ← RingHom.comp_apply, y.2]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `choose nx hnx using step`. Set `e0` to `RingEquiv.ofBijective (algebraMap A (G 0)) h0`. Set `y : ∀ n, {y : G n →+* T // y.comp (algebraMap A (G n)) = x}` to `fun n => Nat.rec ⟨x.comp e0.symm.toRingHom, RingHom.ext fun a => congrArg x (e0.symm_apply_apply a)⟩ (fun n t => nx n t) n`. Take `⟨z, hz⟩` from `colim_lift A G f L ι hι T (fun n => (y n).1) (fun n => hnx n (y n))`. Use `⟨z, RingHom.ext fun a => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.comp_apply, ← (ι 0).commutes, hz, ← RingHom.comp_apply, (y 0).2]`.
+A detailed English derivation is pending.
 -/
 theorem cov_tower : ∀ (p : ℕ) [Fact p.Prime] (A : Type) [CommRing A] (r : ℕ → A), Pf p A → IsRt p r → ∃ (B : Type) (_ : CommRing B) (_ : Algebra A B), Pf p B ∧ Cov p r B ∧ AIC B ∧ VAL (algebraMap A B (r 0)) ∧ Splits p (r 0) (algebraMap A B) := by
   intro p _ A _ r hA hr

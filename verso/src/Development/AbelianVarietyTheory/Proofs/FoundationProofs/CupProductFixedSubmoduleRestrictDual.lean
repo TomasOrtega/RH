@@ -30,7 +30,7 @@ def fix : Submodule R M where
 variable [hJ : J.Normal]
 
 /- English proof (translation)
-Introduce `m hm σ hσ`. Establish `h1 : g⁻¹ * σ * g ∈ J` using `by simpa using hJ.conj_mem σ hσ g⁻¹`. Establish `e : σ * g = g * (g⁻¹ * σ * g)` using `by group`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem fix_stable (g : D) : ∀ m ∈ fix ρ J, ρ g m ∈ fix ρ J := by
   intro m hm σ hσ
@@ -58,7 +58,7 @@ Both sides reduce to the same expression.
 @[simp] theorem fixRep_apply (g : D) (m : fix ρ J) : ((fixRep ρ J g m : fix ρ J) : M) = ρ g m := rfl
 
 /- English proof (translation)
-The claim follows from `continuous_induced_rng.2 (h.comp (continuous_fst.prodMk (continuous_subtype_val.comp continuous_snd)))`.
+A detailed English derivation is pending.
 -/
 theorem contAction_fixRep (h : ContAction ρ) : ContAction (fixRep ρ J) :=
   continuous_induced_rng.2 (h.comp (continuous_fst.prodMk (continuous_subtype_val.comp continuous_snd)))
@@ -75,11 +75,11 @@ theorem resD_equiv (χ : D →* Rˣ) (g : D) (φ : TDual R M) :
     resD ρ J (twDual χ ρ g φ) = twDual χ (fixRep ρ J) g (resD ρ J φ) := rfl
 
 /- English proof (translation)
-Proceed by induction on `x using Submodule.Quotient.induction_on with | H f =>`. Rewrite `hx`, the goal using `[H1ur, LinearMap.mem_ker]`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (restrictCocycles1 ρ J.subtype continuous_subtype_val f) = 0 at hx`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (restrictCocycles1 ρ' J.subtype continuous_subtype_val (cocycles1MapOfEquivariant ρ ρ' u continuous_of_discreteTopology he f)) = 0`. Rewrite `hx`, the goal using `[Submodule.Quotient.mk_eq_zero]`.
+Proceed by induction. Rewrite the hypotheses and the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨m, hm⟩` from `(mem_coboundaries1 _ _).1 hx`. Use `(mem_coboundaries1 _ _).2 ⟨u m, fun σ => ?_⟩` and prove the remaining obligations. Establish `e` using `hm σ`. Express the relevant statement in the definitionally equal form `f.1 σ = ρ σ m - m at e`. Express the relevant statement in the definitionally equal form `u (f.1 σ) = ρ' σ (u m) - u m`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e, map_sub, he]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_h1_mem_unramified {M' : Type} [AddCommGroup M'] [Module R M'] [TopologicalSpace M']
     [DiscreteTopology M'] (ρ' : Representation R D M') (u : M →ₗ[R] M')
@@ -99,21 +99,19 @@ theorem map_h1_mem_unramified {M' : Type} [AddCommGroup M'] [Module R M'] [Topol
   rw [e, map_sub, he]
 
 /- English proof (translation)
-Proceed by induction on `x using Submodule.Quotient.induction_on with | H f =>`. Rewrite `hx` using `[H1ur, LinearMap.mem_ker]`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (restrictCocycles1 ρ J.subtype continuous_subtype_val f) = 0 at hx`. Rewrite `hx` using `[Submodule.Quotient.mk_eq_zero]`. Take `⟨m, hm⟩` from `(mem_coboundaries1 _ _).1 hx`.
+Proceed by induction. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Set `f' : D → M` to `fun g => f.1 g - (ρ g m - m)`. Establish `hf'J : ∀ σ ∈ J, f' σ = 0` using `fun σ hσ => by`. Establish `e` using `hm ⟨σ, hσ⟩`. Express the relevant statement in the definitionally equal form `f.1 σ = ρ σ m - m at e`. Use `show f.1 σ - (ρ σ m - m) = 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, sub_self]`. Establish `hcoc : ∀ g k, f' (g * k) = f' g + ρ g (f' k)` using `fun g k => by show f.1 (g * k) - (ρ (g * k) m - m) = f.1 g - (ρ g m - m) + ρ g (f.1 k - (ρ k m - m))`. Rewrite using `[f.2.2 g k, map_mul, Module.End.mul_apply, map_sub, map_sub]`. Normalize the expressions using the abelian group laws. Establish `hfix : ∀ g, f' g ∈ fix ρ J` using `fun g σ hσ => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : g⁻¹ * σ * g ∈ J` using `by simpa using hJ.conj_mem σ hσ g⁻¹`. Establish `e1` using `hcoc σ g`. Establish `e2` using `hcoc g (g⁻¹ * σ * g)`. Rewrite `e1` using `[hf'J σ hσ, zero_add]`. Rewrite `e2` using `[hf'J _ h1, map_zero, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: σ * g = g * (g⁻¹ * σ * g)` using `by group`. Rewrite using `[← e1, this, e2]`. Establish `hcont : Continuous f'` using `f.2.1.sub ((h.comp (continuous_id.prodMk continuous_const)).sub continuous_const)`. Set `F : Z1 (fixRep ρ J)` to `⟨fun g => ⟨f' g, hfix g⟩, continuous_induced_rng.2 hcont, fun g k => Subtype.ext (hcoc g k)⟩`. Use `⟨Submodule.Quotient.mk F, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[H1ur, LinearMap.mem_ker]`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (restrictCocycles1 _ J.subtype continuous_subtype_val F) = 0`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Use `(mem_coboundaries1 _ _).2 ⟨0, fun σ => Subtype.ext ?_⟩` and prove the remaining obligations. Use `show f' σ = ρ σ 0 - 0`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hf'J σ.1 σ.2, map_zero, sub_zero]`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (cocycles1MapOfEquivariant _ _ _ continuous_of_discreteTopology (fun _ _ => rfl) F) = Submodule.Quotient.mk f`. Rewrite using `[Submodule.Quotient.eq]`. Use `(mem_coboundaries1 _ _).2 ⟨-m, fun g => ?_⟩` and prove the remaining obligations. Use `show f' g - f.1 g = ρ g (-m) - -m`.
-
-Use `show f.1 g - (ρ g m - m) - f.1 g = ρ g (-m) - -m`. Rewrite using `[map_neg]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem exists_fix_of_mem_H1ur (h : ContAction ρ) (x : H1 ρ) (hx : x ∈ H1ur ρ J) :
     ∃ x' : H1 (fixRep ρ J), x' ∈ H1ur (fixRep ρ J) J ∧
@@ -162,7 +160,7 @@ theorem exists_fix_of_mem_H1ur (h : ContAction ρ) (x : H1 ρ) (hx : x ∈ H1ur 
     abel
 
 /- English proof (translation)
-Proceed by induction on `y using Submodule.Quotient.induction_on with | H y =>`. Proceed by induction on `x using Submodule.Quotient.induction_on with | H x =>`. Both sides reduce to the same expression.
+Proceed by induction. Proceed by induction. Both sides reduce to the same expression.
 -/
 theorem cupProduct_fixedSubmodule_restrictDual (χ : D →* Rˣ) (h : ContAction ρ) (hN : ContAction (fixRep ρ J))
     (y : H1 (twDual χ ρ)) (x : H1 (fixRep ρ J)) :
@@ -178,7 +176,7 @@ theorem cupProduct_fixedSubmodule_restrictDual (χ : D →* Rˣ) (h : ContAction
 end Gen
 
 /- English proof (translation)
-The claim follows from `(LinearEquiv.congrRight (M := B) j).bijective.of_comp_iff' b`.
+A detailed English derivation is pending.
 -/
 theorem bijective_compr₂_iff {R A B C : Type} [CommRing R] [AddCommGroup A] [Module R A]
     [AddCommGroup B] [Module R B] [AddCommGroup C] [Module R C] (b : A →ₗ[R] B →ₗ[R] C)
@@ -186,25 +184,21 @@ theorem bijective_compr₂_iff {R A B C : Type} [CommRing R] [AddCommGroup A] [M
   (LinearEquiv.congrRight (M := B) j).bijective.of_comp_iff' b
 
 /- English proof (translation)
-Set `cup` to `cupH1H1TwistedDual χ ρ (MonoidHom.id D) (h.comp' continuous_id)`. Set `L` to `H1ur ρ J`. Set `P : Submodule (ZMod n) (H1 ((twDual χ ρ).comp (MonoidHom.id D)))` to `⨅ x ∈ L, LinearMap.ker (cup.flip x)`. Establish `memP : ∀ z, z ∈ P ↔ ∀ x ∈ L, cup z x = 0` using `fun z => by`. Simplify using `only [P, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.flip_apply]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `b` to `cup.compr₂ inv.toLinearMap`. Establish `hbb : Function.Bijective b` using `(bijective_compr₂_iff cup inv).2 hb`. Set `bL` to `b.compl₂ (L.subtype : L →ₗ[ZMod n] H1 (ρ.comp (MonoidHom.id D)))`. Establish `hk` using `GlobalTheory.ZModDual.card_ker_mul_card_eq n _ L bL`. Establish `hkP : LinearMap.ker bL = P`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `z`. Rewrite using `[LinearMap.mem_ker, memP]`. Prove the components needed by the constructor for the conclusion. Introduce `hz x hx`. Use `LinearMap.congr_fun hz ⟨x, hx⟩` as an intermediate fact.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `inv.map_eq_zero_iff.1 this`. Introduce `hz`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Use `show inv (cup z x.1) = 0`. Rewrite using `[hz x.1 x.2, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk1 : Nat.card (LinearMap.ker bL.flip) = 1`. Establish `hz : ∀ a : LinearMap.ker bL.flip, a = 0` using `fun a => by`. Establish `ha` using `LinearMap.mem_ker.1 a.2`. Establish `h0 : cup.flip a.1.1 = 0` using `LinearMap.ext fun z => by`. Use `LinearMap.congr_fun ha z` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `inv.map_eq_zero_iff.1 this`. Establish `h1 : a.1.1 = 0` using `hbf.1 (h0.trans (map_zero _).symm)`. Conclude with `Subtype.ext (Subtype.ext h1)`. Use `Nat.card_eq_one_iff_unique.2 ⟨⟨fun a c => by rw [hz a, hz c]⟩, ⟨0⟩⟩` and prove the remaining obligations. Rewrite `hk` using `[hkP, hk1, one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hY : Nat.card (H1 ((twDual χ ρ).comp (MonoidHom.id D))) = Nat.card (H1 (ρ.comp (MonoidHom.id D)))` using `(Nat.card_eq_of_bijective b hbb).trans (GlobalTheory.ZModDual.card_dual_eq n _)`. Establish `h2 : Nat.card (H2 (ρ.comp (MonoidHom.id D))) = Nat.card (H0 ((twDual χ ρ).comp (MonoidHom.id D)))` using `(Nat.card_eq_of_bijective _ ((bijective_compr₂_iff _ inv).2 h20)).trans (GlobalTheory.ZModDual.card_dual_eq n _)`. Establish `hpos : 0 < Nat.card (H0 ρ)` using `Nat.card_pos`. Establish `hcard : Nat.card P = Nat.card (H1ur (twDual χ ρ) J)`. Rewrite using `[hU]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : Nat.card P * Nat.card (H0 ρ) = Nat.card (H0 (twDual χ ρ)) * Nat.card (H0 ρ)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_comm]`. Conclude with `congrArg (· * Nat.card (H0 ρ)) h2`. Conclude with `Nat.eq_of_mul_eq_mul_right hpos e`.
-
-Establish `hUP : H1ur (twDual χ ρ) J ≤ P` using `fun z hz => (memP z).2 (fun x hx => orth z hz x hx)`. Use `haveI : Finite P := Subtype.finite`. Take `⟨u, hu⟩` from `(Function.Injective.bijective_of_nat_card_le (Submodule.inclusion_injective hUP) hcard.le).2 ⟨y, (memP y).2 hy⟩`. Establish `e` using `congrArg Subtype.val hu`. Express the relevant statement in the definitionally equal form `(u : H1 ((twDual χ ρ).comp (MonoidHom.id D))) = y at e`.
-
-Rewrite using `[← e]`. Conclude with `u.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_H1ur_of_perp {n : ℕ} [NeZero n] {D : Type} [Group D] [TopologicalSpace D]
     {M : Type} [AddCommGroup M] [Module (ZMod n) M] [Finite M] [TopologicalSpace M] [DiscreteTopology M]
@@ -290,15 +284,11 @@ open scoped Matrix
 namespace GlobalTheory.Ord2
 
 /- English proof (translation)
-Introduce `hL F Ω _ _ _ _ _ l _ r M _ _ _ _ _ A v ρ hρ hA hr hl y`. Use `set χ := (cycMod F Ω l r).comp (Dec (F := F) A).subtype with hχdef`. Use `set J := (Ine (F := F) A).subgroupOf (Dec (F := F) A) with hJdef`. Use `haveI : NeZero (l ^ r) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Use `haveI : Finite (TDual (ZMod (l ^ r)) M) := GlobalTheory.DualSide.finite_TDual`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hχ : ContAction (charRep χ)` using `(((Units.continuous_val.comp GlobalTheory.Published.PoitouTate.continuous_cycMod).comp continuous_subtype_val).comp continuous_fst).mul continuous_snd`. Establish `hρ' : ContAction (twDual χ ρ)` using `GlobalTheory.DualSide.contAction_twDual hχ hρ`. Establish `orth : ∀ y ∈ H1ur (twDual χ ρ) J, ∀ x ∈ H1ur ρ J, cupH1H1TwistedDual χ ρ (MonoidHom.id _) (hρ.comp' continuous_id) y x = 0`. Introduce `y hy x hx`. Take `⟨x', hx', rfl⟩` from `GlobalTheory.InertiaFixed.exists_fix_of_mem_H1ur ρ J hρ x hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hN` using `GlobalTheory.InertiaFixed.contAction_fixRep ρ J hρ`. Rewrite using `[GlobalTheory.InertiaFixed.cupProduct_fixedSubmodule_restrictDual ρ J χ hρ hN]`. Establish `uo` using `hL.uo F Ω l r (GlobalTheory.InertiaFixed.fix ρ J) A (GlobalTheory.InertiaFixed.fixRep ρ J) v hr hA hl (fun σ hσ => LinearMap.ext fun m => Subtype.ext (m.2 σ (Subgroup.mem_subgroupOf.2 hσ))) hN`. Conclude with `(uo.2 _).1 (GlobalTheory.InertiaFixed.map_h1_mem_unramified _ J _ _ _ y hy) x' hx'`. Use `⟨fun hy x hx => orth _ hy x hx, fun hy => ?_⟩` and prove the remaining obligations.
-
-Take `⟨-, hfin1, -, -⟩` from `hL.lf F Ω l r M A ρ v hr hA hρ`. Establish `hfin0'` using `(hL.lf F Ω l r _ A (twDual χ ρ) v hr hA hρ').1`. Establish `hfin1'` using `(hL.lf F Ω l r _ A (twDual χ ρ) v hr hA hρ').2.1`. Take `⟨⟨inv⟩, -, hb, hbf, h20⟩` from `hL.lt F Ω l r M A ρ v hr hA hρ`. Use `haveI : Finite (H1 (ρ.comp (MonoidHom.id _))) := hfin1`.
-
-Use `haveI : Finite (H1 ((twDual χ ρ).comp (MonoidHom.id _))) := hfin1'`. Use `haveI : Finite (H0 ((twDual χ ρ).comp (MonoidHom.id _))) := hfin0'`. Conclude with `GlobalTheory.InertiaFixed.mem_H1ur_of_perp χ ρ hρ J inv hb hbf h20 ((hL.le F Ω l r M A ρ v hr hA hρ).2 hl) (GlobalTheory.T.unramified_h1_card_invariants F Ω l r M A v ρ hρ hA) (GlobalTheory.T.unramified_h1_card_invariants F Ω l r (TDual (ZMod (l ^ r)) M) A v (twDual χ ρ) hρ' hA) …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem unramified_h1_dual_iff_perp : GlobalTheory.Mem.LiteralAutomorphy.LitCoh → ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (r : ℕ) (M : Type) [AddCommGroup M] [Module (ZMod (l ^ r)) M] [Finite M] [TopologicalSpace M] [DiscreteTopology M] (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 F)) (ρ : Representation (ZMod (l ^ r)) (Dec (F := F) A) M) (hρ : ContAction ρ), IsPlaceOver A v → 0 < r → ((l : ℕ) : 𝓞 F) ∉ v.asIdeal → ∀ y : H1 (twDual ((cycMod F Ω l r).comp (Dec (F := F) A).subtype) ρ), y ∈ H1ur (twDual ((cycMod F Ω l r).comp (Dec (F := F) A).subtype) ρ) ((Ine (F := F) A).subgroupOf (Dec (F := F) A)) ↔ ∀ x ∈ H1ur ρ ((Ine (F := F) A).subgroupOf (Dec (F := F) A)), cupH1H1TwistedDual ((cycMod F Ω l r).comp (Dec (F := F) A).subtype) ρ (MonoidHom.id _) (hρ.comp' continuous_id) y x = 0 := by
   intro hL F Ω _ _ _ _ _ l _ r M _ _ _ _ _ A v ρ hρ hA hr hl y

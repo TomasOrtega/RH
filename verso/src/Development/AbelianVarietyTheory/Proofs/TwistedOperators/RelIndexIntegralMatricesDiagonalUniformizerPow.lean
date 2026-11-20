@@ -17,9 +17,9 @@ open GlobalTheory.InertHomIdx
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
 /- English proof (translation)
-Set `g : (∀ i, B i) →+ (AddSubgroup.pi Set.univ B)` to `{ toFun := fun v => ⟨fun i => (v i : G), fun i _ => (v i).2⟩ map_zero' := rfl map_add' := fun _ _ => rfl }`. Establish `hg : Function.Surjective g` using `fun x => ⟨fun i => ⟨x.1 i, x.2 i (Set.mem_univ i)⟩, rfl⟩`. Establish `hc : ((AddSubgroup.pi Set.univ A).addSubgroupOf (AddSubgroup.pi Set.univ B)).comap g = AddSubgroup.pi Set.univ fun i => (A i).addSubgroupOf (B i)`. Use extensionality with `v`. Simplify using `[g, AddSubgroup.mem_addSubgroupOf, AddSubgroup.mem_pi]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[AddSubgroup.relIndex, ← AddSubgroup.index_comap_of_surjective _ hg, hc]`. Repeatedly rewrite using `[AddSubgroup.relIndex, AddSubgroup.index, ← Nat.card_pi]`. Use `Nat.card_congr ((Quotient.congrRight (fun x y ↦ ?_)).trans (Setoid.piQuotientEquiv _).symm)` and prove the remaining obligations. Rewrite using `[QuotientAddGroup.leftRel_pi]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem relIndex_pi_pi' {ι G : Type} [Fintype ι] [AddCommGroup G] (A B : ι → AddSubgroup G) :
     (AddSubgroup.pi Set.univ A).relIndex (AddSubgroup.pi Set.univ B) = ∏ i, (A i).relIndex (B i) := by
@@ -41,18 +41,18 @@ def twist₂ (ϖ : L) (d : ℤ) : AddSubgroup L :=
   (Formalism.UG.intL L).toAddSubgroup.map (AddMonoidHom.mulLeft (ϖ ^ d))
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_intL {x : L} : x ∈ Formalism.UG.intL L ↔ Valued.v x ≤ 1 := Iff.rfl
 
 /- English proof (translation)
-Break down `le_or_gt 0 d with hd | hd` into its components or cases. Establish `: max (-d) 0 = 0` using `max_eq_right (by omega)`. Rewrite using `[this, Int.toNat_zero, pow_zero, AddSubgroup.relIndex_eq_one]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Take `⟨k, rfl⟩` from `Int.eq_ofNat_of_zero_le hd`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `Valued.v (ϖ ^ (k : ℤ) * x) ≤ 1`. Rewrite using `[zpow_natCast, map_mul, map_pow]`. Conclude with `mul_le_one' (pow_le_one' h1 k) hx`. Take `⟨e, he⟩ : ∃ e : ℕ, d = -(e : ℤ)` from `⟨(-d).toNat, by omega⟩`. Substitute `he` using the available equality.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hm : max (-(-(e : ℤ))) 0 = e` using `by omega`. Rewrite using `[hm, Int.toNat_natCast, ← hQ e]`. Establish `hinj : Function.Injective (AddMonoidHom.mulLeft (ϖ ^ e))` using `mul_right_injective₀ (pow_ne_zero e h0)`. Rewrite using `[← AddSubgroup.relIndex_map_map_of_injective _ _ hinj]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[twist₂, AddSubgroup.map_map]`. Use `AddSubgroup.map_id _` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Simplify using `[_root_.zpow_neg, ← mul_assoc, mul_inv_cancel₀ (pow_ne_zero e h0)]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem relIndex_twO (ϖ : L) (Q : ℕ) (h0 : ϖ ≠ 0) (h1 : Valued.v ϖ ≤ 1)
     (hQ : ∀ e : ℕ, ((Formalism.UG.intL L).toAddSubgroup.map (AddMonoidHom.mulLeft (ϖ ^ e))).relIndex
@@ -88,7 +88,7 @@ open GlobalTheory.InertHomIdx
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
 /- English proof (translation)
-Use extensionality with `X`. Rewrite using `[AddSubgroup.mem_map_equiv, AddSubgroup.mem_pi, mem_intMat]`. Simplify using `only [Set.mem_univ, true_implies, AddSubgroup.mem_pi]`. Conclude with `Iff.rfl`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem intMat_eq_pi (r n : ℕ) :
     intMat L r n =
@@ -101,13 +101,13 @@ theorem intMat_eq_pi (r n : ℕ) :
   exact Iff.rfl
 
 /- English proof (translation)
-Use extensionality with `Y`. Rewrite using `[AddSubgroup.mem_map_equiv, AddSubgroup.mem_pi]`. Simplify using `only [Set.mem_univ, true_implies, AddSubgroup.mem_pi, twist₂, AddSubgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨X, hX, hXY⟩ i j`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨X i j, hX i j, ?_⟩` and prove the remaining obligations. Rewrite using `[← hXY]`. Express the relevant statement in the definitionally equal form `ϖ ^ d i * X i j = (Matrix.diagonal (fun i => ϖ ^ d i) * X) i j`. Rewrite using `[Matrix.diagonal_mul]`. Introduce `hY`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨Matrix.of fun i j => (ϖ ^ d i)⁻¹ * Y i j, fun i j => ?_, ?_⟩` and prove the remaining obligations. Take `⟨x, hx, hxe⟩` from `hY i j`. Express the relevant statement in the definitionally equal form `ϖ ^ d i * x = Y i j at hxe`. Express the relevant statement in the definitionally equal form `(ϖ ^ d i)⁻¹ * Y i j ∈ Formalism.UG.intL L`. Rewrite using `[← hxe, ← mul_assoc, inv_mul_cancel₀ (zpow_ne_zero _ h0), one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(Matrix.diagonal (fun i => ϖ ^ d i) * Matrix.of fun i j => (ϖ ^ d i)⁻¹ * Y i j) i j = Y i j`. Rewrite using `[Matrix.diagonal_mul, Matrix.of_apply, ← mul_assoc, mul_inv_cancel₀ (zpow_ne_zero _ h0), one_mul]`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_diag_eq_pi (ϖ : L) (h0 : ϖ ≠ 0) (r n : ℕ) (d : Fin r → ℤ) :
     (intMat L r n).map (lmul (Matrix.diagonal (fun i => ϖ ^ d i))) =
@@ -135,7 +135,7 @@ theorem map_diag_eq_pi (ϖ : L) (h0 : ϖ ≠ 0) (r n : ℕ) (d : Fin r → ℤ) 
       rw [Matrix.diagonal_mul, Matrix.of_apply, ← mul_assoc, mul_inv_cancel₀ (zpow_ne_zero _ h0), one_mul]
 
 /- English proof (translation)
-Establish `h : ((∑ i, (max (-d i) 0).toNat : ℕ) : ℤ) = ∑ i, max (-d i) 0`. Use `push_cast`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `Int.toNat_of_nonneg (le_max_right _ _)`. Rewrite using `[← h, Int.toNat_natCast]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_toNat {r : ℕ} (d : Fin r → ℤ) :
     ∑ i, (max (-d i) 0).toNat = (∑ i, max (-d i) 0).toNat := by
@@ -146,7 +146,7 @@ theorem sum_toNat {r : ℕ} (d : Fin r → ℤ) :
   rw [← h, Int.toNat_natCast]
 
 /- English proof (translation)
-Introduce `L _ _ ϖ Q h0 h1 hQ r n d`. Rewrite using `[map_diag_eq_pi ϖ h0, intMat_eq_pi, AddSubgroup.relIndex_map_map_of_injective _ _ (AddEquiv.injective _), relIndex_pi_pi']`. Repeatedly rewrite using `[relIndex_pi_pi', relIndex_twO ϖ Q h0 h1 hQ, Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← pow_mul, Finset.prod_pow_eq_pow_sum, ← sum_toNat, Finset.mul_sum, mul_comm n]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 -/
 theorem relIndex_intMat_diag : ∀ {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L) (Q : ℕ), ϖ ≠ 0 → Valued.v ϖ ≤ 1 → (∀ e : ℕ, ((Formalism.UG.intL L).toAddSubgroup.map (AddMonoidHom.mulLeft (ϖ ^ e))).relIndex (Formalism.UG.intL L).toAddSubgroup = Q ^ e) → ∀ (r n : ℕ) (d : Fin r → ℤ), (GlobalTheory.InertHomIdx.intMat L r n).relIndex ((GlobalTheory.InertHomIdx.intMat L r n).map (GlobalTheory.InertHomIdx.lmul (Matrix.diagonal (fun i => ϖ ^ d i)))) = Q ^ (n * (∑ i, max (-d i) 0).toNat) := by
   intro L _ _ ϖ Q h0 h1 hQ r n d

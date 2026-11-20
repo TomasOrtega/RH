@@ -12,14 +12,14 @@ section SlopeTestRemainingChoices
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(TR.infEq F).symm (TR.infEq F (Pi.single w t)) = _`. Conclude with `RingEquiv.symm_apply_apply _ _`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 private lemma infiniteProjection_placeEmbed (w : InfinitePlace F) (t : ℝ) : TR.pInf F (Fo.at1 w t) = Pi.single w t := by
   change (TR.infEq F).symm (TR.infEq F (Pi.single w t)) = _
   exact RingEquiv.symm_apply_apply _ _
 
 /- English proof (translation)
-Simplify using `[Fo.at1]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma placeEmbedReal_zero (w : InfinitePlace F) : Fo.at1 w 0 = 0 := by
   simp [Fo.at1]
@@ -30,14 +30,14 @@ Both sides reduce to the same expression.
 private lemma placeEmbedReal_finitePart (w : InfinitePlace F) (t : ℝ) : (Fo.at1 w t).2 = 0 := rfl
 
 /- English proof (translation)
-Simplify using `[placeEmbedReal_zero]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma shift_zero (w : InfinitePlace F) (i : Fin 4) (v : V4 F) :
     v + Pi.single i (Fo.at1 w 0) = v := by
   simp [placeEmbedReal_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `[finPartPi, placeEmbedReal_finitePart]`. Simplify using `[finPartPi, Pi.single_eq_of_ne h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private lemma finPart_shift (w : InfinitePlace F) (i : Fin 4) (v : V4 F) (t : ℝ) :
     finPartPi (v + Pi.single i (Fo.at1 w t)) = finPartPi v := by
@@ -48,9 +48,9 @@ private lemma finPart_shift (w : InfinitePlace F) (i : Fin 4) (v : V4 F) (t : �
   · simp [finPartPi, Pi.single_eq_of_ne h]
 
 /- English proof (translation)
-Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Distinguish the cases in `h' : w' = w`. Substitute `h'` using the available equality. Simplify using `[map_add, infiniteProjection_placeEmbed]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[map_add, infiniteProjection_placeEmbed, h', Pi.single_eq_of_ne h']`. Simplify using `[h, Pi.single_eq_of_ne h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private lemma coord_shift (w w' : InfinitePlace F) (i j : Fin 4) (v : V4 F) (t : ℝ) :
     ((TR.pInf F ((v + Pi.single i (Fo.at1 w t) : V4 F) j) w' : ℝ) : ℂ) =
@@ -64,29 +64,29 @@ private lemma coord_shift (w w' : InfinitePlace F) (i j : Fin 4) (v : V4 F) (t :
   · simp [h, Pi.single_eq_of_ne h]
 
 /- English proof (translation)
-Establish `h` using `((hasDerivAt_id (0 : ℝ)).ofReal_comp.const_mul c).const_add a`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma lin_der (a c : ℂ) : HasDerivAt (fun t : ℝ => a + c * (t : ℂ)) c 0 := by
   have h := ((hasDerivAt_id (0 : ℝ)).ofReal_comp.const_mul c).const_add a
   simpa using h
 
 /- English proof (translation)
-The claim follows from `Algebra.subset_adjoin ⟨j, w, rfl⟩`.
+A detailed English derivation is pending.
 -/
 private lemma coord_mem (j : Fin 4) (w : InfinitePlace F) :
     (fun v : V4 F => ((TR.pInf F (v j) w : ℝ) : ℂ)) ∈ UpperTheory.ConvolutionTheory.R2.polyFn (F := F) :=
   Algebra.subset_adjoin ⟨j, w, rfl⟩
 
 /- English proof (translation)
-Unfold `UpperTheory.ConvolutionTheory.R2.polyFn at hp`. Proceed by induction on `hp using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨j, w', rfl⟩` from `hx`. Use `⟨algebraMap ℂ _ (if j = i ∧ w' = w then 1 else 0), Subalgebra.algebraMap_mem _ _, fun v => ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (fun t : ℝ => ((TR.pInf F ((v + Pi.single i (Fo.at1 w t) : V4 F) j) w' : ℝ) : ℂ)) = fun t : ℝ => ((TR.pInf F (v j) w' : ℝ) : ℂ) + (if j = i ∧ w' = w then 1 else 0) * (t : ℂ)`. Use function extensionality and compare the values at `fun t => coord_shift w w' i j v t`. Rewrite using `[e]`. Conclude with `lin_der _ _`. Consider the case `algebraMap r`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Treat this case separately. Supply the required witnesses or components.
 
-Conclude with `⟨0, zero_mem _, fun v => hasDerivAt_const _ _⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨x', hxm, hx⟩` from `hx`. Take `⟨y', hym, hy⟩` from `hy`. Conclude with `⟨x' + y', add_mem hxm hym, fun v => (hx v).add (hy v)⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `mul x y hxa hya hx hy`. Take `⟨x', hxm, hx⟩` from `hx`. Take `⟨y', hym, hy⟩` from `hy`. Use `⟨x' * y + x * y', add_mem (mul_mem hxm hya) (mul_mem hxa hym), fun v => ?_⟩` and prove the remaining obligations. Establish `h` using `(hx v).mul (hy v)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [shift_zero] at h`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 private lemma poly_der (w : InfinitePlace F) (i : Fin 4) {p : V4 F → ℂ}
     (hp : p ∈ UpperTheory.ConvolutionTheory.R2.polyFn (F := F)) :
@@ -120,9 +120,9 @@ private noncomputable def Qf (δ : F) (v : V4 F) : ℂ :=
   ((∑ w, TR.pInf F (v 0 ^ 2 + v 1 ^ 2 + 2 * (v 2 ^ 2 - rt δ * v 3 ^ 2)) w : ℝ) : ℂ)
 
 /- English proof (translation)
-Establish `e : Qf δ = ∑ w, ((fun v : V4 F => ((TR.pInf F (v 0) w : ℝ) : ℂ)) ^ 2 + (fun v : V4 F => ((TR.pInf F (v 1) w : ℝ) : ℂ)) ^ 2 + algebraMap ℂ (V4 F → ℂ) 2 * ((fun v : V4 F => ((TR.pInf F (v 2) w : ℝ) : ℂ)) ^ 2 - algebraMap ℂ (V4 F → ℂ) ((TR.pInf F (rt δ) w : ℝ) : ℂ) * (fun v : V4 F = …`. Use function extensionality and compare the values at `v`. Establish `h2 : ∀ x, TR.pInf F (2 : A F) x = 2` using `fun x => by`. Rewrite using `[map_ofNat]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `[Qf, Finset.sum_apply, map_add, map_mul, map_sub, map_pow, h2]`. Rewrite using `[e]`. Use `sum_mem fun w _ => ?_` and prove the remaining obligations. Conclude with `add_mem (add_mem (pow_mem (coord_mem 0 w) 2) (pow_mem (coord_mem 1 w) 2)) (mul_mem (Subalgebra.algebraMap_mem _ _) (sub_mem (pow_mem (coord_mem 2 w) 2) (mul_mem (Subalgebra.algebraMap_mem _ _) (pow_mem (coord_mem 3 w) 2))))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private lemma Qf_mem (δ : F) : Qf δ ∈ UpperTheory.ConvolutionTheory.R2.polyFn (F := F) := by
   have e : Qf δ = ∑ w, ((fun v : V4 F => ((TR.pInf F (v 0) w : ℝ) : ℂ)) ^ 2 +
@@ -141,7 +141,7 @@ private lemma Qf_mem (δ : F) : Qf δ ∈ UpperTheory.ConvolutionTheory.R2.polyF
       (mul_mem (Subalgebra.algebraMap_mem _ _) (pow_mem (coord_mem 3 w) 2))))
 
 /- English proof (translation)
-Take `⟨q, hq, hd⟩` from `poly_der w i (Qf_mem δ)`. Use `⟨algebraMap ℂ _ (-(Real.pi : ℂ)) * q, mul_mem (Subalgebra.algebraMap_mem _ _) hq, fun v => ?_⟩` and prove the remaining obligations. Establish `h` using `((hd v).const_mul (-(Real.pi : ℂ))).cexp`. Simplify using `only [shift_zero] at h`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma gauss_der (δ : F) (w : InfinitePlace F) (i : Fin 4) :
     ∃ q ∈ UpperTheory.ConvolutionTheory.R2.polyFn (F := F), ∀ v, HasDerivAt
@@ -158,15 +158,15 @@ private def Gen (δ : F) : Set (V4 F → ℂ) :=
     φ = fun v => p v * UpperTheory.ConvolutionTheory.R2.gauss δ v * g (finPartPi v)}
 
 /- English proof (translation)
-Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨p, hp, g, hg, rfl⟩` from `hx`. Use `Submodule.subset_span ⟨(fun v : V4 F => ((TR.pInf F (v i) w : ℝ) : ℂ)) * p, mul_mem (coord_mem i w) hp, g, hg, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `v`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Fo.cw, mul_assoc]`. Consider the case `zero`. Establish `: (fun v : V4 F => Fo.cw w (v i) * (0 : V4 F → ℂ) v) = 0`. Use function extensionality and compare the values at `v`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy`. Establish `: (fun v : V4 F => Fo.cw w (v i) * (x + y) v) = (fun v => Fo.cw w (v i) * x v) + fun v => Fo.cw w (v i) * y v`. Use function extensionality and compare the values at `v`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[mul_add]`. Rewrite using `[this]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx`. Establish `: (fun v : V4 F => Fo.cw w (v i) * (c • x) v) = c • fun v => Fo.cw w (v i) * x v`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `v`. Simplify using `[mul_left_comm]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma cw_coord_mul_mem_span_gen_of_mem (δ : F) (w : InfinitePlace F) (i : Fin 4) {f : V4 F → ℂ}
     (hf : f ∈ Submodule.span ℂ (Gen δ)) :
@@ -193,15 +193,15 @@ private lemma cw_coord_mul_mem_span_gen_of_mem (δ : F) (w : InfinitePlace F) (i
     rw [this]; exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨p, hp, g, hg, rfl⟩` from `hx`. Take `⟨p', hp', hdp⟩` from `poly_der w i hp`. Take `⟨q, hq, hdq⟩` from `gauss_der δ w i`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨fun v => (p' + p * q) v * UpperTheory.ConvolutionTheory.R2.gauss δ v * g (finPartPi v), Submodule.subset_span ⟨p' + p * q, add_mem hp' (mul_mem hp hq), g, hg, rfl⟩, fun v => ?_⟩` and prove the remaining obligations. Establish `h` using `((hdp v).mul (hdq v)).mul_const (g (finPartPi v))`. Simplify using `only [shift_zero] at h`. Simplify using `only [finPart_shift]`. Establish `e : (p' + p * q) v * UpperTheory.ConvolutionTheory.R2.gauss δ v * g (finPartPi v) = (p' v * UpperTheory.ConvolutionTheory.R2.gauss δ v + p v * (UpperTheory.ConvolutionTheory.R2.gauss δ v * q v)) * g (finPartPi v)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Pi.add_apply, Pi.mul_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `h`. Consider the case `zero => exact ⟨0, zero_mem _, fun v => hasDerivAt_const _ _⟩`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨x', hxm, hx⟩` from `hx`. Take `⟨y', hym, hy⟩` from `hy`. Conclude with `⟨x' + y', add_mem hxm hym, fun v => (hx v).add (hy v)⟩`. Consider the case `smul c x _ hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨x', hxm, hx⟩` from `hx`. Conclude with `⟨c • x', Submodule.smul_mem _ _ hxm, fun v => (hx v).const_mul c⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private lemma span_d (δ : F) (w : InfinitePlace F) (i : Fin 4) {f : V4 F → ℂ}
     (hf : f ∈ Submodule.span ℂ (Gen δ)) :
@@ -237,11 +237,11 @@ end SlopeTestRemainingChoices
 end UpperTheory.ConvolutionTheory.R2.Ff
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D O w i φ hφ`. Establish `hs : φ.1 ∈ Submodule.span ℂ (Gen D.δ)` using `hφ`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `e : (O.x w i φ).1 = fun v => Fo.cw w (v i) * φ.1 v` using `funext fun v => O.x_apply w i φ v`. Express the relevant statement in the definitionally equal form `(O.x w i φ).1 ∈ Submodule.span ℂ (Gen D.δ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e]`. Conclude with `cw_coord_mul_mem_span_gen_of_mem D.δ w i hs`. Take `⟨f', hf', hd⟩` from `span_d D.δ w i hs`. Establish `e : (O.d w i φ).1 = f'` using `funext fun v => (O.d_spec w i φ v).unique (hd v)`. Express the relevant statement in the definitionally equal form `(O.d w i φ).1 ∈ Submodule.span ℂ (Gen D.δ)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `hf'`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.opsFock :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (O : Fo.Ops F), OpsFock D O := by

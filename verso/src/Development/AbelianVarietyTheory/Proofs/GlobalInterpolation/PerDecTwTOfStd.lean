@@ -9,19 +9,17 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 namespace GlobalTheory.PerTwClose
 
 /- English proof (translation)
-Introduce `B X I hI l Z l0 hR cf nch tp C t Y hS u a ha x hx F hF c`. Establish `hP` using `(t.ptE.per u a ha).2.2`. Establish `hres : ∀ z, GlobalTheory.PerQ.resCTw t u a ha c z = fun c' => if c' = c then z c' else 0`. Introduce `z`. Apply `(t.pt.val u a ha).eW.injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[GlobalTheory.PerQ.resCTw, LinearEquiv.apply_symm_apply]`. Use function extensionality and compare the values at `c' s`. Establish `e1` using `hS.2.2.eW u a ha (fun c' => if c' = c then z c' else 0) c' s s rfl`. Establish `e2` using `hS.2.2.eW u a ha z c' s s rfl`. Use `Eq.trans ?_ e1.symm` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs`. Apply the tactic sequence `all_goals first | exact e2 | rfl | (exfalso; contradiction)`. Take `⟨y, hy, hyv⟩` from `hR.tw u a F hF c`. Establish `hyQ : y ∈ nabAt B.fields.emb (I.perIn u a).sgT ((I.perIn u a).S'.Lsh c.1 ((I.perIn u a).S'.rep c))`. Use `GlobalTheory.PeriodOnStep.Lsh_eq_N ((I.stX a).rep c).1.1.deco` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `show y ∈ nabAt _ _ (((I.stX a).rep c).1.1.deco.1.Lsh)`. Rewrite using `[this]`. Conclude with `hy`. Take `⟨b, hb⟩` from `@GlobalTheory.T.classPairing_integral_form_row_isIntegral _ _ _ _ _ _ _ _ _ _ B.fields.emb B.embLL _ _ (I.perIn u a) (l.ch u a) (l.per u a) (B.hcW u) (l.fmL u a).famP (((I.rec7 l Z).eMtTw u a).symm F) (t.ptE.jM u a (((I.rec7 l Z).eMtTw u a).symm F)) (fun w => hP w _) c (fun p q = …`. Use `⟨(b : B.fields.K), ?_, fun w _ => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Use `show B.embLL (b : B.fields.K) = _`. Rewrite using `[hb, GlobalTheory.PerQ.pcLTw, hres, hres]`. Both sides reduce to the same expression. Distinguish the cases in `h0 : (b : B.fields.K) = 0`. Conclude with `Or.inl h0`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Or.inr ?_` and prove the remaining obligations. Unfold `vAdd`. Establish `h` using `IsDedekindDomain.HeightOneSpectrum.valuation_le_one (K := (I.rec7 l Z).what₂.LL) ((I.rec7 l Z).plEq w) b`. Establish `h2` using `(WithZero.log_le_log ((Valuation.ne_zero_iff _).2 h0) one_ne_zero).2 h`. Rewrite `h2` using `[WithZero.log_one]`.
-
-Conclude with `neg_nonneg.mpr h2`.
+A detailed English derivation is pending.
 -/
 theorem perDecTwT_of_std : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (l0 : I.Law0 l), GlobalTheory.PerQ.RowInt I l Z → ∀ (cf : Formalism.L2.Host.CharFrame (I.rec7 l Z)) (nch : NChoice (I.rec7 l Z)) (tp : Formalism.L2.Host.TupTied (I.rec7 l Z) cf nch) (C : ColsTiedSym (I.rec7 l Z)) (t : SymmetricTwistedColumnsAtPrimes tp C (I.tw l l0 Z)) (Y : DivX (I.rec7 l Z)), I.StdTw l Z l0 t → ∀ u a ha, GlobalTheory.PerQ.PerDecTwT Y t u a ha := by
   intro B X I hI l Z l0 hR cf nch tp C t Y hS u a ha x hx F hF c

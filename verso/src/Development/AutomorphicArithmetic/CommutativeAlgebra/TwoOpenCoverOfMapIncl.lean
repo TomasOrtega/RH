@@ -26,9 +26,7 @@ import Development.AutomorphicArithmetic.CommutativeAlgebra.ProjectiveBundleForm
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Pbf UpperTheory.Blow
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `h`. Distinguish the cases in `hl : i = Fin.last N`. Use `left`. Rewrite using `[← hl]`. Conclude with `hi`.
-
-Use `right`. Take `⟨j, rfl⟩` from `Fin.exists_castSucc_eq.2 hl`. Conclude with `Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span ⟨_, ⟨j, rfl⟩, rfl⟩) hi`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem q_of_unit {N : ℕ} {A : Type} [CommRing A] (v : Fin (N + 1) → A) (hv : Ideal.span (Set.range v) = ⊤)
     (h : ∃ i, IsUnit (v i)) :
@@ -43,11 +41,11 @@ private theorem q_of_unit {N : ℕ} {A : Type} [CommRing A] (v : Fin (N + 1) →
     exact Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span ⟨_, ⟨j, rfl⟩, rfl⟩) hi
 
 /- English proof (translation)
-Introduce `R _ N E`. Use `UpperTheory.mayerVietoris_stackProduct_of_injective_of_locally_covered R E (incl (Q1 N)) (incl (Q2 N)) (fun A x y h => Subtype.ext h) (fun A x y h => Subtype.ext h) (fun A => Function.bijective_id) (fun A => Function.bijective_id) ?_` and prove the remaining obligations. Introduce `T x`. Take `⟨S, hS, hP⟩` from `UpperTheory.locally_exists_isUnit_of_span_range_eq_top T (show Um (N + 1) Γ(T, ⊤) from x).1 (show Um (N + 1) Γ(T, ⊤) from x).2`. Use `⟨S, hS, fun V g hg => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Set `w : (XC (N + 1)).D.obj Γ(V, ⊤)` to `(XC (N + 1)).D.map g.appTop x`. Break down `q_of_unit (fun i => g.appTop.hom ((show Um (N + 1) Γ(T, ⊤) from x).1 i)) (show Um (N + 1) Γ(V, ⊤) from (XC (N + 1)).D.map g.appTop x).2 (hP V g hg) with h | h` into its components or cases. Establish `h' : (Q1 N).P Γ(V, ⊤) w` using `h`. Conclude with `Or.inl ⟨⟨w, h'⟩, rfl⟩`. Establish `h' : (Q2 N).P Γ(V, ⊤) w` using `h`.
+Introduce a local definition for the expression. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Prove the first alternative. Establish an intermediate fact.
 
-Conclude with `Or.inr ⟨⟨w, h'⟩, rfl⟩`.
+Prove the second alternative.
 -/
 theorem UpperTheory.two_open_cover_of_map_incl :
     ∀ (R : Type) [CommRing R] (N : ℕ) (E : Spc), Cover2 R (Sp.map E (incl (Q1 N))) (Sp.map E (incl (Q2 N))) := by

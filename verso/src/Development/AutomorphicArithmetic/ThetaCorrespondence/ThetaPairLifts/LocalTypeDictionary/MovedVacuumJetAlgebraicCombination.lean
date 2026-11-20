@@ -23,23 +23,19 @@ namespace GlobalTheory.MovedJet
 open GlobalTheory.Grid (neg sgn ofSgn)
 open MvPolynomial
 /- English proof (translation)
-Introduce `D T _ L μ₀ sc G W i j A A' WW X _ _ _ hX t γ hγ a _ γ' hγ' a' _ _ _ k`. Establish `hI` using `hX.is`. Establish `hθ : IsInfFam W.θ` using `hI.isVac.2.inf`. Establish `hom` using `hI.weil t`. Use `set u : D.what₂.Tau → Matrix (Fin A.rank) (Fin A.rank) ℂ := fun τ => compAt W.θ τ (Formalism.L2.Theta.mt A γ) with hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set hm : D.what₂.Tau → Matrix (Fin WW.rank) (Fin WW.rank) ℂ := fun τ => (compAt W.θ τ (Formalism.L2.Theta.mt WW γ')).map (starRingEnd ℂ) with hhm`. Use `set H : D.what₂.Tau → Matrix (Fin WW.rank) (Fin WW.rank) ℂ := fun τ => Matrix.conjTranspose (hm τ) with hH`. Use `set U : D.what₂.Tau → Matrix (Fin A.rank) (Fin A.rank) ℂ := fun τ => Matrix.conjTranspose (u τ) with hU`. Use `set Q := GlobalTheory.CompactHowe.substF H U (MvPolynomial.monomial k 1) with hQdef`. Establish `hHm : hm * H = fun _ => 1` using `funext fun τ => map_conj_mul_conjT (mul_conjT_of_unitary (conjT_mul_compAt hθ hX.stdW.1 γ' τ))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUm : u * U = fun _ => 1` using `funext fun τ => mul_conjT_of_unitary (conjT_mul_compAt hθ hX.std.1 γ τ)`. Establish `hQ : GlobalTheory.CompactHowe.substF hm u Q = MvPolynomial.monomial k 1`. Rewrite using `[hQdef, GlobalTheory.CompactHowe.substF_mul, hHm, hUm, substF_one]`. Establish `hact` using `om_pureTensorO_vac hX t γ γ' Q`. Establish `hjet : pureTensorO W.ψ W.θ (neg A) WW (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B (X.ω t (γ, γ') X.vac) (MvPolynomial.monomial k 1) 0 = pureTensorO W.ψ W.θ (neg A) WW (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B X.vac Q 0`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hQ]`. Express the relevant statement in the definitionally equal form `pureTensorO W.ψ W.θ (neg A) WW (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B ((X.ω t).toSgn true ((ofSgn true A).symm γ, γ') X.vac) _ 0 = _`. Rewrite using `[← hact.2]`. Conclude with `hom.om_aut _ (GlobalTheory.SquareComm.ofSgn_symm_mem_GQ true hγ) γ' hγ' _ hact.1`. Establish `hHalg : ∀ τ a b, IsAlgebraic ℚ (H τ a b)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ a b`. Establish `e : H τ a b = compAt W.θ τ (Formalism.L2.Theta.mt WW γ') b a`. Simplify using `[hH, hhm, Matrix.conjTranspose_apply]`. Rewrite using `[e]`. Conclude with `isAlgebraic_compAt_of_mem_GQ hθ hγ' τ b a`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hUalg : ∀ τ a b, IsAlgebraic ℚ (U τ a b)`. Introduce `τ a b`. Establish `e : U τ a b = starRingEnd ℂ (compAt W.θ τ (Formalism.L2.Theta.mt A γ) b a)`. Simplify using `[hU, hu, Matrix.conjTranspose_apply]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isAlgebraic_conj (isAlgebraic_compAt_of_mem_GQ hθ hγ τ b a)`. Set `e` to `Q.support.equivFin`. Use `⟨Q.support.card, fun p => MvPolynomial.coeff (e.symm p).1 Q, fun p => (e.symm p).1, fun p => ?_, fun p => ?_, ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.SubstCoeff.coeff_substF_monomial_continuous_algebraic k (e.symm p).1).2 H U hHalg hUalg`. Conclude with `GlobalTheory.CompactHowe.mapDomain_fst_eq_of_coeff_substF_ne_zero H U k (e.symm p).1 (MvPolynomial.mem_support_iff.1 (e.symm p).2)`.
-
-Rewrite using `[hjet]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[show MvPolynomial.monomial x (MvPolynomial.coeff x Q) = MvPolynomial.coeff x Q • MvPolynomial.monomial x 1 by`.
-
-Rewrite using `[MvPolynomial.smul_monomial, smul_eq_mul, mul_one], map_smul, Pi.smul_apply, smul_eq_mul]`. Use `_ = _ := by`. Rewrite using `[← Finset.sum_coe_sort]`. Conclude with `(Equiv.sum_comp e.symm (fun x : Q.support => MvPolynomial.coeff x.1 Q * pureTensorO W.ψ W.θ (neg A) WW (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B X.vac (MvPolynomial.monomial x.1 1) 0)).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jet_moved_vacuum_algebraic : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →
@@ -115,7 +111,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx MeasureTheory
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.MovedJet.jet_moved_vacuum_algebraic | exact _root_.GlobalTheory.MovedJet.jet_moved_vacuum_algebraic | (intros; apply _root_.GlobalTheory.MovedJet.jet_moved_vacuum_algebraic <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.moved_vacuum_jet_algebraic_combination : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →

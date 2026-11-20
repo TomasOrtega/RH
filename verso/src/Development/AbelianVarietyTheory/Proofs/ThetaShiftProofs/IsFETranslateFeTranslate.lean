@@ -35,14 +35,14 @@ abbrev SecFMod (j : ℕ) (α : D.X) : Type :=
   SecOver (strF D F) (LB.LinComb D.P.L (DegPre.famφ D F α) (DegPre.famε j))
 
 /- English proof (translation)
-Use `show Spec.map _ ≫ Spec.map _ = _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem TF_hom : (TF (R := R) F).hom = Spec.map (CommRingCat.ofHom (toF (R := R) F)) := by
   show Spec.map _ ≫ Spec.map _ = _
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
 /- English proof (translation)
-Rewrite using `[← TF_hom]`. Conclude with `(IsPullback.of_hasPullback (TF (R := R) F).hom D.P.A.hom).flip`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullback_prB : IsPullback (DegPre.prB D F).left (strF D F) D.P.A.hom
     (Spec.map (CommRingCat.ofHom (toF (R := R) F))) := by
@@ -53,18 +53,18 @@ def resF (j : ℕ) (α : D.X) : SecBMod D j α →ₛₗ[toF (R := R) F] SecFMod
   pullOver D.P.L (DegPre.famε j) (isPullback_prB D F).w (GC.famφ_eq D F α)
 
 /- English proof (translation)
-The claim follows from `sval_pullOver _ _ s r hJ`.
+A detailed English derivation is pending.
 -/
 theorem sval_resF {j : ℕ} {α : D.X} (s : SecBMod D j α) {Z : Scheme.{0}} (r : Z ⟶ (DegPre.BF D F).left) {z : Z} {J}
     (hJ : Good D.P.L z J) : sval (resF D F j α s) r z J = sval s (r ≫ (DegPre.prB D F).left) z J :=
   sval_pullOver _ _ s r hJ
 
 /- English proof (translation)
-Use `D.P.isAb.smooth` as an intermediate fact. Establish `hinj : Function.Injective (toF (R` using `R) F) := (algebraMap (FractionRing R) F).injective.comp (IsFractionRing.injective R _)`. Establish `: IsDominant (Spec.map (CommRingCat.ofHom (toF (R` using `R) F))) := ⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).2 (by`. Rewrite using `[CommRingCat.hom_ofHom, (RingHom.injective_iff_ker_eq_bot _).1 hinj]`. Conclude with `bot_le)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `IsSchemeTheoreticallyDominant.of_isDominant (Spec.map (CommRingCat.ofHom (toF (R := R) F)))` as an intermediate fact. Establish `: IsSchemeTheoreticallyDominant (DegPre.prB D F).left` using `.of_isPullback (isPullback_prB D F).flip`. Establish `: QuasiCompact (DegPre.prB D F).left` using `MorphismProperty.of_isPullback (P := @QuasiCompact) (isPullback_prB D F).flip inferInstance`. Introduce `s t h`. Use `SecOver.ext _ _ fun i => (DegPre.prB D F).left.app_injective _ (fn_ext fun y hy => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e` using `congrArg (fun q : SecFMod D F j α => gs (𝟙 _) y _ (LB.Sec.f q i)) h`. Establish `hy' : (𝟙 (DegPre.BF D F).left : _ ⟶ _) y ∈ LB.wchart D.P.L (DegPre.famφ D F α) i` using `(wchart_eq (GC.famφ_eq D F α) i).ge hy`. Conclude with `(gs_pull _ _ y _ hy _).trans ((gs_pullFn _ _ _ _ y hy').symm.trans (e.trans ((gs_pullFn _ _ _ _ y hy').trans (gs_pull _ _ y _ hy _).symm)))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem resF_injective (j : ℕ) (α : D.X) : Function.Injective (resF D F j α) := by
   have := D.P.isAb.smooth
@@ -86,7 +86,7 @@ theorem resF_injective (j : ℕ) (α : D.X) : Function.Injective (resF D F j α)
     ((gs_pullFn _ _ _ _ y hy').trans (gs_pull _ _ y _ hy _).symm)))
 
 /- English proof (translation)
-The claim follows from `secScal_iff (isPullback_prB D F).w (GC.famφ_eq D F α) D.P.isLB s₁ s _ _ ((Over.w (fst (TF (R := R) F) D.P.A)).symm.trans (congrArg _ (TF_hom F))) r`.
+A detailed English derivation is pending.
 -/
 theorem secScal_iff_resF {j : ℕ} {α : D.X} (s₁ : SecFMod D F j α) (s : SecBMod D j α) (r : R) :
     GeneratorPullback.SecScal D.P.L (DegPre.famφ D F α) (DegPre.famε j) s₁ (D.famφB α) (DegPre.famε j) s (DegPre.prB D F).left
@@ -109,7 +109,7 @@ def IsFETranslate (j : ℕ) (mu α : D.X) (s : SecBMod D j α) (t : SecBMod D j 
       (DegPre.deltaφ D (FractionRing R) j α mu) (DegPre.deltaε j) u
 
 /- English proof (translation)
-Take `⟨⟨u, hu, hc⟩, -⟩` from `gen_fe (D := D) (F := FractionRing R) hG j mu α`. Use `resF_injective D (FractionRing R) j _ (sec_ext' D.P.isLB fun y J hJ => ?_)` and prove the remaining obligations. Conclude with `((secRel_iff D.P.isLB _ _ _ _ _ _ _ _ _ u).1 (h u hu hc) _ _ y J hJ).trans ((secRel_iff D.P.isLB _ _ _ _ _ _ _ _ _ u).1 (h' u hu hc) _ _ y J hJ).symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem IsFETranslate.unique (hG : GlobalFnsSt) {j : ℕ} {mu α : D.X} {s : SecBMod D j α}
     {t t' : SecBMod D j (α + j • mu)} (h : IsFETranslate D j mu α s t) (h' : IsFETranslate D j mu α s t') : t = t' := by
@@ -121,7 +121,7 @@ theorem IsFETranslate.unique (hG : GlobalFnsSt) {j : ℕ} {mu α : D.X} {s : Sec
 abbrev trB (mu : D.X) : D.P.A ⟶ D.P.A := 𝟙 D.P.A * cP D D.P.A mu
 
 /- English proof (translation)
-Rewrite using `[trF_eq, tr_pr, MonObj.comp_mul, comp_cP, comp_cP, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trF_prB (mu : D.X) : DegPre.trF D F mu ≫ DegPre.prB D F = DegPre.prB D F ≫ trB D mu := by
   rw [trF_eq, tr_pr, MonObj.comp_mul, comp_cP, comp_cP, Category.comp_id]
@@ -133,17 +133,15 @@ section OverField
 variable {k : Type} [Field k] (D : DegPre k)
 
 /- English proof (translation)
-Set `_ : Algebra (FractionRing k) k` to `(FractionRing.algEquiv k k).toRingEquiv.toRingHom.toAlgebra`. Establish `h₁ : jFK (R` using `k) k ≫ jK k = 𝟙 _ := by`. Use `(TF_hom (R := k) k).trans ?_` and prove the remaining obligations. Rewrite using `[show toF (R := k) k = RingHom.id k from RingHom.ext fun x => (FractionRing.algEquiv k k).commutes x, CommRingCat.ofHom_id, Spec.map_id]`. Establish `h₂ : jK k ≫ jFK (R` using `k) k = 𝟙 _ := by show Spec.map _ ≫ Spec.map _ = _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, show (algebraMap k (FractionRing k)).comp (algebraMap (FractionRing k) k) = RingHom.id _ from RingHom.ext fun x => ((FractionRing.algEquiv k k).symm.commutes _).symm.trans ((FractionRing.algEquiv k k).symm_apply_apply x), CommRingCat.of …`. Take `⟨u, hu, hv⟩` from `SectionScalarValuation.exists_eB D j α mu (DegPre.famMult D k j mu α) (pullGen_isGen _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ (powGen_isGen _ _ _ _ (D.psi_gen mu) j) (tau_isGen D mu α)) (powGen_isGen _ _ _ _ (pullGen_isGen _ _ _ _ D.rig_gen _) j)) _) (fun U …`. Establish `a₁ : ∀ χ, D.P.A.hom ≫ jFK (R` using `k) k ≫ D.xK χ = (SectionScalarValuation.cQ D D.P.A χ).left := fun χ => by show D.P.A.hom ≫ jFK (R := k) k ≫ jK k ≫ (D.c χ).left = D.P.A.hom ≫ (D.c χ).left`. Rewrite using `[← Category.assoc (jFK (R := k) k), h₁, Category.id_comp]`. Establish `a₂ : D.P.A.hom ≫ jFK (R` using `k) k ≫ (toUnit (TK k)).left ≫ eSec D.P.A = (1 : D.P.A ⟶ D.P.A).left := by show D.P.A.hom ≫ jFK (R := k) k ≫ jK k ≫ eSec D.P.A = D.P.A.hom ≫ eSec D.P.A`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Category.assoc (jFK (R := k) k), h₁, Category.id_comp]`. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Fintype.prod_unique, a₁, a₂]`. Rewrite using `[add_comm mu α, SectionScalarValuation.cQ_add]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_pow]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use the proof step `module)`. Use `⟨u, hu, fun T ρ κ z J hJ => (hv T ρ z J hJ).trans (congrArg₂ (· * ·) rfl ?_)⟩` and prove the remaining obligations. Set `σ : T ⟶ TF (R` to `k) k := Over.homMk T.hom (by show T.hom ≫ jFK (R := k) k ≫ jK k = _`. Rewrite using `[h₁, Category.comp_id])`. Establish `e : σ.left ≫ jFK (R` using `k) k = κ.left := by show T.hom ≫ _ = _`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Over.w κ]`. Use `show (κ.left ≫ jK k) ≫ _ = _`. Rewrite using `[Category.assoc, h₂]`. Conclude with `Category.comp_id _`. Rewrite using `[Over.w ρ]`.
-
-Use `(val_famMult σ hJ j mu α).trans ?_` and prove the remaining obligations. Rewrite using `[UUA.val_powGen', UUA.val_powGen', e]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_feGen (j : ℕ) (mu α : D.X) :
     ∃ u : LB.Gen (LB.LinComb D.P.L (Sum.elim (D.famφB (α + j • mu)) (fun i => (trB D mu).left ≫ D.famφB α i))
@@ -193,12 +191,12 @@ theorem exists_feGen (j : ℕ) (mu α : D.X) :
 def feGen (j : ℕ) (mu α : D.X) := (exists_feGen D j mu α).choose
 
 /- English proof (translation)
-The claim follows from `(exists_feGen D j mu α).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem feGen_isGen (j : ℕ) (mu α : D.X) : (feGen D j mu α).IsGen := (exists_feGen D j mu α).choose_spec.1
 
 /- English proof (translation)
-The claim follows from `(exists_feGen D j mu α).choose_spec.2 T ρ κ z J hJ`.
+A detailed English derivation is pending.
 -/
 theorem val_feGen (j : ℕ) (mu α : D.X) {T : Over (Spec (CommRingCat.of k))} (ρ : T ⟶ D.P.A) (κ : T ⟶ TK k)
     {z : T.left} {J} (hJ : Good D.P.L z J) :
@@ -208,9 +206,7 @@ theorem val_feGen (j : ℕ) (mu α : D.X) {T : Over (Spec (CommRingCat.of k))} (
   (exists_feGen D j mu α).choose_spec.2 T ρ κ z J hJ
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `exists_sec D.P.isLB (φ' := D.famφB (α + j • mu)) (ε' := DegPre.famε j) (fun U _ h => by`. Rewrite using `[Fintype.prod_sum_type]`. Simplify using `only [DegPre.deltaε, Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib]`. Conclude with `(mul_comm _ _).trans (inv_mul_cancel_right _ _))`. Use the proof step `(pullMulSec s (trB D mu).left (feGen D j mu α) (feGen_isGen D j mu α))`.
-
-Conclude with `⟨t, fun Z ρ z J hJ => (ht Z ρ z J hJ).trans (sval_pullMulSec _ _ _ _ ρ z hJ)⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_feTranslate (j : ℕ) (mu α : D.X) (s : SecBMod D j α) : ∃ t : SecBMod D j (α + j • mu),
     ∀ (Z : Scheme.{0}) (ρ : Z ⟶ D.P.A.left) (z : Z) (J), Good D.P.L z J →
@@ -227,7 +223,7 @@ def feTranslate (j : ℕ) (mu α : D.X) (s : SecBMod D j α) : SecBMod D j (α +
   (exists_feTranslate D j mu α s).choose
 
 /- English proof (translation)
-The claim follows from `(exists_feTranslate D j mu α s).choose_spec Z ρ z J hJ`.
+A detailed English derivation is pending.
 -/
 theorem sval_feTranslate (j : ℕ) (mu α : D.X) (s : SecBMod D j α) {Z : Scheme.{0}} (ρ : Z ⟶ D.P.A.left) {z : Z} {J}
     (hJ : Good D.P.L z J) : sval (feTranslate D j mu α s) ρ z J =
@@ -235,9 +231,9 @@ theorem sval_feTranslate (j : ℕ) (mu α : D.X) (s : SecBMod D j α) {Z : Schem
   (exists_feTranslate D j mu α s).choose_spec Z ρ z J hJ
 
 /- English proof (translation)
-Use `D.P.isAb.smooth` as an intermediate fact. Use `D.P.isAb.proper` as an intermediate fact. Establish `: IsLocallyNoetherian D.P.A.left` using `LocallyOfFiniteType.isLocallyNoetherian D.P.A.hom`. Establish `: CompactSpace D.P.A.left` using `QuasiCompact.compactSpace_of_compactSpace D.P.A.hom`. Establish `: IsNoetherian D.P.A.left` using `{}`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem noetherianSpace_B : NoetherianSpace D.P.A.left := by
   have := D.P.isAb.smooth
@@ -261,7 +257,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
 include hW
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (by show (T.hom ≫ (P.toPre.c (e χ)).left) ≫ φ = (T.hom ≫ spMap (PowerSeries.C (R := k))) ≫ (a.D₀.c χ).left rw [Category.assoc, hW.2.2.2.2.1, Category.assoc])`.
+A detailed English derivation is pending.
 -/
 theorem push_cP (T : Over (Spec (CommRingCat.of (PowerSeries k)))) (χ : a.D₀.X) :
     pushHom hW.1 T (cP P.toPre T (e χ)) = cP a.D₀ _ χ := Over.OverMorphism.ext (by
@@ -269,11 +265,9 @@ theorem push_cP (T : Over (Spec (CommRingCat.of (PowerSeries k)))) (χ : a.D₀.
   rw [Category.assoc, hW.2.2.2.2.1, Category.assoc])
 
 /- English proof (translation)
-Set `ρ` to `pushHom hW.1 P.toPre.P.A (𝟙 _)`. Establish `hρ : ρ.left = φ` using `Category.id_comp _`. Use `fin_cases i`. Conclude with `(Category.id_comp _).trans (Category.comp_id _).symm`. Establish `e₁ : pushHom hW.1 _ (𝟙 _ * cP P.toPre _ (e α)) = ρ ≫ (𝟙 _ * cP a.D₀ _ α)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul, push_cP hW, MonObj.comp_mul, comp_cP, Category.comp_id]`. Conclude with `(congrArg (fun q => q.left) e₁).trans (congrArg (· ≫ _) hρ)`. Establish `e₁ : pushHom hW.1 _ (cP P.toPre _ (e α)) = ρ ≫ cP a.D₀ _ α` using `by rw [push_cP hW, comp_cP]`. Conclude with `(congrArg (fun q => q.left) e₁).trans (congrArg (· ≫ _) hρ)`. Establish `e₁ : pushHom hW.1 P.toPre.P.A 1 = ρ ≫ (1 : a.D₀.P.A ⟶ a.D₀.P.A)` using `by rw [map_one, MonObj.comp_one]`.
-
-Conclude with `(congrArg (fun q => q.left) e₁).trans (congrArg (· ≫ _) hρ)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem famφB_comp (α : a.D₀.X) (i : Fin 4) : P.toPre.famφB (e α) i ≫ φ = φ ≫ a.D₀.famφB α i := by
   let ρ := pushHom hW.1 P.toPre.P.A (𝟙 _)
@@ -293,7 +287,7 @@ def pullB (j : ℕ) (α : a.D₀.X) :
   pullThrough hW.2.1 a.D₀.P.isLB P.toPre.P.isLB (famφB_comp hW α) (DegPre.famε j) hW.1.1.w
 
 /- English proof (translation)
-The claim follows from `secThrough_pullThrough _ _ _ _ _ s`.
+A detailed English derivation is pending.
 -/
 theorem secThrough_pullB (j : ℕ) (α : a.D₀.X) (s : SecBMod a.D₀ j α) :
     SecThrough w (P.toPre.famφB (e α)) (a.D₀.famφB α) (DegPre.famε j) (pullB hW j α s) s φ :=
@@ -307,14 +301,14 @@ abbrev constF (k : Type) [Field k] (F : Type) [Field F] [Algebra (FractionRing (
   (toF (R := PowerSeries k) F).comp (PowerSeries.C (R := k))
 
 /- English proof (translation)
-Rewrite using `[GC.famφ_eq, Category.assoc, famφB_comp hW, Category.assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem famφ_comp (α : a.D₀.X) (i : Fin 4) :
     DegPre.famφ P.toPre F (e α) i ≫ φ = ((DegPre.prB P.toPre F).left ≫ φ) ≫ a.D₀.famφB α i := by
   rw [GC.famφ_eq, Category.assoc, famφB_comp hW, Category.assoc]
 
 /- English proof (translation)
-Use `(isPullback_prB P.toPre F).paste_horiz hW.1.1` as an intermediate fact. Rewrite `this` using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isPullback_prB_comp : IsPullback ((DegPre.prB P.toPre F).left ≫ φ) (strF P.toPre F) a.D₀.P.A.hom
     (Spec.map (CommRingCat.ofHom (constF k F))) := by
@@ -325,7 +319,7 @@ def pullF (j : ℕ) (α : a.D₀.X) : SecBMod a.D₀ j α →ₛₗ[constF k F] 
   pullThrough hW.2.1 a.D₀.P.isLB P.toPre.P.isLB (famφ_comp hW F α) (DegPre.famε j) (isPullback_prB_comp hW F).w
 
 /- English proof (translation)
-The claim follows from `secThrough_pullThrough _ _ _ _ _ s`.
+A detailed English derivation is pending.
 -/
 theorem secThrough_pullF (j : ℕ) (α : a.D₀.X) (s : SecBMod a.D₀ j α) :
     SecThrough w (DegPre.famφ P.toPre F (e α)) (a.D₀.famφB α) (DegPre.famε j) (pullF hW F j α s) s
@@ -333,7 +327,7 @@ theorem secThrough_pullF (j : ℕ) (α : a.D₀.X) (s : SecBMod a.D₀ j α) :
   secThrough_pullThrough _ _ _ _ _ s
 
 /- English proof (translation)
-The claim follows from `sec_ext' P.toPre.P.isLB fun y J' hJ' => by obtain ⟨J, hJ⟩ := exists_good' a.D₀.P.isLB y have e₁ := (secThrough_pullB hW j α s).sval (famφB_comp hW α) (𝟙 _ ≫ (DegPre.prB P.toPre F).left) hJ hJ' have e₂ := (secThrough_pullF hW F j α s).sval (famφ_comp hW F α) (𝟙 _) hJ hJ' simp only …`.
+A detailed English derivation is pending.
 -/
 theorem resF_pullB (j : ℕ) (α : a.D₀.X) (s : SecBMod a.D₀ j α) :
     resF P.toPre F j (e α) (pullB hW j α s) = pullF hW F j α s := sec_ext' P.toPre.P.isLB fun y J' hJ' => by
@@ -345,7 +339,7 @@ theorem resF_pullB (j : ℕ) (α : a.D₀.X) (s : SecBMod a.D₀ j α) :
   exact (Units.mul_right_inj _).1 (e₁.symm.trans e₂)
 
 /- English proof (translation)
-Set `_ : Algebra k F` to `(constF k F).toAlgebra`. Use `noetherianSpace_B a.D₀` as an intermediate fact. Conclude with `isExtension_pullThrough (isPullback_prB_comp hW F) hW.2.1 a.D₀.P.isLB P.toPre.P.isLB (famφ_comp hW F α)`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isExtension_pullF (j : ℕ) (α : a.D₀.X) :
     letI : Algebra k F := (constF k F).toAlgebra
@@ -360,21 +354,21 @@ def constFam (α : a.D₀.X) (s₀ : SecBMod a.D₀ j α) : Fam P.toPre F j :=
   (FamFree.exists_fam_single hG P.tau_bimult hj (e α) (pullF hW F j α s₀)).choose
 
 /- English proof (translation)
-The claim follows from `(FamFree.exists_fam_single hG P.tau_bimult hj (e α) (pullF hW F j α s₀)).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem constFam_self (α : a.D₀.X) (s₀ : SecBMod a.D₀ j α) :
     famComp P.toPre F j (e α) (constFam hW F hG hj α s₀) = pullF hW F j α s₀ :=
   (FamFree.exists_fam_single hG P.tau_bimult hj (e α) (pullF hW F j α s₀)).choose_spec.1
 
 /- English proof (translation)
-The claim follows from `SecOps.sec_ext ((FamFree.exists_fam_single hG P.tau_bimult hj (e α) (pullF hW F j α s₀)).choose_spec.2 χ hχ)`.
+A detailed English derivation is pending.
 -/
 theorem constFam_off (α : a.D₀.X) (s₀ : SecBMod a.D₀ j α) (χ : P.toPre.X) (hχ : ∀ mu, e α + j • mu ≠ χ) :
     famComp P.toPre F j χ (constFam hW F hG hj α s₀) = 0 :=
   SecOps.sec_ext ((FamFree.exists_fam_single hG P.tau_bimult hj (e α) (pullF hW F j α s₀)).choose_spec.2 χ hχ)
 
 /- English proof (translation)
-Use `fam_ext fun χ i => congrArg (fun q => LB.Sec.f q i) (?_ : s.s χ = (constFam hW F hG hj α s₀).s χ)` and prove the remaining obligations. Distinguish the cases in `hχ : ∃ mu, e α + j • mu = χ`. Conclude with `FamFree.eq_of_eq_add_nsmul hG _ _ hχ (h₁.trans (constFam_self hW F hG hj α s₀).symm)`. Conclude with `(h₂ χ fun mu h => hχ ⟨mu, h⟩).trans (constFam_off hW F hG hj α s₀ χ fun mu h => hχ ⟨mu, h⟩).symm`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem eq_constFam {α : a.D₀.X} {s₀ : SecBMod a.D₀ j α} {s : Fam P.toPre F j}
     (h₁ : famComp P.toPre F j (e α) s = pullF hW F j α s₀)
@@ -390,7 +384,7 @@ def expo (a : ArcIn D l β k b) (j : ℕ) (α mu : a.D₀.X) : ℤ := j * (a.be 
 
 omit hW in
 /- English proof (translation)
-Take `⟨n, hn⟩ : (2 : ℤ) ∣ a.be mu mu` from `(Dvd.intro _ rfl).trans (a.be_dvd mu mu)`. Rewrite using `[expo, hn, Int.mul_ediv_cancel_left _ two_ne_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem two_mul_expo (a : ArcIn D l β k b) (j : ℕ) (α mu : a.D₀.X) :
     2 * expo a j α mu = j * a.be mu mu + 2 * a.be mu α := by

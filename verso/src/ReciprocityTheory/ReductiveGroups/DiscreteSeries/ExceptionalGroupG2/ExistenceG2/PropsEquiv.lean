@@ -31,15 +31,13 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
   {E : Fin n → Fin n → Module.End ℂ D} {V : Submodule ℂ D}
 
 /- English proof (translation)
-Establish `hSc : IsClosed ((Submodule.span ℂ (Set.range y)).topologicalClosure : Set H)` using `Submodule.isClosed_topologicalClosure _`. Establish `hcl : IsClosed (closGen E V : Set H)` using `Submodule.isClosed_topologicalClosure _`. Establish `hspan : Submodule.span ℂ (Set.range y) ≤ closGen E V` using `Submodule.span_le.2 (Set.range_subset_iff.2 hy)`. Establish `hS : (Submodule.span ℂ (Set.range y)).topologicalClosure ≤ closGen E V` using `Submodule.topologicalClosure_minimal _ hspan hcl`. Establish `hSG : ∀ g ∈ UJset ε, ∀ x ∈ (Submodule.span ℂ (Set.range y)).topologicalClosure, σ g x ∈ (Submodule.span ℂ (Set.range y)).topologicalClosure`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g hg`. Establish `hle : Submodule.span ℂ (Set.range y) ≤ ((Submodule.span ℂ (Set.range y)).topologicalClosure).comap (σ g : H →ₗ[ℂ] H)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Take `⟨j, hj⟩` from `hst g hg i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `show σ g (y i) ∈ (Submodule.span ℂ (Set.range y)).topologicalClosure`. Rewrite using `[hj]`. Conclude with `Submodule.le_topologicalClosure _ (Submodule.subset_span ⟨j, rfl⟩)`. Establish `hc' : IsClosed ((((Submodule.span ℂ (Set.range y)).topologicalClosure).comap (σ g : H →ₗ[ℂ] H) : Submodule ℂ H) : Set H)` using `hSc.preimage (σ g).continuous`. Conclude with `fun x hx => Submodule.topologicalClosure_minimal _ hle hc' hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Break down `rigid_irred hgap hσ hD hV hc hVK _ hS hSc hSG with h | h` into its components or cases. It suffices to derive a contradiction. Take `⟨i, hi⟩` from `hne`. Establish `: y i ∈ (Submodule.span ℂ (Set.range y)).topologicalClosure` using `Submodule.le_topologicalClosure _ (Submodule.subset_span ⟨i, rfl⟩)`. Rewrite `this` using `[h, Submodule.mem_bot]`.
-
-Conclude with `hi this`. Conclude with `h.symm.le`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem closGen_le_span (hgap : StdGap ε lam) (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     (hV : IsKIrrHW ε E (lowK ε lam) V) (hc : ∀ v ∈ V, casimir E v = (casVal lam : ℂ) • v)
@@ -103,25 +101,23 @@ variable {ε : Fin n → Bool} {lam : Fin n → ℝ}
   {E₂ : Fin n → Fin n → Module.End ℂ D₂} {V₂ : Submodule ℂ D₂}
 
 /- English proof (translation)
-Take `⟨φ, hφK, hφI⟩` from `KTypeIsomorphism.exists_phi hσ₁ hD₁ hV₁ hσ₂ hD₂ hV₂`. Establish `huniv` using `rigid_universal hσ₁ hD₁ hV₁ hc₁ hVK₁ hσ₂ hD₂ hV₂ hc₂ hVK₂ hgap φ hφK hφI`. Set `y₁ : ↥(UJset ε) × ↥V₁ → H₁` to `fun p => σ₁ p.1.1 ((p.2 : D₁) : H₁)`. Set `y₂ : ↥(UJset ε) × ↥V₁ → H₂` to `fun p => σ₂ p.1.1 (((φ p.2 : V₂) : D₂) : H₂)`. Establish `split : ∀ g ∈ UJset ε, ∀ g' ∈ UJset ε, ∃ h ∈ UJset ε, σ₁ g' = (σ₁ g).comp (σ₁ h) ∧ σ₂ g' = (σ₂ g).comp (σ₂ h)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `g hg g' hg'`. Take `⟨gi, hgi, hggi⟩` from `UnitaryGroupOfForm.inv_mem_UJ hg`. Establish `hm : gi * g' ∈ UJset ε` using `mul_mem_unitaryJ hgi hg'`. Establish `e1 : g * (gi * g') = g'` using `by rw [← Matrix.mul_assoc, hggi, Matrix.one_mul]`. Conclude with `⟨gi * g', hm, by rw [← hσ₁.1.2 g hg _ hm, e1], by rw [← hσ₂.1.2 g hg _ hm, e1]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hI : ∀ i j, inner ℂ (y₂ i) (y₂ j) = inner ℂ (y₁ i) (y₁ j)`. Introduce and unpack `⟨⟨g, hg⟩, v⟩ ⟨⟨g', hg'⟩, v'⟩`. Take `⟨h, hh, e₁, e₂⟩` from `split g hg g' hg'`. Use `show inner ℂ (σ₂ g (((φ v : V₂) : D₂) : H₂)) (σ₂ g' (((φ v' : V₂) : D₂) : H₂)) = inner ℂ (σ₁ g ((v : D₁) : H₁)) (σ₁ g' ((v' : D₁) : H₁))`. Rewrite using `[e₁, e₂, ContinuousLinearMap.comp_apply, ContinuousLinearMap.comp_apply, UnitaryGroupOfForm.inner_map_map' hσ₂ hg, UnitaryGroupOfForm.inner_map_map' hσ₁ hg]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `huniv h hh v' v`. Establish `h₁ : ∀ i, y₁ i ∈ closGen E₁ V₁` using `fun p => closGen_stable hgap hσ₁ hD₁ hV₁ hc₁ hVK₁ p.1.1 p.1.2 _ (UnitaryGroupOfForm.mem_closGen V₁ (p.2 : D₁) p.2.2)`. Establish `h₂ : ∀ i, y₂ i ∈ closGen E₂ V₂` using `fun p => closGen_stable hgap hσ₂ hD₂ hV₂ hc₂ hVK₂ p.1.1 p.1.2 _ (UnitaryGroupOfForm.mem_closGen V₂ ((φ p.2 : V₂) : D₂) (φ p.2).2)`. Establish `hτ₁ : ∀ g (hg : g ∈ UJset ε) (p : ↥(UJset ε) × ↥V₁), σ₁ g (y₁ p) = y₁ (⟨g * p.1.1, mul_mem_unitaryJ hg p.1.2⟩, p.2)`. Introduce `g hg p`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `show σ₁ g (σ₁ p.1.1 _) = σ₁ (g * p.1.1) _`. Rewrite using `[hσ₁.1.2 g hg _ p.1.2]`. Both sides reduce to the same expression. Establish `hτ₂ : ∀ g (hg : g ∈ UJset ε) (p : ↥(UJset ε) × ↥V₁), σ₂ g (y₂ p) = y₂ (⟨g * p.1.1, mul_mem_unitaryJ hg p.1.2⟩, p.2)`. Introduce `g hg p`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Use `show σ₂ g (σ₂ p.1.1 _) = σ₂ (g * p.1.1) _`. Rewrite using `[hσ₂.1.2 g hg _ p.1.2]`. Both sides reduce to the same expression. Take `⟨v₀, hv₀V, hv₀⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hV₁0`. Establish `hne₁ : ∃ i, y₁ i ≠ 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨(⟨1, one_mem_unitaryJ ε⟩, ⟨v₀, hv₀V⟩), ?_⟩` and prove the remaining obligations. Use `show σ₁ 1 ((v₀ : D₁) : H₁) ≠ 0`. Rewrite using `[hσ₁.1.1]`. Introduce `h`. Establish `h' : ((v₀ : D₁) : H₁) = 0` using `h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hv₀ (Subtype.ext h')`. Establish `hne₂ : ∃ i, y₂ i ≠ 0`. Use `⟨(⟨1, one_mem_unitaryJ ε⟩, ⟨v₀, hv₀V⟩), ?_⟩` and prove the remaining obligations. Use `show σ₂ 1 (((φ ⟨v₀, hv₀V⟩ : V₂) : D₂) : H₂) ≠ 0`. Rewrite using `[hσ₂.1.1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `h`. Establish `h' : (((φ ⟨v₀, hv₀V⟩ : V₂) : D₂) : H₂) = 0` using `h`. Establish `hh` using `hφI ⟨v₀, hv₀V⟩ ⟨v₀, hv₀V⟩`. Rewrite `hh` using `[h', inner_zero_left]`. Conclude with `hv₀ (Subtype.ext (inner_self_eq_zero.1 hh.symm))`.
-
-Establish `hd₁` using `KTypeIsomorphism.closGen_le_span hgap hσ₁ hD₁ hV₁ hc₁ hVK₁ y₁ h₁ (fun g hg i => ⟨_, hτ₁ g hg i⟩) hne₁`. Establish `hd₂` using `KTypeIsomorphism.closGen_le_span hgap hσ₂ hD₂ hV₂ hc₂ hVK₂ y₂ h₂ (fun g hg i => ⟨_, hτ₂ g hg i⟩) hne₂`. Take `⟨U, hU⟩` from `KTypeIsomorphism.gns_extend y₁ y₂ hI (closGen E₁ V₁) (closGen E₂ V₂) (Submodule.isClosed_topologicalClosure _) (Submodule.isClosed_topologicalClosure _) h₁ h₂ hd₁ hd₂`. Use `⟨U, fun g hg x y hxy => ?_⟩` and prove the remaining obligations. Conclude with `KTypeIsomorphism.gns_intertwine y₁ y₂ _ _ h₁ hd₁ U hU (σ₁ g) (σ₂ g) (fun p => (⟨g * p.1.1, mul_mem_unitaryJ hg p.1.2⟩, p.2)) (hτ₁ g hg) (hτ₂ g hg) (closGen_stable hgap hσ₁ hD₁ hV₁ hc₁ hVK₁ g hg) x y hxy`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem data_unitary_equiv (hgap : StdGap ε lam)
     (hσ₁ : IsURepOn (UJset ε) σ₁) (hD₁ : IsDerivedOn ε σ₁ D₁ E₁) (hV₁ : IsKIrrHW ε E₁ (lowK ε lam) V₁)

@@ -12,15 +12,15 @@ namespace GlobalTheory.Published
 open CategoryTheory AlgebraicGeometry TopologicalSpace in
 
 /- English proof (translation)
-Establish `hrange : (U : Set X) ⊆ Set.range π`. Introduce `y hy`. Take `⟨x, hx⟩` from `(ConcreteCategory.bijective_of_isIso ((π ∣_ U).base)).2 ⟨y, hy⟩`. Use `⟨x.1, ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val hx` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `this` using `[morphismRestrict_base_coe]`. Establish `hgen : π (genericPoint X') = genericPoint X`. Establish `h1` using `(genericPoint_spec X').image π.continuous`. Establish `hdense : closure (Set.range π) = Set.univ`. Apply `Set.eq_univ_of_univ_subset` to reduce the goal to its premises.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← (U.isOpen.dense hU).closure_eq]`. Conclude with `closure_mono hrange`. Rewrite `h1` using `[Set.image_univ, hdense]`. Conclude with `h1.eq (genericPoint_spec X)`. Use `⟨hgen, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : genericPoint X' ∈ π ⁻¹ᵁ U` using `by show π (genericPoint X') ∈ U`. Rewrite using `[hgen]`. Conclude with `((genericPoint_spec X).mem_open_set_iff U.isOpen).2 (by simpa using hU)`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : genericPoint X' ∈ Set.range (π ⁻¹ᵁ U).ι := by`. Rewrite using `[Scheme.Opens.range_ι]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hmem`. Establish `h1` using `_root_.GlobalTheory.CurveDegreesCompare.residueDegree_comp (π ∣_ U) U.ι x`. Establish `h2` using `_root_.GlobalTheory.CurveDegreesCompare.residueDegree_comp (π ⁻¹ᵁ U).ι π x`. Rewrite `h1` using `[morphismRestrict_ι, h2, _root_.GlobalTheory.CurveDegreesCompare.residueDegree_of_isOpenImmersion (π ⁻¹ᵁ U).ι, _root_.GlobalTheory.CurveDegreesCompare.residueDegree_of_isOpenImmersion U.ι, _root_.GlobalTheory.CurveDegreesCompare.residueDegree_of_isOpenImmersion (π ∣_ U), hx]`. Simplify using `using h1`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Published.generic_of_isIso_restrict {X X' : Scheme.{0}} [IsIntegral X]
     [IsIntegral X'] (π : X' ⟶ X) (U : X.Opens)
@@ -57,7 +57,7 @@ theorem _root_.GlobalTheory.Published.generic_of_isIso_restrict {X X' : Scheme.{
 open CategoryTheory AlgebraicGeometry TopologicalSpace in
 
 /- English proof (translation)
-Introduce `k _ X X' _ _ p p' D hp hp' _ _ π hπ U hU hiso L a hL`. Take `⟨hgen, hdeg⟩` from `_root_.GlobalTheory.Published.generic_of_isIso_restrict π U hU`. Use `(H k X X' p p' D hp hp' π hπ hgen (by rw [hdeg]; exact one_ne_zero)).1 L a hL` as an intermediate fact. Simplify `this` using `[hdeg]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem _root_.GlobalTheory.Published.arBirational_of_arProj (H : _root_.GlobalTheory.Published.ArProj) :
     _root_.GlobalTheory.Published.ArBirational := by

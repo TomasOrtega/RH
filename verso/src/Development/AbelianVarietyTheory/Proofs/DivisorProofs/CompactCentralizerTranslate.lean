@@ -13,27 +13,23 @@ noncomputable section
 namespace GlobalTheory.OrbFinAf.TorusNorm
 
 /- English proof (translation)
-Set `T : Z × S →* Z × S` to `{ toFun := fun h => (τ h.1 * (ι h.2)⁻¹, h.2⁻¹) map_one' := by simp map_mul' := fun h k => by`. Use `ext`. Use `show τ (h.1 * k.1) * (ι (h.2 * k.2))⁻¹ = τ h.1 * (ι h.2)⁻¹ * (τ k.1 * (ι k.2)⁻¹)`. Rewrite using `[map_mul, map_mul, _root_.mul_inv_rev, hZ (ι k.2)⁻¹ (ι h.2)⁻¹]`. Simplify using `only [mul_assoc]`.
+Introduce a local definition for the expression. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[← mul_assoc, ← mul_assoc, hZ (ι h.2)⁻¹ (τ k.1)]`. Use `show (h.2 * k.2)⁻¹ = h.2⁻¹ * k.2⁻¹`. Rewrite using `[_root_.mul_inv_rev, hS] }`. Establish `hT : ∀ h, T h = (τ h.1 * (ι h.2)⁻¹, h.2⁻¹)` using `fun h => rfl`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomm : ∀ a b : Z × S, a * b = b * a` using `fun a b => Prod.ext (hZ _ _) (hS _ _)`. Establish `hTc : Continuous T` using `by show Continuous fun h : Z × S => (τ h.1 * (ι h.2)⁻¹, h.2⁻¹)`. Conclude with `((hτc.comp continuous_fst).mul (hιc.comp continuous_snd).inv).prodMk continuous_snd.inv`. Establish `hTi : ∀ h, T (T h) = h`. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hT, hT]`. Use `ext`. Simplify using `only [map_mul, map_inv, hτi, hτι, inv_inv]`. Rewrite using `[mul_assoc, inv_mul_cancel, mul_one]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨W, hW, hWs⟩` from `hsq`. Take `⟨U, hU1, hUs⟩` from `hU`. Establish `hsqT : ∃ W' ∈ nhds (1 : Z × S), ∀ s ∈ W', T s = s → ∃ r : Z × S, T r = r ∧ r * r = s`. Use `⟨W ×ˢ U, prod_mem_nhds hW hU1, fun s hs hTs => ?_⟩` and prove the remaining obligations. Establish `h2 : s.2⁻¹ = s.2` using `congrArg Prod.snd hTs`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `ha : s.2 = 1` using `hUs _ hs.2 (by`. Combine the equalities or inequalities in the displayed calculation. Establish `h1 : τ s.1 * (ι s.2)⁻¹ = s.1` using `congrArg Prod.fst hTs`. Rewrite `h1` using `[ha, map_one, inv_one, mul_one]`. Take `⟨r, hr, hrr⟩` from `hWs _ hs.1 h1`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨(r, 1), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hT]`. Simplify using `[hr]`. Use `ext`. Conclude with `hrr`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[ha]`. Use `haveI : T2Space (Z × S) := inferInstance`. Take `⟨B, hB, hBs⟩` from `GlobalTheory.InvolutionNorm.exists_compact_mod_kernel (Z × S) hcomm T hTc hTi hsqT (D ×ˢ {1}) (hD.prod isCompact_singleton)`. Use `⟨Prod.fst '' B, hB.image continuous_fst, fun z a hz => ?_⟩` and prove the remaining obligations. Establish `hmem : T (z, a) * (z, a) ∈ D ×ˢ ({1} : Set S)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hT]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show τ z * (ι a)⁻¹ * z ∈ D`. Rewrite using `[mul_assoc, hZ (ι a)⁻¹ z, ← mul_assoc]`. Conclude with `hz`.
-
-Use `show a⁻¹ * a = 1`. Conclude with `inv_mul_cancel a`. Take `⟨t, ht, b, hb, hzb⟩` from `hBs _ hmem`. Use `⟨t.1, t.2, ?_, b.1, ⟨b, hb, rfl⟩, congrArg Prod.fst hzb⟩` and prove the remaining obligations. Establish `h1 : τ t.1 * (ι t.2)⁻¹ * t.1 = 1` using `congrArg Prod.fst ht`.
-
-Rewrite `h1` using `[mul_assoc, hZ _ t.1, ← mul_assoc]`. Conclude with `mul_inv_eq_one.1 h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_compact_mod_sim (Z S : Type) [Group Z] [TopologicalSpace Z] [IsTopologicalGroup Z]
     [LocallyCompactSpace Z] [SigmaCompactSpace Z] [T2Space Z]

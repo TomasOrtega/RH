@@ -13,7 +13,7 @@ open scoped ENNReal NumberField.AdeleRing InnerProductSpace ComplexConjugate
 open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial
 
 /- English proof (translation)
-Establish `h1` using `(quasiMeasurePreserving_mk (Gam K n) μ).ae (coeFn_rightRegularRep (Gam K n) μ g v)`. Establish `h2` using `(measurePreserving_mul_right μ g).quasiMeasurePreserving.ae h`. Use `filter_upwards [h1, h2] with y e1 e2`. Rewrite using `[e1]`. Conclude with `e2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem reps_right {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measure (G1 K n)) [μ.IsHaarMeasure]
     {v : L2 μ} {φ : G1 K n → ℂ} (h : Reps μ v φ) (g : G1 K n) :
@@ -25,11 +25,9 @@ private theorem reps_right {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : 
   exact e2
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `⟨0, τ.zero_mem, ?_⟩` and prove the remaining obligations. Use `filter_upwards [(quasiMeasurePreserving_mk (Gam K n) μ).ae (Lp.coeFn_zero ℂ 2 (quotientMeasure (Gam K n) μ))] with y e`. Simplify using `using e`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Consider the case `insert i s hi ih`. Take `⟨v, hv, hr⟩` from `ih`. Take `⟨w, hw, hq⟩` from `h i`. Use `⟨c i • w + v, τ.add_mem (τ.smul_mem _ hw) hv, ?_⟩` and prove the remaining obligations. Use `filter_upwards [(quasiMeasurePreserving_mk (Gam K n) μ).ae (Lp.coeFn_add (c i • w) v), (quasiMeasurePreserving_mk (Gam K n) μ).ae (Lp.coeFn_smul (c i) w), hr, hq] with y e1 e2 e3 e4`.
-
-Rewrite using `[e1, Pi.add_apply, e2, Pi.smul_apply, e3, e4, Finset.sum_insert hi, smul_eq_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem reps_sum {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measure (G1 K n)) [μ.IsHaarMeasure]
     (τ : Submodule ℂ (L2 μ)) {ι : Type} (s : Finset ι) (φ : ι → G1 K n → ℂ) (c : ι → ℂ)
@@ -49,14 +47,14 @@ private theorem reps_sum {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Me
     rw [e1, Pi.add_apply, e2, Pi.smul_apply, e3, e4, Finset.sum_insert hi, smul_eq_mul]
 
 /- English proof (translation)
-Establish `: (⟨Real.exp 0, Real.exp_pos 0⟩ : {r : ℝ // 0 < r}) = 1` using `Subtype.ext (by simp)`. Rewrite using `[zt, this, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem zt_zero {K : Type} [Field K] [NumberField K] : zt K 0 = 1 := by
   have : (⟨Real.exp 0, Real.exp_pos 0⟩ : {r : ℝ // 0 < r}) = 1 := Subtype.ext (by simp)
   rw [zt, this, map_one]
 
 /- English proof (translation)
-Rewrite using `[blkLaws.1, neg_zero, zt_zero, mul_one, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem lv_zero {K : Type} [Field K] [NumberField K] (m₁ m₂ : G1 K 2) :
     ((lv m₁ m₂ 0 : G1 K (2 + 2)) : AdelicGLn.AdelicGL K (2 + 2)) =
@@ -64,9 +62,9 @@ private theorem lv_zero {K : Type} [Field K] [NumberField K] (m₁ m₂ : G1 K 2
   rw [blkLaws.1, neg_zero, zt_zero, mul_one, mul_one]
 
 /- English proof (translation)
-Establish `h1 : (⟨Real.exp t, Real.exp_pos t⟩ : {r : ℝ // 0 < r}) = r` using `Subtype.ext h.symm`. Establish `h2 : (⟨Real.exp (-t), Real.exp_pos (-t)⟩ : {r : ℝ // 0 < r}) = r⁻¹`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Real.exp (-t) = r.1⁻¹`. Rewrite using `[h, Real.exp_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[blkLaws.1, zt, zt, h1, h2]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem lv_ray {K : Type} [Field K] [NumberField K] (r : {r : ℝ // 0 < r}) (t : ℝ) (h : r.1 = Real.exp t) :
     ((lv 1 1 t : G1 K (2 + 2)) : AdelicGLn.AdelicGL K (2 + 2)) =
@@ -80,25 +78,23 @@ private theorem lv_ray {K : Type} [Field K] [NumberField K] (r : {r : ℝ // 0 <
   simp
 
 /- English proof (translation)
-Introduce `K _ _ _ μ₂ _ τ₁ τ₂ D h₁ h₂ f hf`. Prove the components needed by the constructor for the conclusion. Introduce `hs`. Use `⟨hs.cont, hs.bdd, hs.unip, fun t g => ?_, fun g => ?_⟩` and prove the remaining obligations. Use `hs.ray ⟨Real.exp t, Real.exp_pos t⟩ _ g ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Subgroup.coe_mul, lv_ray ⟨Real.exp t, Real.exp_pos t⟩ t rfl]`. Take `⟨d, φ, ψ, hφ, hψ, hx⟩` from `hs.levi g`. Establish `hx' : ∀ m₁ m₂, f (lv m₁ m₂ 0 * g) = ∑ i, φ i m₁ * ψ i m₂` using `fun m₁ m₂ => hx m₁ m₂ _ (by rw [Subgroup.coe_mul, lv_zero])`. Use `⟨fun m₂ => ?_, fun m₁ => ?_⟩` and prove the remaining obligations. Use `reps_sum μ₂ τ₁ Finset.univ φ (fun i => ψ i m₂) (fun i => (hφ i).2)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `this` using `only [hx', mul_comm]`. Use `reps_sum μ₂ τ₂ Finset.univ ψ (fun i => φ i m₁) (fun i => (hψ i).2)` as an intermediate fact. Simplify `this` using `only [hx']`. Introduce and unpack `⟨hc, hb, hu, hr, hsl⟩`. Use `⟨hc, hb, hu, fun r x g hx => ?_, fun g => ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: x = lv 1 1 (Real.log r.1) * g`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hx, Subgroup.coe_mul, lv_ray r _ (Real.exp_log r.2).symm]`. Rewrite using `[this, hr]`. Take `⟨E₁, E₂, hE₁, hE₂, hR₁, hR₂, hE⟩` from `secStr μ₂ τ₁ τ₂ D h₁ h₂`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨X, n₁, n₂, t, k, hk, rfl⟩` from `iwa g`. Take `⟨a, b, φ, ψ, x, y, s, u, hφ, hψ, hT⟩` from `tens E₁ E₂`. Take `⟨hk₁, hk₂⟩` from `hE f hc hf hsl k hk`. Establish `hT'` using `hT (fun m₁ m₂ => f (lv m₁ m₂ 0 * k)) hk₁ hk₂`. Use `set c : Fin a → Fin b → ℂ := fun i j => ∑ p, ∑ q, s i p * u j q * f (lv (x i p) (y j q) 0 * k) with hcdef`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a * b, fun l m => c (finProdFinEquiv.symm l).1 (finProdFinEquiv.symm l).2 * φ (finProdFinEquiv.symm l).1 (m * n₁), fun l m => ψ (finProdFinEquiv.symm l).2 (m * n₂), fun l => ⟨?_, ?_⟩, fun l => ⟨?_, ?_⟩, fun m₁ m₂ z hz => ?_⟩` and prove the remaining obligations. Conclude with `continuous_const.mul ((hR₁ _ (hφ _)).cont.comp (continuous_mul_const n₁))`. Take `⟨v, hv, hq⟩` from `(hR₁ _ (hφ (finProdFinEquiv.symm l).1)).rep`. Use `reps_sum μ₂ τ₁ (Finset.univ : Finset Unit) (fun _ m => φ (finProdFinEquiv.symm l).1 (m * n₁)) (fun _ => c (finProdFinEquiv.symm l).1 (finProdFinEquiv.symm l).2) (fun _ => ⟨_, h₁.inv n₁ v hv, reps_right μ₂ hq n₁⟩)` as an intermediate fact. Simplify `this` using `only [Finset.univ_unique, Finset.sum_singleton]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `(hR₂ _ (hψ _)).cont.comp (continuous_mul_const n₂)`. Take `⟨v, hv, hq⟩` from `(hR₂ _ (hψ (finProdFinEquiv.symm l).2)).rep`. Conclude with `⟨_, h₂.inv n₂ v hv, reps_right μ₂ hq n₂⟩`. Take `⟨e, he, -⟩` from `adMeas m₁ m₂ 0`. Establish `h1 : lv m₁ m₂ 0 * nn X = nn (e.symm X) * lv m₁ m₂ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he, e.apply_symm_apply]`. Establish `h2 : lv m₁ m₂ 0 * lv n₁ n₂ t = lv 1 1 t * lv (m₁ * n₁) (m₂ * n₂) 0`. Rewrite using `[blkLaws.2.1, blkLaws.2.1]`. Simplify using the standard rewrite rules. Establish `hz' : z = nn (e.symm X) * (lv 1 1 t * (lv (m₁ * n₁) (m₂ * n₂) 0 * k))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `: z = lv m₁ m₂ 0 * (nn X * lv n₁ n₂ t * k)`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hz, Subgroup.coe_mul (x := lv m₁ m₂ 0), lv_zero]`. Rewrite using `[this, ← mul_assoc, ← mul_assoc, h1, mul_assoc (nn _), h2]`. Simplify using `only [mul_assoc]`.
-
-Rewrite using `[hz', hu, hr, hT', ← Fintype.sum_prod_type']`. Conclude with `(Equiv.sum_comp finProdFinEquiv.symm (fun p : Fin a × Fin b => c p.1 p.2 * φ p.1 (m₁ * n₁) * ψ p.2 (m₂ * n₂))).symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.secCrit :
     ∀ {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] (μ₂ : Measure (G1 K 2)) [μ₂.IsHaarMeasure] (τ₁ τ₂ : Submodule ℂ (L2 μ₂)) (D : TypeDat K (2 + 2)), CuspIrr μ₂ τ₁ → CuspIrr μ₂ τ₂ → ∀ f : G1 K (2 + 2) → ℂ, D.Fix f →

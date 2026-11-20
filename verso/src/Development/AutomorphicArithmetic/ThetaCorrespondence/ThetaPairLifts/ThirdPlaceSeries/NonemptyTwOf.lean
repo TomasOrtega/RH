@@ -26,7 +26,7 @@ set_option maxHeartbeats 1000000
 section General
 variable {D : D7}
 /- English proof (translation)
-Take `⟨D0, cf, jE, A, cg, au, rep, row, low, Pq, S, hl, eig, θ, Bs, M, C, tp, ch, mt, big, L, Sp, Au, ss, rfl⟩` from `b`. Establish `h` using `hkF_zero_of_sideB (D := D0) Bs h0`. Conclude with `⟨⟨Bs.cHk, Bs.cHk_del⟩, fun i j s P x => h i j s P x⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_frob_unit_and_hkF_zero_eq_of_built {hL : _root_.UpperTheory.Zero.LLC.RecTExists} (b : _root_.GlobalTheory.HeightCounting.NormChoiceConstructed hL D) (h0 : ∀ j P, b.hL j 0 P = 1) :
     (∃ u, IsFrobUnit D u) ∧
@@ -40,9 +40,9 @@ variable {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {K : Ctx} {B : Base} {f :
   {Wt : Set B.places.Pl} {p0 : BaseLevelRowSide (w.D Z)} {t : RowsT K w Z Wt p0} {nch : NChoice (w.D Z)} {n : NchT w Z Wt nch}
   {xd : ThData (w.D Z)} {c : _root_.GlobalTheory.Mem.Top.Bl.NormChoiceCore hL t n}
 /- English proof (translation)
-Take `⟨g, h1, h2, ⟨cg⟩⟩` from `hG`. Take `⟨k1, k2⟩` from `_root_.GlobalTheory.TwInputs.JoinModel.embB_hk_commute_and_hEig_zero_of_built c.a.nt.toNBuilt`. Take `⟨⟨u, hu⟩, hz⟩` from `_root_.GlobalTheory.TwInputs.AtLayer.exists_frob_unit_and_hkF_zero_eq_of_built c.a.nt.toNBuilt (c.a.ratIn_hL ▸ c.a.ratIn.hL_zero)`. Take `⟨f', s1, s2, s3⟩` from `hR _ (realOf t hH hV hs) _ c.row.nexp`. Take `⟨H, r1, r2⟩` from `exists_hecke (realOf t hH hV hs) _ c.row.nexp e.ser.ex f' s1 s2 s3 u hu hz`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨_root_.GlobalTheory.TwInputs.JoinModel.twistInputsOfBaseTuples (_root_.GlobalTheory.TwInputs.JoinModel.heckeSeriesOfRealHeight e H r1 r2 k1 k2) rfl HEq.rfl g h1 h2 hF cg fun hT v hv => base_of_untw _ hT v hv⟩`.
+Supply the required witnesses or components.
 -/
 theorem nonempty_twOf_of_hecke_stable_reads {hH hV hs} (e : _root_.GlobalTheory.HeightCounting.defaultExtension hL K B f T w Z Wt p0 t nch n xd c) (hF : FieldOk (realOf t hH hV hs))
     (hG : ∃ G : _root_.GlobalTheory.TwInputs.GalSideAlt (w.st Z).toD7, G.cf = TC.cf w.I w.l Z ∧ G.lam.C = TC.cf w.I w.l Z ∧ Nonempty (_root_.GlobalTheory.HeightCounting.CGTrueT hL _ G.wd))

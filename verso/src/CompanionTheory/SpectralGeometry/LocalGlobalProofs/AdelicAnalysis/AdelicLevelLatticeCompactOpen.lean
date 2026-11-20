@@ -10,7 +10,7 @@ open NumberField IsDedekindDomain MeasureTheory Matrix Topology GlobalTheory.Com
 open scoped ENNReal NNReal MatrixGroups Kronecker
 
 /- English proof (translation)
-Use extensionality with `x`. Conclude with `⟨fun h i _ => h i, fun h i => h i (Set.mem_univ i)⟩`.
+By extensionality, compare the relevant components. Supply the required witnesses or components.
 -/
 theorem latN_coe_eq_pi (F : Type) [Field F] [NumberField F] (ι : Type) [Fintype ι] [DecidableEq ι]
     (N : ℕ) : (latN F ι N : Set (ι → A F)) =
@@ -19,9 +19,9 @@ theorem latN_coe_eq_pi (F : Type) [Field F] [NumberField F] (ι : Type) [Fintype
   exact ⟨fun h i _ => h i, fun h i => h i (Set.mem_univ i)⟩
 
 /- English proof (translation)
-Establish `hOh : IsCompact (Oh F)` using `(GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F).2.2.2.1`. Establish `heq : {x : A F | ∃ y ∈ Oh F, x = (N : A F) * y} = (fun y => (N : A F) * y) '' Oh F`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨y, hy, rfl⟩`. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨y, hy, rfl⟩`. Rewrite using `[heq]`. Conclude with `hOh.image (continuous_const.mul continuous_id)`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_mul_oh (F : Type) [Field F] [NumberField F] (N : ℕ) :
     IsCompact {x : A F | ∃ y ∈ Oh F, x = (N : A F) * y} := by
@@ -37,19 +37,17 @@ theorem isCompact_mul_oh (F : Type) [Field F] [NumberField F] (N : ℕ) :
   exact hOh.image (continuous_const.mul continuous_id)
 
 /- English proof (translation)
-Introduce `F _ _ ι _ _ N hN`. Take `⟨-, -, hT2, -, -, -, -, -, -, hOpen⟩` from `GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F`. Establish `hC : IsCompact (latN F ι N : Set (ι → A F))`. Rewrite using `[latN_coe_eq_pi]`. Conclude with `isCompact_univ_pi fun _ => isCompact_mul_oh F N`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hO : IsOpen (latN F ι N : Set (ι → A F))`. Rewrite using `[latN_coe_eq_pi]`. Conclude with `isOpen_set_pi Set.finite_univ fun _ _ => hOpen N hN`. Use `⟨hC, hO, fun a => ?_⟩` and prove the remaining obligations. Establish `hclopen : IsClopen (latN F ι N : Set (ι → A F))` using `⟨hC.isClosed, hO⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont : Continuous fun x : ι → A F => x - toA a` using `continuous_id.sub continuous_const`. Establish `hS : IsClopen {x : ι → A F | x - toA a ∈ latN F ι N}` using `hclopen.preimage hcont`. Establish `hK : IsCompact {x : ι → A F | x - toA a ∈ latN F ι N}`. Establish `h : {x : ι → A F | x - toA a ∈ latN F ι N} = (fun x => x + toA a) '' (latN F ι N : Set (ι → A F))`. Use extensionality with `x`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `⟨x - toA a, hx, by simp⟩`. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify using `using hy`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h]`. Conclude with `hC.image (continuous_id.add continuous_const)`. Use `⟨?_, HasCompactSupport.of_support_subset_isCompact hK Set.support_indicator_subset⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hx : x ∈ {x : ι → A F | x - toA a ∈ latN F ι N}`. Use `filter_upwards [hS.isOpen.mem_nhds hx] with y hy`. Establish `hy' : y ∈ {x : ι → A F | x - toA a ∈ latN F ι N}` using `hy`. Rewrite using `[indC, Set.indicator_of_mem hx, Set.indicator_of_mem hy']`. Use `filter_upwards [hS.compl.isOpen.mem_nhds hx] with y hy`.
-
-Establish `hy' : y ∉ {x : ι → A F | x - toA a ∈ latN F ι N}` using `hy`. Rewrite using `[indC, Set.indicator_of_notMem hx, Set.indicator_of_notMem hy']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (F : Type) [Field F] [NumberField F] (ι : Type) [Fintype ι] [DecidableEq ι] (N : ℕ),
     0 < N → IsCompact (latN F ι N : Set (ι → A F)) ∧ IsOpen (latN F ι N : Set (ι → A F)) ∧

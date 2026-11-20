@@ -7,7 +7,7 @@ open UpperTheory.V.W (Plc Lp)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `congrArg Units.val h`. Introduce `h`. Conclude with `Units.ext h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem mem_dx_iff {K : Type} [Field K] {Δ : K} (g : GL (Fin 2) (Lsq K Δ)) :
     g ∈ DX Δ ↔ (g : Matrix (Fin 2) (Fin 2) (Lsq K Δ)).map star =
@@ -19,16 +19,16 @@ private theorem mem_dx_iff {K : Type} [Field K] {Δ : K} (g : GL (Fin 2) (Lsq K 
     exact Units.ext h
 
 /- English proof (translation)
-Simplify using `[Matrix.mul_fin_two]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem conj_two {R : Type} [CommRing R] (a b c d : R) :
     (!![0, -1; 1, 0] : Matrix (Fin 2) (Fin 2) R) * !![a, b; c, d] * !![0, 1; -1, 0] = !![d, -c; -b, a] := by
   simp [Matrix.mul_fin_two]
 
 /- English proof (translation)
-Establish `h` using `(mem_dx_iff _).1 g.2`. Take `⟨a, b, c, d, hm⟩ : ∃ a b c d, ((g : GL (Fin 2) (Lsq K Δ)) : Matrix (Fin 2) (Fin 2) (Lsq K Δ)) = !![a, b; c, d]` from `⟨_, _, _, _, Matrix.eta_fin_two _⟩`. Rewrite `h` using `[hm, conj_two]`. Establish `h00` using `congrFun (congrFun h 0) 0`. Establish `h01` using `congrFun (congrFun h 0) 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `at h00 h01`. Use `⟨a, b, ?_⟩` and prove the remaining obligations. Use `show ((g : GL (Fin 2) (Lsq K Δ)) : Matrix (Fin 2) (Fin 2) (Lsq K Δ)) = _`. Rewrite using `[hm, h00, show c = -star b by rw [h01, neg_neg]]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dx_form {K : Type} [Field K] {Δ : K} (g : DX Δ) :
     ∃ a b : Lsq K Δ, mt g = !![a, b; -star b, star a] := by
@@ -44,17 +44,17 @@ private theorem dx_form {K : Type} [Field K] {Δ : K} (g : DX Δ) :
   rw [hm, h00, show c = -star b by rw [h01, neg_neg]]
 
 /- English proof (translation)
-Introduce `K _ Δ`. Use `⟨fun g => ?_, fun x hx hd => ?_⟩` and prove the remaining obligations. Take `⟨a, b, h⟩` from `dx_form g`. Rewrite using `[h, Matrix.det_fin_two_of]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[Matrix.star_eq_conjTranspose, Matrix.one_fin_two]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> ring`. Simplify using `[mul_comm]`. Establish `hadj : star x = x.adjugate`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Set `u : GL (Fin 2) (Lsq K Δ)` to `⟨x, x.adjugate, by rw [Matrix.mul_adjugate, hd, one_smul], by rw [Matrix.adjugate_mul, hd, one_smul]⟩`. Establish `hu : u ∈ DX Δ`. Use `(mem_dx_iff u).2 ?_` and prove the remaining obligations. Use `show x.map star = !![0, -1; 1, 0] * x * !![0, 1; -1, 0]`.
+Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨a, b, c, d, rfl⟩ : ∃ a b c d, x = !![a, b; c, d]` from `⟨_, _, _, _, Matrix.eta_fin_two _⟩`. Rewrite using `[conj_two]`. Rewrite `hadj` using `[Matrix.star_eq_conjTranspose, Matrix.adjugate_fin_two_of]`. Establish `h00` using `congrFun (congrFun hadj 0) 0`. Establish `h01` using `congrFun (congrFun hadj 0) 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h10` using `congrFun (congrFun hadj 1) 0`. Establish `h11` using `congrFun (congrFun hadj 1) 1`. Simplify using `at h00 h01 h10 h11`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [h00, h01, h10, h11]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components.
 
-Conclude with `⟨⟨u, hu⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Dict.Br.suIff :
     ∀ (K : Type) [Field K] (Δ : K), (∀ g : DX Δ, star (mt g) * mt g = (mt g).det • (1 : Matrix (Fin 2) (Fin 2) (Lsq K Δ)) ∧ star (mt g).det = (mt g).det) ∧ ∀ x : Matrix (Fin 2) (Fin 2) (Lsq K Δ), star x * x = 1 → x.det = 1 → ∃ g : DX Δ, mt g = x := by

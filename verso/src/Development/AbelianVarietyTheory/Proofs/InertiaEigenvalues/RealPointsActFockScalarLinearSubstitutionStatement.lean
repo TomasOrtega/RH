@@ -21,7 +21,7 @@ open GlobalTheory.DownLift
 open GlobalTheory.ExportSeries GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators GlobalTheory.IndefiniteRowSideFullHecke.InfinityTypes
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.RealFockSubst.om_ptP_subst` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FRealPointsActFockScalarLinearSubstitution.lean&line=26#L26)
 -/

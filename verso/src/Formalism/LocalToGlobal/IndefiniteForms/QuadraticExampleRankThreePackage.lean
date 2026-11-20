@@ -20,9 +20,9 @@ def dfr {n : ℕ} (s : Fin n → ℝ) : InfinitePlace K → Matrix (Fin n) (Fin 
   fun _ => Matrix.diagonal fun i => (((Real.sqrt (s i))⁻¹ : ℝ) : ℂ)
 
 /- English proof (translation)
-Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Rewrite using `[dfr, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Establish `h : Real.sqrt (s i) ≠ 0` using `(Real.sqrt_pos.mpr (hs i)).ne'`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[← Complex.ofReal_mul, inv_mul_cancel₀ h, Complex.ofReal_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dfr_inv {n : ℕ} (s : Fin n → ℝ) (hs : ∀ i, 0 < s i) (v : InfinitePlace K) :
     (dfr K s v)⁻¹ = Matrix.diagonal fun i => ((Real.sqrt (s i) : ℝ) : ℂ) := by
@@ -34,7 +34,7 @@ theorem dfr_inv {n : ℕ} (s : Fin n → ℝ) (hs : ∀ i, 0 < s i) (v : Infinit
   rw [← Complex.ofReal_mul, inv_mul_cancel₀ h, Complex.ofReal_one]
 
 /- English proof (translation)
-Rewrite using `[dfr, Matrix.det_diagonal]`. Use `IsUnit.mk0 _ (Finset.prod_ne_zero_iff.mpr fun i _ => ?_)` and prove the remaining obligations. Conclude with `(inv_pos.mpr (Real.sqrt_pos.mpr (hs i))).ne'` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem dfr_unit {n : ℕ} (s : Fin n → ℝ) (hs : ∀ i, 0 < s i) (v : InfinitePlace K) :
     IsUnit (dfr K s v).det := by
@@ -47,7 +47,7 @@ variable (K) in
 def line (n : ℕ) (p : Fin n) : Submodule K (Fin n → K) := LinearMap.range (LinearMap.single K (fun _ => K) p)
 
 /- English proof (translation)
-Introduce `i`. Establish `h` using `LinearMap.disjoint_single_single K (fun _ : Fin n => K) {i} {j | j ≠ i} (by simp)`. Simplify `h` using `[line]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem line_indep (n : ℕ) : iSupIndep (line K n) := by
   intro i
@@ -56,16 +56,16 @@ theorem line_indep (n : ℕ) : iSupIndep (line K n) := by
   simpa [line] using h
 
 /- English proof (translation)
-The claim follows from `LinearMap.iSup_range_single K (fun _ : Fin n => K)`.
+A detailed English derivation is pending.
 -/
 theorem line_top (n : ℕ) : (⨆ p, line K n p) = ⊤ := LinearMap.iSup_range_single K (fun _ : Fin n => K)
 
 /- English proof (translation)
-Introduce and unpack `x ⟨c, rfl⟩ y`. Rewrite using `[Matrix.one_mulVec, Matrix.one_mulVec]`. Simplify using `only [Formalism.HermitianLatticesTheory.majAt, Formalism.HermitianLatticesTheory.fcoord, dfr_inv s hs v, fr, inv_one, Matrix.one_mulVec, Matrix.mulVec_diagonal, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : i = p`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Rewrite using `[← sqrt_mul_sqrt_complex (s i) (hs i)]`. Simplify using `only [star_mul', Complex.star_def, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree. Establish `h0 : Formalism.HermitianLatticesTheory.vecAt (Pi.basisFun K (Fin n)) v (LinearMap.single K (fun _ => K) p c) i = 0`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `[Formalism.HermitianLatticesTheory.vecAt, h]`. Rewrite using `[h0]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem scal_diag {n : ℕ} (s : Fin n → ℝ) (hs : ∀ i, 0 < s i) (v : InfinitePlace K) (p : Fin n) :
     IsScalarOn (fr K n) (dfr K s) v 1 (line K n p) (s p) := by
@@ -86,14 +86,14 @@ theorem scal_diag {n : ℕ} (s : Fin n → ℝ) (hs : ∀ i, 0 < s i) (v : Infin
 def only0 (V : Type) [AddCommGroup V] [Module K V] : Fin 2 → Submodule K V := ![⊤, ⊥]
 
 /- English proof (translation)
-Apply the tactic sequence `rw [iSupIndep_pair (i := 0) (j := 1) (by decide) (by intro k; fin_cases k <;> simp)]`. Simplify using `[only0]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem singleton_grading_independent (V : Type) [AddCommGroup V] [Module K V] : iSupIndep (only0 (K := K) V) := by
   rw [iSupIndep_pair (i := 0) (j := 1) (by decide) (by intro k; fin_cases k <;> simp)]
   simp [only0]
 
 /- English proof (translation)
-The claim follows from `top_le_iff.1 (le_iSup (only0 (K := K) V) 0)`.
+A detailed English derivation is pending.
 -/
 theorem singleton_grading_supr_eq_top (V : Type) [AddCommGroup V] [Module K V] : (⨆ p, only0 (K := K) V p) = ⊤ :=
   top_le_iff.1 (le_iSup (only0 (K := K) V) 0)
@@ -105,7 +105,7 @@ section Only
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
 /- English proof (translation)
-Establish `h0 : Formalism.HermitianLatticesTheory.vecAt (Pi.basisFun K (Fin d)) v (0 : Fin d → K) = 0`. Use function extensionality and compare the values at `i`. Simplify using `[Formalism.HermitianLatticesTheory.vecAt]`. Simplify using `[Formalism.HermitianLatticesTheory.majAt, Formalism.HermitianLatticesTheory.fcoord, h0]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem maj_zero {d : ℕ} (X : InfinitePlace K → Matrix (Fin d) (Fin d) ℂ) (v : InfinitePlace K) (y : Fin d → K) :
     Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin d)) X v 0 y = 0 := by
@@ -114,9 +114,9 @@ theorem maj_zero {d : ℕ} (X : InfinitePlace K → Matrix (Fin d) (Fin d) ℂ) 
   simp [Formalism.HermitianLatticesTheory.majAt, Formalism.HermitianLatticesTheory.fcoord, h0]
 
 /- English proof (translation)
-Use `revert p`. Rewrite using `[Fin.forall_fin_two]`. Use `⟨fun x _ y => ?_, fun x hx y => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.one_mulVec, Matrix.one_mulVec]`. Conclude with `maj_scale _ (fun _ => ht) _ two.fr_unit v x y`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `h0 : x = 0` using `by simpa [only0] using hx`. Substitute `h0` using the available equality. Rewrite using `[Matrix.mulVec_zero, maj_zero, maj_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scal_only0 (t : Fin 2 → ℝ) (ht : 0 < t 0) (v : InfinitePlace K) (p : Fin 2) :
     IsScalarOn (fr K 1) (scaleFrame (fun _ => t 0) (fr K 1)) v 1 (only0 (K := K) (Fin 1 → K) p) (t p) := by
@@ -175,7 +175,7 @@ abbrev df1 : DefSide (base K v0) where
   Zp := fun _ _ => only0 (Fin 1 → K)
 
 /- English proof (translation)
-The claim follows from `ConjugateWeightGram.isCMSub_cmMax conj := hv0 HV_rat := fun _ => (std_ratHerm K (cmMax K) 2).1 HV_pos := fun _ v => one_posDef K 2 v Mt_lat := fun _ => sl_lattice K 2 Pq_surj := fun _ x => ⟨x, by simp⟩ XQ_quot := fun _ => one_quot K 2 Lam_lat := fun _ => by show Submodule.IsLatti …`.
+A detailed English derivation is pending.
 -/
 theorem wf0 (hv0 : IsConjAt v0) : (df0 K v0).WF where
   cm := ConjugateWeightGram.isCMSub_cmMax
@@ -195,7 +195,7 @@ theorem wf0 (hv0 : IsConjAt v0) : (df0 K v0).WF where
   Zp_indep := fun _ => line_indep 2
 
 /- English proof (translation)
-The claim follows from `ConjugateWeightGram.isCMSub_cmMax conj := hv0 HV_rat := fun _ => (std_ratHerm K (cmMax K) 1).1 HV_pos := fun _ v => one_posDef K 1 v Mt_lat := fun _ => sl_lattice K 1 Pq_surj := fun _ x => ⟨x, by simp⟩ XQ_quot := fun _ => one_quot K 1 Lam_lat := fun _ => by show Submodule.IsLatti …`.
+A detailed English derivation is pending.
 -/
 theorem wf1 (hv0 : IsConjAt v0) : (df1 K v0).WF where
   cm := ConjugateWeightGram.isCMSub_cmMax
@@ -260,13 +260,13 @@ abbrev num : IndefNum (base K v0) where
 variable {K v0 kap l}
 
 /- English proof (translation)
-The claim follows from `mul_pos hk (Finset.prod_pos fun j _ => hl j p)`.
+A detailed English derivation is pending.
 -/
 theorem prod_pos' (hk : 0 < kap) (hl : ∀ j p, 0 < l j p) (p : Fin 2) : 0 < kap * ∏ j, l j p :=
   mul_pos hk (Finset.prod_pos fun j _ => hl j p)
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVecLin_one, Submodule.map_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_one_eq {d : ℕ} (A : Submodule K (Fin d → K)) :
     Submodule.map (Matrix.mulVecLin (1 : Matrix (Fin d) (Fin d) K)) A = A := by
@@ -330,14 +330,14 @@ abbrev cd : ColData (dc K v0) (sp K v0) (dat1 K v0 kap l) where
   sE := conjLinearRankOne (Real.sqrt (kap * ∏ j, l j 0))
 
 /- English proof (translation)
-Use `⟨fun _ _ φ F => ?_, fun _ => rfl, fun _ _ => one_ne_zero, fun _ w => ValuationRepresentative.vw_one w⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem l1b : (cd K v0 kap l).PairingFactorsThroughPeriods := by
   refine ⟨fun _ _ φ F => ?_, fun _ => rfl, fun _ _ => one_ne_zero, fun _ w => ValuationRepresentative.vw_one w⟩
   simp
 
 /- English proof (translation)
-Establish `hr : 0 < Real.sqrt (kap * ∏ j, l j 0)` using `Real.sqrt_pos.mpr (prod_pos' hk hl 0)`. Use `⟨fun y => conj_linear_rank_one_norm _ _ hr.le (scale_inv_one K _ (fun _ => prod_pos' hk hl 0) v0) y, fun _ => Submodule.mem_top, by simp, 1, fun y => by rw [Matrix.one_mulVec], fun _ => ⟨((Real.sqrt (kap * ∏ j, l j 0) : ℝ) : ℂ)⁻¹, inv_ne_zero (by exact_mod_cast hr.ne'), 1, fun x …` and prove the remaining obligations. Rewrite using `[Matrix.one_mulVec, Matrix.one_mulVec]`. Conclude with `pairC_std K v0 _ hr x y`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem l1e (hk : 0 < kap) (hl : ∀ j p, 0 < l j p) : (cd K v0 kap l).L1e := by
   have hr : 0 < Real.sqrt (kap * ∏ j, l j 0) := Real.sqrt_pos.mpr (prod_pos' hk hl 0)
@@ -360,7 +360,7 @@ def cols (hk : 0 < kap) (hl : ∀ j p, 0 < l j p) : IndefCols (df1 K v0) (dc K v
   l1e := l1e hk hl
 
 /- English proof (translation)
-Introduce `w _ j`. Use `⟨?_, rfl⟩` and prove the remaining obligations. Use `show ((idx w (sl K 2) (matLat (1 : Matrix (Fin 2) (Fin 2) K) (sl K 2)) : ℤ) : ℝ) + ((idx (conjPl w) (sl K 2) (matLat (1 : Matrix (Fin 2) (Fin 2) K) (sl K 2)) : ℤ) : ℝ) + ((jw (1 : Matrix (Fin 2) (Fin 2) K) w (sl K 2) : ℤ) : ℝ) = 0`. Rewrite using `[matLat_one, idx_std, idx_std, jw_std]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem untw : (dat0 K v0 kap l).Untwisted (num K v0 kap l) := by
   intro w _ j
@@ -371,7 +371,7 @@ theorem untw : (dat0 K v0 kap l).Untwisted (num K v0 kap l) := by
   rw [matLat_one, idx_std, idx_std, jw_std]; simp
 
 /- English proof (translation)
-The claim follows from `untw level := ⟨rfl, rfl, rfl⟩ passage := fun _ _ HH0 h => by have h' : (dat0 K v0 kap l).muMaxRR ≤ HH0 := h have h1 : ((dat1 K v0 kap l).muMaxRR - (dat0 K v0 kap l).muMaxRR) / 14 ≤ (num K v0 kap l).la := le_trans (le_max_left _ _) (le_max_right _ _) have h2 : ((dat1 K v0 kap l).m …`.
+A detailed English derivation is pending.
 -/
 theorem extra (hk : 0 < kap) (hl : ∀ j p, 0 < l j p) :
     IndefExtra (side (K := K) (v0 := v0) hk hl) (cols hk hl) where
@@ -401,12 +401,12 @@ end three
 def l4 (j p : Fin 2) : ℝ := 2 + ((j : ℕ) : ℝ) + 2 * ((p : ℕ) : ℝ)
 
 /- English proof (translation)
-Unfold `l4`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem example_weights_pos (j p : Fin 2) : 0 < l4 j p := by unfold l4; positivity
 
 /- English proof (translation)
-Introduce and unpack `⟨j, p⟩ ⟨j', p'⟩ h`. Apply the tactic sequence `fin_cases j <;> fin_cases p <;> fin_cases j' <;> fin_cases p' <;> simp [l4] at h ⊢ <;> norm_num at h`.
+Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem example_weights_injective : Function.Injective fun x : Fin 2 × Fin 2 => l4 x.1 x.2 := by
   rintro ⟨j, p⟩ ⟨j', p'⟩ h
@@ -417,9 +417,9 @@ section DiagMaps
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
 /- English proof (translation)
-Use `⟨fun x y h => ?_, fun y => ⟨fun i => (a i)⁻¹ * y i, ?_⟩⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `congrFun h i` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_diagonal, Matrix.mulVec_diagonal]`. Conclude with `mul_left_cancel₀ (ha i) this`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[Matrix.mulVec_diagonal, mul_inv_cancel_left₀ (ha i)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diag_bij {n : ℕ} (a : Fin n → K) (ha : ∀ i, a i ≠ 0) : Function.Bijective (Matrix.diagonal a).mulVec := by
   refine ⟨fun x y h => ?_, fun y => ⟨fun i => (a i)⁻¹ * y i, ?_⟩⟩
@@ -431,11 +431,11 @@ theorem diag_bij {n : ℕ} (a : Fin n → K) (ha : ∀ i, a i ≠ 0) : Function.
     rw [Matrix.mulVec_diagonal, mul_inv_cancel_left₀ (ha i)]
 
 /- English proof (translation)
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨c, rfl⟩, rfl⟩`. Use `⟨a p * c, funext fun i => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : i = p`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using `[Matrix.mulVec_diagonal]`. Simplify using `[Matrix.mulVec_diagonal, h]`. Introduce and unpack `⟨c, rfl⟩`. Use `⟨_, ⟨(a p)⁻¹ * c, rfl⟩, funext fun i => ?_⟩` and prove the remaining obligations.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : i = p`. Substitute `h` using the available equality. Simplify using `[Matrix.mulVec_diagonal, mul_inv_cancel_left₀ (ha i)]`. Simplify using `[Matrix.mulVec_diagonal, h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem diag_map_line {n : ℕ} (a : Fin n → K) (ha : ∀ i, a i ≠ 0) (p : Fin n) :
     Submodule.map (Matrix.diagonal a).mulVecLin (line K n p) = line K n p := by
@@ -453,13 +453,13 @@ theorem diag_map_line {n : ℕ} (a : Fin n → K) (ha : ∀ i, a i ≠ 0) (p : F
     · simp [Matrix.mulVec_diagonal, h]
 
 /- English proof (translation)
-Introduce and unpack `x ⟨c, rfl⟩ y`. Simplify using `only [Formalism.HermitianLatticesTheory.majAt, Formalism.HermitianLatticesTheory.fcoord, dfr_inv s hs v, fr, inv_one, Matrix.one_mulVec, Matrix.mulVec_diagonal, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hv : ∀ z : Fin n → K, Formalism.HermitianLatticesTheory.vecAt (Pi.basisFun K (Fin n)) v ((Matrix.diagonal a).mulVec z) i = v.embedding (a i) * Formalism.HermitianLatticesTheory.vecAt (Pi.basisFun K (Fin n)) v z i`. Introduce `z`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Formalism.HermitianLatticesTheory.vecAt, Matrix.mulVec_diagonal]`. Rewrite using `[hv, hv]`. Distinguish the cases in `h : i = p`. Substitute `h` using the available equality. Establish `h2 : ((‖v.embedding (a i)‖ ^ 2 : ℝ) : ℂ) = star (v.embedding (a i)) * v.embedding (a i)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite using `[Complex.star_def, Complex.conj_mul']`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[Complex.ofReal_mul, h2, ← sqrt_mul_sqrt_complex (s i) (hs i)]`. Simplify using `only [star_mul', Complex.star_def, Complex.conj_ofReal]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h0 : Formalism.HermitianLatticesTheory.vecAt (Pi.basisFun K (Fin n)) v (LinearMap.single K (fun _ => K) p c) i = 0`. Simplify using `[Formalism.HermitianLatticesTheory.vecAt, h]`. Rewrite using `[h0]`. Simplify using the standard rewrite rules.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem scal_diag2 {n : ℕ} (s : Fin n → ℝ) (hs : ∀ i, 0 < s i) (v : InfinitePlace K) (a : Fin n → K) (p : Fin n) :
     IsScalarOn (fr K n) (dfr K s) v (Matrix.diagonal a) (line K n p) (s p * ‖v.embedding (a p)‖ ^ 2) := by
@@ -483,15 +483,15 @@ theorem scal_diag2 {n : ℕ} (s : Fin n → ℝ) (hs : ∀ i, 0 < s i) (v : Infi
     rw [h0]; simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨x 0, by funext i; rw [Subsingleton.elim i 0]; simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_line_one (x : Fin 1 → K) : x ∈ line K 1 0 :=
   ⟨x 0, by funext i; rw [Subsingleton.elim i 0]; simp⟩
 
 /- English proof (translation)
-Use `revert p`. Rewrite using `[Fin.forall_fin_two]`. Use `⟨fun x _ y => ?_, fun x hx y => ?_⟩` and prove the remaining obligations. Conclude with `scal_diag2 (fun _ : Fin 1 => s 0) (fun _ => hs) v (fun _ => a 0) 0 x (mem_line_one x) y`. Establish `h0 : x = 0` using `by simpa [only0] using hx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `h0` using the available equality. Rewrite using `[Matrix.mulVec_zero, maj_zero, maj_zero, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem scal_only0D (s : Fin 2 → ℝ) (hs : 0 < s 0) (v : InfinitePlace K) (a : Fin 2 → K) (p : Fin 2) :
     IsScalarOn (fr K 1) (dfr K fun _ : Fin 1 => s 0) v (Matrix.diagonal fun _ : Fin 1 => a 0)
@@ -505,7 +505,7 @@ theorem scal_only0D (s : Fin 2 → ℝ) (hs : 0 < s 0) (v : InfinitePlace K) (a 
     rw [Matrix.mulVec_zero, maj_zero, maj_zero, mul_zero]
 
 /- English proof (translation)
-Use `revert p`. Rewrite using `[Fin.forall_fin_two]`. Conclude with `⟨map_top_of_bij A h, Submodule.map_bot _⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem map_only0 (A : Matrix (Fin 1) (Fin 1) K) (h : Function.Bijective A.mulVec) (p : Fin 2) :
     Submodule.map A.mulVecLin (only0 (K := K) (Fin 1 → K) p) = only0 (K := K) (Fin 1 → K) p := by
@@ -561,7 +561,7 @@ abbrev df1 : DefSide (base K v0) where
   Zp := fun _ _ => only0 (Fin 1 → K)
 
 /- English proof (translation)
-The claim follows from `ConjugateWeightGram.isCMSub_cmMax conj := hv0 HV_rat := fun _ => (std_ratHerm K (cmMax K) 2).1 HV_pos := fun _ v => one_posDef K 2 v Mt_lat := fun _ => sl_lattice K 2 Pq_surj := fun _ x => ⟨x, by simp⟩ XQ_quot := fun _ => one_quot K 2 Lam_lat := fun _ => by show Submodule.IsLatti …`.
+A detailed English derivation is pending.
 -/
 theorem wf0 (hv0 : IsConjAt v0) : (df0 K v0).WF where
   cm := ConjugateWeightGram.isCMSub_cmMax
@@ -581,7 +581,7 @@ theorem wf0 (hv0 : IsConjAt v0) : (df0 K v0).WF where
   Zp_indep := fun _ => line_indep 2
 
 /- English proof (translation)
-The claim follows from `ConjugateWeightGram.isCMSub_cmMax conj := hv0 HV_rat := fun _ => (std_ratHerm K (cmMax K) 1).1 HV_pos := fun _ v => one_posDef K 1 v Mt_lat := fun _ => sl_lattice K 1 Pq_surj := fun _ x => ⟨x, by simp⟩ XQ_quot := fun _ => one_quot K 1 Lam_lat := fun _ => by show Submodule.IsLatti …`.
+A detailed English derivation is pending.
 -/
 theorem wf1 (hv0 : IsConjAt v0) : (df1 K v0).WF where
   cm := ConjugateWeightGram.isCMSub_cmMax
@@ -653,7 +653,7 @@ abbrev num : IndefNum (base K v0) where
 variable {K v0 S b kap l}
 
 /- English proof (translation)
-Consider the cases of `t`. Conclude with `one_ne_zero`. Conclude with `hb j p`.
+Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem bT_ne (hb : ∀ j p, b j p ≠ 0) (t : Bool) (j p : Fin 2) : bT K b t j p ≠ 0 := by
   cases t
@@ -661,20 +661,20 @@ theorem bT_ne (hb : ∀ j p, b j p ≠ 0) (t : Bool) (j p : Fin 2) : bT K b t j 
   · exact hb j p
 
 /- English proof (translation)
-The claim follows from `Finset.prod_ne_zero_iff.mpr fun j _ => bT_ne hb t j p`.
+A detailed English derivation is pending.
 -/
 theorem aT_ne (hb : ∀ j p, b j p ≠ 0) (t : Bool) (p : Fin 2) : aT K b t p ≠ 0 :=
   Finset.prod_ne_zero_iff.mpr fun j _ => bT_ne hb t j p
 
 /- English proof (translation)
-The claim follows from `mul_pos (hl j p) (pow_pos (norm_pos_iff.mpr ((map_ne_zero _).mpr (bT_ne hb t j p))) 2)`.
+A detailed English derivation is pending.
 -/
 theorem lam_pos (hb : ∀ j p, b j p ≠ 0) (hl : ∀ j p, 0 < l j p) (j : Fin 2) (t : Bool) (p : Fin 2)
     (v : InfinitePlace K) : 0 < l j p * ‖v.embedding (bT K b t j p)‖ ^ 2 :=
   mul_pos (hl j p) (pow_pos (norm_pos_iff.mpr ((map_ne_zero _).mpr (bT_ne hb t j p))) 2)
 
 /- English proof (translation)
-Rewrite using `[aT, map_prod, norm_prod, Finset.prod_mul_distrib, Finset.prod_pow, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem scal_eq (t : Bool) (p : Fin 2) (v : InfinitePlace K) :
     kap * ∏ j, (l j p * ‖v.embedding (bT K b t j p)‖ ^ 2) =
@@ -682,7 +682,7 @@ theorem scal_eq (t : Bool) (p : Fin 2) (v : InfinitePlace K) :
   rw [aT, map_prod, norm_prod, Finset.prod_mul_distrib, Finset.prod_pow, mul_assoc]
 
 /- English proof (translation)
-Establish `h1 : l j p * ‖v.embedding (bT K b false j p)‖ ^ 2 = l j p` using `by simp [bT]`. Rewrite using `[h1]`. Use `revert p`. Rewrite using `[Fin.forall_fin_two]`. Conclude with `⟨fun _ => min_le_left _ _, fun _ => min_le_right _ _⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem norm_inner_fF_le_half_sq_add_integral (j p : Fin 2) (v : InfinitePlace K) :
     min (Real.log (l j 0)) (Real.log (l j 1)) ≤ Real.log (l j p * ‖v.embedding (bT K b false j p)‖ ^ 2) := by
@@ -694,7 +694,7 @@ theorem norm_inner_fF_le_half_sq_add_integral (j p : Fin 2) (v : InfinitePlace K
 
 variable (S) in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun w => decide_eq_decide.mpr (hS w), by intro w; simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem h0 (hS : ∀ w, conjPl w ∈ S ↔ w ∈ S) : (dat0 K v0 S b kap l).H0 :=
   ⟨fun w => decide_eq_decide.mpr (hS w), by intro w; simp⟩
@@ -721,9 +721,9 @@ def rows0 (hS : ∀ w, conjPl w ∈ S ↔ w ∈ S) (hb : ∀ j p, b j p ≠ 0) (
   l1d := fun _ _ => rfl
 
 /- English proof (translation)
-Use `⟨fun w hw => ?_, fun w _ _ => le_refl _, fun _ => ?_⟩` and prove the remaining obligations. Establish `hμ : decide (w ∈ S) = true` using `decide_eq_true hw`. Establish `hr : (1 : ℝ) ≤ (ramw w : ℝ)` using `by exact_mod_cast (ramified_basic_bound K w).2.1`. Establish `hr0 : (ramw w : ℝ) ≠ 0` using `by linarith`. Establish `hp : 0 ≤ (ramw w : ℝ) * (2 / (plc w : ℝ) ^ 2)` using `by positivity`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ j : Fin 2, 2 * ((ramw w : ℝ) * ((((dat0 K v0 S b kap l).Iw j true w : ℝ) + ((dat0 K v0 S b kap l).Iw j true (conjPl w) : ℝ)) / (2 * (ramw w : ℝ) * 2))) = (((dat0 K v0 S b kap l).Iw j true w : ℝ) + ((dat0 K v0 S b kap l).Iw j true (conjPl w) : ℝ)) / 2`. Introduce `j`. Clear the denominators using the available nonvanishing facts. Simplify using `only [hμ, if_pos hw, mul_zero, add_zero, key, Fin.sum_univ_two, Nat.cast_ofNat]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
 Simplify using the standard rewrite rules.
 -/
@@ -795,20 +795,20 @@ abbrev cd : ColData (dc K v0 b) (sp K v0 b) (dat1 K v0 S b kap l) where
   sE := conjLinearRankOne (Real.sqrt (kap * ∏ j, l j 0))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec_diagonal]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem diag_const_mulVec (a : K) (F : Fin 1 → K) : (Matrix.diagonal fun _ : Fin 1 => a).mulVec F = a • F := by
   funext i; simp [Matrix.mulVec_diagonal]
 
 /- English proof (translation)
-Use `⟨fun _ t φ F => ?_, fun _ => rfl, fun _ _ => one_ne_zero, fun _ w => ValuationRepresentative.vw_one w⟩` and prove the remaining obligations. Simplify using `only [Matrix.one_mulVec, one_mul, diag_const_mulVec, LinearMap.smul_apply, map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem l1b : (cd K v0 S b kap l).PairingFactorsThroughPeriods := by
   refine ⟨fun _ t φ F => ?_, fun _ => rfl, fun _ _ => one_ne_zero, fun _ w => ValuationRepresentative.vw_one w⟩
   simp only [Matrix.one_mulVec, one_mul, diag_const_mulVec, LinearMap.smul_apply, map_smul]
 
 /- English proof (translation)
-Rewrite using `[dfr_inv _ (fun _ => hc) v]`. Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dfr_inv_one (c : ℝ) (hc : 0 < c) (v : InfinitePlace K) :
     (dfr K (fun _ : Fin 1 => c) v)⁻¹ = ((Real.sqrt c : ℝ) : ℂ) • 1 := by
@@ -817,7 +817,7 @@ theorem dfr_inv_one (c : ℝ) (hc : 0 < c) (v : InfinitePlace K) :
   fin_cases i; fin_cases j; simp
 
 /- English proof (translation)
-Establish `hr : 0 < Real.sqrt (kap * ∏ j, l j 0)` using `Real.sqrt_pos.mpr (three.prod_pos' hk hl 0)`. Use `⟨fun y => conj_linear_rank_one_norm _ _ hr.le (dfr_inv_one _ (three.prod_pos' hk hl 0) v0) y, fun _ => Submodule.mem_top, by simp, 1, fun y => by rw [Matrix.one_mulVec], fun _ => ⟨((Real.sqrt (kap * ∏ j, l j 0) : ℝ) : ℂ)⁻¹, inv_ne_zero (by exact_mod_cast hr.ne'), 1, fun x => by r …` and prove the remaining obligations. Rewrite using `[Matrix.one_mulVec, Matrix.one_mulVec]`. Conclude with `pairC_std K v0 _ hr x y`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem l1e (hk : 0 < kap) (hl : ∀ j p, 0 < l j p) : (cd K v0 S b kap l).L1e := by
   have hr : 0 < Real.sqrt (kap * ∏ j, l j 0) := Real.sqrt_pos.mpr (three.prod_pos' hk hl 0)
@@ -837,9 +837,9 @@ def cols (hS : ∀ w, conjPl w ∈ S ↔ w ∈ S) (hb : ∀ j p, b j p ≠ 0) (h
   l1e := l1e hk hl
 
 /- English proof (translation)
-Introduce `w hw j`. Use `⟨?_, if_neg hw⟩` and prove the remaining obligations. Establish `hμ : decide (w ∈ S) = false` using `decide_eq_false hw`. Establish `h1 : Matrix.diagonal (bT K b false j) = (1 : Matrix (Fin 2) (Fin 2) K)`. Rewrite using `[← Matrix.diagonal_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Simplify using `only [IndefData.Aw, IndefData.Iw, hμ, h1]`. Rewrite using `[matLat_one, idx_std, idx_std, jw_std]`. Simplify using the standard rewrite rules.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem untw : (dat0 K v0 S b kap l).Untwisted (num K v0 S b kap l) := by
   intro w hw j
@@ -851,7 +851,7 @@ theorem untw : (dat0 K v0 S b kap l).Untwisted (num K v0 S b kap l) := by
   rw [matLat_one, idx_std, idx_std, jw_std]; simp
 
 /- English proof (translation)
-The claim follows from `untw level := ⟨rfl, rfl, rfl⟩ passage := fun _ _ HH0 h => by have h' : (dat0 K v0 S b kap l).muMaxRR ≤ HH0 := h have h1 : ((dat1 K v0 S b kap l).muMaxRR - (dat0 K v0 S b kap l).muMaxRR) / 14 ≤ (num K v0 S b kap l).la := le_trans (le_max_left _ _) (le_max_right _ _) have h2 : ((da …`.
+A detailed English derivation is pending.
 -/
 theorem extra (hS : ∀ w, conjPl w ∈ S ↔ w ∈ S) (hb : ∀ j p, b j p ≠ 0) (hk : 0 < kap) (hl : ∀ j p, 0 < l j p) :
     IndefExtra (side (K := K) (v0 := v0) (S := S) hS hb hk hl) (cols hS hb hk hl) where

@@ -38,7 +38,7 @@ def segY (y : (Σ k, J k) → Ω) : (Σ k, segJ J k) → Ω
   | ⟨.inr _, c⟩ => ∏ k, y ⟨k, c k⟩
 
 /- English proof (translation)
-Rewrite using `[Fintype.prod_sum_type]`. Simplify using `[segY]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem segY_prod (y : (Σ k, J k) → Ω) (c : (k : K ⊕ Unit) → segJ J k) :
     ∏ k, segY y ⟨k, c k⟩ = (∏ k, y ⟨k, c (Sum.inl k)⟩) * ∏ k, y ⟨k, c (Sum.inr ()) k⟩ := by
@@ -48,9 +48,9 @@ theorem segY_prod (y : (Σ k, J k) → Ω) (c : (k : K ⊕ Unit) → segJ J k) :
 variable {X : Scheme.{0}} {ξ : Spec (CommRingCat.of Ω) ⟶ X} {y : (Σ k, J k) → Ω}
 
 /- English proof (translation)
-Establish `key` using `@GlobalTheory.T.coords_join_blocks X Ω _ ξ K _ J _ y Unit _ (fun _ => ∀ k, J k) (fun _ => Fintype.ofFinite _) (segBlock y) h (fun _ p => by`. Take `⟨c, hc⟩` from `h.cover p`. Conclude with `⟨c, hc⟩)`. Establish `e : (fun c' : (k : K ⊕ Unit) → segJ J k => ∏ k, segY y ⟨k, c' k⟩) = fun c' : (k : K ⊕ Unit) → Sum.elim J (fun _ : Unit => ∀ k, J k) k => (∏ k, y ⟨k, c' (Sum.inl k)⟩) * ∏ k, segBlock y ⟨k, c' (Sum.inr k)⟩`. Use function extensionality and compare the values at `c'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[segY_prod]`. Simplify using `[segBlock]`. Rewrite using `[e]`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem segTie (h : CoordTie ℤ ξ fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩) :
     CoordTie ℤ ξ fun c' : (k : K ⊕ Unit) → segJ J k => ∏ k, segY y ⟨k, c' k⟩ := by
@@ -68,9 +68,9 @@ theorem segTie (h : CoordTie ℤ ξ fun c' : (k : K) → J k => ∏ k, y ⟨k, c
   exact key
 
 /- English proof (translation)
-Take `⟨h0, h1⟩` from `h`. Simplify using `only [segY_prod] at h0 h1`. Establish `hB` using `right_ne_zero_of_mul h0`. Use `⟨left_ne_zero_of_mul h0, fun c' => ?_⟩` and prove the remaining obligations. Establish `h2` using `h1 (fun k => match k with`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Consider the case `.inl k => c' k`. Consider the case `.inr u => c (Sum.inr u))`. Simplify using `only at h2`. Rewrite `h2` using `[mul_div_mul_right _ _ hB]`. Then use the resulting hypothesis.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem segChart {c : (k : K ⊕ Unit) → segJ J k} {p : Cpt ξ}
     (h : InChart ξ (fun c' : (k : K ⊕ Unit) → segJ J k => ∏ k, segY y ⟨k, c' k⟩) c p) :
@@ -86,9 +86,9 @@ theorem segChart {c : (k : K ⊕ Unit) → segJ J k} {p : Cpt ξ}
   rwa [mul_div_mul_right _ _ hB] at h2
 
 /- English proof (translation)
-Use `⟨h.1, fun p _ c' hc => ?_⟩` and prove the remaining obligations. Establish `h1` using `h.2 p trivial (fun k => c' (Sum.inl k)) (segChart hc)`. Establish `e : (∏ k, segY y ⟨k, c' k⟩ ^ (Sum.elim a 0 : K ⊕ Unit → ℤ) k) = ∏ k, y ⟨k, c' (Sum.inl k)⟩ ^ a k`. Rewrite using `[Fintype.prod_sum_type]`. Simplify using `[segY]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem segDeg {F : Type} [AddCommGroup F] [Module Ω F] {L : Lat ξ F} {a : K → ℤ} {e₀ : F}
     (h : L.IsDegOn Set.univ y a e₀) : L.IsDegOn Set.univ (segY y) (Sum.elim a 0) e₀ := by
@@ -109,13 +109,11 @@ variable {K K' : Type} [Fintype K] [Fintype K'] {J : K → Type} {J' : K' → Ty
   [∀ k, Fintype (J' k)]
 
 /- English proof (translation)
-Establish `e : ∀ f : MRing J, MvPolynomial.eval w (MvPolynomial.map (Int.castRingHom ℂ) (MvPolynomial.rename v f)) = MvPolynomial.eval (fun p => w (v p)) (MvPolynomial.map (Int.castRingHom ℂ) f)`. Introduce `f`. Rewrite using `[MvPolynomial.map_rename, MvPolynomial.eval_rename]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Conclude with `⟨hw', fun f hf => by`. Rewrite using `[← e]`. Conclude with `h.2 _ (Ideal.mem_map_of_mem _ hf)⟩`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hw, fun f hf => ?_⟩` and prove the remaining obligations. Set `φ : MRing J' →+* ℂ` to `(MvPolynomial.eval w).comp (MvPolynomial.map (Int.castRingHom ℂ))`. Establish `hle : bd.map (MvPolynomial.rename v) ≤ RingHom.ker φ` using `Ideal.map_le_iff_le_comap.2 fun g hg => by show φ (MvPolynomial.rename v g) = 0 show MvPolynomial.eval w (MvPolynomial.map (Int.castRingHom ℂ) (MvPolynomial.rename v g)) = 0`. Rewrite using `[e]`. Conclude with `h.2 g hg`.
-
-Conclude with `hle hf`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_mcPts_map (v : (Σ k, J k) → Σ k, J' k) (bd : Ideal (MRing J)) (w : (Σ k, J' k) → ℂ)
     (hw : ∀ k, ∃ i, w ⟨k, i⟩ ≠ 0) (hw' : ∀ k, ∃ i, w (v ⟨k, i⟩) ≠ 0) :
@@ -197,15 +195,15 @@ end GlobalTheory.CompanionTheory.Ar
 namespace GlobalTheory.CompanionTheory.Ar
 
 /- English proof (translation)
-Introduce `hRes E _ _ _ H D l Xo c Y Ω₀ _ ξ₀ hgen`. Use `haveI : CharZero Ω₀ := GlobalTheory.T.component_generic_char_zero E H D l Xo c Y Ω₀ ξ₀ hgen`. Take `⟨K₀, _, J₀, _, y₀, X₀, ξ', f₀, cst₀, t₀, m₀, Li', _, _, M', ρ', L', bd₀, h₁, h₂, h₃, h₄, h₅, h₆, h₇, h₈, h₉⟩` from `GlobalTheory.T.exists_coords_for_component hRes E H D l Xo c Y Ω₀ ξ₀ hgen`. Take `⟨Ω, _, _, _, K, _, J, _, y, X, ξ, f, cst, t, m, Li, _, _, M, ρ, Li₀, _, _, M₀, j, V₀, b, bd, hall, htie, hnorm, hdom, hcst, hact, hjpt, hV, hflag, hvb, hsnc, hbd⟩` from `GlobalTheory.T.coords_with_constants_map E H D l Xo c Y Ω₀ ξ₀ K₀ J₀ y₀ X₀ ξ' f₀ cst₀ t₀ m₀ Li' M' ρ' L' bd₀ hgen h₁ h₂ h₃ h₄ h₅ h₆ h₇ h₈ h₉`. Take `⟨K', _, J', _, y', bk, bx, 𝔐, g, Fl, xdeg, e, hbk, hy, hξ, hf, hg0, hdeg, hlines, -, hreg, hinj⟩` from `GlobalTheory.T.generic_coords_descend_subfield E H D l Xo c Y Ω K J y X ξ f Ω₀ ξ₀ cst t m Li M ρ Li₀ M₀ j V₀ b 1 hall htie hnorm hgen hdom hcst hact hjpt hV hflag hvb`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `tie₂` using `segTie (y := y') 𝔐.tie`. Establish `hy₂ : ∀ k (a : J k), segY y' ⟨Sum.inl (bk k), bx k a⟩ = y ⟨k, a⟩` using `hy`. Set `v : (Σ k, J k) → Σ k, segJ J' k` to `fun p => ⟨Sum.inl (bk p.1), bx p.1 p.2⟩`. Use `⟨{ Ω := Ω, K := K' ⊕ Unit, J := segJ J', y := segY y', 𝔐 := 𝔐.retie tie₂, Fl := Fl.retie tie₂, deg_one := hdeg, xdeg := fun r => Sum.elim (xdeg r) 0, e := e, lines := ?_, bd := bd.map (MvPolynomial.rename v), snc := ?_, bd_iff := ?_, k₀ := Sum.inr (), embeds := ?_ }, hg0⟩` and prove the remaining obligations. Conclude with `fun r => segDeg (hlines r)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `GlobalTheory.T.snc_model_reindexed_coords X 𝔐.X Ω ξ 𝔐.ξ g K J y (K' ⊕ Unit) (segJ J') (segY y') (fun k => Sum.inl (bk k)) bx _ bd hall 𝔐.all htie tie₂ hξ hy₂ hreg hinj hsnc`. Introduce `z w hw`. Establish `hw₁` using `GlobalTheory.T.complex_coords_reindexed X 𝔐.X Ω ξ 𝔐.ξ g K J y (K' ⊕ Unit) (segJ J') (segY y') (fun k => Sum.inl (bk k)) bx z w hall 𝔐.all 𝔐.tie.gen hξ hy₂ hreg hw`. Establish `hne : ∀ k, ∃ i, w ⟨k, i⟩ ≠ 0` using `fun k => (hw.1 k).imp fun _ h => h.ne_zero`. Establish `hne' : ∀ k, ∃ i, w (v ⟨k, i⟩) ≠ 0` using `fun k => (hw₁.1 k).imp fun _ h => h.ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mem_mcPts_map v bd w hne hne']`. Use `(show (fun p => w (v p)) ∈ mcPts bd ↔ _ from hbd (z ≫ g) _ hw₁).trans ?_` and prove the remaining obligations. Establish `hab` using `abLocus_pullback abLocusOne Y.t.semi 𝔐.m.cart.1 (centre z)`. Establish `hc : f (centre (z ≫ g)) = 𝔐.f (centre z)`. Rewrite using `[hf]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[hc]`. Conclude with `not_congr hab`. Conclude with `GlobalTheory.T.embeds_generic_of_char_zero 𝔐.X Ω 𝔐.ξ _ _ 𝔐.tie`.
+A detailed English derivation is pending.
 -/
 theorem exists_refGeo : ReciprocityTheory.ChartRestriction.G.Geo.ResK.ResKStatement → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Tor.Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (Ω₀ : Type) [Field Ω₀] (ξ₀ : Spec (CommRingCat.of Ω₀) ⟶ Y.X), IsCptGen ξ₀ → ∃ G : RefGeo Y, genPt G.𝔐.ξ₀ = genPt ξ₀ := by
   intro hRes E _ _ _ H D l Xo c Y Ω₀ _ ξ₀ hgen

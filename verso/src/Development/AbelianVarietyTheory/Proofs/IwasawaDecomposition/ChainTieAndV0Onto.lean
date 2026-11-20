@@ -8,9 +8,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Mem.SJ
 
 /- English proof (translation)
-Introduce `D Bs A X fc s R cr M`. Use `⟨fun h u x y => ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[M.cφ_eq, M.cF_eq]`. Conclude with `(h u x y).symm`. Unfold `Seam.GoodPartHasComplexCoordinates`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `⟨_, M.cF_eq y⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem chainTie_and_v0Onto :
     ∀ (D : D7) (Bs : DefBase D.what₂.LL) (A : DefAmb Bs) (X : CxData A) (fc : DefSub A → DefFace Bs) (s : Bool)

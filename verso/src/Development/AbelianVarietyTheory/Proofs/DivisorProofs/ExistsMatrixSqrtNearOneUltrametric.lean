@@ -8,9 +8,9 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {K : Type} [NontriviallyNormedField K] [IsUltrametricDist K] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Matrix.norm_le_iff (by positivity)]`. Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity) fun k _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul (norm_entry_le_entrywise_sup_norm A) (norm_entry_le_entrywise_sup_norm B) (norm_nonneg _) (norm_nonneg _)`.
+A detailed English derivation is pending.
 -/
 theorem norm_mul_le_ultra (A B : Matrix (Fin n) (Fin n) K) : ‖A * B‖ ≤ ‖A‖ * ‖B‖ := by
   rw [Matrix.norm_le_iff (by positivity)]
@@ -22,7 +22,7 @@ theorem norm_mul_le_ultra (A B : Matrix (Fin n) (Fin n) K) : ‖A * B‖ ≤ ‖
     (norm_nonneg _) (norm_nonneg _)
 
 /- English proof (translation)
-Rewrite using `[Matrix.norm_le_iff (le_max_of_le_left (norm_nonneg _))]`. Introduce `i j`. Rewrite using `[Matrix.add_apply]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le_max (norm_entry_le_entrywise_sup_norm A) (norm_entry_le_entrywise_sup_norm B))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_add_le_max_ultra (A B : Matrix (Fin n) (Fin n) K) : ‖A + B‖ ≤ max ‖A‖ ‖B‖ := by
   rw [Matrix.norm_le_iff (le_max_of_le_left (norm_nonneg _))]
@@ -32,7 +32,7 @@ theorem norm_add_le_max_ultra (A B : Matrix (Fin n) (Fin n) K) : ‖A + B‖ ≤
     (max_le_max (norm_entry_le_entrywise_sup_norm A) (norm_entry_le_entrywise_sup_norm B))
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, ← norm_neg B]`. Conclude with `norm_add_le_max_ultra A (-B)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_sub_le_max_ultra (A B : Matrix (Fin n) (Fin n) K) : ‖A - B‖ ≤ max ‖A‖ ‖B‖ := by
   rw [sub_eq_add_neg, ← norm_neg B]
@@ -43,7 +43,7 @@ noncomputable def iter (u : Matrix (Fin n) (Fin n) K) : ℕ → Matrix (Fin n) (
   | k + 1 => u - iter u k * iter u k
 
 /- English proof (translation)
-The claim follows from `| 0 => Commute.zero_right a | k + 1 => h.sub_right ((commute_iter h k).mul_right (commute_iter h k))`.
+A detailed English derivation is pending.
 -/
 theorem commute_iter {u a : Matrix (Fin n) (Fin n) K} (h : Commute a u) :
     ∀ k, Commute a (iter u k)
@@ -51,7 +51,7 @@ theorem commute_iter {u a : Matrix (Fin n) (Fin n) K} (h : Commute a u) :
   | k + 1 => h.sub_right ((commute_iter h k).mul_right (commute_iter h k))
 
 /- English proof (translation)
-The claim follows from `| 0 => by simp [iter] | k + 1 => by have ih := norm_iter_le hc k refine (norm_sub_le_max_ultra _ _).trans (max_le le_rfl ?_) calc ‖iter u k * iter u k‖ ≤ ‖iter u k‖ * ‖iter u k‖ := norm_mul_le_ultra _ _ _ ≤ ‖u‖ * 1 := mul_le_mul ih (ih.trans hc.le) (norm_nonneg _) (norm_nonneg _) …`.
+A detailed English derivation is pending.
 -/
 theorem norm_iter_le {u : Matrix (Fin n) (Fin n) K} (hc : ‖u‖ < 1) : ∀ k, ‖iter u k‖ ≤ ‖u‖
   | 0 => by simp [iter]
@@ -63,7 +63,7 @@ theorem norm_iter_le {u : Matrix (Fin n) (Fin n) K} (hc : ‖u‖ < 1) : ∀ k, 
       _ = ‖u‖ := mul_one _
 
 /- English proof (translation)
-Rewrite using `[sub_mul, mul_add, mul_add, ← h.eq]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem matrix_sub_mul_self_sub_eq_neg_mul_of_commute (u a b : Matrix (Fin n) (Fin n) K) (h : Commute a b) :
     (u - b * b) - (u - a * a) = -((b - a) * (a + b)) := by
@@ -71,7 +71,7 @@ theorem matrix_sub_mul_self_sub_eq_neg_mul_of_commute (u a b : Matrix (Fin n) (F
   abel
 
 /- English proof (translation)
-The claim follows from `| 0 => by simp [iter] | k + 1 => by have hcomm : Commute (iter u k) (iter u (k + 1)) := commute_iter (commute_iter (Commute.refl u) k).symm (k + 1) show ‖(u - iter u (k + 1) * iter u (k + 1)) - (u - iter u k * iter u k)‖ ≤ _ rw [matrix_sub_mul_self_sub_eq_neg_mul_of_commute u _ _ …`.
+A detailed English derivation is pending.
 -/
 theorem norm_iter_diff_le {u : Matrix (Fin n) (Fin n) K} (hc : ‖u‖ < 1) :
     ∀ k, ‖iter u (k + 1) - iter u k‖ ≤ ‖u‖ * ‖u‖ ^ k
@@ -90,55 +90,53 @@ theorem norm_iter_diff_le {u : Matrix (Fin n) (Fin n) K} (hc : ‖u‖ < 1) :
       _ = ‖u‖ * ‖u‖ ^ (k + 1) := by ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem tau_add (σ : K →+* K) (A B : Matrix (Fin n) (Fin n) K) :
     ((A + B).map σ)ᵀ = (A.map σ)ᵀ + (B.map σ)ᵀ := by
   ext i j; simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem tau_sub (σ : K →+* K) (A B : Matrix (Fin n) (Fin n) K) :
     ((A - B).map σ)ᵀ = (A.map σ)ᵀ - (B.map σ)ᵀ := by
   ext i j; simp
 
 /- English proof (translation)
-Rewrite using `[Matrix.map_mul, transpose_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tau_mul (σ : K →+* K) (A B : Matrix (Fin n) (Fin n) K) :
     ((A * B).map σ)ᵀ = (B.map σ)ᵀ * (A.map σ)ᵀ := by
   rw [Matrix.map_mul, transpose_mul]
 
 /- English proof (translation)
-Rewrite using `[Matrix.map_one σ (map_zero σ) (map_one σ), transpose_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tau_one (σ : K →+* K) : ((1 : Matrix (Fin n) (Fin n) K).map σ)ᵀ = 1 := by
   rw [Matrix.map_one σ (map_zero σ) (map_one σ), transpose_one]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem tau_smul (σ : K →+* K) (c : K) (A : Matrix (Fin n) (Fin n) K) :
     ((c • A).map σ)ᵀ = σ c • (A.map σ)ᵀ := by
   ext i j; simp
 
 /- English proof (translation)
-Establish `h4 : (4 : K) ≠ 0` using `by norm_num`. Establish `h4p : 0 < ‖(4 : K)‖` using `norm_pos_iff.2 h4`. Use `set u : Matrix (Fin n) (Fin n) K := (4 : K)⁻¹ • (s - 1) with hu`. Establish `hs1 : ‖s - 1‖ < ‖(4 : K)‖` using `(Matrix.norm_lt_iff h4p).2 fun i j => by simpa using hs i j`. Establish `hc : ‖u‖ < 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu, norm_smul, norm_inv, inv_mul_lt_iff₀ h4p, mul_one]`. Conclude with `hs1`. Establish `hcs : CauchySeq (iter u)` using `cauchySeq_of_le_geometric ‖u‖ ‖u‖ hc fun k => by`. Rewrite using `[dist_eq_norm, norm_sub_rev]`. Conclude with `norm_iter_diff_le hc k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨y, hy⟩` from `cauchySeq_tendsto_of_complete hcs`. Establish `hfix : y + y * y = u`. Establish `h1 : Tendsto (fun k => iter u (k + 1)) atTop (𝓝 y)` using `hy.comp (tendsto_add_atTop_nat 1)`. Establish `h2 : Tendsto (fun k => iter u (k + 1)) atTop (𝓝 (u - y * y))` using `tendsto_const_nhds.sub (hy.mul hy)`. Conclude with `eq_sub_iff_add_eq.1 (tendsto_nhds_unique h1 h2)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨1 + (2 : K) • y, ?_, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[add_mul, mul_add, mul_add, one_mul, mul_one, one_mul, smul_mul_smul_comm]`. Use `module`. Use `_ = s := by rw [hfix, hu, smul_inv_smul₀ h4]; abel`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `a ha`. Establish `hau : Commute a u` using `((Commute.sub_right ha (Commute.one_right a))).smul_right _`. Establish `hay : a * y = y * a` using `tendsto_nhds_unique (hy.const_mul a) ((hy.mul_const a).congr fun k => (commute_iter hau k).eq.symm)`. Conclude with `((Commute.one_right a).add_right ((show Commute a y from hay).smul_right (2 : K))).eq`. Introduce `hsσ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Establish `hτu : (u.map σ)ᵀ = u`. Rewrite using `[hu, tau_smul, tau_sub, tau_one, hsσ, map_inv₀, map_ofNat]`. Establish `hτiter : ∀ k, ((iter u k).map σ)ᵀ = iter u k`. Introduce `k`. Proceed by induction on `k with`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => ext i j`. Simplify using `[iter]`. Consider the case `succ k ih => show ((u - iter u k * iter u k).map σ)ᵀ = u - iter u k * iter u k`. Rewrite using `[tau_sub, tau_mul, ih, hτu]`. Establish `hτc : Continuous fun M : Matrix (Fin n) (Fin n) K => (M.map σ)ᵀ` using `(continuous_id.matrix_map hσ).matrix_transpose`.
-
-Establish `hτy : (y.map σ)ᵀ = y` using `tendsto_nhds_unique ((hτc.tendsto y).comp hy) (hy.congr fun k => (hτiter k).symm)`. Rewrite using `[tau_add, tau_one, tau_smul, hτy, map_ofNat]`.
+A detailed English derivation is pending.
 -/
 theorem exists_sqrt [CompleteSpace K] [CharZero K] (σ : K →+* K) (hσ : Continuous σ)
     (s : Matrix (Fin n) (Fin n) K)
@@ -192,9 +190,9 @@ end GlobalTheory.MatSqrtNearOne
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K _ _ _ _ n σ hσ`. Establish `h4 : (4 : K) ≠ 0` using `by norm_num`. Use `⟨{s | ∀ i j, ‖s i j - (1 : Matrix (Fin n) (Fin n) K) i j‖ < ‖(4 : K)‖}, ?_, ?_⟩` and prove the remaining obligations. Use `IsOpen.mem_nhds ?_ (by simp [h4])` and prove the remaining obligations. Simplify using `only [Set.ofPred_forall]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => isOpen_lt ((continuous_id.matrix_elem i j).sub continuous_const).norm continuous_const`. Introduce `s hs`. Conclude with `MatSqrtNearOne.exists_sqrt σ hσ s hs`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem matrix_sqrt_near_one_ultrametric :
     ∀ (K : Type) [NontriviallyNormedField K] [IsUltrametricDist K] [CompleteSpace K]

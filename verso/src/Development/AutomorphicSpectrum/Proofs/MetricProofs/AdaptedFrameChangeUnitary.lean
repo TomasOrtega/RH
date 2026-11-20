@@ -13,17 +13,17 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Change
 
 /- English proof (translation)
-Simplify using `[sgI, fromBlocks_multiply, ← fromBlocks_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sgI_mul_self (j j' : ℕ) : sgI j j' * sgI j j' = 1 := by
   simp [sgI, fromBlocks_multiply, ← fromBlocks_one]
 
 /- English proof (translation)
-Establish `hb : u = fromBlocks u.toBlocks₁₁ 0 0 u.toBlocks₂₂` using `by conv_lhs => rw [← fromBlocks_toBlocks u, h21, h12]`. Generalize the expression as in `u.toBlocks₁₁ = a at hb`. Generalize the expression as in `u.toBlocks₂₂ = d at hb`. Substitute `hb` using the available equality. Establish `h` using `hu`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Establish an intermediate fact.
 
-Simplify using `only [sgI, fromBlocks_conjTranspose, fromBlocks_multiply] at h`. Take `⟨h1, -, -, h2⟩` from `fromBlocks_inj.1 h`. Establish `h1' : aᴴ * a = 1`. Simplify using `using h1`. Establish `h2' : dᴴ * d = 1`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using h2`. Simplify using `[fromBlocks_conjTranspose, fromBlocks_multiply, h1', h2', ← fromBlocks_one]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 -/
 theorem unitary_of_blocks {j j' : ℕ} (u : Matrix (Sg j j') (Sg j j') ℂ) (hu : uᴴ * sgI j j' * u = sgI j j')
     (h21 : u.toBlocks₂₁ = 0) (h12 : u.toBlocks₁₂ = 0) : uᴴ * u = 1 := by
@@ -42,13 +42,11 @@ theorem unitary_of_blocks {j j' : ℕ} (u : Matrix (Sg j j') (Sg j j') ℂ) (hu 
   simp [fromBlocks_conjTranspose, fromBlocks_multiply, h1', h2', ← fromBlocks_one]
 
 /- English proof (translation)
-Establish `h' : u * uᴴ = 1` using `mul_eq_one_comm.1 h`. Establish `hcomm : sgI j j' * u = u * sgI j j'`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hcomm` using `[← fromBlocks_toBlocks u]`. Simplify using `only [sgI, fromBlocks_multiply] at hcomm`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_one, Matrix.one_mul, Matrix.mul_neg, Matrix.neg_mul] at hcomm`. Take `⟨-, h12, h21, -⟩` from `fromBlocks_inj.1 hcomm`. Prove the components needed by the constructor for the conclusion. Use extensionality with `a b`. Use `congrFun (congrFun h21 a) b` as an intermediate fact.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [Matrix.neg_apply, Matrix.zero_apply] at this ⊢`. Conclude with `neg_eq_self.1 this`. Use extensionality with `a b`. Use `congrFun (congrFun h12 a) b` as an intermediate fact. Simplify using `only [Matrix.neg_apply, Matrix.zero_apply] at this ⊢`.
-
-Conclude with `self_eq_neg.1 this`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blocks_of_unitary {j j' : ℕ} (u : Matrix (Sg j j') (Sg j j') ℂ) (hu : uᴴ * sgI j j' * u = sgI j j')
     (h : uᴴ * u = 1) : u.toBlocks₂₁ = 0 ∧ u.toBlocks₁₂ = 0 := by
@@ -86,13 +84,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Ψ : Type} [Fintype
   [AddCommGroup Λ] [Module (𝓞 E) Λ] {F : UnivFam E Ψ j j' n g Λ} (C : LatEmb F) (R : RiemLat E g Λ)
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`. Establish `hcoord : ∀ l, C.bas.equivFun y l = 0`. Introduce `l`. Take `⟨x, hx⟩` from `R.unimod.2 (C.lam.coord l)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `key : imLin R.Hm (R.P x) (C.perExt R y) = C.bas.equivFun y l`. Rewrite using `[LatEmb.perExt, Module.Basis.constr_apply_fintype, map_sum]`. Establish `hk : ∀ k, imLin R.Hm (R.P x) (R.P (C.lam k)) = if k = l then 1 else 0`. Introduce `k`. Establish `h1 : imLin R.Hm (R.P x) (R.P (C.lam k)) = (R.form x (C.lam k) : ℝ)` using `R.im x _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[h1, hx]`. Simplify using `[Module.Basis.coord_apply, Finsupp.single_apply, eq_comm]`. Simplify using `[hk]`. Rewrite using `[← key, hy, map_zero]`. Establish `: C.bas.equivFun y = 0` using `funext hcoord`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem perExt_injective : Function.Injective (C.perExt R) := by
   rw [injective_iff_map_eq_zero]
@@ -114,7 +112,7 @@ theorem perExt_injective : Function.Injective (C.perExt R) := by
 
 open Classical in
 /- English proof (translation)
-Simplify using `only [LatEmb.pPart, smul_add, Pi.single_add, map_add]`. Use `module`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pPart_add (τ : Ψ) (y y' : Fin (j + j') → ℂ) :
     C.pPart R τ (y + y') = C.pPart R τ y + C.pPart R τ y' := by
@@ -123,7 +121,7 @@ theorem pPart_add (τ : Ψ) (y y' : Fin (j + j') → ℂ) :
 
 open Classical in
 /- English proof (translation)
-Simplify using `only [LatEmb.pBar, smul_add, Pi.single_add, map_add]`. Use `module`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pBar_add (τ : Ψ) (y y' : Fin (j + j') → ℂ) :
     C.pBar R τ (y + y') = C.pBar R τ y + C.pBar R τ y' := by
@@ -132,7 +130,7 @@ theorem pBar_add (τ : Ψ) (y y' : Fin (j + j') → ℂ) :
 
 open Classical in
 /- English proof (translation)
-Simplify using `only [LatEmb.pPart, LatEmb.pBar]`. Use `module`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pPart_add_pBar (τ : Ψ) (y : Fin (j + j') → ℂ) :
     C.pPart R τ y + C.pBar R τ y = C.perExt R (Pi.single τ y) := by
@@ -140,7 +138,7 @@ theorem pPart_add_pBar (τ : Ψ) (y : Fin (j + j') → ℂ) :
   module
 
 /- English proof (translation)
-Establish `h0 : C.perExt R (Pi.single τ y) = 0`. Rewrite using `[← pPart_add_pBar, h, h', add_zero]`. Establish `h1 : (Pi.single τ y : Ψ → Fin (j + j') → ℂ) = 0` using `(injective_iff_map_eq_zero _).1 (perExt_injective C R) _ h0`. Simplify using `using congrFun h1 τ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_zero_of_parts (τ : Ψ) (y : Fin (j + j') → ℂ) (h : C.pPart R τ y = 0) (h' : C.pBar R τ y = 0) : y = 0 := by
   classical
@@ -152,7 +150,7 @@ theorem eq_zero_of_parts (τ : Ψ) (y : Fin (j + j') → ℂ) (h : C.pPart R τ 
 variable {C}
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [LatEmb.cinv, Matrix.mul_assoc]`. Use `_ = 1 := by rw [h, sgI_mul_self]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cinv_mul {A : Matrix (Fin (j + j')) (Sg j j') ℂ} {τ : Ψ} (h : Aᴴ * C.sgr τ * A = sgI j j') :
     C.cinv A τ * A = 1 := by
@@ -161,14 +159,14 @@ theorem cinv_mul {A : Matrix (Fin (j + j')) (Sg j j') ℂ} {τ : Ψ} (h : Aᴴ *
     _ = 1 := by rw [h, sgI_mul_self]
 
 /- English proof (translation)
-The claim follows from `(Matrix.mul_eq_one_comm_of_equiv finSumFinEquiv).1 (cinv_mul h)`.
+A detailed English derivation is pending.
 -/
 theorem mul_cinv {A : Matrix (Fin (j + j')) (Sg j j') ℂ} {τ : Ψ} (h : Aᴴ * C.sgr τ * A = sgI j j') :
     A * C.cinv A τ = 1 :=
   (Matrix.mul_eq_one_comm_of_equiv finSumFinEquiv).1 (cinv_mul h)
 
 /- English proof (translation)
-Establish `h1 : (C.cinv A τ)ᴴ * Aᴴ = 1`. Rewrite using `[← conjTranspose_mul, mul_cinv h, conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem sgr_eq {A : Matrix (Fin (j + j')) (Sg j j') ℂ} {τ : Ψ} (h : Aᴴ * C.sgr τ * A = sgI j j') :
     C.sgr τ = (C.cinv A τ)ᴴ * sgI j j' * C.cinv A τ := by
@@ -179,7 +177,7 @@ theorem sgr_eq {A : Matrix (Fin (j + j')) (Sg j j') ℂ} {τ : Ψ} (h : Aᴴ * C
     _ = _ := by rw [h]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = sgI j j' := by rw [← sgr_eq h, h']`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem change_isSgU {A A' : Matrix (Fin (j + j')) (Sg j j') ℂ} {τ : Ψ} (h : Aᴴ * C.sgr τ * A = sgI j j')
     (h' : A'ᴴ * C.sgr τ * A' = sgI j j') :
@@ -190,7 +188,7 @@ theorem change_isSgU {A A' : Matrix (Fin (j + j')) (Sg j j') ℂ} {τ : Ψ} (h :
     _ = sgI j j' := by rw [← sgr_eq h, h']
 
 /- English proof (translation)
-Establish `: (C.cinv A τ * A) *ᵥ w = 0`. Rewrite using `[← mulVec_mulVec, hw, mulVec_zero]`. Simplify `this` using `[cinv_mul h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mulVec_eq_zero {A : Matrix (Fin (j + j')) (Sg j j') ℂ} {τ : Ψ} (h : Aᴴ * C.sgr τ * A = sgI j j')
     {w : Sg j j' → ℂ} (hw : A *ᵥ w = 0) : w = 0 := by
@@ -199,15 +197,15 @@ theorem mulVec_eq_zero {A : Matrix (Fin (j + j')) (Sg j j') ℂ} {τ : Ψ} (h : 
   simpa [cinv_mul h] using this
 
 /- English proof (translation)
-Apply the tactic sequence `ext (i | i) <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem split_vec (w : Sg j j' → ℂ) : w = Sum.elim (w ∘ Sum.inl) (0 : Fin j' → ℂ) + Sum.elim (0 : Fin j → ℂ) (w ∘ Sum.inr) := by
   ext (i | i) <;> simp
 
 /- English proof (translation)
-Establish `h1 : C.pPart R τ (A τ *ᵥ Sum.elim (0 : Fin j → ℂ) (w ∘ Sum.inr)) = 0`. Rewrite `hw` using `[split_vec w, mulVec_add, pPart_add, hA.ker, zero_add]`. Simplify using `using hw`. Establish `h2` using `eq_zero_of_parts C R τ _ h1 (hA.kerBar τ _)`. Establish `h3` using `mulVec_eq_zero (hA.unit τ) h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using congrFun h3 (Sum.inr i)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem inr_eq_zero {A : Ψ → Matrix (Fin (j + j')) (Sg j j') ℂ} (hA : C.IsAdapted R A) (τ : Ψ)
     (w : Sg j j' → ℂ) (hw : C.pPart R τ (A τ *ᵥ w) = 0) (i : Fin j') : w (Sum.inr i) = 0 := by
@@ -219,9 +217,9 @@ theorem inr_eq_zero {A : Ψ → Matrix (Fin (j + j')) (Sg j j') ℂ} (hA : C.IsA
   simpa using congrFun h3 (Sum.inr i)
 
 /- English proof (translation)
-Establish `h1 : C.pBar R τ (A τ *ᵥ Sum.elim (w ∘ Sum.inl) (0 : Fin j' → ℂ)) = 0`. Rewrite `hw` using `[split_vec w, mulVec_add, pBar_add, hA.kerBar, add_zero]`. Simplify using `using hw`. Establish `h2` using `eq_zero_of_parts C R τ _ (hA.ker τ _) h1`. Establish `h3` using `mulVec_eq_zero (hA.unit τ) h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using congrFun h3 (Sum.inl i)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem inl_eq_zero {A : Ψ → Matrix (Fin (j + j')) (Sg j j') ℂ} (hA : C.IsAdapted R A) (τ : Ψ)
     (w : Sg j j' → ℂ) (hw : C.pBar R τ (A τ *ᵥ w) = 0) (i : Fin j) : w (Sum.inl i) = 0 := by
@@ -233,21 +231,21 @@ theorem inl_eq_zero {A : Ψ → Matrix (Fin (j + j')) (Sg j j') ℂ} (hA : C.IsA
   simpa using congrFun h3 (Sum.inl i)
 
 /- English proof (translation)
-Simplify using `[mulVec, dotProduct, Fintype.sum_sum_type, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mulVec_inl (u : Matrix (Sg j j') (Sg j j') ℂ) (k : Fin j) (x : Sg j j') :
     (u *ᵥ Sum.elim (Pi.single k 1) (0 : Fin j' → ℂ)) x = u x (Sum.inl k) := by
   simp [mulVec, dotProduct, Fintype.sum_sum_type, Pi.single_apply]
 
 /- English proof (translation)
-Simplify using `[mulVec, dotProduct, Fintype.sum_sum_type, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mulVec_inr (u : Matrix (Sg j j') (Sg j j') ℂ) (k : Fin j') (x : Sg j j') :
     (u *ᵥ Sum.elim (0 : Fin j → ℂ) (Pi.single k 1)) x = u x (Sum.inr k) := by
   simp [mulVec, dotProduct, Fintype.sum_sum_type, Pi.single_apply]
 
 /- English proof (translation)
-Use extensionality with `(i | i)`. Simplify using `[mulVec, dotProduct, Fintype.sum_sum_type, toBlocks₁₁]`. Establish `: ∀ k, u (Sum.inr i) (Sum.inl k) = 0` using `fun k => congrFun (congrFun h i) k`. Simplify using `[mulVec, dotProduct, Fintype.sum_sum_type, this]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem mulVec_diag_inl (u : Matrix (Sg j j') (Sg j j') ℂ) (h : u.toBlocks₂₁ = 0) (v : Fin j → ℂ) :
     u *ᵥ Sum.elim v (0 : Fin j' → ℂ) = Sum.elim (u.toBlocks₁₁ *ᵥ v) (0 : Fin j' → ℂ) := by
@@ -257,7 +255,7 @@ theorem mulVec_diag_inl (u : Matrix (Sg j j') (Sg j j') ℂ) (h : u.toBlocks₂�
     simp [mulVec, dotProduct, Fintype.sum_sum_type, this]
 
 /- English proof (translation)
-Use extensionality with `(i | i)`. Establish `: ∀ k, u (Sum.inl i) (Sum.inr k) = 0` using `fun k => congrFun (congrFun h i) k`. Simplify using `[mulVec, dotProduct, Fintype.sum_sum_type, this]`. Simplify using `[mulVec, dotProduct, Fintype.sum_sum_type, toBlocks₂₂]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mulVec_diag_inr (u : Matrix (Sg j j') (Sg j j') ℂ) (h : u.toBlocks₁₂ = 0) (v : Fin j' → ℂ) :
     u *ᵥ Sum.elim (0 : Fin j → ℂ) v = Sum.elim (0 : Fin j → ℂ) (u.toBlocks₂₂ *ᵥ v) := by
@@ -269,17 +267,15 @@ theorem mulVec_diag_inr (u : Matrix (Sg j j') (Sg j j') ℂ) (h : u.toBlocks₁�
 end Arch
 
 /- English proof (translation)
-Introduce `E _ _ _ Ψ _ j j' n g Λ _ _ F C R A A' _ hA hA'`. Establish `hmul : ∀ τ, A τ * (C.cinv (A τ) τ * A' τ) = A' τ` using `fun τ => by`. Rewrite using `[← Matrix.mul_assoc, mul_cinv (hA.unit τ), Matrix.one_mul]`. Prove the components needed by the constructor for the conclusion. Introduce `hAd τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h21 : (C.cinv (A τ) τ * A' τ).toBlocks₂₁ = 0`. Use extensionality with `i k`. Establish `hw : C.pPart R τ (A τ *ᵥ ((C.cinv (A τ) τ * A' τ) *ᵥ Sum.elim (Pi.single k 1) (0 : Fin j' → ℂ))) = 0`. Rewrite using `[mulVec_mulVec, hmul]`. Conclude with `hAd.ker τ _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `inr_eq_zero R hA τ _ hw i` as an intermediate fact. Rewrite `this` using `[mulVec_inl]`. Then use the resulting hypothesis. Establish `h12 : (C.cinv (A τ) τ * A' τ).toBlocks₁₂ = 0`. Use extensionality with `i k`. Establish `hw : C.pBar R τ (A τ *ᵥ ((C.cinv (A τ) τ * A' τ) *ᵥ Sum.elim (0 : Fin j → ℂ) (Pi.single k 1))) = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mulVec_mulVec, hmul]`. Conclude with `hAd.kerBar τ _`. Use `inl_eq_zero R hA τ _ hw i` as an intermediate fact. Rewrite `this` using `[mulVec_inr]`. Then use the resulting hypothesis. Conclude with `unitary_of_blocks _ (change_isSgU (hA.unit τ) (hA' τ)) h21 h12`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hu`. Establish `hb` using `fun τ => blocks_of_unitary _ (change_isSgU (hA.unit τ) (hA' τ)) (hu τ)`. Use `⟨hA', fun τ v => ?_, fun τ v => ?_⟩` and prove the remaining obligations. Rewrite using `[← hmul τ, ← mulVec_mulVec, mulVec_diag_inl _ (hb τ).1]`. Conclude with `hA.ker τ _`.
-
-Rewrite using `[← hmul τ, ← mulVec_mulVec, mulVec_diag_inr _ (hb τ).2]`. Conclude with `hA.kerBar τ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAdapted_iff_unitary : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Type) [Fintype Ψ] (j j' n g : ℕ) (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] (F : UnivFam E Ψ j j' n g Λ) (C : LatEmb F) (R : RiemLat E g Λ) (A A' : Ψ → Matrix (Fin (j + j')) (Sg j j') ℂ), R.form = F.form → C.IsAdapted R A → (∀ τ, (A' τ)ᴴ * C.sgr τ * A' τ = sgI j j') → (C.IsAdapted R A' ↔ ∀ τ, (C.cinv (A τ) τ * A' τ)ᴴ * (C.cinv (A τ) τ * A' τ) = 1) := by
   intro E _ _ _ Ψ _ j j' n g Λ _ _ F C R A A' _ hA hA'

@@ -12,25 +12,21 @@ section Cyclicity
 variable {G : Type} [Group G]
 
 /- English proof (translation)
-Use `Fintype.ofFinite G` as an intermediate fact. Use `set m := Fintype.card G with hmdef`. Break down `Nat.lt_or_ge m 2 with hm | hm` into its components or cases. Establish `: Subsingleton G` using `Fintype.card_le_one_iff_subsingleton.1 (by omega) infer_instance`. Establish `hk : ∀ x : G, ∃ k : ℕ, k < m ∧ ((((k : ℚ) / m : ℚ)) : AddCircle (1 : ℚ)) = χ (Additive.ofMul x)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Establish `hy01` using `reprIco_mem (χ (Additive.ofMul x))`. Establish `h0 : (((m : ℚ) * reprIco (χ (Additive.ofMul x)) : ℚ) : AddCircle (1 : ℚ)) = 0`. Rewrite using `[← nsmul_eq_mul, AddCircle.coe_nsmul, coe_reprIco, ← map_nsmul, ← ofMul_pow, pow_card_eq_one, ofMul_one, map_zero]`. Take `⟨n, hn⟩` from `(AddCircle.coe_eq_zero_iff _).1 h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hn` using `[zsmul_one]`. Simplify using `only [Set.mem_Ico] at hy01`. Establish `hmpos : (0 : ℚ) < m` using `by exact_mod_cast (by omega : 0 < m)`. Establish `hn0 : 0 ≤ n`. Establish `: (0 : ℚ) ≤ n` using `by rw [hn]; exact mul_nonneg hmpos.le hy01.1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `hnm : n < m`. Establish `: (n : ℚ) < m` using `by rw [hn]; nlinarith`. Conclude with `this` after adjusting the coercions. Use `⟨n.toNat, by omega, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← coe_reprIco (χ (Additive.ofMul x))]`. Use `congr 1`. Rewrite using `[show ((n.toNat : ℕ) : ℚ) = (n : ℚ) by exact_mod_cast Int.toNat_of_nonneg hn0, hn]`. Clear the denominators using the available nonvanishing facts. Use `choose k hkm hkeq using hk`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hkinj : Function.Injective k`. Introduce `x x' h`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Apply `hχ` to reduce the goal to its premises. Rewrite using `[← hkeq x, ← hkeq x', h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `himage : Finset.univ.image k = Finset.range m`. Apply `Finset.eq_of_subset_of_card_le` to reduce the goal to its premises. Introduce `i hi`. Take `⟨x, -, rfl⟩` from `Finset.mem_image.1 hi`. Conclude with `Finset.mem_range.2 (hkm x)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Finset.card_range, Finset.card_image_of_injective _ hkinj, Finset.card_univ]`. Establish `h1 : 1 ∈ Finset.univ.image k`. Rewrite using `[himage]`. Conclude with `Finset.mem_range.2 (by omega)`. Take `⟨g, -, hg⟩` from `Finset.mem_image.1 h1`.
-
-Establish `hχg` using `hkeq g`. Rewrite `hχg` using `[hg, Nat.cast_one]`. Establish `hord : orderOf g = m`. Rewrite using `[← addOrderOf_ofMul_eq_orderOf, ← addOrderOf_injective χ hχ, ← hχg]`. Conclude with `AddCircle.addOrderOf_period_div (p := (1 : ℚ)) (n := m) (by omega)`.
-
-Conclude with `isCyclic_of_orderOf_eq_card g (by rw [hord, Nat.card_eq_fintype_card])`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCyclic_of_injective_char [Finite G] (χ : Additive G →+ AddCircle (1 : ℚ))
     (hχ : Function.Injective χ) : IsCyclic G := by
@@ -99,7 +95,7 @@ def charKer (χ : Additive G →+ AddCircle (1 : ℚ)) : Subgroup G :=
   (AddMonoidHom.toMultiplicativeRight χ).ker
 
 /- English proof (translation)
-Rewrite using `[charKer, MonoidHom.mem_ker, AddMonoidHom.toMultiplicativeRight_apply_apply, ofAdd_eq_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_charKer {χ : Additive G →+ AddCircle (1 : ℚ)} {x : G} :
     x ∈ charKer χ ↔ χ (Additive.ofMul x) = 0 := by
@@ -120,7 +116,7 @@ theorem charBar_apply (χ : Additive G →+ AddCircle (1 : ℚ)) (x : G) :
   rfl
 
 /- English proof (translation)
-Introduce `x y h`. Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `QuotientGroup.kerLift_injective (AddMonoidHom.toMultiplicativeRight χ)` to reduce the goal to its premises. Conclude with `congrArg Multiplicative.ofAdd h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem charBar_injective (χ : Additive G →+ AddCircle (1 : ℚ)) :
     Function.Injective (charBar χ) := by
@@ -130,7 +126,7 @@ theorem charBar_injective (χ : Additive G →+ AddCircle (1 : ℚ)) :
   exact congrArg Multiplicative.ofAdd h
 
 /- English proof (translation)
-Use extensionality with `x`. Conclude with `charBar_apply χ (Additive.toMul x)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem charComp_charBar (χ : Additive G →+ AddCircle (1 : ℚ)) :
     charComp (charKer χ) (charBar χ) = χ := by

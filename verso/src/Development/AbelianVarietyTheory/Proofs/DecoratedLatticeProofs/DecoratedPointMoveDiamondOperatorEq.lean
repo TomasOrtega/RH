@@ -10,7 +10,7 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE
 namespace GlobalTheory.DiaTheta
 
 /- English proof (translation)
-The claim follows from `dif_pos ⟨p.1.1.2, p.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem decoratedPoint_move_diamondOperator_eq {X : Fields} {n : ℕ} {ST SG Q : Finset (HeightOneSpectrum (𝓞 X.E))} {y : Ys X n} (p : PtY ST SG Q y) (P : ST)
     (a : (𝓞 X.E ⧸ P.1.asIdeal)ˣ) :
@@ -18,11 +18,9 @@ theorem decoratedPoint_move_diamondOperator_eq {X : Fields} {n : ℕ} {ST SG Q :
   dif_pos ⟨p.1.1.2, p.2⟩
 
 /- English proof (translation)
-Rewrite using `[decoratedPoint_move_diamondOperator_eq, decoratedPoint_move_diamondOperator_eq]`. Establish `hT` using `GlobalTheory.LvT.Built.levelPrimeDatum_diamond_invariant X.K p.1.1.deco p'.1.1.deco P s`. Use function extensionality and compare the values at `x`. Unfold `xiAt`. Use `split_ifs with h1 h2 h3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Unfold `XiEntry`. Conclude with `congrArg (· * _) (congrFun hT x)`. Unfold `XiCpl1`. Conclude with `congrArg (· * _) (congrFun hT x)`. Take `⟨n, rfl⟩ : ∃ n, i = n + 1` from `⟨i - 1, by have := R.two_le_m; omega⟩ show xiOver Ch sel mu cst n h3 _ _ _ x = xiOver Ch sel mu cst n h3 _ _ _ x`.
-
-Unfold `xiOver`. Conclude with `congrArg (· * _) (congrFun hT x)`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem xiAt_dia {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
     (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ}
@@ -51,9 +49,9 @@ end GlobalTheory.DiaTheta
 namespace GlobalTheory.DiaTheta
 
 /- English proof (translation)
-Introduce `B X I _ u a i b b' p p' P s`. Establish `e1 : ((I.atIn u a).A i).dia b P s p = PtY.mv p (DecoSet.dia1 P s p.1.1.deco)` using `rfl`. Establish `e2 : ((I.atIn u a).A (i + 1)).dia b' P s p' = PtY.mv p' (DecoSet.dia1 P s p'.1.1.deco)` using `rfl`. Rewrite using `[e1, e2]`. Unfold `TC.th thAt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[xiAt_dia I.Ch I.sel (I.tup a) (I.cst a) (I.idx a) u i b b' p p' P s, decoratedPoint_move_diamondOperator_eq, decoratedPoint_move_diamondOperator_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem th_dia : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Laws → ∀ (u : B.Word) (a : I.ι) (i : ℕ) (b : (I.stp u a i).β) (b' : (I.stp u a (i + 1)).β) (p : (I.stp u a i).D b) (p' : (I.stp u a (i + 1)).D b') (P : (I.atIn u a).ST) (s : (Res P.1)ˣ), I.th u a i b b' (((I.atIn u a).A i).dia b P s p) (((I.atIn u a).A (i + 1)).dia b' P s p') = I.th u a i b b' p p' := by
   intro B X I _ u a i b b' p p' P s

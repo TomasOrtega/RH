@@ -7,9 +7,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 namespace GlobalTheory.PlacesExc
 
 /- English proof (translation)
-Introduce `D l hl`. Establish `h1 : (placesOver D.host.E l).Finite` using `Formalism.L2.Fam.NPC.placesOver_fin D.host l hl`. Establish `h2 : (placesS D l).Finite` using `Formalism.L2.Fam.NPC.exceptional_places_finite D.host l`. Use `⟨(h1.union h2).toFinset, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite `hv` using `[Set.Finite.mem_toFinset]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨fun h => hv (Or.inl h), fun h => hv (Or.inr h)⟩`.
+Supply the required witnesses or components.
 -/
 theorem finite_exceptional : ∀ (D : D7) (l : ℕ), l.Prime → ∃ F : Finset (PlE D.host), ∀ v, v ∉ F → v ∉ placesOver D.host.E l ∧ v ∉ placesS D l := by
   intro D l hl

@@ -31,11 +31,11 @@ open MeasureTheory VMetric
 open scoped ENNReal
 
 /- English proof (translation)
-Introduce `k _ X p _ Y _ q hp hq π hπ hg hd`. Take `⟨U₁, x, hU₁, hg₁, hx⟩` from `GlobalTheory.T.etale_coordinate_near_generic_point k X p hp`. Take `⟨U, hle, hU, hgU, hV, h₁, h₂, h₃⟩` from `GlobalTheory.T.finite_affine_neighbourhood_exists k X p Y q hp hq π hπ hg hd U₁ hg₁`. Establish `hres` using `Scheme.Hom.etale_appLE (𝟙 X) hU₁ hU hle`. Use `⟨U, fun a => (Scheme.Hom.appLE (𝟙 X) U₁ U hle).hom (x a), hU, hgU, ?_, hV, h₁, h₂, h₃⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hw : 𝟙 X ≫ p = p ≫ spMap (RingHom.id k)`. Rewrite using `[show spMap (RingHom.id k) = 𝟙 _ from Spec.map_id _, Category.comp_id, Category.id_comp]`. Establish `e : (MvPolynomial.eval₂Hom (algX p U) fun a => (Scheme.Hom.appLE (𝟙 X) U₁ U hle).hom (x a)) = (Scheme.Hom.appLE (𝟙 X) U₁ U hle).hom.comp (MvPolynomial.eval₂Hom (algX p U₁) x)`. Use `MvPolynomial.ringHom_ext (fun a => ?_) fun a => ?_` and prove the remaining obligations. Use `RingHom.congr_fun (TopForm.appLE_comp_algX (p := p) (p' := p) (φ := 𝟙 X) (σ := RingHom.id k) hw (V := U₁) (W := U) hle) a` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `using this.symm`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `RingHom.Etale.stableUnderComposition _ _ hx hres`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_open_finite_etale : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) [IsIntegral X] (Y : Scheme.{0})
     [IsIntegral Y] (q : Y ⟶ Sp k), IsArithVar p 1 → IsArithVar q 1 → ∀ (π : Y ⟶ X), π ≫ p = q →
@@ -63,29 +63,25 @@ theorem exists_open_finite_etale : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) 
   exact RingHom.Etale.stableUnderComposition _ _ hx hres
 
 /- English proof (translation)
-Introduce `k _ X p _ Y _ q hp hq π hπ hg hd σ`. Take `⟨U, x, hU, hgU, hx, hV, hfin, het, hr⟩` from `exists_open_finite_etale k X p Y q hp hq π hπ hg hd`. Establish `: Nonempty U` using `⟨⟨_, hgU⟩⟩`. Establish `hgV : genericPoint Y ∈ π ⁻¹ᵁ U` using `show π (genericPoint Y) ∈ U from hg ▸ hgU`. Use `set m := PtsOver.map π hπ (spMap σ) with hm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem (z : CxPts q σ) : z ∈ ptsIn q σ (π ⁻¹ᵁ U) ↔ m z ∈ ptsIn p σ U` using `Iff.rfl`. Establish `hCx (a : k) : algX q (π ⁻¹ᵁ U) a = (π.app U).hom (algX p U a)`. Establish `hw : π ≫ p = q ≫ spMap (RingHom.id k)`. Rewrite using `[hπ, show spMap (RingHom.id k) = 𝟙 _ from Spec.map_id _, Category.comp_id]`. Use `RingHom.congr_fun (TopForm.appLE_comp_algX (p := p) (p' := q) (φ := π) (σ := RingHom.id k) hw (V := U) (W := π ⁻¹ᵁ U) le_rfl) a` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this.symm` using `[Scheme.Hom.app_eq_appLE]`. Establish `hcx : (MvPolynomial.eval₂Hom (algX q (π ⁻¹ᵁ U)) fun a => π.app U (x a)) = (π.app U).hom.comp (MvPolynomial.eval₂Hom (algX p U) x)`. Use `MvPolynomial.ringHom_ext (fun a => ?_) fun a => ?_` and prove the remaining obligations. Simplify using `[hCx]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hx' : (MvPolynomial.eval₂Hom (algX q (π ⁻¹ᵁ U)) fun a => π.app U (x a)).Etale`. Rewrite using `[hcx]`. Conclude with `RingHom.Etale.stableUnderComposition _ _ hx het`. Use `⟨(ptsIn p σ U)ᶜ, GlobalTheory.T.complex_points_off_open_finite k X p hp U hgU σ, GlobalTheory.T.complex_points_off_open_finite k Y q hq _ hgV σ, fun y hy => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hy' : y ∈ ptsIn p σ U` using `not_not.1 hy`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc` using `GlobalTheory.T.etale_fibre_embeddings_card Γ(X, U) Γ(Y, π ⁻¹ᵁ U) (π.app U).hom hfin het (evHom hy')`. Rewrite `hc` using `[hr]`. Rewrite using `[← hc]`. Establish `hz (z : m ⁻¹' {y}) : z.1 ∈ ptsIn q σ (π ⁻¹ᵁ U)` using `(hmem z.1).2 (by rw [z.2]; exact hy')`. Establish `hev (z : m ⁻¹' {y}) (a) : ev q σ _ ((π.app U).hom a) z.1 = ev p σ U a y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `(ev_app π hπ U a z.1).trans (congrArg _ z.2)`. Use `Set.encard_congr (Equiv.ofBijective (fun z => ⟨evHom (hz z), RingHom.ext fun a => ?_⟩) ⟨?_, ?_⟩)` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, ← ev_eq]`. Conclude with `hev z a`. Introduce `z z' h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `Subtype.ext (Subtype.ext (ext_of_valR hV (hz z) (hz z') fun a => ?_))` and prove the remaining obligations. Use `RingHom.congr_fun (congrArg Subtype.val h) a` as an intermediate fact. Conclude with `(ev_eq (hz z) a).trans (this.trans (ev_eq (hz z') a).symm)`. Introduce and unpack `⟨ψ, hψ⟩`. Establish `hC (a : k) : ψ (algX q (π ⁻¹ᵁ U) a) = σ a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e₁ : algX q (π ⁻¹ᵁ U) a = (π.app U).hom (algX p U a)` using `hCx a`. Rewrite using `[e₁]`. Conclude with `(RingHom.congr_fun hψ _).trans ((ev_eq hy' _).symm.trans (ev_algX hy' a))`. Establish `hzz` using `ofHom_mem hV ψ hC`. Establish `hy₂ : m (ofHom hV ψ hC) = y`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subtype.ext (ext_of_valR hU hzz hy' fun a => ?_)` and prove the remaining obligations. Conclude with `((ev_app π hπ U a _).symm.trans (ev_ofHom hV ψ hC _)).trans ((RingHom.congr_fun hψ a).trans (ev_eq hy' a).symm)`. Use `⟨⟨ofHom hV ψ hC, hy₂⟩, Subtype.ext (RingHom.ext fun a => ?_)⟩` and prove the remaining obligations. Conclude with `(ev_eq hzz a).symm.trans (ev_ofHom hV ψ hC a)`. Establish `hz' : z ∈ ptsIn q σ (π ⁻¹ᵁ U)` using `not_not.1 hz`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨c, hc, hcU, hcx⟩` from `AlgChart.exists_of_etale hU x hx (σ := σ) (hmem z |>.1 hz')`. Take `⟨c', hc', hcU', hcx'⟩` from `AlgChart.exists_of_etale hV _ hx' hz'`. Use `⟨c, c', hc', hc, fun w hw hw' => ?_⟩` and prove the remaining obligations. Establish `key₁ : ∀ (U' : X.Opens) (h : U' = U) (x' : Fin 1 → Γ(X, U')), x' = h ▸ x → ∀ a y, ev p σ U' (x' a) y = ev p σ U (x a) y`. Introduce and unpack `U' rfl x' rfl a y`.
-
-Both sides reduce to the same expression. Establish `key₂ : ∀ (U' : Y.Opens) (h : U' = π ⁻¹ᵁ U) (x' : Fin 1 → Γ(Y, U')), x' = h ▸ (fun a => π.app U (x a)) → ∀ a y, ev q σ U' (x' a) y = ev q σ (π ⁻¹ᵁ U) (π.app U (x a)) y`. Introduce and unpack `U' rfl x' rfl a y`. Both sides reduce to the same expression. Use extensionality with `a`.
-
-Rewrite using `[c'.apply_eq w hw a, c.apply_eq _ hw' a, key₂ _ hcU' _ hcx', key₁ _ hcU _ hcx]`. Conclude with `ev_app π hπ U _ w`.
+Both sides reduce to the same expression. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finite_exceptional : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) [IsIntegral X] (Y : Scheme.{0})
     [IsIntegral Y] (q : Y ⟶ Sp k), IsArithVar p 1 → IsArithVar q 1 → ∀ (π : Y ⟶ X) (hπ : π ≫ p = q),
@@ -161,11 +157,11 @@ theorem exists_finite_exceptional : ∀ (k : Type) [CommRing k] (X : Scheme.{0})
     exact ev_app π hπ U _ w
 
 /- English proof (translation)
-Take `⟨T, hT, hT', hf, hc⟩` from `exists_finite_exceptional k X p Y q hp hq π hπ hg hd σ`. Establish `H₁ : (h.stepMet fl i).IsCInf` using `H.restrict _ _`. Establish `H₂ : ((h.pull π hπ).stepMet (fl.pull π) i).IsCInf` using `(H.pull π hπ).restrict _ _`. Use `CxPts.t2Space_cxPts_of_isProjOver σ hp.isProjOver` as an intermediate fact. Use `CxPts.t2Space_cxPts_of_isProjOver σ hq.isProjOver` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `CxPts.secondCountableTopology_of_isProjOver (σ := σ) hp.isProjOver` as an intermediate fact. Use `CxPts.secondCountableTopology_of_isProjOver (σ := σ) hq.isProjOver` as an intermediate fact. Use `GlobalTheory.T.glueMeas_univ_eq_mul_of_fibre_encard_eq 1 one_ne_zero (CxPts p σ) (CxPts q σ) (AlgChart p σ 1) (AlgChart q σ 1) _ _ _ _ (fun c c' => c.holo_trans c') (fun c c' y hy hy' => ?_) (fun c c' => c.holo_trans c') (fun c c' y hy hy' => ?_) _ (PtsOver.continuous_map π hπ _) …` and prove the remaining obligations. Rewrite using `[Met.bcDens_trans _ _ _ c c' (H₁ σ) hy hy', ENNReal.ofReal_mul (sq_nonneg _)]`. Rewrite using `[Met.bcDens_trans _ _ _ c c' (H₂ σ) hy hy', ENNReal.ofReal_mul (sq_nonneg _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, c', h₁, h₂, h₃⟩` from `hc z hz`. Conclude with `⟨c, c', h₁, h₂, fun w hw hw' => ⟨h₃ w hw hw', congrArg _ (bcDens_pullStep H hπ c c' hw hw' h₃)⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem bcMeas_pullStep {k : Type} [CommRing k] {X Y : Scheme.{0}} {p : X ⟶ Sp k} [IsIntegral X]
     {q : Y ⟶ Sp k} [IsIntegral Y] (hp : IsArithVar p 1) (hq : IsArithVar q 1) (π : Y ⟶ X) (hπ : π ≫ p = q)
@@ -192,7 +188,7 @@ theorem bcMeas_pullStep {k : Type} [CommRing k] {X Y : Scheme.{0}} {p : X ⟶ Sp
     exact ⟨c, c', h₁, h₂, fun w hw hw' => ⟨h₃ w hw hw', congrArg _ (bcDens_pullStep H hπ c c' hw hw' h₃)⟩⟩
 
 /- English proof (translation)
-Take `⟨Φ, hΦ⟩` from `((hA.arExists k X p 1 hp).2 PUnit fun _ => L).1`. Conclude with `⟨_, ((hA.arIso k X p 1 hp).2 PUnit _ Φ hΦ).1 PUnit.unit⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isSelfInter (hA : Published.ArCalc) {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X]
     {p : X ⟶ Sp k} (hp : IsArithVar p 1) (L : HermLB p) : ∃ x, L.IsSelfInter x := by
@@ -200,19 +196,19 @@ theorem exists_isSelfInter (hA : Published.ArCalc) {k : Type} [CommRing k] {X : 
   exact ⟨_, ((hA.arIso k X p 1 hp).2 PUnit _ Φ hΦ).1 PUnit.unit⟩
 
 /- English proof (translation)
-Introduce `hA k _ X p _ Y _ q hp hq π hπ hg hd E r h H fl`. Use `⟨fl.pull π, fun a => ?_⟩` and prove the remaining obligations. Use `set d := π.residueDegree (genericPoint Y) with hd'`. Establish `hd0 : (d : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 hd`. Establish `hdE₀ : (d : ENNReal) ≠ 0` using `Nat.cast_ne_zero.2 hd`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdE₁ : (d : ENNReal) ≠ ⊤` using `ENNReal.natCast_ne_top d`. Establish `hm` using `fun i σ => bcMeas_pullStep hp hq π hπ hg hd H fl i σ`. Establish `hfin : h.FlagBcFinite fl ↔ (h.pull π hπ).FlagBcFinite (fl.pull π)`. Establish `key (x : ENNReal) : x ≠ ⊤ ↔ (d : ENNReal) * x ≠ ⊤`. Simplify using `[ENNReal.mul_eq_top, hdE₀, hdE₁]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `forall_congr' fun i => forall_congr' fun σ => ?_` and prove the remaining obligations. Rewrite using `[hm i σ]`. Conclude with `key _`. Use `hp.finite_emb` as an intermediate fact. Use `Fintype.ofFinite (k →+* ℂ)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hbc : (h.pull π hπ).flagBc (fl.pull π) = d * h.flagBc fl`. Rewrite using `[flagBc, flagBc, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[bcInt, bcInt, finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hm i σ, ENNReal.toReal_mul, ENNReal.toReal_natCast]`. Establish `hx : ∀ (i : Fin r) (x : ℝ), (grLB fl i H).IsSelfInter x → (grLB (fl.pull π) i (H.pull π hπ)).IsSelfInter (d * x)` using `fun i x hx => (GlobalTheory.T.graded_metric_pullback_isometric k X Y p q E r h H fl π hπ i).symm.isSelfInter hq ((hA.arProj k X Y p q 1 hp hq π hπ hg hd).1 _ x hx)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨h₁, x, h₂, rfl⟩`. Use `⟨hfin.1 h₁, fun i => d * x i, fun i => hx i _ (h₂ i), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hbc, mul_sub, Finset.mul_sum]`. Simplify using `only [mul_div_assoc]`. Introduce and unpack `⟨h₁, x', h₂, e⟩ choose x hx₀ using fun i => exists_isSelfInter hA hp (grLB fl i H)`. Use `⟨hfin.2 h₁, x, hx₀, mul_left_cancel₀ hd0 (e.trans ?_)⟩` and prove the remaining obligations. Establish `e' (i) : x' i = d * x i` using `(h₂ i).unique hq (hx i _ (hx₀ i))`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hbc, mul_sub, Finset.mul_sum]`. Simplify using `only [e', mul_div_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem isFlagCh2_pull : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) [IsIntegral X] (Y : Scheme.{0}) [IsIntegral Y] (q : Y ⟶ Sp k), IsArithVar p 1 → IsArithVar q 1 → ∀ (π : Y ⟶ X) (hπ : π ≫ p = q), π (genericPoint Y) = genericPoint X → π.residueDegree (genericPoint Y) ≠ 0 → ∀ (E : X.Modules) (r : ℕ) (h : VMetric p E r) (H : h.IsCInf) (fl : Vert.Flag E r), ∃ fl' : Vert.Flag ((Scheme.Modules.pullback π).obj E) r, ∀ a : ℝ, VMetric.IsFlagCh2 H fl a ↔ VMetric.IsFlagCh2 (H.pull π hπ) fl' (π.residueDegree (genericPoint Y) * a) := by
   intro hA k _ X p _ Y _ q hp hq π hπ hg hd E r h H fl

@@ -10,9 +10,7 @@ namespace Formalism.FourierDecayAlt.P.CutSE
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.Wd Formalism.FourierDecayAlt.P5
 
 /- English proof (translation)
-Use `continuousAt_pi.2 fun p => continuousAt_pi.2 fun q => ?_` and prove the remaining obligations. Use `show ContinuousAt (fun c => w1 k r l c p q) c`. Simplify using `only [w1]`. Use `split_ifs`. Conclude with `continuousAt_id`.
-
-Conclude with `(continuous_star.continuousAt).inv₀ (star_ne_zero.mpr hc)`. Conclude with `continuousAt_const`. Conclude with `continuousAt_const`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem continuousAt_w1_of_ne_zero (k r : ℕ) (l : Fin r) {c : ℂ} (hc : c ≠ 0) :
     ContinuousAt (w1 k r l) c := by
@@ -25,9 +23,9 @@ private theorem continuousAt_w1_of_ne_zero (k r : ℕ) (l : Fin r) {c : ℂ} (hc
   · exact continuousAt_const
   · exact continuousAt_const
 /- English proof (translation)
-Proceed by induction on `i using Fin.induction with`. Consider the case `zero`. Simplify using `only [Formalism.FourierDecayAlt.P.Qx6.wCell_zero]`. Conclude with `continuousAt_const`. Consider the case `succ l ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [Formalism.FourierDecayAlt.P.Qx6.wCell_succ]`. Use `ih.mul ?_` and prove the remaining obligations. Establish `hf : ContinuousAt (fun y : (Fin r → ℂ) × Mx k r => y.1 l) x` using `by fun_prop`. Conclude with `(continuousAt_w1_of_ne_zero k r l (hx l)).comp (f := fun y : (Fin r → ℂ) × Mx k r => y.1 l) hf`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem continuousAt_wCell_fst_of_mem_OmX (k r : ℕ) (x : (Fin r → ℂ) × Mx k r) (hx : x.1 ∈ OmX r)
     (i : Fin (r + 1)) : ContinuousAt (fun y : (Fin r → ℂ) × Mx k r => wCell k r i y.1) x := by
@@ -42,11 +40,9 @@ private theorem continuousAt_wCell_fst_of_mem_OmX (k r : ℕ) (x : (Fin r → �
     exact (continuousAt_w1_of_ne_zero k r l (hx l)).comp (f := fun y : (Fin r → ℂ) × Mx k r => y.1 l) hf
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ _ _ D`. Establish `hmem : ∀ x ∈ DomR k r D.z D.z', eR k r x ∈ JF.Om k r D.z D.z'`. Introduce `x hx`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `Formalism.FourierDecayAlt.P.TLB.wCell_gv (Pa := M.Par.mk k r 0 0 0 0) D hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Formalism.FourierDecayAlt.P5.Rad.wCell_mem_omPlus D.z_mem D.z'_mem hx.1 hx.2.1 hx.2.2`. Use `⟨hmem, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Use `ContinuousAt.continuousWithinAt ?_` and prove the remaining obligations. Conclude with `(continuousAt_wCell_fst_of_mem_OmX k r x hx.1 (Fin.last r)).mul continuous_snd.continuousAt`.
-
-Introduce `g hg`. Conclude with `⟨hg.1, hg.2.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem spectral_pairing_big_cell : RDSPEOm := by
   intro k r Wp Wq _ _ _ _ _ _ D

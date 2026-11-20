@@ -7,9 +7,9 @@ noncomputable section
 namespace Deduction
 
 /- English proof (translation)
-Establish `hk : (0 : ℝ) < (k : ℝ) + 1` using `by positivity`. Establish `key` using `Real.integral_rpow_mul_exp_neg_mul_Ioi hk ha`. Establish `e : ∀ u : ℝ, u ^ k * Real.exp (-a * u) = u ^ (((k : ℝ) + 1) - 1) * Real.exp (-(a * u))` using `fun u => by rw [add_sub_cancel_right, Real.rpow_natCast, neg_mul]`. Rewrite using `[MeasureTheory.integral_div]`. Repeatedly rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[key, Real.Gamma_nat_eq_factorial]`. Establish `h2 : ((k : ℝ) + 1) = ((k + 1 : ℕ) : ℝ)` using `by push_cast; ring`. Establish `hf : (k.factorial : ℝ) ≠ 0` using `by positivity`. Rewrite using `[h2, Real.rpow_natCast, one_div, inv_pow, mul_div_assoc, div_self hf, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem kernel_integral (k : ℕ) (a : ℝ) (ha : 0 < a) :
     ∫ u in Ioi (0 : ℝ), u ^ k * Real.exp (-a * u) / (k.factorial : ℝ) = (a ^ (k + 1))⁻¹ := by

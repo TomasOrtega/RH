@@ -25,7 +25,7 @@ import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.TorusCo
 namespace CompanionTheory.Bmu
 
 /- English proof (translation)
-The claim follows from `bounded_of (GlobalTheory.T.quotient_bound_of_factor_reduce_chart GlobalTheory.T.factorization' (GlobalTheory.T.reduction_of_derived_series GlobalTheory.T.DerivedSeriesLinear GlobalTheory.T.DerivedSeriesAdjoint GlobalTheory.T.DerivedSeriesDerivation) GlobalTheory.T.ChartExistence) …`.
+A detailed English derivation is pending.
 -/
 theorem bounded : Bounded :=
   bounded_of (GlobalTheory.T.quotient_bound_of_factor_reduce_chart GlobalTheory.T.factorization' (GlobalTheory.T.reduction_of_derived_series GlobalTheory.T.DerivedSeriesLinear GlobalTheory.T.DerivedSeriesAdjoint GlobalTheory.T.DerivedSeriesDerivation) GlobalTheory.T.ChartExistence)
@@ -34,7 +34,7 @@ theorem bounded : Bounded :=
     GlobalTheory.T.ExponentialMembership GlobalTheory.T.RootVectors
 
 /- English proof (translation)
-The claim follows from `uniq_of bounded (GlobalTheory.T.truncated_derivation_limit GlobalTheory.T.factorization' GlobalTheory.T.TruncatedDerivation) GlobalTheory.T.TorusConjugacy GlobalTheory.T.DerivedSeriesAdjoint GlobalTheory.T.factorization'`.
+A detailed English derivation is pending.
 -/
 theorem besselMapUniqGap : BesselMapUniqGap :=
   uniq_of bounded (GlobalTheory.T.truncated_derivation_limit GlobalTheory.T.factorization' GlobalTheory.T.TruncatedDerivation) GlobalTheory.T.TorusConjugacy GlobalTheory.T.DerivedSeriesAdjoint GlobalTheory.T.factorization'

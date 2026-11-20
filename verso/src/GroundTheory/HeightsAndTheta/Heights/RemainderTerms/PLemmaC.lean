@@ -8,7 +8,7 @@ namespace GroundTheory.Heights₂.Heights.RestTerms
 open Finset
 
 /- English proof (translation)
-Rewrite using `[h1 m lam hlam, GroundTheory.Heights₂.Heights.frobDim]`. Use `congr 2`. Unfold `vandermondeOf`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_filter, Finset.filter_lt_eq_Ioi]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem numStandardTable_eq_frobDim (h1 : FrobeniusDimensionFormula.Statement) {m : ℕ}
     (lam : Fin m → ℕ) (hlam : Antitone lam) :
@@ -20,9 +20,9 @@ theorem numStandardTable_eq_frobDim (h1 : FrobeniusDimensionFormula.Statement) {
   rw [← Finset.prod_filter, Finset.filter_lt_eq_Ioi]
 
 /- English proof (translation)
-Introduce `r a nu hnu`. Establish `hsum : Antitone (fun i => a + nu i)` using `fun i j hij => Nat.add_le_add_left (hnu hij) a`. Establish `hrect : Antitone (rectangle r a)` using `fun _ _ _ => le_rfl`. Establish `hb` using `GroundTheory.Heights₂.Heights.FrobeniusRectangleBound.intersectionNumber_baseChange r a nu hnu`. Rewrite `hb` using `[← numStandardTable_eq_frobDim h1 _ hsum, ← numStandardTable_eq_frobDim h1 nu hnu, show (fun _ : Fin r => a) = rectangle r a from rfl, ← numStandardTable_eq_frobDim h1 _ hrect]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hb` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem LemmaC.proof (h1 : FrobeniusDimensionFormula.Statement) : LemmaC.Statement := by
   intro r a nu hnu

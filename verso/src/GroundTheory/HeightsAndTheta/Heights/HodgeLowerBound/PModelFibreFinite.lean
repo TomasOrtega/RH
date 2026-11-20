@@ -11,21 +11,19 @@ namespace GroundTheory.Heights₂.Heights.LowerBoundFree
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.AnForm.M
 
 /- English proof (translation)
-Introduce `K _ ι _ P e M Ψ hP hΨ y`. Take `⟨k0⟩` from `hP.1`. Establish `hH : IsMultiHomogIdeal P` using `hP.2.1.2.1`. Set `f : M.Xc → (((k : K) → ι k) → ℂ)` to `fun x => (Ψ (segre (modelLift M x x)) 0)⁻¹ • segre (modelLift M x x)`. Use `Set.Finite.of_finite_image (f := f) ((fibreFinite K ι P e Ψ hP hΨ y).subset ?_) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨x, ⟨hxy, hx0⟩, rfl⟩`. Establish `hq : modelQ M Ψ x = y` using `hxy`. Establish `hl` using `(modelLift_spec M x).1 x (mem_modelU M x)`. Establish `hlam : Ψ (segre (modelLift M x x)) 0 ≠ 0` using `fun h => hx0 (Or.inl h)`. Use `⟨fun p => Function.update (1 : K → ℂ) k0 (Ψ (segre (modelLift M x x)) 0)⁻¹ p.1 * modelLift M x x p, mcPts_smul hH _ ?_ hl.1, ?_, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `k`. Distinguish the cases in `hk : k = k0`. Substitute `hk` using the available equality. Simplify using `[hlam]`. Simplify using `[Function.update_of_ne hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[segre_smul, Finset.prod_update_of_mem (Finset.mem_univ _)]`. Simplify using `[f]`. Use `show Ψ ((Ψ (segre (modelLift M x x)) 0)⁻¹ • segre (modelLift M x x)) = Fin.cons 1 y`. Rewrite using `[map_smul]`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `[hlam]`. Rewrite using `[← hq]`. Simplify using `[modelQ, div_eq_inv_mul]`. Introduce and unpack `x1 ⟨_, h1⟩ x2 ⟨_, h2⟩ heq`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `l1` using `(modelLift_spec M x1).1 x1 (mem_modelU M x1)`. Establish `l2` using `(modelLift_spec M x2).1 x2 (mem_modelU M x2)`. Establish `hlam1 : Ψ (segre (modelLift M x1 x1)) 0 ≠ 0` using `fun h => h1 (Or.inl h)`. Establish `hlam2 : Ψ (segre (modelLift M x2 x2)) 0 ≠ 0` using `fun h => h2 (Or.inl h)`. Establish `hseg : segre (modelLift M x1 x1) = (Ψ (segre (modelLift M x1 x1)) 0 / Ψ (segre (modelLift M x2 x2)) 0) • segre (modelLift M x2 x2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (fun w => Ψ (segre (modelLift M x1 x1)) 0 • w) heq` as an intermediate fact. Simplify using `only [f, smul_smul, mul_inv_cancel₀ hlam1, one_smul] at this`. Rewrite using `[div_eq_mul_inv]`. Conclude with `this`. Take `⟨c, hc, hcz⟩` from `sameOrbit_of_segre l2.1.1 _ (div_ne_zero hlam1 hlam2) hseg`.
-
-Rewrite using `[← l1.2, ← l2.2]`. Conclude with `((M.fibre _ l2.1 _ l1.1).2 ⟨c, hc, hcz⟩).symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ModelFibreFinite.proof : ModelFibreFinite.Statement := by
   intro K _ ι _ P e M Ψ hP hΨ y

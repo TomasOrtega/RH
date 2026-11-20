@@ -197,7 +197,7 @@ def scaledTrivLat (x : τ → Ω) (r : ℕ) (s : Ω) (c : τ) : AddSubgroup (Fin
 variable {R}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_scaledTrivLat {x : τ → Ω} {r : ℕ} {s : Ω} {c : τ} {v : Fin r → Ω} :
     v ∈ scaledTrivLat R x r s c ↔ ∀ q, ∃ a ∈ chartRing R x c, v q = s * a := Iff.rfl
@@ -206,14 +206,14 @@ def scaledBasis (r : ℕ) {s : Ω} (hs : s ≠ 0) : Module.Basis (Fin r) Ω (Fin
   (Pi.basisFun Ω (Fin r)).unitsSMul fun _ => Units.mk0 s hs
 
 /- English proof (translation)
-Simplify using `[scaledBasis, Units.smul_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem scaledBasis_repr (r : ℕ) {s : Ω} (hs : s ≠ 0) (v : Fin r → Ω) (q : Fin r) :
     (scaledBasis r hs).repr v q = s⁻¹ * v q := by
   simp [scaledBasis, Units.smul_def]
 
 /- English proof (translation)
-Simplify using `[scaledBasis, Module.Basis.unitsSMul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem scaledBasis_apply (r : ℕ) {s : Ω} (hs : s ≠ 0) (q : Fin r) :
     scaledBasis r hs q = s • Pi.single q 1 := by
@@ -259,13 +259,13 @@ def scaledTrivBundle (x : τ → Ω) (r : ℕ) {s : Ω} (hs : s ≠ 0) : ChartBu
 variable {K : Type*} [Fintype K] {ι : K → Type*}
 
 /- English proof (translation)
-Establish `hd : degLat R y ((0 : Fin r → K → ℤ) i) c = (chartRing R (segreVec y) c : Set Ω)`. Use extensionality with `u`. Simplify using `[degLat]`. Rewrite using `[hd]`. Use extensionality with `z`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, -, rfl⟩`. Take `⟨a, ha, hva⟩` from `(mem_scaledTrivLat).1 hv i`. Rewrite using `[SetLike.mem_coe, scaledBasis_repr, hva, ← mul_assoc, inv_mul_cancel₀ hs, one_mul]`. Conclude with `ha`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hz`. Use `⟨Pi.single i (s * z), (mem_scaledTrivLat).2 fun q => ?_, fun j hij => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : q = i`. Substitute `h` using the available equality. Conclude with `⟨z, hz, by simp⟩`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨0, zero_mem _, by simp [h]⟩`. Rewrite using `[scaledBasis_repr]`. Simplify using `[(ne_of_lt hij).symm]`. Rewrite using `[scaledBasis_repr]`. Simplify using `[← mul_assoc, inv_mul_cancel₀ hs]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isFlagFrame_scaledTriv (y : (Σ k, ι k) → Ω) (r : ℕ) {s : Ω} (hs : s ≠ 0) :
     IsFlagFrame y (scaledTrivBundle R (segreVec y) r hs) (scaledBasis r hs) 0 where
@@ -292,9 +292,9 @@ theorem isFlagFrame_scaledTriv (y : (Σ k, ι k) → Ω) (r : ℕ) {s : Ω} (hs 
         simp [← mul_assoc, inv_mul_cancel₀ hs]
 
 /- English proof (translation)
-Take `⟨a, ha, hva⟩` from `(mem_scaledTrivLat).1 hv l`. Conclude with `⟨a, ha, by simp [hva]⟩`. Use `generate c hc ψ hψ := by`. Use `⟨fun l => ψ (Pi.single l 1), fun l => hψ _ ((mem_scaledTrivLat).2 fun q => ?_), ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : q = l`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h` using the available equality. Conclude with `⟨1, one_mem _, by simp⟩`. Conclude with `⟨0, zero_mem _, by simp [h]⟩`. Use extensionality with `i`. Simplify using `[Pi.single_apply]`.
+Supply the required witnesses or components. Supply the required witnesses or components. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isTwistedDualGens_triv (y : (Σ k, ι k) → Ω) (r : ℕ) :
     IsTwistedDualGens y (scaledTrivBundle R (segreVec y) r one_ne_zero) 0

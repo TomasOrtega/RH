@@ -3,29 +3,25 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Ws.Bl
 
 /- English proof (translation)
-Introduce `A _ _ _ _ T _ _ _ _ P hsat hP n`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible A`. Establish `hm : maximalIdeal A = Ideal.span {ϖ}` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).mp hϖ`. Establish `hϖ0 : ϖ ≠ 0` using `hϖ.ne_zero`. Establish `hL : ∀ (k : ℕ) (z : T), z ∈ lev A T k ↔ ∃ t, ϖ ^ k • t = z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k z`. Use `show z ∈ maximalIdeal A ^ k • (⊤ : Submodule A T) ↔ _`. Rewrite using `[hm, Ideal.span_singleton_pow, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Simplify using the standard rewrite rules. Establish `hfin : ∀ k, Finite (T ⧸ lev A T k)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Establish `h1 : (maximalIdeal A).FG` using `IsNoetherian.noetherian _`. Use `haveI : Finite (A ⧸ maximalIdeal A) := (inferInstance : Finite (ResidueField A))`. Use `haveI := Ideal.finite_quotient_pow h1 k`. Use `haveI : Finite (T ⧸ (⊤ : Submodule A T)) := inferInstance`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `Submodule.finite_quotient_smul _ (Module.finite_def.mp inferInstance)`. Take `⟨y, hyP, hy0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hP`. Establish `hx : ∃ x ∈ P, x ∉ lev A T 1`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Establish `hall : ∀ k : ℕ, ∀ z ∈ P, z ∈ lev A T k`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `z _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(hL 0 z).mpr ⟨z, by simp⟩`. Consider the case `succ k ih`. Introduce `z hz`. Take `⟨t, rfl⟩` from `(hL 1 z).mp (hcon z hz)`. Establish `htP : t ∈ P` using `hsat _ _ (pow_ne_zero 1 hϖ0) hz`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨s, rfl⟩` from `(hL k t).mp (ih t htP)`. Conclude with `(hL (k + 1) _).mpr ⟨s, by rw [smul_smul, ← pow_add, add_comm 1 k]⟩`. Establish `hmem : y ∈ (⨅ i : ℕ, maximalIdeal A ^ i • (⊤ : Submodule A T))` using `Submodule.mem_iInf _ |>.mpr (fun i => hall i y hyP)`. Rewrite `hmem` using `[Ideal.iInf_pow_smul_eq_bot_of_isLocalRing _ (IsLocalRing.maximalIdeal.isMaximal A).ne_top]`. Conclude with `hy0 ((Submodule.mem_bot A).mp hmem)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨x, hxP, hx1⟩` from `hx`. Use `⟨hfin n, ?_⟩` and prove the remaining obligations. Use `haveI := hfin n`. Establish `key : ∀ i j : ℕ, i < j → j < n → ϖ ^ i • x - ϖ ^ j • x ∉ lev A T n`. Introduce `i j hij hjn hmem`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨s, hs⟩` from `(hL n _).mp hmem`. Establish `e1 : ϖ ^ i • (ϖ ^ (n - i) • s) = ϖ ^ i • (x - ϖ ^ (j - i) • x)`. Rewrite using `[smul_smul, ← pow_add, Nat.add_sub_cancel' (by omega), hs, smul_sub, smul_smul, ← pow_add, Nat.add_sub_cancel' hij.le]`. Establish `e2 : ϖ ^ (n - i) • s = x - ϖ ^ (j - i) • x` using `smul_right_injective T (pow_ne_zero i hϖ0) e1`. Apply `hx1` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite using `[hL 1]`. Use `⟨ϖ ^ (n - i - 1) • s + ϖ ^ (j - i - 1) • x, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, smul_smul, smul_smul, ← pow_add, ← pow_add, Nat.add_sub_cancel' (by omega : 1 ≤ n - i), Nat.add_sub_cancel' (by omega : 1 ≤ j - i), e2, sub_add_cancel]`. Set `f : Fin n → P.map (lev A T n).mkQ` to `fun i => ⟨(lev A T n).mkQ (ϖ ^ (i : ℕ) • x), Submodule.mem_map_of_mem (P.smul_mem _ hxP)⟩`. Establish `hf : Function.Injective f`.
-
-Introduce `i j hij`. Establish `h' : (lev A T n).mkQ (ϖ ^ (i : ℕ) • x) = (lev A T n).mkQ (ϖ ^ (j : ℕ) • x)` using `congrArg Subtype.val hij`. Rewrite `h'` using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`. Break down `lt_trichotomy (i : ℕ) j with h | h | h` into its components or cases. Conclude with `absurd h' (key _ _ h j.2)`.
-
-Conclude with `Fin.ext h`. Establish `h''` using `(lev A T n).neg_mem h'`. Rewrite `h''` using `[neg_sub]`. Conclude with `absurd h'' (key _ _ h i.2)`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Bl.cardP :
     ∀ (A : Type) [CommRing A] [IsDomain A] [IsDiscreteValuationRing A] [Finite (ResidueField A)] (T : Type) [AddCommGroup T] [Module A T] [Module.Finite A T] [Module.Free A T] (P : Submodule A T), (∀ (a : A) (x : T), a ≠ 0 → a • x ∈ P → x ∈ P) → P ≠ ⊥ →

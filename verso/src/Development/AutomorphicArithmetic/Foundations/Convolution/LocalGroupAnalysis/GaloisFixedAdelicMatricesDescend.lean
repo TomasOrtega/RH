@@ -12,9 +12,9 @@ section
 variable {F E : Type} [Field F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul l a`. Simplify using `only [Algebra.TensorProduct.map_tmul, AlgHom.id_apply, LinearMap.rTensor_tmul, TensorProduct.lid_tmul, AlgHom.coe_coe]`. Establish `h : ∑ τ : E ≃ₐ[F] E, ((τ : E →ₐ[F] E) : E → E) l = algebraMap F E (Algebra.trace F E l)` using `(trace_eq_sum_automorphisms l).symm`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← TensorProduct.sum_tmul, h, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`. Consider the case `add a b ha hb`. Simplify using `only [map_add, Finset.sum_add_distrib, ha, hb, TensorProduct.tmul_add]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 private theorem sum_map_tensor [FiniteDimensional F E] [IsGalois F E] {A : Type} [CommRing A] [Algebra F A]
     (t : E ⊗[F] A) :
@@ -32,7 +32,7 @@ private theorem sum_map_tensor [FiniteDimensional F E] [IsGalois F E] {A : Type}
     simp only [map_add, Finset.sum_add_distrib, ha, hb, TensorProduct.tmul_add]
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul l a => simp [Algebra.TensorProduct.map_tmul]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem map_mul_tensor {A : Type} [CommRing A] [Algebra F A] (τ τ' : E ≃ₐ[F] E) (t : E ⊗[F] A) :
     Algebra.TensorProduct.map ((τ * τ' : E ≃ₐ[F] E) : E →ₐ[F] E) (AlgHom.id F A) t =
@@ -44,13 +44,13 @@ private theorem map_mul_tensor {A : Type} [CommRing A] [Algebra F A] (τ τ' : E
   | add a b ha hb => simp only [map_add, ha, hb]
 
 /- English proof (translation)
-Establish `hpow : ∀ k : ℕ, Algebra.TensorProduct.map ((σ ^ k : E ≃ₐ[F] E) : E →ₐ[F] E) (AlgHom.id F A) T = T`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Rewrite using `[pow_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Establish `: ((1 : E ≃ₐ[F] E) : E →ₐ[F] E) = AlgHom.id F E` using `rfl`. Rewrite using `[this, Algebra.TensorProduct.map_id]`. Both sides reduce to the same expression. Consider the case `succ k ih => rw [pow_succ, map_mul_tensor, h, ih]`. Establish `hall : ∀ τ : E ≃ₐ[F] E, Algebra.TensorProduct.map (τ : E →ₐ[F] E) (AlgHom.id F A) T = T`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Establish an intermediate fact.
 
-Introduce `τ`. Take `⟨k, rfl⟩` from `(mem_powers_iff_mem_zpowers).2 (hσ τ)`. Conclude with `hpow k`. Establish `hs` using `sum_map_tensor (F := F) (E := E) T`. Simplify using `only [hall, Finset.sum_const, Finset.card_univ] at hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hc : ((Fintype.card (E ≃ₐ[F] E) : ℕ) : F) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Use `⟨((Fintype.card (E ≃ₐ[F] E) : ℕ) : F)⁻¹ • TensorProduct.lid F A (LinearMap.rTensor A (Algebra.trace F E) T), ?_⟩` and prove the remaining obligations. Rewrite using `[TensorProduct.tmul_smul, ← hs, ← Nat.cast_smul_eq_nsmul F, smul_smul, inv_mul_cancel₀ hc, one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fixed_tensor [FiniteDimensional F E] [IsGalois F E] {A : Type} [CommRing A] [Algebra F A]
     (σ : E ≃ₐ[F] E) (hσ : ∀ τ : E ≃ₐ[F] E, τ ∈ Subgroup.zpowers σ) (T : E ⊗[F] A)
@@ -80,9 +80,9 @@ section
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Establish `h1 : Algebra.TensorProduct.map (σ : E →ₐ[F] E) (AlgHom.id F 𝔸[F]) ((adeleTensorEquiv F E).symm y) = (adeleTensorEquiv F E).symm y`. Apply `(adeleTensorEquiv F E).injective` to reduce the goal to its premises. Rewrite using `[AlgEquiv.apply_symm_apply]`. Conclude with `hy`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha⟩` from `fixed_tensor σ hσ _ h1`. Use `⟨a, ?_⟩` and prove the remaining obligations. Use `congrArg (adeleTensorEquiv F E) ha` as an intermediate fact. Rewrite `this` using `[AlgEquiv.apply_symm_apply, adeleTensorEquiv_tmul, map_one, one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem fixed_adele [IsGalois F E] (σ : E ≃ₐ[F] E) (hσ : ∀ τ : E ≃ₐ[F] E, τ ∈ Subgroup.zpowers σ)
     (y : 𝔸[E]) (hy : galAd σ y = y) : ∃ a, adeleMap F E a = y := by
@@ -98,7 +98,7 @@ private theorem fixed_adele [IsGalois F E] (σ : E ≃ₐ[F] E) (hσ : ∀ τ : 
   rwa [AlgEquiv.apply_symm_apply, adeleTensorEquiv_tmul, map_one, one_mul] at this
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `adeleTensorEquiv F E (Algebra.TensorProduct.map (σ : E →ₐ[F] E) (AlgHom.id F 𝔸[F]) ((adeleTensorEquiv F E).symm (adeleMap F E a))) = _`. Rewrite using `[adeleTensorEquiv_symm_adeleMap, Algebra.TensorProduct.map_tmul, adeleTensorEquiv_tmul, map_one, map_one, one_mul]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem galAd_adeleMap (σ : E ≃ₐ[F] E) (a : 𝔸[F]) : galAd σ (adeleMap F E a) = adeleMap F E a := by
   change adeleTensorEquiv F E (Algebra.TensorProduct.map (σ : E →ₐ[F] E) (AlgHom.id F 𝔸[F])
@@ -107,7 +107,7 @@ private theorem galAd_adeleMap (σ : E ≃ₐ[F] E) (a : 𝔸[F]) : galAd σ (ad
   rfl
 
 /- English proof (translation)
-Establish `: ∀ i j, ∃ a, adeleMap F E a = (y : Matrix (Fin n) (Fin n) 𝔸[E]) i j` using `fun i j => fixed_adele σ hσ _ (congrArg (fun u : AdelicGLn.AdelicGL E n => (u : Matrix (Fin n) (Fin n) 𝔸[E]) i j) hy)`. Use `choose M hM using this`. Conclude with `⟨Matrix.of M, Matrix.ext hM⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem fixed_mat [IsGalois F E] (σ : E ≃ₐ[F] E) (hσ : ∀ τ : E ≃ₐ[F] E, τ ∈ Subgroup.zpowers σ) {n : ℕ}
     (y : AdelicGLn.AdelicGL E n) (hy : mapGL n (galAd σ) y = y) :
@@ -119,31 +119,27 @@ private theorem fixed_mat [IsGalois F E] (σ : E ≃ₐ[F] E) (hσ : ∀ τ : E 
 end
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ σ hσ n hn δ γ hγ hN x`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Establish `hp : (sigmaGL σ : Monoid.End (GL (Fin n) E)) ^ Module.finrank F E = 1`. Rewrite using `[← sigmaGL_pow, ← IsGalois.card_aut_eq_finrank, pow_card_eq_one', sigmaGL_one]`. Establish `hfix : sigmaGL σ (incl γ : GL (Fin n) E) = incl γ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Conclude with `σ.commutes _`. Establish `hδ : δ * incl γ = incl γ * δ`. Establish `h` using `map_twNorm_of_pow_eq_one (sigmaGL σ) hp δ`. Express the relevant statement in the definitionally equal form `sigmaGL σ (normGL σ δ) = δ⁻¹ * normGL σ δ * δ at h`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite `h` using `[hN, hfix]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨-, hmapd, -⟩` from `UpperTheory.adelicGL_galois_baseChange_diagonal_compat F E σ n`. Establish `hDΓ : AdelicGLn.diagonal E n δ * AdelicGLn.diagonal E n (incl γ) = AdelicGLn.diagonal E n (incl γ) * AdelicGLn.diagonal E n δ`. Rewrite using `[← map_mul, ← map_mul, hδ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hC : ∀ s t : AdelicGLn.AdelicGL E n, s * AdelicGLn.diagonal E n (incl γ) = AdelicGLn.diagonal E n (incl γ) * s → t * AdelicGLn.diagonal E n (incl γ) = AdelicGLn.diagonal E n (incl γ) * t → s * t = t * s`. Introduce `s t hs ht`. Establish `hD : ((AdelicGLn.diagonal E n (incl γ) : AdelicGLn.AdelicGL E n) : Matrix (Fin n) (Fin n) 𝔸[E]) = (γ : Matrix (Fin n) (Fin n) F).map ((algebraMap E 𝔸[E]).comp (algebraMap F E))`. Use extensionality with `a b`. Both sides reduce to the same expression.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs' : (s : Matrix (Fin n) (Fin n) 𝔸[E]) * (γ : Matrix (Fin n) (Fin n) F).map ((algebraMap E 𝔸[E]).comp (algebraMap F E)) = (γ : Matrix (Fin n) (Fin n) F).map ((algebraMap E 𝔸[E]).comp (algebraMap F E)) * (s : Matrix (Fin n) (Fin n) 𝔸[E])`. Rewrite using `[← hD]`. Conclude with `congrArg Units.val hs`. Establish `ht' : (t : Matrix (Fin n) (Fin n) 𝔸[E]) * (γ : Matrix (Fin n) (Fin n) F).map ((algebraMap E 𝔸[E]).comp (algebraMap F E)) = (γ : Matrix (Fin n) (Fin n) F).map ((algebraMap E 𝔸[E]).comp (algebraMap F E)) * (t : Matrix (Fin n) (Fin n) 𝔸[E])`. Rewrite using `[← hD]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `congrArg Units.val ht`. Conclude with `Units.ext (UpperTheory.centralizer_commutative_of_separable_charpoly F 𝔸[E] _ n _ hγ _ _ hs' ht')`. Establish `hinjM : Function.Injective (fun M : Matrix (Fin n) (Fin n) 𝔸[F] => M.map (adeleMap F E))` using `Matrix.map_injective adeleMap_injective`. Establish `hinjG : Function.Injective (mapGL n (adeleMap F E) : AdelicGLn.AdelicGL F n → AdelicGLn.AdelicGL E n)` using `fun a b h => Units.ext (hinjM (congrArg Units.val h))`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `hx`. Establish `h1` using `UpperTheory.twNorm_conj_diagonal_eq_conj_normGL F E σ n δ x`. Establish `h0` using `UpperTheory.twNorm_conj_diagonal_eq_conj_normGL F E σ n δ 1`. Rewrite `h1` using `[hx]`. Simplify using `only [inv_one, one_mul, map_one, mul_one] at h0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[h0, hN]`. Establish `hcom : x * AdelicGLn.diagonal E n (incl γ) = AdelicGLn.diagonal E n (incl γ) * x`. Combine the equalities or inequalities in the displayed calculation. Establish `hxD` using `hC x _ hcom hDΓ`. Establish `hθ : mapGL n (galAd σ) x = x`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hθ' : mapGL n (galAd σ) x⁻¹ = x⁻¹` using `by rw [map_inv, hθ]`. Take `⟨M, hM⟩` from `fixed_mat σ hσ x hθ`. Take `⟨N, hN'⟩` from `fixed_mat σ hσ x⁻¹ hθ'`. Establish `hMN : M * N = 1` using `hinjM (by`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(M * N).map (adeleMap F E) = (1 : Matrix (Fin n) (Fin n) 𝔸[F]).map (adeleMap F E)`. Rewrite using `[Matrix.map_mul, hM, hN', Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `congrArg Units.val (mul_inv_cancel x))`. Establish `hNM : N * M = 1` using `hinjM (by`. Express the relevant statement in the definitionally equal form `(N * M).map (adeleMap F E) = (1 : Matrix (Fin n) (Fin n) 𝔸[F]).map (adeleMap F E)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[Matrix.map_mul, hM, hN', Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `congrArg Units.val (inv_mul_cancel x))`. Establish `he : mapGL n (adeleMap F E) (⟨M, N, hMN, hNM⟩ : AdelicGLn.AdelicGL F n) = x` using `Units.ext hM`. Use `⟨⟨M, N, hMN, hNM⟩, hinjG ?_, he.symm⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, hmapd, he]`.
-
-Conclude with `hcom`. Introduce and unpack `⟨t, ht, rfl⟩`. Establish `hcomm : mapGL n (adeleMap F E) t * AdelicGLn.diagonal E n (incl γ) = AdelicGLn.diagonal E n (incl γ) * mapGL n (adeleMap F E) t`. Rewrite using `[← hmapd, ← map_mul, ← map_mul, ht]`. Establish `hθ : mapGL n (galAd σ) (mapGL n (adeleMap F E) t) = mapGL n (adeleMap F E) t` using `Units.ext (Matrix.ext fun i j => galAd_adeleMap σ _)`.
-
-Rewrite using `[hθ, mul_assoc, ← hC _ _ hcomm hDΓ]`. Use `group`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.G.galois_fixed_adelic_matrices_descend :
     N3 := by

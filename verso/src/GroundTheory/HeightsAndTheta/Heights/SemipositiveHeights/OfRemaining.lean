@@ -21,23 +21,21 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 open GroundTheory.Heights₂.Heights.HilbertSamuel
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ _ y D α I hI hV hB hNef hPos`. Establish `hagree : ∀ (V : Ideal (MRingOver ℚ ι)) (n : ℕ) (L : Fin n → K → ℤ), IsProjVarF V n → I V n L = NumbersDVR.intNum ℚ V L`. Take `⟨I₀, -, h₀⟩` from `Targets.ExistsUnique.full ℚ ι`. Introduce `V n L hVn`. Rewrite using `[h₀ I hI V n L hVn, h₀ _ (NumbersDVR.IntNumIsFieldIntersection.full ℚ K ι) V n L hVn]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hG : IsProjVarF (KH.genIdeal y) D` using `isProjVarF_map_of_isArithVar hV`. Establish `hdeg : 0 < genDeg (mCoordIdeal y) D α`. Establish `h` using `hagree _ D (fun _ => α) hG`. Rewrite `hPos` using `[h]`. Conclude with `hPos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨k, e, hk, he, hmem⟩ : ∃ (k : ℕ) (e : Ω), 1 ≤ k ∧ e ≠ 0 ∧ e ∈ chartLatQ y ((k : ℤ) • α - 1) 1 := by`. Break down `Nat.eq_zero_or_pos D with rfl | hD` into its components or cases. Establish `hr` using `hZ K ι Ω y ((1 : ℕ) • α - 1) 1 hV`. Establish `hg : genDeg (mCoordIdeal y) 0 ((1 : ℕ) • α - 1) = genDeg (mCoordIdeal y) 0 α`. Unfold `genDeg`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `j`. Conclude with `j.elim0`. Rewrite `hr` using `[hg]`. Establish `hpos : 0 < Module.finrank ℚ (chartLatQ y ((1 : ℕ) • α - 1) 1)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (0 : ℤ) < Module.finrank ℚ (chartLatQ y ((1 : ℕ) • α - 1) 1)` using `by rw [hr]; exact hdeg`. Conclude with `this` after adjusting the coercions. Use `Module.nontrivial_of_finrank_pos hpos` as an intermediate fact. Take `⟨⟨e, he⟩, hne⟩` from `exists_ne (0 : chartLatQ y ((1 : ℕ) • α - 1) 1)`. Use `⟨1, e, le_rfl, fun h => hne ?_, by simpa using he⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Subtype.ext h`. Establish `hnef : NefOnGenericDeg (mCoordIdeal y) α`. Introduce `W hW hPW`. Establish `hWq : IsProjVarF (W.map (MvPolynomial.map (Int.castRingHom ℚ))) 1` using `isProjVarF_map_of_isArithVar (D := 1) hW`. Establish `h` using `hNef _ hWq (Ideal.map_mono hPW)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite `h` using `[hagree _ 1 _ hWq]`. Unfold `genDeg`. Use `h using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Use `fin_cases j`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Conclude with `hK K ι Ω y D α hD hV hB hnef hdeg`. Take `⟨n, hn, hns⟩` from `ChartDenominator.proof K ι Ω y ((k : ℤ) • α - 1) 1 e hmem`. Establish `hn0 : (n : Ω) ≠ 0` using `by exact_mod_cast (show n ≠ 0 by omega)`. Use `⟨k, hk, (n : Ω) * e, ?_, mul_ne_zero hn0 he⟩` and prove the remaining obligations.
-
-Establish `hfun : (fun κ => (k : ℤ) * α κ - 1) = (k : ℤ) • α - 1`. Use function extensionality and compare the values at `κ`. Simplify using the standard rewrite rules. Rewrite using `[hfun]`. Conclude with `hns`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SiuZB.proof (hK : KodairaGeneric.Statement) (hZ : SectionsDimZero.Statement) : KH.SiuZStatement := by
   intro K _ ι _ Ω _ _ y D α I hI hV hB hNef hPos
@@ -94,7 +92,7 @@ theorem SiuZB.proof (hK : KodairaGeneric.Statement) (hZ : SectionsDimZero.Statem
   exact hns
 
 /- English proof (translation)
-The claim follows from `SiuZB.proof hK SectionsDimZero.proof`.
+A detailed English derivation is pending.
 -/
 theorem SiuZB.of_kodaira (hK : KodairaGeneric.Statement) : KH.SiuZStatement :=
   SiuZB.proof hK SectionsDimZero.proof

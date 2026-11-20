@@ -14,15 +14,15 @@ set_option autoImplicit false
 namespace GlobalTheory.PtExt
 
 /- English proof (translation)
-Introduce `R _ A _ _ n hR b _ S _ u g hu hg D _ _ D' _ _ φ x y`. Take `⟨D1, _, _, ψ1, z1, h1, hz1⟩` from `hR D' (spOver φ ≫ x)`. Take `⟨E, _, _, ψ2, w, h2, hw⟩` from `hR D1 (spOver ψ1 ≫ spOver φ ≫ y)`. Establish `hψ : spOver (ψ2.comp ψ1) = spOver ψ2 ≫ spOver ψ1` using `(spOver_comp ψ1 ψ2).symm`. Establish `hz : (spOver ψ2 ≫ z1) ^ n = spOver (ψ2.comp ψ1) ≫ spOver φ ≫ x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← comp_pow, hz1, hψ, Category.assoc]`. Establish `hw' : w ^ n = spOver (ψ2.comp ψ1) ≫ spOver φ ≫ y` using `by rw [hw, hψ, Category.assoc]`. Establish `hmul : spOver φ ≫ (x * y) = (spOver φ ≫ x) * (spOver φ ≫ y)` using `comp_mul _ _ _`. Establish `hzw : ((spOver ψ2 ≫ z1) * w) ^ n = spOver (ψ2.comp ψ1) ≫ spOver φ ≫ (x * y)`. Rewrite using `[mul_pow, hz, hw', hmul, comp_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : ∀ t : Pt A D, spOver (ψ2.comp ψ1) ≫ spOver φ ≫ t = spOver ((ψ2.comp ψ1).comp φ) ≫ t` using `fun t ↦ by`. Rewrite using `[← Category.assoc, spOver_comp]`. Establish `hinj : Function.Injective (ψ2.comp ψ1)` using `fun a c h ↦ h1.injective (h2.injective h)`. Apply `hinj` to reduce the goal to its premises. Establish `e1` using `hg D' (spOver φ ≫ x) (spOver φ ≫ y) E (ψ2.comp ψ1) _ _ hz hw'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `e2` using `hg D x y E ((ψ2.comp ψ1).comp φ) _ _ (hz.trans (hc x)) (hw'.trans (hc y))`. Rewrite `e2` using `[AlgHom.comp_apply]`. Establish `e3` using `hu D D' φ (x * y) E (ψ2.comp ψ1) _ hzw`. Rewrite `e3` using `[hmul]`. Establish `e4` using `hu D D' φ x E (ψ2.comp ψ1) _ hz`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e5` using `hu D D' φ y E (ψ2.comp ψ1) _ hw'`. Simplify using `only [map_sub]`. Take the linear combination `e1 - e2 - e3 + e4 + e5`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem isAdd_of_isSecDiff_isSecAdd : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] [IsCommMonObj A] (n : ℕ), HasRoots A n → ∀ b : Fn0 A, IsTorsChar n b → ∀ S : SecFam A, (∀ (D : Type) [CommRing D] [Algebra R D] (x : Pt A D), IsSec n b x (S D x)) → ∀ (u : Fn1 A) (g : Fn2 A), IsSecDiff n S u → IsSecAdd n S g → IsAdd u g := by
   intro R _ A _ _ n hR b _ S _ u g hu hg D _ _ D' _ _ φ x y

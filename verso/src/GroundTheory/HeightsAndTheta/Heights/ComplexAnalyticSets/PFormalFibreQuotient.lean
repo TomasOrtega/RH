@@ -5,25 +5,23 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 
 /- English proof (translation)
-Use `set q := P.comap (algebraMap S S') with hq`. Establish `hq' : (P.comap φ).comap (algebraMap R R') = q.comap f`. Rewrite using `[hq, Ideal.comap_comap, Ideal.comap_comap, hcomm]`. Establish `hmapq : ((q.comap f).map (algebraMap R R')).map φ = q.map (algebraMap S S')`. Rewrite using `[Ideal.map_map, hcomm, ← Ideal.map_map, Ideal.map_comap_of_surjective f hf]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `ψ : Localization.AtPrime (P.comap φ) →+* Localization.AtPrime P` to `Localization.localRingHom (P.comap φ) P φ rfl`. Establish `hψ : Function.Surjective ψ`. Introduce `y`. Take `⟨⟨a, t⟩, rfl⟩` from `IsLocalization.mk'_surjective P.primeCompl y`. Take `⟨a', rfl⟩` from `hφ a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t', ht'⟩` from `hφ (t : S')`. Establish `ht'' : t' ∈ (P.comap φ).primeCompl`. Express the relevant statement in the definitionally equal form `t' ∉ P.comap φ`. Rewrite using `[Ideal.mem_comap, ht']`. Conclude with `t.2`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨IsLocalization.mk' _ a' ⟨t', ht''⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Localization.localRingHom_mk']`. Use `congr 1`. Conclude with `Subtype.ext ht'`. Set `χ` to `(Ideal.Quotient.mk ((q.map (algebraMap S S')).map (algebraMap S' (Localization.AtPrime P)))).comp ψ`.
+Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hχ : Function.Surjective χ` using `Ideal.Quotient.mk_surjective.comp hψ`. Establish `hkerχ : ((q.comap f).map (algebraMap R R')).map (algebraMap R' (Localization.AtPrime (P.comap φ))) = RingHom.ker χ`. Use extensionality with `x`. Take `⟨⟨r, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (P.comap φ).primeCompl x`. Rewrite using `[RingHom.mem_ker, RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem, Localization.localRingHom_mk', IsLocalization.mk'_mem_map_algebraMap_iff, IsLocalization.mk'_mem_map_algebraMap_iff]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, htr⟩`. Use `⟨φ t, ht, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul, ← hmapq]`. Conclude with `Ideal.mem_map_of_mem φ htr`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce and unpack `⟨t, ht, htr⟩`. Take `⟨t', rfl⟩` from `hφ t`. Use `⟨t', ht, ?_⟩` and prove the remaining obligations. Establish `h1 : φ (t' * r) ∈ ((q.comap f).map (algebraMap R R')).map φ`. Rewrite using `[hmapq, map_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `htr`. Rewrite `h1` using `[← Ideal.mem_comap, Ideal.comap_map_of_surjective φ hφ]`. Establish `key : Ideal.comap φ ⊥ ≤ (q.comap f).map (algebraMap R R')`. Use `le_trans ?_ (le_trans hker (Ideal.map_mono ?_))` and prove the remaining obligations. Introduce `y hy`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hy`. Introduce `y hy`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker.mp hy]`. Conclude with `q.zero_mem`. Conclude with `(sup_le le_rfl key) h1`.
-
-Use `⟨(((Ideal.quotEquivOfEq ?_).trans (RingHom.quotientKerEquivOfSurjective hχ))).symm⟩` and prove the remaining obligations. Rewrite using `[← hkerχ, hq']`.
+A detailed English derivation is pending.
 -/
 theorem primeFibreLocalRing_nonempty_equiv_of_surjective
     {R S R' S' : Type*} [CommRing R] [CommRing S] [CommRing R'] [CommRing S']
@@ -87,37 +85,35 @@ theorem primeFibreLocalRing_nonempty_equiv_of_surjective
   rw [← hkerχ, hq']
 
 /- English proof (translation)
-Use `hB` as an intermediate fact. Establish `: IsNoetherianRing A` using `isNoetherianRing_of_surjective B A f hf`. Use `set M := m.comap f with hM`. Establish `hpow : ∀ n : ℕ, (M ^ n).map f = m ^ n` using `fun n => by`. Rewrite using `[Ideal.map_pow, hM, Ideal.map_comap_of_surjective f hf]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `fam : (n : ℕ) → AdicCompletion M B →+* A ⧸ m ^ n` to `fun n => (Ideal.quotientMap (m ^ n) f (Ideal.le_comap_pow f n)).comp (AdicCompletion.evalₐ M n : AdicCompletion M B →+* B ⧸ M ^ n)`. Establish `hfam : ∀ {k n : ℕ} (hle : k ≤ n), (Ideal.Quotient.factorPow m hle).comp (fam n) = fam k`. Introduce `k n hle`. Use extensionality with `x`. Proceed by induction on `x using AdicCompletion.induction_on with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Proceed by induction. Treat this case separately.
 
-Consider the case `h b`. Simplify using `only [fam, RingHom.comp_apply, RingHom.coe_coe, AdicCompletion.evalₐ_mk]`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.factorPow m hle (Ideal.Quotient.mk (m ^ n) (f (b n))) = Ideal.Quotient.mk (m ^ k) (f (b k))`. Rewrite using `[Ideal.Quotient.factorPow, Ideal.Quotient.factor_mk, Ideal.Quotient.eq]`. Establish `hb` using `AdicCompletion.AdicCauchySequence.mk_eq_mk hle b`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hb` using `[Submodule.Quotient.eq]`. Establish `hb' : b n - b k ∈ M ^ k` using `by simpa using hb`. Rewrite using `[← map_sub]`. Conclude with `Ideal.le_comap_pow f k hb'`. Set `φ : AdicCompletion M B →+* AdicCompletion m A` to `AdicCompletion.liftRingHom m fam hfam`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcomm : φ.comp (algebraMap B (AdicCompletion M B)) = (algebraMap A (AdicCompletion m A)).comp f`. Use `RingHom.ext fun b => AdicCompletion.ext_evalₐ fun n => ?_` and prove the remaining obligations. Simplify using `only [φ, fam, RingHom.comp_apply, AdicCompletion.algebraMap_apply, AdicCompletion.evalₐ_liftRingHom, RingHom.coe_coe, AdicCompletion.evalₐ_of, Algebra.algebraMap_self, RingHom.id_apply]`. Both sides reduce to the same expression. Use `⟨φ, ?_, hcomm, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `fgM : M.FG` using `IsNoetherian.noetherian M`. Establish `fgm : m.FG` using `IsNoetherian.noetherian m`. Use `AdicCompletion.isAdicComplete_self M fgM` as an intermediate fact. Establish `hmap : (M.map (algebraMap B (AdicCompletion M B))).map φ = m.map (algebraMap A (AdicCompletion m A))`. Rewrite using `[Ideal.map_map, hcomm, ← Ideal.map_map, hM, Ideal.map_comap_of_surjective f hf]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: IsHausdorff ((M.map (algebraMap B (AdicCompletion M B))).map φ) (AdicCompletion m A)`. Rewrite using `[hmap]`. Conclude with `(AdicCompletion.isAdicComplete_self m fgm).toIsHausdorff`. Apply `surjective_of_mk_map_comp_surjective (I := M.map (algebraMap B (AdicCompletion M B))) φ` to reduce the goal to its premises. Introduce `y`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (AdicCompletion.evalOneₐ m y)`. Take `⟨b, rfl⟩` from `hf a`. Use `⟨algebraMap B _ b, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, ← RingHom.comp_apply φ, hcomm, RingHom.comp_apply, Ideal.Quotient.eq, hmap, ← AdicCompletion.ker_evalOneₐ_eq_map m fgm, RingHom.mem_ker]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Simplify using `[ha, AdicCompletion.algebraMap_apply]`. Introduce `x hx`. Set `_ : Algebra B A` to `f.toAlgebra`. Set `K` to `RingHom.ker f`. Set `g : B →ₗ[B] A` to `Algebra.linearMap B A`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hg : Function.Surjective g` using `hf`. Establish `hfg : Function.Exact K.subtype g`. Introduce `y`. Simplify using `[g, K, RingHom.mem_ker, Algebra.linearMap_apply, RingHom.algebraMap_toAlgebra]`. Establish `hx' : AdicCompletion.map M g x = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Proceed by induction on `x using AdicCompletion.induction_on with`. Consider the case `h b => ?_`. Establish `hb` using `RingHom.mem_ker.mp hx`. Use `AdicCompletion.ext fun n => ?_` and prove the remaining obligations. Establish `h1 : f (b n) ∈ m ^ n`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congrArg (AdicCompletion.evalₐ m n) hb` as an intermediate fact. Rewrite `this` using `[map_zero]`. Simplify using `only [φ, AdicCompletion.evalₐ_liftRingHom, fam, RingHom.comp_apply, RingHom.coe_coe, AdicCompletion.evalₐ_mk] at this`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mp this`. Establish `h2 : g (b n) ∈ (M ^ n • ⊤ : Submodule B A)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Ideal.smul_top_eq_map, Submodule.restrictScalars_mem]`. Express the relevant statement in the definitionally equal form `f (b n) ∈ (M ^ n).map f`. Rewrite using `[hpow]`. Conclude with `h1`. Simplify `h2` using `[AdicCompletion.map_mk]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨z, rfl⟩` from `((AdicCompletion.map_exact (I := M) Subtype.val_injective hfg hg) x).mp hx'`. Take `⟨t, rfl⟩` from `AdicCompletion.ofTensorProduct_surjective_of_finite M K z`. Establish `hnat` using `congrArg (fun F => F t) (AdicCompletion.ofTensorProduct_naturality M K.subtype)`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply] at hnat`. Rewrite using `[hnat]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Use `clear hnat hx hx'`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r k`. Simplify using `only [TensorProduct.AlgebraTensorModule.map_tmul, LinearMap.id_coe, id_eq, Submodule.coe_subtype, AdicCompletion.ofTensorProduct_tmul]`.
-
-Conclude with `Ideal.mul_mem_left _ r (Ideal.mem_map_of_mem _ k.2)`. Consider the case `add t₁ t₂ h₁ h₂`. Rewrite using `[map_add, map_add]`. Conclude with `add_mem h₁ h₂`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_adicCompletion_surjection_of_surjective
     {B A : Type} [CommRing B] [CommRing A] (f : B →+* A) (hf : Function.Surjective f)
@@ -215,9 +211,9 @@ theorem exists_adicCompletion_surjection_of_surjective
       exact add_mem h₁ h₂
 
 /- English proof (translation)
-Introduce `B A _ _ f hf hB m P _`. Take `⟨φ, hφ, hcomm, hker⟩` from `exists_adicCompletion_surjection_of_surjective f hf hB m`. Use `⟨⟨P.comap φ, inferInstance⟩, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(P.comap φ).comap _ = _`. Rewrite using `[Ideal.comap_comap, hcomm, ← Ideal.comap_comap]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `primeFibreLocalRing_nonempty_equiv_of_surjective f φ hf hφ hcomm hker P`.
+A detailed English derivation is pending.
 -/
 theorem FormalFibreQuotient.proof : FormalFibreQuotient.Statement := by
   intro B A _ _ f hf hB m P _

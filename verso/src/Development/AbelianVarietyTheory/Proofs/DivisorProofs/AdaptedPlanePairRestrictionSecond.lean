@@ -14,7 +14,7 @@ namespace GlobalTheory.MixXDblChar
 open scoped Classical in
 
 /- English proof (translation)
-Introduce `g _`. Use `⟨g (fun i => (x₀ i).2) • (BoundedContinuousFunction.evalCLM ℂ (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x₀ i).1)).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ (κ → mixedEmbedding.mixedSpace F) ℂ), fun f => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.proj_apply, pureA, ContinuousLinearMap.coe_smul', ContinuousLinearMap.coe_comp', Function.comp_apply, Pi.smul_apply, SchwartzMap.toBoundedContinuousFunctionCLM_apply, BoundedContinuousFunction.evalCLM_apply, smul_eq_mul]`. Rewrite using `[mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem evAt_mem_adm {F : Type} [Field F] [NumberField F] (κ : Type) [Fintype κ] (x₀ : κ → AF F) :
     (LinearMap.proj (R := ℂ) (φ := fun _ : (κ → AF F) => ℂ) x₀) ∈ (adeleClass F).adm κ := by
@@ -28,7 +28,7 @@ theorem evAt_mem_adm {F : Type} [Field F] [NumberField F] (κ : Type) [Fintype �
   rw [mul_comm]
 
 /- English proof (translation)
-Unfold `actB`. Rewrite using `[Matrix.mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem actB_mul_left {R E' : Type} [CommRing R] [CommRing E'] [Algebra R E'] {c : E' →ₐ[R] E'} {α α' β : Type}
     [Fintype β] [DecidableEq β] [Fintype α'] {J : Matrix β β E'} (p : UG c J) (A : Matrix α α' E') (x : Matrix α' β E') :
@@ -36,7 +36,7 @@ theorem actB_mul_left {R E' : Type} [CommRing R] [CommRing E'] [Algebra R E'] {c
   unfold actB; rw [Matrix.mul_assoc]
 
 /- English proof (translation)
-Unfold `actB`. Conclude with `Matrix.vecMulVec_mul _ _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem actB_vecMulVec {R E' : Type} [CommRing R] [CommRing E'] [Algebra R E'] {c : E' →ₐ[R] E'} {α β : Type}
     [Fintype β] [DecidableEq β] {J : Matrix β β E'} (p : UG c J) (u : α → E') (y : β → E') :
@@ -44,9 +44,9 @@ theorem actB_vecMulVec {R E' : Type} [CommRing R] [CommRing E'] [Algebra R E'] {
   unfold actB; exact Matrix.vecMulVec_mul _ _ _
 
 /- English proof (translation)
-Unfold `actB`. Rewrite using `[Matrix.mul_assoc, ← Matrix.transpose_mul]`. Establish `: ((↑(p⁻¹) : GL β E') : Matrix β β E') * ((p : GL β E') : Matrix β β E') = 1`. Rewrite using `[← Units.val_mul, ← Subgroup.coe_mul, inv_mul_cancel]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[this, Matrix.transpose_one, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem actB_inv_actB {R E' : Type} [CommRing R] [CommRing E'] [Algebra R E'] {c : E' →ₐ[R] E'} {α β : Type}
     [Fintype β] [DecidableEq β] {J : Matrix β β E'} (p : UG c J) (x : Matrix α β E') :
@@ -58,33 +58,29 @@ theorem actB_inv_actB {R E' : Type} [CommRing R] [CommRing E'] [Algebra R E'] {c
   rw [this, Matrix.transpose_one, Matrix.mul_one]
 
 /- English proof (translation)
-Introduce `hPr F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hP₁ e he hne dd dd₁ hdd hdd₁ omd omd₁ hS hS₁ ed hmap hheis hinv hadm hnz`. Take `⟨Φ₀, hΦ₀, hΦ₀0⟩` from `id hnz`. Take `⟨x, hx⟩` from `Function.ne_iff.mp hΦ₀0`. Simplify using `only [Pi.zero_apply] at hx`. Establish `inv_mul : ∀ p φ, omd p (omd p⁻¹ φ) = φ` using `fun p φ => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Establish `inv_mul₁ : ∀ p φ, omd₁ p (omd₁ p⁻¹ φ) = φ` using `fun p φ => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Establish `hsp : ∀ p, ∀ φ ∈ schA F (Fin n × Fin d ⊕ Fin n × Fin d), omd p φ ∈ schA F (Fin n × Fin d ⊕ Fin n × Fin d)` using `fun p φ hφ => hS.pres p φ hφ`. Establish `key : ∀ p, ∃ k : ℂ, ∀ Φ ∈ schA F (Fin n × Fin d ⊕ Fin n × Fin d), ed (omd p Φ) = k • omd₁ p (ed Φ)` using `fun p => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `GlobalTheory.T.pair_restricts_to_adapted_x hPr F E σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hP₁ e he hne dd dd₁ hdd hdd₁ ed hmap hheis hinv hadm hnz (omd₁ p⁻¹ ∘ₗ ed ∘ₗ omd p) (fun Φ hΦ => hS₁.pres _ _ (hmap _ (hS.pres _ _ hΦ))) (fun z Φ hΦ => by`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[hS.impl p _ Φ hΦ, actB_mul_left, hheis _ _ (hS.pres _ _ hΦ), hS₁.impl _ _ _ (hmap _ (hS.pres _ _ hΦ)), actB_inv_actB])`. Use the proof step `(fun y Φ hΦ => by`. Simplify using `only [LinearMap.comp_apply]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hS.impl p _ Φ hΦ, actB_vecMulVec, hinv _ _ (hS.pres _ _ hΦ)])`. Use the proof step `(fun l hl => by`. Establish `e0 : l ∘ₗ (omd₁ p⁻¹ ∘ₗ ed ∘ₗ omd p) = ((l ∘ₗ omd₁ p⁻¹) ∘ₗ ed) ∘ₗ omd p` using `rfl`. Rewrite using `[e0]`. Conclude with `hS.adm p _ (hadm _ (hS₁.adm p⁻¹ l hl)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨k, fun Φ hΦ => ?_⟩` and prove the remaining obligations. Use `congrArg (omd₁ p) (hk Φ hΦ)` as an intermediate fact. Simplify `this` using `[LinearMap.comp_apply, inv_mul₁, map_smul]`. Use `choose cf hcf using key`. Establish `huniq : ∀ p (k : ℂ), (∀ Φ ∈ schA F (Fin n × Fin d ⊕ Fin n × Fin d), ed (omd p Φ) = k • omd₁ p (ed Φ)) → k = cf p` using `fun p k hk => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hk _ (hsp p⁻¹ _ hΦ₀)`. Establish `h2` using `hcf p _ (hsp p⁻¹ _ hΦ₀)`. Rewrite `h1`, `h2` using `[inv_mul]`. Establish `h3` using `congrFun (h1.symm.trans h2) x`. Establish `h4` using `congrFun h1 x`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul] at h3 h4`. Establish `hV : omd₁ p (ed (omd p⁻¹ Φ₀)) x ≠ 0` using `fun h0 => hx (by rw [h4, h0, mul_zero])`. Conclude with `mul_right_cancel₀ hV h3`. Establish `hmul : ∀ p q, cf (p * q) = cf p * cf q` using `fun p q => (huniq (p * q) _ fun Φ hΦ => by`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, hcf p _ (hsp q Φ hΦ), hcf q Φ hΦ, map_smul, smul_smul]).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hone : cf 1 = 1` using `(huniq 1 1 fun Φ _ => by simp).symm`. Establish `hne0 : ∀ p, cf p ≠ 0` using `fun p h => by`. Use `hmul p p⁻¹` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel, hone, h, zero_mul]`. Conclude with `one_ne_zero this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hcont_cf : Continuous cf`. Use `continuous_iff_continuousAt.2 fun p₀ => ?_` and prove the remaining obligations. Establish `hφ` using `hsp p₀⁻¹ _ hΦ₀`. Establish `hf` using `hS.cont _ (hadm _ (evAt_mem_adm _ x)) _ hφ`. Establish `hg` using `hS₁.cont _ (evAt_mem_adm _ x) _ (hmap _ hφ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.comp_apply, LinearMap.proj_apply] at hf hg`. Establish `h0 : omd₁ p₀ (ed (omd p₀⁻¹ Φ₀)) x ≠ 0`. Rewrite using `[hcf p₀⁻¹ _ hΦ₀, map_smul, inv_mul₁]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Conclude with `mul_ne_zero (hne0 _) hx`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `(hf.continuousAt.div hg.continuousAt h0).congr ?_` and prove the remaining obligations. Use `filter_upwards [hg.continuousAt.eventually_ne h0] with p hp`. Use `congrFun (hcf p _ hφ) x` as an intermediate fact. Simplify using `only [Pi.smul_apply, smul_eq_mul] at this`. Simplify using `only [Pi.div_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, mul_div_cancel_right₀ _ hp]`. Set `cM : UG (cA σ) (dbl (incM F W.J)) →* ℂ` to `{ toFun := cf, map_one' := hone, map_mul' := hmul }`. Set `cU` to `cM.toHomUnits`. Establish `hcv : ∀ p, ((cU p : ℂˣ) : ℂ) = cf p` using `fun p => rfl`. Establish `hcontU : Continuous cU`.
-
-Use `Units.continuous_iff.2 ⟨hcont_cf, ?_⟩` and prove the remaining obligations. Establish `: (fun p => ((cU p)⁻¹ : ℂˣ).val) = fun p => (cf p)⁻¹` using `funext fun p => by`. Rewrite using `[Units.val_inv_eq_inv_val, hcv]`. Rewrite using `[this]`. Conclude with `hcont_cf.inv₀ hne0`.
-
-Conclude with `⟨cU, hcontU, fun g Φ hΦ => by rw [hcv]; exact hcf g Φ hΦ⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_cont_char : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →

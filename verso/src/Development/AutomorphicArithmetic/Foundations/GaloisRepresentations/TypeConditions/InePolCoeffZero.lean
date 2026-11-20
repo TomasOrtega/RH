@@ -28,21 +28,21 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
 def SepW (y : WD h) : Prop := y.tame ∧ ∃ s ∈ Ine (F := E) B, (y.inePol s).Separable
 
 /- English proof (translation)
-Take `⟨k1, s, hs, k2⟩` from `k`. Use `⟨(WD.tame_iff_inePol y).1 k1, WD.noMonodromy_of_inertia_separable_charpoly E Ω B w h y s hs k2, fun γ hγ hc z hz => ?_⟩` and prove the remaining obligations. It suffices to derive a contradiction. Take `⟨n, a, rfl⟩` from `y.exists_rep`. Rewrite `k1` using `[WD.tame_mk]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hz` using `[ht, WD.inePol_of_mem_Ine _ hγ, WD.charPol_mk]`. Rewrite `k2` using `[WD.inePol_of_mem_Ine _ hs, WD.charPol_mk]`. Set `U` to `End.eigenspace (a.ρ (ineIncl h ⟨γ, hγ⟩)) z`. Set `K : Subgroup (Ine (F` to `E) B) := { carrier := {σ | ∃ c : ℂ, ∀ v ∈ U, a.ρ (ineIncl h σ) v = c • v} one_mem' := ⟨1, fun v _ => by simp⟩ mul_mem' := fun {x y} ⟨c, hc⟩ ⟨d, hd⟩ => ⟨d * c, fun v hv => by`. Rewrite using `[map_mul, map_mul, End.mul_apply, hd v hv, map_smul, hc v hv, smul_smul]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `inv_mem' := fun {x} ⟨c, hc⟩ => ⟨c⁻¹, fun v hv => by`. Establish `e : a.ρ (ineIncl h x⁻¹) (a.ρ (ineIncl h x) v) = v`. Rewrite using `[← End.mul_apply, ← map_mul, ← map_mul, inv_mul_cancel, map_one, map_one, End.one_apply]`. Rewrite `e` using `[hc v hv, map_smul]`. Distinguish the cases in `h0 : c = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[h0, zero_smul]`. Rewrite using `[← e]`. Simplify using the standard rewrite rules. Rewrite using `[← e, smul_smul, inv_mul_cancel₀ h0, one_smul, e]⟩ }`. Establish `hop : IsOpen (K : Set (Ine (F` using `E) B)) := K.isOpen_of_mem_nhds (g := 1) (Filter.mem_of_superset (IsOpen.mem_nhds a.smooth (by show a.ρ (ineIncl h 1) = 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_one, map_one])) fun σ hσ => ⟨1, fun v _ => by`. Establish `: a.ρ (ineIncl h σ) = 1` using `hσ`. Rewrite using `[this]`. Use the proof step `simp⟩)`. Establish `hK : IsClosed ((K.map (Ine (F` using `E) B).subtype : Subgroup (G E Ω)) : Set (G E Ω)) := (isClosed_Ine B).isClosedEmbedding_subtypeVal.isClosedMap _ (K.isClosed_of_isOpen hop)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : Subgroup.closure (insert γ (Wild E B : Set (G E Ω))) ≤ K.map (Ine (F` using `E) B).subtype := by`. Rewrite using `[Subgroup.closure_le]`. Introduce and unpack `u (rfl | hu)`. Conclude with `⟨⟨u, hγ⟩, ⟨z, fun v hv => End.mem_eigenspace_iff.1 hv⟩, rfl⟩`. Conclude with `⟨⟨u, Wild_le_Ine hu⟩, ⟨1, fun v _ => by rw [k1 _ hu]; simp⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u, ⟨c, hu⟩, e⟩` from `closure_minimal (SetLike.coe_subset_coe.mpr hle) hK (hc hs)`. Take `rfl : u = ⟨s, hs⟩` from `Subtype.ext e`. Establish `h1 : finrank ℂ U = (a.ρ (ineIncl h ⟨γ, hγ⟩)).charpoly.rootMultiplicity z`. Rewrite using `[← LinearMap.finrank_maxGenEigenspace_eq, (a.semisimple _).isFinitelySemisimple.maxGenEigenspace_eq_eigenspace]`. Establish `h2 : finrank ℂ U ≤ (a.ρ (ineIncl h ⟨s, hs⟩)).charpoly.rootMultiplicity c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← LinearMap.finrank_maxGenEigenspace_eq, (a.semisimple _).isFinitelySemisimple.maxGenEigenspace_eq_eigenspace]`. Conclude with `Submodule.finrank_mono fun v hv => End.mem_eigenspace_iff.2 (hu v hv)`. Establish `h3` using `rootMultiplicity_le_one_of_separable k2 c`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem SepW.ncW {y : WD h} (k : SepW y) (ht : thr w y.lpDim = 2) : NcW y := by
   obtain ⟨k1, s, hs, k2⟩ := k
@@ -89,11 +89,11 @@ theorem SepW.ncW {y : WD h} (k : SepW y) (ht : thr w y.lpDim = 2) : NcW y := by
   omega
 
 /- English proof (translation)
-Take `⟨k1, s, hs, k2⟩` from `k`. Take `⟨n, a, rfl⟩` from `y.exists_rep`. Rewrite `k1` using `[WD.tame_mk]`. Use `⟨?_, s⁻¹, inv_mem hs, ?_⟩` and prove the remaining obligations. Rewrite using `[WD.lpDual_mk, WD.tame_mk]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `σ hσ`. Rewrite using `[WDRep.dual_ρ, k1 σ⁻¹ (inv_mem hσ)]`. Both sides reduce to the same expression. Rewrite `k2` using `[WD.inePol_of_mem_Ine _ hs, WD.charPol_mk]`. Rewrite using `[WD.lpDual_mk, WD.inePol_of_mem_Ine _ (inv_mem hs), WD.charPol_mk, WDRep.dual_ρ, LabDual.charpoly_dualMap]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `k2 using 3` and compare the differences between its conclusion and the goal. Conclude with `Subtype.ext (inv_inv s)`.
+Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem SepW.dual {y : WD h} (k : SepW y) : SepW y.lpDual := by
   obtain ⟨k1, s, hs, k2⟩ := k
@@ -110,11 +110,9 @@ theorem SepW.dual {y : WD h} (k : SepW y) : SepW y.lpDual := by
     exact Subtype.ext (inv_inv s)
 
 /- English proof (translation)
-Take `⟨k1, s, hs, k2⟩` from `k`. Rewrite `k1` using `[WD.tame_mk]`. Establish `hc' : ∀ y, y ∈ B ↔ c.symm y ∈ B'` using `fun y => by rw [hc, c.apply_symm_apply]`. Establish `hs'` using `ConjTransport.conjG_mem_Ine c.symm τ.symm (ConjTransport.symm_alg c τ hτ) hc' hs`. Use `⟨(WD.tame_mk _).2 fun σ hσ => ?_, _, hs', ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hw : ConjTransport.conjG c τ hτ σ ∈ Wild E B` using `ConjTransport.conjG_mem_wild c τ hτ hc hσ`. Rewrite using `[e σ (ineIncl h ⟨_, Wild_le_Ine hw⟩) fun z => (ConjTransport.conjG_apply_c c τ hτ _ z).symm]`. Conclude with `k1 _ hw`. Rewrite `k2` using `[WD.inePol_of_mem_Ine _ hs, WD.charPol_mk]`. Rewrite using `[WD.inePol_of_mem_Ine _ hs', WD.charPol_mk, e _ (ineIncl h ⟨s, hs⟩) fun z => c.apply_symm_apply _]`.
-
-Conclude with `k2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SepW.transport {B' : ValuationSubring Ω} {w' : HeightOneSpectrum (𝓞 E)} {h' : IsPlaceOver B' w'} {n : ℕ}
     (c : Ω ≃+* Ω) (τ : E ≃+* E) (hτ : ∀ x, c (algebraMap E Ω x) = algebraMap E Ω (τ x)) (hc : ∀ y, y ∈ B' ↔ c y ∈ B)
@@ -142,9 +140,7 @@ def Sep {w : PlE H} (y : A.LP w) : Prop := Tm N A y ∧ ∃ s ∈ Ine (F := H.E)
 variable {N A}
 
 /- English proof (translation)
-Rewrite using `[WD.tame_iff_inePol]`. Use `⟨fun k σ hσ => ?_, fun k σ hσ hw => ?_⟩` and prove the remaining obligations. Rewrite using `[← T.inePol w y σ (Wild_le_Ine hσ), T.dim]`. Conclude with `k σ (Wild_le_Ine hσ) hσ`. Rewrite using `[T.inePol w y σ hσ, ← T.dim]`.
-
-Conclude with `k σ hw`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tm_iff (T : GlobalTheory.RowTie.WDTie N A) {w : PlE H} (y : A.LP w) : Tm N A y ↔ (T.e w y).tame := by
   rw [WD.tame_iff_inePol]
@@ -155,26 +151,24 @@ theorem tm_iff (T : GlobalTheory.RowTie.WDTie N A) {w : PlE H} (y : A.LP w) : Tm
     exact k σ hw
 
 /- English proof (translation)
-The claim follows from `and_congr (tm_iff T y) (exists_congr fun s => and_congr_right fun hs => by rw [T.inePol w y s hs])`.
+A detailed English derivation is pending.
 -/
 theorem sep_iff (T : GlobalTheory.RowTie.WDTie N A) {w : PlE H} (y : A.LP w) : Sep N A y ↔ SepW (T.e w y) :=
   and_congr (tm_iff T y) (exists_congr fun s => and_congr_right fun hs => by rw [T.inePol w y s hs])
 
 /- English proof (translation)
-The claim follows from `(nc_iff T y).2 (((sep_iff T y).1 h).ncW (by rwa [T.dim]))`.
+A detailed English derivation is pending.
 -/
 theorem nc_of_sep (T : GlobalTheory.RowTie.WDTie N A) {w : PlE H} {y : A.LP w} (ht : thr w (A.lpDim y) = 2) (h : Sep N A y) :
     Nc N A y :=
   (nc_iff T y).2 (((sep_iff T y).1 h).ncW (by rwa [T.dim]))
 
 /- English proof (translation)
-Take `⟨k1, s, hs, k2⟩` from `h`. Use `⟨fun σ hσ hw => ?_, s, hs, ?_⟩` and prove the remaining obligations. Establish `e : A.inePol c σ = X - C 1` using `by rw [tc σ hσ hw, hc]; simp`. Rewrite using `[((hLP w y y c c 0 hc hc).2.2.2.2.2 σ hσ).2 1 e, scaleRoots_one, k1 σ hσ hw, A.lpDim_char _ _ hc]`. Take `⟨m1, m2⟩` from `inePol_monic hLP c s hs`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `m2` using `[hc]`. Establish `e : A.inePol c s = X - C (-(A.inePol c s).coeff 0)`. Rewrite using `[C_neg, sub_neg_eq_add]`. Conclude with `m1.eq_X_add_C m2`. Establish `hz : -(A.inePol c s).coeff 0 ≠ 0` using `neg_ne_zero.2 (h0 s hs)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[((hLP w y y c c 0 hc hc).2.2.2.2.2 s hs).2 _ e]`. Take `⟨n1, -⟩` from `inePol_monic hLP y s hs`. Establish `sp` using `IsAlgClosed.splits (A.inePol y s)`. Use `(nodup_roots_iff_of_splits ((monic_scaleRoots_iff _).2 n1).ne_zero (IsAlgClosed.splits _)).1 ?_` and prove the remaining obligations. Rewrite using `[roots_scaleRoots _ hz.isUnit]`.
-
-Conclude with `(nodup_roots k2).map (mul_right_injective₀ hz)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sep_char (hLP : Formalism.MainNotions.SumRepresentations.At.TieLP N A) {w : PlE H} {y c : A.LP w} (hc : A.lpDim c = 1) (tc : Tm N A c)
     (h0 : ∀ s ∈ Ine (F := H.E) (N.plOm.1 w), (A.inePol c s).coeff 0 ≠ 0) (h : Sep N A y) : Sep N A (A.lpChar y c) := by
@@ -196,19 +190,19 @@ theorem sep_char (hLP : Formalism.MainNotions.SumRepresentations.At.TieLP N A) {
 end
 
 /- English proof (translation)
-Use `host_isCMField D.host` as an intermediate fact. Take `⟨π₀, hπ₀⟩` from `Quotient.exists_rep (C.e _ π).1`. Establish `hmk : CG.mk π₀ = (C.e _ π).1` using `hπ₀`. Establish `hc₀ : π₀.IsCsd`. Establish `h1` using `(C.csd _ π).1 hc`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[CGu.IsCsd, ← hmk]`. Conclude with `h1`. Establish `hpar : ∀ v, T.e v (D.naut.locG π v) = ParLaws.locPar hL (CG.mk π₀) (D.nd.plOm.2 v)` using `fun v => by`. Rewrite using `[C.loc, hmk]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `k`, the goal using `[sep_iff T, hpar]`. Take `⟨γ, hγ⟩` from `GlobalTheory.exists_tameGenAt_of_isPlaceOver _ _ _ _ (D.nd.plOm.2 w')`. Take `⟨γ', ⟨c, hcE, hcA, -⟩, -⟩` from `GlobalTheory.conjGen_transport_exists D w' w γ (GlobalTheory.TwistDet.isConjPl_symm hw) hγ`. Establish `hcp : ConjPl (IsCMField.complexConj D.host.E).toRingEquiv w w'` using `(conjPl_iff_mem _ _ _).2 fun x y e => hw x y (e.trans (host_complexConj D.host _))`. Take `rfl : w' = conjSrc (IsCMField.complexConj D.host.E).toRingEquiv w` from `eq_conjSrc fun x => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using (hcp (IsCMField.complexConj D.host.E x)).symm`. Take `⟨σ, hσ, -⟩` from `LocEx.exists_isLocComp hF _ a π₀ w`. Rewrite `k` using `[ParLaws.locPar_mk hL hσ]`. Rewrite using `[ParLaws.locPar_mk hL (ParLaws.isLocComp_flip hc₀ hσ)]`. Set `π₁ : IrrRep (GL (Fin a) (w.adicCompletion D.host.E))` to `⟨σ.V, σ.ρ.comp (GlobalTheory.TypeTame.invTranspose a), fun v => (σ.smooth v).preimage (GlobalTheory.TypeTame.continuous_invTranspose a), GlobalTheory.GelfandKazhdan.isIrreducible_comp _ (fun g => ⟨_, GlobalTheory.TypeTame.invTranspose_invTranspose a g⟩) σ.irred⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hE` using `GlobalTheory.GelfandKazhdan.equiv_contra _ a σ.V σ.ρ (PositivityTheory.Tls2.BZGL.irreducibleAdmissibleGL_top _ a σ.V σ.ρ σ.smooth σ.irred) σ.irred`. Establish `hr` using `ParLaws.isRec_locRec hL (D.nd.plOm.2 w)`. Set `cc` to `(IsCMField.complexConj D.host.E).toRingEquiv`. Set `i` to `RingEquiv.ofBijective (conjLoc cc w) ⟨(conjLoc cc w).injective, ParLaws.conjLoc_surjective cc w⟩`. Set `L` to `longElt a (w.adicCompletion D.host.E)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨b', b, h1, h2, -, h4⟩` from `hL.2 _ _ _ _ _ _ _ _ _ _ _ _ (ParLaws.isRec_locRec hL (D.nd.plOm.2 (conjSrc cc w))) hr c (D.host.conj : D.host.E →+* D.host.E) i (fun z => (hcA z).symm) hcE (conjLoc_spec cc w).1 (fun x => ((conjLoc_spec cc w).2.1 x).trans (congrArg _ (host_complexConj D.host x))) a (ParLaws.toRe …`. Express the relevant statement in the definitionally equal form `σ.ρ L (σ.ρ (invRevT (Matrix.GeneralLinearGroup.map (conjLoc cc w) g)) v) = σ.ρ (invT a _ (Matrix.GeneralLinearGroup.map (conjLoc cc w) g)) (σ.ρ L v)`. Establish `e : ∀ (x y : GL (Fin a) (w.adicCompletion D.host.E)) (u : σ.V), σ.ρ x (σ.ρ y u) = σ.ρ (x * y) u` using `fun x y u => by rw [map_mul]; rfl`. Use `(e _ _ v).trans (Eq.trans ?_ (e _ _ v).symm)` and prove the remaining obligations. Rewrite using `[ParLaws.invRevT_eq, inv_mul_cancel_right])`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨_, _, _, -, H⟩` from `hr`. Establish `kd` using `k.dual`. Rewrite `kd` using `[← H.dual a (ParLaws.toRep σ) π₁ hE, ← h2]`. Conclude with `h1 ▸ kd.transport c (D.host.conj : D.host.E ≃+* D.host.E) hcE hcA h4`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sep_conj (hL : GlobalTheory.Published.LocalLanglandsGL) (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL) {D : D7}
     {T : GlobalTheory.RowTie.WDTie D.nd D.naut} (C : CGTrue hL D T) {a : ℕ} (π : D.naut.CG a) (hc : D.naut.csd π) {w w' : PlE D.host}
@@ -261,17 +255,15 @@ theorem sep_conj (hL : GlobalTheory.Published.LocalLanglandsGL) (hF : GlobalTheo
   exact h1 ▸ kd.transport c (D.host.conj : D.host.E ≃+* D.host.E) hcE hcA h4
 
 /- English proof (translation)
-Use `haveI := host_isCMField D.host`. Use `set χ' := (CGu.equivChar D.host.E (C.e 1 π)).1 with hχ'`. Use `set χ := (S.e1 π).1 with hχ`. Establish `hloc : ∀ v, T.e v (D.naut.locG π v) = ParLaws.locPar hL (CG.ofChar χ') (D.nd.plOm.2 v)` using `fun v => by`. Rewrite using `[C.loc, hχ', CGu.ofChar_equivChar]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `unr' : ∀ v, D.naut.unr (D.naut.locG π v) ↔ χ'.UnrAt v` using `fun v => by`. Rewrite using `[T.unr, hloc v]`. Conclude with `GlobalTheory.RankOneComp.locPar_ofChar_unr_iff hL χ' _`. Establish `hchar : χ' = χ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← mul_inv_eq_one]`. Apply `GlobalTheory.HeckeSplitRow.eq_one_of_split D.host` to reduce the goal to its premises. Use `filter_upwards [D.naut.locG_unr_ae π] with v hv _`. Establish `u1` using `(S.unr_iff π v).1 hv`. Establish `u2` using `(unr' v).1 hv`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun x hx => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Formalism.L2.Host.HChar.loc_mul, Formalism.L2.Host.HChar.loc_inv, u1 x hx, u2 x hx, inv_one, mul_one]`. Establish `hf` using `S.frob π v u1`. Establish `hf' : D.naut.frobEig (D.naut.locG π v) = {(((χ'.val v)⁻¹ : ℂˣ) : ℂ)}`. Rewrite using `[T.frobEig _ _ hv, hloc v]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.RankOneComp.locPar_ofChar_frob hL χ' _ u2`. Rewrite `hf` using `[hf', Multiset.singleton_inj, Units.val_inj, inv_inj]`. Rewrite using `[Formalism.L2.Host.HChar.val_mul, Formalism.L2.Host.HChar.val_inv, hf, mul_inv_cancel]`. Rewrite using `[tm_iff T, hloc, hchar, ParLaws.locPar_ofChar]`. Take `⟨a, ha, ε, -, H⟩` from `ParLaws.isRec_locRec hL (D.nd.plOm.2 w)`.
-
-Rewrite using `[H.one]`. Use `GlobalTheory.SerSys.LabDepth.tame_of_isTameWD ((PositivityTheory.LocalParametersCuspidal.DZC.tame_lpOfChar_iff _ _).2 fun σ hσ => ?_)` and prove the remaining obligations. Conclude with `GlobalTheory.MuTameQS.isTame_loc ht _ ((GlobalTheory.MuTameQS.val_lt_one_iff w _).2 (PositivityTheory.LocalParametersCuspidal.DZC.wild_to_unitsOne a ha σ hσ))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tm_rankOne (hL : GlobalTheory.Published.LocalLanglandsGL) {D : D7} {T : GlobalTheory.RowTie.WDTie D.nd D.naut} (C : CGTrue hL D T)
     {C₀ : CharFrame D} (S : CharSide D C₀) (π : D.naut.CG 1) (w : PlE D.host) (ht : (S.e1 π).1.TameAt w) :
@@ -303,9 +295,9 @@ theorem tm_rankOne (hL : GlobalTheory.Published.LocalLanglandsGL) {D : D7} {T : 
   exact GlobalTheory.MuTameQS.isTame_loc ht _ ((GlobalTheory.MuTameQS.val_lt_one_iff w _).2 (PositivityTheory.LocalParametersCuspidal.DZC.wild_to_unitsOne a ha σ hσ))
 
 /- English proof (translation)
-Rewrite using `[T.inePol w c s hs, WD.inePol_of_mem_Ine _ hs]`. Take `⟨n, a, e⟩` from `(T.e w c).exists_rep`. Rewrite using `[← e, WD.charPol_mk]`. Introduce `h0`. Establish `hu : IsUnit (a.ρ (ineIncl (N.plOm.2 w) ⟨s, hs⟩))` using `(Group.isUnit _).map a.ρ`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hd` using `(LinearMap.isUnit_iff_isUnit_det _).1 hu`. Rewrite `hd` using `[LinearMap.det_eq_sign_charpoly_coeff, h0, mul_zero]`. Conclude with `not_isUnit_zero hd`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inePol_coeff_zero {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H what₂} {A : NAut N}
     (T : GlobalTheory.RowTie.WDTie N A) {w : PlE H} (c : A.LP w) (s) (hs : s ∈ Ine (F := H.E) (N.plOm.1 w)) :

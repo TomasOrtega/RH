@@ -6,11 +6,11 @@ import Formalism.LocalRingCardinality.SpanPowerMembership.SignSplitEquivInl
 namespace GlobalTheory.CartanDiagSigns
 
 /- English proof (translation)
-Use `set φ := Matrix.reindexAlgEquiv ℂ ℂ e with hφ`. Establish `h1 : ∀ M : Matrix m m ℂ, Matrix.reindex e e M = φ M` using `fun M => rfl`. Establish `hc : Continuous φ`. Express the relevant statement in the definitionally equal form `Continuous (fun M : Matrix m m ℂ => Matrix.reindex e e M)`. Conclude with `(continuous_id.matrix_reindex e e)`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hc' : Continuous φ.symm`. Express the relevant statement in the definitionally equal form `Continuous (fun M : Matrix n n ℂ => Matrix.reindex e.symm e.symm M)`. Conclude with `(continuous_id.matrix_reindex e.symm e.symm)`. Rewrite using `[h1, h1, NormedSpace.exp_eq_tsum ℂ, NormedSpace.exp_eq_tsum ℂ]`. Simplify using `only`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Function.LeftInverse.map_tsum (g := φ) _ hc hc' (fun x => φ.symm_apply_apply x)]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[map_smul, map_pow]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_reindex {m n : Type} [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n]
     (e : m ≃ n) (A : Matrix m m ℂ) :
@@ -36,7 +36,7 @@ namespace GlobalTheory.CartanDiagSigns
 open Formalism.BasicNotions.Examples₂.CD
 
 /- English proof (translation)
-Use `(Equiv.symm_apply_eq (e0 ε)).mpr ?_` and prove the remaining obligations. Use `show a.1 = (Equiv.sumCompl fun i => ε i = true) (Sum.inl ((Fintype.equivFin {i // ε i = true}).symm (Fintype.equivFin {i // ε i = true} a)))`. Rewrite using `[Equiv.symm_apply_apply]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sign_split_symm_true {n : ℕ} (ε : Fin n → Bool) (a : {i // ε i = true}) :
     (e0 ε).symm a.1 = Sum.inl (Fintype.equivFin {i // ε i = true} a) := by
@@ -47,7 +47,7 @@ theorem sign_split_symm_true {n : ℕ} (ε : Fin n → Bool) (a : {i // ε i = t
   rfl
 
 /- English proof (translation)
-Use `(Equiv.symm_apply_eq (e0 ε)).mpr ?_` and prove the remaining obligations. Use `show b.1 = (Equiv.sumCompl fun i => ε i = true) (Sum.inr ((Fintype.equivFin {i // ¬ ε i = true}).symm (Fintype.equivFin {i // ¬ ε i = true} ⟨b.1, by simp [b.2]⟩)))`. Rewrite using `[Equiv.symm_apply_apply]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sign_split_symm_false {n : ℕ} (ε : Fin n → Bool) (b : {i // ε i = false}) :
     (e0 ε).symm b.1 = Sum.inr (Fintype.equivFin {i // ¬ ε i = true} ⟨b.1, by simp [b.2]⟩) := by
@@ -59,7 +59,7 @@ theorem sign_split_symm_false {n : ℕ} (ε : Fin n → Bool) (b : {i // ε i = 
   rfl
 
 /- English proof (translation)
-Consider the cases of `x with`. Consider the case `inl a => simpa using sign_split_equiv_inl ε a`. Consider the case `inr b => simpa using sign_split_equiv_inr ε b`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem sign_split_eval {n : ℕ} (ε : Fin n → Bool) (x : Fin (nT ε) ⊕ Fin (nF ε)) :
     ε (e0 ε x) = x.elim (fun _ => true) (fun _ => false) := by
@@ -68,9 +68,9 @@ theorem sign_split_eval {n : ℕ} (ε : Fin n → Bool) (x : Fin (nT ε) ⊕ Fin
   | inr b => simpa using sign_split_equiv_inr ε b
 
 /- English proof (translation)
-Establish `h : Matrix.reindex e e A = Matrix.reindexAlgEquiv ℂ ℂ e A` using `rfl`. Rewrite `hA`, the goal using `[Matrix.mem_unitaryGroup_iff]`. Establish `hs : star (Matrix.reindex e e A) = Matrix.reindex e e (star A)`. Simplify using `[Matrix.star_eq_conjTranspose, Matrix.conjTranspose_submatrix]`. Rewrite using `[hs]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : Matrix.reindex e e (star A) = Matrix.reindexAlgEquiv ℂ ℂ e (star A)` using `rfl`. Rewrite using `[h, h2, ← map_mul, hA, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem reindex_unitary {m n : Type} [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n]
     (e : m ≃ n) {A : Matrix m m ℂ} (hA : A ∈ Matrix.unitaryGroup m ℂ) :
@@ -89,23 +89,23 @@ namespace GlobalTheory.CartanDiagSigns
 open Formalism.BasicNotions.Examples₂.CD
 
 /- English proof (translation)
-Introduce `n ε u`. Take `⟨k₁, hk₁, k₂, hk₂, hu⟩` from `GlobalTheory.IndefiniteRowSideFullHecke.CartanCoshPower.isCartan_cartanB u`. Use `set B := GlobalTheory.IndefiniteRowSideFullHecke.CartanCoshPower.cartanB u with hB`. Use `set P : Matrix (Fin (nT ε) ⊕ Fin (nF ε)) (Fin (nT ε) ⊕ Fin (nF ε)) ℂ := Formalism.MainNotions.SchurIrreducible.pOf B with hP`. Establish `hPapp : ∀ x y, P x y = Matrix.fromBlocks 0 B B.conjTranspose 0 x y` using `fun _ _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨Matrix.reindex (e0 ε) (e0 ε) P, ⟨⟨?herm, ?zeroP⟩, ?K⟩, ?off⟩` and prove the remaining obligations. Establish `hPh : P.conjTranspose = P`. Rewrite using `[Matrix.ext_iff.symm]`. Introduce `x y`. Rewrite using `[hPapp, Matrix.conjTranspose_apply, hPapp]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `cases x <;> cases y <;> simp`. Use `show (Matrix.reindex (e0 ε) (e0 ε) P).conjTranspose = Matrix.reindex (e0 ε) (e0 ε) P`. Rewrite using `[Matrix.reindex_apply, Matrix.conjTranspose_submatrix, hPh]`. Introduce `i j hij`. Rewrite using `[Matrix.reindex_apply, Matrix.submatrix_apply, hPapp]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hi` using `sign_split_eval ε ((e0 ε).symm i)`. Establish `hj` using `sign_split_eval ε ((e0 ε).symm j)`. Rewrite `hi`, `hj` using `[Equiv.apply_symm_apply]`. Apply the tactic sequence `rcases hx : (e0 ε).symm i with a | a <;> rcases hy : (e0 ε).symm j with b | b <;>`. Simplify the hypotheses and the goal together.
+Apply the first step, then apply the next step to every resulting obligation. Simplify the hypotheses and the goal together. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `⟨Matrix.reindex (e0 ε) (e0 ε) (Matrix.fromBlocks k₁ 0 0 k₂), 1, ⟨?_, ?_⟩, ⟨one_mem _, ?_⟩, ?_⟩` and prove the remaining obligations. Apply `reindex_unitary` to reduce the goal to its premises. Rewrite `hk₁`, `hk₂`, the goal using `[Matrix.mem_unitaryGroup_iff]`. Rewrite using `[Matrix.star_eq_conjTranspose, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply]`. Simplify using `only [← Matrix.star_eq_conjTranspose, hk₁, hk₂, star_zero, mul_zero, zero_mul, add_zero, zero_add, Matrix.conjTranspose_zero, Matrix.mul_zero, Matrix.zero_mul, Matrix.fromBlocks_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `i j hij`. Rewrite using `[Matrix.reindex_apply, Matrix.submatrix_apply]`. Establish `hi` using `sign_split_eval ε ((e0 ε).symm i)`. Establish `hj` using `sign_split_eval ε ((e0 ε).symm j)`. Rewrite `hi`, `hj` using `[Equiv.apply_symm_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify the hypotheses and the goal together. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `rcases hx : (e0 ε).symm i with a | a <;> rcases hy : (e0 ε).symm j with b | b <;>`. Simplify the hypotheses and the goal together. Introduce `i j hij`. Establish `: i ≠ j` using `fun h => hij (h ▸ rfl)`. Simplify using `[Matrix.one_apply, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_one, exp_reindex, hu]`. Express the relevant statement in the definitionally equal form `Matrix.reindexAlgEquiv ℂ ℂ (e0 ε) (Matrix.fromBlocks k₁ 0 0 k₂ * NormedSpace.exp P) = _`. Rewrite using `[map_mul]`. Both sides reduce to the same expression. Use extensionality with `a b`.
+Both sides reduce to the same expression. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.RealRankSubgroupMembership.offBlock, Matrix.of_apply, Matrix.reindex_apply, Matrix.submatrix_apply]`. Rewrite using `[sign_split_symm_true ε a, sign_split_symm_false ε b]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem cartan_reindex_diag : ∀ (n : ℕ) (ε : Fin n → Bool) (u : Formalism.BasicNotions.UpqT (Formalism.BasicNotions.Examples₂.CD.nT ε) (Formalism.BasicNotions.Examples₂.CD.nF ε)), ∃ X : Matrix (Fin n) (Fin n) ℂ, GlobalTheory.IndefiniteRowSideFullHecke.RealRankSubgroupMembership.IsCartan ε (Matrix.reindex (Formalism.BasicNotions.Examples₂.CD.e0 ε) (Formalism.BasicNotions.Examples₂.CD.e0 ε) (Formalism.BasicNotions.UpqT.mat u)) X ∧ GlobalTheory.IndefiniteRowSideFullHecke.RealRankSubgroupMembership.offBlock ε X = (GlobalTheory.IndefiniteRowSideFullHecke.CartanCoshPower.cartanB u).submatrix (Fintype.equivFin {i // ε i = true}) ((Equiv.subtypeEquivRight (fun i => by simp)).trans (Fintype.equivFin {i // ¬ ε i = true})) := by
   intro n ε u

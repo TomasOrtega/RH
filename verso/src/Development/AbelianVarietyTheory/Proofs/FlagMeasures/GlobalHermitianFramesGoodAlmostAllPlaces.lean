@@ -36,12 +36,12 @@ variable {K : Type} [Field K] [ValuativeRel K] [TopologicalSpace K]
 variable {R : Type} [CommRing R] [Algebra K R] [TopologicalSpace R]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨O.one_mem, 1, O.one_mem, one_mul 1⟩`.
+Supply the required witnesses or components.
 -/
 theorem unitIn_one (O : Subring R) : UnitIn O 1 := ⟨O.one_mem, 1, O.one_mem, one_mul 1⟩
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using unitIn_one O`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `ih.mul hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem unitIn_pow {O : Subring R} {x : R} (hx : UnitIn O x) (n : ℕ) : UnitIn O (x ^ n) := by
   induction n with
@@ -49,13 +49,13 @@ theorem unitIn_pow {O : Subring R} {x : R} (hx : UnitIn O x) (n : ℕ) : UnitIn 
   | succ n ih => rw [pow_succ]; exact ih.mul hx
 
 /- English proof (translation)
-The claim follows from `(L.O_def _).2 (isIntegral_algebraMap (R := 𝒪[K]) (x := x))`.
+A detailed English derivation is pending.
 -/
 theorem alg_mem (L : LocE K R) (x : 𝒪[K]) : algebraMap K R (x : K) ∈ L.O :=
   (L.O_def _).2 (isIntegral_algebraMap (R := 𝒪[K]) (x := x))
 
 /- English proof (translation)
-Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Establish `h` using `congrArg (fun x : 𝒪[K] => (x : K)) u.inv_mul`. Simplify using `only [MulMemClass.coe_mul, OneMemClass.coe_one] at h`. Conclude with `h`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coe_inv_unit (u : (𝒪[K])ˣ) : (((u⁻¹ : (𝒪[K])ˣ) : 𝒪[K]) : K) = ((u : 𝒪[K]) : K)⁻¹ := by
   apply eq_inv_of_mul_eq_one_left
@@ -64,7 +64,7 @@ theorem coe_inv_unit (u : (𝒪[K])ˣ) : (((u⁻¹ : (𝒪[K])ˣ) : 𝒪[K]) : K
   exact h
 
 /- English proof (translation)
-Use `⟨alg_mem L u, _, alg_mem L ((u⁻¹ : (𝒪[K])ˣ) : 𝒪[K]), ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul]`. Establish `h` using `congrArg (fun x : 𝒪[K] => (x : K)) u.mul_inv`. Simplify using `only [MulMemClass.coe_mul, OneMemClass.coe_one] at h`. Rewrite using `[h, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem unitIn_alg (L : LocE K R) (u : (𝒪[K])ˣ) : UnitIn L.O (algebraMap K R ((u : 𝒪[K]) : K)) := by
   refine ⟨alg_mem L u, _, alg_mem L ((u⁻¹ : (𝒪[K])ˣ) : 𝒪[K]), ?_⟩
@@ -74,7 +74,7 @@ theorem unitIn_alg (L : LocE K R) (u : (𝒪[K])ˣ) : UnitIn L.O (algebraMap K R
   rw [h, map_one]
 
 /- English proof (translation)
-Simplify using `only [hf, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hf_smul (L : LocE K R) {n : ℕ} (Hm : Matrix (Fin n) (Fin n) R) (s t : R) (x y : Fin n → R) :
     hf L Hm (s • x) (t • y) = s * L.cj t * hf L Hm x y := by
@@ -85,11 +85,11 @@ theorem hf_smul (L : LocE K R) {n : ℕ} (Hm : Matrix (Fin n) (Fin n) R) (s t : 
 end Local
 
 /- English proof (translation)
-Unfold `lead`. Use `set e := Fin.castLE (Nat.lt_succ_iff.mp l.2)`. Establish `h1 : Z'.submatrix e e = Matrix.of fun i j => β (e j) * (Matrix.of fun i j => β (e i) * ((Z.submatrix e e).map ι) i j) i j`. Use extensionality with `i j`. Simplify using `only [Matrix.submatrix_apply, h, Matrix.of_apply, Matrix.map_apply]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, Matrix.det_mul_row, Matrix.det_mul_column, RingHom.map_det, RingHom.mapMatrix_apply]`. Establish `h2 : ∏ i : Fin l, β (e i) = ∏ i ∈ Finset.range l, β i`. Rewrite using `[← Fin.prod_univ_eq_prod_range]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lead_scale {R R' : Type} [CommRing R] [CommRing R'] (ι : R' →+* R) {N : ℕ}
     (Z : Matrix (Fin N) (Fin N) R') (Z' : Matrix (Fin N) (Fin N) R) (β : ℕ → R)
@@ -116,37 +116,37 @@ def sc (n : ℕ) : (A.loc p).Ep :=
   algebraMap (A.loc p).Fp (A.loc p).Ep (((G.c p : (A.loc p).Fp))⁻¹ ^ (r - n))
 
 /- English proof (translation)
-Simplify using `[sc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sc_last : sc G p r = 1 := by simp [sc]
 
 /- English proof (translation)
-The claim follows from `(A.L p).cj.commutes _`.
+A detailed English derivation is pending.
 -/
 theorem cj_sc (n : ℕ) : (A.L p).cj (sc G p n) = sc G p n := (A.L p).cj.commutes _
 
 /- English proof (translation)
-Rewrite using `[A.L_cj, (A.loc p).cj_ιE]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cj_ι (x : E) : (A.L p).cj ((A.loc p).ιE x) = (A.loc p).ιE (sig x) := by
   rw [A.L_cj, (A.loc p).cj_ιE]
 
 /- English proof (translation)
-Rewrite using `[sc, ← G.f_eq p a, smul_smul, ← map_mul, ← mul_pow, inv_mul_cancel₀ (G.c p).ne_zero, one_pow, map_one, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem f_scale (a : Fin (r + 1)) : (G.S p).f a = sc G p a • A.bc p (G.f a) := by
   rw [sc, ← G.f_eq p a, smul_smul, ← map_mul, ← mul_pow, inv_mul_cancel₀ (G.c p).ne_zero, one_pow,
     map_one, one_smul]
 
 /- English proof (translation)
-Rewrite using `[sc, ← G.f'_eq p a, smul_smul, ← map_mul, ← mul_pow, inv_mul_cancel₀ (G.c p).ne_zero, one_pow, map_one, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem f'_scale (a : Fin (r + 1)) : (G.S p).f' a = sc G p a • A.bc p (G.f' a) := by
   rw [sc, ← G.f'_eq p a, smul_smul, ← map_mul, ← mul_pow, inv_mul_cancel₀ (G.c p).ne_zero, one_pow,
     map_one, one_smul]
 
 /- English proof (translation)
-Rewrite using `[G.Hm_eq p]`. Conclude with `(RatExt.rational_extend A _ p).2.2.2.2.1 G.Hm x y`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem herm_bc (x y : Fin (k + 2 * r + 1) → E) :
     hf (A.L p) (G.S p).Hm (A.bc p x) (A.bc p y) = (A.loc p).ιE (∑ i, ∑ j, x i * G.Hm i j * sig (y j)) := by
@@ -154,7 +154,7 @@ theorem herm_bc (x y : Fin (k + 2 * r + 1) → E) :
   exact (RatExt.rational_extend A _ p).2.2.2.2.1 G.Hm x y
 
 /- English proof (translation)
-Simplify using `only [Frames.Zh, Frames.h, Matrix.of_apply, GFrames.Zh]`. Rewrite using `[f_scale, f'_scale, hf_smul, cj_sc, herm_bc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem Zh_scale (a b : Fin (r + 1)) :
     (G.S p).Zh a b = sc G p b * sc G p a * (A.loc p).ιE (G.Zh a b) := by
@@ -162,16 +162,16 @@ theorem Zh_scale (a b : Fin (r + 1)) :
   rw [f_scale, f'_scale, hf_smul, cj_sc, herm_bc]
 
 /- English proof (translation)
-The claim follows from `lead_scale (A.loc p).ιE G.Zh (G.S p).Zh (sc G p) (Zh_scale G p) l`.
+A detailed English derivation is pending.
 -/
 theorem D_scale (l : Fin (r + 2)) :
     (G.S p).D l = (∏ i ∈ Finset.range l, sc G p i) ^ 2 * (A.loc p).ιE (G.D l) :=
   lead_scale (A.loc p).ιE G.Zh (G.S p).Zh (sc G p) (Zh_scale G p) l
 
 /- English proof (translation)
-Establish `h1` using `(G.S p).gram (Fin.last r) (Fin.last r)`. Establish `h2` using `(G.S p).gram' (Fin.last r) (Fin.last r)`. Simplify using `only [and_self, if_true] at h1 h2`. Rewrite `h1` using `[f_scale, Fin.val_last, sc_last, one_smul, herm_bc]`. Rewrite `h2` using `[f'_scale, Fin.val_last, sc_last, one_smul, herm_bc]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_mul, GFrames.TT, map_mul, h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem TT_eq : algebraMap (A.loc p).Fp (A.loc p).Ep (((G.S p).T : (A.loc p).Fp) * (G.S p).T') =
     (A.loc p).ιE G.TT := by
@@ -184,9 +184,9 @@ theorem TT_eq : algebraMap (A.loc p).Fp (A.loc p).Ep (((G.S p).T : (A.loc p).Fp)
   ring
 
 /- English proof (translation)
-Establish `hP : ∏ i ∈ Finset.range (r + 1), sc G p i = ∏ i ∈ Finset.range r, sc G p i`. Rewrite using `[Finset.prod_range_succ, sc_last, mul_one]`. Establish `hcj : (A.L p).cj (∏ i ∈ Finset.range r, sc G p i) = ∏ i ∈ Finset.range r, sc G p i`. Rewrite using `[map_prod]`. Conclude with `Finset.prod_congr rfl fun i _ => cj_sc G p i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `Frames.G`. Rewrite using `[D_scale, D_scale, TT_eq]`. Simplify using `only [Fin.val_last, Fin.coe_castSucc, hP, map_mul, map_pow, hcj, cj_ι, GFrames.Gr, map_sub]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem G_scale : (G.S p).G = (∏ i ∈ Finset.range r, sc G p i) ^ 4 * (A.loc p).ιE G.Gr := by
   have hP : ∏ i ∈ Finset.range (r + 1), sc G p i = ∏ i ∈ Finset.range r, sc G p i := by
@@ -212,7 +212,7 @@ def Ok (A : Places F E sig) (p : HeightOneSpectrum (𝓞 F)) (x : E) : Prop :=
   (A.loc p).ιE x ∈ (A.L p).O ∧ (A.loc p).ιE x⁻¹ ∈ (A.L p).O
 
 /- English proof (translation)
-Use `(((PlacesInt.integers_local A).2.1 x).union ((PlacesInt.integers_local A).2.1 x⁻¹)).subset ?_` and prove the remaining obligations. Introduce `p hp`. Simplify using `only [Ok, not_and_or, Set.mem_setOf_eq] at hp`. Conclude with `hp`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ok_fin (A : Places F E sig) (x : E) : {p | ¬ Ok A p x}.Finite := by
   refine (((PlacesInt.integers_local A).2.1 x).union ((PlacesInt.integers_local A).2.1 x⁻¹)).subset ?_
@@ -221,7 +221,7 @@ theorem ok_fin (A : Places F E sig) (x : E) : {p | ¬ Ok A p x}.Finite := by
   exact hp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, _, h.2, by rw [← map_mul, mul_inv_cancel₀ hx, map_one]⟩`.
+Supply the required witnesses or components.
 -/
 theorem unitIn_ok {A : Places F E sig} {p : HeightOneSpectrum (𝓞 F)} {x : E} (h : Ok A p x) (hx : x ≠ 0) :
     UnitIn (A.L p).O ((A.loc p).ιE x) :=
@@ -230,7 +230,7 @@ theorem unitIn_ok {A : Places F E sig} {p : HeightOneSpectrum (𝓞 F)} {x : E} 
 variable {A : Places F E sig} {r k : ℕ} (G : GFrames A r k) (p : HeightOneSpectrum (𝓞 F))
 
 /- English proof (translation)
-Rewrite using `[sc, map_pow, ← hu, ← coe_inv_unit]`. Conclude with `unitIn_pow (unitIn_alg (A.L p) u⁻¹) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitIn_sc (u : (𝒪[(A.loc p).Fp])ˣ) (hu : ((u : 𝒪[(A.loc p).Fp]) : (A.loc p).Fp) = G.c p) (n : ℕ) :
     UnitIn (A.L p).O (sc G p n) := by
@@ -238,23 +238,21 @@ theorem unitIn_sc (u : (𝒪[(A.loc p).Fp])ˣ) (hu : ((u : 𝒪[(A.loc p).Fp]) :
   exact unitIn_pow (unitIn_alg (A.L p) u⁻¹) _
 
 /- English proof (translation)
-Use `haveI := PlacesInt.nontrivial_Ep (A.loc p)`. Establish `hc : UnitIn (A.L p).O (algebraMap (A.loc p).Fp (A.loc p).Ep (G.c p))` using `hu ▸ unitIn_alg (A.L p) u`. Establish `hP : ∀ n, UnitIn (A.L p).O (∏ i ∈ Finset.range n, sc G p i)` using `fun n => unitIn_prod _ _ _ fun i _ => unitIn_sc G p u hu i`. Use `⟨hgg, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[G.Hm_eq p]`. Conclude with `(hHm i j).1`. Establish `hdet' : (G.S p).Hm.det = (A.loc p).ιE G.Hm.det`. Rewrite using `[G.Hm_eq p, RingHom.map_det, RingHom.mapMatrix_apply]`. Establish `hne : G.Hm.det ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h0`. Use `(G.S p).herm.2` as an intermediate fact. Rewrite `this` using `[hdet', h0, map_zero]`. Conclude with `not_isUnit_zero this`. Take `⟨-, y, hy, hxy⟩` from `unitIn_ok hdet hne`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨y, hy, hdet' ▸ hxy⟩`. Introduce `a i`. Rewrite using `[f_scale G p a]`. Conclude with `(A.L p).O.mul_mem (unitIn_sc G p u hu a).1 (hf a i).1`. Introduce `a i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[f'_scale G p a]`. Conclude with `(A.L p).O.mul_mem (unitIn_sc G p u hu a).1 (hf' a i).1`. Introduce `a i`. Rewrite using `[G.es_eq p a]`. Conclude with `(A.L p).O.mul_mem (by rw [map_pow]; exact (unitIn_pow hc _).1) (hes a i).1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `a i`. Rewrite using `[G.es'_eq p a]`. Conclude with `(A.L p).O.mul_mem (by rw [map_pow]; exact (unitIn_pow hc _).1) (hes' a i).1`. Establish `hne : G.Gr ≠ 0`. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `(G.S p).G_ne` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(G.S p).G = 0`. Rewrite using `[G_scale, h0, map_zero, mul_zero]`. Use `(unitIn_pow (hP r) 4).mul (unitIn_ok hGr hne)` as an intermediate fact. Rewrite `this` using `[← G_scale]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Introduce `l hl`. Establish `hne : G.D l ≠ 0`. Introduce `h0`. Apply `hl` to reduce the goal to its premises.
-
-Rewrite using `[D_scale, h0, map_zero, mul_zero]`. Use `(unitIn_pow (hP l) 2).mul (unitIn_ok (hD l) hne)` as an intermediate fact. Rewrite `this` using `[← D_scale]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem good_of (hgg : (G.S p).gg = false) (u : (𝒪[(A.loc p).Fp])ˣ)
     (hu : ((u : 𝒪[(A.loc p).Fp]) : (A.loc p).Fp) = G.c p)
@@ -311,11 +309,11 @@ theorem good_of (hgg : (G.S p).gg = false) (u : (𝒪[(A.loc p).Fp])ˣ)
 end GlobalTheory.HL.GoodAlmostAll
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ sig A r k G`. Use `open GlobalTheory.HL.GoodAlmostAll in`. Establish `H : ({p | (G.S p).gg = true} ∪ {p | ¬ ∃ u : (𝒪[(A.loc p).Fp])ˣ, ((u : 𝒪[(A.loc p).Fp]) : (A.loc p).Fp) = G.c p} ∪ (⋃ i, ⋃ j, {p | ¬ Ok A p (G.Hm i j)}) ∪ {p | ¬ Ok A p G.Hm.det} ∪ (⋃ a, ⋃ i, {p | ¬ Ok A p (G.f a i)}) ∪ (⋃ a, ⋃ i, {p | ¬ Ok A p (G.f' a i)}) ∪ (⋃ a, ⋃ i, {p | ¬ Ok …`. Use `(((((((((G.gg_fin.union G.c_unit).union ?_).union (ok_fin A _)).union ?_).union ?_).union ?_).union ?_).union ?_).union (ok_fin A _))` and prove the remaining obligations. Apply the tactic sequence `all_goals first`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately.
 
-Consider the case `exact Set.finite_iUnion fun _ => Set.finite_iUnion fun _ => ok_fin A _`. Consider the case `exact Set.finite_iUnion fun _ => ok_fin A _`. Use `H.subset fun p hp => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hB`. Apply `hp` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Set.mem_union, Set.mem_iUnion, Set.mem_setOf_eq, not_or, not_exists, not_not, Bool.not_eq_true] at hB`. Take `⟨⟨⟨⟨⟨⟨⟨⟨⟨hgg, hu⟩, hHm⟩, hdet⟩, hf⟩, hf'⟩, hes⟩, hes'⟩, hD⟩, hGr⟩` from `hB`. Take `⟨u, hu⟩` from `not_forall_not.mp hu`. Conclude with `GlobalTheory.HL.GoodAlmostAll.good_of G p hgg u hu hHm hdet hf hf' hes hes' hD hGr`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HL.StdPlace.good_almost_all : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {sig : E →ₐ[F] E} (A : Places F E sig), ∀ (r k : ℕ) (G : GFrames A r k), {p | ¬ Good (G.S p)}.Finite := by
   intro F E _ _ _ _ _ sig A r k G

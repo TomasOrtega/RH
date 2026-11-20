@@ -11,17 +11,15 @@ open scoped TensorProduct GlobalTheory.CuspRep.CuspidalL2GL
 open UpperTheory.V.Cj UpperTheory.V.Cj.H
 
 /- English proof (translation)
-Set `ε : M ≃ₗ[ℂ] LinearMap.range f` to `LinearEquiv.ofInjective f hf`. Set `A : LinearMap.range f →ₗ[ℂ] LinearMap.range f` to `ε.toLinearMap ∘ₗ B ∘ₗ ε.symm.toLinearMap`. Establish `hε : ∀ m, (ε m : H) = f m` using `fun _ => rfl`. Establish `hA : ∀ m, (A (ε m) : H) = f (B m)` using `fun m => by`. Simplify using `only [A, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply, hε]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hD : ∀ g, ∀ v ∈ LinearMap.range f, R g v ∈ LinearMap.range f`. Introduce and unpack `g _ ⟨m, rfl⟩`. Conclude with `⟨ρ g m, hρ g m⟩`. Take `⟨P, Q, S, h1, h2, h3, h4, h5, h6⟩` from `absProj G H R (LinearMap.range f) A hD hR (by`. Introduce `g v`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨m, rfl⟩` from `ε.surjective v`. Establish `: (⟨R g (ε m), hD g _ (ε m).2⟩ : LinearMap.range f) = ε (ρ g m)` using `Subtype.ext (hρ g m).symm`. Rewrite using `[this, hA, hA, hB, hρ])`. Use the proof step `(by`. Introduce `v w`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨m, rfl⟩` from `ε.surjective v`. Take `⟨m', rfl⟩` from `ε.surjective w`. Rewrite using `[hA, hA, hε, hε, hs])`. Use the proof step `(by`. Introduce `W hs h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hW W hs fun m hm => ?_` and prove the remaining obligations. Establish `: f m ∈ W ⊓ LinearMap.range f` using `⟨hm, m, rfl⟩`. Rewrite using `[h, Submodule.mem_bot] at this)` and apply the resulting hypothesis. Use `⟨P, Q, S, h1, h2, h3, fun k m => ?_, fun w m => ?_, h6⟩` and prove the remaining obligations. Rewrite using `[← hA]`.
-
-Conclude with `h4 k (ε m)`. Rewrite using `[← hA]`. Conclude with `h5 w (ε m)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem transport {G H M : Type} [Group G] [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     [AddCommGroup M] [Module ℂ M] (R : G →* (H →L[ℂ] H)) (f : M →ₗ[ℂ] H) (hf : Function.Injective f)
@@ -60,13 +58,13 @@ private theorem transport {G H M : Type} [Group G] [NormedAddCommGroup H] [Inner
   · rw [← hA]; exact h5 w (ε m)
 
 /- English proof (translation)
-Introduce `E _ _ _ a ha μ _ _ n e he c`. Establish `hg` using `gardFacts E a ha μ`. Take `⟨c1, c2, c3, -⟩` from `clFacts E a μ`. Take `⟨-, o2, o3⟩` from `casOp E a n e he 0 c`. Establish `hm : ∀ φ ∈ gard μ, casA 0 c e φ ∈ gard μ` using `(o3 (gard μ) fun X φ h => (hg φ h).2.2.2.1 X).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `f : gard μ →ₗ[ℂ] HL μ` to `{ toFun := fun φ => cl μ φ.1 map_add' := fun φ ψ => by`. Use `(c1 φ.1 ψ.1 1 1 (hg _ φ.2).2.1 (hg _ ψ.2).2.1).2` as an intermediate fact. Simplify `this` using `only [one_smul, Submodule.coe_add]`. Use the proof step `map_smul' := fun s φ => by`. Use `(c1 φ.1 φ.1 s 0 (hg _ φ.2).2.1 (hg _ φ.2).2.1).2` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this }` using `only [zero_smul, add_zero, Submodule.coe_smul, RingHom.id_apply]`. Establish `hf : Function.Injective f`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `φ h`. Conclude with `Subtype.ext (c2 φ.1 (hg _ φ.2).1 (hg _ φ.2).2.1 h)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨P, Q, S, h1, h2, h3, h4, h5, h6⟩` from `transport (GlobalTheory.AutomorphicL2Unitary.R (latticeGL E a) μ) f hf ((casA 0 c e).restrict hm) (fun g φ => ⟨rt E a g φ.1, (hg _ φ.2).2.2.2.2 g⟩) (fun g v => GlobalTheory.AutomorphicL2Unitary.norm_R g v) (fun g φ => c3 φ.1 g (hg _ φ.2).2.1) (fun g φ => Subtype.ext (LinearMap.co …`. Conclude with `⟨P, Q, S, h1, h2, h3, fun k φ hφ => h4 k ⟨φ, hφ⟩, fun F φ hφ => h5 F ⟨φ, hφ⟩, h6⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.H.casimir_resolvent_projection :
     UpperTheory.V.Cj.H.CasimirResolventProjection := by

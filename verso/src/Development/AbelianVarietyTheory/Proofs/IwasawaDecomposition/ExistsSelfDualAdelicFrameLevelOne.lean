@@ -19,11 +19,11 @@ open scoped TensorProduct Matrix nonZeroDivisors
 variable (F : Type) {E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `integral_finiteAdele_complete_separated F`. Use `GlobalTheory.IdealIdele.exists_idem (Formalism.UG.intAd F) (fun y hy => h1 y fun N hN => ?_) (fun x hx hc => ?_) m hm` and prove the remaining obligations. Take `⟨w, hw, e⟩` from `hy N hN`. Conclude with `⟨w, hw, by rw [nsmul_eq_mul]; exact e⟩`. Take `⟨y, hy⟩` from `h2 x hx fun N k hN hk => by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, e⟩` from `hc N k hN hk`. Conclude with `⟨w, hw, by rw [nsmul_eq_mul]; exact e⟩`. Use `⟨y, ?_, fun N hN => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, e⟩` from `hy 1 one_pos`. Rewrite using `[e, one_smul]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem (hx 1) ha`. Take `⟨a, ha, e⟩` from `hy N hN`. Conclude with `⟨a, ha, by rw [← nsmul_eq_mul]; exact e⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_idem_adele (m : ℕ) (hm : 0 < m) :
     ∃ f ∈ Formalism.UG.intAd F, f * f = f ∧ (∃ w ∈ Formalism.UG.intAd F, f = (m : FiniteAdeleRing (𝓞 F) F) * w) ∧
@@ -43,17 +43,17 @@ theorem exists_idem_adele (m : ℕ) (hm : 0 < m) :
       exact ⟨a, ha, by rw [← nsmul_eq_mul]; exact e⟩
 
 /- English proof (translation)
-Take `⟨m, n, β, hm, hn, hmn, hmB, hβB, hβ0, hdvd⟩` from `GlobalTheory.IdealIdele.exists_local_generator B hB`. Take `⟨f, hf, hff, ⟨w, hw, hfw⟩, h3⟩` from `exists_idem_adele F m hm`. Take `⟨v, hv, hfv⟩` from `h3 n hn hmn`. Establish `hβE : (β : E) ≠ 0` using `by simpa using hβ0`. Establish `hnat : ∀ (k : ℕ) (a : FiniteAdeleRing (𝓞 F) F) (x : E), ((k : FiniteAdeleRing (𝓞 F) F) * a) ⊗ₜ[F] x = a ⊗ₜ[F] ((k : E) * x)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k a x`. Rewrite using `[← nsmul_eq_mul, ← nsmul_eq_mul, ← Nat.cast_smul_eq_nsmul F, ← Nat.cast_smul_eq_nsmul F, TensorProduct.smul_tmul]`. Use `⟨(1 - f) ⊗ₜ (β : E) + f ⊗ₜ 1, (1 - f) ⊗ₜ (β : E)⁻¹ + f ⊗ₜ 1, ?_, add_mem ?_ ?_, ?_⟩` and prove the remaining obligations. Establish `e1 : (1 - f) * (1 - f) = 1 - f` using `by linear_combination hff`. Establish `e2 : (1 - f) * f = 0` using `by linear_combination -hff`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : f * (1 - f) = 0` using `by linear_combination -hff`. Simplify using `only [add_mul, mul_add, Algebra.TensorProduct.tmul_mul_tmul, e1, e2, e3, hff, TensorProduct.zero_tmul, mul_inv_cancel₀ hβE, mul_one, add_zero, zero_add]`. Rewrite using `[← TensorProduct.add_tmul, sub_add_cancel, Algebra.TensorProduct.one_def]`. Conclude with `tmul_mem_adelicCompletion_of_integral F (sub_mem (one_mem _) hf : _ ∈ Formalism.UG.intAd F) (FractionalIdeal.mem_coeIdeal_of_mem _ hβB)`. Rewrite using `[hfw, hnat, mul_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `tmul_mem_adelicCompletion_of_integral F hw ?_` and prove the remaining obligations. Use `FractionalIdeal.mem_coeIdeal_of_mem (P := E) (𝓞 E)⁰ hmB` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Use `mem_adelicCompletion_mul_inv_fractionalIdeal F (B : FractionalIdeal (𝓞 E)⁰ E) 1 ((1 - f) ⊗ₜ (β : E)⁻¹ + f ⊗ₜ 1) (FractionalIdeal.coeIdeal_ne_zero.2 hB) fun x hx => by` as an intermediate fact. Take `⟨b, hb, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd⟩` from `hdvd b hb`. Establish `hd' : (n : E) * algebraMap (𝓞 E) E b = algebraMap (𝓞 E) E β * algebraMap (𝓞 E) E d`. Rewrite using `[← map_mul, ← hd, map_mul, map_natCast]`. Simplify using `only [add_mul, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Use `add_mem ?_ (tmul_mem_adelicCompletion_of_integral F hf ((FractionalIdeal.mem_one_iff _).2 ⟨b, rfl⟩))` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfv, hnat]`. Use `tmul_mem_adelicCompletion_of_integral F hv ((FractionalIdeal.mem_one_iff _).2 ⟨d, ?_⟩)` and prove the remaining obligations. Rewrite using `[mul_left_comm, hd']`. Conclude with `(inv_mul_cancel_left₀ hβE _).symm`. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_generator_int (B : Ideal (𝓞 E)) (hB : B ≠ ⊥) :
     ∃ y y' : RA F E, y * y' = 1 ∧ y ∈ hat1 F ((B : FractionalIdeal (𝓞 E)⁰ E) : Set E) ∧
@@ -95,11 +95,9 @@ theorem exists_generator_int (B : Ideal (𝓞 E)) (hB : B ≠ ⊥) :
     rwa [one_mul] at this
 
 /- English proof (translation)
-Take `⟨a, B, ha, rfl⟩` from `FractionalIdeal.exists_eq_spanSingleton_mul I`. Establish `hB : B ≠ ⊥`. Introduce and unpack `rfl`. Simplify using `at hI`. Establish `haE : algebraMap (𝓞 E) E a ≠ 0` using `by simpa using ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨y, y', h, hy, hy'⟩` from `exists_generator_int F B hB`. Use `⟨(1 ⊗ₜ (algebraMap (𝓞 E) E a)⁻¹) * y, (1 ⊗ₜ (algebraMap (𝓞 E) E a)) * y', ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_mul_mul_comm, h, Algebra.TensorProduct.tmul_mul_tmul, inv_mul_cancel₀ haE, mul_one, mul_one, Algebra.TensorProduct.one_def]`. Conclude with `(adelicCompletion_fractionalIdeal_properties F E).1 _ _ _ (one_tmul_mem_adelicCompletionOfElementSet F (FractionalIdeal.mem_spanSingleton_self _ _)) _ hy`. Rewrite using `[mul_inv, FractionalIdeal.spanSingleton_inv, inv_inv]`.
-
-Conclude with `(adelicCompletion_fractionalIdeal_properties F E).1 _ _ _ (one_tmul_mem_adelicCompletionOfElementSet F (FractionalIdeal.mem_spanSingleton_self _ _)) _ hy'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_generator (I : FractionalIdeal (𝓞 E)⁰ E) (hI : I ≠ 0) :
     ∃ y y' : RA F E, y * y' = 1 ∧ y ∈ hat1 F (I : Set E) ∧
@@ -118,21 +116,17 @@ theorem exists_generator (I : FractionalIdeal (𝓞 E)⁰ E) (hI : I ≠ 0) :
     exact (adelicCompletion_fractionalIdeal_properties F E).1 _ _ _ (one_tmul_mem_adelicCompletionOfElementSet F (FractionalIdeal.mem_spanSingleton_self _ _)) _ hy'
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hz`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, x, hx, rfl⟩` from `hz`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨c, rfl⟩` from `(FractionalIdeal.mem_one_iff _).1 hx`. Establish `h1 : (1 : E) ⊗ₜ[F] a ∈ Formalism.L2.Herm.intAf F E` using `Subring.subset_closure (Or.inr ⟨⟨a, ha⟩, rfl⟩)`. Establish `h2 : (algebraMap (𝓞 E) E c) ⊗ₜ[F] (1 : FiniteAdeleRing (𝓞 F) F) ∈ Formalism.L2.Herm.intAf F E` using `Subring.subset_closure (Or.inl ⟨⟨_, c, rfl⟩, rfl⟩)`. Use `mul_mem h1 h2` as an intermediate fact. Rewrite `this` using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [map_neg]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `neg_mem hx`. Introduce `hz`. Establish `key : ∀ t ∈ Formalism.L2.Herm.intAf F E, (Algebra.TensorProduct.comm F _ E).symm t ∈ hat1 F ((1 : FractionalIdeal (𝓞 E)⁰ E) : Set E)`. Introduce `t ht`. Proceed by induction on `ht using Subring.closure_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Treat this case separately.
 
-Consider the case `mem z hz`. Break down `hz with ⟨⟨_, c, rfl⟩, rfl⟩ | ⟨b, rfl⟩` into its components or cases. Conclude with `one_tmul_mem_adelicCompletionOfElementSet F ((FractionalIdeal.mem_one_iff _).2 ⟨c, rfl⟩)`. Conclude with `tmul_mem_adelicCompletion_of_integral F b.2 (FractionalIdeal.one_mem_one _)`. Consider the case `zero => rw [map_zero]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Consider the case `one => rw [map_one]`. Conclude with `one_tmul_mem_adelicCompletionOfElementSet F (FractionalIdeal.one_mem_one _)`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`.
-
-Consider the case `neg a _ ha => rw [map_neg]`. Conclude with `neg_mem ha`. Consider the case `mul a b _ _ ha hb`. Rewrite using `[map_mul]`. Use `(adelicCompletion_fractionalIdeal_properties F E).1 _ _ _ ha _ hb` as an intermediate fact.
-
-Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis. Simplify `key _ hz` using `only [AlgEquiv.symm_apply_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_integral_adelic_lattice_iff (z : RA F E) :
     z ∈ hat1 F ((1 : FractionalIdeal (𝓞 E)⁰ E) : Set E) ↔
@@ -171,21 +165,19 @@ theorem mem_integral_adelic_lattice_iff (z : RA F E) :
     simpa only [AlgEquiv.symm_apply_apply] using key _ hz
 
 /- English proof (translation)
-Take `⟨-, e, cI, hc, hL, -⟩` from `GlobalTheory.exists_pseudoBasis_adapted E n L ⊤ hfg hsp`. Establish `key` using `mem_hat_pseudoBasis_iff F E n L e cI hL`. Set `P : Matrix (Fin n) (Fin n) (RA F E)` to `Matrix.of fun i a => fv F (e a) i`. Set `Q : Matrix (Fin n) (Fin n) (RA F E)` to `Matrix.of fun b i => (1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ e.repr (Pi.single i 1) b`. Establish `hP : ∀ w : Fin n → RA F E, P *ᵥ w = ∑ a, w a • fv F (e a)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `w`. Use function extensionality and compare the values at `i`. Simplify using `[P, Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`. Establish `hQ : ∀ w b, (Q *ᵥ w) b = adCoord F e b w`. Introduce `w b`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `∑ i : Fin n, _ = ∑ i : Fin n, _`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Establish `hQP : Q * P = 1`. Use `Matrix.ext_of_mulVec_single fun i => ?_` and prove the remaining obligations. Use function extensionality and compare the values at `b`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mulVec_mulVec, hQ, hP, adCoord_sum, Matrix.one_mulVec]`. Establish `hPQ : P * Q = 1` using `mul_eq_one_comm.1 hQP`. Use `choose y y' hyy hy hy' using fun a => exists_generator F (cI a) (hc a)`. Establish `hD : Matrix.diagonal y * Matrix.diagonal y' = 1`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `a`. Conclude with `hyy a`. Establish `h1 : P * Matrix.diagonal y * (Matrix.diagonal y' * Q) = 1`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc _ _ Q, hD, Matrix.one_mul, hPQ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, _, h1, mul_eq_one_comm.1 h1, fun z => ?_⟩` and prove the remaining obligations. Establish `hz : z = P *ᵥ (Q *ᵥ z)` using `by rw [Matrix.mulVec_mulVec, hPQ, Matrix.one_mulVec]`. Use `conv_lhs => rw [hz, hP, key]`. Use `forall_congr' fun a => ?_` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, Matrix.mulVec_diagonal]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `(adelicCompletion_fractionalIdeal_properties F E).1 _ _ _ (hy' a) _ h` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel₀ (hc a)]`. Then use the resulting hypothesis. Introduce `h`.
-
-Use `(adelicCompletion_fractionalIdeal_properties F E).1 _ _ _ (hy a) _ h` as an intermediate fact. Rewrite `this` using `[mul_one, ← mul_assoc, hyy, one_mul]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_basis_hat {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E)) (hfg : L.FG)
     (hsp : Submodule.span E (L : Set (Fin n → E)) = ⊤) :
@@ -231,11 +223,11 @@ theorem exists_basis_hat {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E)) (hfg :
     rwa [mul_one, ← mul_assoc, hyy, one_mul] at this
 
 /- English proof (translation)
-Take `⟨P, Q, hPQ, hQP, h⟩` from `exists_basis_hat F L hfg hsp`. Set `s` to `Algebra.TensorProduct.comm F (FiniteAdeleRing (𝓞 F) F) E`. Establish `hm : ∀ A B : Matrix (Fin n) (Fin n) (RA F E), A * B = 1 → A.map s * B.map s = 1` using `fun A B hAB => by`. Rewrite using `[← Matrix.map_mul, hAB, Matrix.map_one _ (map_zero _) (map_one _)]`. Use `⟨⟨P.map s, Q.map s, hm _ _ hPQ, hm _ _ hQP⟩, fun x => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : ∀ i, (Q.map s *ᵥ x) i = s ((Q *ᵥ fun j => s.symm (x j)) i)` using `fun i => by`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, AlgEquiv.apply_symm_apply, Matrix.map_apply]`. Express the relevant statement in the definitionally equal form `_ ↔ ∀ i, (Q.map s *ᵥ x) i ∈ _`. Simplify using `only [e]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hx i`. Conclude with `(mem_integral_adelic_lattice_iff F _).1 ((h _).1 (GlobalTheory.PrincInLevel.swap_symm_mem_hat L x hx) i)`. Introduce `hx`. Use `GlobalTheory.PrincInLevel.swap_mem_hatL L _ ((h _).2 fun i => (mem_integral_adelic_lattice_iff F _).2 (hx i))` as an intermediate fact. Simplify `this` using `only [s, AlgEquiv.apply_symm_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_isFrame {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E)) (hfg : L.FG)
     (hsp : Submodule.span E (L : Set (Fin n → E)) = ⊤) :
@@ -263,11 +255,11 @@ open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D V Λ hΛ hd`. Establish `hl : Λ = GlobalTheory.Member.latC V` using `SetLike.coe_injective (hΛ.trans (GlobalTheory.Member.coe_selfDualLatticeInFrameCoordinates_eq V).symm)`. Establish `hfg : Λ.FG` using `hl ▸ V.standardTuple_isLattice.fg.map _`. Establish `hsp : Submodule.span D.host.E (Λ : Set (Fin V.rank → D.host.E)) = ⊤`. Establish `h1 : (Λ : Set (Fin V.rank → D.host.E)) = V.frame.equivFun.toLinearMap '' (V.L0 : Set V.V)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hl]`. Both sides reduce to the same expression. Rewrite using `[h1, ← Submodule.map_span, V.standardTuple_isLattice.span_eq_top, Submodule.map_top, LinearEquiv.range]`. Take `⟨β, hβ⟩` from `exists_isFrame D.host.F Λ hfg hsp`. Use `⟨β, 0, hβ, hd, one_pos, fun x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pow_zero, Nat.cast_one, one_smul]`. Rewrite `hx` using `[← hΛ]`. Conclude with `hx`. Rewrite using `[pow_zero, Nat.cast_one, one_smul, ← hΛ]`. Conclude with `hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isSDFrame : ∀ (D : D7) (V : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)), (Λ : Set (Fin V.rank → D.host.E)) = L0c D V → Formalism.L2.Herm.dualL D.sp.cm V Λ = Λ → ∃ β, IsSDFrame V β Λ 1 := by
   intro D V Λ hΛ hd

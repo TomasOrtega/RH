@@ -14,13 +14,13 @@ noncomputable section
 namespace GlobalTheory.FlagCls
 
 /- English proof (translation)
-Use `haveI := hM.isQuasicoherent`. Establish `key : ∀ t : Γ(M, V), ((Scheme.Modules.pullbackComp y π).hom.app M ≫ (Scheme.Modules.pullbackCongr w).hom.app M).app ⊤ (QCoh.pullbackSections y _ hy (QCoh.pullbackSections π M hWV t)) = QCoh.pullbackSections x M hx t`. Introduce `t`. Substitute `w` using the available equality. Rewrite using `[← Vert.DivPull.pullbackComp_inv_app y π M hWV hy hx t, QCoh.app_app, Iso.inv_hom_id_app_assoc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `set c := ((hf.pullback π).basis hWV).repr s with hc`. Establish `hs : s = ∑ b, c b • QCoh.pullbackSections π M hWV (f b)` using `by conv_lhs => rw [← ((hf.pullback π).basis hWV).sum_repr s]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[IsFrame.basis_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Twist.resM, QCoh.res_pullbackSections, hc]`. Establish `h2 : ((Scheme.Modules.pullbackComp y π).hom.app M ≫ (Scheme.Modules.pullbackCongr w).hom.app M).app ⊤ (QCoh.pullbackSections y _ hy s) = ∑ b, (y.appLE W ⊤ hy).hom (c b) • (hf.pullback x).basis hx b`. Rewrite using `[hs]`. Simplify using `only [map_sum, QCoh.pullbackSections_smul, Scheme.Modules.Hom.app_smul, key, IsFrame.basis_apply, Twist.resM, QCoh.res_pullbackSections]`. Use function extensionality and compare the values at `b`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [coordAt]`. Rewrite using `[h2, Module.Basis.repr_sum_self, ← hc]`. Simplify using `[TangentOrigin.evalPt, Scheme.Hom.appLE]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coordAt_id_pullbackSections {B Y : Scheme.{0}} {M : B.Modules} {r : ℕ} (hM : IsVB M r) (π : Y ⟶ B)
     {V : B.Opens} {f : Fin r → Γ(M, V)} (hf : IsFrame f) {K : Type} [CommRing K] (x : Sp K ⟶ B) (hx : ⊤ ≤ x ⁻¹ᵁ V)
@@ -54,9 +54,9 @@ theorem coordAt_id_pullbackSections {B Y : Scheme.{0}} {M : B.Modules} {r : ℕ}
   simp [TangentOrigin.evalPt, Scheme.Hom.appLE]
 
 /- English proof (translation)
-Introduce `B Y M r hM π fl V f hf K _ x hx fl' A hA y w hS`. Use `⟨hA.1, fun k W hWV t hy => ?_⟩` and prove the remaining obligations. Take `⟨e, he⟩` from `hS k`. Take `⟨cf, h1, h2⟩` from `hA.2 k ⊤ hx (e.hom.app ⊤ (QCoh.pullbackSections y _ hy t)) le_rfl`. Use `⟨cf, h1, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← h2, QCoh.app_app, he, ← QCoh.app_app, QCoh.pullback_map_app_pullbackSections]`. Conclude with `(coordAt_id_pullbackSections hM π hf x hx y w hWV hy _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flagMat_of_stepIso : ∀ (B Y : Scheme.{0}) (M : B.Modules) (r : ℕ) (hM : IsVB M r) (π : Y ⟶ B) (fl : Vert.Flag ((Scheme.Modules.pullback π).obj M) r) (V : B.Opens) (f : Fin r → Γ(M, V)) (hf : IsFrame f) (K : Type) [Field K] (x : Sp K ⟶ B), ⊤ ≤ x ⁻¹ᵁ V → ∀ (fl' : Vert.Flag ((Scheme.Modules.pullback x).obj M) r) (A : Matrix (Fin r) (Fin r) K), FlagMat hM x fl' hf (𝟙 (Sp K)) A → ∀ (y : Sp K ⟶ Y) (w : y ≫ π = x), StepIso π fl fl' y w → FlagMat hM π fl hf y A := by
   intro B Y M r hM π fl V f hf K _ x hx fl' A hA y w hS

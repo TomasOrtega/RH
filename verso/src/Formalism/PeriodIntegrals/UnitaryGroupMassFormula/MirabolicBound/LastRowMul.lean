@@ -14,56 +14,56 @@ section Entries
 variable {F : Type} [Field F] [Fintype F] {n : ℕ}
 
 /- English proof (translation)
-Simplify using `[blkM, finSumFinEquiv_symm_apply_castSucc]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem blkM_cc (A : Matrix (Fin n) (Fin n) F) (i j : Fin n) :
     blkM A (Fin.castSucc i) (Fin.castSucc j) = A i j := by
   simp [blkM, finSumFinEquiv_symm_apply_castSucc]
 
 /- English proof (translation)
-Simplify using `[blkM, finSumFinEquiv_symm_apply_castSucc, finSumFinEquiv_symm_last]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem blkM_cl (A : Matrix (Fin n) (Fin n) F) (i : Fin n) :
     blkM A (Fin.castSucc i) (Fin.last n) = 0 := by
   simp [blkM, finSumFinEquiv_symm_apply_castSucc, finSumFinEquiv_symm_last]
 
 /- English proof (translation)
-Simplify using `[blkM, finSumFinEquiv_symm_apply_castSucc, finSumFinEquiv_symm_last]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem blkM_lc (A : Matrix (Fin n) (Fin n) F) (j : Fin n) :
     blkM A (Fin.last n) (Fin.castSucc j) = 0 := by
   simp [blkM, finSumFinEquiv_symm_apply_castSucc, finSumFinEquiv_symm_last]
 
 /- English proof (translation)
-Simplify using `[blkM, finSumFinEquiv_symm_last]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem blkM_ll (A : Matrix (Fin n) (Fin n) F) :
     blkM A (Fin.last n) (Fin.last n) = 1 := by
   simp [blkM, finSumFinEquiv_symm_last]
 
 /- English proof (translation)
-Simplify using `[colM, finSumFinEquiv_symm_apply_castSucc]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem colM_cc (x : Fin n → F) (i j : Fin n) :
     colM x (Fin.castSucc i) (Fin.castSucc j) = (1 : Matrix (Fin n) (Fin n) F) i j := by
   simp [colM, finSumFinEquiv_symm_apply_castSucc]
 
 /- English proof (translation)
-Simplify using `[colM, finSumFinEquiv_symm_apply_castSucc, finSumFinEquiv_symm_last]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem colM_cl (x : Fin n → F) (i : Fin n) :
     colM x (Fin.castSucc i) (Fin.last n) = x i := by
   simp [colM, finSumFinEquiv_symm_apply_castSucc, finSumFinEquiv_symm_last]
 
 /- English proof (translation)
-Simplify using `[colM, finSumFinEquiv_symm_apply_castSucc, finSumFinEquiv_symm_last]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem colM_lc (x : Fin n → F) (j : Fin n) :
     colM x (Fin.last n) (Fin.castSucc j) = 0 := by
   simp [colM, finSumFinEquiv_symm_apply_castSucc, finSumFinEquiv_symm_last]
 
 /- English proof (translation)
-Simplify using `[colM, finSumFinEquiv_symm_last]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem colM_ll (x : Fin n → F) :
     colM x (Fin.last n) (Fin.last n) = 1 := by
@@ -84,15 +84,15 @@ theorem col_val (x : Fin n → F) : ((col x : GL (Fin (n + 1)) F) : Matrix (Fin 
 end Entries
 
 /- English proof (translation)
-Introduce `F _ _ n u hu`. Take `⟨hd, hl⟩` from `hu`. Use `⟨⟨fun i => ?_, fun i j hij => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[E_val]`. Proceed by induction on `i using Fin.lastCases with`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Consider the case `last => simp`. Consider the case `cast i => simpa using hd i`. Rewrite using `[E_val]`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => exact absurd hij (lt_irrefl _)`. Consider the case `cast j => simp`. Consider the case `cast i`. Proceed by induction on `j using Fin.lastCases with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `last => exact absurd hij (not_lt.mpr (Fin.castSucc_lt_last i).le)`. Consider the case `cast j`. Simplify using `only [blkM_cc]`. Conclude with `hl i j (Fin.castSucc_lt_castSucc_iff.mp hij)`. Rewrite using `[E_val]`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `superdiag`. Simplify using `[Fin.sum_univ_castSucc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blkFacts : UnitriangularBlockExtension := by
   intro F _ _ n u hu
@@ -119,19 +119,19 @@ theorem blkFacts : UnitriangularBlockExtension := by
     simp [Fin.sum_univ_castSucc]
 
 /- English proof (translation)
-Introduce `F _ _ n x`. Use `⟨⟨fun i => ?_, fun i j hij => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[col_val]`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => simp`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `cast i => simp`. Rewrite using `[col_val]`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`. Proceed by induction on `j using Fin.lastCases with`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Proceed by induction.
 
-Consider the case `last => exact absurd hij (lt_irrefl _)`. Consider the case `cast j => simp`. Consider the case `cast i`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => exact absurd hij (not_lt.mpr (Fin.castSucc_lt_last i).le)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `cast j`. Simplify using `only [colM_cc]`. Conclude with `Matrix.one_apply_ne (ne_of_gt (Fin.castSucc_lt_castSucc_iff.mp hij))`. Rewrite using `[col_val]`. Unfold `superdiag`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `h0 : ∀ i j : Fin (n + 1), (if (j : ℕ) = (i : ℕ) + 1 then (1 : Matrix (Fin (n + 1)) (Fin (n + 1)) F) i j else 0) = 0`. Introduce `i j`. Use `split_ifs with h`. Rewrite using `[Matrix.one_apply_ne]`. Introduce `e`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Use linear arithmetic over natural numbers and integers.
 
-Substitute `e` using the available equality. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Establish `hl : ∀ i : Fin (n + 1), (n = (i : ℕ)) ↔ (i = Fin.last n)`. Introduce `i`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[Fin.ext_iff, Fin.val_last]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using `only [Fin.sum_univ_castSucc (n := n + 1), colM_cc, colM_cl, colM_lc, colM_ll, Fin.val_castSucc, Fin.val_last, h0, ite_self, add_left_inj, hl]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem colFacts : ColFacts := by
   intro F _ _ n x
@@ -169,9 +169,9 @@ theorem colFacts : ColFacts := by
     simp
 
 /- English proof (translation)
-Introduce `F _ _ n A x`. Use extensionality with `: 1`. Simplify using `only [Units.val_mul, E_val, col_val, blkM, colM]`. Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Use `congr 2`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using the standard rewrite rules. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem conjCol : ConjCol := by
   intro F _ _ n A x
@@ -187,11 +187,11 @@ theorem conjCol : ConjCol := by
   · simp
 
 /- English proof (translation)
-Introduce `F _ _ ψ₀ _ V _ _ π ℓ hℓ _`. Establish `hD : D F (0 + 1) = 1` using `by simp [D]`. Use `show ∃ p : Fin (D F (0 + 1)) → GL (Fin (0 + 1)) F, _`. Rewrite using `[hD]`. Use `⟨fun _ => 1, fun _ j => ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Units.val_one]`. Rewrite using `[Matrix.one_apply]`. Conclude with `if_congr eq_comm rfl rfl`. Rewrite using `[linearIndependent_unique_iff] show ℓ ∘ₗ π 1 ≠ 0`. Rewrite using `[map_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h`. Apply `hℓ` to reduce the goal to its premises. Use extensionality with `v`. Simplify using `using LinearMap.congr_fun h v`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem baseProp : BaseProp := by
   intro F _ _ ψ₀ _ V _ _ π ℓ hℓ _
@@ -211,7 +211,7 @@ theorem baseProp : BaseProp := by
     simpa using LinearMap.congr_fun h v
 
 /- English proof (translation)
-Introduce `j`. Rewrite using `[E_val]`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => simp`. Consider the case `cast j => simp [Fin.castSucc_ne_last]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem lastRowE_E {F : Type} [Field F] [Fintype F] {n : ℕ} (A : GL (Fin n) F) : LastRowE (E F n A) := by
   intro j
@@ -221,7 +221,7 @@ theorem lastRowE_E {F : Type} [Field F] [Fintype F] {n : ℕ} (A : GL (Fin n) F)
   | cast j => simp [Fin.castSucc_ne_last]
 
 /- English proof (translation)
-Establish `h2 : ∀ l, (p : Matrix (Fin (n + 1)) (Fin (n + 1)) F) (Fin.last n) l = if l = Fin.last n then 1 else 0` using `hp`. Rewrite using `[Units.val_mul, Matrix.mul_apply]`. Simplify using `only [h2, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lastRow_mul {F : Type} [Field F] [Fintype F] {n : ℕ} {p : GL (Fin (n + 1)) F} (hp : LastRowE p)
     (g : GL (Fin (n + 1)) F) (j : Fin (n + 1)) :

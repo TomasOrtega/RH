@@ -12,9 +12,9 @@ open GlobalTheory.EtC.ClsSpec
 set_option backward.isDefEq.respectTransparency false
 
 /- English proof (translation)
-Establish `hZ : IsZero ((res R F).X s)` using `CochainComplex.isZero_of_isStrictlyGE ((injectiveResolution F).cochainComplex) 0 s hs`. Establish `h` using `hZ.eq_of_src (𝟙 _) 0`. Establish `ha : Sec.map (𝟙 _) a = Sec.map (0 : (res R F).X s ⟶ _) a` using `by rw [h]`. Establish `hb : Sec.map (𝟙 _) b = Sec.map (0 : (res R F).X s ⟶ _) b` using `by rw [h]`. Simplify using `[Sec.map] at ha hb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[ha, hb]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sec_neg {R : Type} [CommRing R] (F : Shv R) (s : ℤ) (hs : s < 0) {U : Scheme.{0}}
     (a b : Sec ((res R F).X s) U) : a = b := by
@@ -27,20 +27,20 @@ theorem sec_neg {R : Type} [CommRing R] (F : Shv R) (s : ℤ) (hs : s < 0) {U : 
   rw [ha, hb]
 
 /- English proof (translation)
-Rewrite using `[← face_res, ClsSpec.lineUnit_res]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lineUnit_face_res {E : Spc} (L : E ⟶ ofCat (glCat 1)) {V U : Scheme.{0}} (g : V ⟶ U) (x : Sx E 2 U) (i : Fin 3) :
     lineUnit L ((x.res g).face i) = umap g (lineUnit L (x.face i)) := by
   rw [← face_res, ClsSpec.lineUnit_res]
 
 /- English proof (translation)
-Use `(GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties (ZMod q)).2.2.1 _ _ fun p s hs U x => ?_` and prove the remaining obligations. Use `match p with`. Consider the case `0`. Take `rfl : s = 2` from `by omega`. Rewrite using `[h0, h0']`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `1`. Take `rfl : s = 1` from `by omega`. Use `ClsSpec.sep (ClsSpec.loc_mono (root_loc (hE U ⟨x.face 0⟩) (lineUnit L x)) fun V g ⟨v, hv⟩ => ?_)` and prove the remaining obligations. Establish `hv' : v ^ q = lineUnit L (x.res g)` using `by rw [ClsSpec.lineUnit_res]; exact hv`. Rewrite using `[(GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties (ZMod q)).2.1 γ 1 1 _ V U g x, (GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties (ZMod q)).2.1 γ' 1 1 _ V U g x, h1 V _ v hv', h1' V _ v hv']`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `2`. Take `rfl : s = 0` from `by omega`. Establish `hU` using `hE U ⟨(x.face 0).face 0⟩`. Use `ClsSpec.sep (ClsSpec.loc_mono (ClsSpec.loc_and (root_loc hU (lineUnit L (x.face 2))) (root_loc hU (lineUnit L (x.face 0)))) fun V g ⟨⟨v, hv⟩, w, hw⟩ => ?_)` and prove the remaining obligations. Rewrite `hv`, `hw` using `[← lineUnit_face_res]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties (ZMod q)).2.1 γ 2 0 _ V U g x, (GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties (ZMod q)).2.1 γ' 2 0 _ V U g x, h2 V _ v w hv hw, h2' V _ v w hv hw]`. Consider the case `p + 3 => exact sec_neg _ _ (by omega) _ _`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem rep_unique (q : ℕ) [NeZero q] {E : Spc} (hE : Inv q E) (L : E ⟶ ofCat (glCat 1))
     (γ γ' : Cochain ((chains (ZMod q)).obj E) (res _ (tw q 1)) 2)
@@ -77,11 +77,9 @@ theorem rep_unique (q : ℕ) [NeZero q] {E : Spc} (hE : Inv q E) (L : E ⟶ ofCa
   | p + 3 => exact sec_neg _ _ (by omega) _ _
 
 /- English proof (translation)
-Use `⟨fun U x => ?_, fun U x v hv => ?_, fun U x v w hv hw => ?_⟩` and prove the remaining obligations. Rewrite using `[(GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties (ZMod q)).2.2.2.1 f γ]`. Conclude with `h0 U _`. Rewrite using `[(GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties (ZMod q)).2.2.2.1 f γ]`. Conclude with `h1 U _ v hv`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[(GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties (ZMod q)).2.2.2.1 f γ]`. Use `h2 U _ v w ?_ ?_` and prove the remaining obligations. Rewrite using `[← map_face]`. Conclude with `hv`. Rewrite using `[← map_face]`.
-
-Conclude with `hw`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rep_comp (q : ℕ) {E E' : Spc} (f : E ⟶ E') (L : E' ⟶ ofCat (glCat 1))
     (γ : Cochain ((chains (ZMod q)).obj E') (res _ (tw q 1)) 2)
@@ -107,7 +105,7 @@ theorem rep_comp (q : ℕ) {E E' : Spc} (f : E ⟶ E') (L : E' ⟶ ofCat (glCat 
     · rw [← map_face]; exact hw
 
 /- English proof (translation)
-Introduce `U x v w hv hw` and use `h2 U x v w (by rw [sub_zero_one]; exact hv) (by rw [sub_one_one]; exact hw)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem face_forms (q : ℕ) {E : Spc} (L : E ⟶ ofCat (glCat 1)) (γ : Cochain ((chains (ZMod q)).obj E) (res _ (tw q 1)) 2)
     (h2 : ∀ (U : Scheme.{0}) (x : Sx E 2 U) (v w : (Γ(U, ⊤))ˣ), v ^ q = lineUnit L (x.sub 0 1 (by omega)) →
@@ -117,9 +115,9 @@ theorem face_forms (q : ℕ) {E : Spc} (L : E ⟶ ofCat (glCat 1)) (γ : Cochain
   fun U x v w hv hw => h2 U x v w (by rw [sub_zero_one]; exact hv) (by rw [sub_one_one]; exact hw)
 
 /- English proof (translation)
-Establish `hE : Inv q E` using `fun U ⟨x⟩ => hE' U ⟨x.map f⟩`. Take `⟨γ, hγ, h0, h1, h2⟩` from `firstChernClassTateTwist_cocycle_representative q hE' L`. Take `⟨γ', hγ', h0', h1', h2'⟩` from `firstChernClassTateTwist_cocycle_representative q hE (f ≫ L)`. Take `⟨k0, k1, k2⟩` from `rep_comp q f L γ.1 h0 h1 (face_forms q L γ.1 h2)`. Establish `key` using `rep_unique q hE (f ≫ L) _ γ'.1 k0 k1 k2 h0' h1' (face_forms q (f ≫ L) γ'.1 h2')`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hγ, ← hγ']`. Express the relevant statement in the definitionally equal form `CohomologyClass.mk (zcomp (Cocycle.ofHom ((chains (ZMod q)).map f)) γ (zero_add 2)) = _`. Use `congr 1`. Conclude with `Cocycle.ext key`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem firstChernClassTateTwist_pullback (q : ℕ) [NeZero q] {E E' : Spc} (f : E ⟶ E') (L : E' ⟶ ofCat (glCat 1)) (hE' : Inv q E') :
     pull _ f _ _ (c1 q L) = c1 q (f ≫ L) := by
@@ -140,25 +138,25 @@ open GlobalTheory.EtC.ClsSpec
 set_option backward.isDefEq.respectTransparency false
 
 /- English proof (translation)
-Take `⟨γL, hL, l0, l1, l2⟩` from `firstChernClassTateTwist_cocycle_representative q hE L`. Take `⟨γM, hM, m0, m1, m2⟩` from `firstChernClassTateTwist_cocycle_representative q hE M`. Take `⟨γN, hN', n0, n1, n2⟩` from `firstChernClassTateTwist_cocycle_representative q hE N`. Establish `l2'` using `face_forms q L γL.1 l2`. Establish `m2'` using `face_forms q M γM.1 m2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n2'` using `face_forms q N γN.1 n2`. Establish `hq₁ : ∀ (U : Scheme.{0}) (_ : Sx E 1 U), IsUnit (q : Γ(U, ⊤))` using `fun U x => hE U ⟨x.face 0⟩`. Choose the witnesses or unpack the hypotheses as in `⟨b, hb, hbv⟩ : ∃ b : ∀ U : Scheme.{0}, Sx E 1 U → Sec ((res _ (tw q 1)).X 0) U, (∀ (V U : Scheme.{0}) (g : V ⟶ U) (x : Sx E 1 U), Sec.res g (b U x) = b V (x.res g)) ∧ ∀ (U : Scheme.{0}) (x : Sx E 1 U) (v w : (Γ(U, ⊤))ˣ), v ^ q = lineUnit L x → w ^ q = lineUnit M x → b U x = kumT …`. Break down `kumT_cases q with ht | ht` into its components or cases. Conclude with `exists_two_family ht hq₁ (fun U x => lineUnit L x) (fun U x => lineUnit M x) (fun V U g x => ClsSpec.lineUnit_res L g x) (fun V U g x => ClsSpec.lineUnit_res M g x)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun _ _ => 0, fun V U g x => map_zero _, fun U x v w _ _ => ?_⟩` and prove the remaining obligations. Rewrite using `[ht]`. Simplify using the standard rewrite rules. Take `⟨β, hβ1, hβ0⟩` from `exists_single (R := ZMod q) (E := E) (I := res _ (tw q 1)) (n := 1) 1 0 (by simp) b hb`. Rewrite using `[← hL, ← hM, ← hN', eq_comm, ← sub_eq_zero, ← CohomologyClass.mk_add, ← CohomologyClass.mk_sub, CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ 1 (by norm_num)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨β, ?_⟩` and prove the remaining obligations. Apply `(GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties (ZMod q)).2.2.1` to reduce the goal to its premises. Introduce `p t ht U x`. Rewrite using `[Cocycle.coe_sub, Cocycle.coe_add, ((GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties (ZMod q)).1 _ _ p t ht U x).2.1, ((GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties (ZMod q)).1 _ _ p t ht U x).1]`. Use `match p with`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `0`. Take `rfl : t = 2` from `by omega`. Rewrite using `[(GlobalTheory.T.etaleCochainEvalOnSimplex_differential_values (ZMod q) (by norm_num) β U).1 x, hβ0 _ _ _ _ _ (by decide), smap_zero, l0, m0, n0]`. Simplify using the standard rewrite rules. Consider the case `1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `rfl : t = 1` from `by omega`. Rewrite using `[(GlobalTheory.T.etaleCochainEvalOnSimplex_differential_values (ZMod q) (by norm_num) β U).2 0 0 1 (by simp) ht x]`. Rewrite using `[Finset.sum_eq_zero fun i _ => by rw [hβ0 _ _ _ _ _ (by decide), smul_zero], smul_zero, add_zero, hβ1]`. Use `ClsSpec.sep (ClsSpec.loc_mono (ClsSpec.loc_and (root_loc (hq₁ U x) (lineUnit L x)) (root_loc (hq₁ U x) (lineUnit M x))) fun V g ⟨⟨v, hv⟩, w, hw⟩ => ?_)` and prove the remaining obligations. Rewrite `hv`, `hw` using `[← ClsSpec.lineUnit_res]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[res_map, hb, hbv V _ v w hv hw, res_sub, res_add, (GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties (ZMod q)).2.1 γL.1 1 1 _ V U g x, (GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties (ZMod q)).2.1 γM.1 1 1 _ V U g x, (GlobalTheory.T.etaleCochainEvalOnSimplex_b …`. Consider the case `2`. Take `rfl : t = 0` from `by omega`. Rewrite using `[(GlobalTheory.T.etaleCochainEvalOnSimplex_differential_values (ZMod q) (by norm_num) β U).2 1 (-1) 0 (by simp) ht x]`. Rewrite using `[hβ0 _ _ _ _ _ (by decide), smap_zero, zero_add, Fin.sum_univ_three, hβ1, hβ1, hβ1]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fin.val_zero, Fin.val_one, Fin.val_two, pow_zero, pow_one, one_smul, neg_smul, Int.reduceNeg]`. Rewrite using `[Int.negOnePow_even 2 (by decide), one_smul, ← sub_eq_add_neg]`. Establish `hU` using `hE U ⟨(x.face 0).face 0⟩`. Use `ClsSpec.sep (ClsSpec.loc_mono (ClsSpec.loc_and (ClsSpec.loc_and (root_loc hU (lineUnit L (x.face 2))) (root_loc hU (lineUnit L (x.face 0)))) (ClsSpec.loc_and (root_loc hU (lineUnit M (x.face 2))) (root_loc hU (lineUnit M (x.face 0))))) fun V g ⟨⟨⟨a, ha⟩, c, hc⟩, ⟨a', ha'⟩, c', hc …` and prove the remaining obligations. Rewrite `ha`, `hc`, `ha'`, `hc'` using `[← lineUnit_face_res]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hN2 : ∀ i, lineUnit N ((x.res g).face i) = lineUnit L ((x.res g).face i) * lineUnit M ((x.res g).face i)` using `fun i => hN V _`. Simplify using `only [res_add, res_sub, neg_one_sq, one_smul]`. Rewrite using `[(GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties (ZMod q)).2.1 γL.1 2 0 _ V U g x, (GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties (ZMod q)).2.1 γM.1 2 0 _ V U g x, (GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties (ZMod q)).2.1 γN.1 2 0 _ V U g x, …`. Rewrite using `[hb, hb, hb, face_res, face_res, face_res, hbv V _ c c' (by rw [hc]) (by rw [hc']), hbv V _ (a * c) (a' * c') (by rw [lineUnit_face, mul_pow, ha, hc]) (by rw [lineUnit_face, mul_pow, ha', hc']), hbv V _ a a' ha ha']`. Establish `e : a * c * (a' * c') = a * a' * (c * c')` using `by rw [mul_mul_mul_comm]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[e]`. Normalize the expressions using the abelian group laws. Consider the case `p + 3 => exact sec_neg _ _ (by omega) _ _`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isOneCochain_add (q : ℕ) [NeZero q] {E : Spc} (L M N : E ⟶ ofCat (glCat 1)) (hE : Inv q E)
     (hN : ∀ (U : Scheme.{0}) (x : Sx E 1 U), lineUnit N x = lineUnit L x * lineUnit M x) :
@@ -234,7 +232,7 @@ theorem isOneCochain_add (q : ℕ) [NeZero q] {E : Spc} (L M N : E ⟶ ofCat (gl
 end GlobalTheory.EtC.ChernSpec
 
 /- English proof (translation)
-Introduce `q _`. Conclude with `⟨fun L hE => firstChernClassTateTwist_cocycle_representative q hE L, fun f L hE' => GlobalTheory.EtC.ChernSpec.firstChernClassTateTwist_pullback q f L hE', fun L M N hE hN => GlobalTheory.EtC.ChernSpec.isOneCochain_add q L M N hE hN⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.EtC.firstChernClassTateTwist_cocycle_naturality_additivity : ∀ (q : ℕ) [NeZero q], (∀ {E : Spc} (L : E ⟶ ofCat (glCat 1)), Inv q E → ∃ γ : Cocycle ((chains (ZMod q)).obj E) (res _ (tw q 1)) 2, CohomologyClass.mk γ = c1 q L ∧ (∀ (U : Scheme.{0}) (x : Sx E 0 U), ev γ.1 0 2 (by simp) U x = 0) ∧ (∀ (U : Scheme.{0}) (x : Sx E 1 U) (v : (Γ(U, ⊤))ˣ), v ^ q = lineUnit L x → ev γ.1 1 1 (by simp) U x = Sec.map ((res _ (tw q 1)).d 0 1) (kumT q U v)) ∧ ∀ (U : Scheme.{0}) (x : Sx E 2 U) (v w : (Γ(U, ⊤))ˣ), v ^ q = lineUnit L (x.sub 0 1 (by omega)) → w ^ q = lineUnit L (x.sub 1 1 (by omega)) → ev γ.1 2 0 (by simp) U x = kumT q U v + kumT q U w - kumT q U (v * w)) ∧ (∀ {E E' : Spc} (f : E ⟶ E') (L : E' ⟶ ofCat (glCat 1)), Inv q E' → pull _ f _ _ (c1 q L) = c1 q (f ≫ L)) ∧ ∀ {E : Spc} (L M N : E ⟶ ofCat (glCat 1)), Inv q E → (∀ (U : Scheme.{0}) (x : Sx E 1 U), lineUnit N x = lineUnit L x * lineUnit M x) → c1 q N = c1 q L + c1 q M := by
   intro q _

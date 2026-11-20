@@ -8,17 +8,15 @@ open scoped Pointwise
 namespace GlobalTheory.IndexVolume
 
 /- English proof (translation)
-Take `⟨s, hs, -⟩` from `(H.subgroupOf L).exists_isComplement_left 1`. Establish `hs' : Finite s` using `hs.finite_left_iff.mpr inferInstance`. Establish `hU : (⋃ a : s, (a.val : L) • (H : Set G)) = (L : Set G)`. Use extensionality with `x`. Simplify using `only [Set.mem_iUnion, Set.mem_smul_set, SetLike.mem_coe]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, h, hh, rfl⟩`. Conclude with `L.mul_mem a.val.2 (hHL hh)`. Introduce `hx`. Take `⟨⟨b, h⟩, hbh, -⟩` from `hs.existsUnique ⟨x, hx⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨b, (h.val : G), Subgroup.mem_subgroupOf.mp h.2, ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val hbh` as an intermediate fact. Conclude with `this`. Establish `hdisj : Pairwise (Function.onFun Disjoint fun a : s => (a.val : L) • (H : Set G))`. Introduce `a b hab`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Function.onFun, Set.disjoint_left]`. Introduce and unpack `x ⟨h1, hh1, rfl⟩ ⟨h2, hh2, he⟩`. Apply `hab` to reduce the goal to its premises. Establish `hh1' : (⟨h1, hHL hh1⟩ : L) ∈ H.subgroupOf L` using `Subgroup.mem_subgroupOf.mpr hh1`. Establish `hh2' : (⟨h2, hHL hh2⟩ : L) ∈ H.subgroupOf L` using `Subgroup.mem_subgroupOf.mpr hh2`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (a.val : L) * ⟨h1, hHL hh1⟩ = (b.val : L) * ⟨h2, hHL hh2⟩` using `Subtype.ext he.symm`. Use `(hs.existsUnique ((a.val : L) * ⟨h1, hHL hh1⟩)).unique (y₁ := (a, ⟨_, hh1'⟩)) (y₂ := (b, ⟨_, hh2'⟩)) rfl e.symm` as an intermediate fact. Conclude with `congrArg Prod.fst this`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[measure_smul, hs.encard_left, Subgroup.relIndex]`.
-
-Use `_ = μ (⋃ a : s, (a.val : L) • (H : Set G)) := (measure_iUnion hdisj fun a => hH.const_smul _).symm`. Use `_ = μ L := by rw [hU]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem relIndex_mul_measure_subgroup {G : Type*} [Group G] [MeasurableSpace G] [MeasurableMul G]
     (H L : Subgroup G) (hHL : H ≤ L) [(H.subgroupOf L).FiniteIndex]
@@ -55,11 +53,11 @@ theorem relIndex_mul_measure_subgroup {G : Type*} [Group G] [MeasurableSpace G] 
     _ = μ L := by rw [hU]
 
 /- English proof (translation)
-Establish `hE` using `Model.measurableEmbedding_val (k := k) n`. Unfold `volGL`. Rewrite using `[withDensity_apply _ hs, setLIntegral_congr_fun hs (g := fun _ => 1), setLIntegral_one, hE.comap_apply]`. Introduce `g hg`. Take `⟨u, rfl⟩` from `hK hg`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h1 : nabs k (Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) u)) = 1`. Rewrite using `[nabs_eq_one_iff]`. Establish `: ((Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) u) : kˣ) : k) = algebraMap 𝒪[k] k u.val.det` using `((algebraMap 𝒪[k] k).map_det u.val).symm`. Rewrite using `[this]`. Conclude with `(Valuation.integer.integers (valuation k)).one_of_isUnit ((Matrix.isUnit_iff_isUnit_det _).1 u.isUnit)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [h1, Real.one_rpow, ENNReal.ofReal_one]`.
+A detailed English derivation is pending.
 -/
 theorem volGL_of_subset_KO {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] {n : Type} [Fintype n] [DecidableEq n]
@@ -82,11 +80,11 @@ theorem volGL_of_subset_KO {k : Type} [Field k] [ValuativeRel k] [TopologicalSpa
   simp only [h1, Real.one_rpow, ENNReal.ofReal_one]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ ν _ n _ _ H L hHL hLK hH`. Take `⟨hB, hlc, hsc, hc, -, -, hhaar, -⟩` from `volGL_haar k n ν`. Establish `hL : IsOpen (L : Set (GL n k))` using `Subgroup.isOpen_mono hHL hH`. Establish `hLc : IsCompact (L : Set (GL n k))` using `hc.of_isClosed_subset (L.isClosed_of_isOpen hL) hLK`. Use `haveI : CompactSpace L := isCompact_iff_compactSpace.1 hLc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Finite (L ⧸ H.subgroupOf L) := Subgroup.quotient_finite_of_isOpen _ (hH.preimage continuous_subtype_val)`. Use `haveI : (H.subgroupOf L).FiniteIndex := Subgroup.finiteIndex_of_finite_quotient`. Establish `key` using `relIndex_mul_measure_subgroup H L hHL hH.measurableSet (volGL ν n)`. Establish `h0 : volGL ν n H ≠ 0` using `(hH.measure_pos _ ⟨1, one_mem _⟩).ne'`. Establish `ht : volGL ν n H ≠ ⊤` using `((measure_mono (hHL.trans hLK)).trans_lt hc.measure_lt_top).ne`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← volGL_of_subset_KO ν _ hH.measurableSet (hHL.trans hLK), ← volGL_of_subset_KO ν _ hL.measurableSet hLK, ← key]`. Use `⟨ENNReal.toReal_pos h0 ht, ?_⟩` and prove the remaining obligations. Rewrite using `[ENNReal.toReal_mul, ENNReal.toReal_natCast]`.
+A detailed English derivation is pending.
 -/
 theorem relIndex_mul_volM : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [MeasurableSpace k] [BorelSpace k] (ν : Measure k) [ν.IsAddHaarMeasure]

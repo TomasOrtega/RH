@@ -7,7 +7,7 @@ open NumberField Matrix
 namespace Formalism.L2.PairingIndexBounds.Eq.SqG
 
 /- English proof (translation)
-Use `letI := D.host.cmStar`. Introduce `N' L' L'' hN h1 h2 n hn`. Conclude with `h D.host.E D.sp.cm.cmUnram N' L' L'' hN h1 h2 n hn`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem splitPair_of_gen (h : SplitPairGen) (D : Formalism.BasicNotions.D7) : SquareSplitPairs.SplitPair D := by
   letI := D.host.cmStar
@@ -15,7 +15,7 @@ theorem splitPair_of_gen (h : SplitPairGen) (D : Formalism.BasicNotions.D7) : Sq
   exact h D.host.E D.sp.cm.cmUnram N' L' L'' hN h1 h2 n hn
 
 /- English proof (translation)
-The claim follows from `SquareSplitPairs.eqP_of_pair B hcc hδ hδ0 hS χ hχ (splitPair_of_gen hG D)`.
+A detailed English derivation is pending.
 -/
 theorem eqP_gen {D : Formalism.BasicNotions.D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Formalism.L2.Ker.Base D cc δ)
     (hcc : Formalism.MainNotions.TaylorLogMetric.IsCurveIdeal D cc) (hδ : Formalism.MainNotions.TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) (hδ0 : δ ≠ 0) (hS : B.StdOK)

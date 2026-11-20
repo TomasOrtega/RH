@@ -16,29 +16,25 @@ set_option maxHeartbeats 1000000
 namespace GlobalTheory.Pdv
 
 /- English proof (translation)
-Establish `hb` using `GlobalTheory.Mem.Col2.base_fields_primes_ok B X`. Establish `kCst : ∀ (X' : Fields) (Pr' : Primes X') (sel' : HeightOneSpectrum (𝓞 X'.F) → HeightOneSpectrum (𝓞 X'.E)) (S' : Set ℕ) (tup' : (I.rec7 l Z).what₂.Tup → Tup X'.F X'.E X'.K S') (cst' : ∀ μ, LocCst X' (rowSG Pr' sel' (tup' μ))), X' = B.fields → HEq Pr' (B.primes X) → HEq sel' I.sel …`. Introduce and unpack `X' Pr' sel' S' tup' cst' rfl h1 h2 rfl h3 h4`. Take `rfl` from `eq_of_heq h1`. Take `rfl` from `eq_of_heq h2`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl` from `eq_of_heq h3`. Take `rfl` from `eq_of_heq h4`. Introduce `μ`. Establish `h5` using `(hN μ)`. Use `⟨hI.sharp μ, h5.1, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show 2 * (I.cst μ).M ≤ 4 * B.R.m + 1`. Use linear arithmetic over natural numbers and integers. Use `⟨?fields, ?sel, ?bad, ?chOk, ?chars, ?sharp, ?deep, ?repOne⟩` and prove the remaining obligations. Use `case fields => exact hX_eq ▸ hb.1`. Use `case sel =>`.
+Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `key : ∀ (X' : Fields) (sel' : HeightOneSpectrum (𝓞 X'.F) → HeightOneSpectrum (𝓞 X'.E)), X' = B.fields → HEq sel' I.sel → IsSel X' sel'`. Introduce and unpack `X' sel' rfl h`. Take `rfl` from `eq_of_heq h`. Conclude with `hI.sel_ok`. Conclude with `key _ _ hX_eq hsel`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Treat this case separately. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `case bad =>`. Establish `key : ∀ (X' : Fields) (Pr' : Primes X'), X' = B.fields → HEq Pr' (B.primes X) → ∀ v, Pr'.T v ∈ I.S`. Introduce and unpack `X' Pr' rfl h`. Take `rfl` from `eq_of_heq h`. Conclude with `hI.T_mem`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[hS]`. Use `⟨fun i => ?_, key _ _ hX_eq hPr, fun _ hl => hI.small_mem hl, hI.two_q_d_mem.2.1⟩` and prove the remaining obligations. Rewrite using `[t.g_rec]`. Conclude with `hI.g_mem i`. Use `case chOk =>`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Establish `key : ∀ (X' : Fields) (Pr' : Primes X') (Ch' : Chars X' Pr' (I.rec7 l Z).R.m), X' = B.fields → HEq Pr' (B.primes X) → HEq Ch' I.Ch → Ch'.Ok`. Introduce and unpack `X' Pr' Ch' rfl h1 h2`. Take `rfl` from `eq_of_heq h1`. Take `rfl` from `eq_of_heq h2`. Conclude with `hI.ch_ok`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `key _ _ _ hX_eq hPr hCh`. Use `case chars =>`. Establish `key : ∀ (X' : Fields) (Pr' : Primes X') (Ch' : Chars X' Pr' (I.rec7 l Z).R.m) (glob' : ChGlob X' (I.rec7 l Z).R.m) (seam' : Seam (I.rec7 l Z) X'), X' = B.fields → HEq Pr' (B.primes X) → HEq Ch' I.Ch → HEq glob' I.glob → HEq seam' (seamOf B (I.cols l) Z.W Z.V Z.S Z.N Z.G) → ∃ eta, …`. Introduce and unpack `X' Pr' Ch' glob' seam' rfl h1 h2 h3 h4`. Take `rfl` from `eq_of_heq h1`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `rfl` from `eq_of_heq h2`. Take `rfl` from `eq_of_heq h3`. Take `rfl` from `eq_of_heq h4`. Conclude with `⟨I.C.eta, hI.ch_tied⟩`. Conclude with `key _ _ _ _ _ hX_eq hPr hCh hglob hseam`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `case sharp => exact fun μ => (kCst _ _ _ _ _ _ hX_eq hPr hsel hS htup hcst μ).1`. Use `case deep => exact fun μ => (kCst _ _ _ _ _ _ hX_eq hPr hsel hS htup hcst μ).2`. Use `case repOne =>`. Establish `key : ∀ (X' : Fields) (Pr' : Primes X') (sel' : HeightOneSpectrum (𝓞 X'.F) → HeightOneSpectrum (𝓞 X'.E)) (S' : Set ℕ) (tup' : (I.rec7 l Z).what₂.Tup → Tup X'.F X'.E X'.K S') (idx' : ∀ μ, ChIdx X' Pr' (I.rec7 l Z).R (QE sel' (tup' μ : Chr X'.F X'.E X'.K))), X' = B.fields → HEq Pr' …`. Introduce and unpack `X' Pr' sel' S' tup' idx' rfl h1 h2 rfl h3 h4`.
-
-Take `rfl` from `eq_of_heq h1`. Take `rfl` from `eq_of_heq h2`. Take `rfl` from `eq_of_heq h3`. Take `rfl` from `eq_of_heq h4`. Introduce `μ`.
-
-Conclude with `(hN μ).2.2`. Rewrite using `[hm2]`. Conclude with `key _ _ _ _ _ _ hX_eq hPr hsel hS htup hidx`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colSide_of_choices {B : Base} {X : PreX B.toPre} (I : TC B X) (hI : I.Ok) (l : I.Laws) (Z : TC.Later B (I.cols l))
     {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : G.Inst (I.rec7 l Z) L} {Gl : G.LatInst (I.rec7 l Z)} {K : G.Consts}
@@ -118,7 +114,7 @@ theorem colSide_of_choices {B : Base} {X : PreX B.toPre} (I : TC B X) (hI : I.Ok
     exact key _ _ _ _ _ _ hX_eq hPr hsel hS htup hidx
 
 /- English proof (translation)
-Introduce `B X I hI _ l Z L hT Gi Gl K Y cX ex t hN hS`. Conclude with `colSide_of_choices I hI l Z t hN hS.X_eq hS.seam hS.Pr hS.Ch hS.sel hS.S hS.tup hS.cst hS.idx hS.m2 hS.glob`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem colSide_of_std : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (L : SizeData₂ (I.rec7 l Z)) (hT : GatTies (I.rec7 l Z)) (Gi : G.Inst (I.rec7 l Z) L) (Gl : G.LatInst (I.rec7 l Z)) (K : G.Consts) (Y : DivX (I.rec7 l Z)) (cX : ExtraC) (ex : Extra (I.rec7 l Z) L hT Gi Gl K Y cX) (t : KerEntTied ex), GlobalTheory.Pdv.ColNorm I → I.StdKer l Z t → GlobalTheory.KerJ.ColSide t := by
   intro B X I hI _ l Z L hT Gi Gl K Y cX ex t hN hS

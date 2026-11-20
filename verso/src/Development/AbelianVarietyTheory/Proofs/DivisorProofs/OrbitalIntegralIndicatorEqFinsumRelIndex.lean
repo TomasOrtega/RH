@@ -11,9 +11,9 @@ open GlobalTheory.UnitLemma GlobalTheory.InertUnitOrb
 namespace GlobalTheory.OrbIndUnit
 
 /- English proof (translation)
-Establish `hs : rStab (fun _ : H => c) = ⊤`. Use extensionality with `k`. Simplify using `[rStab]`. Unfold `avg`. Rewrite using `[hs, Subgroup.index_top]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Subsingleton (H ⧸ (⊤ : Subgroup H)) := QuotientGroup.subsingleton_quotient_top`. Use `haveI : Unique (H ⧸ (⊤ : Subgroup H)) := uniqueOfSubsingleton (1 : H ⧸ (⊤ : Subgroup H))`. Rewrite using `[finsum_unique]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem avg_const_fun {H : Type} [Group H] (c : ℂ) : avg (fun _ : H => c) = c := by
   have hs : rStab (fun _ : H => c) = ⊤ := by
@@ -26,15 +26,15 @@ theorem avg_const_fun {H : Type} [Group H] (c : ℂ) : avg (fun _ : H => c) = c 
   simp
 
 /- English proof (translation)
-Unfold `twOrb`. Apply `finsum_congr` to reduce the goal to its premises. Introduce `q`. Use `set Q : G := Quotient.out q with hQ`. Establish `hfun : (fun k : K => (K : Set G).indicator 1 ((Q * k)⁻¹ * γ * (MonoidHom.id G) (Q * k))) = fun _ => (K : Set G).indicator (1 : G → ℂ) (Q⁻¹ * γ * Q)`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `k`. Establish `he : (Q * k)⁻¹ * γ * (MonoidHom.id G) (Q * k) = (k : G)⁻¹ * (Q⁻¹ * γ * Q) * k`. Simplify using `only [MonoidHom.id_apply]`. Use `group`. Rewrite using `[he]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `h : Q⁻¹ * γ * Q ∈ K`. Establish `h' : (k : G)⁻¹ * (Q⁻¹ * γ * Q) * k ∈ K` using `K.mul_mem (K.mul_mem (K.inv_mem k.2) h) k.2`. Simplify using `[Set.indicator_apply, h, h']`. Establish `h' : (k : G)⁻¹ * (Q⁻¹ * γ * Q) * k ∉ K`. Introduce `h'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `h` to reduce the goal to its premises. Use `K.mul_mem (K.mul_mem k.2 h') (K.inv_mem k.2)` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Simplify using `[Set.indicator_apply, h, h']`. Rewrite using `[hfun, avg_const_fun]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : Q⁻¹ * γ * Q ∈ K`. Simplify using `[Set.indicator_apply, h]`. Simplify using `[Set.indicator_apply, h]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem twOrb_id_indicator (G : Type) [Group G] [TopologicalSpace G] (K : Subgroup G) (γ : G) :
     twOrb (MonoidHom.id G) K γ ((K : Set G).indicator 1) = ∑ᶠ q : DoubleCoset.Quotient (twCent (MonoidHom.id G) γ : Set G) (K : Set G), if (Quotient.out q)⁻¹ * γ * Quotient.out q ∈ K then (((twCent (MonoidHom.id G) γ ⊓ K.map (MulAut.conj (Quotient.out q)).toMonoidHom).relIndex (cptPart (twCent (MonoidHom.id G) γ)) : ℕ) : ℂ) else 0 := by

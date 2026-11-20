@@ -15,39 +15,37 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : Formalism.BasicNotions.D7}
 
 /- English proof (translation)
-Establish `hP` using `P.isPrime`. Use `set g : 𝓞 D.host.E := ((Lat.gS D : ℕ) : 𝓞 D.host.E) with hg`. Use `set M := Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (Ideal.span {g} • Λ) with hM`. Establish `hg0 : ((Lat.gS D : ℕ) : D.host.E) ≠ 0`. Establish `h2 : (Lat.gS D : ℕ) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Unfold `Lat.gS`. Conclude with `mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero`. Conclude with `h2` after adjusting the coercions. Establish `hgs : ∀ x : (VS D).V, x ∈ Ideal.span {g} • Λ ↔ ∃ l ∈ Λ, g • l = x`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Establish `hd : ∀ c, F'.fl.fvec c - F.fl.fvec c ∈ M` using `fun c => hadm c P hgP`. Establish `hsd : m (F'.fl.fvec i) - ν (F.fl.fvec i) ∈ M`. Establish `e : m (F'.fl.fvec i) - ν (F.fl.fvec i) = ν (F''.fl.fvec i - F.fl.fvec i)`. Rewrite using `[map_sub, hf'' i]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `[LinearEquiv.coe_inv]`. Rewrite using `[e]`. Take `⟨t, ht, htd⟩` from `(Formalism.L2.SG.Pf.ZsVolLat.mem_locP P.asIdeal _ _).1 (hadm'' i P hgP)`. Take `⟨l, hl, hlg⟩` from `(hgs _).1 htd`. Use `(Formalism.L2.SG.Pf.ZsVolLat.mem_locP P.asIdeal _ _).2 ⟨t, ht, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Formalism.L2.SG.Pf.ZsVolLat.smul_O, ← hlg, Formalism.L2.SG.Pf.ZsVolLat.smul_O]`. Conclude with `(hgs _).2 ⟨ν l, hν l hl, rfl⟩`. Establish `hud : ∀ c, uu' c i • (F'.fl.fvec c - F.fl.fvec c) ∈ M`. Introduce `c`. Take `⟨t1, ht1, o, ho⟩` from `Formalism.L2.SG.Pf.ZsVolLat.int_at F' Λ hc' hz' m hm uu' huu' hfr' P hgP c i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨t2, ht2, htd⟩` from `(Formalism.L2.SG.Pf.ZsVolLat.mem_locP P.asIdeal _ _).1 (hd c)`. Take `⟨l, hl, hlg⟩` from `(hgs _).1 htd`. Use `(Formalism.L2.SG.Pf.ZsVolLat.mem_locP P.asIdeal _ _).2 ⟨t1 * t2, fun h => (hP.mem_or_mem h).elim ht1 ht2, ?_⟩` and prove the remaining obligations. Establish `e : (t1 * t2) • (uu' c i • (F'.fl.fvec c - F.fl.fvec c)) = o • (t2 • (F'.fl.fvec c - F.fl.fvec c))`. Rewrite using `[← algebraMap_smul D.host.E (t1 * t2), ← algebraMap_smul D.host.E o, ← algebraMap_smul D.host.E t2, smul_smul, smul_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `ho' : algebraMap (𝓞 D.host.E) D.host.E t1 * uu' c i = algebraMap (𝓞 D.host.E) D.host.E o` using `ho`. Rewrite using `[map_mul, mul_right_comm, ho']`. Rewrite using `[e, ← hlg]`. Conclude with `(hgs _).2 ⟨o • l, Λ.smul_mem o hl, smul_comm g o l⟩`. Use `set y : Fin D.R.rS → D.host.E := fun a => uu' (Fin.castSucc a) i - uu (Fin.castSucc a) i with hy`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlast : uu' (Fin.last _) i - uu (Fin.last _) i = 0`. Distinguish the cases in `h : i = Fin.last _`. Substitute `h` using the available equality. Rewrite using `[(huu' _ _).2 rfl, (huu _ _).2 rfl, sub_self]`. Establish `hlt : i < Fin.last _` using `lt_of_le_of_ne (Fin.le_last i) h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[(huu' _ _).1 hlt, (huu _ _).1 hlt, sub_self]`. Establish `hw : ∑ a, y a • F.fl.e a = (m (F'.fl.fvec i) - ν (F.fl.fvec i)) - ∑ c, uu' c i • (F'.fl.fvec c - F.fl.fvec c)`. Rewrite using `[hfr i, hfr' i]`. Simplify using `only [smul_sub, Finset.sum_sub_distrib]`. Establish `h2 : ∑ c, (uu' c i - uu c i) • F.fl.fvec c = ∑ a, y a • F.fl.e a`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Formalism.L2.SG.Pf.ZsVolLat.sum_fvec]`. Simplify using `only [hy, hlast, zero_smul, add_zero]`. Rewrite using `[← h2]`. Simplify using `only [sub_smul, Finset.sum_sub_distrib]`. Normalize the expressions using the abelian group laws.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hwM : ∑ a, y a • F.fl.e a ∈ M`. Rewrite using `[hw]`. Conclude with `M.sub_mem hsd (M.sum_mem fun c _ => hud c)`. Take `⟨t, ht, htw⟩` from `(Formalism.L2.SG.Pf.ZsVolLat.mem_locP P.asIdeal _ _).1 hwM`. Take `⟨l, hl, hlg⟩` from `(hgs _).1 htw`.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hl_eq : l = ∑ a, (((Lat.gS D : ℕ) : D.host.E)⁻¹ * ((t : D.host.E) * y a)) • F.fl.e a`. Establish `h1 : ((Lat.gS D : ℕ) : D.host.E) • l = t • ∑ a, y a • F.fl.e a`. Rewrite using `[← hlg, ← algebraMap_smul D.host.E g]`. Both sides reduce to the same expression. Establish `h2` using `congrArg (fun v => ((Lat.gS D : ℕ) : D.host.E)⁻¹ • v) h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [smul_smul, inv_mul_cancel₀ hg0, one_smul] at h2`. Rewrite using `[h2, Finset.smul_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul D.host.E t, smul_smul, smul_smul, mul_assoc]`. Establish `hlX : l ∈ XLam Λ F`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.mem_inf.2 ⟨hl, ?_⟩` and prove the remaining obligations. Use `show l ∈ F.fl.X`. Rewrite using `[hl_eq]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`. Establish `hloc : l ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (Submodule.span (𝓞 D.host.E) (Set.range F.fl.e))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Formalism.L2.SG.Pf.ZsVolLat.conv_at F Λ hc P hgP]`. Conclude with `⟨1, P.asIdeal.primeCompl.one_mem, by rw [one_smul]; exact hlX⟩`. Take `⟨t', ht', ht'l⟩` from `(Formalism.L2.SG.Pf.ZsVolLat.mem_locP P.asIdeal _ _).1 hloc`. Establish `hv2 : t' • l = ∑ a, ((t' : D.host.E) * (((Lat.gS D : ℕ) : D.host.E)⁻¹ * ((t : D.host.E) * y a))) • F.fl.e a`. Rewrite using `[hl_eq, Finset.smul_sum]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul D.host.E t', smul_smul]`. Establish `hjr : (j : ℕ) < D.R.rS` using `lt_of_lt_of_le hji (Nat.lt_succ_iff.1 i.2)`. Take `⟨o, ho⟩` from `Formalism.L2.SG.Pf.ZsVolLat.coef_spanO F.fl ht'l _ hv2 ⟨j, hjr⟩`. Use `⟨t' * t, fun h => (hP.mem_or_mem h).elim ht' ht, -o, ?_⟩` and prove the remaining obligations.
-
-Establish `hyj : y ⟨j, hjr⟩ = uu' j i - uu j i` using `rfl`. Rewrite `ho` using `[hyj]`. Establish `hgi : ((Lat.gS D : ℕ) : D.host.E) * ((Lat.gS D : ℕ) : D.host.E)⁻¹ = 1` using `mul_inv_cancel₀ hg0`. Use `push_cast`. Take the linear combination `((Lat.gS D : ℕ) : D.host.E) * ho + ((t' : D.host.E) * (t : D.host.E) * (uu' j i - uu j i)) * hgi`.
+A detailed English derivation is pending.
 -/
 theorem cong_at_pair {T T' : D.host.E} (F : LFlag (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T')
     (Λ : Submodule (𝓞 D.host.E) (VS D).V) (hc : IsFixedConv Λ (Lat.gS D) F) (hc' : IsFixedConv Λ (Lat.gS D) F')
@@ -152,11 +150,11 @@ theorem cong_at_pair {T T' : D.host.E} (F : LFlag (VS D) D.R.rS T) (F' : LFlag (
   linear_combination ((Lat.gS D : ℕ) : D.host.E) * ho + ((t' : D.host.E) * (t : D.host.E) * (uu' j i - uu j i)) * hgi
 
 /- English proof (translation)
-Apply the tactic sequence `have h1 : uu j i ∈ Formalism.L2.SG.Pf.StabIntSh.ddPow D ((i : ℕ) - (j : ℕ)) := Formalism.L2.SG.Pf.ZsVolLat.frame_entry F Λ hX hz ν hν uu huu hfr j i hji`. Apply the tactic sequence `have h2 : uu' j i ∈ Formalism.L2.SG.Pf.StabIntSh.ddPow D ((i : ℕ) - (j : ℕ)) := Formalism.L2.SG.Pf.ZsVolLat.frame_entry F' Λ hX' hz' m hm uu' huu' hfr' j i hji`. Establish `hd : uu j i - uu' j i ∈ Formalism.L2.SG.Pf.StabIntSh.ddPow D ((i : ℕ) - (j : ℕ))` using `(FractionalIdeal.mem_coe).1 (Submodule.sub_mem _ ((FractionalIdeal.mem_coe).2 h1) ((FractionalIdeal.mem_coe).2 h2))`. Use `(FractionalIdeal.mem_coe).1 (Formalism.L2.SG.Pf.ZsVolLat.mem_of_loc _ _ fun P => ?_)` and prove the remaining obligations. Distinguish the cases in `hgP : ((Lat.gS D : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Take `⟨t, ht, o, ho⟩` from `cong_at_pair F F' Λ hc hc' hz' hadm ν m hν hm F'' hadm'' hf'' uu uu' huu huu' hfr hfr' P hgP j i hji`. Use `⟨t, ht, ?_⟩` and prove the remaining obligations. Rewrite using `[ho]`. Conclude with `(FractionalIdeal.mem_coe).2 (Formalism.L2.SG.Pf.ZsVolLat.g_mul_mem (Formalism.L2.SG.Pf.ZsVolLat.o_mem_ddPow _ o))`. Use `⟨((Lat.gS D : ℕ) : 𝓞 D.host.E), hgP, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : (((Lat.gS D : ℕ) : 𝓞 D.host.E) : D.host.E) = ((Lat.gS D : ℕ) : D.host.E)` using `by simp`. Rewrite using `[e]`. Conclude with `(FractionalIdeal.mem_coe).2 (Formalism.L2.SG.Pf.ZsVolLat.g_mul_mem hd)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cong_glob_pair {T T' : D.host.E} (F : LFlag (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T')
     (Λ : Submodule (𝓞 D.host.E) (VS D).V) (hc : IsFixedConv Λ (Lat.gS D) F) (hc' : IsFixedConv Λ (Lat.gS D) F')
@@ -190,9 +188,9 @@ variable (M : ∀ p : LocalSplitGroups.PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP 
   (F0 : FlagG (VS D) D.R.rS (Formalism.L2.SG.CntLocal.Tn u)) (what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V))
 
 /- English proof (translation)
-Introduce `γ w F' L U hH a' b ha hb hst hES`. Take `⟨hA, -, hR, hP, hE, hN⟩` from `hH`. Establish `hΛ : IsRowLat D F0 γ.lam` using `hR.1 γ.lam γ.mem`. Establish `h'` using `Formalism.L2.SG.Pf.TupAct.ez_of_normRep hΛ hE hN`. Take `⟨p', e'⟩` from `hN.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ν, hν, m, hm, hνF, hmF, F2, hF2, hr2, hf2⟩` from `Formalism.L2.SG.Pf.TupAct.moveCZ hΛ hP.1.ne_zero hP.2.2.1.ne_zero ⟨δ, M, hA⟩ h' ⟨p', e'⟩ ha hb hst hES`. Conclude with `⟨ν, m, F2, ha, hb, hst, hES, hν, hm, hνF, hmF, hF2, hr2, hf2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem moveCZ_holds : Formalism.L2.SG.Pf.ZsVolAct.MoveCZ M δ u u' F0 what₂ := by
   intro γ w F' L U hH a' b ha hb hst hES
@@ -205,39 +203,35 @@ theorem moveCZ_holds : Formalism.L2.SG.Pf.ZsVolAct.MoveCZ M δ u u' F0 what₂ :
   exact ⟨ν, m, F2, ha, hb, hst, hES, hν, hm, hνF, hmF, hF2, hr2, hf2⟩
 
 /- English proof (translation)
-Introduce `γ w F' L U hH F'' hF'' hr''`. Take `⟨hA, -, hR, hP, hE, hN⟩` from `hH`. Establish `hΛ : IsRowLat D F0 γ.lam` using `hR.1 γ.lam γ.mem`. Take `⟨_, ⟨_, _, hLift, hConv⟩, hXF⟩` from `hΛ`. Take `⟨⟨⟨hLift', _, hFOK⟩, e'⟩, hAdm, _, _, _⟩` from `hN`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨p'', e''⟩` from `hr''`. Take `⟨n, hn, m, hm, hfr, -⟩` from `(Formalism.L2.SG.Closed.TermEqIff_holds D u u' F0 γ.lam (hR.1 γ.lam γ.mem) ⟨F', ⟨hLift', ‹_›, hFOK⟩⟩ ⟨F'', p''⟩).1 (e'.trans e''.symm)`. Establish `hν : n⁻¹ ∈ NLam γ.lam (lf D F0)` using `Formalism.L2.SG.Pf.nlamPf_inv hn`. Establish `hf'' : ∀ b, F''.fl.fvec b = (n⁻¹)⁻¹ (m (F'.fl.fvec b))` using `fun b => by rw [inv_inv]; exact hfr b`. Establish `hν0` using `hν`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm0` using `hm`. Take `⟨⟨hisoν, hgν⟩, hf1, hf2⟩` from `hν`. Take `⟨uu, huu, hu⟩` from `Formalism.L2.SG.Pf.StabilizerIndexVolumes.tri_exists F0 n⁻¹ hf1 hf2`. Take `⟨⟨hisom, hgm⟩, hg1, hg2⟩` from `hm`. Take `⟨uu', huu', hu'⟩` from `Formalism.L2.SG.Pf.StabilizerIndexVolumes.tri_exists F'.fl m hg1 hg2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hνΛ : ∀ v ∈ γ.lam, n⁻¹ v ∈ γ.lam` using `fun v hv => by`. Rewrite using `[← hgν]`. Conclude with `Submodule.mem_map_of_mem hv`. Establish `hmΛ : ∀ v ∈ γ.lam, m v ∈ γ.lam` using `fun v hv => by`. Rewrite using `[← hgm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.mem_map_of_mem hv`. Establish `hdet : IsUnit uu.conjTranspose.det`. Rewrite using `[Formalism.L2.SG.Pf.StabilizerIndexVolumes.lo_det (Formalism.L2.SG.Pf.StabilizerIndexVolumes.lo_conjT huu)]`. Conclude with `isUnit_one`. Set `a' : PairVal.GLR D` to `Matrix.nonsingInvUnit uu.conjTranspose hdet`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `ha' : (a' : PairVal.MatR D) = uu.conjTranspose` using `rfl`. Establish `hSS : Formalism.L2.SG.Pf.StabilizerIndexVolumes.sgnM (K` using `D.host.E) D.R.rS * Formalism.L2.SG.Pf.StabilizerIndexVolumes.sgnM D.R.rS = 1 := Formalism.L2.SG.Pf.AtPt.sg_sq D.R.rS`. Set `b : PairVal.MatR D` to `Formalism.L2.SG.Pf.ZsVolAct.sbs uu'`. Establish `hsbs : Formalism.L2.SG.Pf.ZsVolAct.sbs b = uu'`. Simplify using `only [b, Formalism.L2.SG.Pf.ZsVolAct.sbs, Matrix.mul_assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hSS, Matrix.mul_one, ← Matrix.mul_assoc, hSS, Matrix.one_mul]`. Establish `hbU : IsUpUni b`. Introduce `i j`. Simplify using `only [b, Formalism.L2.SG.Pf.ZsVolAct.sbs, Formalism.L2.SG.Pf.StabilizerIndexVolumes.sgnM, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Use `⟨fun h => by rw [(huu' i j).1 h, mul_zero, zero_mul], fun h => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Substitute `h` using the available equality. Rewrite using `[(huu' i i).2 rfl, mul_one, ← pow_add, ← two_mul, pow_mul]`. Simplify using the standard rewrite rules. Establish `hiso : ∀ x y, (VS D).hT ((n⁻¹) x) ((n⁻¹) y) = (VS D).hT x y` using `hisoν`. Establish `hZ1 : uu.conjTranspose * ZhatL (lf D F0) F' * uu' = ZhatL (lf D F0) F'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hZ'' : ZhatL (lf D F0) F'' = ZhatL (lf D F0) F'` using `hF''.2.2.2.2`. Use function extensionality and compare the values at `a c`. Rewrite using `[← Formalism.L2.SG.Pf.TupLift.zhat_lift (lf D F0) F' hiso hu hu' a c, ← hZ'']`. Use `show (VS D).hT (F0.fvec a) ((n⁻¹)⁻¹ (m (F'.fl.fvec c))) = (VS D).hT (F0.fvec a) (F''.fl.fvec c)`. Rewrite using `[hf'' c]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hadm : ∀ b, ModG (VS D) γ.lam (Lat.gS D) (F'.fl.fvec b - (lf D F0).fl.fvec b)` using `fun b => by`. Establish `h` using `hAdm.2.2 b`. Rewrite `h` using `[Formalism.L2.SG.Pf.TupOrb.frameAct_one']`. Then use the resulting hypothesis. Establish `hadm'' : ∀ b, ModG (VS D) γ.lam (Lat.gS D) (F''.fl.fvec b - (lf D F0).fl.fvec b)` using `fun b => by`. Establish `h` using `hF''.2.1.2.2 b`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[Formalism.L2.SG.Pf.TupOrb.frameAct_one']`. Then use the resulting hypothesis. Use `⟨a', b, n⁻¹, m, ?_, hbU, ?_, ?_, hν0, hm0, ?_, ?_, hF'', ⟨p'', e''⟩, hf''⟩` and prove the remaining obligations. Rewrite using `[ha']`. Conclude with `Formalism.L2.SG.Pf.StabilizerIndexVolumes.lo_conjT huu`. Rewrite using `[ha', Formalism.L2.SG.Pf.AtPt.zhatOM_eq]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = uu.conjTranspose * ZhatL (lf D F0) F' * uu' * Formalism.L2.SG.Pf.AtPt.Sg D.host.E D.R.rS := by`. Establish `: Formalism.L2.SG.Pf.AtPt.Sg D.host.E D.R.rS * b = uu' * Formalism.L2.SG.Pf.AtPt.Sg D.host.E D.R.rS`. Simplify using `only [b, Formalism.L2.SG.Pf.ZsVolAct.sbs, ← Matrix.mul_assoc]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `show Formalism.L2.SG.Pf.StabilizerIndexVolumes.sgnM D.R.rS * Formalism.L2.SG.Pf.StabilizerIndexVolumes.sgnM D.R.rS * uu' * Formalism.L2.SG.Pf.StabilizerIndexVolumes.sgnM D.R.rS = _`. Rewrite using `[hSS, Matrix.one_mul]`. Both sides reduce to the same expression. Rewrite using `[this]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = ZhatL (lf D F0) F' * Formalism.L2.SG.Pf.AtPt.Sg D.host.E D.R.rS := by rw [hZ1]`. Introduce `i j hji`. Establish `hk : ((i : ℕ) - (j : ℕ)) ≤ D.R.rS` using `by have := i.2; omega`. Apply the tactic sequence `have h1 := Formalism.L2.SG.Pf.ZsVolLat.frame_entry (lf D F0) γ.lam hXF hLift.1 n⁻¹ hνΛ uu huu hu j i hji`. Apply the tactic sequence `have h2 := Formalism.L2.SG.Pf.ZsVolLat.frame_entry F' γ.lam hFOK.2 hLift'.1 m hmΛ uu' huu' hu' j i hji`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `cong_glob_pair (lf D F0) F' γ.lam hConv hFOK.1 hXF hFOK.2 hLift.1 hLift'.1 hadm n⁻¹ m hνΛ hmΛ F'' hadm'' hf'' uu uu' huu huu' hu hu' j i hji`. Rewrite using `[ha']`. Simplify using `only [b, Formalism.L2.SG.Pf.ZsVolAct.sbs]`. Rewrite using `[Matrix.conjTranspose_apply, Formalism.L2.SG.Pf.ZsVolLat.bt_sgn, Formalism.L2.SG.Pf.ZsVolLat.star_conjF]`. Use `⟨Formalism.L2.SG.Pf.ZsVolLat.conj_ddPow δ M hA hk h1, h2, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← map_sub]`. Conclude with `Formalism.L2.SG.Pf.ZsVolLat.conj_qdPow δ M hA hk h3`. Introduce `c`. Rewrite using `[ha', Matrix.conjTranspose_conjTranspose]`. Conclude with `hu c`.
-
-Introduce `c`. Rewrite using `[hsbs]`. Conclude with `hu' c`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ontoCZ_holds : Formalism.L2.SG.Pf.ZsVolAct.OntoCZ M δ u u' F0 what₂ := by
   intro γ w F' L U hH F'' hF'' hr''

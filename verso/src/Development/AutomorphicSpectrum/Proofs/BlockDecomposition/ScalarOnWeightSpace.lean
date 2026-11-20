@@ -20,14 +20,14 @@ open PositivityTheory.RgBcC PositivityTheory.RgBcC.Real PositivityTheory.RgBcC.R
 variable {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.DYlb8.main hS a`.
+A detailed English derivation is pending.
 -/
 theorem mem_down {S : Finset (Fin n)} (hS : ∀ a b, b ≤ a → a ∈ S → b ∈ S) (a : Fin n) :
     a ∈ S ↔ (a : ℕ) < S.card :=
   _root_.UpperTheory.Reformulated.B.DYlb8.main hS a
 
 /- English proof (translation)
-Proceed by induction on `d with`. Consider the case `zero => simp`. Consider the case `succ d ih`. Rewrite using `[← add_assoc, Finset.sum_Ico_succ_top (by omega), mul_add, ih]`. Use `push_cast`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -41,23 +41,23 @@ theorem twice_sum_Ico (m d : ℕ) :
     ring
 
 /- English proof (translation)
-Use `set d := (univ.filter fun a => lev a = c).card with hd`. Use `set m := (univ.filter fun a => lev a < c).card with hmm`. Establish `hlow : ∀ a, lev a < c ↔ (a : ℕ) < m` using `fun a => by`. Use `mem_down (S := univ.filter fun a => lev a < c) (fun x y hyx hx => by` as an intermediate fact. Rewrite `hx`, the goal using `[mem_filter]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `⟨mem_univ _, lt_of_le_of_lt (hm hyx) hx.2⟩) a`. Simplify using `using this`. Establish `hcard : (univ.filter fun a => lev a < c + 1).card = m + d`. Rewrite using `[hmm, hd, ← Finset.card_union_of_disjoint]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `a`. Simplify using `only [mem_filter, mem_univ, true_and, mem_union]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.disjoint_left]`. Introduce `a h1 h2`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(mem_filter.1 h1).2` as an intermediate fact. Use `(mem_filter.1 h2).2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hup : ∀ a, lev a < c + 1 ↔ (a : ℕ) < m + d` using `fun a => by`. Use `mem_down (S := univ.filter fun a => lev a < c + 1) (fun x y hyx hx => by` as an intermediate fact.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `hx`, the goal using `[mem_filter]`. Conclude with `⟨mem_univ _, lt_of_le_of_lt (hm hyx) hx.2⟩) a`. Rewrite `this` using `[hcard]`. Simplify using `using this`. Establish `hle : m + d ≤ n`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hcard]`. Conclude with `(card_le_univ _).trans_eq (Fintype.card_fin n)`. Establish `hmap : (univ.filter fun a => lev a = c).map Fin.valEmbedding = Finset.Ico m (m + d)`. Use extensionality with `k`. Simplify using `only [mem_map, mem_filter, mem_univ, true_and, Fin.valEmbedding_apply, Finset.mem_Ico]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`. Establish `h1` using `hlow a`. Establish `h2` using `hup a`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce and unpack `⟨k1, k2⟩`. Use `⟨⟨k, by omega⟩, ?_, rfl⟩` and prove the remaining obligations. Establish `h1` using `hlow ⟨k, by omega⟩`. Establish `h2` using `hup ⟨k, by omega⟩`. Simplify using `only at h1 h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[← twice_sum_Ico, ← hmap, Finset.sum_map]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem level_sum (lev : Fin n → ℕ) (hm : Monotone lev) (c : ℕ) :
     2 * ∑ a ∈ univ.filter (fun a => lev a = c), ((a : ℕ) : ℝ) =

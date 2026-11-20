@@ -6,11 +6,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 namespace GlobalTheory.EtC.ArtCoh
 
 /- English proof (translation)
-Establish `hid : spMap (e : R →+* S) ≫ spMap (e.symm : S →+* R) = 𝟙 (sp S)`. Rewrite using `[← Functor.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `: (e : R →+* S).comp (e.symm : S →+* R) = RingHom.id S` using `by ext x; simp`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce `x y`. Establish `hx : pull _ (spMap (e : R →+* S)) _ _ (pull _ (spMap (e.symm : S →+* R)) _ _ x) = x`. Rewrite using `[← pull_comp, hid, pull_id]`. Establish `hy : pull _ (spMap (e : R →+* S)) _ _ (pull _ (spMap (e.symm : S →+* R)) _ _ y) = y`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← pull_comp, hid, pull_id]`. Rewrite using `[← hx, ← hy, Subsingleton.elim (pull _ (spMap (e.symm : S →+* R)) _ _ x) (pull _ (spMap (e.symm : S →+* R)) _ _ y)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem ht_subsingleton_of_ringEquiv (q : ℕ) {R S : Type} [CommRing R] [CommRing S] (e : R ≃+* S) (n i : ℤ)
     [h : Subsingleton (Ht q (sp R) n i)] : Subsingleton (Ht q (sp S) n i) := by
@@ -29,7 +29,7 @@ theorem ht_subsingleton_of_ringEquiv (q : ℕ) {R S : Type} [CommRing R] [CommRi
     (pull _ (spMap (e.symm : S →+* R)) _ _ y)]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `x y`. Conclude with `(GlobalTheory.EtC.ProdCoh.ht_prod_bijective q A B n i).1 (Prod.ext (Subsingleton.elim _ _) (Subsingleton.elim _ _))`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ht_subsingleton_prod (q : ℕ) (A B : Type) [CommRing A] [CommRing B] (n i : ℤ)
     [Subsingleton (Ht q (sp A) n i)] [Subsingleton (Ht q (sp B) n i)] : Subsingleton (Ht q (sp (A × B)) n i) := by
@@ -38,9 +38,9 @@ theorem ht_subsingleton_prod (q : ℕ) (A B : Type) [CommRing A] [CommRing B] (n
   exact (GlobalTheory.EtC.ProdCoh.ht_prod_bijective q A B n i).1 (Prod.ext (Subsingleton.elim _ _) (Subsingleton.elim _ _))
 
 /- English proof (translation)
-Establish `hfs : RingHom.fst Z Z = RingHom.snd Z Z` using `by ext x; exact Subsingleton.elim _ _`. Prove the components needed by the constructor for the conclusion. Introduce `a b`. Take `⟨x, hx⟩` from `(GlobalTheory.EtC.ProdCoh.ht_prod_bijective q Z Z n i).2 (a, b)`. Establish `h1` using `congrArg Prod.fst hx`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `congrArg Prod.snd hx`. Simplify using `only at h1 h2`. Rewrite `h1` using `[hfs]`. Rewrite using `[← h1, ← h2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ht_subsingleton_of_subsingleton (q : ℕ) (Z : Type) [CommRing Z] [Subsingleton Z] (n i : ℤ) :
     Subsingleton (Ht q (sp Z) n i) := by
@@ -55,11 +55,11 @@ theorem ht_subsingleton_of_subsingleton (q : ℕ) (Z : Type) [CommRing Z] [Subsi
   rw [← h1, ← h2]
 
 /- English proof (translation)
-Proceed by induction on `ι using Finite.induction_empty_option with`. Consider the case `of_equiv e ih`. Introduce `R _ hR`. Use `ih (fun a => R (e a)) (fun a => hR (e a))` as an intermediate fact. Conclude with `ht_subsingleton_of_ringEquiv q (RingEquiv.piCongrLeft R e) n i`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `h_empty`. Introduce `R _ _`. Conclude with `ht_subsingleton_of_subsingleton q _ n i`. Consider the case `h_option ih`. Introduce `R _ hR`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hR none`. Establish `h2` using `ih (fun a => R (some a)) (fun a => hR (some a))`. Use `ht_subsingleton_prod q (R none) (∀ a, R (some a)) n i` as an intermediate fact. Conclude with `ht_subsingleton_of_ringEquiv q (RingEquiv.piOptionEquivProd (R := R)).symm n i`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ht_subsingleton_pi (q : ℕ) (n i : ℤ) (ι : Type) [Finite ι] : ∀ (R : ι → Type) [∀ j, CommRing (R j)],
     (∀ j, Subsingleton (Ht q (sp (R j)) n i)) → Subsingleton (Ht q (sp (∀ j, R j)) n i) := by
@@ -79,7 +79,7 @@ theorem ht_subsingleton_pi (q : ℕ) (n i : ℤ) (ι : Type) [Finite ι] : ∀ (
     exact ht_subsingleton_of_ringEquiv q (RingEquiv.piOptionEquivProd (R := R)).symm n i
 
 /- English proof (translation)
-Introduce `q K _ _ _ n i h`. Use `ht_subsingleton_pi q n i (MaximalSpectrum K) (fun M => K ⧸ M.asIdeal) h` as an intermediate fact. Conclude with `ht_subsingleton_of_ringEquiv q (IsArtinianRing.equivPi K).toRingEquiv.symm n i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ht_subsingleton_artinian : ∀ (q : ℕ) (K : Type) [CommRing K] [IsArtinianRing K] [IsReduced K] (n i : ℤ),
     (∀ M : MaximalSpectrum K, Subsingleton (Ht q (sp (K ⧸ M.asIdeal)) n i)) → Subsingleton (Ht q (sp K) n i) := by

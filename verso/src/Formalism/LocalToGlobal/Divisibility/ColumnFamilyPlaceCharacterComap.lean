@@ -27,7 +27,7 @@ def comap (f : T' → T) (μ0' : T') : DefFam K G Pl0 T' J where
   tr := F.tr
 
 /- English proof (translation)
-The claim follows from `h.conj tup_fin := @Finite.of_injective _ _ h.tup_fin f hf irr := h.irr what₂ t := h.what₂ (f t) lifts j t := h.lifts j (f t)`.
+A detailed English derivation is pending.
 -/
 theorem comap_ok [Fintype J] {s : ℕ} (h : F.Ok s) {f : T' → T} (hf : Function.Injective f) (μ0' : T') :
     (F.comap f μ0').Ok s where
@@ -50,7 +50,7 @@ def comap (f : T' → T) (μ0' : T') : DefFam3 K G Pl0 I0 Ty T' J where
   trI := F3.trI
 
 /- English proof (translation)
-The claim follows from `F3.F.comap_ok h.ok2 hf μ0' what₂ t := h.what₂ (f t) lifts j t := h.lifts j (f t)`.
+A detailed English derivation is pending.
 -/
 theorem comap_ok_of_injective [Fintype J] {s : ℕ} (h : F3.Ok3 s) {f : T' → T} (hf : Function.Injective f) (μ0' : T') :
     (F3.comap f μ0').Ok3 s where
@@ -59,7 +59,7 @@ theorem comap_ok_of_injective [Fintype J] {s : ℕ} (h : F3.Ok3 s) {f : T' → T
   lifts j t := h.lifts j (f t)
 
 /- English proof (translation)
-Unfold `DefFam3.TypesSep3`. Use `show (∀ p ∈ (F3.RI (f μ0')).ixFin3 F3.F.X, ∀ p' ∈ (F3.RI (f μ0')).ixFin3 F3.F.X, p ≠ p' → ∀ j, (F3.LI j (f μ0')).DiffAt (F3.tr3 j p) (F3.tr3 j p')) ↔ _`. Rewrite using `[hμ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comap_typesSep3_iff [Fintype J] {f : T' → T} {μ0' : T'} (hμ : f μ0' = F3.F.μ0) :
     (F3.comap f μ0').TypesSep3 ↔ F3.TypesSep3 := by
@@ -69,7 +69,7 @@ theorem comap_typesSep3_iff [Fintype J] {f : T' → T} {μ0' : T'} (hμ : f μ0'
   rw [hμ]
 
 /- English proof (translation)
-Unfold `DefFam3.TrISep`. Use `show (∀ j, ∀ p ∈ (F3.RI (f μ0')).ixFin3 F3.F.X, ∀ p' ∈ (F3.RI (f μ0')).ixFin3 F3.F.X, (∃ k : (F3.RI (f μ0')).PlI × Ty, p.2 ((F3.RI (f μ0')).plI k.1, k.2) ≠ p'.2 ((F3.RI (f μ0')).plI k.1, k.2)) → ∃ k : (F3.LI j (f μ0')).PlI × Ty, F3.trI j p.2 ((F3.LI j (f μ0')).plI k.1, k.2) ≠ F3. …`. Rewrite using `[hμ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comap_trISep_iff [Fintype J] {f : T' → T} {μ0' : T'} (hμ : f μ0' = F3.F.μ0) :
     (F3.comap f μ0').TrISep ↔ F3.TrISep := by
@@ -144,7 +144,7 @@ Both sides reduce to the same expression.
 theorem TupF.incl_val {TU TC : Finset (Tup X.F X.E X.K S)} (h : TU ⊆ TC) (τ : TupF TU) : (TupF.incl h τ).1 = τ.1 := rfl
 
 /- English proof (translation)
-Introduce `a b hab`. Establish `hv : (TupF.incl h a).1 = (TupF.incl h b).1` using `congrArg Subtype.val hab`. Conclude with `Subtype.ext hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem TupF.incl_injective {TU TC : Finset (Tup X.F X.E X.K S)} (h : TU ⊆ TC) : Function.Injective (TupF.incl h) := by
   intro a b hab
@@ -188,7 +188,7 @@ theorem column_family_base_tuple_comap :
     TupF.incl h (colFam3 W Ch sel hX v0 TU Xg S0 xiVal trIv).F.μ0 = (colFam3 W Ch sel hX v0 TC Xg S0 xiVal trIv).F.μ0 := rfl
 
 /- English proof (translation)
-Conclude with `⟨rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem column_family_place_character_comap :
     (colFam3 W Ch sel hX v0 TU Xg S0 xiVal trIv).F.v0 = (colFam3 W Ch sel hX v0 TC Xg S0 xiVal trIv).F.v0 ∧
@@ -215,7 +215,7 @@ theorem colFam3_tr_comap :
     (colFam3 W Ch sel hX v0 TU Xg S0 xiVal trIv).F.tr = (colFam3 W Ch sel hX v0 TC Xg S0 xiVal trIv).F.tr := rfl
 
 /- English proof (translation)
-Conclude with `⟨rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem colFam3_lvl_comap (P : Subgroup (Col.G0 X.E Pr.vGs R.r)) (ψ : P →* X.Kˣ) :
     (colFam3 W Ch sel hX v0 TU Xg S0 xiVal trIv).F.lvl P ψ = (colFam3 W Ch sel hX v0 TC Xg S0 xiVal trIv).F.lvl P ψ ∧
@@ -236,7 +236,7 @@ theorem colIn3_muVal_comap (j : Fin R.m) (t : TupF TU) :
       (colIn3 W Ch sel hX v0 TC Xg S0 xiVal trIv).A.muVal j (TupF.incl h t) := rfl
 
 /- English proof (translation)
-Conclude with `⟨rfl, fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem colIn3_forms_comap (t : TupF TU) :
     (colIn3 W Ch sel hX v0 TU Xg S0 xiVal trIv).A.MtildeCSD t =
@@ -246,7 +246,7 @@ theorem colIn3_forms_comap (t : TupF TU) :
   exact ⟨rfl, fun _ => rfl⟩
 
 /- English proof (translation)
-Conclude with `⟨rfl, fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem colIn3_hecke_comap (t : TupF TU) :
     (colIn3 W Ch sel hX v0 TU Xg S0 xiVal trIv).A.heckeR t =
@@ -256,7 +256,7 @@ theorem colIn3_hecke_comap (t : TupF TU) :
   exact ⟨rfl, fun _ => rfl⟩
 
 /- English proof (translation)
-Conclude with `⟨rfl, fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem colIn3_g0Act_comap (t : TupF TU) :
     (colIn3 W Ch sel hX v0 TU Xg S0 xiVal trIv).A.leftGroupActionRight t =
@@ -292,7 +292,7 @@ theorem colIn3_trI_comap :
     (colIn3 W Ch sel hX v0 TU Xg S0 xiVal trIv).trI = (colIn3 W Ch sel hX v0 TC Xg S0 xiVal trIv).trI := rfl
 
 /- English proof (translation)
-Conclude with `⟨rfl, fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem colFam3_RI_LI_comap (t : TupF TU) :
     (colFam3 W Ch sel hX v0 TU Xg S0 xiVal trIv).RI t = (colFam3 W Ch sel hX v0 TC Xg S0 xiVal trIv).RI (TupF.incl h t) ∧
@@ -303,7 +303,7 @@ theorem colFam3_RI_LI_comap (t : TupF TU) :
 include h in
 
 /- English proof (translation)
-The claim follows from `hH.conj irr := hH.irr commR τ := hH.commR (TupF.incl h τ) splitR τ := hH.splitR (TupF.incl h τ) commL j τ := hH.commL j (TupF.incl h τ) splitL j τ := hH.splitL j (TupF.incl h τ)`.
+A detailed English derivation is pending.
 -/
 theorem colHyp_restrict (hH : ColHyp W Ch sel v0 TC Xg S0) : ColHyp W Ch sel v0 TU Xg S0 where
   conj := hH.conj
@@ -316,7 +316,7 @@ theorem colHyp_restrict (hH : ColHyp W Ch sel v0 TC Xg S0) : ColHyp W Ch sel v0 
 include h in
 
 /- English proof (translation)
-The claim follows from `colHyp_restrict W Ch sel v0 h Xg S0 hH.base commAllR τ := hH.commAllR (TupF.incl h τ) splitIR τ := hH.splitIR (TupF.incl h τ) commAllL j τ := hH.commAllL j (TupF.incl h τ) splitIL j τ := hH.splitIL j (TupF.incl h τ)`.
+A detailed English derivation is pending.
 -/
 theorem colHyp3_restrict (hH : ColHyp3 W Ch sel v0 TC Xg S0) : ColHyp3 W Ch sel v0 TU Xg S0 where
   base := colHyp_restrict W Ch sel v0 h Xg S0 hH.base
@@ -328,7 +328,7 @@ theorem colHyp3_restrict (hH : ColHyp3 W Ch sel v0 TC Xg S0) : ColHyp3 W Ch sel 
 include h in
 
 /- English proof (translation)
-Conclude with `DefFam3.comap_ok_of_injective _ hO (TupF.incl_injective h) (mu0F TU)`.
+A detailed English derivation is pending.
 -/
 theorem column_family_ok_restrict_subtype {s : ℕ} (hO : (colFam3 W Ch sel hX v0 TC Xg S0 xiVal trIv).Ok3 s) :
     (colFam3 W Ch sel hX v0 TU Xg S0 xiVal trIv).Ok3 s := by
@@ -337,7 +337,7 @@ theorem column_family_ok_restrict_subtype {s : ℕ} (hO : (colFam3 W Ch sel hX v
 include h in
 
 /- English proof (translation)
-Conclude with `column_family_ok_restrict_subtype (h := h) (hO := colFam3_ok (hH := hH) ..) ..`.
+A detailed English derivation is pending.
 -/
 theorem colFam3_ok_restrict (hH : ColHyp3 W Ch sel v0 TC Xg S0) : (colFam3 W Ch sel hX v0 TU Xg S0 xiVal trIv).Ok3 1 := by
   exact column_family_ok_restrict_subtype (h := h) (hO := colFam3_ok (hH := hH) ..) ..
@@ -345,7 +345,7 @@ theorem colFam3_ok_restrict (hH : ColHyp3 W Ch sel v0 TC Xg S0) : (colFam3 W Ch 
 include h in
 
 /- English proof (translation)
-Rewrite using `[colFam3_comap W Ch sel hX v0 h Xg S0 xiVal trIv]`. Conclude with `DefFam3.comap_typesSep3_iff (colFam3 W Ch sel hX v0 TC Xg S0 xiVal trIv) (TupF.incl_mu0F h)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colFam3_typesSep3_restrict_iff :
     (colFam3 W Ch sel hX v0 TU Xg S0 xiVal trIv).TypesSep3 ↔ (colFam3 W Ch sel hX v0 TC Xg S0 xiVal trIv).TypesSep3 := by
@@ -355,7 +355,7 @@ theorem colFam3_typesSep3_restrict_iff :
 include h in
 
 /- English proof (translation)
-Rewrite using `[colFam3_comap W Ch sel hX v0 h Xg S0 xiVal trIv]`. Conclude with `DefFam3.comap_trISep_iff (colFam3 W Ch sel hX v0 TC Xg S0 xiVal trIv) (TupF.incl_mu0F h)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colFam3_trISep_restrict_iff :
     (colFam3 W Ch sel hX v0 TU Xg S0 xiVal trIv).TrISep ↔ (colFam3 W Ch sel hX v0 TC Xg S0 xiVal trIv).TrISep := by
@@ -365,7 +365,7 @@ theorem colFam3_trISep_restrict_iff :
 include h in
 
 /- English proof (translation)
-Conclude with `(colFam3_typesSep3_restrict_iff W Ch sel hX v0 h Xg S0 xiVal trIv).mpr (colFam3_typesSep' W Ch sel hX v0 TC Xg S0 xiVal trIv hH hI)`.
+A detailed English derivation is pending.
 -/
 theorem colFam3_typesSep_restrict (hH : ColHyp3 W Ch sel v0 TC Xg S0)
     (hI : (colFam3 W Ch sel hX v0 TC Xg S0 xiVal trIv).TrISep) :
@@ -392,21 +392,21 @@ def colSubRes3 (Zs : DefSub (colFam3 W Ch sel hX v0 TC Xg S0 xiVal trIv).amb3) :
 variable (Zs : DefSub (colFam3 W Ch sel hX v0 TC Xg S0 xiVal trIv).amb3)
 
 /- English proof (translation)
-Unfold `DefSub.Stable at hst ⊢`. Conclude with `⟨fun t i => hst.1 (TupF.incl h t) i, fun j t i => hst.2 j (TupF.incl h t) i⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem colSubRes3_stable (hst : Zs.Stable) : (colSubRes3 W Ch sel hX v0 h Xg S0 xiVal trIv Zs).Stable := by
   unfold DefSub.Stable at hst ⊢
   exact ⟨fun t i => hst.1 (TupF.incl h t) i, fun j t i => hst.2 j (TupF.incl h t) i⟩
 
 /- English proof (translation)
-Unfold `DefSub.InBlock at hin ⊢`. Conclude with `⟨fun t => hin.1 (TupF.incl h t), fun j t => hin.2 j (TupF.incl h t)⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem colSubRes3_inBlock (hin : Zs.InBlock) : (colSubRes3 W Ch sel hX v0 h Xg S0 xiVal trIv Zs).InBlock := by
   unfold DefSub.InBlock at hin ⊢
   exact ⟨fun t => hin.1 (TupF.incl h t), fun j t => hin.2 j (TupF.incl h t)⟩
 
 /- English proof (translation)
-Conclude with `Iff.rfl`.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem colFam3_sameTypes3_restrict_iff (P : Subgroup (Col.G0 X.E Pr.vGs R.r)) (ψ : P →* X.Kˣ) :
     (colFam3 W Ch sel hX v0 TU Xg S0 xiVal trIv).SameTypes3 P ψ (colSubRes3 W Ch sel hX v0 h Xg S0 xiVal trIv Zs) ↔
@@ -414,7 +414,7 @@ theorem colFam3_sameTypes3_restrict_iff (P : Subgroup (Col.G0 X.E Pr.vGs R.r)) (
   exact Iff.rfl
 
 /- English proof (translation)
-Conclude with `⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem colSide3_rows_comap (P : Col.LevFam X.E X.K R.r Pr.vGs) (t : TupF TU) :
     (colSide3 W Ch sel hX v0 TU Xg S0 xiVal trIv P (colSubRes3 W Ch sel hX v0 h Xg S0 xiVal trIv Zs)).nV t =
@@ -434,7 +434,7 @@ theorem colSide3_rows_comap (P : Col.LevFam X.E X.K R.r Pr.vGs) (t : TupF TU) :
   exact ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩
 
 /- English proof (translation)
-Conclude with `⟨rfl, rfl, rfl, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem colSide3_lifts_comap (P : Col.LevFam X.E X.K R.r Pr.vGs) (j : Fin R.m) (t : TupF TU) :
     (colSide3 W Ch sel hX v0 TU Xg S0 xiVal trIv P (colSubRes3 W Ch sel hX v0 h Xg S0 xiVal trIv Zs)).dZ j t =
@@ -450,7 +450,7 @@ theorem colSide3_lifts_comap (P : Col.LevFam X.E X.K R.r Pr.vGs) (j : Fin R.m) (
   exact ⟨rfl, rfl, rfl, rfl, rfl⟩
 
 /- English proof (translation)
-Conclude with `colSide3_WF W Ch sel hX v0 TU Xg S0 xiVal trIv (colHyp3_restrict (h := h) (hH := hH) ..) ((colFam3_trISep_restrict_iff W Ch sel hX v0 h Xg S0 xiVal trIv).mpr hI) P (colSubRes3 W Ch sel hX v0 h Xg S0 xiVal trIv Zs) (colSubRes3_stable (h := h) (Zs := Zs) (hst := hst) ..) (colSubRes …`.
+A detailed English derivation is pending.
 -/
 theorem colSide3_WF_restrict (hH : ColHyp3 W Ch sel v0 TC Xg S0)
     (hI : (colFam3 W Ch sel hX v0 TC Xg S0 xiVal trIv).TrISep) (P : Col.LevFam X.E X.K R.r Pr.vGs)

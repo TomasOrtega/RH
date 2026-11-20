@@ -1,15 +1,15 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `Γ _ s t h`. Establish `key : ∀ (u : Finset (Γ →* ℂ)) (r : Multiset (Γ →* ℂ)), r.toFinset ⊆ u → ∀ g : Γ, (Multiset.map (fun (f : Γ →* ℂ) ↦ (f : Γ → ℂ) g) r).sum = ∑ f ∈ u, (r.count f : ℂ) * f g`. Introduce `u r hr g`. Rewrite using `[Finset.sum_multiset_map_count, Finset.sum_subset hr]`. Conclude with `Finset.sum_congr rfl fun f _ => by simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f _ hf`. Establish `: r.count f = 0` using `Multiset.count_eq_zero.2 (by simpa using hf)`. Simplify using `[this]`. Use `set u : Finset (Γ →* ℂ) := s.toFinset ∪ t.toFinset with hu`. Establish `hs : s.toFinset ⊆ u` using `Finset.subset_union_left`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : t.toFinset ⊆ u` using `Finset.subset_union_right`. Establish `lin` using `linearIndependent_iff'.1 (linearIndependent_monoidHom Γ ℂ) u (fun f => (s.count f : ℂ) - (t.count f : ℂ)) (by`. Use function extensionality and compare the values at `g`. Establish `e` using `h g`. Rewrite `e` using `[key u s hs g, key u t ht g]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply, sub_mul, Finset.sum_sub_distrib]`. Conclude with `sub_eq_zero.2 e)`. Use extensionality with `f`. Distinguish the cases in `hf : f ∈ u`. Use `lin f hf` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_eq_zero.1 this` after adjusting the coercions. Establish `h1 : f ∉ s` using `fun m => hf (hs (by simpa using m))`. Establish `h2 : f ∉ t` using `fun m => hf (ht (by simpa using m))`. Rewrite using `[Multiset.count_eq_zero.2 h1, Multiset.count_eq_zero.2 h2]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qf50.multiset_eq_of_sum :
     ∀ {Γ : Type} [inst : Monoid Γ] (s t : Multiset (Γ →* ℂ)),

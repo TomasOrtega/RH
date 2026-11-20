@@ -7,7 +7,7 @@ open scoped WithZero TensorProduct
 namespace GlobalTheory.CNorm
 
 /- English proof (translation)
-Unfold `pTor`. Conclude with `Nat.card_congr (Equiv.subtypeEquivRight fun x => by`. Simplify using `only [Subgroup.mem_inf, MonoidHom.mem_ker, powMonoidHom_apply])`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pTor_eq_card_inf_ker (p : ℕ) {G : Type} [CommGroup G] (U : Subgroup G) :
     pTor p U = Nat.card (U ⊓ (powMonoidHom p : G →* G).ker : Subgroup G) := by
@@ -16,21 +16,21 @@ theorem pTor_eq_card_inf_ker (p : ℕ) {G : Type} [CommGroup G] (U : Subgroup G)
     simp only [Subgroup.mem_inf, MonoidHom.mem_ker, powMonoidHom_apply])
 
 /- English proof (translation)
-Introduce `p A A' _ _ g hIK hTK hIR hTR`. Establish `hcomm : (powMonoidHom p : A' →* A').comp g = g.comp (powMonoidHom p : A →* A)`. Use extensionality with `a`. Simplify using `[map_pow]`. Establish `hRp : pows p g.range = (powMonoidHom p : A →* A).range.map g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [pows, MonoidHom.range_eq_map, Subgroup.map_map, hcomm]`. Establish `hKpow : g.ker.map (powMonoidHom p : A →* A) ≤ g.ker`. Introduce and unpack `_ ⟨k, hk, rfl⟩`. Conclude with `g.ker.pow_mem hk p`. Establish `eA : pIdx p (⊤ : Subgroup A) = (powMonoidHom p : A →* A).range.relIndex g.ker * pIdx p g.range`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : pIdx p (⊤ : Subgroup A) = (powMonoidHom p : A →* A).range.index`. Rewrite using `[pIdx, Subgroup.relIndex_top_right, pows, ← MonoidHom.range_eq_map]`. Rewrite using `[h1, ← Subgroup.relIndex_mul_index (le_sup_left : (powMonoidHom p : A →* A).range ≤ (powMonoidHom p : A →* A).range ⊔ g.ker), Subgroup.relIndex_sup_left, ← Subgroup.comap_map_eq, Subgroup.index_comap, pIdx, hRp]`. Establish `eK : pIdx p g.ker = (g.ker.map (powMonoidHom p : A →* A)).relIndex ((powMonoidHom p : A →* A).range ⊓ g.ker) * (powMonoidHom p : A →* A).range.relIndex g.ker`. Establish `h0 : pIdx p g.ker = (g.ker.map (powMonoidHom p : A →* A)).relIndex g.ker` using `rfl`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[h0, ← Subgroup.relIndex_mul_relIndex _ ((powMonoidHom p : A →* A).range ⊓ g.ker) _ (le_inf (Subgroup.map_le_range _ _) hKpow) inf_le_right, Subgroup.inf_relIndex_right]`. Establish `hB : g.ker.comap (powMonoidHom p : A →* A) = (powMonoidHom p : A' →* A').ker.comap g`. Use extensionality with `a`. Simplify using `[MonoidHom.mem_ker, map_pow]`. Establish `hKB : g.ker ≤ g.ker.comap (powMonoidHom p : A →* A)` using `fun x hx => g.ker.pow_mem hx p`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQB : (powMonoidHom p : A →* A).ker ≤ g.ker.comap (powMonoidHom p : A →* A)`. Introduce `x hx`. Rewrite `hx` using `[MonoidHom.mem_ker]`. Simplify using `[Subgroup.mem_comap, hx]`. Establish `eR : pTor p g.range = g.ker.relIndex (powMonoidHom p : A →* A).ker * (g.ker.map (powMonoidHom p : A →* A)).relIndex ((powMonoidHom p : A →* A).range ⊓ g.ker)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : pTor p g.range = g.ker.relIndex (g.ker.comap (powMonoidHom p : A →* A))`. Rewrite using `[pTor_eq_card_inf_ker, Subgroup.relIndex_ker, hB, Subgroup.map_comap_eq]`. Establish `h2 : (g.ker ⊔ (powMonoidHom p : A →* A).ker).relIndex (g.ker.comap (powMonoidHom p : A →* A)) = (g.ker.map (powMonoidHom p : A →* A)).relIndex ((powMonoidHom p : A →* A).range ⊓ g.ker)`. Rewrite using `[← Subgroup.comap_map_eq, Subgroup.relIndex_comap, Subgroup.map_comap_eq]`. Rewrite using `[h1, ← Subgroup.relIndex_mul_relIndex g.ker (g.ker ⊔ (powMonoidHom p : A →* A).ker) _ le_sup_left (sup_le hKB hQB), h2, Subgroup.relIndex_sup_left]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `eT : pTor p (⊤ : Subgroup A) = pTor p g.ker * g.ker.relIndex (powMonoidHom p : A →* A).ker`. Establish `h` using `Subgroup.relIndex_mul_relIndex ⊥ (g.ker ⊓ (powMonoidHom p : A →* A).ker) (powMonoidHom p : A →* A).ker bot_le inf_le_right`. Rewrite `h` using `[Subgroup.relIndex_bot_left, Subgroup.relIndex_bot_left, Subgroup.inf_relIndex_right]`. Rewrite using `[pTor_eq_card_inf_ker, pTor_eq_card_inf_ker, top_inf_eq, ← h]`. Rewrite `hIK`, the goal using `[eK]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hTR`, the goal using `[eR]`. Rewrite using `[eA, eT]`. Use `⟨mul_ne_zero (right_ne_zero_of_mul hIK) hIR, mul_ne_zero hTK (left_ne_zero_of_mul hTR), ?_⟩` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem pIdx_pTor_ker_range :
     ∀ (p : ℕ) (A A' : Type) [CommGroup A] [CommGroup A'] (g : A →* A'), pIdx p g.ker ≠ 0 → pTor p g.ker ≠ 0 → pIdx p g.range ≠ 0 → pTor p g.range ≠ 0 → pIdx p (⊤ : Subgroup A) ≠ 0 ∧ pTor p (⊤ : Subgroup A) ≠ 0 ∧ pIdx p (⊤ : Subgroup A) * pTor p g.ker * pTor p g.range = pIdx p g.ker * pIdx p g.range * pTor p (⊤ : Subgroup A) := by

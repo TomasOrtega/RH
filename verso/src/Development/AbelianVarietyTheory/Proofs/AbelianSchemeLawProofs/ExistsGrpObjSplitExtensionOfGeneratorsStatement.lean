@@ -8,7 +8,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 /- English proof (citation)
-Apply `GlobalTheory.exists_grpObj_gtDatum_of_generators` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FAbelianSchemeLawProofs%2FExistsGrpObjSplitExtensionOfGenerators.lean&line=456#L456)
 -/

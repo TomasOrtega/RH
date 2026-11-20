@@ -4,15 +4,13 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped Pointwise
 
 /- English proof (translation)
-Introduce `P _ f n hff hk`. Take `⟨hkf, hkn⟩` from `hk`. Establish `hrange : CardLe f.range n`. Use `CardLe.of_injective ⟨hkf, hkn⟩ (fun y => (⟨y.1, ?_⟩ : f.ker)) ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `y.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[AddMonoidHom.mem_ker, ← hx]`. Conclude with `hff x`. Introduce `a b hab`. Establish `h` using `congrArg Subtype.val hab`. Conclude with `Subtype.ext h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hrf, hrn⟩` from `hrange`. Establish `e` using `QuotientAddGroup.quotientKerEquivRange f`. Establish `hqf : Finite (P ⧸ f.ker)` using `Finite.of_equiv _ e.toEquiv.symm`. Establish `hq : Nat.card (P ⧸ f.ker) ≤ n`. Rewrite using `[Nat.card_congr e.toEquiv]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hrn`. Establish `hcard` using `AddSubgroup.card_eq_card_quotient_mul_card_addSubgroup f.ker`. Establish `hpos1 : 0 < Nat.card (P ⧸ f.ker)` using `Nat.card_pos`. Establish `hpos2 : 0 < Nat.card f.ker` using `Nat.card_pos`. Establish `hfin : Finite P` using `Nat.finite_of_card_ne_zero (by rw [hcard]; positivity)`.
-
-Use `⟨hfin, ?_⟩` and prove the remaining obligations. Rewrite using `[hcard, sq]`. Conclude with `Nat.mul_le_mul hq hkn`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Two.sqZero :
     ∀ (P : Type) [AddCommGroup P] (f : P →+ P) (n : ℕ), (∀ x, f (f x) = 0) → CardLe f.ker n → CardLe P (n ^ 2) := by

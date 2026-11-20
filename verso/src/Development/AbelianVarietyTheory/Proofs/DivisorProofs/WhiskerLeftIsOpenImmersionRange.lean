@@ -7,15 +7,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `S A T Z z hz`. Establish `hc : pullback.snd A.hom Z.hom ≫ z.left = (A ◁ z).left ≫ pullback.snd A.hom T.hom`. Rewrite using `[Over.whiskerLeft_left, pullback.lift_snd]`. Establish `hsq : IsPullback (pullback.snd A.hom Z.hom) (A ◁ z).left z.left (pullback.snd A.hom T.hom)`. Use `IsPullback.of_bot (v₂₁ := pullback.fst A.hom T.hom) (v₂₂ := T.hom) (h₃₁ := A.hom) ?_ hc (IsPullback.of_hasPullback A.hom T.hom).flip` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1 : (A ◁ z).left ≫ pullback.fst A.hom T.hom = pullback.fst A.hom Z.hom`. Rewrite using `[Over.whiskerLeft_left, pullback.lift_fst, Category.comp_id]`. Establish `e2 : z.left ≫ T.hom = Z.hom` using `Over.w z`. Rewrite using `[e1, e2]`. Conclude with `(IsPullback.of_hasPullback A.hom Z.hom).flip`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsnd : (snd A T).left = pullback.snd A.hom T.hom` using `by simp`. Use `⟨?_, fun x => ?_⟩` and prove the remaining obligations. Conclude with `MorphismProperty.of_isPullback (P := @IsOpenImmersion) hsq hz`. Rewrite using `[hsnd]`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨y, rfl⟩`. Use `⟨pullback.snd A.hom Z.hom y, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, hc, Scheme.Hom.comp_apply]`. Introduce and unpack `⟨w, hw⟩`. Take `⟨p, hp1, hp2⟩` from `Scheme.Pullback.exists_preimage_pullback (f := z.left) (g := pullback.snd A.hom T.hom) w x hw`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hsq.isoPullback.inv p, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, hsq.isoPullback_inv_snd, hp2]`.
+A detailed English derivation is pending.
 -/
 theorem whiskerLeft_isOpenImmersion_range :
     ∀ (S : Scheme.{0}) (A T Z : Over S) (z : Z ⟶ T), IsOpenImmersion z.left →

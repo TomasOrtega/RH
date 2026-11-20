@@ -5,9 +5,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CharacterLevelBoun
 open Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V UpperTheory.V.Af
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `IsCyclic.exists_generator (α := A)`. Establish `ho : orderOf z ∣ orderOf g`. Rewrite using `[orderOf_eq_card_of_forall_mem_zpowers hg]`. Conclude with `(orderOf_dvd_of_pow_eq_one hzl).trans hl`. Establish `e : monoidHomOfForallMemZpowers hg ho g = z` using `monoidHomOfForallMemZpowers_apply_gen hg ho`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨monoidHomOfForallMemZpowers hg ho, fun h => hz (by rw [← e, h, MonoidHom.one_apply]), fun a => ?_⟩` and prove the remaining obligations. Take `⟨n, rfl⟩` from `Subgroup.mem_zpowers_iff.mp (hg a)`. Rewrite using `[map_zpow, e, ← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, hzl, one_zpow]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_nontrivial_l_torsion_character {A C : Type} [Group A] [Finite A] [IsCyclic A] [CommGroup C] {l : ℕ} (hl : l ∣ Nat.card A)
     {z : C} (hz : z ≠ 1) (hzl : z ^ l = 1) : ∃ φ : A →* C, φ ≠ 1 ∧ ∀ a, φ a ^ l = 1 := by
@@ -21,19 +21,17 @@ private theorem exists_nontrivial_l_torsion_character {A C : Type} [Group A] [Fi
   rw [map_zpow, e, ← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, hzl, one_zpow]
 
 /- English proof (translation)
-Unfold `UpperTheory.V.Sd.S3.ThetaEx`. Introduce `Ω _ _ _ l _ w hw hwl`. Unfold `KillsMu`. Use `haveI : Fact w.Prime := ⟨hw⟩`. Establish `hlp : Nat.Prime l` using `Fact.out`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdvd : l ∣ Nat.card (ZMod w)ˣ`. Rewrite using `[Nat.card_eq_fintype_card, ZMod.card_units_eq_totient, Nat.totient_prime hw]`. Conclude with `(Nat.modEq_iff_dvd' hw.one_lt.le).1 hwl.symm`. Use `haveI : IsAlgClosed (Qbar l) := inferInstance`. Use `haveI : NeZero (l : Qbar l) := ⟨by exact_mod_cast hlp.ne_zero⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot (Qbar l) l`. Set `z : (Qbar l)ˣ` to `(hζ.isUnit hlp.ne_zero).unit`. Establish `hz : z ≠ 1`. Introduce `h`. Apply `hζ.ne_one hlp.one_lt` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify `congrArg Units.val h` using `[z]`. Establish `hzl : z ^ l = 1`. Use `ext`. Simplify using `[z, hζ.pow_eq_one]`. Take `⟨φ, hφ, hφl⟩` from `exists_nontrivial_l_torsion_character (A := (ZMod w)ˣ) hdvd hz hzl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use `⟨φ.comp (UpperTheory.V.Chr.cls ℚ Ω w), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Apply `hφ` to reduce the goal to its premises. Use extensionality with `u`. Take `⟨s, rfl⟩` from `(UpperTheory.V.Chr.clsOnto Ω w).1 u`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `DFunLike.congr_fun h s` as an intermediate fact. Simplify using `using this`. Use extensionality with `s`. Simplify using `[hφl]`. Introduce `s hs haveI : Fact (1 < w) := ⟨hw.one_lt⟩`.
-
-Establish `h1 : UpperTheory.V.Chr.cls ℚ Ω w s = 1` using `(UpperTheory.V.Chr.clsFacts ℚ Ω w).2.2.1 s 1 (fun ζ hζ => by`. Rewrite using `[Units.val_one, ZMod.val_one, pow_one]`. Conclude with `hs ζ hζ)`. Rewrite using `[MonoidHom.comp_apply, h1, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_theta_character_cmDatum : UpperTheory.V.Sd.S3.ThetaEx := by
   unfold UpperTheory.V.Sd.S3.ThetaEx

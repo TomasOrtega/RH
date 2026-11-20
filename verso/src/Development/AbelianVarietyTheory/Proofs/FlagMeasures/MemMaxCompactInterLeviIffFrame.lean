@@ -11,7 +11,7 @@ noncomputable def proj (T : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ) (l : ℕ) : M
   ∑ i ∈ univ.filter (fun i : Fin a => i.val < l), T i * (T i)ᴴ
 
 /- English proof (translation)
-Unfold `proj`. Rewrite using `[Matrix.conjTranspose_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem proj_conjTranspose (T : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ) (l : ℕ) : (proj T l)ᴴ = proj T l := by
   unfold proj
@@ -20,9 +20,9 @@ theorem proj_conjTranspose (T : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ) (l : ℕ)
   rw [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose]
 
 /- English proof (translation)
-Unfold `proj`. Rewrite using `[Matrix.sum_mul, Finset.sum_eq_single k]`. Rewrite using `[Matrix.mul_assoc, h1, Matrix.mul_one]`. Introduce `i _ hik`. Rewrite using `[Matrix.mul_assoc, h2 i k hik, Matrix.mul_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `hk'`. Conclude with `absurd (Finset.mem_filter.2 ⟨Finset.mem_univ k, hk⟩) hk'`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem proj_mul (T : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ) (h1 : ∀ i, (T i)ᴴ * T i = 1)
     (h2 : ∀ i k, i ≠ k → (T i)ᴴ * T k = 0) (l : ℕ) (k : Fin a) (hk : k.val < l) :
@@ -36,9 +36,9 @@ theorem proj_mul (T : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ) (h1 : ∀ i, (T i)�
     exact absurd (Finset.mem_filter.2 ⟨Finset.mem_univ k, hk⟩) hk'
 
 /- English proof (translation)
-Establish `e : A * proj T l = ∑ i ∈ univ.filter (fun i : Fin a => i.val < l), T i * c i * (T i)ᴴ`. Unfold `proj`. Rewrite using `[Matrix.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Matrix.mul_assoc, hA i]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Matrix.mul_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, proj_mul T h1 h2 l i (Finset.mem_filter.1 hi).2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem proj_keep (T : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ) (h1 : ∀ i, (T i)ᴴ * T i = 1)
     (h2 : ∀ i k, i ≠ k → (T i)ᴴ * T k = 0) (l : ℕ) (A : Matrix (Fin n) (Fin n) ℂ)
@@ -54,7 +54,7 @@ theorem proj_keep (T : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ) (h1 : ∀ i, (T i)
   rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, proj_mul T h1 h2 l i (Finset.mem_filter.1 hi).2]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_sum]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = ∑ k ∈ univ.filter (fun i : Fin a => i.val < l), T k * (T k)ᴴ := Finset.sum_congr rfl fun k hk => by rw [proj_mul T h1 h2 l k (Finset.mem_filter.1 hk).2]`. Use `_ = proj T l := rfl`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem proj_idem (T : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ) (h1 : ∀ i, (T i)ᴴ * T i = 1)
     (h2 : ∀ i k, i ≠ k → (T i)ᴴ * T k = 0) (l : ℕ) : proj T l * proj T l = proj T l := by
@@ -68,9 +68,9 @@ theorem proj_idem (T : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ) (h1 : ∀ i, (T i)
     _ = proj T l := rfl
 
 /- English proof (translation)
-Establish `hs : univ.filter (fun i : Fin a => i.val < k.val + 1) = insert k (univ.filter (fun i : Fin a => i.val < k.val))`. Use extensionality with `i`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers. Unfold `proj`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions.
 
-Rewrite using `[hs, Finset.sum_insert (by simp), add_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem proj_succ (T : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ) (k : Fin a) :
     proj T (k.val + 1) = proj T k.val + T k * (T k)ᴴ := by
@@ -83,18 +83,16 @@ theorem proj_succ (T : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ) (k : Fin a) :
   rw [hs, Finset.sum_insert (by simp), add_comm]
 
 /- English proof (translation)
-Unfold `Formalism.REAL.Jm allPos`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem Jm_allPos' (k : ℕ) : Formalism.REAL.Jm (allPos k) = 1 := by
   unfold Formalism.REAL.Jm allPos
   simp
 
 /- English proof (translation)
-Establish `hgX : g * X = X * (Xᴴ * g * X)`. Combine the equalities or inequalities in the displayed calculation. Establish `hkk : (Xᴴ * g * X)ᴴ * (Xᴴ * g * X) = 1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.mul_assoc]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = Xᴴ * gᴴ * (g * X) := by rw [hgX]`. Use `_ = Xᴴ * (gᴴ * g) * X := by simp only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hg, Matrix.mul_one, hX]`. Use `⟨⟨⟨Xᴴ * g * X, (Xᴴ * g * X)ᴴ, mul_eq_one_comm.1 hkk, hkk⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show (Xᴴ * g * X)ᴴ * Formalism.REAL.Jm (allPos m) * (Xᴴ * g * X) = Formalism.REAL.Jm (allPos m)`.
-
-Rewrite using `[Jm_allPos', Matrix.mul_one, hkk]`. Use `show g * (X * Xᴴ) = X * (Xᴴ * g * X) * Xᴴ`. Rewrite using `[← hgX, Matrix.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_compress {m : ℕ} (X : Matrix (Fin n) (Fin m) ℂ) (hX : Xᴴ * X = 1)
     (g : Matrix (Fin n) (Fin n) ℂ) (hg : gᴴ * g = 1) (hc : g * (X * Xᴴ) = X * Xᴴ * g) :
@@ -117,11 +115,11 @@ theorem exists_compress {m : ℕ} (X : Matrix (Fin n) (Fin m) ℂ) (hX : Xᴴ * 
     rw [← hgX, Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `hP : Pᴴ * T k = 0`. Simplify `congrArg Matrix.conjTranspose (h4 k)` using `[Matrix.conjTranspose_mul]`. Establish `hQ : Qᴴ * T k = 0`. Simplify `congrArg Matrix.conjTranspose (h5 k)` using `[Matrix.conjTranspose_mul]`. Establish `h3' : ∀ i k, (T i)ᴴ * (J * T k) = 0` using `fun i k => by rw [← Matrix.mul_assoc]; exact h3 i k`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[Matrix.add_mul, Matrix.add_mul, Matrix.sum_mul, Finset.sum_eq_single k]`. Simplify using `only [Matrix.add_mul, Matrix.mul_assoc, h1, h3', hP, hQ, Matrix.mul_zero, Matrix.mul_one, add_zero]`. Introduce `i _ hik`. Simplify using `only [Matrix.add_mul, Matrix.mul_assoc, h2 i k hik, h3', Matrix.mul_zero, add_zero]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ k) h`.
+A detailed English derivation is pending.
 -/
 theorem block_mul {p' q' : ℕ} (J : Matrix (Fin n) (Fin n) ℂ)
     (T : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ) (P : Matrix (Fin n) (Fin p') ℂ) (Q : Matrix (Fin n) (Fin q') ℂ)
@@ -145,18 +143,18 @@ theorem block_mul {p' q' : ℕ} (J : Matrix (Fin n) (Fin n) ℂ)
     exact absurd (Finset.mem_univ k) h
 
 /- English proof (translation)
-Establish `h : (uMat x)ᴴ * Formalism.REAL.Jm (allPos m) * uMat x = Formalism.REAL.Jm (allPos m)` using `x.2`. Rewrite `h` using `[Jm_allPos', Matrix.mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem unit_lemma_5 {m : ℕ} (x : Formalism.REAL.UJ (allPos m)) : (uMat x)ᴴ * uMat x = 1 := by
   have h : (uMat x)ᴴ * Formalism.REAL.Jm (allPos m) * uMat x = Formalism.REAL.Jm (allPos m) := x.2
   rwa [Jm_allPos', Matrix.mul_one] at h
 
 /- English proof (translation)
-Establish `hPT : Pᴴ * T k = 0`. Simplify `congrArg Matrix.conjTranspose (h4 k)` using `[Matrix.conjTranspose_mul]`. Establish `hQT : Qᴴ * T k = 0`. Simplify `congrArg Matrix.conjTranspose (h5 k)` using `[Matrix.conjTranspose_mul]`. Establish `hPJT : Pᴴ * (J * T k) = 0` using `by rw [← Matrix.mul_assoc, hPJ, hPT]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hQJT : Qᴴ * (J * T k) = 0` using `by rw [← Matrix.mul_assoc, hQJ, Matrix.neg_mul, hQT, neg_zero]`. Establish `h3' : ∀ i k, (T i)ᴴ * (J * T k) = 0` using `fun i k => by rw [← Matrix.mul_assoc]; exact h3 i k`. Establish `hJJ' : ∀ {r : ℕ} (X : Matrix (Fin n) (Fin r) ℂ), J * (J * X) = X` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, hJJ, Matrix.one_mul]`. Rewrite using `[Matrix.add_mul, Matrix.add_mul, Matrix.sum_mul, Finset.sum_eq_single k]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.add_mul, Matrix.mul_assoc, h1, h3', hJJ', hPJT, hQJT, Matrix.mul_zero, Matrix.mul_one, zero_add, add_zero]`. Introduce `i _ hik`. Simplify using `only [Matrix.add_mul, Matrix.mul_assoc, h2 i k hik, h3', hJJ', Matrix.mul_zero, add_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ k) h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem block_sum_mul_J_mul_T {p' q' : ℕ} (J : Matrix (Fin n) (Fin n) ℂ)
     (T : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ) (P : Matrix (Fin n) (Fin p') ℂ) (Q : Matrix (Fin n) (Fin q') ℂ)
@@ -184,7 +182,7 @@ private theorem block_sum_mul_J_mul_T {p' q' : ℕ} (J : Matrix (Fin n) (Fin n) 
     exact absurd (Finset.mem_univ k) h
 
 /- English proof (translation)
-Simplify using `only [Matrix.add_mul, Matrix.sum_mul, Matrix.mul_assoc, hJP, h4, hP1, hQP, Matrix.mul_zero, Matrix.mul_one, add_zero, zero_add, Finset.sum_const_zero]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem block_sum_mul_P {p' q' : ℕ} (J : Matrix (Fin n) (Fin n) ℂ)
     (T : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ) (P : Matrix (Fin n) (Fin p') ℂ) (Q : Matrix (Fin n) (Fin q') ℂ)
@@ -196,7 +194,7 @@ private theorem block_sum_mul_P {p' q' : ℕ} (J : Matrix (Fin n) (Fin n) ℂ)
     Matrix.mul_one, add_zero, zero_add, Finset.sum_const_zero]
 
 /- English proof (translation)
-Simplify using `only [Matrix.add_mul, Matrix.sum_mul, Matrix.mul_assoc, hJQ, Matrix.mul_neg, h5, hQ1, hPQ, neg_zero, Matrix.mul_zero, Matrix.mul_one, add_zero, zero_add, Finset.sum_const_zero]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem block_sum_mul_Q {p' q' : ℕ} (J : Matrix (Fin n) (Fin n) ℂ)
     (T : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ) (P : Matrix (Fin n) (Fin p') ℂ) (Q : Matrix (Fin n) (Fin q') ℂ)
@@ -208,7 +206,7 @@ private theorem block_sum_mul_Q {p' q' : ℕ} (J : Matrix (Fin n) (Fin n) ℂ)
     neg_zero, Matrix.mul_zero, Matrix.mul_one, add_zero, zero_add, Finset.sum_const_zero]
 
 /- English proof (translation)
-Simplify using `only [Matrix.conjTranspose_add, Matrix.conjTranspose_sum, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hJH, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem conjTranspose_block_sum_eq {p' q' : ℕ} (J : Matrix (Fin n) (Fin n) ℂ)
     (T : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ) (P : Matrix (Fin n) (Fin p') ℂ) (Q : Matrix (Fin n) (Fin q') ℂ)
@@ -219,7 +217,7 @@ private theorem conjTranspose_block_sum_eq {p' q' : ℕ} (J : Matrix (Fin n) (Fi
     Matrix.conjTranspose_conjTranspose, hJH, Matrix.mul_assoc]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hc, Matrix.mul_one]`. Use `_ = B * ((∑ i, (T i * (T i)ᴴ + J * T i * (T i)ᴴ * J)) + P * Pᴴ + Q * Qᴴ) := by`. Simplify using `only [Matrix.mul_add, Matrix.mul_sum, ← Matrix.mul_assoc, hT, hJT, hP, hQ]`. Use `_ = B := by rw [hc, Matrix.mul_one]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem ext_of_frame_eq {p' q' : ℕ} (J : Matrix (Fin n) (Fin n) ℂ)
     (T : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ) (P : Matrix (Fin n) (Fin p') ℂ) (Q : Matrix (Fin n) (Fin q') ℂ)
@@ -233,7 +231,7 @@ private theorem ext_of_frame_eq {p' q' : ℕ} (J : Matrix (Fin n) (Fin n) ℂ)
     _ = B := by rw [hc, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `e : proj T l *ᵥ (A *ᵥ (proj T l *ᵥ y)) = A *ᵥ (proj T l *ᵥ y)`. Simplify using `only [Matrix.mulVec_mulVec]`. Rewrite using `[proj_keep T h1 h2 l A c hA]`. Rewrite `e` using `[hy]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem proj_mulVec_mulVec_eq_of_invariant (T : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ) (h1 : ∀ i, (T i)ᴴ * T i = 1)
     (h2 : ∀ i k, i ≠ k → (T i)ᴴ * T k = 0) (l : ℕ) (A : Matrix (Fin n) (Fin n) ℂ)
@@ -245,11 +243,11 @@ private theorem proj_mulVec_mulVec_eq_of_invariant (T : ∀ i, Matrix (Fin n) (F
   rwa [hy] at e
 
 /- English proof (translation)
-Establish `key : ∀ B : Matrix (Fin n) (Fin n) ℂ, (∀ y, proj T l *ᵥ y = y → proj T l *ᵥ (B *ᵥ y) = B *ᵥ y) → proj T l * (B * proj T l) = B * proj T l`. Introduce `B hB`. Use `Matrix.toLin'.injective (LinearMap.ext fun y => ?_)` and prove the remaining obligations. Simplify using `only [Matrix.toLin'_apply]`. Establish `hz : proj T l *ᵥ (proj T l *ᵥ y) = proj T l *ᵥ y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mulVec_mulVec, proj_idem T h1 h2 l]`. Simplify using `only [← Matrix.mulVec_mulVec]`. Conclude with `hB _ hz`. Establish `e1` using `key A hA`. Establish `e2` using `key Aᴴ hA'`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : proj T l * A * proj T l = proj T l * A`. Establish `h` using `congrArg Matrix.conjTranspose e2`. Simplify `h` using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, proj_conjTranspose, Matrix.mul_assoc]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem inv_of_eq_mul_inv_mul (T : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ) (h1 : ∀ i, (T i)ᴴ * T i = 1)
     (h2 : ∀ i k, i ≠ k → (T i)ᴴ * T k = 0) (l : ℕ) (A : Matrix (Fin n) (Fin n) ℂ)
@@ -276,59 +274,51 @@ private theorem inv_of_eq_mul_inv_mul (T : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ
     _ = proj T l * A := by rw [← Matrix.mul_assoc, e3]
 
 /- English proof (translation)
-Introduce and unpack `n ε a j W p' q' T P Q ⟨h1, h2, h3, h4, h5, hP1, hQ1, hJP, hJQ, hc, hW⟩ g`. Establish `hJJ : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1` using `Formalism.REAL.Jm_mul_self ε`. Establish `hJH : (Formalism.REAL.Jm ε)ᴴ = Formalism.REAL.Jm ε` using `Formalism.REAL.Jm_conjTranspose ε`. Establish `hPJ : Pᴴ * Formalism.REAL.Jm ε = Pᴴ`. Simplify `congrArg Matrix.conjTranspose hJP` using `[Matrix.conjTranspose_mul, hJH]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hQJ : Qᴴ * Formalism.REAL.Jm ε = -Qᴴ`. Simplify `congrArg Matrix.conjTranspose hJQ` using `[Matrix.conjTranspose_mul, hJH]`. Establish `hQP : Qᴴ * P = 0`. Establish `e : Qᴴ * P = -(Qᴴ * P)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use extensionality with `x y`. Establish `e'` using `congrFun (congrFun e x) y`. Rewrite `e'` using `[Matrix.neg_apply]`. Rewrite using `[Matrix.zero_apply]`. Take the linear combination `e' / 2`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hPQ : Pᴴ * Q = 0`. Simplify `congrArg Matrix.conjTranspose hQP` using `[Matrix.conjTranspose_mul]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hK, hM⟩`. Establish `hK' : (uMat g)ᴴ * uMat g = 1` using `hK`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hM' : ∀ (l : Fin (a + 1)), ∀ y ∈ W l, uMat g *ᵥ y ∈ W l ∧ (uMat g)ᴴ *ᵥ y ∈ W l` using `hM`. Establish `hUJ : (uMat g)ᴴ * Formalism.REAL.Jm ε * uMat g = Formalism.REAL.Jm ε` using `g.2`. Establish `hgg : uMat g * (uMat g)ᴴ = 1` using `mul_eq_one_comm.1 hK'`. Establish `hgJ : uMat g * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * uMat g`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hcomm : ∀ l : Fin (a + 1), uMat g * proj T l.val = proj T l.val * uMat g` using `fun l => inv_of_eq_mul_inv_mul T h1 h2 l.val (uMat g) (fun y hy => (hW l _).1 (hM' l y ((hW l y).2 hy)).1) (fun y hy => (hW l _).1 (hM' l y ((hW l y).2 hy)).2)`. Establish `hTT : ∀ i : Fin a, uMat g * (T i * (T i)ᴴ) = T i * (T i)ᴴ * uMat g`. Introduce `i`. Establish `c1` using `hcomm i.succ`. Establish `c0` using `hcomm i.castSucc`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `c1` using `[Fin.val_succ, proj_succ T i]`. Rewrite `c0` using `[Fin.val_castSucc]`. Establish `e : T i * (T i)ᴴ = (proj T i.val + T i * (T i)ᴴ) - proj T i.val` using `by abel`. Rewrite using `[e, Matrix.mul_sub, Matrix.sub_mul, c1, c0]`. Take `⟨S, hS⟩ : ∃ S, S = ∑ i, (T i * (T i)ᴴ + Formalism.REAL.Jm ε * T i * (T i)ᴴ * Formalism.REAL.Jm ε)` from `⟨_, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hc` using `[← hS]`. Establish `hgS : uMat g * S = S * uMat g`. Rewrite using `[hS, Matrix.mul_sum, Matrix.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_add, Matrix.add_mul, hTT i]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm ε * (uMat g * (T i * (T i)ᴴ)) * Formalism.REAL.Jm ε := by rw [hgJ]; simp only [Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm ε * (T i * (T i)ᴴ * uMat g) * Formalism.REAL.Jm ε := by rw [hTT i]`.
+Reduce the equality to equality of the corresponding arguments. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_ = Formalism.REAL.Jm ε * T i * (T i)ᴴ * (uMat g * Formalism.REAL.Jm ε) := by simp only [Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm ε * T i * (T i)ᴴ * Formalism.REAL.Jm ε * uMat g := by rw [hgJ]; simp only [Matrix.mul_assoc]`. Establish `hR : P * Pᴴ + Q * Qᴴ = 1 - S` using `by rw [← hc]; abel`. Establish `hgR : uMat g * (P * Pᴴ + Q * Qᴴ) = (P * Pᴴ + Q * Qᴴ) * uMat g`. Rewrite using `[hR, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.one_mul, hgS]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRJ : (P * Pᴴ + Q * Qᴴ) * Formalism.REAL.Jm ε = P * Pᴴ - Q * Qᴴ`. Simplify using `only [Matrix.add_mul, Matrix.mul_assoc, hPJ, hQJ, Matrix.mul_neg, sub_eq_add_neg]`. Establish `hgPP : uMat g * (P * Pᴴ) = P * Pᴴ * uMat g`. Establish `e1 : ∀ R : Matrix (Fin n) (Fin n) ℂ, uMat g * R = R * uMat g → uMat g * (R + R * Formalism.REAL.Jm ε) = (R + R * Formalism.REAL.Jm ε) * uMat g`. Introduce `R hR'`.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_add, Matrix.mul_assoc]`. Use `_ = R * uMat g + R * (uMat g * Formalism.REAL.Jm ε) := by rw [hR', Matrix.mul_assoc]`. Use `_ = (R + R * Formalism.REAL.Jm ε) * uMat g := by rw [hgJ, Matrix.add_mul, Matrix.mul_assoc]`. Establish `e2` using `e1 _ hgR`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite `e2` using `[hRJ]`. Establish `hsum : P * Pᴴ + Q * Qᴴ + (P * Pᴴ - Q * Qᴴ) = P * Pᴴ + P * Pᴴ` using `by abel`. Establish `e3 : uMat g * (P * Pᴴ) + uMat g * (P * Pᴴ) = P * Pᴴ * uMat g + P * Pᴴ * uMat g`. Rewrite `e2` using `[hsum, Matrix.mul_add, Matrix.add_mul]`. Conclude with `e2`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x y`. Establish `e4` using `congrFun (congrFun e3 x) y`. Simplify using `only [Matrix.add_apply] at e4`. Take the linear combination `e4 / 2`. Establish `hgQQ : uMat g * (Q * Qᴴ) = Q * Qᴴ * uMat g`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `e : Q * Qᴴ = (P * Pᴴ + Q * Qᴴ) - P * Pᴴ` using `by abel`. Rewrite using `[e, Matrix.mul_sub, Matrix.sub_mul, hgR, hgPP]`. Use `choose k hk using fun i => exists_compress (T i) (h1 i) (uMat g) hK' (hTT i)`. Take `⟨u, hu⟩` from `exists_compress P hP1 (uMat g) hK' hgPP`. Take `⟨v, hv⟩` from `exists_compress Q hQ1 (uMat g) hK' hgQQ`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `⟨k, u, v, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_add, Matrix.mul_add]`. Use `_ = (∑ i, (T i * uMat (k i) * (T i)ᴴ + Formalism.REAL.Jm ε * T i * uMat (k i) * (T i)ᴴ * Formalism.REAL.Jm ε)) + P * uMat u * Pᴴ + Q * uMat v * Qᴴ := by`. Rewrite using `[hu, hv, hS, Matrix.mul_sum]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_add, hk i]`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm ε * (uMat g * (T i * (T i)ᴴ)) * Formalism.REAL.Jm ε := by rw [hgJ]; simp only [Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm ε * T i * uMat (k i) * (T i)ᴴ * Formalism.REAL.Jm ε := by rw [hk i]; simp only [Matrix.mul_assoc]`. Introduce and unpack `⟨k, u, v, hg⟩`. Establish `hA : ∀ i, uMat g * T i = T i * uMat (k i)` using `fun i => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hg]`. Conclude with `block_mul _ T P Q h1 h2 h3 h4 h5 _ _ _ i`. Establish `hgH : (uMat g)ᴴ = (∑ i, (T i * (uMat (k i))ᴴ * (T i)ᴴ + Formalism.REAL.Jm ε * T i * (uMat (k i))ᴴ * (T i)ᴴ * Formalism.REAL.Jm ε)) + P * (uMat u)ᴴ * Pᴴ + Q * (uMat v)ᴴ * Qᴴ`. Rewrite using `[hg]`. Conclude with `conjTranspose_block_sum_eq _ T P Q hJH _ _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hAH : ∀ i, (uMat g)ᴴ * T i = T i * (uMat (k i))ᴴ` using `fun i => by`. Rewrite using `[hgH]`. Conclude with `block_mul _ T P Q h1 h2 h3 h4 h5 _ _ _ i`. Use `Set.mem_inter ?_ ?_` and prove the remaining obligations. Use `show (uMat g)ᴴ * uMat g = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hJA : ∀ i, uMat g * (Formalism.REAL.Jm ε * T i) = Formalism.REAL.Jm ε * T i * uMat (k i)` using `fun i => by`. Rewrite using `[hg]`. Conclude with `block_sum_mul_J_mul_T _ T P Q h1 h2 h3 h4 h5 hJJ hPJ hQJ _ _ _ i`. Establish `hJAH : ∀ i, (uMat g)ᴴ * (Formalism.REAL.Jm ε * T i) = Formalism.REAL.Jm ε * T i * (uMat (k i))ᴴ` using `fun i => by`. Rewrite using `[hgH]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `block_sum_mul_J_mul_T _ T P Q h1 h2 h3 h4 h5 hJJ hPJ hQJ _ _ _ i`. Establish `hPA : uMat g * P = P * uMat u`. Rewrite using `[hg]`. Conclude with `block_sum_mul_P _ T P Q h4 hJP hP1 hQP _ _ _`. Establish `hPAH : (uMat g)ᴴ * P = P * (uMat u)ᴴ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hgH]`. Conclude with `block_sum_mul_P _ T P Q h4 hJP hP1 hQP _ _ _`. Establish `hQA : uMat g * Q = Q * uMat v`. Rewrite using `[hg]`. Conclude with `block_sum_mul_Q _ T P Q h5 hJQ hQ1 hPQ _ _ _`.
-
-Establish `hQAH : (uMat g)ᴴ * Q = Q * (uMat v)ᴴ`. Rewrite using `[hgH]`. Conclude with `block_sum_mul_Q _ T P Q h5 hJQ hQ1 hPQ _ _ _`. Use `ext_of_frame_eq _ T P Q hc _ _ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `i`.
-
-Simplify using `only [Matrix.mul_assoc, Matrix.one_mul]`. Rewrite using `[hA i, ← Matrix.mul_assoc, hAH i, Matrix.mul_assoc (T i), unit_lemma_5, Matrix.mul_one]`. Introduce `i`. Simplify using `only [Matrix.mul_assoc, Matrix.one_mul]`. Rewrite using `[hJA i, ← Matrix.mul_assoc, hJAH i, Matrix.mul_assoc (Formalism.REAL.Jm ε * T i), unit_lemma_5, Matrix.mul_one]`.
-
-Simplify using `only [Matrix.mul_assoc, Matrix.one_mul]`. Rewrite using `[hPA, ← Matrix.mul_assoc, hPAH, Matrix.mul_assoc P, unit_lemma_5, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc, Matrix.one_mul]`. Rewrite using `[hQA, ← Matrix.mul_assoc, hQAH, Matrix.mul_assoc Q, unit_lemma_5, Matrix.mul_one]`. Use `show ∀ (l : Fin (a + 1)), ∀ y ∈ W l, uMat g *ᵥ y ∈ W l ∧ (uMat g)ᴴ *ᵥ y ∈ W l`.
-
-Introduce `l y hy`. Establish `hy' : proj T l.val *ᵥ y = y` using `(hW l y).1 hy`. Conclude with `⟨(hW l _).2 (proj_mulVec_mulVec_eq_of_invariant T h1 h2 l.val _ _ hA y hy'), (hW l _).2 (proj_mulVec_mulVec_eq_of_invariant T h1 h2 l.val _ _ hAH y hy')⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_maxK_inter_flagM_iff : ∀ (n : ℕ) (ε : Fin n → Bool) (a : ℕ) (j : Fin a → ℕ) (W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)) (p' q' : ℕ) (T : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ) (P : Matrix (Fin n) (Fin p') ℂ) (Q : Matrix (Fin n) (Fin q') ℂ), ((∀ i, (T i)ᴴ * T i = 1) ∧ (∀ i k, i ≠ k → (T i)ᴴ * T k = 0) ∧ (∀ i k, (T i)ᴴ * Formalism.REAL.Jm ε * T k = 0) ∧ (∀ i, (T i)ᴴ * P = 0) ∧ (∀ i, (T i)ᴴ * Q = 0) ∧ Pᴴ * P = 1 ∧ Qᴴ * Q = 1 ∧ Formalism.REAL.Jm ε * P = P ∧ Formalism.REAL.Jm ε * Q = -Q ∧ (∑ i, (T i * (T i)ᴴ + Formalism.REAL.Jm ε * T i * (T i)ᴴ * Formalism.REAL.Jm ε)) + P * Pᴴ + Q * Qᴴ = 1 ∧ ∀ (l : Fin (a + 1)) (y : Fin n → ℂ), y ∈ W l ↔ (∑ i ∈ univ.filter (fun i : Fin a => i.val < l.val), T i * (T i)ᴴ) *ᵥ y = y) → ∀ g : Formalism.REAL.UJ ε, g ∈ maxK ε ∩ flagM ε W ↔ ∃ (k : ∀ i, Formalism.REAL.UJ (allPos (j i))) (u : Formalism.REAL.UJ (allPos p')) (v : Formalism.REAL.UJ (allPos q')), uMat g = (∑ i, (T i * uMat (k i) * (T i)ᴴ + Formalism.REAL.Jm ε * T i * uMat (k i) * (T i)ᴴ * Formalism.REAL.Jm ε)) + P * uMat u * Pᴴ + Q * uMat v * Qᴴ := by
   rintro n ε a j W p' q' T P Q ⟨h1, h2, h3, h4, h5, hP1, hQ1, hJP, hJQ, hc, hW⟩ g

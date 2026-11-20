@@ -20,11 +20,11 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m}
   {cst : LocCst X (rowSG Pr sel mu)} {L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))} {G : ChGlob X R.m} {m2 : ℕ}
 
 /- English proof (translation)
-Unfold `XiCpl1`. Rewrite using `[hphi, mul_assoc, mul_left_comm _ (phiT _ _ _ _), ← Finset.prod_mul_distrib, Units.coe_prod, ← Finset.prod_mul_distrib]`. Use `congrArg _ (Finset.prod_congr rfl fun P _ => ?_)` and prove the remaining obligations. Establish `e1 : inFr (frsF sel mu p P) (frsF sel mu q' P) x = (κ P).1.toLinearMap ∘ₗ inFr (frsF sel mu p P) (frsF sel mu p' P) x`. Rewrite using `[hfr]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `LinearMap.ext fun w => ?_` and prove the remaining obligations. Both sides reduce to the same expression. Establish `e2 : (frsF sel mu q' P).symm (repY Y) = (κ P).1 ((frsF sel mu p' P).symm (repY Y))`. Rewrite using `[hfr]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e1, e2]`. Conclude with `GlobalTheory.CoupledLaw.psiAt_target hX hPr hL (hc P) (L.h m2 al P) _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xiCpl1_moved (hX : X.Ok) (hPr : Pr.Ok) (hL : L.Ok Ch sel mu cst G m2) {u : Pr.Word} {al : L.β m2} {b : L.β (m2 + 1)}
     (p : ChPt (R := R) sel mu u m2) (p' q' : ChPt (R := R) sel mu u (m2 + 1)) (Y : Set (Sp X.E (R.N (m2 + 1))))
@@ -52,15 +52,15 @@ end Local
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Y cX ex t u μ St A dtU a hP hT' _hE hMu i hi hi2 hAw β β' x x' x₁' κ' p p' p₁' hx hp hp' hp₁' w`. Substitute `hi2` using the available equality. Take `⟨q', κ'', hq', hphi, hfr, hin⟩` from `GlobalTheory.T.chartPoint_right_translate_by_level_coupled_step A dtU a hP hT' hi β' x' x₁' κ' p' hx hp'`. Take `⟨c, hc, hχ⟩` from `GlobalTheory.T.coupledStep_chart_level_at_bad_primes A dtU a hP hT' β' κ' κ'' hin`. Establish `hst` using `GlobalTheory.T.coupledStepChartLevel_keeps_baseCoset A dtU a hP hT' β' κ' κ'' hin`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmu` using `GlobalTheory.T.stepCharacter_det_coupled_eq_prod_local A dtU a hP hT' hMu β' κ' κ'' hin`. Establish `hAw'` using `hAw β β' x x₁' x x₁' p q' p p₁' hp hq' hp hp₁' fun v _ => ⟨rfl, rfl⟩`. Rewrite using `[hAw']`. Establish `law` using `xiCpl1_moved (Ch := t.Ch) (cst := t.cst μ) hP.fields.ok t.pr_ok (t.idx_ok μ) (al := A.ib t.m2 hi β) (b := A.ib (t.m2 + 1) (cpl_lt t μ) β') p p' q' (cosetOf A (t.m2 + 1) hi β' p') κ'' c hfr hc w (hphi p w)`. Establish `hcos : cosetOf A (t.m2 + 1) hi β' q' = cosetOf A (t.m2 + 1) hi β' p'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `y`. Unfold `cosetOf y0At`. Simplify using `only [Set.mem_setOf_eq, dif_pos rfl]`. Use `forall_congr' fun P => ?_` and prove the remaining obligations. Rewrite using `[hfr P]`.
+By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hst P _`. Establish `ex1 : xiPt A t.m2 hi β β' p q' w = XiCpl1 t.Ch t.sel (t.tup μ) (t.cst μ) (t.idx μ) t.m2 (A.ib t.m2 hi β) p q' (cosetOf A (t.m2 + 1) hi β' q') w`. Unfold `xiPt`. Rewrite using `[dif_neg (lt_irrefl _), if_pos rfl]`. Establish `ex2 : xiPt A t.m2 hi β β' p p' w = XiCpl1 t.Ch t.sel (t.tup μ) (t.cst μ) (t.idx μ) t.m2 (A.ib t.m2 hi β) p p' (cosetOf A (t.m2 + 1) hi β' p') w`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `xiPt`. Rewrite using `[dif_neg (lt_irrefl _), if_pos rfl]`. Rewrite using `[ex1, ex2, hcos, hmu, ← hχ, ← map_mul, ← map_mul, mul_comm (∏ P : SB t μ, _), law]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levAt_target : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a => PtEx A a → MuLaw t u μ dtU → ∀ i hi, i = t.m2 → PtAway A a i hi →
   ∀ β β' (x : UA D i (Nat.le_of_succ_le hi)) (x' x₁' : UA D (i + 1) hi) (κ' : ((St (i + 1) hi).K β').lev.U) p p' p₁',

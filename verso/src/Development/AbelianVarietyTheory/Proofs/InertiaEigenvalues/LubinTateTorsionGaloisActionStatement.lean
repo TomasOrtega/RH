@@ -10,7 +10,7 @@ open NumberField IsDedekindDomain ValuativeRel Formalism.ConjugateSelfDual Recip
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.localArtinMap_unitUniformizerPow_lubinTateTorsion | exact GlobalTheory.localArtinMap_unitUniformizerPow_lubinTateTorsion | (intros; apply GlobalTheory.localArtinMap_unitUniformizerPow_lubinTateTorsion <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.lubin_tate_torsion_galois_action : ∀ (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     (Ω : Type) [Field Ω] [ValuativeRel Ω] [TopologicalSpace Ω] [IsValuativeTopology Ω] [Algebra K Ω]

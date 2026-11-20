@@ -20,9 +20,7 @@ open CategoryTheory AlgebraicGeometry GroundTheory.PAdicHodge GlobalTheory.LogCr
 namespace CrystallineSemistableComparison.Pb
 
 /- English proof (translation)
-Establish `hfin` using `GlobalTheory.T.filtered_module_finite_of_graded (sFil Q) (fun r r' h T => (isFil Q).anti h T) (d + 1) (fun r _ j' => hgr r j') j`. Rewrite `hfin` using `[Nat.cast_add, Nat.cast_one]`. Establish `ha : ∀ T, (sFil Q 0).S T = ⊤` using `fun T => (isFil Q).top 0 le_rfl T`. Establish `hb` using `GlobalTheory.T.square_pull_bijective_of_acyclic (sFil Q 0) (sFil Q (↑d + 1)) ha ?hv j`. Conclude with `Module.Finite.of_surjective (hM := hfin) (LinearEquiv.ofBijective _ hb).symm.toLinearMap (LinearEquiv.ofBijective _ hb).symm.surjective`.
-
-Conclude with `hvan`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma isHecke_div_and_resEtaPow_div {b : Base} {L : b.Fun} (Q : ObjectProperty (Thick L)) (d : ℕ)
     (hvan : ∀ j, Subsingleton (CH.H (sq (sFil Q (↑d + 1)) (IdF.bot (sP Q).A)) j))
@@ -38,11 +36,11 @@ private lemma isHecke_div_and_resEtaPow_div {b : Base} {L : b.Fun} (Q : ObjectPr
   · exact hvan
 
 /- English proof (translation)
-Take `⟨U⟩` from `(CrystallineSemistableComparison.Pb.cov_ex q).1 inferInstance`. Use `GlobalTheory.T.finite_length_witt_cohomology q ρ j ?_` and prove the remaining obligations. Establish `hvan` using `GlobalTheory.T.witt_level_one_vanish_above_dim q ρ U (Finset.univ.sup U.d) (fun α => Finset.le_sup (Finset.mem_univ α))`. Establish `hfin` using `isHecke_div_and_resEtaPow_div _ _ hvan ?hN ?hgr j`. Use `Module.Finite.of_surjective (hM := hfin) (LinearEquiv.ofBijective ((incl ?hle).o.pull j) ?hb).symm.toLinearMap (LinearEquiv.surjective _)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `T hT`. Conclude with `⟨hT.1, ⊤, Set.mem_singleton _, by simp [InU]⟩`. Use `(CrystallineSemistableComparison.Pb.zar ⊤ ?u (Set.range U.U) {⊤} _ ?hcov j).2.2` and prove the remaining obligations. Conclude with `Or.inr ⟨(Fact.out : l.Prime).ne_zero, Or.inl rfl⟩`. Introduce `W hW`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Prove the second alternative. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Set.mem_singleton_iff.mp hW, sSup_range, U.cover]`. Conclude with `GlobalTheory.T.truncated_witt_isNoetherian`. Conclude with `GlobalTheory.T.witt_level_one_graded_finite q ρ U`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wittCohomology_finite_length {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] [PerfectRing k l] {O : Type} [CommRing O]
     {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of O)) [IsProper q] [Smooth q] (ρ : O →+* k) (j : ℕ) :
@@ -63,7 +61,7 @@ theorem wittCohomology_finite_length {l : ℕ} [Fact l.Prime] {k : Type} [Field 
   · exact GlobalTheory.T.witt_level_one_graded_finite q ρ U
 
 /- English proof (translation)
-Establish `: IsProper M.p` using `sm_proper hM`. Establish `: Smooth M.p` using `hM.2`. Conclude with `wittCohomology_finite_length M.p r.ρ j`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smooth_model_finite_length_link {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (r : Res l K) (M : Model l K)
     (hM : M.Sm) (j : ℕ) : IsFiniteLength (WittVector l r.k) ((Wc.HS l (B.schFn M.p) r.ρ j).M 1) := by

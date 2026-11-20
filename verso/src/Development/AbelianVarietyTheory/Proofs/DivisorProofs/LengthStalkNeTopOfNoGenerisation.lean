@@ -7,17 +7,15 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace GlobalTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `: IsNoetherianRing B` using `IsLocalization.isNoetherianRing p.primeCompl B inferInstance`. Establish `: Module.Finite B N` using `Module.Finite.of_isLocalizedModule p.primeCompl f`. Establish `: IsLocalRing B` using `IsLocalization.AtPrime.isLocalRing B p`. Establish `: IsArtinianRing (B ⧸ Module.annihilator B N)`. Rewrite using `[isArtinianRing_iff_isNoetherianRing_krullDimLE_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨inferInstance, Ring.krullDimLE_zero_iff.mpr fun Q hQ => ?_⟩` and prove the remaining obligations. Set `Q'` to `Q.comap (Ideal.Quotient.mk (Module.annihilator B N))`. Establish `hQ' : Q'.IsPrime` using `Ideal.comap_isPrime _ _`. Establish `h1 : Module.annihilator A M ≤ Q'.comap (algebraMap A B)`. Introduce `a ha`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: algebraMap A B a ∈ Module.annihilator B N`. Rewrite using `[← map_annihilator_of_isLocalizedModule p.primeCompl f]`. Conclude with `Ideal.mem_map_of_mem _ ha`. Simplify using `only [Q', Ideal.mem_comap]`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.2 this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Q.zero_mem`. Establish `h2 : Q'.comap (algebraMap A B) ≤ p`. Rewrite using `[← IsLocalization.AtPrime.comap_maximalIdeal B p]`. Conclude with `Ideal.comap_mono (IsLocalRing.le_maximalIdeal hQ'.ne_top)`. Establish `h3 : Ideal.under A Q' = p` using `h _ (Ideal.comap_isPrime _ _) h1 h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : Q' = IsLocalRing.maximalIdeal B`. Rewrite using `[← IsLocalization.map_comap p.primeCompl B Q', h3, IsLocalization.AtPrime.map_eq_maximalIdeal]`. Establish `h5 : Q'.IsMaximal` using `h4 ▸ IsLocalRing.maximalIdeal.isMaximal B`. Establish `h6` using `Ideal.map_eq_top_or_isMaximal_of_surjective (Ideal.Quotient.mk (Module.annihilator B N)) Ideal.Quotient.mk_surjective h5`. Rewrite `h6` using `[Ideal.map_comap_of_surjective _ Ideal.Quotient.mk_surjective]`.
-
-Conclude with `h6.resolve_left hQ.ne_top`. Conclude with `isFiniteLength_of_isArtinianRing_annihilator`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFiniteLength_localized_of_minimal_prime {A B M N : Type*} [CommRing A] [CommRing B]
     [IsNoetherianRing A] [Algebra A B] (p : Ideal A) [p.IsPrime] [IsLocalization.AtPrime B p]
@@ -56,15 +54,13 @@ theorem isFiniteLength_localized_of_minimal_prime {A B M N : Type*} [CommRing A]
   exact isFiniteLength_of_isArtinianRing_annihilator
 
 /- English proof (translation)
-Take `⟨U, hU, hx⟩` from `QCoh.exists_affine_mem w`. Take `⟨x, rfl⟩ : ∃ x' : U, x' = w` from `⟨⟨w, hx⟩, rfl⟩`. Use `hU.isLocalization_stalk x` as an intermediate fact. Use `QCoh.isLocalizedModule_germLinear F hU x` as an intermediate fact. Use `QCoh.finite_sections F hU` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsNoetherianRing Γ(X, U)` using `IsLocallyNoetherian.component_noetherian ⟨U, hU⟩`. Rewrite using `[Module.length_ne_top_iff]`. Use `isFiniteLength_localized_of_minimal_prime (hU.primeIdealOf x).asIdeal (QCoh.germLinear F x) fun q hq h1 h2 => ?_` and prove the remaining obligations. Set `P : PrimeSpectrum Γ(X, U)` to `⟨q, hq⟩`. Establish `hP : hU.fromSpec P ∈ QCoh.support F`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: P ∈ Module.support Γ(X, U) Γ(F, U)` using `Module.mem_support_iff_of_finite.2 h1`. Rewrite `this` using `[← QCoh.fromSpec_preimage_support F hU]`. Conclude with `this`. Establish `hs : P ⤳ hU.primeIdealOf x` using `(PrimeSpectrum.le_iff_specializes _ _).1 h2`. Establish `hs' : hU.fromSpec P ⤳ (x : X)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hU.fromSpec_primeIdealOf x]`. Conclude with `hs.map hU.fromSpec.continuous`. Establish `e` using `h _ hP (specializes_iff_mem_closure.1 hs')`. Rewrite `e` using `[← hU.fromSpec_primeIdealOf x]`. Establish `e' : P = hU.primeIdealOf x` using `hU.fromSpec.isOpenEmbedding.injective e`.
-
-Conclude with `congrArg PrimeSpectrum.asIdeal e'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem QCoh.length_stalk_ne_top_of_no_generisation (X : Scheme.{0}) [IsLocallyNoetherian X]
     (F : X.Modules) [GlobalTheory.QCoh.IsFiniteQC F] (w : X)

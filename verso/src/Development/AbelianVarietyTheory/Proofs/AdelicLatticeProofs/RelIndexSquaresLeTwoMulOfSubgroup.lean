@@ -6,15 +6,13 @@ open scoped WithZero
 namespace GlobalTheory.QNorm
 
 /- English proof (translation)
-Distinguish the cases in `hK : K ≤ H`. Rewrite using `[Subgroup.relIndex_eq_one.mpr hK]`. Evaluate the numerical expressions. Take `⟨a, haK, haH⟩` from `SetLike.not_le_iff_exists.mp hK`. Establish `ha` using `(h a haK).resolve_left haH`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `le_of_eq` to reduce the goal to its premises. Unfold `Subgroup.relIndex`. Rewrite using `[Subgroup.index_eq_two_iff]`. Use `⟨⟨a⁻¹, K.inv_mem haK⟩, fun b => ?_⟩` and prove the remaining obligations. Simplify using `only [Subgroup.mem_subgroupOf, Subgroup.coe_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hb : (b : G) ∈ H`. Use `right`. Use `⟨hb, fun hba => haH ?_⟩` and prove the remaining obligations. Use `H.mul_mem hb (H.inv_mem hba)` as an intermediate fact. Simplify using `using this`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `left`. Use `⟨?_, hb⟩` and prove the remaining obligations. Use `H.mul_mem ((h b b.2).resolve_left hb) (H.inv_mem ha)` as an intermediate fact. Establish `e : (b : G) * ε⁻¹ * (a * ε⁻¹)⁻¹ = b * a⁻¹`. Rewrite using `[mul_inv_rev, inv_inv, mul_assoc, inv_mul_cancel_left]`.
-
-Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem relIndex_le_two_of_coset {G : Type} [CommGroup G] (H K : Subgroup G) (ε : G)
     (h : ∀ x ∈ K, x ∈ H ∨ x * ε⁻¹ ∈ H) : H.relIndex K ≤ 2 := by
@@ -40,21 +38,19 @@ theorem relIndex_le_two_of_coset {G : Type} [CommGroup G] (H K : Subgroup G) (ε
       rwa [e] at this
 
 /- English proof (translation)
-Introduce `G _ U H ε hHU hfin hε hsq`. Establish `hle : ∀ V : Subgroup G, sqs V ≤ V`. Introduce and unpack `V x ⟨y, hy, rfl⟩`. Conclude with `V.pow_mem hy 2`. Establish `hmono : sqs H ≤ sqs U` using `Subgroup.map_mono hHU`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `Subgroup.relIndex_mul_relIndex (sqs H) H U (hle H) hHU`. Establish `h2` using `Subgroup.relIndex_mul_relIndex (sqs H) (sqs U) U hmono (hle U)`. Use `set H' : Subgroup G := (sqs H).comap (powMonoidHom 2) with hH'`. Establish `h3 : H'.relIndex U = (sqs H).relIndex (sqs U)`. Rewrite using `[hH', Subgroup.relIndex_comap]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hHH' : H ≤ H' ⊓ U` using `le_inf (Subgroup.le_comap_map _ _) hHU`. Establish `h4` using `Subgroup.relIndex_mul_relIndex H (H' ⊓ U) U hHH' inf_le_right`. Rewrite `h4` using `[Subgroup.inf_relIndex_right, h3]`. Establish `h5 : H.relIndex (H' ⊓ U) ≤ 2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Apply `relIndex_le_two_of_coset H _ ε` to reduce the goal to its premises. Introduce and unpack `x ⟨⟨y, hy, hxy⟩, -⟩`. Simplify using `only [powMonoidHom_apply] at hxy`. Establish `: (x * y⁻¹) ^ 2 = 1` using `by rw [mul_pow, ← hxy, inv_pow, mul_inv_cancel]`. Break down `hε _ this with h | h` into its components or cases.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `left`. Rewrite `h` using `[mul_inv_eq_one]`. Rewrite using `[h]`. Conclude with `hy`. Use `right`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : x * ε⁻¹ = y`. Rewrite using `[← h, mul_inv_rev, inv_inv, mul_comm y, mul_inv_cancel_left]`. Rewrite using `[e]`. Conclude with `hy`. Establish `hne : (sqs H).relIndex (sqs U) * (sqs U).relIndex U ≠ 0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[h2, ← h1]`. Conclude with `mul_ne_zero hsq hfin`. Take `⟨hb, ha⟩` from `mul_ne_zero_iff.mp hne`. Use `⟨ha, ?_⟩` and prove the remaining obligations. Apply `Nat.le_of_mul_le_mul_left _ (Nat.pos_of_ne_zero hb)` to reduce the goal to its premises.
-
-Rewrite using `[h2, ← h1, ← h4]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem relIndex_sqs_le_two_mul :
     ∀ (G : Type) [CommGroup G] (U H : Subgroup G) (ε : G), H ≤ U → H.relIndex U ≠ 0 →

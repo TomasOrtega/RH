@@ -25,11 +25,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   (hj : j ≫ genStr Z ≫ spMap e.toRingHom = X.str)
 
 /- English proof (translation)
-Establish `hc : Continuous (cxOf e σ hj)` using `continuous_induced_rng.2 ((continuous_comp (C := ℂ) j).comp continuous_subtype_val)`. Use `⟨IsEmbedding.of_comp hc continuous_subtype_val (((isOpenEmbedding_comp (C := ℂ) j).isEmbedding).comp IsEmbedding.subtypeVal), ?_⟩` and prove the remaining obligations. Establish `hr : Set.range (cxOf e σ hj) = Subtype.val ⁻¹' Set.range fun x : Sp ℂ ⟶ X.X => x ≫ j`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨x.1, rfl⟩`. Introduce and unpack `⟨x, hx⟩ replace hx : x ≫ j = y.1 := hx`. Use `⟨⟨x, ?_⟩, Subtype.ext hx⟩` and prove the remaining obligations. Rewrite using `[← hj, ← Category.assoc, hx, ← Category.assoc, y.2, ← Spec.map_comp]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[hr]`. Conclude with `(isOpenEmbedding_comp (C := ℂ) j).isOpen_range.preimage continuous_subtype_val`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpenEmbedding_cxOf [IsOpenImmersion j] : IsOpenEmbedding (cxOf e σ hj) := by
   have hc : Continuous (cxOf e σ hj) :=
@@ -52,14 +52,14 @@ theorem isOpenEmbedding_cxOf [IsOpenImmersion j] : IsOpenEmbedding (cxOf e σ hj
 variable [IsOpenImmersion j]
 
 /- English proof (translation)
-The claim follows from `le_preimage_comp z.1 j (j.preimage_image_eq W).ge hz`.
+A detailed English derivation is pending.
 -/
 theorem le_preimage_cxOf (W : X.X.Opens) {z : CxPts X.str (σ.comp e.toRingHom)}
     (hz : z ∈ ptsIn X.str (σ.comp e.toRingHom) W) : ⊤ ≤ (cxOf e σ hj z).1 ⁻¹ᵁ (j ''ᵁ W) :=
   le_preimage_comp z.1 j (j.preimage_image_eq W).ge hz
 
 /- English proof (translation)
-Establish `hle : W ≤ j ⁻¹ᵁ j ''ᵁ W` using `(j.preimage_image_eq W).ge`. Express the relevant statement in the definitionally equal form `valR z.1 W g = valR (z.1 ≫ j) (j ''ᵁ W) _`. Rewrite using `[← valR_appLE z.1 j hle hz, ← CommRingCat.comp_apply, Scheme.Hom.appIso_inv_appLE]`. Conclude with `(valR_res z.1 le_rfl hz g).symm`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_eq_valAt'_cxOf (W : X.X.Opens) (g : Γ(X.X, W)) {z : CxPts X.str (σ.comp e.toRingHom)}
     (hz : z ∈ ptsIn X.str (σ.comp e.toRingHom) W) :
@@ -74,9 +74,7 @@ end Transfer
 open GlobalTheory.Points Filter Topology
 
 /- English proof (translation)
-Establish `hl : (fderiv ℂ Φ.symm (Φ x)).comp (fderiv ℂ Φ x) = ContinuousLinearMap.id ℂ E₁` using `((h₂.hasFDerivAt.comp x h₁.hasFDerivAt).congr_of_eventuallyEq (EventuallyEq.symm (Φ.eventually_left_inverse hx : Φ.symm ∘ Φ =ᶠ[𝓝 x] id))).unique (hasFDerivAt_id x)`. Establish `h₁' : HasFDerivAt Φ (fderiv ℂ Φ x) (Φ.symm (Φ x))`. Rewrite using `[Φ.left_inv hx]`. Conclude with `h₁.hasFDerivAt`. Establish `hr : (fderiv ℂ Φ x).comp (fderiv ℂ Φ.symm (Φ x)) = ContinuousLinearMap.id ℂ E₂` using `((h₁'.comp (Φ x) h₂.hasFDerivAt).congr_of_eventuallyEq (EventuallyEq.symm (Φ.eventually_right_inverse' hx : Φ ∘ Φ.symm =ᶠ[𝓝 (Φ x)] id))).unique (hasFDerivAt_id (Φ x))`.
-
-Conclude with `(ContinuousLinearEquiv.equivOfInverse (fderiv ℂ Φ x) (fderiv ℂ Φ.symm (Φ x)) (fun v => DFunLike.congr_fun hl v) (fun v => DFunLike.congr_fun hr v)).toLinearEquiv.finrank_eq`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finrank_eq_of_differentiableAt {E₁ E₂ : Type} [NormedAddCommGroup E₁] [NormedSpace ℂ E₁]
     [NormedAddCommGroup E₂] [NormedSpace ℂ E₂] (Φ : OpenPartialHomeomorph E₁ E₂) {x : E₁} (hx : x ∈ Φ.source)
@@ -101,7 +99,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {σ : c.F →+* ℂ}
 
 /- English proof (translation)
-The claim follows from `(h.2.2.1 U f).2.differentiableAt ((h.2.2.1 U f).1.mem_nhds ⟨hb, hU⟩)`.
+A detailed English derivation is pending.
 -/
 theorem differentiableAt_valAt'_symm {n g : ℕ} {ch₀ : OpenPartialHomeomorph (CxPts (genStr Z) σ) (Fin n → ℂ)}
     {ex : ExpMaps Z σ g} (h : IsExpChart ch₀ ex) (U : (gen Z).Opens) (f : Γ(gen Z, U)) {b : Fin n → ℂ}
@@ -112,45 +110,39 @@ theorem differentiableAt_valAt'_symm {n g : ℕ} {ch₀ : OpenPartialHomeomorph 
 end Transfer
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Y T F _ e σ X j hj hji y n g ch₀ ex hex hy0 hy00 r hr`. Use `set κ := cxOf e σ hj with hκdef`. Establish `hκ : IsOpenEmbedding κ` using `isOpenEmbedding_cxOf e σ hj`. Use `haveI : Nonempty (GlobalTheory.CxPts X.str (σ.comp e.toRingHom)) := ⟨y⟩`. Use `set χ := (hκ.toOpenPartialHomeomorph κ).trans ch₀ with hχdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hχ : ∀ u ∈ χ.target, κ (χ.symm u) = ch₀.symm u` using `fun u hu => by`. Establish `h2 : ch₀.symm u ∈ Set.range κ`. Use `hu.2` as an intermediate fact. Rewrite `this` using `[Set.mem_preimage, IsOpenEmbedding.toOpenPartialHomeomorph_target]`. Then use the resulting hypothesis. Rewrite using `[OpenPartialHomeomorph.coe_trans_symm, Function.comp_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hκ.toOpenPartialHomeomorph_right_inv κ h2`. Establish `hyχ : y ∈ χ.source` using `⟨trivial, hy0⟩`. Establish `hχy : χ y = 0` using `hy00`. Take `⟨c₁, hc₁⟩` from `GlobalTheory.AlgChart.exists_mem_source (p := X.str) (σ := σ.comp e.toRingHom) (D := X.dim) y`. Establish `hn : n = X.dim` using `by set Φ := χ.symm.trans c₁.e with hΦ`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : (0 : Fin n → ℂ) ∈ Φ.source`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hχy]`. Conclude with `χ.map_source hyχ`. Use `show χ.symm 0 ∈ c₁.e.source`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← hχy, χ.left_inv hyχ]`. Conclude with `hc₁`. Establish `h0t : (0 : Fin n → ℂ) ∈ χ.target` using `h0.1`. Establish `h1 : DifferentiableAt ℂ Φ 0`. Rewrite using `[differentiableAt_euclidean]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `a`. Establish `hev : (fun u => Φ u a) =ᶠ[𝓝 0] fun u => valAt' (ch₀.symm u).1 (j ''ᵁ c₁.U) ((j.appIso c₁.U).inv.hom (c₁.x a))` using `by filter_upwards [Φ.open_source.mem_nhds h0] with u hu`. Establish `hs : χ.symm u ∈ c₁.e.source` using `hu.2`. Use `show c₁.e (χ.symm u) a = _`. Rewrite using `[c₁.apply_eq _ hs a, ev_eq_valAt'_cxOf e σ hj _ _ (c₁.source_subset hs), show cxOf e σ hj (χ.symm u) = ch₀.symm u from hχ u hu.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `DifferentiableAt.congr_of_eventuallyEq ?_ hev` and prove the remaining obligations. Use `differentiableAt_valAt'_symm hex _ _ h0t.1 ?_` and prove the remaining obligations. Rewrite using `[← hχ 0 h0t]`. Conclude with `le_preimage_cxOf e σ hj _ (c₁.source_subset h0.2)`. Establish `h2 : DifferentiableAt ℂ Φ.symm (Φ 0)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hB : IsOpen Φ.target` using `Φ.open_target`. Establish `hΦ0 : Φ 0 ∈ Φ.target` using `Φ.map_source h0`. Establish `hsub : Φ.target ⊆ c₁.e.target` using `fun w hw => hw.1`. Establish `hmaps : Set.MapsTo (fun w => κ (c₁.e.symm w)) Φ.target ch₀.source` using `fun w hw => hw.2.2`. Establish `hhol : IsHolTo Φ.target (fun w => (κ (c₁.e.symm w)).1)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `U f`. Establish `hset : {b ∈ Φ.target | ⊤ ≤ (κ (c₁.e.symm b)).1 ⁻¹ᵁ U} = Φ.target ∩ c₁.e.symm ⁻¹' ptsIn X.str (σ.comp e.toRingHom) (j ⁻¹ᵁ U)` using `rfl`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hset]`. Conclude with `(c₁.e.continuousOn_symm.mono hsub).isOpen_inter_preimage hB (isOpen_ptsIn _)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hset]`. Use `((c₁.holo (j ⁻¹ᵁ U) ((j.app U).hom f)).mono fun w hw => ⟨hsub hw.1, hw.2⟩).congr fun w _ => ?_` and prove the remaining obligations. Conclude with `valR_comp (c₁.e.symm w).1 j U f`. Rewrite using `[differentiableAt_pi]`. Introduce `k`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hd` using `(hex.2.1 k (ReciprocityTheory.L2DbarEstimates.V X.dim) Φ.target (fun w => κ (c₁.e.symm w)) hB hhol hmaps).differentiableAt (hB.mem_nhds hΦ0)`. Conclude with `hd`. Use `finrank_eq_of_differentiableAt Φ h0 h1 h2` as an intermediate fact. Simplify `this` using `[finrank_euclideanSpace_fin]`. Substitute `hn` using the available equality.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr1 : 0 < min r 1` using `lt_min hr one_pos`. Use `set r' : ℝ := min r 1 / 2 with hr'`. Establish `hr'0 : 0 < r'` using `half_pos hr1`. Establish `hr'r : r' < min r 1` using `half_lt_self hr1`. Establish `hr'c : (r' : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hr'0.ne'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `L : (Fin X.dim → ℂ) ≃L[ℂ] ReciprocityTheory.L2DbarEstimates.V X.dim` to `(ContinuousLinearEquiv.smulLeft (Units.mk0 ((r' : ℂ)⁻¹) (inv_ne_zero hr'c))).trans (EuclideanSpace.equiv (Fin X.dim) ℂ).symm`. Establish `hL : ∀ u k, (L u).ofLp k = (r' : ℂ)⁻¹ * u k`. Introduce `u k`. Simplify using `[L]`. Set `ch` to `(χ.trans (OpenPartialHomeomorph.ofSet (Metric.ball (0 : Fin X.dim → ℂ) r') Metric.isOpen_ball)).trans L.toHomeomorph.toOpenPartialHomeomorph`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hchs : ∀ v, ch.symm v = χ.symm (L.symm v)` using `fun v => rfl`. Establish `hch : ∀ z, ch z = L (χ z)` using `fun z => rfl`. Establish `hsrc : ∀ z ∈ ch.source, z ∈ χ.source ∧ χ z ∈ Metric.ball (0 : Fin X.dim → ℂ) r'` using `fun z hz => hz.1`. Establish `htgt : ∀ v ∈ ch.target, L.symm v ∈ χ.target` using `fun v hv => hv.2.2`. Use `⟨rfl, r', ch, hr'0, hr'r.trans_le (min_le_left _ _), hr'r.trans_le (min_le_right _ _), ?_, ⟨⟨hyχ, ?_⟩, trivial⟩, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `W f v hv`. Establish `hopen : IsOpen (ch.target ∩ ch.symm ⁻¹' ptsIn X.str (σ.comp e.toRingHom) W)` using `ch.continuousOn_symm.isOpen_inter_preimage ch.open_target (isOpen_ptsIn W)`. Use `DifferentiableAt.differentiableWithinAt ?_` and prove the remaining obligations. Establish `hev : (ev X.str (σ.comp e.toRingHom) W f ∘ ch.symm) =ᶠ[𝓝 v] fun w => valAt' (ch₀.symm (L.symm w)).1 (j ''ᵁ W) ((j.appIso W).inv.hom f)` using `by filter_upwards [hopen.mem_nhds hv] with w hw`. Rewrite using `[Function.comp_apply, ev_eq_valAt'_cxOf e σ hj W f hw.2, hchs, show cxOf e σ hj (χ.symm (L.symm w)) = ch₀.symm (L.symm w) from hχ _ (htgt w hw.1)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `DifferentiableAt.congr_of_eventuallyEq ?_ hev` and prove the remaining obligations. Establish `hb` using `htgt v hv.1`. Use `(differentiableAt_valAt'_symm hex (j ''ᵁ W) _ hb.1 ?_).comp v L.symm.differentiableAt` and prove the remaining obligations. Rewrite using `[← hχ _ hb]`. Conclude with `le_preimage_cxOf e σ hj W hv.2`.
+Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `show χ y ∈ Metric.ball 0 r'`. Rewrite using `[hχy]`. Conclude with `Metric.mem_ball_self hr'0`. Rewrite using `[hch, hχy, map_zero]`. Introduce `z hz`.
-
-Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram.polydisc, Set.mem_setOf_eq]`. Introduce `k`. Rewrite using `[hch, hL, norm_mul, norm_inv, Complex.norm_real, Real.norm_of_nonneg hr'0.le]`. Establish `h1` using `(hsrc z hz).2`. Rewrite `h1` using `[mem_ball_zero_iff]`.
-
-Establish `h2 : ‖χ z k‖ < r'` using `(norm_le_pi_norm (χ z) k).trans_lt h1`. Combine the equalities or inequalities in the displayed calculation. Introduce `z hz`. Use `⟨hz.1.1.2, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`.
-
-Use `show χ z k = _`. Rewrite using `[hch, hL, Fin.cast_eq_self, ← mul_assoc, mul_inv_cancel₀ hr'c, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem exists_holoChart_of_expChart : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (T : TorModel Y) (F : Type) [Field F] (e : F ≃+* c.F) (σ : c.F →+* ℂ) (X : Var F) (j : X.X ⟶ gen T.Z) (hj : j ≫ genStr T.Z ≫ spMap e.toRingHom = X.str), IsOpenImmersion j → ∀ (y : GlobalTheory.CxPts X.str (σ.comp e.toRingHom)) (n g : ℕ) (ch₀ : OpenPartialHomeomorph (GlobalTheory.CxPts (genStr T.Z) σ) (Fin n → ℂ)) (ex : ExpMaps T.Z σ g), IsExpChart ch₀ ex → cxOf e σ hj y ∈ ch₀.source → ch₀ (cxOf e σ hj y) = 0 → ∀ r : ℝ, 0 < r → ∃ (hn : n = X.dim) (r' : ℝ) (ch : OpenPartialHomeomorph (GlobalTheory.CxPts X.str (σ.comp e.toRingHom)) (ReciprocityTheory.L2DbarEstimates.V X.dim)), 0 < r' ∧ r' < r ∧ r' < 1 ∧ IsHoloChart ch ∧ y ∈ ch.source ∧ ch y = 0 ∧ (∀ z ∈ ch.source, (ch z).ofLp ∈ GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram.polydisc X.dim 1) ∧ ∀ z ∈ ch.source, cxOf e σ hj z ∈ ch₀.source ∧ ch₀ (cxOf e σ hj z) = fun k => (r' : ℂ) * (ch z).ofLp (Fin.cast hn k) := by
   intro E _ _ _ H Dw l Xo c O _ β Y T F _ e σ X j hj hji y n g ch₀ ex hex hy0 hy00 r hr

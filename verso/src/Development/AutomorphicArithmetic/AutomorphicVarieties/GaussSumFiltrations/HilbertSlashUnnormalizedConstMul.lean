@@ -9,7 +9,7 @@ open UpperHalfPlane hiding I
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply]`. Conclude with `(RingHom.map_det (Pi.evalRingHom (fun _ : InfinitePlace F => ℝ) v) _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cmp_det (v : InfinitePlace F) (h : GL (Fin 2) (InfinitePlace F → ℝ)) :
     ((cmp v h).det : ℝ) = (h : Matrix (Fin 2) (Fin 2) (InfinitePlace F → ℝ)).det v := by
@@ -17,7 +17,7 @@ theorem cmp_det (v : InfinitePlace F) (h : GL (Fin 2) (InfinitePlace F → ℝ))
   exact (RingHom.map_det (Pi.evalRingHom (fun _ : InfinitePlace F => ℝ) v) _).symm
 
 /- English proof (translation)
-Rewrite using `[← cmp_det, ← cmp_det, ← cmp_det, map_mul, map_mul, Units.val_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_mul_apply (v : InfinitePlace F) (h h' : GL (Fin 2) (InfinitePlace F → ℝ)) :
     ((h * h' : GL (Fin 2) (InfinitePlace F → ℝ)) : Matrix (Fin 2) (Fin 2) (InfinitePlace F → ℝ)).det v =
@@ -25,7 +25,7 @@ theorem det_mul_apply (v : InfinitePlace F) (h h' : GL (Fin 2) (InfinitePlace F 
   rw [← cmp_det, ← cmp_det, ← cmp_det, map_mul, map_mul, Units.val_mul]
 
 /- English proof (translation)
-Rewrite using `[← cmp_det, ← cmp_det, map_inv, map_inv, Units.val_inv_eq_inv_val]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_inv_apply (v : InfinitePlace F) (h : GL (Fin 2) (InfinitePlace F → ℝ)) :
     ((h⁻¹ : GL (Fin 2) (InfinitePlace F → ℝ)) : Matrix (Fin 2) (Fin 2) (InfinitePlace F → ℝ)).det v =
@@ -33,7 +33,7 @@ theorem det_inv_apply (v : InfinitePlace F) (h : GL (Fin 2) (InfinitePlace F →
   rw [← cmp_det, ← cmp_det, map_inv, map_inv, Units.val_inv_eq_inv_val]
 
 /- English proof (translation)
-Establish `hp : 0 < ((cmp v h').det : ℝ)` using `by rw [cmp_det]; exact hh' v`. Rewrite using `[denom_cocycle_σ, σ, if_pos hp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem denom_cmp_mul (v : InfinitePlace F) (h h' : GL (Fin 2) (InfinitePlace F → ℝ)) (hh' : Pos h') (z : ℍ) :
     denom (cmp v h * cmp v h') z = denom (cmp v h) ((cmp v h' • z : ℍ) : ℂ) * denom (cmp v h') z := by
@@ -42,7 +42,7 @@ theorem denom_cmp_mul (v : InfinitePlace F) (h h' : GL (Fin 2) (InfinitePlace F 
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Simplify using `only [act, map_mul]`. Conclude with `mul_smul _ _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem act_mul (h h' : GL (Fin 2) (InfinitePlace F → ℝ)) (z : Hn F) : act (h * h') z = act h (act h' z) := by
   funext v
@@ -50,7 +50,7 @@ theorem act_mul (h h' : GL (Fin 2) (InfinitePlace F → ℝ)) (z : Hn F) : act (
   exact mul_smul _ _ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Simplify using `only [act, map_one]`. Conclude with `one_smul _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem act_one (z : Hn F) : act (1 : GL (Fin 2) (InfinitePlace F → ℝ)) z = z := by
   funext v
@@ -58,7 +58,7 @@ theorem act_one (z : Hn F) : act (1 : GL (Fin 2) (InfinitePlace F → ℝ)) z = 
   exact one_smul _ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `only [sl0, act_mul, map_mul]`. Simplify using `only [act, denom_cmp_mul _ h h' hh', Finset.prod_mul_distrib, mul_inv, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hilbertSlashUnnormalized_mul (k : ℕ) (h h' : GL (Fin 2) (InfinitePlace F → ℝ)) (hh' : Pos h') (f : Hn F → ℂ) :
     sl0 k (h * h') f = sl0 k h' (sl0 k h f) := by
@@ -68,27 +68,25 @@ theorem hilbertSlashUnnormalized_mul (k : ℕ) (h h' : GL (Fin 2) (InfinitePlace
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `[sl0, act_one, denom_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem hilbertSlashUnnormalized_one (k : ℕ) (f : Hn F → ℂ) : sl0 k 1 f = f := by
   funext z
   simp [sl0, act_one, denom_one]
 
 /- English proof (translation)
-Simplify using `only [sl0]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hilbertSlashUnnormalized_const_mul (k : ℕ) (h : GL (Fin 2) (InfinitePlace F → ℝ)) (c : ℂ) (f : Hn F → ℂ) (z : Hn F) :
     sl0 k h (fun w => c * f w) z = c * sl0 k h f z := by
   simp only [sl0]; ring
 
 /- English proof (translation)
-Introduce `F _ _ k h h' f hh hh'`. Use `⟨fun v => ?_, fun v => ?_, hilbertSlashUnnormalized_mul k h h' hh' f, ?_, hilbertSlashUnnormalized_one k f, ?_⟩` and prove the remaining obligations. Rewrite using `[det_mul_apply]`. Conclude with `mul_pos (hh v) (hh' v)`. Rewrite using `[det_inv_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `inv_pos.mpr (hh v)`. Use function extensionality and compare the values at `z`. Establish `hprod : (∏ v, |((h * h' : GL (Fin 2) (InfinitePlace F → ℝ)) : Matrix (Fin 2) (Fin 2) (InfinitePlace F → ℝ)).det v|) = (∏ v, |(h : Matrix (Fin 2) (Fin 2) (InfinitePlace F → ℝ)).det v|) * ∏ v, |(h' : Matrix (Fin 2) (Fin 2) (InfinitePlace F → ℝ)).det v|`. Simplify using `only [det_mul_apply, abs_mul, Finset.prod_mul_distrib]`. Establish `hsl : sl k h f = fun w => ((((∏ v, |(h : Matrix (Fin 2) (Fin 2) (InfinitePlace F → ℝ)).det v|) ^ ((k : ℝ) / 2) : ℝ) : ℂ)) * sl0 k h f w` using `rfl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [sl]`. Rewrite using `[hsl, hilbertSlashUnnormalized_const_mul, hilbertSlashUnnormalized_mul k h h' hh' f, hprod, Real.mul_rpow (Finset.prod_nonneg fun v _ => abs_nonneg _) (Finset.prod_nonneg fun v _ => abs_nonneg _)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use function extensionality and compare the values at `z`.
-
-Simplify using `[sl, hilbertSlashUnnormalized_one]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem slash_cocycle : ∀ (F : Type) [Field F] [NumberField F] (k : ℕ) (h h' : GL (Fin 2) (InfinitePlace F → ℝ)) (f : Hn F → ℂ), Pos h → Pos h' → Pos (h * h') ∧ Pos h⁻¹ ∧ sl0 k (h * h') f = sl0 k h' (sl0 k h f) ∧ sl k (h * h') f = sl k h' (sl k h f) ∧ sl0 k 1 f = f ∧ sl k 1 f = f := by
   intro F _ _ k h h' f hh hh'

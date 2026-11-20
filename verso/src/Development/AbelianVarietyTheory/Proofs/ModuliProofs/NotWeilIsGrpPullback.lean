@@ -20,7 +20,7 @@ abbrev manyChart {X : Scheme.{0}} {κ : Type} (v : κ → Γ(X, ⊤)ˣ) : LB X :
   ⟨κ, fun _ => ⊤, fun i j => res inf_le_left (v i * (v j)⁻¹)⟩
 
 /- English proof (translation)
-The claim follows from `top_le_iff.1 fun _ _ => TopologicalSpace.Opens.mem_iSup.2 ⟨PUnit.unit, trivial⟩ g_self _ := map_one _ cocycle _ _ _ := by show res _ 1 * res _ 1 = res _ 1 simp only [map_one, _root_.mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem oneChart_isLB (X : Scheme.{0}) : (oneChart X).IsLB where
   cover := top_le_iff.1 fun _ _ => TopologicalSpace.Opens.mem_iSup.2 ⟨PUnit.unit, trivial⟩
@@ -30,14 +30,14 @@ theorem oneChart_isLB (X : Scheme.{0}) : (oneChart X).IsLB where
     simp only [map_one, _root_.mul_one]
 
 /- English proof (translation)
-The claim follows from `(gm_res f y (U := ⊤) (V := ⊤ ⊓ ⊤) inf_le_left ⟨trivial, trivial⟩ _).trans (by rw [map_mul, map_inv])`.
+A detailed English derivation is pending.
 -/
 theorem gm_manyChart {X Y : Scheme.{0}} {κ : Type} (v : κ → Γ(X, ⊤)ˣ) (f : Y ⟶ X) (y : Y) (i j : κ) :
     gm f y ((manyChart v).U i ⊓ (manyChart v).U j) ((manyChart v).g i j) = gm f y ⊤ (v i) * (gm f y ⊤ (v j))⁻¹ :=
   (gm_res f y (U := ⊤) (V := ⊤ ⊓ ⊤) inf_le_left ⟨trivial, trivial⟩ _).trans (by rw [map_mul, map_inv])
 
 /- English proof (translation)
-The claim follows from `top_le_iff.1 fun _ _ => TopologicalSpace.Opens.mem_iSup.2 ⟨Classical.arbitrary κ, trivial⟩ g_self i := unit_ext fun y hy => by rw [gm_res (𝟙 X) y _ hy, map_one, gm_manyChart, mul_inv_cancel] cocycle i j k := unit_ext fun y hy => by rw [map_mul, gm_res (𝟙 X) y _ hy, gm_res (𝟙 X) y …`.
+A detailed English derivation is pending.
 -/
 theorem manyChart_isLB {X : Scheme.{0}} {κ : Type} [Nonempty κ] (v : κ → Γ(X, ⊤)ˣ) : (manyChart v).IsLB where
   cover := top_le_iff.1 fun _ _ => TopologicalSpace.Opens.mem_iSup.2 ⟨Classical.arbitrary κ, trivial⟩
@@ -48,7 +48,7 @@ theorem manyChart_isLB {X : Scheme.{0}} {κ : Type} [Nonempty κ] (v : κ → Γ
       gm_manyChart, _root_.mul_assoc, inv_mul_cancel_left]
 
 /- English proof (translation)
-Use `⟨⟨fun p => res le_top (v p.2)⁻¹⟩, (isGen_iff _).2 fun Z f z j j' k k' hj hj' hk hk' => ?_⟩` and prove the remaining obligations. Establish `e : ∀ (j : (oneChart Y).ι) (k : κ), gw (L` using `oneChart Y) (L' := manyChart v) (F := F) ⟨fun p => res le_top (v p.2)⁻¹⟩ f z j k = (gm f z ⊤ (v k))⁻¹ := fun j k => (gm_res f z (V := ((oneChart Y).pull F).U (fun _ => j) ⊓ ⊤) le_top ⟨mem_pull.2 trivial, trivial⟩ _).trans (map_inv _ _)`. Rewrite using `[e, e, gm_manyChart]`. Use `show _ = gm _ _ _ 1 * _ * _`. Rewrite using `[map_one, _root_.one_mul, mul_inv_rev, inv_inv, mul_comm (gm f z ⊤ (v k')), mul_inv_cancel_right]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem manyChart_iso {X Y : Scheme.{0}} {κ : Type} (v : κ → Γ(X, ⊤)ˣ) (F : X ⟶ Y) :
     LBIso (manyChart v) ((oneChart Y).pull F) := by
@@ -61,7 +61,7 @@ theorem manyChart_iso {X Y : Scheme.{0}} {κ : Type} (v : κ → Γ(X, ⊤)ˣ) (
   rw [map_one, _root_.one_mul, mul_inv_rev, inv_inv, mul_comm (gm f z ⊤ (v k')), mul_inv_cancel_right]
 
 /- English proof (translation)
-The claim follows from `isGen_of_gm _ fun y j j' _ _ => (map_one _).trans (Eq.symm ((congrArg₂ (· * ·) (Finset.prod_eq_one fun k _ => (congrArg (· ^ ε k) (map_one _)).trans (one_zpow _)) (map_one _)).trans (_root_.mul_one _)))`.
+A detailed English derivation is pending.
 -/
 theorem one_isGen {X Y : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ) :
     (⟨fun _ => 1⟩ : LB.Gen (LB.LinComb (oneChart X) φ ε)).IsGen :=
@@ -72,17 +72,15 @@ theorem one_isGen {X Y : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Y ⟶ X
 variable {S : Scheme.{0}} {G : Over S} [GrpObj G]
 
 /- English proof (translation)
-Introduce `p`. Use `⟨⊤, trivial, ⟨⟨_, _, one_isGen _ _⟩, ⟨_, _, one_isGen _ _⟩, rfl, rfl⟩, fun θx θy h₁ h₂ => ?_⟩` and prove the remaining obligations. Establish `hi : IsIso (overRes (⊤ : T.left.Opens)).hom` using `by show IsIso ((⊤ : T.left.Opens).ι ≫ T.hom)`. Establish `: IsIso (⊤ : T.left.Opens).ι` using `inferInstanceAs (IsIso T.left.topIso.hom)`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : unitRes (⊤ : T.left.Opens) 1 = 1` using `map_one _`. Rewrite using `[e1]`. Use `clear e1 h₁ h₂`. Generalize the expression as in `overRes (⊤ : T.left.Opens) = T' at *`. Establish `hs : IsIso (snd T' G).left` using `inferInstanceAs (IsIso (pullback.snd T'.hom G.hom))`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ θ : ThetaGrp G (oneChart _) k T', ∃ a : Γ(S, ⊤)ˣ, ∀ (Z : Scheme.{0}) (r : Z ⟶ (T' ⊗ G).left) (z : Z) (J), tval θ r z J = gm (r ≫ (T' ⊗ G).hom) z ⊤ a`. Introduce `θ`. Establish `le : ⊤ ≤ LB.wchart (oneChart G.left) ![(snd T' G).left, (translPt G θ.pt).left] (fun _ => PUnit.unit)` using `fun _ _ => Set.mem_iInter.2 fun _ => trivial`. Take `⟨a, ha⟩` from `hu (pullU (inv (snd T' G).left) ⊤ (res le (θ.φ.s fun _ => PUnit.unit)))`. Use `⟨a, fun Z r z J => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `congrArg (gm (r ≫ (snd T' G).left) z ⊤) ha`. Establish `h₁` using `gm_pull (r ≫ (snd T' G).left) (inv (snd T' G).left) z ⊤ trivial (res le (θ.φ.s fun _ => PUnit.unit))`. Establish `h₂` using `gm_pull (r ≫ (snd T' G).left) G.hom z ⊤ trivial a`. Rewrite `h₁` using `[Category.assoc, IsIso.hom_inv_id, Category.comp_id]`. Rewrite `h₂` using `[Category.assoc, Over.w]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `(gm_res r z le trivial _).symm.trans (h₁.symm.trans (h.trans h₂))`. Take `⟨a, ha⟩` from `key θx`. Take `⟨b, hb⟩` from `key θy`. Rewrite using `[commIsOf_iff (oneChart_isLB _)]`. Introduce `Z r z J _`.
-
-Rewrite using `[ha, ha, hb, hb, Category.assoc, Category.assoc, Over.w, Over.w, map_one, _root_.mul_one, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weilIs_oneChart (hu : ∀ u : Γ(G.left, ⊤)ˣ, ∃ a : Γ(S, ⊤)ˣ, u = pullU G.hom ⊤ a) {T : Over S} [IsIso T.hom]
     (k : ℤ) (x y : T ⟶ G) : WeilIs G (oneChart _) k x y 1 := by
@@ -117,7 +115,7 @@ theorem weilIs_oneChart (hu : ∀ u : Γ(G.left, ⊤)ˣ, ∃ a : Γ(S, ⊤)ˣ, u
   rw [ha, ha, hb, hb, Category.assoc, Category.assoc, Over.w, Over.w, map_one, _root_.mul_one, mul_comm]
 
 /- English proof (translation)
-Establish `hJ : ∀ J, Good (manyChart v) z J` using `fun _ _ => trivial`. Use `(gen_trans (φ := ![(snd T G).left, (translPt G θ.pt).left]) (ε := ![k, -k]) θ.isGen r z ((hJ J).mem _ r) ((hJ J').mem _ r)).trans ?_` and prove the remaining obligations. Use `congr 1`. Use `(Finset.prod_congr rfl fun i _ => congrArg (· ^ _) (gm_manyChart v _ z _ _)).trans ?_` and prove the remaining obligations. Simplify using `only [Fin.prod_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem tval_manyChart {κ : Type} (v : κ → Γ(G.left, ⊤)ˣ) {k : ℤ} {T : Over S} (θ : ThetaGrp G (manyChart v) k T)
     {Z : Scheme.{0}} (r : Z ⟶ (T ⊗ G).left) (z : Z) (J J' : (Z ⟶ G.left) → κ) :
@@ -133,15 +131,15 @@ theorem tval_manyChart {κ : Type} (v : κ → Γ(G.left, ⊤)ˣ) {k : ℤ} {T :
   simp only [Fin.prod_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one]
 
 /- English proof (translation)
-Rewrite `H` using `[commIsOf_iff (manyChart_isLB _)]`. Set `r : T ⟶ T ⊗ G` to `lift (𝟙 T) 1`. Establish `s : ∀ x : T ⟶ G, (r.left ≫ (translT G x).left) ≫ (snd T G).left = r.left ≫ (translPt G x).left` using `fun x => by`. Rewrite using `[Category.assoc, ← Over.comp_left, translT, lift_snd]`. Establish `q : ∀ x y : T ⟶ G, (r.left ≫ (translT G x).left) ≫ (translPt G y).left = (y * x).left` using `fun x y => by`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Over.comp_left, ← Over.comp_left]`. Use `congr 1`. Use `show (r ≫ lift (fst T G) ((fst T G ≫ x) * snd T G)) ≫ ((fst T G ≫ y) * snd T G) = _`. Simplify using `[r, MonObj.comp_mul, comp_lift]`. Establish `hPQ : (θy.pt * θx.pt).left ≠ (θx.pt * θy.pt).left` using `fun h => hn (Over.OverMorphism.ext h.symm)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `J : (T.left ⟶ G.left) → Bool` to `fun ψ => decide (ψ = (θx.pt * θy.pt).left)`. Establish `h₁` using `H _ r.left z J (fun _ => trivial)`. Establish `h₂` using `H _ r.left z (fun _ => false) (fun _ => trivial)`. Rewrite `h₁` using `[tval_manyChart _ θx r.left z J (fun _ => false), tval_manyChart _ θy r.left z J (fun _ => false), tval_manyChart _ θx _ z J (fun _ => false), tval_manyChart _ θy _ z J (fun _ => false), s, s, q, q]`. Establish `j₁ : J (θx.pt * θy.pt).left = true` using `decide_eq_true rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `j₂ : J (θy.pt * θx.pt).left = false` using `decide_eq_false hPQ`. Rewrite `h₁` using `[j₁, j₂]`. Simplify using `only [Bool.false_eq_true, if_false, if_true, map_one, inv_one, _root_.mul_one, zpow_neg, zpow_one] at h₁`. Use `⟨(θx.pt * θy.pt).left, ?_⟩` and prove the remaining obligations. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `a₁` using `congrArg Additive.ofMul h₁`. Establish `a₂` using `congrArg Additive.ofMul h₂`. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_one] at a₁ a₂ ⊢`. Take the linear combination `(norm := abel) a₁ - a₂`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem gm_eq_one_of_commIsOf (u : Γ(G.left, ⊤)ˣ) {T : Over S}
     {θx θy : ThetaGrp G (manyChart (fun b : Bool => if b then u else 1)) 1 T} {c : Γ(T.left, ⊤)ˣ}
@@ -228,7 +226,7 @@ def heisRep (S : Scheme.{0}) : (heisFunctor S ⋙ forget _).RepresentableBy (hei
 instance (S : Scheme.{0}) : GrpObj (heisObj S) := GrpObj.ofRepresentableBy _ _ (heisRep S)
 
 /- English proof (translation)
-The claim follows from `((yonedaGrpObjIsoOfRepresentableBy _ _ (heisRep S)).hom.app (Opposite.op T)).hom.map_mul x y`.
+A detailed English derivation is pending.
 -/
 theorem heisEquiv_mul {S : Scheme.{0}} {T : Over S} (x y : T ⟶ heisObj S) :
     heisEquiv T (x * y) = heisEquiv T x * heisEquiv T y :=
@@ -241,11 +239,11 @@ theorem heisEquiv_comp {S : Scheme.{0}} {T T' : Over S} (g : T' ⟶ T) (x : T �
     heisEquiv T' (g ≫ x) = Heis.map g.left.appTop.hom (heisEquiv T x) := rfl
 
 /- English proof (translation)
-Set `e` to `AffineSpace.isoOfIsAffine (Fin 3) S`. Establish `: IsIso e.hom.appTop` using `inferInstanceAs (IsIso (e.hom.app ⊤))`. Set `ψ` to `(Scheme.ΓSpecIso (.of (MvPolynomial (Fin 3) Γ(S, ⊤)))).inv ≫ e.hom.appTop`. Establish `hψ : ψ = CommRingCat.ofHom (MvPolynomial.eval₂Hom ((𝔸(Fin 3; S) ↘ S).appTop).hom (AffineSpace.coord S))` using `by show _ ≫ (AffineSpace.isoOfIsAffine (Fin 3) S).hom.appTop = _`. Rewrite using `[AffineSpace.isoOfIsAffine_hom_appTop, Iso.inv_hom_id_assoc]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `E` to `(asIso ψ).commRingCatIsoToRingEquiv`. Take `⟨a, ha, h⟩` from `MvPolynomial.isUnit_iff_eq_C_of_isReduced.1 (u.isUnit.map E.symm)`. Use `⟨ha.unit, Units.ext ?_⟩` and prove the remaining obligations. Use `(E.apply_symm_apply _).symm.trans ((congrArg E h).trans ?_)` and prove the remaining obligations. Use `show ψ.hom (MvPolynomial.C a) = _`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hψ]`. Conclude with `MvPolynomial.eval₂Hom_C _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem heis_units (S : Scheme.{0}) [IsAffine S] [IsReduced S] (u : Γ((heisObj S).left, ⊤)ˣ) :
     ∃ a : Γ(S, ⊤)ˣ, u = pullU (heisObj S).hom ⊤ a := by
@@ -270,19 +268,17 @@ namespace GlobalTheory
 open WeilPullNoncomm
 
 /- English proof (translation)
-Introduce `H`. Set `S : Scheme.{0}` to `Spec (.of ℚ)`. Establish `h2 : IsUnit (2 : Γ(S, ⊤))`. Use `(IsUnit.mk0 (2 : ℚ) two_ne_zero).map (Scheme.ΓSpecIso (.of ℚ)).inv.hom` as an intermediate fact. Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Set `G` to `heisObj S`. Set `u : Γ(G.left, ⊤)ˣ` to `pullU G.hom ⊤ h2.unit`. Set `T : Over S` to `Over.mk (𝟙 S)`. Set `x : T ⟶ G` to `(heisEquiv T).symm ⟨1, 0, 0⟩`. Set `y : T ⟶ G` to `(heisEquiv T).symm ⟨0, 1, 0⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `: IsMonHom (Iso.refl G).hom` using `inferInstanceAs (IsMonHom (𝟙 G))`. Establish `hp` using `isGrpPullback_of_iso (Iso.refl G)`. Establish `: IsIso (Over.mk (T.hom ≫ 𝟙 S)).hom` using `inferInstanceAs (IsIso (𝟙 S ≫ 𝟙 S))`. Establish `W` using `(H S S G G _ _ (oneChart _) (manyChart fun b : Bool => if b then u else 1) (oneChart_isLB _) (manyChart_isLB _) hp (manyChart_iso _ _) T 1 x y (pushPt hp.1.w x) (pushPt hp.1.w y) 1 rfl rfl).2 (weilIs_oneChart (heis_units S) _ _ _)`. Take `⟨p⟩ : Nonempty S` from `inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨V, hV, ⟨θx, θy, hx, hy⟩, hc⟩` from `W p`. Establish `: Nonempty V` using `⟨⟨p, hV⟩⟩`. Establish `: Nonempty (⊤ : V.toScheme.Opens)` using `⟨⟨⟨p, hV⟩, trivial⟩⟩`. Take `⟨r, hr⟩` from `gm_eq_one_of_commIsOf u (hc θx θy hx hy) (fun h => by`. Establish `e₀` using `(heisEquiv_mul θx.pt θy.pt).symm.trans ((congrArg (heisEquiv _) h).trans (heisEquiv_mul θy.pt θx.pt))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ex : heisEquiv _ θx.pt = Heis.map V.ι.appTop.hom ⟨1, 0, 0⟩` using `(congrArg (heisEquiv _) hx).trans ((heisEquiv_comp _ _).trans (congrArg _ ((heisEquiv T).apply_symm_apply _)))`. Establish `ey : heisEquiv _ θy.pt = Heis.map V.ι.appTop.hom ⟨0, 1, 0⟩` using `(congrArg (heisEquiv _) hy).trans ((heisEquiv_comp _ _).trans (congrArg _ ((heisEquiv T).apply_symm_apply _)))`. Rewrite `e₀` using `[ex, ey]`. Establish `e` using `congrArg Heis.c e₀`. Establish `e' : V.ι.appTop.hom 0 + V.ι.appTop.hom 0 + V.ι.appTop.hom 1 * V.ι.appTop.hom 1 = V.ι.appTop.hom 0 + V.ι.appTop.hom 0 + V.ι.appTop.hom 0 * V.ι.appTop.hom 0` using `e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `at e') ⟨p, hV⟩`. Establish `e` using `congrArg Units.val ((gm_pull r G.hom _ ⊤ trivial h2.unit).symm.trans hr)`. Use `replace e := (gm_val (r ≫ G.hom) _ ⊤ trivial h2.unit).symm.trans e`. Rewrite `e` using `[IsUnit.unit_spec, map_ofNat, map_ofNat, Units.val_one]`. Establish `nt : Nontrivial ((overRes V).left.presheaf.stalk (⟨p, hV⟩ : V.toScheme))` using `(V.toScheme.toLocallyRingedSpace.isLocalRing ⟨p, hV⟩).toNontrivial`.
-
-Conclude with `one_ne_zero (α := (overRes V).left.presheaf.stalk (⟨p, hV⟩ : V.toScheme)) (add_left_cancel (a := 1) ((one_add_one_eq_two.trans e).trans (add_zero _).symm))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem not_weilIs_grpPullback : ¬ ∀ (S S' : Scheme.{0}) (G : Over S) (G' : Over S') [GrpObj G] [GrpObj G']
     (f : S' ⟶ S) (φ : G'.left ⟶ G.left) (L : LB G.left) (L' : LB G'.left), L.IsLB → L'.IsLB →

@@ -17,27 +17,25 @@ section Div
 variable {K : Type} [NormedField K] [IsUltrametricDist K] [CharZero K]
 
 /- English proof (translation)
-Establish `c0 : MvPowerSeries.constantCoeff (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) K) = 0` using `by simp`. Establish `c1 : MvPowerSeries.constantCoeff (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) K) = 0` using `by simp`. Establish `cz : MvPowerSeries.constantCoeff (0 : MvPowerSeries (Fin 2) K) = 0` using `by simp`. Establish `ci : MvPowerSeries.constantCoeff (at1 (0 : Fin 2) i) = 0` using `constantCoeff_series_at_variable 0 i hi.1`. Establish `i0` using `integral_mvPowerSeries_X (K := K) (0 : Fin 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i1` using `integral_mvPowerSeries_X (K := K) (1 : Fin 2)`. Establish `ii : Integral (at1 (0 : Fin 2) i)` using `integral_series_at_variable 0 i hi.2.1`. Take `⟨D, hD⟩ : ∃ D, D = MvPowerSeries.subst ![at1 (0 : Fin 2) i, (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) K)] F` from `⟨_, rfl⟩`. Establish `cD : MvPowerSeries.constantCoeff D = 0`. Rewrite using `[hD]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `law_constantCoeff_subst2 F hF.1 _ _ ci c1`. Establish `iD : Integral D`. Rewrite using `[hD]`. Conclude with `integral_subst_two_variables hF.2.1 _ _ ci c1 ii i1`. Take `⟨H, hH⟩ : ∃ H, H = MvPowerSeries.subst ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 2) K), D] G` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `iH : Integral H`. Rewrite using `[hH]`. Conclude with `integral_subst_two_variables hG _ _ c0 cD i0 iD`. Establish `hH0 : MvPowerSeries.subst ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 2) K), 0] H = 0`. Establish `hb` using `hs2 c0 cz`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hH, subst2_subst G c0 cD hb, MvPowerSeries.subst_X hb, hD, subst2_subst F ci c1 hb, MvPowerSeries.subst_X hb, subst_at_variable_eq_subst i 0 hb]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one]`. Express the relevant statement in the definitionally equal form `MvPowerSeries.subst ![MvPowerSeries.X 0, MvPowerSeries.subst ![at1 (0 : Fin 2) i, 0] F] G = 0`. Rewrite using `[law_right_zero hF _ ci]`. Conclude with `hd`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hdvd : (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) K) ∣ H`. Rewrite using `[MvPowerSeries.X_dvd_iff]`. Introduce `m hm`. Rewrite using `[law_coeff_axis0 H m hm, hH0, map_zero]`. Take `⟨H1, e1⟩` from `hdvd`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `iH1 : Integral H1`. Introduce `n`. Use `iH (Finsupp.single 1 1 + n)` as an intermediate fact. Rewrite `this` using `[e1, MvPowerSeries.X_def, MvPowerSeries.coeff_add_monomial_mul, one_mul]`. Then use the resulting hypothesis. Establish `hb` using `hs2 c0 hF.1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨MvPowerSeries.subst ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 2) K), F] H1, integral_subst_two_variables iH1 _ _ c0 hF.1 i0 hF.2.1, ?_⟩` and prove the remaining obligations. Establish `e3 : MvPowerSeries.subst ![at1 (0 : Fin 2) i, F] F = (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) K)`. Use `law_eq_of_log hF _ _ _ ci hF.1 c1 ?_` and prove the remaining obligations. Establish `e4` using `law_subst hF (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) K) (MvPowerSeries.X 1) c0 c1`. Rewrite `e4` using `[subst_XX]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e4, log_subst_formal_inverse hi 0]`. Express the relevant statement in the definitionally equal form `-at1 0 l + (at1 0 l + _) = _`. Rewrite using `[neg_add_cancel_left]`. Establish `e2 : MvPowerSeries.subst ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 2) K), F] H = G`. Rewrite using `[hH, subst2_subst G c0 cD hb, MvPowerSeries.subst_X hb, hD, subst2_subst F ci c1 hb, MvPowerSeries.subst_X hb, subst_at_variable_eq_subst i 0 hb]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one]`. Express the relevant statement in the definitionally equal form `MvPowerSeries.subst ![MvPowerSeries.X 0, MvPowerSeries.subst ![at1 (0 : Fin 2) i, F] F] G = G`. Rewrite using `[e3]`. Conclude with `subst_XX G`. Rewrite using `[← e2, e1, MvPowerSeries.subst_mul hb, MvPowerSeries.subst_X hb]`.
-
-Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem div_law {F G : MvPowerSeries (Fin 2) K} {l i : PowerSeries K} (hF : LawLog F l)
     (hi : IsInv l i) (hG : Integral G)
@@ -107,33 +105,29 @@ theorem div_law {F G : MvPowerSeries (Fin 2) K} {l i : PowerSeries K} (hF : LawL
 end Div
 
 /- English proof (translation)
-Introduce `K _ _ _ g2 g3 c0 a1 a3 xT yT P l i ep F hP hF hi hC hC3 hT`. Take `⟨hT1, hT2, nx, ny, na, -⟩` from `hT`. Establish `hep` using `hC.1`. Establish `hep0` using `hC.2.1`. Establish `c0' : MvPowerSeries.constantCoeff (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) K) = 0` using `by simp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c1' : MvPowerSeries.constantCoeff (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) K) = 0` using `by simp`. Establish `cz : MvPowerSeries.constantCoeff (0 : MvPowerSeries (Fin 2) K) = 0` using `by simp`. Establish `ci : MvPowerSeries.constantCoeff (at1 (0 : Fin 2) i) = 0` using `constantCoeff_series_at_variable 0 i hi.1`. Establish `i0` using `integral_mvPowerSeries_X (K := K) (0 : Fin 2)`. Establish `i1` using `integral_mvPowerSeries_X (K := K) (1 : Fin 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX : Integral (ι` using `Unit) (PowerSeries.X : PowerSeries K) := law_integral_X ()`. Establish `hX2 : Integral (ι` using `Unit) (PowerSeries.X ^ 2 : PowerSeries K) := by`. Rewrite using `[pow_two]`. Conclude with `integral_mul' hX hX`. Establish `hX3 : Integral (ι` using `Unit) (PowerSeries.X ^ 3 : PowerSeries K) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ]`. Conclude with `integral_mul' hX2 hX`. Establish `hg0 : PowerSeries.constantCoeff (gT ep xT) = 1` using `by simp [gT, hep0]`. Establish `hgi : Integral (ι` using `Unit) (gT ep xT) := integral_sub' hep (integral_mul' (integral_C' nx) hX2)`. Establish `hinv : (gT ep xT)⁻¹ * gT ep xT = 1` using `PowerSeries.inv_mul_cancel _ (by rw [hg0]; exact one_ne_zero)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hginv : Integral (ι` using `Unit) (gT ep xT)⁻¹ := integral_of_mul_eq_one hgi hg0 hinv`. Establish `hth : Integral (ι` using `Unit) (thT ep xT yT) := integral_mul' (integral_add' hep (integral_mul' (integral_C' ny) hX3)) hginv`. Establish `hth0 : PowerSeries.constantCoeff (thT ep xT yT) = 1`. Establish `e` using `congrArg PowerSeries.constantCoeff hinv`. Rewrite `e` using `[map_mul, hg0, mul_one, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `thT`. Rewrite using `[map_mul, e]`. Simplify using `[hep0]`. Establish `hL : Integral (LT ep xT yT a1)` using `integral_sub' (integral_add' (integral_mul' i1 (integral_series_at_variable 0 _ hth)) (integral_mul' i0 (integral_series_at_variable 1 _ hth))) (integral_mul' (integral_mul' (integral_C' na) i0) i1)`. Establish `hb` using `hs2 c0' ci`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `eF : MvPowerSeries.subst ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 2) K), at1 0 i] F = 0`. Use `law_eq_of_log hF _ _ 0 c0' ci cz ?_` and prove the remaining obligations. Rewrite using `[law_subst_zero l hF.2.2.1, log_subst_formal_inverse hi 0]`. Conclude with `add_neg_cancel _`. Establish `hd : MvPowerSeries.subst ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 2) K), at1 0 i] (LT ep xT yT a1) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `congrArg (MvPowerSeries.subst ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 2) K), at1 0 i]) (hG K g2 g3 c0 a1 a3 xT yT P l i ep F hP hF hC hC3 hT1 hT2)`. Rewrite `e` using `[MvPowerSeries.subst_mul hb, MvPowerSeries.subst_mul hb, MvPowerSeries.subst_mul hb, MvPowerSeries.subst_pow hb F, eF, psubst_msubst _ hF.1 hb, eF]`. Establish `e5 : PowerSeries.subst (0 : MvPowerSeries (Fin 2) K) (gT ep xT) ≠ 0`. Introduce `h`. Rewrite `h` using `[PowerSeries.subst_zero_eq_C_constantCoeff, hg0]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `at h`. Rewrite `e` using `[MvPowerSeries.subst_pow hb]`. Simplify using `only [ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, mul_zero, zero_mul] at e`. Break down `mul_eq_zero.1 e with h | h` into its components or cases. Conclude with `absurd h e5`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `pow_eq_zero_iff (two_ne_zero) |>.1 h`. Take `⟨nu, hnu, e⟩` from `div_law hF hi hL hd`. Use `⟨nu, hnu, ?_, e⟩` and prove the remaining obligations. Establish `a0 : ∀ n : MvPowerSeries (Fin 2) K, MvPowerSeries.coeff (Finsupp.single (1 : Fin 2) 1) (MvPowerSeries.X 1 * n) = MvPowerSeries.constantCoeff n`. Introduce `n`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `MvPowerSeries.coeff_add_monomial_mul (Finsupp.single (1 : Fin 2) 1) 0 n (1 : K)` as an intermediate fact. Rewrite `this` using `[add_zero, one_mul]`. Then use the resulting hypothesis. Establish `a1' : ∀ n : MvPowerSeries (Fin 2) K, MvPowerSeries.coeff (Finsupp.single (1 : Fin 2) 1) (MvPowerSeries.X 0 * n) = 0`. Introduce `n`. Establish `hx : (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) K) ∣ MvPowerSeries.X 0 * n` using `Dvd.intro _ rfl`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `MvPowerSeries.X_dvd_iff.1 hx _ (by simp)`. Establish `h1 : MvPowerSeries.coeff (Finsupp.single (1 : Fin 2) 1) (LT ep xT yT a1) = 1`. Unfold `LT`. Establish `e6 : MvPowerSeries.C a1 * MvPowerSeries.X 0 * MvPowerSeries.X 1 = (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) K) * (MvPowerSeries.C a1 * MvPowerSeries.X 1)`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[e6, map_sub, map_add, a0, a1', a1', add_zero, sub_zero]`. Conclude with `(Formalism.G.LogP.constantCoeff_subst_of_zero (σ := Unit) (thT ep xT yT) (b := fun _ => (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) K)) (fun _ => c0')).trans hth0`. Establish `h2 : MvPowerSeries.coeff (Finsupp.single (1 : Fin 2) 1) (F * nu) = MvPowerSeries.constantCoeff nu` using `by classical`. Rewrite using `[MvPowerSeries.coeff_mul, Finsupp.antidiagonal_single, Finset.sum_map]`. Simplify using `[Finset.Nat.antidiagonal_succ, law_coeff_single hF 1, hF.1]`.
-
-Rewrite `h1` using `[e, h2]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LDiv_of (hG : GCob) : LDiv := by
   intro K _ _ _ g2 g3 c0 a1 a3 xT yT P l i ep F hP hF hi hC hC3 hT

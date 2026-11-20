@@ -22,37 +22,33 @@ noncomputable section
 namespace GlobalTheory.RowGrpSemi
 
 /- English proof (translation)
-Establish `hnorm : s.range ≤ Subgroup.normalizer (N : Set X)`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Subgroup.mem_normalizer_iff]`. Introduce `n`. Use `⟨fun hn => hconj n hn y, fun hn => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `hconj _ hn y⁻¹` as an intermediate fact. Establish `e : s y⁻¹ * (s y * n * (s y)⁻¹) * (s y⁻¹)⁻¹ = n` using `by rw [map_inv]; group`. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Establish `hdec : ∀ x ∈ R, ∃ n ∈ N, ∃ h, x = n * s h`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hx` using `[hR, ← SetLike.mem_coe, Subgroup.coe_mul_of_right_le_normalizer_left N s.range hnorm]`. Take `⟨n, hn, _, ⟨h, rfl⟩, e⟩` from `hx`. Conclude with `⟨n, hn, h, e.symm⟩`. Establish `hmemR : ∀ n ∈ N, ∀ h, n * s h ∈ R` using `fun n hn h => by`. Rewrite using `[hR]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_mem (Subgroup.mem_sup_left hn) (Subgroup.mem_sup_right ⟨h, rfl⟩)`. Establish `hpeq : ∀ x y (hx : x ∈ R) (hy : y ∈ R), x = y → p ⟨x, hx⟩ = p ⟨y, hy⟩`. Introduce and unpack `x _ hx hy rfl`. Both sides reduce to the same expression. Establish `hval : ∀ x (hx : x ∈ R), ∃ n ∈ N, x = n * s (p ⟨x, hx⟩)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Take `⟨n, hn, h, rfl⟩` from `hdec x hx`. Conclude with `⟨n, hn, by rw [hpn n hn h hx]⟩`. Establish `hpmul : ∀ x y (hx : x ∈ R) (hy : y ∈ R) (hxy : x * y ∈ R), p ⟨x * y, hxy⟩ = p ⟨x, hx⟩ * p ⟨y, hy⟩`. Introduce `x y hx hy hxy`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn, h, rfl⟩` from `hdec x hx`. Take `⟨n', hn', h', rfl⟩` from `hdec y hy`. Establish `e : n * s h * (n' * s h') = (n * (s h * n' * (s h)⁻¹)) * s (h * h')` using `by rw [map_mul]; group`. Rewrite using `[hpeq _ _ hxy (hmemR _ (mul_mem hn (hconj n' hn' h)) _) e, hpn _ (mul_mem hn (hconj n' hn' h)), hpn n hn h, hpn n' hn' h']`. Establish `hp1 : ∀ (h1 : (1 : X) ∈ R), p ⟨1, h1⟩ = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h1`. Rewrite using `[hpeq 1 (1 * s 1) h1 (hmemR 1 N.one_mem 1) (by rw [map_one, one_mul]), hpn 1 N.one_mem 1]`. Establish `hfin : ∀ x (hx : x ∈ R), x ∈ Xf → p ⟨x, hx⟩ ∈ Yf`. Introduce `x hx hxf`. Take `⟨n, hn, e⟩` from `hval x hx`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hkey n hn _ (e ▸ hxf)`. Establish `hRf : ∀ r : R.subgroupOf Xf, r.1.1 ∈ R` using `fun r => Subgroup.mem_subgroupOf.1 r.2`. Set `π : R.subgroupOf Xf →* Yf` to `{ toFun := fun r => ⟨p ⟨r.1.1, hRf r⟩, hfin _ _ r.1.2⟩ map_one' := Subtype.ext (hp1 _) map_mul' := fun r r' => Subtype.ext (hpmul _ _ (hRf r) (hRf r') (hRf (r * r'))) }`. Establish `hsR : ∀ y, s y ∈ R` using `fun y => by rw [hR]; exact Subgroup.mem_sup_right ⟨y, rfl⟩`. Set `σ : Yf →* R.subgroupOf Xf` to `{ toFun := fun y => ⟨⟨s y.1, hsf _ y.2⟩, Subgroup.mem_subgroupOf.2 (hsR _)⟩ map_one' := Subtype.ext (Subtype.ext (map_one s)) map_mul' := fun y y' => Subtype.ext (Subtype.ext (map_mul s _ _)) }`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hπ : ∀ r, (π r).1 = p ⟨r.1.1, hRf r⟩` using `fun r => rfl`. Use `⟨π, σ, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hp.comp ((continuous_subtype_val.comp continuous_subtype_val).subtype_mk _)).subtype_mk _`. Conclude with `((hs.comp continuous_subtype_val).subtype_mk _).subtype_mk _`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hπ]`. Conclude with `(hpeq _ (1 * s y.1) _ (hmemR 1 N.one_mem _) (one_mul _).symm).trans (hpn 1 N.one_mem _ _)`. Introduce `r`. Rewrite using `[Subgroup.mem_subgroupOf]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h1`. Establish `h1' : p ⟨r.1.1, hRf r⟩ = 1` using `by rw [← hπ, h1]; rfl`. Take `⟨n, hn, e⟩` from `hval _ (hRf r)`. Rewrite `e` using `[h1', map_one, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Conclude with `e ▸ hn`. Introduce `hn`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hπ]`. Conclude with `(hpeq _ (r.1.1 * s 1) _ (hmemR _ hn 1) (by rw [map_one, mul_one])).trans (hpn _ hn 1 _)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `b`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, hn, hk⟩`. Establish `hxf : n * s g.1 ∈ Xf`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `e : n * s g.1 = b.1 * ((b.1)⁻¹ * (n * s g.1) * b.1) * (b.1)⁻¹` using `by group`. Rewrite using `[e]`. Conclude with `mul_mem (mul_mem b.2 (hK hk)) (inv_mem b.2)`. Use `⟨⟨⟨n * s g.1, hxf⟩, Subgroup.mem_subgroupOf.2 (hmemR n hn _)⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show ((b⁻¹ * ⟨n * s g.1, hxf⟩ * b : Xf) : X) ∈ K`.
-
-Conclude with `hk`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hπ]`. Conclude with `hpn n hn _ _`. Introduce and unpack `⟨r, hr, rfl⟩`.
-
-Take `⟨n, hn, e⟩` from `hval _ (hRf r)`. Use `⟨n, hn, ?_⟩` and prove the remaining obligations. Rewrite using `[hπ, ← e]`. Conclude with `hr`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_split {X Y : Type} [Group X] [TopologicalSpace X] [Group Y] [TopologicalSpace Y]
     (Xf : Subgroup X) (Yf : Subgroup Y) (N R K : Subgroup X) (s : Y →* X) (p : R → Y)
@@ -155,7 +151,7 @@ namespace GlobalTheory.RowGrpSemi
 open GlobalTheory.Core.Mi
 
 /- English proof (translation)
-Rewrite `hf`, the goal using `[CenAct.mem_GfC_iff]`. Use `GlobalTheory.LevNorm.finf_sand d.p0 _ d.j0 hf d.p0_j0` as an intermediate fact. Rewrite `this` using `[GlobalTheory.JacProj.witt_anisotropic_block_flag_mul_embedded d hn h]`. Then use the resulting hypothesis.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem key_jac {D : D7} {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) {n : GA D S} (hn : n ∈ flagN d) (h : GA D S₀)
     (hf : n * d.emb0 h ∈ GfC S) : h ∈ GfC S₀ := by
@@ -164,7 +160,7 @@ theorem key_jac {D : D7} {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) {n :
   rwa [GlobalTheory.JacProj.witt_anisotropic_block_flag_mul_embedded d hn h] at this
 
 /- English proof (translation)
-Substitute `hN hs hR` using the available equality. Conclude with `finite_split (GfC S) (GfC S₀) (flagN d) _ K d.emb0 (GlobalTheory.JacProj.proj d) rfl (fun n hn h => GlobalTheory.MixPer.witt_anisotropic_group_normalizes_flag_unipotent D S S₀ ρ d n hn h) d.continuous_embed (GlobalTheory.JacProj.continuous_proj d) (fun n hn h _ => GlobalTheory.Ja …`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem jac_case {D : D7} {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (N R K : Subgroup (GA D S)) (s : GA D S₀ →* GA D S)
     (hN : N = flagN d) (hs : s = d.emb0) (hR : R = N ⊔ s.range) (hK : K ≤ GfC S) :
@@ -179,9 +175,9 @@ theorem jac_case {D : D7} {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (N 
     (fun n hn h hf => key_jac d hn h hf) hK
 
 /- English proof (translation)
-Substitute `hN hs hR` using the available equality. Take `⟨p, hp, hpn⟩` from `GlobalTheory.BesProj.exists_continuous_proj D S S₀ A L ρ d o`. Use `finite_split (GfC S) (GfC A) (flagN d) _ K (embA d o) p rfl (fun n hn h => ?_) (d.continuous_embed.comp (o.continuous_emb.comp (continuous_id.prodMk continuous_const))) hp (fun n hn h _ => hpn h ⟨n, hn⟩) (fun y hy => CenAct.embA_mem_GfC d o hy) (fun n hn h hf => ?_) hK` and prove the remaining obligations. Rewrite using `[embA_apply]`. Conclude with `GlobalTheory.MixPer.witt_anisotropic_group_normalizes_flag_unipotent D S S₀ ρ d n hn _`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hf` using `[embA_apply]`. Establish `h0` using `key_jac d hn _ hf`. Establish `h1 : embA d o h ∈ GfC S` using `by rw [embA_apply]; exact CenAct.witt_embedding_mem_finite_unitary_points d h0`. Conclude with `GlobalTheory.LevNorm.mem_GfC_of_embA d o h1`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bes_case {D : D7} {S S₀ A L : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (o : OrthDec S₀ A L) (N R K : Subgroup (GA D S))
     (s : GA D A →* GA D S) (hN : N = flagN d) (hs : s = embA d o) (hR : R = N ⊔ s.range) (hK : K ≤ GfC S) :
@@ -206,17 +202,15 @@ end GlobalTheory.RowGrpSemi
 namespace GlobalTheory.CellMass
 
 /- English proof (translation)
-Introduce `D Γ _ _ Pl0 T A Ks _ _ _ R ch j hj`. Establish `hj'` using `List.mem_range'_1.1 hj`. Establish `sp` using `GlobalTheory.RowGrpSplit.grpAt_all ch j hj`. Establish `hNfl : ∃ (S₀ : HSp D) (ρ : ℕ) (d : HypDec (ch.G.V (.grid D.R.m j)) S₀ ρ), rowN ch.G j = flagN d`. Distinguish the cases in `h1 : j + 2 * ((D.R.m - 1 - j) / 2) + 1 = D.R.m`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Conclude with `⟨_, _, _, by unfold rowN; rw [dif_pos h1]⟩`. Establish `h2 : j + 2 * ((D.R.m - 2 - j) / 2) + 2 = D.R.m` using `by omega`. Conclude with `⟨_, _, _, by unfold rowN; rw [dif_neg h1, dif_pos h2]⟩`. Establish `hNc : IsClosed ((rowN ch.G j : Subgroup (GA D (ch.G.V (.grid D.R.m j)))) : Set (GA D (ch.G.V (.grid D.R.m j))))`. Take `⟨S₀, ρ, d, e⟩` from `hNfl`.
+Supply the required witnesses or components. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e]`. Conclude with `GlobalTheory.Mem.TrueRecord.isClosed_NFlag _ (isIsoSub_e d)`. Use `⟨?_, ?_, ?_, sp.opn, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.coe_subgroupOf]`. Conclude with `sp.clR.preimage continuous_subtype_val`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Subgroup.coe_subgroupOf]`. Conclude with `hNc.preimage continuous_subtype_val`. Introduce `x hx`. Rewrite `hx`, the goal using `[Subgroup.mem_subgroupOf]`. Rewrite using `[rowGrp_eq]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Conclude with `Subgroup.mem_sup_left hx`. Rewrite using `[Subgroup.coe_subgroupOf]`. Conclude with `sp.clB.isClosedEmbedding_subtypeVal.isCompact_preimage sp.cpt`. Distinguish the cases in `h1 : j + 2 * ((D.R.m - 1 - j) / 2) + 1 = D.R.m`. Conclude with `GlobalTheory.RowGrpSemi.jac_case (rowJac ch.G j (by omega) ((D.R.m - 1 - j) / 2) (by omega)) _ _ _ _ (by unfold rowN; rw [dif_pos h1]) (by unfold rowEmb; rw [dif_pos h1]) (rowGrp_eq ch.G j) sp.le`.
-
-Establish `h2 : j + 2 * ((D.R.m - 2 - j) / 2) + 2 = D.R.m` using `by omega`. Conclude with `GlobalTheory.RowGrpSemi.bes_case (besDecAt ch.G j _ h2) (GlobalTheory.OrthSumExists.orthDecHsum D _ _) _ _ _ _ (by unfold rowN; rw [dif_neg h1, dif_pos h2]) (by unfold rowEmb; rw [dif_neg h1, dif_pos h2]) (rowGrp_eq ch.G j) sp.le`.
+A detailed English derivation is pending.
 -/
 theorem rowGrp_finite_semidirect : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} (ch : Choice R), ∀ j ∈ idx D,

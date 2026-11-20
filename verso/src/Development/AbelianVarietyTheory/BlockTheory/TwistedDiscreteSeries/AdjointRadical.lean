@@ -23,9 +23,9 @@ def lieRadical : Submodule k (Matrix (Fin r) (Fin r) k) where
 variable {b}
 
 /- English proof (translation)
-Introduce `i j h`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : b l < b i`. Rewrite using `[hA hl, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hX l j (by omega), mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_mem_lieRadical {A X : Matrix (Fin r) (Fin r) k} (hA : A.BlockTriangular b)
     (hX : X ∈ lieRadical k b) : A * X ∈ lieRadical k b := by
@@ -37,9 +37,9 @@ theorem mul_mem_lieRadical {A X : Matrix (Fin r) (Fin r) k} (hA : A.BlockTriangu
   · rw [hX l j (by omega), mul_zero]
 
 /- English proof (translation)
-Introduce `i j h`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : b j < b l`. Rewrite using `[hA hl, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hX i l (by omega), zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_lieRadical_mul {A X : Matrix (Fin r) (Fin r) k} (hX : X ∈ lieRadical k b)
     (hA : A.BlockTriangular b) : X * A ∈ lieRadical k b := by
@@ -51,7 +51,7 @@ theorem mem_lieRadical_mul {A X : Matrix (Fin r) (Fin r) k} (hX : X ∈ lieRadic
   · rw [hX i l (by omega), zero_mul]
 
 /- English proof (translation)
-Use `letI := g.invertible`. Rewrite using `[Matrix.coe_units_inv]`. Conclude with `Matrix.blockTriangular_inv_of_blockTriangular hg`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blockTriangular_inv {α : Type} [LinearOrder α] {c : Fin r → α} {g : GL (Fin r) k}
     (hg : (g : Matrix (Fin r) (Fin r) k).BlockTriangular c) :
@@ -61,7 +61,7 @@ theorem blockTriangular_inv {α : Type} [LinearOrder α] {c : Fin r → α} {g :
   exact Matrix.blockTriangular_inv_of_blockTriangular hg
 
 /- English proof (translation)
-Introduce `i j hij`. Establish `h1` using `h i j (by omega)`. Establish `hne : i ≠ j` using `by rintro rfl; omega`. Simplify `h1` using `[Matrix.one_apply_ne hne]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem blockTriangular_of_sub_one {A : Matrix (Fin r) (Fin r) k} (h : A - 1 ∈ lieRadical k b) :
     A.BlockTriangular b := by
@@ -119,7 +119,7 @@ def levi : Subgroup (GL (Fin r) k) where
     · exact blockTriangular_inv h1 h
 
 /- English proof (translation)
-Introduce `i j h` and use `δ.2 i j (by omega)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem levi_blockTriangular (δ : levi k b) :
     ((δ : GL (Fin r) k) : Matrix (Fin r) (Fin r) k).BlockTriangular b :=
@@ -138,7 +138,7 @@ def adRadical (δ : levi k b) : lieRadical k b →ₗ[k] lieRadical k b where
     simp
 
 /- English proof (translation)
-Establish `e : (((δ : GL (Fin r) k)⁻¹ * n * δ : GL (Fin r) k) : Matrix (Fin r) (Fin r) k) - 1 = (((δ⁻¹ : levi k b) : GL (Fin r) k) : Matrix (Fin r) (Fin r) k) * ((n : Matrix (Fin r) (Fin r) k) - 1) * ((δ : GL (Fin r) k) : Matrix (Fin r) (Fin r) k)`. Rewrite using `[mul_sub, sub_mul, mul_one, Subgroup.coe_inv, Units.inv_mul, Units.val_mul, Units.val_mul]`. Use `show _ ∈ lieRadical k b`. Rewrite using `[e]`. Conclude with `mem_lieRadical_mul (mul_mem_lieRadical (levi_blockTriangular δ⁻¹) hn) (levi_blockTriangular δ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_mem_radical (δ : levi k b) {n : GL (Fin r) k} (hn : n ∈ radical k b) :
     (δ : GL (Fin r) k)⁻¹ * n * δ ∈ radical k b := by
@@ -182,14 +182,14 @@ def RegularLeviNoEigenvalueOne : Prop :=
     ¬ Module.End.HasEigenvalue (adRadical (m⁻¹ * γ * m)) 1
 
 /- English proof (translation)
-Introduce `i j h`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp_all`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 example : (!![0, 1; 0, 0] : Matrix (Fin 2) (Fin 2) ℝ) ∈ lieRadical ℝ (fun i : Fin 2 => (i : ℕ)) := by
   intro i j h
   fin_cases i <;> fin_cases j <;> simp_all
 
 /- English proof (translation)
-Establish `nd : ∀ (k : Type) [NontriviallyNormedField k], ¬ DiscreteTopology k` using `fun k _ hk => by`. Establish `h0 : (nhdsWithin (0 : k) {0}ᶜ).NeBot` using `inferInstance`. Conclude with `h0.ne (discreteTopology_iff_nhds_ne.1 hk 0)`. Conclude with `⟨fun δ hδ => (h ℝ (nd ℝ) r b δ hδ).1, fun δ hδ => (h ℚ_[p] (nd _) r b δ hδ).1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 example (h : UnipotentChangeOfVariables) (p : ℕ) [Fact p.Prime] (r : ℕ) (b : Fin r → ℕ) :
     (∀ δ : levi ℝ b, Function.Bijective

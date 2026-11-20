@@ -7,15 +7,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.Se
 open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa
 
 /- English proof (translation)
-Introduce `l _ L G0 T Q n O _ _ _ r r' B _ _ _ u u' D0 P hA hC hD hψ`. Establish `hU` using `UpperTheory.V.Pa.pt_unip l L G0 T n O r B u D0 P hA`. Take `⟨⟨ρ', hρ⟩, κ', hκ⟩` from `UpperTheory.V.Pa.np_desc l L G0 Q.G0' Q.g0 n P.x P.k (T.H.toOpenSubgroup : Subgroup G0.Γ) T.H.toOpenSubgroup.isOpen' (fun g hg => MonoidHom.mem_ker.2 (T.H_η g hg)) hU Q.ker0`. Establish `hb` using `UpperTheory.V.Pa.b_desc l L G0 T Q n P.x P.k ρ' hρ κ' hκ D0 hU`. Use `letI := P.alg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Establish `hmat : (mat ρ').comp Q.g0.p₀ = mat P.x.ρ`. Use extensionality with `a i j`. Simplify using `[mat, hρ]`. Use `⟨⟨NP.desc Q.g0 P.x ρ' hρ, Kap.desc Q.g0 ρ' hρ P.k κ' hκ, P.al, ?_, hb.1 P.b1, hb.2 P.b2, P.f, ?_⟩, rfl, rfl⟩` and prove the remaining obligations. Introduce `j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨h1, h2⟩` from `P.eig j`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `e : (mat ρ') (Q.g0.p₀ (T.sg j)) = (mat P.x.ρ) (T.sg j)`. Rewrite using `[← hmat]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `e ▸ h2`. Use `⟨?_, fun v i => by rw [hψ]; exact P.maps.2 v i⟩` and prove the remaining obligations. Take `⟨-, -, -, -, hof, hsurj⟩` from `UpperTheory.V.Pa.comap_lam n P.x.A G0.G₀ Q.G0'.G₀ Q.g0.p₀ (GDet.ofRep (mat ρ'))`. Take `⟨-, -, -, hmap, -, -⟩` from `UpperTheory.V.Pa.comap_lam n B G0.G₀ Q.G0'.G₀ Q.g0.p₀ u'.D`. Apply `(hsurj (Glob.Hom.p₀_surj Q.g0)).1` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hmap, hD, P.maps.1, hof (mat ρ'), hmat]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.pt_desc :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G0 : Glob l L) (T : TWGrp G0) (Q : TWQuot T) (n : ℕ) (O : Type) [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O] (r : Resid G0.frame O n) (r' : Resid Q.G0'.frame O n) (B : Type) [CommRing B] [Algebra O B] [IsCO O B] (u : Pair r B) (u' : Pair r' B) (D0 : ℕ) (P : Pt T u D0), Adapted T (r := r) → Glob.Compat Q.g0 r r' → u'.D.comap Q.g0.p₀ = u.D → u'.ψ = u.ψ → ∃ P' : Pt Q.grp u' D0, RingHom.ker P'.f = RingHom.ker P.f ∧ Nat.card P'.x.K = Nat.card P.x.K := by

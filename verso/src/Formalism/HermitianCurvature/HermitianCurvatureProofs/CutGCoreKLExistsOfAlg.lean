@@ -13,7 +13,7 @@ section Int
 variable {V V' : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V']
 
 /- English proof (translation)
-Proceed by induction on `t generalizing x with`. Consider the case `zero => simp`. Consider the case `succ t ih`. Rewrite using `[List.ofFn_succ, List.ofFn_succ, List.prod_cons, List.prod_cons, Module.End.mul_apply, Module.End.mul_apply, h, ih (fun k => F k.succ) (fun k => F' k.succ) (fun k y => h k.succ y)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem ofFn_prod_int {t : ℕ} (F : Fin t → Module.End ℂ V) (F' : Fin t → Module.End ℂ V') (f : V →ₗ[ℂ] V')
     (h : ∀ k x, f (F k x) = F' k (f x)) (x : V) : f ((List.ofFn F).prod x) = (List.ofFn F').prod (f x) := by
@@ -24,7 +24,7 @@ theorem ofFn_prod_int {t : ℕ} (F : Fin t → Module.End ℂ V) (F' : Fin t →
       h, ih (fun k => F k.succ) (fun k => F' k.succ) (fun k y => h k.succ y)]
 
 /- English proof (translation)
-Unfold `Tm`. Apply the tactic sequence `split_ifs <;> simp [Module.algebraMap_end_apply, hf]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tm_int {n : ℕ} {E : Fin n → Fin n → Module.End ℂ V} {E' : Fin n → Fin n → Module.End ℂ V'} (f : V →ₗ[ℂ] V')
     (hf : ∀ a b x, f (E a b x) = E' a b (f x)) (u : ℂ) (a b : Fin n) (x : V) :
@@ -33,7 +33,7 @@ theorem tm_int {n : ℕ} {E : Fin n → Fin n → Module.End ℂ V} {E' : Fin n 
   split_ifs <;> simp [Module.algebraMap_end_apply, hf]
 
 /- English proof (translation)
-Unfold `qminor`. Rewrite using `[LinearMap.sum_apply, LinearMap.sum_apply, map_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, Module.End.intCast_apply, Module.End.intCast_apply, map_zsmul, ofFn_prod_int _ _ f (fun k y => tm_int f hf _ _ _ y)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem qminor_int {n t : ℕ} {E : Fin n → Fin n → Module.End ℂ V} {E' : Fin n → Fin n → Module.End ℂ V'}
     (f : V →ₗ[ℂ] V') (hf : ∀ a b x, f (E a b x) = E' a b (f x)) (a b : Fin t → Fin n) (u : ℂ) (x : V) :
@@ -45,7 +45,7 @@ theorem qminor_int {n t : ℕ} {E : Fin n → Fin n → Module.End ℂ V} {E' : 
     ofFn_prod_int _ _ f (fun k y => tm_int f hf _ _ _ y)]
 
 /- English proof (translation)
-The claim follows from `qminor_int f hf id id u x`.
+A detailed English derivation is pending.
 -/
 theorem qdet_int {n : ℕ} {E : Fin n → Fin n → Module.End ℂ V} {E' : Fin n → Fin n → Module.End ℂ V'}
     (f : V →ₗ[ℂ] V') (hf : ∀ a b x, f (E a b x) = E' a b (f x)) (u : ℂ) (x : V) :
@@ -68,9 +68,9 @@ theorem resE_apply (E : Fin n → Fin n → Module.End ℂ V) (S : Submodule ℂ
     ((resE E S hS a b x : S) : V) = E a b x := rfl
 
 /- English proof (translation)
-Introduce `a b c d`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h` using `LinearMap.congr_fun (hE a b c d) (x : V)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply the tactic sequence `by_cases hbc : b = c <;> by_cases hda : d = a <;>`. Apply the tactic sequence `simp only [hbc, hda, if_true, if_false, Module.End.mul_apply, LinearMap.sub_apply, LinearMap.zero_apply, Submodule.coe_sub, Submodule.coe_zero, sub_zero, zero_sub, resE_apply] at h ⊢ <;> exact h`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem glRel_resE {E : Fin n → Fin n → Module.End ℂ V} (hE : GlRel E) (S : Submodule ℂ V) (hS : Stab E S) :
     GlRel (resE E S hS) := by
@@ -84,11 +84,9 @@ theorem glRel_resE {E : Fin n → Fin n → Module.End ℂ V} (hE : GlRel E) (S 
       Submodule.coe_sub, Submodule.coe_zero, sub_zero, zero_sub, resE_apply] at h ⊢ <;> exact h
 
 /- English proof (translation)
-Use `⟨Submodule.nontrivial_iff_ne_bot.2 hne, fun T hT => ?_⟩` and prove the remaining obligations. Establish `hinj` using `Submodule.map_injective_of_injective S.injective_subtype`. Establish `hst : Stab E (T.map S.subtype)`. Introduce `a b v hv`. Take `⟨x, hx, rfl⟩` from `Submodule.mem_map.1 hv`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.mem_map.2 ⟨resE E S hS a b x, hT a b x hx, rfl⟩`. Break down `hirr (T.map S.subtype) (Submodule.map_subtype_le S T) hst with h | h` into its components or cases. Use `left`. Conclude with `hinj (h.trans (Submodule.map_bot _).symm)`. Use `right`.
-
-Conclude with `hinj (h.trans (Submodule.map_subtype_top S).symm)`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem irr_resE {E : Fin n → Fin n → Module.End ℂ V} (S : Submodule ℂ V) (hS : Stab E S) (hne : S ≠ ⊥)
     (hirr : ∀ S' : Submodule ℂ V, S' ≤ S → Stab E S' → S' = ⊥ ∨ S' = S) : Irr (resE E S hS) := by
@@ -105,9 +103,9 @@ theorem irr_resE {E : Fin n → Fin n → Module.End ℂ V} (S : Submodule ℂ V
     exact hinj (h.trans (Submodule.map_subtype_top S).symm)
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_smul]`. Use `qdet_int (CapSp E m).subtype (E := resE E (CapSp E m) hS) (E' := E) (fun a b y => rfl) w x` as an intermediate fact. Simplify using `only [Submodule.subtype_apply] at this`. Rewrite using `[this]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mem_CapSp.1 x.2 w`.
+A detailed English derivation is pending.
 -/
 theorem cap_resE {E : Fin n → Fin n → Module.End ℂ V} (m : Fin n → ℂ) (hS : Stab E (CapSp E m)) (w : ℂ)
     (x : CapSp E m) : qdet (resE E (CapSp E m) hS) w x = cpol m w • x := by
@@ -134,36 +132,36 @@ theorem projI_apply (h : DirectSum.IsInternal S) (i : ι) (v : V) :
     projI h i v = (LinearEquiv.ofBijective (DirectSum.coeLinearMap S) h).symm v i := rfl
 
 /- English proof (translation)
-Rewrite using `[projI_apply]`. Conclude with `DirectSum.IsInternal.ofBijective_coeLinearMap_same h x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem projI_self (h : DirectSum.IsInternal S) {i : ι} (x : S i) : projI h i (x : V) = x := by
   rw [projI_apply]
   exact DirectSum.IsInternal.ofBijective_coeLinearMap_same h x
 
 /- English proof (translation)
-Rewrite using `[projI_apply]`. Conclude with `DirectSum.IsInternal.ofBijective_coeLinearMap_of_ne h hij x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem projI_ne (h : DirectSum.IsInternal S) {i j : ι} (hij : j ≠ i) (x : S j) : projI h i (x : V) = 0 := by
   rw [projI_apply]
   exact DirectSum.IsInternal.ofBijective_coeLinearMap_of_ne h hij x
 
 /- English proof (translation)
-The claim follows from `projI_self h ⟨v, hv⟩`.
+A detailed English derivation is pending.
 -/
 theorem projI_mem (h : DirectSum.IsInternal S) {i : ι} {v : V} (hv : v ∈ S i) : projI h i v = ⟨v, hv⟩ :=
   projI_self h ⟨v, hv⟩
 
 /- English proof (translation)
-Rewrite using `[map_sum, Finset.sum_eq_single i (fun j _ hj => projI_ne h hj (y j)) (fun hi => absurd (Finset.mem_univ i) hi)]`. Conclude with `projI_self h (y i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem projI_sum (h : DirectSum.IsInternal S) (y : ∀ j, S j) (i : ι) : projI h i (∑ j, (y j : V)) = y i := by
   rw [map_sum, Finset.sum_eq_single i (fun j _ hj => projI_ne h hj (y j)) (fun hi => absurd (Finset.mem_univ i) hi)]
   exact projI_self h (y i)
 
 /- English proof (translation)
-Use `set e := LinearEquiv.ofBijective (DirectSum.coeLinearMap S) h with he`. Establish `h1 : DirectSum.coeLinearMap S (e.symm v) = v` using `e.apply_symm_apply v`. Use `conv_rhs => rw [← h1, ← DirectSum.sum_univ_of (e.symm v)]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[DirectSum.coeLinearMap_of]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem sum_projI (h : DirectSum.IsInternal S) (v : V) : ∑ j, (projI h j v : V) = v := by
   set e := LinearEquiv.ofBijective (DirectSum.coeLinearMap S) h with he
@@ -175,7 +173,7 @@ theorem sum_projI (h : DirectSum.IsInternal S) (v : V) : ∑ j, (projI h j v : V
   rfl
 
 /- English proof (translation)
-Establish `e : T v = ∑ j, ((T.restrict (hT j) (projI h j v) : S j) : V)` using `by conv_lhs => rw [← sum_projI h v]`. Rewrite using `[map_sum]`. Both sides reduce to the same expression. Rewrite using `[e, projI_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem projI_comm (h : DirectSum.IsInternal S) (T : Module.End ℂ V) (hT : ∀ j, ∀ v ∈ S j, T v ∈ S j) (i : ι) (v : V) :
     projI h i (T v) = T.restrict (hT i) (projI h i v) := by

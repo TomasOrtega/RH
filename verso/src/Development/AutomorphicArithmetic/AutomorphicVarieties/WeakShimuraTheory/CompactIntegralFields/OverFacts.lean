@@ -10,7 +10,7 @@ section Mat
 variable {k : Type} [Field k]
 
 /- English proof (translation)
-Establish `h1` using `h.1`. Unfold `IsGSp at h1`. Simplify using `using h1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem low_l {n : M4 k} (h : IsLow n) : adj n * n = 1 := by
   have h1 := h.1
@@ -18,7 +18,7 @@ private theorem low_l {n : M4 k} (h : IsLow n) : adj n * n = 1 := by
   simpa using h1
 
 /- English proof (translation)
-The claim follows from `mul_eq_one_comm.1 (low_l h)`.
+A detailed English derivation is pending.
 -/
 private theorem low_r {n : M4 k} (h : IsLow n) : n * adj n = 1 := mul_eq_one_comm.1 (low_l h)
 
@@ -39,25 +39,23 @@ end Gal
 end UpperTheory.V.Ws.OvF
 
 /- English proof (translation)
-Establish `hnr : n * adj n = 1` using `UpperTheory.V.Ws.OvF.low_r hn`. Establish `hmr : m * adj m = 1` using `UpperTheory.V.Ws.OvF.low_r hm`. Establish `hXu : IsUnit (adj n * B).det`. Rewrite using `[Matrix.det_mul]`. Conclude with `IsUnit.mul (Matrix.isUnit_det_of_left_inverse hnr) hB`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hC : adj m * n = (adj m * B) * (adj n * B)⁻¹`. Establish `e : adj m * B = (adj m * n) * (adj n * B)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hXu, Matrix.mul_one]`. Establish `hCup : IsUp (adj m * n)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hC]`. Establish `a1 : Matrix.BlockTriangular (adj m * B) id` using `fun i j hij => h2 i j hij`. Establish `a2 : Matrix.BlockTriangular (adj n * B) id` using `fun i j hij => h1 i j hij`. Use `haveI := Matrix.invertibleOfIsUnitDet _ hXu`. Establish `a3` using `a1.mul (Matrix.blockTriangular_inv_of_blockTriangular a2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Conclude with `fun i j hij => a3 hij`. Establish `hC1 : adj m * n = 1`. Take `⟨-, hmd, hmz⟩` from `hm`. Take `⟨-, hnd, hnz⟩` from `hn`. Establish `m01` using `hmz 0 1 (by decide)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m02` using `hmz 0 2 (by decide)`. Establish `m03` using `hmz 0 3 (by decide)`. Establish `m12` using `hmz 1 2 (by decide)`. Establish `m13` using `hmz 1 3 (by decide)`. Establish `m23` using `hmz 2 3 (by decide)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n01` using `hnz 0 1 (by decide)`. Establish `n02` using `hnz 0 2 (by decide)`. Establish `n03` using `hnz 0 3 (by decide)`. Establish `n12` using `hnz 1 2 (by decide)`. Establish `n13` using `hnz 1 3 (by decide)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n23` using `hnz 2 3 (by decide)`. Establish `m0` using `hmd 0`. Establish `m1` using `hmd 1`. Establish `m2` using `hmd 2`. Establish `m3` using `hmd 3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d0` using `hnd 0`. Establish `d1` using `hnd 1`. Establish `d2` using `hnd 2`. Establish `d3` using `hnd 3`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation.
 
-Break down `lt_trichotomy j i with hij | hij | hij` into its components or cases. Apply the tactic sequence `rw [hCup i j hij] fin_cases i <;> fin_cases j <;> simp_all`. Apply the tactic sequence `subst hij fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_four, adj, sgn, Fin.rev, m01, m02, m03, m12, m13, m23, n01, n02, n03, n12, n13, n23, m0, m1, m2, m3, d0, d1, d2, d3]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp (config := {decide := true}) at hij ⊢ <;>`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_four, adj, sgn, Fin.rev, m01, m02, m03, m12, m13, m23, n01, n02, n03, n12, n13, n23, m0, m1, m2, m3, d0, d1, d2, d3]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem eq_of_isLow_of_isUp_adj_mul_of_isUnit_det {k : Type} [Field k] {n m B : M4 k} (hn : IsLow n) (hm : IsLow m)
     (hB : IsUnit B.det) (h1 : IsUp (adj n * B)) (h2 : IsUp (adj m * B)) : n = m := by
@@ -116,9 +114,9 @@ private theorem eq_of_isLow_of_isUp_adj_mul_of_isUnit_det {k : Type} [Field k] {
     _ = m := by rw [hC1, Matrix.mul_one]
 
 /- English proof (translation)
-Unfold `Dec`. Use `letI : MulAction (G F Ω) (ValuationSubring Ω) := ValuationSubring.pointwiseMulAction`. Rewrite using `[MulAction.mem_stabilizer_iff]`. Use extensionality with `x`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem]`.
+Replace the relevant objects with their definitions. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_inv_rev, inv_inv, AlgEquiv.smul_def, AlgEquiv.mul_apply]`. Rewrite using `[← h2, AlgEquiv.aut_inv, AlgEquiv.apply_symm_apply, h1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem inv_mul_mem_dec_of_both_map_place {Ω F : Type} [Field Ω] [Field F] [Algebra F Ω] {A A' : ValuationSubring Ω}
     {g₁ g₂ : G F Ω} (h1 : ∀ x, g₁ x ∈ A' ↔ x ∈ A) (h2 : ∀ x, g₂ x ∈ A' ↔ x ∈ A) :
@@ -132,13 +130,13 @@ private theorem inv_mul_mem_dec_of_both_map_place {Ω F : Type} [Field Ω] [Fiel
   rw [← h2, AlgEquiv.aut_inv, AlgEquiv.apply_symm_apply, h1]
 
 /- English proof (translation)
-Unfold `Over at hO`. Take `⟨-, hOn⟩` from `hO`. Take `⟨v₂, g₂, hg₂, hup⟩` from `hOn v'`. Establish `hvv` using `hv v' v₂ v g₂ g hg₂ hg`. Substitute `hvv` using the available equality.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hU` using `hflag v₂ _ (inv_mul_mem_dec_of_both_map_place hg₂ hg)`. Establish `e : adj (P'.n v') * P.r g * P.n v₂ = (adj (P'.n v') * P.r g₂ * P.n v₂) * (adj (P.n v₂) * P.r (g₂⁻¹ * g) * P.n v₂)`. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← map_mul, mul_inv_cancel, map_one, Matrix.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = adj (P'.n v') * P.r g₂ * (P.n v₂ * adj (P.n v₂)) * P.r g₂⁻¹ * P.r g * P.n v₂ := by`. Rewrite using `[UpperTheory.V.Ws.OvF.low_r (hlow v₂)]`. Simplify using `only [Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = _ := by simp only [Matrix.mul_assoc]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a1 : Matrix.BlockTriangular (adj (P'.n v') * P.r g₂ * P.n v₂) id` using `fun i j hij => hup i j hij`. Establish `a2 : Matrix.BlockTriangular (adj (P.n v₂) * P.r (g₂⁻¹ * g) * P.n v₂) id` using `fun i j hij => hU i j hij`. Conclude with `fun i j hij => (a1.mul a2) hij`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 private theorem over_fact_of_isLow_of_flag {Ω F F' : Type} [Field Ω] [Field F] [Field F'] [Algebra F Ω] [Algebra F' Ω]
     {φ : G F' Ω →* G F Ω} {ι ι' k : Type} [Field k] {pl : ι → ValuationSubring Ω}
@@ -168,15 +166,15 @@ private theorem over_fact_of_isLow_of_flag {Ω F F' : Type} [Field Ω] [Field F]
   exact fun i j hij => (a1.mul a2) hij
 
 /- English proof (translation)
-Establish `hQ'` using `hQ`. Unfold `Over at hO hQ`. Take `⟨hOr, hOn⟩` from `hO`. Take `⟨hQr, -⟩` from `hQ`. Establish `hr : P'.r = Q'.r` using `hOr.trans hQr.symm`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hn : P'.n = Q'.n`. Use function extensionality and compare the values at `v'`. Take `⟨v, g, hg, hup⟩` from `hOn v'`. Establish `hup2` using `over_fact_of_isLow_of_flag hQ' hlow hflag hv v' v g hg`. Establish `hB : IsUnit (P.r g * P.n v).det`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Matrix.isUnit_det_of_right_inverse (B := adj (P.n v) * P.r g⁻¹)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [UpperTheory.V.Ws.OvF.low_r (hlow v), Matrix.mul_one, ← map_mul, mul_inv_cancel, map_one]`. Apply `eq_of_isLow_of_isUp_adj_mul_of_isUnit_det (hl1 v') (hl2 v') hB` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hup` using `only [Matrix.mul_assoc]`. Simplify `hup2` using `only [Matrix.mul_assoc]`. Consider the cases of `P'`. Consider the cases of `Q'`. Simplify using `only at hr hn`.
+Simplify to obtain the desired conclusion from the available facts. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Substitute `hr` using the available equality. Substitute `hn` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem over_pd_unique_of_isLow_of_flag {Ω F F' : Type} [Field Ω] [Field F] [Field F'] [Algebra F Ω] [Algebra F' Ω]
     {φ : G F' Ω →* G F Ω} {ι ι' k : Type} [Field k] {pl : ι → ValuationSubring Ω}
@@ -210,13 +208,13 @@ private theorem over_pd_unique_of_isLow_of_flag {Ω F F' : Type} [Field Ω] [Fie
   rfl
 
 /- English proof (translation)
-Unfold `Over at h1 h2 ⊢`. Take `⟨h1r, h1n⟩` from `h1`. Take `⟨h2r, h2n⟩` from `h2`. Use `⟨by rw [h2r, h1r]; rfl, fun v'' => ?_⟩` and prove the remaining obligations. Take `⟨v', g', hg', hu'⟩` from `h2n v''`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨v, g, hg, hu⟩` from `h1n v'`. Use `⟨v, φ g' * g, fun x => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[AlgEquiv.mul_apply, hφ, hg', hg]`. Establish `e1 : P'.r g' = P.r (φ g')` using `by rw [h1r]; rfl`. Establish `e : adj (P''.n v'') * P.r (φ g' * g) * P.n v = (adj (P''.n v'') * P'.r g' * P'.n v') * (adj (P'.n v') * P.r g * P.n v)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[UpperTheory.V.Ws.OvF.low_r (hl v')]`. Simplify using `only [Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = _ := by simp only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Establish `a1 : Matrix.BlockTriangular (adj (P''.n v'') * P'.r g' * P'.n v') id` using `fun i j hij => hu' i j hij`. Establish `a2 : Matrix.BlockTriangular (adj (P'.n v') * P.r g * P.n v) id` using `fun i j hij => hu i j hij`. Conclude with `fun i j hij => (a1.mul a2) hij`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 private theorem over_comp_of_over_of_isLow {Ω F F' F'' : Type} [Field Ω] [Field F] [Field F'] [Field F''] [Algebra F Ω]
     [Algebra F' Ω] [Algebra F'' Ω] {φ : G F' Ω →* G F Ω} {ψ : G F'' Ω →* G F' Ω} (hφ : ∀ g x, φ g x = g x)
@@ -247,15 +245,15 @@ private theorem over_comp_of_over_of_isLow {Ω F F' F'' : Type} [Field Ω] [Fiel
     exact fun i j hij => (a1.mul a2) hij
 
 /- English proof (translation)
-Take `⟨X, hXd⟩ : ∃ X, X = adj n * M` from `⟨_, rfl⟩`. Establish `hM : M = n * X` using `by rw [hXd, ← Matrix.mul_assoc, UpperTheory.V.Ws.OvF.low_r hn, Matrix.one_mul]`. Rewrite `h` using `[← hXd]`. Take `⟨-, hd, hz⟩` from `hn`. Establish `n01` using `hz 0 1 (by decide)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `n02` using `hz 0 2 (by decide)`. Establish `n03` using `hz 0 3 (by decide)`. Establish `n12` using `hz 1 2 (by decide)`. Establish `n13` using `hz 1 3 (by decide)`. Establish `n23` using `hz 2 3 (by decide)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `x10` using `h 1 0 (by decide)`. Establish `x20` using `h 2 0 (by decide)`. Establish `x30` using `h 3 0 (by decide)`. Establish `x21` using `h 2 1 (by decide)`. Establish `x31` using `h 3 1 (by decide)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `x32` using `h 3 2 (by decide)`. Establish `d0` using `hd 0`. Substitute `hM` using the available equality. Prove the components needed by the constructor for the conclusion. Apply the tactic sequence `intro i fin_cases i <;> simp [Matrix.mul_apply, Fin.sum_univ_four, n01, n02, n03, n12, n13, n23, x10, x20, x30, x21, x31, x32, d0]`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Prove the components needed by the constructor for the conclusion. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `h01 h21 h11`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_four, n01, n02, n03, n12, n13, n23, x10, x20, x30, x21, x31, x32, d0] at h01 h21 h11`. Rewrite `h21`, `h11` using `[h01]`. Simplify using `[hd 1] at h21 h11`. The claim follows by propositional logic.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. The claim follows by propositional logic.
 -/
 private theorem first_column_and_entry_two_one_of_isUp_adj_mul {k : Type} [Field k] {n M : M4 k} (hn : IsLow n) (h : IsUp (adj n * M)) :
     (∀ i, n i 0 * M 0 0 = M i 0) ∧ (M 0 1 = 0 → M 2 1 = 0 → M 1 1 ≠ 0 → n 2 1 = 0) := by
@@ -289,9 +287,9 @@ private theorem first_column_and_entry_two_one_of_isUp_adj_mul {k : Type} [Field
     tauto
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp [Matrix.one_apply, hij]`. Consider the case `succ m ih`. Take `⟨h1, h2, h3⟩` from `ih`. Rewrite using `[pow_succ, hc, hdi, hdj, h2, h3]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, by ring, by ring⟩` and prove the remaining obligations. Take the linear combination `(r x j j) * h1`.
+Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem entry_pow_mul_sub_eq_and_diag_pow {Γ k : Type} [Group Γ] [Field k] (r : Γ →* M4 k) (i j : Fin 4) (hij : i ≠ j)
     (hc : ∀ x y, r (x * y) i j = r x i j * r y j j + r x i i * r y i j)
@@ -307,11 +305,11 @@ private theorem entry_pow_mul_sub_eq_and_diag_pow {Γ k : Type} [Group Γ] [Fiel
     linear_combination (r x j j) * h1
 
 /- English proof (translation)
-Establish `key : ∀ z, r z i j ≠ 0 → r z i i ≠ r z j j → ∀ e : ℕ, r (z ^ (l ^ e)) i j ≠ 0`. Introduce `z hz hz' e h0`. Establish `h1` using `(entry_pow_mul_sub_eq_and_diag_pow r i j hij hc hdi hdj z (l ^ e)).1`. Rewrite `h1` using `[h0, zero_mul, ← sub_pow_char_pow]`. Conclude with `(mul_ne_zero hz (pow_ne_zero _ (sub_ne_zero.2 hz'))) h1.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h1 : r x i i = r x j j`. Distinguish the cases in `h2 : r y i j = 0`. Use `⟨y * x, key _ ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[hc, h2, zero_mul, zero_add]`. Conclude with `mul_ne_zero (hd y i) hx`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hdi, hdj, h1]`. Introduce `h`. Conclude with `hy (mul_right_cancel₀ (hd x j) h)`. Conclude with `⟨y, key y h2 hy⟩`. Conclude with `⟨x, key x hx h1⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_entry_pow_l_pow_ne_zero {Γ k : Type} [Group Γ] [Field k] (l : ℕ) [Fact l.Prime] [CharP k l]
     (r : Γ →* M4 k) (i j : Fin 4) (hij : i ≠ j)
@@ -336,9 +334,9 @@ private theorem exists_entry_pow_l_pow_ne_zero {Γ k : Type} [Group Γ] [Field k
   · exact ⟨x, key x hx h1⟩
 
 /- English proof (translation)
-Establish `hm : (u : O) - v ∈ IsLocalRing.maximalIdeal O`. Assume the negation of the conclusion as `hn`. Establish `hu` using `(IsLocalRing.notMem_maximalIdeal.1 hn).map a`. Rewrite `hu` using `[map_sub, h, sub_self]`. Conclude with `not_isUnit_zero hu`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e : IsLocalRing.residue O u = IsLocalRing.residue O v` using `Ideal.Quotient.eq.2 hm`. Rewrite using `[Units.val_mul, map_mul, e, ← map_mul, Units.mul_inv, map_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem residue_mul_inv_eq_one_of_map_eq {O k : Type} [CommRing O] [IsLocalRing O] [Field k] (a : O →+* k) (u v : Oˣ)
     (h : a u = a v) : IsLocalRing.residue O ↑(u * v⁻¹) = 1 := by
@@ -351,13 +349,11 @@ private theorem residue_mul_inv_eq_one_of_map_eq {O k : Type} [CommRing O] [IsLo
   rw [Units.val_mul, map_mul, e, ← map_mul, Units.mul_inv, map_one]
 
 /- English proof (translation)
-Use `haveI := c.dvr`. Use `haveI := c.fin`. Establish `hl : ((l : ℕ) : c.O) ∈ IsLocalRing.maximalIdeal c.O`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinj : Function.Injective (algebraMap ℤ_[l] c.O)`. Introduce `x y hxy`. Establish `h2` using `congrArg (fun z : c.O => (z : PadicAlgCl l)) hxy`. Establish `h3 : Function.Injective (algebraMap ℤ_[l] (PadicAlgCl l))`. Rewrite using `[IsScalarTower.algebraMap_eq ℤ_[l] ℚ_[l] (PadicAlgCl l)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(algebraMap ℚ_[l] (PadicAlgCl l)).injective.comp (FaithfulSMul.algebraMap_injective ℤ_[l] ℚ_[l])`. Conclude with `h3 (by simpa using h2)`. Use `haveI : FaithfulSMul ℤ_[l] c.O := (faithfulSMul_iff_algebraMap_injective _ _).mpr hinj`. Establish `h4 : IsUnit (algebraMap ℤ_[l] c.O (l : ℤ_[l]))` using `by simpa using hu`. Conclude with `PadicInt.p_nonunit ((isUnit_map_iff (algebraMap ℤ_[l] c.O) _).mp h4)`.
-
-Rewrite using `[CharP.charP_iff_prime_eq_zero (Fact.out)]`. Use `ha _ hl` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem charP_of_ringHom_kills_maxIdeal {l : ℕ} [Fact l.Prime] (c : Coef l) {k : Type} [Field k] (a : c.O →+* k)
     (ha : ∀ x ∈ IsLocalRing.maximalIdeal c.O, a x = 0) : CharP k l := by
@@ -381,11 +377,11 @@ private theorem charP_of_ringHom_kills_maxIdeal {l : ℕ} [Fact l.Prime] (c : Co
   simpa using this
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `hT.pow`. Use `⟨e, fun z => ?_⟩` and prove the remaining obligations. Establish `hz : resQ T.F z ∈ T.F.fixingSubgroup`. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `z.commutes ⟨x, hx⟩`. Establish `h2` using `he _ hz`. Use `⟨IntermediateField.fixingSubgroupEquiv T'.F ⟨_, h2⟩, ?_⟩` and prove the remaining obligations. Apply `AlgEquiv.ext` to reduce the goal to its premises. Introduce `x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show ((resQ T.F z) ^ l ^ e) x = (z ^ l ^ e) x`. Rewrite using `[← map_pow]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem exists_pow_res_surj_of_tower_le {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime]
     {c : Coef l} {D : Raw Ω c} {T T' : Tower D} (hT : T.Le T') :
@@ -405,7 +401,7 @@ private theorem exists_pow_res_surj_of_tower_le {Ω : Type} [Field Ω] [CharZero
   rfl
 
 /- English proof (translation)
-Unfold `IsGSp at h`. Establish `e0` using `congrFun (congrFun h 0) 0`. Establish `e1` using `congrFun (congrFun h 1) 1`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_four, adj, sgn, Fin.rev, z01, z02, z03, z13, z23] at e0 e1`. Take the linear combination `e0 - e1 - z12`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem diag_product_eq_of_isGSp_of_entries_zero {k : Type} [Field k] {X : M4 k} {ν : k} (h : IsGSp ν X) (z01 : X 0 1 = 0)
     (z02 : X 0 2 = 0) (z03 : X 0 3 = 0) (z13 : X 1 3 = 0) (z23 : X 2 3 = 0) (z12 : X 1 2 * X 2 1 = 0) :
@@ -417,7 +413,7 @@ private theorem diag_product_eq_of_isGSp_of_entries_zero {k : Type} [Field k] {X
   linear_combination e0 - e1 - z12
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `exists_entry_pow_l_pow_ne_zero l r i j hij hc hdi hdj hd x y hx hy`. Take `⟨e, he⟩` from `hlift`. Take `⟨h, hh⟩` from `he z`. Conclude with `⟨h, by rw [hr, hh]; exact hz e⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem exists_entry_ne_zero_of_triangular_mul {Γ Γ' k : Type} [Group Γ] [Group Γ'] [Field k] (l : ℕ) [Fact l.Prime] [CharP k l]
     (φ : Γ' →* Γ) (r : Γ →* M4 k) (r' : Γ' →* M4 k) (hr : ∀ g, r' g = r (φ g))
@@ -432,7 +428,7 @@ private theorem exists_entry_ne_zero_of_triangular_mul {Γ Γ' k : Type} [Group 
   exact ⟨h, by rw [hr, hh]; exact hz e⟩
 
 /- English proof (translation)
-Rewrite using `[mul_comm c, ← mul_assoc, mul_assoc a, mul_comm b⁻¹ a⁻¹, ← mul_assoc, mul_inv_cancel, one_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem mul_inv_mul_mul_inv_eq {Γ : Type} [CommGroup Γ] (a b c : Γ) : a * b⁻¹ * (c * a⁻¹) = c * b⁻¹ := by
   rw [mul_comm c, ← mul_assoc, mul_assoc a, mul_comm b⁻¹ a⁻¹, ← mul_assoc, mul_inv_cancel, one_mul, mul_comm]
@@ -440,81 +436,75 @@ private theorem mul_inv_mul_mul_inv_eq {Γ : Type} [CommGroup Γ] (a b c : Γ) :
 set_option maxHeartbeats 1000000 in
 open UpperTheory.V.Ws.OvF in
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D hD T T' hT hF k _ a ha W W' s t s' t' hs ht hs' ht' hss' htt'`. Use `haveI := charP_of_ringHom_kills_maxIdeal c a ha`. Establish `hvT : ∀ (v' : T'.ι) (v₁ v₂ : T.ι) (g₁ g₂ : G T.F Ω), (∀ x, g₁ x ∈ T'.pl v' ↔ x ∈ T.pl v₁) → (∀ x, g₂ x ∈ T'.pl v' ↔ x ∈ T.pl v₂) → v₁ = v₂`. Introduce `v' v₁ v₂ g₁ g₂ h1 h2`. Take `⟨v, -, hu⟩` from `T.cover (T'.pl v') (T'.ovl v')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(hu v₁ ⟨g₁, h1⟩).trans (hu v₂ ⟨g₂, h2⟩).symm`. Establish `hO1 : Over (resLe hT.le) T.pl T'.pl s s'` using `hss'`. Establish `hO2 : Over (resLe hT.le) T.pl T'.pl t t'` using `htt'`. Unfold `Over at hO1 hO2`. Establish `hsr : ∀ g, s'.r g = s.r (resLe hT.le g)` using `fun g => by rw [hO1.1]; rfl`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htr : ∀ g, t'.r g = t.r (resLe hT.le g)` using `fun g => by rw [hO2.1]; rfl`. Establish `hunit : ∀ u : (↥c.O)ˣ, a u ≠ 0` using `fun u => (u.isUnit.map a).ne_zero`. Establish `hds` using `hs.res.diag`. Establish `hdt` using `ht.res.diag`. Establish `hlift` using `exists_pow_res_surj_of_tower_le hT`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hdm : ∀ x y (q : Fin 4), s.r (x * y) q q = s.r x q q * s.r y q q`. Introduce `x y q`. Rewrite using `[hds, hds, hds, map_mul, Units.val_mul, map_mul]`. Establish `hd0 : ∀ x (q : Fin 4), s.r x q q ≠ 0` using `fun x q => by rw [hds]; exact hunit _`. Establish `hok` using `hF.1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Use `⟨?c1, ?c2, ?c3, ?c4, ?c5, ?c6, ?c7, ?c8⟩` and prove the remaining obligations. Use `case c1 =>`. Introduce `hst`. Substitute `hst` using the available equality. Conclude with `over_pd_unique_of_isLow_of_flag hss' htt' hs.pair.low hs.pair.flag hvT hs'.pair.low ht'.pair.low`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `case c2 =>`. Introduce `S hS g`. Rewrite using `[hsr]`. Conclude with `hS _`. Use `case c3 =>`.
+Treat this case separately. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `⟨hS, hN⟩`. Use `⟨fun g => by rw [hsr]; exact hS _, fun v' => ?_⟩` and prove the remaining obligations. Take `⟨v, g, hg, hup⟩` from `hO1.2 v'`. Establish `hlow'` using `hs'.pair.low v'`. Establish `hl` using `hs.pair.low v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h6` using `(first_column_and_entry_two_one_of_isUp_adj_mul hlow' (M := s.r g * s.n v) (by simpa only [Matrix.mul_assoc] using hup)).2`. Establish `r01` using `hS g 0 1 (by decide) (by decide)`. Establish `r02` using `hS g 0 2 (by decide) (by decide)`. Establish `r03` using `hS g 0 3 (by decide) (by decide)`. Establish `r13` using `hS g 1 3 (by decide) (by decide)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `r23` using `hS g 2 3 (by decide) (by decide)`. Establish `r21` using `hS g 2 1 (by decide) (by decide)`. Establish `n21` using `hN v 2 1 (by decide) (by decide)`. Establish `n01` using `hl.2.2 0 1 (by decide)`. Establish `n11` using `hl.2.1 1`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h21 : s'.n v' 2 1 = 0` using `h6 (by simp [Matrix.mul_apply, Fin.sum_univ_four, r01, r02, r03, n01, n21]) (by simp [Matrix.mul_apply, Fin.sum_univ_four, r21, r23, n01, n21]) (by simpa [Matrix.mul_apply, Fin.sum_univ_four, r13, n01, n21, n11] using hd0 g 1)`. Unfold `SuppM`. Introduce `i j hij hw`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> first`. Consider the case `exact absurd rfl hij`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact absurd (by decide) hw`. Consider the case `exact hlow'.2.2 _ _ (by decide)`. Consider the case `exact h21`. Use `case c4 =>`. Introduce and unpack `⟨hS, hN⟩ ⟨hSt, hNt⟩ ⟨hr, hn⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun g => by rw [hsr, htr]; exact hr _, fun v' => ?_⟩` and prove the remaining obligations. Take `⟨v, g, hg, hup⟩` from `hO1.2 v'`. Establish `hup2` using `over_fact_of_isLow_of_flag htt' ht.pair.low ht.pair.flag hvT v' v g hg`. Establish `e1` using `(first_column_and_entry_two_one_of_isUp_adj_mul (hs'.pair.low v') (M := s.r g * s.n v) (by simpa only [Matrix.mul_assoc] using hup)).1 2`. Establish `e2` using `(first_column_and_entry_two_one_of_isUp_adj_mul (ht'.pair.low v') (M := t.r g * t.n v) (by simpa only [Matrix.mul_assoc] using hup2)).1 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n00` using `(hs.pair.low v).2.1 0`. Establish `m00` using `(ht.pair.low v).2.1 0`. Establish `r01` using `hS g 0 1 (by decide) (by decide)`. Establish `r02` using `hS g 0 2 (by decide) (by decide)`. Establish `r03` using `hS g 0 3 (by decide) (by decide)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `r21` using `hS g 2 1 (by decide) (by decide)`. Establish `r23` using `hS g 2 3 (by decide) (by decide)`. Establish `q01` using `hSt g 0 1 (by decide) (by decide)`. Establish `q02` using `hSt g 0 2 (by decide) (by decide)`. Establish `q03` using `hSt g 0 3 (by decide) (by decide)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `q21` using `hSt g 2 1 (by decide) (by decide)`. Establish `q23` using `hSt g 2 3 (by decide) (by decide)`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_four, n00, m00, r01, r02, r03, r21, r23, q01, q02, q03, q21, q23, mul_zero, zero_mul, add_zero, zero_add, mul_one] at e1 e2`. Establish `d00 : t.r g 0 0 = s.r g 0 0` using `by rw [hds, hdt]`. Establish `d22 : t.r g 2 2 = s.r g 2 2` using `by rw [hds, hdt]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Treat this case separately.
 
-Rewrite `e2` using `[d00, d22, ← hr g, ← hn v]`. Apply `mul_right_cancel₀ (hd0 g 0)` to reduce the goal to its premises. Take the linear combination `e1 - e2`. Use `case c5 =>`. Introduce `hS hSt ⟨hr, hn⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun g => by rw [hsr, htr]; exact hr _, fun v' => ?_⟩` and prove the remaining obligations. Take `⟨v, g, hg, hup⟩` from `hO1.2 v'`. Establish `hup2` using `over_fact_of_isLow_of_flag htt' ht.pair.low ht.pair.flag hvT v' v g hg`. Establish `e1` using `(first_column_and_entry_two_one_of_isUp_adj_mul (hs'.pair.low v') (M := s.r g * s.n v) (by simpa only [Matrix.mul_assoc] using hup)).1 1`. Establish `e2` using `(first_column_and_entry_two_one_of_isUp_adj_mul (ht'.pair.low v') (M := t.r g * t.n v) (by simpa only [Matrix.mul_assoc] using hup2)).1 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n00` using `(hs.pair.low v).2.1 0`. Establish `m00` using `(ht.pair.low v).2.1 0`. Establish `r01` using `hS g 0 1 (by decide) (by decide)`. Establish `r02` using `hS g 0 2 (by decide) (by decide)`. Establish `r03` using `hS g 0 3 (by decide) (by decide)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `r12` using `hS g 1 2 (by decide) (by decide)`. Establish `r13` using `hS g 1 3 (by decide) (by decide)`. Establish `q01` using `hSt g 0 1 (by decide) (by decide)`. Establish `q02` using `hSt g 0 2 (by decide) (by decide)`. Establish `q03` using `hSt g 0 3 (by decide) (by decide)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `q12` using `hSt g 1 2 (by decide) (by decide)`. Establish `q13` using `hSt g 1 3 (by decide) (by decide)`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_four, n00, m00, r01, r02, r03, r12, r13, q01, q02, q03, q12, q13, mul_zero, zero_mul, add_zero, zero_add, mul_one] at e1 e2`. Establish `d00 : t.r g 0 0 = s.r g 0 0` using `by rw [hds, hdt]`. Establish `d11 : t.r g 1 1 = s.r g 1 1` using `by rw [hds, hdt]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Treat this case separately.
 
-Rewrite `e2` using `[d00, d11, ← hr g, ← hn v]`. Apply `mul_right_cancel₀ (hd0 g 0)` to reduce the goal to its premises. Take the linear combination `e1 - e2`. Use `case c6 =>`. Unfold `Ent`.
+Replace the relevant objects with their definitions. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `hS ⟨g, i, j, hw, hne⟩`. Take `⟨y, -, hy⟩` from `hok.g3 (-wPs) (by decide)`. Establish `hne02 : s.r y 2 2 ≠ s.r y 0 0`. Rewrite using `[hds, hds]`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply `hy` to reduce the goal to its premises. Establish `e : (T.fr ∅).rt (-wPs) y = (T.fr W).χ 2 y * ((T.fr W).χ 0 y)⁻¹`. Simplify using `[Fr.rt, wPs, Tower.fr]`. Rewrite using `[Tower.rb, e]`. Conclude with `residue_mul_inv_eq_one_of_map_eq a _ _ h`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hrel : s.r y 0 0 * s.r y 3 3 = s.r y 1 1 * s.r y 2 2` using `diag_product_eq_of_isGSp_of_entries_zero (hs.pair.mult y) (hS y 0 1 (by decide) (by decide)) (hS y 0 2 (by decide) (by decide)) (hS y 0 3 (by decide) (by decide)) (hS y 1 3 (by decide) (by decide)) (hS y 2 3 (by decide) (by decide)) (by rw [hS y 2 1 (by decide) (by decide), mul_z …`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> (try exact absurd hw (by decide))`. Take `⟨h, hh⟩` from `exists_entry_ne_zero_of_triangular_mul l (resLe hT.le) s.r s'.r hsr hlift 2 0 (by decide) (fun x z => by`. Rewrite using `[map_mul]`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_four, hS x 2 1 (by decide) (by decide), hS x 2 3 (by decide) (by decide)])`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use the proof step `(fun x z => hdm x z 2) (fun x z => hdm x z 0) hd0 g y hne hne02`. Conclude with `⟨h, 2, 0, by decide, hh⟩`. Establish `hne13 : s.r y 3 3 ≠ s.r y 1 1`. Introduce `h`. Apply `hne02` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hrel` using `[h]`. Apply `mul_left_cancel₀ (hd0 y 1)` to reduce the goal to its premises. Take the linear combination `-hrel`. Take `⟨h, hh⟩` from `exists_entry_ne_zero_of_triangular_mul l (resLe hT.le) s.r s'.r hsr hlift 3 1 (by decide) (fun x z => by`. Rewrite using `[map_mul]`.
+Supply the required witnesses or components. Treat this case separately. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `[Matrix.mul_apply, Fin.sum_univ_four, hS z 0 1 (by decide) (by decide), hS z 2 1 (by decide) (by decide)])`. Use the proof step `(fun x z => hdm x z 3) (fun x z => hdm x z 1) hd0 g y hne hne13`. Conclude with `⟨h, 3, 1, by decide, hh⟩`. Use `case c7 =>`. Unfold `Ent`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `hS`. Take `⟨y, -, hy⟩` from `hok.g3 (-wAl) (by decide)`. Take `⟨y2, -, hy2⟩` from `hok.g3 (-wBe) (by decide)`. Establish `hne10 : s.r y 1 1 ≠ s.r y 0 0`. Rewrite using `[hds, hds]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Apply `hy` to reduce the goal to its premises. Establish `e : (T.fr ∅).rt (-wAl) y = (T.fr W).χ 1 y * ((T.fr W).χ 0 y)⁻¹`. Simplify using `[Fr.rt, wAl, Tower.fr]`. Rewrite using `[Tower.rb, e]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `residue_mul_inv_eq_one_of_map_eq a _ _ h`. Establish `hne21 : s.r y2 2 2 ≠ s.r y2 1 1`. Rewrite using `[hds, hds]`. Introduce `h`. Apply `hy2` to reduce the goal to its premises.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (T.fr ∅).rt (-wBe) y2 = (T.fr W).χ 2 y2 * ((T.fr W).χ 1 y2)⁻¹`. Simplify using `[Fr.rt, wBe, Tower.fr]`. Conclude with `mul_inv_mul_mul_inv_eq _ _ _`. Rewrite using `[Tower.rb, e]`. Conclude with `residue_mul_inv_eq_one_of_map_eq a _ _ h`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hrel : s.r y 0 0 * s.r y 3 3 = s.r y 1 1 * s.r y 2 2` using `diag_product_eq_of_isGSp_of_entries_zero (hs.pair.mult y) (hS y 0 1 (by decide) (by decide)) (hS y 0 2 (by decide) (by decide)) (hS y 0 3 (by decide) (by decide)) (hS y 1 3 (by decide) (by decide)) (hS y 2 3 (by decide) (by decide)) (by rw [hS y 1 2 (by decide) (by decide), zero_ …`. Prove the components needed by the constructor for the conclusion. Apply the tactic sequence `rintro ⟨g, i, j, hw, hne⟩ fin_cases i <;> fin_cases j <;> (try exact absurd hw (by decide))`. Take `⟨h, hh⟩` from `exists_entry_ne_zero_of_triangular_mul l (resLe hT.le) s.r s'.r hsr hlift 1 0 (by decide) (fun x z => by`. Rewrite using `[map_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.mul_apply, Fin.sum_univ_four, hS x 1 2 (by decide) (by decide), hS x 1 3 (by decide) (by decide)])`. Use the proof step `(fun x z => hdm x z 1) (fun x z => hdm x z 0) hd0 g y hne hne10`. Conclude with `⟨h, 1, 0, by decide, hh⟩`. Establish `hne32 : s.r y 3 3 ≠ s.r y 2 2`. Introduce `h`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Apply `hne10` to reduce the goal to its premises. Rewrite `hrel` using `[h]`. Apply `mul_right_cancel₀ (hd0 y 2)` to reduce the goal to its premises. Take the linear combination `-hrel`. Take `⟨h, hh⟩` from `exists_entry_ne_zero_of_triangular_mul l (resLe hT.le) s.r s'.r hsr hlift 3 2 (by decide) (fun x z => by`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[map_mul]`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_four, hS z 0 2 (by decide) (by decide), hS z 1 2 (by decide) (by decide)])`. Use the proof step `(fun x z => hdm x z 3) (fun x z => hdm x z 2) hd0 g y hne hne32`. Conclude with `⟨h, 3, 2, by decide, hh⟩`. Apply the tactic sequence `rintro ⟨g, i, j, hw, hne⟩ fin_cases i <;> fin_cases j <;> (try exact absurd hw (by decide))`.
-
-Take `⟨h, hh⟩` from `exists_entry_ne_zero_of_triangular_mul l (resLe hT.le) s.r s'.r hsr hlift 2 1 (by decide) (fun x z => by`. Rewrite using `[map_mul]`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_four, hS z 0 1 (by decide) (by decide), hS x 2 3 (by decide) (by decide)])`. Use the proof step `(fun x z => hdm x z 2) (fun x z => hdm x z 1) hd0 g y2 hne hne21`. Conclude with `⟨h, 2, 1, by decide, hh⟩`.
-
-Use `case c8 =>`. Introduce `s₀ g0 hs0 hs0s u hu hus0`. Establish `hc : Over ((resQ T.F).comp (resLe hT.le)) (fun _ => D.pl l) T'.pl s₀ s'` using `over_comp_of_over_of_isLow (fun _ _ => rfl) hs0s hss' hs.pair.low`. Establish `e : (resQ T.F).comp (resLe hT.le) = resQ T'.F`. Use extensionality with `g x`.
-
-Both sides reduce to the same expression. Rewrite `hc` using `[e]`. Conclude with `over_pd_unique_of_isLow_of_flag hus0 hc hs0.low hs0.flag (fun _ _ _ _ _ _ _ => Subsingleton.elim _ _) hu.pair.low hs'.pair.low`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.overFacts :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ (T T' : Tower D) (hT : T.Le T'), T.Fit → ∀ (k : Type) [Field k] (a : c.O →+* k), (∀ x ∈ maximalIdeal c.O, a x = 0) → ∀ (W W' : Finset ℕ) (s t : PD T.ι (G T.F Ω) k) (s' t' : PD T'.ι (G T'.F Ω) k),

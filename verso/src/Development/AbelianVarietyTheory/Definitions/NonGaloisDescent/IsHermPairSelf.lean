@@ -26,7 +26,7 @@ def headScalar (a b : ℕ) (t : kˣ) : GL (Fin (a + b)) k :=
   emb₂ k (stdSum (rfl : a + b = a + b)) (Matrix.GeneralLinearGroup.scalar (Fin a) t, 1)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ => rfl, fun _ _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem one_mem (N m : ℕ) : (1 : GL (Fin N) k) ∈ colSet k N m ∧ (1 : GL (Fin N) k) ∈ cornerSet k N m :=
   ⟨fun _ _ _ => rfl, fun _ _ _ => rfl⟩
@@ -46,9 +46,9 @@ def IsHermPair {G : Type} [Group G] (π : Representation ℂ G V) (σ : Represen
     ∀ w, (∀ v, C v w = 0) → w = 0
 
 /- English proof (translation)
-Take `⟨B, -, h2, h3⟩` from `h`. Apply the tactic sequence `refine ⟨B, h3, fun v hv => ?_, fun v hv => ?_⟩ <;>`. Assume the negation of the conclusion as `h0`. Use `h2 v h0` as an intermediate fact. Rewrite `this` using `[hv v]`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at this`.
+Simplify using the standard rewrite rules.
 -/
 theorem isHermPair_self {G : Type} [Group G] {π : Representation ℂ G V} (h : IsUnitarisable π) : IsHermPair π π := by
   obtain ⟨B, -, h2, h3⟩ := h
@@ -65,7 +65,7 @@ def IsAvg {X : Type} [AddCommGroup X] (u : Representation ℂ (Multiplicative X)
     ∀ v, v - E v ∈ Submodule.span ℂ {w | ∃ (x : L) (y : V), w = u (Multiplicative.ofAdd (x : X)) y - χ x • y}
 
 /- English proof (translation)
-Establish `h : ∀ (x : (⊥ : AddSubgroup X)) v, u (Multiplicative.ofAdd (x : X)) v = v` using `fun x v => by`. Rewrite using `[AddSubgroup.mem_bot.1 x.2]`. Simplify using the standard rewrite rules. Conclude with `⟨fun x v => by simp [h], fun x v => by simp [h], fun v => by simp⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem isAvg_bot {X : Type} [AddCommGroup X] (u : Representation ℂ (Multiplicative X) V) :
     IsAvg u ⊥ (fun _ => 1) 1 := by

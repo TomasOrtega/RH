@@ -48,7 +48,7 @@ theorem graphMorphismToAffineSpace_eq_homOfVector (k : Type u) [Field k] (M n q 
   rfl
 
 /- English proof (translation)
-Simplify using `[graphMorphismToAffineSpace]`.
+Simplify using the standard rewrite rules.
 -/
 theorem graphMorphismToAffineSpace_comp_affineSpaceIndexedByToSpec (k : Type u) [Field k] (M n q : ℕ)
     (F : Fin q →
@@ -59,7 +59,7 @@ theorem graphMorphismToAffineSpace_comp_affineSpaceIndexedByToSpec (k : Type u) 
   simp [graphMorphismToAffineSpace]
 
 /- English proof (translation)
-Simplify using `[graphMorphismToAffineSpace]`.
+Simplify using the standard rewrite rules.
 -/
 theorem graphMorphismToAffineSpace_appTop_coord_inl (k : Type u) [Field k] (M n q : ℕ)
     (F : Fin q →
@@ -74,7 +74,7 @@ theorem graphMorphismToAffineSpace_appTop_coord_inl (k : Type u) [Field k] (M n 
   simp [graphMorphismToAffineSpace]
 
 /- English proof (translation)
-Simplify using `[graphMorphismToAffineSpace]`.
+Simplify using the standard rewrite rules.
 -/
 theorem graphMorphismToAffineSpace_appTop_coord_inr (k : Type u) [Field k] (M n q : ℕ)
     (F : Fin q →

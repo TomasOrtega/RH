@@ -22,7 +22,7 @@ local notation "π" => (GLnLocal.uniformizer F : F)
 noncomputable local instance fintypeResidue : Fintype 𝓀[F] := Fintype.ofFinite _
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, Units.val_mul, coe_torusPow, coe_torusPow, mul_diagonal, diagonal_mul, Pi.neg_apply, zpow_sub₀ (uniformizer_ne_zero F), _root_.zpow_neg, div_eq_mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem torusPow_mul_mul_neg_apply (l : Fin n → ℤ) (g : GL (Fin n) F) (a b : Fin n) :
     ((torusPow F n l * g * torusPow F n (-l) : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) a b =
@@ -32,13 +32,11 @@ theorem torusPow_mul_mul_neg_apply (l : Fin n → ℤ) (g : GL (Fin n) F) (a b :
   ring
 
 /- English proof (translation)
-Rewrite using `[mem_unipotent_inf_integralGL_iff]`. Establish `hN : torusPow F n l * unipC S c * torusPow F n (-l) ∈ unipotent F n`. Rewrite using `[torusPow_neg, torusPow]`. Conclude with `diagGL_mul_mul_inv_mem_unipotent F n (unipC_mem_unipotent S c) _`. Use `⟨hN, fun a b => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hab : a ≤ b`. Rewrite using `[torusPow_mul_mul_neg_apply]`. Use `Subring.mul_mem _ (zpow_mem_of_nonneg (by linarith [hl hab])) ?_` and prove the remaining obligations. Rewrite using `[coe_unipC, Matrix.add_apply]`. Use `Subring.add_mem _ ?_ (cMat_mem c a b)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `Subring.one_mem _`. Conclude with `Subring.zero_mem _`. Rewrite using `[hN.1 (show id b < id a from lt_of_not_ge hab)]`.
-
-Conclude with `Subring.zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torusPow_conj_unipC_mem {l : Fin n → ℤ} (hl : Antitone l) (S : Finset (Fin n))
     (c : Pairs S → 𝓀[F]) :
@@ -61,7 +59,7 @@ theorem torusPow_conj_unipC_mem {l : Fin n → ℤ} (hl : Antitone l) (S : Finse
     exact Subring.zero_mem _
 
 /- English proof (translation)
-Rewrite using `[gMat, torusPow_add, torusPow_neg]`. Use `group`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torusPow_mul_gMat (l : Fin n → ℤ) (S : Finset (Fin n)) (c : Pairs S → 𝓀[F]) :
     torusPow F n l * gMat S c =
@@ -80,21 +78,21 @@ theorem minusculeHecke_apply (r : ℕ) (x : GL (Fin n) F) :
   rfl
 
 /- English proof (translation)
-Use `set Φ : GL (Fin n) F → ℂ := fun x => (minusculeHecke μ r : HeckeAlgebra μ) x * f (g * x) with hΦ`. Establish `hcs : HasCompactSupport Φ`. Use `HasCompactSupport.intro (isCompact_minusculeSet r) fun x hx => ?_` and prove the remaining obligations. Simplify using `only [hΦ, minusculeHecke_apply, Set.indicator_of_notMem hx, zero_mul]`. Establish `hK : ∀ x, ∀ k ∈ integralOpen F n, Φ (x * k) = Φ x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x k hk`. Simplify using `only [hΦ]`. Rewrite using `[(HeckeAlgebraLevel.val_mem _ _ (minusculeHecke μ r) k hk x).2, ← mul_assoc, hf _ k hk]`. Rewrite using `[integral_eq_smul_finsum_coset μ (integralOpen F n) (isCompact_integralGL F n) hcs hK, Complex.real_smul]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition.
 
-Use `set Cs : Finset (GL (Fin n) F ⧸ integralGL F n) := (Finset.univ.powersetCard r).biUnion fun S => Finset.univ.image fun c : Pairs S → 𝓀[F] => (QuotientGroup.mk (gMat S c) : _)`. Express the relevant statement in the definitionally equal form `(∑ᶠ x : GL (Fin n) F ⧸ integralGL F n, Φ x.out) = _`. Rewrite using `[finsum_eq_sum_of_support_subset (s := Cs)]`. Rewrite using `[Finset.sum_biUnion]`. Use `Finset.sum_congr rfl fun S hS => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hSr` using `(Finset.mem_powersetCard.1 hS).2`. Rewrite using `[Finset.sum_image fun c _ c' _ h => gMat_injective S h]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul (integralGL F n) (gMat S c)`. Rewrite using `[hk, hK _ k k.2]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hΦ, minusculeHecke_apply]`. Rewrite using `[Set.indicator_of_mem (hSr ▸ gMat_mem_minusculeSet S c), one_mul]`. Introduce `S _ S' _ hne`. Simplify using `only [Function.onFun]`. Rewrite using `[Finset.disjoint_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x hx hx'`. Take `⟨c, -, rfl⟩` from `Finset.mem_image.1 hx`. Take `⟨c', -, hc'⟩` from `Finset.mem_image.1 hx'`. Use `congrArg (fun x : GL (Fin n) F ⧸ integralGL F n => iwasawaExponent F n x.out) hc'` as an intermediate fact. Simplify using `only [iwasawaExponent_out, iwasawaExponent_gMat] at this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hne (lamS_injective this).symm`. Introduce `x hx`. Establish `hm : x.out ∈ minusculeSet F n r`. Assume the negation of the conclusion as `hm`. Apply `hx` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [hΦ, minusculeHecke_apply, Set.indicator_of_notMem hm, zero_mul]`. Take `⟨S, hS, c, hc⟩` from `exists_gMat hm`. Rewrite `hc` using `[QuotientGroup.out_eq']`. Conclude with `Finset.mem_biUnion.2 ⟨S, Finset.mem_powersetCard.2 ⟨Finset.subset_univ _, hS⟩, Finset.mem_image.2 ⟨c, Finset.mem_univ _, hc⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem integral_minusculeHecke_mul {f : GL (Fin n) F → ℂ}
     (hf : ∀ g, ∀ k ∈ integralGL F n, f (g * k) = f g) (g : GL (Fin n) F) (r : ℕ) :
@@ -151,14 +149,14 @@ def kappa (F : Type*) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarch
 
 omit [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F)] in
 /- English proof (translation)
-Establish `: Nonempty 𝓀[F]` using `⟨0⟩`. Conclude with `Nat.card_pos`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem kappa_pos (S : Finset (Fin n)) : 0 < kappa F S := by
   have : Nonempty 𝓀[F] := ⟨0⟩
   exact Nat.card_pos
 
 /- English proof (translation)
-Simplify using `only [torusPow_mul_gMat, hN _ (torusPow_conj_unipC_mem hl S _), Finset.sum_const, Finset.card_univ, nsmul_eq_mul, kappa, Nat.card_eq_fintype_card]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_gMat_torusPow {f : GL (Fin n) F → ℂ}
     (hN : ∀ u ∈ unipotent F n ⊓ integralGL F n, ∀ g, f (u * g) = f g)
@@ -171,17 +169,17 @@ theorem sum_gMat_torusPow {f : GL (Fin n) F → ℂ}
 omit [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F)] in
 
 /- English proof (translation)
-Establish `hcard : kappa F S = qF F ^ Fintype.card (Pairs S)`. Rewrite using `[kappa, Nat.card_fun, qF, Nat.card_eq_fintype_card (α := Pairs S)]`. Establish `hrho : rhoPair (lamS S) = (r : ℤ) * ((n : ℤ) - 1) - 2 * ∑ i ∈ S, ((i : ℕ) : ℤ)`. Rewrite using `[rhoPair]`. Simplify using `only [lamS_apply, mul_ite, mul_one, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_ite_mem, Finset.univ_inter]`. Simplify using `only [Finset.sum_sub_distrib, Finset.sum_const, hS, nsmul_eq_mul, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ((S.card.choose 2 : ℕ) : ℤ) * 2 = (r : ℤ) * ((r : ℤ) - 1)`. Rewrite using `[hS]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `Nat.div_two_mul_two_of_even (Nat.even_mul_pred_self r)`. Rewrite `h` using `[← Nat.choose_two_right]`. Break down `Nat.eq_zero_or_pos r with h0 | hr0` into its components or cases. Substitute `h0` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `: ((r.choose 2 * 2 : ℕ) : ℤ) = ((r * (r - 1) : ℕ) : ℤ)` using `by rw [h]`. Move the coercions through the operations in `[Nat.cast_sub hr0] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : ((∑ i ∈ S, (n - 1 - (i : ℕ)) : ℕ) : ℤ) = (r : ℤ) * ((n : ℤ) - 1) - ∑ i ∈ S, ((i : ℕ) : ℤ)`. Rewrite using `[Nat.cast_sum, Finset.sum_congr rfl fun (i : Fin n) (_ : i ∈ S) => (show ((n - 1 - (i : ℕ) : ℕ) : ℤ) = ((n : ℤ) - 1) - ((i : ℕ) : ℤ) by have := i.2; omega)]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.sum_sub_distrib, Finset.sum_const, hS, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : (Fintype.card (Pairs S) : ℤ) + (S.card.choose 2 : ℕ) = ((∑ i ∈ S, (n - 1 - (i : ℕ)) : ℕ) : ℤ)`. Conclude with `card_pairs_add_choose S` after adjusting the coercions. Rewrite using `[hcard, halfModulus_eq, Nat.cast_pow, ← sqrtQ_sq, ← pow_mul, ← zpow_natCast (sqrtQ F) (2 * _), ← zpow_add₀ sqrtQ_ne_zero, ← zpow_natCast]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[hrho]`. Move the coercions through the operations in `[Nat.cast_sub hr]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem kappa_mul_halfModulus {r : ℕ} (hr : r ≤ n) {S : Finset (Fin n)} (hS : S.card = r) :
     (kappa F S : ℂ) * halfModulus F (lamS S) = sqrtQ F ^ (r * (n - r)) := by
@@ -222,7 +220,7 @@ theorem kappa_mul_halfModulus {r : ℕ} (hr : r ≤ n) {S : Finset (Fin n)} (hS 
 
 omit [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F)] in
 /- English proof (translation)
-Rewrite using `[esymmL, map_sum]`. Simplify using `only [monomial, evalAt_single, one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem evalAt_esymmL (z : Fin n → ℂˣ) (r : ℕ) :
     evalAt z (esymmL n r) = ∑ S ∈ (Finset.univ : Finset (Fin n)).powersetCard r,
@@ -231,9 +229,9 @@ theorem evalAt_esymmL (z : Fin n → ℂˣ) (r : ℕ) :
   simp only [monomial, evalAt_single, one_mul]
 
 /- English proof (translation)
-Rewrite using `[satakeTransform_apply, satake_minusculeHecke]`. Simplify using `only [map_smul, map_sum, smul_eq_mul, evalAt_esymmL]`. Rewrite using `[mul_assoc]`. Use `congr 1`. Rewrite using `[Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun S hS => ?_` and prove the remaining obligations. Establish `hSr` using `(Finset.mem_powersetCard.1 hS).2`. Rewrite using `[monomial, normalize_single, evalAt_single, one_mul, ← kappa_mul_halfModulus hr hSr, kappa]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem evalAt_satakeTransform_minusculeHecke (z : Fin n → ℂˣ) {r : ℕ} (hr : r ≤ n) :
     evalAt z (satakeTransform μ (minusculeHecke μ r)) =
@@ -251,7 +249,7 @@ theorem evalAt_satakeTransform_minusculeHecke (z : Fin n → ℂˣ) {r : ℕ} (h
   ring
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Conclude with `h (antitone_of_forall_succ_le hne)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_lt_succ_of_not_antitone {μ : Fin n → ℤ} (h : ¬ Antitone μ) :
     ∃ i j : Fin n, (j : ℕ) = i + 1 ∧ μ i < μ j := by
@@ -263,7 +261,7 @@ omit [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F)] [TopologicalSp
   [IsNonarchimedeanLocalField F] in
 
 /- English proof (translation)
-Rewrite using `[Whittaker.psiN]`. Use `hψ _ (Subring.sum_mem _ fun i _ => Subring.sum_mem _ fun j _ => ?_)` and prove the remaining obligations. Use `split_ifs`. Conclude with `((mem_unipotent_inf_integralGL_iff F n).1 hu).2 i j`. Conclude with `Subring.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem psiN_eq_one_of_mem {ψ₀ : AddChar F ℂ} (hψ : ∀ x ∈ 𝒪[F], ψ₀ x = 1) {u : GL (Fin n) F}
     (hu : u ∈ unipotent F n ⊓ integralGL F n) : Whittaker.psiN ψ₀ u = 1 := by
@@ -276,19 +274,15 @@ theorem psiN_eq_one_of_mem {ψ₀ : AddChar F ℂ} (hψ : ∀ x ∈ 𝒪[F], ψ�
 omit [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F)] in
 
 /- English proof (translation)
-Take `⟨i, j, hij, hlt⟩` from `exists_lt_succ_of_not_antitone hμ`. Take `⟨x, hx, hψx⟩` from `hψ₁`. Establish `hne : i ≠ j` using `fun h => by rw [h] at hij; omega`. Establish `hij' : i < j` using `Fin.lt_def.2 (by omega)`. Use `set u := Whittaker.rootElt i j x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `huN : u ∈ unipotent F n` using `Whittaker.rootElt_mem_unipotent hij' x`. Use `set k := torusPow F n (-μ) * u * torusPow F n (-(-μ))`. Establish `hk : k ∈ integralGL F n`. Establish `hkN : k ∈ unipotent F n` using `by show torusPow F n (-μ) * u * torusPow F n (-(-μ)) ∈ unipotent F n`. Rewrite using `[neg_neg, show torusPow F n μ = (torusPow F n (-μ))⁻¹ by rw [torusPow_neg, inv_inv], torusPow]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `diagGL_mul_mul_inv_mem_unipotent F n huN _`. Use `((mem_unipotent_inf_integralGL_iff F n).2 ⟨hkN, fun a b => ?_⟩).2` and prove the remaining obligations. Rewrite using `[show k = torusPow F n (-μ) * u * torusPow F n (-(-μ)) from rfl, torusPow_mul_mul_neg_apply, Whittaker.rootElt_apply hne]`. Simplify using `only [Pi.neg_apply]`. Distinguish the cases in `hab : a = b`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Substitute `hab` using the available equality. Rewrite using `[Matrix.one_apply_eq, if_neg (fun h => hne (h.1.trans h.2.symm)), sub_self, zpow_zero, add_zero, one_mul]`. Conclude with `Subring.one_mem _`. Rewrite using `[Matrix.one_apply_ne hab, zero_add] split_ifs with h`. Take `⟨rfl, rfl⟩` from `h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[show -μ i - -μ j = (-μ i - -μ j - 1) + 1 by ring, zpow_add₀ (uniformizer_ne_zero F), zpow_one, mul_assoc]`. Conclude with `Subring.mul_mem _ (zpow_mem_of_nonneg (by linarith)) hx`. Rewrite using `[mul_zero]`. Conclude with `Subring.zero_mem _`. Establish `heq : torusPow F n μ * k = u * torusPow F n μ`.
-
-Simplify using `only [k, neg_neg, torusPow_neg]`. Use `group`. Establish `h1` using `hWK (torusPow F n μ) k hk`. Rewrite `h1` using `[heq, hWN u huN, Whittaker.psiN_rootElt ψ₀ hne, if_pos hij]`. Establish `: (ψ₀ x - 1) * W (torusPow F n μ) = 0` using `by rw [sub_mul, h1, one_mul, sub_self]`.
-
-Conclude with `(mul_eq_zero.1 this).resolve_left (sub_ne_zero.2 hψx)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_not_antitone {ψ₀ : AddChar F ℂ} (hψ₁ : ∃ x : F, π * x ∈ 𝒪[F] ∧ ψ₀ x ≠ 1)
     {W : GL (Fin n) F → ℂ} (hWN : ∀ u ∈ unipotent F n, ∀ g, W (u * g) = Whittaker.psiN ψ₀ u * W g)
@@ -335,7 +329,7 @@ theorem eq_zero_of_not_antitone {ψ₀ : AddChar F ℂ} (hψ₁ : ∃ x : F, π 
 omit [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F)] in
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun a b => ?_)` and prove the remaining obligations. Rewrite using `[Units.val_mul, mul_permGL_apply, ← map_inv, Units.val_mul, permGL_mul_apply, inv_inv, coe_torusPow, coe_torusPow, diagonal_apply, diagonal_apply]`. Simplify using `only [Function.comp_apply, σ.injective.eq_iff]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem permGL_conj_torusPow (σ : Equiv.Perm (Fin n)) (μ : Fin n → ℤ) :
     (permGL F σ)⁻¹ * torusPow F n μ * permGL F σ = torusPow F n (μ ∘ σ) := by
@@ -347,7 +341,7 @@ theorem permGL_conj_torusPow (σ : Equiv.Perm (Fin n)) (μ : Fin n → ℤ) :
 omit [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F)] in
 
 /- English proof (translation)
-Use `IsLocallyConstant.continuous ((IsLocallyConstant.iff_exists_open f).2 fun g => ?_)` and prove the remaining obligations. Use `⟨g • (integralGL F n : Set (GL (Fin n) F)), (isOpen_integralGL F n).smul g, Set.mem_smul_set.2 ⟨1, (integralGL F n).one_mem, by simp⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨k, hk, rfl⟩`. Conclude with `hf g k hk`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem continuous_of_mul_right_invariant {f : GL (Fin n) F → ℂ}
     (hf : ∀ g, ∀ k ∈ integralGL F n, f (g * k) = f g) : Continuous f := by

@@ -19,9 +19,9 @@ def crdLat (S : HSpace E) (L : Submodule (𝓞 E) S.V) : Submodule (𝓞 E) (Fin
   L.map ((crd S : S.V →ₗ[E] (Fin S.rank → E)).restrictScalars (𝓞 E))
 
 /- English proof (translation)
-Use `conv_lhs => rw [← S.frame.sum_repr x, ← S.frame.sum_repr y]`. Simplify using `only [map_sum, LinearMap.sum_apply, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, Finset.mul_sum]`. Unfold `hform`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [RingHom.id_apply, crd, Module.Basis.equivFun_apply, CMData.sig, HSpace.gram]`. Use `show _ = star _ * _ * _`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hT_crd (hc : CMData F E) (S : HSpace E) (x y : S.V) :
     S.hT x y = hform (hc.sig : E →+* E) S.gram (crd S x) (crd S y) := by

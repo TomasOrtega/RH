@@ -7,7 +7,7 @@ set_option autoImplicit false
 namespace GlobalTheory.CobLin
 
 /- English proof (translation)
-Unfold `at2`. Conclude with `subst_sub (hasSubst_of_constantCoeff_zero fun s => by`. Consider the cases of `s with`. Consider the case `inl s => exact hu s`. Consider the case `inr s => exact hv s) c c'`.
+Replace the relevant objects with their definitions. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem powerSeriesEvalTwoGroups_sub {R : Type} [CommRing R] {d : ℕ} {τ : Type} (c c' : MvPowerSeries (Fin d ⊕ Fin d) R)
     (u v : Fin d → MvPowerSeries τ R) (hu : ∀ i, constantCoeff (u i) = 0)
@@ -20,7 +20,7 @@ theorem powerSeriesEvalTwoGroups_sub {R : Type} [CommRing R] {d : ℕ} {τ : Typ
     | inr s => exact hv s) c c'
 
 /- English proof (translation)
-Establish `ha : ∀ s, constantCoeff (Sum.elim u v s) = 0` using `fun s => by`. Consider the cases of `s with`. Consider the case `inl s => exact hu s`. Consider the case `inr s => exact hv s`. Conclude with `constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero ha) ha (hμ i)`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem constantCoeff_op_eq_zero {R : Type} [CommRing R] {d : ℕ} {τ : Type}
     {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R} (hμ : ∀ i, constantCoeff (μ i) = 0)
@@ -33,11 +33,11 @@ theorem constantCoeff_op_eq_zero {R : Type} [CommRing R] {d : ℕ} {τ : Type}
   exact constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero ha) ha (hμ i)
 
 /- English proof (translation)
-Introduce `R _ d μ hμ c c' f f'`. Establish `h1 : ∀ i, constantCoeff ((x1 : Fin d → MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) R) i) = 0` using `fun _ => constantCoeff_X _`. Establish `h2 : ∀ i, constantCoeff ((x2 : Fin d → MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) R) i) = 0` using `fun _ => constantCoeff_X _`. Establish `h3 : ∀ i, constantCoeff ((x3 : Fin d → MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) R) i) = 0` using `fun _ => constantCoeff_X _`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `cob2`. Rewrite using `[powerSeriesEvalTwoGroups_sub c c' _ _ h2 h3, powerSeriesEvalTwoGroups_sub c c' _ _ (constantCoeff_op_eq_zero hμ _ _ h1 h2) h3, powerSeriesEvalTwoGroups_sub c c' _ _ h1 (constantCoeff_op_eq_zero hμ _ _ h2 h3), powerSeriesEvalTwoGroups_sub c c' _ _ h1 h2]`. Normalize the expressions using the abelian group laws. Unfold `swap`. Conclude with `powerSeriesEvalTwoGroups_sub c c' _ _ (fun _ => constantCoeff_X _) (fun _ => constantCoeff_X _)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Unfold `cob1 inL inR`. Rewrite using `[subst_sub (hasSubst_of_constantCoeff_zero hμ), subst_sub (hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _), subst_sub (hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _)]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem sub_rules : ∀ (R : Type) [CommRing R] (d : ℕ) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R),
     (∀ i, constantCoeff (μ i) = 0) → ∀ (c c' : MvPowerSeries (Fin d ⊕ Fin d) R)

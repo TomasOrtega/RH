@@ -5,7 +5,7 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 namespace PositivityTheory.RgBcC.LfSt
 
 /- English proof (translation)
-The claim follows from `Kchain.kChain GlobalTheory.T.height_bound_facts (GelfandReading.frameDer_of GlobalTheory.T.height_bound_facts)`.
+A detailed English derivation is pending.
 -/
 theorem kChain_holds : KChain := Kchain.kChain GlobalTheory.T.height_bound_facts (GelfandReading.frameDer_of GlobalTheory.T.height_bound_facts)
 

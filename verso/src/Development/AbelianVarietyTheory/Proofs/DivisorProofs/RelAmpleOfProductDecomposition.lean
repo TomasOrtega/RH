@@ -18,11 +18,9 @@ open MonObj
 namespace GlobalTheory.ProdAmple
 
 /- English proof (translation)
-Use `⟨⟨by rw [Over.w, Over.w]⟩, ⟨PullbackCone.IsLimit.mk _ (fun s ↦ (BinaryFan.IsLimit.lift' hq (W := Over.mk (s.fst ≫ B₁.hom)) (Over.homMk s.fst rfl) (Over.homMk s.snd s.condition.symm)).1.left) (fun s ↦ ?_) (fun s ↦ ?_) (fun s m h₁ h₂ ↦ ?_)⟩⟩` and prove the remaining obligations. Conclude with `congrArg (·.left) (BinaryFan.IsLimit.lift' hq (W := Over.mk (s.fst ≫ B₁.hom)) (Over.homMk s.fst rfl) (Over.homMk s.snd s.condition.symm)).2.1`. Conclude with `congrArg (·.left) (BinaryFan.IsLimit.lift' hq (W := Over.mk (s.fst ≫ B₁.hom)) (Over.homMk s.fst rfl) (Over.homMk s.snd s.condition.symm)).2.2`. Establish `hm : m ≫ C.hom = s.fst ≫ B₁.hom` using `by rw [← h₁, Category.assoc, Over.w]`. Establish `t` using `(BinaryFan.IsLimit.lift' hq (W := Over.mk (s.fst ≫ B₁.hom)) (Over.homMk s.fst rfl) (Over.homMk s.snd s.condition.symm)).2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (Over.homMk m hm : Over.mk (s.fst ≫ B₁.hom) ⟶ C) = (BinaryFan.IsLimit.lift' hq (W` using `Over.mk (s.fst ≫ B₁.hom)) (Over.homMk s.fst rfl) (Over.homMk s.snd s.condition.symm)).1 := by`. Use `BinaryFan.IsLimit.hom_ext hq ?_ ?_` and prove the remaining obligations. Rewrite using `[t.1]`. Use `ext`. Conclude with `h₁`.
-
-Rewrite using `[t.2]`. Use `ext`. Conclude with `h₂`. Conclude with `congrArg (·.left) e`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem isPullback_of_isLimit_binaryFan {T : Scheme.{0}} {C B₁ B₂ : Over T} (q₁ : C ⟶ B₁) (q₂ : C ⟶ B₂)
     (hq : IsLimit (BinaryFan.mk q₁ q₂)) : IsPullback q₁.left q₂.left B₁.hom B₂.hom := by
@@ -49,11 +47,9 @@ theorem isPullback_of_isLimit_binaryFan {T : Scheme.{0}} {C B₁ B₂ : Over T} 
     exact congrArg (·.left) e
 
 /- English proof (translation)
-Introduce `T _ C B₁ B₂ _ _ _ hB₁ hB₂ q₁ q₂ hq L₁ hL₁ a₁ L₂ hL₂ a₂ L hL e`. Establish `hp` using `isPullback_of_isLimit_binaryFan q₁ q₂ hq`. Establish `hd` using `LB.isLB_div hL (pull_isLB hL₁ q₁.left)`. Establish `last : LBIso (L₂.pull q₂.left) (L.div (L₁.pull q₁.left))`. Use `(CechPic.cls_eq_iff (pull_isLB hL₂ _) hd).1 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[CechPic.cls_div hL (pull_isLB hL₁ q₁.left), e, CechPic.cls_pull hL₁, CechPic.cls_pull hL₂, add_sub_cancel_left]`. Use `haveI := hB₁.proper`. Use `haveI := hB₂.proper`. Use `haveI : IsProper q₁.left := MorphismProperty.of_isPullback hp.flip hB₂.proper`. Use `haveI : IsProper C.hom := by`.
-
-Rewrite using `[← Over.w q₁]`. Use `infer_instance`. Conclude with `(relAmple_iff_isAmpleLB_of_isAffine _ hL).2 (IsAmpleLB.box ((relAmple_iff_isAmpleLB_of_isAffine _ hL₁).1 a₁) ((relAmple_iff_isAmpleLB_of_isAffine _ hL₂).1 a₂) hL (p := q₁.left) (q := q₂.left) (f := B₁.hom) (g := B₂.hom) hp last)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relAmple_of_cls_eq_add : ∀ {T : Scheme.{0}} [IsAffine T] {C B₁ B₂ : Over T} [GrpObj C] [GrpObj B₁] [GrpObj B₂], IsAbelianScheme B₁ → IsAbelianScheme B₂ → ∀ (q₁ : C ⟶ B₁) (q₂ : C ⟶ B₂), IsLimit (BinaryFan.mk q₁ q₂) → ∀ {L₁ : LB B₁.left} (hL₁ : L₁.IsLB), Out.RelAmple B₁ L₁ → ∀ {L₂ : LB B₂.left} (hL₂ : L₂.IsLB), Out.RelAmple B₂ L₂ → ∀ {L : LB C.left} (hL : L.IsLB), cls L hL = pull q₁.left (cls L₁ hL₁) + pull q₂.left (cls L₂ hL₂) → Out.RelAmple C L := by
   intro T _ C B₁ B₂ _ _ _ hB₁ hB₂ q₁ q₂ hq L₁ hL₁ a₁ L₂ hL₂ a₂ L hL e

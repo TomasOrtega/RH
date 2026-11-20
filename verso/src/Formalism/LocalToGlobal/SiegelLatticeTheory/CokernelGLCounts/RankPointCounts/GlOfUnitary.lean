@@ -20,7 +20,7 @@ def matOf (γ : (VS D).V →ₗ[D.host.E] (VS D).V) : Matrix (Fin X.B.I.n) (Fin 
   (LinearMap.toMatrix X.bas X.bas γ).map X.ιE.symm
 
 /- English proof (translation)
-Unfold `matOf`. Rewrite using `[LinearMap.toMatrix_comp X.bas X.bas X.bas]`. Simplify using `using map_mul X.ιE.symm.mapMatrix (LinearMap.toMatrix X.bas X.bas γ) (LinearMap.toMatrix X.bas X.bas δ)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem matOf_comp (γ δ : (VS D).V →ₗ[D.host.E] (VS D).V) : matOf X (γ ∘ₗ δ) = matOf X γ * matOf X δ := by
   unfold matOf
@@ -28,7 +28,7 @@ theorem matOf_comp (γ δ : (VS D).V →ₗ[D.host.E] (VS D).V) : matOf X (γ �
   simpa using map_mul X.ιE.symm.mapMatrix (LinearMap.toMatrix X.bas X.bas γ) (LinearMap.toMatrix X.bas X.bas δ)
 
 /- English proof (translation)
-Unfold `matOf`. Rewrite using `[LinearMap.toMatrix_id]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem matOf_id : matOf X LinearMap.id = 1 := by
   unfold matOf
@@ -36,7 +36,7 @@ theorem matOf_id : matOf X LinearMap.id = 1 := by
   simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `show X.ιE.symm (X.bas.repr (γ y) i) = _`. Rewrite using `[← LinearMap.toMatrix_mulVec_repr X.bas X.bas γ y]`. Conclude with `RingHom.map_mulVec (X.ιE.symm : D.host.E →+* X.B.I.E) _ _ i`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem crd_apply (γ : (VS D).V →ₗ[D.host.E] (VS D).V) (y : (VS D).V) :
     X.crd (γ y) = matOf X γ *ᵥ X.crd y := by
@@ -46,7 +46,7 @@ theorem crd_apply (γ : (VS D).V →ₗ[D.host.E] (VS D).V) (y : (VS D).V) :
   exact RingHom.map_mulVec (X.ιE.symm : D.host.E →+* X.B.I.E) _ _ i
 
 /- English proof (translation)
-Introduce `_ _ h` and use `X.bas.repr.injective (Finsupp.ext fun i => X.ιE.symm.injective (congrFun h i))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem crd_inj : Function.Injective (X.crd) := fun _ _ h =>
   X.bas.repr.injective (Finsupp.ext fun i => X.ιE.symm.injective (congrFun h i))
@@ -64,7 +64,7 @@ def glOf (γ : (VS D).V ≃ₗ[D.host.E] (VS D).V) : GL (Fin X.B.I.n) X.B.I.E wh
     exact LinearMap.ext fun x => by simp
 
 /- English proof (translation)
-Apply `LinearEquiv.ext` to reduce the goal to its premises. Introduce `y`. Apply `crd_inj X` to reduce the goal to its premises. Rewrite using `[matE_crd]`. Conclude with `(crd_apply X γ.toLinearMap y).symm`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem matE_glOf (γ : (VS D).V ≃ₗ[D.host.E] (VS D).V) : matE X (glOf X γ) = γ := by
   apply LinearEquiv.ext
@@ -74,7 +74,7 @@ theorem matE_glOf (γ : (VS D).V ≃ₗ[D.host.E] (VS D).V) : matE X (glOf X γ)
   exact (crd_apply X γ.toLinearMap y).symm
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, ← LatDictK.crd_vOf X x, ← matE_crd, ← matE_crd, h]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem matE_inj {M M' : GL (Fin X.B.I.n) X.B.I.E} (h : matE X M = matE X M') : M = M' := by
   apply Units.ext
@@ -84,7 +84,7 @@ theorem matE_inj {M M' : GL (Fin X.B.I.n) X.B.I.E} (h : matE X M = matE X M') : 
   rw [Matrix.toLin'_apply, Matrix.toLin'_apply, ← LatDictK.crd_vOf X x, ← matE_crd, ← matE_crd, h]
 
 /- English proof (translation)
-Rewrite using `[hT_expand X x y]`. Simplify using `only [← X.J_eq]`. Rewrite using `[qform]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hT_coord (x y : (VS D).V) :
     (VS D).hT x y = star (X.bas.equivFun x) ⬝ᵥ (mapM X X.B.I.J *ᵥ X.bas.equivFun y) := by
@@ -93,9 +93,9 @@ theorem hT_coord (x y : (VS D).V) :
   rw [qform]
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `h (Pi.single i 1) (Pi.single j 1)` as an intermediate fact. Establish `hs : star (Pi.single i (1 : D.host.E) : m → D.host.E) = Pi.single i 1`. Use extensionality with `k`. Apply the tactic sequence `by_cases hk : k = i <;> simp [Pi.single_apply, hk]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `this` using `[hs]`. Simplify `this` using `[Matrix.mulVec, dotProduct, Pi.single_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem form_ext {m : Type} [Fintype m] [DecidableEq m] {P Q : Matrix m m D.host.E}
     (h : ∀ a c : m → D.host.E, star a ⬝ᵥ (P *ᵥ c) = star a ⬝ᵥ (Q *ᵥ c)) : P = Q := by
@@ -108,7 +108,7 @@ theorem form_ext {m : Type} [Fintype m] [DecidableEq m] {P Q : Matrix m m D.host
   simpa [Matrix.mulVec, dotProduct, Pi.single_apply] using this
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [mapM, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.conjTranspose_apply, Formalism.UG.cT, Matrix.transpose_apply, starRingEnd_apply, RingEquiv.coe_toRingHom, X.ιE_conj, Formalism.BasicNotions.bridge_star_holds D.R D.host]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mapM_cT (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) :
     mapM X (Formalism.UG.cT (starRingEnd X.B.I.E) M) = (mapM X M)ᴴ := by
@@ -117,13 +117,11 @@ theorem mapM_cT (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) :
     Matrix.transpose_apply, starRingEnd_apply, RingEquiv.coe_toRingHom, X.ιE_conj, Formalism.BasicNotions.bridge_star_holds D.R D.host]
 
 /- English proof (translation)
-Use `set A := mapM X ((glOf X γ : GL _ _) : Matrix _ _ _) with hA`. Establish `hrep : ∀ y, X.bas.equivFun (γ y) = A *ᵥ X.bas.equivFun y`. Introduce `y`. Rewrite using `[hA, ← matE_repr, matE_glOf]`. Establish `key : Aᴴ * mapM X X.B.I.J * A = mapM X X.B.I.J`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `form_ext` to reduce the goal to its premises. Introduce `a c`. Establish `h1` using `hγ (X.bas.equivFun.symm a) (X.bas.equivFun.symm c)`. Rewrite `h1` using `[hT_coord, hT_coord, hrep, hrep, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Rewrite using `[← h1, Matrix.star_mulVec, Matrix.mulVec_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, Matrix.mul_assoc]`. Use `show Formalism.UG.cT (starRingEnd X.B.I.E) ((glOf X γ : GL _ _) : Matrix _ _ _) * X.B.I.J * ((glOf X γ : GL _ _) : Matrix _ _ _) = X.B.I.J`. Apply `Matrix.map_injective X.ιE.injective` to reduce the goal to its premises. Use `show mapM X _ = mapM X _`. Rewrite using `[map_mul, map_mul, mapM_cT]`.
-
-Conclude with `key`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glOf_unitary (γ : (VS D).V ≃ₗ[D.host.E] (VS D).V) (hγ : γ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT) :
     glOf X γ ∈ Formalism.UG.UJ (starRingEnd X.B.I.E) X.B.I.J := by
@@ -150,9 +148,9 @@ end Mat
 section UJ
 
 /- English proof (translation)
-Establish `hg' : Formalism.UG.cT σA (g : Matrix m m A) * JA * (g : Matrix m m A) = JA` using `hg`. Use `show Formalism.UG.cT σB ((g : Matrix m m A).map φ) * JA.map φ * (g : Matrix m m A).map φ = JA.map φ`. Establish `hc : Formalism.UG.cT σB ((g : Matrix m m A).map φ) = (Formalism.UG.cT σA (g : Matrix m m A)).map φ`. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, hσ]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, ← Matrix.map_mul, ← Matrix.map_mul, hg']`.
+A detailed English derivation is pending.
 -/
 theorem uj_bc {A B : Type} [CommRing A] [CommRing B] {m : Type} [Fintype m] [DecidableEq m]
     (φ : A →+* B) (σA : A →+* A) (σB : B →+* B) (hσ : ∀ a, φ (σA a) = σB (φ a)) (JA : Matrix m m A)
@@ -175,9 +173,9 @@ def AH (Λ : Submodule (𝓞 D.host.E) (VS D).V) : Set ((VS D).V ≃ₗ[D.host.E
     γ (X.zu u) = X.zu u ∧ Formalism.HermitianLatticesTheory.gmap γ Λ = Λ}
 
 /- English proof (translation)
-Establish `hc : ∀ v, γ v = v → (glOf X γ : Matrix _ _ _) *ᵥ X.crd v = X.crd v` using `fun v hv => by`. Rewrite using `[← matE_crd, matE_glOf, hv]`. Break down `hy with (⟨a, rfl⟩ | ⟨a, rfl⟩) | hz'` into its components or cases. Conclude with `hc _ (he a)`. Conclude with `hc _ (hf a)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hz'` using `[Set.mem_singleton_iff]`. Rewrite using `[hz']`. Conclude with `hc _ hz`.
+A detailed English derivation is pending.
 -/
 theorem crd_fix_of (γ : (VS D).V ≃ₗ[D.host.E] (VS D).V) (he : ∀ a, γ (X.eX a) = X.eX a)
     (hf : ∀ a, γ (X.fY a) = X.fY a) (hz : γ (X.zu u) = X.zu u) (y : Fin X.B.I.n → X.B.I.E) (hy : y ∈ fixSet X u) :

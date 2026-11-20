@@ -17,9 +17,7 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 namespace GlobalTheory.FinPartAt
 
 /- English proof (translation)
-Use `haveI : Module.Finite (Localization.Away P'.f) P'.B := P'.fin.finite`. Use `haveI : Module.Finite (OL P' x0 hu) (Bt P' x0 hu) := Module.Finite.base_change _ _ _`. Use `haveI : Module.Finite O (OL P' x0 hu) := inferInstanceAs (Module.Finite O O)`. Use `haveI : Module.Finite O (Bt P' x0 hu) := Module.Finite.trans (OL P' x0 hu) (Bt P' x0 hu)`. Express the relevant statement in the definitionally equal form `IsFinite (Spec.map (CommRingCat.ofHom (algebraMap O (Bt P' x0 hu))))`.
-
-Rewrite using `[IsFinite.SpecMap_iff]`. Rewrite using `[CommRingCat.hom_ofHom]`. Conclude with `RingHom.finite_algebraMap.mpr inferInstance`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hs_isFinite (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Scheme.{0}) (t : SAB H X)
     (R : Type) [CommRing R] (ξ : Sp R ⟶ X) (q : ℕ) (P' : GlobalTheory.HTMap.FP t ξ q) (O : Type) [CommRing O] (x0 : R →+* O)

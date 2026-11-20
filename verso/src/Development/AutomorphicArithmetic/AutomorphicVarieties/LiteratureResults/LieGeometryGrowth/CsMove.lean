@@ -6,7 +6,7 @@ open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Li
 open scoped ContDiff
 
 /- English proof (translation)
-Establish `h1 : ContDiffAt ℝ ∞ (fun x => w (A x)) p` using `hw.comp p A.contDiff.contDiffAt`. Establish `h2` using `(ContinuousAlternatingMap.compContinuousLinearMapCLM A : (V [⋀^Fin q]→L[ℝ] F) →L[ℝ] (V [⋀^Fin q]→L[ℝ] F)).contDiff.contDiffAt.comp p h1`. Conclude with `(ContinuousLinearMap.compContinuousAlternatingMapCLM ℝ V F F (Fin q) B).contDiff.contDiffAt.comp p h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem tp_smooth {V F : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [NormedAddCommGroup F] [NormedSpace ℝ F]
     (A : V →L[ℝ] V) (B : F →L[ℝ] F) {q : ℕ} (w : V → V [⋀^Fin q]→L[ℝ] F) (p : V) (hw : ContDiffAt ℝ ∞ w (A p)) :
@@ -17,11 +17,11 @@ private theorem tp_smooth {V F : Type} [NormedAddCommGroup V] [NormedSpace ℝ V
   exact (ContinuousLinearMap.compContinuousAlternatingMapCLM ℝ V F F (Fin q) B).contDiff.contDiffAt.comp p h2
 
 /- English proof (translation)
-Introduce `E _ _ _ a ho U Ξ q k c`. Take `⟨B, hB, hb⟩` from `matBd E a Ξ c`. Take `⟨D, hD, hd⟩` from `Cs.tpSz (HV E a) (Fin Ξ.d → ℂ) q k B`. Use `⟨D, hD, fun w g x h b hh hs => ?_⟩` and prove the remaining obligations. Take `⟨h1, -, h3⟩` from `hb h hh.1 hh.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `e : sand h⁻¹ (sand h (hOne E a)) = hOne E a`. Rewrite using `[← ContinuousLinearMap.mul_apply, ← map_mul, inv_mul_cancel, map_one, ContinuousLinearMap.one_apply]`. Rewrite using `[Cs.Tw_eq U Ξ w.1 g h x]`. Use `hd _ _ _ _ b (ContinuousLinearMap.opNorm_le_bound _ hB h3) (ContinuousLinearMap.opNorm_le_bound _ hB fun y => by rw [mulVecL_apply]; exact h1 y) ?_ (by rw [e]; exact hs)` and prove the remaining obligations. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `tp_smooth _ _ _ _ ((w.2 _).1.contDiffAt (ho.mem_nhds (sand_mem_cone _ hOne_mem_cone)))`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Lit.Geo.Cs.move :
     UpperTheory.V.Lit.Geo.Cs.Move := by

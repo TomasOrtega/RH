@@ -6,9 +6,9 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.Sec
 namespace GlobalTheory.SquareEqNegReIm
 
 /- English proof (translation)
-Establish `hs : ((Real.sqrt c : ℝ) : ℂ) ^ 2 = (c : ℂ)`. Rewrite using `[← Complex.ofReal_pow, Real.sq_sqrt hc]`. Establish `h : z ^ 2 = (((Real.sqrt c : ℝ) : ℂ) * Complex.I) ^ 2`. Rewrite using `[mul_pow, hs, Complex.I_sq, hz]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Break down `sq_eq_sq_iff_eq_or_eq_neg.mp h with h | h` into its components or cases. Rewrite using `[h]`. Simplify using `[Real.sq_sqrt hc]`. Rewrite using `[h]`. Simplify using `[Real.sq_sqrt hc]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem re_im_of_sq_eq_neg {z : ℂ} {c : ℝ} (hc : 0 ≤ c) (hz : z ^ 2 = -(c : ℂ)) :
     z.re = 0 ∧ z.im ^ 2 = c := by
@@ -21,7 +21,7 @@ theorem re_im_of_sq_eq_neg {z : ℂ} {c : ℝ} (hc : 0 ≤ c) (hz : z ^ 2 = -(c 
   · rw [h]; simp [Real.sq_sqrt hc]
 
 /- English proof (translation)
-Use `re_im_of_sq_eq_neg (by positivity) ?_` and prove the remaining obligations. Rewrite using `[H.sqrt_neg_disc_sq]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem re_eq_zero_and_im_sq {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E]
     (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) :

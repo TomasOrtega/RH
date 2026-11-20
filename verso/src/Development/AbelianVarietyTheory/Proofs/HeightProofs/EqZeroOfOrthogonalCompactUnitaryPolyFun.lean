@@ -44,7 +44,7 @@ def polyAlg (ε : Fin n → Bool) : StarSubalgebra ℂ C(KG ε, ℂ) where
     funext k; rfl
 
 /- English proof (translation)
-Introduce `a b h`. Establish `h1 : ((a : UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ) = ((b : UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ)` using `Units.ext h`. Conclude with `Subtype.ext (Subtype.ext h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem toMK_injective (ε : Fin n → Bool) : Function.Injective (fun k : KG ε => toMK k) := by
   intro a b h
@@ -52,9 +52,9 @@ theorem toMK_injective (ε : Fin n → Bool) : Function.Injective (fun k : KG ε
   exact Subtype.ext (Subtype.ext h1)
 
 /- English proof (translation)
-Introduce `x y hxy`. Establish `hne : toMK x ≠ toMK y` using `fun h => hxy (toMK_injective ε h)`. Choose the witnesses or unpack the hypotheses as in `⟨i, j, hij⟩ : ∃ i j, toMK x i j ≠ toMK y i j := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hne (Matrix.ext hc)`. Use `⟨_, ⟨⟨coord ε (i, j, true), continuous_coord ε _⟩, ⟨1, show coord ε (i, j, true) ∈ polyV ε 1 from coord_mem ε _⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify `hij` using `[coord]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem polyAlg_separatesPoints (ε : Fin n → Bool) : (polyAlg ε).SeparatesPoints := by
   intro x y hxy
@@ -67,19 +67,19 @@ theorem polyAlg_separatesPoints (ε : Fin n → Bool) : (polyAlg ε).SeparatesPo
   simpa [coord] using hij
 
 /- English proof (translation)
-The claim follows from `ContinuousMap.starSubalgebra_topologicalClosure_eq_top_of_separatesPoints _ (polyAlg_separatesPoints ε)`.
+A detailed English derivation is pending.
 -/
 theorem polyAlg_dense (ε : Fin n → Bool) : (polyAlg ε).topologicalClosure = ⊤ :=
   ContinuousMap.starSubalgebra_topologicalClosure_eq_top_of_separatesPoints _ (polyAlg_separatesPoints ε)
 
 /- English proof (translation)
-The claim follows from `F.continuous.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`.
+A detailed English derivation is pending.
 -/
 theorem integrable_cont (ε : Fin n → Bool) (F : C(KG ε, ℂ)) : Integrable F (muK ε) :=
   F.continuous.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)
 
 /- English proof (translation)
-Use `(LipschitzWith.of_dist_le_mul fun F G => ?_).continuous (K := 1)` and prove the remaining obligations. Rewrite using `[dist_eq_norm, ← integral_sub (integrable_cont ε F) (integrable_cont ε G)]`. Establish `h` using `norm_integral_le_of_norm_le_const (μ := muK ε) (C := ‖F - G‖) (Filter.Eventually.of_forall fun k => by`. Simplify using `using ContinuousMap.norm_coe_le_norm (F - G) k)`. Simplify `h` using `[probReal_univ, dist_eq_norm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem continuous_integral_cont (ε : Fin n → Bool) :
     Continuous fun F : C(KG ε, ℂ) => ∫ k, F k ∂(muK ε) := by
@@ -91,19 +91,17 @@ theorem continuous_integral_cont (ε : Fin n → Bool) :
   simpa [probReal_univ, dist_eq_norm] using h
 
 /- English proof (translation)
-Introduce `n ε h hc horth`. Set `H : C(KG ε, ℂ)` to `⟨h, hc⟩`. Set `Φ : C(KG ε, ℂ) → ℂ` to `fun F => ∫ k, star (F k) * h k ∂(muK ε)`. Establish `hΦ : Continuous Φ`. Establish `: Continuous fun F : C(KG ε, ℂ) => star F * H` using `(continuous_star).mul continuous_const`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(continuous_integral_cont ε).comp this`. Establish `hclosed : IsClosed {F : C(KG ε, ℂ) | Φ F = 0}` using `isClosed_eq hΦ continuous_const`. Establish `hsub : ((polyAlg ε : StarSubalgebra ℂ C(KG ε, ℂ)) : Set C(KG ε, ℂ)) ⊆ {F | Φ F = 0}`. Introduce and unpack `F ⟨d, hd⟩`. Conclude with `horth d _ hd`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcl : closure ((polyAlg ε : StarSubalgebra ℂ C(KG ε, ℂ)) : Set C(KG ε, ℂ)) = Set.univ`. Use `polyAlg_dense ε` as an intermediate fact. Rewrite using `[← StarSubalgebra.topologicalClosure_coe, this]`. Both sides reduce to the same expression. Establish `hH : Φ H = 0`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: H ∈ closure ((polyAlg ε : StarSubalgebra ℂ C(KG ε, ℂ)) : Set C(KG ε, ℂ))` using `by rw [hcl]; trivial`. Conclude with `hclosed.closure_subset_iff.mpr hsub this`. Establish `hint : ∫ k, (Complex.normSq (h k) : ℂ) ∂(muK ε) = 0`. Establish `e : (fun k => (Complex.normSq (h k) : ℂ)) = fun k => star (h k) * h k`. Use function extensionality and compare the values at `k`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.normSq_eq_conj_mul_self]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `hH`. Establish `hint' : ∫ k, Complex.normSq (h k) ∂(muK ε) = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hint` using `[integral_complex_ofReal]`. Conclude with `hint` after adjusting the coercions. Establish `hnn : 0 ≤ᵐ[muK ε] fun k => Complex.normSq (h k)` using `Filter.Eventually.of_forall fun k => Complex.normSq_nonneg _`. Establish `hcn : Continuous fun k => Complex.normSq (h k)` using `Complex.continuous_normSq.comp hc`. Establish `hae` using `(integral_eq_zero_iff_of_nonneg_ae hnn (hcn.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _))).mp hint'`.
-
-Establish `hz : (fun k => Complex.normSq (h k)) = fun _ => 0` using `(Continuous.ae_eq_iff_eq (muK ε) hcn continuous_const).mp hae`. Use function extensionality and compare the values at `k`. Use `congrFun hz k` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_orth_poly : ∀ {n : ℕ} (ε : Fin n → Bool) (h : KG ε → ℂ), Continuous h → (∀ d, ∀ q ∈ GlobalTheory.KFourier.polyV ε d, ∫ k, star (q k) * h k ∂(muK ε) = 0) → h = 0 := by
   intro n ε h hc horth

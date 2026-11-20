@@ -6,7 +6,7 @@ namespace ReciprocityTheory.ChartRestriction.G.I2
 open MeasureTheory Metric
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_eq_single a]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Pi.single_eq_of_ne hb]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sum_norm_smul_single {N : ℕ} (a : Fin N) (w : ℂ) :
     ∑ i, ‖(w • (Pi.single a (1 : ℂ) : Fin N → ℂ)) i‖ = ‖w‖ := by
@@ -17,7 +17,7 @@ theorem sum_norm_smul_single {N : ℕ} (a : Fin N) (w : ℂ) :
   · simp
 
 /- English proof (translation)
-Establish `hA` using `ReciprocityTheory.AnForm.Osgood.osgood N Set.univ F isOpen_univ hF.differentiableOn`. Conclude with `contDiffOn_univ.mp (hA.contDiffOn uniqueDiffOn_univ)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiff_of_differentiable {N : ℕ} {F : (Fin N → ℂ) → ℂ} (hF : Differentiable ℂ F)
     {n : WithTop ℕ∞} : ContDiff ℂ n F := by
@@ -25,7 +25,7 @@ theorem contDiff_of_differentiable {N : ℕ} {F : (Fin N → ℂ) → ℂ} (hF :
   exact contDiffOn_univ.mp (hA.contDiffOn uniqueDiffOn_univ)
 
 /- English proof (translation)
-The claim follows from `| 0, l, x, hM => by have := hM x (by simp) simpa using this | k + 1, l, x, hM => by set e : Fin N → ℂ := Pi.single (l 0) 1 with he set v : Fin k → (Fin N → ℂ) := fun j => Pi.single (l (Fin.succ j)) 1 with hv set A := iteratedFDeriv ℂ k F with hA have hD : Differentiable ℂ A := Co …`.
+A detailed English derivation is pending.
 -/
 theorem iter_step_bound {N : ℕ} (F : (Fin N → ℂ) → ℂ) (hF : Differentiable ℂ F) (ρ M : ℝ)
     (hρ : 0 < ρ) : ∀ (k : ℕ) (l : Fin k → Fin N) (x : Fin N → ℂ),
@@ -77,21 +77,21 @@ theorem iter_step_bound {N : ℕ} (F : (Fin N → ℂ) → ℂ) (hF : Differenti
     exact hc
 
 /- English proof (translation)
-Establish `hS0 : 0 ≤ S` using `le_trans (by positivity) (hS 0)`. Break down `Nat.eq_zero_or_pos k with rfl | hk` into its components or cases. Rewrite using `[iteratedFDeriv_zero_apply]`. Establish `h0` using `hS 0`. Simplify using `only [Pi.zero_apply, norm_zero, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, Finset.sum_const_zero, mul_zero, Real.exp_zero, mul_one] at h0`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `using Real.abs_le_sqrt h0`. Establish `hπk : 0 < Real.pi * k` using `by positivity`. Take `⟨ρ, hρd⟩ : ∃ ρ : ℝ, ρ = 1 / Real.sqrt (Real.pi * k)` from `⟨_, rfl⟩`. Establish `hρ : 0 < ρ` using `by rw [hρd]; positivity`. Establish `hρ2 : ρ ^ 2 = 1 / (Real.pi * k)` using `by rw [hρd, div_pow, Real.sq_sqrt hπk.le, one_pow]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbound` using `iter_step_bound F hF ρ (Real.sqrt S * Real.exp ((k : ℝ) / 2)) hρ k l 0 (by`. Introduce `y hy`. Simplify using `only [Pi.zero_apply, sub_zero] at hy`. Establish `hsq : ∑ i, ‖y i‖ ^ 2 ≤ k / Real.pi`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[mul_pow, hρ2]`. Clear the denominators using the available nonvanishing facts. Establish `h2 : ‖F y‖ ^ 2 ≤ S * Real.exp k`. Establish `he : ‖F y‖ ^ 2 = ‖F y‖ ^ 2 * Real.exp (-Real.pi * ∑ i, ‖y i‖ ^ 2) * Real.exp (Real.pi * ∑ i, ‖y i‖ ^ 2)`. Rewrite using `[mul_assoc, ← Real.exp_add]`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[he]`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_left (Real.exp_le_exp.mpr ?_) hS0` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Establish `hsx : Real.sqrt S * Real.exp ((k : ℝ) / 2) = Real.sqrt (S * Real.exp k)`. Establish `: Real.exp (k : ℝ) = Real.exp ((k : ℝ) / 2) ^ 2`. Rewrite using `[sq, ← Real.exp_add]`. Put the polynomial expressions in normal form. Rewrite using `[Real.sqrt_mul hS0, this, Real.sqrt_sq (Real.exp_pos _).le]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsx]`. Simplify using `using Real.abs_le_sqrt h2)`. Use `hbound.trans (le_of_eq ?_)` and prove the remaining obligations. Establish `hr : ρ ^ k = 1 / (Real.pi * k) ^ ((k : ℝ) / 2)`. Rewrite using `[hρd, div_pow, one_pow, Real.sqrt_eq_rpow, ← Real.rpow_natCast, ← Real.rpow_mul hπk.le]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Put the polynomial expressions in normal form. Rewrite using `[show Real.pi * Real.exp 1 * k = (Real.pi * k) * Real.exp 1 by ring, Real.mul_rpow hπk.le (Real.exp_pos 1).le, Real.exp_one_rpow, hr]`. Clear the denominators using the available nonvanishing facts.
+Put the polynomial expressions in normal form. Rewrite the hypotheses and the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem cauchy_gauss_le {N k : ℕ} (F : (Fin N → ℂ) → ℂ) (hF : Differentiable ℂ F) (S : ℝ)
     (hS : ∀ z, ‖F z‖ ^ 2 * Real.exp (-Real.pi * ∑ i, ‖z i‖ ^ 2) ≤ S) (l : Fin k → Fin N) :

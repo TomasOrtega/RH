@@ -10,25 +10,23 @@ open scoped TensorProduct
 namespace GlobalTheory.RealPar
 
 /- English proof (translation)
-Establish `hd : ∀ v s, HasDerivAt (fun t : ℝ => U t (ι v)) (U s (ι (a v))) s`. Introduce `v s`. Establish `h1 : HasDerivAt (fun t : ℝ => U (t - s) (ι v)) (ι (a v)) s`. Use `(show HasDerivAt (fun t : ℝ => U t (ι v)) (ι (a v)) (s - s) by` as an intermediate fact. Rewrite using `[sub_self]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hder v)`. Conclude with `this.comp_sub_const s s`. Establish `h2` using `((U s).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt s h1`. Establish `h3 : (fun t : ℝ => U t (ι v)) = ((U s).restrictScalars ℝ) ∘ fun t : ℝ => U (t - s) (ι v)`. Use extensionality with `r`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hadd s (r - s)` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Simplify using `[this]`. Rewrite using `[h3]`. Conclude with `h2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `_ ⟨w, hw, rfl⟩`. Rewrite using `[← (W.map ι).orthogonal_orthogonal, Submodule.mem_orthogonal]`. Introduce `y hy`. Set `b` to `Module.finBasis ℂ W`. Set `f : ℝ → Fin (Module.finrank ℂ W) → ℂ` to `fun s i => inner ℂ y (U s (ι (b i)))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hf : ∀ s (u : W), inner ℂ y (U s (ι u)) = ∑ j, b.repr u j * f s j`. Introduce `s u`. Establish `h3 : (u : V) = ∑ j, b.repr u j • (b j : V)`. Use `congrArg W.subtype (b.sum_repr u)` as an intermediate fact. Rewrite `this` using `[map_sum]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Conclude with `this.symm`. Rewrite using `[h3]`. Simplify using `only [f, map_sum, map_smul, inner_sum, inner_smul_right]`. Set `M : Matrix (Fin (Module.finrank ℂ W)) (Fin (Module.finrank ℂ W)) ℂ` to `fun i j => b.repr ⟨a (b i), hW _ (b i).2⟩ j`. Set `L` to `LinearMap.toContinuousLinearMap (Matrix.toLin' M)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfd : ∀ s, HasDerivAt f (L (f s)) s`. Introduce `s`. Rewrite using `[hasDerivAt_pi]`. Introduce `i`. Establish `h2` using `((innerSL ℂ y).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt s (hd (b i) s)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Use `hf s ⟨a (b i), hW _ (b i).2⟩` as an intermediate fact. Establish `h4 : L (f s) i = ∑ j, b.repr ⟨a (b i), hW _ (b i).2⟩ j * f s j`. Simplify using `only [L, LinearMap.coe_toContinuousLinearMap', Matrix.toLin'_apply]`. Both sides reduce to the same expression. Rewrite using `[h4, ← this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `h2`. Establish `hf0 : f 0 = 0`. Use extensionality with `i`. Simplify using `only [f, h0]`. Conclude with `Submodule.inner_left_of_mem_orthogonal (K := W.map ι) ⟨b i, (b i).2, rfl⟩ hy`.
-
-Establish `hz : f = fun _ => 0`. Use `ODE_solution_unique_univ (v := fun _ x => L x) (s := fun _ => Set.univ) (K := ‖L‖₊) (t₀ := 0) (fun _ => L.lipschitz.lipschitzOnWith) (fun s => ⟨hfd s, trivial⟩) (fun s => ⟨?_, trivial⟩) hf0` and prove the remaining obligations. Simplify using `using hasDerivAt_const s (0 : Fin (Module.finrank ℂ W) → ℂ)`. Rewrite using `[hf t ⟨w, hw⟩, hz]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem flow_mem_map {V H : Type*} [AddCommGroup V] [Module ℂ V] [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (ι : V →ₗ[ℂ] H) (a : V →ₗ[ℂ] V) (W : Submodule ℂ V) [FiniteDimensional ℂ W] (hW : ∀ w ∈ W, a w ∈ W)
@@ -89,19 +87,17 @@ theorem flow_mem_map {V H : Type*} [AddCommGroup V] [Module ℂ V] [NormedAddCom
   simp
 
 /- English proof (translation)
-Introduce `p q n e ε T R σ hb hF W hfin hK k hk`. Take `⟨Y, hY, hexp, -⟩` from `Formalism.REAL.compact_exists_log_bounded ε k hk`. Take `⟨X, rfl⟩` from `(Matrix.reindex e e).surjective Y`. Establish `hX : X ∈ upq p q`. Establish `h1` using `hY.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Formalism.REAL.inG at h1`. Rewrite `h1` using `[← hb.reindex_Jm, Matrix.conjTranspose_reindex]`. Apply `(Matrix.reindex e e).injective` to reduce the goal to its premises. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_mul_equiv] at h1`. Simplify using `only [Matrix.reindex_apply]`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.submatrix_add]`. Conclude with `h1`. Establish `hKC : IsKC X`. Introduce `a b hab`. Rewrite `hab` using `[hb.sameBlock_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `congrFun (congrFun hY.2 (e a)) (e b)`. Simplify using `only [Formalism.REAL.Jm, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply] at h2`. Apply the tactic sequence `cases h3 : ε (e a) <;> cases h4 : ε (e b) <;> rw [h3, h4] at hab h2`. Conclude with `(hab rfl).elim`. Simplify using `only [if_true, Bool.false_eq_true, if_false] at h2`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Take the linear combination `(1/2 : ℂ) * h2`. Simplify using `only [if_true, Bool.false_eq_true, if_false] at h2`. Take the linear combination `(-1/2 : ℂ) * h2`. Conclude with `(hab rfl).elim`. Establish `hk' : σ k = R.U.π (T.expt ((1 : ℝ) • X))`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hF, one_smul, T.expt_cov X hX, ← hexp]`. Use `congr 1`. Use `open scoped Matrix.Norms.Operator in`. Conclude with `(NormedSpace.map_exp (Matrix.reindexAlgEquiv ℂ ℂ e) (by`. Conclude with `LinearMap.continuous_of_finiteDimensional (Matrix.reindexAlgEquiv ℂ ℂ e).toLinearMap) X).symm`.
-
-Rewrite using `[hk']`. Conclude with `flow_mem_map R.ι (R.HK.act X) W (hK X hKC) (fun t => R.U.π (T.expt (t • X))) (by simp [T.expt_zero]) (fun s t => by simp only [T.expt_add X hX, map_mul]) (R.der X hX) 1`.
+A detailed English derivation is pending.
 -/
 theorem isKStableOn_of_kStable : ∀ (p q n : ℕ) (e : Ix p q ≃ Fin n) (ε : Fin n → Bool) (T : GrpData p q) (R : DSRep T) (σ : Matrix (Fin n) (Fin n) ℂ → (R.U.H →L[ℂ] R.U.H)), BlockOrd e ε → Factors R.U e σ → ∀ W : Submodule ℂ R.HK.V, FiniteDimensional ℂ W → KStable R.HK.act W → IsKStableOn ε σ (W.map R.ι) := by
   intro p q n e ε T R σ hb hF W hfin hK k hk

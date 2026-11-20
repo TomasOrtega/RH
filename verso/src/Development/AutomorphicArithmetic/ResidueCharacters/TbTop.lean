@@ -15,17 +15,13 @@ namespace UpperTheory.N
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Use `haveI : IsDiscreteValuationRing ↥(OL LL) := Formalism.BasicNotions.Examples₂.LB.OL_dvr LL`. Set `Y` to `kerY Yt p e₀ hpe hp hint he₀`. Establish `hcjY` using `cj_sub (hF K LL) (S := fun _ => (U : Set ℤ)) (GRep.ofLat Yt) (LinearMap.ker p) (ker_stable Yt p hp) ⟨hcrys, hjmp⟩`. Establish `hsub : LocalSituation.Jset (LocalSituation.sit D.loc HW l (D.locA l) K _ LL hg) Y ⊆ U` using `fun a ha => by`. Take `⟨τ, hτ⟩` from `JsetEmb.jsetSplit_all D HW l K _ LL hg Y a ha`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hcjY.2 τ a hτ`. Establish `hWY` using `hW K _ LL hg Y h h hcjY.1 fun a ha => hb a (hsub ha)`. Establish `hCt` using `hCo l K _ LL hg Yt hcrys`. Use `haveI : IsTopologicalRing (LocalSituation.sit D.loc HW l (D.locA l) K _ LL hg).LL := inferInstanceAs (IsTopologicalRing ↥LL.1)`. Use `haveI : IsDomain (LocalSituation.sit D.loc HW l (D.locA l) K _ LL hg).O := inferInstanceAs (IsDomain ↥(OL LL))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `haveI : IsPrincipalIdealRing (LocalSituation.sit D.loc HW l (D.locA l) K _ LL hg).O := inferInstanceAs (IsPrincipalIdealRing ↥(OL LL))`. Establish `key` using `TBLoc.tb_part1 (LocalSituation.sit D.loc HW l (D.locA l) K _ LL hg) Yt p e₀ hpe hp hint he₀ Subtype.val_injective _ (h4 l K _ LL hg).1 e h h _ Ve h1 hχ hCt hWY le_rfl φ hφ`. Establish `e1 : LocalSituation.ell (LocalSituation.sit D.loc HW l (D.locA l) K _ LL hg) = l` using `(D.loc l).PD_p K`. Use `⟨LocalSituation.cTBY (LocalSituation.sit D.loc HW l (D.locA l) K _ LL hg) Y h h e, ?_, ?_⟩` and prove the remaining obligations. Establish `hvd` using `LocRes.vdeg_le K (s := sN l N) (m := LocalSituation.mN l (sN l N) (h + h)) (le_max_left _ _) (by unfold LocalSituation.mN; omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (LocalSituation.sit D.loc HW l (D.locA l) K _ LL hg).W.s = sN l N` using `(HW l).W_s _ _ _ _`. Establish `e3 : LocalSituation.gK (LocalSituation.sit D.loc HW l (D.locA l) K _ LL hg) = 0`. Unfold `LocalSituation.gK`. Rewrite using `[e2]`. Use `show padicValNat _ (Module.finrank ℚ_[l] ↥(Ks K _)) - padicValNat _ (Module.finrank ℚ_[l] ↥K.1) = 0`.
-
-Rewrite using `[hKs, Nat.sub_self]`. Unfold `LocalSituation.cTBY LocalSituation.vdegMs`. Rewrite using `[e3, e1, e2]`. Conclude with `LocNum.cTB_le l N h n t e _ _ Fact.out U _ hsub hn hb he ht hvd hgl`. Establish `e4 : ((((D.loc l).PD K).p : ℕ) : ↥(OL LL)) = (l : ↥(OL LL))` using `by rw [(D.loc l).PD_p]`.
-
-Rewrite using `[← e4]`. Conclude with `key`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tb_top (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (l : ℕ) [Fact l.Prime]
     (h4 : LocalSituation.Conclusion4 D HW F) (hCo : CrysOnCond D HW F)

@@ -9,7 +9,7 @@ open Formalism.MainNotions.DIV.Cons (intO)
 namespace GlobalTheory.Proof.exists_descending_letter_chain
 
 /- English proof (translation)
-Use `⟨hi.comp (Fin.castLE_injective hk), fun l j hj => ?_⟩` and prove the remaining obligations. Take `⟨l', hl, e⟩` from `h (Fin.castLE hk l) j hj`. Conclude with `⟨⟨l'.1, lt_of_le_of_lt (Fin.le_def.1 hl) l.2⟩, e⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem down_prefix {T : Type} {m : T → ℕ} {n : ℕ} {u : Fin n → Let m} (hi : Function.Injective u)
     (h : ∀ (l : Fin n) (j : Fin (m (u l).1)), j < (u l).2 → ∃ l' ≤ l, u l' = ⟨(u l).1, j⟩) {k : ℕ} (hk : k ≤ n) :
@@ -21,9 +21,9 @@ theorem down_prefix {T : Type} {m : T → ℕ} {n : ℕ} {u : Fin n → Let m} (
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (Dw : Datum H)
 
 /- English proof (translation)
-Use `List.pairwise_flatMap.2 ⟨fun a _ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[List.pairwise_map]`. Use `List.Pairwise.imp ?_ (List.pairwise_le_finRange _)` and prove the remaining obligations. Conclude with `fun h _ => Fin.le_def.1 h`. Use `(List.nodup_finRange _).pairwise_of_forall_ne fun a _ b _ hab x hx y hy h => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨i, -, rfl⟩` from `List.mem_map.1 hx`. Take `⟨i', -, rfl⟩` from `List.mem_map.1 hy`. Conclude with `absurd ((Fintype.equivFin (E →+* ℂ)).symm.injective h) hab`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pairwise_letters : (letters Dw).Pairwise fun a b => a.1 = b.1 → (a.2 : ℕ) ≤ (b.2 : ℕ) := by
   refine List.pairwise_flatMap.2 ⟨fun a _ => ?_, ?_⟩
@@ -36,7 +36,7 @@ theorem pairwise_letters : (letters Dw).Pairwise fun a b => a.1 = b.1 → (a.2 :
     exact absurd ((Fintype.equivFin (E →+* ℂ)).symm.injective h) hab
 
 /- English proof (translation)
-Take `⟨l', e⟩` from `List.get_of_mem (GlobalTheory.Proof.LetterConjugation.mem_letters Dw ⟨((letters Dw).get l).1, j⟩)`. Use `⟨l', not_lt.1 fun hl => ?_, e⟩` and prove the remaining obligations. Establish `h` using `List.pairwise_iff_get.1 (pairwise_letters Dw) l l' hl`. Rewrite `h` using `[e]`. Conclude with `absurd (h rfl) (not_le.2 hj)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem earlier (l : Fin (letters Dw).length) (j : Fin (Dw.mult ((letters Dw).get l).1))
     (hj : j < ((letters Dw).get l).2) : ∃ l' ≤ l, (letters Dw).get l' = ⟨((letters Dw).get l).1, j⟩ := by
@@ -47,11 +47,11 @@ theorem earlier (l : Fin (letters Dw).length) (j : Fin (Dw.mult ((letters Dw).ge
   exact absurd (h rfl) (not_le.2 hj)
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw st x hx`. Break down `st with ⟨τ, k⟩ | k` into its components or cases. Distinguish the cases in `h : k < Dw.mult τ`. Simplify using `only [letterOf, dif_pos h, Option.some.injEq] at hx`. Establish `hi : Function.Injective fun i : Fin (Dw.mult τ) => (⟨τ, i⟩ : Let Dw.mult)` using `fun i i' h => eq_of_heq (Sigma.mk.inj h).2`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hd : ∀ (l : Fin (Dw.mult τ)) (j : Fin (Dw.mult τ)), j < l → ∃ l' ≤ l, (⟨τ, l'⟩ : Let Dw.mult) = ⟨τ, j⟩` using `fun l j hj => ⟨j, hj.le, rfl⟩`. Use `⟨Dw.mult τ, fun i => ⟨τ, i⟩, ⟨k, h⟩, down_prefix hi hd le_rfl, down_prefix hi hd _, down_prefix hi hd _, hx, fun X t C _ _ y fr p => ?_⟩` and prove the remaining obligations. Simplify using `[lnStep, h, lat]`. Simplify using `[letterOf, h] at hx`. Take `⟨h, hx⟩` from `List.getElem?_eq_some_iff.1 (show (letters Dw)[k]? = some x from hx)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hi : Function.Injective (letters Dw).get` using `List.nodup_iff_injective_get.1 (GlobalTheory.Proof.LetterConjugation.nodup_letters Dw)`. Use `⟨_, (letters Dw).get, ⟨k, h⟩, down_prefix hi (earlier Dw) le_rfl, down_prefix hi (earlier Dw) _, down_prefix hi (earlier Dw) _, hx, fun X t C _ _ y fr p => ?_⟩` and prove the remaining obligations. Simplify using `only [lnStep, dif_pos h, lat]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem step_position : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (st : ((E →+* ℂ) × ℕ) ⊕ ℕ) (x : Letter Dw), letterOf Dw st = some x → ∃ (n : ℕ) (u : Fin n → Let Dw.mult) (k : Fin n), Down u ∧ Down (u ∘ Fin.castLE k.2.le) ∧ Down (u ∘ Fin.castLE (Nat.succ_le_of_lt k.2)) ∧ u k = x ∧ ∀ (X : Scheme.{0}) (t : SAB H X) (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C] (y : Sp C ⟶ X) (fr : Vecs Dw t C) (p : ℕ), lnStep t y fr p false st = Real.log (grNorm t y (latDR t y) (fun i => fr (u i).1 (u i).2) k) := by
   intro E _ _ _ H Dw st x hx

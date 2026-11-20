@@ -27,15 +27,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 variable {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨-, h1, h2, pm, ⟨h3, h4⟩, h5⟩`. Establish `h6` using `(ptOver_iff_charts h3 _ 1 z.s y.s).2 h5`. Use `⟨(Category.comp_id _).symm.trans h1, fun τ i => (Category.comp_id _).symm.trans (h2 τ i), pm, h3.trans (Category.comp_id _), h4, fun J e => fn_ext fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨i, rfl⟩ : ∃ i, J = fun _ => i` from `⟨J 0, fin_one_eq J⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hi : (snd (Over.mk z.x) Xo.univ.t.G).left x ∈ Xo.univ.t.PP.L.U i` using `Set.mem_iInter.1 hx 0`. Use `(gs_appLE pm _ _ e _ x hx _).trans ((h6 _ (𝟙 _) x i i hi hi).trans ?_)` and prove the remaining obligations. Use `(GlobalTheory.ObjLower.gw_idIso Xo.univ.t.PP.L (𝟙 _ ≫ (snd (Over.mk z.x) Xo.univ.t.G).left) x i i hi hi).trans (gm_self Xo.univ.t.PP.isLB _ x hi)` as an intermediate fact. Use `(congrArg (fun u => (u ^ (1 : ℤ)).val * _) this).trans ?_` and prove the remaining obligations. Rewrite using `[one_zpow, Units.val_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `_root_.one_mul _`. Introduce and unpack `⟨k1, k2, pn, k3, k4, k5⟩`. Establish `h3 : pn ≫ (snd (Over.mk y.x) Xo.univ.t.G).left = (snd (Over.mk z.x) Xo.univ.t.G).left ≫ 𝟙 _` using `k3.trans (Category.comp_id _).symm`. Use `⟨φ.comp_algebraMap, (Category.comp_id _).trans k1, fun τ i => (Category.comp_id _).trans (k2 τ i), pn, ⟨h3, k4⟩, (ptOver_iff_charts h3 _ 1 z.s y.s).1 fun Z r x i j hi hj => ?_⟩` and prove the remaining obligations. Establish `a : r x ∈ (PPx z.x).U fun _ => i` using `Set.mem_iInter.2 fun _ => hi`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a' : r x ∈ (PPx z.x).U fun _ => j` using `Set.mem_iInter.2 fun _ => hj`. Establish `e` using `ppx_le_cov pn k3 fun _ => i`. Use `(gs_appLE pn _ _ e r x a _).symm.trans ((congrArg (gs r x _) (k5 _ e)).trans ((gs_compat z.s r x a a').trans (congrArg (fun u : _ˣ => u.val * _) ?_)))` and prove the remaining obligations. Use `(gm_linComb Xo.univ.t.PP.L (fun _ : Fin 1 => (snd (Over.mk z.x) Xo.univ.t.G).left) (fun _ => 1) r x _ _ a a').trans ?_` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_one]`.
-
-Conclude with `congrArg (· ^ (1 : ℤ)) (GlobalTheory.ObjLower.gw_idIso _ _ x i j hi hj).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liesOver_triv {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [i : Algebra c.F T] (φ : S →ₐ[c.F] T)
     (y : FrPt Xo c S) (z : FrPt Xo c T) :
@@ -73,7 +71,7 @@ section Generators
 variable {nab : NabV Xo c} (Δ : DeltaDatum Xo c nab)
 
 /- English proof (translation)
-Establish `hT : FromTest (K` using `c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) z := ⟨p, φ, y, h⟩`. Unfold `evR evalAt`. Rewrite using `[dif_pos hT]`. Conclude with `evalWD_framed Xo c f hf.1 S _ _ _ _ _ _ z hT.choose_spec.choose_spec.choose_spec h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evR_of_frMap {f : Rul Xo c} {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} (hf : f ∈ sec Xo c a n) {p : TRing c.F}
     {S : Type} [CommRing S] [Algebra c.F S] (φ : p.R →ₐ[c.F] S) {y : FrPt Xo c p.R} {z : FrPt Xo c S}
@@ -152,13 +150,13 @@ def ValuesWellDefined : Prop :=
 variable {Xo c nab}
 
 /- English proof (translation)
-The claim follows from `(harmL_eq Dw c _ a).symm.trans (GlobalTheory.StdHarm.harmL_std c n a)`.
+A detailed English derivation is pending.
 -/
 theorem harmLat_std (n : ℕ) (a : (E →+* ℂ) × ℕ → ℕ) : harmLat Dw c a (Lat.std E n) = harmA c a n :=
   (harmL_eq Dw c _ a).symm.trans (GlobalTheory.StdHarm.harmL_std c n a)
 
 /- English proof (translation)
-Rewrite using `[← harmLat_std, ← toGen_std, levOK_iff]`. Conclude with `⟨fun h => h.2, fun h => ⟨std_mem_reps _ n 1, h⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem seriesData_std_iff {n N : ℕ} {β : c.F} {a : (E →+* ℂ) × ℕ → ℕ} {P : MvPolynomial (LtN Dw n) c.F} :
     IsSeriesData (DeltaDatum.triv Xo c nab) (Lat.std E n) N β a P ↔
@@ -167,9 +165,9 @@ theorem seriesData_std_iff {n N : ℕ} {β : c.F} {a : (E →+* ℂ) × ℕ → 
   exact ⟨fun h => h.2, fun h => ⟨std_mem_reps _ n 1, h⟩⟩
 
 /- English proof (translation)
-Use `⟨fun h q => ?_, fun h x p y => ?_⟩` and prove the remaining obligations. Use `h fun b => levRep (q b)` as an intermediate fact. Simplify `this` using `only [mk_levRep]`. Take `⟨S', _, _, φ, y', F, h1, h2, h3, h4⟩` from `h (fun b => Submodule.Quotient.mk (x b)) p y`. Use `⟨S', _, _, φ, y', F, h1, h2, fun b => ?_, h4⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `h3 b` as an intermediate fact. Rewrite `this` using `[levPt_levRep, levPtCl_mk]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem translateFamily_iff {n : ℕ} (P : MvPolynomial (LtN Dw n) c.F) (w : (Fin n → NamedCl Dw l) → Rul Xo c) :
     IsTranslateFamily Xo c nab P w ↔ ∀ q, IsThRule Xo c nab (fun b => levRep (q b)) P (w q) := by
@@ -182,7 +180,7 @@ theorem translateFamily_iff {n : ℕ} (P : MvPolynomial (LtN Dw n) c.F) (w : (Fi
     rwa [levPt_levRep, levPtCl_mk] at this
 
 /- English proof (translation)
-Rewrite using `[finsum_eq_sum_of_support_subset (s := levelIndex Dw l n) _ fun q _ => by simp [levelIndex], _root_.mul_assoc, Finset.mul_sum, fourierComb]`. Simplify using `only [map_mul, map_sum, AlgHom.commutes, h, ← normalized_datum_eq_induced_coeff, x0Dat, _root_.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem comb_eq {n : ℕ} (κ : c.F) (x0 : Fin n → Dw.La) (W : (Fin n → NamedCl Dw l) → Rul Xo c) (p : TRing c.F)
     (y : FrPt Xo c p.R) {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T] (φ : p.R →ₐ[c.F] T)
@@ -195,15 +193,15 @@ theorem comb_eq {n : ℕ} (κ : c.F) (x0 : Fin n → Dw.La) (W : (Fin n → Name
   simp only [map_mul, map_sum, AlgHom.commutes, h, ← normalized_datum_eq_induced_coeff, x0Dat, _root_.mul_assoc]
 
 /- English proof (translation)
-Establish `key : ∀ (S : Type) [CommRing S] [i : Algebra c.F S] (z : FrPt Xo c S) (v : S), @CoverVal _ _ _ _ _ _ _ _ _ _ (DeltaDatum.triv Xo c nab) S _ i z n (Lat.std E n) N β (-cls l x0) a P v ↔ ShortValAt Xo c nab (x0Dat c x0) ⟨stdLat E n⟩ β N P z v`. Introduce `S _ _ z v`. Establish `e1 : (DeltaDatum.triv Xo c nab).combinedCoeff (-cls l x0) = normCoef c (x0Dat c x0)`. Rewrite using `[normCoef_x0Dat]`. Use `congrArg (fourier c) (funext fun x => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(congrArg _ (phiDelta_triv _ _ x)).trans ((_root_.mul_one _).trans ?_)` and prove the remaining obligations. Take `⟨x, rfl⟩` from `cls_surjective l n x`. Both sides reduce to the same expression. Establish `e2 : MvPolynomial.map (DeltaDatum.triv Xo c nab).cov.incl P = P` using `MvPolynomial.map_id P`. Unfold `CoverVal`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[e1, e2]`. Use `(thVal_iff Xo c nab z (Lat.std E n) N β (x0Dat c x0) a P v).trans ⟨fun h => h.2.2, fun h => ⟨⟨(std_mem_reps (DeltaDatum.triv Xo c nab) n 1).1, (trivAt_iff _ _).2 (std_stdAt _), hβ, ?_⟩, (levOK_iff _ _ _).2 hN, h⟩⟩` and prove the remaining obligations. Rewrite using `[harmL_eq, harmLat_std]` and apply the resulting hypothesis. Use `forall_congr' fun p => forall_congr' fun y => ⟨fun h S _ i φ z hz => ?_, fun h => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨v, hv, e⟩` from `@h.2 S _ i φ.toRingHom z ((liesOver_triv φ y z).2 hz)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `e' : φ (f p y) = v` using `e.trans ((congrArg (v * ·) (fnAt_one _)).trans (_root_.mul_one v))`. Conclude with `e' ▸ (key S z v).1 hv`. Conclude with `⟨p.R, _, (inferInstance : Algebra c.F p.R), RingHom.id _, y, RingHom.FaithfullyFlat.of_bijective Function.bijective_id, (liesOver_triv (AlgHom.id c.F p.R) y y).2 (GlobalTheory.Frames.frMapUniq_refl y)⟩`. Introduce `S _ i φ z hz`. Use `letI : Algebra c.F S := i`.
+Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Set `φ' : p.R →ₐ[c.F] S` to `{ φ with commutes' := fun x => RingHom.congr_fun hz.1 x }`. Conclude with `⟨_, (key S z _).2 (h S φ' z ((liesOver_triv φ' y z).1 hz)), ((congrArg (_ * ·) (fnAt_one _)).trans (_root_.mul_one _)).symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rule_triv_iff {n N : ℕ} {β : c.F} {a : (E →+* ℂ) × ℕ → ℕ} {P : MvPolynomial (LtN Dw n) c.F}
     (hN : (Lat.std E n).Admissible l.M N) (hβ : β ≠ 0) (hP : P ∈ harmA c a n) (x0 : Fin n → Dw.La) (f : Rul Xo c) :
@@ -240,15 +238,13 @@ theorem rule_triv_iff {n N : ℕ} {β : c.F} {a : (E →+* ℂ) × ℕ → ℕ} 
       ((congrArg (_ * ·) (fnAt_one _)).trans (_root_.mul_one _)).symm⟩
 
 /- English proof (translation)
-Establish `hT` using `fun x => (h n a P hP x).1`. Establish `hS` using `(h n a P hP x0).2 N β hN hβ`. Prove the components needed by the constructor for the conclusion. Introduce `H`. Use `⟨⟨fun q p y => ((hT fun b => levRep (q b)).1 p.R y).exists.choose, (translateFamily_iff P _).2 fun q p y => ((hT fun b => levRep (q b)).1 p.R y).exists.choose_spec⟩, fun W hW f => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hW` using `[translateFamily_iff]`. Rewrite using `[rule_triv_iff hN hβ hP]`. Prove the components needed by the constructor for the conclusion. Introduce `hf`. Use function extensionality and compare the values at `p y`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(H p.R y _ _ (hf p y p.R (AlgHom.id _ _) y (GlobalTheory.Frames.frMapUniq_refl y)) fun q => hW q p y).trans (comb_eq κ x0 W p y (AlgHom.id _ _) (AlgHom.id _ _) _ fun _ => rfl).symm`. Introduce and unpack `rfl p y S _ _ φ z hz`. Take `⟨v, hv, -⟩` from `hS.1 S z`. Establish `e` using `H S z v _ hv fun q => (hT _).2 _ _ φ y z hz _ (hW q p y)`. Rewrite `hv` using `[e.trans (comb_eq κ x0 W p y φ (AlgHom.id _ _) _ fun _ => rfl).symm]`. Then use the resulting hypothesis.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨⟨W, hW⟩, H⟩ S _ _ y v w hv hw`. Establish `hf` using `(rule_triv_iff hN hβ hP x0 _).1 ((H W hW _).2 rfl)`. Rewrite `hW` using `[translateFamily_iff]`. Use `Module.eq_of_localization_maximal (fun m _ => Localization.AtPrime m) (fun m _ => Algebra.linearMap S _) _ _ fun m _ => ?_` and prove the remaining obligations. Take `⟨A, u, χ, -, -, -, ⟨z, hz, hu⟩, -⟩` from `GlobalTheory.T.chartCoverF_of_sectionBaseChange GlobalTheory.abelianSchemeLaws_all.1.secBaseChange E _ Dw l Xo c S y y rfl m`.
-
-Conclude with `((hS.1 _ z).unique (hS.2 _ _ _ y z hz v hv) (hf A u _ χ z hu)).trans (comb_eq κ x0 W A u χ (locM c.F m) w fun q => ((hT _).1 _ z).unique ((hT _).2 _ _ _ u z hu _ (hW q A u)) ((hT _).2 _ _ _ y z hz _ (hw q)))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem valueLaw_iff (h : ValuesWellDefined Xo c nab) {n N : ℕ} {β : c.F} {a : (E →+* ℂ) × ℕ → ℕ}
     {P : MvPolynomial (LtN Dw n) c.F} (hN : (Lat.std E n).Admissible l.M N) (hβ : β ≠ 0) (hP : P ∈ harmA c a n)
@@ -296,15 +292,15 @@ def StdValuesExact : Prop :=
 variable {Xo c nab}
 
 /- English proof (translation)
-The claim follows from `LatticeBetaCompare.isBeLat_betaH Dw c (Lat.std E n) ⟨1, by rw [IsBeLat, latIdeal_std]; exact isBe_top Dw c⟩`.
+A detailed English derivation is pending.
 -/
 theorem isBeLat_std (n : ℕ) : IsBeLat Dw c (Lat.std E n) (betaH (Dw := Dw) c ⟨stdLat E n⟩) :=
   LatticeBetaCompare.isBeLat_betaH Dw c (Lat.std E n) ⟨1, by rw [IsBeLat, latIdeal_std]; exact isBe_top Dw c⟩
 
 /- English proof (translation)
-Take `⟨b, hb, hs⟩` from `h.1`. Establish `hu : IsUnit b`. Rewrite `hs` using `[latIdeal_std]`. Rewrite using `[← Ideal.span_singleton_eq_top, hs]`. Simplify using `only [reflexIdeal, Ideal.map_top]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[← Ideal.one_eq_top]`. Take `⟨u, rfl⟩` from `hu`. Conclude with `⟨u, hb⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_unit {n : ℕ} {β : c.F} (h : IsBeLat Dw c (Lat.std E n) β) :
     ∃ u : (𝓞 c.F)ˣ, ((u : 𝓞 c.F) : c.F) = β := by
@@ -318,9 +314,9 @@ theorem exists_unit {n : ℕ} {β : c.F} (h : IsBeLat Dw c (Lat.std E n) β) :
   exact ⟨u, hb⟩
 
 /- English proof (translation)
-Introduce `S _ _ y v w ⟨T, _, _, φ, y', z, t, F, h1, h2, h3, h4, h5, h6, h7⟩ hw`. Establish `e` using `h S y (algebraMap c.F S (β' / β) * v) w ⟨T, _, _, φ, y', z, t, F, h1, h2, h3, h4, h5, h6, by`. Rewrite using `[map_mul, φ.commutes, h7, ← _root_.mul_assoc, ← map_mul]`. Use `congr 2`. Use the proof step `field_simp⟩ hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `e1 : v = algebraMap c.F S (β * β'⁻¹) * (algebraMap c.F S (β' / β) * v)`. Rewrite using `[← _root_.mul_assoc, ← map_mul, show β * β'⁻¹ * (β' / β) = 1 by field_simp, map_one, _root_.one_mul]`. Rewrite using `[e1, e]`. Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ValueLaw.scale {n N : ℕ} {β β' κ : c.F} (hβ : β ≠ 0) (hβ' : β' ≠ 0) {x0 : Fin n → Dw.La}
     {P : MvPolynomial (LtN Dw n) c.F} (h : ValueLaw Xo c nab N β κ x0 P) :
@@ -337,18 +333,16 @@ theorem ValueLaw.scale {n N : ℕ} {β β' κ : c.F} (hβ : β ≠ 0) (hβ' : β
   ring
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `cls_surjective l n (-x₀)`. Conclude with `⟨x, by rw [hx, neg_neg]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_neg_cls {n : ℕ} (x₀ : Fin n → ConjCl Dw l) : ∃ x0 : Fin n → Dw.La, x₀ = -cls l x0 := by
   obtain ⟨x, hx⟩ := cls_surjective l n (-x₀)
   exact ⟨x, by rw [hx, neg_neg]⟩
 
 /- English proof (translation)
-Establish `h0 : ∀ {n : ℕ} {β : c.F}, IsBeLat Dw c (Lat.std E n) β → β ≠ 0` using `fun h => LatticeBetaCompare.isBe_ne_zero (latIdeal_ne_bot _) h`. Prove the components needed by the constructor for the conclusion. Introduce `H n N β x₀ a P hd`. Take `⟨x0, rfl⟩` from `exists_neg_cls x₀`. Take `⟨hN, hβ, hP⟩` from `seriesData_std_iff.1 hd`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `(H n N a x0 P hN hP).scale (h0 (isBeLat_std n)) (h0 hβ)` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel₀ (h0 (isBeLat_std n)), _root_.one_mul]`. Conclude with `(valueLaw_iff h hd.2.1 (h0 hβ) hP _ x0).1 this`. Introduce `H n N a x0 P hN hP`. Establish `hd` using `(seriesData_std_iff (nab := nab)).2 ⟨hN, isBeLat_std n, hP⟩`.
-
-Conclude with `(valueLaw_iff h hd.2.1 (h0 hd.2.2.1) hP _ x0).2 (H n N _ (-cls l x0) a P hd)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exact_iff (h : ValuesWellDefined Xo c nab) : StdValuesExact Xo c nab ↔ StdFourier Xo c nab := by
   have h0 : ∀ {n : ℕ} {β : c.F}, IsBeLat Dw c (Lat.std E n) β → β ≠ 0 := fun h =>

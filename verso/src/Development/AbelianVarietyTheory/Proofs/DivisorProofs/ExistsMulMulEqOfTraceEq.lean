@@ -5,7 +5,7 @@ namespace GlobalTheory.TraceEqualFinrank
 open Module
 
 /- English proof (translation)
-Establish `he : IsIdempotentElem (Matrix.toLin' P)`. Express the relevant statement in the definitionally equal form `Matrix.toLin' P * Matrix.toLin' P = Matrix.toLin' P`. Rewrite using `[Module.End.mul_eq_comp, ← Matrix.toLin'_mul, hP.eq]`. Establish `hproj` using `(LinearMap.isProj_range_iff_isIdempotentElem (Matrix.toLin' P)).mpr he`. Rewrite using `[← Matrix.trace_toLin'_eq, hproj.trace]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_eq_finrank_range {g : ℕ} (P : Matrix (Fin g) (Fin g) ℂ) (hP : IsIdempotentElem P) :
     Matrix.trace P = (finrank ℂ (LinearMap.range (Matrix.toLin' P)) : ℂ) := by
@@ -16,15 +16,15 @@ theorem trace_eq_finrank_range {g : ℕ} (P : Matrix (Fin g) (Fin g) ℂ) (hP : 
   rw [← Matrix.trace_toLin'_eq, hproj.trace]
 
 /- English proof (translation)
-Establish `hrk : finrank ℂ (LinearMap.range (Matrix.toLin' P')) = finrank ℂ (LinearMap.range (Matrix.toLin' P))`. Establish `h2` using `(trace_eq_finrank_range P' hP').symm.trans (h.symm.trans (trace_eq_finrank_range P hP))`. Conclude with `h2` after adjusting the coercions. Set `e` to `LinearEquiv.ofFinrankEq _ _ hrk`. Establish `hid' : ∀ w ∈ LinearMap.range (Matrix.toLin' P'), Matrix.toLin' P' w = w`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `w ⟨u, rfl⟩`. Rewrite using `[← LinearMap.comp_apply, ← Matrix.toLin'_mul, hP'.eq]`. Set `Xl : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)` to `(LinearMap.range (Matrix.toLin' P')).subtype ∘ₗ e.symm.toLinearMap ∘ₗ (Matrix.toLin' P).rangeRestrict`. Set `Yl : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)` to `(LinearMap.range (Matrix.toLin' P)).subtype ∘ₗ e.toLinearMap ∘ₗ (Matrix.toLin' P').rangeRestrict`. Use `⟨LinearMap.toMatrix' Xl, LinearMap.toMatrix' Yl, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Rewrite using `[Matrix.toLin'_mul, Matrix.toLin'_mul, Matrix.toLin'_toMatrix', Matrix.toLin'_toMatrix']`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Establish `hw` using `(e.symm ((Matrix.toLin' P).rangeRestrict v)).2`. Establish `h1 : (Matrix.toLin' P').rangeRestrict (Matrix.toLin' P' ((e.symm ((Matrix.toLin' P).rangeRestrict v) : Fin g → ℂ))) = e.symm ((Matrix.toLin' P).rangeRestrict v)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Matrix.toLin' P' (Matrix.toLin' P' _) = _`. Rewrite using `[hid' _ hw, hid' _ hw]`. Express the relevant statement in the definitionally equal form `((e ((Matrix.toLin' P').rangeRestrict (Matrix.toLin' P' ((e.symm ((Matrix.toLin' P).rangeRestrict v) : Fin g → ℂ)))) : LinearMap.range (Matrix.toLin' P)) : Fin g → ℂ) = Matrix.toLin' P v`. Rewrite using `[h1, LinearEquiv.apply_symm_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_mul_mul_eq_of_trace_eq {g : ℕ} (P P' : Matrix (Fin g) (Fin g) ℂ)
     (hP : IsIdempotentElem P) (hP' : IsIdempotentElem P')

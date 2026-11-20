@@ -10,9 +10,9 @@ noncomputable section
 namespace GlobalTheory.LocFlat
 
 /- English proof (translation)
-Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Distinguish the cases in `hx : x ∈ W`. Use `filter_upwards [hW.isOpen.mem_nhds hx] with y hy`. Simplify using `[Set.indicator_of_mem hy, Set.indicator_of_mem hx]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `filter_upwards [hW.isClosed.isOpen_compl.mem_nhds hx] with y hy`. Simplify using `[Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]`.
+A detailed English derivation is pending.
 -/
 theorem flatSB_isLocallyConstant_indicator {X : Type*} [TopologicalSpace X] {W : Set X} (hW : IsClopen W)
     (a : ℂ) : IsLocallyConstant (W.indicator fun _ => a) := by
@@ -42,26 +42,26 @@ theorem affPt_eq_basePt_add_freeMat (p : ℕ) (x₀ : Matrix n n' k)
     affPt p x₀ e = basePt c x₀ + freeMat p e := rfl
 
 /- English proof (translation)
-Simplify using `[ch, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ch_add' (a b : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) : ch (a + b) = ch a + ch b := by
   simp [ch, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[ch, basePt, Fin.ext_iff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ch_basePt' (x₀ : Matrix n n' k) : ch (basePt c x₀) = 0 := by
   simp [ch, basePt, Fin.ext_iff]
 
 /- English proof (translation)
-Rewrite using `[affPt_eq_basePt_add_freeMat, ch_add', ch_basePt', zero_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ch_affPt_zero_eq (p : ℕ) (e : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free p rs} → k) :
     ch (affPt p (0 : Matrix n n' k) e) = ch (freeMat p e) := by
   rw [affPt_eq_basePt_add_freeMat, ch_add', ch_basePt', zero_add]
 
 /- English proof (translation)
-Simplify using `[freeMat, rs.2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem freeMat_apply_free (p : ℕ) (e : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free p rs} → k)
     (rs : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free p rs}) :
@@ -69,9 +69,7 @@ theorem freeMat_apply_free (p : ℕ) (e : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c 
   simp [freeMat, rs.2]
 
 /- English proof (translation)
-Use `continuous_matrix fun r s => ?_` and prove the remaining obligations. Distinguish the cases in `h : Free p (r, s)`. Simplify using `only [freeMat, Matrix.of_apply, dif_pos h]`. Use `fun_prop`. Simplify using `only [freeMat, Matrix.of_apply, dif_neg h]`.
-
-Conclude with `continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_freeMat (p : ℕ) :
     Continuous (freeMat (k := k) (n := n) (n' := n') (c := c) p) := by
@@ -81,7 +79,7 @@ theorem continuous_freeMat (p : ℕ) :
   · simp only [freeMat, Matrix.of_apply, dif_neg h]; exact continuous_const
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.SplitWeil.t2Space k`. Use `Function.LeftInverse.isClosedEmbedding (f := fun z : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k => fun rs : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free p rs} => z rs.1.1 rs.1.2) (fun e => funext fun rs => freeMat_apply_free p e rs) ?_ (continuous_freeMat p)` and prove the remaining obligations. Conclude with `continuous_pi fun rs => continuous_id.matrix_elem _ _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isClosedEmbedding_freeMat (p : ℕ) :
     Topology.IsClosedEmbedding (freeMat (k := k) (n := n) (n' := n') (c := c) p) := by
@@ -93,13 +91,11 @@ theorem isClosedEmbedding_freeMat (p : ℕ) :
   exact continuous_pi fun rs => continuous_id.matrix_elem _ _
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.SplitWeil.t2Space k`. Establish `hU : {y : k | ‖((ψ (-y) : Circle) : ℂ) - 1‖ < 1 / 2} ∈ 𝓝 (0 : k)`. Use `(isOpen_lt ?_ continuous_const).mem_nhds ?_` and prove the remaining obligations. Conclude with `(continuous_subtype_val.comp (hψ.comp continuous_neg)).sub continuous_const |>.norm`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨s₀, hs₀⟩` from `exists_cball_subset hU`. Set `W : Set (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k)` to `Set.univ.pi fun _ => Set.univ.pi fun _ => cball s₀`. Establish `hWc : IsCompact W` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_cball s₀`. Establish `hWo : IsOpen W` using `isOpen_set_pi Set.finite_univ fun _ _ => isOpen_set_pi Set.finite_univ fun _ _ => isOpen_cball s₀`. Use `⟨W, ⟨hWc.isClosed, hWo⟩, hWc, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `r _ s _`. Simplify using `[cball]`. Introduce `z hz`. Apply `hs₀` to reduce the goal to its premises. Use `show valuation k (ch z) ≤ valuation k (s₀ : k)`.
-
-Conclude with `Valuation.map_sum_le _ fun i _ => hz _ (Set.mem_univ _) _ (Set.mem_univ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem exists_clopen_ch_near (ψ : AddChar k Circle) (hψ : Continuous ψ) :
     ∃ W : Set (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k), IsClopen W ∧ IsCompact W ∧
@@ -137,9 +133,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 open Classical in
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.SplitWeil.t2Space k`. Establish `hemb : Topology.IsClosedEmbedding fun q : X × ({rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free p rs} → k) => A q.1 q.2`. Use `Function.LeftInverse.isClosedEmbedding (f := fun z => (R z, fun rs : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free p rs} => Q z rs.1.1 rs.1.2)) ?_ ?_ hA` and prove the remaining obligations. Introduce and unpack `⟨x, e⟩`. Simplify using `only [hRA, hQA]`.
-
-Conclude with `Prod.ext rfl (funext fun rs => freeMat_apply_free p e rs)`. Conclude with `hR.prodMk (continuous_pi fun rs => hQ.matrix_elem _ _)`. Conclude with `integral_mul_mem_SB (Measure.pi fun _ => ν) (fun q => Φ (A q.1 q.2)) ⟨hΦ.1.comp_continuous hA, hΦ.2.comp_isClosedEmbedding hemb⟩ (fun e => (ψ (-ch (affPt p (0 : Matrix n n' k) e)) : ℂ))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem flatSB_generic {X : Type} [TopologicalSpace X] [T2Space X] (ψ : AddChar k Circle) (ν : Measure k) (p : ℕ)
     (A : X → ({rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free p rs} → k) → Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k)
@@ -165,29 +159,25 @@ theorem flatSB_generic {X : Type} [TopologicalSpace X] [T2Space X] (ψ : AddChar
 open Classical in
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.SplitWeil.t2Space k`. Use `haveI := GlobalTheory.SplitWeil.secondCountable k`. Use `haveI := hν`. Take `⟨W, hWcl, hWc, hW0, hWψ⟩` from `exists_clopen_ch_near (n := n) (n' := n') (c := c) ψ hψ`. Use `set μ : Measure ({rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free p rs} → k) := Measure.pi fun _ => ν`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set f : ({rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free p rs} → k) → ℂ := fun e => (ψ (-ch (affPt p (0 : Matrix n n' k) e)) : ℂ) with hf`. Use `set K := freeMat (k := k) (n := n) (n' := n') (c := c) p ⁻¹' W with hK`. Use `set I : ℂ := ∫ e, W.indicator (fun _ => (1 : ℂ)) (freeMat p e) * f e ∂μ with hI`. Establish `hfc : Continuous f`. Use `continuous_subtype_val.comp (hψ.comp (Continuous.neg ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `continuous_finset_sum _ fun i _ => ((continuous_affPt_uncurry p).comp (Continuous.prodMk_right (0 : Matrix n n' k))).matrix_elem _ _`. Establish `hKo : IsOpen K` using `hWcl.isOpen.preimage (continuous_freeMat p)`. Establish `hKc : IsCompact K` using `(isClosedEmbedding_freeMat p).isCompact_preimage hWc`. Establish `hK0 : (0 : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free p rs} → k) ∈ K` using `by show freeMat p 0 ∈ W`. Use `hW0 using 1` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use extensionality with `r s`. Simplify using `[freeMat]`. Establish `hμK : 0 < μ.real K`. Rewrite using `[measureReal_def]`. Conclude with `ENNReal.toReal_pos (hKo.measure_pos μ ⟨0, hK0⟩).ne' hKc.measure_lt_top.ne`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hIK : I = ∫ e in K, f e ∂μ`. Rewrite using `[hI, ← integral_indicator hKo.measurableSet]`. Use `congr 1`. Use function extensionality and compare the values at `e`. Distinguish the cases in `he : e ∈ K`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: freeMat p e ∈ W` using `he`. Simplify using `[Set.indicator_of_mem he, Set.indicator_of_mem this]`. Establish `: freeMat p e ∉ W` using `he`. Simplify using `[Set.indicator_of_notMem he, Set.indicator_of_notMem this]`. Establish `hInt : IntegrableOn f K μ` using `hfc.continuousOn.integrableOn_compact hKc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hI0 : I ≠ 0`. Introduce `h0`. Establish `hb : ‖∫ e in K, (f e - 1) ∂μ‖ ≤ 1 / 2 * μ.real K`. Use `norm_setIntegral_le_of_norm_le_const hKc.measure_lt_top fun e he => ?_` and prove the remaining obligations. Use `hWψ _ he` as an intermediate fact.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[← ch_affPt_zero_eq]`. Conclude with `this.le`. Rewrite `hb` using `[integral_sub hInt (integrableOn_const hKc.measure_lt_top.ne), ← hIK, h0, setIntegral_const]`. Simplify using `only [zero_sub, norm_neg, Complex.real_smul, mul_one] at hb`. Rewrite `hb` using `[Complex.norm_real, Real.norm_of_nonneg hμK.le]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨fun z => I⁻¹ * (Ψ (R z) * W.indicator (fun _ => (1 : ℂ)) (Q z)), ?_, fun x => ?_⟩` and prove the remaining obligations. Establish `hH : (fun q : X × Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k => Ψ q.1 * W.indicator (fun _ => (1 : ℂ)) q.2) ∈ SB _`. Use `⟨(hΨ.1.comp_continuous continuous_fst).mul ((flatSB_isLocallyConstant_indicator hWcl 1).comp_continuous continuous_snd), ?_⟩` and prove the remaining obligations. Use `HasCompactSupport.intro (hΨ.2.isCompact.prod hWc) fun q hq => ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Distinguish the cases in `h1 : q.1 ∈ tsupport Ψ`. Establish `h2 : q.2 ∉ W` using `fun h2 => hq ⟨h1, h2⟩`. Simplify using `[Set.indicator_of_notMem h2]`. Simplify using `[image_eq_zero_of_notMem_tsupport h1]`. Establish `hemb : Topology.IsClosedEmbedding fun z : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k => (R z, Q z)` using `Function.LeftInverse.isClosedEmbedding (f := G) hGRQ hG (hR.prodMk hQ)`.
-
-Conclude with `⟨(IsLocallyConstant.const I⁻¹).mul (hH.1.comp_continuous (hR.prodMk hQ)), (hH.2.comp_isClosedEmbedding hemb).mul_left⟩`. Establish `: ∀ e, I⁻¹ * (Ψ (R (A x e)) * W.indicator (fun _ => (1 : ℂ)) (Q (A x e))) * f e = (I⁻¹ * Ψ x) * (W.indicator (fun _ => (1 : ℂ)) (freeMat p e) * f e)`. Introduce `e`. Rewrite using `[hRA, hQA]`. Expand and normalize the polynomial expressions, which then agree.
-
-Simplify using `only [hf] at this`. Rewrite using `[integral_congr_ae (Eventually.of_forall this), integral_const_mul, ← hI]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem flatOnto_generic {X : Type} [TopologicalSpace X] [T2Space X] (ψ : AddChar k Circle) (hψ : Continuous ψ)
     (ν : Measure k) (hν : ν.IsAddHaarMeasure) (p : ℕ)
@@ -280,9 +270,7 @@ def glue {X : Type} (rd : n ⊕ Fin c → n' ⊕ Fin (c + 1) → Bool) (E : X �
   Matrix.of fun r s => if rd r s then E q.1 r s else q.2 r s + basePt c (0 : Matrix n n' k) r s
 
 /- English proof (translation)
-Use `continuous_matrix fun r s => ?_` and prove the remaining obligations. Consider the cases of `h : rd r s`. Simplify using `only [restOf, Matrix.of_apply, h, Bool.false_eq_true, ↓reduceIte]`. Use `fun_prop`. Simplify using `only [restOf, Matrix.of_apply, h]`.
-
-Conclude with `continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_restOf (rd : n ⊕ Fin c → n' ⊕ Fin (c + 1) → Bool) :
     Continuous (restOf (k := k) (n := n) (n' := n') rd) := by
@@ -292,9 +280,7 @@ theorem continuous_restOf (rd : n ⊕ Fin c → n' ⊕ Fin (c + 1) → Bool) :
   · simp only [restOf, Matrix.of_apply, h]; exact continuous_const
 
 /- English proof (translation)
-Use `continuous_matrix fun r s => ?_` and prove the remaining obligations. Consider the cases of `h : rd r s`. Simplify using `only [glue, Matrix.of_apply, h, Bool.false_eq_true, ↓reduceIte]`. Use `fun_prop`. Simplify using `only [glue, Matrix.of_apply, h]`.
-
-Conclude with `(hE.comp continuous_fst).matrix_elem _ _`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_glue {X : Type} [TopologicalSpace X] (rd : n ⊕ Fin c → n' ⊕ Fin (c + 1) → Bool)
     {E : X → Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k} (hE : Continuous E) :
@@ -305,7 +291,7 @@ theorem continuous_glue {X : Type} [TopologicalSpace X] (rd : n ⊕ Fin c → n'
   · simp only [glue, Matrix.of_apply, h]; exact (hE.comp continuous_fst).matrix_elem _ _
 
 /- English proof (translation)
-Use extensionality with `r s`. Consider the cases of `h : rd r s`. Simplify using `[glue, restOf, h]`. Simplify using `[glue, h, hER z r s h]`.
+By extensionality, compare the relevant components. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem glue_restOf {X : Type} (rd : n ⊕ Fin c → n' ⊕ Fin (c + 1) → Bool)
     (E : X → Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) (R : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k → X)
@@ -331,7 +317,7 @@ def extCol (x : Matrix n (n' ⊕ Unit) k) : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c 
     | .inr _, _ => 0
 
 /- English proof (translation)
-Use `continuous_matrix fun r s => ?_` and prove the remaining obligations. Break down `s with s | s` into its components or cases. Conclude with `continuous_id.matrix_elem _ _`. Conclude with `continuous_id.matrix_elem _ _`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem continuous_readCol (p : ℕ) (hp : p - 1 < c + 1) :
     Continuous (readCol (k := k) (n := n) (n' := n') p hp) := by
@@ -341,9 +327,7 @@ theorem continuous_readCol (p : ℕ) (hp : p - 1 < c + 1) :
   · exact continuous_id.matrix_elem _ _
 
 /- English proof (translation)
-Use `continuous_matrix fun r s => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases r with r | r <;> rcases s with s | s`. Conclude with `continuous_id.matrix_elem _ _`. Conclude with `continuous_id.matrix_elem _ _`. Conclude with `continuous_const`.
-
-Conclude with `continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem continuous_extCol : Continuous (extCol (k := k) (n := n) (n' := n') (c := c)) := by
   refine continuous_matrix fun r s => ?_
@@ -354,9 +338,9 @@ theorem continuous_extCol : Continuous (extCol (k := k) (n := n) (n' := n') (c :
   · exact continuous_const
 
 /- English proof (translation)
-Apply the tactic sequence `rcases r with r | r <;> rcases s with s | s`. Both sides reduce to the same expression. Simplify using `only [rdCol, decide_eq_true_eq] at h`. Simplify using `only [extCol, readCol, Matrix.of_apply, Sum.elim_inr]`. Use `congr 2`.
+Apply the first step, then apply the next step to every resulting obligation. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `ext`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using `[rdCol] at h`. Simplify using `[rdCol] at h`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem extCol_readCol (p : ℕ) (hp : p - 1 < c + 1) (z : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) (r s)
     (h : rdCol p r s = true) : extCol (readCol p hp z) r s = z r s := by
@@ -373,9 +357,9 @@ def ptCol (p : ℕ) (x : Matrix n (n' ⊕ Unit) k)
   affPt p x.toCols₁ e + colAt n' c p fun r => x r (Sum.inr ())
 
 /- English proof (translation)
-Use extensionality with `r s`. Break down `s with s | s` into its components or cases. Simplify using `[readCol, ptCol, affPt, basePt, colAt, Free, Matrix.toCols₁]`. Simplify using `[readCol, ptCol, affPt, basePt, colAt, Free]`. Establish `h1 : ¬ p < p - 1 + 1` using `by omega`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : p - 1 + 1 = p` using `by omega`. Simplify using `[h1, h2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem readCol_ptCol (p : ℕ) (hp1 : 1 ≤ p) (hp : p - 1 < c + 1) (x : Matrix n (n' ⊕ Unit) k) e :
     readCol p hp (ptCol p x e) = x := by
@@ -388,9 +372,9 @@ theorem readCol_ptCol (p : ℕ) (hp1 : 1 ≤ p) (hp : p - 1 < c + 1) (x : Matrix
     simp [h1, h2]
 
 /- English proof (translation)
-Use extensionality with `r s`. Apply the tactic sequence `rcases r with r | r <;> rcases s with s | s`. Simplify using `[restOf, rdCol, freeMat, Free]`. Distinguish the cases in `h : s.val + 1 = p`. Simplify using `[restOf, rdCol, freeMat, Free, h]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[restOf, rdCol, freeMat, ptCol, affPt, basePt, colAt, Free, h]`. Simplify using `[restOf, rdCol, freeMat, ptCol, affPt, basePt, colAt]`. Simplify using `[restOf, rdCol, freeMat, ptCol, affPt, basePt, colAt]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem restOf_ptCol (p : ℕ) (x : Matrix n (n' ⊕ Unit) k) e :
     restOf (rdCol p) (ptCol (c := c) p x e) = freeMat p e := by
@@ -426,7 +410,7 @@ def extRow (x : Matrix (n ⊕ Unit) n' k) : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c 
     | _, .inr _ => 0
 
 /- English proof (translation)
-Use `continuous_matrix fun r s => ?_` and prove the remaining obligations. Break down `r with r | r` into its components or cases. Conclude with `continuous_id.matrix_elem _ _`. Conclude with `continuous_id.matrix_elem _ _`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem continuous_readRow (p : ℕ) (hp : p - 1 < c) :
     Continuous (readRow (k := k) (n := n) (n' := n') p hp) := by
@@ -436,9 +420,7 @@ theorem continuous_readRow (p : ℕ) (hp : p - 1 < c) :
   · exact continuous_id.matrix_elem _ _
 
 /- English proof (translation)
-Use `continuous_matrix fun r s => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases r with r | r <;> rcases s with s | s`. Conclude with `continuous_id.matrix_elem _ _`. Conclude with `continuous_const`. Conclude with `continuous_id.matrix_elem _ _`.
-
-Conclude with `continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem continuous_extRow : Continuous (extRow (k := k) (n := n) (n' := n') (c := c)) := by
   refine continuous_matrix fun r s => ?_
@@ -449,9 +431,9 @@ theorem continuous_extRow : Continuous (extRow (k := k) (n := n) (n' := n') (c :
   · exact continuous_const
 
 /- English proof (translation)
-Apply the tactic sequence `rcases r with r | r <;> rcases s with s | s`. Both sides reduce to the same expression. Simplify using `[rdRow] at h`. Simplify using `only [rdRow, decide_eq_true_eq] at h`. Simplify using `only [extRow, readRow, Matrix.of_apply, Sum.elim_inr]`.
+Apply the first step, then apply the next step to every resulting obligation. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `congr 2`. Use `ext`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using `[rdRow] at h`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 -/
 theorem extRow_readRow (p : ℕ) (hp : p - 1 < c) (z : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) (r s)
     (h : rdRow p r s = true) : extRow (readRow p hp z) r s = z r s := by
@@ -468,9 +450,9 @@ def ptRow (p : ℕ) (x : Matrix (n ⊕ Unit) n' k)
   affPt p x.toRows₁ e + rowAt n c p (x (Sum.inr ()))
 
 /- English proof (translation)
-Use extensionality with `r s`. Break down `r with r | r` into its components or cases. Simplify using `[readRow, ptRow, affPt, basePt, rowAt, Free, Matrix.toRows₁]`. Establish `h1 : ¬ p - 1 + 1 < p` using `by omega`. Establish `h2 : p - 1 + 1 = p` using `by omega`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[readRow, ptRow, affPt, basePt, rowAt, Free, h1, h2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem readRow_ptRow (p : ℕ) (hp1 : 1 ≤ p) (hp : p - 1 < c) (x : Matrix (n ⊕ Unit) n' k) e :
     readRow p hp (ptRow p x e) = x := by
@@ -482,9 +464,9 @@ theorem readRow_ptRow (p : ℕ) (hp1 : 1 ≤ p) (hp : p - 1 < c) (x : Matrix (n 
     simp [readRow, ptRow, affPt, basePt, rowAt, Free, h1, h2]
 
 /- English proof (translation)
-Use extensionality with `r s`. Apply the tactic sequence `rcases r with r | r <;> rcases s with s | s`. Simplify using `[restOf, rdRow, freeMat, Free]`. Simplify using `[restOf, rdRow, freeMat, ptRow, affPt, basePt, rowAt]`. Distinguish the cases in `h : r.val + 1 = p`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `[restOf, rdRow, freeMat, Free, h]`. Simplify using `[restOf, rdRow, freeMat, ptRow, affPt, basePt, rowAt, Free, h]`. Simplify using `[restOf, rdRow, freeMat, ptRow, affPt, basePt, rowAt]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem restOf_ptRow (p : ℕ) (x : Matrix (n ⊕ Unit) n' k) e :
     restOf (rdRow p) (ptRow (c := c) p x e) = freeMat p e := by
@@ -506,11 +488,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] {c : ℕ}
 
 /- English proof (translation)
-Use `((continuous_affPt_uncurry p).comp (Continuous.prodMk ?_ continuous_snd)).add ?_` and prove the remaining obligations. Conclude with `continuous_matrix fun r s => continuous_fst.matrix_elem _ _`. Use `continuous_matrix fun r s => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases r with r | r <;> rcases s with s | s`. Simplify using `only [colAt, fromBlocks_apply₁₁, Matrix.zero_apply]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Conclude with `continuous_const`. Distinguish the cases in `h : s.val + 1 = p`. Simplify using `only [colAt, fromBlocks_apply₁₂, Matrix.of_apply, h, if_true]`. Conclude with `continuous_fst.matrix_elem _ _`. Simplify using `only [colAt, fromBlocks_apply₁₂, Matrix.of_apply, h, if_false]`.
-
-Conclude with `continuous_const`. Simplify using `only [colAt, fromBlocks_apply₂₁, Matrix.zero_apply]`. Conclude with `continuous_const`. Simplify using `only [colAt, fromBlocks_apply₂₂, Matrix.zero_apply]`. Conclude with `continuous_const`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_ptCol (p : ℕ) :
     Continuous fun q : Matrix n (n' ⊕ Unit) k × ({rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free p rs} → k) =>
@@ -528,11 +508,9 @@ theorem continuous_ptCol (p : ℕ) :
     · simp only [colAt, fromBlocks_apply₂₂, Matrix.zero_apply]; exact continuous_const
 
 /- English proof (translation)
-Use `((continuous_affPt_uncurry p).comp (Continuous.prodMk ?_ continuous_snd)).add ?_` and prove the remaining obligations. Conclude with `continuous_matrix fun r s => continuous_fst.matrix_elem _ _`. Use `continuous_matrix fun r s => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases r with r | r <;> rcases s with s | s`. Simplify using `only [rowAt, fromBlocks_apply₁₁, Matrix.zero_apply]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `continuous_const`. Simplify using `only [rowAt, fromBlocks_apply₁₂, Matrix.zero_apply]`. Conclude with `continuous_const`. Distinguish the cases in `h : r.val + 1 = p`. Simplify using `only [rowAt, fromBlocks_apply₂₁, Matrix.of_apply, h, if_true]`.
-
-Conclude with `continuous_fst.matrix_elem _ _`. Simplify using `only [rowAt, fromBlocks_apply₂₁, Matrix.of_apply, h, if_false]`. Conclude with `continuous_const`. Simplify using `only [rowAt, fromBlocks_apply₂₂, Matrix.zero_apply]`. Conclude with `continuous_const`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_ptRow (p : ℕ) :
     Continuous fun q : Matrix (n ⊕ Unit) n' k × ({rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free p rs} → k) =>
@@ -572,11 +550,11 @@ theorem flRow_eq_integral (ψ : AddChar k Circle) (ν : Measure k) (p : ℕ)
 end Main
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ ψ ν hψ hν n n' _ _ _ _ c p hp1`. Use `haveI := GlobalTheory.SplitWeil.t2Space k`. Use `⟨fun hpc => ?_, fun hpc => ?_⟩` and prove the remaining obligations. Establish `hp : p - 1 < c + 1` using `by omega`. Use `⟨fun Φ hΦ => ?_, fun Ψ hΨ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[flCol_eq_integral]`. Conclude with `flatSB_generic ψ ν p (ptCol p) (continuous_ptCol p) (readCol p hp) (continuous_readCol p hp) (restOf (rdCol p)) (continuous_restOf _) (readCol_ptCol p hp1 hp) (restOf_ptCol p) Φ hΦ`. Take `⟨Φ, hΦ, h⟩` from `flatOnto_generic ψ hψ ν hν p (ptCol p) (readCol p hp) (continuous_readCol p hp) (restOf (rdCol p)) (continuous_restOf _) (glue (rdCol p) extCol) (continuous_glue _ continuous_extCol) (glue_restOf _ _ _ (extCol_readCol p hp)) (readCol_ptCol p hp1 hp) (restOf_ptCol p) Ψ hΨ`. Conclude with `⟨Φ, hΦ, by rw [flCol_eq_integral]; exact funext h⟩`. Establish `hp : p - 1 < c` using `by omega`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun Φ hΦ => ?_, fun Ψ hΨ => ?_⟩` and prove the remaining obligations. Rewrite using `[flRow_eq_integral]`. Conclude with `flatSB_generic ψ ν p (ptRow p) (continuous_ptRow p) (readRow p hp) (continuous_readRow p hp) (restOf (rdRow p)) (continuous_restOf _) (readRow_ptRow p hp1 hp) (restOf_ptRow p) Φ hΦ`. Take `⟨Φ, hΦ, h⟩` from `flatOnto_generic ψ hψ ν hν p (ptRow p) (readRow p hp) (continuous_readRow p hp) (restOf (rdRow p)) (continuous_restOf _) (glue (rdRow p) extRow) (continuous_glue _ continuous_extRow) (glue_restOf _ _ _ (extRow_readRow p hp)) (readRow_ptRow p hp1 hp) (restOf_ptRow p) Ψ hΨ`. Conclude with `⟨Φ, hΦ, by rw [flRow_eq_integral]; exact funext h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem flat_SB_onto : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ψ : AddChar k Circle) (ν : Measure k), Continuous ψ → ν.IsAddHaarMeasure → ∀ (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (c p : ℕ), 1 ≤ p → (p ≤ c + 1 → (∀ Φ ∈ SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k), GlobalTheory.LocFlat.flCol ψ ν p Φ ∈ SB _) ∧ ∀ Ψ ∈ SB (Matrix n (n' ⊕ Unit) k), ∃ Φ ∈ SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k), GlobalTheory.LocFlat.flCol ψ ν p Φ = Ψ) ∧ (p ≤ c → (∀ Φ ∈ SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k), GlobalTheory.LocFlat.flRow ψ ν p Φ ∈ SB _) ∧ ∀ Ψ ∈ SB (Matrix (n ⊕ Unit) n' k), ∃ Φ ∈ SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k), GlobalTheory.LocFlat.flRow ψ ν p Φ = Ψ) := by
   intro k _ _ _ _ _ _ ψ ν hψ hν n n' _ _ _ _ c p hp1

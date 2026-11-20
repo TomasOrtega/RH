@@ -19,15 +19,15 @@ open scoped Classical
 variable {g : ℕ} [Fact g.Prime]
 
 /- English proof (translation)
-Take `⟨-, -, hu, hmul, -, -⟩` from `GlobalTheory.GLm.ParBasic.par_basic g a b n hn`. Set `f₁ : P →* Gn g a` to `MonoidHom.mk' (fun p => toG (tl a ((p : Gn g n) : Mt g n))) (by`. Introduce `p q`. Establish `hp : InPar a ((p : Gn g n) : Mt g n)` using `(hP p).1 p.2`. Establish `hq : InPar a ((q : Gn g n) : Mt g n)` using `(hP q).1 q.2`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Subgroup.coe_mul, Units.val_mul, (hmul _ _ hp hq).1, Units.val_mul, Recip.coe_toG ((hu _ hp).1.mul (hu _ hq).1), Recip.coe_toG (hu _ hp).1, Recip.coe_toG (hu _ hq).1])`. Set `f₂ : P →* Gn g b` to `MonoidHom.mk' (fun p => toG (br a b ((p : Gn g n) : Mt g n))) (by`. Introduce `p q`. Establish `hp : InPar a ((p : Gn g n) : Mt g n)` using `(hP p).1 p.2`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hq : InPar a ((q : Gn g n) : Mt g n)` using `(hP q).1 q.2`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Subgroup.coe_mul, Units.val_mul, (hmul _ _ hp hq).2, Units.val_mul, Recip.coe_toG ((hu _ hp).2.mul (hu _ hq).2), Recip.coe_toG (hu _ hp).2, Recip.coe_toG (hu _ hq).2])`. Introduce `h hh x hx`. Establish `E1 : toG (tl a ((h * x * h⁻¹ : Gn g n) : Mt g n)) = f₁ ⟨h, hh⟩ * f₁ ⟨x, hx⟩ * (f₁ ⟨h, hh⟩)⁻¹`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← map_inv, ← map_mul, ← map_mul]`. Both sides reduce to the same expression. Establish `E2 : toG (br a b ((h * x * h⁻¹ : Gn g n) : Mt g n)) = f₂ ⟨h, hh⟩ * f₂ ⟨x, hx⟩ * (f₂ ⟨h, hh⟩)⁻¹`. Rewrite using `[← map_inv, ← map_mul, ← map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[E1, E2]`. Conclude with `(h2 _ _ _).trans (h1 _ _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blocks_conj (a b n : ℕ) (hn : n = a + b) (P : Subgroup (Gn g n))
     (hP : ∀ x, x ∈ P ↔ InPar a (x : Mt g n)) (Λ : Gn g a → Gn g b → ℂ)
@@ -58,9 +58,9 @@ theorem blocks_conj (a b n : ℕ) (hn : n = a + b) (P : Subgroup (Gn g n))
   exact (h2 _ _ _).trans (h1 _ _ _)
 
 /- English proof (translation)
-Unfold `mean`. Rewrite using `[Fintype.sum_prod_type_right, Fintype.card_prod]`. Simplify using `only [Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `push_cast`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mean_prod_right {A B : Type} [Fintype A] [Fintype B] (F : A → B → ℂ) :
     mean (fun p : A × B => F p.1 p.2) = mean (fun b => mean (fun a => F a b)) := by
@@ -71,9 +71,9 @@ theorem mean_prod_right {A B : Type} [Fintype A] [Fintype B] (F : A → B → �
   push_cast; rw [mul_inv]; ring
 
 /- English proof (translation)
-Unfold `mean`. Rewrite using `[Fintype.sum_prod_type, Fintype.card_prod]`. Simplify using `only [Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `push_cast`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mean_prod_left {A B : Type} [Fintype A] [Fintype B] (F : A → B → ℂ) :
     mean (fun p : A × B => F p.1 p.2) = mean (fun a => mean (fun b => F a b)) := by
@@ -84,14 +84,14 @@ theorem mean_prod_left {A B : Type} [Fintype A] [Fintype B] (F : A → B → ℂ
   push_cast; rw [mul_inv]; ring
 
 /- English proof (translation)
-Rewrite using `[← mean_prod_right, mean_prod_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mean_swap {A B : Type} [Fintype A] [Fintype B] (F : A → B → ℂ) :
     mean (fun b => mean (fun a => F a b)) = mean (fun a => mean (fun b => F a b)) := by
   rw [← mean_prod_right, mean_prod_left]
 
 /- English proof (translation)
-Unfold `mean`. Rewrite using `[Fintype.card_congr e, Equiv.sum_comp e F]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mean_equiv {A B : Type} [Fintype A] [Fintype B] (e : A ≃ B) (F : B → ℂ) :
     mean (fun x => F (e x)) = mean F := by
@@ -99,7 +99,7 @@ theorem mean_equiv {A B : Type} [Fintype A] [Fintype B] (e : A ≃ B) (F : B →
   rw [Fintype.card_congr e, Equiv.sum_comp e F]
 
 /- English proof (translation)
-Unfold `mean`. Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem mean_sum {A ι : Type} [Fintype A] (R : Finset ι) (Λ : A → ℂ) (T : ι → A → ℂ) :
     mean (fun p => Λ p * ∑ i ∈ R, T i p) = ∑ i ∈ R, mean (fun p => Λ p * T i p) := by
@@ -108,7 +108,7 @@ theorem mean_sum {A ι : Type} [Fintype A] (R : Finset ι) (Λ : A → ℂ) (T :
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Unfold `res`. Simplify using `only [← Finset.sum_filter, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem res_comm {p q r s m k : ℕ} (Λ : Gn g m → Gn g k → ℂ) (y₁ : Gn g p) (y₃ : Gn g q) (y₂ : Gn g r)
     (y₄ : Gn g s) :
@@ -121,15 +121,15 @@ theorem res_comm {p q r s m k : ℕ} (Λ : Gn g m → Gn g k → ℂ) (y₁ : Gn
   ring
 
 /- English proof (translation)
-Take `⟨-, R2, -⟩` from `Recip.reciprocity g`. Take `⟨⟨Pc, hPc⟩, -, -, -, -, -⟩` from `GlobalTheory.GLm.ParBasic.par_basic g c d n hn2`. Take `⟨⟨Pa, hPa⟩, -, -, -, -, -⟩` from `GlobalTheory.GLm.ParBasic.par_basic g a b n hn1`. Establish `hR : ∀ x : Gn g n, ∃! i, i ∈ (Finset.range (a + 1)).filter (fun i => i ≤ c ∧ c - i ≤ b) ∧ ∃ h ∈ Pc, ∃ k ∈ Pa, x = h * wI g a c i n * k`. Introduce `x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨i, ⟨hi, p, q, hp, hq, e⟩, hu⟩` from `GlobalTheory.GLm.ParCoset.doubleCoset g a b c d n hn1 hn2 x`. Use `⟨i, ⟨hi, p, (hPc p).2 hp, q, (hPa q).2 hq, e⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `j ⟨hj, h, hh, k, hk, e'⟩`. Conclude with `hu j ⟨hj, h, k, (hPc h).1 hh, (hPa k).1 hk, e'⟩`. Establish `hm` using `mackey_doubleCoset_pairing (Gn g n) Pc Pa ℕ ((Finset.range (a + 1)).filter (fun i => i ≤ c ∧ c - i ≤ b)) (fun i => wI g a c i n) hR (fun x => Λ (toG (tl c (x : Mt g n))) (toG (br c d (x : Mt g n)))) (fun z => Φ (toG (tl a (z : Mt g n))) (toG (br a b (z : Mt g n)))) (blocks_conj c …`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cc : ∀ (P : Subgroup (Gn g n)) (Q : Gn g n → Prop), (∀ x, x ∈ P ↔ Q x) → Nat.card P = (Finset.univ.filter Q).card`. Introduce `P Q hP`. Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_subtype]`. Use `congr 1`. Use extensionality with `x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[hP]`. Rewrite `hm` using `[cc Pc _ hPc, cc Pa _ hPa]`. Simplify using `only [hPc, hPa] at hm`. Rewrite using `[R2 c d n hn2]`. Unfold `hcT`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_range] at hi`. Conclude with `mackey_cell_term g a b c d n i hn1 hn2 (by omega) hi.2.1 hi.2.2 Λ Φ`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem left_side (a b c d n : ℕ) (hn1 : n = a + b) (hn2 : n = c + d) (Φ : Gn g a → Gn g b → ℂ)
     (hΦ1 : ∀ y, IsClass fun x => Φ x y) (hΦ2 : ∀ x, IsClass (Φ x))
@@ -171,15 +171,13 @@ theorem left_side (a b c d n : ℕ) (hn1 : n = a + b) (hn2 : n = c + d) (Φ : Gn
   exact mackey_cell_term g a b c d n i hn1 hn2 (by omega) hi.2.1 hi.2.2 Λ Φ
 
 /- English proof (translation)
-Establish `hc : c = i + (c - i)` using `by omega`. Establish `hd : d = (a - i) + (b - (c - i))` using `by omega`. Take `⟨R1, -, -⟩` from `Recip.reciprocity g`. Rewrite using `[mean_prod_right (fun (h₁ : Gn g c) (h₂ : Gn g d) => Λ h₁ h₂ * hcT i (c - i) (fun y₁ y₃ => hcT (a - i) (b - (c - i)) (fun y₂ y₄ => res i (a - i) (fun x => res (c - i) (b - (c - i)) (Φ x) y₃ y₄) y₁ y₂) d h₂) c h₁)]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `congr 1`. Use function extensionality and compare the values at `h₂`. Conclude with `R1 i (c - i) c hc (fun x => Λ x h₂) _ (hΛ1 h₂)`. Use `_ = mean (fun q : Gn g i × Gn g (c - i) => mean (fun h₂ : Gn g d => res i (c - i) (fun x => Λ x h₂) q.1 q.2 * hcT (a - i) (b - (c - i)) (fun y₂ y₄ => res i (a - i) (fun x => res (c - i) (b - (c - i)) (Φ x) q.2 y₄) q.1 y₂) d h₂)) := mean_swap _`. Use `_ = mean (fun q : Gn g i × Gn g (c - i) => mean (fun r : Gn g (a - i) × Gn g (b - (c - i)) => res (a - i) (b - (c - i)) (fun h₂ => res i (c - i) (fun x => Λ x h₂) q.1 q.2) r.1 r.2 * res i (a - i) (fun x => res (c - i) (b - (c - i)) (Φ x) q.2 r.2) q.1 r.1)) := by`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use function extensionality and compare the values at `q`. Use `R1 (a - i) (b - (c - i)) d hd _ _ ?_` and prove the remaining obligations. Introduce `x y`. Use `show res i (c - i) (fun z => Λ z (y * x * y⁻¹)) q.1 q.2 = res i (c - i) (fun z => Λ z x) q.1 q.2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[show (fun z => Λ z (y * x * y⁻¹)) = (fun z => Λ z x) from funext fun z => hΛ2 z x y]`. Use `_ = mean (fun w : (Gn g i × Gn g (c - i)) × (Gn g (a - i) × Gn g (b - (c - i))) => res (a - i) (b - (c - i)) (fun h₂ => res i (c - i) (fun x => Λ x h₂) w.1.1 w.1.2) w.2.1 w.2.2 * res i (a - i) (fun x => res (c - i) (b - (c - i)) (Φ x) w.1.2 w.2.2) w.1.1 w.2.1) := (mean_prod_left …`. Use `_ = _ := by`. Rewrite using `[← mean_equiv (Equiv.prodProdProdComm (Gn g i) (Gn g (a - i)) (Gn g (c - i)) (Gn g (b - (c - i))))]`. Use `congr 1`.
-
-Use function extensionality and compare the values at `y`. Simplify using `only [Equiv.prodProdProdComm_apply]`. Rewrite using `[res_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem right_term (a b c d n i : ℕ) (hn1 : n = a + b) (hn2 : n = c + d) (hia : i ≤ a) (hic : i ≤ c)
     (hcb : c - i ≤ b) (Φ : Gn g a → Gn g b → ℂ) (Λ : Gn g c → Gn g d → ℂ)
@@ -224,13 +222,13 @@ theorem right_term (a b c d n i : ℕ) (hn1 : n = a + b) (hn2 : n = c + d) (hia 
         rw [res_comm]
 
 /- English proof (translation)
-Introduce `g _ a b c d n hn1 hn2 Φ hΦ1 hΦ2 h₁ h₂`. Take `⟨-, -, R3⟩` from `Recip.reciprocity g`. Establish `hcl : IsClass (hcT a b Φ n)` using `(GlobalTheory.T.harishChandra_induction_restriction_isClassFunction g a b n hn1).1 Φ`. Establish `hres` using `(GlobalTheory.T.harishChandra_induction_restriction_isClassFunction g c d n hn2).2 _ hcl`. It suffices to establish `H : (fun (h₁ : Gn g c) (h₂ : Gn g d) => res c d (hcT a b Φ n) h₁ h₂) = (fun (h₁ : Gn g c) (h₂ : Gn g d) => ∑ i ∈ (Finset.range (a + 1)).filter (fun i => i ≤ c ∧ c - i ≤ b), hcT i (c - i) (fun y₁ y₃ => hcT (a - i) (b - (c - i)) (fun y₂ y₄ => res i (a - i) (fun x => res (c - i) (b …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the argument to an intermediate assertion.
 
-Use `R3 (Gn g c) (Gn g d) _ _ hres.2 hres.1 ?_ ?_ ?_` and prove the remaining obligations. Introduce `y x z`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_range] at hi`. Conclude with `(GlobalTheory.T.harishChandra_induction_restriction_isClassFunction g i (c - i) c (by omega)).1 _ x z`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y z`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_range] at hi`. Establish `hd' : ∀ Ψ, hcT (a - i) (b - (c - i)) Ψ d (z * y * z⁻¹) = hcT (a - i) (b - (c - i)) Ψ d y` using `fun Ψ => (GlobalTheory.T.harishChandra_induction_restriction_isClassFunction g (a - i) (b - (c - i)) d (by omega)).1 Ψ y z`. Simplify using `only [hd']`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Λ hΛ1 hΛ2`. Rewrite using `[left_side a b c d n hn1 hn2 Φ hΦ1 hΦ2 Λ hΛ1 hΛ2, mean_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_range] at hi`. Conclude with `(right_term a b c d n i hn1 hn2 (by omega) hi.2.1 hi.2.2 Φ Λ hΛ1 hΛ2).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mackey_formula : ∀ (g : ℕ) [Fact g.Prime] (a b c d n : ℕ), n = a + b → n = c + d →
     ∀ Φ : Gn g a → Gn g b → ℂ, (∀ y, IsClass fun x => Φ x y) → (∀ x, IsClass (Φ x)) → ∀ h₁ h₂,

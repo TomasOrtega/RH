@@ -3,11 +3,11 @@ import Mathlib
 namespace GlobalTheory.SummableProdPi
 
 /- English proof (translation)
-Establish `hnn : ∀ n : J → A, 0 ≤ ∏ j : J, f j (n j)` using `fun n => Finset.prod_nonneg fun j _ => h0 j (n j)`. Use `summable_of_sum_le (c := ∏ j : J, ∑' a, f j a) hnn fun s => ?_` and prove the remaining obligations. Establish `hsub : s ⊆ Fintype.piFinset (fun j : J => s.image (fun n : J → A => n j))`. Introduce `n hn`. Rewrite using `[Fintype.mem_piFinset]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `j`. Conclude with `Finset.mem_image_of_mem _ hn`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.prod_le_prod` to reduce the goal to its premises. Introduce `j _`.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Finset.sum_nonneg fun a _ => h0 j a`. Introduce `j _`. Conclude with `(hs j).sum_le_tsum _ fun a _ => h0 j a`.
+A detailed English derivation is pending.
 -/
 theorem summable_prod_pi {J A : Type} [inst : Fintype J] (f : J → A → ℝ)
     (h0 : ∀ (j : J) (a : A), (0 : ℝ) ≤ f j a) (hs : ∀ j : J, Summable (f j)) :

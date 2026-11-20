@@ -12,11 +12,11 @@ open scoped Matrix
 namespace GlobalTheory.HilbertThetaSeries.GoodInv
 
 /- English proof (translation)
-Establish `hu : ¬ IsUnit ((p : ℕ) : 𝓞 F)`. Introduce `h`. Establish `h1 : IsUnit (algebraMap ℤ (𝓞 F) (p : ℤ))` using `by simpa using h`. Establish `h2 : IsUnit (p : ℤ)` using `isUnit_of_map_unit _ _ h1`. Conclude with `(Nat.prime_iff_prime_int.mp hp).not_unit h2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal (Ideal.span {((p : ℕ) : 𝓞 F)}) (by`. Rewrite using `[Ne, Ideal.span_singleton_eq_top])` and apply the resulting hypothesis. Establish `hmem : ((p : ℕ) : 𝓞 F) ∈ M` using `hle (Ideal.subset_span rfl)`. Use `⟨⟨M, hM.isPrime, ?_⟩, hmem⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `: ((p : ℕ) : 𝓞 F) = 0` using `by simpa using hmem`. Conclude with `hp.ne_zero (by exact_mod_cast this)`.
+A detailed English derivation is pending.
 -/
 theorem exists_place (F : Type) [Field F] [NumberField F] (p : ℕ) (hp : p.Prime) :
     ∃ w : HeightOneSpectrum (𝓞 F), ((p : ℕ) : 𝓞 F) ∈ w.asIdeal := by
@@ -34,9 +34,9 @@ theorem exists_place (F : Type) [Field F] [NumberField F] (p : ℕ) (hp : p.Prim
   exact hp.ne_zero (by exact_mod_cast this)
 
 /- English proof (translation)
-Establish `h1 : (n : F) = algebraMap (𝓞 F) F (n : 𝓞 F)` using `by simp`. Rewrite using `[h1, HeightOneSpectrum.valuation_eq_one_iff_notMem]`. Introduce `hn`. Establish `hc : IsCoprime ((n : ℕ) : 𝓞 F) ((p : ℕ) : 𝓞 F)` using `Nat.Coprime.cast h`. Take `⟨a, b, hab⟩` from `hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hab ▸ add_mem (Ideal.mul_mem_left _ _ hn) (Ideal.mul_mem_left _ _ hw)))`.
+A detailed English derivation is pending.
 -/
 theorem val_nat {F : Type} [Field F] [NumberField F] {p n : ℕ} (h : n.Coprime p)
     (w : HeightOneSpectrum (𝓞 F)) (hw : ((p : ℕ) : 𝓞 F) ∈ w.asIdeal) : w.valuation F (n : F) = 1 := by
@@ -48,11 +48,11 @@ theorem val_nat {F : Type} [Field F] [NumberField F] {p n : ℕ} (h : n.Coprime 
   exact w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hab ▸ add_mem (Ideal.mul_mem_left _ _ hn) (Ideal.mul_mem_left _ _ hw)))
 
 /- English proof (translation)
-Use `set q : ℚ := Algebra.trace ℚ F x with hq`. Establish `h : et x ^ q.den = 1`. Unfold `et`. Rewrite using `[← Complex.exp_nat_mul, ← hq]`. Establish `h1 : (q.den : ℂ) * (q : ℂ) = (q.num : ℂ)` using `by exact_mod_cast Rat.den_mul_eq_num q`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (q.den : ℂ) * (2 * Real.pi * Complex.I * (q : ℂ)) = (q.num : ℂ) * (2 * Real.pi * Complex.I)`. Rewrite using `[← h1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Complex.exp_int_mul_two_pi_mul_I]`. Establish `h2 : ‖ι.symm (et x)‖ ^ q.den = 1`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← norm_pow, ← map_pow, h, map_one, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) q.den_nz).1 h2`.
+A detailed English derivation is pending.
 -/
 theorem norm_et {F : Type} [Field F] [NumberField F] {p : ℕ} [Fact p.Prime] (ι : Qbar p ≃+* ℂ) (x : F) :
     ‖ι.symm (et x)‖ = 1 := by
@@ -69,17 +69,17 @@ theorem norm_et {F : Type} [Field F] [NumberField F] {p : ℕ} [Fact p.Prime] (�
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) q.den_nz).1 h2
 
 /- English proof (translation)
-Establish `huniq : ∀ x ∈ T, ∀ y ∈ T, x - y ∈ A → x = y` using `fun x hx y hy h => (hT.2 x (hT.1 x hx)).unique ⟨hx, by simpa using A.zero_mem⟩ ⟨hy, h⟩`. Establish `hex : ∀ x, ∃ y, x ∈ T → y ∈ T ∧ s x - y ∈ A` using `fun x => by`. Distinguish the cases in `hx : x ∈ T`. Take `⟨y, hy, -⟩` from `hT.2 _ (hB x (hT.1 x hx))`. Conclude with `⟨y, fun _ => hy⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨x, fun h => absurd h hx⟩`. Use `choose σ hσ using hex`. Establish `hit : ∀ n : ℕ, ∀ x ∈ T, σ^[n] x ∈ T ∧ s^[n] x - σ^[n] x ∈ A`. Introduce `n x hx`. Proceed by induction on `n with`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => exact ⟨hx, by simpa using A.zero_mem⟩`. Consider the case `succ n ih`. Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply']`. Use `⟨(hσ _ ih.1).1, ?_⟩` and prove the remaining obligations. Establish `h1` using `(hA _).2 ih.2`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(hσ _ ih.1).2`. Rewrite `h1` using `[map_sub]`. Simplify using `using A.add_mem h1 h2`. Use `⟨σ, hσ, ?_, fun n x hx h => ?_⟩` and prove the remaining obligations. Establish `hm : Set.MapsTo σ (T : Set V) T` using `fun x hx => (hσ x hx).1`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(T.finite_toSet.injOn_iff_bijOn_of_mapsTo hm).1 fun x hx y hy h => huniq x hx y hy ?_` and prove the remaining obligations. Rewrite using `[← hA, map_sub]`. Use `A.sub_mem (hσ x hx).2 (hσ y hy).2` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `hit n x hx` as an intermediate fact. Rewrite `this` using `[h]`. Conclude with `(huniq _ hx _ this.1 this.2).symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_perm {V : Type} [AddCommGroup V] {A B : AddSubgroup V} {T : Finset V} (hT : IsReps A B T)
     (s : V →+ V) (hA : ∀ x, s x ∈ A ↔ x ∈ A) (hB : ∀ x ∈ B, s x ∈ B) :
@@ -121,51 +121,49 @@ section Lat
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] [DecidableEq κ]
 
 /- English proof (translation)
-Introduce `i hi` and use `ha.mul (hx i hi)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem smul_mem_LL {a : F} (ha : IsIntegral ℤ a) {x : κ → F} (hx : x ∈ LL F κ) : a • x ∈ LL F κ :=
   fun i hi => ha.mul (hx i hi)
 
 /- English proof (translation)
-Simplify using `only [BF, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem BF_smul_right (G : Matrix κ κ ℤ) (a : F) (x y : κ → F) : BF G x (a • y) = a * BF G x y := by
   simp only [BF, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Simplify using `only [BF, Matrix.mulVec_add, dotProduct_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem BF_add_right (G : Matrix κ κ ℤ) (x y z : κ → F) : BF G x (y + z) = BF G x y + BF G x z := by
   simp only [BF, Matrix.mulVec_add, dotProduct_add]
 
 /- English proof (translation)
-Take `⟨hδ0, hint, htr, d, -, hd, -, -, hdu⟩` from `GlobalTheory.T.isDel_ne_zero_coprime_denominators_different_generator F p hp δ hδ`. Take `⟨-, hsm, hadd, hI, -, haL, het, -⟩` from `GlobalTheory.T.evenPos_gramForm_integral_lattice_properties F κ G hL.pos`. Take `⟨hlev, -⟩` from `GlobalTheory.T.dualLattice_index_eq_discr_pow_mul_det_pow F κ G hL.pos`. Take `⟨-, -, -, ht⟩` from `GlobalTheory.T.intMatrix_isometry_prime_order_lattice_stability F p hp κ G S t hL`. Establish `htp : t.Coprime p` using `((Nat.Prime.coprime_iff_not_dvd hp).2 (by exact_mod_cast ht)).symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w₀, hw₀⟩` from `exists_place F p hp`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Simplify using `using hc w₀ hw₀`. Establish `hd0 : (d : F) ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `h`. Simplify `hdu w₀ hw₀` using `[h]`. Establish `ht0 : (t : F) ≠ 0`. Introduce `h`. Simplify `val_nat htp w₀ hw₀` using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hN0 : (N : F) ≠ 0` using `by exact_mod_cast hN.ne'`. Take `⟨N₁, h1, h1p, h1i⟩` from `hint (c / ((t : F) ^ 2 * d * N)) (by`. Introduce `w hw`. Establish `e : c / ((t : F) ^ 2 * d * N) = (c / δ) / ((t : F) ^ 2 * (d / δ) * N)` using `by field_simp`. Rewrite using `[e, map_div₀, map_mul, map_mul, map_pow, hc w hw, hdu w hw, val_nat htp w hw, val_nat hNp w hw]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `simp)`. Take `⟨N₂, h2, h2p, h2i⟩` from `htr c⁻¹ (by`. Introduce `w hw`. Establish `e : δ * c⁻¹ = (c / δ)⁻¹` using `by field_simp`. Rewrite using `[e, map_inv₀, hc w hw]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `simp)`. Establish `hN1 : (N₁ : F) ≠ 0` using `by exact_mod_cast h1.ne'`. Establish `hN2 : (N₂ : F) ≠ 0` using `by exact_mod_cast h2.ne'`. Establish `hnat : ∀ n : ℕ, IsIntegral ℤ (n : F)` using `fun n => by`. Simplify using `using (isIntegral_algebraMap (R := ℤ) (A := F) (x := (n : ℤ)))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨N₁ * N₂ * N, by positivity, Nat.Coprime.mul_left (Nat.Coprime.mul_left h1p h2p) hNp, fun y hy => ?_, fun y l hl => ?_⟩` and prove the remaining obligations. Establish `hyd : ((N : F) / c) • y ∈ dualL F G`. Assume the negation of the conclusion as `h`. Conclude with `hy (by simp [wT, h])`. Establish `h3` using `smul_mem_LL ((hnat (N₂ * N)).mul h1i) (hlev _ hyd d hd)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(haL _ _).2 ⟨_, h3, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul, smul_smul, smul_smul, hL.det]`. Establish `e : ((N₁ * N₂ * N : ℕ) : F)⁻¹ * (((N₂ * N : ℕ) : F) * (N₁ * (c / ((t : F) ^ 2 * d * N)))) * ((((t : ℤ) ^ 2 : ℤ) : F) * d) * (N / c) = 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[e, one_smul]`. Take `⟨l₀, hl₀, rfl⟩` from `(haL _ _).1 hl`. Establish `hld : ((N : F) / c) • (((N₁ * N₂ * N : ℕ) : F) • l₀) ∈ dualL F G`. Introduce `l' hl'`. Take `⟨n, hn⟩` from `h2i _ ((hnat (N₁ * N * N)).mul ((hI l₀ hl₀).2 l' hl'))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[← hn, (hsm _ _ _).1, (hsm _ _ _).1]`. Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `hiff : ((N : F) / c) • (y + ((N₁ * N₂ * N : ℕ) : F) • l₀) ∈ dualL F G ↔ ((N : F) / c) • y ∈ dualL F G`. Rewrite using `[smul_add]`. Conclude with `(dualL F G).add_mem_cancel_right hld`. Unfold `wT`. Rewrite using `[hiff]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h`. Use `congr 1`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Take `⟨x₀, hx₀, rfl⟩` from `(haL _ _).1 (hT x hx)`. Rewrite using `[hadd, add_div, (het _ _).1, ((het (BF _ (_ • l₀) _ / c) 0).2.2.1).2, mul_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Take `⟨n, hn⟩` from `h2i _ ((hnat N₁).mul ((hI l₀ hl₀).2 x₀ hx₀))`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[← hn, (hsm _ _ _).1, BF_smul_right]`. Use `congr 1`. Use `push_cast`.
-
-Clear the denominators using the available nonvanishing facts. Both sides reduce to the same expression.
+Clear the denominators using the available nonvanishing facts. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isSB_wT {p : ℕ} (hp : p.Prime) {δ : F} (hδ : IsDel p δ) {G S : Matrix κ κ ℤ} {t : ℕ} (hL : LatD p G S t)
     (Φ : (κ → F) → ℂ) {N : ℕ} {T : Finset (κ → F)} {c : F} (hN : 0 < N) (hNp : N.Coprime p)
@@ -244,35 +242,29 @@ theorem isSB_wT {p : ℕ} (hp : p.Prime) {δ : F} (hδ : IsDel p δ) {G S : Matr
 end Lat
 
 /- English proof (translation)
-Introduce `F _ _ p hpf ι hp2 δ hδ κ _ _ G S t hL Φ N T c hΦ hN hNp hSB hT h0 hc`. Establish `hp : p.Prime` using `hpf.out`. Take `⟨-, hinv, hint, hzero⟩` from `hΦ`. Take `⟨-, hsm, -, -, -, haL, het, -⟩` from `GlobalTheory.T.evenPos_gramForm_integral_lattice_properties F κ G hL.pos`. Take `⟨hiso, hS, hfree, -⟩` from `GlobalTheory.T.intMatrix_isometry_prime_order_lattice_stability F p hp κ G S t hL`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hC` using `GlobalTheory.T.weil_index_constant_congruent_one_mod_prime F p ι hp2 δ c hδ hc t N hNp hL.cong`. Establish `hp1 : (p : ℝ)⁻¹ ≤ 1` using `inv_le_one_of_one_le₀ (by exact_mod_cast hp.one_le)`. Establish `hC1 : ‖ι.symm (wC (p - 1) t (N : F) c)‖ ≤ 1`. Use `IsUltrametricDist.norm_add_le_max (ι.symm (wC (p - 1) t (N : F) c) - 1) 1` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, norm_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.trans (max_le (hC.trans hp1) le_rfl)`. Set `s : (κ → F) →+ (κ → F)` to `(Matrix.mulVecLin (S.map (Int.cast : ℤ → F))).toAddMonoidHom`. Establish `hs : ∀ x, s x = (S.map (Int.cast : ℤ → F)) *ᵥ x` using `fun _ => rfl`. Take `⟨σ, hσ, hbij, hit⟩` from `exists_perm hT s (fun x => (hS x).2.2.2 _) (fun x hx => ((hS x).2.2.2 _).2 hx)`. Establish `huniq : ∀ x ∈ T, ∀ y ∈ T, x - y ∈ aL κ (N : F) → x = y` using `fun x hx y hy h => (hT.2 x (hT.1 x hx)).unique ⟨hx, by simpa using (aL κ (N : F)).zero_mem⟩ ⟨hy, h⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦσ : ∀ x ∈ T, Φ (σ x) = Φ x` using `fun x hx => by`. Rewrite using `[← hinv x, ← hSB.2 (σ x) _ (hσ x hx).2, hs, add_sub_cancel]`. Use `⟨isSB_wT hp hδ hL Φ hN hNp hT.1 hc _, fun y => ?_, fun y => ?_, ?_⟩` and prove the remaining obligations. Establish `hiff : ((N : F) / c) • (S.map (Int.cast : ℤ → F) *ᵥ y) ∈ dualL F G ↔ ((N : F) / c) • y ∈ dualL F G`. Rewrite using `[← Matrix.mulVec_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `(hS _).2.2.1`. Unfold `wT`. Rewrite using `[hiff]`. Use `split_ifs with h`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `symm`. Use `Finset.sum_nbij σ (fun x hx => (hσ x hx).1) hbij.injOn hbij.surjOn fun x hx => ?_` and prove the remaining obligations. Take `⟨l, hl, e⟩` from `(haL _ _).1 (hσ x hx).2`. Establish `e' : S.map (Int.cast : ℤ → F) *ᵥ x = σ x + (N : F) • l` using `by rw [← e, hs, add_sub_cancel]`. Rewrite using `[hΦσ x hx, ← (hiso y x).1, e', BF_add_right, add_div, (het _ _).1, ((het (BF _ _ (_ • l) / c) 0).2.2.1).2, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨n, hn⟩` from `hiff.2 h l hl`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[← hn, (hsm _ _ _).1, BF_smul_right]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Unfold `wT split_ifs with h`. Rewrite using `[map_mul, norm_mul, map_sum]`. Use `mul_le_one₀ hC1 (norm_nonneg _) ?_` and prove the remaining obligations. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun x _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[map_mul, norm_mul, norm_et, mul_one]`. Conclude with `hint x`. Simplify using the standard rewrite rules. Establish `e0 : wT G (p - 1) t (N : F) c T Φ 0 = wC (p - 1) t (N : F) c * (Φ 0 + ∑ x ∈ T.erase 0, Φ x)`. Unfold `wT`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_pos (by simpa using (dualL F G).zero_mem), Finset.add_sum_erase _ _ h0]`. Use `congr 1`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Simplify using `[BF, et]`. Establish `hσ0 : σ 0 = 0` using `(huniq _ h0 _ (hσ 0 h0).1 (by simpa using (hσ 0 h0).2)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `horb` using `GlobalTheory.T.norm_sum_free_orbits_le_inv_prime p ι _ σ (T.erase 0) Φ (fun x hx => by`. Take `⟨hx0, hx⟩` from `Finset.mem_erase.1 hx`. Conclude with `Finset.mem_erase.2 ⟨fun h => hx0 (hbij.injOn hx h0 (h.trans hσ0.symm)), (hσ x hx).1⟩)`. Use the proof step `(fun x hx => hit p x (Finset.mem_of_mem_erase hx) (hS x).1)`. Use the proof step `(fun x hx h => by`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hx0, hx⟩` from `Finset.mem_erase.1 hx`. Establish `h1` using `(hσ x hx).2`. Rewrite `h1` using `[h]`. Conclude with `hx0 (huniq x hx 0 h0 (by simpa using hfree N x hN hNp (hT.1 x hx) h1)))`. Use the proof step `(fun x hx => hΦσ x (Finset.mem_of_mem_erase hx)) (fun x _ => hint x)`.
-
-Rewrite using `[e0, map_mul, map_add]`. Use `set a := ι.symm (wC (p - 1) t (N : F) c)`. Use `set b := ι.symm (Φ 0)`. Use `set r := ι.symm (∑ x ∈ T.erase 0, Φ x)`. Establish `e : a * (b + r) - 1 = (a - 1) + (a * (b - 1) + a * r)` using `by ring`.
-
-Rewrite using `[e]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hC ?_)` and prove the remaining obligations. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) hC1).trans hzero`.
-
-Rewrite using `[norm_mul]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) hC1).trans horb`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_wT : ∀ (F : Type) [Field F] [NumberField F] (p : ℕ) [Fact p.Prime] (ι : Qbar p ≃+* ℂ), p ≠ 2 → ∀ δ : F, IsDel p δ → ∀ (κ : Type) [Fintype κ] [DecidableEq κ] (G S : Matrix κ κ ℤ) (t : ℕ), LatD p G S t → ∀ (Φ : (κ → F) → ℂ) (N : ℕ) (T : Finset (κ → F)) (c : F), Good ι S Φ → 0 < N → N.Coprime p → IsSB N Φ → IsReps (aL κ (N : F)) (aL κ (N : F)⁻¹) T → 0 ∈ T → PUnit p (c / δ) → Good ι S (wT G (p - 1) t (N : F) c T Φ) := by
   intro F _ _ p hpf ι hp2 δ hδ κ _ _ G S t hL Φ N T c hΦ hN hNp hSB hT h0 hc
@@ -358,7 +350,7 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HilbertThetaSeries.GoodInv.good_wT | exact GlobalTheory.HilbertThetaSeries.GoodInv.good_wT | (intros; apply GlobalTheory.HilbertThetaSeries.GoodInv.good_wT <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.integral_test_function_finite_fourier_transform_of_odd_prime : ∀ (F : Type) [Field F] [NumberField F] (p : ℕ) [Fact p.Prime] (ι : Qbar p ≃+* ℂ), p ≠ 2 → ∀ δ : F, IsDel p δ → ∀ (κ : Type) [Fintype κ] [DecidableEq κ] (G S : Matrix κ κ ℤ) (t : ℕ), LatD p G S t → ∀ (Φ : (κ → F) → ℂ) (N : ℕ) (T : Finset (κ → F)) (c : F), Good ι S Φ → 0 < N → N.Coprime p → IsSB N Φ → IsReps (aL κ (N : F)) (aL κ (N : F)⁻¹) T → 0 ∈ T → PUnit p (c / δ) → Good ι S (wT G (p - 1) t (N : F) c T Φ) := by
   first | exact @GlobalTheory.HilbertThetaSeries.GoodInv.good_wT | exact GlobalTheory.HilbertThetaSeries.GoodInv.good_wT | (intros; apply GlobalTheory.HilbertThetaSeries.GoodInv.good_wT <;> assumption)

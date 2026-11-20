@@ -6,7 +6,7 @@ open scoped Matrix
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Ord2.galoisRepRankTwoTateDual_eq_one_of_mem_ker_unramified` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FGaloisRepRankTwoTateDualEqOneOfMemKerUnramifiedQ.lean&line=9#L9)
 -/

@@ -15,7 +15,7 @@ open scoped Matrix ComplexOrder
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `h0 : GoodEmb c (goodOf c c.F.val.toRingHom)` using `goodEmb_goodOf c _`. Establish `hF : CuspFD Xo c U` using `(Formalism.L2.PjFree.cuspFD_ofPj U).1 (GlobalTheory.cuspForms_finiteDimensional_of_isUnf GlobalTheory.firstFiveLaws.1.secBaseChange _ H Dw l Xo c _ (fun σ => Formalism.L2.PjFree.Unf.ofPj (U σ)) _ h0 ((Formalism.L2.PjFree.isUnf_ofPj (U _)).2 (h.unf _ h0)))`. Use `haveI := hF a n hd`. Use `haveI : Module.Free c.F (cusp Xo c U a n) := Module.Free.of_divisionRing _ _`. Conclude with `⟨_, ⟨Module.finBasis c.F _⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_basis {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} {l : Level H}
     {Xo : Moduli Dw l} {c : Coeff l} {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ D.R.r} {V : HSp D}
@@ -31,9 +31,9 @@ theorem exists_basis {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.
   exact ⟨_, ⟨Module.finBasis c.F _⟩⟩
 
 /- English proof (translation)
-Take `⟨l₀, -⟩` from `GlobalTheory.Member.Inhab.exists_ctx_ok_at_lift D j hj`. Set `l : Level (hostOfRecord D)` to `{ l₀ with A := 1, A_pos := one_pos }`. Take `⟨-, Xo, c, U, dict, h⟩` from `LevelModel.exists_levelLaws_at_lift D j hj l rfl`. Establish `h0 : (0 : ℝ) ≤ (absA (datumW D j hj) a : ℝ) + D.R.f * D.R.r * n` using `by positivity`. Take `⟨L, hL⟩` from `LevelModel.exists_sizeRows D l.M ((absA (datumW D j hj) a : ℝ) + D.R.f * D.R.r * n + 1) hf (by linarith)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hN⟩` from `exists_basis h a n hd`. Conclude with `⟨l, Xo, c, U, dict, _, L, N, h, hL, by linarith, hN⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hyps_inhabited (D : D7) (hf : 16 ≤ D.R.f) (j : ℕ) (hj : 1 ≤ j ∧ j ≤ D.R.m)
     (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) (hd : Dom a n) :
@@ -52,16 +52,16 @@ theorem hyps_inhabited (D : D7) (hf : 16 ≤ D.R.f) (j : ℕ) (hj : 1 ≤ j ∧ 
   exact ⟨l, Xo, c, U, dict, _, L, N, h, hL, by linarith, hN⟩
 
 /- English proof (translation)
-Unfold `SizeData₂.logOm`. Rewrite using `[large₂.logDerivative_at_one_eq, Lg'.logDerivative_at_one_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem logOm_indep {D : D7} (large₂ Lg' : SizeData₂ D) : large₂.logOm = Lg'.logOm := by
   unfold SizeData₂.logOm
   rw [large₂.logDerivative_at_one_eq, Lg'.logDerivative_at_one_eq]
 
 /- English proof (translation)
-Take `⟨-, h⟩` from `frameOfSpec n (A v) hA`. Establish `hv : vecS (Pi.basisFun K (Fin n)) v x = fun i => v.embedding (x i)`. Use function extensionality and compare the values at `i`. Simplify using `[vecS]`. Use `conv_rhs => rw [← h, metOf, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, ← Matrix.star_mulVec]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Unfold `normS cnormS fcoordS`. Rewrite using `[Real.sq_sqrt (Finset.sum_nonneg fun _ _ => by positivity), hv]`. Use `push_cast`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.star_apply, Complex.star_def, Complex.conj_mul']`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normS_sq_frameOf {K : Type} [Field K] [NumberField K] {n : ℕ}
     (A : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ) (v : InfinitePlace K) (hA : (A v).PosDef) (x : Fin n → K) :
@@ -78,15 +78,15 @@ theorem normS_sq_frameOf {K : Type} [Field K] [NumberField K] {n : ℕ}
   rw [Pi.star_apply, Complex.star_def, Complex.conj_mul']
 
 /- English proof (translation)
-Introduce `h`. Take `⟨m, hm⟩` from `exists_nat_gt (Real.exp (|La| + 1))`. Establish `hm0 : (0 : ℝ) < m` using `(Real.exp_pos _).trans hm`. Establish `hmK : (m : K) ≠ 0`. Establish `: m ≠ 0` using `by rintro rfl; simp at hm0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `h1` using `h (fun _ => (m : K)⁻¹) trivial (fun e => inv_ne_zero hmK (congrFun e 0))`. Establish `hn : ∀ v : InfinitePlace K, normS (Pi.basisFun K (Fin 1)) (fun _ => frameOf 1) v (fun _ => (m : K)⁻¹) ^ 2 = ((m : ℝ)⁻¹) ^ 2`. Introduce `v`. Use `normS_sq_frameOf (fun _ : InfinitePlace K => (1 : Matrix (Fin 1) (Fin 1) ℂ)) v Matrix.PosDef.one (fun _ => (m : K)⁻¹)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[this]`. Simplify using `[dotProduct, sq]`. Establish `hc : (0 : ℝ) < nPlS K`. Unfold `nPlS`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Conclude with `Fintype.card_pos` after adjusting the coercions. Unfold `meanLogS at h1`. Simplify using `only [hn, Finset.sum_const, Finset.card_univ, nsmul_eq_mul] at h1`. Establish `e : (Fintype.card (InfinitePlace K) : ℝ) = nPlS K` using `rfl`. Rewrite `h1` using `[e, ← mul_assoc, one_div_mul_cancel hc.ne', one_mul, Real.log_pow, Real.log_inv]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : |La| + 1 < Real.log m` using `(Real.lt_log_iff_exp_lt hm0).2 hm`. Use `le_abs_self La` as an intermediate fact. Move the coercions through the operations in `at h1`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem not_lamS_top (K : Type) [Field K] [NumberField K] [StarRing K] (La : ℝ) :
     ¬ LamS (⊤ : Submodule (𝓞 K) (Fin 1 → K)) (fun _ => frameOf 1) La := by
@@ -117,9 +117,9 @@ theorem not_lamS_top (K : Type) [Field K] [NumberField K] [StarRing K] (La : ℝ
   linarith
 
 /- English proof (translation)
-Take `⟨hf, hL, hS, -⟩` from `h`. Establish `hf' : (0 : ℝ) < D.R.f` using `by exact_mod_cast lt_of_lt_of_le (by norm_num) hf`. Establish `hr : (0 : ℝ) < D.R.r`. Use `D.R.m_add_three_le_k` as an intermediate fact. Conclude with `(show 0 < D.R.r by unfold Ranks.r; omega)` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `Real.log_nonneg hS`. Establish `hL' : 0 < L` using `by linarith`. Establish `hS' : 0 < S` using `by linarith`. Unfold `lamConst`. Check the signs of the components of the expression.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem lamConst_pos {D : D7} {M : ℕ} {S L C Om : ℝ} (hC : 0 < C) (h : SizeRows D M S L) :
     0 < lamConst C D.R.f D.R.r L (dE D.host.E) Om S := by

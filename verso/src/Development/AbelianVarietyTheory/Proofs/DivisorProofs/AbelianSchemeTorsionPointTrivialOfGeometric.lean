@@ -10,29 +10,25 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.TorsionRigid
 
 /- English proof (translation)
-Use `hA.smooth` as an intermediate fact. Set `AT` to `(Over.pullback T.hom).obj A`. Establish `hft : LocallyOfFiniteType AT.hom`. Express the relevant statement in the definitionally equal form `LocallyOfFiniteType (pullback.snd A.hom T.hom)`. Use `infer_instance`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Introduce a local definition for the expression.
 
-Set `f` to `((Over.pullback T.hom).map (mulN A c)).left`. Establish `hfu : FormallyUnramified f`. Establish `h` using `GlobalTheory.GrpTangent.formallyUnramified_mulN AT hc`. Rewrite `h` using `[← GlobalTheory.GrpTangent.pullback_map_mulN]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hff : LocallyOfFiniteType f`. Establish `: LocallyOfFiniteType (f ≫ AT.hom)`. Rewrite using `[show f ≫ AT.hom = AT.hom from Over.w ((Over.pullback T.hom).map (mulN A c))]`. Use `infer_instance`. Conclude with `locallyOfFiniteType_of_comp f AT.hom`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `sec : (T ⟶ A) → (T.left ⟶ AT.left)` to `fun y => pullback.lift y.left (𝟙 T.left) (by rw [Over.w y, Category.id_comp])`. Establish `sec_fst : ∀ y : T ⟶ A, sec y ≫ pullback.fst A.hom T.hom = y.left` using `fun y => pullback.lift_fst _ _ _`. Establish `sec_snd : ∀ y : T ⟶ A, sec y ≫ pullback.snd A.hom T.hom = 𝟙 _` using `fun y => pullback.lift_snd _ _ _`. Establish `f_fst : f ≫ pullback.fst A.hom T.hom = pullback.fst A.hom T.hom ≫ (mulN A c).left` using `pullback.lift_fst _ _ _`. Establish `f_snd : f ≫ pullback.snd A.hom T.hom = pullback.snd A.hom T.hom` using `pullback.lift_snd _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `sec_f : ∀ y : T ⟶ A, sec y ≫ f = sec (y ^ c)`. Introduce `y`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, f_fst, ← Category.assoc, sec_fst, sec_fst, ← GlobalTheory.GrpTangent.comp_mulN]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[Category.assoc, f_snd, sec_snd, sec_snd]`. Establish `key : sec x ≫ f = sec 1 ≫ f` using `by rw [sec_f, sec_f, hx, one_pow]`. Set `Y : Over AT.left` to `Over.mk f`. Set `X : Over AT.left` to `Over.mk (sec 1 ≫ f)`. Set `fx : X ⟶ Y` to `Over.homMk (sec x) key`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Set `f1 : X ⟶ Y` to `Over.homMk (sec 1) rfl`. Use `haveI : LocallyOfFiniteType Y.hom := hff`. Use `haveI : FormallyUnramified Y.hom := hfu`. Establish `hpt : ∀ t : T.left, t ∈ Set.range (GlobalTheory.FinEt.agreeι fx f1)`. Introduce `t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨k, _, _, a, ha⟩` from `GlobalTheory.FinEt.exists_algClosed_point T.left t`. Establish `hk : (c : k) ≠ 0` using `(GlobalTheory.GrpTangent.isUnit_natCast_of_point hc a).ne_zero`. Establish `h1` using `H k hk (a ≫ T.hom) (Over.homMk a rfl)`. Establish `h2 : a ≫ x.left = a ≫ (1 : T ⟶ A).left`. Use `congrArg CommaMorphism.left (h1.trans (comp_one (Over.homMk a rfl : Over.mk (a ≫ T.hom) ⟶ T)).symm)` as an intermediate fact.
+Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Establish `h3 : a ≫ fx.left = a ≫ f1.left`. Express the relevant statement in the definitionally equal form `a ≫ sec x = a ≫ sec 1`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, sec_fst, sec_fst, h2]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, Category.assoc, sec_snd, sec_snd]`. Establish `h4` using `(GlobalTheory.FinEt.comp_eq_comp_iff_range fx f1 a).mp h3`. Apply `h4` to reduce the goal to its premises. Rewrite using `[ha]`. Both sides reduce to the same expression.
-
-Establish `hsec : sec x = sec 1`. Use `(GlobalTheory.FinEt.comp_eq_comp_iff_range fx f1 (𝟙 _)).mpr (by` as an intermediate fact. Introduce and unpack `_ ⟨t, rfl⟩`. Conclude with `hpt _)`. Simplify `this` using `[fx, f1]`.
-
-Use `ext1`. Rewrite using `[← sec_fst x, hsec, sec_fst]`.
+Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_one_of_geometric (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A]
     (hA : IsAbelianScheme A) (T : Over S) (x : T ⟶ A) (c : ℕ) (hc : IsUnit (c : Γ(T.left, ⊤)))

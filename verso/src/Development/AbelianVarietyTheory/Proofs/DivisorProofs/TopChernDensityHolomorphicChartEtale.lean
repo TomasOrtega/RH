@@ -12,13 +12,13 @@ open scoped ContDiff Matrix
 namespace GlobalTheory.GoodTop
 
 /- English proof (translation)
-Introduce `F _ σ X m E O H hM e he c y hy hye hyc A hA`. Use `set G : V X.dim → Matrix (Fin m) (Fin m) ℂ := fun u => H A (c.e.symm u) () with hG`. Use `set φ : V X.dim → V X.dim := c.e ∘ e.symm with hφ`. Establish `ho` using `isOpen_over e c.e.open_source`. Establish `hm` using `mem_over e hye hyc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdiff : DifferentiableOn ℂ φ (e.target ∩ e.symm ⁻¹' c.e.source)` using `holoChart_trans_algChart he c`. Establish `han : AnalyticAt ℂ φ (e y)` using `GlobalTheory.InjHol.analyticAt_of_differentiableOn_euclidean ho hm hdiff`. Establish `hφy : φ (e y) = c.e y` using `by simp only [hφ, Function.comp_apply, e.left_inv hye]`. Establish `hG2 : MContDiffAt 2 G (φ (e y))` using `hφy ▸ hM.mContDiffAt_chart hy c hyc hA ()`. Establish `hGu : IsUnit (G (φ (e y))).det` using `hφy ▸ hM.isUnit_det_chart hy c hyc hA ()`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hger : (fun v => H A (e.symm v) ()) =ᶠ[𝓝 (e y)] fun v => G (φ v)` using `by filter_upwards [ho.mem_nhds hm] with w hw`. Simplify using `only [hG, hφ, Function.comp_apply, c.e.left_inv hw.2]`. Establish `hcurv : curvAt (fun v => H A (e.symm v) ()) (e y) = curvAt (fun v => G (φ v)) (e y)`. Use function extensionality and compare the values at `a b`. Conclude with `curv_congr hger _ _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key` using `GlobalTheory.T.polarisedTopChernCoeff_curvature_comp_holomorphic (G := G) (φ := φ) (w := e y) (han.contDiffAt) hG2 hGu`. Rewrite using `[hcurv, key, hφy]`. Establish `hfr : topDens E H c y = chernTop (MvPolynomial.X ((), X.dim)) (fun v => H A (c.e.symm v)) (c.e y)` using `hM.chernTop_frame _ hy c hyc (E.nonempty (under y)).choose_spec hA`. Rewrite using `[hfr, GlobalTheory.T.chernTopDensity_eq_polarisedTopChern, transDet, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem topDens_holoChart : ∀ {F : Type} [Field F] {σ : F →+* ℂ} {X : Var F} {m : ℕ} (E : Fr (ratOf X) (fun _ : Unit => m) 0) (O : X.X.Opens) (H : Mat (fun _ : Unit => m) X.Fn → CxPts X.str σ → Mat (fun _ : Unit => m) ℂ), IsMetricOn E O H → ∀ {e : OpenPartialHomeomorph (CxPts X.str σ) (V X.dim)}, IsHoloChart e → ∀ (c : AlgChart X.str σ X.dim) {y : CxPts X.str σ}, y ∈ ptsIn X.str σ O → y ∈ e.source → y ∈ c.e.source → ∀ {A : Mat (fun _ : Unit => m) X.Fn}, A ∈ E.S (under y) → (Real.pi ^ X.dim)⁻¹ * (mixTop fun _ => curvAt (fun v => H A (e.symm v) ()) (e y)).re = ‖transDet e c.e y‖ ^ 2 * topDens E H c y := by
   intro F _ σ X m E O H hM e he c y hy hye hyc A hA

@@ -39,7 +39,7 @@ namespace UpperTheory.V.Z.Sym.Top
 open UpperTheory.V.Lit UpperTheory.V.W UpperTheory.V.HV UpperTheory.V.Z.Sym.Pl
 
 /- English proof (translation)
-Introduce `E _ _ _ hE p hp S hS h1 h2 n hn hn' π hr _` and use `h E hE p hp S hS h1 h2 n hn hn' π hr`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem descUse_of_weak (h : Z.Desc.DescWeak) : Z.Desc.DescUse :=
   fun E _ _ _ hE p hp S hS h1 h2 n hn hn' π hr _ => h E hE p hp S hS h1 h2 n hn hn' π hr

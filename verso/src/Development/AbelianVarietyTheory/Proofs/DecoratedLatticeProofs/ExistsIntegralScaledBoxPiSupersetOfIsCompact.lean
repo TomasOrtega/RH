@@ -10,7 +10,7 @@ open scoped Topology
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `x hx i _` and use `show valuation k (x i) ≤ _ from le_trans (hx i trivial) h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem box_subset_box_of_valuation_le {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (n : Type) {s t : kˣ}
@@ -18,17 +18,15 @@ theorem box_subset_box_of_valuation_le {k : Type} [Field k] [ValuativeRel k] [To
   fun x hx i _ => show valuation k (x i) ≤ _ from le_trans (hx i trivial) h
 
 /- English proof (translation)
-Introduce `hK r`. Set `ι` to `{s : kˣ // valuation k (r : k) ≤ valuation k (s : k)}`. Use `haveI : Nonempty ι := ⟨⟨r, le_rfl⟩⟩`. Establish `hcov : K ⊆ ⋃ s : ι, box n (s : kˣ)`. Introduce `x _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.mem_iUnion]`. Distinguish the cases in `hn : Nonempty n`. Take `⟨i0, -, hi0⟩` from `Finset.exists_max_image Finset.univ (fun i => valuation k (x i)) Finset.univ_nonempty`. Distinguish the cases in `hle : valuation k (x i0) ≤ valuation k (r : k)`. Use `⟨⟨r, le_rfl⟩, fun i _ => ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `le_trans (hi0 i (Finset.mem_univ i)) hle`. Use `push_neg at hle`. Establish `hx0 : x i0 ≠ 0`. Introduce `h0`. Rewrite `hle` using `[h0, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `not_lt_zero' hle`. Use `⟨⟨Units.mk0 (x i0) hx0, by simpa using hle.le⟩, fun i _ => ?_⟩` and prove the remaining obligations. Simplify `hi0 i (Finset.mem_univ i)` using `[cball]`. Use `⟨⟨r, le_rfl⟩, fun i _ => (hn ⟨i⟩).elim⟩` and prove the remaining obligations. Establish `hdir : Directed (· ⊆ ·) (fun s : ι => box n (s : kˣ))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Introduce `s t`. Break down `le_total (valuation k ((s : kˣ) : k)) (valuation k ((t : kˣ) : k)) with h | h` into its components or cases. Conclude with `⟨t, box_subset_box_of_valuation_le n h, le_rfl⟩`. Conclude with `⟨s, le_rfl, box_subset_box_of_valuation_le n h⟩`. Take `⟨s, hs⟩` from `hK.elim_directed_cover (fun s : ι => box n (s : kˣ)) (fun s => isOpen_box _) hcov hdir`.
-
-Conclude with `⟨s, s.2, hs⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_box_superset_of_isCompact (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (n : Type) [Fintype n] (K : Set (n → k)) :

@@ -31,7 +31,7 @@ def StdSide {ι : Type} (lam : X.Tau → DomWeight n) (rho : GL (Fin n) X.E →*
     ∃ hc : CMData X.F X.E, ∀ h : H, ∃ x : Formalism.L2.Col.UAd hc n, MatEq (mat h) (x : GL (Fin n) _)
 
 /- English proof (translation)
-Take `⟨c, -, hr, hli, hc, hx⟩` from `s`. Use `⟨c, hli, fun h t => ?_⟩` and prove the remaining obligations. Take `⟨x, hm⟩` from `hx h`. Conclude with `⟨_, fun φ => hr hc t φ h x hm⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem StdSide.value {ι : Type} {lam : X.Tau → DomWeight n} {rho : GL (Fin n) X.E →* Module.End X.K (VV X.K lam)}
     {SG : ι → Finset (Pl X.E)} {Fm : ι → Type} {val : ∀ t, Fm t → DecoSet X.E n ∅ (SG t) → VV X.K lam} {ad : ∀ t, Fm t → H → W}

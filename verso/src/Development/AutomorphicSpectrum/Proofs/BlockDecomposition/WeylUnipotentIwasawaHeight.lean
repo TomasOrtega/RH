@@ -13,7 +13,7 @@ namespace GlobalTheory.CompanionTheory.HeightNu
 open GlobalTheory.StdUnn.Model GlobalTheory.StdUnn.LeftInvSect
 
 /- English proof (translation)
-Use `⟨(M.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₁₁, (M.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₁₂, (M.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₂₁, (M.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₂₂, ?_⟩` and prove the remaining obligations. Unfold `blk4`. Rewrite using `[Matrix.fromBlocks_toBlocks]`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem exists_blocks {R : Type} {n : ℕ} (M : Matrix (Fin (n + n)) (Fin (n + n)) R) :
     ∃ a b c d : Matrix (Fin n) (Fin n) R, M = blk4 a b c d := by
@@ -27,9 +27,9 @@ theorem exists_blocks {R : Type} {n : ℕ} (M : Matrix (Fin (n + n)) (Fin (n + n
   simp
 
 /- English proof (translation)
-Establish `h : (Matrix.GeneralLinearGroup.det (ad a) : (AE D)ˣ) = (conjUnit D.sp.cm.sig (Matrix.GeneralLinearGroup.det a⁻¹ : (AE D)ˣ) : (AE D)ˣ)`. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(adj (a⁻¹).1 : Mx D n n).det = _`. Unfold `adj`. Rewrite using `[Matrix.det_transpose]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(RingHom.map_det (cA D) (a⁻¹).1).symm`. Rewrite using `[h, GlobalTheory.DiagThetaRule.absA_conj, map_inv, map_inv]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absA_det_ad {D : D7} {n : ℕ} (a : GL (Fin n) (AE D)) :
     absA D (Matrix.GeneralLinearGroup.det (ad a)) =
@@ -44,7 +44,7 @@ theorem absA_det_ad {D : D7} {n : ℕ} (a : GL (Fin n) (AE D)) :
   rw [h, GlobalTheory.DiagThetaRule.absA_conj, map_inv, map_inv]
 
 /- English proof (translation)
-Take `⟨m, u, b, hpe, hm, hu⟩` from `exists_levi_unip hp a ha`. Use `⟨a.1 * b, ?_⟩` and prove the remaining obligations. Rewrite using `[hpe, mat_mul, hm, hu, submatrix_fromBlocks_mul]`. Simplify using `[-Matrix.coe_units_inv]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem levi_unip_blocks {D : D7} {n : ℕ} {p : G D n} (hp : p ∈ P D n) (a : GL (Fin n) (AE D))
     (ha : blkA (mat p) = a.1) : ∃ b, mat p = blk4 a.1 b 0 (adj (a⁻¹).1) := by
@@ -54,7 +54,7 @@ theorem levi_unip_blocks {D : D7} {n : ℕ} {p : G D n} (hp : p ∈ P D n) (a : 
   simp [-Matrix.coe_units_inv]
 
 /- English proof (translation)
-Rewrite using `[mat_mul, hw, hnb, submatrix_fromBlocks_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mat_w_nb {D : D7} {n : ℕ} {nb : hermA D n → G D n} (hnb : IsNMap nb) {w : G D n}
     (hw : mat w = blk4 0 1 (-1) 0) (c : hermA D n) : mat (w * nb c) = blk4 0 1 (-1) (-c.1) := by
@@ -62,11 +62,11 @@ theorem mat_w_nb {D : D7} {n : ℕ} {nb : hermA D n → G D n} (hnb : IsNMap nb)
   simp
 
 /- English proof (translation)
-Introduce `D n H hH nb hnb w hw c`. Take `⟨p, hp, k, hk, e⟩` from `GlobalTheory.StdUnn.Iwasawa.exists_mul D n (w * nb c)`. Take `⟨a, ha⟩` from `exists_blkA hp`. Take `⟨b, hmp⟩` from `levi_unip_blocks hp a ha`. Take `⟨k₁, k₂, k₃, k₄, hk4⟩` from `exists_blocks (mat k)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h2` using `mat_w_nb hnb hw c`. Rewrite `h2` using `[e, mat_mul, hmp, hk4, submatrix_fromBlocks_mul]`. Take `⟨-, -, h3, h4⟩` from `blockMatrixTwoByTwoFin_injective h2`. Rewrite `h3`, `h4` using `[Matrix.zero_mul, zero_add]`. Use `⟨ad a, k, k₁, k₂, k₃, k₄, hk, hk4, h3, h4, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e, hH p hp a ha k hk, absA_det_ad]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lower_row : ∀ (D : D7) (n : ℕ) (H : G D n → ℝ≥0), IsHeight H → ∀ (nb : hermA D n → G D n), IsNMap nb → ∀ w : G D n, mat w = blk4 0 1 (-1) 0 → ∀ c : hermA D n, ∃ (d : GL (Fin n) (AE D)) (k : G D n) (k₁ k₂ k₃ k₄ : Mx D n n), k ∈ K D n ∧ mat k = blk4 k₁ k₂ k₃ k₄ ∧ d.1 * k₃ = -1 ∧ d.1 * k₄ = -c.1 ∧ (H (w * nb c))⁻¹ = absA D (Matrix.GeneralLinearGroup.det d) := by
   intro D n H hH nb hnb w hw c

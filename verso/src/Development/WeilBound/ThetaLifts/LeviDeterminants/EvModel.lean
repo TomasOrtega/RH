@@ -15,17 +15,17 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (ε : Fin n × Fin d ≃ κ₀ ⊕ Fin n₁ × Fin d₁)
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `exists_slice ε (0 : κ₀ → mixedEmbedding.mixedSpace F)`. It suffices to establish `h : _ ∧ _ ∧ _ ∧ T ≠ 0 ∧ _ from ⟨LinearMap.funLeft ℂ ℂ fun b => glue ε 0 b, ⟨h.1, h.2.1, h.2.2.1, T, fun v => LinearMap.funLeft ℂ ℂ fun b => glue ε 0 b, h.2.2.2.1, h.2.2.2.2⟩, T, hT, _, h.2.2.2.2⟩`. Use `⟨fun Φ hΦ => slice_mem_schA ε 0 hΦ, fun z Φ _ => ?_, fun u hu Φ _ => ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `b`. Simplify using `only [LinearMap.funLeft_apply, Darboux.rho, schr, hco, (hj z).1, (hj z).2, glue_dot, glue_add, zero_dotProduct, zero_add]`.
+Extract witnesses or component facts from the available result. Reduce the argument to an intermediate assertion. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `b`. Simplify using `only [LinearMap.funLeft_apply, Darboux.rho, schr, hco, (hI u hu).1, (hI u hu).2, glue_dot, glue_add, zero_dotProduct, map_zero, Prod.fst_zero, Prod.snd_zero, add_zero, dotProduct_zero, mul_zero, AddChar.map_zero_eq_one, one_mul]`. Use `⟨fun h => ?_, fun v => ⟨funext (hvac v), ?_⟩, fun f φ _ _ => ?_⟩` and prove the remaining obligations. Take `⟨f, hf⟩` from `exists_schwartz_ne (Fin n × Fin d → mixedEmbedding.mixedSpace F)`. Use `hT f 0` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[h, glue_zero]`. Conclude with `hf this.symm`. Use `le_antisymm ?_ fun φ hφ => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Conclude with `slice_mem_SB ε 0 hg`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : IsOpen (Set.univ.pi fun _ : κ₀ => (v.adicCompletionIntegers F : Set (Fv F v)))` using `isOpen_set_pi Set.finite_univ fun _ _ => Valued.isOpen_valuationSubring _`. Establish `h2 : IsCompact (Set.univ.pi fun _ : κ₀ => (v.adicCompletionIntegers F : Set (Fv F v)))` using `isCompact_univ_pi fun _ => PI.AdicCompletionValuation.isCompact_adicCompletionIntegers F v`. Use `⟨_, box_mem_SB ε h1 h2 hφ, funext fun b => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.funLeft_apply, box_glue, Set.indicator_of_mem (by exact fun _ _ => zero_mem _), Pi.one_apply, one_mul]`. Use function extensionality and compare the values at `b`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.funLeft_apply, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, hT]`. Rewrite using `[glue_map ε (evI F)]`. Use `congr 1`. Use `congr 2`. Use function extensionality and compare the values at `k`.
+Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F)`. Use `finprod_congr fun v => ?_` and prove the remaining obligations. Rewrite using `[glue_map ε (evFin F v)]`. Simplify using `only [Pi.zero_apply, map_zero]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_isEvS (B : Base F E) (Ma : Model σ X W) (M₁ : Model σ X₁ W₁)
     (p q : Matrix (Fin n) (Fin d) (AE F E) → κ₀ → AF F) (π : Matrix (Fin n) (Fin d) (AE F E) → Matrix (Fin n₁) (Fin d₁) (AE F E))
@@ -79,43 +79,37 @@ theorem exists_isEvS (B : Base F E) (Ma : Model σ X W) (M₁ : Model σ X₁ W�
         rfl
 
 /- English proof (translation)
-Set `ε : Fin n × Fin d ≃ (κ × Fin 2) ⊕ Fin n₁ × Fin d₁` to `Fintype.equivOfCardEq (by simp [hcard])`. Set `β` to `Module.finBasisOfFinrankEq F E hB.cm.2.2.1`. Set `βA` to `Algebra.TensorProduct.basis (AF F) β`. Set `Tr` to `Algebra.trace (AF F) (AE F E)`. Set `p : Matrix (Fin n) (Fin d) (AE F E) → κ × Fin 2 → AF F` to `fun z k => βA.repr (b z k.1) k.2`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `q : Matrix (Fin n) (Fin d) (AE F E) → κ × Fin 2 → AF F` to `fun z k => -Tr (βA k.2 * D z k.1)`. Establish `hpq : ∀ z z', p z ⬝ᵥ q z' = -Tr (b z ⬝ᵥ D z')` using `fun z z' => by`. Simplify using `only [dotProduct, Fintype.sum_prod_type, map_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [← βA.sum_repr (b z k), Finset.sum_mul, map_sum, ← Finset.sum_neg_distrib]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, map_smul, smul_eq_mul, ← mul_neg]`. Establish `hTr : ∀ z, Tr (cA σ z) = Tr z` using `GlobalTheory.VacCocycle.trace_conj (cA σ) (cA_cA hB)`. Set `Φ : Matrix (Fin n) (Fin d) (AE F E) →ₗ[AF F] (Fin n × Fin d → AF F) × (Fin n × Fin d → AF F)` to `{ toFun := fun z => (glue ε (p z) (M₁.co.e (π z)).1, glue ε (q z) (M₁.co.e (π z)).2) map_add' := fun z z' => by`. Rewrite using `[Prod.mk_add_mk, glue_add, glue_add, hπ.map_add, map_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `congr 2 <;> funext k <;> simp [p, q, hb.map_add, hD.map_add, mul_add, add_comm]`. Use the proof step `map_smul' := fun c z => by`. Rewrite using `[Prod.smul_mk, glue_smul, glue_smul, hπ.map_smul, map_smul]`. Apply the tactic sequence `congr 2 <;> funext k <;> simp [p, q, hb.map_smul, hD.map_smul] }`. Establish `hΦ : ∀ z z', symp (R` using `AF F) (cA σ) (-1) (incM F X.J) (incM F W.J) z z' = (Φ z).1 ⬝ᵥ (Φ z').2 - (Φ z').1 ⬝ᵥ (Φ z).2 := fun z z' => by`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h1` using `M₁.co.form (π z) (π z')`. Use `show Tr _ = glue ε _ _ ⬝ᵥ glue ε _ _ - glue ε _ _ ⬝ᵥ glue ε _ _`. Express the relevant statement in the definitionally equal form `Tr _ = _ at h1`. Rewrite using `[glue_dot, glue_dot, hpq, hpq, hH, mul_add, map_add, h1, neg_one_mul, map_neg, map_sub, hTr]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbij : Function.Bijective Φ`. Use `(bijective_of_symp (Φ ∘ₗ M.co.e.symm.toLinearMap) fun u w => by` as an intermediate fact. Establish `h1` using `M.co.form (M.co.e.symm u) (M.co.e.symm w)`. Rewrite `h1` using `[hΦ, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Conclude with `h1).comp M.co.e.bijective`.
+Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z`. Simplify using the standard rewrite rules. Set `co : Darboux (symp (R` to `AF F) (cA σ) (-1) (incM F X.J) (incM F W.J)) (Fin n × Fin d) := ⟨LinearEquiv.ofBijective Φ hbij, hΦ⟩`. Establish `hco : ∀ z, co.e z = (glue ε (p z) (M₁.co.e (π z)).1, glue ε (q z) (M₁.co.e (π z)).2)` using `fun z => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hr : ∀ x : Matrix (Fin n) (Fin d) E, ∃ y z : Fin n × Fin d → F, co.e (incM F x) = (fun i => algebraMap F (AF F) (y i), fun i => algebraMap F (AF F) (z i))` using `fun x => by`. Take `⟨⟨y, hy⟩, ⟨y', hy'⟩, x₁, hx₁⟩` from `hrat x`. Take `⟨u, w, huw⟩` from `hM₁.rat x₁`. Use `⟨glue ε (fun k => β.repr (y k.1) k.2) u, glue ε (fun k => -Algebra.trace F E (β k.2 * y' k.1)) w, ?_⟩` and prove the remaining obligations. Rewrite using `[hco, hx₁, huw, glue_map ε (algebraMap F (AF F)), glue_map ε (algebraMap F (AF F))]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `congr 2 <;> funext k`. Simplify using `only [p, hy] show βA.repr ((1 : AF F) ⊗ₜ[F] y k.1) k.2 = _`. Simplify using `[βA, Algebra.TensorProduct.basis_repr_tmul]`. Simplify using `only [q, hy']`. Rewrite using `[map_neg, ← GlobalTheory.VacIndic.trace_inclR, map_mul (inclR (F := F) (AF F)), Algebra.TensorProduct.basis_apply]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hδ : ∀ v, ∀ γ ∈ latAtV X W v, ∀ γ' ∈ latAtV X W v, ∀ θ : 𝓞 E, B.ψ (Tr (inclR (F` using `F) (AF F) (θ : E) * (b γ' ⬝ᵥ D γ))) = 1 := fun v γ hγ γ' hγ' θ => by`. Take `⟨-, δ, h0, h1, h2, h3⟩` from `hlat v γ hγ`. Use `GlobalTheory.LatVacArith.psi_symp_latAtV σ B X W r s r' s' hB hX hW v θ 1 (by rw [map_one]; exact one_mem _) γ' hγ' δ h0` as an intermediate fact. Rewrite `this` using `[one_mul, symp, hH, h1, h2, h3]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `this` using `[hTens]`. Establish `hv : ∀ v, ∃ φa, Model.IsVac (⟨co, fun _ => 0, 0, ∅⟩ : Model σ X W) B.ψ v φa ∧ ∀ c, φa (glue ε 0 c) = M₁.vac v c`. Introduce `v`. Use `exists_isVac ε hX hW _ M₁ hr p q π hco v (fun γ hγ => (hlat v γ hγ).1) (fun γ hγ γ' hγ' => ?_) (fun θ hθ γ hγ => ?_) (hM₁.vac v)` and prove the remaining obligations. Use `hδ v γ hγ γ' hγ' (-1)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[show ((-1 : 𝓞 E) : E) = -1 by simp, map_neg, map_one, neg_one_mul, map_neg]`. Rewrite using `[hpq, this]`. Rewrite using `[← one_mul (B.ψ _ * B.ψ _), ← hδ v γ hγ γ hγ θ]`. Simplify using `only [← AddChar.map_add_eq_mul]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : inclR (F` using `F) (AF F) (θ : E) + cA σ (inclR (F := F) (AF F) (θ : E)) = 1 := by`. Rewrite using `[GlobalTheory.VacIndic.cA_inclR, ← map_add, hθ, map_one]`. Establish `h2 : Tr (inclR (F` using `F) (AF F) (θ : E) * cA σ (b γ ⬝ᵥ D γ)) = Tr (b γ ⬝ᵥ D γ) - Tr (inclR (F := F) (AF F) (θ : E) * (b γ ⬝ᵥ D γ)) := by`. Rewrite using `[← hTr, map_mul, cA_cA hB, ← map_sub, eq_sub_of_add_eq' h1, sub_mul, one_mul]`. Establish `h3 : (⅟(2 : AF F)) * 2 = 1` using `invOf_mul_self _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression.
 
-Use `show _ * Tr _ = _ + (_ + _ * Tr _)`. Rewrite using `[hpq, hH, mul_add (inclR (F := F) (AF F) (θ : E)), mul_sub, map_add, map_sub, h2]`. Generalize the expression as in `(⅟(2 : AF F)) = t at h3 ⊢`. Take the linear combination `(Tr (inclR (F := F) (AF F) (θ : E) * (b γ ⬝ᵥ D γ))) * h3`. Use `choose φa hφa hφb using hv`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Set `S : ∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ` to `fun v => Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1`. Set `G : Pl F → Prop` to `fun v => Model.IsVac (⟨co, fun _ => 0, 0, ∅⟩ : Model σ X W) B.ψ v (S v) ∧ M₁.vac v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1`. Set `Ma : Model σ X W` to `⟨co, fun v => if G v then S v else φa v, M.μ, M.dom⟩`. Take `⟨e, he⟩` from `exists_isEvS ε B Ma M₁ p q π hco ι ι' I (fun z => ⟨funext fun k => by simp [p, (hj z).1], (hj z).2⟩) (fun u hu => ⟨funext fun k => by simp [p, (hI u hu).1], (hI u hu).2⟩) fun v c => by`. Distinguish the cases in `h : G v`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Use `show (if G v then S v else φa v) _ = _`. Rewrite using `[if_pos h, h.2]`. Use `Set.indicator_eq_indicator ⟨fun hx i => ?_, fun hx i => ?_⟩ rfl` and prove the remaining obligations. Simplify using `using hx (ε.symm (.inr i))`. Take `⟨i, rfl⟩` from `ε.symm.surjective i`.
-
-Break down `i with i | i` into its components or cases. Rewrite using `[glue_inl]`. Conclude with `zero_mem _`. Rewrite using `[glue_inr]`. Conclude with `hx i`.
-
-Use `show (if G v then S v else φa v) _ = _`. Rewrite using `[if_neg h, hφb]`. Use `⟨ε, Ma, e, p, q, ⟨hr, fun v => ?_, ?_, hM.haar, hM.dom⟩, hco, fun z h => funext fun k => by simp [p, h], fun z h => funext fun k => by simp [q, h], he⟩` and prove the remaining obligations. Use `show Model.IsVac _ _ _ (if G v then S v else φa v) split_ifs with h`. Conclude with `h.1`.
-
-Conclude with `hφa v`. Use `filter_upwards [GlobalTheory.VacIndic.eventually_isVac_indicator B hB X W r s r' s' hX hW co hr, hM₁.std] with v h1 h2`. Conclude with `if_pos ⟨h1, h2⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_modelS {B : Base F E} {r s r' s' : ℕ} (hB : B.IsGood σ) (hX : X.IsHerm σ B r s) (hW : W.IsSkew σ B r' s')
     {M : Model σ X W} (hM : M.IsGood B.ψ) {M₁ : Model σ X₁ W₁} (hM₁ : M₁.IsGood B.ψ) {κ : Type} [Fintype κ]

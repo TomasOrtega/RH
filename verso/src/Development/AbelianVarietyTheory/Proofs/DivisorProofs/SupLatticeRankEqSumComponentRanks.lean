@@ -14,11 +14,11 @@ open NumberField IsDedekindDomain MeasureTheory Module ReciprocityTheory.ChartRe
 set_option synthInstance.maxHeartbeats 200000
 
 /- English proof (translation)
-Establish `key : ∀ s : Finset ι, finrank R (⨆ i ∈ s, S i : Submodule R V) = ∑ i ∈ s, finrank R (S i)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Finset.iSup_insert, Finset.sum_insert ha, ← ih]`. Establish `hd : Disjoint (S a) (⨆ i ∈ s, S i)` using `hS.disjoint_biSup (y := (s : Set ι)) (by exact_mod_cast ha)`. Establish `h` using `Submodule.finrank_sup_add_finrank_inf_eq (S a) (⨆ i ∈ s, S i)`. Rewrite `h` using `[hd.eq_bot, finrank_bot, add_zero]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hu : (⨆ i ∈ (Finset.univ : Finset ι), S i) = ⨆ i, S i` using `iSup_congr fun i => iSup_pos (Finset.mem_univ i)`. Rewrite using `[← hu]`. Conclude with `key Finset.univ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_iSup_of_indep {R V ι : Type} [Field R] [AddCommGroup V] [Module R V] [FiniteDimensional R V]
     [Fintype ι] (S : ι → Submodule R V) (hS : iSupIndep S) :
@@ -42,7 +42,7 @@ variable {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.
   {c : Coeff l} {r : ℕ}
 
 /- English proof (translation)
-Establish `hset : (partLat U Z G : Set (cuspW Xo c U G)) = Submodule.inclusion (cuspOn_le U Z G) '' (latOn U Z G : Set (cuspOn U Z G))`. Simplify using `[partLat]`. Rewrite using `[hset, Submodule.span_image]`. Conclude with `(LinearEquiv.finrank_eq (Submodule.equivMapOfInjective _ (Submodule.inclusion_injective (cuspOn_le U Z G)) _))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rankOn_eq_finrank_span (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (Z : Comp Xo c) (G : WTZ D.host.E) :
     rankOn U Z G = finrank c.F (Submodule.span c.F (partLat U Z G : Set (cuspW Xo c U G))) := by
@@ -63,7 +63,7 @@ open NumberField IsDedekindDomain MeasureTheory Module ReciprocityTheory.ChartRe
 set_option synthInstance.maxHeartbeats 200000
 
 /- English proof (translation)
-Introduce `Z` and use `by rw [Submodule.disjoint_def] intro x hx hx' have hle : (⨆ (j) (_ : j ≠ Z), (cuspOn U j G).comap (cuspW Xo c U G).subtype) ≤ LinearMap.ker ((LinearMap.mulLeft c.F (idem Z)).comp (cuspW Xo c U G).subtype) := iSup₂_le fun j hj y hy => by rw [LinearMap.mem_ker, LinearMap.comp_apply …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cuspOn_comap_indep {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} {l : Level H}
     {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ} (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (G : WTZ D.host.E) :
@@ -85,15 +85,11 @@ theorem cuspOn_comap_indep {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Ge
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D H Dw l Xo c r U x V dict G hU hG`. Take `⟨-, -, -, hsup⟩` from `GlobalTheory.CuspSplit.splits D H Dw l Xo c r U V dict hU G`. Use `haveI := CompFin.finite_comp Xo c`. Use `haveI := Fintype.ofFinite (Comp Xo c)`. Take `⟨-, ⟨s, hs⟩, htop⟩` from `hG`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : FiniteDimensional c.F (cuspW Xo c U G) := by`. Use `Module.Finite.of_fg_top ⟨s, ?_⟩` and prove the remaining obligations. Rewrite using `[← htop, ← hs, Submodule.span_span_of_tower]`. Use `set S : Comp Xo c → Submodule c.F (cuspW Xo c U G) := fun Z => Submodule.span c.F (partLat U Z G : Set (cuspW Xo c U G)) with hSdef`. Establish `hspan : Submodule.span c.F (latW U G : Set (cuspW Xo c U G)) = ⨆ Z, S Z`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le, ← hsup]`. Introduce `y hy`. Establish `hle : (⨆ Z : Comp Xo c, partLat U Z G) ≤ (⨆ Z, S Z).restrictScalars (𝓞 c.F)` using `iSup_le fun Z z hz => (le_iSup S Z) (Submodule.subset_span hz)`. Conclude with `hle hy`.
-
-Conclude with `iSup_le fun Z => Submodule.span_mono (by rw [← hsup]; exact le_iSup (fun Z => partLat U Z G) Z)`. Establish `hind : iSupIndep S` using `(cuspOn_comap_indep U G).mono fun Z => Submodule.span_le.2 fun y hy => Submodule.mem_comap.2 (GlobalTheory.CuspSplit.coe_mem_of_mem_partLat hy)`. Rewrite using `[finsum_eq_sum_of_fintype]`. Use `show finrank c.F (Submodule.span c.F (latW U G : Set (cuspW Xo c U G))) = _`. Rewrite using `[hspan, finrank_iSup_of_indep S hind]`.
-
-Conclude with `Finset.sum_congr rfl fun Z _ => (rankOn_eq_finrank_span U Z G).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rankW_eq_finsum_rankOn : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H)
     (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (x : ℝ)

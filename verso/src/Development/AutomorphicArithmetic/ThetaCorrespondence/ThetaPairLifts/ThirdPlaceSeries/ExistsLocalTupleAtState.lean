@@ -27,21 +27,19 @@ variable {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {K : Ctx} {B : Base} {f :
   (x : St P)
 end State
 /- English proof (translation)
-Introduce `_ hL`. Establish `s1 : Step KPx (fun _ _ _ _ => True) _` using `Step.of_evLgG (evLgG_of_evLg GlobalTheory.Mem.R3.OkVals.large_coefficientField_contains_twist_values)`. Use `s1.trans (Step.of_all ?_)` and prove the remaining obligations. Introduce `K B f T _ _ _ hOk w _ P x l ch tp _ hpsi _ _ side v hv hok`. Establish `hV : ValsIn w.I` using `(hOk w.px w.I P.hX w.ok w.C_eq w.xi_range).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `clear hOk s1`. Establish `hψ : IsPsi ((Dof x).ntw.l (ch.twI v)) (ch.Q v) (tp.psi v)`. Establish `h` using `tp.psi_is v hv`. Rewrite `h` using `[← ch.twI_l v]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : tp.psi v = T.psi v` using `congrFun hpsi v`. Establish `ht` using `xi_mu x ch hv he`. Establish `hr` using `fun PP => ram_mul x.m.z.R.C (ch.twI v) hψ PP`. Rewrite `hr` using `[← ht]`. Use `⟨fun PP hP => ?_, fun j ι hι => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨-, h1, -, h2⟩` from `(T.psi_tw v).2.2.2 PP fun hu => (hψ.ram PP).1 (he ▸ hu :) hP`. Conclude with `splitK_of_prime (D := Dof x) PP h1 fun hd => h2 (Or.inl hd)`. Rewrite using `[tupT_muTw x hv]`. Use `isTupOf x.m.z.lev.is l.b.ser.ex.good l.b.ser.ex.pin _ j _ hψ ht (fun PP hP => ?_) _ ?_ rfl` and prove the remaining obligations. Establish `hs : IsSplitPl (Dof x).host PP`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Break down `(hr PP).1 ((x.m.z.lev.is.Q_ram _ PP).2 (Or.inl hP)) with h | h` into its components or cases. Take `⟨q, -, hq, e⟩` from `isDelta_delAt x.m.z.R.C (ch.twI v)`. Establish `h'` using `(hq PP).1 h`. Apply the tactic sequence `refine l.a.elem.split PP (e.imp (fun e => ?_) fun e => ?_) <;> subst e <;> exact h'`. Conclude with `hψ.split PP h`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(l.b.ser.ch _ PP hs).2 ?_` and prove the remaining obligations. Take `⟨u, -, e⟩` from `(Formalism.L2.Col.mem_QE _ _ _).1 ((x.m.z.lev.Q _).le hP)`. Conclude with `l.sel.ge ⟨u, e⟩`. Use `chrEq_twVia side.psi hv hok l.b.ser.ex.good (fun PP h1 h2 => ?_) ι hι` and prove the remaining obligations. Establish `hval : ValLL0 (Dof x) x.m.z.R.C` using `by rw [x.m.z.lev.C]; exact l.a.val`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hy⟩` from `val_delAt hval _ PP h2`. Establish `hx` using `x.m.z.lev.xiH (x.m.z.R.mu ((Dof x).plEq v))`. Take `⟨z, hz⟩` from `hV.1 _ PP (hx ▸ not_not.1 fun hu => ((hr PP).1 hu).elim h2 h1 :)`. Establish `hz' : (Dof x).what₂.embLL z = (((x.m.z.R.C.delAt ((Dof x).ntw.l (ch.twI v)) * tp.psi v).val PP : ℂˣ) : ℂ)` using `hz.trans (congrArg (fun χ : HChar (Dof x).host.E => ((χ.val PP : ℂˣ) : ℂ)) (hx.symm.trans ht))`. Use `⟨y⁻¹ * (show (Dof x).what₂.LL from z), ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[map_mul, map_inv₀, hy]`. Use `(congrArg _ hz').trans ?_` and prove the remaining obligations. Rewrite using `[HChar.val_mul, Units.val_mul, inv_mul_cancel_left₀ (Units.ne_zero _)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem clsQ_at_state_of_choiceSide : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, AllSt fun _ _ _ T w P x => ∀ (l : _root_.GlobalTheory.HeightCounting.Up.ThirdIntermediateLevel hL x) (ch : NChoice (Dof x)) (tp : TupTied (Dof x) (cfOf x) ch), tp.xi = w.I.xi → tp.psi = T.psi → ch.Q = QOf P → (∀ v, TwistedAt (Dof x) v → ch.k' v = T.k v) → ChoiceSide (Dof x) (cfOf x) l.mt.M l.b.Bs.exp ch tp → ∀ v, TwistedAt (Dof x) v → IntegralHeckeForms.TwOK (ch.twI v) (ch.k' v) (ch.Q v) (GlobalTheory.PlaceRead.chr ch v) →
   IntegralHeckeForms.ClsQ (D := Dof x) (ch.Q v) ∧ ∀ (j : Fin (Dof x).R.m) (ι : GlobalTheory.PlaceRead.KE ch v →+* ℂ), (∀ y, ι (ch.embW v y) = (Dof x).what₂.embLL y) →
@@ -95,7 +93,7 @@ set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 1600000
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.PlaceRead.TupAt.clsQ_at_state_of_choiceSide | exact _root_.GlobalTheory.PlaceRead.TupAt.clsQ_at_state_of_choiceSide | (intros; apply _root_.GlobalTheory.PlaceRead.TupAt.clsQ_at_state_of_choiceSide <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.clsQ_of_choiceSide_twOK_at_state : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, AllSt fun _ _ _ T w P x => ∀ (l : _root_.GlobalTheory.HeightCounting.Up.ThirdIntermediateLevel hL x) (ch : NChoice (Dof x)) (tp : TupTied (Dof x) (cfOf x) ch), tp.xi = w.I.xi → tp.psi = T.psi → ch.Q = QOf P → (∀ v, TwistedAt (Dof x) v → ch.k' v = T.k v) → ChoiceSide (Dof x) (cfOf x) l.mt.M l.b.Bs.exp ch tp → ∀ v, TwistedAt (Dof x) v → IntegralHeckeForms.TwOK (ch.twI v) (ch.k' v) (ch.Q v) (GlobalTheory.PlaceRead.chr ch v) →
   IntegralHeckeForms.ClsQ (D := Dof x) (ch.Q v) ∧ ∀ (j : Fin (Dof x).R.m) (ι : GlobalTheory.PlaceRead.KE ch v →+* ℂ), (∀ y, ι (ch.embW v y) = (Dof x).what₂.embLL y) →

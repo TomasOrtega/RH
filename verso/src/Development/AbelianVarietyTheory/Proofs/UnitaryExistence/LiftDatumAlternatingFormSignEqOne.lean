@@ -16,9 +16,9 @@ open GlobalTheory.Member
 namespace GlobalTheory.Member
 
 /- English proof (translation)
-Establish `h1` using `xi0_embedding_im_pos D D.host.φ₀ ((mem_cm_type_iff D _).2 rfl)`. Establish `hφ : D.host.φ₀ D.host.sqrtMinusD = Complex.I * (Real.sqrt D.host.d : ℂ)` using `D.host.φ₀_mem`. Establish `hpos : 0 < (D.host.φ₀ D.host.sqrtMinusD).im`. Rewrite using `[hφ]`. Establish `hd : (0 : ℝ) < D.host.d` using `by exact_mod_cast d_pos D`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using hd`. Rewrite `h1` using `[if_pos hpos, Int.cast_one, _root_.one_mul]`. Rewrite using `[map_neg, Complex.neg_im]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem neg_baseElement_im_neg_baseEmbedding (D : D7) : (D.host.φ₀ (-D.host.xi0)).im < 0 := by
   have h1 := xi0_embedding_im_pos D D.host.φ₀ ((mem_cm_type_iff D _).2 rfl)
@@ -32,21 +32,21 @@ theorem neg_baseElement_im_neg_baseEmbedding (D : D7) : (D.host.φ₀ (-D.host.x
   linarith
 
 /- English proof (translation)
-Introduce `D H Dw j hj hrt hrt0 hp _ φ ε hinj hspan0 hEF`. Establish `hr` using `D.sp.W_rank j hj.1 hj.2`. Set `f` to `((D.sp.W j).frame.equivFun.restrictScalars (𝓞 D.host.E)).toLinearMap`. Establish `hio : Function.Injective (f ∘ₗ φ)` using `(D.sp.W j).frame.equivFun.injective.comp hinj`. Establish `hdet` using `(GlobalTheory.RecDict.posIndex_gmW (D.sp.W j) (D.sp.W_sig j) hr D.host.φ₀).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hherm` using `GlobalTheory.RecDict.cc_gmW (D.sp.W j) hr`. Establish `hspan : Submodule.span D.host.E (Set.range (f ∘ₗ φ)) = ⊤`. Establish `: Set.range (f ∘ₗ φ) = (D.sp.W j).frame.equivFun.toLinearMap '' Set.range φ`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[this, Submodule.span_image, hspan0, Submodule.map_top, LinearEquiv.range]`. Break down `Int.units_eq_one_or ε with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Substitute using the available equality. Introduce a local definition for the expression.
 
-Set `c : (Fin (D.sp.W j).rank → D.host.E) ≃ₗ[D.host.E] (Fin D.R.r → D.host.E)` to `LinearEquiv.funCongrLeft D.host.E D.host.E (finCongr hr.symm)`. Set `ψ : Dw.La →ₗ[𝓞 D.host.E] (Fin D.R.r → D.host.E)` to `(c.restrictScalars (𝓞 D.host.E)).toLinearMap ∘ₗ f ∘ₗ φ`. Establish `hψ : ∀ x, ψ x = (D.sp.W j).frame.equivFun (φ x) ∘ Fin.cast hr.symm` using `fun _ => rfl`. Establish `hτ : D.host.φ₀ (H.rt : D.host.E) = H.rt0` using `by rw [hrt, hrt0]`. Establish `hξ : cc (-D.host.xi0) = -(-D.host.xi0)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cc, map_neg, conj_xi0_alt]`. Establish `hsp : Submodule.span D.host.E (Set.range ψ) = ⊤`. Establish `: Set.range ψ = c.toLinearMap '' Set.range (f ∘ₗ φ)`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, Submodule.span_image, hspan, Submodule.map_top, LinearEquiv.range]`. Take `⟨P, hP, hPg⟩` from `(GlobalTheory.HermSign.signature_of_model D.host.E H Dw D.R.r (-D.host.xi0) _ ψ hξ ⟨c.injective.comp hio, hsp, hherm, hdet, fun x y => by`. Rewrite using `[hEF, hψ, hψ, neg_mul, map_neg, GlobalTheory.RecDict.trace_herm_gmW]`. Use the proof step `simp⟩ D.host.φ₀ hτ).2 (neg_baseElement_im_neg_baseEmbedding D)`. Establish `hm` using `D.R.m_add_three_le_k`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hj.1`. Establish `h2` using `hj.2`. Establish `hle : Dw.p ≤ D.R.r`. Rewrite using `[hp]`. Simplify using `only [Ranks.sigW, Ranks.r]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `h3` using `(GlobalTheory.Inertia.gram_eq_sgn_iff D.host.φ₀ hherm hdet _).1 ⟨hle, P, hP, hPg⟩`. Rewrite `h3` using `[(GlobalTheory.RecDict.posIndex_gmW (D.sp.W j) (D.sp.W_sig j) hr D.host.φ₀).1, D.sp.W_sigval j hj.1 hj.2, hp]`. Simplify using `only [Ranks.sigW] at h3`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem sign_eq_one : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (j : ℕ), InR D j → (H.rt : D.host.E) = D.host.sqrtMinusD → H.rt0 = D.host.φ₀ D.host.sqrtMinusD → Dw.p = (D.R.sigW j).1 → Dw.q = (D.R.sigW j).2 → ∀ (φ : Dw.La →ₗ[𝓞 D.host.E] (D.sp.W j).V) (ε : ℤˣ), Function.Injective φ → Submodule.span D.host.E (Set.range φ) = ⊤ → (∀ x y, ((Dw.EF x y : ℤ) : ℚ) = ((ε : ℤ) : ℚ) * Algebra.trace ℚ D.host.E (D.host.xi0 * (D.sp.W j).hT (φ x) (φ y))) → ε = 1 := by
   intro D H Dw j hj hrt hrt0 hp _ φ ε hinj hspan0 hEF

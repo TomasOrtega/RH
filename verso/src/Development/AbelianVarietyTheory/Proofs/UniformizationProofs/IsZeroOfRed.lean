@@ -27,9 +27,9 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegPre R}
   {T : Over (Spec (CommRingCat.of R))}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h e Z r a ha`. Take `⟨h₁, h₂⟩` from `h e _ r.left ((Over.map (thick R I e)).map a).left (congrArg (fun q => q.left) ha)`. Conclude with `⟨Over.OverMorphism.ext h₁, h₂⟩`. Introduce `h e Z r y hy`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `w : r ≫ T.hom = (y ≫ (thickObj R I e G).hom) ≫ thick R I e`. Rewrite using `[← Over.w x, ← Category.assoc, ← hy, Category.assoc, Over.w (fstG I e G), Category.assoc]`. Both sides reduce to the same expression. Take `⟨h₁, h₂⟩` from `h e (Over.mk (y ≫ (thickObj R I e G).hom)) (Over.homMk r w) (Over.homMk y rfl) (Over.OverMorphism.ext hy)`. Conclude with `⟨congrArg (fun q => q.left) h₁, h₂⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem red_iff_over (x : T ⟶ G) (g : GtPt D T) :
     U.Red x g ↔ ∀ (e : ℕ) (Z : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))))
@@ -49,7 +49,7 @@ theorem red_iff_over (x : T ⟶ G) (g : GtPt D T) :
     exact ⟨congrArg (fun q => q.left) h₁, h₂⟩
 
 /- English proof (translation)
-Use `map_mul_fstG (1 : Z ⟶ thickObj R I e G) 1` as an intermediate fact. Rewrite `this` using `[_root_.mul_one]`. Conclude with `mul_eq_left.1 this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_one_fstG {e : ℕ} {Z : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))} :
     (Over.map (thick R I e)).map (1 : Z ⟶ thickObj R I e G) ≫ fstG I e G = 1 := by
@@ -58,9 +58,9 @@ theorem map_one_fstG {e : ℕ} {Z : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1
   exact mul_eq_left.1 this.symm
 
 /- English proof (translation)
-Rewrite using `[red_iff_over]`. Introduce `e Z r a ha`. Take `rfl : a = 1` from `eq_of_map_fstG (by rw [ha, map_one_fstG, MonObj.comp_one])`. Use `⟨by rw [im_one, h.1]; exact (MonObj.comp_one r).symm, fun χ z J hJ => ?_⟩` and prove the remaining obligations. Establish `t₁` using `val_unit (U.gt e) χ (Z := Z) (z := z) hJ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `t₁.trans ((val_corr hJ (h.2 χ) r.left).trans (val_one _)).symm`.
+A detailed English derivation is pending.
 -/
 theorem red_one {g : GtPt D T} (h : g.IsZero) : U.Red 1 g := by
   rw [red_iff_over]
@@ -73,11 +73,11 @@ theorem red_one {g : GtPt D T} (h : g.IsZero) : U.Red 1 g := by
 variable {U} in
 
 /- English proof (translation)
-Rewrite `hx`, `hx'`, the goal using `[red_iff_over]`. Introduce `e Z r y hy`. Take `⟨a, ha⟩` from `exists_lift_fstG (r ≫ x)`. Take `⟨b, hb⟩` from `exists_lift_fstG (r ≫ x')`. Take `rfl : y = a * b` from `eq_of_map_fstG (by rw [hy, map_mul_fstG, ha, hb, MonObj.comp_mul])`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a₁, a₂⟩` from `hx e Z r a ha`. Take `⟨b₁, b₂⟩` from `hx' e Z r b hb`. Use `⟨by rw [im_mul, a₁, b₁, h.1]; exact (MonObj.comp_mul _ _ _).symm, fun χ z J hJ => ?_⟩` and prove the remaining obligations. Establish `e₁ : val ((U.gt e).t χ) ((Over.map (thick R I e)).map (a * b)).left z J * th D z J (cP D _ χ) (im (U.gt e) a) (im (U.gt e) b) = val ((U.gt e).t χ) ((Over.map (thick R I e)).map a).left z J * val ((U.gt e).t χ) ((Over.map (thick R I e)).map b).left z J` using `val_t_mul_points (U.gt e) hG χ a b z J hJ`. Establish `e₂ : val (g''.s χ) r.left z J * th D z J (r ≫ cP D T χ) (r ≫ g.b) (r ≫ g'.b) = val (g.s χ) r.left z J * val (g'.s χ) r.left z J` using `((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl (val_cub D.cub r hJ _ _ _))).symm.trans ((val_corr hJ (h.2 χ) r.left).trans (val_mul hJ _ _ _))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e₁` using `[a₁, b₁, a₂ χ z J hJ, b₂ χ z J hJ]`. Rewrite `e₂` using `[comp_cP]`. Conclude with `mul_right_cancel (e₁.trans e₂.symm)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_mul (hG : GlobalFnsSt) {g g' g'' : GtPt D T} {x x' : T ⟶ G} (hx : U.Red x g)
     (hx' : U.Red x' g') (h : g.IsAdd g' g'') : U.Red (x * x') g'' := by
@@ -124,7 +124,7 @@ variable [IsLocalRing S] [IsHausdorff (I.map φ) S]
 omit [IsDomain R] in
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (hom_ext_of_isHausdorff (I.map φ) fun e => congrArg (·.left) (h e))`.
+A detailed English derivation is pending.
 -/
 theorem pt_ext {B : Over (Spec (CommRingCat.of R))} {b b' : Over.mk (spMap φ) ⟶ B}
     (h : ∀ e, levι I φ e ≫ b = levι I φ e ≫ b') : b = b' :=
@@ -133,13 +133,13 @@ theorem pt_ext {B : Over (Spec (CommRingCat.of R))} {b b' : Over.mk (spMap φ) �
 variable [IsNoetherianRing S]
 
 /- English proof (translation)
-Rewrite `h`, `h'`, `h''` using `[red_iff_over]`. Use `choose a ha using fun e => exists_lift_fstG (levι I φ e ≫ x)`. Use `choose a' ha' using fun e => exists_lift_fstG (levι I φ e ≫ x')`. Establish `k` using `fun e => h e _ _ _ (ha e)`. Establish `k'` using `fun e => h' e _ _ _ (ha' e)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k''` using `fun e => h'' e _ (levι I φ e) (a e * a' e) (by rw [map_mul_fstG, ha, ha', MonObj.comp_mul])`. Establish `hb : g''.b = g.b * g'.b` using `pt_ext (I := I) fun e => by`. Rewrite using `[MonObj.comp_mul, ← (k e).1, ← (k' e).1, ← (k'' e).1, im_mul]`. Use `⟨hb, fun χ => CoordAdd.corr_of_thick (ne_top_of_isHausdorff (I.map φ)) D.P.isLB (fun U _ h => ?_) (DVR.mulGen_isGen _ _ _ _ _ _ _ (g''.isGen χ) (DVR.pullGen_isGen _ _ _ _ D.cub.isGen _)) (DVR.mulGen_isGen _ _ _ _ _ _ _ (g.isGen χ) (g'.isGen χ)) fun e z J hJ => ?_⟩` and prove the remaining obligations. Use `(Fintype.prod_sum_type _).trans (Eq.trans ?_ (Fintype.prod_sum_type _).symm)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(congrArg₂ (· * ·) (CoordAdd.prod_gtφT g''.b χ h) (prod_cub (DegPre.cT D _ χ) g.b g'.b h)).trans (Eq.trans ?_ (congrArg₂ (· * ·) (CoordAdd.prod_gtφT g.b χ h) (CoordAdd.prod_gtφT g'.b χ h)).symm)` and prove the remaining obligations. Rewrite using `[hb, _root_.mul_assoc (DegPre.cT D _ χ)]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e₁ : val ((U.gt e).t χ) ((Over.map (thick R I e)).map (a e * a' e)).left z J * th D (T` using `(Over.map (thick R I e)).obj (lev I φ e)) z J (cP D _ χ) (im (U.gt e) (a e)) (im (U.gt e) (a' e)) = val ((U.gt e).t χ) ((Over.map (thick R I e)).map (a e)).left z J * val ((U.gt e).t χ) ((Over.map (thick R I e)).map (a' e)).left z J := val_t_mul_points (U.gt e) hG χ (a e) (a' e) …`. Rewrite `e₁` using `[(k e).1, (k' e).1, (k e).2 χ z J hJ, (k' e).2 χ z J hJ, (k'' e).2 χ z J hJ, ← comp_cP D (levι I φ e)]`. Conclude with `((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl (val_cub D.cub (levι I φ e) hJ _ _ _))).trans (e₁.trans (val_mul hJ _ _ _).symm)`.
+A detailed English derivation is pending.
 -/
 theorem isAdd_of_red (hG : GlobalFnsSt) {x x' : Over.mk (spMap φ) ⟶ G} {g g' g'' : GtPt D (Over.mk (spMap φ))}
     (h : U.Red x g) (h' : U.Red x' g') (h'' : U.Red (x * x') g'') : GtPt.IsAdd g g' g'' := by
@@ -172,9 +172,9 @@ theorem isAdd_of_red (hG : GlobalFnsSt) {x x' : Over.mk (spMap φ) ⟶ G} {g g' 
       (e₁.trans (val_mul hJ _ _ _).symm)
 
 /- English proof (translation)
-Rewrite `h` using `[red_iff_over]`. Establish `k` using `fun e => h e _ (levι I φ e) 1 (by rw [map_one_fstG, MonObj.comp_one])`. Establish `hb : g.b = 1` using `pt_ext (I := I) fun e => by rw [MonObj.comp_one, ← (k e).1, im_one]`. Use `⟨hb, fun χ => CoordAdd.corr_of_thick (ne_top_of_isHausdorff (I.map φ)) D.P.isLB (fun U _ h => ?_) (g.isGen χ) (fun i j => (map_one _).trans ((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _)).symm) fun e z J hJ => ?_⟩` and prove the remaining obligations. Use `(CoordAdd.prod_gtφT g.b χ h).trans (Eq.trans ?_ (Fintype.prod_empty _).symm)` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hb, _root_.mul_one, inv_mul_cancel, _root_.one_mul, mul_inv_cancel]`. Conclude with `((k e).2 χ z J hJ).symm.trans ((val_unit (U.gt e) χ (Z := lev I φ e) (z := z) hJ).trans (val_one _).symm)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isZero_of_red {g : GtPt D (Over.mk (spMap φ))} (h : U.Red 1 g) : g.IsZero := by
   rw [red_iff_over] at h
@@ -191,9 +191,9 @@ theorem isZero_of_red {g : GtPt D (Over.mk (spMap φ))} (h : U.Red 1 g) : g.IsZe
 end Complete
 
 /- English proof (translation)
-Introduce `hG V _ _ _ hV D A G _ _ U W _ _ _ hW x x' x'' g g' g'' h h' h''`. Use `hV.1` as an intermediate fact. Use `hW.1` as an intermediate fact. Use `hW.2.2.2.2` as an intermediate fact. Establish `: IsNoetherianRing W` using `IsNoetherianRing.of_finite V W`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨⟨fun e => ?_, fun e => ?_⟩, ⟨fun e => ?_, fun e => ?_⟩⟩` and prove the remaining obligations. Conclude with `isAdd_of_red (φ := algebraMap V W) hG h h' (e ▸ h'')`. Conclude with `RedOnto.red_unique (φ := algebraMap V W) h'' (red_mul hG h h' e)`. Conclude with `isZero_of_red (φ := algebraMap V W) (e ▸ h)`. Conclude with `RedOnto.red_unique (φ := algebraMap V W) h (red_one U e)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem main : GlobalFnsSt → (AllPre fun {V} _ _ _ {D} {_} {G} _ _ U => ∀ (W : Type) [CommRing W] [IsLocalRing W] [Algebra V W], FinExt V W → ∀ (x x' x'' : TA V W ⟶ G) (g g' g'' : GtPt D (TA V W)), U.Red x g → U.Red x' g' → U.Red x'' g'' → (x'' = x * x' ↔ GtPt.IsAdd g g' g'') ∧ (x = 1 ↔ g.IsZero)) := by
   intro hG V _ _ _ hV D A G _ _ U W _ _ _ hW x x' x'' g g' g'' h h' h''

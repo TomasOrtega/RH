@@ -26,11 +26,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Set `xF : Sp ((Xo.XF c).residueField x) ⟶ Xo.XF c` to `(Xo.XF c).fromSpecResidueField x`. Use `letI : Algebra c.F ((Xo.XF c).residueField x) := (Spec.preimage (xF ≫ pullback.snd _ _)).hom.toAlgebra`. Establish `hsnd : xF ≫ pullback.snd _ _ = spMap (algebraMap c.F ((Xo.XF c).residueField x))` using `(Spec.map_preimage _).symm`. Take `⟨P, hP⟩` from `GlobalTheory.FlagTan.exists_frPt (S := (Xo.XF c).residueField x) (Xo := Xo) (c := c) (xF ≫ pullback.fst _ _) (by`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hsnd, sOf, ← Spec.map_comp]`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `rfl)`. Establish `hx : xF = GlobalTheory.FlagMod.frX P` using `GlobalTheory.FlagMod.eq_frX P hP.symm hsnd`. Set `pt : Sp ((Xo.XF c).residueField x)` to `IsLocalRing.closedPoint _`. Use `⟨X.ptY P pt, ?_⟩` and prove the remaining obligations. Establish `e1 : X.π (X.ptY P pt) = (X.ptY P ≫ X.π) pt` using `(Scheme.Hom.comp_apply _ _ _).symm`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, (X.lies_ptY P).1, ← hx, Scheme.Hom.comp_apply]`. Conclude with `congrArg Y.j (Scheme.fromSpecResidueField_apply x _)`.
+A detailed English derivation is pending.
 -/
 theorem j_mem_range_π {Y : Model Xo c (RingHom.id c.F)} (X : FlagCover Y) (x : Xo.XF c) :
     Y.j x ∈ Set.range X.π := by
@@ -49,7 +49,7 @@ theorem j_mem_range_π {Y : Model Xo c (RingHom.id c.F)} (X : FlagCover Y) (x : 
   exact congrArg Y.j (Scheme.fromSpecResidueField_apply x _)
 
 /- English proof (translation)
-Use `X.proper` as an intermediate fact. Establish `hc : IsClosed (Set.range X.π)` using `X.π.isClosedMap.isClosed_range`. Establish `hd : closure (Set.range Y.j) ⊆ Set.range X.π` using `closure_minimal (by rintro _ ⟨x, rfl⟩; exact j_mem_range_π X x) hc`. Conclude with `fun y => hd (LogKS.dense_interior Y y)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem surjective_π {Y : Model Xo c (RingHom.id c.F)} (X : FlagCover Y) : Function.Surjective X.π := by
   have := X.proper
@@ -59,11 +59,11 @@ theorem surjective_π {Y : Model Xo c (RingHom.id c.F)} (X : FlagCover Y) : Func
   exact fun y => hd (LogKS.dense_interior Y y)
 
 /- English proof (translation)
-Introduce `y`. Take `⟨z, hz⟩` from `surjective_π X ((barComp Y Z).ι y)`. Establish `hzU : z ∈ X.π ⁻¹ᵁ barComp Y Z` using `by show X.π z ∈ barComp Y Z`. Establish `: (barComp Y Z).ι y ∈ Set.range (barComp Y Z).ι` using `⟨y, rfl⟩`. Rewrite `this` using `[Scheme.Opens.range_ι, ← hz]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨z', hz'⟩ : z ∈ Set.range (inc₀ X Z)` from `by rwa [Scheme.Opens.range_ι]`. Use `⟨z', (barComp Y Z).ι.isOpenEmbedding.injective ?_⟩` and prove the remaining obligations. Establish `e1` using `Scheme.Hom.comp_apply (π₀ X Z) (barComp Y Z).ι z'`. Establish `e2` using `Scheme.Hom.comp_apply (inc₀ X Z) X.π z'`. Rewrite `e1` using `[morphismRestrict_ι]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← e1, e2, hz', hz]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem surjective_π₀ {Y : Model Xo c (RingHom.id c.F)} (X : FlagCover Y) (Z : Comp Xo c) :
     Function.Surjective (π₀ X Z) := by
@@ -81,17 +81,17 @@ theorem surjective_π₀ {Y : Model Xo c (RingHom.id c.F)} (X : FlagCover Y) (Z 
   rw [← e1, e2, hz', hz]
 
 /- English proof (translation)
-Establish `hsm` using `GlobalTheory.VarFlag.smooth_gen TF.smooth`. Take `⟨B, j, hB, hcov⟩` from `GlobalTheory.T.exists_varieties_components_smooth_genericFibre E H Dw l Xo c c.F (RingHom.id c.F) TF.Y c.F (RingEquiv.refl _) hF hsm`. Establish `hJ : ∀ w : gen TF.Y, genι TF.Y w ∈ barComp TF.Y Z ↔ w ∈ Set.range (j Z)` using `GlobalTheory.VarFlag.barComp_iff Z B j (fun i => (hB i).1) (fun i => (hB i).2.2.2) hcov`. Use `(hB Z).1` as an intermediate fact. Establish `hr : Set.range (j Z ≫ genι TF.Y) ⊆ Set.range (barComp TF.Y Z).ι`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Scheme.Opens.range_ι]`. Introduce and unpack `_ ⟨b, rfl⟩`. Conclude with `(hJ _).2 ⟨b, rfl⟩`. Set `φ` to `IsOpenImmersion.lift (barComp TF.Y Z).ι (j Z ≫ genι TF.Y) hr`. Establish `hφ : φ ≫ (barComp TF.Y Z).ι = j Z ≫ genι TF.Y` using `IsOpenImmersion.lift_fac _ _ _`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsOpenImmersion (φ ≫ (barComp TF.Y Z).ι)` using `by rw [hφ]; infer_instance`. Establish `: IsOpenImmersion φ` using `IsOpenImmersion.of_comp φ (barComp TF.Y Z).ι`. Establish `hsurj : Function.Surjective φ`. Introduce `y`. Take `⟨w, hw⟩ : ∃ w, genι TF.Y w = (barComp TF.Y Z).ι y` from `⟨inv (genι TF.Y) ((barComp TF.Y Z).ι y), by rw [← Scheme.Hom.comp_apply, IsIso.inv_hom_id]; rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hm : genι TF.Y w ∈ barComp TF.Y Z`. Establish `: (barComp TF.Y Z).ι y ∈ Set.range (barComp TF.Y Z).ι` using `⟨y, rfl⟩`. Rewrite `this` using `[Scheme.Opens.range_ι, ← hw]`. Then use the resulting hypothesis. Take `⟨b, rfl⟩` from `(hJ w).1 hm`. Use `⟨b, (barComp TF.Y Z).ι.isOpenEmbedding.injective ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Scheme.Hom.comp_apply, hφ, Scheme.Hom.comp_apply, hw]`. Establish `hiso : IsIso φ` using `(isIso_iff_isOpenImmersion_and_surjective φ).2 ⟨inferInstance, ⟨hsurj⟩⟩`. Establish `hspid : spMap (RingEquiv.refl c.F).toRingHom = 𝟙 _` using `Spec.map_id _`. Use `⟨B Z, φ, hiso, ?_, (hB Z).2.1⟩` and prove the remaining obligations. Establish `h3` using `(hB Z).2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[hspid, Category.comp_id]`. Rewrite using `[← h3, GlobalTheory.VarFlag.genStr_eq, s₀, ← Category.assoc, hφ, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_var (TF : TorFlag Xo c) (Z : Comp Xo c) (hF : FnAlgClosed Xo c) :
     ∃ (B : GlobalTheory.ProjVar.Var c.F) (φ : B.X ⟶ X₀ TF.Y Z), IsIso φ ∧ φ ≫ s₀ TF.Y Z = B.str ∧ B.dim = Dw.dim := by
@@ -126,19 +126,15 @@ theorem exists_var (TF : TorFlag Xo c) (Z : Comp Xo c) (hF : FnAlgClosed Xo c) :
   rw [← h3, GlobalTheory.VarFlag.genStr_eq, s₀, ← Category.assoc, hφ, Category.assoc]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c TF Z hF`. Take `⟨B, φ, hφ, hs, hd⟩` from `exists_var TF Z hF`. Establish `hs' : s₀ TF.Y Z = inv φ ≫ B.str` using `by rw [← hs, IsIso.inv_hom_id_assoc]`. Establish `: Nonempty (X₀ TF.Y Z)` using `⟨φ (genericPoint B.X)⟩`. Establish `hint : IsIntegral (X₀ TF.Y Z)` using `isIntegral_of_isOpenImmersion (inv φ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hint, ?_, ?_, ?_, ⟨surjective_π₀ TF.X Z⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hs', ← hd]`. Conclude with `GlobalTheory.VarFlag.smooth_iso _ _ B.smooth`. Take `⟨N, i, hi, hs2⟩` from `B.isProjOver`. Conclude with `⟨N, inv φ ≫ i, inferInstance, by rw [Category.assoc, hs2, hs']⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs']`. Conclude with `MorphismProperty.of_isPullback (P := @GeometricallyConnected) (IsPullback.of_horiz_isIso ⟨by simp⟩ : IsPullback (inv φ) (inv φ ≫ B.str) B.str (𝟙 _)) inferInstance`. Use `haveI : GlobalTheory.IsNormalScheme TF.Y.X := GlobalTheory.IsNormalScheme.of_pred TF.Y.normal`. Conclude with `GlobalTheory.IsNormalScheme.of_isOpenImmersion (i₀ TF.Y Z ≫ TF.Y.j)`. Introduce `v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsOpenImmersion (j₀ TF.Y Z ≫ (barComp TF.Y Z).ι)` using `by rw [j₀_ι]; infer_instance`. Establish `: IsOpenImmersion (j₀ TF.Y Z)` using `IsOpenImmersion.of_comp _ (barComp TF.Y Z).ι`. Establish `hgen : IsGenericPoint (genPt Z) (Z : Set (Xo.XF c))`. Establish `hirr : IsIrreducible (Z : Set (Xo.XF c))` using `Z.2.1`. Conclude with `IsIrreducible.isGenericPoint_genericPoint hirr (isClosed_of_mem_irreducibleComponents _ Z.2)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : Set.range (j₀ TF.Y Z) ⊆ closure {j₀ TF.Y Z v}`. Introduce and unpack `_ ⟨w, rfl⟩`. Establish `hw : i₀ TF.Y Z w ∈ (Z : Set (Xo.XF c))` using `(j_mem_barComp (Y := TF.Y) Z _).1 w.2`. Establish `h1 : i₀ TF.Y Z v ⤳ i₀ TF.Y Z w` using `hv ▸ hgen.specializes hw`. Establish `h2 : v ⤳ w` using `(i₀ TF.Y Z).isOpenEmbedding.isInducing.specializes_iff.1 h1`.
-
-Conclude with `specializes_iff_mem_closure.1 (h2.map (j₀ TF.Y Z).continuous)`. Establish `hdense : Dense (Set.range (j₀ TF.Y Z))` using `(j₀ TF.Y Z).isOpenEmbedding.isOpen_range.dense ⟨_, ⟨v, rfl⟩⟩`. Establish `hg : IsGenericPoint (j₀ TF.Y Z v) (Set.univ : Set (X₀ TF.Y Z))`. Use `Set.eq_univ_of_univ_subset ?_` and prove the remaining obligations. Rewrite using `[← hdense.closure_eq]`.
-
-Conclude with `closure_minimal hsub isClosed_closure`. Conclude with `hg.eq (genericPoint_spec (X₀ TF.Y Z))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isVariety_barComp : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c), FnAlgClosed Xo c → ∃ _ : IsIntegral (X₀ TF.Y Z), SmoothOfRelativeDimension Dw.dim (s₀ TF.Y Z) ∧ IsProjOver (s₀ TF.Y Z) ∧ GeometricallyConnected (s₀ TF.Y Z) ∧ Surjective (π₀ TF.X Z) ∧ GlobalTheory.IsNormalScheme (V₀ TF.Y Z) ∧ ∀ v : V₀ TF.Y Z, i₀ TF.Y Z v = genPt Z → j₀ TF.Y Z v = genericPoint (X₀ TF.Y Z) := by
   intro E _ _ _ H Dw l Xo c TF Z hF

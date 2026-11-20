@@ -13,9 +13,9 @@ noncomputable section
 namespace GlobalTheory.CoefBound
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Establish `h` using `CartierDiv.mult_add (0 : CartierDiv X) 0 z`. Rewrite `h` using `[add_zero]`. Rewrite using `[zero_nsmul]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Use linear arithmetic over natural numbers and integers. Consider the case `succ n ih => rw [succ_nsmul, CartierDiv.mult_add, ih]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Treat this case separately. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cartierDivisor_mult_nsmul_eq_natCast_mul {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X] (D : CartierDiv X)
     (n : ℕ) (z : X) : (n • D).mult z = n * D.mult z := by
@@ -27,17 +27,15 @@ theorem cartierDivisor_mult_nsmul_eq_natCast_mul {X : Scheme.{0}} [IsIntegral X]
   | succ n ih => rw [succ_nsmul, CartierDiv.mult_add, ih]; push_cast; ring
 
 /- English proof (translation)
-Introduce `Y _ _ _ R Fd m r a hr hR`. Establish `hfin` using `Fd.finite_support_mult`. Use `set S : ℕ := ∑ z ∈ hfin.toFinset, ((m : ℤ) * Fd.mult z).toNat with hS`. Use `⟨a + 1 + S, by omega, fun z => ?_⟩` and prove the remaining obligations. Establish `hF : (m : ℤ) * Fd.mult z < ((a + 1 + S : ℕ) : ℤ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hz : Fd.mult z = 0`. Rewrite using `[hz]`. Use `push_cast`. Use linear arithmetic over natural numbers and integers. Establish `hmem : z ∈ hfin.toFinset` using `by simpa using hz`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ((m : ℤ) * Fd.mult z).toNat ≤ S` using `Finset.single_le_sum (f := fun z => ((m : ℤ) * Fd.mult z).toNat) (fun _ _ => Nat.zero_le _) hmem`. Establish `h2 : (m : ℤ) * Fd.mult z ≤ (((m : ℤ) * Fd.mult z).toNat : ℤ)` using `Int.self_le_toNat _`. Establish `h3 : ((((m : ℤ) * Fd.mult z).toNat : ℕ) : ℤ) ≤ (S : ℤ)` using `by exact_mod_cast h1`. Use `push_cast`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[CartierDiv.mult_add, cartierDivisor_mult_nsmul_eq_natCast_mul, cartierDivisor_mult_nsmul_eq_natCast_mul]`. Use `set b : ℕ := a + 1 + S`. Establish `hRz : R.mult z ≤ (m : ℤ) - 1` using `by have := hR z; omega`. Establish `hrb : (0 : ℤ) ≤ ((r * b : ℕ) : ℤ)` using `by positivity`. Establish `key : ((r * b : ℕ) : ℤ) * R.mult z ≤ ((r * b : ℕ) : ℤ) * ((m : ℤ) - 1)` using `mul_le_mul_of_nonneg_left hRz hrb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : ((b : ℕ) : ℤ) ≤ ((r * b : ℕ) : ℤ)`. Establish `: b ≤ r * b` using `Nat.le_mul_of_pos_left b hr`. Conclude with `this` after adjusting the coercions. Establish `e : (((m * r * b : ℕ)) : ℤ) = ((r * b : ℕ) : ℤ) * (m : ℤ)` using `by push_cast; ring`. Rewrite using `[e]`.
-
-Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem coef_lt_of_large : ∀ (Y : Scheme.{0}) [IsIntegral Y] [IsLocallyNoetherian Y] [CompactSpace Y] (R Fd : CartierDiv Y) (m r a : ℕ), 0 < r → (∀ z, R.mult z < m) → ∃ b : ℕ, a ≤ b ∧ ∀ z, ((r * b) • R + m • Fd).mult z < (m * r * b : ℕ) := by
   intro Y _ _ _ R Fd m r a hr hR

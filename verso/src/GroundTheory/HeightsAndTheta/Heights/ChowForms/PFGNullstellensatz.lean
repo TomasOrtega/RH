@@ -5,13 +5,11 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights
 
 /- English proof (translation)
-Introduce `F _ D _ _ _ _ r hr`. Establish `hJ : IsJacobsonRing D` using `isJacobsonRing_of_finiteType (A := F)`. Establish `hmem : r ∈ (⊥ : Ideal D).jacobson`. Rewrite using `[Ideal.jacobson, Submodule.mem_sInf]`. Introduce and unpack `m ⟨-, hm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Set `_ : Field (D ⧸ m)` to `Ideal.Quotient.field m`. Establish `: Algebra.FiniteType F (D ⧸ m)` using `inferInstance`. Establish `: Module.Finite F (D ⧸ m)` using `finite_of_finite_type_of_isJacobsonRing F (D ⧸ m)`. Establish `: Algebra.IsAlgebraic F (D ⧸ m)` using `inferInstance`. Set `ψ : (D ⧸ m) →ₐ[F] AlgebraicClosure F` to `IsAlgClosed.lift`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `h0 : ψ (Ideal.Quotient.mkₐ F m r) = 0` using `hr (ψ.comp (Ideal.Quotient.mkₐ F m))`. Establish `h1 : Ideal.Quotient.mkₐ F m r = 0` using `(map_eq_zero_iff ψ ψ.toRingHom.injective).mp h0`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mp h1`. Rewrite `hmem` using `[← Ideal.radical_eq_jacobson]`. Take `⟨k, hk⟩` from `hmem`.
-
-Conclude with `IsReduced.eq_zero r ⟨k, by simpa using hk⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem FGNullstellensatz.proof : FGNullstellensatz.Statement := by
   intro F _ D _ _ _ _ r hr

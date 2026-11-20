@@ -2,12 +2,12 @@ import Development.EtaleCohomology.CyclotomicDiscriminants.SFewOfCut
 
 namespace LateralTheory.Fin.SFewOf
 /- English proof (translation)
-Apply `LateralTheory.Q.SFewOfCut.sFewOf` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result.
 -/
 theorem few_of_statement_holds : UpperTheory.V.ZK.SFewOf := by
   apply LateralTheory.Q.SFewOfCut.sFewOf
 /- English proof (translation)
-The claim follows from `few_of_statement_holds`.
+A detailed English derivation is pending.
 -/
 theorem intersectionNumber_baseChange : UpperTheory.V.ZK.SFewOf := few_of_statement_holds
 end LateralTheory.Fin.SFewOf

@@ -6,7 +6,7 @@ import Development.AutomorphicSpectrum.Proofs.MembershipProofs.DiscreteSeriesUpq
 namespace GlobalTheory.CompanionTheory.Glob
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Published.discreteSeriesLowestKType_iff.2 ⟨GlobalTheory.CompanionTheory.TypeCount.LowK.lowKMultOne, GlobalTheory.CompanionTheory.Front.discreteSeriesUpqUnique⟩`.
+A detailed English derivation is pending.
 -/
 theorem discreteSeriesLowestKType : GlobalTheory.Published.DiscreteSeriesLowestKType :=
   GlobalTheory.Published.discreteSeriesLowestKType_iff.2

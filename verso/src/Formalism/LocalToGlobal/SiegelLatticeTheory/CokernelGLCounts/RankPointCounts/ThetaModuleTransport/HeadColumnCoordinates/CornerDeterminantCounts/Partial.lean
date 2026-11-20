@@ -4,7 +4,7 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCou
 namespace Formalism.L2.SG.LocalCountModules.UnitaryGroupMassFormula.LocCntUL
 
 /- English proof (translation)
-The claim follows from `locCntUL_of h1 (fun _ _ _ _ _ _ _ _ _ M _ r => mbeU_holds M r) (fun _ _ _ _ _ _ _ _ _ M _ r => cornerU_holds M r)`.
+A detailed English derivation is pending.
 -/
 theorem locCntUL_of'
     (h1 : Formalism.MainNotions.ThinScalesBound.AllLoc (fun M => ∀ r n, ThetaMbeU M r n false)) : Formalism.L2.SG.LocalCountModules.LocCntUL.LocCntUL :=

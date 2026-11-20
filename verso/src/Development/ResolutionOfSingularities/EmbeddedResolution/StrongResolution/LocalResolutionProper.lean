@@ -20,7 +20,7 @@ def pullbackIsoLastObj (d : LocalResolutionData k f s) (i : d.cover.I₀) :
   (pullbackSymmetry s.lastStructMap (d.cover.f i)).trans (d.lastObjIsoPullback i).symm
 
 /- English proof (translation)
-Rewrite using `[pullbackIsoLastObj]`. Simplify using `only [Iso.trans_hom, Iso.symm_hom, Category.assoc]`. Rewrite using `[← d.lastObjIsoPullback_hom_fst i, Iso.inv_hom_id_assoc]`. Conclude with `pullbackSymmetry_hom_comp_fst _ _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pullbackIsoLastObj_hom_lastStructMap (d : LocalResolutionData k f s) (i : d.cover.I₀) :
     (d.pullbackIsoLastObj i).hom ≫ (d.seq i).lastStructMap = pullback.snd s.lastStructMap (d.cover.f i) := by
@@ -30,11 +30,9 @@ theorem pullbackIsoLastObj_hom_lastStructMap (d : LocalResolutionData k f s) (i 
   exact pullbackSymmetry_hom_comp_fst _ _
 
 /- English proof (translation)
-Establish `key : ∀ i : d.cover.I₀, IsProper (d.seq i).lastStructMap`. Introduce `i`. Take `⟨-, h, -⟩` from `d.isResolution i`. Conclude with `h`. Take `⟨-, h2⟩` from `(inferInstance : MorphismProperty.IsLocalAtTarget (@IsProper) Scheme.zariskiPrecoverage)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `h2 (R := d.cover.presieve₀) d.cover.mem₀ ?_` and prove the remaining obligations. Introduce `U g _inst hg`. Take `⟨i⟩` from `hg`. Rewrite using `[← d.pullbackIsoLastObj_hom_lastStructMap i]`. Use `key i` as an intermediate fact.
-
-Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isProper_lastStructMap (d : LocalResolutionData k f s) : IsProper s.lastStructMap := by
   have key : ∀ i : d.cover.I₀, IsProper (d.seq i).lastStructMap := by

@@ -11,7 +11,7 @@ open CrystallineSemistableComparison CrystallineSemistableComparison.Onto
 namespace GlobalTheory.CompanionTheory.KunGlue
 
 /- English proof (translation)
-Introduce `hT hS hM hC hZ hA hK` and use `GlobalTheory.T.slant_of_hodge_kuenneth hT hS (fun K _ _ X X' P q q' _ _ _ _ p₁ p₂ hP h₁ h₂ => GlobalTheory.T.kuenneth_product_proper_smooth hS hM hC hZ hA hK K X X' P q q' p₁ p₂ hP h₁ h₂)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem slantOf : CrystallineSemistableComparison.Onto.TopRes → CrystallineSemistableComparison.Onto.SlantOf :=
   fun hT hS hM hC hZ hA hK => GlobalTheory.T.slant_of_hodge_kuenneth hT hS (fun K _ _ X X' P q q' _ _ _ _ p₁ p₂ hP h₁ h₂ =>

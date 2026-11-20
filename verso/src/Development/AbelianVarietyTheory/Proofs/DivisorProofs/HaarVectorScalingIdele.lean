@@ -20,9 +20,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups (tensNU)
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i u hu`. Conclude with `congrFun (h u hu) i`. Introduce `h u hu`. Use function extensionality and compare the values at `i`.
-
-Conclude with `h i u hu`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem at_vec_iff {m : ℕ} {v : Pl F} {w : Fin m → AE F E} :
     At (evFin F v) w ↔ ∀ i, At (evFin F v) (w i) := by
@@ -34,7 +32,7 @@ theorem at_vec_iff {m : ℕ} {v : Pl F} {w : Fin m → AE F E} :
     exact h i u hu
 
 /- English proof (translation)
-Use `at_evFin_iff.2 ⟨fun w => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.AutFunCompare.map_tensNU_zero (evInf F w) _ _ (fun _ => rfl) y`. Conclude with `GlobalTheory.AutFunCompare.map_tensNU_zero (evFin F w) _ _ (evalV_singleFin_ne hw) y`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem at_liftFin (v : Pl F) (y : Fv F v ⊗[F] E) :
     At (evFin F v) (tensNU (E := E) (GlobalTheory.Doubling.inFin v) (GlobalTheory.Doubling.inFin_mul v) y) := by
@@ -43,16 +41,16 @@ theorem at_liftFin (v : Pl F) (y : Fv F v ⊗[F] E) :
   · exact GlobalTheory.AutFunCompare.map_tensNU_zero (evFin F w) _ _ (evalV_singleFin_ne hw) y
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.AutFunCompare.map_tensNU_self (evFin F v) _ _ (evalV_singleFin_self v) y`.
+A detailed English derivation is pending.
 -/
 theorem compFin_liftFin (v : Pl F) (y : Fv F v ⊗[F] E) :
     compFin F E v (tensNU (E := E) (GlobalTheory.Doubling.inFin v) (GlobalTheory.Doubling.inFin_mul v) y) = y :=
   GlobalTheory.AutFunCompare.map_tensNU_self (evFin F v) _ _ (evalV_singleFin_self v) y
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `at_evFin_iff.1 hz`. Take `⟨g1, g2⟩` from `at_evFin_iff.1 (at_liftFin v (compFin F E v z))`. Use `GlobalTheory.Doubling.adele_ext (fun w => (g1 w).trans (h1 w).symm) fun w => ?_` and prove the remaining obligations. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Conclude with `compFin_liftFin w _`. Conclude with `(g2 w hw).trans (h2 w hw).symm`.
+A detailed English derivation is pending.
 -/
 theorem liftFin_compFin {v : Pl F} {z : AE F E} (hz : At (evFin F v) z) :
     tensNU (E := E) (GlobalTheory.Doubling.inFin v) (GlobalTheory.Doubling.inFin_mul v) (compFin F E v z) = z := by
@@ -65,7 +63,7 @@ theorem liftFin_compFin {v : Pl F} {z : AE F E} (hz : At (evFin F v) z) :
   · exact (g2 w hw).trans (h2 w hw).symm
 
 /- English proof (translation)
-Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Conclude with `GlobalTheory.AutFunCompare.continuous_tensNU (E := E) (evFin F v).toLinearMap (map_mul (evFin F v)) ((RestrictedProduct.continuous_eval v).comp continuous_snd)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_compFinV (v : Pl F) : Continuous (compFin F E v) := by
   haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
@@ -73,7 +71,7 @@ theorem continuous_compFinV (v : Pl F) : Continuous (compFin F E v) := by
     ((RestrictedProduct.continuous_eval v).comp continuous_snd)
 
 /- English proof (translation)
-Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Conclude with `GlobalTheory.AutFunCompare.continuous_tensNU _ _ (continuous_const.prodMk (continuous_singleFin v))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_liftFinV (v : Pl F) :
     Continuous (tensNU (E := E) (GlobalTheory.Doubling.inFin v) (GlobalTheory.Doubling.inFin_mul v)) := by
@@ -112,7 +110,7 @@ def vecAtSmulCE {m : ℕ} {v : Pl F} (s : (AE F E)ˣ) : vecAt F E m (evFin F v) 
     exact ((continuous_const_smul ((s⁻¹ : (AE F E)ˣ) : AE F E)).comp continuous_subtype_val).subtype_mk _
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => rfl`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem cA_eq_sigR (σ : E →ₐ[F] E) (z : AE F E) : cA σ z = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) σ z := by
   induction z using TensorProduct.induction_on with
@@ -121,27 +119,17 @@ theorem cA_eq_sigR (σ : E →ₐ[F] E) (z : AE F E) : cA σ z = Formalism.MainN
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ m v t ht ν hν`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := GlobalTheory.Doubling.isTopologicalRing_tens`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨e0⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`. Use `haveI : SecondCountableTopology (AE F E) := e0.secondCountableTopology`. Use `haveI : T2Space (AE F E) := e0.isEmbedding.t2Space`. Use `haveI : BorelSpace (AE F E) := ⟨rfl⟩`. Use `haveI := GlobalTheory.LocTateInt.isTopologicalRing_Ev (E := E) v`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI := GlobalTheory.LocTateInt.t2Space_Fv_tensor (E := E) v`. Use `haveI := GlobalTheory.LocTateInt.locallyCompactSpace_Ev (E := E) v`. Use `haveI := GlobalTheory.LocTateInt.secondCountable_Ev (E := E) v`. Use `haveI : BorelSpace (Fv F v ⊗[F] E) := ⟨rfl⟩`. Use `set e1 := vecAtEquiv F E m v`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `haveI : LocallyCompactSpace (vecAt F E m (evFin F v)) := e1.toHomeomorph.isClosedEmbedding.locallyCompactSpace`. Use `haveI := hν`. Use `haveI : SecondCountableTopology (vecAt F E m (evFin F v)) := e1.toHomeomorph.isEmbedding.secondCountableTopology`. Use `haveI : BorelSpace (vecAt F E m (evFin F v)) := inferInstance`. Use `haveI : T2Space (vecAt F E m (evFin F v)) := inferInstance`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : ν.Regular := inferInstance`. Use `set s : (AE F E)ˣ := GlobalTheory.Doubling.conjUnit σ t⁻¹ with hs`. Establish `hf : ⇑(vecAtSmul (m` using `m) (ev := evFin F v) (cA σ (t⁻¹ : (AE F E)ˣ).1)) = ⇑(vecAtSmulCE (m := m) (v := v) s) := by`. Use function extensionality and compare the values at `w`. Apply `Subtype.ext` to reduce the goal to its premises.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show cA σ (t⁻¹ : (AE F E)ˣ).1 • w.1 = (s : AE F E) • w.1`. Rewrite using `[cA_eq_sigR]`. Both sides reduce to the same expression. Rewrite using `[hf]`. Establish `h1` using `addEquivAddHaarChar_smul_map ν (vecAtSmulCE (m := m) (v := v) s)`.
-
-Rewrite `h1` using `[← GlobalTheory.ModuLR.addEquivAddHaarChar_transport e1]`. Use `set U0 : (Fv F v ⊗[F] E)ˣ := GlobalTheory.Doubling.unitFin F E v s with hU0`. Use `set Uc : (Fin m → Fv F v ⊗[F] E)ˣ := Units.map (Pi.constRingHom (Fin m) (Fv F v ⊗[F] E)).toMonoidHom U0`. Establish `hg : (e1.symm.trans (vecAtSmulCE (m` using `m) (v := v) s)).trans e1 = GlobalTheory.ModuNorm.mulUnitCE Uc := by`. Use extensionality with `y i`.
-
-Use `show compFin F E v ((s : AE F E) * tensNU (E := E) (GlobalTheory.Doubling.inFin v) (GlobalTheory.Doubling.inFin_mul v) (y i)) = (U0 : Fv F v ⊗[F] E) * y i`. Rewrite using `[map_mul, compFin_liftFin]`. Both sides reduce to the same expression. Establish `hc : distribHaarChar (Fin m → Fv F v ⊗[F] E) Uc = ‖Algebra.norm (Fv F v) (U0 : Fv F v ⊗[F] E)‖₊ ^ m`. Rewrite using `[GlobalTheory.ModuPiLocal.distribHaarChar_pi (fun _ : Fin m => Fv F v ⊗[F] E) Uc]`.
-
-Establish `hU : ∀ i, Units.map (Pi.evalRingHom (fun _ : Fin m => Fv F v ⊗[F] E) i).toMonoidHom Uc = U0` using `fun i => Units.ext rfl`. Simplify using `only [hU, GlobalTheory.LocTateInt.distribHaarChar_Ev, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Rewrite `h1` using `[hg, ← GlobalTheory.ModuNorm.distribHaarChar_eq_addEquivAddHaarChar, hc]`. Establish `hn : ‖Algebra.norm (Fv F v) (U0 : Fv F v ⊗[F] E)‖₊ = (absE F E t)⁻¹`. Express the relevant statement in the definitionally equal form `GlobalTheory.Doubling.absEv F E v (GlobalTheory.Doubling.unitFin F E v s) = _`.
-
-Rewrite using `[GlobalTheory.Doubling.absEv_unitFin, hs, show Algebra.norm (AF F) (GlobalTheory.Doubling.conjUnit σ t⁻¹ : AE F E) = Algebra.norm (AF F) ((t⁻¹ : (AE F E)ˣ) : AE F E) from GlobalTheory.Doubling.norm_sigR σ _, ← GlobalTheory.Doubling.absEv_unitFin, map_inv, map_inv, ← absE_of_mem h …`. Rewrite `h1` using `[hn]`. Establish `h0 : absE F E t ≠ 0` using `fun h => by`. Use `congrArg (absE F E) (mul_inv_cancel t)` as an intermediate fact. Rewrite `this` using `[map_mul, h, zero_mul, map_one]`.
-
-Conclude with `zero_ne_one this`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_pow, mul_inv_cancel₀ h0, one_pow, one_smul]`. Use `_ = absE F E t ^ m • ((absE F E t)⁻¹ ^ m • ν.map ⇑(vecAtSmulCE (m := m) (v := v) s)) := (smul_smul _ _ _).symm`. Use `_ = absE F E t ^ m • ν := by rw [h1]`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_vecAtSmul_cA_inv : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (m : ℕ) (v : Pl F)
     (t : (AE F E)ˣ), t ∈ idelesAt E (evFin F v) → ∀ ν : Measure (vecAt F E m (evFin F v)), ν.IsAddHaarMeasure →

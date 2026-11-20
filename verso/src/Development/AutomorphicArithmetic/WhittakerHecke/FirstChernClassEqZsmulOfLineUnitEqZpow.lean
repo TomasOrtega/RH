@@ -15,7 +15,7 @@ private noncomputable def trivNat : glCat 1 ⟶ glCat 1 where
     rw [this]
 
 /- English proof (translation)
-Unfold `lineUnit`. Simplify using `only [ofCatMap]`. Establish `h : glMat ((ConcreteCategory.hom ((nerveMap (trivNat.app Γ(U, ⊤)).toFunctor).app (op ⦋1⦌))) ((ConcreteCategory.hom ((L.app (op ⦋1⦌)).app (op U))) y)) = 1` using `rfl`. Conclude with `(congrArg Matrix.GeneralLinearGroup.det h).trans (map_one _)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem lineUnit_triv {E : Spc} (L : E ⟶ ofCat (glCat 1)) {U : Scheme.{0}} (y : Sx E 1 U) :
     lineUnit (L ≫ ofCatMap trivNat) y = 1 := by
@@ -26,11 +26,11 @@ private theorem lineUnit_triv {E : Spc} (L : E ⟶ ofCat (glCat 1)) {U : Scheme.
   exact (congrArg Matrix.GeneralLinearGroup.det h).trans (map_one _)
 
 /- English proof (translation)
-Introduce `hA q _ E L M ε hE hLM`. Establish `add : ∀ (L M N : E ⟶ ofCat (glCat 1)), GlobalTheory.EtC.Inv q E → (∀ (U : Scheme) (x : Sx E 1 U), lineUnit N x = lineUnit L x * lineUnit M x) → c1 q N = c1 q L + c1 q M` using `fun L M N => (hA q).1 L M N`. Use `set T := L ≫ ofCatMap trivNat with hT`. Establish `hT1 : ∀ (U : Scheme.{0}) (y : Sx E 1 U), lineUnit T y = 1` using `fun U y => lineUnit_triv L y`. Establish `h0` using `add T T T hE (fun U x => by rw [hT1 U x]; simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : c1 q T = 0` using `left_eq_add.mp h0`. Break down `Int.units_eq_one_or ε with rfl | rfl` into its components or cases. Establish `h1` using `add M T L hE (fun U x => by rw [hLM U x, hT1 U x]; simp)`. Rewrite using `[h1, hc, add_zero]`. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `add L M T hE (fun U x => by rw [hT1 U x, hLM U x]; simp)`. Rewrite `h1` using `[hc]`. Simplify using `only [Units.val_neg, Units.val_one, neg_smul, one_smul]`. Conclude with `eq_neg_of_add_eq_zero_left h1.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.firstChernClass_eq_zsmul_of_lineUnit_eq_zpow :
     DivisorAdditivity → ∀ (q : ℕ) [NeZero q] {E : Spc} (L M : E ⟶ ofCat (glCat 1)) (ε : ℤˣ), Inv q E →

@@ -10,15 +10,15 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo GroundTheory.Heights�
 open scoped Matrix
 
 /- English proof (translation)
-Introduce `Ω _ E _ _ r u u' hu hu' hspan`. Set `S` to `Submodule.span Ω (Set.range u')`. Set `B' : Module.Basis (Fin r) Ω S` to `Module.Basis.span hu'`. Establish `hmem : ∀ a, u a ∈ S` using `fun a => by`. Express the relevant statement in the definitionally equal form `u a ∈ Submodule.span Ω (Set.range u')`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← hspan]`. Conclude with `Submodule.subset_span ⟨a, rfl⟩`. Set `v : Fin r → S` to `fun a => ⟨u a, hmem a⟩`. Establish `hv : LinearIndependent Ω v` using `LinearIndependent.of_comp S.subtype hu`. Establish `: FiniteDimensional Ω S` using `Module.Finite.of_basis B'`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcard : Fintype.card (Fin r) = Module.finrank Ω S` using `(Module.finrank_eq_card_basis B').symm`. Set `B : Module.Basis (Fin r) Ω S` to `basisOfLinearIndependentOfCardEqFinrank' v hv hcard`. Establish `hB : ⇑B = v` using `coe_basisOfLinearIndependentOfCardEqFinrank' v hv hcard`. Use `⟨B'.det v, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hB]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(B'.isUnit_det B).ne_zero`. Introduce `φ`. Establish `key` using `congrArg (fun f => f v) (AlternatingMap.eq_smul_basis_det B' (φ.compLinearMap S.subtype))`. Establish `hB' : (fun i => S.subtype (B' i)) = u'` using `funext fun a => Module.Basis.coe_span_apply hu' a`. Establish `hv' : (fun i => S.subtype (v i)) = u` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [AlternatingMap.compLinearMap_apply, AlternatingMap.smul_apply, smul_eq_mul] at key`. Rewrite `key` using `[hB', hv']`. Rewrite using `[key, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SameSpanAltDet.proof : SameSpanAltDet.Statement := by
   intro Ω _ E _ _ r u u' hu hu' hspan

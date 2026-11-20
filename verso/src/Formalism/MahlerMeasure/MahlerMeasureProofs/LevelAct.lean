@@ -15,22 +15,22 @@ theorem tieE_apply' (g : MvPolynomial σ k) :
   rfl
 
 /- English proof (translation)
-Simplify using `[tieF]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tieF_apply' (g : MvPolynomial σ k) :
     tieF w e g = ∑ c, pderiv (w c) (pderiv (e c) g) := by
   simp [tieF]
 
 /- English proof (translation)
-Use `MvPolynomial.induction_on' p ?_ ?_` and prove the remaining obligations. Introduce `s a`. Establish `key : X i * pderiv i (monomial s a : MvPolynomial σ k) = monomial s (a * (s i : k))`. Rewrite using `[pderiv_monomial]`. Distinguish the cases in `hs : s i = 0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `[hs]`. Rewrite using `[show (X i : MvPolynomial σ k) = monomial (Finsupp.single i 1) 1 from rfl, monomial_mul, one_mul]`. Establish `hsum : Finsupp.single i 1 + (s - Finsupp.single i 1) = s`. Use extensionality with `j`. Distinguish the cases in `hij : i = j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Substitute `hij` using the available equality. Simplify using `only [Finsupp.add_apply, Finsupp.tsub_apply, Finsupp.single_eq_same]`. Use linear arithmetic over natural numbers and integers. Simplify using `[hij]`. Rewrite using `[hsum]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, coeff_monomial, coeff_monomial]`. Use `split_ifs with h`. Substitute `h` using the available equality. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p q hp hq`. Simplify using `only [map_add, mul_add, coeff_add, hp, hq, add_mul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coeff_X_mul_pderiv' (i : σ) (p : MvPolynomial σ k) (m : σ →₀ ℕ) :
     coeff m (X i * pderiv i p) = coeff m p * (m i : k) := by
@@ -59,9 +59,9 @@ theorem coeff_X_mul_pderiv' (i : σ) (p : MvPolynomial σ k) (m : σ →₀ ℕ)
     simp only [map_add, mul_add, coeff_add, hp, hq, add_mul]
 
 /- English proof (translation)
-Use extensionality with `m`. Rewrite using `[MvPolynomial.coeff_sum, MvPolynomial.coeff_smul, smul_eq_mul]`. Repeatedly rewrite using `[coeff_X_mul_pderiv']`. Rewrite using `[← Finset.mul_sum]`. Distinguish the cases in `hm : coeff m g = 0`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hm]`. Simplify using the standard rewrite rules. Take `⟨h1, -⟩` from `h m (MvPolynomial.mem_support_iff.mpr hm)`. Rewrite using `[← h1, Nat.cast_sum]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem euler_w_of_biHom {a b : ℕ} {g : MvPolynomial σ k} (h : BiHom w e a b g) :
     (∑ c, X (w c) * pderiv (w c) g) = (a : k) • g := by
@@ -76,9 +76,9 @@ theorem euler_w_of_biHom {a b : ℕ} {g : MvPolynomial σ k} (h : BiHom w e a b 
     ring
 
 /- English proof (translation)
-Use extensionality with `m`. Rewrite using `[MvPolynomial.coeff_sum, MvPolynomial.coeff_smul, smul_eq_mul]`. Repeatedly rewrite using `[coeff_X_mul_pderiv']`. Rewrite using `[← Finset.mul_sum]`. Distinguish the cases in `hm : coeff m g = 0`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hm]`. Simplify using the standard rewrite rules. Take `⟨-, h2⟩` from `h m (MvPolynomial.mem_support_iff.mpr hm)`. Rewrite using `[← h2, Nat.cast_sum]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem euler_e_of_biHom {a b : ℕ} {g : MvPolynomial σ k} (h : BiHom w e a b g) :
     (∑ c, X (e c) * pderiv (e c) g) = (b : k) • g := by
@@ -95,21 +95,19 @@ theorem euler_e_of_biHom {a b : ℕ} {g : MvPolynomial σ k} (h : BiHom w e a b 
 variable {w e}
 
 /- English proof (translation)
-Conclude with `pderiv_X_of_ne h`.
+A detailed English derivation is pending.
 -/
 private theorem mvPolynomial_pderiv_X_of_ne {i j : σ} (h : j ≠ i) : pderiv i (X j : MvPolynomial σ k) = 0 := by
   exact pderiv_X_of_ne h
 
 /- English proof (translation)
-Conclude with `pderiv_X_self i`.
+A detailed English derivation is pending.
 -/
 private theorem mvPolynomial_pderiv_X_self (i : σ) : pderiv i (X i : MvPolynomial σ k) = 1 := by
   exact pderiv_X_self i
 
 /- English proof (translation)
-Distinguish the cases in `h : d = c`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl]`. Conclude with `mvPolynomial_pderiv_X_self _`. Rewrite using `[if_neg h]`.
-
-Conclude with `mvPolynomial_pderiv_X_of_ne (fun h' => h (hf h'))`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pderiv_X_inj {f : Fin r → σ} (hf : Function.Injective f) (c d : Fin r) :
     pderiv (f c) (X (f d) : MvPolynomial σ k) = if d = c then 1 else 0 := by
@@ -121,7 +119,7 @@ theorem pderiv_X_inj {f : Fin r → σ} (hf : Function.Injective f) (c d : Fin r
     exact mvPolynomial_pderiv_X_of_ne (fun h' => h (hf h'))
 
 /- English proof (translation)
-Establish `h0 : ∀ d, pderiv (e c) (X (w d) : MvPolynomial σ k) = 0` using `fun d => mvPolynomial_pderiv_X_of_ne (hwe d c)`. Rewrite using `[map_sum]`. Simplify using `only [Derivation.leibniz, h0, pderiv_X_inj he, smul_eq_mul, mul_ite, mul_one, mul_zero, add_zero, Finset.sum_ite_eq', Finset.mem_univ, ↓reduceIte]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pderiv_e_S (he : Function.Injective e) (hwe : ∀ c d, w c ≠ e d)
     (c : Fin r) : pderiv (e c) (∑ d, X (w d) * X (e d) : MvPolynomial σ k) = X (w c) := by
@@ -131,7 +129,7 @@ theorem pderiv_e_S (he : Function.Injective e) (hwe : ∀ c d, w c ≠ e d)
     add_zero, Finset.sum_ite_eq', Finset.mem_univ, ↓reduceIte]
 
 /- English proof (translation)
-Establish `h0 : ∀ d, pderiv (w c) (X (e d) : MvPolynomial σ k) = 0` using `fun d => mvPolynomial_pderiv_X_of_ne (fun h => hwe c d h.symm)`. Rewrite using `[map_sum]`. Simplify using `only [Derivation.leibniz, h0, pderiv_X_inj hw, smul_eq_mul, mul_ite, mul_one, mul_zero, zero_add, Finset.sum_ite_eq', Finset.mem_univ, ↓reduceIte]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pderiv_w_S (hw : Function.Injective w) (hwe : ∀ c d, w c ≠ e d)
     (c : Fin r) : pderiv (w c) (∑ d, X (w d) * X (e d) : MvPolynomial σ k) = X (e c) := by
@@ -142,22 +140,22 @@ theorem pderiv_w_S (hw : Function.Injective w) (hwe : ∀ c d, w c ≠ e d)
     zero_add, Finset.sum_ite_eq', Finset.mem_univ, ↓reduceIte]
 
 /- English proof (translation)
-Rewrite using `[smul_eq_C_mul, map_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem natCast_smul_eq_natCast_mul (n : ℕ) (g : MvPolynomial σ k) :
     (n : k) • g = (n : MvPolynomial σ k) * g := by
   rw [smul_eq_C_mul, map_natCast]
 
 /- English proof (translation)
-Establish `h1 : ∀ c, pderiv (e c) ((∑ d, X (w d) * X (e d)) * g) = X (w c) * g + (∑ d, X (w d) * X (e d)) * pderiv (e c) g`. Introduce `c`. Rewrite using `[Derivation.leibniz, pderiv_e_S he hwe, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ∀ c, pderiv (w c) (X (w c) * g) = g + X (w c) * pderiv (w c) g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Introduce `c`. Rewrite using `[Derivation.leibniz, mvPolynomial_pderiv_X_self, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : ∀ c, pderiv (w c) ((∑ d, X (w d) * X (e d)) * pderiv (e c) g) = X (e c) * pderiv (e c) g + (∑ d, X (w d) * X (e d)) * pderiv (w c) (pderiv (e c) g)`. Introduce `c`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Derivation.leibniz, pderiv_w_S hw hwe, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl (fun c _ => ?_)` and prove the remaining obligations. Rewrite using `[h1, map_add, h2, h3]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ = (∑ _c : Fin r, g) + ((∑ c, X (w c) * pderiv (w c) g) + ∑ c, X (e c) * pderiv (e c) g) + (∑ d, X (w d) * X (e d)) * ∑ c, pderiv (w c) (pderiv (e c) g) := by`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_add_distrib, Finset.sum_add_distrib, Finset.mul_sum]`. Use `_ = _ := by`. Rewrite using `[hW, hE]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, natCast_smul_eq_natCast_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem F_S_mul (hw : Function.Injective w) (he : Function.Injective e) (hwe : ∀ c d, w c ≠ e d)
     (g : MvPolynomial σ k) (a b : ℕ) (hW : ∑ c, X (w c) * pderiv (w c) g = (a : k) • g)
@@ -194,9 +192,9 @@ theorem F_S_mul (hw : Function.Injective w) (he : Function.Injective e) (hwe : �
         ring
 
 /- English proof (translation)
-Establish `h1 : ∀ c, X (w c) * pderiv (w c) ((∑ d, X (w d) * X (e d)) * g) = X (w c) * X (e c) * g + (∑ d, X (w d) * X (e d)) * (X (w c) * pderiv (w c) g)`. Introduce `c`. Rewrite using `[Derivation.leibniz, pderiv_w_S hw hwe, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl (fun c _ => h1 c), Finset.sum_add_distrib, ← Finset.sum_mul, ← Finset.mul_sum, hW]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [natCast_smul_eq_natCast_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem euler_w_S_mul (hw : Function.Injective w) (hwe : ∀ c d, w c ≠ e d)
     (g : MvPolynomial σ k) (a : ℕ) (hW : ∑ c, X (w c) * pderiv (w c) g = (a : k) • g) :
@@ -213,9 +211,9 @@ theorem euler_w_S_mul (hw : Function.Injective w) (hwe : ∀ c d, w c ≠ e d)
   ring
 
 /- English proof (translation)
-Establish `h1 : ∀ c, X (e c) * pderiv (e c) ((∑ d, X (w d) * X (e d)) * g) = X (w c) * X (e c) * g + (∑ d, X (w d) * X (e d)) * (X (e c) * pderiv (e c) g)`. Introduce `c`. Rewrite using `[Derivation.leibniz, pderiv_e_S he hwe, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl (fun c _ => h1 c), Finset.sum_add_distrib, ← Finset.sum_mul, ← Finset.mul_sum, hE]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [natCast_smul_eq_natCast_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem euler_e_S_mul (he : Function.Injective e) (hwe : ∀ c d, w c ≠ e d)
     (g : MvPolynomial σ k) (b : ℕ) (hE : ∑ c, X (e c) * pderiv (e c) g = (b : k) • g) :
@@ -232,30 +230,30 @@ theorem euler_e_S_mul (he : Function.Injective e) (hwe : ∀ c d, w c ≠ e d)
   ring
 
 /- English proof (translation)
-Rewrite using `[pow_zero]`. Apply the tactic sequence `first | done | rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem linearMap_pow_zero_apply (f : MvPolynomial σ k →ₗ[k] MvPolynomial σ k) (x : MvPolynomial σ k) :
     (f ^ 0) x = x := by
   rw [pow_zero]; first | done | rfl
 
 /- English proof (translation)
-Rewrite using `[pow_succ']`. Apply the tactic sequence `first | done | rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem linearMap_pow_succ_apply_eq_apply_pow (f : MvPolynomial σ k →ₗ[k] MvPolynomial σ k) (n : ℕ)
     (x : MvPolynomial σ k) : (f ^ (n + 1)) x = f ((f ^ n) x) := by
   rw [pow_succ']; first | done | rfl
 
 /- English proof (translation)
-Rewrite using `[linearMap_pow_succ_apply_eq_apply_pow, tieE_apply']`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem tieE_pow_succ_apply (j : ℕ) (x : MvPolynomial σ k) :
     (tieE w e ^ (j + 1)) x = (∑ d, X (w d) * X (e d)) * (tieE w e ^ j) x := by
   rw [linearMap_pow_succ_apply_eq_apply_pow, tieE_apply']
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero`. Simplify using `only [linearMap_pow_zero_apply, Nat.add_zero]`. Conclude with `⟨hW, hE⟩`. Consider the case `succ j ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Supply the required witnesses or components. Treat this case separately.
 
-Rewrite using `[tieE_pow_succ_apply j u]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[euler_w_S_mul hw hwe _ _ ih.1, Nat.add_assoc]`. Rewrite using `[euler_e_S_mul he hwe _ _ ih.2, Nat.add_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem euler_pow (hw : Function.Injective w) (he : Function.Injective e) (hwe : ∀ c d, w c ≠ e d)
     (u : MvPolynomial σ k) (a b : ℕ) (hW : ∑ c, X (w c) * pderiv (w c) u = (a : k) • u)
@@ -273,11 +271,11 @@ theorem euler_pow (hw : Function.Injective w) (he : Function.Injective e) (hwe :
     · rw [euler_e_S_mul he hwe _ _ ih.2, Nat.add_assoc]
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero`. Rewrite using `[tieE_pow_succ_apply 0 u, linearMap_pow_zero_apply, tieF_apply', F_S_mul hw he hwe u a b hW hE, ← tieF_apply' w e u, hF]`. Simplify using `only [natCast_smul_eq_natCast_mul]`. Use `push_cast`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `succ j ih`. Take `⟨h1, h2⟩` from `euler_pow hw he hwe u a b hW hE (j + 1)`. Rewrite using `[tieE_pow_succ_apply (j + 1) u, tieF_apply', F_S_mul hw he hwe _ _ _ h1 h2, ← tieF_apply' w e ((tieE w e ^ (j + 1)) u), ih, tieE_pow_succ_apply j u]`. Simplify using `only [natCast_smul_eq_natCast_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem F_E_pow (hw : Function.Injective w) (he : Function.Injective e) (hwe : ∀ c d, w c ≠ e d)
     (u : MvPolynomial σ k) (a b : ℕ) (hW : ∑ c, X (w c) * pderiv (w c) u = (a : k) • u)
@@ -299,25 +297,25 @@ theorem F_E_pow (hw : Function.Injective w) (he : Function.Injective e) (hwe : �
     ring
 
 /- English proof (translation)
-Rewrite using `[pow_succ]`. Apply the tactic sequence `first | done | rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem linearMap_pow_succ_apply_eq_pow_apply (f : MvPolynomial σ k →ₗ[k] MvPolynomial σ k) (n : ℕ)
     (x : MvPolynomial σ k) : (f ^ (n + 1)) x = (f ^ n) (f x) := by
   rw [pow_succ]; first | done | rfl
 
 /- English proof (translation)
-Rewrite using `[pow_add]`. Apply the tactic sequence `first | done | rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem linearMap_pow_apply_pow_apply (f : MvPolynomial σ k →ₗ[k] MvPolynomial σ k) (m n : ℕ)
     (x : MvPolynomial σ k) : (f ^ m) ((f ^ n) x) = (f ^ (m + n)) x := by
   rw [pow_add]; first | done | rfl
 
 /- English proof (translation)
-Proceed by induction on `j generalizing l with`. Consider the case `zero`. Simplify using `only [linearMap_pow_zero_apply, Nat.descFactorial_zero, mul_one, Nat.cast_one, one_smul, Nat.sub_zero]`. Consider the case `succ j ih`. Consider the cases of `l with`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero`. Rewrite using `[linearMap_pow_succ_apply_eq_pow_apply, linearMap_pow_zero_apply, hF, map_zero, Nat.zero_descFactorial_succ, zero_mul, Nat.cast_zero, zero_smul]`. Consider the case `succ l`. Rewrite using `[linearMap_pow_succ_apply_eq_pow_apply, F_E_pow hw he hwe u a b hW hE hF l, map_smul, ih l, smul_smul, ← Nat.cast_mul, Nat.add_sub_add_right]`. Use `congr 2`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hN, Nat.succ_descFactorial_succ, show N0 + (l + 1) = N0 + l + 1 by omega, Nat.succ_descFactorial_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem F_pow_E_pow (hw : Function.Injective w) (he : Function.Injective e) (hwe : ∀ c d, w c ≠ e d)
     (u : MvPolynomial σ k) (a b N0 : ℕ) (hW : ∑ c, X (w c) * pderiv (w c) u = (a : k) • u)
@@ -343,19 +341,19 @@ theorem F_pow_E_pow (hw : Function.Injective w) (he : Function.Injective e) (hwe
 end
 
 /- English proof (translation)
-Introduce `k σ _ _ r w e hw he hwe hr o n z l u hlo hln hF hB`. Establish `hW` using `euler_w_of_biHom w e hB`. Establish `hE` using `euler_e_of_biHom w e hB`. Take `⟨N0, hN⟩ : ∃ N0, o - l + (n - l) + r = N0 + 1` from `⟨o - l + (n - l) + r - 1, by omega⟩`. Establish `key : ∀ j, ((tieE w e ^ j).comp (tieF w e ^ j)) ((tieE w e ^ l) u) = ((l.descFactorial j * (N0 + l).descFactorial j : ℕ) : k) • (tieE w e ^ l) u`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `j`. Rewrite using `[LinearMap.comp_apply, F_pow_E_pow hw he hwe u (o - l) (n - l) N0 hW hE hF hN j l, map_smul]`. Distinguish the cases in `hjl : j ≤ l`. Use `congr 1`. Rewrite using `[linearMap_pow_apply_pow_apply, show j + (l - j) = l by omega]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Nat.descFactorial_eq_zero_iff_lt.mpr (show l < j by omega)]`. Establish `hA : z + l ≤ o + n + r + z - 1` using `by omega`. Establish `hS'` using `hS (o + n + r + z - 1) z l hA`. Rewrite `hS'` using `[show o + n + r + z - 1 - z - l = N0 + l by omega]`. Establish `hcast` using `congrArg (Rat.cast : ℚ → k) hS'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [qch, Rat.cast_sum, Rat.cast_div, Rat.cast_mul, Rat.cast_pow, Rat.cast_neg, Rat.cast_one, Rat.cast_natCast] at hcast`. Simplify using `only [tiePhi, LinearMap.sum_apply, LinearMap.smul_apply, key, smul_smul]`. Rewrite using `[← Finset.sum_smul]`. Use `congr 1`. Rewrite using `[← Finset.sum_subset (Finset.range_mono (show l + 1 ≤ o + 1 by omega)) ?_]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `Eq.trans ?_ hcast` and prove the remaining obligations. Use `Finset.sum_congr rfl (fun j hj => ?_)` and prove the remaining obligations. Establish `hjl : j ≤ l`. Rewrite `hj` using `[Finset.mem_range]`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `hf : ((j.factorial : ℕ) : k) ≠ 0` using `Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero j)`. Establish `hc : (((o + n + r + z - 1).choose j : ℕ) : k) ≠ 0` using `Nat.cast_ne_zero.mpr (Nat.choose_pos (by omega)).ne'`. Rewrite using `[Nat.descFactorial_eq_factorial_mul_choose, Nat.descFactorial_eq_factorial_mul_choose]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Introduce `j _ hj`. Rewrite `hj` using `[Finset.mem_range, not_lt]`. Simplify using `[Nat.descFactorial_eq_zero_iff_lt.mpr (show l < j by omega)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem levelAct_of (hS : LevelSum) : LevelAct := by
   intro k σ _ _ r w e hw he hwe hr o n z l u hlo hln hF hB

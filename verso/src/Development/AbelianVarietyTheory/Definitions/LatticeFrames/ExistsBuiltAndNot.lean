@@ -14,7 +14,7 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE
 variable {B : GlobalTheory.Mem.Base} {X : PreX B.toPre}
 
 /- English proof (translation)
-Take `⟨hX, hPr, -⟩` from `base_fields_primes_ok B X`. Establish `hc` using `GlobalTheory.MuOffMove.conjP_notMem_vT hPr P.2`. Establish `hsp` using `(split_of_conj_ne₂ B.fields P.1 (P.1.under (𝓞 B.host.F)) hX (fun e => hc (e.symm ▸ P.2)) rfl).2`. Use `Subtype.ext (((hsp Q.1).1 (congrArg HeightOneSpectrum.asIdeal e.symm)).resolve_right fun e' => hc (e' ▸ Q.2)).symm` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem under_inj (u : B.Word) (P Q : (B.primes X).vT u)
     (e : P.1.under (𝓞 B.host.F) = Q.1.under (𝓞 B.host.F)) : P = Q := by
@@ -37,14 +37,14 @@ def errOf (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) : ErrX (I.rec7 l
     (GlobalTheory.MuOffMove.natCast_mem_under (X := B.fields) P.1 (B.T u)).2 (T_mem (base_fields_primes_ok B X).2.1 u P)
 
 /- English proof (translation)
-The claim follows from `builtG_intro I l Z h hJ (TrueColsTest.law0 h l) _ rfl`.
+A detailed English derivation is pending.
 -/
 theorem builtG_errOf (I : TC B X) (h : I.Ok) (hJ : I.JetsIn) (l : I.Laws) (Z : TC.Later B (I.cols l)) :
     BuiltG (I.rec7 l Z) (errOf I l Z) :=
   builtG_intro I l Z h hJ (TrueColsTest.law0 h l) _ rfl
 
 /- English proof (translation)
-Take `⟨B, X, I, hL, h, hJ⟩` from `GlobalTheory.KerT.JetsInhab.exists_colIn_jets`. Take `⟨Z⟩` from `TrueColsTest.later (TrueColsTest.laws (I := I) h) hL`. Conclude with `⟨_, _, builtG_errOf I h hJ _ Z⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_builtG : ∃ (D : D7) (EX : ErrX D), BuiltG D EX := by
   obtain ⟨B, X, I, hL, h, hJ⟩ := GlobalTheory.KerT.JetsInhab.exists_colIn_jets
@@ -52,7 +52,7 @@ theorem exists_builtG : ∃ (D : D7) (EX : ErrX D), BuiltG D EX := by
   exact ⟨_, _, builtG_errOf I h hJ _ Z⟩
 
 /- English proof (translation)
-The claim follows from `builtG_ind (Q := fun D EX => ((D.host.QS * D.host.q * D.host.d : ℕ) : 𝓞 D.host.E) ∣ EX.piG i - 1) (fun _ X _ _ _ _ _ _ EX e => by rw [e]; exact X.piG_cong i) h`.
+A detailed English derivation is pending.
 -/
 theorem cong {D : D7} {EX : ErrX D} (h : BuiltG D EX) (i : Fin 2) :
     ((D.host.QS * D.host.q * D.host.d : ℕ) : 𝓞 D.host.E) ∣ EX.piG i - 1 :=
@@ -60,9 +60,9 @@ theorem cong {D : D7} {EX : ErrX D} (h : BuiltG D EX) (i : Fin 2) :
     (fun _ X _ _ _ _ _ _ EX e => by rw [e]; exact X.piG_cong i) h
 
 /- English proof (translation)
-Use `builtG_ind (Q := fun D _ => ∀ u : D.what₂.Word, Nonempty ((D.mem u).C.cls 0)) ?_ h u` and prove the remaining obligations. Introduce `B X I l Z _ _ _ _ _ u`. Take `⟨b⟩` from `l.idx0 I.mu0`. Establish `: NeZero (B.R.N 0)` using `⟨by have := B.R.m_add_three_le_k; unfold Ranks.N; omega⟩`. Take `⟨p, -⟩` from `exists_ptAt (R := B.R) I.sel (I.tup I.mu0) (I.cst I.mu0) (u := u) (j := 0) (DecoF.base _ _ _ _ _)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨(I.stp u I.mu0 0).cl b p⟩`.
+Supply the required witnesses or components.
 -/
 theorem nonempty_cls {D : D7} {EX : ErrX D} (h : BuiltG D EX) (u : D.what₂.Word) : Nonempty ((D.mem u).C.cls 0) := by
   refine builtG_ind (Q := fun D _ => ∀ u : D.what₂.Word, Nonempty ((D.mem u).C.cls 0)) ?_ h u
@@ -73,7 +73,7 @@ theorem nonempty_cls {D : D7} {EX : ErrX D} (h : BuiltG D EX) (u : D.what₂.Wor
   exact ⟨(I.stp u I.mu0 0).cl b p⟩
 
 /- English proof (translation)
-Unfold `BuiltG at h ⊢`. Rewrite using `[e]` and apply the resulting hypothesis.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem congr_piG {D : D7} {EX EX' : ErrX D} (h : BuiltG D EX) (e : EX'.piG = EX.piG) : BuiltG D EX' := by
   unfold BuiltG at h ⊢
@@ -86,7 +86,7 @@ def negG {D : D7} (EX : ErrX D) : ErrX D :=
     piG_norm := fun i => by simpa using EX.piG_norm i }
 
 /- English proof (translation)
-Introduce `h'` and use `by have h1 := cong h 0 have h2 : ((D.host.QS * D.host.q * D.host.d : ℕ) : 𝓞 D.host.E) ∣ -EX.piG 0 - 1 := cong h' 0 have h3 : ((D.host.QS * D.host.q * D.host.d : ℕ) : 𝓞 D.host.E) ∣ ((-2 : ℤ) : 𝓞 D.host.E) := by have := dvd_add h1 h2 convert this using 1 push_cast ring have h4 := P …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_builtG_neg {D : D7} {EX : ErrX D} (h : BuiltG D EX) : ¬ BuiltG D (negG EX) := fun h' => by
   have h1 := cong h 0
@@ -102,7 +102,7 @@ theorem not_builtG_neg {D : D7} {EX : ErrX D} (h : BuiltG D EX) : ¬ BuiltG D (n
   omega
 
 /- English proof (translation)
-The claim follows from `let ⟨D, EX, h⟩ := exists_builtG ⟨D, EX, negG EX, h, not_builtG_neg h⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_built_and_not : ∃ (D : D7) (EX EX' : ErrX D), BuiltG D EX ∧ ¬ BuiltG D EX' :=
   let ⟨D, EX, h⟩ := exists_builtG

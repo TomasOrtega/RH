@@ -11,11 +11,11 @@ def univIC (Y : Type*) [TopologicalSpace Y] [IrreducibleSpace Y] : IrreducibleCl
   isClosed' := isClosed_univ
 
 /- English proof (translation)
-Proceed by induction on `a using WithBot.recBotCoe with`. Consider the case `bot => exact absurd rfl ha`. Consider the case `coe a`. Proceed by induction on `b using WithBot.recBotCoe with`. Consider the case `bot => exact absurd h (by simp)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `coe b`. Establish `hb' : b < ⊤`. Rewrite `hb` using `[← WithBot.coe_top]`. Conclude with `WithBot.coe_lt_coe.mp hb`. Establish `h' : a + 1 ≤ b` using `by exact_mod_cast h`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha' : a ≠ ⊤` using `(lt_of_le_of_lt (le_self_add.trans h') hb').ne`. Conclude with `WithBot.coe_lt_coe.mpr ((ENat.add_one_le_iff ha').mp h')`.
+A detailed English derivation is pending.
 -/
 lemma withBot_lt_of_add_one_le {a b : WithBot ℕ∞} (h : a + 1 ≤ b) (hb : b < ⊤) (ha : a ≠ ⊥) : a < b := by
   induction a using WithBot.recBotCoe with
@@ -32,19 +32,17 @@ lemma withBot_lt_of_add_one_le {a b : WithBot ℕ∞} (h : a + 1 ≤ b) (hb : b 
       exact WithBot.coe_lt_coe.mpr ((ENat.add_one_le_iff ha').mp h')
 
 /- English proof (translation)
-Establish `hY : Nonempty (IrreducibleCloseds Y)` using `⟨univIC Y⟩`. Distinguish the cases in `hZ : Nonempty (IrreducibleCloseds Z)`. Establish `hlt : ∀ c : IrreducibleCloseds Z, IrreducibleCloseds.map f hf.continuous c < univIC Y`. Introduce `c`. Use `lt_of_le_of_ne (fun x _ => trivial) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `heq`. Take `⟨y, hy⟩` from `hne`. Establish `h1 : (IrreducibleCloseds.map f hf.continuous c : Set Y) ⊆ range f`. Rewrite using `[IrreducibleCloseds.coe_map]`. Conclude with `closure_minimal (image_subset_range _ _) hf.isClosed_range`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hy` to reduce the goal to its premises. Apply `h1` to reduce the goal to its premises. Rewrite using `[heq]`. Discharge the goal by the elementary cases of `trivial`. Set `g : WithTop (IrreducibleCloseds Z) → IrreducibleCloseds Y` to `fun o => WithTop.recTopCoe (univIC Y) (IrreducibleCloseds.map f hf.continuous) o`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hg : StrictMono g`. Introduce `a b hab`. Proceed by induction on `a using WithTop.recTopCoe with`. Consider the case `top => exact absurd hab (by simp)`. Consider the case `coe a`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Proceed by induction on `b using WithTop.recTopCoe with`. Consider the case `top => exact hlt a`. Consider the case `coe b`. Conclude with `IrreducibleCloseds.map_strictMono_of_isInducing hf.isInducing (WithTop.coe_lt_coe.mp hab)`. Establish `h` using `krullDim_le_of_strictMono g hg`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[krullDim_WithTop]`. Conclude with `withBot_lt_of_add_one_le h hfin (bot_lt_krullDim).ne'`. Rewrite `hZ` using `[not_nonempty_iff]`. Establish `: topologicalKrullDim Z = ⊥` using `krullDim_eq_bot`. Rewrite using `[this]`.
-
-Conclude with `bot_lt_krullDim`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dim_lt_of_closedEmbedding {Z Y : Type*} [TopologicalSpace Z] [TopologicalSpace Y] [IrreducibleSpace Y]
     (f : Z → Y) (hf : IsClosedEmbedding f) (hfin : topologicalKrullDim Y < ⊤) (hne : (range f)ᶜ.Nonempty) :
@@ -83,7 +81,7 @@ theorem dim_lt_of_closedEmbedding {Z Y : Type*} [TopologicalSpace Z] [Topologica
     exact bot_lt_krullDim
 
 /- English proof (translation)
-Introduce `Y B W p ι hι hirr hfin hne`. Establish `: IsClosedImmersion (pullback.fst p ι)` using `inferInstance`. Use `dim_lt_of_closedEmbedding _ (pullback.fst p ι).isClosedEmbedding hfin ?_` and prove the remaining obligations. Rewrite using `[Scheme.Pullback.range_fst, ← preimage_compl]`. Conclude with `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LeafBdry_of : LateralTheory.E.LeafGeoCut.LeafBdry := by
   intro Y B W p ι hι hirr hfin hne

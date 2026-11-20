@@ -15,7 +15,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Unf.DefCpt
 
 /- English proof (translation)
-Introduce `D` and use `GlobalTheory.Unf.Inhab.coCpt_of_isAniso (GlobalTheory.BesselConvDefinite.isAniso_of_isDefinite (D.sp.X 0) (D.sp.X_sig 0) (D.sp.X_def 0 (Nat.zero_le _)))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem coCpt_X_zero : ∀ (D : D7), GlobalTheory.Unf.CoCpt (D.sp.X 0) := fun D =>
   GlobalTheory.Unf.Inhab.coCpt_of_isAniso

@@ -14,17 +14,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.TranslInv
 
 /- English proof (translation)
-Introduce `S A _ _ hA L hL h0 h1 h hh`. Establish `hAA : IsAbelianScheme (G2 A)` using `AbelianSchemeGerms.isAbelianScheme_tensor A A hA hA`. Establish `cube` using `GlobalTheory.CubeTop.cubeTheorem S (G2 A) hAA L hL (G2 A) (lift (1 : G2 A ⟶ A) (snd A A)) (toUnit _ ≫ lift 1 h) (lift (fst A A) 1)`. Establish `zero_of : ∀ {Y : Scheme.{0}} (ψ : Y ⟶ (G2 A).left), (∃ t : (L.pull ψ).Gen, t.IsGen) → GlobalTheory.CechPic.pull ψ (GlobalTheory.CechPic.cls L hL) = 0` using `fun ψ hψ => (GlobalTheory.CechPic.cls_pull hL ψ (pull_isLB hL ψ)).symm.trans ((GlobalTheory.CechPic.cls_eq_zero_iff _).2 hψ)`. Establish `e_abc : lift (1 : G2 A ⟶ A) (snd A A) * (toUnit _ ≫ lift 1 h) * lift (fst A A) 1 = GlobalTheory.UPel.HT.Hecke.transl (lift 1 h : 𝟙_ (Over S) ⟶ G2 A)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [GlobalTheory.UPel.HT.Hecke.transl, MonObj.mul_comp, MonObj.comp_mul]`. Establish `e_ab : lift (1 : G2 A ⟶ A) (snd A A) * (toUnit _ ≫ lift 1 h) = (snd A A * (toUnit _ ≫ h)) ≫ lift (1 : A ⟶ A) (𝟙 A)`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [MonObj.mul_comp, MonObj.comp_mul]`. Establish `e_ac : lift (1 : G2 A ⟶ A) (snd A A) * lift (fst A A) 1 = 𝟙 _`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [MonObj.mul_comp, MonObj.comp_mul]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `e_bc : (toUnit _ ≫ lift 1 h) * lift (fst A A) 1 = fst A A ≫ lift (𝟙 A) (toUnit A ≫ h)`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [MonObj.mul_comp, MonObj.comp_mul]`. Establish `e_a : lift (1 : G2 A ⟶ A) (snd A A) = snd A A ≫ lift (1 : A ⟶ A) (𝟙 A)`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp`. Establish `e_b : (toUnit _ ≫ lift 1 h : G2 A ⟶ G2 A) = (toUnit _ ≫ h) ≫ lift (1 : A ⟶ A) (𝟙 A)`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp`. Establish `e_c : lift (fst A A) (1 : G2 A ⟶ A) = fst A A ≫ lift (𝟙 A) (1 : A ⟶ A)`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp`. Establish `e_1 : (1 : G2 A ⟶ G2 A) = (1 : G2 A ⟶ A) ≫ lift (1 : A ⟶ A) (𝟙 A)`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Take `⟨t, ht⟩` from `cube`. Establish `hz` using `(GlobalTheory.CechPic.cls_eq_zero_iff (LB.isLB_linComb hL _ _)).2 ⟨t, ht⟩`. Rewrite `hz` using `[GlobalTheory.CechPic.cls_linComb hL]`. Simplify using `only [Fin.sum_univ_eight, Matrix.cons_val] at hz`. Rewrite `hz` using `[e_abc, e_ab, e_ac, e_bc, e_a, e_b, e_c, e_1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Over.comp_left, Over.id_left, GlobalTheory.CechPic.pull_comp, GlobalTheory.CechPic.pull_id, zero_of _ h0, zero_of _ h1, zero_of _ hh, map_zero] at hz`. Simplify using `only [one_zsmul, neg_one_zsmul, neg_zero, add_zero, ← sub_eq_add_neg, sub_eq_zero] at hz`. Conclude with `(GlobalTheory.CechPic.cls_eq_iff hL (pull_isLB hL _)).1 ((GlobalTheory.CechPic.cls_pull hL _ (pull_isLB hL _)).trans hz).symm`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem translSnd : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A →
     ∀ (L : LB (G2 A).left), L.IsLB → (∃ t : (L.pull (lift (1 : A ⟶ A) (𝟙 A)).left).Gen, t.IsGen) →

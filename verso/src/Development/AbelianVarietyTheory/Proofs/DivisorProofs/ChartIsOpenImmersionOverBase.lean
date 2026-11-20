@@ -8,7 +8,7 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Use `ext`. Establish `hf` using `Over.w f`. Establish `hg` using `Over.w g`. Simplify using `only [Over.mk_hom] at hf hg`. Conclude with `(Category.comp_id f.left).symm.trans (hf.trans (hg.symm.trans (Category.comp_id g.left)))`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem transl_toTerm_eq {S : Scheme.{0}} {X : Over S} (f g : X ⟶ Over.mk (𝟙 S)) : f = g := by
   ext
@@ -18,7 +18,7 @@ theorem transl_toTerm_eq {S : Scheme.{0}} {X : Over S} (f g : X ⟶ Over.mk (�
   exact (Category.comp_id f.left).symm.trans (hf.trans (hg.symm.trans (Category.comp_id g.left)))
 
 /- English proof (translation)
-Unfold `transl`. Rewrite using `[comp_mul, Category.comp_id, ← Category.assoc, transl_toTerm_eq (_ ≫ Over.homMk G.hom (by simp)) (Over.homMk G.hom (by simp)), _root_.mul_assoc, ← comp_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem transl_comp {S : Scheme.{0}} {G : Over S} [GrpObj G] (y z : Over.mk (𝟙 S) ⟶ G) :
     transl y ≫ transl z = transl (y * z) := by
@@ -27,7 +27,7 @@ theorem transl_comp {S : Scheme.{0}} {G : Over S} [GrpObj G] (y z : Over.mk (�
     transl_toTerm_eq (_ ≫ Over.homMk G.hom (by simp)) (Over.homMk G.hom (by simp)), _root_.mul_assoc, ← comp_mul]
 
 /- English proof (translation)
-Unfold `transl`. Rewrite using `[comp_one, _root_.mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem transl_one {S : Scheme.{0}} {G : Over S} [GrpObj G] : transl (1 : Over.mk (𝟙 S) ⟶ G) = 𝟙 G := by
   unfold transl
@@ -40,9 +40,9 @@ instance transl_left_isIso {S : Scheme.{0}} {G : Over S} [GrpObj G] (y : Over.mk
   inferInstanceAs (IsIso ((Over.forget S).map (transl y)))
 
 /- English proof (translation)
-Use `N.isOpen` as an intermediate fact. Consider the cases of `j with`. Consider the case `none => exact ⟨N.isOpen, N.u_over⟩`. Consider the case `some k`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Near.chart_some]`. Use `infer_instance`. Rewrite using `[Near.chart_some, Category.assoc, Over.w, N.u_over]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Near.chart_isOpenImmersion_over {R : Type} [CommRing R] [IsLocalRing R] (S : Scheme.{0}) (π : S ⟶ Sp R)
     (G' : Over S) [GrpObj G'] (N : Near π G') (n : ℕ) (x : Fin n → (Over.mk (𝟙 S) ⟶ G')) (j : Option (Fin n)) :

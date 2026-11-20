@@ -5,13 +5,13 @@ open scoped InnerProductSpace BigOperators
 namespace GlobalTheory.GenUnr
 
 /- English proof (translation)
-Establish `hfin : Finite (O ⧸ Ideal.span {ϖ ^ (2 * N)})` using `IsLocalRing.finite_quotient_iff.mpr ⟨2 * N, by rw [hϖ.maximalIdeal_eq, Ideal.span_singleton_pow]⟩`. Use `haveI := Fintype.ofFinite (Matrix (Fin r ⊕ Fin t) (Fin r) (O ⧸ Ideal.span {ϖ ^ (2 * N)}))`. Establish `hϖK : algebraMap O K ϖ ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective O K)).mpr hϖ.ne_zero`. Set `lift : O ⧸ Ideal.span {ϖ ^ (2 * N)} → O` to `fun c => (Ideal.Quotient.mk_surjective c).choose`. Establish `hlift : ∀ c, Ideal.Quotient.mk _ (lift c) = c` using `fun c => (Ideal.Quotient.mk_surjective c).choose_spec`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `rep : Matrix (Fin r ⊕ Fin t) (Fin r) (O ⧸ Ideal.span {ϖ ^ (2 * N)}) → Matrix (Fin r ⊕ Fin t) (Fin r) K` to `fun c => (algebraMap O K (ϖ ^ N))⁻¹ • (c.map lift).map (algebraMap O K)`. Use `⟨Finset.univ.image rep, fun x z hxz => ?_⟩` and prove the remaining obligations. Establish `hdiff : ∀ i j, ∃ a : O, a * ϖ ^ (2 * N) = z i j - lift (Ideal.Quotient.mk _ (z i j))` using `fun i j => Ideal.mem_span_singleton'.mp (Ideal.Quotient.eq.mp (hlift _).symm)`. Use `choose w hw using hdiff`. Use `⟨rep (z.map (Ideal.Quotient.mk _)), Finset.mem_image_of_mem _ (Finset.mem_univ _), Matrix.of w, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use extensionality with `i j`. Establish `hx` using `congrFun (congrFun hxz i) j`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, Matrix.map_apply, map_pow] at hx`. Establish `hz : lift (Ideal.Quotient.mk _ (z i j)) = z i j - w i j * ϖ ^ (2 * N)`. Rewrite using `[hw]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [rep, Matrix.add_apply, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, hz, map_sub, map_mul, map_pow, Matrix.of_apply, ← hx]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem finite_classes_mod_pow (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [Finite (IsLocalRing.ResidueField O)] [Field K] [Algebra O K] [IsFractionRing O K]

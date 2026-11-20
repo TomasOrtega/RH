@@ -13,9 +13,9 @@ noncomputable section
 namespace GlobalTheory.OmegaSplit
 
 /- English proof (translation)
-Establish `e1` using `measurePreserving_prodAssoc a b (c.prod d)`. Establish `e2` using `(measurePreserving_prodAssoc b c d).symm`. Establish `e3` using `(Measure.measurePreserving_swap (μ := b) (ν := c)).prod (MeasurePreserving.id d)`. Establish `e4` using `measurePreserving_prodAssoc c b d`. Establish `e5` using `(measurePreserving_prodAssoc a c (b.prod d)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `e5.comp (((MeasurePreserving.id a).prod (e4.comp (e3.comp e2))).comp e1)`.
+A detailed English derivation is pending.
 -/
 theorem mp_interchange {A B C D : Type} [MeasurableSpace A] [MeasurableSpace B] [MeasurableSpace C]
     [MeasurableSpace D] (a : Measure A) (b : Measure B) (c : Measure C) (d : Measure D)
@@ -30,9 +30,9 @@ theorem mp_interchange {A B C D : Type} [MeasurableSpace A] [MeasurableSpace B] 
   exact e5.comp (((MeasurePreserving.id a).prod (e4.comp (e3.comp e2))).comp e1)
 
 /- English proof (translation)
-Establish `h2` using `(rotation (Circle.exp (Real.pi / 2))).measurePreserving`. Establish `h3` using `Complex.volume_preserving_equiv_real_prod.symm`. Establish `h4` using `h2.comp h3`. Establish `h5 : (fun t : ℝ × ℝ => ((t.1 : ℂ) * Complex.I + Complex.I * ((t.2 : ℂ) * Complex.I))) = rotation (Circle.exp (Real.pi / 2)) ∘ Complex.measurableEquivRealProd.symm`. Use function extensionality and compare the values at `ab`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[rotation_apply, Complex.measurableEquivRealProd, Complex.ext_iff]`. Rewrite using `[h5]`. Conclude with `h4`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mp_diag : MeasurePreserving
     (fun t : ℝ × ℝ => ((t.1 : ℂ) * Complex.I + Complex.I * ((t.2 : ℂ) * Complex.I)))
@@ -48,22 +48,22 @@ theorem mp_diag : MeasurePreserving
   exact h4
 
 /- English proof (translation)
-Establish `h` using `(rotation ⟨s, by simpa [Submonoid.unitSphere] using hs⟩).measurePreserving`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mp_unit (s : ℂ) (hs : ‖s‖ = 1) : MeasurePreserving (fun z : ℂ => s * z) volume volume := by
   have h := (rotation ⟨s, by simpa [Submonoid.unitSphere] using hs⟩).measurePreserving
   exact h
 
 /- English proof (translation)
-Use `set n := Fintype.card ι with hn`. Establish `hI : MeasurePreserving (fun (z : ι → ℂ) i => Complex.I * z i) volume volume` using `volume_preserving_pi fun _ => mp_unit _ Complex.norm_I`. Establish `hS : MeasurePreserving (fun (z : ι → ℂ) i => s i * (starRingEnd ℂ) (z i)) volume volume` using `volume_preserving_pi (f := fun i z => s i * (starRingEnd ℂ) z) fun i => (mp_unit _ (hs i)).comp Complex.conjLIE.measurePreserving`. Establish `hsc : MeasurePreserving (fun z : ι → ℂ => (-2 : ℝ) • z) (((2 : ℝ≥0∞) ^ n * 2 ^ n) • volume) volume`. Use `⟨measurable_const_smul _, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.map_smul, Measure.map_addHaar_smul _ (by norm_num), smul_smul]`. Establish `hf : Module.finrank ℝ (ι → ℂ) = n * 2`. Simplify using `[Module.finrank_pi_fintype, hn]`. Establish `h1 : ENNReal.ofReal |((-2 : ℝ) ^ Module.finrank ℝ (ι → ℂ))⁻¹| = ((2 : ℝ≥0∞) ^ n * 2 ^ n)⁻¹`. Rewrite using `[hf, abs_inv, abs_pow, abs_neg, abs_two, ENNReal.ofReal_inv_of_pos (by positivity), ENNReal.ofReal_pow (by norm_num), mul_two, pow_add]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[h1, ENNReal.mul_inv_cancel (by simp) (by finiteness), one_smul]`. Establish `hsh1` using `measurePreserving_add_prod (volume : Measure (ι → ℂ)) (volume : Measure (ι → ℂ))`. Establish `hsh2` using `measurePreserving_prod_add (volume : Measure (ι → ℂ)) (volume : Measure (ι → ℂ))`. Establish `hA` using `(hsh1.comp ((MeasurePreserving.id volume).prod hI)).smul_measure ((2 : ℝ≥0∞) ^ n * 2 ^ n)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB` using `((MeasurePreserving.id volume).prod hS).comp (hsh2.comp ((MeasurePreserving.id (volume : Measure (ι → ℂ))).prod hsc))`. Use `haveI : SFinite (((2 : ℝ≥0∞) ^ n • volume : Measure (ι → ℂ))) := inferInstance`. Rewrite `hB` using `[Measure.prod_smul_right]`. Rewrite using `[Measure.prod_smul_left, Measure.prod_smul_right, smul_smul]`. Use `hB.comp hA using 1` and compare the differences between its conclusion and the goal.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components.
 
-Use function extensionality and compare the values at `z`. Use extensionality with `i`. Simplify using the standard rewrite rules. Simplify using `[map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem mp_colrow {ι : Type} [Fintype ι] (s : ι → ℂ) (hs : ∀ i, ‖s i‖ = 1) :
     MeasurePreserving (fun z : (ι → ℂ) × (ι → ℂ) =>
@@ -119,9 +119,9 @@ def idxEquiv (ι : Type) : (Unit ⊕ (ι ⊕ ι)) ⊕ (ι × ι) ≃ Option ι �
   right_inv := by rintro ⟨_ | _, _ | _⟩ <;> rfl
 
 /- English proof (translation)
-Establish `h1` using `(volume_preserving_funUnique Unit ℂ).symm`. Establish `h2` using `volume_measurePreserving_sumPiEquivProdPi_symm (fun _ : ι ⊕ ι => ℂ)`. Establish `h3` using `volume_measurePreserving_sumPiEquivProdPi_symm (fun _ : Unit ⊕ (ι ⊕ ι) => ℂ)`. Establish `h4` using `volume_measurePreserving_sumPiEquivProdPi_symm (fun _ : (Unit ⊕ (ι ⊕ ι)) ⊕ (ι × ι) => ℂ)`. Establish `h5` using `volume_measurePreserving_piCongrLeft (fun _ : κ × κ => ℂ) ((idxEquiv ι).trans (e.prodCongr e))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨_, h5.comp (h4.comp ((h3.comp (h1.prod h2)).prod (MeasurePreserving.id volume))), ?_⟩` and prove the remaining obligations. Introduce `x`. Establish `key` using `fun y i => MeasurableEquiv.piCongrLeft_apply_apply ((idxEquiv ι).trans (e.prodCongr e)) (β := fun _ : κ × κ => ℂ) y i`. Conclude with `⟨key _ (.inl (.inl ())), fun a => key _ (.inl (.inr (.inl a))), fun b => key _ (.inl (.inr (.inr b))), fun a b => key _ (.inr (a, b))⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_assemble {ι κ : Type} [Fintype ι] [Fintype κ] (e : Option ι ≃ κ) :
     ∃ f : (ℂ × ((ι → ℂ) × (ι → ℂ))) × (ι × ι → ℂ) → (κ × κ → ℂ),
@@ -147,7 +147,7 @@ theorem exists_assemble {ι κ : Type} [Fintype ι] [Fintype κ] (e : Option ι 
 variable {P Q P' Q' : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`. Simplify using `[Formalism.UG.Jpq, sg, Matrix.one_apply, Matrix.diagonal_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Jpq_eq (P Q : ℕ) : Formalism.UG.Jpq P Q = Matrix.diagonal fun i => (sg i : ℂ) := by
   ext i j
@@ -156,21 +156,21 @@ theorem Jpq_eq (P Q : ℕ) : Formalism.UG.Jpq P Q = Matrix.diagonal fun i => (sg
   split_ifs <;> simp
 
 /- English proof (translation)
-Apply the tactic sequence `rcases sg_eq i with h | h <;> rw [h] <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sg_mul_self (i : Fin P ⊕ Fin Q) : (sg i : ℂ) * sg i = 1 := by
   rcases sg_eq i with h | h <;> rw [h] <;> simp
 
 /- English proof (translation)
-Apply the tactic sequence `rcases sg_eq i with h | h <;> rw [h] <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem norm_sg (i : Fin P ⊕ Fin Q) : ‖(sg i : ℂ)‖ = 1 := by
   rcases sg_eq i with h | h <;> rw [h] <;> simp
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Xᴴ * Formalism.UG.Jpq P Q + Formalism.UG.Jpq P Q * X = 0 ↔ _`. Rewrite using `[Jpq_eq, ← Matrix.ext_iff]`. Use `forall_congr' fun a => forall_congr' fun b => ?_` and prove the remaining obligations. Simplify using `only [Matrix.add_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, conjTranspose_apply, Matrix.zero_apply, Complex.star_def]`. Establish `ha` using `sg_mul_self a`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take the linear combination `(sg a : ℂ) * h - X a b * ha`. Introduce `h`. Take the linear combination `(sg a : ℂ) * h - (sg b : ℂ) * (starRingEnd ℂ) (X b a) * ha`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem mem_lieU_iff (X : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) :
     X ∈ lieU P Q ↔ ∀ a b, X a b = -((sg a : ℂ) * sg b) * (starRingEnd ℂ) (X b a) := by
@@ -203,7 +203,7 @@ def coord (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q)) (he : SignCompa
     simp
 
 /- English proof (translation)
-Establish `h` using `(mem_lieU_iff _).1 X.2 k k`. Rewrite `h` using `[sg_mul_self]`. Establish `h2` using `congrArg Complex.re h`. Simplify using `at h2`. Apply the tactic sequence `apply Complex.ext <;> simp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -217,7 +217,7 @@ theorem diag_eq (X : lieU P Q) (k : Fin P ⊕ Fin Q) :
   linarith
 
 /- English proof (translation)
-The claim follows from `(mem_lieU_iff _).1 X.2 _ _`.
+A detailed English derivation is pending.
 -/
 theorem row_eq (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q)) (X : lieU P Q) (b) :
     X.val (e none) (e (some b)) = -((sg (e none) : ℂ) * sg (e (some b))) *
@@ -225,11 +225,11 @@ theorem row_eq (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q)) (X : lieU 
   (mem_lieU_iff _).1 X.2 _ _
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `X h`. Establish `h1 : (X.val (e none) (e none)).im = 0` using `congrArg (fun t => t.1.1) h`. Establish `h2 : ∀ a, X.val (e (some a)) (e none) = 0` using `fun a => congrArg (fun t => t.1.2 a) h`. Establish `h3 : ∀ a b, X.val (e (some a)) (e (some b)) = 0` using `fun a b => congrArg (fun t => t.2.val a b) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `i j`. Take `⟨i, rfl⟩` from `e.surjective i`. Take `⟨j, rfl⟩` from `e.surjective j`. Apply the tactic sequence `rcases i with _ | i <;> rcases j with _ | j`. Rewrite using `[diag_eq, h1]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[row_eq, h2]`. Simplify using the standard rewrite rules. Conclude with `h2 i`. Conclude with `h3 i j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coord_injective (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q)) (he : SignCompat e) :
     Function.Injective (coord e he) := by
@@ -249,17 +249,17 @@ theorem coord_injective (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q)) (
   · exact h3 i j
 
 /- English proof (translation)
-Introduce and unpack `⟨⟨θ, z⟩, Y⟩`. Set `g : Option (Fin P' ⊕ Fin Q') → Option (Fin P' ⊕ Fin Q') → ℂ` to `fun i j => match i, j with`. Consider the case `none, none => (θ : ℂ) * Complex.I`. Consider the case `some a, none => z a`. Consider the case `none, some b => -((sg (e none) : ℂ) * sg (e (some b))) * (starRingEnd ℂ) (z b)`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `some a, some b => Y.val a b`. Use `⟨⟨Matrix.of fun i j => g (e.symm i) (e.symm j), ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_lieU_iff]`. Introduce `i j`. Take `⟨i, rfl⟩` from `e.surjective i`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨j, rfl⟩` from `e.surjective j`. Simplify using `only [Matrix.of_apply, Equiv.symm_apply_apply]`. Apply the tactic sequence `rcases i with _ | i <;> rcases j with _ | j`. Rewrite using `[sg_mul_self]`. Simplify using `[g]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `h1` using `sg_mul_self (e none)`. Establish `h2` using `sg_mul_self (e (some i))`. Simplify using `only [g, map_mul, map_neg, Complex.conj_ofReal, Complex.conj_conj]`. Take the linear combination `(-z i) * h1 - z i * (sg (e none) : ℂ) * (sg (e none) : ℂ) * h2`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[he, he]`. Conclude with `(mem_lieU_iff _).1 Y.2 i j`. Use `Prod.ext (Prod.ext ?_ ?_) ?_` and prove the remaining obligations. Simplify using `[coord, g]`. Use function extensionality and compare the values at `a`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[coord, g]`. Use extensionality with `a b`. Simplify using `[coord, g]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coord_surjective (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q)) (he : SignCompat e) :
     Function.Surjective (coord e he) := by
@@ -291,11 +291,11 @@ theorem coord_surjective (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q)) 
     · ext a b; simp [coord, g]
 
 /- English proof (translation)
-Establish `h1 : ‖X.val (e none) (e none)‖ = |(X.val (e none) (e none)).im|` using `by conv_lhs => rw [diag_eq]`. Simplify using the standard rewrite rules. Establish `h2 : ∀ b, ‖X.val (e none) (e (some b))‖ = ‖X.val (e (some b)) (e none)‖`. Introduce `b`. Rewrite using `[row_eq, norm_mul, norm_neg, norm_mul, norm_sg, norm_sg]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `∑ i, ∑ j, ‖X.val i j‖ = |(X.val (e none) (e none)).im| + 2 * ∑ a, ‖X.val (e (some a)) (e none)‖ + ∑ a, ∑ b, ‖X.val (e (some a)) (e (some b))‖`. Establish `h3 : ∀ i, ∑ j, ‖X.val i j‖ = ‖X.val i (e none)‖ + ∑ b, ‖X.val i (e (some b))‖`. Introduce `i`. Rewrite using `[← e.sum_comp, Fintype.sum_option]`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [h3]`. Rewrite using `[← e.sum_comp, Fintype.sum_option, Finset.sum_add_distrib, h1]`. Simplify using `only [h2]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem matrixEntryAbsSum_unitaryLie_coordinates_split (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q)) (he : SignCompat e) (X : lieU P Q) :
     l1 X.val = tanGauge (coord e he X).1 + l1 (coord e he X).2.val := by
@@ -316,31 +316,31 @@ theorem matrixEntryAbsSum_unitaryLie_coordinates_split (e : Option (Fin P' ⊕ F
   ring
 
 /- English proof (translation)
-Introduce `P Q P' Q' e he lam lam' hl hl' r`. Establish `: BorelSpace (lieU P Q)` using `⟨rfl⟩`. Establish `: BorelSpace (lieU P' Q')` using `⟨rfl⟩`. Establish `: SecondCountableTopology (Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ)` using `inferInstanceAs (SecondCountableTopology ((Fin P ⊕ Fin Q) → (Fin P ⊕ Fin Q) → ℂ))`. Establish `: SecondCountableTopology (Matrix (Fin P' ⊕ Fin Q') (Fin P' ⊕ Fin Q') ℂ)` using `inferInstanceAs (SecondCountableTopology ((Fin P' ⊕ Fin Q') → (Fin P' ⊕ Fin Q') → ℂ))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: SecondCountableTopology (lieU P Q)` using `TopologicalSpace.Subtype.secondCountableTopology _`. Establish `: SecondCountableTopology (lieU P' Q')` using `TopologicalSpace.Subtype.secondCountableTopology _`. Establish `: LocallyCompactSpace (lieU P Q)` using `LocallyCompactSpace.of_finiteDimensional_of_complete ℝ _`. Establish `: LocallyCompactSpace (lieU P' Q')` using `LocallyCompactSpace.of_finiteDimensional_of_complete ℝ _`. Take `⟨h1, h2⟩` from `hl'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `D : lieU P Q ≃L[ℝ] (ℝ × Sp P' Q') × lieU P' Q'` to `(LinearEquiv.ofBijective (coord e he) ⟨coord_injective e he, coord_surjective e he⟩).toContinuousLinearEquiv`. Establish `hD : ∀ X, D X = coord e he X` using `fun _ => rfl`. Establish `hn : Fintype.card (Fin P' ⊕ Fin Q') = P' + Q'` using `by simp`. Set `μ : Measure (Sp P' Q')` to `(2 : ℝ≥0∞) ^ Fintype.card (Fin P' ⊕ Fin Q') • volume`. Establish `: μ.IsAddHaarMeasure` using `Measure.IsAddHaarMeasure.smul _ (by simp) (by finiteness)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ν : Measure ((ℝ × Sp P' Q') × lieU P' Q')` to `((volume : Measure ℝ).prod μ).prod lam'`. Establish `: ((volume : Measure ℝ).prod μ).IsAddHaarMeasure` using `Measure.prod.instIsAddHaarMeasure _ _`. Establish `: ν.IsAddHaarMeasure` using `Measure.prod.instIsAddHaarMeasure _ _`. Establish `hc : ∀ A B : ℕ, Continuous (fun ab : lieU A B × lieU A B => entries ((ab.1 : Matrix (Fin A ⊕ Fin B) (Fin A ⊕ Fin B) ℂ) + Complex.I • (ab.2 : Matrix (Fin A ⊕ Fin B) (Fin A ⊕ Fin B) ℂ)))`. Introduce `A B`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `continuous_pi fun ij => ?_` and prove the remaining obligations. Conclude with `((continuous_subtype_val.comp continuous_fst).add ((continuous_subtype_val.comp continuous_snd).const_smul Complex.I)).matrix_elem ij.1 ij.2`. Establish `hm : Measurable D.symm` using `D.symm.continuous.measurable`. Establish `hω : IsOmegaLeb (ν.map D.symm)`. Use `⟨D.symm.isAddHaarMeasure_map ν, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf, hf'⟩` from `exists_assemble e`. Establish `m1` using `mp_interchange ((volume : Measure ℝ).prod μ) lam' ((volume : Measure ℝ).prod μ) lam'`. Establish `m2` using `mp_interchange (volume : Measure ℝ) μ (volume : Measure ℝ) μ`. Establish `m3` using `mp_colrow (fun b => -((sg (e none) : ℂ) * sg (e (some b)))) (fun b => by rw [norm_neg, norm_mul, norm_sg, norm_sg, mul_one])`. Establish `m4 : MeasurePreserving _ (lam'.prod lam') volume` using `⟨(hc P' Q').measurable, h2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m5` using `hf.comp ((((mp_diag.prod m3).comp m2).prod m4).comp m1)`. Rewrite using `[Measure.map_prod_map _ _ hm hm, Measure.map_map (hc P Q).measurable (hm.prodMap hm), ← m5.map_eq]`. Use `congr 1`. Use function extensionality and compare the values at `⟨x, y⟩ ⟨i, j⟩`. Take `⟨X, rfl⟩` from `D.surjective x`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Y, rfl⟩` from `D.surjective y`. Take `⟨i, rfl⟩` from `e.surjective i`. Take `⟨j, rfl⟩` from `e.surjective j`. Simplify using `only [Function.comp_apply, Prod.map_apply, ContinuousLinearEquiv.symm_apply_apply]`. Express the relevant statement in the definitionally equal form `X.val (e i) (e j) + Complex.I * Y.val (e i) (e j) = _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases i with _ | i <;> rcases j with _ | j`. Rewrite using `[(hf' _).1, diag_eq X, diag_eq Y]`. Both sides reduce to the same expression. Rewrite using `[(hf' _).2.2.1, row_eq e X, row_eq e Y]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hf' _).2.1]`. Both sides reduce to the same expression. Rewrite using `[(hf' _).2.2.2]`. Both sides reduce to the same expression. Establish `hopen : IsOpen (ballU P Q r)` using `isOpen_lt (continuous_matrixEntryAbsSum.comp continuous_subtype_val) continuous_const`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.CompactDualUnique.isOmegaLeb_unique hl hω, Measure.map_apply hm hopen.measurableSet]`. Establish `hset : D.symm ⁻¹' ballU P Q r = {p | tanGauge p.1 + l1 (p.2 : Matrix (Fin P' ⊕ Fin Q') (Fin P' ⊕ Fin Q') ℂ) < r}`. Use extensionality with `p`. Take `⟨X, rfl⟩` from `D.surjective p`. Rewrite using `[Set.mem_preimage, D.symm_apply_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `l1 X.val < r ↔ _`. Rewrite using `[matrixEntryAbsSum_unitaryLie_coordinates_split e he]`. Both sides reduce to the same expression. Rewrite using `[hset]`. Simplify using `only [ν, μ, hn]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.prod_smul_right, Measure.prod_smul_left, Measure.smul_apply, smul_eq_mul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem omega_split : ∀ (P Q P' Q' : ℕ) (e : Option (Fin P' ⊕ Fin Q') ≃ (Fin P ⊕ Fin Q)), SignCompat e → ∀ (lam : Measure (lieU P Q)) (lam' : Measure (lieU P' Q')), IsOmegaLeb lam → IsOmegaLeb lam' → ∀ r : ℝ, lam (ballU P Q r) = (2 : ℝ≥0∞) ^ (P' + Q') * ((volume : Measure (ℝ × Sp P' Q')).prod lam') {p | tanGauge p.1 + l1 (p.2 : Matrix (Fin P' ⊕ Fin Q') (Fin P' ⊕ Fin Q') ℂ) < r} := by
   intro P Q P' Q' e he lam lam' hl hl' r

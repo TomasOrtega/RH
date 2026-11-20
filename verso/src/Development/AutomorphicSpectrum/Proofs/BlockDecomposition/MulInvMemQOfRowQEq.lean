@@ -12,9 +12,7 @@ section Alg
 variable {k : Type} [Field k]
 
 /- English proof (translation)
-Use `show GlobalTheory.BZMir.mirabolicProjection k (n + 1) (a * b⁻¹) ∈ GlobalTheory.BZMir.Mir k n`. Establish `hab : Matrix.vecMul (GlobalTheory.BZMir.eLast k n) (↑(GlobalTheory.BZMir.mirabolicProjection k (n + 1) a) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) = Matrix.vecMul (GlobalTheory.BZMir.eLast k n) (↑(GlobalTheory.BZMir.mirabolicProjection k (n + 1) b) : Matrix (Fin (n + 1)) (Fin (n + …`. Rewrite using `[GlobalTheory.BZMir.vecMul_eLast, GlobalTheory.BZMir.vecMul_eLast]`. Use function extensionality and compare the values at `j`. Conclude with `congrFun h j`.
-
-Rewrite using `[GlobalTheory.BZMir.mem_Mir_iff, ← GlobalTheory.BZMir.vecMul_eLast k n (↑(GlobalTheory.BZMir.mirabolicProjection k (n + 1) (a * b⁻¹)) : Matrix (Fin (n + 1)) (Fin (n + 1)) k), map_mul, map_inv, Units.val_mul, ← Matrix.vecMul_vecMul, hab, Matrix.vecMul_vecMul, ← Units.val_mul, mul_ …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_inv_mem_Q_of_rowQ_eq (n : ℕ) (a b : Mir k (n + 1)) (h : rowQ k n a = rowQ k n b) :
     a * b⁻¹ ∈ Q k n := by
@@ -36,11 +34,11 @@ def rowMat (n : ℕ) (r : Fin (n + 1) → k) : Matrix (Fin (n + 2)) (Fin (n + 2)
     (Fin.lastCases (motive := fun _ => k) 0 r)
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[GlobalTheory.CompanionTheory.BZPhiPhi.rowMat, Matrix.updateRow_apply]`. Use `split_ifs with hi`. Substitute `hi` using the available equality. Proceed by induction on `j using Fin.lastCases with`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Proceed by induction. Treat this case separately.
 
-Consider the case `last => simp [Matrix.one_apply, Fin.castSucc_ne_last]`. Consider the case `cast j`. Distinguish the cases in `hj : j = Fin.last n`. Substitute `hj` using the available equality. Simplify using `[Matrix.one_apply]`.
+Treat this case separately. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.one_apply, Pi.single_apply, hj, Ne.symm hj]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rowMat_single (n : ℕ) : rowMat n (Pi.single (Fin.last n) (1 : k)) = 1 := by
   ext i j
@@ -71,7 +69,7 @@ theorem rowEl_val (n : ℕ) (r : Fin (n + 1) → k) (h : (rowMat n r).det ≠ 0)
     (((rowEl n r h : Mir k (n + 1)) : GL (Fin (n + 2)) k) : Matrix (Fin (n + 2)) (Fin (n + 2)) k) = rowMat n r := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Use `show GlobalTheory.CompanionTheory.BZPhiPhi.rowMat n r (Fin.castSucc (Fin.last n)) (Fin.castSucc j) = r j`. Rewrite using `[GlobalTheory.CompanionTheory.BZPhiPhi.rowMat, Matrix.updateRow_self, Fin.lastCases_castSucc]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowQ_rowEl (n : ℕ) (r : Fin (n + 1) → k) (h : (rowMat n r).det ≠ 0) :
     rowQ k n (rowEl n r h) = r := by
@@ -86,11 +84,11 @@ section Top
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [GlobalTheory.CompanionTheory.BZPhiPhi.rowMat]`. Distinguish the cases in `hi : i = Fin.castSucc (Fin.last n)`. Substitute `hi` using the available equality. Simplify using `only [Matrix.updateRow_self]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Proceed by induction on `j using Fin.lastCases with`. Consider the case `last`. Simplify using `only [Fin.lastCases_last]`. Conclude with `continuous_const`. Consider the case `cast j`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.lastCases_castSucc]`. Conclude with `continuous_apply j`. Simplify using `only [Matrix.updateRow_ne hi]`. Conclude with `continuous_const`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_rowMat (n : ℕ) : Continuous (rowMat (k := k) n) := by
   refine continuous_pi fun i => continuous_pi fun j => ?_
@@ -109,9 +107,9 @@ theorem continuous_rowMat (n : ℕ) : Continuous (rowMat (k := k) n) := by
     exact continuous_const
 
 /- English proof (translation)
-Establish `hM : Continuous fun r : {r : Fin (n + 1) → k // (GlobalTheory.CompanionTheory.BZPhiPhi.rowMat n r).det ≠ 0} => GlobalTheory.CompanionTheory.BZPhiPhi.rowMat n r.1` using `(GlobalTheory.CompanionTheory.BZPhiPhi.continuous_rowMat n).comp continuous_subtype_val`. Apply `continuous_induced_rng.2` to reduce the goal to its premises. Rewrite using `[Units.continuous_iff]`. Use `⟨hM, ?_⟩` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Matrix.coe_units_inv]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `show Continuous fun r : {r : Fin (n + 1) → k // (GlobalTheory.CompanionTheory.BZPhiPhi.rowMat n r).det ≠ 0} => (GlobalTheory.CompanionTheory.BZPhiPhi.rowMat n r.1)⁻¹`. Simplify using `only [Matrix.inv_def, Ring.inverse_eq_inv']`. Conclude with `(hM.matrix_det.inv₀ fun r => r.2).smul hM.matrix_adjugate`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_rowEl (n : ℕ) :
     Continuous fun r : {r : Fin (n + 1) → k // (rowMat n r).det ≠ 0} => rowEl n r.1 r.2 := by

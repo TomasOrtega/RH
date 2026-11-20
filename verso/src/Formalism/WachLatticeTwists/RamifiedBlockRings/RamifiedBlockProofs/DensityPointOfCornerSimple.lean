@@ -11,11 +11,11 @@ namespace Formalism.RepresentationBoundsCohomology.ringDataObjects
 open Formalism.NG Formalism.TruncatedSeriesCounting.TruncatedSeriesCountingIdentities
 
 /- English proof (translation)
-Establish `hWU' : W.map (Polynomial.C : A →+* Polynomial A) * U.map Polynomial.C = 1`. Simplify `congrArg (fun M => M.map (Polynomial.C : A →+* Polynomial A)) hWU` using `[Matrix.map_mul]`. Establish `key : (Polynomial.X : Polynomial A) • (U * W).map Polynomial.C - (U * B * W).map Polynomial.C + (1 - U * W).map Polynomial.C = 1 + U.map Polynomial.C * (((Polynomial.X : Polynomial A) • 1 - B.map Polynomial.C - 1) * W.map Polynomial.C)`. Establish `h1 : (1 - U * W).map (Polynomial.C : A →+* Polynomial A) = 1 - U.map Polynomial.C * W.map Polynomial.C`. Use `map_sub (Polynomial.C : A →+* Polynomial A).mapMatrix 1 (U * W)` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_one, RingHom.mapMatrix_apply, RingHom.mapMatrix_apply, Matrix.map_mul]`. Then use the resulting hypothesis. Rewrite using `[h1, Matrix.map_mul, Matrix.map_mul, Matrix.map_mul, Matrix.sub_mul, Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_sub, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_smul, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws. Unfold `blockPoly`. Rewrite using `[key, Matrix.det_one_add_mul_comm, Matrix.mul_assoc, hWU', Matrix.mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `Matrix.charpoly`. Use `congr 1`. Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [h, Matrix.charmatrix_apply, Matrix.one_apply]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blockPoly_factor {A : Type*} [CommRing A] {d S : Type*} [Fintype d] [DecidableEq d] [Fintype S]
     [DecidableEq S] (U : Matrix d S A) (W : Matrix S d A) (hWU : W * U = 1) (B : Matrix S S A) :
@@ -41,7 +41,7 @@ theorem blockPoly_factor {A : Type*} [CommRing A] {d S : Type*} [Fintype d] [Dec
   by_cases h : i = j <;> simp [h, Matrix.charmatrix_apply, Matrix.one_apply]
 
 /- English proof (translation)
-Establish `hd : (Polynomial.derivative f).natDegree ≤ f.natDegree` using `(Polynomial.natDegree_derivative_le f).trans (Nat.sub_le _ _)`. Establish `h` using `Polynomial.resultant_add_right_deg f (Polynomial.derivative f) f.natDegree (Polynomial.derivative f).natDegree (f.natDegree - (Polynomial.derivative f).natDegree) le_rfl`. Rewrite `h` using `[Nat.add_sub_cancel' hd, Polynomial.coeff_natDegree, hf.leadingCoeff, one_pow, one_mul]`. Rewrite using `[h, ← isUnit_iff_ne_zero, Polynomial.isUnit_resultant_iff_isCoprime hf]`. Conclude with `Iff.rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem sep_iff_resultant {K : Type*} [Field K] (f : Polynomial K) (hf : f.Monic) :
     f.resultant f.derivative f.natDegree f.natDegree ≠ 0 ↔ f.Separable := by
@@ -54,13 +54,11 @@ theorem sep_iff_resultant {K : Type*} [Field K] (f : Polynomial K) (hf : f.Monic
   exact Iff.rfl
 
 /- English proof (translation)
-Use `set M : Matrix S S (Polynomial K) := (Polynomial.X : Polynomial K) • B0.map Polynomial.C + B1.map Polynomial.C with hM`. Use `set p := M.charpoly with hp`. Establish `hev : ∀ c : K, (p.resultant (Polynomial.derivative p) (Fintype.card S) (Fintype.card S)).eval c = (c • B0 + B1).charpoly.resultant (Polynomial.derivative (c • B0 + B1).charpoly) (Fintype.card S) (Fintype.card S)`. Introduce `c`. Establish `hm : M.map (Polynomial.evalRingHom c) = c • B0 + B1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Simplify using `[hM]`. Apply the tactic sequence `try ring`. Rewrite using `[← hm, Matrix.charpoly_map, Polynomial.derivative_map, Polynomial.resultant_map_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hsep : ∀ c : K, (p.resultant (Polynomial.derivative p) (Fintype.card S) (Fintype.card S)).eval c ≠ 0 ↔ (c • B0 + B1).charpoly.Separable`. Introduce `c`. Rewrite using `[hev, ← sep_iff_resultant (c • B0 + B1).charpoly (Matrix.charpoly_monic _), Matrix.charpoly_natDegree_eq_dim]`. Use `⟨p.resultant (Polynomial.derivative p) (Fintype.card S) (Fintype.card S), fun h0 => ?_, fun c hc => (hsep c).mp hc⟩` and prove the remaining obligations. Establish `h1` using `(hsep 0).mpr (by simpa using h)`.
-
-Rewrite `h1` using `[h0, Polynomial.eval_zero]`. Conclude with `h1 rfl`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pencil_disc {K : Type*} [Field K] {S : Type*} [Fintype S] [DecidableEq S] (B0 B1 : Matrix S S K)
     (h : B1.charpoly.Separable) :
@@ -91,11 +89,11 @@ theorem pencil_disc {K : Type*} [Field K] {S : Type*} [Fintype S] [DecidableEq S
   exact h1 rfl
 
 /- English proof (translation)
-Rewrite `hp`, the goal using `[Polynomial.separable_def]`. Take `⟨u, v, e⟩` from `hp`. Use `set q := Polynomial.C a * Polynomial.X with hqdef`. Establish `hcomp : (u * p + v * Polynomial.derivative p).comp q = 1` using `by rw [e, Polynomial.one_comp]`. Rewrite `hcomp` using `[Polynomial.add_comp, Polynomial.mul_comp, Polynomial.mul_comp]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hq : Polynomial.derivative q = Polynomial.C a` using `by simp [hqdef]`. Establish `hC : Polynomial.C a⁻¹ * Polynomial.C a = 1`. Rewrite using `[← Polynomial.C_mul, inv_mul_cancel₀ ha, Polynomial.C_1]`. Use `⟨u.comp q, v.comp q * Polynomial.C a⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.derivative_comp, hq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `hcomp + (v.comp q * (Polynomial.derivative p).comp q) * hC`.
+A detailed English derivation is pending.
 -/
 private theorem separable_comp_C_mul_X_of_ne_zero {K : Type*} [Field K] {p : Polynomial K} (hp : p.Separable) {a : K}
     (ha : a ≠ 0) : (p.comp (Polynomial.C a * Polynomial.X)).Separable := by
@@ -112,11 +110,11 @@ private theorem separable_comp_C_mul_X_of_ne_zero {K : Type*} [Field K] {p : Pol
   linear_combination hcomp + (v.comp q * (Polynomial.derivative p).comp q) * hC
 
 /- English proof (translation)
-Establish `key : Matrix.charmatrix (c • B) = Polynomial.C c • (Matrix.charmatrix B).map (Polynomial.compRingHom (Polynomial.C c⁻¹ * Polynomial.X))`. Use extensionality with `i j`. Break down `eq_or_ne i j with rfl | hij` into its components or cases. Simplify using `only [Matrix.charmatrix_apply, Matrix.diagonal_apply_eq, Matrix.smul_apply, Matrix.map_apply, Polynomial.coe_compRingHom_apply, Polynomial.sub_comp, Polynomial.X_comp, Polynomial.C_comp, smul_eq_mul]`. Rewrite using `[mul_sub, ← mul_assoc, ← Polynomial.C_mul, ← Polynomial.C_mul, mul_inv_cancel₀ hc, Polynomial.C_1, one_mul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.charmatrix_apply, Matrix.diagonal_apply_ne _ hij, zero_sub, Matrix.smul_apply, Matrix.map_apply, Polynomial.coe_compRingHom_apply, Polynomial.neg_comp, Polynomial.C_comp, smul_eq_mul, mul_neg]`. Rewrite using `[Polynomial.C_mul]`. Establish `hcp : (c • B).charpoly = Polynomial.C (c ^ Fintype.card S) * B.charpoly.comp (Polynomial.C c⁻¹ * Polynomial.X)`. Rewrite using `[Matrix.charpoly, key, Matrix.det_smul, ← RingHom.mapMatrix_apply, ← RingHom.map_det, Polynomial.coe_compRingHom_apply, Polynomial.C_pow, Matrix.charpoly]`. Rewrite using `[hcp]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Polynomial.Separable.unit_mul (Polynomial.isUnit_C.mpr ((isUnit_iff_ne_zero.mpr hc).pow _)) (separable_comp_C_mul_X_of_ne_zero h (inv_ne_zero hc))`.
+A detailed English derivation is pending.
 -/
 theorem charpoly_smul_sep {K : Type*} [Field K] {S : Type*} [Fintype S] [DecidableEq S] (B : Matrix S S K)
     (c : K) (hc : c ≠ 0) (h : B.charpoly.Separable) : (c • B).charpoly.Separable := by
@@ -143,13 +141,13 @@ theorem charpoly_smul_sep {K : Type*} [Field K] {S : Type*} [Fintype S] [Decidab
     (Polynomial.isUnit_C.mpr ((isUnit_iff_ne_zero.mpr hc).pow _)) (separable_comp_C_mul_X_of_ne_zero h (inv_ne_zero hc))
 
 /- English proof (translation)
-Take `⟨D, hD0, hD⟩` from `pencil_disc B0 B1 h`. Establish `hfin : Set.Finite {l : O | D.eval (c0 * algebraMap O K l)⁻¹ = 0}`. Apply `Set.Finite.of_finite_image (f := fun l => (c0 * algebraMap O K l)⁻¹)` to reduce the goal to its premises. Use `(D.roots.toFinset.finite_toSet).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨l, hl, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Simplify using `only [Finset.mem_coe, Multiset.mem_toFinset]`. Conclude with `(Polynomial.mem_roots hD0).2 hl`. Introduce `l1 _ l2 _ h12`. Conclude with `hinj (mul_left_cancel₀ hc0 (inv_inj.1 h12))`. Take `⟨l, hl⟩` from `(hfin.union (Set.finite_singleton (0 : O))).infinite_compl.nonempty`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Set.mem_compl_iff, Set.mem_union, Set.mem_setOf_eq, Set.mem_singleton_iff, not_or] at hl`. Take `⟨hDl, hl0⟩` from `hl`. Establish `hν : c0 * algebraMap O K l ≠ 0` using `mul_ne_zero hc0 fun h0 => hl0 (hinj (by rw [h0, map_zero]))`. Use `⟨l, ?_⟩` and prove the remaining obligations. Establish `heq : B0 + (c0 * algebraMap O K l) • B1 = (c0 * algebraMap O K l) • ((c0 * algebraMap O K l)⁻¹ • B0 + B1)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_add, smul_smul, mul_inv_cancel₀ hν, one_smul]`. Rewrite using `[heq]`. Conclude with `charpoly_smul_sep _ _ hν (hD _ hDl)`.
+A detailed English derivation is pending.
 -/
 theorem pencil_choose {O : Type*} [CommRing O] [Infinite O] {K : Type*} [Field K] [Algebra O K]
     (hinj : Function.Injective (algebraMap O K)) {S : Type*} [Fintype S] [DecidableEq S]
@@ -182,13 +180,11 @@ variable {O : Type} [CommRing O] [IsDomain O] {X : Type} (T : Subalgebra O (X �
   [DecidableEq d] {G : Type} [Group G] (r : G →* (X → Matrix d d O))
 
 /- English proof (translation)
-Take `⟨cf, hcf⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.mp hA`. Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples (R := O) (M := nonZeroDivisors O) cf.support cf`. Establish `hint : ∀ g, ∃ y : O, algebraMap O (FractionRing O) y = (b : O) • cf g`. Introduce `g`. Distinguish the cases in `hg : g ∈ cf.support`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `RingHom.mem_rangeS.mp (hb g hg)`. Rewrite `hg` using `[Finsupp.mem_support_iff, not_not]`. Conclude with `⟨0, by simp [hg]⟩`. Use `choose o ho using hint`. Use `⟨b, nonZeroDivisors.ne_zero b.2, ∑ g ∈ cf.support, fun y => algebraMap O O ((fun g (_ : X) => o g) g y) • r g y, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Supply the required witnesses or components.
 
-Unfold `tSpan`. Conclude with `⟨cf.support, fun g _ => o g, fun g => T.algebraMap_mem (o g), rfl⟩`. Establish `ho' : ∀ g, algebraMap O (FractionRing O) (o g) = algebraMap O (FractionRing O) (b : O) * cf g` using `fun g => by rw [ho, Algebra.smul_def]`. Use extensionality with `i j`. Rewrite using `[← hcf]`.
-
-Simplify using `only [Finsupp.sum, Finset.sum_apply, Matrix.map_apply, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul, Algebra.algebraMap_self_apply, map_sum, map_mul, ho', Finset.mul_sum, mul_assoc]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem clearDen (x : X) (A : Matrix d d (FractionRing O))
     (hA : A ∈ Submodule.span (FractionRing O)
@@ -218,9 +214,9 @@ theorem clearDen (x : X) (A : Matrix d d (FractionRing O))
       smul_eq_mul, Algebra.algebraMap_self_apply, map_sum, map_mul, ho', Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Introduce `i j hij`. Take `⟨s, cc, hcc, rfl⟩` from `ha`. Establish `hN : ((∑ g ∈ s, fun y => algebraMap O O (cc g y) • r g y) x).map (algebraMap O (FractionRing O)) = ∑ g ∈ s, algebraMap O (FractionRing O) (cc g x) • (r g x).map (algebraMap O (FractionRing O))`. Use extensionality with `k l`. Simplify using `[Finset.sum_apply, Matrix.sum_apply, map_sum, Matrix.smul_apply, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`. Rewrite using `[hN, Finset.mul_sum, Finset.sum_mul, Matrix.sum_apply]`. Conclude with `Finset.sum_eq_zero fun g _ => by`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_apply, h g i j hij, smul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blockDiag_of_mem (x : X) {m : ℕ} (c : d → Fin m) (P : Matrix d d (FractionRing O))
     (h : ∀ g i j, c i ≠ c j → (P * (r g x).map (algebraMap O (FractionRing O)) * P⁻¹) i j = 0)
@@ -241,21 +237,19 @@ theorem blockDiag_of_mem (x : X) {m : ℕ} (c : d → Fin m) (P : Matrix d d (Fr
 end Pts
 
 /- English proof (translation)
-Establish `hφ : Function.Injective (algebraMap O (FractionRing O))` using `IsFractionRing.injective O _`. Establish `hOinf : Infinite O`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Conclude with `Infinite.of_injective (fun k : ℕ => ϖ ^ k) (pow_injective_of_not_isUnit hϖ.not_isUnit hϖ.ne_zero)`. Establish `hKinf : Infinite (FractionRing O)` using `Infinite.of_injective _ hφ`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : (eB x).map (algebraMap O (FractionRing O)) * (eB x).map (algebraMap O (FractionRing O)) = (eB x).map (algebraMap O (FractionRing O))`. Rewrite using `[← Matrix.map_mul, ← Pi.mul_apply eB eB x, heBB]`. Establish `heblk` using `blockDiag_of_mem T r x c P hG.2.1 eB heBm`. Take `⟨A, hAblk, hAsep⟩` from `hC (FractionRing O) d m c P _ hG.1 he heblk`. Set `ρ : G →* Matrix d d (FractionRing O)` to `((algebraMap O (FractionRing O)).mapMatrix : Matrix d d O →+* Matrix d d (FractionRing O)).toMonoidHom.comp ((Pi.evalMonoidHom (fun _ : X => Matrix d d O) x).comp r)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hAspan : A ∈ Submodule.span (FractionRing O) (Set.range fun g => (r g x).map (algebraMap O (FractionRing O)))` using `hD (FractionRing O) d G ρ m c P hG A hAblk`. Take `⟨b, hb0, a, ha, hab⟩` from `clearDen T r x A hAspan`. Take `⟨f, hfT, hfx, hfy⟩` from `sepPoint O X T hsep x`. Take `⟨S, hS1, hS2, U, W, hUW, hWU⟩` from `idem_factor _ he`. Establish `hfac : ∀ M : Matrix d d (FractionRing O), blockPoly ((eB x).map (algebraMap O (FractionRing O))) ((eB x).map (algebraMap O (FractionRing O)) * M * (eB x).map (algebraMap O (FractionRing O))) = (W * M * U).charpoly`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `M`. Establish `h1` using `blockPoly_factor U W hWU (W * M * U)`. Rewrite `h1` using `[hUW]`. Rewrite using `[← h1, ← hUW]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hB1 : (W * A * U).charpoly.Separable` using `by rw [← hfac]; exact hAsep`. Use `set c0 : FractionRing O := algebraMap O (FractionRing O) w * algebraMap O (FractionRing O) (f x) * algebraMap O (FractionRing O) b with hc0def`. Establish `hc0 : c0 ≠ 0` using `mul_ne_zero (mul_ne_zero ((map_ne_zero_iff _ hφ).mpr hw) ((map_ne_zero_iff _ hφ).mpr hfx)) ((map_ne_zero_iff _ hφ).mpr hb0)`. Take `⟨l, hl⟩` from `pencil_choose hφ (W * S0.map (algebraMap O (FractionRing O)) * U) (W * A * U) hB1 c0 hc0`. Use `⟨fun y => f y * l, a, T.mul_mem hfT (T.algebraMap_mem l), fun y hy => by simp [hfy y hy], ha, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : ∀ (t : O) (N : Matrix d d O), (t • N).map (algebraMap O (FractionRing O)) = algebraMap O (FractionRing O) t • N.map (algebraMap O (FractionRing O))` using `fun t N => by ext; simp`. Establish `hadd : ∀ N N' : Matrix d d O, (N + N').map (algebraMap O (FractionRing O)) = N.map (algebraMap O (FractionRing O)) + N'.map (algebraMap O (FractionRing O))` using `fun N N' => by ext; simp`. Establish `hM : (eB x * S0 * eB x + w • ((f x * l) • (eB x * a x * eB x))).map (algebraMap O (FractionRing O)) = (eB x).map (algebraMap O (FractionRing O)) * (S0.map (algebraMap O (FractionRing O)) + (c0 * algebraMap O (FractionRing O) l) • A) * (eB x).map (algebraMap O (FractionRing O))`. Rewrite using `[hadd, hs, hs, Matrix.map_mul, Matrix.map_mul, Matrix.map_mul, Matrix.map_mul, hab]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, smul_smul, map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Rewrite using `[hc0def]`. Expand and normalize the polynomial expressions, which then agree. Use `beta_reduce`. Rewrite using `[hM, hfac, Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul]`.
-
-Conclude with `hl`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem point_generic (hD : StatDensity) (hC : StatCornerSimple) {O : Type} [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] {X : Type} [Fintype X] (T : Subalgebra O (X → O)) {d : Type} [Fintype d]
@@ -326,27 +320,25 @@ theorem point_generic (hD : StatDensity) (hC : StatCornerSimple) {O : Type} [Com
   exact hl
 
 /- English proof (translation)
-Take `⟨-, -, -, hblk, hcard, hdiag⟩` from `hP`. Establish `hφ : Function.Injective (algebraMap O (FractionRing O))` using `IsFractionRing.injective O _`. Use `set φ := algebraMap O (FractionRing O) with hφdef`. Use `set lam : d → FractionRing O := fun a => if bl a = 0 then 0 else φ ((χ₁ g₀ : O) * (((ε g₀)⁻¹ ^ ((bl a : ℕ) - 1) : Oˣ) : O)) with hlam`. Establish `hone : ∀ a b : d, bl a ≠ 0 → bl a = bl b → a = b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a b ha hbl`. Establish `h2` using `Fintype.card_le_one_iff.mp (hcard (bl a) ha).le ⟨a, rfl⟩ ⟨b, hbl.symm⟩`. Conclude with `congrArg Subtype.val h2`. Establish `he : (eB π).map φ = Matrix.diagonal (fun a => if bl a = 0 then (0 : FractionRing O) else 1)`. Rewrite using `[heBπ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation.
 
-Use extensionality with `i j`. Break down `eq_or_ne i j with rfl | h` into its components or cases. Apply the tactic sequence `by_cases h0 : bl i = 0 <;> simp [h0]`. Simplify using `[h]`. Establish `hA : (eB π * r g₀ π * eB π).map φ = Matrix.diagonal lam`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Use extensionality with `a b`. Rewrite using `[Matrix.map_apply, heBπ, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Break down `eq_or_ne a b with rfl | hab` into its components or cases. Distinguish the cases in `h0 : bl a = 0`. Simplify using `[h0, hlam]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `[h0, hlam, hdiag g₀ a h0]`. Rewrite using `[Matrix.diagonal_apply_ne _ hab]`. Distinguish the cases in `ha0 : bl a = 0`. Simplify using `[ha0]`. Distinguish the cases in `hb0 : bl b = 0`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[hb0]`. Establish `hne : bl a ≠ bl b` using `fun hbl => hab (hone a b ha0 hbl)`. Simplify using `[hblk g₀ a b hne]`. Rewrite using `[he, hA]`. Establish `hm : (Polynomial.X : Polynomial (FractionRing O)) • (Matrix.diagonal (fun a => if bl a = 0 then (0 : FractionRing O) else 1)).map Polynomial.C - (Matrix.diagonal lam).map Polynomial.C + (1 - Matrix.diagonal (fun a => if bl a = 0 then (0 : FractionRing O) else 1)).map Polynomial.C …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation.
 
-Use extensionality with `i j`. Break down `eq_or_ne i j with rfl | h` into its components or cases. Apply the tactic sequence `by_cases h0 : bl i = 0 <;> simp [h0, hlam]`. Simplify using `[h, Matrix.one_apply_ne h]`. Establish `hbp : blockPoly (Matrix.diagonal (fun a => if bl a = 0 then (0 : FractionRing O) else 1)) (Matrix.diagonal lam) = ∏ a ∈ Finset.univ.filter (fun a => bl a ≠ 0), (Polynomial.X - Polynomial.C (lam a))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `blockPoly`. Rewrite using `[hm, Matrix.det_diagonal, Finset.prod_filter]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h0 : bl a = 0 <;> simp [h0]`. Rewrite using `[hbp, Polynomial.separable_prod_X_sub_C_iff']`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a ha0 b hb0 hlab`. Establish `ha : bl a ≠ 0` using `(Finset.mem_filter.mp ha0).2`. Establish `hb : bl b ≠ 0` using `(Finset.mem_filter.mp hb0).2`. Simplify using `only [hlam, if_neg ha, if_neg hb] at hlab`. Establish `h1` using `mul_left_cancel₀ (Units.ne_zero (χ₁ g₀)) (hφ hlab)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (ε g₀)⁻¹ ^ ((bl a : ℕ) - 1) = (ε g₀)⁻¹ ^ ((bl b : ℕ) - 1)` using `Units.ext h1`. Rewrite `h2` using `[inv_pow, inv_pow, inv_inj]`. Establish `ha' : (bl a : ℕ) ≠ 0` using `fun h => ha (by ext; simpa using h)`. Establish `hb' : (bl b : ℕ) ≠ 0` using `fun h => hb (by ext; simpa using h)`. Establish `hia : (bl a : ℕ) - 1 < t` using `by have := (bl a).isLt; omega`.
-
-Establish `hib : (bl b : ℕ) - 1 < t` using `by have := (bl b).isLt; omega`. Establish `h3` using `hε _ _ hia hib h2`. Conclude with `hone a b ha (Fin.ext (by omega))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem point_pi {O : Type} [CommRing O] [IsDomain O] {X : Type} (T : Subalgebra O (X → O)) {d : Type}
     [Fintype d] [DecidableEq d] {G : Type} [Group G] (r : G →* (X → Matrix d d O)) (π : X) {t : ℕ}
@@ -418,17 +410,15 @@ theorem point_pi {O : Type} [CommRing O] [IsDomain O] {X : Type} (T : Subalgebra
   exact hone a b ha (Fin.ext (by omega))
 
 /- English proof (translation)
-Introduce `O _ _ _ X _ T d _ _ G _ r π t bl χ₁ ε hP eB e₁ hI hG3 g₀ hε L ϖ hϖ`. Establish `hsep` using `hP.2.1`. Take `⟨heBm, -, heBB, -, -, -, -, -, heBπ, -⟩` from `hI`. Establish `hpt : ∀ y : {y : X // y ≠ π}, ∃ (j : X → O) (a : X → Matrix d d O), j ∈ T ∧ (∀ z, z ≠ y.1 → j z = 0) ∧ a ∈ tSpan T r ∧ (blockPoly ((eB y.1).map (algebraMap O (FractionRing O))) ((eB y.1 * r g₀ y.1 * eB y.1 + ϖ ^ L • (j y.1 • (eB y.1 * a y.1 * eB y.1))).map (algebraMap O (Fraction …`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨m, c, P, hG⟩` from `hG3 y.1`. Conclude with `point_generic hD hC T r hsep eB heBm heBB y.1 m c P hG (r g₀ y.1) (ϖ ^ L) (pow_ne_zero _ hϖ)`. Use `choose j a hjT hj0 haT hjsep using hpt`. Set `eqv` to `Fintype.equivFin {y : X // y ≠ π}`. Use `⟨Fintype.card {y : X // y ≠ π}, fun i => j (eqv.symm i), fun i => a (eqv.symm i), fun i => ⟨hjT _, hj0 _ π (eqv.symm i).2.symm, haT _⟩, fun x => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `beta_reduce`. Distinguish the cases in `hx : x = π`. Rewrite using `[hx]`. Establish `hzero : ∑ i, j (eqv.symm i) π • (eB π * a (eqv.symm i) π * eB π) = 0` using `Finset.sum_eq_zero fun i _ => by rw [hj0 _ π (eqv.symm i).2.symm, zero_smul]`. Rewrite using `[hzero, smul_zero, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `point_pi T r π bl χ₁ ε hP eB heBπ g₀ hε`. Establish `hsum : ∑ i, j (eqv.symm i) x • (eB x * a (eqv.symm i) x * eB x) = j ⟨x, hx⟩ x • (eB x * a ⟨x, hx⟩ x * eB x)`. Rewrite using `[Finset.sum_eq_single (eqv ⟨x, hx⟩)]`. Simplify using the standard rewrite rules. Introduce `i _ hi`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hj0 _ x, zero_smul]`. Introduce `hxe`. Apply `hi` to reduce the goal to its premises. Rewrite using `[← eqv.apply_symm_apply i]`. Conclude with `congrArg eqv (Subtype.ext hxe.symm)`.
-
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[hsum]`. Conclude with `hjsep ⟨x, hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem density_point_of_corner_simple (hD : StatDensity) (hC : StatCornerSimple) : DensityPointExists := by
   intro O _ _ _ X _ T d _ _ G _ r π t bl χ₁ ε hP eB e₁ hI hG3 g₀ hε L ϖ hϖ

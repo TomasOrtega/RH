@@ -6,13 +6,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Base UpperTheory.V.Pr UpperTheory.V.Fr UpperTheory.V
 
 /- English proof (translation)
-Introduce `hP Ω _ _ _ l _ c _ N _ e ψ o₁ hD σ hσ B hB`. Take `⟨Hb, hG⟩` from `gen_host Ω l c N e ψ o₁ hD σ hσ B hB`. Take `⟨Q, hQ, hS⟩` from `seed_cl Ω l c _ _ σ B _ Hb hG`. Take `⟨L, i1, i2, i3, i4, g₁, Φ, C₀, w, ⟨k, -⟩, hok, hbig, hw, hwQ, hle⟩` from `frame_ex hP l _ _ σ B _ Hb hG Q hQ`. Use `⟨L, i1, i2, i3, i4, g₁, Φ, C₀, ⟨k⟩, hok, hbig, hS L w k.ab k.gal hw hwQ hle ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h, hg⟩` from `k.g0`. Use `⟨g₁, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[k.gal]`. Use `⟨h, ?_⟩` and prove the remaining obligations. Establish `h1` using `k.del ⟨g₁, h⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h1` using `[hg]`. Conclude with `h1.symm.trans Φ.g0.2`. Establish `h1` using `k.psi ⟨g₁, h⟩`. Rewrite `h1` using `[hg]`. Establish `h2` using `hok.baseSubgroup_spec`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[h1]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.host_ex :
     GC.Hypotheses₂ → HostFrameEx := by

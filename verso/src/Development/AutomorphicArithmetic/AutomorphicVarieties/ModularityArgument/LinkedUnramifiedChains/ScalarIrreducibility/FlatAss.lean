@@ -1,11 +1,11 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.LinkedUnramifiedChains.RedDefs
 
 /- English proof (translation)
-Establish `h1 : ∑ _i : Fin 1, a • r = 0`. Rewrite using `[Fin.sum_univ_one]`. Conclude with `h`. Take `⟨l, c, y, hy, hc⟩` from `Module.Flat.isTrivialRelation_of_sum_smul_eq_zero (f := fun _ : Fin 1 => a) (x := fun _ : Fin 1 => r) h1`. Establish `hr : r = ∑ j, c 0 j • y j` using `hy 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hr]`. Use `Ideal.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`. Use `Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ ((hmem _).2 ?_))` and prove the remaining obligations. Establish `h2` using `hc j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[Fin.sum_univ_one]`. Rewrite using `[mul_comm]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem flatAss_ann {A R : Type} [CommRing A] [CommRing R] [Algebra A R] [Module.Flat A R]
     (P : Ideal A) (a : A) (hmem : ∀ b, b ∈ P ↔ b * a = 0) (r : R) (h : a • r = 0) :
@@ -27,11 +27,11 @@ private theorem flatAss_ann {A R : Type} [CommRing A] [CommRing R] [Algebra A R]
   exact h2
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `r hr`. Establish `h0 : r * algebraMap A R a = 0` using `congrArg Subtype.val (Module.mem_annihilator.1 hr ⟨algebraMap A R a, Ideal.mem_span_singleton_self _⟩)`. Use `flatAss_ann P a hmem r ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, mul_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h0`. Use `Ideal.map_le_iff_le_comap.2 fun b hb => ?_` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap, Module.mem_annihilator]`. Introduce and unpack `⟨n, hn⟩`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hn`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `algebraMap A R b * (c * algebraMap A R a) = 0`. Rewrite using `[mul_left_comm, ← map_mul, (hmem b).1 hb, map_zero, mul_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem flatAss_annih {A R : Type} [CommRing A] [CommRing R] [Algebra A R] [Module.Flat A R]
     (P : Ideal A) (a : A) (hmem : ∀ b, b ∈ P ↔ b * a = 0) :
@@ -53,15 +53,13 @@ private theorem flatAss_annih {A R : Type} [CommRing A] [CommRing R] [Algebra A 
     rw [mul_left_comm, ← map_mul, (hmem b).1 hb, map_zero, mul_zero]
 
 /- English proof (translation)
-Use `haveI : Algebra.HasGoingDown A R := Algebra.HasGoingDown.of_flat`. Take `⟨hPp, a, hPa⟩` from `isAssociatedPrime_iff.1 hP`. Establish `hmem : ∀ b, b ∈ P ↔ b * a = 0` using `fun b => by`. Rewrite using `[hPa, Submodule.mem_colon_singleton, Submodule.mem_bot, smul_eq_mul]`. Establish `hmapQ : P.map (algebraMap A R) ≤ Q` using `Ideal.map_le_iff_le_comap.2 hPQ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI := hQ`. Take `⟨Q', hQ'min, hQ'Q⟩` from `Ideal.exists_minimalPrimes_le hmapQ`. Establish `hQ'ass : Q' ∈ associatedPrimes R R`. Establish `h1` using `hQ'min`. Rewrite `h1` using `[← flatAss_annih P a hmem]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `associatedPrimes.subset_of_injective (Submodule.injective_subtype _) (Module.associatedPrimes.minimalPrimes_annihilator_subset_associatedPrimes R _ h1)`. Establish `hQ'm` using `hmin Q' hQ'ass hQ'Q`. Use `haveI hQ'p : Q'.IsPrime := hQ'min.1.1`. Use `⟨⟨hPp, bot_le⟩, fun p hp hpP => ?_⟩` and prove the remaining obligations. Use `haveI := hp.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hPc : P ≤ Q'.comap (algebraMap A R)` using `Ideal.map_le_iff_le_comap.1 hQ'min.1.2`. Use `haveI : Q'.LiesOver (Q'.comap (algebraMap A R)) := ⟨rfl⟩`. Take `⟨Q'', hle, hQ''p, hlies⟩` from `Ideal.exists_ideal_le_liesOver_of_le Q' (hpP.trans hPc)`. Establish `hge` using `hQ'm.2 ⟨hQ''p, bot_le⟩ hle`. Establish `heq : Q'' = Q'` using `le_antisymm hle hge`.
-
-Rewrite using `[hlies.over, heq]`. Conclude with `hPc`.
+A detailed English derivation is pending.
 -/
 private theorem flatAss_alg {A R : Type} [CommRing A] [CommRing R] [IsNoetherianRing A]
     [IsNoetherianRing R] [Algebra A R] [Module.Flat A R] (Q : Ideal R) (hQ : Q.IsPrime)
@@ -95,7 +93,7 @@ private theorem flatAss_alg {A R : Type} [CommRing A] [CommRing R] [IsNoetherian
 open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.GalOfCusp IsLocalRing UpperTheory.V UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Base UpperTheory.V.Af UpperTheory.V.Pr UpperTheory.V.Alg UpperTheory.V.J
 
 /- English proof (translation)
-Introduce `A R _ _ _ _ ι hι Q hQ hmin P hP hPQ` and use `@flatAss_alg A R _ _ _ _ ι.toAlgebra hι Q hQ hmin P hP hPQ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.J.flatAss :
     ∀ (A R : Type) [CommRing A] [CommRing R] [IsNoetherianRing A] [IsNoetherianRing R] (ι : A →+* R), ι.Flat → ∀ Q : Ideal R, Q.IsPrime →

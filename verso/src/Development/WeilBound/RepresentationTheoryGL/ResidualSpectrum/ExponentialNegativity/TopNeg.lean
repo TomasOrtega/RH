@@ -4,7 +4,7 @@ import Development.WeilBound.RepresentationTheoryGL.ResidualSpectrum.Exponential
 namespace PositivityTheory.Rg.Rs
 
 /- English proof (translation)
-The claim follows from `expNeg_of count_holds`.
+A detailed English derivation is pending.
 -/
 theorem expNeg_holds : ExpNeg := expNeg_of count_holds
 

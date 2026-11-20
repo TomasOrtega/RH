@@ -63,7 +63,7 @@ def DataEx : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr
       ∀ T : Finset (HeightOneSpectrum (𝓞 E)), Nonempty (RunData π S T K W)
 
 /- English proof (translation)
-Introduce `E _ _ _ hE n hn π hπ S hS`. Take `⟨K, W, hK, hW, hT⟩` from `h2 E hE n hn π hπ S hS`. Conclude with `⟨K, W, hK, hW, fun T => let ⟨X⟩ := hT T; h1 E n π S T K W X⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem setupEx_of (h1 : SetupAlg) (h2 : DataEx) : SetupEx := by
   intro E _ _ _ hE n hn π hπ S hS

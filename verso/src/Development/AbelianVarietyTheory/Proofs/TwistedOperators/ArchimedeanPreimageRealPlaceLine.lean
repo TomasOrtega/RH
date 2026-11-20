@@ -25,13 +25,13 @@ variable {D : D7}
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Set `ι : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F →ₗ[D.host.F] AF D.host.F` to `(LinearMap.inr D.host.F (InfiniteAdeleRing D.host.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F)).comp (LinearMap.mulLeft D.host.F a.2)`. Set `g : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E →ₗ[D.host.F] AE D` to `TensorProduct.map ι LinearMap.id`. Set `fL : AE D →ₗ[D.host.F] Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E` to `TensorProduct.map (sndA D.host.F).toLinearMap LinearMap.id`. Establish `hfL : fL t = finPart D t` using `rfl`. Establish `key : ∀ s : AF D.host.F ⊗[D.host.F] D.host.E, a • s = g (fL s)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `s`. Proceed by induction on `s using TensorProduct.induction_on with`. Consider the case `zero => rw [smul_zero, LinearMap.map_zero, LinearMap.map_zero]`. Consider the case `tmul b x`. Establish `hab : a * b = ι b.2`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show a.1 * b.1 = 0`. Rewrite using `[ha, zero_mul]`. Both sides reduce to the same expression. Establish `h1 : a • (b ⊗ₜ[D.host.F] x : AE D) = (a * b) ⊗ₜ[D.host.F] x` using `rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, hab]`. Both sides reduce to the same expression. Consider the case `add s₁ s₂ h₁ h₂`. Rewrite using `[smul_add, h₁, h₂, LinearMap.map_add, LinearMap.map_add]`. Rewrite using `[key, hfL, ht, LinearMap.map_zero]`.
+Both sides reduce to the same expression. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_eq_zero_of_finPart_eq_zero (t : AE D) (ht : finPart D t = 0) (a : AF D.host.F)
     (ha : a.1 = 0) : a • t = 0 := by
@@ -61,19 +61,15 @@ theorem smul_eq_zero_of_finPart_eq_zero (t : AE D) (ht : finPart D t = 0) (a : A
   rw [key, hfL, ht, LinearMap.map_zero]
 
 /- English proof (translation)
-Introduce `D θ hθ ε S X d e cS hcS τ z u hu`. Establish `hx : (lineAt θ τ z 1).map (finPart D) = 0`. Use function extensionality and compare the values at `fun i => funext fun j => congrFun (congrFun ((GlobalTheory.OrientedHeis.isLineAt_lineAt hθ τ z).2.1 1) i) j`. Use `set y := cS.symm (lineAt θ τ z 1) with hydef`. Establish `hy` using `cS.apply_symm_apply (lineAt θ τ z 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hy` using `[← hydef, hcS]`. Use `set c : D.host.E := if ε then -1 else 1 with hc`. Apply the tactic sequence `have hc0 : c ≠ 0 := by rw [hc]; split_ifs <;> norm_num`. Use `set N : Matrix (Fin S.rank) (Fin S.rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E) := (c • S.gram).map ((finPart D).comp (inclR (AF D.host.F))) with hN`. Establish `hNdet : IsUnit N.det`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hd : N.det = ((finPart D).comp (inclR (AF D.host.F))) (c • S.gram).det` using `(RingHom.map_det ((finPart D).comp (inclR (AF D.host.F))) _).symm`. Rewrite using `[hd]`. Use `IsUnit.map _ (Ne.isUnit ?_)` and prove the remaining obligations. Rewrite using `[Matrix.det_smul]`. Conclude with `mul_ne_zero (pow_ne_zero _ hc0) (gram_det_ne S)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hM : (HMul.hMul ((y.map (finPart D))ᵀ.submatrix e id) N : Matrix (Fin X.rank) (Fin S.rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)) = 0`. Establish `h3` using `congrArg (fun m => Matrix.map m (finPart D)) hy`. Simplify using `only [Matrix.map_mul] at h3`. Rewrite `h3` using `[hx]`. Conclude with `h3`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hM0 : (y.map (finPart D))ᵀ.submatrix e id = 0`. Combine the equalities or inequalities in the displayed calculation. Establish `hent : ∀ i j, finPart D (y i j) = 0`. Introduce `i j`. Establish `h4` using `congrFun (congrFun hM0 (e.symm j)) i`.
-
-Simplify using `only [Matrix.submatrix_apply, Matrix.transpose_apply, Matrix.map_apply, Equiv.apply_symm_apply, id, Matrix.zero_apply] at h4`. Conclude with `h4`. Establish `hu1 : u.1 = 0`. Establish `h5 : (InfiniteAdeleRing.ringEquiv_mixedSpace D.host.F) u.1 = 0` using `hu`. Conclude with `(map_eq_zero_iff _ (InfiniteAdeleRing.ringEquiv_mixedSpace D.host.F).injective).1 h5`.
-
-Use function extensionality and compare the values at `i j`. Conclude with `smul_eq_zero_of_finPart_eq_zero (y i j) (hent i j) u hu1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem arch_symm_lineAt : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (ε : Bool) (S X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d)
     (cS : Matrix (Fin S.rank) (Fin d) (AE D) ≃+ WO S X),

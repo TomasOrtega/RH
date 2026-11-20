@@ -13,21 +13,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.DvrDiv
 
 /- English proof (translation)
-Introduce `R _ _ _ _ _ a b hb h`. Distinguish the cases in `ha : a = 0`. Conclude with `ha ▸ dvd_zero b`. Set `K` to `FractionRing R`. Take `⟨h1, h2, -⟩` from `GlobalTheory.normal_domain_height_one.{0, 0, 0} R K`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hbK : algebraMap R K b ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective R K)).mpr hb`. It suffices to establish `hmem : ∀ (p : Ideal R) [p.IsPrime], p.height = 1 → algebraMap R K a / algebraMap R K b ∈ primeLocalSubalgebra K p by`. Take `⟨r, hr⟩` from `(h2 (algebraMap R K a / algebraMap R K b)).2 hmem`. Use `⟨r, IsFractionRing.injective R K ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hr, mul_div_cancel₀ _ hbK]`.
+Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p _ hp`. Take `⟨-, hD, -⟩` from `h1 p hp`. Set `D` to `primeLocalSubalgebra K p`. Use `haveI : IsDiscreteValuationRing D := hD`. Set `W` to `AdicCompletion (IsLocalRing.maximalIdeal D) D`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `iW : D →+* W` to `algebraMap D W`. Set `φ : R →+* W` to `iW.comp (algebraMap R D)`. Establish `hRD : Function.Injective (algebraMap R D)` using `fun x y hxy => IsFractionRing.injective R K (congrArg Subtype.val hxy)`. Establish `hφ : Function.Injective φ` using `(algebraMap_adicCompletion_injective_of_dvr D).comp hRD`. Use `haveI : CharZero W := (RingHom.charZero_iff hφ).1 inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hW : GlobalTheory.LN.CDvr W` using `⟨inferInstance, inferInstance, inferInstance⟩`. Take `⟨t, ht⟩` from `h W hW φ hφ`. Establish `hdvd : algebraMap R D b ∣ algebraMap R D a`. Break down `ValuationRing.dvd_total (algebraMap R D b) (algebraMap R D a) with hd | ⟨c, hc⟩` into its components or cases. Conclude with `hd`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `ha' : φ a ≠ 0` using `(map_ne_zero_iff _ hφ).mpr ha`. Establish `e : φ a * (iW c * t) = φ a * 1`. Rewrite using `[_root_.mul_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul, _root_.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Both sides reduce to the same expression. Use `_ = φ a := by rw [← hc]; exact ht.symm`. Establish `hu : IsUnit (iW c)` using `isUnit_iff_exists_inv.mpr ⟨t, mul_left_cancel₀ ha' e⟩`. Take `⟨u, rfl⟩` from `isUnit_of_map_unit iW c hu`. Conclude with `⟨↑u⁻¹, by rw [hc, _root_.mul_assoc, Units.mul_inv, _root_.mul_one]⟩`.
-
-Take `⟨c, hc⟩` from `hdvd`. Establish `hcK : algebraMap R K a = algebraMap R K b * (c : K)` using `congrArg Subtype.val hc`. Rewrite using `[hcK, mul_div_cancel_left₀ _ hbK]`. Conclude with `c.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_of_forall_cDvr : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R] [CharZero R] (a b : R), b ≠ 0 → (∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], GlobalTheory.LN.CDvr V → ∀ φ : R →+* V, Function.Injective φ → φ b ∣ φ a) → b ∣ a := by
   intro R _ _ _ _ _ a b hb h

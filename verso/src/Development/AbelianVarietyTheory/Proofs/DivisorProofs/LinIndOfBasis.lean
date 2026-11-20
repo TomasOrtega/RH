@@ -17,9 +17,9 @@ namespace GlobalTheory.FrameRead
 open Formalism.IndefR.Bridge
 
 /- English proof (translation)
-Establish `h1 : LinearIndependent K fun a => b.repr (x a)` using `hx.map' b.repr.toLinearMap (LinearMap.ker_eq_bot.2 b.repr.injective)`. Establish `h2` using `GlobalTheory.LatBC.linInd_mapRange φ φ.injective h1`. Establish `h3` using `h2.map' (Finsupp.linearCombination C fun i => f (b i)) (LinearMap.ker_eq_bot.2 h)`. Use `(funext fun a => ?_ : (fun a => f (x a)) = _) ▸ h3` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finsupp.linearCombination_apply, Finsupp.sum_mapRange_index (by simp)]`. Use `conv_lhs => rw [← b.linearCombination_repr (x a), Finsupp.linearCombination_apply, Finsupp.sum, map_sum]`. Simplify using `only [map_smulₛₗ, Finsupp.sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem linInd_of_basis {K C X M I : Type} [Field K] [Field C] [AddCommGroup X] [Module K X] [AddCommGroup M] [Module C M]
     (φ : K →+* C) (f : X →ₛₗ[φ] M) (b : Module.Basis I K X) (h : LinearIndependent C fun i => f (b i))
@@ -36,13 +36,13 @@ theorem linInd_of_basis {K C X M I : Type} [Field K] [Field C] [AddCommGroup X] 
   simp only [map_smulₛₗ, Finsupp.sum]
 
 /- English proof (translation)
-Set `B : Module.Basis I ℂ W` to `Module.Basis.mk hli hsp.ge`. Establish `hB : ∀ i, B i = c0 (b i)` using `fun i => Module.Basis.mk_apply _ _ i`. Set `θ : W →+ M` to `{ toFun := fun w => ∑ i, io.symm (B.repr w i) • Φ (b i) map_zero' := by simp map_add' := fun x y => by simp [add_smul, Finset.sum_add_distrib] }`. Establish `hθ : ∀ w, θ w = ∑ i, io.symm (B.repr w i) • Φ (b i)` using `fun _ => rfl`. Establish `hs : ∀ (a : ℂ) w, θ (a • w) = io.symm a • θ w` using `fun a w => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[hθ, Finset.smul_sum, mul_smul]`. Establish `hb : ∀ i, θ (c0 (b i)) = Φ (b i)` using `fun i => by`. Rewrite using `[← hB, hθ, B.repr_self, Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `j _ hj`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Finsupp.single_apply, hj.symm]`. Simplify using the standard rewrite rules. Use `⟨θ, hs, fun x => ?_, (injective_iff_map_eq_zero θ).2 fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[← b.sum_repr x]`. Simplify using `only [map_sum, map_smulₛₗ, hs, hb, ← h, RingEquiv.symm_apply_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Fintype.linearIndependent_iff.1 hΦ _ ((hθ w).symm.trans hw)` as an intermediate fact. Use `B.ext_elem fun i => ?_` and prove the remaining obligations. Simplify using `using this i`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_avatar {K C X W M I : Type} [Field K] [Field C] [AddCommGroup X] [Module K X] [AddCommGroup W] [Module ℂ W]
     [AddCommGroup M] [Module C M] [Fintype I] (io : C ≃+* ℂ) {σ : K →+* ℂ} {e0 : K →+* C} (h : ∀ x, io (e0 x) = σ x)
@@ -77,19 +77,17 @@ variable {G Γ : Type} [Group G] [Group Γ] {ι : Γ →* G} {W : Type} [NormedA
   {χ : J →* ℂˣ}
 
 /- English proof (translation)
-Set `rd : S.Forms →ₛₗ[e0] (G → M)` to `{ toFun := fun f g => Λ g⁻¹ (θ (P.extL f g)) map_add' := fun f f' => by funext g; simp only [map_add, Pi.add_apply] map_smul' := fun a f => by`. Use function extensionality and compare the values at `g`. Simplify using `only [map_smulₛₗ, Pi.smul_apply, hs, ← h, RingEquiv.symm_apply_apply, RingHom.id_apply] }`. Establish `hrd : ∀ f g, rd f g = Λ g⁻¹ (θ (P.ext f g))` using `fun _ _ => rfl`. Establish `hm : ∀ a b z, Λ a (Λ b z) = Λ (a * b) z` using `fun a b z => by rw [map_mul]; rfl`.
+Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨rd, fun f γ g => ?_, fun f k g => ?_, fun n f hf => ?_, fun f f' A hA h1 g => ?_, fun f c => ?_⟩` and prove the remaining obligations. Use `P.extMem_holds f γ g 1` as an intermediate fact. Simplify using `only [OneMemClass.coe_one, mul_one, map_one, Units.val_one, one_smul] at this`. Rewrite using `[hrd, hrd, this, hΛ, hm]`. Use `congr 2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `group`. Use `P.extMem_holds f 1 g k` as an intermediate fact. Simplify using `only [one_mul, map_one, Module.End.one_apply] at this`. Rewrite using `[hrd, hrd, this, hs, hm, map_smul]`. Use `congr 3`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `group`. Establish `h1` using `linInd_of_basis σ P.extL S.basis P.extBij_holds.1 n f hf`. Rewrite `h1`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `a ha i`. Establish `h2` using `h1 (fun i => io (a i)) (funext fun g => hinj ?_) i`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using h2`. Establish `h3` using `congrArg (fun F => Λ g (F g)) ha`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, hrd, map_sum, map_smul, hm, mul_inv_cancel, map_one, Module.End.one_apply, Pi.zero_apply, map_zero] at h3`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, map_sum, hs, RingEquiv.symm_apply_apply, Pi.zero_apply, map_zero]`. Conclude with `h3`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hrd, hA, dcOp, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun s hs' => ?_` and prove the remaining obligations. Establish `e : Λ s⁻¹ = 1`. Use `map_mul Λ s⁻¹ s` as an intermediate fact. Rewrite `this` using `[h1 s hs', mul_one, inv_mul_cancel, map_one]`.
-
-Conclude with `this.symm`. Rewrite using `[hrd, mul_inv_rev, map_mul, e, one_mul]`. Rewrite using `[hrd, P.ext_rep]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_reading (P : ClassPres ι S σ ρ J χ) {C M : Type} [Field C] [AddCommGroup M] [Module C M] (io : C ≃+* ℂ)
     {e0 : K →+* C} (h : ∀ x, io (e0 x) = σ x) (θ : W →+ M) (hs : ∀ (a : ℂ) w, θ (a • w) = io.symm a • θ w)

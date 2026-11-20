@@ -20,7 +20,7 @@ def betaU (x : L) (hx : x ≠ 0) : GL (Fin 2) L where
     ext p r; fin_cases p <;> fin_cases r <;> simp [Matrix.mul_apply, Fin.sum_univ_two, hx]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `p r`. Apply the tactic sequence `fin_cases p <;> fin_cases r <;>`. Simplify using `[betaU, wU, nU, w2, Matrix.mul_apply, Fin.sum_univ_two, hx]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem wU_mul_nU (x : L) (hx : x ≠ 0) :
     wU L * nU x = betaU x hx * (wU L * nU x⁻¹ * wU L) := by
@@ -30,7 +30,7 @@ theorem wU_mul_nU (x : L) (hx : x ≠ 0) :
     simp [betaU, wU, nU, w2, Matrix.mul_apply, Fin.sum_univ_two, hx]
 
 /- English proof (translation)
-Establish `: ((betaU x hx)⁻¹ : GL (Fin 2) L).val = !![-x, 1; 0, x⁻¹]` using `rfl`. Establish `hw : ∀ M : Matrix (Fin 2) (Fin 2) L, (w2 L * M * w2 L) 1 0 = M 0 1` using `fun M => by`. Simplify using `[w2, Matrix.mul_apply, Fin.sum_univ_two, Matrix.vecMul, dotProduct]`. Rewrite using `[partner, hw, this]`. Simplify using `[cT]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem partner_betaU_lower (σ : L →+* L) (x : L) (hx : x ≠ 0) : partner σ (betaU x hx) 1 0 = 0 := by
   have : ((betaU x hx)⁻¹ : GL (Fin 2) L).val = !![-x, 1; 0, x⁻¹] := rfl
@@ -40,11 +40,11 @@ theorem partner_betaU_lower (σ : L →+* L) (x : L) (hx : x ≠ 0) : partner σ
   simp [cT]
 
 /- English proof (translation)
-Establish `h2 : (Q ^ 2) ^ (-o) = Q ^ (-(2 * o))`. Rewrite using `[← zpow_natCast, ← zpow_mul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h3 : Q ^ (-(-o) * N) * Q ^ (-o * (N - 2)) = Q ^ (2 * o)`. Rewrite using `[← zpow_add₀ hQ]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `h4 : v ^ o = (v ^ (-o))⁻¹` using `by rw [zpow_neg, inv_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[div_zpow, div_zpow, h2, zpow_neg Q (2 * o)]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem arith (u v Q : ℂ) (hQ : Q ≠ 0) (o N : ℤ) :
     u ^ (-o) * Q ^ (-(-o) * N) * (v ^ o * Q ^ (-o * (N - 2))) = ((u / v) / Q ^ 2) ^ (-o) := by
@@ -63,7 +63,7 @@ section Root
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {n : ℕ} {σ : L →+* L}
 
 /- English proof (translation)
-Establish `h1` using `v_eq_exp' (neg_ne_zero.2 hx)`. Rewrite `h1` using `[Valuation.map_neg, v_eq_exp' hx]`. Use `WithZero.exp_injective h1` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ordL_neg' (x : L) (hx : x ≠ 0) : ordL (-x) = ordL x := by
   have h1 := v_eq_exp' (neg_ne_zero.2 hx)
@@ -72,22 +72,20 @@ theorem ordL_neg' (x : L) (hx : x ≠ 0) : ordL (-x) = ordL x := by
   omega
 
 /- English proof (translation)
-Simplify using `[ordL]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem ordL_one' : ordL (1 : L) = 0 := by simp [ordL]; rfl
 
 /- English proof (translation)
-Introduce `i j hji`. Rewrite using `[rootHom_val]`. Distinguish the cases in `hI : (∃ p, i = cI n a h p) ∧ ∃ r, j = cI n a h r`. Take `⟨⟨p, rfl⟩, r, rfl⟩` from `hI`. Rewrite using `[blockM_cI]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hlt : (cI n a h r : ℕ) < (cI n a h p : ℕ)` using `hji`. Simplify using `only [cI] at hlt`. Establish `hp : p = 1` using `Fin.ext (by have := p.2; simp only [Fin.val_one]; omega)`. Establish `hr : r = 0` using `Fin.ext (by have := r.2; simp only [Fin.val_zero]; omega)`. Substitute `hp hr` using the available equality.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Both sides reduce to the same expression. Distinguish the cases in `hJ : (∃ p, i = cJ n a h p) ∧ ∃ r, j = cJ n a h r`. Take `⟨⟨p, rfl⟩, r, rfl⟩` from `hJ`. Rewrite using `[blockM_cJ]`. Establish `hlt : (cJ n a h r : ℕ) < (cJ n a h p : ℕ)` using `hji`.
+Both sides reduce to the same expression. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [cJ] at hlt`. Establish `hp : p = 1` using `Fin.ext (by have := p.2; simp only [Fin.val_one]; omega)`. Establish `hr : r = 0` using `Fin.ext (by have := r.2; simp only [Fin.val_zero]; omega)`. Substitute `hp hr` using the available equality. Conclude with `partner_betaU_lower σ x hx`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[blockM_out]`. Conclude with `Matrix.one_apply_ne (ne_of_gt hji)`. Assume the negation of the conclusion as `hc push_neg at hc`. Conclude with `hI ⟨by simpa [eq_comm] using hc.1, by simpa using hc.2⟩`. Assume the negation of the conclusion as `hc push_neg at hc`.
-
-Conclude with `hJ ⟨by simpa using hc.1, by simpa using hc.2⟩`.
+Assume the negation of the conclusion and derive a contradiction. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem isBorel_root (hσ : ∀ x, σ (σ x) = x) (a : ℕ) (h : 2 * (a + 2) ≤ n) (x : L) (hx : x ≠ 0) :
     IsBorelU (rootHom σ hσ a h (betaU x hx)) := by
@@ -121,7 +119,7 @@ theorem isBorel_root (hσ : ∀ x, σ (σ x) = x) (a : ℕ) (h : 2 * (a + 2) ≤
     exact hJ ⟨by simpa using hc.1, by simpa using hc.2⟩
 
 /- English proof (translation)
-Establish `e : (⟨a, hk⟩ : Fin n) = cI n a h 0` using `Fin.ext (by simp [cI])`. Rewrite using `[e, rootHom_val, blockM_cI]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem diag_a (hσ : ∀ x, σ (σ x) = x) (a : ℕ) (h : 2 * (a + 2) ≤ n) (x : L) (hx : x ≠ 0) (hk : a < n) :
     (((rootHom σ hσ a h (betaU x hx) : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) ⟨a, hk⟩ ⟨a, hk⟩ = -x⁻¹ := by
@@ -130,7 +128,7 @@ theorem diag_a (hσ : ∀ x, σ (σ x) = x) (a : ℕ) (h : 2 * (a + 2) ≤ n) (x
   rfl
 
 /- English proof (translation)
-Establish `e : (⟨a + 1, hk⟩ : Fin n) = cI n a h 1` using `Fin.ext (by simp [cI])`. Rewrite using `[e, rootHom_val, blockM_cI]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem root_hom_diag_entry_eq (hσ : ∀ x, σ (σ x) = x) (a : ℕ) (h : 2 * (a + 2) ≤ n) (x : L) (hx : x ≠ 0) (hk : a + 1 < n) :
     (((rootHom σ hσ a h (betaU x hx) : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) ⟨a + 1, hk⟩ ⟨a + 1, hk⟩ = x := by
@@ -139,11 +137,11 @@ theorem root_hom_diag_entry_eq (hσ : ∀ x, σ (σ x) = x) (a : ℕ) (h : 2 * (
   rfl
 
 /- English proof (translation)
-Rewrite using `[rootHom_val, blockM_out]`. Conclude with `Matrix.one_apply_eq k`. Use `left`. Introduce `p e`. Use `congrArg Fin.val e` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hp` using `p.2`. Simplify using `only [cI] at this`. Use linear arithmetic over natural numbers and integers. Use `left`. Introduce `p e`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrArg Fin.val e` as an intermediate fact. Establish `hp` using `p.2`. Simplify using `only [cJ] at this`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem diag_other (hσ : ∀ x, σ (σ x) = x) (a : ℕ) (h : 2 * (a + 2) ≤ n) (x : L) (hx : x ≠ 0) (k : Fin n)
     (hk : k.val < n / 2) (h1 : k.val ≠ a) (h2 : k.val ≠ a + 1) :
@@ -166,17 +164,15 @@ theorem diag_other (hσ : ∀ x, σ (σ x) = x) (a : ℕ) (h : 2 * (a + 2) ≤ n
 end Root
 
 /- English proof (translation)
-Introduce `L _ _ ϖ σ q n hU a h χ i j hi hj x hx`. Establish `hq : (q : ℂ) ≠ 0`. Establish `: 2 ≤ q` using `hU.2.2.2.2.2.1`. Conclude with `Nat.cast_ne_zero.2 (by omega)`. Use `⟨rootHom σ hU.1 a h (betaU x hx), isBorel_root hU.1 a h x hx, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hij : i ≠ j` using `fun e => by`. Use `congrArg Fin.val e` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `ha : a < n` using `by omega`. Establish `ha1 : a + 1 < n` using `by omega`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hin : i.val < n` using `by omega`. Establish `hjn : j.val < n` using `by omega`. Unfold `chiDeltaU`. Rewrite using `[Finset.prod_eq_mul i j hij ?_ (by simp) (by simp)]`. Rewrite using `[dif_pos hin, dif_pos hjn]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ei : (⟨i.val, hin⟩ : Fin n) = ⟨a, ha⟩` using `Fin.ext hi`. Establish `ej : (⟨j.val, hjn⟩ : Fin n) = ⟨a + 1, ha1⟩` using `Fin.ext hj`. Rewrite using `[ei, ej, diag_a, root_hom_diag_entry_eq, ordL_neg' _ (inv_ne_zero hx), ordL_inv' hx, hi, hj]`. Establish `hN : ((n : ℤ) - 1 - 2 * ((a + 1 : ℕ) : ℤ)) = ((n : ℤ) - 1 - 2 * (a : ℤ)) - 2` using `by push_cast; ring`. Rewrite using `[hN]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `arith _ _ _ hq _ _`. Introduce `k _ hk`. Establish `hkn : k.val < n` using `by omega`. Rewrite using `[dif_pos hkn, diag_other hU.1 a h x hx ⟨k.val, hkn⟩ (by simpa using k.2) (fun e => hk.1 (Fin.ext (by simpa [hi] using e))) (fun e => hk.2 (Fin.ext (by simpa [hj] using e))), ordL_one']`. Simplify using the standard rewrite rules.
-
-Simplify using `only [sR, uR, ← map_mul]`. Conclude with `congrArg _ (wU_mul_nU x hx)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sR_uR_factor : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L) (σ : L →+* L) (q n : ℕ) (hU : IsUnramInv ϖ σ q) (a : ℕ) (h : 2 * (a + 2) ≤ n) (χ : Fin (n / 2) → ℂˣ) (i j : Fin (n / 2)), i.val = a → j.val = a + 1 → ∀ x : L, x ≠ 0 →
     ∃ b : GU σ n, IsBorelU b ∧

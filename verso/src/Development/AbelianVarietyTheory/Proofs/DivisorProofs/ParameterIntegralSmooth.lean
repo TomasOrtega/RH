@@ -6,13 +6,13 @@ open scoped ContDiff
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `d U' C K ψ hU hC hK hψ hKs`. Establish `hf : LocallyIntegrable (C.indicator ψ) volume` using `((integrable_indicator_iff hC.measurableSet).2 hψ).locallyIntegrable`. Establish `hgs : ∀ p, ∀ x, p ∈ U' → x ∉ -C → (fun z (y : Fin d → ℂ) => K (z, -y)) p x = 0`. Introduce `p x hp hx`. Conclude with `hK p hp (-x) (by simpa [Set.mem_neg] using hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hg : ContDiffOn ℝ (⊤ : ℕ∞) (↿(fun z (y : Fin d → ℂ) => K (z, -y))) (U' ×ˢ Set.univ)`. Establish `h1 : ContDiff ℝ ∞ (fun p : (Fin d → ℂ) × (Fin d → ℂ) => (p.1, -p.2))` using `contDiff_fst.prodMk contDiff_snd.neg`. Use `hKs.comp h1.contDiffOn ?_` and prove the remaining obligations. Introduce and unpack `⟨p, x⟩ ⟨hp, -⟩`. Conclude with `⟨hp, Set.mem_univ _⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hv : ContDiffOn ℝ (⊤ : ℕ∞) (fun _ : Fin d → ℂ => (0 : Fin d → ℂ)) U'` using `contDiffOn_const`. Establish `main` using `contDiffOn_convolution_right_with_param_comp (μ := volume) (ContinuousLinearMap.mul ℝ ℝ) hv hU hC.neg hgs hf hg`. Use `main.congr ?_` and prove the remaining obligations. Introduce `z hz`. Simplify using `only [convolution_def, ContinuousLinearMap.mul_apply', zero_sub, neg_neg]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Distinguish the cases in `hw : w ∈ C`. Simplify using `[Set.indicator_of_mem hw]`. Simplify using `[Set.indicator_of_notMem hw, hK z hz w hw]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiffOn_integral_mul_kernel_of_compact :
     ∀ (d : ℕ) (U' C : Set (Fin d → ℂ)) (K : (Fin d → ℂ) × (Fin d → ℂ) → ℝ) (ψ : (Fin d → ℂ) → ℝ),

@@ -5,7 +5,7 @@ open PowerSeries GlobalTheory.MomOne
 open scoped ComplexConjugate BigOperators Topology
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.MomOne.Transfer.shift_eq_hat_translate` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FJetHarmonics%2FCpTransportedTaylorSeriesShiftEqTranslate.lean&line=173#L173)
 -/

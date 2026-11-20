@@ -34,15 +34,13 @@ noncomputable section
 namespace GlobalTheory.CovGmin
 
 /- English proof (translation)
-Introduce `D T j Y G σ f B hB h`. Establish `key : ∀ μ : MeasureTheory.Measure (AutQ (D.sp.W j)), μ Set.univ ≤ 1 → AllWt.petAt (Y.U (Formalism.L2.Pj.goodOf Y.d.c₂ σ)) (xiR D) (D.sp.W j) (Y.dict (Formalism.L2.Pj.goodOf Y.d.c₂ σ)) μ G f ≤ B`. Introduce `μ hμ`. Rewrite using `[AllWt.petAt_eq]`. Establish `hb : ∀ q : AutQ (D.sp.W j), ‖AllWt.homN (Y.U (Formalism.L2.Pj.goodOf Y.d.c₂ σ)) (xiR D) G f (Y.dict (Formalism.L2.Pj.goodOf Y.d.c₂ σ) q.out)‖ₑ ≤ ENNReal.ofReal B`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `q`. Rewrite using `[Real.enorm_eq_ofReal (AllWt.homN_nonneg _ _ _ _ _)]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Distinguish the cases in `hz : (Y.dict (Formalism.L2.Pj.goodOf Y.d.c₂ σ) q.out).2 ∈ ((Y.U (Formalism.L2.Pj.goodOf Y.d.c₂ σ)).X (Y.dict (Formalism.L2.Pj.goodOf Y.d.c₂ σ) q.out).1).dom`. Conclude with `h _ hz`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h0 : AllWt.homN (Y.U (Formalism.L2.Pj.goodOf Y.d.c₂ σ)) (xiR D) G f (Y.dict (Formalism.L2.Pj.goodOf Y.d.c₂ σ) q.out) = 0`. Simplify using `[AllWt.homN, AllWt.ptN, rdU, hz, ReciprocityTheory.ChartRestriction.G.FD.Data.pnorm]`. Rewrite using `[h0]`. Conclude with `hB`. Establish `h1` using `MeasureTheory.eLpNorm_le_of_ae_enorm_bound (p := 2) (μ := μ) (Filter.Eventually.of_forall hb)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : MeasureTheory.eLpNorm (fun q : AutQ (D.sp.W j) => AllWt.homN (Y.U (Formalism.L2.Pj.goodOf Y.d.c₂ σ)) (xiR D) G f (Y.dict (Formalism.L2.Pj.goodOf Y.d.c₂ σ) q.out)) 2 μ ≤ ENNReal.ofReal B`. Use `h1.trans ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul]`. Conclude with `(mul_le_mul_right (ENNReal.rpow_le_one hμ (by positivity)) _).trans (by simp)`. Conclude with `ENNReal.toReal_le_of_le_ofReal hB h2`.
-
-Use `⟨key _ ?_, fun Z => key _ (AllWt.muPart_univ_le _ _ _)⟩` and prove the remaining obligations. Rewrite using `[← AllWt.muPart_univ (D.sp.W j) (Y.dict (Formalism.L2.Pj.goodOf Y.d.c₂ σ))]`. Conclude with `AllWt.muPart_univ_le _ _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem petW_le_of_homN_le : ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (G : WTZ D.host.E) (σ : Y.d.c₂.F →+* ℂ) (f : Rul Y.d.Xo₂ Y.d.c₂) (B : ℝ), 0 ≤ B → (∀ z : Σ k, ReciprocityTheory.ChartRestriction.G.FD.Frame ((Y.U (Formalism.L2.Pj.goodOf Y.d.c₂ σ)).X k).Ψ D.R.r, z.2 ∈ ((Y.U (Formalism.L2.Pj.goodOf Y.d.c₂ σ)).X z.1).dom → AllWt.homN (Y.U (Formalism.L2.Pj.goodOf Y.d.c₂ σ)) (xiR D) G f z ≤ B) → AllWt.petW Y.U (xiR D) (fun _ => D.sp.W j) Y.dict G σ f ≤ B ∧ ∀ Z, petOn Y.U (xiR D) (fun _ => D.sp.W j) Y.dict Z G σ f ≤ B := by
   intro D T j Y G σ f B hB h
@@ -77,9 +75,9 @@ set_option maxHeartbeats 800000 in
 set_option synthInstance.maxHeartbeats 200000 in
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `petW_le_of_homN_le D T j Y G σ f B hB h`. Establish `hn1 : ‖σ (Na : Y.d.c₂.F)‖ = Na` using `by rw [map_natCast, Complex.norm_natCast]`. Establish `hN0 : (0 : ℝ) ≤ Na` using `Nat.cast_nonneg _`. Use `⟨?_, fun Z => ?_⟩` and prove the remaining obligations. Use `show AllWt.petW Y.U (xiR D) (fun _ => D.sp.W j) Y.dict G σ (w : Rul Y.d.Xo₂ Y.d.c₂) ≤ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, AllWt.petW_smul, hn1]`. Conclude with `(mul_le_mul_of_nonneg_left h1 hN0).trans (mul_le_mul_of_nonneg_right hA hB)`. Rewrite using `[hc, AllWt.petOn_smul, hn1]`. Conclude with `(mul_le_mul_of_nonneg_left (h2 Z) hN0).trans (mul_le_mul_of_nonneg_right hA hB)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nrm_le_of_eq_smul (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (G : WTZ D.host.E) (σ : Y.d.c₂.F →+* ℂ)
     (w : Y.V G) (f : Rul Y.d.Xo₂ Y.d.c₂) (Na : ℕ) (A B : ℝ) (hB : 0 ≤ B) (hA : (Na : ℝ) ≤ A)
@@ -100,9 +98,9 @@ theorem nrm_le_of_eq_smul (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (G : WT
     exact (mul_le_mul_of_nonneg_left (h2 Z) hN0).trans (mul_le_mul_of_nonneg_right hA hB)
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff, ← hS, Submodule.span_le]`. Introduce `y hy`. Take `⟨s, hs, hm⟩` from `h y hy`. Establish `hm'` using `hm (s • y) rfl (by rw [Nat.cast_smul_eq_nsmul]; rfl)`. Establish `hNa' : ((Na : F)) ≠ 0` using `by exact_mod_cast hNa.ne'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : y = (s⁻¹ * (Na : F)⁻¹) • (Na • (s • y))`. Rewrite using `[← Nat.cast_smul_eq_nsmul F, smul_smul, smul_smul, mul_assoc s⁻¹, inv_mul_cancel₀ hNa', mul_one, inv_mul_cancel₀ hs, one_smul]`. Rewrite using `[SetLike.mem_coe, e1]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hm')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_eq_top_of_multiples {F M : Type*} [Field F] [CharZero F] [AddCommGroup M] [Module F M] (W : Submodule F M)
     (S S' : Set W) (hS : Submodule.span F S = ⊤) (Na : ℕ) (hNa : 0 < Na)
@@ -121,7 +119,7 @@ theorem span_eq_top_of_multiples {F M : Type*} [Field F] [CharZero F] [AddCommGr
   exact Submodule.smul_mem _ _ (Submodule.subset_span hm')
 
 /- English proof (translation)
-Simplify using `only [← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exp_consts (CA CB CC Q κ : ℝ) :
     Real.exp (CC * Q * κ) * (Real.exp (391 * Q * κ) * Real.exp (CA * Q * κ) * Real.exp (CB * Q * κ)) =
@@ -134,17 +132,17 @@ set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `_`. Take `⟨CA, hCA0, hA⟩` from `GlobalTheory.CovGmin.span_thFam`. Take `⟨CB, hCB0, hB⟩` from `GlobalTheory.RawThetaSup.homN_smul_raw_le`. Take `⟨CC, hCC0, hC⟩` from `GlobalTheory.T.exists_bounded_integer_goodCover_thetaSeries_integral`. Use `⟨CA + CB + CC + 391, by linarith only [hCA0, hCB0, hCC0], ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `D T hJ j hp hq hf hj Y e o hG Lb hL hM hE hfr ho a n hDom hev hn hpos hsz`. Establish `hH : GlobalTheory.CovGmin.Hyp D T j Y e o Lb a n` using `⟨hJ, hp, hq, hf, hj, hG, hL, hM, hE, hfr, ho, hDom, hev, hn, hpos, hsz⟩`. Take `⟨_, nab, hnab⟩` from `GlobalTheory.CanonConn.exists_isNab_uncond D.host.E T.Q.H (T.Q.Dw j) Y.d.l₂ Y.d.Xo₂ Y.d.c₂`. Take `⟨Na, hNa, hlog, hint⟩` from `hC D T j Y e o Lb a n hH nab hnab`. Establish `hspan` using `hA D T j Y e o Lb a n hH nab hnab`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hB'` using `hB D T j Y e o Lb a n hH nab hnab`. Use `clear hA hB hC`. Establish `hκ : 1 ≤ sizeK (T.Q.Dw j) a n`. Establish `h1` using `GlobalTheory.RawThetaSup.two_mul_card_psi T.Q.H`. Establish `h2 : 1 ≤ n / 2 * (Fintype.card (Psi T.Q.H) * ((T.Q.Dw j).p + (T.Q.Dw j).q))` using `Nat.mul_pos (by omega) (Nat.mul_pos (by omega) (by omega))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (1 : ℝ) ≤ ((n / 2 : ℕ) : ℝ) * (Fintype.card (Psi T.Q.H) * ((T.Q.Dw j).p + (T.Q.Dw j).q) : ℕ)`. Conclude with `h2` after adjusting the coercions. Rewrite using `[GlobalTheory.RawThetaSup.sizeK_eq]`. Conclude with `h3.trans (le_add_of_nonneg_left (Nat.cast_nonneg _))`. Establish `hNaE : (Na : ℝ) ≤ Real.exp (CC * ((D.R.f : ℝ) * D.R.r * Lb) ^ 2 * sizeK (T.Q.Dw j) a n)` using `(Real.log_le_iff_le_exp (Nat.cast_pos.2 hNa)).1 hlog`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hFE : Real.exp (fieldSz Y.d.c₂.F) ≤ Real.exp (391 * ((D.R.f : ℝ) * D.R.r * Lb) ^ 2 * sizeK (T.Q.Dw j) a n)` using `Real.exp_le_exp.2 ((hG.size.trans ho).trans (le_mul_of_one_le_right (mul_nonneg (by norm_num) (sq_nonneg _)) hκ))`. Use `⟨{w | w ∈ (AllWt.latW Y.U (wtZ a n) : Set (Y.V (wtZ a n))) ∧ ∀ σ, Y.nrm (wtZ a n) σ w ≤ Real.exp ((CA + CB + CC + 391) * ((D.R.f : ℝ) * D.R.r * Lb) ^ 2 * sizeK (T.Q.Dw j) a n) ∧ ∀ Z, petOn Y.U (xiR D) (fun _ => D.sp.W j) Y.dict Z (wtZ a n) σ w ≤ Real.exp ((CA + CB + CC + 391) * ( …` and prove the remaining obligations. Use `span_eq_top_of_multiples (Y.V (wtZ a n)) _ _ hspan Na hNa ?_` and prove the remaining obligations. Introduce and unpack `y ⟨x0, La, N, P, -, hU, hTb, hTM, hO, hP, hρ, hy⟩`. Take `⟨s, hs0, hs1, hs2⟩` from `GlobalTheory.T.exists_small_scalar_reflexIdeal_selfDualLattice D.host.E T.Q.H (T.Q.Dw j) Y.d.l₂ Y.d.c₂ n La hU`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨s, hs0, fun y₁ hy₁ hc => ⟨hint x0 La N P hU hTb hTM hO hP y hy s hs1 y₁ hy₁, fun σ => ?_⟩⟩` and prove the remaining obligations. Establish `hsup` using `hB' _ x0 La N P hU hTM hO hP hρ y hy s _ (Real.exp_pos _).le (fun σ => (hs2 σ).trans (pow_le_pow_left₀ (Real.exp_pos _).le hFE 2)) σ`. Establish `hfin` using `nrm_le_of_eq_smul D T.toCore j Y (wtZ a n) σ _ _ Na _ _ (mul_nonneg (mul_nonneg (Real.exp_pos _).le (Real.exp_pos _).le) (Real.exp_pos _).le) hNaE hc hsup`. Rewrite `hfin` using `[exp_consts]`. Conclude with `hfin`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gmin_good_cover : Hypotheses2 → ∃ C : ℝ, 0 ≤ C ∧ ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j : ℕ, 1 ≤ (T.Q.Dw j).p → 1 ≤ (T.Q.Dw j).q → 2 < Module.finrank ℚ D.host.E / 2 → InR D j → ∀ (Y : Deep T.toCore j) (e : ℕ) (o : ℝ), Y.Good e o → ∀ Lb : ℝ, 1 ≤ Lb → Real.log Y.d.l₂.M ≤ 30 * Lb → fieldSz D.host.E ≤ 3 * Lb → Real.log (D.R.f * D.R.r) ≤ Lb → o ≤ 391 * (D.R.f * D.R.r * Lb) ^ 2 → ∀ (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ), Dom a n → Even n → 8 * D.R.f * D.R.r + 4 ≤ n → (∀ (τ : Psi T.Q.H) (k : Fin ((T.Q.Dw j).p + (T.Q.Dw j).q)), (k : ℕ) < (T.Q.Dw j).p → ((n / 2 : ℕ) : ℤ) < laOf (T.Q.Dw j) a n τ k) → Real.log (sizeK (T.Q.Dw j) a n) ≤ 20 * Lb → ∃ s : Set (Y.V (wtZ a n)), s ⊆ (AllWt.latW Y.U (wtZ a n) : Set (Y.V (wtZ a n))) ∧ Submodule.span Y.d.c₂.F s = ⊤ ∧ ∀ y ∈ s, ∀ σ, Y.nrm (wtZ a n) σ y ≤ Real.exp (C * ((D.R.f : ℝ) * D.R.r * Lb) ^ 2 * sizeK (T.Q.Dw j) a n) ∧ ∀ Z, petOn Y.U (xiR D) (fun _ => D.sp.W j) Y.dict Z (wtZ a n) σ y ≤ Real.exp (C * ((D.R.f : ℝ) * D.R.r * Lb) ^ 2 * sizeK (T.Q.Dw j) a n) := by
   intro _

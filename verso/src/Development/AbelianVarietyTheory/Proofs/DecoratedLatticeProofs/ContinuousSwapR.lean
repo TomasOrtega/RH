@@ -13,16 +13,16 @@ namespace GlobalTheory.FinPartIso
 section Swap
 
 /- English proof (translation)
-The claim follows from `Continuous.units_map _ (continuous_id.matrix_map h)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_bc {A B : Type} [CommRing A] [CommRing B] [TopologicalSpace A] [TopologicalSpace B] {n : ℕ}
     (φ : A →+* B) (h : Continuous φ) : Continuous (bc (n := Fin n) φ) :=
   Continuous.units_map _ (continuous_id.matrix_map h)
 
 /- English proof (translation)
-Establish `hg' : cT σ g.1 * J * g.1 = J` using `hg`. Establish `h2` using `congrArg (fun M => M.map φ) hg'`. Simplify using `only [Matrix.map_mul, hJ] at h2`. Establish `e1 : cT σ' (g.1.map φ) = (cT σ g.1).map φ`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [cT, Matrix.transpose_apply, Matrix.map_apply, h]`. Express the relevant statement in the definitionally equal form `cT σ' (g.1.map φ) * J' * g.1.map φ = J'`. Rewrite using `[e1]`. Conclude with `h2`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bc_mem {A B : Type} [CommRing A] [CommRing B] {n : ℕ} (σ : A →+* A) (σ' : B →+* B) (φ : A →+* B)
     (h : ∀ x, σ' (φ x) = φ (σ x)) (J : Matrix (Fin n) (Fin n) A) (J' : Matrix (Fin n) (Fin n) B)
@@ -55,11 +55,9 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] 
 def swapR : R ⊗[F] E ≃+* E ⊗[F] R := (Algebra.TensorProduct.comm F R E).toRingEquiv
 
 /- English proof (translation)
-Use `letI : Algebra R (E ⊗[F] R) := Algebra.TensorProduct.rightAlgebra`. Use `letI := tensTopL (F := F) (E := E) R`. Use `haveI : IsModuleTopology R (E ⊗[F] R) := ⟨rfl⟩`. Use `haveI : IsModuleTopology R (R ⊗[F] E) := ⟨rfl⟩`. Use `haveI := IsModuleTopology.toContinuousAdd R (E ⊗[F] R)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := IsModuleTopology.toContinuousAdd R (R ⊗[F] E)`. Set `L : R ⊗[F] E ≃ₗ[R] E ⊗[F] R` to `{ (swapR (F := F) (E := E) R).toAddEquiv with map_smul' := fun c y => by`. Express the relevant statement in the definitionally equal form `swapR (F := F) (E := E) R (c • y) = c • swapR (F := F) (E := E) R y`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul]`. Use `rfl }`.
-
-Conclude with `⟨IsModuleTopology.continuous_of_linearMap L.toLinearMap, IsModuleTopology.continuous_of_linearMap L.symm.toLinearMap⟩`.
+Both sides reduce to the same expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem continuous_swapR :
     @Continuous _ _ _ (tensTopL (F := F) (E := E) R) (swapR (F := F) (E := E) R) ∧
@@ -82,7 +80,7 @@ variable (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
 
 omit [TopologicalSpace R] in
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem swapR_sig (x : R ⊗[F] E) :
     Formalism.UG.sigR σ R (swapR R x) = swapR R (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR R σ x) := by
@@ -118,7 +116,7 @@ def finEquiv : finPts σ J ≃ₜ* GFin σ J where
 end Fin
 
 /- English proof (translation)
-Introduce `D V n hn`. Substitute `hn` using the available equality. Use `letI := tensTopL (F := D.host.F) (E := D.host.E) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)`. Conclude with `⟨(finEquiv D.sp.cm.sig V.gram).trans (swapU (FiniteAdeleRing (𝓞 D.host.F) D.host.F) D.sp.cm.sig V.gram), fun g => rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Equip the data with the indicated structure. Supply the required witnesses or components.
 -/
 theorem exists_finIso : ∀ (D : D7) (V : HSp D) (n : ℕ) (hn : V.rank = n), letI := tensTopL (F := D.host.F) (E := D.host.E) (FiniteAdeleRing (𝓞 D.host.F) D.host.F); ∃ e : ↥(GfC V) ≃ₜ* ↥(UPts (sigD D) (V.gram.reindex (finCongr hn) (finCongr hn)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)), ∀ g, (e g).1.1 = finM V hn g.1 := by
   intro D V n hn

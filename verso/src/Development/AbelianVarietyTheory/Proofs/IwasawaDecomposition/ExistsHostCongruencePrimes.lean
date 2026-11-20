@@ -14,31 +14,29 @@ open scoped TensorProduct
 namespace GlobalTheory.Mem
 
 /- English proof (translation)
-It suffices to establish `h : ∀ H₁ : Host R, H₁.ccK = ⊤ → ∃ H : Host R, H.toHostAx = H₁.toHostAx ∧ H.splitBound = H₁.splitBound ∧ H.ccK = ⊤ ∧ H.TT = H₁.TT ∧ (∀ k, H.g k % (H.QS * H.q * H.d) = 1) ∧ Disjoint (Formalism.CyclotomicNorms.BB R.r (H.g 0)) (Formalism.CyclotomicNorms.BB R.r (H.g 1)) ∧ (∀ p ∈ H.lev …`. Introduce `H hK`. Take `⟨c, hc⟩ : ∃ c : ℕ, c = H.QS * H.q * H.d` from `⟨_, rfl⟩`. Establish `hc1 : 1 < c`. Establish `h1 : 0 < H.QS * H.q` using `Nat.mul_pos H.QS_pos H.q_prime.pos`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : 1 * H.d ≤ H.QS * H.q * H.d` using `Nat.mul_le_mul_right _ h1`. Establish `h3` using `H.d_prime.one_lt`. Use linear arithmetic over natural numbers and integers. Establish `hmod : ∀ x : ℕ, x ≡ 1 [MOD c] → x % c = 1` using `fun x hx => by`. Establish `: x % c = 1 % c` using `hx`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Nat.mod_eq_of_lt hc1]`. Then use the resulting hypothesis. Take `⟨π₀, g₀, hg₀, hN₀, hK₀, hn₀, hi₀, hm₀⟩` from `ImaginaryQuadraticNorm.exists_norm_prime R H c 1 N (by omega) (Nat.coprime_one_left c)`. Take `⟨M, N', hM0, hcM, hdis⟩` from `exists_modulus_bb_disjoint R.r g₀ c hg₀ (by omega)`. Establish `hcop : Nat.Coprime (1 + M) (M ^ 2)` using `Nat.Coprime.pow_right 2 (by simp)`. Take `⟨π₁, g₁, hg₁, hN₁, hK₁, hn₁, hi₁, hm₁⟩` from `ImaginaryQuadraticNorm.exists_norm_prime R H (M ^ 2) (1 + M) (N' + g₀) (pow_ne_zero 2 hM0) hcop`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hD` using `hdis g₁ hg₁ (by omega) hm₁`. Establish `hg₀c : g₀ % c = 1` using `hmod _ (by simpa using hm₀)`. Establish `hg₁c : g₁ % c = 1`. Apply `hmod` to reduce the goal to its premises. Use `(hm₁.of_dvd (hcM.trans (dvd_pow_self M two_ne_zero))).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : 1 + M ≡ 1 + 0 [MOD c]` using `Nat.ModEq.add_left 1 ((Nat.modEq_zero_iff_dvd).2 hcM)`. Simplify using `using h1.pow 2`. Establish `hd₀ : (c : 𝓞 H.E) ∣ π₀ - 1`. Simplify `hi₀` using `[Ideal.mem_span_singleton]`. Establish `hd₁ : (c : 𝓞 H.E) ∣ π₁ - 1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h1 : (c : 𝓞 H.E) ∣ (M : 𝓞 H.E)` using `Nat.cast_dvd_cast hcM`. Establish `h2 : ((M ^ 2 : ℕ) : 𝓞 H.E) ∣ π₁ - ((1 + M : ℕ) : 𝓞 H.E)` using `Ideal.mem_span_singleton.1 hi₁`. Establish `h3 : (c : 𝓞 H.E) ∣ π₁ - ((1 + M : ℕ) : 𝓞 H.E)` using `(Nat.cast_dvd_cast (hcM.trans (dvd_pow_self M two_ne_zero))).trans h2`. Establish `h4 : π₁ - 1 = (π₁ - ((1 + M : ℕ) : 𝓞 H.E)) + M` using `by push_cast; ring`. Rewrite using `[h4]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `dvd_add h3 h1`. Take `⟨p, hpN, hp, hpm⟩` from `Nat.forall_exists_prime_gt_and_modEq g₁ (q := 15 * c) (a := 1) (by omega) (Nat.coprime_one_left _)`. Take `⟨p', hpN', hp', hpm'⟩` from `Nat.forall_exists_prime_gt_and_modEq p (q := 15 * c) (a := 1) (by omega) (Nat.coprime_one_left _)`. Establish `hpc : p % c = 1` using `hmod _ (hpm.of_mul_left 15)`. Establish `hpc' : p' % c = 1` using `hmod _ (hpm'.of_mul_left 15)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp15 : p % 15 = 1` using `hpm.of_mul_right c`. Establish `hp15' : p' % 15 = 1` using `hpm'.of_mul_right c`. Substitute `hc` using the available equality. Establish `hlv : ∀ x ∈ ({g₀, g₁, p, p'} : Finset ℕ), x.Prime ∧ x % (H.QS * H.q * H.d) = 1`. Introduce `x hx`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hx`. Apply the tactic sequence `rcases hx with h | h | h | h <;> subst h`. Conclude with `⟨hg₀, hg₀c⟩`. Conclude with `⟨hg₁, hg₁c⟩`. Conclude with `⟨hp, hpc⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨hp', hpc'⟩`. Establish `hS : ∀ x ∈ ({g₀, g₁, p, p'} : Finset ℕ), Nat.Coprime x H.QS`. Introduce `x hx`. Establish `h1 : Nat.Coprime x (H.QS * H.q * H.d)`. Rewrite using `[Nat.Coprime, Nat.gcd_comm, Nat.gcd_rec, (hlv x hx).2, Nat.gcd_one_left]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `(h1.coprime_mul_right_right).coprime_mul_right_right`. Apply the tactic sequence `refine ⟨{ H with levelPrimes := {g₀, g₁, p, p'} g := ![g₀, g₁] g_prime := by intro i; fin_cases i <;> simpa g_ne := by simp; omega g_level := by intro i; fin_cases i <;> simp pde := p pde' := p' pde_prime := hp pde'_prime := hp' pde_ne := by omega pde_level := by constructor <;> …`. Introduce `k fin_cases k`. Conclude with `hg₀c`. Conclude with `hg₁c`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `k fin_cases k`. Conclude with `hN₀`. Use `show N < g₁`. Use linear arithmetic over natural numbers and integers. Introduce `k fin_cases k`.
-
-Conclude with `⟨π₀, hK₀, hn₀, hd₀⟩`. Conclude with `⟨π₁, hK₁, hn₁, hd₁⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_relevel_primes_one_mod (R : Ranks) (H₀ : Host R) (N : ℕ) : ∃ H : Host R, H.toHostAx = H₀.toHostAx ∧ H.splitBound = H₀.splitBound ∧ H.ccK = ⊤ ∧ H.TT = H₀.TT ∧ (∀ k, H.g k % (H.QS * H.q * H.d) = 1) ∧ Disjoint (Formalism.CyclotomicNorms.BB R.r (H.g 0)) (Formalism.CyclotomicNorms.BB R.r (H.g 1)) ∧ (∀ p ∈ H.levelPrimes, p.Prime ∧ p % (H.QS * H.q * H.d) = 1) ∧ (∀ k, N < H.g k) ∧ (∀ k, ∃ π : 𝓞 H.E, (π : H.E) ∈ H.K ∧ (π : H.E) * H.conj (π : H.E) = (H.g k : H.E) ∧ ((H.QS * H.q * H.d : ℕ) : 𝓞 H.E) ∣ π - 1) ∧ H.pde % (H.QS * H.q * H.d) = 1 ∧ H.pde' % (H.QS * H.q * H.d) = 1 := by
   suffices h : ∀ H₁ : Host R, H₁.ccK = ⊤ → ∃ H : Host R, H.toHostAx = H₁.toHostAx ∧ H.splitBound = H₁.splitBound ∧ H.ccK = ⊤ ∧ H.TT = H₁.TT ∧ (∀ k, H.g k % (H.QS * H.q * H.d) = 1) ∧ Disjoint (Formalism.CyclotomicNorms.BB R.r (H.g 0)) (Formalism.CyclotomicNorms.BB R.r (H.g 1)) ∧ (∀ p ∈ H.levelPrimes, p.Prime ∧ p % (H.QS * H.q * H.d) = 1) ∧ (∀ k, N < H.g k) ∧ (∀ k, ∃ π : 𝓞 H.E, (π : H.E) ∈ H.K ∧ (π : H.E) * H.conj (π : H.E) = (H.g k : H.E) ∧ ((H.QS * H.q * H.d : ℕ) : 𝓞 H.E) ∣ π - 1) ∧ H.pde % (H.QS * H.q * H.d) = 1 ∧ H.pde' % (H.QS * H.q * H.d) = 1 from
@@ -129,9 +127,9 @@ theorem exists_relevel_primes_one_mod (R : Ranks) (H₀ : Host R) (N : ℕ) : �
     · exact ⟨π₁, hK₁, hn₁, hd₁⟩
 
 /- English proof (translation)
-Introduce `R hinj ho he B N TT`. Take `⟨H₀, hB, hq, hd, -, hT, -⟩` from `UpperTheory.Host.exists_host_of_injective R hinj ho he B N TT`. Take `⟨H, h1, h2, h3, h4, h5⟩` from `exists_relevel_primes_one_mod R H₀ N`. Use `⟨H, h2.trans hB, ?_, ?_, h3, h4.trans hT, h5⟩` and prove the remaining obligations. Rewrite using `[h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hq`. Rewrite using `[h1]`. Conclude with `hd`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_host_level_primes_one_mod : ∀ (R : Ranks), Function.Injective R.h → R.o ^ 64 ≤ 2 ^ R.e → 2 ≤ R.e → ∀ (B N : ℕ) (TT : Finset (R.A)), ∃ H : Host R, H.splitBound = B ∧ N < H.q ∧ N < H.d ∧ H.ccK = ⊤ ∧ H.TT = TT ∧ (∀ k, H.g k % (H.QS * H.q * H.d) = 1) ∧ Disjoint (Formalism.CyclotomicNorms.BB R.r (H.g 0)) (Formalism.CyclotomicNorms.BB R.r (H.g 1)) ∧ (∀ p ∈ H.levelPrimes, p.Prime ∧ p % (H.QS * H.q * H.d) = 1) ∧ (∀ k, N < H.g k) ∧ (∀ k, ∃ π : 𝓞 H.E, (π : H.E) ∈ H.K ∧ (π : H.E) * H.conj (π : H.E) = (H.g k : H.E) ∧ ((H.QS * H.q * H.d : ℕ) : 𝓞 H.E) ∣ π - 1) ∧ H.pde % (H.QS * H.q * H.d) = 1 ∧ H.pde' % (H.QS * H.q * H.d) = 1 := by
   intro R hinj ho he B N TT

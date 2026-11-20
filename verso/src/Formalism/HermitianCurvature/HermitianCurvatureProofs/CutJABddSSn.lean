@@ -26,7 +26,7 @@ def ssnV (l : ℕ) (ρ π : M.Ty P) (q : Qp P.r P.TT) : ℂ :=
   if M.Up P l π ρ then ((Real.sqrt (M.Nrm P l π) : ℝ) : ℂ) * ((∏ i, conj (q.1.1 i)) * ∏ i, (q.1.1 i)⁻¹) else 0
 
 /- English proof (translation)
-Rewrite using `[← Formalism.FourierDecayAlt.P.MAx2.Adj.coordE_vc l q.1]`. Conclude with `Formalism.FourierDecayAlt.P.MAx2.Adj.inv_val _ (fun q => Formalism.FourierDecayAlt.P.MAx2.Adj.coordE_vc_ne l q) q`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evD_inv_c (l : Fin P.r) (q : Qp P.r P.TT) :
     evD P q ((DQ P).inv ((DQ P).x (M.vc l))) = (q.1.1 l)⁻¹ := by
@@ -34,7 +34,7 @@ theorem evD_inv_c (l : Fin P.r) (q : Qp P.r P.TT) :
   exact Formalism.FourierDecayAlt.P.MAx2.Adj.inv_val _ (fun q => Formalism.FourierDecayAlt.P.MAx2.Adj.coordE_vc_ne l q) q
 
 /- English proof (translation)
-Rewrite using `[← Formalism.FourierDecayAlt.P.MAx2.Adj.coordE_vcb l q.1]`. Use `Formalism.FourierDecayAlt.P.MAx2.Adj.inv_val _ (fun q => ?_) q` and prove the remaining obligations. Use `show Formalism.FourierDecayAlt.MA.coordE (M.vcb l) q.1 ≠ 0`. Rewrite using `[Formalism.FourierDecayAlt.P.MAx2.Adj.coordE_vcb]`. Conclude with `(map_ne_zero _).2 (q.2.1 l)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evD_inv_cb (l : Fin P.r) (q : Qp P.r P.TT) :
     evD P q ((DQ P).inv ((DQ P).x (M.vcb l))) = (conj (q.1.1 l))⁻¹ := by
@@ -45,9 +45,9 @@ theorem evD_inv_cb (l : Fin P.r) (q : Qp P.r P.TT) :
   exact (map_ne_zero _).2 (q.2.1 l)
 
 /- English proof (translation)
-Unfold `phR`. Rewrite using `[map_mul, map_prod, map_prod]`. Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[evaluation_of_coordinate_variable, Formalism.FourierDecayAlt.P.MAx2.Adj.coordE_vcb]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_congr rfl fun i _ => evD_inv_c P i q`.
+A detailed English derivation is pending.
 -/
 theorem evD_phR (q : Qp P.r P.TT) :
     evD P q (phR P) = (∏ i, conj (q.1.1 i)) * ∏ i, (q.1.1 i)⁻¹ := by
@@ -59,9 +59,9 @@ theorem evD_phR (q : Qp P.r P.TT) :
   · exact Finset.prod_congr rfl fun i _ => evD_inv_c P i q
 
 /- English proof (translation)
-Unfold `phRb`. Rewrite using `[map_mul, map_prod, map_prod]`. Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[evaluation_of_coordinate_variable, Formalism.FourierDecayAlt.P.MAx2.Adj.coordE_vc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_congr rfl fun i _ => evD_inv_cb P i q`.
+A detailed English derivation is pending.
 -/
 theorem evD_phRb (q : Qp P.r P.TT) :
     evD P q (phRb P) = (∏ i, q.1.1 i) * ∏ i, (conj (q.1.1 i))⁻¹ := by
@@ -73,7 +73,7 @@ theorem evD_phRb (q : Qp P.r P.TT) :
   · exact Finset.prod_congr rfl fun i _ => evD_inv_cb P i q
 
 /- English proof (translation)
-The claim follows from `extD P fun q => by rw [evD_cjD, evD_phR P, evD_phRb P, map_mul, map_prod, map_prod] congr 1 · exact Finset.prod_congr rfl fun i _ => Complex.conj_conj _ · exact Finset.prod_congr rfl fun i _ => map_inv₀ _ _`.
+A detailed English derivation is pending.
 -/
 theorem cjD_phR : cjD P (phR P) = phRb P :=
   extD P fun q => by
@@ -83,7 +83,7 @@ theorem cjD_phR : cjD P (phR P) = phRb P :=
     · exact Finset.prod_congr rfl fun i _ => map_inv₀ _ _
 
 /- English proof (translation)
-Unfold `ssnB ssnV`. Use `split_ifs`. Rewrite using `[map_mul, evD_alg, evD_phR P]`. Conclude with `map_zero _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evD_ssnB (l : ℕ) (ρ π : M.Ty P) (q : Qp P.r P.TT) :
     evD P q (ssnB P l ρ π) = ssnV P l ρ π q := by
@@ -93,11 +93,11 @@ theorem evD_ssnB (l : ℕ) (ρ π : M.Ty P) (q : Qp P.r P.TT) :
   · exact map_zero _
 
 /- English proof (translation)
-Rewrite using `[rep_Drb hL.2.2.2.2.1, rep_Dri hL.2.2.2.1, scalar_mul_fnP, Matrix.scalar_apply, Matrix.diagonal_mul]`. Unfold `SS ssnB`. Rewrite using `[Matrix.of_apply]`. Use `split_ifs with h`. Rewrite using `[algebraMap_eq_multiplierPair, multiplierPair_mul]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `mul_comm _ _`. Apply `extD P` to reduce the goal to its premises. Introduce `q`. Establish `e1 : evD P q ((∏ i, (DQ P).x (M.vc i)) * ∏ i, (DQ P).inv ((DQ P).x (M.vcb i))) = conj (evD P q (phR P))`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← evD_cjD, cjD_phR P]`. Both sides reduce to the same expression. Rewrite `e1` using `[map_mul]`. Rewrite using `[evD_cjD, map_mul, map_mul, map_mul, evD_alg, evD_alg, e1, map_mul, mul_comm]`. Rewrite using `[mul_zero, cjD_zero, multiplierPair_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ssn_entry {L : LevelData (A P (DQ P)) P.r} (hL : IsModelLevel P (DQ P) L) (l : ℕ)
     (ρ π : M.Ty P) :
@@ -118,7 +118,7 @@ theorem ssn_entry {L : LevelData (A P (DQ P)) P.r} (hL : IsModelLevel P (DQ P) L
   · rw [mul_zero, cjD_zero, multiplierPair_zero]
 
 /- English proof (translation)
-Apply the tactic sequence `rw [Matrix.star_apply, ssn_entry P hL, star_fnP, cjD_cjD]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ssnStar_entry {L : LevelData (A P (DQ P)) P.r} (hL : IsModelLevel P (DQ P) L) (l : ℕ)
     (ρ π : M.Ty P) :
@@ -127,7 +127,7 @@ theorem ssnStar_entry {L : LevelData (A P (DQ P)) P.r} (hL : IsModelLevel P (DQ 
   rw [Matrix.star_apply, ssn_entry P hL, star_fnP, cjD_cjD]
 
 /- English proof (translation)
-Rewrite using `[evD_cjD, evD_ssnB P]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem evD_ssnStar (l : ℕ) (ρ π : M.Ty P) (q : Qp P.r P.TT) :
     evD P q (cjD P (ssnB P l π ρ)) = conj (ssnV P l π ρ q) := by
@@ -305,9 +305,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
   [∀ x, NormedAddCommGroup (Wq x)] [∀ x, InnerProductSpace ℂ (Wq x)] [∀ x, FiniteDimensional ℂ (Wq x)]
 
 /- English proof (translation)
-Introduce `q hq ρ π`. Use `show _ = conj (V π ρ ⟨q, hq⟩)`. Rewrite using `[← hV q hq π ρ]`. Establish `h1` using `hadj (B.gq (T v).base q) (e ρ q.2) (e π q.2)`. Unfold `B.hsInner at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, inner_conj_symm]`.
+A detailed English derivation is pending.
 -/
 theorem fibMat_adj {S : C.HidaSetting E Wp Wq} {T : ∀ v : Fin S.f, D.LevTower S.G.k S.G.r (Wp (S.pl v)) (Wq (S.pl v))}
     {v : Fin S.f} {e : M.Ty (D.parOf S v) → ℂ → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))} {c ca : Coef S v}
@@ -322,9 +322,9 @@ theorem fibMat_adj {S : C.HidaSetting E Wp Wq} {T : ∀ v : Fin S.f, D.LevTower 
   rw [h1, inner_conj_symm]
 
 /- English proof (translation)
-Take `⟨hadj, hc, hca, he, hea, hb, hba, hV⟩` from `h`. Use `⟨fun x A B' => ?_, hca, hc, hea, he, hba, hb, fibMat_adj hadj hV⟩` and prove the remaining obligations. Unfold `B.hsInner`. Establish `h1` using `hadj x B' A`. Unfold `B.hsInner at h1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← inner_conj_symm (B.hsVec B'), ← h1, inner_conj_symm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem realC_swap {S : C.HidaSetting E Wp Wq} {T : ∀ v : Fin S.f, D.LevTower S.G.k S.G.r (Wp (S.pl v)) (Wq (S.pl v))}
     {v : Fin S.f} {e : M.Ty (D.parOf S v) → ℂ → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))} {Bg : ℝ} {c ca : Coef S v}
@@ -355,9 +355,9 @@ def RealToBdd : Prop :=
       BddReal S T v e Cb b
 
 /- English proof (translation)
-Take `⟨K, hK, hR⟩` from `hR`. Use `⟨K, hK, ?_⟩` and prove the remaining obligations. Introduce `Cc Cb hCc hCb E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v e L hFr hGa hQQ hL b hb`. Take `⟨l, hl, rfl⟩` from `hb`. Establish `hPl : Q.IsPlace (D.parOf S v) (T v).base.z (T v).base.z' (T v).base.π (T v).base.π'` using `(hB.1.2.2.2.1.2 v).2.2.2.1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, ca, hc⟩` from `hR Cc Cb hCc hCb E Wp Wq S T f χ ν' m₀ top A₀ hB v e hFr hGa hQQ l (Finset.mem_Icc.2 (Set.mem_Icc.1 hl))`. Apply the tactic sequence `exact hG E Wp Wq S T v hPl e Cb c ca _ _ hFr hc fun ρ π => ⟨ssnB (D.parOf S v) l ρ π, ssn_entry (D.parOf S v) hL l ρ π, fun q => evD_ssnB (D.parOf S v) l ρ π q⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem jABddSSnQQ_of (hG : RealToBdd) (hR : SSnRealiser) : JABddSSnQQ := by
   obtain ⟨K, hK, hR⟩ := hR
@@ -372,9 +372,9 @@ theorem jABddSSnQQ_of (hG : RealToBdd) (hR : SSnRealiser) : JABddSSnQQ := by
     ⟨ssnB (D.parOf S v) l ρ π, ssn_entry (D.parOf S v) hL l ρ π, fun q => evD_ssnB (D.parOf S v) l ρ π q⟩
 
 /- English proof (translation)
-Take `⟨K, hK, hR⟩` from `hR`. Use `⟨K, hK, ?_⟩` and prove the remaining obligations. Introduce `Cc Cb hCc hCb E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v e L hFr hGa hQQ hL b hb`. Take `⟨l, hl, rfl⟩` from `hb`. Establish `hPl : Q.IsPlace (D.parOf S v) (T v).base.z (T v).base.z' (T v).base.π (T v).base.π'` using `(hB.1.2.2.2.1.2 v).2.2.2.1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, ca, hc⟩` from `hR Cc Cb hCc hCb E Wp Wq S T f χ ν' m₀ top A₀ hB v e hFr hGa hQQ l (Finset.mem_Icc.2 (Set.mem_Icc.1 hl))`. Apply the tactic sequence `exact hG E Wp Wq S T v hPl e Cb ca c _ _ hFr (realC_swap hc) fun ρ π => ⟨cjD (D.parOf S v) (ssnB (D.parOf S v) l π ρ), ssnStar_entry (D.parOf S v) hL l ρ π, fun q => evD_ssnStar (D.parOf S v) l ρ π q⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem jABddSSnStarQQ_of (hG : RealToBdd) (hR : SSnRealiser) : JABddSSnStarQQ := by
   obtain ⟨K, hK, hR⟩ := hR

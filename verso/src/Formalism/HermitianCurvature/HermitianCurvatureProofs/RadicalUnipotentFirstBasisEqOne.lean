@@ -57,35 +57,35 @@ Use linear arithmetic over natural numbers and integers.
 theorem hs (k j ρ : ℕ) : 2 * ((j + 1) + ρ) + k + 1 = 2 * (j + (1 + ρ)) + k + 1 := by omega
 
 /- English proof (translation)
-Use `ext`. Simplify using `[Ux3.block_index_first_val]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem qX (a : Fin j) : Fin.cast (hs k j ρ) (U.eB k (j + 1) ρ (Sum.inl (Sum.inl a.castSucc))) =
     U.eB k j (1 + ρ) (Sum.inl (Sum.inl a)) := by
   ext; simp [Ux3.block_index_first_val]
 
 /- English proof (translation)
-Use `ext`. Simplify using `[Ux3.block_index_first_val, Ux3.block_index_middle_val]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem qE : Fin.cast (hs k j ρ) (U.eB k (j + 1) ρ (Sum.inl (Sum.inl (Fin.last j)))) =
     U.eB k j (1 + ρ) (Sum.inl (Sum.inr (U.eB k 1 ρ (Sum.inl (Sum.inl 0))))) := by
   ext; simp [Ux3.block_index_first_val, Ux3.block_index_middle_val]
 
 /- English proof (translation)
-Use `ext`. Simplify using `[Ux3.block_index_middle_val]`. Use linear arithmetic over natural numbers and integers.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem qV (v : Fin (2 * ρ + k + 1)) : Fin.cast (hs k j ρ) (U.eB k (j + 1) ρ (Sum.inl (Sum.inr v))) =
     U.eB k j (1 + ρ) (Sum.inl (Sum.inr (U.eB k 1 ρ (Sum.inl (Sum.inr v))))) := by
   ext; simp [Ux3.block_index_middle_val]; omega
 
 /- English proof (translation)
-Use `ext`. Simplify using `[Ux3.block_index_middle_val, Ux3.block_index_last_val]`. Use linear arithmetic over natural numbers and integers.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem qE' : Fin.cast (hs k j ρ) (U.eB k (j + 1) ρ (Sum.inr 0)) =
     U.eB k j (1 + ρ) (Sum.inl (Sum.inr (U.eB k 1 ρ (Sum.inr 0)))) := by
   ext; simp [Ux3.block_index_middle_val, Ux3.block_index_last_val]; omega
 
 /- English proof (translation)
-Use `ext`. Simplify using `[Ux3.block_index_last_val]`. Use linear arithmetic over natural numbers and integers.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem qS (b : Fin j) : Fin.cast (hs k j ρ) (U.eB k (j + 1) ρ (Sum.inr b.succ)) = U.eB k j (1 + ρ) (Sum.inr b) := by
   ext; simp [Ux3.block_index_last_val]; omega
@@ -97,7 +97,7 @@ namespace Formalism.FourierDecayAlt.P.PBH
 variable {k j ρ : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← (U.eB k 1 ρ).sum_comp]`. Simplify using `[Fintype.sum_sum_type]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_over_rank_one_basis {M : Type*} [AddCommMonoid M] (f : Fin (2 * (1 + ρ) + k + 1) → M) :
     ∑ i, f i = f (U.eB k 1 ρ (Sum.inl (Sum.inl 0))) + ∑ v, f (U.eB k 1 ρ (Sum.inl (Sum.inr v))) +
@@ -106,7 +106,7 @@ theorem sum_over_rank_one_basis {M : Type*} [AddCommMonoid M] (f : Fin (2 * (1 +
   simp [Fintype.sum_sum_type]
 
 /- English proof (translation)
-Rewrite using `[Ux3.hpkBlocks k 1 ρ, Ux3.block3_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hpk1 (p q : U.Ix k 1 ρ) : Hpk k (1 + ρ) (U.eB k 1 ρ p) (U.eB k 1 ρ q) =
     Matrix.fromBlocks (Matrix.fromBlocks (0 : Matrix (Fin 1) (Fin 1) ℂ) 0 0 (Hpk k ρ))
@@ -114,12 +114,12 @@ theorem hpk1 (p q : U.Ix k 1 ρ) : Hpk k (1 + ρ) (U.eB k 1 ρ p) (U.eB k 1 ρ q
   rw [Ux3.hpkBlocks k 1 ρ, Ux3.block3_apply]
 
 /- English proof (translation)
-Use extensionality with `a b`. Use `fin_cases a`. Use `fin_cases b`. Simplify using `[G.wMat]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem weyl_lift_eq_pair : G.wMat 1 = 1 := by ext a b; fin_cases a; fin_cases b; simp [G.wMat]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, sum_over_rank_one_basis]`. Simplify using `[hpk1, weyl_lift_eq_pair, cb, Matrix.conjTranspose_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cH_E (x : U.RC k j (1 + ρ)) (a : Fin j) :
     ((Matrix.of x.1)ᴴ * Hpk k (1 + ρ)) a (U.eB k 1 ρ (Sum.inl (Sum.inl 0))) = star (cb x a) := by
@@ -127,7 +127,7 @@ theorem cH_E (x : U.RC k j (1 + ρ)) (a : Fin j) :
   simp [hpk1, weyl_lift_eq_pair, cb, Matrix.conjTranspose_apply]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, sum_over_rank_one_basis]`. Simplify using `[hpk1, weyl_lift_eq_pair, cm, Matrix.conjTranspose_apply, Matrix.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cH_V (x : U.RC k j (1 + ρ)) (a : Fin j) (v : Fin (2 * ρ + k + 1)) :
     ((Matrix.of x.1)ᴴ * Hpk k (1 + ρ)) a (U.eB k 1 ρ (Sum.inl (Sum.inr v))) = ((cm x)ᴴ * Hpk k ρ) a v := by
@@ -135,7 +135,7 @@ theorem cH_V (x : U.RC k j (1 + ρ)) (a : Fin j) (v : Fin (2 * ρ + k + 1)) :
   simp [hpk1, weyl_lift_eq_pair, cm, Matrix.conjTranspose_apply, Matrix.mul_apply]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, sum_over_rank_one_basis]`. Simplify using `[hpk1, weyl_lift_eq_pair, ct, Matrix.conjTranspose_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cH_E' (x : U.RC k j (1 + ρ)) (a : Fin j) :
     ((Matrix.of x.1)ᴴ * Hpk k (1 + ρ)) a (U.eB k 1 ρ (Sum.inr 0)) = star (ct x a) := by
@@ -143,7 +143,7 @@ theorem cH_E' (x : U.RC k j (1 + ρ)) (a : Fin j) :
   simp [hpk1, weyl_lift_eq_pair, ct, Matrix.conjTranspose_apply]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, sum_over_rank_one_basis, cH_E, cH_E']`. Simplify using `only [cH_V]`. Rewrite using `[Matrix.mul_apply (M := (cm x)ᴴ * Hpk k ρ) (N := cm x)]`. Simplify using `[ct, cb, cm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cHc (x : U.RC k j (1 + ρ)) (a b : Fin j) :
     ((Matrix.of x.1)ᴴ * Hpk k (1 + ρ) * Matrix.of x.1) a b =
@@ -160,7 +160,7 @@ namespace Formalism.FourierDecayAlt.P.PBH
 variable {k j ρ : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Ux3.rn_eq, U.embG, Ux3.block3_mul]`. Apply the tactic sequence `congr 1 <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lhs_form (A : B.Mat k (1 + ρ)) (x : U.RC k j (1 + ρ)) :
     U.embG k j (1 + ρ) A * U.Rn k j (1 + ρ) x =
@@ -171,7 +171,7 @@ theorem lhs_form (A : B.Mat k (1 + ρ)) (x : U.RC k j (1 + ρ)) :
   congr 1 <;> simp
 
 /- English proof (translation)
-Rewrite using `[U.muP, Ux3.rn_eq, Ux3.block3_mul]`. Apply the tactic sequence `congr 1 <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rhs_form (q : Matrix (Fin (j + 1)) (Fin (j + 1)) ℂ) (X : U.RC k (j + 1) ρ) :
     U.muP k (j + 1) ρ q * U.Rn k (j + 1) ρ X =
@@ -188,14 +188,14 @@ def uu (x : U.RC k j (1 + ρ)) (y : U.RC k 1 ρ) : Fin j → ℂ := Matrix.vecMu
 def uu' (x : U.RC k j (1 + ρ)) (y : U.RC k 1 ρ) : Fin j → ℂ := ((cm x)ᴴ * Hpk k ρ) *ᵥ cy y
 
 /- English proof (translation)
-The claim follows from `Ux4.hpk_conjTranspose k ρ`.
+A detailed English derivation is pending.
 -/
 theorem hH (k ρ : ℕ) : (Hpk k ρ)ᴴ = Hpk k ρ := Ux4.hpk_conjTranspose k ρ
 
 /- English proof (translation)
-Simplify using `only [uu', uu, Matrix.mulVec, Matrix.vecMul, dotProduct, Matrix.mul_apply, Matrix.conjTranspose_apply, star_sum, star_mul', star_star, Pi.star_apply, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `l _`. Use `congrFun (congrFun (hH k ρ) l) i` as an intermediate fact. Rewrite `this` using `[Matrix.conjTranspose_apply]`. Rewrite using `[← this]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -209,9 +209,9 @@ theorem star_uu' (x : U.RC k j (1 + ρ)) (y : U.RC k 1 ρ) (a : Fin j) : star (u
   rw [← this]; simp; ring
 
 /- English proof (translation)
-Simplify using `only [nn, Matrix.vecMul, dotProduct, star_sum, star_mul', star_star, Pi.star_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `l _`. Use `congrFun (congrFun (hH k ρ) l) i` as an intermediate fact. Rewrite `this` using `[Matrix.conjTranspose_apply]`. Rewrite using `[← this]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -234,14 +234,14 @@ theorem CX_succ (x : U.RC k j (1 + ρ)) (y : U.RC k 1 ρ) (v : Fin (2 * ρ + k +
     CX x y v b.succ = cm x v b + cy y v * cb x b := rfl
 
 /- English proof (translation)
-Simplify using `[Matrix.mul_apply, Matrix.vecMul, dotProduct, XC, CX_zero, Matrix.conjTranspose_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cXH_zero (x : U.RC k j (1 + ρ)) (y : U.RC k 1 ρ) (v : Fin (2 * ρ + k + 1)) :
     ((Matrix.of (XC x y).1)ᴴ * Hpk k ρ) 0 v = Matrix.vecMul (star (cy y)) (Hpk k ρ) v := by
   simp [Matrix.mul_apply, Matrix.vecMul, dotProduct, XC, CX_zero, Matrix.conjTranspose_apply]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, Matrix.vecMul, dotProduct, XC, CX_succ, Matrix.conjTranspose_apply, Matrix.of_apply, star_add, star_mul', add_mul, Finset.sum_add_distrib, Finset.mul_sum, Pi.star_apply]`. Use `congr 1`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cXH_succ (x : U.RC k j (1 + ρ)) (y : U.RC k 1 ρ) (b : Fin j) (v : Fin (2 * ρ + k + 1)) :
     ((Matrix.of (XC x y).1)ᴴ * Hpk k ρ) b.succ v =
@@ -252,16 +252,16 @@ theorem cXH_succ (x : U.RC k j (1 + ρ)) (y : U.RC k 1 ρ) (b : Fin j) (v : Fin 
   apply Finset.sum_congr rfl; intro i _; ring
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Simplify using `only [cXH_zero]`. Simplify using `[nn, dotProduct, XC, CX_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem cXHcX_00 (x : U.RC k j (1 + ρ)) (y : U.RC k 1 ρ) :
     ((Matrix.of (XC x y).1)ᴴ * Hpk k ρ * Matrix.of (XC x y).1) 0 0 = nn y := by
   rw [Matrix.mul_apply]; simp only [cXH_zero]; simp [nn, dotProduct, XC, CX_zero]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Simplify using `only [cXH_zero]`. Simplify using `only [Matrix.of_apply, XC, CX_succ, nn, uu, Matrix.vecMul, dotProduct, mul_add, Finset.sum_add_distrib, Finset.sum_mul]`. Use `congr 1`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `i _`. Apply the tactic sequence `(try simp only [Finset.mul_sum, Finset.sum_mul])`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `l _`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cXHcX_0s (x : U.RC k j (1 + ρ)) (y : U.RC k 1 ρ) (b : Fin j) :
     ((Matrix.of (XC x y).1)ᴴ * Hpk k ρ * Matrix.of (XC x y).1) 0 b.succ = uu x y b + nn y * cb x b := by
@@ -272,9 +272,9 @@ theorem cXHcX_0s (x : U.RC k j (1 + ρ)) (y : U.RC k 1 ρ) (b : Fin j) :
   apply Finset.sum_congr rfl; intro l _; ring
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Simplify using `only [cXH_succ]`. Simplify using `only [Matrix.of_apply, XC, CX_zero, nn, uu', Matrix.mulVec, Matrix.vecMul, dotProduct, add_mul, Finset.sum_add_distrib, Finset.mul_sum]`. Use `congr 1`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `i _`. Apply the tactic sequence `(try simp only [Finset.mul_sum, Finset.sum_mul])`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `l _`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hermitian_form_column_succ_zero (x : U.RC k j (1 + ρ)) (y : U.RC k 1 ρ) (a : Fin j) :
     ((Matrix.of (XC x y).1)ᴴ * Hpk k ρ * Matrix.of (XC x y).1) a.succ 0 = uu' x y a + star (cb x a) * nn y := by
@@ -285,9 +285,9 @@ theorem hermitian_form_column_succ_zero (x : U.RC k j (1 + ρ)) (y : U.RC k 1 ρ
   apply Finset.sum_congr rfl; intro l _; ring
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Simplify using `only [cXH_succ]`. Simplify using `only [Matrix.of_apply, XC, CX_succ, nn, uu, uu', Matrix.mulVec, Matrix.vecMul, dotProduct, add_mul, mul_add, Finset.sum_add_distrib, Finset.mul_sum, Finset.sum_mul, Matrix.mul_apply]`. Simplify using `only [Matrix.conjTranspose_apply, ← Finset.sum_add_distrib]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `l _`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cXHcX_ss (x : U.RC k j (1 + ρ)) (y : U.RC k 1 ρ) (a b : Fin j) :
     ((Matrix.of (XC x y).1)ᴴ * Hpk k ρ * Matrix.of (XC x y).1) a.succ b.succ =
@@ -306,7 +306,7 @@ namespace Formalism.FourierDecayAlt.P.PBH
 variable {k j ρ : ℕ}
 
 /- English proof (translation)
-Simplify using `only [dlt, Matrix.add_apply, Matrix.smul_apply, Matrix.sub_apply, Matrix.vecMulVec_apply, Matrix.conjTranspose_apply, smul_eq_mul, Pi.star_apply, star_mul']`. Simplify using `only [uu']`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dlt_apply (x : U.RC k j (1 + ρ)) (y : U.RC k 1 ρ) (a b : Fin j) :
     dlt x y a b = (1 / 2 : ℂ) * (star (cb x a) * ct x b - star (ct x a) * cb x b) +
@@ -317,7 +317,7 @@ theorem dlt_apply (x : U.RC k j (1 + ρ)) (y : U.RC k 1 ρ) (a b : Fin j) :
   simp only [uu']; ring
 
 /- English proof (translation)
-Rewrite using `[dlt_apply, dlt_apply]`. Simplify using `only [star_add, star_mul', star_sub, star_star, Complex.star_def, map_mul, map_sub, map_add, Complex.conj_conj, Complex.conj_I, Complex.conj_ofReal, map_div₀, map_one, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dlt_skew (x : U.RC k j (1 + ρ)) (y : U.RC k 1 ρ) (a b : Fin j) : dlt x y a b = -star (dlt x y b a) := by
   rw [dlt_apply, dlt_apply]
@@ -326,7 +326,7 @@ theorem dlt_skew (x : U.RC k j (1 + ρ)) (y : U.RC k 1 ρ) (a b : Fin j) : dlt x
   ring
 
 /- English proof (translation)
-Establish `hs` using `congrFun (congrFun (Ux2.skewOf_ct q) a) b`. Simplify using `only [Matrix.conjTranspose_apply, Matrix.neg_apply] at hs`. Rewrite using `[hs, neg_neg]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem skew_skew (q : (G.UT j → ℂ) × (Fin j → ℝ)) (a b : Fin j) : U.skewOf q a b = -star (U.skewOf q b a) := by
   have hs := congrFun (congrFun (Ux2.skewOf_ct q) a) b
@@ -334,11 +334,11 @@ theorem skew_skew (q : (G.UT j → ℂ) × (Fin j → ℝ)) (a b : Fin j) : U.sk
   rw [hs, neg_neg]
 
 /- English proof (translation)
-Consider the cases of `a using Fin.cases with`. Consider the case `zero`. Consider the cases of `b using Fin.cases with`. Consider the case `zero => simp [SX, Complex.star_def, Complex.conj_ofReal]`. Consider the case `succ b => simp [SX]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the case `succ a`. Consider the cases of `b using Fin.cases with`. Consider the case `zero => simp [SX]`. Consider the case `succ b`. Simplify using `only [SX, Fin.cases_succ, star_add, neg_add]`.
+Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Rewrite using `[← skew_skew, ← dlt_skew]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem SX_skew (x : U.RC k j (1 + ρ)) (y : U.RC k 1 ρ) (a b : Fin (j + 1)) : SX x y a b = -star (SX x y b a) := by
   cases a using Fin.cases with
@@ -354,7 +354,7 @@ theorem SX_skew (x : U.RC k j (1 + ρ)) (y : U.RC k 1 ρ) (a b : Fin (j + 1)) : 
       rw [← skew_skew, ← dlt_skew]
 
 /- English proof (translation)
-Establish `h` using `SX_skew x y a a`. Apply `Complex.ext` to reduce the goal to its premises. Establish `h1` using `congrArg Complex.re h`. Simplify using `at h1 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
 Simplify using the standard rewrite rules.
 -/
@@ -367,9 +367,9 @@ theorem SX_diag (x : U.RC k j (1 + ρ)) (y : U.RC k 1 ρ) (a : Fin (j + 1)) :
   · simp
 
 /- English proof (translation)
-Use extensionality with `a b`. Break down `lt_trichotomy a b with h | h | h` into its components or cases. Rewrite using `[Ux2.skewOf_lt _ h]`. Both sides reduce to the same expression. Substitute `h` using the available equality.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Substitute using the available equality.
 
-Rewrite using `[Ux2.skewOf_diag, SX_diag x y a]`. Both sides reduce to the same expression. Rewrite using `[skew_skew, Ux2.skewOf_lt _ h, SX_skew x y a b]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem skewOf_XC (x : U.RC k j (1 + ρ)) (y : U.RC k 1 ρ) : U.skewOf (XC x y).2 = SX x y := by
   ext a b
@@ -380,7 +380,7 @@ theorem skewOf_XC (x : U.RC k j (1 + ρ)) (y : U.RC k 1 ρ) : U.skewOf (XC x y).
   · rw [skew_skew, Ux2.skewOf_lt _ h, SX_skew x y a b]; rfl
 
 /- English proof (translation)
-Simplify using `[U.blk2, Matrix.reindex_apply, show a.castSucc = Fin.castAdd 1 a from rfl, show b.castSucc = Fin.castAdd 1 b from rfl]`.
+Simplify using the standard rewrite rules.
 -/
 theorem block_two_apply_castSucc_castSucc {p : ℕ} (A : Matrix (Fin p) (Fin p) ℂ) (B' : Matrix (Fin p) (Fin 1) ℂ) (C : Matrix (Fin 1) (Fin p) ℂ)
     (D : Matrix (Fin 1) (Fin 1) ℂ) (a b : Fin p) : U.blk2 A B' C D a.castSucc b.castSucc = A a b := by
@@ -388,7 +388,7 @@ theorem block_two_apply_castSucc_castSucc {p : ℕ} (A : Matrix (Fin p) (Fin p) 
     show b.castSucc = Fin.castAdd 1 b from rfl]
 
 /- English proof (translation)
-Establish `: Fin.last p = Fin.natAdd p (0 : Fin 1)` using `by ext; simp`. Simplify using `[U.blk2, Matrix.reindex_apply, show a.castSucc = Fin.castAdd 1 a from rfl, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem block_two_apply_castSucc_last {p : ℕ} (A : Matrix (Fin p) (Fin p) ℂ) (B' : Matrix (Fin p) (Fin 1) ℂ) (C : Matrix (Fin 1) (Fin p) ℂ)
     (D : Matrix (Fin 1) (Fin 1) ℂ) (a : Fin p) : U.blk2 A B' C D a.castSucc (Fin.last p) = B' a 0 := by
@@ -396,7 +396,7 @@ theorem block_two_apply_castSucc_last {p : ℕ} (A : Matrix (Fin p) (Fin p) ℂ)
   simp [U.blk2, Matrix.reindex_apply, show a.castSucc = Fin.castAdd 1 a from rfl, this]
 
 /- English proof (translation)
-Establish `: Fin.last p = Fin.natAdd p (0 : Fin 1)` using `by ext; simp`. Simplify using `[U.blk2, Matrix.reindex_apply, show b.castSucc = Fin.castAdd 1 b from rfl, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem block_two_apply_last_castSucc {p : ℕ} (A : Matrix (Fin p) (Fin p) ℂ) (B' : Matrix (Fin p) (Fin 1) ℂ) (C : Matrix (Fin 1) (Fin p) ℂ)
     (D : Matrix (Fin 1) (Fin 1) ℂ) (b : Fin p) : U.blk2 A B' C D (Fin.last p) b.castSucc = C 0 b := by
@@ -404,7 +404,7 @@ theorem block_two_apply_last_castSucc {p : ℕ} (A : Matrix (Fin p) (Fin p) ℂ)
   simp [U.blk2, Matrix.reindex_apply, show b.castSucc = Fin.castAdd 1 b from rfl, this]
 
 /- English proof (translation)
-Establish `: Fin.last p = Fin.natAdd p (0 : Fin 1)` using `by ext; simp`. Simplify using `[U.blk2, Matrix.reindex_apply, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem block_two_apply_last_last {p : ℕ} (A : Matrix (Fin p) (Fin p) ℂ) (B' : Matrix (Fin p) (Fin 1) ℂ) (C : Matrix (Fin 1) (Fin p) ℂ)
     (D : Matrix (Fin 1) (Fin 1) ℂ) : U.blk2 A B' C D (Fin.last p) (Fin.last p) = D 0 0 := by
@@ -412,9 +412,9 @@ theorem block_two_apply_last_last {p : ℕ} (A : Matrix (Fin p) (Fin p) ℂ) (B'
   simp [U.blk2, Matrix.reindex_apply, this]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Fin.sum_univ_castSucc]`. Simplify using `only [qL, block_two_apply_castSucc_castSucc, block_two_apply_castSucc_last, Matrix.conjTranspose_apply, Matrix.of_apply]`. Use `congr 1`. Rewrite using `[Finset.sum_eq_single a]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `b _ hb`. Simplify using `[Matrix.one_apply_ne (Ne.symm hb)]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem qmul_cs {m : Type*} (x : U.RC k j (1 + ρ)) (M : Matrix (Fin (j + 1)) m ℂ) (a : Fin j) (v : m) :
     (qL x * M) a.castSucc v = M a.castSucc v + star (aC x 0 a) * M (Fin.last j) v := by
@@ -427,7 +427,7 @@ theorem qmul_cs {m : Type*} (x : U.RC k j (1 + ρ)) (M : Matrix (Fin (j + 1)) m 
   · simp
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Fin.sum_univ_castSucc]`. Simplify using `[qL, block_two_apply_last_castSucc, block_two_apply_last_last]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem qmul_last {m : Type*} (x : U.RC k j (1 + ρ)) (M : Matrix (Fin (j + 1)) m ℂ) (v : m) :
     (qL x * M) (Fin.last j) v = M (Fin.last j) v := by
@@ -435,7 +435,7 @@ theorem qmul_last {m : Type*} (x : U.RC k j (1 + ρ)) (M : Matrix (Fin (j + 1)) 
   simp [qL, block_two_apply_last_castSucc, block_two_apply_last_last]
 
 /- English proof (translation)
-Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Rewrite using `[qL, Ux3.symmetricScalarBlockMatrix_mul]`. Simplify using `[U.blk2, Matrix.fromBlocks_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem qL_inv (x : U.RC k j (1 + ρ)) : (qL x)⁻¹ = U.blk2 1 (-(Matrix.of (aC x))ᴴ) 0 1 := by
   apply Matrix.inv_eq_right_inv
@@ -443,7 +443,7 @@ theorem qL_inv (x : U.RC k j (1 + ρ)) : (qL x)⁻¹ = U.blk2 1 (-(Matrix.of (aC
   simp [U.blk2, Matrix.fromBlocks_one]
 
 /- English proof (translation)
-Establish `h : (U.blk2 1 (-(Matrix.of (aC x))ᴴ) 0 1)ᴴ = U.blk2 1 0 (-(Matrix.of (aC x))) 1`. Simplify using `[U.blk2, Matrix.conjTranspose_reindex, Matrix.fromBlocks_conjTranspose]`. Rewrite using `[Dx2.Split.w_conj_apply, ← Matrix.conjTranspose_nonsing_inv, qL_inv, h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_inverse_block_apply (x : U.RC k j (1 + ρ)) (a b : Fin (j + 1)) :
     (G.wMat (j + 1) * (qL x)ᴴ⁻¹ * G.wMat (j + 1)) a b =
@@ -463,7 +463,7 @@ section M1
 open Dx2.Split
 
 /- English proof (translation)
-Rewrite using `[Ux3.rn_eq, Ux3.block3_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem radical_unipotent_rank_one_apply (y : U.RC k 1 ρ) (p q : U.Ix k 1 ρ) :
     U.Rn k 1 ρ y (U.eB k 1 ρ p) (U.eB k 1 ρ q) =
@@ -473,7 +473,7 @@ theorem radical_unipotent_rank_one_apply (y : U.RC k 1 ρ) (p q : U.Ix k 1 ρ) :
   rw [Ux3.rn_eq, Ux3.block3_apply]
 
 /- English proof (translation)
-Rewrite using `[weyl_lift_eq_pair, Matrix.one_mul]`. Simplify using `[Matrix.mul_apply, Matrix.vecMul, dotProduct, cy, Matrix.conjTranspose_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem yH (y : U.RC k 1 ρ) (v : Fin (2 * ρ + k + 1)) :
     (G.wMat 1 * (Matrix.of y.1)ᴴ * Hpk k ρ) 0 v = Matrix.vecMul (star (cy y)) (Hpk k ρ) v := by
@@ -481,7 +481,7 @@ theorem yH (y : U.RC k 1 ρ) (v : Fin (2 * ρ + k + 1)) :
   simp [Matrix.mul_apply, Matrix.vecMul, dotProduct, cy, Matrix.conjTranspose_apply]
 
 /- English proof (translation)
-Rewrite using `[weyl_lift_eq_pair, Matrix.one_mul, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, Ux2.skewOf_diag]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem yHy (y : U.RC k 1 ρ) :
     (G.wMat 1 * ((-(1 / 2 : ℂ)) • ((Matrix.of y.1)ᴴ * Hpk k ρ * Matrix.of y.1) + U.skewOf y.2)) 0 0 =
@@ -490,7 +490,7 @@ theorem yHy (y : U.RC k 1 ρ) :
   congr 2
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, sum_over_rank_one_basis]`. Simplify using `only [radical_unipotent_rank_one_apply, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromRows_apply_inl, Matrix.neg_apply, yH, yHy]`. Simplify using `[ct, cb, cm, uu, Matrix.vecMul, dotProduct, Finset.sum_neg_distrib, sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem rc_E (x : U.RC k j (1 + ρ)) (y : U.RC k 1 ρ) (b : Fin j) :
     (U.Rn k 1 ρ y * Matrix.of x.1) (U.eB k 1 ρ (Sum.inl (Sum.inl 0))) b =
@@ -501,7 +501,7 @@ theorem rc_E (x : U.RC k j (1 + ρ)) (y : U.RC k 1 ρ) (b : Fin j) :
   simp [ct, cb, cm, uu, Matrix.vecMul, dotProduct, Finset.sum_neg_distrib, sub_eq_add_neg]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, sum_over_rank_one_basis]`. Simplify using `only [radical_unipotent_rank_one_apply, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.fromRows_apply_inr, Matrix.fromBlocks_apply₁₁]`. Simplify using `[cm, cb, cy, Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem rc_V (x : U.RC k j (1 + ρ)) (y : U.RC k 1 ρ) (v : Fin (2 * ρ + k + 1)) (b : Fin j) :
     (U.Rn k 1 ρ y * Matrix.of x.1) (U.eB k 1 ρ (Sum.inl (Sum.inr v))) b = cm x v b + cy y v * cb x b := by
@@ -511,7 +511,7 @@ theorem rc_V (x : U.RC k j (1 + ρ)) (y : U.RC k 1 ρ) (v : Fin (2 * ρ + k + 1)
   simp [cm, cb, cy, Matrix.one_apply]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, sum_over_rank_one_basis]`. Simplify using `[radical_unipotent_rank_one_apply, cb]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rc_E' (x : U.RC k j (1 + ρ)) (y : U.RC k 1 ρ) (b : Fin j) :
     (U.Rn k 1 ρ y * Matrix.of x.1) (U.eB k 1 ρ (Sum.inr 0)) b = cb x b := by
@@ -519,14 +519,14 @@ theorem rc_E' (x : U.RC k j (1 + ρ)) (y : U.RC k 1 ρ) (b : Fin j) :
   simp [radical_unipotent_rank_one_apply, cb]
 
 /- English proof (translation)
-Simplify using `[radical_unipotent_rank_one_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem radical_unipotent_first_basis_eq_one (y : U.RC k 1 ρ) :
     U.Rn k 1 ρ y (U.eB k 1 ρ (Sum.inl (Sum.inl 0))) (U.eB k 1 ρ (Sum.inl (Sum.inl 0))) = 1 := by
   simp [radical_unipotent_rank_one_apply]
 
 /- English proof (translation)
-Rewrite using `[radical_unipotent_rank_one_apply, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.neg_apply, yH]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem radical_unipotent_first_middle (y : U.RC k 1 ρ) (v : Fin (2 * ρ + k + 1)) :
     U.Rn k 1 ρ y (U.eB k 1 ρ (Sum.inl (Sum.inl 0))) (U.eB k 1 ρ (Sum.inl (Sum.inr v))) =
@@ -534,7 +534,7 @@ theorem radical_unipotent_first_middle (y : U.RC k 1 ρ) (v : Fin (2 * ρ + k + 
   rw [radical_unipotent_rank_one_apply, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.neg_apply, yH]
 
 /- English proof (translation)
-Rewrite using `[radical_unipotent_rank_one_apply, Matrix.fromBlocks_apply₁₂, Matrix.fromRows_apply_inl, yHy]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem radical_unipotent_first_last (y : U.RC k 1 ρ) :
     U.Rn k 1 ρ y (U.eB k 1 ρ (Sum.inl (Sum.inl 0))) (U.eB k 1 ρ (Sum.inr 0)) =
@@ -542,27 +542,27 @@ theorem radical_unipotent_first_last (y : U.RC k 1 ρ) :
   rw [radical_unipotent_rank_one_apply, Matrix.fromBlocks_apply₁₂, Matrix.fromRows_apply_inl, yHy]
 
 /- English proof (translation)
-Rewrite using `[radical_unipotent_rank_one_apply, Matrix.fromBlocks_apply₁₂, Matrix.fromRows_apply_inr]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem radical_unipotent_middle_last (y : U.RC k 1 ρ) (v : Fin (2 * ρ + k + 1)) :
     U.Rn k 1 ρ y (U.eB k 1 ρ (Sum.inl (Sum.inr v))) (U.eB k 1 ρ (Sum.inr 0)) = cy y v := by
   rw [radical_unipotent_rank_one_apply, Matrix.fromBlocks_apply₁₂, Matrix.fromRows_apply_inr]; rfl
 
 /- English proof (translation)
-Rewrite using `[Matrix.neg_apply, Matrix.mul_assoc, Ux3.wMat_mul_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem reversed_adjoint_block_apply {n m : ℕ} (c : Matrix (Fin m) (Fin n) ℂ) (H : Matrix (Fin m) (Fin m) ℂ) (a : Fin n) (p : Fin m) :
     (-(G.wMat n * cᴴ * H)) a p = -(cᴴ * H) a.rev p := by
   rw [Matrix.neg_apply, Matrix.mul_assoc, Ux3.wMat_mul_apply]
 
 /- English proof (translation)
-The claim follows from `Ux3.wMat_mul_apply M a p`.
+A detailed English derivation is pending.
 -/
 theorem W_apply {n : ℕ} {m : Type*} (M : Matrix (Fin n) m ℂ) (a : Fin n) (p : m) :
     (G.wMat n * M) a p = M a.rev p := Ux3.wMat_mul_apply M a p
 
 /- English proof (translation)
-Establish `h` using `star_uu' x y a`. Simplify using `only [r0, Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, star_add, star_sub, star_mul', Complex.star_def, Complex.conj_I, Complex.conj_ofReal, ← Matrix.vecMul_vecMul] at h ⊢`. Rewrite using `[show Matrix.vecMul (Matrix.vecMul (star (cy y)) (Hpk k ρ)) (cm x) a = uu x y a from rfl, ← h, Complex.conj_conj]`. Establish `h2 : (starRingEnd ℂ) (1 / 2 : ℂ) = 1 / 2` using `by rw [map_div₀, map_one, map_ofNat]`. Rewrite using `[h2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -577,7 +577,7 @@ theorem star_first_coordinate_eq (x : U.RC k j (1 + ρ)) (y : U.RC k 1 ρ) (a : 
   rw [h2]; ring
 
 /- English proof (translation)
-Simplify using `only [r0, Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, ← Matrix.vecMul_vecMul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem first_coordinate_apply (x : U.RC k j (1 + ρ)) (y : U.RC k 1 ρ) (b : Fin j) :
     r0 x y b = ct x b - (1 / 2 : ℂ) * uu x y b + Complex.I * (dy y : ℂ) * cb x b := by
@@ -605,57 +605,47 @@ local macro "blks" : tactic => `(tactic| simp only [Ux3.block3_apply, Matrix.fro
   Matrix.fromCols_apply_inl, Matrix.fromCols_apply_inr])
 
 /- English proof (translation)
-Rewrite using `[lhs_form, rhs_form, skewOf_XC]`. Apply `Ux2.mat_ext_eB (k := k) (j := j + 1) (ρ := ρ)` to reduce the goal to its premises. Introduce `p q`. Rewrite using `[castM_apply]`. Apply the tactic sequence `rcases p with ((a | v) | b) <;> rcases q with ((a' | v') | b')`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Consider the cases of `a using Fin.lastCases with`. Consider the case `last`. Consider the cases of `a' using Fin.lastCases with`. Consider the case `last => simp only [qE]`. Use `blks`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[radical_unipotent_first_basis_eq_one, qL, block_two_apply_last_last]`. Both sides reduce to the same expression. Consider the case `cast a' => simp only [qE, qX]`. Use `blks`. Simplify using `[qL, block_two_apply_last_castSucc]`.
+Both sides reduce to the same expression. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Split into cases according to the possible forms of the given data.
 
-Consider the case `cast a`. Consider the cases of `a' using Fin.lastCases with`. Consider the case `last`. Simplify using `only [qX, qE]`. Use `blks`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[reversed_adjoint_block_apply, cH_E, qL, block_two_apply_castSucc_last]`. Simplify using `[aC, Matrix.conjTranspose_apply]`. Consider the case `cast a' => simp only [qX]`. Use `blks`. Simplify using `[qL, block_two_apply_castSucc_castSucc]`.
+Simplify using the standard rewrite rules. Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the cases of `a using Fin.lastCases with`. Consider the case `last`. Simplify using `only [qE, qV]`. Use `blks`. Rewrite using `[radical_unipotent_first_middle, qmul_last, reversed_adjoint_block_apply, rev_last', cXH_zero]`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Split into cases according to the possible forms of the given data.
 
-Consider the case `cast a`. Simplify using `only [qX, qV]`. Use `blks`. Rewrite using `[reversed_adjoint_block_apply, cH_V, qmul_cs, reversed_adjoint_block_apply, reversed_adjoint_block_apply, rev_castSucc', rev_last', cXH_succ, cXH_zero]`. Apply the tactic sequence `simp [aC] <;> ring`.
+Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the cases of `a using Fin.lastCases with`. Consider the case `last`. Consider the cases of `b' using Fin.cases with`. Consider the case `zero`. Simplify using `only [qE, qE']`.
+Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `blks`. Rewrite using `[radical_unipotent_first_last, qmul_last, W_apply, rev_last', Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, cXHcX_00]`. Simplify using `[SX]`. Consider the case `succ b'`. Simplify using `only [qE, qS]`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules.
 
-Use `blks`. Rewrite using `[rc_E, qmul_last, W_apply, rev_last', Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, cXHcX_0s]`. Simplify using `only [SX, Fin.cases_zero, Fin.cases_succ, first_coordinate_apply]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `cast a`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the cases of `b' using Fin.cases with`. Consider the case `zero`. Simplify using `only [qX, qE']`. Use `blks`. Rewrite using `[reversed_adjoint_block_apply, cH_E', qmul_cs, W_apply, W_apply, rev_castSucc', rev_last']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, cXHcX_00, hermitian_form_column_succ_zero, SX, Fin.cases_zero, Fin.cases_succ, star_first_coordinate_eq, aC, star_neg]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `succ b'`. Simplify using `only [qX, qS]`. Use `blks`.
+Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[W_apply, qmul_cs, W_apply, W_apply, rev_castSucc', rev_last']`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, cHc, cXHcX_0s, cXHcX_ss, SX, Fin.cases_zero, Fin.cases_succ, first_coordinate_apply, dlt_apply, aC, star_neg, star_uu']`. Expand and normalize the polynomial expressions, which then agree. Consider the cases of `a' using Fin.lastCases with`. Consider the case `last => simp only [qV, qE]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately.
 
-Use `blks`. Simplify using `[radical_unipotent_rank_one_apply]`. Consider the case `cast a' => simp only [qV, qX]`. Use `blks`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Split into cases according to the possible forms of the given data. Treat this case separately. Split into cases according to the possible forms of the given data.
 
-Simplify using `only [qV]`. Use `blks`. Simplify using `[radical_unipotent_rank_one_apply]`. Consider the cases of `b' using Fin.cases with`. Consider the case `zero => simp only [qV, qE']`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Use `blks`. Rewrite using `[radical_unipotent_middle_last]`. Both sides reduce to the same expression. Consider the case `succ b' => simp only [qV, qS]`. Use `blks`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Rewrite using `[rc_V]`. Both sides reduce to the same expression. Consider the cases of `b using Fin.cases with`. Consider the case `zero`. Consider the cases of `a' using Fin.lastCases with`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `last => simp only [qE', qE]`. Use `blks`. Simplify using `[radical_unipotent_rank_one_apply]`. Consider the case `cast a' => simp only [qE', qX]`. Use `blks`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Consider the case `succ b`. Consider the cases of `a' using Fin.lastCases with`. Consider the case `last => simp only [qS, qE]`. Use `blks`.
+Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Consider the case `cast a' => simp only [qS, qX]`. Use `blks`. Simplify using the standard rewrite rules. Consider the cases of `b using Fin.cases with`.
+Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `zero => simp only [qE', qV]`. Use `blks`. Simplify using `[radical_unipotent_rank_one_apply]`. Consider the case `succ b => simp only [qS, qV]`. Use `blks`.
-
-Simplify using the standard rewrite rules. Consider the cases of `b using Fin.cases with`. Consider the case `zero`. Consider the cases of `b' using Fin.cases with`. Consider the case `zero => simp only [qE']`.
-
-Use `blks`. Rewrite using `[conj_inverse_block_apply, rev_zero', block_two_apply_last_last]`. Simplify using `[radical_unipotent_rank_one_apply]`. Consider the case `succ b'`. Simplify using `only [qE', qS]`.
-
-Use `blks`. Rewrite using `[rc_E', conj_inverse_block_apply, rev_zero', rev_succ', block_two_apply_last_castSucc]`. Simplify using `[aC]`. Consider the case `succ b`. Consider the cases of `b' using Fin.cases with`.
-
-Consider the case `zero => simp only [qS, qE']`. Use `blks`. Rewrite using `[conj_inverse_block_apply, rev_zero', rev_succ', block_two_apply_castSucc_last]`. Simplify using the standard rewrite rules. Consider the case `succ b'`.
-
-Simplify using `only [qS]`. Use `blks`. Rewrite using `[conj_inverse_block_apply, rev_succ', rev_succ', block_two_apply_castSucc_castSucc]`. Simplify using `[Matrix.one_apply, Fin.rev_inj]`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem M1 (x : U.RC k j (1 + ρ)) (y : U.RC k 1 ρ) :
     D.castM (hs' k j ρ) (U.embG k j (1 + ρ) (U.Rn k 1 ρ y) * U.Rn k j (1 + ρ) x) =
@@ -774,7 +764,7 @@ local macro "blks" : tactic => `(tactic| simp only [Ux3.block3_apply, Matrix.fro
 def Z1 (c : ℂ) : G.Mat 1 := fun _ _ => c
 
 /- English proof (translation)
-Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Rewrite using `[Ux3.symmetricScalarBlockMatrix_mul]`. Simplify using `[Matrix.mul_nonsing_inv _ hA, Matrix.mul_nonsing_inv _ hD, U.blk2, Matrix.fromBlocks_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem block_diagonal_inv {p s : ℕ} (A : Matrix (Fin p) (Fin p) ℂ) (D' : Matrix (Fin s) (Fin s) ℂ) (hA : IsUnit A.det)
     (hD : IsUnit D'.det) : (U.blk2 A 0 0 D')⁻¹ = U.blk2 A⁻¹ 0 0 D'⁻¹ := by
@@ -783,26 +773,26 @@ theorem block_diagonal_inv {p s : ℕ} (A : Matrix (Fin p) (Fin p) ℂ) (D' : Ma
   simp [Matrix.mul_nonsing_inv _ hA, Matrix.mul_nonsing_inv _ hD, U.blk2, Matrix.fromBlocks_one]
 
 /- English proof (translation)
-Simplify using `[U.blk2, Matrix.conjTranspose_reindex, Matrix.fromBlocks_conjTranspose]`.
+Simplify using the standard rewrite rules.
 -/
 theorem block_diagonal_conjTranspose {p s : ℕ} (A : Matrix (Fin p) (Fin p) ℂ) (D' : Matrix (Fin s) (Fin s) ℂ) :
     (U.blk2 A 0 0 D')ᴴ = U.blk2 Aᴴ 0 0 D'ᴴ := by
   simp [U.blk2, Matrix.conjTranspose_reindex, Matrix.fromBlocks_conjTranspose]
 
 /- English proof (translation)
-Simplify using `[Z1, Matrix.det_unique]`.
+Simplify using the standard rewrite rules.
 -/
 theorem det_single_entry_matrix (c : ℂ) : (Matrix.of (Z1 c)).det = c := by
   simp [Z1, Matrix.det_unique]
 
 /- English proof (translation)
-Establish `hZ : IsUnit (Matrix.of (Z1 c)).det` using `by rw [det_single_entry_matrix]; exact Ne.isUnit hc`. Establish `hH' : IsUnit Hᴴ.det` using `by rw [Matrix.det_conjTranspose]; exact hH.star`. Establish `hZ' : IsUnit (Matrix.of (Z1 c))ᴴ.det` using `by rw [Matrix.det_conjTranspose]; exact hZ.star`. Rewrite using `[show U.mMap k (j + 1) ρ (U.blk2 H 0 0 (Matrix.of (Z1 c))) γ = U.blk3 0 0 ((U.blk2 H 0 0 (Matrix.of (Z1 c)))ᴴ⁻¹ * G.wMat (j + 1)) 0 γ 0 (G.wMat (j + 1) * U.blk2 H 0 0 (Matrix.of (Z1 c))) 0 0 from rfl, block_diagonal_conjTranspose, block_diagonal_inv _ _ hH' hZ']`. Apply `Ux2.mat_ext_eB (k := k) (j := j + 1) (ρ := ρ)` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `p q`. Rewrite using `[castM_apply]`. Simplify using `only [U.mMap]`. Apply the tactic sequence `rcases p with ((a | v) | b) <;> rcases q with ((a' | v') | b')`. Apply the tactic sequence `cases a using Fin.lastCases <;> cases a' using Fin.lastCases <;> simp only [qE, qX] <;> blks <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `cases a using Fin.lastCases <;> simp only [qE, qX, qV] <;> blks <;> simp`. Apply the tactic sequence `cases a using Fin.lastCases <;> cases b' using Fin.cases all_goals (simp only [qE, qE', qX, qS]; blks; simp only [mul_w_apply, rev_zero', rev_succ', block_two_apply_last_last, block_two_apply_castSucc_last, block_two_apply_last_castSucc, block_two_apply_castSucc_castSucc, Fin.las …`. Apply the tactic sequence `cases a' using Fin.lastCases <;> simp only [qV, qE, qX] <;> blks <;> simp`. Simplify using `only [qV]`. Use `blks`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `cases b' using Fin.cases <;> simp only [qV, qE', qS] <;> blks <;> simp`. Apply the tactic sequence `cases b using Fin.cases <;> cases a' using Fin.lastCases all_goals (simp only [qE, qE', qX, qS]; blks; simp only [W_apply, rev_zero', rev_succ', block_two_apply_last_last, block_two_apply_castSucc_last, block_two_apply_last_castSucc, block_two_apply_castSucc_castSucc, Fin.last_ze …`. Apply the tactic sequence `cases b using Fin.cases <;> simp only [qE', qS, qV] <;> blks <;> simp`. Apply the tactic sequence `cases b using Fin.cases <;> cases b' using Fin.cases <;> simp only [qE', qS] <;> blks <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem M2 (H : Matrix (Fin j) (Fin j) ℂ) (hH : IsUnit H.det) (c : ℂ) (hc : c ≠ 0) (γ : B.Mat k ρ) :
     D.castM (hs' k j ρ) (U.mMap k j (1 + ρ) H (U.mMap k 1 ρ (Matrix.of (Z1 c)) γ)) =
@@ -845,22 +835,22 @@ section GXs
 open Dx2.Split
 
 /- English proof (translation)
-Rewrite using `[U.muP]`. Simplify using `[Ux3.wMat_mul_self, Ux3.block3_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem muP_one' (n : ℕ) : U.muP k n ρ 1 = 1 := by
   rw [U.muP]; simp [Ux3.wMat_mul_self, Ux3.block3_one]
 
 /- English proof (translation)
-Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Rewrite using `[leviElement_mul, Matrix.mul_nonsing_inv _ hq, muP_one']`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem leviElement_inv' {n : ℕ} (q : Matrix (Fin n) (Fin n) ℂ) (hq : IsUnit q.det) : (U.muP k n ρ q)⁻¹ = U.muP k n ρ q⁻¹ := by
   apply Matrix.inv_eq_right_inv
   rw [leviElement_mul, Matrix.mul_nonsing_inv _ hq, muP_one']
 
 /- English proof (translation)
-Establish `hqh : IsUnit qᴴ.det` using `by rw [Matrix.det_conjTranspose]; exact hq.star`. Rewrite using `[leviElement_inv' q hq, U.muP, U.muP, U.mMap, U.mMap, Ux3.block3_mul, Ux3.block3_mul]`. Apply the tactic sequence `congr 1 <;> simp only [Matrix.zero_mul, Matrix.mul_zero, zero_add, add_zero, Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.mul_inv_rev, Matrix.mul_inv_rev]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.mul_assoc (G.wMat n) (G.wMat n), Ux3.wMat_mul_self, Matrix.one_mul]`. Rewrite using `[← Matrix.conjTranspose_nonsing_inv, Matrix.nonsing_inv_nonsing_inv _ hq]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (G.wMat n) (G.wMat n), Ux3.wMat_mul_self, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem M3 {n : ℕ} (q q' Z : Matrix (Fin n) (Fin n) ℂ) (hq : IsUnit q.det) (hq' : IsUnit q'.det) (γ : B.Mat k ρ) :
     (U.muP k n ρ q)⁻¹ * U.mMap k n ρ Z γ * U.muP k n ρ q' = U.mMap k n ρ (qᴴ * Z * q') γ := by
@@ -876,7 +866,7 @@ theorem M3 {n : ℕ} (q q' Z : Matrix (Fin n) (Fin n) ℂ) (hq : IsUnit q.det) (
     rw [← Matrix.mul_assoc (G.wMat n) (G.wMat n), Ux3.wMat_mul_self, Matrix.one_mul]
 
 /- English proof (translation)
-Use extensionality with `i l`. Establish `hi : i = Fin.castAdd 0 i` using `rfl`. Establish `hl : l = Fin.castAdd 0 l` using `rfl`. Simplify using `only [U.blk2, Matrix.reindex_apply, Matrix.submatrix_apply]`. Rewrite using `[hi, hl, finSumFinEquiv_symm_apply_castAdd, finSumFinEquiv_symm_apply_castAdd]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -890,14 +880,14 @@ theorem block_two_zero_size_eq {p : ℕ} (A : Matrix (Fin p) (Fin p) ℂ) (B' : 
   rfl
 
 /- English proof (translation)
-Rewrite using `[U.Zj, block_two_zero_size_eq, block_two_zero_size_eq, block_two_zero_size_eq, Matrix.one_mul, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem corner_matrix_zero_size_eq (a : Fin 0 → Fin j → ℂ) (b : Fin j → Fin 0 → ℂ) (H : Matrix (Fin j) (Fin j) ℂ)
     (Z : Matrix (Fin 0) (Fin 0) ℂ) : U.Zj a b H Z = H := by
   rw [U.Zj, block_two_zero_size_eq, block_two_zero_size_eq, block_two_zero_size_eq, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Rewrite using `[U.mMap, U.mMap, U.embG, U.embG, Ux3.block3_mul, Ux3.block3_mul]`. Apply the tactic sequence `congr 1 <;> simp [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mMap_sand {n ρ' : ℕ} (Z : Matrix (Fin n) (Fin n) ℂ) (A M C : B.Mat k ρ') :
     U.mMap k n ρ' Z (A * M * C) = U.embG k n ρ' A * U.mMap k n ρ' Z M * U.embG k n ρ' C := by
@@ -905,7 +895,7 @@ theorem mMap_sand {n ρ' : ℕ} (Z : Matrix (Fin n) (Fin n) ℂ) (A M C : B.Mat 
   congr 1 <;> simp [Matrix.mul_assoc]
 
 /- English proof (translation)
-Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Rewrite using `[← embG_mul, Matrix.mul_nonsing_inv _ hA]`. Rewrite using `[U.embG]`. Conclude with `Ux3.block3_one`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem embG_inv' {n ρ' : ℕ} (A : B.Mat k ρ') (hA : IsUnit A.det) : (U.embG k n ρ' A)⁻¹ = U.embG k n ρ' A⁻¹ := by
   apply Matrix.inv_eq_right_inv
@@ -913,25 +903,25 @@ theorem embG_inv' {n ρ' : ℕ} (A : B.Mat k ρ') (hA : IsUnit A.det) : (U.embG 
   rw [U.embG]; exact Ux3.block3_one
 
 /- English proof (translation)
-Simplify using `[D.castM, Matrix.inv_reindex]`.
+Simplify using the standard rewrite rules.
 -/
 theorem castM_invS {a b : ℕ} (h : a = b) (A : B.Mat k a) : D.castM h A⁻¹ = (D.castM h A)⁻¹ := by
   simp [D.castM, Matrix.inv_reindex]
 
 /- English proof (translation)
-The claim follows from `Matrix.isUnit_det_of_left_inverse (Ux3.rn_inv_mul x)`.
+A detailed English derivation is pending.
 -/
 theorem rn_unit {n ρ' : ℕ} (x : U.RC k n ρ') : IsUnit (U.Rn k n ρ' x).det :=
   Matrix.isUnit_det_of_left_inverse (Ux3.rn_inv_mul x)
 
 /- English proof (translation)
-Rewrite using `[qL, Ux3.block2_det_upper_triangular]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem qL_unit (x : U.RC k j (1 + ρ)) : IsUnit (qL x).det := by
   rw [qL, Ux3.block2_det_upper_triangular]; simp
 
 /- English proof (translation)
-Establish `h` using `Formalism.FourierDecayAlt.P.level_determinant_z j 0 σ d η (fun a => a.elim0)`. Rewrite `h` using `[U.ZjH, corner_matrix_zero_size_eq]`. Rewrite using `[h]`. Use `IsUnit.mul (Ne.isUnit (Formalism.FourierDecayAlt.P.Ux10.det_hMat_ne σ d hd)) ?_` and prove the remaining obligations. Simplify using `[G.detM, Matrix.det_isEmpty]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem headH_unit (σ : Equiv.Perm (Fin j)) (d : Fin j → ℂ) (hd : ∀ i, d i ≠ 0) (η : U.XiH j 0 σ) :
     IsUnit (U.headH σ d η.2.1 η.2.2).det := by
@@ -944,17 +934,17 @@ theorem headH_unit (σ : Equiv.Perm (Fin j)) (d : Fin j → ℂ) (hd : ∀ i, d 
 def bC (x : U.RC k j (1 + ρ)) : Fin j → Fin 1 → ℂ := (Matrix.of (aC x))ᴴ
 
 /- English proof (translation)
-Simplify using `[qL, U.blk2, Matrix.conjTranspose_reindex, Matrix.fromBlocks_conjTranspose]`.
+Simplify using the standard rewrite rules.
 -/
 theorem qL_ct (x : U.RC k j (1 + ρ)) : (qL x)ᴴ = U.blk2 1 0 (Matrix.of (aC x)) 1 := by
   simp [qL, U.blk2, Matrix.conjTranspose_reindex, Matrix.fromBlocks_conjTranspose]
 
 /- English proof (translation)
-Establish `hH` using `headH_unit σ d hd η`. Simplify using `only [U.gaXi, U.ZjH]`. Rewrite using `[corner_matrix_zero_size_eq, mMap_sand, ← embG_inv' _ (rn_unit y)]`. Establish `e : (U.Rn k j (1 + ρ) x)⁻¹ * ((U.embG k j (1 + ρ) (U.Rn k 1 ρ y))⁻¹ * U.mMap k j (1 + ρ) (U.headH σ d η.2.1 η.2.2) (U.mMap k 1 ρ (Matrix.of (Z1 c)) γ) * U.embG k j (1 + ρ) (U.Rn k 1 ρ y')) * U.Rn k j (1 + ρ) x' = (U.embG k j (1 + ρ) (U.Rn k 1 ρ y) * U.Rn k j (1 + ρ) x)⁻¹ * U.mMap …`. Rewrite using `[Matrix.mul_inv_rev]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `show D.castM (hs' k j ρ) ((U.Rn k j (1 + ρ) x)⁻¹ * ((U.embG k j (1 + ρ) (U.Rn k 1 ρ y))⁻¹ * U.mMap k j (1 + ρ) (U.headH σ d η.2.1 η.2.2) (U.mMap k 1 ρ (Matrix.of (Z1 c)) γ) * U.embG k j (1 + ρ) (U.Rn k 1 ρ y')) * U.Rn k j (1 + ρ) x') = _`. Rewrite using `[e, castM_mul, castM_mul, castM_invS, M1, M1, M2 _ hH c hc, Matrix.mul_inv_rev]`. Establish `e2 : (U.Rn k (j + 1) ρ (XC x y))⁻¹ * (U.muP k (j + 1) ρ (qL x))⁻¹ * U.mMap k (j + 1) ρ (U.blk2 (U.headH σ d η.2.1 η.2.2) 0 0 (Matrix.of (Z1 c))) γ * (U.muP k (j + 1) ρ (qL x') * U.Rn k (j + 1) ρ (XC x' y')) = (U.Rn k (j + 1) ρ (XC x y))⁻¹ * ((U.muP k (j + 1) ρ (qL x))⁻¹ * U.mMap …`. Simplify using `only [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2, M3 _ _ _ (qL_unit x) (qL_unit x'), qL_ct]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem GX (σ : Equiv.Perm (Fin j)) (d : Fin j → ℂ) (hd : ∀ i, d i ≠ 0) (c : ℂ) (hc : c ≠ 0)
     (x x' : U.RC k j (1 + ρ)) (η : U.XiH j 0 σ) (y y' : U.RC k 1 ρ) (γ : B.Mat k ρ) :

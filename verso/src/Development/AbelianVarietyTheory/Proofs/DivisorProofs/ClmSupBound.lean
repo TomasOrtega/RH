@@ -22,14 +22,14 @@ abbrev pd {X : Type} [NormedAddCommGroup X] [NormedSpace ℝ X] (w : X) :
   LineDeriv.lineDerivOpCLM ℂ (SchwartzMap X ℂ) w
 
 /- English proof (translation)
-Simplify using `[pd, LineDeriv.lineDerivOpCLM_apply, SchwartzMap.lineDerivOp_apply_eq_fderiv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pd_apply {X : Type} [NormedAddCommGroup X] [NormedSpace ℝ X] (w : X) (f : SchwartzMap X ℂ) (x : X) :
     pd w f x = fderiv ℝ f x w := by
   simp [pd, LineDeriv.lineDerivOpCLM_apply, SchwartzMap.lineDerivOp_apply_eq_fderiv]
 
 /- English proof (translation)
-Establish `hp : Continuous ((s.sup (schwartzSeminormFamily ℂ Y ℂ)).comp T.toLinearMap)` using `(Seminorm.continuous_finsetSup fun i _ => (schwartz_withSeminorms ℂ Y ℂ).continuous_seminorm i).comp T.continuous`. Take `⟨s', C, -, hC⟩` from `Seminorm.bound_of_continuous (schwartz_withSeminorms ℂ X ℂ) _ hp`. Use `⟨s', C, C.2, fun f => ?_⟩` and prove the remaining obligations. Use `hC f` as an intermediate fact. Simplify `this` using `[Seminorm.smul_apply, NNReal.smul_def]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem clm_sup_bound {X Y : Type} [NormedAddCommGroup X] [NormedSpace ℝ X] [NormedAddCommGroup Y] [NormedSpace ℝ Y]
     (T : SchwartzMap X ℂ →L[ℂ] SchwartzMap Y ℂ) (s : Finset (ℕ × ℕ)) :

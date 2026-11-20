@@ -18,7 +18,7 @@ namespace PositivityTheory.SiegelWeilFormula.KWhit.Ht
 open PositivityTheory.SiegelWeilFormula PositivityTheory.SiegelWeilFormula.KWhit
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 /- English proof (translation)
-Establish `h` using `((d.ok.stdK k).1 hk).2`. Establish `e : ∀ z : AE F E, compFin F E v (finOne F • z) = compFin F E v z` using `fun z => by`. Rewrite using `[compFin_smul, evFin_finOne, one_smul]`. Conclude with `⟨e _ ▸ compFin_intHat v (h k (by simp) i j), e _ ▸ compFin_intHat v (h k⁻¹ (by simp) i j)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem k_int_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) {k : d.G} (hk : k ∈ d.K) (v : HeightOneSpectrum (𝓞 F)) (i j : Fin d.n ⊕ Fin d.n) :
     compFin F E v (inFrame d.b k i j) ∈ OE E v ∧ compFin F E v (inFrame d.b k⁻¹ i j) ∈ OE E v := by
@@ -27,51 +27,49 @@ theorem k_int_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) {k : d.G
     rw [compFin_smul, evFin_finOne, one_smul]
   exact ⟨e _ ▸ compFin_intHat v (h k (by simp) i j), e _ ▸ compFin_intHat v (h k⁻¹ (by simp) i j)⟩
 /- English proof (translation)
-The claim follows from `((d.ok.stdK k).1 hk).1 w`.
+A detailed English derivation is pending.
 -/
 theorem k_unit_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) {k : d.G} (hk : k ∈ d.K) (w : InfinitePlace F) :
     (inFrame d.b k).map (piInf (d.B.emb w)) * ((inFrame d.b k).map (piInf (d.B.emb w)))ᴴ = 1 :=
   ((d.ok.stdK k).1 hk).1 w
 /- English proof (translation)
-Rewrite using `[← _root_.PositivityTheory.SiegelWeilFormula.KWhit.inFrame_mul_k, mul_inv_cancel]`. Simplify using `only [inFrame, mat2, OneMemClass.coe_one, Units.val_one, Matrix.mul_one]`. Conclude with `_root_.PositivityTheory.SiegelWeilFormula.KWhit.incM_inv_mul_k d`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inFrame_mul_inv_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (k : d.G) : inFrame d.b k * inFrame d.b k⁻¹ = 1 := by
   rw [← _root_.PositivityTheory.SiegelWeilFormula.KWhit.inFrame_mul_k, mul_inv_cancel]
   simp only [inFrame, mat2, OneMemClass.coe_one, Units.val_one, Matrix.mul_one]
   exact _root_.PositivityTheory.SiegelWeilFormula.KWhit.incM_inv_mul_k d
 /- English proof (translation)
-Simplify using `only [piInf, RingHom.comp_apply, compInf_cA]`. Conclude with `(GlobalTheory.AdelicU.infEmb_sigR d.ok.good.cm (d.B.emb w) _).symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem piInf_cA_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (w : InfinitePlace F) (z : AE F E) :
     piInf (d.B.emb w) (cA σ z) = star (piInf (d.B.emb w) z) := by
   simp only [piInf, RingHom.comp_apply, compInf_cA]
   exact (GlobalTheory.AdelicU.infEmb_sigR d.ok.good.cm (d.B.emb w) _).symm
 /- English proof (translation)
-Simplify using `[piInf, compInf, inclR, Algebra.TensorProduct.map_tmul, infEmb_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem piInf_inclR_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (w : InfinitePlace F) (e : E) :
     piInf (d.B.emb w) (inclR (F := F) (AF F) e) = (d.B.emb w).1 e := by
   simp [piInf, compInf, inclR, Algebra.TensorProduct.map_tmul, infEmb_tmul]
 /- English proof (translation)
-Use `set pw := piInf (d.B.emb w) with hpw`. Establish `hmap : ∀ {a b c : Type} [Fintype b] (X : Matrix a b (AE F E)) (Y : Matrix b c (AE F E)), (X * Y).map pw = X.map pw * Y.map pw` using `fun X Y => Matrix.map_mul`. Establish `hsm : ∀ {a b : Type} (c : AE F E) (X : Matrix a b (AE F E)), (c • X).map pw = pw c • X.map pw`. Introduce `a b c X`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hθ : (Gen.matInf (hOf β).1).map (θ w) = ((hOf β).1.map pw).map star`. Use extensionality with `i j`. Conclude with `hR.th w _`. Establish `hK : ((inFrame d.b k).map pw).toBlocks₂₁ * (((inFrame d.b k).map pw).toBlocks₂₁)ᴴ + ((inFrame d.b k).map pw).toBlocks₂₂ * (((inFrame d.b k).map pw).toBlocks₂₂)ᴴ = 1`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hu` using `_root_.PositivityTheory.SiegelWeilFormula.KWhit.Ht.k_unit_k d hk w`. Use extensionality with `i j`. Use `congrFun (congrFun hu (Sum.inr i)) (Sum.inr j)` as an intermediate fact. Simplify using `only [Matrix.mul_apply, Fintype.sum_sum_type, Matrix.conjTranspose_apply, Matrix.one_apply, Sum.inr.injEq] at this`. Simplify `this` using `[Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.one_apply, Matrix.toBlocks₂₁, Matrix.toBlocks₂₂, Matrix.add_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1'` using `congrArg (fun M => M.map pw) h1`. Establish `h2'` using `congrArg (fun M => M.map pw) h2`. Simplify using `only [hsm, hmap, map_intCast] at h1' h2'`. Establish `htu : (t.1.map pw)ᴴ * u.1.map pw = 1`. Establish `h0` using `congrArg (fun M => M.map pw) (_root_.PositivityTheory.SiegelWeilFormula.KWhit.Ht.levi_tu_k d x t u hR.levi)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hmap, Matrix.map_one _ (map_zero pw) (map_one pw)] at h0`. Establish `h3 : ((t.1ᵀ.map pw) * ((u.1.map (cA σ)).map pw)).map (starRingEnd ℂ) = (1 : Matrix (Fin d.n) (Fin d.n) ℂ).map (starRingEnd ℂ)` using `by rw [h0]`. Rewrite `h3` using `[Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `e1 : ((u.1.map (cA σ)).map pw).map (starRingEnd ℂ) = u.1.map pw`. Use extensionality with `i j`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.map_apply]`. Rewrite using `[hpw, _root_.PositivityTheory.SiegelWeilFormula.KWhit.Ht.piInf_cA_k]`. Simplify using the standard rewrite rules. Rewrite `h3` using `[e1]`. Rewrite using `[← h3]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hh : ((hOf β).1.map pw)ᴴ = (hOf β).1.map pw`. Use extensionality with `a b`. Simplify using `only [Matrix.conjTranspose_apply, Matrix.map_apply]`. Rewrite using `[← (hOf β).2 a b, sigR_eq_cA', _root_.PositivityTheory.SiegelWeilFormula.KWhit.Ht.piInf_cA_k]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hβ : β.1.map pw = -(((d.B.emb w).1 η) • ((hOf β).1.map pw)ᵀ)`. Rewrite using `[hR.hof β]`. Use extensionality with `i j`. Simplify using `[Matrix.map_apply, Matrix.mul_apply, Matrix.scalar_apply, incM, Matrix.diagonal_apply, hpw, _root_.PositivityTheory.SiegelWeilFormula.KWhit.Ht.piInf_inclR_k]`. Establish `hg : (g w).1 * (u.1.map pw)ᴴ = ((‖(d.B.emb w).1 η‖ ^ (-(1 / 2 : ℝ)) : ℝ) : ℂ) • 1` using `hR.gc w`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `have he : ‖(((ε : ℤ) : ℂ))‖ = 1 := by rcases Int.units_eq_one_or ε with h | h <;> simp [h]`. Establish `hη : (d.B.emb w).1 η ≠ 0` using `(map_ne_zero _).2 hR.ne`. Establish `hgi : IsUnit (g w).1.det` using `(Matrix.isUnit_iff_isUnit_det _).1 (g w).isUnit`. Establish `key` using `GlobalTheory.T.det_sq_norm_eq_hermitian_block_formula (t.1.map pw) (u.1.map pw) (D.1.map pw) ((inFrame d.b k).map pw).toBlocks₂₁ ((inFrame d.b k).map pw).toBlocks₂₂ (β.1.map pw) ((hOf β).1.map pw) (g w).1 ((ε : ℤ) : ℂ) ((d.B.emb w).1 η) he hη hK h1' h2' htu hh hβ hg hgi`. Rewrite `key` using `[det_map, det_map]`.
-
-Rewrite using `[hθ, Matrix.coe_units_inv]`. Conclude with `key`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem real_at_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) {x : d.G} {t u : GL (Fin d.n) (AE F E)} {T : nF σ d.Y d.b} {η : E}
     {T₀ : Matrix (Fin d.n) (Fin d.n) E} {hOf : nA σ d.Y d.b → HeckeCharacterZeroLocus.SiegelWeilU.HermR (AF F) σ d.n}
@@ -136,25 +134,23 @@ theorem real_at_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (R : _
   rw [hθ, Matrix.coe_units_inv]
   exact key
 /- English proof (translation)
-Use `set cf := compFin F E v with hcf`. Establish `hcm : HeckeCharacterZeroLocus.SiegelWeilU.IsCMExt F E σ` using `d.ok.good.cm`. Establish `hmap : ∀ {a b c : Type} [Fintype b] (X : Matrix a b (AE F E)) (Y : Matrix b c (AE F E)), (X * Y).map cf = X.map cf * Y.map cf` using `fun X Y => Matrix.map_mul`. Establish `hsm : ∀ {a b : Type} (c : AE F E) (X : Matrix a b (AE F E)), (c • X).map cf = cf c • X.map cf`. Introduce `a b c X`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `ht : IsUnit (t.1.map cf).det`. Rewrite using `[det_map]`. Conclude with `(Matrix.GeneralLinearGroup.det t).isUnit.map cf`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hD : IsUnit (D.1.map cf).det`. Rewrite using `[det_map]`. Conclude with `(Matrix.GeneralLinearGroup.det D).isUnit.map cf`. Establish `htu : (t.1.map cf)ᵀ * (u.1.map cf).map (HeckeCharacterZeroLocus.SiegelWeilU.sigR (v.adicCompletion F) σ) = 1`. Establish `h0` using `congrArg (fun M => M.map cf) (_root_.PositivityTheory.SiegelWeilFormula.KWhit.Ht.levi_tu_k d x t u hR.levi)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [hmap, Matrix.map_one _ (map_zero cf) (map_one cf)] at h0`. Rewrite using `[← h0, Matrix.transpose_map]`. Use `congr 1`. Use extensionality with `i j`. Conclude with `(compFin_cA v _).symm`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hη : IsUnit (inclR (F` using `F) (v.adicCompletion F) η) := (Ne.isUnit hR.ne).map _`. Establish `he : IsUnit (((ε : ℤ) : v.adicCompletion F ⊗[F] E))` using `ε.isUnit.map (Int.castRingHom _)`. Establish `he1 : ‖Algebra.norm (v.adicCompletion F) (((ε : ℤ) : v.adicCompletion F ⊗[F] E))‖ = 1`. Break down `Int.units_eq_one_or ε with h | h` into its components or cases. Simplify using `[h]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: (((ε : ℤ) : v.adicCompletion F ⊗[F] E)) = algebraMap (v.adicCompletion F) _ (-1)`. Rewrite using `[h]`. Simplify using `only [Units.val_neg, Units.val_one, Int.cast_neg, Int.cast_one, map_neg, map_one]`. Rewrite using `[this, Algebra.norm_algebraMap, norm_pow, norm_neg, norm_one, one_pow]`. Establish `hβ : β.1.map cf = -((inclR (F` using `F) (v.adicCompletion F) η) • ((hOf β).1.map cf)ᵀ) := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hR.hof β]`. Use extensionality with `i j`. Simplify using `[Matrix.map_apply, Matrix.mul_apply, Matrix.scalar_apply, incM, Matrix.diagonal_apply, hcf, compFin_inclR]`. Establish `hh : ∀ a b, HeckeCharacterZeroLocus.SiegelWeilU.sigR (v.adicCompletion F) σ (((hOf β).1.map cf) b a) = ((hOf β).1.map cf) a b`. Introduce `a b`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.map_apply]`. Rewrite using `[← (hOf β).2 a b]`. Conclude with `(compFin_sigR v _).symm`. Establish `hkk : (inFrame d.b k).map cf * (inFrame d.b k⁻¹).map cf = 1`. Rewrite using `[← hmap, _root_.PositivityTheory.SiegelWeilFormula.KWhit.Ht.inFrame_mul_inv_k, Matrix.map_one _ (map_zero cf) (map_one cf)]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1'` using `congrArg (fun M => M.map cf) h1`. Establish `h2'` using `congrArg (fun M => M.map cf) h2`. Simplify using `only [hsm, hmap, map_intCast] at h1' h2'`. Establish `key` using `PositivityTheory.SiegelWeilFormula.HeightDict.fin_index hcm v d.n (t.1.map cf) (u.1.map cf) (D.1.map cf) (β.1.map cf) ((hOf β).1.map cf) (inclR (F := F) (v.adicCompletion F) η) (((ε : ℤ) : v.adicCompletion F ⊗[F] E)) ((inFrame d.b k).map cf) ((inFrame d.b k⁻¹).map cf) ht hD htu h …`. Rewrite `key` using `[det_map, det_map]`.
-
-Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem fin_at_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) {x : d.G} {t u : GL (Fin d.n) (AE F E)} {T : nF σ d.Y d.b} {η : E}
     {T₀ : Matrix (Fin d.n) (Fin d.n) E} {hOf : nA σ d.Y d.b → HeckeCharacterZeroLocus.SiegelWeilU.HermR (AF F) σ d.n}
@@ -214,11 +210,11 @@ theorem fin_at_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (R : _r
   rw [det_map, det_map] at key
   exact key
 /- English proof (translation)
-Rewrite using `[GlobalTheory.Doubling.absE_apply, NNReal.coe_mul, NNReal.coe_prod]`. Use `congr 1`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.Doubling.absEw_eq_sq d.ok.good.cm (d.B.emb w), NNReal.coe_pow, coe_nnnorm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `set s := (GlobalTheory.Doubling.finite_mulSupport_absEv x).toFinset with hs`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ (s := s) (by simp [s]), NNReal.coe_prod, finprod_eq_prod_of_mulSupport_subset _ (s := s) ?_]`. Conclude with `Finset.prod_congr rfl fun v _ => (normV_eq x v).symm`. Introduce `v hv`. Simplify using `only [Set.Finite.coe_toFinset, s, Function.mem_mulSupport] at hv ⊢`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Rewrite `hv` using `[normV_eq]`. Conclude with `fun h => hv (by rw [h, NNReal.coe_one])`.
+A detailed English derivation is pending.
 -/
 theorem absE_split_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (x : (AE F E)ˣ) :
     ((GlobalTheory.Doubling.absE F E x : ℝ≥0) : ℝ) =
@@ -237,21 +233,19 @@ theorem absE_split_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (x 
       rw [normV_eq] at hv
       exact fun h => hv (by rw [h, NNReal.coe_one])
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d R x t u T η T₀ hOf θ fr g hR nb lam 𝓖 hc ε w hw`. Use `choose lv hlv using fun v : HeightOneSpectrum (𝓞 F) => exists_haar_tup (E := E) v d.n`. Take `⟨hCO, hstd⟩` from `_root_.PositivityTheory.SiegelWeilFormula.HeightDict.fin_std_k (σ := σ) d d.n t u η hR.ne`. Establish `hat : (0 : ℝ) < ((GlobalTheory.Doubling.absE F E (Matrix.GeneralLinearGroup.det t) : ℝ≥0) : ℝ)` using `absE_pos _`. Use `⟨lv, L1 σ t, L2 σ u η, ((GlobalTheory.Doubling.absE F E (Matrix.GeneralLinearGroup.det t) : ℝ≥0) : ℝ)⁻¹, inv_pos.2 hat, hlv, hCO, hstd, fun β => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨D, k, hk, ha, hb1, hb2⟩` from `_root_.PositivityTheory.SiegelWeilFormula.KWhit.Ht.frame_iwa_k d (w * nb β * x)`. Take `⟨hr1, hr2⟩` from `_root_.PositivityTheory.SiegelWeilFormula.KWhit.Ht.bottom_rows_k d x t u hR.levi nb hc.1 ε w hw β`. Establish `h1` using `hr1.symm.trans hb1`. Establish `h2` using `hr2.symm.trans hb2`. Establish `hre` using `fun w' => _root_.PositivityTheory.SiegelWeilFormula.KWhit.Ht.real_at_k d R hR ε β D hk h1 h2 w'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfi` using `fun v => _root_.PositivityTheory.SiegelWeilFormula.KWhit.Ht.fin_at_k d R hR ε β D hk h1 h2 v (lv v)`. Use `set X : InfinitePlace F → ℝ := fun w' => (1 + (((g w')⁻¹).1 * (Gen.matInf (hOf β).1).map (θ w') * (((g w')⁻¹).1)ᴴ) * (((g w')⁻¹).1 * (Gen.matInf (hOf β).1).map (θ w') * (((g w')⁻¹).1)ᴴ)).det.re with hX`. Use `set N : HeightOneSpectrum (𝓞 F) → ℝ := fun v => Gen.nu2 (lv v) (L1 σ t v) (L2 σ u η v) (Gen.matV v (hOf β).1) with hN`. Establish `hnuA : Gen.nuA θ g lv (L1 σ t) (L2 σ u η) (hOf β).1 = (∏ w', X w') * ∏ᶠ v, N v` using `rfl`. Establish `hsD` using `_root_.PositivityTheory.SiegelWeilFormula.KWhit.Ht.absE_split_k d (Matrix.GeneralLinearGroup.det D)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hsT` using `_root_.PositivityTheory.SiegelWeilFormula.KWhit.Ht.absE_split_k d (Matrix.GeneralLinearGroup.det t)`. Simplify using `only [Matrix.GeneralLinearGroup.val_det_apply] at hsD hsT`. Establish `hfT` using `fin_supp (Matrix.GeneralLinearGroup.det t)`. Establish `hfD` using `fin_supp (Matrix.GeneralLinearGroup.det D)`. Simplify using `only [Matrix.GeneralLinearGroup.val_det_apply] at hfT hfD`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hT0` using `normV_ne (Matrix.GeneralLinearGroup.det t)`. Simplify using `only [Matrix.GeneralLinearGroup.val_det_apply] at hT0`. Establish `hNv : ∀ v, N v = ‖Algebra.norm (v.adicCompletion F) (compFin F E v D.1.det)‖ / ‖Algebra.norm (v.adicCompletion F) (compFin F E v t.1.det)‖` using `fun v => by`. Rewrite using `[hfi v, mul_div_cancel_left₀ _ (hT0 v)]`. Establish `hNs : (Function.mulSupport N).Finite`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Use `(hfD.union hfT).subset fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hc'`. Simplify using `only [Set.mem_union, Function.mem_mulSupport, not_or, not_not] at hc'`. Conclude with `hv (by rw [hNv v, hc'.1, hc'.2, div_one])`. Establish `hA : ((GlobalTheory.Doubling.absE F E (Matrix.GeneralLinearGroup.det D) : ℝ≥0) : ℝ) = ((GlobalTheory.Doubling.absE F E (Matrix.GeneralLinearGroup.det t) : ℝ≥0) : ℝ) * Gen.nuA θ g lv (L1 σ t) (L2 σ u η) (hOf β).1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hsD, hsT, hnuA, Finset.prod_congr rfl fun w' _ => hre w', Finset.prod_mul_distrib, finprod_congr fun v => hfi v, finprod_mul_distrib hfT hNs]`. Expand and normalize the polynomial expressions, which then agree. Establish `hDpos` using `absE_pos (Matrix.GeneralLinearGroup.det D)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite `hDpos` using `[hA]`.
-
-Conclude with `pos_of_mul_pos_right hDpos hat.le`. Rewrite using `[ha, hA, mul_inv]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heightDict_k : _root_.PositivityTheory.SiegelWeilFormula.KWhit.HeightDict_k := by
   intro F E _ _ _ _ _ σ d R x t u T η T₀ hOf θ fr g hR nb lam 𝓖 hc ε w hw

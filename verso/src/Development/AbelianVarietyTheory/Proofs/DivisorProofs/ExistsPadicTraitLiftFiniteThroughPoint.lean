@@ -13,17 +13,15 @@ open Classical
 namespace GlobalTheory.UPoinc
 
 /- English proof (translation)
-Introduce `X Z f hf p _ Y w hw`. Use `set x : Sp (PadicAlgCl p) ⟶ Z := gPt p ≫ Y with hxdef`. Take `⟨⟨z, φ⟩, hzφ⟩` from `(Scheme.SpecToEquivOfField (PadicAlgCl p) Z).symm.surjective x`. Simplify using `only [Scheme.SpecToEquivOfField_symm_apply] at hzφ`. Establish `hz : f w = z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw, ← hzφ]`. Conclude with `(Scheme.Hom.comp_apply _ _ _).trans (Scheme.fromSpecResidueField_apply z _)`. Substitute `hz` using the available equality. Establish `hfin` using `GlobalTheory.residueFieldMap_finite_of_locallyQuasiFinite f w`. Use `letI := (f.residueFieldMap w).hom.toAlgebra`.
+Substitute using the available equality. Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use `letI := φ.hom.toAlgebra`. Use `haveI : Module.Finite (Z.residueField (f w)) (X.residueField w) := hfin`. Use `haveI : Algebra.IsAlgebraic (Z.residueField (f w)) (X.residueField w) := inferInstance`. Set `ψ : X.residueField w →ₐ[Z.residueField (f w)] PadicAlgCl p` to `IsAlgClosed.lift`. Use `set y0 : Sp (PadicAlgCl p) ⟶ X := Spec.map (CommRingCat.ofHom ψ.toRingHom) ≫ X.fromSpecResidueField w with hy0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hy0f : y0 ≫ f = gPt p ≫ Y`. Rewrite using `[← hxdef, ← hzφ, hy0, Category.assoc, ← Scheme.Hom.SpecMap_residueFieldMap_fromSpecResidueField, ← Spec.map_comp_assoc]`. Use `congr 2`. Use extensionality with `a`. Conclude with `ψ.commutes a`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy0w : y0 (IsLocalRing.closedPoint (PadicAlgCl p)) = w` using `(Scheme.Hom.comp_apply _ _ _).trans (Scheme.fromSpecResidueField_apply w _)`. Use `haveI : IsProper f := inferInstance`. Establish `hE : ValuativeCriterion.Existence f` using `(UniversallyClosed.eq_valuativeCriterion ▸ (inferInstance : UniversallyClosed f) : (ValuativeCriterion.Existence ⊓ @QuasiCompact) f).1`. Take `⟨⟨l, hl1, hl2⟩⟩` from `(hE { R := OO p, K := PadicAlgCl p, i₁ := y0, i₂ := Y, commSq := ⟨hy0f⟩ }).exists_lift`. Use `⟨l, hl2, ?_⟩` and prove the remaining obligations.
-
-Establish `: gPt p ≫ l = y0` using `hl1`. Rewrite using `[this, hy0w]`.
+A detailed English derivation is pending.
 -/
 theorem exists_lift_finite_through_point : ∀ (X Z : Scheme.{0}) (f : X ⟶ Z), IsFinite f → ∀ (p : ℕ) [Fact p.Prime] (Y : Sp (OO p) ⟶ Z) (w : X), f w = (gPt p ≫ Y) (IsLocalRing.closedPoint (PadicAlgCl p)) → ∃ y : Sp (OO p) ⟶ X, y ≫ f = Y ∧ (gPt p ≫ y) (IsLocalRing.closedPoint (PadicAlgCl p)) = w := by
   intro X Z f hf p _ Y w hw

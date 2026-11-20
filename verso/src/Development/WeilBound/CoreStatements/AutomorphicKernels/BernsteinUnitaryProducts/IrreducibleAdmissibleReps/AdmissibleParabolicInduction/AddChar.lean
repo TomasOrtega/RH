@@ -7,7 +7,7 @@ namespace PositivityTheory.PfBern.Props1
 open PositivityTheory.PfBern.Assembly
 
 /- English proof (translation)
-Introduce `k _ _ _ _` and use `GroundTheory.LocalField.exists_addChar_continuous_ne_one (K := k)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem existsAddChar_holds : ExistsAddChar := fun k _ _ _ _ =>
   GroundTheory.LocalField.exists_addChar_continuous_ne_one (K := k)

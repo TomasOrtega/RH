@@ -6,21 +6,21 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC LateralTheory.E.t_
 namespace LateralTheory.E.ColimPf.RigidPf
 
 /- English proof (translation)
-Introduce `A B O Ω _ ψ g hg hloc u v huv hψ`. Set `: Algebra A B` to `g.hom.toAlgebra`. Set `: Algebra A O` to `(g ≫ u).hom.toAlgebra`. Establish `: Algebra.Etale A B` using `hg`. Set `u' : B →ₐ[A] O` to `{ u.hom with commutes' := fun _ => rfl }`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hv : ∀ a, v.hom (g.hom a) = (g ≫ u).hom a` using `fun a => by rw [huv]; rfl`. Set `v' : B →ₐ[A] O` to `{ v.hom with commutes' := hv }`. Take `⟨e, he, hsp⟩ : ∃ e, IsIdempotentElem e ∧ KaehlerDifferential.ideal A B = B ⊗[A] B ∙ e` from `(Ideal.isIdempotentElem_iff_of_fg _ (KaehlerDifferential.ideal_fg A B)).mp <| (Ideal.cotangent_subsingleton_iff _).mp <| inferInstanceAs <| Subsingleton Ω[B⁄A]`. Set `w : B ⊗[A] B →ₐ[A] O` to `Algebra.TensorProduct.productMap u' v'`. Establish `hψu : ∀ b, ψ (v.hom b) = ψ (u.hom b)` using `fun b => (DFunLike.congr_fun hψ b).symm`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hpt : ∀ t : B ⊗[A] B, ψ (w t) = ψ (u.hom (Algebra.TensorProduct.lmul' A t))`. Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `only [w, Algebra.TensorProduct.productMap_apply_tmul, Algebra.TensorProduct.lmul'_apply_tmul, map_mul]`. Express the relevant statement in the definitionally equal form `ψ (u.hom x) * ψ (v.hom y) = ψ (u.hom x) * ψ (u.hom y)`. Rewrite using `[hψu]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Establish `he0 : e ∈ KaehlerDifferential.ideal A B` using `by rw [hsp]; exact Submodule.mem_span_singleton_self e`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Establish `hwe : ψ (w e) = 0`. Rewrite using `[hpt]`. Establish `: Algebra.TensorProduct.lmul' A e = 0` using `he0`. Rewrite using `[this, map_zero, map_zero]`. Establish `hwe0 : w e = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hu : IsUnit (1 - w e)` using `hloc _ (by rw [map_sub, map_one, hwe, sub_zero]; exact one_ne_zero)`. Establish `hid : w e * (1 - w e) = 0`. Use `(he.map w).eq` as an intermediate fact. Rewrite using `[mul_sub, mul_one, this, sub_self]`. Simplify using `using (hu.mul_left_eq_zero).1 hid`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use extensionality with `b`. Establish `hb : b ⊗ₜ[A] (1 : B) - 1 ⊗ₜ b ∈ KaehlerDifferential.ideal A B`. Rewrite using `[KaehlerDifferential.ideal, RingHom.mem_ker, map_sub]`. Simplify using the standard rewrite rules. Rewrite `hb` using `[hsp]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨r, hr⟩` from `Submodule.mem_span_singleton.1 hb`. Use `congrArg w hr` as an intermediate fact. Rewrite `this` using `[smul_eq_mul, map_mul, hwe0, mul_zero, map_sub]`. Simplify using `only [w, Algebra.TensorProduct.productMap_apply_tmul, map_one, mul_one, one_mul] at this`. Conclude with `sub_eq_zero.1 this.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem etale_lift_to_strict_local_ring_unique_on_residue_field : LateralTheory.E.ColimPf.Rigid := by
   intro A B O Ω _ ψ g hg hloc u v huv hψ

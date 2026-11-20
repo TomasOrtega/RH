@@ -16,19 +16,19 @@ open GlobalTheory.Doubling (absE absEv unitFin ideleAt)
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Rewrite using `[mul_sub, mul_one, hε, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem idem_mul_one_sub {R : Type} [CommRing R] {ε : R} (hε : ε * ε = ε) : ε * (1 - ε) = 0 := by
   rw [mul_sub, mul_one, hε, sub_self]
 
 /- English proof (translation)
-Take the linear combination `hε`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem one_sub_idem {R : Type} [CommRing R] {ε : R} (hε : ε * ε = ε) : (1 - ε) * (1 - ε) = 1 - ε := by
   linear_combination hε
 
 /- English proof (translation)
-Simplify using `only [Algebra.smul_def, mul_one]`. Establish `he : algebraMap (AF F) A ε * algebraMap (AF F) A ε = algebraMap (AF F) A ε` using `by rw [← map_mul, hε]`. Rewrite using `[map_sub, map_one]`. Take the linear combination `(a * b - a - b + 1) * he`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem idem_smul_mul {A : Type} [CommRing A] [Algebra (AF F) A] {ε : AF F} (hε : ε * ε = ε) (a b : A) :
     (ε • a + (1 - ε) • (1 : A)) * (ε • b + (1 - ε) • (1 : A)) = ε • (a * b) + (1 - ε) • (1 : A) := by
@@ -38,7 +38,7 @@ theorem idem_smul_mul {A : Type} [CommRing A] [Algebra (AF F) A] {ε : AF F} (h�
   linear_combination (a * b - a - b + 1) * he
 
 /- English proof (translation)
-Establish `h1` using `idem_mul_one_sub hε`. Establish `h2` using `one_sub_idem hε`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one, smul_add, smul_smul, hε, h1, h2, mul_comm (1 - ε) ε, zero_smul, add_zero, zero_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem idem_smul_mat_mul {A : Type} [CommRing A] [Algebra (AF F) A] {n : ℕ} {ε : AF F} (hε : ε * ε = ε)
     (G H : Matrix (Fin n) (Fin n) A) :
@@ -49,9 +49,9 @@ theorem idem_smul_mat_mul {A : Type} [CommRing A] [Algebra (AF F) A] {n : ℕ} {
     smul_smul, hε, h1, h2, mul_comm (1 - ε) ε, zero_smul, add_zero, zero_add]
 
 /- English proof (translation)
-Establish `h1` using `idem_mul_one_sub hε`. Establish `h2` using `one_sub_idem hε`. Establish `hm : (ε • G + (1 - ε) • (1 : Matrix (Fin n) (Fin n) A)).map c = ε • G.map c + (1 - ε) • 1`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, Matrix.one_apply, map_add, map_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[hm, Matrix.transpose_add, Matrix.transpose_smul, Matrix.transpose_smul, Matrix.transpose_one]`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one, smul_add, smul_smul, hε, h1, h2, mul_comm (1 - ε) ε, zero_smul, add_zero, zero_add]`. Rewrite using `[hG, ← add_smul, add_sub_cancel, one_smul]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem idem_smul_unitary {A : Type} [CommRing A] [Algebra (AF F) A] (c : A →ₐ[AF F] A) {n : ℕ} {ε : AF F}
     (hε : ε * ε = ε) {G J : Matrix (Fin n) (Fin n) A} (hG : Gᵀ * J * G.map c = J) :
@@ -103,7 +103,7 @@ def eFin (v : Pl F) : AF F := GlobalTheory.LatVac.liftV v 1
 def eInf (F : Type) [Field F] [NumberField F] : AF F := realAd F 1
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.LatVac.at_liftV v 1 (eFin v - 1) (by`. Rewrite using `[eFin, map_sub, GlobalTheory.LatVac.evFin_liftV, map_one, sub_self])`. Rewrite `h` using `[smul_eq_mul, sub_mul, one_mul, sub_eq_zero]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eFin_idem (v : Pl F) : eFin v * eFin v = eFin v := by
   have h := GlobalTheory.LatVac.at_liftV v 1 (eFin v - 1) (by
@@ -112,9 +112,9 @@ theorem eFin_idem (v : Pl F) : eFin v * eFin v = eFin v := by
   exact h
 
 /- English proof (translation)
-Establish `h` using `at_partInf (M := AF F) (1 : AF F) (eInf F - 1) (by`. Rewrite using `[eInf, GlobalTheory.ArchUniq.evI_eq_evIHom, map_sub, map_one, ← GlobalTheory.ArchUniq.evI_eq_evIHom, evI_realAd_one, sub_self])`. Simplify using `only [partInf, smul_eq_mul, mul_one] at h`. Unfold `eInf at h ⊢`. Rewrite `h` using `[sub_mul, one_mul, sub_eq_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem eInf_idem : eInf F * eInf F = eInf F := by
   have h := at_partInf (M := AF F) (1 : AF F) (eInf F - 1) (by
@@ -153,7 +153,7 @@ theorem mat_compArch {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (g : UA σ J) :
     mat (compArch σ J g) = eInf F • mat g + (1 - eInf F) • 1 := rfl
 
 /- English proof (translation)
-Introduce `u hu`. Establish `h` using `GlobalTheory.LatVac.at_liftV v 1 u hu`. Rewrite using `[mat_compAt, show eFin v • mat g + (1 - eFin v) • (1 : Matrix (Fin _) (Fin _) (AE F E)) - 1 = eFin v • (mat g - 1) by rw [sub_smul, one_smul, smul_sub]; abel, smul_smul]`. Rewrite using `[show u * eFin v = 0 from h, zero_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem compAt_mem {n : ℕ} {X : Spc F E n} (v : Pl F) (g : UA σ X.J) : compAt σ X.J v g ∈ UAt σ X (evFin F v) := by
   intro u hu
@@ -163,7 +163,7 @@ theorem compAt_mem {n : ℕ} {X : Spc F E n} (v : Pl F) (g : UA σ X.J) : compAt
   rw [show u * eFin v = 0 from h, zero_smul]
 
 /- English proof (translation)
-Introduce `u hu`. Establish `h` using `at_partInf (M := AF F) (1 : AF F) u hu`. Simplify using `only [partInf, smul_eq_mul, mul_one] at h`. Rewrite using `[mat_compArch, show eInf F • mat g + (1 - eInf F) • (1 : Matrix (Fin _) (Fin _) (AE F E)) - 1 = eInf F • (mat g - 1) by rw [sub_smul, one_smul, smul_sub]; abel, smul_smul]`. Rewrite using `[show u * eInf F = 0 from h, zero_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem compArch_mem {n : ℕ} {X : Spc F E n} (g : UA σ X.J) : compArch σ X.J g ∈ UAt σ X (evI F) := by
   intro u hu
@@ -174,9 +174,9 @@ theorem compArch_mem {n : ℕ} {X : Spc F E n} (g : UA σ X.J) : compArch σ X.J
   rw [show u * eInf F = 0 from h, zero_smul]
 
 /- English proof (translation)
-Introduce `u hu`. Establish `h` using `GlobalTheory.LatVac.at_liftV v 1 u hu`. Express the relevant statement in the definitionally equal form `u • (eFin v • (l : AE F E) + (1 - eFin v) • 1 - 1) = 0`. Rewrite using `[show eFin v • (l : AE F E) + (1 - eFin v) • 1 - 1 = eFin v • ((l : AE F E) - 1) by`. Rewrite using `[sub_smul, one_smul, smul_sub]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `abel, smul_smul]`. Rewrite using `[show u * eFin v = 0 from h, zero_smul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitAt_mem (v : Pl F) (l : (AE F E)ˣ) : unitAt E v l ∈ idelesAt E (evFin F v) := by
   intro u hu
@@ -187,9 +187,9 @@ theorem unitAt_mem (v : Pl F) (l : (AE F E)ˣ) : unitAt E v l ∈ idelesAt E (ev
   rw [show u * eFin v = 0 from h, zero_smul]
 
 /- English proof (translation)
-Introduce `u hu`. Establish `h` using `at_partInf (M := AF F) (1 : AF F) u hu`. Simplify using `only [partInf, smul_eq_mul, mul_one] at h`. Express the relevant statement in the definitionally equal form `u • (eInf F • (l : AE F E) + (1 - eInf F) • 1 - 1) = 0`. Rewrite using `[show eInf F • (l : AE F E) + (1 - eInf F) • 1 - 1 = eInf F • ((l : AE F E) - 1) by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_smul, one_smul, smul_sub]`. Use the proof step `abel, smul_smul]`. Rewrite using `[show u * eInf F = 0 from h, zero_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitArch_mem (l : (AE F E)ˣ) : unitArch F E l ∈ idelesAt E (evI F) := by
   intro u hu

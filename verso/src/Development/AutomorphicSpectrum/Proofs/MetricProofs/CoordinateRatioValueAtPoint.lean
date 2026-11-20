@@ -8,13 +8,13 @@ open GlobalTheory.CompanionTheory.Ar.PB.CovGraph
 namespace GlobalTheory.CompanionTheory.Ar.PB.CovGraph
 
 /- English proof (translation)
-Introduce `K' _ ι' _ Ω _ y' z k c hz hzc`. Establish `hy : y' ⟨k, c⟩ ≠ 0`. Introduce `h0`. Establish `hm : (X ⟨k, c⟩ : MRing ι') ∈ mCoordIdeal y'`. Use `RingHom.mem_ker.2 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[mConeMap, h0]`. Establish `h1` using `hz.2 _ hm`. Simplify using `only [map_X, eval_X] at h1`. Conclude with `hzc h1`. Use `⟨hy, fun i => ⟨fun l => if l = k then 1 else 0, X ⟨k, i⟩, X ⟨k, c⟩, GroundTheory.Heights₂.Heights.LowerBoundFree.isMultiHomog_X_single ⟨k, i⟩, GroundTheory.Heights₂.Heights.LowerBoundFree.isMultiHomog_X_single ⟨k, c⟩, ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hy`. Simplify using `only [aeval_X]`. Clear the denominators using the available nonvanishing facts. Simplify using `using hzc`. Simplify using `only [map_X, eval_X]`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_eq_inv_mul]`.
+A detailed English derivation is pending.
 -/
 theorem isValueAt_coord_ratio :
     ∀ (K' : Type) [Fintype K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (Ω : Type) [Field Ω]

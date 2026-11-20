@@ -53,7 +53,7 @@ def IsProjOf {c : CoefA (Vc D i)} {H : HMod (Bridge.Gf (Vc D i) → c.W)}
     (R.HW i σ).e (th x) (fun ρ => v ρ) = R.eWf i σ (thP ((c.ext ∘ₗ H.e).rangeRestrict x) (PiTensorProduct.tprod ℂ v))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ω, f₀, f, B, io, thP, h1, h2, h3, h4, h5, h6, h7⟩`. Conclude with `⟨ω, f₀, f, B, io, thP, ⟨h1, ⟨h2, h3, h4⟩, h5, h6⟩, h7⟩`. Introduce and unpack `⟨ω, f₀, f, B, io, thP, h, h7⟩`. Conclude with `⟨ω, f₀, f, B, io, thP, h.1, h.2.1.vec, h.2.1.onb, h.2.1.theta, h.2.2.1, h.2.2.2, h7⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isConjLift_iff (μ' η' : (AE D)ˣ →* Circle) (c : CoefA (Vc D i)) (H : HMod (Bridge.Gf (Vc D i) → c.W))
     (th : H.H →ₗ[ℂ] (R.HW i σ).H) :
@@ -78,7 +78,7 @@ def PhaseFun (u : GA D (Wc D i) → ℂ) : Prop :=
     ∀ k ∈ levW R i, ∀ h, u (h * k) = u h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => norm_one, fun _ _ _ => rfl, fun _ _ _ => rfl, fun _ _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem phaseFun_one : PhaseFun R i (fun _ => 1) := ⟨fun _ => norm_one, fun _ _ _ => rfl, fun _ _ _ => rfl, fun _ _ _ => rfl⟩
 

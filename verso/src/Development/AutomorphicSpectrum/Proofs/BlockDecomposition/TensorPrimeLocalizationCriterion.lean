@@ -4,33 +4,31 @@ open TensorProduct
 namespace GlobalTheory.CompanionTheory.KrullLocal
 
 /- English proof (translation)
-Use `choose bb tt ht vv hv hvt using h1`. Establish `hmul : ∀ {x y : C}, x ∉ q → y ∉ q → x * y ∉ q` using `fun hx hy hm => (hq.mem_or_mem hm).elim hx hy`. Establish `hone : (1 : C) ∉ q` using `fun h => hq.ne_top ((Ideal.eq_top_iff_one q).2 h)`. Establish `hone' : algebraMap B C 1 ∉ q` using `by simpa using hone`. Set `f : C → D` to `fun c => φ (bb c) * Ring.inverse (φ (tt c))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hft : ∀ c, f c * φ (tt c) = φ (bb c)`. Introduce `c`. Simplify using `only [f]`. Rewrite using `[mul_assoc, Ring.inverse_mul_cancel _ (hu _ (ht c)), mul_one]`. Establish `key : ∀ (c : C) (b t : B) (v : C), algebraMap B C t ∉ q → v ∉ q → v * (algebraMap B C t * c) = v * algebraMap B C b → f c * φ t = φ b`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c b t v htq hvq h`. Establish `hz : φ (tt c * b - t * bb c) = 0`. Apply `h2` to reduce the goal to its premises. Use `⟨vv c * v, hmul (hv c) hvq, ?_⟩` and prove the remaining obligations. Establish `h'` using `hvt c`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sub, map_mul]`. Take the linear combination `(-(vv c * algebraMap B C (tt c))) * h + (v * algebraMap B C t) * h'`. Establish `hz' : φ (tt c) * φ b = φ (tt c) * (f c * φ t)`. Establish `e : φ (tt c) * φ b - φ t * φ (bb c) = 0` using `by simpa using hz`. Rewrite `e` using `[← hft c]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `e`. Conclude with `((hu _ (ht c)).mul_left_cancel hz').symm`. Establish `hhom1 : f 1 = 1`. Use `key 1 1 1 1 hone' hone (by simp)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hhom0 : f 0 = 0`. Use `key 0 0 1 1 hone' hone (by simp)` as an intermediate fact. Simplify using `using this`. Establish `hhommul : ∀ c c', f (c * c') = f c * f c'`. Introduce `c c'`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `key (c * c') (bb c * bb c') (tt c * tt c') (vv c * vv c') (by rw [map_mul]; exact hmul (ht c) (ht c')) (hmul (hv c) (hv c')) (by`. Establish `h` using `hvt c`. Establish `h'` using `hvt c'`. Simplify using `only [map_mul]`. Take the linear combination `(vv c' * algebraMap B C (tt c') * c') * h + (vv c * algebraMap B C (bb c)) * h')`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hU : IsUnit (φ (tt c * tt c'))`. Rewrite using `[map_mul]`. Conclude with `(hu _ (ht c)).mul (hu _ (ht c'))`. Apply `hU.mul_right_cancel` to reduce the goal to its premises. Rewrite using `[e, map_mul, map_mul, ← hft c, ← hft c']`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hhomadd : ∀ c c', f (c + c') = f c + f c'`. Introduce `c c'`. Establish `e` using `key (c + c') (tt c' * bb c + tt c * bb c') (tt c * tt c') (vv c * vv c') (by rw [map_mul]; exact hmul (ht c) (ht c')) (hmul (hv c) (hv c')) (by`. Establish `h` using `hvt c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `h'` using `hvt c'`. Simplify using `only [map_mul, map_add]`. Take the linear combination `(vv c' * algebraMap B C (tt c')) * h + (vv c * algebraMap B C (tt c)) * h')`. Establish `hU : IsUnit (φ (tt c * tt c'))`. Rewrite using `[map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `(hu _ (ht c)).mul (hu _ (ht c'))`. Apply `hU.mul_right_cancel` to reduce the goal to its premises. Rewrite using `[e, map_add, map_mul, map_mul, map_mul, ← hft c, ← hft c']`. Expand and normalize the polynomial expressions, which then agree. Use `⟨{ toFun := f, map_one' := hhom1, map_mul' := hhommul, map_zero' := hhom0, map_add' := hhomadd }, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b`. Use `key (algebraMap B C b) b 1 1 hone' hone (by simp [mul_comm])` as an intermediate fact. Simplify using `using this`. Introduce `v hvq`. Establish `hb : algebraMap B C (bb v) ∉ q`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `hm`. Establish `h` using `hvt v`. Establish `: vv v * (algebraMap B C (tt v) * v) ∈ q`. Rewrite using `[h]`. Conclude with `q.mul_mem_left _ hm`.
-
-Conclude with `hmul (hv v) (hmul (ht v) hvq) this`. Establish `hU` using `hu _ hb`. Rewrite `hU` using `[← hft v]`. Conclude with `isUnit_of_mul_isUnit_left hU`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ringHom_of_fractions {B C D : Type} [CommRing B] [CommRing C] [CommRing D]
     [Algebra B C] (q : Ideal C) [hq : q.IsPrime] (φ : B →+* D)
@@ -117,15 +115,15 @@ theorem exists_ringHom_of_fractions {B C D : Type} [CommRing B] [CommRing C] [Co
     exact isUnit_of_mul_isUnit_left hU
 
 /- English proof (translation)
-Establish `hmul : ∀ {x y : C}, x ∉ q → y ∉ q → x * y ∉ q` using `fun hx hy hm => (hq.mem_or_mem hm).elim hx hy`. Establish `hone : (1 : C) ∉ q` using `fun h => hq.ne_top ((Ideal.eq_top_iff_one q).2 h)`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨1, 1, 0, by simpa using hone, hone, by simp⟩`. Consider the case `tmul r0 c`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨b, t, ht, v, hv, h⟩` from `h1 c`. Use `⟨t, v, b • r0, ht, hv, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_assoc, h, TensorProduct.smul_tmul, Algebra.smul_def, mul_comm]`. Consider the case `add x y hx hy`. Take `⟨s, v, r, hs, hv, e⟩` from `hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨s', v', r', hs', hv', e'⟩` from `hy`. Use `⟨s * s', v * v', s' • r + s • r', by rw [map_mul]; exact hmul hs hs', hmul hv hv', ?_⟩` and prove the remaining obligations. Establish `a1 : ((1 : R) ⊗ₜ[B] (v * v' * algebraMap B C (s * s'))) = ((1 : R) ⊗ₜ[B] (v' * algebraMap B C s')) * ((1 : R) ⊗ₜ[B] (v * algebraMap B C s))`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, map_mul]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `a2 : ((1 : R) ⊗ₜ[B] (v * v' * algebraMap B C (s * s'))) = ((1 : R) ⊗ₜ[B] (v * algebraMap B C s)) * ((1 : R) ⊗ₜ[B] (v' * algebraMap B C s'))`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, map_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[mul_add]`. Use `nth_rewrite 1 [a1]`. Rewrite using `[a2, mul_assoc, mul_assoc, e, e', Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, one_mul, one_mul, TensorProduct.add_tmul, TensorProduct.smul_tmul, TensorProduct.smul_tmul, Algebra.smul_def, Algebra.smul_def]`. Apply the tactic sequence `congr 2 <;> ring`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_mul_eq_tmul {B R C : Type} [CommRing B] [CommRing R] [CommRing C] [Algebra B R]
     [Algebra B C] (q : Ideal C) [hq : q.IsPrime]
@@ -166,29 +164,27 @@ theorem exists_mul_eq_tmul {B R C : Type} [CommRing B] [CommRing R] [CommRing C]
     congr 2 <;> ring
 
 /- English proof (translation)
-Use `set q : Ideal C := Q₀.comap (Algebra.TensorProduct.includeRight : C →ₐ[B] R ⊗[B] C) with hqdef`. Use `haveI hq : q.IsPrime := Ideal.comap_isPrime _ _`. Establish `hLR : ∀ t : B, (algebraMap B R t) ⊗ₜ[B] (1 : C) = (1 : R) ⊗ₜ[B] algebraMap B C t`. Introduce `t`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmemq : ∀ c : C, c ∈ q ↔ (1 : R) ⊗ₜ[B] c ∈ Q₀` using `fun c => Iff.rfl`. Establish `hmemp : ∀ r : R, r ∈ Q₀.comap (Algebra.TensorProduct.includeLeftRingHom : R →+* R ⊗[B] C) ↔ r ⊗ₜ[B] (1 : C) ∈ Q₀` using `fun r => Iff.rfl`. Set `φ₀ : B →+* D` to `(algebraMap R D).comp (algebraMap B R)`. Establish `hu : ∀ t : B, algebraMap B C t ∉ q → IsUnit (φ₀ t)`. Introduce `t ht`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hunit` to reduce the goal to its premises. Rewrite using `[hmemp, hLR]`. Conclude with `fun h => ht ((hmemq _).2 h)`. Establish `h1' : ∀ c : C, ∃ b t : B, algebraMap B C t ∉ q ∧ ∃ v : C, v ∉ q ∧ v * (algebraMap B C t * c) = v * algebraMap B C b` using `h1`. Take `⟨g, hg, hgu⟩` from `exists_ringHom_of_fractions q φ₀ hu h1' (by`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `b hb`. Take `⟨t, ht, htb⟩` from `h2 b hb`. Establish `e : φ₀ (t * b) = 0` using `hJ _ htb`. Rewrite `e` using `[map_mul]`. Conclude with `(hu t ht).mul_right_eq_zero.1 e)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `letI : Algebra B D := φ₀.toAlgebra`. Use `haveI : IsScalarTower B R D := .of_algebraMap_eq (fun _ => rfl)`. Set `gA : C →ₐ[B] D` to `{ g with commutes' := hg }`. Set `fA : R →ₐ[B] D` to `IsScalarTower.toAlgHom B R D`. Set `φ : R ⊗[B] C →ₐ[B] D` to `Algebra.TensorProduct.productMap fA gA`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hφ : ∀ (r : R) (c : C), φ (r ⊗ₜ[B] c) = algebraMap R D r * g c`. Introduce `r c`. Simplify using `[φ, fA, gA]`. Establish `hφr : ∀ (r : R) (τ : R ⊗[B] C), φ (r • τ) = algebraMap R D r * φ τ`. Introduce `r τ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Algebra.smul_def, map_mul, Algebra.TensorProduct.algebraMap_apply, hφ]`. Simplify using the standard rewrite rules. Set `Ψ : (R ⊗[B] C) ⊗[R] M →ₗ[R] N` to `TensorProduct.lift (LinearMap.mk₂ R (fun (τ : R ⊗[B] C) (m : M) => φ τ • ι m) (fun a b m => by simp [add_smul]) (fun r a m => by rw [hφr, mul_smul, algebraMap_smul]) (fun a m n => by simp) (fun r a m => by rw [map_smul, smul_comm]))`. Establish `hΨ : φ w • ι y = 0`. Establish `e` using `congrArg Ψ hw`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `e` using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one, map_zero]`. Simplify `e` using `[Ψ]`. Take `⟨s, v, r, hs, hv, e⟩` from `exists_mul_eq_tmul (R := R) q h1' w`. Establish `hr : r ∉ Q₀.comap (Algebra.TensorProduct.includeLeftRingHom : R →+* R ⊗[B] C)`. Introduce `hm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `hm` using `[hmemp]`. Establish `h3 : (r ⊗ₜ[B] v) ∈ Q₀`. Use `Q₀.mul_mem_right ((1 : R) ⊗ₜ[B] v) hm` as an intermediate fact. Simplify `this` using `[Algebra.TensorProduct.tmul_mul_tmul]`. Rewrite `h3` using `[← e]`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `hQ.mem_or_mem h3 with h4 | h4` into its components or cases. Establish `: v * algebraMap B C s ∈ q` using `(hmemq _).2 h4`. Conclude with `(hq.mem_or_mem this).elim hv hs`. Conclude with `hw0 h4`. Establish `hunitw : IsUnit (φ w)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e2` using `congrArg φ e`. Rewrite `e2` using `[map_mul, hφ, hφ]`. Establish `hU : IsUnit (algebraMap R D r * g v)` using `(hunit r hr).mul (hgu v hv)`. Rewrite `hU` using `[← e2]`. Conclude with `isUnit_of_mul_isUnit_right hU`.
-
-Take `⟨u, hu'⟩` from `hunitw`. Establish `: ι y = (↑u⁻¹ : D) • (φ w • ι y)`. Rewrite using `[← hu', smul_smul, Units.inv_mul, one_smul]`. Rewrite using `[this, hΨ, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_eq_zero_of_smul_tmul {B R C M D N : Type} [CommRing B] [CommRing R] [CommRing C]
     [Algebra B R] [Algebra B C] [AddCommGroup M] [Module R M] [CommRing D] [Algebra R D]
@@ -275,17 +271,15 @@ theorem map_eq_zero_of_smul_tmul {B R C M D N : Type} [CommRing B] [CommRing R] 
   rw [this, hΨ, smul_zero]
 
 /- English proof (translation)
-Introduce `B R C M _ _ _ _ _ _ _ _ _ J hJ Q₀ hQ h1 h2 y w hw0 hw`. Set `p : Ideal R` to `Q₀.comap (Algebra.TensorProduct.includeLeftRingHom : R →+* R ⊗[B] C)`. Use `haveI hp : p.IsPrime := Ideal.comap_isPrime _ _`. Set `A` to `Localization.AtPrime p`. Set `N` to `LocalizedModule p.primeCompl M`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Use `letI : Module (A ⧸ Module.annihilator A N) N := Module.quotientAnnihilator`. Use `haveI : IsScalarTower R (A ⧸ Module.annihilator A N) N := by`. Use `⟨fun r d n => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective d`. Establish `e : ∀ (x : A) (n : N), (Ideal.Quotient.mk (Module.annihilator A N) x) • n = x • n` using `fun _ _ => rfl`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : r • Ideal.Quotient.mk (Module.annihilator A N) a = Ideal.Quotient.mk (Module.annihilator A N) (r • a)` using `rfl`. Rewrite using `[e2, e, e, smul_assoc]`. Establish `hJ' : ∀ a ∈ J, algebraMap R (A ⧸ Module.annihilator A N) (algebraMap B R a) = 0`. Introduce `a ha`. Rewrite using `[IsScalarTower.algebraMap_apply R A (A ⧸ Module.annihilator A N), Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem, Module.mem_annihilator]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `n`. Proceed by induction on `n using LocalizedModule.induction_on with`. Consider the case `_ m s`. Rewrite using `[algebraMap_smul, LocalizedModule.smul'_mk, algebraMap_smul, hJ a ha, LocalizedModule.zero_mk]`. Establish `hunit : ∀ r : R, r ∉ p → IsUnit (algebraMap R (A ⧸ Module.annihilator A N) r)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `r hr`. Rewrite using `[IsScalarTower.algebraMap_apply R A (A ⧸ Module.annihilator A N)]`. Conclude with `(IsLocalization.map_units A (⟨r, hr⟩ : p.primeCompl)).map _`. Establish `hy` using `map_eq_zero_of_smul_tmul (D := A ⧸ Module.annihilator A N) J hJ' Q₀ hQ hunit h1 h2 (LocalizedModule.mkLinearMap p.primeCompl M) y w hw0 hw`. Take `⟨s, hs⟩` from `(IsLocalizedModule.eq_zero_iff p.primeCompl (LocalizedModule.mkLinearMap p.primeCompl M)).1 hy`.
-
-Conclude with `⟨s, s.2, hs⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem smul_eq_zero_of_smul_one_tmul_eq_zero : ∀ {B R C M : Type} [CommRing B] [CommRing R] [CommRing C] [Algebra B R] [Algebra B C] [AddCommGroup M] [Module R M] [Module B M] [IsScalarTower B R M] (J : Ideal B), (∀ a ∈ J, ∀ m : M, a • m = 0) → ∀ Q₀ : Ideal (R ⊗[B] C), Q₀.IsPrime → (∀ c : C, ∃ b t : B, t ∉ (Q₀.comap (Algebra.TensorProduct.includeRight : C →ₐ[B] R ⊗[B] C)).comap (algebraMap B C) ∧ ∃ v : C, v ∉ Q₀.comap (Algebra.TensorProduct.includeRight : C →ₐ[B] R ⊗[B] C) ∧ v * (algebraMap B C t * c) = v * algebraMap B C b) → (∀ b : B, (∃ v : C, v ∉ Q₀.comap (Algebra.TensorProduct.includeRight : C →ₐ[B] R ⊗[B] C) ∧ v * algebraMap B C b = 0) → ∃ t : B, t ∉ (Q₀.comap (Algebra.TensorProduct.includeRight : C →ₐ[B] R ⊗[B] C)).comap (algebraMap B C) ∧ t * b ∈ J) → ∀ (y : M) (w : R ⊗[B] C), w ∉ Q₀ → w • ((1 : R ⊗[B] C) ⊗ₜ[R] y) = 0 → ∃ u : R, u ∉ Q₀.comap (Algebra.TensorProduct.includeLeftRingHom : R →+* R ⊗[B] C) ∧ u • y = 0 := by
   intro B R C M _ _ _ _ _ _ _ _ _ J hJ Q₀ hQ h1 h2 y w hw0 hw

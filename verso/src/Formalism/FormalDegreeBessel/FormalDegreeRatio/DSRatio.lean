@@ -8,9 +8,9 @@ noncomputable section
 namespace Formalism.QuantumDeterminants
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `a _`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `b hb`. Establish `hab : a < b` using `by simpa using hb`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: ((a : ℕ) : ℝ) < ((b : ℕ) : ℝ)` using `by exact_mod_cast hab`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private theorem fdegDen_ne_zero (n : ℕ) :
     (∏ a : Fin n, ∏ b ∈ univ.filter (fun b : Fin n => a < b),
@@ -24,31 +24,27 @@ private theorem fdegDen_ne_zero (n : ℕ) :
   linarith
 
 /- English proof (translation)
-Introduce `n μ s hinj hint hinj'`. Establish `hD` using `fdegDen_ne_zero n`. Establish `hN : ∀ a b : Fin n, a < b → |μ a - μ b| ≠ 0` using `fun a b h => abs_ne_zero.mpr (sub_ne_zero.mpr (hinj.ne h.ne))`. Establish `es : ((μ + Pi.single s 1 : Fin n → ℝ)) s = μ s + 1` using `by simp`. Establish `eo : ∀ t, t ≠ s → ((μ + Pi.single s 1 : Fin n → ℝ)) t = μ t` using `fun t ht => by simp [Pi.single_apply, ht]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set h : Fin n → ℝ := fun t => (μ s + 1 - μ t) / (μ s - μ t) with hh`. Establish `hsign : ∀ t, t ≠ s → |μ s + 1 - μ t| / |μ s - μ t| = h t`. Introduce `t ht`. Take `⟨m, hm⟩` from `hint s t`. Establish `h1 : μ s - μ t ≠ 0` using `sub_ne_zero.mpr (hinj.ne ht.symm)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : μ s + 1 - μ t ≠ 0`. Use `hinj'.ne ht.symm` as an intermediate fact. Rewrite `this` using `[es, eo t ht]`. Conclude with `sub_ne_zero.mpr this`. Establish `e2 : μ s + 1 - μ t = (m : ℝ) + 1` using `by linarith`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hm]`. Rewrite `h2` using `[e2]`. Establish `hm0 : m ≠ 0` using `by exact_mod_cast h1`. Establish `hm1 : m + 1 ≠ 0` using `by exact_mod_cast h2`. Rewrite using `[← abs_div, abs_of_pos]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[e2, hm]`. Break down `lt_or_gt_of_ne hm0 with hneg | hpos` into its components or cases. Establish `hle : m ≤ -2` using `by omega`. Establish `: (m : ℝ) ≤ -2` using `by exact_mod_cast hle`. Apply the tactic sequence `apply div_pos_of_neg_of_neg <;> linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `: (1 : ℝ) ≤ m` using `by exact_mod_cast hpos`. Apply the tactic sequence `apply div_pos <;> linarith`. Establish `hr : ∀ a b : Fin n, a < b → |((μ + Pi.single s 1 : Fin n → ℝ)) a - ((μ + Pi.single s 1 : Fin n → ℝ)) b| / |μ a - μ b| = (if a = s then h b else 1) * (if b = s then h a else 1)`. Introduce `a b hab`. Distinguish the cases in `has : a = s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hbs : b ≠ s` using `has ▸ hab.ne'`. Rewrite using `[if_pos has, if_neg hbs, mul_one, has, es, eo b hbs]`. Conclude with `hsign b hbs`. Distinguish the cases in `hbs : b = s`. Rewrite using `[if_neg has, if_pos hbs, one_mul, hbs, es, eo a has, abs_sub_comm (μ a), abs_sub_comm (μ a)]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hsign a has`. Rewrite using `[if_neg has, if_neg hbs, mul_one, eo a has, eo b hbs]`. Conclude with `div_self (hN a b hab)`. Unfold `fdegHC`. Rewrite using `[div_div_div_cancel_right₀ hD, ← Finset.prod_div_distrib]`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_div_distrib]`. Conclude with `Finset.prod_congr rfl fun b hb => hr a b (by simpa using hb)`. Use `_ = ∏ t : Fin n, ((if s < t then h t else 1) * (if t < s then h t else 1)) := by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Finset.prod_mul_distrib]`. Use `congr 1`. Rewrite using `[Finset.prod_eq_single s]`. Rewrite using `[Finset.prod_filter]`. Conclude with `Finset.prod_congr rfl fun t _ => by simp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `a _ has`. Conclude with `Finset.prod_eq_one fun b _ => if_neg has`. Introduce `h'`. Conclude with `absurd (Finset.mem_univ s) h'`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[Finset.prod_ite_eq']`. Simplify using the standard rewrite rules. Use `_ = ∏ s' ∈ univ.erase s, (μ s + 1 - μ s') / (μ s - μ s') := by`. Rewrite using `[← Finset.filter_ne' univ s, Finset.prod_filter]`. Use `Finset.prod_congr rfl fun t _ => ?_` and prove the remaining obligations.
-
-Break down `lt_trichotomy s t with hst | hst | hst` into its components or cases. Simplify using `[hst, hst.ne', not_lt.mpr hst.le, hh]`. Substitute `hst` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hst, hst.ne, not_lt.mpr hst.le, hh]`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem formalDegreeShiftRatio_holds : FdegRatio := by
   intro n μ s hinj hint hinj'
@@ -122,7 +118,7 @@ theorem formalDegreeShiftRatio_holds : FdegRatio := by
         · simp [hst, hst.ne, not_lt.mpr hst.le, hh]
 
 /- English proof (translation)
-Introduce `k hk`. Simplify using `only [fdegHC, Finset.prod_filter, Fin.prod_univ_two]`. Evaluate the numerical expressions. Apply the tactic sequence `all_goals first | linarith | (rw [abs_of_nonneg (by linarith)]; ring)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem formalDegreeTwoByTwo_holds : FormalDegreeTwoByTwo := by
   intro k hk
@@ -131,9 +127,9 @@ theorem formalDegreeTwoByTwo_holds : FormalDegreeTwoByTwo := by
   all_goals first | linarith | (rw [abs_of_nonneg (by linarith)]; ring)
 
 /- English proof (translation)
-Simplify using `only [Finset.prod_filter]`. Rewrite using `[Fin.prod_univ_succ]`. Use `congr 1`. Rewrite using `[Fin.prod_univ_succ]`. Simplify using `[Fin.succ_pos]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_succ]`. Simplify using `[Fin.succ_lt_succ_iff]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem prod_pairs_succ {n : ℕ} (f : Fin (n + 1) → Fin (n + 1) → ℝ) :
     (∏ x : Fin (n + 1), ∏ y ∈ univ.filter (fun y : Fin (n + 1) => x < y), f x y) =
@@ -149,23 +145,23 @@ private theorem prod_pairs_succ {n : ℕ} (f : Fin (n + 1) → Fin (n + 1) → �
     simp [Fin.succ_lt_succ_iff]
 
 /- English proof (translation)
-Introduce `n a b hn`. Unfold `fdegHC`. Rewrite using `[prod_pairs_succ, prod_pairs_succ]`. Establish `hpair : ∏ i : Fin n, ∏ j ∈ univ.filter (fun j : Fin n => i < j), |lamHol n a b i.succ - lamHol n a b j.succ| = ∏ i : Fin n, ∏ j ∈ univ.filter (fun j : Fin n => i < j), (((j.succ : ℕ) : ℝ) - ((i.succ : ℕ) : ℝ))`. Use `Finset.prod_congr rfl fun i _ => Finset.prod_congr rfl fun j hj => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hij : i < j` using `by simpa using hj`. Establish `hij' : ((i : ℕ) : ℝ) < ((j : ℕ) : ℝ)` using `by exact_mod_cast hij`. Simplify using `only [lamHol, Fin.succ_ne_zero, if_false, Fin.val_succ]`. Use `push_cast`. Rewrite using `[abs_of_nonneg (by linarith)]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hP : ∏ i : Fin n, ∏ j ∈ univ.filter (fun j : Fin n => i < j), (((j.succ : ℕ) : ℝ) - ((i.succ : ℕ) : ℝ)) ≠ 0`. Establish `e : ∏ i : Fin n, ∏ j ∈ univ.filter (fun j : Fin n => i < j), (((j.succ : ℕ) : ℝ) - ((i.succ : ℕ) : ℝ)) = ∏ i : Fin n, ∏ j ∈ univ.filter (fun j : Fin n => i < j), (((j : ℕ) : ℝ) - ((i : ℕ) : ℝ))` using `Finset.prod_congr rfl fun i _ => Finset.prod_congr rfl fun j _ => by`. Simplify using `only [Fin.val_succ]`. Use `push_cast`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `fdegDen_ne_zero n`. Rewrite using `[hpair, mul_div_mul_right _ _ hP]`. Establish `hB : ∏ j : Fin n, (((j.succ : ℕ) : ℝ) - (((0 : Fin (n + 1)) : ℕ) : ℝ)) = (n.factorial : ℝ)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.prod_range_add_one_eq_factorial]`. Use `push_cast`. Rewrite using `[← Fin.prod_univ_eq_prod_range (fun j : ℕ => (j : ℝ) + 1)]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[Fin.val_succ]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hA : ∏ j : Fin n, |lamHol n a b 0 - lamHol n a b j.succ| = ∏ j ∈ Icc 1 n, (b - a - (j : ℝ))`. Establish `e1 : ∏ j : Fin n, |lamHol n a b 0 - lamHol n a b j.succ| = ∏ j ∈ range n, (b - a - n + (j : ℝ))`. Rewrite using `[← Fin.prod_univ_eq_prod_range (fun j : ℕ => b - a - n + (j : ℝ))]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [lamHol, Fin.succ_ne_zero, if_false, if_true, Fin.val_succ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Rewrite using `[abs_of_nonneg (by have : (0:ℝ) ≤ ((j : ℕ) : ℝ) := Nat.cast_nonneg _; linarith)]`. Expand and normalize the polynomial expressions, which then agree. Establish `eI : Icc 1 n = Ico 1 (n + 1)` using `by ext x; simp only [Finset.mem_Icc, Finset.mem_Ico]; omega`. Rewrite using `[e1, ← Finset.prod_range_reflect, eI, Finset.prod_Ico_eq_prod_range, Nat.add_sub_cancel]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun j hj => ?_` and prove the remaining obligations. Establish `hj' : j < n` using `Finset.mem_range.mp hj`. Establish `e : ((n - 1 - j : ℕ) : ℝ) = (n : ℝ) - 1 - j`. Rewrite using `[Nat.cast_sub (by omega), Nat.cast_sub (by omega)]; push_cast; ring`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hA, hB]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem holomorphicFormalDegree_holds : HolFdeg := by
   intro n a b hn
@@ -217,9 +213,9 @@ theorem holomorphicFormalDegree_holds : HolFdeg := by
   rw [hA, hB]
 
 /- English proof (translation)
-Introduce `V _ _ n E ν v hG hHW Y`. Rewrite using `[quantumDetHighestWeight_holds V n E ν v hG hHW]`. Use `congr 1`. Unfold `capP`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [rhoStd]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem capelliHighestWeight_holds : CapelliHW := by
   intro V _ _ n E ν v hG hHW Y
@@ -232,7 +228,7 @@ theorem capelliHighestWeight_holds : CapelliHW := by
   ring
 
 /- English proof (translation)
-Introduce `n lam σ Y`. Unfold `capP`. Conclude with `Equiv.prod_comp σ (fun s => Y + lam s)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem capelliPolynomialPermInvariant_holds : CapPPerm := by
   intro n lam σ Y

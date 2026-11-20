@@ -19,9 +19,9 @@ namespace GlobalTheory.InterpMetricLog
 variable {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {s : FinalTheorems S κ}
 
 /- English proof (translation)
-Establish `hr0 : 0 < x.r σ y` using `(Real.exp_pos 1).trans_le (x.exp_le_r σ y)`. Use `⟨psd_of_quad (x.gram_posDef g τ) ((x.hodge σ).pos y g τ) fun v => ?_, psd_of_quad ((x.hodge σ).pos y g τ) (x.gram_posDef g τ) fun v => (hC.2 σ y hy g τ v).2⟩` and prove the remaining obligations. Establish `h1` using `(hC.2 σ y hy g τ v).1`. Establish `e : x.r σ y ^ C * x.r σ y ^ (-C) = 1` using `by rw [← Real.rpow_add hr0, add_neg_cancel, Real.rpow_zero]`. Establish `hp : 0 ≤ x.r σ y ^ C` using `(Real.rpow_pos_of_pos hr0 _).le`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem cmp_hodge (x : ToroidalCompactificationData s) {C : ℝ} (hC : x.IsMuExp C) (σ : κ.c.F →+* ℂ) (y : CxPts (genStr s.T.Z) σ)
     (hy : ¬ LiesIn y (genBd s.T.Z)) (g : EigFrame s.T.Z σ (y.1 ≫ genι s.T.Z)) (τ : D.host.E →+* ℂ) :
@@ -37,9 +37,9 @@ theorem cmp_hodge (x : ToroidalCompactificationData s) {C : ℝ} (hC : x.IsMuExp
     _ ≤ _ := mul_le_mul_of_nonneg_left h1 hp
 
 /- English proof (translation)
-Establish `hr1 : 1 ≤ x.r σ y` using `by linarith [x.exp_le_r σ y, Real.add_one_le_exp (1 : ℝ)]`. Establish `hm : 1 ≤ x.r σ y ^ C` using `Real.one_le_rpow hr1 hC.1`. Establish `h` using `cmp_hodge x hC σ y hy g τ`. Establish `hA` using `(x.eigMet σ).pos y g τ`. Establish `hB` using `(x.hodge σ).pos y g τ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [ToroidalCompactificationData.eigMetAt, EigMet.interp]`. Use `split_ifs`. Conclude with `(h.mix hA hm (x.wt_mem R y)).symm`. Conclude with `(h.mixDual hA hB hm (x.wt_mem R y)).symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cmp_interp (x : ToroidalCompactificationData s) {C : ℝ} (hC : x.IsMuExp C) (σ : κ.c.F →+* ℂ) (R : ℝ) (y : CxPts (genStr s.T.Z) σ)
     (hy : ¬ LiesIn y (genBd s.T.Z)) (g : EigFrame s.T.Z σ (y.1 ≫ genι s.T.Z)) (τ : D.host.E →+* ℂ) :
@@ -59,17 +59,17 @@ end GlobalTheory.InterpMetricLog
 namespace GlobalTheory.InterpMetricLog
 
 /- English proof (translation)
-Introduce `_ _ D O hO _ A T H h c`. Take `⟨x, P, hx⟩` from `hO`. Take `⟨C₀, hC₀⟩` from `x.exists_isMuExp`. Use `⟨∑ w : DV.Rt D.what₂.Tau O.N, (∑ z : Letter O.S.Dw, |(O.ex w z : ℝ)| * (O.S.Dw.mult z.1 : ℝ)) * C₀, fun u a z hz R hR => ?_⟩` and prove the remaining obligations. Establish `hZ` using `hz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hZ` using `[(h.an c).Z]`. Establish `e1 : (T.F c).phR R u a z = O.chg c (some R) u _ ((h.man c).pt a z)` using `(h.an c).phR R hR u a z`. Rewrite using `[e1, (h.an c).r a z hz]`. Unfold `Setup.chg`. Rewrite using `[hx.hm_eq, hx.h0_eq, hx.r_eq]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hy : ¬ LiesIn ((O.Φ.C c).down ((h.man c).pt a z)) (genBd O.s.T.Z)` using `hZ`. Establish `hr` using `x.exp_le_r _ ((O.Φ.C c).down ((h.man c).pt a z))`. Establish `hr0 : 0 < x.r _ ((O.Φ.C c).down ((h.man c).pt a z))` using `(Real.exp_pos 1).trans_le hr`. Establish `hr1 : 1 ≤ x.r _ ((O.Φ.C c).down ((h.man c).pt a z))` using `by linarith [Real.add_one_le_exp (1 : ℝ)]`. Establish `hL : ∀ w : DV.Rt D.what₂.Tau O.N, |lnRatio (metsOf x O.Φ c (some R) _ (O.ex w)) (refMet x O.Φ c _ (O.ex w)) ((h.man c).pt a z)| ≤ (∑ z : Letter O.S.Dw, |(O.ex w z : ℝ)| * (O.S.Dw.mult z.1 : ℝ)) * (C₀ * Real.log (x.r _ ((O.Φ.C c).down ((h.man c).pt a z))))` using `fun w => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b` using `abs_lnRatio_met_le (Y := O.Φ.C c) (x.eigMetAt _ (some R)) (x.eigMet _) (O.ex w) ((h.man c).pt a z) (Real.one_le_rpow hr1 hC₀.1) fun g τ => cmp_interp x hC₀ _ R _ hy g τ`. Rewrite `b` using `[Real.log_rpow hr0]`. Then use the resulting hypothesis. Establish `hu : ∀ w : DV.Rt D.what₂.Tau O.N, |u w.1 w.2| ≤ ‖u‖` using `fun w => by`. Rewrite using `[← Real.norm_eq_abs]`. Conclude with `(norm_le_pi_norm (u w.1) w.2).trans (norm_le_pi_norm u w.1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hl : 0 ≤ Real.log (x.r _ ((O.Φ.C c).down ((h.man c).pt a z)))` using `Real.log_nonneg hr1`. Use `(Finset.abs_sum_le_sum_abs _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[abs_mul]`. Conclude with `mul_le_mul (hu w) (hL w) (abs_nonneg _) (norm_nonneg _)`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `_ = _ := by`. Simplify using `only [rFlag]`. Rewrite using `[Finset.sum_mul, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun w _ => by ring`.
+A detailed English derivation is pending.
 -/
 theorem abs_phR_le : Hypotheses2 → HypothesesH → OnObj fun _ O _ T _ _ => ∀ c, ∃ C : ℝ, ∀ u σ x, x ∉ (T.M c).Z σ →
     ∀ R : ℝ, 2 ≤ R → |(T.F c).phR R u σ x| ≤ C * ‖u‖ * Real.log ((T.M c).r σ x) := by

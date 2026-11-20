@@ -21,12 +21,12 @@ def IsRedSh {Q q : ℕ} (h : q ∣ Q) (i : ℤ) (π : tw Q i ⟶ (restr (ZMod.ca
     Sec.map π (twGen i ζ) = (show Sec ((restr (ZMod.castHom h (ZMod q))).obj (tw q i)) U from twGen i ξ)
 
 /- English proof (translation)
-The claim follows from `pow_dvd_pow p (Nat.le_add_right a b)`.
+A detailed English derivation is pending.
 -/
 theorem dvdA (p a b : ℕ) : p ^ a ∣ p ^ (a + b) := pow_dvd_pow p (Nat.le_add_right a b)
 
 /- English proof (translation)
-The claim follows from `pow_dvd_pow p (Nat.le_add_left b a)`.
+A detailed English derivation is pending.
 -/
 theorem dvdB (p a b : ℕ) : p ^ b ∣ p ^ (a + b) := pow_dvd_pow p (Nat.le_add_left b a)
 
@@ -43,15 +43,15 @@ def InRedSh : Prop := ∀ (Q q : ℕ) [NeZero Q] [NeZero q] (h : q ∣ Q) (i : �
     restrH (ZMod.castHom h (ZMod q)) E (tw q i) n (red Q q E n i z) = HK.post _ ((chains _).obj E) π n z
 
 /- English proof (translation)
-Introduce `hF p a b _ X _ n i z hz`. Establish `hp : p ≠ 0` using `(Fact.out : p.Prime).ne_zero`. Establish `: NeZero (p ^ (a + b))` using `⟨pow_ne_zero _ hp⟩`. Establish `: NeZero (p ^ a)` using `⟨pow_ne_zero _ hp⟩`. Establish `: NeZero (p ^ b)` using `⟨pow_ne_zero _ hp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨π, π', l, hπ, hπ', hepi, htor, hcomp⟩` from `hS p a b i`. Establish `hex : (ShortComplex.mk (kernel.ι π) π (kernel.condition π)).ShortExact` using `{ exact := ShortComplex.exact_of_f_is_kernel _ (kernelIsKernel π) }`. Take `⟨c, hc⟩` from `hF.a7 (ZMod (p ^ (a + b))) _ hex`. Establish `e1` using `hR _ _ (dvdB p a b) i π hπ (sch.obj X) n z`. Rewrite `e1` using `[hz, map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨w', hw'⟩` from `((hc ((chains (ZMod (p ^ (a + b)))).obj (sch.obj X)) n).1 z).1 e1.symm`. Substitute `hw'` using the available equality. Use `⟨?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `p ^ a • HK.post _ _ (kernel.ι π) n w' = 0`. Rewrite using `[← PostcompositionHomotopy.post_nsmul, htor, PostcompositionHomotopy.post_zero]`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hA` using `hF.a8 _ _ (ZMod.castHom (dvdA p a b) (ZMod (p ^ a))) (sch.obj X) (tw (p ^ a) i) n`. Take `⟨v, hv⟩` from `hA.2 (HK.post _ _ l n w')`. Use `⟨v, hA.1 ?_⟩` and prove the remaining obligations. Rewrite using `[hR _ _ (dvdA p a b) i π' hπ' (sch.obj X) n, map_nsmul, hv]`. Express the relevant statement in the definitionally equal form `HK.post _ _ π' n (HK.post _ _ (kernel.ι π) n w') = _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← PostcompositionHomotopy.post_comp, hcomp, PostcompositionHomotopy.post_nsmul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bock_of (hS : InTwSeq) (hR : InRedSh) : BocksteinInputFromFormal := by
   intro hF p a b _ X _ n i z hz

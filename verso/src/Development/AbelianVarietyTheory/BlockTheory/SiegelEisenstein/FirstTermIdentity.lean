@@ -38,7 +38,7 @@ def FirstTermIdentity : Prop :=
             ResidueAt (eisS ω H Φ g) (StdUnn.s0 T n) (κ * b))
 
 /- English proof (translation)
-Establish `e` using `d.rank_add`. Use `⟨by omega, by omega, ?_⟩` and prove the remaining obligations. Establish `: T.rank = n + t` using `by omega`. Rewrite using `[StdUnn.s0, this]`. Use `push_cast`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -50,7 +50,7 @@ example {D : D7} {n t : ℕ} {T T' : HSp D} (d : HypDec T T' t) (h : T.rank + T'
   rw [StdUnn.s0, this]; push_cast; ring
 
 /- English proof (translation)
-Establish `e` using `d.rank_add`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 example {D : D7} {t : ℕ} {T T' : HSp D} (d : HypDec T T' t) : T.rank % 2 = T'.rank % 2 := by
   have e := d.rank_add

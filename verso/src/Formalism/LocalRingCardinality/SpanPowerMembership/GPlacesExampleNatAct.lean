@@ -19,7 +19,7 @@ def locAdj (G : Finset ℕ) (loc : ∀ p, Formalism.MainNotions.S.Loc.LocAt F E 
   { loc p with split := if h : Formalism.MainNotions.S.Loc.resChar p ∈ G then some (spl p h) else none }
 
 /- English proof (translation)
-Unfold `locAdj`. Apply the tactic sequence `by_cases h : Formalism.MainNotions.S.Loc.resChar p ∈ G <;> simp [h]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem locAdj_split (G : Finset ℕ) (loc : ∀ p, Formalism.MainNotions.S.Loc.LocAt F E sig p)
     (spl : ∀ p, Formalism.MainNotions.S.Loc.resChar p ∈ G →
@@ -80,7 +80,7 @@ def toySData (Del : ℚ) (hDel : 0 < Del)
 variable {sig hc}
 
 /- English proof (translation)
-Use `show Module.finrank ℂ (EuclideanSpace ℂ (Fin 0)) = 0`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem toySData_HH (Del : ℚ) (hDel hgap hlet) (loc : ∀ p, Formalism.MainNotions.S.Loc.LocAt F E sig p) :
     Module.finrank ℂ (toySData sig hc Del hDel hgap hlet loc).HH = 0 := by
@@ -144,9 +144,9 @@ def toySignLevel (p : ℕ) : Level (emptyPlaces p) where
   χ := Units.map (Int.castRingHom ℤ_[3]).toMonoidHom
 
 /- English proof (translation)
-Establish `hs : ∀ G, (emptyPlaces p).subst G = AlgHom.id _ _`. Introduce `G`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨v, _⟩`. Conclude with `v.elim0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions.
 
-Unfold `Places.natAct`. Rewrite using `[hs, Finset.prod_eq_one (fun v _ => v.elim0), one_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem emptyPlaces_natAct (p : ℕ) (A : ∀ v, GL (Fin ((emptyPlaces p).m + 1)) ((emptyPlaces p).Qq v)) :
     (emptyPlaces p).natAct A = LinearMap.id := by
@@ -170,20 +170,20 @@ def gAtPExample (p : ℕ) : GAtP p where
 instance (p : ℕ) : Unique (gAtPExample p).P.Tup := inferInstanceAs (Unique (emptyPlaces p).Tup)
 
 /- English proof (translation)
-Use `⟨{default}, fun _ _ v => v.elim0, fun L _ => ⟨default, Finset.mem_singleton_self _, 1, Subsingleton.elim _ _⟩⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem toySignLevel_fin (p : ℕ) : (toySignLevel p).FinClasses := by
   refine ⟨{default}, fun _ _ v => v.elim0, fun L _ => ⟨default,
     Finset.mem_singleton_self _, 1, Subsingleton.elim _ _⟩⟩
 
 /- English proof (translation)
-Rewrite using `[eq_bot_iff]`. Introduce `F hF`. Rewrite using `[Submodule.mem_bot]`. Use function extensionality and compare the values at `L`. Establish `h` using `hF`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `only [Level.M, Level.funMod, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker] at h`. Establish `h1` using `h.2 (show (toySignLevel p).Γ from (-1 : ℤˣ)) L`. Establish `hs : (toySignLevel p).smul (show (toySignLevel p).Γ from (-1 : ℤˣ)) L = L` using `Subsingleton.elim _ _`. Simplify using `only [LinearMap.sub_apply, LinearMap.proj_apply, LinearMap.comp_apply, LinearMap.smul_apply, hs] at h1`. Establish `hc : ((toySignLevel p).χ (show (toySignLevel p).Γ from (-1 : ℤˣ)) : ℤ_[3]) = -1` using `by show ((Units.map (Int.castRingHom ℤ_[3]).toMonoidHom (-1 : ℤˣ) : ℤ_[3]ˣ) : ℤ_[3]) = -1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Rewrite `h1` using `[hc]`. Establish `e : (((toySignLevel p).actX (show (toySignLevel p).Γ from (-1 : ℤˣ))).restrictScalars ℤ_[3]) (F L) = F L` using `by show (emptyPlaces p).natAct _ (F L) = F L`. Rewrite using `[emptyPlaces_natAct]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `h1` using `[e, neg_one_smul, sub_neg_eq_add]`. Establish `h2 : (2 : ℚ_[3]) • F L = 0` using `by rw [two_smul]; exact h1`. Simplify using `using (smul_eq_zero.mp h2).resolve_left two_ne_zero`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem toySignLevel_M (p : ℕ) : (toySignLevel p).M = ⊥ := by
   rw [eq_bot_iff]
@@ -210,9 +210,9 @@ theorem toySignLevel_M (p : ℕ) : (toySignLevel p).M = ⊥ := by
   simpa using (smul_eq_zero.mp h2).resolve_left two_ne_zero
 
 /- English proof (translation)
-Rewrite using `[eq_bot_iff]`. Introduce `F hF`. Rewrite using `[Submodule.mem_bot]`. Use function extensionality and compare the values at `i`. Establish `h : F i ∈ (toySignLevel p).M` using `hF i (Set.mem_univ i)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite `h` using `[toySignLevel_M]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gAtPExample_M (p : ℕ) : (gAtPExample p).M = ⊥ := by
   rw [eq_bot_iff]
@@ -224,7 +224,7 @@ theorem gAtPExample_M (p : ℕ) : (gAtPExample p).M = ⊥ := by
   exact h
 
 /- English proof (translation)
-Unfold `GAtP.d`. Rewrite using `[gAtPExample_M]`. Conclude with `finrank_bot _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gAtPExample_d (p : ℕ) : (gAtPExample p).d = 0 := by
   unfold GAtP.d

@@ -18,18 +18,18 @@ namespace PH
 variable {D : ℕ} {z : Fin D → ℂ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => 0, analyticAt_const, h.mono fun w hw => by simp [hw]⟩`.
+Supply the required witnesses or components.
 -/
 theorem of_ev {f g : (Fin D → ℂ) → ℝ} (h : ∀ᶠ w in 𝓝 z, f w = g w) : PH z f g :=
   ⟨fun _ => 0, analyticAt_const, h.mono fun w hw => by simp [hw]⟩
 
 /- English proof (translation)
-The claim follows from `of_ev (Eventually.of_forall fun _ => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem refl' (f : (Fin D → ℂ) → ℝ) : PH z f f := of_ev (Eventually.of_forall fun _ => rfl)
 
 /- English proof (translation)
-Take `⟨H, hH, e⟩` from `h`. Use `⟨fun w => -H w, hH.neg, e.mono fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[hw, Complex.neg_re]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem symm {f g : (Fin D → ℂ) → ℝ} (h : PH z f g) : PH z g f := by
   obtain ⟨H, hH, e⟩ := h
@@ -38,7 +38,7 @@ theorem symm {f g : (Fin D → ℂ) → ℝ} (h : PH z f g) : PH z g f := by
   ring
 
 /- English proof (translation)
-Take `⟨H1, hH1, e1⟩` from `h1`. Take `⟨H2, hH2, e2⟩` from `h2`. Use `⟨fun w => H1 w + H2 w, hH1.add hH2, (e1.and e2).mono fun w hw => ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hw.1, hw.2, Complex.add_re]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -51,7 +51,7 @@ theorem trans {f g h : (Fin D → ℂ) → ℝ} (h1 : PH z f g) (h2 : PH z g h) 
   ring
 
 /- English proof (translation)
-Take `⟨H1, hH1, e1⟩` from `h1`. Take `⟨H2, hH2, e2⟩` from `h2`. Use `⟨fun w => H1 w + H2 w, hH1.add hH2, (e1.and e2).mono fun w hw => ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hw.1, hw.2, Complex.add_re]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -65,7 +65,7 @@ theorem add {f g f' g' : (Fin D → ℂ) → ℝ} (h1 : PH z f g) (h2 : PH z f' 
   ring
 
 /- English proof (translation)
-Take `⟨H1, hH1, e1⟩` from `h1`. Take `⟨H2, hH2, e2⟩` from `h2`. Use `⟨fun w => H1 w - H2 w, hH1.sub hH2, (e1.and e2).mono fun w hw => ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hw.1, hw.2, Complex.sub_re]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -79,7 +79,7 @@ theorem sub {f g f' g' : (Fin D → ℂ) → ℝ} (h1 : PH z f g) (h2 : PH z f' 
   ring
 
 /- English proof (translation)
-Take `⟨H, hH, e⟩` from `h`. Use `⟨fun w => (c : ℂ) * H w, analyticAt_const.mul hH, e.mono fun w hw => ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hw, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem smul (c : ℝ) {f g : (Fin D → ℂ) → ℝ} (h : PH z f g) : PH z (fun w => c * f w) (fun w => c * g w) := by
   obtain ⟨H, hH, e⟩ := h
@@ -89,9 +89,9 @@ theorem smul (c : ℝ) {f g : (Fin D → ℂ) → ℝ} (h : PH z f g) : PH z (fu
   ring
 
 /- English proof (translation)
-Use `revert h`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `_`. Simplify using `only [Finset.sum_empty]`. Conclude with `refl' _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `a s ha ih h`. Simplify using `only [Finset.sum_insert ha]`. Conclude with `(h a (Finset.mem_insert_self a s)).add (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+A detailed English derivation is pending.
 -/
 theorem sum {ι : Type*} (s : Finset ι) {f g : ι → (Fin D → ℂ) → ℝ} (h : ∀ i ∈ s, PH z (f i) (g i)) :
     PH z (fun w => ∑ i ∈ s, f i w) (fun w => ∑ i ∈ s, g i w) := by
@@ -106,7 +106,7 @@ theorem sum {ι : Type*} (s : Finset ι) {f g : ι → (Fin D → ℂ) → ℝ} 
     exact (h a (Finset.mem_insert_self a s)).add (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Take `⟨H, hH, e⟩` from `h`. Conclude with `⟨H, hH, e.mono fun w hw => by rw [hf, hg, hw]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem congr' {f g f' g' : (Fin D → ℂ) → ℝ} (h : PH z f g) (hf : ∀ w, f' w = f w) (hg : ∀ w, g' w = g w) :
     PH z f' g' := by
@@ -114,7 +114,7 @@ theorem congr' {f g f' g' : (Fin D → ℂ) → ℝ} (h : PH z f g) (hf : ∀ w,
   exact ⟨H, hH, e.mono fun w hw => by rw [hf, hg, hw]⟩
 
 /- English proof (translation)
-Take `⟨H, hH, e⟩` from `h`. Conclude with `⟨fun w => H (L w), hH.comp hL, hL.continuousAt.eventually e⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem comp {D' : ℕ} {L : (Fin D' → ℂ) → (Fin D → ℂ)} {y : Fin D' → ℂ} (hL : AnalyticAt ℂ L y)
     {f g : (Fin D → ℂ) → ℝ} (h : PH (L y) f g) : PH y (fun w => f (L w)) (fun w => g (L w)) := by
@@ -124,11 +124,11 @@ theorem comp {D' : ℕ} {L : (Fin D' → ℂ) → (Fin D → ℂ)} {y : Fin D' �
 end PH
 
 /- English proof (translation)
-Establish `e : ∀ r, hessC (φ r) z = hessC (ψ r) z`. Introduce `r`. Take `⟨H, hH, hev⟩` from `h r`. Establish `hev' : φ r =ᶠ[𝓝 z] fun w => ψ r w + (H w).re` using `hev`. Establish `h2 : fderiv ℝ (fderiv ℝ (φ r)) z = fderiv ℝ (fderiv ℝ (fun w => ψ r w + (H w).re)) z` using `hev'.fderiv.fderiv_eq`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : hessC (φ r) z = hessC (fun w => ψ r w + (H w).re) z`. Unfold `hessC`. Rewrite using `[h2]`. Rewrite using `[h1]`. Conclude with `ReciprocityTheory.AnForm.A.hessC_add_re_analytic' _ _ _ (hψ r) hH`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (fun r => hessC (φ r) z) = fun r => hessC (ψ r) z` using `funext e`. Simplify using `only [maDens, this]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem maDens_eq {D : ℕ} (φ ψ : Fin D → (Fin D → ℂ) → ℝ) (z : Fin D → ℂ) (h : ∀ r, PH z (φ r) (ψ r))
     (hψ : ∀ r, ContDiffAt ℝ 2 (ψ r) z) : maDens φ z = maDens ψ z := by
@@ -147,9 +147,9 @@ theorem maDens_eq {D : ℕ} (φ ψ : Fin D → (Fin D → ℂ) → ℝ) (z : Fin
   simp only [maDens, this]
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `A.cover (Φ z)`. Establish `hcont : ContinuousAt Φ z` using `hΦ.2.1.continuousAt (hΦ.1.mem_nhds hz)`. Establish `h1 : AnalyticAt ℂ (A.chart j ∘ Φ) z` using `hΦ.2.2.2 j z ⟨hz, hj⟩`. Establish `h2 : AnalyticAt ℂ (G ∘ (A.chart j).symm) ((A.chart j ∘ Φ) z)` using `hG j _ ⟨(A.chart j).map_source hj, by simp [(A.chart j).left_inv hj, hzV]⟩`. Use `(h2.comp h1).congr ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [hcont.preimage_mem_nhds ((A.chart j).open_source.mem_nhds hj)] with w hw`. Simplify using `[Function.comp, (A.chart j).left_inv hw]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem holo_comp {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X) {V : Set X} {G : X → ℂ}
     (hG : A.HoloOn V G) {Vp : Set (Fin e → ℂ)} {Φ : (Fin e → ℂ) → X} (hΦ : IsParam A Vp Φ) {z : Fin e → ℂ}
@@ -166,7 +166,7 @@ theorem holo_comp {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X
 def lin {D D' : ℕ} (τ : Fin D' → Fin D) (z : Fin D → ℂ) : Fin D' → ℂ := fun j => z (τ j)
 
 /- English proof (translation)
-Establish `: lin τ = ⇑(ContinuousLinearMap.pi fun j => ContinuousLinearMap.proj (R` using `ℂ) (φ := fun _ : Fin D => ℂ) (τ j)) := by`. Use function extensionality and compare the values at `w`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `ContinuousLinearMap.analyticAt _ _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lin_analyticAt {D D' : ℕ} (τ : Fin D' → Fin D) (z : Fin D → ℂ) : AnalyticAt ℂ (lin τ) z := by
   have : lin τ = ⇑(ContinuousLinearMap.pi fun j => ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin D => ℂ) (τ j)) := by
@@ -176,13 +176,13 @@ theorem lin_analyticAt {D D' : ℕ} (τ : Fin D' → Fin D) (z : Fin D → ℂ) 
   exact ContinuousLinearMap.analyticAt _ _
 
 /- English proof (translation)
-The claim follows from `contDiff_pi.2 fun j => contDiff_apply ℝ ℂ (τ j)`.
+A detailed English derivation is pending.
 -/
 theorem lin_contDiff {D D' : ℕ} (τ : Fin D' → Fin D) : ContDiff ℝ 2 (lin τ) :=
   contDiff_pi.2 fun j => contDiff_apply ℝ ℂ (τ j)
 
 /- English proof (translation)
-Simplify using `[herm2, dotProduct, Matrix.mulVec, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem herm2_line_expand (G : Matrix (Fin 2) (Fin 2) ℂ) (b : ℂ) :
     herm2 G ![1, b] ![1, b] = G 0 0 + G 0 1 * b + (starRingEnd ℂ) b * G 1 0 + (starRingEnd ℂ) b * G 1 1 * b := by
@@ -190,13 +190,11 @@ theorem herm2_line_expand (G : Matrix (Fin 2) (Fin 2) ℂ) (b : ℂ) :
   ring
 
 /- English proof (translation)
-Establish `e : (fun y => xiPot (F y) (b y)) = fun y => -Real.log (F y 0 0 + F y 0 1 * b y + (starRingEnd ℂ) (b y) * F y 1 0 + (starRingEnd ℂ) (b y) * F y 1 1 * b y).re + (1 / 2) * Real.log (F y 0 0 * F y 1 1 - F y 0 1 * F y 1 0).re`. Use function extensionality and compare the values at `y`. Rewrite using `[xiPot, herm2_line_expand, Matrix.det_fin_two]`. Establish `hpos1 : 0 < (herm2 (F x) ![1, b x] ![1, b x]).re`. Establish `hne : (![1, b x] : Fin 2 → ℂ) ≠ 0` using `fun h => by simpa using congrFun h 0`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Complex.lt_def.mp (hpos.dotProduct_mulVec_pos hne)).1`. Establish `hpos2 : 0 < (F x).det.re` using `(Complex.lt_def.mp hpos.det_pos).1`. Rewrite `hpos1` using `[herm2_line_expand]`. Rewrite `hpos2` using `[Matrix.det_fin_two]`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : ContDiffAt ℝ 2 (fun y => (starRingEnd ℂ) (b y)) x` using `Complex.conjCLE.contDiff.contDiffAt.comp x hb`. Establish `hS` using `(((hF 0 0).add ((hF 0 1).mul hb)).add (hc.mul (hF 1 0))).add ((hc.mul (hF 1 1)).mul hb)`. Establish `hD` using `((hF 0 0).mul (hF 1 1)).sub ((hF 0 1).mul (hF 1 0))`. Establish `hSr : ContDiffAt ℝ 2 (fun y => (F y 0 0 + F y 0 1 * b y + (starRingEnd ℂ) (b y) * F y 1 0 + (starRingEnd ℂ) (b y) * F y 1 1 * b y).re) x` using `Complex.reCLM.contDiff.contDiffAt.comp x hS`. Establish `hDr : ContDiffAt ℝ 2 (fun y => (F y 0 0 * F y 1 1 - F y 0 1 * F y 1 0).re) x` using `Complex.reCLM.contDiff.contDiffAt.comp x hD`.
-
-Conclude with `(hSr.log hpos1.ne').neg.add (contDiffAt_const.mul (hDr.log hpos2.ne'))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiffAt_xiPot {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {F : E → Matrix (Fin 2) (Fin 2) ℂ}
     {b : E → ℂ} {x : E} (hF : ∀ p q, ContDiffAt ℝ 2 (fun y => F y p q) x) (hb : ContDiffAt ℝ 2 b x)
@@ -229,20 +227,20 @@ section Sq
 variable {d : ℕ} {σ : Type} [Fintype σ] {SY : AnSys (d + 1) σ} {a₀ : σ} {ε : σ → ℤ} (Q : AnSq SY a₀ ε)
 
 /- English proof (translation)
-The claim follows from `((Q.G_smooth n p q).contDiffAt ((Q.U_open n).mem_nhds hy)).of_le (WithTop.coe_le_coe.2 le_top)`.
+A detailed English derivation is pending.
 -/
 theorem G_cd (n : ℕ) (p q : Fin 2) {y : Fin d → ℂ} (hy : y ∈ Q.U n) :
     ContDiffAt ℝ 2 (fun y => Q.G n y p q) y :=
   ((Q.G_smooth n p q).contDiffAt ((Q.U_open n).mem_nhds hy)).of_le (WithTop.coe_le_coe.2 le_top)
 
 /- English proof (translation)
-The claim follows from `((Q.α_smooth n a).contDiffAt ((Q.U_open n).mem_nhds hy)).of_le (WithTop.coe_le_coe.2 le_top)`.
+A detailed English derivation is pending.
 -/
 theorem α_cd (n : ℕ) (a : σ) {y : Fin d → ℂ} (hy : y ∈ Q.U n) : ContDiffAt ℝ 2 (Q.α n a) y :=
   ((Q.α_smooth n a).contDiffAt ((Q.U_open n).mem_nhds hy)).of_le (WithTop.coe_le_coe.2 le_top)
 
 /- English proof (translation)
-The claim follows from `contDiffAt_xiPot (fun p q => (G_cd Q n p q hz).comp z (lin_contDiff τ).contDiffAt) (contDiff_apply ℝ ℂ j).contDiffAt (Q.G_pos n _ hz)`.
+A detailed English derivation is pending.
 -/
 theorem xi_cd {D : ℕ} (n : ℕ) (τ : Fin d → Fin D) (j : Fin D) {z : Fin D → ℂ} (hz : lin τ z ∈ Q.U n) :
     ContDiffAt ℝ 2 (fun z' => xiPot (Q.G n (lin τ z')) (z' j)) z :=
@@ -250,22 +248,20 @@ theorem xi_cd {D : ℕ} (n : ℕ) (τ : Fin d → Fin D) (j : Fin D) {z : Fin D 
     (contDiff_apply ℝ ℂ j).contDiffAt (Q.G_pos n _ hz)
 
 /- English proof (translation)
-The claim follows from `ContDiffAt.sum fun a _ => contDiffAt_const.mul ((α_cd Q n a hz).comp z (lin_contDiff τ).contDiffAt)`.
+A detailed English derivation is pending.
 -/
 theorem sumα_cd {D : ℕ} (n : ℕ) (c : σ → ℝ) (τ : Fin d → Fin D) {z : Fin D → ℂ} (hz : lin τ z ∈ Q.U n) :
     ContDiffAt ℝ 2 (fun z' => ∑ a, c a * Q.α n a (lin τ z')) z :=
   ContDiffAt.sum fun a _ => contDiffAt_const.mul ((α_cd Q n a hz).comp z (lin_contDiff τ).contDiffAt)
 
 /- English proof (translation)
-Unfold `paramDens`. Apply `maDens_eq` to reduce the goal to its premises. Introduce `r`. Distinguish the cases in `hr : (r : ℕ) < 2 * k - 1`. Simplify using `only [sumPot, mix, hr, ↓reduceIte]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Take `⟨H, hH, hev⟩` from `Q.xi_pot n z hz`. Conclude with `⟨H, hH, hev⟩`. Simplify using `only [sumPot, mix, hr, ↓reduceIte]`. Use `PH.sum (f := fun a z' => c a * (SY.potH a).φ (Q.ΦY n z) (Q.ΦY n z')) (g := fun a z' => c a * Q.α n a (Fin.tail z')) Finset.univ fun a _ => ?_` and prove the remaining obligations. Distinguish the cases in `ha : a = a₀`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `ha` using the available equality. Simplify using `only [hc, zero_mul]`. Conclude with `PH.refl' _`. Take `⟨H, hH, hev⟩` from `Q.base_pot n a ha z hz`. Conclude with `PH.smul (c a) ⟨H, hH, hev⟩`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `r`. Distinguish the cases in `hr : (r : ℕ) < 2 * k - 1`. Simplify using `only [hr, ↓reduceIte]`. Conclude with `xi_cd Q n Fin.succ 0 hz`. Simplify using `only [hr, ↓reduceIte]`.
-
-Conclude with `sumα_cd Q n c Fin.succ hz`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem part1 (c : σ → ℝ) (hc : c a₀ = 0) (n k : ℕ) (z : Fin (d + 1) → ℂ) (hz : Fin.tail z ∈ Q.U n) :
     paramDens (fun r => sumPot (mix (2 * k - 1) (fun a => (ε a : ℝ)) c r) SY.potH) (Q.ΦY n) z =
@@ -303,7 +299,7 @@ theorem potH_φ {e : ℕ} {τ : Type} (S : AnSys e τ) (a : τ) (x y : S.X) :
 def τ0 (d : ℕ) : Fin (d + 1) → Fin (d + 2) := Fin.cons 0 (fun m : Fin d => m.succ.succ)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Use `Fin.cases ?_ (fun m => ?_) j` and prove the remaining obligations. Simplify using `[lin, τ0]`. Simplify using `[lin, τ0, Fin.tail]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem lin_τ0 (z : Fin (d + 2) → ℂ) : lin (τ0 d) z = (Fin.cons (z 0) (Fin.tail (Fin.tail z)) : Fin (d + 1) → ℂ) := by
   funext j
@@ -312,18 +308,18 @@ theorem lin_τ0 (z : Fin (d + 2) → ℂ) : lin (τ0 d) z = (Fin.cons (z 0) (Fin
   · simp [lin, τ0, Fin.tail]
 
 /- English proof (translation)
-The claim follows from `((Q.coverW.1 n).1).mem_nhds hz`.
+A detailed English derivation is pending.
 -/
 theorem ev_U (n : ℕ) {z : Fin (d + 2) → ℂ} (hz : Fin.tail (Fin.tail z) ∈ Q.U n) :
     ∀ᶠ z' : Fin (d + 2) → ℂ in 𝓝 z, Fin.tail (Fin.tail z') ∈ Q.U n :=
   ((Q.coverW.1 n).1).mem_nhds hz
 
 /- English proof (translation)
-Take `⟨V, hVo, hxV, G, hG, hid⟩` from `Q.th0 a (Q.ΦW n z) (Set.mem_univ _)`. Use `⟨fun w => G (Q.ΦW n w), holo_comp Q.SW.A hG (Q.coverW.1 n) hz hxV, ?_⟩` and prove the remaining obligations. Establish `hcont : ContinuousAt (Q.ΦW n) z` using `(Q.coverW.1 n).2.1.continuousAt (((Q.coverW.1 n).1).mem_nhds hz)`. Use `filter_upwards [hcont.preimage_mem_nhds (hVo.mem_nhds hxV), ev_U Q n hz] with z' h1 h2`. Establish `e1` using `hid _ h1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `Q.first_projection_chart_compat n z hz`. Establish `e3` using `Q.first_projection_chart_compat n z' h2`. Express the relevant statement in the definitionally equal form `(Q.SW.th (some a)).φ (Q.ΦW n z) (Q.ΦW n z') - (SY.th a).φ (Q.q 0 (Q.ΦW n z)) (Q.q 0 (Q.ΦW n z')) = _ at e1`. Rewrite `e1` using `[e2, e3]`. Rewrite using `[potH_φ, potH_φ, Q.ph0 a, Function.comp_apply, e3, lin_τ0, lin_τ0]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem M0 (n : ℕ) (a : σ) {z : Fin (d + 2) → ℂ} (hz : Fin.tail (Fin.tail z) ∈ Q.U n) :
     PH z (fun z' => (Q.SW.potH (some a)).φ (Q.ΦW n z) (Q.ΦW n z'))
@@ -341,11 +337,11 @@ theorem M0 (n : ℕ) (a : σ) {z : Fin (d + 2) → ℂ} (hz : Fin.tail (Fin.tail
   linarith
 
 /- English proof (translation)
-Take `⟨V, hVo, hxV, G, hG, hid⟩` from `Q.th1 (Q.ΦW n z) (Set.mem_univ _)`. Use `⟨fun w => G (Q.ΦW n w), holo_comp Q.SW.A hG (Q.coverW.1 n) hz hxV, ?_⟩` and prove the remaining obligations. Establish `hcont : ContinuousAt (Q.ΦW n) z` using `(Q.coverW.1 n).2.1.continuousAt (((Q.coverW.1 n).1).mem_nhds hz)`. Use `filter_upwards [hcont.preimage_mem_nhds (hVo.mem_nhds hxV), ev_U Q n hz] with z' h1 h2`. Establish `e1` using `hid _ h1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `Q.second_projection_chart_compat n z hz`. Establish `e3` using `Q.second_projection_chart_compat n z' h2`. Express the relevant statement in the definitionally equal form `(Q.SW.th none).φ (Q.ΦW n z) (Q.ΦW n z') - (SY.th a₀).φ (Q.q 1 (Q.ΦW n z)) (Q.q 1 (Q.ΦW n z')) = _ at e1`. Rewrite `e1` using `[e2, e3]`. Rewrite using `[potH_φ, potH_φ, Q.ph1, Function.comp_apply, e3]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `_ = (SY.th a₀).φ (Q.ΦY n (Fin.tail z)) (Q.ΦY n (Fin.tail z')) + SY.ph a₀ (Q.ΦY n (Fin.tail z')) + _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem M1 (n : ℕ) {z : Fin (d + 2) → ℂ} (hz : Fin.tail (Fin.tail z) ∈ Q.U n) :
     PH z (fun z' => (Q.SW.potH none).φ (Q.ΦW n z) (Q.ΦW n z'))
@@ -364,7 +360,7 @@ theorem M1 (n : ℕ) {z : Fin (d + 2) → ℂ} (hz : Fin.tail (Fin.tail z) ∈ Q
   linarith
 
 /- English proof (translation)
-Establish `hz0 : Fin.tail (lin (τ0 d) z) ∈ Q.U n` using `by rw [lin_τ0, Fin.tail_cons]; exact hz`. Take `⟨H, hH, hev⟩` from `Q.xi_pot n (lin (τ0 d) z) hz0`. Use `(PH.comp (lin_analyticAt (τ0 d) z) (f := fun ζ => ∑ a, (ε a : ℝ) * (SY.potH a).φ (Q.ΦY n (lin (τ0 d) z)) (Q.ΦY n ζ)) (g := fun ζ => xiPot (Q.G n (Fin.tail ζ)) (ζ 0)) ⟨H, hH, hev⟩).congr' (fun w => rfl) (fun w => ?_)` and prove the remaining obligations. Rewrite using `[lin_τ0, Fin.tail_cons, Fin.cons_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem Y0 (n : ℕ) {z : Fin (d + 2) → ℂ} (hz : Fin.tail (Fin.tail z) ∈ Q.U n) :
     PH z (fun z' => ∑ a, (ε a : ℝ) * (SY.potH a).φ (Q.ΦY n (lin (τ0 d) z)) (Q.ΦY n (lin (τ0 d) z')))
@@ -376,7 +372,7 @@ theorem Y0 (n : ℕ) {z : Fin (d + 2) → ℂ} (hz : Fin.tail (Fin.tail z) ∈ Q
   rw [lin_τ0, Fin.tail_cons, Fin.cons_zero]
 
 /- English proof (translation)
-Take `⟨H, hH, hev⟩` from `Q.xi_pot n (lin Fin.succ z) hz`. Use `(PH.comp (lin_analyticAt Fin.succ z) (f := fun ζ => ∑ a, (ε a : ℝ) * (SY.potH a).φ (Q.ΦY n (lin Fin.succ z)) (Q.ΦY n ζ)) (g := fun ζ => xiPot (Q.G n (Fin.tail ζ)) (ζ 0)) ⟨H, hH, hev⟩).congr' (fun w => rfl) (fun w => ?_)` and prove the remaining obligations. Simplify using `only [lin]`. Rewrite using `[Fin.succ_zero_eq_one]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Y1 (n : ℕ) {z : Fin (d + 2) → ℂ} (hz : Fin.tail (Fin.tail z) ∈ Q.U n) :
     PH z (fun z' => ∑ a, (ε a : ℝ) * (SY.potH a).φ (Q.ΦY n (lin Fin.succ z)) (Q.ΦY n (lin Fin.succ z')))
@@ -389,7 +385,7 @@ theorem Y1 (n : ℕ) {z : Fin (d + 2) → ℂ} (hz : Fin.tail (Fin.tail z) ∈ Q
   rfl
 
 /- English proof (translation)
-Establish `hz0 : Fin.tail (lin (τ0 d) z) ∈ Q.U n` using `by rw [lin_τ0, Fin.tail_cons]; exact hz`. Take `⟨H, hH, hev⟩` from `Q.base_pot n a ha (lin (τ0 d) z) hz0`. Use `(PH.comp (lin_analyticAt (τ0 d) z) (f := fun ζ => (SY.potH a).φ (Q.ΦY n (lin (τ0 d) z)) (Q.ΦY n ζ)) (g := fun ζ => Q.α n a (Fin.tail ζ)) ⟨H, hH, hev⟩).congr' (fun w => rfl) (fun w => ?_)` and prove the remaining obligations. Rewrite using `[lin_τ0, Fin.tail_cons]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem Ya0 (n : ℕ) (a : σ) (ha : a ≠ a₀) {z : Fin (d + 2) → ℂ} (hz : Fin.tail (Fin.tail z) ∈ Q.U n) :
     PH z (fun z' => (SY.potH a).φ (Q.ΦY n (lin (τ0 d) z)) (Q.ΦY n (lin (τ0 d) z')))
@@ -401,7 +397,7 @@ theorem Ya0 (n : ℕ) (a : σ) (ha : a ≠ a₀) {z : Fin (d + 2) → ℂ} (hz :
   rw [lin_τ0, Fin.tail_cons]
 
 /- English proof (translation)
-Take `⟨H, hH, hev⟩` from `Q.base_pot n a ha (lin Fin.succ z) hz`. Conclude with `(PH.comp (lin_analyticAt Fin.succ z) (f := fun ζ => (SY.potH a).φ (Q.ΦY n (lin Fin.succ z)) (Q.ΦY n ζ)) (g := fun ζ => Q.α n a (Fin.tail ζ)) ⟨H, hH, hev⟩).congr' (fun w => rfl) (fun w => rfl)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Ya1 (n : ℕ) (a : σ) (ha : a ≠ a₀) {z : Fin (d + 2) → ℂ} (hz : Fin.tail (Fin.tail z) ∈ Q.U n) :
     PH z (fun z' => (SY.potH a).φ (Q.ΦY n (lin Fin.succ z)) (Q.ΦY n (lin Fin.succ z')))
@@ -411,7 +407,7 @@ theorem Ya1 (n : ℕ) (a : σ) (ha : a ≠ a₀) {z : Fin (d + 2) → ℂ} (hz :
     (g := fun ζ => Q.α n a (Fin.tail ζ)) ⟨H, hH, hev⟩).congr' (fun w => rfl) (fun w => rfl)
 
 /- English proof (translation)
-Use `((PH.sum (f := fun a z' => (ε a : ℝ) * (Q.SW.potH (some a)).φ (Q.ΦW n z) (Q.ΦW n z')) (g := fun a z' => (ε a : ℝ) * (SY.potH a).φ (Q.ΦY n (lin (τ0 d) z)) (Q.ΦY n (lin (τ0 d) z'))) Finset.univ fun a _ => (M0 Q n a hz).smul _).trans (Y0 Q n hz)).congr' (fun w => ?_) (fun w => rfl)` and prove the remaining obligations. Rewrite using `[Fintype.sum_option]`. Simplify using `[AnSq.pull0]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem K0 (n : ℕ) {z : Fin (d + 2) → ℂ} (hz : Fin.tail (Fin.tail z) ∈ Q.U n) :
     PH z (fun z' => ∑ o, Q.pull0 (fun a => (ε a : ℝ)) o * (Q.SW.potH o).φ (Q.ΦW n z) (Q.ΦW n z'))
@@ -423,9 +419,9 @@ theorem K0 (n : ℕ) {z : Fin (d + 2) → ℂ} (hz : Fin.tail (Fin.tail z) ∈ Q
   simp [AnSq.pull0]
 
 /- English proof (translation)
-Use `(PH.sum (f := fun a z' => c a * (Q.SW.potH (some a)).φ (Q.ΦW n z) (Q.ΦW n z')) (g := fun a z' => c a * Q.α n a (Fin.tail (Fin.tail z'))) Finset.univ fun a _ => ?_).congr' (fun w => ?_) (fun w => rfl)` and prove the remaining obligations. Distinguish the cases in `ha : a = a₀`. Substitute `ha` using the available equality. Simplify using `only [hc, zero_mul]`. Conclude with `PH.refl' _`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((M0 Q n a hz).trans (Ya0 Q n a ha hz)).smul _`. Rewrite using `[Fintype.sum_option]`. Simplify using `[AnSq.pull0]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem KA (n : ℕ) (c : σ → ℝ) (hc : c a₀ = 0) {z : Fin (d + 2) → ℂ} (hz : Fin.tail (Fin.tail z) ∈ Q.U n) :
     PH z (fun z' => ∑ o, Q.pull0 c o * (Q.SW.potH o).φ (Q.ΦW n z) (Q.ΦW n z'))
@@ -443,7 +439,7 @@ theorem KA (n : ℕ) (c : σ → ℝ) (hc : c a₀ = 0) {z : Fin (d + 2) → ℂ
 
 open Classical in
 /- English proof (translation)
-Establish `: ∀ a, (if a = a₀ then 0 else v a) * f a = v a * f a - (if a = a₀ then v a₀ * f a₀ else 0)`. Introduce `a`. Apply the tactic sequence `by_cases h : a = a₀ <;> simp [h]`. Simplify using `only [this, Finset.sum_sub_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_split (v f : σ → ℝ) :
     v a₀ * f a₀ + ∑ a, (if a = a₀ then 0 else v a) * f a = ∑ a, v a * f a := by
@@ -455,11 +451,9 @@ theorem sum_split (v f : σ → ℝ) :
   ring
 
 /- English proof (translation)
-Establish `hs` using `PH.sum (z := z) (f := fun a z' => (if a = a₀ then 0 else (ε a : ℝ)) * (Q.SW.potH (some a)).φ (Q.ΦW n z) (Q.ΦW n z')) (g := fun a z' => (if a = a₀ then 0 else (ε a : ℝ)) * (SY.potH a).φ (Q.ΦY n (lin Fin.succ z)) (Q.ΦY n (lin Fin.succ z'))) Finset.univ fun a _ => by`. Distinguish the cases in `ha : a = a₀`. Simplify using `only [ha, if_true, zero_mul]`. Conclude with `PH.refl' _`. Simplify using `only [ha, if_false]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `((M0 Q n a hz).trans ((Ya0 Q n a ha hz).trans (Ya1 Q n a ha hz).symm)).smul _`. Use `(((M1 Q n hz).smul (ε a₀ : ℝ)).add hs |>.trans (Y1 Q n hz |>.congr' (fun w => ?_) (fun w => rfl))).congr' (fun w => ?_) (fun w => rfl)` and prove the remaining obligations. Conclude with `sum_split (a₀ := a₀) (fun a => (ε a : ℝ)) (fun a => (SY.potH a).φ (Q.ΦY n (lin Fin.succ z)) (Q.ΦY n (lin Fin.succ w)))`. Rewrite using `[Fintype.sum_option]`. Simplify using `only [AnSq.pull1, Option.elim]`.
-
-Apply the tactic sequence `try congr 1`. Apply the tactic sequence `try (refine Finset.sum_congr rfl fun a _ => ?_; by_cases ha : a = a₀ <;> simp [ha])`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem K1 (n : ℕ) {z : Fin (d + 2) → ℂ} (hz : Fin.tail (Fin.tail z) ∈ Q.U n) :
     PH z (fun z' => ∑ o, Q.pull1 (fun a => (ε a : ℝ)) o * (Q.SW.potH o).φ (Q.ΦW n z) (Q.ΦW n z'))
@@ -482,7 +476,7 @@ theorem K1 (n : ℕ) {z : Fin (d + 2) → ℂ} (hz : Fin.tail (Fin.tail z) ∈ Q
     try (refine Finset.sum_congr rfl fun a _ => ?_; by_cases ha : a = a₀ <;> simp [ha])
 
 /- English proof (translation)
-Use `Fin.cases ?_ (fun j => ?_) r` and prove the remaining obligations. Simplify using `[AnSq.wcoef]`. Establish `hj : ((j.succ : Fin (d + 2)) : ℕ) = (j : ℕ) + 1` using `Fin.val_succ j`. Simplify using `only [AnSq.wcoef, Fin.cons_succ, ReciprocityTheory.ChartRestriction.G.AI.word]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem wcoef_eq (c : σ → ℝ) (k i : ℕ) (hk : 1 ≤ k) (r : Fin (d + 2)) :
     Q.wcoef c k i r = if (r : ℕ) = 0 then Q.pull0 (fun a => (ε a : ℝ)) - Q.pull1 (fun a => (ε a : ℝ))
@@ -496,27 +490,23 @@ theorem wcoef_eq (c : σ → ℝ) (k i : ℕ) (hk : 1 ≤ k) (r : Fin (d + 2)) :
     split_ifs <;> first | rfl | omega
 
 /- English proof (translation)
-Unfold `paramDens`. Use `(maDens_eq _ (fun (r : Fin (d + 2)) (z' : Fin (d + 2) → ℂ) => if (r : ℕ) = 0 then xiPot (Q.G n (Fin.tail (Fin.tail z'))) (z' 0) - xiPot (Q.G n (Fin.tail (Fin.tail z'))) (z' 1) else if (r : ℕ) = 1 then xiPot (Q.G n (Fin.tail (Fin.tail z'))) (z' 1) else if (r : ℕ) < 2 + 2 * i then …` and prove the remaining obligations. Introduce `r`. Simplify using `only [sumPot]`. Rewrite using `[wcoef_eq Q c k i hk r]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h0 : (r : ℕ) = 0`. Simplify using `only [h0, ↓reduceIte, Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]`. Conclude with `(K0 Q n hz).sub (K1 Q n hz)`. Distinguish the cases in `h1 : (r : ℕ) = 1`. Simplify using `only [h0, h1, ↓reduceIte]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Conclude with `K1 Q n hz`. Distinguish the cases in `h2 : (r : ℕ) < 2 + 2 * i`. Simplify using `only [h0, h1, h2, ↓reduceIte]`. Conclude with `K0 Q n hz`. Distinguish the cases in `h3 : (r : ℕ) < 2 * k`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [h0, h1, h2, h3, ↓reduceIte]`. Conclude with `K1 Q n hz`. Simplify using `only [h0, h1, h2, h3, ↓reduceIte]`. Conclude with `KA Q n c hc hz`. Introduce `r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Establish `hx0 : ContDiffAt ℝ 2 (fun z' : Fin (d + 2) → ℂ => xiPot (Q.G n (Fin.tail (Fin.tail z'))) (z' 0)) z` using `xi_cd Q n (fun m : Fin d => m.succ.succ) 0 hz`. Establish `hx1 : ContDiffAt ℝ 2 (fun z' : Fin (d + 2) → ℂ => xiPot (Q.G n (Fin.tail (Fin.tail z'))) (z' 1)) z` using `xi_cd Q n (fun m : Fin d => m.succ.succ) 1 hz`. Establish `hA : ContDiffAt ℝ 2 (fun z' : Fin (d + 2) → ℂ => ∑ a, c a * Q.α n a (Fin.tail (Fin.tail z'))) z` using `sumα_cd Q n c (fun m : Fin d => m.succ.succ) hz`. Distinguish the cases in `h0 : (r : ℕ) = 0`. Simplify using `only [h0, ↓reduceIte]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Conclude with `hx0.sub hx1`. Distinguish the cases in `h1 : (r : ℕ) = 1`. Simplify using `only [h0, h1, ↓reduceIte]`. Conclude with `hx1`. Distinguish the cases in `h2 : (r : ℕ) < 2 + 2 * i`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify by unfolding definitions. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [h0, h1, h2, ↓reduceIte]`. Conclude with `hx0`. Distinguish the cases in `h3 : (r : ℕ) < 2 * k`. Simplify using `only [h0, h1, h2, h3, ↓reduceIte]`. Conclude with `hx1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [h0, h1, h2, h3, ↓reduceIte]`. Conclude with `hA`. Use function extensionality and compare the values at `r z' dsimp only`. Distinguish the cases in `h0 : (r : ℕ) = 0`. Establish `: 0 < k` using `by omega`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[h0, this]`. Apply the tactic sequence `try ring`. Distinguish the cases in `h1 : (r : ℕ) = 1`. Establish `: 1 < 2 * k` using `by omega`. Simplify using `[h1, this]`.
-
-Distinguish the cases in `h2 : (r : ℕ) < 2 + 2 * i`. Establish `: (r : ℕ) < 2 * k` using `by omega`. Simplify using `[h0, h1, h2, this]`. Distinguish the cases in `h3 : (r : ℕ) < 2 * k`. Simplify using `[h0, h1, h2, h3]`.
-
-Simplify using `[h0, h1, h2, h3]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem part2 (c : σ → ℝ) (hc : c a₀ = 0) (n k : ℕ) (hk : 1 ≤ k) (i : ℕ) (hi : i < k) (z : Fin (d + 2) → ℂ)
     (hz : Fin.tail (Fin.tail z) ∈ Q.U n) :

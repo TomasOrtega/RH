@@ -7,13 +7,13 @@ open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv G
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `p m O A k A' σ _ _ _ _ _ _ _ x E hE r g hg _ hx f`. Use `letI : Algebra O A' := ((algebraMap k A').comp r).toAlgebra`. Establish `hs : HasSubst (fun i => (C (g (x i)) : MvPowerSeries Empty A'))` using `hasSubst_of_constantCoeff_nilpotent fun i => by simpa using hx i`. Establish `hevX : ∀ i, evA k (fun i => g (x i)) hx (X i) = g (x i)`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[evA, coe_substAlgHom, subst_X hs]`. Set `φ : MvPowerSeries σ O →ₐ[O] A'` to `{ g.comp E.toRingHom with commutes' := fun c => by show g (E (algebraMap O _ c)) = (algebraMap k A').comp r c`. Rewrite using `[AlgHom.commutes, hg]`. Use `rfl }`. Set `ψ : MvPowerSeries σ O →ₐ[O] A'` to `{ (evA k (fun i => g (x i)) hx).toRingHom.comp (map r) with commutes' := fun c => by show evA k (fun i => g (x i)) hx (map r (algebraMap O _ c)) = (algebraMap k A').comp r c`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Establish `hm : map r (algebraMap O (MvPowerSeries σ O) c) = algebraMap k (MvPowerSeries σ k) (r c)`. Simplify using `[MvPowerSeries.algebraMap_apply, map_C]`. Rewrite using `[hm, AlgHom.commutes]`. Use `rfl }`. Establish `hφX : ∀ i, φ (X i) = g (x i)` using `fun i => by show g (E (X i)) = _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hE.1 i]`. Establish `hψX : ∀ i, ψ (X i) = g (x i)` using `fun i => by show evA k (fun i => g (x i)) hx (map r (X i)) = _`. Rewrite using `[map_X, hevX]`. Establish `key` using `GlobalTheory.mvPowerSeries_algHom_ext_of_isNilpotent O σ A' φ ψ (fun i => by rw [hφX]; exact hx i) (fun i => by rw [hφX, hψX])`. Conclude with `DFunLike.congr_fun key f`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem algHom_eval_comp_eq_evA_map :
     ∀ (p m : ℕ) (O A k A' σ : Type) [CommRing O] [CommRing A] [Algebra O A] [CommRing k]

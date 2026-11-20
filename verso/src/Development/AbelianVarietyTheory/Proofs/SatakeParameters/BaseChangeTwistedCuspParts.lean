@@ -13,7 +13,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.EigStrCalc
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `R.k_even`. Take `⟨b, hb⟩` from `R.m_even`. Establish `h2` using `R.two_le_m`. Conclude with `⟨a + b - 1, by simp only [Ranks.r]; omega⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem odd_rank (R : Ranks) : Odd R.r := by
   obtain ⟨a, ha⟩ := R.k_even
@@ -22,9 +22,9 @@ theorem odd_rank (R : Ranks) : Odd R.r := by
   exact ⟨a + b - 1, by simp only [Ranks.r]; omega⟩
 
 /- English proof (translation)
-Take `⟨P, Q, hPQ, hP, hQ⟩` from `h`. Rewrite using `[GlobalTheory.Mem.GoodPlace.isSplitPl_iff]`. Distinguish the cases in `hw : w = P`. Substitute `hw` using the available equality. Conclude with `⟨Q, hPQ, HeightOneSpectrum.ext (by simpa [HeightOneSpectrum.under, Ideal.under] using hQ)⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components.
 
-Conclude with `⟨P, hw, HeightOneSpectrum.ext (by simpa [HeightOneSpectrum.under, Ideal.under] using hP)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isSplitPl_of_under (D : D7) (w : HeightOneSpectrum (𝓞 D.host.E))
     (h : Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) (w.under (𝓞 D.host.F))) : IsSplitPl D.host w := by
@@ -36,7 +36,7 @@ theorem isSplitPl_of_under (D : D7) (w : HeightOneSpectrum (𝓞 D.host.E))
   · exact ⟨P, hw, HeightOneSpectrum.ext (by simpa [HeightOneSpectrum.under, Ideal.under] using hP)⟩
 
 /- English proof (translation)
-Simplify using `[normV, Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem normV_eq_absNorm {F : Type} [Field F] [NumberField F] (w : HeightOneSpectrum (𝓞 F)) :
     normV w = Ideal.absNorm w.asIdeal := by
@@ -47,17 +47,17 @@ end GlobalTheory.EigStrCalc
 namespace GlobalTheory.EigStrCalc
 
 /- English proof (translation)
-Unfold `GlobalTheory.DownLift.str`. Establish `hr : (Multiset.range t) = (Multiset.range t).map (fun k => t - 1 - k)`. Rewrite using `[← Finset.range_val, ← Finset.image_val_of_injOn]`. Rewrite using `[show (Finset.range t).image (fun k => t - 1 - k) = Finset.range t from ?_]`. Use extensionality with `k`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `only [Finset.mem_image, Finset.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, hj, rfl⟩`. Use linear arithmetic over natural numbers and integers. Introduce `hk; exact ⟨t - 1 - k, by omega, by omega⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha b hb h`. Simplify using `only [Finset.coe_range, Set.mem_Iio] at ha hb`. Simplify using `only at h`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Multiset.map_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [hr, Multiset.map_map]`. Establish `hcoe : ((List.range t : List ℕ) : Multiset ℕ) = Multiset.range t` using `rfl`. Rewrite using `[hcoe]`. Use `Multiset.map_congr rfl fun k hk => ?_` and prove the remaining obligations. Rewrite `hk` using `[Multiset.mem_range]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp_apply]`. Rewrite using `[mul_inv, inv_inv, ← Complex.cpow_neg]`. Use `congr 2`. Rewrite using `[Nat.cast_sub (by omega), Nat.cast_sub (by omega)]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem inv_block (q : ℕ) (z : ℂ) (t : ℕ) :
     (((List.range t : List ℕ) : Multiset ℕ).map
@@ -89,7 +89,7 @@ end GlobalTheory.EigStrCalc
 namespace GlobalTheory.EigStrCalc
 
 /- English proof (translation)
-Take `⟨s, rfl⟩ : ∃ s, t = s + 1` from `⟨t - 1, by omega⟩`. Unfold `spehLoc at h`. Simplify using `only at h`. Rewrite `h` using `[List.range_succ_eq_map]`. Conclude with `(A.unr_tw _ _).1 ((A.unr_sum _ _).1 h).1`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unr_of_speh {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H what₂} (A : NAut N)
     (θ : A.CG 1) (t : ℕ) (ht : 1 ≤ t) (w : PlE H) (h : A.unr (spehLoc N A ⟨1, θ, t⟩ w)) :
@@ -101,25 +101,25 @@ theorem unr_of_speh {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData 
   exact (A.unr_tw _ _).1 ((A.unr_sum _ _).1 h).1
 
 /- English proof (translation)
-Introduce `hAF hL D P h41 h7 _ i x Q P0 Sig hQ hP0 hSig hB w hsplit hS hQw hunr z hz`. Establish `hsp : IsSplitPl D.host w` using `isSplitPl_of_under D w hsplit`. Take `⟨π, rfl⟩` from `hSig`. Establish `e1 : D.naut.locV i Q w = D.naut.locV i P0 w` using `(((h41 i).2.1 Q P0 (by rw [hQ]; exact Option.some_ne_none x) (hQ.trans hP0.symm)).2 w hS hQw).1 hsp`. Establish `e2` using `hB.2.2.2.1 w hsp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : isoLoc D.nd D.naut (twistIso D.nd D.naut ([⟨D.R.r, π, 1⟩] ++ [muPart D.nd D.naut i]) D.naut.etaTinv) w = D.naut.lpSum (D.naut.locG (D.naut.tw π D.naut.etaTinv) w) (spehLoc D.nd D.naut ⟨1, D.naut.tw (D.naut.muC i) D.naut.etaTinv, D.R.t⟩ w)`. Establish `: spehLoc D.nd D.naut ⟨D.R.r, D.naut.tw π D.naut.etaTinv, 1⟩ w = D.naut.locG (D.naut.tw π D.naut.etaTinv) w`. Simplify using `[spehLoc, D.naut.lpSum_zero, D.naut.lpTw_zero]`. Rewrite using `[← this]`. Conclude with `congrArg _ (D.naut.lpSum_zero _)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `eV : D.naut.locV i Q w = D.naut.lpSum (D.naut.locG (D.naut.tw π D.naut.etaTinv) w) (spehLoc D.nd D.naut ⟨1, D.naut.tw (D.naut.muC i) D.naut.etaTinv, D.R.t⟩ w)`. Rewrite using `[e1, ← e2, e3]`. Rewrite `hunr` using `[eV]`. Take `⟨ha, hb⟩` from `(D.naut.unr_sum _ _).1 hunr`. Establish `ht : 1 ≤ D.R.t` using `D.R.t_odd.pos`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hθ` using `unr_of_speh D.naut _ D.R.t ht w hb`. Take `⟨-, hblk⟩` from `GlobalTheory.RowModelRoad.frobEig_block D.naut _ D.R.t w z⁻¹ hθ hz`. Use `⟨(D.naut.frobEig (D.naut.locG (D.naut.tw π D.naut.etaTinv) w)).map (fun a : ℂ => a⁻¹), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[eV, D.naut.frobEig_sum _ _ ha hb, Multiset.map_add, hblk, ← normV_eq_absNorm, inv_block]`. Take `⟨hTie, -⟩` from `GlobalTheory.AutomorphismSplitting.tieAut_and_split hAF hL D P`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hEta : GlobalTheory.LocalInv.EtaType D.nd D.naut`. Use `⟨hTie.1.1, fun τ z hz => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rcases (hTie.2.1 τ).1 with h | h <;> rw [h, Multiset.mem_singleton] at hz <;> subst hz`. Conclude with `⟨0, by push_cast; ring⟩`. Conclude with `⟨-1, by push_cast; ring⟩`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hmem : (⟨D.R.r, D.naut.tw π D.naut.etaTinv, 1⟩ : Part D.naut.CG) ∈ twistIso D.nd D.naut ([⟨D.R.r, π, 1⟩] ++ [muPart D.nd D.naut i]) D.naut.etaTinv`. Simplify using `[twistIso]`. Take `⟨hcsd, hralg⟩` from `GlobalTheory.LocalInv.part_alg D.nd D.naut hEta (GlobalTheory.LocalInv.weightRegular_definite D) i P0 _ hB _ hmem (odd_rank D.R) odd_one`. Establish `htemp` using `h7 D.R.r _ (odd_rank D.R).pos hcsd hralg w`. Establish `hdE` using `D.naut.locG_dim D.naut.etaT w`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `huE` using `D.naut.etaT_unr w`. Take `⟨c, hc⟩` from `Multiset.card_eq_one.mp ((D.naut.frobEig_card _ huE).trans hdE)`. Establish `hcn : ‖c‖ = 1` using `(D.naut.tempered_unr _ huE).1 (hTie.2.2.1 w) c (by rw [hc]; exact Multiset.mem_singleton_self c)`. Rewrite `htemp` using `[D.naut.locG_tw]`. Establish `hu2` using `D.naut.unr_char _ _ hdE ha huE`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(D.naut.tempered_unr _ hu2).1 htemp`. Rewrite `h2` using `[D.naut.frobEig_char _ _ c ha huE hdE hc]`. Introduce `a haB`. Take `⟨α, hα, rfl⟩` from `Multiset.mem_map.mp haB`. Establish `h3` using `h2 (α * c) (Multiset.mem_map_of_mem _ hα)`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[norm_mul, hcn, mul_one]`. Rewrite using `[norm_inv, h3, inv_one]`. Establish `hq : (1 : ℝ) ≤ (Ideal.absNorm w.asIdeal : ℝ)`. Establish `: Ideal.absNorm w.asIdeal ≠ 0` using `fun h0 => w.ne_bot (Ideal.absNorm_eq_zero_iff.mp h0)`. Conclude with `Nat.one_le_iff_ne_zero.mpr this` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Real.one_le_rpow hq ?_` and prove the remaining obligations. Establish `: (1 : ℝ) ≤ D.R.r` using `by exact_mod_cast (odd_rank D.R).pos`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem strCalc : GlobalTheory.Published.AutomorphicFormsFiniteGL → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D), Formalism.MainNotions.SumRepresentations.Conclusion41 D → Formalism.MainNotions.SumRepresentations.adm7 D → Formalism.MainNotions.SumRepresentations.tieLab D → ∀ (i : D.nd.Loc) (x : D.nd.X i) (Q P0 : D.naut.AV i) (Sig : List (Part D.naut.CG)), D.naut.ptV i Q = some x → D.naut.ptV i P0 = some x → IsCuspIso D.nd D.naut Sig → IsBCV D.nd D.naut i P0 (twistIso D.nd D.naut (Sig ++ [muPart D.nd D.naut i]) D.naut.etaTinv) → ∀ w : HeightOneSpectrum (𝓞 D.host.E), Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) (w.under (𝓞 D.host.F)) → w ∉ D.nd.S i → w ∉ D.nd.Q i → D.naut.unr (D.naut.locV i Q w) → ∀ z : ℂ, D.naut.frobEig (D.naut.locG (D.naut.tw (D.naut.muC i) D.naut.etaTinv) w) = {z⁻¹} → ∃ B' : Multiset ℂ, (D.naut.frobEig (D.naut.locV i Q w)).map (fun a : ℂ => a⁻¹) = B' + GlobalTheory.DownLift.str (Ideal.absNorm w.asIdeal) z D.R.t ∧ ∀ a ∈ B', ‖a‖ ≤ (Ideal.absNorm w.asIdeal : ℝ) ^ (((D.R.r : ℝ) - 1) / 2) := by
   intro hAF hL D P h41 h7 _ i x Q P0 Sig hQ hP0 hSig hB w hsplit hS hQw hunr z hz

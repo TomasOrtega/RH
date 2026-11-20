@@ -12,14 +12,14 @@ open Pointwise CategoryTheory
 variable {G : Type*} [Group G]
 
 /- English proof (translation)
-Rewrite using `[Subgroup.comap_map_eq, QuotientGroup.ker_mk']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sup_eq_comap_map (H U : Subgroup G) [U.Normal] :
     H ⊔ U = (H.map (QuotientGroup.mk' U)).comap (QuotientGroup.mk' U) := by
   rw [Subgroup.comap_map_eq, QuotientGroup.ker_mk']
 
 /- English proof (translation)
-Rewrite using `[sup_eq_comap_map, Subgroup.index_comap_of_surjective _ (QuotientGroup.mk'_surjective U)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem index_sup_eq_index_map (H U : Subgroup G) [U.Normal] :
     (H ⊔ U).index = (H.map (QuotientGroup.mk' U)).index := by
@@ -39,7 +39,7 @@ theorem quotMap_comp_mk' {U V : OpenNormalSubgroup G} (h : U ≤ V) :
   rfl
 
 /- English proof (translation)
-Introduce `y`. Take `⟨x, rfl⟩` from `QuotientGroup.mk'_surjective (V : Subgroup G) y`. Conclude with `⟨QuotientGroup.mk' (U : Subgroup G) x, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem quotMap_surjective {U V : OpenNormalSubgroup G} (h : U ≤ V) :
     Function.Surjective (quotMap h) := by
@@ -48,20 +48,20 @@ theorem quotMap_surjective {U V : OpenNormalSubgroup G} (h : U ≤ V) :
   exact ⟨QuotientGroup.mk' (U : Subgroup G) x, rfl⟩
 
 /- English proof (translation)
-The claim follows from `MonoidHom.ext fun x => QuotientGroup.induction_on x fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem quotMap_self {U : OpenNormalSubgroup G} (h : U ≤ U) : quotMap h = MonoidHom.id _ :=
   MonoidHom.ext fun x => QuotientGroup.induction_on x fun _ => rfl
 
 /- English proof (translation)
-The claim follows from `MonoidHom.ext fun x => QuotientGroup.induction_on x fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem quotMap_comp {U V W : OpenNormalSubgroup G} (h₁ : U ≤ V) (h₂ : V ≤ W) :
     (quotMap h₂).comp (quotMap h₁) = quotMap (h₁.trans h₂) :=
   MonoidHom.ext fun x => QuotientGroup.induction_on x fun _ => rfl
 
 /- English proof (translation)
-Rewrite using `[Subgroup.map_map, quotMap_comp_mk']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_map_quotMap (H : Subgroup G) {U V : OpenNormalSubgroup G} (h : U ≤ V) :
     (H.map (QuotientGroup.mk' (U : Subgroup G))).map (quotMap h) =
@@ -77,7 +77,7 @@ variable {p : ℕ} [hp : Fact p.Prime]
 omit [TotallyDisconnectedSpace G] in
 
 /- English proof (translation)
-Establish `h` using `not_dvd_superIndex_iff (⟨p, hp.out⟩ : Nat.Primes) H`. Simplify using `only [index_sup_eq_index_map] at h`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem not_dvd_superIndex_iff_map (H : Subgroup G) :
     ¬ Supernatural.ofNat p ∣ superIndex H ↔
@@ -87,7 +87,7 @@ theorem not_dvd_superIndex_iff_map (H : Subgroup G) :
   exact h
 
 /- English proof (translation)
-Rewrite using `[IsProSylow, isProPGroup_subgroup_iff_isPGroup_map, not_dvd_superIndex_iff_map, ← forall_and]`. Conclude with `⟨fun h => h.2, fun h => ⟨hP, h⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isProSylow_iff {P : Subgroup G} (hP : IsClosed (P : Set G)) :
     IsProSylow p P ↔ ∀ U : OpenNormalSubgroup G,
@@ -131,27 +131,25 @@ noncomputable def sylowSystem (p : ℕ) [Fact p.Prime] (H : Subgroup G) :
     rw [Subgroup.map_map, quotMap_comp]
 
 /- English proof (translation)
-Rewrite `hH` using `[isProPGroup_subgroup_iff_isPGroup_map]`. Establish `hfin : ∀ U, Finite ((sylowSystem p H).obj U)` using `fun U => by`. Use `Sylow.finite_of_finiteIndex (default : Sylow p (G ⧸ (U : Subgroup G)))` as an intermediate fact. Conclude with `Subtype.finite`. Establish `hne : ∀ U, Nonempty ((sylowSystem p H).obj U)` using `fun U => by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨S, hS⟩` from `IsPGroup.exists_le_sylow (hH U)`. Conclude with `⟨⟨S, hS⟩⟩`. Take `⟨s, hs⟩` from `nonempty_sections_of_finite_cofiltered_system (sylowSystem p H)`. Set `T : OpenNormalSubgroup G → Subgroup G` to `fun U => ((s U).1 : Subgroup (G ⧸ (U : Subgroup G))).comap (QuotientGroup.mk' (U : Subgroup G))`. Establish `hc : ∀ {U V : OpenNormalSubgroup G} (h : U ≤ V), ((s V).1 : Subgroup (G ⧸ (V : Subgroup G))) = ((s U).1 : Subgroup (G ⧸ (U : Subgroup G))).map (quotMap h)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `U V h`. Rewrite using `[← hs (homOfLE h)]`. Both sides reduce to the same expression. Establish `hHT : ∀ U, H ≤ T U` using `fun U => Subgroup.map_le_iff_le_comap.mp (s U).2`. Establish `hUT : ∀ U : OpenNormalSubgroup G, (U : Subgroup G) ≤ T U` using `fun U x hx => by show QuotientGroup.mk' (U : Subgroup G) x ∈ ((s U).1 : Subgroup _)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[QuotientGroup.mk'_apply, (QuotientGroup.eq_one_iff x).mpr hx]`. Conclude with `one_mem _`. Establish `hTcl : ∀ U, IsClosed (T U : Set G)` using `fun U => Subgroup.isClosed_of_isOpen _ (Subgroup.isOpen_mono (hUT U) U.toOpenSubgroup.isOpen)`. Establish `hTmono : ∀ {U V : OpenNormalSubgroup G}, U ≤ V → T U ≤ T V` using `fun {U V} h x hx => by show QuotientGroup.mk' (V : Subgroup G) x ∈ ((s V).1 : Subgroup _)`. Rewrite using `[hc h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Subgroup.mem_map_of_mem (quotMap h) hx`. Establish `hTlift : ∀ {U V : OpenNormalSubgroup G}, U ≤ V → ∀ x ∈ T V, ∃ y ∈ T U, y⁻¹ * x ∈ (V : Subgroup G)` using `fun {U V} h x hx => by`. Establish `hx' : QuotientGroup.mk' (V : Subgroup G) x ∈ ((s V).1 : Subgroup _)` using `hx`. Rewrite `hx'` using `[hc h]`. Take `⟨z, hz, hzx⟩` from `Subgroup.mem_map.mp hx'`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Take `⟨y, rfl⟩` from `QuotientGroup.mk'_surjective (U : Subgroup G) z`. Conclude with `⟨y, hz, QuotientGroup.eq.mp hzx⟩`. Set `P : Subgroup G` to `⨅ U, T U`. Establish `hPcl : IsClosed (P : Set G)`. Rewrite using `[Subgroup.coe_iInf]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `isClosed_iInter hTcl`. Establish `hPmap : ∀ U : OpenNormalSubgroup G, P.map (QuotientGroup.mk' (U : Subgroup G)) = ((s U).1 : Subgroup _)`. Introduce `U`. Use `le_antisymm (Subgroup.map_le_iff_le_comap.mpr (iInf_le T U)) fun z hz => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `QuotientGroup.mk'_surjective (U : Subgroup G) z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : x ∈ T U` using `hz`. Set `t : OpenNormalSubgroup G → Set G` to `fun W => (T (W ⊓ U) : Set G) ∩ {y | x⁻¹ * y ∈ (U : Subgroup G)}`. Establish `htcl : ∀ W, IsClosed (t W)` using `fun W => (hTcl _).inter ((Subgroup.isClosed_of_isOpen _ U.toOpenSubgroup.isOpen).preimage (continuous_const_mul x⁻¹))`. Establish `htdir : Directed (· ⊇ ·) t` using `fun W₁ W₂ => ⟨W₁ ⊓ W₂, fun y hy => ⟨hTmono (inf_le_inf_right U inf_le_left) hy.1, hy.2⟩, fun y hy => ⟨hTmono (inf_le_inf_right U inf_le_right) hy.1, hy.2⟩⟩`. Establish `htne : ∀ W, (t W).Nonempty` using `fun W => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨y, hy, hyx⟩` from `hTlift (inf_le_right : W ⊓ U ≤ U) x hx`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Use `(U : Subgroup G).inv_mem hyx` as an intermediate fact. Rewrite `this` using `[mul_inv_rev, inv_inv]`. Then use the resulting hypothesis. Take `⟨y, hy⟩` from `IsCompact.nonempty_iInter_of_directed_nonempty_isCompact_isClosed t htdir htne (fun W => (htcl W).isCompact) htcl`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hy` using `[Set.mem_iInter]`. Establish `hyP : y ∈ P` using `Subgroup.mem_iInf.mpr fun W => hTmono inf_le_left (hy W).1`. Use `Subgroup.mem_map.mpr ⟨y, hyP, ?_⟩` and prove the remaining obligations. Rewrite using `[QuotientGroup.mk'_apply, QuotientGroup.mk'_apply]`. Conclude with `(QuotientGroup.eq.mpr (hy U).2).symm`.
-
-Use `⟨P, (isProSylow_iff hPcl).mpr fun U => ?_, le_iInf fun U => hHT U⟩` and prove the remaining obligations. Rewrite using `[hPmap U]`. Conclude with `⟨(s U).1.isPGroup', (s U).1.not_dvd_index⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isProSylow_le {H : Subgroup G} (hH : IsProPGroup p H) :
     ∃ P : Subgroup G, IsProSylow p P ∧ H ≤ P := by
@@ -226,7 +224,7 @@ theorem exists_isProSylow_le {H : Subgroup G} (hH : IsProPGroup p H) :
   exact ⟨(s U).1.isPGroup', (s U).1.not_dvd_index⟩
 
 /- English proof (translation)
-The claim follows from `let ⟨P, hP, _⟩ := exists_isProSylow_le (isProPGroup_bot (G := G) p) ⟨P, hP⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_isProSylow : ∃ P : Subgroup G, IsProSylow p P :=
   let ⟨P, hP, _⟩ := exists_isProSylow_le (isProPGroup_bot (G := G) p)

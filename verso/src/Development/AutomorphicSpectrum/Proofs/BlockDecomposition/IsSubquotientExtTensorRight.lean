@@ -14,9 +14,9 @@ variable {G H V V' W W' : Type} [Group G] [Group H]
   [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W']
 
 /- English proof (translation)
-Take `⟨S, f, hf⟩` from `h`. Set `ι : S.toRepresentation.IntertwiningMap σ'` to `{ toLinearMap := S.toSubmodule.subtype, isIntertwining' := fun _ => rfl }`. Establish `hι : Function.Injective ι` using `Subtype.val_injective`. Take `⟨ι', hι'⟩` from `GlobalTheory.ParIndExact.extTensor_injective_left B ι hι`. Establish `hs : Function.Surjective (GlobalTheory.ParIndExact.extTensorMapLeft B f)` using `LinearMap.rTensor_surjective W hf`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(IsSubquotient.of_surjective _ hs).trans (IsSubquotient.of_injective ι' hι')`.
+A detailed English derivation is pending.
 -/
 theorem isSubquotient_extTensor_left {σ : Representation ℂ G V} {σ' : Representation ℂ G V'}
     (B : Representation ℂ H W) (h : IsSubquotient σ σ') :
@@ -31,9 +31,9 @@ theorem isSubquotient_extTensor_left {σ : Representation ℂ G V} {σ' : Repres
   exact (IsSubquotient.of_surjective _ hs).trans (IsSubquotient.of_injective ι' hι')
 
 /- English proof (translation)
-Take `⟨S, f, hf⟩` from `h`. Set `ι : S.toRepresentation.IntertwiningMap ρ'` to `{ toLinearMap := S.toSubmodule.subtype, isIntertwining' := fun _ => rfl }`. Establish `hι : Function.Injective ι` using `Subtype.val_injective`. Take `⟨ι', hι'⟩` from `GlobalTheory.ParIndExact.extTensor_injective_right A ι hι`. Establish `hs : Function.Surjective (GlobalTheory.ParIndExact.extTensorMapRight A f)` using `LinearMap.lTensor_surjective V hf`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(IsSubquotient.of_surjective _ hs).trans (IsSubquotient.of_injective ι' hι')`.
+A detailed English derivation is pending.
 -/
 theorem isSubquotient_extTensor_right {ρ : Representation ℂ H W} {ρ' : Representation ℂ H W'}
     (A : Representation ℂ G V) (h : IsSubquotient ρ ρ') :
@@ -48,7 +48,7 @@ theorem isSubquotient_extTensor_right {ρ : Representation ℂ H W} {ρ' : Repre
   exact (IsSubquotient.of_surjective _ hs).trans (IsSubquotient.of_injective ι' hι')
 
 /- English proof (translation)
-Take `⟨S, f, hf⟩` from `h`. Set `T : Subrepresentation (σ'.comp s)` to `⟨S.toSubmodule, fun x _ hv => S.apply_mem_toSubmodule (s x) hv⟩`. Conclude with `⟨T, ⟨f.toLinearMap, fun x => f.isIntertwining' (s x)⟩, hf⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem isSubquotient_comp {L : Type} [Group L] {σ : Representation ℂ G V}
     {σ' : Representation ℂ G V'} (s : L →* G) (h : IsSubquotient σ σ') :
@@ -61,7 +61,7 @@ theorem isSubquotient_comp {L : Type} [Group L] {σ : Representation ℂ G V}
 end General
 
 /- English proof (translation)
-Introduce `k _ _ _ _ r t U U' W W' _ _ _ _ _ _ _ _ σ σ' ρ ρ' hσ' hρ' hs hr`. Establish `hext : IsSubquotient (extTensor σ ρ) (extTensor σ' ρ')` using `(isSubquotient_extTensor_left ρ hs).trans (isSubquotient_extTensor_right σ' hr)`. Establish `hsm : IsSmooth ((extTensor σ' ρ').comp (leviTwo k (Fin r) (Fin t)).symm.toMonoidHom)` using `isSmooth_comp (isSmooth_extTensor hσ' hρ') _ (show Continuous fun g : Levi k (Two (Fin r) (Fin t)) => (g false, g true) from (continuous_apply false).prodMk (continuous_apply true))`. Conclude with `GlobalTheory.ParIndSubquot.parInd_isSubquotient k _ _ _ _ _ _ _ _ hsm (isSubquotient_comp _ hext)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem prod₂_isSubquotient : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (r t : ℕ) (U U' W W' : Type) [AddCommGroup U] [Module ℂ U] [AddCommGroup U'] [Module ℂ U'] [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W'] (σ : Representation ℂ (GL (Fin r) k) U) (σ' : Representation ℂ (GL (Fin r) k) U') (ρ : Representation ℂ (GL (Fin t) k) W) (ρ' : Representation ℂ (GL (Fin t) k) W'), IsSmooth σ' → IsSmooth ρ' → IsSubquotient σ σ' → IsSubquotient ρ ρ' → IsSubquotient (prod₂ σ ρ) (prod₂ σ' ρ') := by
   intro k _ _ _ _ r t U U' W W' _ _ _ _ _ _ _ _ σ σ' ρ ρ' hσ' hρ' hs hr

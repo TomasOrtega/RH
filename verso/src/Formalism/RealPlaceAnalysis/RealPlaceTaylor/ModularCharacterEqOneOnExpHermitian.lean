@@ -21,7 +21,7 @@ lemma indefiniteUnitaryMk_val {n : ℕ} (ε : Fin n → Bool) (m : Matrix (Fin n
     (((indefiniteUnitaryMk ε m h : UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) = m := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Units.ext e)`.
+A detailed English derivation is pending.
 -/
 lemma indefinite_unitary_ext {n : ℕ} {ε : Fin n → Bool} {g h : UJ ε}
     (e : ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) =
@@ -31,7 +31,7 @@ lemma indefinite_unitary_ext {n : ℕ} {ε : Fin n → Bool} {g h : UJ ε}
 abbrev modularCharacterAlt {n : ℕ} (ε : Fin n → Bool) (g : UJ ε) : ℝ≥0 := Measure.modularCharacterFun g
 
 /- English proof (translation)
-Rewrite using `[modularCharacterAlt, Measure.modularCharacterFun_eq_haarScalarFactor (muG ε) g]`. Conclude with `Measure.isMulLeftInvariant_eq_smul _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma map_mul_right_haar_modular_alt {n : ℕ} (ε : Fin n → Bool) (g : UJ ε) :
     Measure.map (fun x => x * g) (muG ε) = modularCharacterAlt ε g • muG ε := by
@@ -39,30 +39,30 @@ lemma map_mul_right_haar_modular_alt {n : ℕ} (ε : Fin n → Bool) (g : UJ ε)
   exact Measure.isMulLeftInvariant_eq_smul _ _
 
 /- English proof (translation)
-The claim follows from `Measure.modularCharacterFun_map_mul g h`.
+A detailed English derivation is pending.
 -/
 lemma modularCharacter_mul {n : ℕ} (ε : Fin n → Bool) (g h : UJ ε) :
     modularCharacterAlt ε (g * h) = modularCharacterAlt ε g * modularCharacterAlt ε h :=
   Measure.modularCharacterFun_map_mul g h
 
 /- English proof (translation)
-The claim follows from `Measure.modularCharacterFun_map_one`.
+A detailed English derivation is pending.
 -/
 lemma modularCharacter_one {n : ℕ} (ε : Fin n → Bool) : modularCharacterAlt ε 1 = 1 :=
   Measure.modularCharacterFun_map_one
 
 /- English proof (translation)
-The claim follows from `continuous_hs_real_place_taylor.comp (continuous_coeMatrix ε)`.
+A detailed English derivation is pending.
 -/
 lemma continuous_frobenius_on_group {n : ℕ} (ε : Fin n → Bool) : Continuous (hsG (ε := ε)) :=
   continuous_hs_real_place_taylor.comp (continuous_coeMatrix ε)
 
 /- English proof (translation)
-Establish `hc : IsCompact {g : UJ ε | hsG g ≤ (n : ℝ) + 1}`. Establish `h` using `(isClosedEmbeddingMatrix n ε).1.isCompact_preimage ((hermitian_small_ball n ε).1 ((n : ℝ) + 1))`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Conclude with `⟨fun hg => ⟨g.2, hg⟩, fun hg => hg.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Supply the required witnesses or components.
 
-Use `⟨hc, ?_, hc.measure_lt_top⟩` and prove the remaining obligations. Establish `hU : IsOpen {g : UJ ε | hsG g < (n : ℝ) + 1}` using `isOpen_lt (continuous_frobenius_on_group ε) continuous_const`. Establish `h1 : (1 : UJ ε) ∈ {g : UJ ε | hsG g < (n : ℝ) + 1}` using `by show hs (1 : Matrix (Fin n) (Fin n) ℂ) < (n : ℝ) + 1`. Rewrite using `[f1auxiliary_hs_one]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `(hU.measure_pos (muG ε) ⟨1, h1⟩).trans_le (measure_mono fun g (hg : hsG g < (n : ℝ) + 1) => hg.le)`.
+A detailed English derivation is pending.
 -/
 lemma frobenius_ball_compact_pos_finite {n : ℕ} (ε : Fin n → Bool) :
     IsCompact {g : UJ ε | hsG g ≤ (n : ℝ) + 1} ∧ 0 < muG ε {g : UJ ε | hsG g ≤ (n : ℝ) + 1} ∧
@@ -82,11 +82,11 @@ lemma frobenius_ball_compact_pos_finite {n : ℕ} (ε : Fin n → Bool) :
     (measure_mono fun g (hg : hsG g < (n : ℝ) + 1) => hg.le)
 
 /- English proof (translation)
-Take `⟨hc, hpos, hfin⟩` from `frobenius_ball_compact_pos_finite ε`. Use `set B := {g : UJ ε | hsG g ≤ (n : ℝ) + 1} with hB`. Establish `hBm : MeasurableSet B` using `hc.isClosed.measurableSet`. Establish `hpre : (fun x => x * g) ⁻¹' B = B`. Use extensionality with `x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [hB, Set.mem_preimage, Set.mem_ofPred_eq, hsG, Subgroup.coe_mul, Units.val_mul]`. Rewrite using `[((hermitian_small_ball n ε).2 _ _ hk).1]`. Establish `h1` using `map_mul_right_haar_modular_alt ε g`. Establish `h2 : (Measure.map (fun x => x * g) (muG ε)) B = muG ε B`. Rewrite using `[Measure.map_apply (measurable_mul_const g) hBm, hpre]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[h1, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Establish `h3 : ((modularCharacterAlt ε g : ℝ≥0∞)) * muG ε B = 1 * muG ε B` using `by rw [h2, one_mul]`. Rewrite `h3` using `[ENNReal.mul_left_inj hpos.ne' hfin.ne]`. Conclude with `h3` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma modularCharacter_eq_one_on_compact {n : ℕ} (ε : Fin n → Bool) (g : UJ ε)
     (hk : ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) ∈ Kset ε) :
@@ -107,19 +107,19 @@ lemma modularCharacter_eq_one_on_compact {n : ℕ} (ε : Fin n → Bool) (g : UJ
   exact_mod_cast h3
 
 /- English proof (translation)
-The claim follows from `(maximal_compact_facts n ε).1 _ (maximal_compact_facts n ε).2.2.1`.
+A detailed English derivation is pending.
 -/
 lemma signature_mem_indefinite_unitary {n : ℕ} (ε : Fin n → Bool) : inUJ ε (Jm ε) :=
   (maximal_compact_facts n ε).1 _ (maximal_compact_facts n ε).2.2.1
 
 /- English proof (translation)
-Use `set j := indefiniteUnitaryMk ε (Jm ε) (signature_mem_indefinite_unitary ε) with hj`. Establish `hDj : modularCharacterAlt ε j = 1` using `modularCharacter_eq_one_on_compact ε j (maximal_compact_facts n ε).2.2.1`. Establish `hherm : (NormedSpace.exp X)ᴴ = NormedSpace.exp X` using `exp_conjTranspose_of_hermitian (((parabolic_character_holds n ε X).1.mp hX).1)`. Establish `hconj : j * p * j = p⁻¹`. Apply `indefinite_unitary_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hinv` using `coeMatrix_inv_eq ε p`. Simplify using `only [Subgroup.coe_mul, Units.val_mul, Subgroup.coe_inv]`. Rewrite using `[hinv, hj, indefiniteUnitaryMk_val]`. Use `show Jm ε * _ * Jm ε = Jm ε * (coeMatrixAlt ε p)ᴴ * Jm ε`. Rewrite using `[show coeMatrixAlt ε p = NormedSpace.exp X from hp, hp, hherm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : modularCharacterAlt ε p⁻¹ = modularCharacterAlt ε p`. Rewrite using `[← hconj, modularCharacter_mul, modularCharacter_mul, hDj, one_mul, mul_one]`. Establish `h2 : modularCharacterAlt ε p * modularCharacterAlt ε p = 1`. Rewrite using `[← modularCharacter_one ε, ← mul_inv_cancel p, modularCharacter_mul, h1]`. Establish `h3 : ((modularCharacterAlt ε p : ℝ≥0) : ℝ) * (modularCharacterAlt ε p : ℝ) = 1` using `by exact_mod_cast h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : (0 : ℝ) ≤ (modularCharacterAlt ε p : ℝ)` using `(modularCharacterAlt ε p).2`. Establish `h5 : ((modularCharacterAlt ε p : ℝ≥0) : ℝ) = 1` using `by nlinarith`. Conclude with `h5` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 lemma modularCharacter_eq_one_on_exp_hermitian {n : ℕ} (ε : Fin n → Bool) (p : UJ ε) (X : Matrix (Fin n) (Fin n) ℂ) (hX : inP ε X)
     (hp : ((p : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) = NormedSpace.exp X) :
@@ -145,11 +145,11 @@ lemma modularCharacter_eq_one_on_exp_hermitian {n : ℕ} (ε : Fin n → Bool) (
   exact_mod_cast h5
 
 /- English proof (translation)
-Establish `hgU : inUJ ε ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)` using `g.2`. Take `⟨k, X, hk, hX, hg⟩` from `(polar_decomposition_holds n ε).1 _ hgU`. Establish `hkU : inUJ ε k` using `(maximal_compact_facts n ε).1 k hk`. Establish `hEU : inUJ ε (NormedSpace.exp X)`. Establish `h` using `exp_indefinite_unitary_holds n ε X hX.1 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[Complex.ofReal_one, one_smul]`. Then use the resulting hypothesis. Establish `hdec : g = indefiniteUnitaryMk ε k hkU * indefiniteUnitaryMk ε _ hEU`. Apply `indefinite_unitary_ext` to reduce the goal to its premises. Rewrite using `[Subgroup.coe_mul, Units.val_mul, indefiniteUnitaryMk_val, indefiniteUnitaryMk_val]`. Conclude with `hg`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hk' : (((indefiniteUnitaryMk ε k hkU : UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) ∈ Kset ε` using `hk`. Rewrite using `[hdec, modularCharacter_mul, modularCharacter_eq_one_on_compact ε _ hk', modularCharacter_eq_one_on_exp_hermitian ε _ X hX (indefiniteUnitaryMk_val ε _ hEU), one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma modularCharacter_eq_one_alt {n : ℕ} (ε : Fin n → Bool) (g : UJ ε) : modularCharacterAlt ε g = 1 := by
   have hgU : inUJ ε ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) := g.2
@@ -167,14 +167,14 @@ lemma modularCharacter_eq_one_alt {n : ℕ} (ε : Fin n → Bool) (g : UJ ε) : 
   rw [hdec, modularCharacter_mul, modularCharacter_eq_one_on_compact ε _ hk', modularCharacter_eq_one_on_exp_hermitian ε _ X hX (indefiniteUnitaryMk_val ε _ hEU), one_mul]
 
 /- English proof (translation)
-Introduce `n ε g`. Rewrite using `[map_mul_right_haar_modular_alt, modularCharacter_eq_one_alt, one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem indefinite_unitary_unimodular : Unimodular := by
   intro n ε g
   rw [map_mul_right_haar_modular_alt, modularCharacter_eq_one_alt, one_smul]
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.InvolutionInvariants.invInvariant_of h`.
+A detailed English derivation is pending.
 -/
 theorem invInvariant_of (h : Unimodular) : InvInvariant :=
   _root_.UpperTheory.Reformulated.B.InvolutionInvariants.invInvariant_of h

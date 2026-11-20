@@ -19,14 +19,14 @@ private def Qm (α β : k) : Matrix (Fin 4) (Fin 4) k :=
   (2 : k)⁻¹ • !![0, β⁻¹, 0, 1; α⁻¹, 0, -1, 0; 0, -β⁻¹, 0, 1; α⁻¹, 0, 1, 0]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Pm, Qm, Matrix.mul_apply, Fin.sum_univ_four] <;> field_simp <;> ring`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma PQ (h2 : (2 : k) ≠ 0) {α β : k} (ha : α ≠ 0) (hb : β ≠ 0) : Pm α β * Qm α β = 1 := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [Pm, Qm, Matrix.mul_apply, Fin.sum_univ_four] <;> field_simp <;> ring
 
 /- English proof (translation)
-Establish `h1` using `PQ h2 ha hb`. Establish `h3 : Qm α β * Pm α β = 1` using `mul_eq_one_comm.mp h1`. Establish `: M = Qm α β * (N * Pm α β)` using `by rw [← h, ← Matrix.mul_assoc, h3, Matrix.one_mul]`. Rewrite using `[this, Matrix.charpoly_mul_comm, Matrix.mul_assoc, h1, Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private lemma cp_conj (h2 : (2 : k) ≠ 0) {α β : k} (ha : α ≠ 0) (hb : β ≠ 0) (M N : Matrix (Fin 4) (Fin 4) k)
     (h : Pm α β * M = N * Pm α β) : M.charpoly = N.charpoly := by
@@ -36,7 +36,7 @@ private lemma cp_conj (h2 : (2 : k) ≠ 0) {α β : k} (ha : α ≠ 0) (hb : β 
   rw [this, Matrix.charpoly_mul_comm, Matrix.mul_assoc, h1, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `ha` using `α.ne_zero`. Establish `hb` using `β.ne_zero`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Pm, mix, blk, Matrix.mul_apply, Fin.sum_univ_four] <;> field_simp <;> ring`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma P_mix (h2 : (2 : k) ≠ 0) (α β : kˣ) (A B : Matrix (Fin 2) (Fin 2) k) :
     Pm (α : k) β * mix (β / α) A B = blk A B * Pm (α : k) β := by
@@ -46,7 +46,7 @@ private lemma P_mix (h2 : (2 : k) ≠ 0) (α β : kˣ) (A B : Matrix (Fin 2) (Fi
   fin_cases i <;> fin_cases j <;> simp [Pm, mix, blk, Matrix.mul_apply, Fin.sum_univ_four] <;> field_simp <;> ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_diagonal]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Pm, ant, blk, Matrix.mul_apply, Fin.sum_univ_four] <;> ring`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma blk_P (α β : k) (A B : Matrix (Fin 2) (Fin 2) k) :
     blk A B * Pm α β * Matrix.diagonal ![β, -α, -β, α] =
@@ -56,7 +56,7 @@ private lemma blk_P (α β : k) (A B : Matrix (Fin 2) (Fin 2) k) :
   fin_cases i <;> fin_cases j <;> simp [Pm, ant, blk, Matrix.mul_apply, Fin.sum_univ_four] <;> ring
 
 /- English proof (translation)
-Simplify using `[Matrix.charpoly, Matrix.det_succ_row_zero, Fin.sum_univ_succ, blk, Matrix.charmatrix_apply, Fin.succAbove, Matrix.diagonal_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma cp_blk (A B : Matrix (Fin 2) (Fin 2) k) : (blk A B).charpoly = A.charpoly * B.charpoly := by
   simp [Matrix.charpoly, Matrix.det_succ_row_zero, Fin.sum_univ_succ, blk, Matrix.charmatrix_apply, Fin.succAbove,
@@ -64,7 +64,7 @@ private lemma cp_blk (A B : Matrix (Fin 2) (Fin 2) k) : (blk A B).charpoly = A.c
   ring
 
 /- English proof (translation)
-Simplify using `[Matrix.charpoly, Matrix.det_succ_row_zero, Fin.sum_univ_succ, ant, Matrix.charmatrix_apply, Fin.succAbove, Matrix.diagonal_apply, Matrix.mul_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma cp_ant (A B : Matrix (Fin 2) (Fin 2) k) : (ant A B).charpoly = (A * B).charpoly.comp (X ^ 2) := by
   simp [Matrix.charpoly, Matrix.det_succ_row_zero, Fin.sum_univ_succ, ant, Matrix.charmatrix_apply, Fin.succAbove,
@@ -75,17 +75,15 @@ end UpperTheory.V.Sd.S2.symmetric_square_mixed_charpoly
 
 open UpperTheory.V.Sd.S2 UpperTheory.V.Sd.S2.symmetric_square_mixed_charpoly in
 /- English proof (translation)
-Introduce `k Γ₀ Γ _ _ _ j t α β ρ R H s hs`. Establish `hN : j.range.Normal` using `Subgroup.normal_of_index_eq_two H.index`. Establish `hc : ∀ h : Γ₀, ∃ h', j h' = t⁻¹ * j h * t` using `fun h => by`. Use `hN.conj_mem' (j h) ⟨h, rfl⟩ t` as an intermediate fact. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : ∀ a b : Γ, a ∉ j.range → b ∉ j.range → a * b ∈ j.range` using `fun a b ha hb => (Subgroup.mul_mem_iff_of_index_two H.index).mpr (by simp [ha, hb])`. Establish `ht' : t⁻¹ ∉ j.range` using `fun h => H.nmem (inv_mem_iff.mp h)`. Use `⟨fun g g' hg => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨h, hh⟩` from `hm _ _ ht' hs`. Take `⟨g'', hg''⟩` from `hc g`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : g' = h⁻¹ * g'' * h` using `H.inj (by`. Rewrite using `[map_mul, map_mul, map_inv, hh, hg'', hg]`. Use the proof step `group)`. Rewrite using `[H.on g g'' hg'', cp_conj H.two α.ne_zero β.ne_zero _ _ (P_mix H.two α β _ _), cp_blk, e]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_mul, Units.val_mul, Matrix.charpoly_mul_comm, ← Units.val_mul, ← map_mul, mul_inv_cancel_left]`. Take `⟨h, hh⟩` from `hm _ _ hs ht'`. Take `⟨h', hh'⟩` from `hc h`. Take `⟨u, hu⟩` from `hm _ _ H.nmem H.nmem`. Establish `e : g = h * u * h'` using `H.inj (by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_mul, hh', hu, hh, hg]`. Use the proof step `group)`. Establish `es : s = j h * t` using `by rw [hh]; group`. Establish `key : Pm (α : k) β * (R s : Matrix (Fin 4) (Fin 4) k) = ant ((ρ h : Matrix (Fin 2) (Fin 2) k) * Matrix.diagonal ![(α : k) ^ 2, (β : k) ^ 2]) (ρ h') * Pm (α : k) β`. Rewrite using `[es, map_mul, Units.val_mul, H.on h h' hh', H.off, ← Matrix.mul_assoc, P_mix H.two, blk_P]`.
-
-Rewrite using `[cp_conj H.two α.ne_zero β.ne_zero _ _ key, cp_ant, e, map_mul, map_mul, Units.val_mul, Units.val_mul, H.sq u hu]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.symmetric_square_mixed_charpoly :
     UpperTheory.V.Sd.S2.MixCp := by

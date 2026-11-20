@@ -13,15 +13,15 @@ noncomputable section
 variable {C : Type} [Field C]
 
 /- English proof (translation)
-Establish `hc : ∀ s, constantCoeff (Function.extend j (X : τ → MvPowerSeries τ C) 0 s) = 0`. Introduce `s`. Rewrite using `[Function.extend_def]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `ha` using `hasSubst_of_constantCoeff_zero hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[coeff_subst ha, finsum_eq_single _ (Finsupp.mapDomain j α)]`. Rewrite using `[Finsupp.prod_mapDomain_index_inj hj]`. Simplify using `only [hj.extend_apply]`. Rewrite using `[← MvPowerSeries.monomial_one_eq, coeff_monomial_same, smul_eq_mul, mul_one]`. Introduce `D hD`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hsupp : ↑D.support ⊆ Set.range j`. Take `⟨β, rfl⟩ : ∃ β, Finsupp.mapDomain j β = D` from `⟨_, Finsupp.mapDomain_comapDomain j hj D hsupp⟩`. Rewrite using `[Finsupp.prod_mapDomain_index_inj hj]`. Simplify using `only [hj.extend_apply]`. Rewrite using `[← MvPowerSeries.monomial_one_eq, coeff_monomial_ne, smul_zero]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `rfl`. Conclude with `hD rfl`. Take `⟨s, hs, hsr⟩` from `Set.not_subset.mp hsupp`. Establish `hz : Function.extend j (X : τ → MvPowerSeries τ C) 0 s = 0` using `Function.extend_apply' _ _ _ (fun h => hsr h)`. Establish `hs' : D s ≠ 0` using `Finsupp.mem_support_iff.mp hs`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.prod, Finset.prod_eq_zero hs (by simp [hz, hs']), map_zero, smul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem coeff_subst_extend_zero {σ τ : Type} [Finite σ] {j : τ → σ} (hj : Function.Injective j)
     (g : MvPowerSeries σ C) (α : τ →₀ ℕ) :
@@ -53,14 +53,14 @@ theorem coeff_subst_extend_zero {σ τ : Type} [Finite σ] {j : τ → σ} (hj :
       rw [Finsupp.prod, Finset.prod_eq_zero hs (by simp [hz, hs']), map_zero, smul_zero]
 
 /- English proof (translation)
-Conclude with `subst_zero_of_constantCoeff_zero h0`.
+A detailed English derivation is pending.
 -/
 theorem subst_zero_of_constantCoeff {σ τ : Type} [Finite σ] (h : MvPowerSeries σ C)
     (h0 : constantCoeff h = 0) : subst (0 : σ → MvPowerSeries τ C) h = 0 := by
   exact subst_zero_of_constantCoeff_zero h0
 
 /- English proof (translation)
-Rewrite using `[← coe_substAlgHom hs, map_sum]`. Simplify using `only [map_smul, substAlgHom_X]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem subst_sum_smul_X {σ τ ι : Type} [Fintype ι] {s : σ → MvPowerSeries τ C} (hs : HasSubst s)
     (c : ι → C) (k : ι → σ) :
@@ -79,9 +79,9 @@ noncomputable section
 variable {C : Type} [Field C] [CharZero C] {v : AddValuation C (WithTop ℝ)}
 
 /- English proof (translation)
-Establish `hE` using `(GlobalTheory.T.formalGroupExp_twoSided_inverse_unique C v (d x.1) (G x.1)).1`. Unfold `IsExp at hE`. Simplify using `only [expAlong]`. Use `constantCoeff_subst_eq_zero ?_ ?_ (hE.1 x.2)` and prove the remaining obligations. Conclude with `hasSubst_of_constantCoeff_zero (fun e => by simp [MvPowerSeries.smul_eq_C_mul])`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e`. Simplify using `[MvPowerSeries.smul_eq_C_mul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem constantCoeff_expAlong {κ : Type} {d : κ → ℕ} (G : ∀ b, LogFGL v (d b)) {ι : κ → Type}
     [∀ b, Fintype (ι b)] (u : ∀ b, ι b → Fin (d b) → C) (x : Σ b, Fin (d b)) :
@@ -95,43 +95,39 @@ theorem constantCoeff_expAlong {κ : Type} {d : κ → ℕ} (G : ∀ b, LogFGL v
     simp [MvPowerSeries.smul_eq_C_mul]
 
 /- English proof (translation)
-Establish `hinj : ∀ (β : κ → Type), Function.Injective (fun x : (Σ b : κ', β (e b)) => (⟨e x.1, x.2⟩ : Σ b, β b))`. Introduce `β`. Introduce and unpack `⟨a, x⟩ ⟨c, y⟩ h`. Simplify using `only [Sigma.mk.inj_iff] at h`. Take `⟨h1, h2⟩` from `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `rfl` from `e.injective h1`. Rewrite `h2` using `[heq_eq_eq]`. Rewrite using `[h2]`. Establish `hjt : Function.Injective (fun x : (Σ b : κ', ι (e b)) => (⟨e x.1, x.2⟩ : Σ b, ι b))` using `hinj ι`. Establish `hjv : Function.Injective (fun x : (Σ b : κ', Fin (d (e b))) => (⟨e x.1, x.2⟩ : Σ b, Fin (d b)))` using `hinj (fun b => Fin (d b))`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcc : ∀ {σ τ : Type} (j : τ → σ) (s : σ), constantCoeff (Function.extend j (X : τ → MvPowerSeries τ C) 0 s) = 0`. Introduce `σ τ j s`. Rewrite using `[Function.extend_def]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hE : ∀ b (k : Fin (d b)), constantCoeff (expOf (G b) k) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Introduce `b k`. Establish `h` using `(GlobalTheory.T.formalGroupExp_twoSided_inverse_unique C v (d b) (G b)).1`. Unfold `IsExp at h`. Conclude with `h.1 k`. Establish `hA : HasSubst (expAlong G u)` using `hasSubst_of_constantCoeff_zero (constantCoeff_expAlong G u)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA' : HasSubst (expAlong (fun b => G (e b)) (fun b => u (e b)))` using `hasSubst_of_constantCoeff_zero (constantCoeff_expAlong _ _)`. Establish `hRt : HasSubst (Function.extend (fun x : (Σ b : κ', ι (e b)) => (⟨e x.1, x.2⟩ : Σ b, ι b)) (X : (Σ b : κ', ι (e b)) → MvPowerSeries (Σ b : κ', ι (e b)) C) 0)` using `hasSubst_of_constantCoeff_zero (hcc _)`. Establish `hRv : HasSubst (Function.extend (fun x : (Σ b : κ', Fin (d (e b))) => (⟨e x.1, x.2⟩ : Σ b, Fin (d b))) (X : (Σ b : κ', Fin (d (e b))) → MvPowerSeries (Σ b : κ', Fin (d (e b))) C) 0)` using `hasSubst_of_constantCoeff_zero (hcc _)`. Establish `hin : ∀ b, HasSubst (fun e' : Fin (d b) => ∑ a, u b a e' • (X ⟨b, a⟩ : MvPowerSeries (Σ b, ι b) C))` using `fun b => hasSubst_of_constantCoeff_zero (fun e' => by simp [MvPowerSeries.smul_eq_C_mul])`. Establish `K1 : ∀ F : MvPowerSeries (Σ b, ι b) C, derivAt0 (MvPolynomial.rename (fun x : (Σ b : κ', ι (e b)) => (⟨e x.1, x.2⟩ : Σ b, ι b)) P) F = derivAt0 P (subst (Function.extend (fun x : (Σ b : κ', ι (e b)) => (⟨e x.1, x.2⟩ : Σ b, ι b)) (X : (Σ b : κ', ι (e b)) → MvPowerSeries (Σ b : κ', …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `F`. Unfold `derivAt0`. Rewrite using `[MvPolynomial.support_rename_of_injective hjt, Finset.sum_image (Finsupp.mapDomain_injective hjt).injOn]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Establish `hm : (mfact (Finsupp.mapDomain (fun x : (Σ b : κ', ι (e b)) => (⟨e x.1, x.2⟩ : Σ b, ι b)) α) : C) = mfact α`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `mfact`. Conclude with `Finsupp.prod_mapDomain_index_inj hjt`. Rewrite using `[MvPolynomial.coeff_rename_mapDomain _ hjt, coeff_subst_extend_zero hjt, hm]`. Establish `K2 : ∀ x : Σ b, Fin (d b),`. Substitute `(Function.extend (fun x : (Σ b : κ', ι (e b)) => (⟨e x.1, x.2⟩ : Σ b, ι b)) (X : (Σ b : κ', ι (e b)) → MvPowerSeries (Σ b : κ', ι (e b)) C) 0) (expAlong G u x) =` using the available equality.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Substitute using the available equality. Assume the hypotheses and unpack their components.
 
-Substitute `(expAlong (fun b => G (e b)) (fun b => u (e b))) (Function.extend (fun x : (Σ b : κ', Fin (d (e b))) => (⟨e x.1, x.2⟩ : Σ b, Fin (d b))) (X : (Σ b : κ', Fin (d (e b))) → MvPowerSeries (Σ b : κ', Fin (d (e b))) C) 0 x) := by` using the available equality. Introduce and unpack `⟨b, k⟩`. Distinguish the cases in `hb : ∃ b', e b' = b`. Take `⟨b', rfl⟩` from `hb`. Establish `h1 : Function.extend (fun x : (Σ b : κ', Fin (d (e b))) => (⟨e x.1, x.2⟩ : Σ b, Fin (d b))) (X : (Σ b : κ', Fin (d (e b))) → MvPowerSeries (Σ b : κ', Fin (d (e b))) C) 0 ⟨e b', k⟩ = X ⟨b', k⟩` using `hjv.extend_apply _ _ ⟨b', k⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ∀ a, Function.extend (fun x : (Σ b : κ', ι (e b)) => (⟨e x.1, x.2⟩ : Σ b, ι b)) (X : (Σ b : κ', ι (e b)) → MvPowerSeries (Σ b : κ', ι (e b)) C) 0 ⟨e b', a⟩ = X ⟨b', a⟩` using `fun a => hjt.extend_apply _ _ ⟨b', a⟩`. Rewrite using `[h1, subst_X hA']`. Simplify using `only [expAlong]`. Rewrite using `[subst_comp_subst_apply (hin (e b')) hRt]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `e'`. Rewrite using `[subst_sum_smul_X hRt]`. Simplify using `only [h2]`. Establish `h1 : Function.extend (fun x : (Σ b : κ', Fin (d (e b))) => (⟨e x.1, x.2⟩ : Σ b, Fin (d b))) (X : (Σ b : κ', Fin (d (e b))) → MvPowerSeries (Σ b : κ', Fin (d (e b))) C) 0 ⟨b, k⟩ = 0` using `Function.extend_apply' _ _ _ (by`. Introduce and unpack `⟨⟨b', k'⟩, h⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hb ⟨b', congrArg Sigma.fst h⟩)`. Establish `h2 : ∀ a, Function.extend (fun x : (Σ b : κ', ι (e b)) => (⟨e x.1, x.2⟩ : Σ b, ι b)) (X : (Σ b : κ', ι (e b)) → MvPowerSeries (Σ b : κ', ι (e b)) C) 0 ⟨b, a⟩ = 0` using `fun a => Function.extend_apply' _ _ _ (by`. Introduce and unpack `⟨⟨b', a'⟩, h⟩`. Conclude with `hb ⟨b', congrArg Sigma.fst h⟩)`. Rewrite using `[h1, ← coe_substAlgHom hA', map_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [expAlong]`. Rewrite using `[subst_comp_subst_apply (hin b) hRt]`. Establish `h3 : (fun e' : Fin (d b) => subst (Function.extend (fun x : (Σ b : κ', ι (e b)) => (⟨e x.1, x.2⟩ : Σ b, ι b)) (X : (Σ b : κ', ι (e b)) → MvPowerSeries (Σ b : κ', ι (e b)) C) 0) (∑ a, u b a e' • (X ⟨b, a⟩ : MvPowerSeries (Σ b, ι b) C))) = 0`. Use function extensionality and compare the values at `e'`. Rewrite using `[subst_sum_smul_X hRt]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[h2]`. Rewrite using `[h3]`. Conclude with `subst_zero_of_constantCoeff _ (hE b k)`. Establish `K : ∀ f : MvPowerSeries (Σ b, Fin (d b)) C, derivAt0 (MvPolynomial.rename (fun x : (Σ b : κ', ι (e b)) => (⟨e x.1, x.2⟩ : Σ b, ι b)) P) (subst (expAlong G u) f) = derivAt0 P (subst (expAlong (fun b => G (e b)) (fun b => u (e b))) (subst (Function.extend (fun x : (Σ b : κ', Fin (d …`. Introduce `f`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[K1, subst_comp_subst_apply hA hRt, subst_comp_subst_apply hRv hA']`. Conclude with `congrArg (fun F => derivAt0 P (subst F f)) (funext K2)`. Establish `Rint : ∀ f : MvPowerSeries (Σ b, Fin (d b)) C, MvIsInt v f → MvIsInt v (subst (Function.extend (fun x : (Σ b : κ', Fin (d (e b))) => (⟨e x.1, x.2⟩ : Σ b, Fin (d b))) (X : (Σ b : κ', Fin (d (e b))) → MvPowerSeries (Σ b : κ', Fin (d (e b))) C) 0) f)`. Introduce `f hf α`. Rewrite using `[coeff_subst_extend_zero hjv]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hf _`. Establish `Rsec : ∀ g : MvPowerSeries (Σ b : κ', Fin (d (e b))) C, MvIsInt v g → ∃ f, MvIsInt v f ∧ subst (Function.extend (fun x : (Σ b : κ', Fin (d (e b))) => (⟨e x.1, x.2⟩ : Σ b, Fin (d b))) (X : (Σ b : κ', Fin (d (e b))) → MvPowerSeries (Σ b : κ', Fin (d (e b))) C) 0) f = g`. Introduce `g hg`. Use `⟨@id (MvPowerSeries (Σ b, Fin (d b)) C) (Function.extend (Finsupp.mapDomain (fun x : (Σ b : κ', Fin (d (e b))) => (⟨e x.1, x.2⟩ : Σ b, Fin (d b)))) (fun α => coeff α g) 0), ?_, ?_⟩` and prove the remaining obligations. Introduce `β show IsIntV v (Function.extend (Finsupp.mapDomain (fun x : (Σ b : κ', Fin (d (e b))) => (⟨e x.1, x.2⟩ : Σ b, Fin (d b)))) (fun α => coeff α g) 0 β)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Function.extend_def]`. Use `split_ifs with h`. Conclude with `hg _`. Simplify using `[IsIntV]`. Use extensionality with `α`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[coeff_subst_extend_zero hjv]`. Conclude with `(Finsupp.mapDomain_injective hjv).extend_apply _ _ α`. Unfold `depth`. Apply `le_antisymm` to reduce the goal to its premises. Use `le_iInf fun g => ?_` and prove the remaining obligations.
-
-Take `⟨f, hf, hfg⟩` from `Rsec g.1 g.2`. Use `(iInf_le _ ⟨f, hf⟩).trans_eq ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[K f, hfg]`. Use `le_iInf fun f => ?_` and prove the remaining obligations.
-
-Use `(iInf_le _ ⟨subst (Function.extend (fun x : (Σ b : κ', Fin (d (e b))) => (⟨e x.1, x.2⟩ : Σ b, Fin (d b))) (X : (Σ b : κ', Fin (d (e b))) → MvPowerSeries (Σ b : κ', Fin (d (e b))) C) 0) f.1, Rint f.1 f.2⟩).trans_eq ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[K f.1]`.
+Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem depth_rename (κ : Type) [Fintype κ] [DecidableEq κ] (d : κ → ℕ)
     (G : ∀ b, LogFGL v (d b)) (ι : κ → Type) [∀ b, Fintype (ι b)] [∀ b, DecidableEq (ι b)]
@@ -265,7 +261,7 @@ end GlobalTheory.FGDepth
 namespace GlobalTheory.FGDepth
 
 /- English proof (translation)
-Introduce `C _ _ v κ _ _ d G ι _ _ u κ' _ _ e P`. Conclude with `depth_rename κ d G ι u κ' e P`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem depth_restrict : ∀ (C : Type) [Field C] [CharZero C] (v : AddValuation C (WithTop ℝ)) (κ : Type) [Fintype κ] [DecidableEq κ] (d : κ → ℕ) (G : ∀ b, LogFGL v (d b)) (ι : κ → Type) [∀ b, Fintype (ι b)] [∀ b, DecidableEq (ι b)] (u : ∀ b, ι b → Fin (d b) → C) (κ' : Type) [Fintype κ'] [DecidableEq κ'] (e : κ' ↪ κ) (P : MvPolynomial (Σ b : κ', ι (e b)) C), depth G u (MvPolynomial.rename (fun x => (⟨e x.1, x.2⟩ : Σ b, ι b)) P) = depth (fun b => G (e b)) (fun b => u (e b)) P := by
   intro C _ _ v κ _ _ d G ι _ _ u κ' _ _ e P

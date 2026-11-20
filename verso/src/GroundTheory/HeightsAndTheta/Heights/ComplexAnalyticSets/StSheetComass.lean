@@ -17,7 +17,7 @@ def sheetJac (s : (Fin d → ℂ) → Fin n → ℂ) (y : Fin d → ℂ) : ℝ :
       (WithLp.linearEquiv 2 ℝ (Fin d → ℂ)).toLinearMap)
 
 /- English proof (translation)
-The claim follows from `Real.sqrt_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem sheetJac_nonneg (s : (Fin d → ℂ) → Fin n → ℂ) (y : Fin d → ℂ) : 0 ≤ sheetJac s y :=
   Real.sqrt_nonneg _

@@ -5,17 +5,17 @@ open Matrix Polynomial
 namespace GlobalTheory.SimSep
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hA : aeval A p = 0`. Use `Matrix.toLin'.injective (LinearMap.ext fun u => ?_)` and prove the remaining obligations. Take `⟨q, rfl⟩` from `hv u`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Matrix.toLin'_apply, map_zero, LinearMap.zero_apply, Matrix.mulVec_mulVec]`. Rewrite using `[← map_mul, mul_comm, map_mul, ← Matrix.mulVec_mulVec, h, Matrix.mulVec_zero]`. Establish `hmin : minpoly R A ∣ p` using `minpoly.dvd R A hA`. Establish `hmon : (minpoly R A).Monic` using `minpoly.monic (Matrix.isIntegral A)`. Use `set d := (minpoly R A).natDegree with hd`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `ψ : (Fin d → R) →ₗ[R] (Fin m → R)` to `{ toFun := fun c => aeval A (((degreeLTEquiv R d).symm c : degreeLT R d) : R[X]) *ᵥ v map_add' := fun a b => by simp [Matrix.add_mulVec] map_smul' := fun c a => by simp [Matrix.smul_mulVec] }`. Establish `hψ : Function.Surjective ψ`. Introduce `u`. Take `⟨q, rfl⟩` from `hv u`. Establish `hq : q %ₘ minpoly R A ∈ degreeLT R d`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_degreeLT]`. Conclude with `lt_of_lt_of_le (degree_modByMonic_lt q hmon) (degree_le_natDegree)`. Use `⟨degreeLTEquiv R d ⟨_, hq⟩, ?_⟩` and prove the remaining obligations. Simplify using `[ψ, Polynomial.aeval_modByMonic_eq_self_of_root (minpoly.aeval R A)]`. Establish `hle : m ≤ d`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `LinearMap.finrank_range_le ψ` as an intermediate fact. Rewrite `this` using `[LinearMap.range_eq_top.mpr hψ, finrank_top]`. Simplify using `using this`. Establish `heq : minpoly R A = A.charpoly`. Use `(Polynomial.eq_of_monic_of_dvd_of_natDegree_le hmon (Matrix.charpoly_monic A) (Matrix.minpoly_dvd_charpoly A) ?_).symm` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]`. Conclude with `hle`. Rewrite `hmin` using `[heq]`. Then use the resulting hypothesis. Introduce and unpack `⟨q, rfl⟩`. Rewrite using `[map_mul, Matrix.aeval_self_charpoly, zero_mul, Matrix.zero_mulVec]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulVec_aeval_eq_zero_iff {R : Type} [Field R] {m : ℕ} (A : Matrix (Fin m) (Fin m) R)
     (v : Fin m → R) (hv : ∀ u : Fin m → R, ∃ p : R[X], u = aeval A p *ᵥ v) (p : R[X]) :
@@ -61,21 +61,19 @@ end GlobalTheory.SimSep
 namespace GlobalTheory.SimSep
 
 /- English proof (translation)
-Introduce `R _ m N U hc hs`. Take `⟨v, hv⟩` from `GlobalTheory.LatOrb.exists_cyclicVector_of_separable_charpoly m N hs`. Take `⟨w, hw⟩` from `GlobalTheory.LatOrb.exists_cyclicVector_of_separable_charpoly m U (hc ▸ hs)`. Set `φ : R[X] →ₗ[R] (Fin m → R)` to `{ toFun := fun p => aeval N p *ᵥ v map_add' := fun a b => by simp [Matrix.add_mulVec] map_smul' := fun c a => by simp [Matrix.smul_mulVec] }`. Set `ψ : R[X] →ₗ[R] (Fin m → R)` to `{ toFun := fun p => aeval U p *ᵥ w map_add' := fun a b => by simp [Matrix.add_mulVec] map_smul' := fun c a => by simp [Matrix.smul_mulVec] }`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hφ : Function.Surjective φ` using `fun u => let ⟨p, hp⟩ := hv u`. Use the proof step `⟨p, hp.symm⟩`. Establish `hψ : Function.Surjective ψ` using `fun u => let ⟨p, hp⟩ := hw u`. Use the proof step `⟨p, hp.symm⟩`. Establish `hker : LinearMap.ker ψ = LinearMap.ker φ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `p`. Simplify using `only [LinearMap.mem_ker]`. Use `show aeval U p *ᵥ w = 0 ↔ aeval N p *ᵥ v = 0`. Rewrite using `[mulVec_aeval_eq_zero_iff U w hw, mulVec_aeval_eq_zero_iff N v hv, hc]`. Set `T : (Fin m → R) ≃ₗ[R] (Fin m → R)` to `((ψ.quotKerEquivOfSurjective hψ).symm.trans (Submodule.quotEquivOfEq _ _ hker)).trans (φ.quotKerEquivOfSurjective hφ)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hT : ∀ p, T (ψ p) = φ p`. Introduce `p`. Establish `h1 : (ψ.quotKerEquivOfSurjective hψ).symm (ψ p) = Submodule.Quotient.mk p`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify using `only [T, LinearEquiv.trans_apply, h1, Submodule.quotEquivOfEq_mk]`. Both sides reduce to the same expression. Establish `hcomm : ∀ x, T (U *ᵥ x) = N *ᵥ T x`. Introduce `x`. Take `⟨p, rfl⟩` from `hψ x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : U *ᵥ ψ p = ψ (X * p)` using `by show U *ᵥ (aeval U p *ᵥ w) = aeval U (X * p) *ᵥ w`. Rewrite using `[map_mul, aeval_X, Matrix.mulVec_mulVec]`. Establish `e2 : N *ᵥ φ p = φ (X * p)` using `by show N *ᵥ (aeval N p *ᵥ v) = aeval N (X * p) *ᵥ v`. Rewrite using `[map_mul, aeval_X, Matrix.mulVec_mulVec]`. Rewrite using `[e1, hT, hT, e2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hl : T.toLinearMap.comp T.symm.toLinearMap = LinearMap.id` using `LinearMap.ext fun x => by simp`. Establish `hr : T.symm.toLinearMap.comp T.toLinearMap = LinearMap.id` using `LinearMap.ext fun x => by simp`. Set `P : GL (Fin m) R` to `⟨LinearMap.toMatrix' T.toLinearMap, LinearMap.toMatrix' T.symm.toLinearMap, by rw [← LinearMap.toMatrix'_comp, hl, LinearMap.toMatrix'_id], by rw [← LinearMap.toMatrix'_comp, hr, LinearMap.toMatrix'_id]⟩`. Use `⟨P, Matrix.toLin'.injective (LinearMap.ext fun x => ?_)⟩` and prove the remaining obligations. Simplify using `only [P, Matrix.toLin'_mul, LinearMap.comp_apply, Matrix.toLin'_toMatrix', Matrix.toLin'_apply, LinearEquiv.coe_coe]`.
-
-Conclude with `(hcomm x).symm`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_of_charpoly_eq_of_separable : ∀ (R : Type) [Field R] (m : ℕ)
     (N U : Matrix (Fin m) (Fin m) R), N.charpoly = U.charpoly → N.charpoly.Separable →

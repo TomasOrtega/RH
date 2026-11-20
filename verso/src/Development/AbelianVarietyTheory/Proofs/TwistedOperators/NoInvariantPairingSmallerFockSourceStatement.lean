@@ -5,7 +5,7 @@ import Formalism.LocalToGlobal.BesselHermitianTheta.DefsReal
 open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible Formalism.L2.Theta
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.NoInvPairing.no_pairing_smaller_source` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FNoInvariantPairingSmallerFockSource.lean&line=248#L248)
 -/

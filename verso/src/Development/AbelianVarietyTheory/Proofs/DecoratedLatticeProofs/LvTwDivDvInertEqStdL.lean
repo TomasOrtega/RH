@@ -16,11 +16,11 @@ open GlobalTheory.LFun (toCompl locMat locChar IsSplitChart IsInertChart IsFrame
 namespace GlobalTheory.LFun
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ B m v w r b α s h2 hw hU hB`. Establish `hv` using `InertChart.under_eq_iff hw`. Establish `hq` using `InertChart.absNorm_eq h2 hw`. Establish `hq0 : ((Ideal.absNorm v.asIdeal : ℕ) : ℂ) ≠ 0` using `by exact_mod_cast (one_lt_absNorm v).ne_bot`. Establish `hns` using `not_isSplit_of_isInertAt hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[LvTw_inert B m hv hq, hB]`. Use `congr 1`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.SphericalSectionVariables.stdL, Units.val_inv_eq_inv_val]`. Use `congr 2`. Rewrite using `[npow, show qV F v = Ideal.absNorm v.asIdeal from rfl, pow_two, show -(2 * (s + 1 / 2)) = -(s + 1 / 2) + -(s + 1 / 2) by ring, Complex.cpow_add _ _ hq0, Nat.cast_mul, Complex.natCast_mul_natCast_cpow]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[dv, GlobalTheory.IndefiniteRowSideFullHecke.SphericalSectionVariables.dFac]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[locL, etaFam_of_unram hU, eulerFac_singleton, GlobalTheory.IndefiniteRowSideFullHecke.SphericalSectionVariables.etaL, Units.val_pow_eq_pow_val, npow, show qV F v = Ideal.absNorm v.asIdeal from rfl]`. Establish `he : ((etaU E v : ℂˣ) : ℂ) = -1` using `by simp [etaU, hns]`. Rewrite using `[he]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem LvTw_div_dv_inert_eq_stdL : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (B : Fam E) (m : HeightOneSpectrum (𝓞 E) → ℂˣ) (v : HeightOneSpectrum (𝓞 F)) (w : HeightOneSpectrum (𝓞 E)) (r b : ℕ) (α : Fin (r / 2) → ℂˣ) (s : ℂ), Module.finrank F E = 2 → IsInertAt F E v w → Formalism.MainNotions.SchurIrreducible.IsUnram (E := E) v → B w = bcParam r α → LvTw B m v (s + 1 / 2) / dv E r b v s = GlobalTheory.IndefiniteRowSideFullHecke.SphericalSectionVariables.stdL (qV F v) r α (((m w)⁻¹ : ℂˣ) : ℂ) (s + 1 / 2) / GlobalTheory.IndefiniteRowSideFullHecke.SphericalSectionVariables.dFac (qV F v) r b s := by
   intro F E _ _ _ _ _ B m v w r b α s h2 hw hU hB

@@ -9,9 +9,9 @@ open TensorProduct WithConv Coalgebra
 namespace GlobalTheory.NMul
 
 /- English proof (translation)
-Establish `key : ∀ (n : ℕ) (x : A), x ∈ (Ideal.span {(p : A)} ^ n • ⊤ : Submodule A A) ↔ x ∈ (Ideal.span {(p : O)} ^ n • ⊤ : Submodule O A)`. Introduce `n x`. Rewrite using `[GlobalTheory.mem_span_singleton_pow_smul_top_iff_exists, GlobalTheory.mem_span_singleton_pow_smul_top_iff_exists]`. Simplify using `[Algebra.smul_def]`. Conclude with `{ haus' := fun x hx => IsHausdorff.haus h.toIsHausdorff x fun n => SModEq.sub_mem.2 ((key n _).1 (SModEq.sub_mem.1 (hx n))) prec' := fun f hf => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨L, hL⟩` from `IsPrecomplete.prec h.toIsPrecomplete (f := f) fun {m n} hmn => SModEq.sub_mem.2 ((key _ _).1 (SModEq.sub_mem.1 (hf hmn)))`. Conclude with `⟨L, fun n => SModEq.sub_mem.2 ((key _ _).2 (SModEq.sub_mem.1 (hL n)))⟩ }`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isAdicComplete_ring_of_module {O A : Type} [CommRing O] [CommRing A] [Algebra O A]
     (p : ℕ) [h : IsAdicComplete (Ideal.span {(p : O)}) A] :
@@ -34,27 +34,27 @@ end GlobalTheory.NMul
 namespace GlobalTheory.NMul
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ _ _ G d c n k`. Use `haveI : IsAdicComplete (Ideal.span {(p : O)}) (G.A n) := GlobalTheory.isAdicComplete_of_finite_projective _ _`. Use `haveI : IsAdicComplete (Ideal.span {(p : G.A n)}) (G.A n) := isAdicComplete_ring_of_module (O := O) p`. Establish `hT` using `(GlobalTheory.T.padicContinuousEvaluation_existsUnique_subst_natural p O (G.A n) (Fin d) (c.x n) (c.nil n)).2 (c.ev n) (c.isEval n)`. Establish `hsucc : ∀ (k : ℕ) (j : Fin d), nmul c.μ (k + 1) j =`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `(Sum.elim (nmul c.μ k) fun i => (X i : MvPowerSeries (Fin d) O)) (c.μ j) := by` using the available equality. Introduce `k j`. Simplify using `only [nmul, Function.iterate_succ_apply']`. Both sides reduce to the same expression. Establish `hmul : ∀ (j : ℕ) (a : G.A n), PDiv.mulBy O (G.A n) j a = (toConv (AlgHom.id O (G.A n)) ^ j).ofConv a` using `fun j a => DFunLike.congr_fun (PDiv.comp_mulBy_pts (AlgHom.id O (G.A n)) j) a`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `k with`. Consider the case `zero`. Introduce `i`. Establish `h0 : nmul c.μ 0 i = 0` using `rfl`. Rewrite using `[h0, map_zero, hmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using `[c.aug n i]`. Consider the case `succ k ih`. Introduce `i`. Establish `hu : ∀ s, constantCoeff (Sum.elim (nmul c.μ k) (fun i => (X i : MvPowerSeries (Fin d) O)) s) = 0`. Establish `hc : ∀ (k : ℕ) (j : Fin d), constantCoeff (nmul c.μ k j) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro j`. Both sides reduce to the same expression. Consider the case `succ k ihk`.
+Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `j`. Rewrite using `[hsucc]`. Apply the tactic sequence `refine constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero ?_) ?_ (c.isLaw.const j) <;>`. Introduce and unpack `(l | l)`. Simplify using `using ihk l`.
+Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Simplify using the standard rewrite rules. Introduce and unpack `(l | l)`. Simplify using `using hc k l`. Simplify using the standard rewrite rules. Set `ψ : MvPowerSeries (Fin d ⊕ Fin d) O →ₐ[O] G.A n` to `(Algebra.TensorProduct.lift (PDiv.mulBy O (G.A n) k : G.A n →ₐ[O] G.A n) (AlgHom.id O (G.A n)) fun _ _ => Commute.all _ _).comp (c.ev₂ n)`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Establish `hψ : IsEval p (fun s => c.ev n (Sum.elim (nmul c.μ k) (fun i => (X i : MvPowerSeries (Fin d) O)) s)) ψ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(l | l)`. Simplify using `only [ψ, AlgHom.comp_apply, (c.isEval₂ n).1 (Sum.inl l), Sum.elim_inl, Algebra.TensorProduct.lift_tmul, map_one, mul_one, ih]`. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [ψ, AlgHom.comp_apply, (c.isEval₂ n).1 (Sum.inr l), Sum.elim_inr, Algebra.TensorProduct.lift_tmul, map_one, one_mul, (c.isEval n).1 l]`. Both sides reduce to the same expression. Introduce `m`. Take `⟨N, hN⟩` from `(c.isEval₂ n).2 m`. Use `⟨N, fun f hf => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hy⟩` from `hN f hf`. Use `⟨(Algebra.TensorProduct.lift (PDiv.mulBy O (G.A n) k : G.A n →ₐ[O] G.A n) (AlgHom.id O (G.A n)) fun _ _ => Commute.all _ _) y, ?_⟩` and prove the remaining obligations. Simplify using `only [ψ, AlgHom.comp_apply, hy, map_mul, map_pow, map_natCast]`. Rewrite using `[hsucc, hT.1 _ _ ψ hu hψ (c.μ i)]`. Simplify using `only [ψ, AlgHom.comp_apply, c.comul n i]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hmul (k + 1), pow_succ, AlgHom.convMul_apply]`. Establish `e : (toConv (AlgHom.id O (G.A n)) ^ k).ofConv = (PDiv.mulBy O (G.A n) k : G.A n →ₐ[O] G.A n)`. Use extensionality with `a`. Conclude with `(hmul k a).symm`. Simplify using `only [e]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ev_nmul : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C]
     (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)]

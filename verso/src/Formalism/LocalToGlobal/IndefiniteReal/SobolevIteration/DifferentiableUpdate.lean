@@ -25,14 +25,14 @@ Both sides reduce to the same expression.
     pds (i :: L) f = pd i (pds L f) := rfl
 
 /- English proof (translation)
-Establish `hd : ContDiff ℝ ∞ (fderiv ℝ f)` using `hf.fderiv_right (m := ∞) (by simp)`. Conclude with `hd.clm_apply contDiff_const`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma contDiff_pd (i : Fin N) {f : (Fin N → ℝ) → H} (hf : ContDiff ℝ ∞ f) : ContDiff ℝ ∞ (pd i f) := by
   have hd : ContDiff ℝ ∞ (fderiv ℝ f) := hf.fderiv_right (m := ∞) (by simp)
   exact hd.clm_apply contDiff_const
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simpa using hf`. Consider the case `cons i L ih => simpa only [pds_cons] using contDiff_pd i ih`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 lemma contDiff_pds (L : List (Fin N)) {f : (Fin N → ℝ) → H} (hf : ContDiff ℝ ∞ f) :
     ContDiff ℝ ∞ (pds L f) := by
@@ -41,16 +41,16 @@ lemma contDiff_pds (L : List (Fin N)) {f : (Fin N → ℝ) → H} (hf : ContDiff
   | cons i L ih => simpa only [pds_cons] using contDiff_pd i ih
 
 /- English proof (translation)
-Conclude with `(contDiff_pds L hf).differentiable (by simp)`.
+A detailed English derivation is pending.
 -/
 lemma differentiable_pds (L : List (Fin N)) {f : (Fin N → ℝ) → H} (hf : ContDiff ℝ ∞ f) :
     Differentiable ℝ (pds L f) := by
   exact (contDiff_pds L hf).differentiable (by simp)
 
 /- English proof (translation)
-Establish `h1 : HasDerivAt (fun t : ℝ => p + t • (Pi.single i 1 : Fin N → ℝ)) (Pi.single i 1) 0`. Simplify using `using ((hasDerivAt_id (0 : ℝ)).smul_const (Pi.single i (1 : ℝ) : Fin N → ℝ)).const_add p`. Establish `h2 : HasFDerivAt f (fderiv ℝ f (p + (0 : ℝ) • Pi.single i 1)) (p + (0 : ℝ) • Pi.single i 1)`. Simplify using `using hf.hasFDerivAt`. Establish `h3` using `h2.comp_hasDerivAt (0 : ℝ) h1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `h3` using `[pd, Function.comp_def]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma pd_hasDerivAt (i : Fin N) {f : (Fin N → ℝ) → H} (p : Fin N → ℝ) (hf : DifferentiableAt ℝ f p) :
     HasDerivAt (fun t : ℝ => f (p + t • Pi.single i 1)) (pd i f p) 0 := by
@@ -62,14 +62,14 @@ lemma pd_hasDerivAt (i : Fin N) {f : (Fin N → ℝ) → H} (p : Fin N → ℝ) 
   simpa [pd, Function.comp_def] using h3
 
 /- English proof (translation)
-Conclude with `(pd_hasDerivAt i p hf).deriv.symm`.
+A detailed English derivation is pending.
 -/
 lemma pd_eq_deriv (i : Fin N) {f : (Fin N → ℝ) → H} (p : Fin N → ℝ) (hf : DifferentiableAt ℝ f p) :
     pd i f p = deriv (fun t : ℝ => f (p + t • Pi.single i 1)) 0 := by
   exact (pd_hasDerivAt i p hf).deriv.symm
 
 /- English proof (translation)
-Rewrite using `[fderiv_clm_apply hg (differentiableAt_const v)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma fderiv_apply_lemma (g : (Fin N → ℝ) → ((Fin N → ℝ) →L[ℝ] H)) (v w p : Fin N → ℝ)
     (hg : DifferentiableAt ℝ g p) : fderiv ℝ (fun q => g q v) p w = fderiv ℝ g p w v := by
@@ -77,9 +77,7 @@ private lemma fderiv_apply_lemma (g : (Fin N → ℝ) → ((Fin N → ℝ) →L[
   simp
 
 /- English proof (translation)
-Establish `hd : ContDiff ℝ ∞ (fderiv ℝ f)` using `hf.fderiv_right (m := ∞) (by simp)`. Use function extensionality and compare the values at `p`. Apply the tactic sequence `have hs := (hf.contDiffAt (x := p)).isSymmSndFDerivAt (by simp <;> first | exact WithTop.coe_le_coe.2 le_top | norm_cast | decide | exact le_top)`. Use `show fderiv ℝ (fun q => fderiv ℝ f q (Pi.single j 1)) p (Pi.single i 1) = fderiv ℝ (fun q => fderiv ℝ f q (Pi.single i 1)) p (Pi.single j 1)`. Rewrite using `[fderiv_apply_lemma _ _ _ _ (hd.differentiable (by simp) p), fderiv_apply_lemma _ _ _ _ (hd.differentiable (by simp) p)]`.
-
-Conclude with `hs _ _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma pd_comm (i j : Fin N) {f : (Fin N → ℝ) → H} (hf : ContDiff ℝ ∞ f) :
     pd i (pd j f) = pd j (pd i f) := by
@@ -94,7 +92,7 @@ lemma pd_comm (i j : Fin N) {f : (Fin N → ℝ) → H} (hf : ContDiff ℝ ∞ f
   exact hs _ _
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => rfl`. Consider the case `cons i L ih`. Simplify using `only [pds_cons]`. Rewrite using `[pd_comm k i (contDiff_pds L hf), ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma pd_pds (k : Fin N) (L : List (Fin N)) {f : (Fin N → ℝ) → H} (hf : ContDiff ℝ ∞ f) :
     pd k (pds L f) = pds L (pd k f) := by
@@ -105,7 +103,7 @@ lemma pd_pds (k : Fin N) (L : List (Fin N)) {f : (Fin N → ℝ) → H} (hf : Co
     rw [pd_comm k i (contDiff_pds L hf), ih]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Establish `h` using `(A.hasFDerivAt.comp p (hf p).hasFDerivAt).fderiv`. Simplify using `only [pd]`. Rewrite using `[show (fun q => A (f q)) = A ∘ f from rfl, h]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma pd_clm (i : Fin N) (A : H →L[ℝ] H) {f : (Fin N → ℝ) → H} (hf : Differentiable ℝ f) :
     pd i (fun p => A (f p)) = fun p => A (pd i f p) := by
@@ -116,7 +114,7 @@ lemma pd_clm (i : Fin N) (A : H →L[ℝ] H) {f : (Fin N → ℝ) → H} (hf : D
   rfl
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => rfl`. Consider the case `cons i L ih`. Simplify using `only [pds_cons]`. Rewrite using `[ih, pd_clm i A (differentiable_pds L hf)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma pds_clm (L : List (Fin N)) (A : H →L[ℝ] H) {f : (Fin N → ℝ) → H} (hf : ContDiff ℝ ∞ f) :
     pds L (fun p => A (f p)) = fun p => A (pds L f p) := by
@@ -127,7 +125,7 @@ lemma pds_clm (L : List (Fin N)) (A : H →L[ℝ] H) {f : (Fin N → ℝ) → H}
     rw [ih, pd_clm i A (differentiable_pds L hf)]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Simplify using `only [pd]`. Establish `h` using `((hf p).hasFDerivAt.add (hg p).hasFDerivAt).fderiv`. Conclude with `congrArg (fun L : (Fin N → ℝ) →L[ℝ] H => L (Pi.single i 1)) h`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma pd_add (i : Fin N) {f g : (Fin N → ℝ) → H} (hf : Differentiable ℝ f) (hg : Differentiable ℝ g) :
     pd i (fun p => f p + g p) = fun p => pd i f p + pd i g p := by
@@ -137,7 +135,7 @@ lemma pd_add (i : Fin N) {f g : (Fin N → ℝ) → H} (hf : Differentiable ℝ 
   exact congrArg (fun L : (Fin N → ℝ) →L[ℝ] H => L (Pi.single i 1)) h
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Simplify using `only [pd]`. Establish `h` using `((hf p).hasFDerivAt.const_smul c).fderiv`. Conclude with `congrArg (fun L : (Fin N → ℝ) →L[ℝ] H => L (Pi.single i 1)) h`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma pd_smul (i : Fin N) (c : ℝ) {f : (Fin N → ℝ) → H} (hf : Differentiable ℝ f) :
     pd i (fun p => c • f p) = fun p => c • pd i f p := by
@@ -147,7 +145,7 @@ lemma pd_smul (i : Fin N) (c : ℝ) {f : (Fin N → ℝ) → H} (hf : Differenti
   exact congrArg (fun L : (Fin N → ℝ) →L[ℝ] H => L (Pi.single i 1)) h
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => rfl`. Consider the case `cons i L ih`. Simplify using `only [pds_cons]`. Rewrite using `[ih, pd_add i (differentiable_pds L hf) (differentiable_pds L hg)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma pds_add (L : List (Fin N)) {f g : (Fin N → ℝ) → H} (hf : ContDiff ℝ ∞ f) (hg : ContDiff ℝ ∞ g) :
     pds L (fun p => f p + g p) = fun p => pds L f p + pds L g p := by
@@ -158,7 +156,7 @@ lemma pds_add (L : List (Fin N)) {f g : (Fin N → ℝ) → H} (hf : ContDiff �
     rw [ih, pd_add i (differentiable_pds L hf) (differentiable_pds L hg)]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => rfl`. Consider the case `cons i L ih`. Simplify using `only [pds_cons]`. Rewrite using `[ih, pd_smul i c (differentiable_pds L hf)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma pds_smul (L : List (Fin N)) (c : ℝ) {f : (Fin N → ℝ) → H} (hf : ContDiff ℝ ∞ f) :
     pds L (fun p => c • f p) = fun p => c • pds L f p := by
@@ -169,7 +167,7 @@ lemma pds_smul (L : List (Fin N)) (c : ℝ) {f : (Fin N → ℝ) → H} (hf : Co
     rw [ih, pd_smul i c (differentiable_pds L hf)]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Apply the tactic sequence `by_cases hk : k = j <;> simp [Function.update_apply, hk, Pi.single_apply, Ne.symm hij]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma update_add_single {i j : Fin N} (hij : i ≠ j) (r : Fin N → ℝ) (s t : ℝ) :
     Function.update (r + t • Pi.single i 1) j s = Function.update r j s + t • Pi.single i 1 := by
@@ -177,7 +175,7 @@ lemma update_add_single {i j : Fin N} (hij : i ≠ j) (r : Fin N → ℝ) (s t :
   by_cases hk : k = j <;> simp [Function.update_apply, hk, Pi.single_apply, Ne.symm hij]
 
 /- English proof (translation)
-Use `differentiable_pi.2 fun k => ?_` and prove the remaining obligations. Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify `(differentiable_apply k : Differentiable ℝ fun r : Fin N → ℝ => r k)` using `[Function.update_of_ne hk]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma differentiable_update (j : Fin N) (s : ℝ) :
     Differentiable ℝ (fun r : Fin N → ℝ => Function.update r j s) := by
@@ -189,7 +187,7 @@ lemma differentiable_update (j : Fin N) (s : ℝ) :
       (differentiable_apply k : Differentiable ℝ fun r : Fin N → ℝ => r k)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `r`. Rewrite using `[pd_eq_deriv i (f := fun r => g (Function.update r j s)) r ((hg.comp (differentiable_update j s)) r), pd_eq_deriv i _ (hg _)]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Simplify using `only [update_add_single hij]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma pd_update (i j : Fin N) (hij : i ≠ j) (s : ℝ) {g : (Fin N → ℝ) → H} (hg : Differentiable ℝ g) :
     pd i (fun r => g (Function.update r j s)) = fun r => pd i g (Function.update r j s) := by
@@ -202,7 +200,7 @@ lemma pd_update (i j : Fin N) (hij : i ≠ j) (s : ℝ) {g : (Fin N → ℝ) →
   simp only [update_add_single hij]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => rfl`. Consider the case `cons i L ih`. Simplify using `only [pds_cons]`. Rewrite using `[ih (fun k hk => hL k (by simp [hk])), pd_update i j (hL i (by simp)) s (differentiable_pds L hg)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma pds_update (L : List (Fin N)) (j : Fin N) (hL : ∀ i ∈ L, i ≠ j) (s : ℝ) {g : (Fin N → ℝ) → H}
     (hg : ContDiff ℝ ∞ g) :

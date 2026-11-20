@@ -32,7 +32,7 @@ def chosenProb : Measure (ClassSpace Γ) :=
     (chosenQuot Γ P P' Set.univ)⁻¹ • chosenQuot Γ P P' else Measure.dirac (classOf Γ 1)
 
 /- English proof (translation)
-Introduce `_ hs` and use `hs`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem measurable_classOf : Measurable (classOf Γ) := fun _ hs => hs
 
@@ -59,9 +59,9 @@ variable {H H' : Type} [Group H] [Group H'] [TopologicalSpace H] [TopologicalSpa
 
 include he in
 /- English proof (translation)
-Use `(cls_eq_iff Γ a b).trans (Iff.trans ?_ (cls_eq_iff Γ' _ _).symm)` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, hγ, rfl⟩`. Conclude with `⟨e γ, (he γ).2 hγ, map_mul e _ _⟩`. Introduce and unpack `⟨γ, hγ, h⟩`.
+Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨e.symm γ, (he _).1 (by simpa using hγ), e.injective ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, h]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem classOf_eq_iff (a b : H) : classOf Γ a = classOf Γ b ↔ cls Γ' (e a) = cls Γ' (e b) := by
   refine (cls_eq_iff Γ a b).trans (Iff.trans ?_ (cls_eq_iff Γ' _ _).symm)
@@ -95,7 +95,7 @@ def IsHaarPair (Γ : Subgroup H) (p : Measure H × Set H) : Prop :=
   p.1.IsHaarMeasure ∧ IsFundamentalDomain Γ p.2 p.1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => Iff.rfl, fun _ h => ⟨h.1.2.2.1, h.2⟩⟩`.
+Supply the required witnesses or components.
 -/
 example (K : Subgroup (UFin G)) :
     (∀ g, ContinuousMulEquiv.refl (UAd G) g ∈ ratPts G ↔ g ∈ ratPts G) ∧
@@ -109,7 +109,7 @@ section Split
 open scoped Matrix
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((g : Matrix (Fin n) (Fin n) R).map s)ᵀ * J * (g : Matrix (Fin n) (Fin n) R) = J ↔ (g : Matrix (Fin n) (Fin n) R)ᵀ * Jᵀ * (g : Matrix (Fin n) (Fin n) R).map s = Jᵀ`. Rewrite using `[← Matrix.transpose_inj, Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_UJ_iff {R : Type} [CommRing R] (s : R →+* R) {n : ℕ} (J : Matrix (Fin n) (Fin n) R) (g : GL (Fin n) R) :
     g ∈ Formalism.UG.UJ s J ↔ g ∈ unitaryOf s Jᵀ := by
@@ -128,21 +128,21 @@ def glue (A : ι → Matrix (Fin n) (Fin n) ℂ) (B : Matrix (Fin n) (Fin n) S) 
   Matrix.of fun i j => Φ.symm (fun w => A w i j, B i j)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[glue, compAt]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem glue_at (A : ι → Matrix (Fin n) (Fin n) ℂ) (B : Matrix (Fin n) (Fin n) S) (w : ι) :
     (glue Φ A B).map (compAt Φ w) = A w := by
   ext i j; simp [glue, compAt]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[glue, compLast]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem glue_last (A : ι → Matrix (Fin n) (Fin n) ℂ) (B : Matrix (Fin n) (Fin n) S) :
     (glue Φ A B).map (compLast Φ) = B := by
   ext i j; simp [glue, compLast]
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `Φ.injective (Prod.ext (funext fun w => congrFun (congrFun (h w) i) j) (congrFun (congrFun h' i) j))`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem comp_ext {M N : Matrix (Fin n) (Fin n) R} (h : ∀ w, M.map (compAt Φ w) = N.map (compAt Φ w))
     (h' : M.map (compLast Φ) = N.map (compLast Φ)) : M = N := by
@@ -158,7 +158,7 @@ def glueGL (a : ι → GL (Fin n) ℂ) (b : GL (Fin n) S) : GL (Fin n) R where
     (by rw [Matrix.map_mul, glue_last, glue_last, b.inv_val]; simp)
 
 /- English proof (translation)
-The claim follows from `Units.continuous_iff.2 ⟨Units.continuous_val.matrix_map h, Units.continuous_coe_inv.matrix_map h⟩`.
+A detailed English derivation is pending.
 -/
 theorem continuous_map {R R' : Type} [CommRing R] [CommRing R'] [TopologicalSpace R] [TopologicalSpace R']
     {φ : R →+* R'} (h : Continuous φ) : Continuous (Matrix.GeneralLinearGroup.map (n := Fin n) φ) :=
@@ -221,9 +221,9 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNot
 variable (E : Type) [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Establish `: ∀ v : InfinitePlace F, SigmaCompactSpace v.Completion` using `fun v => (InfinitePlace.Completion.isometry_extensionEmbedding v).isClosedEmbedding.sigmaCompactSpace`. Establish `: SigmaCompactSpace (Ainf F)` using `inferInstanceAs (SigmaCompactSpace (∀ v : InfinitePlace F, v.Completion))`. Establish `: IsModuleTopology (Ainf F) (Ainf F ⊗[F] E)` using `⟨rfl⟩`. Establish `: ContinuousAdd (Ainf F ⊗[F] E)` using `IsModuleTopology.toContinuousAdd (Ainf F) _`. Take `⟨m, f, hf⟩` from `Module.Finite.exists_fin' (Ainf F) (Ainf F ⊗[F] E)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[← hf.range_eq]`. Conclude with `isSigmaCompact_range (IsModuleTopology.continuous_of_linearMap f)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigmaCompact_inf (F : Type) [Field F] [NumberField F] [Algebra F E] : SigmaCompactSpace (Ainf F ⊗[F] E) := by
   have : ∀ v : InfinitePlace F, SigmaCompactSpace v.Completion := fun v =>
@@ -237,15 +237,15 @@ theorem sigmaCompact_inf (F : Type) [Field F] [NumberField F] [Algebra F E] : Si
   exact isSigmaCompact_range (IsModuleTopology.continuous_of_linearMap f)
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `GlobalTheory.InfAdeleCM.infAdele_tensor_bijective (maximalRealSubfield E) E (IsCMField.complexConj E) (Algebra.IsQuadraticExtension.finrank_eq_two _ _) (IsCMField.complexConj_ne_one E) inferInstance (IsCMField.complexEmbedding_complexConj E)`. Use `choose θ hθ using h1`. Take `⟨h3, h4, h5⟩` from `h2 θ hθ`. Establish `hinj : Function.Injective (fun w : InfinitePlace E => w.embedding)` using `fun v w h => by`. Rewrite using `[← v.mk_embedding, ← w.mk_embedding]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrArg _ h`. Establish `hmem : ∀ τ : E →+* ℂ, τ ∈ Set.range (fun w : InfinitePlace E => w.embedding) ↔ (InfinitePlace.mk τ).embedding = τ` using `fun τ => ⟨fun ⟨w, hw⟩ => by rw [← hw]; simp only [InfinitePlace.mk_embedding], fun h => ⟨_, h⟩⟩`. Establish `hb` using `h5 (Set.range fun w : InfinitePlace E => w.embedding) fun τ => by`. Establish `hne : ComplexEmbedding.conjugate τ ≠ τ` using `fun h => IsTotallyComplex.complexEmbedding_not_isReal τ (ComplexEmbedding.isReal_iff.2 h)`. Rewrite using `[hmem, hmem, InfinitePlace.mk_conjugate_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `InfinitePlace.embedding_mk_eq τ with h | h` into its components or cases. Rewrite using `[h]`. Simplify using `[hne.symm]`. Rewrite using `[h]`. Simplify using `[hne]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `f : Ainf (maximalRealSubfield E) ⊗[maximalRealSubfield E] E →+* (InfinitePlace E → ℂ)` to `Pi.ringHom fun w => θ w.embedding`. Establish `hf : Function.Bijective f` using `(Equiv.arrowCongr (Equiv.ofInjective _ hinj).symm (Equiv.refl ℂ)).bijective.comp hb`. Establish `hfc : Continuous f` using `continuous_pi fun w => h3 _`. Use `sigmaCompact_inf E (maximalRealSubfield E)` as an intermediate fact. Establish `: IsModuleTopology (Ainf (maximalRealSubfield E)) (Ainf (maximalRealSubfield E) ⊗[maximalRealSubfield E] E)` using `⟨rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsTopologicalRing (Ainf (maximalRealSubfield E) ⊗[maximalRealSubfield E] E)` using `IsModuleTopology.isTopologicalRing (Ainf (maximalRealSubfield E)) _`. Establish `ho : IsOpenMap f` using `f.toAddMonoidHom.isOpenMap_of_sigmaCompact hf.2 hfc`. Use `⟨RingEquiv.ofBijective f hf, hfc, ?_, fun x w => (hθ _).1 x, fun z w => h4 _ z⟩` and prove the remaining obligations. Conclude with `((RingEquiv.ofBijective f hf).toEquiv.toHomeomorphOfContinuousOpen hfc ho).symm.continuous`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_inf_equiv : ∃ Θ : Ainf (maximalRealSubfield E) ⊗[maximalRealSubfield E] E ≃+* (InfinitePlace E → ℂ),
     Continuous Θ ∧ Continuous Θ.symm ∧ (∀ x w, Θ (1 ⊗ₜ x) w = w.embedding x) ∧

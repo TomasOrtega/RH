@@ -13,11 +13,9 @@ open NumberField NumberField.Units NumberField.Units.dirichletUnitTheorem Global
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.Shintani
 
 /- English proof (translation)
-Use `haveI : Finite (F →+* ℝ) := Finite.of_equiv _ (realEmbeddingsEquiv F).symm`. Use `haveI : Fintype (F →+* ℝ) := Fintype.ofFinite _`. Establish `hprod : ∏ τ : F →+* ℝ, τ ((u : 𝓞 F) : F) = 1`. Rewrite using `[prod_real_embeddings_eq_absNorm (u : 𝓞 F) hu, Ideal.span_singleton_eq_top.2 u.isUnit, Ideal.absNorm_top]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Choose the witnesses or unpack the hypotheses as in `⟨τ, hτ⟩ : ∃ τ : F →+* ℝ, τ ((u : 𝓞 F) : F) ≤ 1 := by`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hlt : ∏ _τ : F →+* ℝ, (1 : ℝ) < ∏ τ : F →+* ℝ, τ ((u : 𝓞 F) : F)` using `Finset.prod_lt_prod_of_nonempty (fun _ _ => one_pos) (fun τ _ => hne τ) ⟨σ, Finset.mem_univ σ⟩`. Rewrite `hlt` using `[hprod]`.
-
-Simplify using `at hlt`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem embedding_unit_le_abs {F : Type} [Field F] [NumberField F] [IsTotallyReal F] {R : ℝ} {u : (𝓞 F)ˣ}
     (hu : TotPos F ((u : 𝓞 F) : F)) (hR : ∀ σ τ : F →+* ℝ, σ ((u : 𝓞 F) : F) ≤ R * τ ((u : 𝓞 F) : F))
@@ -41,9 +39,9 @@ theorem embedding_unit_le_abs {F : Type} [Field F] [NumberField F] [IsTotallyRea
     _ = |R| := mul_one _
 
 /- English proof (translation)
-Introduce `F _ _ _ R`. Establish `hinj : Function.Injective (fun u : (𝓞 F)ˣ => ((u : 𝓞 F) : F))` using `fun a b h => Units.ext (RingOfIntegers.ext h)`. Use `((Embeddings.finite_of_norm_le F ℂ |R|).preimage hinj.injOn).subset ?_` and prove the remaining obligations. Introduce and unpack `u ⟨hu, hR⟩`. Use `⟨(u : 𝓞 F).isIntegral_coe, fun φ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨σ, rfl⟩` from `(realEmbeddingsEquiv F).surjective φ`. Establish `h` using `embedding_unit_le_abs hu hR σ`. Express the relevant statement in the definitionally equal form `‖((σ ((u : 𝓞 F) : F) : ℝ) : ℂ)‖ ≤ |R|`. Rewrite using `[Complex.norm_real, Real.norm_of_nonneg (hu σ).le]`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_totPos_units_bounded_ratio : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (R : ℝ),
     {u : (𝓞 F)ˣ | TotPos F ((u : 𝓞 F) : F) ∧ ∀ σ τ : F →+* ℝ, σ ((u : 𝓞 F) : F) ≤ R * τ ((u : 𝓞 F) : F)}.Finite := by

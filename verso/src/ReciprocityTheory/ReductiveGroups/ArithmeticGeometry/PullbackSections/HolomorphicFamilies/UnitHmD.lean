@@ -12,7 +12,7 @@ open scoped ComplexConjugate
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Unfold `conjEmb`. Use extensionality with `z`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem conjEmb_conjEmb (τ : E →+* ℂ) : conjEmb (conjEmb τ) = τ := by
   unfold conjEmb
@@ -20,7 +20,7 @@ theorem conjEmb_conjEmb (τ : E →+* ℂ) : conjEmb (conjEmb τ) = τ := by
   simp
 
 /- English proof (translation)
-Unfold `conjEmb`. Use extensionality with `z`. Simplify using `[NumberField.ComplexEmbedding.conjugate]`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem conjEmb_eq_conjugate (τ : E →+* ℂ) : conjEmb τ = ComplexEmbedding.conjugate τ := by
   unfold conjEmb
@@ -30,7 +30,7 @@ theorem conjEmb_eq_conjugate (τ : E →+* ℂ) : conjEmb τ = ComplexEmbedding.
 variable (X : Data E r) (x : Frame X.Ψ r)
 
 /- English proof (translation)
-Rewrite using `[conjEmb_eq_conjugate]`. Conclude with `(X.cmType τ.1).1 τ.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjEmb_not_mem (τ : X.Ψ) : conjEmb τ.1 ∉ X.Ψ := by
   rw [conjEmb_eq_conjugate]; exact (X.cmType τ.1).1 τ.2

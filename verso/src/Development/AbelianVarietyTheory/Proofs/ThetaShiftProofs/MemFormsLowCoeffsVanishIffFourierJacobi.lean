@@ -22,7 +22,7 @@ open MeasureTheory GlobalTheory.TorusFourier GlobalTheory.MaxCuspKilled
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r ρ : ℕ}
 
 /- English proof (translation)
-Establish `h1 : ∀ a b, IsCMField.complexConj E (X.Gm a b) = X.Gm b a` using `X.Gm_herm`. Simplify using `only [herm, cc, map_sum, map_mul, h1, IsCMField.complexConj_apply_apply]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem herm_swap (X : Data E r) (v w : Fin r → E) : herm X.Gm w v = cc (herm X.Gm v w) := by
   have h1 : ∀ a b, IsCMField.complexConj E (X.Gm a b) = X.Gm b a := X.Gm_herm
@@ -31,17 +31,15 @@ theorem herm_swap (X : Data E r) (v w : Fin r → E) : herm X.Gm w v = cc (herm 
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Distinguish the cases in `hm : ξ ∈ Submodule.span E (Set.range cu.e)`. Conclude with `⟨cu, hm⟩`. Use `set I := Submodule.span E (Set.range cu.e) with hI`. Establish `hiso : GlobalTheory.MaxCusp.IsIsotropicSub X.Gm I` using `GlobalTheory.MaxCusp.isIsotropicSub_span (by rintro _ ⟨a, rfl⟩ _ ⟨b, rfl⟩; exact cu.iso a b)`. Set `f : I →ₗ[E] E` to `{ toFun := fun v => herm X.Gm v ξ map_add' := fun x y => by simp [herm, add_mul, Finset.sum_add_distrib] map_smul' := fun c x => by`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Simplify using `only [herm, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, RingHom.id_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring }`. Establish `hIr : Module.finrank E I = n + 1`. Rewrite using `[hI, finrank_span_eq_card cu.ind, Fintype.card_fin]`. Establish `hk : n ≤ Module.finrank E (LinearMap.ker f)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `f.finrank_range_add_finrank_ker`. Establish `h2 : Module.finrank E (LinearMap.range f) ≤ 1`. Simplify using `using Submodule.finrank_le (LinearMap.range f)`. Use linear arithmetic over natural numbers and integers. Take `⟨u, hu⟩` from `exists_linearIndependent_of_le_finrank hk`.
+Simplify to obtain the desired conclusion from the available facts. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set w : Fin n → Fin r → E := fun i => ((u i : I) : Fin r → E) with hw`. Establish `hwi : LinearIndependent E w` using `(hu.map' _ (Submodule.ker_subtype _)).map' I.subtype (Submodule.ker_subtype _)`. Establish `hwI : ∀ i, w i ∈ I` using `fun i => (u i : I).2`. Establish `hwξ : ∀ i, herm X.Gm (w i) ξ = 0` using `fun i => (u i).2`. Establish `hns : ξ ∉ Submodule.span E (Set.range w)` using `fun h => hm (Submodule.span_le.2 (by rintro _ ⟨i, rfl⟩; exact hwI i) h)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨Fin.cons ξ w, hwi.finCons hns, fun a b => ?_⟩, Submodule.subset_span ⟨0, rfl⟩⟩` and prove the remaining obligations. Apply the tactic sequence `refine Fin.cases ?_ (fun a => ?_) a <;> refine Fin.cases ?_ (fun b => ?_) b`. Conclude with `hξ`. Use `show herm X.Gm ξ (w b) = 0`. Rewrite using `[herm_swap, hwξ]`.
-
-Simplify using `[cc]`. Conclude with `hwξ a`. Conclude with `hiso _ (hwI a) _ (hwI b)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_cusp_mem {n : ℕ} (X : Data E r) (cu : CuspFD X (n + 1)) {ξ : Fin r → E} (h0 : ξ ≠ 0)
     (hξ : herm X.Gm ξ ξ = 0) : ∃ cu' : CuspFD X (n + 1), ξ ∈ Submodule.span E (Set.range cu'.e) := by
@@ -80,23 +78,21 @@ theorem exists_cusp_mem {n : ℕ} (X : Data E r) (cu : CuspFD X (n + 1)) {ξ : F
   · exact hiso _ (hwI a) _ (hwI b)
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hb : IsZBasis X cu (zBas X cu)` using `Classical.epsilon_spec hbas`. Establish `hdom : ∀ u, zAct X cu u x ∈ X.dom` using `fun u => zAct_mem_dom X cu (zBas_skew X cu hbas) u x hx`. Take `⟨L, hL1, hL2, hL3⟩` from `GlobalTheory.T.cuspFlow_eq_torusAction E r ρ X cu hb η hηΛ`. Use `set ν : X.Ψ → ℝ := fun τ => (τ.1 (hq χ η)).re with hν`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set g : (Fin (nZ X ρ) → ℝ) → ℂ := fun t => P (zAct X cu t x) with hg`. Establish `hgc : Continuous g` using `hsec.1.continuousOn.comp_continuous (continuous_zAct X cu x) hdom`. Establish `hper : ∀ l : Fin (nZ X ρ) → ℝ, (∀ k, ∃ z : ℤ, l k = z) → ∀ u, g (u + l) = g u`. Introduce `l hl u`. Use `choose n hn using hl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: l = fun i => (n i : ℝ)` using `funext hn`. Rewrite using `[this]`. Conclude with `maxCuspsA_periodic X cu hb la hchi P hsec x hx u n`. Establish `hcomp : dotForm 1 (phZ X cu χ) ∘ₗ L = dotForm 2 ν`. Use `LinearMap.ext fun s => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[LinearMap.comp_apply, dotForm_apply, dotForm_apply, one_mul, hL2 χ hχ.1 s]`. Establish `hfreq : ∀ p ∈ X.periods la, ∃ k : ℤ, 2 * ∑ τ, ν τ * p τ = k`. Introduce `p hp`. Use `choose n hn using hL3 la p hp`. Use `choose m hm using hχ.2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `⟨∑ k, m k * n k, ?_⟩` and prove the remaining obligations. Rewrite using `[← hL2 χ hχ.1 p]`. Simplify using `only [hn, hm]`. Use `push_cast`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hex` using `PeriodLatticeCountable.fd_exists X la`. Take `⟨-, hD, h0, h1⟩` from `hex.choose_spec`. Take `⟨H₁, -, -⟩` from `partialCoeff_spec_cube (Pi.basisFun ℝ (Fin (nZ X ρ))) hD h0.ne' h1.ne L hgc (fun i => hper _ fun k => ⟨if k = i then 1 else 0, by`. Apply the tactic sequence `by_cases h : k = i <;> simp [h]⟩)`. Use the proof step `(fun l hl => hper _ (hL3 la l hl))`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨-, -, -, B⟩` from `H₁ (dotForm 2 ν) hfreq`. Rewrite using `[coefFn_eq_cubeCoeff]`. Use `B.1 ?_ _ (fun i => ?_) hcomp` and prove the remaining obligations. Use function extensionality and compare the values at `b`. Establish `h` using `hP _ (hdom b)`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Rewrite `h` using `[Data.fj, if_pos hfreq, dif_pos hex]`. Rewrite using `[partialCoeff, coeff_eq, Pi.zero_apply, ← h]`. Use `congr 2`. Use function extensionality and compare the values at `s`. Rewrite using `[hL1, maxCuspsA_zAct_add, add_comm (L s), dotForm_apply]`.
-
-Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨z, hz⟩` from `hχ.2 i`. Conclude with `⟨z, by simp [dotForm_apply, Pi.single_apply, hz]⟩`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem coefFn_eq_zero_of_fj (X : Data E r) (cu : CuspFD X ρ) (hbas : ∃ bs, IsZBasis X cu bs) (la : Wt X.Ψ r)
     (hchi : ∀ β ∈ zGam X cu, ∀ γ ∈ X.Γ, (γ : Matrix (Fin r) (Fin r) E) = zMatE X cu.e β → X.χ la γ = 1)
@@ -153,7 +149,7 @@ theorem coefFn_eq_zero_of_fj (X : Data E r) (cu : CuspFD X ρ) (hbas : ∃ bs, I
     exact ⟨z, by simp [dotForm_apply, Pi.single_apply, hz]⟩
 
 /- English proof (translation)
-Establish `h1 : ∀ a b, IsCMField.complexConj E (χ a b) = χ b a` using `hχ`. Simplify using `only [hq, cc, map_sum, map_mul, h1, IsCMField.complexConj_apply_apply]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hq_real {χ : Matrix (Fin ρ) (Fin ρ) E} (hχ : IsHermE χ) (η : Fin ρ → E) : cc (hq χ η) = hq χ η := by
   have h1 : ∀ a b, IsCMField.complexConj E (χ a b) = χ b a := hχ
@@ -162,7 +158,7 @@ theorem hq_real {χ : Matrix (Fin ρ) (Fin ρ) E} (hχ : IsHermE χ) (η : Fin �
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Simplify using `only [hq, cc, Pi.smul_apply, smul_eq_mul, map_mul, map_intCast, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hq_zsmul (χ : Matrix (Fin ρ) (Fin ρ) E) (n : ℤ) (η : Fin ρ → E) :
     hq χ ((n : E) • η) = (n : E) ^ 2 * hq χ η := by
@@ -170,19 +166,17 @@ theorem hq_zsmul (χ : Matrix (Fin ρ) (Fin ρ) E) (n : ℤ) (η : Fin ρ → E)
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Establish `key : ∀ η : Fin ρ → E, η ≠ 0 → (∑ a, η a • cu.e a) ∈ X.Λ → ∀ τ : X.Ψ, 0 < (τ.1 (hq χ η)).re`. Introduce `η hη0 hηΛ τ`. Establish `hiso : X.IsIso (∑ a, η a • cu.e a)` using `⟨hηΛ, herm_comb cu η, fun h => hη0 (funext (Fintype.linearIndependent_iff.1 cu.ind η h))⟩`. Establish `h1 : ∃ y ∈ X.dom, X.fj la (∑ a, η a • cu.e a) (fun τ => (τ.1 (hq χ η)).re) P y ≠ 0`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push Not at h`. Conclude with `hne (coefFn_eq_zero_of_fj X cu hbas la hchi P hP.1.1 χ hχ η hηΛ h x hx)`. Take `⟨y, hy, hfj⟩` from `h1`. Establish `hnn` using `BoundedSectionAlgebra.sign_of_bdd X moderateCoefficientPositivity_holds hP.1 hiso _ hy hfj τ`. Use `lt_of_le_of_ne hnn fun h0 => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hre : (starRingEnd ℂ) (τ.1 (hq χ η)) = τ.1 (hq χ η)`. Rewrite using `[← emb_cc', hq_real hχ.1]`. Establish `hz : hq χ η = 0`. Apply `τ.1.injective` to reduce the goal to its premises. Rewrite using `[map_zero, ← Complex.conj_eq_iff_re.1 hre, ← h0, Complex.ofReal_zero]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `hfj` to reduce the goal to its premises. Establish `: (fun τ : X.Ψ => (τ.1 (hq χ η)).re) = 0` using `by funext τ; simp [hz]`. Rewrite using `[this]`. Conclude with `hP.2 _ hiso y hy`. Take `⟨n, hn0, hn⟩` from `GlobalTheory.MaxCusp.exists_smul_mem X (∑ a, η a • cu.e a)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hn' : (n : E) ≠ 0` using `Int.cast_ne_zero.2 hn0`. Establish `key2 : ∀ τ : X.Ψ, 0 < (τ.1 (hq χ η)).re`. Introduce `τ`. Establish `h` using `key ((n : E) • η) (smul_ne_zero hn' hη) (by simpa [Finset.smul_sum, smul_smul] using hn) τ`. Rewrite `h` using `[hq_zsmul, map_mul, map_pow, map_intCast, ← Complex.ofReal_intCast, ← Complex.ofReal_pow, Complex.re_ofReal_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `pos_of_mul_pos_left (by rwa [mul_comm] at h) (sq_nonneg _)`. Distinguish the cases in `hσ : σ ∈ X.Ψ`. Conclude with `key2 ⟨σ, hσ⟩`. Establish `h2 : ComplexEmbedding.conjugate σ ∈ X.Ψ`. Assume the negation of the conclusion as `h`.
-
-Conclude with `hσ ((X.cmType σ).2 h)`. Simplify using `using key2 ⟨_, h2⟩`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem posDef_of_coefFn_ne_zero (X : Data E r) (cu : CuspFD X ρ) (hbas : ∃ bs, IsZBasis X cu bs) (la : Wt X.Ψ r)
     (hchi : ∀ β ∈ zGam X cu, ∀ γ ∈ X.Γ, (γ : Matrix (Fin r) (Fin r) E) = zMatE X cu.e β → X.χ la γ = 1)
@@ -224,13 +218,13 @@ theorem posDef_of_coefFn_ne_zero (X : Data E r) (cu : CuspFD X ρ) (hbas : ∃ b
     simpa using key2 ⟨_, h2⟩
 
 /- English proof (translation)
-Establish `hb : IsZBasis X cu (zBas X cu)` using `Classical.epsilon_spec hbas`. Use `and_congr_right' ⟨fun h β hβ => ?_, fun h k => h _ ((hb.2 _).2 (Submodule.subset_span ⟨k, rfl⟩))⟩` and prove the remaining obligations. Rewrite `hβ` using `[hb.2]`. Set `φ : Matrix (Fin ρ) (Fin ρ) E →+ ℝ` to `AddMonoidHom.mk' (prE X χ) fun a b => by`. Simplify using `[prE, Matrix.mul_add, add_div, Finset.sum_add_distrib]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `∃ n : ℤ, φ β = n`. Proceed by induction on `hβ using Submodule.span_induction with`. Consider the case `mem v hv => obtain ⟨k, rfl⟩ := hv`. Conclude with `h k`. Consider the case `zero => exact ⟨0, by simp⟩`.
+Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb`. Take `⟨m, hm⟩` from `ha`. Take `⟨n, hn⟩` from `hb`. Conclude with `⟨m + n, by rw [map_add, hm, hn]; push_cast; rfl⟩`. Consider the case `smul c a _ ha`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `ha`. Conclude with `⟨c * m, by rw [map_zsmul, hm]; simp⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isExpoFD_iff (X : Data E r) (cu : CuspFD X ρ) (hbas : ∃ bs, IsZBasis X cu bs)
     (χ : Matrix (Fin ρ) (Fin ρ) E) :
@@ -253,15 +247,13 @@ theorem isExpoFD_iff (X : Data E r) (cu : CuspFD X ρ) (hbas : ∃ bs, IsZBasis 
     exact ⟨c * m, by rw [map_zsmul, hm]; simp⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv`. Take `⟨a, ha, x, hx, h⟩` from `hv`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨a', rfl⟩` from `(FractionalIdeal.mem_one_iff _).1 ha`. Rewrite using `[← h]`. Conclude with `X.Λ.smul_mem a' hx.1`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.add_apply, add_smul, Finset.sum_add_distrib]`. Conclude with `X.Λ.add_mem hx hy`. Consider the case `smul c x _ hx`. Establish `: (∑ i, (c • x) i • cu.e i) = c • ∑ i, x i • cu.e i`. Simplify using `[Finset.smul_sum, smul_assoc]`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this]`. Conclude with `X.Λ.smul_mem c hx`. Introduce `hv`. Use `Submodule.subset_span ⟨1, (FractionalIdeal.mem_one_iff _).2 ⟨1, by simp⟩, _, Submodule.mem_inf.2 ⟨hv, ?_⟩, one_smul _ _⟩` and prove the remaining obligations. Rewrite using `[Submodule.restrictScalars_mem]`.
-
-Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_crdI_one_iff (X : Data E r) (cu : CuspFD X ρ) (v : Fin ρ → E) :
     v ∈ crdI 1 cu ↔ (∑ i, v i • cu.e i) ∈ X.Λ := by
@@ -294,7 +286,7 @@ open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G Reciproci
 open Formalism.L2.Pj Formalism.L2.Pj.QAt Formalism.MainNotions Formalism.BasicNotions Formalism.L2.LamCM GlobalTheory.ArcCM
 
 /- English proof (translation)
-Apply `D.host.φ₀.injective` to reduce the goal to its premises. Rewrite using `[WeightFamilies.emb_conj, FJ.emb_cc']`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cc_eq_conj (D : D7) (z : D.host.E) : FD.cc z = D.host.conj z := by
   apply D.host.φ₀.injective
@@ -302,20 +294,18 @@ theorem cc_eq_conj (D : D7) (z : D.host.E) : FD.cc z = D.host.conj z := by
   rfl
 
 /- English proof (translation)
-Simplify using `only [WeightFamilies.hform, hq, cc_eq_conj]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_eq_hq (D : D7) {n : ℕ} (χ : Matrix (Fin n) (Fin n) D.host.E) (η : Fin n → D.host.E) :
     WeightFamilies.hform D χ η η = hq χ η := by
   simp only [WeightFamilies.hform, hq, cc_eq_conj]
 
 /- English proof (translation)
-Use `Fintype.sum_bijective (fun t => (⟨DV.tauEmb D t, hX t⟩ : X.Ψ)) ⟨fun s t hst => ?_, fun τ => ?_⟩ _ _ fun _ => rfl` and prove the remaining obligations. Establish `h1 : DV.tauEmb D s = DV.tauEmb D t` using `congrArg Subtype.val hst`. Conclude with `D.eTau.injective (Subtype.ext ((factEmb D.R D.host).1.1 h1))`. Take `⟨g, hg⟩` from `(factEmb D.R D.host).1.2 τ.1`. Distinguish the cases in `hP : g ∈ D.R.Psi`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `(Formalism.L2.Geo.exists_tauEmb_iff D g).2 hP`. Conclude with `⟨t, Subtype.ext (by rw [← hg, ht])⟩`. Rewrite `hP` using `[Formalism.L2.Geo.mem_Psi_iff_mul_cc_notMem, not_not]`. Take `⟨t, ht⟩` from `(Formalism.L2.Geo.exists_tauEmb_iff D _).2 hP`. Use `absurd ?_ ((X.cmType τ.1).1 τ.2)` and prove the remaining obligations.
+Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: ComplexEmbedding.conjugate τ.1 = DV.tauEmb D t`. Rewrite using `[← ht, Formalism.L2.Geo.emb_mul_cc_comp, hg]`. Use extensionality with `z`. Conclude with `(WeightFamilies.emb_conj D τ.1 z).symm`. Rewrite using `[this]`.
-
-Conclude with `hX t`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trF_eq_sum (D : D7) {r : ℕ} (X : Data D.host.E r) (hX : ∀ t, DV.tauEmb D t ∈ X.Ψ) (z : D.host.E) :
     WeightFamilies.trF D z = ∑ τ : X.Ψ, (τ.1 z).re := by
@@ -338,29 +328,25 @@ theorem trF_eq_sum (D : D7) {r : ℕ} (X : Data D.host.E r) (hX : ∀ t, DV.tauE
       exact hX t
 
 /- English proof (translation)
-Introduce `D T h j ka CR Tt c hj hjm F`. Establish `hF : F.1 ∈ T.C j ka` using `cutR_le T.C j ka F.2`. Establish `hSS : ∀ k, rdU (T.U j T.σ₀) F.1 k ∈ ((T.U j T.σ₀).X k).SS (laU (T.U j T.σ₀) (wtA ka) ka.n k)` using `abelian₂.holSub_SS siegelSpaceAlgebra_holds _ _ (((mem_cusp _ _ _ _ _ _).1 hF).2 T.σ₀ T.good_σ₀)`. Use `⟨hSS, ?_⟩` and prove the remaining obligations. Establish `hbas : ∀ k (cu : FJ.CuspFD (T.X₀ j k) (WeightFamilies.rho D j)), ∃ bs, FJ.IsZBasis (T.X₀ j k) cu bs` using `fun k cu => h.latZ j hj ⟨k, cu⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hchi : ∀ k, ∀ γ ∈ (T.X₀ j k).Γ, (T.X₀ j k).χ (laU (T.U j T.σ₀) (wtA ka) ka.n k) γ = 1` using `fun k => h.chiTriv j hj T.σ₀ T.good_σ₀ _ _ (dom_wtA ka) k`. Establish `hΨ : ∀ k t, DV.tauEmb D t ∈ (T.X₀ j k).Ψ` using `fun k t => (((h.unf j hj T.σ₀ T.good_σ₀).2.1 k).2 _).2 (h.pins.1.2.2.2 t)`. Establish `hspan : ∀ k ξ, (T.X₀ j k).IsIso ξ → ∃ cu : FJ.CuspFD (T.X₀ j k) (WeightFamilies.rho D j), ξ ∈ Submodule.span D.host.E (Set.range cu.e)`. Introduce `k ξ hξ`. Take `⟨cu⟩` from `h.cuNe j hj k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩ : ∃ n, WeightFamilies.rho D j = n + 1` from `⟨D.R.m - j - 1, by show D.R.m - j = _ omega⟩`. Use `revert cu`. Rewrite using `[hn]`. Conclude with `fun cu => exists_cusp_mem _ cu hξ.2.2 hξ.2.1`. Establish `hmain` using `fun k => GlobalTheory.maxCusps_iff_killed_coeff_vanish D.host.E D.R.r (WeightFamilies.rho D j) (T.X₀ j k) (hspan k) (hbas k) (laU (T.U j T.σ₀) (wtA ka) ka.n k) (fun _ _ _ γ hγ _ => hchi k γ hγ) (WeightFamilies.c1 D CR Tt c j) _ (hSS k)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hherm : ∀ χ : Matrix (Fin (WeightFamilies.rho D j)) (Fin (WeightFamilies.rho D j)) D.host.E, WeightFamilies.IsHerm D χ ↔ FJ.IsHermE χ` using `fun χ => forall_congr' fun a => forall_congr' fun b => by rw [cc_eq_conj, eq_comm]`. Establish `hexpo : ∀ (cu : T.Cu j) χ, IsExpoFD (T.X₀ j cu.1.1) cu.1.2 χ ↔ WeightFamilies.IsHerm D χ ∧ WeightFamilies.IntOn D (T.Xc j cu) χ ((D.host.g 0 * D.host.g 1 : ℕ) : D.host.E)`. Introduce `cu χ`. Rewrite using `[isExpoFD_iff _ _ (hbas _ _), hherm]`. Use `and_congr_right fun hχ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h.expo j hj cu.1 χ hχ]`. Simplify using `only [cc_eq_conj]`. Both sides reduce to the same expression. Establish `hkill : ∀ (cu : T.Cu j) (χ : WeightFamilies.ExpoSet D (T.Xc j cu)), WeightFamilies.Killed (recB h) CR Tt c (j` using `j) cu χ ↔ KilledFD (T.X₀ j cu.1.1) cu.1.2 χ.1 (WeightFamilies.c1 D CR Tt c j) := by`. Introduce `cu χ`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `exists_congr fun η => ?_` and prove the remaining obligations. Establish `h1 : η ∈ WeightFamilies.dualZ D (T.Xc j cu) ↔ (∑ i, η i • cu.1.2.e i) ∈ (T.X₀ j cu.1.1).Λ`. Rewrite using `[maxCuspsTieStatement_holds D T j cu, SetLike.mem_coe, mem_crdI_one_iff]`. Rewrite using `[← h1, ← trF_eq_sum D _ (hΨ _), ← hform_eq_hq]`. Conclude with `and_left_comm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsg : ∀ (cu : T.Cu j) (χ : WeightFamilies.ExpoSet D (T.Xc j cu)), (recB h).sg j cu χ ka F = 0 ↔ ∀ x ∈ (T.X₀ j cu.1.1).dom, FJ.coefFn (FJ.zAct _ cu.1.2) (FJ.phZ _ cu.1.2 χ.1) (rdU (T.U j T.σ₀) F.1 cu.1.1) x = 0`. Introduce `cu χ`. Establish `e : ((recB h).sg j cu χ ka F : Frame (T.X₀ j cu.1.1).Ψ D.R.r → ℂ) = fun x => open Classical in if x ∈ (T.X₀ j cu.1.1).dom then FJ.coefFn (FJ.zAct _ cu.1.2) (FJ.phZ _ cu.1.2 χ.1) (rdU (T.U j T.σ₀) F.1 cu.1.1) x else 0` using `rfl`. Prove the components needed by the constructor for the conclusion. Introduce `h0 x hx`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `congrFun (e.symm.trans h0) x` as an intermediate fact. Rewrite `this` using `[if_pos hx]`. Then use the resulting hypothesis. Introduce `h0`. Use `e.trans (funext fun x => ?_)` and prove the remaining obligations. Use `split_ifs with hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `h0 x hx`. Both sides reduce to the same expression. Simplify using `only [WeightFamilies.MggK, Submodule.mem_iInf, LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `H k`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `(hmain k).2 fun cu χ hχ hK x hx => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Set `cu' : T.Cu j` to `⟨⟨k, cu⟩, hj⟩`. Establish `h1` using `(hexpo cu' χ).1 hχ`. Establish `hpos : WeightFamilies.PosDefE D χ` using `fun l hl σ => by`.
-
-Rewrite using `[hform_eq_hq]`. Conclude with `posDef_of_coefFn_ne_zero _ cu (hbas k cu) _ (fun _ _ γ hγ _ => hchi k γ hγ) _ (hSS k) χ hχ hx hne l hl σ`. Set `χ' : WeightFamilies.ExpoSet D (T.Xc j cu')` to `⟨χ, h1.1, hpos, h1.2⟩`. Conclude with `hne ((hsg cu' χ').1 (H cu' χ' ((hkill cu' χ').2 hK)) x hx)`. Introduce `H cu χ hK`.
-
-Conclude with `(hsg cu χ).2 ((hmain cu.1.1).1 (H _) cu.1.2 χ.1 ((hexpo cu χ.1).2 ⟨χ.2.1, χ.2.2.2⟩) ((hkill cu χ).1 hK))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_iff_low_coeff_vanish : ∀ (D : D7) (T : Core D) (h : LawsCore T) (j : ℕ) (ka : WeightFamilies.Wt D j) (CR Tt cc : ℝ), InR D j → j < D.R.m → ∀ F : (recB h).Cusp j ka, (∀ k, rdU (T.U j T.σ₀) F.1 k ∈ ((T.U j T.σ₀).X k).SS (laU (T.U j T.σ₀) (wtA ka) ka.n k)) ∧ (F ∈ WeightFamilies.MggK (recB h) CR Tt cc j ka ↔ ∀ k, rdU (T.U j T.σ₀) F.1 k ∈ ((T.U j T.σ₀).X k).SSgt (laU (T.U j T.σ₀) (wtA ka) ka.n k) (WeightFamilies.c1 D CR Tt cc j)) := by
   intro D T h j ka CR Tt c hj hjm F

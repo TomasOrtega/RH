@@ -24,13 +24,13 @@ open Formalism Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotion
 namespace GlobalTheory.TheoremBAdm
 
 /- English proof (translation)
-Introduce `hBK hTD hEC D HW F Cm`. Establish `hN1` using `GlobalTheory.T.wachLattice_laterClauses_hold D HW F Cm`. Take `⟨hP1, -, -, -, -, hP6, -, hP8, hP9, -⟩` from `hN1`. Establish `h54` using `GlobalTheory.T.localConstants_from_admitted_local_Galois_statements hBK hTD hEC D HW F Cm`. Take `⟨-, ⟨hWX, -⟩, hW1, -, -, hH, -, -⟩` from `h54`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hB` using `GlobalTheory.T.arcTheorem_tools_of_wachModuleConclusions D HW F Cm`. Take `⟨hSat, -, hSatP, hPi0, hKL, hKill, -, hF1, -⟩` from `hB`. Take `⟨hRelay, hArcAdm⟩` from `GlobalTheory.T.wachRelayLemma_arcCoordinateHypotheses hBK hTD hEC D HW F Cm`. Establish `hA11` using `GlobalTheory.T.ramifiedCoefficientChains_adm11 D`. Establish `hArc` using `GlobalTheory.T.arcCoordinatesCaseA_of_admArcA_of_P1free_of_adm11 D HW F Cm hArcAdm hP1 hA11`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ` using `(GlobalTheory.jumps_exact_adm D HW F).2`. Establish `hExt` using `GlobalTheory.HerrExtClass.herr_extension_class_formula D HW F`. Establish `hAdm9` using `GlobalTheory.T.dcris_exact_strict_elementwise_crystalline D`. Establish `hSplit` using `GlobalTheory.T.classSplitting_along_arcs_of_admissible D HW F Cm ⟨hP8, hP9, hW1, hJ, hExt, hF1, hRelay, hArc⟩ hArcAdm hP1 hP6 hWX (GlobalTheory.T.fontaine_fullFaithful_exact_psi D HW F) hJ hAdm9 hA11`. Establish `hUniv` using `GlobalTheory.T.crystallineUniversalPart_caseA D HW F Cm ⟨hSat, hKL, hPi0, hArc⟩ hP9 hH (GlobalTheory.T.dDeRham_eq_dCris_of_unramified D)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨(GlobalTheory.T.wachModuleLocalConclusions_usedForms D HW F Cm).1, GlobalTheory.T.localConstants_from_admitted_local_Galois_statements hBK hTD hEC D HW F Cm, hSat, hSatP, hKill, ArcLiftingSetup.content_divisibility_clause D, GlobalTheory.T.h1fGeneratorBoundAll_loc D, hRelay, hAr …`.
+Supply the required witnesses or components.
 -/
 theorem admissible_ranks_of_CMDatum : GlobalTheory.Published.BlochKatoLocal → Formalism.GaloisCohomology.LocalTateDualityK → Formalism.GaloisCohomology.LocalEulerCharK →
     ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F),

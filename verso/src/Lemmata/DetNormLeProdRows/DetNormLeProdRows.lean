@@ -4,13 +4,13 @@ import Formalism.GelfandTransference.Statement
 namespace Bl.DetNormLeProdRows
 
 /- English proof (translation)
-Set `v : Fin ρ → EuclideanSpace ℂ (Fin ρ)` to `fun i => WithLp.toLp 2 (A i)`. Establish `h : Module.finrank ℂ (EuclideanSpace ℂ (Fin ρ)) = Fintype.card (Fin ρ)` using `by simp`. Set `e` to `(EuclideanSpace.basisFun (Fin ρ) ℂ).toBasis`. Set `b` to `InnerProductSpace.gramSchmidtOrthonormalBasis h v`. Establish `he : e.det v = A.det`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Module.Basis.det_apply, ← Matrix.det_transpose A]`. Use `congr 1`. Establish `hbv : b.toBasis.det v = b.toBasis.det e * e.det v`. Rewrite using `[Module.Basis.det_apply, Module.Basis.det_apply, Module.Basis.det_apply, ← Matrix.det_mul, Module.Basis.toMatrix_mul_toMatrix]`. Establish `hb1 : ‖b.toBasis.det e‖ = 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[e]`. Establish `key : ‖A.det‖ = ‖b.toBasis.det v‖`. Rewrite using `[hbv, norm_mul, hb1, one_mul, he]`. Rewrite using `[key, InnerProductSpace.gramSchmidtOrthonormalBasis_det h v, norm_prod]`. Apply `Finset.prod_le_prod (fun i _ => norm_nonneg _)` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `i _`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 -/
 private theorem det_norm_le_prod_rows (ρ : ℕ) (A : Matrix (Fin ρ) (Fin ρ) ℂ) :
     ‖A.det‖ ≤ ∏ i, ‖(WithLp.toLp 2 (A i) : EuclideanSpace ℂ (Fin ρ))‖ := by
@@ -36,9 +36,9 @@ private theorem det_norm_le_prod_rows (ρ : ℕ) (A : Matrix (Fin ρ) (Fin ρ) �
     _ = ‖v i‖ := by rw [b.orthonormal.1 i, one_mul]
 
 /- English proof (translation)
-Introduce `ρ A`. Establish `h0` using `det_norm_le_prod_rows ρ A`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Finset.prod_pow]`. Use `Finset.prod_congr rfl (fun i _ => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[EuclideanSpace.norm_sq_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem goal1 :
   Formalism.HadamardInequality.Hadamard := by

@@ -10,7 +10,7 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.S
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ M J _`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [hσ.2.2.1]; norm_num)`. Introduce `hJ hinv r P T hP`. Establish `H : (datR (Af F) σ J P T).Hyp` using `datR_hyp hinv hJ hP`. Conclude with `⟨Asub (Af F) σ J P, levG hinv hJ hP, Asub_le, isClosed_Asub hJ hinv P T hP, continuous_levG hinv hJ P T hP, fun n hn => ⟨levG_mem hinv hJ hP n, levG_inv_mul hinv hJ hP n hn⟩, fun u hu hu1 => levi_inf_unipotent_eq_one hinv hJ hP u hu hu1, fun n hn m hm => unipotent_radical_normal …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem levi_part_all : LevPAll := by
   intro F E _ _ _ _ _ σ hσ M J _

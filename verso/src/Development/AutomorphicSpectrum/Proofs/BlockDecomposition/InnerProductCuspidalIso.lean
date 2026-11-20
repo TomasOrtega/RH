@@ -16,7 +16,7 @@ variable {K : Type} [Field K] [Fintype K] [DecidableEq K]
 variable {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Rewrite using `[PI.GreenLabelSurjWork.glEquiv_symm_val, PI.GreenLabelSurjWork.glEquiv_val]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem glEquiv_symm_symm (e : α ≃ β) (g : GL α K) :
     (glEquiv K e.symm).symm g = glEquiv K e g := by
@@ -26,7 +26,7 @@ theorem glEquiv_symm_symm (e : α ≃ β) (g : GL α K) :
   simp
 
 /- English proof (translation)
-Rewrite using `[(GlobalTheory.T.permutation_matrix_properties K β (e.symm.trans e')).2.1]`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Rewrite using `[PI.GreenLabelSurjWork.glEquiv_val, PI.GreenLabelSurjWork.glEquiv_val, PI.GreenLabelSurjWork.glEquiv_val]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem glEquiv_conj (e e' : α ≃ β) (g : GL α K) :
     glEquiv K e' g =
@@ -39,9 +39,9 @@ theorem glEquiv_conj (e e' : α ≃ β) (g : GL α K) :
   simp
 
 /- English proof (translation)
-Use `set P : GL β K := pm K (e.symm.trans e') with hP`. Set `m : (mu : Type) ≃ₗ[ℂ] (mu : Type)` to `LinearEquiv.ofLinear (mu.ρ P⁻¹) (mu.ρ P) (by rw [← Module.End.mul_eq_comp, ← map_mul]; simp; rfl) (by rw [← Module.End.mul_eq_comp, ← map_mul]; simp; rfl)`. Use `⟨φ.trans m, fun g x => ?_⟩` and prove the remaining obligations. Establish `hm : ∀ y, m y = mu.ρ P⁻¹ y` using `fun _ => rfl`. Simplify using `only [LinearEquiv.trans_apply, hm]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, glEquiv_conj e e' g, ← hP]`. Establish `: P⁻¹ * (P * glEquiv K e g * P⁻¹) = glEquiv K e g * P⁻¹` using `by group`. Rewrite using `[← Module.End.mul_apply, ← map_mul, this, map_mul, Module.End.mul_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem along_of_along (lam : FDRep ℂ (GL α K)) (mu : FDRep ℂ (GL β K)) (e e' : α ≃ β)
     (φ : lam ≃ₗ[ℂ] mu) (h : ∀ g x, φ (lam.ρ g x) = mu.ρ (glEquiv K e' g) (φ x)) :
@@ -58,7 +58,7 @@ theorem along_of_along (lam : FDRep ℂ (GL α K)) (mu : FDRep ℂ (GL β K)) (e
   rw [← Module.End.mul_apply, ← map_mul, this, map_mul, Module.End.mul_apply]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨e', φ, h⟩`. Conclude with `along_of_along lam mu e e' φ h`. Introduce and unpack `⟨φ, h⟩`. Conclude with `⟨e, φ, h⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cuspIso_iff_along (lam : FDRep ℂ (GL α K)) (mu : FDRep ℂ (GL β K)) (e : α ≃ β) :
     CuspIso K lam mu ↔
@@ -70,11 +70,9 @@ theorem cuspIso_iff_along (lam : FDRep ℂ (GL α K)) (mu : FDRep ℂ (GL β K))
     exact ⟨e, φ, h⟩
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.T.simple_iff_irreducible.2 (GL α K) lam (transp e.symm mu)]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ε, h⟩`. Use `⟨ε, fun g x => ?_⟩` and prove the remaining obligations. Use `h g x` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[PI.GreenLabelSurjWork.transp_ρ, glEquiv_symm_symm]`. Conclude with `this`. Introduce and unpack `⟨φ, h⟩`. Use `⟨φ, fun g x => ?_⟩` and prove the remaining obligations. Rewrite using `[PI.GreenLabelSurjWork.transp_ρ, glEquiv_symm_symm]`.
-
-Conclude with `h g x`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iso_transp_symm_iff (lam : FDRep ℂ (GL α K)) (mu : FDRep ℂ (GL β K)) (e : α ≃ β) :
     Nonempty (lam ≅ transp e.symm mu) ↔
@@ -92,11 +90,11 @@ theorem iso_transp_symm_iff (lam : FDRep ℂ (GL α K)) (mu : FDRep ℂ (GL β K
     exact h g x
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.T.simple_iff_irreducible.2 (GL β K) (transp e lam) mu]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ε, h⟩`. Use `⟨ε, fun g x => ?_⟩` and prove the remaining obligations. Use `h (glEquiv K e g) x` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[PI.GreenLabelSurjWork.transp_ρ, MulEquiv.symm_apply_apply]`. Conclude with `this`. Introduce and unpack `⟨φ, h⟩`. Use `⟨φ, fun γ x => ?_⟩` and prove the remaining obligations. Rewrite using `[PI.GreenLabelSurjWork.transp_ρ]`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `h ((glEquiv K e).symm γ) x` as an intermediate fact. Rewrite `this` using `[MulEquiv.apply_symm_apply]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iso_transp_iff (lam : FDRep ℂ (GL α K)) (mu : FDRep ℂ (GL β K)) (e : α ≃ β) :
     Nonempty (transp e lam ≅ mu) ↔
@@ -116,13 +114,11 @@ theorem iso_transp_iff (lam : FDRep ℂ (GL α K)) (mu : FDRep ℂ (GL β K)) (e
     exact this
 
 /- English proof (translation)
-Establish `hT : Simple (transp e.symm mu)` using `PI.GreenLabelSurjWork.transp_simple e.symm mu hm`. Establish `hc : ∀ g, mu.character (glEquiv K e g) = (transp e.symm mu).character g`. Introduce `g`. Use `show _ = LinearMap.trace ℂ _ ((transp e.symm mu).ρ g)`. Rewrite using `[PI.GreenLabelSurjWork.transp_ρ, glEquiv_symm_symm]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `haveI : Invertible (Nat.card (GL α K) : ℂ) := invertibleOfNonzero (by`. Conclude with `Nat.card_pos.ne')` after adjusting the coercions. Establish `ho` using `FDRep.char_orthonormal (transp e.symm mu) lam`. Establish `hiff : CuspIso K lam mu ↔ Nonempty (transp e.symm mu ≅ lam)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 
-Rewrite using `[cuspIso_iff_along lam mu e, ← iso_transp_symm_iff lam mu e]`. Conclude with `⟨fun ⟨i⟩ => ⟨i.symm⟩, fun ⟨i⟩ => ⟨i.symm⟩⟩`. Simplify using `only [ip, Set.ncard_univ, Set.mem_univ, if_true, hc]`. Simplify using `only [mul_comm (lam.character _)]`. Rewrite using `[ho]`.
-
-Simplify using `only [hiff]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ip_char (lam : FDRep ℂ (GL α K)) (mu : FDRep ℂ (GL β K)) (e : α ≃ β)
     (hl : Simple lam) (hm : Simple mu) :
@@ -147,7 +143,7 @@ theorem ip_char (lam : FDRep ℂ (GL α K)) (mu : FDRep ℂ (GL β K)) (e : α �
   simp only [hiff]
 
 /- English proof (translation)
-Introduce `K _ _ _ α β _ _ _ _ lam mu e hl hm`. Use `⟨ip_char lam mu e hl hm, ?_⟩` and prove the remaining obligations. Rewrite using `[cuspIso_iff_along lam mu e, iso_transp_iff lam mu e]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem main : ReciprocityTheory.Ty.Fin.St.IpCuspIso := by
   intro K _ _ _ α β _ _ _ _ lam mu e hl hm

@@ -7,15 +7,13 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.ContUniv
 
 /- English proof (translation)
-Establish `hmul : ∀ c d : J, (∑ c' with π c' = c, e c') * (∑ c' with π c' = d, e c') = if c = d then ∑ c' with π c' = c, e c' else 0`. Introduce `c d`. Rewrite using `[Finset.sum_mul_sum]`. Use `split_ifs with hcd`. Substitute `hcd` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single i]`. Conclude with `he.idem i`. Introduce `j _ hji`. Conclude with `he.ortho hji.symm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce `h`. Conclude with `absurd hi h`. Use `Finset.sum_eq_zero fun i hi => Finset.sum_eq_zero fun j hj => he.ortho ?_` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hcd ((Finset.mem_filter.1 hi).2.symm.trans (Finset.mem_filter.1 hj).2)`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨fun c => ?_, fun c d hcd => ?_⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ * _ = _`. Rewrite using `[hmul, if_pos rfl]`. Express the relevant statement in the definitionally equal form `_ * _ = _`. Rewrite using `[hmul, if_neg hcd]`.
-
-Rewrite using `[Finset.sum_fiberwise]`. Conclude with `he.complete`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coi_fiber {R I J : Type} [CommRing R] [Fintype I] [Fintype J] [DecidableEq J]
     (π : I → J) {e : I → R} (he : CompleteOrthogonalIdempotents e) :
@@ -45,7 +43,7 @@ theorem coi_fiber {R I J : Type} [CommRing R] [Fintype I] [Fintype J] [Decidable
     exact he.complete
 
 /- English proof (translation)
-Proceed by induction on `d with`. Consider the case `zero => simp`. Consider the case `succ d ih`. Rewrite using `[pow_succ', pow_mul, ← add_assoc, h, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem chain_pow {M : Type} [Monoid M] {p : ℕ} {x : ℕ → M} (h : ∀ k, x (k + 1) ^ p = x k)
     (m d : ℕ) : x (m + d) ^ p ^ d = x m := by
@@ -55,7 +53,7 @@ theorem chain_pow {M : Type} [Monoid M] {p : ℕ} {x : ℕ → M} (h : ∀ k, x 
     rw [pow_succ', pow_mul, ← add_assoc, h, ih]
 
 /- English proof (translation)
-Take `⟨d, hd⟩` from `sub_dvd_pow_sub_pow x y q`. Rewrite using `[hd, ← mul_assoc, h, zero_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_sub_pow {S : Type} [CommRing S] {a x y : S} (h : a * (x - y) = 0) (q : ℕ) :
     a * (x ^ q - y ^ q) = 0 := by
@@ -63,7 +61,7 @@ theorem mul_sub_pow {S : Type} [CommRing S] {a x y : S} (h : a * (x - y) = 0) (q
   rw [hd, ← mul_assoc, h, zero_mul]
 
 /- English proof (translation)
-Establish `h0` using `map_natCast (ZMod.castHom h (ZMod M)) c.val`. Rewrite `h0` using `[ZMod.natCast_zmod_val]`. Rewrite using `[← ZMod.natCast_eq_natCast_iff, ZMod.natCast_zmod_val]`. Conclude with `h0.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_modEq {N M : ℕ} [NeZero N] [NeZero M] (h : M ∣ N) (c : ZMod N) :
     c.val ≡ (ZMod.castHom h (ZMod M) c).val [MOD M] := by
@@ -75,14 +73,14 @@ theorem val_modEq {N M : ℕ} [NeZero N] [NeZero M] (h : M ∣ N) (c : ZMod N) :
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Rewrite using `[← map_pow, ← map_pow, ← Units.val_pow_eq_pow_val, chain_pow ε.succ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sharp_xi_pow (ε : Eps l) (t : PAlg l) (m d : ℕ) :
     t.sharp (t.s (ε.e (m + d))) ^ l ^ d = t.sharp (t.s (ε.e m)) := by
   rw [← map_pow, ← map_pow, ← Units.val_pow_eq_pow_val, chain_pow ε.succ]
 
 /- English proof (translation)
-Use `sharp_xi_pow ε t 0 m` as an intermediate fact. Rewrite `this` using `[zero_add]`. Rewrite using `[this]`. Conclude with `ε.sharp_e t`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sharp_xi_period (ε : Eps l) (t : PAlg l) (m : ℕ) :
     t.sharp (t.s (ε.e m)) ^ l ^ m = 1 := by
@@ -92,11 +90,11 @@ theorem sharp_xi_period (ε : Eps l) (t : PAlg l) (m : ℕ) :
   exact ε.sharp_e t
 
 /- English proof (translation)
-Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le h`. Use `⟨coi_fiber _ he, fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[(sharp_sum t _ e (fun i _ => he.idem i) (fun i _ j _ hij => he.ortho hij)).1, Finset.sum_mul]`. Use `Finset.sum_eq_zero fun c' hc' => ?_` and prove the remaining obligations. Establish `hπ` using `(Finset.mem_filter.1 hc').2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `mul_sub_pow (hc c') (l ^ d)`. Rewrite `h1` using `[← map_pow, chain_pow hr, ← pow_mul, mul_comm c'.val, pow_mul, sharp_xi_pow]`. Establish `h2 : t.sharp (t.s (ε.e m)) ^ c'.val = t.sharp (t.s (ε.e m)) ^ c.val`. Establish `hv` using `val_modEq (pow_dvd_pow l h) c'`. Rewrite `hv` using `[hπ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[pow_eq_pow_mod c'.val (sharp_xi_period ε t m), pow_eq_pow_mod c.val (sharp_xi_period ε t m)]`. Conclude with `congrArg _ hv`. Rewrite `h1` using `[h2]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem coi_descend (ε : Eps l) (t : PAlg l) (r : ℕ → t.A) (hr : ∀ m, r (m + 1) ^ l = r m)
     {m n : ℕ} (h : m ≤ n) (e : ZMod (l ^ n) → t.A) (he : CompleteOrthogonalIdempotents e)

@@ -13,7 +13,7 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.FourierDecayAlt.B
 
 /- English proof (translation)
-The claim follows from `bessel_lemma_from_reductions bilinear_form_continuity ae_equality_from_test_functions fatou_lemma_in_parameter matrix_coefficient_linear dilation_matrix_coefficient bessel_function_trivial_index regularized_beta_bound_continuity_sesquilinear regularised_average_identity unfolding …`.
+A detailed English derivation is pending.
 -/
 theorem lemma_B_of_components : Formalism.FourierDecayAlt.B.LemmaB :=
   bessel_lemma_from_reductions bilinear_form_continuity ae_equality_from_test_functions fatou_lemma_in_parameter matrix_coefficient_linear dilation_matrix_coefficient
@@ -21,7 +21,7 @@ theorem lemma_B_of_components : Formalism.FourierDecayAlt.B.LemmaB :=
     dilation_identity_of_jacobian phase_function_adjoint regularised_pairing_via_phase assemble_equality_identity adjointness_of_bessel_transform
 
 /- English proof (translation)
-Introduce `hX` and use `bessel_lemma_closed_form hX lemma_B_of_components clause_of_regularized_limit adjointness_polynomially_bounded`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem b_lemmaBClosed_of : Formalism.FourierDecayAlt.B.XiExists → Formalism.FourierDecayAlt.B.LemmaBClosed := fun hX =>
   bessel_lemma_closed_form hX lemma_B_of_components clause_of_regularized_limit adjointness_polynomially_bounded

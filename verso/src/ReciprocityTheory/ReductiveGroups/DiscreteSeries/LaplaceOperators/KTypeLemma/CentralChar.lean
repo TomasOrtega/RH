@@ -10,13 +10,13 @@ namespace ReciprocityTheory.ChartRestriction.DS.Lap.LemK
 open ReciprocityTheory.ChartRestriction.DS
 
 /- English proof (translation)
-Introduce `ε lam h H _ _ _ σ D E V hσ hD hV hcas hVK hint hanti hgap hp hq ω y hy`. Take `⟨hg, hnpq, h8, -⟩` from `gapCentral n ε lam h hgap`. Establish `hlam : S7.IsHCParam lam` using `⟨hanti, hint⟩`. Take `⟨T⟩` from `HW.kType_exists ε lam hlam`. Take `⟨μ, hμ⟩` from `S7.exists_mu hlam`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hq0 : 1 ≤ S7.q0 ε` using `le_min hp hq`. Establish `hP` using `(S7.isPsiFor_psiM ε lam h T μ hlam hμ hg hq0 (by unfold S7.q0; push_cast; exact h8)).1`. Establish `hstd : StdGap ε lam` using `⟨hanti, h, hg, hnpq⟩`. Establish `hV0 : V ≠ ⊥`. Take `⟨w, hw, hw0, -⟩` from `hV.2.2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `hb`. Rewrite `hw` using `[hb]`. Conclude with `hw0 ((Submodule.mem_bot ℂ).1 hw)`. Establish `key` using `capelli_data hstd hσ hD hV hcas hVK hV0 hP (fun Y g hg' => S7.psiCapelli (n := n) ε lam T μ hμ Y g hg') (ω - ((n : ℂ) - 1) / 2) y hy`. Rewrite `key` using `[sub_add_cancel]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[capelliQdet.1 (Module.End ℂ D) n E ω, key, capelliQdet.{0}.2]`.
+A detailed English derivation is pending.
 -/
 theorem centralChar (n : ℕ) : CentralCharStatement n := by
   intro ε lam h H _ _ _ σ D E V hσ hD hV hcas hVK hint hanti hgap hp hq ω y hy

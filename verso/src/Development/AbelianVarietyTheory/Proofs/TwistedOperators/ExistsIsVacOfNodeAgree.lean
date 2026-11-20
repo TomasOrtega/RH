@@ -18,11 +18,11 @@ noncomputable section
 namespace GlobalTheory.GridJoin
 
 /- English proof (translation)
-Take `⟨V₁, S₁, M₁, Λ₁, β₁⟩` from `N₁`. Take `⟨V₂, S₂, M₂, Λ₂, β₂⟩` from `N₂`. Take `⟨sp₁, lat₁, cart₁, -⟩` from `h₁`. Take `⟨sp₂, lat₂, cart₂, -⟩` from `h₂`. Simplify using `only at sp₁ sp₂ lat₁ lat₂ cart₁ cart₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions.
 
-Substitute `sp₁ sp₂` using the available equality. Consider the cases of `eq_of_heq lat₁`. Consider the cases of `eq_of_heq lat₂`. Use `⟨f, ?_⟩` and prove the remaining obligations. Establish `c₁` using `eq_of_heq cart₁`.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `c₂` using `eq_of_heq cart₂`. Unfold `GlobalTheory.Grid.IsVac GlobalTheory.Grid.cartS`. Simplify using `only [GlobalTheory.Grid.sgnM, cond]`. Rewrite using `[c₁, c₂]`. Conclude with `hf`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isVac_of_nodeAgree {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {sc : GlobalTheory.ChiGrid.Consts}
@@ -47,9 +47,9 @@ theorem exists_isVac_of_nodeAgree {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {
   exact hf
 
 /- English proof (translation)
-Introduce `D Γ _ _ Pl0 T A Ks _ _ _ R sc _ _ _ F hR _ G' W hW G _ _ hA _ j hj`. Establish `hp : (GlobalTheory.ChiGrid.Pair.top A.μ0 j).InRange D.R.m`. Simplify using `only [GlobalTheory.ChiGrid.Pair.InRange, GlobalTheory.ChiGrid.Pair.big, GlobalTheory.ChiGrid.Node.InRange]`. Use linear arithmetic over natural numbers and integers. Take `⟨f, hf⟩` from `GlobalTheory.FunObj.exists_isVac W hR.lev hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Take `⟨f', hf'⟩` from `exists_isVac_of_nodeAgree W (hA.top j hj.le) (hA.top (j + 1) hj) f hf`. Rewrite `hf'` using `[hW.ψ, hW.θ]`. Conclude with `⟨f', hf'⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_isVac_col : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {sc : GlobalTheory.ChiGrid.Consts}, GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → HostHyp D → ∀ {F : Face D A}, GlobalTheory.Hk3.Core R F → sc.cGap = 1 → ∀ {G' : GlobalTheory.ChiGrid.GridData R.toLevCh sc} (W : G'.Weil), W.Over R → ∀ G : GlobalTheory.Grid.GridPre R, G.IsSpaces → G.IsChars → SpAgree G W → (∀ i, i < D.R.m → ∀ κ : G'.CosAt i, IsThetaAt W.ψ (symplO _ _) (heisO W.ψ _ _) G.idem (latO (G'.pS (.chi i 0)) (G'.pT (.chi i 0)) (G'.latS (.chi i 0) : Set _) (G'.latT (.chi i 0) : Set _) fun _ => True) 1 (W.vac i) (cosInd G.idem κ) (W.cosVec i κ)) → ∀ j, j < D.R.m → ∃ f : WO (G.Xp j).V (G.nX j).V → ℂ, GlobalTheory.Grid.IsVac R.ψ R.θ false (G.Xp j) (G.nX j) f := by
   intro D Γ _ _ Pl0 T A Ks _ _ _ R sc _ _ _ F hR _ G' W hW G _ _ hA _ j hj

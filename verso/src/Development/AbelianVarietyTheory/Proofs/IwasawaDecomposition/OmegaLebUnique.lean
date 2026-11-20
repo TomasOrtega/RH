@@ -8,7 +8,7 @@ open Formalism.BasicNotions MeasureTheory Filter Topology Matrix
 namespace GlobalTheory.OmegaLebUnique
 
 /- English proof (translation)
-Introduce `_ _ _ _ h h'` and use `GlobalTheory.CompactDualUnique.isOmegaLeb_unique h h'`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem omegaLeb_unique :
     ∀ (P Q : ℕ) (l l' : Measure (lieU P Q)), IsOmegaLeb l → IsOmegaLeb l' → l = l' :=

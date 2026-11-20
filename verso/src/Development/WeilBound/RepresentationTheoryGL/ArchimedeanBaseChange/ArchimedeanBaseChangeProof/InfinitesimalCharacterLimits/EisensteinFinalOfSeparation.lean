@@ -5,7 +5,7 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LimitVectorIden
 namespace PositivityTheory.Rg.BcB.SpectralAccumulation
 
 /- English proof (translation)
-The claim follows from `eFinal_of hS FiniteDiscreteTypes.finDisc (GlobalTheory.T.limit_vector_identity : LimVec)`.
+A detailed English derivation is pending.
 -/
 theorem eisenstein_final_of_separation (hS : Sep4) : EFinal :=
   eFinal_of hS FiniteDiscreteTypes.finDisc (GlobalTheory.T.limit_vector_identity : LimVec)

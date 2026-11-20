@@ -28,17 +28,17 @@ namespace GlobalTheory.FullRigid
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Take `⟨θ, hθ, hφ, -, -, w, hw, -⟩` from `sabMap_iso m m' rfl rfl`. Use `t'.semi.smooth` as an intermediate fact. Use `t'.semi.geomConnected` as an intermediate fact. Take `⟨w₁, g₁, -⟩` from `m.lin`. Take `⟨U, hU, hc, -⟩` from `exists_isAffineOpen_mem_and_subset (X := S) (U := ⊤) (x := z (IsLocalRing.closedPoint K)) trivial`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hy : ∀ y, z y ∈ U` using `fun y => (congrArg (fun V => y ∈ V) (Scheme.preimage_eq_top_of_closedPoint_mem z hc)).mpr trivial`. Establish `: ConnectedSpace t'.G.left` using `GeometricallyConnected.geometrically_connectedSpace (f := t'.G.hom) (𝟙 _) (𝟙 _) t'.G.hom (IsPullback.of_horiz_isIso ⟨by simp⟩)`. Take `⟨d, hd⟩` from `exists_dim_of_preconnected t'.G.hom (eSec t'.G (default : PrimeSpectrum K))`. Take `⟨-, ws, gs', -⟩` from `t'.sym`. Set `P : Out.PolAV (Sp K)` to `{ A := t'.G, g := d, smoothDim := hd, L := t'.PP.L, isLB := t'.PP.isLB ample := relAmple_pull m.cart.1 t.PP.isLB t'.PP.isLB ((isGen_iff w₁).1 g₁) U hU hy hA ktriv := kTriv_pull m.cart t.PP.isLB t'.PP.isLB ((isGen_iff w₁).1 g₁) hK isAb := ⟨inferInstance, inferInstance, MorphismPro …`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hNK : IsUnit (N : K)` using `(Nat.cast_ne_zero.2 (by omega)).isUnit`. Establish `hMu : IsUnit (N : Γ(Sp K, ⊤))`. Simplify using `using hNK.map (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom`. Establish `: Etale (Out.mulA t'.G N).left` using `GrpTangent.etale_id_pow t'.G hMu`. Establish `h : θ.hom = 𝟙 _`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hS (Sp K) P N hN θ hθ (fun _ => ⟨⊤, trivial, ?_⟩) (fix_torsion_of_forall_geometric t'.G N θ.hom fun k _ _ x y hy => ?_)` and prove the remaining obligations. Take `⟨t, ht⟩` from `gen_of_iso ((isGen_iff w).1 hw) (t'.G.hom ⁻¹ᵁ ⊤).ι`. Use `gen_chartPull (chartPullOut t'.PP.L _ _ _ _ fun n => ?_) t ht` and prove the remaining obligations. Use `fin_cases n`. Use `exacts [rfl, (Category.comp_id _).symm]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `β : K →+* k` to `(Spec.preimage x).hom`. Establish `: CharZero k` using `(RingHom.charZero_iff β.injective).1 inferInstance`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `m'.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, Category.assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg _ hφ).trans (hfix k x y hy)`. Rewrite using `[Over.w, Over.w]`. Rewrite using `[← hφ, h, Over.id_left, Category.id_comp]`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_field (hS : Out.SerreSt) {S : Scheme.{0}} {t : SAB H S} (hp : IsProper t.G.hom)
     (hA : Out.RelAmple t.G t.PP.L) (hK : Out.KTriv t.G t.PP.L) {K : Type} [Field K] [CharZero K] {z : Sp K ⟶ S}
@@ -86,11 +86,9 @@ theorem eq_of_field (hS : Out.SerreSt) {S : Scheme.{0}} {t : SAB H S} (hp : IsPr
   rw [← hφ, h, Over.id_left, Category.id_comp]
 
 /- English proof (translation)
-Take `⟨-, I, -, hI⟩` from `o.geom k (x ≫ f) (Spec.preimage ((x ≫ f) ≫ s)).hom (Spec.map_preimage _).symm`. Establish `hy₁ : pushHom ν.cart (Over.mk x) y ^ N = 1` using `by rw [← map_pow, hy, map_one]`. Take `⟨a, ha⟩` from `(I.onto N hN _).1 hy₁`. Establish `e : (x ≫ f) ≫ (lev a).left = y.left ≫ ν.φ` using `congrArg (fun q => q.left) ((hI a).trans ha)`. Establish `e₁ : y.left = x ≫ (lv a).left`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `ν.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc]`. Conclude with `e.symm.trans ((Category.assoc _ _ _).trans (congrArg (x ≫ ·) (h a).symm))`. Rewrite using `[Over.w, Category.assoc, Over.w]`. Conclude with `(Category.comp_id _).symm`.
-
-Rewrite using `[e₁, Category.assoc, Category.assoc]`. Conclude with `congrArg (x ≫ ·) ((h a).trans (h' a).symm)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_on_torsion {D : Datum H} {n N : ℕ} {S S' : Scheme.{0}} {s : S ⟶ Sp (RZ H n N)} {t : SAB H S}
     {lev : D.La → (𝟙_ (Over S) ⟶ t.G)} {t' : SAB H S'} {f : S' ⟶ S} (ν ν' : SABMap t' t f)
@@ -114,15 +112,15 @@ theorem eq_on_torsion {D : Datum H} {n N : ℕ} {S S' : Scheme.{0}} {s : S ⟶ S
 end GlobalTheory.FullRigid
 
 /- English proof (translation)
-Introduce `hL E _ _ _ H D n N S S' s t lev t' f ν ν' lv hN _ o _ hc h h'`. Take `⟨θ, hθ, hφ, -⟩` from `sabMap_iso ν ν' rfl rfl`. Establish `hA : IsAbelianScheme t'.G` using `⟨t'.semi.comm, t'.semi.smooth, MorphismProperty.of_isPullback (P := @IsProper) ν.cart.1 o.proper, t'.semi.geomConnected⟩`. Establish `key : θ.hom = 𝟙 _`. Use `GlobalTheory.eq_id_of_forall_geometric_fibre hL.globalFns t'.G hA θ.hom (IsMonHom.one_hom θ.hom) fun p => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hc p` as an intermediate fact. Set `j : Sp (S'.residueField p) ⟶ S'` to `S'.fromSpecResidueField p`. Take `⟨PP', cub, sym, adj, prim, m, -⟩` from `sabPull Out.CubePf.cubePull j t'`. Generalize the expression as in `(⟨(Over.pullback j).obj t'.G, IsSemiAbelian.pullback _ t'.G t'.semi, OAct.pullback _ t'.G t'.act, PP', cub, sym, adj, prim⟩ : SAB H _) = t'' at m`. Take `⟨a, ha⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ ν m`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ ν' m`. Establish `e : a.φ = b.φ` using `GlobalTheory.FullRigid.eq_of_field hL.serre o.proper o.ample o.ktriv a b hN fun k _ _ _ x y hy => by`. Establish `hy₁ : pushHom m.cart (Over.mk x) y ^ N = 1` using `by rw [← map_pow, hy, map_one]`. Establish `e₁` using `GlobalTheory.FullRigid.eq_on_torsion ν ν' lv (by omega) o h h' k (x ≫ j) _ hy₁`. Rewrite using `[ha, hb, ← Category.assoc, ← Category.assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e₁`. Use `⟨_, _, j, m.φ, _, (default : PrimeSpectrum (S'.residueField p)), Scheme.fromSpecResidueField_apply p _, m.cart.1, ?_⟩` and prove the remaining obligations. Apply `ν'.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc]`. Conclude with `(congrArg (m.φ ≫ ·) hφ).trans (ha.symm.trans (e.trans hb))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, Over.w]`. Rewrite using `[← hφ, key, Over.id_left, Category.id_comp]`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.fullObj_rigid : Out.Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (n N : ℕ) (S S' : Scheme.{0}) (s : S ⟶ Sp (RZ H n N)) (t : SAB H S) (lev : D.La → (𝟙_ (Over S) ⟶ t.G)) (t' : SAB H S') (f : S' ⟶ S) (ν ν' : SABMap t' t f) (lv : D.La → (𝟙_ (Over S') ⟶ t'.G)), 3 ≤ N → Odd N → FullObj D s t lev → IsReduced S' → (∀ x : S', CharZero (S'.residueField x)) → (∀ a, (lv a).left ≫ ν.φ = f ≫ (lev a).left) → (∀ a, (lv a).left ≫ ν'.φ = f ≫ (lev a).left) → ν.φ = ν'.φ := by
   intro hL E _ _ _ H D n N S S' s t lev t' f ν ν' lv hN _ o _ hc h h'

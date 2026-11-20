@@ -27,7 +27,7 @@ variable {A B : Type} [CommRing A] [CommRing B] {n : ℕ} (e : A ≃+* B) (S : S
   {P Q : AddSubgroup (Fin n → A)} {𝔞 : Set A}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, Matrix.map_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem equiv_mulVec (m : Matrix (Fin n) (Fin n) A) (z : Fin n → A) :
     (fun i => e ((m *ᵥ z) i)) = m.map e *ᵥ fun i => e (z i) := by
@@ -35,13 +35,11 @@ theorem equiv_mulVec (m : Matrix (Fin n) (Fin n) A) (z : Fin n → A) :
   simp only [Matrix.mulVec, dotProduct, map_sum, map_mul, Matrix.map_apply]
 
 /- English proof (translation)
-Establish `h0 : ∀ z ∈ P, m *ᵥ z ∈ P`. Introduce `z hz`. Rewrite `hz`, the goal using `[hP]`. Introduce `i`. Rewrite using `[equiv_mulVec, hm, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul, ← Matrix.mulVec_mulVec]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subring.sum_mem (t := Finset.univ) _ fun j _ => mul_mem (T i j).2 (hz j)`. Substitute `hQ` using the available equality. Introduce `z hz`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, y, hy, rfl⟩` from `hz`. Conclude with `AddSubgroup.subset_closure ⟨a, ha, m *ᵥ y, h0 y hy, Matrix.mulVec_smul m a y⟩`. Consider the case `zero => rw [Matrix.mulVec_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [Matrix.mulVec_add]`.
-
-Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [Matrix.mulVec_neg]`. Conclude with `neg_mem hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mulVec_mem_of_frame (hP : ∀ z, z ∈ P ↔ ∀ i, ((β⁻¹).val *ᵥ fun i => e (z i)) i ∈ S)
     (hQ : Q = AddSubgroup.closure {w | ∃ a ∈ 𝔞, ∃ z ∈ P, w = a • z}) (m : Matrix (Fin n) (Fin n) A)
@@ -65,17 +63,15 @@ theorem mulVec_mem_of_frame (hP : ∀ z, z ∈ P ↔ ∀ i, ((β⁻¹).val *ᵥ 
   | neg x _ hx => rw [Matrix.mulVec_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Use `set b' := f b₀ with hb'`. Establish `hy' : ∀ i j, ∃ t : S, t * M = b' * (y - 1) i j` using `fun i j => by`. Establish `h` using `Ideal.mul_mem_mul (hy i j) (Ideal.mem_map_of_mem f hb₀)`. Rewrite `h` using `[← Ideal.map_mul, hM, Ideal.map_span, Set.image_singleton, map_natCast, mul_comm]`. Conclude with `Ideal.mem_span_singleton'.1 h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `choose T hT using hy'`. Set `m : Matrix (Fin n) (Fin n) A` to `(β.val * (Matrix.of T).map S.subtype * (β⁻¹).val).map e.symm`. Establish `hm : m.map e = β.val * (Matrix.of T).map S.subtype * (β⁻¹).val`. Use extensionality with `i j`. Conclude with `e.apply_symm_apply _`.
+By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h1 : (M : B) • (Matrix.of T).map S.subtype = (b' : B) • (y.map S.subtype - 1)`. Use extensionality with `i j`. Use `congrArg S.subtype (hT i j)` as an intermediate fact. Apply the tactic sequence `by_cases hij : i = j <;> simpa [Matrix.one_apply, hij, mul_comm] using this`. Establish `h2 : b • (k - 1) = (M : A) • m`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply `Matrix.map_injective e.injective` to reduce the goal to its premises. Establish `e1 : (b • (k - 1)).map e = e b • (k.map e - 1)`. Apply the tactic sequence `ext i j; by_cases hij : i = j <;> simp [hij]`. Establish `e2 : ((M : A) • m).map e = (M : B) • m.map e` using `by ext i j; simp`. Use `show (b • (k - 1)).map e = ((M : A) • m).map e`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1, e2, hm, hk, hb, ← Matrix.smul_mul, ← Matrix.mul_smul, h1, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Introduce `z hz`. Use `⟨m *ᵥ z, mulVec_mem_of_frame e S β hP hQ m _ hm z hz, ?_⟩` and prove the remaining obligations. Use `congrArg (· *ᵥ z) h2` as an intermediate fact. Simplify using `only [Matrix.smul_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec, Nat.cast_smul_eq_nsmul, smul_sub] at this`.
-
-Rewrite using `[Matrix.mulVec_smul, this]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulVec_smul_congr (hP : ∀ z, z ∈ P ↔ ∀ i, ((β⁻¹).val *ᵥ fun i => e (z i)) i ∈ S)
     (hQ : Q = AddSubgroup.closure {w | ∃ a ∈ 𝔞, ∃ z ∈ P, w = a • z}) (k : Matrix (Fin n) (Fin n) A)
@@ -111,7 +107,7 @@ theorem mulVec_smul_congr (hP : ∀ z, z ∈ P ↔ ∀ i, ((β⁻¹).val *ᵥ fu
   rw [Matrix.mulVec_smul, this]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mulVec_smul, ← Matrix.mulVec_smul, ← hu, Matrix.mulVec_sub, Matrix.mulVec_sub, hk, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mulVec_mul_congr {k g h u : Matrix (Fin n) (Fin n) A} {x w : Fin n → A} {M : ℕ} (hk : k = g * (h * u))
     (hu : u *ᵥ x - x = M • w) : k *ᵥ x - g *ᵥ h *ᵥ x = M • g *ᵥ h *ᵥ w := by
@@ -119,17 +115,17 @@ theorem mulVec_mul_congr {k g h u : Matrix (Fin n) (Fin n) A} {x w : Fin n → A
     ← Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Establish `hM : (M : O) ∈ Mb` using `Ideal.mul_le_left (I := Mb) (J := Mh) (by rw [hM₀]; exact Ideal.mem_span_singleton_self _)`. Establish `key : ∀ f : La →ₗ[O] La, (∀ a ∈ Mh • (⊤ : Submodule O La), ∃ w ∈ Q, fv (f a) = M • w) → ∀ a, f a ∈ Mb • (⊤ : Submodule O La)`. Introduce `f hf a`. Take `⟨u, hu, v, hv, huv⟩` from `Submodule.mem_sup.1 (hcop ▸ Submodule.mem_top : (1 : O) ∈ Mb ⊔ Mh)`. Take `⟨w, hw, e₁⟩` from `hf (v • a) (Submodule.smul_mem_smul hv Submodule.mem_top)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `hdiv _ w hw e₁`. Establish `e₂ : f a = u • f a + (M : O) • x`. Rewrite using `[Nat.cast_smul_eq_nsmul, ← hx, map_smul, ← add_smul, huv, one_smul]`. Rewrite using `[e₂]`. Conclude with `add_mem (Submodule.smul_mem_smul hu Submodule.mem_top) (Submodule.smul_mem_smul hM Submodule.mem_top)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨key (lev 1 - LinearMap.id) fun a ha => ?_, fun g h => key (lev (g * h) - lev g ∘ₗ lev h) fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨w₁, h₁, e₁⟩` from `hlev 1 a ha`. Take `⟨w₂, h₂, e₂⟩` from `hone a ha`. Use `⟨w₁ + w₂, add_mem h₁ h₂, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, ← e₁, ← e₂, LinearMap.sub_apply, map_sub, LinearMap.id_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Establish `ha' : lev h a ∈ Mh • (⊤ : Submodule O La)`. Use `Submodule.mem_map_of_mem (f := lev h) ha` as an intermediate fact. Rewrite `this` using `[Submodule.map_smul'']`. Conclude with `Submodule.smul_mono le_rfl le_top this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w₁, h₁, e₁⟩` from `hlev (g * h) a ha`. Take `⟨w₂, h₂, e₂⟩` from `hmul g h a ha`. Take `⟨w₃, h₃, e₃⟩` from `hlev h a ha`. Take `⟨w₄, h₄, e₄⟩` from `hlev g _ ha'`. Use `⟨w₁ + w₂ - κ g *ᵥ w₃ - w₄, sub_mem (sub_mem (add_mem h₁ h₂) (hpres g _ h₃)) h₄, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[smul_sub, smul_sub, smul_add, ← Matrix.mulVec_smul, ← e₁, ← e₂, ← e₃, ← e₄, LinearMap.sub_apply, map_sub, LinearMap.comp_apply, Matrix.mulVec_sub]`. Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem congr_of_matrices {O La G : Type} [CommRing O] [AddCommGroup La] [Module O La] [Group G] (fv : La →+ (Fin n → A))
     (M : ℕ) (Mb Mh : Ideal O) (hcop : Mb ⊔ Mh = ⊤) (hM₀ : Mb * Mh = Ideal.span {(M : O)}) (lev : G → La →ₗ[O] La)
@@ -178,21 +174,17 @@ def sw (D : D7) : Af D.host.F ⊗[D.host.F] D.host.E ≃+* Lev.EAf D :=
 abbrev SI (D : D7) : Subring (Lev.EAf D) := Formalism.L2.Herm.intAf D.host.F D.host.E
 
 /- English proof (translation)
-Take `⟨c, hF, -, -, h1, h2⟩` from `h`. Simplify using `only [one_pow, Nat.cast_one, one_smul] at h1 h2`. Rewrite using `[← hF]`. Prove the components needed by the constructor for the conclusion. Introduce `hz`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, x, hx, rfl⟩` from `hz`. Use `GlobalTheory.AdelicLatMove.pure_mem_hatL Λ a ha (fun i => V.frame.repr x i) (h1 _ ?_)` and prove the remaining obligations. Use `show ∑ i, V.frame.repr x i • V.frame i ∈ V.L0`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[V.frame.sum_repr]`. Conclude with `hx`. Consider the case `zero => simp only [Pi.zero_apply, map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => simp only [Pi.add_apply, map_add]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => simp only [Pi.neg_apply, map_neg]`. Conclude with `neg_mem hx`. Introduce `hz`. Establish `key : ∀ y ∈ AddSubgroup.closure (GlobalTheory.AdelicLatMove.pureSet Λ), (fun i => (sw D).symm (y i)) ∈ latHat V`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y hy`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, x, hx, rfl⟩` from `hy`. Use `AddSubgroup.subset_closure ⟨a, ha, ∑ i, x i • V.frame i, h2 x hx, ?_⟩` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Treat this case separately.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[V.frame.repr_sum_self]`. Both sides reduce to the same expression. Consider the case `zero => simp only [Pi.zero_apply, map_zero]`. Conclude with `zero_mem _`.
-
-Consider the case `add x y _ _ hx hy => simp only [Pi.add_apply, map_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => simp only [Pi.neg_apply, map_neg]`. Conclude with `neg_mem hx`. Use `key _ (GlobalTheory.AdelicLatMove.mem_closure_of_mem_hatL Λ _ hz)` as an intermediate fact.
-
-Simplify `this` using `only [RingEquiv.symm_apply_apply]`.
+Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_latHat_iff {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)}
     {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)} (h : IsSDFrame V β Λ 1)
@@ -229,9 +221,9 @@ theorem mem_latHat_iff {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)}
     simpa only [RingEquiv.symm_apply_apply] using this
 
 /- English proof (translation)
-Unfold `latGHat gLat`. Use `congr 1`. Use extensionality with `w`. Simplify using `only [map_one, Units.val_one, Set.mem_image, Matrix.one_mulVec, exists_eq_right, Set.mem_ofPred_eq, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨a, ha, z, hz, rfl⟩`. Conclude with `⟨_, ⟨a, ha, rfl⟩, z, hz, rfl⟩`. Introduce and unpack `⟨_, ⟨a, ha, rfl⟩, z, hz, rfl⟩`. Conclude with `⟨a, ha, z, hz, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem latGHat_one (V : HSp D) : latGHat V 1 = AddSubgroup.closure
     {w | ∃ a ∈ (fun a : D.host.E => (1 : Af D.host.F) ⊗ₜ[D.host.F] a) '' {a | a ∈ D.host.AA}, ∃ z ∈ latHat V, w = a • z} := by
@@ -246,7 +238,7 @@ theorem latGHat_one (V : HSp D) : latGHat V 1 = AddSubgroup.closure
     exact ⟨a, ha, z, hz, rfl⟩
 
 /- English proof (translation)
-The claim follows from `(congrArg Units.val hy).symm`.
+A detailed English derivation is pending.
 -/
 theorem map_finHom {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {k : GA D V} {y : GL (Fin V.rank) (SI D)}
     (hy : Formalism.L2.DIV.frGL β y = Lev.finE V k) :
@@ -254,9 +246,9 @@ theorem map_finHom {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {k : GA D V} {
   (congrArg Units.val hy).symm
 
 /- English proof (translation)
-Establish `e : Formalism.L2.DIV.idS D.host.F (∏ PP ∈ Pg, PP.asIdeal) = ∏ PP ∈ Pg, Formalism.L2.DIV.idS D.host.F PP.asIdeal` using `map_prod (Ideal.mapHom (Formalism.L2.DIV.oToS D.host.F D.host.E)) _ _`. Rewrite using `[e, Ideal.prod_eq_iInf_of_pairwise_isCoprime]`. Simplify using `only [Ideal.mem_iInf]`. Introduce `PP hP`. Establish `h` using `hs PP hP`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `Formalism.L2.DIV.resS at h`. Rewrite `h` using `[RingHom.comp_apply]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 ((map_eq_zero_iff _ (RingEquiv.injective _)).1 h)`. Introduce `P _ Q _ hPQ`. Conclude with `(HeightOneSpectrum.isCoprime_of_ne P Q hPQ).map (Ideal.mapHom (Formalism.L2.DIV.oToS D.host.F D.host.E))`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_idS_prod (Pg : Finset (Formalism.L2.DIV.Pl D.host.E)) (s : SI D)
     (hs : ∀ PP ∈ Pg, Formalism.L2.DIV.resS D.host.F PP s = 0) :
@@ -280,7 +272,7 @@ def fvec (V : HSp D) {La : Type} [AddCommGroup La] [Module (𝓞 D.host.E) La]
     simp only [finVec, map_add, Pi.add_apply, TensorProduct.tmul_add]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `show (1 : Af D.host.F) ⊗ₜ[D.host.F] (ι (b • a) i) = ((1 : Af D.host.F) ⊗ₜ[D.host.F] (b : D.host.E)) * ((1 : Af D.host.F) ⊗ₜ[D.host.F] (ι a i))`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, map_smul]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem fvec_smul (V : HSp D) {La : Type} [AddCommGroup La] [Module (𝓞 D.host.E) La]
     (ι : La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E)) (b : 𝓞 D.host.E) (a : La) :
@@ -292,11 +284,11 @@ theorem fvec_smul (V : HSp D) {La : Type} [AddCommGroup La] [Module (𝓞 D.host
   rfl
 
 /- English proof (translation)
-Introduce `w hw e`. Establish `hM' : (M : D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 hM`. Establish `h1 : finVec V ((M : D.host.E)⁻¹ • ι x) = w`. Use function extensionality and compare the values at `i`. Establish `e₁ : (1 : Af D.host.F) ⊗ₜ[D.host.F] (ι x i) = M • w i` using `congrFun e i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Set `j : D.host.E →ₐ[D.host.F] Af D.host.F ⊗[D.host.F] D.host.E` to `Algebra.TensorProduct.includeRight`. Establish `e₂ : j (ι x i) = j M * w i` using `by rw [map_natCast, ← nsmul_eq_mul]; exact e₁`. Use `show j ((M : D.host.E)⁻¹ * ι x i) = w i`. Rewrite using `[map_mul, e₂, ← mul_assoc, ← map_mul, inv_mul_cancel₀ hM', map_one, one_mul]`. Choose the witnesses or unpack the hypotheses as in `⟨x', hx'⟩ : (M : D.host.E)⁻¹ • ι x ∈ LinearMap.range ι := by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hι.2, (GlobalTheory.MarkCoset.latG_spec D V 1).1, h1]`. Conclude with `hw`. Use `⟨x', hι.1 ?_⟩` and prove the remaining obligations. Rewrite using `[map_nsmul, hx', ← Nat.cast_smul_eq_nsmul D.host.E, smul_smul, mul_inv_cancel₀ hM', one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_nsmul {V : HSp D} {La : Type} [AddCommGroup La] [Module (𝓞 D.host.E) La]
     {ι : La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E)} (hι : LatEmb V ι) {M : ℕ} (hM : M ≠ 0) (x : La) :
@@ -316,7 +308,7 @@ theorem exists_eq_nsmul {V : HSp D} {La : Type} [AddCommGroup La] [Module (𝓞 
   rw [map_nsmul, hx', ← Nat.cast_smul_eq_nsmul D.host.E, smul_smul, mul_inv_cancel₀ hM', one_smul]
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `hk`. Conclude with `mulVec_mem_of_frame (sw D) (SI D) β (mem_latHat_iff h) (latGHat_one V) _ _ (map_finHom hy)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mulVec_mem_of_St {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)}
     {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)} (h : IsSDFrame V β Λ 1) {k : GA D V}
@@ -325,15 +317,15 @@ theorem mulVec_mem_of_St {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)}
   exact mulVec_mem_of_frame (sw D) (SI D) β (mem_latHat_iff h) (latGHat_one V) _ _ (map_finHom hy)
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `Formalism.L2.DIV.parLev_St hp`. Establish `hred : ∀ i j, (y.val - 1) i j ∈ Formalism.L2.DIV.idS D.host.F (∏ PP ∈ L.Pg, PP.asIdeal)`. Introduce `i j`. Use `mem_idS_prod _ _ fun PP hP => ?_` and prove the remaining obligations. Establish `h2 : Formalism.L2.DIV.upperLeftBlock L.hr (Formalism.L2.DIV.redFn β PP (Lev.finE V k)) = 1` using `congrFun h1 ⟨PP, hP⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h3` using `Formalism.L2.DIV.upper_block_val_submatrix L.hr (Formalism.L2.DIV.blockTri_blkOf_le _ _ (Formalism.L2.DIV.parLev_g hp hP))`. Rewrite `h3` using `[h2, ← hy, Formalism.L2.DIV.redFn_frGL]`. Establish `h4 : (1 : Matrix (Fin L.r) (Fin L.r) (Formalism.L2.DIV.kP PP)) (Fin.cast hL i) (Fin.cast hL j) = Formalism.L2.DIV.resS D.host.F PP (y.val i j)` using `congrFun (congrFun h3 (Fin.cast hL i)) (Fin.cast hL j)`. Rewrite using `[Matrix.sub_apply, map_sub, ← h4]`. Distinguish the cases in `hij : i = j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hij` using the available equality. Rewrite using `[Matrix.one_apply_eq, Matrix.one_apply_eq, map_one, sub_self]`. Rewrite using `[Matrix.one_apply_ne hij, Matrix.one_apply_ne (fun e => hij (Fin.cast_injective hL e)), map_zero, sub_self]`. Introduce `a ha`. Use `Submodule.smul_induction_on ha (fun b hb x _ => ?_) ?_` and prove the remaining obligations.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[fvec_smul]`. Conclude with `mulVec_smul_congr (sw D) (SI D) β (mem_latHat_iff h) (latGHat_one V) _ _ (map_finHom hy) (Formalism.L2.DIV.oToS D.host.F D.host.E) hM hred hb _ rfl _ (((GlobalTheory.MarkCoset.latG_spec D V 1).1 _).1 (hι.2 ▸ LinearMap.mem_range_self ι x))`. Introduce and unpack `x x' ⟨w, hw, e⟩ ⟨w', hw', e'⟩`. Use `⟨w + w', add_mem hw hw', ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, ← e, ← e', map_add, Matrix.mulVec_add]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem lift_one_congr {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)}
     {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)} (h : IsSDFrame V β Λ 1)
@@ -367,13 +359,13 @@ theorem lift_one_congr {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)}
     abel
 
 /- English proof (translation)
-Use `choose κ hκ hκ' using hlev`. Establish `hM₁ : (∏ PP ∈ L.Pg, PP.asIdeal) * Mh = Ideal.span {(M : 𝓞 D.host.E)}` using `by rw [← hMb, hM]`. Establish `hst` using `fun g => mulVec_mem_of_St hβ (Formalism.L2.DIV.parLev_St (hκ g).2.1)`. Use `congr_of_matrices (Q := latGHat V 1) (fvec V ι) M Mb Mh hcop hM lev (fun g => (finHom V (κ g)).val) (exists_eq_nsmul hι hM0) hκ' hst ?_ ?_` and prove the remaining obligations. Conclude with `lift_one_congr hβ hL hι hM₁ (hκ 1).2.1 ((hκ 1).2.2.trans (map_one eG))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `g h a ha`. Establish `hp : Lev.finE V (κ g * κ h) ∈ Formalism.L2.DIV.parLev D.sp.cm V.gram β L`. Rewrite using `[map_mul]`. Conclude with `mul_mem (hκ g).2.1 (hκ h).2.1`. Establish `hl : Lev.IsLevelLift V β L (eG (g * h)) (κ g * κ h)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨mul_mem (hκ g).1 (hκ h).1, hp, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul (Lev.finE V), Formalism.L2.DIV.rTup_mul (hκ g).2.1 (hκ h).2.1, (hκ g).2.2, (hκ h).2.2, map_mul]`. Establish `hu` using `Lev.lift_div_mem hl (hκ (g * h))`. Take `⟨w, hw, e⟩` from `lift_one_congr (L := L) hβ hL hι hM₁ hu.2.1 (Subgroup.mem_bot.1 hu.2.2) a ha`. Use `⟨_, hst g _ (hst h _ hw), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e₀ : κ (g * h) = κ g * (κ h * ((κ g * κ h)⁻¹ * κ (g * h)))` using `by group`. Establish `e₁ : (finHom V (κ (g * h))).val = (finHom V (κ g)).val * ((finHom V (κ h)).val * (finHom V ((κ g * κ h)⁻¹ * κ (g * h))).val)`. Rewrite using `[← Units.val_mul, ← Units.val_mul, ← map_mul, ← map_mul, ← e₀]`. Conclude with `mulVec_mul_congr e₁ e`.
+A detailed English derivation is pending.
 -/
 theorem congr_of_lifts {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)}
     {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)} (hβ : IsSDFrame V β Λ 1)
@@ -413,7 +405,7 @@ variable {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : Formalism.L2.DIV.
   {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} {l : Level H}
 
 /- English proof (translation)
-The claim follows from `congr_of_lifts (L := R.datWp i R.triv) hβ (rank_Wc i) hι (by have := l.three_le; omega) hMb l.prod l.coprime R.eG.toMonoidHom hlev`.
+A detailed English derivation is pending.
 -/
 theorem congr_of_levIs {ι : Dw.La →ₗ[𝓞 D.host.E] (Fin (Wc D i).rank → D.host.E)} (hι : LatEmb (Wc D i) ι)
     (hβ : IsSDFrame (Wc D i) (R.βW i) (R.ΛW i) 1) (hMb : l.Mb = ∏ PP ∈ R.Pg, PP.asIdeal)
@@ -424,7 +416,7 @@ theorem congr_of_levIs {ι : Dw.La →ₗ[𝓞 D.host.E] (Fin (Wc D i).rank → 
     R.eG.toMonoidHom hlev
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LevelActionOfLifts.actLev_of_lifts_of_eq_one D H Dw l Xo c G lev hpq hA (congr_of_levIs R i hι hβ hMb hlev).1 (congr_of_levIs R i hι hβ hMb hlev).2`.
+A detailed English derivation is pending.
 -/
 theorem actLev_of_levIs (Xo : Moduli Dw l) (c : Coeff l) (hpq : 1 ≤ Dw.p + Dw.q) (hA : l.A = 1)
     {ι : Dw.La →ₗ[𝓞 D.host.E] (Fin (Wc D i).rank → D.host.E)} (hι : LatEmb (Wc D i) ι)
@@ -436,7 +428,7 @@ theorem actLev_of_levIs (Xo : Moduli Dw l) (c : Coeff l) (hpq : 1 ≤ Dw.p + Dw.
 end Record
 
 /- English proof (translation)
-Establish `hpq : 1 ≤ (C.Q.Dw ((i : ℕ) + 1)).p + (C.Q.Dw ((i : ℕ) + 1)).q`. Establish `h : (C.Q.Dw ((i : ℕ) + 1)).p = D.R.k + ((i : ℕ) + 1) - 1` using `(hQ.2.2.2 _ ⟨Nat.le_add_left _ _, i.2⟩).1`. Use `D.R.m_add_three_le_k` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `⟨actLev_of_levIs R i _ _ hpq hQ.2.1.2 hι (hR.βW i) hh.1 hlev, actLev_of_levIs R i _ _ hpq hQ.2.1.2 hι (hR.βW i) hh.1 hlev⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Supply the required witnesses or components.
 -/
 theorem actLev_record {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : Formalism.L2.DIV.FamIn D.what₂.LL G Pl0 T0 D.R.m}
     (C : Core D) [Algebra C.Q.c.F D.what₂.LL] (R : RealDat D A C.Q.c.F) (i : Fin D.R.m) {Tp : Type} {tup : Tp → T0}

@@ -7,7 +7,7 @@ namespace Formalism.MainNotions.DIV.Inh
 open Formalism.BasicNotions NumberField
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨{ aP := fun _ _ => 0, aM := fun _ _ => 0, aPlus_antitone := fun _ _ _ _ => le_rfl, aM_anti := fun _ _ _ _ => le_rfl, n := 0, n_even := ⟨0, rfl⟩ }⟩`.
+Supply the required witnesses or components.
 -/
 theorem nonempty_zero_weight (D : D7) (j : ℕ) : Nonempty (Formalism.MainNotions.WeightFamilies.Wt D j) :=
   ⟨{ aP := fun _ _ => 0, aM := fun _ _ => 0, aPlus_antitone := fun _ _ _ _ => le_rfl,
@@ -21,17 +21,15 @@ def OsConcrete (D : D7) : Prop :=
     Set.range D.what₂.OtoLL = {x | x ∈ K ∧ IsIntegral ℤ x}
 
 /- English proof (translation)
-Take `⟨hinj, K, hK⟩` from `h`. Use `letI : NumberField D.what₂.LL := D.nfLL`. Use `haveI : FiniteDimensional ℚ K := inferInstance`. Use `haveI : NumberField K := { to_charZero := inferInstance, to_finiteDimensional := inferInstance }`. Set `g : 𝓞 K →+* D.what₂.LL` to `(algebraMap K D.what₂.LL).comp (algebraMap (𝓞 K) K)`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : Function.Injective g` using `(algebraMap K D.what₂.LL).injective.comp (IsFractionRing.injective (𝓞 K) K)`. Establish `hrange : g.range = D.what₂.OtoLL.range`. Use extensionality with `y`. Rewrite using `[RingHom.mem_range, RingHom.mem_range]`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨a, rfl⟩`. Establish `hy : g a ∈ Set.range D.what₂.OtoLL`. Rewrite using `[hK, Set.mem_setOf_eq]`. Conclude with `⟨(algebraMap (𝓞 K) K a).2, IsIntegral.algebraMap (R := ℤ) (A := K) (B := D.what₂.LL) ((IsIntegralClosure.isIntegral_iff (A := 𝓞 K) (R := ℤ) (B := K)).mpr ⟨a, rfl⟩)⟩`. Conclude with `hy`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `⟨x, rfl⟩`. Establish `hx : D.what₂.OtoLL x ∈ Set.range D.what₂.OtoLL` using `⟨x, rfl⟩`. Rewrite `hx` using `[hK, Set.mem_setOf_eq]`. Take `⟨hxK, hxI⟩` from `hx`. Establish `hz : IsIntegral ℤ (⟨D.what₂.OtoLL x, hxK⟩ : K)` using `(isIntegral_algebraMap_iff (algebraMap K D.what₂.LL).injective).mp hxI`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ha⟩` from `(IsIntegralClosure.isIntegral_iff (A := 𝓞 K) (R := ℤ) (B := K)).mp hz`. Use `⟨a, ?_⟩` and prove the remaining obligations. Use `show algebraMap K D.what₂.LL (algebraMap (𝓞 K) K a) = _`. Rewrite using `[ha]`. Both sides reduce to the same expression.
-
-Conclude with `⟨K, inferInstance, inferInstance, ⟨(RingEquiv.ofBijective g.rangeRestrict ⟨fun a b hab => hg (by have h := congrArg Subtype.val hab; exact h), g.rangeRestrict_surjective⟩).trans ((RingEquiv.subringCongr hrange).trans (RingEquiv.ofBijective D.what₂.OtoLL.rangeRestrict ⟨fun a b hab …`.
+Both sides reduce to the same expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem OsRingOfIntegers_of_concrete (D : D7) (h : OsConcrete D) : OsRingOfIntegers D := by
   obtain ⟨hinj, K, hK⟩ := h
@@ -91,21 +89,21 @@ def zeroCuspModel (D : D7) (K : Type) [Field K] [NumberField K] (e : 𝓞 K ≃+
   sg := fun _ _ _ _ => 0
 
 /- English proof (translation)
-The claim follows from `inferInstanceAs (Subsingleton PUnit)`.
+A detailed English derivation is pending.
 -/
 theorem zero_cusp_model_subsingleton (D : D7) (K : Type) [Field K] [NumberField K] (e : 𝓞 K ≃+* D.what₂.O) (j : ℕ)
     (w : Formalism.MainNotions.WeightFamilies.Wt D j) : Subsingleton ((zeroCuspModel D K e).Cusp j w) :=
   inferInstanceAs (Subsingleton PUnit)
 
 /- English proof (translation)
-Take `⟨K, hf, hn, ⟨e⟩⟩` from `h`. Conclude with `⟨zeroCuspModel D K e⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_cusp_provision (D : D7) (h : OsRingOfIntegers D) : Nonempty (Formalism.MainNotions.WeightFamilies.Prov D) := by
   obtain ⟨K, hf, hn, ⟨e⟩⟩ := h
   exact ⟨zeroCuspModel D K e⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨p⟩ => ⟨p.KO, p.fKO, p.nfKO, ⟨p.eO⟩⟩, nonempty_cusp_provision D⟩`.
+Supply the required witnesses or components.
 -/
 theorem nonempty_cusp_provision_iff (D : D7) : Nonempty (Formalism.MainNotions.WeightFamilies.Prov D) ↔ OsRingOfIntegers D :=
   ⟨fun ⟨p⟩ => ⟨p.KO, p.fKO, p.nfKO, ⟨p.eO⟩⟩, nonempty_cusp_provision D⟩

@@ -15,7 +15,7 @@ namespace GlobalTheory.LowRow.ZetaProd
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-The claim follows from `| [] => by simp | b :: l => by rw [List.length_cons, Fin.prod_univ_succ] simp [prod_fin_getD_list f l]`.
+A detailed English derivation is pending.
 -/
 theorem prod_fin_getD_list (f : ℂˣ → ℂ) : ∀ l : List ℂˣ, ∏ a : Fin l.length, f (l.getD a 1) = (l.map f).prod
   | [] => by simp
@@ -24,7 +24,7 @@ theorem prod_fin_getD_list (f : ℂˣ → ℂ) : ∀ l : List ℂˣ, ∏ a : Fin
     simp [prod_fin_getD_list f l]
 
 /- English proof (translation)
-Establish `hl : m.toList.length = n` using `(Multiset.length_toList m).trans hn`. Substitute `hl` using the available equality. Rewrite using `[prod_fin_getD_list]`. Use `conv_rhs => rw [← Multiset.coe_toList m]`. Rewrite using `[Multiset.map_coe, Multiset.prod_coe]`.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_fin_getD (m : Multiset ℂˣ) {n : ℕ} (hn : m.card = n) (f : ℂˣ → ℂ) :
     ∏ a : Fin n, f (m.toList.getD a 1) = (m.map f).prod := by
@@ -45,17 +45,15 @@ def zetaParams (S : Finset (HeightOneSpectrum (𝓞 D.host.F))) (B : GlobalTheor
   else 0
 
 /- English proof (translation)
-Rewrite using `[show -((1 + (D.R.t : ℂ)) / 2) = ((-((1 + (D.R.t : ℝ)) / 2) : ℝ) : ℂ) by push_cast; ring, Complex.ofReal_re]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem re_neg_half : (-((1 + (D.R.t : ℂ)) / 2)).re = -((1 + (D.R.t : ℝ)) / 2) := by
   rw [show -((1 + (D.R.t : ℂ)) / 2) = ((-((1 + (D.R.t : ℝ)) / 2) : ℝ) : ℂ) by push_cast; ring, Complex.ofReal_re]
 
 /- English proof (translation)
-Unfold `zetaParams`. Use `split_ifs with hw`. Establish `ha : (a : ℕ) < (B w).toList.length` using `by rw [Multiset.length_toList, hcard w hw]; exact a.2`. Establish `hβ : (B w).toList.getD a 1 ∈ B w`. Rewrite using `[List.getD_eq_getElem _ _ ha]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Multiset.mem_toList.1 (List.getElem_mem ha)`. Establish `hN : (0 : ℝ) < (Ideal.absNorm w.asIdeal : ℝ)`. Use `two_le_absNorm w` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[norm_mul, norm_mul, Pi.inv_apply, Units.val_inv_eq_inv_val, norm_inv, GlobalTheory.LFun.norm_val, inv_one, mul_one, GlobalTheory.LFun.norm_npow, re_neg_half, sub_eq_add_neg, Real.rpow_add hN]`.
-
-Conclude with `mul_le_mul_of_nonneg_right (hb w hw _ hβ) (Real.rpow_nonneg hN.le _)`. Rewrite using `[norm_zero]`. Conclude with `Real.rpow_nonneg (Nat.cast_nonneg _) _`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_zetaParams_le {S : Finset (HeightOneSpectrum (𝓞 D.host.F))} {B : GlobalTheory.LFun.Fam D.host.E} (cμ : (AE D)ˣ →* Circle)
     (hcard : ∀ w, OffS D S w → (B w).card = D.R.r)
@@ -78,21 +76,19 @@ theorem norm_zetaParams_le {S : Finset (HeightOneSpectrum (𝓞 D.host.F))} {B :
     exact Real.rpow_nonneg (Nat.cast_nonneg _) _
 
 /- English proof (translation)
-Use `set x := zetaParams S B cμ with hxdef`. Establish `hx` using `norm_zetaParams_le cμ hcard hb`. Take `⟨h1, h2, -⟩` from `sum_bound (OffS D S) (κ := Fin D.R.r) (fun a => ‖x a.1.1 a.2‖) (fun _ => norm_nonneg _) fun a => by`. Use `(hx _ _).trans ?_` and prove the remaining obligations. Establish `ht : (D.R.r : ℝ) + 5 ≤ D.R.t` using `by exact_mod_cast D.R.rank_add_five_le`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `two_le_absNorm a.1.1` as an intermediate fact. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_neg (by linarith)]`. Conclude with `Real.rpow_le_rpow_of_exponent_le (by linarith) (by push_cast; linarith)`. Establish `hm : Multipliable fun p : {w // OffS D S w} × Fin D.R.r => (1 - x p.1.1 p.2)⁻¹`. Use `multipliable_one_add_of_summable (f := fun p : {w // OffS D S w} × Fin D.R.r => (1 - x p.1.1 p.2)⁻¹ - 1) (Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun p => ?_) (h2.mul_left 2))` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hx2 : ‖x p.1.1 p.2‖ ≤ 1 / 2` using `h1 p`. Establish `h3 : 1 / 2 ≤ ‖1 - x p.1.1 p.2‖`. Use `norm_sub_norm_le (1 : ℂ) (x p.1.1 p.2)` as an intermediate fact. Rewrite `this` using `[norm_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hne : 1 - x p.1.1 p.2 ≠ 0` using `fun h => by rw [h, norm_zero] at h3; linarith`. Establish `e : (1 - x p.1.1 p.2)⁻¹ - 1 = x p.1.1 p.2 * (1 - x p.1.1 p.2)⁻¹`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : ‖1 - x p.1.1 p.2‖⁻¹ ≤ 2`. Rewrite using `[inv_le_comm₀ (by linarith) two_pos]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[e, norm_mul, norm_inv]`. Use polynomial arithmetic with `[norm_nonneg (x p.1.1 p.2)]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hp` using `hm.hasProd.prod_fiberwise fun b => hasProd_fintype _`. Rewrite using `[eulerOff, ← hp.tprod_eq]`. Use `show _ = GlobalTheory.LFun.eulerProd (GlobalTheory.LFun.above D.host.E (S : Set (HeightOneSpectrum (𝓞 D.host.F)))) (GlobalTheory.LFun.twist B (GlobalTheory.LFun.val cμ)⁻¹) ((1 + (D.R.t : ℂ)) / 2)`. Rewrite using `[GlobalTheory.LFun.eulerProd]`. Set `e : {w // OffS D S w} ≃ {w // w ∉ GlobalTheory.LFun.above D.host.E (S : Set (HeightOneSpectrum (𝓞 D.host.F)))}` to `Equiv.subtypeEquivRight fun w => (GlobalTheory.IndefiniteRowSideFullHecke.ThetaAdjointScalarOnComponents.offS_iff S w).trans (by simp [GlobalTheory.LFun.above])`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e.tprod_eq]`. Use `tprod_congr fun w => ?_` and prove the remaining obligations. Use `show _ = GlobalTheory.LFun.locL _ w.1 _`. Rewrite using `[GlobalTheory.LFun.locL_twist, ← prod_fin_getD (B w.1) (hcard w.1 w.2)]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations.
-
-Simplify using `only [hxdef, zetaParams, if_pos w.2]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eulerOff_zetaParams {S : Finset (HeightOneSpectrum (𝓞 D.host.F))} {B : GlobalTheory.LFun.Fam D.host.E} (cμ : (AE D)ˣ →* Circle)
     (hcard : ∀ w, OffS D S w → (B w).card = D.R.r)
@@ -143,11 +139,9 @@ end GlobalTheory.LowRow.ZetaProd
 namespace GlobalTheory.LowRow
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hZ i t σ s P cμ cη m ω BW f₀ f c io hd μ 𝓧 hμ ev hne`. Take `⟨B, hsys, hb, -, hsum⟩` from `hZ i t σ s P cμ cη m ω BW f₀ f c io hd μ 𝓧 hμ ev hne`. Establish `hcard : ∀ w, OffS D (finS R t) w → (B w).card = D.R.r` using `fun w hw => by`. Establish `hv : w.under (𝓞 D.host.F) ∉ ((finS R t : Finset _) : Set (HeightOneSpectrum (𝓞 D.host.F)))`. Simplify using `using (GlobalTheory.IndefiniteRowSideFullHecke.ThetaAdjointScalarOnComponents.offS_iff _ w).1 hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Break down `hsys _ hv w rfl with ⟨-, h, -⟩ | ⟨-, τ, ϖ, α, -, -, h, -⟩` into its components or cases. Conclude with `h`. Rewrite using `[h]`. Conclude with `GlobalTheory.LGrp.card_bcParam _ α`. Use `⟨ZetaProd.zetaParams (finS R t) B cμ, ZetaProd.norm_zetaParams_le cμ hcard hb, fun U₁ h₁ U₂ h₂ v₁ v₂ => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[ZetaProd.eulerOff_zetaParams cμ hcard hb]`. Conclude with `hsum U₁ h₁ U₂ h₂ v₁ v₂`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteZetaC_of_finiteZetaL : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A),

@@ -13,11 +13,11 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.CechPic
 namespace GlobalTheory.Discrepancy
 
 /- English proof (translation)
-Use `haveI : IsProper p := GlobalTheory.CommonModel.isProper_of_isProjOver hp`. Establish `hkey : ∀ g, G.IsEqn y g → (KltAt p n Δ y ↔ ∀ (E : DivOver p), E.Through y → -1 < discrep E η m g)` using `fun g hg => IsLogEqn.kltAt_iff hn hM.ne_zero hM.pos (hM.eqn y g hg)`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨g, hg⟩` from `G.exists_isEqn y`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hkey g hg]`. Introduce `E hE`. Establish `h1` using `h g hg E hE`. Simplify `h1` using `[DivOver.ord_one]`. Introduce `h g hg E hE`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `(hkey g hg).1 h E hE`. Simplify `h1` using `[DivOver.ord_one]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem inMultAt_one_iff_kltAt {k : Type} [Field k] [CharZero k] {X : Scheme.{0}} [IsIntegral X]
     [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X] {p : X ⟶ Sp k} {n : ℕ} (hp : IsProjOver p)
@@ -38,9 +38,9 @@ theorem inMultAt_one_iff_kltAt {k : Type} [Field k] [CharZero k] {X : Scheme.{0}
     simpa [DivOver.ord_one] using h1
 
 /- English proof (translation)
-Rewrite using `[hJ U 1]`. Prove the components needed by the constructor for the conclusion. Introduce `h y hy`. Conclude with `(inMultAt_one_iff_kltAt hp hn hM y).1 (h y hy 1 (by simp))`. Introduce `h y hy u hu`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: u = 1` using `Units.ext (by simpa using hu)`. Substitute `this` using the available equality. Conclude with `(inMultAt_one_iff_kltAt hp hn hM y).2 (h y hy)`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem one_mem_ideal_iff {k : Type} [Field k] [CharZero k] {X : Scheme.{0}} [IsIntegral X]
     [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X] {p : X ⟶ Sp k} {n : ℕ} (hp : IsProjOver p)
@@ -57,17 +57,17 @@ theorem one_mem_ideal_iff {k : Type} [Field k] [CharZero k] {X : Scheme.{0}} [Is
     exact (inMultAt_one_iff_kltAt hp hn hM y).2 (h y hy)
 
 /- English proof (translation)
-Introduce `k _ _ X _ _ _ p n hp hn Δ η m G Y _ _ s _ K B hM hR J hJ x`. Establish `hO` using `(isOpen_kltAt_and_lcAt_of_isLogRes k X p n hp hn Δ η m G Y s K B hM hR).1`. Establish `hb : ∀ {U : X.Opens} {z : X}, z ∈ U → ∃ U' ∈ X.affineOpens, z ∈ U' ∧ U' ≤ U` using `TopologicalSpace.Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens`. Prove the components needed by the constructor for the conclusion. Introduce `hx hk`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨V, hV, hxV, hVO⟩` from `hb (show x ∈ (⟨_, hO⟩ : X.Opens) from hk)`. Establish `h1 : (1 : Γ(X, V)) ∈ J.ideal ⟨V, hV⟩` using `(one_mem_ideal_iff hp hn hM hJ ⟨V, hV⟩).2 (fun y hy => hVO hy)`. Establish `h2` using `(Scheme.IdealSheafData.mem_support_iff_of_mem (U := ⟨V, hV⟩) hxV).1 hx`. Rewrite `h2` using `[Scheme.mem_zeroLocus_iff]`. Conclude with `h2 1 h1 (by rw [Scheme.basicOpen_one]; exact hxV)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hnk`. Assume the negation of the conclusion as `hx`. Take `⟨V, hV, hxV, -⟩` from `hb (show x ∈ (⊤ : X.Opens) from trivial)`. Establish `h2 : ¬ x ∈ X.zeroLocus (J.ideal ⟨V, hV⟩ : Set Γ(X, V))` using `fun h => hx ((Scheme.IdealSheafData.mem_support_iff_of_mem (U := ⟨V, hV⟩) hxV).2 h)`. Rewrite `h2` using `[Scheme.mem_zeroLocus_iff]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `push_neg at h2`. Take `⟨f, hf, hfx⟩` from `h2`. Rewrite `hfx` using `[Scheme.mem_basicOpen X f x hxV]`. Use `haveI : Nonempty V := ⟨⟨x, hxV⟩⟩`. Establish `hgen : algebraMap (X.presheaf.stalk x) X.functionField (X.presheaf.germ V x hxV f) = X.germToFunctionField V f` using `by simp`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hunit : IsUnit (X.germToFunctionField V f)`. Rewrite using `[← hgen]`. Conclude with `hfx.map _`. Establish `hmem` using `(hJ ⟨V, hV⟩ f).1 hf x hxV hunit.unit (by rw [IsUnit.unit_spec]; rfl)`. Apply `hnk` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← inMultAt_one_iff_kltAt hp hn hM x]`. Introduce `g hg E hE`. Establish `h3` using `hmem g hg E hE`. Establish `h4 : E.ord hunit.unit = 0` using `DivOver.ord_eq_zero_of_unitAt hE _ ⟨_, hfx, by rw [IsUnit.unit_spec]; exact hgen⟩`. Simplify `h3` using `[h4, DivOver.ord_one]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_support_multIdeal_iff : ∀ (k : Type) [Field k] [CharZero k] (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X] (p : X ⟶ Sp k) (n : ℕ), IsProjOver p → topologicalKrullDim X = n → ∀ (Δ : X → ℚ) (η : RatForms p n) (m : ℕ) (G : CartierDiv X) (Y : Scheme.{0}) [IsIntegral Y] [IsLocallyNoetherian Y] (s : Y ⟶ X) [IsDominant s] (K : CartierDiv Y) (B : Closeds Y), IsLogMult p n Δ η m G → IsLogRes p n η m G s K B → ∀ J : X.IdealSheafData, IsMultIdeal p n η m G J → ∀ x : X, x ∈ J.support ↔ ¬ KltAt p n Δ x := by
   intro k _ _ X _ _ _ p n hp hn Δ η m G Y _ _ s _ K B hM hR J hJ x

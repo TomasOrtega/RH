@@ -14,7 +14,7 @@ def DDsp {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   Submodule.span ℂ ((fun g => σ g w0) '' UH (Hpk k r))
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨g, hg, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_DDsp {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : Mx k r → (H →L[ℂ] H)) (w0 : H) {g : Mx k r} (hg : g ∈ UH (Hpk k r)) : σ g w0 ∈ DDsp σ w0 :=
@@ -54,9 +54,9 @@ def ExtSm (D : D7) (Ch Cg Cq : ℝ) : Prop :=
       (DoubleCosetSpanBesselBound L.z' L.c L.π' L.μW' L.μN μG νq' σ w0 → atFormAtPoint L.z' L.c L.π' L.μW' L.μN μG νq' σ)
 
 /- English proof (translation)
-Take `⟨P, hP, hDS⟩` from `hσ`. Take `⟨S, hS⟩` from `hDS.2.2.2.2.2.1`. Take `⟨v, hvS, hv0, -⟩` from `hS.2.2.2.1`. Use `⟨((‖v‖⁻¹ : ℝ) : ℂ) • v, P, hP, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_inv, abs_norm]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inv_mul_cancel₀ (norm_ne_zero_iff.mpr hv0)`. Conclude with `(le_sSup (show S ∈ {S | IsKTypeOf ε _ (Formalism.QuantumDeterminants.lowK ε lam) S} from hS)) (S.smul_mem _ hvS)`.
+A detailed English derivation is pending.
 -/
 theorem lowUnitH_exists {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ} {σ : Mx k r → (H →L[ℂ] H)}
@@ -70,7 +70,7 @@ theorem lowUnitH_exists {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProd
   · exact (le_sSup (show S ∈ {S | IsKTypeOf ε _ (Formalism.QuantumDeterminants.lowK ε lam) S} from hS)) (S.smul_mem _ hvS)
 
 /- English proof (translation)
-Introduce `L lam0 μ ka b κ H _ _ _ σ μG νq νq' hN hσ hG hq hq'`. Take `⟨w0, hw0⟩` from `lowUnitH_exists hσ`. Establish `h1` using `hDD L lam0 μ ka b κ H σ μG νq νq' w0 hN hσ hw0 hG hq hq'`. Establish `h2` using `hE L lam0 μ ka b κ H σ μG νq νq' w0 hN hσ hw0 hG hq hq'`. Conclude with `⟨h2.1 h1.1, h2.2 h1.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem bessel_bound_of_double_coset (D : D7) (Ch Cg Cq : ℝ) (hDD : DoubleCosetBesselBound D Ch Cg Cq) (hE : ExtSm D Ch Cg Cq) :
     adm22 D Ch Cg Cq := by
@@ -89,7 +89,7 @@ def FamilyDoubleCosetBesselBound (Ch Cg Cq : ℝ) : Prop := ∀ x (i : Fm.Ix x),
 def ExtSmF (Ch Cg Cq : ℝ) : Prop := ∀ x (i : Fm.Ix x), ExtSm (Fm.D x i) Ch Cg Cq
 
 /- English proof (translation)
-Introduce `Cg hCg x i` and use `bessel_bound_of_double_coset _ _ _ _ (hDD Cg hCg x i) (hE Cg hCg x i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem bessel_bound_family_of_double_coset (Ch Cg0 Cq : ℝ) (hDD : ∀ Cg ≥ Cg0, FamilyDoubleCosetBesselBound Fm Ch Cg Cq) (hE : ∀ Cg ≥ Cg0, ExtSmF Fm Ch Cg Cq) :
     ∀ Cg ≥ Cg0, ∀ x (i : Fm.Ix x), adm22 (Fm.D x i) Ch Cg Cq :=

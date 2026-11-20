@@ -18,7 +18,7 @@ def UnitCC {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Representa
   ∃ ω : kˣ →* ℂˣ, HasCentralChar ρ ω ∧ ∀ z, ‖(ω z : ℂ)‖ = 1
 
 /- English proof (translation)
-Take `⟨ω, hω, h1⟩` from `hU`. Take `⟨v, hv⟩` from `exists_ne (0 : X)`. Establish `e : c • v = (ω z : ℂ) • v` using `(hc v).symm.trans (hω z v)`. Establish `: c = (ω z : ℂ)` using `smul_left_injective ℂ hv e`. Rewrite using `[this, h1]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_eq_one_of_unitCC {N : ℕ} {X : Type} [AddCommGroup X] [Module ℂ X] [Nontrivial X]
     {ρ : Representation ℂ (GL (Fin N) k) X} (hU : UnitCC ρ) {z : kˣ} {c : ℂ}
@@ -30,7 +30,7 @@ theorem norm_eq_one_of_unitCC {N : ℕ} {X : Type} [AddCommGroup X] [Module ℂ 
   rw [this, h1]
 
 /- English proof (translation)
-Establish `h1` using `hasCentralChar_twist h (absPow k s)`. Rewrite `h1` using `[Fintype.card_fin]`. Conclude with `hasCentralChar_of_equiv (x.twEquiv _ _) h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasCentralChar_nu_u (x : IrrGL k) {ω : kˣ →* ℂˣ} (h : HasCentralChar x.rep ω) (s : ℂ) :
     HasCentralChar (x.nu s).rep (ω * absPow k s ^ x.1) := by
@@ -39,7 +39,7 @@ theorem hasCentralChar_nu_u (x : IrrGL k) {ω : kˣ →* ℂˣ} (h : HasCentralC
   exact hasCentralChar_of_equiv (x.twEquiv _ _) h1
 
 /- English proof (translation)
-Establish `hz` using `nabs_pos' k z`. Establish `hω : ‖(ω z : ℂ)‖ ≠ 0` using `norm_ne_zero_iff.2 (ω z).ne_zero`. Rewrite using `[MonoidHom.mul_apply, MonoidHom.pow_apply, Units.val_mul, Units.val_pow_eq_pow_val, val_absPow_ofReal, norm_mul, norm_pow, Complex.norm_real, Real.norm_of_nonneg (Real.rpow_nonneg hz.le _), Real.log_mul hω (pow_ne_zero _ (Real.rpow_pos_of_pos hz _).ne'), Real.log_pow, Real.log_rp …`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem log_norm_mul_absPow_u (ω : kˣ →* ℂˣ) (t : ℝ) (d : ℕ) (z : kˣ) :
     Real.log ‖(((ω * absPow k (t : ℂ) ^ d) z : ℂˣ) : ℂ)‖ =
@@ -52,7 +52,7 @@ theorem log_norm_mul_absPow_u (ω : kˣ →* ℂˣ) (t : ℝ) (d : ℕ) (z : kˣ
   ring
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [Finset.sum_range_succ, add_mul, ih]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_range_mul_two_u (l : ℕ) : (∑ i ∈ Finset.range l, (i : ℝ)) * 2 = l * ((l : ℝ) - 1) := by
   induction l with
@@ -60,13 +60,13 @@ theorem sum_range_mul_two_u (l : ℕ) : (∑ i ∈ Finset.range l, (i : ℝ)) * 
   | succ n ih => rw [Finset.sum_range_succ, add_mul, ih]; push_cast; ring
 
 /- English proof (translation)
-Take `⟨hd, hi, f, hf, -⟩` from `hL`. Establish `hterm : ∀ a : Fin Δ.len, HasCentralChar (Δ.term a).rep (ω * absPow k (((a : ℕ) : ℝ) : ℂ) ^ Δ.d)` using `fun a => by`. Establish `h` using `hasCentralChar_nu_u Δ.first hω ((a : ℕ) : ℂ)`. Rewrite using `[Complex.ofReal_natCast]`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsc : ∀ v, δ.rep (GeneralLinearGroup.scalar (Fin δ.1) z) v = (∏ a : Fin Δ.len, (((ω * absPow k (((a : ℕ) : ℝ) : ℂ) ^ Δ.d) z : ℂˣ) : ℂ)) • v`. Introduce `v`. Take `⟨w, rfl⟩` from `hf v`. Establish `h1` using `GlobalTheory.BoundaryMaps.multiProd_scalar (stdBlocks (fun a => (Δ.term a).1) hd) (fun a => (Δ.term a).rep) _ hterm z w`. Rewrite using `[← f.isIntertwining]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(congrArg f h1).trans (map_smul f _ _)`. Use `haveI := Model.nontrivial_of_isIrreducible hi`. Establish `hc` using `congrArg Real.log (norm_eq_one_of_unitCC hU hsc)`. Rewrite `hc` using `[norm_prod, Real.log_one, Real.log_prod fun a _ => norm_ne_zero_iff.2 (Units.ne_zero _)]`. Simplify using `only [log_norm_mul_absPow_u] at hc`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hc` using `[Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, ← Finset.sum_mul, ← Finset.mul_sum, Fin.sum_univ_eq_sum_range (fun i => (i : ℝ)) Δ.len]`. Establish `hS` using `sum_range_mul_two_u Δ.len`. Establish `hl : (Δ.len : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 Δ.len_pos.ne'`. Apply `mul_left_cancel₀ hl` to reduce the goal to its premises. Take the linear combination `hc - ((Δ.d : ℝ) * Real.log (nabs k z) / 2) * hS`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem log_norm_centralChar_u {δ : IrrGL k} {Δ : Segment k} (hL : IsLSeg Δ δ.rep) (hU : UnitCC δ.rep)
     {ω : kˣ →* ℂˣ} (hω : HasCentralChar Δ.first.rep ω) (z : kˣ) :
@@ -97,23 +97,21 @@ theorem log_norm_centralChar_u {δ : IrrGL k} {Δ : Segment k} (hL : IsLSeg Δ �
   linear_combination hc - ((Δ.d : ℝ) * Real.log (nabs k z) / 2) * hS
 
 /- English proof (translation)
-Take `⟨⟨-, -, hnsub⟩, j, hj, hfirst⟩` from `hP`. Establish `hf : Δ'.first.nu (y : ℂ) = (Δ.first.nu (x : ℂ)).nu (j : ℂ)` using `hfirst`. Establish `hρ' : Δ'.first = Δ.first.nu (((x + j - y : ℝ)) : ℂ)`. Establish `h1` using `congrArg (fun r => r.nu (-(y : ℂ))) hf`. Simplify using `only [IrrGL.nu_nu, add_neg_cancel, IrrGL.nu_zero] at h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hd : Δ'.d = Δ.d` using `congrArg Sigma.fst hρ'`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Take `⟨ω, -, hω⟩` from `exists_smooth_hasCentralChar Δ.first.2.rep.smooth Δ.first.2.rep.irr`. Establish `hω' : HasCentralChar Δ'.first.rep (ω * absPow k (((x + j - y : ℝ)) : ℂ) ^ Δ.first.1)`. Rewrite using `[hρ']`. Conclude with `hasCentralChar_nu_u _ hω _`. Take `⟨ϖ, hϖ⟩` from `exists_uniformizer k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hne : nabs k ϖ ≠ 1` using `fun e => uniformizer_lt_one.ne (hϖ ▸ (nabs_eq_one_iff ϖ).1 e)`. Establish `hL0 : Real.log (nabs k ϖ) ≠ 0` using `Real.log_ne_zero_of_pos_of_ne_one (nabs_pos' k ϖ) hne`. Establish `hA` using `log_norm_centralChar_u hL hU hω ϖ`. Establish `hA'` using `log_norm_centralChar_u hL' hU' hω' ϖ`. Rewrite `hA'` using `[log_norm_mul_absPow_u, hd]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hdL : (Δ.d : ℝ) * Real.log (nabs k ϖ) ≠ 0` using `mul_ne_zero (Nat.cast_ne_zero.2 Δ.d_pos.ne') hL0`. Establish `ht : x + j - y = ((Δ.len : ℝ) - Δ'.len) / 2`. Apply `mul_left_cancel₀ hdL` to reduce the goal to its premises. Establish `e1 : (Δ.first.1 : ℝ) = Δ.d` using `rfl`. Rewrite `hA'` using `[e1]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `hA' - hA`. Establish `hlen : Δ.len < j + Δ'.len`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hnsub` to reduce the goal to its premises.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `w hw`. Take `⟨a, ha, rfl⟩` from `Segment.mem_carrier.1 hw`. Use `Segment.mem_carrier.2 ⟨j + a, ?_, ?_⟩` and prove the remaining obligations. Establish `ha' : a < Δ'.len` using `ha show j + a < Δ.len`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hfirst, IrrGL.nu_nu]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hj1 : (1 : ℝ) ≤ j` using `by exact_mod_cast hj`. Establish `hl1 : (Δ.len : ℝ) + 1 ≤ j + Δ'.len` using `by exact_mod_cast hlen`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem add_one_le_of_precedes_u (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (δ δ' : IrrGL k) (Δ Δ' : Segment k) (hL : IsLSeg Δ δ.rep) (hU : UnitCC δ.rep) (hL' : IsLSeg Δ' δ'.rep)

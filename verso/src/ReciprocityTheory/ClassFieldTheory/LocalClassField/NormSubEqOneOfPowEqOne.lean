@@ -12,26 +12,24 @@ variable {p : ℕ} [Fact p.Prime]
 noncomputable abbrev res : Obar p →+* kbar p := IsLocalRing.residue (Obar p)
 
 /- English proof (translation)
-The claim follows from `mem_Obar_iff.1 x.2`.
+A detailed English derivation is pending.
 -/
 theorem norm_le_one (x : Obar p) : ‖(x : PadicAlgCl p)‖ ≤ 1 := mem_Obar_iff.1 x.2
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact Bl.FirstBlockLemmaD.goal1 .. | (apply Bl.FirstBlockLemmaD.goal1 <;> assumption) | (intros; apply Bl.FirstBlockLemmaD.goal1 <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem norm_sub_le_max' (x y : PadicAlgCl p) : ‖x - y‖ ≤ max ‖x‖ ‖y‖ := by
   first | exact Bl.FirstBlockLemmaD.goal1 .. | (apply Bl.FirstBlockLemmaD.goal1 <;> assumption) | (intros; apply Bl.FirstBlockLemmaD.goal1 <;> assumption)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩`. Establish `h1 : ((u : Obar p) : PadicAlgCl p) * (((u⁻¹ : (Obar p)ˣ) : Obar p) : PadicAlgCl p) = 1`. Establish `h2 : (((u : Obar p) * ((u⁻¹ : (Obar p)ˣ) : Obar p) : Obar p) : PadicAlgCl p) = 1`. Rewrite using `[u.mul_inv]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Conclude with `h2`. Establish `h3` using `congrArg norm h1`. Rewrite `h3` using `[norm_mul, norm_one]`. Establish `ha` using `norm_le_one (u : Obar p)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb` using `norm_le_one ((u⁻¹ : (Obar p)ˣ) : Obar p)`. Establish `hb0` using `norm_nonneg ((u : Obar p) : PadicAlgCl p)`. Use the polynomial consequences of the given equalities and inequalities. Introduce `h`. Establish `hx0 : (x : PadicAlgCl p) ≠ 0`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Rewrite `h` using `[h0, norm_zero]`. Conclude with `zero_ne_one h`. Establish `hi : ‖(x : PadicAlgCl p)⁻¹‖ ≤ 1` using `by rw [norm_inv, h, inv_one]`. Use `IsUnit.of_mul_eq_one (⟨(x : PadicAlgCl p)⁻¹, mem_Obar_iff.2 hi⟩ : Obar p) ?_` and prove the remaining obligations.
-
-Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `mul_inv_cancel₀ hx0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem isUnit_iff (x : Obar p) : IsUnit x ↔ ‖(x : PadicAlgCl p)‖ = 1 := by
   constructor
@@ -55,9 +53,9 @@ theorem isUnit_iff (x : Obar p) : IsUnit x ↔ ‖(x : PadicAlgCl p)‖ = 1 := b
     exact mul_inv_cancel₀ hx0
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `hc`. Establish `h1 : ‖(x : PadicAlgCl p)‖ = 1` using `le_antisymm (norm_le_one x) (not_lt.1 hc)`. Conclude with `(IsLocalRing.residue_ne_zero_iff_isUnit x).2 ((isUnit_iff x).2 h1) h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Assume the negation of the conclusion as `hc`. Use `(isUnit_iff x).1 ((IsLocalRing.residue_ne_zero_iff_isUnit x).1 hc)` as an intermediate fact. Conclude with `absurd this (ne_of_lt h)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem res_eq_zero_iff (x : Obar p) : res x = 0 ↔ ‖(x : PadicAlgCl p)‖ < 1 := by
   constructor
@@ -71,20 +69,20 @@ theorem res_eq_zero_iff (x : Obar p) : res x = 0 ↔ ‖(x : PadicAlgCl p)‖ < 
     exact absurd this (ne_of_lt h)
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero, ← map_sub, res_eq_zero_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem res_eq_iff (x y : Obar p) : res x = res y ↔ ‖(x : PadicAlgCl p) - (y : PadicAlgCl p)‖ < 1 := by
   rw [← sub_eq_zero, ← map_sub, res_eq_zero_iff]
   rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_resK_iff (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (c : kbar p) :
     c ∈ resK p K ↔ ∃ x : Obar p, (x : PadicAlgCl p) ∈ K ∧ res x = c := Iff.rfl
 
 /- English proof (translation)
-Introduce `c hc`. Take `⟨x, hx, rfl⟩` from `(mem_resK_iff K c).1 hc`. Conclude with `(mem_resK_iff L _).2 ⟨x, h hx, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem resK_mono {K L : IntermediateField ℚ_[p] (PadicAlgCl p)} (h : K ≤ L) : resK p K ≤ resK p L := by
   intro c hc
@@ -92,13 +90,13 @@ theorem resK_mono {K L : IntermediateField ℚ_[p] (PadicAlgCl p)} (h : K ≤ L)
   exact (mem_resK_iff L _).2 ⟨x, h hx, rfl⟩
 
 /- English proof (translation)
-The claim follows from `(spectralNorm_eq_of_equiv (σ.restrictScalars ℚ_[p]) x).symm`.
+A detailed English derivation is pending.
 -/
 theorem norm_GK {K : IntermediateField ℚ_[p] (PadicAlgCl p)} (σ : GK p K) (x : PadicAlgCl p) : ‖σ x‖ = ‖x‖ :=
   (spectralNorm_eq_of_equiv (σ.restrictScalars ℚ_[p]) x).symm
 
 /- English proof (translation)
-Establish `h : ((p : ℕ) : PadicAlgCl p) = algebraMap ℚ_[p] (PadicAlgCl p) (p : ℚ_[p])` using `by simp`. Rewrite using `[h, PadicAlgCl.norm_extends]`. Conclude with `Padic.norm_p_lt_one`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_p_lt_one : ‖((p : ℕ) : PadicAlgCl p)‖ < 1 := by
   have h : ((p : ℕ) : PadicAlgCl p) = algebraMap ℚ_[p] (PadicAlgCl p) (p : ℚ_[p]) := by simp
@@ -118,15 +116,13 @@ scoped instance charP_kbar : CharP (kbar p) p := by
   exact h3 ▸ hr
 
 /- English proof (translation)
-Establish `: ProperSpace K` using `FiniteDimensional.proper ℚ_[p] K`. Establish `hc : IsCompact (Metric.closedBall (0 : K) 1)` using `isCompact_closedBall 0 1`. Take `⟨t, -, htf, hcov⟩` from `finite_cover_balls_of_compact hc (e := 1) one_pos`. Set `g : K → kbar p` to `fun x => if h : ‖(x : PadicAlgCl p)‖ ≤ 1 then res ⟨x, mem_Obar_iff.2 h⟩ else 0`. Establish `hsub : (resK p K : Set (kbar p)) ⊆ g '' t`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `c hc`. Take `⟨x, hx, rfl⟩` from `(mem_resK_iff K c).1 hc`. Establish `hxb : (⟨x, hx⟩ : K) ∈ Metric.closedBall (0 : K) 1`. Rewrite using `[mem_closedBall_zero_iff]`. Conclude with `norm_le_one x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, hxy⟩` from `Set.mem_iUnion₂.1 (hcov hxb)`. Rewrite `hxy` using `[Metric.mem_ball, dist_eq_norm]`. Establish `hxy' : ‖(x : PadicAlgCl p) - (y : PadicAlgCl p)‖ < 1` using `hxy`. Establish `hy1 : ‖(y : PadicAlgCl p)‖ ≤ 1`. Establish `h1 : (y : PadicAlgCl p) = (x : PadicAlgCl p) - ((x : PadicAlgCl p) - (y : PadicAlgCl p))` using `by ring`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Conclude with `(norm_sub_le_max' _ _).trans (max_le (norm_le_one x) hxy'.le)`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Establish `hg : g y = res ⟨(y : PadicAlgCl p), mem_Obar_iff.2 hy1⟩` using `dif_pos hy1`. Rewrite using `[hg]`.
-
-Conclude with `((res_eq_iff x ⟨(y : PadicAlgCl p), mem_Obar_iff.2 hy1⟩).2 hxy').symm`. Conclude with `(htf.image g).subset hsub`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_resK (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (hK : FiniteDimensional ℚ_[p] K) :
     Finite (resK p K) := by
@@ -154,7 +150,7 @@ theorem finite_resK (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (hK : FiniteD
   exact (htf.image g).subset hsub
 
 /- English proof (translation)
-Use `finite_resK K hK` as an intermediate fact. Use `Fintype.ofFinite (resK p K)` as an intermediate fact. Establish `hch : CharP (resK p K) p` using `((resK p K).subtype.charP_iff Subtype.val_injective p).2 inferInstance`. Take `⟨n, -, hn⟩` from `FiniteField.card (resK p K) p`. Conclude with `⟨n, n.pos, by rw [qK, Nat.card_eq_fintype_card, hn]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem qK_eq_pow (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (hK : FiniteDimensional ℚ_[p] K) :
     ∃ f : ℕ, 0 < f ∧ qK p K = p ^ f := by
@@ -166,7 +162,7 @@ theorem qK_eq_pow (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (hK : FiniteDim
   exact ⟨n, n.pos, by rw [qK, Nat.card_eq_fintype_card, hn]⟩
 
 /- English proof (translation)
-Take `⟨f, hf, h⟩` from `qK_eq_pow K hK`. Rewrite using `[h]`. Conclude with `Nat.one_lt_pow hf.ne' (Fact.out : p.Prime).one_lt`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_lt_qK (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (hK : FiniteDimensional ℚ_[p] K) :
     1 < qK p K := by
@@ -175,9 +171,9 @@ theorem one_lt_qK (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (hK : FiniteDim
   exact Nat.one_lt_pow hf.ne' (Fact.out : p.Prime).one_lt
 
 /- English proof (translation)
-Take `⟨f, hf, h⟩` from `qK_eq_pow K hK`. Introduce `hd`. Establish `h1 : p ∣ qK p K ^ n`. Rewrite using `[h, ← pow_mul]`. Conclude with `dvd_pow_self p (Nat.mul_pos hf hn).ne'`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : 1 ≤ qK p K ^ n` using `Nat.one_le_pow _ _ (by have := one_lt_qK K hK; omega)`. Establish `h3 : p ∣ 1`. Use `(Nat.dvd_sub h1 hd)` as an intermediate fact. Rewrite `this` using `[Nat.sub_sub_self h2]`. Then use the resulting hypothesis. Conclude with `(Fact.out : p.Prime).one_lt.ne' (Nat.dvd_one.1 h3)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem not_dvd_qK_pow_sub_one (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (hK : FiniteDimensional ℚ_[p] K)
     {n : ℕ} (hn : 0 < n) : ¬ p ∣ qK p K ^ n - 1 := by
@@ -192,24 +188,22 @@ theorem not_dvd_qK_pow_sub_one (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (h
   exact (Fact.out : p.Prime).one_lt.ne' (Nat.dvd_one.1 h3)
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact Bl.FirstBlockLemmaC.goal1 .. | (apply Bl.FirstBlockLemmaC.goal1 <;> assumption) | (intros; apply Bl.FirstBlockLemmaC.goal1 <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem norm_eq_one_of_pow {m : ℕ} (hm : m ≠ 0) {ζ : PadicAlgCl p} (hζ : ζ ^ m = 1) : ‖ζ‖ = 1 := by
   first | exact Bl.FirstBlockLemmaC.goal1 .. | (apply Bl.FirstBlockLemmaC.goal1 <;> assumption) | (intros; apply Bl.FirstBlockLemmaC.goal1 <;> assumption)
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact Bl.PadicNatCastNorm.goal1 .. | (apply Bl.PadicNatCastNorm.goal1 <;> assumption) | (intros; apply Bl.PadicNatCastNorm.goal1 <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem norm_sub_one_of_pow {m : ℕ} (hm : ¬ p ∣ m) {η : PadicAlgCl p} (hη : η ^ m = 1) (h : η ≠ 1) :
     ‖η - 1‖ = 1 := by
   first | exact Bl.PadicNatCastNorm.goal1 .. | (apply Bl.PadicNatCastNorm.goal1 <;> assumption) | (intros; apply Bl.PadicNatCastNorm.goal1 <;> assumption)
 
 /- English proof (translation)
-Establish `hm0 : m ≠ 0` using `by rintro rfl; exact hm (dvd_zero p)`. Establish `hξ0 : ξ ≠ 0`. Introduce and unpack `rfl`. Rewrite `hξ` using `[zero_pow hm0]`. Conclude with `zero_ne_one hξ`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ζ - ξ = ξ * (ζ / ξ - 1)` using `by field_simp`. Rewrite using `[h1, norm_mul, norm_eq_one_of_pow hm0 hξ, one_mul]`. Apply `norm_sub_one_of_pow hm` to reduce the goal to its premises. Rewrite using `[div_pow, hζ, hξ, div_one]`. Introduce `h2`.
-
-Conclude with `h ((div_eq_one_iff_eq hξ0).1 h2)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem norm_sub_eq_one_of_pow_eq_one {m : ℕ} (hm : ¬ p ∣ m) {ζ ξ : PadicAlgCl p} (hζ : ζ ^ m = 1)
     (hξ : ξ ^ m = 1) (h : ζ ≠ ξ) : ‖ζ - ξ‖ = 1 := by

@@ -11,17 +11,15 @@ open NumberField IsDedekindDomain MeasureTheory Matrix Topology GlobalTheory.Com
 open scoped ENNReal NNReal MatrixGroups Kronecker
 
 /- English proof (translation)
-Introduce `F _ _ _ _ lf hH h1 ι _ _ B N hN`. Take `⟨hlc, hsc, ht2, -, hopen, -, -, -, -, -⟩` from `GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F`. Use `haveI := hlc`. Use `haveI := hsc`. Use `haveI := ht2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : SigmaFinite lf := inferInstance`. Establish `hscale` using `(GlobalTheory.T.adelic_haar_measure_scaling F lf hH h1).1`. Establish `hNF : ((N : F)) ≠ 0` using `Nat.cast_ne_zero.mpr hN.ne'`. Establish `hnorm : ((Algebra.norm ℚ (N : F) : ℚ) : ℝ) = (N : ℝ) ^ Module.finrank ℚ F`. Establish `: (N : F) = algebraMap ℚ F (N : ℚ)` using `by simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[this, Algebra.norm_algebraMap]`. Use `push_cast`. Both sides reduce to the same expression. Use `set S : Set (A F) := (fun x => algebraMap F (A F) (N : F) * x) '' Oh F with hSdef`. Establish `hlf : lf S = ENNReal.ofReal (((N : ℝ) ^ Module.finrank ℚ F)⁻¹)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[hSdef, hscale (N : F) hNF (Oh F) hopen.measurableSet, h1, mul_one, hnorm, abs_of_nonneg (by positivity)]`. Establish `hset : (latN F ι N : Set (ι → A F)) = Set.pi Set.univ (fun _ => S)`. Use extensionality with `x`. Simplify using `only [SetLike.mem_coe, Set.mem_pi, Set.mem_univ, true_imp_iff, hSdef, Set.mem_image, map_natCast]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `h i`. Take `⟨y, hy, e⟩` from `h i`. Conclude with `⟨y, hy, e.symm⟩`. Introduce `h i`. Take `⟨y, hy, e⟩` from `h i`.
-
-Conclude with `⟨y, hy, e.symm⟩`. Establish `hk : 0 ≤ kap F` using `inv_nonneg.mpr (Real.sqrt_nonneg _)`. Rewrite using `[hset, muF, Measure.smul_apply, Measure.pi_pi, smul_eq_mul, Finset.prod_const, Finset.card_univ, hlf, ENNReal.toReal_mul, ENNReal.toReal_pow, ENNReal.toReal_ofReal (by positivity), ENNReal.toReal_ofReal]`. Check the signs of the components of the expression.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem muF_latN : ∀ (F : Type) [Field F] [NumberField F] [MeasurableSpace (A F)] [BorelSpace (A F)] (lf : Measure (A F)), lf.IsAddHaarMeasure → lf (Oh F) = 1 → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (B : Matrix ι ι F) (N : ℕ), 0 < N → (muF B lf (latN F ι N : Set (ι → A F))).toReal = kap F ^ Fintype.card ι * (Real.sqrt |((Algebra.norm ℚ B.det : ℚ) : ℝ)|)⁻¹ * (((N : ℝ) ^ Module.finrank ℚ F)⁻¹) ^ Fintype.card ι := by
   intro F _ _ _ _ lf hH h1 ι _ _ B N hN

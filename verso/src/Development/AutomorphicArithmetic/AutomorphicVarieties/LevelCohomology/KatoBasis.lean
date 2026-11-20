@@ -4,15 +4,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PublishedTheorems.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Published.Kato
 
 /- English proof (translation)
-Introduce `l _ E E' _ h`. Set `V : Submodule (↥E) (Qbar l)` to `(IntermediateField.extendScalars h).toSubalgebra.toSubmodule`. Establish `hV : ∀ x, x ∈ V ↔ x ∈ E'` using `fun x => Iff.rfl`. Use `haveI : Module.Finite ℚ_[l] V := by`. Set `f : ↥E' →ₗ[ℚ_[l]] V` to `{ toFun := fun x => ⟨x.1, (hV _).2 x.2⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `Module.Finite.of_surjective f (fun y => ⟨⟨y.1, (hV _).1 y.2⟩, rfl⟩)`. Use `haveI : Module.Finite (↥E) V := Module.Finite.of_restrictScalars_finite ℚ_[l] (↥E) V`. Set `b` to `Module.finBasis (↥E) V`. Use `choose π hπ using fun i => LinearMap.exists_extend (b.coord i)`. Use `⟨_, fun i => (b i : Qbar l), π, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx`. Establish `h1` using `congrArg (fun y : V => (y : Qbar l)) (b.sum_repr ⟨x, (hV _).2 hx⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at h1`. Use `h1.symm.trans (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations. Establish `h2 : π i x = b.repr ⟨x, (hV _).2 hx⟩ i`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `LinearMap.congr_fun (hπ i) ⟨x, (hV _).2 hx⟩` as an intermediate fact. Simplify using `using this`. Rewrite using `[h2, mul_comm]`. Both sides reduce to the same expression. Introduce `i`.
-
-Rewrite using `[continuousOn_iff_continuous_restrict]`. Set `g : ↥E' →ₗ[ℚ_[l]] ↥E` to `((π i).restrictScalars ℚ_[l]).comp E'.val.toLinearMap`. Conclude with `g.continuous_of_finiteDimensional`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.X.Kato.basis :
     ∀ (l : ℕ) [Fact l.Prime] (E E' : IntermediateField ℚ_[l] (Qbar l)) [FiniteDimensional ℚ_[l] ↥E'], E ≤ E' → ∃ (d : ℕ) (ε : Fin d → Qbar l) (π : Fin d → (Qbar l →ₗ[↥E] ↥E)), (∀ x ∈ E', x = ∑ i, ε i * (π i x : Qbar l)) ∧ ∀ i, ContinuousOn (π i) (E' : Set (Qbar l)) := by

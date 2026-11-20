@@ -10,7 +10,7 @@ variable {R : Type*} (S : Type*) [CommRing R] [CommRing S] [Algebra R S]
 variable {V V' : Type*} [AddCommGroup V] [Module R V] [AddCommGroup V'] [Module R V']
 
 /- English proof (translation)
-Simplify using `only [Submodule.baseChange_eq_span, Submodule.map_span, Submodule.map_coe, Set.image_image]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem baseChange_map (f : V →ₗ[R] V') (A : Submodule R V) :
     (A.map f).baseChange S = (A.baseChange S).map (f.baseChange S) := by
@@ -19,14 +19,14 @@ theorem baseChange_map (f : V →ₗ[R] V') (A : Submodule R V) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[← Submodule.map_top, baseChange_map, Submodule.baseChange_top, Submodule.map_top]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem baseChange_range (f : V →ₗ[R] V') :
     (LinearMap.range f).baseChange S = LinearMap.range (f.baseChange S) := by
   rw [← Submodule.map_top, baseChange_map, Submodule.baseChange_top, Submodule.map_top]
 
 /- English proof (translation)
-Rewrite using `[Submodule.baseChange, ← LinearMap.exact_iff]`. Conclude with `lTensor_exact S (LinearMap.exact_subtype_mkQ B) B.mkQ_surjective`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_baseChange_mkQ (B : Submodule R V) :
     LinearMap.ker (B.mkQ.baseChange S) = B.baseChange S := by
@@ -48,7 +48,7 @@ theorem baseChangeQuotEquiv_tmul (B : Submodule R V) (s : S) (x : V) :
 variable [Module.Flat R S]
 
 /- English proof (translation)
-Rewrite using `[Submodule.baseChange, eq_comm, ← LinearMap.exact_iff]`. Conclude with `Module.Flat.lTensor_exact S (LinearMap.exact_subtype_ker_map f)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem baseChange_ker (f : V →ₗ[R] V') :
     (LinearMap.ker f).baseChange S = LinearMap.ker (f.baseChange S) := by
@@ -56,7 +56,7 @@ theorem baseChange_ker (f : V →ₗ[R] V') :
   exact Module.Flat.lTensor_exact S (LinearMap.exact_subtype_ker_map f)
 
 /- English proof (translation)
-Rewrite using `[← ker_baseChange_mkQ S B, ← LinearMap.ker_comp, ← LinearMap.baseChange_comp, ← baseChange_ker, LinearMap.ker_comp, Submodule.ker_mkQ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem baseChange_comap (f : V →ₗ[R] V') (B : Submodule R V') :
     (B.comap f).baseChange S = (B.baseChange S).comap (f.baseChange S) := by
@@ -64,7 +64,7 @@ theorem baseChange_comap (f : V →ₗ[R] V') (B : Submodule R V') :
     ← baseChange_ker, LinearMap.ker_comp, Submodule.ker_mkQ]
 
 /- English proof (translation)
-Rewrite using `[← Submodule.map_comap_subtype, baseChange_map, baseChange_comap, Submodule.map_comap_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem baseChange_inf (A B : Submodule R V) :
     (A ⊓ B).baseChange S = A.baseChange S ⊓ B.baseChange S := by
@@ -72,7 +72,7 @@ theorem baseChange_inf (A B : Submodule R V) :
   rfl
 
 /- English proof (translation)
-Proceed by induction on `ι using Finite.induction_empty_option with`. Consider the case `of_equiv e ih => rw [← e.iInf_comp, ← e.iInf_comp, ih]`. Consider the case `h_empty => rw [iInf_of_empty, iInf_of_empty, Submodule.baseChange_top]`. Consider the case `h_option ih => rw [iInf_option, iInf_option, baseChange_inf, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem baseChange_iInf {ι : Type*} [Finite ι] (A : ι → Submodule R V) :
     (⨅ i, A i).baseChange S = ⨅ i, (A i).baseChange S := by
@@ -82,7 +82,7 @@ theorem baseChange_iInf {ι : Type*} [Finite ι] (A : ι → Submodule R V) :
   | h_option ih => rw [iInf_option, iInf_option, baseChange_inf, ih]
 
 /- English proof (translation)
-The claim follows from `Module.Flat.lTensor_preserves_injective_linearMap (M := S) f hf`.
+A detailed English derivation is pending.
 -/
 theorem baseChange_injective {f : V →ₗ[R] V'} (hf : Function.Injective f) :
     Function.Injective (f.baseChange S) :=
@@ -99,7 +99,7 @@ theorem coe_baseChangeEquiv_apply (A : Submodule R V) (x : S ⊗[R] A) :
     (baseChangeEquiv S A x : S ⊗[R] V) = A.subtype.baseChange S x := rfl
 
 /- English proof (translation)
-Rewrite using `[Submodule.submoduleOf, baseChange_comap, Submodule.map_equiv_eq_comap_symm, ← Submodule.comap_comp, Submodule.submoduleOf]`. Use `congr 1`. Use `ext1 x`. Take `⟨y, rfl⟩` from `(baseChangeEquiv S A).surjective x`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_baseChangeEquiv_submoduleOf (A B : Submodule R V) :
     ((B.submoduleOf A).baseChange S).map (baseChangeEquiv S A : S ⊗[R] A →ₗ[S] A.baseChange S) =
@@ -127,7 +127,7 @@ theorem baseChangeSubquotEquiv_tmul (A B : Submodule R V) (s : S) (x : A) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[← (baseChangeEquiv S A).rank_eq]`. Conclude with `(TensorProduct.isBaseChange R A S).lift_rank_eq`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_rank_baseChange.{u, v, w} {R : Type u} (S : Type v) [CommRing R] [CommRing S]
     [Algebra R S] [Module.Flat R S] [NoZeroDivisors S] [FaithfulSMul R S]
@@ -137,7 +137,7 @@ theorem lift_rank_baseChange.{u, v, w} {R : Type u} (S : Type v) [CommRing R] [C
   exact (TensorProduct.isBaseChange R A S).lift_rank_eq
 
 /- English proof (translation)
-Simplify using `using! congr_arg Cardinal.toNat (lift_rank_baseChange S A)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem finrank_baseChange [NoZeroDivisors S] [FaithfulSMul R S] (A : Submodule R V) :
     Module.finrank S (A.baseChange S) = Module.finrank R A := by
@@ -164,14 +164,14 @@ noncomputable def baseChangeToField : S ⊗[R] V →ₗ[S] L ⊗[K] V :=
 
 @[simp]
 /- English proof (translation)
-Simplify using `[baseChangeToField, smul_tmul', Algebra.smul_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem baseChangeToField_tmul (s : S) (v : V) :
     baseChangeToField R K S L V (s ⊗ₜ v) = algebraMap S L s ⊗ₜ[K] v := by
   simp [baseChangeToField, smul_tmul', Algebra.smul_def]
 
 /- English proof (translation)
-Proceed by induction on `x with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp [hx, hy]`. Consider the case `tmul s v => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem baseChangeToField_naturality (f : V →ₗ[K] V') (x : S ⊗[R] V) :
     f.baseChange L (baseChangeToField R K S L V x) =
@@ -182,7 +182,7 @@ theorem baseChangeToField_naturality (f : V →ₗ[K] V') (x : S ⊗[R] V) :
   | tmul s v => simp
 
 /- English proof (translation)
-Simplify using `only [spanBaseChange, Submodule.baseChange_eq_span, Submodule.map_span, Submodule.map_coe, Set.image_image, TensorProduct.mk_apply, baseChangeToField_tmul, map_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spanBaseChange_eq_map (M : Submodule R V) :
     spanBaseChange K S L M = (M.baseChange S).map (baseChangeToField R K S L V) := by
@@ -193,7 +193,7 @@ omit [Algebra R K] [IsScalarTower R K V] [IsScalarTower R K V'] [Algebra R S] [A
   [IsScalarTower R K L] [IsScalarTower R S L] in
 
 /- English proof (translation)
-Simplify using `only [spanBaseChange, Submodule.map_span, Submodule.map_coe, Set.image_image]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem spanBaseChange_map [LinearMap.CompatibleSMul V V' R K] (f : V →ₗ[K] V')
     (M : Submodule R V) :
@@ -207,11 +207,11 @@ variable [IsFractionRing R K] [FaithfulSMul S L]
 variable (R V) in
 
 /- English proof (translation)
-Establish `hflat : Module.Flat R V` using `(Module.flat_iff_of_isLocalization K (nonZeroDivisors R) V).1 inferInstance`. Establish `h1 : Function.Injective ((IsScalarTower.toAlgHom R S L).toLinearMap.rTensor V)` using `Module.Flat.rTensor_preserves_injective_linearMap _ (FaithfulSMul.algebraMap_injective S L)`. Establish `h2 : ∀ x, IsLocalization.moduleTensorEquiv (nonZeroDivisors R) K L V (baseChangeToField R K S L V x) = (IsScalarTower.toAlgHom R S L).toLinearMap.rTensor V x`. Introduce `x`. Proceed by induction on `x with`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul s v => rw [baseChangeToField_tmul]`. Both sides reduce to the same expression. Introduce `x y hxy`.
+Treat this case separately. Treat this case separately. Treat this case separately. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `h1` to reduce the goal to its premises. Rewrite using `[← h2, ← h2, hxy]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem baseChangeToField_injective : Function.Injective (baseChangeToField R K S L V) := by
   have hflat : Module.Flat R V :=
@@ -230,7 +230,7 @@ theorem baseChangeToField_injective : Function.Injective (baseChangeToField R K 
   rw [← h2, ← h2, hxy]
 
 /- English proof (translation)
-Use extensionality with `x`. Establish `hker : (W.restrictScalars R).baseChange S = LinearMap.ker ((W.mkQ.restrictScalars R).baseChange S)` using `(ker_baseChange_mkQ S (W.restrictScalars R)).symm`. Rewrite using `[Submodule.mem_comap, Submodule.restrictScalars_mem, ← ker_baseChange_mkQ L W, hker, LinearMap.mem_ker, LinearMap.mem_ker, baseChangeToField_naturality, map_eq_zero_iff _ (baseChangeToField_injective R K S L (V ⧸ W))]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem comap_baseChangeToField (W : Submodule K V) :
     ((W.baseChange L).restrictScalars S).comap (baseChangeToField R K S L V) =
@@ -246,7 +246,7 @@ theorem comap_baseChangeToField (W : Submodule K V) :
 variable [Module.Flat R S]
 
 /- English proof (translation)
-Rewrite using `[spanBaseChange_eq_map, spanBaseChange_eq_map, baseChange_inf, ← comap_baseChangeToField K S L, Submodule.map_inf_eq_map_inf_comap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem spanBaseChange_inf_subspace (M : Submodule R V) (W : Submodule K V) :
     spanBaseChange K S L (M ⊓ W.restrictScalars R) =
@@ -269,9 +269,9 @@ theorem coe_spanBaseChangeEquiv_apply (M : Submodule R V) (x : S ⊗[R] M) :
       baseChangeToField R K S L V (M.subtype.baseChange S x) := rfl
 
 /- English proof (translation)
-Rewrite using `[Submodule.submoduleOf, baseChange_comap, Submodule.map_equiv_eq_comap_symm]`. Use extensionality with `x`. Take `⟨y, rfl⟩` from `(spanBaseChangeEquiv K S L M).surjective x`. Rewrite using `[Submodule.submoduleOf, spanBaseChange_eq_map K S L N]`. Simplify using `only [Submodule.mem_comap, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply, Submodule.subtype_apply, coe_spanBaseChangeEquiv_apply]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `⟨fun h => ⟨_, h, rfl⟩, fun ⟨z, hz, h⟩ => baseChangeToField_injective R K S L V h ▸ hz⟩`.
+Supply the required witnesses or components.
 -/
 theorem map_spanBaseChangeEquiv_submoduleOf (M N : Submodule R V) :
     ((N.submoduleOf M).baseChange S).map
@@ -293,7 +293,7 @@ noncomputable def spanBaseChangeSubquotEquiv (M N : Submodule R V) :
       (map_spanBaseChangeEquiv_submoduleOf K S L M N)
 
 /- English proof (translation)
-Rewrite using `[← (spanBaseChangeEquiv K S L M).finrank_eq]`. Conclude with `(TensorProduct.isBaseChange R M S).finrank_eq`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_spanBaseChange [NoZeroDivisors S] [FaithfulSMul R S] (M : Submodule R V) :
     Module.finrank S (spanBaseChange K S L M) = Module.finrank R M := by
@@ -303,7 +303,7 @@ theorem finrank_spanBaseChange [NoZeroDivisors S] [FaithfulSMul R S] (M : Submod
 end Lattice
 
 /- English proof (translation)
-The claim follows from `(IsBaseChange.of_equiv (f := ((spanBaseChangeEquiv K S L M).toLinearMap.restrictScalars R) ∘ₗ TensorProduct.mk R S M 1) (spanBaseChangeEquiv K S L M) (fun _ => rfl)).lift_rank_eq`.
+A detailed English derivation is pending.
 -/
 theorem lift_rank_spanBaseChange.{u, v} {R : Type*} (K S : Type*) (L : Type u) [CommRing R]
     [Field K] [CommRing S] [CommRing L] [Algebra R K] [Algebra K L] [Algebra S L]
@@ -317,7 +317,7 @@ theorem lift_rank_spanBaseChange.{u, v} {R : Type*} (K S : Type*) (L : Type u) [
     TensorProduct.mk R S M 1) (spanBaseChangeEquiv K S L M) (fun _ => rfl)).lift_rank_eq
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨spanBaseChange_inf_subspace K S L M W, lift_rank_spanBaseChange K S L M, lift_rank_baseChange L W, finrank_spanBaseChange K S L M, finrank_baseChange L W⟩`.
+Supply the required witnesses or components.
 -/
 theorem flat_spanBaseChange_inf_subspace.{u, v} {R : Type*} (K S : Type*) (L : Type u)
     [CommRing R] [IsDomain R] [CommRing S] [IsDomain S] [Field K] [Field L]
@@ -338,7 +338,7 @@ theorem flat_spanBaseChange_inf_subspace.{u, v} {R : Type*} (K S : Type*) (L : T
     lift_rank_baseChange L W, finrank_spanBaseChange K S L M, finrank_baseChange L W⟩
 
 /- English proof (translation)
-The claim follows from `(flat_spanBaseChange_inf_subspace ℚ ℤ_[p] ℚ_[p] M W).1`.
+A detailed English derivation is pending.
 -/
 example (p : ℕ) [Fact p.Prime] (M : Submodule ℤ (Fin 2 → ℚ)) (W : Submodule ℚ (Fin 2 → ℚ)) :
     spanBaseChange ℚ ℤ_[p] ℚ_[p] (M ⊓ W.restrictScalars ℤ) =

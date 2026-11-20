@@ -15,14 +15,14 @@ variable {R : Type} [CommRing R] {G G' : Over (Sp R)} [GrpObj G] [GrpObj G'] {n 
   {v : Fin n → (epsR R ⟶ G)}
 
 /- English proof (translation)
-The claim follows from `(LieComb.isLieComb_iff_tanExp _ _).2 (congrArg Additive.toMul (map_zero (LieComb.combHom hv))).symm`.
+A detailed English derivation is pending.
 -/
 theorem isLieComb_zero [IsCommMonObj G] (hv : ∀ i, IsTangent (v i)) : IsLieComb 0 v 1 :=
   (LieComb.isLieComb_iff_tanExp _ _).2
     (congrArg Additive.toMul (map_zero (LieComb.combHom hv))).symm
 
 /- English proof (translation)
-Rewrite `h`, `h'`, the goal using `[LieComb.isLieComb_iff_tanExp]`. Rewrite using `[h, h']`. Conclude with `(congrArg Additive.toMul (map_add (LieComb.combHom hv) c c')).symm`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLieComb_add [IsCommMonObj G] (hv : ∀ i, IsTangent (v i)) {c c' : Fin n → R}
     {w w' : epsR R ⟶ G} (h : IsLieComb c v w) (h' : IsLieComb c' v w') :
@@ -32,7 +32,7 @@ theorem isLieComb_add [IsCommMonObj G] (hv : ∀ i, IsTangent (v i)) {c c' : Fin
   exact (congrArg Additive.toMul (map_add (LieComb.combHom hv) c c')).symm
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => rw [zero_smul, pow_zero]`. Conclude with `isLieComb_zero hv`. Consider the case `succ N ih => rw [succ_nsmul, pow_succ]`. Conclude with `isLieComb_add hv ih h`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isLieComb_nsmul [IsCommMonObj G] (hv : ∀ i, IsTangent (v i)) {c : Fin n → R}
     {w : epsR R ⟶ G} (h : IsLieComb c v w) (N : ℕ) : IsLieComb (N • c) v (w ^ N) := by
@@ -41,7 +41,7 @@ theorem isLieComb_nsmul [IsCommMonObj G] (hv : ∀ i, IsTangent (v i)) {c : Fin 
   | succ N ih => rw [succ_nsmul, pow_succ]; exact isLieComb_add hv ih h
 
 /- English proof (translation)
-Unfold `IsTangent at hx ⊢`. Rewrite using `[Over.comp_left, ← Category.assoc, hx, ← Over.comp_left, IsMonHom.one_hom]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem isTangent_comp (f : G ⟶ G') [IsMonHom f] {x : epsR R ⟶ G} (hx : IsTangent x) :
     IsTangent (x ≫ f) := by
@@ -49,7 +49,7 @@ theorem isTangent_comp (f : G ⟶ G') [IsMonHom f] {x : epsR R ⟶ G} (hx : IsTa
   rw [Over.comp_left, ← Category.assoc, hx, ← Over.comp_left, IsMonHom.one_hom]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simpa using MonObj.one_comp f`. Consider the case `cons a l ih => rw [List.prod_cons, List.map_cons, List.prod_cons, MonObj.mul_comp, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem list_prod_comp (f : G ⟶ G') [IsMonHom f] (l : List (epsR R ⟶ G)) :
     l.prod ≫ f = (l.map (· ≫ f)).prod := by
@@ -58,7 +58,7 @@ theorem list_prod_comp (f : G ⟶ G') [IsMonHom f] (l : List (epsR R ⟶ G)) :
   | cons a l ih => rw [List.prod_cons, List.map_cons, List.prod_cons, MonObj.mul_comp, ih]
 
 /- English proof (translation)
-Take `⟨u, hu, rfl⟩` from `h`. Use `⟨fun i => u i ≫ f, fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Over.comp_left, Over.comp_left, hu i, Category.assoc]`. Rewrite using `[list_prod_comp, List.map_ofFn]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isLieComb_comp (f : G ⟶ G') [IsMonHom f] {c : Fin n → R} {w : epsR R ⟶ G}
     (h : IsLieComb c v w) : IsLieComb c (fun i => v i ≫ f) (w ≫ f) := by
@@ -69,7 +69,7 @@ theorem isLieComb_comp (f : G ⟶ G') [IsMonHom f] {c : Fin n → R} {w : epsR R
     rfl
 
 /- English proof (translation)
-Introduce `R _ G G' _ _ _ n v hv`. Conclude with `⟨isLieComb_zero hv, fun _ _ _ _ h h' => isLieComb_add hv h h', fun _ _ N h => isLieComb_nsmul hv h N, fun f _ => ⟨fun i => isTangent_comp f (hv i), fun _ _ h => isLieComb_comp f h⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem lieComb_add_pow_map : ∀ (R : Type) [CommRing R] (G G' : Over (Sp R)) [GrpObj G] [IsCommMonObj G] [GrpObj G'] (n : ℕ) (v : Fin n → (epsR R ⟶ G)), (∀ i, IsTangent (v i)) → IsLieComb 0 v 1 ∧ (∀ c c' w w', IsLieComb c v w → IsLieComb c' v w' → IsLieComb (c + c') v (w * w')) ∧ (∀ c w (N : ℕ), IsLieComb c v w → IsLieComb (N • c) v (w ^ N)) ∧ ∀ f : G ⟶ G', IsMonHom f → (∀ i, IsTangent (v i ≫ f)) ∧ ∀ c w, IsLieComb c v w → IsLieComb c (fun i => v i ≫ f) (w ≫ f) := by
   intro R _ G G' _ _ _ n v hv

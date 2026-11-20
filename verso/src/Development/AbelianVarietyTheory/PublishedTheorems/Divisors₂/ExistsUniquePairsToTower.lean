@@ -35,7 +35,7 @@ def IsConnecting (x : G.VecExt) (b : G.A 1) : Prop :=
 variable {G}
 
 /- English proof (translation)
-Take `⟨c, B, rfl, h₁, h₂, rfl⟩` from `h`. Take `⟨c', B', rfl, h₁', h₂', rfl⟩` from `h'`. Conclude with `⟨c - c', B - B', rfl, by rw [map_sub, map_sub, h₁, h₁'], by rw [map_sub, h₂, h₂', sub_zero], rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsConnecting.sub {x x' : G.VecExt} {b b' : G.A 1} (h : G.IsConnecting x b)
     (h' : G.IsConnecting x' b') : G.IsConnecting (x - x') (b - b') := by
@@ -44,13 +44,11 @@ theorem IsConnecting.sub {x x' : G.VecExt} {b b' : G.A 1} (h : G.IsConnecting x 
   exact ⟨c - c', B - B', rfl, by rw [map_sub, map_sub, h₁, h₁'], by rw [map_sub, h₂, h₂', sub_zero], rfl⟩
 
 /- English proof (translation)
-Take `⟨c, B, h₀, h₁, h₂, h₃⟩` from `h.sub h'`. Rewrite `h₀` using `[sub_self, Submodule.Quotient.mk_eq_zero]`. Take `⟨D, rfl⟩` from `h₀`. Rewrite `h₁` using `[cocyclesMap_cob, ← sub_eq_zero, ← map_sub]`. Use `set E := B - funsMap ((p : ℤ_[p]) • 𝟙 G) D with hE`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e₂ : cobOne R _ (E.1 2) = 0` using `congrArg (fun z : G.cocycles ↦ z.1 2) h₁`. Establish `e₃ : G.mulP 1 (E.1 1) = 0`. Rewrite using `[← E.2 1, mulP_res, (mulBy_of_cobOne_eq_zero e₂ p).1, ← Nat.cast_smul_eq_nsmul R, hp, zero_smul]`. Establish `e₁ : E.1 1 = 0` using `CartierDual.eq_of_forall_apply (R := R) fun φ ↦ by`. Take `⟨ψ, rfl⟩` from `G.dual_mulP_surjective 1 φ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(congrArg ψ.ofConv e₃).trans ((map_zero _).trans (map_zero _).symm)`. Establish `e₄ : b - b' = algebraMap R _ (Coalgebra.counit (D.1 1))`. Rewrite using `[← h₃, ← G.mulBy_pow_self, pow_one, ← natCast_smul_id_app]`. Conclude with `sub_eq_zero.1 e₁`. Rewrite `h₂` using `[e₄, Bialgebra.counit_algebraMap]`.
-
-Rewrite using `[← sub_eq_zero, e₄, h₂, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsConnecting.unique (hp : (p : R) = 0) {x : G.VecExt} {b b' : G.A 1}
     (h : G.IsConnecting x b) (h' : G.IsConnecting x b') : b = b' := by
@@ -98,13 +96,13 @@ def PairsTo (P : LB (A ⊗ B).left) (n : ℕ) (x : PDiv.SpAlg R D ⟶ A) (v : ep
     (unitOn (epsUnit b))
 
 /- English proof (translation)
-The claim follows from `(Units.mapEquiv (Scheme.ΓSpecIso (CommRingCat.of D)).symm.commRingCatIsoToRingEquiv.toMulEquiv).bijective`.
+A detailed English derivation is pending.
 -/
 theorem unitOn_bijective : Function.Bijective (unitOn (R := D)) :=
   (Units.mapEquiv (Scheme.ΓSpecIso (CommRingCat.of D)).symm.commRingCatIsoToRingEquiv.toMulEquiv).bijective
 
 /- English proof (translation)
-The claim follows from `Units.ext (congrArg (fun q ↦ q.hom u.val) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom f))).symm`.
+A detailed English derivation is pending.
 -/
 theorem map_unitOn {D' : Type} [CommRing D'] (f : D →+* D') (u : Dˣ) :
     Units.map (spMap f).appTop.hom.toMonoidHom (unitOn u) = unitOn (Units.map f.toMonoidHom u) :=
@@ -152,14 +150,14 @@ def BarsottiTateDieudonne : Prop :=
 namespace BarsottiTateDieudonne
 
 /- English proof (translation)
-The claim follows from `fun p _ ↦ have ⟨e, _, h₁, h₂, h₃, _⟩ := H p ⟨e, h₁, h₂, h₃⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem HodgeQuotient.deRhamVectorExtension (H : HodgeQuotient) : DeRhamVectorExtension := fun p _ ↦
   have ⟨e, _, h₁, h₂, h₃, _⟩ := H p
   ⟨e, h₁, h₂, h₃⟩
 
 /- English proof (translation)
-The claim follows from `H.2.deRhamVectorExtension`.
+A detailed English derivation is pending.
 -/
 theorem deRhamVectorExtension (H : BarsottiTateDieudonne) : DeRhamVectorExtension :=
   H.2.deRhamVectorExtension

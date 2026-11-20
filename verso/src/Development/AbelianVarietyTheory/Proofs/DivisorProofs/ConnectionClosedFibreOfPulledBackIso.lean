@@ -26,30 +26,30 @@ namespace GlobalTheory.PotIso
 open GlobalTheory.KS GlobalTheory.KS.AdjDlog
 
 /- English proof (translation)
-Simplify using `only [constFn, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem constFn_mul_c {R : Type} [CommRing R] {Y : Scheme.{0}} (q : Y ⟶ Sp R) (W : Y.Opens) (a b : R) :
     constFn q W (a * b) = constFn q W a * constFn q W b := by
   simp only [constFn, map_mul]
 
 /- English proof (translation)
-Simplify using `only [constFn, map_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem constFn_one_c {R : Type} [CommRing R] {Y : Scheme.{0}} (q : Y ⟶ Sp R) (W : Y.Opens) :
     constFn q W 1 = 1 := by
   simp only [constFn, map_one]
 
 /- English proof (translation)
-Simplify using `only [constFn, map_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem constFn_zero_c {R : Type} [CommRing R] {Y : Scheme.{0}} (q : Y ⟶ Sp R) (W : Y.Opens) :
     constFn q W 0 = 0 := by
   simp only [constFn, map_zero]
 
 /- English proof (translation)
-Establish `e1 : (q ≫ spMap x).appLE ⊤ W le_top = (spMap x).appLE ⊤ ⊤ le_top ≫ q.appLE ⊤ W le_top` using `(Scheme.Hom.appLE_comp_appLE _ _ _ _ _ _ _).symm`. Establish `h2` using `congrArg (fun k => k.hom t) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom x))`. Express the relevant statement in the definitionally equal form `((q ≫ spMap x).appLE ⊤ W le_top).hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom t) = (q.appLE ⊤ W le_top).hom ((Scheme.ΓSpecIso (CommRingCat.of S)).inv.hom (x t))`. Rewrite using `[e1, CommRingCat.comp_apply]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [CommRingCat.comp_apply] at h2`. Conclude with `h2.symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem constFn_comp_spMap_c {R S : Type} [CommRing R] [CommRing S] {Y : Scheme.{0}} (q : Y ⟶ Sp S) (x : R →+* S)
     (W : Y.Opens) (t : R) : constFn (q ≫ spMap x) W t = constFn q W (x t) := by
@@ -64,7 +64,7 @@ theorem constFn_comp_spMap_c {R S : Type} [CommRing R] [CommRing S] {Y : Scheme.
   exact h2.symm
 
 /- English proof (translation)
-Establish `le : O ≤ f ⁻¹ᵁ (L.U (j PUnit.unit) ⊓ L.U (j' PUnit.unit))` using `le_inf ((h.trans inf_le_left).trans (LB.wchart_le L _ j PUnit.unit)) ((h.trans inf_le_right).trans (LB.wchart_le L _ j' PUnit.unit))`. Establish `e : res h ((L.pull f).g j j') = res le (pullU f _ (L.g (j PUnit.unit) (j' PUnit.unit)))` using `by show res h (∏ k : PUnit, _) = _ erw [Fintype.prod_unique, zpow_one, res_res']`. Both sides reduce to the same expression. Rewrite using `[e, val_res_pullU]`.
+Establish an intermediate fact. Establish an intermediate fact. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_g_val {X Y : Scheme.{0}} (L : LB X) (f : Y ⟶ X) (j j' : PUnit → L.ι) {O : Y.Opens}
     (h : O ≤ (L.pull f).U j ⊓ (L.pull f).U j') :
@@ -79,9 +79,9 @@ theorem pull_g_val {X Y : Scheme.{0}} (L : LB X) (f : Y ⟶ X) (j j' : PUnit →
   rw [e, val_res_pullU]
 
 /- English proof (translation)
-Use `IsPullback.of_right ?_ hprb hm` and prove the remaining obligations. Establish `e : spMap (constHom ρ) = spMap (algebraMap k (DualNumber k)) ≫ spMap ((TrivSqZeroExt.fstHom k k k).toRingHom.comp ρ)`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Rewrite using `[hpr, ← e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h₂`.
+A detailed English derivation is pending.
 -/
 theorem isPullback_pr {k R : Type} [Field k] [CommRing R] (ρ : R →+* DualNumber k) {A B' A₀ : Scheme.{0}}
     (pA : A ⟶ Sp R) (pB : B' ⟶ Sp (DualNumber k)) (p₀ : A₀ ⟶ Sp k) (π₂ : B' ⟶ A) (m₀ : A₀ ⟶ A) (pr : B' ⟶ A₀)
@@ -96,25 +96,25 @@ theorem isPullback_pr {k R : Type} [Field k] [CommRing R] (ρ : R →+* DualNumb
   rw [hpr, ← e]; exact h₂
 
 /- English proof (translation)
-Introduce `k _ R _ P ρ B' _ π₁ π₂ h₁ h₂ hfib A₀ _ m₀ hm₀ pr hpr hprb J V jj hV hVU d hd hdB w hw`. Take `⟨a, b, hab⟩` from `GlobalTheory.T.two_pullback_isomorphism_unit_constant_plus_eps_function k R P ρ B' π₁ π₂ h₁ h₂ hfib A₀ m₀ hm₀ pr hpr hprb V jj hV hVU w hw`. Establish `hpre : ∀ W : P.A.left.Opens, π₁ ⁻¹ᵁ W = π₂ ⁻¹ᵁ W` using `GlobalTheory.T.preimage_eq_of_agree_on_closedFibre_dualNumbers k P.A.left B'.left B'.hom π₁ π₂ hfib`. Establish `hpb : IsPullback pr B'.hom A₀.hom (spMap (algebraMap k (DualNumber k)))` using `GlobalTheory.PotIso.isPullback_pr ρ _ _ _ π₂ m₀ pr h₂.1 hm₀.1 hpr hprb`. Establish `thick` using `GlobalTheory.T.existsUnique_add_eps_mul_on_dualNumber_thickening k A₀.left B'.left A₀.hom B'.hom pr hpb`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `hpr` using the available equality. Use `⟨fun i => constFn A₀.hom (m₀ ⁻¹ᵁ V i) ((a⁻¹ : kˣ) : k) * b i, hd, hV, hVU, fun i i' => ?_⟩` and prove the remaining obligations. Establish `hW : V i ⊓ V i' ≤ P.L.U (jj i) ⊓ P.L.U (jj i')` using `inf_le_inf (hVU i) (hVU i')`. Establish `hO₀ : m₀ ⁻¹ᵁ (V i ⊓ V i') ≤ m₀ ⁻¹ᵁ (P.L.U (jj i) ⊓ P.L.U (jj i'))` using `m₀.preimage_mono hW`. Establish `hO : (pr ≫ m₀) ⁻¹ᵁ (V i ⊓ V i') ≤ pr ⁻¹ᵁ (m₀ ⁻¹ᵁ (V i ⊓ V i'))` using `le_rfl`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hchart : ∀ l, (pr ≫ m₀) ⁻¹ᵁ V l ≤ (LB.div (P.L.pull (pr ≫ m₀)) (P.L.pull π₁)).U (fun _ => jj l, fun _ => jj l)`. Introduce `l x hx`. Use `⟨Set.mem_iInter.2 fun _ => hVU l hx, Set.mem_iInter.2 fun _ => ?_⟩` and prove the remaining obligations. Establish `: x ∈ π₁ ⁻¹ᵁ P.L.U (jj l)` using `by rw [hpre]; exact hVU l hx`. Conclude with `this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM : (pr ≫ m₀) ⁻¹ᵁ (V i ⊓ V i') ≤ (P.L.pull (pr ≫ m₀)).U (fun _ => jj i) ⊓ (P.L.pull (pr ≫ m₀)).U (fun _ => jj i')` using `fun x hx => ⟨(hchart i hx.1).1, (hchart i' hx.2).1⟩`. Establish `hL : (pr ≫ m₀) ⁻¹ᵁ (V i ⊓ V i') ≤ (P.L.pull π₁).U (fun _ => jj i) ⊓ (P.L.pull π₁).U (fun _ => jj i')` using `fun x hx => ⟨(hchart i hx.1).2, (hchart i' hx.2).2⟩`. Establish `iso` using `iso_rel w hw (fun _ => jj i) (fun _ => jj i') (fun _ => jj i) (fun _ => jj i') hM hL`. Rewrite `iso` using `[GlobalTheory.PotIso.pull_g_val, GlobalTheory.PotIso.pull_g_val]`. Establish `hs : ∀ l, V i ⊓ V i' ≤ V l → rsT (w.s (fun _ => jj l, fun _ => jj l)).val ((pr ≫ m₀) ⁻¹ᵁ (V i ⊓ V i')) = constFn B'.hom ((pr ≫ m₀) ⁻¹ᵁ (V i ⊓ V i')) (algebraMap k (DualNumber k) (a : k)) + constFn B'.hom ((pr ≫ m₀) ⁻¹ᵁ (V i ⊓ V i')) DualNumber.eps * pbT pr (rsT (b l) (m₀ ⁻¹ᵁ (V i …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l hl`. Establish `hl' : (pr ≫ m₀) ⁻¹ᵁ (V i ⊓ V i') ≤ (pr ≫ m₀) ⁻¹ᵁ V l` using `(pr ≫ m₀).preimage_mono hl`. Rewrite using `[← rsT_rsT (hchart l) hl', hab l, rsT_add, rsT_mul, GlobalTheory.KS.rsT_constFn _ hl', GlobalTheory.KS.rsT_constFn _ hl', rsT_pbT pr (show (pr ≫ m₀) ⁻¹ᵁ V l ≤ pr ⁻¹ᵁ (m₀ ⁻¹ᵁ V l) from le_rfl) hl', pbT_rsT pr (m₀.preimage_mono hl) hO]`. Establish `hA : constFn B'.hom ((pr ≫ m₀) ⁻¹ᵁ (V i ⊓ V i')) (algebraMap k (DualNumber k) (a : k)) = pbT pr (constFn A₀.hom (m₀ ⁻¹ᵁ (V i ⊓ V i')) (a : k)) ((pr ≫ m₀) ⁻¹ᵁ (V i ⊓ V i'))`. Rewrite using `[GlobalTheory.KS.pbT_constFn A₀.hom pr hO, hprb, GlobalTheory.PotIso.constFn_comp_spMap_c]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd'` using `hdB (V i ⊓ V i') (rsT (P.L.g (jj i) (jj i')).val (V i ⊓ V i'))`. Rewrite `hd'` using `[pbT_rsT π₁ hW (hpre _).ge, pbT_rsT (pr ≫ m₀) hW le_rfl, ← pbT_pbT pr m₀ hO₀ hO]`. Rewrite `iso` using `[← pbT_pbT pr m₀ hO₀ hO, hd', hs i inf_le_left, hs i' inf_le_right, hA]`. Establish `hee : constFn B'.hom ((pr ≫ m₀) ⁻¹ᵁ (V i ⊓ V i')) DualNumber.eps * constFn B'.hom ((pr ≫ m₀) ⁻¹ᵁ (V i ⊓ V i')) DualNumber.eps = 0`. Rewrite using `[← GlobalTheory.PotIso.constFn_mul_c, DualNumber.eps_mul_eps, GlobalTheory.PotIso.constFn_zero_c]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `d (V i ⊓ V i') (rsT (P.L.g (jj i) (jj i')).val (V i ⊓ V i')) = D at iso ⊢`. Generalize the expression as in `pbT m₀ (P.L.g (jj i) (jj i')).val (m₀ ⁻¹ᵁ (V i ⊓ V i')) = g₀ at iso ⊢`. Establish `key : constFn B'.hom ((pr ≫ m₀) ⁻¹ᵁ (V i ⊓ V i')) DualNumber.eps * pbT pr (constFn A₀.hom (m₀ ⁻¹ᵁ (V i ⊓ V i')) (a : k) * D) ((pr ≫ m₀) ⁻¹ᵁ (V i ⊓ V i')) = constFn B'.hom ((pr ≫ m₀) ⁻¹ᵁ (V i ⊓ V i')) DualNumber.eps * pbT pr (g₀ * (rsT (b i') (m₀ ⁻¹ᵁ (V i ⊓ V i')) - rsT (b i) (m₀ …`. Rewrite using `[pbT_mul, pbT_mul, pbT_sub]`. Take the linear combination `iso - (pbT pr (rsT (b i) (m₀ ⁻¹ᵁ (V i ⊓ V i'))) ((pr ≫ m₀) ⁻¹ᵁ (V i ⊓ V i')) * pbT pr D ((pr ≫ m₀) ⁻¹ᵁ (V i ⊓ V i'))) * hee`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Take `⟨_, _, huniq⟩` from `thick (m₀ ⁻¹ᵁ (V i ⊓ V i')) (constFn B'.hom (pr ⁻¹ᵁ (m₀ ⁻¹ᵁ (V i ⊓ V i'))) DualNumber.eps * pbT pr (constFn A₀.hom (m₀ ⁻¹ᵁ (V i ⊓ V i')) (a : k) * D) (pr ⁻¹ᵁ (m₀ ⁻¹ᵁ (V i ⊓ V i'))))`. Establish `u₁` using `huniq (0, constFn A₀.hom (m₀ ⁻¹ᵁ (V i ⊓ V i')) (a : k) * D) (by`. Simplify using `only [map_zero, zero_add, app_eq_pbT])`. Establish `u₂` using `huniq (0, g₀ * (rsT (b i') (m₀ ⁻¹ᵁ (V i ⊓ V i')) - rsT (b i) (m₀ ⁻¹ᵁ (V i ⊓ V i')))) (by`. Simplify using `only [map_zero, zero_add, app_eq_pbT]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `key)`. Establish `hX` using `congrArg Prod.snd (u₁.trans u₂.symm)`. Simplify using `only at hX`. Establish `hc : constFn A₀.hom (m₀ ⁻¹ᵁ (V i ⊓ V i')) ((a⁻¹ : kˣ) : k) * constFn A₀.hom (m₀ ⁻¹ᵁ (V i ⊓ V i')) (a : k) = 1`. Rewrite using `[← GlobalTheory.PotIso.constFn_mul_c, Units.inv_mul, GlobalTheory.PotIso.constFn_one_c]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `show D = g₀ * (rsT (constFn A₀.hom (m₀ ⁻¹ᵁ V i') ((a⁻¹ : kˣ) : k) * b i') (m₀ ⁻¹ᵁ (V i ⊓ V i')) - rsT (constFn A₀.hom (m₀ ⁻¹ᵁ V i) ((a⁻¹ : kˣ) : k) * b i) (m₀ ⁻¹ᵁ (V i ⊓ V i')))`. Rewrite using `[rsT_mul, rsT_mul, GlobalTheory.KS.rsT_constFn _ (m₀.preimage_mono inf_le_right), GlobalTheory.KS.rsT_constFn _ (m₀.preimage_mono inf_le_left)]`. Take the linear combination `constFn A₀.hom (m₀ ⁻¹ᵁ (V i ⊓ V i')) ((a⁻¹ : kˣ) : k) * hX - D * hc`.
+A detailed English derivation is pending.
 -/
 theorem conn_of_iso : ∀ (k : Type) [Field k] (R : Type) [CommRing R] (P : PolAV (Sp R)) (ρ : R →+* DualNumber k) (B' : Over (Sp (DualNumber k))) [GrpObj B'] (π₁ π₂ : B'.left ⟶ P.A.left), IsGrpPullback B' P.A (spMap ρ) π₁ → IsGrpPullback B' P.A (spMap (constHom ρ)) π₂ → (∀ (Z : Scheme.{0}) (x : Z ⟶ B'.left) (y : Z ⟶ Sp k), x ≫ B'.hom = y ≫ spMap (TrivSqZeroExt.fstHom k k k).toRingHom → x ≫ π₁ = x ≫ π₂) → ∀ (A₀ : Over (Sp k)) [GrpObj A₀] (m₀ : A₀.left ⟶ P.A.left), IsGrpPullback A₀ P.A (spMap ((TrivSqZeroExt.fstHom k k k).toRingHom.comp ρ)) m₀ → ∀ pr : B'.left ⟶ A₀.left, pr ≫ m₀ = π₂ → pr ≫ A₀.hom = B'.hom ≫ spMap (algebraMap k (DualNumber k)) → ∀ {J : Type} (V : J → P.A.left.Opens) (jj : J → P.L.ι), ⨆ i, V i = ⊤ → (∀ i, V i ≤ P.L.U (jj i)) → ∀ d : ∀ W : P.A.left.Opens, Γ(P.A.left, W) → Γ(A₀.left, m₀ ⁻¹ᵁ W), GlobalTheory.KS.LocDerK A₀.hom P.A.hom m₀ (fun r => (ρ r).snd) ⊤ d → (∀ (W : P.A.left.Opens) (f : Γ(P.A.left, W)), pbT π₁ f (π₂ ⁻¹ᵁ W) = pbT π₂ f (π₂ ⁻¹ᵁ W) + constFn B'.hom (π₂ ⁻¹ᵁ W) DualNumber.eps * pbT pr (d W f) (π₂ ⁻¹ᵁ W)) → ∀ w : LB.Iso (P.L.pull π₁) (P.L.pull π₂), w.IsGen → ∃ q : ∀ i, Γ(A₀.left, m₀ ⁻¹ᵁ V i), GlobalTheory.HeatConn.IsConnK P.A P.L A₀ m₀ (fun r => (ρ r).snd) V jj d q := by
   intro k _ R _ P ρ B' _ π₁ π₂ h₁ h₂ hfib A₀ _ m₀ hm₀ pr hpr hprb J V jj hV hVU d hd hdB w hw

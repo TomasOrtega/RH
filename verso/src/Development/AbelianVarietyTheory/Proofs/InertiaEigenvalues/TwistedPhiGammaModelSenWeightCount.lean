@@ -12,9 +12,9 @@ open scoped LaurentSeries PowerSeries
 namespace GlobalTheory.ModelCount
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `zero => simp`. Consider the case `succ L ih`. Establish `step` using `h (a + L)`. Establish `e : a + ((L + 1 : ℕ) : ℤ) = a + L + 1` using `by push_cast; ring`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_range_succ, Finset.sum_range_succ, e]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem telescope (S S₀ m : ℤ → ℕ) (h : ∀ y, S y + m (y + 1) = S₀ y + m y) (a : ℤ) (L : ℕ) :
     ∑ j ∈ Finset.range L, S (a + j) + m (a + L) = ∑ j ∈ Finset.range L, S₀ (a + j) + m a := by
@@ -27,7 +27,7 @@ theorem telescope (S S₀ m : ℤ → ℕ) (h : ∀ y, S y + m (y + 1) = S₀ y 
     omega
 
 /- English proof (translation)
-Establish `hd : (l : ℤ) ∣ y - u` using `((CharP.intCast_eq_intCast k l).mp h).dvd`. Establish `hz : y - u = 0` using `Int.eq_zero_of_abs_lt_dvd hd (abs_lt.mpr ⟨by omega, by omega⟩)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem eq_of_cast_eq {k : Type} [Field k] (l : ℕ) [CharP k l] {u y : ℤ} (h : (u : k) = (y : k))
     (h1 : u - y < l) (h2 : y - u < l) : u = y := by
@@ -36,21 +36,21 @@ theorem eq_of_cast_eq {k : Type} [Field k] (l : ℕ) [CharP k l] {u y : ℤ} (h 
   omega
 
 /- English proof (translation)
-Proceed by induction on `U using Multiset.induction_on with`. Consider the case `empty => simp [resCount]`. Consider the case `cons u U ih`. Establish `hU` using `ih (fun v hv => h v (Multiset.mem_cons_of_mem hv))`. Establish `hu` using `h u (Multiset.mem_cons_self u U)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `split : ∀ x : k, resCount (u ::ₘ U) w x = (if ((u - w : ℤ) : k) = x then 1 else 0) + resCount U w x`. Introduce `x`. Unfold `resCount`. Rewrite using `[Multiset.filter_cons, Multiset.card_add]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [split]`. Rewrite using `[Finset.sum_add_distrib, hU, Multiset.filter_cons, Multiset.card_add]`. Use `congr 1`. Establish `tr : ∀ j : ℕ, (((u - w : ℤ) : k) = ((a + j - w : ℤ) : k)) ↔ ((u : k) = ((a + j : ℤ) : k))`. Introduce `j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `push_cast`. Conclude with `sub_left_inj`. Distinguish the cases in `hp : p u`. Rewrite using `[if_pos hp, Multiset.card_singleton]`. Take `⟨ha, hb⟩` from `hu.1 hp`.
+Move the embeddings inside the algebraic operations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single (u - a).toNat]`. Rewrite using `[if_pos]`. Rewrite using `[tr]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j _ hj`. Rewrite using `[if_neg]`. Introduce `hc`. Use `(hu.2 (a + j) (by omega) (by have := Finset.mem_range.mp ‹j ∈ Finset.range L›; omega) ((tr j).mp hc)).1` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hn`. It suffices to derive a contradiction. Conclude with `hn (Finset.mem_range.mpr (by omega))`. Rewrite using `[if_neg hp, Multiset.card_zero]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+It suffices to derive a contradiction. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `j hj`. Rewrite using `[if_neg]`. Introduce `hc`. Establish `hj'` using `Finset.mem_range.mp hj`. Conclude with `hp (hu.2 (a + j) (by omega) (by omega) ((tr j).mp hc)).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sum_resCount {k : Type} [Field k] (U : Multiset ℤ) (w a : ℤ) (L : ℕ) (p : ℤ → Prop) [DecidablePred p]
     (h : ∀ u ∈ U, (p u → a ≤ u ∧ u < a + L) ∧
@@ -100,7 +100,7 @@ theorem sum_resCount {k : Type} [Field k] (U : Multiset ℤ) (w a : ℤ) (L : �
       exact hp (hu.2 (a + j) (by omega) (by omega) ((tr j).mp hc)).2
 
 /- English proof (translation)
-Unfold `resCount at h`. Take `⟨u, hu⟩` from `Multiset.card_pos_iff_exists_mem.mp (Nat.pos_of_ne_zero h)`. Rewrite `hu` using `[Multiset.mem_filter]`. Conclude with `⟨u, hu.1, hu.2⟩`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_of_resCount_ne {k : Type} [Field k] {U : Multiset ℤ} {w : ℤ} {x : k} (h : resCount U w x ≠ 0) :
     ∃ u ∈ U, ((u - w : ℤ) : k) = x := by
@@ -111,51 +111,47 @@ theorem exists_of_resCount_ne {k : Type} [Field k] {U : Multiset ℤ} {w : ℤ} 
   exact ⟨u, hu.1, hu.2⟩
 
 /- English proof (translation)
-Introduce `k G _ _ l n _ _ _ R F r Dt M h1 h2 h3 N hN hle i`. Establish `hNabc` using `(GlobalTheory.T.obj_and_abc_of_model F M M.T N hN).2`. Establish `hSabc` using `(GlobalTheory.T.obj_and_abc_of_model F M M.T M.Nstd M.std_model).2`. Establish `hs : Dt.sg l i = GlobalTheory.PhiGam.sg l Dt.h i` using `rfl`. Establish `hsh` using `GlobalTheory.T.phiGamma_lattice_families_shift_inclusion (F.D M.T) Dt.h Dt.w N M.Nstd hNabc.1 hSabc.1 hNabc.2.1 hSabc.2.1 i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hsh` using `[← hs]`. Establish `hP : N i ≤ sh (-(Dt.sg l i : ℤ)) (M.Nstd i)`. Establish `h'` using `sh_le_sh (-(Dt.sg l i : ℤ)) hsh`. Rewrite `h'` using `[sh_sh_eq, neg_add_cancel, sh_zero_eq]`. Then use the resulting hypothesis. Establish `tel` using `fun y : ℤ => GlobalTheory.T.senMultiplicity_lattice_count_relation R ((F.D M.T).γ i) ((F.D M.T).γ_semi i) (N i) (M.Nstd i) (hNabc.1 i) (hSabc.1 i) (hle i) (hNabc.2.2 i) (hSabc.2.2 i) (Dt.sg l i) hP (y : k)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `rel : ∀ y : ℤ, sen ((F.D M.T).γ i) (N i) (y : k) + qmult ((F.D M.T).γ i) (N i) (M.Nstd i) ((y + 1 : ℤ) : k) = sen ((F.D M.T).γ i) (M.Nstd i) (y : k) + qmult ((F.D M.T).γ i) (N i) (M.Nstd i) (y : k)`. Introduce `y`. Rewrite using `[Int.cast_add, Int.cast_one]`. Conclude with `(tel y).1`. Establish `mz : ∀ y : ℤ, qmult ((F.D M.T).γ i) (N i) (M.Nstd i) (y : k) ≠ 0 → ∃ j : ℕ, 1 ≤ j ∧ j ≤ Dt.sg l i ∧ ∃ u ∈ Dt.U i, (u : k) = ((y - j + Dt.w i : ℤ) : k)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Take `⟨j, hj1, hj2, hj⟩` from `(tel y).2 hy`. Rewrite `hj` using `[M.std_sen]`. Take `⟨u, hu, hux⟩` from `exists_of_resCount_ne hj`. Use `⟨j, hj1, hj2, u, hu, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `at hux ⊢`. Take the linear combination `hux`. Establish `sz : ∀ y : ℤ, sen ((F.D M.T).γ i) (N i) (y : k) ≠ 0 → ∃ u ∈ Dt.U i, (u : k) = ((y + Dt.w i : ℤ) : k)`. Introduce `y hy`. Take `⟨u, hu, hux⟩` from `GlobalTheory.T.senWeight_subquotient_model_mem_residues F M h1 h2 h3 M.T M.T LinearMap.id LinearMap.id N (fun _ _ => rfl) (fun _ _ hab => hab) (fun _ _ => rfl) (fun b => ⟨b, rfl⟩) hN i (y : k) hy`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨u, hu, ?_⟩` and prove the remaining obligations. Move the coercions through the operations in `at hux ⊢`. Take the linear combination `hux`. Take `⟨-, hwin, hG, hB⟩` from `GlobalTheory.T.admissibleLetterData_window_arithmetic (k := k) Dt h1 h2 h3 i`. Establish `hT1` using `h1 i`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht` using `Dt.one_le_letterBlockLength`. Establish `e1 : qmult ((F.D M.T).γ i) (N i) (M.Nstd i) ((0 : ℤ) : k) = 0`. Assume the negation of the conclusion as `hne`. Take `⟨j, hj1, hj2, u, hu, hux⟩` from `mz 0 hne`. Conclude with `hwin u hu _ (by omega) (by omega) hux`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a ha`. Assume the negation of the conclusion as `hne`. Take `⟨u, hu, hux⟩` from `sz a (by simpa using hne)`. Conclude with `hwin u hu _ (by omega) (by omega) hux`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `hG'`. Take `⟨hGU, hGc, hw1, hwt⟩` from `hG hG'`. Establish `hL : ((Dt.w i).toNat : ℤ) = Dt.w i` using `Int.toNat_of_nonneg (by omega)`. Establish `tl` using `telescope (fun y => sen ((F.D M.T).γ i) (N i) (y : k)) (fun y => sen ((F.D M.T).γ i) (M.Nstd i) (y : k)) (fun y => qmult ((F.D M.T).γ i) (N i) (M.Nstd i) (y : k)) rel (-Dt.w i) (Dt.w i).toNat`. Establish `e0 : qmult ((F.D M.T).γ i) (N i) (M.Nstd i) ((-Dt.w i + ((Dt.w i).toNat : ℤ) : ℤ) : k) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[hL, neg_add_cancel]`. Conclude with `e1`. Establish `e2 : qmult ((F.D M.T).γ i) (N i) (M.Nstd i) ((-Dt.w i : ℤ) : k) = 0`. Assume the negation of the conclusion as `hne`. Take `⟨j, hj1, hj2, u, hu, hux⟩` from `mz (-Dt.w i) hne`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hGU u hu _ (by omega) (by omega) hux`. Establish `hsum` using `sum_resCount (k := k) (Dt.U i) (Dt.w i) 0 (Dt.w i).toNat (· < Dt.w i) (by`. Introduce `u hu`. Establish `hr` using `Dt.range i u (Multiset.mem_add.mpr (Or.inl hu))`. Use `⟨fun _ => ⟨by omega, by omega⟩, fun y hy0 hyL hc => ?_⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Break down `Multiset.mem_add.mp hu with hlow | hcl` into its components or cases. Establish `hb` using `Dt.lowG i hG' u (Multiset.mem_add.mpr (Or.inl hlow))`. Establish `hy` using `eq_of_cast_eq l hc (by omega) (by omega)`. Conclude with `⟨hy, by omega⟩`. Conclude with `absurd hc (hGc u hcl y hy0 (by omega)))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e3 : ∀ j : ℕ, ((0 : ℤ) + (j : ℤ) - Dt.w i) = -Dt.w i + j` using `fun j => by ring`. Simplify using `only [e3] at hsum`. Establish `hsum' : ∑ j ∈ Finset.range (Dt.w i).toNat, sen ((F.D M.T).γ i) (M.Nstd i) ((-Dt.w i + j : ℤ) : k) = Dt.d i`. Express the relevant statement in the definitionally equal form `_ = Multiset.card ((Dt.U i).filter (· < Dt.w i))`. Rewrite using `[← hsum]`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl (fun j _ => M.std_sen i _)`. Rewrite `tl` using `[e0, e2, hsum']`. Use linear arithmetic over natural numbers and integers. Introduce `hB'`. Take `⟨hBU, hBc, htw, hwη⟩` from `hB hB'`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hwst : Dt.wst i = (Dt.h i : ℤ) - Dt.w i` using `rfl`. Establish `hL : ((Dt.wst i).toNat : ℤ) = Dt.wst i` using `Int.toNat_of_nonneg (by omega)`. Establish `tl` using `telescope (fun y => sen ((F.D M.T).γ i) (N i) (y : k)) (fun y => sen ((F.D M.T).γ i) (M.Nstd i) (y : k)) (fun y => qmult ((F.D M.T).γ i) (N i) (M.Nstd i) (y : k)) rel 0 ((Dt.wst i).toNat + 1 + (Dt.sg l i + 1))`. Establish `e0 : qmult ((F.D M.T).γ i) (N i) (M.Nstd i) (((0 : ℤ) + (((Dt.wst i).toNat + 1 + (Dt.sg l i + 1) : ℕ) : ℤ) : ℤ) : k) = 0`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨j, hj1, hj2, u, hu, hux⟩` from `mz _ hne`. Conclude with `hBU u hu _ (by push_cast; omega) (by push_cast; omega) hux`. Rewrite `tl` using `[e0, e1, Finset.sum_range_add]`. Establish `hz : ∑ j ∈ Finset.range (Dt.sg l i + 1), sen ((F.D M.T).γ i) (N i) (((0 : ℤ) + (((Dt.wst i).toNat + 1 + j : ℕ) : ℤ) : ℤ) : k) = 0`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `j hj`. Establish `hj'` using `Finset.mem_range.mp hj`. Assume the negation of the conclusion as `hne`. Take `⟨u, hu, hux⟩` from `sz _ hne`. Conclude with `hBU u hu _ (by push_cast; omega) (by push_cast; omega) hux`.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `tl` using `[hz]`. Establish `hsum` using `sum_resCount (k := k) (Dt.U i) (Dt.w i) (Dt.w i) ((Dt.wst i).toNat + 1 + (Dt.sg l i + 1)) (fun u => ¬ u < Dt.w i) (by`. Introduce `u hu`. Establish `hr` using `Dt.range i u (Multiset.mem_add.mpr (Or.inl hu))`. Use `⟨fun _ => ⟨by omega, by push_cast; omega⟩, fun y hy0 hyL hc => ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Move the coercions through the operations in `at hyL`. Break down `Multiset.mem_add.mp hu with hlow | hcl` into its components or cases. Establish `hb` using `Dt.lowBd i hB' u (Multiset.mem_add.mpr (Or.inl hlow))`. Establish `hy` using `eq_of_cast_eq l hc (by omega) (by omega)`. Conclude with `⟨hy, by omega⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hyh : y ≤ (Dt.h i : ℤ)`. Conclude with `absurd hc (hBc u hcl y (by omega) hyh)`. Conclude with `absurd hc (hBU u (Multiset.mem_add.mpr (Or.inr hcl)) y (by omega) (by omega)))`. Establish `e3 : ∀ j : ℕ, (Dt.w i + (j : ℤ) - Dt.w i) = 0 + j` using `fun j => by ring`. Simplify using `only [e3] at hsum`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hsum' : ∑ j ∈ Finset.range ((Dt.wst i).toNat + 1 + (Dt.sg l i + 1)), sen ((F.D M.T).γ i) (M.Nstd i) (((0 : ℤ) + j : ℤ) : k) = Multiset.card ((Dt.U i).filter (fun u => ¬ u < Dt.w i))`. Rewrite using `[← hsum]`. Conclude with `Finset.sum_congr rfl (fun j _ => M.std_sen i _)`. Rewrite `tl` using `[hsum']`. Establish `hfirst : ∑ j ∈ Finset.range ((Dt.wst i).toNat + 1), sen ((F.D M.T).γ i) (N i) (((0 : ℤ) + j : ℤ) : k) = ∑ a ∈ Finset.range ((Dt.wst i).toNat + 1), sen ((F.D M.T).γ i) (N i) (a : k)`.
-
-Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hsplit` using `congrArg Multiset.card (Multiset.filter_add_not (· < Dt.w i) (Dt.U i))`. Rewrite `hsplit` using `[Multiset.card_add]`. Establish `hU : Multiset.card (Dt.U i) = r` using `Dt.card_eq i`.
-
-Establish `hd : Dt.d i = Multiset.card ((Dt.U i).filter (· < Dt.w i))` using `rfl`. Rewrite `tl` using `[hfirst]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem count : ∀ {k G : Type} [Field k] [Group G] {l n : ℕ} [Fact l.Prime] [CharP k l] [NeZero n] {R : RingPG k l} (F : DFun R n G) {r : ℕ} {Dt : TopData n r} (M : ModTh F Dt), Dt.T1 l → Dt.T2 l → Dt.T3 l → ∀ N : Lats k n M.T.m, M.Model M.T N → (∀ i, M.Nstd i ≤ N i) → ∀ i, (∀ a : ℕ, a ≤ Dt.sg l i + 1 → sen ((F.D M.T).γ i) (N i) (a : k) = 0) ∧ (Dt.ty i = LType.G → ∑ j ∈ Finset.range (Dt.w i).toNat, sen ((F.D M.T).γ i) (N i) ((-Dt.w i + j : ℤ) : k) = Dt.d i) ∧ (Dt.ty i = LType.Bd → Dt.d i + ∑ a ∈ Finset.range ((Dt.wst i).toNat + 1), sen ((F.D M.T).γ i) (N i) (a : k) = r) := by
   intro k G _ _ l n _ _ _ R F r Dt M h1 h2 h3 N hN hle i

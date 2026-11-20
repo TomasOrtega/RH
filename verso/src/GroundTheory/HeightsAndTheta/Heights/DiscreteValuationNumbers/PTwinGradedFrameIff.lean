@@ -16,7 +16,7 @@ section Triangular
 variable {Ω : Type*} [Field Ω] {E : Type*} [AddCommGroup E] [Module Ω E] {N : ℕ}
 
 /- English proof (translation)
-Simplify using `only [map_sum, map_smul, Finsupp.coe_finsetSum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem repr_sum_smul {τ : Type*} [Fintype τ] (w : Module.Basis (Fin N) Ω E) (a : τ → Ω) (bb : τ → E)
     (j : Fin N) :
@@ -25,15 +25,15 @@ theorem repr_sum_smul {τ : Type*} [Fintype τ] (w : Module.Basis (Fin N) Ω E) 
     smul_eq_mul]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Use `set T := Finset.univ.filter (fun q : Fin N => n ≤ (q : ℕ) ∧ a q ≠ 0) with hT`. Establish `hTne : T.Nonempty`. Take `⟨q, hq, hq'⟩` from `hne`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨q, by simp [hT, hq, hq']⟩`. Establish `hq0 : T.max' hTne ∈ T` using `T.max'_mem hTne`. Establish `hq0'` using `hq0`. Simplify using `only [hT, Finset.mem_filter, Finset.mem_univ, true_and] at hq0'`. Establish `hsum : w.repr (∑ q, a q • bb q) (T.max' hTne) = a (T.max' hTne) * w.repr (bb (T.max' hTne)) (T.max' hTne)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[repr_sum_smul, Finset.sum_eq_single (T.max' hTne)]`. Introduce `q _ hq`. Break down `lt_or_gt_of_ne hq with hlt | hgt` into its components or cases. Rewrite using `[hup q _ hlt, mul_zero]`. Establish `haq : a q = 0`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `haq`. Establish `hmem : q ∈ T`. Simplify using `only [hT, Finset.mem_filter, Finset.mem_univ, true_and]`. Conclude with `⟨le_trans hq0'.1 (le_of_lt (Fin.lt_def.mp hgt)), haq⟩`. Conclude with `absurd (T.le_max' q hmem) (not_le.mpr hgt)`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[haq, zero_mul]`. Simplify using the standard rewrite rules. Establish `h0` using `h _ hq0'.1`. Rewrite `h0` using `[hsum]`. Conclude with `mul_ne_zero hq0'.2 (hd _) h0`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_eq_zero_of_tri (w : Module.Basis (Fin N) Ω E) (bb : Fin N → E)
     (hup : ∀ q j : Fin N, q < j → w.repr (bb q) j = 0) (hd : ∀ q, w.repr (bb q) q ≠ 0)
@@ -68,11 +68,11 @@ theorem coeff_eq_zero_of_tri (w : Module.Basis (Fin N) Ω E) (bb : Fin N → E)
   exact mul_ne_zero hq0'.2 (hd _) h0
 
 /- English proof (translation)
-Rewrite `hx` using `[Module.Basis.mem_span_image]`. Establish `key : ∀ j : Fin N, i ≤ j → w.repr x j - t * (Finsupp.single i (1 : Ω) j) = 0`. Introduce `j hj`. Establish `hj' : j ∉ (w.repr (x - t • w i)).support` using `fun hm => by`. Establish `hlt` using `hx (Finset.mem_coe.mpr hm)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_ofPred_eq, Fin.val_castSucc] at hlt`. Conclude with `absurd hj (not_le.mpr (Fin.lt_def.mpr hlt))`. Rewrite `hj'` using `[Finsupp.notMem_support_iff, map_sub, map_smul, Module.Basis.repr_self, Finsupp.sub_apply, Finsupp.smul_apply, smul_eq_mul]`. Conclude with `hj'`. Use `⟨fun j hj => ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h0` using `key j hj.le`. Rewrite `h0` using `[Finsupp.single_eq_of_ne (ne_of_gt hj), mul_zero, sub_zero]`. Then use the resulting hypothesis. Establish `h0` using `key i le_rfl`. Rewrite `h0` using `[Finsupp.single_eq_same, mul_one, sub_eq_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem repr_of_sub_mem (w : Module.Basis (Fin N) Ω E) {x : E} {i : Fin N} {t : Ω}
     (hx : x - t • w i ∈
@@ -106,7 +106,7 @@ variable {o : Type u} [CommRing o] {Ω : Type v} [Field Ω] [Algebra o Ω] {K : 
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Establish `hy : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k => (Finset.prod_ne_zero_iff.mp hc) k (Finset.mem_univ _)`. Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ => zpow_ne_zero _ (hy k)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mon_ne_zero {c : ∀ k, ι k} (hc : segreVec y c ≠ 0) (a : K → ℤ) :
     IndefiniteRowSideFullHecke.NumbersDVR.Bundles.chartMon y c a ≠ 0 := by
@@ -117,33 +117,33 @@ theorem mon_ne_zero {c : ∀ k, ι k} (hc : segreVec y c ≠ 0) (a : K → ℤ) 
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Introduce `c hc`. Establish `hm` using `mon_ne_zero (y := y) hc`. Establish `hex : ∀ i, ∃ v ∈ B.lat c, (∀ j, i < j → w.repr v j = 0) ∧ w.repr v i = IndefiniteRowSideFullHecke.NumbersDVR.Bundles.chartMon y c (b i)`. Introduce `i`. Establish `hmem : IndefiniteRowSideFullHecke.NumbersDVR.Bundles.chartMon y c (b i) ∈ degLat o y (b i) c` using `⟨1, one_mem _, (one_mul _).symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hmem` using `[← h.graded c hc i]`. Conclude with `hmem`. Use `choose bb hbb hup hdiag using hex`. Establish `hd : ∀ q, w.repr (bb q) q ≠ 0` using `fun q => by rw [hdiag q]; exact hm _`. Establish `hli : LinearIndependent Ω bb` using `Fintype.linearIndependent_iff.mpr fun g hg q => coeff_eq_zero_of_tri w bb hup hd g 0 (fun j _ => by rw [hg]; simp) q (Nat.zero_le _)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: FiniteDimensional Ω E` using `Module.Finite.of_basis w`. Establish `hsp : Submodule.span Ω (Set.range bb) = ⊤` using `hli.span_eq_top_of_card_eq_finrank' (by simp [Module.finrank_eq_card_basis w])`. Establish `hgen : ∀ n : ℕ, ∀ e ∈ B.lat c, (∀ j : Fin N, n ≤ (j : ℕ) → w.repr e j = 0) → ∃ a : Fin N → Ω, (∀ q, a q ∈ chartRing o (segreVec y) c) ∧ e = ∑ q, a q • bb q`. Introduce `n`. Proceed by induction on `n with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `zero`. Introduce `e _ he`. Use `⟨0, fun _ => zero_mem _, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.zero_apply, zero_smul, Finset.sum_const_zero]`. Conclude with `w.repr.injective (Finsupp.ext fun j => by simpa using he j (Nat.zero_le _))`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Consider the case `succ n ih`. Introduce `e he hz`. Distinguish the cases in `hn : n < N`. Establish `hmem : w.repr e ⟨n, hn⟩ ∈ degLat o y (b ⟨n, hn⟩) c`. Rewrite using `[← h.graded c hc ⟨n, hn⟩]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨e, he, fun j hj => hz j (by rw [Fin.lt_def] at hj; simp at hj; omega), rfl⟩`. Take `⟨a, ha, hae⟩` from `hmem`. Take `⟨a', ha', he'⟩` from `ih (e - a • bb ⟨n, hn⟩) (sub_mem he (B.stable c a ha _ (hbb _))) (fun j hj => by`. Rewrite using `[map_sub, map_smul, Finsupp.sub_apply, Finsupp.smul_apply, smul_eq_mul]`. Break down `Nat.lt_or_ge n (j : ℕ) with hlt | hge` into its components or cases.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality.
 
-Rewrite using `[hz j hlt, hup _ j (Fin.lt_def.mpr hlt), mul_zero, sub_zero]`. Establish `hj : j = ⟨n, hn⟩` using `Fin.ext (le_antisymm hge hj)`. Substitute `hj` using the available equality. Rewrite using `[hdiag, hae]`. Simplify using `[IndefiniteRowSideFullHecke.NumbersDVR.Bundles.chartMon])`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use `⟨a' + Pi.single ⟨n, hn⟩ a, fun q => add_mem (ha' q) ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hq : q = ⟨n, hn⟩`. Substitute `hq` using the available equality. Simplify using `using ha`. Simplify using `[hq]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.add_apply, add_smul, Finset.sum_add_distrib]`. Rewrite using `[← he', Finset.sum_eq_single (⟨n, hn⟩ : Fin N)]`. Simplify using the standard rewrite rules. Introduce `q _ hq`. Simplify using `[hq]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Conclude with `ih e he fun j hj => absurd j.isLt (by omega)`. Use `⟨1, fun _ => 1, fun _ => 1, fun _ => one_mem _, fun _ => one_mem _, by simp, fun _ => ?_⟩` and prove the remaining obligations. Use `⟨bb, hli, hsp, fun e => ⟨fun ⟨n, hn⟩ => ?_, fun ⟨a, ha, hae⟩ => ⟨0, ?_⟩⟩, fun i => ⟨1, ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite `hn` using `[one_pow, one_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha, hae⟩` from `hgen N e hn (fun j hj => absurd j.isLt (by omega))`. Conclude with `⟨a, fun q => ⟨0, by rw [pow_zero, one_mul]; exact ha q⟩, hae⟩`. Rewrite using `[pow_zero, one_smul, hae]`. Use `AddSubgroup.sum_mem _ fun q _ => B.stable c _ ?_ _ (hbb q)` and prove the remaining obligations. Take `⟨n, hn⟩` from `ha q`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hn` using `[one_pow, one_mul]`. Then use the resulting hypothesis. Conclude with `⟨one_ne_zero, ⟨0, by rw [pow_zero, one_mul]; exact one_mem _⟩, ⟨0, by rw [pow_zero, one_mul, inv_one]; exact one_mem _⟩⟩`. Rewrite using `[Module.Basis.mem_span_image]`. Introduce `j hj`. Simplify using `only [Set.mem_ofPred_eq, Fin.val_castSucc]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `hj` using `[Finset.mem_coe, Finsupp.mem_support_iff, map_sub, map_smul, Module.Basis.repr_self, Finsupp.sub_apply, Finsupp.smul_apply, smul_eq_mul, one_mul]`. Assume the negation of the conclusion as `hji`. Break down `(not_lt.mp hji).lt_or_eq with hlt | heq` into its components or cases. Apply `hj` to reduce the goal to its premises. Rewrite using `[hup i j (Fin.lt_def.mpr hlt), Finsupp.single_eq_of_ne (ne_of_gt (Fin.lt_def.mpr hlt)), mul_zero, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hji' : j = i` using `Fin.ext heq.symm`. Substitute `hji'` using the available equality. Apply `hj` to reduce the goal to its premises. Rewrite using `[hdiag, Finsupp.single_eq_same, mul_one, sub_self]`.
+A detailed English derivation is pending.
 -/
 theorem forward (h : IsFlagFrame y B w b) :
     IndefiniteRowSideFullHecke.NumbersDVR.Bundles.IsGradedFrame o y B
@@ -229,37 +229,35 @@ theorem forward (h : IsFlagFrame y B w b) :
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Use `⟨fun c hc i => ?_⟩` and prove the remaining obligations. Establish `hm` using `mon_ne_zero (y := y) hc`. Take `⟨k, f, cc, hf, hcc, h1, hfr⟩` from `h c hc`. Use `choose bb hli hsp hlat hunit using hfr`. Use `choose u hu hbu using hunit`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htri : ∀ l q, (∀ j, q < j → w.repr (bb l q) j = 0) ∧ w.repr (bb l q) q = u l q * IndefiniteRowSideFullHecke.NumbersDVR.Bundles.chartMon y c (b q)` using `fun l q => repr_of_sub_mem w (hbu l q)`. Establish `hA` using `Model.exists_sum_mul_pow_eq_one (chartRing o (segreVec y) c) f cc hf hcc h1`. Use extensionality with `s`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, hvz, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hloc : ∀ l, ∃ n : ℕ, f l ^ n * (w.repr v i / IndefiniteRowSideFullHecke.NumbersDVR.Bundles.chartMon y c (b i)) ∈ chartRing o (segreVec y) c`. Introduce `l`. Take `⟨a, ha, hva⟩` from `(hlat l v).1 ⟨0, by rw [pow_zero, one_smul]; exact hv⟩`. Establish `hz` using `coeff_eq_zero_of_tri w (bb l) (fun q j hqj => (htri l q).1 j hqj) (fun q => by rw [(htri l q).2]; exact mul_ne_zero (hu l q).1 (hm _)) a (i + 1) (fun j hj => by rw [← hva]; exact hvz j (Fin.lt_def.mpr (by omega)))`. Establish `hvi : w.repr v i = a i * (u l i * IndefiniteRowSideFullHecke.NumbersDVR.Bundles.chartMon y c (b i))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hva, repr_sum_smul, Finset.sum_eq_single i, (htri l i).2]`. Introduce `q _ hq`. Break down `lt_or_gt_of_ne hq with hlt | hgt` into its components or cases. Rewrite using `[(htri l q).1 i hlt, mul_zero]`. Rewrite using `[hz q (Fin.lt_def.mp hgt), zero_mul]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using the standard rewrite rules. Take `⟨n1, hn1⟩` from `ha i`. Take `⟨n2, hn2⟩` from `(hu l i).2.1`. Use `⟨n1 + n2, ?_⟩` and prove the remaining obligations. Establish `hq : w.repr v i / IndefiniteRowSideFullHecke.NumbersDVR.Bundles.chartMon y c (b i) = a i * u l i`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[hvi]`. Clear denominators, using `[hm (b i)]` for the nonvanishing conditions. Rewrite using `[hq, show f l ^ (n1 + n2) * (a i * u l i) = (f l ^ n1 * a i) * (f l ^ n2 * u l i) by ring]`. Conclude with `mul_mem hn1 hn2`. Use `choose nl hnl using hloc`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨d, hd, hd1⟩` from `hA (∑ l, nl l)`. Establish `hmul : ∀ l, f l ^ (∑ l, nl l) * (w.repr v i / IndefiniteRowSideFullHecke.NumbersDVR.Bundles.chartMon y c (b i)) ∈ chartRing o (segreVec y) c`. Introduce `l`. Establish `hle : nl l ≤ ∑ l, nl l` using `Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ l)`. Rewrite using `[← Nat.sub_add_cancel hle, pow_add, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_mem (pow_mem (hf l) _) (hnl l)`. Establish `ht : w.repr v i / IndefiniteRowSideFullHecke.NumbersDVR.Bundles.chartMon y c (b i) ∈ chartRing o (segreVec y) c`. Establish `he : w.repr v i / IndefiniteRowSideFullHecke.NumbersDVR.Bundles.chartMon y c (b i) = ∑ l, d l * (f l ^ (∑ l, nl l) * (w.repr v i / IndefiniteRowSideFullHecke.NumbersDVR.Bundles.chartMon y c (b i)))`. Repeatedly rewrite using `[← mul_assoc]`. Rewrite using `[← Finset.sum_mul, hd1, one_mul]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[he]`. Conclude with `Subalgebra.sum_mem _ fun l _ => mul_mem (hd l) (hmul l)`. Conclude with `⟨_, ht, (div_mul_cancel₀ _ (hm (b i))).symm⟩`. Introduce and unpack `⟨a, ha, rfl⟩`. Establish `hloc : ∀ l, ∃ n : ℕ, ∃ v : E, f l ^ n • v ∈ B.lat c ∧ (∀ j, i < j → w.repr v j = 0) ∧ w.repr v i = a * ∏ k, y ⟨k, c k⟩ ^ b i k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Introduce `l`. Establish `hcoef : ∀ q, ∃ n : ℕ, f l ^ n * (Pi.single i (a * (u l i)⁻¹) : Fin N → Ω) q ∈ chartRing o (IndefiniteRowSideFullHecke.NumbersDVR.Bundles.mseg y) c`. Introduce `q`. Distinguish the cases in `hq : q = i`. Substitute `hq` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨n2, hn2⟩` from `(hu l q).2.2`. Use `⟨n2, ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.single_eq_same, show f l ^ n2 * (a * (u l q)⁻¹) = a * (f l ^ n2 * (u l q)⁻¹) by ring]`. Conclude with `mul_mem ha hn2`. Conclude with `⟨0, by rw [Pi.single_eq_of_ne hq, mul_zero]; exact zero_mem _⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hsum : (a * (u l i)⁻¹) • bb l i = ∑ q, (Pi.single i (a * (u l i)⁻¹) : Fin N → Ω) q • bb l q`. Rewrite using `[Finset.sum_eq_single i]`. Rewrite using `[Pi.single_eq_same]`. Introduce `q _ hq`. Rewrite using `[Pi.single_eq_of_ne hq, zero_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Take `⟨n, hn⟩` from `(hlat l ((a * (u l i)⁻¹) • bb l i)).2 ⟨_, hcoef, hsum⟩`. Use `⟨n, _, hn, fun j hj => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, Finsupp.smul_apply, (htri l i).1 j hj, smul_zero]`. Rewrite using `[map_smul, Finsupp.smul_apply, (htri l i).2, smul_eq_mul]`.
+Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hu0` using `(hu l i).1`. Simplify using `only [IndefiniteRowSideFullHecke.NumbersDVR.Bundles.chartMon]`. Clear the denominators using the available nonvanishing facts. Use `choose nl v hvl hvz hvi using hloc`. Take `⟨d, hd, hd1⟩` from `hA (∑ l, nl l)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨∑ l, (d l * f l ^ (∑ l, nl l)) • v l, ?_, fun j hj => ?_, ?_⟩` and prove the remaining obligations. Use `AddSubgroup.sum_mem _ fun l _ => ?_` and prove the remaining obligations. Establish `hle : nl l ≤ ∑ l, nl l` using `Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ l)`. Rewrite using `[← Nat.sub_add_cancel hle, pow_add, ← mul_assoc, mul_smul]`. Conclude with `B.stable c _ (mul_mem (hd l) (pow_mem (hf l) _)) _ (hvl l)`.
-
-Rewrite using `[repr_sum_smul]`. Conclude with `Finset.sum_eq_zero fun l _ => by rw [hvz l j hj, mul_zero]`. Rewrite using `[repr_sum_smul]`. Repeatedly rewrite using `[hvi]`. Rewrite using `[← Finset.sum_mul, hd1, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem backward (h : IndefiniteRowSideFullHecke.NumbersDVR.Bundles.IsGradedFrame o y B
       (fun i => Submodule.span Ω (w '' {j | (j : ℕ) < i})) b w) :
@@ -355,7 +353,7 @@ theorem backward (h : IndefiniteRowSideFullHecke.NumbersDVR.Bundles.IsGradedFram
 end Main
 
 /- English proof (translation)
-Introduce `o _ Ω _ _ K _ ι _ y N E _ _ B w b`. Conclude with `⟨forward, backward⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem proof : Statement.{u, v, w} := by
   intro o _ Ω _ _ K _ ι _ y N E _ _ B w b

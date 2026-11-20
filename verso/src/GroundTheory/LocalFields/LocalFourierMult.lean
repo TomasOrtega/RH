@@ -20,14 +20,14 @@ def unitsMeasureOf (μ : Measure K) : Measure Kˣ :=
 def multHaarOf (μ : Measure K) : Measure Kˣ := multHaarConst K • unitsMeasureOf μ
 
 /- English proof (translation)
-Rewrite using `[multHaarOf, unitsMeasureOf, multHaar, Measure.comap_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem multHaarOf_haarIntegers : multHaarOf (haarIntegers K) = multHaar K := by
   rw [multHaarOf, unitsMeasureOf, multHaar, Measure.comap_smul]
 
 omit [BorelSpace K] in
 /- English proof (translation)
-Rewrite using `[unitsMeasureOf, unitsMeasureOf, withDensity_smul_measure, Measure.comap_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unitsMeasureOf_smul (c : ℝ≥0∞) (μ : Measure K) :
     unitsMeasureOf (c • μ) = c • unitsMeasureOf μ := by
@@ -35,13 +35,13 @@ theorem unitsMeasureOf_smul (c : ℝ≥0∞) (μ : Measure K) :
 
 omit [BorelSpace K] in
 /- English proof (translation)
-Rewrite using `[multHaarOf, multHaarOf, unitsMeasureOf_smul, smul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem multHaarOf_smul (c : ℝ≥0∞) (μ : Measure K) : multHaarOf (c • μ) = c • multHaarOf μ := by
   rw [multHaarOf, multHaarOf, unitsMeasureOf_smul, smul_comm]
 
 /- English proof (translation)
-Use `conv_lhs => rw [eq_smul_haarIntegers μ]`. Rewrite using `[multHaarOf_smul, multHaarOf_haarIntegers]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem multHaarOf_eq (μ : Measure K) [μ.IsAddHaarMeasure] :
     multHaarOf μ = μ (𝒪[K] : Set K) • multHaar K := by
@@ -49,7 +49,7 @@ theorem multHaarOf_eq (μ : Measure K) [μ.IsAddHaarMeasure] :
   rw [multHaarOf_smul, multHaarOf_haarIntegers]
 
 /- English proof (translation)
-Establish `h : unitsMeasureOf μ = (multHaarConst K)⁻¹ • multHaarOf μ`. Rewrite using `[multHaarOf, smul_smul, ENNReal.inv_mul_cancel multHaarConst_ne_zero multHaarConst_ne_top, one_smul]`. Rewrite using `[h, multHaarOf_eq, smul_smul, multHaarConst, inv_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem unitsMeasureOf_eq (μ : Measure K) [μ.IsAddHaarMeasure] :
     unitsMeasureOf μ = ((1 - ((residueCard K : ℝ≥0∞))⁻¹) * μ (𝒪[K] : Set K)) • multHaar K := by
@@ -69,14 +69,14 @@ instance (μ : Measure K) [μ.IsAddHaarMeasure] : (multHaarOf μ).IsHaarMeasure 
   exact IsHaarMeasure.smul _ h0 ht
 
 /- English proof (translation)
-Rewrite using `[multHaarOf_eq, Measure.smul_apply, multHaar_unitFiltrationUnits_zero, smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem multHaarOf_unitFiltrationUnits_zero (μ : Measure K) [μ.IsAddHaarMeasure] :
     multHaarOf μ (unitFiltrationUnits K 0 : Set Kˣ) = μ (𝒪[K] : Set K) := by
   rw [multHaarOf_eq, Measure.smul_apply, multHaar_unitFiltrationUnits_zero, smul_eq_mul, mul_one]
 
 /- English proof (translation)
-Rewrite using `[multHaarOf_eq, selfDualMeasure_integers]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem multHaarOf_selfDualMeasure (ψ : AddChar K Circle) :
     multHaarOf (selfDualMeasure ψ) =
@@ -84,7 +84,7 @@ theorem multHaarOf_selfDualMeasure (ψ : AddChar K Circle) :
   rw [multHaarOf_eq, selfDualMeasure_integers]
 
 /- English proof (translation)
-Rewrite using `[unitsMeasureOf_eq, selfDualMeasure_integers]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unitsMeasureOf_selfDualMeasure (ψ : AddChar K Circle) :
     unitsMeasureOf (selfDualMeasure ψ) =
@@ -98,7 +98,7 @@ variable (p : ℕ) [Fact p.Prime] (K) [Algebra ℚ_[p] K] [ValuativeExtension �
   [FiniteDimensional ℚ_[p] K]
 
 /- English proof (translation)
-Rewrite using `[multHaarOf_unitFiltrationUnits_zero, selfDualMeasure_stdCharOf_integers]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem multHaarOf_selfDualMeasure_stdCharOf_units :
     multHaarOf (selfDualMeasure (stdCharOf p K)) (unitFiltrationUnits K 0 : Set Kˣ) =

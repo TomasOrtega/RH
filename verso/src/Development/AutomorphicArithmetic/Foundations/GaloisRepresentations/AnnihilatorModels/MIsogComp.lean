@@ -10,9 +10,9 @@ attribute [local instance] Ideal.Quotient.field
 open UpperTheory.Gal.crystallineComparison UpperTheory.Gal.crystallineComparison.Mod
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Simplify using `only [pow_zero, Hom.one_def]`. Rewrite using `[← Category.assoc, toUnit_unique (f ≫ toUnit Y) (toUnit X)]`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[pow_succ, pow_succ, ← ih, Hom.mul_def, Hom.mul_def, ← Category.assoc, comp_lift]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem comp_pow' {C : Type*} [Category C] [CartesianMonoidalCategory C] {X Y Z : C} [MonObj Z]
     (f : X ⟶ Y) (g : Y ⟶ Z) (n : ℕ) : f ≫ (g ^ n) = (f ≫ g) ^ n := by
@@ -24,20 +24,20 @@ private theorem comp_pow' {C : Type*} [Category C] [CartesianMonoidalCategory C]
     rw [pow_succ, pow_succ, ← ih, Hom.mul_def, Hom.mul_def, ← Category.assoc, comp_lift]
 
 /- English proof (translation)
-Conclude with `map_pow (IsMonHom.monoidHom g X) f n`.
+A detailed English derivation is pending.
 -/
 private theorem pow_comp' {C : Type*} [Category C] [CartesianMonoidalCategory C] {X Y Z : C} [MonObj Y] [MonObj Z]
     (f : X ⟶ Y) (g : Y ⟶ Z) [IsMonHom g] (n : ℕ) : (f ^ n) ≫ g = (f ≫ g) ^ n := by
   exact map_pow (IsMonHom.monoidHom g X) f n
 
 /- English proof (translation)
-Introduce `hP p _ D R _ b N S s c c' o o₁ o₂ ψ χ h1 h2`. Take `⟨⟨k, rfl⟩, hψ, ha, he, hL, ψ', hψ', hψ1, hψ2⟩` from `h1`. Take `⟨⟨k', rfl⟩, hχ, ha', he', hL', χ', hχ', hχ1, hχ2⟩` from `h2`. Use `haveI := hψ`. Use `haveI := hχ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI := hψ'`. Use `haveI := hχ'`. Use `⟨⟨k + k', (pow_add p k k').symm⟩, inferInstance, ?_, ?_, ?_, ⟨χ' ≫ ψ', inferInstance, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `a`. Rewrite using `[← Category.assoc, ha, Category.assoc, ha', Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Rewrite using `[he', he, Category.assoc]`. Rewrite using `[(hP p D R b N S s o).2.2.2.2 o₂ (ψ ≫ χ) (p ^ k * p ^ k')]`. Introduce `T x y`. Establish `e1` using `((hP p D R b N S s o).2.2.2.2 o₁ ψ (p ^ k)).1 hL`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e2` using `((hP p D R b N S s o₁).2.2.2.2 o₂ χ (p ^ k')).1 hL'`. Rewrite using `[← Category.assoc, ← Category.assoc, e2, e1, mul_comm, mul_smul]`. Rewrite using `[Category.assoc, ← Category.assoc χ, hχ1, pow_comp', Category.id_comp, comp_pow', hψ1, ← pow_mul]`. Rewrite using `[Category.assoc, ← Category.assoc ψ', hψ2, pow_comp', Category.id_comp, comp_pow', hχ2, ← pow_mul, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.Mod.isogComp_of :
     PairCalc → IsogComp := by

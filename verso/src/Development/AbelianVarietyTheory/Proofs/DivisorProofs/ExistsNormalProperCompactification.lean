@@ -15,11 +15,11 @@ set_option autoImplicit false
 namespace GlobalTheory.NormalCompletion
 
 /- English proof (translation)
-Establish `: LocallyOfFiniteType (spMap (algebraMap R A))` using `(HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)).2 (RingHom.finiteType_algebraMap.2 ‹_›)`. Take `⟨N, e, he, hq, hs⟩` from `GlobalTheory.isQProjOver_comp_of_isAffineHom (spMap (algebraMap R A)) (GlobalTheory.ZM.OnePoint.isQProjOver_id R)`. Rewrite `hs` using `[Category.comp_id]`. Use `ReciprocityTheory.ChartRestriction.G.Geo.Tor.isProper_str R N` as an intermediate fact. Set `f : Sp A ⟶ pullback (PSpace.str R N) s` to `pullback.lift e a (hs.trans h.symm)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hf₁ : f ≫ pullback.fst _ _ = e` using `pullback.lift_fst _ _ _`. Establish `hf₂ : f ≫ pullback.snd _ _ = a` using `pullback.lift_snd _ _ _`. Establish `: IsImmersion (f ≫ pullback.fst _ _)` using `hf₁ ▸ he`. Establish `: QuasiCompact (f ≫ pullback.fst _ _)` using `hf₁ ▸ hq`. Establish `: IsImmersion f` using `.of_comp f (pullback.fst _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: QuasiCompact f` using `.of_comp f (pullback.fst _ _)`. Use `⟨f.image, f.toImage, f.imageι ≫ pullback.snd _ _, inferInstance, inferInstance, ?_⟩` and prove the remaining obligations. Rewrite using `[f.toImage_imageι_assoc, hf₂]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_open_in_proper {R A : Type} [CommRing R] [CommRing A] [Algebra R A] [Algebra.FiniteType R A]
     {Y : Scheme.{0}} (s : Y ⟶ Sp R) [IsProper s] (a : Sp A ⟶ Y) (h : a ≫ s = spMap (algebraMap R A)) :
@@ -41,13 +41,13 @@ theorem exists_open_in_proper {R A : Type} [CommRing R] [CommRing A] [Algebra R 
   rw [f.toImage_imageι_assoc, hf₂]
 
 /- English proof (translation)
-Introduce `k₀ k _ _ _ A _ _ j Y s a _ hj _ h`. Establish `: IsDomain A` using `hj.isDomain j`. Take `⟨X, u, c, _, _, huc⟩` from `exists_open_in_proper s a h`. Set `K` to `FractionRing A`. Set `η : Sp K ⟶ Sp A` to `spMap (algebraMap A K)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `: IsPreimmersion η` using `IsPreimmersion.of_isLocalization (R := A) (S := K) (nonZeroDivisors A)`. Set `g : Sp K ⟶ X` to `η ≫ u`. Establish `: QuasiCompact g` using `QuasiCompact.of_comp g (c ≫ s)`. Establish `: QuasiSeparated g` using `QuasiSeparated.of_comp g (c ≫ s)`. Establish `: IsFinite g.fromNormalization` using `NormCurve.isFinite_fromNormalization g (c ≫ s)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hη : spMap (IsFractionRing.lift hj : K →+* k) ≫ η = spMap j`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Use extensionality with `x`. Conclude with `IsFractionRing.lift_algebraMap hj x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨g.normalization, pullback g.fromNormalization u, pullback.fst _ _, pullback.snd _ _, g.fromNormalization ≫ c, spMap (IsFractionRing.lift hj : K →+* k) ≫ pullback.lift g.toNormalization η g.toNormalization_fromNormalization, inferInstance, GlobalTheory.IsNormalScheme.pred _, infe …` and prove the remaining obligations. Rewrite using `[pullback.condition_assoc, huc]`. Rewrite using `[Category.assoc, pullback.lift_snd, hη]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_normal_proper : ∀ (k₀ k : Type) [Field k₀] [IsAlgClosed k₀] [Field k] (A : Type) [CommRing A] [Algebra k₀ A] (j : A →+* k) (Y : Scheme.{0}) (s : Y ⟶ Sp k₀) (a : Sp A ⟶ Y), Algebra.FiniteType k₀ A → Function.Injective j → IsProper s → a ≫ s = spMap (algebraMap k₀ A) → ∃ (W U : Scheme.{0}) (i : U ⟶ W) (π : U ⟶ Sp A) (b : W ⟶ Y) (w : Sp k ⟶ U), IsIntegral W ∧ ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme W ∧ IsProper (b ≫ s) ∧ IsOpenImmersion i ∧ i ≫ b = π ≫ a ∧ w ≫ π = spMap j := by
   intro k₀ k _ _ _ A _ _ j Y s a _ hj _ h

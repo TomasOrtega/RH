@@ -39,9 +39,9 @@ def DClauseAll : Prop :=
       LatBasis X p θ (reindex₂ X p Q) → WClause X hb u p θ Q → DClause X hb u p θ Q
 
 /- English proof (translation)
-Take `⟨θ, hθ, Q, l, hl, hy1, hy2, hLB, hW⟩` from `hA`. Take `⟨ψ, hψ, hker, hform⟩` from `latCoreX_holds X p θ hθ Q hLB (KvA X p.1) rfl`. Take `⟨π, hπ, hπk⟩` from `MassDataIdxSteps.stResZ_holds X p`. Use `⟨ψ, 1, π, 1, hψ, hker, fun x => ?_, hπ, hπk, fun x B hB => ?_⟩` and prove the remaining obligations. Rewrite using `[inv_one, one_mul, mul_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hH_of_form X u p θ hθ Q l hl hy1 hy2 ψ hform x`. Rewrite `hB` using `[inv_one, one_mul, mul_one]`. Rewrite using `[inv_one, one_mul, mul_one]`. Conclude with `hD X hb hK u hT hL p θ hθ Q l hl hy1 hy2 hLB hW ψ hform π hπk x B hB`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hModelU_of (hD : DClauseAll) (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (hK : X.LevelSubgroupCharacter) (u : D.what₂.Word)
     (hT : X.MeasTie hb) (hL : X.LevelSubgroupNormalized) (p : TypX X) (hA : HAdaptQ X hb u p) : HModelU X hb u p := by
@@ -60,7 +60,7 @@ def HAdaptAll : Prop :=
     X.MeasTie hb → X.LevelSubgroupNormalized → ∀ p : TypX X, HAdaptQ X hb u p
 
 /- English proof (translation)
-Introduce `X hb hK u hT hL p` and use `hModelU_of hD X hb hK u hT hL p (hA X hb hK u hT hL p)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hModelAll_of (hA : HAdaptAll) (hD : DClauseAll) : HModelAll :=
   fun X hb hK u hT hL p => hModelU_of hD X hb hK u hT hL p (hA X hb hK u hT hL p)

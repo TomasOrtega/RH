@@ -3,7 +3,7 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open GlobalTheory.CuspRep GlobalTheory.HeckeGal GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Base UpperTheory.V.Sd
 
 /- English proof (translation)
-Establish `h : (Finset.univ : Finset (Equiv.Perm (Fin 2))) = {1, Equiv.swap 0 1}` using `by decide`. Rewrite using `[Formalism.REAL.qdet, Formalism.REAL.qminor, h, Finset.sum_pair (by decide)]`. Simplify using `[Formalism.REAL.Tm, List.ofFn_succ, sub_eq_add_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem qdet2 {A : Type} [Ring A] [Algebra ℂ A] (E : Fin 2 → Fin 2 → A) (u : ℂ) :
     Formalism.REAL.qdet E u = (algebraMap ℂ A u + E 0 0) * (algebraMap ℂ A (u - 1) + E 1 1) - E 1 0 * E 0 1 := by
@@ -12,15 +12,15 @@ private theorem qdet2 {A : Type} [Ring A] [Algebra ℂ A] (E : Fin 2 → Fin 2 �
   simp [Formalism.REAL.Tm, List.ofFn_succ, sub_eq_add_neg]
 
 /- English proof (translation)
-Establish `hI` using `Complex.I_mul_I`. Establish `hc : E 1 0 φ = E 0 1 φ - (Complex.I * k) • φ` using `by rw [← h1]; abel`. Establish `ha : E 0 0 φ = Complex.I • E 0 1 φ + (k / 2) • φ`. Rewrite `h2` using `[hc]`. Take the linear combination `(norm := skip) (1 / 2 : ℂ) • h0 + (1 / 2 : ℂ) • h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Apply the tactic sequence `match_scalars <;> first | ring1 | linear_combination (k / 2) * hI | linear_combination (-k / 2) * hI`. Establish `hd : E 1 1 φ = -E 0 0 φ` using `eq_neg_of_add_eq_zero_right h0`. Establish `r1 : E 0 0 (E 0 1 φ) = E 0 1 (E 0 0 φ) + E 0 1 φ`. Use `LinearMap.congr_fun (hE 0 0 0 1) φ` as an intermediate fact. Simplify using `at this`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `sub_eq_iff_eq_add'.1 this`. Establish `r2 : E 1 0 (E 0 1 φ) = E 0 1 (E 1 0 φ) + (E 1 1 φ - E 0 0 φ)`. Use `LinearMap.congr_fun (hE 1 0 0 1) φ` as an intermediate fact. Simplify using `at this`. Rewrite using `[← this]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Establish `r3 : E 0 0 (E 0 0 φ) = Complex.I • E 0 0 (E 0 1 φ) + (k / 2) • E 0 0 φ` using `by conv_lhs => rw [ha]`. Simplify using the standard rewrite rules. Rewrite using `[qdet2]`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, LinearMap.add_apply, Module.algebraMap_end_apply, map_add, map_smul, hd, map_neg, r2, r3, r1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hc, ha, map_add, map_smul, map_sub]`. Apply the tactic sequence `match_scalars <;> ring_nf <;> simp [Complex.I_sq] <;> ring_nf`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem casimir {V : Type} [AddCommGroup V] [Module ℂ V] (E : Fin 2 → Fin 2 → Module.End ℂ V)
     (hE : Formalism.REAL.GlRel E) (k : ℂ) (φ : V) (h0 : E 0 0 φ + E 1 1 φ = 0)
@@ -51,15 +51,15 @@ private theorem casimir {V : Type} [AddCommGroup V] [Module ℂ V] (E : Fin 2 �
   match_scalars <;> ring_nf <;> simp [Complex.I_sq] <;> ring_nf
 
 /- English proof (translation)
-Introduce `F _ _ _ k φ h0 h1 h2`. Establish `key : ∀ z ∈ TR.Zalg F 2, ∃ c : ℂ, z φ = c • φ`. Introduce `z hz`. Proceed by induction on `hz using Algebra.adjoin_induction with`. Consider the case `mem x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨v, u, rfl⟩` from `hx`. Use `⟨(u + ((k : ℂ) - 1) / 2) * (u - ((k : ℂ) - 1) / 2), ?_⟩` and prove the remaining obligations. Rewrite using `[← casimir _ (TR.glRel_Eop v) k φ (h0 v) (h1 v) (h2 v) u, TR.cap]`. Evaluate the numerical expressions. Consider the case `algebraMap r => exact ⟨r, Module.algebraMap_end_apply ..⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨a, ha⟩` from `hx`. Take `⟨b, hb⟩` from `hy`. Conclude with `⟨a + b, by rw [LinearMap.add_apply, ha, hb, add_smul]⟩`. Consider the case `mul x y _ _ hx hy`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨a, ha⟩` from `hx`. Take `⟨b, hb⟩` from `hy`. Conclude with `⟨b * a, by rw [Module.End.mul_apply, hb, map_smul, ha, smul_smul]⟩`. Use `Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℂ {φ}) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨c, hc⟩` from `key z hz`. Conclude with `Submodule.mem_span_singleton.2 ⟨c, hc.symm⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Sd.Hm.zfinof :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (k : ℕ) (φ : TR.Sm F 2),

@@ -13,7 +13,7 @@ section Local
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {n : ℕ}
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ, a', ha', b', hb', e⟩` from `h`. Use `⟨ϖ, hϖ, a * a', mul_mem ha ha', b' * b, mul_mem hb' hb, ?_⟩` and prove the remaining obligations. Simplify using `only [Units.val_mul, e, Matrix.mul_assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem hasDiv_mul_mul {O : Subring L} {d : List ℤ} {g : GL (Fin n) L} (h : HasDiv O d g) {a b : GL (Fin n) L}
     (ha : a ∈ GLint (Fin n) O) (hb : b ∈ GLint (Fin n) O) : HasDiv O d (a * g * b) := by
@@ -22,9 +22,9 @@ theorem hasDiv_mul_mul {O : Subring L} {d : List ℤ} {g : GL (Fin n) L} (h : Ha
   simp only [Units.val_mul, e, Matrix.mul_assoc]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.DoubleCosetDivisors.main`. Consider the case `exact _root_.GlobalTheory.DoubleCosetDivisors.main`. Consider the case `(apply _root_.GlobalTheory.DoubleCosetDivisors.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.DoubleCosetDivisors.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.DoubleCosetDivisors.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.DoubleCosetDivisors.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem HasDiv.exists_eq_mul_mul {O : Subring L} (hO : ∀ x : L, Valued.v x ≤ 1 → x ∈ O) {d : List ℤ}
     {g s : GL (Fin n) L} (hg : HasDiv O d g) (hs : HasDiv O d s) :

@@ -15,7 +15,7 @@ open CategoryTheory AlgebraicGeometry NumberField GlobalTheory.CompanionTheory.A
   ReciprocityTheory.ChartRestriction.G.Geo.Tor GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles
 
 /- English proof (translation)
-Establish `h1` using `Scheme.SpecMap_stalkSpecializes_fromSpecStalk (X := X) q.2`. Establish `h2` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ`. Establish `h3` using `Spec.map_comp (X.presheaf.stalkSpecializes q.2) (Scheme.stalkClosedPointTo ξ)`. Use `Eq.trans (congrArg (· ≫ X.fromSpecStalk q.1) h3) ?_` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).trans ((congrArg (Spec.map (Scheme.stalkClosedPointTo ξ) ≫ ·) h1).trans h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem genMap_fromSpecStalk {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (q : Cpt ξ) :
     Spec.map (CommRingCat.ofHom (genMap ξ q)) ≫ X.fromSpecStalk q.1 = ξ := by
@@ -26,13 +26,13 @@ theorem genMap_fromSpecStalk {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Spec 
   exact (Category.assoc _ _ _).trans ((congrArg (Spec.map (Scheme.stalkClosedPointTo ξ) ≫ ·) h1).trans h2)
 
 /- English proof (translation)
-Set `a₀ : Algebra R ((Spec (CommRingCat.of R)).presheaf.stalk p)` to `StructureSheaf.stalkAlgebra R p`. Establish `hl : IsLocalization.AtPrime ((Spec (CommRingCat.of R)).presheaf.stalk p) p.asIdeal` using `StructureSheaf.IsLocalization.to_stalk R p`. Establish `hu : ∀ s : p.asIdeal.primeCompl, IsUnit (k₀ s)` using `fun s => IsUnit.mk0 _ fun h => s.2 (by rw [hk (h.trans (map_zero k₀).symm)]; exact p.asIdeal.zero_mem)`. Set `ψ : ((Spec (CommRingCat.of R)).presheaf.stalk p) →+* Ω` to `IsLocalization.lift hu`. Establish `hψ : ∀ a, ψ (algebraMap R _ a) = k₀ a` using `fun a => IsLocalization.lift_eq hu a`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1` using `Scheme.SpecMap_stalkMap_fromSpecStalk x (x := p)`. Establish `h2 : (Spec (CommRingCat.of R)).fromSpecStalk p = Spec.map (CommRingCat.ofHom (algebraMap R ((Spec (CommRingCat.of R)).presheaf.stalk p)))` using `Spec.fromSpecStalk_eq' (CommRingCat.of R) p`. Establish `h3` using `genMap_fromSpecStalk ξ ⟨x p, hq⟩`. Establish `hc : ψ.comp (x.stalkMap p).hom = genMap ξ ⟨x p, hq⟩`. Establish `e1 : Spec.map (CommRingCat.ofHom (ψ.comp (x.stalkMap p).hom)) ≫ X.fromSpecStalk (x p) = Spec.map (CommRingCat.ofHom (genMap ξ ⟨x p, hq⟩)) ≫ X.fromSpecStalk (x p)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Eq.trans ?_ h3.symm` and prove the remaining obligations. Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc]`. Use `erw [h1]`. Rewrite using `[h2, ← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, show ψ.comp (algebraMap R _) = k₀ from RingHom.ext hψ, hx]`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective ((cancel_mono _).1 e1))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `_ ⟨g, rfl⟩`. Take `⟨⟨a, s⟩, hb⟩` from `IsLocalization.surj p.asIdeal.primeCompl ((x.stalkMap p).hom g)`. Use `⟨s, s.2, a, ?_⟩` and prove the remaining obligations. Rewrite using `[← hc, ← hψ, ← hψ, ← hb, map_mul, mul_comm]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem regAt_loc {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
     {R : Type} [CommRing R] (k₀ : R →+* Ω) (hk : Function.Injective k₀) (x : Spec (CommRingCat.of R) ⟶ X)
@@ -70,17 +70,17 @@ section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Simplify using `using congrArg (fun w : 𝓞 E => τ w) H.rt_sq`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem rt_sq_map (H : Host E) (τ : E →+* ℂ) : τ H.rt ^ 2 = -(H.d : ℂ) := by
   simpa using congrArg (fun w : 𝓞 E => τ w) H.rt_sq
 
 /- English proof (translation)
-Establish `h1 : H.bar H.rt ^ 2 = H.rt ^ 2` using `by rw [← map_pow, H.rt_sq]; simp`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 h1 with h | h` into its components or cases. It suffices to derive a contradiction. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `h2 : starRingEnd ℂ (τ H.rt) = τ H.rt`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← IsCMField.complexEmbedding_complexConj, ← H.bar_eq, h]`. Establish `h3 : τ H.rt ^ 2 = -(H.d : ℂ)` using `rt_sq_map H τ`. Take `⟨r, hr⟩` from `Complex.conj_eq_iff_real.1 h2`. Rewrite `h3` using `[hr]`. Establish `h4 : r ^ 2 = -(H.d : ℝ)` using `by exact_mod_cast h3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h5 : (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`. Use polynomial arithmetic with `[sq_nonneg r]`. Conclude with `h`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem bar_rt (H : Host E) : H.bar H.rt = -H.rt := by
   have h1 : H.bar H.rt ^ 2 = H.rt ^ 2 := by rw [← map_pow, H.rt_sq]; simp
@@ -98,17 +98,17 @@ theorem bar_rt (H : Host E) : H.bar H.rt = -H.rt := by
   · exact h
 
 /- English proof (translation)
-Use `ext`. Rewrite using `[H.bar_eq, H.bar_eq, IsCMField.complexConj_apply_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem bar_bar (H : Host E) (a : 𝓞 E) : H.bar (H.bar a) = a := by
   ext; rw [H.bar_eq, H.bar_eq, IsCMField.complexConj_apply_apply]
 
 /- English proof (translation)
-Take `⟨τ, rfl⟩` from `exists_emb E c.F c.conj j σ`. Establish `h3 : τ H.rt ^ 2 = H.rt0 ^ 2` using `by rw [H.sqrt_neg_disc_sq, rt_sq_map]`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 h3 with h | h` into its components or cases. Use `⟨.inr ⟨τ, h⟩, fun a => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `j (τ.codRestrict c.F (c.conj τ) (H.bar (H.bar a) : 𝓞 E)) = _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[bar_bar]`. Both sides reduce to the same expression. Use `⟨.inl ⟨τ.comp (IsCMField.complexConj E).toRingEquiv.toRingHom, ?_⟩, fun a => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `τ (IsCMField.complexConj E H.rt) = _`. Rewrite using `[← H.bar_eq, bar_rt]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[h]`. Use `congrArg j (Subtype.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `τ (IsCMField.complexConj E (H.bar a : 𝓞 E)) = τ a`. Rewrite using `[← H.bar_eq, bar_bar]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_label {l : Level H} (c : Coeff l) {Ω : Type} [Field Ω] (j : c.F →+* Ω) (σ : E →+* Ω) :
     ∃ s, ∀ a : 𝓞 E, j (labelEmb c s (H.bar a)) = σ a := by
@@ -129,43 +129,39 @@ end
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O _ β Y S Ω _ K _ J _ y 𝔐 p hp hpS hpq o _ _ ho Dc hF hfree`. Take `⟨hchar, -, hprop, htate, -, -, hch⟩` from `Hcptgen.hcpt_generic E H D l Xo c O β Y S Ω K J y 𝔐 p hpS o ho`. Establish `hint : ∀ s, mseg y s ≠ 0 → ∀ z : Ω, IsIntegral ℤ z → z ∈ chartRing o (mseg y) s` using `fun s hs z hz => by`. Take `⟨-, h1, h2, -⟩` from `hch s hs`. Take `⟨a, rfl⟩` from `IsIntegrallyClosed.algebraMap_eq_of_integral (R := chartRing o (mseg y) s) hz.tower_top`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `a.2`. Establish `hσ : ∀ s, mseg y s ≠ 0 → ∀ (σ : E →+* Ω) (z : 𝓞 E), σ z ∈ chartRing o (mseg y) s` using `fun s hs σ z => hint s hs _ (map_isIntegral_int σ (RingOfIntegers.isIntegral_coe z))`. Establish `hunit : ∀ s (r : ℤ), ¬ (p : ℤ) ∣ r → ∃ u : chartRing o (mseg y) s, u * r = 1` using `fun s r hr => by`. Establish `hr0 : r ≠ 0` using `fun h => hr (h ▸ dvd_zero _)`. Take `⟨u, hu⟩` from `(ho _).2 ⟨r.sign, r.natAbs, fun h => hr (Int.natCast_dvd.2 h), rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨_, (chartRing o (mseg y) s).algebraMap_mem u⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Establish `h1 : ((r.natAbs : ℕ) : Ω) ≠ 0` using `by exact_mod_cast Int.natAbs_ne_zero.2 hr0`. Establish `h2 : ((r.sign : ℤ) : Ω) * r = (r.natAbs : ℕ)`. Rewrite using `[← Int.cast_mul, Int.sign_mul_self_eq_natAbs, Int.cast_natCast]`. Simplify using `only [MulMemClass.coe_mul, hu, SubringClass.coe_intCast, OneMemClass.coe_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_mul_eq_mul_div, h2, div_self h1]`. Establish `hnm : ∀ s (m : Ideal (chartRing o (mseg y) s)), m.IsPrime → (p : chartRing o (mseg y) s) ∉ m → ∀ n : ℤ, n ≠ 0 → (n : chartRing o (mseg y) s) ∉ m` using `fun s m hm hpm n hn hnm => by`. Take `⟨k, r, hr, rfl⟩` from `WfDvdMonoid.max_power_factor' hn (show ¬ IsUnit (p : ℤ) from (Nat.prime_iff_prime_int.1 hp.out).not_isUnit)`. Take `⟨u, hu⟩` from `hunit s r hr`. Move the coercions through the operations in `at hnm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Move the embeddings inside the algebraic operations. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hm.mem_or_mem hnm with h | h` into its components or cases. Conclude with `hpm (hm.mem_of_pow_mem _ h)`. Conclude with `hm.ne_top ((Ideal.eq_top_iff_one _).2 (hu ▸ m.mul_mem_left u h))`. Establish `hpt : ∀ s, mseg y s ≠ 0 → ∀ m : Ideal (chartRing o (mseg y) s), m.IsPrime → (p : chartRing o (mseg y) s) ∈ m → ∃ q : Cpt 𝔐.ξ, InChart 𝔐.ξ (mseg y) s q ∧ InFibre 𝔐.ξ p q ∧ ∀ r ∈ regAt 𝔐.ξ q, ∃ t ∉ m, ∃ a : chartRing o (mseg y) s, algebraMap _ Ω t * r = algebraMap _ Ω a` using `fun s hs m hm hpm => by`. Take `⟨-, -, -, x, hx, hr⟩` from `hch s hs`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hl` using `regAt_loc (algebraMap (chartRing o (mseg y) s) Ω) Subtype.val_injective x hx ⟨m, hm⟩ (𝔐.all _)`. Use `⟨⟨x ⟨m, hm⟩, 𝔐.all _⟩, ((hr _).1 ⟨_, rfl⟩).1, ?_, hl⟩` and prove the remaining obligations. Introduce and unpack `⟨h0, -, h1⟩`. Take `⟨t, ht, a, ha⟩` from `hl _ h1`. Use `ht ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Establish `: t = a * p` using `Subtype.ext (by`. Express the relevant statement in the definitionally equal form `(t : Ω) * _ = (a : Ω) at ha`. Simplify using `only [MulMemClass.coe_mul, SubringClass.coe_natCast, ← ha]`. Use the proof step `field_simp)`. Conclude with `this ▸ m.mul_mem_left a hpm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Use `⟨fun s => ?_, fun σ => ?_, ?_⟩` and prove the remaining obligations. Establish `hN` using `(hch s.1 s.2).1`. Use `⟨projective_of_factor fun m hm => ?_, fun σ => ?_⟩` and prove the remaining obligations. Use `hm.isPrime` as an intermediate fact. Distinguish the cases in `hpm : (p : chartRing o (mseg y) s.1) ∈ m`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hq, hq', hR⟩` from `hpt s.1 s.2 m this hpm`. Take `⟨U, hU, b, -, hb⟩` from `hfree.1 q hq'`. Take `⟨hb1, hb2⟩` from `hb q hq' hU`. Conclude with `factor_of_frame Subtype.val_injective m _ hR _ (om'_fg _) b hb1 ((hF.om'_loc s q hq hq').symm.trans hb2)`. Conclude with `factor_om' _ m hpm`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨s', hs'⟩` from `exists_label c 𝔐.cst σ`. Take `⟨e⟩` from `nonempty_equiv_dual (𝔐.ρ.comp (H.bar : 𝓞 E →+* 𝓞 E)) (Dc s).ρΩ (hF.act s) σ (Dc s).om' (𝔐.Vgen s') (by`. Use extensionality with `x`. Rewrite using `[LatBasic.mem_eigSp]`. Simplify using `only [HodgeCpt.Vgen, GlobalTheory.CompanionTheory.Ar.eigSp, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero, LinearMap.smul_apply, LinearMap.id_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨fun h a => (h (H.bar a)).trans (congrArg (· • x) (hs' a)), fun h a => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `H.bar.surjective a`. Conclude with `(h a).trans (congrArg (· • x) (hs' a).symm))`. Use `projective_of_factor fun m hm => ?_` and prove the remaining obligations. Use `hm.isPrime` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Express the relevant assertion in an equivalent form by its definition.
 
-Distinguish the cases in `hpm : (p : chartRing o (mseg y) s.1) ∈ m`. Take `⟨q, hq, hq', hR⟩` from `hpt s.1 s.2 m this hpm`. Take `⟨U, hU, b, -, hb⟩` from `hfree.2 s' q hq'`. Take `⟨hb1, hb2⟩` from `hb q hq' hU`. Take `⟨N, i1, i2, i3, f, g, t, ht, hfg⟩` from `factor_of_frame Subtype.val_injective m _ hR ((Dc s).om'.map ((𝔐.Vgen s').dualRestrict.restrictScalars _)) ((om'_fg _).map _) b hb1 (by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[← hb2, Lat.map, hF.om'_loc s q hq hq', Submodule.map_span]`. Use the proof step `rfl)`. Conclude with `⟨N, i1, i2, i3, f ∘ₗ e.toLinearMap, e.symm.toLinearMap ∘ₗ g, t, ht, fun x => by`. Express the relevant statement in the definitionally equal form `e.symm (g (f (e x))) = _`. Rewrite using `[hfg, map_smul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `congrArg (t • ·) (e.symm_apply_apply x)⟩`. Take `⟨n, hn, hz⟩` from `exists_den E`. Use `factor_omHT _ m hpm σ n (hnm _ m this hpm n hn) fun k => ?_` and prove the remaining obligations. Take `⟨z, hz⟩` from `hz k`. Conclude with `⟨⟨_, hσ s.1 s.2 σ z⟩, by`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `σ z = _`. Rewrite using `[← hz]`. Use the proof step `simp⟩`. Take `⟨δ, hδ, r, hr, h⟩` from `exists_diff_gen E p`. Use `⟨σ δ, fun s => ⟨⟨_, hσ s.1 s.2 σ δ⟩, rfl, le_antisymm (Submodule.span_mono ?_) (Submodule.span_le.2 ?_)⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Introduce and unpack `_ rfl`. Conclude with `⟨δ, hδ, rfl⟩`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Take `⟨z, hz⟩` from `h x hx`. Take `⟨u, hu⟩` from `hunit s.1 r hr`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Use `Submodule.mem_span_singleton.2 ⟨u * ⟨_, hσ s.1 s.2 σ z⟩, ?_⟩` and prove the remaining obligations. Establish `h1 : (r : Ω) * σ x = σ z * σ δ` using `by simpa using congrArg (fun w : 𝓞 E => σ w) hz`. Establish `h2 : (u : Ω) * r = 1` using `by simpa using congrArg Subtype.val hu`. Express the relevant statement in the definitionally equal form `(u : Ω) * σ z * σ δ = σ x`. Rewrite using `[mul_assoc, ← h1, ← mul_assoc, h2, one_mul]`.
-
-Unfold `IsCp split_ifs with h2`. Conclude with `⟨4, rfl, fun s => ofNat_mem _ 4⟩`. Take `⟨-, ζ, hζ, -⟩` from `Htat.level_param E H D 𝔐.X 𝔐.t Ω 𝔐.ξ (p ^ 𝔐.R p) (Nat.one_le_pow _ _ hp.out.pos) hpq hprop (𝔐.tors p hpS) htate`. Establish `hR` using `𝔐.R_ge p hpS`. Establish `h1 : IsPrimitiveRoot ((ζ : Ω) ^ p ^ (𝔐.R p - 1)) p` using `(IsPrimitiveRoot.coe_units_iff.2 hζ).pow (pow_pos hp.out.pos _) (by rw [← pow_succ]; congr 1; omega)`.
-
-Conclude with `⟨_, ⟨_, h1, rfl⟩, fun s => sub_mem (hint s.1 s.2 _ (h1.isIntegral hp.out.pos)) (one_mem _)⟩`.
+A detailed English derivation is pending.
 -/
 theorem family_proj : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (p : ℕ) [Fact p.Prime] (hpS : p ∈ S) (hpq : 0 < D.p + D.q) (o : Type) [CommRing o] [Algebra o Ω] (ho : ∀ x : Ω, x ∈ (algebraMap o Ω).range ↔ ∃ (a : ℤ) (b : ℕ), ¬ p ∣ b ∧ x = (a : Ω) / (b : Ω)) (Dc : ∀ s : {s : ∀ k, J k // mseg y s ≠ 0}, HTChart (chartRing o (mseg y) s.1) Ω (cmConj E) p (𝔐.R p) (D.p + D.q) (Module.Dual Ω 𝔐.Li)), IsHTFamily 𝔐 p o Dc → HTFree 𝔐 p → (∀ s, Module.Projective (chartRing o (mseg y) s.1) (Dc s).om' ∧ ∀ σ : E →+* Ω, Module.Projective (chartRing o (mseg y) s.1) ((Dc s).omHT σ)) ∧ (∀ σ : E →+* Ω, ∃ d : Ω, ∀ s : {s : ∀ k, J k // mseg y s ≠ 0}, ∃ ds : chartRing o (mseg y) s.1, (ds : Ω) = d ∧ GeneratesDiff σ ds) ∧ ∃ κ : Ω, IsCp p κ ∧ ∀ s : {s : ∀ k, J k // mseg y s ≠ 0}, κ ∈ chartRing o (mseg y) s.1 := by
   intro E _ _ _ H D l Xo c O _ β Y S Ω _ K _ J _ y 𝔐 p hp hpS hpq o _ _ ho Dc hF hfree

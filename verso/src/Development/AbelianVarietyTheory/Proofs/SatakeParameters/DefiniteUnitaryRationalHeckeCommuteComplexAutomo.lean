@@ -15,19 +15,17 @@ noncomputable section
 namespace GlobalTheory.EigenConj
 
 /- English proof (translation)
-Introduce `E _ _ _ n σ t ht φ φ' z hφ hφ' hfin heig`. Establish `key : ∀ (f : UA E n → ℂ) (x : UA E n), opOf (RU E n) t f x = ∑ g ∈ t.support, t g * f (x * g)`. Introduce `f x`. Simplify using `only [opOf, Finsupp.sum, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `hc1 : Continuous (opOf (RU E n) t φ')`. Establish `e : opOf (RU E n) t φ' = fun x => ∑ g ∈ t.support, t g * φ' (x * g)` using `funext (key φ')`. Rewrite using `[e]`. Conclude with `continuous_finset_sum _ fun g _ => continuous_const.mul (hφ'.cont.comp (continuous_id.mul continuous_const))`. Establish `hc2 : Continuous (σ z • φ')` using `hφ'.cont.const_smul _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl1 : ∀ γ ∈ ratU E n, ∀ x, opOf (RU E n) t φ' (γ * x) = opOf (RU E n) t φ' x`. Introduce `γ hγ x`. Rewrite using `[key, key]`. Repeatedly rewrite using `[mul_assoc, hφ'.left γ hγ]`. Establish `hl2 : ∀ γ ∈ ratU E n, ∀ x, (σ z • φ') (γ * x) = (σ z • φ') x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `γ hγ x`. Simplify using `only [Pi.smul_apply, hφ'.left γ hγ]`. Establish `hfinEq : ∀ h ∈ finU E n, opOf (RU E n) t φ' h = (σ z • φ') h`. Introduce `h hh`. Establish `e` using `congrFun heig h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[key, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[key, Pi.smul_apply, smul_eq_mul]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨hgU, q, hq⟩` from `ht g hg`. Rewrite using `[map_mul, hfin _ ((finU E n).mul_mem hh hgU), hq, map_ratCast]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `_ = σ (∑ g ∈ t.support, t g * φ (h * g)) := (map_sum σ _ _).symm`. Use `_ = σ (z * φ h) := by rw [e]`. Use `_ = σ z * φ' h := by rw [map_mul, hfin h hh]`. Establish `hon : Set.EqOn (opOf (RU E n) t φ') (σ z • φ') ((ratU E n : Set (UA E n)) * (finU E n : Set (UA E n)))`. Introduce and unpack `_ ⟨γ, hγ, g, hg, rfl⟩`.
-
-Rewrite using `[hl1 γ hγ, hl2 γ hγ]`. Conclude with `hfinEq g hg`. Conclude with `Continuous.ext_on (GlobalTheory.UnitarySplit.dense_and_split E n).1 hc1 hc2 hon`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem opOf_conj : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (σ : ℂ ≃+* ℂ) (t : UA E n →₀ ℂ), (∀ g ∈ t.support, g ∈ finU E n ∧ ∃ q : ℚ, t g = q) → ∀ (φ φ' : UA E n → ℂ) (z : ℂ), IsAutFormU φ → IsAutFormU φ' → (∀ g ∈ finU E n, φ' g = σ (φ g)) → opOf (RU E n) t φ = z • φ → opOf (RU E n) t φ' = σ z • φ' := by
   intro E _ _ _ n σ t ht φ φ' z hφ hφ' hfin heig

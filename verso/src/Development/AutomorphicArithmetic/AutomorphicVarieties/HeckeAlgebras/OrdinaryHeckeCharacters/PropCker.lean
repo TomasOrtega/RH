@@ -4,19 +4,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.Ordi
 open IsLocalRing Matrix UpperTheory.V.Hi
 
 /- English proof (translation)
-Establish `key : ∃ K0 : Subgroup H, K0.FiniteIndex ∧ ∀ (K : Subgroup H) [K.Normal] [Fintype (H ⧸ K)], K ≤ K0 → ∑ q : H ⧸ K, ρ q.out w = 0` using `by clear hfix`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w h`. Take `⟨x, m, rfl⟩` from `h`. Take `⟨K0, h0, h1⟩` from `hs m`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨K0, h0, fun K _ _ hK => ?_⟩` and prove the remaining obligations. Simplify using `only [map_sub]`. Rewrite using `[Finset.sum_sub_distrib, sub_eq_zero, ← Equiv.sum_comp (Equiv.mulRight (x : H ⧸ K)) (fun q : H ⧸ K => ρ q.out m)]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Establish `h2 : ((q * x).out)⁻¹ * (q.out * x) ∈ K`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← QuotientGroup.eq]`. Simplify using the standard rewrite rules. Establish `h3` using `h1 _ (hK h2)`. Establish `h4 : q.out * x = (q * x).out * (((q * x).out)⁻¹ * (q.out * x))` using `by group`. Rewrite using `[Equiv.coe_mulRight, ← Module.End.mul_apply, ← map_mul, h4, map_mul, Module.End.mul_apply, h3]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => exact ⟨⊤, inferInstance, fun K _ _ _ => by simp⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨K1, h1, h1'⟩` from `ha`. Take `⟨K2, h2, h2'⟩` from `hb`. Use `⟨K1 ⊓ K2, inferInstance, fun K _ _ hK => ?_⟩` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_add]`. Rewrite using `[Finset.sum_add_distrib, h1' K (hK.trans inf_le_left), h2' K (hK.trans inf_le_right), add_zero]`. Consider the case `smul c a _ ha`. Take `⟨K1, h1, h1'⟩` from `ha`. Use `⟨K1, h1, fun K _ _ hK => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_smul]`. Rewrite using `[← Finset.smul_sum, h1' K hK, smul_zero]`. Take `⟨K0, h0, h1⟩` from `key`. Use `haveI : Fintype (H ⧸ K0.normalCore) := Fintype.ofFinite _`. Establish `h2` using `h1 K0.normalCore K0.normalCore_le`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hfix, Finset.sum_const, Finset.card_univ] at h2`. Rewrite `h2` using `[← Nat.cast_smul_eq_nsmul k, smul_eq_zero]`. Conclude with `h2.resolve_left (Nat.cast_ne_zero.2 Fintype.card_ne_zero)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Hi.propCker_avg {H k M : Type} [Group H] [Field k] [CharZero k] [AddCommGroup M] [Module k M]
     (ρ : Representation k H M) (hs : ∀ m, ∃ K : Subgroup H, K.FiniteIndex ∧ ∀ x ∈ K, ρ x m = m) {w : M}
@@ -59,37 +59,33 @@ private theorem UpperTheory.V.Hi.propCker_avg {H k M : Type} [Group H] [Field k]
   exact h2.resolve_left (Nat.cast_ne_zero.2 Fintype.card_ne_zero)
 
 /- English proof (translation)
-Introduce `G _ I k M _ _ _ _ π hsm v hv`. Establish `mul : ∀ (g h : G) (w : M), π g (π h w) = π (g * h) w` using `fun g h w => by`. Rewrite using `[map_mul π g h, Module.End.mul_apply]`. Establish `hz : ∀ j : ℕ, I.z ^ j ∈ I.P` using `fun j => pow_mem I.z_mem j`. Establish `hpow : ∀ j : ℕ, (I.uOp π I.z ^ j) v = I.uOp π (I.z ^ j) v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => simpa using (uOpMul G I k M π 1 1 (one_mem _) (one_mem _) v hv).2.2.1.symm`. Consider the case `succ j ih`. Rewrite using `[pow_succ', Module.End.mul_apply, ih, pow_succ', (uOpMul G I k M π _ _ I.z_mem (hz j) v hv).2.1]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hpow]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Set `ρ : Representation k I.N M` to `π.comp I.N.subtype`. Set `J : Submodule k M` to `Submodule.span k {w | ∃ x m, w = ρ x m - m}`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `key : ∃ j0 : ℕ, ∀ j ≥ j0, π (I.z ^ j) v ∈ J` using `by clear hv hpow`. Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem w h`. Take `⟨x, hx, m, rfl⟩` from `h`. Take `⟨j0, h0⟩` from `I.exh x hx`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨j0, fun j hj => ?_⟩` and prove the remaining obligations. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le' hj`. Establish `h1` using `I.P_N _ (hz d) _ h0`. Use `Submodule.subset_span ⟨⟨_, h1⟩, π (I.z ^ (d + j0)) m, ?_⟩` and prove the remaining obligations. Use `show _ = π _ _ - _`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, mul, mul]`. Use `congr 3`. Simplify using `only [Subgroup.subtype_apply]`. Use `group`. Consider the case `zero => exact ⟨0, fun j _ => by simp⟩`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `add a b _ _ ha hb`. Take `⟨j1, h1⟩` from `ha`. Take `⟨j2, h2⟩` from `hb`. Use `⟨max j1 j2, fun j hj => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `add_mem (h1 j (le_of_max_le_left hj)) (h2 j (le_of_max_le_right hj))`. Consider the case `smul c a _ ha`. Take `⟨j1, h1⟩` from `ha`. Use `⟨j1, fun j hj => ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.smul_mem _ _ (h1 j hj)`. Take `⟨j, hj⟩` from `key`. Establish `hj` using `hj j le_rfl`. Use `⟨j, propCker_avg ρ ?_ ?_ ?_⟩` and prove the remaining obligations. Introduce `m`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc, -⟩` from `hsm m`. Conclude with `⟨(I.Nconj (I.z ^ c)).subgroupOf I.N, ⟨I.fin_N _ (hz c)⟩, fun x hx => hc x hx⟩`. Establish `hfin : ((I.Nconj (I.z ^ j)).subgroupOf I.N).FiniteIndex` using `⟨I.fin_N _ (hz j)⟩ haveI : Fintype (I.N ⧸ (I.Nconj (I.z ^ j)).subgroupOf I.N) := Fintype.ofFinite _`. Rewrite using `[Iwa.uOp, finsum_eq_sum_of_fintype, LinearMap.sum_apply]`. Use `Submodule.sum_mem _ fun q _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ρ q.out (π (I.z ^ j) v) - π (I.z ^ j) v ∈ J` using `Submodule.subset_span ⟨_, _, rfl⟩`. Establish `h2` using `add_mem h1 hj`. Rewrite `h2` using `[sub_add_cancel]`. Rewrite using `[← mul]`. Conclude with `h2`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `x`. Conclude with `(uOpMul G I k M π _ 1 (hz j) (one_mem _) v hv).1 x x.2`. Introduce and unpack `⟨j, hj⟩`. Establish `h1` using `propCp G I k M π _ (hz j) v hv`. Rewrite `h1` using `[hj, zero_sub, neg_mem_iff, Submodule.smul_mem_iff _ (Nat.cast_ne_zero.2 (I.fin_N _ (hz j)))]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `stab : ∀ t ∈ I.Tf, ∀ w ∈ I.jacKer π, π t w ∈ I.jacKer π`. Introduce `t ht w hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w h`. Take `⟨x, hx, m, rfl⟩` from `h`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `Submodule.subset_span ⟨_, I.Tf_Nf t ht x hx, π t m, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, mul, mul]`. Use `congr 3`. Use `group`. Consider the case `zero => simp`.
-
-Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`. Consider the case `smul c a _ ha => rw [map_smul]`. Conclude with `Submodule.smul_mem _ _ ha`. Establish `h2` using `stab _ (inv_mem (I.P_le _ (hz j))) _ h1`.
-
-Rewrite `h2` using `[mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Hi.propCker :
     ∀ (G : Type) [Group G] (I : Iwa G) (k M : Type) [Field k] [CharZero k] [AddCommGroup M] [Module k M] (π : Representation k G M), I.Smooth π → ∀ v ∈ fixd π I.N, v ∈ I.jacKer π ↔ ∃ j : ℕ, (I.uOp π I.z ^ j) v = 0 := by

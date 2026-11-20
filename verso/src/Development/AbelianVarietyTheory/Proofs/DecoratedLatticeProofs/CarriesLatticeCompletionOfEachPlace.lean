@@ -15,16 +15,16 @@ open GlobalTheory.FinPl GlobalTheory.FinPl.KSplit GlobalTheory.FinPl.KOpen
 variable {D : D7}
 
 /- English proof (translation)
-Rewrite using `[mem_latV_iff S L P₁ z hz, mem_latV_iff S L P₂ z fun i => idAt_mono h (hz i)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem latV_transfer (S : HSp D) (L : Lat S) {P₁ P₂ : Pl D → Prop} (h : ∀ p, P₁ p → P₂ p)
     {z : Fin S.rank → AE D} (hz : ∀ i, z i ∈ idAt D P₁) : z ∈ latV S L P₁ ↔ z ∈ latV S L P₂ := by
   rw [mem_latV_iff S L P₁ z hz, mem_latV_iff S L P₂ z fun i => idAt_mono h (hz i)]
 
 /- English proof (translation)
-Rewrite using `[mem_latV_iff S L _ z hz]`. Establish `h0 : finPart D ∘ z = 0`. Use function extensionality and compare the values at `i`. Rewrite using `[Function.comp_apply, ← e_mul_fin (hz i)]`. Use `GlobalTheory.LatticeLocalGlobal.ext_components _ _ fun w => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.compFin D w _ = GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.compFin D w _`. Rewrite using `[map_mul, compFin_e, if_neg (Finset.notMem_empty w), zero_mul, Pi.zero_apply, map_zero]`. Rewrite using `[h0]`. Conclude with `zero_mem _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_latV_empty (S : HSp D) (L : Lat S) {z : Fin S.rank → AE D}
     (hz : ∀ i, z i ∈ idAt D (· ∈ (∅ : Finset (Pl D)))) : z ∈ latV S L (· ∈ (∅ : Finset (Pl D))) := by
@@ -40,13 +40,13 @@ theorem mem_latV_empty (S : HSp D) (L : Lat S) {z : Fin S.rank → AE D}
   exact zero_mem _
 
 /- English proof (translation)
-Introduce `D S g L M Q`. Proceed by induction on `Q using Finset.induction_on with`. Consider the case `empty`. Introduce `_ y hy`. Conclude with `iff_of_true (mem_latV_empty S L hy) (mem_latV_empty S M (supp_mulVec S _ g hy))`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Consider the case `insert v Q hv ih`. Introduce `hQ y hy`. Establish `hQ'` using `ih fun w hw => hQ w (Finset.mem_insert_of_mem hw)`. Establish `hvv` using `hQ v (Finset.mem_insert_self v Q)`. Establish `hgy` using `supp_mulVec S _ g hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `comm : ∀ c : AE D, c • (mt S g *ᵥ y) = mt S g *ᵥ (c • y)` using `fun c => (mulVec_smul _ _ _).symm`. Establish `s1 : ∀ i, (eQ {v} • y) i ∈ idAt D (fun p => p ∈ insert v Q ∧ p ∈ ({v} : Finset (Pl D)))` using `fun i => mul_mem_idAt (eQ_off {v}) (hy i)`. Establish `s2 : ∀ i, ((1 - eQ {v}) • y) i ∈ idAt D (fun p => p ∈ insert v Q ∧ p ∉ ({v} : Finset (Pl D)))` using `fun i => mul_mem_idAt (one_sub_eQ_off {v}) (hy i)`. Establish `i1 : ∀ p, (p ∈ insert v Q ∧ p ∈ ({v} : Finset (Pl D))) → p = v` using `fun p h => Finset.mem_singleton.1 h.2`. Establish `i2 : ∀ p, (p ∈ insert v Q ∧ p ∉ ({v} : Finset (Pl D))) → p ∈ Q` using `fun p h => (Finset.mem_insert.1 h.1).resolve_left fun e => h.2 (Finset.mem_singleton.2 e)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t1 : ∀ i, (eQ {v} • y) i ∈ idAt D (· = v)` using `fun i => idAt_mono i1 (s1 i)`. Establish `t2 : ∀ i, ((1 - eQ {v}) • y) i ∈ idAt D (· ∈ Q)` using `fun i => idAt_mono i2 (s2 i)`. Rewrite using `[mem_latV_iff_parts S L _ {v} hy, mem_latV_iff_parts S M _ {v} hgy, comm, comm, latV_transfer S L i1 s1, latV_transfer S L i2 s2, latV_transfer S M i1 (fun i => by rw [← comm]; exact mul_mem_idAt (eQ_off {v}) (hgy i)), latV_transfer S M i2 (fun i => by rw [← comm]; exact mul_mem_ …`. Conclude with `and_congr (hvv _ t1) (hQ' _ t2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem moves_of_places : ∀ {D : D7} (S : HSp D) (g : GA D S) (L M : Lat S) (Q : Finset (Pl D)),
     (∀ v ∈ Q, Moves S g L M (· = v)) → Moves S g L M (· ∈ Q) := by

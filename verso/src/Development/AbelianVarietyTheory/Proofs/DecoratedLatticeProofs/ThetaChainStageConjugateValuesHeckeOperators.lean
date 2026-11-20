@@ -18,7 +18,7 @@ def Good (V : HSp D) (J : Set (GA D V)) (χ : GA D V → ℂ) (f : GA D V → �
   Continuous f ∧ (∃ C : ℝ, ∀ g, ‖f g‖ ≤ C) ∧ (∀ γ ∈ GQ V, ∀ g, f (γ * g) = f g) ∧ ∀ k ∈ J, ∀ g, f (g * k) = χ k * f g
 
 /- English proof (translation)
-Take `⟨c, ⟨C, hC⟩, l, r⟩` from `h`. Take `⟨c', ⟨C', hC'⟩, l', r'⟩` from `h'`. Use `⟨c.add c', ⟨C + C', fun g => (norm_add_le _ _).trans (add_le_add (hC g) (hC' g))⟩, fun γ hγ g => by simp [l γ hγ g, l' γ hγ g], fun k hk g => by simp [r k hk g, r' k hk g, mul_add]⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem Good.add {V : HSp D} {J : Set (GA D V)} {χ : GA D V → ℂ} {f f' : GA D V → ℂ}
     (h : Good V J χ f) (h' : Good V J χ f') : Good V J χ (f + f') := by
@@ -28,7 +28,7 @@ theorem Good.add {V : HSp D} {J : Set (GA D V)} {χ : GA D V → ℂ} {f f' : GA
     fun γ hγ g => by simp [l γ hγ g, l' γ hγ g], fun k hk g => by simp [r k hk g, r' k hk g, mul_add]⟩
 
 /- English proof (translation)
-Take `⟨c, ⟨C, hC⟩, l, r⟩` from `h`. Use `⟨continuous_const.mul c, ⟨‖a‖ * C, fun g => ?_⟩, fun γ hγ g => by simp [l γ hγ g], fun k hk g => by simp [r k hk g, mul_left_comm]⟩` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hC g) (norm_nonneg a)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Good.smul {V : HSp D} {J : Set (GA D V)} {χ : GA D V → ℂ} {f : GA D V → ℂ} (a : ℂ)
     (h : Good V J χ f) : Good V J χ (a • f) := by
@@ -39,11 +39,11 @@ theorem Good.smul {V : HSp D} {J : Set (GA D V)} {χ : GA D V → ℂ} {f : GA D
   exact mul_le_mul_of_nonneg_left (hC g) (norm_nonneg a)
 
 /- English proof (translation)
-Establish `hT` using `(GlobalTheory.MultMem.mem_mult_iff _ _ _ _ _ _ _ _).1 ((mem_multT θ M J χ u).1 hu)`. Establish `hu' : u = PiTensorProduct.lift (PiTensorProduct.lift.symm u)` using `(LinearEquiv.apply_symm_apply _ _).symm`. Proceed by induction on `v using PiTensorProduct.induction_on with`. Consider the case `smul_tprod a x`. Rewrite using `[map_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `Good.smul a ?_` and prove the remaining obligations. Rewrite using `[hu', PiTensorProduct.lift.tprod]`. Conclude with `⟨(hT.aut x).cont, GlobalTheory.CuspDecay.bounded_of_cuspForm hP hθ (hT.aut x) (hT.cusp x), (hT.aut x).left, hT.lev x⟩`. Consider the case `add x y hx hy`. Rewrite using `[map_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx.add hy`.
+A detailed English derivation is pending.
 -/
 theorem good_val (hP : GlobalTheory.Published.CuspRapidDecay) {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D}
     {S : D.what₂.Tau → SPar} {M : DSModel V S} {J : Set (GA D V)} {χ : GA D V → ℂ}
@@ -63,7 +63,7 @@ theorem good_val (hP : GlobalTheory.Published.CuspRapidDecay) {θ : InfFam D} (h
     exact hx.add hy
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Simplify using `using congrArg conj h`. Introduce `h`. Simplify using `[h]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem conj_eq_one_iff' (z : ℂ) : conj z = 1 ↔ z = 1 := by
   constructor
@@ -71,7 +71,7 @@ theorem conj_eq_one_iff' (z : ℂ) : conj z = 1 ↔ z = 1 := by
   · intro h; simp [h]
 
 /- English proof (translation)
-Introduce `hP D c hc j _ s _`. Use `⟨fun u v => good_val hP hc.inf (u : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ)) u.2 v, fun P d R => ?_, fun R f => ?_⟩` and prove the remaining obligations. Simplify using `only [Hecke₂, conj_eq_one_iff']`. Use function extensionality and compare the values at `g`. Simplify using `[heckeLin, map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem conj_values_hecke : GlobalTheory.Published.CuspRapidDecay → ∀ D : D7, ForStage D fun c _ s =>
     (∀ (u : s.CC c) v, Continuous (PiLocalization₂.val u v) ∧ (∃ C : ℝ, ∀ g, ‖PiLocalization₂.val u v g‖ ≤ C) ∧

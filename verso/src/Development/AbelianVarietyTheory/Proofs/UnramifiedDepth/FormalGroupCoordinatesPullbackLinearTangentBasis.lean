@@ -10,31 +10,29 @@ open Formalism.L2.FormalSeriesBounds Formalism.IncomingBounds GlobalTheory.MainT
 namespace GlobalTheory.MainTerm
 
 /- English proof (translation)
-Introduce `C _ V d I J _ _ G S t ht ι _ e z al he hal0 hal`. Take `⟨f, hf⟩ : ∃ f : I → MvPowerSeries ι C, f = fun x => ∑ j, e j x • (MvPowerSeries.X j : MvPowerSeries ι C)` from `⟨_, rfl⟩`. Establish `hlp : ∀ F : MvPowerSeries I C, linPull e F = MvPowerSeries.subst f F`. Introduce `F`. Substitute `hf` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Both sides reduce to the same expression. Establish `hf0 : ∀ x, MvPowerSeries.constantCoeff (f x) = 0`. Introduce `x`. Simplify using `[hf, map_sum, MvPowerSeries.smul_eq_C_mul]`. Establish `hsub : MvPowerSeries.HasSubst f` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hf0`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hl : 2 ≤ V.l` using `V.l_prime.two_le`. Establish `hal' : ∀ c s x, S.al c s x = ∑ b', al c s b' * S.tan b' x`. Introduce `c s x`. Break down `Nat.eq_zero_or_pos s with rfl | hs` into its components or cases. Simplify using `only [hal0, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Conclude with `S.cur_zero_inl c x`. Rewrite using `[hal c s x hs]`. Use `Finset.sum_congr rfl fun b' _ => ?_` and prove the remaining obligations. Rewrite using `[show S.al b' 0 x = S.tan b' x from S.cur_zero_inl b' x]`. Simplify using `only [hlp]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun c => MvPowerSeries.constantCoeff_subst_eq_zero hsub hf0 (ht.1 c), fun b μ => ?_, fun κ μ => ?_⟩` and prove the remaining obligations. Use `set P : I → ℕ → C := fun c s => MvPowerSeries.coeff μ (MvPowerSeries.subst f (t c) ^ V.l ^ s) with hP set Y : I → C := fun b' => ∑ s ∈ Finset.range (μ.degree + 1), ∑ c, al c s b' * P c s with hY set Zf : I → C := fun b' => MvPowerSeries.coeff μ (∑ j, MvPowerSeries.C (R := C) (z b …`. Establish `hx : ∀ x, ∑ b', (Y b' - Zf b') * S.tan b' x = 0`. Introduce `x`. Establish `h` using `GlobalTheory.T.coeff_subst_sum_l_pow_pow_mvPowerSeries C I ι I V.l hl (fun c s => S.al c s x) t (MvPowerSeries.X x) f hf0 ht.1 (fun μ' => by rw [MvPowerSeries.coeff_X, ht.2 x μ']) μ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[MvPowerSeries.subst_X hsub]`. Establish `eL : MvPowerSeries.coeff μ (f x) = ∑ b', Zf b' * S.tan b' x`. Simplify using `only [hf, hZ, map_sum, MvPowerSeries.coeff_smul, MvPowerSeries.coeff_C_mul, he, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b' _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `eR : ∑ s ∈ Finset.range (μ.degree + 1), ∑ c, S.al c s x * MvPowerSeries.coeff μ (MvPowerSeries.subst f (t c) ^ V.l ^ s) = ∑ b', Y b' * S.tan b' x`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Simplify using `only [hP, hal', Finset.sum_mul]`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b' _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `_ = ∑ b', ∑ s ∈ Finset.range (μ.degree + 1), ∑ c, al c s b' * P c s * S.tan b' x := Finset.sum_comm`. Use `_ = _ := by simp only [hY, Finset.sum_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite `h` using `[eL, eR]`. Simplify using `only [sub_mul, Finset.sum_sub_distrib, h, sub_self]`. Establish `hv : Matrix.vecMul (fun b' => Y b' - Zf b') (Matrix.of S.tan) = 0`. Use function extensionality and compare the values at `x`. Simplify using `only [Matrix.vecMul, dotProduct, Matrix.of_apply, Pi.zero_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `hx x`. Establish `h0` using `congrFun (Matrix.eq_zero_of_vecMul_eq_zero S.U_det_ne hv) b`. Conclude with `sub_eq_zero.mp h0`. Establish `hF : ∀ μ' : I →₀ ℕ, MvPowerSeries.coeff μ' (S.ze t κ) = ∑ s ∈ Finset.range (μ'.degree + 1), ∑ c, (-S.be c s κ) * MvPowerSeries.coeff μ' (t c ^ V.l ^ s)`. Introduce `μ'`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use `show -(∑ s ∈ Finset.Icc 1 μ'.degree, ∑ c : I, S.be c s κ * MvPowerSeries.coeff μ' (t c ^ V.l ^ s)) = _`. Simplify using `only [neg_mul, Finset.sum_neg_distrib]`. Use `congr 1`. Apply `Finset.sum_subset` to reduce the goal to its premises. Introduce `s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Substitute using the available equality.
 
-Simplify using `only [Finset.mem_Icc, Finset.mem_range] at hs ⊢`. Use linear arithmetic over natural numbers and integers. Introduce `s hs hns`. Establish `hs0 : s = 0`. Simplify using `only [Finset.mem_Icc, Finset.mem_range] at hs hns`.
-
-Use linear arithmetic over natural numbers and integers. Substitute `hs0` using the available equality. Simplify using `[show ∀ c, S.be c 0 κ = 0 from fun c => S.be_zero c κ]`. Rewrite using `[GlobalTheory.T.coeff_subst_sum_l_pow_pow_mvPowerSeries C I ι I V.l hl (fun c s => -S.be c s κ) t (S.ze t κ) f hf0 ht.1 hF μ]`. Simplify using `only [neg_mul, Finset.sum_neg_distrib]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem linPull_coords : ∀ (C : Type) [Field C] (V : VF C) (d : ℕ) (I J : Type) [Fintype I] [Fintype J] (G : Cart V d I J) (S : Sys G) (t : I → MvPowerSeries I C), S.IsT t → ∀ (ι : Type) [Fintype ι] (e : ι → I → C) (z : I → ι → C) (al : I → ℕ → I → C), (∀ j x, e j x = ∑ b, z b j * S.tan b x) → (∀ c b, al c 0 b = if c = b then 1 else 0) → (∀ c (k : ℕ) x, 1 ≤ k → S.al c k x = ∑ b, al c k b * S.al b 0 x) → (∀ c, MvPowerSeries.constantCoeff (linPull e (t c)) = 0) ∧ (∀ (b : I) (μ : ι →₀ ℕ), ∑ s ∈ Finset.range (μ.degree + 1), ∑ c, al c s b * MvPowerSeries.coeff μ (linPull e (t c) ^ (V.l ^ s)) = MvPowerSeries.coeff μ (∑ j, MvPowerSeries.C (R := C) (z b j) * (MvPowerSeries.X j : MvPowerSeries ι C))) ∧ ∀ (κ : J) (μ : ι →₀ ℕ), MvPowerSeries.coeff μ (linPull e (S.ze t κ)) = -∑ s ∈ Finset.range (μ.degree + 1), ∑ c, S.be c s κ * MvPowerSeries.coeff μ (linPull e (t c) ^ (V.l ^ s)) := by
   intro C _ V d I J _ _ G S t ht ι _ e z al he hal0 hal

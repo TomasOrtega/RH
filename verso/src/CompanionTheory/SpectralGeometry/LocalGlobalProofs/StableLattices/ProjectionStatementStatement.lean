@@ -4,7 +4,7 @@ import CompanionTheory.RealGroups.UnitaryAdmissibility.ArchimedeanUnitaryDual.In
 open CompanionTheory.Rg.Fl
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.FixedProj.stProj` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=CompanionTheory%2FSpectralGeometry%2FLocalGlobalProofs%2FStableLattices%2FProjectionStatement.lean&line=10#L10)
 -/

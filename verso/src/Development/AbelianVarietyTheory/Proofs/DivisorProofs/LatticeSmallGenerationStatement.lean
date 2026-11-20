@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.PublishedFoundations.N
 open GlobalTheory.BigTop GlobalTheory.BigOn GlobalTheory.BigOn.Exp
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BigOn.Exp.latSmallGen | exact GlobalTheory.BigOn.Exp.latSmallGen | (intros; apply GlobalTheory.BigOn.Exp.latSmallGen <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.LatticeSmallGeneration : GlobalTheory.BigOn.Exp.LatSmallGen := by
   first | exact @GlobalTheory.BigOn.Exp.latSmallGen | exact GlobalTheory.BigOn.Exp.latSmallGen | (intros; apply GlobalTheory.BigOn.Exp.latSmallGen <;> assumption)

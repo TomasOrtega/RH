@@ -14,13 +14,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 open Classical in
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.SplitWeil.t2Space k`. Use `haveI := GlobalTheory.SplitWeil.secondCountable k`. Use `haveI := hν`. Establish `hemb : Topology.IsClosedEmbedding (fun e => ptCol (c` using `c) p x e) := by`. Establish `h : (fun e => ptCol (c` using `c) p x e) = (fun z => z + (basePt c x.toCols₁ + colAt n' c p fun r => x r (Sum.inr ()))) ∘ freeMat p := by`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Use function extensionality and compare the values at `e`. Simplify using `only [ptCol, affPt_eq_basePt_add_freeMat, Function.comp_apply]`. Normalize the expressions using the abelian group laws. Rewrite using `[h]`. Conclude with `(Homeomorph.addRight _).isClosedEmbedding.comp (isClosedEmbedding_freeMat p)`.
-
-Establish `hch : Continuous fun e : {rs : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1)) // Free p rs} → k => ((ψ (-ch (affPt p (0 : Matrix n n' k) e)) : Circle) : ℂ)`. Use `continuous_subtype_val.comp (hψ.comp (Continuous.neg ?_))` and prove the remaining obligations. Conclude with `continuous_finset_sum _ fun i _ => ((continuous_affPt_uncurry p).comp (Continuous.prodMk_right (0 : Matrix n n' k))).matrix_elem _ _`. Use `Continuous.integrable_of_hasCompactSupport ?_ ?_` and prove the remaining obligations. Conclude with `(hΦ.1.continuous.comp hemb.continuous).mul hch`.
-
-Conclude with `(hΦ.2.comp_isClosedEmbedding hemb).mul_right`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem flCol_integrand_integrable (ψ : AddChar k Circle) (hψ : Continuous ψ) (ν : Measure k)
     (hν : ν.IsAddHaarMeasure) (p : ℕ) (Φ : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k → ℂ)
@@ -48,7 +44,7 @@ theorem flCol_integrand_integrable (ψ : AddChar k Circle) (hψ : Continuous ψ)
   · exact (hΦ.2.comp_isClosedEmbedding hemb).mul_right
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [flCol_eq_integral, Pi.add_apply, add_mul]`. Conclude with `integral_add (flCol_integrand_integrable ψ hψ ν hν p Φ₁ h₁ x) (flCol_integrand_integrable ψ hψ ν hν p Φ₂ h₂ x)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem flCol_add_of_SB (ψ : AddChar k Circle) (hψ : Continuous ψ) (ν : Measure k)
     (hν : ν.IsAddHaarMeasure) (p : ℕ) (Φ₁ Φ₂ : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k → ℂ)
@@ -61,7 +57,7 @@ theorem flCol_add_of_SB (ψ : AddChar k Circle) (hψ : Continuous ψ) (ν : Meas
     (flCol_integrand_integrable ψ hψ ν hν p Φ₂ h₂ x)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [flCol_eq_integral, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Conclude with `integral_const_mul _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem flCol_smul (ψ : AddChar k Circle) (ν : Measure k) (p : ℕ) (a : ℂ)
     (Φ : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k → ℂ) :
@@ -73,13 +69,13 @@ theorem flCol_smul (ψ : AddChar k Circle) (ν : Measure k) (p : ℕ) (a : ℂ)
 end Lin
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ ψ ν hψ hν n n' _ _ _ _ c p hp1 hpc M _ _ L hL`. Establish `hSB` using `(flat_SB_onto k ψ ν hψ hν n n' c p hp1).1 hpc`. Set `F : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) →ₗ[ℂ] SB (Matrix n (n' ⊕ Unit) k)` to `{ toFun := fun Φ => ⟨flCol ψ ν p Φ.1, hSB.1 Φ.1 Φ.2⟩ map_add' := fun Φ₁ Φ₂ => Subtype.ext (flCol_add_of_SB ψ hψ ν hν p Φ₁.1 Φ₂.1 Φ₁.2 Φ₂.2) map_smul' := fun a Φ => Subtype.ext (flCol_smul ψ ν p a Φ.1) }`. Establish `hFs : Function.Surjective F` using `fun Ψ => by`. Take `⟨Φ, hΦ, h⟩` from `hSB.2 Ψ.1 Ψ.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨⟨Φ, hΦ⟩, Subtype.ext h⟩`. Establish `hker : LinearMap.ker F ≤ LinearMap.ker L` using `fun Φ hΦ => by`. Rewrite `hΦ`, the goal using `[LinearMap.mem_ker]`. Apply `hL` to reduce the goal to its premises. Introduce `x`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg (fun Ψ : SB (Matrix n (n' ⊕ Unit) k) => Ψ.1 x) hΦ` as an intermediate fact. Simplify `this` using `[F]`. Use `⟨((LinearMap.ker F).liftQ L hker).comp (F.quotKerEquivOfSurjective hFs).symm.toLinearMap, ?_⟩` and prove the remaining obligations. Introduce `Φ Ψ hΨ`. Establish `hΨF : Ψ = F Φ` using `Subtype.ext hΨ`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Substitute `hΨF` using the available equality. Establish `h2 : (F.quotKerEquivOfSurjective hFs).symm (F Φ) = Submodule.Quotient.mk Φ`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, h2]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/

@@ -20,7 +20,7 @@ variable {S : Scheme.{0}} {A B : Over S} [GrpObj A] [GrpObj B]
 omit [GrpObj A] [GrpObj B] in
 
 /- English proof (translation)
-Simplify using `only [zcPair, map_add, map_sum, map_nsmul, map_zsmul, pull_evc, Category.assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pull_zcPair {P : LB (A ⊗ B).left} (hP : P.IsLB) (lm : A ⟶ B) (mu : B ⟶ A) (α : Matrix (Fin 4) (Fin 4) ℤ)
     {Y Z : Over S} (w : Z ⟶ Y) (u u' : Y ⟶ G4 (A ⊗ B)) :
@@ -36,7 +36,7 @@ variable {P : LB (A ⊗ B).left} (hD : IsDual A B P) (hD' : IsDual B A (swap P))
 
 include e in
 /- English proof (translation)
-Establish `hm` using `map_mul_pt s (prj (A ⊗ B) i ≫ fst A B) u u'`. Establish `h1` using `map_one_pt s (prj (A ⊗ B) i ≫ fst A B) (T := T)`. Use `show lam (pull (pA s i).left (cls L hL)) u u' = _`. Rewrite using `[lam_pull_pt (pA s i) _ u u' hm h1, lam_cL_pt s hD.isLB l L hL e]`. Simplify using `only [pA, toBase_map, Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem line_bundle_pairing_zeroth (i : Fin 4) :
     lam (pull (phiL mu s (0, i)) (cls L hL)) u u' =
@@ -49,11 +49,11 @@ theorem line_bundle_pairing_zeroth (i : Fin 4) :
 
 include e hD' in
 /- English proof (translation)
-Establish `hm0` using `map_mul_pt s (prj (A ⊗ B) i ≫ fst A B) u u'`. Establish `hm : (u * u') ≫ (pA (B` using `B) s i)⁻¹ = u ≫ (pA s i)⁻¹ * u' ≫ (pA s i)⁻¹ := by`. Rewrite using `[GrpObj.comp_inv, GrpObj.comp_inv, GrpObj.comp_inv]`. Use `show ((u * u') ≫ (Over.pullback s).map (prj (A ⊗ B) i ≫ fst A B))⁻¹ = _`. Rewrite using `[hm0, mul_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `h1 : (1 : T ⟶ (Over.pullback s).obj (G4 (A ⊗ B))) ≫ (pA (B` using `B) s i)⁻¹ = 1 := by`. Rewrite using `[GrpObj.comp_inv]`. Use `show ((1 : T ⟶ _) ≫ (Over.pullback s).map (prj (A ⊗ B) i ≫ fst A B))⁻¹ = 1`. Rewrite using `[map_one_pt, inv_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show lam (pull ((pA (B := B) s i)⁻¹).left (cls L hL)) u u' = _`. Rewrite using `[lam_pull_pt ((pA s i)⁻¹) _ u u' hm h1, lam_cL_pt s hD.isLB l L hL e, GrpObj.comp_inv, GrpObj.comp_inv, toBase_inv, toBase_inv, GrpObj.inv_comp]`. Simplify using `only [pA, toBase_map, Category.assoc]`. Conclude with `evc_inv_inv hD hD' _ _`.
+A detailed English derivation is pending.
 -/
 theorem line_bundle_pairing_first [IsCommMonObj A] (i : Fin 4) :
     lam (pull (phiL mu s (1, i)) (cls L hL)) u u' =
@@ -76,7 +76,7 @@ theorem line_bundle_pairing_first [IsCommMonObj A] (i : Fin 4) :
 
 include e in
 /- English proof (translation)
-Establish `hm` using `map_mul_pt s (prj (A ⊗ B) i ≫ snd A B ≫ mu) u u'`. Establish `h1` using `map_one_pt s (prj (A ⊗ B) i ≫ snd A B ≫ mu) (T := T)`. Use `show lam (pull (pM mu s i).left (cls L hL)) u u' = _`. Rewrite using `[lam_pull_pt (pM mu s i) _ u u' hm h1, lam_cL_pt s hD.isLB l L hL e]`. Simplify using `only [pM, toBase_map, Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem line_bundle_pairing_second (i : Fin 4) :
     lam (pull (phiL mu s (2, i)) (cls L hL)) u u' =
@@ -89,11 +89,11 @@ theorem line_bundle_pairing_second (i : Fin 4) :
 
 include e hD' in
 /- English proof (translation)
-Establish `hm0` using `map_mul_pt s (prj (A ⊗ B) i ≫ snd A B ≫ mu) u u'`. Establish `hm : (u * u') ≫ (pM mu s i)⁻¹ = u ≫ (pM mu s i)⁻¹ * u' ≫ (pM mu s i)⁻¹`. Rewrite using `[GrpObj.comp_inv, GrpObj.comp_inv, GrpObj.comp_inv]`. Use `show ((u * u') ≫ (Over.pullback s).map (prj (A ⊗ B) i ≫ snd A B ≫ mu))⁻¹ = _`. Rewrite using `[hm0, mul_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `h1 : (1 : T ⟶ (Over.pullback s).obj (G4 (A ⊗ B))) ≫ (pM mu s i)⁻¹ = 1`. Rewrite using `[GrpObj.comp_inv]`. Use `show ((1 : T ⟶ _) ≫ (Over.pullback s).map (prj (A ⊗ B) i ≫ snd A B ≫ mu))⁻¹ = 1`. Rewrite using `[map_one_pt, inv_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show lam (pull ((pM mu s i)⁻¹).left (cls L hL)) u u' = _`. Rewrite using `[lam_pull_pt ((pM mu s i)⁻¹) _ u u' hm h1, lam_cL_pt s hD.isLB l L hL e, GrpObj.comp_inv, GrpObj.comp_inv, toBase_inv, toBase_inv, GrpObj.inv_comp]`. Simplify using `only [pM, toBase_map, Category.assoc]`. Conclude with `evc_inv_inv hD hD' _ _`.
+A detailed English derivation is pending.
 -/
 theorem line_bundle_pairing_third [IsCommMonObj A] (i : Fin 4) :
     lam (pull (phiL mu s (3, i)) (cls L hL)) u u' =
@@ -116,7 +116,7 @@ theorem line_bundle_pairing_third [IsCommMonObj A] (i : Fin 4) :
 
 include hD hD' in
 /- English proof (translation)
-Rewrite using `[evc_mul_left hD, evc_mul_right hD hD', evc_mul_right hD hD', IsAdditive.evc_one hD.isLB hD.additive]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem evc_lam_key {Y : Over S} (a a' : Y ⟶ A) (b b' : Y ⟶ B) :
     evc hD.isLB (a * a') (b * b') - evc hD.isLB a b - evc hD.isLB a' b' + evc hD.isLB (1 : Y ⟶ A) (1 : Y ⟶ B) =
@@ -126,7 +126,7 @@ theorem evc_lam_key {Y : Over S} (a a' : Y ⟶ A) (b b' : Y ⟶ B) :
   abel
 
 /- English proof (translation)
-Establish `hv` using `toBase_comp s (G4 (A ⊗ B)) v (𝟙 _)`. Rewrite `hv` using `[Category.comp_id]`. Rewrite using `[evc, ← pull_comp, hv]`. Use `congr 2`. Simplify using `only [phiP, ← comp_lift, Over.comp_left]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -142,7 +142,7 @@ private theorem pull_pull_phiP_eq_evc (ij : Fin 4 × Fin 4) (v : T ⟶ (Over.pul
 
 include hD' in
 /- English proof (translation)
-Simplify using `only [GlobalTheory.CechPic.lam, pull_pull_phiP_eq_evc hD, toBase_mul, toBase_one, MonObj.mul_comp, MonObj.one_comp]`. Conclude with `evc_lam_key hD hD' _ _ _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lam_phiP (ij : Fin 4 × Fin 4) :
     lam (pull (phiP s ij) (cls P hD.isLB)) u u' =

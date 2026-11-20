@@ -7,11 +7,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open Matrix IsLocalRing UpperTheory.V UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.Pa UpperTheory.V.Th UpperTheory.V.Th.Coc
 
 /- English proof (translation)
-Introduce `O R G _ _ _ _ n D x ρ hn h`. Use `⟨fun y => ?_, fun r y => ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `(((CA.d_gmap D).2.2.1 x.toRingHom y).2 1)`. Rewrite `h1` using `[h]`. Establish `h2` using `(CA.d_toDet (GDet.ofRep ρ) (MonoidAlgebra.mapRingHom G x.toRingHom y)).2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[CA.d_toDet_ofRep.1 ρ, (CA.d_ofRep _ _ _).2.2.1 hn]`. Conclude with `h2.trans h1`. Proceed by induction on `y using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [smul_add, map_add, map_add, ha, hb, smul_add]`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `single g a`. Rewrite using `[MonoidAlgebra.smul_single, repR_single, repR_single, smul_eq_mul, map_mul, mul_smul]`. Take `⟨t, ht⟩` from `(CA.d_tr D.toDet).1 hn`. Conclude with `⟨t, fun y => (ht y).trans (CA.d_toDet D y).2.2.1⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Th.Coc.trRep :
     ∀ {O R G : Type} [CommRing O] [CommRing R] [Algebra O R] [Group G] {n : ℕ} (D : GDet n R G) (x : R →ₐ[O] O) (ρ : G →* Matrix (Fin n) (Fin n) O), 1 ≤ n → D.map x.toRingHom = GDet.ofRep ρ → (∀ y, (repR x ρ y).trace = x (D.tr y)) ∧ (∀ (r : R) y, repR x ρ (r • y) = x r • repR x ρ y) ∧ ∃ t : MonoidAlgebra R G →ₗ[R] R, ∀ y, t y = D.tr y := by

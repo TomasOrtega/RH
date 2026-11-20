@@ -21,7 +21,7 @@ def cst (g : X ⟶ Sp K) (x : X) : K →+* X.presheaf.stalk x :=
   ((X.presheaf.germ ⊤ x trivial).hom.comp g.appTop.hom).comp (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom
 
 /- English proof (translation)
-Establish `h : X.presheaf.germ ⊤ (centre z) trivial ≫ Scheme.stalkClosedPointTo z = z.appTop ≫ (Scheme.ΓSpecIso (CommRingCat.of R)).hom`. Use `(Scheme.germ_stalkClosedPointTo z ⊤ trivial).trans ?_` and prove the remaining obligations. Simplify using `only [Iso.trans_hom, Functor.mapIso_hom, Iso.op_hom, Scheme.Hom.appTop]`. Use `congr 1`. Conclude with `congrArg (fun q => q.hom t) h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem stalkClosedPointTo_germ_top (z : Sp R ⟶ X) (t : Γ(X, ⊤)) :
     (Scheme.stalkClosedPointTo z).hom ((X.presheaf.germ ⊤ (centre z) trivial).hom t) =
@@ -34,11 +34,11 @@ theorem stalkClosedPointTo_germ_top (z : Sp R ⟶ X) (t : Γ(X, ⊤)) :
   exact congrArg (fun q => q.hom t) h
 
 /- English proof (translation)
-Use `show (Scheme.stalkClosedPointTo z).hom ((X.presheaf.germ ⊤ (centre z) trivial).hom (g.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom k))) = φ k`. Rewrite using `[stalkClosedPointTo_germ_top]`. Establish `h2 : z.appTop.hom (g.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom k)) = (Spec.map (CommRingCat.ofHom φ)).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom k)`. Establish `h' : z ≫ g = Spec.map (CommRingCat.ofHom φ)` using `h`. Rewrite using `[← h']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression. Rewrite using `[h2]`. Establish `h3` using `congrArg (fun q => q.hom k) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom φ))`. Establish `h3' : (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (φ k) = (Spec.map (CommRingCat.ofHom φ)).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom k)` using `h3`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h3']`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem val_cst (z : Sp R ⟶ X) (g : X ⟶ Sp K) (φ : K →+* R) (h : z ≫ g = spMap φ) (k : K) :
     (Scheme.stalkClosedPointTo z).hom (cst g (centre z) k) = φ k := by
@@ -59,7 +59,7 @@ theorem val_cst (z : Sp R ⟶ X) (g : X ⟶ Sp K) (φ : K →+* R) (h : z ≫ g 
 variable {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Establish `h1 : genMap ξ p (cst g p.1 k) = (Scheme.stalkClosedPointTo ξ).hom (cst g (centre ξ) k)` using `congrArg (Scheme.stalkClosedPointTo ξ).hom (X.presheaf.germ_stalkSpecializes_apply (show p.1 ∈ (⊤ : X.Opens) from trivial) p.2 _)`. Rewrite using `[h1, val_cst ξ g φ h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem genMap_cst (ξ : Sp Ω ⟶ X) (g : X ⟶ Sp K) (φ : K →+* Ω) (h : ξ ≫ g = spMap φ) (p : Cpt ξ) (k : K) :
     genMap ξ p (cst g p.1 k) = φ k := by
@@ -69,17 +69,15 @@ theorem genMap_cst (ξ : Sp Ω ⟶ X) (g : X ⟶ Sp K) (φ : K →+* Ω) (h : ξ
   rw [h1, val_cst ξ g φ h]
 
 /- English proof (translation)
-Use `haveI : CharZero Ω := charZero_of_injective_ringHom inc.injective`. Establish `hinv : ∀ n : ℕ, 0 < n → ((n : Ω))⁻¹ ∈ regAt ξ p`. Introduce `n hn`. Take `⟨u, hu⟩` from `hq n hn`. Use `⟨(u⁻¹ : _ˣ), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : genMap ξ p u = (n : Ω)` using `by rw [hu, map_natCast]`. Establish `h2 : genMap ξ p (u⁻¹ : _ˣ) * genMap ξ p u = 1`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Rewrite `h2` using `[h1]`. Conclude with `eq_inv_of_mul_eq_one_left h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmem : ∀ r : ℚ, Rat.castHom Ω r ∈ regAt ξ p`. Introduce `r`. Rewrite using `[eq_ratCast, Rat.cast_def, div_eq_mul_inv]`. Conclude with `mul_mem (intCast_mem _ _) (hinv r.den r.den_pos)`. Set `ψ : ℚ →+* regAt ξ p` to `(Rat.castHom Ω).codRestrict _ hmem`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hint : ∀ a : F, inc a ∈ regAt ξ p`. Introduce `a`. Use `hN p _ ⟨(minpoly ℚ a).map ψ, (minpoly.monic (Algebra.IsIntegral.isIntegral a)).map ψ, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map]`. Establish `e : (algebraMap (regAt ξ p) Ω).comp ψ = inc.comp (algebraMap ℚ F)` using `Subsingleton.elim _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e, ← Polynomial.hom_eval₂]`. Use `minpoly.aeval ℚ a` as an intermediate fact. Rewrite `this` using `[Polynomial.aeval_def]`. Rewrite using `[this, map_zero]`. Establish `hb : Function.Bijective (genMap ξ p).rangeRestrict` using `⟨fun a b hab => hξ.inj p (congrArg Subtype.val hab), (genMap ξ p).rangeRestrict_surjective⟩`.
-
-Use `⟨(RingEquiv.ofBijective _ hb).symm.toRingHom.comp (inc.codRestrict (genMap ξ p).range hint), ?_⟩` and prove the remaining obligations. Use extensionality with `a`. Conclude with `congrArg Subtype.val ((RingEquiv.ofBijective _ hb).apply_symm_apply (inc.codRestrict (genMap ξ p).range hint a))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem exists_lift {ξ : Sp Ω ⟶ X} {F : Type} [Field F] [NumberField F] (hξ : IsCptGen ξ) (hN : NormalCpt ξ)
     (p : Cpt ξ) (inc : F →+* Ω) (hq : ∀ n : ℕ, 0 < n → IsUnit (n : X.presheaf.stalk p.1)) :
@@ -117,19 +115,17 @@ theorem exists_lift {ξ : Sp Ω ⟶ X} {F : Type} [Field F] [NumberField F] (hξ
 end General
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c U O _ β Y Z T _ _ y c₀ hy hU`. Use `haveI : FiniteDimensional ℚ c.F := c.fin`. Use `haveI : NumberField c.F := { to_charZero := inferInstance, to_finiteDimensional := c.fin }`. Establish `h0 : genPt Z.ξ₀ ⤳ centre y` using `(Z.closure _).1 hU`. Establish `h : genPt (Z.ξ₀ ≫ Y.j) ⤳ centre (y ≫ Y.j)` using `h0.map Y.j.continuous`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨h, ?_⟩` and prove the remaining obligations. Establish `hN : NormalCpt (Z.ξ₀ ≫ Y.j)` using `XR.normalCpt_of_isCptGen Z.gen Y.normal`. Establish `hq : ∀ n : ℕ, 0 < n → IsUnit (n : Y.X.presheaf.stalk (centre (y ≫ Y.j)))`. Introduce `n hn`. Use `haveI : IsLocalHom (Scheme.stalkClosedPointTo (y ≫ Y.j)).hom := Scheme.isLocalHom_stalkClosedPointTo _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (Scheme.stalkClosedPointTo (y ≫ Y.j)).hom (n : Y.X.presheaf.stalk (centre (y ≫ Y.j))) = c₀ (n : c.F)` using `(map_natCast _ n).trans (map_natCast c₀ n).symm`. Conclude with `isUnit_of_map_unit (Scheme.stalkClosedPointTo (y ≫ Y.j)).hom _ ((congrArg IsUnit e).mpr ((IsUnit.mk0 _ (Nat.cast_ne_zero.2 hn.ne')).map c₀))`. Take `⟨κ, hκ⟩` from `exists_lift Z.gen hN ⟨centre (y ≫ Y.j), h⟩ Z.inc hq`. Use `⟨κ, hκ, ?_⟩` and prove the remaining obligations. Set `π` to `genMap Z.ξ₀ ⟨centre y, h0⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `s : c.F →+* (Xo.XF c).presheaf.stalk (centre y)` to `(Y.j.stalkMap (centre y)).hom.comp κ`. Set `t : c.F →+* (Xo.XF c).presheaf.stalk (centre y)` to `cst (pullback.snd _ _) (centre y)`. Establish `hD : GlobalTheory.CompanionTheory.Ar.Dominates Z.ξ₀ (Z.ξ₀ ≫ Y.j) Y.j (RingHom.id Z.Ω)` using `by show Z.ξ₀ ≫ Y.j = Spec.map (CommRingCat.ofHom (RingHom.id Z.Ω)) ≫ Z.ξ₀ ≫ Y.j`. Establish `e : CommRingCat.ofHom (RingHom.id Z.Ω) = 𝟙 _` using `rfl`. Rewrite using `[e, Spec.map_id, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hs : π.comp s = Z.inc`. Use extensionality with `a`. Conclude with `(PullReg.stalkMap_comp_genMap hD ⟨centre y, h0⟩ h (κ a)).trans (congrArg (fun f => f a) hκ)`. Establish `ht : π.comp t = Z.inc`. Use extensionality with `a`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `genMap_cst Z.ξ₀ (pullback.snd _ _) Z.inc Z.over_inc ⟨centre y, h0⟩ a`. Establish `est : s = t` using `GlobalTheory.T.number_field_maps_local_ring_unique c.F _ Z.Ω π s t (hs.trans ht.symm)`. Establish `e1 : (Scheme.stalkClosedPointTo (y ≫ Y.j)).hom.comp κ = (Scheme.stalkClosedPointTo y).hom.comp s`. Rewrite using `[Scheme.stalkClosedPointTo_comp]`. Both sides reduce to the same expression.
-
-Rewrite using `[e1, est]`. Use extensionality with `a`. Conclude with `val_cst y (pullback.snd _ _) c₀ hy a`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem exists_coef : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (U : Set (Xo.XF c)) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (Z : CptOver Y U) (T : Type) [CommRing T] [IsLocalRing T] (y : Sp T ⟶ Xo.XF c) (c₀ : c.F →+* T), y ≫ pullback.snd _ _ = spMap c₀ → centre y ∈ U → ∃ (h : genPt (Z.ξ₀ ≫ Y.j) ⤳ centre (y ≫ Y.j)) (κ : c.F →+* Y.X.presheaf.stalk (centre (y ≫ Y.j))), (genMap (Z.ξ₀ ≫ Y.j) ⟨_, h⟩).comp κ = Z.inc ∧ (Scheme.stalkClosedPointTo (y ≫ Y.j)).hom.comp κ = c₀ := by
   intro E _ _ _ H D l Xo c U O _ β Y Z T _ _ y c₀ hy hU

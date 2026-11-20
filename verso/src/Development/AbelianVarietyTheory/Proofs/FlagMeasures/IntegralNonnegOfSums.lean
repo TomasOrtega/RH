@@ -5,21 +5,19 @@ open scoped ComplexOrder
 namespace GlobalTheory.PosDefFT
 
 /- English proof (translation)
-Use `set I := ∫ p : ℝ × ℝ, ψ (p.2 - p.1) ∂(μ.prod μ) with hI`. Establish `key : ∀ k : ℕ, 0 ≤ (k : ℂ) * (ψ 0 - I + k * I)`. Introduce `k`. Set `P : Measure (Fin k → ℝ)` to `Measure.pi (fun _ => μ)`. Establish `hint : ∀ i j : Fin k, Integrable (fun t : Fin k → ℝ => ψ (t j - t i)) P`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j`. Use `Integrable.of_bound ?_ C (Eventually.of_forall fun t => hb _)` and prove the remaining obligations. Conclude with `(hc.comp (by fun_prop)).aestronglyMeasurable`. Establish `hval : ∀ i j : Fin k, ∫ t, ψ (t j - t i) ∂P = (if i = j then ψ 0 - I else 0) + I`. Introduce `i j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Establish `hind : ProbabilityTheory.iIndepFun (fun (i : Fin k) (t : Fin k → ℝ) => t i) P` using `ProbabilityTheory.iIndepFun_pi (X := fun _ => id) (fun _ => aemeasurable_id)`. Establish `h2` using `hind.indepFun h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[ProbabilityTheory.indepFun_iff_map_prod_eq_prod_map_map (measurable_pi_apply i).aemeasurable (measurable_pi_apply j).aemeasurable]`. Establish `e : ∀ l : Fin k, P.map (fun t => t l) = μ` using `fun l => (measurePreserving_eval (fun _ : Fin k => μ) l).map_eq`. Rewrite `h2` using `[e, e]`. Rewrite using `[if_neg h, zero_add, hI, ← h2, integral_map (by fun_prop)]`. Conclude with `(hc.comp (by fun_prop)).aestronglyMeasurable`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses repeatedly using the stated equalities.
 
-Establish `h0 : 0 ≤ ∫ t, ∑ i, ∑ j, ψ (t j - t i) ∂P` using `integral_nonneg (fun t => hp k t)`. Rewrite `h0` using `[integral_finset_sum _ (fun i _ => integrable_finset_sum _ (fun j _ => hint i j))]`. Rewrite `h0` using `[integral_finset_sum _ (fun j _ => hint _ j), hval]`. Simplify `h0` using `[Finset.sum_add_distrib, mul_add]`. Establish `key2 : ∀ k : ℕ, 0 ≤ (1 / ((k : ℝ) + 1) : ℝ) • (ψ 0 - I) + I`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k`. Establish `h1` using `key (k + 1)`. Establish `h2 : (0 : ℝ) ≤ (1 / ((k : ℝ) + 1)) ^ 2` using `by positivity`. Establish `h3` using `smul_nonneg h2 h1`. Use `h3 using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Establish `: ((k : ℂ) + 1) ≠ 0` using `by exact_mod_cast Nat.succ_ne_zero k`. Simplify using `only [Complex.real_smul]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `hlim : Tendsto (fun k : ℕ => (1 / ((k : ℝ) + 1) : ℝ) • (ψ 0 - I) + I) atTop (𝓝 ((0 : ℝ) • (ψ 0 - I) + I))` using `(tendsto_one_div_add_atTop_nhds_zero_nat.smul_const _).add_const _`.
-
-Simplify using `using ge_of_tendsto' hlim key2`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem integral_prod_nonneg (ψ : ℝ → ℂ) (hc : Continuous ψ) (C : ℝ) (hb : ∀ s, ‖ψ s‖ ≤ C)
     (hp : ∀ (k : ℕ) (t : Fin k → ℝ), 0 ≤ ∑ i, ∑ j, ψ (t j - t i))
@@ -68,19 +66,17 @@ theorem integral_prod_nonneg (ψ : ℝ → ℂ) (hc : Continuous ψ) (C : ℝ) (
   simpa using ge_of_tendsto' hlim key2
 
 /- English proof (translation)
-Set `μ : Measure ℝ` to `volume.restrict (Set.Ioo 0 1)`. Use `haveI : IsProbabilityMeasure μ := ⟨by simp [μ]⟩`. Set `G : ℕ → ℝ → ℂ` to `fun n x => ∫ s in (-((n : ℝ) * x))..((n : ℝ) * (1 - x)), ψ s`. Establish `hG : ∀ n x, G n x = (n : ℝ) • ∫ y, ψ ((n : ℝ) * (y - x)) ∂μ`. Introduce `n x`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `intervalIntegral.smul_integral_comp_mul_sub (f := ψ) (a := 0) (b := 1) (n : ℝ) ((n : ℝ) * x)`. Rewrite `h` using `[intervalIntegral.integral_of_le zero_le_one, integral_Ioc_eq_integral_Ioo]`. Simplify using `only [G, μ, mul_sub]`. Rewrite using `[h]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hint : ∀ n : ℕ, Integrable (fun p : ℝ × ℝ => ψ ((n : ℝ) * (p.2 - p.1))) (μ.prod μ)`. Introduce `n`. Use `Integrable.of_bound ?_ C (Eventually.of_forall fun t => hb _)` and prove the remaining obligations. Conclude with `(hc.comp (by fun_prop)).aestronglyMeasurable`. Establish `hnn : ∀ n, 0 ≤ ∫ x, G n x ∂μ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `n`. Establish `h` using `integral_prod_nonneg (fun s => ψ ((n : ℝ) * s)) (hc.comp (by fun_prop)) C (fun s => hb _) (fun k t => by simpa [mul_sub] using hp k (fun i => (n : ℝ) * t i)) μ`. Rewrite `h` using `[integral_prod _ (hint n)]`. Repeatedly rewrite using `[hG, integral_smul]`. Conclude with `smul_nonneg (Nat.cast_nonneg n) h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hlim : Tendsto (fun n => ∫ x, G n x ∂μ) atTop (𝓝 (∫ _x, (∫ s, ψ s) ∂μ))`. Use `tendsto_integral_of_dominated_convergence (fun _ => ∫ s, ‖ψ s‖) ?_ (integrable_const _) ?_ ?_` and prove the remaining obligations. Introduce `n`. Establish `: G n = fun x => (n : ℝ) • ∫ y, ψ ((n : ℝ) * (y - x)) ∂μ` using `funext (hG n)`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `((hint n).integral_prod_left.smul (n : ℝ)).aestronglyMeasurable`. Introduce `n`. Use `Eventually.of_forall fun x => ?_` and prove the remaining obligations. Use `(intervalIntegral.norm_integral_le_integral_norm_uIoc).trans ?_` and prove the remaining obligations. Conclude with `setIntegral_le_integral hi.norm (Eventually.of_forall fun _ => norm_nonneg _)`.
-
-Use `(ae_restrict_iff' measurableSet_Ioo).2 (Eventually.of_forall fun x hx => ?_)` and prove the remaining obligations. Use `intervalIntegral_tendsto_integral hi ?_ ?_` and prove the remaining obligations. Conclude with `tendsto_neg_atTop_atBot.comp (tendsto_natCast_atTop_atTop.atTop_mul_const hx.1)`. Conclude with `tendsto_natCast_atTop_atTop.atTop_mul_const (sub_pos.2 hx.2)`. Simplify using `using ge_of_tendsto' hlim hnn`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem integral_nonneg_of_sums (ψ : ℝ → ℂ) (hc : Continuous ψ) (C : ℝ) (hb : ∀ s, ‖ψ s‖ ≤ C)
     (hi : Integrable ψ)
@@ -127,17 +123,17 @@ theorem integral_nonneg_of_sums (ψ : ℝ → ℂ) (hc : Continuous ψ) (C : ℝ
   simpa using ge_of_tendsto' hlim hnn
 
 /- English proof (translation)
-Introduce and unpack `φ hc ⟨A, e, he, hb⟩ hp ξ`. Establish `hn : ∀ s : ℝ, ‖Complex.exp (-(Complex.I * ξ * s)) * φ s‖ = ‖φ s‖`. Introduce `s`. Rewrite using `[norm_mul, Complex.norm_exp]`. Simplify using the standard rewrite rules.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hc' : Continuous fun s : ℝ => Complex.exp (-(Complex.I * ξ * s)) * φ s` using `by fun_prop`. Establish `hA : 0 ≤ A` using `by simpa using (norm_nonneg _).trans (hb 0)`. Use `integral_nonneg_of_sums _ hc' A (fun s => ?_) ?_ (fun k t => ?_)` and prove the remaining obligations. Rewrite using `[hn]`. Use `(hb s).trans (mul_le_of_le_one_right hA ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Real.exp_le_one_iff, neg_nonpos]`. Check the signs of the components of the expression. Establish `h1 : IntegrableOn (fun s : ℝ => Real.exp (-(e * |s|))) (Set.Ioi 0)`. Use `(exp_neg_integrableOn_Ioi 0 he).congr_fun (fun s hs => ?_) measurableSet_Ioi` and prove the remaining obligations. Simplify using `[abs_of_pos (Set.mem_Ioi.1 hs)]`.
+Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `h2 : IntegrableOn (fun s : ℝ => Real.exp (-(e * |s|))) (Set.Iic 0)`. Use `(integrableOn_exp_mul_Iic he 0).congr_fun (fun s hs => ?_) measurableSet_Iic` and prove the remaining obligations. Simplify using `[abs_of_nonpos (Set.mem_Iic.1 hs)]`. Establish `h3 : Integrable (fun s : ℝ => Real.exp (-(e * |s|)))`. Use `h2.union h1` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Set.Iic_union_Ioi, integrableOn_univ]`. Then use the resulting hypothesis. Use `(h3.const_mul A).mono' hc'.aestronglyMeasurable (Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Rewrite using `[hn]`. Conclude with `hb s`. Use `hp k t (fun j => Complex.exp (-(Complex.I * ξ * t j))) using 4 with i _ j _` and compare the differences between its conclusion and the goal.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.star_def, ← Complex.exp_conj, ← Complex.exp_add]`. Use `congr 1`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem fourier_nonneg : ∀ φ : ℝ → ℂ, Continuous φ →
     (∃ A e : ℝ, 0 < e ∧ ∀ s, ‖φ s‖ ≤ A * Real.exp (-(e * |s|))) →

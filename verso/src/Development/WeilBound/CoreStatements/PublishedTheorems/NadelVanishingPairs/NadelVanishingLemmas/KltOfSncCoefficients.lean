@@ -24,7 +24,7 @@ noncomputable def DivOver.ordHom {k : Type} [Field k] {X : Scheme.{0}} [IsIntegr
   map_mul' f g := by simp [E.ord_mul]
 
 /- English proof (translation)
-Establish `h` using `congrArg Multiplicative.toAdd (map_prod E.ordHom (fun j => f j ^ e j) s)`. Rewrite `h` using `[toAdd_prod]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[map_zpow, toAdd_zpow, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -41,9 +41,9 @@ theorem DivOver.ord_prod_zpow {k : Type} [Field k] {X : Scheme.{0}} [IsIntegral 
       rfl
 
 /- English proof (translation)
-Take `⟨a, ha, hav⟩` from `hv`. Establish `h1 : (v : X.functionField) ∈ E.ring` using `hE _ ⟨a, hav⟩`. Establish `hinv : algebraMap (X.presheaf.stalk x) X.functionField (↑(ha.unit⁻¹)) = ((v⁻¹ : X.functionFieldˣ) : X.functionField)`. Rewrite using `[Units.val_inv_eq_inv_val]`. Use `eq_inv_of_mul_eq_one_right ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hav, ← map_mul, IsUnit.mul_val_inv, map_one]`. Establish `h2 : ((v⁻¹ : X.functionFieldˣ) : X.functionField) ∈ E.ring` using `hE _ ⟨_, hinv⟩`. Establish `e1` using `(E.ord_nonneg_iff v).mpr h1`. Establish `e2` using `(E.ord_nonneg_iff v⁻¹).mpr h2`. Rewrite `e2` using `[E.ord_inv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -64,35 +64,31 @@ theorem DivOver.ord_eq_zero_of_unitAt {k : Type} [Field k] {X : Scheme.{0}} [IsI
   omega
 
 /- English proof (translation)
-Introduce `k _ _ Y _ _ q n _ η hη K G m B hm hK hsnc hsupp y g hG E hE`. Use `haveI : Smooth q := SmoothOfRelativeDimension.smooth n q`. Establish `hdim : topologicalKrullDim Y = n` using `HSCore.VanishNumberField.topologicalKrullDim_eq_of_smooth q n inferInstance`. Take `⟨U, hy, z, J, w, u, hc⟩` from `exists_isSncChart k Y q n B hsnc y`. Establish `hgen : genericPoint Y ∈ U` using `((genericPoint_spec Y).mem_open_set_iff U.isOpen).mpr ⟨y, trivial, hy⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfg` using `isFreeGen_formOf hgen hc.frame`. Establish `hω0 : formOf U hgen (dOn q z) ≠ 0`. Introduce `h0`. Use `hfg.1 (a₁ := 0) (a₂ := 1) (by simp only [h0, smul_zero])` as an intermediate fact. Conclude with `zero_ne_one this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hr : hfg.repr η ≠ 0`. Introduce `h0`. Apply `hη` to reduce the goal to its premises. Rewrite using `[← hfg.repr_smul η, h0, zero_smul]`. Establish `hηh : η = ((Units.mk0 _ hr : Y.functionFieldˣ) : Y.functionField) • formOf U hgen (dOn q z)` using `(hfg.repr_smul η).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set h : Y.functionFieldˣ := Units.mk0 _ hr with hdef`. Establish `hKy : K.IsEqn y h` using `hK U (dOn q z) hc.frame y hy h hηh`. Establish `hD1 : (G - m • K).IsEqn y (g / h ^ m)` using `hG.sub (hKy.nsmul m)`. Establish `hD2` using `IsSncChart.isEqn_monomial k Y q n B y U hy z J w u hc (G - m • K) hsupp`. Establish `hunit` using `(hD1.iff_unitAt).mp hD2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hzero` using `DivOver.ord_eq_zero_of_unitAt hE ((∏ j ∈ J, u j ^ (G - m • K).mult (w j)) / (g / h ^ m)) (by simpa using hunit)`. Rewrite `hzero` using `[div_eq_mul_inv, E.ord_mul, E.ord_inv, div_eq_mul_inv, E.ord_mul, E.ord_inv, DivOver.ord_prod_zpow, E.ord_pow]`. Establish `hform : E.formOrd η = E.ord h + E.formOrd (formOf U hgen (dOn q z))`. Rewrite using `[hηh]`. Conclude with `E.formOrd_smul hdim hω0 h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hF0 : 0 ≤ E.formOrd (formOf U hgen (dOn q z))` using `E.formOrd_formOf_nonneg hdim hy hE (dOn q z) hω0`. Establish `hF1` using `E.sum_ord_sub_one_le_formOrd_dOn hdim hy hE z hω0 (J := ↥J) (fun j => j.1) Subtype.val_injective (fun j => u j.1) (fun j => hc.val j.1 j.2)`. Rewrite `hF1` using `[Finset.sum_coe_sort J (fun j => E.ord (u j))]`. Establish `hnn : ∀ j ∈ J, 0 ≤ E.ord (u j)` using `fun j hj => (E.ord_nonneg_iff _).mpr (hE _ (by rw [hc.val j hj]; exact regAt_fnOf hy _ _))`. Use `set F := E.formOrd (formOf U hgen (dOn q z)) with hFdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `set S := ∑ j ∈ J, E.ord (u j) with hSdef`. Use `set T := ∑ j ∈ J, (G - m • K).mult (w j) * E.ord (u j) with hTdef`. Establish `hm' : (0 : ℚ) < m` using `by exact_mod_cast hm`. Establish `hdisc : discrep E η m g = ((m * F - T : ℤ) : ℚ) / m`. Establish `hg' : E.ord g = m * E.ord h + T` using `by linarith`.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Unfold `discrep`. Rewrite using `[hform, hg']`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hdisc]`. Prove the components needed by the constructor for the conclusion. Introduce `hlt`. Establish `hT : T ≤ (m - 1) * S`. Rewrite using `[hSdef, hTdef, Finset.mul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.sum_le_sum (fun j hj => ?_)` and prove the remaining obligations. Use `hlt (w j) (hc.spec j hj)` as an intermediate fact. Conclude with `mul_le_mul_of_nonneg_right (by omega) (hnn j hj)`. Establish `hS0 : 0 ≤ S` using `Finset.sum_nonneg hnn`. Establish `key : -(m : ℤ) < m * F - T`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities.
 
-Break down `eq_or_lt_of_le hS0 with hS | hS` into its components or cases. Rewrite `hT` using `[← hS]`. Establish `: (m : ℤ) * F ≥ 0` using `mul_nonneg (by exact_mod_cast hm.le) hF0`. Establish `hm0 : (0 : ℤ) < m` using `by exact_mod_cast hm`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: (m : ℤ) * (S - 1) ≤ m * F` using `mul_le_mul_of_nonneg_left (by linarith) (by exact_mod_cast hm.le)`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[lt_div_iff₀ hm']`. Establish `: ((-(m : ℤ) : ℤ) : ℚ) < ((m * F - T : ℤ) : ℚ)` using `by exact_mod_cast key`. Move the coercions through the operations in `at this ⊢`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Introduce `hle`. Establish `hT : T ≤ m * S`. Rewrite using `[hSdef, hTdef, Finset.mul_sum]`. Use `Finset.sum_le_sum (fun j hj => ?_)` and prove the remaining obligations.
-
-Conclude with `mul_le_mul_of_nonneg_right (hle (w j) (hc.spec j hj)) (hnn j hj)`. Establish `key : -(m : ℤ) ≤ m * F - T`. Establish `: (m : ℤ) * (S - 1) ≤ m * F` using `mul_le_mul_of_nonneg_left (by linarith) (by exact_mod_cast hm.le)`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[le_div_iff₀ hm']`.
-
-Establish `: ((-(m : ℤ) : ℤ) : ℚ) ≤ ((m * F - T : ℤ) : ℚ)` using `by exact_mod_cast key`. Move the coercions through the operations in `at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem coeff_criterion_snc : ∀ (k : Type) [Field k] [CharZero k] (Y : Scheme.{0}) [IsIntegral Y] [IsLocallyNoetherian Y] (q : Y ⟶ Sp k) (n : ℕ) [SmoothOfRelativeDimension n q] (η : RatForms q n), η ≠ 0 → ∀ (K G : CartierDiv Y) (m : ℕ) (B : Closeds Y), 0 < m → IsDivOfForm K η → FinalTheorems.Snc (Scheme.IdealSheafData.vanishingIdeal B) → (G - m • K).supp ≤ B → ∀ (y : Y) (g : Y.functionFieldˣ), G.IsEqn y g → ∀ E : DivOver q, E.Through y → ((∀ w, w ⤳ y → (G - m • K).mult w < m) → -1 < discrep E η m g) ∧ ((∀ w, w ⤳ y → (G - m • K).mult w ≤ m) → -1 ≤ discrep E η m g) := by
   intro k _ _ Y _ _ q n _ η hη K G m B hm hK hsnc hsupp y g hG E hE

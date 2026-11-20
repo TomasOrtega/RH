@@ -19,11 +19,11 @@ namespace GlobalTheory.CuspCentre
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r ρ : ℕ}
 
 /- English proof (translation)
-Introduce `v hv`. Use `choose z hz hz' using fun a b => hβ a b _ (hd v hv b)`. Use `⟨∑ a, (∑ b, -z a b) • cu.e a, (hc _).2 fun a => ?_, ?_⟩` and prove the remaining obligations. Conclude with `(c a : Submodule (𝓞 E) E).sum_mem fun b _ => (c a : Submodule (𝓞 E) E).neg_mem (hz a b)`. Rewrite using `[zMatE_mulVec, Finset.smul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Nat.cast_smul_eq_nsmul E, smul_smul, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hz' a b`. Establish `h0` using `X.ξ0_ne`. Rewrite using `[mul_neg, ← h]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem zMatE_congr_of_entries (X : Data E r) (N : ℕ) (cu : FJ.CuspFD X ρ)
     (c : Fin ρ → FractionalIdeal (𝓞 E)⁰ E)
@@ -50,33 +50,33 @@ theorem zMatE_congr_of_entries (X : Data E r) (N : ℕ) (cu : FJ.CuspFD X ρ)
     field_simp
 
 /- English proof (translation)
-Introduce `E _ _ _ H r ρ X N D φ cu c hΛ hφ hΓ hc β`. Establish `hsd` using `GlobalTheory.SatDual.pairing_pseudoBasis E H D r (-X.ξ0) X.Gm φ ρ cu.e c (by rw [cc_neg', X.ξ0_im]) hφ cu.ind (by rw [hΛ]; exact hc)`. Establish `hd : ∀ v ∈ X.Λ, ∀ b, ∀ a' ∈ c b, ∃ n : ℤ, Algebra.trace ℚ E (-X.ξ0 * herm X.Gm v (cu.e b) * cc a') = n`. Introduce `v hv`. Rewrite `hv` using `[← hΛ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨x, rfl⟩` from `hv`. Conclude with `(hsd fun b => -X.ξ0 * herm X.Gm (φ x) (cu.e b)).1 ⟨x, fun _ => rfl⟩`. Establish `h0` using `X.ξ0_ne`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hs, γ, hγ, e⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hs, fun a b y hy => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `(hsd (Pi.single b y)).2 (by`. Introduce `b' a' ha'`. Distinguish the cases in `hb : b' = b`. Substitute `hb` using the available equality.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hy a' ha'`. Conclude with `⟨0, by simp [Pi.single_eq_of_ne hb]⟩)`. Take `⟨w, hw, hw'⟩` from `((hΓ γ).1 hγ).2 (φ x) (hΛ ▸ ⟨x, rfl⟩)`. Rewrite `hw'` using `[e, zMatE_mulVec, add_right_inj]`. Establish `h1 : ∀ a, ∑ b', β a b' * herm X.Gm (φ x) (cu.e b') = -(β a b / X.ξ0 * y)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Rewrite using `[Finset.sum_eq_single b]`. Establish `h2` using `hx b`. Rewrite `h2` using `[Pi.single_eq_same]`. Rewrite using `[← h2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Introduce `b' _ hb'`. Establish `h2` using `hx b'`. Rewrite `h2` using `[Pi.single_eq_of_ne hb', mul_eq_zero, neg_eq_zero]`. Rewrite using `[h2.resolve_left h0, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `only [h1] at hw'`. Break down `Nat.eq_zero_or_pos N with hN | hN` into its components or cases. Substitute `hN` using the available equality. Rewrite `hw'` using `[zero_smul]`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `Fintype.linearIndependent_iff.1 cu.ind _ hw' a`. Conclude with `⟨0, FractionalIdeal.zero_mem _, by rw [mul_zero]; exact neg_eq_zero.1 h3⟩`. Establish `hN' : (N : E) ≠ 0` using `by exact_mod_cast hN.ne'`. Establish `h3 : ∑ a, ((N : E)⁻¹ * (β a b / X.ξ0 * y)) • cu.e a = -w`. Establish `h4 : w = (N : E)⁻¹ • (N • w)`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Nat.cast_smul_eq_nsmul E, smul_smul, inv_mul_cancel₀ hN', one_smul]`. Rewrite using `[h4, ← hw', Finset.smul_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, ← neg_smul, mul_neg, neg_neg]`. Use `⟨_, (hc _).1 (h3 ▸ X.Λ.neg_mem hw) a, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_inv_cancel_left₀ hN']`. Introduce and unpack `⟨hs, hβ⟩`. Establish `h1` using `zMatE_congr_of_entries X N cu c hd hc β hβ`. Establish `h2` using `zMatE_congr_of_entries X N cu c hd hc (-β) (by`. Introduce `a b y hy`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz, hz'⟩` from `hβ a b y hy`. Use `⟨-z, (c a : Submodule (𝓞 E) E).neg_mem hz, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.neg_apply, neg_div, neg_mul, hz', mul_neg])`. Establish `hm : FJ.zMatE X cu.e β * FJ.zMatE X cu.e (-β) = 1`. Rewrite using `[← zMatE_add, add_neg_cancel, zMatE_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hm' : FJ.zMatE X cu.e (-β) * FJ.zMatE X cu.e β = 1`. Rewrite using `[← zMatE_add, neg_add_cancel, zMatE_zero]`. Use `⟨hs, ⟨_, _, hm, hm'⟩, (hΓ _).2 ⟨⟨zMatE_unitary X cu β hs, fun x => ⟨fun hx => ?_, fun hx => ?_⟩⟩, h1⟩, rfl⟩` and prove the remaining obligations. Take `⟨w, hw, hw'⟩` from `h1 x hx`. Express the relevant statement in the definitionally equal form `FJ.zMatE X cu.e β *ᵥ x ∈ X.Λ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw']`. Conclude with `X.Λ.add_mem hx (nsmul_mem hw N)`. Take `⟨w, hw, hw'⟩` from `h2 _ hx`. Express the relevant statement in the definitionally equal form `FJ.zMatE X cu.e β *ᵥ x ∈ X.Λ at hx`. Express the relevant statement in the definitionally equal form `FJ.zMatE X cu.e (-β) *ᵥ (FJ.zMatE X cu.e β *ᵥ x) = FJ.zMatE X cu.e β *ᵥ x + _ at hw'`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hw'` using `[Matrix.mulVec_mulVec, hm', Matrix.one_mulVec]`. Rewrite using `[hw']`. Conclude with `X.Λ.add_mem hx (nsmul_mem hw N)`.
+A detailed English derivation is pending.
 -/
 theorem mem_zGam_principal_iff : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (r ρ : ℕ) (X : Data E r) (N : ℕ) (D : Datum H) (φ : D.La →ₗ[𝓞 E] (Fin r → E)) (cu : FJ.CuspFD X ρ) (cc' : Fin ρ → FractionalIdeal (𝓞 E)⁰ E), LinearMap.range φ = X.Λ → (Function.Injective φ ∧ Submodule.span E (Set.range φ) = ⊤ ∧ (∀ a b, cc (X.Gm a b) = X.Gm b a) ∧ X.Gm.det ≠ 0 ∧ ∀ x y, ((D.EF x y : ℤ) : ℚ) = Algebra.trace ℚ E (-X.ξ0 * herm X.Gm (φ x) (φ y))) → (∀ γ : GL (Fin r) E, γ ∈ X.Γ ↔ IsUStab X.Gm X.Λ γ ∧ ∀ v ∈ X.Λ, ∃ w ∈ X.Λ, (γ : Matrix (Fin r) (Fin r) E) *ᵥ v = v + N • w) → (∀ a : Fin ρ → E, (∑ b, a b • cu.e b) ∈ X.Λ ↔ ∀ b, a b ∈ cc' b) → ∀ β, β ∈ FJ.zGam X cu ↔ FJ.IsSkew β ∧ ∀ a b (y : E), (∀ a' ∈ cc' b, ∃ n : ℤ, Algebra.trace ℚ E (y * cc a') = n) → ∃ z ∈ cc' a, β a b / X.ξ0 * y = (N : E) * z := by
   intro E _ _ _ H r ρ X N D φ cu c hΛ hφ hΓ hc β

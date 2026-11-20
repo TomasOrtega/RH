@@ -10,9 +10,7 @@ open GlobalTheory GlobalTheory.CM
 namespace GlobalTheory.CM
 
 /- English proof (translation)
-Introduce `S A _ _ L L' hL hL' h hK R _ t x hx`. Establish `hu : ∃ u : LB.Gen (abelian₂ A (LB.div L L')), u.IsGen`. Simplify using `only [LamEq, Category.comp_id] at h`. Take `⟨w, hw⟩` from `h`. Conclude with `gen_chartPull (GlobalTheory.DescendedPrincipal.chartPullDiv L L' _ _) w hw`.
-
-Conclude with `hK R t x ((GlobalTheory.UU.KTwist.inK_div_iff (x := x) hL hL' hx).1 (GlobalTheory.UU.KTwist.inK_of_lam (LB.isLB_div hL hL') hu x))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem kTriv_of_lamEq : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A] (L L' : LB A.left), L.IsLB → L'.IsLB → LamEq L' (𝟙 A) (𝟙 A) L (𝟙 A) (𝟙 A) → Out.KTriv A L → Out.KTriv A L' := by
   intro S A _ _ L L' hL hL' h hK R _ t x hx

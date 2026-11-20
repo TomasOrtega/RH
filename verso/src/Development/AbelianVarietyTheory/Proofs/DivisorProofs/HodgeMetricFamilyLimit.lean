@@ -29,7 +29,7 @@ variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+*
   {t : ℝ → ℝ} {u : ℝ → CxPts p σ → F} {u₀ : CxPts p σ → F} {y : CxPts p σ}
 
 /- English proof (translation)
-Take `⟨ι, _, f, Φ, O, h₁, h₂, h₃, h₄, h₅, h₆⟩` from `h`. Establish `hΦ` using `h₄.continuousOn.continuousAt (h₂.mem_nhds h₃)`. Establish `hf : Tendsto (fun x : ℝ × CxPts p σ => f x.2) (atTop ×ˢ 𝓝 y) (𝓝 (f y))` using `h₁.continuousAt.tendsto.comp tendsto_snd`. Rewrite using `[h₅.self_of_nhds]`. Conclude with `(hΦ.tendsto.comp ((ht.comp tendsto_fst).prodMk_nhds hf)).congr' (h₆.mono fun _ e => e.symm)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_of_famAt (h : FamAt t u u₀ y) (ht : Tendsto t atTop (𝓝 0)) :
     Tendsto (fun x : ℝ × CxPts p σ => u x.1 x.2) (atTop ×ˢ 𝓝 y) (𝓝 (u₀ y)) := by
@@ -41,7 +41,7 @@ theorem tendsto_of_famAt (h : FamAt t u u₀ y) (ht : Tendsto t atTop (𝓝 0)) 
   exact (hΦ.tendsto.comp ((ht.comp tendsto_fst).prodMk_nhds hf)).congr' (h₆.mono fun _ e => e.symm)
 
 /- English proof (translation)
-The claim follows from `have ⟨_, h₁, h₂, h₃⟩ := eventually_nhds_iff.1 hΨ h.comp h₂ h₃ fun v hv => (h₁ v hv).contDiffWithinAt`.
+A detailed English derivation is pending.
 -/
 theorem famAt_comp (h : FamAt t u u₀ y) {Ψ : F → G} (hΨ : ∀ᶠ v in 𝓝 (u₀ y), ContDiffAt ℝ ∞ Ψ v) :
     FamAt t (fun R z => Ψ (u R z)) (fun z => Ψ (u₀ z)) y :=
@@ -49,7 +49,7 @@ theorem famAt_comp (h : FamAt t u u₀ y) {Ψ : F → G} (hΨ : ∀ᶠ v in 𝓝
   h.comp h₂ h₃ fun v hv => (h₁ v hv).contDiffWithinAt
 
 /- English proof (translation)
-The claim follows from `have ⟨_, h₁, h₂, h₃⟩ := eventually_nhds_iff.1 hΨ h.comp h₂ h₃ fun v hv => (h₁ v hv).contDiffWithinAt`.
+A detailed English derivation is pending.
 -/
 theorem vInfAt_comp (h : VInfAt u₀ y) {Ψ : F → G} (hΨ : ∀ᶠ v in 𝓝 (u₀ y), ContDiffAt ℝ ∞ Ψ v) :
     VInfAt (fun z => Ψ (u₀ z)) y :=
@@ -57,14 +57,14 @@ theorem vInfAt_comp (h : VInfAt u₀ y) {Ψ : F → G} (hΨ : ∀ᶠ v in 𝓝 (
   h.comp h₂ h₃ fun v hv => (h₁ v hv).contDiffWithinAt
 
 /- English proof (translation)
-Rewrite using `[cutWt_of_le κ hR hr h, Real.div_rpow hr.le (by linarith), Real.rpow_neg (by linarith), div_eq_inv_mul (r ^ κ)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cutWt_eq (κ : ℝ) {R r : ℝ} (hR : 2 ≤ R) (hr : 0 < r) (h : r ≤ R ^ 2) :
     cutWt κ R r = 1 / (1 + R ^ (-κ) * r ^ κ) := by
   rw [cutWt_of_le κ hR hr h, Real.div_rpow hr.le (by linarith), Real.rpow_neg (by linarith), div_eq_inv_mul (r ^ κ)]
 
 /- English proof (translation)
-Establish `c {v : ℝ × ℝ} (hv : 0 < v.2) : ContDiffAt ℝ ∞ (fun v : ℝ × ℝ => 1 + v.1 * v.2 ^ κ) v` using `contDiffAt_const.add (contDiffAt_fst.mul (contDiffAt_snd.rpow_const_of_ne hv.ne'))`. Establish `h₀ : (fun v : ℝ × ℝ => 1 + v.1 * v.2 ^ κ) (a, r) ≠ 0` using `by positivity`. Use `filter_upwards [(c (v := (a, r)) hr).continuousAt.eventually_ne h₀, (continuous_snd.continuousAt (x := (a, r))).eventually (lt_mem_nhds hr)] with v h₁ h₂`. Conclude with `contDiffAt_const.div (c h₂) h₁`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiffAt_wt (κ : ℝ) {a r : ℝ} (ha : 0 ≤ a) (hr : 0 < r) :
     ∀ᶠ v in 𝓝 (a, r), ContDiffAt ℝ ∞ (fun v : ℝ × ℝ => 1 / (1 + v.1 * v.2 ^ κ)) v := by
@@ -78,7 +78,7 @@ theorem contDiffAt_wt (κ : ℝ) {a r : ℝ} (ha : 0 ≤ a) (hr : 0 < r) :
 variable {κ : ℝ} {ρ : CxPts p σ → ℝ}
 
 /- English proof (translation)
-Use `(famAt_comp ((famAt_param _ y).prodMk (famAt_const hρ _)) (contDiffAt_wt κ le_rfl h)).congr ?_ (.of_forall fun z => by simp)` and prove the remaining obligations. Use `filter_upwards [tendsto_fst.eventually (eventually_ge_atTop (max 2 (ρ y + 1))), tendsto_snd.eventually ((hρ.continuousAt.eventually (lt_mem_nhds h)).and (hρ.continuousAt.eventually (gt_mem_nhds (lt_add_one (ρ y)))))] with x h₁ h₂`. Establish `h₃` using `le_of_max_le_left h₁`. Establish `h₄` using `le_of_max_le_right h₁`. Conclude with `cutWt_eq κ h₃ h₂.1 (by nlinarith [h₂.2])`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem famAt_cutWt (hρ : VInfAt ρ y) (h : 0 < ρ y) :
     FamAt (fun R => R ^ (-κ)) (fun R z => cutWt κ R (ρ z)) (fun _ => 1) y := by
@@ -92,7 +92,7 @@ theorem famAt_cutWt (hρ : VInfAt ρ y) (h : 0 < ρ y) :
   exact cutWt_eq κ h₃ h₂.1 (by nlinarith [h₂.2])
 
 /- English proof (translation)
-Use `(vInfAt_comp ((vInfAt_const (R ^ (-κ)) y).prodMk hρ) (contDiffAt_wt κ (Real.rpow_nonneg (by linarith) _) h)).congr ?_` and prove the remaining obligations. Use `filter_upwards [hρ.continuousAt.eventually (lt_mem_nhds h), hρ.continuousAt.eventually (gt_mem_nhds h')] with z h₁ h₂`. Conclude with `cutWt_eq κ hR h₁ h₂.le`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem vInfAt_cutWt (hρ : VInfAt ρ y) (h : 0 < ρ y) {R : ℝ} (hR : 2 ≤ R) (h' : ρ y < R ^ 2) :
     VInfAt (fun z => cutWt κ R (ρ z)) y := by
@@ -108,22 +108,20 @@ def ratExpr (l l₁ : ℂ) (A B C : Matrix (Fin g) (Fin g) ℂ) : Matrix (Fin g)
     (1 + (1 - l₁) • (A * C⁻¹ - 1)) * (1 + (1 - l) • (A * C⁻¹ - 1))⁻¹)) * C
 
 /- English proof (translation)
-Simplify using `[ratExpr]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ratExpr_zero (l₁ : ℂ) (A B C : Matrix (Fin g) (Fin g) ℂ) : ratExpr 0 l₁ A B C = C := by simp [ratExpr]
 
 abbrev Arg (g : ℕ) : Type := ℂ × ℂ × (Fin g → Fin g → ℂ) × (Fin g → Fin g → ℂ) × (Fin g → Fin g → ℂ)
 
 /- English proof (translation)
-Establish `a (v : Arg g) : MContDiffAt ∞ (fun v : Arg g => Matrix.of v.2.2.1) v` using `fun i j => by`. Simplify using `only [Matrix.of_apply]`. Use `fun_prop`. Establish `b (v : Arg g) : MContDiffAt ∞ (fun v : Arg g => Matrix.of v.2.2.2.1) v` using `fun i j => by`. Simplify using `only [Matrix.of_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `fun_prop`. Establish `c (v : Arg g) : MContDiffAt ∞ (fun v : Arg g => Matrix.of v.2.2.2.2) v` using `fun i j => by`. Simplify using `only [Matrix.of_apply]`. Use `fun_prop`. Establish `o (v : Arg g) : MContDiffAt ∞ (fun _ : Arg g => (1 : Matrix (Fin g) (Fin g) ℂ)) v` using `mContDiffAt_const _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `V {v : Arg g} (hv : IsUnit (Matrix.of v.2.2.2.2).det) : MContDiffAt ∞ (fun v : Arg g => Matrix.of v.2.2.1 * (Matrix.of v.2.2.2.2)⁻¹ - 1) v` using `((a v).mul ((c v).inv hv)).sub (o v)`. Establish `K {v : Arg g} (hv : IsUnit (Matrix.of v.2.2.2.2).det) : MContDiffAt ∞ (fun v : Arg g => 1 + (1 - v.1) • (Matrix.of v.2.2.1 * (Matrix.of v.2.2.2.2)⁻¹ - 1)) v` using `(o v).add (MContDiffAt.smul (by fun_prop) (V hv))`. Establish `d {v : Arg g} (hv : v.2.1 * (1 - v.2.1) ≠ 0) : ContDiffAt ℝ ∞ (fun v : Arg g => v.1 * (1 - v.1) / (v.2.1 * (1 - v.2.1))) v`. Simplify using `only [div_eq_mul_inv]`. Conclude with `ContDiffAt.mul (by fun_prop) (ContDiffAt.inv (f := fun v : Arg g => v.2.1 * (1 - v.2.1)) (by fun_prop) hv)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e₁ : ∀ᶠ v : Arg g in 𝓝 (0, l₁, A, B, C), v.2.1 * (1 - v.2.1) ≠ 0` using `ContinuousAt.eventually_ne (g := fun v : Arg g => v.2.1 * (1 - v.2.1)) (by fun_prop) h₁`. Establish `hK : IsUnit (1 + (1 - (0 : ℂ)) • (A * C⁻¹ - 1)).det`. Rewrite using `[sub_zero, one_smul, add_sub_cancel, Matrix.det_mul]`. Conclude with `hA.mul (Matrix.isUnit_nonsing_inv_det _ hC)`. Use `filter_upwards [e₁, (c (0, l₁, A, B, C)).eventually_isUnit hC, (K (v := (0, l₁, A, B, C)) hC).eventually_isUnit hK] with v h₂ h₃ h₄`.
-
-Use `⟨h₄, (((o v).add (MContDiffAt.smul (by fun_prop) (V h₃))).add (MContDiffAt.smul (d h₂) ((((((b v).mul ((c v).inv h₃)).sub (o v)).sub (MContDiffAt.smul (by fun_prop) (V h₃))).mul ((o v).add (MContDiffAt.smul (by fun_prop) (V h₃)))).mul ((K h₃).inv h₄)))).mul (c v)⟩` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 theorem ratExpr_smooth {l₁ : ℂ} {A B C : Matrix (Fin g) (Fin g) ℂ} (h₁ : l₁ * (1 - l₁) ≠ 0) (hA : IsUnit A.det)
     (hC : IsUnit C.det) : ∀ᶠ v : Arg g in 𝓝 (0, l₁, A, B, C),
@@ -164,19 +162,17 @@ def IsRat (Γ : ℝ → Matrix (Fin g) (Fin g) ℂ) : Prop :=
       Γ s = ratExpr ((1 - s) / (1 - s₀) : ℝ) ((1 - s₁) / (1 - s₀) : ℝ) (Γ s₀) (Γ s₁) (Γ 1)
 
 /- English proof (translation)
-Take `⟨R₀, h₀, h₀'⟩ : ∃ R₀ : ℝ, 2 ≤ R₀ ∧ ρ y < R₀ ^ 2` from `⟨ρ y + 2, by linarith, by nlinarith⟩`. Establish `h₁ : 2 ≤ R₀ + 1` using `by linarith`. Establish `h₁' : ρ y < (R₀ + 1) ^ 2` using `by nlinarith`. Establish `w₀` using `vInfAt_cutWt (κ := κ) hρ h h₀ h₀'`. Establish `w₁` using `vInfAt_cutWt (κ := κ) hρ h h₁ h₁'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `lt {R : ℝ} (hR : 2 ≤ R) (h' : ρ y < R ^ 2) : cutWt κ R (ρ y) < 1`. Rewrite using `[cutWt_eq κ hR h h'.le, div_lt_one (by positivity), lt_add_iff_pos_right]`. Check the signs of the components of the expression. Establish `ne : cutWt κ (R₀ + 1) (ρ y) - cutWt κ R₀ (ρ y) ≠ 0`. Rewrite using `[cutWt_eq κ h₁ h h₁'.le, cutWt_eq κ h₀ h h₀'.le]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(sub_pos.2 (one_div_lt_one_div_of_lt (by positivity) ?_)).ne'` and prove the remaining obligations. Use `Real.rpow_lt_rpow_of_neg (x := R₀) (y := R₀ + 1) (by linarith) (lt_add_one _) (neg_lt_zero.2 hκ)` as an intermediate fact. Use `gcongr`. Establish `d₀` using `(sub_pos.2 (lt h₀ h₀')).ne'`. Establish `q {s s₀ : ℝ} (hs : 1 - s₀ ≠ 0) : ∀ᶠ v in 𝓝 (s, s₀), ContDiffAt ℝ ∞ (fun v : ℝ × ℝ => (((1 - v.1) / (1 - v.2) : ℝ) : ℂ)) v` using `by filter_upwards [ContinuousAt.eventually_ne (g := fun v : ℝ × ℝ => 1 - v.2) (by fun_prop) hs] with v hv`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Complex.ofRealCLM.contDiff.contDiffAt.comp v (ContDiffAt.div (by fun_prop) (by fun_prop) hv)`. Establish `fl` using `(famAt_comp ((famAt_cutWt (κ := κ) hρ h).prodMk (famAt_const w₀ _)) (q d₀)).congr (u' := fun R z => (((1 - cutWt κ R (ρ z)) / (1 - cutWt κ R₀ (ρ z)) : ℝ) : ℂ)) (u₀' := fun _ => 0) (.of_forall fun _ => rfl) (.of_forall fun z => by simp)`. Establish `fl₁` using `vInfAt_comp (w₁.prodMk w₀) (q d₀)`. Establish `m {A : CxPts p σ → Matrix (Fin g) (Fin g) ℂ} (hA : MInfAt A y) : VInfAt (F` using `Fin g → Fin g → ℂ) A y := vInfAt_pi fun a => vInfAt_pi fun b => hA a b`. Establish `fa` using `fl.prodMk (famAt_const (fl₁.prodMk ((m (hM R₀)).prodMk ((m (hM (R₀ + 1))).prodMk (m hM₀)))) _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hl : (((1 - cutWt κ (R₀ + 1) (ρ y)) / (1 - cutWt κ R₀ (ρ y)) : ℝ) : ℂ) * (1 - (((1 - cutWt κ (R₀ + 1) (ρ y)) / (1 - cutWt κ R₀ (ρ y)) : ℝ) : ℂ)) ≠ 0`. Rewrite using `[← Complex.ofReal_one, ← Complex.ofReal_sub, ← Complex.ofReal_mul, Complex.ofReal_ne_zero]`. Use `mul_ne_zero (div_ne_zero (sub_pos.2 (lt h₁ h₁')).ne' d₀) ?_` and prove the remaining obligations. Rewrite using `[one_sub_div d₀]`. Conclude with `div_ne_zero (by rwa [sub_sub_sub_cancel_left]) d₀`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `sm` using `ratExpr_smooth (B := M (R₀ + 1) y) hl (hu R₀) hu₀`. Use `(famAt_comp fa (sm.mono fun v hv => hv.2 a b)).congr ?_ (.of_forall fun z => (congrFun (congrFun (ratExpr_zero _ _ _ _) a) b).symm)` and prove the remaining obligations. Use `filter_upwards [(tendsto_of_famAt fa (tendsto_rpow_neg_atTop hκ)).eventually sm, tendsto_fst.eventually (eventually_ge_atTop 2), tendsto_snd.eventually (H.and ((hρ.continuousAt.eventually (lt_mem_nhds h)).and ((w₀.continuousAt.eventually (gt_mem_nhds (lt h₀ h₀'))).and ((w₁.contin …`. Establish `k` using `k₁.1`. Simplify using `only [k₄, k₅ _ h₀, k₅ _ h₁, k₅ _ k₂] at k ⊢`.
-
-Conclude with `congrFun (congrFun (k₃ _ (cutWt_mem κ (by linarith) k₆.le) _ ⟨(cutWt_mem κ (by linarith) k₆.le).1, k₇⟩ _ ⟨(cutWt_mem κ (by linarith) k₆.le).1, k₈⟩ (sub_ne_zero.1 k₉) k) a) b`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem famAt_of_isRat (hκ : 0 < κ) (hρ : VInfAt ρ y) (h : 0 < ρ y) {M : ℝ → CxPts p σ → Matrix (Fin g) (Fin g) ℂ}
     {M₀ : CxPts p σ → Matrix (Fin g) (Fin g) ℂ} (hM : ∀ R, MInfAt (M R) y) (hM₀ : MInfAt M₀ y)
@@ -229,9 +225,9 @@ theorem famAt_of_isRat (hκ : 0 < κ) (hρ : VInfAt ρ y) (h : 0 < ρ y) {M : �
 end Calc
 
 /- English proof (translation)
-Establish `hi : Function.Injective σ`. Rewrite using `[RingHom.injective_iff_ker_eq_bot]`. Use `Ideal.eq_bot_of_comap_eq_bot (R := ℤ) ?_` and prove the remaining obligations. Rewrite using `[RingHom.comap_ker, ← RingHom.injective_iff_ker_eq_bot]`. Conclude with `RingHom.injective_int _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨IsFractionRing.lift (A := 𝓞 F) (K := F) hi, RingHom.ext fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, IsFractionRing.lift_algebraMap]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_extend {F : Type} [Field F] [NumberField F] (σ : 𝓞 F →+* ℂ) :
     ∃ σ' : F →+* ℂ, σ'.comp (algebraMap (𝓞 F) F) = σ := by
@@ -244,9 +240,9 @@ theorem exists_extend {F : Type} [Field F] [NumberField F] (σ : 𝓞 F →+* �
   rw [RingHom.comp_apply, IsFractionRing.lift_algebraMap]
 
 /- English proof (translation)
-Take `⟨V, e, hx₀, he⟩` from `hV (b (y.1 (IsLocalRing.closedPoint ℂ)))`. Set `c : VB.Chart (LieVB.omega G) r` to `⟨V, e, he⟩`. Take `⟨U, W, hx, hle, ch⟩` from `Conormal.exists_isChart (LieVB.sec_hom (MonObj.one (X := G))) hx₀`. Use `choose f hf using fun i => ch.d_surjective (LieVB.sec_hom (MonObj.one (X := G))) (Twist.resM (LieVB.omega G) hle (c.e i))`. Use `⟨c.pull hV b, U, W, ch.le, f, mem_ptsIn.2 hx₀, mem_ptsIn.2 hx, fun m z hz i i' => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hle' : b ⁻¹ᵁ U ≤ (c.pull hV b).U` using `b.preimage_mono hle`. Establish `e (i) : Twist.resM _ hle' ((c.pull hV b).e i) = QCoh.pullbackSections b _ (le_refl (b ⁻¹ᵁ U)) (LieVB.dUnit G ch.le (f i))` using `(QCoh.res_pullbackSections b _ le_rfl hle' (c.e i)).trans ((QCoh.pullbackSections_res b _ le_rfl hle (c.e i)).symm.trans (congrArg _ (hf i).symm))`. Rewrite using `[← m.form_frame _ (ptsIn_mono hle' hz), ← m.form_resM _ _ hle' hz, e, e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_chart {k : Type} [CommRing k] {X T : Scheme.{0}} (G : Over X) [GrpObj G] [QuasiSeparated G.hom] {r : ℕ}
     (hV : VB.IsVB (LieVB.omega G) r) (b : T ⟶ X) {q : T ⟶ Sp k} {σ : k →+* ℂ} (y : CxPts q σ) :
@@ -269,17 +265,17 @@ theorem exists_chart {k : Type} [CommRing k] {X T : Scheme.{0}} (G : Over X) [Gr
   rw [← m.form_frame _ (ptsIn_mono hle' hz), ← m.form_resM _ _ hle' hz, e, e]
 
 /- English proof (translation)
-Introduce `D A N j S κ s x T b q hb hab h h₀ hvb hh hh₀ hd hd₀ σ y`. Establish `hκ : 0 < x.kap` using `(add_pos_of_nonneg_of_pos (mul_nonneg zero_le_two x.isMuExp_muExp'.1) two_pos).trans x.lt_kap`. Establish `: FiniteDimensional ℚ κ.c.F` using `κ.c.fin`. Establish `: NumberField κ.c.F` using `{}`. Take `⟨σ', rfl⟩` from `exists_extend σ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ρ, hρ⟩` from `GlobalTheory.T.auxiliary_data_base_change _ _ _ _ _ _ s.T.Z x T b q hb hab σ'`. Use `s.T.Z.t.semi.separated` as an intermediate fact. Take `⟨c, U, W, hU, f, hy, hyU, key⟩` from `exists_chart s.T.Z.t.G hvb b y`. Establish `hpos (z) : 0 < ρ z`. Take `⟨-, yc, -, -, e⟩` from `hρ z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `e ▸ (Real.exp_pos 1).trans_le (x.exp_le_r σ' yc)`. Use `⟨c, hy, famAt_of_isRat (ρ := ρ) (M := fun R => ((h R).met _).G c) (M₀ := (h₀.met _).G c) hκ (hρ y).1 (hpos y) (fun R => hh R _ _ y hy) (hh₀ _ _ y hy) (fun R => (((h R).met _).posDef _ y hy).det_pos.ne'.isUnit) ((h₀.met _).posDef _ y hy).det_pos.ne'.isUnit ?_⟩` and prove the remaining obligations. Use `filter_upwards [(isOpen_ptsIn _).mem_nhds hyU, (isOpen_ptsIn _).mem_nhds hy] with z hz hz'`. Take `⟨-, yc, e, hb, er⟩` from `hρ z`. Take `⟨u, -⟩` from `FinalTheorems.exists_isHodgeFrame_iff.2 hb`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Γ : ℝ → Matrix (Fin (D.R.f * N)) (Fin (D.R.f * N)) ℂ` to `fun t => .of fun i i' => ∑ τ : D.host.E →+* ℂ, form (if τ (A.H.rt : D.host.E) = A.H.rt0 then GradedNorm.mix t (x.gram yc u τ) ((x.hodge σ').gram yc u τ) else GradedNorm.mixDual t (x.gram yc u τ) ((x.hodge σ').gram yc u τ))⁻¹ (fun a => (valR (u.v τ a) W (f i)).snd) fun a => (valR …`. Establish `p₀ (τ) : (x.gram yc u τ).PosDef` using `(x.eigMet σ').pos yc u τ`. Establish `p₁ (τ)` using `(x.hodge σ').pos yc u τ`. Establish `e₁ : (h₀.met _).G c z = Γ 1`. Use extensionality with `i i'`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[key _ z hz, hd₀ σ' yc z e u U W hU _ _ hz]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[(GradedNorm.mix_values (s := 0)).2.1, (GradedNorm.mixDual_values (s := 0) (p₀ τ).det_pos.ne'.isUnit (p₁ τ).det_pos.ne'.isUnit).2.1, ite_self]`. Use `⟨Γ, fun t ht t₀ ht₀ t₁ ht₁ hne hu => ?_, e₁, fun R hR => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.T.graded_norm_interpolation_bound _ S.Dw.mult _ ((Pad.length_letters S).symm.trans (Pad.LineTest.length_letters _)) (fun τ => τ (A.H.rt : D.host.E) = A.H.rt0) _ _ p₀ p₁ (fun i τ a => (valR (u.v τ a) W (f i)).snd) Γ (fun t i i' => ?_) (e₁ ▸ ((h₀.met _).posDef _ z hz') …` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun τ _ => by congr`. Use extensionality with `i i'`. Rewrite using `[key _ z hz, hd R σ' yc z e u U W hU _ _ hz, er, ← x.wt_eq hR hb]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem vFam_interp : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (x : ToroidalCompactificationData s) (T : Scheme.{0}) (b : T ⟶ s.T.Z.X) (q : T ⟶ Sp (𝓞 κ.c.F)), b ≫ s.T.Z.s = q → (∀ w : T, b w ∈ abLocus s.T.Z.t.G) → ∀ (h : ℝ → VMetric q ((Scheme.Modules.pullback b).obj (LieVB.omega s.T.Z.t.G)) (D.R.f * N)) (h₀ : VMetric q ((Scheme.Modules.pullback b).obj (LieVB.omega s.T.Z.t.G)) (D.R.f * N)), VB.IsVB (LieVB.omega s.T.Z.t.G) (D.R.f * N) → (∀ R, (h R).IsCInf) → h₀.IsCInf → (∀ R, IsDualEigOn (fun σ' => x.eigMetAt σ' (some R)) b (h R)) → IsDualEigOn (fun σ' => x.hodge σ') b h₀ → VFam (fun R => R ^ (-x.kap)) h h₀ := by
   intro D A N j S κ s x T b q hb hab h h₀ hvb hh hh₀ hd hd₀ σ y

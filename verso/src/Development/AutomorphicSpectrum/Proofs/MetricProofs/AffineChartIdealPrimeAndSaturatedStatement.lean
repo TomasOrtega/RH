@@ -5,7 +5,7 @@ import Development.AutomorphicSpectrum.Proofs.MetricProofs.ChPrime
 open MvPolynomial ReciprocityTheory.AnForm.R GlobalTheory.CompanionTheory.Ar.Cmp
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.Ar.Cmp.SncRes.Dict.ideal_isPrime_and_mem_iff` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FAffineChartIdealPrimeAndSaturated.lean&line=250#L250)
 -/

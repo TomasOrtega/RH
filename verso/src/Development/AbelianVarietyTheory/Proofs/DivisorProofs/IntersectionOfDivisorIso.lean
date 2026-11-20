@@ -15,7 +15,7 @@ open GlobalTheory.CechPic GlobalTheory.Cartier.CartierDiv GlobalTheory.QCoh Reci
 variable {F : Type} [Field F] {Y Y' : Var F}
 
 /- English proof (translation)
-Establish `e : ψ = GlobalTheory.functionFieldMap f` using `IsLocalization.ringHom_ext (nonZeroDivisors (Y'.X.presheaf.stalk (f (genericPoint Y.X)))) (RingHom.ext fun z => (map_alg h _ z).trans (GlobalTheory.functionFieldMap_algebraMap f _ z).symm)`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_functionFieldMap {f : Y.X ⟶ Y'.X} [IsDominant f] {ψ : Y'.Fn →+* Y.Fn}
     (h : genericPt Y ≫ f = spMap ψ ≫ genericPt Y') (a : Y'.Fn) : ψ a = GlobalTheory.functionFieldMap f a := by
@@ -25,9 +25,9 @@ theorem eq_functionFieldMap {f : Y.X ⟶ Y'.X} [IsDominant f] {ψ : Y'.Fn →+* 
   rw [e]
 
 /- English proof (translation)
-Use `ext_of_isEqn fun y => ?_` and prove the remaining obligations. Take `⟨g, hg⟩` from `Δ'.exists_isEqn (φ.hom y)`. Use `⟨_, h.2.2.2 y g hg, ?_⟩` and prove the remaining obligations. Establish `e : Units.map (ψ : Y'.Fn →* Y.Fn) g = DomPull.unitsMap φ.hom g` using `Units.ext (eq_functionFieldMap h.2.1 _)`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(DomPull.isEqn_pullback φ.hom Δ' hg).add (isEqn_principal u y)`.
+A detailed English derivation is pending.
 -/
 theorem eq_pullback_add {Δ : Y.Dv} {Δ' : Y'.Dv} {φ : Y.X ≅ Y'.X} {ψ : Y'.Fn →+* Y.Fn} {u : Y.Fnˣ}
     (h : DivIso Δ Δ' φ ψ u) : Δ = DomPull.pullback φ.hom Δ' + principal u := by
@@ -40,7 +40,7 @@ theorem eq_pullback_add {Δ : Y.Dv} {Δ' : Y'.Dv} {φ : Y.X ≅ Y'.X} {ψ : Y'.F
   exact (DomPull.isEqn_pullback φ.hom Δ' hg).add (isEqn_principal u y)
 
 /- English proof (translation)
-Rewrite using `[← interNumOn_const_eq_topSelf (appTop_algebraΓOfHom φ.hom Y'.str hφ) hM d, topSelf_def, ← interNumOn_id, ← interNumOn_comp_of_isIso F φ.hom (𝟙 Y'.X), Category.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem topSelf_pull (φ : Y.X ≅ Y'.X) (hφ : φ.hom ≫ Y'.str = Y.str) {M : LB Y'.X} (hM : M.IsLB) (d : ℕ) :
     topSelfIntersection F (M.pull φ.hom) d = topSelfIntersection F M d := by
@@ -48,9 +48,7 @@ theorem topSelf_pull (φ : Y.X ≅ Y'.X) (hφ : φ.hom ≫ Y'.str = Y.str) {M : 
     ← interNumOn_comp_of_isIso F φ.hom (𝟙 Y'.X), Category.comp_id]
 
 /- English proof (translation)
-Introduce `F _ Y Y' Δ Δ' φ ψ u h`. Establish `e : toPic Δ = cls _ (DomPull.presents_pullback φ.hom Δ').isLB`. Rewrite using `[eq_pullback_add h, map_add, toPic_principal, add_zero]`. Conclude with `(DomPull.presents_pullback φ.hom Δ').toPic_eq`. Rewrite using `[Var.inter_eq_of_toPic_eq (fun _ => (DomPull.presents_pullback φ.hom Δ').isLB) fun _ => e, Var.inter_const, ← h.2.2.1]`.
-
-Conclude with `topSelf_pull φ h.1 (isLB_toLB Δ') Y.dim`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inter_eq_of_divIso : ∀ (F : Type) [Field F] (Y Y' : Var F) (Δ : Y.Dv) (Δ' : Y'.Dv) (φ : Y.X ≅ Y'.X)
     (ψ : Y'.Fn →+* Y.Fn) (u : Y.Fnˣ), DivIso Δ Δ' φ ψ u → Y.inter (fun _ => Δ) = Y'.inter (fun _ => Δ') := by

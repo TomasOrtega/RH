@@ -6,7 +6,7 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo NumberField GlobalThe
 namespace GlobalTheory.CompanionTheory.Ar.Dense0
 
 /- English proof (translation)
-The claim follows from `@CoverDenseAlt.exists_points_bounded_line_heights`.
+A detailed English derivation is pending.
 -/
 theorem dense_bounded_lines : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (P : Ideal (MRing ι)) (d : ℕ), IsArithVar P d → ∀ (J : Type) [Fintype J] (A : J → HermLine ι), (∀ j, IsSmoothHerm (A j)) → ∃ C : ℝ, ∀ f : MRing ι, (∃ a, IsMultiHomog f a) → f ∉ P → ∃ (L : Type) (_ : Field L) (_ : NumberField L), ∃ w ∈ ptsOver L P, aeval w f ≠ 0 ∧ ∀ j, |lineHt (A j) L w| ≤ C :=
   @CoverDenseAlt.exists_points_bounded_line_heights

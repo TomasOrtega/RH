@@ -11,7 +11,7 @@ open MvPolynomial FockH1Action
 variable {σ : Type*}
 
 /- English proof (translation)
-Rewrite using `[homogeneousComponent_of_mem (homogeneousComponent_mem n P)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hc_hc (m n : ℕ) (P : MvPolynomial σ ℂ) :
     homogeneousComponent m (homogeneousComponent n P) =
@@ -20,7 +20,7 @@ theorem hc_hc (m n : ℕ) (P : MvPolynomial σ ℂ) :
   rw [homogeneousComponent_of_mem (homogeneousComponent_mem n P)]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem eq_zero_of_hc (x : MvPolynomial σ ℂ) (h : ∀ e, homogeneousComponent e x = 0) :
     x = 0 := by
@@ -29,9 +29,9 @@ theorem eq_zero_of_hc (x : MvPolynomial σ ℂ) (h : ∀ e, homogeneousComponent
     _ = 0 := Finset.sum_eq_zero (fun i _ => h i)
 
 /- English proof (translation)
-Establish `hsub : Finset.range (P.totalDegree + 1) ⊆ Finset.range n`. Introduce `i hi`. Simplify using `only [Finset.mem_range] at hi ⊢`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← Finset.sum_subset hsub ?_]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sum_homogeneousComponent P`. Introduce `i _ hi`. Simplify using `only [Finset.mem_range, not_lt] at hi`. Apply `homogeneousComponent_eq_zero` to reduce the goal to its premises. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem sum_hc_of_le (P : MvPolynomial σ ℂ) (n : ℕ) (hn : P.totalDegree < n) :
     ∑ i ∈ Finset.range n, homogeneousComponent i P = P := by
@@ -47,11 +47,11 @@ theorem sum_hc_of_le (P : MvPolynomial σ ℂ) (n : ℕ) (hn : P.totalDegree < n
     omega
 
 /- English proof (translation)
-Establish `hterm : ∀ d, homogeneousComponent (d + 2) ((R + L) (homogeneousComponent d P)) = R (homogeneousComponent d P)`. Introduce `d`. Establish `hmem` using `hR d _ (homogeneousComponent_mem d P)`. Rewrite using `[LinearMap.add_apply, map_add, hL, hc_hc, if_neg (show ¬ (d + 2 + 2 = d) by omega), map_zero, add_zero, homogeneousComponent_of_mem hmem, if_pos rfl]`. Establish `hsupp : (Function.support fun d => R (homogeneousComponent d P)) ⊆ ↑(Finset.range (P.totalDegree + 1))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `d hd`. Rewrite `hd` using `[Function.mem_support]`. Rewrite using `[Finset.coe_range, Set.mem_Iio]`. Assume the negation of the conclusion as `hlt`. Apply `hd` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h0 : homogeneousComponent d P = 0`. Apply `homogeneousComponent_eq_zero` to reduce the goal to its premises. Use linear arithmetic over natural numbers and integers. Rewrite using `[h0, map_zero]`. Rewrite using `[FockH1Action.plusPart, finsum_congr hterm, finsum_eq_sum_of_support_subset _ hsupp, ← map_sum R, sum_homogeneousComponent]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem plus_eq (R L : Module.End ℂ (MvPolynomial σ ℂ))
     (hR : ∀ (d : ℕ) (P : MvPolynomial σ ℂ), P ∈ homog σ d → R P ∈ homog σ (d + 2))
@@ -81,7 +81,7 @@ theorem plus_eq (R L : Module.End ℂ (MvPolynomial σ ℂ))
     ← map_sum R, sum_homogeneousComponent]
 
 /- English proof (translation)
-Apply `eq_zero_of_hc` to reduce the goal to its premises. Introduce `e`. Rewrite using `[hL, hc_hc, if_neg (show ¬ (e + 2 = k) by omega), map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 private theorem apply_homogeneousComponent_eq_zero_of_lt_two (L : Module.End ℂ (MvPolynomial σ ℂ))
     (hL : ∀ (e : ℕ) (P : MvPolynomial σ ℂ),
@@ -92,15 +92,15 @@ private theorem apply_homogeneousComponent_eq_zero_of_lt_two (L : Module.End ℂ
   rw [hL, hc_hc, if_neg (show ¬ (e + 2 = k) by omega), map_zero]
 
 /- English proof (translation)
-Establish `hterm : ∀ d, homogeneousComponent d ((R + L) (homogeneousComponent (d + 2) P)) = L (homogeneousComponent (d + 2) P)`. Introduce `d`. Establish `hmem` using `hR (d + 2) _ (homogeneousComponent_mem (d + 2) P)`. Rewrite using `[LinearMap.add_apply, map_add, hL, hc_hc, if_pos rfl, homogeneousComponent_of_mem hmem]`. Use `split_ifs with hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd hc (by omega)`. Rewrite using `[zero_add]`. Establish `hsupp : (Function.support fun d => L (homogeneousComponent (d + 2) P)) ⊆ ↑(Finset.range (P.totalDegree + 1))`. Introduce `d hd`. Rewrite `hd` using `[Function.mem_support]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[Finset.coe_range, Set.mem_Iio]`. Assume the negation of the conclusion as `hlt`. Apply `hd` to reduce the goal to its premises. Establish `h0 : homogeneousComponent (d + 2) P = 0`. Apply `homogeneousComponent_eq_zero` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[h0, map_zero]`. Rewrite using `[FockH1Action.minusPart, finsum_congr hterm, finsum_eq_sum_of_support_subset _ hsupp]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_range_succ' _ (P.totalDegree + 1 + 1), Finset.sum_range_succ' _ (P.totalDegree + 1), apply_homogeneousComponent_eq_zero_of_lt_two L hL P 0 (by norm_num)]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [zero_add, apply_homogeneousComponent_eq_zero_of_lt_two L hL P 1 (by norm_num), add_zero]`. Apply the tactic sequence `try rfl`. Use `_ = L P := by`. Rewrite using `[← map_sum L, sum_hc_of_le P (P.totalDegree + 1 + 1 + 1) (by omega)]`.
+A detailed English derivation is pending.
 -/
 theorem minus_eq (R L : Module.End ℂ (MvPolynomial σ ℂ))
     (hR : ∀ (d : ℕ) (P : MvPolynomial σ ℂ), P ∈ homog σ d → R P ∈ homog σ (d + 2))
@@ -140,7 +140,7 @@ theorem minus_eq (R L : Module.End ℂ (MvPolynomial σ ℂ))
         rw [← map_sum L, sum_hc_of_le P (P.totalDegree + 1 + 1 + 1) (by omega)]
 
 /- English proof (translation)
-Introduce `σ R L hR hL P`. Conclude with `⟨plus_eq R L hR hL P, minus_eq R L hR hL P⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem raisingLoweringSplit : FockRL.PMSplit := by
   intro σ R L hR hL P

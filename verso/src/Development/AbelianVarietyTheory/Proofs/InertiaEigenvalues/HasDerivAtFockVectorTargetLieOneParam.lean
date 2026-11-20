@@ -50,9 +50,9 @@ def frONB {D : D7} {V : HSp D} (B : D.what₂.Tau → Matrix (Fin V.rank) (Fin V
       _ = gramAt D V τ := by rw [h2, Matrix.mul_nonsing_inv _ hu, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Establish `hu : IsUnit (B τ).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (GlobalTheory.ConjTwist.isUnit_of_isONBasis (hB τ))`. Establish `hJ : Formalism.REAL.Jm (fun _ : Fin V.rank => true) = 1`. Simplify using `[Formalism.REAL.Jm]`. Use `show ((B τ)⁻¹)⁻¹ * Formalism.REAL.Jm (fun _ : Fin V.rank => true) * (B τ)⁻¹ = 1`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hJ, Matrix.mul_one, Matrix.nonsing_inv_nonsing_inv _ hu, Matrix.mul_nonsing_inv _ hu]`.
+A detailed English derivation is pending.
 -/
 theorem frONB_cart {D : D7} {V : HSp D} (B : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ)
     (hB : ∀ τ, IsONBasis (gramAt D V τ) 1 (B τ) V.rank) : (frONB B hB).cart = fun _ => 1 := by
@@ -64,7 +64,7 @@ theorem frONB_cart {D : D7} {V : HSp D} (B : D.what₂.Tau → Matrix (Fin V.ran
   rw [hJ, Matrix.mul_one, Matrix.nonsing_inv_nonsing_inv _ hu, Matrix.mul_nonsing_inv _ hu]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Establish `hu : IsUnit (B τ).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (GlobalTheory.ConjTwist.isUnit_of_isONBasis (hB τ))`. Use `show ((B τ)⁻¹)⁻¹ = B τ`. Rewrite using `[Matrix.nonsing_inv_nonsing_inv _ hu]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frONB_onb {D : D7} {V : HSp D} (B : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ)
     (hB : ∀ τ, IsONBasis (gramAt D V τ) 1 (B τ) V.rank) : (frONB B hB).onb = B := by
@@ -74,15 +74,15 @@ theorem frONB_onb {D : D7} {V : HSp D} (B : D.what₂.Tau → Matrix (Fin V.rank
   rw [Matrix.nonsing_inv_nonsing_inv _ hu]
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hG _ i t τ Y hY`. Establish `hC` using `hG.core`. Establish `hB` using `hC.models.BV i`. Use `set AV := frONB (R.BV i) hB with hAV`. Use `set BW := GlobalTheory.ChainFr.Fr.ofModel (R.MW i (sg0 D A)) with hBW`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcA` using `frONB_cart (R.BV i) hB`. Establish `hoA` using `frONB_onb (R.BV i) hB`. Take `⟨hf, hv, -⟩` from `GlobalTheory.CoefActIo.thetaVector_laws (i := i) hC t`. Establish `hvac : GlobalTheory.ChainFr.IsVacF R.ψ R.θ AV BW (R.vP i t)`. Use `⟨hf, fun ρ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hcA]`. Conclude with `hv ρ`. Establish `hI` using `GlobalTheory.PairInfTypes.infTypesAt D T R.toLevCh A.μ0 hC.lev i t τ`. Establish `hAll` using `GlobalTheory.LieScalar.lieFockAll D (Vc D i) (Wc D i) AV BW R.θ R.ψ _ _ (R.ωP i t) (R.vP i t) τ _ _ hC.models.inf (hC.thP.ωP i t) hI.chiV hI.chiW hvac`. Use `⟨((-eS D i τ : ℚ) : ℂ) * Y.trace, fun P z => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hpt : GlobalTheory.ChainFr.ptF R.ψ R.θ AV BW (R.vP i t) = R.ptP i t`. Unfold `GlobalTheory.ChainFr.ptF RealDat.ptP`. Rewrite using `[hcA, hoA]`. Both sides reduce to the same expression. Establish `hε : BW.ε τ = fun j : Fin (Wc D i).rank => decide ((j : ℕ) < pS D i τ)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use function extensionality and compare the values at `j`. Conclude with `hC.models.order i τ j`. Establish `h` using `hAll.2 Y hY P z`. Rewrite `h` using `[hpt, hε]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_ptP : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.LiftRows.Given R F → R.FullP → ∀ (i : Fin D.R.m) (t : T) (τ : D.what₂.Tau) (Y : Matrix (Fin (Wc D i).rank) (Fin (Wc D i).rank) ℂ), Y ∈ lieAt (Wc D i) τ → ∃ a : ℂ, ∀ (P : PolF D (Wc D i).rank (Vc D i).rank) (z : WO (Vc D i) (Wc D i)), HasDerivAt (fun s : ℝ => R.ωP i t (1, oneP R.θ (Wc D i) τ Y s) (R.ptP i t P) z) (R.ptP i t (fockT τ (fun _ : Fin (Vc D i).rank => true) (fun j : Fin (Wc D i).rank => decide ((j : ℕ) < pS D i τ)) ((R.MW i (sg0 D A)).fr τ * Y * ((R.MW i (sg0 D A)).fr τ)⁻¹) P + a • P) z) 0 := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hG _ i t τ Y hY

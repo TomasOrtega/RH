@@ -11,13 +11,13 @@ open scoped Matrix
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `L _ _ _ X`. Break down `isEmpty_or_nonempty (Plc L) with hE | hN` into its components or cases. Use `⟨∅, Set.empty_subset _, Set.injOn_empty _, ?_⟩` and prove the remaining obligations. Introduce `w`. Conclude with `(IsEmpty.false w).elim`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set f : Plc L → _ := fun w : Plc L => w.under (𝓞 (Lp L)) with hf`. Establish `spec : ∀ w ∈ X, Classical.epsilon (fun v => v ∈ X ∧ f v = f w) ∈ X ∧ f (Classical.epsilon (fun v => v ∈ X ∧ f v = f w)) = f w` using `fun w hw => Classical.epsilon_spec (p := fun v => v ∈ X ∧ f v = f w) ⟨w, hw, rfl⟩`. Use `⟨(fun w => Classical.epsilon (fun v => v ∈ X ∧ f v = f w)) '' X, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Conclude with `(spec w hw).1`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨a, ha, rfl⟩ _ ⟨b, hb, rfl⟩ hab`. Establish `hab' : f a = f b`. Use `hab` as an intermediate fact. Simplify using `only at this`. Rewrite `this` using `[(spec a ha).2, (spec b hb).2]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `this`. Simplify using `only [hab']`. Introduce `w hw`. Conclude with `⟨_, ⟨w, hw, rfl⟩, (spec w hw).2⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Ga.select :
     ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (X : Set (Plc L)), ∃ P ⊆ X, Set.InjOn (fun w : Plc L => w.under (𝓞 (Lp L))) P ∧ ∀ w ∈ X, ∃ w' ∈ P, w'.under (𝓞 (Lp L)) = w.under (𝓞 (Lp L)) := by

@@ -23,7 +23,7 @@ open PartialDerivEval FirstUnitSeriesIntegrality MulLFrob LiftedCoordinateEvalua
 variable {C : Type} [Field C] {dd : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← Finsupp.mapDomain_comp]`. Establish `e : ((fun x : Fin dd => ((0 : Fin 1), x)) ∘ Prod.snd) = id`. Use function extensionality and compare the values at `p`. Conclude with `Prod.ext (Subsingleton.elim _ _) rfl`. Rewrite using `[e, Finsupp.mapDomain_id]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem snd_map (ν : Fin 1 × Fin dd →₀ ℕ) :
     (ν.mapDomain Prod.snd).mapDomain (fun x : Fin dd => ((0 : Fin 1), x)) = ν := by
@@ -34,7 +34,7 @@ theorem snd_map (ν : Fin 1 × Fin dd →₀ ℕ) :
   rw [e, Finsupp.mapDomain_id]
 
 /- English proof (translation)
-Rewrite using `[← Finsupp.mapDomain_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem snd_mapDomain_mapDomain (ν : Fin 1 × Fin dd →₀ ℕ) :
     (ν.mapDomain Prod.snd).mapDomain (fun x : Fin dd => ((0 : Fin 2), x)) =
@@ -46,11 +46,11 @@ end SelfAdjointLinearTerm
 
 open SelfAdjointLinearTerm in
 /- English proof (translation)
-Unfold `zl`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coeff_C_mul]`. Use `conv_lhs => rw [← snd_map ν]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coeff_eval_second_zero, MvPowerSeries.coeff_pderiv, snd_mapDomain_mapDomain]`. Establish `h0 : (ν.mapDomain fun q : Fin 1 × Fin dd => ((0 : Fin 2), q.2)) ((1 : Fin 2), j) = 0`. Apply `Finsupp.mapDomain_of_notMem_range` to reduce the goal to its premises. Introduce and unpack `⟨x, hx⟩`. Establish `h01 : (0 : Fin 2) = 1` using `congrArg Prod.fst hx`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd h01 (by decide)`. Rewrite using `[h0]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coeff_zl {C : Type} [Field C] {dd : ℕ} (v : Fin dd → C) (F : PS C 2 dd) (ν : Fin 1 × Fin dd →₀ ℕ) :
     MvPowerSeries.coeff ν (zl v F) = ∑ j, v j * MvPowerSeries.coeff
@@ -76,7 +76,7 @@ open PartialDerivEval FirstUnitSeriesIntegrality MulLFrob LiftedCoordinateEvalua
 variable {C : Type} [Field C] [CharZero C] {dd : ℕ}
 
 /- English proof (translation)
-Introduce `k i`. Use `fin_cases k`. Simplify using `[pt]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem aux_statement_9 : Z0 (![pt C dd 0, 0] : Fin 2 → Pt C 1 dd) := by
   intro k i
@@ -85,7 +85,7 @@ theorem aux_statement_9 : Z0 (![pt C dd 0, 0] : Fin 2 → Pt C 1 dd) := by
   · simp
 
 /- English proof (translation)
-Establish `hS : MvPowerSeries.HasSubst (fun p : Fin 2 × Fin dd => (![pt C dd 0, 0] : Fin 2 → Pt C 1 dd) p.1 p.2)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun p => aux_statement_9 p.1 p.2)`. Simplify using `only [zl, ev, map_sub, MvPowerSeries.subst_sub hS, mul_sub, Finset.sum_sub_distrib]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem zl_sub (v : Fin dd → C) (F G : PS C 2 dd) : zl v (F - G) = zl v F - zl v G := by
   have hS : MvPowerSeries.HasSubst (fun p : Fin 2 × Fin dd => (![pt C dd 0, 0] : Fin 2 → Pt C 1 dd) p.1 p.2) :=
@@ -93,7 +93,7 @@ theorem zl_sub (v : Fin dd → C) (F G : PS C 2 dd) : zl v (F - G) = zl v F - zl
   simp only [zl, ev, map_sub, MvPowerSeries.subst_sub hS, mul_sub, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Establish `hS : MvPowerSeries.HasSubst (fun p : Fin 2 × Fin dd => (![pt C dd 0, 0] : Fin 2 → Pt C 1 dd) p.1 p.2)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun p => aux_statement_9 p.1 p.2)`. Simplify using `only [zl, ev, Derivation.map_smul, LinearMap.map_smul, MvPowerSeries.subst_smul hS, Finset.smul_sum, mul_smul_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem zl_smul (v : Fin dd → C) (c : C) (F : PS C 2 dd) : zl v (c • F) = c • zl v F := by
   have hS : MvPowerSeries.HasSubst (fun p : Fin 2 × Fin dd => (![pt C dd 0, 0] : Fin 2 → Pt C 1 dd) p.1 p.2) :=
@@ -102,7 +102,7 @@ theorem zl_smul (v : Fin dd → C) (c : C) (F : PS C 2 dd) : zl v (c • F) = c 
     mul_smul_comm]
 
 /- English proof (translation)
-Unfold `zl`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[pderiv_expS hf, ev_mul aux_statement_9, expS_eq, ev_ex aux_statement_9 f hf, hf0, ex_zero, one_mul]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem zl_expS (v : Fin dd → C) {f : PS C 2 dd} (hf : constantCoeff f = 0)
     (hf0 : ev (n := 1) ![pt C dd 0, 0] f = 0) : zl v (FB.expS C f) = zl v f := by
@@ -113,9 +113,9 @@ theorem zl_expS (v : Fin dd → C) {f : PS C 2 dd} (hf : constantCoeff f = 0)
 def PAB (A B : Pt C 1 dd) : Fin 2 → Pt C 2 dd := ![comp1 A (pt C (n := 2) dd 0), comp1 B (pt C (n := 2) dd 1)]
 
 /- English proof (translation)
-Simplify using `only [comp1, ev]`. Establish `hc : ∀ p : Fin 1 × Fin dd, constantCoeff ((![pt C dd k] : Fin 1 → Pt C n dd) p.1 p.2) = 0`. Introduce `p`. Simplify using `only [Matrix.cons_val_fin_one, pt, MvPowerSeries.constantCoeff_X]`. Apply `MvPowerSeries.constantCoeff_subst_eq_zero` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `MvPowerSeries.hasSubst_of_constantCoeff_zero hc`. Conclude with `hc`. Conclude with `hA i`.
+A detailed English derivation is pending.
 -/
 theorem constant_zero_comp_coordinate {n : ℕ} {A : Pt C 1 dd} (hA : ∀ i, constantCoeff (A i) = 0) (k : Fin n) (i : Fin dd) :
     constantCoeff (comp1 A (pt C (n := n) dd k) i) = 0 := by
@@ -129,7 +129,7 @@ theorem constant_zero_comp_coordinate {n : ℕ} {A : Pt C 1 dd} (hA : ∀ i, con
   · exact hA i
 
 /- English proof (translation)
-Introduce `k i`. Use `fin_cases k`. Simplify `constant_zero_comp_coordinate hA 0 i` using `[PAB]`. Simplify `constant_zero_comp_coordinate hB 1 i` using `[PAB]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem zPAB {A B : Pt C 1 dd} (hA : ∀ i, constantCoeff (A i) = 0) (hB : ∀ i, constantCoeff (B i) = 0) :
     Z0 (PAB A B) := by
@@ -139,13 +139,9 @@ theorem zPAB {A B : Pt C 1 dd} (hA : ∀ i, constantCoeff (A i) = 0) (hB : ∀ i
   · simpa [PAB] using constant_zero_comp_coordinate hB 1 i
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k i`. Use `fin_cases k`. Use `show ev (n := 1) ![pt C dd 0, 0] (ev ![pt C (n := 2) dd 0] (A i)) = A i`. Rewrite using `[ev_ev (z0_1 _ fun j => z0_pt 0 j) aux_statement_9]`. Establish `: (fun (k : Fin 1) (i : Fin dd) => ev (n` using `1) ![pt C dd 0, 0] ((![pt C (n := 2) dd 0] : Fin 1 → Pt C 2 dd) k i)) = ![pt C (n := 1) dd 0] := by`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `k i`. Use `fin_cases k`. Conclude with `ev_X aux_statement_9 0 i`. Rewrite using `[this, germEval_oneStandardPoint_self]`. Use `show ev (n := 1) ![pt C dd 0, 0] (ev ![pt C (n := 2) dd 1] (B i)) = 0`.
-
-Rewrite using `[ev_ev (z0_1 _ fun j => z0_pt 1 j) aux_statement_9]`. Establish `: (fun (k : Fin 1) (i : Fin dd) => ev (n` using `1) ![pt C dd 0, 0] ((![pt C (n := 2) dd 1] : Fin 1 → Pt C 2 dd) k i)) = ![(0 : Pt C 1 dd)] := by`. Use function extensionality and compare the values at `k i`. Use `fin_cases k`. Conclude with `ev_X aux_statement_9 1 i`.
-
-Rewrite using `[this, ev_zero_pt, hB i, map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem product_points_at_zero {A B : Pt C 1 dd} (hB : ∀ i, constantCoeff (B i) = 0) :
     (fun k i => ev (n := 1) ![pt C dd 0, 0] (PAB A B k i)) = (![A, 0] : Fin 2 → Pt C 1 dd) := by
@@ -169,7 +165,7 @@ theorem product_points_at_zero {A B : Pt C 1 dd} (hB : ∀ i, constantCoeff (B i
     rw [this, ev_zero_pt, hB i, map_zero]
 
 /- English proof (translation)
-Use `show pderiv C ((1 : Fin 2), j) (ev ![pt C (n := 2) dd 0] (A k)) = 0`. Rewrite using `[pderiv_eval_single (fun j => z0_pt 0 j)]`. Use `Finset.sum_eq_zero fun m _ => ?_` and prove the remaining obligations. Rewrite using `[pderiv_pt_ne _ _ _ (show (0 : Fin 2) ≠ 1 by decide), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem d_A (A : Pt C 1 dd) (j k : Fin dd) :
     pderiv C ((1 : Fin 2), j) (comp1 A (pt C (n := 2) dd 0) k) = 0 := by
@@ -179,9 +175,9 @@ theorem d_A (A : Pt C 1 dd) (j k : Fin dd) :
   rw [pderiv_pt_ne _ _ _ (show (0 : Fin 2) ≠ 1 by decide), mul_zero]
 
 /- English proof (translation)
-Use `show pderiv C ((1 : Fin 2), j) (ev ![pt C (n := 2) dd 1] (B k)) = _`. Rewrite using `[pderiv_eval_single (fun j => z0_pt 1 j), Finset.sum_eq_single j]`. Rewrite using `[pderiv_pt_same, if_pos rfl, mul_one]`. Introduce `m _ hm`. Rewrite using `[pderiv_pt_same, if_neg hm, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`.
+A detailed English derivation is pending.
 -/
 theorem d_B (B : Pt C 1 dd) (j k : Fin dd) :
     pderiv C ((1 : Fin 2), j) (comp1 B (pt C (n := 2) dd 1) k) =
@@ -195,9 +191,9 @@ theorem d_B (B : Pt C 1 dd) (j k : Fin dd) :
     exact absurd (Finset.mem_univ j) h
 
 /- English proof (translation)
-Rewrite using `[ev_ev (z0_1 _ fun j => z0_pt 1 j) aux_statement_9]`. Establish `: (fun (k : Fin 1) (i : Fin dd) => ev (n` using `1) ![pt C dd 0, 0] ((![pt C (n := 2) dd 1] : Fin 1 → Pt C 2 dd) k i)) = ![(0 : Pt C 1 dd)] := by`. Use function extensionality and compare the values at `k i`. Use `fin_cases k`. Conclude with `ev_X aux_statement_9 1 i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, ev_zero_pt, ← coeff_zero_eq_constantCoeff_apply, coeff_pderiv]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem eval_pderiv_constant_linear (B : Pt C 1 dd) (j k : Fin dd) :
     ev (n := 1) ![pt C dd 0, 0] (ev ![pt C (n := 2) dd 1] (pderiv C ((0 : Fin 1), j) (B k))) =
@@ -214,13 +210,13 @@ theorem eval_pderiv_constant_linear (B : Pt C 1 dd) (j k : Fin dd) :
 variable {V : VF C} {O : Type} [CommRing O] [StarRing O]
 
 /- English proof (translation)
-Rewrite using `[ev_sgP Y _ A hA, neg_neg]`. Unfold `zl`. Establish `h1 : ∀ j, ev (n` using `1) ![pt C dd 0, 0] (pderiv C ((1 : Fin 2), j) (ev (PAB A B) Y.h)) = ∑ k, ev (n := 1) ![A, 0] (pderiv C ((1 : Fin 2), k) Y.h) * MvPowerSeries.C (coeff (Finsupp.single ((0 : Fin 1), j) 1) (B k)) := by`. Introduce `j`. Rewrite using `[pderiv_eval_pair (zPAB hA hB)]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `e0 : ∑ k, ev (PAB A B) (pderiv C ((0 : Fin 2), k) Y.h) * pderiv C ((1 : Fin 2), j) (PAB A B 0 k) = 0` using `Finset.sum_eq_zero fun k _ => by`. Rewrite using `[show PAB A B 0 k = comp1 A (pt C (n := 2) dd 0) k from rfl, d_A, mul_zero]`. Rewrite using `[e0, zero_add, ev_sum aux_statement_9]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[show PAB A B 1 k = comp1 B (pt C (n := 2) dd 1) k from rfl, d_B, ev_mul aux_statement_9, eval_pderiv_constant_linear, ev_ev (zPAB hA hB) aux_statement_9, product_points_at_zero hB]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [h1, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Unfold `linAct`. Rewrite using `[map_sum, Finset.sum_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem zl_hAB (Y : FBChart C V O dd) {A B : Pt C 1 dd} (hA : ∀ i, constantCoeff (A i) = 0)
     (hB : ∀ i, constantCoeff (B i) = 0) (v : Fin dd → C) :
@@ -249,9 +245,9 @@ theorem zl_hAB (Y : FBChart C V O dd) {A B : Pt C 1 dd} (hA : ∀ i, constantCoe
   ring
 
 /- English proof (translation)
-Rewrite using `[ev_ev (zPAB hA hB) aux_statement_9, product_points_at_zero hB]`. Establish `h` using `congrArg (ev (n := 1) ![A]) Y.gauge.ax1`. Rewrite `h` using `[ev_ev aux_statement_9 (z0_1 A hA), ev_zero (z0_1 A hA)]`. Establish `: (fun (k : Fin 2) (i : Fin dd) => ev (n` using `1) ![A] ((![pt C dd 0, 0] : Fin 2 → Pt C 1 dd) k i)) = (![A, 0] : Fin 2 → Pt C 1 dd) := by`. Use function extensionality and compare the values at `k i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `fin_cases k`. Conclude with `ev_X (z0_1 A hA) 0 i`. Conclude with `ev_zero (z0_1 A hA)`. Rewrite `h` using `[this]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem height_at_zero_product (Y : FBChart C V O dd) {A B : Pt C 1 dd} (hA : ∀ i, constantCoeff (A i) = 0)
     (hB : ∀ i, constantCoeff (B i) = 0) : ev (n := 1) ![pt C dd 0, 0] (ev (PAB A B) Y.h) = 0 := by
@@ -268,14 +264,14 @@ theorem height_at_zero_product (Y : FBChart C V O dd) {A B : Pt C 1 dd} (hA : �
   exact h
 
 /- English proof (translation)
-The claim follows from `const_ev (zPAB hA hB) (h_const Y)`.
+A detailed English derivation is pending.
 -/
 theorem const_hAB (Y : FBChart C V O dd) {A B : Pt C 1 dd} (hA : ∀ i, constantCoeff (A i) = 0)
     (hB : ∀ i, constantCoeff (B i) = 0) : constantCoeff (ev (PAB A B) Y.h) = 0 :=
   const_ev (zPAB hA hB) (h_const Y)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [comp1, ev, pt]`. Rewrite using `[MvPowerSeries.subst_X (MvPowerSeries.hasSubst_of_constantCoeff_zero (fun p => by`. Simplify using `only [Matrix.cons_val_fin_one, pt, MvPowerSeries.constantCoeff_X]))]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem comp1_identity_left {n : ℕ} (k : Fin n) : comp1 (pt C (n := 1) dd 0) (pt C (n := n) dd k) = pt C dd k := by
   funext i
@@ -285,11 +281,11 @@ theorem comp1_identity_left {n : ℕ} (k : Fin n) : comp1 (pt C (n := 1) dd 0) (
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Unfold `linAct`. Rewrite using `[Finset.sum_eq_single i]`. Use `show coeff (Finsupp.single ((0 : Fin 1), i) 1) (X ((0 : Fin 1), i) : PS C 1 dd) * v i = v i`. Rewrite using `[coeff_X, if_pos rfl, one_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j _ hj show coeff (Finsupp.single ((0 : Fin 1), j) 1) (X ((0 : Fin 1), i) : PS C 1 dd) * v j = 0`. Rewrite using `[coeff_X, if_neg, zero_mul]`. Introduce `h`. Apply `hj` to reduce the goal to its premises. Use `(Finsupp.single_left_inj (one_ne_zero)).1 h` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(Prod.mk.inj this).2`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+A detailed English derivation is pending.
 -/
 theorem linAct_id (v : Fin dd → C) : linAct (pt C (n := 1) dd 0) v = v := by
   funext i
@@ -308,7 +304,7 @@ theorem linAct_id (v : Fin dd → C) : linAct (pt C (n := 1) dd 0) v = v := by
     exact absurd (Finset.mem_univ i) h
 
 /- English proof (translation)
-Introduce `i` and use `by simp [pt]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem zId : ∀ i, constantCoeff (pt C (n := 1) dd 0 i) = 0 := fun i => by simp [pt]
 
@@ -317,11 +313,11 @@ end SelfAdjointLinearTerm
 open SelfAdjointLinearTerm PartialDerivEval FirstUnitSeriesIntegrality MulLFrob in
 
 /- English proof (translation)
-Establish `hM : ∀ i, MvPowerSeries.constantCoeff (mulL Y.B.G.F V.l i) = 0` using `multiplication_constantCoeff_zero Y.B.G V.l`. Establish `e1 : (![comp1 (mulL Y.B.G.F V.l) (pt C (n` using `2) dd 0), pt C dd 1] : Fin 2 → Pt C 2 dd) = PAB (mulL Y.B.G.F V.l) (pt C (n := 1) dd 0) := by`. Unfold `PAB`. Rewrite using `[comp1_identity_left]`. Establish `e2 : ev (PAB (pt C (n` using `1) dd 0) (pt C (n := 1) dd 0)) Y.h = Y.h := by`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `PAB`. Rewrite using `[comp1_identity_left, comp1_identity_left, PartialDerivEval.eval_points_two]`. Establish `e3 : ev (n` using `2) ![comp1 (mulL Y.B.G.F V.l) (pt C (n := 2) dd 0), pt C dd 1] Y.h - (V.l : C) • Y.h = ev (PAB (mulL Y.B.G.F V.l) (pt C (n := 1) dd 0)) Y.h - (V.l : C) • ev (PAB (pt C (n := 1) dd 0) (pt C (n := 1) dd 0)) Y.h := by`. Rewrite using `[e1, e2]`. Unfold `FBChart.u1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[e3, zl_expS v (by rw [map_sub, const_hAB Y hM zId, MvPowerSeries.smul_eq_C_mul, map_mul, const_hAB Y zId zId, mul_zero, sub_zero]) (by rw [ev_sub aux_statement_9, height_at_zero_product Y hM zId, MvPowerSeries.smul_eq_C_mul, ev_mul aux_statement_9, height_at_zero_product Y zId z …`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem linear_part_first_unit {C : Type} [Field C] [CharZero C] {V : VF C} {O : Type} [CommRing O] [StarRing O] {dd : ℕ}
     (Y : FBChart C V O dd) (v : Fin dd → C) :
@@ -350,9 +346,9 @@ theorem linear_part_first_unit {C : Type} [Field C] [CharZero C] {V : VF C} {O :
 open SelfAdjointLinearTerm PartialDerivEval FirstUnitSeriesIntegrality MulLFrob in
 
 /- English proof (translation)
-Establish `e1 : (![comp1 e (pt C (n` using `2) dd 0), pt C dd 1] : Fin 2 → Pt C 2 dd) = PAB e (pt C (n := 1) dd 0) := by`. Unfold `PAB`. Rewrite using `[comp1_identity_left]`. Establish `e2 : (![pt C (n` using `2) dd 0, comp1 eb (pt C dd 1)] : Fin 2 → Pt C 2 dd) = PAB (pt C (n := 1) dd 0) eb := by`. Unfold `PAB`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[comp1_identity_left]`. Rewrite using `[e1, e2, zl_expS v (by rw [map_sub, const_hAB Y he0 zId, const_hAB Y zId heb0, sub_zero]) (by rw [ev_sub aux_statement_9, height_at_zero_product Y he0 zId, height_at_zero_product Y zId heb0, sub_zero]), zl_sub, zl_hAB Y he0 zId, zl_hAB Y zId heb0, linAct_id, germEval_oneStandardP …`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem constant_zero_first_zero_self {C : Type} [Field C] [CharZero C] {V : VF C} {O : Type} [CommRing O] [StarRing O] {dd : ℕ}
     (Y : FBChart C V O dd) (e eb : Pt C 1 dd) (he0 : ∀ i, MvPowerSeries.constantCoeff (e i) = 0)

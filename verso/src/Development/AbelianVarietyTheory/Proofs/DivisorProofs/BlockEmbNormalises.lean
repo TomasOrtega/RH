@@ -27,7 +27,7 @@ variable {A : Type} [CommRing A] {n r d : ℕ} {X Y : Matrix (Fin n) (Fin r) A} 
   (e : Fin d → Fin r) (P Q : Matrix (Fin d) (Fin d) A)
 
 /- English proof (translation)
-Establish `: Submodule.span A ((fun i => Xᵀ i) '' I) ≤ LinearMap.ker (LinearMap.proj a ∘ₗ Z.mulVecLin)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, hi, rfl⟩`. Conclude with `hz i hi`. Conclude with `this hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem row_span {Z : Matrix (Fin r) (Fin n) A} {I : Set (Fin r)} {a : Fin r} (hz : ∀ i ∈ I, (Z * X) a i = 0)
     {y : Fin n → A} (hy : y ∈ Submodule.span A ((fun i => Xᵀ i) '' I)) : (Z *ᵥ y) a = 0 := by
@@ -38,7 +38,7 @@ theorem row_span {Z : Matrix (Fin r) (Fin n) A} {I : Set (Fin r)} {a : Fin r} (h
   exact this hy
 
 /- English proof (translation)
-Rewrite using `[add_mulVec, add_mulVec, one_mulVec, ← mulVec_mulVec, ← mulVec_mulVec, ← mulVec_mulVec, ← mulVec_mulVec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem blk_mulVec (y : Fin n → A) :
     (1 + X.submatrix id e * P * K.submatrix e id + Y.submatrix id e * Q * L.submatrix e id) *ᵥ y =
@@ -47,11 +47,11 @@ theorem blk_mulVec (y : Fin n → A) :
   rfl
 
 /- English proof (translation)
-Establish `h1 : (fun a => (L *ᵥ y) (e a)) = 0` using `funext fun a => row_span (fun i _ => by rw [hLX]; rfl) hy`. Rewrite using `[blk_mulVec, h1, mulVec_zero, mulVec_zero, add_zero]`. Use `add_mem hy ?_` and prove the remaining obligations. Break down `hI with hI | hI` into its components or cases. Rewrite using `[mulVec_eq_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Use `sum_mem fun a _ => ?_` and prove the remaining obligations. Rewrite using `[op_smul_eq_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨e a, hI a, rfl⟩)`. Establish `h2 : (fun a => (K *ᵥ y) (e a)) = 0` using `funext fun a => row_span (fun i hi => by`. Rewrite using `[hKX, Matrix.one_apply_ne]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Conclude with `hI a hi) hy`. Rewrite using `[h2, mulVec_zero, mulVec_zero]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blk_span (hLX : L * X = 0) (hKX : K * X = 1) {I : Set (Fin r)} (hI : (∀ a, e a ∈ I) ∨ ∀ a, e a ∉ I)
     {y : Fin n → A} (hy : y ∈ Submodule.span A ((fun i => Xᵀ i) '' I)) :
@@ -71,13 +71,13 @@ theorem blk_span (hLX : L * X = 0) (hKX : K * X = 1) {I : Set (Fin r)} (hI : (�
     exact zero_mem _
 
 /- English proof (translation)
-Introduce `i hi`. Establish `h1 : L * X.submatrix id e = 0`. Use extensionality with `a b`. Conclude with `congrFun (congrFun hLX a) (e b)`. Rewrite using `[blk_mulVec, mulVec_add, mulVec_add, mulVec_mulVec _ L (X.submatrix id e), h1, zero_mulVec, add_zero, Pi.add_apply, hy i hi, zero_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hI with hI | hI` into its components or cases. Establish `h2 : (fun a => (L *ᵥ y) (e a)) = 0` using `funext fun a => hy _ (hI a)`. Rewrite using `[h2, mulVec_zero, mulVec_zero, mulVec_zero]`. Both sides reduce to the same expression. Rewrite using `[mulVec_mulVec _ L]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `∑ a, (L * Y.submatrix id e) i a * _ = 0`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Establish `: (L * Y.submatrix id e) i a = 0`. Express the relevant statement in the definitionally equal form `(L * Y) i (e a) = 0`. Rewrite using `[hLY, Matrix.one_apply_ne]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Conclude with `hI a hi`. Rewrite using `[this, zero_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blk_perp (hLX : L * X = 0) (hLY : L * Y = 1) {I : Set (Fin r)} (hI : (∀ a, e a ∈ I) ∨ ∀ a, e a ∉ I)
     {y : Fin n → A} (hy : ∀ i ∈ I, (L *ᵥ y) i = 0) : ∀ i ∈ I,
@@ -112,11 +112,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 omit [NumberField E] in
 
 /- English proof (translation)
-Establish `e : ∀ (a : GAd σ J) y, (matHom _ σ J a⁻¹).1 *ᵥ (matHom _ σ J a).1 *ᵥ y = y` using `fun a y => by`. Rewrite using `[mulVec_mulVec, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one, one_mulVec]`. Establish `e' : ∀ y, (matHom _ σ J m).1 *ᵥ (matHom _ σ J m⁻¹).1 *ᵥ y = y` using `fun y => by`. Simplify `e m⁻¹ y` using `only [inv_inv]`. Establish `i1 : ∀ y, y ∈ A ↔ (matHom _ σ J m).1 *ᵥ y ∈ A` using `fun y => ⟨h1 y, fun h => e m y ▸ h2 _ h⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `i2 : ∀ y, y ∈ A ↔ (matHom _ σ J m⁻¹).1 *ᵥ y ∈ A` using `fun y => ⟨h2 y, fun h => e' y ▸ h1 _ h⟩`. Establish `v : ∀ y, (matHom _ σ J (m * u * m⁻¹)).1 *ᵥ y = (matHom _ σ J m).1 *ᵥ (matHom _ σ J u).1 *ᵥ (matHom _ σ J m⁻¹).1 *ᵥ y` using `fun y => by`. Rewrite using `[map_mul, map_mul, Units.val_mul, Units.val_mul, mulVec_mulVec, mulVec_mulVec]`. Use `⟨fun y => by rw [v, ← i1, ← hu.1, ← i2], fun y hy => ?_⟩` and prove the remaining obligations. Use `h1 _ (hu.2 _ (h3 y hy))` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[mulVec_sub, e', ← v]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem conj_mem_trivOn {A B B' : Submodule (AF F ⊗[F] E) (Fin n → AF F ⊗[F] E)} {m u : GAd σ J}
     (h1 : ∀ y ∈ A, (matHom _ σ J m).1 *ᵥ y ∈ A) (h2 : ∀ y ∈ A, (matHom _ σ J m⁻¹).1 *ᵥ y ∈ A)
@@ -137,9 +137,7 @@ theorem conj_mem_trivOn {A B B' : Submodule (AF F ⊗[F] E) (Fin n → AF F ⊗[
 omit [NumberField E] in
 
 /- English proof (translation)
-Use `⟨(hu j hj).1, fun y hy => ?_⟩` and prove the remaining obligations. Establish `: colSpan F X T ≤ A.comap ((matHom _ σ J u).1.mulVecLin - LinearMap.id)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, hi, rfl⟩`. Conclude with `(hu i hi).2 _ (Submodule.subset_span ⟨i, rfl, rfl⟩)`.
-
-Conclude with `this hy`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_trivOn_span {A : Submodule (AF F ⊗[F] E) (Fin n → AF F ⊗[F] E)} {u : GAd σ J} {T : Set (Fin r)} {j : Fin r}
     (hj : j ∈ T) (hu : ∀ i ∈ T, u ∈ trivOn σ J A (colSpan F X {i})) : u ∈ trivOn σ J A (colSpan F X T) := by
@@ -151,33 +149,29 @@ theorem mem_trivOn_span {A : Submodule (AF F ⊗[F] E) (Fin n → AF F ⊗[F] E)
   exact this hy
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ σ hσ n J hJ r X Y hW S l d h ι ⟨Φ, jj, _, _, _, hΦ, hι⟩ hS _ _`. Prove the components needed by the constructor for the conclusion. Set `e : Fin d → Fin r` to `fun a => ⟨l + a.val, by omega⟩`. Establish `hm : ∀ {a b c : ℕ} (U : Matrix (Fin a) (Fin b) E) (V : Matrix (Fin b) (Fin c) E), adMat F U * adMat F V = adMat F (U * V)` using `fun U V => (Matrix.map_mul).symm`. Establish `hLX : adMat F (cT (σ : E →+* E) X * J) * adMat F X = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hm, hW.xx]`. Conclude with `Matrix.map_zero _ (map_zero _)`. Establish `hLY : adMat F (cT (σ : E →+* E) X * J) * adMat F Y = 1`. Rewrite using `[hm, hW.xy]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hKX : adMat F (cT (σ : E →+* E) Y * J) * adMat F X = 1`. Rewrite using `[hm, yx hσ hJ hW]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `sp : ∀ g {I : Set (Fin r)}, ((∀ a, e a ∈ I) ∨ ∀ a, e a ∉ I) → ∀ y ∈ colSpan F X I, (matHom _ σ J (ι g)).1 *ᵥ y ∈ colSpan F X I` using `fun g I hI y hy => by`. Rewrite using `[hι]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `blk_span (Y := adMat F Y) e _ _ hLX hKX hI hy`. Establish `pp : ∀ g {I : Set (Fin r)}, ((∀ a, e a ∈ I) ∨ ∀ a, e a ∉ I) → ∀ y ∈ colPerp σ J X I, (matHom _ σ J (ι g)).1 *ᵥ y ∈ colPerp σ J X I` using `fun g I hI y hy => by`. Rewrite using `[hι]`. Simplify using `only [colPerp, Submodule.mem_iInf, LinearMap.mem_ker] at hy ⊢`. Conclude with `blk_perp (X := adMat F X) (K := adMat F (cT (σ : E →+* E) Y * J)) e _ _ hLX hLY hI hy`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `cp : ∀ p : Fin r → Prop, (∀ a, e a ∈ {i | ∃ k ∈ S, i ≤ k ∧ p k}) ∨ ∀ a, e a ∉ {i | ∃ k ∈ S, i ≤ k ∧ p k}` using `fun p => by`. Assume the negation of the conclusion as `hc`. Take `⟨h1, h2⟩` from `not_or.1 hc`. Take `⟨b, k, hk, hb, hp⟩ : ∃ b, e b ∈ {i | ∃ k ∈ S, i ≤ k ∧ p k}` from `by simpa only [not_forall, not_not] using h2`. Use `h1 fun a => ⟨k, hk, ?_, hp⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hb' : l + b.val ≤ k.val` using `hb`. Establish `: ¬ k.val + 1 < l + d` using `fun h' => hS k (by omega) h' hk`. Express the relevant statement in the definitionally equal form `l + a.val ≤ k.val`. Use linear arithmetic over natural numbers and integers. Establish `cp' : (∀ a, e a ∈ {i | ∃ k ∈ S, i ≤ k}) ∨ ∀ a, e a ∉ {i | ∃ k ∈ S, i ≤ k}`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Simplify `cp fun _ => True` using `only [and_true]`. Introduce `g u hu`. Use `⟨Subgroup.mem_iInf.2 fun j => ?_, conj_mem_trivOn (sp g cp') (map_inv ι g ▸ sp g⁻¹ cp') (map_inv ι g ▸ pp g⁻¹ cp') hu.2⟩` and prove the remaining obligations. Establish `hu1` using `Subgroup.mem_iInf.1 hu.1`. Distinguish the cases in `hj : j ∈ Set.range e`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `conj_mem_trivOn (B' := colSpan F X (Set.range e)) (sp g (cp _)) (map_inv ι g ▸ sp g⁻¹ (cp _)) (fun y hy => map_inv ι g ▸ sp g⁻¹ (I := Set.range e) (Or.inl fun a => Set.mem_range_self a) y (Submodule.span_mono (Set.image_mono (Set.singleton_subset_iff.2 hj)) hy)) (mem_trivOn_span …` and prove the remaining obligations. Take `⟨b, rfl⟩` from `hj`. Introduce and unpack `_ ⟨a, rfl⟩`. Establish `key : ∀ a b : Fin d, ∀ k ∈ S, k < e a → k < e b` using `fun a b k hk hka => by`. Establish `h1 : k.val < l + a.val` using `hka`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ¬ l ≤ k.val` using `fun h' => hS k h' (by omega) hk`. Express the relevant statement in the definitionally equal form `k.val < l + b.val`. Use linear arithmetic over natural numbers and integers. Establish `: {i | ∃ k ∈ S, i ≤ k ∧ k < e b} = {i | ∃ k ∈ S, i ≤ k ∧ k < e a}` using `Set.ext fun i => ⟨fun ⟨k, hk, h1, h2⟩ => ⟨k, hk, h1, key _ _ k hk h2⟩, fun ⟨k, hk, h1, h2⟩ => ⟨k, hk, h1, key _ _ k hk h2⟩⟩`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hu1 _`. Conclude with `conj_mem_trivOn (sp g (cp _)) (map_inv ι g ▸ sp g⁻¹ (cp _)) (map_inv ι g ▸ sp g⁻¹ (I := {j}) (Or.inr fun a (ha : e a = j) => hj (Exists.intro a ha))) (hu1 j)`. Establish `k1 : ∀ z, GlobalTheory.LFun.finTens F E (Φ.symm z) = (GlobalTheory.LFun.finAdEquiv F E).symm (GlobalTheory.CuspRep.pFin E z)` using `fun z => by`. Use `congrArg (GlobalTheory.CuspRep.pFin E) (hΦ (Φ.symm z))` as an intermediate fact. Rewrite `this` using `[RingEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction.
 
-Rewrite using `[this]`. Conclude with `((GlobalTheory.LFun.finAdEquiv F E).symm_apply_apply _).symm`. Establish `k2 : ∀ y, ((GlobalTheory.CuspRep.infGL E d y).1.map Φ.symm).map (GlobalTheory.LFun.finTens F E) = 1` using `fun y => by`. Use `congrArg Units.val (GlobalTheory.CuspRep.pFin_infGL (E := E) y)` as an intermediate fact. Establish `e : ((GlobalTheory.CuspRep.infGL E d y).1.map Φ.symm).map (GlobalTheory.LFun.finTens F E) = ((GlobalTheory.CuspRep.infGL E d y).1.map (GlobalTheory.CuspRep.pFin E)).map (GlobalTheory.LFun.finAdEquiv F E).symm` using `Matrix.ext fun a b => k1 _`.
+Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e, show (GlobalTheory.CuspRep.infGL E d y).1.map (GlobalTheory.CuspRep.pFin E) = 1 from this]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `k3 : ∀ x, sigR (Af F) σ (GlobalTheory.LFun.finTens F E x) = GlobalTheory.LFun.finTens F E (sigR (AF F) σ x)` using `fun x => by`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
-
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a b => rfl`. Introduce `y`. Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(matHom _ σ J (ι (GlobalTheory.CuspRep.infGL E d y))).1.map (GlobalTheory.LFun.finTens F E) = 1`.
-
-Establish `o : ∀ {a : ℕ}, (1 : Matrix (Fin a) (Fin a) (AF F ⊗[F] E)).map (GlobalTheory.LFun.finTens F E) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Rewrite using `[hι, Matrix.map_add _ (map_add _), Matrix.map_add _ (map_add _), Matrix.map_mul, Matrix.map_mul, Matrix.map_mul, Matrix.map_mul, Matrix.map_sub _ (map_sub _), Matrix.map_sub _ (map_sub _), k2, ← GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.cT_map _ (sigR (Af F) σ) …`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blockEmb_normalises : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [IsTotallyComplex E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →

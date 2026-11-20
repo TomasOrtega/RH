@@ -13,7 +13,7 @@ namespace GroundTheory.Heights₂.Heights.ComplexSets
 noncomputable section
 
 /- English proof (translation)
-Introduce `n d J hJ hd`. Take `⟨A₀, N, hA₀⟩` from `h₄ n d J hJ hd`. Use `⟨{A | ConeAvoids J A N}, h₃ n d N J, ⟨A₀, hA₀⟩, fun A hA => ?_⟩` and prove the remaining obligations. Establish `hfin : (projHom J A).toRingHom.Finite` using `h₁ n d N J A hA`. Conclude with `⟨h₂ n d J A hJ hd hfin, hfin⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem FiniteProjectionsContainOpen.proof (h₁ : ConeAvoidsFinite.Statement)
     (h₂ : FiniteProjHomInjective.Statement) (h₃ : ConeAvoidsOpen.Statement)

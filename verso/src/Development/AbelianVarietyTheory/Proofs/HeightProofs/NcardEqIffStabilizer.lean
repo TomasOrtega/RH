@@ -19,11 +19,11 @@ open scoped IntermediateField Pointwise in
 variable {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L] in
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (fun Q : HeightOneSpectrum (𝓞 L) => Q.asIdeal)` using `fun Q Q' h => HeightOneSpectrum.ext h`. Rewrite using `[← Set.ncard_image_of_injective _ hinj]`. Use `congr 1`. Use extensionality with `P`. Simplify using `only [Set.mem_image, Set.mem_setOf_eq, Ideal.primesOver]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Q, hQ, rfl⟩`. Conclude with `⟨Q.isPrime, ⟨hQ.symm⟩⟩`. Introduce and unpack `⟨hP, hlies⟩`. Use `⟨⟨P, hP, ?_⟩, hlies.over.symm, rfl⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `rfl`. Apply `𝔭.ne_bot` to reduce the goal to its premises. Rewrite using `[hlies.over, Ideal.under, Ideal.comap_bot_of_injective]`. Conclude with `FaithfulSMul.algebraMap_injective _ _`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.FieldSize.RaySplit.ncard_eq_primesOver (𝔭 : HeightOneSpectrum (𝓞 K)) :
     {Q : HeightOneSpectrum (𝓞 L) | Q.asIdeal.comap (algebraMap (𝓞 K) (𝓞 L)) = 𝔭.asIdeal}.ncard =
@@ -49,33 +49,29 @@ open NumberField IsDedekindDomain Polynomial in
 open scoped IntermediateField Pointwise in
 variable {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L] in
 /- English proof (translation)
-Take `⟨P, hPp, hPo, hfrob⟩` from `hσ`. Use `haveI := hPp`. Use `haveI := hPo`. Establish `hPne : P ≠ ⊥`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `𝔭.ne_bot` to reduce the goal to its premises. Rewrite using `[hPo.over, Ideal.under, Ideal.comap_bot_of_injective]`. Conclude with `FaithfulSMul.algebraMap_injective _ _`. Use `haveI : P.IsMaximal := hPp.isMaximal hPne`. Use `haveI : 𝔭.asIdeal.IsMaximal := 𝔭.isMaximal`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `he : 𝔭.asIdeal.ramificationIdxIn (𝓞 R) = 1`. Rewrite using `[← Ideal.card_inertia_eq_ramificationIdxIn (G := Gal(R/F)) 𝔭.asIdeal P]`. Establish `hbot : Ideal.inertia Gal(R/F) P = ⊥`. Rewrite using `[Subgroup.eq_bot_iff_forall]`. Introduce `τ hτ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hu τ ⟨P, hPp, hPo, fun x => (AddSubgroup.mem_inertia.mp hτ) x⟩`. Rewrite using `[hbot, Subgroup.card_bot]`. Establish `hf : 𝔭.asIdeal.inertiaDegIn (𝓞 R) = Module.finrank (𝓞 F ⧸ 𝔭.asIdeal) (𝓞 R ⧸ P)`. Rewrite using `[Ideal.inertiaDegIn_eq_inertiaDeg 𝔭.asIdeal P Gal(R/F), ← Ideal.inertiaDeg_eq_inertiaDeg' 𝔭.asIdeal P, Ideal.inertiaDeg'_algebraMap]`. Establish `hcount` using `Ideal.ncard_primesOver_mul_ramificationIdxIn_mul_inertiaDegIn 𝔭.asIdeal (𝓞 R) Gal(R/F)`.
+Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Rewrite `hcount` using `[he, one_mul, hf, IsGalois.card_aut_eq_finrank]`. Establish `hdeg : 0 < Module.finrank F R` using `Module.finrank_pos`. Use `letI : Field (𝓞 F ⧸ 𝔭.asIdeal) := Ideal.Quotient.field _`. Use `letI : Field (𝓞 R ⧸ P) := Ideal.Quotient.field _`. Use `letI : Fintype (𝓞 F ⧸ 𝔭.asIdeal) := Fintype.ofFinite _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `letI : Fintype (𝓞 R ⧸ P) := Fintype.ofFinite _`. Establish `hq : Ideal.absNorm 𝔭.asIdeal = Fintype.card (𝓞 F ⧸ 𝔭.asIdeal)`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply, Nat.card_eq_fintype_card]`. Establish `hcard : Fintype.card (𝓞 R ⧸ P) = Fintype.card (𝓞 F ⧸ 𝔭.asIdeal) ^ Module.finrank (𝓞 F ⧸ 𝔭.asIdeal) (𝓞 R ⧸ P)` using `Module.card_eq_pow_finrank`. Establish `hq1 : 1 < Fintype.card (𝓞 F ⧸ 𝔭.asIdeal)` using `Fintype.one_lt_card`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hsplit : (𝔭.asIdeal.primesOver (𝓞 R)).ncard = Module.finrank F R ↔ Module.finrank (𝓞 F ⧸ 𝔭.asIdeal) (𝓞 R ⧸ P) = 1`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite `hcount` using `[h]`. Conclude with `Nat.eq_of_mul_eq_mul_left hdeg (hcount.trans (mul_one _).symm)`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Rewrite `hcount` using `[h, mul_one]`. Conclude with `hcount`. Rewrite using `[hsplit]`. Prove the components needed by the constructor for the conclusion.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `h1`. Establish `hcq : Fintype.card (𝓞 R ⧸ P) = Fintype.card (𝓞 F ⧸ 𝔭.asIdeal)`. Rewrite using `[hcard, h1, pow_one]`. Apply `hu σ` to reduce the goal to its premises. Use `⟨P, hPp, hPo, fun x => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hxq : x ^ Ideal.absNorm 𝔭.asIdeal - x ∈ P`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_pow, sub_eq_zero, hq, ← hcq]`. Conclude with `FiniteField.pow_card _`. Establish `hsum` using `P.add_mem (hfrob x) hxq`. Rewrite `hsum` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h1`. Substitute `h1` using the available equality. Establish `hall : ∀ y : 𝓞 R ⧸ P, y ^ Fintype.card (𝓞 F ⧸ 𝔭.asIdeal) = y`. Introduce `y`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective y`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hx` using `hfrob x`. Rewrite `hx` using `[one_smul, ← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_pow, sub_eq_zero, hq]`. Conclude with `hx.symm`. Establish `hroots` using `Polynomial.card_le_degree_of_subset_roots (p := (X ^ Fintype.card (𝓞 F ⧸ 𝔭.asIdeal) - X : (𝓞 R ⧸ P)[X])) (Z := Finset.univ) (fun y _ => by`. Rewrite using `[Polynomial.mem_roots (FiniteField.X_pow_card_sub_X_ne_zero _ hq1)]`.
-
-Simplify using `[hall y])`. Rewrite `hroots` using `[Finset.card_univ, FiniteField.X_pow_card_sub_X_natDegree_eq _ hq1, hcard]`. Establish `hle` using `(Nat.pow_le_pow_iff_right hq1).mp (hroots.trans (pow_one _).symm.le)`. Establish `hpos : 0 < Module.finrank (𝓞 F ⧸ 𝔭.asIdeal) (𝓞 R ⧸ P)`. Break down `Nat.eq_zero_or_pos (Module.finrank (𝓞 F ⧸ 𝔭.asIdeal) (𝓞 R ⧸ P)) with h0 | h0` into its components or cases.
-
-Rewrite `hcount` using `[h0, mul_zero]`. Use linear arithmetic over natural numbers and integers. Conclude with `h0`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem ncard_primesOver_eq_finrank_iff_frob_eq_one {F R : Type} [Field F]
     [NumberField F] [Field R] [NumberField R] [Algebra F R] [IsGalois F R]
@@ -164,9 +160,7 @@ open NumberField IsDedekindDomain Polynomial in
 open scoped IntermediateField Pointwise in
 variable {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L] in
 /- English proof (translation)
-Use `⟨fun h χ => by rw [h, map_one], fun h => ?_⟩` and prove the remaining obligations. Use `letI : CommGroup G := { (inferInstance : Group G) with mul_comm := mul_comm' }`. Assume the negation of the conclusion as `hσ`. Use `haveI : NeZero (Monoid.exponent G) := ⟨Monoid.exponent_ne_zero_of_finite⟩`. Take `⟨χ, hχ⟩` from `CommGroup.exists_apply_ne_one_of_hasEnoughRootsOfUnity G ℂ hσ`.
-
-Conclude with `hχ (h χ)`.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem eq_one_iff_forall_char_eq_one_of_finite_commutative {G : Type} [Group G] [Finite G]
     [IsMulCommutative G] (σ : G) : σ = 1 ↔ ∀ χ : G →* ℂˣ, χ σ = 1 := by
@@ -182,9 +176,9 @@ open NumberField IsDedekindDomain Polynomial in
 open scoped IntermediateField Pointwise in
 variable {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L] in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.NT.heckeIdeal`. Establish `hirr : ∀ 𝔮 : HeightOneSpectrum (𝓞 F), Irreducible (Associates.mk 𝔮.asIdeal)` using `fun 𝔮 => Associates.irreducible_mk.mpr (Ideal.prime_of_isPrime 𝔮.ne_bot 𝔮.isPrime).irreducible`. Rewrite using `[finprod_eq_single _ 𝔭]`. Rewrite using `[Associates.count_self (hirr 𝔭), pow_one]`. Introduce `𝔮 h𝔮`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Associates.count_eq_zero_of_ne (hirr 𝔮) (hirr 𝔭), pow_zero]`. Introduce `h`. Conclude with `h𝔮 (HeightOneSpectrum.ext (associated_iff_eq.mp (Associates.mk_eq_mk_iff_associated.mp h)))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem heckeIdeal_asIdeal_eq_heckeVal {F R : Type} [Field F] [NumberField F]
     [Field R] [NumberField R] [Algebra F R] (χ : Gal(R/F) →* ℂˣ) (𝔭 : HeightOneSpectrum (𝓞 F)) :
@@ -204,9 +198,9 @@ open NumberField IsDedekindDomain Polynomial in
 open scoped IntermediateField Pointwise in
 variable {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L] in
 /- English proof (translation)
-Establish `h` using `IsTotallyComplex.isComplex (InfinitePlace.mk ((algebraMap ℝ ℂ).comp φ))`. Rewrite `h` using `[← InfinitePlace.not_isReal_iff_isComplex, InfinitePlace.isReal_mk_iff]`. Apply `h` to reduce the goal to its premises. Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `[ComplexEmbedding.conjugate_coe_eq]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem false_of_ringHom_real_of_isTotallyComplex {F : Type} [Field F] [NumberField F] [IsTotallyComplex F]
     (φ : F →+* ℝ) : False := by
@@ -223,25 +217,21 @@ open scoped IntermediateField Pointwise in
 variable {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L] in
 
 /- English proof (translation)
-Introduce `K R _ _ _ _ _ _ _ n _ hray 𝔭 hn𝔭`. Take `⟨hunr, -, hart⟩` from `hray`. Establish `hnot : ¬ 𝔭.asIdeal ∣ Ideal.span {(n : 𝓞 K)}`. Rewrite using `[Ideal.dvd_span_singleton]`. Conclude with `hn𝔭`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcop : IsCoprime 𝔭.asIdeal (Ideal.span {(n : 𝓞 K)})`. Rewrite using `[Ideal.isCoprime_iff_sup_eq]`. Assume the negation of the conclusion as `h`. Establish `heq` using `𝔭.isMaximal.eq_of_le h le_sup_left`. Apply `hn𝔭` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[heq]`. Conclude with `Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)`. Establish `hu` using `hunr 𝔭 hnot`. Take `⟨σ, hσ⟩` from `_root_.GlobalTheory.NT.exists_isFrob R 𝔭`. Rewrite using `[_root_.GlobalTheory.FieldSize.RaySplit.ncard_eq_primesOver, ncard_primesOver_eq_finrank_iff_frob_eq_one hu hσ]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hchar : σ = 1 ↔ ∀ χ : Gal(R/K) →* ℂˣ, _root_.GlobalTheory.NT.heckeIdeal R χ 𝔭.asIdeal = 1`. Use `(eq_one_iff_forall_char_eq_one_of_finite_commutative σ).trans (forall_congr' fun χ => ?_)` and prove the remaining obligations. Rewrite using `[heckeIdeal_asIdeal_eq_heckeVal, _root_.GlobalTheory.NT.heckeVal_of_unramIn R χ hu hσ, Units.val_eq_one]`. Rewrite using `[hchar, hart 𝔭.asIdeal 𝔭.ne_bot hcop]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨α, β, ⟨-, hβ, -, hβcop, hαβ, -⟩, hI⟩`. Establish `hdvd : β ∣ α`. Rewrite using `[← Ideal.span_singleton_le_span_singleton, ← hI]`. Conclude with `Submodule.mul_le.mpr fun a _ b hb => Ideal.mul_mem_left _ a hb`. Take `⟨π, rfl⟩` from `hdvd`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Use `⟨π, ?_, ?_⟩` and prove the remaining obligations. Establish `hβ0 : Ideal.span {β} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]` and apply the resulting hypothesis. Apply `mul_right_cancel₀ hβ0` to reduce the goal to its premises. Rewrite using `[hI, ← Ideal.span_singleton_mul_span_singleton, mul_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hβcop` using `[Ideal.isCoprime_iff_sup_eq, Ideal.eq_top_iff_one, Submodule.mem_sup]`. Take `⟨u, hu', v, hv, huv⟩` from `hβcop`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton.mp hu'`. Establish `key : π - 1 = c * (β * π - β) + (π - 1) * v`. Take the linear combination `(1 - π) * huv`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[key]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ hαβ) (Ideal.mul_mem_left _ _ hv)`. Introduce and unpack `⟨π, hπ, hπ1⟩`. Use `⟨π, 1, ⟨?_, one_ne_zero, ?_, ?_, hπ1, fun φ => (false_of_ringHom_real_of_isTotallyComplex φ).elim⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
-
-Conclude with `𝔭.ne_bot (hπ.trans (Ideal.span_singleton_eq_bot.mpr rfl))`. Rewrite using `[← hπ]`. Conclude with `hcop`. Rewrite using `[Ideal.span_singleton_one, Ideal.isCoprime_iff_sup_eq]`. Conclude with `top_sup_eq _`.
-
-Rewrite using `[Ideal.span_singleton_one, Ideal.mul_top, hπ]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.FieldSize.RaySplit.ncard_eq_finrank_iff : ∀ (K R : Type) [Field K] [NumberField K] [IsTotallyComplex K] [Field R] [NumberField R]
     [Algebra K R] [IsAbelianGalois K R] (n : ℕ), 0 < n → _root_.GlobalTheory.FieldSize.IsRay R (Ideal.span {(n : 𝓞 K)}) →

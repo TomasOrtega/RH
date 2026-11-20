@@ -6,9 +6,9 @@ open scoped TensorProduct
 namespace GlobalTheory.EtC
 
 /- English proof (translation)
-Unfold `firstAndFinite`. Apply `Algebra.IsIntegral.adjoin` to reduce the goal to its premises. Introduce and unpack `x (⟨a, rfl⟩ | hx)`. Conclude with `(Algebra.IsIntegral.isIntegral a).map _`. Take `⟨i, hi⟩` from `Set.mem_iUnion.mp hx`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, -, rfl⟩` from `hi`. Conclude with `(Algebra.IsIntegral.isIntegral a).map _`.
+A detailed English derivation is pending.
 -/
 theorem firstAndFinite_isIntegral (R A : Type) [CommRing R] [CommRing A] [Algebra R A]
     [Algebra.IsIntegral R A] (k : ℕ) (F : Finset A) :
@@ -24,6 +24,6 @@ theorem firstAndFinite_isIntegral (R A : Type) [CommRing R] [CommRing A] [Algebr
 end GlobalTheory.EtC
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.EtC.firstAndFinite_isIntegral`.
+A detailed English derivation is pending.
 -/
 example : ∀ (R A : Type) [CommRing R] [CommRing A] [Algebra R A] [Algebra.IsIntegral R A] (k : ℕ) (F : Finset A), Algebra.IsIntegral R (firstAndFinite R A k F) := GlobalTheory.EtC.firstAndFinite_isIntegral

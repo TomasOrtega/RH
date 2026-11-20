@@ -16,7 +16,7 @@ open Classical
 namespace GlobalTheory.RawLift.Covol
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F _ i`. Conclude with `GlobalTheory.Size.exists_isCovolOne (Vc D i) (Wc D i)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_isCovolOne_of_laws : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Laws R F → ∀ i, ∃ (μ : Measure (WO (Vc D i) (Wc D i))) (𝓕 : Set (WO (Vc D i) (Wc D i))), IsCovolOne (ratL (Wc D i) (Vc D i)) μ 𝓕 := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F _ i

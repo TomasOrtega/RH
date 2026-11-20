@@ -19,14 +19,14 @@ namespace TVCoefPf
 variable {k r : ℕ}
 
 /- English proof (translation)
-The claim follows from `Fin.ext rfl`.
+A detailed English derivation is pending.
 -/
 theorem castLE_self (h : r ≤ r) (a : Fin r) : Fin.castLE h a = a := Fin.ext rfl
 
 /- English proof (translation)
-Use `a.isLt` as an intermediate fact. Use `b.isLt` as an intermediate fact. Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `Fin.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h'` using `congrArg Fin.val h`. Simplify using `only [esI] at h'`. Use linear arithmetic over natural numbers and integers. Introduce `h`. Rewrite using `[h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem esI_inj (a b : Fin r) : esI k r a = esI k r b ↔ a = b := by
   have := a.isLt
@@ -40,7 +40,7 @@ theorem esI_inj (a b : Fin r) : esI k r a = esI k r b ↔ a = b := by
   · intro h; rw [h]
 
 /- English proof (translation)
-Use `a.isLt` as an intermediate fact. Unfold `C3.keyS esI`. Simplify using `only`. Apply the tactic sequence `split_ifs with h <;> omega`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem keyS_esI (a : Fin r) : C3.keyS k r (esI k r a) = a.val := by
   have := a.isLt
@@ -49,7 +49,7 @@ theorem keyS_esI (a : Fin r) : C3.keyS k r (esI k r a) = a.val := by
   split_ifs with h <;> omega
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Simplify using `only [bvec, Matrix.mulVec_single_one, Matrix.col_apply, Pi.single_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[Formalism.FourierDecayAlt.P.Qx3.w1_apply, Formalism.FourierDecayAlt.P.Qx3.sw_es, Formalism.FourierDecayAlt.P.Qx3.dd_es]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem w1_mulVec_bvec_esI (l : Fin r) (s : ℂ) : Q.w1 k r l s *ᵥ bvec (esI k r l) = (star s)⁻¹ • bvec (eI k r l) := by
   funext p
@@ -58,9 +58,9 @@ theorem w1_mulVec_bvec_esI (l : Fin r) (s : ℂ) : Q.w1 k r l s *ᵥ bvec (esI k
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `h1 : a.val ≠ b.val` using `fun h => hab (Fin.ext h)`. Use `a.isLt` as an intermediate fact. Use `b.isLt` as an intermediate fact. Break down `hq with rfl | rfl` into its components or cases. Apply the tactic sequence `constructor <;> intro h <;> have h' := congrArg Fin.val h <;> simp only [eI, esI] at h' <;> omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `constructor <;> intro h <;> have h' := congrArg Fin.val h <;> simp only [eI, esI] at h' <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ne_of_ne {a b : Fin r} (hab : ¬ a = b) {q : Fin (2 * r + k + 1)} (hq : q = eI k r a ∨ q = esI k r a) :
     q ≠ eI k r b ∧ q ≠ esI k r b := by
@@ -72,9 +72,9 @@ theorem ne_of_ne {a b : Fin r} (hab : ¬ a = b) {q : Fin (2 * r + k + 1)} (hq : 
   · constructor <;> intro h <;> have h' := congrArg Fin.val h <;> simp only [eI, esI] at h' <;> omega
 
 /- English proof (translation)
-Introduce `L`. Proceed by induction on `L with`. Consider the case `nil => intro _`. Simplify using the standard rewrite rules. Consider the case `cons b L ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `ha`. Rewrite `ha` using `[List.mem_cons, not_or]`. Rewrite using `[List.map_cons, List.prod_cons, ← Matrix.mulVec_mulVec, ih ha.2]`. Take `⟨h1, h2⟩` from `ne_of_ne ha.1 hq`. Conclude with `Formalism.FourierDecayAlt.P.Qx3.reflection_fixes_basis_vector b (c b) h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem wlist_fix (c : Fin r → ℂ) (a : Fin r) {q : Fin (2 * r + k + 1)} (hq : q = eI k r a ∨ q = esI k r a) :
     ∀ L : List (Fin r), a ∉ L → (L.map fun b => Q.w1 k r b (c b)).prod *ᵥ bvec q = bvec q := by
@@ -89,13 +89,13 @@ theorem wlist_fix (c : Fin r → ℂ) (a : Fin r) {q : Fin (2 * r + k + 1)} (hq 
     exact Formalism.FourierDecayAlt.P.Qx3.reflection_fixes_basis_vector b (c b) h1 h2
 
 /- English proof (translation)
-Establish `hc' : ∀ l, c l ≠ 0` using `hc`. Introduce `L`. Proceed by induction on `L with`. Consider the case `nil => intro _ h`. Simplify using `at h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `cons b L ih`. Introduce `hnd ha`. Rewrite `hnd` using `[List.nodup_cons]`. Rewrite using `[List.map_cons, List.prod_cons, ← Matrix.mulVec_mulVec]`. Distinguish the cases in `hab : b = a`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hab` using the available equality. Rewrite using `[Matrix.mulVec_smul, wlist_fix c b (Or.inr rfl) L hnd.1, Matrix.mulVec_smul, w1_mulVec_bvec_esI, smul_smul, mul_inv_cancel₀ (star_ne_zero.2 (hc' b)), one_smul]`. Establish `haL : a ∈ L`. Break down `List.mem_cons.1 ha with h | h` into its components or cases. Conclude with `absurd h.symm hab`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Rewrite using `[ih hnd.2 haL]`. Take `⟨h1, h2⟩` from `ne_of_ne (fun h => hab h.symm) (Or.inl rfl)`. Conclude with `Formalism.FourierDecayAlt.P.Qx3.reflection_fixes_basis_vector b (c b) h1 h2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem wlist_main {c : Fin r → ℂ} (hc : c ∈ OmX r) (a : Fin r) :
     ∀ L : List (Fin r), L.Nodup → a ∈ L →
@@ -121,7 +121,7 @@ theorem wlist_main {c : Fin r → ℂ} (hc : c ∈ OmX r) (a : Fin r) :
       exact Formalism.FourierDecayAlt.P.Qx3.reflection_fixes_basis_vector b (c b) h1 h2
 
 /- English proof (translation)
-Unfold `Q.wCell`. Use `wlist_main hc a _ ((List.nodup_finRange r).filter _) ?_` and prove the remaining obligations. Rewrite using `[List.mem_filter]`. Conclude with `⟨List.mem_finRange a, by simp⟩`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem wcell_es {c : Fin r → ℂ} (hc : c ∈ OmX r) (a : Fin r) :
     Q.wCell k r (Fin.last r) c *ᵥ (star (c a) • bvec (esI k r a)) = bvec (eI k r a) := by
@@ -131,9 +131,9 @@ theorem wcell_es {c : Fin r → ℂ} (hc : c ∈ OmX r) (a : Fin r) :
   exact ⟨List.mem_finRange a, by simp⟩
 
 /- English proof (translation)
-Establish `hW : Q.wCell k r (Fin.last r) c ∈ Q.Glev k r 0` using `Formalism.FourierDecayAlt.P.Qx3.wlist_glev hc _`. Establish `hu : IsUnit (Q.wCell k r (Fin.last r) c * g).det`. Rewrite using `[Matrix.det_mul]`. Conclude with `(Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh hW.1).mul (Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh hg.1)`. Establish `ha : a.val < (Fin.last r).val` using `by rw [Fin.val_last]; exact a.isLt`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : (Q.wCell k r (Fin.last r) c * g) *ᵥ (star (c a) • bvec (esI k r a)) = bvec (eI k r a)`. Rewrite using `[← Matrix.mulVec_mulVec, Matrix.mulVec_smul, (hg.2 a ha).2]`. Conclude with `wcell_es hc a`. Rewrite using `[← hv, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hu, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_e {c : Fin r → ℂ} (hc : c ∈ OmX r) {g : Q.Mx k r} (hg : g ∈ Q.Glev k r (Fin.last r)) (a : Fin r) :
     (Q.wCell k r (Fin.last r) c * g)⁻¹ *ᵥ bvec (eI k r a) = star (c a) • bvec (esI k r a) := by
@@ -148,7 +148,7 @@ theorem inv_e {c : Fin r → ℂ} (hc : c ∈ OmX r) {g : Q.Mx k r} (hg : g ∈ 
   rw [← hv, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hu, Matrix.one_mulVec]
 
 /- English proof (translation)
-Use extensionality with `a l`. Simplify using `only [Matrix.of_apply]`. Rewrite using `[castLE_self, inv_e hc hg a]`. Simplify using `[bvec, Pi.single_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_entry {c : Fin r → ℂ} (hc : c ∈ OmX r) {g : Q.Mx k r} (hg : g ∈ Q.Glev k r (Fin.last r))
     (B : Fin r → Fin (2 * r + k + 1)) :
@@ -161,9 +161,9 @@ theorem det_entry {c : Fin r → ℂ} (hc : c ∈ OmX r) {g : Q.Mx k r} (hg : g 
   simp [bvec, Pi.single_apply]
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro j _`. Use linear arithmetic over natural numbers and integers. Consider the case `succ m ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Use linear arithmetic over natural numbers and integers. Treat this case separately.
 
-Introduce `j hj`. Establish `hm : m < n` using `by have := j.isLt; omega`. Establish `h1` using `ih ⟨m, hm⟩ rfl`. Establish `h2 : τ ⟨m, hm⟩ < τ j` using `h (by rw [Fin.lt_def]; simp only; omega)`. Rewrite `h2` using `[Fin.lt_def]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -180,11 +180,11 @@ theorem sm_ge {n : ℕ} {τ : Fin n → Fin n} (h : StrictMono τ) : ∀ m (j : 
     omega
 
 /- English proof (translation)
-Establish `hρ : StrictMono fun j : Fin n => Fin.rev (τ (Fin.rev j))`. Introduce `a b hab`. Rewrite using `[Fin.rev_lt_rev]`. Conclude with `h (Fin.rev_lt_rev.2 hab)`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Fin.ext` to reduce the goal to its premises. Establish `e1` using `sm_ge h j.val j rfl`. Establish `e2` using `sm_ge hρ (Fin.rev j).val (Fin.rev j) rfl`. Simplify using `only [Fin.rev_rev, Fin.val_rev] at e2`. Use `j.isLt` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(τ j).isLt` as an intermediate fact. Simplify using `only [id]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem sm_eq_id {n : ℕ} {τ : Fin n → Fin n} (h : StrictMono τ) : τ = id := by
   have hρ : StrictMono fun j : Fin n => Fin.rev (τ (Fin.rev j)) := by
@@ -202,11 +202,9 @@ theorem sm_eq_id {n : ℕ} {τ : Fin n → Fin n} (h : StrictMono τ) : τ = id 
   omega
 
 /- English proof (translation)
-Apply the tactic sequence `rw [det_entry hc hg B]`. Distinguish the cases in `hcol : ∃ l, ∀ a, B l ≠ esI k r a`. Take `⟨l, hl⟩` from `hcol`. Conclude with `Matrix.det_eq_zero_of_column_eq_zero l (fun a => by simp [hl a])`. Use `push Not at hcol choose τ hτ using hcol`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hτm : StrictMono τ`. Introduce `a b hab`. Use `hm hab` as an intermediate fact. Simplify using `only [hτ, keyS_esI] at this`. Conclude with `Fin.lt_def.2 this`.
-
-Establish `hid` using `sm_eq_id hτm`. Conclude with `absurd (funext fun l => by rw [hτ l, hid]; rfl) hB`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem det_zero {c : Fin r → ℂ} (hc : c ∈ OmX r) {g : Q.Mx k r} (hg : g ∈ Q.Glev k r (Fin.last r))
     (B : Fin r → Fin (2 * r + k + 1)) (hm : StrictMono fun l => C3.keyS k r (B l)) (hB : B ≠ C3.sR k r r le_rfl) :
@@ -227,9 +225,9 @@ theorem det_zero {c : Fin r → ℂ} (hc : c ∈ OmX r) {g : Q.Mx k r} (hg : g �
     exact absurd (funext fun l => by rw [hτ l, hid]; rfl) hB
 
 /- English proof (translation)
-Apply the tactic sequence `rw [det_entry hc hg]`. Establish `e : (Matrix.of fun a l : Fin r => star (c a) * (if C3.sR k r r le_rfl l = esI k r a then (1 : ℂ) else 0)) = Matrix.diagonal fun a => star (c a)`. Use extensionality with `a l`. Simplify using `only [Matrix.of_apply, Matrix.diagonal_apply, C3.sR, castLE_self, esI_inj]`. Distinguish the cases in `h : a = l`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`. Rewrite using `[e, Matrix.det_diagonal]`. Simplify using `[drbF, map_prod]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_sR {c : Fin r → ℂ} (hc : c ∈ OmX r) {g : Q.Mx k r} (hg : g ∈ Q.Glev k r (Fin.last r)) :
     (Matrix.of fun a l : Fin r =>
@@ -247,7 +245,7 @@ theorem det_sR {c : Fin r → ℂ} (hc : c ∈ OmX r) {g : Q.Mx k r} (hg : g ∈
   simp [drbF, map_prod]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Apply `Fin.ext` to reduce the goal to its premises. Use `j.isLt` as an intermediate fact. Simplify using `[colsVm, C3.sR, esI, Fin.val_rev]`. Use linear arithmetic over natural numbers and integers.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem colsVm_eq : colsVm k r r = C3.sR k r r le_rfl ∘ Fin.revPerm := by
   funext j
@@ -257,7 +255,7 @@ theorem colsVm_eq : colsVm k r r = C3.sR k r r le_rfl ∘ Fin.revPerm := by
   omega
 
 /- English proof (translation)
-Unfold `kvM`. Rewrite using `[colsVm_eq, Formalism.FourierDecayAlt.P.FiniteSumLocalExpansion.skewRow, Formalism.FourierDecayAlt.P.FourTermExpansion.skewCol (C3.sR k r r le_rfl) w J x hx hloc, smul_smul, ← Int.cast_mul, ← Units.val_mul, Int.units_mul_self, Units.val_one, Int.cast_one, one_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem kv_rev {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {x : Q.Mx k r} (hx : x ∈ B.GV k r)
     {J : Q.Mx k r → E} (hloc : Formalism.FourierDecayAlt.P.CapelliWordSumExpansion.Loc ((r : ℕ) : ℕ∞) J x) (w : ℂ) :
@@ -267,11 +265,11 @@ theorem kv_rev {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {x : Q.Mx k
     ← Int.cast_mul, ← Units.val_mul, Int.units_mul_self, Units.val_one, Int.cast_one, one_smul]
 
 /- English proof (translation)
-Rewrite using `[kv_rev hx hloc, ← det_sR hc hg]`. Simplify using `only [capAv, C3.AAvop]`. Rewrite using `[Fintype.sum_eq_single (C3.sR k r r le_rfl)]`. Establish `hmono : StrictMono fun l => C3.keyS k r (C3.sR k r r le_rfl l)`. Introduce `a b hab`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [C3.sR, castLE_self, keyS_esI]`. Conclude with `hab`. Rewrite using `[if_pos hmono]`. Both sides reduce to the same expression. Introduce `B hB split_ifs with hm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[det_zero hc hg B hm hB, zero_smul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem coef_gen {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {c : Fin r → ℂ} (hc : c ∈ OmX r)
     {g : Q.Mx k r} (hg : g ∈ Q.Glev k r (Fin.last r)) (hx : Q.wCell k r (Fin.last r) c * g ∈ B.GV k r)
@@ -295,7 +293,7 @@ theorem coef_gen {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {c : Fin 
 end TVCoefPf
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P Bs hpl hk y J hJ c hc g hg hcg`. Take `⟨hGV, hCk⟩` from `capa_J_ck P Bs hJ hc hg hcg ((P.r : ℕ) : ℕ∞)`. Conclude with `TVCoefPf.coef_gen hc hg hGV (hCk _ (Set.mem_singleton _)) y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem toda_coefficient_holds : TVCoef := by
   intro Wp Wq _ _ _ _ _ _ P Bs hpl hk y J hJ c hc g hg hcg

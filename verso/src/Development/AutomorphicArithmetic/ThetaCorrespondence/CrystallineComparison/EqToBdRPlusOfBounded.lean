@@ -11,25 +11,23 @@ variable {p : ℕ} [Fact p.Prime] {R : Type} [CommRing R] [Fact ¬IsUnit (p : R)
   [IsAlgClosed (FractionRing R)]
 
 /- English proof (translation)
-Use extensionality with `x`. Apply `BdRPlus.ext_eval` to reduce the goal to its premises. Introduce `n`. Take `⟨N, hN⟩` from `hb n`. Use `set T := (AcrisZero.toQuot p R n).range`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ k : ℕ, ∃ c : Ainf p R, BdRPlus.eval p R n (j x) - BdRPlus.eval p R n (Acris.toBdRPlus p R x) = (p : AinfInv p R ⧸ AinfInv.kerTheta p R ^ n) ^ k * Ideal.Quotient.mk _ (algebraMap (Ainf p R) (AinfInv p R) c)`. Introduce `k`. Take `⟨a0, z, hz⟩` from `Acris.exists_eq_add (N + n + k) x`. Take `⟨az, haz⟩` from `hN z`. Take `⟨bz, hbz⟩` from `AcrisZero.exists_p_pow_mul_eq n (Acris.toRange p R n z)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hbz'` using `congrArg Subtype.val hbz`. Simplify using `only [Subring.coe_mul, Subring.coe_pow, Subring.coe_natCast, RingHom.coe_rangeRestrict] at hbz'`. Establish `hy2 : j x = algebraMap (AinfInv p R) (BdRPlus p R) (a0 : AinfInv p R) + (p : BdRPlus p R) ^ (N + n + k) * j z`. Rewrite using `[hz, map_add, map_mul, map_pow, map_natCast, h0 a0]`. Establish `hx2 : Acris.toBdRPlus p R x = algebraMap (AinfInv p R) (BdRPlus p R) (a0 : AinfInv p R) + (p : BdRPlus p R) ^ (N + n + k) * Acris.toBdRPlus p R z`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz, map_add, map_mul, map_pow, map_natCast, Acris.toBdRPlus_algebraMap_zero]`. Use `⟨(p : Ainf p R) ^ n * az - (p : Ainf p R) ^ N * bz, ?_⟩` and prove the remaining obligations. Establish `e1 : BdRPlus.eval p R n ((p : BdRPlus p R) ^ N * j z) = Ideal.Quotient.mk _ (algebraMap (Ainf p R) (AinfInv p R) az)` using `haz`. Establish `e2 : (p : AinfInv p R ⧸ AinfInv.kerTheta p R ^ n) ^ n * BdRPlus.eval p R n (Acris.toBdRPlus p R z) = Ideal.Quotient.mk _ (algebraMap (Ainf p R) (AinfInv p R) bz)`. Rewrite using `[Acris.eval_toBdRPlus, hbz']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite `e1` using `[map_mul, map_pow, map_natCast]`. Rewrite using `[hy2, hx2]`. Simplify using `only [map_add, map_mul, map_pow, map_natCast, map_sub]`. Rewrite using `[add_sub_add_left_eq_sub, ← mul_sub]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by rw [e1, e2]`. Establish `hmem : ∀ c : Ainf p R, Ideal.Quotient.mk (AinfInv.kerTheta p R ^ n) (algebraMap (Ainf p R) (AinfInv p R) c) ∈ T` using `fun c => ⟨algebraMap (Ainf p R) (AcrisZero p R) c, rfl⟩`. Take `⟨c0, hc0⟩` from `key 0`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hc0` using `[pow_zero, one_mul]`. Establish `hH : IsHausdorff (span {(p : T)}) T` using `inferInstance`. Establish `h0' : (⟨_, hmem c0⟩ : T) = 0`. Apply `hH.haus` to reduce the goal to its premises. Introduce `k`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `key k`. Establish `hx : (⟨_, hmem c0⟩ : T) = ((p : T) ^ k) • (⟨_, hmem c⟩ : T)`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [smul_eq_mul, Subring.coe_mul, Subring.coe_pow, Subring.coe_natCast]`. Rewrite using `[← hc0, hc]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[SModEq.zero, hx]`. Conclude with `Submodule.smul_mem_smul (Ideal.pow_mem_pow (Ideal.mem_span_singleton_self _) k) Submodule.mem_top`. Establish `h1` using `congrArg Subtype.val h0'`. Simplify using `only [ZeroMemClass.coe_zero] at h1`. Rewrite `h1` using `[← hc0]`.
-
-Conclude with `sub_eq_zero.1 h1`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_toBdRPlus_of_bounded (j : Acris p R →+* BdRPlus p R)
     (h0 : ∀ a : AcrisZero p R, j (algebraMap (AcrisZero p R) (Acris p R) a) =

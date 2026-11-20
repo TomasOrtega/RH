@@ -6,7 +6,7 @@ open Limits
 namespace DifferentiableLines.CellsProj
 
 /- English proof (translation)
-Take `⟨N, j, _, e⟩` from `h`. Use `isProper_str K N` as an intermediate fact. Rewrite using `[← e]`. Use `infer_instance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isProper_of_proj {K : Type} [CommRing K] {P : Scheme.{0}} {t : P ⟶ Sp K} (h : IsProjOver t) : IsProper t := by
   obtain ⟨N, j, _, e⟩ := h
@@ -15,11 +15,11 @@ theorem isProper_of_proj {K : Type} [CommRing K] {P : Scheme.{0}} {t : P ⟶ Sp 
   infer_instance
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => exact ⟨X, s, π, hs, rfl, fun W a a' h => ⟨h, by simp⟩⟩`. Consider the case `insert i T _ ih`. Take `⟨P, t, q, ht, hq, H⟩` from `ih`. Establish `hi : IsProjOver (PSpace.str K (n i))` using `⟨n i, 𝟙 _, inferInstance, Category.id_comp _⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨pullback t (PSpace.str K (n i)), pullback.fst _ _ ≫ t, pullback.lift q (g i) (hq.trans (hg i).symm), GlobalTheory.ProjSpace.isProjOver_pullback ht hi, by rw [pullback.lift_fst_assoc, hq], fun W a a' h => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (· ≫ pullback.fst _ _) h`. Establish `h2` using `congrArg (· ≫ pullback.snd _ _) h`. Simplify using `only [Category.assoc, pullback.lift_fst, pullback.lift_snd] at h1 h2`. Use `⟨(H W a a' h1).1, fun j hj => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Break down `Finset.mem_insert.1 hj with rfl | hj` into its components or cases. Conclude with `h2`. Conclude with `(H W a a' h1).2 j hj`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem exists_joint {K : Type} [CommRing K] {X Z : Scheme.{0}} (s : X ⟶ Sp K) (hs : IsProjOver s) (π : Z ⟶ X)
     {I : Type} (n : I → ℕ) (g : ∀ i, Z ⟶ PSpace K (n i)) (hg : ∀ i, g i ≫ PSpace.str K (n i) = π ≫ s)
@@ -42,9 +42,9 @@ theorem exists_joint {K : Type} [CommRing K] {X Z : Scheme.{0}} (s : X ⟶ Sp K)
     · exact (H W a a' h1).2 j hj
 
 /- English proof (translation)
-Use `Fintype.ofFinite I` as an intermediate fact. Take `⟨P, t, q, ht, hq, H⟩` from `exists_joint s hs π n g hg Finset.univ`. Use `isProper_of_proj ht` as an intermediate fact. Use `isProper_of_proj hs` as an intermediate fact. Establish `: IsProper (q ≫ t)` using `by rw [hq]; infer_instance`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : IsProper q` using `IsProper.of_comp q t`. Establish `hm : Mono q` using `⟨fun a a' h => ext _ a a' (H _ a a' h).1 fun i => (H _ a a' h).2 i (Finset.mem_univ i)⟩`. Establish `: IsClosedImmersion q` using `(IsClosedImmersion.iff_isProper_and_mono q).2 ⟨hp, hm⟩`. Rewrite using `[← hq]`. Conclude with `GlobalTheory.ProjSpace.isProjOver_comp_of_isClosedImmersion q ht`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isProjOver_of_joint {K : Type} [CommRing K] {X Z : Scheme.{0}} (s : X ⟶ Sp K) (hs : IsProjOver s) (π : Z ⟶ X)
     [IsProper π] {I : Type} [Finite I] (n : I → ℕ) (g : ∀ i, Z ⟶ PSpace K (n i))
@@ -63,7 +63,7 @@ theorem isProjOver_of_joint {K : Type} [CommRing K] {X Z : Scheme.{0}} (s : X �
   exact GlobalTheory.ProjSpace.isProjOver_comp_of_isClosedImmersion q ht
 
 /- English proof (translation)
-Use `(HasRingHomProperty.Spec_iff (P := @SmoothOfRelativeDimension (Nat.card σ))).2 ?_` and prove the remaining obligations. Use `RingHom.locally_of RingHom.isStandardSmoothOfRelativeDimension_respectsIso _ ?_` and prove the remaining obligations. Conclude with `(RingHom.isStandardSmoothOfRelativeDimension_algebraMap _).2 (GlobalTheory.Adelic.isStandardSmooth_mvPolynomial R σ)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem smooth_C (R σ : Type) [CommRing R] [Finite σ] :
     SmoothOfRelativeDimension (Nat.card σ) (spMap (MvPolynomial.C : R →+* MvPolynomial σ R)) := by
@@ -72,7 +72,7 @@ theorem smooth_C (R σ : Type) [CommRing R] [Finite σ] :
   exact (RingHom.isStandardSmoothOfRelativeDimension_algebraMap _).2 (GlobalTheory.Adelic.isStandardSmooth_mvPolynomial R σ)
 
 /- English proof (translation)
-The claim follows from `@smoothOfRelativeDimension_comp _ _ _ _ _ _ hU.fromSpec (smooth_C Γ(X, U) σ) inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem smooth_cell {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) (σ : Type) [Finite σ] :
     SmoothOfRelativeDimension (Nat.card σ + 0)
@@ -84,13 +84,13 @@ end DifferentiableLines.CellsProj
 open DifferentiableLines.CellsProj GlobalTheory.FlagEmb GlobalTheory.FlagMod in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Y p A Z π g κ hκ hZ hs`. Set `𝒰 : Z.OpenCover` to `Scheme.Cover.mkOfCovers (A.B × Pm Dw.mult) (fun k => Sp (CR Dw.mult (A.V k.1))) (fun k => κ k.1 k.2) (fun z => by`. Take `⟨b, w, y, h⟩` from `hZ.cover z`. Conclude with `⟨(b, w), y, h⟩) (fun k => hκ k.1 k.2)`. Use `⟨Nat.card (CellVar Dw.mult) + 0 + Dw.dim, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `HasRingHomProperty.instIsZariskiLocalAtSource (P := @SmoothOfRelativeDimension.{0} (Nat.card (CellVar Dw.mult) + 0 + Dw.dim)) (Q := RingHom.Locally (RingHom.IsStandardSmoothOfRelativeDimension (Nat.card (CellVar Dw.mult) + 0 + Dw.dim)))` as an intermediate fact. Use `IsZariskiLocalAtSource.of_openCover (P := @SmoothOfRelativeDimension.{0} (Nat.card (CellVar Dw.mult) + 0 + Dw.dim)) 𝒰 fun k => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `SmoothOfRelativeDimension _ (κ k.1 k.2 ≫ π ≫ Y.s)`. Rewrite using `[← Category.assoc, hZ.plk.base, cbase]`. Conclude with `@smoothOfRelativeDimension_comp _ _ _ _ _ _ Y.s (smooth_cell (A.V k.1).2 (CellVar Dw.mult)) hs`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hZ.proper` as an intermediate fact. Use `isProjOver_of_joint Y.s Y.proj π (fun en : En Dw.mult => plN A.N en.1) g (fun en => ?_) hZ.ext` and prove the remaining obligations. Use `𝒰.hom_ext _ _ fun k => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `κ k.1 k.2 ≫ g en ≫ _ = κ k.1 k.2 ≫ π ≫ Y.s`. Take `⟨hu, e⟩` from `hZ.plk.plk k.1 k.2 en`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, e, GlobalTheory.ProjSpace.pt_str, ← Category.assoc, hZ.plk.base, cbase, Category.assoc]`. Establish `h : (A.V k.1).2.fromSpec ≫ Y.s = spMap ((A.alpha k.1).comp (RingHom.id c.F))` using `(spMap_ev_top _).symm`. Rewrite using `[h]`. Conclude with `Spec.map_comp _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DifferentiableLines.flag_embedding_atlas_projective : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)) (p : GlobalTheory.FlagMod.LowRank.Proj (RingHom.id c.F)) (A : GlobalTheory.FlagMod.FieldFlag.Atlas Y p) (Z : Scheme.{0}) (π : Z ⟶ Y.X) (g : ∀ en : GlobalTheory.FlagEmb.En Dw.mult, Z ⟶ PSpace c.F (GlobalTheory.FlagEmb.plN A.N en.1)) (κ : ∀ b, GlobalTheory.FlagEmb.Pm Dw.mult → (Sp (GlobalTheory.FlagEmb.CR Dw.mult (A.V b)) ⟶ Z)), (∀ b w, IsOpenImmersion (κ b w)) → GlobalTheory.FlagMod.FieldFlag.Cells A π g κ → SmoothOfRelativeDimension Dw.dim Y.s → ∃ d : ℕ, SmoothOfRelativeDimension d (π ≫ Y.s) ∧ IsProjOver (π ≫ Y.s) := by
   intro E _ _ _ H Dw l Xo c Y p A Z π g κ hκ hZ hs

@@ -19,35 +19,33 @@ import Development.AbelianVarietyTheory.Proofs.HeightProofs.MemRangeOfValVLeOne
 open AlgebraicGeometry CategoryTheory ReciprocityTheory.ChartRestriction.G.Semi NumberField IsDedekindDomain Module Formalism.BasicNotions Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.AllWt GlobalTheory.FlatLine GlobalTheory.CompHt GlobalTheory.FlatCore GlobalTheory.IndefiniteRowSideFullHecke GlobalTheory.FlatDegreeCompare
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c r U x hL Z τ s ρ hρ K _ _ _ y hyZ t₀ m1 v v' hv1 hv1' hI hI' π ε hπε 𝔓 hM a a' ha ha'`. Establish `hε : 0 < ε 𝔓`. Break down `Nat.eq_zero_or_pos (ε 𝔓) with h | h` into its components or cases. Establish `h0` using `hπε 𝔓 0`. Rewrite `h0` using `[h, pow_zero, map_zero, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd h0 zero_ne_one`. Conclude with `h`. Take `⟨T, iK, hFin, hT⟩` from `GlobalTheory.T.exists_completeDVR_completion_integral_iff K 𝔓`. Take `⟨e, he, hv⟩` from `GlobalTheory.T.exists_ramification_completeDVR_valuation_eq_mul K 𝔓 T iK hT`. Use `letI := (iK.comp (algebraMap c.F K)).toAlgebra`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `φ : K →ₐ[c.F] T.Fr` to `{ iK with commutes' := fun _ => rfl }`. Take `⟨yT, hyT⟩` from `GlobalTheory.FlagTan.exists_frMap φ y`. Take `⟨y', td, hbor, hint0⟩` from `GlobalTheory.RealisationValues.Proportional.exists_integral_change (GlobalTheory.T.evaluation_laws_generic_frames_atlas_hold E H Dw l Xo c).1 (GlobalTheory.T.exists_global_model_goodLevel_all_primes E H Dw l Xo c hL.pos hL.good hL.lev).1 (valV T.V (K' := T.Fr)).valuationSubring y …`. Establish `hint : Formalism.L2.Pj.Integral T (iK.comp (algebraMap c.F K)) y'` using `hint0 T _ (AlgHom.id _ _) (fun x hx => GlobalTheory.RealisationValues.Proportional.mem_range_of_valV_le_one hx) y' (ReciprocityTheory.ChartRestriction.G.PullbackSections.frMap_refl y')`. Establish `hA` using `UpperTheory.tangent_vectors_reduction_prime E H Dw l Xo c K y t₀ m1 τ.1 v hv1 𝔓 T iK e he hv yT hyT td y' hbor hint`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hB` using `UpperTheory.tangent_vectors_reduction_prime E H Dw l Xo c K y t₀ m1 (conjEmb τ.1) v' hv1' 𝔓 T iK e he hv yT hyT td y' hbor hint`. Take `⟨g, hg⟩` from `exists_gen hI hM`. Take `⟨g', hg'⟩` from `exists_gen hI' hM`. Establish `hAa` using `(eq_of_locOrd hI hg ha).trans (eq_of_locOrd hI hg hA).symm`. Establish `hBa` using `(eq_of_locOrd hI' hg' ha').trans (eq_of_locOrd hI' hg' hB).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨C, -, -, hchg⟩` from `((GlobalTheory.Frames.frBor_calculus E H Dw l Xo c T.Fr yT y' y').1 td).1 hbor`. Establish `hover : OverLa (π 𝔓) T.V (iK.comp (algebraMap c.F K)) (e * ε 𝔓)`. Use `⟨Nat.mul_pos he hε, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, hv, vAdd, hπε, vLa]`. Distinguish the cases in `hz : z = 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `hz` using the available equality. Simplify using the standard rewrite rules. Establish `hz' : (π 𝔓).valuation c.F z ≠ 0` using `by simpa using hz`. Rewrite using `[WithZero.log_pow]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression.
 
-Expand and normalize the polynomial expressions, which then agree. Set `yI : IntFr Xo c T (iK.comp (algebraMap c.F K))` to `⟨y', GlobalTheory.FlagTan.fromTest_of_isLocalRing y', hint⟩`. Establish `hyTZ : LiesOn Z yT` using `GlobalTheory.FlatLine.liesOn_frMap hyT hyZ`. Establish `hlies : LiesOn Z y'`. Establish `e1 : ptF y' = ptF yT`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `ptF`. Use `congr 1`. Conclude with `hchg.1`. Introduce `p`. Rewrite using `[e1]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hyTZ p`. Establish `hmem : (fun f => nval T.V (e * ε 𝔓) (evI yI f)) ∈ valOn Z (π 𝔓)` using `⟨PtV.mk (π 𝔓) hover yI ⟨hFin, hlies⟩ () trivial, rfl⟩`. Establish `hval` using `hρ (π 𝔓) _ hmem`. Establish `hev1` using `GlobalTheory.FlagTan.evR_frBor s.sig_mem hbor`. Establish `hev2 : evR Xo c s.sig yT = φ (evR Xo c s.sig y)` using `GlobalTheory.FlagTan.evR_frMap s.sig_mem.1 hyT`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS4` using `GlobalTheory.T.flatLineWeight_character_triangular_frameChange E H Dw τ T.Fr td`. Establish `hφ : ∀ z, φ z = iK z` using `fun _ => rfl`. Establish `hD : ∀ σ, (∏ i : Fin (Dw.mult σ), (td (some ⟨σ, i⟩) : T.Fr)) ≠ 0` using `fun σ => Finset.prod_ne_zero_iff.2 fun i _ => (td _).ne_zero`. Establish `hprod : evR Xo c s.sig y' * (∏ i : Fin (Dw.mult τ.1), (td (some ⟨τ.1, i⟩) : T.Fr)) = (∏ i : Fin (Dw.mult (conjEmb τ.1)), (td (some ⟨conjEmb τ.1, i⟩) : T.Fr)) * iK (evR Xo c s.sig y)`. Rewrite using `[hev1, hev2, hφ, ← hS4]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hval' : nval T.V (e * ε 𝔓) (evR Xo c s.sig y') = (ρ (π 𝔓) : EReal)` using `hval`. Establish `hy'0 : evR Xo c s.sig y' ≠ 0`. Introduce `h0`. Rewrite `hval'` using `[h0, nval_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `EReal.coe_ne_top _ hval'.symm`. Establish `ha0 : iK (evR Xo c s.sig y) ≠ 0`. Introduce `h0`. Rewrite `hprod` using `[h0, mul_zero]`. Conclude with `mul_ne_zero hy'0 (hD _) hprod`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hZ` using `congrArg (vV T.V) hprod`. Rewrite `hZ` using `[vV_mul hy'0 (hD _), vV_mul (hD _) ha0, hv]`. Rewrite `hval'` using `[nval_of_ne hy'0, EReal.coe_eq_coe_iff]`. Establish `he' : (e : ℝ) ≠ 0` using `by exact_mod_cast he.ne'`. Establish `hε' : (ε 𝔓 : ℝ) ≠ 0` using `by exact_mod_cast hε.ne'`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hZ'` using `congrArg (Int.cast : ℤ → ℝ) hZ`. Move the coercions through the operations in `at hZ'`. Rewrite using `[← hval', hAa, hBa, eq_sub_of_add_eq hZ']`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.archimedean_section_valuation_bound :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (x : ℝ), Laws U x → ∀ (Z : Comp Xo c) (τ : Psi H) (s : ArchSec U x Z (flatWt Dw τ)) (ρ : HeightOneSpectrum (𝓞 c.F) → ℝ), (∀ la, ∀ w ∈ valOn Z la, w s.sig = (ρ la : EReal)) → ∀ (K : Type) [Field K] [NumberField K] [Algebra c.F K] (y : FrPt Xo c K), LiesOn Z y → ∀ (t₀ : SAB H (Sp K)) (m1 : SABMap t₀ Xo.univ.t y.x) (v : Fin (Dw.mult τ.1) → (epsR K ⟶ t₀.G)) (v' : Fin (Dw.mult (conjEmb τ.1)) → (epsR K ⟶ t₀.G)), (∀ i, (v i).left ≫ m1.φ = y.u τ.1 i) → (∀ i, (v' i).left ≫ m1.φ = y.u (conjEmb τ.1) i) → Indep v → Indep v' → ∀ (π : HeightOneSpectrum (𝓞 K) → HeightOneSpectrum (𝓞 c.F)) (ε : HeightOneSpectrum (𝓞 K) → ℕ), (∀ 𝔓 (z : c.F), 𝔓.valuation K (algebraMap c.F K z) = (π 𝔓).valuation c.F z ^ ε 𝔓) → ∀ (𝔓 : HeightOneSpectrum (𝓞 K)), HasModel t₀ 𝔓 → ∀ (a a' : ℝ), EigenvectorLieDegree.IsLocOrd t₀.G v 𝔓 a → EigenvectorLieDegree.IsLocOrd t₀.G v' 𝔓 a' → (ε 𝔓 : ℝ) * ρ (π 𝔓) = (vAdd 𝔓 (evR Xo c s.sig y) : ℝ) + (a - a') := by

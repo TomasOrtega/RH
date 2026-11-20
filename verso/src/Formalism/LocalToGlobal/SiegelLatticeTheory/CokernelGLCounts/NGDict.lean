@@ -154,7 +154,7 @@ def AssemblyConstantThirtyNine (k r : ℕ) : Prop :=
           sumSq R d0 (fun _ => True) ≤ ENNReal.ofReal (P.Hp ^ ((39 : ℝ) * ((r : ℝ) + 1) ^ 2)) * nn R d0
 
 /- English proof (translation)
-Introduce `F _ _ _ E _ _ _ _ M hOK V _ _ H hV P hR hT`. Use `⟨fun hP => ⟨NGOrbit0_of hP hR, NGUnimod_of hOK hR.1⟩, fun hP R d0 => ?_⟩` and prove the remaining obligations. Take `⟨hHp, hS⟩` from `hD F E M hOK V H hV hk P hR hT hP`. Conclude with `hG F E M hOK V H hV hk P hR hT hHp R d0 (hS R d0)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem NGLeft_of_dict (k r : ℕ) (hk : 4 * r + 7 ≤ k) (hG : Glue k r) (hD : DictAll k r) : NGLeft k r 22 7 := by
   intro F _ _ _ E _ _ _ _ M hOK V _ _ H hV P hR hT
@@ -163,16 +163,16 @@ theorem NGLeft_of_dict (k r : ℕ) (hk : 4 * r + 7 ≤ k) (hG : Glue k r) (hD : 
   exact hG F E M hOK V H hV hk P hR hT hHp R d0 (hS R d0)
 
 /- English proof (translation)
-The claim follows from `nongeneric_local_of_remainder k r 22 7 C hk hC1 hC2 (NGLeft_of_dict k r hk hG hD)`.
+A detailed English derivation is pending.
 -/
 theorem local_counting_bound_of_dictionary (k r : ℕ) (C : ℝ) (hk : 4 * r + 7 ≤ k) (hC1 : (gainBoundConstant 22 7 : ℝ) ≤ C) (hC2 : (nongenericConstantNoGain 22 : ℝ) ≤ C)
     (hG : Glue k r) (hD : DictAll k r) : Formalism.MainNotions.NonGenericAndKTwoTheorems.NonGenericLocalBound k r C :=
   nongeneric_local_of_remainder k r 22 7 C hk hC1 hC2 (NGLeft_of_dict k r hk hG hD)
 
 /- English proof (translation)
-Introduce `F _ _ _ E _ _ _ _ M hOK V _ _ H hV P hR`. Distinguish the cases in `hP : P.PrimeTo`. Conclude with `NGAt_of_good hOK k 39 hP hR`. Distinguish the cases in `hT : ∃ (d : Datum P) (t : Term V M r), IsTermOver P d t`. Take `⟨hHp, hS⟩` from `hD F E M hOK V H hV hk P hR hT hP`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `NGAt_of hOK k 39 (fun R d0 => hG F E M hOK V H hV hk P hR hT hHp R d0 (hS R d0)) (fun h => absurd h hP)`. Use `NGAt_of_noTerms hOK k 39 (fun R d => ?_)` and prove the remaining obligations. Use extensionality with `t`. Simplify using `only [Set.mem_empty_iff_false, iff_false]`. Conclude with `fun ht => hT ⟨d, t, (R.hRT d).1 ht⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem local_counting_bound_thirty_nine (k r : ℕ) (hk : 4 * r + 7 ≤ k) (hG : AssemblyConstantThirtyNine k r) (hD : DictAll k r) :
     Formalism.MainNotions.NonGenericAndKTwoTheorems.NonGenericLocalBound k r 39 := by

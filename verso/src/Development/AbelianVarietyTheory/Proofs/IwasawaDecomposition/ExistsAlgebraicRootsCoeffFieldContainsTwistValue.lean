@@ -21,7 +21,7 @@ def finOr {α : Type} (s : Set α) : Finset α := by
   exact if h : s.Finite then h.toFinset else ∅
 
 /- English proof (translation)
-Unfold `finOr`. Rewrite using `[dif_pos h, Set.Finite.mem_toFinset]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_finOr {α : Type} {s : Set α} (h : s.Finite) {x : α} : x ∈ finOr s ↔ x ∈ s := by
   unfold finOr
@@ -30,7 +30,7 @@ theorem mem_finOr {α : Type} {s : Set α} (h : s.Finite) {x : α} : x ∈ finOr
 def rootN (N : ℕ) : ℂ := Complex.exp (2 * Real.pi * Complex.I / N)
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos N with rfl | hN` into its components or cases. Simplify using `only [rootN, Nat.cast_zero, div_zero, Complex.exp_zero]`. Conclude with `isAlgebraic_one`. Establish `h : rootN N ^ N = 1` using `(Complex.isPrimitiveRoot_exp N hN.ne').pow_eq_one`. Conclude with `(IsIntegral.of_pow hN (by rw [h]; exact isIntegral_one)).isAlgebraic`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rootN_isAlgebraic (N : ℕ) : IsAlgebraic ℚ (rootN N) := by
   rcases Nat.eq_zero_or_pos N with rfl | hN
@@ -55,9 +55,9 @@ def Sv (P : Pre) (Ξ : Set (Formalism.L2.Host.HChar P.host.E)) : Finset ℂ := b
   exact (finOr Ξ).biUnion rootsOf
 
 /- English proof (translation)
-Unfold `Sv at hz`. Take `⟨χ, -, hχ⟩` from `Finset.mem_biUnion.1 hz`. Unfold `rootsOf at hχ`. Take `⟨Q, -, hQ⟩` from `Finset.mem_biUnion.1 hχ`. Take `⟨Q', -, rfl⟩` from `Finset.mem_image.1 hQ`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `rootN_isAlgebraic _`.
+A detailed English derivation is pending.
 -/
 theorem isAlgebraic_of_mem_Sv (P : Pre) (Ξ : Set (Formalism.L2.Host.HChar P.host.E)) (z : ℂ) (hz : z ∈ Sv P Ξ) : IsAlgebraic ℚ z := by
   unfold Sv at hz
@@ -68,7 +68,7 @@ theorem isAlgebraic_of_mem_Sv (P : Pre) (Ξ : Set (Formalism.L2.Host.HChar P.hos
   exact rootN_isAlgebraic _
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.HeckeSplit.eventually_unrAt χ.1 χ.2.1`. Rewrite `h` using `[Filter.eventually_cofinite]`. Use `h.subset fun Q hQ => ?_` and prove the remaining obligations. Simplify using `only [ramSet, Set.mem_setOf_eq] at hQ ⊢`. Rewrite using `[GlobalTheory.HeckeSplit.unrAt_iff]` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem ramSet_finite {E : Type} [Field E] [NumberField E] (χ : Formalism.L2.Host.HChar E) : (ramSet χ).Finite := by
   have h := GlobalTheory.HeckeSplit.eventually_unrAt χ.1 χ.2.1
@@ -78,9 +78,9 @@ theorem ramSet_finite {E : Type} [Field E] [NumberField E] (χ : Formalism.L2.Ho
   rwa [GlobalTheory.HeckeSplit.unrAt_iff]
 
 /- English proof (translation)
-Establish `hne : (Ideal.span {((n : ℕ) : 𝓞 E)} : Ideal (𝓞 E)) ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hn` after adjusting the coercions. Use `(Ideal.finite_factors hne).subset fun Q hQ => ?_` and prove the remaining obligations. Simplify using `only [overN, Set.mem_setOf_eq] at hQ ⊢`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`. Conclude with `hQ`.
+A detailed English derivation is pending.
 -/
 theorem overN_finite {E : Type} [Field E] [NumberField E] {n : ℕ} (hn : n ≠ 0) : (overN (E := E) n).Finite := by
   have hne : (Ideal.span {((n : ℕ) : 𝓞 E)} : Ideal (𝓞 E)) ≠ 0 := by
@@ -92,27 +92,25 @@ theorem overN_finite {E : Type} [Field E] [NumberField E] {n : ℕ} (hn : n ≠ 
   exact hQ
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Simplify using `only [Qprime, Set.mem_setOf_eq] at hv`. Apply `hv` to reduce the goal to its premises. Introduce `x hx`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonoidHom.mem_ker]`. Take `⟨a, rfl⟩` from `finAf_surjective F E x`. Simplify using `only [inertAt, Subgroup.mem_inf] at hx`. Take `⟨hx1, hx2⟩` from `hx`. Establish `hcomp : ∀ P : HeightOneSpectrum (𝓞 E), ((GlobalTheory.HeckeSplit.finPart E P a : (P.adicCompletion E)ˣ) : P.adicCompletion E) = afIso F E (finAf F E a : AfE F E) P`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `P`. Rewrite using `[afIso_finAf]`. Both sides reduce to the same expression. Establish `key : ξ.1 a = ξ.1 (GlobalTheory.HeckeSplit.infIdele E (GlobalTheory.HeckeSplit.infPart E a))`. Rewrite using `[GlobalTheory.HeckeSplit.char_eq_prod_local ξ.1 ξ.2.1 a ∅ ?_, Finset.prod_empty, mul_one]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `P _`. Distinguish the cases in `hPv : P.under (𝓞 F) = v`. Apply `(GlobalTheory.HeckeSplit.unrAt_iff E ξ P).2 (hne P hPv)` to reduce the goal to its premises. Rewrite using `[hcomp]`. Simplify using `only [intU, Submonoid.mem_units_iff] at hx1`.
+Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `(mem_rInt_iff F E _).1 hx1.1 P`. Establish `h2` using `(mem_rInt_iff F E _).1 hx1.2 P`. Establish `hprod : afIso F E (finAf F E a : AfE F E) P * afIso F E (((finAf F E a)⁻¹ : (AfE F E)ˣ) : AfE F E) P = 1`. Establish `h : afIso F E ((finAf F E a : AfE F E) * (((finAf F E a)⁻¹ : (AfE F E)ˣ) : AfE F E)) P = 1`. Rewrite using `[Units.mul_inv, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite `h` using `[map_mul]`. Conclude with `h`. Establish `hv' : Valued.v (afIso F E (finAf F E a : AfE F E) P) * Valued.v (afIso F E (((finAf F E a)⁻¹ : (AfE F E)ˣ) : AfE F E) P) = 1`. Rewrite using `[← map_mul, hprod, map_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Use `le_antisymm h1 ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `h1 : GlobalTheory.HeckeSplit.finPart E P a = 1`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hcomp, Units.val_one]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(mem_suppAt_iff F E v _).1 hx2 P hPv`. Rewrite using `[h1, map_one, map_one]`. Establish `hb : finAf F E (GlobalTheory.HeckeSplit.infIdele E (GlobalTheory.HeckeSplit.infPart E a)) = 1`. Apply `Units.ext` to reduce the goal to its premises. Apply `(afIso F E).injective` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[afIso_finAf, Units.val_one, map_one]`. Both sides reduce to the same expression. Establish `e1` using `h a`. Establish `e2` using `h (GlobalTheory.HeckeSplit.infIdele E (GlobalTheory.HeckeSplit.infPart E a))`. Rewrite `e2` using `[hb, map_one, Units.val_one, map_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e1` using `[key, e2]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_one]`. Apply `σ.injective` to reduce the goal to its premises. Rewrite using `[map_one]`.
-
-Conclude with `e1.symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ram {F E K : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [Field K] {σ : K →+* ℂ}
     {μ : Chr F E K} {ξ : Formalism.L2.Host.HChar E} (h : Reads σ μ ξ) {v : HeightOneSpectrum (𝓞 F)} (hv : v ∈ Qprime μ) :
@@ -182,19 +180,17 @@ end GlobalTheory.Mem.Col2.RootsIn
 open GlobalTheory.Mem.Col2.RootsIn in
 
 /- English proof (translation)
-Use `⟨GlobalTheory.Mem.Col2.RootsIn.Sv, fun P Ξ z hz => isAlgebraic_of_mem_Sv P Ξ z hz, ?_⟩` and prove the remaining obligations. Introduce `B px I hI hS`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `a P _`. Conclude with `⟨_, (hI.xi_reads a _).symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `a P hP`. Take `⟨v, hv, hsel, -⟩` from `I.exists_of_mem_Q hP`. Take `⟨Q, hQv, hQ⟩` from `exists_ram (hI.xi_reads a) hv`. Establish `hPv : P.asIdeal.under (𝓞 B.fields.F) = v.asIdeal` using `hsel ▸ hI.sel_ok v`. Establish `hQP : ((Ideal.absNorm Q.asIdeal : ℕ) : 𝓞 B.fields.E) ∈ P.asIdeal`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ((Ideal.absNorm Q.asIdeal : ℕ) : 𝓞 B.fields.F) ∈ P.asIdeal.under (𝓞 B.fields.F)`. Rewrite using `[hPv, ← hQv]`. Use `show _ ∈ Ideal.comap (algebraMap (𝓞 B.fields.F) (𝓞 B.fields.E)) Q.asIdeal`. Rewrite using `[Ideal.mem_comap, map_natCast]`. Conclude with `Ideal.absNorm_mem _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : ((Ideal.absNorm Q.asIdeal : ℕ) : 𝓞 B.fields.F) ∈ Ideal.comap (algebraMap (𝓞 B.fields.F) (𝓞 B.fields.E)) P.asIdeal` using `h2`. Rewrite `h3` using `[Ideal.mem_comap, map_natCast]`. Conclude with `h3`. Establish `hQ0 : Ideal.absNorm Q.asIdeal ≠ 0` using `fun h0 => Q.ne_bot (Ideal.absNorm_eq_zero_iff.1 h0)`. Establish `hN : Nat.card (kP P) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hP0 : Ideal.absNorm P.asIdeal ≠ 0` using `fun h0 => P.ne_bot (Ideal.absNorm_eq_zero_iff.1 h0)`. Rewrite `hP0` using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Then use the resulting hypothesis. Establish `hmem : rootN (Nat.card (kP P)) ∈ GlobalTheory.Mem.Col2.RootsIn.Sv B.toPre (Set.range I.xi)`. Unfold `GlobalTheory.Mem.Col2.RootsIn.Sv`. Use `Finset.mem_biUnion.2 ⟨I.xi a, (mem_finOr (Set.finite_range _)).2 ⟨a, rfl⟩, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Unfold `rootsOf`. Use `Finset.mem_biUnion.2 ⟨Q, (mem_finOr (ramSet_finite _)).2 hQ, ?_⟩` and prove the remaining obligations. Conclude with `Finset.mem_image.2 ⟨P, (mem_finOr (overN_finite hQ0)).2 hQP, rfl⟩`. Take `⟨z, hz⟩` from `(B.mem_LLC).1 (hS _ hmem)`. Use `⟨z, IsPrimitiveRoot.of_map_of_injective (f := B.embLL) ?_ B.embLL.injective⟩` and prove the remaining obligations.
-
-Rewrite using `[hz]`. Conclude with `Complex.isPrimitiveRoot_exp _ hN`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mem.Col2.exists_roots_valsIn : ∃ Sv : ∀ P : Pre, Set (Formalism.L2.Host.HChar P.host.E) → Finset ℂ, (∀ P Ξ, ∀ z ∈ Sv P Ξ, IsAlgebraic ℚ z) ∧
   ∀ (B : Base) (px : PreX B.toPre) (I : Col2.ColIn B px), I.Ok → (∀ z ∈ Sv B.toPre (Set.range I.xi), z ∈ B.LLC) → ValsIn I := by

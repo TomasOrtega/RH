@@ -11,7 +11,7 @@ noncomputable section
 universe u
 
 /- English proof (translation)
-Set `_` to `(Subring.inclusion h).toAlgebra`. Use `hl₁` as an intermediate fact. Use `hl₂` as an intermediate fact. Establish `: IsLocalRing R` using `IsLocalization.AtPrime.isLocalRing R 𝔭₁`. Rewrite using `[← IsLocalization.AtPrime.under_maximalIdeal R 𝔭₁ inferInstance, ← IsLocalization.AtPrime.under_maximalIdeal R 𝔭₂ inferInstance]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem prime_eq_of_isLocalization_atPrime' {F : Type*} [Field F] {B R : Subring F} (h : B ≤ R)
     (𝔭₁ 𝔭₂ : Ideal B) [𝔭₁.IsPrime] [𝔭₂.IsPrime]
@@ -25,11 +25,11 @@ theorem prime_eq_of_isLocalization_atPrime' {F : Type*} [Field F] {B R : Subring
     ← IsLocalization.AtPrime.under_maximalIdeal R 𝔭₂ inferInstance]
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ K _ _ ι _ J _ P n hP N u hu hu' c x hx hxP W hϖW hWmin hWrel`. Use `hP.multiProj.isPrime` as an intermediate fact. Introduce `𝔫 h𝔫`. Take `⟨W', hW'p, hW'h, hW'r, hW'le, hW'c, h, hl⟩` from `h₁ O K ι J P n hP N u hu hu' c x hx hxP W hWmin hWrel 𝔫 h𝔫`. Establish `hmin` using `h₂ O K ι J P n hP N u hu hu' c x hx hxP W hWmin hWrel W' hW'p hW'h hW'r hW'le hW'c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨h', 𝔫', h𝔫', hl', hdeg⟩` from `h₃ O ϖ hϖ K ι J P n hP N u hu hu' c x hx hxP W hϖW hWmin hWrel W' hmin hW'r hW'c`. Use `h𝔫.isPrime` as an intermediate fact. Use `h𝔫'.isPrime` as an intermediate fact. Establish `heq : 𝔫 = 𝔫'` using `prime_eq_of_isLocalization_atPrime' h 𝔫 𝔫' hl hl'`. Substitute `heq` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `⟨W', ⟨hmin, hW'r, hW'c⟩, ⟨h, hl⟩, hdeg⟩`.
+Supply the required witnesses or components.
 -/
 theorem BlowUpOverLocMaxPoint.proof (h₁ : BlowUpOverLocMaxCentre.Statement.{u})
     (h₂ : BlowUpOverLocFibreMinimal.Statement.{u}) (h₃ : BlowUpOverLocPointDeg.Statement.{u}) :

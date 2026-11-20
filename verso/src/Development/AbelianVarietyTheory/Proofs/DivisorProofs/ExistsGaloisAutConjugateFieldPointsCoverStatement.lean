@@ -10,7 +10,7 @@ open GlobalTheory.ZH GlobalTheory.Poinc GlobalTheory.UPoinc.USum
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Poinc.FieldConj.exists_aut_eq_of_comp_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsGaloisAutConjugateFieldPointsCover.lean&line=146#L146)
 -/

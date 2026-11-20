@@ -17,9 +17,9 @@ namespace GlobalTheory.TraceLattice
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E)
 
 /- English proof (translation)
-Establish `h1` using `trace_eq_sum_embeddings ℂ (K := ℚ) (L := E) (x := ((x * H.bar y : 𝓞 E) : E))`. Rewrite `h1` using `[← Algebra.coe_trace_int, ← (RingHom.equivRatAlgHom E ℂ).sum_comp]`. Rewrite using `[GlobalTheory.LatticeBoundTests.trBil_apply, ← Complex.re_sum]`. Establish `h2 : ∑ σ : E →+* ℂ, σ (x : E) * starRingEnd ℂ (σ (y : E)) = ((Algebra.trace ℤ (𝓞 E) (x * H.bar y) : ℤ) : ℂ)`. Rewrite using `[← map_intCast (algebraMap ℚ ℂ), h1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[← IsCMField.complexEmbedding_complexConj, ← H.bar_eq, ← map_mul]`. Both sides reduce to the same expression. Rewrite using `[h2]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cast_trace_mul_bar (x y : 𝓞 E) :
     ((Algebra.trace ℤ (𝓞 E) (x * H.bar y) : ℤ) : ℝ) = GlobalTheory.LatticeBoundTests.trBil E x y := by
@@ -35,24 +35,24 @@ theorem cast_trace_mul_bar (x y : 𝓞 E) :
   rw [h2]; simp
 
 /- English proof (translation)
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[H.bar_eq, H.bar_eq, IsCMField.complexConj_apply_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem bar_bar (a : 𝓞 E) : H.bar (H.bar a) = a := by
   apply RingOfIntegers.ext
   rw [H.bar_eq, H.bar_eq, IsCMField.complexConj_apply_apply]
 
 /- English proof (translation)
-Introduce `E _ _ _ H`. Set `J` to `Module.Free.ChooseBasisIndex ℤ (𝓞 E)`. Set `q : J ≃ Fin (Fintype.card J)` to `Fintype.equivFin J`. Set `e : Module.Basis (Fin (Fintype.card J)) ℤ (𝓞 E)` to `(RingOfIntegers.basis E).reindex q`. Use `⟨Fintype.card J, Matrix.of fun i j => Algebra.trace ℤ (𝓞 E) (e i * H.bar (e j)), (Algebra.leftMulMatrix e).toRingHom, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Module.finrank_eq_card_chooseBasisIndex]`. Conclude with `Module.finrank_pos`. Use extensionality with `i j`. Apply `Int.cast_injective (α := ℝ)` to reduce the goal to its premises. Simplify using `only [Matrix.transpose_apply, Matrix.of_apply]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cast_trace_mul_bar, cast_trace_mul_bar, GlobalTheory.LatticeBoundTests.trBil_symm]`. Establish `h` using `(GlobalTheory.LatticeBoundTests.trBil_posDef E).submatrix q.symm.injective`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.of_apply, Matrix.submatrix_apply, cast_trace_mul_bar, e, Module.Basis.reindex_apply]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.of_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.leftMulMatrix_eq_repr_mul]`. Establish `h1 : ∑ k, e.repr (a * e i) k * Algebra.trace ℤ (𝓞 E) (e k * H.bar (e j)) = Algebra.trace ℤ (𝓞 E) (a * e i * H.bar (e j))` using `by conv_rhs => rw [← e.sum_repr (a * e i)]`. Rewrite using `[Finset.sum_mul, map_sum]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, map_zsmul, smul_eq_mul]`. Establish `h2 : ∑ k, Algebra.trace ℤ (𝓞 E) (e i * H.bar (e k)) * e.repr (H.bar a * e j) k = Algebra.trace ℤ (𝓞 E) (e i * H.bar (H.bar a * e j))` using `by conv_rhs => rw [← e.sum_repr (H.bar a * e j)]`. Rewrite using `[map_sum, Finset.mul_sum, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zsmul, mul_smul_comm, map_zsmul, smul_eq_mul, mul_comm]`. Rewrite using `[h1, h2, map_mul H.bar, bar_bar]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_traceForm_matrix : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E), ∃ (m : ℕ) (B0 : Matrix (Fin m) (Fin m) ℤ) (ρ0 : 𝓞 E →+* Matrix (Fin m) (Fin m) ℤ), 1 ≤ m ∧ B0.transpose = B0 ∧ (B0.map (Int.cast : ℤ → ℝ)).PosDef ∧ ∀ a, (ρ0 a).transpose * B0 = B0 * ρ0 (H.bar a) := by
   intro E _ _ _ H

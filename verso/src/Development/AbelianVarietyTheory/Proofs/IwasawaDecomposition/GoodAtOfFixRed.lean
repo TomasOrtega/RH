@@ -20,7 +20,7 @@ def FixRed (X : HidaSetting D) (red : X.B.I.Gf → G0g D.nd)
         incl X.B.I (b kv j) ∈ wLf X (D.naut.plGw kv.1 kv.2)
 
 /- English proof (translation)
-Introduce `k hk kv` and use `⟨b kv, (hf kv).1, (hf kv).2 k hk⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem goodAt_of_fixRed {X : HidaSetting D} {red : X.B.I.Gf → G0g D.nd}
     {b : (Σ k : Fin 2, D.nd.PlG k) → Fin D.R.r → Fin X.B.I.n → X.B.I.E} (hf : FixRed X red b) :

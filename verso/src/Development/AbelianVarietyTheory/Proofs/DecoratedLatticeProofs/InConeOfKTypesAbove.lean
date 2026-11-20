@@ -12,15 +12,15 @@ open Formalism.MainNotions.S (IsURepOn IsIrredOn IsKFin IsKStableOn IsWtOn IsKTy
 namespace GlobalTheory.CoverCone
 
 /- English proof (translation)
-Introduce `KTA p q n e P T R σ hb hσ hds μ v hv`. Take `⟨S, hS⟩` from `GlobalTheory.RealPar.isKTypeOf_of_isHW R hb hσ μ ⟨v, hv⟩`. Take `⟨c, hc, hμ⟩` from `KTA n P.sgn P.lam R.U.H σ P.hc hds _ S hS`. Use `⟨fun a b => c (e a) (e b), fun a b hab => ?_, ?_⟩` and prove the remaining obligations. Establish `h2` using `P.hc.1 (hc _ _ hab)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h2` using `[← GlobalTheory.RealPar.ratEntry_cast, ← GlobalTheory.RealPar.ratEntry_cast]`. Conclude with `h2` after adjusting the coercions. Use function extensionality and compare the values at `x`. Apply `Rat.cast_injective (α := ℝ)` to reduce the goal to its premises. Establish `hx` using `congrFun hμ (e x)`.
+Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Equiv.symm_apply_apply] at hx`. Use `push_cast`. Rewrite using `[hx, GlobalTheory.RealPar.blattner_eq P hb (lam := GlobalTheory.RealPar.blockPar P e) (fun a => GlobalTheory.RealPar.ratEntry_cast P (e a)) x]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.add_apply]`. Use `congr 1`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e.sum_comp]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← e.sum_comp]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.RealPar.root_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+A detailed English derivation is pending.
 -/
 theorem inCone_of_kTypesAbove : GlobalTheory.Dec.KTypesAbove → ∀ (p q n : ℕ) (e : Ix p q ≃ Fin n) (P : SignedPar n) (T : GrpData p q) (R : DSRep T) (σ : Matrix (Fin n) (Fin n) ℂ → (R.U.H →L[ℂ] R.U.H)), BlockOrd e P.sgn → Factors R.U e σ → IsDSPar P σ → ∀ (μ : Ix p q → ℚ) v, IsHW R.HK.act μ v → InCone (blockPar P e) μ := by
   intro KTA p q n e P T R σ hb hσ hds μ v hv

@@ -12,7 +12,7 @@ noncomputable section
 namespace FibreConstantClosedForm
 
 /- English proof (translation)
-Rewrite using `[eval_eq']`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Simplify using `[Fin.prod_univ_two]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem eval_two (g : MvPolynomial (Fin 2) ℝ) (x y : ℝ) :
     eval ![x, y] g = ∑ d ∈ g.support, g.coeff d * (x ^ d 0 * y ^ d 1) := by
@@ -21,7 +21,7 @@ theorem eval_two (g : MvPolynomial (Fin 2) ℝ) (x y : ℝ) :
   simp [Fin.prod_univ_two]
 
 /- English proof (translation)
-Establish `h1 : ‖(n : E3)‖ = 1` using `mem_sphere_zero_iff_norm.mp n.2`. Establish `h2` using `PiLp.norm_apply_le (n : E3) 2`. Rewrite `h2` using `[h1, Real.norm_eq_abs]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem abs_height_le (n : Sphere2) : |height n| ≤ 1 := by
   have h1 : ‖(n : E3)‖ = 1 := mem_sphere_zero_iff_norm.mp n.2
@@ -30,14 +30,14 @@ theorem abs_height_le (n : Sphere2) : |height n| ≤ 1 := by
   exact h2
 
 /- English proof (translation)
-Unfold `height`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_height : Continuous height := by
   unfold height
   fun_prop
 
 /- English proof (translation)
-Simplify using `[centredPrimitive]`.
+Simplify using the standard rewrite rules.
 -/
 theorem centredPrimitive_X_pow (a : ℕ) (c : ℝ) :
     centredPrimitive (Polynomial.X ^ a) c =
@@ -45,11 +45,11 @@ theorem centredPrimitive_X_pow (a : ℕ) (c : ℝ) :
   simp [centredPrimitive]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hni`. Establish `h` using `h0.1 1 1`. Establish `hm : uniformMean (fun _ : ℝ => (1 : ℝ)) = 1`. Rewrite using `[uniformMean, intervalIntegral.integral_const]`. Evaluate the numerical expressions.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Establish `hc : ∀ c, centredPrimitive 1 c = 0`. Introduce `c`. Simplify using `only [centredPrimitive, Polynomial.eval_one, hm, sub_self, intervalIntegral.integral_zero]`. Simplify using `only [Polynomial.eval_one, mul_one, hm, hc, zero_mul, zero_div, intervalIntegral.integral_zero] at h`. Rewrite `h` using `[integral_undef hni]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Evaluate the numerical expressions using `at h`.
+Evaluate the numerical expressions.
 -/
 theorem integrable_kernel (h0 : ZonalBilinearFormula.Statement) :
     Integrable (fun p : Sphere2 × Sphere2 => kernelL ⟪(p.1 : E3), (p.2 : E3)⟫_ℝ) pairMeasure := by
@@ -67,7 +67,7 @@ theorem integrable_kernel (h0 : ZonalBilinearFormula.Statement) :
   norm_num at h
 
 /- English proof (translation)
-Use `(integrable_kernel h0).mul_bdd (c := 1) ?_ (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Conclude with `(((continuous_height.comp continuous_fst).pow a).mul ((continuous_height.comp continuous_snd).pow b)).aestronglyMeasurable`. Rewrite using `[norm_mul, norm_pow, norm_pow, Real.norm_eq_abs, Real.norm_eq_abs]`. Conclude with `mul_le_one₀ (pow_le_one₀ (abs_nonneg _) (abs_height_le _)) (by positivity) (pow_le_one₀ (abs_nonneg _) (abs_height_le _))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_term (h0 : ZonalBilinearFormula.Statement) (a b : ℕ) :
     Integrable (fun p : Sphere2 × Sphere2 =>
@@ -80,7 +80,7 @@ theorem integrable_term (h0 : ZonalBilinearFormula.Statement) (a b : ℕ) :
       (pow_le_one₀ (abs_nonneg _) (abs_height_le _))
 
 /- English proof (translation)
-Establish `h` using `h0.1 (Polynomial.X ^ a) (Polynomial.X ^ b)`. Simplify using `only [Polynomial.eval_pow, Polynomial.eval_X] at h`. Rewrite using `[← h]`. Use `congr 1`. Use function extensionality and compare the values at `p`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -98,9 +98,9 @@ theorem term_eq (h0 : ZonalBilinearFormula.Statement) (a b : ℕ) :
   ring
 
 /- English proof (translation)
-Establish `hfun : (fun p : Sphere2 × Sphere2 => kernelL ⟪(p.1 : E3), (p.2 : E3)⟫_ℝ * eval ![height p.1, height p.2] g) = fun p => ∑ d ∈ g.support, g.coeff d * (kernelL ⟪(p.1 : E3), (p.2 : E3)⟫_ℝ * (height p.1 ^ d 0 * height p.2 ^ d 1))`. Use function extensionality and compare the values at `p`. Rewrite using `[eval_two, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hfun, integral_finsetSum _ (fun d _ => (integrable_term h0 _ _).const_mul (g.coeff d))]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem integral_expand (h0 : ZonalBilinearFormula.Statement) (g : MvPolynomial (Fin 2) ℝ) :
     ∫ p, kernelL ⟪(p.1 : E3), (p.2 : E3)⟫_ℝ * eval ![height p.1, height p.2] g ∂pairMeasure =
@@ -119,16 +119,16 @@ theorem integral_expand (h0 : ZonalBilinearFormula.Statement) (g : MvPolynomial 
   rw [integral_const_mul]
 
 /- English proof (translation)
-The claim follows from `intervalIntegral.integral_finsetSum fun i hi => (hf i hi).intervalIntegrable a b`.
+A detailed English derivation is pending.
 -/
 theorem isum {ι : Type*} (a b : ℝ) (s : Finset ι) (f : ι → ℝ → ℝ) (hf : ∀ i ∈ s, Continuous (f i)) :
     ∫ x in a..b, ∑ i ∈ s, f i x = ∑ i ∈ s, ∫ x in a..b, f i x :=
   intervalIntegral.integral_finsetSum fun i hi => (hf i hi).intervalIntegrable a b
 
 /- English proof (translation)
-Repeatedly rewrite using `[eval_two]`. Rewrite using `[isum _ _ _ _ (fun d _ => by fun_prop)]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[← intervalIntegral.integral_const_mul]`. Use `congr 1`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `y`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem integral_snd (g : MvPolynomial (Fin 2) ℝ) (x : ℝ) :
     ∫ y in (-1 : ℝ)..1, eval ![x, y] g =
@@ -142,9 +142,9 @@ theorem integral_snd (g : MvPolynomial (Fin 2) ℝ) (x : ℝ) :
   ring
 
 /- English proof (translation)
-Repeatedly rewrite using `[eval_two]`. Rewrite using `[isum _ _ _ _ (fun d _ => by fun_prop)]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[← intervalIntegral.integral_const_mul, ← intervalIntegral.integral_mul_const]`. Use `congr 1`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `x`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem integral_fst (g : MvPolynomial (Fin 2) ℝ) (y : ℝ) :
     ∫ x in (-1 : ℝ)..1, eval ![x, y] g =
@@ -158,9 +158,9 @@ theorem integral_fst (g : MvPolynomial (Fin 2) ℝ) (y : ℝ) :
   ring
 
 /- English proof (translation)
-Unfold `squareMean`. Repeatedly rewrite using `[integral_snd]`. Rewrite using `[isum _ _ _ _ (fun d _ => by fun_prop), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Simplify using `only [uniformMean]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[intervalIntegral.integral_mul_const, intervalIntegral.integral_const_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem squareMean_eq (g : MvPolynomial (Fin 2) ℝ) :
     squareMean g = ∑ d ∈ g.support,
@@ -174,13 +174,13 @@ theorem squareMean_eq (g : MvPolynomial (Fin 2) ℝ) :
   ring
 
 /- English proof (translation)
-Establish `hpt : ∀ s t : ℝ, eval ![s, t] g - (1 / 2) * (∫ x in (-1 : ℝ)..1, eval ![x, t] g) - (1 / 2) * (∫ y in (-1 : ℝ)..1, eval ![s, y] g) + squareMean g = ∑ d ∈ g.support, g.coeff d * ((s ^ d 0 - uniformMean (fun t : ℝ => t ^ d 0)) * (t ^ d 1 - uniformMean (fun t : ℝ => t ^ d 1)))`. Introduce `s t`. Rewrite using `[eval_two, integral_fst, integral_snd, squareMean_eq]`. Simplify using `only [uniformMean, Finset.mul_sum, ← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hin : ∀ s : ℝ, ∫ t in (-1 : ℝ)..c, ∑ d ∈ g.support, g.coeff d * ((s ^ d 0 - uniformMean (fun t : ℝ => t ^ d 0)) * (t ^ d 1 - uniformMean (fun t : ℝ => t ^ d 1))) = ∑ d ∈ g.support, g.coeff d * (s ^ d 0 - uniformMean (fun t : ℝ => t ^ d 0)) * centredPrimitive (Polynomial.X ^ d 1) …`. Introduce `s`. Rewrite using `[isum _ _ _ _ (fun d _ => by fun_prop)]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[centredPrimitive_X_pow, ← intervalIntegral.integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Expand and normalize the polynomial expressions, which then agree. Unfold `doublyCentred`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions.
 
-Repeatedly rewrite using `[hpt, hin]`. Rewrite using `[isum _ _ _ _ (fun d _ => by fun_prop)]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[intervalIntegral.integral_mul_const, intervalIntegral.integral_const_mul, centredPrimitive_X_pow (d 0)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem doublyCentred_eq (g : MvPolynomial (Fin 2) ℝ) (c : ℝ) :
     doublyCentred g c = ∑ d ∈ g.support, g.coeff d *
@@ -215,9 +215,9 @@ theorem doublyCentred_eq (g : MvPolynomial (Fin 2) ℝ) (c : ℝ) :
   ring
 
 /- English proof (translation)
-Establish `h` using `intervalIntegral.norm_integral_le_of_norm_le_const (a := -1) (b := 1) (C := 1) (f := fun t : ℝ => t ^ a) (fun x hx => ?_)`. Rewrite `h` using `[Real.norm_eq_abs]`. Rewrite using `[uniformMean, abs_mul]`. Evaluate the numerical expressions using `at h ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `hx` using `[Set.uIoc_of_le (by norm_num)]`. Rewrite using `[Real.norm_eq_abs, abs_pow]`. Conclude with `pow_le_one₀ (abs_nonneg _) (abs_le.mpr ⟨hx.1.le, hx.2⟩)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem abs_uniformMean_pow_le (a : ℕ) : |uniformMean (fun t : ℝ => t ^ a)| ≤ 1 := by
   have h := intervalIntegral.norm_integral_le_of_norm_le_const (a := -1) (b := 1) (C := 1)
@@ -231,9 +231,9 @@ theorem abs_uniformMean_pow_le (a : ℕ) : |uniformMean (fun t : ℝ => t ^ a)| 
     exact pow_le_one₀ (abs_nonneg _) (abs_le.mpr ⟨hx.1.le, hx.2⟩)
 
 /- English proof (translation)
-Establish `h1 : |x ^ a| ≤ 1`. Rewrite using `[abs_pow]`. Conclude with `pow_le_one₀ (abs_nonneg _) (abs_le.mpr hx)`. Establish `h2` using `abs_uniformMean_pow_le a`. Rewrite using `[Real.norm_eq_abs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem abs_centred_pow_le (a : ℕ) {x : ℝ} (hx : x ∈ Set.Icc (-1 : ℝ) 1) :
     ‖x ^ a - uniformMean (fun t : ℝ => t ^ a)‖ ≤ 2 := by
@@ -247,7 +247,7 @@ theorem abs_centred_pow_le (a : ℕ) {x : ℝ} (hx : x ∈ Set.Icc (-1 : ℝ) 1)
     _ ≤ 2 := by linarith
 
 /- English proof (translation)
-The claim follows from `|centredPrimitive (Polynomial.X ^ a) c| ≤ 2 * (c + 1) := by rw [centredPrimitive_X_pow] have h := intervalIntegral.norm_integral_le_of_norm_le_const (a := -1) (b := c) (C := 2) (f := fun t : ℝ => t ^ a - uniformMean (fun t : ℝ => t ^ a)) (fun x hx => ?_) · rw [Real.norm_eq_abs, a …`.
+A detailed English derivation is pending.
 -/
 theorem abs_centredPrimitive_le_left (a : ℕ) {c : ℝ} (hc : c ∈ Set.Icc (-1 : ℝ) 1) :
     |centredPrimitive (Polynomial.X ^ a) c| ≤ 2 * (c + 1) := by
@@ -260,7 +260,7 @@ theorem abs_centredPrimitive_le_left (a : ℕ) {c : ℝ} (hc : c ∈ Set.Icc (-1
     exact abs_centred_pow_le a ⟨hx.1.le, hx.2.trans hc.2⟩
 
 /- English proof (translation)
-Rewrite using `[intervalIntegral.integral_sub ((continuous_pow a).intervalIntegrable _ _) intervalIntegrable_const, intervalIntegral.integral_const, uniformMean]`. Simplify using `only [smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem centredPrimitive_one (a : ℕ) :
     ∫ t in (-1 : ℝ)..1, (t ^ a - uniformMean (fun t : ℝ => t ^ a)) = 0 := by
@@ -270,7 +270,7 @@ theorem centredPrimitive_one (a : ℕ) :
   ring
 
 /- English proof (translation)
-The claim follows from `|centredPrimitive (Polynomial.X ^ a) c| ≤ 2 * (1 - c) := by have hcont : Continuous fun t : ℝ => t ^ a - uniformMean (fun t : ℝ => t ^ a) := by fun_prop have hsplit := intervalIntegral.integral_add_adjacent_intervals (hcont.intervalIntegrable (μ := volume) (-1) c) (hcont.interval …`.
+A detailed English derivation is pending.
 -/
 theorem abs_centredPrimitive_le_right (a : ℕ) {c : ℝ} (hc : c ∈ Set.Icc (-1 : ℝ) 1) :
     |centredPrimitive (Polynomial.X ^ a) c| ≤ 2 * (1 - c) := by
@@ -287,7 +287,7 @@ theorem abs_centredPrimitive_le_right (a : ℕ) {c : ℝ} (hc : c ∈ Set.Icc (-
     exact abs_centred_pow_le a ⟨(hc.1.trans hx.1.le), hx.2⟩
 
 /- English proof (translation)
-Establish `h : centredPrimitive (Polynomial.X ^ a) = fun c => ∫ t in (-1 : ℝ)..c, (t ^ a - uniformMean (fun t : ℝ => t ^ a))`. Use function extensionality and compare the values at `(centredPrimitive_X_pow a)`. Rewrite using `[h]`. Conclude with `intervalIntegral.continuous_primitive (fun _ _ => (by fun_prop : Continuous fun t : ℝ => t ^ a - uniformMean (fun t : ℝ => t ^ a)).intervalIntegrable _ _) (-1)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_centredPrimitive (a : ℕ) : Continuous (centredPrimitive (Polynomial.X ^ a)) := by
   have h : centredPrimitive (Polynomial.X ^ a) =
@@ -299,9 +299,9 @@ theorem continuous_centredPrimitive (a : ℕ) : Continuous (centredPrimitive (Po
       _ _) (-1)
 
 /- English proof (translation)
-Use `IntervalIntegrable.mono_fun' (g := fun _ => (4 : ℝ)) intervalIntegrable_const ?_ ?_` and prove the remaining obligations. Conclude with `(((continuous_centredPrimitive a).mul (continuous_centredPrimitive b)).measurable.div (by fun_prop)).aestronglyMeasurable`. Use `(ae_restrict_iff' measurableSet_uIoc).mpr (Filter.Eventually.of_forall fun c hc => ?_)` and prove the remaining obligations. Rewrite `hc` using `[Set.uIoc_of_le (by norm_num)]`. Establish `hc' : c ∈ Set.Icc (-1 : ℝ) 1` using `⟨hc.1.le, hc.2⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify by unfolding definitions.
 
-Simplify using `only`. Break down `eq_or_lt_of_le (show (0 : ℝ) ≤ 1 - c ^ 2 by nlinarith [hc'.1, hc'.2]) with h | h` into its components or cases. Simplify using `[← h]`. Rewrite using `[Real.norm_eq_abs, abs_div, abs_of_pos h, div_le_iff₀ h, abs_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem intervalIntegrable_ratio (a b : ℕ) :
     IntervalIntegrable (fun c : ℝ => centredPrimitive (Polynomial.X ^ a) c *
@@ -323,11 +323,11 @@ theorem intervalIntegrable_ratio (a b : ℕ) :
         _ = 4 * (1 - c ^ 2) := by ring
 
 /- English proof (translation)
-Rewrite using `[integral_expand h0, squareMean_eq]`. Repeatedly rewrite using `[term_eq h0, doublyCentred_eq, Finset.sum_div]`. Rewrite using `[intervalIntegral.integral_finsetSum (fun d _ => by`. Use `(intervalIntegrable_ratio (d 0) (d 1)).const_mul (g.coeff d) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `c`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use the proof step `ring)]`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Repeatedly rewrite using `[mul_div_assoc]`. Rewrite using `[intervalIntegral.integral_const_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem bilinear_extended (h0 : ZonalBilinearFormula.Statement) (g : MvPolynomial (Fin 2) ℝ) :
     ∫ p, kernelL ⟪(p.1 : E3), (p.2 : E3)⟫_ℝ * eval ![height p.1, height p.2] g ∂pairMeasure =
@@ -345,9 +345,9 @@ theorem bilinear_extended (h0 : ZonalBilinearFormula.Statement) (g : MvPolynomia
   ring
 
 /- English proof (translation)
-Establish `hgeom : (1 - c ^ 2) * ∑ j ∈ Finset.range k, (c ^ 2) ^ j = 1 - (c ^ 2) ^ k` using `mul_neg_geom_sum (c ^ 2) k`. Rewrite `hgeom` using `[← pow_mul]`. Break down `eq_or_ne (1 - c ^ 2) 0 with h | h` into its components or cases. Establish `hc2 : c ^ 2 = 1` using `by linarith`. Establish `hpow : ∀ j : ℕ, c ^ (2 * j) = 1` using `fun j => by rw [pow_mul, hc2, one_pow]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses repeatedly using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[h, hpow]`. Rewrite using `[div_eq_iff h, ← hgeom]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gHat_div (k : ℕ) (c : ℝ) :
     ((1 - c ^ (2 * k)) - k * (1 - c ^ 2)) / (1 - c ^ 2) =
@@ -363,7 +363,7 @@ theorem gHat_div (k : ℕ) (c : ℝ) :
     ring
 
 /- English proof (translation)
-Rewrite using `[integral_pow]`. Establish `h : (-1 : ℝ) ^ (2 * j + 1) = -1` using `by rw [pow_succ, pow_mul]; norm_num`. Rewrite using `[h]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem integral_even_pow (j : ℕ) : ∫ c in (-1 : ℝ)..1, c ^ (2 * j) = 2 / (2 * j + 1) := by
   rw [integral_pow]
@@ -377,11 +377,11 @@ end FibreConstantClosedForm
 open FibreConstantClosedForm in
 
 /- English proof (translation)
-Establish `key : ∀ k : ℕ, fibreConstant k = -(1 / 2) * ∑ j ∈ Finset.range k, (1 : ℝ) / (2 * j + 1)`. Introduce `k`. Rewrite using `[fibreConstant, bilinear_extended h0, (h1 k).1]`. Repeatedly rewrite using `[(h1 k).2, gHat_div]`. Rewrite using `[intervalIntegral.integral_sub ((by fun_prop : Continuous fun c : ℝ => ∑ j ∈ Finset.range k, c ^ (2 * j)).intervalIntegrable _ _) intervalIntegrable_const, isum _ _ _ _ (fun j _ => by fun_prop), intervalIntegral.integral_const]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[integral_even_pow]`. Establish `: ∑ j ∈ Finset.range k, (2 : ℝ) / (2 * j + 1) = 2 * ∑ j ∈ Finset.range k, (1 : ℝ) / (2 * j + 1)`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[this, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Apply the tactic sequence `refine ⟨key, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;> rw [key] <;> norm_num [Finset.sum_range_succ]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem FibreConstantClosedForm.proof (h0 : ZonalBilinearFormula.Statement)
     (h1 : GHatIdentity.Statement) : FibreConstantClosedForm.Statement := by

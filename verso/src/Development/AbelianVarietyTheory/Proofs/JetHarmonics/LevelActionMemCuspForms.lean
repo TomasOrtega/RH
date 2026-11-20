@@ -41,17 +41,17 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {U : Formalism.L2.PjFree.Unf Xo c σ r}
 
 /- English proof (translation)
-Take `⟨gam, A, htr, hA0, hA, hAt⟩` from `GlobalTheory.T.exists_isometry_triangular_periods_of_framePointMove E H Dw l Xo c σ r U hσ hU ρ ν k k' x x' y' t hm hb`. Establish `hgen` using `GlobalTheory.T.abs_generatorRatio_eq_one_of_unitFrame_move E H Dw l Xo c σ r U hσ hU ρ ν k k' x x' y' t hm hb hx hx'`. Apply the tactic sequence `obtain ⟨a, ε, hε, hξ, hav, hlat, hiso⟩ := GlobalTheory.T.exists_rational_isometry_of_trace_isometry E r (U.X k) (U.X k') (hxi k k') gam htr`. Take `⟨hbij, hrt, -, -⟩` from `GlobalTheory.Relab.relab_good E H l c σ hσ`. Take `⟨hrr, hty, -⟩` from `hU`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hΨ : (U.X k).Ψ = (U.X k').Ψ` using `Finset.ext fun τ => ((hty k).2 τ).trans ((hty k').2 τ).symm`. Establish `hp : (U.X k).p0 = (U.X k').p0` using `(hty k).1.trans (hty k').1.symm`. Set `e` to `Equiv.ofBijective _ hbij`. Establish `he : ∀ τ, Formalism.L2.PjFree.relab c σ (e.symm τ) = τ` using `e.apply_symm_apply`. Establish `m1 : ∀ τ ∈ (U.X k).Ψ, Dw.mult (e.symm τ) = r - (U.X k).p0` using `fun τ hτ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Datum.mult`. Rewrite using `[if_pos ((hrt _).1 (by rw [he]; exact ((hty k).2 τ).1 hτ)), (hty k).1]`. Use linear arithmetic over natural numbers and integers. Establish `m2 : ∀ τ ∉ (U.X k).Ψ, Dw.mult (e.symm τ) = (U.X k).p0` using `fun τ hτ => by`. Unfold `Datum.mult`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[if_neg (fun h => hτ (((hty k).2 τ).2 (by rw [← he τ]; exact (hrt _).2 h))), (hty k).1]`. Establish `hrel : ∀ τ, ∀ i < Dw.mult (e.symm τ), ∀ v ∈ (U.X k).Λ, Formalism.L2.PjFree.perFr (U.X k') x'.1 ((a : Matrix (Fin r) (Fin r) E) *ᵥ v) τ i = ∑ j ∈ Finset.range (Dw.mult (e.symm τ)), A (e.symm τ) i j * Formalism.L2.PjFree.perFr (U.X k) x.1 v τ j` using `fun τ i hi v hv => by`. Use `hA (e.symm τ) i hi ⟨v, hv⟩` as an intermediate fact. Rewrite `this` using `[he, ← hav]`. Then use the resulting hypothesis. Break down `hε with rfl | rfl` into its components or cases.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h : IsMatch (U.X k) (U.X k') a` using `⟨hΨ, hp, by rw [hξ, one_mul], fun u v => by rw [hiso, one_mul], hlat⟩`. Take `⟨b, hb, hxb, hu⟩` from `GlobalTheory.T.frames_differ_by_isometry_and_triangular_of_periods E r _ _ a h (fun τ => Dw.mult (e.symm τ)) m1 m2 x.1 x.2 x'.1 x'.2 (fun τ => A (e.symm τ)) (fun τ => hA0 _) hrel`. Take `⟨h1, h2⟩` from `hu hx hx'`. Use `⟨a, h, b, hb, hxb, h1, fun j => ?_⟩` and prove the remaining obligations. Break down `j with _ | ⟨τ, i⟩` into its components or cases.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hgen`. Use `h2 (e τ) i (by rw [e.symm_apply_apply]; exact i.2)` as an intermediate fact. Rewrite `this` using `[e.symm_apply_apply, hAt]`. Conclude with `this`. Conclude with `(GlobalTheory.T.not_antiIsometry_of_triangular_related_periods E r _ _ hΨ hp hr a hiso (fun τ => Dw.mult (e.symm τ)) m1 m2 x.1 x.2 x'.1 x'.2 (fun τ => A (e.symm τ)) (fun τ => hA0 _) hrel).elim`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_match (hσ : Formalism.L2.PjFree.GoodEmb c σ) (hU : Formalism.L2.PjFree.IsUnf U) (hr : 1 ≤ r)
     (hxi : ∀ k k' (τ : E →+* ℂ), ‖τ (U.X k).ξ0‖ = ‖τ (U.X k').ξ0‖)
@@ -98,7 +98,7 @@ theorem exists_match (hσ : Formalism.L2.PjFree.GoodEmb c σ) (hU : Formalism.L2
       (fun τ => A (e.symm τ)) (fun τ => hA0 _) hrel).elim
 
 /- English proof (translation)
-Unfold `Formalism.L2.PjFree.laU`. Rewrite using `[h.p0]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem laU_match {k k' : U.Comp} {a : GL (Fin r) E} (h : IsMatch (U.X k) (U.X k') a)
     (w : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (τ : (U.X k').Ψ) (i : Fin r) :
@@ -107,17 +107,15 @@ theorem laU_match {k k' : U.Comp} {a : GL (Fin r) E} (h : IsMatch (U.X k) (U.X k
   rw [h.p0]
 
 /- English proof (translation)
-Establish `hsec` using `hU.2.2.2.2.1 w n hD g hg k`. Take `⟨hun1, hun2⟩` from `GlobalTheory.FrameNorm.exists_unitFr_frBor E H Dw l Xo c σ r U hσ hU`. Take `⟨⟨k', a, h⟩, c₀, hc⟩` from `GlobalTheory.T.exists_eq_const_mul_of_forall_exists_norm_eq' (Frame (U.X k).Ψ r) (Σ k' : U.Comp, {a : GL (Fin r) E // IsMatch (U.X k) (U.X k') a}) (U.X k).dom (FourierCoefficientDomain.isOpen_dom _) (GlobalTheory.frames_isConnected E r (U.X k)).isPreconnected (GlobalTheory.frames …`. Take `⟨x₀, hx₀, ⟨b₀, hb₀, e₀⟩, -⟩` from `hun1 k ⟨x, hx⟩`. Take `⟨ρ, ν, y', hm, hv⟩` from `hmv (U.un k x₀)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k', x', t, hx', hb⟩` from `hun2 y'`. Take `⟨a, h, b, hbB, hxb, hb1, ht⟩` from `exists_match hσ hU hr hxi hm hb hx₀ hx'`. Use `⟨⟨k', a, h⟩, ?_⟩` and prove the remaining obligations. Establish `hQ` using `(hfc k').1.1`. Establish `v1 : Formalism.L2.PjFree.rdU U g k x₀.1 = Formalism.L2.PjFree.toC (evR Xo c g (U.un k x₀))` using `dif_pos x₀.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `v2 : Formalism.L2.PjFree.rdU U f k' x'.1 = Formalism.L2.PjFree.toC (evR Xo c f (U.un k' x'))` using `dif_pos x'.2`. Establish `v3` using `(GlobalTheory.Frames.algebraic_laws GlobalTheory.lawsFieldsSeparately.2.1 E H Dw l Xo c).2.2.2.2.2.2 (CAt σ) (inferInstanceAs (IsReduced ℂ)) w n f hf t _ y' hb`. Establish `v4 : ‖Formalism.L2.PjFree.toC (wchar (ex Dw w n) t : CAt σ)‖ = 1`. Establish `: Formalism.L2.PjFree.toC (wchar (ex Dw w n) t : CAt σ) = ∏ j, Formalism.L2.PjFree.toC (t j : CAt σ) ^ ex Dw w n j` using `rfl`. Rewrite using `[this, norm_prod]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_eq_one fun j _ => by`. Rewrite using `[norm_pow, show ‖Formalism.L2.PjFree.toC (t j : CAt σ)‖ = 1 from ht j, one_pow]`. Establish `v5 : ‖Formalism.L2.PjFree.rdU U g k x₀.1‖ = ‖Formalism.L2.PjFree.rdU U f k' x'.1‖`. Rewrite using `[v1, v2, hv, v3]`. Conclude with `(norm_mul (Formalism.L2.PjFree.toC (wchar (ex Dw w n) t : CAt σ)) _).trans (by rw [v4, one_mul]; rfl)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `v6 : ‖bchar (Formalism.L2.PjFree.laU U w n k') b‖ = 1`. Unfold `bchar`. Simplify using `only [norm_prod, norm_zpow, hb1, one_zpow, Finset.prod_const_one]`. Rewrite `v5` using `[hxb, hQ.2.1 _ (h.mem_dom x₀.2) b hbB, norm_mul, v6, one_mul, e₀, hsec.2.1 x hx b₀ hb₀, GlobalTheory.Dict.Pull.cast_rmul, GlobalTheory.Dict.Extend.lact_rmul, hQ.2.1 _ (h.mem_dom hx) _ (GlobalTheory.Dict.Pull.cast_bor h.psi hb₀), GlobalTheory.Dict.Pull.cast_bchar h.psi (laU_match …`. Conclude with `mul_left_cancel₀ (norm_ne_zero_iff.2 (AR.Up.OntoE.bchar_ne _ _ hb₀)) v5)`.
-
-Conclude with `GlobalTheory.T.mem_cuspForms_of_multiple_rational_isometry_move E r _ _ a h _ _ (laU_match h w n) _ _ c₀ hsec (hfc k') hc`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rdU_mem_SS (hσ : Formalism.L2.PjFree.GoodEmb c σ) (hU : Formalism.L2.PjFree.IsUnf U) (hr : 1 ≤ r)
     (hxi : ∀ k k' (τ : E →+* ℂ), ‖τ (U.X k).ξ0‖ = ‖τ (U.X k').ξ0‖) {w : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} (hD : Dom w n)
@@ -174,13 +172,13 @@ open GlobalTheory.FormTies
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `D T h j hj w γ f hf`. Establish `hp` using `h.pins`. Establish `hpq : 1 ≤ (T.Q.Dw j).p + (T.Q.Dw j).q`. Rewrite using `[(hp.2.2.2 j hj).1, (hp.2.2.2 j hj).2.1]`. Use `hj.1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hj.2` as an intermediate fact. Use `D.R.m_add_three_le_k` as an intermediate fact. Simplify using `only [Ranks.sigW]`. Use linear arithmetic over natural numbers and integers. Establish `hL` using `GlobalTheory.T.actLev_full_level_group_framedPoints D T.Q j hpq hp.2.1.2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Take `⟨hs, hc⟩` from `(mem_cusp _ _ _ _ _ _).1 hf`. Establish `hg : actLev (Xo` using `T.Q.Xo j) T.Q.c (levFull (T.Q.Dw j) T.Q.l) γ f ∈ sec (T.Q.Xo j) T.Q.c (wtA w) w.n := actL_mem _ _ _ _ hL.total hL.nat hL.bor _ γ hs`. Use `(mem_cusp _ _ _ _ _ _).2 ⟨hg, fun σ hσ => holCusp_mem_holSub _ _ fun k => ?_⟩` and prove the remaining obligations. Establish `hU` using `h.unf j hj σ hσ`. Use `GlobalTheory.LevelCusp.rdU_mem_SS (U := Formalism.L2.PjFree.Unf.ofPj (T.U j σ)) hσ hU (hU.1 ▸ hpq) (fun k k' τ => (h.xiAbs j hj σ hσ k τ).trans (h.xiAbs j hj σ hσ k' τ).symm) (dom_wtA w) hs hg (fun k => GlobalTheory.CuspSecFin.mem_SS_of_mem_holSub _ _ (hc σ hσ) k) (fun y => ?_) k` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨ρ, ν, -, -, hm⟩` from `mvPt_spec hL.total γ y`. Conclude with `⟨ρ, ν, _, hm, evalAt_actL hL (h.evalWD j hj) frMap_trans_id γ hs.1 y⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.LevelCusp.actLev_mem_cuspA : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (w : WeightFamilies.Wt D j) (γ : LaMod (T.Q.Dw j) T.Q.l ≃ₗ[𝓞 D.host.E] LaMod (T.Q.Dw j) T.Q.l), ∀ f ∈ T.cuspA j (wtA w) w.n, actLev (Xo := T.Q.Xo j) T.Q.c (levFull (T.Q.Dw j) T.Q.l) γ f ∈ T.cuspA j (wtA w) w.n := by
   intro D T h j hj w γ f hf

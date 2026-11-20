@@ -14,9 +14,9 @@ open AlgebraicGeometry CategoryTheory NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
 
 /- English proof (translation)
-Introduce `E _ _ _ H V _ _ _ hc t hprop κ _ tg htan hbas _ hstar`. Take `⟨d, G, A, uvec, x, hd, hu, hch⟩` from `hA E H (Sp V) t V (𝟙 (Sp V)) tg htan hbas`. Take `⟨e, wP, ph1, ph2, sy, ad, hfr, hpr, htr, hfa, had, hrig⟩` from `hB E H (Sp V) t V (𝟙 (Sp V)) d G A κ tg uvec x hch`. Establish `hPow` using `globalFnsDvr_of_globalFns hGF E H V hc t hprop`. Take `⟨hax, hr⟩` from `hC E H (Sp V) t hPow hstar V (𝟙 (Sp V)) d G A κ tg uvec x e ph1 ph2 sy ad hch hfr hfa had`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨d, mkFB G A ph1 ph2 sy ad hax hr, uvec, x, e, wP, hd, hu, hch, hfr, hpr, htr, hrig, fun k F => ?_⟩` and prove the remaining obligations. Conclude with `germSt_holds E H (Sp V) t V (𝟙 (Sp V)) d G.F A.act κ tg uvec x ph1 ph2 sy ad e wP hch hfr hpr htr k F`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem intChart_of_cut (hA : ChartDataGSt) (hB : FrameSt) (hC : FBIdSt) (hGF : GlobalFnsSt) :
     IntChartStatement := by

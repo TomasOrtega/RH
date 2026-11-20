@@ -17,9 +17,9 @@ noncomputable section
 namespace BaseChange
 
 /- English proof (translation)
-Rewrite using `[ringKrullDim_quotient, Order.krullDim_eq_iSup_coheight, iSup_le_iff]`. Introduce `a`. Take `⟨Z, hZ, hZa⟩` from `Ideal.exists_minimalPrimes_le ((PrimeSpectrum.mem_zeroLocus _ _).mp a.2)`. Establish `: Z.IsPrime` using `hZ.1.1`. Set `z : PrimeSpectrum.zeroLocus (R` to `R) (I : Set R) := ⟨⟨Z, inferInstance⟩, (PrimeSpectrum.mem_zeroLocus _ _).mpr hZ.1.2⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hza : z ≤ a` using `hZa`. Set `e : Set.Ici z ↪o PrimeSpectrum.zeroLocus (R` to `R) (Z : Set R) := OrderEmbedding.ofMapLEIff (fun x => ⟨x.1.1, (PrimeSpectrum.mem_zeroLocus _ _).mpr (show Z ≤ x.1.1.asIdeal from x.2)⟩) fun _ _ => Iff.rfl`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Introduce a local definition for the expression. Chain the equalities or inequalities of the calculation.
 -/
 theorem ringKrullDim_quotient_le_of_minimalPrimes {R : Type*} [CommRing R] (I : Ideal R)
     {N : WithBot ℕ∞} (h : ∀ Z ∈ I.minimalPrimes, ringKrullDim (R ⧸ Z) ≤ N) :
@@ -49,14 +49,14 @@ set_option linter.unusedSectionVars false
 variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-The claim follows from `(Ideal.finite_minimalPrimes_of_isNoetherianRing _ (P ⊔ Ideal.span {f})).subset fun _ h => h.1`.
+A detailed English derivation is pending.
 -/
 theorem comps_finite {R : Type} [CommRing R] [IsNoetherianRing R] (P : Ideal (MRing ι R))
     (f : MRing ι R) : (comps P f).Finite :=
   (Ideal.finite_minimalPrimes_of_isNoetherianRing _ (P ⊔ Ideal.span {f})).subset fun _ h => h.1
 
 /- English proof (translation)
-Unfold `NumbersDVR.divCycle at h`. Use `split_ifs at h with hh`. Conclude with `hh`. Conclude with `absurd rfl h`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem mem_comps_of_divCycle_ne_zero {R : Type} [CommRing R] {P W : Ideal (MRing ι R)}
     {f : MRing ι R} (h : NumbersDVR.divCycle P f W ≠ 0) : W ∈ comps P f := by
@@ -66,14 +66,14 @@ theorem mem_comps_of_divCycle_ne_zero {R : Type} [CommRing R] {P W : Ideal (MRin
   · exact absurd rfl h
 
 /- English proof (translation)
-The claim follows from `ReciprocityTheory.AnForm.R.comap_of_mem_minimalPrimes_extC P0 Z hZ`.
+A detailed English derivation is pending.
 -/
 theorem comap_extC {P0 : Ideal (MRing ι ℚ)} [P0.IsPrime] {Z : Ideal (MRing ι ℂ)}
     (hZ : Z ∈ (extC P0).minimalPrimes) : Z.comap (MvPolynomial.map (algebraMap ℚ ℂ)) = P0 :=
   ReciprocityTheory.AnForm.R.comap_of_mem_minimalPrimes_extC P0 Z hZ
 
 /- English proof (translation)
-Introduce `k`. Take `⟨i, hi⟩` from `hP k`. Use `⟨i, fun hX => hi ?_⟩` and prove the remaining obligations. Rewrite using `[← h, Ideal.mem_comap, MvPolynomial.map_X]`. Conclude with `hX`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isRelevant_of_comap {P0 : Ideal (MRing ι ℚ)} {Z : Ideal (MRing ι ℂ)} (hP : NumbersDVR.IsRelevant P0)
     (h : Z.comap (MvPolynomial.map (algebraMap ℚ ℂ)) = P0) : NumbersDVR.IsRelevant Z := by
@@ -84,14 +84,14 @@ theorem isRelevant_of_comap {P0 : Ideal (MRing ι ℚ)} {Z : Ideal (MRing ι ℂ
   exact hX
 
 /- English proof (translation)
-Introduce `hZ` and use `hs (h ▸ Ideal.mem_comap.mpr hZ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sC_not_mem {P0 : Ideal (MRing ι ℚ)} {Z : Ideal (MRing ι ℂ)}
     (h : Z.comap (MvPolynomial.map (algebraMap ℚ ℂ)) = P0) {s : MRing ι ℚ} (hs : s ∉ P0) :
     sC s ∉ Z := fun hZ => hs (h ▸ Ideal.mem_comap.mpr hZ)
 
 /- English proof (translation)
-Introduce `d hd`. Apply `hs` to reduce the goal to its premises. Introduce `h0`. Apply `hd` to reduce the goal to its premises. Simplify using `[sC, coeff_map, h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem isMultiHomog_sC {s : MRing ι ℚ} {a : K → ℕ} (hs : NumbersDVR.IsMultiHomog s a) :
     NumbersDVR.IsMultiHomog (sC s) a := by
@@ -102,14 +102,14 @@ theorem isMultiHomog_sC {s : MRing ι ℚ} {a : K → ℕ} (hs : NumbersDVR.IsMu
   simp [sC, coeff_map, h0]
 
 /- English proof (translation)
-The claim follows from `FieldNumbers.isMultiHomogIdeal_map (F' := ℂ) h`.
+A detailed English derivation is pending.
 -/
 theorem isMultiHomogIdeal_extC {P0 : Ideal (MRing ι ℚ)} (h : IsMultiHomogIdeal P0) :
     IsMultiHomogIdeal (extC P0) :=
   FieldNumbers.isMultiHomogIdeal_map (F' := ℂ) h
 
 /- English proof (translation)
-Use `hP.1.isPrime` as an intermediate fact. Use `⟨⟨hZ.1.1, FieldNumbers.PFContracted.isMultiHomogIdeal_of_mem_minimalPrimes (isMultiHomogIdeal_extC hP.1.multiHomog) hZ, isRelevant_of_comap hP.1.relevant (comap_extC hZ)⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hP.2]`. Conclude with `ReciprocityTheory.AnForm.R.ringKrullDim_of_mem_minimalPrimes_extC P0 Z hZ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isProjVar_of_mem_minimalPrimes {P0 : Ideal (MRing ι ℚ)} {e : ℕ} (hP : IsProjVarQ P0 e)
     {Z : Ideal (MRing ι ℂ)} (hZ : Z ∈ (extC P0).minimalPrimes) : IsProjVar Z e := by
@@ -120,13 +120,13 @@ theorem isProjVar_of_mem_minimalPrimes {P0 : Ideal (MRing ι ℚ)} {e : ℕ} (hP
   exact ReciprocityTheory.AnForm.R.ringKrullDim_of_mem_minimalPrimes_extC P0 Z hZ
 
 /- English proof (translation)
-Introduce `_ hz` and use `⟨hz.1, fun f hf => hz.2 f (h hf)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem zPts_anti {P Q : Ideal (MRing ι ℂ)} (h : P ≤ Q) : zPts Q ⊆ zPts P :=
   fun _ hz => ⟨hz.1, fun f hf => hz.2 f (h hf)⟩
 
 /- English proof (translation)
-Introduce `z hz`. Take `⟨U, hU, G, hG, hgG⟩` from `hg z (zPts_anti h hz)`. Conclude with `⟨U, hU, G, hG, fun w hw => hgG w ⟨hw.1, zPts_anti h hw.2⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isLocSmooth_anti {P Q : Ideal (MRing ι ℂ)} (h : P ≤ Q) {g : MCone ι → ℝ}
     (hg : IsLocSmooth P g) : IsLocSmooth Q g := by
@@ -135,16 +135,16 @@ theorem isLocSmooth_anti {P Q : Ideal (MRing ι ℂ)} (h : P ≤ Q) {g : MCone �
   exact ⟨U, hU, G, hG, fun w hw => hgG w ⟨hw.1, zPts_anti h hw.2⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun c hc z hz => hg.1 c hc z (zPts_anti h hz), isLocSmooth_anti h hg.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem isSmoothFn_anti {P Q : Ideal (MRing ι ℂ)} (h : P ≤ Q) {g : MCone ι → ℝ}
     (hg : IsSmoothFn P g) : IsSmoothFn Q g :=
   ⟨fun c hc z hz => hg.1 c hc z (zPts_anti h hz), isLocSmooth_anti h hg.2⟩
 
 /- English proof (translation)
-Establish `h1` using `localMult_eq_one_of_isRadical (ReciprocityTheory.AnForm.R.extC_isRadical P0) hZ`. Unfold `localMult at h1`. Rewrite `h1` using `[dif_pos ‹Z.IsPrime›]`. Unfold `NumbersDVR.multAt`. Rewrite using `[ObjectsChow.VerticalPartMultiplicity.length_localizedModule_quotient]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem multAt_extC_toNat {P0 : Ideal (MRing ι ℚ)} [P0.IsPrime] {Z : Ideal (MRing ι ℂ)}
     [Z.IsPrime] (hZ : Z ∈ (extC P0).minimalPrimes) : (NumbersDVR.multAt (extC P0) Z).toNat = 1 := by
@@ -156,7 +156,7 @@ theorem multAt_extC_toNat {P0 : Ideal (MRing ι ℚ)} [P0.IsPrime] {Z : Ideal (M
   exact h1
 
 /- English proof (translation)
-Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hs, finsum_mem_eq_finite_toFinset_sum _ hs]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem cast_finsum_mem {α : Type*} {s : Set α} (hs : s.Finite) (f : α → ℤ) :
     ((∑ᶠ i ∈ s, f i : ℤ) : ℝ) = ∑ᶠ i ∈ s, (f i : ℝ) := by
@@ -169,13 +169,13 @@ end BaseChange
 open BaseChange
 
 /- English proof (translation)
-Introduce `K _ _ ι _ P0 e bs hP`. Use `hP.1.isPrime` as an intermediate fact. Establish `hmin : ∀ Z ∈ (extC P0).minimalPrimes, IsProjVar Z e` using `fun Z hZ => isProjVar_of_mem_minimalPrimes hP hZ`. Establish `hdim : ringKrullDim (MRing ι ℂ ⧸ extC P0) < ((e + 1 + Fintype.card K : ℕ) : WithBot ℕ∞)`. Use `lt_of_le_of_lt (ringKrullDim_quotient_le_of_minimalPrimes _ (N := ((e + Fintype.card K : ℕ) : WithBot ℕ∞)) fun Z hZ => (hmin Z hZ).2.le) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(show e + Fintype.card K < e + 1 + Fintype.card K by omega)` after adjusting the coercions. Establish `h1` using `(FieldNumbers.IntNumBaseChange.intersectionNumber_baseChange.1 ℚ ℂ K ι P0).2 e bs`. Rewrite using `[← h1]`. Express the relevant statement in the definitionally equal form `NumbersDVR.intNum ℂ (extC P0) bs = _`. Rewrite using `[NumbersDVR.IntNumAssoc.full ℂ K ι e (extC P0) (isMultiHomogIdeal_extC hP.1.multiHomog) hdim bs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `NumbersDVR.cycEval`. Rewrite using `[finsum_mem_def]`. Use `finsum_congr fun W => ?_` and prove the remaining obligations. Unfold `NumbersDVR.idealCycle`. Distinguish the cases in `hW : W ∈ (extC P0).minimalPrimes`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `: W.IsPrime` using `hW.1.1`. Rewrite using `[dif_pos ⟨hW, (hmin W hW).1.relevant⟩, Set.indicator_of_mem hW, multAt_extC_toNat hW]`. Simplify using the standard rewrite rules. Rewrite using `[dif_neg (fun h => hW h.1), Set.indicator_of_notMem hW]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem BCDeg.intersectionNumber_baseChange : BCDeg.Statement := by
   intro K _ _ ι _ P0 e bs hP
@@ -208,23 +208,19 @@ set_option linter.unusedSectionVars false
 variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Use `hP.1.isPrime` as an intermediate fact. Establish `hZv` using `isProjVar_of_mem_minimalPrimes hP hZ`. Establish `: Z.IsPrime` using `hZ.1.1`. Establish `: Wa.IsPrime` using `hWa.1.1.1`. Establish `hZc` using `comap_extC hZ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdWa : ringKrullDim (MRing ι ℂ ⧸ Wa) = ((e + Fintype.card K : ℕ) : WithBot ℕ∞)` using `FieldNumbers.CutRegular.ringKrullDim_minimalPrime (sC_not_mem hZc hsP) hWa.1 (by rw [hZv.2, show e + 1 + Fintype.card K = e + Fintype.card K + 1 by omega])`. Establish `hPsW : P0 ⊔ Ideal.span {s} ≤ Wa.comap (MvPolynomial.map (algebraMap ℚ ℂ))`. Use `sup_le ?_ ?_` and prove the remaining obligations. Rewrite using `[← hZc]`. Conclude with `Ideal.comap_mono (le_sup_left.trans hWa.1.1.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `(le_sup_right.trans hWa.1.1.2) (Ideal.mem_span_singleton_self _)`. Take `⟨W', hW', hW'W⟩` from `Ideal.exists_minimalPrimes_le hPsW`. Establish `: W'.IsPrime` using `hW'.1.1`. Establish `hdW' : ringKrullDim (MRing ι ℚ ⧸ W') = ((e + Fintype.card K : ℕ) : WithBot ℕ∞)` using `FieldNumbers.CutRegular.ringKrullDim_minimalPrime hsP hW' (by rw [hP.2, show e + 1 + Fintype.card K = e + Fintype.card K + 1 by omega])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hext : extC W' ≤ Wa` using `Ideal.map_le_iff_le_comap.mpr hW'W`. Take `⟨Wa', hWa', hWa'Wa⟩` from `Ideal.exists_minimalPrimes_le hext`. Establish `: Wa'.IsPrime` using `hWa'.1.1`. Establish `hdWa' : ringKrullDim (MRing ι ℂ ⧸ Wa') = ((e + Fintype.card K : ℕ) : WithBot ℕ∞)`. Rewrite using `[← hdW']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `ReciprocityTheory.AnForm.R.ringKrullDim_of_mem_minimalPrimes_extC W' Wa' hWa'`. Establish `heq : Wa' = Wa`. Assume the negation of the conclusion as `hne`. Establish `h` using `NumbersDVR.DimStrictDrop.full (MRing ι ℂ) Wa' Wa (lt_of_le_of_ne hWa'Wa hne)`. Rewrite `h` using `[hdWa, hdWa']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Put the expressions in a common number system so they can be compared.
 
-Establish `h' : ((e + Fintype.card K + 1 : ℕ) : WithBot ℕ∞) ≤ ((e + Fintype.card K : ℕ) : WithBot ℕ∞)`. Conclude with `h` after adjusting the coercions. Use `WithBot.coe_le_coe.mp (show ((((e + Fintype.card K + 1 : ℕ) : ℕ∞)) : WithBot ℕ∞) ≤ (((e + Fintype.card K : ℕ) : ℕ∞) : WithBot ℕ∞) from h')` as an intermediate fact. Normalize the coercions in `at this`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcW : Wa.comap (MvPolynomial.map (algebraMap ℚ ℂ)) = W'`. Rewrite using `[← heq]`. Conclude with `ReciprocityTheory.AnForm.R.comap_of_mem_minimalPrimes_extC W' Wa' hWa'`. Use `⟨⟨hcW ▸ hW', ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `k`.
-
-Take `⟨i, hi⟩` from `hWa.2 k`. Use `⟨i, fun h => hi ?_⟩` and prove the remaining obligations. Rewrite `h` using `[Ideal.mem_comap, MvPolynomial.map_X]`. Conclude with `h`. Rewrite using `[hcW, ← heq]`.
-
-Conclude with `hWa'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comps_descend {P0 : Ideal (MRing ι ℚ)} {e : ℕ} (hP : IsProjVarQ P0 (e + 1))
     {s : MRing ι ℚ} (hsP : s ∉ P0) {Z Wa : Ideal (MRing ι ℂ)}
@@ -279,17 +275,17 @@ theorem comps_descend {P0 : Ideal (MRing ι ℚ)} {e : ℕ} (hP : IsProjVarQ P0 
     exact hWa'
 
 /- English proof (translation)
-Use `set M := (extC P0).minimalPrimes with hMdef`. Use `set V := ⋃ Z ∈ M, comps Z (sC s) with hVdef`. Establish `hM : M.Finite` using `Ideal.finite_minimalPrimes_of_isNoetherianRing _ _`. Establish `hV : V.Finite` using `hM.biUnion fun Z _ => comps_finite Z (sC s)`. Establish `hL : ∀ Z ∈ M, ∑ᶠ Wa ∈ comps Z (sC s), (NumbersDVR.divCycle Z (sC s) Wa : ℝ) * F Wa = ∑ᶠ Wa ∈ V, (NumbersDVR.divCycle Z (sC s) Wa : ℝ) * F Wa`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `Z hZ`. Use `finsum_mem_inter_support_eq' _ _ _ fun Wa hWa => ⟨fun h => Set.mem_biUnion hZ h, fun _ => ?_⟩` and prove the remaining obligations. Use `mem_comps_of_divCycle_ne_zero fun h0 => ?_` and prove the remaining obligations. Apply `Function.mem_support.mp hWa` to reduce the goal to its premises. Simplify using `[h0]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[finsum_mem_congr rfl hL, finsum_mem_comm _ hM hV]`. Establish `hR : ∀ W ∈ comps P0 s, (NumbersDVR.divCycle P0 s W : ℝ) * ∑ᶠ Wa ∈ (extC W).minimalPrimes, F Wa = ∑ᶠ Wa ∈ (extC W).minimalPrimes, ∑ᶠ Z ∈ M, (NumbersDVR.divCycle Z (sC s) Wa : ℝ) * F Wa`. Introduce `W hW`. Rewrite using `[mul_finsum_mem' _ _ (Ideal.finite_minimalPrimes_of_isNoetherianRing _ _)]`. Use `finsum_mem_congr rfl fun Wa hWa => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hm W hW Wa hWa, cast_finsum_mem hM, finsum_mem_mul' _ _ hM]`. Establish `hdisj : (comps P0 s).PairwiseDisjoint fun W => (extC W).minimalPrimes`. Introduce `W1 h1 W2 h2 hne`. Use `Set.disjoint_left.mpr fun Wa ha hb => hne ?_` and prove the remaining obligations. Establish `: W1.IsPrime` using `h1.1.1.1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: W2.IsPrime` using `h2.1.1.1`. Rewrite using `[← ReciprocityTheory.AnForm.R.comap_of_mem_minimalPrimes_extC W1 Wa ha, ReciprocityTheory.AnForm.R.comap_of_mem_minimalPrimes_extC W2 Wa hb]`. Rewrite using `[finsum_mem_congr rfl hR, ← finsum_mem_biUnion (f := fun Wa => ∑ᶠ Z ∈ M, (NumbersDVR.divCycle Z (sC s) Wa : ℝ) * F Wa) hdisj (comps_finite P0 s) fun W _ => Ideal.finite_minimalPrimes_of_isNoetherianRing _ _]`. Use `finsum_mem_inter_support_eq' _ _ _ fun Wa hWa => ?_` and prove the remaining obligations. Take `⟨Z, hZ, hZW⟩` from `exists_ne_zero_of_finsum_mem_ne_zero (Function.mem_support.mp hWa)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hWaZ : Wa ∈ comps Z (sC s)` using `mem_comps_of_divCycle_ne_zero fun h0 => hZW (by simp [h0])`. Take `⟨h1, h2⟩` from `comps_descend hP hsP hZ hWaZ`. Conclude with `⟨fun _ => Set.mem_biUnion h1 h2, fun _ => Set.mem_biUnion hZ hWaZ⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sum_components {P0 : Ideal (MRing ι ℚ)} {e : ℕ} (hP : IsProjVarQ P0 (e + 1))
     {s : MRing ι ℚ} (hsP : s ∉ P0)
@@ -336,14 +332,14 @@ theorem sum_components {P0 : Ideal (MRing ι ℚ)} {e : ℕ} (hP : IsProjVarQ P0
 end BaseChange
 
 /- English proof (translation)
-Introduce `K _ _ ι _ P0 e s s' a a' Z Wa hP _ hsP _ hs'P hZ h1 h2`. Conclude with `⟨(comps_descend hP hsP hZ h1).1, (comps_descend hP hs'P hZ h2).1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem BCCommon.intersectionNumber_baseChange : BCCommon.Statement := by
   intro K _ _ ι _ P0 e s s' a a' Z Wa hP _ hsP _ hs'P hZ h1 h2
   exact ⟨(comps_descend hP hsP hZ h1).1, (comps_descend hP hs'P hZ h2).1⟩
 
 /- English proof (translation)
-Introduce `K _ _ ι _ P0 e L hP hRes hL`. Establish `hM : (extC P0).minimalPrimes.Finite` using `Ideal.finite_minimalPrimes_of_isNoetherianRing _ _`. Unfold `zIntQ`. Rewrite using `[BCDeg.intersectionNumber_baseChange K ι P0 e _ hP, cast_finsum_mem hM]`. Conclude with `finsum_mem_congr rfl fun Z hZ => hDeg K ι Z e L (isProjVar_of_mem_minimalPrimes hP hZ) (hRes Z hZ) fun j => isLocSmooth_anti hZ.1.2 (hL j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DegreesQ.proof (hDeg : Degrees.Statement) : DegreesQ.Statement := by
   intro K _ _ ι _ P0 e L hP hRes hL
@@ -354,9 +350,9 @@ theorem DegreesQ.proof (hDeg : Degrees.Statement) : DegreesQ.Statement := by
     (hRes Z hZ) fun j => isLocSmooth_anti hZ.1.2 (hL j)
 
 /- English proof (translation)
-Introduce `K _ _ ι _ P0 e L A s v hP hResZ hResW hL hA hAs hv`. Take `⟨a, hAa, hs, hsP⟩` from `hAs`. Use `hP.1.isPrime` as an intermediate fact. Establish `hM : (extC P0).minimalPrimes.Finite` using `Ideal.finite_minimalPrimes_of_isNoetherianRing _ _`. Establish `hZ : ∀ Z ∈ (extC P0).minimalPrimes, zInt Z (e + 1) (Fin.cons v fun j => logH (L j)) (secNorm A (sC s)) = (∑ᶠ Wa ∈ comps Z (sC s), (NumbersDVR.divCycle Z (sC s) Wa : ℝ) * zInt Wa e (fun j => logH (L j)) v) - zInt Z (e + 1) (Fin.cons (logH A) fun j => logH (L j)) v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `Z hZ`. Conclude with `hPL1 K ι Z e L A (sC s) v (isProjVar_of_mem_minimalPrimes hP hZ) (hResZ Z hZ) (fun Wa hWa => hResW _ (comps_descend hP hsP hZ hWa).1 Wa (comps_descend hP hsP hZ hWa).2) (fun j => isLocSmooth_anti hZ.1.2 (hL j)) (isLocSmooth_anti hZ.1.2 hA) ⟨a, hAa, isMultiHomog_sC hs, sC_not_mem …`. Unfold `zIntQ`. Rewrite using `[finsum_mem_congr rfl hZ, finsum_mem_sub_distrib _ _ hM, sum_components hP hsP (fun W hW Wa hWa => hBCM K ι P0 e s a W Wa hP hs hsP hW hWa) (fun Wa => zInt Wa e (fun j => logH (L j)) v)]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ProjectiveLineOverRationals.proof (hPL1 : PoincareLelongAlt.Statement) (hBCM : BCMult.Statement) : ProjectiveLineOverRationals.Statement := by
   intro K _ _ ι _ P0 e L A s v hP hResZ hResW hL hA hAs hv
@@ -379,11 +375,9 @@ theorem ProjectiveLineOverRationals.proof (hPL1 : PoincareLelongAlt.Statement) (
       (fun Wa => zInt Wa e (fun j => logH (L j)) v)]
 
 /- English proof (translation)
-Introduce `K _ _ ι _ P0 e L A A' s s' hP hResZ hResW hResW' hL hA hA' hAs hAs' hnc`. Take `⟨a, hAa, hs, hsP⟩` from `hAs`. Take `⟨a', hAa', hs', hs'P⟩` from `hAs'`. Use `hP.1.isPrime` as an intermediate fact. Establish `hM : (extC P0).minimalPrimes.Finite` using `Ideal.finite_minimalPrimes_of_isNoetherianRing _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∑ᶠ Z ∈ (extC P0).minimalPrimes, ((∑ᶠ Wa ∈ comps Z (sC s), (NumbersDVR.divCycle Z (sC s) Wa : ℝ) * zInt Wa e (fun j => logH (L j)) (secNorm A' (sC s'))) + zInt Z (e + 1) (Fin.cons (logH A') fun j => logH (L j)) (secNorm A (sC s))) = ∑ᶠ Z ∈ (extC P0).minimalPrimes, ((∑ᶠ Wa ∈ …`. Use `finsum_mem_congr rfl fun Z hZ => ?_` and prove the remaining obligations. Conclude with `hPL2 K ι Z e L A A' (sC s) (sC s') (isProjVar_of_mem_minimalPrimes hP hZ) (hResZ Z hZ) (fun Wa hWa => hResW _ (comps_descend hP hsP hZ hWa).1 Wa (comps_descend hP hsP hZ hWa).2) (fun Wa hWa => hResW' _ (comps_descend hP hs'P hZ hWa).1 Wa (comps_descend hP hs'P hZ hWa).2) (fun j = …`. Rewrite `key` using `[finsum_mem_add_distrib hM, finsum_mem_add_distrib hM, sum_components hP hsP (fun W hW Wa hWa => hBCM K ι P0 e s a W Wa hP hs hsP hW hWa) (fun Wa => zInt Wa e (fun j => logH (L j)) (secNorm A' (sC s'))), sum_components hP hs'P (fun W hW Wa hWa => hBCM K ι P0 e s' a' W Wa hP hs' h …`. Unfold `zIntQ`.
-
-Conclude with `key`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ProjectivePlaneOverRationals.proof (hPL2 : ProjectiveLineTwo.Statement) (hBCM : BCMult.Statement) : ProjectivePlaneOverRationals.Statement := by
   intro K _ _ ι _ P0 e L A A' s s' hP hResZ hResW hResW' hL hA hA' hAs hAs' hnc
@@ -417,7 +411,7 @@ theorem ProjectivePlaneOverRationals.proof (hPL2 : ProjectiveLineTwo.Statement) 
   exact key
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ProjectiveLineOverRationals.proof hPL1 hBCM, ProjectivePlaneOverRationals.proof hPL2 hBCM, DegreesQ.proof hDeg⟩`.
+Supply the required witnesses or components.
 -/
 theorem BaseChange.proof (hPL1 : PoincareLelongAlt.Statement) (hPL2 : ProjectiveLineTwo.Statement) (hDeg : Degrees.Statement)
     (hBCM : BCMult.Statement) : ProjectiveLineOverRationals.Statement ∧ ProjectivePlaneOverRationals.Statement ∧ DegreesQ.Statement :=

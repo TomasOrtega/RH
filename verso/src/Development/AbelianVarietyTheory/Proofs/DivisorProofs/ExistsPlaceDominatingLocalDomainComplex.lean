@@ -15,21 +15,21 @@ set_option autoImplicit false
 namespace GlobalTheory.DvrDom
 
 /- English proof (translation)
-Introduce `κ _ _ O hc h`. Use `letI : Algebra ℂ O := ((algebraMap ℂ κ).codRestrict O hc).toAlgebra`. Establish `h' : Algebra.EssFiniteType ℂ O` using `h`. Take `⟨s, hs⟩` from `h'.cond`. Use `⟨s.image (fun x : O => (x : κ)), ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx`. Rewrite `hx` using `[Finset.mem_image]`. Take `⟨y, -, rfl⟩` from `hx`. Conclude with `y.2`. Establish `key : ∀ x ∈ Algebra.adjoin ℂ (s : Set O), ((x : O) : κ) ∈ Algebra.adjoin ℂ ((s.image (fun x : O => (x : κ)) : Finset κ) : Set κ)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Apply `Algebra.subset_adjoin` to reduce the goal to its premises. Rewrite using `[Finset.coe_image]`.
+Proceed by induction. Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨x, hx, rfl⟩`. Consider the case `algebraMap r => exact Subalgebra.algebraMap_mem _ r`. Consider the case `add x y _ _ hx hy => simpa using Subalgebra.add_mem _ hx hy`. Consider the case `mul x y _ _ hx hy => simpa using Subalgebra.mul_mem _ hx hy`. Introduce `v hv`.
+Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨a, m⟩, hm⟩` from `IsLocalization.surj (Submonoid.comap (algebraMap (↥(Algebra.adjoin ℂ (s : Set O))) O) (IsUnit.submonoid O)) (⟨v, hv⟩ : O)`. Establish `hu : IsUnit ((m : Algebra.adjoin ℂ (s : Set O)) : O)` using `m.2`. Take `⟨u, hu'⟩` from `hu`. Establish `hinv : (((m : Algebra.adjoin ℂ (s : Set O)) : O) : κ) * (((u⁻¹ : Oˣ) : O) : κ) = 1`. Rewrite using `[← hu']`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(((u : O) * ((u⁻¹ : Oˣ) : O) : O) : κ) = ((1 : O) : κ)`. Rewrite using `[u.mul_inv]`. Establish `hd0 : (((m : Algebra.adjoin ℂ (s : Set O)) : O) : κ) ≠ 0`. Introduce `h0`. Rewrite `hinv` using `[h0, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `zero_ne_one hinv`. Establish `hmL` using `congrArg (fun z : O => (z : κ)) hm`. Simplify using `only at hmL`. Use `⟨((a : O) : κ), key _ a.2, (((m : Algebra.adjoin ℂ (s : Set O)) : O) : κ), key _ (m : Algebra.adjoin ℂ (s : Set O)).2, hd0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[inv_eq_of_mul_eq_one_right hinv]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `((u⁻¹ : Oˣ) : O).2`. Rewrite using `[eq_div_iff hd0]`. Simplify using `using hmL`.
+A detailed English derivation is pending.
 -/
 theorem exists_fractions_of_essFiniteType : ∀ {κ : Type} [Field κ] [Algebra ℂ κ] (O : Subring κ) (hc : ∀ a : ℂ, algebraMap ℂ κ a ∈ O), ((algebraMap ℂ κ).codRestrict O hc).EssFiniteType → ∃ G : Finset κ, (∀ x ∈ G, x ∈ O) ∧ ∀ o ∈ O, ∃ b ∈ Algebra.adjoin ℂ (G : Set κ), ∃ d ∈ Algebra.adjoin ℂ (G : Set κ), d ≠ 0 ∧ d⁻¹ ∈ O ∧ o = b / d := by
   classical
@@ -76,13 +76,11 @@ theorem exists_fractions_of_essFiniteType : ∀ {κ : Type} [Field κ] [Algebra 
     simpa using hmL
 
 /- English proof (translation)
-Introduce `R _ _ _ P _ a ha haP`. Establish `hle : Ideal.span {a} ≤ P` using `(Ideal.span_singleton_le_iff_mem P).2 haP`. Take `⟨Q, hQ, hQP⟩` from `Ideal.exists_minimalPrimes_le hle`. Establish `hQp : Q.IsPrime` using `hQ.1.1`. Establish `haQ : a ∈ Q` using `hQ.1.2 (Ideal.mem_span_singleton_self a)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ0 : Q ≠ ⊥` using `fun h => ha (by rw [h] at haQ; exact (Ideal.mem_bot).1 haQ)`. Establish `hht : Q.height ≤ 1` using `Ideal.height_le_one_of_isPrincipal_of_mem_minimalPrimes _ Q hQ`. Use `⟨Q, hQp, haQ, hQP, hQ0, fun p hp hp0 hpQ => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `hlt : p < Q` using `lt_of_le_of_ne hpQ hne`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `haveI := hp`. Use `haveI := hQp`. Establish `h1 : p.height + 1 ≤ Q.height` using `Ideal.height_add_one_le_of_lt_of_isPrime hlt`. Establish `hp1 : 1 ≤ p.height` using `Order.one_le_iff_ne_zero.mpr (fun h => hp0 (Ideal.height_eq_zero_iff_eq_bot.1 h))`. Establish `h2 : (1 : ℕ∞) + 1 ≤ 1` using `(add_le_add_left hp1 1).trans (h1.trans hht)`.
-
-Conclude with `absurd h2 (by decide)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_minimal_prime_le : ∀ {R : Type} [CommRing R] [IsDomain R] [IsNoetherianRing R] (P : Ideal R) [P.IsPrime] (a : R), a ≠ 0 → a ∈ P → ∃ Q : Ideal R, Q.IsPrime ∧ a ∈ Q ∧ Q ≤ P ∧ Q ≠ ⊥ ∧ ∀ p : Ideal R, p.IsPrime → p ≠ ⊥ → p ≤ Q → p = Q := by
   intro R _ _ _ P _ a ha haP
@@ -104,55 +102,49 @@ theorem exists_minimal_prime_le : ∀ {R : Type} [CommRing R] [IsDomain R] [IsNo
   exact absurd h2 (by decide)
 
 /- English proof (translation)
-Introduce `κ _ _ O hO`. Use `letI := hO.isLocalRing`. Introduce `hnf`. Take `⟨G, hGO, hGfrac⟩` from `exists_fractions_of_essFiniteType O hO.const_mem hO.essFiniteType`. Use `letI : Algebra ℂ O := ((algebraMap ℂ κ).codRestrict O hO.const_mem).toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Use `haveI : Algebra.EssFiniteType ℂ O := hO.essFiniteType`. Use `haveI : IsNoetherianRing O := Algebra.EssFiniteType.isNoetherianRing ℂ O`. Take `⟨Y, hY⟩` from `(IsNoetherian.noetherian (IsLocalRing.maximalIdeal O) : (IsLocalRing.maximalIdeal O).FG)`. Take `⟨V, hOV⟩` from `(LocalSubring.mk O).exists_le_valuationSubring`. Take `⟨hle, hloc⟩` from `(LocalSubring.le_def).1 hOV`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hOV' : ∀ x ∈ O, x ∈ V` using `fun x hx => hle hx`. Establish `hVnu : ∀ x : O, x ∈ IsLocalRing.maximalIdeal O → ∀ hx : (x : κ) ∈ V, (⟨x, hx⟩ : V) ∈ IsLocalRing.maximalIdeal V`. Introduce `x hxm hx`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hxm` using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `hxm (hloc.map_nonunit x hu)`. Establish `hm0 : IsLocalRing.maximalIdeal O ≠ ⊥` using `fun h => hnf ((IsLocalRing.isField_iff_maximalIdeal_eq).2 h)`. Set `Y' : Finset O` to `Y.filter (fun y : O => (y : κ) ≠ 0)`. Establish `hY'ne : Y'.Nonempty`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Assume the negation of the conclusion as `hne`. Rewrite `hne` using `[Finset.not_nonempty_iff_eq_empty]`. Apply `hm0` to reduce the goal to its premises. Rewrite using `[← hY, Submodule.span_eq_bot]`. Introduce `y hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `hy0`. Establish `: y ∈ Y'` using `Finset.mem_filter.2 ⟨hy, fun h => hy0 (Subtype.ext h)⟩`. Rewrite `this` using `[hne]`. Conclude with `absurd this (Finset.notMem_empty _)`. Take `⟨a, haY', hamax⟩` from `Y'.exists_max_image (fun y : O => V.valuation (y : κ)) hY'ne`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Take `⟨haY, ha0⟩` from `Finset.mem_filter.1 haY'`. Establish `hdivV : ∀ y ∈ Y, (y : κ) / a ∈ V`. Introduce `y hy`. Distinguish the cases in `hy0 : (y : κ) = 0`. Rewrite using `[hy0, zero_div]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `V.zero_mem`. Rewrite using `[← ValuationSubring.valuation_le_one_iff, map_div₀]`. Establish `h1` using `hamax y (Finset.mem_filter.2 ⟨hy, hy0⟩)`. Establish `h2 : V.valuation (a : κ) ≠ 0` using `(Valuation.ne_zero_iff _).2 ha0`. Conclude with `(div_le_one₀ (zero_lt_iff.2 h2)).2 h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Set `T : Finset κ` to `G ∪ Y.image (fun y : O => (y : κ)) ∪ Y.image (fun y : O => (y : κ) / a)`. Establish `hTV : ∀ x ∈ T, x ∈ V`. Introduce `x hx`. Simplify using `only [T, Finset.mem_union, Finset.mem_image] at hx`. Break down `hx with (hx | ⟨y, -, rfl⟩) | ⟨y, hy, rfl⟩` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hOV' x (hGO x hx)`. Conclude with `hOV' _ y.2`. Conclude with `hdivV y hy`. Establish `hGT : Algebra.adjoin ℂ (G : Set κ) ≤ Algebra.adjoin ℂ (T : Set κ)` using `Algebra.adjoin_mono (by intro x hx; simp [T, Finset.mem_coe.1 hx])`. Establish `hfracT : ∀ f : κ, ∃ u ∈ Algebra.adjoin ℂ (T : Set κ), ∃ v ∈ Algebra.adjoin ℂ (T : Set κ), v ≠ 0 ∧ f * v = u`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Introduce `f`. Take `⟨x, hx, z, hz, hz0, hfz⟩` from `hO.frac f`. Take `⟨b, hb, d, hd, hd0, -, rfl⟩` from `hGfrac x hx`. Take `⟨b', hb', d', hd', hd0', -, rfl⟩` from `hGfrac z hz`. Establish `hb0' : b' ≠ 0` using `by rintro rfl; exact hz0 (zero_div _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Use `⟨b * d', Subalgebra.mul_mem _ (hGT hb) (hGT hd'), b' * d, Subalgebra.mul_mem _ (hGT hb') (hGT hd), mul_ne_zero hb0' hd0, ?_⟩` and prove the remaining obligations. Clear denominators, using `at hfz` for the nonvanishing conditions. Take the linear combination `hfz`. Establish `hcV : ∀ z : ℂ, algebraMap ℂ κ z ∈ V` using `fun z => hOV' _ (hO.const_mem z)`. Take `⟨R, hcR, hft, hTR, hRV, hRn, hRi, hRf⟩` from `GlobalTheory.T.exists_normal_finiteType_subring_le_valuationSubring' V T hcV hTV hfracT`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI := hRn`. Use `haveI := hRi`. Use `haveI := hRf`. Establish `hadjR : ∀ x ∈ Algebra.adjoin ℂ (T : Set κ), x ∈ R`. Set `R' : Subalgebra ℂ κ` to `{ R with algebraMap_mem' := hcR }`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Algebra.adjoin ℂ (T : Set κ) ≤ R'` using `Algebra.adjoin_le (fun x hx => hTR x hx)`. Conclude with `fun x hx => this hx`. Set `ι : R →+* V` to `{ toFun := fun r => ⟨r, hRV r.2⟩ map_one' := rfl map_mul' := fun _ _ => rfl map_zero' := rfl map_add' := fun _ _ => rfl }`. Set `P : Ideal R` to `(IsLocalRing.maximalIdeal V).comap ι`. Use `haveI : P.IsPrime := Ideal.comap_isPrime _ _`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `haT : (a : κ) ∈ T` using `by simp [T, haY]`. Set `a' : R` to `⟨a, hTR _ haT⟩`. Establish `ha'0 : a' ≠ 0` using `fun h => ha0 (congrArg Subtype.val h)`. Establish `ha'P : a' ∈ P` using `hVnu a (hY ▸ Submodule.subset_span haY) _`. Take `⟨Q, hQp, haQ, hQP, hQ0, hmin⟩` from `exists_minimal_prime_le P a' ha'0 ha'P`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `haveI := hQp`. Take `⟨W, hWd, hRW, hinvW, hninvW, hWfrac⟩` from `GlobalTheory.T.exists_dvr_localization_of_minimal_prime' R Q hQ0 hmin`. Establish `hcW : ∀ z : ℂ, algebraMap ℂ κ z ∈ W` using `fun z => hRW ⟨_, hcR z⟩`. Establish `hWft : ((algebraMap ℂ κ).codRestrict W hcW).EssFiniteType` using `GlobalTheory.EssFiniteDescent.essFiniteType_of_eq_div κ (algebraMap ℂ κ) R hcR W hcW (fun x hx => hRW ⟨x, hx⟩) hft (fun e he => by`. Take `⟨b, s, hs, rfl⟩` from `hWfrac e he`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨b, b.2, s, s.2, hinvW s hs, rfl⟩)`. Set `F : Place (algebraMap ℂ κ)` to `⟨W, hcW, hWd, hWft⟩`. Establish `hOW : ∀ o ∈ O, o ∈ W`. Introduce `o ho`. Take `⟨b, hb, d, hd, hd0, hdi, rfl⟩` from `hGfrac o ho`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Set `d' : R` to `⟨d, hadjR _ (hGT hd)⟩`. Establish `hd'Q : d' ∉ Q`. Introduce `hdQ`. Establish `hm : ι d' ∈ IsLocalRing.maximalIdeal V` using `hQP hdQ`. Rewrite `hm` using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`.
+Simplify using the standard rewrite rules. Prove the second alternative. Clear the denominators using the available nonvanishing facts. Treat this case separately. Treat this case separately.
 
-Apply `hm` to reduce the goal to its premises. Conclude with `IsUnit.of_mul_eq_one (⟨d⁻¹, hOV' _ hdi⟩ : V) (Subtype.ext (mul_inv_cancel₀ hd0))`. Rewrite using `[div_eq_mul_inv]`. Conclude with `mul_mem (hRW ⟨b, hadjR _ (hGT hb)⟩) (hinvW d' hd'Q)`. Use `⟨F, hOW, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Introduce `f hf hf0`. Establish `hspan : ∀ x ∈ Submodule.span O (Y : Set O), ∃ w ∈ W, ((x : O) : κ) = a * w`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨(y : κ) / a, hRW ⟨_, hTR _ ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [T, Finset.mem_union, Finset.mem_image]`. Conclude with `Or.inr ⟨y, hy, rfl⟩`. Clear the denominators using the available nonvanishing facts. Consider the case `zero => exact ⟨0, zero_mem _, by simp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨w, hw, ex⟩` from `hx`. Take `⟨w', hw', ey⟩` from `hy`. Conclude with `⟨w + w', add_mem hw hw', by push_cast; rw [ex, ey]; ring⟩`. Consider the case `smul c x _ hx`.
-
-Take `⟨w, hw, ex⟩` from `hx`. Use `⟨c * w, mul_mem (hOW _ c.2) hw, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_eq_mul, Subring.coe_mul, ex]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hf` using `[← hY]`.
-
-Take `⟨w, hw, efw⟩` from `hspan f hf`. Establish `hw0 : w ≠ 0` using `by rintro rfl; exact hf0 (by rw [efw, mul_zero])`. Establish `haW : (a : κ) ∈ W` using `hRW a'`. Establish `hainv : (a : κ)⁻¹ ∉ W` using `hninvW a' haQ ha'0`. Establish `h1 : 0 ≤ F.ord (a : κ)` using `(F.ord_nonneg_iff ha0).2 haW`.
-
-Establish `h2 : ¬ 0 ≤ F.ord ((a : κ)⁻¹)` using `fun h => hainv ((F.ord_nonneg_iff (inv_ne_zero ha0)).1 h)`. Establish `h3 : 0 ≤ F.ord w` using `(F.ord_nonneg_iff hw0).2 hw`. Rewrite `h2` using `[F.ord_inv]`. Rewrite using `[efw, F.ord_mul ha0 hw0]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_place_dominating : ∀ {κ : Type} [Field κ] [Algebra ℂ κ] (O : Subring κ) (hO : IsLocModel (algebraMap ℂ κ) O), letI := hO.isLocalRing;
   ¬ IsField O → ∃ F : Place (algebraMap ℂ κ), F.Contains O ∧ ∀ f : O, f ∈ IsLocalRing.maximalIdeal O → (f : κ) ≠ 0 → 0 < F.ord f := by

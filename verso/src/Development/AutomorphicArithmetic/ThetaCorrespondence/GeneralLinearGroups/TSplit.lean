@@ -10,7 +10,7 @@ open Filter Topology GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL 
 namespace UpperTheory.Lit.Cas.TSplit
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Establish `hs : S.toRepresentation g s = c • s` using `Subtype.ext (h s)`. Use `show Submodule.Quotient.mk (S.toRepresentation g s) = _`. Rewrite using `[hs, Submodule.Quotient.mk_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem subQuot_apply_of_smul {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     {ρ : Representation ℂ G V} (S T : Subrepresentation ρ) {g : G} {c : ℂ}
@@ -22,9 +22,9 @@ private theorem subQuot_apply_of_smul {G V : Type} [Group G] [AddCommGroup V] [M
   rw [hs, Submodule.Quotient.mk_smul]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Apply `h` to reduce the goal to its premises. Unfold `jhMult`. Use `nonpos_iff_eq_zero.mp (iSup_le fun r => iSup_le fun hr => ?_)` and prove the remaining obligations. Take `⟨S, T, -, -, hST⟩` from `hr`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Consider the cases of `r with`. Consider the case `zero => simp`. Consider the case `succ n => exact (hne ⟨S 0, T 0, hST 0⟩).elim`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 private theorem exists_step_of_jhMult_ne_zero {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] {σ : Representation ℂ G W} {ρ : Representation ℂ G V}
@@ -42,9 +42,9 @@ private theorem exists_step_of_jhMult_ne_zero {G V W : Type} [Group G] [AddCommG
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use extensionality with `i j`. Take `⟨⟨a, i⟩, rfl⟩` from `(stdBlocks d hd).surjective i`. Take `⟨⟨b, j⟩, rfl⟩` from `(stdBlocks d hd).surjective j`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[leviEmb_apply_same]`. Simplify using `[Matrix.GeneralLinearGroup.scalar, Matrix.scalar_apply, Matrix.diagonal_apply]`. Rewrite using `[leviEmb_apply_ne _ _ _ hab]`. Simplify using `[Matrix.GeneralLinearGroup.scalar, Matrix.scalar_apply, Matrix.diagonal_apply]`. Conclude with `fun h => absurd h hab`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem leviEmb_scalar {s N : ℕ} (d : Fin s → ℕ) (hd : ∑ a, d a = N) (t : kˣ) :
     leviEmb k (stdBlocks d hd) (fun a => Matrix.GeneralLinearGroup.scalar (Fin (d a)) t) =
@@ -61,7 +61,7 @@ private theorem leviEmb_scalar {s N : ℕ} (d : Fin s → ℕ) (hd : ∑ a, d a 
     exact fun h => absurd h hab
 
 /- English proof (translation)
-Establish `: Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.scalar (Fin n) t) = t ^ n` using `by ext; simp [Matrix.GeneralLinearGroup.scalar]`. Rewrite using `[this]`. Simplify using `[nabs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem nabs_det_scalar (n : ℕ) (t : kˣ) :
     nabs k (Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.scalar (Fin n) t)) =
@@ -72,11 +72,11 @@ private theorem nabs_det_scalar (n : ℕ) (t : kˣ) :
   simp [nabs]
 
 /- English proof (translation)
-Use `ext`. Rewrite using `[val_deltaHalf]`. Establish `hm : modulus k (fun a => Fin (d a)) (fun a => Matrix.GeneralLinearGroup.scalar (Fin (d a)) t) = 1`. Simplify using `only [modulus, Fin.prod_univ_two, nabs_det_scalar, modExp]`. Simplify using `only [Finset.sum_filter, Fin.sum_univ_two]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hp : nabs k t ≠ 0` using `ne_of_gt (nabs_pos' k t)`. Establish `he : (nabs k t ^ d 1) ^ d 0 = nabs k t ^ (((d 0 : ℕ) : ℤ) * ((d 1 : ℕ) : ℤ))`. Rewrite using `[mul_comm, zpow_mul, zpow_natCast, zpow_natCast]`. Establish `he' : (nabs k t ^ d 0) ^ d 1 = nabs k t ^ (((d 0 : ℕ) : ℤ) * ((d 1 : ℕ) : ℤ))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[zpow_mul, zpow_natCast, zpow_natCast]`. Rewrite using `[he, he']`. Conclude with `mul_inv_cancel₀ (zpow_ne_zero _ hp)`. Rewrite using `[hm]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem deltaHalf_scalar (d : Fin 2 → ℕ) (t : kˣ) :
     deltaHalf k (fun a => Fin (d a))
@@ -99,9 +99,9 @@ private theorem deltaHalf_scalar (d : Fin 2 → ℕ) (t : kˣ) :
   simp
 
 /- English proof (translation)
-Proceed by induction on `w using PiTensorProduct.induction_on with`. Consider the case `add y z hy hz => rw [map_add, hy, hz, smul_add]`. Consider the case `smul_tprod r y`. Rewrite using `[map_smul, piTensor_tprod, smul_comm]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [hc]`. Conclude with `MultilinearMap.map_smul_univ _ _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem piTensor_apply_of_smul {h : ℕ} (x : Fin h → IrrGL k) (g : ∀ a, GL (Fin (x a).1) k)
     (c : Fin h → ℂ) (hc : ∀ a v, (x a).rep (g a) v = c a • v)
@@ -116,7 +116,7 @@ private theorem piTensor_apply_of_smul {h : ℕ} (x : Fin h → IrrGL k) (g : �
     exact MultilinearMap.map_smul_univ _ _ _
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `exists_ne (0 : W)`. Establish `key : E.toLinearEquiv (ρ g (E.toLinearEquiv.symm w)) = σ g (E.toLinearEquiv (E.toLinearEquiv.symm w))` using `Representation.IntertwiningMap.isIntertwining ρ σ E.toIntertwiningMap g _`. Simplify using `only [hρ, hσ, map_smul, LinearEquiv.apply_symm_apply] at key`. Establish `h0 : (c' - c) • w = 0` using `by rw [sub_smul, key, sub_self]`. Conclude with `sub_eq_zero.mp ((smul_eq_zero.mp h0).resolve_right hw)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem smul_eq_of_equiv {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W]
     [Module ℂ W] [Nontrivial W] {ρ : Representation ℂ G V} {σ : Representation ℂ G W}
@@ -134,13 +134,11 @@ end UpperTheory.Lit.Cas.TSplit
 
 open UpperTheory.Lit.Cas.TSplit in
 /- English proof (translation)
-Introduce `k _ _ _ _ N V _ _ π x hd hj t c c0 c1 hπ h0 h1`. Take `⟨S, T, ⟨E⟩⟩` from `exists_step_of_jhMult_ne_zero hj`. Use `set g : Levi k (fun a => Fin (x a).1) := fun a => Matrix.GeneralLinearGroup.scalar (Fin (x a).1) t`. Establish `hjac : ∀ v, jac (stdBlocks (fun a => (x a).1) hd) π g v = c • v`. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨u, rfl⟩` from `Submodule.Quotient.mk_surjective _ v`. Rewrite using `[jac_mk, leviEmb_scalar, deltaHalf_scalar, hπ, inv_one, Units.val_one, one_smul, Submodule.Quotient.mk_smul]`. Establish `hsub` using `subQuot_apply_of_smul S T hjac`. Establish `hpi` using `piTensor_apply_of_smul x g ![c0, c1] (by`. Introduce `a v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `fin_cases a`. Conclude with `h0 v`. Conclude with `h1 v)`. Use `haveI : Nontrivial (PiTensorProduct ℂ (fun a => (x a).2.rep.V)) := GlobalTheory.ProdSupport.nontrivial_piTensor _ (fun a => Model.nontrivial_of_isIrreducible (x a).2.rep.irr)`. Use `smul_eq_of_equiv E hsub hpi` as an intermediate fact.
-
-Simplify `this` using `[Fin.prod_univ_two]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Lit.Cas.split :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (N : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V) (x : Fin 2 → IrrGL k) (hd : ∑ a, (x a).1 = N), jm x hd π ≠ 0 → ∀ (t : kˣ) (c c0 c1 : ℂ), (∀ v, π (Matrix.GeneralLinearGroup.scalar (Fin N) t) v = c • v) → ScalarBy (x 0) t c0 → ScalarBy (x 1) t c1 → c0 * c1 = c := by

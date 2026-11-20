@@ -9,13 +9,13 @@ namespace Formalism.L2.SG.Pf.G3
 open Formalism.HermitianLattices.Ext.L3 Formalism.HermitianLattices.Ext.L3.U0 Formalism.HermitianLattices.Ext.L3.WA
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem mem_iff_lemma {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] {S : Subring K} {ι : Type} [Fintype ι] (b : ι → V) (v : V) :
     v ∈ spanS S b ↔ ∃ c : ι → K, (∀ i, c i ∈ S) ∧ v = ∑ i, c i • b i := Iff.rfl
 
 /- English proof (translation)
-Rewrite `hv`, the goal using `[mem_iff_lemma]`. Take `⟨d, hd, rfl⟩` from `hv`. Conclude with `⟨fun i => a * d i, fun i => S.mul_mem ha (hd i), by simp [Finset.smul_sum, mul_smul]⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem smul_mem_lemma_2 {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] {S : Subring K} {ι : Type} [Fintype ι] {g : ι → V} {a : K} (ha : a ∈ S)
     {v : V} (hv : v ∈ spanS S g) : a • v ∈ spanS S g := by
@@ -24,7 +24,7 @@ private theorem smul_mem_lemma_2 {K V : Type} [Field K] [StarRing K] [AddCommGro
   exact ⟨fun i => a * d i, fun i => S.mul_mem ha (hd i), by simp [Finset.smul_sum, mul_smul]⟩
 
 /- English proof (translation)
-Rewrite `hv` using `[mem_iff_lemma]`. Take `⟨c, hc, rfl⟩` from `hv`. Conclude with `AddSubgroup.sum_mem _ fun k _ => smul_mem_lemma_2 (hc k) (hfg k)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem spanS_le_lemma_3 {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] {S : Subring K} {κ ι : Type} [Fintype κ] [Fintype ι] {f : κ → V}
     {g : ι → V} (hfg : ∀ k, f k ∈ spanS S g) {v : V} (hv : v ∈ spanS S f) : v ∈ spanS S g := by
@@ -33,7 +33,7 @@ private theorem spanS_le_lemma_3 {K V : Type} [Field K] [StarRing K] [AddCommGro
   exact AddSubgroup.sum_mem _ fun k _ => smul_mem_lemma_2 (hc k) (hfg k)
 
 /- English proof (translation)
-Rewrite `hv` using `[mem_iff_lemma]`. Take `⟨c, -, rfl⟩` from `hv`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem mem_span_lemma_4 {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] {S : Subring K} {ι : Type} [Fintype ι] {g : ι → V} {v : V}
     (hv : v ∈ spanS S g) : v ∈ Submodule.span K (Set.range g) := by
@@ -42,9 +42,9 @@ private theorem mem_span_lemma_4 {K V : Type} [Field K] [StarRing K] [AddCommGro
   exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
 
 /- English proof (translation)
-Use `⟨le_antisymm ?_ ?_, fun v => ⟨spanS_le_lemma_3 h1, spanS_le_lemma_3 h2⟩⟩` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `mem_span_lemma_4 (h1 k)`. Rewrite using `[Submodule.span_le]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `mem_span_lemma_4 (h2 i)`.
+A detailed English derivation is pending.
 -/
 private theorem spans_eq_lemma_5 {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] {S : Subring K} {κ ι : Type} [Fintype κ] [Fintype ι] {f : κ → V}
     {g : ι → V} (h1 : ∀ k, f k ∈ spanS S g) (h2 : ∀ i, g i ∈ spanS S f) :
@@ -59,9 +59,9 @@ private theorem spans_eq_lemma_5 {K V : Type} [Field K] [StarRing K] [AddCommGro
     exact mem_span_lemma_4 (h2 i)
 
 /- English proof (translation)
-Rewrite using `[linearIndependent_iff']`. Introduce `s g hg i hi`. Establish `h1` using `congrArg (h (f i)) hg`. Rewrite `h1` using `[map_sum, map_zero, Finset.sum_eq_single i]`. Rewrite `h1` using `[map_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(mul_eq_zero.1 h1).resolve_right (hn i)`. Introduce `j _ hji`. Rewrite using `[map_smul, ho i j (Ne.symm hji), smul_zero]`. Introduce `h'`. Conclude with `absurd hi h'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem linInd_lemma_6 {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
     {h : V →ₗ⋆[K] V →ₗ[K] K} {ι : Type} {f : ι → V} (ho : ∀ i j, i ≠ j → h (f i) (f j) = 0)
@@ -78,9 +78,9 @@ private theorem linInd_lemma_6 {K V : Type} [Field K] [StarRing K] [AddCommGroup
     exact absurd hi h'
 
 /- English proof (translation)
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_sum, LinearMap.sum_apply, Finset.sum_eq_single i]`. Rewrite using `[map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, smul_eq_mul, starRingEnd_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `j _ hji`. Rewrite using `[map_smulₛₗ, LinearMap.smul_apply, ho j i hji, smul_zero]`. Introduce `h'`. Conclude with `absurd (Finset.mem_univ i) h'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem form_sum_lemma_7 {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
     {h : V →ₗ⋆[K] V →ₗ[K] K} {ι : Type} [Fintype ι] {b : ι → V}
@@ -97,7 +97,7 @@ private theorem form_sum_lemma_7 {K V : Type} [Field K] [StarRing K] [AddCommGro
     exact absurd (Finset.mem_univ i) h'
 
 /- English proof (translation)
-Use `(mem_iff_lemma b (b i)).2 ⟨fun j => if j = i then 1 else 0, fun j => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only split_ifs`. Conclude with `S.one_mem`. Conclude with `S.zero_mem`. Simplify using `[ite_smul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem mem_self_lemma_9 {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] {S : Subring K} {ι : Type} [Fintype ι] [DecidableEq ι] (b : ι → V) (i : ι) :
     b i ∈ spanS S b := by
@@ -109,7 +109,7 @@ private theorem mem_self_lemma_9 {K V : Type} [Field K] [StarRing K] [AddCommGro
   · simp [ite_smul]
 
 /- English proof (translation)
-Introduce `m hm` and use `mem_span_lemma_4 hm smul_mem := fun a ha m hm => smul_mem_lemma_2 ha hm int := by intro x hx y hy rw [mem_iff_lemma] at hx hy obtain ⟨a, ha, rfl⟩ := hx obtain ⟨c, hc, rfl⟩ := hy rw [form_sum_lemma_7 ho] exact sum_mem fun i _ => S.mul_mem (S.mul_mem (hS.star_mem _ (ha i)) (hc i)) …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem isSD_lemma_8 {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
     {S : Subring K} (hS : IsHermSemilocal S) {h : V →ₗ⋆[K] V →ₗ[K] K} {ι : Type} [Fintype ι]
@@ -153,63 +153,53 @@ private theorem isSD_lemma_8 {K V : Type} [Field K] [StarRing K] [AddCommGroup V
       exact absurd (Finset.mem_univ i) h'
 
 /- English proof (translation)
-Use `set Xs := ∑ i ∈ Finset.univ.filter (fun i => e i = e i₀), x i • b i with hXs`. Establish `hπ0 : π ≠ 0` using `hπ.ne`. Establish `hp0 : π ^ e i₀ ≠ 0` using `pow_ne_zero _ hπ0`. Take `⟨h', hh'⟩ : ∃ h' : V →ₗ⋆[K] V →ₗ[K] K, ∀ v w, h' v w = (π ^ e i₀)⁻¹ * h v w` from `⟨(π ^ e i₀)⁻¹ • h, fun v w => by simp only [LinearMap.smul_apply, smul_eq_mul]⟩`. Establish `hstar : ∀ v w, star (h v w) = h w v` using `fun v w => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← starRingEnd_apply]`. Conclude with `hs.eq v w`. Establish `hpstar : star ((π ^ e i₀)⁻¹) = (π ^ e i₀)⁻¹` using `by rw [star_inv₀, star_pow, hπ.fix]`. Establish `hs' : h'.IsSymm` using `LinearMap.IsSymm.mk fun v w => by`. Rewrite using `[hh', hh', starRingEnd_apply, star_mul, hstar, hpstar, mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hz : ∀ v w, h' v w = 0 → h v w = 0` using `fun v w hvw => by`. Rewrite `hvw` using `[hh']`. Conclude with `(mul_eq_zero.1 hvw).resolve_left (inv_ne_zero hp0)`. Establish `hd' : ∀ v, h' v v = 0 → v = 0` using `fun v hv => hd v (hz v v hv)`. Establish `hconv : ∀ v, h' v v = h v v * (π ^ e i₀)⁻¹` using `fun v => by rw [hh', mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨bP, hbP⟩ : ∃ bP : {i // e i = e i₀} → V, ∀ p, bP p = b p` from `⟨fun p => b p, fun _ => rfl⟩`. Establish `hoP : ∀ p q, p ≠ q → h' (bP p) (bP q) = 0` using `fun p q hpq => by`. Rewrite using `[hh', hbP, hbP, ho _ _ (fun hq => hpq (Subtype.ext hq)), mul_zero]`. Establish `huP : ∀ p, IsUnitIn S (h' (bP p) (bP p))` using `fun p => by`. Rewrite using `[hconv, hbP]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `hu p` as an intermediate fact. Rewrite `this` using `[p.2]`. Then use the resulting hypothesis. Establish `hSD` using `isSD_lemma_8 hS hoP huP`. Establish `hXeq : Xs = ∑ p : {i // e i = e i₀}, x p • bP p`. Simplify using `only [hbP]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_subtype _ (fun i => by simp) (fun i => x i • b i)`. Establish `hXL : Xs ∈ spanS S bP` using `(mem_iff_lemma _ _).2 ⟨fun p => x p, fun p => hx p, hXeq⟩`. Establish `hXu' : IsUnitIn S (h' Xs Xs)`. Rewrite using `[hconv]`. Conclude with `hX`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hXX : h' Xs Xs ≠ 0` using `hXu'.1`. Establish `hX0 : Xs ≠ 0` using `fun h0 => hXX (by rw [h0, map_zero])`. Establish `hXW : Xs ∈ Submodule.span K (Set.range bP)` using `mem_span_lemma_4 hXL`. Take `⟨k, f, hof, huf, hspf, hspanf⟩` from `sd_basis hS hπ hs' hd' _ (cutW h' (Submodule.span K (Set.range bP)) Xs) (cutM h' (spanS S bP) Xs) le_rfl (hSD.cut hXL hXu')`. Establish `hinf : K ∙ Xs ⊓ cutW h' (Submodule.span K (Set.range bP)) Xs = ⊥`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[eq_bot_iff]`. Introduce `v hv`. Take `⟨hv1, hv2⟩` from `Submodule.mem_inf.1 hv`. Take `⟨t, rfl⟩` from `Submodule.mem_span_singleton.1 hv1`. Establish `hv2' : t • Xs ∈ Submodule.span K (Set.range bP) ⊓ LinearMap.ker (h' Xs)` using `hv2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `ht` using `LinearMap.mem_ker.1 (Submodule.mem_inf.1 hv2').2`. Rewrite `ht` using `[map_smul, smul_eq_mul]`. Rewrite using `[(mul_eq_zero.1 ht).resolve_right hXX, zero_smul]`. Conclude with `Submodule.zero_mem _`. Establish `e1` using `Submodule.finrank_sup_add_finrank_inf_eq (K ∙ Xs) (cutW h' (Submodule.span K (Set.range bP)) Xs)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Rewrite `e1` using `[sup_cutW hXW hXX, hinf, finrank_bot, finrank_span_singleton hX0, ← hspanf, finrank_span_eq_card (linInd_lemma_6 hof (fun j => (huf j).1)), finrank_span_eq_card (linInd_lemma_6 hoP (fun p => (huP p).1)), Fintype.card_fin]`. Use `set p₀ : {i // e i = e i₀} := ⟨i₀, rfl⟩ with hp₀`. Establish `hQ : Fintype.card {p : {i // e i = e i₀} // p ≠ p₀} = k`. Rewrite using `[Fintype.card_subtype, Finset.filter_ne', Finset.card_erase_of_mem (Finset.mem_univ _), Finset.card_univ]`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `σ` to `Fintype.equivFinOfCardEq hQ`. Take `⟨gP, hg0, hgq⟩ : ∃ gP : {i // e i = e i₀} → V, gP p₀ = Xs ∧ ∀ q : {p : {i // e i = e i₀} // p ≠ p₀}, gP q.1 = f (σ q)` from `⟨fun p => if hp : p = p₀ then Xs else f (σ ⟨p, hp⟩), dif_pos rfl, fun q => dif_neg q.2⟩`. Take `⟨c, hcP, hcn⟩ : ∃ c : ι → V, (∀ p : {i // e i = e i₀}, c p = gP p) ∧ ∀ i, e i ≠ e i₀ → c i = b i` from `⟨fun i => if hi : e i = e i₀ then gP ⟨i, hi⟩ else b i, fun p => dif_pos p.2, fun i hi => dif_neg hi⟩`. Establish `hc0 : c i₀ = Xs` using `(hcP p₀).trans hg0`. Establish `hXf : ∀ j, h Xs (f j) = 0` using `fun j => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hm : f j ∈ cutW h' (Submodule.span K (Set.range bP)) Xs`. Rewrite using `[← hspanf]`. Conclude with `Submodule.subset_span ⟨j, rfl⟩`. Establish `hm' : f j ∈ Submodule.span K (Set.range bP) ⊓ LinearMap.ker (h' Xs)` using `hm`. Conclude with `hz _ _ (LinearMap.mem_ker.1 (Submodule.mem_inf.1 hm').2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hfX : ∀ j, h (f j) Xs = 0` using `fun j => by rw [← hstar, hXf, star_zero]`. Establish `hgo : ∀ p p' : {i // e i = e i₀}, p ≠ p' → h (gP p) (gP p') = 0`. Introduce `p p' hpp`. Distinguish the cases in `hp : p = p₀`. Establish `hp' : p' ≠ p₀` using `fun hq => hpp (hp.trans hq.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hp, hg0, show gP p' = f (σ ⟨p', hp'⟩) from hgq ⟨p', hp'⟩]`. Conclude with `hXf _`. Distinguish the cases in `hp' : p' = p₀`. Rewrite using `[hp', hg0, show gP p = f (σ ⟨p, hp⟩) from hgq ⟨p, hp⟩]`. Conclude with `hfX _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[show gP p = f (σ ⟨p, hp⟩) from hgq ⟨p, hp⟩, show gP p' = f (σ ⟨p', hp'⟩) from hgq ⟨p', hp'⟩]`. Conclude with `hz _ _ (hof _ _ (fun hq => hpp (congrArg Subtype.val (σ.injective hq))))`. Establish `hfL : ∀ j, f j ∈ spanS S bP` using `fun j => (mem_cutM.1 ((hspf _).1 (mem_self_lemma_9 f j))).1`. Establish `hgL : ∀ p, gP p ∈ spanS S bP` using `fun p => by`. Distinguish the cases in `hp : p = p₀`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hp, hg0]`. Conclude with `hXL`. Rewrite using `[show gP p = f (σ ⟨p, hp⟩) from hgq ⟨p, hp⟩]`. Conclude with `hfL _`. Establish `hperp : ∀ w ∈ Submodule.span K (Set.range bP), ∀ j, e j ≠ e i₀ → h w (b j) = 0 ∧ h (b j) w = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `w hw j hj`. Take `⟨a, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun K).1 hw`. Establish `hne : ∀ p : {i // e i = e i₀}, (p : ι) ≠ j` using `fun p hq => hj (hq ▸ p.2)`. Prove the components needed by the constructor for the conclusion. Rewrite using `[map_sum, LinearMap.sum_apply]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.sum_eq_zero fun p _ => by`. Rewrite using `[map_smulₛₗ, LinearMap.smul_apply, hbP, ho _ _ (hne p), smul_zero]`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_zero fun p _ => by`. Rewrite using `[map_smul, hbP, ho _ _ (hne p).symm, smul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hoc : ∀ i j, i ≠ j → h (c i) (c j) = 0`. Introduce `i j hij`. Distinguish the cases in `hi : e i = e i₀`. Distinguish the cases in `hj : e j = e i₀`. Rewrite using `[show c i = gP ⟨i, hi⟩ from hcP ⟨i, hi⟩, show c j = gP ⟨j, hj⟩ from hcP ⟨j, hj⟩]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `hgo _ _ (fun hq => hij (congrArg Subtype.val hq))`. Rewrite using `[show c i = gP ⟨i, hi⟩ from hcP ⟨i, hi⟩, hcn j hj]`. Conclude with `(hperp _ (mem_span_lemma_4 (hgL _)) j hj).1`. Rewrite using `[hcn i hi]`. Distinguish the cases in `hj : e j = e i₀`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show c j = gP ⟨j, hj⟩ from hcP ⟨j, hj⟩]`. Conclude with `(hperp _ (mem_span_lemma_4 (hgL _)) i hi).2`. Rewrite using `[hcn j hj]`. Conclude with `ho i j hij`. Establish `huc : ∀ i, IsUnitIn S (h (c i) (c i) * (π ^ e i)⁻¹)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i`. Distinguish the cases in `hi : e i = e i₀`. Rewrite using `[show c i = gP ⟨i, hi⟩ from hcP ⟨i, hi⟩, hi, ← hconv]`. Distinguish the cases in `hp : (⟨i, hi⟩ : {i // e i = e i₀}) = p₀`. Rewrite using `[hp, hg0]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hXu'`. Rewrite using `[show gP ⟨i, hi⟩ = f (σ ⟨⟨i, hi⟩, hp⟩) from hgq ⟨⟨i, hi⟩, hp⟩]`. Conclude with `huf _`. Rewrite using `[hcn i hi]`. Conclude with `hu i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `h1 : ∀ i, c i ∈ spanS S b`. Introduce `i`. Distinguish the cases in `hi : e i = e i₀`. Rewrite using `[show c i = gP ⟨i, hi⟩ from hcP ⟨i, hi⟩]`. Conclude with `spanS_le_lemma_3 (fun p => by rw [hbP]; exact mem_self_lemma_9 b p) (hgL _)`.
-
-Rewrite using `[hcn i hi]`. Conclude with `mem_self_lemma_9 b i`. Establish `hfc : ∀ j, f j ∈ spanS S c` using `fun j => by`. Establish `hfj : f j = c (σ.symm j).1.1` using `by rw [hcP, hgq, Equiv.apply_symm_apply]`. Rewrite using `[hfj]`.
-
-Conclude with `mem_self_lemma_9 c _`. Establish `h2 : ∀ i, b i ∈ spanS S c`. Introduce `i`. Distinguish the cases in `hi : e i = e i₀`. Establish `hbi : b i ∈ spanS S bP`.
-
-Establish `hm` using `mem_self_lemma_9 (S := S) bP ⟨i, hi⟩`. Rewrite `hm` using `[hbP]`. Then use the resulting hypothesis. Establish `hr` using `(hspf _).2 (proj_mem hSD.toIsLatIn hXL hXu' hbi)`. Establish `ha : h' Xs (b i) * (h' Xs Xs)⁻¹ ∈ S` using `S.mul_mem (hSD.int _ hXL _ hbi) hXu'.2.2`. Establish `key : b i = (h' Xs (b i) * (h' Xs Xs)⁻¹) • Xs + (b i - (h' Xs (b i) * (h' Xs Xs)⁻¹) • Xs)` using `by abel`.
-
-Rewrite using `[key]`. Use `add_mem (smul_mem_lemma_2 ha ?_) (spanS_le_lemma_3 hfc hr)` and prove the remaining obligations. Rewrite using `[← hc0]`. Conclude with `mem_self_lemma_9 c i₀`. Rewrite using `[← hcn i hi]`.
-
-Conclude with `mem_self_lemma_9 c i`. Take `⟨hspc, hiffc⟩` from `spans_eq_lemma_5 h1 h2`. Conclude with `⟨c, hoc, huc, hc0, hcn, hspc, hiffc⟩`.
+A detailed English derivation is pending.
 -/
 theorem uni_part {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V]
     {S : Subring K} {π : K} {h : V →ₗ⋆[K] V →ₗ[K] K} (hS : IsHermSemilocal S) (hπ : IsUnif S π)

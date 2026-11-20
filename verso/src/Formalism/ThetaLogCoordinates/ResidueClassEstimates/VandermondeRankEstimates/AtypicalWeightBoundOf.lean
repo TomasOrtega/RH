@@ -14,7 +14,7 @@ namespace TTyp
 end TTyp
 
 /- English proof (translation)
-Establish `hz' : z ≠ 0` using `ne_of_gt hz`. Establish `e : y / z * z = y` using `by field_simp`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 private theorem le_div_of_mul_le_of_pos' {x y z : ℝ} (hz : 0 < z) (h : x * z ≤ y) : x ≤ y / z := by
   have hz' : z ≠ 0 := ne_of_gt hz
@@ -24,9 +24,9 @@ private theorem le_div_of_mul_le_of_pos' {x y z : ℝ} (hz : 0 < z) (h : x * z �
 namespace TTyp
 
 /- English proof (translation)
-Unfold `Formalism.InvariantFactorPaths.BranchingDimensions.Letters.be`. Use `push_cast`. Establish `hn : (D.n0 : ℝ) ≤ D.Ns`. Unfold `Formalism.InvariantFactorPaths.BranchingDimensions.Letters.n0`. Conclude with `Nat.sub_le _ _` after adjusting the coercions.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite `hi` using `[Finset.mem_Icc]`. Conclude with `h i hi.1 hi.2)`. Use `_ = (D.n0 : ℝ) * (2 * a) := by simp`. Use `_ ≤ 2 * a * D.Ns := by nlinarith`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma be_le (D : Letters) {a : ℝ} (ha : 0 ≤ a) (h : ∀ i, 1 ≤ i → i ≤ D.n0 → (D.B i : ℝ) ≤ 2 * a) :
     (D.be : ℝ) ≤ 2 * a * D.Ns := by
@@ -43,7 +43,7 @@ lemma be_le (D : Letters) {a : ℝ} (ha : 0 ≤ a) (h : ∀ i, 1 ≤ i → i ≤
     _ ≤ 2 * a * D.Ns := by nlinarith
 
 /- English proof (translation)
-Unfold `Formalism.InvariantFactorPaths.BranchingDimensions.Letters.be Formalism.InvariantFactorPaths.BranchingDimensions.Letters.bePos Formalism.InvariantFactorPaths.BranchingDimensions.Letters.beNeg`. Rewrite using `[← Finset.sum_filter_add_sum_filter_not (Icc 1 D.n0) (fun i => D.vec i = true)]`. Simplify using `only [Bool.not_eq_true]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma be_eq (D : Letters) : D.be = D.bePos + D.beNeg := by
   unfold Formalism.InvariantFactorPaths.BranchingDimensions.Letters.be Formalism.InvariantFactorPaths.BranchingDimensions.Letters.bePos Formalism.InvariantFactorPaths.BranchingDimensions.Letters.beNeg
@@ -51,9 +51,9 @@ lemma be_eq (D : Letters) : D.be = D.bePos + D.beNeg := by
   simp only [Bool.not_eq_true]
 
 /- English proof (translation)
-Unfold `Formalism.InvariantFactorPaths.BranchingDimensions.PathEntryBounds at h20`. Establish `H` using `(h20 D mu hW hP).2 i hi`. Establish `hv : D.nVec i ≤ D.Ns`. Unfold `Formalism.InvariantFactorPaths.BranchingDimensions.Letters.nVec`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 
-Establish `hc : D.nCov i ≤ D.Ns`. Unfold `Formalism.InvariantFactorPaths.BranchingDimensions.Letters.nCov`. Combine the equalities or inequalities in the displayed calculation. Conclude with `⟨fun h1 => H.2 m (by omega), fun h1 => H.1 m (by omega) hm⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Supply the required witnesses or components.
 -/
 lemma ent_sign (h20 : PathEntryBounds) {D : Letters} {mu : D.Stages} (hW : D.Wf) (hP : D.IsPATH mu)
     {i m : ℕ} (hi : i ≤ D.Ns) (hm : m < D.k) :
@@ -79,7 +79,7 @@ namespace TTyp
 def lat (q : ℕ → Bool) (B : ℕ → ℕ) (i : ℕ) : List ℕ := (((List.range' 1 i).filter q).reverse).map B
 
 /- English proof (translation)
-Proceed by induction on `n generalizing s with`. Consider the case `zero => rfl`. Consider the case `succ n ih => show s :: List.range' (s + 1) (n + 1) = (s :: List.range' (s + 1) n) ++ [s + (n + 1)]`. Rewrite using `[ih (s + 1), show s + 1 + n = s + (n + 1) by omega]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem list_range'_succ_eq_append_singleton (s n : ℕ) : List.range' s (n + 1) = List.range' s n ++ [s + n] := by
   induction n generalizing s with
@@ -90,7 +90,7 @@ private theorem list_range'_succ_eq_append_singleton (s n : ℕ) : List.range' s
     rfl
 
 /- English proof (translation)
-Unfold `lat`. Rewrite using `[list_range'_succ_eq_append_singleton, show (1 : ℕ) + i = i + 1 from Nat.add_comm 1 i, List.filter_append]`. Distinguish the cases in `hq : q (i + 1) = true`. Simplify using `[hq]`. Simplify using `[hq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma lat_succ (q : ℕ → Bool) (B : ℕ → ℕ) (i : ℕ) :
     lat q B (i + 1) = if q (i + 1) = true then B (i + 1) :: lat q B i else lat q B i := by
@@ -101,9 +101,9 @@ lemma lat_succ (q : ℕ → Bool) (B : ℕ → ℕ) (i : ℕ) :
   · simp [hq]
 
 /- English proof (translation)
-Proceed by induction on `l generalizing u with`. Consider the case `nil => simp`. Consider the case `cons x l ih`. Consider the cases of `u with`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `succ u => simpa using ih u`.
+Treat this case separately.
 -/
 private theorem list_sum_drop_eq_getD_add_sum_drop_succ (l : List ℕ) (u : ℕ) : (l.drop u).sum = l.getD u 0 + (l.drop (u + 1)).sum := by
   induction l generalizing u with
@@ -114,7 +114,7 @@ private theorem list_sum_drop_eq_getD_add_sum_drop_succ (l : List ℕ) (u : ℕ)
     | succ u => simpa using ih u
 
 /- English proof (translation)
-The claim follows from `| [], u => by simp | a :: t, 0 => by have e := Finset.sum_Ico_add' (fun j => (a :: t).getD j 0) 0 t.length 1 have h := sum_drop t 0 simp only [List.drop_zero, List.getD_cons_succ, zero_add] at e h rw [List.drop_zero, List.sum_cons, List.length_cons, Finset.sum_eq_sum_Ico_succ_bot …`.
+A detailed English derivation is pending.
 -/
 lemma sum_drop : ∀ (l : List ℕ) (u : ℕ), (l.drop u).sum = ∑ j ∈ Ico u l.length, l.getD j 0
   | [], u => by simp
@@ -130,7 +130,7 @@ lemma sum_drop : ∀ (l : List ℕ) (u : ℕ), (l.drop u).sum = ∑ j ∈ Ico u 
       rw [List.drop_succ_cons, List.length_cons, ← e, sum_drop t u]
 
 /- English proof (translation)
-The claim follows from `| 0 => by simp [lat] | n + 1 => by rw [lat_succ, Finset.sum_filter, Finset.sum_Icc_succ_top (by omega), ← Finset.sum_filter, ← sum_lat g q B n] by_cases h : q (n + 1) = true · simp only [if_pos h, List.length_cons, Finset.sum_range_succ', List.getD_cons_succ, List.getD_cons_zero] …`.
+A detailed English derivation is pending.
 -/
 lemma sum_lat (g : ℕ → ℝ) (q : ℕ → Bool) (B : ℕ → ℕ) : ∀ n,
     ∑ l ∈ range (lat q B n).length, g ((lat q B n).getD l 0) =
@@ -145,7 +145,7 @@ lemma sum_lat (g : ℕ → ℝ) (q : ℕ → Bool) (B : ℕ → ℕ) : ∀ n,
       · simp only [if_neg h, add_zero]
 
 /- English proof (translation)
-The claim follows from `| 0 => ⟨[], by simp, by simp⟩ | d + 1 => by obtain ⟨pre, h1, h2⟩ := lat_split q B i d rw [← add_assoc, lat_succ, Finset.card_filter, Finset.sum_Icc_succ_top (by omega), ← Finset.card_filter] by_cases h : q (i + d + 1) = true · exact ⟨B (i + d + 1) :: pre, by simp [h, h1], by simp …`.
+A detailed English derivation is pending.
 -/
 lemma lat_split (q : ℕ → Bool) (B : ℕ → ℕ) (i : ℕ) : ∀ d, ∃ pre : List ℕ,
     lat q B (i + d) = pre ++ lat q B i ∧
@@ -160,7 +160,7 @@ lemma lat_split (q : ℕ → Bool) (B : ℕ → ℕ) (i : ℕ) : ∀ d, ∃ pre 
       · exact ⟨pre, by simp [h, h1], by simp [h, h2]⟩
 
 /- English proof (translation)
-Unfold `lat at h`. Simplify using `only [List.mem_map, List.mem_reverse, List.mem_filter, List.mem_range'_1] at h`. Take `⟨l, ⟨⟨h1, h2⟩, hq⟩, hx⟩` from `h`. Conclude with `⟨l, h1, by omega, hq, hx.symm⟩`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma mem_lat {q : ℕ → Bool} {B : ℕ → ℕ} {j x : ℕ} (h : x ∈ lat q B j) :
     ∃ l, 1 ≤ l ∧ l ≤ j ∧ q l = true ∧ x = B l := by
@@ -170,9 +170,9 @@ lemma mem_lat {q : ℕ → Bool} {B : ℕ → ℕ} {j x : ℕ} (h : x ∈ lat q 
   exact ⟨l, h1, by omega, hq, hx.symm⟩
 
 /- English proof (translation)
-Proceed by induction on `l generalizing t with`. Consider the case `nil => simp at h`. Consider the case `cons x l ih`. Consider the cases of `t with`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `succ t`. Rewrite using `[List.getD_cons_succ]`. Conclude with `List.mem_cons_of_mem _ (ih (by simpa using h))`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma getD_mem {l : List ℕ} {t : ℕ} (h : t < l.length) : l.getD t 0 ∈ l := by
   induction l generalizing t with
@@ -185,7 +185,7 @@ lemma getD_mem {l : List ℕ} {t : ℕ} (h : t < l.length) : l.getD t 0 ∈ l :=
       exact List.mem_cons_of_mem _ (ih (by simpa using h))
 
 /- English proof (translation)
-Proceed by induction on `pre with`. Consider the case `nil => simp`. Consider the case `cons x pre ih`. Rewrite using `[List.length_cons, ← Nat.add_assoc, List.cons_append, List.getD_cons_succ]`. Conclude with `ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem list_getD_append_add_length (pre R : List ℕ) (u : ℕ) : (pre ++ R).getD (u + pre.length) 0 = R.getD u 0 := by
   induction pre with
@@ -195,7 +195,7 @@ private theorem list_getD_append_add_length (pre R : List ℕ) (u : ℕ) : (pre 
     exact ih
 
 /- English proof (translation)
-Take `⟨pre, hpre, hlen⟩` from `lat_split q B i (n - i)`. Rewrite `hpre`, `hlen` using `[show i + (n - i) = n by omega]`. Use `⟨fun u => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hpre, ← hlen, list_getD_append_add_length]`. Rewrite using `[hpre, List.length_append, hlen]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma lat_shift (q : ℕ → Bool) (B : ℕ → ℕ) {i n : ℕ} (h : i ≤ n) :
     (∀ u, (lat q B n).getD (u + ((Icc (i + 1) n).filter (fun l => q l = true)).card) 0 =
@@ -208,49 +208,45 @@ lemma lat_shift (q : ℕ → Bool) (B : ℕ → ℕ) {i n : ℕ} (h : i ≤ n) :
   · rw [hpre, List.length_append, hlen]
 
 /- English proof (translation)
-Establish `F0 : fT k' 0 = 0` using `(h31 k').1`. Establish `hnn : ∀ m, (0 : ℝ) ≤ ((max (la m) 0 : ℤ) : ℝ)` using `fun m => by exact_mod_cast le_max_right (la m) 0`. Establish `hbeyond : ∀ m, m < K → lst.length ≤ m → max (la m) 0 = 0`. Introduce `m hmK hmL`. Establish `h` using `h3 lst.length`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[List.drop_length]`. Establish `h0 : tailPos K la lst.length ≤ 0` using `by simpa using h`. Establish `hsub : max (la m) 0 ≤ tailPos K la lst.length`. Unfold `tailPos`. Conclude with `Finset.single_le_sum (f := fun m => max (la m) 0) (fun i _ => le_max_right _ _) (Finset.mem_filter.mpr ⟨Finset.mem_range.mpr hmK, hmL⟩)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Introduce a local definition for the expression.
 
-Conclude with `le_antisymm (le_trans hsub h0) (le_max_right _ _)`. Set `al : ℕ → ℝ` to `fun l => if l < K then ((max (la l) 0 : ℤ) : ℝ) else 0`. Set `Bs : ℕ → ℝ` to `fun l => ((lst.getD l 0 : ℕ) : ℝ)`. Establish `hal : ∀ l, al l = if l < K then ((max (la l) 0 : ℤ) : ℝ) else 0` using `fun l => rfl`. Establish `hBs : ∀ l, Bs l = ((lst.getD l 0 : ℕ) : ℝ)` using `fun l => rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hal0 : ∀ l, 0 ≤ al l`. Introduce `l`. Rewrite using `[hal]`. Use `split_ifs`. Conclude with `hnn l`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `le_refl 0`. Establish `halK : ∀ l, K ≤ l → al l = 0`. Introduce `l hl`. Rewrite using `[hal, if_neg (by omega)]`. Establish `halL : ∀ l, lst.length ≤ l → al l = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Introduce `l hl`. Rewrite using `[hal]`. Use `split_ifs with h`. Rewrite using `[hbeyond l h hl]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hA : ∀ u, ((tailPos K la u : ℤ) : ℝ) = ∑ l ∈ Ico u lst.length, al l`. Introduce `u`. Unfold `tailPos`. Rewrite using `[Int.cast_sum]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : ∑ m ∈ (range K).filter (fun m => u ≤ m), ((max (la m) 0 : ℤ) : ℝ) = ∑ m ∈ (range K).filter (fun m => u ≤ m), al m`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `m hm`. Rewrite `hm` using `[Finset.mem_filter, Finset.mem_range]`. Rewrite using `[hal, if_pos hm.1]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `e2 : ∑ m ∈ (range K).filter (fun m => u ≤ m), al m = ∑ m ∈ Ico u (K + lst.length), al m`. Apply `Finset.sum_subset` to reduce the goal to its premises. Introduce `m hm`. Rewrite `hm` using `[Finset.mem_filter, Finset.mem_range]`. Rewrite using `[Finset.mem_Ico]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `⟨hm.2, by omega⟩`. Introduce `m hm hnm`. Rewrite `hm` using `[Finset.mem_Ico]`. Apply `halK` to reduce the goal to its premises. Assume the negation of the conclusion as `hc`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hnm (Finset.mem_filter.mpr ⟨Finset.mem_range.mpr (by omega), hm.1⟩)`. Establish `e3 : ∑ m ∈ Ico u lst.length, al m = ∑ m ∈ Ico u (K + lst.length), al m`. Apply `Finset.sum_subset` to reduce the goal to its premises. Introduce `m hm`. Rewrite `hm`, the goal using `[Finset.mem_Ico]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨hm.1, by omega⟩`. Introduce `m hm hnm`. Rewrite `hm` using `[Finset.mem_Ico]`. Apply `halL` to reduce the goal to its premises. Assume the negation of the conclusion as `hc`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hnm (Finset.mem_Ico.mpr ⟨hm.1, by omega⟩)`. Rewrite using `[e1, e2, e3]`. Establish `hB : ∀ u, (((lst.drop u).sum : ℕ) : ℝ) = ∑ l ∈ Ico u lst.length, Bs l`. Introduce `u`. Rewrite using `[sum_drop lst u, Nat.cast_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hC : ∑ m ∈ range K, fT k' ((max (la m) 0 : ℤ) : ℝ) = ∑ l ∈ range lst.length, fT k' (al l)`. Establish `c1 : ∑ m ∈ range K, fT k' ((max (la m) 0 : ℤ) : ℝ) = ∑ m ∈ range K, fT k' (al m)`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `m hm`. Rewrite `hm` using `[Finset.mem_range]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hal, if_pos hm]`. Establish `c2 : ∑ m ∈ range K, fT k' (al m) = ∑ m ∈ range (K + lst.length), fT k' (al m)`. Apply `Finset.sum_subset` to reduce the goal to its premises. Introduce `m hm`. Rewrite `hm`, the goal using `[Finset.mem_range]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Introduce `m _ hnm`. Rewrite `hnm` using `[Finset.mem_range]`. Rewrite using `[halK m (by omega), F0]`. Establish `c3 : ∑ m ∈ range lst.length, fT k' (al m) = ∑ m ∈ range (K + lst.length), fT k' (al m)`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.sum_subset` to reduce the goal to its premises. Introduce `m hm`. Rewrite `hm`, the goal using `[Finset.mem_range]`. Use linear arithmetic over natural numbers and integers. Introduce `m _ hnm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hnm` using `[Finset.mem_range]`. Rewrite using `[halL m (by omega), F0]`. Rewrite using `[c1, c2, c3]`. Take `⟨-, P2, P3, P4⟩` from `h34 k' lst.length al Bs hk hal0 (fun l hl => by rw [hBs]; exact_mod_cast h1 l hl) (fun l hl => by rw [hBs, hBs]; exact_mod_cast h2 l hl) (fun u _ => by`. Establish `h' : ((tailPos K la u : ℤ) : ℝ) ≤ (((lst.drop u).sum : ℕ) : ℝ)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3u` using `h3 u`. Generalize the expression as in `(lst.drop u).sum = s at h3u ⊢`. Conclude with `h3u` after adjusting the coercions. Rewrite `h'` using `[hA u, hB u]`. Use the proof step `linarith)`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hC]`. Conclude with `le_trans P2 P3`. Introduce `u₀ X hX hT`. Rewrite `hT` using `[hA u₀, hB u₀]`.
-
-Establish `hu : u₀ < lst.length`. Assume the negation of the conclusion as `hc`. Simplify using `only [Finset.Ico_eq_empty_of_le (show lst.length ≤ u₀ by omega), Finset.sum_empty] at hT`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨hu, ?_⟩` and prove the remaining obligations.
-
-Take `⟨Q1, Q2⟩` from `P4 u₀ X hu hX.le (by linarith)`. Rewrite using `[hC]`. Conclude with `le_trans Q1 Q2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma bracket (h31 : LogBinomialProperties) (h34 : LogBinomialDeficit) (k' K : ℕ) (la : ℕ → ℤ) (lst : List ℕ) (hk : 1 ≤ k')
     (h1 : ∀ l, l < lst.length → k' ≤ lst.getD l 0)
@@ -386,7 +382,7 @@ namespace TTyp
 def revW (n : ℕ) (la : ℕ → ℤ) : ℕ → ℤ := fun m => -(la (n - 1 - m))
 
 /- English proof (translation)
-Take `⟨j, rfl⟩ : ∃ j, i = j + 1` from `⟨i - 1, by omega⟩`. Rewrite using `[lat_succ, if_neg (by simp [h]), Nat.add_sub_cancel]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 lemma lat_pred (q : ℕ → Bool) (B : ℕ → ℕ) {i : ℕ} (hi : 1 ≤ i) (h : q i = false) :
     lat q B (i - 1) = lat q B i := by
@@ -394,9 +390,9 @@ lemma lat_pred (q : ℕ → Bool) (B : ℕ → ℕ) {i : ℕ} (hi : 1 ≤ i) (h 
   rw [lat_succ, if_neg (by simp [h]), Nat.add_sub_cancel]
 
 /- English proof (translation)
-Unfold `tailPos`. Establish `hs : (range n).filter (fun m => u ≤ m) = insert u ((range n).filter (fun m => u + 1 ≤ m))`. Use extensionality with `m`. Simplify using `only [Finset.mem_filter, Finset.mem_range, Finset.mem_insert]`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Use linear arithmetic over natural numbers and integers. Introduce `h`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hs, Finset.sum_insert (by simp)]`.
+Fix the arbitrary inputs or assume the hypotheses. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 -/
 lemma tailPos_split (n : ℕ) (la : ℕ → ℤ) {u : ℕ} (hu : u < n) :
     tailPos n la u = max (la u) 0 + tailPos n la (u + 1) := by
@@ -412,14 +408,14 @@ lemma tailPos_split (n : ℕ) (la : ℕ → ℤ) {u : ℕ} (hu : u < n) :
   rw [hs, Finset.sum_insert (by simp)]
 
 /- English proof (translation)
-The claim follows from `list_sum_drop_eq_getD_add_sum_drop_succ l u`.
+A detailed English derivation is pending.
 -/
 lemma drop_split (l : List ℕ) (u : ℕ) : (l.drop u).sum = l.getD u 0 + (l.drop (u + 1)).sum := list_sum_drop_eq_getD_add_sum_drop_succ l u
 
 /- English proof (translation)
-Establish `hcard : ((Icc (i₀ + 1) n0).filter (fun l => q l = true)).card = ((Icc (min i₀ n0 + 1) n0).filter (fun l => q l = true)).card`. Distinguish the cases in `h : i₀ ≤ n0`. Rewrite using `[min_eq_left h]`. Rewrite using `[min_eq_right (by omega), Finset.Icc_eq_empty_of_lt (by omega : n0 < i₀ + 1), Finset.Icc_eq_empty_of_lt (by omega : n0 < n0 + 1)]`. Take `⟨hsh1, hsh2⟩` from `lat_shift q B (min_le_right i₀ n0)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hd` using `[hcard]`. Take `⟨hlt, hbd⟩` from `(bracket h31 h34 k' K la (lat q B n0) hk h1 h2 h3).2 _ X hX hd`. Rewrite `hbd` using `[hsh1 u]`. Conclude with `⟨by omega, hbd⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 lemma key (h31 : LogBinomialProperties) (h34 : LogBinomialDeficit) (k' K : ℕ) (la : ℕ → ℤ) (q : ℕ → Bool) (B : ℕ → ℕ) (n0 : ℕ)
     (hk : 1 ≤ k')
@@ -447,7 +443,7 @@ lemma key (h31 : LogBinomialProperties) (h34 : LogBinomialDeficit) (k' K : ℕ) 
   exact ⟨by omega, hbd⟩
 
 /- English proof (translation)
-Establish `hpos : 0 ≤ La * k' / (4 * k)` using `div_nonneg (mul_nonneg hLa.le hk') (by linarith)`. Use `_root_.Formalism.InvariantFactorPaths.BranchingDimensions.le_div_of_mul_le_of_pos' (by linarith) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 lemma a_fin {La b p k k' g : ℝ} (hLa : 0 < La) (hp : 0 < p) (hk : 0 < k) (hk' : 0 ≤ k')
     (hg0 : 0 < g) (hg : g ≤ 4 * b / p) : La * k' / (16 * k) ≤ (La * b / (p * k)) * k' / (4 * g) := by
@@ -460,7 +456,7 @@ lemma a_fin {La b p k k' g : ℝ} (hLa : 0 < La) (hp : 0 < p) (hk : 0 < k) (hk' 
 end TTyp
 
 /- English proof (translation)
-Establish `h'` using `Real.exp_le_exp.mpr h`. Rewrite `h'` using `[Real.exp_log hw, Real.exp_add, Real.exp_log hT]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem le_exp_mul_of_log_le_add_log {w T E : ℝ} (hw : 0 < w) (hT : 0 < T) (h : Real.log w ≤ E + Real.log T) :
     w ≤ Real.exp E * T := by
@@ -468,125 +464,113 @@ private theorem le_exp_mul_of_log_le_add_log {w T E : ℝ} (hw : 0 < w) (hT : 0 
   rwa [Real.exp_log hw, Real.exp_add, Real.exp_log hT] at h'
 
 /- English proof (translation)
-Introduce `h20 h21 h31 h32 h33 h35 h34 D a p La b hW hPB hTD mu hP`. Establish `h21'` using `h21`. Unfold `LogWeylDimensionEstimate at h32`. Unfold `LogRankEstimate at h33`. Unfold `PathTailBounds at h35`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Unfold `PathInterlacingCriterion at h21'`. Establish `hWF` using `hW`. Take `⟨hr1, hK1, h3r, hvr, hvn⟩` from `hWF`. Establish `hPB'` using `hPB`. Take `⟨ha3, hpr, hp13, hBi, hdv, hdc, -, -, h2r, hkK, hNa⟩` from `hPB'`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hk : D.k = D.r + D.K` using `rfl`. Establish `hn0 : D.n0 = D.Ns - D.r` using `rfl`. Establish `hk' : D.k' = D.K - 2 * D.Ns` using `rfl`. Establish `hK2 : 2 * D.Ns ≤ D.K` using `by omega`. Establish `hk'1 : 1 ≤ D.k'` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnr : D.n0 + D.r = D.Ns` using `by omega`. Establish `hmin : min D.Ns D.n0 = D.n0` using `min_eq_right (by omega)`. Establish `hSL : D.stLen D.Ns = D.K`. Unfold `Formalism.InvariantFactorPaths.BranchingDimensions.Letters.stLen`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 
-Establish `hstage : stage mu D.Ns = Formalism.InvariantFactorPaths.BranchingDimensions.Letters.kaRows mu D.Ns`. Use function extensionality and compare the values at `l`. Simplify using `only [Formalism.InvariantFactorPaths.BranchingDimensions.Letters.stage, Formalism.InvariantFactorPaths.BranchingDimensions.Letters.kaRows]`. Conclude with `congrArg (Formalism.InvariantFactorPaths.BranchingDimensions.Letters.ent mu D.Ns) (by omega)`. Establish `hRV : ∀ i, D.latestV i = Formalism.InvariantFactorPaths.BranchingDimensions.TTyp.lat (fun l => D.vec l) D.B (min i D.n0)` using `fun i => rfl`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRC : ∀ i, D.latestC i = Formalism.InvariantFactorPaths.BranchingDimensions.TTyp.lat (fun l => !D.vec l) D.B (min i D.n0)` using `fun i => rfl`. Establish `hP'` using `hP`. Unfold `Formalism.InvariantFactorPaths.BranchingDimensions.Letters.IsPATH at hP'`. Establish `hdomN : ∀ m, m + 1 < D.k → Formalism.InvariantFactorPaths.BranchingDimensions.Letters.ent mu D.Ns (m + 1) ≤ Formalism.InvariantFactorPaths.BranchingDimensions.Letters.ent mu D.Ns m` using `hP'.2.1 D.Ns le_rfl`. Establish `hdomK : Dom D.K (Formalism.InvariantFactorPaths.BranchingDimensions.Letters.kaRows mu D.Ns)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Dom`. Introduce `m hm`. Use `show Formalism.InvariantFactorPaths.BranchingDimensions.Letters.ent mu D.Ns (D.r + (m + 1)) ≤ Formalism.InvariantFactorPaths.BranchingDimensions.Letters.ent mu D.Ns (D.r + m)`. Rewrite using `[← Nat.add_assoc]`. Conclude with `hdomN (D.r + m) (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hposc : ((range D.K).filter fun m => 0 < Formalism.InvariantFactorPaths.BranchingDimensions.Letters.kaRows mu D.Ns m).card ≤ D.Ns`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.card_le_card` to reduce the goal to its premises. Introduce `m hm`. Simplify using `only [Finset.mem_filter, Finset.mem_range] at hm ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hc`. Use `(Formalism.InvariantFactorPaths.BranchingDimensions.TTyp.ent_sign h20 hW hP (i := D.Ns) (m := D.r + m) le_rfl (by omega)).2 (by omega)` as an intermediate fact. Establish `e : Formalism.InvariantFactorPaths.BranchingDimensions.Letters.kaRows mu D.Ns m = Formalism.InvariantFactorPaths.BranchingDimensions.Letters.ent mu D.Ns (D.r + m)` using `rfl`. Use linear arithmetic over natural numbers and integers. Use `_ = D.Ns := Finset.card_range _`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hnegc : ((range D.K).filter fun m => Formalism.InvariantFactorPaths.BranchingDimensions.Letters.kaRows mu D.Ns m < 0).card ≤ D.Ns`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.card_le_card` to reduce the goal to its premises. Introduce `m hm`. Simplify using `only [Finset.mem_filter, Finset.mem_range, Finset.mem_Ico] at hm ⊢`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, hm.1⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Use `(Formalism.InvariantFactorPaths.BranchingDimensions.TTyp.ent_sign h20 hW hP (i := D.Ns) (m := D.r + m) le_rfl (by omega)).1 (by omega)` as an intermediate fact. Establish `e : Formalism.InvariantFactorPaths.BranchingDimensions.Letters.kaRows mu D.Ns m = Formalism.InvariantFactorPaths.BranchingDimensions.Letters.ent mu D.Ns (D.r + m)` using `rfl`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_ = D.Ns := by`. Rewrite using `[Nat.card_Ico]`. Use linear arithmetic over natural numbers and integers. Establish `hC` using `(h21' D mu hW).2 hP`. Establish `hlab : ∀ l, l < D.K → -(D.beNeg : ℤ) ≤ Formalism.InvariantFactorPaths.BranchingDimensions.Letters.kaRows mu D.Ns l ∧ Formalism.InvariantFactorPaths.BranchingDimensions.Letters.kaRows mu D.Ns l ≤ D.bePos`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `l hl`. Establish `h` using `hC.2.2.1 D.r le_rfl l (by omega)`. Rewrite `h` using `[hnr, hstage]`. Conclude with `⟨le_trans hC.1 h.1, le_trans h.2 hC.2.1⟩`. Establish `hbe : (D.be : ℝ) ≤ 2 * a * D.Ns` using `Formalism.InvariantFactorPaths.BranchingDimensions.TTyp.be_le D (by linarith) (fun i h1 h2 => (hBi i h1 h2).2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA0 : ((max (Formalism.InvariantFactorPaths.BranchingDimensions.Letters.kaRows mu D.Ns 0) 0 + max (-(Formalism.InvariantFactorPaths.BranchingDimensions.Letters.kaRows mu D.Ns (D.K - 1))) 0 : ℤ) : ℝ) ≤ 2 * a * D.Ns`. Establish `e` using `Formalism.InvariantFactorPaths.BranchingDimensions.TTyp.be_eq D`. Establish `h0` using `hlab 0 (by omega)`. Establish `h1` using `hlab (D.K - 1) (by omega)`. Establish `hz : max (Formalism.InvariantFactorPaths.BranchingDimensions.Letters.kaRows mu D.Ns 0) 0 + max (-(Formalism.InvariantFactorPaths.BranchingDimensions.Letters.kaRows mu D.Ns (D.K - 1))) 0 ≤ (D.be : ℤ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `m1 : max (Formalism.InvariantFactorPaths.BranchingDimensions.Letters.kaRows mu D.Ns 0) 0 ≤ (D.bePos : ℤ)` using `max_le h0.2 (by positivity)`. Establish `m2 : max (-(Formalism.InvariantFactorPaths.BranchingDimensions.Letters.kaRows mu D.Ns (D.K - 1))) 0 ≤ (D.beNeg : ℤ)` using `max_le (by linarith [h1.1]) (by positivity)`. Rewrite using `[e]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hz' : ((max (Formalism.InvariantFactorPaths.BranchingDimensions.Letters.kaRows mu D.Ns 0) 0 + max (-(Formalism.InvariantFactorPaths.BranchingDimensions.Letters.kaRows mu D.Ns (D.K - 1))) 0 : ℤ) : ℝ) ≤ (D.be : ℝ)`. Conclude with `hz` after adjusting the coercions. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hLW` using `h32 D.r D.K D.Ns D.K (Formalism.InvariantFactorPaths.BranchingDimensions.Letters.kaRows mu D.Ns) (2 * a * D.Ns) hK2 le_rfl (by omega) hdomK hposc hnegc hA0`. Rewrite `hLW` using `[← hk']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hLR` using `(h33 D (2 * a) (by linarith) hr1 (by omega) hK2 (fun i h1 h2 => (hBi i h1 h2).2)).1`. Establish `hsplitB : ∑ i ∈ Icc 1 D.n0, fT D.k' (D.B i : ℝ) = ∑ i ∈ (Icc 1 D.n0).filter (fun i => D.vec i = true), fT D.k' (D.B i : ℝ) + ∑ i ∈ (Icc 1 D.n0).filter (fun i => (!D.vec i) = true), fT D.k' (D.B i : ℝ)`. Rewrite using `[← Finset.sum_filter_add_sum_filter_not (Icc 1 D.n0) (fun i => D.vec i = true)]`. Use `congr 1`. Apply `Finset.sum_congr _ (fun _ _ => rfl)` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Finset.filter_congr` to reduce the goal to its premises. Introduce `x _`. Simplify using the standard rewrite rules. Establish `hSv` using `Formalism.InvariantFactorPaths.BranchingDimensions.TTyp.sum_lat (fun x : ℕ => fT D.k' (x : ℝ)) (fun l => D.vec l) D.B D.n0`. Establish `hSc` using `Formalism.InvariantFactorPaths.BranchingDimensions.TTyp.sum_lat (fun x : ℕ => fT D.k' (x : ℝ)) (fun l => !D.vec l) D.B D.n0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `hLk : ∀ (q : ℕ → Bool) l, l < (Formalism.InvariantFactorPaths.BranchingDimensions.TTyp.lat q D.B D.n0).length → D.k' ≤ (Formalism.InvariantFactorPaths.BranchingDimensions.TTyp.lat q D.B D.n0).getD l 0`. Introduce `q l hl`. Take `⟨j, hj1, hj2, -, hx⟩` from `Formalism.InvariantFactorPaths.BranchingDimensions.TTyp.mem_lat (Formalism.InvariantFactorPaths.BranchingDimensions.TTyp.getD_mem hl)`. Rewrite using `[hx]`. Use `(hBi j hj1 hj2).1` as an intermediate fact.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hp2 : 169 ≤ p ^ 2`. Combine the equalities or inequalities in the displayed calculation. Establish `hL4v : ∀ l, l + 1 < (Formalism.InvariantFactorPaths.BranchingDimensions.TTyp.lat (fun l => D.vec l) D.B D.n0).length → 4 * (Formalism.InvariantFactorPaths.BranchingDimensions.TTyp.lat (fun l => D.vec l) D.B D.n0).getD (l + 1) 0 ≤ (Formalism.InvariantFactorPaths.BranchingDimension …`. Introduce `l hl`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `hdv l (by rw [hRV, min_self]; exact hl)`. Rewrite `h` using `[hRV, min_self]`. Establish `h'` using `Nat.mul_le_mul hp2 (le_refl ((Formalism.InvariantFactorPaths.BranchingDimensions.TTyp.lat (fun l => D.vec l) D.B D.n0).getD (l + 1) 0))`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hL4c : ∀ l, l + 1 < (Formalism.InvariantFactorPaths.BranchingDimensions.TTyp.lat (fun l => !D.vec l) D.B D.n0).length → 4 * (Formalism.InvariantFactorPaths.BranchingDimensions.TTyp.lat (fun l => !D.vec l) D.B D.n0).getD (l + 1) 0 ≤ (Formalism.InvariantFactorPaths.BranchingDimensi …`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Introduce `l hl`. Establish `h` using `hdc l (by rw [hRC, min_self]; exact hl)`. Rewrite `h` using `[hRC, min_self]`. Establish `h'` using `Nat.mul_le_mul hp2 (le_refl ((Formalism.InvariantFactorPaths.BranchingDimensions.TTyp.lat (fun l => !D.vec l) D.B D.n0).getD (l + 1) 0))`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hTv : ∀ u, tailPos D.K (Formalism.InvariantFactorPaths.BranchingDimensions.Letters.kaRows mu D.Ns) u ≤ (((Formalism.InvariantFactorPaths.BranchingDimensions.TTyp.lat (fun l => D.vec l) D.B D.n0).drop u).sum : ℕ)`. Introduce `u`. Establish `h` using `((h35 D mu hW hP).1 D.Ns u le_rfl).1`. Rewrite `h` using `[hSL, hstage]`. Unfold `Formalism.InvariantFactorPaths.BranchingDimensions.Letters.SPos at h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite `h` using `[hRV, hmin]`. Conclude with `h`. Establish `hTc : ∀ u, tailPos D.K (Formalism.InvariantFactorPaths.BranchingDimensions.TTyp.revW D.K (Formalism.InvariantFactorPaths.BranchingDimensions.Letters.kaRows mu D.Ns)) u ≤ (((Formalism.InvariantFactorPaths.BranchingDimensions.TTyp.lat (fun l => !D.vec l) D.B D.n0).drop u).sum : ℕ)`. Introduce `u`. Establish `h` using `((h35 D mu hW hP).1 D.Ns u le_rfl).2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[hSL, hstage]`. Unfold `Formalism.InvariantFactorPaths.BranchingDimensions.Letters.SNeg at h`. Rewrite `h` using `[hRC, hmin]`. Conclude with `h`. Establish `hBv` using `Formalism.InvariantFactorPaths.BranchingDimensions.TTyp.bracket h31 h34 D.k' D.K (Formalism.InvariantFactorPaths.BranchingDimensions.Letters.kaRows mu D.Ns) (Formalism.InvariantFactorPaths.BranchingDimensions.TTyp.lat (fun l => D.vec l) D.B D.n0) hk'1 (hLk _) hL4v hTv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBc` using `Formalism.InvariantFactorPaths.BranchingDimensions.TTyp.bracket h31 h34 D.k' D.K (Formalism.InvariantFactorPaths.BranchingDimensions.TTyp.revW D.K (Formalism.InvariantFactorPaths.BranchingDimensions.Letters.kaRows mu D.Ns)) (Formalism.InvariantFactorPaths.BranchingDimensions.TTyp …`. Establish `hrefl : ∑ m ∈ range D.K, fT D.k' ((max (Formalism.InvariantFactorPaths.BranchingDimensions.TTyp.revW D.K (Formalism.InvariantFactorPaths.BranchingDimensions.Letters.kaRows mu D.Ns) m) 0 : ℤ) : ℝ) = ∑ m ∈ range D.K, fT D.k' ((max (-(Formalism.InvariantFactorPaths.BranchingDimensio …` using `Finset.sum_range_reflect (fun m => fT D.k' ((max (-(Formalism.InvariantFactorPaths.BranchingDimensions.Letters.kaRows mu D.Ns m)) 0 : ℤ) : ℝ)) D.K`. Establish `hx2 : 0 ≤ 2 * a * (D.Ns : ℝ)` using `mul_nonneg (by linarith) (Nat.cast_nonneg _)`. Establish `hL0 : 0 ≤ Real.log (1 + 2 * a * D.Ns)` using `Real.log_nonneg (by linarith)`. Establish `hcoef : (2 * (D.Ns : ℝ) * D.r + 8 * (D.Ns : ℝ) ^ 2) * Real.log (1 + 2 * a * D.Ns) ≤ 9 * (D.Ns : ℝ) ^ 2 * Real.log (1 + 2 * a * D.Ns)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `h2r' : 2 * (D.r : ℝ) ≤ D.Ns` using `by exact_mod_cast h2r`. Establish `hN0 : (0 : ℝ) ≤ D.Ns` using `Nat.cast_nonneg _`. Establish `: 2 * (D.Ns : ℝ) * D.r + 8 * (D.Ns : ℝ) ^ 2 ≤ 9 * (D.Ns : ℝ) ^ 2` using `by nlinarith`. Conclude with `mul_le_mul_of_nonneg_right this hL0`. Establish `hw : Formalism.InvariantFactorPaths.BranchingDimensions.Letters.wt mu = weylDim D.K (Formalism.InvariantFactorPaths.BranchingDimensions.Letters.kaRows mu D.Ns)` using `rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hwpos : 0 < Formalism.InvariantFactorPaths.BranchingDimensions.Letters.wt mu` using `by rw [hw]; exact hLW.1`. Establish `hTpos : (0 : ℝ) < D.rankAA`. Establish `: 0 < D.rankAA`. Unfold `Formalism.InvariantFactorPaths.BranchingDimensions.Letters.rankAA`. Conclude with `Finset.prod_pos (fun i _ => Nat.choose_pos (by omega))`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `hbase` using `hLW.2.2`. Use `⟨le_exp_mul_of_log_le_add_log hwpos hTpos (by` and prove the remaining obligations. Rewrite using `[hw]`. Combine the linear relations using `[hBv.1, hBc.1]), fun hnt => ?_⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `le_exp_mul_of_log_le_add_log hwpos hTpos` to reduce the goal to its premises. Rewrite using `[hw]`. Unfold `Formalism.InvariantFactorPaths.BranchingDimensions.Letters.Typical at hnt`. Establish `hTD'` using `hTD`. Take `⟨hLa, hTDb⟩` from `hTD'`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hkR : (0 : ℝ) < D.k`. Establish `: 0 < D.k` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `hpR : (0 : ℝ) < p`. Use `hpr.pos` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `hk'R : (0 : ℝ) ≤ D.k'` using `Nat.cast_nonneg _`. Establish `hm1` using `min_le_left (La * D.k' / (16 * D.k)) ((D.k' : ℝ) / 12)`. Establish `hm2` using `min_le_right (La * D.k' / (16 * D.k)) ((D.k' : ℝ) / 12)`. Break down `not_and_or.mp hnt with hc1 | hc23` into its components or cases.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_neg at hc1`. Take `⟨i, hi1, hiN, hvi, hgt⟩` from `hc1`. Establish `hir : D.r < i`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `hvr i hi1 h` as an intermediate fact. Simplify using `[this] at hvi`. Establish `hin0 : i ≤ D.n0`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `hvn i h hiN` as an intermediate fact. Simplify using `[this] at hvi`. Establish `hX : D.XT p La b i = La * b i / (p * D.k)` using `rfl`. Establish `hbpos` using `(hTDb i hir hiN).1`. Establish `hB4` using `(hTDb i hir hiN).2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hXpos : 0 < D.XT p La b i`. Rewrite using `[hX]`. Conclude with `div_pos (mul_pos hLa hbpos) (mul_pos hpR hkR)`. Establish `t1` using `((h35 D mu hW hP).1 (i - 1) 0 (by omega)).1`. Establish `heqv : D.SPos 0 (i - 1) = D.SPos 0 i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Unfold `Formalism.InvariantFactorPaths.BranchingDimensions.Letters.SPos`. Rewrite using `[hRV, hRV, min_eq_left (by omega : i - 1 ≤ D.n0), min_eq_left hin0, Formalism.InvariantFactorPaths.BranchingDimensions.TTyp.lat_pred (fun l => D.vec l) D.B (i := i) (by omega) hvi]`. Establish `hd1 : ((tailPos (D.stLen i) (stage mu i) 0 : ℤ) : ℝ) ≤ (D.SPos 0 i : ℝ) - D.XT p La b i`. Establish `t1R : ((tailPos (D.stLen (i - 1)) (stage mu (i - 1)) 0 : ℤ) : ℝ) ≤ (D.SPos 0 (i - 1) : ℝ)`. Conclude with `t1` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `t1R` using `[heqv]`. Rewrite `hgt` using `[Int.cast_sub]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `t2` using `(h35 D mu hW hP).2.1 i 0 (D.XT p La b i) hiN hXpos.le hd1`. Rewrite `t2` using `[hSL, hstage]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis.
 
-Unfold `Formalism.InvariantFactorPaths.BranchingDimensions.Letters.SPos at t2`. Rewrite `t2` using `[hRV, min_self]`. Establish `td` using `Formalism.InvariantFactorPaths.BranchingDimensions.TTyp.key h31 h34 D.k' D.K (Formalism.InvariantFactorPaths.BranchingDimensions.Letters.kaRows mu D.Ns) (fun l => D.vec l) D.B D.n0 hk'1 (hLk _) hL4v hTv i 0 _ hXpos t2`. Take `⟨l, hl1, hl2, hql, hgx⟩` from `Formalism.InvariantFactorPaths.BranchingDimensions.TTyp.mem_lat (Formalism.InvariantFactorPaths.BranchingDimensions.TTyp.getD_mem td.1)`. Establish `hli : l ≠ i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Simplify using `[hql] at hvi`. Establish `hlmin` using `min_le_left i D.n0`. Establish `hlmin'` using `min_le_right i D.n0`. Establish `hgle : (D.B l : ℝ) ≤ 4 * b i / p` using `hB4 l hl1 (by omega) (by omega)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hg0 : (0 : ℝ) < D.B l`. Use `(hBi l hl1 (by omega)).1` as an intermediate fact. Establish `: 0 < D.B l` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `hthr` using `Formalism.InvariantFactorPaths.BranchingDimensions.TTyp.a_fin hLa hpR hkR hk'R hg0 hgle`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `td2` using `td.2`. Rewrite `td2` using `[hgx, hX]`. Combine the linear relations using `[hBv.1, hBc.1]`. Break down `not_and_or.mp hc23 with hc2 | hc3` into its components or cases. Use `push_neg at hc2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨i, hir, hiN, hvi, hgt⟩` from `hc2`. Establish `hX : D.XT p La b i = La * b i / (p * D.k)` using `rfl`. Establish `hbpos` using `(hTDb i hir hiN).1`. Establish `hB4` using `(hTDb i hir hiN).2`. Establish `hXpos : 0 < D.XT p La b i`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hX]`. Conclude with `div_pos (mul_pos hLa hbpos) (mul_pos hpR hkR)`. Establish `t1` using `((h35 D mu hW hP).1 (i - 1) 0 (by omega)).2`. Establish `heqc : D.SNeg 0 (i - 1) = D.SNeg 0 i`. Unfold `Formalism.InvariantFactorPaths.BranchingDimensions.Letters.SNeg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hRC, hRC]`. Distinguish the cases in `hin : i ≤ D.n0`. Rewrite using `[min_eq_left (by omega : i - 1 ≤ D.n0), min_eq_left hin, Formalism.InvariantFactorPaths.BranchingDimensions.TTyp.lat_pred (fun l => !D.vec l) D.B (i := i) (by omega) (by simp [hvi])]`. Rewrite using `[min_eq_right (by omega : D.n0 ≤ i - 1), min_eq_right (by omega : D.n0 ≤ i)]`. Establish `hd2 : ((tailNeg (D.stLen i) (stage mu i) 0 : ℤ) : ℝ) ≤ (D.SNeg 0 i : ℝ) - D.XT p La b i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t1R : ((tailNeg (D.stLen (i - 1)) (stage mu (i - 1)) 0 : ℤ) : ℝ) ≤ (D.SNeg 0 (i - 1) : ℝ)`. Conclude with `t1` after adjusting the coercions. Rewrite `t1R` using `[heqc]`. Rewrite `hgt` using `[Int.cast_sub]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Establish `t2` using `(h35 D mu hW hP).2.2 i 0 (D.XT p La b i) hiN hXpos.le hd2`. Rewrite `t2` using `[hSL, hstage]`. Unfold `Formalism.InvariantFactorPaths.BranchingDimensions.Letters.SNeg at t2`. Rewrite `t2` using `[hRC, min_self]`. Establish `hfc : ((Icc (i + 1) D.n0).filter (fun l => D.vec l = false)) = ((Icc (i + 1) D.n0).filter (fun l => (!D.vec l) = true))` using `Finset.filter_congr (fun x _ => by simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite `t2` using `[hfc]`. Establish `td` using `Formalism.InvariantFactorPaths.BranchingDimensions.TTyp.key h31 h34 D.k' D.K (Formalism.InvariantFactorPaths.BranchingDimensions.TTyp.revW D.K (Formalism.InvariantFactorPaths.BranchingDimensions.Letters.kaRows mu D.Ns)) (fun l => !D.vec l) D.B D.n0 hk'1 (hLk _) hL4c hTc i 0 _ hXp …`. Take `⟨l, hl1, hl2, hql, hgx⟩` from `Formalism.InvariantFactorPaths.BranchingDimensions.TTyp.mem_lat (Formalism.InvariantFactorPaths.BranchingDimensions.TTyp.getD_mem td.1)`. Establish `hli : l ≠ i`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hvi] at hql`. Establish `hlmin` using `min_le_left i D.n0`. Establish `hlmin'` using `min_le_right i D.n0`. Establish `hgle : (D.B l : ℝ) ≤ 4 * b i / p` using `hB4 l hl1 (by omega) (by omega)`. Establish `hg0 : (0 : ℝ) < D.B l`.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `(hBi l hl1 (by omega)).1` as an intermediate fact. Establish `: 0 < D.B l` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `hthr` using `Formalism.InvariantFactorPaths.BranchingDimensions.TTyp.a_fin hLa hpR hkR hk'R hg0 hgle`. Establish `td2` using `td.2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `td2` using `[hgx, hX]`. Combine the linear relations using `[hBv.1, hBc.1]`. Use `push_neg at hc3`. Take `⟨i, hir, hiN, hgt⟩` from `hc3`. Establish `hh : D.Bo i = (Formalism.InvariantFactorPaths.BranchingDimensions.TTyp.lat (fun l => D.vec l) D.B (min (i - 1) D.n0)).getD (D.r - 1 - (i - 1 - D.n0)) 0` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hent0 : 0 ≤ Formalism.InvariantFactorPaths.BranchingDimensions.Letters.ent mu (i - 1) (D.r - 1)` using `(Formalism.InvariantFactorPaths.BranchingDimensions.TTyp.ent_sign h20 hW hP (i := i - 1) (m := D.r - 1) (by omega) (by omega)).1 (by omega)`. Establish `hhpos : (0 : ℝ) < D.Bo i`. Break down `Nat.eq_zero_or_pos (D.Bo i) with h0 | h0` into its components or cases. Establish `hz : ((D.Bo i : ℕ) : ℝ) = 0` using `by rw [h0]; simp`. Establish `: (0 : ℝ) ≤ Formalism.InvariantFactorPaths.BranchingDimensions.Letters.ent mu (i - 1) (D.r - 1)` using `by exact_mod_cast hent0`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h0` after adjusting the coercions. Establish `hstu : stage mu (i - 1) (D.r - 1 - (i - 1 - D.n0)) = Formalism.InvariantFactorPaths.BranchingDimensions.Letters.ent mu (i - 1) (D.r - 1)`. Simplify using `only [Formalism.InvariantFactorPaths.BranchingDimensions.Letters.stage]`. Conclude with `congrArg (Formalism.InvariantFactorPaths.BranchingDimensions.Letters.ent mu (i - 1)) (by omega)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hus : D.r - 1 - (i - 1 - D.n0) < D.stLen (i - 1)`. Unfold `Formalism.InvariantFactorPaths.BranchingDimensions.Letters.stLen`. Use linear arithmetic over natural numbers and integers. Establish `hsplitT` using `Formalism.InvariantFactorPaths.BranchingDimensions.TTyp.tailPos_split (D.stLen (i - 1)) (stage mu (i - 1)) hus`. Rewrite `hsplitT` using `[hstu]`.
-
-Establish `t1` using `((h35 D mu hW hP).1 (i - 1) (D.r - 1 - (i - 1 - D.n0) + 1) (by omega)).1`. Establish `hds : D.SPos (D.r - 1 - (i - 1 - D.n0)) (i - 1) = D.Bo i + D.SPos (D.r - 1 - (i - 1 - D.n0) + 1) (i - 1)`. Unfold `Formalism.InvariantFactorPaths.BranchingDimensions.Letters.SPos Formalism.InvariantFactorPaths.BranchingDimensions.Letters.Bo`. Conclude with `Formalism.InvariantFactorPaths.BranchingDimensions.TTyp.drop_split _ _`. Establish `hmx : (((max (Formalism.InvariantFactorPaths.BranchingDimensions.Letters.ent mu (i - 1) (D.r - 1)) 0 : ℤ)) : ℝ) ≤ (2 / 3) * (D.Bo i : ℝ)`.
-
-Rewrite using `[max_eq_left hent0]`. Conclude with `hgt.le`. Establish `hd3 : ((tailPos (D.stLen (i - 1)) (stage mu (i - 1)) (D.r - 1 - (i - 1 - D.n0)) : ℤ) : ℝ) ≤ (D.SPos (D.r - 1 - (i - 1 - D.n0)) (i - 1) : ℝ) - (D.Bo i : ℝ) / 3`. Establish `t1R : ((tailPos (D.stLen (i - 1)) (stage mu (i - 1)) (D.r - 1 - (i - 1 - D.n0) + 1) : ℤ) : ℝ) ≤ (D.SPos (D.r - 1 - (i - 1 - D.n0) + 1) (i - 1) : ℝ)`. Conclude with `t1` after adjusting the coercions.
-
-Rewrite using `[hsplitT, hds, Int.cast_add, Nat.cast_add]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hX3 : (0 : ℝ) < (D.Bo i : ℝ) / 3` using `by linarith`. Establish `t2` using `(h35 D mu hW hP).2.1 (i - 1) (D.r - 1 - (i - 1 - D.n0)) ((D.Bo i : ℝ) / 3) (by omega) hX3.le hd3`. Rewrite `t2` using `[hSL, hstage]`.
-
-Unfold `Formalism.InvariantFactorPaths.BranchingDimensions.Letters.SPos at t2`. Rewrite `t2` using `[hRV, min_self]`. Establish `td` using `Formalism.InvariantFactorPaths.BranchingDimensions.TTyp.key h31 h34 D.k' D.K (Formalism.InvariantFactorPaths.BranchingDimensions.Letters.kaRows mu D.Ns) (fun l => D.vec l) D.B D.n0 hk'1 (hLk _) hL4v hTv (i - 1) (D.r - 1 - (i - 1 - D.n0)) _ hX3 t2`. Establish `td2` using `td.2`. Rewrite `td2` using `[← hh]`.
-
-Establish `hne : (D.Bo i : ℝ) ≠ 0` using `ne_of_gt hhpos`. Establish `e12 : (D.Bo i : ℝ) / 3 * D.k' / (4 * D.Bo i) = D.k' / 12`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite `td2` using `[e12]`.
-
-Combine the linear relations using `[hBv.1, hBc.1]`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem pathWeightBound_of :
     PathEntryBounds → PathInterlacingCriterion → LogBinomialProperties → LogWeylDimensionEstimate → LogRankEstimate → PathTailBounds → LogBinomialDeficit → PathWeightBound := by

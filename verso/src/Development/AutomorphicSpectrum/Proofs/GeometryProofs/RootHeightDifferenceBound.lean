@@ -14,15 +14,13 @@ section Places
 variable {L : Type} [Field L] [NumberField L]
 
 /- English proof (translation)
-Take `⟨i₀, hi₀⟩` from `hx`. Use `haveI : Nonempty ι := ⟨i₀⟩`. Establish `hS : (⋃ i ∈ Finset.univ.filter (fun i => x i ≠ 0), Function.mulSupport fun v : FinitePlace L => v (x i)).Finite`. Use `Set.Finite.biUnion (Finset.finite_toSet _) fun i hi => ?_` and prove the remaining obligations. Conclude with `FinitePlace.mulSupport_finite (by simpa using hi)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `hS.subset fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Apply `hv` to reduce the goal to its premises. Establish `h1 : ∀ i, x i ≠ 0 → v (x i) = 1`. Introduce `i hi`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Conclude with `hn (Set.mem_biUnion (by simpa using hi) h)`. Establish `h2 : ∀ i, v (x i) ≤ 1`. Introduce `i`. Distinguish the cases in `hi : x i = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[hi]`. Conclude with `(h1 i hi).le`. Establish `h3 : (⨆ i, v (x i)) = 1`. Establish `hle : (⨆ i, v (x i)) ≤ 1` using `ciSup_le h2`. Establish `hge : (1 : ℝ) ≤ ⨆ i, v (x i)`.
-
-Establish `hb : BddAbove (Set.range fun i => v (x i))` using `(Set.finite_range _).bddAbove`. Combine the equalities or inequalities in the displayed calculation. Conclude with `le_antisymm hle hge`. Simplify using `[h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma log_sup_support {ι : Type} [Fintype ι] (x : ι → L) (hx : ∃ i, x i ≠ 0) :
     (Function.support fun v : FinitePlace L => Real.log (⨆ i, v (x i))).Finite := by
@@ -55,7 +53,7 @@ lemma log_sup_support {ι : Type} [Fintype ι] (x : ι → L) (hx : ∃ i, x i �
   simp [h3]
 
 /- English proof (translation)
-Use `(Set.finite_iUnion fun k => log_sup_support (x k) (hx k)).subset fun v hv => ?_` and prove the remaining obligations. Take `⟨k, -, hk⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hv`. Conclude with `Set.mem_iUnion.2 ⟨k, right_ne_zero_of_mul hk⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 lemma block_support {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] (a : K → ℝ)
     (x : ∀ k, ι k → L) (hx : ∀ k, ∃ i, x k i ≠ 0) :
@@ -65,11 +63,11 @@ lemma block_support {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι
   exact Set.mem_iUnion.2 ⟨k, right_ne_zero_of_mul hk⟩
 
 /- English proof (translation)
-Establish `hd : (0 : ℝ) < Module.finrank ℚ L` using `by exact_mod_cast Module.finrank_pos`. Establish `hc : ∀ r : ℝ, ∑ _σ : L →+* ℂ, r = Module.finrank ℚ L * r` using `fun r => by`. Simplify using `[Finset.card_univ, Embeddings.card L ℂ]`. Establish `h1 : Module.finrank ℚ L * lo ≤ ∑ σ, S σ`. Rewrite using `[← hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_le_sum fun σ _ => (h σ).1`. Establish `h2 : ∑ σ, S σ ≤ Module.finrank ℚ L * hi`. Rewrite using `[← hc]`. Conclude with `Finset.sum_le_sum fun σ _ => (h σ).2`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[inv_mul_eq_div, le_div_iff₀ hd]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[inv_mul_eq_div, div_le_iff₀ hd]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma avg_mem (S : (L →+* ℂ) → ℝ) {lo hi : ℝ} (h : ∀ σ, S σ ∈ Set.Icc lo hi) :
     (Module.finrank ℚ L : ℝ)⁻¹ * ∑ σ, S σ ∈ Set.Icc lo hi := by
@@ -96,11 +94,11 @@ variable {K₁ K₂ : Type} [Fintype K₁] [Fintype K₂] {ι₁ : K₁ → Type
   [∀ k, Fintype (ι₁ k)] [∀ k, Fintype (ι₂ k)]
 
 /- English proof (translation)
-Unfold `ptHt`. Rewrite using `[← mul_sub]`. Use `congr 1`. Establish `s₁` using `block_support (L := L) (ι := ι₁) a₁ (fun k i => z (joinInl ι₁ ι₂ ⟨k, i⟩)) (fun k => hz (Sum.inl k))`. Establish `s₂` using `block_support (L := L) (ι := ι₂) a₂ (fun k i => z (joinInr ι₁ ι₂ ⟨k, i⟩)) (fun k => hz (Sum.inr k))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (∑ᶠ v : FinitePlace L, ∑ k, Sum.elim a₁ (-a₂) k * Real.log (⨆ i, v (z ⟨k, i⟩))) = (∑ᶠ v : FinitePlace L, ∑ k, a₁ k * Real.log (⨆ i, v (z (joinInl ι₁ ι₂ ⟨k, i⟩)))) - ∑ᶠ v : FinitePlace L, ∑ k, a₂ k * Real.log (⨆ i, v (z (joinInr ι₁ ι₂ ⟨k, i⟩)))`. Rewrite using `[← finsum_sub_distrib s₁ s₂]`. Use `finsum_congr fun v => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, Pi.neg_apply, neg_mul, Finset.sum_neg_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Simplify using `only [Finset.sum_sub_distrib]`. Simplify using `only [joinInl, joinInr]`. Expand and normalize the polynomial expressions, which then agree.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma ptHt_sub_join (a₁ : K₁ → ℝ) (a₂ : K₂ → ℝ) (φ₁ : ((Σ k, ι₁ k) → ℂ) → ℝ) (φ₂ : ((Σ k, ι₂ k) → ℂ) → ℝ)
     (L : Type) [Field L] [NumberField L] (z : (Σ k, joinIdx ι₁ ι₂ k) → L) (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) :
@@ -135,14 +133,14 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : 
   {L : Type} [Field L]
 
 /- English proof (translation)
-The claim follows from `(comp_aeval_apply (R := ℤ) (f := z) σ.toIntAlgHom f).symm`.
+A detailed English derivation is pending.
 -/
 lemma aeval_emb (σ : L →+* ℂ) (z : (Σ k, ι k) → L) (f : MRing ι) :
     aeval (fun p => σ (z p)) f = σ (aeval z f) :=
   (comp_aeval_apply (R := ℤ) (f := z) σ.toIntAlgHom f).symm
 
 /- English proof (translation)
-Use `⟨fun k => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hz.1 k`. Conclude with `⟨i, (map_ne_zero σ).2 hi⟩`. Rewrite using `[aeval_emb, hz.2 f hf, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 lemma ptsOver_emb (σ : L →+* ℂ) {P : Ideal (MRing ι)} {z : (Σ k, ι k) → L} (hz : z ∈ ptsOver L P) :
     (fun p => σ (z p)) ∈ ptsOver ℂ P := by
@@ -152,7 +150,7 @@ lemma ptsOver_emb (σ : L →+* ℂ) {P : Ideal (MRing ι)} {z : (Σ k, ι k) �
   · rw [aeval_emb, hz.2 f hf, map_zero]
 
 /- English proof (translation)
-Take `⟨dg, dh, g, f, hg, hf, hd, hy, h0, h1⟩` from `h`. Use `⟨dg, dh, g, f, hg, hf, hd, hy, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[aeval_emb]`. Conclude with `(map_ne_zero σ).2 h0`. Rewrite using `[aeval_emb, aeval_emb, h1, map_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma hasVal_emb (σ : L →+* ℂ) {y : (Σ k, ι k) → Ω} {a : K → ℤ} {u : Ω} {z : (Σ k, ι k) → L} {w : L}
     (h : HasVal y a u z w) : HasVal y a u (fun p => σ (z p)) (σ w) := by
@@ -167,7 +165,7 @@ end Embed
 variable {Ψ : Type} [Fintype Ψ] {N : ℕ}
 
 /- English proof (translation)
-Consider the cases of `j with`. Consider the case `none => rfl`. Consider the case `some r => simp [RootModel.line, M.x_deg]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 lemma line_a (M : RootModel Ψ N) (t : ℝ) (j : Option (Ψ × Fin N)) : (M.line t j).a = (M.line 1 j).a := by
   cases j with
@@ -175,7 +173,7 @@ lemma line_a (M : RootModel Ψ N) (t : ℝ) (j : Option (Ψ × Fin N)) : (M.line
   | some r => simp [RootModel.line, M.x_deg]
 
 /- English proof (translation)
-Consider the cases of `j with`. Consider the case `none => simp [RootModel.coef, h]`. Consider the case `some r => rfl`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 lemma coef_eq {M R : RootModel Ψ N} (h : M.kA = R.kA) (lam : Wt Ψ N) (s : ℝ) (j : Option (Ψ × Fin N)) :
     M.coef lam s j = R.coef lam s j := by
@@ -184,9 +182,9 @@ lemma coef_eq {M R : RootModel Ψ N} (h : M.kA = R.kA) (lam : Wt Ψ N) (s : ℝ)
   | some r => rfl
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_option, add_comm]`. Establish `h1 : |M.coef lam s none| ≤ |s|`. Establish `hk : (1 : ℝ) ≤ M.kA` using `by exact_mod_cast M.kA_pos`. Simplify using `only [RootModel.coef]`. Rewrite using `[abs_div, Nat.abs_cast]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `div_le_self (abs_nonneg s) hk`. Establish `h2 : ∑ r : Ψ × Fin N, |M.coef lam s (some r)| = l1 lam`. Simplify using `[RootModel.coef, l1, Fintype.sum_prod_type]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma sum_abs_coef (M : RootModel Ψ N) (lam : Wt Ψ N) (s : ℝ) :
     ∑ j, |M.coef lam s j| ≤ l1 lam + |s| := by
@@ -206,9 +204,9 @@ def lineDefect (M R : RootModel Ψ N) (t : ℝ) (j : Option (Ψ × Fin N)) :
     Real.log ((R.line 1 j).h fun p => Z (joinInr M.ι R.ι p))
 
 /- English proof (translation)
-Unfold `lineHt`. Rewrite using `[ptHt_sub_join _ _ _ _ L z hz]`. Establish `e : (Sum.elim (fun k => ((M.line t j).a k : ℝ)) (-fun k => ((R.line 1 j).a k : ℝ))) = fun k => (joinDeg M R j k : ℝ)`. Use function extensionality and compare the values at `k`. Consider the cases of `k with`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data.
 
-Consider the case `inl k => simp [joinDeg, line_a M t j]`. Consider the case `inr k => simp [joinDeg]`. Rewrite using `[e]`. Both sides reduce to the same expression.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma lineHt_sub (M R : RootModel Ψ N) (t : ℝ) (j : Option (Ψ × Fin N)) (L : Type) [Field L] [NumberField L]
     (z : (Σ k, joinIdx M.ι R.ι k) → L) (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) :
@@ -227,23 +225,21 @@ lemma lineHt_sub (M R : RootModel Ψ N) (t : ℝ) (j : Option (Ψ × Fin N)) (L 
   rfl
 
 /- English proof (translation)
-Take `⟨harith, hbir, -, -⟩` from `GlobalTheory.T.join_model_points_project Ψ N M R i`. Use `choose val hval0 hval using fun j => hC.unit j L z hz`. Establish `hc : 0 ≤ c`. Take `⟨-, q, m, hq, -, hlog, -, -⟩` from `hC.vert none`. Establish `h0 : 0 ≤ Real.log m` using `Real.log_natCast_nonneg m`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq' : (0 : ℝ) < q` using `by exact_mod_cast hq`. Conclude with `(mul_nonneg_iff_of_pos_left hq').1 (h0.trans hlog)`. Set `E : Option (Ψ × Fin N) → ℝ` to `fun j => (Module.finrank ℚ L : ℝ)⁻¹ * ∑ σ : L →+* ℂ, (lineDefect M R t j (fun p => σ (z p)) - Real.log ‖σ (val j)‖)`. Set `D : Option (Ψ × Fin N) → ℝ` to `fun j => lineHt (M.line t j) L (fun p => z (joinInl M.ι R.ι p)) - lineHt (R.line 1 j) L (fun p => z (joinInr M.ι R.ι p))`. Establish `hD : ∀ j, |D j - E j| ≤ c`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `j`. Use `GlobalTheory.T.vertical_bound_height_compare (M.K ⊕ R.K) (joinIdx M.ι R.ι) M.Ω (joinOf M R i) (dimFl Ψ N + 1) harith hbir (joinDeg M R j) (u j) c (hC.vert j) (lineDefect M R t j) L z hz (val j) (hval0 j) (hval j)` as an intermediate fact. Simplify using `only [D, E]`. Rewrite using `[lineHt_sub M R t j L z hz.1]`. Conclude with `this`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hE : ∑ j, M.coef lam s j * E j ∈ Set.Icc lo hi`. Establish `e : ∑ j, M.coef lam s j * E j = (Module.finrank ℚ L : ℝ)⁻¹ * ∑ σ : L →+* ℂ, ∑ j, M.coef lam s j * (lineDefect M R t j (fun p => σ (z p)) - Real.log ‖σ (val j)‖)`. Simplify using `only [E]`. Rewrite using `[Finset.sum_comm, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Finset.mul_sum, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `avg_mem _ fun σ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hA _ (ptsOver_emb σ hz) (fun j => σ (val j)) fun j => hasVal_emb σ (hval j)`. Establish `hsplit : rootHt M t lam s L (fun p => z (joinInl M.ι R.ι p)) - rootHt R 1 lam s L (fun p => z (joinInr M.ι R.ι p)) = ∑ j, M.coef lam s j * E j + ∑ j, M.coef lam s j * (D j - E j)`. Unfold `rootHt`. Rewrite using `[← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[← coef_eq hC.kA lam s j]`. Simplify using `only [D]`. Expand and normalize the polynomial expressions, which then agree. Establish `hb : |∑ j, M.coef lam s j * (D j - E j)| ≤ (l1 lam + |s|) * c`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Rewrite using `[abs_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hD j) (abs_nonneg _)`. Use `_ = (∑ j, |M.coef lam s j|) * c := by rw [Finset.sum_mul]`. Use `_ ≤ (l1 lam + |s|) * c := mul_le_mul_of_nonneg_right (sum_abs_coef M lam s) hc`.
-
-Rewrite using `[hsplit]`. Use `abs_le.1 hb` as an intermediate fact. Conclude with `⟨by linarith [hE.1, this.1], by linarith [hE.2, this.2]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem close_ht (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (M R : RootModel Ψ N) (i : R.Ω →+* M.Ω)
     (u : Option (Ψ × Fin N) → M.Ω) (c t s lo hi : ℝ) (lam : Wt Ψ N) (hC : Close M R i u c)

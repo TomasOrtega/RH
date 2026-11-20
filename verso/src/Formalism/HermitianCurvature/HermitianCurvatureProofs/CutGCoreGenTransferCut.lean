@@ -74,11 +74,11 @@ def GTSS : Prop :=
 def GenTransferOfCut : Prop := GTFn → GTKap → GTConn → GTSS → GenTransfer
 
 /- English proof (translation)
-Introduce `hFn hKap hConn hSS Wp Wq _ _ _ _ _ _ P Bs hpl hk hcs X d hL hS hR hQ`. Establish `hyp : GTHyp P Bs X d`. Unfold `GTHyp`. Conclude with `⟨hpl, hk, hcs, hL, hS, hR, hQ⟩`. Take `⟨e₀, hf₀, hk₀⟩` from `hKap Wp Wq P Bs X d hyp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨e₁, hf₁, hk₁, hn₁⟩` from `hConn Wp Wq P Bs X d hyp e₀ hf₀ hk₀`. Take `⟨e, hf, hke, hne, hse⟩` from `hSS Wp Wq P Bs X d hyp e₁ hf₁ hk₁ hn₁`. Use `⟨e, hf, fun Φ => ?_⟩` and prove the remaining obligations. Take `⟨a₁, a₂, a₃, a₄, a₅, a₆⟩` from `hFn Wp Wq P Bs X d hyp e Φ`. Take `⟨b₁, b₂⟩` from `hne Φ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a₁, a₂, a₃, a₄, a₅, a₆, b₁, b₂, fun f => hke f Φ, fun l hl => (hse l hl Φ).1, fun l hl => (hse l hl Φ).2⟩`.
+Supply the required witnesses or components.
 -/
 theorem genTransfer_of_cut : GenTransferOfCut := by
   intro hFn hKap hConn hSS Wp Wq _ _ _ _ _ _ P Bs hpl hk hcs X d hL hS hR hQ

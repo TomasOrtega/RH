@@ -6,7 +6,7 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.UPel.HT GlobalTheory.UPel.HT.Hecke GlobalTheory.UPel.HT.ES
 
 /- English proof (citation)
-Apply `UpperTheory.Cb.exists_polarization_descent_of_quasi_isogeny` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicArithmetic%2FFoundations%2FEtaleClopenDescent%2FExistsPolarizationDescentOfQuasiIsogeny.lean&line=12#L12)
 -/

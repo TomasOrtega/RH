@@ -11,25 +11,25 @@ private noncomputable def dotPerp (U : Submodule ℂ (ι → ℂ)) : Submodule �
   U.dualAnnihilator.comap (dotProductEquiv ℂ ι).toLinearMap
 
 /- English proof (translation)
-Simplify using `[dotPerp, Submodule.mem_dualAnnihilator, dotProductEquiv]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem mem_dotPerp (U : Submodule ℂ (ι → ℂ)) (v : ι → ℂ) :
     v ∈ dotPerp U ↔ ∀ w ∈ U, v ⬝ᵥ w = 0 := by
   simp [dotPerp, Submodule.mem_dualAnnihilator, dotProductEquiv]
 
 /- English proof (translation)
-The claim follows from `(Submodule.orderIsoMapComap (dotProductEquiv ℂ ι)).symm.isCompl (Subspace.isCompl_dualAnnihilator h)`.
+A detailed English derivation is pending.
 -/
 private theorem dotPerp_isCompl {U U' : Submodule ℂ (ι → ℂ)} (h : IsCompl U U') :
     IsCompl (dotPerp U) (dotPerp U') :=
   (Submodule.orderIsoMapComap (dotProductEquiv ℂ ι)).symm.isCompl (Subspace.isCompl_dualAnnihilator h)
 
 /- English proof (translation)
-Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce `hv`. Rewrite using `[← Subspace.dualAnnihilator_dualCoannihilator_eq (W := U), Submodule.mem_dualCoannihilator]`. Introduce `φ hφ`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨w, rfl⟩` from `(dotProductEquiv ℂ ι).surjective φ`. Establish `h` using `(mem_dotPerp _ v).1 hv w hφ`. Rewrite `h` using `[dotProduct_comm]`. Simplify `h` using `[dotProductEquiv]`. Introduce `hv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mem_dotPerp]`. Introduce `w hw`. Rewrite using `[dotProduct_comm]`. Conclude with `(mem_dotPerp _ w).1 hw v hv`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dotPerp_dotPerp (U : Submodule ℂ (ι → ℂ)) : dotPerp (dotPerp U) = U := by
   ext v
@@ -48,7 +48,7 @@ private theorem dotPerp_dotPerp (U : Submodule ℂ (ι → ℂ)) : dotPerp (dotP
     exact (mem_dotPerp _ w).1 hw v hv
 
 /- English proof (translation)
-Introduce `v hv`. Rewrite `hv`, the goal using `[mem_dotPerp]`. Introduce `w hw`. Rewrite using `[Matrix.mulVec_transpose, ← Matrix.dotProduct_mulVec]`. Conclude with `hv _ (h w hw)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dotPerp_invariant (U : Submodule ℂ (ι → ℂ)) (g : Matrix ι ι ℂ)
     (h : ∀ v ∈ U, g *ᵥ v ∈ U) : ∀ v ∈ dotPerp U, gᵀ *ᵥ v ∈ dotPerp U := by
@@ -59,9 +59,9 @@ private theorem dotPerp_invariant (U : Submodule ℂ (ι → ℂ)) (g : Matrix �
   exact hv _ (h w hw)
 
 /- English proof (translation)
-Introduce `ι _ _ Γ hΓ W hW`. Take `⟨U', hU', hc⟩` from `hΓ (dotPerp W) (fun g hg => by`. Simplify using `using dotPerp_invariant W gᵀ (hW _ ⟨g, hg, rfl⟩))`. Use `⟨dotPerp U', ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `dotPerp_invariant U' g (hU' g hg)`. Use `dotPerp_isCompl hc` as an intermediate fact. Rewrite `this` using `[dotPerp_dotPerp]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem ss_transpose :
     ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (Γ : Set (Matrix ι ι ℂ)), SS Γ → SS (Matrix.transpose '' Γ) := by

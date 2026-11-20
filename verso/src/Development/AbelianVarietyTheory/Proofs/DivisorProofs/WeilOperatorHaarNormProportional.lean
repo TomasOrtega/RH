@@ -15,15 +15,13 @@ noncomputable section
 namespace GlobalTheory.DoublingEvaluationL2
 
 /- English proof (translation)
-Set `E : Z ≃ₜ+ X × Y` to `{ e.toEquiv with map_add' := he continuous_toFun := e.continuous continuous_invFun := e.symm.continuous }`. Set `eM : Z ≃ᵐ X × Y` to `e.toMeasurableEquiv`. Set `μY : Measure Y` to `Measure.addHaar`. Use `haveI hν : (μ.map E).IsAddHaarMeasure := inferInstance`. Establish `hE : (E : Z → X × Y) = eM` using `rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set s := Measure.addHaarScalarFactor (μ.map E) (μX.prod μY)`. Establish `hs : μ.map E = s • (μX.prod μY)` using `Measure.isAddLeftInvariant_eq_smul _ _`. Establish `key : ∀ F : Z → ℂ, Continuous F → ∫⁻ z, ‖F z‖ₑ ^ 2 ∂μ = s * ∫⁻ y, ∫⁻ x, ‖F (e.symm (x, y))‖ₑ ^ 2 ∂μX ∂μY`. Introduce `F hF`. Establish `hm : Measurable fun p : X × Y => ‖F (e.symm p)‖ₑ ^ 2` using `((hF.comp e.symm.continuous).measurable.enorm.pow_const 2)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hE, lintegral_map_equiv]`. Simplify using `[eM]`. Use `_ = s * ∫⁻ y, ∫⁻ x, ‖F (e.symm (x, y))‖ₑ ^ 2 ∂μX ∂μY := by`. Rewrite using `[hs, lintegral_smul_measure, lintegral_prod_symm _ hm.aemeasurable]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Rewrite using `[key f hf, key g hg]`. Establish `hmg : Measurable fun p : X × Y => ‖g (e.symm p)‖ₑ ^ 2` using `((hg.comp e.symm.continuous).measurable.enorm.pow_const 2)`. Repeatedly rewrite using `[h]`. Rewrite using `[lintegral_const_mul _ (hmg.lintegral_prod_left' )]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lintegral_sq_split {Z X Y : Type} [TopologicalSpace Z] [AddCommGroup Z] [IsTopologicalAddGroup Z]
     [TopologicalSpace X] [AddCommGroup X] [IsTopologicalAddGroup X] [LocallyCompactSpace X] [SecondCountableTopology X]
@@ -68,15 +66,13 @@ end GlobalTheory.DoublingEvaluationL2
 namespace GlobalTheory.DoublingEvaluationL2
 
 /- English proof (translation)
-Introduce `F _ _ κ κ' _ _ A hA hL2`. Use `haveI : LocallyCompactSpace (AF F) := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele F`. Use `haveI : SecondCountableTopology (AF F) := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Use `haveI : T2Space (AF F) := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `letI mX : MeasurableSpace (κ → AF F) := borel _`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use `haveI : BorelSpace (κ → AF F) := ⟨rfl⟩`. Use `letI mY : MeasurableSpace (κ' → AF F) := borel _`. Use `haveI : BorelSpace (κ' → AF F) := ⟨rfl⟩`. Set `μX : Measure (κ → AF F)` to `Measure.addHaar`. Take `⟨c, hc⟩` from `hL2 μX inferInstance`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `μ hμ`. Use `letI mZ : MeasurableSpace (κ ⊕ κ' → AF F) := borel _`. Use `haveI : BorelSpace (κ ⊕ κ' → AF F) := ⟨rfl⟩`. Use `⟨c, fun Φ hΦ => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hP` using `IsTame.mapsTo (GlobalTheory.T.tame_part_left F κ κ κ' A hA) Φ hΦ`. Use `lintegral_sq_split (Homeomorph.sumPiEquivProdPi κ κ' (fun _ => AF F)) (fun a b => rfl) μ μX (GlobalTheory.ThetaTransformMeas.continuous_of_mem_schA F hP) (GlobalTheory.ThetaTransformMeas.continuous_of_mem_schA F hΦ) c fun y => ?_` and prove the remaining obligations. Conclude with `hc _ (GlobalTheory.DoublingEvLaw.sliceL hΦ y)`. Introduce `μ hμ`. Use `letI mZ : MeasurableSpace (κ' ⊕ κ → AF F) := borel _`.
-
-Use `haveI : BorelSpace (κ' ⊕ κ → AF F) := ⟨rfl⟩`. Use `⟨c, fun Φ hΦ => ?_⟩` and prove the remaining obligations. Establish `hP` using `IsTame.mapsTo (GlobalTheory.T.tame_part_right F κ' κ κ A hA) Φ hΦ`. Use `lintegral_sq_split ((Homeomorph.sumPiEquivProdPi κ' κ (fun _ => AF F)).trans (Homeomorph.prodComm _ _)) (fun a b => rfl) μ μX (GlobalTheory.ThetaTransformMeas.continuous_of_mem_schA F hP) (GlobalTheory.ThetaTransformMeas.continuous_of_mem_schA F hΦ) c fun y => ?_` and prove the remaining obligations. Conclude with `hc _ (GlobalTheory.DoublingEvLaw.sliceR hΦ y)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem main : ∀ (F : Type) [Field F] [NumberField F] (κ κ' : Type) [Fintype κ] [Fintype κ']
     (A : ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ → AF F) → ℂ)), IsTame F A →

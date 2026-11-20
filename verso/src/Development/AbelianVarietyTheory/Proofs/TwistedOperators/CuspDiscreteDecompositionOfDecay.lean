@@ -28,17 +28,15 @@ open GlobalTheory.AutomorphicL2Unitary GlobalTheory.OpTrace GlobalTheory.Cusp Gl
 variable {D : D7} {V : HSp D} {μ : Measure (GA D V)} [μ.IsHaarMeasure] [μ.IsMulRightInvariant]
 
 /- English proof (translation)
-Take `⟨θ, hθ⟩` from `GlobalTheory.AdelicU.exists_isInfFam D`. Establish `hfc` using `continuous_of_mem_ccAd hf`. Establish `hder : ∀ l : List (D.what₂.Tau × Matrix (Fin V.rank) (Fin V.rank) ℂ), (∀ p ∈ l, p.2 ∈ lieAt V p.1) → ∃ f' ∈ CcGA V, tsupport f' ⊆ tsupport f ∧ ∀ F : DividedPowerChartLift V μ, l.foldr (fun p φ => Rder θ V p.1 p.2 φ) (convR μ f (lift (GQ V) F)) = convR μ f' (lift (GQ V) F)`. Introduce `l`. Proceed by induction on `l with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `nil => exact fun _ => ⟨f, hf, subset_rfl, fun F => rfl⟩`. Consider the case `cons p l ih`. Introduce `hl`. Take `⟨f₁, h₁, s₁, e₁⟩` from `ih fun q hq => hl q (List.mem_cons_of_mem _ hq)`. Take `⟨f₂, h₂, s₂, e₂⟩` from `GlobalTheory.T.right_derivative_rightConvolution_eq_test_function μ θ hθ h₁ (hl p List.mem_cons_self)`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨f₂, h₂, s₂.trans s₁, fun F => by simp only [List.foldr_cons, e₁ F, e₂ F]⟩`. Use `choose! fl hfl hsl hel using hder`. Establish `hM : ∀ l : List (D.what₂.Tau × Matrix (Fin V.rank) (Fin V.rank) ℂ), (∀ p ∈ l, p.2 ∈ lieAt V p.1) → ∃ M : ℝ, ∀ y, ‖fl l y‖ ≤ M` using `fun l hl =>`. Establish `c` using `continuous_of_mem_ccAd (hfl l hl)`. Use the proof step `c.1.bounded_above_of_compact_support c.2`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `choose! M hM using hM`. Take `⟨A, Cg, hg⟩` from `GlobalTheory.T.norm_rightConvolution_le_adelic_height_pow μ hfc.2.isCompact (GlobalTheory.T.ncard_rational_points_in_translate_le_height_pow hfc.2.isCompact)`. Take `⟨U, hU, hlev⟩` from `GlobalTheory.T.convolution_right_invariant_open μ hf`. Take `⟨L, C, hL, hB⟩` from `hP D θ hθ V U hU A 0`. Use `⟨C * ∑ l ∈ L, Cg * M l, fun F hF g => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hgr : ∀ l : List (D.what₂.Tau × Matrix (Fin V.rank) (Fin V.rank) ℂ), (∀ p ∈ l, p.2 ∈ lieAt V p.1) → ∀ x, ‖(l.foldr (fun p φ => Rder θ V p.1 p.2 φ) (convR μ f (lift (GQ V) F))) x‖ ≤ Cg * M l * ‖F‖ * GlobalTheory.Grow.height V x ^ A` using `fun l hl x => by`. Rewrite using `[hel l hl F]`. Conclude with `hg _ (continuous_of_mem_ccAd (hfl l hl)).1 (hsl l hl) _ (hM l hl) F x`. Establish `hcont` using `(GlobalTheory.AutomorphicL2Local.continuous_convR_lift _ (GQ V) μ f hfc.1 hfc.2 F).2`. Establish `key` using `hB (convR μ f (lift (GQ V) F)) ⟨fun γ hγ x => ((leftInv_lift (Γ := GQ V) F).convR (μ := μ) f) γ hγ x, ⟨U, hU, hlev F⟩, hcont⟩ (hlev F) (GlobalTheory.T.contDiff_rightConvolution_along_one_parameter_products μ θ hθ hf F) (fun l hl => ⟨_, hgr l hl⟩) (GlobalTheory.T.convolution_prese …`.
-
-Rewrite `key` using `[pow_zero, mul_one, ← Finset.sum_mul, ← mul_assoc]`. Conclude with `key`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_convR_le (hP : GlobalTheory.Published.CuspDecayBound) {f : GA D V → ℂ} (hf : f ∈ CcGA V) :
     ∃ K : ℝ, ∀ F : DividedPowerChartLift V μ, F ∈ L2cusp V μ → ∀ g, ‖convR μ f (lift (GQ V) F) g‖ ≤ K * ‖F‖ := by
@@ -79,11 +77,11 @@ theorem norm_convR_le (hP : GlobalTheory.Published.CuspDecayBound) {f : GA D V �
   exact key
 
 /- English proof (translation)
-Take `⟨K, hK⟩` from `norm_convR_le (μ := μ) hP hf`. Establish `hfc` using `continuous_of_mem_ccAd hf`. Establish `hi : Integrable f μ` using `hfc.1.integrable_of_hasCompactSupport hfc.2`. Establish `h1 : IsHilbertSchmidt ((L2cusp V μ).subtypeL ∘L RcuspOp V μ f)`. Use `GlobalTheory.T.isHilbertSchmidt_of_ae_pointwise_bounded_Lp_two _ K fun v => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : ((L2cusp V μ).subtypeL ∘L RcuspOp V μ f) v = RopG V μ f v` using `coe_RcuspOp V μ hi v`. Rewrite using `[e]`. Use `ae_quotMeasure_iff.2 ?_` and prove the remaining obligations. Use `filter_upwards [(GlobalTheory.AutomorphicL2Pointwise.lift_Rop_eq_convR _ (GQ V) μ f hi v).2] with x hx`. Establish `hx' : (RopG V μ f v) (mk (GQ V) x) = convR μ f (lift (GQ V) (v : DividedPowerChartLift V μ)) x` using `hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx']`. Simplify using `using hK v v.2 x`. Conclude with `h1.of_norm_le 1 fun x => by simp`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isHilbertSchmidt_RcuspOp (hP : GlobalTheory.Published.CuspDecayBound) {f : GA D V → ℂ} (hf : f ∈ CcGA V) :
     IsHilbertSchmidt (RcuspOp V μ f) := by
@@ -106,7 +104,7 @@ end GlobalTheory.CuspHS
 namespace GlobalTheory.Published
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ hf` and use `CuspSpectrum.isTraceClass_of_isHilbertSchmidt hDM (fun _ hg => CuspHS.isHilbertSchmidt_RcuspOp hP hg) hf`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cuspTraceClass_of_decay (hP : CuspDecayBound) (hDM : DixmierMalliavinFactorisation) : CuspTraceClass :=
   fun _ _ _ _ _ _ hf => CuspSpectrum.isTraceClass_of_isHilbertSchmidt hDM

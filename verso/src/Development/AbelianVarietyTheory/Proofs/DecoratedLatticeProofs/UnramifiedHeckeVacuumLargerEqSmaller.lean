@@ -21,17 +21,15 @@ namespace GlobalTheory.ChainOnto
 open Formalism.UG GlobalTheory.Hk3 GlobalTheory.SphTheta in
 
 /- English proof (translation)
-Introduce `hH L _ _ _ _ ϖ σ q δ ψ n n' M _ _ ρ ω s hS h' hh'`. Establish `hU` using `hS.1.unr`. Take `⟨-, hw2⟩` from `hH L ϖ σ q δ n n' (antiG L n) (antiG L n') ψ M ρ ω hS.1 s hS.2.1 hS.2.2.1 hS.2.2.2`. Establish `hK` using `P.isCommensurated_integral_unitary_of_unramified hU n`. Establish `hK'` using `P.isCommensurated_integral_unitary_of_unramified hU n'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `f1 : ∀ k ∈ KU σ n, ω (k, 1) s = s` using `fun k hk => hS.1.fix k 1 (mem_KU_iff.1 hk) (one_mem _) s hS.2.2.1`. Establish `f2 : ∀ k ∈ KU σ n', ω (1, k) s = s` using `fun k hk => hS.1.fix 1 k (one_mem _) (mem_KU_iff.1 hk) s hS.2.2.1`. Use `set w := heckeVec (ω.comp (MonoidHom.inr _ _)) (KU σ n') h' s with hw`. Establish `w1 : ∀ k ∈ KU σ n, ω (k, 1) w = w` using `fun k hk => by`. Rewrite using `[hw, GlobalTheory.LFun.map_heckeVec hK' hh' (ρ' := ω.comp (MonoidHom.inr _ _)) (ω (k, 1)) (fun g y => by show (ω (k, 1) * ω (1, g)) y = (ω (1, g) * ω (k, 1)) y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul, ← map_mul]`. Use the proof step `simp), f1 k hk]`. Establish `w2 : ∀ k ∈ KU σ n', ω (1, k) w = w` using `fun k hk => by`. Establish `hs : s ∈ GlobalTheory.PRep.fixed (ω.comp (MonoidHom.inr _ _)) (KU σ n')` using `GlobalTheory.LGrp.mem_fixed.2 f2`. Set `e : GU σ n' ⧸ KU σ n' ≃ GU σ n' ⧸ KU σ n'` to `MulAction.toPerm k`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [hw, GlobalTheory.LFun.heckeVec_eq_of_section hh'.1 hs (fun c => k * (e.symm c).out) (fun c => by`. Rewrite using `[← smul_eq_mul, ← MulAction.Quotient.smul_mk, QuotientGroup.out_eq']`. Conclude with `e.apply_symm_apply c), ← finsum_comp_equiv e]`. Rewrite using `[hw]`. Use `((ω (1, k)).toAddMonoidHom.map_finsum (GlobalTheory.LFun.finite_heckeVec hK' hh' _ s)).trans (finsum_congr fun c => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Use `hh'.1 ⟨k, hk⟩ 1 c.out` as an intermediate fact. Simplify using `only [OneMemClass.coe_one, mul_one] at this`. Simplify using `only [Equiv.symm_apply_apply, this, map_mul, LinearMap.toAddMonoidHom_coe, map_smul]`. Both sides reduce to the same expression. Take `⟨h, hh, e⟩` from `GlobalTheory.T.exists_hecke_translate_of_mem_span_fixed_translates _ (KU σ n) hK M (ω.comp (MonoidHom.inl _ _)) s w f1 w1 (hw2 w fun g hg => w2 g (mem_KU_iff.2 hg))`.
-
-Conclude with `⟨h, hh, e⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem heckeVec_howe : GlobalTheory.Hk3.HoweUnram → ∀ (L : Type) [Field L] [CharZero L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L) (σ : L →+* L) (q : ℕ) (δ : L) (ψ : AddChar L ℂ) (n n' : ℕ) (M : Type) [AddCommGroup M] [Module ℂ M] (ρ : Matrix (Fin n') (Fin n) L → Module.End ℂ M) (ω : GU σ n × GU σ n' →* Module.End ℂ M) (s : M), IsStd ϖ σ q δ ψ ρ ω s → ∀ h' ∈ Hecke ℂ (KU σ n'), ∃ h ∈ Hecke ℂ (KU σ n), heckeVec (ω.comp (MonoidHom.inl _ _)) (KU σ n) h s = heckeVec (ω.comp (MonoidHom.inr _ _)) (KU σ n') h' s := by
   intro hH L _ _ _ _ ϖ σ q δ ψ n n' M _ _ ρ ω s hS h' hh'

@@ -10,7 +10,7 @@ open Formalism.MainNotions.DIV.Cons (intO SCF)
 open GlobalTheory.OmegaHT
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.OmegaHT.Transpose.mapSt | exact GlobalTheory.OmegaHT.Transpose.mapSt | (intros; apply GlobalTheory.OmegaHT.Transpose.mapSt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.OmegaMapStatement : GlobalTheory.OmegaHT.MapSt := by
   first | exact @GlobalTheory.OmegaHT.Transpose.mapSt | exact GlobalTheory.OmegaHT.Transpose.mapSt | (intros; apply GlobalTheory.OmegaHT.Transpose.mapSt <;> assumption)

@@ -10,11 +10,11 @@ variable {O R K : Type} [CommRing O] [CommRing R] [Algebra O R] [IsLocalRing R] 
 
 omit [IsNoetherianRing R] [IsUltrametricDist K] in
 /- English proof (translation)
-Rewrite using `[map_mul, norm_mul]`. Distinguish the cases in `h0 : f z = 0`. Simplify using `[h0]`. Establish `hp : 0 < ‖f z‖` using `norm_pos_iff.2 h0`. Establish `hx : ‖f x‖ ≤ 1`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hx`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt (‖f z‖⁻¹) (not_le.1 hx)`. Establish `h1` using `hf (x ^ n * z) (Ideal.mul_mem_left _ _ hz)`. Rewrite `h1` using `[map_mul, map_pow, norm_mul, norm_pow]`. Establish `h2` using `mul_lt_mul_of_pos_right hn hp`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[inv_mul_cancel₀ hp.ne']`. Conclude with `lt_asymm h1 h2`. Conclude with `mul_le_of_le_one_left hp.le hx`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem norm_mul_le_of_loc {f : R →ₐ[O] K} (hf : IsLocPt f) (x : R) {z : R} (hz : z ∈ maximalIdeal R) :
     ‖f (x * z)‖ ≤ ‖f z‖ := by
@@ -33,15 +33,13 @@ private theorem norm_mul_le_of_loc {f : R →ₐ[O] K} (hf : IsLocPt f) (x : R) 
   exact mul_le_of_le_one_left hp.le hx
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `(IsNoetherian.noetherian (maximalIdeal R) : (maximalIdeal R).FG)`. Establish `hsm : ∀ z ∈ s, z ∈ maximalIdeal R` using `fun z hz => hs ▸ Submodule.subset_span hz`. Establish `hlt : (s.sup fun z => ‖f z‖₊) < 1` using `(Finset.sup_lt_iff (by norm_num)).2 fun z hz => hf z (hsm z hz)`. Use `⟨(s.sup fun z => ‖f z‖₊ : NNReal), NNReal.coe_nonneg _, hlt, fun z hz => ?_⟩` and prove the remaining obligations. Establish `key : ∀ x : R, ‖f (x * z)‖ ≤ (s.sup fun z => ‖f z‖₊ : NNReal)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hz` using `[← hs]`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`. Introduce `x`. Conclude with `(norm_mul_le_of_loc hf x (hsm z hz)).trans (Finset.le_sup (f := fun z => ‖f z‖₊) hz)`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Consider the case `zero => intro x`. Simplify using the standard rewrite rules. Consider the case `add a b _ _ ha hb`. Introduce `x`. Rewrite using `[mul_add, map_add]`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (ha x) (hb x))`. Consider the case `smul a b _ hb`. Introduce `x`. Rewrite using `[smul_eq_mul, ← mul_assoc]`. Conclude with `hb _`.
-
-Simplify using `using key 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem exists_rho {f : R →ₐ[O] K} (hf : IsLocPt f) :
     ∃ ρ : ℝ, 0 ≤ ρ ∧ ρ < 1 ∧ ∀ z ∈ maximalIdeal R, ‖f z‖ ≤ ρ := by
@@ -68,11 +66,11 @@ private theorem exists_rho {f : R →ₐ[O] K} (hf : IsLocPt f) :
   simpa using key 1
 
 /- English proof (translation)
-Take `⟨ρ, h0, h1, h⟩` from `exists_rho hf`. Establish `key : ∀ n : ℕ, ∀ z ∈ maximalIdeal R ^ (n + 1), ‖f z‖ ≤ ρ ^ (n + 1)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simpa using h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ n ih`. Introduce `z hz`. Rewrite `hz` using `[pow_succ]`. Use `Submodule.mul_induction_on hz (fun a ha b hb => ?_) (fun a b ha hb => ?_)` and prove the remaining obligations. Rewrite using `[map_mul, norm_mul, pow_succ]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul (ih a ha) (h b hb) (norm_nonneg _) (pow_nonneg h0 _)`. Rewrite using `[map_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ha hb)`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one hε h1`. Conclude with `⟨n + 1, fun z hz => (key n z hz).trans_lt ((pow_le_pow_of_le_one h0 h1.le (Nat.le_succ n)).trans_lt hn)⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_pow {f : R →ₐ[O] K} (hf : IsLocPt f) {ε : ℝ} (hε : 0 < ε) :
     ∃ n : ℕ, ∀ z ∈ maximalIdeal R ^ n, ‖f z‖ < ε := by
@@ -94,15 +92,15 @@ private theorem exists_pow {f : R →ₐ[O] K} (hf : IsLocPt f) {ε : ℝ} (hε 
     ((pow_le_pow_of_le_one h0 h1.le (Nat.le_succ n)).trans_lt hn)⟩
 
 /- English proof (translation)
-Establish `hsp : ∀ y ∈ Submodule.span O T, f' y = s * f y`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz => exact hT z hz`. Consider the case `zero => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb => rw [map_add, map_add, ha, hb, mul_add]`. Consider the case `smul a b _ hb => rw [map_smul, map_smul, hb, mul_smul_comm]`. Rewrite using `[← sub_eq_zero, ← norm_le_zero_iff]`. Use `le_of_forall_pos_le_add fun ε hε => ?_` and prove the remaining obligations. Establish `hs : 0 < ‖s‖ + 1` using `by positivity`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨n, hn⟩` from `exists_pow hf (div_pos hε hs)`. Take `⟨n', hn'⟩` from `exists_pow hf' (div_pos hε hs)`. Take `⟨y, hy, hxy⟩` from `h (max n n')`. Establish `e : f' x - s * f x = f' (x - y) - s * f (x - y)`. Rewrite using `[map_sub, map_sub, hsp y hy]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `a1` using `hn _ (Ideal.pow_le_pow_right (le_max_left _ _) hxy)`. Establish `a2` using `hn' _ (Ideal.pow_le_pow_right (le_max_right _ _) hxy)`. Rewrite using `[e, zero_add]`. Use `(norm_sub_le _ _).trans ?_` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_mul]`. Establish `a3` using `mul_le_mul_of_nonneg_left a1.le (norm_nonneg s)`. Establish `a4 : ε / (‖s‖ + 1) + ‖s‖ * (ε / (‖s‖ + 1)) = ε` using `by field_simp; ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private theorem eq_of_dense {f f' : R →ₐ[O] K} (hf : IsLocPt f) (hf' : IsLocPt f') (s : K) (x : R)
     (T : Set R) (hT : ∀ y ∈ T, f' y = s * f y)
@@ -138,9 +136,9 @@ section Mon
 variable {O R K Γ : Type} [CommRing O] [CommRing R] [Algebra O R] [Field K] [Algebra O K] [Group Γ]
 
 /- English proof (translation)
-Introduce and unpack `y ⟨L, rfl, rfl⟩`. Proceed by induction on `L with`. Consider the case `nil => simp at hj`. Consider the case `cons s L ih`. Rewrite `hj` using `[List.map_cons, List.sum_cons, mul_add]`.
+Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[List.map_cons, List.prod_cons, map_mul]`. Distinguish the cases in `hs : e * wt s.2.1 s.2.2 < 0`. Rewrite using `[h _ _ _ hs, zero_mul]`. Rewrite using `[ih (by omega), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem mon_zero (r : Γ →* GG 3 R) (f : R →ₐ[O] K) (e : ℤ)
     (h : ∀ g a b, e * wt a b < 0 → f ((r g).mat a b) = 0) (j : ℤ) (hj : e * j < 0) :
@@ -156,7 +154,7 @@ private theorem mon_zero (r : Γ →* GG 3 R) (f : R →ₐ[O] K) (e : ℤ)
     · rw [ih (by omega), mul_zero]
 
 /- English proof (translation)
-Introduce and unpack `y ⟨L, rfl, rfl⟩`. Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons s L ih`. Rewrite using `[List.map_cons, List.map_cons, List.sum_cons, List.prod_cons, map_mul, map_mul, h, ih, _root_.zpow_add, Units.val_mul]`.
+Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -172,9 +170,9 @@ private theorem mon_tor (r : Γ →* GG 3 R) (f f' : R →ₐ[O] K) (t : Kˣ)
     ring
 
 /- English proof (translation)
-Break down `Int.units_eq_one_or (η g) with h | h` into its components or cases. Conclude with `⟨g, h, rfl⟩`. Use `⟨g * c⁻¹, by simp [MonoidHom.mem_ker, h, hc], ?_⟩` and prove the remaining obligations. Establish `hl : (r c).left = 1` using `Units.ext h1`. Establish `e : g = g * c⁻¹ * c` using `by simp`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `conv_lhs => rw [e]`. Rewrite using `[map_mul r _ c, GG.mat, GG.mat, SemidirectProduct.mul_left, hl, map_one, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mat_ker (η : Γ →* ℤˣ) (r : Γ →* GG 3 R) (c : Γ) (hc : η c = -1) (h1 : (r c).mat = 1) (g : Γ) :
     ∃ g' ∈ η.ker, (r g).mat = (r g').mat := by
@@ -189,21 +187,19 @@ private theorem mat_ker (η : Γ →* ℤˣ) (r : Γ →* GG 3 R) (c : Γ) (hc :
 end Mon
 
 /- English proof (translation)
-Introduce `l _ c Γ H _ _ _ _ _ _ η Ψ N ι hι U I cc g₁ S M _ hM f hf`. Establish `h1 : (S.r.hom cc).mat = 1` using `((S.rep S.R).1 (AlgHom.id _ _)).1.atc`. Establish `key : ∀ e : ℤ, (∀ j, e * j < 0 → ∀ x ∈ M.𝒜 j, f (M.q x) = 0) ↔ ∀ g ∈ η.ker, ∀ a b, e * wt a b < 0 → f ((S.r.hom g).mat a b) = 0`. Introduce `e`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h g _ a b hab`. Take `⟨x, hx, hq⟩` from `M.ent g a b`. Rewrite using `[← hq]`. Conclude with `h _ hab x hx`. Introduce `h j hj x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h' : ∀ g a b, e * wt a b < 0 → f ((S.r.hom g).mat a b) = 0`. Introduce `g a b hab`. Take `⟨g', hg', e'⟩` from `mat_ker η S.r.hom cc hM.ηc h1 g`. Rewrite using `[e']`. Conclude with `h g' hg' a b hab`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `eq_of_dense hf hf 0 (M.q x) (entMon S.r.hom j) (fun y hy => by rw [mon_zero _ f e h' j hj y hy, zero_mul]) (M.dense j x hx)` as an intermediate fact. Rewrite `this` using `[zero_mul]`. Then use the resulting hypothesis. Use `⟨?_, ?_, fun f' hf' t ht => ?_⟩` and prove the remaining obligations. Use `key 1` as an intermediate fact. Simplify using `only [one_mul] at this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this`. Use `key (-1)` as an intermediate fact. Simplify using `only [neg_mul, one_mul, neg_lt_zero] at this`. Conclude with `this`. Establish `h' : ∀ g a b, f' ((S.r.hom g).mat a b) = ((t ^ wt a b : (PadicAlgCl l)ˣ) : PadicAlgCl l) * f ((S.r.hom g).mat a b)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g a b`. Use `(conjBy_tor (push f S.r.hom) t).1 g a b` as an intermediate fact. Rewrite `this` using `[← ht]`. Conclude with `this`. Use `AlgHom.ext fun x => ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `x using DirectSum.Decomposition.inductionOn M.𝒜 with`. Consider the case `zero => rw [map_zero, map_zero]`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`. Consider the case `@homogeneous j x`. Rewrite using `[act_of_mem M.𝒜 _ _ x.2]`.
-
-Conclude with `eq_of_dense hf hf' _ (M.q x) (entMon S.r.hom j) (mon_tor _ f f' t h' j) (M.dense j x x.2)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.U3.model_signs :
     ∀ {l : ℕ} [Fact l.Prime] {c : Coef l} {Γ H : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [Group H] [TopologicalSpace H] [IsTopologicalGroup H]

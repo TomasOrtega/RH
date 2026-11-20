@@ -15,7 +15,7 @@ namespace GlobalTheory.IwaFlag
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨ε, -, hc, -, hε, -⟩` from `(GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D (· = v)).1`. Rewrite `h`, the goal using `[hε]`. Use `congrArg (cA D) h` as an intermediate fact. Rewrite `this` using `[map_mul, hc]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem cA_mem_idAt' {v : Pl D} {y : AE D} (h : y ∈ idAt D (· = v)) : cA D y ∈ idAt D (· = v) := by
   obtain ⟨ε, -, hc, -, hε, -⟩ := (GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D (· = v)).1
@@ -24,7 +24,7 @@ theorem cA_mem_idAt' {v : Pl D} {y : AE D} (h : y ∈ idAt D (· = v)) : cA D y 
   rwa [map_mul, hc] at this
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Conclude with `Ideal.sum_mem _ fun x _ => Ideal.mul_mem_left _ _ (h x j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_left_mem {R : Type} [CommRing R] {I : Ideal R} {l m k : ℕ} (A : Matrix (Fin l) (Fin m) R)
     {M : Matrix (Fin m) (Fin k) R} (h : ∀ i j, M i j ∈ I) (i : Fin l) (j : Fin k) : (A * M) i j ∈ I := by
@@ -32,7 +32,7 @@ theorem mul_left_mem {R : Type} [CommRing R] {I : Ideal R} {l m k : ℕ} (A : Ma
   exact Ideal.sum_mem _ fun x _ => Ideal.mul_mem_left _ _ (h x j)
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Conclude with `Ideal.sum_mem _ fun x _ => Ideal.mul_mem_right _ _ (h i x)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_right_mem {R : Type} [CommRing R] {I : Ideal R} {l m k : ℕ} {M : Matrix (Fin l) (Fin m) R}
     (B : Matrix (Fin m) (Fin k) R) (h : ∀ i j, M i j ∈ I) (i : Fin l) (j : Fin k) : (M * B) i j ∈ I := by
@@ -48,43 +48,39 @@ variable {D : D7}
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D S S₀ ρ d v g hg ⟨a, hup, hgX⟩`. Establish `hG' : ∀ i j, (mt S g - 1) i j ∈ idAt D (· = v)` using `fun i j => by`. Rewrite using `[Matrix.sub_apply]`. Conclude with `(mem_congGrp_iff S (idAt D (· = v)) g).1 hg i j`. Establish `hba : (adj (mt S g ⬝ d.jY) ⬝ (gA S ⬝ d.jX)) * a = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : adj (mt S g ⬝ d.jY) ⬝ (gA S ⬝ (mt S g ⬝ d.jX)) = 1`. Rewrite using `[adj_mul, Matrix.mul_assoc, ← Matrix.mul_assoc (gA S), ← Matrix.mul_assoc (adj (mt S g)), mt_unitary]`. Conclude with `d.gram_YX`. Rewrite `h1` using `[hgX]`. Simplify `h1` using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hab : a * (adj (mt S g ⬝ d.jY) ⬝ (gA S ⬝ d.jX)) = 1` using `mul_eq_one_comm.1 hba`. Take `⟨A, hA⟩ : ∃ A : GL (Fin ρ) (AE D), A.1 = a` from `⟨⟨a, _, hab, hba⟩, rfl⟩`. Establish `hdet : IsUnit a.det` using `Matrix.isUnit_det_of_left_inverse hba`. Rewrite `hdet` using `[Matrix.det_of_upperTriangular (M := a) (fun ⦃i j⦄ h => hup i j h)]`. Establish `hu : ∀ i, IsUnit (a i i)` using `fun i => isUnit_of_dvd_unit (Finset.dvd_prod_of_mem (fun k => a k k) (Finset.mem_univ i)) hdet`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨t, ht1, htinv⟩ : ∃ t : GL (Fin ρ) (AE D), t.1 = diagonal (fun i => a i i) ∧ (t⁻¹).1 = diagonal (fun i => (((hu i).unit⁻¹ : (AE D)ˣ) : AE D))` from `⟨⟨diagonal (fun i => a i i), diagonal (fun i => (((hu i).unit⁻¹ : (AE D)ˣ) : AE D)), by rw [diagonal_mul_diagonal]; simp only [IsUnit.mul_val_inv, diagonal_one], by rw [diagonal_mul_diagonal]; simp only [IsUnit.val_inv_mul, diagonal_one]⟩, rfl, rfl⟩`. Establish `ht_diag : ∀ i j, i ≠ j → t.1 i j = 0` using `fun i j h => by rw [ht1]; exact diagonal_apply_ne _ h`. Establish `hAt : (A * t⁻¹).1 = a * diagonal (fun i => (((hu i).unit⁻¹ : (AE D)ˣ) : AE D))`. Rewrite using `[Units.val_mul A t⁻¹, htinv, hA]`. Establish `hUX : A * t⁻¹ ∈ UX D ρ` using `fun i j => ⟨fun h => by rw [hAt, mul_diagonal, hup i j h, zero_mul], by rw [hAt, mul_diagonal]; exact IsUnit.mul_val_inv (hu i)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hR' : mt S (g * (d.levi t)⁻¹) ⬝ d.jX = d.jX ⬝ (A * t⁻¹).1`. Rewrite using `[Units.val_mul A t⁻¹, hA, ← map_inv d.levi t, mt_mul, Matrix.mul_assoc, d.levi_jX]`. Simplify `congrArg (fun M : Mx D S.rank ρ => M ⬝ (t⁻¹).1) hgX` using `only [Matrix.mul_assoc]`. Establish `hR : g * (d.levi t)⁻¹ ∈ GlobalTheory.Unf.Rgrp S (rat d.e)` using `⟨A * t⁻¹, hUX, hR'⟩`. Rewrite `hR` using `[GlobalTheory.Unf.Rgrp_eq d]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨n, hn, γ, hnγ⟩` from `((flag_jacobi_structure D S S₀ ρ d).2.2.2.1 _).1 hR`. Establish `hcomm : d.levi t * d.emb0 γ = d.emb0 γ * d.levi t`. Use `d.ga_ext ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.MixModel.mt_mul S (d.levi t) (d.emb0 γ), GlobalTheory.MixModel.mt_mul S (d.emb0 γ) (d.levi t), Matrix.mul_assoc, Matrix.mul_assoc, d.wittDecomp_anisotropicEmbedding_inclX, d.levi_jX, ← Matrix.mul_assoc, d.wittDecomp_anisotropicEmbedding_inclX]`. Rewrite using `[GlobalTheory.MixModel.mt_mul S (d.levi t) (d.emb0 γ), GlobalTheory.MixModel.mt_mul S (d.emb0 γ) (d.levi t), Matrix.mul_assoc, Matrix.mul_assoc, d.wittDecomp_anisotropicEmbedding_inclAnisotropic, d.wittDecomp_levi_inclAnisotropic, ← Matrix.mul_assoc, d.wittDecomp_levi_inclAnisotr …`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.MixModel.mt_mul S (d.levi t) (d.emb0 γ), GlobalTheory.MixModel.mt_mul S (d.emb0 γ) (d.levi t), Matrix.mul_assoc, Matrix.mul_assoc, d.wittDecomp_anisotropicEmbedding_inclY, d.levi_jY, ← Matrix.mul_assoc, d.wittDecomp_anisotropicEmbedding_inclY]`. Establish `hgfac : g = n * d.levi t * d.emb0 γ`. Rewrite using `[mul_assoc, hcomm, ← mul_assoc, ← hnγ, inv_mul_cancel_right]`. Establish `hmtγ : mt S₀ γ = d.p0 ⬝ (mt S g ⬝ d.j0)`. Establish `e1 : mt S (g * (d.levi t)⁻¹) ⬝ d.j0 = mt S g ⬝ d.j0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_inv d.levi t, mt_mul, Matrix.mul_assoc, d.wittDecomp_levi_inclAnisotropic]`. Establish `e2 : d.p0 ⬝ (mt S (n * d.emb0 γ) ⬝ d.j0) = mt S₀ γ`. Rewrite using `[mt_mul, Matrix.mul_assoc, d.wittDecomp_anisotropicEmbedding_inclAnisotropic, ← Matrix.mul_assoc (mt S n), ← Matrix.mul_assoc, GlobalTheory.Unf.flagUnipotent_anisotropic_projection_eq_one d hn, Matrix.one_mul]`. Rewrite using `[← e2, ← hnγ, e1]`. Establish `hγ : γ ∈ grpAt S₀ (· = v)` using `(mem_congGrp_iff S₀ _ γ).2 fun i j => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : mt S₀ γ - 1 = d.p0 ⬝ ((mt S g - 1) ⬝ d.j0)`. Rewrite using `[hmtγ, Matrix.sub_mul, Matrix.mul_sub, Matrix.one_mul, d.p0_j0]`. Rewrite using `[← Matrix.sub_apply, e]`. Conclude with `mul_left_mem _ (mul_right_mem _ hG') i j`. Establish `haI : ∀ i j, (a - 1) i j ∈ idAt D (· = v)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : a - 1 = d.pX ⬝ ((mt S g - 1) ⬝ d.jX)`. Rewrite using `[Matrix.sub_mul, Matrix.mul_sub, Matrix.one_mul, d.pX_jX, hgX, ← Matrix.mul_assoc, d.pX_jX, Matrix.one_mul]`. Introduce `i j`. Rewrite using `[e]`. Conclude with `mul_left_mem _ (mul_right_mem _ hG') i j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `ht1I : ∀ i j, (t.1 - 1) i j ∈ idAt D (· = v)`. Introduce `i j`. Rewrite using `[ht1, Matrix.sub_apply]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Use `haI i i` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply]`. Rewrite using `[diagonal_apply_eq]` and apply the resulting hypothesis. Rewrite using `[diagonal_apply_ne _ h, Matrix.one_apply_ne h, sub_zero]`. Conclude with `Ideal.zero_mem _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `htiI : ∀ i j, ((t⁻¹).1 - 1) i j ∈ idAt D (· = v)`. Introduce `i j`. Rewrite using `[htinv, Matrix.sub_apply]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haI i i` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, Matrix.one_apply_eq]`. Rewrite using `[diagonal_apply_eq, Matrix.one_apply_eq]`. Establish `e : (((hu i).unit⁻¹ : (AE D)ˣ) : AE D) - 1 = -((((hu i).unit⁻¹ : (AE D)ˣ) : AE D) * (a i i - 1))`. Rewrite using `[mul_sub, IsUnit.val_inv_mul (hu i)]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(idAt D (· = v)).neg_mem (Ideal.mul_mem_left _ _ this)`. Rewrite using `[diagonal_apply_ne _ h, Matrix.one_apply_ne h, sub_zero]`. Conclude with `Ideal.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hadjI : ∀ i j, (adj (t⁻¹).1 - 1) i j ∈ idAt D (· = v)`. Introduce `i j`. Rewrite using `[← adj_one, ← adj_sub]`. Conclude with `cA_mem_idAt' (htiI j i)`. Establish `hlevI : d.levi t ∈ grpAt S (· = v)`.
+Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : mt S (d.levi t) - 1 = d.jX ⬝ (t.1 - 1) ⬝ d.pX + d.jY ⬝ (adj (t⁻¹).1 - 1) ⬝ d.pY`. Rewrite using `[d.mt_levi, ← d.sum_eq_one]`. Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one]`. Normalize the expressions using the abelian group laws. Use `(mem_congGrp_iff S _ _).2 fun i j => ?_` and prove the remaining obligations.
-
-Rewrite using `[← Matrix.sub_apply, e, Matrix.add_apply]`. Conclude with `add_mem (mul_right_mem _ (mul_left_mem _ ht1I) i j) (mul_right_mem _ (mul_left_mem _ hadjI) i j)`. Establish `hnI : n ∈ grpAt S (· = v)`. Establish `e : n = g * (d.levi t * d.emb0 γ)⁻¹` using `eq_mul_inv_of_mul_eq ((mul_assoc _ _ _).symm.trans hgfac.symm)`. Rewrite using `[e]`.
-
-Conclude with `mul_mem hg (inv_mem (mul_mem hlevI (wittCoreEmbedding_preserves_supportedUnitarySubgroup d hγ)))`. Conclude with `⟨n, hn, hnI, t, ht_diag, hlevI, γ, hγ, hgfac⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem flag_stab : ∀ (D : D7) (S S₀ : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (v : Pl D) (g : GA D S), g ∈ grpAt S (· = v) → (∃ a : Mx D ρ ρ, (∀ i j, j < i → a i j = 0) ∧ mt S g ⬝ d.jX = d.jX ⬝ a) → ∃ n ∈ flagN d, n ∈ grpAt S (· = v) ∧ ∃ t : GL (Fin ρ) (AE D), (∀ i j, i ≠ j → t.1 i j = 0) ∧ d.levi t ∈ grpAt S (· = v) ∧ ∃ γ ∈ grpAt S₀ (· = v), g = n * d.levi t * d.emb0 γ := by
   intro D S S₀ ρ d v g hg ⟨a, hup, hgX⟩

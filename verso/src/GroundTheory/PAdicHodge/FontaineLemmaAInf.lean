@@ -18,7 +18,7 @@ local notation "θ" => fontaineTheta (normInteger K) p
 local notation "φ" => WittVector.frobeniusEquiv p (PreTilt (normInteger K) p)
 
 /- English proof (translation)
-Rewrite using `[pow_succ, RingAut.mul_apply, frobeniusEquiv_xi, map_sum, map_sum]`. Simplify using `only [map_pow, WittVector.frobeniusEquiv_pow_teichmuller, fontaineTheta_teichmuller, hε, one_pow, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fontaineTheta_frobenius_pow_succ_xi {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) (n : ℕ) :
     θ ((φ ^ (n + 1)) (xi ε)) = p := by
@@ -27,7 +27,7 @@ theorem fontaineTheta_frobenius_pow_succ_xi {ε : 𝒪♭} (hε : PreTilt.untilt
     one_pow, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one]
 
 /- English proof (translation)
-Rewrite using `[mu, map_sub, map_one, WittVector.frobeniusEquiv_pow_teichmuller, map_sub, map_one, fontaineTheta_teichmuller, map_pow, hε, one_pow, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fontaineTheta_frobenius_pow_mu {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) (n : ℕ) :
     θ ((φ ^ n) (mu ε)) = 0 := by
@@ -35,14 +35,14 @@ theorem fontaineTheta_frobenius_pow_mu {ε : 𝒪♭} (hε : PreTilt.untilt ε =
     fontaineTheta_teichmuller, map_pow, hε, one_pow, sub_self]
 
 /- English proof (translation)
-Rewrite using `[map_mul, map_mul, fontaineTheta_frobenius_pow_mu hε, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fontaineTheta_frobenius_pow_mul_mu {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1) (b : AInf K p)
     (n : ℕ) : θ ((φ ^ n) (mu ε * b)) = 0 := by
   rw [map_mul, map_mul, fontaineTheta_frobenius_pow_mu hε, zero_mul]
 
 /- English proof (translation)
-Introduce `h`. Apply `norm_natCast_ne_zero hε hζ` to reduce the goal to its premises. Establish `h2 : ((p : 𝒪) : K) = (p : K)` using `by simp`. Rewrite using `[← h2, h, ZeroMemClass.coe_zero, norm_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem natCast_ne_zero {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1)
     (hζ : PreTilt.untilt ((_root_.frobeniusEquiv 𝒪♭ p).symm ε) ≠ 1) : (p : 𝒪) ≠ 0 := by
@@ -57,24 +57,22 @@ noncomputable def kerThetaFrob : Ideal (AInf K p) :=
   ⨅ n : ℕ, RingHom.ker ((fontaineTheta (normInteger K) p).comp ((φ ^ n : AInf K p ≃+* AInf K p) : AInf K p →+* AInf K p))
 
 /- English proof (translation)
-Simplify using `only [kerThetaFrob, Ideal.mem_iInf, RingHom.mem_ker, RingHom.coe_comp, RingHom.coe_coe, Function.comp_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_kerThetaFrob {a : AInf K p} : a ∈ kerThetaFrob K p ↔ ∀ n : ℕ, θ ((φ ^ n) a) = 0 := by
   simp only [kerThetaFrob, Ideal.mem_iInf, RingHom.mem_ker, RingHom.coe_comp, RingHom.coe_coe,
     Function.comp_apply]
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => exact fun a _ => ⟨a, by rw [pow_zero, RingAut.one_apply, mul_comm]⟩`. Consider the case `succ N ih`. Introduce `a ha`. Establish `h0 : a ∈ RingHom.ker θ`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[RingHom.mem_ker]`. Simplify using `using ha 0`. Rewrite `h0` using `[ker_fontaineTheta_eq_span_xi hε hζ, Ideal.mem_span_singleton']`. Take `⟨a₁, rfl⟩` from `h0`. Establish `hp0` using `natCast_ne_zero hε hζ`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : ∀ n : ℕ, θ ((φ ^ n) (φ a₁)) = 0`. Introduce `n`. Establish `h` using `ha (n + 1)`. Rewrite `h` using `[map_mul, map_mul, fontaineTheta_frobenius_pow_succ_xi hε n, mul_eq_zero]`. Rewrite using `[← RingAut.mul_apply, ← pow_succ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h.resolve_right hp0`. Take `⟨c, hc⟩` from `ih _ h1`. Use `⟨(φ).symm c, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg (φ).symm hc`. Rewrite `h2` using `[map_mul, map_mul, RingEquiv.symm_apply_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[pow_succ', RingAut.mul_apply]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = xi ε * ((φ).symm (mu ε) * (φ).symm c) := by rw [h2]`. Use `_ = mu ε * (φ).symm c := by conv_rhs => rw [mu_eq_xi_mul ε]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_mul_frobeniusEquiv_symm_pow_mu_eq {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1)
     (hζ : PreTilt.untilt ((_root_.frobeniusEquiv 𝒪♭ p).symm ε) ≠ 1) (N : ℕ) :
@@ -109,14 +107,14 @@ theorem exists_mul_frobeniusEquiv_symm_pow_mu_eq {ε : 𝒪♭} (hε : PreTilt.u
           ring
 
 /- English proof (translation)
-Rewrite using `[mu, map_sub, map_one]`. Conclude with `congrArg (· - 1) (teichmuller_coeff_zero p ε)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem constantCoeff_mu (ε : 𝒪♭) : WittVector.constantCoeff (mu ε : AInf K p) = ε - 1 := by
   rw [mu, map_sub, map_one]
   exact congrArg (· - 1) (teichmuller_coeff_zero p ε)
 
 /- English proof (translation)
-Rewrite using `[frobeniusEquiv_symm_pow_mu, map_sub, map_one]`. Conclude with `congrArg (· - 1) (teichmuller_coeff_zero p _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem constantCoeff_frobeniusEquiv_symm_pow_mu (ε : 𝒪♭) (N : ℕ) :
     WittVector.constantCoeff (((φ).symm ^ N) (mu ε) : AInf K p) =
@@ -125,26 +123,24 @@ theorem constantCoeff_frobeniusEquiv_symm_pow_mu (ε : 𝒪♭) (N : ℕ) :
   exact congrArg (· - 1) (teichmuller_coeff_zero p _)
 
 /- English proof (translation)
-Rewrite using `[← norm_pow, sub_pow_char_pow, one_pow, frobeniusEquiv_symm_pow_apply_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_frobeniusEquiv_symm_pow_sub_one_pow (ε : 𝒪♭) (N : ℕ) :
     ‖((_root_.frobeniusEquiv 𝒪♭ p).symm ^ N) ε - 1‖ ^ p ^ N = ‖ε - 1‖ := by
   rw [← norm_pow, sub_pow_char_pow, one_pow, frobeniusEquiv_symm_pow_apply_pow]
 
 /- English proof (translation)
-Rewrite using `[preTilt_dvd_iff_norm_le]`. Use `set r := ‖ε - 1‖ with hr`. Use `set x := ‖WittVector.constantCoeff a‖ with hx`. Establish `hr0 : 0 < r` using `norm_pos_iff.2 (sub_ne_zero.2 (ne_one_of_untilt_ne_one hζ))`. Establish `key : ∀ N : ℕ, x ^ p ^ N * r ≤ r ^ p ^ N`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `N`. Take `⟨c, hc⟩` from `exists_mul_frobeniusEquiv_symm_pow_mu_eq hε hζ N a ha`. Establish `h` using `congrArg (fun y : AInf K p => ‖WittVector.constantCoeff y‖ ^ p ^ N) hc`. Simplify using `only [map_mul, norm_mul, mul_pow, constantCoeff_mu, constantCoeff_frobeniusEquiv_symm_pow_mu, norm_frobeniusEquiv_symm_pow_sub_one_pow] at h`. Rewrite using `[h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Assume the negation of the conclusion and derive a contradiction.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `pow_le_one₀ (norm_nonneg _) (preTilt_norm_le_one _)`. Use `_ = r ^ p ^ N := mul_one _`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set q := x / r with hq`. Establish `hq1 : 1 < q` using `by rw [hq, one_lt_div hr0]; exact hlt`. Establish `hbound : ∀ N : ℕ, q ^ p ^ N * r ≤ 1`. Introduce `N`. Establish `h` using `key N`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hxq : x = q * r` using `by rw [hq, div_mul_cancel₀ _ hr0.ne']`. Rewrite `h` using `[hxq, mul_pow]`. Establish `hrN : 0 < r ^ p ^ N` using `pow_pos hr0 _`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨N, hN⟩` from `exists_nat_gt (1 / (r * (q - 1)))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpN : (N : ℝ) < (p ^ N : ℕ)` using `by exact_mod_cast Nat.lt_pow_self hp.out.one_lt`. Establish `hB` using `one_add_mul_le_pow (a := q - 1) (by linarith) (p ^ N)`. Rewrite `hB` using `[add_sub_cancel]`. Establish `h3` using `hbound N`. Establish `hq0 : 0 < q - 1` using `by linarith`.
-
-Establish `h4 : (1 : ℝ) / (r * (q - 1)) < ((p ^ N : ℕ) : ℝ)` using `hN.trans hpN`. Rewrite `h4` using `[div_lt_iff₀ (mul_pos hr0 hq0)]`. Move the coercions through the operations in `at h4 hB`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem sub_one_dvd_coeff_zero {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1)
     (hζ : PreTilt.untilt ((_root_.frobeniusEquiv 𝒪♭ p).symm ε) ≠ 1) {a : AInf K p}
@@ -187,13 +183,13 @@ theorem sub_one_dvd_coeff_zero {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1)
   nlinarith
 
 /- English proof (translation)
-Establish `hp0` using `natCast_ne_zero hε hζ`. Establish `hJ : kerThetaFrob K p ≤ Ideal.span {mu ε}`. Use `le_span_singleton_of_forall_mem_eq (π := (p : AInf K p)) fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[mem_kerThetaFrob]`. Take `⟨β, hβ⟩` from `sub_one_dvd_coeff_zero hε hζ hx`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv⟩` from `exists_eq_teichmuller_add_mul_p (x - mu ε * teichmuller p β)`. Establish `h0 : (x - mu ε * teichmuller p β).coeff 0 = 0`. Express the relevant statement in the definitionally equal form `_root_.WittVector.constantCoeff (x - mu ε * teichmuller p β) = 0`. Rewrite using `[map_sub, map_mul, constantCoeff_mu, hβ]`. Express the relevant statement in the definitionally equal form `_ - _ * (teichmuller p β).coeff 0 = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[teichmuller_coeff_zero, sub_self]`. Rewrite `hv` using `[h0, teichmuller_zero, zero_add]`. Establish `hxv : x = teichmuller p β * mu ε + v * p` using `by linear_combination hv`. Use `⟨teichmuller p β, v, ?_, hxv⟩` and prove the remaining obligations. Rewrite using `[mem_kerThetaFrob]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `n`. Establish `h` using `hx n`. Rewrite `h` using `[hxv, map_add, map_add, map_mul, map_mul, map_mul, map_mul, fontaineTheta_frobenius_pow_mu hε, mul_zero, zero_add, map_natCast, map_natCast, mul_eq_zero]`. Conclude with `h.resolve_right hp0`. Conclude with `hJ (mem_kerThetaFrob.2 ha)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_mu_of_forall {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1)
     (hζ : PreTilt.untilt ((_root_.frobeniusEquiv 𝒪♭ p).symm ε) ≠ 1) {a : AInf K p}
@@ -222,7 +218,7 @@ theorem mem_span_mu_of_forall {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1)
   exact hJ (mem_kerThetaFrob.2 ha)
 
 /- English proof (translation)
-Use `le_antisymm (fun a ha => mem_span_mu_of_forall hε hζ (mem_kerThetaFrob.1 ha)) ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, mem_kerThetaFrob]`. Introduce `n`. Simplify using `using fontaineTheta_frobenius_pow_mul_mu (K := K) hε 1 n`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem kerThetaFrob_eq_span_mu {ε : 𝒪♭} (hε : PreTilt.untilt ε = 1)
     (hζ : PreTilt.untilt ((_root_.frobeniusEquiv 𝒪♭ p).symm ε) ≠ 1) :

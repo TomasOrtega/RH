@@ -8,31 +8,29 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped TensorProduct
 
 /- English proof (translation)
-Use `set I : Ideal C := Ideal.span {(p : C)} with hI`. Establish `key : ∀ t : C, (p : C) ∣ t ↔ Ideal.Quotient.mk I t = 0` using `fun t => by`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`. Establish `cast_dvd : ∀ t : ℤ, (p : ℤ) ∣ t → Ideal.Quotient.mk I (t : C) = 0`. Introduce `t ht`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(key _).mp` to reduce the goal to its premises. Take `⟨r, hr⟩` from `ht`. Conclude with `⟨(r : C), by rw [hr]; push_cast; ring⟩`. Establish `hpZ : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.mp hp`. Establish `hnd : ¬ (p : ℤ) ∣ 2 * z - tr`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Apply `hd` to reduce the goal to its premises. Establish `e1 : tr ^ 2 - 4 * nm = (2 * z - tr) ^ 2 - 4 * (z ^ 2 - tr * z + nm)` using `by ring`. Rewrite using `[e1]`. Conclude with `dvd_sub (dvd_pow h two_ne_zero) (dvd_mul_of_dvd_right hz 4)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u0, v0, huv⟩` from `(Irreducible.coprime_iff_not_dvd hpZ.irreducible).mpr hnd`. Use `set mk := Ideal.Quotient.mk I`. Use `set X := mk (ω - (z : C)) with hX`. Use `set E := mk π.ε with hEdef`. Use `set A := mk π.a with hAdef`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `set Y := mk (((2 * z - tr : ℤ)) : C) with hY`. Use `set S := mk (v0 : C) with hS`. Establish `hp0 : mk (p : C) = 0` using `(key _).mp dvd_rfl`. Establish `hSY : S * Y = 1`. Establish `h` using `congrArg (fun t : ℤ => mk (t : C)) huv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [Int.cast_add, Int.cast_mul, Int.cast_natCast, Int.cast_one, map_add, map_mul, map_one, hp0, mul_zero, zero_add] at h`. Rewrite using `[hS, hY, ← map_mul]`. Simplify `h` using `[map_mul]`. Establish `hE : E * E = E`. Establish `h` using `(key _).mp π.idem`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[map_sub, map_mul, sub_eq_zero]`. Conclude with `h`. Take `⟨e, he⟩` from `π.nil`. Establish `hAE : A ^ e * E = 0`. Establish `h` using `(key _).mp he`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `h` using `[map_mul, map_pow]`. Then use the resulting hypothesis. Take `⟨u, hu⟩` from `π.gen _ hw`. Establish `hEX : E * X = A * mk u`. Establish `h` using `(key _).mp hu`. Rewrite `h` using `[map_sub, map_mul, map_mul, sub_eq_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hXY : X * (X + Y) = 0`. Establish `e2 : (ω - (z : C)) * (ω - (z : C) + ((2 * z - tr : ℤ) : C)) = (ω * ω - (tr : C) * ω + (nm : C)) - ((z ^ 2 - tr * z + nm : ℤ) : C)`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h` using `congrArg mk e2`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Chain the equalities or inequalities of the calculation.
 
-Rewrite `h` using `[map_mul, map_add, hq, zero_sub, map_neg, cast_dvd _ hz, neg_zero]`. Conclude with `h`. Establish `h1 : X = -S * X ^ 2`. Combine the equalities or inequalities in the displayed calculation. Establish `hpow : ∀ n : ℕ, X = (-S) ^ n * X ^ (n + 1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hEpow : ∀ n : ℕ, E ^ (n + 1) = E`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ, ih, hE]`.
-
-Establish `hEXe : E * X ^ e = 0`. Combine the equalities or inequalities in the displayed calculation. Apply `(key _).mpr` to reduce the goal to its premises. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 private theorem eps_mul_sub {p : ℕ} (hp : p.Prime) {C : Type} [CommRing C] {w : Ideal C} {f : ℕ} (π : Par p w f)
     (ω : C) (tr nm z : ℤ) (hq : ω * ω - (tr : C) * ω + (nm : C) = 0) (hz : (p : ℤ) ∣ z ^ 2 - tr * z + nm)
@@ -116,57 +114,51 @@ private theorem eps_mul_sub {p : ℕ} (hp : p.Prime) {C : Type} [CommRing C] {w 
     _ = 0 := by rw [hEXe, mul_zero]
 
 /- English proof (translation)
-Introduce `p _ D R _ b N _ _ hm k _ _ hk β o i w f hw _ _ π`. Establish `hpp : p.Prime` using `Fact.out`. Use `haveI : CharP k p := (CharP.charP_iff_prime_eq_zero hpp).mpr hk`. Take `⟨g, hg⟩` from `GlobalTheory.AbelianDim.exists_relDim k o.A o.ab`. Establish `HL : LieExact o.A` using `(GlobalTheory.abelianDeRham.2.1 k o.A g o.ab hg).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set τ : 𝓞 D.F →+* k := β.comp (b.t i) with hτ`. Establish `hhom_mul : ∀ (c d : 𝓞 D.F) (h : HdR o.A), hom o (c * d) h = hom o c (hom o d h)`. Introduce `c d h`. Simplify using `[UpperTheory.Gal.Ord.hom, map_mul, Module.End.mul_apply]`. Establish `hhom_add : ∀ (c d : 𝓞 D.F) (h : HdR o.A), hom o (c + d) h = hom o c h + hom o d h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `c d h`. Simplify using `[UpperTheory.Gal.Ord.hom, map_add, LinearMap.add_apply]`. Establish `hhom_int : ∀ (n : ℤ) (h : HdR o.A), hom o (n : 𝓞 D.F) h = (n : k) • h`. Introduce `n h`. Conclude with `GlobalTheory.HTCount.crysAct_intCast o n h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLc : ∀ (c : 𝓞 D.F) (h : HdR o.A), HL.toLie (OActN.toF D o.act) (hom o c h) = c • HL.toLie (OActN.toF D o.act) h` using `fun c h => GlobalTheory.HTLieRho.toLie_crys o HL c h`. Establish `hρ : β b.ρ ^ 2 - (D.tr : k) * β b.ρ + (D.nm : k) = 0`. Establish `h0` using `congrArg β b.ρ_root`. Simplify using `using h0`. Take `⟨r, hr⟩` from `D.split`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hrk : ((r ^ 2 - D.tr * r + D.nm : ℤ) : k) = 0`. Take `⟨s, hs⟩` from `hr`. Rewrite using `[hs]`. Use `push_cast`. Rewrite using `[hk, zero_mul]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨z, hzk, hz⟩ : ∃ z : ℤ, (z : k) = β b.ρ ∧ (p : ℤ) ∣ z ^ 2 - D.tr * z + D.nm := by`. Establish `hfac : (β b.ρ - (r : k)) * (β b.ρ - ((D.tr : k) - (r : k))) = 0`. Establish `e0 : (β b.ρ - (r : k)) * (β b.ρ - ((D.tr : k) - (r : k))) = (β b.ρ ^ 2 - (D.tr : k) * β b.ρ + D.nm) - ((r ^ 2 - D.tr * r + D.nm : ℤ) : k)`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Rewrite using `[e0, hρ, hrk, sub_zero]`. Break down `mul_eq_zero.mp hfac with h0 | h0` into its components or cases. Conclude with `⟨r, (sub_eq_zero.mp h0).symm, hr⟩`. Use `⟨D.tr - r, ?_, ?_⟩` and prove the remaining obligations. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(sub_eq_zero.mp h0).symm`. Establish `e1 : (D.tr - r) ^ 2 - D.tr * (D.tr - r) + D.nm = r ^ 2 - D.tr * r + D.nm` using `by ring`. Rewrite using `[e1]`. Conclude with `hr`. Establish `hwz : D.ω - (z : 𝓞 D.F) ∈ w`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← hw, RingHom.mem_ker, map_sub, map_intCast, RingHom.comp_apply, b.t_ω, hzk, sub_self]`. Establish `hε` using `eps_mul_sub hpp π D.ω D.tr D.nm z (GlobalTheory.HTLieRho.omega_quad D) hz D.disc_p hwz`. Establish `hp_zero : ∀ h, hom o (p : 𝓞 D.F) h = 0`. Introduce `h`. Establish `h0` using `hhom_int (p : ℤ) h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h0` using `[Int.cast_natCast, Int.cast_natCast, hk, zero_smul]`. Conclude with `h0`. Establish `hεω : ∀ h, hom o π.ε (hom o D.ω h) = (β b.ρ) • hom o π.ε h`. Introduce `h`. Take `⟨y, hy⟩` from `hε`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : π.ε * D.ω = (p : 𝓞 D.F) * y + (z : 𝓞 D.F) * π.ε`. Rewrite using `[← hy]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hhom_mul, e3, hhom_add, hhom_mul, hp_zero, hhom_mul, hhom_int, hzk, zero_add]`. Establish `hτε : τ π.ε = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : π.ε - 1 ∈ RingHom.ker τ` using `hw ▸ π.one`. Rewrite `h0` using `[RingHom.mem_ker, map_sub, map_one, sub_eq_zero]`. Conclude with `h0`. Establish `hoff : ∀ j, j ≠ i → β (b.t j π.ε) = 0`. Introduce `j hj`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hprime : (RingHom.ker (β.comp (b.t j))).IsPrime` using `RingHom.ker_isPrime _`. Establish `hpmem : (p : 𝓞 D.F) ∈ RingHom.ker (β.comp (b.t j))`. Rewrite using `[RingHom.mem_ker, map_natCast, hk]`. Establish `hne : RingHom.ker (β.comp (b.t j)) ≠ ⊥`. Introduce `h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `hpmem` using `[h0, Ideal.mem_bot]`. Conclude with `(Nat.cast_ne_zero.mpr hpp.ne_zero) hpmem`. Establish `hmax : (RingHom.ker (β.comp (b.t j))).IsMaximal` using `hprime.isMaximal hne`. Establish `hne' : RingHom.ker (β.comp (b.t j)) ≠ w`. Rewrite using `[← hw]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(b.apart i j (Ne.symm hj) k β).symm`. Establish `h1` using `π.off _ hmax hpmem hne'`. Rewrite `h1` using `[RingHom.mem_ker, RingHom.comp_apply]`. Then use the resulting hypothesis. Establish `hkey : ∀ h, HL.toLie (OActN.toF D o.act) (hom o π.ε h) ∈ GlobalTheory.Serre.Lie.eig (OActN.toF D o.act) τ`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨u, hu, wv, hwv, hdec⟩` from `GlobalTheory.HTLieRho.lie_decomp o β rfl HL (HL.toLie (OActN.toF D o.act) h)`. Take `⟨hu', rfl⟩` from `HL.toLie_surjective (OActN.toF D o.act) u`. Use `choose hs hhs using fun j => HL.toLie_surjective (OActN.toF D o.act) (wv j)`. Establish `hu0 : HL.toLie (OActN.toF D o.act) (hom o π.ε hu') = 0`. Establish `e4 : HL.toLie (OActN.toF D o.act) (hom o π.ε (hom o D.ω hu')) = (β b.ρ) • HL.toLie (OActN.toF D o.act) (hom o π.ε hu')`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hεω, map_smul]`. Establish `e5 : HL.toLie (OActN.toF D o.act) (hom o π.ε (hom o D.ω hu')) = ((D.tr : k) - β b.ρ) • HL.toLie (OActN.toF D o.act) (hom o π.ε hu')`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_smul, map_smul]`. Establish `e6 : (β b.ρ - ((D.tr : k) - β b.ρ)) • HL.toLie (OActN.toF D o.act) (hom o π.ε hu') = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[sub_smul, ← e4, ← e5, sub_self]`. Conclude with `(smul_eq_zero.mp e6).resolve_left (GlobalTheory.HTLieRho.two_rho_sub_ne_zero b β)`. Establish `hsum : HL.toLie (OActN.toF D o.act) h = HL.toLie (OActN.toF D o.act) (hu' + ∑ j, hs j)`. Rewrite using `[hdec, map_add, map_sum]`. Simplify using `only [hhs]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hLε : HL.toLie (OActN.toF D o.act) (hom o π.ε h) = wv i`. Rewrite using `[hLc, hsum, ← hLc, map_add, map_sum, map_add, map_sum, hu0, zero_add]`. Establish `e9 : ∀ j, HL.toLie (OActN.toF D o.act) (hom o π.ε (hs j)) = β (b.t j π.ε) • wv j`. Introduce `j`. Rewrite using `[hLc, hhs j]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `GlobalTheory.Serre.Lie.mem_eig_iff.mp (hwv j) π.ε`. Simplify using `only [e9]`. Rewrite using `[Finset.sum_eq_single i (fun j _ hj => by rw [hoff j hj, zero_smul]) (by simp)]`. Establish `e10 : β (b.t i π.ε) = 1` using `hτε`. Rewrite using `[e10, one_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hLε]`. Conclude with `hwv i`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `c h`. Rewrite using `[← HL.ker_toLie (OActN.toF D o.act), LinearMap.mem_ker, map_sub, map_smul, hLc, GlobalTheory.Serre.Lie.mem_eig_iff.mp (hkey h) c]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `sub_eq_zero.mpr rfl`. Establish `hr1` using `GlobalTheory.UPel.HT.Obj.lieRank o k (𝟙 _) β (by simp) i`. Rewrite `hr1` using `[hm]`. Take `⟨bs⟩` from `(GlobalTheory.Serre.Lie.lieMult_id_iff _ _ _).mp hr1`. Take `⟨h₀, hh₀⟩` from `HL.toLie_surjective (OActN.toF D o.act) (bs 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hLε0 : HL.toLie (OActN.toF D o.act) (hom o π.ε h₀) = bs 0`. Rewrite using `[hLc, hh₀, GlobalTheory.Serre.Lie.mem_eig_iff.mp (bs 0).2 π.ε]`. Establish `e10 : (β.comp (b.t i)) π.ε = 1` using `hτε`. Rewrite using `[e10, one_smul]`. Use `⟨h₀, ?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← HL.ker_toLie (OActN.toF D o.act), LinearMap.mem_ker, hLε0]`. Introduce `h0`. Apply `bs.ne_zero 0` to reduce the goal to its premises. Conclude with `Subtype.ext h0`. Introduce `h`.
-
-Establish `hv` using `hkey h`. Establish `e7` using `bs.sum_repr ⟨_, hv⟩`. Rewrite `e7` using `[Fin.sum_univ_one]`. Establish `e8 : bs.repr ⟨_, hv⟩ 0 • (bs 0 : GlobalTheory.Serre.Lie (OActN.toF D o.act)) = HL.toLie (OActN.toF D o.act) (hom o π.ε h)`. Simplify using `using congrArg Subtype.val e7`.
-
-Use `⟨bs.repr ⟨_, hv⟩ 0, ?_⟩` and prove the remaining obligations. Rewrite using `[← HL.ker_toLie (OActN.toF D o.act), LinearMap.mem_ker, map_sub, map_smul, hLε0, e8, sub_self]`. Introduce `h`. Rewrite using `[← hhom_mul, mul_comm, hhom_mul, hεω]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Ord.lie :
     ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ), 3 ≤ N → N.Coprime p → D.m = 1 →

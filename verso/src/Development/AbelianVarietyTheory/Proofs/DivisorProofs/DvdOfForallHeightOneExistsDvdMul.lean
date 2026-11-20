@@ -12,11 +12,11 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Set `K` to `FractionRing A`. Establish `hhK : algebraMap A K h ≠ 0` using `fun h0 => hh (IsFractionRing.injective A K (by rw [h0, map_zero]))`. Establish `hmem : algebraMap A K z / algebraMap A K h ∈ (algebraMap A K).range`. Use `ReciprocityTheory.ChartRestriction.G.Out.KrullAlg.mem_range_of_forall_height_one (A := A) _ ?_` and prove the remaining obligations. Introduce `P hP h1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨s, hs, t, ht⟩` from `H P hP h1`. Use `⟨s, hs, t, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_div_assoc, eq_div_iff hhK, ← map_mul, ← map_mul, ht, mul_comm]`. Take `⟨c, hc⟩` from `hmem`. Use `⟨c, IsFractionRing.injective A K ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, hc, mul_div_assoc', eq_div_iff hhK, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dvd_of_forall_height_one_exists_dvd_mul {A : Type} [CommRing A] [IsDomain A] [IsNoetherianRing A]
     [IsIntegrallyClosed A] {h z : A} (hh : h ≠ 0)
@@ -39,7 +39,7 @@ section SquareIdeal
 variable {A : Type} [CommRing A] [IsDomain A] [IsIntegrallyClosed A]
 
 /- English proof (translation)
-Establish `: h ^ 2 ∣ (x * y) ^ 2`. Rewrite using `[mul_pow, sq h]`. Conclude with `mul_dvd_mul hx hy`. Conclude with `(IsIntegrallyClosed.pow_dvd_pow_iff two_ne_zero).1 this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_mul_of_dvd_sq_of_dvd_sq {h x y : A} (hx : h ∣ x ^ 2) (hy : h ∣ y ^ 2) : h ∣ x * y := by
   have : h ^ 2 ∣ (x * y) ^ 2 := by
@@ -62,42 +62,38 @@ def sqDvdIdeal (h : A) : Ideal A where
     rw [mul_pow]; exact dvd_mul_of_dvd_right hx _
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_sqDvdIdeal {h x : A} : x ∈ sqDvdIdeal h ↔ h ∣ x ^ 2 := Iff.rfl
 
 end SquareIdeal
 
 /- English proof (translation)
-Introduce `C C' _ _ _ _ _ _ _ _ _ _ _ h hh hsq Hp`. Take `⟨u, f, hf⟩` from `hsq`. Establish `hflat : (algebraMap C C').Flat` using `RingHom.flat_algebraMap_iff.2 inferInstance`. Set `J` to `sqDvdIdeal h`. Establish `hJf : J.map (algebraMap C C') ≤ Ideal.span {f}`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Take `⟨z, hz⟩` from `mem_sqDvdIdeal.1 hx`. Rewrite using `[Ideal.mem_comap, Ideal.mem_span_singleton]`. Apply `(IsIntegrallyClosed.pow_dvd_pow_iff two_ne_zero).1` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨(u : C') * algebraMap C C' z, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow, hz, map_mul, hf]`. Expand and normalize the polynomial expressions, which then agree. Establish `hcol : (Ideal.span {h}).colon (J : Set C) ≤ J`. Introduce `y hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hy` using `[Submodule.mem_colon]`. Apply `mem_sqDvdIdeal.2` to reduce the goal to its premises. Apply `dvd_of_forall_height_one_exists_dvd_mul hh` to reduce the goal to its premises. Introduce `P hP h1`. Take `⟨a, b, c, hb, hc, habc⟩` from `Hp P hP h1`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hac : a * c ∈ J` using `mem_sqDvdIdeal.2 ⟨b * c, by linear_combination (-c) * habc⟩`. Establish `hy'` using `hy (a * c) hac`. Rewrite `hy'` using `[smul_eq_mul, Ideal.mem_span_singleton]`. Take `⟨t, ht⟩` from `hy'`. Use `⟨b * c, fun hm => (hP.mem_or_mem hm).elim hb hc, t ^ 2, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : h * (b * c * y ^ 2) = h * (h * t ^ 2)`. Take the linear combination `(c * y ^ 2) * habc + (y * (a * c) + h * t) * ht`. Conclude with `mul_left_cancel₀ hh e`. Establish `hfJ : f ∈ J.map (algebraMap C C')`. Establish `hm : f ∈ ((Ideal.span {h}).colon (J : Set C)).map (algebraMap C C')`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.ideal_map_colon_eq_of_flat _ hflat, Ideal.map_span, Set.image_singleton, Submodule.mem_colon]`. Introduce `p hp`. Take `⟨w, rfl⟩` from `Ideal.mem_span_singleton.1 (hJf hp)`. Rewrite using `[smul_eq_mul, Ideal.mem_span_singleton, hf]`. Conclude with `⟨((u⁻¹ : C'ˣ) : C') * w, by linear_combination (-(f ^ 2 * w)) * u.mul_inv⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `Ideal.map_mono hcol hm`. Establish `hJeq : J.map (algebraMap C C') = Ideal.span {f}` using `le_antisymm hJf ((Ideal.span_singleton_le_iff_mem _).2 hfJ)`. Establish `hY : ((J * J).colon (Ideal.span {h} : Set C)).map (algebraMap C C') = ⊤`. Rewrite using `[GlobalTheory.ideal_map_colon_eq_of_flat _ hflat, Ideal.map_mul, hJeq, Ideal.map_span, Set.image_singleton, Ideal.span_singleton_mul_span_singleton, Ideal.eq_top_iff_one, Submodule.mem_colon]`. Introduce `p hp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, rfl⟩` from `Ideal.mem_span_singleton.1 hp`. Rewrite using `[smul_eq_mul, _root_.one_mul, Ideal.mem_span_singleton, hf]`. Conclude with `⟨(u : C') * w, by ring⟩`. Establish `hhJJ : h ∈ J * J`. Establish `e` using `Ideal.comap_map_eq_self_of_faithfullyFlat (B := C') ((J * J).colon (Ideal.span {h} : Set C))`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e` using `[hY, Ideal.comap_top]`. Establish `h1 : (1 : C) ∈ (J * J).colon (Ideal.span {h} : Set C)` using `e ▸ Submodule.mem_top`. Rewrite `h1` using `[Submodule.mem_colon]`. Simplify using `using h1 h (Ideal.mem_span_singleton_self h)`. Assume the negation of the conclusion as `hne`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hle : J * J ≤ Ideal.span {h} * maximalIdeal C`. Use `Ideal.mul_le.2 fun x hx y hy => ?_` and prove the remaining obligations. Take `⟨e, he⟩` from `dvd_mul_of_dvd_sq_of_dvd_sq (mem_sqDvdIdeal.1 hx) (mem_sqDvdIdeal.1 hy)`. Distinguish the cases in `hem : e ∈ maximalIdeal C`. Rewrite using `[he]`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Conclude with `Ideal.mul_mem_mul (Ideal.mem_span_singleton_self h) hem`. It suffices to derive a contradiction. Establish `heu : IsUnit e`. Rewrite `hem` using `[mem_maximalIdeal, mem_nonunits_iff, not_not]`. Conclude with `hem`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `mem_sqDvdIdeal.1 hx`. Take `⟨b, hb⟩` from `mem_sqDvdIdeal.1 hy`. Establish `hab : a * b = e ^ 2`. Establish `e2 : h ^ 2 * (a * b) = h ^ 2 * e ^ 2`. Take the linear combination `(-(h * b)) * ha - x ^ 2 * hb + (x * y + h * e) * he`.
-
-Conclude with `mul_left_cancel₀ (pow_ne_zero 2 hh) e2`. Establish `hau : IsUnit a` using `isUnit_of_mul_isUnit_left (hab ▸ heu.pow 2)`. Conclude with `hne ⟨hau.unit⁻¹, x, by rw [ha]; linear_combination (-h) * hau.val_inv_mul⟩`. Take `⟨z, hz, hz'⟩` from `Ideal.mem_span_singleton_mul.1 (hle hhJJ)`. Establish `hz1 : z = 1` using `mul_left_cancel₀ hh (by rw [hz', _root_.mul_one])`.
-
-Conclude with `(maximalIdeal.isMaximal C).ne_top ((Ideal.eq_top_iff_one _).2 (hz1 ▸ hz))`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isUnit_mul_sq_of_faithfullyFlat : ∀ (C C' : Type) [CommRing C] [IsDomain C] [IsLocalRing C] [IsNoetherianRing C] [IsIntegrallyClosed C] [CommRing C'] [IsDomain C'] [IsNoetherianRing C'] [IsIntegrallyClosed C'] [Algebra C C'] [Module.FaithfullyFlat C C'] (h : C), h ≠ 0 → (∃ (u : C'ˣ) (f : C'), algebraMap C C' h = u * f ^ 2) → (∀ p : Ideal C, p.IsPrime → p.height = 1 → ∃ a b c : C, b ∉ p ∧ c ∉ p ∧ b * h = c * a ^ 2) → ∃ (u : Cˣ) (a : C), h = u * a ^ 2 := by
   intro C C' _ _ _ _ _ _ _ _ _ _ _ h hh hsq Hp

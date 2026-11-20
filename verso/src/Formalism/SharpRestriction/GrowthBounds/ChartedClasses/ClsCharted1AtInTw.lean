@@ -21,7 +21,7 @@ def ClsCharted1 (T : Formalism.L2.Herm.TwChTied D inQ) (K : KerLabelsMu Tw u μ 
   ∀ j, 1 ≤ j → j ≤ D.R.m → ∀ (a : Lv.comp j) (L : (Fl.Pj j).Tup), (Fl.Pj j).IsLatTup L → T.chOf u μ j (K.cls j a L) = ch j a
 
 /- English proof (translation)
-Unfold `ybOf`. Rewrite using `[hC (D.R.m - 1) h1 (Nat.sub_le _ _) a L hL]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem yb_cls {K : KerLabelsMu Tw u μ w h Lv} {ch : ∀ j, Lv.comp j → T.Ch u μ j} (hC : ClsCharted1 T K ch) (h1 : 1 ≤ D.R.m - 1)
     (a : Lv.comp (D.R.m - 1)) (L : (Fl.Pj (D.R.m - 1)).Tup) (hL : (Fl.Pj (D.R.m - 1)).IsLatTup L) :
@@ -47,9 +47,9 @@ def chTie_atInTw (Gt : GatTies D) : ChTie T ((atInTw W u μ hμ dt Lc).st Gt) wh
 variable {W hμ dt Lc}
 
 /- English proof (translation)
-Introduce `j h1 hj a L hL`. Consider the cases of `j with`. Consider the case `zero => omega`. Consider the case `succ j`. Rewrite using `[hch j hj]`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `labAt_chOf (st := (atInTw W u μ hμ dt Lc).st Gt) X H j hj a L hL`.
+A detailed English derivation is pending.
 -/
 theorem clsCharted1_atInTw {Gt : GatTies D} {c : LatCmp D} (X : LabIn ((atInTw W u μ hμ dt Lc).I Gt))
     (H : CmpJHyp c ((atInTw W u μ hμ dt Lc).I Gt)) (ch : ∀ j, Lv.comp j → T.Ch u μ j)

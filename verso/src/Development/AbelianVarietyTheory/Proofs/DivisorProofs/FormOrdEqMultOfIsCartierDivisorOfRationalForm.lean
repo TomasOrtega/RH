@@ -15,11 +15,11 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.CechPic
 namespace GlobalTheory.Discrepancy
 
 /- English proof (translation)
-Introduce `k _ _ Y _ _ q n _ η hη K hK E w hE`. Use `haveI := SmoothOfRelativeDimension.smooth n q`. Establish `hn : topologicalKrullDim Y = n` using `GlobalTheory.HSCore.VanishNumberField.topologicalKrullDim_eq_of_smooth q n ‹_›`. Take `⟨U, ω, hU, hω⟩` from `exists_isFrame q n w`. Establish `hgen` using `isFreeGen_formOf (gen_mem hU) hω`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : formOf U (gen_mem hU) ω ≠ 0` using `fun h => one_ne_zero (hgen.1 (a₁ := 1) (a₂ := 0) (by simp [h]))`. Take `⟨c, hc⟩` from `hgen.2 η`. Establish `hc0 : c ≠ 0` using `fun e => hη (by rw [← hc, e]; exact zero_smul _ _)`. Establish `h1` using `hK U ω hω w hU (Units.mk0 c hc0) hc.symm`. Establish `h2` using `E.formOrd_smul hn h0 (Units.mk0 c hc0)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[DivOver.formOrd_formOf_eq_zero hU hE hω, add_zero]`. Use `replace h2 : E.formOrd η = E.ord (Units.mk0 c hc0) := hc ▸ h2`. Rewrite using `[h2, h1.mult_eq, hE.ord_eq]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DivOver.formOrd_eq_mult_of_isDivOfForm : ∀ (k : Type) [Field k] [CharZero k] (Y : Scheme.{0}) [IsIntegral Y] [IsLocallyNoetherian Y] (q : Y ⟶ Sp k) (n : ℕ) [SmoothOfRelativeDimension n q] (η : RatForms q n), η ≠ 0 → ∀ K : CartierDiv Y, IsDivOfForm K η → ∀ (E : DivOver q) (w : Y), E.IsAt w → E.formOrd η = K.mult w := by
   intro k _ _ Y _ _ q n _ η hη K hK E w hE

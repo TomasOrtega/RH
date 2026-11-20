@@ -24,9 +24,9 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     (ρ : Representation LL G V)
 
 /- English proof (translation)
-Establish `h` using `PD.Fil_anti a`. Unfold `Formalism.WeaklyAdmissibleFiltrations.FilV`. Establish `: AlgebraTensorModule.map (LinearMap.id : V →ₗ[LL] V) ((PD.Fil (a + 1)).restrictScalars Qp).subtype = (AlgebraTensorModule.map (LinearMap.id : V →ₗ[LL] V) ((PD.Fil a).restrictScalars Qp).subtype).comp (AlgebraTensorModule.map (LinearMap.id : V →ₗ[LL] V) (Submodule.inclusion (show …`. Use extensionality with `x y`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Rewrite using `[this]`. Conclude with `LinearMap.range_comp_le_range _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem filV_anti (a : ℤ) : Formalism.WeaklyAdmissibleFiltrations.FilV PD (LL := LL) (V := V) (a + 1) ≤ Formalism.WeaklyAdmissibleFiltrations.FilV PD (LL := LL) (V := V) a := by
   have h := PD.Fil_anti a
@@ -40,19 +40,19 @@ theorem filV_anti (a : ℤ) : Formalism.WeaklyAdmissibleFiltrations.FilV PD (LL 
   exact LinearMap.range_comp_le_range _ _
 
 /- English proof (translation)
-The claim follows from `inf_le_inf_left _ (filV_anti PD a)`.
+A detailed English derivation is pending.
 -/
 theorem fildR_anti (τ : K →ₐ[Qp] LL) (a : ℤ) : Formalism.WeaklyAdmissibleFiltrations.FildR PD ρ τ (a + 1) ≤ Formalism.WeaklyAdmissibleFiltrations.FildR PD ρ τ a :=
   inf_le_inf_left _ (filV_anti PD a)
 
 /- English proof (translation)
-The claim follows from `inf_le_left.trans inf_le_left`.
+A detailed English derivation is pending.
 -/
 theorem fildR_le (τ : K →ₐ[Qp] LL) (a : ℤ) : Formalism.WeaklyAdmissibleFiltrations.FildR PD ρ τ a ≤ Formalism.WeaklyAdmissibleFiltrations.DdR PD ρ :=
   inf_le_left.trans inf_le_left
 
 /- English proof (translation)
-Establish `: FiniteDimensional LL ↥(Formalism.WeaklyAdmissibleFiltrations.DdR PD ρ)` using `Module.finite_of_finrank_pos hpos`. Establish `: FiniteDimensional LL ↥(Formalism.WeaklyAdmissibleFiltrations.FildR PD ρ τ a)` using `Submodule.finiteDimensional_of_le (fildR_le PD ρ τ a)`. Establish `hlt : Formalism.WeaklyAdmissibleFiltrations.FildR PD ρ τ (a + 1) < Formalism.WeaklyAdmissibleFiltrations.FildR PD ρ τ a` using `lt_of_le_of_ne (fildR_anti PD ρ τ a) hj`. Use `Submodule.finrank_lt_finrank_of_lt hlt` as an intermediate fact. Unfold `Formalism.WeaklyAdmissibleFiltrations.multV`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -71,20 +71,18 @@ end GlobalTheory.NoJumpMult
 namespace GlobalTheory.NoJumpMult
 
 /- English proof (translation)
-Establish `h1` using `D.R.two_le_m`. Establish `h2` using `D.R.m_add_three_le_k`. Unfold `Formalism.BasicNotions.Ranks.r`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem r_pos (D : D7) : 0 < D.R.r := by
   have h1 := D.R.two_le_m; have h2 := D.R.m_add_three_le_k
   unfold Formalism.BasicNotions.Ranks.r; omega
 
 /- English proof (translation)
-Introduce `D bkP i s ι J hH hJ hG v hv τ a ha`. Take `⟨τc, hτc, -⟩` from `GlobalTheory.ReadEmbEx.exists_readEmb D bkP i ι v hv τ`. Establish `hdR` using `(hH v hv (Tgl i s) (Set.mem_insert_of_mem _ rfl)).1`. Establish `hK : 0 < Module.finrank ℚ_[D.ntw.l i] ↥(bkP.br i v hv).Kw.1`. Use `(bkP.br i v hv).Kw.2` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Module.finrank_pos`. Establish `hpos : 0 < Module.finrank ↥(bkP.br i v hv).LL.1 ↥(Formalism.WeaklyAdmissibleFiltrations.DdR (PDv bkP i v hv) (repV bkP i v hv (Tgl i s)))`. Establish `: Module.finrank ↥(bkP.br i v hv).LL.1 ↥(Formalism.WeaklyAdmissibleFiltrations.DdR (PDv bkP i v hv) (repV bkP i v hv (Tgl i s))) = Module.finrank ℚ_[D.ntw.l i] ↥(bkP.br i v hv).Kw.1 * D.R.r` using `hdR`. Rewrite using `[this]`. Conclude with `Nat.mul_pos hK (r_pos D)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hm` using `multV_ne_zero _ _ τ a hpos ha`. Rewrite `hm` using `[hJ v hv τ τc hτc a]`. Establish `hmem : a ∈ J τc`. Assume the negation of the conclusion as `hn`. Conclude with `hm (by simp [Multiset.count_eq_zero.mpr hn])`.
-
-Conclude with `(hG τc).2.2 a hmem`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem noJump_of_jumps : ∀ (D : D7) (bkP : BlochKatoReduction.BK D) (i : D.ntw.Tw) (s : D.ntw.Sig i), ∀ (ι : FractionRing (D.ntw.O0 i) →+* ℂ) (J : (D.host.E →+* ℂ) → Multiset ℤ), HodgeL bkP i s → JumpsAre bkP i s ι J → GoodJ D J → NoJump bkP i s := by
   intro D bkP i s ι J hH hJ hG v hv τ a ha

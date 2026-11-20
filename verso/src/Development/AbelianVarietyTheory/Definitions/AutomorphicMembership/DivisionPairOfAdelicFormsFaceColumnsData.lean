@@ -79,12 +79,12 @@ set_option maxHeartbeats 2000000 in
 def TwIn.wd (x : TwIn ex) : (x.F.Dc (zsOf x.R x.F)).Mem → D.what₂.Word := (Equiv.ofBijective _ x.C.bij).symm
 
 /- English proof (translation)
-The claim follows from `(Equiv.ofBijective _ x.C.bij).symm_apply_apply u`.
+A detailed English derivation is pending.
 -/
 theorem TwIn.wd_wU (x : TwIn ex) (u : D.what₂.Word) : x.wd (x.C.wU u) = u := (Equiv.ofBijective _ x.C.bij).symm_apply_apply u
 
 /- English proof (translation)
-The claim follows from `(Equiv.ofBijective _ x.C.bij).apply_symm_apply m`.
+A detailed English derivation is pending.
 -/
 theorem TwIn.wU_wd (x : TwIn ex) (m : (x.F.Dc (zsOf x.R x.F)).Mem) : x.C.wU (x.wd m) = m :=
   (Equiv.ofBijective _ x.C.bij).apply_symm_apply m
@@ -181,7 +181,7 @@ def realTOf (y : RealIn x Rc S) : RealT Rc (divisionPairOfAdelicFormsFaceColumns
   vpos := y.vpos
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Unfold `phEff`. Rewrite using `[x.pins.phs i]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem phEff_one (x : TwIn ex) : phEff x.R = fun _ => 1 := by
   funext i

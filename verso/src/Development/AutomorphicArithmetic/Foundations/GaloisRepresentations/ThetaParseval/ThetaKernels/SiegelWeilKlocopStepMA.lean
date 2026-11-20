@@ -23,27 +23,21 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 namespace RD
 variable {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (w : InfinitePlace F)
 /- English proof (translation)
-Establish `hζ0 : R.ζ ≠ 0` using `Krd.zeta_ne R.hζ`. Use `set M := inFrame d.b (R.ι w y) with hM`. Establish `hw : d.cw w M = Matrix.fromBlocks A 0 0 D` using `by rw [hM, R.cw_iota_pf w y, hy, dZ_conj_diag hζ0]`. Establish `ho : ∀ w', w' ≠ w → d.cw w' M = 1` using `fun w' h => R.off_w w w' y h`. Establish `hf : finOne F • M = finOne F • 1` using `R.off_f w y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `o1` using `one_blocks (n := d.n) (1 : ℂ)`. Establish `of` using `one_blocks (n := d.n) (finOne F • (1 : AE F E))`. Simplify using `only [one_smul] at o1`. Establish `hf' : finOne F • M = (finOne F • (1 : AE F E)) • (1 : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E))`. Rewrite using `[hf, smul_one_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `z0 : ∀ w', d.cw w' (0 : Matrix (Fin d.n) (Fin d.n) (AE F E)) = 0` using `fun w' => Matrix.map_zero _ (map_zero _)`. Establish `e12 : M.toBlocks₁₂ = 0`. Apply `_root_.PositivityTheory.SiegelWeilFormula.Place.cw_ext_k d` to reduce the goal to its premises. Introduce `w'`. Rewrite using `[z0]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `show (d.cw w' M).toBlocks₁₂ = 0`. Distinguish the cases in `h : w' = w`. Rewrite using `[h, hw]`. Simplify using the standard rewrite rules. Rewrite using `[ho w' h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `o1.2.1`. Use `show (finOne F • M).toBlocks₁₂ = _`. Rewrite using `[hf', of.2.1, smul_zero]`. Establish `e21 : M.toBlocks₂₁ = 0`. Apply `_root_.PositivityTheory.SiegelWeilFormula.Place.cw_ext_k d` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Introduce `w'`. Rewrite using `[z0]`. Use `show (d.cw w' M).toBlocks₂₁ = 0`. Distinguish the cases in `h : w' = w`. Rewrite using `[h, hw]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[ho w' h]`. Conclude with `o1.2.2.1`. Use `show (finOne F • M).toBlocks₂₁ = _`. Rewrite using `[hf', of.2.2.1, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_, ?_, fun w' h => ⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← Matrix.fromBlocks_toBlocks M]`. Rewrite using `[e12, e21]`. Use `show (d.cw w M).toBlocks₁₁ = _`. Rewrite using `[hw]`.
-
-Simplify using the standard rewrite rules. Use `show (d.cw w M).toBlocks₂₂ = _`. Rewrite using `[hw]`. Simplify using the standard rewrite rules. Use `show (d.cw w' M).toBlocks₁₁ = _`.
-
-Rewrite using `[ho w' h]`. Conclude with `o1.1`. Use `show (d.cw w' M).toBlocks₂₂ = _`. Rewrite using `[ho w' h]`. Conclude with `o1.2.2.2`.
-
-Use `show (finOne F • M).toBlocks₁₁ = _`. Rewrite using `[hf', of.1, smul_one_smul]`. Use `show (finOne F • M).toBlocks₂₂ = _`. Rewrite using `[hf', of.2.2.2, smul_one_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.PositivityTheory.SiegelWeilFormula.RD_k.frame_diag (y : GR d.n) (A D : Matrix (Fin d.n) (Fin d.n) ℂ) (hy : mR y = Matrix.fromBlocks A 0 0 D) :
     inFrame d.b (R.ι w y) = Matrix.fromBlocks (inFrame d.b (R.ι w y)).toBlocks₁₁ 0 0 (inFrame d.b (R.ι w y)).toBlocks₂₂ ∧
@@ -98,31 +92,27 @@ theorem _root_.PositivityTheory.SiegelWeilFormula.RD_k.frame_diag (y : GR d.n) (
   · show (finOne F • M).toBlocks₂₂ = _
     rw [hf', of.2.2.2, smul_one_smul]
 /- English proof (translation)
-Introduce `y a ha hy`. Establish `haH : IsUnit aᴴ.det` using `by rw [Matrix.det_conjTranspose]; exact ha.star`. Establish `hyi : mR y⁻¹ = Matrix.fromBlocks a⁻¹ 0 0 aᴴ`. Establish `h1 : mR y * mR y⁻¹ = 1` using `by show ((y * y⁻¹ : GR d.n) : GL (Fin d.n ⊕ Fin d.n) ℂ).1 = 1`. Rewrite using `[mul_inv_cancel]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h2 : Matrix.fromBlocks a⁻¹ 0 0 aᴴ * mR y = 1`. Rewrite using `[hy, mLoc, Matrix.fromBlocks_multiply, ← Matrix.fromBlocks_one]`. Simplify using `[Matrix.nonsing_inv_mul _ ha, Matrix.mul_nonsing_inv _ haH]`. Combine the equalities or inequalities in the displayed calculation.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Take `⟨hM, -, -, -, -, -⟩` from `R.frame_diag w y a (aᴴ)⁻¹ hy`. Take `⟨hM', -, hD', hO', -, hF'⟩` from `R.frame_diag w y⁻¹ a⁻¹ aᴴ hyi`. Use `set M := inFrame d.b (R.ι w y) with hMdef`. Use `set M' := inFrame d.b (R.ι w y⁻¹) with hM'def`. Establish `hMM : M * M' = 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hMdef, hM'def, ← d.inFrame_mul, ← map_mul, mul_inv_cancel, map_one, d.inFrame_one]`. Establish `hMM' : M' * M = 1`. Rewrite using `[hMdef, hM'def, ← d.inFrame_mul, ← map_mul, inv_mul_cancel, map_one, d.inFrame_one]`. Establish `bl : ∀ {P Q : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E)}, P = Matrix.fromBlocks P.toBlocks₁₁ 0 0 P.toBlocks₂₂ → Q = Matrix.fromBlocks Q.toBlocks₁₁ 0 0 Q.toBlocks₂₂ → P * Q = 1 → P.toBlocks₁₁ * Q.toBlocks₁₁ = 1 ∧ P.toBlocks₂₂ * Q.toBlocks₂₂ = 1`. Introduce `P Q hP hQ hPQ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hPQ` using `[hP, hQ, Matrix.fromBlocks_multiply, ← Matrix.fromBlocks_one]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add] at hPQ`. Take `⟨h1, -, -, h4⟩` from `Matrix.fromBlocks_inj.mp hPQ`. Conclude with `⟨h1, h4⟩`. Take `⟨t1, u1⟩` from `bl hM hM' hMM`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨t2, u2⟩` from `bl hM' hM hMM'`. Set `t : GL (Fin d.n) (AE F E)` to `⟨M.toBlocks₁₁, M'.toBlocks₁₁, t1, t2⟩`. Set `u : GL (Fin d.n) (AE F E)` to `⟨M.toBlocks₂₂, M'.toBlocks₂₂, u1, u2⟩`. Establish `hMtu : inFrame d.b (R.ι w y) = Matrix.fromBlocks t.1 0 0 u.1` using `hM`. Use `set c : ℂ := (d.χ (Matrix.GeneralLinearGroup.det t) : ℂ) * (((absE F E (Matrix.GeneralLinearGroup.det t) : ℝ) ^ ((d.m : ℝ) / 2) : ℝ) : ℂ) with hc`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c, ?_, fun f hf => ?_, fun Ψ hΨ => ⟨hΨ, fun f hf Φ hΦ hTΦ => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hc]`. Use `mul_ne_zero (Circle.coe_ne_zero _) ?_` and prove the remaining obligations. Rewrite using `[Complex.ofReal_ne_zero]`. Conclude with `(Real.rpow_pos_of_pos (lt_of_le_of_ne (NNReal.coe_nonneg _) (absE_ne _).symm) _).ne'`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨φ, rfl⟩` from `hf`. Take `⟨ψ, hψ⟩` from `GlobalTheory.T.schwartz_linear_change d.m d.n c a ha φ`. Conclude with `⟨ψ, hψ⟩`. Use function extensionality and compare the values at `X`. Rewrite using `[(hT.2.1 F E σ d Φ hΦ).2.1 (R.ι w y) t u hMtu X, hTΦ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hui : (u⁻¹).1 = M'.toBlocks₂₂` using `rfl`. Rewrite using `[hui]`. Use `set Z := X * (M'.toBlocks₂₂)ᵀ - X with hZ`. Establish `hZo : ∀ w', w' ≠ w → d.cw w' Z = 0`. Introduce `w' h`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hZ, show d.cw w' (X * (M'.toBlocks₂₂)ᵀ - X) = d.cw w' X * (d.cw w' M'.toBlocks₂₂)ᵀ - d.cw w' X from by`. Rewrite using `[← _root_.PositivityTheory.SiegelWeilFormula.Krd.cw_transpose_k d, ← _root_.PositivityTheory.SiegelWeilFormula.RD_k.cw_mulR]`. Conclude with `Matrix.map_sub _ (map_sub _) _ _, (hO' w' h).2, Matrix.transpose_one,`. Use the proof step `Matrix.mul_one, sub_self]`. Establish `hZf : finOne F • Z = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite using `[hZ, smul_sub, ← Matrix.mul_smul, ← Matrix.transpose_smul, hF', Matrix.transpose_smul, Matrix.transpose_one, Matrix.mul_smul, Matrix.mul_one, sub_self]`. Establish `hX : X * (M'.toBlocks₂₂)ᵀ = X + Z` using `by rw [hZ]; abel`. Establish `hloc : R.loc w (X * (M'.toBlocks₂₂)ᵀ) = Matrix.of (R.loc w X) * a`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.RD_k.loc]`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.RD_k.cw_mulR, _root_.PositivityTheory.SiegelWeilFormula.Krd.cw_transpose_k d, hD', ← Matrix.mul_assoc, mapStar_mulR]`.
-
-Use `congr 1`. Use extensionality with `i j`. Simplify using `[Matrix.conjTranspose_apply]`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.RD_k.tens, id]`. Rewrite using `[hloc, hX, hΨ X Z hZo hZf, hc]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem _root_.PositivityTheory.SiegelWeilFormula.RD_k.stepM_pf (hT : _root_.PositivityTheory.SiegelWeilFormula.TAll_k) : ∀ (y : GR d.n) (a : Matrix (Fin d.n) (Fin d.n) ℂ), IsUnit a.det → mR y = mLoc a →
     ∃ c : ℂ, c ≠ 0 ∧ R.StepOK w (R.ι w y) (fun f u => c * f (Matrix.of u * a)) id := by

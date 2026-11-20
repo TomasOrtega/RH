@@ -5,11 +5,11 @@ open NumberField
 namespace GlobalTheory
 
 /- English proof (translation)
-Assume the negation of the conclusion as `ht`. Take `⟨s, rfl⟩` from `hd`. Establish `hs : s ≠ 0`. Introduce and unpack `rfl`. Conclude with `ht (mul_zero _)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨σ, hσ⟩` from `NumberField.exists_conjugate_one_le_norm hs`. Establish `h1` using `hB σ`. Establish `hcast : (((g₀ : 𝓞 E) * s : 𝓞 E) : E) = (g₀ : E) * (s : E)`. Use `push_cast`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hcast, map_mul, map_natCast, norm_mul, Complex.norm_natCast]`. Establish `h2 : (g₀ : ℝ) ≤ g₀ * ‖σ (s : E)‖` using `le_mul_of_one_le_right (Nat.cast_nonneg _) hσ`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem ringOfIntegers_eq_zero_of_natCast_dvd_of_norm_embedding_le
     (E : Type) [Field E] [NumberField E] (g₀ : ℕ) (B : ℝ) (t : 𝓞 E)

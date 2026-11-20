@@ -33,7 +33,7 @@ def exG {Z W : Sch R} (π : W ⟶ XX Z) : Ex π ⟶ Z := Over.homMk (pullback.sn
   rw [← Over.w (dg Z), ← pullback.condition_assoc, Over.w π])
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext pullback.condition`.
+A detailed English derivation is pending.
 -/
 theorem ex_comm {Z W : Sch R} (π : W ⟶ XX Z) : exI π ≫ π = exG π ≫ dg Z := Over.OverMorphism.ext pullback.condition
 

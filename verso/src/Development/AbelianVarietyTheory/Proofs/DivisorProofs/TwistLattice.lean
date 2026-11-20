@@ -25,13 +25,13 @@ section Quad
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-The claim follows from `forall_congr' fun _ => HeightOneSpectrum.mem_adicCompletionIntegers _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem mem_intA {z : Af K} : z ∈ intA K ↔ ∀ v, Valued.v (z v) ≤ 1 :=
   forall_congr' fun _ => HeightOneSpectrum.mem_adicCompletionIntegers _ _ _
 
 /- English proof (translation)
-Use `HeightOneSpectrum.mem_integers_of_valuation_le_one K z fun v => ?_` and prove the remaining obligations. Use `mem_intA.1 hz v` as an intermediate fact. Rewrite `this` using `[FiniteAdeleRing.algebraMap_apply, HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_int {z : K} (hz : algebraMap K (Af K) z ∈ intA K) : ∃ r : 𝓞 K, algebraMap (𝓞 K) K r = z := by
   refine HeightOneSpectrum.mem_integers_of_valuation_le_one K z fun v => ?_
@@ -39,7 +39,7 @@ theorem exists_int {z : K} (hz : algebraMap K (Af K) z ∈ intA K) : ∃ r : �
   rwa [FiniteAdeleRing.algebraMap_apply, HeightOneSpectrum.valuedAdicCompletion_eq_valuation'] at this
 
 /- English proof (translation)
-Take `⟨a, u, hu, e⟩` from `(GlobalTheory.AdLat.strong_approximation_mod_nat K D (Nat.pos_of_ne_zero hD)).1 z`. Conclude with `⟨a, u, hu, by rw [e, nsmul_eq_mul]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem approx (D : ℕ) (hD : D ≠ 0) (z : Af K) : ∃ a : K, ∃ w ∈ intA K, z = algebraMap K (Af K) a + D * w := by
   obtain ⟨a, u, hu, e⟩ := (GlobalTheory.AdLat.strong_approximation_mod_nat K D (Nat.pos_of_ne_zero hD)).1 z
@@ -52,9 +52,9 @@ def IsW (t : (Af K)ˣ) (θ κ₁ κ₂ : K) (D : ℕ) (W : Matrix (Fin 2) (Fin 2
 variable {t : (Af K)ˣ} {θ κ₁ κ₂ : K}
 
 /- English proof (translation)
-Establish `key : ∀ κ : K, (t : Af K) * algebraMap K (Af K) κ ∈ intA K → ∃ a b : ℤ, ∃ w ∈ intA K, (t : Af K) * algebraMap K (Af K) κ = algebraMap K (Af K) (a * θ + b) + D * w` using `fun κ hκ => by`. Take `⟨a, w, hw, e⟩` from `approx D hD ((t : Af K) * algebraMap K (Af K) κ)`. Establish `: algebraMap K (Af K) a ∈ intA K`. Rewrite using `[eq_sub_of_add_eq e.symm]`. Conclude with `sub_mem hκ (mul_mem (natCast_mem _ D) hw)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨p, q, rfl⟩` from `(hO a).1 this`. Conclude with `⟨p, q, w, hw, e⟩`. Take `⟨a, b, h1⟩` from `key κ₁ ((hA _).2 ⟨1, 0, by simp⟩)`. Take `⟨c, d, h2⟩` from `key κ₂ ((hA _).2 ⟨0, 1, by simp⟩)`. Conclude with `⟨!![a, b; c, d], by simpa using h1, by simpa using h2⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isW (hO : ∀ z : K, algebraMap K (Af K) z ∈ intA K ↔ ∃ a b : ℤ, z = a * θ + b)
     (hA : ∀ z : K, (t : Af K) * algebraMap K (Af K) z ∈ intA K ↔ ∃ a b : ℤ, z = a * κ₁ + b * κ₂)
@@ -72,7 +72,7 @@ theorem exists_isW (hO : ∀ z : K, algebraMap K (Af K) z ∈ intA K ↔ ∃ a b
   exact ⟨!![a, b; c, d], by simpa using h1, by simpa using h2⟩
 
 /- English proof (translation)
-Take `⟨m, rfl⟩` from `hd`. Take `⟨⟨w, hw, e⟩, ⟨w', hw', e'⟩⟩` from `h`. Conclude with `⟨⟨m * w, mul_mem (natCast_mem _ m) hw, by rw [e]; push_cast; ring⟩, ⟨m * w', mul_mem (natCast_mem _ m) hw', by rw [e']; push_cast; ring⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsW.of_dvd {D D' : ℕ} {W : Matrix (Fin 2) (Fin 2) ℤ} (h : IsW t θ κ₁ κ₂ D W) (hd : D' ∣ D) : IsW t θ κ₁ κ₂ D' W := by
   obtain ⟨m, rfl⟩ := hd
@@ -81,13 +81,13 @@ theorem IsW.of_dvd {D D' : ℕ} {W : Matrix (Fin 2) (Fin 2) ℤ} (h : IsW t θ �
     ⟨m * w', mul_mem (natCast_mem _ m) hw', by rw [e']; push_cast; ring⟩⟩
 
 /- English proof (translation)
-Take `⟨⟨w₁, hw₁, e₁⟩, ⟨w₂, hw₂, e₂⟩⟩` from `h`. Establish `hDK : (D : K) ≠ 0` using `Nat.cast_ne_zero.2 hD`. Use `set z : K := ((p * W 0 0 + q * W 1 0 - r : ℤ) * θ + (p * W 0 1 + q * W 1 1 - s : ℤ)) with hz`. Establish `h1 : algebraMap K (Af K) z = D * (w - p * w₁ - q * w₂)`. Simplify using `only [hz, map_add, map_mul, map_intCast] at e e₁ e₂ ⊢`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Take the linear combination `e - p * e₁ - q * e₂`. Establish `h2 : algebraMap K (Af K) (z / D) = w - p * w₁ - q * w₂`. Rewrite using `[div_eq_inv_mul, map_mul, h1, ← mul_assoc, ← map_natCast (algebraMap K (Af K)), ← map_mul, inv_mul_cancel₀ hDK, map_one, one_mul]`. Take `⟨a, b, hab⟩` from `(hO (z / D)).1 (h2 ▸ sub_mem (sub_mem hw (mul_mem (intCast_mem _ p) hw₁)) (mul_mem (intCast_mem _ q) hw₂))`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hab` using `[div_eq_iff hDK]`. Take `⟨ha, hb⟩` from `hI (p * W 0 0 + q * W 1 0 - r - a * D) (p * W 0 1 + q * W 1 1 - s - b * D) (by`. Rewrite `hab` using `[hz]`. Move the coercions through the operations in `at hab ⊢`. Take the linear combination `hab)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Rewrite using `[show p * W 0 0 + q * W 1 0 = r + a * D by linear_combination ha]; simp`. Rewrite using `[show p * W 0 1 + q * W 1 1 = s + b * D by linear_combination hb]; simp`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsW.row (hO : ∀ z : K, algebraMap K (Af K) z ∈ intA K ↔ ∃ a b : ℤ, z = a * θ + b)
     (hI : ∀ a b : ℤ, (a : K) * θ + b = 0 → a = 0 ∧ b = 0)
@@ -114,13 +114,13 @@ theorem IsW.row (hO : ∀ z : K, algebraMap K (Af K) z ∈ intA K ↔ ∃ a b : 
   · rw [show p * W 0 1 + q * W 1 1 = s + b * D by linear_combination hb]; simp
 
 /- English proof (translation)
-Take `⟨d, hd0, hd⟩` from `GlobalTheory.LatDecomp.exists_nat_mul_integral (t : Af K)`. Establish `key : ∀ r s : ℤ, ∃ p q : ℤ, ((p * W 0 0 + q * W 1 0 : ℤ) : ZMod D) = r ∧ ((p * W 0 1 + q * W 1 1 : ℤ) : ZMod D) = s` using `fun r s => by`. Take `⟨a, w, hw, e⟩` from `approx (D * d) (mul_ne_zero hD hd0) (((t⁻¹ : (Af K)ˣ) : Af K) * algebraMap K (Af K) (r * θ + s))`. Establish `hw' : -((d : Af K) * t * w) ∈ intA K` using `neg_mem (mul_mem hd hw)`. Establish `e' : (t : Af K) * algebraMap K (Af K) a = algebraMap K (Af K) (r * θ + s) + D * -((d : Af K) * t * w)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (fun z => (t : Af K) * z) e` as an intermediate fact. Simplify using `only [← mul_assoc, Units.mul_inv, one_mul] at this`. Rewrite using `[this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨p, q, rfl⟩` from `(hA a).1 (e' ▸ add_mem ((hO _).2 ⟨r, s, rfl⟩) (mul_mem (natCast_mem _ D) hw'))`. Conclude with `⟨p, q, h.row hO hI hD hw' e'⟩`. Take `⟨a, b, h1, h2⟩` from `key 1 0`. Take `⟨c, d, h3, h4⟩` from `key 0 1`. Use `⟨!![a, b; c, d], ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Move the coercions through the operations in `at h1 h2 h3 h4`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, h1, h2, h3, h4]`.
+Move the embeddings inside the algebraic operations. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem IsW.exists_inv (hO : ∀ z : K, algebraMap K (Af K) z ∈ intA K ↔ ∃ a b : ℤ, z = a * θ + b)
     (hI : ∀ a b : ℤ, (a : K) * θ + b = 0 → a = 0 ∧ b = 0)
@@ -149,11 +149,11 @@ theorem IsW.exists_inv (hO : ∀ z : K, algebraMap K (Af K) z ∈ intA K ↔ ∃
 end Quad
 
 /- English proof (translation)
-Establish `h' : ∀ i j, ∃ z, (P * Q - 1) i j = (D : ℤ) * z` using `fun i j => by`. Use `(ZMod.intCast_zmod_eq_zero_iff_dvd _ D).1 ?_` and prove the remaining obligations. Use `congrFun (congrFun h i) j` as an intermediate fact. Simplify using `only [Matrix.mul_apply, Matrix.map_apply, Matrix.sub_apply, Matrix.one_apply] at this ⊢`. Use `push_cast`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Apply the tactic sequence `rw [this]; split_ifs <;> simp`. Use `choose Z hZ using h'`. Use `⟨Matrix.of Z, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_iff_eq_add']`. Use extensionality with `i j`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hZ i j`.
+A detailed English derivation is pending.
 -/
 theorem lift_inv {D : ℕ} {P Q : Matrix (Fin 2) (Fin 2) ℤ}
     (h : P.map (Int.cast : ℤ → ZMod D) * Q.map (Int.cast : ℤ → ZMod D) = 1) :
@@ -179,7 +179,7 @@ def vm (x : Fin 2 → F) (P : Matrix (Fin 2) (Fin 2) ℤ) : Fin 2 → F := x ᵥ
 omit [NumberField F] in
 
 /- English proof (translation)
-Simplify using `[vm, Matrix.vecMul, dotProduct, Fin.sum_univ_two]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vm_apply (x : Fin 2 → F) (P : Matrix (Fin 2) (Fin 2) ℤ) (j : Fin 2) : vm x P j = x 0 * P 0 j + x 1 * P 1 j := by
   simp [vm, Matrix.vecMul, dotProduct, Fin.sum_univ_two]
@@ -187,11 +187,11 @@ theorem vm_apply (x : Fin 2 → F) (P : Matrix (Fin 2) (Fin 2) ℤ) (j : Fin 2) 
 omit [NumberField F] in
 
 /- English proof (translation)
-Establish `h' : ∀ i j, ((P i 0 * Q 0 j + P i 1 * Q 1 j : ℤ) : F) = (((1 : Matrix (Fin 2) (Fin 2) ℤ) i j + D * Z i j : ℤ) : F)` using `fun i j => by`. Use `congrFun (congrFun h i) j` as an intermediate fact. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_two, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul] at this`. Rewrite using `[this]`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h0` using `h' 0 j`. Establish `h1` using `h' 1 j`. Simplify using `only [vm_apply, Pi.add_apply, Pi.smul_apply, Algebra.smul_def, map_natCast]`. Move the coercions through the operations in `at h0 h1`. Use `fin_cases j`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.one_apply] at h0 h1 ⊢`. Take the linear combination `x 0 * h0 + x 1 * h1`. Simplify using `[Matrix.one_apply] at h0 h1 ⊢`. Take the linear combination `x 0 * h0 + x 1 * h1`.
+Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem vm_vm (x : Fin 2 → F) {P Q Z : Matrix (Fin 2) (Fin 2) ℤ} {D : ℕ} (h : P * Q = 1 + (D : ℤ) • Z) :
     vm (vm x P) Q = x + (D : 𝓞 F) • vm x Z := by
@@ -212,16 +212,16 @@ theorem vm_vm (x : Fin 2 → F) {P Q Z : Matrix (Fin 2) (Fin 2) ℤ} {D : ℕ} (
     linear_combination x 0 * h0 + x 1 * h1
 
 /- English proof (translation)
-Introduce `j _` and use `by rw [vm_apply, mul_comm (x 0), mul_comm (x 1), ← zsmul_eq_mul, ← zsmul_eq_mul] exact add_mem (zsmul_mem (hx 0 trivial) _) (zsmul_mem (hx 1 trivial) _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem vm_mem {x : Fin 2 → F} (hx : x ∈ stdLat F) (P : Matrix (Fin 2) (Fin 2) ℤ) : vm x P ∈ stdLat F := fun j _ => by
   rw [vm_apply, mul_comm (x 0), mul_comm (x 1), ← zsmul_eq_mul, ← zsmul_eq_mul]
   exact add_mem (zsmul_mem (hx 0 trivial) _) (zsmul_mem (hx 1 trivial) _)
 
 /- English proof (translation)
-Establish `e : ∀ z : Fin 2 → F, vm z ((N : ℤ) • 1) = (N : 𝓞 F) • z` using `fun z => by`. Use function extensionality and compare the values at `j`. Simplify using `only [vm_apply, Pi.smul_apply, Algebra.smul_def (N : 𝓞 F), map_natCast, Matrix.smul_apply]`. Apply the tactic sequence `fin_cases j <;> simp [mul_comm, Matrix.one_apply]`. Rewrite using `[HilbFam.twist, Submodule.mem_sup]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨l, hl, rfl⟩, _, ⟨z, hz, rfl⟩, rfl⟩`. Conclude with `⟨l, hl, z, hz, by rw [← e]; rfl⟩`. Introduce and unpack `⟨l, hl, z, hz, rfl⟩`. Conclude with `⟨_, ⟨l, hl, rfl⟩, _, ⟨z, hz, rfl⟩, by rw [← e]; rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_twist (N : ℕ) (L : Lat F) (α : Matrix (Fin 2) (Fin 2) (ZMod N)) (x : Fin 2 → F) :
     x ∈ HilbFam.twist N L α ↔ ∃ l ∈ L, ∃ z ∈ stdLat F, x = vm l (α.map (ZMod.cast : ZMod N → ℤ)) + (N : 𝓞 F) • z := by
@@ -239,7 +239,7 @@ theorem mem_twist (N : ℕ) (L : Lat F) (α : Matrix (Fin 2) (Fin 2) (ZMod N)) (
 omit [NumberField F] in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `only [vm_apply, Pi.add_apply, Pi.smul_apply, Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem vm_add_smul (x z : Fin 2 → F) (a : 𝓞 F) (P : Matrix (Fin 2) (Fin 2) ℤ) :
     vm (x + a • z) P = vm x P + a • vm z P := by
@@ -248,11 +248,11 @@ theorem vm_add_smul (x z : Fin 2 → F) (a : 𝓞 F) (P : Matrix (Fin 2) (Fin 2)
   ring
 
 /- English proof (translation)
-Rewrite using `[mem_twist]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨l, hl, z, hz, rfl⟩`. Rewrite using `[vm_add_smul, vm_vm l h1]`. Conclude with `add_mem (add_mem hl (hL.1 _ (vm_mem (hL.2 hl) _))) (hL.1 _ (vm_mem hz _))`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `hs : x ∈ stdLat F`. Establish `e` using `vm_vm x h3`. Establish `e'` using `vm_add_smul 0 x (d : 𝓞 F) Z''`. Establish `e0 : vm (0 : Fin 2 → F) Z'' = 0` using `Matrix.zero_vecMul _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e'` using `[zero_add, e0, zero_add]`. Rewrite `e` using `[← e']`. Rewrite using `[eq_sub_of_add_eq e.symm]`. Conclude with `sub_mem (vm_mem (hL.2 h) _) (vm_mem hx _)`. Conclude with `⟨_, h, -vm x Z', neg_mem (vm_mem hs _), by rw [vm_vm x h2, smul_neg, add_neg_cancel_right]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem twist_iff {N d : ℕ} {L : Lat F} (hL : HasLevel N L) {α : Matrix (Fin 2) (Fin 2) (ZMod N)}
     {W V Z Z' Z'' : Matrix (Fin 2) (Fin 2) ℤ} (h1 : α.map (ZMod.cast : ZMod N → ℤ) * W = 1 + (N : ℤ) • Z)
@@ -275,11 +275,9 @@ theorem twist_iff {N d : ℕ} {L : Lat F} (hL : HasLevel N L) {α : Matrix (Fin 
     exact ⟨_, h, -vm x Z', neg_mem (vm_mem hs _), by rw [vm_vm x h2, smul_neg, add_neg_cancel_right]⟩
 
 /- English proof (translation)
-Establish `h : ∀ i, ∃ d : ℕ, d ≠ 0 ∧ (d : 𝓞 F) • x i ∈ (1 : Submodule (𝓞 F) F)` using `fun i => by`. Take `⟨d, hd0, hd⟩` from `GlobalTheory.LatDecomp.exists_nat_mul_integral (algebraMap F (Af F) (x i))`. Take `⟨r, hr⟩` from `exists_int (K := F) (z := d * x i) (by rw [map_mul, map_natCast]; exact hd)`. Conclude with `⟨d, hd0, Submodule.mem_one.2 ⟨r, by rw [hr, Algebra.smul_def, map_natCast]⟩⟩`. Take `⟨a, ha0, ha⟩` from `h 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb0, hb⟩` from `h 1`. Use `⟨a * b, mul_ne_zero ha0 hb0, fun j _ => ?_⟩` and prove the remaining obligations. Use `fin_cases j`. Use `show ((a * b : ℕ) : 𝓞 F) • x 0 ∈ _`. Rewrite using `[Nat.cast_mul, mul_comm, mul_smul]`.
-
-Conclude with `Submodule.smul_mem _ _ ha`. Use `show ((a * b : ℕ) : 𝓞 F) • x 1 ∈ _`. Rewrite using `[Nat.cast_mul, mul_smul]`. Conclude with `Submodule.smul_mem _ _ hb`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_den (x : Fin 2 → F) : ∃ d : ℕ, d ≠ 0 ∧ (d : 𝓞 F) • x ∈ stdLat F := by
   have h : ∀ i, ∃ d : ℕ, d ≠ 0 ∧ (d : 𝓞 F) • x i ∈ (1 : Submodule (𝓞 F) F) := fun i => by
@@ -298,9 +296,9 @@ theorem exists_den (x : Fin 2 → F) : ∃ d : ℕ, d ≠ 0 ∧ (d : 𝓞 F) •
 end Lat
 
 /- English proof (translation)
-Establish `hn' : (n : E) ≠ 0` using `Nat.cast_ne_zero.2 hn.ne'`. Rewrite using `[← map_mul]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y', h, rfl⟩`. Rewrite using `[mul_comm (n : E), mul_inv_cancel_right₀ hn']` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Introduce `h`. Conclude with `⟨e * (n : E)⁻¹, h, by field_simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem mem_nlat {E : Type} [Field E] [NumberField E] (c : Ideal (OF E)) (y : (Af E)ˣ) {n : ℕ} (hn : 0 < n) (e : E) :
     (∃ y' ∈ lattice c y, (n : E) * y' = e) ↔
@@ -314,37 +312,35 @@ theorem mem_nlat {E : Type} [Field E] [NumberField E] (c : Ideal (OF E)) (y : (A
     exact ⟨e * (n : E)⁻¹, h, by field_simp⟩
 
 /- English proof (translation)
-Introduce `K _ _ ι E _ _ _ _ c y t 𝔞 θ₀ κ₁ κ₂ Λ₀ Λ₁ c₁ τ₀ τ₁ N _ A n L₀ _ hc h0 hτ₀ hθ h𝔞 h1 hτ₁ hκ₁ hκ₂ htor hn hL hL₀ x`. Establish `hN : N ≠ 0` using `NeZero.ne N`. Establish `hO : ∀ z : K, algebraMap K (Af K) z ∈ intA K ↔ ∃ a b : ℤ, z = a * θ₀ + b` using `fun z => by`. Establish `e1 : algebraMap K (Af K) z ∈ intA K ↔ z ∈ (1 : FractionalIdeal (𝓞 K)⁰ K)`. Rewrite using `[FractionalIdeal.mem_one_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨exists_int, fun ⟨r, hr⟩ => hr ▸ GlobalTheory.LatDecomp.algebraMap_integral r⟩`. Establish `e2 : z ∈ (1 : FractionalIdeal (𝓞 K)⁰ K) ↔ ι z ∈ Λ₀.lattice`. Rewrite using `[← SetLike.mem_coe (p := Λ₀.lattice), h0, ι.injective.mem_set_image]`. Both sides reduce to the same expression. Rewrite using `[e1, e2, hτ₀.2]`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `exists₂_congr fun a b => ?_` and prove the remaining obligations. Rewrite using `[← ι.injective.eq_iff]`. Simplify using `[hθ]`. Establish `hA : ∀ z : K, (t : Af K) * algebraMap K (Af K) z ∈ intA K ↔ ∃ a b : ℤ, z = a * κ₁ + b * κ₂` using `fun z => by`. Establish `e2 : z ∈ 𝔞 ↔ ι z ∈ Λ₁.lattice`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← SetLike.mem_coe (p := Λ₁.lattice), h1, ι.injective.mem_set_image]`. Both sides reduce to the same expression. Rewrite using `[mem_intA, ← h𝔞 z, e2, hτ₁.2]`. Use `exists₂_congr fun a b => ?_` and prove the remaining obligations. Rewrite using `[← ι.injective.eq_iff, map_add, map_mul, map_mul, hκ₁, hκ₂, map_intCast, map_intCast]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `constructor <;> intro h <;> linear_combination h`. Establish `hI : ∀ a b : ℤ, (a : K) * θ₀ + b = 0 → a = 0 ∧ b = 0` using `fun a b h => by`. Establish `h'` using `congrArg (fun z => (ι z).im) h`. Simplify using `[hθ, τ₀.im_ne_zero] at h'`. Substitute `h'` using the available equality.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Simplify using `using h`. Take `⟨d, hd0, hd⟩` from `exists_den x`. Take `⟨M, hM0, hM⟩` from `GlobalTheory.LatDecomp.exists_nat_mul_good hc y (n : E)⁻¹`. Take `⟨W, hW⟩` from `exists_isW hO hA (N * (M * d)) (mul_ne_zero hN (mul_ne_zero hM0 hd0))`. Take `⟨V, hV⟩` from `(hW.of_dvd (D' := d) ⟨N * M, by ring⟩).exists_inv hO hI hA hd0`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Z'', h3⟩` from `lift_inv (mul_eq_one_comm.1 hV)`. Establish `hAW : ((A : Matrix (Fin 2) (Fin 2) (ZMod N)).map (ZMod.cast : ZMod N → ℤ)).map (Int.cast : ℤ → ZMod N) * W.map (Int.cast : ℤ → ZMod N) = 1`. Establish `e0 : ((A : Matrix (Fin 2) (Fin 2) (ZMod N)).map (ZMod.cast : ZMod N → ℤ)).map (Int.cast : ℤ → ZMod N) = A`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[e0]`. Use `Matrix.ext_iff_vecMul.2 fun v => ?_` and prove the remaining obligations. Take `⟨k, k', hk, hk', hT⟩` from `htor v`. Establish `hNC : (N : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hN`. Establish `ek : (((v 0).val : ℤ) : K) * θ₀ + (((v 1).val : ℤ) : K) = N * k` using `ι.injective (by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_add, map_mul, map_intCast, map_natCast, hk, hθ, tors, Int.cast_natCast]`. Use the proof step `field_simp)`. Establish `ek' : (((vmul v A 0).val : ℤ) : K) * κ₁ + (((vmul v A 1).val : ℤ) : K) * κ₂ = N * k'` using `ι.injective (by`. Simplify using `only [map_add, map_mul, map_intCast, map_natCast, hk', hκ₁, hκ₂, tors, Int.cast_natCast]`. Use the proof step `field_simp)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨r0, r1⟩` from `(hW.of_dvd (D' := N) ⟨_, rfl⟩).row hO hI hN (mem_intA.2 hT) (p := (vmul v A 0).val) (q := (vmul v A 1).val) (r := (v 0).val) (s := (v 1).val) (by`. Rewrite using `[ek, ek', map_mul, map_mul, map_natCast]`. Use the proof step `ring)`. Move the coercions through the operations in `at r0 r1`. Simplify using `only [ZMod.natCast_val, ZMod.cast_id', id] at r0 r1`.
+Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← Matrix.vecMul_vecMul, Matrix.vecMul_one]`. Use function extensionality and compare the values at `j`. Express the relevant statement in the definitionally equal form `(vmul v A ᵥ* _) j = _`. Use `fin_cases j`. Simplify `r0` using `[Matrix.vecMul, dotProduct, Fin.sum_univ_two]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify `r1` using `[Matrix.vecMul, dotProduct, Fin.sum_univ_two]`. Take `⟨Z, h1'⟩` from `lift_inv hAW`. Take `⟨Z', h2'⟩` from `lift_inv (mul_eq_one_comm.1 hAW)`. Rewrite using `[twist_iff hL h1' h2' h3 hd, hL₀, mem_nlat c _ hn, mem_nlat c _ hn]`. Take `⟨⟨w₁, hw₁, e₁⟩, ⟨w₂, hw₂, e₂⟩⟩` from `hW`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `f₁` using `congrArg (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.finiteAdeleMap K E) e₁`. Establish `f₂` using `congrArg (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.finiteAdeleMap K E) e₂`. Simplify using `only [map_add, map_mul, GlobalTheory.LatDecomp.finiteAdeleMap_algebraMap, map_intCast, map_natCast] at f₁ f₂`. Establish `hx : ∀ i, (d : Af E) * algebraMap E (Af E) ((x i : maximalRealSubfield E) : E) ∈ intA E` using `fun i => by`. Take `⟨r, hr⟩` from `Submodule.mem_one.1 (hd i trivial)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hr' : (d : E) * ((x i : maximalRealSubfield E) : E) = ((algebraMap (OF E) (𝓞 E) r : 𝓞 E) : E)`. Use `congrArg (fun z : maximalRealSubfield E => (z : E)) hr` as an intermediate fact. Simplify using `only [Pi.smul_apply, Algebra.smul_def, map_natCast, Subfield.coe_mul, SubringClass.coe_natCast] at this`. Conclude with `this.symm`. Rewrite using `[← map_natCast (algebraMap E (Af E)), ← map_mul, hr']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `GlobalTheory.LatDecomp.algebraMap_integral _`. Establish `hz` using `hM _ (mul_mem (natCast_mem (intA E) N) (add_mem (mul_mem (hx 0) (GlobalTheory.LatDecomp.finiteAdeleMap_integral (mem_intA.1 hw₁))) (mul_mem (hx 1) (GlobalTheory.LatDecomp.finiteAdeleMap_integral (mem_intA.1 hw₂)))))`. Rewrite using `[← add_mem_cancel_right (H := hatO c) hz, mul_inv_rev, inv_inv, Units.val_mul]`. Establish `hT : (GlobalTheory.IndefiniteRowSideFullHecke.LatticeNormTransport.upIdele K E t : Af E) = GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.finiteAdeleMap K E (t : Af K)` using `rfl`. Use `iff_of_eq (congrArg (· ∈ hatO c) ?_)` and prove the remaining obligations.
-
-Simplify using `only [hT, vm_apply, Subfield.coe_add, Subfield.coe_mul, SubringClass.coe_intCast, map_add, map_mul, map_intCast, map_natCast]`. Move the coercions through the operations in `at f₁ f₂`. Take the linear combination `(-(algebraMap E (Af E) (n : E)⁻¹ * ((y⁻¹ : (Af E)ˣ) : Af E))) * (algebraMap E (Af E) ((x 0 : maximalRealSubfield E) : E) * f₁ + algebraMap E (Af E) ((x 1 : maximalRealSubfield E) : E) * f₂)`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem twist_lattice : ∀ (K : Type) [Field K] [NumberField K] (ι : K →+* ℂ) (E : Type) [Field E] [NumberField E] [IsCMField E] [Algebra K E]
   (c : Ideal (OF E)) (y : (Af E)ˣ) (t : (Af K)ˣ) (𝔞 : FractionalIdeal (𝓞 K)⁰ K) (θ₀ κ₁ κ₂ : K)

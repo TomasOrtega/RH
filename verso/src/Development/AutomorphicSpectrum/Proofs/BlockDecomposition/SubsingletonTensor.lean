@@ -25,7 +25,7 @@ def Lin {K : ι → Cx.{w} R} {K' : Cx.{w'} R'} (φ : ∀ i, N i → Cx.Hom (K i
     ∀ i (r : R) n k x, (φ i (r • n)).f k x = σ r • (φ i n).f k x
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cls_congr {K : Cx.{w} R} {n : ℕ} {a b : K.X n} (e : a = b) (ha : K.d n a = 0) (hb : K.d n b = 0) :
     K.cls a ha = K.cls b hb := by
@@ -33,11 +33,9 @@ theorem cls_congr {K : Cx.{w} R} {n : ℕ} {a b : K.X n} (e : a = b) (ha : K.d n
   rfl
 
 /- English proof (translation)
-Use `⟨fun i n n' x => ?_, fun i n x x' => map_add _ _ _, fun i r n x => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, rfl⟩` from `clsSurj x`. Establish `c1` using `cyc (φ i n) a ha`. Establish `c2` using `cyc (φ i n') a ha`. Use `beta_reduce`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mapH_cls' _ a ha (cyc _ a ha), mapH_cls' _ a ha c1, mapH_cls' _ a ha c2, ← cls_add _ _ c1 c2 (by rw [map_add, c1, c2, add_zero])]`. Conclude with `cls_congr (h.1 i n n' j a) _ _`. Take `⟨a, ha, rfl⟩` from `clsSurj x`. Establish `c1` using `cyc (φ i n) a ha`. Use `beta_reduce`.
-
-Rewrite using `[map_smulₛₗ, mapH_cls' _ a ha (cyc _ a ha), mapH_cls' _ a ha c1, ← cls_smul _ _ c1 (by rw [map_smul, c1, smul_zero])]`. Conclude with `cls_congr (h.2 i r n j a) _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bal_mapH {K : ι → Cx.{w} R} {K' : Cx.{w'} R'} {φ : ∀ i, N i → Cx.Hom (K i) K' σ} (h : Lin φ) (j : ℕ) :
     Bal R (N := N) (M := fun i => (K i).H j) (P := K'.H j) fun i n x => (φ i n).mapH j x := by
@@ -57,7 +55,7 @@ theorem bal_mapH {K : ι → Cx.{w} R} {K' : Cx.{w'} R'} {φ : ∀ i, N i → Cx
     exact cls_congr (h.2 i r n j a) _ _
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `clsSurj z`. Establish `c1` using `cyc φ a ha`. Establish `c2` using `cyc f a ha`. Rewrite using `[mapH_cls' φ a ha c1, mapH_cls' f' _ c1 (cyc f' _ c1), mapH_cls' f a ha c2, mapH_cls' ψ _ c2 (cyc ψ _ c2)]`. Conclude with `cls_congr (c k a).symm _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sq_mapH {A : Cx.{w} R} {B : Cx.{w} R} {A' : Cx.{w'} R'} {B' : Cx.{w'} R'} (f : Cx.Hom A B (RingHom.id R))
     (f' : Cx.Hom A' B' (RingHom.id R')) (φ : Cx.Hom A A' σ) (ψ : Cx.Hom B B' σ)
@@ -70,13 +68,13 @@ theorem sq_mapH {A : Cx.{w} R} {B : Cx.{w} R} {A' : Cx.{w'} R'} {B' : Cx.{w'} R'
   exact cls_congr (c k a).symm _ _
 
 /- English proof (translation)
-Establish `L` using `fun i => CrystallineSemistableComparison.P.les (f i) (g i) (hf i) (hfg i) (hg i)`. Use `choose δ hδ i0 e1 e2 e3 using L`. Take `⟨δ', hδ', i0', e1', e2', e3'⟩` from `CrystallineSemistableComparison.P.les f' g' hf' hfg' hg'`. Use `⟨δ, δ', i0, e1, e2, e3, i0', e1', e2', e3', fun i m k z => ?_⟩` and prove the remaining obligations. Take `⟨d, hd, rfl⟩` from `clsSurj z`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `hg i k d`. Take `⟨x, hx⟩` from `conn_ex (f i) (g i) (hfg i) y hd`. Establish `hxc` using `conn_cyc (f i) (hf i) y x hx`. Rewrite using `[hδ i k y x hd hxc hx, mapH_cls' (φA i m) _ hxc (cyc _ _ hxc)]`. Establish `h2 : D'.d k (g'.f k ((φB i m).f k y)) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← c2]`. Conclude with `cyc _ _ hd`. Establish `e : (φD i m).mapH k ((D i).cls ((g i).f k y) hd) = D'.cls (g'.f k ((φB i m).f k y)) h2`. Rewrite using `[mapH_cls' _ _ hd (cyc _ _ hd)]`. Conclude with `cls_congr (c2 i m k y) _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `hδ' k _ _ h2 _ ?_` and prove the remaining obligations. Rewrite using `[← c1, hx, (φB i m).comm]`.
+A detailed English derivation is pending.
 -/
 theorem les_pair {A B D : ι → Cx.{w} R} {A' B' D' : Cx.{w'} R'}
     (f : ∀ i, Cx.Hom (A i) (B i) (RingHom.id R)) (g : ∀ i, Cx.Hom (B i) (D i) (RingHom.id R))
@@ -114,7 +112,7 @@ theorem les_pair {A B D : ι → Cx.{w} R} {A' B' D' : Cx.{w'} R'}
   rw [← c1, hx, (φB i m).comm]
 
 /- English proof (translation)
-Use `subsingleton_of_forall_eq 0 fun t => ?_` and prove the remaining obligations. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => rfl`. Consider the case `tmul n x => rw [Subsingleton.elim x 0, TensorProduct.tmul_zero]`. Consider the case `add s t hs ht => rw [hs, ht, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem subsingleton_tensor {P Q : Type*} [AddCommGroup P] [Module R P] [AddCommGroup Q] [Module R Q] [Subsingleton Q] :
     Subsingleton (P ⊗[R] Q) := by
@@ -125,7 +123,7 @@ theorem subsingleton_tensor {P Q : Type*} [AddCommGroup P] [Module R P] [AddComm
   | add s t hs ht => rw [hs, ht, add_zero]
 
 /- English proof (translation)
-Establish `: ∀ i, Subsingleton (N i ⊗[R] M i)` using `fun i => subsingleton_tensor`. Conclude with `⟨⟨⟨fun _ => 0, fun _ => 0, fun _ => Subsingleton.elim _ _, fun _ => Subsingleton.elim _ _⟩, fun _ _ => Subsingleton.elim _ _⟩, fun _ _ _ => Subsingleton.elim _ _⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem tens_subsingleton [DecidableEq ι] {M : ι → Type w} [∀ i, AddCommGroup (M i)] [∀ i, Module R (M i)]
     {P : Type w'} [AddCommGroup P] [∀ i, Subsingleton (M i)] [Subsingleton P] (p : ∀ i, N i → M i → P) :
@@ -135,7 +133,7 @@ theorem tens_subsingleton [DecidableEq ι] {M : ι → Type w} [∀ i, AddCommGr
     fun _ _ => Subsingleton.elim _ _⟩, fun _ _ _ => Subsingleton.elim _ _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ _ => rfl, fun _ _ _ _ => rfl, fun _ _ _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem bal_unit :
     Bal R (N := N) (M := fun _ : ι => PUnit.{w + 1}) (P := PUnit.{w' + 1}) fun _ _ _ => PUnit.unit :=
@@ -145,9 +143,9 @@ def BC [DecidableEq ι] {K : ι → Cx.{w} R} {K' : Cx.{w'} R'} (φ : ∀ i, N i
   ∀ j, Tens R (N := N) (M := fun i => (K i).H j) (M' := K'.H j) fun i n x => (φ i n).mapH j x
 
 /- English proof (translation)
-Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Take `⟨x⟩` from `‹Nonempty X›`. Conclude with `⟨x, by rw [ha, h (hy.trans hf0.symm)]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨x, rfl⟩`. Rewrite using `[ha, hf0]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 -/
 theorem exact_of_inj {X Y Z : Type*} [Nonempty X] [Zero Y] [Zero Z] (a : X → Y) (f : Y → Z) (ha : ∀ x, a x = 0)
     (hf0 : f 0 = 0) (h : Function.Injective f) : Function.Exact a f := by
@@ -160,11 +158,11 @@ theorem exact_of_inj {X Y Z : Type*} [Nonempty X] [Zero Y] [Zero Z] (a : X → Y
     rw [ha, hf0]
 
 /- English proof (translation)
-Take `⟨δ, δ', i0, e1, e2, e3, i0', e1', e2', e3', hδ⟩` from `les_pair f g f' g' hf hfg hg hf' hfg' hg' φA φB φD c1 c2`. Establish `s1` using `fun i m k z => sq_mapH (f i) f' (φA i m) (φB i m) (c1 i m) k z`. Establish `s2` using `fun i m k z => sq_mapH (g i) g' (φB i m) (φD i m) (c2 i m) k z`. Use `⟨fun tB tD j => ?_, fun tA tD j => ?_⟩` and prove the remaining obligations. Consider the cases of `j with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero`. Conclude with `tens_five (M₁ := fun _ => PUnit) (M₂ := fun _ => PUnit) (P₁ := PUnit) (P₂ := PUnit) (fun _ => 0) (fun _ => 0) (fun i => (f i).mapH 0) (fun i => (g i).mapH 0) 0 0 (f'.mapH 0).toAddMonoidHom (g'.mapH 0).toAddMonoidHom (fun i y => ⟨fun _ => ⟨PUnit.unit, Subsingleton.elim _ _⟩, fun _ …`. Consider the case `succ j`. Conclude with `tens_five (fun i => (g i).mapH j) (fun i => δ i j) (fun i => (f i).mapH (j + 1)) (fun i => (g i).mapH (j + 1)) (g'.mapH j).toAddMonoidHom (δ' j).toAddMonoidHom (f'.mapH (j + 1)).toAddMonoidHom (g'.mapH (j + 1)).toAddMonoidHom (fun i => e2 i j) (fun i => e3 i j) (fun i => e1 i (j …`. Consider the cases of `j with`.
+Treat this case separately. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the case `zero`. Conclude with `tens_five (M₁ := fun _ => PUnit) (P₁ := PUnit) (fun _ => 0) (fun i => (f i).mapH 0) (fun i => (g i).mapH 0) (fun i => δ i 0) 0 (f'.mapH 0).toAddMonoidHom (g'.mapH 0).toAddMonoidHom (δ' 0).toAddMonoidHom (fun i => exact_of_inj _ _ (fun _ => rfl) (map_zero _) (i0 i)) (fun i => e1 i …`. Consider the case `succ j`. Conclude with `tens_five (fun i => δ i j) (fun i => (f i).mapH (j + 1)) (fun i => (g i).mapH (j + 1)) (fun i => δ i (j + 1)) (δ' j).toAddMonoidHom (f'.mapH (j + 1)).toAddMonoidHom (g'.mapH (j + 1)).toAddMonoidHom (δ' (j + 1)).toAddMonoidHom (fun i => e3 i j) (fun i => e1 i (j + 1)) (fun i => e2 …`.
+A detailed English derivation is pending.
 -/
 theorem bc_ses [Fintype ι] [DecidableEq ι] [∀ i, Module.Flat R (N i)] {A B D : ι → Cx.{w} R} {A' B' D' : Cx.{w'} R'}
     (f : ∀ i, Cx.Hom (A i) (B i) (RingHom.id R)) (g : ∀ i, Cx.Hom (B i) (D i) (RingHom.id R))
@@ -245,9 +243,9 @@ def sndHom (K L : Cx.{w} R) : Cx.Hom (prodCx K L) L (RingHom.id R) where
   comm n x := rfl
 
 /- English proof (translation)
-Establish `lP : Lin fun i n => prodHom (φ i n) (ψ i n)` using `⟨fun i n n' k x => Prod.ext (hφ.1 i n n' k x.1) (hψ.1 i n n' k x.2), fun i r n k x => Prod.ext (hφ.2 i r n k x.1) (hψ.2 i r n k x.2)⟩`. Use `(bc_ses (fun i => inlHom (K i) (L i)) (fun i => sndHom (K i) (L i)) (inlHom K' L') (sndHom K' L') ?_ ?_ ?_ ?_ ?_ ?_ φ (fun i n => prodHom (φ i n) (ψ i n)) ψ hφ lP hψ ?_ ?_).2 tφ tψ` and prove the remaining obligations. Conclude with `fun i n => LinearMap.inl_injective`. Conclude with `fun i n y => ⟨fun hy => ⟨y.1, Prod.ext rfl hy.symm⟩, by rintro ⟨x, rfl⟩; rfl⟩`. Conclude with `fun i n => LinearMap.snd_surjective`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun n => LinearMap.inl_injective`. Conclude with `fun n y => ⟨fun hy => ⟨y.1, Prod.ext rfl hy.symm⟩, by rintro ⟨x, rfl⟩; rfl⟩`. Conclude with `fun n => LinearMap.snd_surjective`. Conclude with `fun i m k x => Prod.ext rfl (map_zero _)`. Conclude with `fun i m k x => rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem bc_prod [Fintype ι] [DecidableEq ι] [∀ i, Module.Flat R (N i)] {K L : ι → Cx.{w} R} {K' L' : Cx.{w'} R'}
     (φ : ∀ i, N i → Cx.Hom (K i) K' σ) (ψ : ∀ i, N i → Cx.Hom (L i) L' σ) (hφ : Lin φ) (hψ : Lin ψ)

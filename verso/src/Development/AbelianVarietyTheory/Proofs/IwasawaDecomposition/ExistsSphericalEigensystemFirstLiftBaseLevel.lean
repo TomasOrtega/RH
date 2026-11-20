@@ -18,15 +18,15 @@ noncomputable section
 namespace GlobalTheory.Mem.R3.EigEx
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem stdPsi_of_stdFrame {D : D7} {V : HSp D} {n : ℕ} {hF : D.host.F = maximalRealSubfield D.host.E} {P : principalLevelFrame.RowPsi V n}
     (h : StdFrame hF P) : GlobalTheory.StdFrame.StdPsi hF P := h
 
 /- English proof (translation)
-Establish `hQ : R.Q A3.A.μ0 = ∅` using `(GlobalTheory.GoodPrimes.good_primes R.toRealDat F.lv2 h.base.lev).1`. Establish `hS : R.Sb = R.Pg` using `h.allPl`. Introduce `v`. Unfold `SsetF`. Rewrite using `[hQ, hS, Finset.union_empty, Finset.mem_image]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `exists_congr fun PP => and_congr_right fun _ => ?_` and prove the remaining obligations. Rewrite using `[HeightOneSpectrum.ext_iff]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isSF_ssetF {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type}
     {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
@@ -43,7 +43,7 @@ theorem isSF_ssetF {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type}
   rfl
 
 /- English proof (translation)
-Introduce `_ _ _ _ D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y hP hH _ hgen π`. Establish `hμ : Y.tupT D.what₂.mu0 = A3.A.μ0` using `by rw [← Y.tup0, Y.tupT_tup]`. Unfold `HasEig`. Rewrite using `[hμ]`. Conclude with `GlobalTheory.T.row_type_has_spherical_hecke_eigensystem R.toRealDat F.lv2 hH.ok.ok2 (GlobalTheory.CoreOfWeak.core_of_weak R F hP.char hH.aux.ex).1 hgen _ (isSF_ssetF hP.char) Y.hF Y.PY Y.PW (stdPsi_of_stdFrame Y.stdPsi.1) (fun i => stdPsi_of_stdFrame (Y.stdPsi.2 i)) _ (principalL …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_hasEig : GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (X0 : BaseLevelRowSide D) (Y : Read (A3 := A3) R.toRealDat F.lv2 X0), Pins R F cG → Holds R F → HostHyp D → (∀ χ ∈ A3.A.X, chiIdem χ * lvlIdem F.P0 F.ψ0 ≠ 0) → ∀ π : D.what₂.FT, ∃ c, HasEig R F Y π c := by
   intro _ _ _ _ D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y hP hH _ hgen π

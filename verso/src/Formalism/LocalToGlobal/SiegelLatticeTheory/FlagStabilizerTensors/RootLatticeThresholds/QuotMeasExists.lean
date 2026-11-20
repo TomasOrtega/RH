@@ -22,7 +22,7 @@ section Grp
 variable (G : Set (Matrix (Fin m) (Fin m) ℂ)) [hG : Fact (PI.IsMatGroup G)]
 
 /- English proof (translation)
-Conclude with `Matrix.nonsing_inv_mul a (Matrix.isUnit_det_of_right_inverse (hG.out.2.2.2 a ha).2)`.
+A detailed English derivation is pending.
 -/
 theorem inv_mul_of {a : Matrix (Fin m) (Fin m) ℂ} (ha : a ∈ G) : a⁻¹ * a = 1 := by
   exact Matrix.nonsing_inv_mul a (Matrix.isUnit_det_of_right_inverse (hG.out.2.2.2 a ha).2)
@@ -37,7 +37,7 @@ instance : SecondCountableTopology (Gt G) :=
 def mat (a : Gt G) : Matrix (Fin m) (Fin m) ℂ := Matrix.of a.1
 
 /- English proof (translation)
-Conclude with `a.2`.
+A detailed English derivation is pending.
 -/
 theorem mat_mem (a : Gt G) : mat G a ∈ G := by
   exact a.2
@@ -51,7 +51,7 @@ Both sides reduce to the same expression.
   rfl
 
 /- English proof (translation)
-Conclude with `Subtype.ext (Matrix.of.injective h)`.
+A detailed English derivation is pending.
 -/
 theorem ext_mat {a b : Gt G} (h : mat G a = mat G b) : a = b := by
   exact Subtype.ext (Matrix.of.injective h)
@@ -81,20 +81,20 @@ instance : Group (Gt G) :=
     (fun a => ext_mat G (by simp)) (fun a => ext_mat G (by simp [inv_mul_of G (mat_mem G a)]))
 
 /- English proof (translation)
-Conclude with `continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_mat : Continuous (mat G) := by
   exact continuous_subtype_val
 
 /- English proof (translation)
-Use `show IsClosed (Matrix.of ⁻¹' G)`. Conclude with `hG.out.1.preimage (by exact continuous_id)`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_set : IsClosed {x : PI.MtM m | Matrix.of x ∈ G} := by
   show IsClosed (Matrix.of ⁻¹' G)
   exact hG.out.1.preimage (by exact continuous_id)
 
 /- English proof (translation)
-Conclude with `(isClosed_set G).isClosedEmbedding_subtypeVal`.
+A detailed English derivation is pending.
 -/
 theorem isClosedEmbedding_val : IsClosedEmbedding (Subtype.val : Gt G → PI.MtM m) := by
   exact (isClosed_set G).isClosedEmbedding_subtypeVal
@@ -102,7 +102,7 @@ theorem isClosedEmbedding_val : IsClosedEmbedding (Subtype.val : Gt G → PI.MtM
 instance : LocallyCompactSpace (Gt G) := (isClosedEmbedding_val G).locallyCompactSpace
 
 /- English proof (translation)
-Conclude with `hf.subtype_mk _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_mk {X : Type*} [TopologicalSpace X] {f : X → Matrix (Fin m) (Fin m) ℂ}
     (hf : Continuous fun x => (Matrix.of.symm (f x) : PI.MtM m)) (h : ∀ x, f x ∈ G) :
@@ -110,7 +110,7 @@ theorem continuous_mk {X : Type*} [TopologicalSpace X] {f : X → Matrix (Fin m)
   exact hf.subtype_mk _
 
 /- English proof (translation)
-Conclude with `Matrix.det_ne_zero_of_left_inverse (inv_mul_of G (mat_mem G a))`.
+A detailed English derivation is pending.
 -/
 theorem det_ne (a : Gt G) : (mat G a).det ≠ 0 := by
   exact Matrix.det_ne_zero_of_left_inverse (inv_mul_of G (mat_mem G a))
@@ -153,7 +153,7 @@ def Hs (hS : PI.IsMatGroup S) (hSG : S ⊆ G) : Subgroup (Gt G) where
     rw [mat_inv]; exact (hS.2.2.2 _ ha).1
 
 /- English proof (translation)
-Conclude with `hS.1.preimage (continuous_mat G)`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_Hs (hS : PI.IsMatGroup S) (hSG : S ⊆ G) : IsClosed (Hs G S hS hSG : Set (Gt G)) := by
   exact hS.1.preimage (continuous_mat G)
@@ -165,75 +165,65 @@ section Main
 variable {G S : Set (Matrix (Fin m) (Fin m) ℂ)}
 
 /- English proof (translation)
-Conclude with `(continuous_fst (X := PI.MtM m) (Y := PI.MtM m)).matrix_mul (continuous_snd (X := PI.MtM m) (Y := PI.MtM m))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_mulQ :
     Continuous fun p : PI.MtM m × PI.MtM m => (fun i j => (Matrix.of p.1 * Matrix.of p.2) i j : PI.MtM m) := by
   exact (continuous_fst (X := PI.MtM m) (Y := PI.MtM m)).matrix_mul (continuous_snd (X := PI.MtM m) (Y := PI.MtM m))
 
 /- English proof (translation)
-Unfold `PI.lmulQ`. Conclude with `continuous_const.matrix_mul continuous_id`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_lmulQ (a : Matrix (Fin m) (Fin m) ℂ) : Continuous (PI.lmulQ (m := m) a) := by
   unfold PI.lmulQ
   exact continuous_const.matrix_mul continuous_id
 
 /- English proof (translation)
-Establish `: Fact (PI.IsMatGroup G)` using `⟨hG⟩`. Take `⟨hGsf, -, hGcon, hGinv⟩` from `hμG`. Take `⟨hSsf, hSne, hScon, hSinv⟩` from `hμS`. Use `hGsf` as an intermediate fact. Use `hSsf` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set H := Hs G S hS hSG with hH`. Establish `hHc : IsClosed (H : Set (Gt G))` using `isClosed_Hs G S hS hSG`. Establish `: LocallyCompactSpace H` using `hHc.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Establish `: SecondCountableTopology H` using `TopologicalSpace.Subtype.secondCountableTopology _`. Establish `: SigmaCompactSpace H` using `sigmaCompactSpace_of_locallyCompact_secondCountable`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `e : H → PI.MtM m` to `fun h => h.1.1`. Establish `hce : IsClosedEmbedding e` using `(isClosedEmbedding_val G).comp hHc.isClosedEmbedding_subtypeVal`. Establish `he : MeasurableEmbedding e` using `hce.measurableEmbedding`. Establish `hrange : Set.range e = {x | Matrix.of x ∈ S}`. Use extensionality with `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, rfl⟩`. Conclude with `h.2`. Introduce `hx`. Conclude with `⟨⟨⟨x, hSG hx⟩, hx⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hae : ∀ᵐ x ∂μS, x ∈ Set.range e`. Rewrite using `[hrange, ae_iff]`. Simplify using `using hScon`. Use `set κ : Measure H := μS.comap e with hκ`. Establish `hκmap : κ.map e = μS` using `by rw [hκ, he.map_comap, Measure.restrict_eq_self_of_ae_mem hae]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: SigmaFinite κ` using `SigmaFinite.of_map κ he.measurable.aemeasurable (by rw [hκmap]; exact hSsf)`. Establish `hκinv : ∀ g : H, κ.map (g * ·) = κ`. Introduce `g`. Establish `hcomm : e ∘ (g * ·) = PI.lmulQ (mat G g.1) ∘ e`. Use function extensionality and compare the values at `h`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Rewrite using `[← he.comap_map (κ.map (g * ·)), Measure.map_map he.measurable (measurable_const_mul g), hcomm, ← Measure.map_map (continuous_lmulQ _).measurable he.measurable, hκmap, hSinv _ g.2, hκ]`. Establish `: κ.IsMulLeftInvariant` using `⟨fun g => hκinv g⟩`. Use `set lam : Measure H := Measure.haar with hlam`. Take `⟨K, hKc, hK1⟩` from `exists_compact_mem_nhds (1 : H)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK0 : lam K ≠ 0` using `(Measure.measure_pos_of_mem_nhds lam hK1).ne'`. Establish `hKt : lam K ≠ ⊤` using `hKc.measure_lt_top.ne`. Establish `hκeq : κ = (κ K / lam K) • lam` using `measure_eq_div_smul κ lam hK0 hKt`. Use `set c : ℝ≥0∞ := κ K / lam K with hc`. Establish `hc0 : c ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Apply `hSne` to reduce the goal to its premises. Rewrite using `[← hκmap, hκeq, h0, zero_smul, Measure.map_zero]`. Establish `hct : c ≠ ⊤`. Introduce `ht`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hnull : ∀ n, lam (spanningSets κ n) = 0` using `fun n => by`. Establish `h1` using `measure_spanningSets_lt_top κ n`. Generalize the expression as in `spanningSets κ n = A at h1 ⊢`. Rewrite `h1` using `[hκeq, ht, Measure.smul_apply, smul_eq_mul]`. Assume the negation of the conclusion as `hne`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Rewrite `h1` using `[ENNReal.top_mul hne]`. Conclude with `lt_irrefl _ h1`. Establish `h2 : lam Set.univ = 0`. Rewrite using `[← iUnion_spanningSets κ]`. Conclude with `measure_iUnion_null hnull`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `hK0 (measure_mono_null (Set.subset_univ K) h2)`. Take `⟨β, hβm, hβ1⟩` from `Formalism.L2.SG.Pf.Weil.QuotInt.exists_fib_eq_one hHc lam`. Set `φ : PI.MtM m → ℝ≥0∞` to `fun y => if hy : Matrix.of y ∈ G then β (mk G (Matrix.of y) hy)⁻¹ else 0`. Establish `hGm : MeasurableSet {y : PI.MtM m | Matrix.of y ∈ G}` using `(isClosed_set G).measurableSet`. Establish `hφm : Measurable φ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `measurable_of_restrict_of_restrict_compl hGm ?_ ?_` and prove the remaining obligations. Establish `e1 : Set.domRestrict {y | Matrix.of y ∈ G} φ = fun y => β (mk G (Matrix.of y.1) y.2)⁻¹`. Use function extensionality and compare the values at `y`. Conclude with `dif_pos y.2`. Rewrite using `[e1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hβm.comp (measurable_inv.comp ?_)` and prove the remaining obligations. Conclude with `(continuous_mk G (f := fun y : {y : PI.MtM m | Matrix.of y ∈ G} => Matrix.of y.1) continuous_subtype_val fun y => y.2).measurable`. Establish `e2 : Set.domRestrict {y | Matrix.of y ∈ G}ᶜ φ = fun _ => 0`. Use function extensionality and compare the values at `y`. Conclude with `dif_neg y.2`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[e2]`. Conclude with `measurable_const`. Use `⟨μG.withDensity (fun y => c⁻¹ * φ y), inferInstance, fun f hf => ?_⟩` and prove the remaining obligations. Establish `hF2 : Measurable fun p : PI.MtM m × PI.MtM m => f (fun i j => (Matrix.of p.2 * Matrix.of p.1) i j)` using `hf.comp (continuous_mulQ.comp continuous_swap).measurable`. Establish `hin : Measurable fun x : PI.MtM m => ∫⁻ s : PI.MtM m, f (fun i j => (Matrix.of s * Matrix.of x) i j) ∂μS` using `Measurable.lintegral_prod_right' hF2`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hfib : ∀ x : PI.MtM m, Measurable fun s : PI.MtM m => f (fun i j => (Matrix.of s * Matrix.of x) i j)` using `fun x => hf.comp (continuous_mulQ.comp (continuous_id.prodMk continuous_const)).measurable`. Establish `hGae : ∀ᵐ y ∂μG, Matrix.of y ∈ G`. Rewrite using `[ae_iff]`. Simplify using `using hGcon`. Establish `hsub : ∀ h : H, ∫⁻ x, c⁻¹ * φ x * f (fun i j => (Matrix.of (e h) * Matrix.of x) i j) ∂μG = ∫⁻ y, c⁻¹ * φ (PI.lmulQ (mat G (h⁻¹ : H).1) y) * f y ∂μG`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `h`. Establish `ha : mat G h.1 ∈ G` using `hSG h.2`. Establish `hmap` using `hGinv _ ha`. Establish `hFm : Measurable fun y => c⁻¹ * φ (PI.lmulQ (mat G (h⁻¹ : H).1) y) * f y` using `(measurable_const.mul (hφm.comp (continuous_lmulQ _).measurable)).mul hf`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Establish `hx : PI.lmulQ (mat G (h⁻¹ : H).1) (PI.lmulQ (mat G h.1) x) = x` using `by show (mat G (h⁻¹ : H).1 * (mat G h.1 * Matrix.of x) : Matrix (Fin m) (Fin m) ℂ) = x`. Rewrite using `[← Matrix.mul_assoc, Subgroup.coe_inv, mat_inv, inv_mul_of G ha, Matrix.one_mul]`. Both sides reduce to the same expression. Rewrite using `[hx]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Both sides reduce to the same expression. Use `_ = ∫⁻ y, c⁻¹ * φ (PI.lmulQ (mat G (h⁻¹ : H).1) y) * f y ∂(μG.map (PI.lmulQ (mat G h.1))) := (lintegral_map hFm (continuous_lmulQ _).measurable).symm`. Use `_ = ∫⁻ y, c⁻¹ * φ (PI.lmulQ (mat G (h⁻¹ : H).1) y) * f y ∂μG := by rw [hmap]`. Establish `hone : ∀ y, ∀ hy : Matrix.of y ∈ G, ∫⁻ h, φ (PI.lmulQ (mat G (h⁻¹ : H).1) y) ∂κ = c`. Introduce `y hy`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hval : ∀ h : H, φ (PI.lmulQ (mat G (h⁻¹ : H).1) y) = β ((mk G (Matrix.of y) hy)⁻¹ * h.1)`. Introduce `h`. Establish `hm : Matrix.of (PI.lmulQ (mat G (h⁻¹ : H).1) y) ∈ G` using `hG.2.2.1 _ (mat_mem G _) _ hy`. Establish `hk : mk G (Matrix.of (PI.lmulQ (mat G (h⁻¹ : H).1) y)) hm = (h⁻¹ : H).1 * mk G (Matrix.of y) hy` using `ext_mat G (by rw [mat_mk, mat_mul, mat_mk]; rfl)`. Use `show (if hy' : Matrix.of (PI.lmulQ (mat G (h⁻¹ : H).1) y) ∈ G then β (mk G (Matrix.of (PI.lmulQ (mat G (h⁻¹ : H).1) y)) hy')⁻¹ else 0) = _`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[dif_pos hm, hk, mul_inv_rev, Subgroup.coe_inv, inv_inv]`. Repeatedly rewrite using `[hval]`. Rewrite using `[hκeq, lintegral_smul_measure]`. Use `hβ1 (mk G (Matrix.of y) hy)⁻¹` as an intermediate fact. Unfold `Formalism.L2.SG.Pf.Weil.QuotInt.fib at this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this, smul_eq_mul, mul_one]`. Use `symm`. Establish `hden : Measurable fun y => c⁻¹ * φ y` using `measurable_const.mul hφm`. Use `(lintegral_withDensity_eq_lintegral_mul μG hden hin).trans ?_` and prove the remaining obligations. Simplify using `only [Pi.mul_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Use `lintegral_lintegral_swap ?_` and prove the remaining obligations. Conclude with `((measurable_const.mul (hφm.comp measurable_fst)).mul hF2).aemeasurable`. Use `_ = ∫⁻ h, ∫⁻ x, c⁻¹ * φ x * f (fun i j => (Matrix.of (e h) * Matrix.of x) i j) ∂μG ∂κ := by`. Rewrite using `[← hκmap, he.lintegral_map]`.
-
-Use `_ = ∫⁻ h, ∫⁻ y, c⁻¹ * φ (PI.lmulQ (mat G (h⁻¹ : H).1) y) * f y ∂μG ∂κ := lintegral_congr hsub`. Use `_ = ∫⁻ y, ∫⁻ h, c⁻¹ * φ (PI.lmulQ (mat G (h⁻¹ : H).1) y) * f y ∂κ ∂μG := by`. Use `lintegral_lintegral_swap ?_` and prove the remaining obligations. Establish `hc2 : Continuous fun p : H × PI.MtM m => PI.lmulQ (mat G (p.1⁻¹ : H).1) p.2`. Establish `h1 : Continuous fun p : H × PI.MtM m => (mat G (p.1⁻¹ : H).1)` using `(continuous_mat G).comp (continuous_subtype_val.comp (continuous_inv.comp continuous_fst))`.
-
-Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [PI.lmulQ, Matrix.mul_apply, Matrix.of_apply]`. Conclude with `continuous_finsetSum _ fun l _ => ((continuous_apply l).comp ((continuous_apply i).comp h1)).mul ((continuous_apply j).comp ((continuous_apply l).comp continuous_snd))`. Conclude with `((measurable_const.mul (hφm.comp hc2.measurable)).mul (hf.comp measurable_snd)).aemeasurable`. Use `_ = ∫⁻ y, f y ∂μG := by`.
-
-Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hGae] with y hy`. Establish `hmeas : Measurable fun h : H => φ (PI.lmulQ (mat G (h⁻¹ : H).1) y)`. Use `hφm.comp (Continuous.measurable ?_)` and prove the remaining obligations. Establish `h1 : Continuous fun h : H => (mat G (h⁻¹ : H).1)` using `(continuous_mat G).comp (continuous_subtype_val.comp continuous_inv)`.
-
-Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [PI.lmulQ, Matrix.mul_apply, Matrix.of_apply]`. Conclude with `continuous_finsetSum _ fun l _ => ((continuous_apply l).comp ((continuous_apply i).comp h1)).mul continuous_const`. Combine the equalities or inequalities in the displayed calculation. Establish `hmeas2 : Measurable fun h : H => c⁻¹ * φ (PI.lmulQ (mat G (h⁻¹ : H).1) y)` using `measurable_const.mul hmeas`.
-
-Rewrite using `[lintegral_mul_const (f y) hmeas2, lintegral_const_mul _ hmeas]`. Use `_ = f y := by rw [hone y hy, ENNReal.inv_mul_cancel hc0 hct, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotM_existsSF (hG : PI.IsMatGroup G) (hS : PI.IsMatGroup S) (hSG : S ⊆ G)
     {μG μS : Measure (PI.MtM m)} (hμG : PI.IsHaarOnM G μG) (hμS : PI.IsHaarOnM S μS) :
@@ -406,7 +396,7 @@ theorem quotM_existsSF (hG : PI.IsMatGroup G) (hS : PI.IsMatGroup S) (hSG : S �
 end Main
 
 /- English proof (translation)
-Take `⟨ν, -, hν⟩` from `quotM_existsSF hG hS hSG hμG hμS`. Conclude with `⟨ν, hν⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem quotM_exists {m : ℕ} {G S : Set (Matrix (Fin m) (Fin m) ℂ)} (hG : PI.IsMatGroup G)
     (hS : PI.IsMatGroup S) (hSG : S ⊆ G)
@@ -416,7 +406,7 @@ theorem quotM_exists {m : ℕ} {G S : Set (Matrix (Fin m) (Fin m) ℂ)} (hG : PI
   exact ⟨ν, hν⟩
 
 /- English proof (translation)
-Introduce `k r z hz hT μG μS hG hS`. Take `⟨h1, h2, h3, -, -⟩` from `quotient_measure_unitary_group k r z hz hT`. Take `⟨ν, -, hν⟩` from `quotM_existsSF h1 h2 h3 hG hS`. Conclude with `⟨ν, hν⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem quotMeasExists : ∀ (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ), Formalism.QuantumDeterminants.inWb k r z → 0 < Formalism.QuantumDeterminants.Tz k r z →
     ∀ μG μS : Measure (Formalism.QuantumDeterminants.Mt k r), Formalism.MainNotions.S.IsHaarOn (Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)) μG →
@@ -427,7 +417,7 @@ theorem quotMeasExists : ∀ (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ), Form
   exact ⟨ν, hν⟩
 
 /- English proof (translation)
-Introduce `k r z hz hT μG μS hG hS`. Take `⟨h1, h2, h3, -, -⟩` from `quotient_measure_unitary_group k r z hz hT`. Conclude with `quotM_existsSF h1 h2 h3 hG hS`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem quotMeasExistsSF : ∀ (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ), Formalism.QuantumDeterminants.inWb k r z → 0 < Formalism.QuantumDeterminants.Tz k r z →
     ∀ μG μS : Measure (Formalism.QuantumDeterminants.Mt k r), Formalism.MainNotions.S.IsHaarOn (Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)) μG →

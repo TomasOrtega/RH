@@ -6,7 +6,7 @@ open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af
 open scoped TensorProduct ContDiff Topology
 
 /- English proof (translation)
-Proceed by induction on `m using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp [hx, hy]`. Consider the case `tmul φ v => simp [mul_comm]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem ev_eq_cmp {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a d : ℕ}
     (m : Sm E a ⊗[ℂ] (Fin d → ℂ)) (j : Fin d) (g : GA E a) : ev m g j = (UpperTheory.V.Lit.Bor.cmp j m).1 g := by
@@ -16,9 +16,9 @@ private theorem ev_eq_cmp {E : Type} [Field E] [NumberField E] [IsTotallyComplex
   | tmul φ v => simp [mul_comm]
 
 /- English proof (translation)
-Establish `h : (fun i => e.symm (u i)) = fun i => ∑ k, b.repr (u i) k • e.symm (b k)`. Use function extensionality and compare the values at `i`. Use `conv_lhs => rw [← b.sum_repr (u i)]`. Simplify using `only [map_sum, map_smul]`. Rewrite using `[h]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(α.toMultilinearMap.map_sum (fun i k => b.repr (u i) k • e.symm (b k))).trans ?_` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun I _ => α.map_smul_univ _ _`.
+A detailed English derivation is pending.
 -/
 private theorem alt_expand {V W M : Type} [AddCommGroup V] [Module ℝ V] [AddCommGroup W] [Module ℝ W]
     [AddCommGroup M] [Module ℝ M] {q n : ℕ} (α : V [⋀^Fin q]→ₗ[ℝ] M) (e : V ≃ₗ[ℝ] W) (b : Module.Basis (Fin n) ℝ W)
@@ -33,19 +33,19 @@ private theorem alt_expand {V W M : Type} [AddCommGroup V] [Module ℝ V] [AddCo
   exact Finset.sum_congr rfl fun I _ => α.map_smul_univ _ _
 
 /- English proof (translation)
-Introduce `E _ _ _ a Ξ q v`. Take `⟨τ, h1, hτ, -, -, hi, hs⟩` from `secOne E a`. Set `b` to `Module.finBasis ℝ (HV E a)`. Set `u : HV E a → Fin q → HV E a` to `fun p i => (2 : ℝ)⁻¹ • sand (τ p)⁻¹ (v i)`. Use `⟨(Fin q → Fin (Module.finrank ℝ (HV E a))) × Fin Ξ.d, inferInstance, fun I i => hv.symm (b (I.1 i)), fun I => I.2, fun I p k => ((∏ i, b.repr (u p i) (I.1 i) : ℝ) : ℂ) * Ξ.mat (τ p) k I.2, fun p => toL (τ p).val, by simp only [h1]; rfl, hτ, fun I => ?_, fun U α w hc g x => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `contDiffAt_pi.2 fun k => ContDiffAt.mul ?_ ?_` and prove the remaining obligations. Use `Complex.ofRealCLM.contDiff.contDiffAt.comp (hOne E a) (f := fun p => ∏ i, b.repr (u p i) (I.1 i)) ?_` and prove the remaining obligations. Use `contDiffAt_prod fun i _ => ?_` and prove the remaining obligations. Establish `hu : ContDiffAt ℝ ∞ (fun p => u p i) (hOne E a)` using `(hi.clm_apply contDiffAt_const).const_smul _`. Conclude with `(LinearMap.toContinuousLinearMap (b.coord (I.1 i))).contDiff.contDiffAt.comp (hOne E a) hu`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(((matSmooth E a Ξ k I.2).1).contDiffAt (isOpen_invSet.mem_nhds (val_mem_invSet (τ (hOne E a))))).comp (hOne E a) hτ` as an intermediate fact. Simplify `this` using `only [Function.comp_def, extGL_val]`. Use `hs.mono fun p hp => ?_` and prove the remaining obligations. Establish `e1 : sand (g * τ p) (hOne E a) = sand g p`. Rewrite using `[map_mul, ContinuousLinearMap.mul_apply, hp]`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : ∀ i, (2 : ℝ) • sand (g * τ p) (u p i) = sand g (v i)` using `fun i => by`. Simplify using `only [u, map_smul, smul_smul]`. Rewrite using `[← ContinuousLinearMap.mul_apply, ← map_mul, mul_inv_cancel_right]`. Simplify using the standard rewrite rules. Establish `h` using `hc (g * τ p) x fun i => hv.symm (u p i)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearEquiv.apply_symm_apply, e1, e2] at h`. Establish `e3 : infGL E a (g * τ p) * finGL E a x = pt g x * infGL E a (τ p)` using `pt_mul g (τ p) x`. Simplify using `only [Tw, tp_apply, mulVecL_apply, h, e3, Matrix.mulVec_mulVec, ← map_mul, inv_mul_cancel_left, chart_val]`. Rewrite using `[alt_expand α hv b (u p)]`. Use function extensionality and compare the values at `k`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `e4 : ∀ (I : Fin q → Fin (Module.finrank ℝ (HV E a))) (r : ℝ) (y : GA E a), ev (r • α fun i => hv.symm (b (I i))) y = (r : ℂ) • ev (α fun i => hv.symm (b (I i))) y` using `fun I r y => by`. Rewrite using `[← algebraMap_smul ℂ r, map_smul]`. Both sides reduce to the same expression. Rewrite using `[map_sum]`. Simplify using `only [Finset.sum_apply, e4, Matrix.mulVec, dotProduct, Pi.smul_apply, ← ev_eq_cmp, Fintype.sum_prod_type, smul_eq_mul, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun I _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Lit.Geo.Cs.corrForm :
     CorrForm := by

@@ -14,9 +14,9 @@ section MemConj
 variable {D : D7} (X : HidaSetting D)
 
 /- English proof (translation)
-Unfold `Gr`. Establish `h1` using `Bm_mul_Bm' X`. Establish `h2 : Bm' X * Bm X = 1` using `Bm'_mul_Bm X`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (Bm X) (Bm' X), h1, Matrix.one_mul]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) * (((M⁻¹ : GL (Fin X.B.I.n) X.B.I.E) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) * Bm X) = Bm X`. Rewrite using `[← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]`. Rewrite using `[h3, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mc_gr_mul_inv (M : GL (Fin X.B.I.n) X.B.I.E) :
     Gr X (M : Matrix _ _ _) * Gr X (↑M⁻¹ : Matrix _ _ _) = 1 := by
@@ -31,15 +31,15 @@ theorem mc_gr_mul_inv (M : GL (Fin X.B.I.n) X.B.I.E) :
   rw [h3, h2]
 
 /- English proof (translation)
-Establish `hc : Formalism.UG.cT (starRingEnd X.B.I.E) (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) = (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E)ᴴ`. Use extensionality with `i j`. Unfold `Formalism.UG.cT`. Simplify using `[Matrix.conjTranspose_apply, starRingEnd_apply]`. Establish `hMJ : (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E)ᴴ * X.B.I.J * (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) = X.B.I.J`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← hc]`. Conclude with `hM`. Establish `hJB : JB X = (Bm X)ᴴ * X.B.I.J * Bm X`. Use extensionality with `k k'`. Unfold `JB hE Formalism.UG.hform Bm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.of_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, Finset.sum_mul, starRingEnd_apply]`. Rewrite using `[Finset.sum_comm]`. Establish `h1` using `Bm_mul_Bm' X`. Establish `h5 : ∀ Z : Matrix (Fin X.B.I.n) (Kap X) X.B.I.E, (Bm' X)ᴴ * ((Bm X)ᴴ * Z) = Z` using `fun Z => by`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.conjTranspose_mul, h1, Matrix.conjTranspose_one, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hJB]`. Unfold `Gr`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (Bm X) (Bm' X), h1, Matrix.one_mul, h5]`. Establish `h4 : (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E)ᴴ * (X.B.I.J * ((M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) * Bm X)) = X.B.I.J * Bm X`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hMJ]`. Rewrite using `[h4]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mc_gr_unitary (M : GL (Fin X.B.I.n) X.B.I.E) (hM : M ∈ Formalism.UG.UJ (starRingEnd X.B.I.E) X.B.I.J) :
     (Gr X (M : Matrix _ _ _))ᴴ * JB X * Gr X (M : Matrix _ _ _) = JB X := by
@@ -70,29 +70,27 @@ theorem mc_gr_unitary (M : GL (Fin X.B.I.n) X.B.I.E) (hM : M ∈ Formalism.UG.UJ
   rw [h4]
 
 /- English proof (translation)
-Introduce `D X M hM`. Use `letI : Invertible (2 : X.B.I.E) := invertibleOfNonzero two_ne_zero`. Establish `h1 : Gr X (M : Matrix _ _ _) * Gr X (↑M⁻¹ : Matrix _ _ _) = 1` using `mc_gr_mul_inv X M`. Establish `h2 : Gr X (↑M⁻¹ : Matrix _ _ _) * Gr X (M : Matrix _ _ _) = 1`. Use `mc_gr_mul_inv X M⁻¹` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis. Establish `hU` using `mc_gr_unitary X M hM`. Use `⟨fun Z => ?_, fun Z hZ => ?_, ?_⟩` and prove the remaining obligations. Establish `hBB : ∀ Y : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E, Bm X * (Bm' X * Y) = Y`. Introduce `Y`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Matrix.mul_assoc, Bm_mul_Bm', Matrix.one_mul]`. Unfold `Formalism.L2.SG.Pf.UnipB.gE`. Rewrite using `[← conj_cay h1]`. Unfold `Gr`. Simplify using `only [Matrix.mul_assoc, hBB, Bm_mul_Bm', Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Use `set G := Gr X (M : Matrix _ _ _) with hG`. Use `set G' := Gr X (↑M⁻¹ : Matrix _ _ _) with hG'`. Establish `hA : Gᴴ * JB X = JB X * G'`. Combine the equalities or inequalities in the displayed calculation. Establish `hB : G'ᴴ * JB X = JB X * G`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Gᴴ * (Zᴴ * JB X) * G := by rw [hB]; simp only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `_ = Gᴴ * (-(JB X * Z)) * G := by rw [hZ]`. Use `_ = -(Gᴴ * JB X * Z * G) := by simp only [Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc]`. Use `_ = -(JB X * (G' * Z * G)) := by rw [hA]; simp only [Matrix.mul_assoc]`. Take `⟨y, hy0, hy⟩` from `exists_integral_multiples ℤ ℚ ((Finset.univ.image fun ij : Kap X × Kap X => Gr X (↑M⁻¹ : Matrix _ _ _) ij.1 ij.2) ∪ (Finset.univ.image fun ij : Kap X × Kap X => Gr X (M : Matrix _ _ _) ij.1 ij.2))`. Establish `hint : ∀ z ∈ ((Finset.univ.image fun ij : Kap X × Kap X => Gr X (↑M⁻¹ : Matrix _ _ _) ij.1 ij.2) ∪ (Finset.univ.image fun ij : Kap X × Kap X => Gr X (M : Matrix _ _ _) ij.1 ij.2)), (y.natAbs : X.B.I.E) * z ∈ integralClosure ℤ X.B.I.E`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `z hz`. Rewrite using `[mem_integralClosure_iff]`. Establish `h` using `hy z hz`. Rewrite `h` using `[zsmul_eq_mul]`. Break down `Int.natAbs_eq y with e | e` into its components or cases.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `h` using `[e]`. Simplify using `using h`. Rewrite `h` using `[e]`. Establish `h'` using `h.neg`. Simplify `h'` using `[neg_mul]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hP : ∀ i j, (y.natAbs : X.B.I.E) * Gr X (↑M⁻¹ : Matrix _ _ _) i j ∈ integralClosure ℤ X.B.I.E` using `fun i j => hint _ (Finset.mem_union_left _ (Finset.mem_image.mpr ⟨(i, j), Finset.mem_univ _, rfl⟩))`. Establish `hQ : ∀ i j, (y.natAbs : X.B.I.E) * Gr X (M : Matrix _ _ _) i j ∈ integralClosure ℤ X.B.I.E` using `fun i j => hint _ (Finset.mem_union_right _ (Finset.mem_image.mpr ⟨(i, j), Finset.mem_univ _, rfl⟩))`. Set `P1 : Matrix (Kap X) (Kap X) (𝓞 X.B.I.E)` to `Matrix.of fun i j => ⟨_, hP i j⟩`. Set `Q1 : Matrix (Kap X) (Kap X) (𝓞 X.B.I.E)` to `Matrix.of fun i j => ⟨_, hQ i j⟩`. Establish `hP1 : P1.map (fun a => (a : X.B.I.E)) = (y.natAbs : X.B.I.E) • Gr X (↑M⁻¹ : Matrix _ _ _)`.
+Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use extensionality with `i j`. Both sides reduce to the same expression. Establish `hQ1 : Q1.map (fun a => (a : X.B.I.E)) = (y.natAbs : X.B.I.E) • Gr X (M : Matrix _ _ _)`. Use extensionality with `i j`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hmap : ∀ U V : Matrix (Kap X) (Kap X) (𝓞 X.B.I.E), (U * V).map (fun a => (a : X.B.I.E)) = U.map (fun a => (a : X.B.I.E)) * V.map (fun a => (a : X.B.I.E))` using `fun U V => Matrix.map_mul (f := algebraMap (𝓞 X.B.I.E) X.B.I.E)`. Use `⟨y.natAbs * y.natAbs, Nat.one_le_iff_ne_zero.mpr (mul_ne_zero (Int.natAbs_ne_zero.mpr hy0) (Int.natAbs_ne_zero.mpr hy0)), fun d A => ⟨P1 * A * Q1, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hmap, hmap, hP1, hQ1]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, smul_smul, Nat.cast_mul]`. Use `congr 1`.
-
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem memConjOf_holds : MemConjOf := by
   intro D X M hM

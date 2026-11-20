@@ -15,7 +15,7 @@ def PureW (ι : PadicAlgCl l ≃+* ℂ) (r : G ℚ Ω →* M4 (PadicAlgCl l)) : 
       ∀ x ∈ (r σ).charpoly.roots, ∀ y ∈ (r σ).charpoly.roots, y ≠ 0 → ‖ι x‖ < (p : ℝ) ^ f * ‖ι y‖
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem pureW' {ι : PadicAlgCl l ≃+* ℂ} {r : G ℚ Ω →* M4 (PadicAlgCl l)} (h : PureW ι r) : PureW ι r := h
 end
@@ -38,7 +38,7 @@ def ArithmeticPointDecomposition : Prop :=
 
 variable {B ι J}
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem end1W' (h : ArithmeticPointDecomposition B ι J) : ArithmeticPointDecomposition B ι J := h
 end

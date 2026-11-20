@@ -20,9 +20,9 @@ end GlobalTheory.HomStab.ConjMap
 
 open GlobalTheory.HomStab.ConjMap in
 /- English proof (translation)
-Introduce `k G H _ _ _ A B f₁ f₂ u₁ u₂ g hf hu n`. Establish `hf' : f₂ = (MulAut.conj g).toMonoidHom.comp f₁`. Use extensionality with `h`. Simplify using `[hf h]`. Establish `e : groupHomology.map f₂ u₂ n = groupHomology.map ((MulAut.conj g).toMonoidHom.comp f₁) (u₁ ≫ (Rep.resFunctor f₁).map (actHom B g)) n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply `groupHomology.map_congr hf'` to reduce the goal to its premises. Use extensionality with `a`. Simplify using `[hu a, actHom_apply]`. Both sides reduce to the same expression. Rewrite using `[e, groupHomology.map_comp, GlobalTheory.T.innerAut_acts_trivially_groupHomology k G g n B (actHom B g) (fun a => rfl), Category.comp_id]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem GlobalTheory.HomStab.groupHomology_map_conj : ∀ (k G H : Type) [CommRing k] [Group G] [Group H] (A : Rep k H) (B : Rep k G) (f₁ f₂ : H →* G) (u₁ : A ⟶ Rep.res f₁ B) (u₂ : A ⟶ Rep.res f₂ B) (g : G), (∀ h, f₂ h = g * f₁ h * g⁻¹) → (∀ a, u₂.hom a = B.ρ g (u₁.hom a)) → ∀ n : ℕ, groupHomology.map f₂ u₂ n = groupHomology.map f₁ u₁ n := by
   intro k G H _ _ _ A B f₁ f₂ u₁ u₂ g hf hu n

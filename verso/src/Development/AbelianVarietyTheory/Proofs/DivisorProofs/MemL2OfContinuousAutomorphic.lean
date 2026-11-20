@@ -16,9 +16,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.DefiniteSqInt
 
 /- English proof (translation)
-Introduce `D V K μ 𝓕 hV _ hμ u hu hinv`. Establish `hT` using `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Use `haveI := hT.2.2.2.2.2.2`. Use `hμ.1.1` as an intermediate fact. Take `⟨C, hC, hcov⟩` from `GlobalTheory.Mem.AnisoQuotient.exists_compact D V (GlobalTheory.BesselConvDefinite.isAniso_of_isDefinite V hV.1 hV.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcov' : ∀ g : GA D V, ∃ γ ∈ GQ V, γ * g ∈ C` using `fun g => by`. Take `⟨γ, hγ, c, hc, rfl⟩` from `hcov g`. Conclude with `⟨γ⁻¹, inv_mem hγ, by rwa [inv_mul_cancel_left]⟩`. Use `(GlobalTheory.AutomorphicL2Unitary.memL2_iff_fundamental_domain hμ.2).2 ⟨hinv, (memLp_two_iff_integrable_sq_norm hu.aestronglyMeasurable).2 ?_⟩` and prove the remaining obligations. Simplify `(GlobalTheory.integrableOn_fundamentalDomain_of_cocompact _ (GQ V) C hC hcov' μ inferInstance 𝓕 hμ.2 (fun g => u g ^ 2) (hu.pow 2) fun γ hγ g => by rw [hinv γ hγ]).norm` using `only [← _root_.norm_pow]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem memL2_of_continuous_definite : ∀ {D : D7} (V : HSp D) (K : Subgroup (GL (Fin V.rank) (Lev.EAf D))) (μ : Measure (GA D V)) (𝓕 : Set (GA D V)),
     GlobalTheory.IndefiniteRowSideFullHecke.ClassFunctionSumIntegral.IsDefiniteSpace V → GlobalTheory.IndefiniteRowSideFullHecke.ClassFunctionSumIntegral.IsOpenCompactLevel V K → Links.IsMeasDef V K μ 𝓕 →

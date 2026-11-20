@@ -7,7 +7,7 @@ open scoped InnerProductSpace
 namespace GlobalTheory
 
 /- English proof (translation)
-Unfold `hsNormSq hsInner`. Rewrite using `[Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `inner_self_eq_norm_sq (𝕜 := ℂ) _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hsNormSq_eq_sum_stdBasis {V H : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     [FiniteDimensional ℂ V] [NormedAddCommGroup H] [InnerProductSpace ℂ H] (A : V →L[ℂ] H) :
@@ -18,13 +18,11 @@ theorem hsNormSq_eq_sum_stdBasis {V H : Type} [NormedAddCommGroup V] [InnerProdu
   exact inner_self_eq_norm_sq (𝕜 := ℂ) _
 
 /- English proof (translation)
-Use `set e := stdOrthonormalBasis ℂ V with he`. Use `set f := stdOrthonormalBasis ℂ H`. Establish `key : ∀ (x : V) (y : H), ‖⟪y, A x⟫_ℂ‖ = ‖⟪x, (ContinuousLinearMap.adjoint A) y⟫_ℂ‖`. Introduce `x y`. Rewrite using `[← ContinuousLinearMap.adjoint_inner_left, norm_inner_symm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion repeatedly using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Repeatedly rewrite using `[f.sum_sq_norm_inner_right]`. Use `_ = ∑ j, ∑ i, ‖⟪v i, (ContinuousLinearMap.adjoint A) (f j)⟫_ℂ‖ ^ 2 := by`. Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[key]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Use `_ ≤ ∑ j, ‖(ContinuousLinearMap.adjoint A) (f j)‖ ^ 2 := Finset.sum_le_sum fun j _ => hv.sum_inner_products_le _`. Use `_ = ∑ j, ∑ i, ‖⟪e i, (ContinuousLinearMap.adjoint A) (f j)⟫_ℂ‖ ^ 2 := by`. Repeatedly rewrite using `[e.sum_sq_norm_inner_right]`. Use `_ = ∑ i, ∑ j, ‖⟪f j, A (e i)⟫_ℂ‖ ^ 2 := by`. Rewrite using `[Finset.sum_comm]`.
-
-Repeatedly rewrite using `[key]`. Use `_ = hsNormSq A := by`. Rewrite using `[hsNormSq_eq_sum_stdBasis, ← he]`. Repeatedly rewrite using `[f.sum_sq_norm_inner_right]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_norm_sq_le_hsNormSq {V H : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     [FiniteDimensional ℂ V] [NormedAddCommGroup H] [InnerProductSpace ℂ H] [FiniteDimensional ℂ H]

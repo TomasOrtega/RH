@@ -17,9 +17,7 @@ noncomputable section
 namespace GlobalTheory.MixHt.CycLoc
 
 /- English proof (translation)
-Use `letI : Algebra R S := e.toRingHom.toAlgebra`. Set `f : R ≃ₐ[R] S` to `AlgEquiv.ofRingEquiv (f := e) fun _ => rfl`. Rewrite using `[← Module.length_eq_of_surjective (S := R) (R := S) (M := S ⧸ Ideal.span {e a}) e.surjective]`. Conclude with `(Ideal.quotientEquivAlg (Ideal.span {a}) (Ideal.span {e a}) f (by`. Rewrite using `[Ideal.map_span, Set.image_singleton]`.
-
-Use the proof step `rfl)).toLinearEquiv.length_eq`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_quot_equiv (R S : Type) [CommRing R] [CommRing S] (e : R ≃+* S) (a : R) :
     Module.length R (R ⧸ Ideal.span {a}) = Module.length S (S ⧸ Ideal.span {e a}) := by
@@ -30,11 +28,11 @@ theorem length_quot_equiv (R S : Type) [CommRing R] [CommRing S] (e : R ≃+* S)
     rw [Ideal.map_span, Set.image_singleton]; rfl)).toLinearEquiv.length_eq
 
 /- English proof (translation)
-Use `((Ideal.finite_minimalPrimes_of_isNoetherianRing R (Ideal.span {a})).preimage (f := PrimeSpectrum.asIdeal) fun _ _ _ _ h => PrimeSpectrum.ext h).subset ?_` and prove the remaining obligations. Introduce and unpack `p ⟨hp, hap⟩`. Use `⟨⟨p.isPrime, (Ideal.span_singleton_le_iff_mem _).2 hap⟩, fun q hq hqp => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Use `hq.1` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h1 : q < p.asIdeal` using `lt_of_le_not_ge hqp hn`. Establish `h0 : (⊥ : Ideal R) < q` using `bot_lt_iff_ne_bot.2 fun h => ha (by simpa [h] using (Ideal.span_singleton_le_iff_mem _).1 hq.2)`. Establish `e1` using `Ideal.height_add_one_le_of_lt_of_isPrime h1`. Establish `e0` using `Ideal.height_add_one_le_of_lt_of_isPrime h0`. Rewrite `e1` using `[hp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: (⊥ : Ideal R).height + 1 + 1 ≤ 1` using `(add_le_add_left e0 1).trans e1`. Rewrite `this` using `[Ideal.height_bot]`. Conclude with `absurd this (by decide)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_height_one (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] (a : R) (ha : a ≠ 0) :
     {p : PrimeSpectrum R | p.asIdeal.height = 1 ∧ a ∈ p.asIdeal}.Finite := by
@@ -55,11 +53,11 @@ theorem finite_height_one (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing
   exact absurd this (by decide)
 
 /- English proof (translation)
-Set `y : Spec (X.presheaf.stalk x)` to `p`. Use `GlobalTheory.LocalRingGeneralisation.isIso_stalkMap_fromSpecStalk X x y` as an intermediate fact. Use `⟨(asIso ((X.fromSpecStalk x).stalkMap y) ≪≫ Spec.stalkIso _ y).commRingCatIsoToRingEquiv, ?_⟩` and prove the remaining obligations. Introduce `U hq hx s`. Establish `h1` using `Scheme.Hom.germ_stalkMap_apply (X.fromSpecStalk x) U y hq s`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `show (Spec.stalkIso _ y).hom ((X.fromSpecStalk x).stalkMap y ((X.presheaf.germ U _ hq).hom s)) = _`. Rewrite using `[h1, Scheme.fromSpecStalk_app hx]`. Establish `h2` using `congrArg (fun f => f.hom ((Scheme.ΓSpecIso (X.presheaf.stalk x)).inv.hom ((X.presheaf.germ U x hx).hom s))) (Spec.germ_stalkMapIso_hom (R := X.presheaf.stalk x) (x := y))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at h2`. Rewrite `h2` using `[← CommRingCat.comp_apply (Scheme.ΓSpecIso (X.presheaf.stalk x)).inv (Scheme.ΓSpecIso (X.presheaf.stalk x)).hom, Iso.inv_hom_id, CommRingCat.id_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ h2` and prove the remaining obligations. Simplify using `only [← CommRingCat.comp_apply, Category.assoc, TopCat.Presheaf.germ_res]`. Use `erw [TopCat.Presheaf.germ_res]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem stalk_equiv (X : Scheme.{0}) (x : X) (p : PrimeSpectrum (X.presheaf.stalk x)) :
     ∃ e : X.presheaf.stalk (X.fromSpecStalk x p) ≃+* Localization.AtPrime p.asIdeal,
@@ -83,13 +81,13 @@ theorem stalk_equiv (X : Scheme.{0}) (x : X) (p : PrimeSpectrum (X.presheaf.stal
   erw [TopCat.Presheaf.germ_res]
 
 /- English proof (translation)
-The claim follows from `(Scheme.range_fromSpecStalk (x := x)).le ⟨p, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem specializes_fromSpecStalk (X : Scheme.{0}) (x : X) (p : PrimeSpectrum (X.presheaf.stalk x)) :
     X.fromSpecStalk x p ⤳ x := (Scheme.range_fromSpecStalk (x := x)).le ⟨p, rfl⟩
 
 /- English proof (translation)
-Take `⟨e, -⟩` from `stalk_equiv X x p`. Establish `h1` using `ringKrullDim_stalk_eq_coheight (X.fromSpecStalk x p)`. Rewrite `h1` using `[ringKrullDim_eq_of_ringEquiv e, IsLocalization.AtPrime.ringKrullDim_eq_height p.asIdeal]`. Conclude with `h1.symm` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coheight_fromSpecStalk (X : Scheme.{0}) (x : X) (p : PrimeSpectrum (X.presheaf.stalk x)) :
     Order.coheight (X.fromSpecStalk x p) = p.asIdeal.height := by
@@ -99,7 +97,7 @@ theorem coheight_fromSpecStalk (X : Scheme.{0}) (x : X) (p : PrimeSpectrum (X.pr
   exact_mod_cast h1.symm
 
 /- English proof (translation)
-Establish `hzi : X.fromSpecStalk x p ∈ A.U i` using `(specializes_fromSpecStalk X x p).mem_open (A.U i).isOpen hi`. Take `⟨e, he⟩` from `stalk_equiv X x p`. Rewrite using `[Cartier.mem_nonzeroLocus_iff s i hzi, Scheme.mem_basicOpen _ _ _ hzi, ← MulEquiv.isUnit_map e, he _ hzi hi, IsLocalization.AtPrime.isUnit_to_map_iff _ p.asIdeal, Ideal.mem_primeCompl_iff]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_nonzeroLocus_iff_notMem {X : Scheme.{0}} {A : LB X} (s : A.Sec) {i : A.ι} {x : X} (hi : x ∈ A.U i)
     (p : PrimeSpectrum (X.presheaf.stalk x)) :
@@ -110,9 +108,9 @@ theorem mem_nonzeroLocus_iff_notMem {X : Scheme.{0}} {A : LB X} (s : A.Sec) {i :
     IsLocalization.AtPrime.isUnit_to_map_iff _ p.asIdeal, Ideal.mem_primeCompl_iff]
 
 /- English proof (translation)
-Set `g : PrimeSpectrum ((clo z).presheaf.stalk w)` to `⟨⊥, Ideal.isPrime_bot⟩`. Establish `hg : (clo z).fromSpecStalk w g = genericPoint (clo z)`. Establish `h` using `coheight_fromSpecStalk (clo z) w g`. Rewrite `h` using `[show g.asIdeal.height = 0 from Ideal.height_bot, Order.coheight_eq_zero]`. Conclude with `((genericPoint_specializes _).antisymm (h (show _ ≤ genericPoint (clo z) from genericPoint_specializes _))).eq.symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h : X.fromSpecStalk (cloι z w) (Spec.map ((cloι z).stalkMap w) g) = cloι z ((clo z).fromSpecStalk w g)` using `(Scheme.Hom.comp_apply _ _ _).symm.trans ((congrArg (fun f => f g) (Scheme.SpecMap_stalkMap_fromSpecStalk (cloι z) (x := w))).trans (Scheme.Hom.comp_apply _ _ _))`. Rewrite `h` using `[hg, cloι_genericPoint]`. Establish `h'` using `(X.fromSpecStalk (cloι z w)).isEmbedding.injective (h.trans hp.symm)`. Conclude with `congrArg PrimeSpectrum.asIdeal h'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ker_stalkMap_clo (X : Scheme.{0}) (z : X) (w : clo z) (p : PrimeSpectrum (X.presheaf.stalk (cloι z w)))
     (hp : X.fromSpecStalk (cloι z w) p = z) : RingHom.ker ((cloι z).stalkMap w).hom = p.asIdeal := by
@@ -129,7 +127,7 @@ theorem ker_stalkMap_clo (X : Scheme.{0}) (z : X) (w : clo z) (p : PrimeSpectrum
   exact congrArg PrimeSpectrum.asIdeal h'
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.germ_stalkMap_apply]`. Conclude with `TopCat.Presheaf.germ_res_apply _ _ _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem germ_secPull {X V : Scheme.{0}} {L : LB X} (s : L.Sec) (b : V ⟶ X) (v : V) (i : L.ι) (hi : b v ∈ L.U i)
     (hv : v ∈ (L.pull b).U fun _ => i) :
@@ -140,11 +138,11 @@ theorem germ_secPull {X V : Scheme.{0}} {L : LB X} (s : L.Sec) (b : V ⟶ X) (v 
 variable {k : Type} [CommRing k] {Y : Scheme.{0}} [IsIntegral Y] {q : Y ⟶ Sp k}
 
 /- English proof (translation)
-Establish `hB` using `GlobalTheory.MixHt.hasDim_basic k Y q hq`. Take `⟨m, hm⟩` from `hB.1`. Take `⟨d, -, hd⟩` from `hm (genericPoint Y)`. Establish `hY : topologicalKrullDim Y = d` using `(hB.2.2.2.2.2 Y d).1 hd`. Consider the cases of `d with`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero`. Take `⟨d', -, hd'⟩` from `hm z`. Use `GlobalTheory.T.coheight_add_pointClosureDim_eq_dim k Y q hq 0 hY z d' hd'` as an intermediate fact. Rewrite `this` using `[hz]`. Simplify using `at this`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `succ e => exact ((GlobalTheory.T.coheight_one_iff_pointClosure_dim_projArith k Y q hq e hY).2 z w hz).2`.
+Treat this case separately.
 -/
 theorem coheight_one_iff (hq : IsAmb q) {z : Y} (w : clo z) (hz : Order.coheight z = 1) :
     Order.coheight w = 1 ↔ Order.coheight (cloι z w) = 2 := by
@@ -161,7 +159,7 @@ theorem coheight_one_iff (hq : IsAmb q) {z : Y} (w : clo z) (hz : Order.coheight
   | succ e => exact ((GlobalTheory.T.coheight_one_iff_pointClosure_dim_projArith k Y q hq e hY).2 z w hz).2
 
 /- English proof (translation)
-Introduce `h0` and use `fnOf_sec_ne_zero hs (gen_mem hi) ((algebraMap_germ hi (s.f i)).symm.trans ((congrArg _ h0).trans (map_zero _)))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem germ_ne_zero {A : LB Y} {s : A.Sec} (hs : genericPoint Y ∈ nonzeroLocus s) {i : A.ι} {x : Y} (hi : x ∈ A.U i) :
     Y.presheaf.germ _ x hi (s.f i) ≠ 0 := fun h0 =>
@@ -170,7 +168,7 @@ theorem germ_ne_zero {A : LB Y} {s : A.Sec} (hs : genericPoint Y ∈ nonzeroLocu
 variable [IsLocallyNoetherian Y]
 
 /- English proof (translation)
-Establish `hzi : Y.fromSpecStalk x p ∈ A.U i` using `(specializes_fromSpecStalk Y x p).mem_open (A.U i).isOpen hi`. Take `⟨e, he⟩` from `stalk_equiv Y x p`. Rewrite using `[mult_divOfSec ((coheight_fromSpecStalk Y x p).trans hp) hzi, length_quot_equiv _ _ e, he _ hzi hi]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem mult_eq {A : LB Y} (hA : A.IsLB) (s : A.Sec) (hs : genericPoint Y ∈ nonzeroLocus s) {i : A.ι} {x : Y}
     (hi : x ∈ A.U i) (p : PrimeSpectrum (Y.presheaf.stalk x)) (hp : p.asIdeal.height = 1) :
@@ -182,13 +180,11 @@ theorem mult_eq {A : LB Y} (hA : A.IsLB) (s : A.Sec) (hs : genericPoint Y ∈ no
   rw [mult_divOfSec ((coheight_fromSpecStalk Y x p).trans hp) hzi, length_quot_equiv _ _ e, he _ hzi hi]
 
 /- English proof (translation)
-Establish `hzx : z ⤳ x` using `hz ▸ specializes_fromSpecStalk Y x p`. Establish `hz1 : Order.coheight z = 1` using `hz ▸ (coheight_fromSpecStalk Y x p).trans hp`. Establish `hzt : z ∈ nonzeroLocus t` using `hz ▸ (mem_nonzeroLocus_iff_notMem t hj p).2 ht`. Take `⟨w, rfl⟩ : x ∈ Set.range (cloι z)` from `hzx.mem_closed (cloι z).isClosedEmbedding.isClosed_range ⟨_, cloι_genericPoint z⟩`. Establish `h : genericPoint (clo z) ∈ nonzeroLocus (GlobalTheory.secPull t (cloι z))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.nonzeroLocus_secPull]`. Use `show cloι z (genericPoint (clo z)) ∈ nonzeroLocus t`. Rewrite using `[cloι_genericPoint]` and apply the resulting hypothesis. Establish `hw : w ∈ (B.pull (cloι z)).U fun _ => j` using `Set.mem_iInter.2 fun _ => hj`. Establish `hk` using `ker_stalkMap_clo Y z w p hz`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `e : (Y.presheaf.stalk (cloι z w) ⧸ p.asIdeal) ≃+* (clo z).presheaf.stalk w` to `(Ideal.quotEquivOfEq hk.symm).trans (RingHom.quotientKerEquivOfSurjective ((cloι z).stalkMap_surjective w))`. Rewrite using `[resCyc, dif_pos h, finsum_eq_single _ w fun w' hw' => by`. Rewrite using `[Set.indicator_of_notMem (s := {cloι z w}) (a := cloι z w') (fun e => hw' ((cloι z).isClosedEmbedding.injective (Set.mem_singleton_iff.1 e))), mul_zero],`. Use the proof step `Set.indicator_of_mem (Set.mem_singleton _), Pi.one_apply, mul_one,`. Use `mult_divOfSec ((coheight_one_iff hq w hz1).2 hx) hw, germ_secPull t _ w j hj, length_quot_equiv _ _ e, Int.cast_natCast]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem resCyc_eq (hq : IsAmb q) {B : LB Y} (hB : B.IsLB) (t : B.Sec) {j : B.ι} {x : Y} (hj : x ∈ B.U j)
     (hx : Order.coheight x = 2) (p : PrimeSpectrum (Y.presheaf.stalk x)) (hp : p.asIdeal.height = 1)
@@ -216,11 +212,11 @@ theorem resCyc_eq (hq : IsAmb q) {B : LB Y} (hB : B.IsLB) (t : B.Sec) {j : B.ι}
   rfl
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `mul_ne_zero_iff.1 h`. Establish `h1' : (divOfSec hA s hs).mult z ≠ 0` using `by exact_mod_cast h1`. Establish `hz` using `CartierDiv.coheight_eq_one_of_mult_ne_zero h1'`. Rewrite `h2` using `[resCyc]`. Use `split_ifs at h2 with h3`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `not_forall.1 (mt finsum_eq_zero_of_forall_eq_zero h2)`. Take `⟨h4, h5⟩` from `mul_ne_zero_iff.1 hw`. Establish `h6 : cloι z w = x` using `Set.mem_singleton_iff.1 (Set.mem_of_indicator_ne_zero h5)`. Establish `h7` using `CartierDiv.coheight_eq_one_of_mult_ne_zero (Int.cast_ne_zero.1 h4)`. Use `⟨h6 ▸ (coheight_one_iff hq w hz).1 h7, hz, fun h => notMem_supp_divOfSec.2 h (CartierDiv.mem_supp_of_mult_ne_zero h1'), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(genericPoint_specializes w).map (cloι z).continuous` as an intermediate fact. Rewrite `this` using `[cloι_genericPoint, h6]`. Then use the resulting hypothesis. Conclude with `absurd rfl h2`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem of_term_ne_zero (hq : IsAmb q) {A B : LB Y} (hA : A.IsLB) (hB : B.IsLB) (s : A.Sec) (t : B.Sec)
     (hs : genericPoint Y ∈ nonzeroLocus s) {x z : Y}
@@ -242,9 +238,9 @@ theorem of_term_ne_zero (hq : IsAmb q) {A B : LB Y} (hA : A.IsLB) (hB : B.IsLB) 
   · exact absurd rfl h2
 
 /- English proof (translation)
-Set `ι : PrimeSpectrum (Y.presheaf.stalk x) → Y` to `fun p => Y.fromSpecStalk x p`. Establish `hι : Function.Injective ι` using `(Y.fromSpecStalk x).isEmbedding.injective`. Rewrite using `[finsum_eq_sum_of_support_subset (s := P.image ι), Finset.sum_image fun _ _ _ _ h => hι h, Nat.cast_sum]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Rewrite using `[resCyc_eq hq hB t hj hx p ((hP p).1 hp).1 (hb p hp) rfl, mult_eq hA s hs hi p ((hP p).1 hp).1, Int.cast_natCast, Nat.cast_mul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `z hz`. Take `⟨-, h1, h2, h3⟩` from `of_term_ne_zero hq hA hB s t hs hz`. Take `⟨p, rfl⟩` from `(Scheme.range_fromSpecStalk (x := x)).ge h3`. Conclude with `Finset.mem_coe.2 (Finset.mem_image.2 ⟨p, (hP p).2 ⟨(coheight_fromSpecStalk Y x p).symm.trans h1, not_not.1 (mt (mem_nonzeroLocus_iff_notMem s hi p).2 h2)⟩, rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem finsum_eq (hq : IsAmb q) {A B : LB Y} (hA : A.IsLB) (hB : B.IsLB) (s : A.Sec) (t : B.Sec)
     (hs : genericPoint Y ∈ nonzeroLocus s) {x : Y} {i : A.ι} {j : B.ι} (hi : x ∈ A.U i) (hj : x ∈ B.U j)
@@ -277,11 +273,11 @@ namespace GlobalTheory.MixHt
 open CycLoc in
 
 /- English proof (translation)
-Introduce `k _ Y _ _ q hq A B hA hB s t hs ht hst x`. Distinguish the cases in `hx : Order.coheight x = 2`. Use `swap`. Rewrite using `[finsum_eq_zero_of_forall_eq_zero fun z => not_not.1 fun h => hx (of_term_ne_zero hq hA hB s t hs h).1, finsum_eq_zero_of_forall_eq_zero fun z => not_not.1 fun h => hx (of_term_ne_zero hq hB hA t s ht h).1]`. Take `⟨i, hi⟩` from `ReciprocityTheory.ChartRestriction.G.Geo.Tor.exists_chart hA x`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hj⟩` from `ReciprocityTheory.ChartRestriction.G.Geo.Tor.exists_chart hB x`. Establish `ha` using `germ_ne_zero hs hi`. Establish `hb` using `germ_ne_zero ht hj`. Establish `hP` using `fun p => (finite_height_one _ _ ha).mem_toFinset (a := p)`. Establish `hQ` using `fun p => (finite_height_one _ _ hb).mem_toFinset (a := p)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key (p : PrimeSpectrum (Y.presheaf.stalk x)) (h1 : p.asIdeal.height = 1) (h2 : Y.presheaf.germ _ x hi (s.f i) ∈ p.asIdeal) (h3 : Y.presheaf.germ _ x hj (t.f j) ∈ p.asIdeal) : False` using `(hst _ ((coheight_fromSpecStalk Y x p).trans h1)).elim (fun h => (mem_nonzeroLocus_iff_notMem s hi p).1 h h2) fun h => (mem_nonzeroLocus_iff_notMem t hj p).1 h h3`. Rewrite using `[finsum_eq hq hA hB s t hs hi hj hx _ hP fun p hp => key p ((hP p).1 hp).1 ((hP p).1 hp).2, finsum_eq hq hB hA t s ht hj hi hx _ hQ fun p hp h => key p ((hQ p).1 hp).1 h ((hQ p).1 hp).2]`. Use `congrArg _ (GlobalTheory.T.length_sum_height_one_disjoint_divisors _ ?_ _ _ ha hb _ _ hP hQ (Finset.disjoint_left.2 fun p hp hp' => key p ((hP p).1 hp).1 ((hP p).1 hp).2 ((hQ p).1 hp').2))` and prove the remaining obligations. Rewrite using `[ringKrullDim_stalk_eq_coheight, hx]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem finsum_mult_resCyc_indicator_symm : ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) [IsIntegral Y] [IsLocallyNoetherian Y] (q : Y ⟶ Sp k), IsAmb q → ∀ (A B : LB Y) (hA : A.IsLB) (hB : B.IsLB) (s : A.Sec) (t : B.Sec) (hs : genericPoint Y ∈ nonzeroLocus s) (ht : genericPoint Y ∈ nonzeroLocus t), (∀ z : Y, Order.coheight z = 1 → z ∈ nonzeroLocus s ∨ z ∈ nonzeroLocus t) → ∀ x : Y, ∑ᶠ z, ((divOfSec hA s hs).mult z : ℝ) * resCyc hB t (Set.indicator {x} 1) z = ∑ᶠ z, ((divOfSec hB t ht).mult z : ℝ) * resCyc hA s (Set.indicator {x} 1) z := by
   intro k _ Y _ _ q hq A B hA hB s t hs ht hst x

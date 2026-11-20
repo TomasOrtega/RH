@@ -17,41 +17,37 @@ namespace ReciprocityTheory.ChartRestriction.DS.Lap
 open ReciprocityTheory.ChartRestriction.DS TransportMapLinear
 
 /- English proof (translation)
-Introduce `k r ε u lam h H _ _ _ σ D E V T μ ι hσ hD hV hc hVK hμ hcoef hp hq hsg hHC hGap z c Vp _ _ _ π μW μN P hP hB x₀ w ξ s x hx₀ hHC' hGap' hx hper`. Take `⟨hq0, hNeed⟩` from `gapNeed k r ε h hp hq hsg`. Establish `hmin : 1 ≤ min (pOf ε) (qOf ε)` using `hq0`. Establish `hp1 : 1 ≤ pOf ε` using `le_trans hmin (min_le_left _ _)`. Establish `hq1 : 1 ≤ qOf ε` using `le_trans hmin (min_le_right _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGL : GapLap ε lam h` using `⟨hHC.1, hGap, hNeed⟩`. Establish `hstd : StdGap ε (lam - Pi.single s 1)` using `⟨hHC'.1, h, hGap', by linarith [LemK.three_add_le_gapBound_dual ε]⟩`. Establish `hE` using `hD.glRep`. Establish `hU : IsInfUnitary ε E` using `isInfUnitary_of_isDerivedOn hσ hD`. Establish `hR` using `rreg_isURepOn ε`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDR` using `isDerivedOn_smE hR`. Establish `hUR : IsInfUnitary ε (smE ε (rreg ε))` using `Base.smInfUnitary _ ε (L2 ε) (rreg ε) hR`. Use `set G : Submodule ℂ (Fin (2 * r + k + 1) → D) := Submodule.pi Set.univ (fun _ => genSub E V) with hGdef`. Use `set X : Submodule ℂ (Fin (2 * r + k + 1) → D) := LemK.Xs (LemK.eeVd E) (genSub E V) (LemK.thVd lam s) with hXdef`. Use `set L := tMapDL (D := D) σ (xJ P z) x₀ ((w : D) : H) with hLdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmemG : ∀ f, f ∈ G ↔ ∀ c, f c ∈ genSub E V` using `fun f => LemK.mem_pi_submodule_iff`. Establish `hXG : X ≤ G` using `fun f hf => (hmemG f).2 (LemK.mem_euler_eigenspace_iff.1 hf).1`. Establish `hGs : ∀ a b, ∀ v ∈ genSub E V, E a b v ∈ genSub E V` using `fun a b v hv => LemK.generated_submodule_stable_under_action V a b hv`. Establish `hGA : ∀ a b, ∀ f ∈ G, LemK.tensVd E a b f ∈ G` using `fun a b f hf => (hmemG _).2 (LemK.dualTensorAction_mem hGs a b ((hmemG f).1 hf))`. Establish `hXA : ∀ a b, ∀ f ∈ X, LemK.tensVd E a b f ∈ X` using `fun a b f hf => LemK.euler_eigenspace_stable_under_action hE hGs a b hf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hspec` using `fun (f : Fin (2 * r + k + 1) → D) (hf : f ∈ G) => tMapD_spec k r ε lam h H σ D E V T μ ι hσ hD hV hc hVK hμ hcoef hp hq hsg hHC hGap (xJ P z) x₀ w hx₀ f ((hmemG f).1 hf)`. Establish `hsm : ∀ f ∈ G, IsSmoothL2 ε (L f)` using `fun f hf => (hspec f hf).1`. Establish `hder : ∀ f ∈ G, ∀ a b, ∀ g ∈ UJset ε, Formalism.REAL.Eab ε a b (L f) g = L (LemK.tensVd E a b f) g` using `fun f hf a b g hg => (hspec f hf).2.1 a b g hg`. Take `⟨Tl, hTl, hTint⟩` from `exists_lin ε (LemK.tensVd E) G L hsm hGA hder`. Establish `hbd : ∀ f ∈ G, ∃ C : ℝ, ∀ g ∈ UJset ε, ‖L f g‖ ≤ C * frob g ^ (1 - aExp ε h)` using `fun f hf => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨C, hC⟩` from `(hspec f hf).2.2 []`. Conclude with `⟨C, hC⟩`. Establish `hcont : ∀ f ∈ G, ContinuousOn (L f) (UJset ε)` using `fun f hf => QuotA.contOn_of_smooth (hsm f hf).1`. Use `set ψ := Formalism.MainNotions.S.psiGen k r z c with hψdef`. Set `Z : Submodule ℂ (Fin (2 * r + k + 1) → D)` to `{ carrier := {y | y ∈ X ∧ ∀ g ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r), per P μW μN ψ π (L y) ξ g = 0} add_mem' := by`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `y₁ y₂ ⟨h1X, h1⟩ ⟨h2X, h2⟩`. Use `⟨X.add_mem h1X h2X, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, QuotA.per_add hP hB hp hq hsg (hcont _ (hXG h1X)) (hbd _ (hXG h1X)) (hcont _ (hXG h2X)) (hbd _ (hXG h2X)) ξ hg, h1 g hg, h2 g hg, add_zero]`. Use the proof step `zero_mem' := by`. Use `⟨X.zero_mem, fun g hg => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `QuotA.per_smul P μW μN ψ π 0 0 ξ g` as an intermediate fact. Rewrite `this` using `[zero_smul, zero_smul]`. Rewrite using `[map_zero, this]`. Use the proof step `smul_mem' := by`. Introduce and unpack `a y ⟨hyX, hy⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨X.smul_mem a hyX, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, QuotA.per_smul, hy g hg, smul_zero] }`. Establish `hmemZ : ∀ y, y ∈ Z ↔ y ∈ X ∧ ∀ g ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r), per P μW μN ψ π (L y) ξ g = 0` using `fun y => Iff.rfl`. Establish `hZX : Z ≤ X` using `fun y hy => ((hmemZ y).1 hy).1`. Establish `hZA : ∀ a b, ∀ y ∈ Z, LemK.tensVd E a b y ∈ Z`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b y hy`. Take `⟨hyX, hy0⟩` from `(hmemZ y).1 hy`. Use `(hmemZ _).2 ⟨hXA a b y hyX, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[← QuotA.per_congr hP hB ψ (fun g' hg' => hder y (hXG hyX) a b g' hg') ξ hg, (per_spec k r ε u h z c Vp π μW μN P hP hB hp hq hsg).2 (L y) (hsm y (hXG hyX)).1 (fun wd => (hspec y (hXG hyX)).2.2 wd) a b g hg ξ]`. Conclude with `QuotA.eabB_zero hP (fun y' hy' => hy0 y' hy') a b hg`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hZφ : ∀ y ∈ X, ∀ y' ∈ Z, Tl y = Tl y' → y ∈ Z`. Introduce `y hy y' hy' he`. Establish `e` using `congrArg Subtype.val he`. Rewrite `e` using `[hTl y (hXG hy), hTl y' (hXG (hZX hy'))]`. Establish `hEq` using `QuotA.eqOn_unitary_of_toL2_eq (hsm y (hXG hy)) (hsm y' (hXG (hZX hy'))) e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hmemZ y).2 ⟨hy, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[QuotA.per_congr hP hB ψ hEq ξ hg]`. Conclude with `((hmemZ y').1 hy').2 g hg`. Establish `hxZ : x ∉ Z`. Introduce `hxZ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨g, hg, hne⟩` from `hper`. Conclude with `hne (((hmemZ x).1 hxZ).2 g hg)`. Establish `hkfin : ∀ x' ∈ X, ∃ S : Submodule ℂ (Fin (2 * r + k + 1) → D), S ≤ X ∧ FiniteDimensional ℂ S ∧ IsKStableSub ε (LemK.tensVd E) S ∧ x' ∈ S` using `fun x' hx' => LemK.eigenspace_K_finite hE hV.1 hV.2.1 hx'`. Establish `hK2` using `(LemK.k2Vd _ ε lam h H σ D E V s hσ hD hV hc hVK hHC.2 hHC.1 hGL hp1 hq1).2`. Establish `hK3 : ∀ ψ' : (Fin (2 * r + k + 1) → D) →ₗ[ℂ] smD ε (rreg ε), (∀ a b, ∀ y ∈ G, ψ' (LemK.tensVd E a b y) = smE ε (rreg ε) a b (ψ' y)) → ∀ x' ∈ X, ψ' x' ≠ 0 → ∃ W : Submodule ℂ (smD ε (rreg ε)), W ≤ X.map ψ' ∧ IsKIrrHW ε (smE ε (rreg ε)) (lowK ε (lam - Pi.single s 1)) W ∧ ∀ v ∈ W, c …`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `ψ' hψ' x' hx' hψx'`. Conclude with `LemK.k3Vd _ ε lam h H σ D E V s (smD ε (rreg ε)) (smE ε (rreg ε)) ψ' x' hσ hD hV hc hVK hHC.2 hHC.1 hGL hp1 hq1 hHC'.1 hDR.glRep hUR (fun a b f hf => hψ' a b f ((hmemG f).2 hf)) hx' hψx'`. Establish `hline : ∃ ys ∈ X, ∀ ψ' : (Fin (2 * r + k + 1) → D) →ₗ[ℂ] smD ε (rreg ε), (∀ a b, ∀ y ∈ G, ψ' (LemK.tensVd E a b y) = smE ε (rreg ε) a b (ψ' y)) → ∀ w' ∈ X.map ψ', IsKHWVec ε (smE ε (rreg ε)) (lowK ε (lam - Pi.single s 1)) w' → ∃ c : ℂ, w' = c • ψ' ys`. Take `⟨ys, hys, hl⟩` from `line (isKUnitary_of_isInfUnitary hU) X (lowK ε (lam - Pi.single s 1)) hkfin hK2`. Conclude with `⟨ys, hys, fun ψ' hψ' w' hw' hwK => hl _ (smE ε (rreg ε)) ψ' (fun a b _ x' hx' => hψ' a b x' (hXG hx')) w' hw' hwK⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Take `⟨Y', W, hY'X, hW, hY'Z, hirr, hcas, hK⟩` from `QuotA.quot_generic (LemK.tensVd E) G X Z (lam - Pi.single s 1) hstd Tl hXG hTint hK3 hline hkfin hZX hZA hZφ hx hxZ`. Use `⟨Y'.map L, W, ?_, ?_, hirr, hcas, hK, ?_⟩` and prove the remaining obligations. Introduce and unpack `F hF`. Take `⟨y, hy, rfl⟩` from `Submodule.mem_map.1 hF`. Conclude with `⟨y, hY'X hy, rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce `v`. Rewrite using `[hW]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨L y, Submodule.mem_map_of_mem hy, hTl y (hXG (hY'X hy))⟩`.
-
-Introduce and unpack `⟨F, hF, hv⟩`. Take `⟨y, hy, rfl⟩` from `Submodule.mem_map.1 hF`. Conclude with `⟨y, hy, Subtype.ext (hv.trans (hTl y (hXG (hY'X hy))).symm)⟩`. Introduce and unpack `F hF hF0`. Take `⟨y, hy, rfl⟩` from `Submodule.mem_map.1 hF`.
-
-Establish `hyZ : y ∈ Z` using `(hmemZ y).2 ⟨hY'X hy, hF0⟩`. Rewrite using `[hY'Z y hy hyZ, map_zero]`. Introduce `g _`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem quotM : QuotMStatement := by
   intro k r ε u lam h H _ _ _ σ D E V T μ ι hσ hD hV hc hVK hμ hcoef hp hq hsg hHC hGap z c Vp _ _ _ π μW μN

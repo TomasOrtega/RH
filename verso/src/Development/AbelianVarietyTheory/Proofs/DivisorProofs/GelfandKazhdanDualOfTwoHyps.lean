@@ -14,7 +14,7 @@ open NumberField IsDedekindDomain Formalism.L2.Host GlobalTheory.CuspRep GlobalT
 namespace GlobalTheory.GelfandKazhdanTop
 
 /- English proof (translation)
-Introduce `hJ hA` and use `gelfandKazhdanDual_of_rapidDecay hJ hA (GlobalTheory.cuspRapidDecaySiegelGL_of_finite hA)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem gelfandKazhdanDual_of_jacquetShalika : GlobalTheory.Published.JacquetShalika → GlobalTheory.Published.AutomorphicFormsFiniteGL →
     GlobalTheory.Published.GelfandKazhdanDual :=

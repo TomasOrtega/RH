@@ -9,7 +9,7 @@ namespace GlobalTheory.CompanionTheory.SurjectionOntoH4.ThetaEmpty
 open CrystallineSemistableComparison.Onto GlobalTheory.CompanionTheory.SurjectionOntoH4
 
 /- English proof (translation)
-Establish `h : (toR C ∅ : A → C.R ∅) = C.base.symm` using `funext fun a => C.res_id ∅ _ _`. Rewrite using `[h]`. Conclude with `C.base.symm.bijective`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toR_empty_bijective {K : Type} [Field K] {n d : ℕ} {A : Type} [CommRing A] [Algebra K A]
     (C : ChartRings K A n d) : Function.Bijective (toR C ∅) := by
@@ -18,11 +18,11 @@ theorem toR_empty_bijective {K : Type} [Field K] {n d : ℕ} {A : Type} [CommRin
   exact C.base.symm.bijective
 
 /- English proof (translation)
-Introduce `K _ n d A _ _ C`. Set `e : Bp K n d ≃ₐ[K] R0 K n d ∅` to `AlgEquiv.ofBijective (poly n K ∅) PolyBij.poly_bijective`. Set `θ : R0 K n d ∅ →ₐ[K] C.R ∅` to `(toR C ∅).comp ((phi C).comp e.symm.toAlgHom)`. Establish `hθ : ∀ b, θ (poly n K ∅ b) = toR C ∅ (phi C b)` using `fun b => by`. Establish `hb : e.symm (poly n K ∅ b) = b` using `e.symm_apply_apply b`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `toR C ∅ (phi C (e.symm (poly n K ∅ b))) = _`. Rewrite using `[hb]`. Use `⟨θ, hθ, ?_⟩` and prove the remaining obligations. Set `eM : Bp K n d ≃ₗ[Bp K n d] R0 K n d ∅` to `LinearEquiv.ofBijective (Algebra.linearMap (Bp K n d) (R0 K n d ∅)) PolyBij.poly_bijective`. Set `eN : Aa C ≃ₗ[Aa C] Rb C ∅` to `LinearEquiv.ofBijective (Algebra.linearMap (Aa C) (Rb C ∅)) (toR_empty_bijective C)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `(IsBaseChange.iff_of_equiv_comm (f := Algebra.linearMap (Bp K n d) (Aa C)) eM eN ?_).mp (IsBaseChange.linearMap (Bp K n d) (Aa C))` and prove the remaining obligations. Use `LinearMap.ext fun b => ?_` and prove the remaining obligations. Conclude with `hθ b`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem theta_empty : ∀ {K : Type} [Field K] {n d : ℕ} {A : Type} [CommRing A] [Algebra K A] (C : ChartRings K A n d),
     ∃ (θ : R0 K n d ∅ →ₐ[K] C.R ∅) (hθ : ∀ b, θ (poly n K ∅ b) = toR C ∅ (phi C b)),

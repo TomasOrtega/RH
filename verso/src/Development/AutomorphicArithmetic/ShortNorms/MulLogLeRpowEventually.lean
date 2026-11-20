@@ -6,9 +6,9 @@ import Development.AutomorphicArithmetic.CoprimeRanks.SecondSetNoRelation
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Formalism.HC GlobalTheory.EX UpperTheory.Top HostParam.Seam
 
 /- English proof (translation)
-Establish `h` using `(isLittleO_log_rpow_atTop ha).bound (show (0:ℝ) < 1 / C by positivity)`. Take `⟨x1, hx1⟩` from `Filter.eventually_atTop.mp h`. Use `⟨max x1 1, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hx1'` using `hx1 x (le_trans (le_max_left _ _) hx)`. Establish `hxone : 1 ≤ x` using `le_trans (le_max_right _ _) hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlog : 0 ≤ Real.log x` using `Real.log_nonneg hxone`. Establish `hpow : 0 ≤ x ^ a` using `Real.rpow_nonneg (by linarith) a`. Rewrite `hx1'` using `[Real.norm_of_nonneg hlog, Real.norm_of_nonneg hpow]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 private theorem mul_log_le_rpow_eventually (a C : ℝ) (ha : 0 < a) (hC : 0 < C) :
     ∃ x0 : ℝ, ∀ x, x0 ≤ x → C * Real.log x ≤ x ^ a := by
@@ -24,27 +24,27 @@ private theorem mul_log_le_rpow_eventually (a C : ℝ) (ha : 0 < a) (hC : 0 < C)
     _ = x ^ a := by field_simp
 
 /- English proof (translation)
-Introduce `eps C0 he0 he1`. Take `⟨x1, hx1⟩` from `rank_basic_bounds eps he0 he1`. Establish `hC1pos : 0 < max C0 1` using `lt_of_lt_of_le one_pos (le_max_right _ _)`. Take `⟨x2, hx2⟩` from `mul_log_le_rpow_eventually (eps / 5 / max C0 1) 814 (by positivity) (by norm_num)`. Use `⟨max (max x1 x2) 6, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `s R Y q d hs hx hR hJ hP hW`. Establish `hxx1 : x1 ≤ s.x` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hx`. Establish `hxx2 : x2 ≤ s.x` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hx`. Establish `hx6 : (6:ℝ) ≤ s.x` using `le_trans (le_max_right _ _) hx`. Establish `hX0 : 0 < s.x` using `by linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, -, hr5, -, -, -, -, -, -, -, -, -, -, ht401, -⟩` from `hx1 s R hs hxx1 hR`. Rewrite `hr5` using `[show (5:ℝ) = ((5:ℕ):ℝ) by norm_num, Real.rpow_natCast]`. Rewrite `ht401` using `[show (401:ℝ) = ((401:ℕ):ℝ) by norm_num, Real.rpow_natCast]`. Establish `hJ1 : s.J ≤ max C0 1` using `le_trans hJ (le_max_left _ _)`. Establish `hYlo : s.x ^ (1 / max C0 1) ≤ Y` using `hP.rpow_inv_le hJ1`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hYe : s.x ^ (eps / 5 / max C0 1) ≤ Y ^ (eps / 5)`. Establish `h : s.x ^ (eps / 5 / max C0 1) = (s.x ^ (1 / max C0 1)) ^ (eps / 5)`. Rewrite using `[← Real.rpow_mul hX0.le]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[h]`. Conclude with `Real.rpow_le_rpow (by positivity) hYlo (by positivity)`. Establish `hlogx` using `hx2 s.x hxx2`. Establish `hq` using `hW.q_lo`. Establish `hqlog : 407 * Real.log s.x < Real.log q` using `by linarith`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq0 : (0:ℝ) < q` using `by exact_mod_cast hW.q_prime.pos`. Establish `hqbig : s.x ^ (407:ℕ) < (q:ℝ)`. Rewrite using `[← Real.log_lt_log_iff (by positivity) hq0, Real.log_pow]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `ht0 : (0:ℝ) ≤ R.t` using `by positivity`. Establish `hr0 : (0:ℝ) ≤ R.r` using `by positivity`. Establish `htr : (R.t:ℝ) * R.r ≤ s.x ^ 401 * s.x ^ 5` using `mul_le_mul ht401 hr5 hr0 (by positivity)`. Establish `e1 : s.x ^ 401 * s.x ^ 5 = s.x ^ 406` using `by ring`. Establish `e2 : s.x ^ 407 = s.x * s.x ^ 406` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (216:ℝ) ≤ s.x ^ 406`. Establish `a1 : s.x ^ 3 ≤ s.x ^ 406` using `pow_le_pow_right₀ (by linarith) (by norm_num)`. Establish `a2 : (6:ℝ) ^ 3 ≤ s.x ^ 3` using `pow_le_pow_left₀ (by norm_num) hx6 3`. Evaluate the numerical expressions using `at a2`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h4 : 6 * s.x ^ 406 ≤ s.x * s.x ^ 406` using `mul_le_mul_of_nonneg_right hx6 (by positivity)`. Establish `hqR : ((4 * R.t * R.r + 2 : ℕ) : ℝ) < q`. Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities. Establish `hqR' : ((102 : ℕ) : ℝ) < q`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities. Establish `hqN : 4 * R.t * R.r + 2 < q` using `by exact_mod_cast hqR`. Establish `hqN' : 102 < q` using `by exact_mod_cast hqR'`. Establish `hqd : q ≤ d + 1` using `Nat.le_of_dvd (Nat.succ_pos _) hW.d_q`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `4 * R.t * R.r = P at *`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem UpperTheory.T3.qdBig :
     ∀ eps C0 : ℝ, 0 < eps → eps < 1 / 52 → ∃ x0 : ℝ, ∀ (s : Scale) (R : Ranks) (Y : ℝ) (q d : ℕ), s.eps = eps → x0 ≤ s.x →

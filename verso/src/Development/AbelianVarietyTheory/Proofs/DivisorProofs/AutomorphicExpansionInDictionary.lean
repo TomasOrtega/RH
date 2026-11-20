@@ -10,7 +10,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.HolRead.Descent
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Use `show ((γ * γ' : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ = (γ : Matrix (Fin r) (Fin r) E).map τ.1 * ((γ' : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ)`. Rewrite using `[Units.val_mul, Matrix.map_mul, Matrix.mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lact_mul {E : Type} [Field E] {Ψ : Finset (E →+* ℂ)} {r : ℕ} (γ γ' : GL (Fin r) E) (x : Frame Ψ r) :
     lact (γ * γ') x = lact γ (lact γ' x) := by
@@ -20,7 +20,7 @@ theorem lact_mul {E : Type} [Field E] {Ψ : Finset (E →+* ℂ)} {r : ℕ} (γ 
   rw [Units.val_mul, Matrix.map_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Use `show (γ : Matrix (Fin r) (Fin r) E).map τ.1 * (mat x τ * mat b τ) = ((γ : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ) * mat b τ`. Rewrite using `[Matrix.mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lact_rmul {E : Type} [Field E] {Ψ : Finset (E →+* ℂ)} {r : ℕ} (γ : GL (Fin r) E) (x b : Frame Ψ r) :
     lact γ (rmul x b) = rmul (lact γ x) b := by
@@ -30,16 +30,16 @@ theorem lact_rmul {E : Type} [Field E] {Ψ : Finset (E →+* ℂ)} {r : ℕ} (γ
   rw [Matrix.mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [archM, map_mul, Units.val_mul, Matrix.map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem archM_mul {D : D7} (V : HSp D) (θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ) (a b : GA D V) :
     archM V θ (a * b) = archM V θ a * archM V θ b := by
   simp only [archM, map_mul, Units.val_mul, Matrix.map_mul]
 
 /- English proof (translation)
-Rewrite using `[Matrix.isUnit_iff_isUnit_det, isUnit_iff_ne_zero]`. Introduce `h0`. Establish `h1` using `congrArg Matrix.det (h ρ)`. Rewrite `h1` using `[Matrix.det_mul, h0, mul_zero, Matrix.det_diagonal]`. Use `(Finset.prod_ne_zero_iff.2 fun c _ => ?_) h1.symm` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isUnit_of_negFirst {D : D7} {V : HSp D} {q : ℕ} {x : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (h : NegFirst V q x) (ρ : D.what₂.Tau) : IsUnit (x ρ) := by
@@ -51,7 +51,7 @@ theorem isUnit_of_negFirst {D : D7} {V : HSp D} {q : ℕ} {x : D.what₂.Tau →
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `e` using `(h ρ ⟨tauE D ρ, (hM.1 _).2 ⟨ρ, rfl⟩⟩ rfl).symm.trans (h' ρ ⟨tauE D ρ, (hM.1 _).2 ⟨ρ, rfl⟩⟩ rfl)`. Conclude with `(isUnit_of_negFirst hx ρ).mul_right_cancel ((Matrix.reindex _ _).injective e)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem archM_eq_of_frIs {D : D7} {θ : InfFam D} {V : HSp D} {r : ℕ} {hr : V.rank = r} {X : Data D.host.E r}
     {x : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ} (hM : ModelOf V hr X) (hx : NegFirst V X.p0 x)
@@ -61,25 +61,25 @@ theorem archM_eq_of_frIs {D : D7} {θ : InfFam D} {V : HSp D} {r : ℕ} {hr : V.
   exact (isUnit_of_negFirst hx ρ).mul_right_cancel ((Matrix.reindex _ _).injective e)
 
 /- English proof (translation)
-Introduce `D θ V r hr Comp X dict Kf x₀ la ψ hθ hB hχ hL hR hQ`. Take `⟨hB1, hB2, hB3⟩` from `hB`. Establish `hF : ∀ (k : Comp) (h h' : GA D V) (z : Frame (X k).Ψ r), ∀ γ ∈ (X k).Γ, dict h = ⟨k, z⟩ → dict h' = ⟨k, lact γ z⟩ → ψ h' = ψ h`. Introduce `k h h' z γ hγ e e'`. Establish `key : ∀ p : Σ k, Frame (X k).Ψ r, p = ⟨k, z⟩ → ∃ γ' ∈ (X p.1).Γ, dict h' = ⟨p.1, lact γ' p.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce and unpack `p rfl`. Conclude with `⟨γ, hγ, e'⟩`. Take `⟨δ, hδ, κ, hκ, rfl⟩` from `hB3 h h' (key _ e)`. Rewrite using `[hR κ hκ, hL δ hδ]`. Establish `hK : ∀ k : Comp, ∃ Q : Frame (X k).Ψ r → ℂ, DifferentiableOn ℂ Q (X k).dom ∧ (∀ y ∈ (X k).dom, ∀ b ∈ Bor (X k).Ψ r, Q (rmul y b) = bchar (la k) b * Q y) ∧ ∀ y, IsUnitFr (X k) y → ∃ h, ∃ γ ∈ (X k).Γ, dict h = ⟨k, lact γ y⟩ ∧ Q y = ψ h`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `k`. Take `⟨hM, hN, g, rfl⟩` from `hB1 k`. Take `⟨U1, U2, -, U4, -⟩` from `GlobalTheory.T.frame_unit_correspondence D θ V r hr (X (dict g).1) x₀ hθ hM hN`. Take `⟨γ, hγ, hfr, hu⟩` from `hB2 g`. Take `⟨a, ha, hfa⟩` from `U2 _ (U1 _ _ hfr)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `ea` using `archM_eq_of_frIs hM hN hfr hfa`. Take `⟨Q, hQ1, hQ2, hQ3⟩` from `hQ (dict g).1 (γ * g * a⁻¹)`. Use `⟨Q, hQ1, hQ2, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨v, hv, hfv⟩` from `U2 y hy`. Take `⟨γ', hγ', y', hd, hfy'⟩` from `hu (a⁻¹ * v) (mul_mem (inv_mem ha) hv)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hfy : FrIs θ V hr (X (dict g).1) x₀ v y'`. Introduce `ρ τ hτ`. Rewrite using `[hfy' ρ τ hτ, archM_mul V _ (γ * g), ea ρ, ← archM_mul, mul_inv_cancel_left]`. Take `rfl : y' = y` from `U4 v _ _ hfy hfv`. Use `⟨_, γ', hγ', hd, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hQ3 v hv _ hfv, ← hL γ hγ (g * (a⁻¹ * v))]`. Simplify using `only [mul_assoc]`. Use `choose P hP1 hP2 hP3 using hK`. Use `⟨P, fun k => ⟨hP1 k, hP2 k, fun γ hγ x hx => ?_⟩, fun g => ?_, fun C hC k x hx => ?_⟩` and prove the remaining obligations. Take `⟨G1, G2, -, -, G5, -⟩` from `GlobalTheory.T.gramSchmidt_flagDomain_orthonormalFrames D.host.E r (X k)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, b, hb, rfl⟩` from `G2 x hx`. Establish `hy'` using `G5 y hy γ hγ`. Take `⟨h, γ₁, hγ₁, hd, he⟩` from `hP3 k y hy`. Take `⟨h', γ₂, hγ₂, hd', he'⟩` from `hP3 k _ hy'`. Establish `e : ψ h' = ψ h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hF k h h' _ (γ₂ * γ * γ₁⁻¹) (mul_mem (mul_mem hγ₂ hγ) (inv_mem hγ₁)) hd ?_` and prove the remaining obligations. Rewrite using `[hd', ← lact_mul, ← lact_mul, inv_mul_cancel_right]`. Rewrite using `[hχ k γ hγ, one_mul, lact_rmul, hP2 k _ (G1 _ hy') b hb, hP2 k _ (G1 _ hy) b hb, he, he', e]`. Take `⟨hM, hN, -⟩` from `hB1 (dict g).1`. Take `⟨U1, -⟩` from `GlobalTheory.T.frame_unit_correspondence D θ V r hr (X (dict g).1) x₀ hθ hM hN`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, -, hfr, -⟩` from `hB2 g`. Take `⟨h, γ₁, hγ₁, hd, he⟩` from `hP3 _ _ (U1 _ _ hfr)`. Rewrite using `[he]`. Conclude with `(hF _ g h _ γ₁ hγ₁ rfl hd).symm`. Take `⟨G1, G2, -, -, -, -, G7⟩` from `GlobalTheory.T.gramSchmidt_flagDomain_orthonormalFrames D.host.E r (X k)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, hy, b, hb, rfl⟩` from `G2 x hx`. Rewrite using `[G7 (la k) (P k) y hy b hb (hP2 k y (G1 y hy) b hb)]`. Take `⟨h, -, -, -, he⟩` from `hP3 k y hy`. Rewrite using `[he]`. Conclude with `hC h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem descent : ∀ (D : D7) (θ : InfFam D) (V : HSp D) (r : ℕ) (hr : V.rank = r) (Comp : Type) (X : Comp → Data D.host.E r) (dict : GA D V → Σ k, Frame (X k).Ψ r) (Kf : Subgroup (GA D V)) (x₀ : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) (la : ∀ k, ReciprocityTheory.ChartRestriction.G.FD.Wt (X k).Ψ r) (ψ : GA D V → ℂ), IsInfFam θ → BaseDict θ V hr X dict Kf x₀ → (∀ k, ∀ γ ∈ (X k).Γ, (X k).χ (la k) γ = 1) → (∀ γ ∈ GQ V, ∀ g, ψ (γ * g) = ψ g) → (∀ k ∈ Kf, ∀ g, ψ (g * k) = ψ g) → (∀ (k : Comp) (g : GA D V), ∃ Q : Frame (X k).Ψ r → ℂ, DifferentiableOn ℂ Q (X k).dom ∧ (∀ y ∈ (X k).dom, ∀ b ∈ Bor (X k).Ψ r, Q (rmul y b) = bchar (la k) b * Q y) ∧ ∀ u ∈ GinfC V, ∀ y, FrIs θ V hr (X k) x₀ u y → Q y = ψ (g * u)) → ∃ P : FDSec X, (∀ k, (X k).IsSec (la k) (P k)) ∧ (∀ g, ψ g = P (dict g).1 (dict g).2) ∧ ∀ C : ℝ, (∀ g, ‖ψ g‖ ≤ C) → ∀ k, ∀ y ∈ (X k).dom, (X k).pnorm (la k) (P k) y ≤ C := by
   intro D θ V r hr Comp X dict Kf x₀ la ψ hθ hB hχ hL hR hQ

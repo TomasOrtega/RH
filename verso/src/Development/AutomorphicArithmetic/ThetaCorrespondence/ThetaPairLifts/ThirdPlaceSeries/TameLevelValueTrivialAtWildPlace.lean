@@ -24,15 +24,13 @@ open Formalism.L2.NX
 end GlobalTheory.TameUnitOne
 namespace GlobalTheory.LevCmp
 /- English proof (translation)
-Introduce `_ hL`. Use `StepW.of_all fun _ B _ T _ _ _ _ P x l v i b ψ hA j _ _ _ => ?_` and prove the remaining obligations. Use `⟨fun P'' hP'' u hu => ?_, fun P'' hP'' u hu => ?_⟩` and prove the remaining obligations. Establish `hQ : P'' ∈ QOf P v` using `(cell (D := Dof x) l.b.Bs.exp b hA j).QP_sub hP''`. Conclude with `GlobalTheory.TameUnitOne.tameVal_eq_one ψ P'' _ ((Dof x).ntw.l i) hA.2.2.1 (hA.1 P'' hQ).2 (fun _ _ σ _ => hA.2.2.2.2.1 σ) u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD : P'' ∈ (Dof x).ntw.pD i` using `(cell (D := Dof x) l.b.Bs.exp b hA j).DP_sub hP''`. Use `GlobalTheory.TameUnitOne.tameVal_eq_one ((Dof x).ntw.delta i) P'' _ 15 ((Dof x).ntw.delta_open i) ?_ (fun A hA' σ hσ => ⟨1, ?_⟩) u hu` and prove the remaining obligations. Introduce `h`. Establish `h1` using `(Dof x).ntw.delta_tame i P'' hD`. Establish `h2 : Ideal.absNorm P''.asIdeal ∣ 15 ^ Module.finrank ℤ (𝓞 (Dof x).host.E)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Ideal.absNorm_dvd_absNorm_of_le ((Ideal.span_singleton_le_iff_mem _).2 h)` as an intermediate fact. Rewrite `this` using `[Ideal.absNorm_span_natCast]`. Then use the resulting hypothesis. Establish `h3 : Nat.Coprime (Ideal.absNorm P''.asIdeal) 15`. Rewrite using `[Nat.Coprime, Nat.gcd_comm, Nat.gcd_rec, h1]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h4` using `Nat.Coprime.eq_one_of_dvd (Nat.Coprime.pow_right _ h3) h2`. Conclude with `P''.isPrime.ne_top (Ideal.absNorm_eq_one_iff.1 h4)`. Establish `h1` using `pow_card_eq_one' (x := (⟨(Dof x).ntw.delta i σ, σ, hσ, rfl⟩ : (ReciprocityTheory.Gal.Ine (F := (Dof x).host.E) A).map ((Dof x).ntw.delta i)))`. Rewrite `h1` using `[(Dof x).ntw.delta_15 i P'' hD A hA']`. Rewrite using `[pow_one]`.
-
-Conclude with `congrArg Subtype.val h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tame_value_eq_one_at_wild_place_alt : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, AllSt fun _ B _ T w P x => ∀ (l : _root_.GlobalTheory.HeightCounting.Up.ThirdIntermediateLevel hL x) (v : B.places.Pl) (i : (Dof x).ntw.Tw) (b : Bool) (ψ : G (Dof x).host.E (Dof x).nd.Om →* ((Dof x).ntw.Ok i (T.k v))ˣ) (hA : NX.AdmTw (Dof x) i (T.k v) (QOf P v) ψ) (j : Fin (Dof x).R.m), TwistedAt (Dof x) v → (Dof x).ntw.l i = B.places.resChar v → IntegralHeckeForms.TwOK i (T.k v) (QOf P v) ψ → (∀ P'' ∈ (cell (D := Dof x) l.b.Bs.exp b hA j).QP, ∀ u : 𝓞 (Dof x).host.E, u - 1 ∈ P''.asIdeal → NX.tameVal ψ P'' l.b.Bs.exp.sgnT u = 1) ∧ (∀ P'' ∈ (cell (D := Dof x) l.b.Bs.exp b hA j).DP, ∀ u : 𝓞 (Dof x).host.E, u - 1 ∈ P''.asIdeal → NX.tameVal ((Dof x).ntw.delta i) P'' (if b then l.b.Bs.exp.sgnT else -l.b.Bs.exp.sgnT) u = 1) := by
   intro _ hL
@@ -73,7 +71,7 @@ open GlobalTheory.LevCmp
 open GlobalTheory.TwistChoice (Reading ReadsAt)
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.LevCmp.tame_value_eq_one_at_wild_place_alt | exact _root_.GlobalTheory.LevCmp.tame_value_eq_one_at_wild_place_alt | (intros; apply _root_.GlobalTheory.LevCmp.tame_value_eq_one_at_wild_place_alt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.tw_ok_value_trivial_at_twisted_place : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, AllSt fun _ B _ T w P x => ∀ (l : _root_.GlobalTheory.HeightCounting.Up.ThirdIntermediateLevel hL x) (v : B.places.Pl) (i : (Dof x).ntw.Tw) (b : Bool) (ψ : G (Dof x).host.E (Dof x).nd.Om →* ((Dof x).ntw.Ok i (T.k v))ˣ) (hA : NX.AdmTw (Dof x) i (T.k v) (QOf P v) ψ) (j : Fin (Dof x).R.m), TwistedAt (Dof x) v → (Dof x).ntw.l i = B.places.resChar v → IntegralHeckeForms.TwOK i (T.k v) (QOf P v) ψ → (∀ P'' ∈ (cell (D := Dof x) l.b.Bs.exp b hA j).QP, ∀ u : 𝓞 (Dof x).host.E, u - 1 ∈ P''.asIdeal → NX.tameVal ψ P'' l.b.Bs.exp.sgnT u = 1) ∧ (∀ P'' ∈ (cell (D := Dof x) l.b.Bs.exp b hA j).DP, ∀ u : 𝓞 (Dof x).host.E, u - 1 ∈ P''.asIdeal → NX.tameVal ((Dof x).ntw.delta i) P'' (if b then l.b.Bs.exp.sgnT else -l.b.Bs.exp.sgnT) u = 1) := by
   first | exact @_root_.GlobalTheory.LevCmp.tame_value_eq_one_at_wild_place_alt | exact _root_.GlobalTheory.LevCmp.tame_value_eq_one_at_wild_place_alt | (intros; apply _root_.GlobalTheory.LevCmp.tame_value_eq_one_at_wild_place_alt <;> assumption)

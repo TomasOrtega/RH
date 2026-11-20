@@ -25,7 +25,7 @@ def OK (sp : Spaces R F E) {N : ℕ} (J : Matrix (Fin N) (Fin N) E) (a : 𝓞 E)
     y ∈ UPts sp.cm.sig J (FiniteAdeleRing (𝓞 F) F)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.reindex_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem reindex_refl' {N : ℕ} (J : Matrix (Fin N) (Fin N) E) :
     J.reindex (finCongr (rfl : N = N)) (finCongr (rfl : N = N)) = J := by
@@ -33,9 +33,9 @@ theorem reindex_refl' {N : ℕ} (J : Matrix (Fin N) (Fin N) E) :
   simp [Matrix.reindex_apply]
 
 /- English proof (translation)
-Use extensionality with `x`. Use `show x ∈ Lb.map _ ↔ x ∈ Lb`. Rewrite using `[Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hz`. Introduce `hx`. Conclude with `⟨x, hx, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem map_reE_refl {N : ℕ} (Lb : Submodule (𝓞 E) (Fin N → E)) :
     Lb.map (((Formalism.L2.PairingIndexBounds.F.reE (E := E) (rfl : N = N) : (Fin N → E) ≃ₗ[E] (Fin N → E)) :
@@ -50,7 +50,7 @@ theorem map_reE_refl {N : ℕ} (Lb : Submodule (𝓞 E) (Fin N → E)) :
     exact ⟨x, hx, rfl⟩
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.L2.PairingIndexBounds.F.reGL, Matrix.coe_reindexAlgEquiv]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem reGL_refl {A : Type} [CommRing A] {N : ℕ} (y : GL (Fin N) A) :
     Formalism.L2.PairingIndexBounds.F.reGL (R := A) (finCongr (rfl : N = N)) y = y := by
@@ -58,7 +58,7 @@ theorem reGL_refl {A : Type} [CommRing A] {N : ℕ} (y : GL (Fin N) A) :
   simp [Formalism.L2.PairingIndexBounds.F.reGL, Matrix.coe_reindexAlgEquiv]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[reindex_refl', map_reE_refl, reGL_refl]`. Conclude with `hok`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem OK_re (sp : Spaces R F E) {N n : ℕ} (h : N = n) {J : Matrix (Fin N) (Fin N) E} {a : 𝓞 E}
     {Lb : Submodule (𝓞 E) (Fin N → E)} {y : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)} (hok : OK sp J a Lb y) :
@@ -71,7 +71,7 @@ theorem OK_re (sp : Spaces R F E) {N n : ℕ} (h : N = n) {J : Matrix (Fin N) (F
   exact hok
 
 /- English proof (translation)
-Take `⟨hev, hco, hJ, hLb, hM0, hsd, hy⟩` from `hok`. Conclude with `⟨h ▸ hev, Formalism.L2.KerInert.RepRec.isSD_re h (Formalism.L2.KerInert.RepRec.isSD_core (sp := sp) J hJ hco y hy hLb a rfl hM0 hsd) g dt⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sd_of_OK (sp : Spaces R F E) {N n : ℕ} (h : N = n) {J : Matrix (Fin N) (Fin N) E} {a : 𝓞 E}
     {Lb : Submodule (𝓞 E) (Fin N → E)} {y : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)} (hok : OK sp J a Lb y)
@@ -97,7 +97,7 @@ def ChartOK (cp : ChartPts X D) (a : 𝓞 D.host.E) (j : ℕ) (La : X.Lt j) : Pr
   OK D.sp (cp.J j La) a (cp.Lb j La) (cp.y j La)
 
 /- English proof (translation)
-The claim follows from `sd_of_OK D.sp (cp.hk j La).symm hok (LinearEquiv.refl _ _) (Matrix.GeneralLinearGroup.det (cp.y j La))`.
+A detailed English derivation is pending.
 -/
 theorem kerN_sd (cp : ChartPts X D) (a : 𝓞 D.host.E) (bad : Finset (HeightOneSpectrum (𝓞 D.host.F))) (j : ℕ) (La : X.Lt j)
     (hok : ChartOK cp a j La) :
@@ -105,7 +105,7 @@ theorem kerN_sd (cp : ChartPts X D) (a : 𝓞 D.host.E) (bad : Finset (HeightOne
   sd_of_OK D.sp (cp.hk j La).symm hok (LinearEquiv.refl _ _) (Matrix.GeneralLinearGroup.det (cp.y j La))
 
 /- English proof (translation)
-Introduce `j L0 hL0 La' hLa'`. Take `⟨e1, s1⟩` from `kerN_sd cp a bad j L0 (h0 j L0 hL0)`. Take `⟨e2, s2⟩` from `kerN_sd cp a bad (j + 1) La' (h1 j La' hLa')`. Conclude with `⟨e1, e2, s1, s2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem admissible_of_charts (hfin : ∀ j c, (X.Lv.lev j c).FinClasses) (cp : ChartPts X D) (a : 𝓞 D.host.E)
     (bad : Finset (HeightOneSpectrum (𝓞 D.host.F)))
@@ -118,7 +118,7 @@ theorem admissible_of_charts (hfin : ∀ j c, (X.Lv.lev j c).FinClasses) (cp : C
   exact ⟨e1, e2, s1, s2⟩
 
 /- English proof (translation)
-The claim follows from `admissible_of_charts hfin cp a bad (fun j L0 hL0 => h j L0 (repOf_lat X.Lv hfin j L0 hL0)) (fun j La' hLa' => h (j + 1) La' hLa')`.
+A detailed English derivation is pending.
 -/
 theorem admissible_of_charts_lattices (hfin : ∀ j c, (X.Lv.lev j c).FinClasses) (cp : ChartPts X D) (a : 𝓞 D.host.E)
     (bad : Finset (HeightOneSpectrum (𝓞 D.host.F)))
@@ -127,7 +127,7 @@ theorem admissible_of_charts_lattices (hfin : ∀ j c, (X.Lv.lev j c).FinClasses
   admissible_of_charts hfin cp a bad (fun j L0 hL0 => h j L0 (repOf_lat X.Lv hfin j L0 hL0)) (fun j La' hLa' => h (j + 1) La' hLa')
 
 /- English proof (translation)
-Introduce `j hj L0 hL0 La' hLa'`. Take `⟨e1, s1⟩` from `kerN_sd cp a bad j L0 (h j L0 (Nat.le_of_lt hj) (repOf_lat X.Lv hfin j L0 hL0))`. Take `⟨e2, s2⟩` from `kerN_sd cp a bad (j + 1) La' (h (j + 1) La' hj hLa')`. Conclude with `⟨e1, e2, s1, s2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem admissible_small_of_charts (hfin : ∀ j c, (X.Lv.lev j c).FinClasses) (cp : ChartPts X D) (a : 𝓞 D.host.E)
     (bad : Finset (HeightOneSpectrum (𝓞 D.host.F)))
@@ -165,14 +165,14 @@ variable {n0 : ℕ} (A0 : LocAt D.host.F D.host.E n0 (D.gat u w h)) (J0 : Matrix
   (Uloc0 : ∀ v : HeightOneSpectrum (𝓞 D.host.F), Subgroup (GL (Fin n0) (D.host.E ⊗[D.host.F] v.adicCompletion D.host.F)))
 
 /- English proof (translation)
-Rewrite using `[chAt, dif_pos hi]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chAt_succ_J (i : ℕ) (hi : i + 1 ≤ D.R.m) (La : (sysAt Ch std vp unif eO eO_spec dG dG_spec om).Lt (i + 1)) :
     (chAt Ch std vp unif eO eO_spec dG dG_spec om I A0 J0 Lb0 Uloc0 (i + 1) La).J = (Formalism.L2.Forms.gramN D (i + 1) hi).reindex (finCongr ((I.at' i hi).st.loc ((I.at' i hi).st.eC.symm La.1).1).rk.symm) (finCongr ((I.at' i hi).st.loc ((I.at' i hi).st.eC.symm La.1).1).rk.symm) := by
   rw [chAt, dif_pos hi]
 
 /- English proof (translation)
-Rewrite using `[chAt, dif_pos hi]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chAt_succ_Lb (i : ℕ) (hi : i + 1 ≤ D.R.m) (La : (sysAt Ch std vp unif eO eO_spec dG dG_spec om).Lt (i + 1)) :
     (chAt Ch std vp unif eO eO_spec dG dG_spec om I A0 J0 Lb0 Uloc0 (i + 1) La).Lb = ((I.at' i hi).st.K ((I.at' i hi).st.eC.symm La.1).1).lev.Lb.map
@@ -182,7 +182,7 @@ theorem chAt_succ_Lb (i : ℕ) (hi : i + 1 ≤ D.R.m) (La : (sysAt Ch std vp uni
 
 set_option maxHeartbeats 400000 in
 /- English proof (translation)
-Rewrite using `[chAt, dif_pos hi]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chAt_succ_y (i : ℕ) (hi : i + 1 ≤ D.R.m) (La : (sysAt Ch std vp unif eO eO_spec dG dG_spec om).Lt (i + 1)) :
     (chAt Ch std vp unif eO eO_spec dG dG_spec om I A0 J0 Lb0 Uloc0 (i + 1) La).y = reGL (finCongr ((I.at' i hi).st.loc ((I.at' i hi).st.eC.symm La.1).1).rk.symm)
@@ -192,7 +192,7 @@ theorem chAt_succ_y (i : ℕ) (hi : i + 1 ≤ D.R.m) (La : (sysAt Ch std vp unif
   rw [chAt, dif_pos hi]
 
 /- English proof (translation)
-Rewrite using `[chAt, dif_neg hi]`. Conclude with `⟨rfl, rfl, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem chAt_fill (i : ℕ) (hi : ¬ i + 1 ≤ D.R.m) (La : (sysAt Ch std vp unif eO eO_spec dG dG_spec om).Lt (i + 1)) :
     (chAt Ch std vp unif eO eO_spec dG dG_spec om I A0 J0 Lb0 Uloc0 (i + 1) La).J = 1 ∧
@@ -245,7 +245,7 @@ variable {Ch std vp unif eO eO_spec dG dG_spec om I} in
 set_option maxHeartbeats 400000 in
 
 /- English proof (translation)
-Establish `hok : OK D.sp L0.J a L0.Lb _` using `⟨Formalism.BasicNotions.factNEven D.R 0, hO.1, hD.1, hA.1.1, hA.1.2.1, hA.1.2.2, (Classical.epsilon_spec (hU.1 La hLa)).2⟩`. Conclude with `OK_re D.sp L0.A.rk.symm hok`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem chartOK_zero (L0 : Lev0Data D u w h) (a : 𝓞 D.host.E) (hO : OrthTieAt L0) (hD : DualTieAt L0) (hA : ATieAt I L0 a)
     (hU : UnitTieAt Ch std vp unif eO eO_spec dG dG_spec om I L0) (La : (sysAt Ch std vp unif eO eO_spec dG dG_spec om).Lt 0)
@@ -259,7 +259,7 @@ variable {Ch std vp unif eO eO_spec dG dG_spec om I} in
 set_option maxHeartbeats 400000 in
 
 /- English proof (translation)
-Establish `hok : OK D.sp (Formalism.L2.Forms.gramN D (i + 1) hi) a ((I.at' i hi).st.K ((I.at' i hi).st.eC.symm La.1).1).lev.Lb _` using `⟨Formalism.BasicNotions.factNEven D.R (i + 1), hO.2 i hi, hD.2 i hi, (hA.2 i hi _).1, (hA.2 i hi _).2.1, (hA.2 i hi _).2.2, (Classical.epsilon_spec (hU.2 i hi La hLa)).2⟩`. Establish `key` using `OK_re D.sp ((I.at' i hi).st.loc ((I.at' i hi).st.eC.symm La.1).1).rk.symm hok`. Use `show OK D.sp (chAt Ch std vp unif eO eO_spec dG dG_spec om I L0.A L0.J L0.Lb L0.Uloc (i + 1) La).J a (chAt Ch std vp unif eO eO_spec dG dG_spec om I L0.A L0.J L0.Lb L0.Uloc (i + 1) La).Lb (chAt Ch std vp unif eO eO_spec dG dG_spec om I L0.A L0.J L0.Lb L0.Uloc (i + 1) La).y`. Rewrite using `[chAt_succ_J, chAt_succ_Lb, chAt_succ_y]`. Conclude with `key`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chartOK_succ (L0 : Lev0Data D u w h) (a : 𝓞 D.host.E) (hO : OrthTieAt L0) (hD : DualTieAt L0) (hA : ATieAt I L0 a)
     (hU : UnitTieAt Ch std vp unif eO eO_spec dG dG_spec om I L0) (i : ℕ) (hi : i + 1 ≤ D.R.m)
@@ -280,7 +280,7 @@ variable {Ch std vp unif eO eO_spec dG dG_spec om I} in
 set_option maxHeartbeats 400000 in
 
 /- English proof (translation)
-Take `⟨e1, e2, e3⟩` from `chAt_fill Ch std vp unif eO eO_spec dG dG_spec om I L0.A L0.J L0.Lb L0.Uloc i hi La`. Use `show OK D.sp (chAt Ch std vp unif eO eO_spec dG dG_spec om I L0.A L0.J L0.Lb L0.Uloc (i + 1) La).J a (chAt Ch std vp unif eO eO_spec dG dG_spec om I L0.A L0.J L0.Lb L0.Uloc (i + 1) La).Lb (chAt Ch std vp unif eO eO_spec dG dG_spec om I L0.A L0.J L0.Lb L0.Uloc (i + 1) La).y`. Rewrite using `[e1, e2, e3]`. Conclude with `hF i hi`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chartOK_fill (L0 : Lev0Data D u w h) (a : 𝓞 D.host.E) (hF : FillTieAt Ch std vp unif eO eO_spec dG dG_spec om a)
     (i : ℕ) (hi : ¬ i + 1 ≤ D.R.m) (La : (sysAt Ch std vp unif eO eO_spec dG dG_spec om).Lt (i + 1)) :
@@ -295,9 +295,9 @@ theorem chartOK_fill (L0 : Lev0Data D u w h) (a : 𝓞 D.host.E) (hF : FillTieAt
 set_option maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `hfin L0 a bad hO hD hA hU hF`. Use `admissible_of_charts_lattices hfin (cpAt Ch std vp unif eO eO_spec dG dG_spec om I L0.A L0.J L0.Lb L0.Uloc) a bad ?_` and prove the remaining obligations. Introduce `j`. Consider the cases of `j with`. Consider the case `zero => exact chartOK_zero L0 a hO hD hA hU`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `succ i`. Introduce `La hLa`. Distinguish the cases in `hi : i + 1 ≤ D.R.m`. Conclude with `chartOK_succ L0 a hO hD hA hU i hi La hLa`. Conclude with `chartOK_fill L0 a hF i hi La`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem local_model_lattices_admissible : LocalModelLatticesAdmissible Ch std vp unif eO eO_spec dG dG_spec om I := by
   intro hfin L0 a bad hO hD hA hU hF
@@ -321,9 +321,9 @@ def LocalModelLatticesAdmissibleSmall : Prop :=
 set_option maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `hfin L0 a bad hmm hO hD hA hU`. Use `admissible_small_of_charts hfin (cpAt Ch std vp unif eO eO_spec dG dG_spec om I L0.A L0.J L0.Lb L0.Uloc) a bad ?_` and prove the remaining obligations. Introduce `j`. Consider the cases of `j with`. Consider the case `zero => intro La _ hLa`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Conclude with `chartOK_zero L0 a hO hD hA hU La hLa`. Consider the case `succ i`. Introduce `La hj hLa`. Conclude with `chartOK_succ L0 a hO hD hA hU i (le_trans hj hmm) La hLa`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem local_model_lattices_admissible_small : LocalModelLatticesAdmissibleSmall Ch std vp unif eO eO_spec dG dG_spec om I := by
   intro hfin L0 a bad hmm hO hD hA hU

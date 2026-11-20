@@ -14,19 +14,19 @@ open GlobalTheory.ZM
 namespace GlobalTheory.ZM
 
 /- English proof (translation)
-Introduce `hL hL2 o _ g n N' J b I Y u hN hu K _ x t hs h1 h2`. Establish `hsub : Subsingleton (PrimeSpectrum (DualNumber K))`. Establish `key : ∀ p : PrimeSpectrum (DualNumber K), p.asIdeal = RingHom.ker (TrivSqZeroExt.fstHom K K K).toRingHom`. Introduce `p`. Establish `hp` using `p.isPrime`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hle : RingHom.ker (TrivSqZeroExt.fstHom K K K).toRingHom ≤ p.asIdeal`. Introduce `a ha`. Establish `ha' : a.fst = 0` using `ha`. Apply `hp.mem_of_pow_mem 2` to reduce the goal to its premises. Establish `: a ^ 2 = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply the tactic sequence `rw [sq]; ext <;> simp [ha']`. Rewrite using `[this]`. Conclude with `p.asIdeal.zero_mem`. Establish `hmax : (RingHom.ker (TrivSqZeroExt.fstHom K K K).toRingHom).IsMaximal` using `RingHom.ker_isMaximal_of_surjective _ (fun c => ⟨TrivSqZeroExt.inl c, rfl⟩)`. Conclude with `(hmax.eq_of_le hp.ne_top hle).symm`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨fun p q => PrimeSpectrum.ext ((key p).trans (key q).symm)⟩`. Establish `hsub' : Subsingleton (Sp (DualNumber K))` using `hsub`. Take `⟨p⟩ : Nonempty (Sp (DualNumber K))` from `inferInstanceAs (Nonempty (PrimeSpectrum (DualNumber K)))`. Take `⟨R, _, j, v, hj, ⟨q, _⟩, hv⟩` from `GlobalTheory.T.exists_thetaConstants_locally_on_base hL hL2 o g N' J b _ _ t hN p`. Establish `hsurj : Function.Surjective j` using `fun y => ⟨q, Subsingleton.elim _ _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hiso : IsIso j`. Apply `isIso_of_isOpenImmersion_of_opensRange_eq_top` to reduce the goal to its premises. Use extensionality with `y`. Simplify using `using hsurj y`. Establish `c1` using `(hu R _ v).1 ((GlobalTheory.T.hasThetaConstants_iff_of_thetaLevelPullback o g N' J b _ _ u _ _ t x R j v h1).1 hv)`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `c2` using `(hu R _ v).1 ((GlobalTheory.T.hasThetaConstants_iff_of_thetaLevelPullback o g N' J b _ _ u _ _ t (constPt x) R j v h2).1 hv)`. Take `⟨β, hβ⟩` from `Spec.map_surjective (R := CommRingCat.of o) (S := CommRingCat.of R) (j ≫ x ≫ Y.s)`. Establish `e1 : (j ≫ x) ≫ Y.s = spMap β.hom`. Rewrite using `[Category.assoc]`. Conclude with `hβ.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : (j ≫ constPt x) ≫ Y.s = spMap β.hom`. Rewrite using `[Category.assoc, ← hs]`. Conclude with `hβ.symm`. Establish `h` using `(Y.pts R β.hom v (Y.loc R β.hom _ v e1 c1)).unique ⟨e1, c1⟩ ⟨e2, c2⟩`. Conclude with `(cancel_epi j).1 h`.
+A detailed English derivation is pending.
 -/
 theorem tangent_eq_constPt_of_tMap : Out.Laws → Out.Laws2 → ∀ (o : Type) [CommRing o] (g n N' : ℕ) (J : Type) (b : TBase o (N' ^ 2)) (I : Ideal (MvPolynomial (Ix g (N' ^ 2)) o)) (Y : MMPre n N' I) (u : TObj g (N' ^ 2) J b Y.s), Odd N' → (∀ (R : Type) [CommRing R] (x : Sp R ⟶ Y.MM) (v : Ix g (N' ^ 2) → R), u.HasTh x v ↔ SecCoord Y.de Y.th x v) → ∀ (K : Type) [Field K] (x : Sp (DualNumber K) ⟶ Y.MM) (t : TObj g (N' ^ 2) J b (x ≫ Y.s)), x ≫ Y.s = constPt x ≫ Y.s → TMap t u x → TMap t u (constPt x) → x = constPt x := by
   intro hL hL2 o _ g n N' J b I Y u hN hu K _ x t hs h1 h2

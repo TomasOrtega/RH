@@ -17,7 +17,7 @@ open Neutral.B1 Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.H
 namespace GlobalTheory.Mem.Top.TwChar
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem torsionFree_field (E Ω : Type) [Field E] [Field Ω] [Algebra E Ω] : Module.IsTorsionFree E Ω := inferInstance
 
@@ -46,7 +46,7 @@ theorem cxChar_apply (g : Γ) : cxChar ι ψ h g = (ι ⟨ψ g, h g⟩ : ℂˣ) 
 
 omit [IsDomain O] in
 /- English proof (translation)
-Rewrite using `[cxChar_apply, OneMemClass.coe_eq_one, map_eq_one_iff _ ι.injective, Subtype.ext_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cxChar_eq_one (g : Γ) : cxChar ι ψ h g = 1 ↔ ψ g = 1 := by
   rw [cxChar_apply, OneMemClass.coe_eq_one, map_eq_one_iff _ ι.injective, Subtype.ext_iff]
@@ -54,18 +54,18 @@ theorem cxChar_eq_one (g : Γ) : cxChar ι ψ h g = 1 ↔ ψ g = 1 := by
 
 omit [IsDomain O] in
 /- English proof (translation)
-The claim follows from `(ι ⟨ψ g, h g⟩).2`.
+A detailed English derivation is pending.
 -/
 theorem cxChar_pow (g : Γ) : cxChar ι ψ h g ^ n = 1 := (ι ⟨ψ g, h g⟩).2
 
 /- English proof (translation)
-Set `u0 : rootsOfUnity n O` to `hζ.toRootsOfUnity`. Establish `h0 : IsPrimitiveRoot u0 n`. Rewrite using `[← IsPrimitiveRoot.coe_submonoidClass_iff, ← IsPrimitiveRoot.coe_units_iff]`. Conclude with `hζ`. Establish `h1 : IsPrimitiveRoot (((ι u0 : rootsOfUnity n ℂ) : ℂˣ) : ℂ) n`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsPrimitiveRoot.coe_units_iff, IsPrimitiveRoot.coe_submonoidClass_iff]`. Conclude with `h0.map_of_injective ι.injective`. Take `⟨x0, hx0⟩` from `hL _ h1.pow_eq_one`. Establish `h2 : IsPrimitiveRoot (e x0) n` using `(IsPrimitiveRoot.of_map_of_injective (hx0 ▸ h1) ε.injective).map_of_injective e.injective`. Establish `h3 : IsPrimitiveRoot (j ζ) n` using `hζ.map_of_injective hj`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, -, ha⟩` from `h3.eq_pow_of_pow_eq_one h2.pow_eq_one`. Use `⟨a, (h3.pow_iff_coprime (NeZero.pos n) a).1 (ha ▸ h2), fun u x hx => ?_⟩` and prove the remaining obligations. Take `⟨b, -, hb⟩` from `hζ.eq_pow_of_pow_eq_one (ξ := ((u : Oˣ) : O)) (by`. Rewrite using `[← Units.val_pow_eq_pow_val, (mem_rootsOfUnity _ _).1 u.2, Units.val_one])`. Establish `hu : u = u0 ^ b` using `Subtype.ext (Units.ext hb.symm)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx' : x = x0 ^ b` using `ε.injective (by rw [hx, map_pow, hx0, hu, map_pow]; rfl)`. Rewrite using `[hx', map_pow, ← ha, Units.val_pow_eq_pow_val, ← hb, map_pow, map_pow, ← pow_mul, ← pow_mul, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem exists_exponent [NeZero n] {ζ : O} (hζ : IsPrimitiveRoot ζ n) {L M : Type} [Field L] [Field M] (ε : L →+* ℂ)
     (hL : ∀ z : ℂ, z ^ n = 1 → ∃ x, ε x = z) (e : L →+* M) (j : O →+* M) (hj : Function.Injective j) :
@@ -91,13 +91,13 @@ theorem exists_exponent [NeZero n] {ζ : O} (hζ : IsPrimitiveRoot ζ n) {L M : 
 end Roots
 
 /- English proof (translation)
-Establish `hp : Prime (l : ℤ)` using `Nat.prime_iff_prime_int.mp hl`. Establish `hmax : (Ideal.span {(l : ℤ)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible hp.irreducible`. Establish `hmap : Ideal.map (algebraMap ℤ (𝓞 E)) (Ideal.span {(l : ℤ)}) = Ideal.span {((l : ℕ) : 𝓞 E)}`. Rewrite using `[Ideal.map_span]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hle : Ideal.map (algebraMap ℤ (𝓞 E)) (Ideal.span {(l : ℤ)}) ≤ v.asIdeal`. Rewrite using `[hmap, Ideal.span_le]`. Simplify using `using hv`. Use `v.isPrime` as an intermediate fact. Establish `: v.asIdeal.LiesOver (Ideal.span {(l : ℤ)})` using `⟨hmax.eq_of_le (Ideal.comap_ne_top _ v.isPrime.ne_top) (Ideal.map_le_iff_le_comap.mp hle)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : Ideal.span {(l : ℤ)} ≠ ⊥` using `by simpa using hl.ne_zero`. Rewrite `he` using `[← Ideal.ramificationIdx'_eq_ramificationIdx (Ideal.span {(l : ℤ)}) v.asIdeal hb]`. Introduce `h`. Use `(Ideal.ramificationIdx'_ne_one_iff hle).2 ?_ he` and prove the remaining obligations. Rewrite using `[hmap, Ideal.span_le]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using h`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem not_mem_sq_of_ramificationIdx {E : Type} [Field E] [NumberField E] {l : ℕ} (hl : l.Prime)
     (v : HeightOneSpectrum (𝓞 E)) (hv : ((l : ℕ) : 𝓞 E) ∈ v.asIdeal) (he : v.asIdeal.ramificationIdx ℤ = 1) :
@@ -120,17 +120,15 @@ theorem not_mem_sq_of_ramificationIdx {E : Type} [Field E] [NumberField E] {l : 
   simpa using h
 
 /- English proof (translation)
-Establish `ho` using `h.orderDvd hord`. Establish `hatl : ∀ v, OverP H l v → ∀ x, χ.loc v x = 1` using `fun v hv x =>`. Set `⟨A, hA⟩` to `exists_isPlaceOver Ω v`. Use the proof step `h.loc_eq_one ha hA (hdec v hv A hA) x`. Establish `htame : ∀ v, χ.TameAt v` using `fun v => by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hv : OverP H l v`. Conclude with `fun x _ _ => hatl v hv x`. Conclude with `tameAt_of_orderDvd hl ho hv`. Establish `hunr : ∀ v, χ.UnrAt v ↔ v ∉ Q` using `fun v => by`. Take `⟨A, hA⟩` from `exists_isPlaceOver Ω v`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h.unr_iff ha hA, ← Finset.mem_coe, ← hram v A hA]`. Use `push Not`. Both sides reduce to the same expression. Establish `htriv : χ.TrivOn H.F`. Take `⟨c, hc1, hcm, hr, -⟩` from `GlobalTheory.Mem.HostCM.host_cm R H`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨j, hj⟩` from `hcc.1`. Establish `h1 : ∀ x : H.E, cc (algebraMap H.E Ω x) = algebraMap H.E Ω (c x)` using `fun x => by`. Apply `j.injective` to reduce the goal to its premises. Rewrite using `[hj, hc1]`. Conclude with `(H.conjE_apply (j.comp (algebraMap H.E Ω)) x).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : ∀ x, cc (cc x) = x` using `fun x => j.injective (by rw [hj, hj, Complex.conj_conj])`. Use `hcm.cplx` as an intermediate fact. Conclude with `h.trivOn c hcm.rank hcm.ne (fun x => (algebraMap H.E Ω).injective (by rw [← h1, ← h1, h2])) hr cc h1 h2 ha hanti (pow_pos hl.pos k) ho htame`. Use `⟨⟨⟨k, ho⟩, htriv, htame, hunr, hatl, fun v hv => (hQ v hv).1⟩, ho, ⟨_, pow_pos hl.pos k, ho⟩, htriv, htame, fun v hv => ?_⟩` and prove the remaining obligations. Establish `hvQ : v ∈ Q` using `by_contra fun hn => hv ((hunr v).2 hn)`.
-
-Take `⟨h1, h2, h3⟩` from `hQ v hvQ`. Establish `hp` using `((GlobalTheory.absNorm_prime_iff_inertiaDeg_eq_one_and_finite_ramified H.E).1 v).2 h2`. Conclude with `⟨h1, hp, not_mem_sq_of_ramificationIdx hp v (Ideal.absNorm_mem _) h3, fun hm => hS v hvQ _ hm hp (Ideal.absNorm_mem _)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isPsi_of_isHeckeOf {R : Ranks} {H : Formalism.BasicNotions.Host R} {Ω : Type} [Field Ω] [Algebra H.E Ω] [IsAlgClosure H.E Ω]
     {cc : Ω ≃+* Ω} (hcc : IsCMConjOm H.E Ω cc) {art : Ideles H.E →* Gab H.E Ω} (ha : IsGlobalArtin art)
@@ -185,7 +183,7 @@ def rootIsoAt (D : D7) (i : D.ntw.Tw) (k : ℕ) : RootIso D i k :=
   rootIso (D.ntw.zk_prim i k)
 
 /- English proof (translation)
-The claim follows from `(Subgroup.zpowers_le.2 (Units.ext (D.ntw.zk_prim i k).pow_eq_one)) (h.2.2.2.2.2.1 g)`.
+A detailed English derivation is pending.
 -/
 theorem pick_mem (h : BlochKatoReduction.Gen.PsiOk i A Q k ψ) (g : G D.host.E D.nd.Om) :
     ψ.comp (D.ntw.art i Q) g ∈ rootsOfUnity (D.ntw.l i ^ k) (D.ntw.Ok i k) :=
@@ -195,7 +193,7 @@ def pickGal (h : BlochKatoReduction.Gen.PsiOk i A Q k ψ) (ι : RootIso D i k) :
   cxChar ι (ψ.comp (D.ntw.art i Q)) (pick_mem h)
 
 /- English proof (translation)
-Use `h.2.2.2.1 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Conclude with `cxChar_eq_one _ _ _ g`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem isOpen_ker_pickGal (h : BlochKatoReduction.Gen.PsiOk i A Q k ψ) (ι : RootIso D i k) :
     IsOpen ((pickGal h ι).ker : Set (G D.host.E D.nd.Om)) := by
@@ -219,11 +217,9 @@ def FrobPick (i : D.ntw.Tw) (Q : Finset (PlE D.host)) (k : ℕ)
       χ.val v = ((ι u : rootsOfUnity (D.ntw.l i ^ k) ℂ) : ℂˣ)⁻¹
 
 /- English proof (translation)
-Establish `hH` using `isHeckeOf_heckeOf ha (pickGal h ι) (isOpen_ker_pickGal h ι)`. Establish `key` using `isPsi_of_isHeckeOf (S := S) (Q := Q) (k := k) D.ntw.cc_cm ha hH (D.ntw.lPrime i).out (fun g g' hg => by`. Rewrite using `[eq_inv_iff_mul_eq_one, ← map_mul, pickGal, cxChar_eq_one, map_mul, h.2.2.2.2.1 g g' hg, inv_mul_cancel])`. Use the proof step `(cxChar_pow _ _ _)`. Use the proof step `(fun v A' hA' => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h.2.2.2.2.2.2.1 v A' hA']`. Conclude with `exists_congr fun σ => and_congr Iff.rfl (not_congr (cxChar_eq_one _ _ _ σ)))`. Use the proof step `(fun v hv A' hA' σ hσ => (cxChar_eq_one _ _ _ σ).2 (h.2.2.2.2.2.2.2 v hv A' hA' σ hσ)) h.1`. Use the proof step `(fun P hP p hp hp' hm => Finset.disjoint_left.1 h.2.1 hP (by`. Simplify using `only [Finset.mem_union]`.
-
-Conclude with `Or.inr (hS p hp hp' hm)))`. Conclude with `⟨fun x σ e => ⟨⟨_, pick_mem h σ⟩, rfl, hH x σ e⟩, fun v hv A' hA' σ hσ => ⟨⟨_, pick_mem h σ⟩, rfl, hH.val_eq ha ((key.1.ram v).2 hv) hA' hσ⟩, key⟩`.
+Prove the second alternative. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pickChar_spec (ha : IsGlobalArtin art) (h : BlochKatoReduction.Gen.PsiOk i A Q k ψ) (ι : RootIso D i k) {S : Set ℕ}
     (hS : ∀ p ∈ S, p.Prime → placesOver D.host.E p ⊆ ↑A) :
@@ -247,7 +243,7 @@ theorem pickChar_spec (ha : IsGlobalArtin art) (h : BlochKatoReduction.Gen.PsiOk
     fun v hv A' hA' σ hσ => ⟨⟨_, pick_mem h σ⟩, rfl, hH.val_eq ha ((key.1.ram v).2 hv) hA' hσ⟩, key⟩
 
 /- English proof (translation)
-Use `Finset.disjoint_left.1 h.2.1 hv` as an intermediate fact. Simplify using `only [Finset.mem_union, not_or] at this`. Conclude with `⟨fun hm => this.1 (D.ntw.twistExcludedPlaces_contains_residueChar i hm), this.2⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem pick_not_over (h : BlochKatoReduction.Gen.PsiOk i A Q k ψ) {v : PlE D.host} (hv : v ∈ Q) :
     v ∉ placesOver D.host.E (D.ntw.l i) ∧ v ∉ A := by
@@ -267,13 +263,13 @@ def incl (h : Enl B B') : B.LL →+* B'.LL :=
     (B.embLL.codRestrict B'.embLL.fieldRange fun x => h.2.2.2 ⟨x, rfl⟩)
 
 /- English proof (translation)
-The claim follows from `congrArg Subtype.val (B'.embLL.rangeRestrictFieldEquiv.apply_symm_apply ⟨B.embLL x, h.2.2.2 ⟨x, rfl⟩⟩)`.
+A detailed English derivation is pending.
 -/
 theorem embLL_incl (h : Enl B B') (x : B.LL) : B'.embLL (incl h x) = B.embLL x :=
   congrArg Subtype.val (B'.embLL.rangeRestrictFieldEquiv.apply_symm_apply ⟨B.embLL x, h.2.2.2 ⟨x, rfl⟩⟩)
 
 /- English proof (translation)
-The claim follows from `B'.embLL.injective (by rw [B'.starLL_cx, embLL_incl, embLL_incl, B.starLL_cx])`.
+A detailed English derivation is pending.
 -/
 theorem incl_star (h : Enl B B') (x : B.LL) : incl h (star x) = star (incl h x) :=
   B'.embLL.injective (by rw [B'.starLL_cx, embLL_incl, embLL_incl, B.starLL_cx])
@@ -290,22 +286,22 @@ def plUnder (h : Enl B B') (w : B'.places.Pl) : B.places.Pl where
     exact (Examples₂.PlacesToy.resCharW_prime w).ne_zero (by exact_mod_cast h1)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_plUnder (h : Enl B B') (w : B'.places.Pl) (x : 𝓞 B.LL) :
     x ∈ HeightOneSpectrum.asIdeal (plUnder h w) ↔ RingOfIntegers.mapRingHom (incl h) x ∈ HeightOneSpectrum.asIdeal w := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `Examples₂.PlacesToy.prime_mem_unique (plUnder h w) (Examples₂.PlacesToy.resCharW_prime _) (Examples₂.PlacesToy.resCharW_prime _) (Examples₂.PlacesToy.resCharW_mem _) (by rw [mem_plUnder, map_natCast]; exact Examples₂.PlacesToy.resCharW_mem w)`.
+A detailed English derivation is pending.
 -/
 theorem resChar_plUnder (h : Enl B B') (w : B'.places.Pl) : B.places.resChar (plUnder h w) = B'.places.resChar w :=
   Examples₂.PlacesToy.prime_mem_unique (plUnder h w) (Examples₂.PlacesToy.resCharW_prime _) (Examples₂.PlacesToy.resCharW_prime _)
     (Examples₂.PlacesToy.resCharW_mem _) (by rw [mem_plUnder, map_natCast]; exact Examples₂.PlacesToy.resCharW_mem w)
 
 /- English proof (translation)
-Use `HeightOneSpectrum.ext (Ideal.ext fun x => ?_)` and prove the remaining obligations. Establish `h1` using `Examples₂.PlacesToy.mem_conjW_pow (K := B'.LL) w (RingOfIntegers.mapRingHom (incl h) x) 1`. Establish `h2` using `Examples₂.PlacesToy.mem_conjW_pow (K := B.LL) (plUnder h w) x 1`. Simplify using `only [pow_one] at h1 h2`. Establish `e : RingOfIntegers.mapRingHom (incl h) (Examples₂.PlacesToy.starO x) = Examples₂.PlacesToy.starO (RingOfIntegers.mapRingHom (incl h) x)` using `RingOfIntegers.ext (incl_star h x)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `h1.trans (by rw [← e]; exact h2.symm)`.
+A detailed English derivation is pending.
 -/
 theorem plUnder_conj (h : Enl B B') (w : B'.places.Pl) : plUnder h (B'.places.conj w) = B.places.conj (plUnder h w) := by
   refine HeightOneSpectrum.ext (Ideal.ext fun x => ?_)
@@ -317,7 +313,7 @@ theorem plUnder_conj (h : Enl B B') (w : B'.places.Pl) : plUnder h (B'.places.co
   exact h1.trans (by rw [← e]; exact h2.symm)
 
 /- English proof (translation)
-Introduce `v` and use `by letI : Algebra B.LL B'.LL := (incl h).toAlgebra have := (v : HeightOneSpectrum (𝓞 B.LL)).isPrime obtain ⟨Q, hQ, hl⟩ := (Ideal.nonempty_primesOver (v : HeightOneSpectrum (𝓞 B.LL)).asIdeal (S := 𝓞 B'.LL)).some exact ⟨⟨Q, hQ, Ideal.ne_bot_of_liesOver_of_ne_bot (v : HeightOneSpect …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem plUnder_surjective (h : Enl B B') : Function.Surjective (plUnder h) := fun v => by
   letI : Algebra B.LL B'.LL := (incl h).toAlgebra
@@ -329,7 +325,7 @@ theorem plUnder_surjective (h : Enl B B') : Function.Surjective (plUnder h) := f
 def tr {P P' : Pre} (e : P' = P) (F : Pre → Type) (x : F P) : F P' := cast (congrArg F e.symm) x
 
 /- English proof (translation)
-The claim follows from `cast_heq _ _`.
+A detailed English derivation is pending.
 -/
 theorem tr_heq {P P' : Pre} (e : P' = P) (F : Pre → Type) (x : F P) : HEq (tr e F x) x := cast_heq _ _
 
@@ -337,7 +333,7 @@ def TwProp (P : Pre) (l k : ℕ) (Q : Finset (HeightOneSpectrum (𝓞 P.host.E))
   IsPsi (H := P.host) l Q χ ∧ χ.OrderDvd (l ^ k) ∧ Chr.IsTwist P.host (offSet P) χ ∧ ∀ v ∈ Q, ((l : ℕ) : 𝓞 P.host.E) ∉ v.asIdeal
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem TwProp.tr {P P' : Pre} (e : P' = P) {l k : ℕ} {Q : Finset (HeightOneSpectrum (𝓞 P.host.E))} {χ : HChar P.host.E}
     (h : TwProp P l k Q χ) :
@@ -346,13 +342,13 @@ theorem TwProp.tr {P P' : Pre} (e : P' = P) {l k : ℕ} {Q : Finset (HeightOneSp
   exact h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨T.psi_is w, T.psi_ord w, T.psi_tw w, T.Q_l w⟩`.
+Supply the required witnesses or components.
 -/
 theorem twProp (T : TwDat B) (w : B.places.Pl) : TwProp B.toPre (B.places.resChar w) (T.k w) (T.Q w) (T.psi w) :=
   ⟨T.psi_is w, T.psi_ord w, T.psi_tw w, T.Q_l w⟩
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem tr_one {P P' : Pre} (e : P' = P) : tr e (fun P => HChar P.host.E) 1 = 1 := by
   subst e
@@ -375,9 +371,9 @@ def pull (h : Enl B B') (T : TwDat B) : TwDat B' where
     exact ⟨rfl, rfl⟩
 
 /- English proof (translation)
-Establish `key : ∀ (P : Pre) (e : P = B.toPre) (a : B'.places.Pl → HChar P.host.E), (∀ w, a w = (if B'.places.resChar w = P.host.pde then (tr e Fr f).del' else (tr e Fr f).del) * tr e (fun P => HChar P.host.E) (T.psi (plUnder h w))) → HEq ({1, (tr e Fr f).del, (tr e Fr f).del'} ∪ Set.range …`. Introduce `P e a ha`. Substitute `e` using the available equality. Establish `: a = T.xiTw f ∘ plUnder h` using `funext fun w => by`. Rewrite using `[ha, ← resChar_plUnder h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[this, (plUnder_surjective h).range_comp]`. Both sides reduce to the same expression. Conclude with `key B'.toPre h.1 _ fun _ => rfl`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem set_pull (h : Enl B B') (T : TwDat B) (f : Fr B.toPre) :
     HEq ((pull h T).set (tr h.1 Fr f)) (T.set f) := by
@@ -395,9 +391,9 @@ theorem set_pull (h : Enl B B') (T : TwDat B) (f : Fr B.toPre) :
   exact key B'.toPre h.1 _ fun _ => rfl
 
 /- English proof (translation)
-Establish `key : ∀ (P : Pre) (e : P = B.toPre) (Q : Finset (HeightOneSpectrum (𝓞 B.host.E))) (s : Finset ℕ), (∀ v ∈ Q, Ideal.absNorm v.asIdeal ∉ s) → ∀ v ∈ tr e (fun P => Finset (HeightOneSpectrum (𝓞 P.host.E))) Q, Ideal.absNorm v.asIdeal ∉ s`. Introduce `P e Q s hs`. Substitute `e` using the available equality. Conclude with `hs`. Introduce `w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← resChar_plUnder h]`. Conclude with `key _ h.1 _ _ (hA (plUnder h w))`.
+A detailed English derivation is pending.
 -/
 theorem avoids_pull (h : Enl B B') {T : TwDat B} {Av : ℕ → Finset ℕ} (hA : T.Avoids Av) : (pull h T).Avoids Av := by
   have key : ∀ (P : Pre) (e : P = B.toPre) (Q : Finset (HeightOneSpectrum (𝓞 B.host.E))) (s : Finset ℕ),
@@ -411,11 +407,11 @@ theorem avoids_pull (h : Enl B B') {T : TwDat B} {Av : ℕ → Finset ℕ} (hA :
   exact key _ h.1 _ _ (hA (plUnder h w))
 
 /- English proof (translation)
-Establish `hpos : ∀ w, 0 < B.places.resChar w ^ T.k w` using `fun w => pow_pos (B.places.resChar_prime w).pos _`. Take `⟨B', h, hS'⟩` from `BaseEnl.exists_enl B (S ∪ (TwFin.finite_pl B T.pl).toFinset.biUnion fun w => Polynomial.nthRootsFinset (B.places.resChar w ^ T.k w) (1 : ℂ)) (by`. Introduce `z hz`. Break down `Finset.mem_union.1 hz with hz | hz` into its components or cases. Conclude with `hS z hz`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Take `⟨w, -, hw⟩` from `Finset.mem_biUnion.1 hz`. Rewrite `hw` using `[Polynomial.mem_nthRootsFinset (hpos w)]`. Conclude with `IsAlgebraic.of_pow (hpos w) (hw ▸ isAlgebraic_one))`. Use `⟨B', h, fun z hz => hS' z (Finset.mem_union_left _ hz), fun w z hz => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hw : B.places.resChar w ∈ T.pl`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `hS' z (Finset.mem_union_right _ (Finset.mem_biUnion.2 ⟨w, (Set.Finite.mem_toFinset _).2 hw, (Polynomial.mem_nthRootsFinset (hpos w) _).2 hz⟩))`. Rewrite `hz` using `[(T.off w hw).2, pow_zero, pow_one]`. Conclude with `⟨1, by rw [map_one, hz]⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_enl_roots (T : TwDat B) (S : Finset ℂ) (hS : ∀ z ∈ S, IsAlgebraic ℚ z) :
     ∃ B' : Base, Enl B B' ∧ (∀ z ∈ S, ∃ x : B'.LL, B'.embLL x = z) ∧
@@ -474,7 +470,7 @@ def avoidPlaces (P : Pre) (s : Finset ℕ) : Finset (HeightOneSpectrum (𝓞 P.h
     (placesOver_finite_av P.host.E p.1 (((Set.Finite.mem_toFinset _).1 p.2).2.ne_zero)).toFinset
 
 /- English proof (translation)
-Introduce `v hv` and use `by classical rw [Finset.mem_coe, avoidPlaces, Finset.mem_biUnion] exact ⟨⟨p, (Set.Finite.mem_toFinset _).2 ⟨h, hp⟩⟩, Finset.mem_attach _ _, (Set.Finite.mem_toFinset _).2 hv⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem subset_avoidPlaces (P : Pre) (s : Finset ℕ) {p : ℕ} (h : p ∈ offSet P ∨ p ∈ s) (hp : p.Prime) :
     placesOver P.host.E p ⊆ ↑(avoidPlaces P s) := fun v hv => by
@@ -523,11 +519,11 @@ def ofFamilyOn (B : Base) (pl : Finset ℕ) (Wt : Set B.places.Pl) (hsub : ∀ w
       simp only [if_neg hw, if_neg hw', and_self]
 
 /- English proof (translation)
-Establish `h1 : ∀ i, BlochKatoReduction.Gen.PsiOk i (A i) (Q i) (k i) (ψ i) → ReadsPick art i (Q i) (k i) (ψ i) (ι i) (settingChar ha A Q k ψ ι i) ∧ FrobPick i (Q i) (k i) (ψ i) (ι i) (settingChar ha A Q k ψ ι i) ∧ IsPsi (H` using `X.toD7.host) (X.toD7.ntw.l i) (Q i) (settingChar ha A Q k ψ ι i) ∧ (settingChar ha A Q k ψ ι i).OrderDvd (X.toD7.ntw.l i ^ k i) ∧ Chr.IsTwist X.toD7.host (offSet X.B.toPre) (settingChar ha A Q k ψ ι i) := fun i hi => by`. Rewrite using `[settingChar, dif_pos hi]`. Conclude with `pickChar_spec ha hi (ι i) fun p hp => hA i p (Or.inl hp)`. Establish `h2 : ∀ w ∈ Wt, TwProp X.B.toPre (X.B.places.resChar w) (k (s w)) (Q (s w)) (settingChar ha A Q k ψ ι (s w))` using `fun w hw => by`. Take `⟨-, -, a, b, c⟩` from `h1 _ (hψ w hw)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hl w]`. Conclude with `⟨a, b, c, fun v hv => (pick_not_over (hψ w hw) hv).1⟩`. Use `⟨h1, ofFamilyOn X.B pl Wt hsub hc s Q k (settingChar ha A Q k ψ ι) h2 hs, rfl, fun w v hv hm => ?_, fun w hw => ⟨if_pos hw, if_pos hw, if_pos hw⟩, fun w hw => ⟨if_neg hw, if_neg hw, if_neg hw⟩, fun S hS => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hw : w ∈ Wt`. Establish `hv' : v ∈ Q (s w)` using `(if_pos hw : (ofFamilyOn X.B pl Wt hsub hc s Q k (settingChar ha A Q k ψ ι) h2 hs).Q w = _) ▸ hv`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp` using `((GlobalTheory.absNorm_prime_iff_inertiaDeg_eq_one_and_finite_ramified X.toD7.host.E).1 v).2 ((hψ w hw).1 v hv').2.1`. Conclude with `(pick_not_over (hψ w hw) hv').2 (hA (s w) _ (Or.inr (hl w ▸ hm)) hp (Ideal.absNorm_mem _))`. Conclude with `Finset.notMem_empty v ((if_neg hw : (ofFamilyOn X.B pl Wt hsub hc s Q k (settingChar ha A Q k ψ ι) h2 hs).Q w = _) ▸ hv)`. Take `⟨B', h, a, b⟩` from `exists_enl_roots (ofFamilyOn X.B pl Wt hsub hc s Q k (settingChar ha A Q k ψ ι) h2 hs) S hS`. Conclude with `⟨B', h, a, fun w z hz => b (plUnder h w) z (by rwa [resChar_plUnder]), set_pull h _ f⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_twDat_stagesOn (X : Stages) (f : Fr X.B.toPre) (pl : Finset ℕ) (Wt : Set X.B.places.Pl)
     (hsub : ∀ w ∈ Wt, X.B.places.resChar w ∈ pl) (hc : ∀ w, X.B.places.conj w ∈ Wt ↔ w ∈ Wt)

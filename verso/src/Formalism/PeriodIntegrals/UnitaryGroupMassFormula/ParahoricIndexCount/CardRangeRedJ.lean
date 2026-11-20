@@ -16,9 +16,9 @@ def redJ {a : ℕ} (J' : Subgroup (GL (Fin a) F)) (hJ : J' ≤ Formalism.DoubleC
   (red O a ϖ hϖ).comp (Subgroup.inclusion hJ)
 
 /- English proof (translation)
-Establish `hk : (redJ O ϖ hϖ J' hJ).ker = (Formalism.DoubleCosetMeasures.congSub O ϖ a).subgroupOf J'`. Use extensionality with `k`. Rewrite using `[MonoidHom.mem_ker, Subgroup.mem_subgroupOf]`. Express the relevant statement in the definitionally equal form `red O a ϖ hϖ (Subgroup.inclusion hJ k) = 1 ↔ _`. Rewrite using `[← MonoidHom.mem_ker, ker_red O ϖ hϖ hϖ0, Subgroup.mem_subgroupOf]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[← hk]`. Conclude with `(Nat.card_congr (QuotientGroup.quotientKerEquivRange _).toEquiv).symm`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_range_redJ (hϖ0 : ϖ ≠ 0) {a : ℕ} (J' : Subgroup (GL (Fin a) F))
     (hJ : J' ≤ Formalism.DoubleCosetMeasures.GLint O a) :
@@ -33,7 +33,7 @@ theorem card_range_redJ (hϖ0 : ϖ ≠ 0) {a : ℕ} (J' : Subgroup (GL (Fin a) F
   exact (Nat.card_congr (QuotientGroup.quotientKerEquivRange _).toEquiv).symm
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem mk_congr {u v : F} (hu : u ∈ O) (hv : v ∈ O) (h : u = v) :
     Ideal.Quotient.mk (Ideal.span {(⟨ϖ, hϖ⟩ : O)}) (⟨u, hu⟩ : O) =
@@ -41,7 +41,7 @@ theorem mk_congr {u v : F} (hu : u ∈ O) (hv : v ∈ O) (h : u = v) :
   subst h; rfl
 
 /- English proof (translation)
-Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton']`. Conclude with `⟨⟨o, ho⟩, Subtype.ext (by simp [h, mul_comm])⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mk_eq_zero {u : F} (hu : u ∈ O) (o : F) (ho : o ∈ O) (h : u = ϖ * o) :
     Ideal.Quotient.mk (Ideal.span {(⟨ϖ, hϖ⟩ : O)}) (⟨u, hu⟩ : O) = 0 := by
@@ -49,7 +49,7 @@ theorem mk_eq_zero {u : F} (hu : u ∈ O) (o : F) (ho : o ∈ O) (h : u = ϖ * o
   exact ⟨⟨o, ho⟩, Subtype.ext (by simp [h, mul_comm])⟩
 
 /- English proof (translation)
-Use extensionality with `i j`. Take `⟨x, rfl⟩` from `finSumFinEquiv.surjective i`. Take `⟨y, rfl⟩` from `finSumFinEquiv.surjective j`. Rewrite using `[red_val, theta_apply]`. Conclude with `H x y`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_eq_theta {a t : ℕ} (h : Formalism.DoubleCosetMeasures.GLint O (a + t))
     (A : Matrix (Fin a) (Fin a) (Formalism.DoubleCosetMeasures.kF O ϖ hϖ)) (B : Matrix (Fin a) (Fin t) (Formalism.DoubleCosetMeasures.kF O ϖ hϖ))
@@ -64,7 +64,7 @@ theorem red_eq_theta {a t : ℕ} (h : Formalism.DoubleCosetMeasures.GLint O (a +
   exact H x y
 
 /- English proof (translation)
-The claim follows from `mk_congr O ϖ hϖ _ _ (by rw [hg, theta_apply])`.
+A detailed English derivation is pending.
 -/
 theorem mk_entry {a t : ℕ} (g : Formalism.DoubleCosetMeasures.GLint O (a + t)) {A : Matrix (Fin a) (Fin a) F}
     {B : Matrix (Fin a) (Fin t) F} {C : Matrix (Fin t) (Fin a) F} {D : Matrix (Fin t) (Fin t) F}

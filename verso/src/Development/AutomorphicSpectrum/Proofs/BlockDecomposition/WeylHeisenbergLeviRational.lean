@@ -24,14 +24,14 @@ namespace GlobalTheory.CompanionTheory.ZUnf.Rat
 variable {D : D7} {n ρ p : ℕ}
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.BlockFourMatrices.main f a b c d`.
+A detailed English derivation is pending.
 -/
 theorem blockMatrix_map {R S : Type} {m : ℕ} (f : R → S) (a b c d : Matrix (Fin m) (Fin m) R) :
     (blk4 a b c d).map f = blk4 (a.map f) (b.map f) (c.map f) (d.map f) :=
   _root_.UpperTheory.Reformulated.B.BlockFourMatrices.main f a b c d
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [bl, Matrix.map_apply, Matrix.submatrix_apply]`. Generalize the expression as in `(finSumFinEquiv.trans (finCongr hn)).symm i = x`. Generalize the expression as in `(finSumFinEquiv.trans (finCongr hn)).symm j = y`. Apply the tactic sequence `rcases x with x | x <;> rcases y with y | y <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_bl {R S : Type} (hn : ρ + p = n) (f : R → S) (a : Matrix (Fin ρ) (Fin ρ) R) (b : Matrix (Fin ρ) (Fin p) R)
     (c : Matrix (Fin p) (Fin ρ) R) (d : Matrix (Fin p) (Fin p) R) :
@@ -43,25 +43,25 @@ theorem map_bl {R S : Type} (hn : ρ + p = n) (f : R → S) (a : Matrix (Fin ρ)
   rcases x with x | x <;> rcases y with y | y <;> simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_incA_zero {a b : Type} : (0 : Matrix a b D.host.E).map (incA D) = 0 := by
   ext i j; simp
 
 /- English proof (translation)
-The claim follows from `map_one (incA D).mapMatrix`.
+A detailed English derivation is pending.
 -/
 theorem map_incA_one {m : ℕ} : (1 : Matrix (Fin m) (Fin m) D.host.E).map (incA D) = 1 :=
   map_one (incA D).mapMatrix
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_incA_neg {a b : Type} (x : Matrix a b D.host.E) : (-x).map (incA D) = -(x.map (incA D)) := by
   ext i j; simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [adj, cT, Matrix.transpose_apply, Matrix.map_apply, GlobalTheory.DualPairCheck.cA_incA]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem adj_map_incA {a b : ℕ} (x : Matrix (Fin a) (Fin b) D.host.E) :
     adj (x.map (incA D) : Mx D a b) = (cT (D.sp.cm.sig : D.host.E →+* D.host.E) x).map (incA D) := by
@@ -70,20 +70,20 @@ theorem adj_map_incA {a b : ℕ} (x : Matrix (Fin a) (Fin b) D.host.E) :
   rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[adj]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem adj_zero {a b : ℕ} : adj (0 : Mx D a b) = 0 := by
   ext i j
   simp [adj]
 
 /- English proof (translation)
-Introduce `D n ρ p hn M z ζ hζ η γ a b c d hγ`. Establish `hm : ∀ x y : Matrix (Fin (n + n)) (Fin (n + n)) D.host.E, (x * y).map (incA D) = x.map (incA D) * y.map (incA D)` using `fun x y => Matrix.map_mul`. Rewrite using `[hm, hm, hm]`. Establish `e1 : mat M.w = (wM hn).map (incA D)`. Rewrite using `[M.w_mat, wM, blockMatrix_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_bl, map_incA_zero, map_incA_one, map_incA_neg]`. Establish `e2 : mat (M.nzx z 0) = (nM hn ζ).map (incA D)`. Rewrite using `[M.nzx_mat, nM, blockMatrix_map, adj_zero]`. Simplify using `only [map_bl, map_incA_zero, map_incA_one, hζ]`. Establish `e3 : mat (M.sh (η.map (incA D))) = (sM hn (D.sp.cm.sig : D.host.E →+* D.host.E) η).map (incA D)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[M.sh_mat, sM, blockMatrix_map, adj_map_incA]`. Simplify using `only [map_bl, map_incA_zero, map_incA_one, map_incA_neg]`. Establish `e4 : mat (M.emb γ) = (eM hn a b c d).map (incA D)`. Establish `h'` using `hγ`. Rewrite `h'` using `[blockMatrix_map]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[M.emb_mat γ _ _ _ _ h', eM, blockMatrix_map]`. Simplify using `only [map_bl, map_incA_zero, map_incA_one]`. Rewrite using `[← e1, ← e2, ← e3, ← e4]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mat_eq : ∀ {D : D7} {n ρ p : ℕ} (hn : ρ + p = n) (M : Maps D hn) (z : hermA D ρ) (ζ : Matrix (Fin ρ) (Fin ρ) D.host.E), ζ.map (incA D) = z.1 →
     ∀ (η : Matrix (Fin ρ) (Fin p) D.host.E) (γ : G D p) (a b c d : Matrix (Fin p) (Fin p) D.host.E), mat γ = (blk4 a b c d).map (incA D) →
@@ -111,7 +111,7 @@ theorem mat_eq : ∀ {D : D7} {n ρ p : ℕ} (hn : ρ + p = n) (M : Maps D hn) (
   rfl
 
 /- English proof (translation)
-Introduce `D n ρ p hn M z ζ hζ η γ a b c d hγ`. Establish `h` using `mat_eq hn M z ζ hζ η γ.1 a b c d hγ`. Use `⟨(GlobalTheory.StdUnn.ChartRat.mem_GF_iff _).2 ⟨_, h.symm⟩, h⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem rat_cell : ∀ {D : D7} {n ρ p : ℕ} (hn : ρ + p = n) (M : Maps D hn) (z : hermA D ρ) (ζ : Matrix (Fin ρ) (Fin ρ) D.host.E), ζ.map (incA D) = z.1 →
     ∀ (η : Matrix (Fin ρ) (Fin p) D.host.E) (γ : GF D p) (a b c d : Matrix (Fin p) (Fin p) D.host.E), mat (γ : G D p) = (blk4 a b c d).map (incA D) →

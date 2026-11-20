@@ -19,13 +19,13 @@ def locQuotEquiv {R : Type*} [CommRing R] (q : Ideal R) [q.IsPrime] (J : Ideal R
     (LocalizedModule.mkLinearMap _ _)).restrictScalars _
 
 /- English proof (translation)
-Introduce `S _ _ N J qq h`. Establish `: qq.IsPrime` using `h.1.1`. Set `J' : Ideal (Localization.AtPrime qq)` to `J.localized' (Localization.AtPrime qq) qq.primeCompl (Algebra.linearMap (Poly S N) (Localization.AtPrime qq))`. Establish `hJ' : J' = J.map (algebraMap (Poly S N) (Localization.AtPrime qq))`. Simplify using `only [J', Submodule.localized'_eq_span, Ideal.map]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `hmin : maximalIdeal (Localization.AtPrime qq) ∈ J'.minimalPrimes`. Rewrite using `[hJ', IsLocalization.minimalPrimes_map qq.primeCompl, Set.mem_preimage, Localization.AtPrime.under_maximalIdeal]`. Conclude with `h`. Establish `hne : J' ≠ ⊤` using `ne_top_of_le_ne_top (maximalIdeal.isMaximal _).ne_top hmin.1.2`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Nontrivial (Localization.AtPrime qq ⧸ J')` using `Ideal.Quotient.nontrivial_iff.mpr hne`. Establish `: IsArtinianRing (Localization.AtPrime qq ⧸ J')` using `quotient_artinian_of_mem_minimalPrimes_of_isLocalRing J' hmin`. Establish `: IsArtinian (Localization.AtPrime qq) (Localization.AtPrime qq ⧸ J')` using `isArtinian_of_surjective_algebraMap (Ideal.Quotient.mk_surjective (I := J'))`. Establish `: IsNoetherianRing (Localization.AtPrime qq)` using `IsLocalization.isNoetherianRing qq.primeCompl _ inferInstance`. Unfold `cutMult`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← (locQuotEquiv qq J).length_eq]`. Conclude with `⟨Module.length_pos, Module.length_ne_top.lt_top⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem CutMultPos.proof : CutMultPos.Statement := by
   intro S _ _ N J qq h

@@ -28,13 +28,13 @@ attribute [local instance] GlobalTheory.TypeRec.factG Formalism.BasicNotions.Hos
 namespace GlobalTheory.TypeVec
 
 /- English proof (translation)
-Introduce `g`. Establish `key : ∀ t : Finset ι, P (fun i => if i ∈ t then g i else 1)`. Introduce `t`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => convert h1 using 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Consider the case `insert a t ha ih`. Establish `e : (fun i => if i ∈ insert a t then g i else 1) = Pi.mulSingle a (g a) * (fun i => if i ∈ t then g i else 1)`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hi : i = a`. Substitute `hi` using the available equality. Simplify using `[ha]`. Simplify using `[Finset.mem_insert, hi, Pi.mulSingle_apply]`. Rewrite using `[e]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hm _ _ _ ih`. Simplify using `using key Finset.univ`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem pi_ind {ι : Type} [Fintype ι] [DecidableEq ι] {M : ι → Type} [∀ i, Group (M i)] (P : (∀ i, M i) → Prop) (h1 : P 1)
     (hm : ∀ g i (m : M i), P g → P (Pi.mulSingle i m * g)) : ∀ g, P g := by
@@ -59,9 +59,9 @@ def conjL {X : Type} : (X → ℂ) →ₛₗ[starRingEnd ℂ] (X → ℂ) where
   map_smul' c f := by funext g; simp [mul_comm]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Take `⟨i, Tm, hic, hi1, hinj, hmem, heq⟩` from `hτ`. Use `⟨ii.trans i.symm, (GlobalTheory.splitCompletion_symm_continuous L s i hic hi1).comp hii, fun f hf hf0 => ?_⟩` and prove the remaining obligations. Take `⟨p, hp0, hpe⟩` from `GlobalTheory.T.finiteType_vector_detected_localComponent_equivariant L n π s τ i Tm hic hi1 hinj hmem heq f hf hf0`. Use `⟨p, hp0, fun y x hx f' hf' => ?_⟩` and prove the remaining obligations.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : ∀ Z : GL (Fin n) ℚ_[g], Matrix.GeneralLinearGroup.map i.toRingHom (Matrix.GeneralLinearGroup.map (ii.trans i.symm).toRingHom Z) = Matrix.GeneralLinearGroup.map ii.toRingHom Z`. Introduce `Z`. Use extensionality with `a b`. Simplify using the standard rewrite rules. Rewrite using `[hpe x hx.1 f' hf', hx.2, e]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem loc_piece {L : Type} [Field L] [NumberField L] [IsCMField L] {n g : ℕ} [Fact g.Prime] (π : NG.FinTyp L n)
     (s : SplitPlace L) {w : HeightOneSpectrum (𝓞 L)} (h : s.w = w)
@@ -82,9 +82,9 @@ theorem loc_piece {L : Type} [Field L] [NumberField L] [IsCMField L] {n g : ℕ}
   rw [hpe x hx.1 f' hf', hx.2, e]
 
 /- English proof (translation)
-Introduce `z hz`. Establish `key : principalLevelFrame.isotIn ρ C π ≤ (principalLevelFrame.isotIn ρ C π).comap (ρ h)`. Use `iSup₂_le fun Φ hΦ => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, rfl⟩`. Rewrite using `[Submodule.mem_comap, ← hΦ.1 h f]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(le_iSup₂ (f := fun (Φ : π.S →ₗ[ℂ] A) (_ : principalLevelFrame.IsEqvA ρ π Φ ∧ LinearMap.range Φ ≤ C) => LinearMap.range Φ) Φ hΦ) ⟨_, rfl⟩`. Conclude with `key hz`.
+A detailed English derivation is pending.
 -/
 theorem isotIn_stable {D : D7} {n : ℕ} {A : Type} [AddCommGroup A] [Module ℂ A] (ρ : GAf D.host.E n →* Module.End ℂ A)
     (C : Submodule ℂ A) (π : NG.FinTyp D.host.E n) (h : GAf D.host.E n) :
@@ -99,9 +99,9 @@ theorem isotIn_stable {D : D7} {n : ℕ} {A : Type} [AddCommGroup A] [Module ℂ
   exact key hz
 
 /- English proof (translation)
-Take `⟨q, hq0, hq⟩` from `GlobalTheory.isotIn_detect_by_eqv_map D A ρ C π y hy hy0`. Use `⟨(NG.rt D.host.E n c⁻¹).comp q, fun h0 => hq0 ?_, fun z hz => ⟨π.stable _ _ (hq z hz).1, fun h => ?_⟩⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Establish `e` using `congrFun h0 (g * c)`. Simplify `e` using `[NG.rt, mul_assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `e : (ρ.comp (MulAut.conj c).toMonoidHom) h = ρ (c * h * c⁻¹)` using `rfl`. Rewrite using `[e, LinearMap.comp_apply, LinearMap.comp_apply, (hq z hz).2]`. Use function extensionality and compare the values at `g`. Simplify using `[NG.rt, mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem detect_conj {D : D7} {n : ℕ} {A : Type} [AddCommGroup A] [Module ℂ A] (ρ : GAf D.host.E n →* Module.End ℂ A)
     (C : Submodule ℂ A) (π : NG.FinTyp D.host.E n) (c : GAf D.host.E n) (y : A) (hy : y ∈ principalLevelFrame.isotIn ρ C π) (hy0 : y ≠ 0) :
@@ -118,7 +118,7 @@ theorem detect_conj {D : D7} {n : ℕ} {A : Type} [AddCommGroup A] [Module ℂ A
     simp [NG.rt, mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [KFix, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_KFix {D : D7} {s : ∀ k : Fin 2, D.nd.PlG k → SplitPlace D.host.E}
     {j : ∀ k v, ℚ_[D.host.g k] ≃+* (s k v).v.adicCompletion (maximalRealSubfield D.host.E)}
@@ -128,9 +128,9 @@ theorem mem_KFix {D : D7} {s : ∀ k : Fin 2, D.nd.PlG k → SplitPlace D.host.E
   simp only [KFix, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]
 
 /- English proof (translation)
-Use `pi_ind (M := fun kv : (Σ k : Fin 2, D.nd.PlG k) => GL (Fin D.R.r) (ZMod (D.host.g kv.1))) P h1 ?_` and prove the remaining obligations. Introduce and unpack `g ⟨k, v⟩ m hg`. Establish `e : Pi.mulSingle (⟨k, v⟩ : Σ k : Fin 2, D.nd.PlG k) m = GlobalTheory.GoodTypes.facHom D k v m`. Simplify using `only [GlobalTheory.GoodTypes.facHom, MonoidHom.mulSingle_apply]`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hm g k v m hg`.
+A detailed English derivation is pending.
 -/
 theorem typePrime_finiteGroup_induction_factor (D : D7) (P : G0g D.nd → Prop) (h1 : P 1)
     (hm : ∀ (g : G0g D.nd) (k : Fin 2) (v : D.nd.PlG k) (m : GL (Fin D.R.r) (ZMod (D.host.g k))), P g →
@@ -144,17 +144,17 @@ theorem typePrime_finiteGroup_induction_factor (D : D7) (P : G0g D.nd → Prop) 
   exact hm g k v m hg
 
 /- English proof (translation)
-Establish `hg : ∀ g : G0g D.nd, ∀ (z : SA) (z' : SB), (z : A) ∈ N → (z' : B) = q z → ((ρA g z : SA) : A) ∈ N ∧ ((ρB g z' : SB) : B) = q (ρA g z)`. Use `typePrime_finiteGroup_induction_factor D _ ?_ ?_` and prove the remaining obligations. Introduce `z z' hz hz'`. Simplify using `only [map_one, Module.End.one_apply]`. Conclude with `⟨hz, hz'⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Introduce `g k v m ih z z' hz hz'`. Take `⟨h1, h2⟩` from `ih z z' hz hz'`. Simplify using `only [map_mul, Module.End.mul_apply]`. Conclude with `⟨(hstep k v m _ h1).1, (hstep k v m _ h1).2 _ h2⟩`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `a using MonoidAlgebra.induction_on with`. Consider the case `of g`. Introduce `z z' hz hz'`. Simplify using `only [Representation.asAlgebraHom_of]`. Conclude with `hg g z z' hz hz'`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `add a c ha hc`. Introduce `z z' hz hz'`. Take `⟨a1, a2⟩` from `ha z z' hz hz'`. Take `⟨c1, c2⟩` from `hc z z' hz hz'`. Simplify using `only [map_add, LinearMap.add_apply, Submodule.coe_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨N.add_mem a1 c1, by rw [a2, c2]⟩`. Consider the case `smul c a ha`. Introduce `z z' hz hz'`. Take `⟨a1, a2⟩` from `ha z z' hz hz'`. Simplify using `only [map_smul, LinearMap.smul_apply, Submodule.coe_smul]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨N.smul_mem c a1, by rw [a2]⟩`.
+A detailed English derivation is pending.
 -/
 theorem intertwine {D : D7} {A B : Type} [AddCommGroup A] [Module ℂ A] [AddCommGroup B] [Module ℂ B]
     {SA : Submodule ℂ A} {SB : Submodule ℂ B} (ρA : Representation ℂ (G0g D.nd) SA) (ρB : Representation ℂ (G0g D.nd) SB)
@@ -195,37 +195,33 @@ theorem intertwine {D : D7} {A B : Type} [AddCommGroup A] [Module ℂ A] [AddCom
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Use `set π := principalLevelFrame.rowRepR R.θ (Y.eFT σ) with hπ`. Establish `hloc` using `hcp σ`. Use `choose s hs τ hτ hcpe using hloc`. Establish `hj` using `fun k v => loc_piece π (s k v) (hs k v) (τ k v) (hτ k v) (I.i k v) (I.cont k v)`. Use `choose j hjc hjP using hj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hinj` using `GlobalTheory.PlaceInj.splitPlace_v_injective D s hs`. Take `⟨c, hA, hKc⟩` from `GlobalTheory.T.rowsAtLevels_fixed_principalCongruence_typePlaces R F cG Y hP s j hs hjc`. Take `⟨ρM, hρM⟩` from `GlobalTheory.TypeAct.exists_rep D s j hinj _ ((principalLevelFrame.actM Y.PY (R.MY 0)).comp (MulAut.conj c).toMonoidHom)`. Take `⟨ρV, hρV⟩` from `GlobalTheory.TypeAct.exists_rep D s j hinj _ (rtHom D.host.E D.R.r)`. Take `⟨b, hb⟩` from `principalLevelFrame.rowRepR_occ R.θ (Y.eFT σ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨Tm, hTm, hT0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hb`. Establish `hTm' : Tm ∈ Mult.goodPart R.θ (R.MY 0) (levS _ (R.βY 0) (R.dat0 (R.toRealDat.levR F.lv2 b))) (levChi _ (R.βY 0) (R.dat0 (R.toRealDat.levR F.lv2 b))) R.toRealDat.e0 ⊓ principalLevelFrame.isotIn (principalLevelFrame.actM Y.PY (R.MY 0)) (principalLevelFrame.Minf R.θ Y.PY (R.MY 0)) ( …` using `hTm`. Take `⟨hG, hN⟩` from `Submodule.mem_inf.1 hTm'`. Establish `hMult : Tm ∈ Mult.Mult R.θ (R.MY 0) (levS _ (R.βY 0) (R.dat0 (R.toRealDat.levR F.lv2 b))) (levChi _ (R.βY 0) (R.dat0 (R.toRealDat.levR F.lv2 b)))` using `(Submodule.mem_inf.1 hG).1`. Establish `hK` using `hKc b Tm hMult`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `he` using `GlobalTheory.T.goodProjector_eq_goodIdempotent_typePlaces R F cG Y hP s j hs hjc c hA ρM hρM b Tm hK hG`. Take `⟨q, hq0, hq⟩` from `detect_conj (principalLevelFrame.actM Y.PY (R.MY 0)) (principalLevelFrame.Minf R.θ Y.PY (R.MY 0)) (principalLevelFrame.FinTyp.conjT π) c Tm hN hT0`. Use `set N := principalLevelFrame.isotIn (principalLevelFrame.actM Y.PY (R.MY 0)) (principalLevelFrame.Minf R.θ Y.PY (R.MY 0)) (principalLevelFrame.FinTyp.conjT π) with hNdef`. Establish `hstep : ∀ (k : Fin 2) (v : D.nd.PlG k) (m : GL (Fin D.R.r) (ZMod (D.host.g k))) (z : KFix D s j ((principalLevelFrame.actM Y.PY (R.MY 0)).comp (MulAut.conj c).toMonoidHom)), (z : Mult.MMap (R.MY 0)) ∈ N → ((ρM (GlobalTheory.GoodTypes.facHom D k v m) z : KFix D s j ((principalLeve …`. Introduce `k v m z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨y, rfl⟩` from `GlobalTheory.GLp.reduction_GL_surjective (D.host.g k) D.R.r m`. Take `⟨x, hx1, hx2⟩` from `GlobalTheory.SplitSec.exists_trivOutside_loc D.host.E D.R.r (s k v) (Matrix.GeneralLinearGroup.map (j k v).toRingHom (GlobalTheory.GLp.inc _ _ y))`. Establish `hl : IsLiftAt (s k v) (j k v) y x` using `⟨hx1, hx2⟩`. Establish `eM` using `hρM k v y x hl z`. Use `⟨eM ▸ isotIn_stable _ _ _ (c * x * c⁻¹) _ hz, fun z' hz' => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eV` using `hρV k v y x hl z'`. Rewrite using `[eV, eM, hz']`. Conclude with `((hq _ hz).2 x).symm`. Establish `hall` using `intertwine ρM ρV N q hstep`. Establish `hqK : q Tm ∈ KFix D s j (rtHom D.host.E D.R.r)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hK`, the goal using `[mem_KFix]`. Introduce `k v y x hl`. Use `show NG.rt D.host.E D.R.r x (q Tm) = q Tm`. Rewrite using `[← (hq _ hN).2 x, hK k v y x hl]`. Use `⟨KFix D s j (rtHom D.host.E D.R.r), inferInstance, inferInstance, ρV, (principalLevelFrame.FinTyp.conjT π).S.comap (KFix D s j (rtHom D.host.E D.R.r)).subtype, ⟨q Tm, hqK⟩, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k v`. Rewrite using `[hcpe k v]`. Introduce `yv hyv hyv0`. Establish `hf : conjL (yv : GAf D.host.E D.R.r → ℂ) ∈ π.S` using `hyv`. Establish `hf0 : conjL (yv : GAf D.host.E D.R.r → ℂ) ≠ 0`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h0`. Apply `hyv0` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Use `congrFun h0 g` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `this` using `[conjL]`. Take `⟨p, hp0, hpe⟩` from `hjP k v _ hf hf0`. Use `⟨p.comp (conjL.comp (KFix D s j (rtHom D.host.E D.R.r)).subtype), hp0, fun z hz => ⟨?_, fun h => ?_⟩⟩` and prove the remaining obligations. Establish `hzf : conjL (z : GAf D.host.E D.R.r → ℂ) ∈ π.S` using `hz`. Simplify using `only [GlobalTheory.GLp.fixK1, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k1`. Take `⟨x, hx1, hx2⟩` from `GlobalTheory.SplitSec.exists_trivOutside_loc D.host.E D.R.r (s k v) (Matrix.GeneralLinearGroup.map (j k v).toRingHom (GlobalTheory.GLp.inc _ _ (k1 : GL (Fin D.R.r) ℤ_[D.host.g k])))`. Establish `hl : IsLiftAt (s k v) (j k v) (k1 : GL (Fin D.R.r) ℤ_[D.host.g k]) x` using `⟨hx1, hx2⟩`. Establish `hzK : NG.rt D.host.E D.R.r x (z : GAf D.host.E D.R.r → ℂ) = z` using `(mem_KFix.1 z.2) k v k1 x hl`. Establish `e1` using `hpe (k1 : GL (Fin D.R.r) ℤ_[D.host.g k]) x hl _ hzf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : NG.rt D.host.E D.R.r x (conjL (z : GAf D.host.E D.R.r → ℂ)) = conjL (z : GAf D.host.E D.R.r → ℂ)`. Establish `e3 : NG.rt D.host.E D.R.r x (conjL (z : GAf D.host.E D.R.r → ℂ)) = conjL (NG.rt D.host.E D.R.r x (z : GAf D.host.E D.R.r → ℂ))` using `rfl`. Rewrite using `[e3, hzK]`. Rewrite `e1` using `[e2]`. Conclude with `e1.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hzf : conjL (z : GAf D.host.E D.R.r → ℂ) ∈ π.S` using `hz`. Establish `hy0 : GlobalTheory.GLp.red (D.host.g k) D.R.r (Function.invFun (GlobalTheory.GLp.red (D.host.g k) D.R.r) h) = h` using `Function.invFun_eq (GlobalTheory.GLp.reduction_GL_surjective (D.host.g k) D.R.r h)`. Take `⟨x, hl⟩ : ∃ x, IsLiftAt (s k v) (j k v) (Function.invFun (GlobalTheory.GLp.red (D.host.g k) D.R.r) h) x` from `GlobalTheory.SplitSec.exists_trivOutside_loc D.host.E D.R.r (s k v) _`. Establish `eV` using `hρV k v _ x hl z`. Rewrite `eV` using `[hy0]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e1` using `hpe _ x hl _ hzf`. Conclude with `(congrArg (fun f => p (conjL f)) eV).trans e1`. Introduce `h0`. Apply `hq0` to reduce the goal to its premises. Conclude with `congrArg Subtype.val h0`.
-
-Introduce `a`. Take `⟨h1, h2⟩` from `hall a ⟨Tm, hK⟩ ⟨q Tm, hqK⟩ hN rfl`. Use `show ((ρV.asAlgebraHom a ⟨q Tm, hqK⟩ : KFix D s j (rtHom D.host.E D.R.r)) : GAf D.host.E D.R.r → ℂ) ∈ (principalLevelFrame.FinTyp.conjT π).S`. Rewrite using `[h2]`. Conclude with `(hq _ h1).1`.
-
-Apply `Subtype.ext` to reduce the goal to its premises. Take `⟨-, h2⟩` from `hall D.ntypes.e0 ⟨Tm, hK⟩ ⟨q Tm, hqK⟩ hN rfl`. Rewrite using `[h2, he]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem typeVec_rows {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type}
     {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
@@ -341,9 +337,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
   GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up
 
 /- English proof (translation)
-Introduce `_`. Use `⟨1, one_pos, ?_⟩` and prove the remaining obligations. Introduce `eps C8 C5 c6 Cb _ _ _ _`. Use `⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun C _ _ _ => ⟨0, fun cD _ => ⟨0, fun ch _ => ⟨0, fun K _ _ _ _ _ _ => ?_⟩⟩⟩⟩` and prove the remaining obligations. Use `⟨fun _ _ _ => ∅, fun _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, by simp, by simp, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `B f T _ _ _ _ _ w _ Z Wt hX z p0 Y _ _ _ _ _ I cp hcp σ`. Conclude with `typeVec_rows z.R z.F z.cG Y z.pins I cp hcp σ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem typeVec : PrN → OverRows fun _ _ _ _ w Z _ _ z _ Y => ∀ (I : GlobalTheory.TypeRec.Ident (w.st Z).toD7) cp, GlobalTheory.TypeRec.IsComp I (repOf Y) cp → ∀ σ, ∃ (V : Type) (_ : AddCommGroup V) (_ : Module ℂ V) (ρ : Representation ℂ (G0g (w.st Z).toD7.nd) V) (W : Submodule ℂ V) (x : V), (∀ k v, GlobalTheory.GoodTypes.ConjIn ρ W (GlobalTheory.GoodTypes.facHom (w.st Z).toD7 k v) (cp σ k v).ρ) ∧ x ≠ 0 ∧ (∀ a, ρ.asAlgebraHom a x ∈ W) ∧ ρ.asAlgebraHom (w.st Z).toD7.ntypes.e0 x = x := by
   intro _

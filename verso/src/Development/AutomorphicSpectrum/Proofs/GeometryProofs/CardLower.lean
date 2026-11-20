@@ -34,7 +34,7 @@ namespace GlobalTheory.CompanionTheory.Ar.Rec
 namespace SharpLaws
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.PeriodCoord.card_cmType Q.H`. Rewrite `h` using `[Nat.card_eq_fintype_card, D.host.finrank_cmField]`. Rewrite using `[h]`. Use `show 4 * D.R.ord / 2 = 2 * D.R.ord`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem card_psi (D : D7) (Q : Par D) : Fintype.card (CMType Q.H) = D.R.f := by
   have h := GlobalTheory.PeriodCoord.card_cmType Q.H

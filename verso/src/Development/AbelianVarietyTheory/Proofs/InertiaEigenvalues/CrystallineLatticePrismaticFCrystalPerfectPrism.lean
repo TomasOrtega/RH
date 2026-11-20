@@ -13,7 +13,7 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BSP
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[actT, map_mul]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem galoisLatticeAction_mul {l : ℕ} [Fact l.Prime] {K : FinExt l} {V : Type} [AddCommGroup V] [Module ℚ_[l] V]
     [Module ℤ_[l] V] [IsScalarTower ℤ_[l] ℚ_[l] V] {ρ : Representation ℚ_[l] ↥(GK K) V}
@@ -24,7 +24,7 @@ theorem galoisLatticeAction_mul {l : ℕ} [Fact l.Prime] {K : FinExt l} {V : Typ
   rfl
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[actT, map_one]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem galoisLatticeAction_one {l : ℕ} [Fact l.Prime] {K : FinExt l} {V : Type} [AddCommGroup V] [Module ℚ_[l] V]
     [Module ℤ_[l] V] [IsScalarTower ℤ_[l] ℚ_[l] V] {ρ : Representation ℚ_[l] ↥(GK K) V}
@@ -38,7 +38,7 @@ end GlobalTheory.BSP
 namespace GlobalTheory.BSP
 
 /- English proof (translation)
-Establish `h1 : LinearMap.toMatrix b b (actT L g) * LinearMap.toMatrix b b (actT L g⁻¹) = 1`. Rewrite using `[← LinearMap.toMatrix_comp, galoisLatticeAction_mul, mul_inv_cancel, galoisLatticeAction_one, LinearMap.toMatrix_id]`. Establish `h2 : LinearMap.toMatrix b b (actT L g⁻¹) * LinearMap.toMatrix b b (actT L g) = 1`. Rewrite using `[← LinearMap.toMatrix_comp, galoisLatticeAction_mul, inv_mul_cancel, galoisLatticeAction_one, LinearMap.toMatrix_id]`. Conclude with `⟨⟨_, _, h1, h2⟩, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isUnit_toMatrix_actT {l : ℕ} [Fact l.Prime] {K : FinExt l} {V : Type} [AddCommGroup V] [Module ℚ_[l] V]
     [Module ℤ_[l] V] [IsScalarTower ℤ_[l] ℚ_[l] V] {ρ : Representation ℚ_[l] ↥(GK K) V}
@@ -51,11 +51,11 @@ theorem isUnit_toMatrix_actT {l : ℕ} [Fact l.Prime] {K : FinExt l} {V : Type} 
   exact ⟨⟨_, _, h1, h2⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `l _ K P AI hStd V _ _ _ _ _ _ _ ρ L hcont hcrys`. Use `haveI : Module.Free ℤ_[l] ↥L.T := L.free`. Use `haveI : Module.Finite ℤ_[l] ↥L.T := Module.Finite.iff_fg.mpr L.fg`. Take `⟨bk⟩` from `GlobalTheory.T.nonempty_breuilKisinDatum l K`. Take `⟨τ, hτ⟩` from `GlobalTheory.T.exists_breuilKisin_frobenius_period l K bk`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `b` to `Module.finBasis ℤ_[l] ↥L.T`. Take `⟨s⟩` from `GlobalTheory.T.exists_crystalline_lattice_periods_on_disc l K bk τ hτ P AI hStd V ρ L hcont hcrys _ b`. Establish `hu : ∀ g, IsUnit (LinearMap.toMatrix b b (actT L g))` using `fun g => isUnit_toMatrix_actT L b g`. Take `⟨hs⟩` from `GlobalTheory.T.nonempty_discPeriodAinfBasisData_of_isPer l K bk τ hτ _ _ hu s`. Take `⟨S, T, hST⟩` from `GlobalTheory.T.exists_stratified_phiModule_crystalline_lattice l K bk τ hτ _ _ hu s hs`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨M, e, hMe⟩` from `GlobalTheory.T.exists_framed_fCrystal_of_stratifiedPhiModule l K bk _ S`. Conclude with `⟨M, GlobalTheory.T.etaleRealisation_of_framedMatrices l K bk _ S M e hMe ↥L.T (fun g => actT L g) b T hST⟩`.
+A detailed English derivation is pending.
 -/
 theorem clause1_perfectPrism : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (P : LocPrime l) (AI : LocAinf l P), IsStd P AI → ∀ (V : Type) [AddCommGroup V] [Module ℚ_[l] V] [Module ℤ_[l] V] [IsScalarTower ℤ_[l] ℚ_[l] V] [FiniteDimensional ℚ_[l] V] [TopologicalSpace V] [IsModuleTopology ℚ_[l] V] (ρ : Representation ℚ_[l] ↥(GK K) V) (L : Lattice (O := ℤ_[l]) ρ), (∀ x, Continuous fun g => ρ g x) → IsCrys (P.PD K) ρ → ∃ (M : FCrys l ↥(OL K)) (j : M.M (ainfObj K) →ₛₗ[(inclW l).comp (ainfId K).toRingHom] (WCb l ⊗[ℤ_[l]] ↥L.T)), Realises K M (ainfObj K) (ainfId K) ↥L.T (fun g => actT L g) j := by
   intro l _ K P AI hStd V _ _ _ _ _ _ _ ρ L hcont hcrys

@@ -28,7 +28,7 @@ def modFit (M : Type*) [AddCommGroup M] [Module R M] (i : ℕ) : Ideal R :=
   ⨆ (k : ℕ) (g : Fin k → M) (_ : Submodule.span R (Set.range g) = ⊤), fitGen g i
 
 /- English proof (translation)
-Rewrite using `[Ideal.eq_top_iff_one]`. Conclude with `Ideal.subset_span ⟨Fin.elim0, Fin.elim0, by simp⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 example (A : Matrix m n R) : minorIdeal 0 A = ⊤ := by
   rw [Ideal.eq_top_iff_one]
@@ -45,7 +45,7 @@ def coefMap [Fintype n] (Φ : Matrix m n R) (M : Type*) [AddCommGroup M] [Module
   LinearMap.pi fun i => ∑ j, Φ i j • LinearMap.proj j
 
 /- English proof (translation)
-Simplify using `[coefMap, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coefMap_apply [Fintype n] (Φ : Matrix m n R) (M : Type*) [AddCommGroup M] [Module R M]
     (v : n → M) (i : m) : coefMap Φ M v i = ∑ j, Φ i j • v j := by
@@ -62,7 +62,7 @@ abbrev H2 [Fintype n] (Φ : Matrix m n R) : Type _ :=
   (m → R) ⧸ LinearMap.range Φ.mulVecLin
 
 /- English proof (translation)
-Use `LinearMap.ext fun v => funext fun i => ?_` and prove the remaining obligations. Rewrite using `[coefMap_apply]`. Simplify using `[Matrix.mulVec, dotProduct]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coefMap_self [Fintype n] (Φ : Matrix m n R) : coefMap Φ R = Φ.mulVecLin := by
   refine LinearMap.ext fun v => funext fun i => ?_
@@ -70,7 +70,7 @@ theorem coefMap_self [Fintype n] (Φ : Matrix m n R) : coefMap Φ R = Φ.mulVecL
   simp [Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Rewrite using `[H1c, H1, coefMap_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem h1c_eq_h1 [Fintype n] (Φ : Matrix m n R) : H1c Φ R = H1 Φ := by
   rw [H1c, H1, coefMap_self]
@@ -79,14 +79,14 @@ def IsMinimal (Φ : Matrix m n R) : Prop :=
   ∀ i j, Φ i j ∈ Ideal.jacobson (⊥ : Ideal R)
 
 /- English proof (translation)
-Rewrite using `[IsMinimal, IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isMinimal_iff [IsLocalRing R] (Φ : Matrix m n R) :
     IsMinimal Φ ↔ ∀ i j, Φ i j ∈ IsLocalRing.maximalIdeal R := by
   rw [IsMinimal, IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top]
 
 /- English proof (translation)
-Introduce `_ _` and use `Ideal.zero_mem _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : IsMinimal (0 : Matrix m n R) := fun _ _ => Ideal.zero_mem _
 
@@ -99,7 +99,7 @@ structure IsQis [Fintype m] [Fintype n] [Fintype n'] (Φ : Matrix m n R) (Φ' : 
   surj₂ : ∀ y', ∃ y x', y' = f₂ *ᵥ y + Φ' *ᵥ x'
 
 /- English proof (translation)
-Simplify `h surj₁ x h := ⟨x, h, by simp⟩ inj₂ y x h := ⟨x, by simpa using h⟩ surj₂ y := ⟨y, 0, by simp⟩` using `inj₁ x _ h := by simpa`.
+Simplify using the standard rewrite rules.
 -/
 theorem IsQis.refl [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n] (Φ : Matrix m n R) :
     IsQis Φ Φ 1 1 where
@@ -117,7 +117,7 @@ def IsHtpyEquiv [Fintype m] [Fintype n] [Fintype m'] [Fintype n'] [DecidableEq m
       f₁ * g₁ = 1 + h' * Φ' ∧ f₂ * g₂ = 1 + Φ' * h'
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by simp, 1, 1, 0, 0, by simp, by simp, by simp, by simp, by simp⟩`.
+Supply the required witnesses or components.
 -/
 example [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n] (Φ : Matrix m n R) :
     IsHtpyEquiv Φ Φ 1 1 :=
@@ -184,7 +184,7 @@ abbrev KoszulH1 (a b : M →ₗ[R] M) : Type _ :=
 abbrev KoszulH2 (a b : M →ₗ[R] M) : Type _ := M ⧸ LinearMap.range (koszul₁ a b)
 
 /- English proof (translation)
-Use extensionality with `x`. Use `LinearMap.congr_fun h x` as an intermediate fact. Simplify using `only [LinearMap.comp_apply] at this`. Simplify using `[koszul₀, koszul₁, this]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem koszul₁_comp_koszul₀ (a b : M →ₗ[R] M) (h : a ∘ₗ b = b ∘ₗ a) :
     koszul₁ a b ∘ₗ koszul₀ a b = 0 := by
@@ -212,14 +212,14 @@ def hyperbolic (β : H →ₗ[k] H' →ₗ[k] k) : LinearMap.BilinForm k (H × H
     β.flip.compl₁₂ (LinearMap.snd k H H') (LinearMap.fst k H H')
 
 /- English proof (translation)
-Simplify using `[hyperbolic]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hyperbolic_apply (β : H →ₗ[k] H' →ₗ[k] k) (v w : H × H') :
     hyperbolic β v w = β v.1 w.2 + β w.1 v.2 := by
   simp [hyperbolic]
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩ _ ⟨y, rfl⟩`. Simplify using `[hyperbolic_apply]`. Rewrite using `[LinearMap.finrank_range_of_inj LinearMap.inl_injective]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 example : IsHalfIsotropic (hyperbolic (LinearMap.mul k k))
     (LinearMap.range (LinearMap.inl k k k)) := by

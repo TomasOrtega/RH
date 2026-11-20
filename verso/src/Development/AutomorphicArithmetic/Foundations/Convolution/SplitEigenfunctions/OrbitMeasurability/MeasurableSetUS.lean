@@ -34,7 +34,7 @@ abbrev GG : Type := ↥(GroundTheory.Automorphic.Reduction.normOneGL ℚ 2)
 abbrev Ga : Subgroup GG := GroundTheory.Automorphic.Reduction.rationalGLOne ℚ 2
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[GroundTheory.Automorphic.AdelicGLn.coe_det]`. Establish `h : ((gl g * dM t : GL (Fin 2) (A ℚ)) : Matrix (Fin 2) (Fin 2) (A ℚ)) = (g : Matrix (Fin 2) (Fin 2) (A ℚ)) * !![1, 0; 0, (t : A ℚ)]` using `rfl`. Rewrite using `[h, Matrix.det_mul, g.det_coe, one_mul, Matrix.det_fin_two_of]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_el (g : G1 ℚ) (t : (A ℚ)ˣ) : GroundTheory.Automorphic.AdelicGLn.det ℚ 2 (gl g * dM t) = t := by
   refine Units.ext ?_
@@ -45,7 +45,7 @@ theorem det_el (g : G1 ℚ) (t : (A ℚ)ˣ) : GroundTheory.Automorphic.AdelicGLn
   simp
 
 /- English proof (translation)
-Rewrite using `[GroundTheory.Automorphic.Reduction.mem_normOneGL, det_el]`. Conclude with `UpperTheory.isCompact_integralIdeleUnits_and_abs_eq_one.2 _ t.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_norm (g : G1 ℚ) (t : US) : gl g * dM (t : (A ℚ)ˣ) ∈ GroundTheory.Automorphic.Reduction.normOneGL ℚ 2 := by
   rw [GroundTheory.Automorphic.Reduction.mem_normOneGL, det_el]
@@ -56,12 +56,12 @@ def pm (p : G1 ℚ × US) : GG := ⟨gl p.1 * dM (p.2 : (A ℚ)ˣ), mem_norm _ _
 def us (U : UMeas) : Measure US := U.υ.comap Subtype.val
 
 /- English proof (translation)
-The claim follows from `UpperTheory.isCompact_integralIdeleUnits_and_abs_eq_one.1.isClosed.measurableSet`.
+A detailed English derivation is pending.
 -/
 theorem measurableSet_US : MeasurableSet (US : Set (A ℚ)ˣ) := UpperTheory.isCompact_integralIdeleUnits_and_abs_eq_one.1.isClosed.measurableSet
 
 /- English proof (translation)
-The claim follows from `MeasurableEmbedding.subtype_coe measurableSet_US`.
+A detailed English derivation is pending.
 -/
 theorem val_emb : MeasurableEmbedding (Subtype.val : US → (A ℚ)ˣ) := MeasurableEmbedding.subtype_coe measurableSet_US
 
@@ -75,17 +75,17 @@ instance us_prob (U : UMeas) : IsProbabilityMeasure (us U) := by
   exact h1
 
 /- English proof (translation)
-Establish `hm : Measurable (fun x : US => t * x)` using `(continuous_const.mul continuous_id).measurable`. Use `⟨hm, ?_⟩` and prove the remaining obligations. Use extensionality with `s hs`. Rewrite using `[Measure.map_apply hm hs]`. Unfold `us`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[val_emb.comap_apply, val_emb.comap_apply]`. Establish `hs' : MeasurableSet (Subtype.val '' s : Set (A ℚ)ˣ)` using `val_emb.measurableSet_image.2 hs`. Establish `hmt : Measurable (fun x : IdeleGroup ℚ => (t * x : (A ℚ)ˣ))` using `(continuous_const.mul continuous_id).measurable`. Establish `hi : (U.υ.map (fun x : IdeleGroup ℚ => (t * x : (A ℚ)ˣ))) (Subtype.val '' s) = U.υ (Subtype.val '' s)`. Rewrite using `[U.inv t t.2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hi` using `[Measure.map_apply hmt hs']`. Rewrite using `[← hi]`. Use `congr 1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨_, hy, rfl⟩`. Introduce and unpack `⟨y, hy, hyx⟩`. Establish `hx : x ∈ US`. Establish `: x = ((t⁻¹ * y : US) : (A ℚ)ˣ)`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[hyx]`. Rewrite using `[this]`. Conclude with `Subtype.coe_prop _`. Use `⟨⟨x, hx⟩, ?_, rfl⟩` and prove the remaining obligations. Establish `: t * ⟨x, hx⟩ = y` using `Subtype.ext hyx.symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hy` using `[this]`.
+A detailed English derivation is pending.
 -/
 theorem us_mul (U : UMeas) (t : US) : MeasurePreserving (fun x : US => t * x) (us U) (us U) := by
   have hm : Measurable (fun x : US => t * x) := (continuous_const.mul continuous_id).measurable
@@ -117,7 +117,7 @@ theorem us_mul (U : UMeas) (t : US) : MeasurePreserving (fun x : US => t * x) (u
     simpa [this] using hy
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `!![1, 0; 0, ((s * t : (A ℚ)ˣ) : A ℚ)] = !![1, 0; 0, (s : A ℚ)] * !![1, 0; 0, (t : A ℚ)]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dM_mul (s t : (A ℚ)ˣ) : dM (s * t) = dM s * dM t := by
   apply Units.ext
@@ -126,7 +126,7 @@ theorem dM_mul (s t : (A ℚ)ˣ) : dM (s * t) = dM s * dM t := by
   fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `!![1, 0; 0, (t : A ℚ)] * (g : Matrix (Fin 2) (Fin 2) (A ℚ)) = (cD t g : Matrix (Fin 2) (Fin 2) (A ℚ)) * !![1, 0; 0, (t : A ℚ)]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [cD, Matrix.mul_apply, Fin.sum_univ_two, mul_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dM_gl (t : (A ℚ)ˣ) (g : G1 ℚ) : dM t * gl g = gl (cD t g) * dM t := by
   apply Units.ext
@@ -136,7 +136,7 @@ theorem dM_gl (t : (A ℚ)ˣ) (g : G1 ℚ) : dM t * gl g = gl (cD t g) * dM t :=
   fin_cases i <;> fin_cases j <;> simp [cD, Matrix.mul_apply, Fin.sum_univ_two, mul_comm]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `gl p.1 * dM (p.2 : (A ℚ)ˣ) * (gl q.1 * dM (q.2 : (A ℚ)ˣ)) = gl (p.1 * cD (p.2 : (A ℚ)ˣ) q.1) * dM ((p.2 : (A ℚ)ˣ) * (q.2 : (A ℚ)ˣ))`. Establish `h : gl (p.1 * cD (p.2 : (A ℚ)ˣ) q.1) = gl p.1 * gl (cD (p.2 : (A ℚ)ˣ) q.1)` using `Units.ext rfl`. Rewrite using `[dM_mul, h, mul_assoc, ← mul_assoc (dM _) (gl _), dM_gl]`. Simplify using `only [mul_assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pm_mul (p q : G1 ℚ × US) : pm p * pm q = pm (p.1 * cD (p.2 : (A ℚ)ˣ) q.1, p.2 * q.2) := by
   apply Subtype.ext
@@ -147,7 +147,7 @@ theorem pm_mul (p q : G1 ℚ × US) : pm p * pm q = pm (p.1 * cD (p.2 : (A ℚ)�
   simp only [mul_assoc]
 
 /- English proof (translation)
-Use `⟨⟨y.val, ?_⟩, Units.ext rfl⟩` and prove the remaining obligations. Use `congrArg Units.val h` as an intermediate fact. Rewrite `this` using `[GroundTheory.Automorphic.AdelicGLn.coe_det]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_sl (y : GL (Fin 2) (A ℚ)) (h : GroundTheory.Automorphic.AdelicGLn.det ℚ 2 y = 1) : ∃ g : G1 ℚ, gl g = y := by
   refine ⟨⟨y.val, ?_⟩, Units.ext rfl⟩
@@ -155,11 +155,11 @@ theorem exists_sl (y : GL (Fin 2) (A ℚ)) (h : GroundTheory.Automorphic.AdelicG
   rwa [GroundTheory.Automorphic.AdelicGLn.coe_det] at this
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, rfl⟩`. Express the relevant statement in the definitionally equal form `GroundTheory.Automorphic.AdelicGLn.det ℚ 2 (gl p.1 * dM (p.2 : (A ℚ)ˣ)) ∈ UU`. Rewrite using `[det_el]`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `p.2.2`. Introduce `hx`. Take `⟨g, hg⟩` from `exists_sl ((x : GL (Fin 2) (A ℚ)) * (dM (GroundTheory.Automorphic.AdelicGLn.det ℚ 2 (x : GL (Fin 2) (A ℚ))))⁻¹) (by`. Establish `h1` using `det_el 1 (GroundTheory.Automorphic.AdelicGLn.det ℚ 2 (x : GL (Fin 2) (A ℚ)))`. Simplify using `only [map_one, one_mul] at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_inv, h1, mul_inv_cancel])`. Use `⟨(g, ⟨_, hx⟩), Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `gl g * dM _ = _`. Rewrite using `[hg, inv_mul_cancel_right]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem range_pm : Set.range pm = {x : GG | GroundTheory.Automorphic.AdelicGLn.det ℚ 2 (x : GL (Fin 2) (A ℚ)) ∈ UU} := by
   ext x

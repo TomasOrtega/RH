@@ -16,7 +16,7 @@ noncomputable section
 namespace GlobalTheory.FunctionFieldCoords
 
 /- English proof (translation)
-Use `(genericPoint_spec X).image f.continuous` as an intermediate fact. Rewrite `this` using `[Set.image_univ, f.denseRange.closure_range]`. Conclude with `this.eq (genericPoint_spec Y)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_genericPoint_eq {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] (f : X ⟶ Y)
     [IsDominant f] : f (genericPoint X) = genericPoint Y := by
@@ -25,15 +25,13 @@ theorem map_genericPoint_eq {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] (f 
   exact this.eq (genericPoint_spec Y)
 
 /- English proof (translation)
-Establish `hfin : (f.residueFieldMap (genericPoint M)).hom.Finite`. Use `letI := (f.residueFieldMap (genericPoint M)).hom.toAlgebra`. Express the relevant statement in the definitionally equal form `Module.finrank (W.residueField (f (genericPoint M))) (M.residueField (genericPoint M)) ≠ 0 at h`. Conclude with `Module.finite_of_finrank_pos (Nat.pos_of_ne_zero h)`. Establish `hsurj : ∀ {x : W} (h : x ⤳ genericPoint W), x = genericPoint W → Function.Surjective (W.presheaf.stalkSpecializes h).hom`.
+Establish an intermediate fact. Equip the data with the indicated structure. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `x h rfl`. Rewrite using `[TopCat.Presheaf.stalkSpecializes_refl]`. Conclude with `fun a => ⟨a, rfl⟩`. Establish `hinj : Function.Injective (M.residue (genericPoint M)).hom` using `RingHom.injective (f := ((M.residue (genericPoint M)).hom : M.functionField →+* _))`. Set `e` to `RingEquiv.ofBijective (M.residue (genericPoint M)).hom ⟨hinj, M.residue_surjective _⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `key : ∀ (hs : f (genericPoint M) ⤳ genericPoint W), ((W.presheaf.stalkSpecializes hs ≫ f.stalkMap (genericPoint M)).hom).Finite`. Introduce `hs`. Establish `hc : (M.residue (genericPoint M)).hom.comp (W.presheaf.stalkSpecializes hs ≫ f.stalkMap (genericPoint M)).hom = (f.residueFieldMap (genericPoint M)).hom.comp ((W.residue _).hom.comp (W.presheaf.stalkSpecializes hs).hom)`. Rewrite using `[← CommRingCat.hom_comp, ← CommRingCat.hom_comp, ← CommRingCat.hom_comp, Category.assoc, Category.assoc, Scheme.residue_residueFieldMap]`. Establish `h1 : ((M.residue (genericPoint M)).hom.comp (W.presheaf.stalkSpecializes hs ≫ f.stalkMap (genericPoint M)).hom).Finite`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`. Conclude with `hfin.comp (RingHom.Finite.of_surjective _ ((W.residue_surjective _).comp (hsurj hs (map_genericPoint_eq f))))`. Establish `h2 : (W.presheaf.stalkSpecializes hs ≫ f.stalkMap (genericPoint M)).hom = (e.symm : _ →+* _).comp ((M.residue (genericPoint M)).hom.comp (W.presheaf.stalkSpecializes hs ≫ f.stalkMap (genericPoint M)).hom)`. Use extensionality with `a`. Conclude with `(e.symm_apply_apply _).symm`.
-
-Rewrite using `[h2]`. Conclude with `(RingHom.Finite.of_surjective _ e.symm.surjective).comp h1`. Conclude with `key _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem functionFieldMap_finite {M W : Scheme.{0}} [IsIntegral M] [IsIntegral W] (f : M ⟶ W)
     [IsDominant f] (h : f.residueDegree (genericPoint M) ≠ 0) : (functionFieldMap f).Finite := by
@@ -77,9 +75,9 @@ theorem functionFieldMap_finite {M W : Scheme.{0}} [IsIntegral M] [IsIntegral W]
 end GlobalTheory.FunctionFieldCoords
 
 /- English proof (translation)
-Introduce `M W _ _ f _ h`. Use `letI := (functionFieldMap f).toAlgebra`. Use `haveI : Module.Finite W.functionField M.functionField := GlobalTheory.FunctionFieldCoords.functionFieldMap_finite f h`. Set `b` to `Module.finBasis W.functionField M.functionField`. Use `⟨Module.finrank W.functionField M.functionField, fun j => (b.coord j).toAddMonoidHom, fun j c x => ?_, fun x hx => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `b.coord j (c • x) = c * b.coord j x`. Rewrite using `[map_smul, smul_eq_mul]`. Conclude with `b.ext_elem fun i => by simpa using hx i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.functionField_coords : ∀ (M W : Scheme.{0}) [IsIntegral M] [IsIntegral W] (f : M ⟶ W) [IsDominant f], f.residueDegree (genericPoint M) ≠ 0 → ∃ (r : ℕ) (co : Fin r → (M.functionField →+ W.functionField)), (∀ j c x, co j (GlobalTheory.functionFieldMap f c * x) = c * co j x) ∧ ∀ x, (∀ j, co j x = 0) → x = 0 := by
   intro M W _ _ f _ h

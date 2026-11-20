@@ -14,35 +14,33 @@ noncomputable section
 namespace GlobalTheory.UniLevelLift
 
 /- English proof (translation)
-Introduce `L _ _ _ n J χ s r q hq ψ₀ ξ hψ hU p hp hL`. Use `haveI : Fact (1 < q) := ⟨hq⟩`. Use `set h := s.loc n p with hh`. Establish `hone : ∀ i j : Fin r, ((((1 : GL (Fin r) (ZMod q)) : Matrix (Fin r) (Fin r) (ZMod q)) i j).val : s.v.adicCompletion (maximalRealSubfield L)) = if i = j then 1 else 0`. Introduce `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_one, Matrix.one_apply]`. Use `split_ifs`. Rewrite using `[ZMod.val_one, Nat.cast_one]`. Rewrite using `[ZMod.val_zero, Nat.cast_zero]`. Establish `hent : ∀ a b : Fin n, Valued.v ((h.val - 1) a b) < 1 ∧ (¬ (a.val < r ∧ b.val < r) → h.val a b = if a = b then 1 else 0)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Introduce `a b`. Use `hL a b` as an intermediate fact. Distinguish the cases in `hab : a.val < r ∧ b.val < r`. Rewrite `this` using `[dif_pos hab, hone]`. Use `⟨?_, fun h' => absurd hab h'⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `this using 3` and compare the differences between its conclusion and the goal. Rewrite using `[Matrix.sub_apply, Matrix.one_apply]`. Distinguish the cases in `e : a = b`. Substitute `e` using the available equality. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e' : (⟨a.val, hab.1⟩ : Fin r) ≠ ⟨b.val, hab.2⟩` using `fun h2 => e (Fin.ext (by simpa using congrArg Fin.val h2))`. Rewrite using `[if_neg e, if_neg e']`. Rewrite `this` using `[dif_neg hab]`. Use `⟨?_, fun _ => this⟩` and prove the remaining obligations. Rewrite using `[Matrix.sub_apply, this, Matrix.one_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hK : h ∈ GlobalTheory.SplitWeil.KOne (s.v.adicCompletion (maximalRealSubfield L)) (Fin n)` using `(GlobalTheory.FixedAtSplit.mem_KOne_iff' h).2 fun a b => (hent a b).1`. Establish `hKi` using `(GlobalTheory.FixedAtSplit.mem_KOne_iff' _).1 (inv_mem hK)`. Establish `hint : ∀ (y c : s.v.adicCompletion (maximalRealSubfield L)), Valued.v (y - c) < 1 → Valued.v c ≤ 1 → Valued.v y ≤ 1`. Introduce `y c h1 h2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `Valuation.map_add_le Valued.v (le_of_lt h1) h2` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Establish `hone' : ∀ a b : Fin n, Valued.v ((1 : Matrix (Fin n) (Fin n) (s.v.adicCompletion (maximalRealSubfield L))) a b) ≤ 1`. Introduce `a b`. Rewrite using `[Matrix.one_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `split_ifs`. Rewrite using `[map_one]`. Rewrite using `[map_zero]`. Conclude with `zero_le'`. Establish `huni : NG.UniRT s r h`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨GlobalTheory.BlockConj.mem_GLint_of (fun a b => ?_) (fun a b => ?_), fun a b ha hb => ?_⟩, fun a b ha hb => ⟨fun hlt => ?_, fun he => ?_⟩⟩` and prove the remaining obligations. Use `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 (hint _ _ ?_ (hone' a b))` and prove the remaining obligations. Rewrite using `[← Matrix.sub_apply]`. Conclude with `(hent a b).1`. Use `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 (hint _ _ ?_ (hone' a b))` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[← Matrix.sub_apply]`. Conclude with `hKi a b`. Establish `hne : a ≠ b` using `fun e => by rw [e] at ha; omega`. Rewrite using `[(hent a b).2 (by omega), if_neg hne, map_zero]; exact zero_lt_one`. Establish `hne : a ≠ b` using `fun e => by rw [e] at hlt; omega`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hent a b).1` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, Matrix.one_apply, if_neg hne, sub_zero]`. Then use the resulting hypothesis. Substitute `he` using the available equality. Use `(hent a a).1` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, Matrix.one_apply_eq]`. Then use the resulting hypothesis.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Establish `hpJ : p ∈ J` using `(hU.mem p hp).2 huni`. Establish `hdet : NG.detDD s r h = 1`. Establish `hm : (Matrix.of fun a b : {x : Fin n // r ≤ x.val} => h.val a.1 b.1) = 1`. Use extensionality with `a b`. Rewrite using `[Matrix.of_apply, (hent a.1 b.1).2 (by have := a.2; omega), Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Subtype.ext_iff]`. Unfold `NG.detDD`. Rewrite using `[hm, Matrix.det_one]`. Establish `hchr` using `hU.chr p hpJ hp 1 (by rw [Units.val_one, hdet])`. Establish `hsup : ψ₀ (NG.supDiag s r h) = 1` using `hψ.1 _ (by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `NG.supDiag`. Use `Valuation.map_sum_lt _ one_ne_zero fun a _ => Valuation.map_sum_lt _ one_ne_zero fun b _ => ?_` and prove the remaining obligations. Use `split_ifs with hab`. Establish `hne : a ≠ b` using `fun e => by rw [e] at hab; omega`. Use `(hent a b).1` as an intermediate fact.
-
-Rewrite `this` using `[Matrix.sub_apply, Matrix.one_apply, if_neg hne, sub_zero]`. Then use the resulting hypothesis. Rewrite using `[map_zero]`. Conclude with `zero_lt_one)`. Use `⟨hpJ, Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hchr, hsup, map_one, one_mul, Units.val_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} (J : Subgroup (GAf L n)) (χ : J →* ℂˣ) (s : SplitPlace L) (r q : ℕ), 1 < q → ∀ (ψ₀ : AddChar (s.v.adicCompletion (maximalRealSubfield L)) ℂ) (ξ : (s.v.adicCompletion (maximalRealSubfield L))ˣ →* ℂˣ), NG.IsPsi0 s ψ₀ → NG.LevelUni J χ s r ψ₀ ξ → ∀ p : GAf L n, TrivOutside {s.v} p → IsLiftAt s r q (1 : GL (Fin r) (ZMod q)) (s.loc n p) → ∃ h : p ∈ J, χ ⟨p, h⟩ = 1 := by
   intro L _ _ _ n J χ s r q hq ψ₀ ξ hψ hU p hp hL

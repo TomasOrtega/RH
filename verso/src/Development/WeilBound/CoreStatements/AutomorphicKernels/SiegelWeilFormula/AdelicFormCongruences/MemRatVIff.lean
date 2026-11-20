@@ -15,11 +15,11 @@ namespace PositivityTheory.SiegelWeilFormula.Afc
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Proceed by induction on `h using AddSubgroup.closure_induction with`. Consider the case `mem x hx => obtain ⟨v, rfl⟩ := hx`. Conclude with `⟨v, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Supply the required witnesses or components.
 
-Consider the case `zero => exact ⟨0, by funext i; simp [GlobalTheory.ThK.incV]⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨v, rfl⟩` from `hx`. Take `⟨v', rfl⟩` from `hy`. Conclude with `⟨v + v', by funext i; simp [GlobalTheory.ThK.incV]⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `neg x _ hx`. Take `⟨v, rfl⟩` from `hx`. Conclude with `⟨-v, by funext i; simp [GlobalTheory.ThK.incV]⟩`. Introduce and unpack `⟨v, rfl⟩`. Conclude with `AddSubgroup.subset_closure ⟨v, rfl⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_ratV_iff {d : SD σ} (L : LD d) (u : Fin L.n → AE F E) :
     u ∈ L.ratV ↔ ∃ v : Fin L.n → E, u = GlobalTheory.ThK.incV F v := by
@@ -39,9 +39,9 @@ theorem mem_ratV_iff {d : SD σ} (L : LD d) (u : Fin L.n → AE F E) :
     exact AddSubgroup.subset_closure ⟨v, rfl⟩
 
 /- English proof (translation)
-Establish `hD : ∀ p q, σ (dbl Y.J p q) = s * dbl Y.J q p`. Introduce `p q`. Apply the tactic sequence `rcases p with i | i <;> rcases q with j | j <;> simp [dbl, hJ]`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, map_sum, map_mul, hσ, hD, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sigma_frame {n : ℕ} {Y : Spc F E n} {b : GL (Fin n ⊕ Fin n) E} (hσ : ∀ a, σ (σ a) = a) (s : E) (hJ : ∀ i j, σ (Y.J j i) = s * Y.J i j) (k l : Fin n ⊕ Fin n) :
     σ ((b.1ᵀ * dbl Y.J * b.1.map σ) k l) = s * (b.1ᵀ * dbl Y.J * b.1.map σ) l k := by
@@ -55,9 +55,9 @@ theorem sigma_frame {n : ℕ} {Y : Spc F E n} {b : GL (Fin n ⊕ Fin n) E} (hσ 
   ring
 
 /- English proof (translation)
-Establish `i0 : Fin n` using `⟨0, hn⟩`. Establish `h` using `sigma_frame (b := b) hσ (s : E) hJ (Sum.inl i0) (Sum.inr i0)`. Rewrite `h` using `[hb]`. Simplify using `at h`. Establish `h2 : s * (ε : ℤ) = 1` using `by exact_mod_cast h.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h3 : (ε : ℤ) * ε = 1` using `by rw [← Units.val_mul, Int.units_mul_self, Units.val_one]`. Take the linear combination `(-(ε : ℤ)) * h2 + s * h3`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem eps_of_sign {n : ℕ} {Y : Spc F E n} {b : GL (Fin n ⊕ Fin n) E} (hσ : ∀ a, σ (σ a) = a) (hn : 1 ≤ n) {ε : ℤˣ}
     (hb : FrameEq σ Y b ε) (s : ℤ) (hJ : ∀ i j, σ (Y.J j i) = (s : E) * Y.J i j) : (ε : ℤ) = s := by

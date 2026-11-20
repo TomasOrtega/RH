@@ -13,26 +13,24 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.CFin
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.DYha3.main x`.
+A detailed English derivation is pending.
 -/
 theorem exists_nat_mul_isIntegral {E : Type} [Field E] [NumberField E] (x : E) :
     ∃ n : ℕ, 0 < n ∧ IsIntegral ℤ ((n : E) * x) :=
   _root_.UpperTheory.Reformulated.B.DYha3.main x
 
 /- English proof (translation)
-Use `haveI : IsModuleTopology (Af F) (Af F ⊗[F] E) := ⟨rfl⟩`. Set `b` to `Module.finBasis F E`. Set `bb` to `Algebra.TensorProduct.basis (Af F) b`. Establish `hc : ∀ i, Continuous (fun x : Af F ⊗[F] E => bb.coord i x)` using `fun i => IsModuleTopology.continuous_of_linearMap (bb.coord i)`. Establish `hcoord : ∀ (e : E) i, bb.coord i (inclR (F` using `F) (Af F) e) = algebraMap F (Af F) (b.repr e i) := by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e i`. Express the relevant statement in the definitionally equal form `bb.repr ((1 : Af F) ⊗ₜ[F] e) i = _`. Rewrite using `[Algebra.TensorProduct.basis_repr_tmul]`. Simplify using `[Algebra.algebraMap_eq_smul_one]`. Use `choose m hm hmi using fun i => GroundTheory.Automorphic.CuspidalSpectrum.exists_natCast_mul_integral_of_isCompact F (h𝒦.image (hc i))`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `choose D hD hDi using fun i => exists_nat_mul_isIntegral (b i)`. Use `⟨(∏ i, m i) * ∏ i, D i, Nat.mul_pos (Finset.prod_pos fun i _ => hm i) (Finset.prod_pos fun i _ => hD i), fun e he => ?_⟩` and prove the remaining obligations. Establish `hsum : ((((∏ i, m i) * ∏ i, D i : ℕ)) : E) * e = ∑ i, algebraMap F E (((∏ i, m i : ℕ) : F) * b.repr e i) * (((∏ i, D i : ℕ)) : E) * b i` using `by conv_lhs => rw [← b.sum_repr e]`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.smul_def, map_mul, map_natCast, Nat.cast_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsum]`. Use `IsIntegral.sum _ fun i _ => ?_` and prove the remaining obligations. Take `⟨q, hq⟩` from `Finset.dvd_prod_of_mem m (Finset.mem_univ i)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨r, hr⟩` from `Finset.dvd_prod_of_mem D (Finset.mem_univ i)`. Take `⟨z, hz⟩` from `hmi i (b.repr e i) ⟨_, he, hcoord e i⟩`. Establish `h1 : IsIntegral ℤ (algebraMap F E (((∏ i, m i : ℕ) : F) * b.repr e i))`. Establish `: ((∏ i, m i : ℕ) : F) * b.repr e i = (q : F) * (z : F)`. Rewrite using `[hq, hz, Nat.cast_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `IsIntegral.algebraMap ((isIntegral_natCast q).mul z.2)`. Establish `h2 : (((∏ i, D i : ℕ)) : E) * b i = (r : E) * ((D i : E) * b i)`. Rewrite using `[hr, Nat.cast_mul]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mul_assoc, h2]`. Conclude with `h1.mul ((isIntegral_natCast r).mul (hDi i))`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nat_mul_isIntegral_of_isCompact (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] {𝒦 : Set (Af F ⊗[F] E)} (h𝒦 : IsCompact 𝒦) :
@@ -82,13 +80,11 @@ end GlobalTheory.CompanionTheory.CFin
 namespace GlobalTheory.CompanionTheory.CFin
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J 𝒞 h𝒞 ι _ A B`. Use `haveI : IsModuleTopology (Af F) (Af F ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (Af F ⊗[F] E) := IsModuleTopology.isTopologicalRing (Af F) _`. Set `f : ι → ι → GFin σ J → Af F ⊗[F] E` to `fun u v y => (A.map (inclR (F := F) (Af F)) * (matHom (Af F) σ J y).1 * B.map (inclR (F := F) (Af F))) u v`. Establish `hmat : Continuous fun y : GFin σ J => ((matHom (Af F) σ J y).1 : Matrix (Fin n) (Fin n) (Af F ⊗[F] E))` using `Units.continuous_val.comp (GlobalTheory.AdelicU.isEmbedding_matHom (Af F) σ J).continuous`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : ∀ u v, Continuous (f u v)` using `fun u v => by`. Establish `: Continuous fun y : GFin σ J => A.map (inclR (F` using `F) (Af F)) * (matHom (Af F) σ J y).1 * B.map (inclR (F := F) (Af F)) := (continuous_const.matrix_mul hmat).matrix_mul continuous_const`. Conclude with `this.matrix_elem u v`. Take `⟨d, hd, h⟩` from `exists_nat_mul_isIntegral_of_isCompact F E (𝒦 := ⋃ u, ⋃ v, f u v '' 𝒞) (isCompact_iUnion fun u => isCompact_iUnion fun v => h𝒞.image (hf u v))`. Use `⟨d, hd, fun δ hδ u v => h _ ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Set.mem_iUnion.2 ⟨u, Set.mem_iUnion.2 ⟨v, _, hδ, ?_⟩⟩` and prove the remaining obligations. Establish `hval : ((matHom (Af F) σ J (GlobalTheory.AdelicU.projFin σ J (ratEmb σ J δ))).1 : Matrix (Fin n) (Fin n) (Af F ⊗[F] E)) = δ.1.1.map (inclR (F` using `F) (Af F)) := by`. Use `Matrix.ext fun r s => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map (sndA F) (AlgHom.id F E) ((1 : AF F) ⊗ₜ[F] (δ.1.1 r s)) = (1 : Af F) ⊗ₜ[F] (δ.1.1 r s)`. Simplify using the standard rewrite rules.
-
-Express the relevant statement in the definitionally equal form `(A.map (inclR (F := F) (Af F)) * (matHom (Af F) σ J (GlobalTheory.AdelicU.projFin σ J (ratEmb σ J δ))).1 * B.map (inclR (F := F) (Af F))) u v = _`. Rewrite using `[hval, ← Matrix.map_mul, ← Matrix.map_mul, Matrix.map_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bounded_denominators : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (𝒞 : Set (GFin σ J)), IsCompact 𝒞 → ∀ {ι : Type} [Fintype ι] (A : Matrix ι (Fin n) E) (B : Matrix (Fin n) ι E), ∃ d : ℕ, 0 < d ∧ ∀ δ : GRat σ J, projFin σ J (ratEmb σ J δ) ∈ 𝒞 → ∀ u v, IsIntegral ℤ ((d : E) * (A * δ.1.1 * B) u v) := by
   intro F E _ _ _ _ _ σ n J 𝒞 h𝒞 ι _ A B

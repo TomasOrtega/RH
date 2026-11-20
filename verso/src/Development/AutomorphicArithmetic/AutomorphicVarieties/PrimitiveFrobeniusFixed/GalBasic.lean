@@ -6,7 +6,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped nonZeroDivisors Pointwise
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `(Chr.clsFacts ℚ Ω N).2.2.1 g b h`. Introduce and unpack `rfl x hx`. Conclude with `Chr.cls_spec N g x hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem lifts_cls {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (N : ℕ) [NeZero N] (b : (ZMod N)ˣ)
     (g : G ℚ Ω) : Lifts N b g ↔ Chr.cls ℚ Ω N g = b := by
@@ -17,13 +17,11 @@ private theorem lifts_cls {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure 
     exact Chr.cls_spec N g x hx
 
 /- English proof (translation)
-Establish `hmod : ∀ x : Ω, x ^ N = 1 → ∀ k : ℕ, x ^ (k % N) = x ^ k`. Introduce `x hx k`. Use `conv_rhs => rw [← Nat.mod_add_div k N]`. Rewrite using `[pow_add, pow_mul, hx, one_pow, mul_one]`. Use extensionality with `g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonoidHom.mem_ker, ← lifts_cls N 1 g]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h' : ∀ x : Ω, x ^ N = 1 → g x = x` using `h`. Use `show ∀ x : Ω, x ^ N = 1 → g x = x ^ ((1 : (ZMod N)ˣ) : ZMod N).val`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Rewrite using `[h' x hx, Units.val_one, ZMod.val_one_eq_one_mod, hmod x hx, pow_one]`. Introduce `h`. Establish `h' : ∀ x : Ω, x ^ N = 1 → g x = x ^ ((1 : (ZMod N)ˣ) : ZMod N).val` using `h`. Use `show ∀ x : Ω, x ^ N = 1 → g x = x`.
-
-Introduce `x hx`. Rewrite using `[h' x hx, Units.val_one, ZMod.val_one_eq_one_mod, hmod x hx, pow_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fix_cls {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (N : ℕ) [NeZero N] :
     fixMu ℚ Ω N = (Chr.cls ℚ Ω N).ker := by
@@ -46,7 +44,7 @@ private theorem fix_cls {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure �
     rw [h' x hx, Units.val_one, ZMod.val_one_eq_one_mod, hmod x hx, pow_one]
 
 /- English proof (translation)
-Use `haveI : CharZero Ω := (RingHom.charZero_iff (algebraMap ℚ Ω).injective).mp inferInstance`. Use `(Chr.clsOnto Ω N).1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `all_goals first`. Consider the case `exact Subsingleton.elim (α := Algebra ℚ Ω) _ _`. Consider the case `(convert ‹IsAlgClosure ℚ Ω›; exact Subsingleton.elim (α := Algebra ℚ Ω) _ _)`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem cls_onto {Ω : Type} [Field Ω] [inst : Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (N : ℕ) [NeZero N] :
     Function.Surjective (Chr.cls ℚ Ω N) := by
@@ -57,7 +55,7 @@ private theorem cls_onto {Ω : Type} [Field Ω] [inst : Algebra ℚ Ω] [IsAlgCl
     | (convert ‹IsAlgClosure ℚ Ω›; exact Subsingleton.elim (α := Algebra ℚ Ω) _ _)
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 private theorem act_eq {Ω : Type} [Field Ω] [Algebra ℚ Ω] {N : ℕ} {x : Ω} (hx : ∀ g ∈ fixMu ℚ Ω N, g x = x)
     {g h : G ℚ Ω} (e : g⁻¹ * h ∈ fixMu ℚ Ω N) : g x = h x := by
@@ -65,27 +63,25 @@ private theorem act_eq {Ω : Type} [Field Ω] [Algebra ℚ Ω] {N : ℕ} {x : Ω
     _ = h x := by simp [AlgEquiv.mul_apply]
 
 /- English proof (translation)
-Introduce `Ω _ _ _ N hN`. Use `haveI : NeZero N := ⟨hN⟩`. Establish `hnorm : (fixMu ℚ Ω N).Normal`. Rewrite using `[fix_cls]`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hopen : IsOpen (fixMu ℚ Ω N : Set (G ℚ Ω))`. Rewrite using `[fix_cls]`. Conclude with `(Chr.clsFacts ℚ Ω N).1`. Establish `hcomm : ∀ g h : G ℚ Ω, g * h * g⁻¹ * h⁻¹ ∈ fixMu ℚ Ω N`. Introduce `g h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[fix_cls, MonoidHom.mem_ker, map_mul, map_mul, map_mul, map_inv, map_inv, mul_comm (Chr.cls ℚ Ω N g) (Chr.cls ℚ Ω N h), mul_inv_cancel_right, mul_inv_cancel]`. Establish `h4 : ∀ b : (ZMod N)ˣ, ∃ g : G ℚ Ω, Lifts N b g`. Introduce `b`. Take `⟨g, hg⟩` from `cls_onto (Ω := Ω) N b`. Conclude with `⟨g, (lifts_cls N b g).2 hg⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h5 : ∀ g : G ℚ Ω, ∃ b : (ZMod N)ˣ, Lifts N b g` using `fun g => ⟨_, (lifts_cls N _ g).2 rfl⟩`. Establish `h6 : ∀ x : Ω, (∀ g ∈ fixMu ℚ Ω N, g x = x) → ∀ g h : G ℚ Ω, g (h x) = h (g x)`. Introduce `x hx g h`. Establish `e : (h * g)⁻¹ * (g * h) ∈ fixMu ℚ Ω N`. Use `hcomm g⁻¹ h⁻¹` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `this` using `[inv_inv, inv_inv, mul_assoc (g⁻¹ * h⁻¹), ← mul_inv_rev]`. Then use the resulting hypothesis. Use `act_eq hx e` as an intermediate fact. Simplify `this.symm` using `[AlgEquiv.mul_apply]`. Establish `h7 : ∀ x : Ω, (∀ g ∈ fixMu ℚ Ω N, g x = x) → ∀ h : G ℚ Ω, ∀ g ∈ fixMu ℚ Ω N, g (h x) = h x`. Introduce `x hx h g hg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `e : (g * h)⁻¹ * h ∈ fixMu ℚ Ω N`. Use `hnorm.conj_mem g⁻¹ (inv_mem hg) h⁻¹` as an intermediate fact. Rewrite `this` using `[inv_inv, ← mul_inv_rev]`. Then use the resulting hypothesis. Simplify `act_eq hx e` using `[AlgEquiv.mul_apply]`. Establish `h8 : ∀ x : Ω, (∀ g ∈ fixMu ℚ Ω N, g x = x) → ∀ (k : ℕ) (g h : G ℚ Ω), Pows N k g → Pows N k h → g x = h x`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx k g h hg hh`. Apply `act_eq hx` to reduce the goal to its premises. Use `show ∀ ζ : Ω, ζ ^ N = 1 → (g⁻¹ * h) ζ = ζ`. Introduce `ζ hζ`. Rewrite using `[AlgEquiv.mul_apply, hh ζ hζ, ← hg ζ hζ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `h9 : ∀ M : ℕ, M ∣ N → fixMu ℚ Ω N ≤ fixMu ℚ Ω M`. Introduce `M hM g hg`. Establish `hg' : ∀ ζ : Ω, ζ ^ N = 1 → g ζ = ζ` using `hg`. Use `show ∀ ζ : Ω, ζ ^ M = 1 → g ζ = ζ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `ζ hζ`. Take `⟨j, hj⟩` from `hM`. Conclude with `hg' ζ (by rw [hj, pow_mul, hζ, one_pow])`. Establish `h10 : ∀ (b c : (ZMod N)ˣ) (g h : G ℚ Ω), Lifts N b g → Lifts N c h → Lifts N (b * c) (g * h) ∧ Lifts N b⁻¹ g⁻¹ ∧ (b = c ↔ g⁻¹ * h ∈ fixMu ℚ Ω N)`. Introduce `b c g h hb hc`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `hb`, `hc` using `[lifts_cls]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[lifts_cls, map_mul, hb, hc]`. Rewrite using `[lifts_cls, map_inv, hb]`. Rewrite using `[fix_cls, MonoidHom.mem_ker, map_mul, map_inv, hb, hc, inv_mul_eq_one]`.
-
-Conclude with `⟨hnorm, hopen, hcomm, h4, h5, h6, h7, h8, h9, h10⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.ML.galBasic :
     ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (N : ℕ), N ≠ 0 →

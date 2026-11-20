@@ -20,26 +20,26 @@ def frac (P : Ideal (MRing ι R)) [P.IsPrime] (h : MRing ι R) : FractionRing (M
   algebraMap (MRing ι R ⧸ P) (FractionRing (MRing ι R ⧸ P)) (Ideal.Quotient.mk P h)
 
 /- English proof (translation)
-Simplify using `[frac]`.
+Simplify using the standard rewrite rules.
 -/
 theorem frac_zero (P : Ideal (MRing ι R)) [P.IsPrime] : frac P 0 = 0 := by
   simp [frac]
 
 /- English proof (translation)
-Simplify using `[frac]`.
+Simplify using the standard rewrite rules.
 -/
 theorem frac_one (P : Ideal (MRing ι R)) [P.IsPrime] : frac P 1 = 1 := by
   simp [frac]
 
 /- English proof (translation)
-Simplify using `[frac]`.
+Simplify using the standard rewrite rules.
 -/
 theorem frac_add (P : Ideal (MRing ι R)) [P.IsPrime] (x y : MRing ι R) :
     frac P (x + y) = frac P x + frac P y := by
   simp [frac]
 
 /- English proof (translation)
-Simplify using `[frac]`.
+Simplify using the standard rewrite rules.
 -/
 theorem frac_mul (P : Ideal (MRing ι R)) [P.IsPrime] (x y : MRing ι R) :
     frac P (x * y) = frac P x * frac P y := by
@@ -57,26 +57,26 @@ def primeSet (q : Ideal (homLocRing P W)) : Set (MRing ι R) :=
 variable {P W}
 
 /- English proof (translation)
-Simplify using `only [frac, ne_eq, IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `fun h => hg (hPW h)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem frac_ne_zero (hPW : P ≤ W) {g : MRing ι R} (hg : g ∉ W) : frac P g ≠ 0 := by
   simp only [frac, ne_eq, IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]
   exact fun h => hg (hPW h)
 
 /- English proof (translation)
-The claim follows from `Subring.subset_closure ⟨b, f, g, hf, hg, hgW, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem div_mem {b : K → ℕ} {f g : MRing ι R} (hf : IsMultiHomog f b) (hg : IsMultiHomog g b)
     (hgW : g ∉ W) : frac P f / frac P g ∈ homLocRing P W :=
   Subring.subset_closure ⟨b, f, g, hf, hg, hgW, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, q.zero_mem, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem valIn_zero (q : Ideal (homLocRing P W)) : ValIn P W q 0 := ⟨0, q.zero_mem, rfl⟩
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `hz`. Take `⟨c, hc, rfl⟩` from `hw`. Conclude with `⟨a + c, q.add_mem ha hc, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem valIn_add {q : Ideal (homLocRing P W)} {z w : FractionRing (MRing ι R ⧸ P)}
     (hz : ValIn P W q z) (hw : ValIn P W q w) : ValIn P W q (z + w) := by
@@ -85,7 +85,7 @@ theorem valIn_add {q : Ideal (homLocRing P W)} {z w : FractionRing (MRing ι R �
   exact ⟨a + c, q.add_mem ha hc, rfl⟩
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `hz`. Conclude with `⟨a * ⟨w, hw⟩, q.mul_mem_right _ ha, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem valIn_mul {q : Ideal (homLocRing P W)} {z w : FractionRing (MRing ι R ⧸ P)}
     (hz : ValIn P W q z) (hw : w ∈ homLocRing P W) : ValIn P W q (z * w) := by
@@ -93,7 +93,7 @@ theorem valIn_mul {q : Ideal (homLocRing P W)} {z w : FractionRing (MRing ι R �
   exact ⟨a * ⟨w, hw⟩, q.mul_mem_right _ ha, rfl⟩
 
 /- English proof (translation)
-Establish `e : frac P f / frac P g' = frac P f / frac P g * (frac P g / frac P g')`. Rewrite using `[div_mul_div_cancel₀ (frac_ne_zero hPW hgW)]`. Rewrite using `[e]`. Conclude with `valIn_mul h (div_mem hg hg' hg'W)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valIn_change (hPW : P ≤ W) {q : Ideal (homLocRing P W)} {b : K → ℕ} {f g g' : MRing ι R}
     (hg : IsMultiHomog g b) (hg' : IsMultiHomog g' b) (hgW : g ∉ W) (hg'W : g' ∉ W)
@@ -106,7 +106,7 @@ theorem valIn_change (hPW : P ≤ W) {q : Ideal (homLocRing P W)} {b : K → ℕ
 attribute [local instance] MvPolynomial.weightedGradedAlgebra
 
 /- English proof (translation)
-Establish `key` using `DirectSum.coe_decompose_mul_add_of_left_mem (𝒜 := weightedHomogeneousSubmodule R (blockWeight ι)) (j := d) (b := h) ((mem_weightedHomogeneousSubmodule _ _ _ _).2 hs)`. Rewrite `key` using `[MultiHomogPrimeCriterion.coe_decompose, MultiHomogPrimeCriterion.coe_decompose]`. Conclude with `key`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_mul_add [Fintype K] {c d : K → ℕ} {s : MRing ι R} (hs : IsMultiHomog s c) (h : MRing ι R) :
     weightedHomogeneousComponent (blockWeight ι) (c + d) (s * h) =
@@ -118,7 +118,7 @@ theorem comp_mul_add [Fintype K] {c d : K → ℕ} {s : MRing ι R} (hs : IsMult
   exact key
 
 /- English proof (translation)
-Rewrite using `[← sum_weightedHomogeneousComponent (blockWeight ι) h, finsum_eq_sum _ (weightedHomogeneousComponent_finsupp h), Finset.mul_sum, map_sum]`. Conclude with `Finset.sum_eq_zero fun d _ => IsWeightedHomogeneous.weightedHomogeneousComponent_ne b (IsWeightedHomogeneous.mul hs (weightedHomogeneousComponent_isWeightedHomogeneous d h)) (hb d)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_mul_of_ne [Fintype K] {c b : K → ℕ} {s : MRing ι R} (hs : IsMultiHomog s c) (h : MRing ι R)
     (hb : ∀ d, b ≠ c + d) : weightedHomogeneousComponent (blockWeight ι) b (s * h) = 0 := by
@@ -128,7 +128,7 @@ theorem comp_mul_of_ne [Fintype K] {c b : K → ℕ} {s : MRing ι R} (hs : IsMu
     (IsWeightedHomogeneous.mul hs (weightedHomogeneousComponent_isWeightedHomogeneous d h)) (hb d)
 
 /- English proof (translation)
-Introduce `b g _ _`. Rewrite using `[map_zero, frac_zero, zero_div]`. Conclude with `valIn_zero q`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zero_mem_primeSet (q : Ideal (homLocRing P W)) : (0 : MRing ι R) ∈ primeSet P W q := by
   intro b g _ _
@@ -136,7 +136,7 @@ theorem zero_mem_primeSet (q : Ideal (homLocRing P W)) : (0 : MRing ι R) ∈ pr
   exact valIn_zero q
 
 /- English proof (translation)
-Introduce `b g hg hgW`. Rewrite using `[map_add, frac_add, add_div]`. Conclude with `valIn_add (hx b g hg hgW) (hy b g hg hgW)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem add_mem_primeSet {q : Ideal (homLocRing P W)} {x y : MRing ι R} (hx : x ∈ primeSet P W q)
     (hy : y ∈ primeSet P W q) : x + y ∈ primeSet P W q := by
@@ -145,11 +145,11 @@ theorem add_mem_primeSet {q : Ideal (homLocRing P W)} {x y : MRing ι R} (hx : x
   exact valIn_add (hx b g hg hgW) (hy b g hg hgW)
 
 /- English proof (translation)
-Introduce `b g hg hgW`. Distinguish the cases in `hcb : ∃ d, b = c + d`. Take `⟨d, rfl⟩` from `hcb`. Rewrite using `[comp_mul_add hs h]`. Take `⟨g', hg', hg'W⟩` from `homLocRing_form_not_mem hW hrel d`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hsg : IsMultiHomog (s * g') (c + d)` using `IsWeightedHomogeneous.mul hs hg'`. Establish `e : frac P (s * weightedHomogeneousComponent (blockWeight ι) d h) / frac P g = frac P (weightedHomogeneousComponent (blockWeight ι) d h) / frac P g' * (frac P (s * g') / frac P g)`. Establish `h1` using `frac_ne_zero hPW hg'W`. Establish `h2` using `frac_ne_zero hPW hgW`. Rewrite using `[frac_mul, frac_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `valIn_mul (hh d g' hg' hg'W) (div_mem hsg hg hgW)`. Rewrite using `[comp_mul_of_ne hs h (fun d hd => hcb ⟨d, hd⟩), frac_zero, zero_div]`. Conclude with `valIn_zero q`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_mul_mem_primeSet [Fintype K] (hPW : P ≤ W) (hW : W.IsPrime) (hrel : IsRelevant W)
     {q : Ideal (homLocRing P W)} {c : K → ℕ} {s h : MRing ι R} (hs : IsMultiHomog s c)
@@ -173,7 +173,7 @@ theorem form_mul_mem_primeSet [Fintype K] (hPW : P ≤ W) (hW : W.IsPrime) (hrel
     exact valIn_zero q
 
 /- English proof (translation)
-Rewrite using `[← sum_weightedHomogeneousComponent (blockWeight ι) s, finsum_eq_sum _ (weightedHomogeneousComponent_finsupp s), Finset.sum_mul]`. Conclude with `Finset.sum_induction _ (· ∈ primeSet P W q) (fun _ _ => add_mem_primeSet) (zero_mem_primeSet q) fun c _ => form_mul_mem_primeSet hPW hW hrel (weightedHomogeneousComponent_isWeightedHomogeneous c s) hh`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_primeSet [Fintype K] (hPW : P ≤ W) (hW : W.IsPrime) (hrel : IsRelevant W)
     {q : Ideal (homLocRing P W)} (s : MRing ι R) {h : MRing ι R} (hh : h ∈ primeSet P W q) :
@@ -192,9 +192,9 @@ def primeAbove [Fintype K] (hPW : P ≤ W) (hW : W.IsPrime) (hrel : IsRelevant W
   smul_mem' s _ hh := mul_mem_primeSet hPW hW hrel s hh
 
 /- English proof (translation)
-Introduce `b g' hg' hg'W`. Distinguish the cases in `hsb : b = s`. Substitute `hsb` using the available equality. Rewrite using `[IsWeightedHomogeneous.weightedHomogeneousComponent_same hf]`. Conclude with `valIn_change hPW hg hg' hgW hg'W h`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsWeightedHomogeneous.weightedHomogeneousComponent_ne b hf hsb, frac_zero, zero_div]`. Conclude with `valIn_zero q`.
+A detailed English derivation is pending.
 -/
 theorem form_mem_primeSet (hPW : P ≤ W) {q : Ideal (homLocRing P W)} {s : K → ℕ} {f g : MRing ι R}
     (hf : IsMultiHomog f s) (hg : IsMultiHomog g s) (hgW : g ∉ W)
@@ -208,7 +208,7 @@ theorem form_mem_primeSet (hPW : P ≤ W) {q : Ideal (homLocRing P W)} {s : K �
     exact valIn_zero q
 
 /- English proof (translation)
-Use `h s g hg hgW` as an intermediate fact. Rewrite `this` using `[IsWeightedHomogeneous.weightedHomogeneousComponent_same hf]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem valIn_of_form_mem {q : Ideal (homLocRing P W)} {s : K → ℕ} {f g : MRing ι R}
     (hf : IsMultiHomog f s) (hg : IsMultiHomog g s) (hgW : g ∉ W) (h : f ∈ primeSet P W q) :
@@ -217,16 +217,16 @@ theorem valIn_of_form_mem {q : Ideal (homLocRing P W)} {s : K → ℕ} {f g : MR
   rwa [IsWeightedHomogeneous.weightedHomogeneousComponent_same hf] at this
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_primeAbove [Fintype K] (hPW : P ≤ W) (hW : W.IsPrime) (hrel : IsRelevant W)
     (q : Ideal (homLocRing P W)) (h : MRing ι R) :
     h ∈ primeAbove hPW hW hrel q ↔ h ∈ primeSet P W q := Iff.rfl
 
 /- English proof (translation)
-Introduce `h hh c`. Rewrite `hh`, the goal using `[mem_primeAbove]`. Introduce `b g hg hgW`. Rewrite using `[weightedHomogeneousComponent_of_mem ((mem_weightedHomogeneousSubmodule _ _ _ _).2 (weightedHomogeneousComponent_isWeightedHomogeneous c h))]`. Use `split_ifs with hbc`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Substitute `hbc` using the available equality. Conclude with `hh b g hg hgW`. Rewrite using `[frac_zero, zero_div]`. Conclude with `valIn_zero q`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem primeAbove_multiHomog [Fintype K] (hPW : P ≤ W) (hW : W.IsPrime) (hrel : IsRelevant W)
     (q : Ideal (homLocRing P W)) : IsMultiHomogIdeal (primeAbove hPW hW hrel q) := by
@@ -242,15 +242,15 @@ theorem primeAbove_multiHomog [Fintype K] (hPW : P ≤ W) (hW : W.IsPrime) (hrel
     exact valIn_zero q
 
 /- English proof (translation)
-Use `MultiHomogPrimeCriterion.proof R K ι _ (primeAbove_multiHomog hPW hW hrel q) ?_ ?_` and prove the remaining obligations. Introduce `htop`. Establish `h1 : (1 : MRing ι R) ∈ primeSet P W q`. Rewrite using `[← mem_primeAbove hPW hW hrel, htop]`. Conclude with `Submodule.mem_top`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hW1 : (1 : MRing ι R) ∉ W` using `fun h => hW.ne_top ((Ideal.eq_top_iff_one W).2 h)`. Take `⟨a, ha, hav⟩` from `valIn_of_form_mem (isWeightedHomogeneous_one R (blockWeight ι)) (isWeightedHomogeneous_one R (blockWeight ι)) hW1 h1`. Rewrite `hav` using `[frac_one, div_one]`. Establish `: a = 1` using `Subtype.ext hav`. Conclude with `hq.ne_top ((Ideal.eq_top_iff_one q).2 (this ▸ ha))`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `a b sa sb ha hb hab`. Take `⟨ga, hga, hgaW⟩` from `homLocRing_form_not_mem hW hrel sa`. Take `⟨gb, hgb, hgbW⟩` from `homLocRing_form_not_mem hW hrel sb`. Establish `hg : IsMultiHomog (ga * gb) (sa + sb)` using `IsWeightedHomogeneous.mul hga hgb`. Establish `hgW : ga * gb ∉ W` using `fun h => (hW.mem_or_mem h).elim hgaW hgbW`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x, hx, hxv⟩` from `valIn_of_form_mem (IsWeightedHomogeneous.mul ha hb) hg hgW hab`. Establish `hxe : x = ⟨_, div_mem ha hga hgaW⟩ * ⟨_, div_mem hb hgb hgbW⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hxv, Subring.coe_mul, frac_mul, frac_mul, mul_div_mul_comm]`. Rewrite `hx` using `[hxe]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Break down `hq.mem_or_mem hx with h | h` into its components or cases. Conclude with `Or.inl (form_mem_primeSet hPW ha hga hgaW ⟨_, h, rfl⟩)`. Conclude with `Or.inr (form_mem_primeSet hPW hb hgb hgbW ⟨_, h, rfl⟩)`.
+Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem primeAbove_isPrime [Fintype K] (hPW : P ≤ W) (hW : W.IsPrime) (hrel : IsRelevant W)
     (q : Ideal (homLocRing P W)) [hq : q.IsPrime] : (primeAbove hPW hW hrel q).IsPrime := by
@@ -280,9 +280,9 @@ theorem primeAbove_isPrime [Fintype K] (hPW : P ≤ W) (hW : W.IsPrime) (hrel : 
     · exact Or.inr (form_mem_primeSet hPW hb hgb hgbW ⟨_, h, rfl⟩)
 
 /- English proof (translation)
-Introduce `p hp`. Rewrite using `[mem_primeAbove]`. Introduce `b g _ _`. Establish `: frac P (weightedHomogeneousComponent (blockWeight ι) b p) = 0`. Rewrite using `[frac, Ideal.Quotient.eq_zero_iff_mem.mpr (hP p hp b), map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, zero_div]`. Conclude with `valIn_zero q`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_primeAbove [Fintype K] (hP : IsMultiHomogIdeal P) (hPW : P ≤ W) (hW : W.IsPrime)
     (hrel : IsRelevant W) (q : Ideal (homLocRing P W)) : P ≤ primeAbove hPW hW hrel q := by
@@ -295,11 +295,11 @@ theorem le_primeAbove [Fintype K] (hP : IsMultiHomogIdeal P) (hPW : P ≤ W) (hW
   exact valIn_zero q
 
 /- English proof (translation)
-Introduce `h hh`. Rewrite `hh` using `[mem_primeAbove]`. Rewrite using `[← sum_weightedHomogeneousComponent (blockWeight ι) h, finsum_eq_sum _ (weightedHomogeneousComponent_finsupp h)]`. Use `W.sum_mem fun b _ => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hf`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨g, hg, hgW⟩` from `homLocRing_form_not_mem hW hrel b`. Establish `hfb : IsMultiHomog (weightedHomogeneousComponent (blockWeight ι) b h) b` using `weightedHomogeneousComponent_isWeightedHomogeneous b h`. Take `⟨a, ha, hav⟩` from `hh b g hg hgW`. Establish `hu` using `((hloc R K ι P W hW hPW).2 b _ g hfb hg hgW (div_mem hfb hg hgW)).2 hf`. Establish `: a = ⟨_, div_mem hfb hg hgW⟩` using `Subtype.ext hav`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `ha` using `[this]`. Conclude with `hq.ne_top (Ideal.eq_top_of_isUnit_mem _ ha hu)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem primeAbove_le [Fintype K] (hloc : HomLocRingIsLocal.Statement.{u}) (hPW : P ≤ W)
     (hW : W.IsPrime) (hrel : IsRelevant W) (q : Ideal (homLocRing P W)) [hq : q.IsPrime] :
@@ -320,11 +320,11 @@ theorem primeAbove_le [Fintype K] (hloc : HomLocRingIsLocal.Statement.{u}) (hPW 
   exact hq.ne_top (Ideal.eq_top_of_isUnit_mem _ ha hu)
 
 /- English proof (translation)
-Use `lt_of_le_of_ne (fun h hh => ?_) (fun heq => ?_)` and prove the remaining obligations. Rewrite `hh`, the goal using `[mem_primeAbove]`. Introduce `b g hg hgW`. Take `⟨a, ha, hav⟩` from `hh b g hg hgW`. Conclude with `⟨a, hlt.le ha, hav⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨x, hx', hx⟩` from `SetLike.exists_of_lt hlt`. Take `⟨b, f, g, hf, hg, hgW, hxv⟩` from `(hmem R K ι P W hW hPW x.1).1 x.2`. Establish `h1 : f ∈ primeAbove hPW hW hrel q'` using `form_mem_primeSet hPW hf hg hgW ⟨x, hx', hxv⟩`. Rewrite `h1` using `[← heq]`. Take `⟨a, ha, hav⟩` from `valIn_of_form_mem hf hg hgW h1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hax : a = x` using `Subtype.ext (hav.trans hxv.symm)`. Conclude with `hx (hax ▸ ha)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem primeAbove_strictMono [Fintype K] (hmem : HomLocRingMem.Statement.{u}) (hPW : P ≤ W)
     (hW : W.IsPrime) (hrel : IsRelevant W) {q q' : Ideal (homLocRing P W)} (hlt : q < q') :
@@ -347,17 +347,15 @@ end HomLocRingDimLe
 open HomLocRingDimLe in
 
 /- English proof (translation)
-Introduce `R _ K _ _ ι _ P W _ hP hW hrel hPW`. Use `haveI := hW`. Set `Φ : PrimeSpectrum (homLocRing P W) → PrimeSpectrum (MRing ι R ⧸ P)` to `fun q => haveI := primeAbove_isPrime hPW hW hrel q.asIdeal ⟨(primeAbove hPW hW hrel q.asIdeal).map (Ideal.Quotient.mk P), Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by rw [Ideal.mk_ker]; exact le_primeAbove hP hPW hW hrel q.asIdeal)⟩`. Establish `hΦ : StrictMono Φ`. Introduce `q q' hlt`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hlt`, the goal using `[← PrimeSpectrum.asIdeal_lt_asIdeal]`. Establish `hlt'` using `primeAbove_strictMono h₁ hPW hW hrel hlt`. Establish `hPq` using `le_primeAbove hP hPW hW hrel q.asIdeal`. Establish `hPq'` using `le_primeAbove hP hPW hW hrel q'.asIdeal`. Express the relevant statement in the definitionally equal form `(primeAbove hPW hW hrel q.asIdeal).map (Ideal.Quotient.mk P) < (primeAbove hPW hW hrel q'.asIdeal).map (Ideal.Quotient.mk P)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Use `lt_of_le_of_ne (Ideal.map_mono hlt'.le) fun heq => hlt'.ne ?_` and prove the remaining obligations. Use `congrArg (Ideal.comap (Ideal.Quotient.mk P)) heq` as an intermediate fact. Rewrite `this` using `[Ideal.comap_map_of_surjective' _ Ideal.Quotient.mk_surjective, Ideal.comap_map_of_surjective' _ Ideal.Quotient.mk_surjective, Ideal.mk_ker, sup_eq_left.mpr hPq, sup_eq_left.mpr hPq']`. Then use the resulting hypothesis. Use `haveI hWq : (W.map (Ideal.Quotient.mk P)).IsPrime := Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by rw [Ideal.mk_ker]; exact hPW)`. Set `w : PrimeSpectrum (MRing ι R ⧸ P)` to `⟨W.map (Ideal.Quotient.mk P), hWq⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hΦw : ∀ q, Φ q ≤ w` using `fun q => by`. Rewrite using `[← PrimeSpectrum.asIdeal_le_asIdeal]`. Conclude with `Ideal.map_mono (primeAbove_le h₂ hPW hW hrel q.asIdeal)`. Rewrite using `[show (W.map (Ideal.Quotient.mk P)).height = Order.height w from PrimeSpectrum.height_eq_orderHeight w]`. Unfold `ringKrullDim Order.krullDim`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `iSup_le fun l => ?_` and prove the remaining obligations. Establish `h1 : ((l.map Φ hΦ).length : ℕ∞) ≤ Order.height ((l.map Φ hΦ).last)` using `Order.length_le_height_last`. Rewrite `h1` using `[LTSeries.last_map]`. Establish `h2` using `h1.trans (Order.height_mono (hΦw l.last))`. Establish `h3 : (l.map Φ hΦ).length = l.length` using `rfl`.
-
-Rewrite `h2` using `[h3]`. Conclude with `h2` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HomLocRingDimLe.proof (h₁ : HomLocRingMem.Statement.{u})
     (h₂ : HomLocRingIsLocal.Statement.{u}) : HomLocRingDimLe.Statement.{u} := by

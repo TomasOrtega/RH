@@ -12,7 +12,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.L
 open Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal TensorProduct Module UpperTheory.V.Loc Topology
 
 /- English proof (translation)
-Take `⟨_, h⟩` from `h`. Take `⟨C, h'⟩` from `h'`. Use `(Nat.pow_le_pow_iff_right hl).1 ((h (C + 1) C.succ_pos).1.trans (h' (C + 1) C.succ_pos).2)` as an intermediate fact. Assume the negation of the conclusion as `hc`. Establish `: (C + 1) * (t + 1) ≤ (C + 1) * s` using `Nat.mul_le_mul_left _ (by omega)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -26,7 +26,7 @@ private theorem grows_le {l : ℕ} (hl : 1 < l) {a : ℕ → ℕ} {s t : ℕ} (h
   nlinarith
 
 /- English proof (translation)
-Take `rfl : a = b` from `funext e`. Conclude with `le_antisymm (grows_le hl h h') (grows_le hl h' h)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem grows_unique {l : ℕ} (hl : 1 < l) {a b : ℕ → ℕ} {s t : ℕ} (h : Grows l a s) (h' : Grows l b t)
     (e : ∀ m, a m = b m) : s = t := by
@@ -34,9 +34,9 @@ private theorem grows_unique {l : ℕ} (hl : 1 < l) {a b : ℕ → ℕ} {s t : �
   exact le_antisymm (grows_le hl h h') (grows_le hl h' h)
 
 /- English proof (translation)
-Take `⟨C, h⟩` from `h`. Take `⟨D, h'⟩` from `h'`. Use `⟨C + D, fun m hm => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[mul_add, pow_add]`. Conclude with `Nat.mul_le_mul (h m hm).1 (h' m hm).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show m * (s + t) + (C + D) = (m * s + C) + (m * t + D) by ring, pow_add]`. Conclude with `Nat.mul_le_mul (h m hm).2 (h' m hm).2`.
+A detailed English derivation is pending.
 -/
 private theorem grows_mul {l : ℕ} {a b : ℕ → ℕ} {s t : ℕ} (h : Grows l a s) (h' : Grows l b t) :
     Grows l (fun m => a m * b m) (s + t) := by
@@ -49,7 +49,7 @@ private theorem grows_mul {l : ℕ} {a b : ℕ → ℕ} {s t : ℕ} (h : Grows l
     exact Nat.mul_le_mul (h m hm).2 (h' m hm).2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, fun m _ => by have : (l ^ (m * n)) ^ d = l ^ (m * (d * n)) := by rw [← pow_mul]; congr 1; ring simp [this]⟩`.
+Supply the required witnesses or components.
 -/
 private theorem grows_pow (l n d : ℕ) : Grows l (fun m => (l ^ (m * n)) ^ d) (d * n) :=
   ⟨0, fun m _ => by
@@ -57,9 +57,9 @@ private theorem grows_pow (l n d : ℕ) : Grows l (fun m => (l ^ (m * n)) ^ d) (
     simp [this]⟩
 
 /- English proof (translation)
-Establish `hl : 1 < l` using `(Fact.out : l.Prime).one_lt`. Establish `hm` using `fun m => hF _ (redRep ρ m) (contAction_redRep h m)`. Take `⟨f1, f2, g0, g1, g2⟩` from `UpperTheory.lattice_cohomology_finite_and_growth_of_finGen ρ h (UpperTheory.latticeCochains_finGen_of_finLevel hF ρ h) fun m => ⟨(hm m).1, (hm m).2.1⟩`. Use `⟨f1, f2, grows_unique hl g1 (grows_mul (grows_mul g0 g2) (grows_pow l n d)) fun m => ?_, grows_unique hl g2 (UpperTheory.card_quotient_powSubmodule_grows_finrank l _) fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[(hm m).2.2.2.1, card_quot_lSub]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hm m).2.2.2.2, UpperTheory.card_coinvariants_mod_pow_eq_mod_pow_coinvariants]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem tate_lattice {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] {χ : G →* ℤ_[l]ˣ} {d : ℕ} (hF : FinLevel l G χ d) {n : ℕ}
@@ -76,11 +76,11 @@ private theorem tate_lattice {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [Topo
   · rw [(hm m).2.2.2.2, UpperTheory.card_coinvariants_mod_pow_eq_mod_pow_coinvariants]
 
 /- English proof (translation)
-Use `letI : Module ℤ_[l] V := Module.compHom V (algebraMap ℤ_[l] ℚ_[l])`. Use `haveI : IsScalarTower ℤ_[l] ℚ_[l] V := IsScalarTower.of_algebraMap_smul fun _ _ => rfl`. Take `⟨ρT, j, hT, hj, he, hs⟩` from `UpperTheory.exists_invariant_lattice_openEmbedding ρ h`. Take `⟨r0, r1, r2⟩` from `UpperTheory.rank_cohomology_rational_eq_rank_lattice ρ h ρT j hT hj he hs`. Take `⟨f1, f2, e1, e2⟩` from `tate_lattice hF ρT hT`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `q0 : finrank ℚ_[l] ↥(H0 ρ) = finrank ℤ_[l] ↥(H0 ρT)` using `congrArg Cardinal.toNat r0`. Establish `q1 : finrank ℚ_[l] (H1 ρ) = finrank ℤ_[l] (H1 ρT)` using `congrArg Cardinal.toNat r1`. Establish `q2 : finrank ℚ_[l] (H2 ρ) = finrank ℤ_[l] (H2 ρT)` using `congrArg Cardinal.toNat r2`. Use `⟨Module.rank_lt_aleph0_iff.1 (r1 ▸ Module.rank_lt_aleph0 _ _), Module.rank_lt_aleph0_iff.1 (r2 ▸ Module.rank_lt_aleph0 _ _), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[q0, q1, q2, e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[q2, e2, UpperTheory.finrank_coinvariants_eq_finrank_lattice_coinvariants χ ρ ρT j hj.injective he hs]`.
+A detailed English derivation is pending.
 -/
 private theorem tate_Q {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [CompactSpace G] {χ : G →* ℤ_[l]ˣ} {d : ℕ} (hF : FinLevel l G χ d)
@@ -105,11 +105,11 @@ private theorem tate_Q {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [Topologica
   · rw [q2, e2, UpperTheory.finrank_coinvariants_eq_finrank_lattice_coinvariants χ ρ ρT j hj.injective he hs]
 
 /- English proof (translation)
-Establish `: H0dual χ ρ = (coSub χ ρ).dualAnnihilator`. Use extensionality with `f`. Rewrite using `[Submodule.mem_dualAnnihilator]`. Prove the components needed by the constructor for the conclusion. Introduce `hf w hw`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(Submodule.span_le (p := LinearMap.ker f)).2 ?_ hw` and prove the remaining obligations. Introduce and unpack `_ ⟨g, x, rfl⟩`. Simplify using `[hf g x]`. Introduce `hf g x`. Use `hf _ (Submodule.subset_span ⟨g, x, rfl⟩)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `[sub_eq_zero]`. Rewrite using `[this, ← (Submodule.dualQuotEquivDualAnnihilator _).finrank_eq, Subspace.dual_finrank_eq]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 private theorem finrank_H0dual {G E V : Type} [Group G] [Field E] [AddCommGroup V] [Module E V]
     [FiniteDimensional E V] (χ : G →* Eˣ) (ρ : Representation E G V) :
@@ -128,15 +128,13 @@ private theorem finrank_H0dual {G E V : Type} [Group G] [Field E] [AddCommGroup 
   rw [this, ← (Submodule.dualQuotEquivDualAnnihilator _).finrank_eq, Subspace.dual_finrank_eq]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, x, rfl⟩`. Conclude with `Submodule.subset_span ⟨g, x, by rw [hχ, algebraMap_smul]; rfl⟩`. Introduce `y hy`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `key : ∀ c : E, c • y ∈ coSub χ (resCoef Q ρ)`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨g, x, rfl⟩` from `hy`. Introduce `c`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.subset_span ⟨g, c • x, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = ρ g (c • x) - _`. Rewrite using `[hχ, algebraMap_smul, smul_sub, map_smul, smul_comm c (χ g : Q)]`. Consider the case `zero => intro c`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb => intro c`. Rewrite using `[smul_add]`. Conclude with `add_mem (ha c) (hb c)`. Consider the case `smul a b _ hb => intro c`. Rewrite using `[smul_smul]`.
-
-Conclude with `hb _`. Simplify using `using key 1`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem coSub_res {Q E G V : Type} [Field Q] [Field E] [Algebra Q E] [Group G] [AddCommGroup V]
     [Module E V] [Module Q V] [IsScalarTower Q E V] (χ : G →* Qˣ) (χ' : G →* Eˣ)
@@ -161,13 +159,11 @@ private theorem coSub_res {Q E G V : Type} [Field Q] [Field E] [Algebra Q E] [Gr
     simpa using key 1
 
 /- English proof (translation)
-Introduce `hP v l _ _ G _ _ _ φ hφ E _ _ _ _ _ V _ _ _ _ _ _ _ _ _ ρ h`. Use `haveI : CompactSpace G := by`. Establish `hc : IsClosed (φ.range : Set (GQ v))` using `φ.range.isClosed_of_isOpen hφ.isOpen_range`. Conclude with `(⟨hφ.isEmbedding, hc⟩ : IsClosedEmbedding φ).compactSpace`. Use `haveI : ContinuousConstSMul ℚ_[l] V := ⟨fun c => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify `continuous_const_smul (T := V) (algebraMap ℚ_[l] E c)⟩` using `only [algebraMap_smul]`. Use `haveI : FiniteDimensional E V := Module.Finite.of_restrictScalars_finite ℚ_[l] E V`. Take `⟨f1, f2, e1, e2⟩` from `tate_Q (UpperTheory.finite_level_of_finite_level_mod l G _ _ (UpperTheory.finiteLevel_cyclotomic_of_openEmbedding hP φ hφ)) (resCoef ℚ_[l] ρ) h`. Take `⟨⟨a0⟩, ⟨a1⟩, ⟨a2⟩, -⟩` from `UpperTheory.nonempty_cohomology_restrictScalars_linearEquiv ℚ_[l] ρ`. Use `haveI := Module.Finite.equiv a1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `haveI := Module.Finite.equiv a2`. Establish `hd : 0 < finrank ℚ_[l] E` using `finrank_pos`. Rewrite `e2` using `[coSub_res ((Units.map (algebraMap ℤ_[l] ℚ_[l] : ℤ_[l] →* ℚ_[l])).comp ((cyc v l).comp φ)) ((cycA v l E).comp φ) (fun g => IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] E ((cyc v l (φ g) : ℤ_[l]ˣ) : ℤ_[l])) ρ, (Submodule.Quotient.restrictScalarsEquiv ℚ_[l] _).finrank_eq, a2.finrank_ …`. Rewrite `e1` using `[a0.finrank_eq, a1.finrank_eq, a2.finrank_eq, ← finrank_mul_finrank ℚ_[l] E (H2 ρ), ← finrank_mul_finrank ℚ_[l] E (H1 ρ), ← finrank_mul_finrank ℚ_[l] E ↥(H0 ρ), ← finrank_mul_finrank ℚ_[l] E V]`. Use `⟨Module.Finite.of_restrictScalars_finite ℚ_[l] E _, Module.Finite.of_restrictScalars_finite ℚ_[l] E _, Nat.eq_of_mul_eq_mul_left hd ?_, ?_⟩` and prove the remaining obligations.
-
-Apply the tactic sequence `rw [e1] split_ifs <;> ring`. Rewrite using `[finrank_H0dual]`. Conclude with `Nat.eq_of_mul_eq_mul_left hd e2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Loc.tateRat :
     LocalPublishedTheorems → ∀ {v l : ℕ} [Fact v.Prime] [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (φ : G →* GQ v) (hφ : IsOpenEmbedding φ) {E : Type} [Field E] [Algebra ℚ_[l] E] [FiniteDimensional ℚ_[l] E] [Algebra ℤ_[l] E] [IsScalarTower ℤ_[l] ℚ_[l] E] {V : Type} [AddCommGroup V] [Module E V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] E V] [FiniteDimensional ℚ_[l] V] [TopologicalSpace V] [IsModuleTopology ℚ_[l] V] [IsTopologicalAddGroup V] [ContinuousConstSMul E V] (ρ : Representation E G V), ContAction ρ → Module.Finite E (H1 ρ) ∧ Module.Finite E (H2 ρ) ∧ finrank E (H1 ρ) = finrank E ↥(H0 ρ) + finrank E (H2 ρ) + (if v = l then φ.range.index * finrank E V else 0) ∧ finrank E (H2 ρ) = finrank E ↥(H0dual ((cycA v l E).comp φ) ρ) := by

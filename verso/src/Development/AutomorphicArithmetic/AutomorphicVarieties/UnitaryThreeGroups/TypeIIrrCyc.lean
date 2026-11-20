@@ -9,25 +9,23 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open UpperTheory.V UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.Alg UpperTheory.V.U3
 
 /- English proof (translation)
-Establish `hl : l.Prime` using `Fact.out`. Establish `hI : Ine (F` using `ℚ) A ≤ (galEmb ℚ K Ω).range := by`. Rewrite using `[range_galEmb, ← D.η_ker]`. Conclude with `((dat_facts D).2.2.2.2.2.2.2.2.2.2 A hA).1`. Establish `hsur : ∀ u : ℤ_[l]ˣ, ∃ s : G K Ω, galEmb ℚ K Ω s ∈ Ine (F` using `ℚ) A ∧ cycZ K Ω l s = u := fun u => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨σ, hσ, hu⟩` from `GlobalTheory.CycInertia.cycZ_Ine_surjective Ω l A hA u`. Take `⟨s, rfl⟩` from `hI hσ`. Conclude with `⟨s, hσ, hu⟩`. Assume the negation of the conclusion as `hg`. Take `⟨s, hs, hsg⟩` from `hsur (cycZ K Ω l g)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hs1 : φ s ≠ 1`. Introduce `h1`. Establish `: φ (g * s⁻¹) = 1` using `hφ (by`. Rewrite using `[MonoidHom.mem_ker, cycBar, MonoidHom.comp_apply, map_mul, map_inv, hsg, mul_inv_cancel, map_one])`. Rewrite `this` using `[map_mul, map_inv, h1, inv_one, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hg this`. Establish `hu : IsUnit ((1 + l : ℕ) : ℤ_[l])`. Rewrite using `[PadicInt.isUnit_iff, PadicInt.norm_natCast_eq_one_iff]`. Simplify using the standard rewrite rules. Take `⟨t, ht, htu⟩` from `hsur hu.unit`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `ht1 : D.ΨQ (galEmb ℚ K Ω t) ^ m = 1`. Distinguish the cases in `h1 : φ t = 1`. Establish `h2` using `h (s * t) (by rw [map_mul]; exact mul_mem hs ht) (by rwa [map_mul, h1, mul_one])`. Rewrite `h2` using `[map_mul, map_mul, mul_pow, h s hs hs1, one_mul]`. Then use the resulting hypothesis. Conclude with `h t ht h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hn : Chr.dirG ℚ Ω ψ (galEmb ℚ K Ω t) ^ Nat.card (ZMod N)ˣ = 1`. Rewrite using `[Chr.dirG, MonoidHom.comp_apply, ← map_pow, pow_card_eq_one', map_one]`. Establish `hc : (chiO ℚ Ω l c.O (galEmb ℚ K Ω t) : c.O) = ((1 + l : ℕ) : c.O)`. Establish `: cycZ ℚ Ω l (galEmb ℚ K Ω t) = hu.unit` using `htu`. Rewrite using `[chiO, MonoidHom.comp_apply, this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `h3 : ((D.Ψ (galEmb ℚ K Ω t) ^ Nat.card (ZMod N)ˣ : c.Oˣ) : c.O) = ((1 + l : ℕ) : c.O) ^ (e * Nat.card (ZMod N)ˣ)`. Rewrite using `[Dat.Ψ, Chr.Psi, MonoidHom.mul_apply, mul_pow, hn, mul_one, zpow_natCast, MonoidHom.pow_apply, ← pow_mul, Units.val_pow_eq_pow_val, hc]`. Establish `h4 : ((D.ΨQ (galEmb ℚ K Ω t) ^ Nat.card (ZMod N)ˣ : (PadicAlgCl l)ˣ) : PadicAlgCl l) = ((1 + l : ℕ) : PadicAlgCl l) ^ (e * Nat.card (ZMod N)ˣ)`. Use `congrArg (algebraMap c.O (PadicAlgCl l)) h3` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `this` using `[map_pow, map_natCast]`. Rewrite using `[← this, Dat.ΨQ, MonoidHom.comp_apply, ← map_pow]`. Both sides reduce to the same expression. Establish `h5 : ((1 + l : ℕ) : PadicAlgCl l) ^ (e * Nat.card (ZMod N)ˣ * m) = 1`. Rewrite using `[pow_mul, ← h4, ← Units.val_pow_eq_pow_val, ← pow_mul, mul_comm, pow_mul, ht1, one_pow, Units.val_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h6 : (1 + l) ^ (e * Nat.card (ZMod N)ˣ * m) = 1` using `by exact_mod_cast h5`. Establish `he` using `D.gd.e_pos`. Establish `hN : 0 < Nat.card (ZMod N)ˣ` using `Nat.card_pos`. Break down `Nat.pow_eq_one.1 h6 with h7 | h7` into its components or cases. Conclude with `hl.ne_zero (by omega)`.
-
-Conclude with `(mul_ne_zero (mul_ne_zero (by omega) hN.ne') hm) h7`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem twist_triv {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {K : Type} [Field K] [NumberField K]
     [Algebra K Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} {N : ℕ} [NeZero N] {e : ℕ} {ψ : DirichletCharacter c.O N}
@@ -85,17 +83,17 @@ private theorem twist_triv {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure �
   · exact (mul_ne_zero (mul_ne_zero (by omega) hN.ne') hm) h7
 
 /- English proof (translation)
-Introduce `hC Ω _ _ _ K _ _ _ l _ c N _ e ψ D U g₁ hg r h hI`. Establish `hirr : MatIrr ⊤ fun g => (D.rhoK r h.mult g : Matrix (Fin 3) (Fin 3) (PadicAlgCl l))`. Introduce `W hW`. Use `hI W fun g hg v hv => ?_` and prove the remaining obligations. Rewrite `hg` using `[D.η_ker, ← range_galEmb]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨s, rfl⟩` from `hg`. Conclude with `hW s trivial v hv`. Establish `key : MatIrr (cycBar K Ω l).ker fun g => (D.rhoK r h.mult g : Matrix (Fin 3) (Fin 3) (PadicAlgCl l))`. Assume the negation of the conclusion as `hred`. Take `⟨φ, hφ1, hker, -, M, hM⟩` from `exists_selfTwist (D.rhoK r h.mult) (cycBar K Ω l).ker (fun a b => by simp [MonoidHom.mem_ker, mul_comm (cycBar K Ω l a)]) hirr hred`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨A, hA⟩` from `(Chr.placesQ Ω).1 l Fact.out`. Use `hφ1 (MonoidHom.ext (twist_triv D A hA φ hker 3 (by norm_num) fun s hs h1 => ?_))` and prove the remaining obligations. Establish `hch` using `(pt_inertia_above hC D hg h A hA).1 _ hs`. Establish `htr : (D.rhoK r h.mult s : Matrix (Fin 3) (Fin 3) (PadicAlgCl l)).trace = (r0 D.η D.ΨQ (galEmb ℚ K Ω s)).mat.trace`. Rewrite using `[Matrix.trace_eq_neg_charpoly_coeff, Matrix.trace_eq_neg_charpoly_coeff, ← hch]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `h2` using `congrArg (fun X => (X * ((M⁻¹ : GL (Fin 3) (PadicAlgCl l)) : Matrix (Fin 3) (Fin 3) (PadicAlgCl l))).trace) (hM s trivial)`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, Matrix.trace_smul] at h2`. Rewrite `h2` using `[Matrix.trace_mul_cycle, Units.inv_mul, Matrix.one_mul, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one, htr, smul_eq_mul]`. Establish `h3 : (r0 D.η D.ΨQ (galEmb ℚ K Ω s)).mat.trace = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h0`. Conclude with `h1 (Units.ext (mul_right_cancel₀ h0 (h2.trans (one_mul _).symm)))`. Rewrite `h3` using `[GG.mat, unitaryThreeReflection_left, tor_val, Matrix.trace_diagonal, Fin.sum_univ_three]`. Generalize the expression as in `D.ΨQ (galEmb ℚ K Ω s) = a at h3 ⊢`. Establish `h4 : (a : PadicAlgCl l) + 1 + (a : PadicAlgCl l)⁻¹ = 0` using `by simpa [wt1] using h3`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `ha : (a : PadicAlgCl l) * (a : PadicAlgCl l)⁻¹ = 1` using `mul_inv_cancel₀ a.ne_zero`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_pow_eq_pow_val, Units.val_one]`. Take the linear combination `(a : PadicAlgCl l) * (a - 1) * h4 - ((a : PadicAlgCl l) - 1) * ha`. Use `⟨top_ne_bot, fun _ _ _ => trivial, fun W _ hW => key W fun g hg v hv => hW ⟨g, hg⟩ v hv⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.U3.typeI_irr_cyc :
     CohInp → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {K : Type} [Field K] [NumberField K] [Algebra K Ω]

@@ -32,13 +32,13 @@ theorem extRep_tmul (ρ : Representation LL G V) (g : G) (a : L) (x : V) :
     extRep L ρ g (a ⊗ₜ[LL] x) = a ⊗ₜ[LL] ρ g x := rfl
 
 /- English proof (translation)
-Take `⟨v, w, hvw⟩` from `GlobalTheory.DRFil.exists_dual_bases m hm`. Set `v'` to `Algebra.TensorProduct.basis L v`. Set `w'` to `Algebra.TensorProduct.basis L w`. Set `e` to `v'.equiv w'.dualBasis (Equiv.refl _)`. Use `⟨e.toLinearMap, e.bijective, fun a b x y => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : ∀ i, e.toLinearMap (a ⊗ₜ[LL] v i) (b ⊗ₜ[LL] y) = a * b * algebraMap LL L (m (v i) y)`. Introduce `i`. Establish `h2 : a ⊗ₜ[LL] v i = a • v' i`. Simplify using `[v', Algebra.TensorProduct.basis_apply, smul_tmul']`. Establish `h3 : m (v i) y = w.repr y i` using `by conv_lhs => rw [← w.sum_repr y]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [map_sum, map_smul, hvw, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[h2, map_smul, h3]`. Simplify using `only [e, LinearEquiv.coe_coe, Basis.equiv_apply, Equiv.refl_apply, LinearMap.smul_apply, Basis.dualBasis_apply, w', Algebra.TensorProduct.basis_repr_tmul]`. Simplify using `[mul_assoc]`. Rewrite using `[← v.sum_repr x, tmul_sum, map_sum, map_sum, LinearMap.sum_apply, LinearMap.sum_apply, map_sum, Finset.mul_sum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h4 : a ⊗ₜ[LL] (v.repr x i • v i) = algebraMap LL L (v.repr x i) • (a ⊗ₜ[LL] v i)`. Rewrite using `[algebraMap_smul, tmul_smul]`. Rewrite using `[h4, map_smul, LinearMap.smul_apply, h1, map_smul, LinearMap.smul_apply, smul_eq_mul, smul_eq_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_ext_pairing [FiniteDimensional LL V] (m : V →ₗ[LL] V' →ₗ[LL] LL)
     (hm : Function.Bijective m.flip) :
@@ -73,11 +73,9 @@ theorem exists_ext_pairing [FiniteDimensional LL V] (m : V →ₗ[LL] V' →ₗ[
 end Linear
 
 /- English proof (translation)
-Establish `hfin : ∀ a, FiniteDimensional k (F a)` using `fun a => Submodule.finiteDimensional_of_le (hle a)`. Take `⟨b, hb⟩ : ∃ b : ℤ, ∀ a, finrank k (F b) ≤ finrank k (F a)` from `⟨Function.argmin fun a => finrank k (F a), fun a => Function.argmin_le (fun a => finrank k (F a)) a⟩`. Establish `h1 : ∀ a, b ≤ a → F a = F b` using `fun a ha => Submodule.eq_of_le_of_finrank_le (hF ha) (hb a)`. Use `⟨b, fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[h1 a ha, eq_bot_iff]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Use `hsep x fun c => ?_` and prove the remaining obligations. Break down `le_total b c with h | h` into its components or cases. Rewrite using `[h1 c h]`. Conclude with `hx`.
-
-Conclude with `hF h hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_bot {k M : Type*} [Field k] [AddCommGroup M] [Module k M]
     (D : Submodule k M) [FiniteDimensional k D] (F : ℤ → Submodule k M) (hF : Antitone F)
@@ -107,13 +105,13 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {V' : Type} [AddCommGroup V'] [Module LL V'] [Module Qp V'] [IsScalarTower Qp LL V']
 
 /- English proof (translation)
-Establish `: FiniteDimensional LL ↥(DdRE PD ρ τ)` using `Submodule.finiteDimensional_of_le (S₂ := DdR PD ρ) inf_le_left`. Take `⟨b, hb⟩` from `GlobalTheory.Per.FilCount.exists_eq_of_exhaustive (DdRE PD ρ τ) (FildR PD ρ τ) (fun a b hab => inf_le_inf_left _ (GlobalTheory.DRFil.FilV_antitone PD hab)) (fun a => inf_le_left) (fun x hx => (GlobalTheory.DRFil.exists_mem_FilV PD (LL := LL) x).imp fun a ha => ⟨hx, ha⟩)`. Take `⟨c, hc⟩` from `exists_eq_bot (DdR PD ρ') (FildR PD ρ' τ) (fun a b hab => inf_le_inf_left _ (GlobalTheory.DRFil.FilV_antitone PD hab)) (fun a => le_trans inf_le_left inf_le_left) (fun x hx => GlobalTheory.DRFil.eq_zero_of_forall_mem_FilV PD (LL := LL) x fun a => (hx a).2)`. Set `s : ℤ → ℕ` to `fun a => finrank LL ↥(FildR PD ρ' τ (-a)) + finrank LL ↥(FildR PD ρ τ a)`. Establish `hs : ∀ a, s (a + 1) = s a` using `fun a => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1` using `h a`. Unfold `multV at h1`. Rewrite `h1` using `[show -a - 1 + 1 = -a by ring, show -a - 1 = -(a + 1) by ring]`. Simplify using `only [s]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `hs0 : ∀ a, s a = s 0` using `fun a => by`. Proceed by induction on `a using Int.induction_on with`. Consider the case `zero => rfl`. Consider the case `succ n ih => rw [hs, ih]`. Consider the case `pred n ih => rw [← hs, sub_add_cancel, ih]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `h2` using `hs0 (min b (-c))`. Simplify using `only [s] at h2`. Rewrite `h2` using `[hb _ (min_le_left _ _), hc _ (by omega), finrank_bot, zero_add, neg_zero]`. Conclude with `h2.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_fil_zero_add (ρ : Representation LL G V) (ρ' : Representation LL G V')
     [FiniteDimensional LL ↥(DdR PD ρ)] [FiniteDimensional LL ↥(DdR PD ρ')] (τ : K →ₐ[Qp] LL)
@@ -146,17 +144,17 @@ theorem finrank_fil_zero_add (ρ : Representation LL G V) (ρ' : Representation 
   exact h2.symm
 
 /- English proof (translation)
-Establish `hbij : Function.Bijective m.flip`. Establish `hi : Function.Injective m.flip` using `(injective_iff_map_eq_zero _).2 fun y hy => hm.2.2.1 y fun x => LinearMap.congr_fun hy x`. Use `⟨hi, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank ?_).1 hi⟩` and prove the remaining obligations. Rewrite using `[← hm.2.2.2]`. Conclude with `Subspace.dual_finrank_eq.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨m', hm', hm''⟩` from `exists_ext_pairing L m hbij`. Take `⟨a1, -, -, ⟨a2, -⟩, a3, -⟩` from `GlobalTheory.T.finrank_periodFunctor_coeff_baseChange PD LL L V (L ⊗[LL] V) ρ (extRep L ρ) (TensorProduct.mk LL L V 1) (TensorProduct.isBaseChange LL V L) (fun g x => rfl)`. Take `⟨b1, -, -, ⟨b2, -⟩, b3, -⟩` from `GlobalTheory.T.finrank_periodFunctor_coeff_baseChange PD LL L V' (L ⊗[LL] V') ρ' (extRep L ρ') (TensorProduct.mk LL L V' 1) (TensorProduct.isBaseChange LL V' L) (fun g x => rfl)`. Establish `hχ : ∀ g, ((cycLL PD L g : Lˣ) : L) = algebraMap LL L ((cycLL PD LL g : LLˣ) : LL)` using `fun g => IsScalarTower.algebraMap_apply Qp LL L _`. Establish `hinv : ∀ g x y, m' (extRep L ρ g x) (extRep L ρ' g y) = ((cycLL PD L g : Lˣ) : L) * m' x y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g x y`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x x' hx hx' => simp only [map_add, LinearMap.add_apply, hx, hx', mul_add]`. Consider the case `tmul a x`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add y y' hy hy' => simp only [map_add, hy, hy', mul_add]`. Consider the case `tmul b y`. Rewrite using `[extRep_tmul, extRep_tmul, hm'', hm'', hm.1, map_mul, hχ]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hL : IsDR PD (extRep L ρ)`. Rewrite using `[IsDR, a1, a2]`. Conclude with `h`. Take `⟨c1, c2⟩` from `H _ (extRep L ρ) _ (extRep L ρ') m' hm' hinv hL`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨by rw [IsDR, ← b1, ← b2]; exact c1, ?_⟩` and prove the remaining obligations. Rewrite using `[← a2, ← a3, ← b3, c2]`.
+A detailed English derivation is pending.
 -/
 theorem descend (L : Type) [Field L] [Algebra Qp L] [Algebra LL L] [IsScalarTower Qp LL L]
     [FiniteDimensional LL L] [FiniteDimensional LL V] [FiniteDimensional LL V']
@@ -207,11 +205,9 @@ theorem descend (L : Type) [Field L] [Algebra Qp L] [Algebra LL L] [IsScalarTowe
 end Period
 
 /- English proof (translation)
-Use `K.2` as an intermediate fact. Take `⟨c1, c2⟩` from `GlobalTheory.DRDual.twisted_dual_deRham l P AI T K L W σ W' σ' n 1 hn (fun g x y => by rw [zpow_one]; exact hinv g x y) h`. Use `⟨c1, ?_⟩` and prove the remaining obligations. Use `haveI := (GlobalTheory.Per.TiedDdR.ddR_finrank_le l P AI T K L W σ).1`. Use `haveI := (GlobalTheory.Per.TiedDdR.ddR_finrank_le l P AI T K L W' σ').1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : Fintype.card (↥K.1 →ₐ[ℚ_[l]] ↥L.1) = finrank ℚ_[l] ↥K.1`. Rewrite using `[← hcard, Nat.card_eq_fintype_card]`. Take `⟨d1, d2⟩` from `GlobalTheory.DeRhamSplit.finrank_split (P.PD K) hc σ`. Take `⟨-, d3⟩` from `GlobalTheory.DeRhamSplit.finrank_split (P.PD K) hc σ'`. Rewrite using `[d1, d2, d3, ← Finset.sum_add_distrib]`.
-
-Conclude with `Finset.sum_congr rfl fun τ _ => finrank_fil_zero_add (P.PD K) σ σ' τ fun a => c2 τ a hcard`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tateDual_split (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI)
     (K L : FinExt l) (hcard : Nat.card (↥K.1 →ₐ[ℚ_[l]] ↥L.1) = finrank ℚ_[l] ↥K.1)
@@ -241,9 +237,7 @@ theorem tateDual_split (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l
     finrank_fil_zero_add (P.PD K) σ σ' τ fun a => c2 τ a hcard
 
 /- English proof (translation)
-Take `⟨L, ⟨f⟩, hcard, -⟩` from `GlobalTheory.exists_finExt_embedding_splitting l K LL`. Use `L.2` as an intermediate fact. Use `letI : Algebra LL ↥L.1 := f.toRingHom.toAlgebra`. Use `haveI : IsScalarTower ℚ_[l] LL ↥L.1 := IsScalarTower.of_algebraMap_eq fun x => (f.commutes x).symm`. Use `haveI : FiniteDimensional LL ↥L.1 := Module.Finite.of_restrictScalars_finite ℚ_[l] LL ↥L.1`.
-
-Conclude with `descend (P.PD K) ↥L.1 (tateDual_split l P AI T K L hcard) ρ ρ' m h hm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem tateDual (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI)
     (K : FinExt l) (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [FiniteDimensional ℚ_[l] LL]
@@ -264,9 +258,7 @@ theorem tateDual (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T
   exact descend (P.PD K) ↥L.1 (tateDual_split l P AI T K L hcard) ρ ρ' m h hm
 
 /- English proof (translation)
-Introduce `D l _ K`. Use `⟨fun LL _ _ _ O _ _ hO A A' m h hm => ?_, fun LL _ _ _ O _ _ hO A A' m h hm => ?_⟩` and prove the remaining obligations. Use `haveI := hO.2.1`. Conclude with `(tateDual l (D.loc l) (D.locA l) (D.locT l) K LL A.ρ A'.ρ m h hm).1`. Use `haveI := hO.2.1`.
-
-Conclude with `(tateDual l (D.loc l) (D.locA l) (D.locT l) K LL A.ρ A'.ρ m h hm).2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem main : ∀ D : D7, Formalism.MainNotions.LocalSituation.adm8 D := by
   intro D l _ K

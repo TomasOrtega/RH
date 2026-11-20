@@ -8,7 +8,7 @@ open scoped ComplexOrder
 namespace PositivityTheory.Xgp.c_bm_exists_period
 
 /- English proof (translation)
-Set `e : I ≃ {a : Fin (p + q) // (a : ℕ) < k}` to `Equiv.ofBijective (fun i => ⟨blockEquiv p q (f i), (hr _).2 ⟨i, rfl⟩⟩) ⟨fun i j h => hf ((blockEquiv p q).injective (congrArg Subtype.val h)), fun ⟨a, ha⟩ => by`. Take `⟨x, rfl⟩` from `(blockEquiv p q).surjective a`. Take `⟨i, rfl⟩` from `(hr x).1 ha`. Conclude with `⟨i, rfl⟩⟩`. Rewrite using `[← Matrix.det_submatrix_equiv_self e]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -27,7 +27,7 @@ theorem det_head {p q k : ℕ} {I : Type} [Fintype I] [DecidableEq I] (M : Matri
   rfl
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem sub_conj {m I : Type} [Fintype m] (H Y : Matrix m m ℂ) (f : I → m) :
     (Hᴴ * Y * H).submatrix f f = (H.submatrix id f)ᴴ * Y * H.submatrix id f := by
@@ -35,31 +35,29 @@ theorem sub_conj {m I : Type} [Fintype m] (H Y : Matrix m m ℂ) (f : I → m) :
   simp [Matrix.mul_apply]
 
 /- English proof (translation)
-Use `⟨⟨hdet, ?_⟩, fun h' hb k => ?_⟩` and prove the remaining obligations. Set `f : {a : Fin (p + q) // (a : ℕ) < p + q - p} → Fin q` to `fun a => ⟨a.1, by have := a.2; omega⟩`. Establish `hf : Function.Injective f` using `fun a b e => Subtype.ext (Fin.ext (congrArg Fin.val e :))`. Use `hGo.submatrix hf using 1` and compare the differences between its conclusion and the goal. Use extensionality with `a b`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Use `congrFun (congrFun h (.inl (f a))) (.inl (f b))` as an intermediate fact. Simplify using `only [fromBlocks_conjTranspose, fromBlocks_multiply] at this`. Simplify using `at this`. Simplify using `only [gramHead, Matrix.neg_apply, Matrix.submatrix_apply]`. Rewrite using `[neg_eq_iff_eq_neg]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Establish `e1 : (gramOf (sigForm (p + q) p) (Pi * h')).submatrix (blockEquiv p q) (blockEquiv p q) = (fromBlocks (omBlock h') 0 0 (wBlock h'))ᴴ * ((fromBlocks 1 Z 0 1)ᴴ * fromBlocks (-Go) 0 0 Gw * fromBlocks 1 Z 0 1) * fromBlocks (omBlock h') 0 0 (wBlock h')`. Rewrite using `[← h, ← hb.eq_fromBlocks, Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv]`. Simplify using `only [gramOf, Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Establish `e2 : (h'ᴴ * (fromBlocks Go 0 0 Gw).submatrix (blockEquiv p q).symm (blockEquiv p q).symm * h').submatrix (blockEquiv p q) (blockEquiv p q) = (fromBlocks (omBlock h') 0 0 (wBlock h'))ᴴ * fromBlocks Go 0 0 Gw * fromBlocks (omBlock h') 0 0 (wBlock h')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hb.eq_fromBlocks, Matrix.conjTranspose_submatrix, ← Matrix.submatrix_mul_equiv _ _ _ (blockEquiv p q), ← Matrix.submatrix_mul_equiv _ _ _ (blockEquiv p q)]`. Simplify using the standard rewrite rules. Unfold `gramHead`. Distinguish the cases in `hk : q ≤ k`. Set `f : Fin q ⊕ {b : Fin p // q + (b : ℕ) < k} → Fin q ⊕ Fin p` to `Sum.map id Subtype.val`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hf : Function.Injective f` using `Sum.map_injective.2 ⟨Function.injective_id, Subtype.val_injective⟩`. Establish `hr : ∀ x, ((blockEquiv p q x : Fin (p + q)) : ℕ) < k ↔ ∃ i, f i = x`. Introduce and unpack `(a | b)`. Conclude with `⟨fun _ => ⟨.inl a, rfl⟩, fun _ => by show (a : ℕ) < k; omega⟩`. Use `⟨fun h => ⟨.inr ⟨b, h⟩, rfl⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨a | a, ha⟩`. Simplify using `[f] at ha`. Take `rfl : a.1 = b` from `by simpa [f] using ha`. Conclude with `a.2`. Rewrite using `[det_head _ f hf hr, det_head _ f hf hr, e1, e2, sub_conj, sub_conj]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `set h₂ : Matrix (Fin p) {b : Fin p // q + (b : ℕ) < k} ℂ := (wBlock h').submatrix id Subtype.val`. Establish `e3 : (fromBlocks (omBlock h') 0 0 (wBlock h')).submatrix id f = fromBlocks (omBlock h') 0 0 h₂`. Apply the tactic sequence `ext (a | a) (b | b) <;> rfl`. Rewrite using `[e3]`. Establish `e4 : (fromBlocks (omBlock h') 0 0 h₂)ᴴ * ((fromBlocks 1 Z 0 1)ᴴ * fromBlocks (-Go) 0 0 Gw * fromBlocks 1 Z 0 1) * fromBlocks (omBlock h') 0 0 h₂ = (fromBlocks (omBlock h') (Z * h₂) 0 1)ᴴ * fromBlocks (-Go) 0 0 (h₂ᴴ * Gw * h₂) * fromBlocks (omBlock h') (Z * h₂) 0 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [fromBlocks_conjTranspose, fromBlocks_multiply]`. Simplify using `[Matrix.mul_assoc, Matrix.mul_add, Matrix.add_mul]`. Establish `e5 : (fromBlocks (omBlock h') 0 0 h₂)ᴴ * fromBlocks Go 0 0 Gw * fromBlocks (omBlock h') 0 0 h₂ = (fromBlocks (omBlock h') 0 0 1)ᴴ * fromBlocks Go 0 0 (h₂ᴴ * Gw * h₂) * fromBlocks (omBlock h') 0 0 1`. Simplify using `only [fromBlocks_conjTranspose, fromBlocks_multiply]`. Simplify using `[Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Rewrite using `[e4, e5]`. Simplify using `only [Matrix.det_mul, Matrix.det_conjTranspose, Matrix.det_fromBlocks_zero₂₁, Matrix.det_neg, norm_mul, norm_pow, norm_neg, norm_one, one_pow, one_mul]`. Set `f : {a : Fin q // (a : ℕ) < k} → Fin q ⊕ Fin p` to `fun a => .inl a.1`. Establish `hf : Function.Injective f` using `fun a b e => Subtype.ext (Sum.inl_injective e)`. Establish `hr : ∀ x, ((blockEquiv p q x : Fin (p + q)) : ℕ) < k ↔ ∃ i, f i = x`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `(a | b)`. Use `⟨fun h => ⟨⟨a, h⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨b, hb⟩`. Take `rfl : b.1 = a` from `Sum.inl_injective hb`. Conclude with `b.2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun h => absurd h (by show ¬ q + (b : ℕ) < k; omega), ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨a, ha⟩`. Simplify using `[f] at ha`. Rewrite using `[det_head _ f hf hr, det_head _ f hf hr, e1, e2, sub_conj, sub_conj]`. Use `set h₁ : Matrix (Fin q) {a : Fin q // (a : ℕ) < k} ℂ := (omBlock h').submatrix id Subtype.val`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set O : Matrix (Fin p) {a : Fin q // (a : ℕ) < k} ℂ := 0 with hO`. Establish `e3 : (fromBlocks (omBlock h') 0 0 (wBlock h')).submatrix id f = fromRows h₁ O`. Apply the tactic sequence `ext (a | a) b <;> rfl`. Rewrite using `[e3]`. Establish `e4 : (fromRows h₁ O)ᴴ * ((fromBlocks 1 Z 0 1)ᴴ * fromBlocks (-Go) 0 0 Gw * fromBlocks 1 Z 0 1) * fromRows h₁ O = -((fromRows h₁ O)ᴴ * fromBlocks Go 0 0 Gw * fromRows h₁ O)`.
-
-Simplify using `only [fromBlocks_conjTranspose, fromBlocks_multiply, conjTranspose_fromRows_eq_fromCols_conjTranspose, fromCols_mul_fromBlocks, fromCols_mul_fromRows]`. Simplify using `[hO]`. Rewrite using `[e4, Matrix.det_neg]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem periodGram_of {p q : ℕ} (Pi : Matrix (Fin (p + q)) (Fin (p + q)) ℂ) (Go : Matrix (Fin q) (Fin q) ℂ)
     (Gw : Matrix (Fin p) (Fin p) ℂ) (Z : Matrix (Fin q) (Fin p) ℂ) (hGo : Go.PosDef) (hdet : IsUnit Pi.det)
@@ -147,15 +145,15 @@ theorem periodGram_of {p q : ℕ} (Pi : Matrix (Fin (p + q)) (Fin (p + q)) ℂ) 
     simp
 
 /- English proof (translation)
-Establish `g : ∀ (k : ℕ) (X : Matrix (Fin N) (Fin N) ℂ), gramHead (sigForm N j) k (X.map (starRingEnd ℂ)) = (gramHead (sigForm N j) k X).map (starRingEnd ℂ)` using `fun k X => by`. Use extensionality with `a b`. Simplify using `[gramHead, gramOf, Matrix.mul_apply, Matrix.diagonal_apply, apply_ite]`. Establish `dm : ∀ {I : Type} [Fintype I] [DecidableEq I] (X : Matrix I I ℂ), (X.map (starRingEnd ℂ)).det = starRingEnd ℂ X.det` using `fun X => (RingHom.map_det _ X).symm`. Use `⟨⟨?_, ?_⟩, fun h' hb k => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[dm]`. Conclude with `h.1.1.map _`. Rewrite using `[g]`. It suffices to establish `e : -(gramHead (sigForm N j) (N - j) Pi).map (starRingEnd ℂ) = (-gramHead (sigForm N j) (N - j) Pi)ᵀ by`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Conclude with `h.1.2.transpose`. Use extensionality with `a b`. Use `h.1.2.isHermitian.apply a b` as an intermediate fact. Simplify using `only [Matrix.neg_apply, star_neg, neg_inj] at this`. Simplify using `only [Matrix.neg_apply, Matrix.map_apply, Matrix.transpose_apply, neg_inj]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← this]`. Simplify using the standard rewrite rules. Use `h.2 (h'.map (starRingEnd ℂ)) (fun a b hab => by simp [hb a b hab]) k` as an intermediate fact. Establish `e1 : Pi.map (starRingEnd ℂ) * h' = (Pi * h'.map (starRingEnd ℂ)).map (starRingEnd ℂ)`. Use extensionality with `a b`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Matrix.mul_apply]`. Establish `e2 : (h'ᴴ * G.map (starRingEnd ℂ) * h').submatrix (Subtype.val : {a : Fin N // (a : ℕ) < k} → Fin N) (Subtype.val : {a : Fin N // (a : ℕ) < k} → Fin N) = (((h'.map (starRingEnd ℂ))ᴴ * G * h'.map (starRingEnd ℂ)).submatrix (Subtype.val : {a : Fin N // (a : ℕ) < k} → Fin N) (Subtyp …`. Use extensionality with `a b`. Simplify using `[Matrix.mul_apply]`. Rewrite using `[e1, g, e2, dm, dm, Complex.norm_conj, Complex.norm_conj, this]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem periodGram_conj {N j : ℕ} {Pi G : Matrix (Fin N) (Fin N) ℂ} (h : IsPeriodGram j Pi G) :
     IsPeriodGram j (Pi.map (starRingEnd ℂ)) (G.map (starRingEnd ℂ)) := by
@@ -187,9 +185,9 @@ theorem periodGram_conj {N j : ℕ} {Pi G : Matrix (Fin N) (Fin N) ℂ} (h : IsP
     rw [e1, g, e2, dm, dm, Complex.norm_conj, Complex.norm_conj, this]
 
 /- English proof (translation)
-Establish `e : (omBlock (Γ.map (starRingEnd ℂ)))ᵀ⁻¹ = ((omBlock Γ)ᵀ⁻¹).map (starRingEnd ℂ)`. Establish `e1 : (omBlock (Γ.map (starRingEnd ℂ)))ᵀ = (omBlock Γ)ᴴ` using `rfl`. Rewrite using `[e1, ← Matrix.conjTranspose_nonsing_inv, ← Matrix.transpose_nonsing_inv]`. Both sides reduce to the same expression. Use extensionality with `a b`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. By extensionality, compare the relevant components.
 
-Simplify using `only [blockG, e, Matrix.submatrix_apply, Matrix.map_apply]`. Apply the tactic sequence `rcases (blockEquiv p q).symm a with a | a <;> rcases (blockEquiv p q).symm b with b | b <;>`. Simplify using `[wBlock]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem blockG_conj {p q : ℕ} (Γ : Matrix (Fin (p + q)) (Fin (p + q)) ℂ) :
     blockG (Γ.map (starRingEnd ℂ)) = (blockG Γ).map (starRingEnd ℂ) := by

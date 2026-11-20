@@ -54,11 +54,11 @@ def psJet {n : ℕ} (m : ℕ) (f : PS T n d) : JetR T (Fin n × Fin d) m :=
   Ideal.Quotient.mk _ (MvPowerSeries.trunc T (Finsupp.equivFunOnFinite.symm fun _ => m + 1) f)
 
 /- English proof (translation)
-Rewrite using `[← Set.image_univ, MvPolynomial.mem_ideal_span_X_image]`. Introduce `a ha`. Rewrite `ha` using `[MvPolynomial.mem_support_iff, MvPowerSeries.coeff_trunc]`. Use `split_ifs at ha with h`. Assume the negation of the conclusion as `hne push_neg at hne`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h0 : a = 0`. Use extensionality with `i`. Simplify using `using hne i (Set.mem_univ i)`. Substitute `h0` using the available equality. Apply `ha` to reduce the goal to its premises.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hf` using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`. Conclude with `absurd rfl ha`.
+A detailed English derivation is pending.
 -/
 theorem trunc_mem_span {n : ℕ} (m : ℕ) (f : PS T n d) (hf : constantCoeff f = 0) :
     MvPowerSeries.trunc T (Finsupp.equivFunOnFinite.symm fun _ => m + 1) f ∈
@@ -78,11 +78,9 @@ theorem trunc_mem_span {n : ℕ} (m : ℕ) (f : PS T n d) (hf : constantCoeff f 
   · exact absurd rfl ha
 
 /- English proof (translation)
-Introduce `a ha`. Establish `h1 : Ideal.map (MvPolynomial.aeval g : MvPolynomial σ T →ₐ[T] S) (Ideal.span (Set.range (MvPolynomial.X : σ → MvPolynomial σ T))) ≤ J`. Rewrite using `[Ideal.map_span, Ideal.span_le]`. Introduce and unpack `_ ⟨_, ⟨i, rfl⟩, rfl⟩`. Simplify using `using hg i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : MvPolynomial.aeval g a ∈ J ^ (m + 1)`. Establish `h3` using `Ideal.mem_map_of_mem (MvPolynomial.aeval g : MvPolynomial σ T →ₐ[T] S) ha`. Rewrite `h3` using `[Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono h1 (m + 1) h3`. Rewrite `h2` using `[hJ]`.
-
-Conclude with `(Ideal.mem_bot).mp h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_kill {σ S : Type} [CommRing S] [Algebra T S] (m : ℕ) (g : σ → S) (J : Ideal S)
     (hg : ∀ i, g i ∈ J) (hJ : J ^ (m + 1) = ⊥) :
@@ -102,7 +100,7 @@ theorem aeval_kill {σ S : Type} [CommRing S] [Algebra T S] (m : ℕ) (g : σ �
   exact (Ideal.mem_bot).mp h2
 
 /- English proof (translation)
-Rewrite using `[← Ideal.map_pow, Ideal.map_quotient_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem jet_aug_pow (κ : Type) (m : ℕ) :
     ((Ideal.span (Set.range (MvPolynomial.X : κ → MvPolynomial κ T))).map

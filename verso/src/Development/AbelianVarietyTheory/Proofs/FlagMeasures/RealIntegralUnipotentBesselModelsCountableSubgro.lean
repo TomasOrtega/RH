@@ -14,15 +14,15 @@ section Gen
 variable {n k r : ℕ}
 
 /- English proof (translation)
-Set `f : (Fin n → ℂ) →ₗ[ℂ] ℂ` to `(LinearMap.proj i).comp (Matrix.mulVecLin Qi)`. Establish `hle : Formalism.L2.SG.HidaSetting.spanLt e c ≤ LinearMap.ker f`. Unfold `Formalism.L2.SG.HidaSetting.spanLt`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, hb, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Simplify using `only [Set.mem_setOf_eq] at hb`. Establish `hne : lam ^ (r - (b : ℕ)) ≠ 0`. Introduce `h0`. Establish `h1` using `congrArg (fun w => Qi *ᵥ w) (he b)`. Simplify using `only [Matrix.mulVec_mulVec, hQ1, Matrix.one_mulVec, h0, zero_smul, Matrix.mulVec_zero] at h1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2` using `congrFun h1 (eI k r b)`. Simplify using `at h2`. Establish `h1` using `congrArg (fun w => Qi *ᵥ w) (he b)`. Simplify using `only [Matrix.mulVec_mulVec, hQ1, Matrix.one_mulVec, Matrix.mulVec_smul] at h1`. Establish `h3 : Qi *ᵥ e b = (lam ^ (r - (b : ℕ)))⁻¹ • Pi.single (eI k r b) 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[h1, smul_smul, inv_mul_cancel₀ hne, one_smul]`. Use `show f (e b) = 0`. Simplify using `only [f, LinearMap.coe_comp, Function.comp_apply, Matrix.mulVecLin_apply, LinearMap.coe_proj, Function.eval, h3, Pi.smul_apply, smul_eq_mul]`. Establish `: i ≠ eI k r b`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hi` using `[h]`. Simplify using `[eI] at hi`. Use linear arithmetic over natural numbers and integers. Simplify using `[Pi.single_apply, this]`. Conclude with `hle hy`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coord_span_zero (Q : Matrix (Fin n) (Fin (2 * r + k + 1)) ℂ) (Qi : Matrix (Fin (2 * r + k + 1)) (Fin n) ℂ)
     (hQ1 : Qi * Q = 1) (lam : ℂ) (e : Fin r → Fin n → ℂ)
@@ -54,25 +54,25 @@ theorem coord_span_zero (Q : Matrix (Fin n) (Fin (2 * r + k + 1)) ℂ) (Qi : Mat
   exact hle hy
 
 /- English proof (translation)
-Establish `hcol : ∀ (j i : Fin (2 * r + k + 1)), (Qi * M * Q) i j = (Qi *ᵥ (M *ᵥ (Q *ᵥ Pi.single j 1))) i`. Introduce `j i`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_single_one]`. Both sides reduce to the same expression. Establish `hsplit : ∀ w : Fin n → ℂ, Qi *ᵥ (M *ᵥ w) = Qi *ᵥ w + Qi *ᵥ ((M - 1) *ᵥ w)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `w`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.mulVec_sub]`. Normalize the expressions using the abelian group laws. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `show (Qi * M * Q)ᴴ * Hpk k r * (Qi * M * Q) = Hpk k r`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hQ2' : Qiᴴ * Qᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, hQ2, Matrix.conjTranspose_one]`. Rewrite using `[← hH]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Combine the equalities or inequalities in the displayed calculation. Introduce `a i hai`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hne : lam ^ (r - (a : ℕ)) ≠ 0`. Introduce `h0`. Establish `h1` using `congrArg (fun w => Qi *ᵥ w) (he a)`. Simplify using `only [Matrix.mulVec_mulVec, hQ1, Matrix.one_mulVec, h0, zero_smul, Matrix.mulVec_zero] at h1`. Establish `h2` using `congrFun h1 (eI k r a)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `at h2`. Establish `h1` using `congrArg (fun w => Qi *ᵥ w) (he a)`. Simplify using `only [Matrix.mulVec_mulVec, hQ1, Matrix.one_mulVec, Matrix.mulVec_smul] at h1`. Establish `hv : Qi *ᵥ (M *ᵥ (Q *ᵥ Pi.single (eI k r a) 1)) = Pi.single (eI k r a) 1 + lam ^ (r - (a : ℕ)) • (Qi *ᵥ ((M - 1) *ᵥ e a))`. Rewrite using `[he a, Matrix.mulVec_smul, Matrix.mulVec_smul, hsplit, smul_add, ← h1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcol, hv, Pi.add_apply, Pi.smul_apply, coord_span_zero Q Qi hQ1 lam e he a.1 _ (hS a) i (by simpa [eI] using hai), smul_zero, add_zero, Pi.single_apply]`. Introduce `i j hj1 hj2 hi`. Establish `horth : ∀ a, star (e a) ⬝ᵥ (J *ᵥ (Q *ᵥ Pi.single j 1)) = 0`. Introduce `a`. Establish `hne : lam ^ (r - (a : ℕ)) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Establish `h1` using `congrArg (fun w => Qi *ᵥ w) (he a)`. Simplify using `only [Matrix.mulVec_mulVec, hQ1, Matrix.one_mulVec, h0, zero_smul, Matrix.mulVec_zero] at h1`. Establish `h2` using `congrFun h1 (eI k r a)`. Simplify using `at h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `key : star (Q *ᵥ Pi.single (eI k r a) 1) ⬝ᵥ (J *ᵥ (Q *ᵥ Pi.single j 1)) = 0`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hH]`. Establish `hz : Hpk k r (eI k r a) j = 0`. Establish `ha` using `a.isLt`. Unfold `Hpk`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only [eI, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply, hz]`. Rewrite `key` using `[he a, star_smul, smul_dotProduct]`. Conclude with `(smul_eq_zero.1 key).resolve_left (by simpa using hne)`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hcol, hsplit, Pi.add_apply, coord_span_zero Q Qi hQ1 lam e he r _ (hX _ horth) i hi, add_zero, Matrix.mulVec_mulVec, hQ1, Matrix.one_mulVec]`. Simplify using `[Pi.single_apply]`.
+A detailed English derivation is pending.
 -/
 theorem mem_nset (J : Matrix (Fin n) (Fin n) ℂ) (Q : Matrix (Fin n) (Fin (2 * r + k + 1)) ℂ)
     (Qi : Matrix (Fin (2 * r + k + 1)) (Fin n) ℂ) (hQ1 : Qi * Q = 1) (hQ2 : Q * Qi = 1)
@@ -143,7 +143,7 @@ section Main
 open GlobalTheory.TypeAsm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Use `show Matrix.of.symm (C.Qi τ * Formalism.MainNotions.S.uMat ((1 : X.B.I.Ginf) (vOf X τ)) * C.Q τ) = Matrix.of.symm 1`. Establish `hu : Formalism.MainNotions.S.uMat ((1 : X.B.I.Ginf) (vOf X τ)) = 1` using `rfl`. Rewrite using `[hu, Matrix.mul_one, (C.isT τ).1]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trI_one {D : D7} {X : HidaSetting D} (C : Choice X 1) : trI C 1 = fun _ => Matrix.of.symm 1 := by
   funext τ
@@ -152,11 +152,11 @@ theorem trI_one {D : D7} {X : HidaSetting D} (C : Choice X 1) : trI C 1 = fun _ 
   rw [hu, Matrix.mul_one, (C.isT τ).1]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Establish `h2` using `(C.isT τ).2.1`. Establish `e : C.Qi τ * Formalism.MainNotions.S.uMat ((s * t) (vOf X τ)) * C.Q τ = (C.Qi τ * Formalism.MainNotions.S.uMat (s (vOf X τ)) * C.Q τ) * (C.Qi τ * Formalism.MainNotions.S.uMat (t (vOf X τ)) * C.Q τ)`. Establish `: Formalism.MainNotions.S.uMat ((s * t) (vOf X τ)) = Formalism.MainNotions.S.uMat (s (vOf X τ)) * Formalism.MainNotions.S.uMat (t (vOf X τ))`. Simplify using `[Formalism.MainNotions.S.uMat]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2]`. Simplify using `only [Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = _ := by simp only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [trI, GlobalTheory.DegVol.mulP, Formalism.QuantumDeterminants.lmulM, Formalism.L2.SG.RealObj.trG, Equiv.apply_symm_apply]`. Rewrite using `[e]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem trI_mul {D : D7} {X : HidaSetting D} (C : Choice X 1) (s t : X.B.I.Ginf) :
     trI C (s * t) = GlobalTheory.DegVol.mulP (trI C s) (trI C t) := by
@@ -176,11 +176,11 @@ theorem trI_mul {D : D7} {X : HidaSetting D} (C : Choice X 1) (s t : X.B.I.Ginf)
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Establish `h1` using `(C.isT τ).1`. Establish `h2` using `(C.isT τ).2.1`. Simplify using `only [trI, Equiv.apply_symm_apply, Formalism.L2.SG.RealObj.trG]`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Establish `hu : Formalism.MainNotions.S.uMat (s (vOf X τ)) * Formalism.MainNotions.S.uMat (s⁻¹ (vOf X τ)) = 1`. Simplify using `[Formalism.MainNotions.S.uMat]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = C.Qi τ * C.Q τ := by`. Rewrite using `[h2, Matrix.mul_one, Matrix.mul_assoc (C.Qi τ), hu, Matrix.mul_one]`. Use `_ = 1 := h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trI_inv {D : D7} {X : HidaSetting D} (C : Choice X 1) (s : X.B.I.Ginf) :
     (fun τ => Matrix.of.symm (Matrix.of (trI C s τ))⁻¹) = trI C s⁻¹ := by
@@ -200,13 +200,13 @@ theorem trI_inv {D : D7} {X : HidaSetting D} (C : Choice X 1) (s : X.B.I.Ginf) :
     _ = 1 := h1
 
 /- English proof (translation)
-Introduce `D X Y u C`. Establish `hS` using `Formalism.L2.SG.Pf.NOsub_coe X u Y.hK`. Establish `mem : ∀ s, s ∈ Formalism.L2.SG.PoincareInHH.PoincareSetting.NOinf X u ↔ s ∈ Formalism.L2.SG.Pf.NOsub X u Y.hK`. Introduce `s`. Rewrite using `[← hS]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `⟨(Formalism.L2.SG.Pf.noCount_holds X u).image _, ⟨1, (mem 1).2 (Subgroup.one_mem _), trI_one C⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨s, hs, rfl⟩ _ ⟨t, ht, rfl⟩`. Conclude with `⟨s * t, (mem _).2 (Subgroup.mul_mem _ ((mem _).1 hs) ((mem _).1 ht)), trI_mul C s t⟩`. Introduce and unpack `_ ⟨s, hs, rfl⟩`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨s⁻¹, (mem _).2 (Subgroup.inv_mem _ ((mem _).1 hs)), (trI_inv C s).symm⟩`. Introduce and unpack `_ ⟨s, hs, rfl⟩ τ`. Take `⟨γ, -, hγ1, hγN, -⟩` from `hs`. Establish `hN : s ∈ X.NinfU u` using `hγ1 ▸ hγN`. Establish `hNv` using `hN (vOf X τ)`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hQ1, hQ2, hH, he⟩` from `C.isT τ`. Simplify using `only [trI, Equiv.apply_symm_apply, Formalism.L2.SG.RealObj.trG]`. Conclude with `mem_nset (Formalism.REAL.Jm (X.B.I.ε (vOf X τ))) (C.Q τ) (C.Qi τ) hQ1 hQ2 hH (frS D) _ (fun a => (he a a rfl).1) _ (s (vOf X τ)).2 hNv.1.1 hNv.2`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cov_grp : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u : D.what₂.Word) (C : Choice X 1),
     (trI C '' Formalism.L2.SG.PoincareInHH.PoincareSetting.NOinf X u).Countable ∧

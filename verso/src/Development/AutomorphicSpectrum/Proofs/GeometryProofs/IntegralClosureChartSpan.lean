@@ -10,17 +10,17 @@ namespace GlobalTheory.CompanionTheory.Ar.IntClGens
 variable {o : Type} [CommRing o] {Ω : Type} [Field Ω] [Algebra o Ω] {κ : Type} (x : κ → Ω)
 
 /- English proof (translation)
-Establish `ht : x c / x j ∈ chRing o x j` using `Algebra.subset_adjoin ⟨c, rfl⟩`. Proceed by induction on `hb using Algebra.adjoin_induction with`. Consider the case `mem y hy`. Take `⟨l, rfl⟩` from `hy`. Use `⟨1, fun m hm => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hm`. Establish `key : x c / x j * (x l / x c) = x l / x j`. Rewrite using `[div_mul_div_comm, mul_comm (x j), mul_div_mul_left _ _ hc]`. Establish `: (x c / x j) ^ (1 + k) * (x l / x c) = (x c / x j) ^ k * (x l / x j)`. Rewrite using `[← key]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `Subalgebra.mul_mem _ (Subalgebra.pow_mem _ ht _) (Algebra.subset_adjoin ⟨l, rfl⟩)`. Consider the case `algebraMap r`. Conclude with `⟨0, fun m _ => Subalgebra.mul_mem _ (Subalgebra.pow_mem _ ht _) (Subalgebra.algebraMap_mem _ r)⟩`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Treat this case separately. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `add y z _ _ hy hz`. Take `⟨e1, h1⟩` from `hy`. Take `⟨e2, h2⟩` from `hz`. Conclude with `⟨max e1 e2, fun m hm => by`. Rewrite using `[mul_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `Subalgebra.add_mem _ (h1 m (le_of_max_le_left hm)) (h2 m (le_of_max_le_right hm))⟩`. Consider the case `mul y z _ _ hy hz`. Take `⟨e1, h1⟩` from `hy`. Take `⟨e2, h2⟩` from `hz`. Use `⟨e1 + e2, fun m hm => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hm`. Establish `: (x c / x j) ^ (e1 + e2 + k) * (y * z) = ((x c / x j) ^ (e1 + k) * y) * ((x c / x j) ^ e2 * z)` using `by ring`. Rewrite using `[this]`. Conclude with `Subalgebra.mul_mem _ (h1 _ (by omega)) (h2 _ le_rfl)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twist_mem {c j : κ} (hc : x c ≠ 0) {b : Ω} (hb : b ∈ chRing o x c) :
     ∃ e : ℕ, ∀ m, e ≤ m → (x c / x j) ^ m * b ∈ chRing o x j := by
@@ -55,21 +55,19 @@ theorem twist_mem {c j : κ} (hc : x c ≠ 0) {b : Ω} (hb : b ∈ chRing o x c)
     exact Subalgebra.mul_mem _ (h1 _ (by omega)) (h2 _ le_rfl)
 
 /- English proof (translation)
-Establish `ht : x c / x j ∈ chRing o x j` using `Algebra.subset_adjoin ⟨c, rfl⟩`. Take `⟨p, hmon, hp⟩` from `ha`. Establish `hE : ∀ i, ∃ e : ℕ, ∀ m, e ≤ m → (x c / x j) ^ m * (p.coeff i : Ω) ∈ chRing o x j` using `fun i => twist_mem x hc (p.coeff i).2`. Use `choose E hE using hE`. Take `⟨E0, hE0⟩ : ∃ E0, ∀ i ≤ p.natDegree, E i ≤ E0` from `⟨(Finset.range (p.natDegree + 1)).sup E, fun i hi => Finset.le_sup (Finset.mem_range.2 (by omega))⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hn' : (p.map (algebraMap (chRing o x c) Ω)).natDegree = p.natDegree` using `hmon.natDegree_map _`. Establish `hqm : ((p.map (algebraMap (chRing o x c) Ω)).scaleRoots ((x c / x j) ^ E0)).Monic` using `(Polynomial.monic_scaleRoots_iff _).2 (hmon.map _)`. Establish `hq0 : ((p.map (algebraMap (chRing o x c) Ω)).scaleRoots ((x c / x j) ^ E0)).eval ((x c / x j) ^ E0 * a) = 0`. Establish `h1 : (p.map (algebraMap (chRing o x c) Ω)).eval₂ (RingHom.id Ω) a = 0`. Rewrite using `[Polynomial.eval₂_map, RingHom.id_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hp`. Use `Polynomial.scaleRoots_eval₂_eq_zero (RingHom.id Ω) (s := (x c / x j) ^ E0) h1` as an intermediate fact. Simplify `this` using `[Polynomial.eval₂_id]`. Establish `hlift : (p.map (algebraMap (chRing o x c) Ω)).scaleRoots ((x c / x j) ^ E0) ∈ Polynomial.lifts (algebraMap (chRing o x j) Ω)`. Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i`. Establish `hmem : ((p.map (algebraMap (chRing o x c) Ω)).scaleRoots ((x c / x j) ^ E0)).coeff i ∈ chRing o x j`. Rewrite using `[Polynomial.coeff_scaleRoots, hn', Polynomial.coeff_map]`. Break down `lt_trichotomy i p.natDegree with hi | hi | hi` into its components or cases. Establish `h1 : E i ≤ E0` using `hE0 i hi.le`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : 1 ≤ p.natDegree - i` using `by omega`. Establish `hle : E i ≤ E0 * (p.natDegree - i)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← pow_mul, mul_comm]`. Conclude with `hE i _ hle`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[hi, Nat.sub_self, pow_zero, mul_one, hmon.coeff_natDegree, map_one]`. Conclude with `Subalgebra.one_mem _`. Rewrite using `[Polynomial.coeff_eq_zero_of_natDegree_lt hi, map_zero, zero_mul]`. Conclude with `Subalgebra.zero_mem _`. Conclude with `⟨⟨_, hmem⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨q0, hq0map, -, hq0m⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic hlift hqm`. Establish `hint : IsIntegral (chRing o x j) ((x c / x j) ^ E0 * a)` using `⟨q0, hq0m, by rw [← Polynomial.eval_map, hq0map]; exact hq0⟩`. Use `⟨E0, fun m hm => ?_⟩` and prove the remaining obligations. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hm`. Establish `: (x c / x j) ^ (E0 + k) * a = (x c / x j) ^ k * ((x c / x j) ^ E0 * a)` using `by ring`.
-
-Rewrite using `[this]`. Establish `htk : IsIntegral (chRing o x j) ((x c / x j) ^ k)` using `isIntegral_algebraMap (x := (⟨_, Subalgebra.pow_mem _ ht k⟩ : chRing o x j))`. Conclude with `htk.mul hint`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem twist_integral {c j : κ} (hc : x c ≠ 0) {a : Ω} (ha : IsIntegral (chRing o x c) a) :
     ∃ e : ℕ, ∀ m, e ≤ m → IsIntegral (chRing o x j) ((x c / x j) ^ m * a) := by
@@ -122,21 +120,19 @@ theorem twist_integral {c j : κ} (hc : x c ≠ 0) {a : Ω} (ha : IsIntegral (ch
   exact htk.mul hint
 
 /- English proof (translation)
-Introduce `o _ Ω _ _ κ _ x hfin`. Establish `hgen : ∀ c, ∃ (N : ℕ) (g : Fin N → Ω), (∀ k, x c ≠ 0 ∧ IsIntegral (chRing o x c) (g k)) ∧ (x c ≠ 0 → ∀ a, IsIntegral (chRing o x c) a → a ∈ Submodule.span (chRing o x c) (Set.range g))`. Introduce `c`. Distinguish the cases in `hc : x c = 0`. Conclude with `⟨0, Fin.elim0, fun k => k.elim0, fun h => absurd hc h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Use `haveI := hfin c hc`. Take `⟨N, s, hs⟩` from `Module.Finite.exists_fin (R := chRing o x c) (M := integralClosure (chRing o x c) Ω)`. Use `⟨N, fun k => ((s k : integralClosure (chRing o x c) Ω) : Ω), fun k => ⟨hc, (s k).2⟩, fun _ a ha => ?_⟩` and prove the remaining obligations. Establish `hle : Submodule.map (integralClosure (chRing o x c) Ω).val.toLinearMap (Submodule.span (chRing o x c) (Set.range s)) ≤ Submodule.span (chRing o x c) (Set.range fun k => ((s k : integralClosure (chRing o x c) Ω) : Ω))`. Rewrite using `[Submodule.map_span_le]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Rewrite `hle` using `[hs]`. Conclude with `hle (Submodule.mem_map_of_mem (p := ⊤) (f := (integralClosure (chRing o x c) Ω).val.toLinearMap) (r := ⟨a, ha⟩) Submodule.mem_top)`. Use `choose N g hg using hgen`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨M, ⟨eI⟩⟩` from `Finite.exists_equiv_fin (Σ c, Fin (N c))`. Establish `hD : ∀ (i : Σ c, Fin (N c)) (j : κ), ∃ e : ℕ, ∀ m, e ≤ m → IsIntegral (chRing o x j) ((x i.1 / x j) ^ m * g i.1 i.2)` using `fun i j => twist_integral x ((hg i.1).1 i.2).1 ((hg i.1).1 i.2).2`. Use `choose D hD using hD`. Take `⟨d, hd⟩` from `Finite.exists_le (fun q : (Σ c, Fin (N c)) × κ => D q.1 q.2)`. Use `⟨d, M, Sum.elim (fun c => x c ^ d) (fun k => x (eI.symm k).1 ^ d * g (eI.symm k).1 (eI.symm k).2), fun c => rfl, fun c hc a => ⟨fun ha => ?_, fun ha => ?_⟩⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Submodule.span_mono ?_ ((hg c).2 hc a ha)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Use `⟨Sum.inr (eI ⟨c, k⟩), ?_⟩` and prove the remaining obligations. Establish `he : eI.symm (eI ⟨c, k⟩) = ⟨c, k⟩` using `eI.symm_apply_apply _`. Simplify using `only [Sum.elim_inr]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[he]`. Conclude with `mul_div_cancel_left₀ _ (pow_ne_zero _ hc)`. Establish `hsub : (Set.range fun k => (Sum.elim (fun c => x c ^ d) (fun k => x (eI.symm k).1 ^ d * g (eI.symm k).1 (eI.symm k).2) k : Ω) / x c ^ d) ⊆ ((integralClosure (chRing o x c) Ω).toSubmodule : Set Ω)`. Introduce and unpack `_ ⟨k, rfl⟩`. Rewrite using `[SetLike.mem_coe, Subalgebra.mem_toSubmodule, mem_integralClosure_iff]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Break down `k with j | k` into its components or cases. Simplify using `only [Sum.elim_inl]`. Rewrite using `[← div_pow]`. Conclude with `isIntegral_algebraMap (x := (⟨_, Subalgebra.pow_mem _ (Algebra.subset_adjoin ⟨j, rfl⟩ : x j / x c ∈ chRing o x c) d⟩ : chRing o x c))`. Simplify using `only [Sum.elim_inr]`.
-
-Rewrite using `[mul_div_right_comm, ← div_pow]`. Conclude with `hD (eI.symm k) c d (hd (eI.symm k, c))`. Use `Submodule.span_le.2 hsub ha` as an intermediate fact. Rewrite `this` using `[Subalgebra.mem_toSubmodule, mem_integralClosure_iff]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_twisted_gens : ∀ (o : Type) [CommRing o] (Ω : Type) [Field Ω] [Algebra o Ω] (κ : Type) [Finite κ]
     (x : κ → Ω), (∀ c, x c ≠ 0 → Module.Finite (chRing o x c) (integralClosure (chRing o x c) Ω)) →

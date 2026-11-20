@@ -15,11 +15,11 @@ section Gen
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Substitute `hσ` using the available equality. Choose the witnesses or unpack the hypotheses as in `rfl : J = S.gram := by`. Use extensionality with `a b`. Simplify using `using hJ a b`.
+Substitute using the available equality. Substitute using the available equality. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [GlobalTheory.HermTransport.reL_refl'] at hLb`. Simplify using `only [GlobalTheory.HermTransport.reGL_refl_hom', Subgroup.map_id] at hU ⊢`. Establish `hgQ : ∀ (i : Fin 2) v, ((gp i : ℕ) : 𝓞 F) ∈ v.asIdeal → v ∉ Q` using `fun i v hv hvQ => (hQ v hvQ).2 i hv`. Establish `hTQ : ∀ v, ((T : ℕ) : 𝓞 F) ∈ v.asIdeal → v ∉ Q` using `fun v hv hvQ => (hQ v hvQ).1 hv`. Set `L : Formalism.L2.Herm.StepLevelQ hc S gp T f Q` to `{ Lb := H0.Lb Lb_fin := H0.Lb_fin Lb_span := H0.Lb_span Lb_int := H0.Lb_int Lb_dual := H0.Lb_dual Lb_index := H0.Lb_index Uloc := K.Uloc Uloc_lev := fun v => hLb ▸ K.Uloc_lev v Uloc_hyp := fun v h0 h1 hT hvQ => (hU v hvQ).trans (H0.Uloc_hyp v h0 h1 hT) Uloc_g := fun i v hv x hx = …`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨N, hN, hx⟩` from `GlobalTheory.T.open_congruence_subgroup_preserves_principal_lattice hc.sig S.gram K v`. Conclude with `⟨N, hN, fun x hx' => hx x (hLb ▸ hx'.1) (hLb ▸ hx'.2)⟩`. Use `U := K.U`. Use `U_eq := K.U_eq }`. Conclude with `⟨L, rfl, fun v => rfl, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem stepQ_of_reindex (hc : CMData F E) (S : HSpace E) {n : ℕ} (h : S.rank = n) {σ : E →ₐ[F] E}
     (hσ : σ = hc.sig) {J : Matrix (Fin n) (Fin n) E}
@@ -61,7 +61,7 @@ theorem stepQ_of_reindex (hc : CMData F E) (S : HSpace E) {n : ℕ} (h : S.rank 
 end Gen
 
 /- English proof (translation)
-Introduce `D T Q i hm cl st _ lt K H0 hQ hLb hU`. Take `⟨L, hL, hUloc, hUU⟩` from `GlobalTheory.ChartQ.stepQ_of_reindex D.sp.cm (D.sp.X i) (rankN D i hm) (σ := sigD D) rfl (fun a b => rfl) Q K.lev H0 hQ hLb hU`. Take `⟨C, hy, hst⟩` from `GlobalTheory.HermTransport.classTie_of_reindex D.sp.cm (D.sp.X i) (rankN D i hm) rfl (fun a b => rfl) (Equiv.refl cl) lt K.y K.y_bij (fun c x => by rw [← GlobalTheory.HermTransport.latCrd_eq_reL]; exact K.y_lat c x) K.stabI K.stabI_inj K.stabI_range L.Lb L.U (hL ▸ hLb) hUU`. Conclude with `⟨L, C, hL, ⟨hL ▸ hLb, hUloc, hUU, fun c => hy c, fun c s => hst c s⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem chartTie_toQ : ∀ {D : D7} {T : ℕ} (Q : Finset (HeightOneSpectrum (𝓞 D.host.F))) {i : ℕ} (hm : i ≤ D.R.m) {cl : Type} (st : cl → Type) [∀ c, Group (st c)] (lt : cl → Submodule (𝓞 D.host.E) (D.sp.X i).V) (K : LevelChart D T (badQ D Q) i hm st (fun c => latCrd D i hm (lt c))) (H0 : Formalism.L2.Herm.StepLevel D.sp.cm (D.sp.X i) D.host.g T D.R.f), (∀ v ∈ Q, ((T : ℕ) : 𝓞 D.host.F) ∉ v.asIdeal ∧ ∀ j, ((D.host.g j : ℕ) : 𝓞 D.host.F) ∉ v.asIdeal) → K.lev.Lb = reL (rankN D i hm) H0.Lb → (∀ v, v ∉ Q → K.lev.Uloc v = (H0.Uloc v).map (reGL (rankN D i hm) _).toMonoidHom) → ∃ (L : Formalism.L2.Herm.StepLevelQ D.sp.cm (D.sp.X i) D.host.g T D.R.f Q) (C : Formalism.L2.Herm.ClassTie D.sp.cm (D.sp.X i) L.Lb L.U st lt), L.Lb = H0.Lb ∧ SameCar (rankN D i hm) L.Lb K.lev.Lb L.Uloc K.lev.Uloc L.U K.lev.U (fun c => (C.y c).1) (fun c => (K.y c).1) (fun c s => (C.stabI c s).1) (fun c s => (K.stabI c s).1) := by
   intro D T Q i hm cl st _ lt K H0 hQ hLb hU

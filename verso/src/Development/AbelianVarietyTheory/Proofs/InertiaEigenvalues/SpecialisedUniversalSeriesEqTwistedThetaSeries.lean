@@ -23,11 +23,11 @@ section Fock
 variable {D : D7} {S T : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D}
 
 /- English proof (translation)
-Establish `hA : ∀ k g, IsThetaFunO ψ S T g → IsThetaFunO ψ S T (aPlusAll (heisO ψ S T) θ (fun τ => cplxO (sS τ) (sT τ)) BS BT k g)` using `fun k g hg => GlobalTheory.FockIndep.aPlus_theta hψ hθ _ _ _ hg`. Establish `hl : ∀ l : List (FVar D T.rank S.rank), l.foldr (fun i g => aPlusAll (heisO ψ S T) θ (fun τ => cplxO (sS τ) (sT τ)) BS BT i g) (f + f') = l.foldr (fun i g => aPlusAll (heisO ψ S T) θ (fun τ => cplxO (sS τ) (sT τ)) BS BT i g) f + l.foldr (fun i g => aPlusAll (heisO ψ S T) θ (fun τ …`. Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => exact ⟨rfl, hf, hf'⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `cons i l ih`. Simplify using `only [List.foldr_cons]`. Use `⟨?_, hA i _ ih.2.1, hA i _ ih.2.2⟩` and prove the remaining obligations. Rewrite using `[ih.1]`. Conclude with `GlobalTheory.FockIndep.aPlus_add hψ hθ _ _ _ ih.2.1 ih.2.2`.
+Treat this case separately. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : pureTensorO ψ θ S T sS sT BS BT (f + f') = pureTensorO ψ θ S T sS sT BS BT f + pureTensorO ψ θ S T sS sT BS BT f'`. Use `(MvPolynomial.basisMonomials _ ℂ).ext fun k => ?_` and prove the remaining obligations. Simplify using `only [pureTensorO, pureTensorL, LinearMap.add_apply, Module.Basis.constr_basis, opPow]`. Conclude with `(hl _).1`. Rewrite using `[e, LinearMap.add_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pureTensorO_add (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
     (sS BS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT BT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ)
@@ -59,7 +59,7 @@ theorem pureTensorO_add (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
   rw [e, LinearMap.add_apply]
 
 /- English proof (translation)
-The claim follows from `Finset.sum_induction _ (IsThetaFunO ψ S T) (fun _ _ => GlobalTheory.OrientedHeis.theta_add) GlobalTheory.OrientedHeis.theta_zero fun a ha => GlobalTheory.OrientedHeis.theta_smul _ (hf a ha)`.
+A detailed English derivation is pending.
 -/
 theorem theta_sum {ι : Type} (s : Finset ι) (c : ι → ℂ) (f : ι → WO S T → ℂ) (hf : ∀ a ∈ s, IsThetaFunO ψ S T (f a)) :
     IsThetaFunO ψ S T (∑ a ∈ s, c a • f a) :=
@@ -67,9 +67,9 @@ theorem theta_sum {ι : Type} (s : Finset ι) (c : ι → ℂ) (f : ι → WO S 
     fun a ha => GlobalTheory.OrientedHeis.theta_smul _ (hf a ha)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.sum_empty, Finset.sum_empty]`. Use `GlobalTheory.FiniteFock.pureTensorO_smul ψ θ S T sS sT BS BT 0 0 P` as an intermediate fact. Rewrite `this` using `[zero_smul, zero_smul]`. Then use the resulting hypothesis.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Consider the case `insert a s ha ih`. Establish `hs : ∀ x ∈ s, IsThetaFunO ψ S T (f x)` using `fun x hx => hf x (Finset.mem_insert_of_mem hx)`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, pureTensorO_add hψ hθ sS BS sT BT (GlobalTheory.OrientedHeis.theta_smul _ (hf a (Finset.mem_insert_self a s))) (theta_sum s c f hs) P, GlobalTheory.FiniteFock.pureTensorO_smul, ih hs]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem pureTensorO_sum (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
     (sS BS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT BT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ)
@@ -90,7 +90,7 @@ theorem pureTensorO_sum (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
       GlobalTheory.FiniteFock.pureTensorO_smul, ih hs]
 
 /- English proof (translation)
-Simplify using `only [series_apply, Frame.fock]`. Rewrite using `[pureTensorO_sum hB.frame.vac.1 hB.frame.vac.2.inf _ _ _ _ s c f hf P, map_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Pi.smul_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem series_sum {B : Base S T} (hB : B.Good) (ω : PairRep S T) {ι : Type} (s : Finset ι) (c : ι → ℂ)
     (f : ι → WO S T → ℂ) (hf : ∀ a ∈ s, IsThetaFunO B.F.ψ S T (f a)) (h : GA D S) (P : PolF D T.rank S.rank) (g : GA D T) :
@@ -107,7 +107,7 @@ section Spec
 variable {D : D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N}
 
 /- English proof (translation)
-Rewrite using `[map_add, ofAdd_add, map_mul, Units.val_mul, map_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coef_add (ρ : Setup X) (Y : NExp D.R D.host D.what₂ D.LL0 N X) (i : X.Tw) (b : Bool) (k : ℕ)
     (Q : Finset (Pl D.host.E)) (M : ℕ) (χ : Multiplicative (DelQM D.host (X.l i) Q M) →* (X.Ok i k)ˣ)
@@ -120,7 +120,7 @@ theorem coef_add (ρ : Setup X) (Y : NExp D.R D.host D.what₂ D.LL0 N X) (i : X
 open Classical in
 
 /- English proof (translation)
-Establish `e : a = ∑ PP, Pi.single PP (a PP)` using `(Finset.univ_sum_single a).symm`. Use `conv_lhs => rw [e]`. Rewrite using `[map_sum, ofAdd_sum, map_prod, Units.coe_prod, map_prod]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coef_prod (ρ : Setup X) (Y : NExp D.R D.host D.what₂ D.LL0 N X) (i : X.Tw) (b : Bool) (k : ℕ)
     (Q : Finset (Pl D.host.E)) (M : ℕ) (χ : Multiplicative (DelQM D.host (X.l i) Q M) →* (X.Ok i k)ˣ)
@@ -134,7 +134,7 @@ theorem coef_prod (ρ : Setup X) (Y : NExp D.R D.host D.what₂ D.LL0 N X) (i : 
 open Classical in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `only [Base.locFn, specLoc, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[Fintype.prod_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[coef_prod ρ Y i b k Q M χ a, Finset.prod_mul_distrib]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -154,7 +154,7 @@ theorem locFn_specLoc (ρ : Setup X) (Y : NExp D.R D.host D.what₂ D.LL0 N X) (
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[Base.vecAt, locFn_specLoc]`. Express the relevant statement in the definitionally equal form `(ρ.B i j b).F.vecL (ρ.B i j b).G _ _ = _`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -171,7 +171,7 @@ theorem vecAt_specLoc (ρ : Setup X) (Y : NExp D.R D.host D.what₂ D.LL0 N X) (
   rfl
 
 /- English proof (translation)
-Unfold `coord`. Use `split_ifs`. Conclude with `Subgroup.isOpen_mono (H₁ := (Y.delU i Q M).ker) (fun g hg => by rw [MonoidHom.mem_ker, MonoidHom.comp_apply, MonoidHom.mem_ker.1 hg, map_one]) (Y.delU_open i Q M)`. Rewrite using `[MonoidHom.ker_one]`. Conclude with `isOpen_univ`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coord_open (Y : NExp D.R D.host D.what₂ D.LL0 N X) (i : X.Tw) (Q : Finset (Pl D.host.E)) (M : ℕ) (P : Pl D.host.E) :
     IsOpen ((coord Y i Q M P).ker : Set (G D.host.E N.Om)) := by
@@ -184,13 +184,13 @@ theorem coord_open (Y : NExp D.R D.host D.what₂ D.LL0 N X) (i : X.Tw) (Q : Fin
     exact isOpen_univ
 
 /- English proof (translation)
-Take `⟨σ, hσ⟩` from `ρ.rc.exists_sym (detRoot (Wc D j) g)`. Establish `hker : IsOpen ((χ.comp (Y.delU i Q M)).ker : Set (G D.host.E N.Om))` using `Subgroup.isOpen_mono (H₁ := (Y.delU i Q M).ker) (fun g hg => by rw [MonoidHom.mem_ker, MonoidHom.comp_apply, MonoidHom.mem_ker.1 hg, map_one]) (Y.delU_open i Q M)`. Establish `hn : X.l i ^ M ≠ 0` using `NeZero.ne _`. Establish `hpow : (χ.comp (Y.delU i Q M)) σ ^ (X.l i ^ M) = 1`. Rewrite using `[MonoidHom.comp_apply, ← map_pow]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : Y.delU i Q M σ ^ (X.l i ^ M) = 1`. Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `v`. Rewrite using `[toAdd_pow, toAdd_one, Pi.smul_apply, nsmul_eq_mul, Nat.cast_pow, ← Nat.cast_pow, ZMod.natCast_self, zero_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e, map_one]`. Establish `hd : Multiplicative.toAdd (detChar (Wc D j) ((univOf Y i (admissibleConjugatePairPlaces X i Q M) M ρ.rc).delQ (half (ρ.ch i) (admissibleConjugatePairPlaces X i Q M))) g) = fun P => Multiplicative.toAdd (coord Y i (admissibleConjugatePairPlaces X i Q M) M P.1 σ)`. Use function extensionality and compare the values at `PP`. Express the relevant statement in the definitionally equal form `Multiplicative.toAdd (ρ.rc.pull (coord Y i (admissibleConjugatePairPlaces X i Q M) M PP.1) (detRoot (Wc D j) g)) = _`. Rewrite using `[ρ.rc.pull_eq (coord_open Y i _ M PP.1) hσ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `((charOf ρ.rc (ρ.eOk i b k) (χ.comp (Y.delU i Q M)) (detRoot (Wc D j) g) : Circle) : ℂ) = _`. Rewrite using `[charOf_eq ρ.rc (ρ.eOk i b k) hker hσ hn hpow, hd, MonoidHom.comp_apply, ← ofAdd_toAdd (Y.delU i Q M σ), delU_eq_spread hY (twSet_of_twOK hχ) (hρ.ch i) σ]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem detChar_tw {ρ : Setup X} (hρ : ρ.Good) {Y : NExp D.R D.host D.what₂ D.LL0 N X} (hY : GlobalTheory.UnivChar.IsUnivChar Y)
     (i : X.Tw) (j : Fin D.R.m) (b : Bool) (k : ℕ) (Q : Finset (Pl D.host.E)) (M : ℕ)
@@ -226,11 +226,11 @@ theorem detChar_tw {ρ : Setup X} (hρ : ρ.Good) {Y : NExp D.R D.host D.what₂
 end Spec
 
 /- English proof (translation)
-Introduce `D N X ρ hρ Y hY i j b k Q M χ hχ h P`. Use function extensionality and compare the values at `g`. Establish `hB` using `hρ.base i j b`. Establish `hadm : (ρ.B i j b).admitted (half (ρ.ch i) (admissibleConjugatePairPlaces X i Q M))` using `GlobalTheory.ChoiceAdm.adm_half_of_good_of_split_disjoint D N X ρ hρ i j b _ (fun _ h => isSplit_of_mem_admissibleConjugatePairPlaces h) (hχ.2.1.mono_left (admissibleConjugatePairPlaces_subset i Q M))`. Establish `htheta : ∀ a ∈ (Finset.univ : Finset (↥(half (ρ.ch i) (admissibleConjugatePairPlaces X i Q M)) → ZMod (X.l i ^ M))), IsThetaFunO (ρ.B i j b).F.ψ (Vc D j) (Wc D j) ((ρ.B i j b).vecFam (half (ρ.ch i) (admissibleConjugatePairPlaces X i Q M)) (Base.univFam (univOf Y i (admissibleConj …` using `fun a _ => by`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Base.isThetaFunO_fock_vecAt hB hadm (fun PP y => ((Base.univFam (univOf Y i (admissibleConjugatePairPlaces X i Q M) M ρ.rc) (ρ.β j) PP.1 (a PP) y : ℚ) : ℂ)) 1` as an intermediate fact. Rewrite `this` using `[Frame.fock, GlobalTheory.FiniteFock.pureTensorO_one]`. Then use the resulting hypothesis. Unfold `specSer`. Rewrite using `[twistBy_apply, vecAt_specLoc, series_sum hB _ _ _ _ htheta, detChar_tw hρ hY i j b k Q M χ hχ g]`. Unfold `specXi`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Setup.xi, Base.xiCoef_apply]`. Rewrite using `[← Equiv.sum_comp (Equiv.addRight (Multiplicative.toAdd (detChar (Wc D j) ((univOf Y i (admissibleConjugatePairPlaces X i Q M) M ρ.rc).delQ (half (ρ.ch i) (admissibleConjugatePairPlaces X i Q M))) g))), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Equiv.coe_addRight, add_sub_cancel_right, coef_add]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

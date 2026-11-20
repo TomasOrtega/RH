@@ -23,23 +23,23 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {Ω : 
   {x : (Σ k, ι k) → Ω} {N : ℕ} {V : Type} [AddCommGroup V] [Module Ω V]
 
 /- English proof (translation)
-Introduce `_ _` and use `⟨fun v hv => ⟨1, one_ne_zero, by simpa using hv⟩, fun v hv => ⟨1, one_ne_zero, by simpa using hv⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem sameGeneric_self (E : ChartBundle O (mseg x) N V) : SameGeneric O x E E :=
   fun _ _ => ⟨fun v hv => ⟨1, one_ne_zero, by simpa using hv⟩,
     fun v hv => ⟨1, one_ne_zero, by simpa using hv⟩⟩
 
 /- English proof (translation)
-Introduce `s hs` and use `⟨(h s hs).2, (h s hs).1⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem sameGeneric_flip {E E' : ChartBundle O (mseg x) N V} (h : SameGeneric O x E E') :
     SameGeneric O x E' E :=
   fun s hs => ⟨(h s hs).2, (h s hs).1⟩
 
 /- English proof (translation)
-Establish `step : ∀ {A B C : ChartBundle O (mseg x) N V} (s : ∀ k, ι k), (∀ v ∈ A.lat s, ∃ c : O, c ≠ 0 ∧ algebraMap O Ω c • v ∈ B.lat s) → (∀ v ∈ B.lat s, ∃ c : O, c ≠ 0 ∧ algebraMap O Ω c • v ∈ C.lat s) → ∀ v ∈ A.lat s, ∃ c : O, c ≠ 0 ∧ algebraMap O Ω c • v ∈ C.lat s`. Introduce `A B C s hAB hBC v hv`. Take `⟨c, hc, hcv⟩` from `hAB v hv`. Take `⟨c', hc', hcv'⟩` from `hBC _ hcv`. Conclude with `⟨c' * c, mul_ne_zero hc' hc, by rwa [map_mul, mul_smul]⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `fun s hs => ⟨step s (h s hs).1 (h' s hs).1, step s (h' s hs).2 (h s hs).2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem sameGeneric_comp {E E' E'' : ChartBundle O (mseg x) N V} (h : SameGeneric O x E E')
     (h' : SameGeneric O x E' E'') : SameGeneric O x E E'' := by
@@ -56,7 +56,7 @@ theorem sameGeneric_comp {E E' E'' : ChartBundle O (mseg x) N V} (h : SameGeneri
 end Generic
 
 /- English proof (translation)
-Establish `h` using `hQ (mem_support_iff.1 hμ)`. Rewrite using `[classList, Multiset.length_toList, Multiset.card_map, Finsupp.card_toMultiset, ← h]`. Simplify using `[Finsupp.weight_apply, Finsupp.sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem length_classList {K : Type} {q m : ℕ} (cls : Fin q → K → ℤ) {Q : MvPolynomial (Fin q) ℤ}
     (hQ : Q.IsHomogeneous m) {μ : Fin q →₀ ℕ} (hμ : μ ∈ Q.support) :
@@ -66,21 +66,19 @@ theorem length_classList {K : Type} {q m : ℕ} (cls : Fin q → K → ℤ) {Q :
   simp [Finsupp.weight_apply, Finsupp.sum]
 
 /- English proof (translation)
-Introduce `O _ _ _ Ω _ _ K _ ι _`. Introduce `x d N V _ _ E E' E'' hM h1 h2 k hk1 hk2 q L Q hQ`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `h13 : SameGeneric O x E E''` using `sameGeneric_comp h1 h2`. Take `⟨K', _, _, ι', _, z, EB, w, b, hMB, hbir, hEB⟩` from `GlobalTheory.T.same_generic_bundle_chain O Ω K ι x d hM N 2 V ![E, E', E''] (by`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `j`. Use `fin_cases j`. Conclude with `sameGeneric_self E`. Conclude with `h1`. Conclude with `h13)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM' : IsModelOver (pointIdeal O (joinCoord x z)) d` using `((GroundTheory.Heights₂.Heights.NumbersDVR.BundleExamples.isModelOver_iff O _ d).1 hMB).2`. Establish `p0 : IsPull O x z E (EB 0)` using `(hEB 0).1`. Establish `p1 : IsPull O x z E' (EB 1)` using `(hEB 1).1`. Establish `p2 : IsPull O x z E'' (EB 2)` using `(hEB 2).1`. Establish `fr : ∀ j, IsFlagFrame (joinCoord x z) (EB j) w (b j)` using `fun j => (hEB j).2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `tri : ∀ i j : Fin N, i < j → w.repr (w i) j = 0`. Introduce `i j hij`. Simplify using `[Module.Basis.repr_self, Finsupp.single_apply, ne_of_lt hij]`. Establish `pair : ∀ i j, SameGeneric O (joinCoord x z) (EB i) (EB j) → SameGenericFibre ϖ (EB i) (EB j) ∧ ∃ f g : Fin N → MRing (Sum.elim ι ι') O, IsFlagPair ϖ (joinCoord x z) (EB i) (EB j) w w (b i) (b j) f g` using `fun i j hs => GlobalTheory.T.same_generic_flag_comparison O Ω (K ⊕ K') (Sum.elim ι ι') (joinCoord x z) ϖ hϖ d hM' N V (EB i) (EB j) hs w w (b i) (b j) (fr i) (fr j) tri`. Establish `s01` using `(GlobalTheory.T.chart_bundle_base_extension_unique O Ω K ι x N V E E' K' ι' z (EB 0) (EB 1) p0 p1).2.1 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `s12` using `(GlobalTheory.T.chart_bundle_base_extension_unique O Ω K ι x N V E' E'' K' ι' z (EB 1) (EB 2) p1 p2).2.1 h2`. Establish `s02` using `(GlobalTheory.T.chart_bundle_base_extension_unique O Ω K ι x N V E E'' K' ι' z (EB 0) (EB 2) p0 p2).2.1 h13`. Take `⟨g01, f01, d01, c01⟩` from `pair 0 1 s01`. Take `⟨g12, f12, d12, c12⟩` from `pair 1 2 s12`. Take `⟨-, f02, d02, c02⟩` from `pair 0 2 s02`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨-, f10, d10, c10⟩` from `pair 1 0 (sameGeneric_flip s01)`. Establish `num : ∀ {A B : ChartBundle O (mseg x) N V} (i j : Fin 3) (f g : Fin N → MRing (Sum.elim ι ι') O), SameGeneric O x A B → IsPull O x z A (EB i) → IsPull O x z B (EB j) → IsFlagPair ϖ (joinCoord x z) (EB i) (EB j) w w (b i) (b j) f g → ck O x d N A B k L Q = ∑ μ ∈ Q.support, Q.coeff …` using `K') (L j)) μ) := by`. Introduce `A B i j f g hs pi pj hf`. Conclude with `(GlobalTheory.T.same_generic_flag_difference O Ω K ι x ϖ hϖ d hM N V A B hs K' ι' z hMB hbir (EB i) (EB j) pi pj w w (b i) (b j) f g hf).1 k hk1 hk2 q L Q hQ`. Establish `coc` using `fun μ (hμ : μ ∈ Q.support) => GlobalTheory.T.pair_cocycle O ϖ hϖ Ω (K ⊕ K') (Sum.elim ι ι') (joinCoord x z) d hM' N V (EB 0) (EB 1) (EB 2) g01 g12 w w w (b 0) (b 1) (b 2) f01 d01 f12 d12 f02 d02 c01 c12 c02 k (psumExpansion N k) (psumExpansion N k) (psumExpansion N k) (isPairExpa …`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[num 0 2 f02 d02 h13 p0 p2 c02, num 0 1 f01 d01 h1 p0 p1 c01, num 1 2 f12 d12 h2 p1 p2 c12, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun μ hμ => ?_` and prove the remaining obligations. Rewrite using `[(coc μ hμ).1, mul_add]`. Rewrite using `[num 1 0 f10 d10 (sameGeneric_flip h1) p1 p0 c10, num 0 1 f01 d01 h1 p0 p1 c01, ← Finset.sum_neg_distrib]`.
-
-Use `Finset.sum_congr rfl fun μ hμ => ?_` and prove the remaining obligations. Rewrite using `[(coc μ hμ).2 f10 d10 (psumExpansion N k) c10 (isPairExpansion_psum N k), mul_neg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Ω : Type) [Field Ω] [Algebra O Ω] (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)], GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles.Ba.Statement.{0,0,0} O Ω ι := by
   intro O _ _ _ Ω _ _ K _ ι _

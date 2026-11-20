@@ -11,13 +11,13 @@ section Means
 variable {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-The claim follows from `Finset.sum_pos (fun i _ => hd i) Finset.univ_nonempty`.
+A detailed English derivation is pending.
 -/
 lemma sum_pos_of_pos [Nonempty ι] {d : ι → ℝ} (hd : ∀ i, 0 < d i) : 0 < ∑ i, d i :=
   Finset.sum_pos (fun i _ => hd i) Finset.univ_nonempty
 
 /- English proof (translation)
-Unfold `wmean`. Rewrite using `[div_eq_mul_inv, div_eq_mul_inv]`. Conclude with `mul_le_mul_of_nonneg_right (Finset.sum_le_sum fun i _ => mul_le_mul_of_nonneg_left (h i) (hd i).le) (inv_nonneg.mpr (Finset.sum_nonneg fun i _ => (hd i).le))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma wmean_mono {d X Y : ι → ℝ} (hd : ∀ i, 0 < d i) (h : ∀ i, X i ≤ Y i) :
     wmean d X ≤ wmean d Y := by
@@ -28,13 +28,13 @@ lemma wmean_mono {d X Y : ι → ℝ} (hd : ∀ i, 0 < d i) (h : ∀ i, X i ≤ 
     (inv_nonneg.mpr (Finset.sum_nonneg fun i _ => (hd i).le))
 
 /- English proof (translation)
-Simplify using `only [wmean, mul_add, Finset.sum_add_distrib, add_div]`.
+Simplify using the standard rewrite rules.
 -/
 lemma wmean_add (d X Y : ι → ℝ) : wmean d (fun i => X i + Y i) = wmean d X + wmean d Y := by
   simp only [wmean, mul_add, Finset.sum_add_distrib, add_div]
 
 /- English proof (translation)
-Establish `hS : ∑ i, d i ≠ 0` using `(sum_pos_of_pos hd).ne'`. Simplify using `only [wmean]`. Rewrite using `[div_eq_iff hS, ← Finset.sum_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma wmean_const [Nonempty ι] {d : ι → ℝ} (hd : ∀ i, 0 < d i) (c : ℝ) :
     wmean d (fun _ => c) = c := by
@@ -44,7 +44,7 @@ lemma wmean_const [Nonempty ι] {d : ι → ℝ} (hd : ∀ i, 0 < d i) (c : ℝ)
   ring
 
 /- English proof (translation)
-Establish `h1` using `wmean_mono (X := X) (Y := fun _ => c) hd h`. Establish `h3` using `wmean_const hd c`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma wmean_le_const [Nonempty ι] {d X : ι → ℝ} (hd : ∀ i, 0 < d i) (c : ℝ)
     (h : ∀ i, X i ≤ c) : wmean d X ≤ c := by
@@ -53,7 +53,7 @@ lemma wmean_le_const [Nonempty ι] {d X : ι → ℝ} (hd : ∀ i, 0 < d i) (c :
   linarith
 
 /- English proof (translation)
-Establish `h1` using `wmean_mono (X := fun _ => c) (Y := fun i => X i + Y i) hd (fun i => by show c ≤ X i + Y i; linarith [h i])`. Establish `h2` using `wmean_add d X Y`. Establish `h3` using `wmean_const hd c`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma sub_wmean_le [Nonempty ι] {d X Y : ι → ℝ} (hd : ∀ i, 0 < d i) (c : ℝ)
     (h : ∀ i, c - Y i ≤ X i) : c - wmean d Y ≤ wmean d X := by
@@ -64,7 +64,7 @@ lemma sub_wmean_le [Nonempty ι] {d X Y : ι → ℝ} (hd : ∀ i, 0 < d i) (c :
   linarith
 
 /- English proof (translation)
-Unfold `umean`. Rewrite using `[div_eq_mul_inv, div_eq_mul_inv]`. Conclude with `mul_le_mul_of_nonneg_right (Finset.sum_le_sum fun i _ => h i) (inv_nonneg.mpr (Nat.cast_nonneg _))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma umean_mono {X Y : ι → ℝ} (h : ∀ i, X i ≤ Y i) : umean X ≤ umean Y := by
   unfold umean
@@ -73,19 +73,19 @@ lemma umean_mono {X Y : ι → ℝ} (h : ∀ i, X i ≤ Y i) : umean X ≤ umean
     (inv_nonneg.mpr (Nat.cast_nonneg _))
 
 /- English proof (translation)
-Simplify using `only [umean, Finset.sum_add_distrib, add_div]`.
+Simplify using the standard rewrite rules.
 -/
 lemma umean_add (X Y : ι → ℝ) : umean (fun i => X i + Y i) = umean X + umean Y := by
   simp only [umean, Finset.sum_add_distrib, add_div]
 
 /- English proof (translation)
-Simplify using `only [umean, ← Finset.mul_sum, mul_div_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 lemma umean_mul (c : ℝ) (X : ι → ℝ) : umean (fun i => c * X i) = c * umean X := by
   simp only [umean, ← Finset.mul_sum, mul_div_assoc]
 
 /- English proof (translation)
-Establish `hc : (Fintype.card ι : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr Fintype.card_ne_zero`. Simplify using `only [umean, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Rewrite using `[div_eq_iff hc]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma umean_const [Nonempty ι] (c : ℝ) : umean (fun _ : ι => c) = c := by
   have hc : (Fintype.card ι : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr Fintype.card_ne_zero
@@ -94,9 +94,9 @@ lemma umean_const [Nonempty ι] (c : ℝ) : umean (fun _ : ι => c) = c := by
   ring
 
 /- English proof (translation)
-Establish `h1` using `umean_mono (X := X) (Y := fun i => A i + B i + p * P i + q * E i + K) h`. Establish `h2` using `umean_add (fun i => A i + B i + p * P i + q * E i) (fun _ => K)`. Establish `h3` using `umean_add (fun i => A i + B i + p * P i) (fun i => q * E i)`. Establish `h4` using `umean_add (fun i => A i + B i) (fun i => p * P i)`. Establish `h5` using `umean_add A B`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h6` using `umean_mul p P`. Establish `h7` using `umean_mul q E`. Establish `h8` using `umean_const (ι := ι) K`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma umean_le_comb [Nonempty ι] {X A B P E : ι → ℝ} (p q K : ℝ)
     (h : ∀ i, X i ≤ A i + B i + p * P i + q * E i + K) :
@@ -114,19 +114,19 @@ lemma umean_le_comb [Nonempty ι] {X A B P E : ι → ℝ} (p q K : ℝ)
 end Means
 
 /- English proof (translation)
-Establish `hL : 0 < Real.log (1 + X)` using `Real.log_pos (by linarith)`. Establish `hX1 : 0 < 1 + X` using `by linarith`. Break down `hu.eq_or_lt with h0 | hpos` into its components or cases. Rewrite using `[← h0, zero_mul]`. Conclude with `mul_nonneg hL.le (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hw0 : 0 ≤ (1 + X)⁻¹` using `inv_nonneg.mpr hX1.le`. Establish `hw1 : (1 + X) * (1 + X)⁻¹ = 1` using `mul_inv_cancel₀ hX1.ne'`. Establish `hb0 : 1 - (1 + X)⁻¹ ≤ Real.log (1 + X)`. Use `Real.log_le_sub_one_of_pos (inv_pos.mpr hX1)` as an intermediate fact. Rewrite `this` using `[Real.log_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : 0 < 1 + H / u`. Use `div_nonneg hH.le hpos.le` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `ha : Real.log (1 + H / u) ≤ Real.log (1 + X) + ((1 + H / u) * (1 + X)⁻¹ - 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Real.log_le_sub_one_of_pos (mul_pos h1 (inv_pos.mpr hX1))` as an intermediate fact. Rewrite `this` using `[Real.log_mul h1.ne' (inv_pos.mpr hX1).ne', Real.log_inv]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hyu : u * (H / u) = H`. Rewrite using `[mul_comm, div_mul_eq_mul_div, mul_div_assoc, div_self hpos.ne', mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `i1` using `mul_le_mul_of_nonneg_left ha hu`. Establish `e1 : u * (Real.log (1 + X) + ((1 + H / u) * (1 + X)⁻¹ - 1)) = u * Real.log (1 + X) + u * (1 + X)⁻¹ + H * (1 + X)⁻¹ - u`. Take the linear combination `(1 + X)⁻¹ * hyu`. Establish `i2` using `mul_le_mul_of_nonneg_right huU hL.le`. Establish `hXw : X * (1 + X)⁻¹ = 1 - (1 + X)⁻¹` using `by linear_combination hw1`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwle : (1 + X)⁻¹ ≤ 1` using `by linarith [mul_nonneg hX.le hw0]`. Establish `i3 : 0 ≤ u * (1 - (1 + X)⁻¹)` using `mul_nonneg hu (by linarith)`. Establish `i4 : H * (1 + X)⁻¹ ≤ b * (1 - (1 + X)⁻¹)`. Rewrite using `[← hXw]`. Use `mul_le_mul_of_nonneg_right hHX hw0` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `i5` using `mul_le_mul_of_nonneg_left hb0 hb.le`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma phi_bound {u H X b U : ℝ} (hu : 0 ≤ u) (hH : 0 < H) (hHX : H ≤ X * b) (hb : 0 < b)
     (hX : 0 < X) (huU : u ≤ U) :
@@ -197,28 +197,28 @@ def K0 : ℝ :=
     + D.EDiv C + (m : ℝ) * C.cE * D.B0 + C.cSlope * D.nT * D.a * D.La * (1 + (m : ℝ) / D.k)
 
 /- English proof (translation)
-Conclude with `Nat.cast_nonneg _`.
+A detailed English derivation is pending.
 -/
 lemma nT_nonneg : 0 ≤ D.nT := by
   exact Nat.cast_nonneg _
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, -, haT, -⟩` from `hS`. Conclude with `Finset.sum_nonneg fun t _ => haT t`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 lemma sumA_nonneg (hS : D.HidaSetting C) : 0 ≤ D.sumA := by
   obtain ⟨-, -, -, -, -, -, -, haT, -⟩ := hS
   exact Finset.sum_nonneg fun t _ => haT t
 
 /- English proof (translation)
-Simplify using `only [Data.sumA, Finset.sum_mul]`.
+Simplify using the standard rewrite rules.
 -/
 lemma sum_aT_mul (g : ℝ) : ∑ t, D.aT t * g = D.sumA * g := by
   simp only [Data.sumA, Finset.sum_mul]
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, -, -, -, hd, -, hmu, -⟩` from `hS`. Unfold `Data.uF Data.s`. Establish `hle : ∀ u : W u0, D.muN u0 u - D.h u0 u ≤ Finset.univ.sup' Finset.univ_nonempty (fun u : W u0 => D.muMaxN u0 u - D.h u0 u)`. Introduce `u`. Establish `h1 : D.muN u0 u - D.h u0 u ≤ D.muMaxN u0 u - D.h u0 u` using `by linarith [hmu u0 u]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `h1.trans (Finset.le_sup' (fun u : W u0 => D.muMaxN u0 u - D.h u0 u) (Finset.mem_univ u))`. Use `wmean_le_const (d := D.d u0) (X := fun u => D.muN u0 u - D.h u0 u) (hd u0) _ hle` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma uF_nonneg (hS : D.HidaSetting C) (u0 : U0) : 0 ≤ D.uF u0 := by
   obtain ⟨-, -, -, -, -, -, -, -, -, hd, -, hmu, -⟩ := hS
@@ -232,19 +232,19 @@ lemma uF_nonneg (hS : D.HidaSetting C) (u0 : U0) : 0 ≤ D.uF u0 := by
   linarith
 
 /- English proof (translation)
-Establish `hfR : (f : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr hf.ne'`. Establish `hcard : ∀ c : ℝ, ∑ _j : Fin m, c = (m : ℝ) * c` using `fun c => by simp`. Establish `hcardf : ∀ c : ℝ, ∑ _ρ : Fin f, c = (f : ℝ) * c` using `fun c => by simp`. Establish `hpi : Real.log (π / D.v) = Real.log π - Real.log D.v` using `Real.log_div Real.pi_ne_zero hv.ne'`. Establish `hff : 1 / (f : ℝ) * (f : ℝ) = 1` using `by rw [one_div, inv_mul_cancel₀ hfR]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∑ j : Fin m, (1 / (f : ℝ)) * ∑ ρ : Fin f, Real.log (D.w u0 j ρ * D.v / π) = ∑ j : Fin m, (1 / (f : ℝ)) * ∑ ρ : Fin f, Real.log (D.w u0 j ρ) + (m : ℝ) * (Real.log D.v - Real.log π)`. Rewrite using `[← hcard, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `e1 : ∑ ρ : Fin f, Real.log (D.w u0 j ρ * D.v / π) = ∑ ρ : Fin f, Real.log (D.w u0 j ρ) + (f : ℝ) * (Real.log D.v - Real.log π)`. Rewrite using `[← hcardf, ← Finset.sum_add_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Rewrite using `[Real.log_div (mul_pos (hw j ρ) hv).ne' Real.pi_ne_zero, Real.log_mul (hw j ρ).ne' hv.ne']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`. Take the linear combination `(Real.log D.v - Real.log π) * hff`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `h2 : D.SDiv = (m : ℝ) * ∑ t, D.aT t * (Real.log (D.aT t) - 1 - D.gam + D.LpL) - (m : ℝ) * (Real.log π - Real.log D.v) * D.sumA`. Unfold `Data.SDiv Data.sumA`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Simplify using `only [ph, Data.logOm]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[hpi]`. Expand and normalize the polynomial expressions, which then agree. Establish `hMj : ∀ j : Fin m, ∑ t, D.aT t * (Real.log (D.aT t) - 1 - D.gam + D.LpL - (1 / (f : ℝ)) * ∑ ρ : Fin f, Real.log (D.w u0 j ρ)) = ∑ t, D.aT t * (Real.log (D.aT t) - 1 - D.gam + D.LpL) - D.sumA * ((1 / (f : ℝ)) * ∑ ρ : Fin f, Real.log (D.w u0 j ρ))`. Introduce `j`. Unfold `Data.sumA`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[Finset.sum_mul, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun t _ => by ring`. Establish `h3 : D.Main u0 = (m : ℝ) * ∑ t, D.aT t * (Real.log (D.aT t) - 1 - D.gam + D.LpL) - D.sumA * ∑ j : Fin m, (1 / (f : ℝ)) * ∑ ρ : Fin f, Real.log (D.w u0 j ρ)`. Unfold `Data.Main`. Rewrite using `[Finset.sum_congr rfl (fun j (_ : j ∈ Finset.univ) => hMj j), Finset.sum_sub_distrib, hcard, ← Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `Data.abelian₂`. Take the linear combination `h2 - D.sumA * h1 - h3`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma key_identity (hv : 0 < D.v) (hf : 0 < f) (u0 : U0) (hw : ∀ j ρ, 0 < D.w u0 j ρ) :
     D.SDiv - D.sumA * D.abelian₂ C u0 + (m : ℝ) * D.sumA * D.lg =

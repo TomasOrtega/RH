@@ -12,11 +12,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.LocalFieldIso
 
 /- English proof (translation)
-Introduce the local definition `e : 𝒪[ℚ_[g]] ≃+* ℤ_[g]`. Use the proof step `{ toFun := fun x => ⟨x.1, by`. Establish `h` using `(Valuation.mem_integer_iff _ _).1 x.2`. Use `(GlobalTheory.SplitWeil.padic_valuation_lt_iff g 1 x.1).not.1 (by rw [map_one]; exact not_lt.2 h)` as an intermediate fact. Rewrite using `[norm_one, not_lt] at this⟩` and apply the resulting hypothesis.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `invFun := fun x => ⟨x.1, (Valuation.mem_integer_iff _ _).2 (by`. Use `(GlobalTheory.SplitWeil.padic_valuation_lt_iff g 1 x.1).not.2 (by rw [norm_one]; exact not_lt.2 x.2)` as an intermediate fact. Rewrite using `[map_one, not_lt] at this)⟩` and apply the resulting hypothesis. Use `left_inv := fun _ => rfl`. Use `right_inv := fun _ => rfl`.
-
-Use the proof step `map_mul' := fun _ _ => rfl`. Use the proof step `map_add' := fun _ _ => rfl }`. Unfold `GlobalTheory.SplitWeil.resCard`. Rewrite using `[Nat.card_congr ((IsLocalRing.ResidueField.mapEquiv e).trans PadicInt.residueField).toEquiv, Nat.card_zmod]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resCard_padic (g : ℕ) [Fact g.Prime] : GlobalTheory.SplitWeil.resCard ℚ_[g] = g := by
   let e : 𝒪[ℚ_[g]] ≃+* ℤ_[g] :=
@@ -35,7 +33,7 @@ theorem resCard_padic (g : ℕ) [Fact g.Prime] : GlobalTheory.SplitWeil.resCard 
   rw [Nat.card_congr ((IsLocalRing.ResidueField.mapEquiv e).trans PadicInt.residueField).toEquiv, Nat.card_zmod]
 
 /- English proof (translation)
-Use `haveI : (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Rewrite using `[← (ValuativeRel.isEquiv (ValuativeRel.valuation _) Valued.v).le_one_iff_le_one, valuation_map_le_one_iff i hi y]`. Use `(GlobalTheory.SplitWeil.padic_valuation_lt_iff g 1 y).not` as an intermediate fact. Rewrite `this` using `[map_one, norm_one, not_lt, not_lt]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem padic_v_map_le_one_iff {E : Type} [Field E] [NumberField E] {g : ℕ} [Fact g.Prime]
     {w : HeightOneSpectrum (𝓞 E)} (i : ℚ_[g] ≃+* w.adicCompletion E) (hi : Continuous i) (y : ℚ_[g]) :
@@ -52,23 +50,21 @@ end GlobalTheory.LocalFieldIso
 open GlobalTheory.LocalFieldIso in
 
 /- English proof (translation)
-Introduce `E _ _ g _ w i hi`. Establish `hv : ∀ y : E, Valued.v (algebraMap E (w.adicCompletion E) y) = w.valuation E y` using `fun y => HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w y`. Establish `hgc : i (g : ℚ_[g]) = algebraMap E (w.adicCompletion E) (((g : ℕ) : 𝓞 E) : E)` using `by simp`. Establish `hgp : 1 < (g : ℝ)` using `by exact_mod_cast (Fact.out : g.Prime).one_lt`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `GlobalTheory.Published.DepthZeroTypeModel.v_lt_one i hi (k := (g : ℚ_[g])) Padic.norm_p_lt_one`. Rewrite `h` using `[hgc, hv, HeightOneSpectrum.valuation_of_algebraMap]`. Rewrite `h` using `[HeightOneSpectrum.intValuation_lt_one_iff_mem]`. Then use the resulting hypothesis. Introduce `hg2`. Establish `h2` using `(HeightOneSpectrum.intValuation_le_pow_iff_mem w _ 2).2 hg2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨π, hπ⟩` from `HeightOneSpectrum.valuation_exists_uniformizer E w`. Use `set P := algebraMap E (w.adicCompletion E) π with hP`. Establish `hPv : Valued.v P = WithZero.exp (-1)` using `by rw [hP, hv, hπ]`. Establish `hP0 : P ≠ 0` using `by intro h; rw [h, map_zero] at hPv; exact WithZero.exp_ne_zero hPv.symm`. Use `set x := i.symm P with hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hix : i x = P` using `by simp [hx]`. Establish `hx0 : x ≠ 0` using `by intro h; apply hP0; rw [← hix, h, map_zero]`. Establish `hxlt : ‖x‖ < 1`. Assume the negation of the conclusion as `hc`. Establish `h1 : ‖x⁻¹‖ ≤ 1` using `by rw [norm_inv]; exact inv_le_one_of_one_le₀ (not_lt.1 hc)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `(padic_v_map_le_one_iff i hi _).2 h1`. Rewrite `h3` using `[map_inv₀, hix, map_inv₀, hPv, ← WithZero.exp_neg, neg_neg]`. Conclude with `absurd h3 (not_le.2 (by rw [← WithZero.exp_zero, WithZero.exp_lt_exp]; norm_num))`. Establish `hxle : ‖x‖ ≤ (g : ℝ) ^ (-1 : ℤ)` using `(Padic.norm_le_pow_iff_norm_lt_pow_add_one x (-1)).2 (by simpa using hxlt)`. Establish `hy : Valued.v (i ((g : ℚ_[g]) * x⁻¹ ^ 2)) ≤ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, hgc, map_pow, map_inv₀, hix, Valuation.map_mul, hv, HeightOneSpectrum.valuation_of_algebraMap, Valuation.map_pow, map_inv₀, hPv]`. Use `le_trans (mul_le_mul_of_nonneg_right h2 zero_le') (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← WithZero.exp_neg, ← WithZero.exp_nsmul, ← WithZero.exp_add]`. Evaluate the numerical expressions. Establish `hn` using `(padic_v_map_le_one_iff i hi _).1 hy`.
+Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hn` using `[norm_mul, norm_pow, norm_inv, Padic.norm_p]`. Establish `hxpos : 0 < ‖x‖` using `norm_pos_iff.2 hx0`. Establish `: (g : ℝ)⁻¹ ≤ ‖x‖ ^ 2`. Rewrite `hn` using `[inv_pow, ← div_eq_mul_inv, div_le_one (by positivity)]`. Then use the resulting hypothesis. Rewrite `hxle` using `[zpow_neg_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg0 : (0 : ℝ) < (g : ℝ)⁻¹` using `by positivity`. Establish `h5 : ‖x‖ ^ 2 ≤ ((g : ℝ)⁻¹) ^ 2` using `pow_le_pow_left₀ hxpos.le hxle 2`. Establish `h6 : ((g : ℝ)⁻¹) ^ 2 < (g : ℝ)⁻¹`. Rewrite using `[sq]`. Conclude with `mul_lt_of_lt_one_left hg0 (inv_lt_one_of_one_lt₀ hgp)`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[← GlobalTheory.LocLanglands.resCard_eq_normV, resCard_eq i hi, resCard_padic]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LocalFieldIso.padic_iso_place : ∀ (E : Type) [Field E] [NumberField E] (g : ℕ) [Fact g.Prime] (w : HeightOneSpectrum (𝓞 E))
     (i : ℚ_[g] ≃+* w.adicCompletion E), Continuous i →

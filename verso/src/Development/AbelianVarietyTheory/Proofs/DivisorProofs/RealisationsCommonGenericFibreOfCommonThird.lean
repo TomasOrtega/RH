@@ -14,13 +14,11 @@ noncomputable section
 namespace GlobalTheory.Poinc.SameComb
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[← Spec.map_preimage g]`. Use `set ψ := Spec.preimage g`. Establish `h' : CommRingCat.ofHom R.val.toRingHom ≫ ψ = CommRingCat.ofHom R.val.toRingHom`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h`. Establish `hψ : ψ = 𝟙 _`. Use extensionality with `x`. Take `⟨a, ha, b, hb, rfl⟩` from `frac x`. Establish `ea` using `congrArg (fun f => f.hom ⟨a, ha⟩) h'`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `eb` using `congrArg (fun f => f.hom ⟨b, hb⟩) h'`. Simplify using `only [CommRingCat.hom_comp, CommRingCat.hom_ofHom, RingHom.comp_apply] at ea eb`. Express the relevant statement in the definitionally equal form `ψ.hom (a / b) = a / b`. Rewrite using `[map_div₀]`. Conclude with `congrArg₂ (· / ·) ea eb`.
-
-Rewrite using `[hψ, Spec.map_id]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sp_endo_eq_id {o K : Type} [CommRing o] [Field K] [Algebra o K] (R : Subalgebra o K)
     (frac : ∀ x : K, ∃ a ∈ R, ∃ b ∈ R, x = a / b) (g : Sp K ⟶ Sp K)
@@ -42,14 +40,14 @@ theorem sp_endo_eq_id {o K : Type} [CommRing o] [Field K] [Algebra o K] (R : Sub
   rw [hψ, Spec.map_id]
 
 /- English proof (translation)
-The claim follows from `h.chartPull (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull M r r rfl) (chartPullSame L (fun _ => ψ) (fun _ => φ) _ r fun _ => e)`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_pull_along {X Y Z : Scheme.{0}} {L : LB X} {M : LB Y} {φ : Y ⟶ X} (h : LBIso M (L.pull φ)) (r : Z ⟶ Y)
     {ψ : Z ⟶ X} (e : ψ = r ≫ φ) : LBIso (M.pull r) (L.pull ψ) :=
   h.chartPull (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull M r r rfl) (chartPullSame L (fun _ => ψ) (fun _ => φ) _ r fun _ => e)
 
 /- English proof (translation)
-Apply `sp_endo_eq_id R frac` to reduce the goal to its premises. Establish `e` using `congrArg (· ≫ P.A.hom) hw`. Simplify using `only [Category.assoc, ha.1.w, Over.w t] at e`. Simplify using `using e`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sec_of_pt {o K : Type} [CommRing o] [Field K] [Algebra o K] (R : Subalgebra o K)
     (frac : ∀ x : K, ∃ a ∈ R, ∃ b ∈ R, x = a / b) {Q : PolAV (Sp K)} {P : PolAV (Sp R)} {a : Q.A.left ⟶ P.A.left}
@@ -61,15 +59,15 @@ theorem sec_of_pt {o K : Type} [CommRing o] [Field K] [Algebra o K] (R : Subalge
   simpa using e
 
 /- English proof (translation)
-Introduce `o Ω o₁ o₂ Ω' _ _ _ _ _ _ _ _ S S₁ S₂ ρ ρ₁ ρ₂ ε ε₁ ε₂ lab₁ lab₂ φ h₁ h₂`. Take `⟨P₀, a, a₁, ε₀, ha, ha₁, hLa, hLa₁, hε, hw⟩` from `h₁`. Take `⟨P₀', b, b₂, ε₀', hb, hb₂, hLb, hLb₂, hε', hw'⟩` from `h₂`. Take `⟨θ, hθm, hθ⟩` from `grpPullback_iso ha hb`. Use `haveI := hθm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ext : ∀ {T : Scheme.{0}} (u v : T ⟶ P₀'.A.left), u ≫ b = v ≫ b → u ≫ P₀'.A.hom = v ≫ P₀'.A.hom → u = v` using `fun u v e₁ e₂ => hb.1.hom_ext e₁ e₂`. Use `⟨P₀, a₁, θ.hom.left ≫ b₂, ha₁, ((isGrpPullback_of_iso θ).comp hb₂).congr (Category.id_comp _) rfl, hLa₁, ?_, fun E => ⟨ε₀ E, (hε E).2, ?_⟩, fun x => ?_⟩` and prove the remaining obligations. Use `LBIso.trans P₀.isLB (pull_isLB ρ.P.isLB _) (pull_isLB ρ₂.P.isLB _) hLa ?_` and prove the remaining obligations. Use `LBIso.trans (pull_isLB ρ.P.isLB _) (pull_isLB P₀'.isLB θ.hom.left) (pull_isLB ρ₂.P.isLB _) (lbIso_pull_along hLb θ.hom.left hθ.symm).symm (lbIso_pull_along hLb₂ θ.hom.left rfl)` and prove the remaining obligations. Establish `key : (ε₀ E).left ≫ θ.hom.left = θ.hom.left ≫ (ε₀' E).left`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hθ, (hε E).1, Category.assoc, (hε' E).1, ← Category.assoc, hθ]`. Simplify using `only [Category.assoc, Over.w]`. Rewrite using `[← Category.assoc, key, Category.assoc, (hε' E).2, Category.assoc]`. Take `⟨w, hwa, hwa₁⟩` from `hw x`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w', hwb, hwb₂⟩` from `hw' x`. Use `⟨w, hwa₁, ?_⟩` and prove the remaining obligations. Establish `s₁` using `sec_of_pt S₁.R S₁.frac ha₁ _ w hwa₁`. Establish `s₂` using `sec_of_pt S₂.R S₂.frac hb₂ _ w' hwb₂`. Establish `hww : w ≫ θ.hom.left = w'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hθ, hwa, hwb]`. Rewrite using `[Category.assoc, Over.w, s₁, s₂]`. Rewrite using `[← Category.assoc, hww, hwb₂]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem combine : ∀ (o Ω o₁ o₂ Ω' : Type) [CommRing o] [Field Ω] [Algebra o Ω] [CommRing o₁] [CommRing o₂] [Field Ω'] [Algebra o₁ Ω'] [Algebra o₂ Ω'] (S : ThetaSys o Ω) (S₁ : ThetaSys o₁ Ω') (S₂ : ThetaSys o₂ Ω') (ρ : S.Real) (ρ₁ : S₁.Real) (ρ₂ : S₂.Real) (ε : Matrix (Fin 8) (Fin 8) ℤ → (ρ.P.A ⟶ ρ.P.A)) (ε₁ : Matrix (Fin 8) (Fin 8) ℤ → (ρ₁.P.A ⟶ ρ₁.P.A)) (ε₂ : Matrix (Fin 8) (Fin 8) ℤ → (ρ₂.P.A ⟶ ρ₂.P.A)) (lab₁ : S.Gam → S₁.Gam) (lab₂ : S.Gam → S₂.Gam) (φ : Ω →+* Ω'), Same ρ ε ρ₁ ε₁ lab₁ φ → Same ρ ε ρ₂ ε₂ lab₂ φ → SameAt ρ₁.P ρ₂.P S₁.R.val.toRingHom S₂.R.val.toRingHom ε₁ ε₂ (fun x => ρ₁.pt (lab₁ x)) (fun x => ρ₂.pt (lab₂ x)) := by
   intro o Ω o₁ o₂ Ω' _ _ _ _ _ _ _ _ S S₁ S₂ ρ ρ₁ ρ₂ ε ε₁ ε₂ lab₁ lab₂ φ h₁ h₂

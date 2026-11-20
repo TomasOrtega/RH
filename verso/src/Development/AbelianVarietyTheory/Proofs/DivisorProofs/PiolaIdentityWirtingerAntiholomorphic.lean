@@ -13,7 +13,7 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ
   [IsScalarTower ℝ ℂ E]
 
 /- English proof (translation)
-Establish `hD : DifferentiableAt ℝ (fderiv ℝ f) z` using `(hf.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`. Establish `h : ∀ a : E, HasFDerivAt (fun x => fderiv ℝ f x a) ((ContinuousLinearMap.apply ℝ ℂ a).comp (fderiv ℝ (fderiv ℝ f) z)) z` using `fun a => (ContinuousLinearMap.apply ℝ ℂ a).hasFDerivAt.comp z hD.hasFDerivAt`. Conclude with `((h u).add ((h (Complex.I • u)).const_smul Complex.I)).const_smul (1 / 2 : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_dbar_apply {f : E → ℂ} {z : E} (hf : ContDiffAt ℝ 2 f z) (u : E) :
     HasFDerivAt (fun x => dbar f x u)
@@ -27,7 +27,7 @@ theorem hasFDerivAt_dbar_apply {f : E → ℂ} {z : E} (hf : ContDiffAt ℝ 2 f 
   exact ((h u).add ((h (Complex.I • u)).const_smul Complex.I)).const_smul (1 / 2 : ℂ)
 
 /- English proof (translation)
-Establish `hs : IsSymmSndFDerivAt ℝ f z` using `hf.isSymmSndFDerivAt (by simp)`. Rewrite using `[dbar_eq_of_hasFDerivAt (hasFDerivAt_dbar_apply hf w), dbar_eq_of_hasFDerivAt (hasFDerivAt_dbar_apply hf v)]`. Simplify using `only [antilinPart_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.add_apply, ContinuousLinearMap.coe_comp', Function.comp_apply, ContinuousLinearMap.apply_apply]`. Rewrite using `[hs v w, hs v (Complex.I • w), hs (Complex.I • v) w, hs (Complex.I • v) (Complex.I • w)]`. Put the polynomial expressions in normal form.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form.
 -/
 theorem dbar_dbar_symm {f : E → ℂ} {z : E} (hf : ContDiffAt ℝ 2 f z) (v w : E) :
     dbar (fun x => dbar f x w) z v = dbar (fun x => dbar f x v) z w := by
@@ -40,7 +40,7 @@ theorem dbar_dbar_symm {f : E → ℂ} {z : E} (hf : ContDiffAt ℝ 2 f z) (v w 
   ring_nf
 
 /- English proof (translation)
-Establish `h` using `HasFDerivAt.finset_prod (fun i hi => (hg i hi).hasFDerivAt)`. Rewrite using `[dbar_eq_of_hasFDerivAt h]`. Simplify using `only [antilinPart_apply, dbar_apply, ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dbar_finset_prod {ι : Type*} [DecidableEq ι] (s : Finset ι) {g : ι → E → ℂ} {z : E}
     (hg : ∀ i ∈ s, DifferentiableAt ℝ (g i) z) (u : E) :
@@ -56,13 +56,13 @@ end GlobalTheory.GoodTop.Piola
 namespace GlobalTheory.GoodTop
 
 /- English proof (translation)
-Establish `e : ∀ w : Equiv.Perm (Fin n), dbar (fun x => ∏ i ∈ Finset.univ.erase j, dbar (f i) x (coordVec (w i))) v (coordVec (w j)) = ∑ k ∈ Finset.univ.erase j, dbar (fun x => dbar (f k) x (coordVec (w k))) v (coordVec (w j)) * ∏ i ∈ (Finset.univ.erase j).erase k, dbar (f i) v (coordVec (w …` using `fun w => Piola.dbar_finset_prod (g := fun i x => dbar (f i) x (coordVec (w i))) _ (fun i hi => (Piola.hasFDerivAt_dbar_apply (hf i (Finset.ne_of_mem_erase hi)) _).differentiableAt) _`. Simplify using `only [e, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun k hk => ?_` and prove the remaining obligations. Establish `hkj : k ≠ j` using `Finset.ne_of_mem_erase hk`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set T : Equiv.Perm (Fin n) → ℂ := fun w => ((Equiv.Perm.sign w : ℤ) : ℂ) * (dbar (fun x => dbar (f k) x (coordVec (w k))) v (coordVec (w j)) * ∏ i ∈ (Finset.univ.erase j).erase k, dbar (f i) v (coordVec (w i))) with hT`. Establish `h1 : ∀ w, T (w * Equiv.swap j k) = -T w`. Introduce `w`. Establish `hp : ∏ i ∈ (Finset.univ.erase j).erase k, dbar (f i) v (coordVec ((w * Equiv.swap j k) i)) = ∏ i ∈ (Finset.univ.erase j).erase k, dbar (f i) v (coordVec (w i))`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Equiv.Perm.mul_apply, Equiv.swap_apply_of_ne_of_ne (Finset.ne_of_mem_erase (Finset.mem_of_mem_erase hi)) (Finset.ne_of_mem_erase hi)]`. Simplify using `only [hT]`. Rewrite using `[hp, Equiv.Perm.mul_apply, Equiv.Perm.mul_apply, Equiv.swap_apply_left, Equiv.swap_apply_right, Piola.dbar_dbar_symm (hf k hkj) (coordVec (w k)) (coordVec (w j)), Equiv.Perm.sign_mul, Equiv.Perm.sign_swap hkj.symm]`. Simplify using the standard rewrite rules. Establish `h2 : ∑ w, T w = -∑ w, T w`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_neg_distrib, ← Equiv.sum_comp (Equiv.mulRight (Equiv.swap j k)) T]`. Conclude with `Finset.sum_congr rfl fun w _ => h1 w`. Use `show ∑ w, T w = 0`. Take the linear combination `(1 / 2 : ℂ) * h2`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem piola_dbar {n : ℕ} (f : Fin n → V n → ℂ) (j : Fin n) (v : V n)
     (hf : ∀ i, i ≠ j → ContDiffAt ℝ 2 (f i) v) :

@@ -21,9 +21,9 @@ namespace GlobalTheory.EtaForm
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 
 /- English proof (translation)
-Use `haveI := Dw.fin`. Use `haveI : Module.Finite ℤ (LatMod Dw k) := Module.Finite.trans (𝓞 E) _`. Use `Module.finite_of_fg_torsion (M := LatMod Dw k) fun x => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.mkQ_surjective _ x`. Use `⟨⟨(k : ℤ), mem_nonZeroDivisors_of_ne_zero (by exact_mod_cast hk.ne')⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(k : ℤ) • Submodule.mkQ (Ideal.span {(k : 𝓞 E)} • ⊤ : Submodule (𝓞 E) Dw.La) x = 0`. Rewrite using `[natCast_zsmul, ← map_nsmul]`. Use `(Submodule.Quotient.mk_eq_zero _).2 ?_` and prove the remaining obligations. Rewrite using `[← Nat.cast_smul_eq_nsmul (𝓞 E)]`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) Submodule.mem_top`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_latMod (Dw : Datum H) {k : ℕ} (hk : 0 < k) : Finite (LatMod Dw k) := by
   haveI := Dw.fin
@@ -38,14 +38,14 @@ theorem finite_latMod (Dw : Datum H) {k : ℕ} (hk : 0 < k) : Finite (LatMod Dw 
   exact Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) Submodule.mem_top
 
 /- English proof (translation)
-Use `haveI := finite_latMod Dw hk`. Conclude with `Finite.of_injective (fun g : LevGrp Dw k => (g : LatMod Dw k → LatMod Dw k)) DFunLike.coe_injective`.
+A detailed English derivation is pending.
 -/
 theorem finite_levGrp (Dw : Datum H) {k : ℕ} (hk : 0 < k) : Finite (LevGrp Dw k) := by
   haveI := finite_latMod Dw hk
   exact Finite.of_injective (fun g : LevGrp Dw k => (g : LatMod Dw k → LatMod Dw k)) DFunLike.coe_injective
 
 /- English proof (translation)
-Use `haveI := finite_levGrp Dw hk`. Use `haveI := Fintype.ofFinite (LevGrp Dw k)`. Simplify using `only [etaExpr, finprod_eq_prod_of_fintype, map_prod, map_sum, map_mul, map_intCast]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_etaExpr {S T : Type} [CommRing S] [CommRing T] (φ : S →+* T) {k : ℕ} (hk : 0 < k) {J : Type} [Fintype J]
     {n : ℕ} (cf : J → ℤ) (x : J → Fin n → LatMod Dw k) (w : LatMod Dw k → S) :
@@ -55,7 +55,7 @@ theorem map_etaExpr {S T : Type} [CommRing S] [CommRing T] (φ : S →+* T) {k :
   simp only [etaExpr, finprod_eq_prod_of_fintype, map_prod, map_sum, map_mul, map_intCast]
 
 /- English proof (translation)
-Unfold `etaExpr`. Conclude with `finprod_eq_of_bijective (fun g : LevGrp Dw k => g₀ * g) (Group.mulLeft_bijective g₀) fun g => rfl`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem etaExpr_comp {S : Type} [CommRing S] {k : ℕ} {J : Type} [Fintype J]
     {n : ℕ} (cf : J → ℤ) (x : J → Fin n → LatMod Dw k) (w : LatMod Dw k → S) (g₀ : LevGrp Dw k) :
@@ -66,7 +66,7 @@ theorem etaExpr_comp {S : Type} [CommRing S] {k : ℕ} {J : Type} [Fintype J]
 variable {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Establish `hk : 0 < R ^ 4` using `pow_pos hR.pos _`. Set `h : ptO Xo z.x ⟶ ptO Xo y.x` to `Over.homMk (spMap ψ.toRingHom) hm.1.symm`. Use `⟨fun q => h ≫ ev q, ((GlobalTheory.T.fullLinearLevel_cover_baseChange_torsor hL E H Dw l Xo _ hk).2.1 S T ψ.toRingHom y.x z.x h rfl ev hev).1, fun q => ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.T.thetaNullValue_existsUnique_natural_linear hL E H Dw l Xo c (R ^ 2) hR.pow).2.1 S T ψ y z hm (ev q) (h ≫ ev q) rfl _ (hw q)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_level_baseChange (hL : Laws) {R : ℕ} (hR : Odd R) {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T]
     [Algebra c.F T] (ψ : S →ₐ[c.F] T) {y : FrPt Xo c S} {z : FrPt Xo c T} (hm : FrMap ψ y z)
@@ -81,7 +81,7 @@ theorem exists_level_baseChange (hL : Laws) {R : ℕ} (hR : Odd R) {S T : Type} 
   exact (GlobalTheory.T.thetaNullValue_existsUnique_natural_linear hL E H Dw l Xo c (R ^ 2) hR.pow).2.1 S T ψ y z hm (ev q) (h ≫ ev q) rfl _ (hw q)
 
 /- English proof (translation)
-Establish `hk : 0 < R ^ 4` using `pow_pos hR.pos _`. Use `(GlobalTheory.T.thetaNullValue_existsUnique_natural_linear hL E H Dw l Xo c (R ^ 2) hR.pow).1 S y (ev q) ?_` and prove the remaining obligations. Establish `h1` using `((GlobalTheory.T.fullLinearLevel_cover_baseChange_torsor hL E H Dw l Xo _ hk).2.1 S S (RingHom.id S) y.x y.x (𝟙 _) (by simp [spMap]) ev hev).2 q`. Rewrite using `[← pow_mul]`. Conclude with `h1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem existsUnique_nullVal (hL : Laws) {R : ℕ} (hR : Odd R) {S : Type} [CommRing S] [Algebra c.F S]
     {y : FrPt Xo c S} {ev : LatMod Dw (R ^ 4) → (ptO Xo y.x ⟶ Xo.univ.t.G)}
@@ -94,11 +94,11 @@ theorem existsUnique_nullVal (hL : Laws) {R : ℕ} (hR : Odd R) {S : Type} [Comm
   exact h1
 
 /- English proof (translation)
-Establish `hk : 0 < R ^ 4` using `pow_pos hR.pos _`. Use `Module.eq_of_localization_maximal (R := T) (fun P _ => Localization.AtPrime P) (fun P _ => Algebra.linearMap T (Localization.AtPrime P)) _ _ fun P _ => ?_` and prove the remaining obligations. Set `ψ : T →ₐ[c.F] Localization.AtPrime P` to `IsScalarTower.toAlgHom c.F T _`. Take `⟨u, hu⟩` from `GlobalTheory.T.exists_framedPoint_baseChange_algHom hL E H Dw l Xo c T _ ψ z`. Take `⟨e, he, hv⟩` from `exists_level_baseChange hL hR ψ hu hev hw`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e', he', hv'⟩` from `exists_level_baseChange hL hR ψ hu hev' hw'`. Take `⟨g, hg⟩` from `((GlobalTheory.T.fullLinearLevel_cover_baseChange_torsor hL E H Dw l Xo _ hk).2.2.1 _ u.x e he).2 e' he'`. Establish `hww : (fun q => ψ (w' q)) = fun q => ψ (w (g q))` using `funext fun q => (existsUnique_nullVal hL hR he (g q)).unique (hg q ▸ hv' q) (hv (g q))`. Express the relevant statement in the definitionally equal form `algebraMap T (Localization.AtPrime P) (etaExpr (R ^ 4) cf x w) = algebraMap T (Localization.AtPrime P) (etaExpr (R ^ 4) cf x w')`. Rewrite using `[map_etaExpr _ hk, map_etaExpr _ hk]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(etaExpr_comp cf x (fun q => ψ (w q)) g).symm.trans (congrArg _ hww.symm)`.
+A detailed English derivation is pending.
 -/
 theorem etaExpr_eq_of_levels (hL : Laws) {R : ℕ} (hR : Odd R) {J : Type} [Fintype J] {n : ℕ} (cf : J → ℤ)
     (x : J → Fin n → LatMod Dw (R ^ 4)) {T : Type} [CommRing T] [Algebra c.F T] {z : FrPt Xo c T}
@@ -122,7 +122,7 @@ theorem etaExpr_eq_of_levels (hL : Laws) {R : ℕ} (hR : Odd R) {J : Type} [Fint
   exact (etaExpr_comp cf x (fun q => ψ (w q)) g).symm.trans (congrArg _ hww.symm)
 
 /- English proof (translation)
-Establish `hk : 0 < R ^ 4` using `pow_pos hR.pos _`. Take `⟨e₁, he₁, hv₁⟩` from `exists_level_baseChange hL hR ψ₁ h₁ hev₁ hw₁`. Take `⟨e₂, he₂, hv₂⟩` from `exists_level_baseChange hL hR ψ₂ h₂ hev₂ hw₂`. Conclude with `(map_etaExpr ψ₁.toRingHom hk cf x w₁).trans ((etaExpr_eq_of_levels hL hR cf x he₁ hv₁ he₂ hv₂).trans (map_etaExpr ψ₂.toRingHom hk cf x w₂).symm)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem map_etaExpr_eq_of_levels (hL : Laws) {R : ℕ} (hR : Odd R) {J : Type} [Fintype J] {n : ℕ} (cf : J → ℤ)
     (x : J → Fin n → LatMod Dw (R ^ 4)) {S₁ S₂ T : Type} [CommRing S₁] [Algebra c.F S₁] [CommRing S₂] [Algebra c.F S₂]
@@ -140,9 +140,9 @@ theorem map_etaExpr_eq_of_levels (hL : Laws) {R : ℕ} (hR : Odd R) {J : Type} [
     ((etaExpr_eq_of_levels hL hR cf x he₁ hv₁ he₂ hv₂).trans (map_etaExpr ψ₂.toRingHom hk cf x w₂).symm)
 
 /- English proof (translation)
-Take `⟨S', _, _, α, y₀', ev₀, w₀, hα, hmα, hev₀, hw₀, e₀⟩` from `h₀`. Take `⟨T', _, _, β, y', ev, w, hβ, hmβ, hev, hw, e⟩` from `h`. Take `⟨U, _, _, ψ₁, ψ₂, hc, -, hinj⟩` from `GlobalTheory.exists_faithfullyFlat_pushout c.F S T' S' (β.comp φ) α hα`. Take `⟨z, hz⟩` from `GlobalTheory.T.exists_framedPoint_baseChange_algHom hL E H Dw l Xo c T' U ψ₁ y'`. Establish `hz₀ : FrMap (ψ₂.comp α) y₀ z` using `hc ▸ FramedBaseChange.trans _ ψ₁ (FramedBaseChange.trans φ β hm hmβ) hz`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key` using `map_etaExpr_eq_of_levels hL hR cf x ψ₁ ψ₂ hz (FramedBaseChange.cancel α ψ₂ hmα hz₀) hev hw hev₀ hw₀`. Establish `hβi : Function.Injective β` using `hβ.injective`. Use `hβi (hinj ?_)` and prove the remaining obligations. Rewrite using `[e, key, ← e₀]`. Conclude with `DFunLike.congr_fun hc v₀`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_eq_of_etaValAt (hL : Laws) {R : ℕ} (hR : Odd R) {J : Type} [Fintype J] {n : ℕ} {cf : J → ℤ}
     {x : J → Fin n → LatMod Dw (R ^ 4)} {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T]
@@ -161,11 +161,11 @@ theorem map_eq_of_etaValAt (hL : Laws) {R : ℕ} (hR : Odd R) {J : Type} [Fintyp
   exact DFunLike.congr_fun hc v₀
 
 /- English proof (translation)
-Establish `hk : 0 < R ^ 4` using `pow_pos hR.pos _`. Take `⟨B, _, φ₀, ev₀, hφ, hev₀⟩` from `(GlobalTheory.T.fullLinearLevel_cover_baseChange_torsor hL E H Dw l Xo _ hk).1 S y.x`. Use `letI : Algebra c.F B := (φ₀.comp (algebraMap c.F S)).toAlgebra`. Set `φ : S →ₐ[c.F] B` to `{ φ₀ with commutes' := fun _ => rfl }`. Take `⟨y', hm⟩` from `GlobalTheory.T.exists_framedPoint_baseChange_algHom hL E H Dw l Xo c S B φ y`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨ev, hev⟩ : ∃ ev, IsFullLev Xo (R ^ 4) y'.x ev := by`. Rewrite using `[hm.1]`. Conclude with `⟨ev₀, hev₀⟩`. Use `choose w hw using fun q => (existsUnique_nullVal hL hR hev q).exists`. Take `⟨v, hv, -⟩` from `GlobalTheory.existsUnique_preimage_of_faithfullyFlat c.F S B φ hφ (etaExpr (R ^ 4) cf x w) fun T _ _ ψ₁ ψ₂ hc => by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `GlobalTheory.T.exists_framedPoint_baseChange_algHom hL E H Dw l Xo c B T ψ₁ y'`. Establish `hz₀ : FrMap (ψ₂.comp φ) y z` using `hc ▸ FramedBaseChange.trans φ ψ₁ hm hz`. Conclude with `map_etaExpr_eq_of_levels hL hR cf x ψ₁ ψ₂ hz (FramedBaseChange.cancel φ ψ₂ hm hz₀) hev hw hev hw`. Conclude with `⟨v, B, inferInstance, inferInstance, φ, y', ev, w, hφ, hm, hev, hw, hv⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_etaValAt (hL : Laws) {R : ℕ} (hR : Odd R) {J : Type} [Fintype J] {n : ℕ} (cf : J → ℤ)
     (x : J → Fin n → LatMod Dw (R ^ 4)) {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) :
@@ -187,7 +187,7 @@ theorem exists_etaValAt (hL : Laws) {R : ℕ} (hR : Odd R) {J : Type} [Fintype J
   exact ⟨v, B, inferInstance, inferInstance, φ, y', ev, w, hφ, hm, hev, hw, hv⟩
 
 /- English proof (translation)
-Introduce `hL E _ _ _ H Dw l Xo c R hR J _ n cf x`. Use `⟨fun S _ _ y => ?_, fun S T _ _ _ _ φ y₀ y hm v₀ v h₀ h => map_eq_of_etaValAt hL hR φ hm h₀ h⟩` and prove the remaining obligations. Take `⟨v, hv⟩` from `exists_etaValAt hL hR cf x y`. Conclude with `⟨v, hv, fun v' hv' => map_eq_of_etaValAt hL hR (AlgHom.id c.F S) (FramedBaseChange.refl y) hv' hv⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem etaValAt_existsUnique_natural : Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (R : ℕ), Odd R → ∀ (J : Type) [Fintype J] (n : ℕ) (cf : J → ℤ) (x : J → Fin n → LatMod Dw (R ^ 4)), (∀ (S : Type) [CommRing S] [Algebra c.F S] (y : FrPt Xo c S), ∃! v, EtaValAt Xo c R cf x y v) ∧ ∀ (S T : Type) [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T] (φ : S →ₐ[c.F] T) (y0 : FrPt Xo c S) (y : FrPt Xo c T), FrMap φ y0 y → ∀ v0 v, EtaValAt Xo c R cf x y0 v0 → EtaValAt Xo c R cf x y v → φ v0 = v := by
   intro hL E _ _ _ H Dw l Xo c R hR J _ n cf x

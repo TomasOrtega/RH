@@ -8,23 +8,21 @@ namespace PositivityTheory.HtPt.Htat
 open GlobalTheory.CompanionTheory.Ar.HT NumberField TensorProduct
 
 /- English proof (translation)
-Introduce `A K _ _ _ _ _ E _ _ c p R N W Ω _ _ _ _ _ _ _ _ j hj ρ e h halt hadj hsurj hinj hlin`. Establish `hsym : ∀ w : W, hj.equiv.symm (j w) = (1 : K) ⊗ₜ[A] w`. Introduce `w`. Rewrite using `[LinearEquiv.symm_apply_eq, IsBaseChange.equiv_tmul, one_smul]`. Set `T : 𝓞 E →+* Module.End K (K ⊗[A] W)` to `(Module.End.baseChangeHom A K W).toRingHom.comp ρ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hT : ∀ a (w : W), T a ((1 : K) ⊗ₜ[A] w) = (1 : K) ⊗ₜ[A] (ρ a w)` using `fun a w => rfl`. Set `ρΩ : 𝓞 E →+* Module.End K Ω` to `{ toFun := fun a => hj.equiv.toLinearMap ∘ₗ T a ∘ₗ hj.equiv.symm.toLinearMap map_one' := by ext x; simp map_mul' := by intro a b; ext x; simp [Module.End.mul_apply] map_zero' := by ext x; simp map_add' := by intro a b; ext x; simp }`. Establish `hρ : ∀ a w, ρΩ a (j w) = j (ρ a w)`. Introduce `a w`. Use `show hj.equiv (T a (hj.equiv.symm (j w))) = _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsym, hT, IsBaseChange.equiv_tmul, one_smul]`. Establish `hinjj : Function.Injective j`. Establish `h1 : Function.Injective ((Algebra.linearMap A K).rTensor W)` using `Module.Flat.rTensor_preserves_injective_linearMap _ (IsFractionRing.injective A K)`. Introduce `x y hxy`. Apply `(TensorProduct.lid A W).symm.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h1` to reduce the goal to its premises. Apply `hj.equiv.injective` to reduce the goal to its premises. Simplify using `only [TensorProduct.lid_symm_apply, LinearMap.rTensor_tmul, Algebra.linearMap_apply, map_one, IsBaseChange.equiv_tmul, one_smul]`. Conclude with `hxy`. Establish `hfg : (LinearMap.range j).FG` using `Module.Finite.iff_fg.mp (Module.Finite.range j)`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hspan : Submodule.span K (LinearMap.range j : Set Ω) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `ω hω`. Use `clear hω`. Take `⟨t, rfl⟩` from `hj.equiv.surjective ω`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul s w`. Rewrite using `[IsBaseChange.equiv_tmul]`. Conclude with `Submodule.smul_mem _ s (Submodule.subset_span ⟨w, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `add x y hx hy`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Establish `hproj : Module.Projective A (LinearMap.range j)` using `Module.Projective.of_equiv (LinearEquiv.ofInjective j hinjj)`. Use `⟨{ om := LinearMap.range j om_lat := ⟨hfg, hspan⟩ om_proj := hproj ρΩ := ρΩ om_stable := ?_ e := e alt := halt adj := hadj e_surj := hsurj e_inj := hinj h := j.toAddMonoidHom.comp h h_mem := fun x => ⟨h x, rfl⟩ h_lin := ?_ }, rfl, rfl, fun x => rfl, hρ⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `a x ⟨w, rfl⟩`. Conclude with `⟨ρ a w, (hρ a w).symm⟩`. Introduce `a x`. Take `⟨y, hy⟩` from `hlin a x`. Use `⟨j y, ⟨y, rfl⟩, ?_⟩` and prove the remaining obligations.
-
-Use `show j (h (a • x)) = ρΩ a (j (h x)) + p ^ R • j y`. Rewrite using `[hy, map_add, map_nsmul, hρ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_build : ∀ (A K : Type) [CommRing A] [IsDomain A] [Field K] [Algebra A K] [IsFractionRing A K] (E : Type) [Field E] [NumberField E] (c : E ≃+* E) (p R N : ℕ) (W Ω : Type) [AddCommGroup W] [Module A W] [Module.Finite A W] [Module.Projective A W] [AddCommGroup Ω] [Module K Ω] [Module A Ω] [IsScalarTower A K Ω] (j : W →ₗ[A] Ω), IsBaseChange K j → ∀ (ρ : 𝓞 E →+* Module.End A W) (e : (Fin N → 𝓞 E) →+ (Fin N → 𝓞 E) →+ ZMod (p ^ R)) (h : (Fin N → 𝓞 E) →+ W), (∀ x, e x x = 0) → (∀ (a : 𝓞 E) (x y : Fin N → 𝓞 E), e (a • x) y = e x (RingOfIntegers.mapRingEquiv c a • y)) → (∀ φ : (Fin N → 𝓞 E) →+ ZMod (p ^ R), ∃ x, e x = φ) → (∀ x, e x = 0 → ∃ x', x = (p ^ R) • x') → (∀ (a : 𝓞 E) x, ∃ y, h (a • x) = ρ a (h x) + (p ^ R) • y) → ∃ D : HTChart A K c p R N Ω, D.om = LinearMap.range j ∧ D.e = e ∧ (∀ x, D.h x = j (h x)) ∧ ∀ a w, D.ρΩ a (j w) = j (ρ a w) := by
   intro A K _ _ _ _ _ E _ _ c p R N W Ω _ _ _ _ _ _ _ _ j hj ρ e h halt hadj hsurj hinj hlin

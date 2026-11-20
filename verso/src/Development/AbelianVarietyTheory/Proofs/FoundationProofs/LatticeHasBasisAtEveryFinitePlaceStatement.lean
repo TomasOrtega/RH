@@ -12,7 +12,7 @@ open NumberField IsDedekindDomain MvPolynomial Formalism.BasicNotions Formalism.
 open scoped Matrix ComplexOrder
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LatBasisAt.basisAtEx | exact GlobalTheory.LatBasisAt.basisAtEx | (intros; apply GlobalTheory.LatBasisAt.basisAtEx <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.lattice_has_basis_at_every_finite_place : BasisAtEx := by
   first | exact @GlobalTheory.LatBasisAt.basisAtEx | exact GlobalTheory.LatBasisAt.basisAtEx | (intros; apply GlobalTheory.LatBasisAt.basisAtEx <;> assumption)

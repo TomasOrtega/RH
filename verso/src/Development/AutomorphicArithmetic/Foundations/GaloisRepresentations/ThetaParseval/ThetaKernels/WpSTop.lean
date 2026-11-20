@@ -16,13 +16,13 @@ open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHeck
 noncomputable section
 namespace PositivityTheory.ThKW.S
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB n d X W r s r' s' hX hW M hM χX χW hcX hcW rX rW`. Take `⟨ξ₀, hξ, hσξ⟩` from `_root_.GlobalTheory.T.exists_trace_zero_element F E σ B hB`. Establish `hXu` using `GlobalTheory.T.isUnit_det_gram_of_hermitianSelfDualLatticeSpace F E σ B n X r s hX`. Establish `hWu` using `GlobalTheory.T.isUnit_det_gram_skewHermitian_signature F E σ B d W r' s' hW`. Establish `hT : IsHermND σ X.Jᵀ` using `⟨fun i j => by simpa using hX.herm j i, by rw [Matrix.det_transpose]; exact hXu.ne_zero⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : IsHermND σ (-ξ₀ • W.J⁻¹)` using `GlobalTheory.T.isHermitianNondegenerate_neg_traceZero_smul_inv_skewHermitian F E σ d W.J hW.skew hWu ξ₀ hξ hσξ`. Establish `hLat : PositivityTheory.ThKW.LatH σ (-ξ₀ • W.J⁻¹) X.Jᵀ ξ₀` using `PositivityTheory.ThKW.latH_of hB.cm hX hW hXu hWu hξ`. Take `⟨ω, hω⟩` from `_root_.PositivityTheory.ThKW.S.exists_isWeilDatumOF_k F E σ B hB d n (-ξ₀ • W.J⁻¹) X.Jᵀ hS hT ξ₀ hξ hσξ hLat χW χX hcW hcX (_root_.GlobalTheory.T.restricted_eta_power_character F E σ B hB χW d rW) (_root_.GlobalTheory.T.restricted_eta_power_character F E σ B hB χX n rX)`. Establish `eB : (-1 : AF F ⊗[F] E) • incM F W.J = incM F (ξ₀ • (-ξ₀ • W.J⁻¹)⁻¹)`. Establish `e1 : (-ξ₀ • W.J⁻¹)⁻¹ = (-ξ₀)⁻¹ • W.J` using `Matrix.inv_eq_left_inv (by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.mul_nonsing_inv _ hWu, inv_mul_cancel₀ (neg_ne_zero.2 hξ), one_smul])`. Establish `e2 : ξ₀ • (-ξ₀)⁻¹ • W.J = -W.J`. Rewrite using `[smul_smul, inv_neg, mul_neg, mul_inv_cancel₀ hξ, neg_one_smul]`. Rewrite using `[e1, e2]`. Use function extensionality and compare the values at `i j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[incM]`. Conclude with `_root_.PositivityTheory.ThKW.S.exists_isUWeilPair_cm_k F E σ B hB d n (-ξ₀ • W.J⁻¹) X.Jᵀ hS hT ξ₀ hξ hσξ hLat χW χX hcW hcX (_root_.GlobalTheory.T.restricted_eta_power_character F E σ B hB χW d rW) (_root_.GlobalTheory.T.restricted_eta_power_character F E σ B hB χX n rX) ω hω X.J …`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_isWeil_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E), _root_.UpperTheory.TP.W.GoodK σ B → ∀ (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (r s r' s' : ℕ),
@@ -52,7 +52,7 @@ theorem exists_isWeil_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [
     (_root_.GlobalTheory.T.restricted_eta_power_character F E σ B hB χW d rW) (_root_.GlobalTheory.T.restricted_eta_power_character F E σ B hB χX n rX) ω hω X.J W.J (-1) (by simp) eB
     (Fin n × Fin d) M.co hM.rat
 /- English proof (translation)
-The claim follows from `_root_.PositivityTheory.ThKW.S.exists_isWeil_k`.
+A detailed English derivation is pending.
 -/
 theorem weilEx_k : _root_.PositivityTheory.ThKG.Tow.WeilEx_k := _root_.PositivityTheory.ThKW.S.exists_isWeil_k
 end PositivityTheory.ThKW.S

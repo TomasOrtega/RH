@@ -22,7 +22,7 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     (ρ : Representation LL G V)
 
 /- English proof (translation)
-Proceed by induction on `d using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul v b => simp [actVdR, ιV, actVB, PD.ι_comm]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem act_ι (g : G) (d : V ⊗[Qp] B) :
     actVdR PD ρ g (ιV PD (LL := LL) (V := V) d) = ιV PD (LL := LL) (V := V) (actVB PD ρ g d) := by
@@ -32,7 +32,7 @@ theorem act_ι (g : G) (d : V ⊗[Qp] B) :
   | tmul v b => simp [actVdR, ιV, actVB, PD.ι_comm]
 
 /- English proof (translation)
-Proceed by induction on `d using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul v b => simp [mulVdR, ιV, mulVB, ← IsScalarTower.algebraMap_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem mul_ι (c : K₀) (d : V ⊗[Qp] B) :
     mulVdR (K := K) (BdR := BdR) (V := V) (LL := LL) (algebraMap K₀ K c)
@@ -44,9 +44,9 @@ theorem mul_ι (c : K₀) (d : V ⊗[Qp] B) :
   | tmul v b => simp [mulVdR, ιV, mulVB, ← IsScalarTower.algebraMap_apply]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hd`. Simplify using `only [Dcris, SetLike.mem_coe, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, LinearMap.smul_apply, sub_eq_zero] at h1 h2`. Prove the components needed by the constructor for the conclusion. Simplify using `only [DdR, SetLike.mem_coe, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Introduce `g`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[act_ι, h1 g]`. Simplify using `only [SetLike.mem_coe, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, LinearMap.smul_apply, sub_eq_zero]`. Introduce `c`. Take `⟨c₀, rfl⟩` from `hs c`. Rewrite using `[mul_ι, h2 c₀, map_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -69,9 +69,9 @@ theorem ι_mem_DdRE (hs : Function.Surjective (algebraMap K₀ K)) (τ : K →�
     rfl
 
 /- English proof (translation)
-Establish `h` using `iSupIndep.iInf (fun (c : K) (a : LL) => Module.End.eigenspace (mulVdR (Qp := Qp) (K := K) (BdR := BdR) (V := V) (LL := LL) c) a) (fun c => Module.End.eigenspaces_iSupIndep _)`. Establish `h'` using `h.comp (f := fun τ : K →ₐ[Qp] LL => (τ : K → LL)) DFunLike.coe_injective`. Use `h'.mono fun τ x hx => ?_` and prove the remaining obligations. Establish `h2` using `hx.2`. Simplify using `only [SetLike.mem_coe, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, LinearMap.smul_apply, sub_eq_zero] at h2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp, Submodule.mem_iInf, Module.End.mem_eigenspace_iff]`. Conclude with `h2`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem iSupIndep_DdRE : iSupIndep fun τ : K →ₐ[Qp] LL => DdRE PD ρ τ := by
   have h := iSupIndep.iInf
@@ -89,13 +89,13 @@ theorem iSupIndep_DdRE : iSupIndep fun τ : K →ₐ[Qp] LL => DdRE PD ρ τ := 
 end Abstract
 
 /- English proof (translation)
-Introduce `G _ _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD LL O _ _ _ _ _ v n W T i τ a hs hτ hF`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, ⟨hx, hx'⟩, rfl⟩`. Establish `hxD : ιV PD (LL` using `LL) (V := T.V) x ∈ DdRE PD T.ρ τ := ι_mem_DdRE PD T.ρ hs τ (by rw [hτ]; exact hx)`. Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.1 (Submodule.mem_comap.1 hx')`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hzD : z ∈ DdRE PD T.ρ τ`. Establish `: z = ιV PD (LL` using `LL) (V := T.V) x - y := by rw [← hyz]; abel`. Rewrite using `[this]`. Conclude with `Submodule.sub_mem _ hxD hy.1`. Establish `hz0 : z = 0` using `(Submodule.disjoint_def.1 (iSupIndep_DdRE PD T.ρ τ)) z hzD hz`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hyz, hz0, add_zero]`. Conclude with `hy`. Introduce `y hy`. Establish `hy'` using `hy`. Rewrite `hy'` using `[hF]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨x, hx, rfl⟩` from `hy'`. Conclude with `⟨x, ⟨hx.2, Submodule.mem_comap.2 (Submodule.mem_sup_left hy)⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem toDR_FilLet : ∀ {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K] [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K] {B BdR : Type} [CommRing B] [CommRing BdR] [Algebra Qp B] [Algebra K₀ B] [IsScalarTower Qp K₀ B] [Algebra Qp BdR] [Algebra K₀ BdR] [Algebra K BdR] [IsScalarTower Qp K BdR] [IsScalarTower K₀ K BdR] [IsScalarTower Qp K₀ BdR] {PD : PeriodData G Qp K₀ K B BdR} {LL O : Type} [Field LL] [Algebra Qp LL] [CommRing O] [Algebra O LL] [TopologicalSpace LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ} (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (i : ZMod n) (τ : K →ₐ[Qp] LL) (a : ℤ), Function.Surjective (algebraMap K₀ K) → τ.comp (IsScalarTower.toAlgHom Qp K₀ K) = W.emb i → FildR PD T.ρ τ a = (FilCris PD T.ρ a ⊓ DcrisL PD T.ρ (W.emb i)).map (ιV PD (LL := LL) (V := T.V)) → GlobalTheory.IndefiniteRowSideFullHecke.GradedSeries.toDR (PD := PD) T (GlobalTheory.IndefiniteRowSideFullHecke.GradedSeries.FilLet W T i τ a) = FildR PD T.ρ τ a := by
   intro G _ _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD LL O _ _ _ _ _ v n W T i τ a hs hτ hF

@@ -14,7 +14,7 @@ section Mat
 variable {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] {s : Set W}
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_apply']`. Conclude with `ContDiffOn.sum fun σ _ => contDiffOn_const.mul (contDiffOn_prod fun i _ => hf _ _)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cdo_det {m : Type} [Fintype m] [DecidableEq m] (f : W → Matrix m m ℂ)
     (hf : ∀ i j, ContDiffOn ℝ ∞ (fun w => f w i j) s) : ContDiffOn ℝ ∞ (fun w => (f w).det) s := by
@@ -22,9 +22,7 @@ theorem cdo_det {m : Type} [Fintype m] [DecidableEq m] (f : W → Matrix m m ℂ
   exact ContDiffOn.sum fun σ _ => contDiffOn_const.mul (contDiffOn_prod fun i _ => hf _ _)
 
 /- English proof (translation)
-Simplify using `only [Matrix.inv_def, Matrix.smul_apply, smul_eq_mul, Ring.inverse_eq_inv', Matrix.adjugate_apply]`. Use `((cdo_det f hf).inv hd).mul (cdo_det _ fun a b => ?_)` and prove the remaining obligations. Simplify using `only [Matrix.updateRow_apply]`. Use `split_ifs`. Conclude with `contDiffOn_const`.
-
-Conclude with `hf _ _`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cdo_inv {m : Type} [Fintype m] [DecidableEq m] (f : W → Matrix m m ℂ)
     (hf : ∀ i j, ContDiffOn ℝ ∞ (fun w => f w i j) s) (hd : ∀ w ∈ s, (f w).det ≠ 0) (i j : m) :
@@ -37,7 +35,7 @@ theorem cdo_inv {m : Type} [Fintype m] [DecidableEq m] (f : W → Matrix m m ℂ
   · exact hf _ _
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply]`. Conclude with `ContDiffOn.sum fun k _ => (hf _ _).mul (hg _ _)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cdo_mul {m : Type} [Fintype m] (f g : W → Matrix m m ℂ)
     (hf : ∀ i j, ContDiffOn ℝ ∞ (fun w => f w i j) s) (hg : ∀ i j, ContDiffOn ℝ ∞ (fun w => g w i j) s) (i j : m) :
@@ -48,9 +46,7 @@ theorem cdo_mul {m : Type} [Fintype m] (f g : W → Matrix m m ℂ)
 end Mat
 
 /- English proof (translation)
-Use `show ContDiff ℝ ∞ fun w : V (nd X) => nmat X w τ a b`. Unfold `nmat`. Use `split_ifs`. Conclude with `((EuclideanSpace.proj _ : V (nd X) →L[ℂ] ℂ).restrictScalars ℝ).contDiff`. Conclude with `contDiff_const`.
-
-Conclude with `contDiff_const`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem contDiff_nmat (X : Data E r) (τ : X.Ψ) (a b : Fin r) :
     ContDiff ℝ ∞ fun w : V (nd X) => mat (nmat X w) τ a b := by
@@ -62,7 +58,7 @@ theorem contDiff_nmat (X : Data E r) (τ : X.Ψ) (a b : Fin r) :
   · exact contDiff_const
 
 /- English proof (translation)
-Simplify using `only [PoinPf.Gw, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply]`. Use `ContDiff.sum fun k _ => ContDiff.mul (ContDiff.sum fun l _ => (contDiff_nmat X τ l a).mul contDiff_const) ?_` and prove the remaining obligations. Conclude with `Complex.conjCLE.contDiff.comp (contDiff_nmat X τ k b)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem contDiff_Gw (X : Data E r) (τ : X.Ψ) (a b : Fin r) :
     ContDiff ℝ ∞ fun w : V (nd X) => PoinPf.Gw X w τ a b := by
@@ -72,7 +68,7 @@ theorem contDiff_Gw (X : Data E r) (τ : X.Ψ) (a b : Fin r) :
   exact Complex.conjCLE.contDiff.comp (contDiff_nmat X τ k b)
 
 /- English proof (translation)
-Introduce `w hw`. Establish `h` using `FrameDegreeData.blk_det X hw τ c`. Rewrite `h` using `[gram_cpt X hx]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem blk_det_on (X : Data E r) {x : Frame X.Ψ r} (hx : IsOrth X x) (τ : X.Ψ) (c : Fin r) :
     ∀ w ∈ {w : V (nd X) | cpt X x w ∈ X.dom}, (FrameDegreeData.blk (PoinPf.Gw X w τ) c).det ≠ 0 := by
@@ -81,9 +77,7 @@ theorem blk_det_on (X : Data E r) {x : Frame X.Ψ r} (hx : IsOrth X x) (τ : X.�
   rwa [gram_cpt X hx] at h
 
 /- English proof (translation)
-Simplify using `only [gsU, FrameDegreeData.uMat, Matrix.of_apply]`. Use `split_ifs with h1 h2`. Conclude with `contDiffOn_const`. Use `ContDiffOn.neg ?_` and prove the remaining obligations. Simplify using `only [Matrix.vecMul, dotProduct]`.
-
-Use `ContDiffOn.sum fun m _ => ContDiffOn.mul ?_ ?_` and prove the remaining obligations. Conclude with `(contDiff_Gw X τ c (Fin.castLE c.isLt.le m)).contDiffOn`. Conclude with `cdo_inv (fun w => FrameDegreeData.blk (PoinPf.Gw X w τ) c) (fun a b => (contDiff_Gw X τ (Fin.castLE c.isLt.le a) (Fin.castLE c.isLt.le b)).contDiffOn) (blk_det_on X hx τ c) _ _`. Conclude with `contDiffOn_const`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cdo_gsU (X : Data E r) {x : Frame X.Ψ r} (hx : IsOrth X x) (τ : X.Ψ) (j c : Fin r) :
     ContDiffOn ℝ ∞ (fun w => gsU X w τ j c) {w : V (nd X) | cpt X x w ∈ X.dom} := by
@@ -100,7 +94,7 @@ theorem cdo_gsU (X : Data E r) {x : Frame X.Ψ r} (hx : IsOrth X x) (τ : X.Ψ) 
   · exact contDiffOn_const
 
 /- English proof (translation)
-Use `cdo_mul _ _ (fun a b => cdo_mul _ _ (fun a' b' => ?_) (fun a' b' => (contDiff_Gw X τ a' b').contDiffOn) a b) (fun a b => ?_) i j` and prove the remaining obligations. Conclude with `cdo_gsU X hx τ b' a'`. Conclude with `Complex.conjCLE.contDiff.comp_contDiffOn (cdo_gsU X hx τ a b)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cdo_q (X : Data E r) {x : Frame X.Ψ r} (hx : IsOrth X x) (τ : X.Ψ) (i j : Fin r) :
     ContDiffOn ℝ ∞ (fun w => ((gsU X w τ)ᵀ * PoinPf.Gw X w τ * (gsU X w τ).map (starRingEnd ℂ)) i j)
@@ -111,18 +105,18 @@ theorem cdo_q (X : Data E r) {x : Frame X.Ψ r} (hx : IsOrth X x) (τ : X.Ψ) (i
   · exact Complex.conjCLE.contDiff.comp_contDiffOn (cdo_gsU X hx τ a b)
 
 /- English proof (translation)
-Simplify using `only [FrameDegreeData.dOf, FrameDegreeData.uOf, FrameDegreeData.gram_mul, gram_cpt X hx, gsU]`.
+Simplify using the standard rewrite rules.
 -/
 theorem q_eq_dOf (X : Data E r) {x : Frame X.Ψ r} (hx : IsOrth X x) (w : V (nd X)) (τ : X.Ψ) (k : Fin r) :
     ((gsU X w τ)ᵀ * PoinPf.Gw X w τ * (gsU X w τ).map (starRingEnd ℂ)) k k = FrameDegreeData.dOf X (cpt X x w) τ k := by
   simp only [FrameDegreeData.dOf, FrameDegreeData.uOf, FrameDegreeData.gram_mul, gram_cpt X hx, gsU]
 
 /- English proof (translation)
-Use `set S := {w : V (nd X) | cpt X x w ∈ X.dom}`. Establish `hpos : ∀ w ∈ S, 0 < sgn X.p0 k * (((gsU X w τ)ᵀ * PoinPf.Gw X w τ * (gsU X w τ).map (starRingEnd ℂ)) k k).re`. Introduce `w hw`. Rewrite using `[q_eq_dOf X hx w τ k]`. Conclude with `FrameDegreeData.sgn_dOf_pos X hw τ k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hf : ContDiffOn ℝ ∞ (fun w => sgn X.p0 k * (((gsU X w τ)ᵀ * PoinPf.Gw X w τ * (gsU X w τ).map (starRingEnd ℂ)) k k).re) S` using `contDiffOn_const.mul (Complex.reCLM.contDiff.comp_contDiffOn (cdo_q X hx τ k k))`. Use `ContDiffOn.congr (ContDiffOn.inv (hf.sqrt fun w hw => (hpos w hw).ne') fun w hw => (Real.sqrt_pos.2 (hpos w hw)).ne') fun w hw => ?_` and prove the remaining obligations. Establish `h` using `hpos w hw`. Simplify using `only [gsS]`. Use `congr 2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Apply the tactic sequence `rcases FrameDegreeData.sgn_sq X.p0 k with hs | hs <;> rw [hs] at h ⊢`. Rewrite `h`, the goal using `[one_mul]`. Conclude with `abs_of_pos h`. Rewrite `h`, the goal using `[neg_one_mul]`. Conclude with `abs_of_neg (neg_pos.1 h)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cdo_gsS (X : Data E r) {x : Frame X.Ψ r} (hx : IsOrth X x) (τ : X.Ψ) (k : Fin r) :
     ContDiffOn ℝ ∞ (fun w => gsS X w τ k) {w : V (nd X) | cpt X x w ∈ X.dom} := by
@@ -147,9 +141,9 @@ theorem cdo_gsS (X : Data E r) {x : Frame X.Ψ r} (hx : IsOrth X x) (τ : X.Ψ) 
     exact abs_of_neg (neg_pos.1 h)
 
 /- English proof (translation)
-Introduce `E _ _ _ r X x hx τ a b`. Establish `e : (fun w => gsB X w τ a b) = fun w => gsU X w τ a b * ((gsS X w τ b : ℝ) : ℂ)`. Use function extensionality and compare the values at `w`. Simplify using `only [gsB, Matrix.mul_diagonal]`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(cdo_gsU X hx τ a b).mul (Complex.ofRealCLM.contDiff.comp_contDiffOn (cdo_gsS X hx τ b))`.
+A detailed English derivation is pending.
 -/
 theorem gsB_contDiffOn : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r) {x : Frame X.Ψ r},
     IsOrth X x → ∀ (τ : X.Ψ) (a b : Fin r),

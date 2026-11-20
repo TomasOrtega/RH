@@ -46,7 +46,7 @@ namespace Formalism.MainNotions.ColumnSystems.Pf
 open Formalism.MainNotions.G
 
 /- English proof (translation)
-The claim follows from `have hA2 : RemainderSegmentBoundSecond D := restAlt2_of (restSegLow_of hL) (dimHH_of h3) charZeroAt closed_of_rests (fun _ _ _ => segment_statement_holds D _ _ _) (restFree D) (remainderSegmentBoundFirst D) (rest2 D) (restAlt3 D) (one_segment_of_upper_lower hU hL) hA2 (restExt_of …`.
+A detailed English derivation is pending.
 -/
 theorem closed_extendedAllConclusions {D : Formalism.BasicNotions.D7} (h3 : adm3 D) (hU : RestUp) (hL : RestLow) (hL1 : PartnersToFactors)
     (hLift : RestLift) : Closed (ExtendedAllConclusions D) :=
@@ -55,13 +55,13 @@ theorem closed_extendedAllConclusions {D : Formalism.BasicNotions.D7} (h3 : adm3
     (one_segment_of_upper_lower hU hL) hA2 (restExt_of restRk hL1 hLift hA2)
 
 /- English proof (translation)
-The claim follows from `dimY_of (D := D) hA.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1 hA.2.2.2.2.2.1 (stWeylAt D)`.
+A detailed English derivation is pending.
 -/
 theorem dimYAt_of_adm {D : Formalism.BasicNotions.D7} (hA : admitted D) : DimYAt :=
   dimY_of (D := D) hA.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1 hA.2.2.2.2.2.1 (stWeylAt D)
 
 /- English proof (translation)
-Introduce `X _ W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ jO w hS hH hc j rz ry hd`. Conclude with `h X W Qq O Kf ι σ jO w hS hH hc j 0 le_rfl rz ry hd`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem extended_fourth_of_upper_bound {D : Formalism.BasicNotions.D7} {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ} (h : UpAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc) :
     ExtendedDigitRankBound D C0 CYb Cde Ck CD Cb CE1 CE2 Cc := by
@@ -69,7 +69,7 @@ theorem extended_fourth_of_upper_bound {D : Formalism.BasicNotions.D7} {C0 CYb C
   exact h X W Qq O Kf ι σ jO w hS hH hc j 0 le_rfl rz ry hd
 
 /- English proof (translation)
-The claim follows from `have hY := dimYAt_of_adm hA restUp_of blockRankAt hY charZeroAt (upper_count_of_top_rows (chainDim_of hY) (numBranch_of hA.2.1 hA.2.2.1) top_rows_bound_holds)`.
+A detailed English derivation is pending.
 -/
 theorem restUp_of_adm {D : Formalism.BasicNotions.D7} (hA : admitted D) : RestUp :=
   have hY := dimYAt_of_adm hA
@@ -77,7 +77,7 @@ theorem restUp_of_adm {D : Formalism.BasicNotions.D7} (hA : admitted D) : RestUp
     (upper_count_of_top_rows (chainDim_of hY) (numBranch_of hA.2.1 hA.2.2.1) top_rows_bound_holds)
 
 /- English proof (translation)
-The claim follows from `TransportedAlt.mono (fun _ _ _ _ _ _ _ _ _ _ h => ⟨extended_fourth_of_upper_bound h, (extended_fourth_of_upper_bound h).toDigitRankBound⟩) (restUp_of_adm hA)`.
+A detailed English derivation is pending.
 -/
 theorem fourth_bound_of_admitted {D : Formalism.BasicNotions.D7} (hA : admitted D) :
     TransportedAlt fun C0 CYb Cde Ck CD Cb CE1 CE2 _ Cc =>
@@ -87,7 +87,7 @@ theorem fourth_bound_of_admitted {D : Formalism.BasicNotions.D7} (hA : admitted 
 def Open : Prop := RestPairLift
 
 /- English proof (translation)
-Introduce `hA` and use `have hPL := h hA have hY := dimYAt_of_adm hA have hCD : ChainDimAt := chainDim_of hY have hNB : NumBranchAt := numBranch_of hA.2.1 hA.2.2.1 have hT : RestTail := restTail_of hCD hNB restPairCount (restNotKeptWt_of (wtBound_of hCD) (restBracket_of (restPairFacts_of restNUp) coarse …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem stmtEExt_of {D : Formalism.BasicNotions.D7} (h : admitted D → Open) : ExtendedClosedForm D := fun hA =>
   have hPL := h hA
@@ -105,7 +105,7 @@ theorem stmtEExt_of {D : Formalism.BasicNotions.D7} (h : admitted D → Open) : 
   closed_extendedAllConclusions hA.2.2.1 (restUp_of hB hY charZeroAt hCU) (restLow_of hB hY charZeroAt hCL) hL1 (restLift_of (restLiftVec_of hPL))
 
 /- English proof (translation)
-The claim follows from `(stmtEExt_of h).closed_of_extended_closed`.
+A detailed English derivation is pending.
 -/
 theorem stmtE_of {D : Formalism.BasicNotions.D7} (h : admitted D → Open) : ClosedFormOfAdmitted D := (stmtEExt_of h).closed_of_extended_closed
 

@@ -6,9 +6,9 @@ open Formalism.BasicNotions NumberField
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `hq`. Establish `hN : Even (R.N j)`. Unfold `Ranks.N`. Conclude with `R.k_even.add ((R.t_odd.add_one).mul_left j)`. Take `⟨a, ha⟩` from `hN`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h : (z : ℚ) - (R.N j : ℚ) / 2 = ((z - a : ℤ) : ℚ)`. Rewrite using `[ha]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h, Rat.num_intCast]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitChain_num_sub_half (R : Ranks) (q : ℚ) (hq : ∃ z : ℤ, q = z) (j : ℕ) :
     (((q - (R.N j : ℚ) / 2).num : ℤ) : ℚ) = q - (R.N j : ℚ) / 2 := by

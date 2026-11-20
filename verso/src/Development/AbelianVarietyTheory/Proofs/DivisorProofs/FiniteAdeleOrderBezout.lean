@@ -8,49 +8,41 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 namespace GlobalTheory.AdeleRing
 
 /- English proof (translation)
-Introduce `E _ _ R hR`. Establish `mk : ∀ f : ∀ P : HeightOneSpectrum (𝓞 E), P.adicCompletion E, (∀ P, Valued.v (f P) ≤ 1) → ∃ y ∈ R, ∀ P, y P = f P`. Introduce `f hf`. Use `⟨⟨f, Filter.Eventually.of_forall fun P => (HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 E) E P).2 (hf P)⟩, (hR _).2 (fun P => hf P), fun P => rfl⟩` and prove the remaining obligations. Establish `hmul : ∀ (x y : FiniteAdeleRing (𝓞 E) E) P, (x * y) P = x P * y P` using `fun _ _ _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hadd : ∀ (x y : FiniteAdeleRing (𝓞 E) E) P, (x + y) P = x P + y P` using `fun _ _ _ => rfl`. Establish `hsub : ∀ (x y : FiniteAdeleRing (𝓞 E) E) P, (x - y) P = x P - y P` using `fun _ _ _ => rfl`. Establish `hone : ∀ P, (1 : FiniteAdeleRing (𝓞 E) E) P = 1` using `fun _ => rfl`. Establish `hv0 : ∀ (P : HeightOneSpectrum (𝓞 E)) (x : P.adicCompletion E), Valued.v x = 0 → x = 0` using `fun P x h => (Valued.v).zero_iff.1 h`. Establish `hinv : ∀ (P : HeightOneSpectrum (𝓞 E)) (x : P.adicCompletion E), Valued.v x = 1 → Valued.v x⁻¹ ≤ 1` using `fun P x h => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_inv₀, h, inv_one]`. Establish `hne : ∀ (P : HeightOneSpectrum (𝓞 E)) (x : P.adicCompletion E), Valued.v x = 1 → x ≠ 0` using `fun P x h h0 => by`. Rewrite `h` using `[h0, map_zero]`. Conclude with `zero_ne_one h`. Use `⟨fun a b => ?_, fun p hp q hq => ?_, fun c hc => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `obtain ⟨u, hu, hu'⟩ := mk (fun P => if Valued.v (b P) ≤ Valued.v (a P) then 1 else 0) (fun P => by split_ifs <;> simp)`. Apply the tactic sequence `obtain ⟨w, hw, hw'⟩ := mk (fun P => if Valued.v (b P) ≤ Valued.v (a P) then 0 else 1) (fun P => by split_ifs <;> simp)`. Take `⟨r, hr, hr'⟩` from `mk (fun P => if Valued.v (b P) ≤ Valued.v (a P) then 1 else a P / b P) (fun P => by split_ifs with h`. Simplify using the standard rewrite rules. Rewrite `h` using `[not_le]`.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_div₀, div_le_one₀ (lt_of_le_of_lt zero_le' h)]`. Conclude with `h.le)`. Take `⟨r', hr'', hr'''⟩` from `mk (fun P => if Valued.v (b P) ≤ Valued.v (a P) then b P / a P else 1) (fun P => by split_ifs with h`. Distinguish the cases in `h0 : Valued.v (a P) = 0`. Rewrite using `[hv0 P _ h0, div_zero, map_zero]`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `zero_le'`. Rewrite using `[map_div₀, div_le_one₀ (lt_of_le_of_ne zero_le' (Ne.symm h0))]`. Conclude with `h`. Use the proof step `simp)`. Use `⟨u, hu, w, hw, r, hr, r', hr'', ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `IsDedekindDomain.FiniteAdeleRing.ext E fun P => ?_` and prove the remaining obligations. Rewrite using `[hmul, hadd, hmul, hmul, hu', hw', hr']`. Use `split_ifs with h`. Simplify using the standard rewrite rules. Rewrite `h` using `[not_le]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hb : b P ≠ 0` using `fun h0 => by rw [h0, map_zero] at h; exact not_lt_zero' h`. Rewrite using `[zero_mul, one_mul, zero_add, div_mul_cancel₀ _ hb]`. Use `IsDedekindDomain.FiniteAdeleRing.ext E fun P => ?_` and prove the remaining obligations. Rewrite using `[hmul, hadd, hmul, hmul, hu', hw', hr''']`. Use `split_ifs with h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Distinguish the cases in `h0 : a P = 0`. Establish `: Valued.v (b P) = 0` using `le_antisymm (by rw [h0, map_zero] at h; exact h) zero_le'`. Rewrite using `[hv0 P _ this, h0]`. Simplify using the standard rewrite rules. Rewrite using `[one_mul, zero_mul, add_zero, div_mul_cancel₀ _ h0]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hpP : ∀ P, Valued.v (p P) ≤ 1` using `(hR p).1 hp`. Establish `hqP : ∀ P, Valued.v (q P) ≤ 1` using `(hR q).1 hq`. Set `sf : ∀ P : HeightOneSpectrum (𝓞 E), P.adicCompletion E` to `fun P => if Valued.v (p P) = 1 then 0 else 1`. Set `tf : ∀ P : HeightOneSpectrum (𝓞 E), P.adicCompletion E` to `fun P => if Valued.v (p P) = 1 then 1 else if Valued.v (q P) = 1 then 0 else 1`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1 : ∀ P, Valued.v (sf P + tf P * p P) = 1` using `fun P => by`. Simplify using `only [sf, tf]`. Use `split_ifs with h h'`. Simplify using `using h`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[one_mul, Valuation.map_one_add_of_lt]`. Conclude with `lt_of_le_of_ne (hpP P) h`. Establish `h2 : ∀ P, Valued.v (sf P * q P + tf P) = 1` using `fun P => by`. Simplify using `only [sf, tf]`. Use `split_ifs with h h'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Simplify using `using h'`. Rewrite using `[one_mul, add_comm, Valuation.map_one_add_of_lt]`. Conclude with `lt_of_le_of_ne (hqP P) h'`. Apply the tactic sequence `obtain ⟨s, hs, hs'⟩ := mk sf (fun P => by simp only [sf]; split_ifs <;> simp)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `obtain ⟨t, ht, ht'⟩ := mk tf (fun P => by simp only [tf]; split_ifs <;> simp)`. Take `⟨d, hd, hd'⟩` from `mk (fun P => (sf P + tf P * p P)⁻¹) (fun P => hinv P _ (h1 P))`. Take `⟨d', hd'', hd'''⟩` from `mk (fun P => (sf P * q P + tf P)⁻¹) (fun P => hinv P _ (h2 P))`. Use `⟨s, hs, t, ht, d, hd, d', hd'', ?_, ?_⟩` and prove the remaining obligations. Use `IsDedekindDomain.FiniteAdeleRing.ext E fun P => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hmul, hadd, hmul, hs', ht', hd', hone]`. Conclude with `mul_inv_cancel₀ (hne P _ (h1 P))`. Use `IsDedekindDomain.FiniteAdeleRing.ext E fun P => ?_` and prove the remaining obligations. Rewrite using `[hmul, hadd, hmul, hs', ht', hd''', hone]`. Conclude with `mul_inv_cancel₀ (hne P _ (h2 P))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hcP : ∀ P, Valued.v (c P) ≤ 1` using `(hR c).1 hc`. Apply the tactic sequence `obtain ⟨e, he, he'⟩ := mk (fun P => if Valued.v (c P) = 1 then 1 else 0) (fun P => by split_ifs <;> simp)`. Take `⟨d, hd, hd'⟩` from `mk (fun P => if Valued.v (c P) = 1 then (c P)⁻¹ else 0) (fun P => by split_ifs with h`. Conclude with `hinv P _ h`. Use the proof step `simp)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use `⟨e, he, d, hd, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `IsDedekindDomain.FiniteAdeleRing.ext E fun P => ?_` and prove the remaining obligations. Rewrite using `[hmul, he']`. Apply the tactic sequence `split_ifs <;> simp`. Use `IsDedekindDomain.FiniteAdeleRing.ext E fun P => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hmul, hmul, he', hd']`. Use `split_ifs with h`. Rewrite using `[one_mul, mul_inv_cancel₀ (hne P _ h)]`. Simplify using the standard rewrite rules. Introduce `m hm m' hm' hmm a ha`.
-
-Establish `hmP : ∀ P, Valued.v (m P) = 1` using `fun P => by`. Establish `h1 : Valued.v (m P) * Valued.v (m' P) = 1`. Rewrite using `[← map_mul, ← hmul, hmm, hone, map_one]`. Use `le_antisymm ((hR m).1 hm P) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `hX : ∀ P, Valued.v (m P + (1 - e P) * c P * a P) = 1` using `fun P => by`. Rewrite using `[he']`. Use `split_ifs with h`. Rewrite using `[sub_self, zero_mul, zero_mul, add_zero, hmP P]`. Rewrite using `[Valuation.map_add_eq_of_lt_left, hmP P]`.
-
-Rewrite using `[hmP P, sub_zero, one_mul, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨d', hd'', hd'''⟩` from `mk (fun P => (m P + (1 - e P) * c P * a P)⁻¹) (fun P => hinv P _ (hX P))`. Use `⟨d', hd'', ?_⟩` and prove the remaining obligations. Use `IsDedekindDomain.FiniteAdeleRing.ext E fun P => ?_` and prove the remaining obligations.
-
-Rewrite using `[hmul, hadd, hmul, hmul, hsub, hone, hd''']`. Conclude with `mul_inv_cancel₀ (hne P _ (hX P))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bezout_units_idempotent : ∀ (E : Type) [Field E] [NumberField E] (R : Set (FiniteAdeleRing (𝓞 E) E)), (∀ y, y ∈ R ↔ ∀ P : HeightOneSpectrum (𝓞 E), Valued.v (y P) ≤ 1) →
     (∀ a b : FiniteAdeleRing (𝓞 E) E, ∃ u ∈ R, ∃ v ∈ R, ∃ r ∈ R, ∃ r' ∈ R, a = r * (u * a + v * b) ∧ b = r' * (u * a + v * b)) ∧

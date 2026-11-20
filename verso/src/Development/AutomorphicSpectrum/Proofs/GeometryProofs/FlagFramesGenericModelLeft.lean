@@ -16,7 +16,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.FlagBun.Flags
 
 /- English proof (translation)
-Use `⟨fun a e => ?_, fun n b hb => ?_⟩` and prove the remaining obligations. Use `show (1 : K) ⊗ₜ[Ω] (a • e) = algebraMap Ω K a • ((1 : K) ⊗ₜ[Ω] e)`. Rewrite using `[TensorProduct.tmul_smul, algebraMap_smul]`. Conclude with `Module.Flat.linearIndependent_one_tmul hb`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isExtOver_mk (Ω K E : Type) [Field Ω] [Field K] [Algebra Ω K] [AddCommGroup E] [Module Ω E] :
     IsExtOver (algebraMap Ω K) (TensorProduct.mk Ω K E 1).toAddMonoidHom := by
@@ -26,35 +26,33 @@ theorem isExtOver_mk (Ω K E : Type) [Field Ω] [Field K] [Algebra Ω K] [AddCom
   · exact Module.Flat.linearIndependent_one_tmul hb
 
 /- English proof (translation)
-Introduce `X Ω _ ξ E _ _ κ _ x S _ r V L m n φ c X' ξ' f hx hgen hVB hTw hc hx' hgen' hd hch s p' _`. Take `⟨⟨c₁, J⟩, hcJ⟩` from `hx'.cover p'`. Take `⟨hx0, hchart, hmin⟩` from `GlobalTheory.T.flag_chart_generic_field Ω E κ x S r n φ c X' ξ' p' c₁ J hcJ`. Take `⟨hfp, hreg, -⟩` from `RegAtDom.regAt_dominates X Ω ξ X' _ ξ' f _ hd p'`. Establish `hInC : InChart ξ x c₁ ⟨f p'.1, hfp⟩` using `(hch p' c₁ hfp).2 hchart`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨U, hU, β₀, hspan, hfr⟩` from `hVB s ⟨f p'.1, hfp⟩ trivial`. Establish `hfr0` using `hfr ⟨f p'.1, hfp⟩ trivial hU`. Take `⟨B₀, hBreg, hAreg, hBA⟩` from `GlobalTheory.T.frame_coeffs_regular_in_chart X Ω ξ E κ x (L s) (m s) (n s) (r s) (φ s) (hTw s) _ c₁ hInC β₀ hfr0`. Establish `hxΩ : x c₁ ≠ 0` using `hInC.1`. Establish `hCex : ∀ l, ∃ C : Fin (r s) → Ω, c s l = ∑ a, C a • β₀ a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `l`. Establish `: c s l ∈ Submodule.span Ω (Set.range β₀)`. Rewrite using `[hspan, ← (hc s).2]`. Conclude with `Submodule.subset_span ⟨l, rfl⟩`. Take `⟨C, hC⟩` from `(Submodule.mem_span_range_iff_exists_fun Ω).1 this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨C, hC.symm⟩`. Use `choose C hC using hCex`. Use `set ι := algebraMap Ω (GenField Ω r) with hι`. Set `A₀ : Matrix (Fin (n s)) (Fin (r s)) Ω` to `Matrix.of (fun j a => φ s j (β₀ a) / x c₁ ^ m s)`. Set `A : Matrix (Fin (n s)) (Fin (r s)) (GenField Ω r)` to `A₀.map ι`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `B : Matrix (Fin (r s)) (Fin (n s)) (GenField Ω r)` to `B₀.map ι`. Set `Cm : Matrix (Fin (r s)) (Fin (r s)) (GenField Ω r)` to `Matrix.of (fun a l => ι (C l a))`. Set `G : Matrix (Fin (r s)) (Fin (r s)) (GenField Ω r)` to `Cm * genU Ω r s`. Set `a : GenField Ω r` to `ι (x c₁ ^ m s)`. Establish `ha : a ≠ 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `pow_ne_zero (m s) hx0` using `[a]`. Establish `hF : flagMat φ c s = a • (A * G)`. Establish `h1 : (Matrix.of (fun j l => ι (φ s j (c s l))) : Matrix (Fin (n s)) (Fin (r s)) (GenField Ω r)) = a • (A * Cm)`. Use extensionality with `j l`. Simplify using `only [Matrix.of_apply, Matrix.smul_apply, Matrix.mul_apply, A, Cm, A₀, Matrix.map_apply, smul_eq_mul, Finset.mul_sum]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[hC l, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [map_smul, smul_eq_mul, a, ← map_mul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[flagMat, h1, Matrix.smul_mul, Matrix.mul_assoc]`. Establish `hBA' : B * A = 1`. Use `congrArg (fun M : Matrix (Fin (r s)) (Fin (r s)) Ω => M.map ι) hBA` as an intermediate fact. Simplify `this` using `[B, A, A₀, Matrix.map_mul]`. Use `haveI : IsLocalRing (regAt ξ' p') := EigSplit.isLocalRing_regAt p'`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨P, hPreg, hP0, hPinv, hPflag⟩` from `GlobalTheory.T.flag_basis_change_integral (GenField Ω r) (regAt ξ' p') (r s) (fun c i => G i c) (fun k => GlobalTheory.T.minor_ratio_regular_of_invertible (GenField Ω r) (regAt ξ' p') (n s) (r s) A B G a k (J ⟨s, k⟩) (fun j l => hreg _ (hAreg j l)) (fun l j => hreg _ (hBreg l j)) …`. Establish `hext` using `isExtOver_mk Ω (GenField Ω r) E`. Set `β : Fin (r s) → TensorProduct Ω (GenField Ω r) E` to `fun a => TensorProduct.mk Ω (GenField Ω r) E 1 (β₀ a)`. Set `T : (Fin (r s) → GenField Ω r) →ₗ[GenField Ω r] TensorProduct Ω (GenField Ω r) E` to `Fintype.linearCombination (GenField Ω r) β`. Establish `hTapp : ∀ v, T v = ∑ a, v a • β a` using `fun v => by simp [T, Fintype.linearCombination_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hmap : ∀ (w : Fin (r s) → Fin (r s) → GenField Ω r) (i : ℕ), flagStep (GenField Ω r) (fun k => T (w k)) i = (flagStep (GenField Ω r) w i).map T`. Introduce `w i`. Simplify using `only [flagStep, Submodule.map_span, Set.image_image]`. Establish `hgenB : genB c s = fun k => T (fun a => G a k)`. Use function extensionality and compare the values at `k`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hTapp]`. Simplify using `only [genB, G, Matrix.mul_apply, Cm, Matrix.of_apply, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[hC l, map_sum, Finset.smul_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `h1 : TensorProduct.mk Ω (GenField Ω r) E 1 (C l b • β₀ b) = ι (C l b) • β b` using `hext.1 (C l b) (β₀ b)`. Rewrite using `[h1, smul_smul, mul_comm]`. Establish `hPfun : (fun k => ∑ a, P a k • β a) = fun k => T (fun a => P a k)`. Use function extensionality and compare the values at `k`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hTapp]`. Take `⟨U₁, hU₁, hq₁⟩` from `EigSplit.exists_open_forall_mem_regAt p' (fun ab : Fin (r s) × Fin (r s) => P ab.1 ab.2) (fun ab => hPreg _ _)`. Establish `hdetreg : P.det ∈ regAt ξ' p'`. Rewrite using `[Matrix.det_apply']`. Conclude with `sum_mem fun σ _ => mul_mem (intCast_mem _ _) (prod_mem fun i _ => hPreg _ _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Take `⟨U₂, hU₂, hq₂⟩` from `(regAt_unitAt_open X' _ ξ' p' P.det).2 ⟨hP0, hdetreg, hPinv⟩`. Use `⟨(f ⁻¹ᵁ U) ⊓ U₁ ⊓ U₂, ⟨⟨hU, hU₁⟩, hU₂⟩, fun k => ∑ a, P a k • β a, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Rewrite using `[hgenB, hPfun, hmap, hmap, hPflag]`. Introduce and unpack `q - ⟨⟨hqU, hq1⟩, hq2⟩`.
-
-Take `⟨hqf, -, -⟩` from `RegAtDom.regAt_dominates X Ω ξ X' _ ξ' f _ hd q`. Establish `hfq` using `hfr ⟨f q.1, hqf⟩ trivial hqU`. Establish `hpull` using `FlagPull.pull_isFrameAt hd hext q hqf hfq`. Conclude with `GlobalTheory.T.frame_change_by_unit_matrix X' _ ξ' _ _ _ β q P hpull (fun a b => hq₁ q hq1 (a, b)) (hq₂ q hq2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pull_isFlagVB_genB : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (E : Type) [AddCommGroup E] [Module Ω E] (κ : Type) [Finite κ] (x : κ → Ω) (S : Type) [Fintype S] (r : S → ℕ) (V : S → Submodule Ω E) (L : S → Lat ξ E) (m n : S → ℕ) (φ : ∀ s, Fin (n s) → Module.Dual Ω E) (c : ∀ s, Fin (r s) → E) (X' : Scheme.{0}) (ξ' : Spec (CommRingCat.of (GenField Ω r)) ⟶ X') (f : X' ⟶ X), CoordTie ℤ ξ x → (∀ q : X, genPt ξ ⤳ q) → (∀ s, (L s).IsVB (r s) (V s)) → (∀ s, IsTwistGen ξ x (L s) (m s) (φ s)) → (∀ s, LinearIndependent Ω (c s) ∧ Submodule.span Ω (Set.range (c s)) = V s) → CoordTie ℤ ξ' (flagCoord κ x φ c) → (∀ q : X', genPt ξ' ⤳ q) → Dominates ξ' ξ f (algebraMap Ω (GenField Ω r)) → (∀ (p' : Cpt ξ') (c₁ : κ) (h : genPt ξ ⤳ f p'.1), InChart ξ x c₁ ⟨f p'.1, h⟩ ↔ InChart ξ' (fun k => algebraMap Ω (GenField Ω r) (x k)) c₁ p') → ∀ s, ((L s).pull ξ' f (TensorProduct.mk Ω (GenField Ω r) E 1).toAddMonoidHom).IsFlagVBOn Set.univ (genB c s) := by
   intro X Ω _ ξ E _ _ κ _ x S _ r V L m n φ c X' ξ' f hx hgen hVB hTw hc hx' hgen' hd hch s p' _

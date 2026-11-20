@@ -5,29 +5,25 @@ import Development.AutomorphicArithmetic.CyclotomicBounds.ClassNumberBounds.Selm
 open ReciprocityTheory.Gal UpperTheory.V.Base
 
 /- English proof (translation)
-Introduce `R G M _ _ _ _ _ _ _ _ _ _ ρ hρ U' U h _ γ hγ hcl`. Establish `memU : ∀ (V : Subgroup G) (m : M), m ∈ H0U ρ V ↔ ∀ g ∈ V, ρ g m = m`. Introduce `V m`. Simplify using `[H0U, H0, Representation.mem_invariants]`. Establish `hinv : ∀ m ∈ H0U ρ U', ρ γ m ∈ H0U ρ U'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `m hm`. Rewrite `hm`, the goal using `[memU]`. Introduce `u hu`. Establish `hc` using `Subgroup.Normal.conj_mem ‹(U'.subgroupOf U).Normal› ⟨u, h hu⟩ (by simpa [Subgroup.mem_subgroupOf] using hu) (⟨γ, hγ⟩⁻¹)`. Rewrite `hc` using `[Subgroup.mem_subgroupOf]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [inv_inv, Subgroup.coe_mul, InvMemClass.coe_inv] at hc`. Establish `e : ρ u (ρ γ m) = ρ γ (ρ (γ⁻¹ * u * γ) m)`. Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul]`. Use `congr 2`. Use `group`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, hm _ hc]`. Set `T : H0U ρ U' →ₗ[R] H0U ρ U'` to `LinearMap.codRestrict (H0U ρ U') ((ρ γ - LinearMap.id) ∘ₗ (H0U ρ U').subtype) (fun m => Submodule.sub_mem _ (hinv m m.2) m.2)`. Establish `hT : ∀ m : H0U ρ U', ((T m : H0U ρ U') : M) = ρ γ m - m` using `fun m => rfl`. Take `⟨φ, hφ⟩` from `kerResGen1 R G M ρ hρ U' U h γ hγ hcl T hT`. Use `⟨fun hfin => ?_, fun hsurj => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hfix : ∀ m : H0U ρ U', T m = 0 → (m : M) ∈ H0U ρ U`. Introduce `m hm0`. Establish `hγm : ρ γ m = m`. Use `congrArg Subtype.val hm0` as an intermediate fact. Rewrite `this` using `[hT]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `sub_eq_zero.mp this`. Set `S : Subgroup G` to `{ carrier := {g | ρ g m = m} mul_mem' := by`. Introduce `a b ha hb`. Simplify using `only [Set.mem_setOf_eq, map_mul, Module.End.mul_apply] at *`. Rewrite using `[hb, ha]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use the proof step `one_mem' := by simp`. Use the proof step `inv_mem' := by`. Introduce `a ha`. Simplify using `only [Set.mem_setOf_eq] at *`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hScl : IsClosed (S : Set G)` using `IsClosed.preimage (hρ.comp (Continuous.prodMk continuous_id continuous_const)) (isClosed_singleton (x := (m : M)))`. Establish `hle : Subgroup.zpowers γ ⊔ U' ≤ S` using `sup_le (Subgroup.zpowers_le.mpr hγm) (fun u hu => (memU U' m).mp m.2 u hu)`. Establish `hUS` using `hcl.trans (Subgroup.topologicalClosure_minimal _ hle hScl)`. Conclude with `(memU U m).mpr fun g hg => hUS hg`. Set `ι : LinearMap.ker T →ₗ[R] H0U ρ U` to `LinearMap.codRestrict (H0U ρ U) ((H0U ρ U').subtype ∘ₗ (LinearMap.ker T).subtype) (fun m => hfix m m.2)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hι : Function.Injective ι`. Introduce `a b hab`. Establish `e : ((ι a : H0U ρ U) : M) = ((ι b : H0U ρ U) : M)` using `congrArg Subtype.val hab`. Conclude with `Subtype.ext (Subtype.ext e)`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hq : ∀ x : H0U ρ U' ⧸ LinearMap.range T, x = 0`. Introduce `x`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Take `⟨m', hm', he⟩` from `hsurj y y.2`.
-
-Conclude with `⟨⟨m', hm'⟩, Subtype.ext (by rw [hT]; exact he)⟩`. Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`. Introduce `x hx`. Use `@hφ ⟨x, hx⟩ 0 (by rw [hq (φ _), hq (φ 0)])` as an intermediate fact. Rewrite using `[Submodule.mem_bot]`.
-
-Conclude with `congrArg Subtype.val this`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Base.kerResCyc :
     ∀ (R G M : Type) [CommRing R] [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup M] [Module R M]

@@ -14,11 +14,11 @@ variable {D : D7} {T : Type}
 variable {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.T.twisted_pairing_identity`.
+A detailed English derivation is pending.
 -/
 theorem twisted_jet_one_of_all : _root_.GlobalTheory.FunPr.ThetaLocalInputs → SumOKK → Big fun ch => JetsOne ch := _root_.GlobalTheory.T.twisted_pairing_identity
 /- English proof (translation)
-Introduce `hP hS`. Take `⟨C0, H⟩` from `_root_.GlobalTheory.RowClaim.JetsAssembly.twisted_jet_one_of_all hP hS`. Use `⟨C0, fun ε CF hC => ?_⟩` and prove the remaining obligations. Take `⟨x₀, H⟩` from `H ε CF hC`. Conclude with `⟨x₀, fun D large₂ e hx Γ _ _ Pl0 T A Ks _ _ _ R F s ch i j => jetsAt_of_one ch s.core.lev (H D large₂ e hx Γ Pl0 T A Ks R F s ch i j)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem twistedJet_succ_eq_assembly : _root_.GlobalTheory.FunPr.ThetaLocalInputs → SumOKK → StepJets := by
   intro hP hS
@@ -35,7 +35,7 @@ section
 open GlobalTheory.RowClaim
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.RowClaim.JetsAssembly.twistedJet_succ_eq_assembly | exact _root_.GlobalTheory.RowClaim.JetsAssembly.twistedJet_succ_eq_assembly | (intros; apply _root_.GlobalTheory.RowClaim.JetsAssembly.twistedJet_succ_eq_assembly <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.twisted_jets_assemble : _root_.GlobalTheory.FunPr.ThetaLocalInputs → SumOKK → StepJets := by
   first | exact @_root_.GlobalTheory.RowClaim.JetsAssembly.twistedJet_succ_eq_assembly | exact _root_.GlobalTheory.RowClaim.JetsAssembly.twistedJet_succ_eq_assembly | (intros; apply _root_.GlobalTheory.RowClaim.JetsAssembly.twistedJet_succ_eq_assembly <;> assumption)

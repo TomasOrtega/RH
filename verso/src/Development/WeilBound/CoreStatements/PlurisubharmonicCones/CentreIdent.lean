@@ -13,47 +13,45 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {R : Ty
   {g n : ℕ} {M : LieModel t.G (𝟙 (Sp R)) (Fin g → R)} {B : Set (Fin n → ℂ)} {ψ : (Fin n → ℂ) → (R →+* ℂ)}
 
 /- English proof (translation)
-Use `letI := P.τ.addCommGroup`. Take `⟨Φ, hΦ⟩` from `lie_equiv P.m.cart MV Mz`. Take `⟨d, β, h, t1, t2, t3⟩` from `torus_lift e hb P Mz hL`. Establish `key : ∀ (A : Over (Sp ℂ)) [GrpObj A] (φ : A.left ⟶ P.tB.G.left) (g' : ℕ) (u : HolUnif A (P.tB.PP.L.pull φ) g') (Hm : Matrix (Fin g') (Fin g') ℂ) (χ : u.Λ → ℂ) (ℓ : (Fin g → ℂ) →ₗ[ℂ] (Fin g' → ℂ)), IsGrpPullback A P.tB.G (𝟙 _) φ → u.IsAH Hm χ → IsAbLift e b P φ u ℓ → (∀ p, p ∈ I' …`. Introduce `A iA φ g' u Hm χ ℓ hφ hAH hℓ`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hin, honto⟩` from `GlobalTheory.T.hol_unif_period_matrix_right E H R t g n M _ ψ e _ P A iA φ g' u Hm χ ℓ hb hφ hAH hP hℓ`. Take `⟨H', hH1, hH2, hH3⟩` from `exists_pull_form ℓ Hm hAH.1`. Establish `hE : ∀ y ∈ e.per b, ∀ y' ∈ e.per b, (y ⬝ᵥ Hb *ᵥ star y').im = (ℓ y ⬝ᵥ Hm *ᵥ star (ℓ y')).im`. Introduce `y hy y' hy'`. Take `⟨k, hk, hc⟩` from `hW y hy y' hy'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hk]`. Use `eq_of_forall_exp fun N hN => ?_` and prove the remaining obligations. Use `GlobalTheory.T.hol_unif_period_matrix_middle E H R t g n M _ ψ e _ P A iA φ g' u Hm χ ℓ hb hφ hAH hP hℓ N _ y y' hN hy hy' (hc N (Units.mk0 _ (Complex.exp_ne_zero (-(2 * Real.pi * Complex.I) * (k : ℂ) / N))) hN rfl)` as an intermediate fact. Rewrite `this` using `[Units.val_mk0]`. Establish `c : ((k : ℝ) : ℂ) = (k : ℂ)` using `by push_cast; rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[c]`. Conclude with `this`. Establish `k1 : ∀ p, p ∈ I' ↔ p ∈ e.per b ∧ ℓ p = 0` using `fun p => by`. Rewrite using `[hI']`. Use `and_congr_right fun hp => ⟨fun h0 => ?_, fun h0 y hy => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `eq_zero_of_im_lattice Hm u.Λ u.full hAH.2.1 _ fun q hq => ?_` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `honto q hq`. Rewrite using `[← hE p hp y hy, h0 y hy]`. Rewrite using `[hE p hp y hy, h0]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨k1, fun p q => ?_⟩` and prove the remaining obligations. Rewrite using `[← hH2]`. Use `congr 2`. Use `herm_unique H' Hb hH1 hH (e.per b) {y | ℓ y = 0} (fun x hx y hy => by rw [hH2, hE x hx y hy]) hH3 (fun y hy => ?_) (fun p => ?_)` and prove the remaining obligations. Take `⟨z, rfl⟩` from `(t3 A φ g' u ℓ hφ hℓ y).1 hy`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : (2 * Real.pi * Complex.I : ℂ) ≠ 0` using `Complex.two_pi_I_ne_zero`. Establish `e1 : z = ∑ a, (z a / (2 * Real.pi * Complex.I)) • (Pi.single a (2 * Real.pi * Complex.I) : Fin d → ℂ)`. Use extensionality with `c`. Simplify using `[Finset.sum_apply, Pi.single_apply, h2]`. Establish `e2 : ∀ a, Hb *ᵥ star (h (Pi.single a (2 * Real.pi * Complex.I))) = 0` using `fun a => by`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hrad _ ((k1 _).2 ⟨(t2 _).2 ⟨(β.coord a).toAddMonoidHom, funext fun c => ?_⟩, (t3 A φ g' u ℓ hφ hℓ _).2 ⟨_, rfl⟩⟩)` and prove the remaining obligations. Distinguish the cases in `hc : c = a`. Substitute `hc` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hc, Finsupp.single_apply]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, map_sum, star_sum, Matrix.mulVec_sum]`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, star_smul, Matrix.mulVec_smul, e2, smul_zero]`. Establish `hp : ℓ p ∈ Submodule.span ℝ (u.Λ : Set (Fin g' → ℂ))` using `by rw [u.full]; trivial`. Establish `: ∀ w ∈ Submodule.span ℝ (u.Λ : Set (Fin g' → ℂ)), ∃ r ∈ Submodule.span ℝ (e.per b), ℓ r = w`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨y, hy, rfl⟩` from `honto x hx`. Conclude with `⟨y, Submodule.subset_span hy, rfl⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `zero => exact ⟨0, Submodule.zero_mem _, map_zero _⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨r, hr, rfl⟩` from `hx`. Take `⟨r', hr', rfl⟩` from `hy`. Conclude with `⟨r + r', Submodule.add_mem _ hr hr', map_add _ _ _⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `smul c x _ hx`. Take `⟨r, hr, rfl⟩` from `hx`. Conclude with `⟨c • r, Submodule.smul_mem _ _ hr, ℓ.map_smul_of_tower c r⟩`. Take `⟨r, hr, hrp⟩` from `this _ hp`. Conclude with `⟨r, hr, by show ℓ (p - r) = 0; rw [map_sub, hrp, sub_self]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Φ, hΦ, fun a x => ?_, fun x x' => ?_, fun p => ?_⟩` and prove the remaining obligations. Establish `d1` using `GlobalTheory.FibreDeriv.isDerivAt0_comp (DiffL.isDerivAt0_pt e hb Mz hL (Φ x)) (t.act.act a).left`. Establish `d2` using `PerGram.isDerivAt0_comp_linMap (PerSpan.isHolTo_ex_slice e hb) (Bb a) (DiffL.isDerivAt0_pt e hb Mz hL (Bb a (Φ x)))`. Establish `e1 : (fun z => (e.ex b (Bb a z)).left) = fun z => (e.ex b z).left ≫ (t.act.act a).left`. Use function extensionality and compare the values at `fun z => by rw [hB, Over.comp_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `d2` using `[e1]`. Use `Mz.inj (Over.OverMorphism.ext ?_)` and prove the remaining obligations. Rewrite using `[GlobalTheory.VerticalDeriv.isDerivAt0_unique d2 d1, hΦ, hΦ, hact a x, Over.comp_left, Category.assoc, Category.assoc, P.m.act]`. Take `⟨-, -, -, A, iA, φ, g', u, Hm, χ, v', w', a', b', hφ, hAH, hv', hw', ha', hb', hc⟩` from `hh x x'`. Take `⟨ℓ, hℓ⟩` from `GlobalTheory.T.hol_unif_period_matrix_left E H R t g n M _ ψ e _ P A iA φ g' u Hm χ hb hφ hAH hP`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1 : a' = ℓ (Φ x)` using `DiffL.isDiff_eq_lift E H R t g n M _ ψ e _ P A iA φ g' u Hm χ ℓ hb hφ hAH hP hℓ Mz hL _ _ v' a' (hΦ x).symm hv' ha'`. Establish `e2 : b' = ℓ (Φ x')` using `DiffL.isDiff_eq_lift E H R t g n M _ ψ e _ P A iA φ g' u Hm χ ℓ hb hφ hAH hP hℓ Mz hL _ _ w' b' (hΦ x').symm hw' hb'`. Rewrite using `[hc, e1, e2, ← (key A φ g' u Hm χ ℓ hφ hAH hℓ).2]`. Take `⟨-, -, -, A, iA, φ, g', u, Hm, χ, v', w', a', b', hφ, hAH, -⟩` from `hh 0 0`. Take `⟨ℓ, hℓ⟩` from `GlobalTheory.T.hol_unif_period_matrix_left E H R t g n M _ ψ e _ P A iA φ g' u Hm χ hb hφ hAH hP`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨MT, hMT, hI⟩` from `hI`. Establish `k2 : ∀ x (δ : P.τ.X →+ ℤ), MV.pt x = MT.pt ((Int.castAddHom ℂ).comp δ) ≫ P.τ.i ↔ Φ x = h fun a => (δ (β a) : ℂ)` using `fun x δ => by`. Establish `a1` using `t1 MT hMT ((Int.castAddHom ℂ).comp δ)`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Mz.inj (Over.OverMorphism.ext ?_)` and prove the remaining obligations. Rewrite using `[hΦ, hx]`. Conclude with `a1.symm`. Introduce `hx`. Use `Over.OverMorphism.ext (P.m.cart.1.hom_ext ?_ ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hΦ, hx]`. Conclude with `a1`. Rewrite using `[Over.w (MV.pt x), Over.w (MT.pt ((Int.castAddHom ℂ).comp δ) ≫ P.τ.i)]`. Establish `k3 : ∀ δ : P.τ.X →+ ℤ, h (fun a => (2 * Real.pi * Complex.I) * (δ (β a) : ℂ)) = (2 * Real.pi * Complex.I : ℂ) • h fun a => (δ (β a) : ℂ)` using `fun δ => by`. Rewrite using `[← map_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Both sides reduce to the same expression. Rewrite using `[(key A φ g' u Hm χ ℓ hφ hAH hℓ).1, t3 A φ g' u ℓ hφ hℓ]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hp, z, rfl⟩`. Take `⟨δ, rfl⟩` from `(t2 z).1 hp`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `⟨Φ.symm (h fun a => (δ (β a) : ℂ)), (hI _).2 ⟨δ, (k2 _ δ).2 (Φ.apply_symm_apply _)⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Φ.apply_symm_apply, k3]`. Introduce and unpack `⟨x, hx, rfl⟩`. Take `⟨δ, hδ⟩` from `(hI x).1 hx`. Rewrite using `[(k2 x δ).1 hδ, ← k3]`.
-
-Conclude with `⟨(t2 _).2 ⟨δ, rfl⟩, _, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem centre_ident (e : FamExp t.G M B ψ) {b : Fin n → ℂ} (hb : b ∈ B) (P : AbPart t (spMap (ψ b)))
     (hP : IsPrincipal P.tB) (Mz : LieModel t.G (spMap (ψ b)) (Fin g → ℂ))
@@ -186,11 +184,11 @@ theorem centre_ident (e : FamExp t.G M B ψ) {b : Fin n → ℂ} (hb : b ∈ B) 
       exact ⟨(t2 _).2 ⟨δ, rfl⟩, _, rfl⟩
 
 /- English proof (translation)
-Take `⟨V, N, f, L, -, -, hL, -⟩` from `e.log b₀ hb`. Establish `hB' : ∀ᶠ bz : (Fin n → ℂ) × (Fin g → ℂ) in 𝓝 (b₀, 0), bz.1 ∈ B` using `(continuous_fst.tendsto (b₀, (0 : Fin g → ℂ))).eventually_mem hB`. Establish `hc : Continuous fun bz : (Fin n → ℂ) × (Fin g → ℂ) => (bz.1, (0 : Fin g → ℂ))` using `by fun_prop`. Establish `hL0` using `(hc.tendsto (b₀, 0)).eventually hL`. Use `filter_upwards [hL, hL0, hB'] with bz h1 h2 h3 hper`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : e.ex bz.1 0 = 1`. Establish `h4` using `e.add bz.1 h3 0 0`. Rewrite `h4` using `[add_zero]`. Simplify using `using h4.symm`. Establish `hx : e.ex bz.1 bz.2 = e.ex bz.1 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0]`. Conclude with `hper`. Rewrite using `[← h1, hx]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem per_small (e : FamExp t.G M B ψ) {b₀ : Fin n → ℂ} (hb : b₀ ∈ B) (hB : B ∈ 𝓝 b₀) :
     ∀ᶠ bz : (Fin n → ℂ) × (Fin g → ℂ) in 𝓝 (b₀, 0), bz.2 ∈ e.per bz.1 → bz.2 = 0 := by

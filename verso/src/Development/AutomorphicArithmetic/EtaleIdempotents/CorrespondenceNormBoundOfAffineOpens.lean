@@ -9,7 +9,7 @@ set_option backward.isDefEq.respectTransparency false
 open CategoryTheory Limits AlgebraicGeometry GroundTheory.PAdicHodge CrystallineSemistableComparison UpperTheory.Ru.crystallineComparison UpperTheory.Gal.crystallineComparison
 
 /- English proof (translation)
-Rewrite using `[Spec.map_comp, Category.assoc, hV.SpecMap_appLE_fromSpec w (isAffineOpen_top _) hw, IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv, ← Spec.map_comp_assoc, Iso.inv_hom_id, Spec.map_id, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma spec_chart {B : Type} [CommRing B] {X : Scheme.{0}} (w : Spec (CommRingCat.of B) ⟶ X) {V : X.Opens}
     (hV : IsAffineOpen V) (hw : ⊤ ≤ w ⁻¹ᵁ V) :
@@ -19,7 +19,7 @@ private lemma spec_chart {B : Type} [CommRing B] {X : Scheme.{0}} (w : Spec (Com
     Category.id_comp]
 
 /- English proof (translation)
-Establish `h : IsUnit (l : Localization.Away (l : B))`. Simplify using `using IsLocalization.Away.algebraMap_isUnit (S := Localization.Away (l : B)) (l : B)`. Simplify using `using h.map (Scheme.ΓSpecIso (CommRingCat.of (Localization.Away (l : B)))).inv.hom`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma unit_away (l : ℕ) (B : Type) [CommRing B] :
     IsUnit (l : Γ(Spec (CommRingCat.of (Localization.Away (l : B))), ⊤)) := by
@@ -28,17 +28,15 @@ private lemma unit_away (l : ℕ) (B : Type) [CommRing B] :
   simpa using h.map (Scheme.ΓSpecIso (CommRingCat.of (Localization.Away (l : B)))).inv.hom
 
 /- English proof (translation)
-Establish `hz : ∀ j i, ⊤ ≤ z j i ⁻¹ᵁ ((T j).p ⁻¹ᵁ U)` using `fun j i => by`. Rewrite using `[← Scheme.Hom.comp_preimage, hzy]`. Conclude with `hy`. Use `letI := fun j => (T j).alg U`. Use `letI : Algebra Γ(Y, U) B := ((y.appLE U ⊤ hy ≫ (Scheme.ΓSpecIso (CommRingCat.of B)).hom).hom).toAlgebra`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `H` using `fun j => splitRules.2 l Y (T j) U hU B y hy (z j) (hz j) (hzy j) (hs j)`. Use `choose ζ hζ hζe using H`. Establish `hres : ψ (algebraMap Γ(Y, U) B (Y.presheaf.map (homOfLE le_top).op π)) = 0`. Establish `e : Y.presheaf.map (homOfLE (le_top : U ≤ ⊤)).op ≫ y.appLE U ⊤ hy = y.appTop`. Rewrite using `[Scheme.Hom.map_appLE, Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `e' : algebraMap Γ(Y, U) B (Y.presheaf.map (homOfLE le_top).op π) = (Scheme.ΓSpecIso (CommRingCat.of B)).hom.hom (y.appTop.hom π)`. Rewrite using `[← e]`. Both sides reduce to the same expression. Rewrite using `[e', hψ]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨fun j i => (ζ j i).toRingHom.comp ((T j).r.appLE V _ (h j)).hom, fun j i => ?_, fun ι _ x => ?_⟩` and prove the remaining obligations. Use `haveI := (T j).fin`. Establish `hS : IsAffineOpen ((T j).p ⁻¹ᵁ U)` using `hU.preimage (T j).p`. Establish `e1` using `spec_chart (z j i) hS (hz j i)`. Establish `e2 : (z j i).appLE ((T j).p ⁻¹ᵁ U) ⊤ (hz j i) ≫ (Scheme.ΓSpecIso (CommRingCat.of B)).hom = CommRingCat.ofHom (ζ j i).toRingHom`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `a`. Conclude with `(hζe j i a).symm`. Rewrite `e1` using `[e2]`. Establish `e3` using `(ptChart_of Y V hV B).2.2 (T j).Z (T j).r _ hS (h j) B (RingHom.id B) (ζ j i).toRingHom`. Establish `e4 : Spec.map (CommRingCat.ofHom (RingHom.id B)) = 𝟙 _`.
-
-Rewrite using `[CommRingCat.ofHom_id, Spec.map_id]`. Rewrite `e3` using `[e4, Category.id_comp, RingHom.id_comp]`. Rewrite using `[e1]`. Conclude with `(Category.assoc _ _ _).trans e3`. Conclude with `hn B hl (fun j => Fin (T j).d) ζ hζ B' ψ hres ι x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma chart_norm {l Q n : ℕ} {Y : Scheme.{0}} (T : Fin (n + 1) → Corr l Y) {U V : Y.Opens}
     (hU : IsAffineOpen U) (hV : IsAffineOpen V) (h : ∀ j, (T j).p ⁻¹ᵁ U ≤ (T j).r ⁻¹ᵁ V) (π : Γ(Y, ⊤))
@@ -87,13 +85,13 @@ private lemma chart_norm {l Q n : ℕ} {Y : Scheme.{0}} (T : Fin (n + 1) → Cor
   · exact hn B hl (fun j => Fin (T j).d) ζ hζ B' ψ hres ι x
 
 /- English proof (translation)
-Introduce `l _ O _ Y q ϖ Q n T κ D A y U V hU hV h hy hn ψ hψ`. Establish `hl : (l : A.obj.U) ∈ nonZeroDivisors A.obj.U` using `(testFacts l A.obj A.property).1`. Establish `hyq : (y.1 ≫ D.π) ≫ q = Spec.map (CommRingCat.ofHom (A.obj.oC.comp κ))`. Rewrite using `[Category.assoc]`. Conclude with `y.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hval : (Scheme.ΓSpecIso (CommRingCat.of A.obj.U)).hom.hom ((y.1 ≫ D.π).appTop.hom (fn q ϖ)) = A.obj.oC (κ ϖ)`. Establish `e : (y.1 ≫ D.π).appTop.hom (fn q ϖ) = ((y.1 ≫ D.π) ≫ q).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of O)).inv.hom ϖ)`. Rewrite using `[Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression. Rewrite using `[e, hyq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (A.obj.oC.comp κ))`. Establish `e3` using `congr($(e2).hom ((Scheme.ΓSpecIso (CommRingCat.of O)).inv.hom ϖ))`. Use `e3.trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Take `⟨α, h1, h2⟩` from `chart_norm T hU hV h (fn q ϖ) hn A.obj.U hl (y.1 ≫ D.π) hy (fun j i => y.1 ≫ D.s j i) (fun j i => by rw [Category.assoc, D.hs]) (fun j => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `D.gen _ (awayPt l A.obj.U ≫ y.1) (unit_away l A.obj.U) j` as an intermediate fact. Simplify `this)` using `only [Category.assoc]`. Use the proof step `(Qb A.obj) ψ (by rw [hval]; exact hψ)`. Conclude with `⟨α, h1, h2⟩`.
+Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.correspondence_norm_bound_of_affine_opens :
     ∀ (l : ℕ) [Fact l.Prime] {O : Type} [CommRing O] {Y : Scheme.{0}} (q : Y ⟶ Spec (CommRingCat.of O)) (ϖ : O) (Q n : ℕ)

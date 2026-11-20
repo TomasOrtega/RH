@@ -11,9 +11,9 @@ namespace GroundTheory.Global
 namespace Elliptic
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Use `show dslope (fun w ↦ G (w + a)) w₀ w = dslope G (w₀ + a) (w + a)`. Break down `eq_or_ne w w₀ with rfl | hw` into its components or cases. Rewrite using `[dslope_same, dslope_same]`. Conclude with `deriv_comp_add_const _ _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hw' : w + a ≠ w₀ + a` using `fun h ↦ hw (add_right_cancel h)`. Rewrite using `[dslope_of_ne _ hw, dslope_of_ne _ hw', slope_def_field, slope_def_field]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma swap_dslope_comp_add (G : ℂ → ℂ) (a w₀ : ℂ) :
     Function.swap dslope w₀ (fun w ↦ G (w + a)) =
@@ -29,9 +29,9 @@ lemma swap_dslope_comp_add (G : ℂ → ℂ) (a w₀ : ℂ) :
     ring
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih`. Rewrite using `[dslopeIter_succ', ih, swap_dslope_comp_add]`. Use function extensionality and compare the values at `w`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[dslopeIter_succ']`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma dslopeIter_comp_add (G : ℂ → ℂ) (a w₀ : ℂ) (k : ℕ) :
     dslopeIter w₀ k (fun w ↦ G (w + a)) = fun w ↦ dslopeIter (w₀ + a) k G (w + a) := by
@@ -43,11 +43,11 @@ lemma dslopeIter_comp_add (G : ℂ → ℂ) (a w₀ : ℂ) (k : ℕ) :
     rw [dslopeIter_succ']
 
 /- English proof (translation)
-Use `set n := meromorphicShift f (w₀ + a)`. Use `set G : ℂ → ℂ := fun z ↦ (z - (w₀ + a)) ^ (n + 1) * f z with hGdef`. Establish `hG : AnalyticAt ℂ G (w₀ + a)` using `analyticAt_pow_mul_of_meromorphicShift_le hf (Nat.le_succ n)`. Establish `e : (fun w ↦ (w - w₀) ^ (n + 1) * f (w + a)) = fun w ↦ G (w + a)`. Use function extensionality and compare the values at `w`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [hGdef]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Establish `hana : AnalyticAt ℂ (fun w ↦ (w - w₀) ^ (n + 1) * f (w + a)) w₀`. Rewrite using `[e]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: AnalyticAt ℂ (fun w ↦ w + a) w₀` using `by fun_prop`. Conclude with `hG.comp_of_eq this rfl`. Rewrite using `[residue_eq_dslopeIter hana, e, dslopeIter_comp_add]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem residue_comp_add {f : ℂ → ℂ} {a w₀ : ℂ} (hf : MeromorphicAt f (w₀ + a)) :
     residue (fun w ↦ f (w + a)) w₀ = residue f (w₀ + a) := by
@@ -68,11 +68,11 @@ theorem residue_comp_add {f : ℂ → ℂ} {a w₀ : ℂ} (hf : MeromorphicAt f 
   rfl
 
 /- English proof (translation)
-Distinguish the cases in `htop : meromorphicOrderAt f p = ⊤`. Rewrite `htop` using `[meromorphicOrderAt_eq_top_iff]`. Rewrite using `[residue_congr hf htop]`. Conclude with `residue_eq_zero_of_analyticAt analyticAt_const`. Take `⟨n, hn⟩` from `WithTop.ne_top_iff_exists.1 htop`.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hn0 : 0 ≤ n` using `by rw [← hn] at h; exact_mod_cast h`. Take `⟨g, hg, -, hfg⟩` from `(meromorphicOrderAt_eq_int_iff hf).1 hn.symm`. Simplify using `only [smul_eq_mul] at hfg`. Use `lift n to ℕ using hn0`. Rewrite using `[residue_congr hf hfg]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `residue_eq_zero_of_analyticAt` to reduce the goal to its premises. Simplify using `only [zpow_natCast]`. Use `fun_prop`.
+A detailed English derivation is pending.
 -/
 theorem residue_eq_zero_of_meromorphicOrderAt_nonneg {f : ℂ → ℂ} {p : ℂ} (hf : MeromorphicAt f p)
     (h : 0 ≤ meromorphicOrderAt f p) : residue f p = 0 := by
@@ -91,7 +91,7 @@ theorem residue_eq_zero_of_meromorphicOrderAt_nonneg {f : ℂ → ℂ} {p : ℂ}
     fun_prop
 
 /- English proof (translation)
-Establish `h : ∀ k : ℕ, AnalyticAt ℂ (fun z ↦ ((z - p) ^ k)⁻¹) u` using `fun k ↦ ((analyticAt_id.sub analyticAt_const).pow k).inv (pow_ne_zero _ (sub_ne_zero.2 hu))`. Establish `: principalPart f p = fun z ↦ ∑ j ∈ Finset.range (meromorphicShift f p + 1), laurentCoeff f p j * ((z - p) ^ (meromorphicShift f p + 1 - j))⁻¹` using `rfl`. Rewrite using `[this]`. Conclude with `Finset.analyticAt_fun_sum _ fun j _ ↦ analyticAt_const.mul (h _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma analyticAt_principalPart (f : ℂ → ℂ) {p u : ℂ} (hu : u ≠ p) :
     AnalyticAt ℂ (principalPart f p) u := by
@@ -103,13 +103,13 @@ lemma analyticAt_principalPart (f : ℂ → ℂ) {p u : ℂ} (hu : u ≠ p) :
   exact Finset.analyticAt_fun_sum _ fun j _ ↦ analyticAt_const.mul (h _)
 
 /- English proof (translation)
-Establish `hp : p ∉ rectBoundary z w` using `notMem_rectBoundary_of_mem_Ioo ⟨(min_le_left _ _).trans_lt h1, h2.trans_le (le_max_right _ _)⟩ ⟨(min_le_left _ _).trans_lt h3, h4.trans_le (le_max_right _ _)⟩`. Establish `hne : ∀ u ∈ rectBoundary z w, u ≠ p` using `fun u hu h ↦ hp (h ▸ hu)`. Establish `hc : ∀ k : ℕ, ContinuousOn (fun u ↦ ((u - p) ^ k)⁻¹) (rectBoundary z w)` using `fun k u hu ↦ ((((continuous_id.sub continuous_const).pow k).continuousAt).inv₀ (pow_ne_zero _ (sub_ne_zero.2 (hne u hu)))).continuousWithinAt`. Use `set n := meromorphicShift f p`. Establish `e : principalPart f p = fun u ↦ ∑ j ∈ Finset.range (n + 1), laurentCoeff f p j * ((u - p) ^ (n + 1 - j))⁻¹` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[e, rectIntegral_finset_sum (Finset.range (n + 1)) (f := fun j u ↦ laurentCoeff f p j * ((u - p) ^ (n + 1 - j))⁻¹) (fun j _ ↦ continuousOn_const.mul (hc _))]`. Repeatedly rewrite using `[rectIntegral_const_mul]`. Rewrite using `[Finset.sum_range_succ, Finset.sum_eq_zero, zero_add]`. Rewrite using `[Nat.add_sub_cancel_left]`. Repeatedly rewrite using `[pow_one]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rectIntegral_sub_inv h1 h2 h3 h4]`. Conclude with `mul_comm _ _`. Introduce `j hj`. Establish `hj' : j < n` using `Finset.mem_range.1 hj`. Establish `e2 : (fun u ↦ ((u - p) ^ (n + 1 - j))⁻¹) = fun u ↦ (u - p) ^ (-((n + 1 - j : ℕ) : ℤ))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `u`. Rewrite using `[zpow_neg, zpow_natCast]`. Rewrite using `[e2, rectIntegral_zpow_sub _ hp, mul_zero]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem rectIntegral_principalPart (f : ℂ → ℂ) {z w p : ℂ} (h1 : z.re < p.re) (h2 : p.re < w.re)
     (h3 : z.im < p.im) (h4 : p.im < w.im) :
@@ -142,29 +142,27 @@ theorem rectIntegral_principalPart (f : ℂ → ℂ) {z w p : ℂ} (h1 : z.re < 
     omega
 
 /- English proof (translation)
-Use `set F : ℂ → ℂ := fun u ↦ f u - ∑ q ∈ S, principalPart f q u with hF`. Use `set E : ℂ → ℂ → ℂ := fun p u ↦ regularPart f p u - ∑ q ∈ S.erase p, principalPart f q u with hE`. Use `set G : ℂ → ℂ := fun u ↦ if u ∈ S then E u u else F u with hG`. Establish `hFE : ∀ p ∈ S, ∀ u, u ≠ p → F u = E p u`. Introduce `p hp u hu`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [hF, hE]`. Rewrite using `[eq_principalPart_add_regularPart f p hu, ← Finset.add_sum_erase S _ hp]`. Expand and normalize the polynomial expressions, which then agree. Establish `hEana : ∀ p ∈ S, AnalyticAt ℂ (E p) p`. Introduce `p hp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `(analyticAt_regularPart (hmero p hp)).sub (Finset.analyticAt_fun_sum _ fun q hq ↦ analyticAt_principalPart f (Finset.ne_of_mem_erase hq).symm)`. Establish `hGana : ∀ u ∈ [[z.re, w.re]] ×ℂ [[z.im, w.im]], AnalyticAt ℂ G u`. Introduce `u hu`. Distinguish the cases in `huS : u ∈ S`. Establish `hnhds : ((S.erase u : Finset ℂ) : Set ℂ)ᶜ ∈ 𝓝 u` using `(S.erase u).finite_toSet.isClosed.isOpen_compl.mem_nhds (by simp)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Use `(hEana u huS).congr ?_` and prove the remaining obligations. Use `filter_upwards [hnhds] with v hv`. Simplify using `only [hG]`. Break down `eq_or_ne v u with rfl | hvu` into its components or cases. Simplify using `[huS]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hvS : v ∉ S` using `fun h ↦ hv (Finset.mem_coe.2 (Finset.mem_erase.2 ⟨hvu, h⟩))`. Rewrite using `[if_neg hvS, hFE u huS v hvu]`. Establish `hnhds : ((S : Set ℂ))ᶜ ∈ 𝓝 u` using `S.finite_toSet.isClosed.isOpen_compl.mem_nhds (by simpa using huS)`. Establish `hFana : AnalyticAt ℂ F u` using `(hana u hu huS).sub (Finset.analyticAt_fun_sum _ fun q hq ↦ analyticAt_principalPart f (fun h ↦ huS (h ▸ hq)))`. Use `hFana.congr ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `filter_upwards [hnhds] with v hv`. Establish `hvS : v ∉ S` using `by simpa using hv`. Simplify using `only [hG, if_neg hvS]`. Establish `hSb : ∀ p ∈ S, p ∉ rectBoundary z w` using `fun p hp ↦ by`. Take `⟨h1, h2, h3, h4⟩` from `hS p hp`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `notMem_rectBoundary_of_mem_Ioo ⟨(min_le_left _ _).trans_lt h1, h2.trans_le (le_max_right _ _)⟩ ⟨(min_le_left _ _).trans_lt h3, h4.trans_le (le_max_right _ _)⟩`. Establish `hbK : rectBoundary z w ⊆ [[z.re, w.re]] ×ℂ [[z.im, w.im]]` using `rectBoundary_subset`. Establish `hG0 : rectIntegral G z w = 0`. Apply `rectIntegral_eq_zero_of_differentiable_on_off_countable G z w ∅ countable_empty` to reduce the goal to its premises. Conclude with `fun u hu ↦ (hGana u hu).continuousAt.continuousWithinAt`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `u hu`. Apply `(hGana u _).differentiableAt` to reduce the goal to its premises. Establish `h'` using `hu.1`. Rewrite `h'`, the goal using `[mem_reProdIm]`. Conclude with `⟨Ioo_subset_Icc_self h'.1, Ioo_subset_Icc_self h'.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGF : rectIntegral G z w = rectIntegral F z w`. Apply `rectIntegral_congr` to reduce the goal to its premises. Introduce `u hu`. Establish `huS : u ∉ S` using `fun h ↦ hSb u h hu`. Simplify using `only [hG, if_neg huS]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hPc : ∀ q ∈ S, ContinuousOn (principalPart f q) (rectBoundary z w)` using `fun q hq u hu ↦ (analyticAt_principalPart f (fun (h : u = q) ↦ hSb q hq (h ▸ hu))).continuousAt.continuousWithinAt`. Establish `hFc : ContinuousOn F (rectBoundary z w)` using `fun u hu ↦ by`. Establish `huS : u ∉ S` using `fun h ↦ hSb u h hu`. Conclude with `((hana u (hbK hu) huS).sub (Finset.analyticAt_fun_sum _ fun q hq ↦ analyticAt_principalPart f (fun h ↦ huS (h ▸ hq)))).continuousAt.continuousWithinAt`. Establish `hsplit : rectIntegral f z w = rectIntegral F z w + ∑ q ∈ S, rectIntegral (principalPart f q) z w`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← rectIntegral_finset_sum S hPc, ← rectIntegral_add hFc (continuousOn_finsetSum S hPc)]`. Use `congr 1`. Use function extensionality and compare the values at `u`. Simplify using `only [hF]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[hsplit, ← hGF, hG0, zero_add, Finset.mul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `q hq`. Take `⟨h1, h2, h3, h4⟩` from `hS q hq`. Conclude with `rectIntegral_principalPart f h1 h2 h3 h4`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rectIntegral_eq_sum_residue {f : ℂ → ℂ} {z w : ℂ} (S : Finset ℂ)
     (hS : ∀ p ∈ S, z.re < p.re ∧ p.re < w.re ∧ z.im < p.im ∧ p.im < w.im)

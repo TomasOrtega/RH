@@ -15,7 +15,7 @@ def fT' (A : Matrix (Fin q → ι) (Fin q → ι) ℂ) (B : Fin q → Matrix ι 
   ∑ I, ∑ J, A I J * ∏ i, B i (I i) (J i)
 
 /- English proof (translation)
-Rewrite using `[Fintype.prod_sum]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.prod_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_sum_sum (g : Fin q → ι → ι → ℂ) :
     ∏ i, (∑ x, ∑ y, g i x y) = ∑ I : Fin q → ι, ∑ J : Fin q → ι, ∏ i, g i (I i) (J i) := by
@@ -24,7 +24,7 @@ theorem prod_sum_sum (g : Fin q → ι → ι → ℂ) :
   rw [Fintype.prod_sum]
 
 /- English proof (translation)
-Use extensionality with `I J`. Simplify using `only [tp, of_apply, mul_apply]`. Rewrite using `[Fintype.prod_sum]`. Simplify using `[Finset.prod_mul_distrib]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tp_mul (A B : Matrix ι ι ℂ) : tp q (A * B) = tp q A * tp q B := by
   ext I J
@@ -34,11 +34,9 @@ theorem tp_mul (A B : Matrix ι ι ℂ) : tp q (A * B) = tp q A * tp q B := by
 
 omit [Fintype ι] in
 /- English proof (translation)
-Use extensionality with `I J`. Simplify using `only [tp, of_apply, one_apply]`. Distinguish the cases in `h : I = J`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg h]`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, I i ≠ J i := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `h (funext hc)`.
-
-Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (if_neg hi)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem tp_one [DecidableEq ι] : tp q (1 : Matrix ι ι ℂ) = 1 := by
   ext I J
@@ -51,9 +49,7 @@ theorem tp_one [DecidableEq ι] : tp q (1 : Matrix ι ι ℂ) = 1 := by
     exact Finset.prod_eq_zero (Finset.mem_univ i) (if_neg hi)
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun c _ => Finset.sum_comm`. Use `_ = ∑ c, ∑ d, ∑ a, ∑ b, f a b c d := by`.
-
-Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun c _ => Finset.sum_comm`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum4 {α β γ δ : Type} [Fintype α] [Fintype β] [Fintype γ] [Fintype δ] (f : α → β → γ → δ → ℂ) :
     ∑ a, ∑ b, ∑ c, ∑ d, f a b c d = ∑ c, ∑ d, ∑ a, ∑ b, f a b c d := by
@@ -66,7 +62,7 @@ theorem sum4 {α β γ δ : Type} [Fintype α] [Fintype β] [Fintype γ] [Fintyp
         exact Finset.sum_congr rfl fun c _ => Finset.sum_comm
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem sum3 {α β γ : Type} [Fintype α] [Fintype β] [Fintype γ] (f : α → β → γ → ℂ) :
     ∑ a, ∑ b, ∑ c, f a b c = ∑ c, ∑ a, ∑ b, f a b c := by
@@ -74,11 +70,11 @@ theorem sum3 {α β γ : Type} [Fintype α] [Fintype β] [Fintype γ] (f : α �
     _ = _ := Finset.sum_comm
 
 /- English proof (translation)
-Establish `h1 : ∀ (b : Matrix ι ι ℂ) (x y : ι), (P * b * Pᴴ) x y = ∑ u, ∑ v, P x u * b u v * star (P y v)`. Introduce `b x y`. Simplify using `only [mul_apply, conjTranspose_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Unfold `fT'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Simplify using `only [h1, prod_sum_sum, Finset.mul_sum]`. Rewrite using `[sum4]`. Use `Finset.sum_congr rfl fun U _ => Finset.sum_congr rfl fun V _ => ?_` and prove the remaining obligations. Simplify using `only [mul_apply, tp, of_apply, transpose_apply, map_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun J _ => Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Simplify using `only [Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fT'_conj (A : Matrix (Fin q → ι) (Fin q → ι) ℂ) (P : Matrix ι ι ℂ) (B : Fin q → Matrix ι ι ℂ) :
     fT' A (fun i => P * B i * Pᴴ) = fT' (tp q Pᵀ * A * tp q (P.map star)) B := by
@@ -103,13 +99,13 @@ section GlobalTheory
 variable {W : Type} [Fintype W] {m : ℕ}
 
 /- English proof (translation)
-Use extensionality with `x y`. Simplify using `only [blk, mul_apply, of_apply]`. Rewrite using `[Fintype.sum_prod_type]`. Simplify using `only`. Distinguish the cases in `h : x.1 = y.1`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos h, Finset.sum_eq_single x.1]`. Simplify using `only [if_true, h]`. Introduce `b _ hb`. Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg h]`. Use `Finset.sum_eq_zero fun w _ => Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `h1 : x.1 = w`. Substitute `h1` using the available equality. Simplify using `[h]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[h1]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blk_mul (d e : W → Matrix (Fin m) (Fin m) ℂ) : blk d * blk e = blk fun w => d w * e w := by
   ext x y
@@ -128,7 +124,7 @@ theorem blk_mul (d e : W → Matrix (Fin m) (Fin m) ℂ) : blk d * blk e = blk f
     · simp [h1]
 
 /- English proof (translation)
-Use extensionality with `x y`. Simplify using `only [blk, of_apply, one_apply, Prod.ext_iff]`. Apply the tactic sequence `by_cases h : x.1 = y.1 <;> simp [h]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blk_one : blk (fun _ : W => (1 : Matrix (Fin m) (Fin m) ℂ)) = 1 := by
   ext x y
@@ -136,7 +132,7 @@ theorem blk_one : blk (fun _ : W => (1 : Matrix (Fin m) (Fin m) ℂ)) = 1 := by
   by_cases h : x.1 = y.1 <;> simp [h]
 
 /- English proof (translation)
-Use extensionality with `x y`. Simplify using `only [blk, of_apply, transpose_apply]`. Distinguish the cases in `h : x.1 = y.1`. Rewrite using `[if_pos h.symm, if_pos h, h]`. Rewrite using `[if_neg (Ne.symm h), if_neg h]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem blk_transpose (d : W → Matrix (Fin m) (Fin m) ℂ) : (blk d)ᵀ = blk fun w => (d w)ᵀ := by
   ext x y
@@ -146,7 +142,7 @@ theorem blk_transpose (d : W → Matrix (Fin m) (Fin m) ℂ) : (blk d)ᵀ = blk 
   · rw [if_neg (Ne.symm h), if_neg h]
 
 /- English proof (translation)
-Use extensionality with `x y`. Simplify using `only [blk, of_apply, map_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blk_map_star (d : W → Matrix (Fin m) (Fin m) ℂ) : (blk d).map star = blk fun w => (d w).map star := by
   ext x y
@@ -154,14 +150,14 @@ theorem blk_map_star (d : W → Matrix (Fin m) (Fin m) ℂ) : (blk d).map star =
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[conjTranspose, blk_transpose, blk_map_star]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem blk_conjTranspose (d : W → Matrix (Fin m) (Fin m) ℂ) : (blk d)ᴴ = blk fun w => (d w)ᴴ := by
   rw [conjTranspose, blk_transpose, blk_map_star]
   rfl
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Conclude with `h (Finset.prod_eq_zero (Finset.mem_univ i) (by simp [blk, hc]))`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem tp_blk_supp {q : ℕ} (e : W → Matrix (Fin m) (Fin m) ℂ) (X Y : Fin q → Ix W m)
     (h : tp q (blk e) X Y ≠ 0) (i : Fin q) : (X i).1 = (Y i).1 := by
@@ -181,9 +177,9 @@ def Mm (a b : Fin N) (ε : Bool) : Matrix (Fin N) (Fin N) ℂ :=
     else (if i = a ∧ j = b then 1 else 0) + (if i = b ∧ j = a then 1 else 0)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Mm, conjTranspose_apply, of_apply]`. Establish `e1 : (j = a ∧ i = b) = (i = b ∧ j = a)` using `propext and_comm`. Establish `e2 : (j = b ∧ i = a) = (i = a ∧ j = b)` using `propext and_comm`. Simplify using `only [e1, e2]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `cases ε <;> simp only [Bool.false_eq_true, if_false, if_true] <;> split_ifs <;> simp [Complex.conj_I]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Mm_herm (a b : Fin N) (ε : Bool) : (Mm a b ε).IsHermitian := by
   ext i j
@@ -194,9 +190,9 @@ theorem Mm_herm (a b : Fin N) (ε : Bool) : (Mm a b ε).IsHermitian := by
   cases ε <;> simp only [Bool.false_eq_true, if_false, if_true] <;> split_ifs <;> simp [Complex.conj_I]
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_eq_single i, Finset.sum_eq_single j]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `b _ hb; exact Finset.sum_eq_zero fun y _ => by simp [Ne.symm hb]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem sd1 (f : Fin N → Fin N → ℂ) (i j : Fin N) :
     ∑ a, ∑ b, (if i = a ∧ j = b then f a b else 0) = f i j := by
@@ -208,9 +204,9 @@ theorem sd1 (f : Fin N → Fin N → ℂ) (i j : Fin N) :
   · simp
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_eq_single j, Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `b _ hb; exact Finset.sum_eq_zero fun y _ => by simp [Ne.symm hb]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem sd2 (f : Fin N → Fin N → ℂ) (i j : Fin N) :
     ∑ a, ∑ b, (if i = b ∧ j = a then f a b else 0) = f j i := by
@@ -235,7 +231,7 @@ def c1 (ε : Bool) : ℂ := if ε then -Complex.I / 4 else 1 / 4
 def c2 (ε : Bool) : ℂ := if ε then Complex.I / 4 else 1 / 4
 
 /- English proof (translation)
-Simplify using `only [Fintype.sum_bool, c1, c2, Mm, of_apply, if_true, Bool.false_eq_true, if_false, mul_add, mul_sub, mul_ite, mul_zero, Finset.sum_add_distrib, Finset.sum_sub_distrib, sd1, sd2]`. Put the polynomial expressions in normal form. Rewrite using `[Complex.I_sq]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mat_expand (z : Matrix (Fin N) (Fin N) ℂ) (i j : Fin N) :
     ∑ a, ∑ b, ∑ ε, (c1 ε * z a b + c2 ε * z b a) * Mm a b ε i j = z i j := by
@@ -253,9 +249,9 @@ def lc (k : K L N) (B : Matrix (Ix (InfinitePlace L) N) (Ix (InfinitePlace L) N)
   ∑ x, ∑ y, gc k x y * B x y
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_eq_single p, Finset.sum_eq_single p']`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[hb]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `b _ hb; exact Finset.sum_eq_zero fun y _ => by simp [hb]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem sum_delta (p p' : Ix (InfinitePlace L) N) (c : ℂ)
     (B : Matrix (Ix (InfinitePlace L) N) (Ix (InfinitePlace L) N) ℂ) :
@@ -268,16 +264,16 @@ theorem sum_delta (p p' : Ix (InfinitePlace L) N) (c : ℂ)
   · simp
 
 /- English proof (translation)
-Simplify using `only [lc, gc, add_mul, Finset.sum_add_distrib, sum_delta]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lc_eq (k : K L N) (B : Matrix (Ix (InfinitePlace L) N) (Ix (InfinitePlace L) N) ℂ) :
     lc k B = c1 k.2.2.2 * B (k.1, k.2.1) (k.1, k.2.2.1) + c2 k.2.2.2 * B (k.1, k.2.2.1) (k.1, k.2.1) := by
   simp only [lc, gc, add_mul, Finset.sum_add_distrib, sum_delta]
 
 /- English proof (translation)
-Simplify using `only [blk, MH, mat_mkHS, of_apply]`. Distinguish the cases in `h : x.1 = y.1`. Rewrite using `[if_pos h]`. Distinguish the cases in `h' : x.1 = k.1`. Rewrite using `[if_pos h', if_pos ⟨h, h'⟩]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h', if_neg (fun hh => h' hh.2)]`. Both sides reduce to the same expression. Rewrite using `[if_neg h, if_neg (fun hh => h hh.1)]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem blk_MH (k : K L N) (x y : Ix (InfinitePlace L) N) :
     blk (fun w => mat (MH k) w) x y = if x.1 = y.1 ∧ x.1 = k.1 then Mm k.2.1 k.2.2.1 k.2.2.2 x.2 y.2 else 0 := by
@@ -290,11 +286,11 @@ theorem blk_MH (k : K L N) (x y : Ix (InfinitePlace L) N) :
   · rw [if_neg h, if_neg (fun hh => h hh.1)]
 
 /- English proof (translation)
-Use extensionality with `x y`. Simplify using `only [Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul, lc_eq, blk_MH]`. Distinguish the cases in `h : x.1 = y.1`. Establish `hb : blk Z x y = Z x.1 x.2 y.2` using `by simp [blk, h]`. Rewrite using `[hb, Fintype.sum_prod_type, Finset.sum_eq_single x.1]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [true_and, if_true, h]`. Simplify using `only [blk, of_apply, if_true, Fintype.sum_prod_type]`. Rewrite using `[← h]`. Conclude with `(mat_expand (Z x.1) x.2 y.2).symm`. Introduce `b _ hb`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_eq_zero fun r _ => by simp [Ne.symm hb]`. Simplify using the standard rewrite rules. Rewrite using `[show blk Z x y = 0 by simp [blk, h]]`. Conclude with `(Finset.sum_eq_zero fun r _ => by simp [h]).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blk_expand (Z : InfinitePlace L → Matrix (Fin N) (Fin N) ℂ) :
     blk Z = ∑ k : K L N, lc k (blk Z) • blk (fun w => mat (MH k) w) := by
@@ -314,7 +310,7 @@ theorem blk_expand (Z : InfinitePlace L → Matrix (Fin N) (Fin N) ℂ) :
     exact (Finset.sum_eq_zero fun r _ => by simp [h]).symm
 
 /- English proof (translation)
-Rewrite using `[lc_eq]`. Establish `hY : mat Y k.1 k.2.2.1 k.2.1 = star (mat Y k.1 k.2.1 k.2.2.1)` using `((mat_herm Y k.1).apply _ _).symm`. Simplify using `only [blk, of_apply, if_true, hY, coef, c1, c2]`. Apply the tactic sequence `apply Complex.ext <;> cases k.2.2.2 <;> simp <;> ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lc_herm (k : K L N) (Y : HS L N) : lc k (blk fun w => mat Y w) = (coef k Y : ℂ) := by
   rw [lc_eq]
@@ -323,7 +319,7 @@ theorem lc_herm (k : K L N) (Y : HS L N) : lc k (blk fun w => mat Y w) = (coef k
   apply Complex.ext <;> cases k.2.2.2 <;> simp <;> ring
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[mat, Submodule.coe_sum, Finset.sum_apply, Matrix.sum_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mat_sum {ι : Type} (s : Finset ι) (f : ι → HS L N) (w : InfinitePlace L) :
     mat (∑ i ∈ s, f i) w = ∑ i ∈ s, mat (f i) w := by
@@ -331,9 +327,9 @@ theorem mat_sum {ι : Type} (s : Finset ι) (f : ι → HS L N) (w : InfinitePla
   simp [mat, Submodule.coe_sum, Finset.sum_apply, Matrix.sum_apply]
 
 /- English proof (translation)
-Use `HS_ext fun w => ?_` and prove the remaining obligations. Use extensionality with `a b`. Establish `h` using `congrFun (congrFun (blk_expand (fun w => mat Y w)) (w, a)) (w, b)`. Simplify using `only [Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul, lc_herm] at h`. Simplify using `only [blk, of_apply, if_true] at h`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[h, mat_sum, Matrix.sum_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `[Complex.real_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem herm_decomp (Y : HS L N) : Y = ∑ k : K L N, coef k Y • MH k := by
   refine HS_ext fun w => ?_
@@ -348,7 +344,7 @@ theorem herm_decomp (Y : HS L N) : Y = ∑ k : K L N, coef k Y • MH k := by
 variable {q : ℕ}
 
 /- English proof (translation)
-Establish `: f Y = f (fun i => ∑ k : K L N, coef k (Y i) • MH k)` using `congrArg f (funext fun i => herm_decomp (Y i))`. Rewrite using `[this, ContinuousMultilinearMap.map_sum]`. Use `Finset.sum_congr rfl fun κ _ => ?_` and prove the remaining obligations. Rewrite using `[ContinuousMultilinearMap.map_smul_univ, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem f_expand (f : ContinuousMultilinearMap ℝ (fun _ : Fin q => HS L N) ℝ) (Y : Fin q → HS L N) :
     f Y = ∑ κ : Fin q → K L N, (∏ i, coef (κ i) (Y i)) * f (fun i => MH (κ i)) := by
@@ -358,9 +354,9 @@ theorem f_expand (f : ContinuousMultilinearMap ℝ (fun _ : Fin q => HS L N) ℝ
   rw [ContinuousMultilinearMap.map_smul_univ, smul_eq_mul]
 
 /- English proof (translation)
-Establish `h : ∀ (i : Fin q) (x y : Ix (InfinitePlace L) N), blk (Z i) x y = ∑ k : K L N, lc k (blk (Z i)) * blk (fun w => mat (MH k) w) x y`. Introduce `i x y`. Use `conv_lhs => rw [blk_expand (Z i)]`. Simplify using `[Matrix.sum_apply]`. Unfold `fT'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only [h, Fintype.prod_sum, Finset.prod_mul_distrib, Finset.mul_sum]`. Rewrite using `[sum3]`. Conclude with `Finset.sum_congr rfl fun κ _ => Finset.sum_congr rfl fun I _ => Finset.sum_congr rfl fun J _ => by ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fT'_expand (A : Matrix (Fin q → Ix (InfinitePlace L) N) (Fin q → Ix (InfinitePlace L) N) ℂ)
     (Z : Fin q → InfinitePlace L → Matrix (Fin N) (Fin N) ℂ) :
@@ -381,7 +377,7 @@ def Tm (f : ContinuousMultilinearMap ℝ (fun _ : Fin q => HS L N) ℝ) :
   fun I J => ∑ κ : Fin q → K L N, (∏ i, gc (κ i) (I i) (J i)) * (f (fun i => MH (κ i)) : ℂ)
 
 /- English proof (translation)
-Unfold `fT' Tm lc`. Simplify using `only [prod_sum_sum, Finset.sum_mul]`. Rewrite using `[sum3]`. Use `Finset.sum_congr rfl fun κ _ => Finset.sum_congr rfl fun I _ => Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -396,7 +392,7 @@ theorem fT'_Tm (f : ContinuousMultilinearMap ℝ (fun _ : Fin q => HS L N) ℝ)
   ring
 
 /- English proof (translation)
-Rewrite using `[fT'_Tm, f_expand f Y]`. Simplify using `only [lc_herm]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem fT'_Tm_herm (f : ContinuousMultilinearMap ℝ (fun _ : Fin q => HS L N) ℝ) (Y : Fin q → HS L N) :
     fT' (Tm f) (fun i => blk fun w => mat (Y i) w) = (f Y : ℂ) := by
@@ -406,9 +402,9 @@ theorem fT'_Tm_herm (f : ContinuousMultilinearMap ℝ (fun _ : Fin q => HS L N) 
   rfl
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Apply `h` to reduce the goal to its premises. Use `Finset.sum_eq_zero fun κ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ i), zero_mul]`. Establish `h1 : ¬(I i = ((κ i).1, (κ i).2.1) ∧ J i = ((κ i).1, (κ i).2.2.1))`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `⟨h1, h2⟩; exact hc (by rw [h1, h2])`. Establish `h2 : ¬(I i = ((κ i).1, (κ i).2.2.1) ∧ J i = ((κ i).1, (κ i).2.1))`. Introduce and unpack `⟨h1, h2⟩; exact hc (by rw [h1, h2])`. Simplify using `only [gc, if_neg h1, if_neg h2, add_zero]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 theorem Tm_supp (f : ContinuousMultilinearMap ℝ (fun _ : Fin q => HS L N) ℝ) (I J : Fin q → Ix (InfinitePlace L) N)
     (h : Tm f I J ≠ 0) (i : Fin q) : (I i).1 = (J i).1 := by
@@ -423,9 +419,9 @@ theorem Tm_supp (f : ContinuousMultilinearMap ℝ (fun _ : Fin q => HS L N) ℝ)
   simp only [gc, if_neg h1, if_neg h2, add_zero]
 
 /- English proof (translation)
-Rewrite `h` using `[mul_apply]`. Take `⟨J, -, hJ⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h`. Take `⟨h1, h2⟩` from `mul_ne_zero_iff.1 hJ`. Rewrite `h1` using `[mul_apply]`. Take `⟨I, -, hI⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h1`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨h3, h4⟩` from `mul_ne_zero_iff.1 hI`. Rewrite using `[tp_blk_supp d1 X I h3 i, hA I J h4 i, tp_blk_supp d2 J Y h2 i]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_supp (d1 d2 : InfinitePlace L → Matrix (Fin N) (Fin N) ℂ)
     (A : Matrix (Fin q → Ix (InfinitePlace L) N) (Fin q → Ix (InfinitePlace L) N) ℂ)
@@ -440,13 +436,13 @@ theorem conj_supp (d1 d2 : InfinitePlace L → Matrix (Fin N) (Fin N) ℂ)
   rw [tp_blk_supp d1 X I h3 i, hA I J h4 i, tp_blk_supp d2 J Y h2 i]
 
 /- English proof (translation)
-Break down `x with ⟨xw, xa⟩` into its components or cases. Break down `y with ⟨yw, ya⟩` into its components or cases. Break down `p with ⟨pw, pa⟩` into its components or cases. Break down `p' with ⟨pw', pa'⟩` into its components or cases. Simplify using `only at hp`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Substitute `hp` using the available equality. Simplify using `only [blk, of_apply, Prod.mk.injEq]`. Distinguish the cases in `h1 : xw = yw`. Substitute `h1` using the available equality. Distinguish the cases in `h2 : xw = pw`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails.
 
-Substitute `h2` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h2]`. Rewrite using `[if_neg h1, if_neg]`. Introduce and unpack `⟨⟨h2, -⟩, h3, -⟩`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `h1 (h2.trans h3.symm)`.
+A detailed English derivation is pending.
 -/
 theorem blk_E (p p' : Ix (InfinitePlace L) N) (hp : p.1 = p'.1) (x y : Ix (InfinitePlace L) N) :
     blk (fun w => if w = p.1 then Matrix.of (fun a b => if a = p.2 ∧ b = p'.2 then (1 : ℂ) else 0) else 0) x y =
@@ -468,9 +464,9 @@ theorem blk_E (p p' : Ix (InfinitePlace L) N) (hp : p.1 = p'.1) (x y : Ix (Infin
     exact h1 (h2.trans h3.symm)
 
 /- English proof (translation)
-Unfold `fT'`. Simplify using `only [blk_E _ _ (hc _), Finset.prod_boole, Finset.mem_univ, true_imp_iff]`. Establish `e : ∀ I' J' : Fin q → Ix (InfinitePlace L) N, (∀ i, I' i = I i ∧ J' i = J i) ↔ (I' = I ∧ J' = J)`. Introduce `I' J'`. Simplify using `only [funext_iff, forall_and]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [e, ite_and, mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_eq_single I (fun b _ hb => by simp [hb]) (by simp)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fT'_E (A : Matrix (Fin q → Ix (InfinitePlace L) N) (Fin q → Ix (InfinitePlace L) N) ℂ)
     (I J : Fin q → Ix (InfinitePlace L) N) (hc : ∀ i, (I i).1 = (J i).1) :
@@ -486,9 +482,9 @@ theorem fT'_E (A : Matrix (Fin q → Ix (InfinitePlace L) N) (Fin q → Ix (Infi
   simp
 
 /- English proof (translation)
-Use extensionality with `I J`. Distinguish the cases in `hc : ∀ i, (I i).1 = (J i).1`. Use `h fun i w => if w = (I i).1 then Matrix.of (fun a b => if a = (I i).2 ∧ b = (J i).2 then (1 : ℂ) else 0) else 0` as an intermediate fact. Rewrite `this` using `[fT'_E A I J hc, fT'_E A' I J hc]`. Then use the resulting hypothesis. Use `push Not at hc`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `hc`. Establish `h1 : A I J = 0` using `by by_contra h1; exact hi (hA I J h1 i)`. Establish `h2 : A' I J = 0` using `by by_contra h2; exact hi (hA' I J h2 i)`. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uniq (A A' : Matrix (Fin q → Ix (InfinitePlace L) N) (Fin q → Ix (InfinitePlace L) N) ℂ)
     (hA : ∀ I J, A I J ≠ 0 → ∀ i, (I i).1 = (J i).1) (hA' : ∀ I J, A' I J ≠ 0 → ∀ i, (I i).1 = (J i).1)
@@ -514,25 +510,23 @@ namespace PositivityTheory.KB.BlockInvariants
 open ComplexBlocks
 
 /- English proof (translation)
-Introduce `L _ _ N q f hf`. Use `⟨Tm f, fun Y => ?_, fun d hd => ?_⟩` and prove the remaining obligations. Use `show f Y = (fT' (Tm f) (fun i => blk fun w => mat (Y i) w)).re`. Rewrite using `[fT'_Tm_herm, Complex.ofReal_re]`. Establish `hd1 : ∀ w, d w * (d w)ᴴ = 1` using `fun w => by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `mem_unitaryGroup_iff.1 (hd w)` using `[Matrix.star_eq_conjTranspose]`. Establish `hd2 : ∀ w, (d w)ᴴ * d w = 1` using `fun w => by`. Simplify `mem_unitaryGroup_iff'.1 (hd w)` using `[Matrix.star_eq_conjTranspose]`. Use `set d' : InfinitePlace L → Matrix (Fin N) (Fin N) ℂ := fun w => (d w)ᵀ with hd'`. Establish `ct : ∀ w, (d' w)ᴴ = ((d w)ᴴ)ᵀ` using `fun w => by ext i j; rfl`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu1 : ∀ w, d' w * (d' w)ᴴ = 1` using `fun w => by`. Rewrite using `[ct, hd', ← transpose_mul, hd2, transpose_one]`. Establish `hu2 : ∀ w, (d' w)ᴴ * d' w = 1` using `fun w => by`. Rewrite using `[ct, hd', ← transpose_mul, hd1, transpose_one]`. Set `u : Gp L N` to `fun w => ⟨d' w, (d' w)ᴴ, hu1 w, hu2 w⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmat : ∀ (Y : HS L N) w, mat (actL u Y) w = d' w * mat Y w * (d' w)ᴴ`. Introduce `Y w`. Rewrite using `[mat_actL]`. Simplify using `[u, Units.inv_mk, conjTranspose_conjTranspose]`. Establish `hone : actL u (one L N).1 = (one L N).1` using `HS_ext fun w => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hmat]`. Simplify using `[one, hu1]`. Establish `hinv` using `hf u hone`. Establish `e1 : (blk d')ᵀ = blk d`. Rewrite using `[blk_transpose]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `e2 : (blk d').map star = blk fun w => (d w)ᴴ`. Rewrite using `[blk_map_star]`. Both sides reduce to the same expression. Establish `key : tp q (blk d) * Tm f * tp q (blk fun w => (d w)ᴴ) = Tm f`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `uniq` to reduce the goal to its premises. Conclude with `conj_supp _ _ _ (Tm_supp f)`. Conclude with `Tm_supp f`. Introduce `Z`. Rewrite using `[fT'_expand, fT'_expand]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun κ _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[← e1, ← e2, ← fT'_conj, fT'_Tm_herm]`. Establish `hb : ∀ i, blk d' * blk (fun w => mat (MH (κ i)) w) * (blk d')ᴴ = blk fun w => mat (actL u (MH (κ i))) w` using `fun i => by`. Rewrite using `[blk_conjTranspose, blk_mul, blk_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use function extensionality and compare the values at `w`. Rewrite using `[hmat]`. Simplify using `only [hb]`. Rewrite using `[fT'_Tm_herm, hinv]`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← tp_mul, blk_mul, show (fun w => (d w)ᴴ * d w) = fun _ => 1 from funext hd2, blk_one, tp_one, Matrix.mul_one]`. Use `_ = (tp q (blk d) * Tm f * tp q (blk fun w => (d w)ᴴ)) * tp q (blk d) := by`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Tm f * tp q (blk d) := by rw [key]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cplx : Cplx := by
   intro L _ _ N q f hf

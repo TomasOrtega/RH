@@ -14,11 +14,11 @@ section SlopeTestRemainingChoices
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (Dw : Datum H)
 
 /- English proof (translation)
-Establish `skew : ∀ x y : Dw.La, Dw.EF x y = -Dw.EF y x` using `fun x y => by`. Use `Dw.alt (x + y)` as an intermediate fact. Simplify using `only [map_add, LinearMap.add_apply, Dw.alt] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Proceed by induction on `u using TensorProduct.induction_on with`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add u u' h h' => simp only [map_add, LinearMap.add_apply, h, h']`. Expand and normalize the polynomial expressions, which then agree. Consider the case `tmul k x`. Proceed by induction on `v using TensorProduct.induction_on with`.
+Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add u u' h h' => simp only [map_add, LinearMap.add_apply, h, h']`. Expand and normalize the polynomial expressions, which then agree. Consider the case `tmul k' x'`. Rewrite using `[LinearMap.BilinForm.baseChange_tmul, LinearMap.BilinForm.baseChange_tmul, skew x x', neg_smul, mul_comm]`.
+Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem skewK {K : Type} [CommRing K] (u v : K ⊗[ℤ] Dw.La) :
     Dw.EF.baseChange K u v = -Dw.EF.baseChange K v u := by
@@ -37,9 +37,9 @@ private theorem skewK {K : Type} [CommRing K] (u v : K ⊗[ℤ] Dw.La) :
       rw [LinearMap.BilinForm.baseChange_tmul, LinearMap.BilinForm.baseChange_tmul, skew x x', neg_smul, mul_comm]
 
 /- English proof (translation)
-Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add u u' h h' => simp only [map_add, LinearMap.add_apply, h, h']`. Consider the case `tmul k x`. Proceed by induction on `v using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add u u' h h' => simp only [map_add, h, h']`. Consider the case `tmul k' x'`. Simplify using `only [LinearMap.baseChange_tmul, LinearMap.BilinForm.baseChange_tmul, LinearMap.restrictScalars_apply, LinearMap.lsmul_apply]`. Rewrite using `[Dw.adj]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem adjK {K : Type} [CommRing K] (o : 𝓞 E) (u v : K ⊗[ℤ] Dw.La) :
     Dw.EF.baseChange K (((LinearMap.lsmul (𝓞 E) Dw.La o).restrictScalars ℤ).baseChange K u) v =
@@ -57,17 +57,17 @@ private theorem adjK {K : Type} [CommRing K] (o : 𝓞 E) (u v : K ⊗[ℤ] Dw.L
       rw [Dw.adj]
 
 /- English proof (translation)
-The claim follows from `Function.Injective.moduleIsTorsionFree Dw.EF Dw.unimod.1 (fun r x => map_smul _ r x)`.
+A detailed English derivation is pending.
 -/
 private theorem torsionFree : Module.IsTorsionFree ℤ Dw.La :=
   Function.Injective.moduleIsTorsionFree Dw.EF Dw.unimod.1 (fun r x => map_smul _ r x)
 
 /- English proof (translation)
-Take `⟨N, ⟨a⟩⟩ : ∃ k : ℕ, Nonempty (Module.Basis (Fin k) ℤ Dw.La)` from `by haveI := Dw.fin haveI : Module.Finite ℤ Dw.La := Module.Finite.trans (𝓞 E) Dw.La haveI := torsionFree Dw haveI : Module.Free ℤ Dw.La := Module.free_of_finite_type_torsion_free'`. Conclude with `⟨_, ⟨Module.finBasis ℤ Dw.La⟩⟩`. Use `choose y hy using fun m' : Fin N => Dw.unimod.2 (a.coord m')`. Use `⟨N, a, y, fun K _ w => ?_⟩` and prove the remaining obligations. Proceed by induction on `w using TensorProduct.induction_on with`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add u u' h h'`. Simplify using `only [map_add, add_smul, Finset.sum_add_distrib]`. Rewrite using `[← h, ← h']`. Consider the case `tmul k x => conv_lhs => rw [← a.sum_repr x, TensorProduct.tmul_sum]`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.BilinForm.baseChange_tmul, hy, Module.Basis.coord_apply, TensorProduct.smul_tmul', _root_.one_mul, smul_eq_mul, _root_.mul_one, TensorProduct.smul_tmul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem expand : ∃ (n : ℕ) (e y : Fin n → Dw.La), ∀ (K : Type) [CommRing K] (w : K ⊗[ℤ] Dw.La),
     w = ∑ m, Dw.EF.baseChange K (1 ⊗ₜ y m) w • ((1 : K) ⊗ₜ[ℤ] e m) := by
@@ -91,7 +91,7 @@ private theorem expand : ∃ (n : ℕ) (e y : Fin n → Dw.La), ∀ (K : Type) [
       smul_eq_mul, _root_.mul_one, TensorProduct.smul_tmul]
 
 /- English proof (translation)
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[H.bar_eq, H.bar_eq]`. Conclude with `IsCMField.complexConj_apply_apply E _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem bar_bar' (a : 𝓞 E) : H.bar (H.bar a) = a := by
   apply RingOfIntegers.ext
@@ -99,17 +99,15 @@ private theorem bar_bar' (a : 𝓞 E) : H.bar (H.bar a) = a := by
   exact IsCMField.complexConj_apply_apply E _
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hw b`. Express the relevant statement in the definitionally equal form `pr Dw w b ∈ intO K`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately.
 
-Take `⟨a, rfl⟩` from `hx`. Simplify using `only [pr, LinearMap.BilinForm.baseChange_tmul, _root_.mul_one, zsmul_eq_mul]`. Conclude with `intCast_mem _ _`. Consider the case `zero => simp only [pr, map_zero, LinearMap.zero_apply]`. Conclude with `zero_mem _`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => simp only [pr, map_add, LinearMap.add_apply]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx`. Establish `: pr Dw (c • x) b = (c : K) * pr Dw x b`. Express the relevant statement in the definitionally equal form `pr Dw ((c : K) • x) b = _`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [pr, map_smul, LinearMap.smul_apply, smul_eq_mul]`. Rewrite using `[this]`. Conclude with `mul_mem c.2 hx`. Introduce `h`. Take `⟨n, e, y, he⟩` from `expand Dw`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he K w]`. Use `Submodule.sum_mem _ fun m _ => ?_` and prove the remaining obligations. Establish `hm : Dw.EF.baseChange K (1 ⊗ₜ y m) w ∈ intO K`. Rewrite using `[skewK]`. Conclude with `neg_mem (show pr Dw w (y m) ∈ intO K from h (y m))`.
-
-Conclude with `Submodule.smul_mem _ (⟨_, hm⟩ : ↥(intO K)) (Submodule.subset_span ⟨e m, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 private theorem mem_span_iff {K : Type} [NormedField K] [IsUltrametricDist K] (w : K ⊗[ℤ] Dw.La) :
     w ∈ Submodule.span ↥(intO K) (Set.range fun a : Dw.La => (1 : K) ⊗ₜ[ℤ] a) ↔ ∀ b, ‖pr Dw w b‖ ≤ 1 := by
@@ -139,13 +137,13 @@ private theorem mem_span_iff {K : Type} [NormedField K] [IsUltrametricDist K] (w
     exact Submodule.smul_mem _ (⟨_, hm⟩ : ↥(intO K)) (Submodule.subset_span ⟨e m, rfl⟩)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Take `⟨f, hf, hU⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem hn inferInstance`. Take `⟨n, e, y, he⟩` from `expand Dw`. Use `set x : K ⊗[ℤ] Dw.La := ∑ m, f ((1 : K) ⊗ₜ[ℤ] e m) • ((1 : K) ⊗ₜ[ℤ] y m) with hx`. Establish `hfx : ∀ u, f u = -Dw.EF.baseChange K u x`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u`. Rewrite using `[← skewK]`. Use `conv_lhs => rw [he K u]`. Simplify using `only [hx, map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun m _ => mul_comm _ _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hf` to reduce the goal to its premises. Rewrite using `[hfx, hw x, neg_zero]`. Introduce `o`. Rewrite using `[← sub_eq_zero, he K (_ - _)]`. Use `Finset.sum_eq_zero fun m _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : f (((LinearMap.lsmul (𝓞 E) Dw.La (H.bar o)).restrictScalars ℤ).baseChange K ((1 : K) ⊗ₜ[ℤ] y m) - σ (H.bar o) • ((1 : K) ⊗ₜ[ℤ] y m)) = 0`. Rewrite using `[← Submodule.mem_bot K, ← hU]`. Conclude with `Submodule.mem_map_of_mem (Submodule.subset_span ⟨H.bar o, _, rfl⟩)`. Rewrite `h0` using `[hfx, neg_eq_zero, map_sub, LinearMap.sub_apply, adjK, bar_bar', map_smul, LinearMap.smul_apply]`. Rewrite using `[map_sub, map_smul, hs, h0, zero_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_of_perp {K : Type} [Field K] (σ s : 𝓞 E →+* K) (hs : ∀ o, s o = σ (H.bar o)) (w : K ⊗[ℤ] Dw.La)
     (hw : ∀ x, IsEigL Dw s x → Dw.EF.baseChange K w x = 0) :
@@ -174,9 +172,9 @@ private theorem mem_of_perp {K : Type} [Field K] (σ s : 𝓞 E →+* K) (hs : �
   rw [map_sub, map_smul, hs, h0, zero_smul]
 
 /- English proof (translation)
-Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem u hu`. Take `⟨o, u', rfl⟩` from `hu`. Rewrite using `[map_sub, LinearMap.sub_apply, adjK, hx, hs, bar_bar', map_smul, map_smul, LinearMap.smul_apply, sub_self]`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add u v _ _ hu hv => rw [map_add, LinearMap.add_apply, hu, hv, add_zero]`. Consider the case `smul c u _ hu => rw [map_smul, LinearMap.smul_apply, hu, smul_zero]`.
+Treat this case separately. Treat this case separately.
 -/
 private theorem perp_of_mem {K : Type} [Field K] (σ s : 𝓞 E →+* K) (hs : ∀ o, s o = σ (H.bar o)) (w : K ⊗[ℤ] Dw.La)
     (hw : w ∈ Submodule.span K {u : K ⊗[ℤ] Dw.La | ∃ (o : 𝓞 E) (u' : K ⊗[ℤ] Dw.La),
@@ -193,27 +191,25 @@ private theorem perp_of_mem {K : Type} [Field K] (σ s : 𝓞 E →+* K) (hs : �
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw _ p _ s σ hs M N a T S hL`. Take `⟨δ, hδ0, hδ, hd⟩` from `UpperTheory.integral_span_membership_of_eigen E p σ`. Establish `hdual` using `(UpperTheory.lattice_data_gives_cut_and_dual E H Dw p s M N a T S hL).2`. Use `⟨δ, hδ0, hδ, fun j m => (T j m).2, fun y hy => ?_⟩` and prove the remaining obligations. Use `haveI := Dw.fin`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `haveI := torsionFree Dw`. Establish `h1` using `hd Dw.La y hy`. Rewrite `h1` using `[mem_span_iff]`. Establish `h2 : ∀ b, pr Dw (δ • y) b = δ * pr Dw y b` using `fun b => by`. Simplify using `only [pr, map_smul, LinearMap.smul_apply, smul_eq_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [h2] at h1`. Rewrite using `[h1]`. Establish `hs' : ∀ o, ((intO ℂ_[p]).subtype.comp s) o = σ (H.bar o)` using `hs`. Establish `hsub : ∀ (j : Fin N) (u v : ℂ_[p] ⊗[ℤ] Dw.La), ∑ m, (T j m : ℂ_[p]) * pr Dw (u - v) (a m) = ∑ m, (T j m : ℂ_[p]) * pr Dw u (a m) - ∑ m, (T j m : ℂ_[p]) * pr Dw v (a m)` using `fun j u v => by`. Simplify using `only [pr, map_sub, LinearMap.sub_apply, mul_sub, Finset.sum_sub_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `ht`. Set `t : Fin N → ↥(intO ℂ_[p])` to `fun j => ⟨∑ m, (T j m : ℂ_[p]) * pr Dw y (a m), ht j⟩`. Use `⟨∑ j, ∑ m, ((t j * S j m : ↥(intO ℂ_[p])) : ℂ_[p]) • ((1 : ℂ_[p]) ⊗ₜ[ℤ] a m), ?_, ?_⟩` and prove the remaining obligations. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.sum_mem _ fun m _ => Submodule.smul_mem _ (t j * S j m) (Submodule.subset_span ⟨a m, rfl⟩)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `mem_of_perp Dw σ _ hs' _ fun x hx => ?_` and prove the remaining obligations. Rewrite using `[← neg_eq_zero, ← hdual _ x hx]`. Use `Finset.sum_eq_zero fun i _ => mul_eq_zero_of_left ?_ _` and prove the remaining obligations. Rewrite using `[hsub, sub_eq_zero]`. Establish `h3 : ∀ j, ∑ m, ∑ m', (S j m : ℂ_[p]) * (T i m' : ℂ_[p]) * ((Dw.EF (a m) (a m') : ℤ) : ℂ_[p]) = if j = i then 1 else 0` using `fun j => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg (intO ℂ_[p]).subtype (hL.2.1 j i)` as an intermediate fact. Simplify using `only [map_sum, map_mul, map_intCast, Subring.subtype_apply] at this`. Rewrite using `[this]`. Apply the tactic sequence `split_ifs <;> simp`. Combine the equalities or inequalities in the displayed calculation.
+Apply the first step, then apply the next step to every resulting obligation. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [← h3, pr, map_sum, LinearMap.sum_apply, map_smul, LinearMap.smul_apply, smul_eq_mul, LinearMap.BilinForm.baseChange_tmul, Finset.mul_sum, Subring.coe_mul, zsmul_eq_mul, _root_.mul_one]`. Use `symm`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components.
 
-Use `Finset.sum_congr rfl fun m _ => Finset.sum_congr rfl fun m' _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨z, hz, hyz⟩ j`. Rewrite `hz` using `[mem_span_iff]`. Establish `he : IsEigL Dw ((intO ℂ_[p]).subtype.comp s) (∑ m, (T j m : ℂ_[p]) ⊗ₜ[ℤ] a m)` using `fun o => by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `congrArg (LinearMap.rTensor Dw.La (intO ℂ_[p]).subtype.toAddMonoidHom.toIntLinearMap) (hL.1 j o)` as an intermediate fact. Simplify using `only [map_sum, LinearMap.rTensor_tmul] at this`. Simplify using `only [map_sum, LinearMap.baseChange_tmul, LinearMap.restrictScalars_apply, LinearMap.lsmul_apply, Finset.smul_sum, TensorProduct.smul_tmul', smul_eq_mul]`. Conclude with `this`. Establish `h4` using `perp_of_mem Dw σ _ hs' _ hyz _ he`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h5 : ∑ m, (T j m : ℂ_[p]) * pr Dw (y - z) (a m) = 0`. Rewrite using `[← h4, map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[pr, ← smul_eq_mul, ← map_smul, TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`. Rewrite `h5` using `[hsub, sub_eq_zero]`.
-
-Rewrite using `[h5]`. Conclude with `(show _ ∈ intO ℂ_[p] from sum_mem fun m _ => mul_mem (T j m).2 (hz (a m)))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.lattice_data_valuation_of_difference :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) [IsGalois ℚ E] (p : ℕ) [Fact p.Prime] (s : 𝓞 E →+* ↥(intO ℂ_[p])) (σ : 𝓞 E →+* ℂ_[p]), (∀ o, (s o : ℂ_[p]) = σ (H.bar o)) → ∀ (M N : ℕ) (a : Fin M → Dw.La) (T S : Fin N → Fin M → ↥(intO ℂ_[p])), GlobalTheory.FlatModel.LatData Dw s a T S → ∃ δ : ℂ_[p], δ ≠ 0 ∧ Real.log ‖δ‖ = -(vDiff E p * Real.log p) ∧ CutL Dw σ a (fun j m => (T j m : ℂ_[p])) δ := by

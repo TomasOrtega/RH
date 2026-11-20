@@ -14,19 +14,19 @@ import CompanionTheory.RealGroups.DiscreteSeries.DiscreteSeriesClassification.Di
 namespace CompanionTheory.RgExh.Dec.L
 
 /- English proof (translation)
-The claim follows from `back_of CompanionTheory.RgExh.Dec.L.SA.assembly_of CompanionTheory.RgExh.Dec.L.AB.absolute_l2_bound GlobalTheory.T.GeometricStatement hLF GlobalTheory.T.HaarExistence hPN GlobalTheory.T.NilpotentRightRule GlobalTheory.T.NilpotentLeftRule CompanionTheory.RgExh.Dec.L.WyKR.kRight Gl …`.
+A detailed English derivation is pending.
 -/
 theorem back_of_inputs (hLF : LineFormula) (hPN : PolyNilPath) : Back :=
   back_of CompanionTheory.RgExh.Dec.L.SA.assembly_of CompanionTheory.RgExh.Dec.L.AB.absolute_l2_bound GlobalTheory.T.GeometricStatement hLF GlobalTheory.T.HaarExistence hPN GlobalTheory.T.NilpotentRightRule GlobalTheory.T.NilpotentLeftRule
     CompanionTheory.RgExh.Dec.L.WyKR.kRight GlobalTheory.T.GrowthStatement GlobalTheory.T.rgExh_pack
 
 /- English proof (translation)
-The claim follows from `back_of_inputs hLF GlobalTheory.T.PolynomialNilpotentPath`.
+A detailed English derivation is pending.
 -/
 theorem back_of_lineFormula (hLF : LineFormula) : Back := back_of_inputs hLF GlobalTheory.T.PolynomialNilpotentPath
 
 /- English proof (translation)
-The claim follows from `back_of_lineFormula CompanionTheory.RgExh.Dec.N.S.line_formula`.
+A detailed English derivation is pending.
 -/
 theorem backward_of_line_formula : Back := back_of_lineFormula CompanionTheory.RgExh.Dec.N.S.line_formula
 

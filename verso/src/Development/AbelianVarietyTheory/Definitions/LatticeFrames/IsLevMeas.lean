@@ -226,7 +226,7 @@ Both sides reduce to the same expression.
 example (c : Com D) (PP : Pl D.host.E) (x : (AE D)ˣ) : qPar c PP x 0 = 0 := rfl
 
 /- English proof (translation)
-Simplify using `[blockL]`.
+Simplify using the standard rewrite rules.
 -/
 example (c : Com D) (PP : Pl D.host.E) : blockL c 0 PP = 1 := by simp [blockL]
 

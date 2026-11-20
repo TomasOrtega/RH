@@ -8,13 +8,13 @@ open Filter Topology MeasureTheory GlobalTheory.PRep GlobalTheory.SplitWeil Glob
 namespace GlobalTheory.CompanionTheory.LamOf
 
 /- English proof (translation)
-Introduce `N`. Use `⟨fun g g' => ?_, fun j => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `only [Zls.lamOf, Pi.add_apply]`. Rewrite using `[← Finset.sum_add_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Use function extensionality and compare the values at `i`. Simplify using `only [Zls.lamOf, Zls.omegaVec]`. Rewrite using `[Finset.sum_eq_single j]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : (i : ℕ) ≤ (j : ℕ)`. Simplify using `[h, Nat.lt_succ_of_le h]`. Establish `h' : ¬ (i : ℕ) < (j : ℕ) + 1` using `fun h2 => h (Nat.le_of_lt_succ h2)`. Simplify using `[h, h']`. Introduce `l _ hl`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Pi.single_apply, hl]`. Introduce `hj`. Conclude with `absurd (Finset.mem_univ j) hj`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lamOf_add_and_single :
     ∀ (N : ℕ), (∀ g g' : Fin (N - 1) → ℕ, Zls.lamOf (g + g') = Zls.lamOf g + Zls.lamOf g') ∧

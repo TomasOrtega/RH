@@ -8,21 +8,21 @@ open Finset MvPolynomial
 namespace UpperTheory.Gal.Schur
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Take `⟨φ, hφ, hmap⟩` from `Submodule.exists_dual_map_eq_bot_of_lt_top (lt_top_iff_ne_top.2 hne) inferInstance`. Establish `hφv : ∀ v : ι → K, φ v = ∑ t, v t * φ (Pi.single t 1)`. Introduce `v`. Rewrite using `[LinearMap.pi_apply_eq_sum_univ φ v]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul]`. Use `congr 2`. Use extensionality with `s`. Simplify using `[Pi.single_apply, eq_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hzero : ∀ x : O, ∑ t, (φ (Pi.single t 1) * τ t N) * τ t x = 0`. Introduce `x`. Establish `hx : (fun t => τ t (N * x)) ∈ Submodule.span K {v : ι → K | ∃ x : O, v = fun t => τ t (N * x)}` using `Submodule.subset_span ⟨x, rfl⟩`. Establish `: φ (fun t => τ t (N * x)) = 0`. Establish `h2` using `Submodule.mem_map_of_mem (f := φ) hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[hmap, Submodule.mem_bot]`. Conclude with `h2`. Rewrite `this` using `[hφv]`. Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hli : LinearIndependent K (fun t => ((τ t : O →* K) : O → K))`. Use `(linearIndependent_monoidHom O K).comp (fun t => (τ t : O →* K)) ?_` and prove the remaining obligations. Introduce `a b hab`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hτ` to reduce the goal to its premises. Use extensionality with `y`. Conclude with `DFunLike.congr_fun hab y`. Establish `hc : ∀ t, φ (Pi.single t 1) * τ t N = 0`. Use `Fintype.linearIndependent_iff.1 hli _ ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts.
 
-Use function extensionality and compare the values at `x`. Simplify `hzero x` using `[Finset.sum_apply]`. Apply `hφ` to reduce the goal to its premises. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Rewrite using `[hφv, LinearMap.zero_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun t _ => ?_` and prove the remaining obligations. Rewrite using `[(mul_eq_zero.1 (hc t)).resolve_right (hN t), mul_zero]`.
+A detailed English derivation is pending.
 -/
 private theorem span_embeddings_mul_eq_univ_of_injective {O K ι : Type} [CommRing O] [Field K] [Fintype ι] (τ : ι → O →+* K)
     (hτ : Function.Injective τ) (N : O) (hN : ∀ t, τ t N ≠ 0) :
@@ -68,17 +68,17 @@ private theorem span_embeddings_mul_eq_univ_of_injective {O K ι : Type} [CommRi
   rw [(mul_eq_zero.1 (hc t)).resolve_right (hN t), mul_zero]
 
 /- English proof (translation)
-Introduce `O K ι _ _ _ τ hτ N hN k`. Establish `hA` using `span_embeddings_mul_eq_univ_of_injective τ hτ N hN`. Set `L : Fin k → (ι → K) →ₗ[K] (ι × Fin k → K)` to `fun j => LinearMap.pi (fun p => if p.2 = j then LinearMap.proj p.1 else 0)`. Establish `hL : ∀ j w p, L j w p = if p.2 = j then w p.1 else 0`. Introduce `j w p`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [L, LinearMap.pi_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hsub : ∀ j, Submodule.map (L j) (Submodule.span K {v : ι → K | ∃ x : O, v = fun t => τ t (N * x)}) ≤ Submodule.span K {x | ∃ β : Fin k → O, x = pt τ fun s ↦ N * β s}`. Introduce `j`. Rewrite using `[Submodule.map_span]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, ⟨x, rfl⟩, rfl⟩`. Use `⟨Pi.single j x, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Rewrite using `[hL]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [pt, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp_all`. Rewrite using `[Submodule.eq_top_iff']`. Introduce `v`. Establish `hv : v = ∑ j, L j (fun t => v (t, j))`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `p`. Simplify using `[Finset.sum_apply, hL]`. Rewrite using `[hv]`. Use `Submodule.sum_mem _ fun j _ => hsub j ?_` and prove the remaining obligations. Use `Submodule.mem_map_of_mem ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hA]`. Conclude with `Submodule.mem_top`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spanTop : SpanTop := by
   classical

@@ -33,9 +33,9 @@ namespace GlobalTheory.CompanionTheory.Ar.Sl.RigScale
 open GlobalTheory GlobalTheory.ArchMetricCompare
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun q => q.left) (map_one (pushHom h (𝟙_ (Over (Sp ℂ)))))`. Establish `e₁ : (1 : 𝟙_ (Over (Sp ℂ)) ⟶ A) = η[A]` using `by rw [Hom.one_def]; simp`. Rewrite `e` using `[e₁]`. Use `e.trans ?_` and prove the remaining obligations. Use `show (toUnit _ ≫ η[G]).left = _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[eSec]`.
+A detailed English derivation is pending.
 -/
 theorem eSec_comp_of_cart {S : Scheme.{0}} {G : Over S} [GrpObj G] {z : Sp ℂ ⟶ S} {A : Over (Sp ℂ)} [GrpObj A]
     {φ : A.left ⟶ G.left} (h : IsGrpPullback A G z φ) : eSec A ≫ φ = z ≫ eSec G := by
@@ -58,7 +58,7 @@ def scale (u : HolUnif A L g) (c : ℂ) (hc : c ≠ 0) : HolUnif A L g :=
       ring }
 
 /- English proof (translation)
-Use `⟨h.1, h.2.1, h.2.2.1, fun l i z hz => ?_⟩` and prove the remaining obligations. Use `show c * u.fr i z = _ * (c * u.fr i (z + (l : Fin g → ℂ)))`. Rewrite using `[h.2.2.2 l i z hz]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem scale_isAH {u : HolUnif A L g} {c : ℂ} (hc : c ≠ 0) {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ}
     (h : u.IsAH Hm χ) : (scale u c hc).IsAH Hm χ := by
@@ -74,17 +74,15 @@ namespace GlobalTheory.CompanionTheory.Ar.Sl
 open GlobalTheory GlobalTheory.ArchMetricCompare RigScale
 
 /- English proof (translation)
-Introduce `S G _ _ P z A _ φ g u Hm χ cart ah`. Establish `he : (u.ex 0).left ≫ φ = z ≫ eSec G`. Use `eSec_comp_of_cart cart` as an intermediate fact. Rewrite using `[show (u.ex 0).left = eSec A from GlobalTheory.CompanionTheory.Ar.Flat.PerGram.ex_zero_left u]`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨i₀, h₀⟩ : ∃ i, ⊤ ≤ ((u.ex 0).left ≫ φ) ⁻¹ᵁ P.L.U i` from `(exists_chart P.isLB (((u.ex 0).left ≫ φ) (default : PrimeSpectrum ℂ))).imp fun _ h => (top_le_preimage_iff_mem _ _).2 h`. Establish `hfr : ∀ i, ⊤ ≤ ((u.ex 0).left ≫ φ) ⁻¹ᵁ P.L.U i → ⊤ ≤ (u.ex 0).left ⁻¹ᵁ (P.L.pull φ).U (fun _ => i)` using `fun i h => (le_pull_iff P.L φ _ _).2 h`. Establish `hz : ∀ i, ⊤ ≤ ((u.ex 0).left ≫ φ) ⁻¹ᵁ P.L.U i → ⊤ ≤ z ⁻¹ᵁ (P.L.pull (eSec G)).U (fun _ => i)` using `fun i h => (le_pull_iff P.L (eSec G) z _).2 (he ▸ h)`. Establish `hrel : ∀ i, ⊤ ≤ ((u.ex 0).left ≫ φ) ⁻¹ᵁ P.L.U i → valF (X` using `(𝟙_ (Over S)).left) z _ (P.rig.s fun _ => i).val = valAt' ((u.ex 0).left ≫ φ) (P.L.U i ⊓ P.L.U i₀) (P.L.g i i₀).val * valF (X := (𝟙_ (Over S)).left) z _ (P.rig.s fun _ => i₀).val := by`. Introduce `i hi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hm : ⊤ ≤ z ⁻¹ᵁ ((P.L.pull (eSec G)).U (fun _ => i) ⊓ (P.L.pull (eSec G)).U (fun _ => i₀))` using `(top_le_preimage_inf _ _ _).2 ⟨hz i hi, hz i₀ h₀⟩`. Establish `e` using `congrArg (fun a => valAt' z _ (Units.val a)) (P.rigGen (fun _ => i) (fun _ => i₀))`. Establish `e2` using `(valAt'_res z inf_le_left _ hm).symm.trans (e.trans ((valAt'_mul _ _ _ _).trans (congrArg₂ (· * ·) rfl (valAt'_res z inf_le_right _ hm))))`. Rewrite using `[he]`. Rewrite using `[← val_pull_g P.L (eSec G) z (fun _ => i) (fun _ => i₀) hm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `e2`. Establish `hn : valF (X` using `(𝟙_ (Over S)).left) z _ (P.rig.s fun _ => i₀).val ≠ 0 := valAt'_unit_ne_zero z (hz i₀ h₀) _`. Establish `hd` using `u.fr_ne (fun _ => i₀) 0 (hfr i₀ h₀)`. Establish `hc : valF (X` using `(𝟙_ (Over S)).left) z _ (P.rig.s fun _ => i₀).val / u.fr (fun _ => i₀) 0 ≠ 0 := div_ne_zero hn hd`. Use `⟨{ A := A, φ := φ, cart := cart, u := scale u _ hc, Hm := Hm, χ := χ, ah := scale_isAH hc ah, rig := ?_ }⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i hi`. Establish `hi' : ⊤ ≤ ((u.ex 0).left ≫ φ) ⁻¹ᵁ P.L.U i` using `hi`. Use `show _ / u.fr (fun _ => i₀) 0 * u.fr (fun _ => i) 0 = _`. Establish `hm : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ ((P.L.pull φ).U (fun _ => i) ⊓ (P.L.pull φ).U (fun _ => i₀))` using `(top_le_preimage_inf _ _ _).2 ⟨hfr i hi', hfr i₀ h₀⟩`. Rewrite using `[u.fr_compat (fun _ => i) (fun _ => i₀) 0 hm, val_pull_g P.L φ _ (fun _ => i) (fun _ => i₀) hm, hrel i hi']`.
-
-Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_archFrame_of_isAH : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (P : RigLB G) (z : Sp ℂ ⟶ S) (A : Over (Sp ℂ)) [GrpObj A] (φ : A.left ⟶ G.left) (g : ℕ) (u : HolUnif A (P.L.pull φ) g) (Hm : Matrix (Fin g) (Fin g) ℂ) (χ : u.Λ → ℂ), IsGrpPullback A G z φ → u.IsAH Hm χ → Nonempty (ArchFrame P z g) := by
   intro S G _ _ P z A _ φ g u Hm χ cart ah

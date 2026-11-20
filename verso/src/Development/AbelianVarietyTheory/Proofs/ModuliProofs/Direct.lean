@@ -27,7 +27,7 @@ namespace GlobalTheory.SiegelDirect
 open GlobalTheory.SiegelPullComp
 
 /- English proof (translation)
-Establish `hw : b ≫ (G ⊗ G).hom = a ≫ (G ⊗ G).hom`. Rewrite using `[← Over.w (fst G G), reassoc_of% h1]`. Establish `key` using `CartesianMonoidalCategory.hom_ext (Over.homMk a rfl : Over.mk (a ≫ (G ⊗ G).hom) ⟶ G ⊗ G) (Over.homMk b hw) (by ext; simpa using h1) (by ext; simpa using h2)`. Simplify using `using congrArg (fun k => k.left) key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem tensor_left_hom_ext' {T : Scheme.{0}} {G : Over T} {X : Scheme.{0}} (a b : X ⟶ (G ⊗ G).left)
     (h1 : a ≫ (fst G G).left = b ≫ (fst G G).left) (h2 : a ≫ (snd G G).left = b ≫ (snd G G).left) : a = b := by
@@ -39,15 +39,15 @@ private theorem tensor_left_hom_ext' {T : Scheme.{0}} {G : Over T} {X : Scheme.{
   simpa using congrArg (fun k => k.left) key
 
 /- English proof (translation)
-Establish `hw : φ ≫ G.hom = A.hom` using `by simpa using hφ.1.w`. Establish `: IsIso φ` using `hφ.1.isIso_fst_of_isIso`. Set `e : A ≅ G` to `Over.isoMk (asIso φ) hw`. Establish `heL : e.inv.left = inv φ` using `rfl`. Establish `hsF : Geo.Tor.IsSquare (inv φ) (e.inv ⊗ₘ e.inv).left`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Rewrite using `[← Over.comp_left, tensorHom_fst, Over.comp_left, heL]`. Rewrite using `[← Over.comp_left, tensorHom_snd, Over.comp_left, heL]`. Use `⟨inv φ, (e.inv ⊗ₘ e.inv).left, ⟨?_, ?_⟩, hsF, by simp, ?_⟩` and prove the remaining obligations. Use `IsPullback.of_horiz_isIso ⟨?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hw]`. Simplify using the standard rewrite rules. Introduce `U x y x₀ y₀ hx hy`. Establish `key` using `hφ.2 (Over.mk (U.hom ≫ 𝟙 T)) x₀ y₀ (Over.homMk x.left (by simp)) (Over.homMk y.left (by simp)) (by simp [hx]) (by simp [hy])`. Establish `hxy` using `mul_left_congr (a := (U.hom ≫ 𝟙 T) ≫ 𝟙 T) (b := U.hom) (by simp) (Over.homMk x.left (by simp)) (Over.homMk y.left (by simp)) x y (by simp) (by simp)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hxy.symm.trans key]`. Simplify using the standard rewrite rules. Apply `tensor_left_hom_ext'` to reduce the goal to its premises. Rewrite using `[Category.assoc, hs.1, ← Category.assoc, hsF.1]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Category.assoc, hs.2, ← Category.assoc, hsF.2]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_inverse {T : Scheme.{0}} {A G : Over T} [GrpObj A] [GrpObj G] {φ : A.left ⟶ G.left}
     {φ₂ : (G2 A).left ⟶ (G2 G).left} (hφ : IsGrpPullback A G (𝟙 T) φ) (hs : Geo.Tor.IsSquare φ φ₂) :
@@ -79,17 +79,15 @@ theorem exists_inverse {T : Scheme.{0}} {A G : Over T} [GrpObj A] [GrpObj G] {φ
       simp
 
 /- English proof (translation)
-Introduce `E _ _ _ H D O _ T sT t lev g p N Ag z bas w hd`. Take `⟨o, φ, φ₂, hφ, hs, hL, hlev, hcl, ψ, ψ₂, hψ, hs', hP, hlev'⟩` from `hd`. Take `⟨F, F₂, hF, hsF, hφF, hF₂⟩` from `exists_inverse hφ hs`. Establish `h0 : t.PP.L.IsLB` using `t.PP.isLB`. Establish `hΛ : (abelian₂ t.G t.PP.L).IsLB`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `abelian₂`. Conclude with `ReciprocityTheory.ChartRestriction.G.DVR.linComb_isLB _ h0 _ _`. Use `⟨F ≫ ψ, F₂ ≫ ψ₂, (hF.comp hψ).congr (Category.id_comp _) rfl, ⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hs'.1, ← Category.assoc, hsF.1, Category.assoc]`. Rewrite using `[Category.assoc, hs'.2, ← Category.assoc, hsF.2, Category.assoc]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hΛ₁` using `pull_isLB hΛ (𝟙 (G2 t.G).left)`. Establish `hΛ₂` using `pull_isLB (pull_isLB hΛ φ₂) F₂`. Establish `hO` using `pull_isLB o.isLB F₂`. Establish `hU₁` using `pull_isLB (pull_isLB Ag.univ.isLB ψ₂) F₂`. Establish `hU₂` using `pull_isLB Ag.univ.isLB (F₂ ≫ ψ₂)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s1 : LBIso (abelian₂ t.G t.PP.L) ((abelian₂ t.G t.PP.L).pull (𝟙 _))` using `iso_pull_id hΛ`. Establish `s2 : LBIso ((abelian₂ t.G t.PP.L).pull (𝟙 _)) (((abelian₂ t.G t.PP.L).pull φ₂).pull F₂)`. Establish `k` using `iso_pull_pull hΛ φ₂ F₂`. Rewrite `k` using `[hF₂]`. Conclude with `k.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s3 : LBIso (((abelian₂ t.G t.PP.L).pull φ₂).pull F₂) (o.P.pull F₂)` using `(iso_pull F₂ hL).symm`. Establish `s4 : LBIso (o.P.pull F₂) ((Ag.univ.P.pull ψ₂).pull F₂)` using `iso_pull F₂ hP`. Establish `s5 : LBIso ((Ag.univ.P.pull ψ₂).pull F₂) (Ag.univ.P.pull (F₂ ≫ ψ₂))` using `iso_pull_pull Ag.univ.isLB ψ₂ F₂`. Conclude with `LBIso.trans hΛ hΛ₁ hU₂ s1 (LBIso.trans hΛ₁ hΛ₂ hU₂ s2 (LBIso.trans hΛ₂ hO hU₂ s3 (LBIso.trans hO hU₁ hU₂ s4 s5)))`. Introduce `u`.
-
-Rewrite using `[← hlev u]`. Simplify using `only [Category.assoc, reassoc_of% hφF]`. Conclude with `hlev' u`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem direct : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (O : Type) [CommRing O] (T : Scheme.{0}) (sT : T ⟶ Sp O) (t : SAB H T) (lev : D.La → (𝟙_ (Over T) ⟶ t.G)) (g p N : ℕ) (Ag : SiegelFamily g p N) (z : ZP p N →+* O) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] D.La) (w : T ⟶ pullback Ag.s (spMap z)), SiegData sT t lev Ag z bas w → ∃ (θ : t.G.left ⟶ Ag.univ.A.left) (θ₂ : (G2 t.G).left ⟶ (G2 Ag.univ.A).left), IsGrpPullback t.G Ag.univ.A (w ≫ pullback.fst _ _) θ ∧ IsSquare θ θ₂ ∧ LBIso (abelian₂ t.G t.PP.L) (Ag.univ.P.pull θ₂) ∧ ∀ u, (lev (bas u)).left ≫ θ = (w ≫ pullback.fst _ _) ≫ (Ag.univ.lev u).left := by
   intro E _ _ _ H D O _ T sT t lev g p N Ag z bas w hd

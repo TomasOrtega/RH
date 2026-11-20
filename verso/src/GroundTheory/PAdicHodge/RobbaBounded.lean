@@ -19,7 +19,7 @@ namespace Laurent
 variable {a b u : ℤ → K} {ρ : ℝ}
 
 /- English proof (translation)
-The claim follows from `gaussNorm_le fun n => norm_cmul_mul_zpow_le hρ (mul_nonneg (gaussNorm_nonneg hρ) (gaussNorm_nonneg hρ)) fun i => mul_le_mul (ha.le_gaussNorm i) (hb.le_gaussNorm _) (by positivity) (gaussNorm_nonneg hρ)`.
+A detailed English derivation is pending.
 -/
 theorem gaussNorm_cmul_le (hρ : 0 < ρ) (ha : ConvergesAt a ρ) (hb : ConvergesAt b ρ) :
     gaussNorm (cmul a b) ρ ≤ gaussNorm a ρ * gaussNorm b ρ :=
@@ -32,14 +32,14 @@ def cpow (u : ℤ → K) : ℕ → ℤ → K
   | k + 1 => cmul u (cpow u k)
 
 /- English proof (translation)
-The claim follows from `| 0 => convergesAt_single 0 1 ρ | k + 1 => hu.cmul hρ (hu.cpow hρ k)`.
+A detailed English derivation is pending.
 -/
 theorem ConvergesAt.cpow (hρ : 0 < ρ) (hu : ConvergesAt u ρ) : ∀ k, ConvergesAt (cpow u k) ρ
   | 0 => convergesAt_single 0 1 ρ
   | k + 1 => hu.cmul hρ (hu.cpow hρ k)
 
 /- English proof (translation)
-The claim follows from `| 0 => by simp [cpow, gaussNorm_single_zero_one hρ] | k + 1 => by rw [pow_succ'] exact (gaussNorm_cmul_le hρ hu (hu.cpow hρ k)).trans (mul_le_mul_of_nonneg_left (gaussNorm_cpow_le hρ hu k) (gaussNorm_nonneg hρ))`.
+A detailed English derivation is pending.
 -/
 theorem gaussNorm_cpow_le (hρ : 0 < ρ) (hu : ConvergesAt u ρ) :
     ∀ k, gaussNorm (cpow u k) ρ ≤ gaussNorm u ρ ^ k
@@ -50,7 +50,7 @@ theorem gaussNorm_cpow_le (hρ : 0 < ρ) (hu : ConvergesAt u ρ) :
       (mul_le_mul_of_nonneg_left (gaussNorm_cpow_le hρ hu k) (gaussNorm_nonneg hρ))
 
 /- English proof (translation)
-The claim follows from `((hu.cpow hρ k).le_gaussNorm n).trans (gaussNorm_cpow_le hρ hu k)`.
+A detailed English derivation is pending.
 -/
 theorem weight_cpow_le (hρ : 0 < ρ) (hu : ConvergesAt u ρ) (k : ℕ) (n : ℤ) :
     ‖cpow u k n‖ * ρ ^ n ≤ gaussNorm u ρ ^ k :=
@@ -59,7 +59,7 @@ theorem weight_cpow_le (hρ : 0 < ρ) (hu : ConvergesAt u ρ) (k : ℕ) (n : ℤ
 def geomInv (u : ℤ → K) : ℤ → K := fun n => ∑' k : ℕ, (-1) ^ k * cpow u k n
 
 /- English proof (translation)
-Rewrite using `[norm_mul, norm_pow, norm_neg, norm_one, one_pow, one_mul, le_div_iff₀ (zpow_pos hρ n)]`. Conclude with `weight_cpow_le hρ hu k n`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_geom_term_le (hρ : 0 < ρ) (hu : ConvergesAt u ρ) (k : ℕ) (n : ℤ) :
     ‖(-1) ^ k * cpow u k n‖ ≤ gaussNorm u ρ ^ k / ρ ^ n := by
@@ -67,7 +67,7 @@ theorem norm_geom_term_le (hρ : 0 < ρ) (hu : ConvergesAt u ρ) (k : ℕ) (n : 
   exact weight_cpow_le hρ hu k n
 
 /- English proof (translation)
-Rewrite using `[tendsto_zero_iff_norm_tendsto_zero, Nat.cofinite_eq_atTop]`. Establish `h` using `(tendsto_pow_atTop_nhds_zero_of_lt_one (gaussNorm_nonneg hρ) hq).div_const (ρ ^ n)`. Rewrite `h` using `[zero_div]`. Conclude with `squeeze_zero (fun _ => norm_nonneg _) (fun k => norm_geom_term_le hρ hu k n) h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_geom_term (hρ : 0 < ρ) (hu : ConvergesAt u ρ) (hq : gaussNorm u ρ < 1) (n : ℤ) :
     Tendsto (fun k : ℕ => (-1) ^ k * cpow u k n) cofinite (𝓝 0) := by
@@ -77,13 +77,11 @@ theorem tendsto_geom_term (hρ : 0 < ρ) (hu : ConvergesAt u ρ) (hq : gaussNorm
   exact squeeze_zero (fun _ => norm_nonneg _) (fun k => norm_geom_term_le hρ hu k n) h
 
 /- English proof (translation)
-Use `tendsto_order.2 ⟨fun x hx => Eventually.of_forall fun n => lt_of_lt_of_le hx (by positivity), fun ε hε => ?_⟩` and prove the remaining obligations. Take `⟨k₀, hk₀⟩` from `exists_pow_lt_of_lt_one (half_pos hε) hq`. Establish `hS : (⋃ k ∈ Finset.range k₀, {n : ℤ | ε / 2 ≤ ‖Laurent.cpow u k n‖ * ρ ^ n}).Finite` using `Set.Finite.biUnion (Finset.finite_toSet _) fun k _ => (hu.cpow hρ k).finite_le (half_pos hε)`. Use `Filter.eventually_cofinite.2 (hS.subset fun n hn => ?_)` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, not_lt] at hn`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Assume the negation of the conclusion as `hcon`. Simplify using `only [Set.mem_iUnion, Set.mem_setOf_eq, Finset.mem_range, not_exists, not_and, not_le] at hcon`. Establish `hρn : 0 < ρ ^ n` using `zpow_pos hρ n`. Establish `: ‖Laurent.geomInv u n‖ * ρ ^ n ≤ ε / 2`. Rewrite using `[← le_div_iff₀ hρn]`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `IsUltrametricDist.norm_tsum_le_of_forall_le_of_nonneg (by positivity) fun k => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow, norm_neg, norm_one, one_pow, one_mul, le_div_iff₀ hρn]`. Break down `lt_or_ge k k₀ with hk | hk` into its components or cases. Conclude with `(hcon k hk).le`. Conclude with `(weight_cpow_le hρ hu k n).trans ((pow_le_pow_of_le_one (gaussNorm_nonneg hρ) hq.le hk).trans hk₀.le)`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem ConvergesAt.geomInv (hρ : 0 < ρ) (hu : ConvergesAt u ρ) (hq : gaussNorm u ρ < 1) :
     ConvergesAt (geomInv u) ρ := by
@@ -109,19 +107,19 @@ theorem ConvergesAt.geomInv (hρ : 0 < ρ) (hu : ConvergesAt u ρ) (hq : gaussNo
   linarith
 
 /- English proof (translation)
-Establish `hw` using `hu.geomInv hρ hq`. Rewrite using `[add_cmul hρ (convergesAt_single 0 1 ρ) hu hw, single_zero_one_cmul]`. Use function extensionality and compare the values at `n`. Establish `hsum : Summable (Function.uncurry fun i (k : ℕ) => u i * ((-1) ^ k * cpow u k (n - i)))`. Use `NonarchimedeanAddGroup.summable_of_tendsto_cofinite_zero ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[tendsto_zero_iff_norm_tendsto_zero]`. Establish `hq' : Tendsto (fun k : ℕ => gaussNorm u ρ ^ k) cofinite (𝓝 0)`. Rewrite using `[Nat.cofinite_eq_atTop]`. Conclude with `tendsto_pow_atTop_nhds_zero_of_lt_one (gaussNorm_nonneg hρ) hq`. Establish `h` using `(tendsto_mul_cofinite_nhds_zero hu hq').div_const (ρ ^ n)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[zero_div]`. Use `squeeze_zero (fun _ => norm_nonneg _) (fun ⟨i, k⟩ => ?_) h` and prove the remaining obligations. Simplify using `only [Function.uncurry_apply_pair, norm_mul, norm_pow, norm_neg, norm_one, one_pow, one_mul]`. Establish `hρn : 0 < ρ ^ n` using `zpow_pos hρ n`. Rewrite using `[le_div_iff₀ hρn]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : ρ ^ n = ρ ^ i * ρ ^ (n - i)` using `by rw [← zpow_add₀ hρ.ne']; congr 1; ring`. Rewrite using `[e]`. Establish `h1` using `weight_cpow_le hρ hu k (n - i)`. Combine the equalities or inequalities in the displayed calculation. Establish `e1 : cmul u (geomInv u) n = ∑' k : ℕ, (-1) ^ k * cpow u (k + 1) n`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [cmul, geomInv, cpow]`. Repeatedly rewrite using `[← tsum_mul_left]`. Rewrite using `[← hsum.tsum_comm]`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : geomInv u n = (Pi.single 0 (1 : K) : ℤ → K) n - ∑' k : ℕ, (-1) ^ k * cpow u (k + 1) n`. Unfold `geomInv`.
+Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[NonarchimedeanAddGroup.summable_of_tendsto_cofinite_zero (tendsto_geom_term hρ hu hq n) |>.tsum_eq_zero_add]`. Simplify using `only [pow_zero, one_mul, cpow, pow_succ, mul_neg, mul_one, neg_mul, tsum_neg]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Pi.add_apply, e1, e2, Pi.single_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cmul_one_add_geomInv (hρ : 0 < ρ) (hu : ConvergesAt u ρ) (hq : gaussNorm u ρ < 1) :
     cmul (Pi.single 0 1 + u) (geomInv u) = Pi.single 0 1 := by
@@ -171,7 +169,7 @@ instance : Nontrivial (Robba K) :=
   ⟨⟨0, 1, fun h => by simpa using congrFun (congrArg Robba.coeff h) 0⟩⟩
 
 /- English proof (translation)
-Set `W : Robba K` to `⟨geomInv U.coeff, ⟨s, hs1, fun ρ h1 h2 h3 => (hU ρ h1 h2).1.geomInv h3 (hU ρ h1 h2).2⟩⟩`. Establish `h : (1 + U) * W = 1` using `Robba.ext (cmul_one_add_geomInv hs0 (hU s le_rfl hs1).1 (hU s le_rfl hs1).2)`. Conclude with `⟨⟨_, W, h, by rw [mul_comm]; exact h⟩, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isUnit_one_add {U : Robba K} {s : ℝ} (hs0 : 0 < s) (hs1 : s < 1)
     (hU : ∀ ρ, s ≤ ρ → ρ < 1 → ConvergesAt U.coeff ρ ∧ gaussNorm U.coeff ρ < 1) :
@@ -185,15 +183,15 @@ theorem isUnit_one_add {U : Robba K} {s : ℝ} (hs0 : 0 < s) (hs1 : s < 1)
 end Robba
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible (normInteger K)`. Establish `hmax` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ`. Establish `hunit : ∀ z : normInteger K, IsUnit z ↔ ‖(z : K)‖ = 1`. Introduce `z`. Rewrite using `[normInteger_integers.isUnit_iff_valuation_eq_one, NormedField.valuation_apply, ← NNReal.coe_eq_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hϖ1 : ‖(ϖ : K)‖ < 1` using `lt_of_le_of_ne (mem_normInteger.1 ϖ.2) fun h => hϖ.not_isUnit ((hunit ϖ).2 h)`. Use `⟨‖(ϖ : K)‖, norm_nonneg _, hϖ1, fun x y hxy => ?_⟩` and prove the remaining obligations. Establish `hx : x ≠ 0`. Introduce and unpack `rfl`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Simplify using `only [norm_zero] at hxy`. Conclude with `absurd hxy (not_lt.2 (norm_nonneg _))`. Establish `hz : ‖y / x‖ < 1` using `by rw [norm_div, div_lt_one (norm_pos_iff.2 hx)]; exact hxy`. Set `z : normInteger K` to `⟨y / x, mem_normInteger.2 hz.le⟩`. Establish `hzmem : z ∈ IsLocalRing.maximalIdeal (normInteger K)` using `(IsLocalRing.mem_maximalIdeal z).2 (mem_nonunits_iff.2 fun hu => hz.ne ((hunit z).1 hu))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hzmem` using `[hmax, Ideal.mem_span_singleton']`. Take `⟨t, ht⟩` from `hzmem`. Establish `e : y / x = (t : K) * (ϖ : K)` using `(congrArg Subtype.val ht).symm`. Establish `ht1 : ‖(t : K)‖ ≤ 1` using `mem_normInteger.1 t.2`. Establish `: ‖y‖ = ‖y / x‖ * ‖x‖` using `by rw [norm_div, div_mul_cancel₀ _ (norm_ne_zero_iff.2 hx)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, e, norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_norm_le_mul_of_lt [IsDiscreteValuationRing (normInteger K)] :
     ∃ q : ℝ, 0 ≤ q ∧ q < 1 ∧ ∀ x y : K, ‖y‖ < ‖x‖ → ‖y‖ ≤ q * ‖x‖ := by
@@ -230,49 +228,43 @@ namespace Robba
 variable [IsDiscreteValuationRing (normInteger K)]
 
 /- English proof (translation)
-Take `⟨q, hq0, hq1, hq⟩` from `exists_norm_le_mul_of_lt (K := K)`. Use `set a := f.coeff with ha_def`. Establish `ha0 : a ≠ 0` using `fun h => h0 (Robba.ext h)`. Take `⟨n₀, hn₀⟩` from `Function.ne_iff.1 ha0`. Establish `hbdd : BddAbove (Set.range fun n => ‖a n‖)` using `hf`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr0, hr1, hc⟩` from `exists_common f f`. Choose the witnesses or unpack the hypotheses as in `⟨N, hN⟩ : ∃ N, ∀ n, ‖a n‖ ≤ ‖a N‖ := by`. Establish `hMpos : 0 < ⨆ n, ‖a n‖` using `lt_of_lt_of_le (norm_pos_iff.2 hn₀) (le_ciSup hbdd n₀)`. Establish `hlt : q * ⨆ n, ‖a n‖ < ⨆ n, ‖a n‖` using `by nlinarith`. Take `⟨n₁, hn₁⟩` from `exists_lt_of_lt_ciSup hlt`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨n₁, fun n => not_lt.1 fun hn => ?_⟩` and prove the remaining obligations. Use `hq _ _ hn` as an intermediate fact. Use `le_ciSup hbdd n` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Use `set M := ‖a N‖`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM : 0 < M` using `lt_of_lt_of_le (norm_pos_iff.2 hn₀) (hN n₀)`. Use `set S := {n | ‖a n‖ = M}`. Establish `hF` using `(hc r le_rfl hr1).1.finite_le hM`. Take `⟨B, hB⟩` from `hF.bddBelow`. Establish `hSbdd : BddBelow S` using `⟨min B 0, fun n hn => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Break down `le_or_gt n 0 with h | h` into its components or cases. Use `min_le_of_left_le (hB ?_)` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq]`. Establish `: (1 : ℝ) ≤ r ^ n` using `one_le_zpow_of_nonpos₀ hr0 hr1.le h`. Establish `hn : ‖a n‖ = M` using `hn`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Conclude with `(min_le_right _ _).trans h.le⟩`. Use `set m := sInf S`. Establish `hmS : ‖a m‖ = M` using `Int.csInf_mem (s := S) ⟨N, rfl⟩ hSbdd`. Establish `hbelow : ∀ n < m, ‖a n‖ < M` using `fun n hn => lt_of_le_of_ne (hN n) fun h => absurd (csInf_le hSbdd h) (not_le.2 hn)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `ham : a m ≠ 0` using `fun h => by rw [h, norm_zero] at hmS; linarith`. Establish `hMr : 0 < M * r ^ m` using `by positivity`. Establish `hG` using `(hc r le_rfl hr1).1.finite_le hMr`. Take `⟨B', hB'⟩` from `hG.bddBelow`. Use `set D := (m - B').toNat`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Choose the witnesses or unpack the hypotheses as in `⟨ρ₀, hρ₀r, hρ₀1, hρ₀q⟩ : ∃ ρ₀, r ≤ ρ₀ ∧ ρ₀ < 1 ∧ q < ρ₀ ^ D := by`. Establish `hlim : Tendsto (fun ρ : ℝ => ρ ^ D) (𝓝[<] 1) (𝓝 1)`. Simplify using `using ((continuous_pow D).tendsto (1 : ℝ)).mono_left nhdsWithin_le_nhds`. Establish `hI : ∀ᶠ ρ in 𝓝[<] (1 : ℝ), ρ ∈ Set.Ioo r 1` using `Ioo_mem_nhdsLT hr1`. Take `⟨ρ, hρ1, hρ2⟩` from `(hI.and (hlim.eventually (lt_mem_nhds hq1))).exists`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `⟨ρ, hρ1.1.le, hρ1.2, hρ2⟩`. Establish `dom : ∀ ρ, ρ₀ ≤ ρ → ρ < 1 → ∀ k, k ≠ m → ‖a k‖ * ρ ^ k < M * ρ ^ m`. Introduce `ρ h1 h2 k hk`. Establish `hρ : 0 < ρ` using `hr0.trans_le (hρ₀r.trans h1)`. Break down `lt_or_gt_of_ne hk with hk | hk` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hρk : 0 < ρ ^ k` using `zpow_pos hρ k`. Establish `e : ρ ^ m = ρ ^ (m - k) * ρ ^ k` using `by rw [← zpow_add₀ hρ.ne']; congr 1; ring`. Rewrite using `[e, ← mul_assoc]`. Use `mul_lt_mul_of_pos_right ?_ hρk` and prove the remaining obligations. Distinguish the cases in `hkG : M * r ^ m ≤ ‖a k‖ * r ^ k`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hkB : B' ≤ k` using `hB' hkG`. Establish `h3 : ρ ^ (D : ℤ) ≤ ρ ^ (m - k)` using `zpow_le_zpow_right_of_le_one₀ hρ h2.le (by omega)`. Establish `h4 : ρ₀ ^ D ≤ ρ ^ D` using `pow_le_pow_left₀ (hr0.le.trans hρ₀r) h1 D`. Rewrite `h3` using `[zpow_natCast]`. Establish `h5 : ‖a k‖ ≤ q * M` using `by rw [← hmS]; exact hq _ _ (by rw [hmS]; exact hbelow k hk)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hrk : 0 < r ^ k` using `zpow_pos hr0 k`. Establish `e' : r ^ m = r ^ (m - k) * r ^ k` using `by rw [← zpow_add₀ hr0.ne']; congr 1; ring`. Rewrite `hkG` using `[not_le, e', ← mul_assoc]`. Establish `h6 : ‖a k‖ < M * r ^ (m - k)` using `lt_of_mul_lt_mul_right hkG hrk.le`.
+Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `h7 : r ^ (m - k) ≤ ρ ^ (m - k)` using `zpow_le_zpow_left₀ (by omega) hr0.le (hρ₀r.trans h1)`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Use `set u : ℤ → K := fun n => if n = 0 then 0 else a (n + m) / a m`. Establish `hweight : ∀ ρ, 0 < ρ → ∀ n, n ≠ 0 → ‖u n‖ * ρ ^ n = ‖a (n + m)‖ * ρ ^ (n + m) / (M * ρ ^ m)`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `ρ hρ n hn`. Simplify using `only [u, if_neg hn, norm_div, hmS]`. Rewrite using `[zpow_add₀ hρ.ne']`. Clear the denominators using the available nonvanishing facts. Establish `hu : ∀ ρ, ρ₀ ≤ ρ → ρ < 1 → ConvergesAt u ρ ∧ gaussNorm u ρ < 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `ρ h1 h2`. Establish `hρ : 0 < ρ` using `hr0.trans_le (hρ₀r.trans h1)`. Establish `ha : ConvergesAt a ρ` using `(hc ρ (hρ₀r.trans h1) h2).1`. Establish `hshift : Tendsto (fun n : ℤ => ‖a (n + m)‖ * ρ ^ (n + m) / (M * ρ ^ m)) cofinite (𝓝 0)`. Use `(ha.comp (add_left_injective m).tendsto_cofinite).div_const (M * ρ ^ m)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Check the signs of the components of the expression. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `this` using `[Function.comp]`. Establish `hconv : ConvergesAt u ρ`. Use `squeeze_zero (fun n => by positivity) (fun n => ?_) hshift` and prove the remaining obligations. Distinguish the cases in `hn : n = 0`. Simplify using `only [u, if_pos hn, norm_zero, zero_mul]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Check the signs of the components of the expression. Conclude with `(hweight ρ hρ n hn).le`. Use `⟨hconv, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hu0 : u = 0`. Rewrite using `[hu0]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: gaussNorm (0 : ℤ → K) ρ = 0` using `by simp [gaussNorm]`. Rewrite using `[this]`. Conclude with `one_pos`. Take `⟨n, hn⟩` from `hconv.exists_eq_gaussNorm hρ hu0`. Rewrite using `[← hn]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Substitute using the available equality.
 
-Distinguish the cases in `hn0 : n = 0`. Simplify using `only [u, if_pos hn0, norm_zero, zero_mul]`. Conclude with `one_pos`. Rewrite using `[hweight ρ hρ n hn0, div_lt_one (by positivity)]`. Conclude with `dom ρ h1 h2 (n + m) (by omega)`.
-
-Use `set U : Robba K := ⟨u, ⟨ρ₀, hρ₀1, fun ρ h1 h2 _ => (hu ρ h1 h2).1⟩⟩`. Establish `hfU : f = single m (a m) * (1 + U)`. Use extensionality with `n`. Rewrite using `[coeff_single_mul]`. Use `show a n = a m * ((Pi.single 0 (1 : K) : ℤ → K) (n - m) + u (n - m))`.
-
-Distinguish the cases in `hn : n - m = 0`. Establish `: n = m` using `by omega`. Substitute `this` using the available equality. Simplify using `[u]`. Simplify using `only [u, Pi.single_apply, if_neg hn, zero_add, sub_add_cancel]`.
-
-Clear the denominators using the available nonvanishing facts. Rewrite using `[hfU]`. Conclude with `(isUnit_single m ham).mul (isUnit_one_add (hr0.trans_le hρ₀r) hρ₀1 hu)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_of_mem_bounded {f : Robba K} (hf : f ∈ bounded K) (h0 : f ≠ 0) : IsUnit f := by
   obtain ⟨q, hq0, hq1, hq⟩ := exists_norm_le_mul_of_lt (K := K)
@@ -391,7 +383,7 @@ theorem isUnit_of_mem_bounded {f : Robba K} (hf : f ∈ bounded K) (h0 : f ≠ 0
   exact (isUnit_single m ham).mul (isUnit_one_add (hr0.trans_le hρ₀r) hρ₀1 hu)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, 1, fun h => zero_ne_one (congrArg Subtype.val h)⟩ mul_comm := mul_comm mul_inv_cancel {x} hx := by have hx' : (x : Robba K) ≠ 0 := fun h => hx (Subtype.ext h) obtain ⟨hf, u, hu⟩ := isUnit_iff_isUnit_bounded.1 (isUnit_of_mem_bounded x.2 hx') refine ⟨↑u⁻¹, ?_⟩ have : (⟨(x : Rob …`.
+Supply the required witnesses or components.
 -/
 theorem isField_bounded : IsField (bounded K) where
   exists_pair_ne := ⟨0, 1, fun h => zero_ne_one (congrArg Subtype.val h)⟩
@@ -405,7 +397,7 @@ theorem isField_bounded : IsField (bounded K) where
     exact u.mul_inv
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => isUnit_of_mem_bounded h.1 h.2⟩` and prove the remaining obligations. Take `⟨g, rfl⟩` from `isUnit_iff.1 h`. Conclude with `⟨(g : bounded K).2, h.ne_zero⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isUnit_iff_mem_bounded {f : Robba K} : IsUnit f ↔ f ∈ bounded K ∧ f ≠ 0 := by
   refine ⟨fun h => ?_, fun h => isUnit_of_mem_bounded h.1 h.2⟩

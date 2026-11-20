@@ -29,19 +29,19 @@ namespace GlobalTheory.GaussUnr
 open ValuativeRel GlobalTheory.SplitFlip GlobalTheory.GaussNonvanish
 
 /- English proof (translation)
-Introduce `F _ _ ψ v ν₀ ξ hξ`. Establish `hϖ : IsUnif (unifAt v)` using `(GlobalTheory.SplitFlip.exists_isUnif (k := Fv F v)).choose_spec`. Establish `hunit : ∀ x : (Fv F v)ˣ, valuation (Fv F v) (x : Fv F v) = 1 → ξ x = 1` using `fun x hx => by`. Apply `hξ x` to reduce the goal to its premises. Conclude with `(val_le_one_iff v _).1 hx.le`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(val_le_one_iff v _).1` to reduce the goal to its premises. Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀, hx, inv_one]`. Establish `hce : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.condExp (ν₀ * ξ) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.condExp ν₀`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.condExp`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `c`. Simplify using `only [Set.mem_setOf_eq, CondLE]`. Use `forall₂_congr fun x hx => ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.mul_apply, hunit x hx.1, mul_one]`. Use `⟨hce, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `gauss`. Rewrite using `[hce]`. Generalize the expression as in `GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.condExp ν₀ = c`. Break down `Nat.eq_zero_or_pos c with h0 | hc1` into its components or cases. Substitute `h0` using the available equality.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hsu : ∀ a b : (Res (Fv F v) 0)ˣ, a = b` using `fun a b => Units.ext ((Ideal.Quotient.subsingleton_iff.2 (by simp)).elim _ _)`. Rewrite using `[Fintype.sum_eq_single 1 (fun y hy => (hy (hsu y 1)).elim), Fintype.sum_eq_single 1 (fun y hy => (hy (hsu y 1)).elim)]`. Distinguish the cases in `h : ((Quotient.out (1 : (Res (Fv F v) 0)ˣ).1 : (ValuativeRel.valuation (Fv F v)).integer) : Fv F v) = 0`. Use `⟨1, ?_⟩` and prove the remaining obligations. Rewrite using `[dif_pos h, dif_pos h, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Units.mk0 _ h, ?_⟩` and prove the remaining obligations. Rewrite using `[dif_neg h, dif_neg h, MonoidHom.mul_apply, mul_inv, Units.val_mul, mul_comm (((ν₀ _)⁻¹ : ℂˣ) : ℂ), mul_assoc]`. Use `⟨1, ?_⟩` and prove the remaining obligations. Rewrite using `[map_one, inv_one, Units.val_one, one_mul]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : ((Quotient.out y.1 : (ValuativeRel.valuation (Fv F v)).integer) : Fv F v) = 0`. Rewrite using `[dif_pos h, dif_pos h]`. Rewrite using `[dif_neg h, dif_neg h, MonoidHom.mul_apply, hunit _ (val_rep_unit hϖ hc1 y), mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gauss_mul_unram : ∀ {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ) {v : HeightOneSpectrum (𝓞 F)}
     (ν₀ ξ : (Fv F v)ˣ →* ℂˣ), (∀ x : (Fv F v)ˣ, (x : Fv F v) ∈ v.adicCompletionIntegers F →

@@ -28,9 +28,9 @@ noncomputable section
 namespace GlobalTheory.EvenOnto.ConjVal
 
 /- English proof (translation)
-Introduce `hP D c hc j _ s _`. Use `⟨fun u v => ?_, fun R f => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2, h3, h4⟩` from `GlobalTheory.ConjVal.good_val hP hc.inf (u : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ)) u.2 v`. Use `⟨h1, h2, h3, fun k hk g => by simpa using h4 k hk g, ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.ChainOnto.MultRapid.multT_apply_rapidDec hP D s.V s.par s.M c.θ hc.inf _ _ _ u.2 v).2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `g`. Simplify using `[heckeLin, map_sum]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem values_conj_hecke : GlobalTheory.Published.CuspRapidDecay → ∀ D : D7, ForStage D fun c _ s => (∀ (u : s.CC c) v, Continuous (PiLocalization₂.val u v) ∧ (∃ C : ℝ, ∀ g, ‖PiLocalization₂.val u v g‖ ≤ C) ∧ (∀ γ ∈ GQ s.V, ∀ g, PiLocalization₂.val u v (γ * g) = PiLocalization₂.val u v g) ∧ (∀ k ∈ s.J, ∀ g, PiLocalization₂.val u v (g * k) = PiLocalization₂.val u v g) ∧ GlobalTheory.Grow.RapidDec s.V (PiLocalization₂.val u v)) ∧ ∀ (R : Finset (GA D s.V)) (f : GA D s.V → ℂ), heckeLin s.V R (fun g => conj (f g)) = fun g => conj (heckeLin s.V R f g) := by
   intro hP D c hc j _ s _

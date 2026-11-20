@@ -13,11 +13,11 @@ section Objects
 variable {K : Type*} [Field K] [NumberField K]
 
 /- English proof (translation)
-Establish `h1 : algebraMap (𝓞 K) (ParDVR e n v) = (algebraMap (MvPolynomial (Par e n) (𝓞 K)) (ParDVR e n v)).comp C` using `IsScalarTower.algebraMap_eq _ _ _`. Establish `h2 : (IsLocalRing.maximalIdeal (ParDVR e n v)).comap (algebraMap (MvPolynomial (Par e n) (𝓞 K)) (ParDVR e n v)) = parPrime e n v` using `Localization.AtPrime.comap_maximalIdeal`. Rewrite using `[h1, ← Ideal.comap_comap, h2]`. Use extensionality with `x`. Simplify using `only [Ideal.mem_comap, parPrime]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Rewrite `hx` using `[MvPolynomial.mem_map_C_iff]`. Simplify using `using hx 0`. Introduce `hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Ideal.mem_map_of_mem _ hx`.
+A detailed English derivation is pending.
 -/
 theorem comap_maximalIdeal_parDVR (e n : ℕ) (v : HeightOneSpectrum (𝓞 K)) :
     (IsLocalRing.maximalIdeal (ParDVR e n v)).comap (algebraMap (𝓞 K) (ParDVR e n v)) = v.asIdeal := by

@@ -5,9 +5,9 @@ open NumberField IsDedekindDomain HeckeValGen GlobalTheory.HeckeSplit
 namespace GlobalTheory.HeckeSplit
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `hc` to reduce the goal to its premises. Use extensionality with `z`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) z`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_div₀, AlgEquiv.one_apply]`. Conclude with `congrArg₂ (· / ·) (h a) (h b)`.
+A detailed English derivation is pending.
 -/
 theorem exists_int_moved (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (c : E ≃ₐ[F] E) (hc : c ≠ 1) : ∃ θ : 𝓞 E, c (θ : E) ≠ (θ : E) := by
@@ -20,7 +20,7 @@ theorem exists_int_moved (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
   exact congrArg₂ (· / ·) (h a) (h b)
 
 /- English proof (translation)
-Use `Ideal.finite_factors (R := 𝓞 E) (I := Ideal.span {δ}) (by simpa using h)` as an intermediate fact. Use `this.subset fun w hw => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq] at hw ⊢`. Rewrite using `[Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`. Conclude with `hw`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_setOf_mem_asIdeal (E : Type) [Field E] [NumberField E] (δ : 𝓞 E) (h : δ ≠ 0) :
     {w : HeightOneSpectrum (𝓞 E) | δ ∈ w.asIdeal}.Finite := by
@@ -30,19 +30,17 @@ theorem finite_setOf_mem_asIdeal (E : Type) [Field E] [NumberField E] (δ : 𝓞
   rw [Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]; exact hw
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ c hc`. Take `⟨θ, hθ⟩` from `exists_int_moved F E c hc`. Establish `hint : IsIntegral ℤ (c (θ : E))` using `θ.isIntegral_coe.map c.toRingHom.toIntAlgHom`. Use `set θ' : 𝓞 E := ⟨c (θ : E), hint⟩ with hθ'`. Establish `hδ : θ - θ' ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Apply `hθ` to reduce the goal to its premises. Use `congrArg (fun t : 𝓞 E => (t : E)) h0` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `(sub_eq_zero.mp this).symm`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(finite_setOf_mem_asIdeal E (θ - θ') hδ).subset ?_ |> Filter.eventually_cofinite.mpr` and prove the remaining obligations. Introduce `w hw`. Simplify using `only [Set.mem_setOf_eq] at hw ⊢`. Assume the negation of the conclusion as `hnot`. Apply `hw` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `hdeg`. Take `⟨u, hu⟩` from `hdeg θ`. Use `⟨θ - algebraMap (𝓞 F) (𝓞 E) u, hu, fun y hy hyw => hnot ?_⟩` and prove the remaining obligations. Establish `hcu : c ((algebraMap (𝓞 F) (𝓞 E) u : 𝓞 E) : E) = ((algebraMap (𝓞 F) (𝓞 E) u : 𝓞 E) : E)`. Establish `: ((algebraMap (𝓞 F) (𝓞 E) u : 𝓞 E) : E) = algebraMap F E (u : F)` using `rfl`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, AlgEquiv.commutes]`. Establish `hy' : y = θ' - algebraMap (𝓞 F) (𝓞 E) u`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[hy]`. Use `push_cast`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[map_sub, hcu]`. Both sides reduce to the same expression. Use `w.asIdeal.sub_mem hu hyw` as an intermediate fact. Rewrite `this` using `[hy']`. Use `this using 1` and compare the differences between its conclusion and the goal.
-
-Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem eventually_degOne_moved : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] [Algebra.IsQuadraticExtension F E] (c : E ≃ₐ[F] E), c ≠ 1 →

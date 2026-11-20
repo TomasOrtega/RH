@@ -9,7 +9,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.PB.FibPt
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_succ_column_zero, Fin.sum_univ_succ]`. Simplify using `[h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_eq_mul_minor_of_col_zero {n : ℕ} (J : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ)
     (h : ∀ i : Fin n, J i.succ 0 = 0) : J.det = J 0 0 * (J.submatrix Fin.succ Fin.succ).det := by
@@ -17,13 +17,13 @@ theorem det_eq_mul_minor_of_col_zero {n : ℕ} (J : Matrix (Fin (n + 1)) (Fin (n
   simp [h]
 
 /- English proof (translation)
-Establish `hl : HasDerivAt (fun t : ℂ => a + t) 1 0`. Simplify using `using (hasDerivAt_id (0 : ℂ)).const_add a`. Establish `hn : HasDerivAt (fun t : ℂ => G 1 0 + G 1 1 * (a + t)) (G 1 1) 0`. Simplify using `using (hl.const_mul (G 1 1)).const_add (G 1 0)`. Establish `hd : HasDerivAt (fun t : ℂ => den G (a + t)) (G 0 1) 0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `(hl.const_mul (G 0 1)).const_add (G 0 0)` using `[den]`. Establish `h0 : den G (a + 0) ≠ 0` using `by simpa using h`. Establish `key` using `hn.div hd h0`. Establish `e : mobD G a = (G 1 1 * den G (a + 0) - (G 1 0 + G 1 1 * (a + 0)) * G 0 1) / den G (a + 0) ^ 2`. Simplify using `only [add_zero]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Unfold `mobD`. Rewrite using `[Matrix.det_fin_two]`. Use `congr 1`. Unfold `den`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e]`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_mob_line (G : Matrix (Fin 2) (Fin 2) ℂ) (a : ℂ) (h : den G a ≠ 0) :
     HasDerivAt (fun t : ℂ => mob G (a + t)) (mobD G a) 0 := by
@@ -46,9 +46,9 @@ theorem hasDerivAt_mob_line (G : Matrix (Fin 2) (Fin 2) ℂ) (a : ℂ) (h : den 
   exact key
 
 /- English proof (translation)
-Establish `hl : HasDerivAt (fun t : ℂ => z + t • (Pi.single k 1 : Fin D → ℂ)) (Pi.single k 1) 0`. Simplify using `using ((hasDerivAt_id (0 : ℂ)).smul_const (Pi.single k 1 : Fin D → ℂ)).const_add z`. Establish `hF' : HasFDerivAt F (fderiv ℂ F z) (z + (0 : ℂ) • (Pi.single k 1 : Fin D → ℂ))`. Simplify using `using hF.hasFDerivAt`. Establish `h2` using `hF'.comp_hasDerivAt (0 : ℂ) hl`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h3` using `(hasDerivAt_pi.1 h2) a`. Conclude with `h3.unique h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem jacC_apply_of_line {D E : ℕ} (F : (Fin D → ℂ) → Fin E → ℂ) (z : Fin D → ℂ)
     (hF : DifferentiableAt ℂ F z) (a : Fin E) (k : Fin D) (c : ℂ)
@@ -63,7 +63,7 @@ theorem jacC_apply_of_line {D E : ℕ} (F : (Fin D → ℂ) → Fin E → ℂ) (
   exact h3.unique h
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, Fin.succ_ne_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mobius_pair_line_first_axis {d : ℕ} (y : Fin d → ℂ) (a₀ a₁ t : ℂ) :
     (Fin.cons a₀ (Fin.cons a₁ y) : Fin (d + 2) → ℂ) + t • (Pi.single 0 1 : Fin (d + 2) → ℂ) =
@@ -74,9 +74,9 @@ theorem mobius_pair_line_first_axis {d : ℕ} (y : Fin d → ℂ) (a₀ a₁ t :
   · simp [Pi.single_apply, Fin.succ_ne_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `[Pi.single_apply]`. Use `Fin.cases ?_ (fun l => ?_) j` and prove the remaining obligations. Simplify using `[Pi.single_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `: (l.succ.succ : Fin (d + 2)) ≠ 1`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`. Simplify using `[Pi.single_apply, this]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mobius_pair_line_second_axis {d : ℕ} (y : Fin d → ℂ) (a₀ a₁ t : ℂ) :
     (Fin.cons a₀ (Fin.cons a₁ y) : Fin (d + 2) → ℂ) + t • (Pi.single 1 1 : Fin (d + 2) → ℂ) =
@@ -99,17 +99,13 @@ theorem mobius_pair_cons {d : ℕ} (g : (Fin d → ℂ) → Matrix (Fin 2) (Fin 
     mob2 g (Fin.cons b₀ (Fin.cons b₁ y)) = Fin.cons (mob (g y) b₀) (Fin.cons (mob (g y) b₁) y) := rfl
 
 /- English proof (translation)
-Use `set z₀ : Fin (d + 2) → ℂ := Fin.cons a₀ (Fin.cons a₁ y) with hz₀`. Establish `hcoord : ∀ i : Fin (d + 2), AnalyticAt ℂ (fun z : Fin (d + 2) → ℂ => z i) z₀` using `fun i => (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin (d + 2) => ℂ) i).analyticAt z₀`. Establish `hT : AnalyticAt ℂ (fun z : Fin (d + 2) → ℂ => Fin.tail (Fin.tail z)) z₀`. Rewrite using `[analyticAt_pi_iff]`. Introduce `i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hcoord i.succ.succ`. Establish `hTz : Fin.tail (Fin.tail z₀) = y`. Simplify using `[hz₀]`. Establish `hga : ∀ p q, AnalyticAt ℂ (fun z : Fin (d + 2) → ℂ => g (Fin.tail (Fin.tail z)) p q) z₀`. Introduce `p q`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : AnalyticAt ℂ (fun y' => g y' p q) (Fin.tail (Fin.tail z₀))` using `ReciprocityTheory.AnForm.Osgood.osgood d Set.univ _ isOpen_univ (hg p q).differentiableOn _ (Set.mem_univ _)`. Conclude with `AnalyticAt.comp (f := fun z : Fin (d + 2) → ℂ => Fin.tail (Fin.tail z)) h1 hT`. Establish `hm : ∀ i : Fin (d + 2), den (g y) (z₀ i) ≠ 0 → AnalyticAt ℂ (fun z : Fin (d + 2) → ℂ => mob (g (Fin.tail (Fin.tail z))) (z i)) z₀`. Introduce `i hi`. Unfold `mob den`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `AnalyticAt.div ?_ ?_ ?_` and prove the remaining obligations. Conclude with `(hga 1 0).add ((hga 1 1).mul (hcoord i))`. Conclude with `(hga 0 0).add ((hga 0 1).mul (hcoord i))`. Rewrite using `[hTz]`. Conclude with `hi`.
-
-Rewrite using `[analyticAt_pi_iff]`. Introduce `i`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Conclude with `hm 0 (by simpa [hz₀] using h₀)`. Use `Fin.cases ?_ (fun l => ?_) j` and prove the remaining obligations.
-
-Conclude with `hm 1 (by simpa [hz₀] using h₁)`. Conclude with `hcoord l.succ.succ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem analyticAt_mobius_pair {d : ℕ} (g : (Fin d → ℂ) → Matrix (Fin 2) (Fin 2) ℂ)
     (hg : ∀ p q, Differentiable ℂ fun y' => g y' p q) (y : Fin d → ℂ) (a₀ a₁ : ℂ)
@@ -147,23 +143,23 @@ theorem analyticAt_mobius_pair {d : ℕ} (g : (Fin d → ℂ) → Matrix (Fin 2)
     · exact hcoord l.succ.succ
 
 /- English proof (translation)
-Establish `hdiff : DifferentiableAt ℂ (mob2 g) (Fin.cons a₀ (Fin.cons a₁ y))` using `(analyticAt_mobius_pair g hg y a₀ a₁ h₀ h₁).differentiableAt`. Use `set J := ReciprocityTheory.AnForm.A.jacC (mob2 g) (Fin.cons a₀ (Fin.cons a₁ y)) with hJ`. Establish `hJ00 : J 0 0 = mobD (g y) a₀`. Use `jacC_apply_of_line _ _ hdiff 0 0 _ ?_` and prove the remaining obligations. Simplify using `only [mobius_pair_line_first_axis, mobius_pair_cons]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hasDerivAt_mob_line (g y) a₀ h₀`. Establish `hJ11 : J 1 1 = mobD (g y) a₁`. Use `jacC_apply_of_line _ _ hdiff 1 1 _ ?_` and prove the remaining obligations. Simplify using `only [mobius_pair_line_second_axis, mobius_pair_cons]`. Simplify using `using hasDerivAt_mob_line (g y) a₁ h₁`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hJ10 : J 1 0 = 0`. Use `jacC_apply_of_line _ _ hdiff 1 0 _ ?_` and prove the remaining obligations. Simplify using `only [mobius_pair_line_first_axis, mobius_pair_cons]`. Simplify using `using hasDerivAt_const (0 : ℂ) (mob (g y) a₁)`. Establish `hJss : ∀ (i : Fin d) (k : Fin (d + 2)), J i.succ.succ k = (Pi.single k 1 : Fin (d + 2) → ℂ) i.succ.succ`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i k`. Use `jacC_apply_of_line _ _ hdiff _ _ _ ?_` and prove the remaining obligations. Establish `e : (fun t : ℂ => mob2 g ((Fin.cons a₀ (Fin.cons a₁ y) : Fin (d + 2) → ℂ) + t • (Pi.single k 1 : Fin (d + 2) → ℂ)) i.succ.succ) = fun t : ℂ => y i + t * (Pi.single k 1 : Fin (d + 2) → ℂ) i.succ.succ`. Use function extensionality and compare the values at `t`. Simplify using `[mob2, Fin.tail]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Simplify using `using ((hasDerivAt_id (0 : ℂ)).mul_const ((Pi.single k 1 : Fin (d + 2) → ℂ) i.succ.succ)).const_add (y i)`. Establish `hc0 : ∀ i : Fin (d + 1), J i.succ 0 = 0`. Introduce `i`. Use `Fin.cases ?_ (fun l => ?_) i` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hJ10`. Rewrite using `[hJss]`. Simplify using `[Pi.single_apply, Fin.succ_ne_zero]`. Establish `hc1 : ∀ i : Fin d, (J.submatrix Fin.succ Fin.succ) i.succ 0 = 0`. Introduce `i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.submatrix_apply]`. Rewrite using `[hJss]`. Establish `: (i.succ.succ : Fin (d + 2)) ≠ 1`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `at this`. Simplify using `[Pi.single_apply, this]`. Establish `hlast : ((J.submatrix Fin.succ Fin.succ).submatrix Fin.succ Fin.succ) = 1`. Use extensionality with `i j`. Simplify using `only [Matrix.submatrix_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hJss]`. Simplify using `[Pi.single_apply, Matrix.one_apply]`. Rewrite using `[det_eq_mul_minor_of_col_zero J hc0, det_eq_mul_minor_of_col_zero _ hc1, hlast, Matrix.det_one, mul_one, hJ00]`. Simplify using `only [Matrix.submatrix_apply]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem det_jacobian_mobius_pair {d : ℕ} (g : (Fin d → ℂ) → Matrix (Fin 2) (Fin 2) ℂ)
     (hg : ∀ p q, Differentiable ℂ fun y' => g y' p q) (y : Fin d → ℂ) (a₀ a₁ : ℂ)
@@ -221,7 +217,7 @@ theorem det_jacobian_mobius_pair {d : ℕ} (g : (Fin d → ℂ) → Matrix (Fin 
   congr 1
 
 /- English proof (translation)
-Introduce `_ g hg y a₀ a₁ h₀ h₁` and use `⟨analyticAt_mobius_pair g hg y a₀ a₁ h₀ h₁, det_jacobian_mobius_pair g hg y a₀ a₁ h₀ h₁⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem mobius_pair_analyticAt_and_det_jacobian : ∀ (d : ℕ) (g : (Fin d → ℂ) → Matrix (Fin 2) (Fin 2) ℂ),
     (∀ p q, Differentiable ℂ fun y' => g y' p q) → ∀ (y : Fin d → ℂ) (a₀ a₁ : ℂ),

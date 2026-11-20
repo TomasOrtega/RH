@@ -17,7 +17,7 @@ noncomputable def comp (P : HeightOneSpectrum (𝓞 E)) :
   map_add' _ _ := rfl
 
 /- English proof (translation)
-The claim follows from `P.valuedAdicCompletion_eq_valuation' a`.
+A detailed English derivation is pending.
 -/
 theorem val_alg (P : HeightOneSpectrum (𝓞 E)) (a : E) :
     Valued.v (algebraMap E (P.adicCompletion E) a) = P.valuation E a :=
@@ -30,7 +30,7 @@ theorem comp_alg (P : HeightOneSpectrum (𝓞 E)) (a : E) :
     comp P (algebraMap E (FiniteAdeleRing (𝓞 E) E) a) = algebraMap E (P.adicCompletion E) a := rfl
 
 /- English proof (translation)
-Set `N : Matrix (Fin n) (Fin n) v.integer` to `fun i j => ⟨M i j, h i j⟩`. Establish `e : M = v.integer.subtype.mapMatrix N` using `rfl`. Rewrite using `[e, ← RingHom.map_det]`. Conclude with `N.det.2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_det_le_one {K Γ : Type} [CommRing K] [LinearOrderedCommGroupWithZero Γ] (v : Valuation K Γ)
     {n : ℕ} (M : Matrix (Fin n) (Fin n) K) (h : ∀ i j, v (M i j) ≤ 1) : v M.det ≤ 1 := by
@@ -40,19 +40,17 @@ theorem val_det_le_one {K Γ : Type} [CommRing K] [LinearOrderedCommGroupWithZer
   exact N.det.2
 
 /- English proof (translation)
-Establish `hloc : ∀ P : HeightOneSpectrum (𝓞 E), ∃ c : 𝓞 E, c ∉ Q.asIdeal ∧ P.valuation E (c : E) * Valued.v (comp P y) ≤ 1`. Introduce `P`. Distinguish the cases in `h1 : Valued.v (comp P y) ≤ 1`. Conclude with `⟨1, (Ideal.ne_top_iff_one _).1 Q.isPrime.ne_top, by simpa using h1⟩`. Establish `hPQ : P ≠ Q` using `by rintro rfl; exact h1 hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hnle : ¬ P.asIdeal ≤ Q.asIdeal` using `fun hle => hPQ (HeightOneSpectrum.ext (P.isMaximal.eq_of_le Q.isPrime.ne_top hle))`. Take `⟨a, haP, haQ⟩` from `Set.not_subset.1 hnle`. Establish `hlt : P.valuation E (a : E) < 1` using `(P.valuation_lt_one_iff_mem (K := E) a).2 haP`. Establish `h0 : Valued.v (comp P y) ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h1` using `[h]`. Conclude with `h1 zero_le_one`. Take `⟨m, hm⟩` from `exists_pow_lt₀ hlt (Units.mk0 _ h0)⁻¹`. Use `⟨a ^ m, fun h => haQ (Q.isPrime.mem_of_pow_mem m h), ?_⟩` and prove the remaining obligations. Establish `: ((a ^ m : 𝓞 E) : E) = (a : E) ^ m` using `by simp`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, map_pow]`. Simplify using `only [Units.val_inv_eq_inv_val, Units.val_mk0] at hm`. Combine the equalities or inequalities in the displayed calculation. Use `choose c hcQ hc using hloc`. Establish `hfin : {P : HeightOneSpectrum (𝓞 E) | ¬ Valued.v (comp P y) ≤ 1}.Finite` using `Filter.eventually_cofinite.1 y.2`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hle : ∀ (P : HeightOneSpectrum (𝓞 E)) (a : 𝓞 E), P.valuation E (a : E) ≤ 1` using `fun P a => P.valuation_le_one (K := E) a`. Use `⟨∏ P ∈ hfin.toFinset, c P, ?_, fun P => ?_⟩` and prove the remaining obligations. Rewrite using `[Q.isPrime.prod_mem_iff]`. Introduce and unpack `⟨P, -, h⟩`. Conclude with `hcQ P h`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h1 : Valued.v (comp P y) ≤ 1`. Conclude with `mul_le_one' (hle _ _) h1`. Establish `hm : P ∈ hfin.toFinset` using `by simpa using h1`. Rewrite using `[← Finset.prod_erase_mul _ _ hm]`. Establish `: (((∏ x ∈ hfin.toFinset.erase P, c x) * c P : 𝓞 E) : E) = ((∏ x ∈ hfin.toFinset.erase P, c x : 𝓞 E) : E) * (c P : E)` using `by push_cast; rfl`.
-
-Rewrite using `[this, map_mul, mul_assoc]`. Conclude with `mul_le_one' (hle _ _) (hc P)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_clear (Q : HeightOneSpectrum (𝓞 E)) (y : FiniteAdeleRing (𝓞 E) E)
     (hy : Valued.v (comp Q y) ≤ 1) :
@@ -97,15 +95,15 @@ theorem exists_clear (Q : HeightOneSpectrum (𝓞 E)) (y : FiniteAdeleRing (𝓞
       exact mul_le_one' (hle _ _) (hc P)
 
 /- English proof (translation)
-Establish `hd : DenseRange (Pi.map fun _ : Fin n => Pi.map fun _ : Fin n => (algebraMap E (Q.adicCompletion E) : E → _))` using `DenseRange.piMap fun _ => DenseRange.piMap fun _ => HeightOneSpectrum.denseRange_algebraMap (R := 𝓞 E) (K := E) Q`. Establish `hc : Continuous fun X : Matrix (Fin n) (Fin n) (Q.adicCompletion E) => h * X` using `continuous_const.matrix_mul continuous_id`. Establish `hb : IsOpen {z : Q.adicCompletion E | Valued.v z < 1}`. Establish `h` using `Valued.isOpen_ball (Q.adicCompletion E) 1`. Use `h using 2 with z` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Simplify using `[Valuation.restrict_lt_iff_lt_embedding]`. Establish `hU : IsOpen {X : Matrix (Fin n) (Fin n) (Q.adicCompletion E) | (∀ i j, Valued.v ((h * X - 1) i j) < 1) ∧ Valued.v ((h * X).det - 1) < 1}`. Use `IsOpen.inter ?_ (hb.preimage (hc.matrix_det.sub continuous_const))` and prove the remaining obligations. Establish `: IsOpen (⋂ i, ⋂ j, {X : Matrix (Fin n) (Fin n) (Q.adicCompletion E) | Valued.v ((h * X - 1) i j) < 1})` using `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => hb.preimage ((hc.sub continuous_const).matrix_elem i j)`. Simplify using `only [← Set.setOf_forall] at this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this`. Take `⟨X, h1, h2⟩` from `hd.exists_mem_open hU ⟨g, ⟨fun i j => by rw [hg]; simp, by rw [hg]; simp⟩⟩`. Use `⟨X, fun i j => ?_, ?_⟩` and prove the remaining obligations. Establish `h3 : Valued.v ((h * (algebraMap E (Q.adicCompletion E)).mapMatrix X - 1) i j) < 1` using `h1 i j`. Establish `e : (h * (algebraMap E (Q.adicCompletion E)).mapMatrix X) i j = (h * (algebraMap E (Q.adicCompletion E)).mapMatrix X - 1) i j + (1 : Matrix (Fin n) (Fin n) (Q.adicCompletion E)) i j` using `by simp`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `Valuation.map_add_le _ h3.le ?_` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `h3 : Valued.v ((h * (algebraMap E (Q.adicCompletion E)).mapMatrix X).det - 1) < 1` using `h2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Valuation.map_eq_of_sub_lt Valued.v (x := (1 : Q.adicCompletion E)) (by rw [map_one]; exact h3)` as an intermediate fact. Rewrite `this` using `[map_one]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_approx_matrix (Q : HeightOneSpectrum (𝓞 E)) {n : ℕ}
     (g h : Matrix (Fin n) (Fin n) (Q.adicCompletion E)) (hg : h * g = 1) :
@@ -146,7 +144,7 @@ theorem exists_approx_matrix (Q : HeightOneSpectrum (𝓞 E)) {n : ℕ}
     rwa [map_one] at this
 
 /- English proof (translation)
-Simplify using `[Matrix.mulVec, dotProduct, Matrix.mul_apply, comp_alg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem comp_mulVec {n : ℕ} (h : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 E) E))
     (X : Matrix (Fin n) (Fin n) E) (P : HeightOneSpectrum (𝓞 E)) (i j : Fin n) :
@@ -155,37 +153,33 @@ theorem comp_mulVec {n : ℕ} (h : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞
   simp [Matrix.mulVec, dotProduct, Matrix.mul_apply, comp_alg]
 
 /- English proof (translation)
-Introduce `E _ _ n g L hL x`. Establish `hL' : ∀ x : Fin n → E, x ∈ L ↔ ∀ (i : Fin n) (Q : HeightOneSpectrum (𝓞 E)), Valued.v (comp Q ((g⁻¹).1.mulVec (fun j => algebraMap E (FiniteAdeleRing (𝓞 E) E) (x j)) i)) ≤ 1` using `hL`. Establish `hle : ∀ (P : HeightOneSpectrum (𝓞 E)) (a : 𝓞 E), P.valuation E (a : E) ≤ 1` using `fun P a => P.valuation_le_one (K := E) a`. Establish `hhg : ∀ Q : HeightOneSpectrum (𝓞 E), (comp Q).mapMatrix (g⁻¹).1 * (comp Q).mapMatrix g.1 = 1` using `fun Q => by`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdet : ∀ (Q : HeightOneSpectrum (𝓞 E)) (X : Matrix (Fin n) (Fin n) E), Q.valuation E X.det = Valued.v (comp Q g.1.det) * Valued.v ((comp Q).mapMatrix (g⁻¹).1 * (algebraMap E (Q.adicCompletion E)).mapMatrix X).det` using `fun Q X => by`. Rewrite using `[← map_mul, RingHom.map_det, ← Matrix.det_mul, ← mul_assoc, ← map_mul, Units.mul_inv, map_one, one_mul, ← RingHom.map_det, val_alg]`. Use `show _ ↔ ∀ Q : HeightOneSpectrum (𝓞 E), Q.valuation E x ≤ Valued.v (comp Q g.1.det)`. Prove the components needed by the constructor for the conclusion. Introduce `hx Q`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem d hd`. Take `⟨v, hv, rfl⟩` from `hd`. Rewrite using `[hdet]`. Use `mul_le_of_le_one_right' (val_det_le_one _ _ fun i j => ?_)` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← comp_mulVec]`. Conclude with `(hL' _).1 (hv j) i Q`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => exact Valuation.map_add_le _ ha hb`. Consider the case `smul a b _ hb`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : a • b = (a : E) * b` using `rfl`. Rewrite using `[e, map_mul]`. Conclude with `(mul_le_of_le_one_left' (hle Q a)).trans hb`. Introduce `hx`. Establish `hloc : ∀ Q : HeightOneSpectrum (𝓞 E), ∃ b : 𝓞 E, b ∉ Q.asIdeal ∧ b • x ∈ Submodule.span (𝓞 E) (detSet L)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `Q`. Take `⟨X, hX1, hX2⟩` from `exists_approx_matrix Q _ _ (hhg Q)`. Use `choose c hcQ hc using fun i j => exists_clear Q ((g⁻¹).1.mulVec (fun k => algebraMap E (FiniteAdeleRing (𝓞 E) E) (X k j)) i) (by rw [comp_mulVec]; exact hX1 i j)`. Take `⟨b, hb⟩ : ∃ b : 𝓞 E, b = ∏ p : Fin n × Fin n, c p.1 p.2` from `⟨_, rfl⟩`. Establish `hbQ : b ∉ Q.asIdeal`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hb, Q.isPrime.prod_mem_iff]`. Introduce and unpack `⟨p, -, h⟩`. Conclude with `hcQ _ _ h`. Establish `hb1 : Q.valuation E (b : E) = 1` using `(HeightOneSpectrum.valuation_eq_one_iff_notMem (K := E) Q (r := b)).2 hbQ`. Establish `hbc : ∀ i j (P : HeightOneSpectrum (𝓞 E)), P.valuation E (b : E) ≤ P.valuation E (c i j : E)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `i j P`. Take `⟨t, ht⟩ : c i j ∣ b` from `hb ▸ Finset.dvd_prod_of_mem (fun p : Fin n × Fin n => c p.1 p.2) (Finset.mem_univ (i, j))`. Establish `: (b : E) = (c i j : E) * (t : E)` using `by rw [ht]; push_cast; rfl`. Rewrite using `[this, map_mul]`. Conclude with `mul_le_of_le_one_right' (hle P t)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd : ((b : E) • X).det ∈ detSet L`. Use `⟨fun j i => (b : E) * X i j, fun j => (hL' _).2 fun i P => ?_, rfl⟩` and prove the remaining obligations. Establish `e : comp P ((g⁻¹).1.mulVec (fun k => algebraMap E (FiniteAdeleRing (𝓞 E) E) ((b : E) * X k j)) i) = algebraMap E _ (b : E) * comp P ((g⁻¹).1.mulVec (fun k => algebraMap E (FiniteAdeleRing (𝓞 E) E) (X k j)) i)`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, comp_alg, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, map_mul, val_alg]`. Conclude with `(mul_le_mul' (hbc i j P) le_rfl).trans (hc i j P)`. Establish `hdv : Q.valuation E ((b : E) • X).det = Valued.v (comp Q g.1.det)`. Rewrite using `[Matrix.det_smul, map_mul, map_pow, hb1, one_pow, one_mul, hdet, hX2, mul_one]`. Take `⟨d, hdd⟩ : ∃ d, d = ((b : E) • X).det` from `⟨_, rfl⟩`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hd`, `hdv` using `[← hdd]`. Establish `hg0 : Valued.v (comp Q g.1.det) ≠ 0` using `(Valuation.ne_zero_iff _).2 ((g.isUnit.map Matrix.detMonoidHom).map (comp Q)).ne_zero`. Establish `hd0 : d ≠ 0`. Introduce and unpack `rfl`. Rewrite `hdv` using `[map_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hg0 hdv.symm`. Take `⟨s, hsQ, hs⟩` from `exists_clear Q (algebraMap E _ (x / d)) (by`. Rewrite using `[comp_alg, val_alg, map_div₀, hdv]`. Conclude with `(div_le_one₀ (zero_lt_iff.2 hg0)).2 (hx Q))`. Take `⟨a, ha⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one (R := 𝓞 E) E ((s : E) * (x / d)) (fun P => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `hs P` as an intermediate fact. Rewrite using `[comp_alg, val_alg, ← map_mul] at this)` and apply the resulting hypothesis. Use `⟨s, hsQ, ?_⟩` and prove the remaining obligations. Establish `e : s • x = a • d`. Establish `e1 : s • x = (s : E) * x` using `rfl`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e2 : a • d = algebraMap (𝓞 E) E a * d` using `rfl`. Rewrite using `[e1, e2, ha]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hd)`.
-
-Set `I : Ideal (𝓞 E)` to `(Submodule.span (𝓞 E) (detSet L)).comap (LinearMap.toSpanSingleton (𝓞 E) E x)`. Establish `hI : I = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨M, hM, hIM⟩` from `Ideal.exists_le_maximal I hne`. Establish `hM0 : M ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField hM (RingOfIntegers.not_isField E)`.
-
-Take `⟨b, hb, hbx⟩` from `hloc ⟨M, hM.isPrime, hM0⟩`. Conclude with `hb (hIM hbx)`. Establish `h1 : (1 : 𝓞 E) ∈ I` using `hI ▸ Submodule.mem_top`. Establish `h2 : (1 : 𝓞 E) • x ∈ Submodule.span (𝓞 E) (detSet L)` using `h1`. Rewrite `h2` using `[one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_span_detSet_iff : ∀ (E : Type) [Field E] [NumberField E] (n : ℕ) (g : GL (Fin n) (FiniteAdeleRing (𝓞 E) E)) (L : Submodule (𝓞 E) (Fin n → E)), (∀ x : Fin n → E, x ∈ L ↔ ∀ (i : Fin n) (Q : HeightOneSpectrum (𝓞 E)), Valued.v (((g⁻¹).1.mulVec (fun j => algebraMap E (FiniteAdeleRing (𝓞 E) E) (x j)) i) Q) ≤ 1) → ∀ x : E, x ∈ Submodule.span (𝓞 E) (detSet L) ↔ ∀ Q : HeightOneSpectrum (𝓞 E), Q.valuation E x ≤ Valued.v (g.1.det Q) := by
   intro E _ _ n g L hL x

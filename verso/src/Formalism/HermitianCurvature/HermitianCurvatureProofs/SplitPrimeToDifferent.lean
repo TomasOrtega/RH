@@ -7,9 +7,9 @@ open NumberField NumberField.IsCMField Module
 open scoped nonZeroDivisors
 
 /- English proof (translation)
-Unfold `twLat`. Rewrite using `[Submodule.mem_inf, Submodule.mem_comap]`. Establish `: ((LinearMap.id : E →ₗ[ℤ] E) - ((-1 : ℤ) ^ s) • conjZ E) t = t - (-1) ^ s * complexConj E t`. Rewrite using `[LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, zsmul_eq_mul]`. Use `push_cast`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Both sides reduce to the same expression. Rewrite using `[this]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_twLat (E : Type) [Field E] [NumberField E] [IsCMField E] (A B : FI E) (s : ℕ) (t : E) :
     t ∈ twLat E A B s ↔ t ∈ A ∧ t - (-1) ^ s * complexConj E t ∈ B := by
@@ -23,9 +23,9 @@ theorem mem_twLat (E : Type) [Field E] [NumberField E] [IsCMField E] (A B : FI E
   rw [this]; rfl
 
 /- English proof (translation)
-Establish `hg' : ((g : E) ^ k) ≠ 0` using `zpow_ne_zero _ (by exact_mod_cast hg.ne')`. Unfold `idl`. Rewrite using `[mul_comm, FractionalIdeal.mem_singleton_mul]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[mul_div_cancel_left₀ _ hg']` and apply the resulting hypothesis. Introduce `h`. Conclude with `⟨_, h, by field_simp⟩`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem mem_idl (E : Type) [Field E] [NumberField E] (g : ℕ) (k ν : ℤ) (t : E) (hg : 0 < g) :
     t ∈ idl E g k ν ↔ t / (g : E) ^ k ∈ dd E ^ ν := by
@@ -39,16 +39,16 @@ theorem mem_idl (E : Type) [Field E] [NumberField E] (g : ℕ) (k ν : ℤ) (t :
     exact ⟨_, h, by field_simp⟩
 
 /- English proof (translation)
-The claim follows from `Algebra.trace_eq_of_algEquiv ((complexConj E).restrictScalars ℚ) x`.
+A detailed English derivation is pending.
 -/
 theorem trace_conj (E : Type) [Field E] [NumberField E] [IsCMField E] (x : E) :
     Algebra.trace ℚ E (complexConj E x) = Algebra.trace ℚ E x :=
   Algebra.trace_eq_of_algEquiv ((complexConj E).restrictScalars ℚ) x
 
 /- English proof (translation)
-Rewrite using `[trace_eq_sum_automorphisms]`. Establish `hu : (Finset.univ : Finset (E ≃ₐ[maximalRealSubfield E] E)) = {1, complexConj E}`. Use `symm`. Apply `Finset.eq_of_subset_of_card_le (Finset.subset_univ _)` to reduce the goal to its premises. Rewrite using `[Finset.card_univ, ← Nat.card_eq_fintype_card, IsGalois.card_aut_eq_finrank, Algebra.IsQuadraticExtension.finrank_eq_two, Finset.card_pair (complexConj_ne_one E).symm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu, Finset.sum_pair (complexConj_ne_one E).symm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem trace_rel (E : Type) [Field E] [NumberField E] [IsCMField E] (x : E) :
     algebraMap (maximalRealSubfield E) E (Algebra.trace (maximalRealSubfield E) E x)
@@ -65,23 +65,21 @@ theorem trace_rel (E : Type) [Field E] [NumberField E] [IsCMField E] (x : E) :
   rfl
 
 /- English proof (translation)
-Use `set F := maximalRealSubfield E with hF`. Establish `hdual : FractionalIdeal.dual (𝓞 F) F (1 : FI E) = 1`. Establish `h` using `coeIdeal_differentIdeal (𝓞 F) F (L := E) (B := 𝓞 E)`. Rewrite `h` using `[h1, FractionalIdeal.coeIdeal_top]`. Conclude with `(inv_eq_one.1 h.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `I : Ideal (𝓞 F)` to `LinearMap.range (Algebra.intTrace (𝓞 F) (𝓞 E))`. Establish `hI0 : (I : FractionalIdeal (𝓞 F)⁰ F) ≠ 0`. Rewrite using `[Ne, FractionalIdeal.coeIdeal_eq_zero]`. Introduce `hb`. Establish `: Algebra.intTrace (𝓞 F) (𝓞 E) 1 ∈ I` using `⟨1, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[hb, Ideal.mem_bot]`. Establish `h2` using `Algebra.algebraMap_intTrace (A := 𝓞 F) (K := F) (L := E) (B := 𝓞 E) 1`. Rewrite `h2` using `[this, map_zero, map_one, ← map_one (algebraMap F E), Algebra.trace_algebraMap, Algebra.IsQuadraticExtension.finrank_eq_two]`. Evaluate the numerical expressions using `at h2`. Establish `hinv : (I : FractionalIdeal (𝓞 F)⁰ F)⁻¹ ≤ 1`.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `a ha`. Rewrite `ha` using `[FractionalIdeal.mem_inv_iff hI0]`. Establish `hmem : algebraMap F E a ∈ FractionalIdeal.dual (𝓞 F) F (1 : FI E)`. Rewrite using `[FractionalIdeal.mem_dual (one_ne_zero : (1 : FI E) ≠ 0)]`. Introduce `b hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hb` using `[FractionalIdeal.mem_one_iff]`. Take `⟨z, rfl⟩` from `hb`. Rewrite using `[Algebra.traceForm_apply, ← Algebra.smul_def, map_smul, smul_eq_mul, ← Algebra.algebraMap_intTrace (A := 𝓞 F)]`. Use `ha (algebraMap (𝓞 F) F (Algebra.intTrace (𝓞 F) (𝓞 E) z)) ((FractionalIdeal.mem_coeIdeal _).2 ⟨_, ⟨z, rfl⟩, rfl⟩)` as an intermediate fact. Rewrite `this` using `[FractionalIdeal.mem_one_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `this`. Rewrite `hmem` using `[hdual, FractionalIdeal.mem_one_iff]`. Take `⟨z, hz⟩` from `hmem`. Establish `hint : IsIntegral ℤ a`. Rewrite using `[← isIntegral_algebraMap_iff (FaithfulSMul.algebraMap_injective F E), ← hz]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `z.isIntegral_coe`. Rewrite using `[FractionalIdeal.mem_one_iff]`. Conclude with `⟨⟨a, hint⟩, rfl⟩`. Establish `hone : (1 : FractionalIdeal (𝓞 F)⁰ F) ≤ I`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1I : (1 : F) ∈ (I : FractionalIdeal (𝓞 F)⁰ F)` using `hone (FractionalIdeal.one_mem_one _)`. Rewrite `h1I` using `[FractionalIdeal.mem_coeIdeal]`. Take `⟨w, ⟨θ, hθ⟩, hw⟩` from `h1I`. Use `⟨θ, ?_⟩` and prove the remaining obligations. Rewrite using `[← trace_rel, ← hF]`.
-
-Establish `h2` using `Algebra.algebraMap_intTrace (A := 𝓞 F) (K := F) (L := E) (B := 𝓞 E) θ`. Rewrite `h2` using `[hθ, hw]`. Rewrite using `[show ((θ : E)) = algebraMap (𝓞 E) E θ from rfl, ← h2, map_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_theta (E : Type) [Field E] [NumberField E] [IsCMField E]
     (h1 : differentIdeal (𝓞 (maximalRealSubfield E)) (𝓞 E) = ⊤) :
@@ -145,17 +143,15 @@ open NumberField NumberField.IsCMField Module
 open scoped nonZeroDivisors
 
 /- English proof (translation)
-Introduce `E _ _ _ p ⟨hp, h⟩`. Unfold `PrimeToDifferent`. Rewrite using `[Ideal.isCoprime_iff_sup_eq]`. Assume the negation of the conclusion as `hne`. Take `⟨P, hPmax, hle⟩` from `Ideal.exists_le_maximal _ hne`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Establish `hD : differentIdeal ℤ (𝓞 E) ≤ P` using `le_sup_left.trans hle`. Establish `hpP : (p : 𝓞 E) ∈ P` using `hle (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`. Establish `h2` using `(h P hPmax.isPrime hpP).2`. Set `p0 : Ideal ℤ` to `Ideal.span {(p : ℤ)}`. Establish `hmap : p0.map (algebraMap ℤ (𝓞 E)) = Ideal.span {(p : 𝓞 E)}`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `[p0, Ideal.map_span]`. Establish `hp0 : p0 ≠ ⊥`. Simplify using `[p0, hp.ne_zero]`. Establish `: p0.IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.1 hp).irreducible`. Establish `: Finite (ℤ ⧸ p0)` using `Ideal.finiteQuotientOfFreeOfNeBot p0 hp0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Q, hQ⟩ : P ∣ p0.map (algebraMap ℤ (𝓞 E))` from `Ideal.dvd_iff_le.2 (by rw [hmap, Ideal.span_singleton_le_iff_mem]; exact hpP)`. Establish `hcop : IsCoprime P Q`. Rewrite using `[Ideal.isCoprime_iff_sup_eq]`. Assume the negation of the conclusion as `hc`. Establish `he : P = P ⊔ Q` using `hPmax.eq_of_le hc le_sup_left`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hQP : Q ≤ P` using `by rw [he]; exact le_sup_right`. Apply `h2` to reduce the goal to its premises. Establish `: p0.map (algebraMap ℤ (𝓞 E)) ≤ P ^ 2`. Rewrite using `[hQ, pow_two]`. Conclude with `Ideal.mul_mono_right hQP`.
-
-Conclude with `this (by rw [hmap]; exact Ideal.mem_span_singleton_self _)`. Conclude with `not_dvd_differentIdeal_of_isCoprime ℤ P Q hcop hQ.symm (Ideal.dvd_iff_le.2 hD)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem splitPrimeToDifferent : Formalism.FourierDecayAlt.S6.SplitCoprime := by
   intro E _ _ _ p ⟨hp, h⟩
@@ -188,25 +184,23 @@ theorem splitPrimeToDifferent : Formalism.FourierDecayAlt.S6.SplitCoprime := by
   exact not_dvd_differentIdeal_of_isCoprime ℤ P Q hcop hQ.symm (Ideal.dvd_iff_le.2 hD)
 
 /- English proof (translation)
-Introduce `E _ _ _ hU g ν s hg l hl t ht`. Establish `hrel : differentIdeal (𝓞 (maximalRealSubfield E)) (𝓞 E) = ⊤`. Establish `h` using `differentIdeal_eq_differentIdeal_mul_differentIdeal ℤ (𝓞 (maximalRealSubfield E)) (𝓞 E)`. Unfold `Unram at hU`. Establish `h0 : (differentIdeal ℤ (𝓞 (maximalRealSubfield E))).map (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E)) ≠ ⊥`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Rewrite using `[← hU]`. Conclude with `differentIdeal_ne_bot`. Rewrite `h` using `[hU]`. Establish `h2 : differentIdeal (𝓞 (maximalRealSubfield E)) (𝓞 E) * (differentIdeal ℤ (𝓞 (maximalRealSubfield E))).map (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E)) = 1 * (differentIdeal ℤ (𝓞 (maximalRealSubfield E))).map (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E))` using `by rw [one_mul]; exact h.symm`. Simplify using `using mul_right_cancel₀ h0 h2`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨θ, hθ⟩` from `exists_theta E hrel`. Establish `hgE : (g : E) ≠ 0` using `by exact_mod_cast hg.ne'`. Establish `hd : dd E ≠ 0`. Unfold `dd`. Rewrite using `[Ne, FractionalIdeal.coeIdeal_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `differentIdeal_ne_bot`. Establish `hdual : dd E ^ (-(ν + 1)) * dd E ^ ν = FractionalIdeal.dual ℤ ℚ (1 : FI E)`. Rewrite using `[← zpow_add₀ hd, show -(ν + 1) + ν = -1 by ring, zpow_neg_one]`. Unfold `dd`. Rewrite using `[coeIdeal_differentIdeal ℤ ℚ, inv_inv]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Unfold `perLat at ht`. Unfold `dualIdl at hl`. Rewrite `hl`, `ht` using `[mem_twLat, mem_idl E g _ _ _ hg, mem_idl E g _ _ _ hg]`. Take `⟨hl1, hl2⟩` from `hl`. Take `⟨ht1, ht2⟩` from `ht`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set ε : E := (-1) ^ s with hε`. Establish `hεε : ε * ε = 1` using `by rw [hε, ← pow_add, ← two_mul, pow_mul]; simp`. Establish `hεc : complexConj E ε = ε` using `by rw [hε, map_pow, map_neg, map_one]`. Use `set x : E := l * t / g with hx`. Establish `hy : x + complexConj E x ∈ FractionalIdeal.dual ℤ ℚ (1 : FI E)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hdual]`. Establish `m1` using `FractionalIdeal.mul_mem_mul hl2 ht1`. Establish `m2` using `FractionalIdeal.mul_mem_mul hl2 ht2`. Establish `m3` using `FractionalIdeal.mul_mem_mul hl1 ht2`. Establish `m2'` using `(dd E ^ (-(ν + 1)) * dd E ^ ν : FI E).coeToSubmodule.smul_mem (g : 𝓞 E) m2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `m` using `(dd E ^ (-(ν + 1)) * dd E ^ ν : FI E).coeToSubmodule.add_mem ((dd E ^ (-(ν + 1)) * dd E ^ ν : FI E).coeToSubmodule.sub_mem m1 m2') m3`. Establish `e : x + complexConj E x = (l - (-1) ^ (s + 1) * complexConj E l) / (g : E) ^ (0 : ℤ) * (t / (g : E) ^ (1 : ℤ)) - (g : 𝓞 E) • ((l - (-1) ^ (s + 1) * complexConj E l) / (g : E) ^ (0 : ℤ) * ((t - ε * complexConj E t) / (g : E) ^ (2 : ℤ))) + l / (g : E) ^ (-1 : ℤ) * ((t - ε * complex …`. Rewrite using `[Algebra.smul_def, hx, map_div₀, map_mul, map_natCast, map_natCast, pow_succ, ← hε, zpow_zero, zpow_one, zpow_neg_one, zpow_ofNat]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(-(complexConj E l * complexConj E t)) * hεε`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `m`. Establish `hz` using `(FractionalIdeal.mem_dual (one_ne_zero : (1 : FI E) ≠ 0)).1 hy (θ : E) ((FractionalIdeal.mem_one_iff _).2 ⟨θ, rfl⟩)`. Rewrite `hz` using `[Algebra.traceForm_apply]`. Establish `e : Algebra.trace ℚ E ((x + complexConj E x) * (θ : E)) = Algebra.trace ℚ E x`.
-
-Rewrite using `[add_mul, map_add, ← trace_conj E (complexConj E x * (θ : E)), map_mul (complexConj E), complexConj_apply_apply, ← map_add, ← mul_add, hθ, mul_one]`. Rewrite `hz` using `[e]`. Conclude with `hz`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem traceDualGe : Formalism.FourierDecayAlt.S6.DualSupset := by
   intro E _ _ _ hU g ν s hg l hl t ht

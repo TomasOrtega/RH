@@ -8,9 +8,9 @@ namespace GlobalTheory.LocAcycUnits
 open Polynomial
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.UnitPowerExistence.exists_unit_pow_eq`. Consider the case `exact _root_.GlobalTheory.UnitPowerExistence.exists_unit_pow_eq`. Consider the case `(apply _root_.GlobalTheory.UnitPowerExistence.exists_unit_pow_eq <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.UnitPowerExistence.exists_unit_pow_eq <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.UnitPowerExistence.exists_unit_pow_eq <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.UnitPowerExistence.exists_unit_pow_eq ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem units_pow_surj_of_sepClosed (O : Type) [CommRing O] [HenselianLocalRing O]
     [IsSepClosed (ResidueField O)] (q : ℕ) (hq : IsUnit (q : O)) (hq0 : 0 < q) (w : Oˣ) :
@@ -24,17 +24,17 @@ theorem units_pow_surj_of_sepClosed (O : Type) [CommRing O] [HenselianLocalRing 
   | (intros; exact _root_.GlobalTheory.UnitPowerExistence.exists_unit_pow_eq ..)
 
 /- English proof (translation)
-Introduce `T O _ _ _ _ _ _ _ _ _ q hT hq hq0 hO u`. Take `⟨_, hroot⟩` from `hT`. Take `⟨c, d, w, hc, hd, hu⟩` from `GlobalTheory.T.units_localization_strictHenselian_eq_const_mul_unit T O hroot hO u`. Use `set L := Localization (Algebra.algebraMapSubmonoid O (nonZeroDivisors T))`. Establish `root : ∀ x : T, x ≠ 0 → ∃ y : T, y ≠ 0 ∧ y ^ q = x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Take `⟨y, hy⟩` from `hroot (X ^ q - C x) (monic_X_pow_sub_C _ hq0.ne') (by rw [natDegree_X_pow_sub_C]; exact hq0)`. Establish `hyq : y ^ q = x` using `by simpa [sub_eq_zero] using hy`. Use `⟨y, ?_, hyq⟩` and prove the remaining obligations. Introduce and unpack `rfl; exact hx (by rw [← hyq, zero_pow hq0.ne'])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `unitOf : ∀ x : T, x ≠ 0 → IsUnit (algebraMap O L (algebraMap T O x))` using `fun x hx => IsLocalization.map_units L (⟨algebraMap T O x, Algebra.mem_algebraMapSubmonoid_of_mem (⟨x, mem_nonZeroDivisors_of_ne_zero hx⟩ : nonZeroDivisors T)⟩ : Algebra.algebraMapSubmonoid O (nonZeroDivisors T))`. Take `⟨c', hc', hcq⟩` from `root c hc`. Take `⟨d', hd', hdq⟩` from `root d hd`. Establish `hqO : IsUnit (q : O)` using `by simpa using hq.map (algebraMap T O)`. Take `⟨w', hw'⟩` from `units_pow_surj_of_sepClosed O q hqO hq0 w`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `powU : ∀ (x y : T) (hx : x ≠ 0) (hy : y ≠ 0), y ^ q = x → (unitOf y hy).unit ^ q = (unitOf x hx).unit`. Introduce `x y hx hy hxy`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `[← map_pow, hxy]`. Establish `hMw : (Units.map (algebraMap O L).toMonoidHom w') ^ q = Units.map (algebraMap O L).toMonoidHom w`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_pow, hw']`. Establish `huU : u * (unitOf d hd).unit = (unitOf c hc).unit * Units.map (algebraMap O L).toMonoidHom w`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `using hu`. Use `⟨(unitOf c' hc').unit * Units.map (algebraMap O L).toMonoidHom w' * (unitOf d' hd').unit⁻¹, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_pow, mul_pow, inv_pow, powU c c' hc hc' hcq, powU d d' hd hd' hdq, hMw, ← huU]`. Use `group`.
+A detailed English derivation is pending.
 -/
 theorem units_localization_pow_surj : ∀ (T O : Type) [CommRing T] [IsDomain T] [IsLocalRing T] [CommRing O] [Algebra T O] [Algebra (Polynomial T) O] [IsScalarTower T (Polynomial T) O] [HenselianLocalRing O] [IsSepClosed (ResidueField O)] (q : ℕ), (IsDomain T ∧ ∀ f : Polynomial T, f.Monic → 0 < f.natDegree → ∃ x : T, f.eval x = 0) → IsUnit (q : T) → 0 < q → (∃ (ι : Type) (_ : Preorder ι) (_ : IsDirected ι (· ≤ ·)) (_ : Nonempty ι) (Si : ι → Subalgebra (Polynomial T) O), Monotone Si ∧ (∀ s : O, ∃ i, s ∈ Si i) ∧ ∀ i, ∃ (A : Type) (_ : CommRing A) (_ : Algebra (Polynomial T) A) (_ : Algebra.Etale (Polynomial T) A) (q : Ideal A) (_ : q.IsPrime), Nonempty (Localization.AtPrime q ≃ₐ[(Polynomial T)] Si i)) → ∀ u : (Localization (Algebra.algebraMapSubmonoid O (nonZeroDivisors T)))ˣ, ∃ v : (Localization (Algebra.algebraMapSubmonoid O (nonZeroDivisors T)))ˣ, v ^ q = u := by
   intro T O _ _ _ _ _ _ _ _ _ q hT hq hq0 hO u

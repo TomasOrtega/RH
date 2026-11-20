@@ -13,9 +13,9 @@ open NumberField Formalism.IncomingBounds Formalism.L2.FormalSeriesBounds Formal
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `C _ _ V O _ _ dd Y d _ I _ p`. Take `⟨M, h1, h2, h3, h4⟩` from `GlobalTheory.T.exists_orthogonal_adjoint_projectors_placePairs C V O dd Y d Unit (fun _ => I) (fun _ => p) (by`. Introduce and unpack `⟨⟨⟩, x⟩ ⟨⟨⟩, x'⟩ hne`. Conclude with `p.em_sep x x' (fun h => hne (by rw [h])))`. Use `⟨M (), (h1 ()).1, (h1 ()).2, fun g c => h2 () g c, fun g c => h3 () g () (1 - g) c ?_, fun g v => h4 () g v⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `h' : g = 1 - g` using `(Prod.ext_iff.mp h).2`. Use `revert h'`. Apply the tactic sequence `fin_cases g <;> decide`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem hasProj_pairData : ∀ (C : Type) [Field C] [CharZero C] (V : VF C) (O : Type) [CommRing O] [StarRing O] (dd : ℕ) (Y : FBChart C V O dd) (d : ℕ) [NeZero d] (I : Fin 2 → Type) [∀ g, Fintype (I g)] (p : PairData Y d I), HasProj (Y.raw p) V := by
   intro C _ _ V O _ _ dd Y d _ I _ p

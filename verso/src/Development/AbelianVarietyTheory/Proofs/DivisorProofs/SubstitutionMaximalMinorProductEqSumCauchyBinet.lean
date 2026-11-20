@@ -16,15 +16,15 @@ noncomputable section
 namespace GlobalTheory.NormDict
 
 /- English proof (translation)
-Introduce `D a d m K T`. Establish `hmin : ∀ τ (s : Fin a → Fin d), GlobalTheory.CompactHowe.substF K (fun _ => (1 : Matrix (Fin a) (Fin a) ℂ)) (Matrix.of fun i i' : Fin a => (MvPolynomial.X (τ, s i, i') : MvPolynomial (Formalism.MainNotions.GL3Theta.Idx D a d) ℂ)).det = ∑ s' : {s : Fin a → Fin d // StrictMono s}, …`. Introduce `τ s`. Rewrite using `[AlgHom.map_det]`. Establish `hM : (GlobalTheory.CompactHowe.substF K (fun _ => (1 : Matrix (Fin a) (Fin a) ℂ))).mapMatrix (Matrix.of fun i i' : Fin a => (MvPolynomial.X (τ, s i, i') : MvPolynomial (Formalism.MainNotions.GL3Theta.Idx D a d) ℂ)) = (Matrix.of fun (i : Fin a) (k : Fin d) => (MvPolynomial.C (K τ …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Matrix.ext fun i i' => ?_` and prove the remaining obligations. Simplify using `only [RingHom.mapMatrix_apply, AlgHom.coe_toRingHom, Matrix.map_apply, Matrix.of_apply, GlobalTheory.CompactHowe.substF_X, Matrix.mul_apply, Matrix.one_apply]`. Rewrite using `[AlgHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, GlobalTheory.CompactHowe.substF_X]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single i']`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `l _ hl`. Simplify using `[Matrix.one_apply_ne hl]`. Simplify using the standard rewrite rules. Rewrite using `[hM, GlobalTheory.MinorFrame.det_mul_eq_sum_sm]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun s' _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[show (Matrix.of fun (i : Fin a) (k : Fin d) => (MvPolynomial.C (K τ k (s i)) : MvPolynomial (Formalism.MainNotions.GL3Theta.Idx D a d) ℂ)).submatrix id s'.1 = (MvPolynomial.C : ℂ →+* MvPolynomial (Formalism.MainNotions.GL3Theta.Idx D a d) ℂ).mapMatrix (Matrix.of fun i i' : Fin a …`. Rewrite using `[← RingHom.map_det]`. Unfold `minorPol`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Simplify using `only [map_prod, hmin]`. Rewrite using `[Finset.prod_congr rfl fun τ _ => Fintype.prod_sum _, Fintype.prod_sum]`. Use `Finset.sum_congr rfl fun T' _ => ?_` and prove the remaining obligations. Rewrite using `[← MvPolynomial.C_mul']`. Simplify using `only [Finset.prod_mul_distrib, map_prod]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem substF_minorPol_eq_sum : ∀ (D : D7) {a d : ℕ} {m : D.what₂.Tau → ℕ} (K : D.what₂.Tau → Matrix (Fin d) (Fin d) ℂ)
     (T : Tup D a d m), GlobalTheory.CompactHowe.substF K (fun _ => (1 : Matrix (Fin a) (Fin a) ℂ)) (minorPol D T) =

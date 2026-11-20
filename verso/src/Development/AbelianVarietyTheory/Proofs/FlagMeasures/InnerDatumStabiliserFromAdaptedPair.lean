@@ -16,9 +16,9 @@ open Formalism.L2.SG.Pf
 variable {D : D7}
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [Formalism.HermitianLatticesTheory.gmap, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨b y, ⟨y, hy, rfl⟩, rfl⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨_, ⟨y, hy, rfl⟩, rfl⟩`. Conclude with `⟨y, hy, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem onto_gmap_mul (a b : GV D) (M : LV D) :
     Formalism.HermitianLatticesTheory.gmap (a * b) M = Formalism.HermitianLatticesTheory.gmap a (Formalism.HermitianLatticesTheory.gmap b M) := by
@@ -31,9 +31,9 @@ theorem onto_gmap_mul (a b : GV D) (M : LV D) :
     exact ⟨y, hy, rfl⟩
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [Formalism.HermitianLatticesTheory.gmap, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `hy`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx`. Conclude with `⟨x, hx, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem onto_gmap_one (M : LV D) : Formalism.HermitianLatticesTheory.gmap (1 : GV D) M = M := by
   ext x
@@ -45,17 +45,15 @@ theorem onto_gmap_one (M : LV D) : Formalism.HermitianLatticesTheory.gmap (1 : G
     exact ⟨x, hx, rfl⟩
 
 /- English proof (translation)
-Establish `hGi : Adapt G⁻¹ B A` using `adapt_inv hG`. Establish `hσ : Adapt (G⁻¹ * h * G) A A`. Establish `h2 : Adapt (G⁻¹ * (h * G)) A A` using `adapt_mul (adapt_mul hG hh) hGi`. Rewrite using `[mul_assoc]` and apply the resulting hypothesis. Establish `hGiso : G ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `hG.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hmap : (Xsp A).map (G : (VS D).V →ₗ[D.host.E] (VS D).V) = Xsp B` using `adapt_xsp hG`. Establish `hinj : ∀ X Y : LV D, Formalism.HermitianLatticesTheory.gmap G X = Formalism.HermitianLatticesTheory.gmap G Y → X = Y`. Introduce `X Y hXY`. Establish `hXY'` using `congrArg (Formalism.HermitianLatticesTheory.gmap G⁻¹) hXY`. Rewrite `hXY'` using `[← onto_gmap_mul, ← onto_gmap_mul, inv_mul_cancel, onto_gmap_one, onto_gmap_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `e : G * (G⁻¹ * h * G) = h * G` using `by group`. Establish `hLσ : Lsub (Formalism.HermitianLatticesTheory.gmap (G⁻¹ * h * G) M) A = Lsub M A`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[← lsub_gmap_of_map_Xsp_eq D T A B G _ hGiso hmap, ← lsub_gmap_of_map_Xsp_eq D T A B G M hGiso hmap, ← onto_gmap_mul, e, onto_gmap_mul]`. Conclude with `hL`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn, hnM⟩` from `hs _ hσ hLσ`. Use `⟨n, hn, ?_, ?_⟩` and prove the remaining obligations. Establish `hA : Adapt (n * (G⁻¹ * h * G)) A A` using `adapt_mul hσ (adapt_nrat hn) show Adapt _ A A ∧ Formalism.HermitianLatticesTheory.gmap _ M = M`. Conclude with `⟨hA, hnM⟩`. Introduce `x hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, hm3⟩` from `nrat_conj hG hn`. Establish `hhx : h x ∈ orth (VS D) (Xsp B)` using `mem_of_map_eq (adapt_orth hh) hx`. Establish `e' : G * (n * (G⁻¹ * h * G)) * G⁻¹ = G * n * G⁻¹ * h` using `by group`. Rewrite using `[e']`. Use `show h x - (G * n * G⁻¹) (h x) ∈ Xsp B`.
-
-Rewrite using `[← neg_sub]`. Conclude with `neg_mem (hm3 (h x) hhx)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem onto_side {T : D.host.E} {A B : LFlag (VS D) D.R.rS T} {M : LV D} {G h : GV D}
     (hG : Adapt G A B) (hh : Adapt h B B)
@@ -97,15 +95,15 @@ theorem onto_side {T : D.host.E} {A B : LFlag (VS D) D.R.rS T} {M : LV D} {G h :
     exact neg_mem (hm3 (h x) hhx)
 
 /- English proof (translation)
-Introduce `D T T' F0 F F0' F' lam lam' Λ γ g h hγ hlam hg hg' hΛ hs hs' hstab`. Take `⟨hH0, hdat⟩` from `hstab`. Establish `hL1 : Lsub (Formalism.HermitianLatticesTheory.gmap h Λ) F = Lsub Λ F` using `congrArg Prod.fst hdat`. Establish `hL2 : Lsub (Formalism.HermitianLatticesTheory.gmap h Λ) F' = Lsub Λ F'` using `congrArg (fun p => p.2.1) hdat`. Take `⟨hhF, hhF'⟩` from `frameAdaptedIsometry_of_fixing_both_frames hH0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hgγ : Adapt (g * γ) F0' F'` using `adapt_mul (adapt_mapLF hγ) hg'`. Establish `e2 : Formalism.HermitianLatticesTheory.gmap (g * γ) lam' = Λ` using `by rw [onto_gmap_mul, hlam, hΛ]`. Take `⟨n, hn, hb1, hx1⟩` from `onto_side (M := lam) hg hhF (by rw [← hΛ]; exact hL1) hs`. Take `⟨n', hn', hb2, hx2⟩` from `onto_side (M := lam') hgγ hhF' (by rw [e2]; exact hL2) hs'`. Establish `key : n * (g⁻¹ * h * g) * γ * (n' * ((g * γ)⁻¹ * h * (g * γ)))⁻¹ = n * γ * n'⁻¹` using `by group`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e3 : g * γ * (n' * ((g * γ)⁻¹ * h * (g * γ))) * γ⁻¹ * g⁻¹ = g * γ * (n' * ((g * γ)⁻¹ * h * (g * γ))) * (g * γ)⁻¹` using `by group`. Establish `hx2' : ∀ x ∈ orth (VS D) (Xsp F'), h x - (g * γ * (n' * ((g * γ)⁻¹ * h * (g * γ))) * γ⁻¹ * g⁻¹) x ∈ Xsp F'`. Rewrite using `[e3]`. Conclude with `hx2`. Establish `hI` using `(GlobalTheory.T.innerDatum_stable_iff_identifications_compatible D T T' F0 F F0' F' lam lam' Λ γ g h (n * (g⁻¹ * h * g)) (n' * ((g * γ)⁻¹ * h * (g * γ))) hγ hlam hg hg' hΛ hb1 hb2 hH0 hx1 hx2').mp hdat`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e4 : h⁻¹ * (g * n⁻¹ * (n * (g⁻¹ * h * g)) * g⁻¹) = 1` using `by group`. Establish `hF : h⁻¹ * (g * n⁻¹ * (n * (g⁻¹ * h * g)) * g⁻¹) ∈ NRat F` using `by rw [e4]; exact nrat_one F`. Establish `hF' : h⁻¹ * (g * n⁻¹ * (n * (g⁻¹ * h * g)) * g⁻¹) ∈ NRat F'` using `by rw [e4]; exact nrat_one F'`. Establish `hKey : KeyEq F0 F0' lam γ (n * (g⁻¹ * h * g) * γ * (n' * ((g * γ)⁻¹ * h * (g * γ)))⁻¹)` using `⟨⟨n, hn, n'⁻¹, nrat_inv hn', key⟩, hI⟩`. Use `⟨(n * (g⁻¹ * h * g), n' * ((g * γ)⁻¹ * h * (g * γ))), ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Conclude with `⟨hb1, hb2, hKey⟩`. Conclude with `⟨hH0, n, hn, n'⁻¹, nrat_inv hn', key, hF, hF'⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem stab_onto : ∀ (D : D7) (T T' : D.host.E) (F0 F : LFlag (VS D) D.R.rS T) (F0' F' : LFlag (VS D) D.R.rS T') (lam lam' Λ : LV D) (γ g h : GV D), γ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT → Formalism.HermitianLatticesTheory.gmap γ lam' = lam → Adapt g F0 F → Adapt g (mapLF γ F0') F' → Λ = Formalism.HermitianLatticesTheory.gmap g lam → (∀ σ, Adapt σ F0 F0 → Lsub (Formalism.HermitianLatticesTheory.gmap σ lam) F0 = Lsub lam F0 → ∃ n ∈ NRat F0, Formalism.HermitianLatticesTheory.gmap (n * σ) lam = lam) → (∀ σ, Adapt σ F0' F0' → Lsub (Formalism.HermitianLatticesTheory.gmap σ lam') F0' = Lsub lam' F0' → ∃ n ∈ NRat F0', Formalism.HermitianLatticesTheory.gmap (n * σ) lam' = lam') → h ∈ stabL F F' Λ → ∃ b, GlobalTheory.StabCnt.InB F0 F0' lam lam' γ b ∧ GlobalTheory.StabCnt.Corr F0 F F0' F' γ g b h := by
   intro D T T' F0 F F0' F' lam lam' Λ γ g h hγ hlam hg hg' hΛ hs hs' hstab

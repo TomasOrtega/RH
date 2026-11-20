@@ -5,7 +5,7 @@ import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ComplexMultiplication
 namespace GlobalTheory.CompanionTheory.CM
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Published.ComplexMultiplicationJSt.oneOrbit GlobalTheory.T.complex_multiplication_jacquet_shalika`.
+A detailed English derivation is pending.
 -/
 theorem idealInvariantsOneOrbit : GlobalTheory.Published.IdealInvariantsOneOrbitSt :=
   GlobalTheory.Published.ComplexMultiplicationJSt.oneOrbit GlobalTheory.T.complex_multiplication_jacquet_shalika

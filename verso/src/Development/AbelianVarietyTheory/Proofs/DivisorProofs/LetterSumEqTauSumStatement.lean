@@ -15,7 +15,7 @@ open GlobalTheory.ShFam GlobalTheory.ShFam.Pad ReciprocityTheory.ChartRestrictio
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.LieLetters.sum_letters_eq_sum_tau` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FLetterSumEqTauSum.lean&line=40#L40)
 -/

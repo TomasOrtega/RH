@@ -5,21 +5,21 @@ open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hI`. Take `⟨N, hN⟩` from `(c.isEval n).2 1`. Set `S : Finset (Fin d →₀ ℕ)` to `Finset.Iic (Finsupp.equivFunOnFinite.symm fun _ => N)`. Set `h₁ : MvPowerSeries (Fin d) O` to `∑ α ∈ S, monomial α (coeff α h)`. Establish `hmon : ∀ α, (monomial α (coeff α h) : MvPowerSeries (Fin d) O) = coeff α h • monomial α (1 : O)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `α`. Use extensionality with `β`. Simplify using `only [coeff_monomial, coeff_smul]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hcoeff : ∀ β ∈ S, coeff β h₁ = coeff β h`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Introduce `β hβ`. Simplify using `only [h₁, map_sum, coeff_monomial]`. Rewrite using `[Finset.sum_eq_single_of_mem β hβ]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Ne.symm hb]`. Establish `h₂ : (p : G.A n) ^ 1 ∣ c.ev n (h - h₁)`. Apply `hN` to reduce the goal to its premises. Introduce `β hβ`. Establish `hmem : β ∈ S`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [S, Finset.mem_Iic]`. Introduce `i`. Use `show β i ≤ N`. Establish `: β i ≤ β.degree`. Distinguish the cases in `h0 : β i = 0`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[Finsupp.degree]`. Conclude with `Finset.single_le_sum (f := fun j => β j) (fun _ _ => Nat.zero_le _) (by simpa using h0)`. Use linear arithmetic over natural numbers and integers. Rewrite using `[map_sub, hcoeff β hmem, sub_self]`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨b, hb⟩` from `h₂`. Use `⟨c.ev n h₁, ?_, b, ?_⟩` and prove the remaining obligations. Simplify using `only [h₁, map_sum]`. Use `Submodule.sum_mem _ fun α _ => ?_` and prove the remaining obligations. Rewrite using `[hmon, map_smul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem_smul (hI α) Submodule.mem_top`. Rewrite `hb` using `[map_sub, pow_one]`. Rewrite using `[← hb]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem Chart.ev_mem_ideal_smul_add_p (p : ℕ) (O : Type) [CommRing O] (G : PDivGroup p O) (d : ℕ)
     (c : QLog.Chart G d) (n : ℕ) (I : Ideal O) (h : MvPowerSeries (Fin d) O) :

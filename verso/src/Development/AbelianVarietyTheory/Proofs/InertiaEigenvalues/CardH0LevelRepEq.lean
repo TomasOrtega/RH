@@ -8,9 +8,9 @@ open ReciprocityTheory.Gal
 namespace GlobalTheory.ShapeNeg
 
 /- English proof (translation)
-Establish `h1` using `Submodule.card_eq_card_quotient_mul_card (LinearMap.ker f)`. Establish `h2` using `Submodule.card_eq_card_quotient_mul_card (LinearMap.range f)`. Establish `h3 : Nat.card (N ⧸ LinearMap.ker f) = Nat.card (LinearMap.range f)` using `Nat.card_congr (f.quotKerEquivRange).toEquiv`. Establish `hpos : 0 < Nat.card (LinearMap.range f)` using `Nat.card_pos`. Rewrite `h1` using `[h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[h1]`. Use polynomial arithmetic with `[h2]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem card_ker_eq_card_quot_range {O : Type} [CommRing O] {N : Type} [AddCommGroup N] [Module O N]
     [Finite N] (f : N →ₗ[O] N) :
@@ -53,7 +53,7 @@ def invariantsOfKilledLevelEquiv {O : Type} [CommRing O] {G : Type} [Group G] {M
     rfl
 
 /- English proof (translation)
-Introduce `O _ G _ _ M _ _ ρ c hfin`. Rewrite using `[Nat.card_congr (invariantsOfKilledLevelEquiv ρ c)]`. Conclude with `card_ker_eq_card_quot_range _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_H0_level_rep : ∀ {O : Type} [CommRing O] {G : Type} [Group G] [TopologicalSpace G] {M : Type} [AddCommGroup M]
     [Module O M] (ρ : Representation O G M) (c : O), Finite ρ.invariants →

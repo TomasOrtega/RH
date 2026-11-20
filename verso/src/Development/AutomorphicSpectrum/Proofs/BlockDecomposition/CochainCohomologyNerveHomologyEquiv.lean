@@ -12,9 +12,9 @@ namespace GlobalTheory.CompanionTheory.Hodge.Nerve.Low
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Establish `heq : (LinearMap.range a).comap (LinearMap.ker b).subtype = LinearMap.range (ShortComplex.mk (ModuleCat.ofHom a) (ModuleCat.ofHom b) w).moduleCatToCycles`. Use extensionality with `x`. Simplify using `only [Submodule.mem_comap, Submodule.coe_subtype, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨y, Subtype.ext hy⟩`. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨y, rfl⟩`. Conclude with `⟨(Submodule.quotEquivOfEq _ _ heq).trans (ShortComplex.mk (ModuleCat.ofHom a) (ModuleCat.ofHom b) w).moduleCatHomologyIso.symm.toLinearEquiv⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem homology_equiv {A B D : Type} [AddCommGroup A] [AddCommGroup B] [AddCommGroup D] [Module R A] [Module R B]
     [Module R D] (a : A →ₗ[R] B) (b : B →ₗ[R] D)
@@ -36,20 +36,20 @@ theorem homology_equiv {A B D : Type} [AddCommGroup A] [AddCommGroup B] [AddComm
 variable {C : Type} [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R)
 
 /- English proof (translation)
-The claim follows from `nerveCx_d (toMod F) n`.
+A detailed English derivation is pending.
 -/
 theorem d_eq (n : ℕ) : (nerveCx.obj (toMod F)).d n (n + 1) = ModuleCat.ofHom (MainStatements.Hodge.dn F n) :=
   nerveCx_d (toMod F) n
 
 /- English proof (translation)
-Rewrite using `[HomologicalComplex.shape _ 0 0 (by simp)]`. Conclude with `ModuleCat.ofHom_zero.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem d_zero : (nerveCx.obj (toMod F)).d 0 0 = ModuleCat.ofHom (0 : MainStatements.Hodge.Cn F 0 →ₗ[R] MainStatements.Hodge.Cn F 0) := by
   rw [HomologicalComplex.shape _ 0 0 (by simp)]
   exact ModuleCat.ofHom_zero.symm
 
 /- English proof (translation)
-Establish `h` using `HomologicalComplex.d_comp_d (GlobalTheory.CompanionTheory.Hodge.Nerve.nerveCx.obj (GlobalTheory.CompanionTheory.Hodge.Nerve.toMod F)) n (n + 1) (n + 1 + 1)`. Rewrite `h` using `[GlobalTheory.CompanionTheory.Hodge.Nerve.Low.d_eq, GlobalTheory.CompanionTheory.Hodge.Nerve.Low.d_eq]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_eq (n : ℕ) :
     ModuleCat.ofHom (MainStatements.Hodge.dn F n) ≫ ModuleCat.ofHom (MainStatements.Hodge.dn F (n + 1)) = 0 := by
@@ -59,7 +59,7 @@ theorem comp_eq (n : ℕ) :
   exact h
 
 /- English proof (translation)
-Rewrite using `[ModuleCat.ofHom_zero, zero_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_zero_eq :
     ModuleCat.ofHom (0 : MainStatements.Hodge.Cn F 0 →ₗ[R] MainStatements.Hodge.Cn F 0) ≫ ModuleCat.ofHom (MainStatements.Hodge.dn F 0) = 0 := by
@@ -79,9 +79,9 @@ def scIso0 : (nerveCx.obj (toMod F)).sc' 0 0 1 ≅
     ((Category.id_comp _).trans ((d_eq F 0).symm.trans (Category.comp_id _).symm))
 
 /- English proof (translation)
-Introduce `R _ C _ F`. Use `⟨?_, fun n => ?_⟩` and prove the remaining obligations. Take `⟨e⟩` from `GlobalTheory.CompanionTheory.Hodge.Nerve.Low.homology_equiv (0 : MainStatements.Hodge.Cn F 0 →ₗ[R] MainStatements.Hodge.Cn F 0) (MainStatements.Hodge.dn F 0) (GlobalTheory.CompanionTheory.Hodge.Nerve.Low.comp_zero_eq F)`. Establish `hbot : (LinearMap.range (0 : MainStatements.Hodge.Cn F 0 →ₗ[R] MainStatements.Hodge.Cn F 0)).comap (LinearMap.ker (MainStatements.Hodge.dn F 0)).subtype = ⊥`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `⟨((Submodule.quotEquivOfEqBot _ hbot).symm.trans e).trans (((GlobalTheory.CompanionTheory.Hodge.Nerve.nerveCx.obj (GlobalTheory.CompanionTheory.Hodge.Nerve.toMod F)).homologyIsoSc' 0 0 1 (by simp) (by simp)) ≪≫ ShortComplex.homologyMapIso (GlobalTheory.CompanionTheory.Hodge.Nerve …`. Take `⟨e⟩` from `GlobalTheory.CompanionTheory.Hodge.Nerve.Low.homology_equiv (MainStatements.Hodge.dn F n) (MainStatements.Hodge.dn F (n + 1)) (GlobalTheory.CompanionTheory.Hodge.Nerve.Low.comp_eq F n)`. Conclude with `⟨e.trans (((GlobalTheory.CompanionTheory.Hodge.Nerve.nerveCx.obj (GlobalTheory.CompanionTheory.Hodge.Nerve.toMod F)).homologyIsoSc' n (n + 1) (n + 2) (by simp) (by simp)) ≪≫ ShortComplex.homologyMapIso (GlobalTheory.CompanionTheory.Hodge.Nerve.Low.scIso F n)).symm.toLinearEquiv⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem homology_nerveCx :
     ∀ {R : Type} [CommRing R] {C : Type} [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R),

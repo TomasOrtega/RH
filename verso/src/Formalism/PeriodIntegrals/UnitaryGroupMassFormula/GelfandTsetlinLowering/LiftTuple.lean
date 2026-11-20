@@ -13,29 +13,29 @@ namespace LTF
 open PI.WGL.LTA PI.WGL.LTM PI.WGL.LTC PI.WGL.LTD PI.WGL.LTE
 
 /- English proof (translation)
-Establish `hH : IsWeightedHomogeneous (rowW N N) (Mlift h lam sg sz hsz L I) (w0r h lam sg + ∑ k, wk h (I k) (k ∈ L))` using `(constant_weighted_homogeneous h lam sg).mul (IsWeightedHomogeneous.prod _ _ _ (fun k _ => G_rowW h sz hsz L k (I k)))`. Use `hH using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `a`. Take `⟨av, hav⟩` from `a`. Simplify using `only [Pi.add_apply, Finset.sum_apply, wk, constant_weight_apply, Pi.single_apply, ite_apply, Pi.zero_apply, Finset.sum_add_distrib, liftWt]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `ha : av < n`. Establish `hn : 0 < n` using `by omega`. Rewrite using `[dif_pos ha, dif_pos (by omega), dif_pos hn, if_pos ha, if_neg (by omega)]`. Establish `hS2 : (∑ k : Fin K, if k ∈ L then (if (⟨av, hav⟩ : Fin N) = ⟨N - 1, by omega⟩ then 1 else 0) else 0) = 0`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `k _`. Establish `hne : (⟨av, hav⟩ : Fin N) ≠ ⟨N - 1, by omega⟩` using `fun e => by rw [Fin.mk.injEq] at e; omega`. Simplify using `[hne]`. Establish `hS1 : (∑ k : Fin K, ∑ q : Fin (sz k), if (⟨av, hav⟩ : Fin N) = eRow h (I k q) then 1 else 0) = tupCnt I ⟨av, ha⟩`. Simplify using `only [tupCnt, Finset.card_filter]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `k _`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `q _`. Establish `: ((⟨av, hav⟩ : Fin N) = eRow h (I k q)) ↔ (I k q = ⟨av, ha⟩)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [eRow, Fin.ext_iff]`. Conclude with `eq_comm`. Distinguish the cases in `hq : I k q = ⟨av, ha⟩`. Rewrite using `[if_pos (this.2 hq), if_pos hq]`. Rewrite using `[if_neg (fun e => hq (this.1 e)), if_neg hq]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hS1, hS2]`. Establish `e3` using `aLast_val h lam sg hI hn`. Establish `e4` using `sg_detShift sg hn`. Establish `e5` using `lam_detShift h lam`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hav' : av = n` using `by omega`. Simplify using `only [dif_neg ha, if_neg ha, if_pos hav', mul_zero, mul_one]`. Establish `hS1 : (∑ k : Fin K, ∑ q : Fin (sz k), if (⟨av, hav⟩ : Fin N) = eRow h (I k q) then 1 else 0) = 0`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `k _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `q _`. Rewrite using `[if_neg]`. Introduce `e`. Simplify using `only [eRow, Fin.ext_iff] at e`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `(I k q).2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hS2 : (∑ k : Fin K, if k ∈ L then (if (⟨av, hav⟩ : Fin N) = ⟨N - 1, by omega⟩ then 1 else 0) else 0) = L.card`. Rewrite using `[Finset.sum_congr rfl (g := fun k => if k ∈ L then 1 else 0)]`. Rewrite using `[← Finset.card_filter]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use extensionality with `k`. Simplify using the standard rewrite rules. Introduce `k _`. Rewrite using `[if_pos (Fin.ext (by simp; omega))]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hS1, hS2, cardL h lam sg sz hsz hshape L hL]`. Establish `hsplit : (∑ i : Fin n, (bb h lam sg i).toNat) = (∑ i : Fin n, if i.1 = 0 then (bb h lam sg i).toNat else 0) + ∑ i : Fin n, (if i.1 = 0 then 0 else (bb h lam sg i).toNat)`. Rewrite using `[← Finset.sum_add_distrib]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp`. Rewrite `hsplit` using `[sum_ite_val (fun i : Fin n => (bb h lam sg i).toNat) 0]`. Establish `e6` using `sumB h lam sg hI`. Unfold `dLast`. Apply the tactic sequence `split_ifs at hsplit ⊢ with h1 h2 <;> omega`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem Mlift_rowW {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (sg : DomWeight n) (hI : Interlace h lam sg)
     {K : ℕ} (sz : Fin K → ℕ) (hsz : ∀ k, sz k ≤ n) (hshape : shapeDeg sz = sg.natW) (L : Finset (Fin K))
@@ -107,9 +107,9 @@ theorem Mlift_rowW {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (sg : DomWeig
 end LTF
 
 /- English proof (translation)
-Introduce `n N h lam sg hI K sz hsz hshape`. Take `⟨L, hL⟩` from `LTD.goodL_exists h lam sg hI sz hshape`. Take `⟨htop, hstd1, hstd2, hstd3⟩` from `LTB.top_component_formula n N h lam sg hI K sz hsz hshape L hL`. Use `⟨LTM.Mlift h lam sg sz hsz L, fun I => ⟨?_, LTF.Mlift_rowW h lam sg hI sz hsz hshape L hL I, LTF.bidet_rowW sz hsz I⟩, fun I w hw => LTC.word_clause h lam sg sz hsz L I w hw, htop, ⟨LTM.stdT sz hsz, hstd1, hstd2, hstd3⟩⟩` and prove the remaining obligations. Establish `hm` using `LTE.Mlift_mem_colWt h lam sg sz hsz L I`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hm` using `[LTE.colWt_eq h lam sg hI sz hsz hshape L hL]`. Conclude with `hm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tuple_decomposition_formula : TupleCore := by
   intro n N h lam sg hI K sz hsz hshape

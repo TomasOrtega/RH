@@ -30,9 +30,9 @@ def wf (e : Fin n → ℤ) (m : ℤ) (p : MvPolynomial (Fin n × Fin n) ℂ) : M
 open scoped ComplexOrder in
 
 /- English proof (translation)
-Unfold `GlobalTheory.CompanionTheory.ModelS.gm`. Establish `hli : LinearIndependent ℂ g.row`. Establish `: IsUnit g` using `(Matrix.isUnit_iff_isUnit_det g).2 (isUnit_iff_ne_zero.2 hg)`. Conclude with `Matrix.linearIndependent_rows_of_isUnit this`. Establish `hinj : Function.Injective (g.submatrix (GlobalTheory.CompanionTheory.ModelS.ini j) id).vecMul`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.vecMul_injective_iff]`. Conclude with `hli.comp _ (Fin.castLE_injective _)`. Establish `hp` using `Matrix.PosDef.mul_conjTranspose_self _ hinj`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 hp.isUnit).ne_zero`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gm_ne_zero (j : Fin n) {g : Mat n} (hg : g ∈ GLs n) : GlobalTheory.CompanionTheory.ModelS.gm j g ≠ 0 := by
   unfold GlobalTheory.CompanionTheory.ModelS.gm
@@ -46,9 +46,9 @@ theorem gm_ne_zero (j : Fin n) {g : Mat n} (hg : g ∈ GLs n) : GlobalTheory.Com
   exact ((Matrix.isUnit_iff_isUnit_det _).1 hp.isUnit).ne_zero
 
 /- English proof (translation)
-Establish `hent : ∀ a b : Fin n, ContDiff ℝ ∞ (fun x : Mat n => x a b)` using `fun a b => (contDiff_apply_apply ℝ ℂ a b).restrict_scalars ℝ`. Unfold `GlobalTheory.CompanionTheory.ModelS.gm`. Use `Cxc.det_smooth.comp ?_` and prove the remaining obligations. Use `contDiff_pi.2 fun a => contDiff_pi.2 fun b => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, Matrix.submatrix_apply, Matrix.conjTranspose_apply, id]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `ContDiff.sum fun c _ => ContDiff.mul (hent _ _) ?_` and prove the remaining obligations. Conclude with `(Complex.conjCLE.contDiff).comp (hent _ _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gm_smooth (j : Fin n) : ContDiff ℝ ∞ (GlobalTheory.CompanionTheory.ModelS.gm j : Mat n → ℂ) := by
   have hent : ∀ a b : Fin n, ContDiff ℝ ∞ (fun x : Mat n => x a b) := fun a b =>
@@ -61,11 +61,11 @@ theorem gm_smooth (j : Fin n) : ContDiff ℝ ∞ (GlobalTheory.CompanionTheory.M
   exact (Complex.conjCLE.contDiff).comp (hent _ _)
 
 /- English proof (translation)
-Unfold `Qf`. Use `contDiffOn_prod fun j _ => ?_` and prove the remaining obligations. Introduce `g hg`. Use `ContDiffAt.contDiffWithinAt ?_` and prove the remaining obligations. Establish `hG : ContDiffAt ℝ ∞ (GlobalTheory.CompanionTheory.ModelS.gm j : Mat n → ℂ) g` using `(gm_smooth j).contDiffAt`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Generalize the expression as in `e j = c`. Consider the cases of `c with`. Consider the case `ofNat k`. Simplify using `only [Int.ofNat_eq_natCast, zpow_natCast]`. Conclude with `hG.pow k`.
+Replace the chosen expression with an arbitrary variable. Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `negSucc k`. Simplify using `only [zpow_negSucc]`. Conclude with `(hG.pow (k + 1)).inv (pow_ne_zero _ (gm_ne_zero j hg))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Qf_smooth (e : Fin n → ℤ) : ContDiffOn ℝ ∞ (Qf e) (GLs n) := by
   unfold Qf
@@ -90,39 +90,39 @@ Both sides reduce to the same expression.
 theorem entryL_apply (a b : Fin n) (x : Mat n) : entryL a b x = x a b := rfl
 
 /- English proof (translation)
-Simplify using `[evP]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evP_C (c : ℂ) (g : Mat n) : evP (MvPolynomial.C c) g = c := by simp [evP]
 
 /- English proof (translation)
-Simplify using `[evP]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evP_X (i : Fin n × Fin n) (g : Mat n) : evP (MvPolynomial.X i) g = g i.1 i.2 := by simp [evP]
 
 /- English proof (translation)
-Simplify using `[evP]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evalPoints_add (p q : MvPolynomial (Fin n × Fin n) ℂ) (g : Mat n) : evP (p + q) g = evP p g + evP q g := by
   simp [evP]
 
 /- English proof (translation)
-Simplify using `[evP]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evP_mul (p q : MvPolynomial (Fin n × Fin n) ℂ) (g : Mat n) : evP (p * q) g = evP p g * evP q g := by
   simp [evP]
 
 /- English proof (translation)
-Simplify using `[evP]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evalEmbedding_smul (c : ℂ) (p : MvPolynomial (Fin n × Fin n) ℂ) (g : Mat n) : evP (c • p) g = c * evP p g := by
   simp [evP]
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C c`. Establish `e : (evP (MvPolynomial.C c) : Mat n → ℂ) = fun _ => c` using `funext (evP_C c)`. Rewrite using `[e]`. Conclude with `contDiff_const`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add p q hp hq`. Establish `e : (evP (p + q) : Mat n → ℂ) = fun g => evP p g + evP q g` using `funext (evalPoints_add p q)`. Rewrite using `[e]`. Conclude with `hp.add hq`. Consider the case `mul_X p i hp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e : (evP (p * MvPolynomial.X i) : Mat n → ℂ) = fun g => evP p g * entryL i.1 i.2 g`. Use function extensionality and compare the values at `g`. Rewrite using `[evP_mul, evP_X, entryL_apply]`. Rewrite using `[e]`. Conclude with `hp.mul (entryL i.1 i.2).contDiff`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contDiff_evalMatrix (p : MvPolynomial (Fin n × Fin n) ℂ) : ContDiff ℂ ∞ (evP p : Mat n → ℂ) := by
   induction p using MvPolynomial.induction_on with
@@ -142,25 +142,25 @@ theorem contDiff_evalMatrix (p : MvPolynomial (Fin n × Fin n) ℂ) : ContDiff �
     exact hp.mul (entryL i.1 i.2).contDiff
 
 /- English proof (translation)
-The claim follows from `(contDiff_evalMatrix p).differentiable (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem differentiable_evalMatrix (p : MvPolynomial (Fin n × Fin n) ℂ) : Differentiable ℂ (evP p : Mat n → ℂ) :=
   (contDiff_evalMatrix p).differentiable (by simp)
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C c`. Establish `e : (evP (MvPolynomial.C c) : Mat n → ℂ) = fun _ => c` using `funext (evP_C c)`. Rewrite using `[e]`. Simplify using `[evP]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `add p q hp hq`. Establish `e : (evP (p + q) : Mat n → ℂ) = evP p + evP q` using `funext (evalPoints_add p q)`. Establish `h : HasFDerivAt (evP (p + q)) (fderiv ℂ (evP p) g + fderiv ℂ (evP q) g) g`. Rewrite using `[e]`. Conclude with `(differentiable_evalMatrix p g).hasFDerivAt.add (differentiable_evalMatrix q g).hasFDerivAt`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h.fderiv]`. Simplify using `only [ContinuousLinearMap.add_apply, hp, hq, map_add, evalPoints_add, add_mul, Finset.sum_add_distrib]`. Consider the case `mul_X p i hp`. Establish `e : (evP (p * MvPolynomial.X i) : Mat n → ℂ) = evP p * ⇑(entryL i.1 i.2)`. Use function extensionality and compare the values at `g`.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.mul_apply, evP_mul, evP_X, entryL_apply]`. Establish `h : HasFDerivAt (evP (p * MvPolynomial.X i)) (evP p g • entryL i.1 i.2 + entryL i.1 i.2 g • fderiv ℂ (evP p) g) g`. Rewrite using `[e]`. Conclude with `(differentiable_evalMatrix p g).hasFDerivAt.mul (entryL i.1 i.2).hasFDerivAt`. Establish `key : ∀ c d, evP (MvPolynomial.pderiv (c, d) (p * MvPolynomial.X i)) g = g i.1 i.2 * evP (MvPolynomial.pderiv (c, d) p) g + evP p g * (if (c, d) = i then 1 else 0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `c d`. Rewrite using `[Derivation.leibniz, MvPolynomial.pderiv_X, smul_eq_mul, smul_eq_mul, evalPoints_add, evP_mul, evP_mul, evP_X, add_comm]`. Use `congr 2`. Distinguish the cases in `hi : (c, d) = i`. Substitute `hi` using the available equality.
+Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[evP]`. Establish `: i ≠ (c, d)` using `fun h => hi h.symm`. Simplify using `[evP, hi, Pi.single_apply, this]`. Rewrite using `[h.fderiv]`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, hp, smul_eq_mul, entryL_apply, key, add_mul, Finset.sum_add_distrib, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨i₁, i₂⟩` from `i`. Rewrite using `[add_comm]`. Use `congr 1`. Simplify using `[Prod.mk.injEq, ite_and, Finset.sum_ite_eq]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fderiv_evalMatrix (p : MvPolynomial (Fin n × Fin n) ℂ) (g v : Mat n) :
     fderiv ℂ (evP p) g v = ∑ c, ∑ d, evP (MvPolynomial.pderiv (c, d) p) g * v c d := by
@@ -204,14 +204,14 @@ theorem fderiv_evalMatrix (p : MvPolynomial (Fin n × Fin n) ℂ) (g v : Mat n) 
     simp [Prod.mk.injEq, ite_and, Finset.sum_ite_eq]
 
 /- English proof (translation)
-Simplify using `[Tp, LinearMap.sum_apply, evP]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evP_Tp (a b : Fin n) (p : MvPolynomial (Fin n × Fin n) ℂ) (g : Mat n) :
     evP (Tp a b p) g = ∑ c, g c a * evP (MvPolynomial.pderiv (c, b) p) g := by
   simp [Tp, LinearMap.sum_apply, evP]
 
 /- English proof (translation)
-Distinguish the cases in `h : d = b`. Substitute `h` using the available equality. Simplify using `[Matrix.mul_apply, Matrix.single_apply]`. Simplify using `[Matrix.mul_apply, Matrix.single_apply, h, Ne.symm h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mul_single_entry (g : Mat n) (a b c d : Fin n) :
     (g * Matrix.single a b (1 : ℂ)) c d = if d = b then g c a else 0 := by
@@ -221,7 +221,7 @@ theorem mul_single_entry (g : Mat n) (a b c d : Fin n) :
   · simp [Matrix.mul_apply, Matrix.single_apply, h, Ne.symm h]
 
 /- English proof (translation)
-Rewrite using `[fderiv_evalMatrix, evP_Tp]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `only [mul_single_entry, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fderiv_evalMatrix_mul_single (p : MvPolynomial (Fin n × Fin n) ℂ) (g : Mat n) (a b : Fin n) :
     fderiv ℂ (evP p) g (g * Matrix.single a b (1 : ℂ)) = evP (Tp a b p) g := by
@@ -236,7 +236,7 @@ def minP {k : ℕ} (r : Fin k → Fin n) : MvPolynomial (Fin n × Fin n) ℂ :=
   ((Matrix.mvPolynomialX (Fin n) (Fin n) ℂ).submatrix r r).det
 
 /- English proof (translation)
-Unfold `evP minP`. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `a b`. Simplify using `[Matrix.mvPolynomialX_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem evalMatrix_minor {k : ℕ} (r : Fin k → Fin n) (g : Mat n) : evP (minP r) g = (g.submatrix r r).det := by
   unfold evP minP
@@ -246,7 +246,7 @@ theorem evalMatrix_minor {k : ℕ} (r : Fin k → Fin n) (g : Mat n) : evP (minP
   simp [Matrix.mvPolynomialX_apply]
 
 /- English proof (translation)
-Unfold `evP detP`. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `a b`. Simplify using `[Matrix.mvPolynomialX_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem evalMatrix_det (g : Mat n) : evP detP g = g.det := by
   unfold evP detP
@@ -256,7 +256,7 @@ theorem evalMatrix_det (g : Mat n) : evP detP g = g.det := by
   simp [Matrix.mvPolynomialX_apply]
 
 /- English proof (translation)
-Establish `e : (fun x : Mat n => x.det) = evP detP` using `funext fun x => (evalMatrix_det x).symm`. Rewrite using `[e]`. Conclude with `differentiable_evalMatrix _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_diff : Differentiable ℂ (fun x : Mat n => x.det) := by
   have e : (fun x : Mat n => x.det) = evP detP := funext fun x => (evalMatrix_det x).symm
@@ -264,13 +264,13 @@ theorem det_diff : Differentiable ℂ (fun x : Mat n => x.det) := by
   exact differentiable_evalMatrix _
 
 /- English proof (translation)
-Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Establish `e : (1 + t • Matrix.single a a (1 : ℂ) : Mat n) = Matrix.diagonal (fun i => if i = a then 1 + t else 1)`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Substitute `hij` using the available equality. Distinguish the cases in `hi : i = a`. Substitute `hi` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hi, Ne.symm hi, Matrix.single_apply]`.
+Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.one_apply, Matrix.single_apply, hij, Matrix.diagonal_apply]`. Introduce `h1 h2`. Conclude with `absurd (h1.symm.trans h2) hij`. Rewrite using `[e, Matrix.det_diagonal]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e : (1 + t • Matrix.single a b (1 : ℂ) : Mat n) = Matrix.transvection a b t`. Simplify using `[Matrix.transvection]`. Rewrite using `[e, Matrix.det_transvection_of_ne a b h t]`. Simplify using `[h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_one_add_single (a b : Fin n) (t : ℂ) :
     (1 + t • Matrix.single a b (1 : ℂ) : Mat n).det = 1 + if a = b then t else 0 := by
@@ -295,19 +295,19 @@ theorem det_one_add_single (a b : Fin n) (t : ℂ) :
     simp [h]
 
 /- English proof (translation)
-The claim follows from `(det_diff g).zpow (Or.inl hg)`.
+A detailed English derivation is pending.
 -/
 theorem detz_diff (m : ℤ) {g : Mat n} (hg : g ∈ GLs n) : DifferentiableAt ℂ (fun x : Mat n => x.det ^ m) g :=
   (det_diff g).zpow (Or.inl hg)
 
 /- English proof (translation)
-Establish `h1 : HasDerivAt (fun t : ℂ => (g + t • (g * Matrix.single a b (1 : ℂ))).det ^ m) (fderiv ℂ (fun x : Mat n => x.det ^ m) g (g * Matrix.single a b (1 : ℂ))) 0` using `(detz_diff m hg).hasFDerivAt.hasLineDerivAt _`. Establish `h2 : ∀ t : ℂ, (g + t • (g * Matrix.single a b (1 : ℂ))).det ^ m = g.det ^ m * (1 + if a = b then t else 0) ^ m`. Introduce `t`. Establish `e : g + t • (g * Matrix.single a b (1 : ℂ)) = g * (1 + t • Matrix.single a b (1 : ℂ))`. Rewrite using `[Matrix.mul_add, Matrix.mul_one, Matrix.mul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Matrix.det_mul, det_one_add_single, mul_zpow]`. Establish `h3 : HasDerivAt (fun t : ℂ => g.det ^ m * (1 + if a = b then t else 0) ^ m) ((if a = b then (m : ℂ) else 0) * g.det ^ m) 0`. Distinguish the cases in `h : a = b`. Simplify using `only [h, if_true]`. Establish `h4 : HasDerivAt (fun z : ℂ => z ^ m) ((m : ℂ) * (1 + 0 : ℂ) ^ (m - 1)) (1 + 0)` using `hasDerivAt_zpow m _ (Or.inl (by simp))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h5` using `(h4.comp_const_add 1 0).const_mul (g.det ^ m)`. Simplify `h5` using `[mul_comm]`. Simplify using `only [h, if_false]`. Simplify using `using hasDerivAt_const (0 : ℂ) (g.det ^ m * (1 + 0 : ℂ) ^ m)`. Rewrite `h1` using `[funext h2]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1.unique h3`.
+A detailed English derivation is pending.
 -/
 theorem detz_fderiv (m : ℤ) {g : Mat n} (hg : g ∈ GLs n) (a b : Fin n) :
     fderiv ℂ (fun x : Mat n => x.det ^ m) g (g * Matrix.single a b (1 : ℂ)) =
@@ -335,13 +335,13 @@ theorem detz_fderiv (m : ℤ) {g : Mat n} (hg : g ∈ GLs n) (a b : Fin n) :
   exact h1.unique h3
 
 /- English proof (translation)
-Unfold `GlobalTheory.CompanionTheory.ModelS.gm`. Use `set A := g.submatrix (GlobalTheory.CompanionTheory.ModelS.ini j) id with hA`. Establish `e1' : g + t • (g * X) = g * (1 + (t : ℂ) • X)`. Rewrite using `[Matrix.mul_add, Matrix.mul_one, Matrix.mul_smul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `e2' : (g + t • (g * X)).submatrix (GlobalTheory.CompanionTheory.ModelS.ini j) id = A * (1 + (t : ℂ) • X)`. Rewrite using `[e1', hA]`. Conclude with `Matrix.submatrix_mul _ _ _ id _ Function.bijective_id`. Establish `e3 : (1 + (t : ℂ) • X)ᴴ = 1 - (t : ℂ) • X`. Simplify using `[Matrix.conjTranspose_add, Matrix.conjTranspose_smul, hX, sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e4 : (1 + (t : ℂ) • X) * (1 - (t : ℂ) • X) = 1 - ((t ^ 2 : ℝ) : ℂ) • (X * X)`. Establish `h : ∀ Y : Mat n, (1 + Y) * (1 - Y) = 1 - Y * Y` using `fun Y => by noncomm_ring`. Rewrite using `[h, Matrix.smul_mul, Matrix.mul_smul, smul_smul]`. Use `push_cast`. Rewrite using `[pow_two]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[e2', Matrix.conjTranspose_mul, e3]`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e4, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.mul_smul, Matrix.smul_mul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gm_path (j : Fin n) (X : Mat n) (hX : Xᴴ = -X) (g : Mat n) (t : ℝ) :
     GlobalTheory.CompanionTheory.ModelS.gm j (g + t • (g * X)) =
@@ -371,21 +371,19 @@ theorem gm_path (j : Fin n) (X : Mat n) (hX : Xᴴ = -X) (g : Mat n) (t : ℝ) :
       rw [e4, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.mul_smul, Matrix.smul_mul]
 
 /- English proof (translation)
-Use `set A : ∀ j : Fin n, Matrix (Fin (j + 1)) (Fin n) ℂ := fun j => g.submatrix (GlobalTheory.CompanionTheory.ModelS.ini j) id with hA`. Set `M : Fin n → ℝ → ℂ` to `fun j s => ((A j) * (A j)ᴴ - (s : ℂ) • ((A j) * (X * X) * (A j)ᴴ)).det`. Set `Ψ : ℝ → ℂ` to `fun s => ∏ j, M j s ^ e j`. Establish `hM0 : ∀ j, M j 0 = GlobalTheory.CompanionTheory.ModelS.gm j g` using `fun j => by`. Simplify using `[M, GlobalTheory.CompanionTheory.ModelS.gm, hA]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hMd : ∀ j, DifferentiableAt ℝ (M j) 0` using `fun j => by`. Establish `h1 : ContDiff ℝ ∞ (fun s : ℝ => (A j) * (A j)ᴴ - (s : ℂ) • ((A j) * (X * X) * (A j)ᴴ))`. Use `contDiff_pi.2 fun a => contDiff_pi.2 fun b => ?_` and prove the remaining obligations. Simplify using `only [Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul]`. Conclude with `contDiff_const.sub (Complex.ofRealCLM.contDiff.mul contDiff_const)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Cxc.det_smooth.comp h1).differentiable (by simp) 0`. Establish `hΨ : DifferentiableAt ℝ Ψ 0`. Establish `: Ψ = ∏ j, fun s => M j s ^ e j`. Use function extensionality and compare the values at `s`. Simplify using `[Ψ, Finset.prod_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this]`. Use `DifferentiableAt.finset_prod fun j _ => ?_` and prove the remaining obligations. Establish `hne : M j 0 ≠ 0` using `by rw [hM0]; exact gm_ne_zero j hg`. Establish `hD` using `hMd j`. Generalize the expression as in `e j = c`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the cases of `c with`. Consider the case `ofNat k`. Simplify using `only [Int.ofNat_eq_natCast, zpow_natCast]`. Conclude with `hD.pow k`. Consider the case `negSucc k`.
+Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [zpow_negSucc]`. Conclude with `(hD.pow (k + 1)).inv (pow_ne_zero _ hne)`. Establish `h1 : HasDerivAt (fun t : ℝ => Qf e (g + t • (g * X))) (fderiv ℝ (Qf e) g (g * X)) 0` using `hd.hasFDerivAt.hasLineDerivAt _`. Establish `h2 : (fun t : ℝ => Qf e (g + t • (g * X))) = fun t => Ψ (t ^ 2)`. Use function extensionality and compare the values at `t`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Qf, Ψ, M]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[gm_path j X hX g t]`. Establish `h3 : HasDerivAt (fun t : ℝ => Ψ (t ^ 2)) ((2 * (0:ℝ)) • deriv Ψ 0) 0`. Establish `hs : HasDerivAt (fun t : ℝ => t ^ 2) (2 * (0:ℝ)) 0` using `by simpa using hasDerivAt_pow 2 (0:ℝ)`.
-
-Establish `hΨ' : HasDerivAt Ψ (deriv Ψ 0) ((fun t : ℝ => t ^ 2) 0)` using `by simpa using hΨ.hasDerivAt`. Conclude with `HasDerivAt.scomp (h := fun t : ℝ => t ^ 2) 0 hΨ' hs`. Rewrite `h1` using `[h2]`. Simplify using `using h1.unique h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem Qf_kill (e : Fin n → ℤ) (X : Mat n) (hX : Xᴴ = -X) {g : Mat n} (hg : g ∈ GLs n)
     (hd : DifferentiableAt ℝ (Qf e) g) : fderiv ℝ (Qf e) g (g * X) = 0 := by
@@ -432,7 +430,7 @@ theorem Qf_kill (e : Fin n → ℤ) (X : Mat n) (hX : Xᴴ = -X) {g : Mat n} (hg
   simpa using h1.unique h3
 
 /- English proof (translation)
-Use `⟨?_, fun g hg => Set.indicator_of_notMem hg _⟩` and prove the remaining obligations. Establish `h : ContDiffOn ℝ ∞ (fun g : Mat n => Qf e g * g.det ^ m * evP p g) (GLs n)` using `((Qf_smooth e).mul (Cxc.detPow_smooth m)).mul ((contDiff_evalMatrix p).restrict_scalars ℝ).contDiffOn`. Conclude with `h.congr fun g hg => Set.indicator_of_mem hg _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem wf_mem (e : Fin n → ℤ) (m : ℤ) (p : MvPolynomial (Fin n × Fin n) ℂ) : wf e m p ∈ GlobalTheory.CompanionTheory.ModelS.SmF n := by
   refine ⟨?_, fun g hg => Set.indicator_of_notMem hg _⟩
@@ -441,7 +439,7 @@ theorem wf_mem (e : Fin n → ℤ) (m : ℤ) (p : MvPolynomial (Fin n × Fin n) 
   exact h.congr fun g hg => Set.indicator_of_mem hg _
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.CompanionTheory.ModelS.Kf, LinearMap.add_apply, Submodule.coe_add, Pi.add_apply, GlobalTheory.CompanionTheory.ModelS.orderedCechToCatCochainsOne_apply_valueAtSubset _ _ _ hg, e2, LinearMap.neg_apply, Submodule.coe_neg, Pi.neg_apply, GlobalTheory.CompanionTheory …`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Kf_val (a b : Fin n) (w : GlobalTheory.CompanionTheory.ModelS.SmF n) {g : Mat n} (hg : g ∈ GLs n) :
     (GlobalTheory.CompanionTheory.ModelS.Kf a b w).1 g = Eu true a b w.1 g - Eu false b a w.1 g := by
@@ -451,7 +449,7 @@ theorem Kf_val (a b : Fin n) (w : GlobalTheory.CompanionTheory.ModelS.SmF n) {g 
   ring
 
 /- English proof (translation)
-Simplify using `only [Eu, Rd, Pi.smul_apply, Pi.add_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Eu_val (s : Bool) (a b : Fin n) (f : Mat n → ℂ) (g : Mat n) :
     Eu s a b f g = (1 / 2 : ℂ) * (fderiv ℝ f g (g * Matrix.single a b 1) +
@@ -459,23 +457,23 @@ theorem Eu_val (s : Bool) (a b : Fin n) (f : Mat n → ℂ) (g : Mat n) :
   simp only [Eu, Rd, Pi.smul_apply, Pi.add_apply, smul_eq_mul]
 
 /- English proof (translation)
-Use `set h : Mat n → ℂ := fun x => x.det ^ m * evP p x with hh`. Use `set f : Mat n → ℂ := fun x => Qf e x * h x with hf`. Establish `hEq : w.1 =ᶠ[nhds g] f` using `by filter_upwards [GlobalTheory.CompanionTheory.RCalc.isOpen_GLs.mem_nhds hg] with x hx`. Rewrite using `[hw, wf, Set.indicator_of_mem hx]`. Simplify using `only [hf, hh, mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfd : fderiv ℝ w.1 g = fderiv ℝ f g` using `hEq.fderiv_eq`. Establish `hQd : DifferentiableAt ℝ (Qf e) g` using `GlobalTheory.CompanionTheory.RCalc.differentiableAt_of_smooth (Qf_smooth e) hg`. Establish `hhF : HasFDerivAt h (g.det ^ m • fderiv ℂ (evP p) g + evP p g • fderiv ℂ (fun x : Mat n => x.det ^ m) g) g` using `(detz_diff m hg).hasFDerivAt.mul (differentiable_evalMatrix p g).hasFDerivAt`. Establish `hhC : DifferentiableAt ℂ h g` using `hhF.differentiableAt`. Establish `hhR : DifferentiableAt ℝ h g` using `hhC.restrictScalars ℝ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : fderiv ℝ f g = Qf e g • fderiv ℝ h g + h g • fderiv ℝ (Qf e) g` using `(hQd.hasFDerivAt.mul hhR.hasFDerivAt).fderiv`. Establish `hres : ∀ v, fderiv ℝ h g v = fderiv ℂ h g v` using `fun v => DFunLike.congr_fun (hhC.hasFDerivAt.restrictScalars ℝ).fderiv v`. Establish `hc1 : fderiv ℂ h g (g * Matrix.single a b 1) = g.det ^ m * evP (Tp a b p) g + evP p g * ((if a = b then (m : ℂ) else 0) * g.det ^ m)`. Rewrite using `[hhF.fderiv]`. Simplify using `only [_root_.add_apply, _root_.smul_apply, smul_eq_mul, fderiv_evalMatrix_mul_single, detz_fderiv m hg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hI : ∀ a b : Fin n, g * Matrix.single a b Complex.I = Complex.I • (g * Matrix.single a b 1)` using `fun a b => by`. Rewrite using `[← Matrix.mul_smul, Matrix.smul_single, smul_eq_mul, mul_one]`. Establish `hIr : ∀ (ℓ : Mat n →L[ℂ] ℂ) (v : Mat n), ℓ (Complex.I • v) = Complex.I * ℓ v` using `fun ℓ v => by`. Rewrite using `[map_smul, smul_eq_mul]`. Establish `k1 : fderiv ℝ (Qf e) g (g * Matrix.single a b 1) - fderiv ℝ (Qf e) g (g * Matrix.single b a 1) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hX : (Matrix.single a b (1 : ℂ) - Matrix.single b a 1 : Mat n)ᴴ = -(Matrix.single a b 1 - Matrix.single b a 1)`. Simplify using `[Matrix.conjTranspose_sub, Matrix.conjTranspose_single]`. Use `Qf_kill e _ hX hg hQd` as an intermediate fact. Rewrite `this` using `[Matrix.mul_sub, map_sub]`. Then use the resulting hypothesis. Establish `k2 : fderiv ℝ (Qf e) g (g * Matrix.single a b Complex.I) + fderiv ℝ (Qf e) g (g * Matrix.single b a Complex.I) = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX : (Matrix.single a b Complex.I + Matrix.single b a Complex.I : Mat n)ᴴ = -(Matrix.single a b Complex.I + Matrix.single b a Complex.I)`. Establish `hn : ∀ a b : Fin n, (Matrix.single a b (-Complex.I) : Mat n) = -Matrix.single a b Complex.I` using `fun a b => by`. Use extensionality with `i j`. Distinguish the cases in `h1 : a = i ∧ b = j`. Take `⟨rfl, rfl⟩` from `h1`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `[Matrix.single_apply, h1]`. Simplify using `[Matrix.conjTranspose_add, Matrix.conjTranspose_single, hn, add_comm]`. Use `Qf_kill e _ hX hg hQd` as an intermediate fact. Rewrite `this` using `[Matrix.mul_add, map_add]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Kf_val a b w hg, Eu_val, Eu_val, hfd, hL]`. Simplify using `only [_root_.add_apply, _root_.smul_apply, smul_eq_mul, Complex.real_smul, hres, if_true, Bool.false_eq_true, if_false]`. Rewrite using `[hI a b, hI b a, hIr, hIr]`. Rewrite using `[← hI a b, ← hI b a]`. Establish `hI2 : Complex.I * Complex.I = -1` using `Complex.I_mul_I`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[hc1]`. Take the linear combination `(h g / 2) * k1 - (Complex.I * h g / 2) * k2 - (1 / 2) * Qf e g * (g.det ^ m * evP (Tp a b p) g + evP p g * ((if a = b then (m : ℂ) else 0) * g.det ^ m) + fderiv ℂ h g (g * Matrix.single b a 1)) * hI2`.
+A detailed English derivation is pending.
 -/
 theorem Kf_wf (e : Fin n → ℤ) (m : ℤ) (p : MvPolynomial (Fin n × Fin n) ℂ) (w : GlobalTheory.CompanionTheory.ModelS.SmF n)
     (hw : w.1 = wf e m p) (a b : Fin n) {g : Mat n} (hg : g ∈ GLs n) :
@@ -532,9 +530,9 @@ theorem Kf_wf (e : Fin n → ℤ) (m : ℤ) (p : MvPolynomial (Fin n × Fin n) �
     (1 / 2) * Qf e g * (g.det ^ m * evP (Tp a b p) g + evP p g * ((if a = b then (m : ℂ) else 0) * g.det ^ m) + fderiv ℂ h g (g * Matrix.single b a 1)) * hI2
 
 /- English proof (translation)
-Introduce `a b hab`. Unfold `GlobalTheory.CompanionTheory.ModelS.muZ`. Establish `h1` using `hl hab`. Establish `h2 : (univ.filter fun c => lev b < lev c).card ≤ (univ.filter fun c => lev a < lev c).card` using `Finset.card_le_card fun c hc => by`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hc ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `lt_of_le_of_lt (hm hab) hc`. Establish `h3 : (univ.filter fun c => lev c < lev a).card ≤ (univ.filter fun c => lev c < lev b).card` using `Finset.card_le_card fun c hc => by`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hc ⊢`. Conclude with `lt_of_lt_of_le hc (hm hab)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem muZ_antitone (lam : Fin n → ℤ) (hl : Antitone lam) (lev : Fin n → ℕ) (hm : Monotone lev) :
     Antitone (GlobalTheory.CompanionTheory.ModelS.muZ lam lev) := by
@@ -552,7 +550,7 @@ theorem muZ_antitone (lam : Fin n → ℤ) (hl : Antitone lam) (lev : Fin n → 
   omega
 
 /- English proof (translation)
-Unfold `GlobalTheory.CompanionTheory.ModelS.dif`. Rewrite using `[dif_pos hj]`. Establish `: j ≤ ⟨j + 1, hj⟩` using `Fin.mk_le_mk.2 (Nat.le_succ _)`. Use `hv this` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem dif_nonneg {v : Fin n → ℤ} (hv : Antitone v) (j : Fin n) (hj : (j : ℕ) + 1 < n) :
     0 ≤ GlobalTheory.CompanionTheory.ModelS.dif v j := by
@@ -563,7 +561,7 @@ theorem dif_nonneg {v : Fin n → ℤ} (hv : Antitone v) (j : Fin n) (hj : (j : 
   omega
 
 /- English proof (translation)
-Establish `hb : Function.Bijective (GlobalTheory.CompanionTheory.ModelS.ini j)` using `(Fintype.bijective_iff_injective_and_card _).2 ⟨Fin.castLE_injective _, by simp [hj]⟩`. Conclude with `Matrix.det_submatrix_equiv_self (Equiv.ofBijective _ hb) g`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lm_eq_det (j : Fin n) (hj : (j : ℕ) + 1 = n) (g : Mat n) : GlobalTheory.CompanionTheory.ModelS.lm j g = g.det := by
   have hb : Function.Bijective (GlobalTheory.CompanionTheory.ModelS.ini j) :=
@@ -571,17 +569,17 @@ theorem lm_eq_det (j : Fin n) (hj : (j : ℕ) + 1 = n) (g : Mat n) : GlobalTheor
   exact Matrix.det_submatrix_equiv_self (Equiv.ofBijective _ hb) g
 
 /- English proof (translation)
-Establish `hμ` using `muZ_antitone lam hl lev hlev.1`. Break down `n with _ | k` into its components or cases. Use `⟨0, 1, fun g hg => ?_⟩` and prove the remaining obligations. Simplify using `[GlobalTheory.CompanionTheory.ModelS.fRaw, Set.indicator_of_mem hg, Qf, evP]`. Use `set μ := GlobalTheory.CompanionTheory.ModelS.muZ lam lev with hμd`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `set x : Fin (k + 1) → ℕ := fun j => if j = Fin.last k then 0 else (GlobalTheory.CompanionTheory.ModelS.dif μ j).toNat with hx`. Use `⟨GlobalTheory.CompanionTheory.ModelS.dif μ (Fin.last k), ∏ j, minP (GlobalTheory.CompanionTheory.ModelS.ini j) ^ x j, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hev : evP (∏ j, minP (GlobalTheory.CompanionTheory.ModelS.ini j) ^ x j) g = ∏ j, GlobalTheory.CompanionTheory.ModelS.lm j g ^ x j`. Establish `e : ∀ j, evP (minP (GlobalTheory.CompanionTheory.ModelS.ini j)) g = GlobalTheory.CompanionTheory.ModelS.lm j g` using `fun j => evalMatrix_minor _ g`. Simplify using `only [← e]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [evP, map_prod, map_pow]`. Establish `hj : ∀ j, GlobalTheory.CompanionTheory.ModelS.lm j g ^ GlobalTheory.CompanionTheory.ModelS.dif μ j = (if j = Fin.last k then g.det ^ GlobalTheory.CompanionTheory.ModelS.dif μ (Fin.last k) else 1) * GlobalTheory.CompanionTheory.ModelS.lm j g ^ x j`. Introduce `j`. Distinguish the cases in `h : j = Fin.last k`. Substitute `h` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hx, lm_eq_det (Fin.last k) (by simp) g]`. Establish `hlt : (j : ℕ) + 1 < k + 1`. Use `Fin.val_lt_last h` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `h0` using `dif_nonneg hμ j hlt`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [h, if_false, one_mul, hx]`. Rewrite using `[← zpow_natCast, Int.toNat_of_nonneg h0]`. Establish `key : ∏ j, GlobalTheory.CompanionTheory.ModelS.lm j g ^ GlobalTheory.CompanionTheory.ModelS.dif μ j = g.det ^ GlobalTheory.CompanionTheory.ModelS.dif μ (Fin.last k) * ∏ j, GlobalTheory.CompanionTheory.ModelS.lm j g ^ x j`. Rewrite using `[Finset.prod_congr rfl fun j _ => hj j, Finset.prod_mul_distrib, Finset.prod_ite_eq']`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[GlobalTheory.CompanionTheory.ModelS.fRaw, Set.indicator_of_mem hg, hev, Finset.prod_mul_distrib, key, Qf]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem fRaw_factor (lam : Fin n → ℤ) (hl : Antitone lam) (lev : Fin n → ℕ) (hlev : IsLev lam lev) :
     ∃ (m : ℤ) (p : MvPolynomial (Fin n × Fin n) ℂ), ∀ g ∈ GLs n,
@@ -635,7 +633,7 @@ def wfL (e : Fin n → ℤ) (m : ℤ) : MvPolynomial (Fin n × Fin n) ℂ →ₗ
     · simp [wf, Set.indicator_of_notMem hg]
 
 /- English proof (translation)
-Establish `hN` using `(MvPolynomial.mem_restrictTotalDegree _ _ _).1 hq`. Simplify using `only [Tp, LinearMap.sum_apply]`. Use `Submodule.sum_mem _ fun c _ => ?_` and prove the remaining obligations. Conclude with `(MvPolynomial.mem_restrictTotalDegree _ _ _).2 ((GlobalTheory.LowStable.X_mul_pderiv_totalDegree_le _ _ q).trans hN)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Tp_mem (a b : Fin n) (d : ℕ) {q : MvPolynomial (Fin n × Fin n) ℂ}
     (hq : q ∈ MvPolynomial.restrictTotalDegree (Fin n × Fin n) ℂ d) :

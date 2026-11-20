@@ -11,46 +11,40 @@ open MvPolynomial Filter Topology Matrix
 noncomputable section
 
 /- English proof (translation)
-Simplify using `[linForm, GroundTheory.Heights₂.Heights.linEval]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eval_linForm_eq_linEval {n : ℕ} (u x : Fin n → ℂ) :
     eval x (linForm u) = GroundTheory.Heights₂.Heights.linEval u x := by
   simp [linForm, GroundTheory.Heights₂.Heights.linEval]
 
 /- English proof (translation)
-Introduce `n d J W u p m γ ord hJ hdim hu hW hp hcov hsl hdisj hord`. Take `⟨q, π, s, hqW, ⟨N₁, hN₁, hcov₁⟩, ⟨N₂, hN₂, hsl₂⟩, ⟨N₃, hN₃, hz₃⟩, hs, hder, hprop⟩` from `hG n d J W u p m γ ord hJ hdim hu hW hp hcov hsl hdisj hord`. Establish `hJW : J ≤ W` using `le_trans le_sup_left hW.1.2`. Establish `hWJ : ∀ x, x ∈ GroundTheory.Heights₂.Heights.ComplexSets.zeroSet W → x ∈ GroundTheory.Heights₂.Heights.ComplexSets.zeroSet J` using `fun x hx f hf => hx f (hJW hf)`. Establish `huW : ∀ x, x ∈ GroundTheory.Heights₂.Heights.ComplexSets.zeroSet W → GroundTheory.Heights₂.Heights.linEval u x = 0` using `fun x hx => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← eval_linForm_eq_linEval]`. Conclude with `hx _ (hW.1.2 (le_sup_right (a := J) (Ideal.subset_span rfl)))`. Use `choose H hHd hH0 hHeq using hord`. Use `set F : Fin m → (Fin (d + 1) → ℂ) → Fin d → ℂ := fun b τ => π *ᵥ (γ b).toFun τ with hFdef`. Establish `hFd : ∀ b, DifferentiableOn ℂ (F b) (Metric.ball 0 (γ b).radius)` using `fun b => (Matrix.mulVecLin π).toContinuousLinearMap.differentiable.comp_differentiableOn (γ b).differentiableOn`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hchart` using `fun b => hC d (ord b) (Metric.ball 0 (γ b).radius) (F b) (H b) (s b) Metric.isOpen_ball (hs b).1 (hs b).2.1 (hFd b) (hHd b) (hH0 b _ (hs b).1) (hder b)`. Use `choose P₀ hP₀ hinj hcnt using hchart`. Use `choose ε hε hεP using fun b => hprop b (P₀ b) (hP₀ b)`. Choose the witnesses or unpack the hypotheses as in `⟨b₀, -⟩ : ∃ b, q ∈ (γ b).image := by`. Simplify using `using hcov₁ ⟨hWJ q hqW, mem_of_mem_nhds hN₁⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : (Finset.univ : Finset (Fin m)).Nonempty` using `⟨b₀, Finset.mem_univ _⟩`. Take `⟨δ₁, hδ₁, hδ₁N⟩` from `Metric.mem_nhds_iff.1 (inter_mem hN₁ (inter_mem hN₂ hN₃))`. Use `set ε₀ := Finset.univ.inf' hne ε with hε₀`. Establish `hε₀pos : 0 < ε₀` using `(Finset.lt_inf'_iff hne).2 fun b _ => hε b`. Use `set δ := min δ₁ ε₀ / 2 with hδdef`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hδ : 0 < δ` using `by positivity`. Establish `h2δN : Metric.ball q (2 * δ) ⊆ N₁ ∩ (N₂ ∩ N₃)` using `(Metric.ball_subset_ball (by rw [hδdef]; linarith [min_le_left δ₁ ε₀])).trans hδ₁N`. Establish `h2δε : ∀ b, 2 * δ ≤ ε b` using `fun b => by`. Rewrite using `[hδdef]`. Combine the linear relations using `[min_le_right δ₁ ε₀, Finset.inf'_le ε (Finset.mem_univ b)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpar : ∀ b, ∀ τ ∈ Metric.ball 0 (γ b).radius, (γ b).toFun τ ∈ Metric.ball q (2 * δ) → τ ∈ P₀ b` using `fun b τ hτ hx => hεP b τ hτ (Metric.ball_subset_ball (h2δε b) hx)`. Use `set U := Metric.ball q δ with hUdef`. Establish `hUsub : U ⊆ Metric.ball q (2 * δ)` using `Metric.ball_subset_ball (by linarith)`. Use `set P : Fin m → Set (Fin (d + 1) → ℂ) := fun b => Metric.ball 0 (γ b).radius ∩ (γ b).toFun ⁻¹' U with hPdef`. Establish `hPo : ∀ b, IsOpen (P b)` using `fun b => (γ b).differentiableOn.continuousOn.isOpen_inter_preimage Metric.isOpen_ball Metric.isOpen_ball`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hPn : ∀ b, P b ∈ 𝓝 (s b)` using `fun b => (hPo b).mem_nhds ⟨(hs b).1, by simp [U, (hs b).2.2, hδ]⟩`. Establish `hPP₀ : ∀ b, P b ⊆ P₀ b` using `fun b τ hτ => hpar b τ hτ.1 (hUsub hτ.2)`. Use `choose V ρ hVo hVm hρ hVsl hVc using fun b => hcnt b (P b) (hPn b) (hPP₀ b)`. Establish `hslq : ∀ x ∈ GroundTheory.Heights₂.Heights.ComplexSets.zeroSet W, x ∈ Metric.ball q (2 * δ) → ∃ τ ∈ Metric.ball 0 (γ b₀).radius, τ 0 = 0 ∧ (γ b₀).toFun τ = x ∧ τ ∈ P₀ b₀`. Introduce `x hx hxb`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `⟨τ, ⟨hτ, hτ0⟩, rfl⟩` from `hsl₂ b₀ ⟨hx, (h2δN hxb).2.1⟩`. Conclude with `⟨τ, hτ, hτ0, rfl, hpar b₀ τ hτ hxb⟩`. Use `⟨q, π, U, ⋂ b, V b, Finset.univ.inf' hne ρ, ?_⟩` and prove the remaining obligations. Use `{ isOpen_U := Metric.isOpen_ball isBounded_U := Metric.isBounded_ball mem_U := Metric.mem_ball_self hδ mem_W := hqW isOpen_V := isOpen_iInter_of_finite hVo mem_V := Set.mem_iInter.2 fun b => by simpa [F, (hs b).2.2] using hVm b pos := (Finset.lt_inf'_iff hne).2 fun b _ => hρ b ze …` and prove the remaining obligations. Introduce `x hxU hxJ hux hxV`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hx2 : x ∈ Metric.ball q (2 * δ)` using `Metric.closedBall_subset_ball (by linarith) (Metric.closure_ball_subset_closedBall hxU)`. Establish `hxW : x ∈ GroundTheory.Heights₂.Heights.ComplexSets.zeroSet W` using `hz₃ x ⟨hxJ, (h2δN hx2).2.2⟩ hux`. Take `⟨τ, hτ, hτ0, rfl, hτP₀⟩` from `hslq _ hxW hx2`. Conclude with `⟨(hVsl b₀ _ (Set.mem_iInter.1 hxV b₀) τ hτP₀ hτ0 rfl).2, hxW⟩`. Introduce and unpack `x ⟨hxU, hxW⟩ x' ⟨hxU', hxW'⟩ hππ`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨τ, hτ, hτ0, rfl, hτP₀⟩` from `hslq _ hxW (hUsub hxU)`. Take `⟨τ', hτ', hτ0', rfl, hτP₀'⟩` from `hslq _ hxW' (hUsub hxU')`. Rewrite using `[hinj b₀ ⟨hτP₀, hτ0⟩ ⟨hτP₀', hτ0'⟩ hππ]`. Introduce `w hw t ht0 htρ`. Establish `hwb : ∀ b, w ∈ V b` using `Set.mem_iInter.1 hw`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `htb : ∀ b, ‖t‖ < ρ b` using `fun b => lt_of_lt_of_le htρ (Finset.inf'_le ρ (Finset.mem_univ b))`. Use `set T : Fin m → Set (Fin (d + 1) → ℂ) := fun b => {τ | τ ∈ P b ∧ F b τ = w ∧ τ 0 ^ ord b * H b τ = t} with hTdef`. Establish `hval : ∀ b, ∀ τ ∈ T b, GroundTheory.Heights₂.Heights.linEval u ((γ b).toFun τ) = t`. Introduce and unpack `b τ ⟨hτP, -, hτt⟩`. Rewrite using `[← hτt]`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `hHeq b τ hτP.1`. Establish `hset : {x | x ∈ U ∩ zeroLocus J ∧ π *ᵥ x = w ∧ linVal u x = t} = ⋃ b, (γ b).toFun '' T b`. Use extensionality with `x`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_iUnion, Set.mem_image, Set.mem_inter_iff]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨⟨hxU, hxJ⟩, hπx, hux⟩`. Choose the witnesses or unpack the hypotheses as in `⟨b, τ, hτ, rfl⟩ : ∃ b, x ∈ (γ b).image := by`. Simplify using `using hcov₁ ⟨hxJ, (h2δN (hUsub hxU)).1⟩`. Use `⟨b, τ, ⟨⟨hτ, hxU⟩, hπx, ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[← hHeq b τ hτ]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hux`. Introduce and unpack `⟨b, τ, hτT, rfl⟩`. Conclude with `⟨⟨hτT.1.2, (γ b).mapsTo hτT.1.1⟩, hτT.2.1, hval b τ hτT⟩`. Establish `hdisjT : Pairwise (Function.onFun Disjoint fun b => (γ b).toFun '' T b)`. Introduce `b c hbc`.
-
-Use `Set.disjoint_left.2 ?_` and prove the remaining obligations. Introduce and unpack `x ⟨τ, hτT, rfl⟩ ⟨τ', hτT', hx⟩`. Establish `h0` using `hdisj b c hbc ⟨⟨τ, hτT.1.1, rfl⟩, ⟨τ', hτT'.1.1, hx⟩⟩`. Establish `h1` using `hval b τ hτT`. Simplify using `only [Set.mem_ofPred_eq] at h0`.
-
-Rewrite `h1` using `[h0]`. Conclude with `(norm_pos_iff.1 ht0) h1.symm`. Rewrite using `[hset, Set.encard_iUnion_of_finite hdisjT, finsum_eq_sum_of_fintype, Nat.cast_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[((γ b).injOn.mono fun τ hτ => hτ.1.1).encard_image]`.
-
-Conclude with `hVc b w (hwb b) t ht0 (htb b)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem BranchesToGoodPosition.proof (hG : BranchesGoodPoint.Statement)
     (hC : PowerUnitCount.Statement) : BranchesToGoodPosition.Statement := by

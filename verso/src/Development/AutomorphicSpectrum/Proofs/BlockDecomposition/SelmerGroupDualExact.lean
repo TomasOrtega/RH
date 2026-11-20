@@ -6,11 +6,11 @@ open NumberField IsDedekindDomain Representation Formalism.ConjugateSelfDual Rec
 namespace GlobalTheory.CompanionTheory.GalDual
 
 /- English proof (translation)
-Establish `key : ∀ φ : TDual R M, Continuous (fun g : Γ => twDual χ ρ g φ)`. Introduce `φ`. Rewrite using `[continuous_discrete_rng]`. Introduce `ψ`. Establish `hset : (fun g : Γ => twDual χ ρ g φ) ⁻¹' {ψ} = ⋂ m : M, (fun g : Γ => ((χ g : Rˣ) : R) * φ (ρ g⁻¹ m)) ⁻¹' {ψ m}`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use extensionality with `g`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff, Set.mem_iInter]`. Conclude with `⟨fun h m => by rw [← h]; rfl, fun h => TDual.ext h⟩`. Rewrite using `[hset]`. Use `isOpen_iInter_of_finite fun m => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : Continuous fun g : Γ => ρ g⁻¹ m` using `Continuous.comp (g := fun p : Γ × M => ρ p.1 p.2) hρ (continuous_inv.prodMk continuous_const)`. Establish `h2 : Continuous fun g : Γ => φ (ρ g⁻¹ m)` using `(continuous_of_discreteTopology (f := fun x : M => φ x)).comp h1`. Establish `h3 : Continuous fun g : Γ => ((χ g : Rˣ) : R) * φ (ρ g⁻¹ m)` using `(Units.continuous_val.comp hχ).mul h2`. Conclude with `(isOpen_discrete {ψ m}).preimage h3`. Conclude with `continuous_prod_of_discrete_right.2 key`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contAction_twDual_of_continuous {R Γ M : Type*} [CommRing R] [TopologicalSpace R]
     [DiscreteTopology R] [Group Γ] [TopologicalSpace Γ] [ContinuousInv Γ] [AddCommGroup M]
@@ -39,9 +39,9 @@ theorem contAction_twDual_of_continuous {R Γ M : Type*} [CommRing R] [Topologic
   exact continuous_prod_of_discrete_right.2 key
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l _ r M _ _ _ _ _ S Av μ ρ hρ hμ`. Establish `hc : Continuous μ`. Rewrite using `[(QuotientGroup.isQuotientMap_mk _).continuous_iff]`. Establish `: (μ ∘ QuotientGroup.mk : G F Ω → _) = cycMod F Ω l r` using `by rw [← hμ]; rfl`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `continuous_cycMod`. Conclude with `contAction_twDual_of_continuous μ hc ρ hρ`.
+A detailed English derivation is pending.
 -/
 theorem contAction_twDual : ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (r : ℕ) (M : Type) [AddCommGroup M]

@@ -5,11 +5,11 @@ open Formalism.REAL Finset
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `⟨fun i => (Nat.casesOn i 0 (fun j => p * c j) : A) + (if i < d + 1 then q * c i else 0), by simp, fun u => ?_⟩` and prove the remaining obligations. Simplify using `only [smul_add, sum_add_distrib, add_mul]`. Use `congr 1`. Rewrite using `[sum_range_succ' _ (d + 1), mul_sum]`. Simplify using `only [Nat.rec_zero, smul_zero, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [smul_mul_assoc, mul_smul_comm, smul_smul, pow_succ]`. Rewrite using `[sum_range_succ _ (d + 1), mul_sum]`. Simplify using `only [lt_irrefl, if_false, smul_zero, add_zero]`. Use `sum_congr rfl fun i hi => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[if_pos (mem_range.mp hi), mul_smul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem affine_mul_polyMap_top {A : Type} [Ring A] [Algebra ℂ A] (d : ℕ) (p q : A) (c : ℕ → A) :
     ∃ c' : ℕ → A, c' (d + 1) = p * c d ∧ ∀ u : ℂ, (u • p + q) * (∑ i ∈ range (d + 1), u ^ i • c i)
@@ -28,9 +28,9 @@ theorem affine_mul_polyMap_top {A : Type} [Ring A] [Algebra ℂ A] (d : ℕ) (p 
     rw [if_pos (mem_range.mp hi), mul_smul_comm]
 
 /- English proof (translation)
-Proceed by induction on `t with`. Consider the case `zero => exact ⟨fun _ => 1, by simp, fun u => by simp⟩`. Consider the case `succ t ih`. Take `⟨c, hct, hc⟩` from `ih (fun k => p k.succ) (fun k => q k.succ)`. Take `⟨c', hct', hc'⟩` from `affine_mul_polyMap_top t (p 0) (q 0) c`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨c', ?_, fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[hct', hct, List.ofFn_succ, List.prod_cons]`. Rewrite using `[List.ofFn_succ, List.prod_cons, hc u, hc' u]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_affine_polyMap_top {A : Type} [Ring A] [Algebra ℂ A] (t : ℕ) (p q : Fin t → A) :
     ∃ c : ℕ → A, c t = (List.ofFn p).prod ∧ ∀ u : ℂ, (List.ofFn fun k => u • p k + q k).prod
@@ -45,21 +45,19 @@ theorem prod_affine_polyMap_top {A : Type} [Ring A] [Algebra ℂ A] (t : ℕ) (p
     · rw [List.ofFn_succ, List.prod_cons, hc u, hc' u]
 
 /- English proof (translation)
-Establish `h : ∀ σ : Equiv.Perm (Fin n), ∃ c : ℕ → A, c n = (List.ofFn fun k : Fin n => if σ k = k then (1 : A) else 0).prod ∧ ∀ u : ℂ, (List.ofFn fun k : Fin n => Tm E (u - (k : ℂ)) (id (σ k)) (id k)).prod = ∑ i ∈ range (n + 1), u ^ i • c i`. Introduce `σ`. Take `⟨c, hct, hc⟩` from `prod_affine_polyMap_top n (fun k => if σ k = k then (1 : A) else 0) (fun k => Tm E (-(k : ℂ)) (σ k) k)`. Use `⟨c, hct, fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[← hc u]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use function extensionality and compare the values at `k`. Unfold `Tm`. Simplify using `only [id]`. Use `split_ifs`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← add_assoc, ← Algebra.algebraMap_eq_smul_one, ← map_add]`. Use `congr 2`. Apply the tactic sequence `all_goals ring`. Simplify using the standard rewrite rules. Use `choose c hct hc using h`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `htop : ∀ σ : Equiv.Perm (Fin n), σ ≠ 1 → c σ n = 0`. Introduce `σ hσ`. Rewrite using `[hct σ]`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, σ k ≠ k := by`. Assume the negation of the conclusion as `hne`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `push_neg at hne`. Conclude with `hσ (Equiv.ext hne)`. Apply `List.prod_eq_zero` to reduce the goal to its premises. Rewrite using `[List.mem_ofFn]`. Conclude with `⟨k, if_neg hk⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨fun i => ∑ σ : Equiv.Perm (Fin n), ((Equiv.Perm.sign σ : ℤ) : A) * c σ i, ?_, fun u => ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[Finset.sum_eq_single (1 : Equiv.Perm (Fin n))]`. Rewrite using `[hct 1]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Introduce `σ _ hσ`. Rewrite using `[htop σ hσ, mul_zero]`. Introduce `h1`. Conclude with `absurd (Finset.mem_univ _) h1`. Unfold `qdet qminor`.
-
-Simplify using `only [hc, mul_sum, smul_sum, mul_smul_comm]`. Conclude with `sum_comm`.
+A detailed English derivation is pending.
 -/
 theorem qdet_polyMap_monic (A : Type) [Ring A] [Algebra ℂ A] (n : ℕ) (E : Fin n → Fin n → A) :
     ∃ c : ℕ → A, c n = 1 ∧ ∀ u : ℂ, qdet E u = ∑ i ∈ range (n + 1), u ^ i • c i := by

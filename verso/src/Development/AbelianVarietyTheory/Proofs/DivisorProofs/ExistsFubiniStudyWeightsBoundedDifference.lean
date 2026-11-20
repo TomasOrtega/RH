@@ -17,9 +17,9 @@ noncomputable section
 namespace GlobalTheory.HSAmp
 
 /- English proof (translation)
-Establish `hi` using `mem_pick (P.L.φ σ).isLB y`. Establish `hj` using `mem_pick (P.A.φ σ).isLB y`. Establish `hi'` using `CxPts.mem_ptsIn_conj h hi`. Establish `hj'` using `CxPts.mem_ptsIn_conj h hj`. Establish `hreg` using `hf _ _ _ (mem_ptsIn.1 hi) (mem_ptsIn.1 hj)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.VolBr.nu_eq k X p P a b f hf σ' y' _ _ hi' hj', GlobalTheory.VolBr.nu_eq k X p P a b f hf σ y _ _ hi hj, ratVal_conj h hreg, Complex.norm_conj, P.L.conj σ σ' _ y y' h hi, P.A.conj σ σ' _ y y' h hj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nu_conjPt {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k} (P : Pair p) (a b : ℤ)
     {f : X.functionField} (hf : f ∈ P.H a b) {σ σ' : k →+* ℂ} {y : CxPts p σ} {y' : CxPts p σ'}
@@ -33,7 +33,7 @@ theorem nu_conjPt {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X
     ratVal_conj h hreg, Complex.norm_conj, P.L.conj σ σ' _ y y' h hi, P.A.conj σ σ' _ y y' h hj]
 
 /- English proof (translation)
-Introduce `k _ X _ p D hX P e x hx`. Take `⟨B, hB, hb⟩` from `GlobalTheory.T.fubiniStudy_log_sum_weight_uniformly_bounded k X p D hX P e x hx`. Use `⟨B, hB, fun n hn => ⟨⟨fun σ y => ((e : ℝ) * n)⁻¹ * Real.log (∑ l, P.nu e 0 σ y (x l) ^ (2 * n)), fun σ y => GlobalTheory.T.complexPointsSmoothAt_fubiniStudy_log_sum_weight k X p P D e x hx n hn σ y, fun σ σ' i y y' h _ => ?_⟩, fun σ y => rfl, fun σ y => hb n hn σ y⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((e : ℝ) * n)⁻¹ * Real.log (∑ l, P.nu e 0 σ' y' (x l) ^ (2 * n)) = ((e : ℝ) * n)⁻¹ * Real.log (∑ l, P.nu e 0 σ y (x l) ^ (2 * n))`. Simplify using `only [nu_conjPt P _ _ (hx.mem _) h]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem exists_isCan_bdd : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (P : Pair p), ∀ (e : ℕ) (x : Fin (D + 1) → X.functionField), Gens P D e x → ∃ B : ℝ, 0 ≤ B ∧ ∀ n : ℕ, 1 ≤ n → ∃ u : SmFn p, IsCan P e n x u ∧ ∀ σ y, |u.u σ y| ≤ B := by
   intro k _ X _ p D hX P e x hx

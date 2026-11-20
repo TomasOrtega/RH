@@ -15,7 +15,7 @@ open scoped TensorProduct
 namespace GlobalTheory.LogPair
 
 /- English proof (translation)
-Introduce `R R' _ _ φ X X' f f' π d s L σ hpb h`. Use `⟨fun i => ReciprocityTheory.ChartRestriction.G.Semi.LB.isLB_pull (h.isLB i) π, fun x => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `h.chart (π.base x)`. Take `⟨C', hC'⟩` from `sncChart_baseChange R R' φ X X' f f' π d s L σ C hpb`. Conclude with `⟨C', by rw [hC']; exact hC⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem relSnc_baseChange : ∀ (R R' : Type) [CommRing R] [CommRing R'] (φ : R →+* R') (X X' : Scheme.{0}) (f : X ⟶ Sp R) (f' : X' ⟶ Sp R') (π : X' ⟶ X) (d : ℕ) (s : ℕ) (L : Fin s → LB X) (σ : ∀ i, (L i).Sec), IsPullback π f' f (spMap φ) → RelSnc f d L σ → RelSnc f' d (fun i => (L i).pull π) (fun i => Cartier.secPull (σ i) π) := by
   intro R R' _ _ φ X X' f f' π d s L σ hpb h

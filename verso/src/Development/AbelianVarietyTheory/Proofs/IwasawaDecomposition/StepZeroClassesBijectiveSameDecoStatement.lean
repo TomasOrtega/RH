@@ -5,7 +5,7 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Mem.Col2.ClsZero.stepZero_classes_bijective_same_deco` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FStepZeroClassesBijectiveSameDeco.lean&line=193#L193)
 -/

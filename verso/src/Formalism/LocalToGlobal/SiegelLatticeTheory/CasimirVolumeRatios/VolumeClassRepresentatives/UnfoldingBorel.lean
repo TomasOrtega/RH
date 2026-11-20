@@ -5,7 +5,7 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.CasimirVolumeRatios.VolumeCla
 namespace Formalism.L2.S.S7.UnfoldingBorel
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.S.S7.UnfoldingVolume.UnfoldVol_holds hB Formalism.L2.S.S7.FundamentalDomainSubgroups.FundInfExists_holds`.
+A detailed English derivation is pending.
 -/
 theorem UnfoldVol_of_borel (hB : Formalism.L2.SG.LitS.BorelClassFinite) : Formalism.MainNotions.FundamentalDomainUnfolding.UnfoldVol :=
   Formalism.L2.S.S7.UnfoldingVolume.UnfoldVol_holds hB Formalism.L2.S.S7.FundamentalDomainSubgroups.FundInfExists_holds

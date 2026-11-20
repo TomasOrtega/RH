@@ -8,7 +8,7 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc ValuativeRel GroundTheory
 namespace GlobalTheory.PMon.Ram
 
 /- English proof (translation)
-Introduce `F _ _ _ _ M _ _ p e n h σ hσ`. Rewrite `hσ` using `[← map_unitFiltrationUnits_restrictAb_localArtinMap (Ω := SeparableClosure F) M n]`. Take `⟨x, hx, rfl⟩` from `Subgroup.mem_map.mp hσ`. Rewrite using `[← map_unitFiltrationUnits_restrictAb_localArtinMap (Ω := SeparableClosure F) M (min (2 * n) (n + e)), ← map_pow]`. Conclude with `Subgroup.mem_map_of_mem _ (GlobalTheory.T.pow_prime_mem_unitFiltrationUnits_min F p e n h x hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_mem_upperRamificationGroup_abelian_nat :
     ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]

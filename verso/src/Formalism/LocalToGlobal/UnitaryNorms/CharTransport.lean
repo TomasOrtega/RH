@@ -17,7 +17,7 @@ def plMap (j : E ≃+* L) (w : HeightOneSpectrum (𝓞 E)) : HeightOneSpectrum (
     (RingOfIntegers.mapRingEquiv j).symm.surjective w
 
 /- English proof (translation)
-Unfold `plMap`. Simplify using `[IsDedekindDomain.HeightOneSpectrum.comap]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem mem_plMap (j : E ≃+* L) (w : HeightOneSpectrum (𝓞 E)) (x : 𝓞 E) :
     RingOfIntegers.mapRingEquiv j x ∈ (plMap j w).asIdeal ↔ x ∈ w.asIdeal := by
@@ -25,7 +25,7 @@ theorem mem_plMap (j : E ≃+* L) (w : HeightOneSpectrum (𝓞 E)) (x : 𝓞 E) 
   simp [IsDedekindDomain.HeightOneSpectrum.comap]
 
 /- English proof (translation)
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Simplify using `[RingOfIntegers.mapRingEquiv]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem mapRingEquiv_symm_apply (j : E ≃+* L) (x : 𝓞 E) :
     RingOfIntegers.mapRingEquiv j.symm (RingOfIntegers.mapRingEquiv j x) = x := by
@@ -33,7 +33,7 @@ theorem mapRingEquiv_symm_apply (j : E ≃+* L) (x : 𝓞 E) :
   simp [RingOfIntegers.mapRingEquiv]
 
 /- English proof (translation)
-Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `y`. Establish `h` using `mem_plMap j.symm (plMap j w) (RingOfIntegers.mapRingEquiv j y)`. Rewrite `h` using `[mapRingEquiv_symm_apply]`. Rewrite using `[h, mem_plMap]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem plMap_symm_plMap (j : E ≃+* L) (w : HeightOneSpectrum (𝓞 E)) : plMap j.symm (plMap j w) = w := by
   apply HeightOneSpectrum.ext
@@ -43,23 +43,23 @@ theorem plMap_symm_plMap (j : E ≃+* L) (w : HeightOneSpectrum (𝓞 E)) : plMa
   rw [h, mem_plMap]
 
 /- English proof (translation)
-Establish `h` using `plMap_symm_plMap j.symm v`. Rewrite `h` using `[RingEquiv.symm_symm]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem plMap_plMap_symm (j : E ≃+* L) (v : HeightOneSpectrum (𝓞 L)) : plMap j (plMap j.symm v) = v := by
   have h := plMap_symm_plMap j.symm v
   rwa [RingEquiv.symm_symm] at h
 
 /- English proof (translation)
-Introduce `a b h`. Rewrite using `[← plMap_symm_plMap j a, h, plMap_symm_plMap]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem plMap_injective (j : E ≃+* L) : Function.Injective (plMap j) := by
   intro a b h
   rw [← plMap_symm_plMap j a, h, plMap_symm_plMap]
 
 /- English proof (translation)
-Use extensionality with `y`. Rewrite using `[Ideal.mem_map_of_equiv]`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Use `⟨(RingOfIntegers.mapRingEquiv j).symm y, ?_, RingEquiv.apply_symm_apply _ _⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← mem_plMap j w, RingEquiv.apply_symm_apply]`. Conclude with `hy`. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `(mem_plMap j w x).2 hx`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem asIdeal_plMap (j : E ≃+* L) (w : HeightOneSpectrum (𝓞 E)) :
     (plMap j w).asIdeal = w.asIdeal.map (RingOfIntegers.mapRingEquiv j) := by
@@ -74,9 +74,9 @@ theorem asIdeal_plMap (j : E ≃+* L) (w : HeightOneSpectrum (𝓞 E)) :
     exact (mem_plMap j w x).2 hx
 
 /- English proof (translation)
-Rewrite using `[asIdeal_plMap, ← Ideal.map_pow, Ideal.mem_map_of_equiv]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hxy⟩`. Rewrite `hy` using `[(RingOfIntegers.mapRingEquiv j).injective hxy]`. Then use the resulting hypothesis. Introduce `hx`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨x, hx, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_plMap_pow (j : E ≃+* L) (w : HeightOneSpectrum (𝓞 E)) (n : ℕ) (x : 𝓞 E) :
     RingOfIntegers.mapRingEquiv j x ∈ (plMap j w).asIdeal ^ n ↔ x ∈ w.asIdeal ^ n := by
@@ -88,11 +88,11 @@ theorem mem_plMap_pow (j : E ≃+* L) (w : HeightOneSpectrum (𝓞 E)) (n : ℕ)
     exact ⟨x, hx, rfl⟩
 
 /- English proof (translation)
-Take `⟨m, rfl⟩ : ∃ m : ℤ, WithZero.exp m = a` from `⟨_, WithZero.exp_log ha⟩`. Take `⟨k, rfl⟩ : ∃ k : ℤ, WithZero.exp k = b` from `⟨_, WithZero.exp_log hb⟩`. Establish `hm : m ≤ 0` using `by rwa [← WithZero.exp_zero, WithZero.exp_le_exp] at ha1`. Establish `hk : k ≤ 0` using `by rwa [← WithZero.exp_zero, WithZero.exp_le_exp] at hb1`. Establish `e1 : (((-m).toNat : ℕ) : ℤ) = -m` using `Int.toNat_of_nonneg (by omega)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : (((-k).toNat : ℕ) : ℤ) = -k` using `Int.toNat_of_nonneg (by omega)`. Establish `h1` using `h (-m).toNat`. Establish `h2` using `h (-k).toNat`. Rewrite `h1` using `[WithZero.exp_le_exp, WithZero.exp_le_exp, e1]`. Rewrite `h2` using `[WithZero.exp_le_exp, WithZero.exp_le_exp, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `i1` using `h1.1 (by omega)`. Establish `i2` using `h2.2 (by omega)`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 -/
 theorem eq_of_forall_le_exp {a b : WithZero (Multiplicative ℤ)} (ha : a ≠ 0) (hb : b ≠ 0) (ha1 : a ≤ 1)
     (hb1 : b ≤ 1) (h : ∀ n : ℕ, a ≤ WithZero.exp (-(n : ℤ)) ↔ b ≤ WithZero.exp (-(n : ℤ))) : a = b := by
@@ -112,9 +112,9 @@ theorem eq_of_forall_le_exp {a b : WithZero (Multiplicative ℤ)} (ha : a ≠ 0)
   omega
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Simplify using the standard rewrite rules. Establish `hx' : RingOfIntegers.mapRingEquiv j x ≠ 0` using `(map_ne_zero_iff _ (RingOfIntegers.mapRingEquiv j).injective).2 hx`. Use `eq_of_forall_le_exp ((plMap j w).intValuation_ne_zero _ hx') (w.intValuation_ne_zero _ hx) ((plMap j w).intValuation_le_one _) (w.intValuation_le_one _) ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `n`. Rewrite using `[HeightOneSpectrum.intValuation_le_pow_iff_mem, HeightOneSpectrum.intValuation_le_pow_iff_mem, mem_plMap_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem intValuation_plMap (j : E ≃+* L) (w : HeightOneSpectrum (𝓞 E)) (x : 𝓞 E) :
     (plMap j w).intValuation (RingOfIntegers.mapRingEquiv j x) = w.intValuation x := by
@@ -127,7 +127,7 @@ theorem intValuation_plMap (j : E ≃+* L) (w : HeightOneSpectrum (𝓞 E)) (x :
   rw [HeightOneSpectrum.intValuation_le_pow_iff_mem, HeightOneSpectrum.intValuation_le_pow_iff_mem, mem_plMap_pow]
 
 /- English proof (translation)
-Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) x`. Establish `key : ∀ c : 𝓞 E, j (algebraMap (𝓞 E) E c) = algebraMap (𝓞 L) L (RingOfIntegers.mapRingEquiv j c)` using `fun c => rfl`. Rewrite using `[map_div₀, key, key, map_div₀, map_div₀, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.valuation_of_algebraMap, intValuation_plMap, intValuation_plMap]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem valuation_plMap (j : E ≃+* L) (w : HeightOneSpectrum (𝓞 E)) (x : E) :
     (plMap j w).valuation L (j x) = w.valuation E x := by
@@ -136,13 +136,13 @@ theorem valuation_plMap (j : E ≃+* L) (w : HeightOneSpectrum (𝓞 E)) (x : E)
   rw [map_div₀, key, key, map_div₀, map_div₀, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.valuation_of_algebraMap, intValuation_plMap, intValuation_plMap]
 
 /- English proof (translation)
-Use `continuous_of_continuousAt_zero f ?_` and prove the remaining obligations. Introduce `s hs'`. Rewrite `hs'` using `[map_zero]`. Take `⟨γ, hγ⟩` from `Valued.mem_nhds_zero.mp hs'`. Take `⟨x0, hx0⟩` from `hs (embedding (γ : ValueGroup₀ (.ofClass (Valued.v : Valuation (WithVal v') _))))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hpos : 0 < embedding (γ : ValueGroup₀ (.ofClass (Valued.v : Valuation (WithVal v') _)))`. Rewrite using `[← map_zero (embedding (f := .ofClass (Valued.v : Valuation (WithVal v') _)))]`. Conclude with `embedding_strictMono (Units.zero_lt γ)`. Establish `hx0' : 0 < Valued.v.restrict (WithVal.toVal v x0)`. Rewrite using `[Valuation.restrict_pos_iff, WithVal.valued_toVal, hx0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hpos`. Use `Filter.mem_map.mpr (Valued.mem_nhds_zero.mpr ⟨Units.mk0 _ hx0'.ne', fun x hx => hγ ?_⟩)` and prove the remaining obligations. Establish `hx1 : Valued.v.restrict x < Valued.v.restrict (WithVal.toVal v x0)` using `hx`. Rewrite `hx1` using `[Valuation.restrict_lt_iff]`. Establish `e0 : Valued.v (WithVal.toVal v x0) = v x0` using `WithVal.valued_toVal _ _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hx1` using `[e0, hx0]`. Use `show Valued.v.restrict (f x) < (γ : ValueGroup₀ _)`. Rewrite using `[Valuation.restrict_lt_iff_lt_embedding, hf]`. Conclude with `hx1`.
+A detailed English derivation is pending.
 -/
 theorem continuous_withVal {R S : Type} [Field R] [Field S] {v : Valuation R (WithZero (Multiplicative ℤ))}
     {v' : Valuation S (WithZero (Multiplicative ℤ))} (hs : Function.Surjective v) (f : WithVal v →+* WithVal v')
@@ -168,7 +168,7 @@ theorem continuous_withVal {R S : Type} [Field R] [Field S] {v : Valuation R (Wi
   exact hx1
 
 /- English proof (translation)
-The claim follows from `continuous_withVal (HeightOneSpectrum.valuation_surjective E w) (WithVal.congr _ _ j).toRingHom fun x => by show Valued.v (WithVal.toVal _ (j x.ofVal)) = _ rw [WithVal.valued_toVal, valuation_plMap, WithVal.apply_ofVal]`.
+A detailed English derivation is pending.
 -/
 theorem continuous_congrVal (j : E ≃+* L) (w : HeightOneSpectrum (𝓞 E)) :
     Continuous (WithVal.congr (w.valuation E) ((plMap j w).valuation L) j) :=
@@ -177,7 +177,7 @@ theorem continuous_congrVal (j : E ≃+* L) (w : HeightOneSpectrum (𝓞 E)) :
     rw [WithVal.valued_toVal, valuation_plMap, WithVal.apply_ofVal]
 
 /- English proof (translation)
-The claim follows from `continuous_withVal (HeightOneSpectrum.valuation_surjective L (plMap j w)) (WithVal.congr (w.valuation E) ((plMap j w).valuation L) j).symm.toRingHom fun x => by show Valued.v (WithVal.toVal _ (j.symm x.ofVal)) = _ rw [WithVal.valued_toVal, ← WithVal.apply_ofVal, ← valuation_plMap …`.
+A detailed English derivation is pending.
 -/
 theorem continuous_congrVal_symm (j : E ≃+* L) (w : HeightOneSpectrum (𝓞 E)) :
     Continuous (WithVal.congr (w.valuation E) ((plMap j w).valuation L) j).symm :=
@@ -193,7 +193,7 @@ def compEquiv (j : E ≃+* L) (w : HeightOneSpectrum (𝓞 E)) :
     (continuous_congrVal_symm j w)).trans (HeightOneSpectrum.adicCompletion.equiv L (plMap j w)).symm)
 
 /- English proof (translation)
-Establish `h : Continuous (fun y : w.adicCompletion E => (HeightOneSpectrum.adicCompletion.ofCompletion (UniformSpace.Completion.map (WithVal.congr (w.valuation E) ((plMap j w).valuation L) j) y.toCompletion) : (plMap j w).adicCompletion L))` using `(HeightOneSpectrum.adicCompletion.continuous_ofCompletion L (plMap j w)).comp (UniformSpace.Completion.continuous_map.comp (HeightOneSpectrum.adicCompletion.continuous_toCompletion E w))`. Conclude with `h.congr fun y => rfl`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_compEquiv (j : E ≃+* L) (w : HeightOneSpectrum (𝓞 E)) : Continuous (compEquiv j w) := by
   have h : Continuous (fun y : w.adicCompletion E =>
@@ -204,7 +204,7 @@ theorem continuous_compEquiv (j : E ≃+* L) (w : HeightOneSpectrum (𝓞 E)) : 
   exact h.congr fun y => rfl
 
 /- English proof (translation)
-Establish `h : Continuous (fun y : (plMap j w).adicCompletion L => (HeightOneSpectrum.adicCompletion.ofCompletion (UniformSpace.Completion.map (WithVal.congr (w.valuation E) ((plMap j w).valuation L) j).symm y.toCompletion) : w.adicCompletion E))` using `(HeightOneSpectrum.adicCompletion.continuous_ofCompletion E w).comp (UniformSpace.Completion.continuous_map.comp (HeightOneSpectrum.adicCompletion.continuous_toCompletion L (plMap j w)))`. Conclude with `h.congr fun y => rfl`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_compEquiv_symm (j : E ≃+* L) (w : HeightOneSpectrum (𝓞 E)) :
     Continuous (compEquiv j w).symm := by
@@ -217,7 +217,7 @@ theorem continuous_compEquiv_symm (j : E ≃+* L) (w : HeightOneSpectrum (𝓞 E
   exact h.congr fun y => rfl
 
 /- English proof (translation)
-Apply `HeightOneSpectrum.adicCompletion.ext` to reduce the goal to its premises. Use `show UniformSpace.Completion.map (WithVal.congr (w.valuation E) ((plMap j w).valuation L) j) ((algebraMap E (w.adicCompletion E) x).toCompletion) = _`. Rewrite using `[HeightOneSpectrum.algebraMap_adicCompletion_toCompletion, HeightOneSpectrum.algebraMap_adicCompletion_toCompletion, UniformSpace.Completion.algebraMap_def, UniformSpace.Completion.algebraMap_def, UniformSpace.Completion.map_coe (uniformContinuous_addMonoidHom_of_continuous (cont …`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem compEquiv_algebraMap (j : E ≃+* L) (w : HeightOneSpectrum (𝓞 E)) (x : E) :
     compEquiv j w (algebraMap E (w.adicCompletion E) x) = algebraMap L ((plMap j w).adicCompletion L) (j x) := by
@@ -231,14 +231,14 @@ theorem compEquiv_algebraMap (j : E ≃+* L) (w : HeightOneSpectrum (𝓞 E)) (x
   rfl
 
 /- English proof (translation)
-Rewrite using `[← compEquiv_algebraMap, RingEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem compEquiv_symm_algebraMap (j : E ≃+* L) (w : HeightOneSpectrum (𝓞 E)) (x : E) :
     (compEquiv j w).symm (algebraMap L ((plMap j w).adicCompletion L) (j x)) = algebraMap E (w.adicCompletion E) x := by
   rw [← compEquiv_algebraMap, RingEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Rewrite using `[Ideal.absNorm_apply, Ideal.absNorm_apply, Submodule.cardQuot_apply, Submodule.cardQuot_apply]`. Conclude with `(Nat.card_congr (Ideal.quotientEquiv _ _ (RingOfIntegers.mapRingEquiv j) (asIdeal_plMap j w)).toEquiv).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absNorm_plMap (j : E ≃+* L) (w : HeightOneSpectrum (𝓞 E)) :
     Ideal.absNorm (plMap j w).asIdeal = Ideal.absNorm w.asIdeal := by
@@ -246,7 +246,7 @@ theorem absNorm_plMap (j : E ≃+* L) (w : HeightOneSpectrum (𝓞 E)) :
   exact (Nat.card_congr (Ideal.quotientEquiv _ _ (RingOfIntegers.mapRingEquiv j) (asIdeal_plMap j w)).toEquiv).symm
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem toNNReal_congr {a b : NNReal} (ha : a ≠ 0) (hb : b ≠ 0) (h : a = b) (z : WithZero (Multiplicative ℤ)) :
     WithZeroMulInt.toNNReal ha z = WithZeroMulInt.toNNReal hb z := by
@@ -254,9 +254,9 @@ theorem toNNReal_congr {a b : NNReal} (ha : a ≠ 0) (hb : b ≠ 0) (h : a = b) 
   rfl
 
 /- English proof (translation)
-Establish `h` using `(HeightOneSpectrum.denseRange_algebraMap E w).equalizer (continuous_norm.comp (continuous_compEquiv j w)) continuous_norm (funext fun x => ?_)`. Conclude with `congrFun h y`. Simplify using `only [Function.comp_apply]`. Rewrite using `[compEquiv_algebraMap]`. Use `show ‖NumberField.FinitePlace.embedding (plMap j w) (j x)‖ = ‖NumberField.FinitePlace.embedding w x‖`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[NumberField.FinitePlace.norm_embedding, NumberField.FinitePlace.norm_embedding, HeightOneSpectrum.adicAbv_def, HeightOneSpectrum.adicAbv_def, valuation_plMap]`. Use `congr 1`. Conclude with `toNNReal_congr _ _ (by rw [absNorm_plMap]) _`.
+A detailed English derivation is pending.
 -/
 theorem norm_compEquiv (j : E ≃+* L) (w : HeightOneSpectrum (𝓞 E)) (y : w.adicCompletion E) :
     ‖compEquiv j w y‖ = ‖y‖ := by
@@ -272,7 +272,7 @@ theorem norm_compEquiv (j : E ≃+* L) (w : HeightOneSpectrum (𝓞 E)) (y : w.a
   exact toNNReal_congr _ _ (by rw [absNorm_plMap]) _
 
 /- English proof (translation)
-Establish `h1 : ‖compEquiv j w y‖ ≤ 1 ↔ Valued.v (compEquiv j w y) ≤ 1` using `Valued.toNormedField.norm_le_one_iff`. Establish `h2 : ‖y‖ ≤ 1 ↔ Valued.v y ≤ 1` using `Valued.toNormedField.norm_le_one_iff`. Rewrite using `[← h1, ← h2, norm_compEquiv]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem valued_le_one_iff (j : E ≃+* L) (w : HeightOneSpectrum (𝓞 E)) (y : w.adicCompletion E) :
     Valued.v (compEquiv j w y) ≤ 1 ↔ Valued.v y ≤ 1 := by
@@ -281,7 +281,7 @@ theorem valued_le_one_iff (j : E ≃+* L) (w : HeightOneSpectrum (𝓞 E)) (y : 
   rw [← h1, ← h2, norm_compEquiv]
 
 /- English proof (translation)
-Establish `h0 : Valued.v z ≠ 0` using `(Valuation.ne_zero_iff _).2 hz`. Rewrite using `[map_inv₀, inv_le_one₀ (zero_lt_iff.2 h0)]`. Conclude with `⟨fun h => ⟨h.le, h.ge⟩, fun h => le_antisymm h.1 h.2⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem valued_eq_one_iff_both_le_one {K : Type} [Field K] [Valued K (WithZero (Multiplicative ℤ))] (z : K) (hz : z ≠ 0) :
     Valued.v z = 1 ↔ Valued.v z ≤ 1 ∧ Valued.v z⁻¹ ≤ 1 := by
@@ -290,7 +290,7 @@ theorem valued_eq_one_iff_both_le_one {K : Type} [Field K] [Valued K (WithZero (
   exact ⟨fun h => ⟨h.le, h.ge⟩, fun h => le_antisymm h.1 h.2⟩
 
 /- English proof (translation)
-Distinguish the cases in `hy : y = 0`. Substitute `hy` using the available equality. Simplify using the standard rewrite rules. Establish `hy' : compEquiv j w y ≠ 0` using `(map_ne_zero_iff _ (compEquiv j w).injective).2 hy`. Rewrite using `[valued_eq_one_iff_both_le_one _ hy', valued_eq_one_iff_both_le_one _ hy, ← map_inv₀, valued_le_one_iff, valued_le_one_iff]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem valued_eq_one_iff (j : E ≃+* L) (w : HeightOneSpectrum (𝓞 E)) (y : w.adicCompletion E) :
     Valued.v (compEquiv j w y) = 1 ↔ Valued.v y = 1 := by
@@ -301,14 +301,14 @@ theorem valued_eq_one_iff (j : E ≃+* L) (w : HeightOneSpectrum (𝓞 E)) (y : 
   rw [valued_eq_one_iff_both_le_one _ hy', valued_eq_one_iff_both_le_one _ hy, ← map_inv₀, valued_le_one_iff, valued_le_one_iff]
 
 /- English proof (translation)
-Conclude with `(AddMonoidHomClass.isometry_of_norm (WithAbs.congr (u.comap j.toRingHom).1 u.1 j) fun x => rfl).continuous`.
+A detailed English derivation is pending.
 -/
 theorem continuous_congrAbs (j : E ≃+* L) (u : InfinitePlace L) :
     Continuous (WithAbs.congr (u.comap j.toRingHom).1 u.1 j) := by
   exact (AddMonoidHomClass.isometry_of_norm (WithAbs.congr (u.comap j.toRingHom).1 u.1 j) fun x => rfl).continuous
 
 /- English proof (translation)
-Conclude with `(AddMonoidHomClass.isometry_of_norm (WithAbs.congr (u.comap j.toRingHom).1 u.1 j).symm fun x => by`. Take `⟨y, rfl⟩` from `(WithAbs.congr (u.comap j.toRingHom).1 u.1 j).surjective x`. Rewrite using `[RingEquiv.symm_apply_apply]`. Use the proof step `rfl).continuous`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_congrAbs_symm (j : E ≃+* L) (u : InfinitePlace L) :
     Continuous (WithAbs.congr (u.comap j.toRingHom).1 u.1 j).symm := by
@@ -323,7 +323,7 @@ def infEquiv (j : E ≃+* L) (u : InfinitePlace L) : (u.comap j.toRingHom).Compl
     (InfinitePlace.Completion.equiv u).symm)
 
 /- English proof (translation)
-Establish `h : Continuous (fun y : (u.comap j.toRingHom).Completion => (InfinitePlace.Completion.ofCompletion (UniformSpace.Completion.map (WithAbs.congr (u.comap j.toRingHom).1 u.1 j) y.toCompletion) : u.Completion))` using `(InfinitePlace.Completion.continuous_ofCompletion u).comp (UniformSpace.Completion.continuous_map.comp (InfinitePlace.Completion.continuous_toCompletion _))`. Conclude with `h.congr fun y => rfl`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_infEquiv (j : E ≃+* L) (u : InfinitePlace L) : Continuous (infEquiv j u) := by
   have h : Continuous (fun y : (u.comap j.toRingHom).Completion =>
@@ -335,7 +335,7 @@ theorem continuous_infEquiv (j : E ≃+* L) (u : InfinitePlace L) : Continuous (
   exact h.congr fun y => rfl
 
 /- English proof (translation)
-Apply `InfinitePlace.Completion.ext` to reduce the goal to its premises. Use `show UniformSpace.Completion.map (WithAbs.congr (u.comap j.toRingHom).1 u.1 j) ((algebraMap E (u.comap j.toRingHom).Completion x).toCompletion) = _`. Rewrite using `[InfinitePlace.Completion.algebraMap_toCompletion, InfinitePlace.Completion.algebraMap_toCompletion, UniformSpace.Completion.algebraMap_def, UniformSpace.Completion.algebraMap_def, UniformSpace.Completion.map_coe (uniformContinuous_addMonoidHom_of_continuous (continuous_congrAbs …`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem infEquiv_algebraMap (j : E ≃+* L) (u : InfinitePlace L) (x : E) :
     infEquiv j u (algebraMap E (u.comap j.toRingHom).Completion x) = algebraMap L u.Completion (j x) := by
@@ -348,7 +348,7 @@ theorem infEquiv_algebraMap (j : E ≃+* L) (u : InfinitePlace L) (x : E) :
   rfl
 
 /- English proof (translation)
-Introduce `x hx`. Establish `h` using `valued_le_one_iff j.symm v ((compEquiv j.symm v).symm x)`. Rewrite `h` using `[RingEquiv.apply_symm_apply]`. Conclude with `h.1 hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mapsTo_integers (j : E ≃+* L) (v : HeightOneSpectrum (𝓞 L)) :
     Set.MapsTo (compEquiv j.symm v).symm ((plMap j.symm v).adicCompletionIntegers E : Set _)
@@ -370,7 +370,7 @@ theorem finMap_apply (j : E ≃+* L) (a : FiniteAdeleRing (𝓞 E) E) (v : Heigh
     finMap j a v = (compEquiv j.symm v).symm (a (plMap j.symm v)) := rfl
 
 /- English proof (translation)
-The claim follows from `RestrictedProduct.mapAlong_continuous (fun w : HeightOneSpectrum (𝓞 E) => w.adicCompletion E) (fun v : HeightOneSpectrum (𝓞 L) => v.adicCompletion L) (plMap j.symm) (plMap_injective j.symm).tendsto_cofinite (fun v => (compEquiv j.symm v).symm) (Filter.Eventually.of_forall fun v = …`.
+A detailed English derivation is pending.
 -/
 theorem continuous_finMap (j : E ≃+* L) : Continuous (finMap j) :=
   RestrictedProduct.mapAlong_continuous (fun w : HeightOneSpectrum (𝓞 E) => w.adicCompletion E)
@@ -382,7 +382,7 @@ def infMap (j : E ≃+* L) : InfiniteAdeleRing E →+* InfiniteAdeleRing L :=
   RingHom.pi fun u => (infEquiv j u).toRingHom.comp (Pi.evalRingHom _ (u.comap j.toRingHom))
 
 /- English proof (translation)
-Conclude with `continuous_pi fun u => (continuous_infEquiv j u).comp (continuous_apply _)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_infMap (j : E ≃+* L) : Continuous (infMap j) := by
   exact continuous_pi fun u => (continuous_infEquiv j u).comp (continuous_apply _)
@@ -391,7 +391,7 @@ def adMap (j : E ≃+* L) : AdeleRing (𝓞 E) E →+* AdeleRing (𝓞 L) L :=
   RingHom.prodMap (infMap j) (finMap j)
 
 /- English proof (translation)
-Conclude with `(continuous_infMap j).prodMap (continuous_finMap j)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_adMap (j : E ≃+* L) : Continuous (adMap j) := by
   exact (continuous_infMap j).prodMap (continuous_finMap j)
@@ -399,15 +399,15 @@ theorem continuous_adMap (j : E ≃+* L) : Continuous (adMap j) := by
 def idMap (j : E ≃+* L) : Ideles E →* Ideles L := Units.map (adMap j).toMonoidHom
 
 /- English proof (translation)
-Conclude with `Units.continuous_map (continuous_adMap j)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_idMap (j : E ≃+* L) : Continuous (idMap j) := by
   exact Units.continuous_map (continuous_adMap j)
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use `show adMap j (algebraMap E (AdeleRing (𝓞 E) E) (k : E)) = algebraMap L (AdeleRing (𝓞 L) L) (j k)`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `u`. Conclude with `infEquiv_algebraMap j u (k : E)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `ext1 v show (compEquiv j.symm v).symm (algebraMap E _ (k : E)) = algebraMap L _ (j k)`. Establish `h` using `compEquiv_symm_algebraMap j.symm v (j (k : E))`. Rewrite `h` using `[RingEquiv.symm_apply_apply]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem idMap_diag (j : E ≃+* L) (k : Eˣ) : idMap j (diagUnits E k) = diagUnits L (Units.map j.toMonoidHom k) := by
   apply Units.ext
@@ -426,11 +426,9 @@ def locMap (j : E ≃+* L) (v : HeightOneSpectrum (𝓞 L)) :
   Units.map (compEquiv j.symm v).symm.toMonoidHom
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Apply `Prod.ext` to reduce the goal to its premises. Use `show infMap j 1 = 1`. Conclude with `map_one _`. Apply `RestrictedProduct.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `v'`. Use `show (compEquiv j.symm v').symm (Pi.mulSingle (plMap j.symm v) (x : (plMap j.symm v).adicCompletion E) (plMap j.symm v')) = Pi.mulSingle v ((compEquiv j.symm v).symm (x : (plMap j.symm v).adicCompletion E)) v'`. Distinguish the cases in `h : v' = v`. Substitute `h` using the available equality. Rewrite using `[Pi.mulSingle_eq_same, Pi.mulSingle_eq_same]`.
-
-Establish `h' : plMap j.symm v' ≠ plMap j.symm v` using `fun e => h (plMap_injective j.symm e)`. Rewrite using `[Pi.mulSingle_eq_of_ne h', Pi.mulSingle_eq_of_ne h, map_one]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idMap_localIdele (j : E ≃+* L) (v : HeightOneSpectrum (𝓞 L)) (x : ((plMap j.symm v).adicCompletion E)ˣ) :
     idMap j (localIdele E (plMap j.symm v) x) = localIdele L v (locMap j v x) := by
@@ -450,7 +448,7 @@ theorem idMap_localIdele (j : E ≃+* L) (v : HeightOneSpectrum (𝓞 L)) (x : (
       rw [Pi.mulSingle_eq_of_ne h', Pi.mulSingle_eq_of_ne h, map_one]
 
 /- English proof (translation)
-Establish `h` using `valued_eq_one_iff j.symm v ((compEquiv j.symm v).symm (x : (plMap j.symm v).adicCompletion E))`. Rewrite `h` using `[RingEquiv.apply_symm_apply]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnitAt_locMap (j : E ≃+* L) (v : HeightOneSpectrum (𝓞 L)) (x : ((plMap j.symm v).adicCompletion E)ˣ) :
     IsUnitAt v (locMap j v x) ↔ IsUnitAt (plMap j.symm v) x := by
@@ -459,7 +457,7 @@ theorem isUnitAt_locMap (j : E ≃+* L) (v : HeightOneSpectrum (𝓞 L)) (x : ((
   exact h.symm
 
 /- English proof (translation)
-Introduce `y`. Use `⟨Units.map (compEquiv j.symm v).toMonoidHom y, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Conclude with `(compEquiv j.symm v).symm_apply_apply (y : v.adicCompletion L)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem locMap_surjective (j : E ≃+* L) (v : HeightOneSpectrum (𝓞 L)) : Function.Surjective (locMap j v) := by
   intro y
@@ -468,7 +466,7 @@ theorem locMap_surjective (j : E ≃+* L) (v : HeightOneSpectrum (𝓞 L)) : Fun
   exact (compEquiv j.symm v).symm_apply_apply (y : v.adicCompletion L)
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Establish `h` using `compEquiv_symm_algebraMap j.symm v (j (k : E))`. Rewrite `h` using `[RingEquiv.symm_apply_apply]`. Conclude with `h`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locMap_atFin (j : E ≃+* L) (v : HeightOneSpectrum (𝓞 L)) (k : Eˣ) :
     locMap j v (atFin (plMap j.symm v) k) = atFin v (Units.map j.toMonoidHom k) := by
@@ -489,16 +487,16 @@ Both sides reduce to the same expression.
 theorem transport_apply (j : E ≃+* L) (χ : HChar L) (a : Ideles E) : (transport j χ).1 a = χ.1 (idMap j a) := rfl
 
 /- English proof (translation)
-Conclude with `congrArg χ.1 (idMap_localIdele j v x)`.
+A detailed English derivation is pending.
 -/
 theorem transport_loc (j : E ≃+* L) (χ : HChar L) (v : HeightOneSpectrum (𝓞 L))
     (x : ((plMap j.symm v).adicCompletion E)ˣ) : (transport j χ).loc (plMap j.symm v) x = χ.loc v (locMap j v x) := by
   exact congrArg χ.1 (idMap_localIdele j v x)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h y hy`. Take `⟨x, rfl⟩` from `locMap_surjective j v y`. Rewrite using `[← transport_loc]`. Conclude with `h x ((isUnitAt_locMap j v x).1 hy)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h x hx`. Rewrite using `[transport_loc]`. Conclude with `h _ ((isUnitAt_locMap j v x).2 hx)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transport_unrAt_symm (j : E ≃+* L) (χ : HChar L) (v : HeightOneSpectrum (𝓞 L)) :
     (transport j χ).UnrAt (plMap j.symm v) ↔ χ.UnrAt v := by
@@ -512,7 +510,7 @@ theorem transport_unrAt_symm (j : E ≃+* L) (χ : HChar L) (v : HeightOneSpectr
     exact h _ ((isUnitAt_locMap j v x).2 hx)
 
 /- English proof (translation)
-Establish `h` using `transport_unrAt_symm j χ (plMap j w)`. Rewrite `h` using `[plMap_symm_plMap]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem transport_unrAt_iff (j : E ≃+* L) (χ : HChar L) (w : HeightOneSpectrum (𝓞 E)) :
     (transport j χ).UnrAt w ↔ χ.UnrAt (plMap j w) := by
@@ -520,11 +518,11 @@ theorem transport_unrAt_iff (j : E ≃+* L) (χ : HChar L) (w : HeightOneSpectru
   rwa [plMap_symm_plMap] at h
 
 /- English proof (translation)
-Establish `hu` using `unif_spec (plMap j.symm v)`. Establish `key : IsUnifAt v (locMap j v (atFin (plMap j.symm v) (unif (plMap j.symm v))))`. Rewrite using `[locMap_atFin]`. Unfold `IsUnifAt at hu ⊢`. Rewrite using `[← hu]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : Valued.v (algebraMap L (v.adicCompletion L) (j (unif (plMap j.symm v) : E))) = v.valuation L (j (unif (plMap j.symm v) : E))` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v _`. Establish `e2 : Valued.v (algebraMap E ((plMap j.symm v).adicCompletion E) (unif (plMap j.symm v) : E)) = (plMap j.symm v).valuation E (unif (plMap j.symm v) : E)` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' (plMap j.symm v) _`. Establish `e3` using `valuation_plMap j.symm v (j (unif (plMap j.symm v) : E))`. Rewrite `e3` using `[RingEquiv.symm_apply_apply]`. Conclude with `e1.trans (e3.symm.trans e2.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← χ.val_eq h _ key, ← transport_loc]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem transport_val_symm (j : E ≃+* L) (χ : HChar L) (v : HeightOneSpectrum (𝓞 L)) (h : χ.UnrAt v) :
     (transport j χ).val (plMap j.symm v) = χ.val v := by
@@ -544,7 +542,7 @@ theorem transport_val_symm (j : E ≃+* L) (χ : HChar L) (v : HeightOneSpectrum
   rfl
 
 /- English proof (translation)
-Establish `h'` using `transport_val_symm j χ (plMap j w) h`. Rewrite `h'` using `[plMap_symm_plMap]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem transport_val (j : E ≃+* L) (χ : HChar L) (w : HeightOneSpectrum (𝓞 E)) (h : χ.UnrAt (plMap j w)) :
     (transport j χ).val w = χ.val (plMap j w) := by
@@ -552,7 +550,7 @@ theorem transport_val (j : E ≃+* L) (χ : HChar L) (w : HeightOneSpectrum (�
   rwa [plMap_symm_plMap] at h'
 
 /- English proof (translation)
-Unfold `HChar.valTw`. Rewrite using `[transport_val j χ w h, absNorm_plMap]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem transport_valTw (j : E ≃+* L) (χ : HChar L) (s : ℝ) (w : HeightOneSpectrum (𝓞 E)) (h : χ.UnrAt (plMap j w)) :
     (transport j χ).valTw s w = χ.valTw s (plMap j w) := by
@@ -560,18 +558,18 @@ theorem transport_valTw (j : E ≃+* L) (χ : HChar L) (s : ℝ) (w : HeightOneS
   rw [transport_val j χ w h, absNorm_plMap]
 
 /- English proof (translation)
-Introduce `a`. Conclude with `h (idMap j a)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem transport_isUnitary (j : E ≃+* L) (χ : HChar L) (h : χ.IsUnitary) : (transport j χ).IsUnitary := by
   intro a
   exact h (idMap j a)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h v hv`. Establish `hv' : (transport j χ).UnrAt (plMap j.symm v)` using `(transport_unrAt_symm j χ v).2 hv`. Take `⟨y, hy⟩` from `h _ hv'`. Use `⟨y, hy.trans ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `transport_valTw j χ s (plMap j.symm v) (by rwa [plMap_plMap_symm])`. Rewrite `h2` using `[plMap_plMap_symm]`. Then use the resulting hypothesis. Introduce `h w hw`. Establish `hw' : χ.UnrAt (plMap j w)` using `(transport_unrAt_iff j χ w).1 hw`. Take `⟨y, hy⟩` from `h _ hw'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨y, hy.trans (transport_valTw j χ s w hw').symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem transport_valuesIn (j : E ≃+* L) (χ : HChar L) (s : ℝ) {C : Type} [Field C] (e : C →+* ℂ) :
     (transport j χ).ValuesIn s e ↔ χ.ValuesIn s e := by
@@ -588,14 +586,14 @@ theorem transport_valuesIn (j : E ≃+* L) (χ : HChar L) (s : ℝ) {C : Type} [
     exact ⟨y, hy.trans (transport_valTw j χ s w hw').symm⟩
 
 /- English proof (translation)
-Rewrite using `[transport_unrAt_iff, transport_unrAt_iff, plMap_symm_plMap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem transport_symm_unrAt_iff (j : E ≃+* L) (χ : HChar E) (w : HeightOneSpectrum (𝓞 E)) :
     (transport j (transport j.symm χ)).UnrAt w ↔ χ.UnrAt w := by
   rw [transport_unrAt_iff, transport_unrAt_iff, plMap_symm_plMap]
 
 /- English proof (translation)
-Establish `h1 : (transport j.symm χ).UnrAt (plMap j w)`. Rewrite using `[transport_unrAt_iff, plMap_symm_plMap]`. Conclude with `h`. Rewrite using `[transport_val j _ w h1, transport_val j.symm χ (plMap j w) (by rw [plMap_symm_plMap]; exact h), plMap_symm_plMap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transport_symm_val (j : E ≃+* L) (χ : HChar E) (w : HeightOneSpectrum (𝓞 E)) (h : χ.UnrAt w) :
     (transport j (transport j.symm χ)).val w = χ.val w := by
@@ -605,7 +603,7 @@ theorem transport_symm_val (j : E ≃+* L) (χ : HChar E) (w : HeightOneSpectrum
   rw [transport_val j _ w h1, transport_val j.symm χ (plMap j w) (by rw [plMap_symm_plMap]; exact h), plMap_symm_plMap]
 
 /- English proof (translation)
-Apply `hS` to reduce the goal to its premises. Use `filter_upwards [hU χ.1 χ.2.1] with v hv`. Establish `hχ : χ.UnrAt v` using `fun x hx => hv x hx`. Conclude with `⟨(transport_symm_unrAt_iff j χ v).2 hχ, hχ, transport_symm_val j χ v hχ⟩`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem transport_transport_symm (hS : SMOne E) (hU : UnrAE E) (j : E ≃+* L) (χ : HChar E) :
     transport j (transport j.symm χ) = χ := by
@@ -624,13 +622,11 @@ def transportEquiv (hS : SMOne E) (hU : UnrAE E) (hS' : SMOne L) (hU' : UnrAE L)
   map_mul' := map_mul _
 
 /- English proof (translation)
-Unfold `infDiag`. Rewrite using `[MonoidHom.finsetProd_apply, Units.coe_prod]`. Apply `Prod.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `u`. Establish `h` using `map_prod ((Pi.evalRingHom (fun w : InfinitePlace E => w.Completion) u).comp (RingHom.fst (InfiniteAdeleRing E) (FiniteAdeleRing (𝓞 E) E)) : AdeleRing (𝓞 E) E →+* u.Completion) (fun i => ((((infIdele E i).comp (atInf i)) k : Ideles E) : AdeleRing (𝓞 E) E)) Finset.univ`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `h.trans ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_eq_single u]`. Use `show Pi.mulSingle u _ u = _`. Rewrite using `[Pi.mulSingle_eq_same]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w _ hw show Pi.mulSingle w _ u = 1`. Conclude with `Pi.mulSingle_eq_of_ne (Ne.symm hw) _`. Introduce `h`. Conclude with `absurd (Finset.mem_univ u) h`. Establish `h` using `map_prod ((RingHom.snd (InfiniteAdeleRing E) (FiniteAdeleRing (𝓞 E) E)) : AdeleRing (𝓞 E) E →+* FiniteAdeleRing (𝓞 E) E) (fun i => ((((infIdele E i).comp (atInf i)) k : Ideles E) : AdeleRing (𝓞 E) E)) Finset.univ`.
-
-Use `h.trans ?_` and prove the remaining obligations. Conclude with `Finset.prod_eq_one fun w _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem infDiag_coe (k : Eˣ) :
     ((infDiag k : Ideles E) : AdeleRing (𝓞 E) E) = (algebraMap E (InfiniteAdeleRing E) (k : E), 1) := by
@@ -659,9 +655,7 @@ theorem infDiag_coe (k : Eˣ) :
     exact Finset.prod_eq_one fun w _ => rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use `show adMap j ((infDiag k : Ideles E) : AdeleRing (𝓞 E) E) = _`. Rewrite using `[infDiag_coe, infDiag_coe]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `u`.
-
-Conclude with `infEquiv_algebraMap j u (k : E)`. Conclude with `map_one (finMap j)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem idMap_infDiag (j : E ≃+* L) (k : Eˣ) : idMap j (infDiag k) = infDiag (Units.map j.toMonoidHom k) := by
   apply Units.ext
@@ -673,18 +667,18 @@ theorem idMap_infDiag (j : E ≃+* L) (k : Eˣ) : idMap j (infDiag k) = infDiag 
   · exact map_one (finMap j)
 
 /- English proof (translation)
-Conclude with `congrArg χ.1 (idMap_infDiag j k)`.
+A detailed English derivation is pending.
 -/
 theorem transport_inf (j : E ≃+* L) (χ : HChar L) (k : Eˣ) :
     (transport j χ).inf k = χ.inf (Units.map j.toMonoidHom k) := by
   exact congrArg χ.1 (idMap_infDiag j k)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h k'`. Establish `h2` using `h (Units.map j.symm.toMonoidHom k')`. Rewrite `h2` using `[transport_inf]`. Establish `e : Units.map j.toMonoidHom (Units.map j.symm.toMonoidHom k') = k'`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `ext`. Simplify using the standard rewrite rules. Rewrite `h2` using `[e]`. Simplify using `using h2`. Introduce `h k`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[transport_inf, h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem transport_hasInf (j : E ≃+* L) (χ : HChar L) {I : Type} [Fintype I] (φ : I → E →+* ℂ) (n : I → ℤ) :
     (transport j χ).HasInf φ n ↔ χ.HasInf (fun i => (φ i).comp j.symm.toRingHom) n := by

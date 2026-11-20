@@ -19,7 +19,7 @@ set_option linter.unusedSectionVars false
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Introduce `z` and use `by show A.h _ ^ p * B.h _ ^ q = A.h z ^ p * B.h z ^ q rw [hA z, hB z]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem HermLine.zcomb_isConjInvariantH {A B : HermLine ι} (hA : IsConjInvariantH A) (hB : IsConjInvariantH B)
     (p q : ℤ) : IsConjInvariantH (HermLine.zcomb A B p q) := fun z => by
@@ -27,7 +27,7 @@ theorem HermLine.zcomb_isConjInvariantH {A B : HermLine ι} (hA : IsConjInvarian
   rw [hA z, hB z]
 
 /- English proof (translation)
-Introduce `z` and use `by show ∏ k, (fsMetric (ι k)).ρ (fun i => (starRingEnd ℂ) (z ⟨k, i⟩)) ^ (1 : K → ℤ) k = ∏ k, (fsMetric (ι k)).ρ (fun i => z ⟨k, i⟩) ^ (1 : K → ℤ) k exact Finset.prod_congr rfl fun k _ => by rw [ProjLine.isConjInvariant_fs (fun i => z ⟨k, i⟩)]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fsH_isConjInvariantH (ι : K → Type) [∀ k, Fintype (ι k)] : IsConjInvariantH (fsH ι) := fun z => by
   show ∏ k, (fsMetric (ι k)).ρ (fun i => (starRingEnd ℂ) (z ⟨k, i⟩)) ^ (1 : K → ℤ) k =
@@ -35,7 +35,7 @@ theorem fsH_isConjInvariantH (ι : K → Type) [∀ k, Fintype (ι k)] : IsConjI
   exact Finset.prod_congr rfl fun k _ => by rw [ProjLine.isConjInvariant_fs (fun i => z ⟨k, i⟩)]
 
 /- English proof (translation)
-Rewrite using `[← zpow_natCast a, ← zpow_natCast (_ * _) n, ← zpow_natCast (_ * _) (p * n), mul_zpow, mul_zpow, ← zpow_mul, ← zpow_mul, ← zpow_mul, ← zpow_mul, mul_mul_mul_comm, ← zpow_add₀ ha, ← zpow_add₀ hb]`. Establish `e1 : ((q : ℤ) - k * p) * (n : ℤ) + (k : ℤ) * ((p * n : ℕ) : ℤ) = ((q * n : ℕ) : ℤ)` using `by push_cast; ring`. Establish `e2 : (p : ℤ) * (n : ℤ) + (-1 : ℤ) * ((p * n : ℕ) : ℤ) = 0` using `by push_cast; ring`. Rewrite using `[e1, e2, zpow_zero, mul_one]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem zcomb_metric_identity {a b : ℝ} (ha : a ≠ 0) (hb : b ≠ 0) (q k p n : ℕ) :
     a ^ (q * n) = (a ^ ((q : ℤ) - k * p) * b ^ (p : ℤ)) ^ n * (a ^ (k : ℤ) * b ^ (-1 : ℤ)) ^ (p * n) := by
@@ -46,21 +46,21 @@ theorem zcomb_metric_identity {a b : ℝ} (ha : a ≠ 0) (hb : b ≠ 0) (q k p n
   rw [e1, e2, zpow_zero, mul_one]
 
 /- English proof (translation)
-Introduce `K _ _ ι _ _ Ω _ _ y D M P0 II hD hII har hb hM`. Take `⟨k, e, C, hk, hC, he0, he, heb⟩` from `hK K ι Ω y D M P0 hD har hb hM`. Establish `hHs : IsSmoothHerm (fsH ι)`. Establish `h` using `(hP K ι P0 (mCoordIdeal y) M 0 1 hM.semipos le_rfl zero_le_one).1`. Establish `h' : (HermLine.zcomb M (fsH ι) 0 1).h = (fsH ι).h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `z`. Simplify using `[HermLine.zcomb]`. Unfold `IsSmoothHerm at h ⊢`. Rewrite `h` using `[h']`. Then use the resulting hypothesis. Use `⟨k, e, C, hk, hC, he0, he, heb, fun p q hp hpq => ?_, hL K ι Ω y D M (fsH ι) II k hII har hM.semipos.1 hHs⟩` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hkq : k * p ≤ q` using `hpq.le`. Establish `ha : (HermLine.zcomb M (fsH ι) ((q : ℤ) - k * p) p).a = ((q - k * p : ℕ) : ℤ) • M.a + fun _ => ((p : ℕ) : ℤ)`. Use function extensionality and compare the values at `i`. Simplify using `[HermLine.zcomb, fsH, HermLine.ofMetrics, Nat.cast_sub hkq]`. Establish `hb0 : (0 : ℤ) ≤ (q : ℤ) - k * p`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: ((k * p : ℕ) : ℤ) ≤ q` using `by exact_mod_cast hkq`. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨hP K ι P0 (mCoordIdeal y) M _ _ hM.semipos hb0 (Nat.cast_nonneg p), HermLine.zcomb_isConjInvariantH hM.conjInv (fsH_isConjInvariantH ι) _ _, ?_, fun ℓ hℓ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ha]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hG K ι Ω y D M P0 (q - k * p) p har hM.normalForm_baseLattice_le_dualSpan_sup_line hM.semipos (by omega) hp`. Rewrite using `[ha]`. Conclude with `hF K ι Ω y D M.a (q - k * p) p ℓ har hM.nef (by omega) hp hℓ`. Introduce `n s hs`. Establish `hB : e ∈ chartLat y (HermLine.zcomb M (fsH ι) k (-1)).a 1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h' : (HermLine.zcomb M (fsH ι) k (-1)).a = (k : ℤ) • M.a - 1`. Use function extensionality and compare the values at `i`. Simplify using `[HermLine.zcomb, fsH, HermLine.ofMetrics]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h']`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `he`. Establish `hdeg : ((q * n : ℕ) : ℤ) • M.a = (n : ℤ) • (HermLine.zcomb M (fsH ι) ((q : ℤ) - k * p) p).a + ((p * n : ℕ) : ℤ) • (HermLine.zcomb M (fsH ι) k (-1)).a`. Use function extensionality and compare the values at `i`. Simplify using `[HermLine.zcomb, fsH, HermLine.ofMetrics]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmet : ∀ z ∈ mcPts (mCoordIdeal y), M.h z ^ (q * n) = (HermLine.zcomb M (fsH ι) ((q : ℤ) - k * p) p).h z ^ n * (HermLine.zcomb M (fsH ι) k (-1)).h z ^ (p * n)` using `fun z hz => zcomb_metric_identity (M.pos z hz.1).ne' ((fsH ι).pos z hz.1).ne' q k p n`. Take `⟨hmem, hbd⟩` from `hS K ι Ω y (HermLine.zcomb M (fsH ι) ((q : ℤ) - k * p) p) (HermLine.zcomb M (fsH ι) k (-1)) M n (p * n) (q * n) s e hdeg hmet hs hB`. Use `⟨hmem, fun c hc => ?_⟩` and prove the remaining obligations. Establish `h` using `hbd c (Real.exp C) hc heb`. Rewrite `h` using `[← Real.exp_nat_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem G2.proof (hK : KodairaSection.Statement) (hS : SectionProduct.Statement)
     (hP : PerturbSemipos.Statement) (hG : NefAmpleGeneric.Statement) (hF : NefAmpleFibre.Statement)

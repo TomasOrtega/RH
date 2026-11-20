@@ -11,17 +11,15 @@ namespace GlobalTheory.InertNbr
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Establish `hA : ∀ p ∈ I, ∀ u ∈ Formalism.UG.latS (F` using `F) (Formalism.L2.Herm.Af F) (Formalism.L2.Herm.intAf F E) N, oToS F E p • u ∈ Formalism.UG.latS (F := F) (Formalism.L2.Herm.Af F) (Formalism.L2.Herm.intAf F E) (I • N) := by`. Introduce `p hp u hu`. Use `Submodule.span_induction (p := fun u _ => oToS F E p • u ∈ Formalism.UG.latS (F := F) (Formalism.L2.Herm.Af F) (Formalism.L2.Herm.intAf F E) (I • N)) ?_ ?_ ?_ ?_ hu` and prove the remaining obligations. Introduce and unpack `_ ⟨m, hm, rfl⟩`. Use `Submodule.subset_span ⟨p • m, Submodule.smul_mem_smul hp hm, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `i`. Use `show iA F E ((p • m) i) = (oToS F E p : E ⊗[F] Formalism.L2.Herm.Af F) * iA F E (m i)`. Rewrite using `[Pi.smul_apply, Algebra.smul_def, map_mul]`. Both sides reduce to the same expression. Rewrite using `[smul_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.zero_mem _`. Introduce `a b _ _ ha hb`. Rewrite using `[smul_add]`. Conclude with `Submodule.add_mem _ ha hb`. Introduce `c a _ ha`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[smul_comm]`. Conclude with `Submodule.smul_mem _ c ha`. Establish `hmap : idS F I = Ideal.span (oToS F E '' I)` using `rfl`. Rewrite `ht` using `[hmap]`. Use `Submodule.span_induction (p := fun t _ => t • u ∈ Formalism.UG.latS (F := F) (Formalism.L2.Herm.Af F) (Formalism.L2.Herm.intAf F E) (I • N)) ?_ ?_ ?_ ?_ ht` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨p, hp, rfl⟩`. Conclude with `hA p hp u hu`. Rewrite using `[zero_smul]`. Conclude with `Submodule.zero_mem _`. Introduce `a b _ _ ha hb`.
-
-Rewrite using `[add_smul]`. Conclude with `Submodule.add_mem _ ha hb`. Introduce `c a _ ha`. Rewrite using `[smul_eq_mul, mul_smul]`. Conclude with `Submodule.smul_mem _ c ha`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idS_smul_latS (I : Ideal (𝓞 E)) (N : Submodule (𝓞 E) (Fin n → E)) {t : Formalism.L2.Herm.intAf F E}
     (ht : t ∈ idS F I) {u : Fin n → E ⊗[F] Formalism.L2.Herm.Af F}
@@ -56,15 +54,13 @@ theorem idS_smul_latS (I : Ideal (𝓞 E)) (N : Submodule (𝓞 E) (Fin n → E)
     rw [smul_eq_mul, mul_smul]; exact Submodule.smul_mem _ c ha
 
 /- English proof (translation)
-Introduce `i j`. Establish `hfin` using `Module.Finite.iff_fg.2 (stdLat_lattice (E := E) (n := n)).fg`. Establish `hspan` using `(stdLat_lattice (E := E) (n := n)).span_eq_top`. Establish `hSR` using `Formalism.UG.P.span_recovery_of_integral_adelic_approx Formalism.UG.P.integral_adele_approximation_holds F E (Fin n) (stdLat E n) hfin hspan`. Establish `hcol : (y : Matrix (Fin n) (Fin n) _) *ᵥ (Pi.single j 1 : Fin n → E ⊗[F] Formalism.L2.Herm.Af F) ∈ Formalism.UG.latS (F` using `F) (Formalism.L2.Herm.Af F) (Formalism.L2.Herm.intAf F E) (Formalism.UG.CS.globLat y (stdLat E n)) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hSR _ _).2 ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec, mem_latS_std]`. Introduce `k`. Distinguish the cases in `hkj : k = j`. Substitute `hkj` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [Pi.single_eq_same]`. Conclude with `Subring.one_mem _`. Rewrite using `[Pi.single_eq_of_ne hkj]`. Conclude with `Subring.zero_mem _`. Establish `h1` using `idS_smul_latS (Q.asIdeal ^ m) _ (h.one_sub_mem_idS m) hcol`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `Submodule.span_mono (Set.image_mono hle) h1`. Establish `h3` using `((mem_latS_std _).1 ((hSR y' _).1 h2)) i`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Establish `e : ((⟨1 - ε, h.one_sub_mem⟩ : Formalism.L2.Herm.intAf F E) • ((y : Matrix (Fin n) (Fin n) _) *ᵥ (Pi.single j 1 : Fin n → E ⊗[F] Formalism.L2.Herm.Af F))) = (1 - ε) • ((y : Matrix (Fin n) (Fin n) _) *ᵥ (Pi.single j 1 : Fin n → E ⊗[F] Formalism.L2.Herm.Af F))` using `rfl`. Rewrite using `[e, Matrix.mulVec_smul, Matrix.mulVec_mulVec, ← Units.val_mul, Matrix.mulVec_single_one, Pi.smul_apply, smul_eq_mul]`.
-
-Both sides reduce to the same expression.
+Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem inv_mul_int_away {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] {n : ℕ}
     (Q : Pl E) (ε : E ⊗[F] Formalism.L2.Herm.Af F) (h : IdemOf F Q ε) (m : ℕ)

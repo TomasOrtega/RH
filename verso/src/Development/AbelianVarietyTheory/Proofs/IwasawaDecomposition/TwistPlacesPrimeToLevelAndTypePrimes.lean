@@ -7,9 +7,9 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 namespace GlobalTheory.Mem.Col2.TC
 
 /- English proof (translation)
-Take `⟨P, hP, rfl⟩` from `hv`. Establish `key : ∀ p : ℕ, p.Prime → p ∈ I.S → ((p : ℕ) : 𝓞 B.host.F) ∉ (P.under (𝓞 B.host.F)).asIdeal`. Introduce `p hp hS hm`. Apply `GlobalTheory.KFormsCmp.notMem_of_QE hI.sel_ok (I.tup a) hP hp hS` to reduce the goal to its premises. Use `Ideal.mem_comap.1 hm` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `using this`. Conclude with `⟨key _ (l.pr.T_prime u) (hI.T_mem u), fun j => key _ (l.pr.g_prime j) (hI.g_mem j)⟩`.
+Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 -/
 theorem underQ_notMem {B : Base} {X : PreX B.toPre} (I : TC B X) (hI : I.Ok) (l : I.Laws) (u : B.Word) (a : I.ι)
     (v : HeightOneSpectrum (𝓞 B.host.F)) (hv : I.UnderQ a v) :
@@ -23,7 +23,7 @@ theorem underQ_notMem {B : Base} {X : PreX B.toPre} (I : TC B X) (hI : I.Ok) (l 
   exact ⟨key _ (l.pr.T_prime u) (hI.T_mem u), fun j => key _ (l.pr.g_prime j) (hI.g_mem j)⟩
 
 /- English proof (translation)
-Introduce `I hI l u a v hv` and use `underQ_notMem I hI l u a v hv`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem underQ_prime_to_bad : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → I.Laws → ∀ (u : B.Word) (a : I.ι)
     (v : HeightOneSpectrum (𝓞 B.host.F)), I.UnderQ a v →

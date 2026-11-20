@@ -12,14 +12,14 @@ section W
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact UpperTheory.Reformulated.B.Qi32.mem_W_of_norm .. | (apply UpperTheory.Reformulated.B.Qi32.mem_W_of_norm <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qi32.mem_W_of_norm <;> assumption) | (apply @UpperTheory.Reformulated.B.Qi32.mem_W_of_norm <;> assumpt …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mem_W_of_norm (i0 : K0 p →+* ℂ_[p]) (hW : ∀ x : WW p, ‖i0 (algebraMap (WW p) (K0 p) x)‖ ≤ 1) (x : K0 p)
     (hx : ‖i0 x‖ ≤ 1) : ∃ w : WW p, algebraMap (WW p) (K0 p) w = x := by
   first | exact UpperTheory.Reformulated.B.Qi32.mem_W_of_norm .. | (apply UpperTheory.Reformulated.B.Qi32.mem_W_of_norm <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qi32.mem_W_of_norm <;> assumption) | (apply @UpperTheory.Reformulated.B.Qi32.mem_W_of_norm <;> assumption) | (intros; apply @UpperTheory.Reformulated.B.Qi32.mem_W_of_norm <;> assumption) | (apply @UpperTheory.Reformulated.B.Qi32.mem_W_of_norm <;> first | assumption | infer_instance) | exact @UpperTheory.Reformulated.B.Qi32.mem_W_of_norm p ‹_› i0 hW x hx | exact @UpperTheory.Reformulated.B.Qi32.mem_W_of_norm p ‹_› i0 hW x | exact @UpperTheory.Reformulated.B.Qi32.mem_W_of_norm p ‹_› i0 hW | exact @UpperTheory.Reformulated.B.Qi32.mem_W_of_norm p ‹_› i0 | exact @UpperTheory.Reformulated.B.Qi32.mem_W_of_norm p ‹_› | exact @UpperTheory.Reformulated.B.Qi32.mem_W_of_norm p
 
 /- English proof (translation)
-Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_Ex hf]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cc_Ex {ι K : Type} [Field K] [CharZero K] {f : MvPowerSeries ι K} (hf : constantCoeff f = 0) :
     constantCoeff (Ex f) = 1 := by
@@ -27,7 +27,7 @@ theorem cc_Ex {ι K : Type} [Field K] [CharZero K] {f : MvPowerSeries ι K} (hf 
   simp
 
 /- English proof (translation)
-Rewrite using `[← th_log]`. Conclude with `PowerSeries.constantCoeff_subst_eq_zero (cc_pmap _ th_zero) _ (cc_pmap _ (cc_logF p))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cc_lgE (Kc : Type) [Field Kc] [Algebra (K0 p) Kc] (iC : Kc →+* ℂ_[p])
     (th : PowerSeries (WW p)) (th_zero : PowerSeries.constantCoeff th = 0) (lgE : PowerSeries ℂ_[p])
@@ -38,21 +38,17 @@ theorem cc_lgE (Kc : Type) [Field Kc] [Algebra (K0 p) Kc] (iC : Kc →+* ℂ_[p]
   exact PowerSeries.constantCoeff_subst_eq_zero (cc_pmap _ th_zero) _ (cc_pmap _ (cc_logF p))
 
 /- English proof (translation)
-Establish `: CharZero Kc` using `charZero_of_injective_algebraMap (algebraMap (K0 p) Kc).injective`. Establish `hl0` using `cc_lgE Kc iC th th_zero lgE th_log`. Use `⟨hfg, ?_⟩` and prove the remaining obligations. Take `⟨U, hU1, hU2⟩` from `K1core Kc Oc witt_mem_integers_Cp iC iC_int th th_zero th_unit lgE th_log (f - g) hfg 1 (by`. Establish `h1 : subst (diagS lgE) (1 : MvPowerSeries ι ℂ_[p]) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← coe_substAlgHom (hs_dg hl0), map_one]`. Rewrite using `[map_one, h1, one_mul]`. Conclude with `h)`. Establish `hU : U = map (algebraMap (K0 p) Kc) (Ex (f - g))`. Establish `h1 : map (algebraMap (K0 p) Kc) (Ex (f - g)) * (map (algebraMap (K0 p) Kc) (expS p (-(f - g))) * U) = map (algebraMap (K0 p) Kc) (Ex (f - g))` using `by rw [← hU1, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[expS_eq_Ex p (by rw [map_neg, hfg, neg_zero]), ← mul_assoc, ← map_mul, mul_comm (Ex (f - g)), Ex_neg_mul hfg, map_one, one_mul]`. Conclude with `h1`. Establish `e0 : constantCoeff (inParam p (f - g)) = 0` using `constantCoeff_subst_eq_zero (hs_dg (cc_logF p)) (cc_dg (cc_logF p)) hfg`. Establish `hP : inParamK p Kc U = map (algebraMap (K0 p) Kc) (expS p (inParam p (f - g)))`. Rewrite using `[expS_eq_Ex p e0, hU]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `show subst (diagS (PowerSeries.map (algebraMap (K0 p) Kc) (logF p))) (map (algebraMap (K0 p) Kc) (Ex (f - g))) = map (algebraMap (K0 p) Kc) (Ex (subst (diagS (logF p)) (f - g)))`. Rewrite using `[← subst_Ex (hs_dg (cc_logF p)) hfg, map_subst (hs_dg (cc_logF p))]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[map_dg]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hm : ∀ n, ∃ w : WW p, algebraMap (WW p) (K0 p) w = coeff n (expS p (inParam p (f - g)))` using `fun n => mem_W_of_norm (iC.comp (algebraMap (K0 p) Kc)) (fun x => (iC_int _).mp (witt_mem_integers_Cp x)) _ (by`. Establish `h3` using `hU2 n`. Rewrite `h3` using `[hP, coeff_map]`. Conclude with `(iC_int _).mp h3)`. Use `choose G hG using hm`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Set `Gs : MvPowerSeries ι (WW p)` to `G`. Establish `hGs : map (algebraMap (WW p) (K0 p)) Gs = expS p (inParam p (f - g))`. Use extensionality with `n`. Rewrite using `[coeff_map]`. Conclude with `hG n`.
-
-Use `⟨Gs - 1, ?_, ?_⟩` and prove the remaining obligations. Establish `h4 : algebraMap (WW p) (K0 p) (constantCoeff Gs) = 1`. Rewrite using `[← constantCoeff_map, hGs, expS_eq_Ex p e0, cc_Ex e0]`. Rewrite using `[map_sub, map_one, sub_eq_zero]`. Conclude with `IsFractionRing.injective (WW p) (K0 p) (by rw [h4, map_one])`.
-
-Rewrite using `[map_sub, map_one, add_sub_cancel, hGs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem simeq_of {ι : Type} (Kc : Type) [Field Kc] [Algebra (K0 p) Kc] (Oc : Subring Kc)
     (witt_mem_integers_Cp : ∀ x : WW p, algebraMap (K0 p) Kc (algebraMap (WW p) (K0 p) x) ∈ Oc)

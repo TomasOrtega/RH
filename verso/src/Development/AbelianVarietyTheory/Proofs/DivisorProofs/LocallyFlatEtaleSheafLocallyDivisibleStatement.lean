@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExtendScalarsUliftH
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.EtC.FlatLoc.flat_loc) | (exact GlobalTheory.EtC.FlatLoc.flat_loc) | (intros; apply GlobalTheory.EtC.FlatLoc.flat_loc <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.locallyFlatEtaleSheaf_locally_divisible : ∀ (Q q e : ℕ) [NeZero Q], q * e = Q → ∀ (M : Shv (ZMod Q)), FlatS M → ∀ (U : Scheme.{0}) (x : Sec M U), e • x = 0 → Loc U fun V g => ∃ y : Sec M V, Sec.res g x = q • y := by
   first | (exact @GlobalTheory.EtC.FlatLoc.flat_loc) | (exact GlobalTheory.EtC.FlatLoc.flat_loc) | (intros; apply GlobalTheory.EtC.FlatLoc.flat_loc  <;> assumption)

@@ -20,9 +20,7 @@ section Ring
 variable {m : ℕ}
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[mem_unipB]`. Use `⟨fun a b hab => ?_, fun a => ?_⟩` and prove the remaining obligations. Use `show f ((x : Matrix (Fin m) (Fin m) R) a b) = 0`. Rewrite using `[hx.1 a b hab, map_zero]`. Use `show f ((x : Matrix (Fin m) (Fin m) R) a a) = 1`.
-
-Rewrite using `[hx.2 a, map_one]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unipB_map {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {x : GL (Fin m) R}
     (hx : x ∈ unipB R (Fin m)) : Matrix.GeneralLinearGroup.map f x ∈ unipB S (Fin m) := by
@@ -34,9 +32,7 @@ theorem unipB_map {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {x : GL
     rw [hx.2 a, map_one]
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[mem_unipB]`. Use `⟨fun a b hab => ?_, fun a => ?_⟩` and prove the remaining obligations. Establish `h0 : f ((x : Matrix (Fin m) (Fin m) R) a b) = 0` using `hx.1 a b hab`. Conclude with `(map_eq_zero_iff f hf).1 h0`. Establish `h1 : f ((x : Matrix (Fin m) (Fin m) R) a a) = f 1` using `by rw [map_one]; exact hx.2 a`.
-
-Conclude with `hf h1`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unipB_of_map {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (hf : Function.Injective f)
     {x : GL (Fin m) R} (hx : Matrix.GeneralLinearGroup.map f x ∈ unipB S (Fin m)) : x ∈ unipB R (Fin m) := by
@@ -54,9 +50,9 @@ section Gen
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {m : ℕ}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨a, ha, b, hb, e⟩` from `Set.mem_mul.1 h`. Use `Set.mem_mul.2 ⟨u⁻¹ * a, (unipB k (Fin m)).mul_mem ((unipB k (Fin m)).inv_mem hu) ha, b, hb, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, e, inv_mul_cancel_left]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Take `⟨a, ha, b, hb, e⟩` from `Set.mem_mul.1 h`. Use `Set.mem_mul.2 ⟨u * a, (unipB k (Fin m)).mul_mem hu ha, b, hb, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, e]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_unipotentKOne_mul_left {u x : GL (Fin m) k} (hu : u ∈ unipB k (Fin m)) :
     u * x ∈ NK₁[k, m] ↔ x ∈ NK₁[k, m] := by
@@ -71,19 +67,19 @@ theorem mem_unipotentKOne_mul_left {u x : GL (Fin m) k} (hu : u ∈ unipB k (Fin
     rw [mul_assoc, e]
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.StepData.isOpen_KOne (k := k) (n := Fin m)).mul_left`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_unipotentKOne : IsOpen NK₁[k, m] :=
   (GlobalTheory.StepData.isOpen_KOne (k := k) (n := Fin m)).mul_left
 
 /- English proof (translation)
-Rewrite using `[← isOpen_compl_iff, isOpen_iff_mem_nhds]`. Introduce `x hx`. Rewrite `hx` using `[Set.mem_compl_iff]`. Establish `hU : IsOpen ((fun y : GL (Fin m) k => x⁻¹ * y) ⁻¹' (KOne k (Fin m) : Set (GL (Fin m) k)))` using `(GlobalTheory.StepData.isOpen_KOne (k := k) (n := Fin m)).preimage (continuous_const.mul continuous_id)`. Establish `hx1 : x ∈ (fun y : GL (Fin m) k => x⁻¹ * y) ⁻¹' (KOne k (Fin m) : Set (GL (Fin m) k))` using `by show x⁻¹ * x ∈ KOne k (Fin m)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[inv_mul_cancel]`. Conclude with `(KOne k (Fin m)).one_mem`. Use `Filter.mem_of_superset (hU.mem_nhds hx1) ?_` and prove the remaining obligations. Introduce `y hy`. Rewrite using `[Set.mem_compl_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hyS`. Establish `hy' : x⁻¹ * y ∈ KOne k (Fin m)` using `hy`. Take `⟨a, ha, b, hb, e⟩` from `Set.mem_mul.1 hyS`. Apply `hx` to reduce the goal to its premises. Use `Set.mem_mul.2 ⟨a, ha, b * (x⁻¹ * y)⁻¹, (KOne k (Fin m)).mul_mem hb ((KOne k (Fin m)).inv_mem hy'), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc, e, mul_inv_rev, inv_inv, mul_inv_cancel_left]`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_unipotentKOne : IsClosed NK₁[k, m] := by
   rw [← isOpen_compl_iff, isOpen_iff_mem_nhds]
@@ -106,9 +102,9 @@ theorem isClosed_unipotentKOne : IsClosed NK₁[k, m] := by
   rw [← mul_assoc, e, mul_inv_rev, inv_inv, mul_inv_cancel_left]
 
 /- English proof (translation)
-Introduce `s`. Express the relevant statement in the definitionally equal form `IsOpen (U.indicator (fun _ => (1 : ℂ)) ⁻¹' s)`. Establish `h` using `Set.indicator_const_preimage U s (1 : ℂ)`. Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff] at h`. Apply the tactic sequence `rcases h with h | h | h | h <;> rw [h]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `isOpen_univ`. Conclude with `hU`. Conclude with `hU'.isOpen_compl`. Conclude with `isOpen_empty`.
+A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_indicator_one {X : Type*} [TopologicalSpace X] {U : Set X} (hU : IsOpen U)
     (hU' : IsClosed U) : IsLocallyConstant (U.indicator (1 : X → ℂ)) := by
@@ -123,7 +119,7 @@ theorem isLocallyConstant_indicator_one {X : Type*} [TopologicalSpace X] {U : Se
   · exact isOpen_empty
 
 /- English proof (translation)
-Use `⟨fun u hu x => ?_, isLocallyConstant_indicator_one isOpen_unipotentKOne isClosed_unipotentKOne, (KO k (Fin m) : Set (GL (Fin m) k)), GlobalTheory.SplitFlip.isCompact_KO, fun x hx => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.indicator_apply, mem_unipotentKOne_mul_left hu, Pi.one_apply]`. Take `⟨a, ha, b, hb, e⟩` from `Set.mem_mul.1 (Set.mem_of_indicator_ne_zero hx)`. Conclude with `⟨a, ha, b, GlobalTheory.StepData.KOne_le_KO hb, e.symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isTestFun_indicator_unipotentKOne : IsTestFun (Set.indicator NK₁[k, m] (1 : GL (Fin m) k → ℂ)) := by
   classical
@@ -140,15 +136,13 @@ section Loc
 variable {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)} {g : ℕ} [Fact g.Prime]
 
 /- English proof (translation)
-Rewrite `hu` using `[mem_unipB]`. Set `M : Matrix (Fin m) (Fin m) ℤ_[g]` to `fun a b => if b < a then 0 else if a = b then 1 else (ZMod.cast ((u : Matrix (Fin m) (Fin m) (ZMod g)) a b) : ℤ_[g])`. Establish `hM : M.BlockTriangular id` using `fun a b hab => by`. Establish `hab' : b < a` using `hab`. Simplify using `only [M]`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_pos hab']`. Establish `hdiag : ∀ a, M a a = 1` using `fun a => by simp [M]`. Establish `hd : IsUnit M.det`. Rewrite using `[Matrix.det_of_isUpperTriangular hM]`. Simplify using `[hdiag]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨v, hv⟩` from `(Matrix.isUnit_iff_isUnit_det M).2 hd`. Use `⟨v, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_unipB, hv]`. Conclude with `⟨fun a b hab => by simp only [M]; rw [if_pos hab], hdiag⟩`. Use `Units.ext (Matrix.ext fun a b => ?_) show PadicInt.toZMod ((v : Matrix (Fin m) (Fin m) ℤ_[g]) a b) = (u : Matrix (Fin m) (Fin m) (ZMod g)) a b` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hv]`. Simplify using `only [M]`. Use `split_ifs with h1 h2`. Rewrite using `[map_zero, hu.1 a b h1]`. Rewrite using `[← h2, map_one, hu.2 a]`.
-
-Conclude with `ZMod.ringHom_map_cast _ _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unip_lift {m : ℕ} {u : Gn g m} (hu : u ∈ unipB (ZMod g) (Fin m)) :
     ∃ v : GL (Fin m) ℤ_[g], v ∈ unipB ℤ_[g] (Fin m) ∧ red g m v = u := by
@@ -177,7 +171,7 @@ theorem exists_unip_lift {m : ℕ} {u : Gn g m} (hu : u ∈ unipB (ZMod g) (Fin 
     · exact ZMod.ringHom_map_cast _ _
 
 /- English proof (translation)
-Rewrite using `[← Fintype.card_subtype, ← Nat.card_eq_fintype_card]`. Conclude with `Nat.card_congr { toFun := fun κ => ⟨c * (κ : Gn g m)⁻¹, κ.2⟩ invFun := fun v => ⟨(v : Gn g m)⁻¹ * c, by rw [mul_inv_rev, inv_inv, mul_inv_cancel_left]; exact v.2⟩ left_inv := fun κ => Subtype.ext (by simp only [mul_inv_rev, inv_inv, inv_mul_cancel_right]) right_inv := fun v => Su …`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_filter_unip {m : ℕ} (c : Gn g m)
     [DecidablePred fun κ : Gn g m => c * κ⁻¹ ∈ unipB (ZMod g) (Fin m)] :
@@ -204,13 +198,13 @@ theorem phi_apply {m : ℕ} (b : GL (Fin m) ℤ_[g]) :
 include hi
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨a, ha, c, hc, e⟩` from `Set.mem_mul.1 h`. Take `⟨d, hd, rfl⟩` from `DzIso.exists_of_mem_KOne i hi hc`. Establish `e' : a * phi i m d = phi i m b` using `e`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ha' : phi i m (b * d⁻¹) = a` using `by rw [map_mul, map_inv, ← e', mul_inv_cancel_right]`. Establish `h1 : phi i m (b * d⁻¹) ∈ unipB (w.adicCompletion E) (Fin m)` using `by rw [ha']; exact ha`. Establish `h2 : inc g m (b * d⁻¹) ∈ unipB ℚ_[g] (Fin m)` using `unipB_of_map (x := inc g m (b * d⁻¹)) i.toRingHom i.injective h1`. Establish `h3 : b * d⁻¹ ∈ unipB ℤ_[g] (Fin m)` using `unipB_of_map (algebraMap ℤ_[g] ℚ_[g]) (fun x y hxy => PadicInt.ext hxy) h2`. Establish `h4 : red g m (b * d⁻¹) ∈ unipB (ZMod g) (Fin m)` using `unipB_map (PadicInt.toZMod (p := g)) h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h4` using `[map_mul, map_inv, hd, inv_one, mul_one]`. Then use the resulting hypothesis. Introduce `h`. Take `⟨v, hv, hvr⟩` from `exists_unip_lift h`. Establish `h1 : red g m (v⁻¹ * b) = 1` using `by rw [map_mul, map_inv, hvr, inv_mul_cancel]`. Use `Set.mem_mul.2 ⟨phi i m v, unipB_map i.toRingHom (unipB_map (algebraMap ℤ_[g] ℚ_[g]) hv), phi i m (v⁻¹ * b), DzIso.map_mem_KOne i hi _ h1, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← map_mul (phi i m), mul_inv_cancel_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_unipotentKOne_iff {m : ℕ} (b : GL (Fin m) ℤ_[g]) :
     phi i m b ∈ NK₁[w.adicCompletion E, m] ↔ red g m b ∈ unipB (ZMod g) (Fin m) := by
@@ -235,7 +229,7 @@ theorem mem_unipotentKOne_iff {m : ℕ} (b : GL (Fin m) ℤ_[g]) :
     rw [← map_mul (phi i m), mul_inv_cancel_left]
 
 /- English proof (translation)
-Establish `h0 : red g m (a⁻¹ * b) = 1` using `by rw [map_mul, map_inv, hab, inv_mul_cancel]`. Establish `hk : phi i m (a⁻¹ * b) ∈ KOne (w.adicCompletion E) (Fin m)` using `DzIso.map_mem_KOne i hi _ h0`. Rewrite using `[← h2 (phi i m a) _ hk, ← map_mul (phi i m), mul_inv_cancel_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_of_red {m : ℕ} (F : GL (Fin m) (w.adicCompletion E) → ℂ)
     (h2 : ∀ x, ∀ k ∈ KOne (w.adicCompletion E) (Fin m), F (x * k) = F x) {a b : GL (Fin m) ℤ_[g]}
@@ -245,23 +239,23 @@ theorem eq_of_red {m : ℕ} (F : GL (Fin m) (w.adicCompletion E) → ℂ)
   rw [← h2 (phi i m a) _ hk, ← map_mul (phi i m), mul_inv_cancel_left]
 
 /- English proof (translation)
-Simplify using `only [← phi_apply i]`. Establish `hT` using `isTestFun_indicator_unipotentKOne (k := w.adicCompletion E) (m := m)`. Establish `key : ∀ y, (Nat.card (unipB (ZMod g) (Fin m)) : ℂ) * F y = ∑ κ : Gn g m, F (phi i m (s κ)) * Set.indicator NK₁[w.adicCompletion E, m] 1 (y * (phi i m (s κ))⁻¹)`. Introduce `y`. Distinguish the cases in `hmem : ∃ u ∈ unipB (w.adicCompletion E) (Fin m), ∃ c ∈ KO (w.adicCompletion E) (Fin m), y = u * c`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Take `⟨u, hu, c, hc, rfl⟩` from `hmem`. Take `⟨a, rfl⟩` from `DzIso.exists_of_mem_KO i hi hc`. Rewrite using `[← phi_apply i a]`. Establish `hterm : ∀ κ : Gn g m, F (phi i m (s κ)) * Set.indicator NK₁[w.adicCompletion E, m] 1 (u * phi i m a * (phi i m (s κ))⁻¹) = if red g m a * κ⁻¹ ∈ unipB (ZMod g) (Fin m) then F (phi i m a) else 0`. Introduce `κ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : u * phi i m a * (phi i m (s κ))⁻¹ = u * phi i m (a * (s κ)⁻¹)`. Rewrite using `[mul_assoc, map_mul, map_inv]`. Establish `hr : red g m (a * (s κ)⁻¹) = red g m a * κ⁻¹` using `by rw [map_mul, map_inv, hs]`. Rewrite using `[e]`. Simplify using `only [Set.indicator_apply, mem_unipotentKOne_mul_left hu, mem_unipotentKOne_iff i hi, hr, Pi.one_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `split_ifs with hU`. Rewrite using `[mul_one]`. Take `⟨v, hv, hvr⟩` from `exists_unip_lift hU`. Establish `hvN : phi i m v ∈ unipB (w.adicCompletion E) (Fin m)` using `unipB_map i.toRingHom (unipB_map (algebraMap ℤ_[g] ℚ_[g]) hv)`. Rewrite using `[← h1 _ hvN, ← map_mul (phi i m)]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `eq_of_red i hi F h2` to reduce the goal to its premises. Rewrite using `[map_mul, hvr, hs, inv_mul_cancel_right]`. Rewrite using `[mul_zero]`. Rewrite using `[h1 u hu, Finset.sum_congr rfl fun κ _ => hterm κ, Finset.sum_ite, Finset.sum_const_zero, add_zero, Finset.sum_const, card_filter_unip, nsmul_eq_mul]`. Establish `hFy : F y = 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Conclude with `hmem (h3 y hne)`. Rewrite using `[hFy, mul_zero]`. Use `(Finset.sum_eq_zero fun κ _ => ?_).symm` and prove the remaining obligations. Establish `hn : y * (phi i m (s κ))⁻¹ ∉ NK₁[w.adicCompletion E, m]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `hS`. Take `⟨a, ha, b, hb, e⟩` from `Set.mem_mul.1 hS`. Conclude with `hmem ⟨a, ha, b * phi i m (s κ), (KO (w.adicCompletion E) (Fin m)).mul_mem (GlobalTheory.StepData.KOne_le_KO hb) (DzIso.map_inc_mem_KO i hi _), by rw [← mul_assoc, e, inv_mul_cancel_right]⟩`. Rewrite using `[Set.indicator_apply, if_neg hn, mul_zero]`. Establish `e2 : (fun y => (Nat.card (unipB (ZMod g) (Fin m)) : ℂ) * F y) = ∑ κ : Gn g m, F (phi i m (s κ)) • (fun y => Set.indicator NK₁[w.adicCompletion E, m] 1 (y * (phi i m (s κ))⁻¹))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use function extensionality and compare the values at `y`. Rewrite using `[key y, Finset.sum_apply]`. Both sides reduce to the same expression. Establish `e1 : I (fun y => (Nat.card (unipB (ZMod g) (Fin m)) : ℂ) * F y) = (Nat.card (unipB (ZMod g) (Fin m)) : ℂ) * I F`. Establish `: (fun y => (Nat.card (unipB (ZMod g) (Fin m)) : ℂ) * F y) = (Nat.card (unipB (ZMod g) (Fin m)) : ℂ) • F` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this, map_smul, smul_eq_mul]`. Rewrite using `[← e1, congrArg I e2, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun κ _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, hI _ hT, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_eq {m : ℕ}
     (I : (GL (Fin m) (w.adicCompletion E) → ℂ) →ₗ[ℂ] ℂ) (hI : IsInvIntegral I) (F : GL (Fin m) (w.adicCompletion E) → ℂ)

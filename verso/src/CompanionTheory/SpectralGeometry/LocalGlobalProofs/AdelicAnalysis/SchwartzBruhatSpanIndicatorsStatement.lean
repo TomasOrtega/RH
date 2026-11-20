@@ -5,7 +5,7 @@ open NumberField IsDedekindDomain MeasureTheory Matrix Topology GlobalTheory.Com
 open scoped ENNReal NNReal MatrixGroups Kronecker
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.SW.ThW.sb_eq_sum_rational_coset_indicators` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=CompanionTheory%2FSpectralGeometry%2FLocalGlobalProofs%2FAdelicAnalysis%2FSchwartzBruhatSpanIndicators.lean&line=11#L11)
 -/

@@ -12,9 +12,9 @@ open HeckeCharacterZeroLocus.SiegelWeilU
 namespace GlobalTheory.SiegelWeilConvCompare
 
 /- English proof (translation)
-Set `e1 : (κ → X) ≃ₜ (κ → Fin k → ℝ)` to `Homeomorph.piCongrRight fun _ => e`. Establish `h1 : ∀ x y, e1 (x + y) = e1 x + e1 y`. Introduce `x y`. Use function extensionality and compare the values at `i`. Conclude with `he (x i) (y i)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression.
 
-Set `L` to `ContinuousLinearEquiv.ofFinrankEq (𝕜 := ℝ) (E := κ → Fin k → ℝ) (F := Fin (Module.finrank ℝ (κ → Fin k → ℝ)) → ℝ) (Module.finrank_fin_fun ℝ).symm`. Use `⟨_, e1.trans L.toHomeomorph, fun x y => ?_⟩` and prove the remaining obligations. Use `show L (e1 (x + y)) = L (e1 x) + L (e1 y)`. Rewrite using `[h1, map_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coord_pi {X : Type} [AddCommGroup X] [TopologicalSpace X] {k : ℕ}
     (e : X ≃ₜ (Fin k → ℝ)) (he : ∀ x y, e (x + y) = e x + e y) (κ : Type) [Fintype κ] :
@@ -29,9 +29,9 @@ theorem exists_coord_pi {X : Type} [AddCommGroup X] [TopologicalSpace X] {k : �
   rw [h1, map_add]
 
 /- English proof (translation)
-Set `e1 : Ainf F ≃ₜ (InfinitePlace F → ℝ)` to `Homeomorph.piCongrRight fun v => (InfinitePlace.Completion.isometryEquivRealOfIsReal (IsTotallyReal.isReal v)).toHomeomorph`. Establish `h1 : ∀ x y, e1 (x + y) = e1 x + e1 y`. Introduce `x y`. Use function extensionality and compare the values at `v`. Conclude with `(InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal v)).map_add _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression.
 
-Set `L` to `ContinuousLinearEquiv.ofFinrankEq (𝕜 := ℝ) (E := InfinitePlace F → ℝ) (F := Fin (Module.finrank ℝ (InfinitePlace F → ℝ)) → ℝ) (Module.finrank_fin_fun ℝ).symm`. Use `⟨_, e1.trans L.toHomeomorph, fun x y => ?_⟩` and prove the remaining obligations. Use `show L (e1 (x + y)) = L (e1 x) + L (e1 y)`. Rewrite using `[h1, map_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coord_Ainf (F : Type) [Field F] [NumberField F] [IsTotallyReal F] :
     ∃ (k : ℕ) (e : Ainf F ≃ₜ (Fin k → ℝ)), ∀ x y, e (x + y) = e x + e y := by
@@ -48,11 +48,9 @@ theorem exists_coord_Ainf (F : Type) [Field F] [NumberField F] [IsTotallyReal F]
   rw [h1, map_add]
 
 /- English proof (translation)
-Set `R` to `Ainf F`. Set `b` to `Module.Free.chooseBasis R (R ⊗[F] E)`. Set `eL : (R ⊗[F] E) ≃ₗ[R] (Module.Free.ChooseBasisIndex R (R ⊗[F] E) → R)` to `b.equivFun`. Use `haveI : IsModuleTopology R (R ⊗[F] E) := ⟨rfl⟩`. Use `haveI : ContinuousAdd (R ⊗[F] E) := IsModuleTopology.toContinuousAdd R (R ⊗[F] E)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `e0 : R ⊗[F] E ≃ₜ (Module.Free.ChooseBasisIndex R (R ⊗[F] E) → R)` to `{ toEquiv := eL.toEquiv continuous_toFun := IsModuleTopology.continuous_of_linearMap eL.toLinearMap continuous_invFun := IsModuleTopology.continuous_of_linearMap eL.symm.toLinearMap }`. Take `⟨k0, eA, hA⟩` from `exists_coord_Ainf F`. Take `⟨k, e1, h1⟩` from `exists_coord_pi eA hA (Module.Free.ChooseBasisIndex R (R ⊗[F] E))`. Use `⟨k, e0.trans e1, fun x y => ?_⟩` and prove the remaining obligations. Use `show e1 (e0 (x + y)) = e1 (e0 x) + e1 (e0 y)`.
-
-Rewrite using `[show e0 (x + y) = e0 x + e0 y from eL.map_add x y, h1]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coord_tens (F E : Type) [Field F] [NumberField F] [IsTotallyReal F] [Field E]
     [NumberField E] [Algebra F E] :
@@ -74,7 +72,7 @@ theorem exists_coord_tens (F E : Type) [Field F] [NumberField F] [IsTotallyReal 
   rw [show e0 (x + y) = e0 x + e0 y from eL.map_add x y, h1]
 
 /- English proof (translation)
-Take `⟨k, eK, hK⟩` from `exists_coord_tens F E`. Take `⟨k1, e1, h1⟩` from `exists_coord_pi eK hK (Fin M)`. Conclude with `exists_coord_pi e1 h1 (Fin n)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_coord_tup (F E : Type) [Field F] [NumberField F] [IsTotallyReal F] [Field E]
     [NumberField E] [Algebra F E] (n M : ℕ) :
@@ -90,15 +88,9 @@ variable {V : Type} [AddCommGroup V] [TopologicalSpace V] [MeasurableSpace V] [S
 end Zero
 
 /- English proof (translation)
-Use `haveI : μ.IsHaarMeasure := hμ`. Use `haveI : Countable E := (Module.Free.chooseBasis ℚ E).equivFun.toEquiv.injective.countable`. Use `haveI : Countable (Matrix (Fin M) (Fin M) E) := inferInstanceAs (Countable (Fin M → Fin M → E))`. Use `haveI : Countable (GL (Fin M) E) := Units.val_injective.countable`. Use `haveI : Countable (HFin (AF F) σ J) := by`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: ((HFin (AF F) σ J : Subgroup (GL (Fin M) (AF F ⊗[F] E))) : Set (GL (Fin M) (AF F ⊗[F] E))).Countable`. Unfold `HFin`. Rewrite using `[Subgroup.coe_map]`. Conclude with `(Set.to_countable _).image _`. Conclude with `this`.
-
-Use `haveI : Countable (HFinIn (AF F) σ J) := by`. Establish `: Function.Injective (fun x : HFinIn (AF F) σ J => (⟨x.1.1, x.2⟩ : HFin (AF F) σ J))`. Introduce `x y hxy`. Conclude with `Subtype.ext (Subtype.ext (congrArg (fun z : HFin (AF F) σ J => z.1) hxy))`. Conclude with `this.countable`.
-
-Use `haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AF F ⊗[F] E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI : IsTopologicalGroup (HA (AF F) σ J) := inferInstanceAs (IsTopologicalGroup (HR (AF F) σ J))`. Use `haveI : BorelSpace (HA (AF F) σ J) := ⟨rfl⟩`. Use `haveI : SMulInvariantMeasure (HFinIn (AF F) σ J) (HA (AF F) σ J) μ := ⟨fun c s hs => measure_preimage_mul μ (show HA (AF F) σ J from c.1) s⟩`.
-
-Conclude with `pos_iff_ne_zero.2 (IsFundamentalDomain.measure_ne_zero (NeZero.ne μ) h)`.
+A detailed English derivation is pending.
 -/
 theorem measure_fundamentalDomain_pos (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (σ : E →ₐ[F] E) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (μ) (hμ : IsHaarH F E σ M J μ)

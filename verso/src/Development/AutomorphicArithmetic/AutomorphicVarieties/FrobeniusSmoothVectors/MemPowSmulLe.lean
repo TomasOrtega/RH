@@ -12,41 +12,35 @@ variable {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] {F : U
 end
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ F C₀ n hF hn S`. Take `⟨W, hz, hr, hB, hA, hgr⟩` from `wpres hF hn S`. Establish `hAW : ∀ (j : ℤ) (q : S.R), q ∈ W.part j → q ∈ S.A`. Introduce `j q hq`. Rewrite using `[hA]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.mem_iSup_of_mem j hq`. Establish `hmulB : ∀ (N : ℕ) (Q : Submodule O S.R), (∀ y ∈ Q, ∃ b : S.B, (b : S.R) = y ∧ b ∈ S.mB ^ N) → ∀ y ∈ Q * W.part 0, ∃ b : S.B, (b : S.R) = y ∧ b ∈ S.mB ^ N`. Introduce `N Q hQ y hy`. Use `Submodule.mul_induction_on hy ?_ ?_` and prove the remaining obligations. Introduce `p hp q hq`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨p', rfl, hp'⟩` from `hQ p hp`. Establish `hq0 : q ∈ S.B` using `(hB q).2 hq`. Conclude with `⟨p' * ⟨q, hq0⟩, rfl, Ideal.mul_mem_right _ _ hp'⟩`. Introduce and unpack `x z ⟨x', rfl, hx'⟩ ⟨z', rfl, hz'⟩`. Conclude with `⟨x' + z', rfl, Ideal.add_mem _ hx' hz'⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hP : ∀ (N : ℕ) (y : S.R), y ∈ (W.part 0 ⊓ Submodule.restrictScalars O (maximalIdeal S.R)) ^ N → ∃ b : S.B, (b : S.R) = y ∧ b ∈ S.mB ^ N`. Introduce `N`. Proceed by induction on `N with`. Consider the case `zero`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hy` using `[pow_zero, Submodule.mem_one]`. Take `⟨o, rfl⟩` from `hy`. Conclude with `⟨algebraMap O S.B o, rfl, by simp⟩`. Consider the case `succ N ih`. Introduce `y hy`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hy` using `[pow_succ]`. Use `Submodule.mul_induction_on hy ?_ ?_` and prove the remaining obligations. Introduce `p hp q hq`. Take `⟨p', rfl, hp'⟩` from `ih p hp`. Establish `hq0 : q ∈ S.B` using `(hB q).2 hq.1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqm : (⟨q, hq0⟩ : S.B) ∈ S.mB` using `by show q ∈ maximalIdeal S.R`. Conclude with `hq.2`. Use `⟨p' * ⟨q, hq0⟩, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ]`. Conclude with `Ideal.mul_mem_mul hp' hqm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce and unpack `x z ⟨x', rfl, hx'⟩ ⟨z', rfl, hz'⟩`. Conclude with `⟨x' + z', rfl, Ideal.add_mem _ hx' hz'⟩`. Establish `hT : ∀ (N : ℕ) (j : ℤ) (y : S.R), y ∈ (W.part 0 ⊓ Submodule.restrictScalars O (maximalIdeal S.R)) ^ N * W.part 0 * W.part j → ∃ a : S.A, (a : S.R) = y ∧ a ∈ S.mB ^ N • S.gr j ∧ a ∈ S.x0 ^ N`. Introduce `N j y hy`. Use `Submodule.mul_induction_on hy ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `p hp q hq`. Take `⟨b, rfl, hb⟩` from `hmulB N _ (hP N) p hp`. Establish `hqA : q ∈ S.A` using `hAW j q hq`. Use `⟨b • (⟨q, hqA⟩ : S.A), rfl, Submodule.smul_mem_smul hb ((hgr j ⟨q, hqA⟩).2 hq), ?_⟩` and prove the remaining obligations. Establish `hib : S.inc b ∈ S.x0 ^ N`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite using `[Space.x0, ← Ideal.map_pow]`. Conclude with `Ideal.mem_map_of_mem _ hb`. Use `show S.inc b * ⟨q, hqA⟩ ∈ S.x0 ^ N`. Conclude with `Ideal.mul_mem_right _ _ hib`. Introduce and unpack `x z ⟨x', rfl, hx1, hx2⟩ ⟨z', rfl, hz1, hz2⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `⟨x' + z', rfl, Submodule.add_mem _ hx1 hz1, Ideal.add_mem _ hx2 hz2⟩`. Establish `hcA : ∀ {Γ : Type} [TopologicalSpace Γ] (j : ℤ) (f : Γ → S.A), (∀ g, (f g : S.R) ∈ W.part j) → AdicCont (maximalIdeal S.R) (fun g => (f g : S.R)) → AdicCont S.x0 f`. Introduce `Γ _ j f hf hc N`. Take `⟨M, hM⟩` from `part_filt O ℤ S.R W hz j N`. Establish `hcM` using `hc M`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hcM`, the goal using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Use `filter_upwards [hcM x] with y hy`. Rewrite `hy`, the goal using `[Ideal.Quotient.eq]`. Take `⟨a, ha, -, ha2⟩` from `hT N j _ (hM ⟨Submodule.sub_mem _ (hf y) (hf x), hy⟩)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hax : f y - f x = a` using `Subtype.ext (by rw [ha]; rfl)`. Rewrite using `[hax]`. Conclude with `ha2`. Establish `hcB : ∀ {Γ : Type} [TopologicalSpace Γ] (f : Γ → S.B), AdicCont (maximalIdeal S.R) (fun g => (f g : S.R)) → AdicCont S.mB f`. Introduce `Γ _ f hc N`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨M, hM⟩` from `part_filt O ℤ S.R W hz 0 N`. Establish `hcM` using `hc M`. Rewrite `hcM`, the goal using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Use `filter_upwards [hcM x] with y hy`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite `hy`, the goal using `[Ideal.Quotient.eq]`. Establish `hd : ((f y : S.R) - f x) ∈ W.part 0` using `(hB _).1 (S.B.sub_mem (f y).2 (f x).2)`. Take `⟨b, hb, hb2⟩` from `hmulB N _ (hmulB N _ (hP N)) _ (hM ⟨hd, hy⟩)`. Establish `hbx : f y - f x = b` using `Subtype.ext (by rw [hb]; rfl)`. Rewrite using `[hbx]`.
-
-Conclude with `hb2`. Use `⟨⟨fun i j => ?_, fun v i => ?_⟩, fun i => ?_, fun v i => ?_, fun j N => ?_⟩` and prove the remaining obligations. Conclude with `hcA (w n i - w n j) (fun g => S.u.r g i j) (fun g => hr g i j) (S.lift.1.1 i j)`. Conclude with `hcA 0 (fun g => (S.u.ψ v i g : S.A)) (fun g => (hB _).1 (S.ψB v i g).2) (S.lift.1.2 v i)`. Conclude with `hcB (fun g => S.aB g i) (S.lift.1.1 i i)`.
-
-Conclude with `hcB (S.ψB v i) (S.lift.1.2 v i)`. Take `⟨M, hM⟩` from `part_filt O ℤ S.R W hz j N`. Use `⟨M, fun a ha hm => ?_⟩` and prove the remaining obligations. Take `⟨b, hb, hb1, -⟩` from `hT N j _ (hM ⟨(hgr j a).1 ha, hm⟩)`. Establish `hba : b = a` using `Subtype.ext hb`.
-
-Rewrite using `[← hba]`. Conclude with `hb1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.cont_u :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] {F : Frame l (ResidueField O)} {C₀ : ℕ} {n : ℕ}, F.Ok C₀ → (n = 2 ∨ n = 3) → ∀ S : Space O F n, S.u.Cont S.x0 ∧ (∀ i, AdicCont S.mB fun g => S.aB g i) ∧ (∀ v i, AdicCont S.mB (S.ψB v i)) ∧ ∀ j (N : ℕ), ∃ M : ℕ, ∀ a ∈ S.gr j, (a : S.R) ∈ maximalIdeal S.R ^ M → a ∈ S.mB ^ N • S.gr j := by

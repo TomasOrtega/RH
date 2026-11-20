@@ -15,7 +15,7 @@ open CategoryTheory AlgebraicGeometry GlobalTheory.LogCris DividedPowers GlobalT
 namespace CrystallineSemistableComparison.Om.L2
 
 /- English proof (translation)
-The claim follows from `hdg_aff_iso_onto (GlobalTheory.T.affine_forms_of_form_uniqueness CrystallineSemistableComparison.Onto.formUniq_pf) CrystallineSemistableComparison.Onto.omNatB_pf`.
+A detailed English derivation is pending.
 -/
 theorem hodge_affine_iso_sign :
     ∀ (K : Type) [Field K] [CharZero K],

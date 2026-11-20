@@ -12,7 +12,7 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.ConjugateSelfDu
 open NumberField IsDedekindDomain
 
 /- English proof (translation)
-Use `isClosed_eq ?_ ?_` and prove the remaining obligations. Conclude with `(continuous_const.sub hM).matrix_det`. Conclude with `(continuous_const.sub hN).matrix_det.mul (continuous_finset_prod _ fun j _ => continuous_const.sub (hχ j))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isClosed_det_eq {Γ A : Type} [TopologicalSpace Γ] [CommRing A] [TopologicalSpace A] [IsTopologicalRing A]
     [T2Space A] {n r : ℕ} {ι : Type} (s : Finset ι) (M : Γ → Matrix (Fin n) (Fin n) A)
@@ -26,7 +26,7 @@ theorem isClosed_det_eq {Γ A : Type} [TopologicalSpace Γ] [CommRing A] [Topolo
       (continuous_finset_prod _ fun j _ => continuous_const.sub (hχ j))
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `haveI : Finite (D.nd.O i) := not_infinite_iff_finite.mp h`. Establish `hf : IsField (D.nd.O i)` using `Finite.isField_of_domain (D.nd.O i)`. Conclude with `IsDiscreteValuationRing.not_a_field' ((IsLocalRing.isField_iff_maximalIdeal_eq).mp hf)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem infinite_O (D : D7) (i : D.nd.Loc) : Infinite (D.nd.O i) := by
   by_contra h
@@ -35,23 +35,21 @@ theorem infinite_O (D : D7) (i : D.nd.Loc) : Infinite (D.nd.O i) := by
   exact IsDiscreteValuationRing.not_a_field' ((IsLocalRing.isField_iff_maximalIdeal_eq).mp hf)
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.SumRepresentations.adm5 Formalism.MainNotions.SumRepresentations.At.JacquetShalikaStrongMultOne at hAN`. Establish `hCheb` using `hAN.2.2.1`. Take `⟨hrc, -, hrF⟩` from `hr x`. Take `⟨hρc, -, hρF⟩` from `hρ`. Establish `hP : (placesOver D.host.E (D.nd.l i)).Finite`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hne : Ideal.span {((D.nd.l i : ℕ) : 𝓞 D.host.E)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `Nat.cast_ne_zero.mpr (D.nd.lPrime i).out.ne_zero`. Use `(Ideal.finite_factors hne).subset ?_` and prove the remaining obligations. Introduce `v hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Ideal.dvd_span_singleton.mpr hv`. Use `set Sg : Set (PlE D.host) := placesOver D.host.E (D.nd.l i) ∪ (↑(D.nd.S i) : Set (PlE D.host)) ∪ (↑(D.nd.Q i) : Set (PlE D.host)) with hSg_def`. Establish `hSg : Sg.Finite` using `(hP.union (D.nd.S i).finite_toSet).union (D.nd.Q i).finite_toSet`. Use `set Fr : Set (GE D.nd) := {σ | ∃ w ∉ Sg, IsSplitPl D.host w ∧ ∃ B : ValuationSubring D.nd.Om, IsPlaceOver (F := D.host.E) B w ∧ IsFrob (F := D.host.E) B (normV w) σ} with hFr_def`. Establish `hden : closure Fr = Set.univ` using `hCheb Sg hSg`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hg : g ∈ closure Fr` using `by rw [hden]; exact Set.mem_univ g`. Use `haveI := infinite_O D i`. Use `Polynomial.eq_of_infinite_eval_eq _ _ ?_` and prove the remaining obligations. Use `Set.Infinite.mono ?_ Set.infinite_univ` and prove the remaining obligations. Introduce `c _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Set.mem_setOf_eq]`. Use `haveI : T2Space (D.nd.O i) := by`. Establish `hA` using `isAdic_iff.mp (D.nd.O_adic i)`. Use `IsTopologicalAddGroup.t2Space_of_zero_sep ?_` and prove the remaining obligations. Introduce `y hy`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Choose the witnesses or unpack the hypotheses as in `⟨n, hn⟩ : ∃ n, y ∉ (IsLocalRing.maximalIdeal (D.nd.O i)) ^ n := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hy` to reduce the goal to its premises. Use `(D.nd.O_complete i).toIsHausdorff.haus y fun n => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[SModEq.zero, Ideal.smul_eq_mul, Ideal.mul_top]`. Conclude with `hcon n`. Conclude with `⟨_, (hA.1 n).mem_nhds (Ideal.zero_mem _), hn⟩`. Establish `hcl` using `isClosed_det_eq (Finset.Icc 1 D.R.t) (fun g => ((r x g : GL _ _) : Matrix (Fin D.R.nV) (Fin D.R.nV) (D.nd.O i))) (fun g => ((ρ' g : GL _ _) : Matrix (Fin D.R.r) (Fin D.R.r) (D.nd.O i))) (fun k g => ((D.nd.chi i k g : (D.nd.O i)ˣ) : D.nd.O i)) hrc hρc (fun k => D.nd.chi_cont i k) …`. Establish `hmain` using `(hcl.closure_subset_iff.mpr ?_) hg`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_setOf_eq] at hmain`. Rewrite using `[Polynomial.eval_mul, Polynomial.eval_prod, Matrix.eval_charpoly, Matrix.eval_charpoly]`. Simplify `hmain` using `only [Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C]`. Introduce and unpack `σ ⟨w, hw, hs, B, hB, hFb⟩`. Establish `hso : SplitOut D.nd i w` using `⟨hs, fun h => hw (Or.inl (Or.inl h)), fun h => hw (Or.inl (Or.inr h)), fun h => hw (Or.inr h)⟩`.
-
-Establish `e3` using `congrArg (Polynomial.eval c) ((hrF w hso B σ hB hFb).trans (hρF w hso B σ hB hFb).symm)`. Rewrite `e3` using `[Polynomial.eval_mul, Polynomial.eval_prod, Matrix.eval_charpoly, Matrix.eval_charpoly]`. Simplify using `only [Set.mem_setOf_eq]`. Simplify `e3` using `only [Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem charpoly_of_isRhoOf (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
     (x : D.nd.X i) (ρ' : GE D.nd →* GL (Fin D.R.r) (D.nd.O i)) (hAN : Formalism.MainNotions.SumRepresentations.adm5 D) (hr : GoodR D.nd i r)
@@ -117,21 +115,21 @@ def rhoChiK (D : D7) (i : D.nd.Loc) (ρ' : GE D.nd →* GL (Fin D.R.r) (D.nd.O i
       (D.nd.chi i ((c : ℕ) + 1)))
 
 /- English proof (translation)
-Establish `hcp : ∀ g, ((r π g : GL _ _) : Matrix (Fin D.R.nV) (Fin D.R.nV) (D.nd.O i)).charpoly = ((ρ π g : GL _ _) : Matrix (Fin D.R.r) (Fin D.R.r) (D.nd.O i)).charpoly * ∏ c ∈ Finset.Icc 1 D.R.t, (X - C ((D.nd.chi i c g : (D.nd.O i)ˣ) : D.nd.O i))` using `fun g => charpoly_of_isRhoOf D i r π (ρ π) hAN hr hρ g`. Unfold `Formalism.MainNotions.SumRepresentations.adm5 Formalism.MainNotions.SumRepresentations.At.JacquetShalikaStrongMultOne at hAN`. Establish `hBN` using `hAN.2.2.2`. Take `⟨-, hSS1, -⟩` from `hr π`. Establish `hblk : ∀ g, ((rhoChiK D i (ρ π) g : GL _ _) : Matrix (Fin (D.R.r + D.R.t)) (Fin (D.R.r + D.R.t)) (KK D.nd i)) = blockHom (KK D.nd i) D.R.r D.R.t ((toK D.nd i).mapMatrix ((ρ π g : GL _ _) : Matrix (Fin D.R.r) (Fin D.R.r) (D.nd.O i)), Matrix.diagonal fun c : Fin D.R.t => toK D.nd i …` using `fun g => rfl`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hdiag : ∀ d : Fin D.R.t → KK D.nd i, (Matrix.diagonal d).charpoly = ∏ c, (X - C (d c))`. Introduce `d`. Use `first`. Consider the case `exact Matrix.charpoly_diagonal d`. Consider the case `(unfold Matrix.charpoly`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show Matrix.charmatrix (Matrix.diagonal d) = Matrix.diagonal fun c => X - C (d c) from by`. Use extensionality with `a b`. Apply the tactic sequence `by_cases h : a = b <;> simp [Matrix.charmatrix_apply, Matrix.diagonal_apply, h]]`. Conclude with `Matrix.det_diagonal)`. Take `⟨Pm, hPm⟩` from `hBN (KK D.nd i) (D.R.r + D.R.t) (mapRep (toK D.nd i) (r π)) (rhoChiK D i (ρ π)) hSS1 hSS (by`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `g`. Use `show ((toK D.nd i).mapMatrix ((r π g : GL _ _) : Matrix (Fin D.R.nV) (Fin D.R.nV) (D.nd.O i))).charpoly = (blockHom (KK D.nd i) D.R.r D.R.t ((toK D.nd i).mapMatrix ((ρ π g : GL _ _) : Matrix (Fin D.R.r) (Fin D.R.r) (D.nd.O i)), Matrix.diagonal fun c : Fin D.R.t => toK D.nd i ((D. …`. Rewrite using `[blockHom_charpoly, RingHom.mapMatrix_apply, RingHom.mapMatrix_apply, Matrix.charpoly_map, Matrix.charpoly_map, hcp g, Polynomial.map_mul, Polynomial.map_prod, hdiag]`. Use `congr 1`. Simplify using `only [Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression.
 
-Rewrite using `[Fin.prod_univ_eq_prod_range (fun c => X - C (toK D.nd i ((D.nd.chi i (c + 1) g : (D.nd.O i)ˣ) : D.nd.O i))) D.R.t, Finset.range_eq_Ico, Finset.prod_Ico_add' (fun c => X - C (toK D.nd i ((D.nd.chi i c g : (D.nd.O i)ˣ) : D.nd.O i))), zero_add]`. Use `congr 1)`. Set `e0 : (Fin (D.R.r + D.R.t) → KK D.nd i) ≃ₗ[KK D.nd i] (Fin (D.R.r + D.R.t) → KK D.nd i)` to `LinearEquiv.ofLinear (Matrix.toLin' ((Pm⁻¹ : GL (Fin (D.R.r + D.R.t)) (KK D.nd i)) : Matrix (Fin (D.R.r + D.R.t)) (Fin (D.R.r + D.R.t)) (KK D.nd i))) (Matrix.toLin' ((Pm : GL (Fin (D.R.r + D.R.t)) (KK D.nd i)) : Matrix (Fin (D.R.r + D.R.t)) (Fin (D.R.r + D.R.t)) (KK D.nd i))) (by …`. Use `⟨e0.trans (splitRT (KK D.nd i) D.R.r D.R.t), ?_⟩` and prove the remaining obligations. Introduce `g u`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hm'` using `congrArg Units.val (hPm g)`. Rewrite `hm'` using `[Units.val_mul, Units.val_mul]`. Establish `hv : ((Pm⁻¹ : GL (Fin (D.R.r + D.R.t)) (KK D.nd i)) : Matrix (Fin (D.R.r + D.R.t)) (Fin (D.R.r + D.R.t)) (KK D.nd i)).mulVec ((mapM (toK D.nd i) (rO D.nd i r π) g : Matrix (Fin (D.R.r + D.R.t)) (Fin (D.R.r + D.R.t)) (KK D.nd i)).mulVec u) = ((rhoChiK D i (ρ π) g : GL (Fin (D.R.r …`. Establish `key : ∀ (A P Q : Matrix (Fin (D.R.r + D.R.t)) (Fin (D.R.r + D.R.t)) (KK D.nd i)) (v : Fin (D.R.r + D.R.t) → KK D.nd i), P * Q = 1 → (Q * A * P).mulVec (Q.mulVec v) = Q.mulVec (A.mulVec v)`. Introduce `A P Q v hPQ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Simplify using `only [mul_assoc, hPQ, mul_one]`. Rewrite using `[hm']`. Conclude with `(key _ _ _ u (Units.mul_inv Pm)).symm`. Use `show splitRT (KK D.nd i) D.R.r D.R.t (((Pm⁻¹ : GL (Fin (D.R.r + D.R.t)) (KK D.nd i)) : Matrix (Fin (D.R.r + D.R.t)) (Fin (D.R.r + D.R.t)) (KK D.nd i)).mulVec ((mapM (toK D.nd i) (rO D.nd i r π) g : Matrix (Fin (D.R.r + D.R.t)) (Fin (D.R.r + D.R.t)) (KK D.nd i)).mulVec u)) = _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[hv, hblk, blockHom_mulVec]`. Use `Prod.ext rfl ?_` and prove the remaining obligations. Use function extensionality and compare the values at `c`. Simplify using `only [Matrix.mulVec_diagonal]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem semisimple_decomposition_of (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
     (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i)

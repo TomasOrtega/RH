@@ -22,11 +22,11 @@ section S
 variable {R : Type*} [CommRing R] {ι : Type*} {n : ℕ}
 
 /- English proof (translation)
-Unfold `sDegs FinalFormK`. Rewrite using `[Finset.mem_biUnion]`. Prove the components needed by the constructor for the conclusion. Introduce `h m`. Assume the negation of the conclusion as `hm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Apply `h` to reduce the goal to its premises. Use `⟨m, ?_, Finsupp.mem_support_iff.2 hm⟩` and prove the remaining obligations. Rewrite using `[mem_support_iff]`. Introduce `h0`. Rewrite `hm` using `[h0]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at hm`. Introduce and unpack `h ⟨m, _, hm⟩`. Conclude with `(Finsupp.mem_support_iff.1 hm) (h m)`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem notMem_sDegs_iff (LL : Letters ι) (S : Set ι) (j : Fin n) (G : MvPolynomial (ι × Fin n) R) (k : ℤ) :
     k ∉ sDegs LL S j G ↔ FinalFormK k (twistSub LL S j G) := by
@@ -45,7 +45,7 @@ theorem notMem_sDegs_iff (LL : Letters ι) (S : Set ι) (j : Fin n) (G : MvPolyn
     exact (Finsupp.mem_support_iff.1 hm) (h m)
 
 /- English proof (translation)
-Introduce `k hk`. Assume the negation of the conclusion as `hk'`. Conclude with `((notMem_sDegs_iff LL S j G k).2 (h k ((notMem_sDegs_iff LL' S' j F k).1 hk'))) hk`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem sDegs_subset_of {ι' : Type*} (LL : Letters ι) (S : Set ι) (LL' : Letters ι') (S' : Set ι') (j : Fin n)
     (G : MvPolynomial (ι × Fin n) R) (F : MvPolynomial (ι' × Fin n) R)
@@ -55,7 +55,7 @@ theorem sDegs_subset_of {ι' : Type*} (LL : Letters ι) (S : Set ι) (LL' : Lett
   exact ((notMem_sDegs_iff LL S j G k).2 (h k ((notMem_sDegs_iff LL' S' j F k).1 hk'))) hk
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Finset.inf_mono (h _), Finset.sup_mono (h _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem val_lam_of_subset [NeZero n] {ι' : Type*} (LL : Letters ι) (S : Set ι) (LL' : Letters ι') (S' : Set ι')
     (G : MvPolynomial (ι × Fin n) R) (F : MvPolynomial (ι' × Fin n) R)

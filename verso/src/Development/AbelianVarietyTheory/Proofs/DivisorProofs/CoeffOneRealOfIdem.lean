@@ -12,7 +12,7 @@ section Gen
 variable {K : Type} [Field K] {G : Type} [Group G] [Fintype G]
 
 /- English proof (translation)
-Rewrite using `[Formalism.L2.DIV.coeff_mul_fin, Formalism.L2.DIV.coeff_mul_fin]`. Conclude with `Fintype.sum_equiv (Equiv.inv G) _ _ (fun s => by simp [mul_comm])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_one_mul_comm (a b : MonoidAlgebra K G) : (a * b).coeff 1 = (b * a).coeff 1 := by
   rw [Formalism.L2.DIV.coeff_mul_fin, Formalism.L2.DIV.coeff_mul_fin]
@@ -21,11 +21,11 @@ theorem coeff_one_mul_comm (a b : MonoidAlgebra K G) : (a * b).coeff 1 = (b * a)
 open Classical in
 
 /- English proof (translation)
-Unfold `Formalism.L2.DIV.lvlIdem`. Rewrite using `[MonoidAlgebra.coeff_sum, Finsupp.finsetSum_apply]`. Use `split_ifs with ht`. Rewrite using `[Finset.sum_eq_single (⟨t, ht⟩ : P)]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b _ hb`. Rewrite using `[MonoidAlgebra.coeff_single, Finsupp.single_eq_of_ne]`. Introduce `h`. Conclude with `hb (Subtype.ext h.symm)`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd (Finset.mem_univ _) h`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Rewrite using `[MonoidAlgebra.coeff_single, Finsupp.single_eq_of_ne]`. Introduce `h`. Conclude with `ht (h ▸ b.2)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem coeff_lvlIdem_eq (P : Subgroup G) (ψ : P →* Kˣ) (t : G) :
     (Formalism.L2.DIV.lvlIdem P ψ).coeff t =
@@ -46,9 +46,9 @@ theorem coeff_lvlIdem_eq (P : Subgroup G) (ψ : P →* Kˣ) (t : G) :
 end Gen
 
 /- English proof (translation)
-Establish `h` using `finrank_range_mulLeft_idem ℂ H a ha`. Establish `hc : (Nat.card H : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`. Establish `e : a.coeff 1 = (((finrank ℂ (LinearMap.range (LinearMap.mulLeft ℂ a)) : ℝ) / (Nat.card H : ℝ) : ℝ) : ℂ)`. Use `push_cast`. Rewrite using `[h, mul_div_cancel_left₀ _ hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Complex.ofReal_re]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_one_real_of_idem {H : Type} [Group H] [Finite H] (a : MonoidAlgebra ℂ H) (ha : a * a = a) :
     (((a.coeff 1).re : ℝ) : ℂ) = a.coeff 1 := by
@@ -60,14 +60,14 @@ theorem coeff_one_real_of_idem {H : Type} [Group H] [Finite H] (a : MonoidAlgebr
   rw [e, Complex.ofReal_re]
 
 /- English proof (translation)
-Introduce `a b`. Use `⟨fun h => Matrix.one_apply_ne (ne_of_gt h), fun h => h ▸ Matrix.one_apply_eq a⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem isUniUp_one {A : Type} [Zero A] [One A] {N : ℕ} : IsUniUp (1 : Matrix (Fin N) (Fin N) A) := by
   intro a b
   refine ⟨fun h => Matrix.one_apply_ne (ne_of_gt h), fun h => h ▸ Matrix.one_apply_eq a⟩
 
 /- English proof (translation)
-Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Unfold `entN`. Use `split_ifs with h`. Conclude with `Matrix.one_apply_ne (by intro e; simp [Fin.ext_iff] at e)`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sd_one {A : Type} [AddCommMonoid A] [One A] {N : ℕ} :
     ∑ i ∈ Finset.range (N - 1), entN (1 : Matrix (Fin N) (Fin N) A) i (i + 1) = 0 := by
@@ -81,7 +81,7 @@ variable (D : D7)
 
 open Classical in
 /- English proof (translation)
-Unfold `badElt`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 -/
 theorem coeff_badElt (k : Fin 2) (S : Finset (Tup D k)) (g : G0g D.nd) :
     (badElt D k S).coeff g = if ∀ kv : (Σ k : Fin 2, D.nd.PlG k), kv.1 ≠ k → g kv = 1 then
@@ -99,7 +99,7 @@ abbrev sdg {A : Type} [AddCommMonoid A] {N : ℕ} (M : Matrix (Fin N) (Fin N) A)
 open Classical in
 
 /- English proof (translation)
-Unfold `eU eDat`. Rewrite using `[MonoidAlgebra.coeff_smul, MonoidAlgebra.coeff_sum, Finsupp.smul_apply, Finset.sum_apply']`. Simplify using `only [MonoidAlgebra.coeff_single, Finsupp.single_apply, Finset.sum_ite_eq', Finset.mem_filter, Finset.mem_univ, true_and, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem coeff_eU (g N : ℕ) [NeZero g] (ψ₀ : AddChar (ZMod g) ℂ) (x : GL (Fin N) (ZMod g)) :
     (eU g N ψ₀).coeff x =
@@ -119,21 +119,21 @@ def extAt (k : Fin 2) (z : ∀ v : D.nd.PlG k, GL (Fin D.R.r) (ZMod (D.host.g k)
     (Eq.rec (motive := fun k' _ => ∀ v : D.nd.PlG k', GL (Fin D.R.r) (ZMod (D.host.g k'))) z h.symm) kv.2 else 1
 
 /- English proof (translation)
-Simplify using `[extAt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem extAt_apply (k : Fin 2) (z : ∀ v : D.nd.PlG k, GL (Fin D.R.r) (ZMod (D.host.g k))) (v : D.nd.PlG k) :
     extAt D k z ⟨k, v⟩ = z v := by
   simp [extAt]
 
 /- English proof (translation)
-Simplify using `[extAt, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem extAt_apply_ne (k : Fin 2) (z : ∀ v : D.nd.PlG k, GL (Fin D.R.r) (ZMod (D.host.g k)))
     (kv : Σ k : Fin 2, D.nd.PlG k) (h : kv.1 ≠ k) : extAt D k z kv = 1 := by
   simp [extAt, h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `⟨k', v⟩`. Distinguish the cases in `h : k' = k`. Substitute `h` using the available equality. Conclude with `extAt_apply D _ _ v`. Rewrite using `[extAt_apply_ne D k _ _ h, hy ⟨k', v⟩ h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extAt_restr (k : Fin 2) (y : G0g D.nd) (hy : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), kv.1 ≠ k → y kv = 1) :
     extAt D k (fun v => y ⟨k, v⟩) = y := by
@@ -146,11 +146,11 @@ theorem extAt_restr (k : Fin 2) (y : G0g D.nd) (hy : ∀ kv : (Σ k : Fin 2, D.n
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_filter]`. Use `Finset.sum_nbij' (fun y v => y ⟨k, v⟩) (extAt D k) (fun _ _ => Finset.mem_univ _) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `z _`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Conclude with `fun kv h => extAt_apply_ne D k z kv h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Introduce `y hy`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hy`. Conclude with `extAt_restr D k y hy`. Introduce `z _`. Use function extensionality and compare the values at `v`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `extAt_apply D k z v`. Introduce `y _`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sum_trivOff [Fintype (G0g D.nd)] (k : Fin 2) [Fintype (∀ v : D.nd.PlG k, GL (Fin D.R.r) (ZMod (D.host.g k)))]
     (F : (∀ v : D.nd.PlG k, GL (Fin D.R.r) (ZMod (D.host.g k))) → ℂ) :
@@ -192,7 +192,7 @@ def cardU (k : Fin 2) : ℂ :=
     IsUniUp (u : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g k)))).card : ℂ)
 
 /- English proof (translation)
-Use `haveI : NeZero (D.host.g k) := ⟨(D.host.g_prime k).ne_zero⟩`. Unfold `cardU`. Use `Nat.cast_ne_zero.mpr (Finset.card_ne_zero.mpr ⟨1, ?_⟩)` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Units.val_one]`. Conclude with `isUniUp_one`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cardU_ne_zero (k : Fin 2) : cardU D k ≠ 0 := by
   classical
@@ -204,7 +204,7 @@ theorem cardU_ne_zero (k : Fin 2) : cardU D k ≠ 0 := by
 
 open Classical in
 /- English proof (translation)
-Use `haveI : NeZero (D.host.g k) := ⟨(D.host.g_prime k).ne_zero⟩`. Unfold `eUk cardU`. Rewrite using `[coeff_eU]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_eUk (k : Fin 2) (ψ₀ : AddChar (ZMod (D.host.g k)) ℂ) (x : GL (Fin D.R.r) (ZMod (D.host.g k))) :
     (eUk D k ψ₀).coeff x = if IsUniUp (x : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g k))) then
@@ -215,9 +215,9 @@ theorem coeff_eUk (k : Fin 2) (ψ₀ : AddChar (ZMod (D.host.g k)) ℂ) (x : GL 
   rw [coeff_eU]
 
 /- English proof (translation)
-Rewrite using `[Formalism.L2.DIV.coeff_mul_fin, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_eUk, phiAt, mul_one]`. Use `split_ifs`. Rewrite using `[← mul_assoc, ← mul_assoc, mul_inv_cancel₀ (cardU_ne_zero D k), one_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem sum_phiAt (k : Fin 2) (ψ₀ : AddChar (ZMod (D.host.g k)) ℂ) (f : (ZMod (D.host.g k))[X])
     [Fintype (GL (Fin D.R.r) (ZMod (D.host.g k)))] :
@@ -231,7 +231,7 @@ theorem sum_phiAt (k : Fin 2) (ψ₀ : AddChar (ZMod (D.host.g k)) ℂ) (f : (ZM
   · simp
 
 /- English proof (translation)
-Establish `ha` using `(GlobalTheory.RowLev.LevelIdem.eUk_eJk_spec D k ψ₀ _ (Or.inl rfl)).1`. Rewrite using `[mul_assoc, D.ntypes.eSer_central k f (eUk D k ψ₀ * D.ntypes.eSer k f), mul_assoc, D.ntypes.eSer_idem, ← mul_assoc, ha]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem eUk_mul_eSer_idem (k : Fin 2) (ψ₀ : AddChar (ZMod (D.host.g k)) ℂ) (f : (ZMod (D.host.g k))[X]) :
     (eUk D k ψ₀ * D.ntypes.eSer k f) * (eUk D k ψ₀ * D.ntypes.eSer k f) = eUk D k ψ₀ * D.ntypes.eSer k f := by
@@ -240,11 +240,9 @@ theorem eUk_mul_eSer_idem (k : Fin 2) (ψ₀ : AddChar (ZMod (D.host.g k)) ℂ) 
     ← mul_assoc, ha]
 
 /- English proof (translation)
-Use `haveI : NeZero (D.host.g k) := ⟨(D.host.g_prime k).ne_zero⟩`. Establish `h1 : (eUk D k ψ₀).coeff 1 = (cardU D k)⁻¹`. Rewrite using `[coeff_eUk, if_pos (by simpa using isUniUp_one), Units.val_one, sdg, sd_one, AddChar.map_zero_eq_one, inv_one, mul_one]`. Establish `hr` using `coeff_one_real_of_idem _ (eUk_mul_eSer_idem D k ψ₀ f)`. Take `⟨n, hn, -⟩ : ∃ n : ℕ, cardU D k = n ∧ n ≠ 0` from `⟨_, rfl, fun h => cardU_ne_zero D k (by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Unfold `cardU at *`. Conclude with `h)⟩` after adjusting the coercions. Unfold `wtOf`. Rewrite using `[h1, hn, show ((n : ℂ))⁻¹ = (((n : ℝ)⁻¹ : ℝ) : ℂ) by push_cast; rfl, Complex.ofReal_re]`. Use `push_cast`.
-
-Rewrite using `[hr, div_inv_eq_mul, mul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wtOf_eUk (k : Fin 2) (ψ₀ : AddChar (ZMod (D.host.g k)) ℂ) (f : (ZMod (D.host.g k))[X]) :
     ((wtOf D k (eUk D k ψ₀) f : ℝ) : ℂ) = cardU D k * (eUk D k ψ₀ * D.ntypes.eSer k f).coeff 1 := by
@@ -272,19 +270,19 @@ variable (D : D7)
 open Classical in
 
 /- English proof (translation)
-Establish `hTi : (∀ kv : (Σ k : Fin 2, D.nd.PlG k), kv.1 ≠ k → (y⁻¹ * 1) kv = 1) ↔ (∀ kv : (Σ k : Fin 2, D.nd.PlG k), kv.1 ≠ k → y kv = 1)`. Simplify using `only [mul_one, Pi.inv_apply, inv_eq_one]`. Rewrite using `[coeff_badElt]`. Distinguish the cases in `hT : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), kv.1 ≠ k → y kv = 1`. Rewrite using `[if_pos hT, if_pos (hTi.2 hT), coeff_lvlIdem_eq] split_ifs with hP`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : ∀ v : D.nd.PlG k, IsUniUp ((y ⟨k, v⟩ : GL (Fin D.R.r) (ZMod (D.host.g k))) : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g k)))` using `fun v => (hW.2.1 y).1 hP ⟨k, v⟩`. Establish `hlam : ((lam (⟨y, hP⟩ : P)⁻¹ : ℂˣ) : ℂ) = ∏ v : D.nd.PlG k, (ψ ⟨k, v⟩ (sdg ((y ⟨k, v⟩ : GL (Fin D.R.r) (ZMod (D.host.g k))) : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g k)))))⁻¹`. Rewrite using `[map_inv, Units.val_inv_eq_inv_val, hW.2.2, ← Finset.prod_inv_distrib, Fintype.prod_sigma, Fintype.prod_eq_single k]`. Introduce `k' hk'`. Use `Finset.prod_eq_one fun v _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1 : ((⟨y, hP⟩ : P) : G0g D.nd) ⟨k', v⟩ = 1` using `hT ⟨k', v⟩ hk'`. Rewrite using `[e1, Units.val_one, sd_one, AddChar.map_zero_eq_one, inv_one]`. Rewrite using `[hlam, mul_assoc, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[phiAt, if_pos (hu v)]`. Simplify using `only [mul_one, Pi.inv_apply]`. Rewrite using `[zero_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v : D.nd.PlG k, ¬ IsUniUp ((y ⟨k, v⟩ : GL (Fin D.R.r) (ZMod (D.host.g k))) : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g k))) := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `hP` to reduce the goal to its premises. Rewrite using `[hW.2.1]`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨k', v⟩`. Distinguish the cases in `h : k' = k`. Substitute `h` using the available equality. Conclude with `hc v`. Rewrite using `[hT ⟨k', v⟩ h, Units.val_one]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `isUniUp_one`. Use `(mul_eq_zero_of_right _ (Finset.sum_eq_zero fun t _ => ?_)).symm` and prove the remaining obligations. Use `Finset.prod_eq_zero (Finset.mem_univ v) ?_` and prove the remaining obligations. Rewrite using `[phiAt, if_neg hv]`. Rewrite using `[if_neg hT, if_neg (fun h => hT (hTi.1 h)), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem term_eq [Fintype (G0g D.nd)] (P : Subgroup (G0g D.nd)) (lam : P →* ℂˣ)
     (ψ : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), AddChar (ZMod (D.host.g kv.1)) ℂ) (hW : IsWhit D P lam ψ)
@@ -336,15 +334,15 @@ theorem term_eq [Fintype (G0g D.nd)] (P : Subgroup (G0g D.nd)) (lam : P →* ℂ
   · rw [if_neg hT, if_neg (fun h => hT (hTi.1 h)), mul_zero]
 
 /- English proof (translation)
-Introduce `D _ P lam ψ hW k S H hH`. Use `haveI : NeZero (D.host.g k) := ⟨(D.host.g_prime k).ne_zero⟩`. Use `⟨fun g hg => ?_, ?_⟩` and prove the remaining obligations. Rewrite `hg` using `[Formalism.L2.DIV.coeff_mul_fin]`. Take `⟨s, -, hs⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hg`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `left_ne_zero_of_mul hs`. Establish `h2` using `right_ne_zero_of_mul hs`. Rewrite `h1` using `[coeff_badElt]`. Use `split_ifs at h1 with hT`. Rewrite `h2`, `with`, `hP` using `[coeff_lvlIdem_eq] at h2 split_ifs`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hH]`. Introduce `kv hkv`. Establish `hu` using `(hW.2.1 _).1 hP kv`. Establish `e : (s⁻¹ * g) kv = g kv`. Simplify using `only [Pi.mul_apply, Pi.inv_apply, hT kv hkv, inv_one, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hu` using `[e]`. Then use the resulting hypothesis. Conclude with `absurd rfl h2`. Conclude with `absurd rfl h1`. Rewrite using `[coeff_one_mul_comm, Formalism.L2.DIV.coeff_mul_fin, Finset.sum_congr rfl fun y _ => term_eq D P lam ψ hW k S y, sum_trivOff D k (fun z => (Nat.card P : ℂ)⁻¹ * ∑ t ∈ S, ∏ v, phiAt D k (ψ ⟨k, v⟩) (t v) (z v)), ← Finset.mul_sum, Finset.sum_comm]`. Repeatedly rewrite using `[← Fintype.prod_sum, sum_phiAt]`.
+Rewrite the conclusion repeatedly using the stated equalities. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Unfold `locShare`. Use `push_cast`. Repeatedly rewrite using `[wtOf_eUk]`. Rewrite using `[div_eq_inv_mul]`.
+A detailed English derivation is pending.
 -/
 theorem badElt_mul_lvlIdem : ∀ (D : D7) [Fintype (G0g D.nd)] (P : Subgroup (G0g D.nd)) (lam : P →* ℂˣ) (ψ : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), AddChar (ZMod (D.host.g kv.1)) ℂ), IsWhit D P lam ψ → ∀ (k : Fin 2) (S : Finset (Tup D k)) (H : Subgroup (G0g D.nd)), IsHalf D k H → (∀ g, (badElt D k S * Formalism.L2.DIV.lvlIdem P lam).coeff g ≠ 0 → g ∈ H) ∧ (badElt D k S * Formalism.L2.DIV.lvlIdem P lam).coeff 1 = ((locShare D (fun k' v => eUk D k' (ψ ⟨k', v⟩)) k S : ℝ) : ℂ) / (Nat.card P : ℂ) := by
   intro D _ P lam ψ hW k S H hH

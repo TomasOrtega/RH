@@ -6,19 +6,17 @@ open NumberField IsDedekindDomain Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh
 open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.AutomorphicForm
 
 /- English proof (translation)
-Establish `hcx : c * x ≠ 0` using `mul_ne_zero hc hx`. Establish `e : algebraMap E (Ad E) (c * x) = ∑ j, (algebraMap E (Ad E) c * y j) * (g⁻¹).val j i`. Rewrite using `[map_mul, hy, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => (mul_assoc _ _ _).symm`. Rewrite using `[← prod_norm_mul_finprod_norm hcx, AutomorphicForm.height, ← mul_assoc, ← Finset.prod_mul_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_le_mul ?_ ?_ (finprod_nonneg fun _ => norm_nonneg _) (Finset.prod_nonneg fun w _ => by have := locHeight_pos (infAt w g); positivity)` and prove the remaining obligations. Use `Finset.prod_le_prod (fun _ _ => pow_nonneg (norm_nonneg _) _) fun w _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_pow]`. Use `pow_le_pow_left₀ (norm_nonneg _) ?_ _` and prove the remaining obligations. Establish `h1 : ((c * x : E) : w.Completion) = ∑ j, ((c : w.Completion) * (y j).1 w) * ((infAt w g)⁻¹).val j i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (infEval w) e` as an intermediate fact. Rewrite `this` using `[map_sum]`. Use `Eq.trans this (Finset.sum_congr rfl fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, ← infAt_inv]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Combine the equalities or inequalities in the displayed calculation. Use `norm_sum_le_of_le _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul]`. Conclude with `mul_le_mul (mul_le_mul_of_nonneg_left (hr j w) (norm_nonneg _)) (norm_inv_apply_le_locHeight _ j i) (norm_nonneg _) (by positivity)`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `_ = _ := by simp; ring`. Use `finprod_le_finprod (Filter.eventually_cofinite.1 (eventually_norm_eq_one hcx)) (fun _ => norm_nonneg _) (finite_mulSupport_locHeight_finAt g) fun p => ?_` and prove the remaining obligations. Establish `h1 : ((c * x : E) : p.adicCompletion E) = ∑ j, (algebraMap E (Ad E) c * y j).2 p * ((finAt p g)⁻¹).val j i`. Use `congrArg (finEval p) e` as an intermediate fact. Rewrite `this` using `[map_sum]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `Eq.trans this (Finset.sum_congr rfl fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[map_mul, ← finAt_inv]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `‖((c * x : E) : p.adicCompletion E)‖ ≤ locHeight (finAt p g)`. Rewrite using `[h1]`.
-
-Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (locHeight_pos _).le fun j _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `(mul_le_mul (hf j p) (norm_inv_apply_le_locHeight _ j i) (norm_nonneg _) zero_le_one).trans_eq (one_mul _)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem key {E : Type} [Field E] [NumberField E] {a : ℕ} (g : GA E a) {c x : E} (hc : c ≠ 0) (hx : x ≠ 0)
     (y : Fin a → Ad E) (i : Fin a) (hy : algebraMap E (Ad E) x = ∑ j, y j * (g⁻¹).val j i)
@@ -63,23 +61,19 @@ private theorem key {E : Type} [Field E] [NumberField E] {a : ℕ} (g : GA E a) 
     exact (mul_le_mul (hf j p) (norm_inv_apply_le_locHeight _ j i) (norm_nonneg _) zero_le_one).trans_eq (one_mul _)
 
 /- English proof (translation)
-Introduce `E _ _ _ a _ L hL`. Establish `hT : IsCompact (⋃ j : Fin a, (fun y : Fin a → Af E => y j) '' (L : Set (Fin a → Af E)))` using `isCompact_iUnion fun j => hL.isCompact.image (continuous_apply j)`. Take `⟨d, hd0, hd⟩` from `GroundTheory.Global.exists_mul_mem_integralFiniteAdeles_of_isCompact (K := E) hT`. Establish `hc : algebraMap (𝓞 E) E d ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 E) E)).mpr hd0`. Use `set c := algebraMap (𝓞 E) E d with hcdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set A : ℝ := ∏ w : InfinitePlace E, (‖(c : w.Completion)‖ * a) ^ 2 with hA`. Use `⟨max 1 A, 1, le_max_left _ _, fun g v hv hv0 => ?_⟩` and prove the remaining obligations. Rewrite using `[pow_one]`. Establish `hH` using `one_le_height (K := E) g`. Establish `hq0` using `qf_nonneg (pt g v)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Break down `le_total 1 (qf (pt g v)) with hq | hq` into its components or cases. Conclude with `one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (le_max_left _ _) hH) hq`. Take `⟨i, hi⟩` from `Function.ne_iff.1 hv0`. Use `set y : Fin a → Ad E := ratVec v ᵥ* g.val with hy`. Establish `hyi : algebraMap E (Ad E) (v i) = ∑ j, y j * (g⁻¹).val j i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `: y ᵥ* (g⁻¹).val = ratVec v`. Rewrite using `[hy, vecMul_vecMul, ← Units.val_mul, mul_inv_cancel, Units.val_one, vecMul_one]`. Conclude with `(congrFun this i).symm`. Establish `hF : ∀ j, (y j).2 = ptF g v j` using `fun j => by`. Express the relevant statement in the definitionally equal form `pFin E (∑ k, ratVec v k * g.val k j) = ∑ k, vFin v k * pFin E (g.val k j)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [map_mul]; rfl`. Establish `hI : ∀ j, pInf E (y j) = pt g v j` using `fun j => by`. Express the relevant statement in the definitionally equal form `pInf E (∑ k, ratVec v k * g.val k j) = ∑ k, vInf v k * pInf E (g.val k j)`. Rewrite using `[map_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun k _ => by rw [map_mul]; rfl`. Establish `hn : ∀ (x : Ad E) (w : InfinitePlace E), ‖pInf E x w‖ = ‖x.1 w‖` using `fun x w => (AddMonoidHomClass.isometry_iff_norm (InfinitePlace.Completion.extensionEmbedding w)).1 (InfinitePlace.Completion.isometry_extensionEmbedding w) (x.1 w)`. Establish `h` using `key g hc hi y i hyi (fun j p => by`. Establish `h1` using `hd (ptF g v j) (Set.mem_iUnion.2 ⟨j, ptF g v, hv, rfl⟩)`. Rewrite `h1` using `[← hF]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Conclude with `norm_le_one_of_mem p (GroundTheory.Global.mem_integralFiniteAdeles.1 h1 p))`. Use the proof step `(norm_nonneg (pt g v)) fun j w => by`. Rewrite using `[← hn, hI]`. Conclude with `(norm_le_pi_norm (pt g v j) w).trans (norm_le_pi_norm _ j)`. Establish `hm : ∀ w : InfinitePlace E, w.mult = 2` using `fun w => InfinitePlace.IsComplex.mult_eq_two (IsTotallyComplex.isComplex w)`.
-
-Establish `hr` using `((UpperTheory.geometric_side_quadraticForm_identity E a).2.2.2.2.2 (pt g v)).1`. Establish `h2 : (∏ w : InfinitePlace E, (‖(c : w.Completion)‖ * a * ‖pt g v‖) ^ w.mult) ≤ max 1 A * qf (pt g v)`. Simplify using `only [hm, mul_pow _ ‖pt g v‖, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ]`. Use `mul_le_mul (le_max_right _ _) ?_ (by positivity) (by positivity)` and prove the remaining obligations. Conclude with `(pow_le_of_le_one (sq_nonneg _) (hr.trans hq) Fintype.card_ne_zero).trans hr`.
-
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.global_geometric_estimate_of_local :
     LatMin := by

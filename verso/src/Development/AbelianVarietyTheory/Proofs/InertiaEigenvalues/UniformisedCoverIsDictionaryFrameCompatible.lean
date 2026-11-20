@@ -17,11 +17,11 @@ open GlobalTheory.LevelSeries
 namespace GlobalTheory.LevelSeries
 
 /- English proof (translation)
-Establish `key : ∀ (z : ℂ) (hz : z ∈ T.Q.c.F) (hz2 : z ∈ C.d.c₂.F), C.σ₂ ⟨z, hz2⟩ = z`. Introduce `z hz hz2`. Establish `h1 : (⟨z, hz2⟩ : C.d.c₂.F) = C.inc ⟨z, hz⟩` using `Subtype.ext rfl`. Establish `h2 : C.σ₂ (C.inc ⟨z, hz⟩) = T.σ₀ ⟨z, hz⟩` using `by rw [← RingHom.comp_apply, hinc]`. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `⟨fun τ => RingHom.ext fun x => key _ (T.Q.c.conj τ x) _, ?_⟩` and prove the remaining obligations. Establish `hz : T.Q.H.rt0 ∈ T.Q.c.F` using `GlobalTheory.coe_baseKA_rho T.Q.l ▸ T.Q.c.le (baseKA T.Q.l).ρ.2`. Establish `hz2 : T.Q.H.rt0 ∈ C.d.c₂.F` using `GlobalTheory.coe_baseKA_rho C.d.l₂ ▸ C.d.c₂.le (baseKA C.d.l₂).ρ.2`. Establish `e : (IntermediateField.inclusion C.d.c₂.le) (baseKA C.d.l₂).ρ = ⟨T.Q.H.rt0, hz2⟩` using `Subtype.ext (GlobalTheory.coe_baseKA_rho C.d.l₂)`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `GoodEmb`. Rewrite using `[RingHom.comp_apply]`. Use `erw [e]`. Conclude with `key _ hz hz2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relab_and_goodEmb_of_inc {D : D7} (T : CoreJ D) (j : ℕ) (C : Cover T j T.σ₀) (hinc : C.σ₂.comp C.inc = T.σ₀) :
     (∀ τ, relab C.d.c₂ C.σ₂ τ = τ) ∧ GoodEmb C.d.c₂ C.σ₂ := by
@@ -42,13 +42,13 @@ theorem relab_and_goodEmb_of_inc {D : D7} (T : CoreJ D) (j : ℕ) (C : Cover T j
   exact key _ hz hz2
 
 /- English proof (translation)
-Substitute `hV` using the available equality. Take `⟨-, -, -, hU, -, hr', g, e, F, ik, φ, th, hMW, hth, hDL⟩` from `hC`. Establish `hP` using `hL.pins`. Establish `hg` using `T.toCore.good_σ₀`. Establish `hr1 : 1 ≤ D.R.r`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `D.R.two_le_m`. Establish `h3` using `D.R.m_add_three_le_k`. Simplify using `only [Ranks.r]`. Use linear arithmetic over natural numbers and integers. Establish `hio` using `GlobalTheory.TupleCover.iotaOK_and_frame T hL j hj _ hg _ rfl hr`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `⟨hU, hio.1, fun k => ⟨hMW k, fun τ => ?_, ?_⟩, fun k τ hτ => ?_, g, e, F, ik, φ, th, hth, hDL⟩` and prove the remaining obligations. Rewrite using `[(hU.2.1 k).2 τ]`. Conclude with `⟨ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.exists_tau_of_inPsi T.Q hP.1 τ, fun ⟨ρ, h⟩ => h ▸ hP.1.2.2.2 ρ⟩`. Establish `hU'` using `(Formalism.L2.PjFree.isUnf_ofPj _).2 hU`. Take `⟨w⟩` from `nonempty_uw hU'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1 : (C.U₂.X k).κ0 = 2 * (C.U₂.X k).ξ0` using `(GlobalTheory.Dict.uw_lattice _ _ _ _ _ _ _ _ _ ((Formalism.L2.PjFree.goodEmb_iff _).2 hGE) hU' hr1 w k).1`. Rewrite using `[h1, (hMW k).2, mul_neg]`. Rewrite using `[(hMW k).1, (hU.2.1 k).1]`. Conclude with `hio.2 τ (((hU.2.1 k).2 τ).1 hτ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDict_cover_of_isUnif {D : D7} (T : CoreJ D) (hL : LawsJ T) (j : ℕ) (hj : InR D j) (W : HSp D)
     (hV : T.V j T.σ₀ = W) (hr : W.rank = D.R.r) (C : Cover T j T.σ₀) (hC : C.IsUnif) (hGE : GoodEmb C.d.c₂ C.σ₂) :
@@ -77,11 +77,11 @@ theorem isDict_cover_of_isUnif {D : D7} (T : CoreJ D) (hL : LawsJ T) (j : ℕ) (
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ hL _ _ _ hmod _ hT i _ hV C hC`. Establish `hj` using `inR i`. Establish `hinc : C.σ₂.comp C.inc = T.σ₀` using `hC.2.2.1`. Take `⟨hrel, hGE⟩` from `relab_and_goodEmb_of_inc T _ C hinc`. Establish `hD` using `isDict_cover_of_isUnif T hL _ hj _ hV (rank_Wc i) C hC hGE`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hU` using `hD.1`. Establish `hP` using `hL.pins`. Establish `hdp : (T.Q.Dw ((i : ℕ) + 1)).p = (D.R.sigW ((i : ℕ) + 1)).1` using `(hP.2.2.2 _ hj).1`. Establish `hres : res T (sg0 D A) = T.toCore.σ₀`. Rewrite using `[show sg0 D A = D.what₂.embLL from sgAt_mk _ R.hv0, res_embLL T hT.alg hP.2.2.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx : IsModelBaseFrameFamily (R.MW i (sg0 D A)) (rank_Wc i) (T.x₀ ((i : ℕ) + 1) T.toCore.σ₀)` using `hres ▸ hT.x0 i (sg0 D A) (base_embedding_good T R hT.alg hP.2.2.1)`. Establish `hε : ∀ ρ a, (R.MW i (sg0 D A)).ε ρ a = decide ((a : ℕ) < (T.Q.Dw ((i : ℕ) + 1)).p)` using `fun ρ a => by`. Rewrite using `[hmod.order i ρ a, hdp, show (Wc D i).sig (tauE D ρ) = D.R.sigW ((i : ℕ) + 1) from D.sp.W_sigval _ hj.1 hj.2 _]`. Use `⟨hD, fun k => ⟨isInvOf_cart _ _ _ hx (by have := hU.1; have := (hU.2.1 k).1; omega) hε, fun hq => isBasOf_onb _ _ _ hx hq hε⟩, hrel, hGE⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem cover_dict_frameTie : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : Formalism.L2.DIV.FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), LawsJ T → R.toLevCh.Is A.μ0 → R.IsGrp F → R.IsFam → R.IsModels → R.IsThP → TieIn T R κ v₀ → ∀ (i : Fin D.R.m), VStd D i → ∀ hV : T.V ((i : ℕ) + 1) T.σ₀ = Wc D i, ∀ C : Cover T ((i : ℕ) + 1) T.σ₀, C.IsUnif → IsDict C.U₂ (Wc D i) (rank_Wc i) (castDict hV C.dict₂) (iotaW T i) (T.x₀ ((i : ℕ) + 1) T.σ₀) ∧ FrameTie C.U₂ (Wc D i) (rank_Wc i) (T.x₀ ((i : ℕ) + 1) T.σ₀) (cart (R.MW i (sg0 D A))) (onb (R.MW i (sg0 D A))) ∧ (∀ τ, relab C.d.c₂ C.σ₂ τ = τ) ∧ GoodEmb C.d.c₂ C.σ₂ := by
   intro D G _ _ Pl0 T0 A T _ R F κ v₀ hL _ _ _ hmod _ hT i _ hV C hC

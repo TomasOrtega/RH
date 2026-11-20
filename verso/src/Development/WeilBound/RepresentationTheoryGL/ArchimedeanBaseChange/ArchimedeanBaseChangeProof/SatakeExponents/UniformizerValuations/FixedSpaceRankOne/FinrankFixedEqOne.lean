@@ -12,13 +12,13 @@ namespace PositivityTheory.Rg.BcB.F.EigA
 section Sums
 
 /- English proof (translation)
-Set `e` to `Subgroup.quotientEquivProdOfLE hAB`. Use `haveI : Finite ((H ⧸ B) × (B ⧸ A.subgroupOf B)) := Finite.of_equiv _ e`. Use `haveI : Finite (H ⧸ B) := Finite.of_surjective Prod.fst (fun p => ⟨(p, ((1 : B) : B ⧸ A.subgroupOf B)), rfl⟩)`. Use `haveI : Finite (B ⧸ A.subgroupOf B) := Finite.of_surjective Prod.snd (fun r => ⟨(((1 : H) : H ⧸ B), r), rfl⟩)`. Use `letI := Fintype.ofFinite (H ⧸ A)`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities.
 
-Use `letI := Fintype.ofFinite (H ⧸ B)`. Use `letI := Fintype.ofFinite (B ⧸ A.subgroupOf B)`. Rewrite using `[finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype]`. Rewrite using `[← e.symm.sum_comp, Fintype.sum_prod_type]`. Establish `key : ∀ (p : H ⧸ B) (r : B ⧸ A.subgroupOf B), F (e.symm (p, r)).out = F p.out`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `p r`. Proceed by induction on `r using QuotientGroup.induction_on with`. Consider the case `H b`. Establish `h1 : e.symm (p, (b : B ⧸ A.subgroupOf B)) = ((p.out * (b : H) : H) : H ⧸ A)` using `rfl`. Rewrite using `[h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨a, ha⟩` from `QuotientGroup.mk_out_eq_mul A (p.out * (b : H))`. Rewrite using `[ha, hF _ _ (hAB a.2), hF _ _ b.2]`. Simplify using `only [key, Finset.sum_const, Finset.card_univ]`. Rewrite using `[← Finset.smul_sum, Subgroup.relIndex, Subgroup.index, Nat.card_eq_fintype_card]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finsum_refine {H M : Type} [Group H] [AddCommMonoid M] (A B : Subgroup H) (hAB : A ≤ B)
     [Finite (H ⧸ A)] (F : H → M) (hF : ∀ x, ∀ b ∈ B, F (x * b) = F x) :
@@ -48,7 +48,7 @@ theorem finsum_refine {H M : Type} [Group H] [AddCommMonoid M] (A B : Subgroup H
   rw [← Finset.smul_sum, Subgroup.relIndex, Subgroup.index, Nat.card_eq_fintype_card]
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `QuotientGroup.mk_out_eq_mul A y`. Rewrite using `[ha, hF _ _ a.2]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem out_mk_inv {H M : Type} [Group H] (A : Subgroup H) (F : H → M) (hF : ∀ x, ∀ a ∈ A, F (x * a) = F x)
     (y : H) : F ((y : H ⧸ A).out) = F y := by
@@ -60,9 +60,9 @@ end Sums
 variable {G : Type} [Group G] {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(∀ h : K, ρ (h : G) v = ((1 : K →* ℂˣ) h : ℂ) • v) ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `h k hk`. Simplify using `using h ⟨k, hk⟩`. Introduce `h k`.
+Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using h k k.2`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_fixed_iff {ρ : Representation ℂ G V} {K : Subgroup G} {v : V} :
     v ∈ fixed ρ K ↔ ∀ k ∈ K, ρ k v = v := by
@@ -76,9 +76,9 @@ theorem mem_fixed_iff {ρ : Representation ℂ G V} {K : Subgroup G} {v : V} :
 def stabK (K : Subgroup G) (g : G) : Subgroup K := (K.map (MulAut.conj g).toMonoidHom).subgroupOf K
 
 /- English proof (translation)
-Rewrite using `[stabK, Subgroup.mem_subgroupOf, Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, e⟩`. Rewrite using `[← e]`. Simplify `hx` using `[MulAut.conj_apply, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h`. Conclude with `⟨_, h, by simp [MulAut.conj_apply, mul_assoc]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem mem_stabK {K : Subgroup G} {g : G} {k : K} : k ∈ stabK K g ↔ g⁻¹ * (k : G) * g ∈ K := by
   rw [stabK, Subgroup.mem_subgroupOf, Subgroup.mem_map]
@@ -90,7 +90,7 @@ theorem mem_stabK {K : Subgroup G} {g : G} {k : K} : k ∈ stabK K g ↔ g⁻¹ 
     exact ⟨_, h, by simp [MulAut.conj_apply, mul_assoc]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h⟩`.
+Supply the required witnesses or components.
 -/
 theorem finiteIndex_stabK {K : Subgroup G} {g : G} (h : (K.map (MulAut.conj g).toMonoidHom).relIndex K ≠ 0) :
     (stabK K g).FiniteIndex := ⟨h⟩
@@ -99,7 +99,7 @@ def hop (ρ : Representation ℂ G V) (K : Subgroup G) (g : G) : V →ₗ[ℂ] V
   ∑ᶠ q : K ⧸ stabK K g, ρ ((q.out : K) : G) ∘ₗ ρ g
 
 /- English proof (translation)
-Use `letI := Fintype.ofFinite (K ⧸ stabK K g)`. Rewrite using `[hop, finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, LinearMap.sum_apply]`. Both sides reduce to the same expression.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hop_apply (ρ : Representation ℂ G V) (K : Subgroup G) (g : G) [Finite (K ⧸ stabK K g)] (v : V) :
     hop ρ K g v = ∑ᶠ q : K ⧸ stabK K g, ρ ((q.out : K) : G) (ρ g v) := by
@@ -108,9 +108,9 @@ theorem hop_apply (ρ : Representation ℂ G V) (K : Subgroup G) (g : G) [Finite
   rfl
 
 /- English proof (translation)
-Introduce `x h hh`. Establish `h1` using `(mem_fixed_iff.1 hv) _ (mem_stabK.1 hh)`. Establish `e : ρ (h : G) (ρ g v) = ρ g v`. Establish `: (h : G) * g = g * (g⁻¹ * (h : G) * g)` using `by group`. Rewrite using `[← Module.End.mul_apply, ← map_mul, this, map_mul, Module.End.mul_apply, h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.coe_mul, map_mul, Module.End.mul_apply, e]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem term_inv {ρ : Representation ℂ G V} {K : Subgroup G} {g : G} {v : V} (hv : v ∈ fixed ρ K) :
     ∀ (x : K), ∀ h ∈ stabK K g, ρ (((x * h : K)) : G) (ρ g v) = ρ (x : G) (ρ g v) := by
@@ -122,11 +122,11 @@ theorem term_inv {ρ : Representation ℂ G V} {K : Subgroup G} {g : G} {v : V} 
   rw [Subgroup.coe_mul, map_mul, Module.End.mul_apply, e]
 
 /- English proof (translation)
-Use `letI := Fintype.ofFinite (K ⧸ stabK K g)`. Rewrite using `[mem_fixed_iff]`. Introduce `k hk`. Rewrite using `[hop_apply, finsum_eq_sum_of_fintype, map_sum]`. Set `F : K → V` to `fun y => ρ (y : G) (ρ g v)`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hF : ∀ x, ∀ h ∈ stabK K g, F (x * h) = F x` using `term_inv hv`. Establish `step : ∀ q : K ⧸ stabK K g, ρ k (ρ ((q.out : K) : G) (ρ g v)) = F (((⟨k, hk⟩ : K) • q).out)`. Introduce `q`. Establish `hq : ((⟨k, hk⟩ : K) • q) = (((⟨k, hk⟩ : K) * q.out : K) : K ⧸ stabK K g)` using `by conv_lhs => rw [← QuotientGroup.out_eq' q]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Both sides reduce to the same expression.
 
-Rewrite using `[hq, out_mk_inv _ F hF]`. Simplify using `only [F, Subgroup.coe_mul, map_mul, Module.End.mul_apply]`. Simplify using `only [step]`. Conclude with `Equiv.sum_comp (MulAction.toPerm (⟨k, hk⟩ : K)) (fun q : K ⧸ stabK K g => F q.out)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hop_mem_fixed {ρ : Representation ℂ G V} {K : Subgroup G} {g : G} [Finite (K ⧸ stabK K g)] {v : V}
     (hv : v ∈ fixed ρ K) : hop ρ K g v ∈ fixed ρ K := by
@@ -153,9 +153,9 @@ def reps (K : Subgroup G) (g : G) [Fintype (K ⧸ stabK K g)] : Finset G :=
   Finset.image (fun q : K ⧸ stabK K g => ((q.out : K) : G) * g) Finset.univ
 
 /- English proof (translation)
-Rewrite using `[hop_apply, finsum_eq_sum_of_fintype, reps]`. Rewrite using `[Finset.sum_image]`. Simplify using `only [map_mul, Module.End.mul_apply]`. Introduce `a _ b _ hab`. Establish `: (a.out : K) = b.out` using `Subtype.ext (mul_right_cancel hab)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← QuotientGroup.out_eq' a, ← QuotientGroup.out_eq' b, this]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hop_eq_reps (ρ : Representation ℂ G V) (K : Subgroup G) (g : G) [Fintype (K ⧸ stabK K g)] (v : V) :
     hop ρ K g v = ∑ γ ∈ reps K g, ρ γ v := by
@@ -168,17 +168,17 @@ theorem hop_eq_reps (ρ : Representation ℂ G V) (K : Subgroup G) (g : G) [Fint
     rw [← QuotientGroup.out_eq' a, ← QuotientGroup.out_eq' b, this]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `γ hγ`. Unfold `reps at hγ`. Take `⟨q, -, rfl⟩` from `Finset.mem_image.1 hγ`. Conclude with `⟨_, (q.out : K).2, 1, K.one_mem, by rw [mul_one]⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `x ⟨k₁, hk₁, k₂, hk₂, rfl⟩`. Set `q : K ⧸ stabK K g` to `((⟨k₁, hk₁⟩ : K) : K ⧸ stabK K g)`. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul (stabK K g) (⟨k₁, hk₁⟩ : K)`. Establish `hhK : g⁻¹ * ((h : K) : G) * g ∈ K` using `mem_stabK.1 h.2`. Establish `hx1 : (((q.out : K) : G) * g)⁻¹ * (k₁ * g * k₂) ∈ K`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (((q.out : K) : G) * g)⁻¹ * (k₁ * g * k₂) = (g⁻¹ * ((h : K) : G) * g)⁻¹ * k₂`. Rewrite using `[show q.out = (⟨k₁, hk₁⟩ : K) * (h : K) from hh]`. Simplify using `only [Subgroup.coe_mul]`. Use `group`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `K.mul_mem (K.inv_mem hhK) hk₂`. Use `⟨((q.out : K) : G) * g, ⟨by unfold reps; exact Finset.mem_image.2 ⟨q, Finset.mem_univ _, rfl⟩, hx1⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `γ ⟨hγ, hγx⟩`. Unfold `reps at hγ`. Take `⟨q', -, rfl⟩` from `Finset.mem_image.1 hγ`.
+Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : g⁻¹ * (((q'.out : K)⁻¹ * q.out : K) : G) * g ∈ K`. Establish `e : g⁻¹ * (((q'.out : K)⁻¹ * q.out : K) : G) * g = ((((q'.out : K) : G) * g)⁻¹ * (k₁ * g * k₂)) * ((((q.out : K) : G) * g)⁻¹ * (k₁ * g * k₂))⁻¹`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv]`. Use `group`. Rewrite using `[e]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `K.mul_mem hγx (K.inv_mem hx1)`. Establish `hqq : q' = q`. Rewrite using `[← QuotientGroup.out_eq' q', ← QuotientGroup.out_eq' q]`. Conclude with `QuotientGroup.eq.2 (mem_stabK.2 hmem)`. Rewrite using `[hqq]`.
+A detailed English derivation is pending.
 -/
 theorem reps_spec (K : Subgroup G) (g : G) [Fintype (K ⧸ stabK K g)] :
     (∀ γ ∈ reps K g, ∃ k₁ ∈ K, ∃ k₂ ∈ K, γ = k₁ * g * k₂) ∧
@@ -217,13 +217,13 @@ theorem reps_spec (K : Subgroup G) (g : G) [Fintype (K ⧸ stabK K g)] :
     rw [hqq]
 
 /- English proof (translation)
-Set `f : G ⧸ J → V` to `fun c => ρ c.out x`. Establish `hf : ∀ g : G, f (g : G ⧸ J) = ρ g x` using `fun g => by`. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul J g`. Simplify using `only [f, hk, map_mul, Module.End.mul_apply, hx k k.2]`. Establish `key : ∀ A B : Finset G, ∑ γ ∈ A, ρ γ (∑ δ ∈ B, ρ δ x) = ∑ p ∈ A ×ˢ B, f ((p.1 * p.2 : G) : G ⧸ J)` using `fun A B => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_product]`. Simplify using `only [hf, map_sum, map_mul, Module.End.mul_apply]`. Rewrite using `[key, key]`. Set `T : Finset (G ⧸ J)` to `(R ×ˢ S).image (fun p => ((p.1 * p.2 : G) : G ⧸ J)) ∪ (S ×ˢ R).image (fun p => ((p.1 * p.2 : G) : G ⧸ J))`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to' (s := R ×ˢ S) (t := T) (g := fun p => ((p.1 * p.2 : G) : G ⧸ J)) (fun p hp => Finset.mem_union_left _ (Finset.mem_image_of_mem _ hp)) f, ← Finset.sum_fiberwise_of_maps_to' (s := S ×ˢ R) (t := T) (g := fun p => ((p.1 * p.2 : G) : G ⧸ J)) (fun p …`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_const, Finset.sum_const]`. Use `congr 1`. Apply `le_antisymm` to reduce the goal to its premises. Use `GlobalTheory.GelfandTrick.card_pairs_le J τ hmul hinv hdc hJ α β R S hR hR' hS hS' c` and compare the differences between its conclusion and the goal.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `GlobalTheory.GelfandTrick.card_pairs_le J τ hmul hinv hdc hJ β α S R hS hS' hR hR' c` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion.
 -/
 theorem comm_core (ρ : Representation ℂ G V) (J : Subgroup G) (τ : G → G) (hmul : ∀ a b, τ (a * b) = τ b * τ a)
     (hinv : ∀ a, τ (τ a) = a) (hdc : ∀ g : G, ∃ k₁ ∈ J, ∃ k₂ ∈ J, τ g = k₁ * g * k₂) (hJ : ∀ k ∈ J, τ k ∈ J)
@@ -264,9 +264,9 @@ def GelPair (K : Subgroup G) : Prop :=
       (∀ g : G, ∃ k₁ ∈ K, ∃ k₂ ∈ K, τ g = k₁ * g * k₂) ∧ ∀ k ∈ K, τ k ∈ K
 
 /- English proof (translation)
-Take `⟨hfin, τ, hmul, hinv, hdc, hτK⟩` from `hK`. Use `haveI := finiteIndex_stabK (hfin g)`. Use `haveI := finiteIndex_stabK (hfin h)`. Use `letI := Fintype.ofFinite (K ⧸ stabK K g)`. Use `letI := Fintype.ofFinite (K ⧸ stabK K h)`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [hop_eq_reps]`. Take `⟨a1, a2⟩` from `reps_spec K g`. Take `⟨b1, b2⟩` from `reps_spec K h`. Conclude with `comm_core ρ K τ hmul hinv hdc hτK g h _ _ a1 a2 b1 b2 v (mem_fixed_iff.1 hv)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem hop_comm {K : Subgroup G} (hK : GelPair K) (ρ : Representation ℂ G V) (g h : G) {v : V}
     (hv : v ∈ fixed ρ K) : hop ρ K g (hop ρ K h v) = hop ρ K h (hop ρ K g v) := by
@@ -281,36 +281,32 @@ theorem hop_comm {K : Subgroup G} (hK : GelPair K) (ρ : Representation ℂ G V)
   exact comm_core ρ K τ hmul hinv hdc hτK g h _ _ a1 a2 b1 b2 v (mem_fixed_iff.1 hv)
 
 /- English proof (translation)
-Use `haveI := finiteIndex_stabK (hK.1 g)`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem finite_quot {K : Subgroup G} (hK : GelPair K) (g : G) : Finite (K ⧸ stabK K g) := by
   haveI := finiteIndex_stabK (hK.1 g)
   infer_instance
 
 /- English proof (translation)
-Take `⟨-, hirr'⟩` from `(GlobalTheory.CuspRep.isIrreducible_iff ρ).1 hirr`. Set `W' : Submodule ℂ V` to `W.map (fixed ρ K).subtype`. Set `U : Submodule ℂ V` to `Submodule.span ℂ {y | ∃ g : G, ∃ w ∈ W', y = ρ g w}`. Establish `hU : ∀ g, ∀ v ∈ U, ρ g v ∈ U`. Introduce `g v hv`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: U ≤ U.comap (ρ g)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `y ⟨g', w, hw, rfl⟩`. Use `Submodule.subset_span ⟨g * g', w, hw, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, Module.End.mul_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this hv`. Take `⟨w0, hw0, hw0ne⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hW`. Establish `hUne : U ≠ ⊥`. Introduce `hb`. Establish `: ((w0 : fixed ρ K) : V) ∈ U` using `Submodule.subset_span ⟨1, _, Submodule.mem_map_of_mem hw0, by simp⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hb, Submodule.mem_bot]`. Conclude with `hw0ne (Subtype.ext this)`. Establish `hUtop : U = ⊤` using `(hirr' U hU).resolve_left hUne`. Rewrite using `[eq_top_iff]`. Introduce `x _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hxU : (x : V) ∈ U` using `hUtop ▸ Submodule.mem_top`. Take `⟨n, c, s, hs⟩` from `Submodule.mem_span_set'.1 hxU`. Establish `hch : ∀ i, ∃ g : G, ∃ w ∈ W', (s i : V) = ρ g w` using `fun i => (s i).2`. Use `choose gs ws hws hgw using hch`. Use `haveI : ∀ i, (stabK K (gs i)).FiniteIndex := fun i => finiteIndex_stabK (hK.1 (gs i))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `K' : Subgroup K` to `⨅ i, stabK K (gs i)`. Use `haveI : K'.FiniteIndex := Subgroup.finiteIndex_iInf (fun i => inferInstance)`. Use `letI := Fintype.ofFinite (K ⧸ K')`. Set `P : V →ₗ[ℂ] V` to `∑ q : K ⧸ K', ρ ((q.out : K) : G)`. Establish `hPx : P x = (Fintype.card (K ⧸ K')) • (x : V)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [P, LinearMap.sum_apply, (mem_fixed_iff.1 x.2) _ (Subtype.coe_prop _), Finset.sum_const, Finset.card_univ]`. Establish `hPs : ∀ i, P (ρ (gs i) (ws i)) ∈ W'`. Introduce `i`. Take `⟨u, hu, hue⟩` from `Submodule.mem_map.1 (hws i)`. Establish `hwf : ws i ∈ fixed ρ K` using `hue ▸ u.2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Finite (K ⧸ stabK K (gs i)) := inferInstance`. Establish `hle : K' ≤ stabK K (gs i)` using `iInf_le _ i`. Establish `h1 : P (ρ (gs i) (ws i)) = ∑ᶠ q : K ⧸ K', ρ ((q.out : K) : G) (ρ (gs i) (ws i))`. Rewrite using `[finsum_eq_sum_of_fintype]`. Simplify using `only [P, LinearMap.sum_apply]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h1, finsum_refine K' (stabK K (gs i)) hle (fun y : K => ρ (y : G) (ρ (gs i) (ws i))) (term_inv hwf), ← hop_apply]`. Use `W'.smul_of_tower_mem _ ?_` and prove the remaining obligations. Use `Submodule.mem_map.2 ⟨⟨hop ρ K (gs i) (ws i), hop_mem_fixed hwf⟩, hst (gs i) u hu _ (by show hop ρ K (gs i) (ws i) = hop ρ K (gs i) u; rw [← hue]; rfl), rfl⟩` and prove the remaining obligations. Establish `hsum : P x ∈ W'`. Rewrite using `[← hs, map_sum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `W'.sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hgw i]`. Conclude with `W'.smul_mem _ (hPs i)`. Rewrite `hsum` using `[hPx]`. Establish `hcard : (Fintype.card (K ⧸ K') : ℂ) ≠ 0`.
-
-Conclude with `Fintype.card_ne_zero` after adjusting the coercions. Establish `hx' : (x : V) ∈ W'`. Use `W'.smul_mem ((Fintype.card (K ⧸ K') : ℂ)⁻¹) hsum` as an intermediate fact. Rewrite `this` using `[← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hcard, one_smul]`. Then use the resulting hypothesis. Take `⟨y, hy, hyx⟩` from `Submodule.mem_map.1 hx'`.
-
-Establish `: y = x` using `Subtype.ext hyx`. Rewrite using `[← this]` and apply the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem fixed_simple {K : Subgroup G} (hK : GelPair K) (ρ : Representation ℂ G V) (hirr : ρ.IsIrreducible)
     (W : Submodule ℂ (fixed ρ K)) (hW : W ≠ ⊥)
@@ -379,21 +375,21 @@ theorem fixed_simple {K : Subgroup G} (hK : GelPair K) (ρ : Representation ℂ 
   rwa [← this]
 
 /- English proof (translation)
-Use `haveI : Nontrivial (fixed ρ K) := (Submodule.nontrivial_iff_ne_bot).2 hne`. Use `haveI : ∀ g, Finite (K ⧸ stabK K g) := finite_quot hK`. Set `T : G → Module.End ℂ (fixed ρ K)` to `fun g => (hop ρ K g).restrict fun _ hv => hop_mem_fixed hv`. Establish `hT : ∀ g (x : fixed ρ K), ((T g x : fixed ρ K) : V) = hop ρ K g x` using `fun _ _ => rfl`. Establish `hscal : ∀ g : G, ∃ c : ℂ, ∀ x : fixed ρ K, T g x = c • x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `g`. Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue (T g)`. Take `⟨v, hv⟩` from `hc.exists_hasEigenvector`. Set `E : Submodule ℂ (fixed ρ K)` to `LinearMap.ker (T g - c • 1)`. Establish `hmemE : ∀ w, w ∈ E ↔ T g w = c • w` using `fun w => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [E, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]`. Establish `hvE : v ∈ E` using `(hmemE v).2 hv.apply_eq_smul`. Establish `hEne : E ≠ ⊥` using `fun hb => hv.2 (by rw [hb] at hvE; exact (Submodule.mem_bot ℂ).1 hvE)`. Establish `hEst : ∀ h : G, ∀ w : fixed ρ K, w ∈ E → ∀ y : fixed ρ K, (y : V) = hop ρ K h w → y ∈ E`. Introduce `h w hw y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `hw`, the goal using `[hmemE]`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hw' : hop ρ K g (w : V) = c • (w : V)` using `by rw [← hT]; exact congrArg Subtype.val hw`. Rewrite using `[hT, hy, Submodule.coe_smul, hy, hop_comm hK ρ g h w.2, hw', map_smul]`. Establish `hEtop` using `fixed_simple hK ρ hirr E hEne hEst`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨c, fun x => ?_⟩` and prove the remaining obligations. Establish `hx : x ∈ E` using `hEtop ▸ Submodule.mem_top`. Conclude with `(hmemE x).1 hx`. Take `⟨x0, hx0⟩` from `exists_ne (0 : fixed ρ K)`. Set `L : Submodule ℂ (fixed ρ K)` to `ℂ ∙ x0`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hLne : L ≠ ⊥`. Introduce `hb`. Establish `: x0 ∈ L` using `Submodule.mem_span_singleton_self x0`. Rewrite `this` using `[hb, Submodule.mem_bot]`. Conclude with `hx0 this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hLst : ∀ h : G, ∀ w : fixed ρ K, w ∈ L → ∀ y : fixed ρ K, (y : V) = hop ρ K h w → y ∈ L`. Introduce `h w hw y hy`. Take `⟨c, hc⟩` from `hscal h`. Establish `: y = c • w`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy, ← hT, hc]`. Rewrite using `[this]`. Conclude with `L.smul_mem c hw`. Establish `hLtop` using `fixed_simple hK ρ hirr L hLne hLst`. Rewrite using `[← finrank_top ℂ (fixed ρ K), ← hLtop, finrank_span_singleton hx0]`.
+A detailed English derivation is pending.
 -/
 theorem finrank_fixed_eq_one {K : Subgroup G} (hK : GelPair K) (ρ : Representation ℂ G V)
     (hirr : ρ.IsIrreducible) (hne : fixed ρ K ≠ ⊥) [FiniteDimensional ℂ (fixed ρ K)] :

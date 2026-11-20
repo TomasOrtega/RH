@@ -15,16 +15,16 @@ def LocGen : Prop := ∀ (q : ℕ) (j : ℤ) (X : Scheme.{0}) (ζ : Prim q Γ(X,
     ∃ c : ℤ, Sec.res f x = c • twGen j (ζ.map f.appTop.hom)
 
 /- English proof (translation)
-The claim follows from `Sheaf.isSeparated (tw q j) X S hS s t (fun _ f hf => h f hf)`.
+A detailed English derivation is pending.
 -/
 theorem sep {q : ℕ} {j : ℤ} {X : Scheme.{0}} (S : Sieve X) (hS : S ∈ Scheme.etaleTopology X) (s t : Sec (tw q j) X)
     (h : ∀ ⦃Y : Scheme.{0}⦄ (f : Y ⟶ X), S f → Sec.res f s = Sec.res f t) : s = t :=
   Sheaf.isSeparated (tw q j) X S hS s t (fun _ f hf => h f hf)
 
 /- English proof (translation)
-Unfold `twGen ofRings.sec`. Establish `hmem : Finsupp.single ξ (1 : ULift.{1} (ZMod q)) - Finsupp.single ζ (ULift.up ((a ^ m : (ZMod q)ˣ) : ZMod q)) ∈ twRel q m Γ(U, ⊤)` using `Submodule.subset_span ⟨ζ, ξ, a, h, rfl⟩`. Establish `key : (Submodule.Quotient.mk (Finsupp.single ξ 1) : (twF q m).obj Γ(U, ⊤)) = (ULift.up.{1} ((a ^ m : (ZMod q)ˣ) : ZMod q)) • (Submodule.Quotient.mk (Finsupp.single ζ 1) : (twF q m).obj Γ(U, ⊤))`. Use `((Submodule.Quotient.eq (twRel q m Γ(U, ⊤))).2 hmem).trans ?_` and prove the remaining obligations. Rewrite using `[← Submodule.Quotient.mk_smul, Finsupp.smul_single, smul_eq_mul, mul_one]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg (fun v => ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ twF q m)).app (op U)).hom v) key).trans (map_smul _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem twGen_pow {q : ℕ} (m : ℤ) {U : Scheme.{0}} (ζ ξ : Prim q Γ(U, ⊤)) (a : (ZMod q)ˣ) (h : ξ.1 = ζ.1 ^ (a : ZMod q).val) :
     twGen m ξ = (ULift.up.{1} ((a ^ m : (ZMod q)ˣ) : ZMod q)) • twGen m ζ := by
@@ -38,7 +38,7 @@ theorem twGen_pow {q : ℕ} (m : ℤ) {U : Scheme.{0}} (ζ ξ : Prim q Γ(U, ⊤
   exact (congrArg (fun v => ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ twF q m)).app (op U)).hom v) key).trans (map_smul _ _ _)
 
 /- English proof (translation)
-Use `⟨_, Presheaf.imageSieve_mem (J := Scheme.etaleTopology) (toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ twF q j)) (U := op X) x, fun Y f hf => ?_⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `hf`. Conclude with `⟨t, ht.symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem locPres {q : ℕ} {j : ℤ} {X : Scheme.{0}} (x : Sec (tw q j) X) :
     ∃ S ∈ Scheme.etaleTopology X, ∀ ⦃Y : Scheme.{0}⦄ (f : Y ⟶ X), S f →
@@ -53,7 +53,7 @@ def RootPow : Prop := ∀ (q : ℕ) (Y : Scheme.{0}) (ζ : Prim q Γ(Y, ⊤)) (s
     ∃ a : (ZMod q)ˣ, (ξ.map g.appTop.hom).1 = (ζ.map g.appTop.hom).1 ^ (a : ZMod q).val
 
 /- English proof (translation)
-Unfold `ofRings.sec`. Establish `h` using `congrArg (fun φ => φ.hom v) ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ twF q j)).naturality g.op)`. Simplify using `only [ModuleCat.hom_comp, LinearMap.coe_comp] at h`. Conclude with `h.symm`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem secRes {q : ℕ} {j : ℤ} {V U : Scheme.{0}} (g : V ⟶ U) (v : (twF q j).obj Γ(U, ⊤)) :
     Sec.res g (ofRings.sec (twF q j) U v) = ofRings.sec (twF q j) V (((twF q j).map g.appTop).hom v) := by
@@ -63,7 +63,7 @@ theorem secRes {q : ℕ} {j : ℤ} {V U : Scheme.{0}} (g : V ⟶ U) (v : (twF q 
   exact h.symm
 
 /- English proof (translation)
-Unfold `twGen ofRings.sec`. Establish `key : (Submodule.Quotient.mk (Finsupp.single ξ c) : (twF q j).obj Γ(U, ⊤)) = c • (Submodule.Quotient.mk (Finsupp.single ξ 1) : (twF q j).obj Γ(U, ⊤))`. Rewrite using `[← Submodule.Quotient.mk_smul, Finsupp.smul_single, smul_eq_mul, mul_one]`. Conclude with `(congrArg (fun v => ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ twF q j)).app (op U)).hom v) key).trans (map_smul _ _ _)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sec_single {q : ℕ} {j : ℤ} {U : Scheme.{0}} (ξ : Prim q Γ(U, ⊤)) (c : ULift.{1} (ZMod q)) :
     ofRings.sec (twF q j) U (Submodule.Quotient.mk (Finsupp.single ξ c) : (twF q j).obj Γ(U, ⊤)) = c • twGen j ξ := by
@@ -74,7 +74,7 @@ theorem sec_single {q : ℕ} {j : ℤ} {U : Scheme.{0}} (ξ : Prim q Γ(U, ⊤))
   exact (congrArg (fun v => ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ twF q j)).app (op U)).hom v) key).trans (map_smul _ _ _)
 
 /- English proof (translation)
-Establish `hc : c = (((c.down.cast : ℤ)) : ULift.{1} (ZMod q))` using `ULift.ext _ _ (by show c.down = ((c.down.cast : ℤ) : ULift.{1} (ZMod q)).down`. Conclude with `(ZMod.intCast_zmod_cast c.down).symm)`. Use `conv_lhs => rw [hc]`. Conclude with `Int.cast_smul_eq_zsmul _ _ _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ulift_smul_eq {q : ℕ} {M : Type*} [AddCommGroup M] [Module (ULift.{1} (ZMod q)) M] (c : ULift.{1} (ZMod q)) (v : M) :
     c • v = ((c.down.cast : ℤ)) • v := by
@@ -85,7 +85,7 @@ theorem ulift_smul_eq {q : ℕ} {M : Type*} [AddCommGroup M] [Module (ULift.{1} 
   exact Int.cast_smul_eq_zsmul _ _ _
 
 /- English proof (translation)
-Unfold `ofRings.sec`. Conclude with `map_sum _ _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem sec_sum {q : ℕ} {j : ℤ} {U : Scheme.{0}} {ι : Type} (s : Finset ι) (g : ι → (twF q j).obj Γ(U, ⊤)) :
     ofRings.sec (twF q j) U (∑ i ∈ s, g i) = ∑ i ∈ s, ofRings.sec (twF q j) U (g i) := by
@@ -93,19 +93,17 @@ theorem sec_sum {q : ℕ} {j : ℤ} {U : Scheme.{0}} {ι : Type} (s : Finset ι)
   exact map_sum _ _ _
 
 /- English proof (translation)
-Introduce `q j X ζ x`. Take `⟨S, hS, hv⟩` from `locPres x`. Establish `hv' : ∀ ⦃Y : Scheme.{0}⦄ (f : Y ⟶ X), S f → ∃ w : Prim q Γ(Y, ⊤) →₀ ULift.{1} (ZMod q), Sec.res f x = ofRings.sec (twF q j) Y (Submodule.Quotient.mk w : (twF q j).obj Γ(Y, ⊤))`. Introduce `Y f hf`. Take `⟨v, hv⟩` from `hv f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨w, rfl⟩` from `Submodule.Quotient.mk_surjective _ v`. Conclude with `⟨w, hv⟩`. Use `choose w hw using hv'`. Establish `hT` using `fun ⦃Y : Scheme.{0}⦄ (f : Y ⟶ X) (hf : S f) => hR q Y (ζ.map f.appTop.hom) (w f hf).support`. Use `choose T hTmem hTprop using hT`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨Sieve.bind S.arrows T, Scheme.etaleTopology.bind_covering hS hTmem, ?_⟩` and prove the remaining obligations. Introduce and unpack `Z _ ⟨Y, h, f, hf, hh, rfl⟩`. Establish `hres : Sec.res (h ≫ f) x = Sec.res h (Sec.res f x)`. Simplify using `only [Sec.res, op_comp, Functor.map_comp, ModuleCat.hom_comp, LinearMap.coe_comp, Function.comp_apply]`. Rewrite using `[hres, hw f hf]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `erw [secRes]`. Use `set G := twGen j (ζ.map (h ≫ f).appTop.hom)`. Establish `hmk : (((twF q j).map h.appTop).hom (Submodule.Quotient.mk (w f hf) : (twF q j).obj Γ(Y, ⊤))) = ∑ ξ ∈ (w f hf).support, (Submodule.Quotient.mk (Finsupp.single (ξ.map h.appTop.hom) (w f hf ξ)) : (twF q j).obj Γ(Z, ⊤))`. Express the relevant statement in the definitionally equal form `(Submodule.Quotient.mk (Finsupp.mapDomain (Prim.map h.appTop.hom) (w f hf)) : (twF q j).obj Γ(Z, ⊤)) = _`. Rewrite using `[Finsupp.mapDomain, Finsupp.sum, ← Submodule.mkQ_apply, map_sum]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Rewrite using `[hmk]`. Use `erw [sec_sum]`. Establish `key : ∃ c : ULift.{1} (ZMod q), ∑ ξ ∈ (w f hf).support, ofRings.sec (twF q j) Z (Submodule.Quotient.mk (Finsupp.single (ξ.map h.appTop.hom) (w f hf ξ)) : (twF q j).obj Γ(Z, ⊤)) = c • G`. Use `Finset.sum_induction _ (fun v => ∃ c : ULift.{1} (ZMod q), v = c • G) ?_ ⟨0, by simp⟩ ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ _ ⟨c, rfl⟩ ⟨d, rfl⟩`. Conclude with `⟨c + d, (add_smul c d G).symm⟩`. Introduce `ξ hξ`. Take `⟨a, ha⟩` from `hTprop f hf h hh ξ hξ`. Rewrite using `[sec_single, twGen_pow j _ _ a ha, LateralTheory.E.TwistTrivial.prim_map_comp, smul_smul]`.
-
-Conclude with `⟨_, rfl⟩`. Take `⟨c, hc⟩` from `key`. Conclude with `⟨_, hc.trans (ulift_smul_eq c G)⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem LocGen_of (hR : RootPow) : LocGen := by
   intro q j X ζ x
@@ -146,9 +144,9 @@ theorem LocGen_of (hR : RootPow) : LocGen := by
   exact ⟨_, hc.trans (ulift_smul_eq c G)⟩
 
 /- English proof (translation)
-Introduce `q`. Take `⟨μ, hnat, hgen⟩` from `hG q`. Use `⟨μ, hnat, ?_⟩` and prove the remaining obligations. Introduce `j k l k' h h' X ζ x`. Take `⟨S, hS, hx⟩` from `hL q j X ζ x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `sep S hS _ _ (fun Y f hf => ?_)` and prove the remaining obligations. Take `⟨c, hc⟩` from `hx f hf`. Rewrite using `[hnat, hnat, LateralTheory.E.TwistTrivial.genRes, LateralTheory.E.TwistTrivial.genRes, hc, map_zsmul, hgen, map_zsmul, hgen]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem Mul_of (hG : Gen) (hL : LocGen) : LateralTheory.E.TwistTrivial.Mul := by
   intro q

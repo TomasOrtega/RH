@@ -15,7 +15,7 @@ open scoped ContDiff Real Topology
 namespace GlobalTheory.BcUnique
 
 /- English proof (translation)
-Use `conv_lhs => rw [← (bas m).sum_repr a]`. Rewrite using `[← Algebra.smul_def]`. Simplify using `only [dens, map_sum, map_smul, Finsupp.smul_apply, Finsupp.finsetSum_apply, smul_eq_mul, Finset.sum_div, mul_div_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dens_mul_pull {n m : ℕ} (L : V n →L[ℂ] V m) (c : ℂ) (a : Alt m) :
     dens (algebraMap ℂ (Alt n) c * pull L a) = c * ∑ S, (bas m).repr a S * dens (pull L (bas m S)) := by
@@ -25,25 +25,21 @@ theorem dens_mul_pull {n m : ℕ} (L : V n →L[ℂ] V m) (c : ℂ) (a : Alt m) 
     mul_div_assoc]
 
 /- English proof (translation)
-Introduce `M _ _ _ _ _ _ A α hα χ j hχ hs`. Establish `hK : IsCompact (tsupport χ)` using `(isClosed_tsupport χ).isCompact`. Use `set h : OnePoint ℂ → V 1 → ℝ := fun t v => (dens (A.loc (A.fn χ * (famAtlas A).pullback A (fib t) α) j v)).re with hh`. Establish `h0 : ∀ t, ∀ x : A.Pt, x.pt ∉ tsupport χ → (A.fn χ * (famAtlas A).pullback A (fib t) α) x = 0`. Introduce `t x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.mul_apply, HolAtlas.fn, image_eq_zero_of_notMem_tsupport hx]`. Simplify using the standard rewrite rules. Establish `e : (fun t : OnePoint ℂ => A.integral (A.fn χ * (famAtlas A).pullback A (fib t) α)) = fun t => ∫ v, h t v`. Use function extensionality and compare the values at `t`. Conclude with `A.integral_eq_integral_chart_of_support _ j _ (GlobalTheory.T.isForm_mul_of_isForm_of_isForm A _ _ (A.isForm_fn hχ) (GlobalTheory.PullbackForm.isForm_pullback _ _ _ _ _ _ _ _ (isHolo_fib A t) hα)) hK hs (h0 t)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Establish `hBc : IsCompact (A.e j '' tsupport χ)` using `hK.image_of_continuousOn ((A.e j).continuousOn.mono hs)`. Establish `hBt : A.e j '' tsupport χ ⊆ (A.e j).target`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `(A.e j).map_source (hs hy)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hH0 : ∀ t, ∀ v ∉ A.e j '' tsupport χ, h t v = 0`. Introduce `t v hv`. Distinguish the cases in `ht : v ∈ (A.e j).target`. Establish `hnK : (A.e j).symm v ∉ tsupport χ` using `fun hk => hv ⟨_, hk, (A.e j).right_inv ht⟩`. Simplify using `only [hh, HolAtlas.loc, dif_pos ht]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `erw [h0 t ⟨(j, (A.e j).symm v), (A.e j).map_target ht⟩ hnK]`. Simplify using `[dens]`. Simplify using `[hh, HolAtlas.loc, ht, dens]`. Use `continuous_iff_continuousAt.2 fun t₀ => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `sphere.cover t₀`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `ContinuousOn.continuousAt (s := (sphere.e k).source) ?_ ((sphere.e k).open_source.mem_nhds hk)` and prove the remaining obligations. Use `continuousOn_integral_of_compact_support hBc ?_ fun t v _ hv => hH0 t v hv` and prove the remaining obligations. Establish `hform : ∀ p ∈ (sphere.e k).source ×ˢ (A.e j).target, Function.uncurry h p = ((χ ((A.e j).symm p.2) : ℂ) * ∑ S, (bas (1 + 1)).repr ((famAtlas A).loc α (j, k) (appendV 1 1 (p.2, sphere.e k p.1))) S * dens (pull headIn (bas (1 + 1) S))).re`. Introduce and unpack `⟨t, v⟩ ⟨ht, hv⟩`. Rewrite using `[← dens_mul_pull, ← GlobalTheory.T.fibre_pullback_form_local_coordinates M A α hα j k t ht v]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Function.uncurry, hh, HolAtlas.loc, dif_pos hv]`. Both sides reduce to the same expression. Establish `hcon : ContinuousOn (Function.uncurry h) ((sphere.e k).source ×ˢ (A.e j).target)`. Use `ContinuousOn.congr ?_ hform` and prove the remaining obligations. Use `Complex.continuous_re.comp_continuousOn (ContinuousOn.mul ?_ (continuousOn_finset_sum _ fun S _ => ContinuousOn.mul ?_ continuousOn_const))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Conclude with `(hχ j).continuousOn.comp continuousOn_snd fun p hp => ⟨hp.2, trivial⟩`. Use `(hα.smooth (j, k) S).continuousOn.comp (f := fun p : OnePoint ℂ × V 1 => appendV 1 1 (p.2, sphere.e k p.1)) ?_ fun p hp => ?_` and prove the remaining obligations. Conclude with `(appendV 1 1).continuous.comp_continuousOn (continuousOn_snd.prodMk ((sphere.e k).continuousOn.comp continuousOn_fst fun p hp => hp.1))`. Conclude with `(appendV_mem_famAtlas_target A j k _ _).2 ⟨hp.2, (sphere.e k).map_source hp.1⟩`. Introduce and unpack `⟨t, v⟩ ⟨ht, -⟩`.
-
-Use `ContinuousAt.continuousWithinAt ?_` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ (A.e j).target`. Conclude with `hcon.continuousAt (((sphere.e k).open_source.prod (A.e j).open_target).mem_nhds ⟨ht, hv⟩)`. Establish `: Function.uncurry h =ᶠ[𝓝 (t, v)] fun _ => 0` using `by filter_upwards [(hBc.isClosed.isOpen_compl.preimage continuous_snd).mem_nhds (show (t, v) ∈ _ from fun h' => hv (hBt h'))] with w hw`. Conclude with `hH0 w.1 w.2 hw`.
-
-Conclude with `continuousAt_const.congr this.symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_integral_fib : ∀ (M : Type) [TopologicalSpace M] [T2Space M] [SecondCountableTopology M] [CompactSpace M] [MeasurableSpace M] [BorelSpace M] (A : HolAtlas M 1) (α : (famAtlas A).Fld), (famAtlas A).IsForm α → ∀ (χ : M → ℝ) (j : A.ι), A.SmoothOn univ (fun y => (χ y : ℂ)) → tsupport χ ⊆ (A.e j).source → Continuous fun t : OnePoint ℂ => A.integral (A.fn χ * (famAtlas A).pullback A (fib t) α) := by
   intro M _ _ _ _ _ _ A α hα χ j hχ hs

@@ -23,7 +23,7 @@ variable {D : D7}
 def epsP (P : Finset (Formalism.L2.DIV.Pl D.host.E)) : AF D.host.F := ∑ PP ∈ P, sA (belowPl PP) 1
 
 /- English proof (translation)
-The claim follows from `algebraMap_AE_eq_zero (D := D) (by rw [map_mul]; exact phiE_orth h)`.
+A detailed English derivation is pending.
 -/
 theorem sA_orth' {v w : HeightOneSpectrum (𝓞 D.host.F)} (h : v ≠ w) :
     sA v (1 : v.adicCompletion D.host.F) * sA w (1 : w.adicCompletion D.host.F) = 0 :=
@@ -34,7 +34,7 @@ section Sum
 variable {P : Finset (Formalism.L2.DIV.Pl D.host.E)} {e : AE D} {es : Formalism.L2.DIV.Pl D.host.E → AE D}
 
 /- English proof (translation)
-Rewrite using `[epsP, map_sum, he, map_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun PP hPP => (below_of_idemAt (hes PP hPP)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algebraMap_epsP (hes : ∀ PP ∈ P, Formalism.L2.NTheta.IsIdemAt (es PP) PP) (he : e = ∑ PP ∈ P, es PP) :
     algebraMap (AF D.host.F) (AE D) (epsP P) = e + cA D e := by
@@ -43,7 +43,7 @@ theorem algebraMap_epsP (hes : ∀ PP ∈ P, Formalism.L2.NTheta.IsIdemAt (es PP
 
 open Classical in
 /- English proof (translation)
-Rewrite using `[epsP, Finset.mul_sum]`. Use `Finset.sum_eq_zero fun PP hPP => sA_orth' fun hv => ?_` and prove the remaining obligations. Use `idemSum_below_inj hes he hc (hsub (Finset.mem_insert_self a A)) (hsub (Finset.mem_insert_of_mem hPP)) hv` as an intermediate fact. Conclude with `ha (this ▸ hPP)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem single_one_mul_idempotent_eq_zero_of_notMem (hes : ∀ PP ∈ P, Formalism.L2.NTheta.IsIdemAt (es PP) PP) (he : e = ∑ PP ∈ P, es PP)
     (hc : e * cA D e = 0) {a : Formalism.L2.DIV.Pl D.host.E} {A : Finset (Formalism.L2.DIV.Pl D.host.E)} (ha : a ∉ A)
@@ -54,9 +54,9 @@ theorem single_one_mul_idempotent_eq_zero_of_notMem (hes : ∀ PP ∈ P, Formali
   exact ha (this ▸ hPP)
 
 /- English proof (translation)
-Introduce `A`. Proceed by induction on `A using Finset.induction_on with`. Consider the case `empty => intro _`. Simplify using `[epsP, IsIdempotentElem]`. Consider the case `insert a A ha ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `hsub`. Rewrite using `[epsP, Finset.sum_insert ha]`. Conclude with `isIdem_add_orth (sA_idem _) (ih ((Finset.subset_insert a A).trans hsub)) (single_one_mul_idempotent_eq_zero_of_notMem hes he hc ha hsub)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIdempotentElem_placeIdempotent (hes : ∀ PP ∈ P, Formalism.L2.NTheta.IsIdemAt (es PP) PP) (he : e = ∑ PP ∈ P, es PP)
     (hc : e * cA D e = 0) : ∀ A : Finset (Formalism.L2.DIV.Pl D.host.E), A ⊆ P → IsIdempotentElem (epsP A) := by
@@ -88,7 +88,7 @@ def facAt (χS χT : (AE D)ˣ →* Circle) (es : Formalism.L2.DIV.Pl D.host.E �
 end Chain
 
 /- English proof (translation)
-The claim follows from `vacFixOff_of hSL hPM hSOI fun _ _ _ _ _ _ _ _ hfS hfT _ _ _ _ hg hh t => actO_mem_latAll_iff hfS hfT hg hh t`.
+A detailed English derivation is pending.
 -/
 theorem vacFixOff (hSL : SplitLin D) (hPM : PlaceModelAt D) (hSOI : SplitOrInert D) : VacFixOffO D :=
   vacFixOff_of hSL hPM hSOI fun _ _ _ _ _ _ _ _ hfS hfT _ _ _ _ hg hh t => actO_mem_latAll_iff hfS hfT hg hh t

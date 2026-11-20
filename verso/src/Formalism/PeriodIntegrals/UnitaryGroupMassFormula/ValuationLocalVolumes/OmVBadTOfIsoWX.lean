@@ -11,7 +11,7 @@ open Formalism.L2.SG.Pf.NcVal.OmVSt Formalism.BasicNotions Formalism.L2.SG.HidaS
 variable {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (ψ : AddChar (AF X.B.I.F) ℂ)
 
 /- English proof (translation)
-The claim follows from `omVBadT_of_iso X u' ψ hStd hLat hGram (fun v hv => isoExt_of _ _ _ _ _ _ _ (hIso v hv)) hLI hRed hFI hFS`.
+A detailed English derivation is pending.
 -/
 theorem omVBadT_of_isoW (hStd : OmVStd X ψ) (hLat : OmVLat X) (hGram : OmVGram X u')
     (hIso : ∀ v : PlX X, ((Tw u' : ℕ) : 𝓞 X.B.I.F) ∈ v.asIdeal →
@@ -24,7 +24,7 @@ theorem omVBadT_of_isoW (hStd : OmVStd X ψ) (hLat : OmVLat X) (hGram : OmVGram 
   omVBadT_of_iso X u' ψ hStd hLat hGram (fun v hv => isoExt_of _ _ _ _ _ _ _ (hIso v hv)) hLI hRed hFI hFS
 
 /- English proof (translation)
-The claim follows from `omVBadT_of_isoW X u' ψ hStd hLat hGram hIso hLI hRed hFI hFS`.
+A detailed English derivation is pending.
 -/
 theorem omVBadT_of_isoWX (hStd : Formalism.L2.SG.Pf.NcX.OmVSt.OmVStd X ψ) (hLat : Formalism.L2.SG.Pf.NcX.OmVSt.OmVLat X)
     (hGram : Formalism.L2.SG.Pf.NcX.OmVSt.OmVGram X u')

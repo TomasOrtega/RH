@@ -18,7 +18,7 @@ namespace GlobalTheory.ChowRigid
 open GlobalTheory.Spread
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_factor_through_integral_subalgebra K B E i hι hint T p t ht`.
+A detailed English derivation is pending.
 -/
 theorem factor_finite (K B E : Type) [Field K] [CommRing B] [CommRing E] [Algebra K B] [Algebra K E]
     (i : E →ₐ[K] B) (hι : Function.Injective i) (hint : ∀ b : B, _root_.IsIntegral K b → b ∈ i.range)
@@ -27,11 +27,11 @@ theorem factor_finite (K B E : Type) [Field K] [CommRing B] [CommRing E] [Algebr
   GlobalTheory.T.exists_factor_through_integral_subalgebra K B E i hι hint T p t ht
 
 /- English proof (translation)
-Use `hA.comm` as an intermediate fact. Use `hA.smooth` as an intermediate fact. Use `hA.proper` as an intermediate fact. Establish `hu : IsUnit ((n : Γ(Sp K, ⊤)))`. Establish `: IsUnit (n : K)` using `(Nat.cast_ne_zero.mpr hn.ne').isUnit`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this.map (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom`. Use `GlobalTheory.GrpTangent.isFinite_torsion A hu` as an intermediate fact. Take `⟨hη1, huniv⟩` from `GlobalTheory.LamF.torsion_universal A n`. Take `⟨w, hw⟩` from `huniv T y hy`. Take `⟨u, hu1, hu2⟩` from `factor_finite K B E i hι hint (torsion A n).left (torsion A n).hom (t ≫ w.left) (by rw [Category.assoc, Over.w w, ht])`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨Over.homMk u hu1 ≫ torsion.ι A n, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← comp_pow, hη1, comp_one]`. Rewrite using `[← hw, Over.comp_left, ← Category.assoc, hu2, Over.comp_left, Category.assoc]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem torsion_factor (K : Type) [Field K] [CharZero K] (A : Over (Sp K)) [GrpObj A] (hA : IsAbelianScheme A)
     (n : ℕ) (hn : 0 < n) (B E : Type) [CommRing B] [CommRing E] [Algebra K B] [Algebra K E]
@@ -54,37 +54,35 @@ theorem torsion_factor (K : Type) [Field K] [CharZero K] (A : Over (Sp K)) [GrpO
     rfl
 
 /- English proof (translation)
-Establish `hι : Function.Injective i` using `fun a b h => Subtype.ext (by rw [← hji a, ← hji b, h])`. Establish `hint : ∀ s : S, _root_.IsIntegral K s → s ∈ i.range` using `fun s hs => by`. Establish `h1 : j s ∈ (algebraicClosure K Ω)` using `mem_algebraicClosure_iff'.mpr (hs.map j)`. Conclude with `⟨⟨j s, h1⟩, hj (hji _)⟩`. Establish `hintΩ : ∀ b : Ω, _root_.IsIntegral K b → b ∈ (algebraicClosure K Ω).val.range` using `fun b hb => ⟨⟨b, mem_algebraicClosure_iff'.mpr hb⟩, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hLinj : Function.Injective (algebraicClosure K Ω).val` using `Subtype.val_injective`. Take `⟨h, hh, hhe⟩` from `GlobalTheory.HomDescent.exists_specialise g (algebraicClosure K Ω).val`. Take `⟨f, hf, hfe⟩` from `GlobalTheory.HomDescent.exists_specialise gS j`. Establish `semi` using `isSemiAbelian_of_isAbelianScheme _ (isAbelianScheme_pullback_obj (spMap (algebraMap K Ω)) A hA)`. Establish `semi'` using `isSemiAbelian_of_isAbelianScheme _ (isAbelianScheme_pullback_obj (spMap (algebraMap K Ω)) A' hA')`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : f = h`. Use `hf` as an intermediate fact. Use `hh` as an intermediate fact. Use `GlobalTheory.HomExtNormal.hom_eq_of_torsion semi semi' f h fun y n hn hy => ?_` and prove the remaining obligations. Set `P` to `pushHom (isGrpPullback_pullback A (spMap (algebraMap K Ω))) (𝟙_ (Over (Sp Ω)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `hPn : P y ^ n = 1` using `by rw [← map_pow, hy, map_one]`. Take `⟨x, hxn, hx⟩` from `torsion_factor K A hA n hn Ω (algebraicClosure K Ω) (algebraicClosure K Ω).val hLinj hintΩ _ (P y) hPn (𝟙 _) (by`. Express the relevant statement in the definitionally equal form `𝟙 _ ≫ 𝟙 _ ≫ _ = _`. Use the proof step `simp)`. Establish `hx' : y.left ≫ pullback.fst _ _ = spMap (algebraicClosure K Ω).val.toRingHom ≫ x.left`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hx, Category.id_comp]`. Both sides reduce to the same expression. Establish `hys : y.left ≫ pullback.snd _ _ = 𝟙 _` using `Over.w y`. Establish `hxw : x.left ≫ A.hom = spMap (algebraMap K (algebraicClosure K Ω))` using `Over.w x`. Establish `eji : spMap j.toRingHom ≫ spMap i.toRingHom = spMap (algebraicClosure K Ω).val.toRingHom`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.HomDescent.spMap_comp]`. Use `congr 1`. Conclude with `RingHom.ext hji`. Establish `eρi : spMap ρ.toRingHom ≫ spMap i.toRingHom = 𝟙 _`. Rewrite using `[GlobalTheory.HomDescent.spMap_comp, show ρ.toRingHom.comp i.toRingHom = RingHom.id _ from RingHom.ext hρi]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Spec.map_id _`. Set `xS : Sp S ⟶ pullback A.hom (spMap (algebraMap K S))` to `pullback.lift (spMap i.toRingHom ≫ x.left) (𝟙 _) (by`. Rewrite using `[Category.assoc, hxw, Category.id_comp, spMap_algHom_comp])`. Set `xL : Sp (algebraicClosure K Ω) ⟶ pullback A.hom (spMap (algebraMap K (algebraicClosure K Ω)))` to `pullback.lift x.left (𝟙 _) (by rw [hxw, Category.id_comp])`. Establish `c1 : y.left ≫ bcMap A.hom j = spMap j.toRingHom ≫ xS`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, bcMap_fst, hx', Category.assoc, pullback.lift_fst, ← Category.assoc, eji]`. Rewrite using `[Category.assoc, bcMap_snd, ← Category.assoc, hys, Category.assoc, pullback.lift_snd, Category.id_comp, Category.comp_id]`. Establish `c2 : y.left ≫ bcMap A.hom (algebraicClosure K Ω).val = spMap (algebraicClosure K Ω).val.toRingHom ≫ xL`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, bcMap_fst, hx', Category.assoc, pullback.lift_fst]`. Rewrite using `[Category.assoc, bcMap_snd, ← Category.assoc, hys, Category.assoc, pullback.lift_snd, Category.id_comp, Category.comp_id]`. Establish `c3 : xL ≫ bcMap A.hom ρ = spMap ρ.toRingHom ≫ xS`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, bcMap_fst, Category.assoc, pullback.lift_fst, pullback.lift_fst, ← Category.assoc, eρi, Category.id_comp]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[Category.assoc, bcMap_snd, Category.assoc, pullback.lift_snd, ← Category.assoc, pullback.lift_snd, Category.id_comp, Category.comp_id]`. Set `xS' : 𝟙_ (Over (Sp S)) ⟶ (Over.pullback (spMap (algebraMap K S))).obj A` to `Over.homMk xS (pullback.lift_snd _ _ _)`. Set `PS` to `pushHom (isGrpPullback_pullback A (spMap (algebraMap K S))) (𝟙_ (Over (Sp S)))`. Establish `hPSinj : Function.Injective PS` using `fun a b e => Over.OverMorphism.ext ((isGrpPullback_pullback A (spMap (algebraMap K S))).1.hom_ext (congrArg (fun z => z.left) e) (by rw [Over.w a, Over.w b]))`. Set `q : Over.mk ((𝟙_ (Over (Sp S))).hom ≫ spMap (algebraMap K S)) ⟶ Over.mk (spMap (algebraMap K (algebraicClosure K Ω)))` to `Over.homMk (spMap i.toRingHom) (by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `_ = 𝟙 _ ≫ _`. Rewrite using `[Category.id_comp]`. Conclude with `spMap_algHom_comp i)`. Establish `hPS : PS xS' = q ≫ x` using `Over.OverMorphism.ext (pullback.lift_fst _ _ _)`. Establish `hxSn : xS' ^ n = 1` using `hPSinj (by rw [map_pow, hPS, ← comp_pow, hxn, comp_one, map_one])`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Set `P'` to `pushHom (isGrpPullback_pullback A' (spMap (algebraMap K S))) (𝟙_ (Over (Sp S)))`. Establish `hzn : P' (xS' ≫ gS) ^ n = 1` using `by rw [← map_pow, ← pow_comp, hxSn, one_comp, map_one]`. Take `⟨c, -, hc⟩` from `torsion_factor K A' hA' n hn S (algebraicClosure K Ω) i hι hint _ (P' (xS' ≫ gS)) hzn (𝟙 _) (by`. Express the relevant statement in the definitionally equal form `𝟙 _ ≫ 𝟙 _ ≫ _ = _`. Use the proof step `simp)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hz : xS ≫ gS.left ≫ pullback.fst _ _ = spMap i.toRingHom ≫ c.left`. Rewrite using `[← hc, Category.id_comp]`. Both sides reduce to the same expression. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `pullback.hom_ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Over.comp_left, Category.assoc]`. Rewrite using `[hfe, hhe]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[reassoc_of% eρi]`. Use `_ = spMap (algebraicClosure K Ω).val.toRingHom ≫ xL ≫ bcMap A.hom ρ ≫ gS.left ≫ pullback.fst _ _ := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[reassoc_of% c3, hz]`. Use `_ = y.left ≫ bcMap A.hom (algebraicClosure K Ω).val ≫ g.left ≫ pullback.fst _ _ := by`. Rewrite using `[hg, reassoc_of% c2]`. Establish `e1 : f.left ≫ pullback.snd _ _ = pullback.snd _ _` using `Over.w f`. Establish `e2 : h.left ≫ pullback.snd _ _ = pullback.snd _ _` using `Over.w h`.
-
-Simplify using `only [Over.comp_left, Category.assoc]`. Rewrite using `[e1, e2]`. Rewrite using `[← hhe, ← hfe, e]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compare (K Ω : Type) [Field K] [CharZero K] [Field Ω] [IsAlgClosed Ω] [Algebra K Ω]
     (S : Type) [CommRing S] [Algebra K S]
@@ -186,17 +184,15 @@ theorem compare (K Ω : Type) [Field K] [CharZero K] [Field Ω] [IsAlgClosed Ω]
   rw [← hhe, ← hfe, e]
 
 /- English proof (translation)
-Introduce `K Ω _ _ _ _ _ A A' _ _ hA hA' f hf`. Use `hA.proper` as an intermediate fact. Use `hA.smooth` as an intermediate fact. Use `hA'.proper` as an intermediate fact. Use `hA'.smooth` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hf` as an intermediate fact. Take `⟨R, gR, ⟨s, hs⟩, hgR, hR⟩` from `GlobalTheory.HomDescent.exists_fg_isMonHom f`. Use `hgR` as an intermediate fact. Use `haveI : IsAlgClosed (algebraicClosure K Ω) := IsAlgClosure.isAlgClosed K`. Set `S : Subalgebra (algebraicClosure K Ω) Ω` to `Algebra.adjoin (algebraicClosure K Ω) (s : Set Ω)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use `haveI : Algebra.FiniteType (algebraicClosure K Ω) S := ⟨(Subalgebra.fg_top S).mpr ⟨s, rfl⟩⟩`. Take `⟨ρ₀⟩` from `GlobalTheory.Ex.ThetaDescent.nonempty_algHom (algebraicClosure K Ω) S`. Establish `hRS : ∀ r ∈ R, r ∈ S` using `fun r hr => by`. Establish `h1 : Algebra.adjoin K (s : Set Ω) ≤ (Algebra.adjoin (algebraicClosure K Ω) (s : Set Ω)).restrictScalars K` using `Algebra.adjoin_le Algebra.subset_adjoin`. Rewrite `hr` using `[← hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `h1 hr`. Set `inc : R →ₐ[K] S` to `{ toFun := fun r => ⟨r, hRS r r.2⟩ map_one' := rfl map_mul' := fun _ _ => rfl map_zero' := rfl map_add' := fun _ _ => rfl commutes' := fun _ => rfl }`. Set `i : algebraicClosure K Ω →ₐ[K] S` to `IsScalarTower.toAlgHom K (algebraicClosure K Ω) S`. Set `j : S →ₐ[K] Ω` to `S.val.restrictScalars K`. Set `ρ : S →ₐ[K] algebraicClosure K Ω` to `ρ₀.restrictScalars K`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨gS, hgS, hgSe⟩` from `GlobalTheory.HomDescent.exists_specialise gR inc`. Use `hgS` as an intermediate fact. Take `⟨g, hg, hge⟩` from `GlobalTheory.HomDescent.exists_specialise gS ρ`. Use `hg` as an intermediate fact. Use `⟨g, hg, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[compare K Ω S i j ρ Subtype.val_injective (fun _ => rfl) (fun x => ρ₀.commutes x) A A' hA hA' gS g hge, hgSe, ← hR, bcMap_comp_of_eq_assoc A.hom inc j R.val fun _ => rfl]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chow_rigidity : ∀ (K Ω : Type) [Field K] [CharZero K] [Field Ω] [IsAlgClosed Ω] [Algebra K Ω] (A A' : Over (Sp K)) [GrpObj A] [GrpObj A'], IsAbelianScheme A → IsAbelianScheme A' → ∀ f : (Over.pullback (spMap (algebraMap K Ω))).obj A ⟶ (Over.pullback (spMap (algebraMap K Ω))).obj A', IsMonHom f → ∃ g : (Over.pullback (spMap (algebraMap K (algebraicClosure K Ω)))).obj A ⟶ (Over.pullback (spMap (algebraMap K (algebraicClosure K Ω)))).obj A', IsMonHom g ∧ GlobalTheory.Spread.bcMap A.hom (algebraicClosure K Ω).val ≫ g.left ≫ pullback.fst _ _ = f.left ≫ pullback.fst _ _ := by
   intro K Ω _ _ _ _ _ A A' _ _ hA hA' f hf

@@ -23,7 +23,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.LocalFrame
 
 /- English proof (translation)
-Use `(GlobalTheory.AbLaw.AllLaws.laws_of_h0_eq_one fun K _ _ P => ?_).1.secBaseChange` and prove the remaining obligations. Take `⟨b, hb⟩` from `GlobalTheory.PowBasis.exists_basis_pow hT P 1 le_rfl K (𝟙 _)`. Establish `: Nontrivial Γ((Over.mk (𝟙 (Spec (CommRingCat.of K)))).left, ⊤)` using `(Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv.toEquiv.nontrivial`. Conclude with `(GlobalTheory.SecTwist.finrank_of_isSecBasis P.A P.L _ _ b hb).trans (one_pow _)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem secBaseChange_of_secTwist (hT : Out.SecTwistSt) : Out.SecBaseChangeSt := by
   refine (GlobalTheory.AbLaw.AllLaws.laws_of_h0_eq_one fun K _ _ P => ?_).1.secBaseChange
@@ -33,17 +33,17 @@ theorem secBaseChange_of_secTwist (hT : Out.SecTwistSt) : Out.SecBaseChangeSt :=
   exact (GlobalTheory.SecTwist.finrank_of_isSecBasis P.A P.L _ _ b hb).trans (one_pow _)
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `(IsNoetherian.noetherian (RingHom.ker (algebraMap R (Localization.AtPrime q))))`. Establish `h1 : ∀ a : s, ∃ m : q.primeCompl, (m : R) * a = 0` using `fun a => (IsLocalization.map_eq_zero_iff q.primeCompl (Localization.AtPrime q) (a : R)).1 (by rw [← RingHom.mem_ker, ← hs]; exact Submodule.subset_span a.2)`. Use `choose m hm using h1`. Set `g : q.primeCompl` to `∏ a, m a`. Establish `hg : ∀ a ∈ RingHom.ker (algebraMap R (Localization.AtPrime q)), (g : R) * a = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha`. Rewrite `ha` using `[← hs]`. Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem a ha`. Choose the witnesses or unpack the hypotheses as in `⟨r, hr⟩ : (m ⟨a, ha⟩ : R) ∣ (g : R) := by`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [g, Submonoid.coe_finset_prod]`. Conclude with `Finset.dvd_prod_of_mem (fun a => (m a : R)) (Finset.mem_univ _)`. Rewrite using `[hr, mul_right_comm, hm ⟨a, ha⟩, zero_mul]`. Consider the case `zero => exact mul_zero _`. Consider the case `add a b _ _ ha hb => rw [mul_add, ha, hb, add_zero]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `smul r a _ ha => rw [smul_eq_mul, mul_left_comm, ha, mul_zero]`. Use `⟨g, g.2, ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (algebraMap R (Localization.AtPrime q) g)` using `IsLocalization.map_units _ g`. Set `f : Localization.Away (g : R) →+* Localization.AtPrime q` to `IsLocalization.Away.lift (g : R) hu`. Use `Function.Injective.isDomain f ((injective_iff_map_eq_zero f).2 fun x hx => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨n, a, ha⟩` from `IsLocalization.Away.surj (g : R) x`. Establish `h2 : algebraMap R (Localization.AtPrime q) a = 0`. Rewrite using `[← IsLocalization.Away.lift_eq (S := Localization.Away (g : R)) (g : R) hu a, ← ha, map_mul]`. Conclude with `(congrArg (· * _) hx).trans (zero_mul _)`. Establish `hu' : IsUnit (algebraMap R (Localization.Away (g : R)) g)` using `IsLocalization.Away.algebraMap_isUnit _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : algebraMap R (Localization.Away (g : R)) a = 0`. Rewrite using `[← hu'.mul_right_eq_zero, ← map_mul, hg a h2, map_zero]`. Rewrite `ha` using `[h3]`. Conclude with `(hu'.pow n).mul_left_eq_zero.1 ha`.
+A detailed English derivation is pending.
 -/
 theorem exists_away_isDomain {R : Type} [CommRing R] [IsNoetherianRing R] (q : Ideal R) [q.IsPrime]
     [IsDomain (Localization.AtPrime q)] : ∃ g ∉ q, IsDomain (Localization.Away g) := by
@@ -81,11 +81,11 @@ theorem exists_away_isDomain {R : Type} [CommRing R] [IsNoetherianRing R] (q : I
   exact (hu'.pow n).mul_left_eq_zero.1 ha
 
 /- English proof (translation)
-Introduce `τ`. Establish `hcard : Nat.card {i // (e i).1 = τ} = Dw.mult τ`. Establish `e2 : {i // (e i).1 = τ} ≃ {s : Σ τ : E →+* ℂ, Fin (Dw.mult τ) // s.1 = τ}` using `e.subtypeEquiv (fun _ => Iff.rfl)`. Establish `e3 : {s : Σ τ : E →+* ℂ, Fin (Dw.mult τ) // s.1 = τ} ≃ Fin (Dw.mult τ)` using `Equiv.sigmaSubtype τ`. Rewrite using `[Nat.card_congr (e2.trans e3), Nat.card_eq_fintype_card, Fintype.card_fin]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Use `hcard.trans ?_` and prove the remaining obligations. Unfold `Datum.mult`. Rewrite using `[if_pos h]`. Use `hcard.trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `Datum.mult`. Rewrite using `[if_neg h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem isTypeFn_fst {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (Dw : Datum H) {g : ℕ}
     (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)) : IsTypeFn H Dw.p Dw.q (fun j => (e j).1) := by
@@ -104,7 +104,7 @@ theorem isTypeFn_fst {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Hos
     rw [if_neg h]
 
 /- English proof (translation)
-Unfold `spMap`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spMap_spMap {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R' →+* R'')
     (g : R →+* R') : spMap f ≫ spMap g = spMap (f.comp g) := by
@@ -113,14 +113,14 @@ theorem spMap_spMap {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] 
   rfl
 
 /- English proof (translation)
-Apply the tactic sequence `ext s <;> simp [dualMap, epsMul, TrivSqZeroExt.algebraMap_eq_inl]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dualMap_comp_epsMul {S T : Type} [CommRing S] [CommRing T] (ψ : S →+* T) (a : S) :
     (dualMap ψ).comp (epsMul a) = (epsMul (ψ a)).comp (dualMap ψ) := by
   ext s <;> simp [dualMap, epsMul, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Introduce `a`. Rewrite using `[Category.assoc, hv a, ← Category.assoc, spMap_spMap, dualMap_comp_epsMul, ← spMap_spMap, Category.assoc, hψ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem isEigAt_pull {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
     {Xo : Moduli Dw l} {c : Coeff l} {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T]
@@ -132,7 +132,7 @@ theorem isEigAt_pull {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Hos
     Category.assoc, hψ]
 
 /- English proof (translation)
-Use `Xo.smooth` as an intermediate fact. Establish `: Smooth Xo.s` using `SmoothOfRelativeDimension.smooth Dw.dim Xo.s`. Establish `h : Smooth (spMap (algebraMap c.F R))` using `by rw [← hs]; infer_instance`. Establish `h'` using `(HasRingHomProperty.Spec_iff (P := @Smooth)).1 h`. Conclude with `RingHom.smooth_algebraMap.1 h'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smooth_of_chart {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
     {Xo : Moduli Dw l} {c : Coeff l} {R : Type} [CommRing R] [Algebra c.F R] (j : Sp R ⟶ Xo.XF c)
@@ -144,27 +144,25 @@ theorem smooth_of_chart {E : Type} [Field E] [NumberField E] [IsCMField E] {H : 
   exact RingHom.smooth_algebraMap.1 h'
 
 /- English proof (translation)
-Introduce `hT E _ _ _ H Dw l Xo c z`. Establish `hS` using `secBaseChange_of_secTwist hT`. Set `e` to `(Fintype.equivFin (Σ τ : E →+* ℂ, Fin (Dw.mult τ))).symm`. Take `⟨R, _, _, jR, o, v, th, hft, hred, hjR, ⟨q, hq⟩, hs, ⟨m⟩, hv, hev, hth, -⟩` from `GlobalTheory.ModuliChart.exists_chart_eigenframe hS E H Dw l Xo c _ _ (isTypeFn_fst Dw e) z`. Set `x : Sp R ⟶ Xo.X` to `jR ≫ pullback.fst _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hb : TanBasis x (fun i => (v i).left ≫ m.cm.F)` using `((GlobalTheory.Frames.lieBasis_iff_tanBasis E H Dw l Xo R x o.t.G m.cm.F m.cart).2 _ v).1 hv`. Set `u : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → (Sp (DualNumber R) ⟶ Xo.univ.t.G.left)` to `fun τ i => (v (e.symm ⟨τ, i⟩)).left ≫ m.cm.F`. Establish `heig : ∀ τ i, IsEigAt c τ (u τ i)`. Introduce `τ i a`. Establish `h` using `hev (e.symm ⟨τ, i⟩) a`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [Equiv.apply_symm_apply] at h`. Establish `h' : (v (e.symm ⟨τ, i⟩)).left ≫ (o.t.act.act a).left = spMap (epsMul (algebraMap c.F R (embK c τ a))) ≫ (v (e.symm ⟨τ, i⟩)).left` using `h`. Use `show ((v (e.symm ⟨τ, i⟩)).left ≫ m.cm.F) ≫ _ = _ ≫ (v (e.symm ⟨τ, i⟩)).left ≫ m.cm.F`. Rewrite using `[Category.assoc, ← m.act a, ← Category.assoc, h', Category.assoc]`. Take `⟨s, hsn⟩` from `GlobalTheory.SecTransport.exists_sec_nonzero E H Dw l Xo R x o.t m.toSABMap th hth`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsm : Algebra.Smooth c.F R` using `smooth_of_chart jR hs`. Establish `hreg : IsRegularRing R` using `GlobalTheory.isRegularRing_of_smooth c.F R`. Establish `hq' : q.asIdeal.IsPrime` using `q.isPrime`. Establish `hdom : IsDomain (Localization.AtPrime q.asIdeal)` using `GlobalTheory.isDomain_of_isRegularLocalRing _`. Take `⟨g, hg, hA⟩` from `exists_away_isDomain q.asIdeal`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `A` to `Localization.Away g`. Set `ψ : R →+* A` to `algebraMap R A`. Establish `hψ : ∀ a, ψ (algebraMap c.F R a) = algebraMap c.F A a` using `fun a => (IsScalarTower.algebraMap_apply c.F R A a).symm`. Establish `hopen : IsOpenImmersion (spMap ψ)` using `inferInstanceAs (IsOpenImmersion (Spec.map (CommRingCat.ofHom (algebraMap R (Localization.Away g)))))`. Establish `hsA : (spMap ψ ≫ jR) ≫ pullback.snd _ _ = spMap (algebraMap c.F A)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, hs, spMap_spMap]`. Set `x' : Sp A ⟶ Xo.X` to `spMap ψ ≫ x`. Set `u' : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → (Sp (DualNumber A) ⟶ Xo.univ.t.G.left)` to `fun τ i => spMap (dualMap ψ) ≫ u τ i`. Establish `hbA` using `GlobalTheory.Frames.tanBasis_baseChange E H Dw l Xo R A ψ x _ _ hb`. Establish `htan : ∀ τ i, IsTanAt x' (u' τ i)` using `fun τ i => hbA.1 _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heig' : ∀ τ i, IsEigAt c τ (u' τ i)` using `fun τ i => isEigAt_pull ψ hψ τ (heig τ i)`. Establish `hb' : TanBasis x' (fun j => u' (e j).1 (e j).2)`. Establish `: (fun j => u' (e j).1 (e j).2) = fun i => spMap (dualMap ψ) ≫ (v i).left ≫ m.cm.F`. Use function extensionality and compare the values at `j`. Use `show _ ≫ (v (e.symm (e j))).left ≫ m.cm.F = _`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Equiv.symm_apply_apply]`. Rewrite using `[this]`. Conclude with `hbA`. Establish `hbasis` using `(GlobalTheory.Frames.eigBasis_iff_tanBasis E H Dw l Xo c A x' u' _ e htan heig').2 hb'`. Take `⟨s', hs', -⟩` from `GlobalTheory.Frames.SecPull.existsUnique_secBC E H Dw l Xo R A ψ 1 x x' rfl s`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgen` using `GlobalTheory.FrameGenerator.secGen_of_secNZ_baseChange hS E H Dw l Xo R x s hsn A ψ x' s' rfl hs'`. Establish `hx : x' ≫ Xo.s = sOf c A`. Establish `h1 : x' ≫ Xo.s = ((spMap ψ ≫ jR) ≫ pullback.snd _ _) ≫ spMap (IntermediateField.inclusion c.le).toRingHom`. Simplify using `only [x', x, Category.assoc]`. Rewrite using `[pullback.condition]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[h1, hsA, sOf, spMap_spMap]`. Use `⟨A, inferInstance, hA, inferInstance, spMap ψ ≫ jR, ⟨x', hx, u', htan, heig', hbasis, s', hgen⟩, inferInstance, ?_, hsA, smooth_of_chart _ hsA, (Category.assoc _ _ _).symm⟩` and prove the remaining obligations. Establish `hr : q ∈ Set.range (PrimeSpectrum.comap ψ)`. Rewrite using `[PrimeSpectrum.localization_away_comap_range A g]`. Conclude with `hg`.
-
-Take `⟨q', hq''⟩` from `hr`. Use `⟨q', ?_⟩` and prove the remaining obligations. Conclude with `(Scheme.Hom.comp_apply _ _ _).trans ((congrArg jR hq'').trans hq)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_integral_chart_frame : ReciprocityTheory.ChartRestriction.G.Out.SecTwistSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ p : Xo.XF c, ∃ (A : Type) (_ : CommRing A) (_ : IsDomain A) (_ : Algebra c.F A) (j : Sp A ⟶ Xo.XF c) (y : FrPt Xo c A), IsOpenImmersion j ∧ p ∈ Set.range j ∧ j ≫ pullback.snd _ _ = spMap (algebraMap c.F A) ∧ Algebra.Smooth c.F A ∧ y.x = j ≫ pullback.fst _ _ := by
   intro hT E _ _ _ H Dw l Xo c z

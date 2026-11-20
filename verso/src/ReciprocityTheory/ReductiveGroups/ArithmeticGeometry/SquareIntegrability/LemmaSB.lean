@@ -9,9 +9,9 @@ noncomputable section
 variable {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Use `first`. Consider the case `rw [← Module.finrank_mul_finrank ℝ ℂ (EuclideanSpace ℂ ι), Complex.finrank_real_complex, finrank_euclideanSpace]`. Consider the case `rw [← FiniteDimensional.finrank_mul_finrank ℝ ℂ (EuclideanSpace ℂ ι), Complex.finrank_real_complex, finrank_euclideanSpace]`. Consider the case `(rw [(WithLp.linearEquiv 2 ℝ (ι → ℂ)).finrank_eq, Module.finrank_pi_fintype]`. Simplify using `[Complex.finrank_real_complex, mul_comm])`.
+Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `simp [← Module.finrank_mul_finrank ℝ ℂ (EuclideanSpace ℂ ι), Complex.finrank_real_complex, finrank_euclideanSpace]`.
+A detailed English derivation is pending.
 -/
 lemma lemS_finrank : Module.finrank ℝ (EuclideanSpace ℂ ι) = 2 * Fintype.card ι := by
   first
@@ -25,39 +25,35 @@ lemma lemS_finrank : Module.finrank ℝ (EuclideanSpace ℂ ι) = 2 * Fintype.ca
       finrank_euclideanSpace]
 
 /- English proof (translation)
-Use `set s := Real.sqrt (q * Real.pi) with hs`. Use `set ρ := Real.sqrt (2 * Fintype.card ι) with hρ`. Establish `hq1 : (1 : ℝ) ≤ q` using `by exact_mod_cast hq`. Establish `hqpos : (0 : ℝ) < q * Real.pi` using `mul_pos (by linarith) Real.pi_pos`. Establish `hs0 : 0 < s` using `Real.sqrt_pos.mpr hqpos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hs2 : s ^ 2 = q * Real.pi` using `Real.sq_sqrt hqpos.le`. Set `eC : EuclideanSpace ℂ ι ≃ₗᵢ[ℂ] EuclideanSpace ℂ (Fin (Fintype.card ι))` to `LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (Fintype.equivFin ι)`. Set `eR : EuclideanSpace ℂ ι ≃ₗᵢ[ℝ] EuclideanSpace ℂ (Fin (Fintype.card ι))` to `LinearIsometryEquiv.piLpCongrLeft 2 ℝ ℂ (Fintype.equivFin ι)`. Take `⟨w, hw⟩ : ∃ w : EuclideanSpace ℂ (Fin (Fintype.card ι)) → EuclideanSpace ℂ ι, w = fun z => s⁻¹ • eC.symm z` from `⟨_, rfl⟩`. Take `⟨G, hG⟩ : ∃ G : EuclideanSpace ℂ (Fin (Fintype.card ι)) → ℂ, G = fun z => F (v0 + w z) * Complex.exp (-((q * Real.pi : ℝ) : ℂ) * inner ℂ v0 (w z))` from `⟨_, rfl⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Hf, hHf⟩ : ∃ Hf : EuclideanSpace ℂ ι → ℝ, Hf = fun u => ‖F u‖ ^ 2 * Real.exp (-(q * Real.pi) * ‖u‖ ^ 2)` from `⟨_, rfl⟩`. Establish `hwd : Differentiable ℂ w`. Rewrite using `[hw]`. Conclude with `(eC.symm.toContinuousLinearEquiv.toContinuousLinearMap.differentiable).const_smul s⁻¹`. Establish `hGd : Differentiable ℂ G`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hG]`. Use `(hF.comp ((differentiable_const v0).add hwd)).mul ?_` and prove the remaining obligations. Use `Differentiable.cexp ?_` and prove the remaining obligations. Use `(differentiable_const _).mul ?_` and prove the remaining obligations. Conclude with `(innerSL ℂ v0).differentiable.comp hwd`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hwn : ∀ z, ‖w z‖ = s⁻¹ * ‖z‖`. Introduce `z`. Rewrite using `[hw]`. Simplify using `only [norm_smul, Real.norm_eq_abs, abs_inv, abs_of_pos hs0, LinearIsometryEquiv.norm_map]`. Establish `hw0 : w 0 = 0` using `by rw [hw]; simp`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hexp2 : ∀ x : ℝ, Real.exp x ^ 2 = Real.exp (2 * x)` using `fun x => by`. Rewrite using `[sq, ← Real.exp_add, two_mul]`. Establish `key : ∀ z, ‖G z‖ ^ 2 * Real.exp (-‖z‖ ^ 2) = Real.exp (q * Real.pi * ‖v0‖ ^ 2) * Hf (v0 + w z)`. Introduce `z`. Establish `hz : ‖z‖ ^ 2 = q * Real.pi * ‖w z‖ ^ 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hwn, mul_pow, ← hs2, inv_pow]`. Clear the denominators using the available nonvanishing facts. Establish `hadd : ‖v0 + w z‖ ^ 2 = ‖v0‖ ^ 2 + 2 * (inner ℂ v0 (w z)).re + ‖w z‖ ^ 2`. Rewrite using `[norm_add_sq (𝕜 := ℂ)]`. Apply the tactic sequence `first | rfl | simp`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hre : (-((q * Real.pi : ℝ) : ℂ) * inner ℂ v0 (w z)).re = -(q * Real.pi) * (inner ℂ v0 (w z)).re`. Simplify using `only [Complex.mul_re, Complex.neg_re, Complex.neg_im, Complex.ofReal_re, Complex.ofReal_im]`. Expand and normalize the polynomial expressions, which then agree. Establish `e1 : Real.exp (2 * (-(q * Real.pi) * (inner ℂ v0 (w z)).re)) * Real.exp (-‖z‖ ^ 2) = Real.exp (q * Real.pi * ‖v0‖ ^ 2) * Real.exp (-(q * Real.pi) * ‖v0 + w z‖ ^ 2)`. Rewrite using `[← Real.exp_add, ← Real.exp_add, hz, hadd]`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hG]`. Simplify using `only [norm_mul, Complex.norm_exp, mul_pow, hre, hexp2]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by rw [e1, hHf]; ring`. Establish `hmem : ∀ z, v0 + w z ∈ Metric.closedBall v0 (ρ / s) ↔ z ∈ Metric.closedBall (0 : EuclideanSpace ℂ (Fin (Fintype.card ι))) ρ`. Introduce `z`. Establish `hsub : v0 + w z - v0 = w z` using `by abel`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Metric.mem_closedBall, Metric.mem_closedBall, dist_eq_norm, dist_eq_norm, hsub, sub_zero, hwn, div_eq_inv_mul]`. Conclude with `⟨fun h => le_of_mul_le_mul_left h (inv_pos.mpr hs0), fun h => mul_le_mul_of_nonneg_left h (inv_pos.mpr hs0).le⟩`. Establish `hA : ∫ z in Metric.closedBall (0 : EuclideanSpace ℂ (Fin (Fintype.card ι))) ρ, ‖G z‖ ^ 2 * Real.exp (-‖z‖ ^ 2) = Real.exp (q * Real.pi * ‖v0‖ ^ 2) * ∫ z, (Metric.closedBall v0 (ρ / s)).indicator Hf (v0 + w z)`. Rewrite using `[← integral_indicator measurableSet_closedBall, ← integral_const_mul]`. Use `congr 1`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `z`. Distinguish the cases in `hzb : z ∈ Metric.closedBall (0 : EuclideanSpace ℂ (Fin (Fintype.card ι))) ρ`. Rewrite using `[Set.indicator_of_mem hzb, Set.indicator_of_mem ((hmem z).2 hzb), key z]`. Establish `h2 : v0 + w z ∉ Metric.closedBall v0 (ρ / s)` using `fun h => hzb ((hmem z).1 h)`. Simplify using `[Set.indicator_apply, hzb, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC : ∫ z, (Metric.closedBall v0 (ρ / s)).indicator Hf (v0 + w z) = s ^ (2 * Fintype.card ι) * ∫ u, (Metric.closedBall v0 (ρ / s)).indicator Hf u` using `by set h := (Metric.closedBall v0 (ρ / s)).indicator Hf`. Establish `h1 : ∫ z, h (v0 + w z) = ∫ y, h (v0 + s⁻¹ • y)`. Rewrite using `[hw]`. Conclude with `(eR.symm.measurePreserving).integral_comp eR.symm.toHomeomorph.measurableEmbedding (fun y => h (v0 + s⁻¹ • y))`. Rewrite using `[h1, MeasureTheory.Measure.integral_comp_smul (μ := volume) (fun y => h (v0 + y)) s⁻¹, lemS_finrank, integral_add_left_eq_self, inv_pow, inv_inv, abs_of_pos (pow_pos hs0 _), smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `L : ‖G 0‖ ^ 2 ≤ 2 / Real.pi ^ Fintype.card ι * ∫ z in Metric.closedBall (0 : EuclideanSpace ℂ (Fin (Fintype.card ι))) ρ, ‖G z‖ ^ 2 * Real.exp (-‖z‖ ^ 2)` using `sq_norm_zero_le_gauss_ball G hGd`. Establish `hG0 : G 0 = F v0` using `by rw [hG]; simp [hw0]`. Establish `hsn : s ^ (2 * Fintype.card ι) = (q * Real.pi) ^ Fintype.card ι` using `by rw [pow_mul, hs2]`. Establish `hJ : ∫ u, (Metric.closedBall v0 (ρ / s)).indicator Hf u = ∫ u in Metric.closedBall v0 (ρ / s), ‖F u‖ ^ 2 * Real.exp (-(q * Real.pi) * ‖u‖ ^ 2)`. Rewrite using `[integral_indicator measurableSet_closedBall, hHf]`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite `L` using `[hA, hC, hG0, hsn, hJ]`. Establish `hE : Real.exp (q * Real.pi * ‖v0‖ ^ 2) * Real.exp (-(q * Real.pi) * ‖v0‖ ^ 2) = 1`. Rewrite using `[← Real.exp_add]`. Use `Real.exp_zero using 2` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
-
-Establish `hpi : Real.pi ^ Fintype.card ι ≠ 0` using `pow_ne_zero _ Real.pi_pos.ne'`. Use `set J := ∫ u in Metric.closedBall v0 (ρ / s), ‖F u‖ ^ 2 * Real.exp (-(q * Real.pi) * ‖u‖ ^ 2)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `_ = 2 * (q : ℝ) ^ Fintype.card ι * J := by rw [hE, div_self hpi]; ring`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lemS_local (q : ℕ) (hq : 1 ≤ q) (F : EuclideanSpace ℂ ι → ℂ) (hF : Differentiable ℂ F)
     (v0 : EuclideanSpace ℂ ι) :

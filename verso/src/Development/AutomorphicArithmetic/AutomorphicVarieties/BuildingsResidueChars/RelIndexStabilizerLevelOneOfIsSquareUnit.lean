@@ -12,7 +12,7 @@ private def el (x : Etau K τ) (a b : O) : Etau K τ :=
   algebraMap O (Etau K τ) a + algebraMap O (Etau K τ) b * x
 
 /- English proof (translation)
-Simplify using `only [el, map_add, map_mul]`. Take the linear combination `(algebraMap O (Etau K τ) b * algebraMap O (Etau K τ) d) * hx`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem el_mul {x : Etau K τ} {e : O} (hx : x * x = algebraMap O (Etau K τ) e) (a b c d : O) :
     el x a b * el x c d = el x (a * c + e * b * d) (a * d + b * c) := by
@@ -20,14 +20,14 @@ private theorem el_mul {x : Etau K τ} {e : O} (hx : x * x = algebraMap O (Etau 
   linear_combination (algebraMap O (Etau K τ) b * algebraMap O (Etau K τ) d) * hx
 
 /- English proof (translation)
-Simplify using `[el]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem el_one (x : Etau K τ) : el x (1 : O) 0 = 1 := by simp [el]
 
 /- English proof (translation)
-Establish `hre` using `congrArg QuadraticAlgebra.re h`. Establish `him` using `congrArg QuadraticAlgebra.im h`. Simplify using `[el, algebraMap_etau] at hre him`. Establish `hbd : algebraMap O K b = algebraMap O K d` using `him.resolve_right hx`. Use `⟨hinj ?_, hinj hbd⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hre` using `[hbd]`. Conclude with `add_right_cancel hre`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem el_inj (hinj : Function.Injective (algebraMap O K)) {x : Etau K τ} (hx : x.im ≠ 0)
     {a b c d : O} (h : el x a b = el x c d) : a = c ∧ b = d := by
@@ -40,7 +40,7 @@ private theorem el_inj (hinj : Function.Injective (algebraMap O K)) {x : Etau K 
   exact add_right_cancel hre
 
 /- English proof (translation)
-Apply `Units.inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Rewrite using `[hu, el_mul hx, ← el_one (O := O) x]`. Use `congr 1`. Take the linear combination `hi`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem inv_el {x : Etau K τ} {e : O} (hx : x * x = algebraMap O (Etau K τ) e)
     {u : (Etau K τ)ˣ} {a b i : O} (hu : (u : Etau K τ) = el x a b) (hi : (a ^ 2 - e * b ^ 2) * i = 1) :
@@ -52,15 +52,15 @@ private theorem inv_el {x : Etau K τ} {e : O} (hx : x * x = algebraMap O (Etau 
   · ring
 
 /- English proof (translation)
-Simplify using `[yy, Algebra.smul_def, algebraMap_etau]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem yy_one (π : O) (x : Etau K τ) : yy π 1 x = algebraMap O (Etau K τ) π * x := by
   simp [yy, Algebra.smul_def, algebraMap_etau]
 
 /- English proof (translation)
-Simplify using `only [PK.Ord, SetLike.mem_coe, Submodule.mem_span_pair, yy_one, el]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, b, rfl⟩`. Conclude with `⟨a, b, by rw [Algebra.smul_def, Algebra.smul_def, mul_one, map_mul]; ring⟩`. Introduce and unpack `⟨a, b, rfl⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨a, b, by rw [Algebra.smul_def, Algebra.smul_def, mul_one, map_mul]; ring⟩`.
+Supply the required witnesses or components.
 -/
 private theorem mem_ord {π : O} {x w : Etau K τ} :
     w ∈ Ord O (yy π 1 x) ↔ ∃ a b : O, w = el x a (π * b) := by
@@ -72,9 +72,9 @@ private theorem mem_ord {π : O} {x w : Etau K τ} :
     exact ⟨a, b, by rw [Algebra.smul_def, Algebra.smul_def, mul_one, map_mul]; ring⟩
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨w, hw, rfl⟩`. Take `⟨c, d, rfl⟩` from `mem_ord.mp hw`. Rewrite using `[hv]`. Simplify using `only`. Rewrite using `[el_mul hx]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Use `mem_ord.mpr ⟨a * c + e * (π * q) * (π * d), a * d + q * c, ?_⟩` and prove the remaining obligations. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem ml_sub {π e : O} {x : Etau K τ} (hx : x * x = algebraMap O (Etau K τ) e)
     {v : (Etau K τ)ˣ} {a q : O} (hv : (v : Etau K τ) = el x a (π * q)) :
@@ -89,13 +89,13 @@ private theorem ml_sub {π e : O} {x : Etau K τ} (hx : x * x = algebraMap O (Et
   ring
 
 /- English proof (translation)
-Establish `h1 : (1 : Etau K τ) ∈ Ord O (yy π 1 x)` using `mem_ord.mpr ⟨1, 0, by rw [mul_zero, el_one]⟩`. Use `show PS.ml u (Ord O (yy π 1 x)) = Ord O (yy π 1 x) ↔ π ∣ b`. Prove the components needed by the constructor for the conclusion. Introduce `hm`. Establish `hu1 : (u : Etau K τ) ∈ Ord O (yy π 1 x)`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hm]`. Conclude with `⟨1, h1, mul_one _⟩`. Take `⟨c, d, hcd⟩` from `mem_ord.mp hu1`. Rewrite `hcd` using `[hu]`. Conclude with `⟨d, (el_inj hinj h0 hcd).2⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨q, rfl⟩`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i : O, (a ^ 2 - e * (π * q) ^ 2) * i = 1 := by`. Take `⟨w, hw⟩` from `hN`. Conclude with `⟨↑w⁻¹, by rw [← hw]; exact w.mul_inv⟩`. Establish `hinv` using `inv_el hx hu hi`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Set.Subset.antisymm (ml_sub hx hu)` to reduce the goal to its premises. Introduce `w hw`. Rewrite using `[PS.mem_ml]`. Establish `hsub` using `ml_sub (π := π) (q := -(q * i)) hx (v := u⁻¹) (a := a * i) (by rw [hinv]; congr 1; ring)`. Conclude with `hsub ⟨w, hw, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem hu_iff (hinj : Function.Injective (algebraMap O K)) {π e : O} {x : Etau K τ} (h0 : x.im ≠ 0)
     (hx : x * x = algebraMap O (Etau K τ) e) {u : (Etau K τ)ˣ} {a b : O} (hu : (u : Etau K τ) = el x a b)
@@ -123,11 +123,11 @@ private theorem hu_iff (hinj : Function.Injective (algebraMap O K)) {π e : O} {
     exact hsub ⟨w, hw, rfl⟩
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i : O, (a ^ 2 - e * b ^ 2) * i = 1 := by`. Take `⟨w, hw⟩` from `hNu`. Conclude with `⟨↑w⁻¹, by rw [← hw]; exact w.mul_inv⟩`. Establish `hiu : IsUnit i` using `⟨⟨i, a ^ 2 - e * b ^ 2, by rw [mul_comm]; exact hi, hi⟩, rfl⟩`. Establish `hprod : ((u⁻¹ * v : (Etau K τ)ˣ) : Etau K τ) = el x (i * (a * c - e * b * d)) (i * (a * d - b * c))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Units.val_mul, inv_el hx hu hi, hv, el_mul hx]`. Apply the tactic sequence `congr 1 <;> ring`. Establish `hN : IsUnit ((i * (a * c - e * b * d)) ^ 2 - e * (i * (a * d - b * c)) ^ 2)`. Establish `hid : (i * (a * c - e * b * d)) ^ 2 - e * (i * (a * d - b * c)) ^ 2 = i ^ 2 * ((a ^ 2 - e * b ^ 2) * (c ^ 2 - e * d ^ 2))` using `by ring`. Rewrite using `[hid]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hiu.pow 2).mul (hNu.mul hNv)`. Rewrite using `[hu_iff hinj h0 hx hprod hN]`. Conclude with `hiu.dvd_mul_left`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem rel_iff (hinj : Function.Injective (algebraMap O K)) {π e : O} {x : Etau K τ} (h0 : x.im ≠ 0)
     (hx : x * x = algebraMap O (Etau K τ) e) {u v : (Etau K τ)ˣ} {a b c d : O}
@@ -153,9 +153,9 @@ private theorem rel_iff (hinj : Function.Injective (algebraMap O K)) {π e : O} 
 end
 
 /- English proof (translation)
-Set `F : G ⧸ H → Set.range f` to `fun q => Quotient.liftOn' q (fun u => (⟨f u, u, rfl⟩ : Set.range f)) (fun u v huv => Subtype.ext ((hf u v).mpr (QuotientGroup.leftRel_apply.mp huv)))`. Establish `hF : Function.Bijective F`. Prove the components needed by the constructor for the conclusion. Introduce `p q hpq`. Take `⟨u, rfl⟩` from `QuotientGroup.mk_surjective p`.
+Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨v, rfl⟩` from `QuotientGroup.mk_surjective q`. Conclude with `QuotientGroup.eq.mpr ((hf u v).mp (congrArg Subtype.val hpq))`. Introduce and unpack `⟨t, u, rfl⟩`. Conclude with `⟨QuotientGroup.mk u, rfl⟩`. Conclude with `Nat.card_congr (Equiv.ofBijective F hF)`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem index_of_fibres {G T : Type} [Group G] (H : Subgroup G) (f : G → T)
     (hf : ∀ u v, f u = f v ↔ u⁻¹ * v ∈ H) : H.index = Nat.card (Set.range f) := by
@@ -177,9 +177,9 @@ private noncomputable def pt {k : Type} [Field k] (α β : k) : Option k := by
   classical exact if α = 0 then none else some (β / α)
 
 /- English proof (translation)
-Unfold `pt`. Apply the tactic sequence `by_cases ha : α = 0 <;> by_cases hc : γ = 0`. Simplify using `[ha, hc]`. Establish `hb : β ≠ 0` using `h1.resolve_left (not_not.mpr ha)`. Simplify using `[ha, hc, hb]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hd : δ ≠ 0` using `h2.resolve_left (not_not.mpr hc)`. Simplify using `[ha, hc, hd]`. Simplify using `only [ha, hc, if_false, Option.some.injEq]`. Rewrite using `[div_eq_div_iff ha hc]`. Apply the tactic sequence `constructor <;> intro h <;> linear_combination -h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem pt_eq {k : Type} [Field k] {α β γ δ : k} (h1 : α ≠ 0 ∨ β ≠ 0) (h2 : γ ≠ 0 ∨ δ ≠ 0) :
     pt α β = pt γ δ ↔ α * δ - β * γ = 0 := by
@@ -198,13 +198,13 @@ section
 variable {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K] {Δ τ : K}
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap O K)` using `by haveI := L.frac`. Conclude with `IsFractionRing.injective O K`. Establish `hx` using `c.sq`. Establish `h0 : x.im ≠ 0` using `c.gen.im_ne`. Establish `hu' : IsIntegral O (u : Etau K τ) ∧ IsIntegral O ((u⁻¹ : (Etau K τ)ˣ) : Etau K τ)` using `hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, b, hab⟩` from `(Gen1.int_iff L c.gen (u : Etau K τ)).mp hu'.1`. Take `⟨a', b', hab'⟩` from `(Gen1.int_iff L c.gen ((u⁻¹ : (Etau K τ)ˣ) : Etau K τ)).mp hu'.2`. Establish `hu1 : (u : Etau K τ) = el x a b` using `hab`. Establish `hu2 : ((u⁻¹ : (Etau K τ)ˣ) : Etau K τ) = el x a' b'` using `hab'`. Use `⟨a, b, hu1, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hprod : el x a b * el x a' b' = el x (1 : O) 0`. Rewrite using `[el_one, ← hu1, ← hu2, Units.mul_inv]`. Rewrite `hprod` using `[el_mul hx]`. Take `⟨h1, h2⟩` from `el_inj hinj h0 hprod`. Use `IsUnit.of_mul_eq_one (a' ^ 2 - (e : O) * b' ^ 2) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(a * a' + (e : O) * b * b' + 1) * h1 - (e : O) * (a * b' + b * a') * h2`.
+A detailed English derivation is pending.
 -/
 private theorem gu_coords (L : IsLoc O Δ) {π : O} {n : ℕ} {e : Oˣ} {h : O} {x : Etau K τ} (c : Cond π n e h x)
     {u : (Etau K τ)ˣ} (hu : u ∈ Gu O τ) :
@@ -228,9 +228,9 @@ private theorem gu_coords (L : IsLoc O Δ) {π : O} {n : ℕ} {e : Oˣ} {h : O} 
   linear_combination (a * a' + (e : O) * b * b' + 1) * h1 - (e : O) * (a * b' + b * a') * h2
 
 /- English proof (translation)
-Establish `hx` using `c.sq`. Take `⟨i, hi⟩` from `hN.exists_right_inv`. Establish `e1 : a * (a * i) + (e : O) * b * -(b * i) = 1` using `by linear_combination hi`. Establish `e2 : a * -(b * i) + b * (a * i) = 0` using `by ring`. Establish `h1 : el x a b * el x (a * i) (-(b * i)) = 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[el_mul hx, e1, e2, el_one]`. Set `v : (Etau K τ)ˣ` to `⟨el x a b, el x (a * i) (-(b * i)), h1, by rw [mul_comm]; exact h1⟩`. Establish `hint : ∀ p q : O, IsIntegral O (el x p q)` using `fun p q => (Gen1.int_iff L c.gen _).mpr ⟨p, q, rfl⟩`. Conclude with `⟨⟨v, hint a b, hint (a * i) (-(b * i))⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private theorem mk_gu (L : IsLoc O Δ) {π : O} {n : ℕ} {e : Oˣ} {h : O} {x : Etau K τ} (c : Cond π n e h x)
     (a b : O) (hN : IsUnit (a ^ 2 - (e : O) * b ^ 2)) :
@@ -246,33 +246,31 @@ private theorem mk_gu (L : IsLoc O Δ) {π : O} {n : ℕ} {e : Oˣ} {h : O} {x :
   exact ⟨⟨v, hint a b, hint (a * i) (-(b * i))⟩, rfl⟩
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap O K)` using `by haveI := L.frac`. Conclude with `IsFractionRing.injective O K`. Establish `h0 : x.im ≠ 0` using `c.gen.im_ne`. Establish `hx` using `c.sq`. Establish `hmax : IsLocalRing.maximalIdeal O = Ideal.span {π}` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer π).mp c.irr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hres0 : ∀ z : O, IsLocalRing.residue O z = 0 ↔ π ∣ z`. Introduce `z`. Rewrite using `[IsLocalRing.residue_eq_zero_iff, hmax, Ideal.mem_span_singleton]`. Establish `hunit : ∀ z : O, IsUnit z ↔ IsLocalRing.residue O z ≠ 0`. Introduce `z`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ne, IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, not_not]`. Establish `hc : ∀ g : Gu O τ, ∃ a b : O, ((g : (Etau K τ)ˣ) : Etau K τ) = el x a b ∧ IsUnit (a ^ 2 - (e : O) * b ^ 2)` using `fun g => gu_coords L c g.2`. Use `choose A B hAB hN using hc`. Set `r` to `IsLocalRing.residue O`. Set `f : Gu O τ → Option (IsLocalRing.ResidueField O)` to `fun g => pt (r (A g)) (r (B g))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hN' : ∀ g, r (A g) ^ 2 - r (e : O) * r (B g) ^ 2 ≠ 0`. Introduce `g`. Use `(hunit _).mp (hN g)` as an intermediate fact. Simplify `this` using `[r, map_sub, map_mul, map_pow]`. Establish `hnz : ∀ g, r (A g) ≠ 0 ∨ r (B g) ≠ 0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `g`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hN' g` to reduce the goal to its premises. Rewrite using `[hcon.1, hcon.2]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hf : ∀ u v : Gu O τ, f u = f v ↔ u⁻¹ * v ∈ (Hu O (yy π 1 x)).subgroupOf (Gu O τ)`. Introduce `u v`. Rewrite using `[Subgroup.mem_subgroupOf, Subgroup.coe_mul, Subgroup.coe_inv, rel_iff hinj h0 hx (hAB u) (hAB v) (hN u) (hN v), ← hres0]`. Use `show pt _ _ = pt _ _ ↔ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pt_eq (hnz u) (hnz v)]`. Simplify using `only [r, map_sub, map_mul]`. Establish `hidx : (Hu O (yy π 1 x)).relIndex (Gu O τ) = Nat.card (Set.range f)` using `index_of_fibres _ f hf`. Rewrite using `[hidx]`. Establish `hrange : Set.range f = insert none (Option.some '' {t : IsLocalRing.ResidueField O | t ^ 2 * r (e : O) ≠ 1})`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use extensionality with `w`. Simplify using `only [Set.mem_range, Set.mem_insert_iff, Set.mem_image, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, rfl⟩`. Distinguish the cases in `ha : r (A g) = 0`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `left`. Simplify using `[f, pt, ha]`. Use `right`. Use `⟨r (B g) / r (A g), ?_, ?_⟩` and prove the remaining obligations. Introduce `heq`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Apply `hN' g` to reduce the goal to its premises. Clear denominators, using `at heq` for the nonvanishing conditions. Take the linear combination `-heq`. Simplify using `[f, pt, ha]`. Introduce and unpack `(rfl | ⟨t, ht, rfl⟩)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hN0 : IsUnit ((0 : O) ^ 2 - (e : O) * 1 ^ 2)` using `by simp`. Take `⟨g, hg⟩` from `mk_gu L c 0 1 hN0`. Use `⟨g, ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `el_inj hinj h0 ((hAB g).symm.trans hg)`. Simplify using `[f, pt, h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 
-Take `⟨t0, rfl⟩` from `IsLocalRing.residue_surjective t`. Establish `hN1 : IsUnit ((1 : O) ^ 2 - (e : O) * t0 ^ 2)`. Rewrite using `[hunit, map_sub, map_mul, map_pow, map_pow, map_one]`. Introduce `h`. Apply `ht` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `-h`. Take `⟨g, hg⟩` from `mk_gu L c 1 t0 hN1`. Use `⟨g, ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `el_inj hinj h0 ((hAB g).symm.trans hg)`. Simplify using `[f, pt, h1, h2, r]`.
-
-Rewrite using `[hrange]`. Use `haveI := L.fin`. Rewrite using `[Nat.card_coe_set_eq, Set.ncard_insert_of_notMem (by simp) (Set.toFinite _), Set.ncard_image_of_injective _ (Option.some_injective _), add_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem count (L : IsLoc O Δ) {π : O} {n : ℕ} {e : Oˣ} {h : O} {x : Etau K τ} (c : Cond π n e h x) :
     (Hu O (yy π 1 x)).relIndex (Gu O τ) =
@@ -359,33 +357,31 @@ end
 end UpperTheory.IdxOne
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ Δ τ L hτ π n e h x c`. Establish `hc` using `UpperTheory.IdxOne.count L c`. Use `haveI := L.fin`. Establish `he0 : IsLocalRing.residue O (e : O) ≠ 0`. Rewrite using `[Ne, IsLocalRing.residue_eq_zero_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun hm => (IsLocalRing.mem_maximalIdeal _).mp hm e.isUnit`. Prove the components needed by the constructor for the conclusion. Introduce `hns`. Rewrite using `[hc]`. Establish `hS : {t : IsLocalRing.ResidueField O | t ^ 2 * IsLocalRing.residue O (e : O) ≠ 1} = Set.univ`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `t`. Simplify using `only [Set.mem_setOf_eq, Set.mem_univ, iff_true]`. Introduce `ht`. Apply `hns` to reduce the goal to its premises. Establish `ht0 : t ≠ 0`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Simplify using `at ht`. Take `⟨r₀, hr₀⟩` from `IsLocalRing.residue_surjective t⁻¹`. Establish `hr₀u : IsUnit r₀`. Assume the negation of the conclusion as `hnu`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `: IsLocalRing.residue O r₀ = 0` using `(IsLocalRing.residue_eq_zero_iff r₀).mpr ((IsLocalRing.mem_maximalIdeal _).mpr hnu)`. Rewrite `this` using `[hr₀]`. Conclude with `inv_ne_zero ht0 this`. Establish `hinv : t⁻¹ ^ 2 * t ^ 2 = 1`. Rewrite using `[← mul_pow, inv_mul_cancel₀ ht0, one_pow]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨r, hr, -⟩` from `UpperTheory.V.Z.Sym.Loc.sqrtO O K Δ L (e : O) r₀ hr₀u (by`. Rewrite using `[← IsLocalRing.residue_eq_zero_iff, map_sub, map_pow, hr₀]`. Take the linear combination `t⁻¹ ^ 2 * ht - (IsLocalRing.residue O (e : O)) * hinv)`. Conclude with `⟨r, by rw [← hr, sq]⟩`. Rewrite using `[hS, Set.ncard_univ, add_comm]`.
+Take a linear combination of the given relations to obtain the conclusion. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨r, hr⟩`. Rewrite using `[hc]`. Use `set a := IsLocalRing.residue O r with ha`. Establish `hea : IsLocalRing.residue O (e : O) = a * a` using `by rw [hr, map_mul]`. Establish `ha0 : a ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `h0`. Apply `he0` to reduce the goal to its premises. Rewrite using `[hea, h0, zero_mul]`. Establish `h2 : (2 : IsLocalRing.ResidueField O) ≠ 0`. Establish `h2' : IsLocalRing.residue O (2 : O) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[Ne, IsLocalRing.residue_eq_zero_iff]`. Conclude with `fun hm => (IsLocalRing.mem_maximalIdeal _).mp hm L.two`. Rewrite `h2'` using `[map_ofNat]`. Then use the resulting hypothesis. Establish `hne : a⁻¹ ≠ -a⁻¹`. Introduce `hh`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `: (2 : IsLocalRing.ResidueField O) * a⁻¹ = 0` using `by linear_combination hh`. Break down `mul_eq_zero.mp this with h | h` into its components or cases. Conclude with `h2 h`. Conclude with `inv_ne_zero ha0 h`. Establish `hC : {t : IsLocalRing.ResidueField O | t ^ 2 * IsLocalRing.residue O (e : O) ≠ 1}ᶜ = {a⁻¹, -a⁻¹}`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `t`. Simplify using `only [Set.mem_compl_iff, Set.mem_setOf_eq, not_not, Set.mem_insert_iff, Set.mem_singleton_iff, hea]`. Establish `haa : a * a⁻¹ = 1` using `mul_inv_cancel₀ ha0`. Prove the components needed by the constructor for the conclusion. Introduce `ht`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `: (t - a⁻¹) * (t + a⁻¹) = 0`. Take the linear combination `a⁻¹ * a⁻¹ * ht - t ^ 2 * (a * a⁻¹ + 1) * haa`. Break down `mul_eq_zero.mp this with h | h` into its components or cases. Use `left`. Take the linear combination `h`.
+Assume the hypotheses and unpack their components. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `right`. Take the linear combination `h`. Introduce and unpack `(rfl | rfl)`. Take the linear combination `(a * a⁻¹ + 1) * haa`. Take the linear combination `(a * a⁻¹ + 1) * haa`.
-
-Establish `hsum` using `Set.ncard_add_ncard_compl {t : IsLocalRing.ResidueField O | t ^ 2 * IsLocalRing.residue O (e : O) ≠ 1}`. Rewrite `hsum` using `[hC, Set.ncard_pair hne]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem UpperTheory.relIndex_stabilizer_level_one_of_isSquare_unit :
     ∀ (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K] (Δ τ : K), IsLoc O Δ → τ ^ 2 - 4 ≠ 0 → ∀ (π : O) (n : ℕ) (e : Oˣ) (h : O) (x : Etau K τ), Cond π n e h x → (¬ IsSquare (e : O) → (Hu O (yy π 1 x)).relIndex (Gu O τ) = Nat.card (IsLocalRing.ResidueField O) + 1) ∧ (IsSquare (e : O) → (Hu O (yy π 1 x)).relIndex (Gu O τ) + 1 = Nat.card (IsLocalRing.ResidueField O)) := by

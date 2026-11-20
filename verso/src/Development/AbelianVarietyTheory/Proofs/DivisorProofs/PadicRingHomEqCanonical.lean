@@ -5,11 +5,11 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps 
 namespace GlobalTheory
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[← sub_eq_zero]`. Apply `IsHausdorff.haus (I := Ideal.span {(p : O)}) ‹_›` to reduce the goal to its premises. Introduce `n`. Rewrite using `[SModEq.zero]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.mp (PadicInt.appr_spec n x)`. Establish `hx : x = (x.appr n : ℤ_[p]) + y * (p : ℤ_[p]) ^ n` using `by rw [hy]; ring`. Establish `hfx : f x - g x = (f y - g y) * (p : O) ^ n`. Rewrite using `[hx, map_add, map_add, map_mul, map_mul, map_pow, map_pow, map_natCast, map_natCast, map_natCast, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hfx, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow]`. Conclude with `Ideal.mem_span_singleton'.mpr ⟨f y - g y, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem padicInt_ringHom_ext (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O]
     [IsHausdorff (Ideal.span {(p : O)}) O] (f g : ℤ_[p] →+* O) : f = g := by
@@ -28,7 +28,7 @@ theorem padicInt_ringHom_ext (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O]
   exact Ideal.mem_span_singleton'.mpr ⟨f y - g y, rfl⟩
 
 /- English proof (translation)
-Introduce `p _ O _ _ _ g`. Conclude with `padicInt_ringHom_ext p O g (padicToO p O)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem padicToO_unique : ∀ (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] [Fact ¬IsUnit (p : O)]
     [IsAdicComplete (Ideal.span {(p : O)}) O] (g : ℤ_[p] →+* O), g = padicToO p O := by

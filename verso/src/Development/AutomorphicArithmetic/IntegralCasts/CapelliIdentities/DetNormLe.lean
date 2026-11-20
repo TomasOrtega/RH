@@ -5,11 +5,11 @@ noncomputable def UpperTheory.Reformulated.B.Qi39.EB.{u_1, u_2} :
     fun {m : Type u_1} {n : Type u_2} (A : Matrix m n ℂ) (c : ℝ) ↦ ∀ (i : m) (j : n), ‖A i j‖ ≤ c
 
 /- English proof (translation)
-Introduce `n _ _ A m h`. Establish `hterm : ∀ σ : Equiv.Perm n, ‖Equiv.Perm.sign σ • ∏ i, A (σ i) i‖ ≤ m ^ Fintype.card n`. Introduce `σ`. Establish `hs : ‖Equiv.Perm.sign σ • ∏ i, A (σ i) i‖ = ‖∏ i, A (σ i) i‖`. Break down `Int.units_eq_one_or (Equiv.Perm.sign σ) with h1 | h1` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[h1, one_smul]`. Rewrite using `[h1, Units.neg_smul, one_smul, norm_neg]`. Rewrite using `[hs, norm_prod]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.det_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_perm, nsmul_eq_mul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Reformulated.B.Qi39.det_norm_le.{u_1} :
     ∀ {n : Type u_1} [inst : Fintype n] [inst_1 : DecidableEq n] (A : Matrix n n ℂ) {m : ℝ},

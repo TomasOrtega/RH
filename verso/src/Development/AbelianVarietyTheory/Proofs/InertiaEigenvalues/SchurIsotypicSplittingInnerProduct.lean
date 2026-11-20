@@ -8,13 +8,13 @@ section SchurIsotypic
 variable {G H : Type} [Group G] [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
 /- English proof (translation)
-Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma schur_act_inv (act : G →* Module.End ℂ H) (g : G) (y : H) : act g (act g⁻¹ y) = y := by
   rw [← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]
 
 /- English proof (translation)
-Introduce `g e he`. Rewrite `he`, the goal using `[Submodule.mem_orthogonal]`. Introduce `u hu`. Use `hact g _ _ (he _ (hP g⁻¹ u hu))` as an intermediate fact. Rewrite `this` using `[schur_act_inv]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma schur_orth_stable (act : G →* Module.End ℂ H)
     (hact : ∀ g (x y : H), inner ℂ x y = 0 → inner ℂ (act g x) (act g y) = 0)
@@ -27,34 +27,32 @@ lemma schur_orth_stable (act : G →* Module.End ℂ H)
   rwa [schur_act_inv] at this
 
 /- English proof (translation)
-Conclude with `⟨P.starProjection x, P.starProjection_apply_mem x, P.sub_starProjection_mem_orthogonal x⟩`.
+Supply the required witnesses or components.
 -/
 lemma schur_decomp [FiniteDimensional ℂ H] (P : Submodule ℂ H) (x : H) :
     ∃ p ∈ P, x - p ∈ Pᗮ := by
   exact ⟨P.starProjection x, P.starProjection_apply_mem x, P.sub_starProjection_mem_orthogonal x⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Take `⟨e₀, he₀E, he₀⟩` from `hne`. Set `K : Submodule ℂ H` to `LinearMap.ker φ ⊓ E`. Establish `hK : ∀ g, ∀ k ∈ K, act g k ∈ K`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g k hk`. Take `⟨hk1, hk2⟩` from `Submodule.mem_inf.1 hk`. Use `Submodule.mem_inf.2 ⟨?_, hE g k hk2⟩` and prove the remaining obligations. Rewrite `hk1`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[hφ g k hk2, hk1, map_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `C : Submodule ℂ H` to `Kᗮ ⊓ E`. Establish `hC : ∀ g, ∀ c ∈ C, act g c ∈ C` using `fun g c hc => Submodule.mem_inf.2 ⟨schur_orth_stable act hact K hK g c (Submodule.mem_inf.1 hc).1, hE g c (Submodule.mem_inf.1 hc).2⟩`. Establish `hCE : ∀ c ∈ C, c ∈ E` using `fun c hc => (Submodule.mem_inf.1 hc).2`. Establish `hinj : ∀ c ∈ C, φ c = 0 → c = 0`. Introduce `c hc h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hcK : c ∈ K` using `Submodule.mem_inf.2 ⟨h0, hCE c hc⟩`. Use `(Submodule.mem_orthogonal _ _).1 (Submodule.mem_inf.1 hc).1 c hcK` as an intermediate fact. Conclude with `inner_self_eq_zero.1 this`. Establish `hU : C.map φ = ⊤`. Break down `hirr (C.map φ) (by` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components.
 
-Introduce `g`. Introduce and unpack `_ ⟨_, ⟨c, hc, rfl⟩, rfl⟩`. Conclude with `⟨act g c, hC g c hc, hφ g c (hCE c hc)⟩) with h | h`. It suffices to derive a contradiction. Take `⟨p, hp, hr⟩` from `schur_decomp K e₀`.
+Supply the required witnesses or components. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrE : e₀ - p ∈ E` using `E.sub_mem he₀E (Submodule.mem_inf.1 hp).2`. Establish `hrC : e₀ - p ∈ C` using `Submodule.mem_inf.2 ⟨hr, hrE⟩`. Establish `hm : φ (e₀ - p) ∈ C.map φ` using `Submodule.mem_map_of_mem hrC`. Rewrite `hm` using `[h, Submodule.mem_bot, map_sub, LinearMap.mem_ker.1 (Submodule.mem_inf.1 hp).1, sub_zero]`. Conclude with `he₀ hm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Set `ψ : C →ₗ[ℂ] W` to `φ.comp C.subtype`. Establish `hψi : Function.Injective ψ`. Rewrite using `[← LinearMap.ker_eq_bot, Submodule.eq_bot_iff]`. Introduce `c hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `Subtype.ext (hinj c c.2 (LinearMap.mem_ker.1 hc))`. Establish `hψs : Function.Surjective ψ`. Introduce `w`. Establish `hw : w ∈ C.map φ` using `hU ▸ Submodule.mem_top`. Take `⟨c, hc, hcw⟩` from `hw`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨⟨c, hc⟩, hcw⟩`. Set `e` to `LinearEquiv.ofBijective ψ ⟨hψi, hψs⟩`. Set `χ : W →ₗ[ℂ] H` to `C.subtype.comp e.symm.toLinearMap`. Establish `hχC : ∀ w, χ w ∈ C` using `fun w => (e.symm w).2`. Establish `hφχ : ∀ w, φ (χ w) = w` using `fun w => by show ψ (e.symm w) = w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `e.apply_symm_apply w`. Establish `hχ : ∀ g w, χ (ρ g w) = act g (χ w)`. Introduce `g w`. Establish `hd : χ (ρ g w) - act g (χ w) ∈ C` using `C.sub_mem (hχC _) (hC g _ (hχC w))`. Use `hinj _ hd (by rw [map_sub, hφχ, hφ g _ (hCE _ (hχC w)), hφχ, sub_self])` as an intermediate fact.
-
-Conclude with `sub_eq_zero.1 this`. Take `⟨w, hw⟩` from `exists_ne (0 : W)`. Establish `h0 : χ w = 0` using `inner_self_eq_zero.1 (hEorth χ hχ w (χ w) (hCE _ (hχC w)))`. Conclude with `hw (by rw [← hφχ w, h0, map_zero])`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma schur_vanish {W : Type} [AddCommGroup W] [Module ℂ W] [Nontrivial W] [FiniteDimensional ℂ H]
     (act : G →* Module.End ℂ H)
@@ -127,13 +125,11 @@ lemma schur_vanish {W : Type} [AddCommGroup W] [Module ℂ W] [Nontrivial W] [Fi
 end SchurIsotypic
 
 /- English proof (translation)
-Introduce `G W H _ _ _ _ _ _ _ act hact ρ hirr x`. Set `S : Set H` to `{q | ∃ (φ : W →ₗ[ℂ] H) (w : W), (∀ g w', φ (ρ g w') = act g (φ w')) ∧ q = φ w}`. Set `I : Submodule ℂ H` to `Submodule.span ℂ S`. Establish `hI : ∀ g, ∀ y ∈ I, act g y ∈ I`. Introduce `g y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hle : I.map (act g) ≤ I`. Rewrite using `[Submodule.map_span]`. Apply `Submodule.span_le.2` to reduce the goal to its premises. Introduce and unpack `_ ⟨_, ⟨φ, w, hφ, rfl⟩, rfl⟩`. Conclude with `Submodule.subset_span ⟨φ, ρ g w, hφ, (hφ g w).symm⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `hle (Submodule.mem_map_of_mem hy)`. Take `⟨q, hq, hxq⟩` from `schur_decomp I x`. Use `⟨q, hq, Iᗮ, schur_orth_stable act hact I hI, ?_, hxq⟩` and prove the remaining obligations. Introduce `φ hφ`. Use `schur_vanish act hact ρ hirr Iᗮ (schur_orth_stable act hact I hI) ?_ φ hφ` and prove the remaining obligations.
-
-Introduce `χ hχ w e he`. Conclude with `(Submodule.mem_orthogonal _ _).1 he _ (Submodule.subset_span ⟨χ, w, hχ, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem schur_isotypic_splitting : ∀ {G W H : Type} [Group G] [AddCommGroup W] [Module ℂ W] [Nontrivial W] [NormedAddCommGroup H] [InnerProductSpace ℂ H] [FiniteDimensional ℂ H] (act : G →* Module.End ℂ H), (∀ g (x y : H), inner ℂ x y = 0 → inner ℂ (act g x) (act g y) = 0) → ∀ (ρ : G →* Module.End ℂ W), (∀ U : Submodule ℂ W, (∀ g, U.map (ρ g) ≤ U) → U = ⊥ ∨ U = ⊤) → ∀ x : H, ∃ q ∈ Submodule.span ℂ {q | ∃ (φ : W →ₗ[ℂ] H) (w : W), (∀ g w', φ (ρ g w') = act g (φ w')) ∧ q = φ w}, ∃ E : Submodule ℂ H, (∀ g, ∀ e ∈ E, act g e ∈ E) ∧ (∀ φ : H →ₗ[ℂ] W, (∀ g, ∀ e ∈ E, φ (act g e) = ρ g (φ e)) → ∀ e ∈ E, φ e = 0) ∧ x - q ∈ E := by
   intro G W H _ _ _ _ _ _ _ act hact ρ hirr x

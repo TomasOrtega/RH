@@ -7,13 +7,13 @@ namespace GroundTheory.Heights₂.Heights
 universe u
 
 /- English proof (translation)
-Introduce `X D g ⟨C, hC⟩ hD`. Establish `iter : ∀ (k : ℕ) (x : X), g (D^[k] x) = 4 ^ k * g x`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Simplify using the standard rewrite rules. Consider the case `succ k ih`. Introduce `x`. Rewrite using `[Function.iterate_succ_apply', hD, ih, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [Pi.zero_apply]`. Assume the negation of the conclusion as `hx`. Establish `hpos : 0 < |g x|` using `abs_pos.mpr hx`. Take `⟨k, hk⟩` from `pow_unbounded_of_one_lt (C / |g x|) (by norm_num : (1 : ℝ) < 4)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hle : (4 : ℝ) ^ k * |g x| ≤ C`. Use `hC (D^[k] x)` as an intermediate fact. Rewrite `this` using `[iter, abs_mul, abs_of_pos (by positivity : (0 : ℝ) < 4 ^ k)]`. Then use the resulting hypothesis. Establish `: C < (4 : ℝ) ^ k * |g x|` using `(div_lt_iff₀ hpos).mp hk`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem BoundedHomogeneousZero.proof : BoundedHomogeneousZero.Statement.{u} := by
   intro X D g ⟨C, hC⟩ hD

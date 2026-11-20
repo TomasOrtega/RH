@@ -25,7 +25,7 @@ theorem reixHom_apply {a b : Type} [Fintype a] [Fintype b] [DecidableEq a] [Deci
     (g : Matrix a a ℂ) : reixHom e g = Matrix.reindex e e g := rfl
 
 /- English proof (translation)
-The claim follows from `continuous_id.matrix_reindex e e`.
+A detailed English derivation is pending.
 -/
 theorem continuous_reixHom {a b : Type} [Fintype a] [Fintype b] [DecidableEq a] [DecidableEq b] (e : a ≃ b) :
     Continuous (reixHom e) :=
@@ -41,14 +41,14 @@ theorem umat_covU {e : Ix p q ≃ Fin n} {ε : Fin n → Bool} (h : BlockOrd e �
     umat (covU h T x) = Matrix.reindex e e ((T.cov x : GL (Ix p q) ℂ) : Mat p q) := rfl
 
 /- English proof (translation)
-The claim follows from `Continuous.subtype_mk (((continuous_reixHom e).units_map _).comp (continuous_fst.comp T.emb.continuous)) _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_covU {e : Ix p q ≃ Fin n} {ε : Fin n → Bool} (h : BlockOrd e ε) (T : GrpData p q) :
     Continuous (covU h T) :=
   Continuous.subtype_mk (((continuous_reixHom e).units_map _).comp (continuous_fst.comp T.emb.continuous)) _
 
 /- English proof (translation)
-Introduce `g`. Take `⟨x, hx⟩` from `h.cov_surj T (g := umat g) g.2`. Conclude with `⟨x, Subtype.ext (Units.ext hx)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem surjective_covU {e : Ix p q ≃ Fin n} {ε : Fin n → Bool} (h : BlockOrd e ε) (T : GrpData p q) :
     Function.Surjective (covU h T) := by
@@ -57,11 +57,11 @@ theorem surjective_covU {e : Ix p q ≃ Fin n} {ε : Fin n → Bool} (h : BlockO
   exact ⟨x, Subtype.ext (Units.ext hx)⟩
 
 /- English proof (translation)
-Use `⟨T.emb, ?_⟩` and prove the remaining obligations. Establish `: Set.range (fun x : T.G => (T.cov x, T.sq x)) = {z : GL (Ix p q) ℂ × ℂˣ | (z.1 : Mat p q)ᴴ * Jm p q * z.1 = Jm p q} ∩ {z | (z.2 : ℂ) ^ 2 = (z.1 : Mat p q).det}`. Use extensionality with `⟨g, w⟩`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← hx]`. Conclude with `⟨T.cov_mem x, T.sq_sq x⟩`. Introduce and unpack `⟨h1, h2⟩`. Take `⟨x, hx, -⟩` from `T.bij g h1 w h2`. Conclude with `⟨x, Prod.ext hx.1 hx.2⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[this]`. Establish `c1 : Continuous fun z : GL (Ix p q) ℂ × ℂˣ => (z.1 : Mat p q)` using `Units.continuous_val.comp continuous_fst`. Establish `c2 : Continuous fun z : GL (Ix p q) ℂ × ℂˣ => (z.2 : ℂ)` using `Units.continuous_val.comp continuous_snd`. Conclude with `(isClosed_eq ((c1.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul c1) continuous_const).inter (isClosed_eq (c2.pow 2) c1.matrix_det)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isClosedEmbedding_emb (T : GrpData p q) :
     Topology.IsClosedEmbedding (fun x : T.G => (T.cov x, T.sq x)) := by
@@ -84,11 +84,11 @@ theorem isClosedEmbedding_emb (T : GrpData p q) :
     (isClosed_eq (c2.pow 2) c1.matrix_det)
 
 /- English proof (translation)
-Establish `h1` using `(mem_Upq _).1 (T.cov_mem x)`. Establish `hJ : (Jm p q).det ≠ 0`. Establish `: (Matrix.reindex e e (Jm p q)).det * (Matrix.reindex e e (Jm p q)).det = 1`. Rewrite using `[h.reindex_Jm, ← Matrix.det_mul, Formalism.REAL.Jm_mul_self, Matrix.det_one]`. Rewrite `this` using `[Matrix.det_reindex_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `left_ne_zero_of_mul_eq_one this`. Establish `h2` using `congrArg (fun A => ‖Matrix.det A‖) h1`. Simplify using `only [Matrix.det_mul, Matrix.det_conjTranspose, norm_mul, norm_star, ← T.sq_sq x, norm_pow] at h2`. Establish `h3 : ‖(T.sq x : ℂ)‖ ^ 4 = 1`. Apply `mul_right_cancel₀ (norm_ne_zero_iff.2 hJ)` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[one_mul]`. Use `conv_rhs => rw [← h2]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) (by norm_num)).1 h3`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem norm_sq_eq_one {e : Ix p q ≃ Fin n} {ε : Fin n → Bool} (h : BlockOrd e ε) (T : GrpData p q) (x : T.G) :
     ‖(T.sq x : ℂ)‖ = 1 := by
@@ -108,11 +108,11 @@ theorem norm_sq_eq_one {e : Ix p q ≃ Fin n} {ε : Fin n → Bool} (h : BlockOr
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) (by norm_num)).1 h3
 
 /- English proof (translation)
-Use `isProperMap_iff_isCompact_preimage.2 ⟨continuous_covU h T, fun K hK => ?_⟩` and prove the remaining obligations. Establish `hS : IsCompact ((Units.val : ℂˣ → ℂ) ⁻¹' Metric.sphere 0 1)`. Use `(Units.isEmbedding_val₀.isInducing.isCompact_preimage_iff ?_).2 (isCompact_sphere 0 1)` and prove the remaining obligations. Introduce `z hz`. Establish `: z ≠ 0` using `by rintro rfl; simp at hz`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `⟨Units.mk0 z this, rfl⟩`. Establish `hK' : IsCompact ((fun g : Formalism.REAL.UJ ε => (Units.map (reixHom e.symm) g.1 : GL (Ix p q) ℂ)) '' K)` using `hK.image (((continuous_reixHom e.symm).units_map _).comp continuous_subtype_val)`. Use `((isClosedEmbedding_emb T).isCompact_preimage (hK'.prod hS)).of_isClosed_subset (hK.isClosed.preimage (continuous_covU h T)) fun x hx => ⟨⟨covU h T x, hx, Units.ext ?_⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Matrix.reindex e.symm e.symm (Matrix.reindex e e ((T.cov x : GL (Ix p q) ℂ) : Mat p q)) = _`. Simplify using the standard rewrite rules.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Simplify using `using norm_sq_eq_one h T x`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isProperMap_covU {e : Ix p q ≃ Fin n} {ε : Fin n → Bool} (h : BlockOrd e ε) (T : GrpData p q) :
     IsProperMap (covU h T) := by
@@ -131,7 +131,7 @@ theorem isProperMap_covU {e : Ix p q ≃ Fin n} {ε : Fin n → Bool} (h : Block
   · simpa using norm_sq_eq_one h T x
 
 /- English proof (translation)
-The claim follows from `Measure.isHaarMeasure_map T.haar (covU h T) (continuous_covU h T) (surjective_covU h T) (isProperMap_iff_tendsto_cocompact.1 (isProperMap_covU h T)).2`.
+A detailed English derivation is pending.
 -/
 theorem isHaarMeasure_map_covU {e : Ix p q ≃ Fin n} {ε : Fin n → Bool} (h : BlockOrd e ε) (T : GrpData p q) :
     (T.haar.map (covU h T)).IsHaarMeasure :=
@@ -139,11 +139,11 @@ theorem isHaarMeasure_map_covU {e : Ix p q ≃ Fin n} {ε : Fin n → Bool} (h :
     (isProperMap_iff_tendsto_cocompact.1 (isProperMap_covU h T)).2
 
 /- English proof (translation)
-Introduce `p q n e ε T R σ h hF v w`. Establish `hc : coefOn (ε` using `ε) σ v w ∘ covU h T = fun g => inner ℂ w (R.U.π g v) := by`. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp, coefOn, umat_covU, hF x]`. Establish `hc1 : Continuous fun g => (inner ℂ w (R.U.π g v) : ℂ)` using `continuous_const.inner (R.U.cont v)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hq` using `(isProperMap_covU h T).isClosedMap.isQuotientMap (continuous_covU h T) (surjective_covU h T)`. Establish `hc2 : Continuous (coefOn (ε` using `ε) σ v w) := hq.continuous_iff.2 (hc ▸ hc1)`. Use `haveI := isHaarMeasure_map_covU h T`. Rewrite using `[Measure.isMulLeftInvariant_eq_smul (Formalism.REAL.muG ε) (T.haar.map (covU h T))]`. Use `MemLp.smul_measure ?_ ENNReal.coe_ne_top` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[memLp_map_measure_iff hc2.aestronglyMeasurable (continuous_covU h T).measurable.aemeasurable, hc, memLp_two_iff_integrable_sq_norm hc1.aestronglyMeasurable]`. Conclude with `(R.schur v w).1`.
+A detailed English derivation is pending.
 -/
 theorem isSqIntOn_of_factors : ∀ (p q n : ℕ) (e : Ix p q ≃ Fin n) (ε : Fin n → Bool) (T : GrpData p q) (R : DSRep T)
     (σ : Matrix (Fin n) (Fin n) ℂ → (R.U.H →L[ℂ] R.U.H)), BlockOrd e ε → Factors R.U e σ → IsSqIntOn ε σ := by

@@ -5,27 +5,25 @@ open Formalism.MainNotions.N
 namespace GlobalTheory
 
 /- English proof (translation)
-Distinguish the cases in `ht : ∃ t, η₀ t = -1 ∧ η t = 1`. Use `swap`. Use `⟨a, fun g _ => rfl, fun g hg => ?_⟩` and prove the remaining obligations. Break down `Int.units_eq_one_or (η₀ g) with h | h` into its components or cases. Conclude with `(hab g h hg).symm`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `absurd ⟨g, h, hg⟩ ht`. Take `⟨t, ht0, ht1⟩` from `ht`. Use `set z := (a t)⁻¹ * b t with hz`. Establish `hzK : ∀ g, η₀ g = 1 → η g = 1 → a g * z = z * a g`. Introduce `g hg0 hg1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `e : b (t * g * t⁻¹) = a (t * g * t⁻¹)` using `hab _ (by simp only [map_mul, map_inv, hg0, mul_one, mul_inv_cancel]) (by simp only [map_mul, map_inv, hg1, mul_one, mul_inv_cancel])`. Simplify using `only [map_mul, map_inv, hab g hg0 hg1] at e`. Rewrite using `[hz]`. Combine the equalities or inequalities in the displayed calculation. Establish `hzs : a s * z = z * a s` using `hc z hzK`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hzH0 : ∀ g, η₀ g = 1 → a g * z = z * a g`. Introduce `g hg0`. Break down `Int.units_eq_one_or (η g) with hg1 | hg1` into its components or cases. Conclude with `hzK g hg0 hg1`. Establish `hk0 : η₀ (s⁻¹ * g) = 1` using `by rw [map_mul, map_inv, h0, hg0]; decide`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hk1 : η (s⁻¹ * g) = 1` using `by rw [map_mul, map_inv, h1, hg1]; decide`. Establish `hk` using `hzK _ hk0 hk1`. Establish `hg : a g = a s * a (s⁻¹ * g)` using `by rw [← map_mul, mul_inv_cancel_left]`. Rewrite using `[hg, mul_assoc, hk, ← mul_assoc, hzs, mul_assoc]`. Establish `hzz : ∀ g, η₀ g = -1 → z * a g * z = a g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `g hg0`. Establish `hm : η₀ (t⁻¹ * g) = 1` using `by rw [map_mul, map_inv, ht0, hg0]; decide`. Establish `hg : a g = a t * a (t⁻¹ * g)` using `by rw [← map_mul, mul_inv_cancel_left]`. Establish `ht2 : b (t * t) = a (t * t)` using `hab _ (by rw [map_mul, ht0]; decide) (by rw [map_mul, ht1]; decide)`. Rewrite `ht2` using `[map_mul, map_mul]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hg]`. Combine the equalities or inequalities in the displayed calculation. Establish `hn : ∀ u : ℤˣ, u = -1 → ¬ u = 1` using `by rintro u rfl; decide`. Use `⟨MonoidHom.mk' (fun g => if η₀ g = 1 then a g else a g * z) ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g g'`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rcases Int.units_eq_one_or (η₀ g) with h | h <;> rcases Int.units_eq_one_or (η₀ g') with h' | h'`. Rewrite using `[if_pos (by rw [map_mul, h, h']; decide), if_pos h, if_pos h', map_mul]`. Rewrite using `[if_neg (hn _ (by rw [map_mul, h, h']; decide)), if_pos h, if_neg (hn _ h'), map_mul, mul_assoc]`. Rewrite using `[if_neg (hn _ (by rw [map_mul, h, h']; decide)), if_neg (hn _ h), if_pos h', map_mul, mul_assoc, mul_assoc, hzH0 g' h']`. Rewrite using `[if_pos (by rw [map_mul, h, h']; decide), if_neg (hn _ h), if_neg (hn _ h'), map_mul, mul_assoc, ← mul_assoc z, hzz g' h']`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `g hg`. Rewrite using `[MonoidHom.mk'_apply, if_pos hg]`. Introduce `g hg`. Rewrite using `[MonoidHom.mk'_apply]`. Break down `Int.units_eq_one_or (η₀ g) with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos h, hab g h hg]`. Rewrite using `[if_neg (hn _ h)]`. Establish `hk : b (g * t⁻¹) = a (g * t⁻¹)` using `hab _ (by rw [map_mul, map_inv, h, ht0]; decide) (by rw [map_mul, map_inv, hg, ht1]; decide)`. Simplify using `only [map_mul, map_inv] at hk`. Rewrite using `[hz]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_hom_patch_of_agree {Γ G : Type*} [Group Γ] [Group G] (a b : Γ →* G)
     (η₀ η : Γ →* ℤˣ) (s : Γ) (h0 : η₀ s = 1) (h1 : η s = -1)
@@ -99,11 +97,11 @@ theorem exists_hom_patch_of_agree {Γ G : Type*} [Group Γ] [Group G] (a b : Γ 
         _ = b g := by group
 
 /- English proof (translation)
-Introduce `Γ k _ _ n ρ₀ ρ' η₀ η P s hs0 hs1 hagree hcomm`. Take `⟨ρ, hρ0, hρ1⟩` from `exists_hom_patch_of_agree ρ₀ ((MulAut.conj P).toMonoidHom.comp ρ') η₀ η s hs0 hs1 (fun g h0 h1 => by`. Simplify using `only [MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, hagree g h0 h1]`. Use the proof step `group)`. Use the proof step `(fun y hy => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul]`. Apply `hcomm` to reduce the goal to its premises. Introduce `g h0 h1`. Simplify `congrArg Units.val (hy g h0 h1))` using `only [Units.val_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨ρ, hρ0, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[hρ1 g hg]`. Simplify using `only [MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_rep_patch_twist : ∀ (Γ k : Type) [Group Γ] [Field k] (n : ℕ) (ρ₀ ρ' : Γ →* GL (Fin n) k) (η₀ η : Γ →* ℤˣ) (P : GL (Fin n) k) (s : Γ), η₀ s = 1 → η s = -1 → (∀ g, η₀ g = 1 → η g = 1 → ρ' g = P⁻¹ * ρ₀ g * P) → (∀ Y : Matrix (Fin n) (Fin n) k, (∀ g, η₀ g = 1 → η g = 1 → ((ρ₀ g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) * Y = Y * ((ρ₀ g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)) → ((ρ₀ s : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) * Y = Y * ((ρ₀ s : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)) → ∃ ρ : Γ →* GL (Fin n) k, (∀ g, η₀ g = 1 → ρ g = ρ₀ g) ∧ ∀ g, η g = 1 → ρ g = P * ρ' g * P⁻¹ := by
   intro Γ k _ _ n ρ₀ ρ' η₀ η P s hs0 hs1 hagree hcomm

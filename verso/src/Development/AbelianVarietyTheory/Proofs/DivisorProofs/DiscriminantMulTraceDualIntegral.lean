@@ -6,15 +6,15 @@ open NumberField IsDedekindDomain
 open scoped nonZeroDivisors
 
 /- English proof (translation)
-Introduce `K _ _ x hx`. Establish `hmem : ((NumberField.discr K).natAbs : 𝓞 K) ∈ differentIdeal ℤ (𝓞 K)`. Rewrite using `[← NumberField.absNorm_differentIdeal K (𝓞 K)]`. Conclude with `Ideal.absNorm_mem _`. Establish `hdual : x ∈ FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (𝓞 K)⁰ K)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[FractionalIdeal.mem_dual (one_ne_zero (α := FractionalIdeal (𝓞 K)⁰ K))]`. Introduce `a ha`. Take `⟨b, rfl⟩` from `(FractionalIdeal.mem_one_iff _).mp ha`. Take `⟨k, hk⟩` from `hx b`. Use `⟨k, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.traceForm_apply, eq_intCast, ← hk, mul_comm]`. Establish `hprod` using `FractionalIdeal.mul_mem_mul (FractionalIdeal.mem_coeIdeal_of_mem (𝓞 K)⁰ hmem) hdual`. Rewrite `hprod` using `[coeIdeal_differentIdeal ℤ ℚ, inv_mul_cancel₀ (FractionalIdeal.dual_ne_zero ℤ ℚ (one_ne_zero (α := FractionalIdeal (𝓞 K)⁰ K)))]`. Take `⟨α, hα⟩` from `(FractionalIdeal.mem_one_iff _).mp hprod`. Rewrite `hα` using `[map_natCast]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hint : IsIntegral ℤ (((NumberField.discr K).natAbs : K) * x)`. Rewrite using `[← hα]`. Conclude with `α.isIntegral_coe`. Break down `Int.natAbs_eq (NumberField.discr K) with h | h` into its components or cases. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hint`. Rewrite using `[h]`. Simplify using `using hint.neg`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem discr_mul_isIntegral_of_traceDual :
     ∀ (K : Type) [Field K] [NumberField K] (x : K), (∀ y : 𝓞 K, ∃ n : ℤ, Algebra.trace ℚ K (x * y) = n) →

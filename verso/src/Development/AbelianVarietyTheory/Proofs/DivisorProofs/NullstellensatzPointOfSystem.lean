@@ -19,7 +19,7 @@ open GlobalTheory.CompHt
 namespace GlobalTheory.ConeOnto
 
 /- English proof (translation)
-Establish `: JacobsonSpace X` using `LocallyOfFiniteType.jacobsonSpace f`. Take `⟨c, hcZ, hc⟩` from `nonempty_inter_closedPoints ⟨x, hx⟩ hZ`. Use `replace hc : IsClosed {c} := hc`. Conclude with `⟨pointOfClosedPoint f c hc, pointOfClosedPoint_comp _ _ _, fun w => by rw [pointOfClosedPoint_apply]; exact hcZ⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_rat_pt {K : Type} [Field K] [IsAlgClosed K] {X : Scheme.{0}} (f : X ⟶ Sp K) [LocallyOfFiniteType f]
     {Z : Set X} (hZ : IsLocallyClosed Z) {x : X} (hx : x ∈ Z) :
@@ -30,41 +30,35 @@ theorem exists_rat_pt {K : Type} [Field K] [IsAlgClosed K] {X : Scheme.{0}} (f :
   exact ⟨pointOfClosedPoint f c hc, pointOfClosedPoint_comp _ _ _, fun w => by rw [pointOfClosedPoint_apply]; exact hcZ⟩
 
 /- English proof (translation)
-Introduce `F _ _ S hS hb K _ _ _ y hy hI`. Use `haveI : IsAlgClosed K := IsAlgClosure.isAlgClosed F`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Establish `hT : (S.baseChange K).IsVariety` using `hS.baseChange K`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hbT : (S.baseChange K).BasePointFree` using `hb.baseChange K`. Take `⟨i₀, hi₀⟩` from `Function.ne_iff.1 hy`. Express the relevant statement in the definitionally equal form `y i₀ ≠ 0 at hi₀`. Set `u : Fin S.N → Fin S.N → K` to `fun j => y i₀ • Pi.single j 1 - y j • Pi.single i₀ 1`. Establish `hu : ∀ (j : Fin S.N) (c : Fin S.N → K), ∑ l, u j l * c l = y i₀ * c j - y j * c i₀` using `fun j c => by`.
+Express the relevant assertion in an equivalent form by its definition. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[u, sub_mul, Finset.sum_sub_distrib, Pi.single_apply, mul_assoc]`. Establish `hcov : ∀ z : (S.baseChange K).Y, ∃ j, z ∈ nonzeroLocus ((S.baseChange K).comb (u j))`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Take `⟨z, hz⟩` from `hc`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hT.smooth` as an intermediate fact. Establish `: Smooth (S.baseChange K).str` using `SmoothOfRelativeDimension.smooth (S.baseChange K).D _`. Establish `hZ : IsClosed (⋂ j, ((nonzeroLocus ((S.baseChange K).comb (u j)) : Set (S.baseChange K).Y)ᶜ))` using `isClosed_iInter fun j => (nonzeroLocus ((S.baseChange K).comb (u j))).isOpen.isClosed_compl`. Take `⟨a, ha, haZ⟩` from `GlobalTheory.ConeOnto.exists_rat_pt (S.baseChange K).str hZ.isLocallyClosed (x := z) (Set.mem_iInter.2 hz)`. Set `xa : (S.baseChange K).Pt K` to `⟨a, ha.trans (Spec.map_id _).symm⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbase : (S.baseChange K).baseHom a = RingHom.id K` using `LinSys.baseHom_ptOver xa`. Establish `hv : ∀ j, y i₀ * (S.baseChange K).coords a j - y j * (S.baseChange K).coords a i₀ = 0` using `fun j => by`. Establish `h0` using `Set.mem_iInter.1 (haZ (IsLocalRing.closedPoint K)) j`. Establish `h1 : (S.baseChange K).val a ((S.baseChange K).comb (u j)) = 0` using `not_not.1 fun h => h0 (((S.baseChange K).val_ne_zero_iff a _).1 h)`. Establish `h2` using `((S.baseChange K).val_comb a (u j)).symm.trans h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h2` using `[hbase]`. Simplify using `only [RingHom.id_apply] at h2`. Conclude with `(hu j ((S.baseChange K).coords a)).symm.trans h2`. Establish `hc0 : (S.baseChange K).coords a i₀ ≠ 0` using `fun h0 => hbT.coords_ne_zero a (funext fun j => by`. Use `hv j` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[h0, mul_zero, sub_zero]`. Conclude with `(mul_eq_zero.1 this).resolve_left hi₀)`. Take `⟨c, hc, e⟩` from `S.exists_coords_baseChange K a`. Use `hno (LinSys.toBase xa) (c⁻¹ * ((S.baseChange K).coords a i₀ / y i₀)) (mul_ne_zero (inv_ne_zero hc) (div_ne_zero hc0 hi₀)) (funext fun j => ?_)` and prove the remaining obligations. Establish `ej` using `congrFun e j`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hvj` using `hv j`. Express the relevant statement in the definitionally equal form `S.coords (a ≫ S.bcFst K) j = _`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at ej ⊢`. Establish `e1 : S.coords (a ≫ S.bcFst K) j = c⁻¹ * (S.baseChange K).coords a j`. Rewrite using `[ej, ← mul_assoc, inv_mul_cancel₀ hc, one_mul]`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e2 : (S.baseChange K).coords a j = (S.baseChange K).coords a i₀ / y i₀ * y j`. Clear the denominators using the available nonvanishing facts. Take the linear combination `hvj`. Rewrite using `[e1, e2]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hX : (X i₀ : MvPolynomial (Fin (S.baseChange K).N) K).IsHomogeneous 1` using `isHomogeneous_X K i₀`. Take `⟨m, A, hA, hrel⟩` from `GlobalTheory.SecIntegral.exists_integral_relation K (S.baseChange K) hT S.N 1 u ((S.baseChange K).form hX) hcov`. Set `σ : Fin S.N → MvPolynomial (Fin S.N) K` to `fun i => ∑ j, C (u i j) * X j`. Establish `hσ : ∀ i, (σ i).IsHomogeneous 1` using `fun i => IsHomogeneous.sum _ _ _ fun j _ => by`. Simplify using `using (isHomogeneous_C (Fin S.N) (u i j)).mul (isHomogeneous_X K j)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `G : MvPolynomial (Fin S.N) K` to `X i₀ ^ m + ∑ k : Fin m, bind₁ σ (A k) * X i₀ ^ (k : ℕ)`. Establish `hG : G.IsHomogeneous m`. Use `(isHomogeneous_X_pow i₀ m).add (IsHomogeneous.sum _ _ _ fun k _ => ?_)` and prove the remaining obligations. Establish `h1 : (bind₁ σ (A k)).IsHomogeneous (1 * (1 * (m - k)))` using `(hA k).eval₂ C σ (fun r => isHomogeneous_C _ r) hσ`. Establish `h2` using `h1.mul (isHomogeneous_X_pow i₀ (k : ℕ))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : 1 * (1 * (m - (k : ℕ))) + k = m` using `by omega`. Rewrite `h2` using `[e]`. Then use the resulting hypothesis. Use `haveI := HeightExists.isIntegral hT`. Take `⟨Ω, _, _, xg, hxg, -⟩` from `HeightExists.exists_generic hT`. Establish `hmem : G ∈ (S.baseChange K).imageIdeal`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[imageIdeal_eq_coneIdeal_of_generic K Ω _ xg hxg 1 _ one_ne_zero (one_smul _ _).symm]`. Use `(mem_coneIdeal_of_isHomogeneous (K := K) (N := S.N) _ hG).2 ?_` and prove the remaining obligations. Establish `h` using `hrel Ω xg`. Rewrite `h` using `[LinSys.powVal_form, LinSys.baseHom_ptOver]`. Use `erw [eval₂_X] at h`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `cg : Fin S.N → Ω` to `(S.baseChange K).coords xg.1`. Establish `h' : cg i₀ ^ m + ∑ k : Fin m, aeval (fun i : Fin S.N => ∑ j : Fin S.N, algebraMap K Ω (u i j) * cg j) (A k) * cg i₀ ^ (k : ℕ) = 0` using `h`. Use `show aeval cg G = 0`. Simplify using `only [G, σ, map_add, map_pow, map_sum, map_mul, aeval_X, aeval_bind₁, aeval_C]`. Conclude with `h'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hmem` using `[← HeightExists.map_imageIdeal hS K]`. Establish `hker : S.imageIdeal.map (MvPolynomial.map (algebraMap F K)) ≤ RingHom.ker (eval y)` using `Ideal.map_le_iff_le_comap.2 fun g hg => by`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, MvPolynomial.eval_map, ← aeval_def]`. Conclude with `hI g hg`. Establish `h0 : eval y G = 0` using `hker hmem`.
-
-Establish `hA0 : ∀ k : Fin m, eval y (bind₁ σ (A k)) = 0` using `fun k => by show aeval y (bind₁ σ (A k)) = 0`. Rewrite using `[aeval_bind₁]`. Establish `e : (fun i => aeval y (σ i)) = 0` using `funext fun i => by`. Simplify using `only [σ, map_sum, map_mul, aeval_C, aeval_X, Algebra.algebraMap_self, RingHom.id_apply, Pi.zero_apply]`. Rewrite using `[hu i y]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, aeval_zero, Algebra.algebraMap_self, RingHom.id_apply, constantCoeff, RingHom.coe_mk, MonoidHom.coe_mk, OneHom.coe_mk]`. Conclude with `(hA k).coeff_eq_zero (d := 0) (by simp; omega)`. Establish `h3 : eval y G = y i₀ ^ m`. Simplify using `only [G, map_add, map_pow, map_sum, map_mul, eval_X, hA0, zero_mul, Finset.sum_const_zero, add_zero]`.
-
-Conclude with `pow_ne_zero m hi₀ (h3.symm.trans h0)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_pt_of_mem_cone : ∀ (F : Type) [Field F] [NumberField F] (S : LinSys F), S.IsVariety → S.BasePointFree → ∀ (K : Type) [Field K] [Algebra F K] [IsAlgClosure F K] (y : Fin S.N → K), y ≠ 0 → (∀ g ∈ S.imageIdeal, aeval y g = 0) → ∃ (x : S.Pt K) (c : K), c ≠ 0 ∧ S.coords x.1 = c • y := by
   intro F _ _ S hS hb K _ _ _ y hy hI

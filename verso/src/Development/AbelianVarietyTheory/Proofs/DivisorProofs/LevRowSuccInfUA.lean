@@ -20,14 +20,14 @@ open GlobalTheory.AdIsom GlobalTheory.IndefiniteRowSideFullHecke.FlatSpaceCompon
 variable {D : D7}
 
 /- English proof (translation)
-Use `haveI : (Valued.v : Valuation (Kw w) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Conclude with `(ValuativeRel.isEquiv (valuation (Kw w)) Valued.v).le_one_iff_le_one`.
+A detailed English derivation is pending.
 -/
 theorem mem_O_iff {w : Pl D.host.E} (a : Kw w) : a ∈ 𝒪[Kw w] ↔ Valued.v a ≤ 1 := by
   haveI : (Valued.v : Valuation (Kw w) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _
   exact (ValuativeRel.isEquiv (valuation (Kw w)) Valued.v).le_one_iff_le_one
 
 /- English proof (translation)
-Simplify using `only [inBasis, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, inv_inv]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem inBasis_val {n n' : ℕ} (h : n' = n) (β x : GL (Fin n) (Lev.EAf D)) (w : Pl D.host.E) (i j : Fin n') :
     (inBasis h β w x).val i j = cpt w ((β⁻¹ * x * β).val (Fin.cast h i) (Fin.cast h j)) := by
@@ -35,9 +35,9 @@ theorem inBasis_val {n n' : ℕ} (h : n' = n) (β x : GL (Fin n) (Lev.EAf D)) (w
   rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Take `⟨h1, h2⟩` from `(mem_KO_iff _).1 hx`. Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Use `(mem_O_iff _).1 (h1 i j)` as an intermediate fact. Rewrite `this` using `[inBasis_val]`. Then use the resulting hypothesis.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `(mem_O_iff _).1 (h2 i j)` as an intermediate fact. Rewrite `this` using `[← map_inv, inBasis_val]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem ent_of_KO {n n' : ℕ} (h : n' = n) (β x : GL (Fin n) (Lev.EAf D)) (w : Pl D.host.E)
     (hx : inBasis h β w x ∈ KO (Kw w) (Fin n')) :
@@ -51,11 +51,9 @@ theorem ent_of_KO {n n' : ℕ} (h : n' = n) (β x : GL (Fin n) (Lev.EAf D)) (w :
     rwa [← map_inv, inBasis_val] at this
 
 /- English proof (translation)
-Substitute `h` using the available equality. Take `⟨z, rfl⟩` from `hx`. Establish `e1 : β⁻¹ * frGL β z * β = intGL D.host.F D.host.E _ z` using `by show β⁻¹ * (β * intGL D.host.F D.host.E _ z * β⁻¹) * β = _ group`. Establish `e2 : β⁻¹ * (frGL β z)⁻¹ * β = intGL D.host.F D.host.E _ z⁻¹`. Rewrite using `[← map_inv]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show β⁻¹ * (β * intGL D.host.F D.host.E _ z⁻¹ * β⁻¹) * β = _`. Use `group`. Use `(mem_KO_iff _).2 ⟨fun i j => (mem_O_iff _).2 ?_, fun i j => (mem_O_iff _).2 ?_⟩` and prove the remaining obligations. Rewrite using `[inBasis_val, e1]`. Conclude with `(mem_OA _).1 (z.val _ _).2 w`.
-
-Rewrite using `[← map_inv, inBasis_val, e2]`. Conclude with `(mem_OA _).1 ((z⁻¹).val _ _).2 w`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem KO_of_St {n n' : ℕ} (h : n' = n) (β : GL (Fin n) (Lev.EAf D)) (w : Pl D.host.E) {x : GL (Fin n) (Lev.EAf D)}
     (hx : x ∈ St β) : inBasis h β w x ∈ KO (Kw w) (Fin n') := by
@@ -75,9 +73,9 @@ theorem KO_of_St {n n' : ℕ} (h : n' = n) (β : GL (Fin n) (Lev.EAf D)) (w : Pl
     exact (mem_OA _).1 ((z⁻¹).val _ _).2 w
 
 /- English proof (translation)
-Rewrite `hy`, the goal using `[mem_hat, hβ]`. Introduce `i`. Establish `e : (β⁻¹).val *ᵥ (idem w • (x.val *ᵥ y)) = idem w • ((β⁻¹ * x * β).val *ᵥ ((β⁻¹).val *ᵥ y))`. Rewrite using `[Matrix.mulVec_smul, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Units.val_mul, Units.val_mul, Matrix.mul_assoc, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Rewrite using `[e, Pi.smul_apply, smul_eq_mul, Matrix.mulVec, dotProduct, Finset.mul_sum]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `sum_mem fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc]`. Conclude with `mul_mem ((idem_mul_mem_iff w _).2 (hx i j)) (hy j)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idem_smul_mem {n : ℕ} {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)} {β : GL (Fin n) (Lev.EAf D)}
     (hβ : IsFrame β Λ) {w : Pl D.host.E} {x : GL (Fin n) (Lev.EAf D)}
@@ -94,9 +92,9 @@ theorem idem_smul_mem {n : ℕ} {Λ : Submodule (𝓞 D.host.E) (Fin n → D.hos
   exact mul_mem ((idem_mul_mem_iff w _).2 (hx i j)) (hy j)
 
 /- English proof (translation)
-Establish `hx' : Formalism.UG.cT (cjA D) x.val * V.gram.map (inc D) * x.val = V.gram.map (inc D)` using `hx`. Establish `e2 : ∀ u v : Fin V.rank → Lev.EAf D, Formalism.UG.hform (cjA D) (V.gram.map (inc D)) u v = (cjA D ∘ u) ⬝ᵥ (V.gram.map (inc D) *ᵥ v)`. Introduce `u v`. Simplify using `only [Formalism.UG.hform, dotProduct, mulVec, Finset.mul_sum, Function.comp_apply, mul_assoc]`. Establish `e3 : cjA D ∘ (x.val *ᵥ b) = (cjA D ∘ b) ᵥ* Formalism.UG.cT (cjA D) x.val`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[Formalism.UG.cT, vecMul_transpose, Function.comp_apply, RingHom.map_mulVec]`. Rewrite using `[hA_eq, hA_eq, e2, e2, e3, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, hx']`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem hA_unitary {V : HSp D} {x : GL (Fin V.rank) (Lev.EAf D)} (hx : x ∈ UA D.sp.cm V.gram)
     (a b : Fin V.rank → Lev.EAf D) : hA V (x.val *ᵥ a) (x.val *ᵥ b) = hA V a b := by
@@ -111,7 +109,7 @@ theorem hA_unitary {V : HSp D} {x : GL (Fin V.rank) (Lev.EAf D)} (hx : x ∈ UA 
   rw [hA_eq, hA_eq, e2, e2, e3, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, hx']
 
 /- English proof (translation)
-Rewrite using `[mem_hat_iff_of_selfDual hsd]`. Introduce `z hz`. Establish `e : z = x.val *ᵥ ((x⁻¹).val *ᵥ z)` using `by rw [mulVec_mulVec, Units.mul_inv, one_mulVec]`. Rewrite using `[hA_smul_right, cjA_idem, GlobalTheory.StdFrames.cP_cP, e, hA_unitary hU, ← hA_smul_left]`. Conclude with `(mem_hat_iff_of_selfDual hsd y).1 hy _ (h z hz)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transfer {V : HSp D} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)} (hsd : IsSelfDualC V Λ)
     {x : GL (Fin V.rank) (Lev.EAf D)} (hU : x ∈ UA D.sp.cm V.gram) {w : Pl D.host.E}
@@ -124,7 +122,7 @@ theorem transfer {V : HSp D} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.h
   exact (mem_hat_iff_of_selfDual hsd y).1 hy _ (h z hz)
 
 /- English proof (translation)
-The claim follows from `| 0, h => absurd rfl h | _ + 1, _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem givenLevel_succ {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (t : T) (w : Pl D.host.E) (a : ℕ) :
     ∀ b, b ≠ 0 → givenLevel G t w (a + 1, b) = KO (Kw w) (Fin ((locGrid G t w).rank (a + 1, b)))
@@ -135,21 +133,17 @@ set_option maxHeartbeats 1600000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Rewrite using `[congLev_top]`. Establish `key : ∀ g ∈ prodLev β P hn K ⊓ UA D.sp.cm V.gram, ∀ (Q : Pl D.host.E), ∀ y ∈ hat Λ, idem Q • (g.val *ᵥ y) ∈ hat Λ`. Introduce and unpack `g hg Q y hy`. Take `⟨hg, hU⟩` from `Subgroup.mem_inf.1 hg`. Take `⟨hA', hB'⟩` from `Subgroup.mem_inf.1 hg`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hA : ∀ w : P, (∀ i j, Valued.v (cpt w.1 ((β⁻¹ * g * β).val i j)) ≤ 1) ∧ ∀ i j, Valued.v (cpt w.1 ((β⁻¹ * g⁻¹ * β).val i j)) ≤ 1` using `fun w => by`. Use `Subgroup.mem_comap.1 (Subgroup.mem_iInf.1 hA' w)` as an intermediate fact. Rewrite `this` using `[hK]`. Conclude with `ent_of_KO _ β g w.1 this`. Distinguish the cases in `hQ : ∃ w ∈ P, Q.under (𝓞 D.host.F) = w.under (𝓞 D.host.F)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, hQw⟩` from `hQ`. Break down `GlobalTheory.IdemSupport.eq_or_eq_cP hQw with rfl | rfl` into its components or cases. Conclude with `idem_smul_mem hβ (hA ⟨Q, hw⟩).1 hy`. Conclude with `transfer hsd hU (fun y hy => idem_smul_mem hβ (hA ⟨w, hw⟩).2 hy) hy`. Use `push_neg at hQ`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Subgroup.mem_comap.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hB' Q) hQ)` as an intermediate fact. Conclude with `idem_smul_mem hβ (ent_of_KO _ β g Q this).1 hy`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hS : x ∈ St β` using `(GlobalTheory.LevSplit.mem_St_iff β Λ hβ x).2 ⟨fun y hy => mem_hat_of_idem hsd.1.fg fun Q => key x hx Q y hy, fun y hy => mem_hat_of_idem hsd.1.fg fun Q => key x⁻¹ (inv_mem hx) Q y hy⟩`. Take `⟨h1, h2⟩` from `(GlobalTheory.LevSplit.mem_St_iff β Λ hβ x).1 hS`. Use `Subgroup.mem_inf.2 ⟨(Subgroup.mem_inf.1 hx).2, ?_⟩` and prove the remaining obligations. Introduce `y`. Use `⟨fun hy => h1 y hy, fun hy => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `h2 _ hy` as an intermediate fact. Rewrite `this` using `[mulVec_mulVec, Units.inv_mul, one_mulVec]`. Conclude with `this`. Introduce `hx`. Take `⟨hU, hst⟩` from `Subgroup.mem_inf.1 hx`.
-
-Establish `hS : x ∈ St β` using `(GlobalTheory.LevSplit.mem_St_iff β Λ hβ x).2 ⟨fun y hy => (hst y).1 hy, fun y hy => (hst _).2 (by rw [mulVec_mulVec, Units.mul_inv, one_mulVec]; exact hy)⟩`. Use `Subgroup.mem_inf.2 ⟨Subgroup.mem_inf.2 ⟨Subgroup.mem_iInf.2 fun w => ?_, Subgroup.mem_iInf.2 fun w' => Subgroup.mem_iInf.2 fun _ => ?_⟩, hU⟩` and prove the remaining obligations. Rewrite using `[Subgroup.mem_comap, hK]`. Conclude with `KO_of_St _ β w.1 hS`. Rewrite using `[Subgroup.mem_comap]`.
-
-Conclude with `KO_of_St _ β w' hS`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prodLev_inf_UA {V : HSp D} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)} {β : GL (Fin V.rank) (Lev.EAf D)}
     (hβ : IsFrame β Λ) (hsd : IsSelfDualC V Λ) (P : Finset (Pl D.host.E)) {n' : P → ℕ} (hn : ∀ w, n' w = V.rank)
@@ -205,7 +199,7 @@ namespace GlobalTheory.FunObj.GridChoice
 open GlobalTheory.FunObj.LevRowSucc
 
 /- English proof (translation)
-Establish `hm : D.R.m ≠ 0` using `by have := D.R.two_le_m; omega`. Rewrite using `[GridData.levMax]`. Conclude with `prodLev_inf_UA (S.B.isFrame (i + 1) D.R.m (by omega) h le_rfl) (G.isV (X := .grid (i + 1) D.R.m) ⟨h, le_rfl⟩ fun j e => by cases e).sd (locPl G t) _ _ fun w => givenLevel_succ G t w.1 i D.R.m hm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levRow_succ_inf_UA {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) {U : Set T}
     (S : GridChoice W U) (t : T) (i : ℕ) (h : i + 1 ≤ D.R.m) :

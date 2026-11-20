@@ -19,9 +19,9 @@ open CategoryTheory AlgebraicGeometry GlobalTheory GlobalTheory.Mean4O GlobalThe
 namespace GlobalTheory.FlatDegZero
 
 /- English proof (translation)
-Introduce `P2 PH SW D O hO h2 A T H h B hB τ c g hg hgph ε π hdown hu hc m k' _ _ _ ρ hρ M hm hk' hiso`. Take `⟨x, hx, hx0⟩` from `GlobalTheory.T.smooth_function_height_weight_estimate P2 PH SW D O hO h2 A T H h B hB τ c g hg hgph ε π hdown hu hc`. Establish `hV` using `(h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).V.ar`. Take `⟨hh, Hh⟩` from `(P2.q11.arExists _ _ _ _ hV).1 (comb (fun o : Option (Option (D.what₂.Tau × Fin O.N)) => o.elim (fnB ((T.M c).pull ε π ((2 : ℝ) • (g - (fun _ _ => O.Y.htDetT B c τ : (T.M c).Fun)))) hu hc) ((h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).gens (GlobalTheory.FlagAr.setB O.Y B))) (fun o …`. Take `⟨hh', Hh'⟩` from `(P2.q11.arExists _ _ _ _ hV).1 (comb (fun o : Option (Option (D.what₂.Tau × Fin O.N)) => o.elim (fnB ((T.M c).pull ε π ((2 : ℝ) • (g - (fun _ _ => O.Y.htDetT B c τ : (T.M c).Fun)))) hu hc) ((h.mdl (GlobalTheory.FlagAr.setB O.Y B) c).gens (GlobalTheory.FlagAr.setB O.Y B))) (fun o …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e2` using `GlobalTheory.T.arithmetic_height_scales_multiple P2.q11 _ _ _ _ hV _ _ _ m hh hh' Hh Hh' x hx`. Rewrite `e2` using `[hx0 hh Hh, mul_zero]`. Conclude with `GlobalTheory.T.arithmetic_height_zero_self_intersection P2.q11 _ _ _ _ hV k' ρ hρ M hk' hh' x (hiso.isArithHeight hV Hh') hx e2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deg_zero : Hypotheses2 → HypothesesH → GlobalTheory.Published.ScholzeWeinsteinB → ∀ (D : D7) (O : Setup D), O.Core → 2 < D.R.f * (O.N - 1) →
     ∀ (A : SlopeTestRemainingChoices O.Y) (T : Real0 O.Y) (H : Ht O.Y) (h : O.Reads A T H) (B : ℝ), 2 ≤ B → ∀ (τ : D.what₂.Tau) (c : O.s.Comp)

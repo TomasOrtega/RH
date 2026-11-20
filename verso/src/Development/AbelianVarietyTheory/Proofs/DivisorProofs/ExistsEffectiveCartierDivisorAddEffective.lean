@@ -14,9 +14,9 @@ namespace GlobalTheory.Cartier.EffDiff
 variable {X : Scheme.{0}} [IsIntegral X]
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `exists_fnOf_eq hη hf`. Use `haveI := hV.isLocalization_basicOpen τ`. Take `⟨m, a, e⟩` from `IsLocalization.Away.surj τ b`. Use `⟨m, fun x hx => ?_⟩` and prove the remaining obligations. Establish `e'` using `congrArg (fnOf _ hη) e`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e'` using `[map_mul, map_pow, hb]`. Establish `h1 : ∀ c : Γ(X, V), fnOf _ hη (algebraMap Γ(X, V) Γ(X, X.basicOpen τ) c) = fnOf V (X.basicOpen_le τ hη) c` using `fun c => fnOf_resG (X.basicOpen_le τ) hη c`. Rewrite `e'` using `[h1, h1]`. Rewrite using `[e']`. Conclude with `regAt_fnOf hx _ a`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_regAt {V : X.Opens} (hV : IsAffineOpen V) (τ : Γ(X, V))
     (hη : genericPoint X ∈ X.basicOpen τ) {f : X.functionField}
@@ -35,19 +35,17 @@ theorem exists_pow_regAt {V : X.Opens} (hV : IsAffineOpen V) (τ : Γ(X, V))
   exact regAt_fnOf hx _ a
 
 /- English proof (translation)
-Establish `key : ∀ x : X, ∃ V : X.Opens, x ∈ V ∧ ∃ m : ℕ, ∀ N, m ≤ N → ∀ y ∈ V, (D + N • divOfSec hL t ht).RegularAt y 1`. Introduce `x`. Take `⟨W, hxW, h, hh⟩` from `D.exists_isEqn_nhds x`. Take `⟨i, hi⟩` from `exists_chart hL x`. Take `⟨V, hVa, hxV, hVle⟩` from `Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens (show x ∈ W ⊓ L.U i from ⟨hxW, hi⟩)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hVW : V ≤ W` using `hVle.trans inf_le_left`. Establish `hVi : V ≤ L.U i` using `hVle.trans inf_le_right`. Use `set τ : Γ(X, V) := resG X hVi (t.f i)`. Establish `hbo : ∀ y, y ∈ X.basicOpen τ ↔ y ∈ V ∧ y ∈ nonzeroLocus t` using `fun y => by`. Establish `hb : X.basicOpen τ = V ⊓ X.basicOpen (t.f i)` using `X.basicOpen_res _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb]`. Conclude with `⟨fun hy => ⟨hy.1, (mem_nonzeroLocus_iff t i (hVi hy.1)).2 hy.2⟩, fun hy => ⟨hy.1, (mem_nonzeroLocus_iff t i (hVi hy.1)).1 hy.2⟩⟩`. Establish `hη : genericPoint X ∈ X.basicOpen τ` using `(hbo _).2 ⟨gen_mem hxV, ht⟩`. Take `⟨m, hm⟩` from `exists_pow_regAt hVa τ hη (f := h) fun y hy => by`. Take `⟨hyV, hyt⟩` from `(hbo y).1 hy`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `(hh y (hVW hyV)).regularAt_iff.1 (hD y hyt)` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis. Use `⟨V, hxV, m, fun N hN y hyV => ?_⟩` and prove the remaining obligations. Establish `hT` using `(presents_divOfRatSec hL (isRatSec_ratOfSec t ht)).isEqn i y (hVi hyV)`. Use `⟨_, (hh y (hVW hyV)).add (hT.nsmul N), ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : (ratOfSec t ht i : X.functionField) = fnOf V (X.basicOpen_le τ hη) τ`. Rewrite using `[val_ratOfSec (gen_mem (hVi hyV)), fnOf_resG]`. Rewrite using `[one_mul, Units.val_mul, Units.val_pow_eq_pow_val, e, ← Nat.add_sub_cancel' hN, pow_add, ← mul_assoc]`. Establish `hp` using `regAt_fnOf hyV (X.basicOpen_le τ hη) (τ ^ (N - m))`. Rewrite `hp` using `[map_pow]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(hm y hyV).mul hp`. Use `choose V hxV m hm using key`. Take `⟨S, hS⟩` from `exists_finset_iSup_eq_top V hxV`. Use `⟨S.sup m, fun N hN y => ?_⟩` and prove the remaining obligations. Take `⟨x, hy⟩` from `Opens.mem_iSup.1 (hS.ge (Set.mem_univ y))`.
-
-Conclude with `hm x N ((Finset.le_sup x.2).trans hN) y hy`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eventually_eff_add_nsmul [CompactSpace X] {L : LB X} (hL : L.IsLB) (t : L.Sec)
     (ht : genericPoint X ∈ nonzeroLocus t) (D : CartierDiv X)
@@ -92,13 +90,11 @@ theorem eventually_eff_add_nsmul [CompactSpace X] {L : LB X} (hL : L.IsLB) (t : 
 end GlobalTheory.Cartier.EffDiff
 
 /- English proof (translation)
-Introduce `X _ _ H hH D`. Use `haveI := hH.compactSpace`. Take `⟨W, hηW, g, hg⟩` from `D.exists_isEqn_nhds (genericPoint X)`. Take `⟨n, -, t, hηt, htW, hU⟩` from `hH.exists_affine_le hηW`. Establish `hL` using `isLB_lbPow hH.isLB n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : Nonempty (nonzeroLocus t) := ⟨⟨_, hηt⟩⟩`. Use `haveI := functionField_isFractionRing_of_isAffineOpen X _ hU`. Take `⟨a, c, hc, e⟩` from `IsFractionRing.div_surjective (A := Γ(X, nonzeroLocus t)) (g : X.functionField)`. Establish `hfn : ∀ b : Γ(X, nonzeroLocus t), algebraMap Γ(X, nonzeroLocus t) X.functionField b = fnOf _ hηt b` using `fun _ => rfl`. Establish `hc0 : fnOf _ hηt c ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hfn]`. Conclude with `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hc`. Take `⟨N₁, h₁⟩` from `eventually_eff_add_nsmul hL t hηt (principal (Units.mk0 _ hc0)) fun x hx => ⟨_, isEqn_principal _ x, by rw [one_mul, Units.val_mk0]; exact regAt_fnOf hx hηt c⟩`. Take `⟨N₂, h₂⟩` from `eventually_eff_add_nsmul hL t hηt (D + principal (Units.mk0 _ hc0)) fun x hx => ⟨_, (hg x (htW hx)).add (isEqn_principal _ x), by`. Rewrite using `[one_mul, Units.val_mul, Units.val_mk0, ← e, hfn, hfn, div_mul_cancel₀ _ hc0]`.
-
-Conclude with `regAt_fnOf hx hηt a⟩`. Use `⟨principal (Units.mk0 _ hc0) + max N₁ N₂ • divOfSec hL t hηt, h₁ _ (le_max_left _ _), ?_⟩` and prove the remaining obligations. Rewrite using `[← add_assoc]`. Conclude with `h₂ _ (le_max_right _ _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Cartier.EffDiff.exists_eff_and_add_eff : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (H : LB X),
     IsAmpleLB H → ∀ D : CartierDiv X, ∃ E : CartierDiv X, E.Eff ∧ (D + E).Eff := by

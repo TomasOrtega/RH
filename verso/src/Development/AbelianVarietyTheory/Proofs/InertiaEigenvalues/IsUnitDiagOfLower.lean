@@ -14,7 +14,7 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {E : T
   [Algebra O E] [IsFractionRing O E]
 
 /- English proof (translation)
-Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `HeightOneSpectrum.intValuation_singleton _ hϖ.ne_zero ((IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_unif (ϖ : O) (hϖ : Irreducible ϖ) :
     (IsDiscreteValuationRing.maximalIdeal O).valuation E (algebraMap O E ϖ) = WithZero.exp (-1 : ℤ) := by
@@ -23,9 +23,9 @@ theorem valuation_unif (ϖ : O) (hϖ : Irreducible ϖ) :
     ((IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ)
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `hu`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`. Use `set v := IsDiscreteValuationRing.maximalIdeal O`. Establish `h1` using `v.intValuation_le_one (u : O)`. Establish `h2` using `v.intValuation_le_one ((u⁻¹ : Oˣ) : O)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : v.intValuation (u : O) * v.intValuation ((u⁻¹ : Oˣ) : O) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Use `le_antisymm h1 ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem valuation_of_isUnit {u : O} (hu : IsUnit u) :
     (IsDiscreteValuationRing.maximalIdeal O).valuation E (algebraMap O E u) = 1 := by
@@ -44,11 +44,9 @@ theorem valuation_of_isUnit {u : O} (hu : IsUnit u) :
 end Val
 
 /- English proof (translation)
-Establish `h1 : ((x : Matrix (Fin n) (Fin n) O).map (IsLocalRing.residue O)).BlockTriangular id`. Introduce `a b hab`. Simplify using `only [Matrix.map_apply]`. Conclude with `(IsLocalRing.residue_eq_zero_iff _).2 (hx a b hab)`. Establish `h2 : IsUnit ((x : Matrix (Fin n) (Fin n) O).map (IsLocalRing.residue O)).det`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ((x : Matrix (Fin n) (Fin n) O).map (IsLocalRing.residue O)).det = IsLocalRing.residue O (x : Matrix (Fin n) (Fin n) O).det` using `(RingHom.map_det _ _).symm`. Rewrite using `[e]`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 x.isUnit).map _`. Rewrite `h2` using `[Matrix.det_of_upperTriangular h1]`. Establish `h3` using `isUnit_of_dvd_unit (Finset.dvd_prod_of_mem _ (Finset.mem_univ i)) h2`.
-
-Simplify using `only [Matrix.map_apply] at h3`. Conclude with `isUnit_of_map_unit (IsLocalRing.residue O) _ h3`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isUnit_diag_of_lower {O : Type} [CommRing O] [IsLocalRing O] {n : ℕ} (x : GL (Fin n) O)
     (hx : ∀ i j, j < i → (x : Matrix (Fin n) (Fin n) O) i j ∈ IsLocalRing.maximalIdeal O)
@@ -68,31 +66,29 @@ theorem isUnit_diag_of_lower {O : Type} [CommRing O] [IsLocalRing O] {n : ℕ} (
   exact isUnit_of_map_unit (IsLocalRing.residue O) _ h3
 
 /- English proof (translation)
-Introduce `O _ _ _ _ E _ _ _ _ ϖ hϖ n a ha x y hx hy`. Establish `hspan` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ`. Establish `hm : ϖ ∈ IsLocalRing.maximalIdeal O` using `by rw [hspan]; exact Ideal.mem_span_singleton_self ϖ`. Use `haveI : IsAdicComplete (Ideal.span {ϖ}) O := by rw [← hspan]; infer_instance`. Establish `hinj : Function.Injective (algebraMap O E)` using `IsFractionRing.injective O E`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hϖ0 : algebraMap O E ϖ ≠ 0` using `(map_ne_zero_iff _ hinj).2 hϖ.ne_zero`. Choose the witnesses or unpack the hypotheses as in `⟨N, hNa⟩ : ∃ N : ℤ, ∀ i, N ≤ a i := by`. Take `⟨N, hN⟩` from `(Set.finite_range a).bddBelow`. Conclude with `⟨N, fun i => hN ⟨i, rfl⟩⟩`. Set `b : Fin n → ℕ` to `fun i => (a i - N).toNat`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hab : ∀ i, a i = N + b i` using `fun i => by`. Use `hNa i` as an intermediate fact. Simplify using `only [b]`. Use linear arithmetic over natural numbers and integers. Establish `hb : StrictAnti b` using `fun i j h => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ha h` as an intermediate fact. Rewrite `this` using `[hab, hab]`. Use linear arithmetic over natural numbers and integers. Establish `hdvd : ∀ z : O, z ∈ IsLocalRing.maximalIdeal O → ϖ ∣ z` using `fun z hz => by`. Rewrite `hz` using `[hspan]`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Ideal.mem_span_singleton.1 hz`. Use `set G : Matrix (Fin n) (Fin n) O := (x : Matrix (Fin n) (Fin n) O) * Matrix.diagonal (fun i => ϖ ^ b i) * y with hG`. Establish `hroot` using `GlobalTheory.IwahoriEigen.exists_root_of_coeff ϖ hm hb G.charpoly (by rw [Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]) (fun j hj => by`. Use `GlobalTheory.IwahoriNewtonTest.intersectionNumber_baseChange O ϖ hm n b hb x y (isUnit_diag_of_lower x hx) (isUnit_diag_of_lower y hy) (fun i j h => hdvd _ (hx i j h)) (fun i j h => hdvd _ (hy i j h)) (n - j) (Nat.sub_le _ _)` as an intermediate fact. Rewrite using `[Nat.sub_sub_self hj] at this)` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `choose z hz hzr using hroot`. Use `set M : Matrix (Fin n) (Fin n) E := (x : Matrix (Fin n) (Fin n) O).map (algebraMap O E) * Matrix.diagonal (fun i => algebraMap O E ϖ ^ a i) * (y : Matrix (Fin n) (Fin n) O).map (algebraMap O E) with hM`. Establish `hMG : M = algebraMap O E ϖ ^ N • G.map (algebraMap O E)`. Establish `: Matrix.diagonal (fun i => algebraMap O E ϖ ^ a i) = algebraMap O E ϖ ^ N • (Matrix.diagonal (fun i => ϖ ^ b i)).map (algebraMap O E)`. Rewrite using `[Matrix.diagonal_map (map_zero _), ← Matrix.diagonal_smul]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[hab, zpow_add₀ hϖ0]`. Simplify using the standard rewrite rules. Rewrite using `[hM, this, hG, Matrix.map_mul, Matrix.map_mul, Matrix.mul_smul, Matrix.smul_mul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Set `r : Fin n → E` to `fun i => algebraMap O E ϖ ^ N * algebraMap O E (ϖ ^ b i * z i)`. Establish `hr0 : ∀ i, r i ≠ 0` using `fun i => mul_ne_zero (zpow_ne_zero _ hϖ0) ((map_ne_zero_iff _ hinj).2 (mul_ne_zero (pow_ne_zero _ hϖ.ne_zero) (hz i).ne_zero))`. Establish `hv : ∀ i, (IsDiscreteValuationRing.maximalIdeal O).valuation E (r i) = WithZero.exp (-(a i))` using `fun i => by`. Simplify using `only [r, map_mul, map_pow, map_zpow₀, valuation_unif ϖ hϖ, valuation_of_isUnit (hz i), mul_one]`. Rewrite using `[← WithZero.exp_zsmul, ← WithZero.exp_nsmul, ← WithZero.exp_add, hab]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish `hval : ∀ i, val O (r i) = a i` using `fun i => by`. Simplify using `only [val, hv i, WithZero.log_exp, neg_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrinj : Function.Injective r` using `fun i j h => by`. Establish `h1` using `hval i`. Rewrite `h1` using `[h, hval j]`. Conclude with `ha.injective h1.symm`. Establish `hrt : ∀ i, M.charpoly.IsRoot (r i)` using `fun i => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h1 : ((G.map (algebraMap O E)).charpoly).IsRoot (algebraMap O E (ϖ ^ b i * z i))`. Rewrite using `[Matrix.charpoly_map]`. Conclude with `(hzr i).map`. Rewrite `h1`, the goal using `[IsRoot.def, Matrix.eval_charpoly]`. Establish `: Matrix.scalar (Fin n) (r i) - M = algebraMap O E ϖ ^ N • (Matrix.scalar (Fin n) (algebraMap O E (ϖ ^ b i * z i)) - G.map (algebraMap O E))`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hMG, smul_sub]`. Use `congr 1`. Rewrite using `[Matrix.scalar_apply, Matrix.scalar_apply, ← Matrix.diagonal_smul]`. Both sides reduce to the same expression. Rewrite using `[this, Matrix.det_smul, h1, mul_zero]`.
-
-Use `⟨r, fun i => ⟨hr0 i, hval i⟩, ?_⟩` and prove the remaining obligations. Use `eq_of_monic_of_dvd_of_natDegree_le (monic_prod_X_sub_C _ _) M.charpoly_monic ?_ ?_` and prove the remaining obligations. Conclude with `Finset.prod_dvd_of_coprime (fun i _ j _ h => pairwise_coprime_X_sub_C hrinj h) fun i _ => dvd_iff_isRoot.2 (hrt i)`. Rewrite using `[Matrix.charpoly_natDegree_eq_dim, natDegree_finsetProd_X_sub_C_eq_card]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem iwahori_roots : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [Finite (IsLocalRing.ResidueField O)] (E : Type) [Field E] [Algebra O E] [IsFractionRing O E]

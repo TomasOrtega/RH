@@ -11,7 +11,7 @@ open GlobalTheory.Orb (IsPseudoCoeff ujMat ujRep)
 open scoped InnerProductSpace
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.KFinDual.kFinite_riesz` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FIntertwinerOfKFiniteVectors.lean&line=153#L153)
 -/

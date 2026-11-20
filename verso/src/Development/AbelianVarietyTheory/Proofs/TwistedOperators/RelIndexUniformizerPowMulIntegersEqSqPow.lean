@@ -12,9 +12,9 @@ noncomputable section
 namespace GlobalTheory.UnramIntIndex
 
 /- English proof (translation)
-Break down `eq_or_ne a 0 with rfl | h` into its components or cases. Conclude with `zero_le'`. Take `⟨m, rfl⟩` from `WithZero.ne_zero_iff_exists.mp h`. Rewrite `ha` using `[← WithZero.coe_one, WithZero.coe_lt_coe]`. Rewrite using `[WithZero.coe_le_coe]`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : Multiplicative.toAdd m < 0` using `ha`. Use `show Multiplicative.toAdd m ≤ -1`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem le_exp_neg_one_of_lt_one {a : WithZero (Multiplicative ℤ)} (ha : a < 1) :
     a ≤ ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) := by
@@ -30,13 +30,13 @@ theorem le_exp_neg_one_of_lt_one {a : WithZero (Multiplicative ℤ)} (ha : a < 1
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
 /- English proof (translation)
-Establish `hy : Valued.v (y : L) ≤ 1` using `y.2`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hn`. Use `lt_of_le_of_ne hy fun h1 => hn ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0 : (y : L) ≠ 0`. Introduce `h0`. Rewrite `h1` using `[h0, map_zero]`. Conclude with `zero_ne_one h1`. Establish `hinv : Valued.v ((y : L)⁻¹) ≤ 1` using `by rw [map_inv₀, h1, inv_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsUnit.of_mul_eq_one (⟨(y : L)⁻¹, hinv⟩ : (Valued.v : Valuation L (WithZero (Multiplicative ℤ))).valuationSubring) ?_` and prove the remaining obligations. Conclude with `Subtype.ext (mul_inv_cancel₀ h0)`. Introduce and unpack `hlt ⟨u, rfl⟩`. Take `⟨z, hz⟩ : ∃ z, (u : (Valued.v : Valuation L (WithZero (Multiplicative ℤ))).valuationSubring) * z = 1` from `⟨_, u.mul_inv⟩`. Establish `h11 : (((u : (Valued.v : Valuation L (WithZero (Multiplicative ℤ))).valuationSubring) : L)) * (z : L) = 1` using `congrArg Subtype.val hz`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `congrArg Valued.v h11`. Rewrite `h1` using `[map_mul, map_one]`. Establish `h2 : Valued.v (z : L) ≤ 1` using `z.2`. Conclude with `absurd h1 (ne_of_lt (lt_of_le_of_lt (mul_le_of_le_one_right' h2) hlt))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_maximalIdeal_iff (y : (Valued.v : Valuation L (WithZero (Multiplicative ℤ))).valuationSubring) :
     y ∈ IsLocalRing.maximalIdeal (Valued.v : Valuation L (WithZero (Multiplicative ℤ))).valuationSubring ↔
@@ -64,23 +64,19 @@ theorem mem_maximalIdeal_iff (y : (Valued.v : Valuation L (WithZero (Multiplicat
     exact absurd h1 (ne_of_lt (lt_of_le_of_lt (mul_le_of_le_one_right' h2) hlt))
 
 /- English proof (translation)
-Take `⟨-, -, -, h4, -, -, h7⟩` from `h`. Use `set V := (Valued.v : Valuation L (WithZero (Multiplicative ℤ))).valuationSubring with hV`. Establish `h0 : ϖ ≠ 0`. Introduce `h0`. Rewrite `h4` using `[h0, map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `WithZero.zero_ne_coe h4`. Establish `hlt : Valued.v ϖ < 1`. Rewrite using `[h4, ← WithZero.coe_one, WithZero.coe_lt_coe]`. Use `show (-1 : ℤ) < 0`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hI : (IsLocalRing.maximalIdeal V).toAddSubgroup.index = q ^ 2` using `h7`. Set `f : V →+ L` to `V.subtype.toAddMonoidHom`. Establish `hf : Function.Injective f` using `Subtype.val_injective`. Establish `e1 : (IsLocalRing.maximalIdeal V).toAddSubgroup.map f = (Formalism.UG.intL L).toAddSubgroup.map (AddMonoidHom.mulLeft ϖ)`. Use extensionality with `x`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Simplify using `only [AddSubgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Establish `hy' : Valued.v (y : L) < 1` using `(mem_maximalIdeal_iff y).1 hy`. Establish `hle` using `le_exp_neg_one_of_lt_one hy'`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Use `⟨ϖ⁻¹ * (y : L), ?_, ?_⟩` and prove the remaining obligations. Use `show Valued.v (ϖ⁻¹ * (y : L)) ≤ 1`. Rewrite using `[map_mul, map_inv₀, inv_mul_le_iff₀ (zero_lt_iff.mpr (by simpa using h0)), mul_one, h4]`. Conclude with `hle`. Use `show ϖ * (ϖ⁻¹ * (y : L)) = (y : L)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Clear the denominators using the available nonvanishing facts. Introduce and unpack `⟨o, ho, rfl⟩`. Establish `ho' : Valued.v o ≤ 1` using `ho`. Establish `hm : Valued.v (ϖ * o) < 1`. Rewrite using `[map_mul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' ho') hlt`. Conclude with `⟨⟨ϖ * o, hm.le⟩, (mem_maximalIdeal_iff _).2 hm, rfl⟩`. Establish `e2 : (⊤ : AddSubgroup V).map f = (Formalism.UG.intL L).toAddSubgroup`. Use extensionality with `x`. Simplify using `only [AddSubgroup.mem_map, AddSubgroup.mem_top, true_and]`.
-
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `y.2`. Introduce `hx`. Conclude with `⟨⟨x, hx⟩, rfl⟩`.
-
-Rewrite using `[← e1, ← e2, AddSubgroup.relIndex_map_map_of_injective _ _ hf, AddSubgroup.relIndex_top_right]`. Conclude with `hI`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_mul_uniformizer (ϖ : L) (c : L →+* L) (q : ℕ) (h : IsUnramInv ϖ c q) :
     ((Formalism.UG.intL L).toAddSubgroup.map (AddMonoidHom.mulLeft ϖ)).relIndex
@@ -130,21 +126,19 @@ theorem relIndex_mul_uniformizer (ϖ : L) (c : L →+* L) (q : ℕ) (h : IsUnram
   exact hI
 
 /- English proof (translation)
-Establish `hbase` using `relIndex_mul_uniformizer ϖ c q h`. Take `⟨-, -, -, h4, -⟩` from `h`. Establish `h0 : ϖ ≠ 0`. Introduce `h0`. Rewrite `h4` using `[h0, map_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `WithZero.zero_ne_coe h4`. Establish `hϖ : ϖ ∈ Formalism.UG.intL L` using `by show Valued.v ϖ ≤ 1`. Rewrite using `[h4, ← WithZero.coe_one, WithZero.coe_le_coe]`. Use `show (-1 : ℤ) ≤ 0`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `set O := (Formalism.UG.intL L).toAddSubgroup with hO`. Establish `hmulle : ∀ a ∈ Formalism.UG.intL L, O.map (AddMonoidHom.mulLeft a) ≤ O`. Introduce and unpack `a ha _ ⟨o, ho, rfl⟩`. Conclude with `(Formalism.UG.intL L).mul_mem ha ho`. Proceed by induction on `e with`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Consider the case `zero`. Establish `: O.map (AddMonoidHom.mulLeft (ϖ ^ 0)) = O`. Use extensionality with `x`. Simplify using `[AddSubgroup.mem_map]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Consider the case `succ e ih`. Establish `hinj : Function.Injective (AddMonoidHom.mulLeft (ϖ ^ e))` using `mul_right_injective₀ (pow_ne_zero e h0)`. Establish `hcomp : O.map (AddMonoidHom.mulLeft (ϖ ^ (e + 1))) = (O.map (AddMonoidHom.mulLeft ϖ)).map (AddMonoidHom.mulLeft (ϖ ^ e))`. Use extensionality with `x`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Simplify using `only [AddSubgroup.mem_map, AddMonoidHom.coe_mulLeft]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨o, ho, rfl⟩`. Conclude with `⟨ϖ * o, ⟨o, ho, rfl⟩, by rw [pow_succ, mul_assoc]⟩`. Introduce and unpack `⟨_, ⟨o, ho, rfl⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨o, ho, by rw [pow_succ, mul_assoc]⟩`. Establish `hstep : (O.map (AddMonoidHom.mulLeft (ϖ ^ (e + 1)))).relIndex (O.map (AddMonoidHom.mulLeft (ϖ ^ e))) = q ^ 2`. Rewrite using `[hcomp, AddSubgroup.relIndex_map_map_of_injective _ _ hinj]`. Conclude with `hbase`. Establish `hle1 : O.map (AddMonoidHom.mulLeft (ϖ ^ (e + 1))) ≤ O.map (AddMonoidHom.mulLeft (ϖ ^ e))`.
-
-Rewrite using `[hcomp]`. Conclude with `AddSubgroup.map_mono (hmulle ϖ hϖ)`. Establish `hle2` using `hmulle (ϖ ^ e) (pow_mem hϖ e)`. Rewrite using `[← AddSubgroup.relIndex_mul_relIndex _ _ _ hle1 hle2, hstep, ih]`. Conclude with `(pow_succ' _ _).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_mul_uniformizer_pow {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
     (ϖ : L) (c : L →+* L) (q : ℕ) (h : IsUnramInv ϖ c q) (e : ℕ) :

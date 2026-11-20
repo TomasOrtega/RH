@@ -9,7 +9,7 @@ open CategoryTheory AlgebraicGeometry GlobalTheory.LogCris CrystallineSemistable
 open GlobalTheory.CatH (face toLast)
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.ConeLocal.connecting_form | exact GlobalTheory.CompanionTheory.ConeLocal.connecting_form | (intros; apply GlobalTheory.CompanionTheory.ConeLocal.connecting_form <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.taylor_differential_representative : ∀ {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {Φ : PDF R C} {Fil : ℤ → IdF Φ.A} {d : ℕ} (hF : IsFil Φ Fil) (E : Frame Φ d) (σ : ∀ T : C, E.D ⟶ T) (hc : E.GrConst Fil)
     (p : Fin d → Φ.A.obj E.D → Φ.A.obj E.D), Taylor Fil E p → ∀ (n : ℕ) (f : CH.Cn (CH.modF Φ.A) n) (y : Idx n d → Φ.A.obj E.D) (c : CH.H (gr Fil (n : ℤ)) n)

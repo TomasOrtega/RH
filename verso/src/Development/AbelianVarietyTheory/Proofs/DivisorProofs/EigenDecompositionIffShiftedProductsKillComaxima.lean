@@ -7,9 +7,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.UPel.HT.LieLin
 
 /- English proof (translation)
-Introduce `O T V _ _ _ _ ψ a τ hτ v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, hv⟩ c`. Conclude with `GlobalTheory.UPel.HT.LieLoc.kill_of_decomp ψ τ v w (fun i c => mem_eigSub.1 (hw i) c) hv c`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, hv⟩` from `GlobalTheory.UPel.HT.LieLoc.decomp_of_kill ψ τ hτ v h`. Conclude with `⟨w, fun i => mem_eigSub.2 (hw i), hv⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem decomp_iff_kill : ∀ (O T V : Type) [CommRing O] [CommRing T] [AddCommGroup V] [Module T V]
   (ψ : O →+* Module.End T V) (a : ℕ)

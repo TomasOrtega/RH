@@ -23,7 +23,7 @@ theorem coe_primeIdealUnit (v : HeightOneSpectrum (𝓞 K)) :
   rfl
 
 /- English proof (translation)
-Use `⟨fun h v ↦ h ▸ rfl, fun h ↦ Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[← finprod_heightOneSpectrum_factorization' (K := K) I.ne_zero, ← finprod_heightOneSpectrum_factorization' (K := K) J.ne_zero]`. Conclude with `finprod_congr fun v ↦ by rw [h v]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fractionalIdealUnits_eq_iff {I J : (FractionalIdeal (𝓞 K)⁰ K)ˣ} :
     I = J ↔ ∀ v : HeightOneSpectrum (𝓞 K),
@@ -34,7 +34,7 @@ theorem fractionalIdealUnits_eq_iff {I J : (FractionalIdeal (𝓞 K)⁰ K)ˣ} :
   exact finprod_congr fun v ↦ by rw [h v]
 
 /- English proof (translation)
-Establish `hfin : (Function.mulSupport fun v ↦ primeIdealUnit (K` using `K) v ^ n v).Finite := (Filter.eventually_cofinite.1 hn).subset fun v hv h ↦ hv (by simp only [h, zpow_zero])`. Rewrite using `[← Units.coeHom_apply, map_finprod _ hfin]`. Conclude with `finprod_congr fun v ↦ by simp [Units.val_zpow_eq_zpow_val]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coe_finprod_primeIdealUnit_zpow (n : HeightOneSpectrum (𝓞 K) → ℤ)
     (hn : ∀ᶠ v in Filter.cofinite, n v = 0) :
@@ -47,7 +47,7 @@ theorem coe_finprod_primeIdealUnit_zpow (n : HeightOneSpectrum (𝓞 K) → ℤ)
   exact finprod_congr fun v ↦ by simp [Units.val_zpow_eq_zpow_val]
 
 /- English proof (translation)
-Rewrite using `[coe_finprod_primeIdealUnit_zpow n hn, count_finprod K v n hn]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem count_finprod_primeIdealUnit_zpow (n : HeightOneSpectrum (𝓞 K) → ℤ)
     (hn : ∀ᶠ v in Filter.cofinite, n v = 0) (v : HeightOneSpectrum (𝓞 K)) :
@@ -56,7 +56,7 @@ theorem count_finprod_primeIdealUnit_zpow (n : HeightOneSpectrum (𝓞 K) → �
   rw [coe_finprod_primeIdealUnit_zpow n hn, count_finprod K v n hn]
 
 /- English proof (translation)
-Rewrite using `[fractionalIdealUnits_eq_iff]`. Introduce `v`. Conclude with `count_finprod_primeIdealUnit_zpow _ (FractionalIdeal.finite_factors _) v`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem finprod_primeIdealUnit_zpow_count (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
     ∏ᶠ v, primeIdealUnit v ^ count K v (I : FractionalIdeal (𝓞 K)⁰ K) = I := by
@@ -66,7 +66,7 @@ theorem finprod_primeIdealUnit_zpow_count (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ
 
 open Classical in
 /- English proof (translation)
-Rewrite using `[coe_primeIdealUnit]`. Use `split_ifs with h`. Substitute `h` using the available equality. Conclude with `count_self K w`. Conclude with `count_maximal_coprime K w (Ne.symm h)`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem count_primeIdealUnit (v w : HeightOneSpectrum (𝓞 K)) :
     count K w ((primeIdealUnit v : (FractionalIdeal (𝓞 K)⁰ K)ˣ) : FractionalIdeal (𝓞 K)⁰ K) =
@@ -78,9 +78,9 @@ theorem count_primeIdealUnit (v w : HeightOneSpectrum (𝓞 K)) :
   · exact count_maximal_coprime K w (Ne.symm h)
 
 /- English proof (translation)
-Take `⟨n, d, hd, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 K) a`. Establish `hd0 : d ≠ 0` using `nonZeroDivisors.ne_zero hd`. Establish `hn0 : n ≠ 0`. Introduce and unpack `rfl`. Simplify using `at ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Establish `hI : spanSingleton (𝓞 K)⁰ (algebraMap (𝓞 K) K n / algebraMap (𝓞 K) K d) = spanSingleton (𝓞 K)⁰ (algebraMap (𝓞 K) K d)⁻¹ * ↑(Ideal.span {n} : Ideal (𝓞 K))`. Rewrite using `[coeIdeal_span_singleton, spanSingleton_mul_spanSingleton, div_eq_mul_inv, mul_comm]`. Rewrite using `[count_well_defined K v ((spanSingleton_ne_zero_iff).2 ha) hI, map_div₀, valuation_of_algebraMap, valuation_of_algebraMap, intValuation_if_neg _ hn0, intValuation_if_neg _ hd0, ← exp_sub, log_exp]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem count_spanSingleton (v : HeightOneSpectrum (𝓞 K)) {a : K} (ha : a ≠ 0) :
     count K v (spanSingleton (𝓞 K)⁰ a) = -log (v.valuation K a) := by
@@ -103,14 +103,14 @@ def ord (v : HeightOneSpectrum (𝓞 K)) (x : IdeleGroup K) : ℤ :=
   -log (Valued.v ((x : 𝔸[K]).2 v))
 
 /- English proof (translation)
-The claim follows from `(Valuation.ne_zero_iff _).2 (finiteProj v x).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem valued_ne_zero (v : HeightOneSpectrum (𝓞 K)) (x : IdeleGroup K) :
     Valued.v ((x : 𝔸[K]).2 v) ≠ 0 :=
   (Valuation.ne_zero_iff _).2 (finiteProj v x).ne_zero
 
 /- English proof (translation)
-Establish `h : ((x * y : IdeleGroup K) : 𝔸[K]).2 v = (x : 𝔸[K]).2 v * (y : 𝔸[K]).2 v` using `rfl`. Rewrite using `[ord, ord, ord, h, map_mul, log_mul (valued_ne_zero v x) (valued_ne_zero v y), neg_add]`. Use the proof step `@[simp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ord_mul (v : HeightOneSpectrum (𝓞 K)) (x y : IdeleGroup K) :
     ord v (x * y) = ord v x + ord v y := by
@@ -119,14 +119,14 @@ theorem ord_mul (v : HeightOneSpectrum (𝓞 K)) (x y : IdeleGroup K) :
 
 @[simp]
 /- English proof (translation)
-Establish `h : ((1 : IdeleGroup K) : 𝔸[K]).2 v = 1` using `rfl`. Rewrite using `[ord, h, map_one, log_one, neg_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ord_one (v : HeightOneSpectrum (𝓞 K)) : ord v (1 : IdeleGroup K) = 0 := by
   have h : ((1 : IdeleGroup K) : 𝔸[K]).2 v = 1 := rfl
   rw [ord, h, map_one, log_one, neg_zero]
 
 /- English proof (translation)
-Establish `h` using `ord_mul v x x⁻¹`. Rewrite `h` using `[mul_inv_cancel, ord_one]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ord_inv (v : HeightOneSpectrum (𝓞 K)) (x : IdeleGroup K) : ord v x⁻¹ = -ord v x := by
   have h := ord_mul v x x⁻¹
@@ -134,7 +134,7 @@ theorem ord_inv (v : HeightOneSpectrum (𝓞 K)) (x : IdeleGroup K) : ord v x⁻
   omega
 
 /- English proof (translation)
-Rewrite using `[mem_adicCompletionIntegers, ord, neg_nonneg, log_le_iff_le_exp (valued_ne_zero v x), exp_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_adicCompletionIntegers_iff_ord_nonneg (v : HeightOneSpectrum (𝓞 K))
     (x : IdeleGroup K) :
@@ -143,7 +143,7 @@ theorem mem_adicCompletionIntegers_iff_ord_nonneg (v : HeightOneSpectrum (𝓞 K
     exp_zero]
 
 /- English proof (translation)
-Rewrite using `[mem_adicCompletionIntegers_iff_ord_nonneg, mem_adicCompletionIntegers_iff_ord_nonneg, ord_inv]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ord_eq_zero_iff (v : HeightOneSpectrum (𝓞 K)) (x : IdeleGroup K) :
     ord v x = 0 ↔ (x : 𝔸[K]).2 v ∈ v.adicCompletionIntegers K ∧
@@ -153,7 +153,7 @@ theorem ord_eq_zero_iff (v : HeightOneSpectrum (𝓞 K)) (x : IdeleGroup K) :
   omega
 
 /- English proof (translation)
-The claim follows from `((x : 𝔸[K]).2.2.and ((x⁻¹ : IdeleGroup K) : 𝔸[K]).2.2).mono fun v hv ↦ (ord_eq_zero_iff v x).2 hv`.
+A detailed English derivation is pending.
 -/
 theorem eventually_ord_eq_zero (x : IdeleGroup K) :
     ∀ᶠ v in Filter.cofinite, ord v x = 0 :=
@@ -161,21 +161,21 @@ theorem eventually_ord_eq_zero (x : IdeleGroup K) :
     (ord_eq_zero_iff v x).2 hv
 
 /- English proof (translation)
-Simplify using `only [mem_standardOpenSubgroup, ord_eq_zero_iff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_standardOpenSubgroup_iff_ord {x : IdeleGroup K} :
     x ∈ standardOpenSubgroup K ↔ ∀ v : HeightOneSpectrum (𝓞 K), ord v x = 0 := by
   simp only [mem_standardOpenSubgroup, ord_eq_zero_iff]
 
 /- English proof (translation)
-Rewrite using `[ord, ← coe_finiteProj, finiteProj_finiteEmbedding]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ord_finiteEmbedding_self (v : HeightOneSpectrum (𝓞 K)) (a : (v.adicCompletion K)ˣ) :
     ord v (finiteEmbedding v a) = -log (Valued.v (a : v.adicCompletion K)) := by
   rw [ord, ← coe_finiteProj, finiteProj_finiteEmbedding]
 
 /- English proof (translation)
-Rewrite using `[ord, ← coe_finiteProj, finiteProj_finiteEmbedding_of_ne h, Units.val_one, map_one, log_one, neg_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ord_finiteEmbedding_of_ne {v w : HeightOneSpectrum (𝓞 K)} (h : w ≠ v)
     (a : (v.adicCompletion K)ˣ) : ord w (finiteEmbedding v a) = 0 := by
@@ -183,7 +183,7 @@ theorem ord_finiteEmbedding_of_ne {v w : HeightOneSpectrum (𝓞 K)} (h : w ≠ 
     neg_zero]
 
 /- English proof (translation)
-Rewrite using `[ord, ← coe_finiteProj, coe_finiteProj_diagonal, valuedAdicCompletion_eq_valuation']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ord_diagonal (v : HeightOneSpectrum (𝓞 K)) (a : Kˣ) :
     ord v (diagonal K a) = -log (v.valuation K a) := by
@@ -192,11 +192,9 @@ theorem ord_diagonal (v : HeightOneSpectrum (𝓞 K)) (a : Kˣ) :
 open Classical in
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `v.valuation_exists_uniformizer K`. Establish `hne : ((π : K) : v.adicCompletion K) ≠ 0`. Introduce `h`. Establish `h'` using `congrArg Valued.v h`. Rewrite `h'` using `[valuedAdicCompletion_eq_valuation', hπ, map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `exp_ne_zero h'`. Use `⟨finiteEmbedding v (Units.mk0 _ hne), fun w ↦ ?_⟩` and prove the remaining obligations. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[ord_finiteEmbedding_self, Units.val_mk0, valuedAdicCompletion_eq_valuation', hπ, log_exp, neg_neg]`.
-
-Conclude with `ord_finiteEmbedding_of_ne h _`.
+Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ord_eq_ite (v : HeightOneSpectrum (𝓞 K)) :
     ∃ x : IdeleGroup K, ∀ w, ord w x = if w = v then 1 else 0 := by
@@ -214,7 +212,7 @@ theorem exists_ord_eq_ite (v : HeightOneSpectrum (𝓞 K)) :
   · exact ord_finiteEmbedding_of_ne h _
 
 /- English proof (translation)
-The claim follows from `(Filter.eventually_cofinite.1 (eventually_ord_eq_zero x)).subset fun v hv h ↦ hv (by simp only [h, zpow_zero])`.
+A detailed English derivation is pending.
 -/
 theorem finite_mulSupport_primeIdealUnit_zpow_ord (x : IdeleGroup K) :
     (Function.mulSupport fun v ↦ primeIdealUnit (K := K) v ^ ord v x).Finite :=
@@ -231,7 +229,7 @@ def toFractionalIdeal : IdeleGroup K →* (FractionalIdeal (𝓞 K)⁰ K)ˣ wher
 
 @[simp]
 /- English proof (translation)
-The claim follows from `count_finprod_primeIdealUnit_zpow _ (eventually_ord_eq_zero x) v`.
+A detailed English derivation is pending.
 -/
 theorem count_toFractionalIdeal (v : HeightOneSpectrum (𝓞 K)) (x : IdeleGroup K) :
     count K v ((toFractionalIdeal x : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
@@ -239,7 +237,7 @@ theorem count_toFractionalIdeal (v : HeightOneSpectrum (𝓞 K)) (x : IdeleGroup
   count_finprod_primeIdealUnit_zpow _ (eventually_ord_eq_zero x) v
 
 /- English proof (translation)
-Simplify using `only [fractionalIdealUnits_eq_iff, count_toFractionalIdeal]`.
+Simplify using the standard rewrite rules.
 -/
 theorem toFractionalIdeal_eq_iff {x : IdeleGroup K} {I : (FractionalIdeal (𝓞 K)⁰ K)ˣ} :
     toFractionalIdeal x = I ↔
@@ -247,7 +245,7 @@ theorem toFractionalIdeal_eq_iff {x : IdeleGroup K} {I : (FractionalIdeal (𝓞 
   simp only [fractionalIdealUnits_eq_iff, count_toFractionalIdeal]
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[MonoidHom.mem_ker, toFractionalIdeal_eq_iff, mem_standardOpenSubgroup_iff_ord]`. Simplify using `only [Units.val_one, count_one]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ker_toFractionalIdeal :
     (toFractionalIdeal (K := K)).ker = standardOpenSubgroup K := by
@@ -258,7 +256,7 @@ theorem ker_toFractionalIdeal :
 open Classical in
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `exists_ord_eq_ite v`. Use `⟨x, toFractionalIdeal_eq_iff.2 fun w ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[hx, count_primeIdealUnit]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem primeIdealUnit_mem_range (v : HeightOneSpectrum (𝓞 K)) :
     primeIdealUnit v ∈ (toFractionalIdeal (K := K)).range := by
@@ -267,7 +265,7 @@ theorem primeIdealUnit_mem_range (v : HeightOneSpectrum (𝓞 K)) :
   rw [hx, count_primeIdealUnit]
 
 /- English proof (translation)
-Introduce `I`. Establish `h : I ∈ (toFractionalIdeal (K` using `K)).range := by`. Rewrite using `[← finprod_primeIdealUnit_zpow_count I]`. Conclude with `finprod_induction (· ∈ (toFractionalIdeal (K := K)).range) (one_mem _) (fun _ _ ↦ mul_mem) fun v ↦ zpow_mem (primeIdealUnit_mem_range v) _`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toFractionalIdeal_surjective : Function.Surjective (toFractionalIdeal (K := K)) := by
   intro I
@@ -278,7 +276,7 @@ theorem toFractionalIdeal_surjective : Function.Surjective (toFractionalIdeal (K
   exact h
 
 /- English proof (translation)
-Rewrite using `[toFractionalIdeal_eq_iff]`. Introduce `v`. Rewrite using `[ord_diagonal, coe_toPrincipalIdeal, count_spanSingleton v a.ne_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem toFractionalIdeal_diagonal (a : Kˣ) :
     toFractionalIdeal (diagonal K a) = toPrincipalIdeal (𝓞 K) K a := by
@@ -287,9 +285,9 @@ theorem toFractionalIdeal_diagonal (a : Kˣ) :
   rw [ord_diagonal, coe_toPrincipalIdeal, count_spanSingleton v a.ne_zero]
 
 /- English proof (translation)
-Rewrite using `[ClassGroup.mk_eq_one_iff, mem_principal_ideals_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hI`. Take `⟨x, hx⟩` from `Submodule.IsPrincipal.principal (S := (I : Submodule (𝓞 K) K))`. Use `⟨x, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `symm`. Apply `Subtype.coe_injective` to reduce the goal to its premises. Simplify using `only [FractionalIdeal.val_eq_coe, hx, coe_spanSingleton]`. Introduce and unpack `⟨x, hx⟩`. Conclude with `⟨⟨x, by rw [← hx, coe_spanSingleton]⟩⟩`.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem _root_.GroundTheory.Global.classGroup_mk_eq_one_iff {I : (FractionalIdeal (𝓞 K)⁰ K)ˣ} :
     ClassGroup.mk K I = 1 ↔ I ∈ (toPrincipalIdeal (𝓞 K) K).range := by
@@ -305,7 +303,7 @@ theorem _root_.GroundTheory.Global.classGroup_mk_eq_one_iff {I : (FractionalIdea
     exact ⟨⟨x, by rw [← hx, coe_spanSingleton]⟩⟩
 
 /- English proof (translation)
-The claim follows from `fun c ↦ ClassGroup.induction K (P := fun c ↦ ∃ I, ClassGroup.mk K I = c) (fun I ↦ ⟨I, rfl⟩) c`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem _root_.GroundTheory.Global.classGroup_mk_surjective :
     Function.Surjective (ClassGroup.mk K : (FractionalIdeal (𝓞 K)⁰ K)ˣ →* ClassGroup (𝓞 K)) :=
@@ -322,17 +320,17 @@ theorem toClassGroup_apply (x : IdeleGroup K) :
   rfl
 
 /- English proof (translation)
-The claim follows from `classGroup_mk_surjective.comp toFractionalIdeal_surjective`.
+A detailed English derivation is pending.
 -/
 theorem toClassGroup_surjective : Function.Surjective (toClassGroup (K := K)) :=
   classGroup_mk_surjective.comp toFractionalIdeal_surjective
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Rewrite `hx` using `[MonoidHom.mem_ker, toClassGroup_apply, classGroup_mk_eq_one_iff]`. Take `⟨a, ha⟩` from `hx`. Establish `hu : (diagonal K a)⁻¹ * x ∈ standardOpenSubgroup K`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← ker_toFractionalIdeal, MonoidHom.mem_ker, map_mul, map_inv, toFractionalIdeal_diagonal, ha, inv_mul_cancel]`. Conclude with `Subgroup.mem_sup.2 ⟨diagonal K a, ⟨a, rfl⟩, _, hu, mul_inv_cancel_left _ _⟩`. Use `sup_le ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Rewrite using `[MonoidHom.mem_ker, toClassGroup_apply, toFractionalIdeal_diagonal, classGroup_mk_eq_one_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨a, rfl⟩`. Introduce `x hx`. Rewrite `hx` using `[← ker_toFractionalIdeal, MonoidHom.mem_ker]`. Rewrite using `[MonoidHom.mem_ker, toClassGroup_apply, hx, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_toClassGroup :
     (toClassGroup (K := K)).ker = (diagonal K).range ⊔ standardOpenSubgroup K := by
@@ -387,7 +385,7 @@ theorem toClassGroup_mk (x : IdeleGroup K) :
   rfl
 
 /- English proof (translation)
-Introduce `c`. Take `⟨x, rfl⟩` from `IdeleGroup.toClassGroup_surjective c`. Conclude with `⟨mk K x, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem toClassGroup_surjective : Function.Surjective (toClassGroup (K := K)) := by
   intro c
@@ -395,11 +393,11 @@ theorem toClassGroup_surjective : Function.Surjective (toClassGroup (K := K)) :=
   exact ⟨mk K x, rfl⟩
 
 /- English proof (translation)
-Use extensionality with `c`. Take `⟨x, rfl⟩` from `mk_surjective K c`. Rewrite using `[MonoidHom.mem_ker, toClassGroup_mk, ← MonoidHom.mem_ker, IdeleGroup.ker_toClassGroup]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨_, ⟨a, rfl⟩, u, hu, rfl⟩` from `Subgroup.mem_sup.1 hx`. Conclude with `⟨u, hu, by rw [map_mul, mk_diagonal]; exact (one_mul (mk K u)).symm⟩`. Introduce and unpack `⟨u, hu, h⟩`. Establish `h1 : mk K (x * u⁻¹) = 1` using `by rw [map_mul, map_inv, h, mul_inv_cancel]`. Rewrite `h1` using `[← MonoidHom.mem_ker, ker_mk]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← inv_mul_cancel_right x u]`. Conclude with `mul_mem (Subgroup.mem_sup_left h1) (Subgroup.mem_sup_right hu)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_toClassGroup :
     (toClassGroup (K := K)).ker = (standardOpenSubgroup K).map (mk K) := by

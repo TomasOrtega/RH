@@ -12,11 +12,11 @@ open scoped ComplexOrder Topology
 namespace GlobalTheory.GoodMetric
 
 /- English proof (translation)
-Establish `h2 : 0 < Real.log 2` using `Real.log_pos one_lt_two`. Establish `h2' : Real.log 2 < 1` using `by have := Real.log_two_lt_d9; linarith`. Establish `hD : 1 ≤ (Real.log 2)⁻¹ ^ N'` using `one_le_pow₀ (one_le_inv₀ h2 |>.2 h2'.le)`. Break down `hL with hN | hL` into its components or cases. Establish `: N' = 0` using `hN' hN`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Substitute `this` using the available equality. Establish `: k = 0` using `by omega`. Substitute `this` using the available equality. Simplify using the standard rewrite rules. Establish `hL0 : 0 < L` using `h2.trans_le hL`.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Break down `le_or_gt 1 L with h1 | h1` into its components or cases. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Separate the alternatives or extract the components of the hypothesis. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 -/
 theorem pow_le_logTwo_mul_pow {L : ℝ} {N N' k : ℕ} (hN' : N = 0 → N' = 0) (hL : N = 0 ∨ Real.log 2 ≤ L)
     (hk : k ≤ N') : L ^ k ≤ (Real.log 2)⁻¹ ^ N' * L ^ N' := by
@@ -39,11 +39,11 @@ theorem pow_le_logTwo_mul_pow {L : ℝ} {N N' k : ℕ} (hN' : N = 0 → N' = 0) 
         _ = _ := by rw [mul_pow, mul_comm]
 
 /- English proof (translation)
-Distinguish the cases in `h : ∀ a ∈ S, |Real.log ‖v a‖| = 0`. Conclude with `Or.inl (Finset.sum_eq_zero h)`. Use `push_neg at h`. Take `⟨a, ha, hne⟩` from `h`. Use `right`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : ‖v a‖ ≠ 0` using `fun h0 => hne (by rw [h0]; simp)`. Establish `hpos : 0 < ‖v a‖` using `lt_of_le_of_ne (norm_nonneg _) (Ne.symm hv)`. Establish `hlt : Real.log ‖v a‖ < Real.log (1 / 2)` using `Real.log_lt_log hpos (hS a ha)`. Establish `hl : Real.log 2 ≤ |Real.log ‖v a‖|`. Rewrite `hlt` using `[one_div, Real.log_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[abs_of_neg (by linarith [Real.log_pos one_lt_two])]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `hl.trans (Finset.single_le_sum (f := fun a => |Real.log ‖v a‖|) (fun _ _ => abs_nonneg _) ha)`.
+A detailed English derivation is pending.
 -/
 theorem sum_abs_log_eq_zero_or_ge {n : ℕ} (S : Finset (Fin n)) (v : ReciprocityTheory.L2DbarEstimates.V n)
     (hS : ∀ a ∈ S, ‖v a‖ < 1 / 2) :
@@ -67,43 +67,35 @@ end GlobalTheory.GoodMetric
 namespace GlobalTheory.GoodMetric
 
 /- English proof (translation)
-Introduce `n S ι _ _ m G c N`. Use `set K := ∑ τ, m τ`. Use `set N' := N * (K + 1)`. Use `set F : ℝ := ∏ τ, ((m τ).factorial : ℝ)`. Use `set D : ℝ := (Real.log 2)⁻¹ ^ N'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨F * (max 1 c) ^ (K + 1) * D, N', ?_⟩` and prove the remaining obligations. Introduce `v hS hdet hC hG τ`. Use `set L := ∑ a ∈ S, |Real.log ‖v a‖| with hLdef`. Establish `hL0 : 0 ≤ L` using `Finset.sum_nonneg fun _ _ => abs_nonneg _`. Establish `hdp : 0 < ‖(Matrix.blockDiagonal' fun τ => G τ v).det‖⁻¹` using `inv_pos.2 (norm_pos_iff.2 hdet)`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hcY : 0 < c * L ^ N` using `hdp.trans_le hG.det`. Establish `hY : 0 < L ^ N`. Break down `(pow_nonneg hL0 N).lt_or_eq with h | h` into its components or cases. Conclude with `h`. Rewrite `hcY` using `[← h, mul_zero]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd hcY (lt_irrefl 0)`. Establish `hc : 0 < c` using `pos_of_mul_pos_left hcY hY.le`. Establish `hLN : N = 0 ∨ Real.log 2 ≤ L`. Break down `sum_abs_log_eq_zero_or_ge S v hS with h | h` into its components or cases. Use `left`.
+Prove the second alternative. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hN`. Rewrite `h` using `[← hLdef]`. Rewrite `hY` using `[h, zero_pow hN]`. Conclude with `lt_irrefl 0 hY`. Conclude with `Or.inr h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hN' : N = 0 → N' = 0` using `fun h => by simp [N', h]`. Establish `key : ∀ k ≤ N', L ^ k ≤ D * L ^ N'` using `fun k hk => pow_le_logTwo_mul_pow hN' hLN hk`. Establish `hF : 1 ≤ F`. Establish `: F = ((∏ τ, (m τ).factorial : ℕ) : ℝ)` using `by simp [F]`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `Nat.one_le_iff_ne_zero.2 (Finset.prod_ne_zero_iff.2 fun _ _ => Nat.factorial_ne_zero _)` after adjusting the coercions. Establish `hD : 1 ≤ D` using `one_le_pow₀ ((one_le_inv₀ (Real.log_pos one_lt_two)).2 (by have := Real.log_two_lt_d9; linarith))`. Establish `hM1 : 1 ≤ max 1 c` using `le_max_left _ _`. Establish `hcF : c ≤ F * (max 1 c) ^ (K + 1)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hcc' : c ≤ F * (max 1 c) ^ (K + 1) * D` using `hcF.trans (le_mul_of_one_le_right (by positivity) hD)`. Establish `hent : ∀ τ' (i j : Fin (m τ')), ‖G τ' v i j‖ ≤ c * L ^ N` using `fun τ' i j => by`. Apply the tactic sequence `have := hG.entry ⟨τ', i⟩ ⟨τ', j⟩`. Simplify `this` using `[Matrix.blockDiagonal'_apply_eq]`. Establish `hprod : (Matrix.blockDiagonal' fun τ => G τ v).det = ∏ τ', (G τ' v).det` using `GlobalTheory.Div.BlockChangeDet.det_blockDiagonal'_eq_prod _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hunit : ∀ τ', IsUnit (G τ' v).det` using `fun τ' => by`. Rewrite `hdet` using `[hprod]`. Conclude with `(Finset.prod_ne_zero_iff.1 hdet τ' (Finset.mem_univ _)).isUnit`. Establish `hCτ : ∀ τ', GlobalTheory.HermFrame.MContDiffAt 2 (G τ') v` using `fun τ' i j => by`. Use `hC ⟨τ', i⟩ ⟨τ', j⟩` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Simplify `this` using `[Matrix.blockDiagonal'_apply_eq]`. Establish `hconn : ∀ ξ, GlobalTheory.HermFrame.conn (fun u => Matrix.blockDiagonal' fun τ => G τ u) v ξ = Matrix.blockDiagonal' fun τ => GlobalTheory.HermFrame.conn (G τ) v ξ` using `fun ξ => GlobalTheory.HermFrame.conn_blockDiagonal' hunit ξ`. Establish `hcurv : ∀ ξ η, GlobalTheory.HermFrame.curv (fun u => Matrix.blockDiagonal' fun τ => G τ u) v ξ η = Matrix.blockDiagonal' fun τ => GlobalTheory.HermFrame.curv (G τ) v ξ η` using `fun ξ η => GlobalTheory.HermFrame.curv_blockDiagonal' hCτ hunit ξ η`. Establish `hdel : ∀ ξ η, GlobalTheory.HermFrame.mdel (fun u => GlobalTheory.HermFrame.conn (fun u => Matrix.blockDiagonal' fun τ => G τ u) u ξ) v η = Matrix.blockDiagonal' fun τ => GlobalTheory.HermFrame.mdel (fun u => GlobalTheory.HermFrame.conn (G τ) u ξ) v η`. Introduce `ξ η`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `he : (fun u => GlobalTheory.HermFrame.conn (fun u => Matrix.blockDiagonal' fun τ => G τ u) u ξ) =ᶠ[𝓝 v] fun u => Matrix.blockDiagonal' fun τ => GlobalTheory.HermFrame.conn (G τ) u ξ` using `(Filter.eventually_all.2 fun i => (hCτ i).eventually_isUnit (hunit i)).mono fun x hx => GlobalTheory.HermFrame.conn_blockDiagonal' hx ξ`. Rewrite using `[GlobalTheory.HermFrame.mdel_congr he, GlobalTheory.HermFrame.mdel_blockDiagonal']`. Use `set e := c * L ^ N`. Use `set M := max 1 e`. Establish `hM : 1 ≤ M` using `le_max_left _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hdetle : ∀ τ', ‖(G τ' v).det‖ ≤ ((m τ').factorial : ℝ) * M ^ m τ'` using `fun τ' => by`. Use `Matrix.det_le (abv := NormedField.toAbsoluteValue ℂ) (A := G τ' v) (x := M) fun i j => (hent τ' i j).trans (le_max_right _ _)` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Use `set P := ∏ τ' ∈ Finset.univ.erase τ, ‖(G τ' v).det‖`. Establish `hnorm : ‖(Matrix.blockDiagonal' fun τ => G τ v).det‖ = ‖(G τ v).det‖ * P`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hprod, norm_prod, ← Finset.mul_prod_erase _ _ (Finset.mem_univ τ)]`. Establish `hP0 : 0 < P` using `Finset.prod_pos fun τ' _ => norm_pos_iff.2 (hunit τ').ne_zero`. Establish `hinv : ‖(G τ v).det‖⁻¹ = ‖(Matrix.blockDiagonal' fun τ => G τ v).det‖⁻¹ * P`. Rewrite using `[hnorm, mul_inv, mul_assoc, inv_mul_cancel₀ hP0.ne', mul_one]`. Establish `hPle : P ≤ F * M ^ K`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : P ≤ ∏ τ' ∈ Finset.univ.erase τ, ((m τ').factorial : ℝ) * M ^ m τ'` using `Finset.prod_le_prod (fun _ _ => norm_nonneg _) fun τ' _ => hdetle τ'`. Establish `h2 : ∏ τ' ∈ Finset.univ.erase τ, ((m τ').factorial : ℝ) * M ^ m τ' ≤ ∏ τ', ((m τ').factorial : ℝ) * M ^ m τ'`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ τ)]`. Use `le_mul_of_one_le_left (Finset.prod_nonneg fun _ _ => by positivity) ?_` and prove the remaining obligations. Conclude with `one_le_mul_of_one_le_of_one_le (by exact_mod_cast Nat.one_le_iff_ne_zero.2 (Nat.factorial_ne_zero _)) (one_le_pow₀ hM)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : ∏ τ', ((m τ').factorial : ℝ) * M ^ m τ' = F * M ^ K`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hMle : M ≤ max 1 c * max 1 (L ^ N)` using `max_le (one_le_mul_of_one_le_of_one_le hM1 (le_max_left _ _)) (mul_le_mul (le_max_right _ _) (le_max_right _ _) hY.le (by positivity))`. Establish `hMY : (max 1 (L ^ N)) ^ (K + 1) ≤ D * L ^ N'`.
-
-Break down `le_total 1 (L ^ N) with h | h` into its components or cases. Rewrite using `[max_eq_right h, ← pow_mul]`. Conclude with `key _ le_rfl`. Rewrite using `[max_eq_left h, one_pow]`. Simplify using `using key 0 (Nat.zero_le _)`.
-
-Use `⟨fun i j => ?_, ?_, fun a i j => ?_, fun a b i j => ?_, fun a b i j => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hinv]`. Combine the equalities or inequalities in the displayed calculation. Use `hG.form a ⟨τ, i⟩ ⟨τ, j⟩` as an intermediate fact.
-
-Rewrite `this` using `[hconn, Matrix.blockDiagonal'_apply_eq]`. Conclude with `this.trans hcc'`. Use `hG.dbar a b ⟨τ, i⟩ ⟨τ, j⟩` as an intermediate fact. Rewrite `this` using `[hcurv, Matrix.blockDiagonal'_apply_eq]`. Conclude with `this.trans hcc'`.
-
-Use `hG.del a b ⟨τ, i⟩ ⟨τ, j⟩` as an intermediate fact. Rewrite `this` using `[hdel, hdel, Matrix.sub_apply, Matrix.blockDiagonal'_apply_eq, Matrix.blockDiagonal'_apply_eq, ← Matrix.sub_apply]`. Conclude with `this.trans hcc'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goodBound_of_blockDiagonal' : ∀ (n : ℕ) (S : Finset (Fin n)) (ι : Type) [Fintype ι] [DecidableEq ι] (m : ι → ℕ) (G : ∀ τ : ι, ReciprocityTheory.L2DbarEstimates.V n → Matrix (Fin (m τ)) (Fin (m τ)) ℂ) (c : ℝ) (N : ℕ), ∃ (c' : ℝ) (N' : ℕ), ∀ v : ReciprocityTheory.L2DbarEstimates.V n, (∀ a ∈ S, ‖v a‖ < 1 / 2) → (Matrix.blockDiagonal' fun τ => G τ v).det ≠ 0 → (∀ p q, ContDiffAt ℝ 2 (fun u => (Matrix.blockDiagonal' fun τ => G τ u) p q) v) → GlobalTheory.GoodMetric.GoodBound S c N (fun u => Matrix.blockDiagonal' fun τ => G τ u) v → ∀ τ, GlobalTheory.GoodMetric.GoodBound S c' N' (G τ) v := by
   intro n S ι _ _ m G c N

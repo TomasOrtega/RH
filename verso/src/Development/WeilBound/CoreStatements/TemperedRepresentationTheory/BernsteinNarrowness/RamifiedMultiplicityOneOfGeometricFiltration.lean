@@ -18,37 +18,37 @@ def NarrowBern : Prop :=
     (a ≠ b ∨ χ₁ ≠ χ₂) → (prod₂ (detRep (Fin a) χ₁) (detRep (Fin b) χ₂)).IsIrreducible
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.SmGL.Bernstein.prod₂_detRep_isIrreducible hG`.
+A detailed English derivation is pending.
 -/
 theorem narrowBern (hG : GlobalTheory.Published.GeometricLemmaFiltration) : NarrowBern :=
   GlobalTheory.CompanionTheory.SmGL.Bernstein.prod₂_detRep_isIrreducible hG
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.KCoNarrow.kCoinv_of_narrow (narrowBern hG) hD`.
+A detailed English derivation is pending.
 -/
 theorem kCoinv_of_geo (hG : GlobalTheory.Published.GeometricLemmaFiltration) (hD : PositivityTheory.KCo.DictSt) : GlobalTheory.ThK.KCoinv :=
   GlobalTheory.CompanionTheory.KCoNarrow.kCoinv_of_narrow (narrowBern hG) hD
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.SoCoinvNarrow.soCoinv_of_narrow (narrowBern hG) hK`.
+A detailed English derivation is pending.
 -/
 theorem soCoinv_of_geo (hG : GlobalTheory.Published.GeometricLemmaFiltration) (hK : GlobalTheory.ThK.KFin) : PositivityTheory.ThKF.SoCoinv :=
   GlobalTheory.CompanionTheory.SoCoinvNarrow.soCoinv_of_narrow (narrowBern hG) hK
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.BernNarrow.first_cohomology_ramified_narrow (narrowBern hG)`.
+A detailed English derivation is pending.
 -/
 theorem ramifiedMultiplicityOne_of_geometricFiltration (hG : GlobalTheory.Published.GeometricLemmaFiltration) : PositivityTheory.ThKG.Loc.RamifiedMultiplicityOne :=
   GlobalTheory.CompanionTheory.BernNarrow.first_cohomology_ramified_narrow (narrowBern hG)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.SplitNarrow.finRam_of_narrow (narrowBern hG)`.
+A detailed English derivation is pending.
 -/
 theorem finRam_of_geo (hG : GlobalTheory.Published.GeometricLemmaFiltration) : PositivityTheory.ThK.FinRam :=
   GlobalTheory.CompanionTheory.SplitNarrow.finRam_of_narrow (narrowBern hG)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.BernBridge.Split.finSplit_of_narrow (narrowBern hG)`.
+A detailed English derivation is pending.
 -/
 theorem finSplit_of_geo (hG : GlobalTheory.Published.GeometricLemmaFiltration) : PositivityTheory.ThK.FinSplit :=
   GlobalTheory.CompanionTheory.BernBridge.Split.finSplit_of_narrow (narrowBern hG)

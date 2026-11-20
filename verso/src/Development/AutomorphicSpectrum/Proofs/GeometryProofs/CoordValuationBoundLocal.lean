@@ -12,7 +12,7 @@ namespace GlobalTheory.CompanionTheory.Ar.RootHt
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {R : Type} [CommRing R] [IsLocalRing R]
 
 /- English proof (translation)
-Take `⟨h, t, rfl, rfl⟩` from `ha`. Take `⟨_, u, rfl, rfl⟩` from `hb`. Conclude with `⟨h, t * u, map_mul _ _ _, map_mul _ _ _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem valAt_mul {ξ : Sp Ω ⟶ X} {z : Sp R ⟶ X} {a b : Ω} {r s : R}
     (ha : ValAt ξ z a r) (hb : ValAt ξ z b s) : ValAt ξ z (a * b) (r * s) := by
@@ -21,13 +21,13 @@ theorem valAt_mul {ξ : Sp Ω ⟶ X} {z : Sp R ⟶ X} {a b : Ω} {r s : R}
   exact ⟨h, t * u, map_mul _ _ _, map_mul _ _ _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h, 1, map_one _, map_one _⟩`.
+Supply the required witnesses or components.
 -/
 theorem valAt_one {ξ : Sp Ω ⟶ X} {z : Sp R ⟶ X} (h : genPt ξ ⤳ centre z) : ValAt ξ z 1 1 :=
   ⟨h, 1, map_one _, map_one _⟩
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simpa using valAt_one h`. Consider the case `insert k S hk ih`. Rewrite using `[Finset.prod_insert hk, Finset.prod_insert hk]`. Conclude with `valAt_mul (ha k) ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valAt_prod {ξ : Sp Ω ⟶ X} {z : Sp R ⟶ X} (h : genPt ξ ⤳ centre z) {K : Type} (S : Finset K)
     (a : K → Ω) (r : K → R) (ha : ∀ k, ValAt ξ z (a k) (r k)) :
@@ -40,7 +40,7 @@ theorem valAt_prod {ξ : Sp Ω ⟶ X} {z : Sp R ⟶ X} (h : genPt ξ ⤳ centre 
     exact valAt_mul (ha k) ih
 
 /- English proof (translation)
-Take `⟨_, s, rfl, rfl⟩` from `ha`. Take `⟨u, rfl⟩ : IsUnit s` from `(Scheme.isLocalHom_stalkClosedPointTo' z).map_nonunit s hr`. Use `⟨(u⁻¹ : (X.presheaf.stalk (centre z))ˣ).1, eq_inv_of_mul_eq_one_left ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul, Units.inv_mul, map_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_mem_regAt_of_isUnit {ξ : Sp Ω ⟶ X} {z : Sp R ⟶ X} (h : genPt ξ ⤳ centre z) {a : Ω} {r : R}
     (ha : ValAt ξ z a r) (hr : IsUnit r) : a⁻¹ ∈ regAt ξ ⟨centre z, h⟩ := by
@@ -50,27 +50,23 @@ theorem inv_mem_regAt_of_isUnit {ξ : Sp Ω ⟶ X} {z : Sp R ⟶ X} (h : genPt �
   rw [← map_mul, Units.inv_mul, map_one]
 
 /- English proof (translation)
-Introduce `X Ω _ ξ K _ J _ y L _ _ w v A _ _ _ zA hq hT hle hun hC`. Establish `hmax : ∀ k, ∃ c : J k, w ⟨k, c⟩ ≠ 0 ∧ ∀ i, v (w ⟨k, i⟩) ≤ v (w ⟨k, c⟩)`. Introduce `k`. Take `⟨u, hu⟩` from `hC.1 k`. Use `haveI : Nonempty (J k) := ⟨u⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `Finite.exists_max (fun i => v (w ⟨k, i⟩))`. Use `⟨c, ?_, hc⟩` and prove the remaining obligations. Establish `h0 : 0 < v (w ⟨k, u⟩)` using `FinitePlace.pos_iff.2 hu.ne_zero`. Conclude with `FinitePlace.pos_iff.1 (h0.trans_le (hc u))`. Use `choose c hc0 hcm using hmax`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `hq (centre zA)`. Use `⟨c, h, hc0, hcm, ?_⟩` and prove the remaining obligations. Use `set x : ((k : K) → J k) → Ω := fun c' => ∏ k, y ⟨k, c' k⟩ with hx`. Use `set zL : Sp L ⟶ X := spMap (algebraMap A L) ≫ zA with hzL`. Establish `hy : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k => (hC.2 k (c k) (isUnit_iff_ne_zero.2 (hc0 k))).1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxc : x c ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => hy k`. Take `⟨c', hc', hreg⟩` from `hT.cover ⟨centre zA, h⟩`. Take `⟨s, hs⟩` from `hreg c`. Use `set r : A := (Scheme.stalkClosedPointTo zA).hom s with hr`. Establish `hvA : ValAt ξ zA (x c / x c') r` using `⟨h, s, hs, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hvL : ValAt ξ zL (x c / x c') (algebraMap A L r)` using `LieTangent.valAt_base hT.gen _ hvA`. Establish `hL : genPt ξ ⤳ centre zL` using `hq _`. Establish `hk : ∀ k, ∃ ρ : L, ValAt ξ zL (y ⟨k, c' k⟩ / y ⟨k, c k⟩) ρ ∧ w ⟨k, c' k⟩ = ρ * w ⟨k, c k⟩` using `fun k => (hC.2 k (c k) (isUnit_iff_ne_zero.2 (hc0 k))).2 (c' k)`. Use `choose ρ hρ hρw using hk`. Establish `hprod : ValAt ξ zL (x c' / x c) (∏ k, ρ k)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e : x c' / x c = ∏ k, y ⟨k, c' k⟩ / y ⟨k, c k⟩` using `(Finset.prod_div_distrib _ _).symm`. Rewrite using `[e]`. Conclude with `valAt_prod hL _ _ _ fun k => hρ k`. Establish `hone : algebraMap A L r * ∏ k, ρ k = 1`. Establish `e : x c / x c' * (x c' / x c) = 1` using `by field_simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `valAt_mul hvL hprod` as an intermediate fact. Rewrite `this` using `[e]`. Conclude with `LieTangent.valAt_unique hT.gen this (valAt_one hL)`. Establish `hρ1 : ∀ k, v (ρ k) ≤ 1`. Introduce `k`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `congrArg v (hρw k)`. Rewrite `e` using `[map_mul]`. Establish `hp : 0 < v (w ⟨k, c k⟩)` using `FinitePlace.pos_iff.2 (hc0 k)`. Use `hcm k (c' k)` as an intermediate fact. Rewrite `this` using `[e]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Conclude with `le_of_mul_le_mul_right (by simpa using this) hp`. Establish `hP : v (∏ k, ρ k) ≤ 1`. Rewrite using `[map_prod]`. Conclude with `Finset.prod_le_one (fun _ _ => by positivity) fun k _ => hρ1 k`. Establish `hsize : v (algebraMap A L r) = 1`.
-
-Establish `e` using `congrArg v hone`. Rewrite `e` using `[map_mul, map_one]`. Use `le_antisymm (hle r) ?_` and prove the remaining obligations. Establish `h0 : 0 ≤ v (algebraMap A L r)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
-
-Establish `hinv : (x c / x c')⁻¹ ∈ regAt ξ ⟨centre zA, h⟩` using `inv_mem_regAt_of_isUnit h hvA (hun r hsize)`. Use `⟨hxc, fun d => ?_⟩` and prove the remaining obligations. Establish `e : x d / x c = x d / x c' * (x c / x c')⁻¹` using `by field_simp`. Rewrite using `[e]`. Conclude with `mul_mem (hreg d) hinv`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bestChart_finite : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (K : Type) [Fintype K] (J : K → Type)
     [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (L : Type) [Field L] [NumberField L] (w : (Σ k, J k) → L)

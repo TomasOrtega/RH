@@ -22,9 +22,9 @@ noncomputable section
 namespace GlobalTheory.ZonalBound
 
 /- English proof (translation)
-Establish `hq0 : (0 : ℝ) < q` using `by exact_mod_cast (by omega : 0 < q)`. Establish `e : ((q : ℝ) ^ 2) ^ (((n : ℝ) - 1) / 2) = (q : ℝ) ^ (n - 1)`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.TrivialParameterBound.bound_eq, ← Real.rpow_natCast, Nat.cast_sub hn, Nat.cast_one]`. Establish `e' : ((q : ℝ) ^ 2) ^ (-(((n : ℝ) - 1) / 2)) = ((q : ℝ) ^ (n - 1))⁻¹`. Rewrite using `[Real.rpow_neg (by positivity), e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `GlobalTheory.IndefiniteRowSideFullHecke.TrivialParameterBound.TrivialBound`. Rewrite using `[e, e']`. Use `forall_congr' fun i => and_congr ?_ Iff.rfl |>.trans and_comm` and prove the remaining obligations. Establish `hp : 0 < ‖(β i : ℂ)‖` using `norm_pos_iff.2 (β i).ne_zero`. Conclude with `⟨fun h => inv_le_of_inv_le₀ (by positivity) h, fun h => inv_le_of_inv_le₀ hp h⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem trivialBound_iff {q n : ℕ} (hq : 1 ≤ q) (hn : 1 ≤ n) (β : Fin (n / 2) → ℂˣ) :
     GlobalTheory.IndefiniteRowSideFullHecke.TrivialParameterBound.TrivialBound q n β ↔
@@ -41,17 +41,15 @@ theorem trivialBound_iff {q n : ℕ} (hq : 1 ≤ q) (hn : 1 ≤ n) (β : Fin (n 
   exact ⟨fun h => inv_le_of_inv_le₀ (by positivity) h, fun h => inv_le_of_inv_le₀ hp h⟩
 
 /- English proof (translation)
-Break down `Nat.lt_or_ge n 2 with hn | hn` into its components or cases. Introduce `i; exact absurd i.2 (by omega)`. Rewrite using `[trivialBound_iff hq (by omega)]`. Introduce `i`. Establish `hq0 : (0 : ℝ) < q` using `by exact_mod_cast (by omega : 0 < q)`.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set c : ℝ := (q : ℝ) ^ (n - 1) with hc`. Establish `hc0 : 0 < c` using `by positivity`. Establish `hcc : (q : ℝ) ^ (2 * (n - 1)) = c * c` using `by rw [hc, ← pow_add]; ring_nf`. Establish `hcC : ‖((q : ℂ) ^ (n - 1))‖ = c` using `by rw [norm_pow, Complex.norm_natCast]`. Establish `hcC0 : ((q : ℂ) ^ (n - 1)) ≠ 0` using `pow_ne_zero _ (by exact_mod_cast (by omega : q ≠ 0))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : 0 < ‖(β i : ℂ)‖` using `norm_pos_iff.2 (β i).ne_zero`. Establish `hb0 : (β i : ℂ) ≠ 0` using `(β i).ne_zero`. Prove the components needed by the constructor for the conclusion. Assume the negation of the conclusion as `hlt push_neg at hlt`. Establish `hX : ‖((q : ℂ) ^ (n - 1) * (β i : ℂ))⁻¹‖ < ((q : ℝ) ^ (2 * (n - 1)))⁻¹`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_inv, norm_mul, hcC, hcc]`. Conclude with `inv_strictAnti₀ (by positivity) (mul_lt_mul_of_pos_left hlt hc0)`. Apply `(h i _ hX).1` to reduce the goal to its premises. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hlt push_neg at hlt`. Establish `hX : ‖(β i : ℂ) / (q : ℂ) ^ (n - 1)‖ < ((q : ℝ) ^ (2 * (n - 1)))⁻¹`. Rewrite using `[norm_div, hcC, hcc, div_lt_iff₀ hc0, mul_inv, mul_assoc, inv_mul_cancel₀ hc0.ne', mul_one]`. Conclude with `(lt_inv_comm₀ hp hc0).2 hlt`. Apply `(h i _ hX).2` to reduce the goal to its premises.
-
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem trivialBound_of_ne_zero {q n : ℕ} (hq : 1 ≤ q) (β : Fin (n / 2) → ℂˣ)
     (h : ∀ i, ∀ X : ℂ, ‖X‖ < ((q : ℝ) ^ (2 * (n - 1)))⁻¹ →
@@ -93,9 +91,7 @@ def denom (n : ℕ) (c : ℂ) (α : Fin (n / 2) → ℂˣ) (X : ℂ) : ℂ :=
   (∏ i, (1 - c * X * (α i : ℂ)) * (1 - c * X / (α i : ℂ))) * (if Odd n then 1 - c * X else 1)
 
 /- English proof (translation)
-Unfold `denom`. Distinguish the cases in `h : Odd n`. Simplify using `only [if_pos h]`. Use `fun_prop`. Simplify using `only [if_neg h]`.
-
-Use `fun_prop`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiable_denom (n : ℕ) (c : ℂ) (α : Fin (n / 2) → ℂˣ) : Differentiable ℂ (denom n c α) := by
   unfold denom
@@ -104,7 +100,7 @@ theorem differentiable_denom (n : ℕ) (c : ℂ) (α : Fin (n / 2) → ℂˣ) : 
   · simp only [if_neg h]; fun_prop
 
 /- English proof (translation)
-Introduce `e` and use `by rw [← sub_eq_zero.1 e, norm_one] at h exact lt_irrefl _ h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem one_sub_ne_zero {z : ℂ} (h : ‖z‖ < 1) : 1 - z ≠ 0 := fun e => by
   rw [← sub_eq_zero.1 e, norm_one] at h
@@ -112,9 +108,9 @@ theorem one_sub_ne_zero {z : ℂ} (h : ‖z‖ < 1) : 1 - z ≠ 0 := fun e => by
 
 open GlobalTheory.IndefiniteRowSideFullHecke.SphericalSectionVariables in
 /- English proof (translation)
-Establish `h1 : (∏ i, (1 - c * X * (α i : ℂ))⁻¹ * (1 - c * X / (α i : ℂ))⁻¹) * ∏ i, (1 - c * X * (α i : ℂ)) * (1 - c * X / (α i : ℂ)) = 1`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Establish `a : 1 - c * X * (α i : ℂ) ≠ 0` using `one_sub_ne_zero (by rw [norm_mul]; exact (h.2 i).1)`. Establish `b : 1 - c * X / (α i : ℂ) ≠ 0` using `one_sub_ne_zero (by rw [norm_div, div_eq_mul_inv]; exact (h.2 i).2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_mul_mul_comm, inv_mul_cancel₀ a, inv_mul_cancel₀ b, one_mul]`. Establish `h2 : (if Odd n then (1 - c * X)⁻¹ else 1) * (if Odd n then 1 - c * X else 1) = 1` using `by split_ifs`. Conclude with `inv_mul_cancel₀ (one_sub_ne_zero h.1)`. Conclude with `one_mul _`. Rewrite using `[closedForm, denom, mul_assoc (∏ j ∈ Finset.range n, _), mul_assoc (∏ j ∈ Finset.range n, _), mul_mul_mul_comm, h1, h2, one_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem closedForm_mul_denom (q n : ℕ) (c X : ℂ) (α : Fin (n / 2) → ℂˣ) (h : Domain (c * X) α) :
     closedForm q n X (c * X) α * denom n c α X = ∏ j ∈ Finset.range n, (1 - (-(q : ℂ)) ^ j * X) := by
@@ -133,7 +129,7 @@ theorem closedForm_mul_denom (q n : ℕ) (c X : ℂ) (α : Fin (n / 2) → ℂˣ
     mul_mul_mul_comm, h1, h2, one_mul, mul_one]
 
 /- English proof (translation)
-Establish `hq1 : (1 : ℝ) ≤ q` using `by exact_mod_cast hq`. Use `Finset.prod_ne_zero_iff.2 fun j hj => one_sub_ne_zero ?_` and prove the remaining obligations. Establish `hj'` using `Finset.mem_range.1 hj`. Rewrite using `[norm_mul, norm_pow, norm_neg, Complex.norm_natCast]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem numer_ne_zero {q n : ℕ} (hq : 1 ≤ q) {X : ℂ} (hX : ‖X‖ < ((q : ℝ) ^ (2 * (n - 1)))⁻¹) :
     ∏ j ∈ Finset.range n, (1 - (-(q : ℂ)) ^ j * X) ≠ 0 := by
@@ -149,7 +145,7 @@ theorem numer_ne_zero {q n : ℕ} (hq : 1 ≤ q) {X : ℂ} (hX : ‖X‖ < ((q :
 open GlobalTheory.IndefiniteRowSideFullHecke.SphericalSectionVariables in
 
 /- English proof (translation)
-Establish `key : ∀ a : ℝ, a ≤ M → ‖y‖ * a < 1` using `fun a ha => (mul_le_mul_of_nonneg_left ha (norm_nonneg _)).trans_lt hy`. Conclude with `⟨by simpa using key 1 hM, fun i => ⟨key _ (hα i).1, key _ (hα i).2⟩⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem domain_of_bound {r : ℕ} {y : ℂ} {α : Fin r → ℂˣ} {M : ℝ} (hM : 1 ≤ M)
     (hα : ∀ i, ‖(α i : ℂ)‖ ≤ M ∧ ‖(α i : ℂ)‖⁻¹ ≤ M) (hy : ‖y‖ * M < 1) : Domain y α := by
@@ -158,9 +154,9 @@ theorem domain_of_bound {r : ℕ} {y : ℂ} {α : Fin r → ℂˣ} {M : ℝ} (hM
   exact ⟨by simpa using key 1 hM, fun i => ⟨key _ (hα i).1, key _ (hα i).2⟩⟩
 
 /- English proof (translation)
-Establish `h0 : ∀ i ∈ (Finset.univ : Finset (Fin r)), 0 ≤ ‖(α i : ℂ)‖ + ‖(α i : ℂ)‖⁻¹` using `fun i _ => by positivity`. Use `⟨1 + ∑ i, (‖(α i : ℂ)‖ + ‖(α i : ℂ)‖⁻¹), le_add_of_nonneg_right (Finset.sum_nonneg h0), fun i => ?_⟩` and prove the remaining obligations. Establish `h1` using `Finset.single_le_sum h0 (Finset.mem_univ i)`. Establish `h2 : 0 ≤ ‖(α i : ℂ)‖` using `norm_nonneg _`. Establish `h3 : 0 ≤ ‖(α i : ℂ)‖⁻¹` using `by positivity`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `constructor <;> linarith`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_bound {r : ℕ} (α : Fin r → ℂˣ) :
     ∃ M : ℝ, 1 ≤ M ∧ ∀ i, ‖(α i : ℂ)‖ ≤ M ∧ ‖(α i : ℂ)‖⁻¹ ≤ M := by
@@ -174,15 +170,15 @@ theorem exists_bound {r : ℕ} (α : Fin r → ℂˣ) :
 open GlobalTheory.IndefiniteRowSideFullHecke.SphericalSectionVariables in
 
 /- English proof (translation)
-Establish `hq2 : 2 ≤ q` using `hU.2.2.2.2.2.1`. Establish `hq : q ≠ 0` using `by omega`. Establish `hqC : (q : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hq`. Establish `hc` using `GlobalTheory.ZetaSumU.cartan_complete L (ϖ : L) σ q n hU`. Use `choose D t ht k₁ hk₁ k₂ hk₂ e using hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun a => (∑ i, max (D a.out i) 0).toNat, fun X hX => ?_⟩` and prove the remaining obligations. Take `⟨χ, hχ, hχϖ⟩` from `GlobalTheory.ZetaSumU.exists_unr_char ϖ hU (Units.mk0 (X * (q : ℂ) ^ n) (mul_ne_zero hX (pow_ne_zero _ hqC)))`. Take `⟨Φ, hΦ⟩` from `exists_isSphSec σ hq n hχ (((0 : ℕ) : ℂ) / 2)`. Take `⟨hXe, hYe⟩` from `GlobalTheory.ZetaSumU.varXY_eq q n 0 hq2 (X * (q : ℂ) ^ n)`. Establish `hz : ((χ ϖ : ℂˣ) : ℂ) = X * (q : ℂ) ^ n` using `by rw [hχϖ]; rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvX : varX q n (χ ϖ) (((0 : ℕ) : ℂ) / 2) = X`. Rewrite using `[hz, hXe, add_zero, mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ hqC), mul_one]`. Establish `hval : ∀ g, ∀ k ∈ KU σ n, Φ (io1 σ n (g * k)) = X ^ (∑ i, max (D g i) 0)` using `fun g k hk => by`. Establish `h` using `GlobalTheory.T.sphericalDoublingSection_graph_diagonal_eq L ϖ σ q n hU χ hχ _ Φ hΦ (D g) (t g) (ht g) (k₁ g) (hk₁ g) (k₂ g * k) (mul_mem (hk₂ g) hk)`. Rewrite `h` using `[hvX, ← mul_assoc, ← e g]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h`. Establish `hval1 : ∀ g, Φ (io1 σ n g) = X ^ (∑ i, max (D g i) 0)` using `fun g => by`. Simplify `hval g 1 (one_mem _)` using `only [mul_one]`. Use `⟨χ, _, Φ, hχ, hΦ, hvX, ?_, fun g k hk => (hval g k hk).trans (hval1 g).symm, fun a => ?_⟩` and prove the remaining obligations. Take `⟨m, rfl⟩` from `Nat.exists_eq_add_of_le' hn`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[hz, hYe, Nat.add_sub_cancel, zero_add, pow_one, pow_succ]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hval1, ← zpow_natCast, Int.toNat_of_nonneg (Finset.sum_nonneg fun i _ => le_max_right _ _)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_deg {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : Lˣ)
     {σ : L →+* L} {q n : ℕ} (hU : IsUnramInv (ϖ : L) σ q) (hn : 1 ≤ n) :
@@ -219,25 +215,23 @@ theorem exists_deg {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ)
 open GlobalTheory.IndefiniteRowSideFullHecke.SphericalSectionVariables in
 
 /- English proof (translation)
-Introduce `H L _ _ _ ϖ σ q n hU α w hw hb`. Take `⟨C, hC⟩` from `hb`. Break down `Nat.lt_or_ge n 2 with hn | hn` into its components or cases. Introduce `i; exact absurd i.2 (by omega)`. Establish `hq2 : 2 ≤ q` using `hU.2.2.2.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hq1 : (1 : ℝ) ≤ q` using `by exact_mod_cast (by omega : 1 ≤ q)`. Take `⟨deg, hdeg⟩` from `exists_deg ϖ hU (by omega : 1 ≤ n)`. Use `letI : MeasurableSpace (GU σ n) := borel _`. Use `haveI : BorelSpace (GU σ n) := ⟨rfl⟩`. Take `⟨μ, hμH, hμK⟩` from `GlobalTheory.ZetaSumU.exists_haar (ϖ : L) hU n`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hKo` using `(GlobalTheory.LFun.IntPtsUnitary.isOpen_isCompact_KU L (ϖ : L) σ q n hU).1`. Establish `hc1 : (1 : ℝ) ≤ (q : ℝ) ^ (n - 1)` using `one_le_pow₀ hq1`. Establish `hc0 : (0 : ℝ) < (q : ℝ) ^ (n - 1)` using `by positivity`. Establish `hny : ∀ x : ℝ, 0 < x → ‖(q : ℂ) ^ (n - 1) * (x : ℂ)‖ = (q : ℝ) ^ (n - 1) * x` using `fun x hx => by`. Rewrite using `[norm_mul, norm_pow, Complex.norm_natCast, Complex.norm_real, Real.norm_of_nonneg hx.le]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨α0, hα0, hw0⟩` from `isZonal_one hU n`. Establish `hb0` using `(trivialBound_iff (by omega) (by omega) α0).1 (GlobalTheory.ZetaSumU.tb_triv q n hq2 α0 hα0)`. Establish `hsum : ∀ r : ℝ, 0 < r → r < ((q : ℝ) ^ (2 * (n - 1)))⁻¹ → Summable fun a => r ^ deg a` using `fun r hr hρ => by`. Take `⟨χ, s, Φ, hχ, hΦ, -, hY, hinv, hval⟩` from `hdeg (r : ℂ) (by exact_mod_cast hr.ne')`. Establish `hdom : Domain (varY q (χ ϖ) s) α0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hY]`. Use `domain_of_bound hc1 hb0 ?_` and prove the remaining obligations. Rewrite using `[hny r hr, mul_right_comm, ← pow_add, ← two_mul]`. Conclude with `(mul_lt_mul_of_pos_left hρ (by positivity)).trans_eq (mul_inv_cancel₀ (by positivity))`. Establish `hint` using `((H L ϖ σ q n hU μ hμK χ hχ s Φ hΦ α0 _ hw0).1 hdom).1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs` using `GlobalTheory.T.summable_norm_coset_out' _ μ (KU σ n) hKo hμK _ (fun g k hk => by simp only [hinv g k hk]) hint`. Use `hs.congr fun a => ?_` and prove the remaining obligations. Simplify using `only [hval, mul_one, norm_pow, Complex.norm_real, Real.norm_of_nonneg hr.le]`. Take `⟨M, hM, hαM⟩` from `exists_bound α`. Establish `heq : ∀ x : ℝ, 0 < x → x < ((q : ℝ) ^ (n - 1) * M)⁻¹ → (∑' a : GU σ n ⧸ KU σ n, w a.out * (x : ℂ) ^ deg a) * denom n ((q : ℂ) ^ (n - 1)) α x = ∏ j ∈ Finset.range n, (1 - (-(q : ℂ)) ^ j * (x : ℂ))` using `fun x hx hδ => by`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨χ, s, Φ, hχ, hΦ, hX, hY, hinv, hval⟩` from `hdeg (x : ℂ) (by exact_mod_cast hx.ne')`. Establish `hdom : Domain ((q : ℂ) ^ (n - 1) * (x : ℂ)) α`. Use `domain_of_bound hM hαM ?_` and prove the remaining obligations. Rewrite using `[hny x hx, mul_right_comm]`. Conclude with `(mul_lt_mul_of_pos_left hδ (by positivity)).trans_eq (mul_inv_cancel₀ (by positivity))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hint, hI, -⟩` from `(H L ϖ σ q n hU μ hμK χ hχ s Φ hΦ α w hw).1 (by rw [hY]; exact hdom)`. Establish `hF : ∀ g, ∀ k ∈ KU σ n, Φ (io1 σ n (g * k)) * w (g * k) = Φ (io1 σ n g) * w g` using `fun g k hk => by`. Establish `h1` using `hw.1 1 ⟨k, hk⟩ g`. Simplify using `only [OneMemClass.coe_one, one_mul] at h1`. Rewrite using `[hinv g k hk, h1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hs` using `(GlobalTheory.T.summable_norm_coset_out' _ μ (KU σ n) hKo hμK _ hF hint).of_norm`. Establish `hci` using `(GlobalTheory.T.integral_right_invariant_eq_sum_open_subgroup_cosets _ μ (KU σ n) hKo hμK (fun g => Φ (io1 σ n g) * w g) _ hF hs.hasSum).2`. Rewrite `hci` using `[hI, hX, hY]`. Rewrite using `[← closedForm_mul_denom q n _ _ α hdom, hci]`. Use `congr 1`.
-
-Conclude with `tsum_congr fun a => by rw [hval, mul_comm]`. Use `trivialBound_of_ne_zero (by omega) α fun i X hX => ?_` and prove the remaining obligations. Establish `hP` using `GlobalTheory.gradedSeries_mul_ne_zero (GU σ n ⧸ KU σ n) deg (fun a => w a.out) ((q : ℝ) ^ (2 * (n - 1)))⁻¹ ((q : ℝ) ^ (n - 1) * M)⁻¹ (denom n ((q : ℂ) ^ (n - 1)) α) (fun X => ∏ j ∈ Finset.range n, (1 - (-(q : ℂ)) ^ j * X)) (by positivity) (differentiable_denom _ _ _) (by fun_prop …`. Conclude with `mul_ne_zero_iff.1 (Finset.prod_ne_zero_iff.1 (mul_ne_zero_iff.1 hP).1 i (Finset.mem_univ i))`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem trivialBound_of_bounded : GlobalTheory.IndefiniteRowSideFullHecke.SphericalSectionVariables.UnramDoublingInert → ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : Lˣ) (σ : L →+* L) (q n : ℕ), IsUnramInv (ϖ : L) σ q → ∀ (α : Fin (n / 2) → ℂˣ) (w : GU σ n → ℂ), GlobalTheory.IndefiniteRowSideFullHecke.SphericalSectionVariables.IsZonal (ϖ : L) q α w → (∃ C : ℝ, ∀ g, ‖w g‖ ≤ C) → GlobalTheory.IndefiniteRowSideFullHecke.TrivialParameterBound.TrivialBound q n α := by
   intro H L _ _ _ ϖ σ q n hU α w hw hb

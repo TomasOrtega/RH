@@ -15,26 +15,26 @@ private noncomputable def pr1 (Y G : Over S) : (Y ⊗ G).left ⟶ Y.left := pull
 private noncomputable def pr2 (Y G : Over S) : (Y ⊗ G).left ⟶ G.left := pullback.snd Y.hom G.hom
 
 /- English proof (translation)
-The claim follows from `pullback.condition`.
+A detailed English derivation is pending.
 -/
 private theorem pr_cond (Y G : Over S) : pr1 Y G ≫ Y.hom = pr2 Y G ≫ G.hom := pullback.condition
 
 /- English proof (translation)
-The claim follows from `pullback.hom_ext h₁ h₂`.
+A detailed English derivation is pending.
 -/
 private theorem pr_ext {Y G : Over S} {Z : Scheme.{0}} {f f' : Z ⟶ (Y ⊗ G).left}
     (h₁ : f ≫ pr1 Y G = f' ≫ pr1 Y G) (h₂ : f ≫ pr2 Y G = f' ≫ pr2 Y G) : f = f' :=
   pullback.hom_ext h₁ h₂
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst t.left a.left (by rw [Over.w t, Over.w a])`.
+A detailed English derivation is pending.
 -/
 private theorem lift_comp_pr1 {Y G T : Over S} (t : T ⟶ Y) (a : T ⟶ G) :
     (lift t a).left ≫ pr1 Y G = t.left :=
   pullback.lift_fst t.left a.left (by rw [Over.w t, Over.w a])
 
 /- English proof (translation)
-The claim follows from `pullback.lift_snd t.left a.left (by rw [Over.w t, Over.w a])`.
+A detailed English derivation is pending.
 -/
 private theorem lift_comp_pr2 {Y G T : Over S} (t : T ⟶ Y) (a : T ⟶ G) :
     (lift t a).left ≫ pr2 Y G = a.left :=
@@ -44,7 +44,7 @@ private noncomputable abbrev subH {Y G : Over S} (U : (Y ⊗ G).left.Opens) : Ov
   Over.mk (U.ι ≫ pr1 Y G)
 
 /- English proof (translation)
-Simplify using `only [Category.assoc, Over.w inc, pr_cond]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem sub_sq {Y A G : Over S} (inc : G ⟶ A) (U : (Y ⊗ G).left.Opens) :
     (U.ι ≫ pr2 Y G ≫ inc.left) ≫ A.hom = (U.ι ≫ pr1 Y G) ≫ Y.hom := by
@@ -59,25 +59,25 @@ private noncomputable def subJ (hP : IsGrpPullback A₀ A Y.hom φ₀) (inc : G 
     (hP.1.lift_snd _ _ _)
 
 /- English proof (translation)
-The claim follows from `hP.1.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 private theorem subJ_fst (hP : IsGrpPullback A₀ A Y.hom φ₀) (inc : G ⟶ A)
     (U : (Y ⊗ G).left.Opens) : (subJ hP inc U).left ≫ φ₀ = U.ι ≫ pr2 Y G ≫ inc.left :=
   hP.1.lift_fst _ _ _
 
 /- English proof (translation)
-The claim follows from `hP.1.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 private theorem subJ_snd (hP : IsGrpPullback A₀ A Y.hom φ₀) (inc : G ⟶ A)
     (U : (Y ⊗ G).left.Opens) : (subJ hP inc U).left ≫ A₀.hom = U.ι ≫ pr1 Y G :=
   hP.1.lift_snd _ _ _
 
 /- English proof (translation)
-Establish `: Mono (subJ hP inc U).left`. Prove the components needed by the constructor for the conclusion. Introduce `Z x y e`. Rewrite using `[← cancel_mono U.ι]`. Apply `pr_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `congrArg (· ≫ A₀.hom) e` as an intermediate fact. Simplify `this` using `only [Category.assoc, subJ_snd]`. Rewrite using `[← cancel_mono inc.left]`. Use `congrArg (· ≫ φ₀) e` as an intermediate fact. Simplify `this` using `only [Category.assoc, subJ_fst]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `Over.mono_of_mono_left _`.
+A detailed English derivation is pending.
 -/
 private theorem subJ_mono (hP : IsGrpPullback A₀ A Y.hom φ₀) (inc : G ⟶ A) [Mono inc.left]
     (U : (Y ⊗ G).left.Opens) : Mono (subJ hP inc U) := by
@@ -94,19 +94,17 @@ private theorem subJ_mono (hP : IsGrpPullback A₀ A Y.hom φ₀) (inc : G ⟶ A
   exact Over.mono_of_mono_left _
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, rfl⟩`. Establish `hh : h.left ≫ U.ι ≫ pr1 Y G = t.left` using `Over.w h`. Establish `e : (h.left ≫ U.ι ≫ pr2 Y G) ≫ G.hom = T'.hom`. Establish `e' : (h.left ≫ U.ι ≫ pr1 Y G) ≫ Y.hom = T'.hom` using `by rw [hh, Over.w t]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `e'` using `only [Category.assoc, pr_cond]`. Use `⟨Over.homMk (h.left ≫ U.ι ≫ pr2 Y G) e, ?_, ?_⟩` and prove the remaining obligations. Use `show (h.left ≫ U.ι ≫ pr2 Y G) ≫ inc.left = (h ≫ subJ hP inc U).left ≫ φ₀`. Simplify using `only [Over.comp_left, Category.assoc, subJ_fst]`. Establish `: (lift t (Over.homMk (h.left ≫ U.ι ≫ pr2 Y G) e)).left = h.left ≫ U.ι`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `pr_ext` to reduce the goal to its premises. Rewrite using `[lift_comp_pr1, Category.assoc, hh]`. Rewrite using `[lift_comp_pr2]`. Simplify using `only [Category.assoc, Over.homMk_left]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Use `show _ ∈ (U : Set (Y ⊗ G).left)`. Rewrite using `[← U.range_ι]`. Conclude with `⟨h.left x, by simp⟩`. Introduce and unpack `⟨a, ha, hr⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hr' : Set.range (lift t a).left ⊆ Set.range U.ι`. Rewrite using `[U.range_ι]`. Conclude with `hr`. Set `s` to `IsOpenImmersion.lift U.ι (lift t a).left hr'`. Establish `hs : s ≫ U.ι = (lift t a).left` using `IsOpenImmersion.lift_fac _ _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : s ≫ U.ι ≫ pr1 Y G = t.left`. Rewrite using `[← Category.assoc, hs, lift_comp_pr1]`. Use `⟨Over.homMk s h1, ?_⟩` and prove the remaining obligations. Apply `SubRep.pull_ext hP` to reduce the goal to its premises. Use `show (s ≫ (subJ hP inc U).left) ≫ φ₀ = _`.
-
-Rewrite using `[Category.assoc, subJ_fst, ← ha, ← Category.assoc, ← Category.assoc, hs, lift_comp_pr2]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem subJ_iff (hP : IsGrpPullback A₀ A Y.hom φ₀) (inc : G ⟶ A)
     (U : (Y ⊗ G).left.Opens) (T' : Over S) (t : T' ⟶ Y) (g : Over.mk t.left ⟶ A₀) :
@@ -144,7 +142,7 @@ private theorem subJ_iff (hP : IsGrpPullback A₀ A Y.hom φ₀) (inc : G ⟶ A)
     rw [Category.assoc, subJ_fst, ← ha, ← Category.assoc, ← Category.assoc, hs, lift_comp_pr2]
 
 /- English proof (translation)
-The claim follows from `subJ_iff hP inc U (Over.mk (K.hom ≫ Y.hom)) (Over.homMk K.hom) g`.
+A detailed English derivation is pending.
 -/
 private theorem fac_iff (hP : IsGrpPullback A₀ A Y.hom φ₀) (inc : G ⟶ A)
     (U : (Y ⊗ G).left.Opens) (K : Over Y.left) (g : K ⟶ A₀) :
@@ -154,7 +152,7 @@ private theorem fac_iff (hP : IsGrpPullback A₀ A Y.hom φ₀) (inc : G ⟶ A)
   subJ_iff hP inc U (Over.mk (K.hom ≫ Y.hom)) (Over.homMk K.hom) g
 
 /- English proof (translation)
-Use `(fac_iff hP inc U K 1).2 ⟨1, ?_, (hc _ _).1⟩` and prove the remaining obligations. Establish `e` using `SubRep.pull_one hP (Over.mk (K.hom ≫ Y.hom)) K.hom rfl`. Use `Eq.trans ?_ e.symm` and prove the remaining obligations. Use `show ((1 : Over.mk (K.hom ≫ Y.hom) ⟶ G) ≫ inc).left = _`. Rewrite using `[one_comp]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fac_one (hP : IsGrpPullback A₀ A Y.hom φ₀) (inc : G ⟶ A) [IsMonHom inc]
     (U : (Y ⊗ G).left.Opens)
@@ -169,9 +167,9 @@ private theorem fac_one (hP : IsGrpPullback A₀ A Y.hom φ₀) (inc : G ⟶ A) 
   rw [one_comp]
 
 /- English proof (translation)
-Take `⟨a, ea, ra⟩` from `(fac_iff hP inc U K g).1 h`. Take `⟨b, eb, rb⟩` from `(fac_iff hP inc U K g').1 h'`. Use `(fac_iff hP inc U K _).2 ⟨a * b⁻¹, ?_, (hc _ _).2 a b ra rb⟩` and prove the remaining obligations. Establish `i2` using `SubRep.pull_inv hP (Over.mk (K.hom ≫ Y.hom)) K.hom rfl (g := g') (a := b ≫ inc) eb.symm`. Establish `m` using `SubRep.pull_mul hP (Over.mk (K.hom ≫ Y.hom)) K.hom rfl (g := g) (a := a ≫ inc) (a' := (b ≫ inc)⁻¹) ea.symm i2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Eq.trans ?_ m.symm` and prove the remaining obligations. Use `show ((a * b⁻¹) ≫ inc).left = _`. Establish `hi : b⁻¹ ≫ inc = (b ≫ inc)⁻¹` using `eq_inv_of_mul_eq_one_left (by rw [← mul_comp, inv_mul_cancel, one_comp])`. Rewrite using `[mul_comp, hi]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fac_sub (hP : IsGrpPullback A₀ A Y.hom φ₀) (inc : G ⟶ A) [IsMonHom inc]
     (U : (Y ⊗ G).left.Opens)
@@ -194,7 +192,7 @@ private theorem fac_sub (hP : IsGrpPullback A₀ A Y.hom φ₀) (inc : G ⟶ A) 
   rw [mul_comp, hi]
 
 /- English proof (translation)
-Use `fac_sub hP inc U hc K 1 g (fac_one hP inc U hc K) h` as an intermediate fact. Rewrite `this` using `[_root_.one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem fac_inv (hP : IsGrpPullback A₀ A Y.hom φ₀) (inc : G ⟶ A) [IsMonHom inc]
     (U : (Y ⊗ G).left.Opens)
@@ -207,7 +205,7 @@ private theorem fac_inv (hP : IsGrpPullback A₀ A Y.hom φ₀) (inc : G ⟶ A) 
   rwa [_root_.one_mul] at this
 
 /- English proof (translation)
-Use `fac_sub hP inc U hc K g g'⁻¹ h (fac_inv hP inc U hc K g' h')` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem fac_mul (hP : IsGrpPullback A₀ A Y.hom φ₀) (inc : G ⟶ A) [IsMonHom inc]
     (U : (Y ⊗ G).left.Opens)
@@ -224,11 +222,11 @@ end UpperTheory.ProductProjectionSubgroup
 
 open UpperTheory.ProductProjectionSubgroup in
 /- English proof (translation)
-Introduce `S Y A G _ _ inc _ _ U hm hmon hU hc A₀ _ φ₀ hP`. Establish `hmL : Mono inc.left` using `Over.mono_left_of_mono inc`. Establish `hmj` using `subJ_mono hP inc U`. Establish `hcl : IsClosedImmersion U.ι` using `.of_isPreimmersion _ (by simpa using hU)`. Establish `hf1 : IsFinite (pr1 Y G)` using `inferInstanceAs (IsFinite (pullback.fst Y.hom G.hom))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he1 : Etale (pr1 Y G)` using `inferInstanceAs (Etale (pullback.fst Y.hom G.hom))`. Establish `hf : IsFinite (subH U).hom` using `inferInstanceAs (IsFinite (U.ι ≫ pr1 Y G))`. Establish `he : Etale (subH U).hom` using `inferInstanceAs (Etale (U.ι ≫ pr1 Y G))`. Take `⟨m, hm'⟩` from `fac_mul hP inc U hc (subH U ⊗ subH U) (fst _ _ ≫ subJ hP inc U) (snd _ _ ≫ subJ hP inc U) ⟨_, rfl⟩ ⟨_, rfl⟩`. Take `⟨e, he'⟩` from `fac_one hP inc U hc (𝟙_ (Over Y.left))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv⟩` from `fac_inv hP inc U hc (subH U) (subJ hP inc U) ⟨𝟙 _, Category.id_comp _⟩`. Take `⟨gH, hj⟩` from `GlobalTheory.T.exists_grpObj_isMonHom_of_mono_factor Y.left A₀ (subH U) (subJ hP inc U) hmj ⟨m, by rw [hm', Hom.mul_def, lift_fst_comp_snd_comp]⟩ ⟨e, by rw [he', Hom.one_def, toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]⟩ ⟨v, by rw [hv, Hom.inv_def]⟩`. Conclude with `⟨subH U, gH, subJ hP inc U, hj, hmj, hf, he, subJ_iff hP inc U⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.exists_lift_of_closed_subgroup_locus :
     ∀ {S : Scheme.{0}} (Y A G : Over S) [GrpObj A] [GrpObj G] (inc : G ⟶ A) [IsFinite G.hom] [Etale G.hom] (U : (Y ⊗ G).left.Opens), Mono inc → IsMonHom inc → IsClosed (U : Set (Y ⊗ G).left) → (∀ (T' : Over S) (t : T' ⟶ Y), Set.range (lift t (1 : T' ⟶ G)).left ⊆ U ∧ ∀ a b : T' ⟶ G, Set.range (lift t a).left ⊆ U → Set.range (lift t b).left ⊆ U → Set.range (lift t (a * b⁻¹)).left ⊆ U) → ∀ (A₀ : Over Y.left) [GrpObj A₀] (φ₀ : A₀.left ⟶ A.left), IsGrpPullback A₀ A Y.hom φ₀ → ∃ (H : Over Y.left) (_ : GrpObj H) (j : H ⟶ A₀), IsMonHom j ∧ Mono j ∧ IsFinite H.hom ∧ Etale H.hom ∧ ∀ (T' : Over S) (t : T' ⟶ Y) (g : Over.mk t.left ⟶ A₀), (∃ h : Over.mk t.left ⟶ H, h ≫ j = g) ↔ ∃ a : T' ⟶ G, a.left ≫ inc.left = g.left ≫ φ₀ ∧ Set.range (lift t a).left ⊆ U := by

@@ -9,7 +9,7 @@ section
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `h1` using `latOf_le_iff.mp h.le`. Establish `h2` using `latOf_le_iff.mp h.ge`. Simplify using `only [inv_one, one_mul, mul_one] at h1 h2`. Conclude with `mem_KO.mpr ⟨h1, h2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_KO_of_latOf_eq {Y : Type} [Fintype Y] [DecidableEq Y] {g : GL Y k} (h : latOf g = latOf 1) :
     g ∈ KO k Y := by
@@ -21,7 +21,7 @@ theorem mem_KO_of_latOf_eq {Y : Type} [Fintype Y] [DecidableEq Y] {g : GL Y k} (
 variable {r s s' : Type} [Fintype r] [DecidableEq r]
 
 /- English proof (translation)
-Take `⟨⟨g, hg, e⟩, h21, h12, h22⟩` from `(parPhi_ne_zero_iff δ).mp hx`. Rewrite using `[← Matrix.fromBlocks_toBlocks x, intM_fromBlocks]`. Use `⟨?_, h12, h21.intM, h22⟩` and prove the remaining obligations. Rewrite using `[← e]`. Conclude with `intM_of_mem_KO hg`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intM_of_parPhi_ne_zero (δ : kˣ →* ℂˣ) {x : Matrix (r ⊕ s) (r ⊕ s') k} (hx : parPhi δ x ≠ 0) : IntM x := by
   obtain ⟨⟨g, hg, e⟩, h21, h12, h22⟩ := (parPhi_ne_zero_iff δ).mp hx
@@ -31,13 +31,13 @@ theorem intM_of_parPhi_ne_zero (δ : kˣ →* ℂˣ) {x : Matrix (r ⊕ s) (r �
   exact intM_of_mem_KO hg
 
 /- English proof (translation)
-Take `⟨⟨g, hg, e⟩, h21, h12, h22⟩` from `(parPhi_ne_zero_iff δ).mp hx`. Establish `hyb : MaxM (Matrix.fromBlocks y.toBlocks₁₁ y.toBlocks₁₂ y.toBlocks₂₁ y.toBlocks₂₂)`. Rewrite using `[Matrix.fromBlocks_toBlocks]` and apply the resulting hypothesis. Take `⟨hy11, hy12, hy21, hy22⟩` from `maxM_fromBlocks.mp hyb`. Establish `a11 : (x + y).toBlocks₁₁ = x.toBlocks₁₁ + y.toBlocks₁₁` using `Matrix.ext fun _ _ => rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `a12 : (x + y).toBlocks₁₂ = x.toBlocks₁₂ + y.toBlocks₁₂` using `Matrix.ext fun _ _ => rfl`. Establish `a21 : (x + y).toBlocks₂₁ = x.toBlocks₂₁ + y.toBlocks₂₁` using `Matrix.ext fun _ _ => rfl`. Establish `a22 : (x + y).toBlocks₂₂ = x.toBlocks₂₂ + y.toBlocks₂₂` using `Matrix.ext fun _ _ => rfl`. Establish `hM : MaxM ((x + y).toBlocks₁₁ - g.val)`. Rewrite using `[a11, ← e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hy11`. Take `⟨u, hu, hgu⟩` from `exists_mul_KOne hg hM`. Establish `k21 : MaxM (x + y).toBlocks₂₁` using `by rw [a21]; exact h21.add hy21`. Establish `k12 : IntM (x + y).toBlocks₁₂` using `by rw [a12]; exact h12.add hy12.intM`. Establish `k22 : IntM (x + y).toBlocks₂₂` using `by rw [a22]; exact h22.add hy22.intM`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[parPhi_of_mem δ (mul_mem hg (KOne_le_KO hu)) hgu k21 k12 k22, parPhi_of_mem δ hg e h21 h12 h22]`. Simplify using `only [map_mul, tame_det_of_mem_KOne hδ hu, mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem parPhi_add_eq_of_maxM {δ : kˣ →* ℂˣ} (hδ : IsTame δ) {x y : Matrix (r ⊕ s) (r ⊕ s') k}
     (hy : MaxM y) (hx : parPhi δ x ≠ 0) : parPhi δ (x + y) = parPhi δ x := by
@@ -63,9 +63,9 @@ private theorem parPhi_add_eq_of_maxM {δ : kˣ →* ℂˣ} (hδ : IsTame δ) {x
 open Classical in
 
 /- English proof (translation)
-Distinguish the cases in `hx : parPhi δ x = 0`. Assume the negation of the conclusion as `hne`. Establish `hxy : parPhi δ (x + y) ≠ 0` using `fun h0 => hne (h0.trans hx.symm)`. Establish `back` using `parPhi_add_eq_of_maxM hδ hy.neg hxy`. Rewrite `back` using `[add_neg_cancel_right]`.
+Consider separately whether the proposition holds or fails. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hxy (back.symm.trans hx)`. Conclude with `parPhi_add_eq_of_maxM hδ hy hx`.
+A detailed English derivation is pending.
 -/
 theorem parPhi_add {δ : kˣ →* ℂˣ} (hδ : IsTame δ) (x : Matrix (r ⊕ s) (r ⊕ s') k) {y : Matrix (r ⊕ s) (r ⊕ s') k}
     (hy : MaxM y) : parPhi δ (x + y) = parPhi δ x := by
@@ -81,9 +81,9 @@ variable {ι ι' Y Y' : Type} [Fintype ι] [DecidableEq ι] [Fintype ι'] [Decid
   [Fintype Y'] [DecidableEq Y']
 
 /- English proof (translation)
-Establish `hM : IntM ((F.bas⁻¹).val * x * F'.bas.val)` using `fun a b => by`. Use `h (F.ord.symm a) (F'.ord.symm b)` as an intermediate fact. Simplify using `only [LatFrame.coords, Matrix.submatrix_apply, Equiv.apply_symm_apply] at this`. Conclude with `this`. Establish `hx : F.bas.val * ((F.bas⁻¹).val * x * F'.bas.val) * (F'.bas⁻¹).val = x`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Rewrite using `[← hx]`. Conclude with `((intM_of_mem_KO hF).mul hM).mul (mem_KO.mp hF').2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intM_of_coords {F : LatFrame k ι Y} {F' : LatFrame k ι' Y'} (hF : F.bas ∈ KO k Y) (hF' : F'.bas ∈ KO k Y')
     {x : Matrix Y Y' k} (h : IntM (F.coords F' x)) : IntM x := by
@@ -98,7 +98,7 @@ theorem intM_of_coords {F : LatFrame k ι Y} {F' : LatFrame k ι' Y'} (hF : F.ba
   exact ((intM_of_mem_KO hF).mul hM).mul (mem_KO.mp hF').2
 
 /- English proof (translation)
-Establish `hM : MaxM ((F.bas⁻¹).val * y * F'.bas.val)` using `((mem_KO.mp hF).2.mul_maxM h).mul_intM (intM_of_mem_KO hF')`. Use `show MaxM (((F.bas⁻¹).val * y * F'.bas.val).submatrix F.ord F'.ord)`. Conclude with `fun i j => hM (F.ord i) (F'.ord j)`.
+Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem maxM_coords {F : LatFrame k ι Y} {F' : LatFrame k ι' Y'} (hF : F.bas ∈ KO k Y) (hF' : F'.bas ∈ KO k Y')
     {y : Matrix Y Y' k} (h : MaxM y) : MaxM (F.coords F' y) := by
@@ -108,7 +108,7 @@ theorem maxM_coords {F : LatFrame k ι Y} {F' : LatFrame k ι' Y'} (hF : F.bas �
   exact fun i j => hM (F.ord i) (F'.ord j)
 
 /- English proof (translation)
-Unfold `LatFrame.coords`. Rewrite using `[Matrix.mul_add, Matrix.add_mul]`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem coords_add (F : LatFrame k ι Y) (F' : LatFrame k ι' Y') (x y : Matrix Y Y' k) :
     F.coords F' (x + y) = F.coords F' x + F.coords F' y := by
@@ -118,7 +118,7 @@ theorem coords_add (F : LatFrame k ι Y) (F' : LatFrame k ι' Y') (x y : Matrix 
   simp
 
 /- English proof (translation)
-Introduce `a ha`. Establish `hc` using `mem_stabLat.mp ha`. Establish `e : a = g * (g⁻¹ * a * g) * g⁻¹` using `by group`. Rewrite using `[e]`. Conclude with `mul_mem (mul_mem hg hc) (inv_mem hg)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stabLat_le_KO {g : GL Y k} (hg : g ∈ KO k Y) : stabLat g ≤ KO k Y := by
   intro a ha
@@ -128,7 +128,7 @@ theorem stabLat_le_KO {g : GL Y k} (hg : g ∈ KO k Y) : stabLat g ≤ KO k Y :=
   exact mul_mem (mul_mem hg hc) (inv_mem hg)
 
 /- English proof (translation)
-Use `show parPhi δ (F.coords F' (x + y)) = parPhi δ (F.coords F' x)`. Rewrite using `[coords_add]`. Conclude with `parPhi_add hδ _ (maxM_coords hF hF' hy)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem transport_parPhi_add_eq_of_maxM [Fintype s] [DecidableEq s] [Fintype s'] [DecidableEq s'] {δ : kˣ →* ℂˣ}
     (hδ : IsTame δ) {F : LatFrame k (r ⊕ s) Y} {F' : LatFrame k (r ⊕ s') Y'} (hF : F.bas ∈ KO k Y)
@@ -141,9 +141,7 @@ private theorem transport_parPhi_add_eq_of_maxM [Fintype s] [DecidableEq s] [Fin
 end
 
 /- English proof (translation)
-Introduce `k _ _ _ _ s r t Z _ _ _ _ _ _ X _ _ δ hδ μ₀ F Ftop hF`. Establish `hK : ∀ j c h, (F j c h).bas ∈ KO k (X j ⊕ Fin c)` using `fun j c h => mem_KO_of_latOf_eq (hF j c h)`. Use `⟨fun j c h x hx => ?_, fun j c h x y hy => ?_, fun j c h => ?_⟩` and prove the remaining obligations. Conclude with `intM_of_coords (hK (j + 1) c (by omega)) (hK j (c + 1) (by omega)) (intM_of_parPhi_ne_zero δ hx)`. Conclude with `transport_parPhi_add_eq_of_maxM hδ (hK (j + 1) c (by omega)) (hK j (c + 1) (by omega)) x hy`.
-
-Conclude with `((TypeDatum.map_conj (parahoric r (Fin j × t) δ hδ) (F j c h)).2.2).trans (stabLat_le_KO (hK j c h))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ofTwist_support_periodic_levels : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (s : ℕ) (r t Z : Type) [Fintype r] [DecidableEq r] [Fintype t] [DecidableEq t] [Fintype Z] [DecidableEq Z] (X : ℕ → Type) [∀ j, Fintype (X j)] [∀ j, DecidableEq (X j)] (δ : kˣ →* ℂˣ) (hδ : IsTame δ) (μ₀ : ℕ → kˣ →* ℂˣ) (F : ∀ j c, j + c = s + 1 → LatFrame k (Ix r t j) (X j ⊕ Fin c)) (Ftop : LatFrame k (Ix r t (s + 2)) Z), (∀ j c h, latOf (F j c h).bas = latOf 1) → (∀ j c h x, (Chain.ofTwist δ hδ μ₀ F Ftop).Phi j c h x ≠ 0 → IntM x) ∧ (∀ j c h x y, MaxM y → (Chain.ofTwist δ hδ μ₀ F Ftop).Phi j c h (x + y) = (Chain.ofTwist δ hδ μ₀ F Ftop).Phi j c h x) ∧ ∀ j c h, ((Chain.ofTwist δ hδ μ₀ F Ftop).lev j c h).J ≤ KO k (X j ⊕ Fin c) := by
   intro k _ _ _ _ s r t Z _ _ _ _ _ _ X _ _ δ hδ μ₀ F Ftop hF

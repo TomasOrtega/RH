@@ -19,7 +19,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open scoped Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.GaussLine.pairInf_nondeg` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FTracePairingArchimedeanVarsNondegenerateRight.lean&line=22#L22)
 -/

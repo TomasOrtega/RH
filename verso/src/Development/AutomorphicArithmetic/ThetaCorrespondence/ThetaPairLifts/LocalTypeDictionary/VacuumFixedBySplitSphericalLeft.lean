@@ -10,17 +10,15 @@ open scoped TensorProduct Matrix GlobalTheory.VacAny
 noncomputable section
 namespace GlobalTheory.SplitSphLeft
 /- English proof (translation)
-Introduce `hPr F E _ _ _ _ _ σ B a a' G X om om' hTr`. Establish `hfin1 : {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F | ¬ G.M.vac v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1}.Finite` using `hTr.geo.hM.std`. Establish `hfin2 : {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F | differentIdeal ℤ (𝓞 F) ≤ v.asIdeal}.Finite`. Establish `h0 : differentIdeal ℤ (𝓞 F) ≠ ⊥` using `differentIdeal_ne_bot`. Use `(Ideal.finite_factors h0).subset ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `v hv`. Conclude with `Ideal.dvd_iff_le.2 hv`. Establish `hfin3 : {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F | (2 : 𝓞 F) ∈ v.asIdeal}.Finite`. Establish `h0 : Ideal.span {(2 : 𝓞 F)} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `two_ne_zero`. Use `(Ideal.finite_factors h0).subset ?_` and prove the remaining obligations. Introduce `v hv`. Conclude with `Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 hv)`. Use `⟨X.T ∪ hfin1.toFinset ∪ hfin2.toFinset ∪ hfin3.toFinset, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Introduce `v hv _ k hk`. Simplify using `only [Finset.mem_union, Set.Finite.mem_toFinset, Set.mem_setOf_eq, not_or, not_not] at hv`. Take `⟨⟨⟨hvT, hstd⟩, hdiff⟩, h2⟩` from `hv`. Break down `GlobalTheory.LFun.InertChart.isSplit_or_isInertAt (GlobalTheory.SplitSphLeft.isUnram_of_unramified' hTr.base.unram v) with hs | ⟨w, hw⟩` into its components or cases. Establish `hψ` using `GlobalTheory.StdCharUnrF.psiUnr_of_not_le F B.ψ hTr.base.std v hdiff`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hSB, -, θ, hθ, hvac⟩` from `hTr.geo.hM.vac v`. Take `⟨φ₁, hφ₁, hact⟩` from `GlobalTheory.T.weilRepresentationLocality_unitaryGroupV_pairVW F E σ B a a' G X om om' hTr v k hk.1 _ hSB`. Establish `h1` using `GlobalTheory.VacTransportLeft.transport_left F E σ B a a' G X om om' hTr v k hk θ hθ _ hSB φ₁ hφ₁ hvac hact`. Take `⟨c, rfl⟩` from `vac_unique_split_left F E σ B a a' G X om om' hTr v hs hψ θ hθ hvac φ₁ hφ₁ h1`. Establish `hc` using `_root_.GlobalTheory.T.split_vacuum_hecke_eigenvalue_eq_one hPr F E σ B a a' G X om om' hTr v hs hvT hψ h2 hstd k hk c hact`.
-
-Rewrite `hact` using `[hc, one_smul]`. Then use the resulting hypothesis. Conclude with `GlobalTheory.T.inert_place_both_stabilisers_fix_vacuum F E σ B a a' G X om om' hTr v w hw hvT k hk 1 (GlobalTheory.InertSph.one_mem_KAt σ G.W v)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem vacuum_fixed_by_split_spherical_left : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)
@@ -73,7 +71,7 @@ open GlobalTheory.SquareComm
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.SplitSphLeft.vacuum_fixed_by_split_spherical_left | exact _root_.GlobalTheory.SplitSphLeft.vacuum_fixed_by_split_spherical_left | (intros; apply _root_.GlobalTheory.SplitSphLeft.vacuum_fixed_by_split_spherical_left <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.split_spherical_left_fixes_vacuum : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)

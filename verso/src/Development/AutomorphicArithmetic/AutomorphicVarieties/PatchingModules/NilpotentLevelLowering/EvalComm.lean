@@ -8,9 +8,9 @@ open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Set `S` to `Algebra.adjoin A (Set.range f)`. Use `letI : CommRing S := Algebra.adjoinCommRingOfComm A (by`. Introduce and unpack `_ ⟨i, rfl⟩ _ ⟨j, rfl⟩`. Conclude with `h i j)`. Use `⟨S.val.comp (MvPolynomial.aeval fun i => (⟨f i, Algebra.subset_adjoin ⟨i, rfl⟩⟩ : S)), fun i => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 private theorem eval_comm {A E σ : Type} [CommRing A] [Ring E] [Algebra A E] (f : σ → E)
     (h : ∀ i j, Commute (f i) (f j)) :
@@ -24,13 +24,11 @@ private theorem eval_comm {A E σ : Type} [CommRing A] [Ring E] [Algebra A E] (f
   simp
 
 /- English proof (translation)
-Introduce `L _ _ n q w l A M _ _ _ ρ x δ hq`. Take `⟨Θ1, h1⟩` from `thetaQ L n q w A M ρ (fun _ => ellC l _) hq`. Take `⟨Θw, hw⟩` from `thetaQ L n q w A M ρ (fun _ => ⊤) hq`. Establish `c1 : ∀ j j' t t', Commute (Θ1 j t : Module.End A (fixd ρ (UC n w fun _ => ellC l _))) (Θ1 j' t')` using `fun j j' t t' => (h1.2 j j' t t').units_val`. Establish `cw : ∀ j j' t t', Commute (Θw j t : Module.End A (fixd ρ (UC n w fun _ => ⊤))) (Θw j' t')` using `fun j j' t t' => (hw.2 j j' t t').units_val`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a1, ha1⟩` from `eval_comm (A := A) (E := Module.End A (fixd ρ (UC n w fun _ => ellC l _))) (Sum.elim (fun p : Fin q × Fin n => ((qj w p.1 : A) ^ (p.2 : ℕ)) • (Θ1 p.1 (Pi.mulSingle p.2 (x p.1)) : Module.End A _)) (fun p : Fin q × Fin n => (Θ1 p.1 (Pi.mulSingle p.2 (δ p.1)) : Module.End A _) - 1)) …`. Introduce and unpack `(p | p) (p' | p')`. Conclude with `((c1 _ _ _ _).smul_left _).smul_right _`. Conclude with `((c1 _ _ _ _).sub_right (Commute.one_right _)).smul_left _`. Conclude with `((c1 _ _ _ _).sub_left (Commute.one_left _)).smul_right _`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((c1 _ _ _ _).sub_left (Commute.one_left _)).sub_right (Commute.one_right _))`. Take `⟨aw, haw⟩` from `eval_comm (A := A) (E := Module.End A (fixd ρ (UC n w fun _ => ⊤))) (fun p : Fin q × Fin n => ((qj w p.1 : A) ^ (p.2 : ℕ)) • (Θw p.1 (Pi.mulSingle p.2 (x p.1)) : Module.End A _)) (fun p p' => ((cw _ _ _ _).smul_left _).smul_right _)`. Conclude with `⟨{ Θ1 := Θ1, h1 := h1, Θw := Θw, hw := hw, act1 := a1 act_uVariable_eq_pow := fun j i => ha1 (.inl (j, i)) act_yVariable := fun j i => by`. Rewrite using `[map_add, map_one, ha1]`. Conclude with `add_sub_cancel _ _`.
-
-Use `actw := aw`. Use `actw_u := fun j i => haw (j, i) }⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Lev.thEx :
     ∀ (L : Type) [Field L] [NumberField L] (n q : ℕ) (w : Fin q → Plc L) (l : ℕ) (A M : Type) [CommRing A] [AddCommGroup M] [Module A M] (ρ : Representation A (GV n w) M) (x δ : ∀ j, ((w j).adicCompletion L)ˣ), (∀ j, IsUnit (qj w j : A)) → Nonempty (ThData l ρ x δ) := by

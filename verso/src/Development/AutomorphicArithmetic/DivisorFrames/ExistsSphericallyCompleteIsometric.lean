@@ -8,9 +8,9 @@ open GlobalTheory.VertCmp
 open scoped Classical
 
 /- English proof (translation)
-Establish `hQ : Cardinal.mk ℚ_[p] ≤ Cardinal.continuum`. Establish `hd : DenseRange ((↑) : ℚ → ℚ_[p])` using `Padic.denseRange_ratCast p`. Use `(GlobalTheory.SmallClosedField.mk_le_of_denseRange _ hd).trans ?_` and prove the remaining obligations. Use `(Cardinal.power_le_power_right (Cardinal.mk_le_aleph0.trans Cardinal.aleph0_le_continuum)).trans Cardinal.continuum_power_aleph0.le` and prove the remaining obligations. Establish `hA : Cardinal.mk (PadicAlgCl p) ≤ Cardinal.continuum` using `(Algebra.IsAlgebraic.cardinalMk_le_max ℚ_[p] (PadicAlgCl p)).trans (max_le hQ Cardinal.aleph0_le_continuum)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hd : DenseRange ((↑) : PadicAlgCl p → ℂ_[p])` using `UniformSpace.Completion.denseRange_coe`. Use `(GlobalTheory.SmallClosedField.mk_le_of_denseRange _ hd).trans ?_` and prove the remaining obligations. Conclude with `(Cardinal.power_le_power_right hA).trans Cardinal.continuum_power_aleph0.le`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem mk_padicComplex_le (p : ℕ) [Fact p.Prime] : Cardinal.mk ℂ_[p] ≤ Cardinal.continuum := by
   have hQ : Cardinal.mk ℚ_[p] ≤ Cardinal.continuum := by
@@ -25,7 +25,7 @@ private theorem mk_padicComplex_le (p : ℕ) [Fact p.Prime] : Cardinal.mk ℂ_[p
   exact (Cardinal.power_le_power_right hA).trans Cardinal.continuum_power_aleph0.le
 
 /- English proof (translation)
-Introduce `p _`. Establish `hnp : ‖(p : ℂ_[p])‖ = (p : ℝ)⁻¹`. Rewrite using `[← map_natCast (algebraMap ℚ_[p] ℂ_[p]) p, norm_algebraMap', Padic.norm_p]`. Take `⟨D, e, he, hs⟩` from `GlobalTheory.LocM.Cht.CompletedClosure.exists_scf_equiv hnp (mk_padicComplex_le p)`. Conclude with `⟨D, RingEquiv.ofBijective e ⟨e.injective, hs⟩, he⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.exists_spherically_complete_isometric :
     ∀ (p : ℕ) [Fact p.Prime], ∃ (C : Formalism.MainNotions.DIV.Cons.SCF p) (j : ℂ_[p] ≃+* ↥C.S), ∀ a, ‖j a‖ = ‖a‖ := by

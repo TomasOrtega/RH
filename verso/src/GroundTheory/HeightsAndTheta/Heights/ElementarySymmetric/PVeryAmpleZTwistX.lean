@@ -8,7 +8,7 @@ namespace GroundTheory.Heights₂.Heights.Kleiman
 universe u v w
 
 /- English proof (translation)
-The claim follows from `VeryAmpleZTwist.proof VeryAmpleZFamily.proof`.
+A detailed English derivation is pending.
 -/
 theorem VeryAmpleZTwist.proof_closed : VeryAmpleZTwist.Statement.{u, v, w} :=
   VeryAmpleZTwist.proof VeryAmpleZFamily.proof

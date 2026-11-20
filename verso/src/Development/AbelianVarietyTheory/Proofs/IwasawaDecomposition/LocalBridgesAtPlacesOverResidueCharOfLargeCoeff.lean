@@ -13,9 +13,9 @@ set_option maxHeartbeats 1000000
 set_option synthInstance.maxHeartbeats 400000
 
 /- English proof (translation)
-Proceed by induction on `S, hS using Set.Finite.induction_on with`. Consider the case `empty => exact ⟨⟨⊥, inferInstance⟩, fun i hi => absurd hi (Set.notMem_empty i)⟩`. Consider the case `@insert a s _ _ ih`. Take `⟨F, hF⟩` from `ih`. Establish `h1` using `F.2`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `(L a).2`. Use `⟨⟨(L a).1 ⊔ F.1, IntermediateField.finiteDimensional_sup _ _⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `i (rfl | hi)`. Conclude with `le_sup_left`. Conclude with `(hF i hi).trans le_sup_right`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_finExt_ge {l : ℕ} [Fact l.Prime] {ι : Type} (S : Set ι) (hS : S.Finite) (L : ι → Loc.FinExt l) :
     ∃ F : Loc.FinExt l, ∀ i ∈ S, (L i).1 ≤ F.1 := by
@@ -31,7 +31,7 @@ theorem exists_finExt_ge {l : ℕ} [Fact l.Prime] {ι : Type} (S : Set ι) (hS :
     · exact (hF i hi).trans le_sup_right
 
 /- English proof (translation)
-Establish `h0 : Ideal.span {(l : 𝓞 E)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hl.ne_zero` after adjusting the coercions. Use `(Ideal.finite_factors h0).subset fun v hv => ?_` and prove the remaining obligations. Conclude with `Ideal.dvd_span_singleton.2 hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem placesOver_finite (E : Type) [Field E] [NumberField E] {l : ℕ} (hl : l.Prime) :
     (placesOver E l).Finite := by
@@ -42,11 +42,11 @@ theorem placesOver_finite (E : Type) [Field E] [NumberField E] {l : ℕ} (hl : l
   exact Ideal.dvd_span_singleton.2 hv
 
 /- English proof (translation)
-Distinguish the cases in `hu : u ∈ placesOver H.E l`. Take `⟨j, L0, hj, hB⟩` from `GlobalTheory.PlaceBridge.exists_locBridge l H.E Ω u A hu hA`. Set `L1 : Loc.FinExt l` to `UpperTheory.KStar.Cyc.rootsExt l _ (UpperTheory.KStar.Cyc.lcm_ne_zero (l := l) H.toHostRaw)`. Establish `f0` using `L0.2`. Establish `f1` using `L1.2`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨⟨L0.1 ⊔ L1.1, IntermediateField.finiteDimensional_sup _ _⟩, fun _ LL hLL => ?_⟩` and prove the remaining obligations. Take `⟨Bw, e1, e2, e3, e4⟩` from `hB LL (le_sup_left.trans hLL)`. Use `⟨Bw, by rw [e1]; exact hj, ?_, e4⟩` and prove the remaining obligations. Rewrite using `[e2]`. Conclude with `UpperTheory.KStar.Cyc.mem_of_rootsExt_le _ (le_sup_right.trans hLL)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨⟨⊥, inferInstance⟩, fun h => absurd h hu⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_bridge_good {R : Ranks} (H : Host R) (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra H.E Ω]
     [IsAlgClosure H.E Ω] (u : HeightOneSpectrum (𝓞 H.E)) (A : ValuationSubring Ω) (hA : IsPlaceOver A u) :
@@ -67,9 +67,9 @@ theorem exists_bridge_good {R : Ranks} (H : Host R) (l : ℕ) [Fact l.Prime] (Ω
   · exact ⟨⟨⊥, inferInstance⟩, fun h => absurd h hu⟩
 
 /- English proof (translation)
-Introduce `D w`. Use `choose L hL using fun u : PlE D.host => exists_bridge_good D.host (D.what₂.places.resChar w) D.nd.Om u (D.nd.plOm.1 u) (D.nd.plOm.2 u)`. Take `⟨F, hF⟩` from `exists_finExt_ge _ (placesOver_finite D.host.E (D.what₂.places.resChar_prime w)) L`. Use `⟨F, fun X j hX u hu => ?_⟩` and prove the remaining obligations. Take `⟨Bw, h1, h2, h3⟩` from `hL u hu (X.Kx j w) ((hF u hu).trans hX)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨Bw, h1, h2, fun z => (iqC_alg X j w z).trans (h3 z).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem brAt_of_large : ∀ (D : D7) (w : D.what₂.places.Pl), ∃ F0 : Loc.FinExt (D.what₂.places.resChar w),
     ∀ (X : CoefIn D.what₂) (j : ℕ), F0.1 ≤ (X.Kx j w).1 → BrAt X j w := by

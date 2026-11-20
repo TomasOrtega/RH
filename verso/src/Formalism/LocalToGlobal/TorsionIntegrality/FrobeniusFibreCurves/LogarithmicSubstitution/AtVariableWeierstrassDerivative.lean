@@ -16,7 +16,7 @@ open PowerSeries
 variable {K : Type} [Field K] [CharZero K]
 
 /- English proof (translation)
-Unfold `wOf`. Rewrite using `[mul_assoc, PowerSeries.inv_mul_cancel _ (by simp), mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem wOf_mul (e1 : K) (P : PowerSeries K) :
     wOf e1 P * (1 + X ^ 2 * P - C e1 * X ^ 2) = X ^ 2 := by
@@ -24,9 +24,9 @@ theorem wOf_mul (e1 : K) (P : PowerSeries K) :
   rw [mul_assoc, PowerSeries.inv_mul_cancel _ (by simp), mul_one]
 
 /- English proof (translation)
-Establish `h1` using `wOf_mul e1 P`. Establish `e2 : dz ((X : PowerSeries K) ^ 2) = 2 * X`. Use `dz_X_pow (K := K) 1` as an intermediate fact. Move the coercions through the operations in `at this`. Take the linear combination `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hd` using `congrArg dz h1`. Simplify using `only [dz_sub, dz_add, dz_mul, dz_one, dz_C, e2] at hd`. Take the linear combination `(1 + X ^ 2 * P - C e1 * X ^ 2) * hd - (X ^ 2 * dz P + P * (2 * X) - C e1 * (2 * X)) * h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem dz_wOf (e1 : K) (P : PowerSeries K) :
     (1 + X ^ 2 * P - C e1 * X ^ 2) ^ 2 * dz (wOf e1 P) = -(X * (-2 + X ^ 3 * dz P)) := by
@@ -39,9 +39,9 @@ theorem dz_wOf (e1 : K) (P : PowerSeries K) :
     (X ^ 2 * dz P + P * (2 * X) - C e1 * (2 * X)) * h1
 
 /- English proof (translation)
-Establish `hs : HasSubst l` using `HasSubst.of_constantCoeff_zero' hl`. Use `congrArg (subst l) (wOf_mul e1 P)` as an intermediate fact. Rewrite `this` using `[← coe_substAlgHom hs]`. Simplify using `only [map_sub, map_mul, map_add, map_one, map_pow] at this`. Rewrite `this` using `[coe_substAlgHom hs, subst_X hs, subst_C]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem subst_wOf_mul (e1 : K) (P : PowerSeries K) {l : PowerSeries K}
     (hl : constantCoeff l = 0) :
@@ -54,9 +54,9 @@ theorem subst_wOf_mul (e1 : K) (P : PowerSeries K) {l : PowerSeries K}
   exact this
 
 /- English proof (translation)
-Establish `hs : HasSubst l` using `HasSubst.of_constantCoeff_zero' hl`. Use `congrArg (subst l) (dz_wOf e1 P)` as an intermediate fact. Rewrite `this` using `[← coe_substAlgHom hs]`. Simplify using `only [map_sub, map_mul, map_add, map_one, map_pow, map_neg, map_ofNat] at this`. Rewrite `this` using `[coe_substAlgHom hs, subst_X hs, subst_C]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem subst_dz_wOf (e1 : K) (P : PowerSeries K) {l : PowerSeries K}
     (hl : constantCoeff l = 0) :
@@ -70,7 +70,7 @@ theorem subst_dz_wOf (e1 : K) (P : PowerSeries K) {l : PowerSeries K}
   exact this
 
 /- English proof (translation)
-Apply `mul_right_cancel₀ (pow_ne_zero 2 hl0)` to reduce the goal to its premises. Unfold `gT`. Establish `hw'` using `subst_wOf_mul (xT + c0) P hl`. Rewrite `hw'` using `[map_add]`. Take the linear combination `X ^ 2 * hw' - subst l (wOf (xT + c0) P) * hcv`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem wl_mul_g {c0 xT : K} {P l ep : PowerSeries K} (hl : constantCoeff l = 0) (hl0 : l ≠ 0)
     (hcv : X ^ 2 * (1 + l ^ 2 * subst l P) = l ^ 2 * (ep + C c0 * X ^ 2)) :
@@ -82,14 +82,14 @@ theorem wl_mul_g {c0 xT : K} {P l ep : PowerSeries K} (hl : constantCoeff l = 0)
   linear_combination X ^ 2 * hw' - subst l (wOf (xT + c0) P) * hcv
 
 /- English proof (translation)
-Simplify using `[gT, hep]`.
+Simplify using the standard rewrite rules.
 -/
 theorem constantCoeff_gT {ep : PowerSeries K} (xT : K) (hep : constantCoeff ep = 1) :
     constantCoeff (gT ep xT) = 1 := by
   simp [gT, hep]
 
 /- English proof (translation)
-Unfold `thT`. Rewrite using `[mul_assoc, PowerSeries.inv_mul_cancel _ (by rw [constantCoeff_gT xT hep]; exact one_ne_zero), mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem thT_mul {ep : PowerSeries K} (xT yT : K) (hep : constantCoeff ep = 1) :
     thT ep xT yT * gT ep xT = ep + C yT * X ^ 3 := by
@@ -98,15 +98,15 @@ theorem thT_mul {ep : PowerSeries K} (xT yT : K) (hep : constantCoeff ep = 1) :
     mul_one]
 
 /- English proof (translation)
-Establish `hWg` using `wl_mul_g (xT := xT) hl hl0 hcv`. Establish `hth` using `thT_mul xT yT hep`. Establish `hZ` using `subst_dz_wOf (xT + c0) P hl`. Establish `hg0 : gT ep xT ≠ 0` using `ne_zero_of_constantCoeff (by rw [constantCoeff_gT xT hep]; exact one_ne_zero)`. Establish `hT' : 2 * (C yT : PowerSeries K) + C a1 * C xT + C a3 = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [← map_ofNat (C (R := K)), ← map_mul, ← map_add]`. Rewrite using `[hT, map_zero]`. Rewrite `hZ` using `[map_add]`. Generalize the expression as in `subst l (dz (wOf (xT + c0) P)) = W' at hZ ⊢`. Generalize the expression as in `subst l (wOf (xT + c0) P) = W at hWg ⊢`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `subst l (dz P) = B at hZ h3`. Generalize the expression as in `subst l P = A at hZ hcv`. Generalize the expression as in `thT ep xT yT = th at hth ⊢`. Establish `hXZ : X ^ 2 * (1 + l ^ 2 * A - (C xT + C c0) * l ^ 2) = l ^ 2 * gT ep xT`. Unfold `gT`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Take the linear combination `hcv`. Establish `hXZ2 : (X ^ 2 * (1 + l ^ 2 * A - (C xT + C c0) * l ^ 2)) ^ 2 = (l ^ 2 * gT ep xT) ^ 2`. Rewrite using `[hXZ]`. Establish `step1 : W' * gT ep xT ^ 2 = X * (2 * ep - C a1 * X * ep - C a3 * X ^ 3)`. Apply `mul_left_cancel₀ (mul_ne_zero (pow_ne_zero 4 hl0) (pow_ne_zero 3 (PowerSeries.X_ne_zero (R := K))))` to reduce the goal to its premises.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Take the linear combination `-X ^ 3 * W' * hXZ2 + X ^ 7 * hZ - X ^ 4 * l * h3`. Apply `mul_left_cancel₀ (pow_ne_zero 2 hg0)` to reduce the goal to its premises. Simplify using `only [gT] at hWg hth step1 ⊢`. Take the linear combination `X * step1 - (2 * th * (ep - C xT * X ^ 2) - C a1 * X * (ep - C xT * X ^ 2)) * hWg - 2 * X ^ 2 * hth - X ^ 5 * hT'`.
+Take a linear combination of the given relations to obtain the conclusion. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem wprime_core {c0 a1 a3 xT yT : K} {P l ep : PowerSeries K} (hl : constantCoeff l = 0)
     (hl0 : l ≠ 0) (hep : constantCoeff ep = 1)
@@ -145,7 +145,7 @@ theorem wprime_core {c0 a1 a3 xT yT : K} {P l ep : PowerSeries K} (hl : constant
 end One
 
 /- English proof (translation)
-Introduce `h`. Use `hL.2.2.2.1` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ne_zero_of_law {K : Type} [NormedField K] {F : MvPowerSeries (Fin 2) K}
     {l : PowerSeries K} (hL : LawLog F l) : l ≠ 0 := by
@@ -155,7 +155,7 @@ theorem ne_zero_of_law {K : Type} [NormedField K] {F : MvPowerSeries (Fin 2) K}
   simp at this
 
 /- English proof (translation)
-Introduce `K _ _ _ g2 g3 c0 a1 a3 xT yT P l i ep F _ hL hC hC3 hT`. Conclude with `wprime_core hL.2.2.1 (ne_zero_of_law hL) hC.2.1 hC.2.2.1 hC3.1 hT`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem weierstrass_derivative_unit_holds : WPrimeU := by
   intro K _ _ _ g2 g3 c0 a1 a3 xT yT P l i ep F _ hL hC hC3 hT
@@ -166,7 +166,7 @@ section Two
 variable {K : Type} [Field K] [CharZero K]
 
 /- English proof (translation)
-Establish `hs : PowerSeries.HasSubst U` using `PowerSeries.HasSubst.of_constantCoeff_zero hU`. Use `congrArg (PowerSeries.subst U) h` as an intermediate fact. Rewrite `this` using `[PowerSeries.subst_mul hs, PowerSeries.subst_pow hs, PowerSeries.subst_X hs]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem subst_wg {ι : Type} {U : MvPowerSeries ι K} (hU : MvPowerSeries.constantCoeff U = 0)
     {W g : PowerSeries K} (h : W * g = PowerSeries.X ^ 2) :
@@ -176,9 +176,9 @@ theorem subst_wg {ι : Type} {U : MvPowerSeries ι K} (hU : MvPowerSeries.consta
   rwa [PowerSeries.subst_mul hs, PowerSeries.subst_pow hs, PowerSeries.subst_X hs] at this
 
 /- English proof (translation)
-Establish `hs : PowerSeries.HasSubst (MvPowerSeries.X x : MvPowerSeries ι K)` using `PowerSeries.HasSubst.X x`. Use `congrArg (PowerSeries.subst (MvPowerSeries.X x : MvPowerSeries ι K)) h` as an intermediate fact. Rewrite `this` using `[← PowerSeries.coe_substAlgHom hs]`. Simplify using `only [map_sub, map_mul, map_ofNat] at this`. Rewrite `this` using `[PowerSeries.coe_substAlgHom hs, PowerSeries.subst_X hs, PowerSeries.subst_C]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem at_variable_weierstrass_derivative {ι : Type} (x : ι) {W W' th : PowerSeries K} {a1 : K}
     (h : PowerSeries.X * W' = W * (2 * th - PowerSeries.C a1 * PowerSeries.X)) :
@@ -192,7 +192,7 @@ theorem at_variable_weierstrass_derivative {ι : Type} (x : ι) {W W' th : Power
   exact this
 
 /- English proof (translation)
-Establish `h0 : MvPowerSeries.constantCoeff (at1 (0 : Fin 2) l) = 0` using `PowerSeries.constantCoeff_subst_eq_zero (by simp) l hl`. Establish `h1 : MvPowerSeries.constantCoeff (at1 (1 : Fin 2) l) = 0` using `PowerSeries.constantCoeff_subst_eq_zero (by simp) l hl`. Conclude with `Formalism.G.LogP.hs2 h0 h1`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hsL {l : PowerSeries K} (hl : PowerSeries.constantCoeff l = 0) :
     MvPowerSeries.HasSubst (![at1 (0 : Fin 2) l, at1 1 l] : Fin 2 → MvPowerSeries (Fin 2) K) := by
@@ -203,7 +203,7 @@ theorem hsL {l : PowerSeries K} (hl : PowerSeries.constantCoeff l = 0) :
   exact Formalism.G.LogP.hs2 h0 h1
 
 /- English proof (translation)
-Introduce `h`. Establish `h2` using `congrArg (MvPowerSeries.pderiv K j) h`. Rewrite `h2` using `[MvPowerSeries.pderiv_X_self, map_zero]`. Conclude with `one_ne_zero h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem X_ne {ι : Type} (j : ι) : (MvPowerSeries.X j : MvPowerSeries ι K) ≠ 0 := by
   intro h
@@ -212,7 +212,7 @@ theorem X_ne {ι : Type} (j : ι) : (MvPowerSeries.X j : MvPowerSeries ι K) ≠
   exact one_ne_zero h2
 
 /- English proof (translation)
-Introduce `h`. Use `congrArg MvPowerSeries.constantCoeff h` as an intermediate fact. Rewrite `this` using `[map_ofNat, map_zero]`. Conclude with `absurd this (by norm_num)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem four_ne {ι : Type} : (4 : MvPowerSeries ι K) ≠ 0 := by
   intro h
@@ -221,7 +221,7 @@ theorem four_ne {ι : Type} : (4 : MvPowerSeries ι K) ≠ 0 := by
   exact absurd this (by norm_num)
 
 /- English proof (translation)
-Rewrite using `[subst_at_variable_eq_subst f x (hsL hl), ParE.subst_inVar x f hl]`. Apply the tactic sequence `fin_cases x <;> rfl`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem subst_log_at_variable (f : PowerSeries K) (x : Fin 2) {l : PowerSeries K}
     (hl : PowerSeries.constantCoeff l = 0) :
@@ -231,7 +231,7 @@ theorem subst_log_at_variable (f : PowerSeries K) (x : Fin 2) {l : PowerSeries K
   fin_cases x <;> rfl
 
 /- English proof (translation)
-Rewrite using `[ParO.subst_atS f (hsL hl), PowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero' hl) (PowerSeries.HasSubst.of_constantCoeff_zero hF), hFl]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sub_atS (f : PowerSeries K) {l : PowerSeries K} {F : MvPowerSeries (Fin 2) K}
     (hl : PowerSeries.constantCoeff l = 0) (hF : MvPowerSeries.constantCoeff F = 0)
@@ -244,9 +244,9 @@ theorem sub_atS (f : PowerSeries K) {l : PowerSeries K} {F : MvPowerSeries (Fin 
   rfl
 
 /- English proof (translation)
-Establish `hb` using `hsL hl`. Establish `e` using `congrArg (MvPowerSeries.subst ![at1 (0 : Fin 2) l, at1 1 l]) h`. Rewrite `e` using `[← MvPowerSeries.coe_substAlgHom hb]`. Simplify using `only [map_sub, map_mul, map_one, map_pow, map_add, map_ofNat] at e`. Rewrite `e` using `[MvPowerSeries.coe_substAlgHom hb, MvPowerSeries.subst_C]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [subst_log_at_variable _ _ hl, sub_atS _ hl hF hFl] at e`. Conclude with `e`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem wadd_law {kap : K} {w l : PowerSeries K} {F : MvPowerSeries (Fin 2) K}
     (hl : PowerSeries.constantCoeff l = 0) (hF : MvPowerSeries.constantCoeff F = 0)
@@ -267,11 +267,11 @@ theorem wadd_law {kap : K} {w l : PowerSeries K} {F : MvPowerSeries (Fin 2) K}
   exact e
 
 /- English proof (translation)
-Establish `hWa : Wa ≠ 0`. Introduce and unpack `rfl`. Rewrite `Ga` using `[zero_mul]`. Conclude with `pow_ne_zero 2 ha Ga.symm`. Establish `hWb : Wb ≠ 0`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Rewrite `Gb` using `[zero_mul]`. Conclude with `pow_ne_zero 2 hb Gb.symm`. Establish `H : a * b * (Wa * Vb + Wb * Va) = 2 * Wa * Wb * (b * ta + a * tb - c * a * b)`. Take the linear combination `Wa * a * Hb + Wb * b * Ha`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `H2 : (a * b * (Wa * Vb + Wb * Va)) ^ 2 = (2 * Wa * Wb * (b * ta + a * tb - c * a * b)) ^ 2` using `by rw [H]`. Establish `h4 : (4 : R) * Wa ^ 2 * Wb ^ 2 ≠ 0` using `mul_ne_zero (mul_ne_zero h4' (pow_ne_zero 2 hWa)) (pow_ne_zero 2 hWb)`. Apply `mul_left_cancel₀ h4` to reduce the goal to its premises. Take the linear combination `-gF * H2 - gF * a ^ 2 * b ^ 2 * E1 + 4 * a ^ 2 * b ^ 2 * Wa * Wb * d ^ 2 * GF - 4 * Wa * Wb * Fv ^ 2 * d ^ 2 * (Wb * gb * Ga + a ^ 2 * Gb)`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem alg_core {R : Type} [CommRing R] [NoZeroDivisors R] (h4' : (4 : R) ≠ 0)
     {a b c Wa Wb Va Vb ta tb ga gb WF gF Fv d : R}
@@ -301,9 +301,9 @@ theorem alg_core {R : Type} [CommRing R] [NoZeroDivisors R] (h4' : (4 : R) ≠ 0
 end Two
 
 /- English proof (translation)
-Introduce `K _ _ _ g2 g3 c0 a1 a3 xT yT P l i ep F hWp hL hC hC3 hT he`. Establish `hl` using `hL.2.2.1`. Establish `hIW` using `wOfWp K g2 g3 (xT + c0) P hWp he`. Establish `E1` using `wadd_law hl hL.1 (ParO.log_law hL) (hW K _ _ _ hIW)`. Establish `hp` using `hP K g2 g3 c0 a1 a3 xT yT P l i ep F hWp hL hC hC3 hT`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg` using `wl_mul_g (xT := xT) hl (ne_zero_of_law hL) hC.2.2.1`. Unfold `LT`. Conclude with `alg_core four_ne E1 (at_variable_weierstrass_derivative 0 hp) (at_variable_weierstrass_derivative 1 hp) (subst_wg (MvPowerSeries.constantCoeff_X (0 : Fin 2)) hg) (subst_wg (MvPowerSeries.constantCoeff_X (1 : Fin 2)) hg) (subst_wg hL.1 hg) (X_ne 0) (X_ne 1)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem GCob_of (hW : WAdd) (hP : WPrimeU) : GCob := by
   intro K _ _ _ g2 g3 c0 a1 a3 xT yT P l i ep F hWp hL hC hC3 hT he
@@ -319,7 +319,7 @@ theorem GCob_of (hW : WAdd) (hP : WPrimeU) : GCob := by
     (X_ne 0) (X_ne 1)
 
 /- English proof (translation)
-The claim follows from `GCob_of hW weierstrass_derivative_unit_holds`.
+A detailed English derivation is pending.
 -/
 theorem GCob_of' (hW : WAdd) : GCob := GCob_of hW weierstrass_derivative_unit_holds
 

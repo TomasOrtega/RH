@@ -6,11 +6,9 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry GroundTheory.Arith.S
 namespace GlobalTheory.CompanionTheory.GE
 
 /- English proof (translation)
-Introduce `U a ha x`. Establish `hle : (Subobject.pullback D.arrow).obj (S (e + c)) ≤ GlobalTheory.CompanionTheory.GE.restrictSys I D S c e`. Unfold `GlobalTheory.CompanionTheory.GE.restrictSys`. Conclude with `le_sup_left`. Establish `hmem : a • x ∈ GlobalTheory.CompanionTheory.GE.secs ((Subobject.pullback D.arrow).obj (S (e + c))) U`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.T.subobject_pullback_sections, Set.mem_preimage, Scheme.Modules.Hom.app_smul]`. Conclude with `h (e + c) U a ha _ (by unfold GlobalTheory.CompanionTheory.GE.secs; exact Set.mem_range_self x)`. Unfold `GlobalTheory.CompanionTheory.GE.secs at hmem ⊢`. Take `⟨y, hy⟩` from `hmem`. Use `⟨ConcreteCategory.hom (Scheme.Modules.Hom.app (Subobject.ofLE _ _ hle) U) y, ?_⟩` and prove the remaining obligations.
-
-Apply the tactic sequence `rw [← hy, ← Subobject.ofLE_arrow hle, Scheme.Modules.Hom.comp_app] <;> rfl`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem killed_restrictSys {A : Type} [CommRing A] [IsNoetherianRing A] (I : Ideal A)
     {X : Scheme.{0}} [X.Over (Spec (.of A))] {E : X.Modules} (J : X.IdealSheafData)

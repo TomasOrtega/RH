@@ -1,23 +1,21 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `P inst T`. Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => intro c _ _ χ hχ`. Simplify using `at hχ`. Consider the case `insert ψ T hψ ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `c hT h`. Establish `hψm` using `hT ψ (Finset.mem_insert_self ψ T)`. Establish `hT' : ∀ χ ∈ T, χ ≠ (0 : P → ℂ) ∧ ∀ (p q : P), χ (p * q) = χ p * χ q` using `fun χ hχ => hT χ (Finset.mem_insert_of_mem hχ)`. Establish `key : ∀ q : P, ∀ χ ∈ T, c χ * (χ q - ψ q) = 0`. Introduce `q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `ih (fun χ => c χ * (χ q - ψ q)) hT' ?_` and prove the remaining obligations. Introduce `p`. Establish `h1` using `h (q * p)`. Establish `h2` using `h p`. Rewrite `h1`, `h2` using `[Finset.sum_insert hψ]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : ∑ χ ∈ T, c χ * (χ q - ψ q) * χ p = ∑ χ ∈ T, c χ * χ (q * p) - ψ q * ∑ χ ∈ T, c χ * χ p`. Rewrite using `[Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun χ hχ => ?_` and prove the remaining obligations. Rewrite using `[(hT' χ hχ).2]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `h1` using `[hψm.2]`. Rewrite using `[h3]`. Take the linear combination `h1 - ψ q * h2`. Establish `hc : ∀ χ ∈ T, c χ = 0`. Introduce `χ hχ`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hne`. Establish `: χ = ψ`. Use function extensionality and compare the values at `q`. Conclude with `sub_eq_zero.mp ((mul_eq_zero.mp (key q χ hχ)).resolve_left hne)`. Conclude with `hψ (this ▸ hχ)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hcψ : c ψ = 0`. Assume the negation of the conclusion as `hne`. Apply `hψm.1` to reduce the goal to its premises. Use function extensionality and compare the values at `p`. Establish `h2` using `h p`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h2` using `[Finset.sum_insert hψ, Finset.sum_eq_zero (fun χ hχ => by rw [hc χ hχ, zero_mul]), add_zero]`. Conclude with `(mul_eq_zero.mp h2).resolve_left hne`. Introduce `χ hχ`. Break down `Finset.mem_insert.mp hχ with rfl | hχ` into its components or cases. Conclude with `hcψ`.
-
-Conclude with `hc χ hχ`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qh30.artin :
     ∀ {P : Type} [inst : Mul P] (T : Finset (P → ℂ))

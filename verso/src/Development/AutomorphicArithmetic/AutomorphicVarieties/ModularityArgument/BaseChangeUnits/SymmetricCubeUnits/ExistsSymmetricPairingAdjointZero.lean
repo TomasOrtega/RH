@@ -19,7 +19,7 @@ section CongLemmas
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Unfold `Cong at *`. Use `IsUltrametricDist.norm_add_le_max ((a : Qbar l) - b) ((b : Qbar l) - c)` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Conclude with `this.trans_lt (max_lt h h')`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cong_trans {a b c : (Qbar l)ˣ} (h : Cong a b) (h' : Cong b c) : Cong a c := by
   unfold Cong at *
@@ -28,7 +28,7 @@ private theorem cong_trans {a b c : (Qbar l)ˣ} (h : Cong a b) (h' : Cong b c) :
   exact this.trans_lt (max_lt h h')
 
 /- English proof (translation)
-Unfold `Cong at h`. Use `IsUltrametricDist.norm_eq_of_add_norm_lt_max (x := (a : Qbar l)) (y := -(b : Qbar l)) (by rw [← sub_eq_add_neg, norm_neg, hb]; exact h.trans_le (le_max_right _ _))` as an intermediate fact. Rewrite using `[this, norm_neg, hb]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem cong_norm {a b : (Qbar l)ˣ} (h : Cong a b) (hb : ‖(b : Qbar l)‖ = 1) : ‖(a : Qbar l)‖ = 1 := by
   unfold Cong at h
@@ -37,7 +37,7 @@ private theorem cong_norm {a b : (Qbar l)ˣ} (h : Cong a b) (hb : ‖(b : Qbar l
   rw [this, norm_neg, hb]
 
 /- English proof (translation)
-Unfold `Cong at *`. Rewrite using `[Units.val_mul, Units.val_mul, ← sub_mul, norm_mul, hc, mul_one]`. Conclude with `h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cong_mul_right {a b : (Qbar l)ˣ} (h : Cong a b) (c : (Qbar l)ˣ) (hc : ‖(c : Qbar l)‖ = 1) :
     Cong (a * c) (b * c) := by
@@ -46,7 +46,7 @@ private theorem cong_mul_right {a b : (Qbar l)ˣ} (h : Cong a b) (c : (Qbar l)ˣ
   exact h
 
 /- English proof (translation)
-Use `cong_trans (cong_mul_right h c (cong_norm h' hd)) ?_` and prove the remaining obligations. Rewrite using `[mul_comm b c, mul_comm b d]`. Conclude with `cong_mul_right h' b hb`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cong_mul {a b c d : (Qbar l)ˣ} (h : Cong a b) (h' : Cong c d) (hb : ‖(b : Qbar l)‖ = 1)
     (hd : ‖(d : Qbar l)‖ = 1) : Cong (a * c) (b * d) := by
@@ -69,7 +69,7 @@ section Shape
 variable {l : ℕ} [Fact l.Prime] {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
 
 /- English proof (translation)
-Use `Units.continuous_iff.2 ⟨h, ?_⟩` and prove the remaining obligations. Simplify using `only [← map_inv]`. Conclude with `h.comp continuous_inv`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem cont_units {Γ R : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [Monoid R]
     [TopologicalSpace R] (f : Γ →* Rˣ) (h : Continuous fun s => (f s : R)) : Continuous f := by

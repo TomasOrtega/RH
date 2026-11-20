@@ -7,9 +7,9 @@ open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible GlobalTheo
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `choose P hP hJ using h`. Establish `hm : Measurable ψ` using `hψ.measurable`. Use extensionality with `A hA`. Rewrite using `[Measure.map_apply hm hA, withDensity_apply _ hA, withDensity_apply _ (hm hA)]`. Establish `hcv` using `lintegral_image_eq_lintegral_abs_det_fderiv_mul μ (hm hA) (fun x _ => (hP x).hasFDerivWithinAt) hb.injective.injOn (fun y => ENNReal.ofReal (J y))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hcv` using `[Set.image_preimage_eq A hb.surjective]`. Rewrite using `[hcv]`. Use `lintegral_congr (fun x => ?_)` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_mul (abs_nonneg _), hJ x]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_withDensity_of_jacobian_gen {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E] (μ : Measure E)
@@ -31,9 +31,7 @@ theorem map_withDensity_of_jacobian_gen {E : Type*} [NormedAddCommGroup E] [Norm
   rw [← ENNReal.ofReal_mul (abs_nonneg _), hJ x]
 
 /- English proof (translation)
-Introduce `p q J ψ _ hψ hb h`. Use `haveI hrow : (volume : Measure (Fin q → ℂ)).IsAddHaarMeasure := by`. Rewrite using `[volume_pi]`. Use `infer_instance`. Use `haveI hall : (volume : Measure (Fin p → Fin q → ℂ)).IsAddHaarMeasure := by`.
-
-Rewrite using `[volume_pi]`. Conclude with `Measure.pi.isAddHaarMeasure _`. Conclude with `map_withDensity_of_jacobian_gen (volume : Measure (Fin p → Fin q → ℂ)) J ψ hψ hb h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_withDensity_of_jacobian : ∀ (p q : ℕ) (J : (Fin p → Fin q → ℂ) → ℝ) (ψ : (Fin p → Fin q → ℂ) → (Fin p → Fin q → ℂ)), Continuous J → Continuous ψ → Function.Bijective ψ → (∀ B, ∃ P : (Fin p → Fin q → ℂ) →L[ℝ] (Fin p → Fin q → ℂ), HasFDerivAt ψ P B ∧ |P.det| * J (ψ B) = J B) → Measure.map ψ (volume.withDensity fun B => ENNReal.ofReal (J B)) = volume.withDensity fun B => ENNReal.ofReal (J B) := by
 

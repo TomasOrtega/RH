@@ -18,7 +18,7 @@ namespace GlobalTheory.TwoLevels
 open ReciprocityTheory.ChartRestriction.G.Out ThetaCoord CommPairing GlobalLift VVRank
 
 /- English proof (translation)
-Rewrite using `[labelSymp, Matrix.toBilin'_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by rw [Matrix.of_apply]; ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem labelSymp_eq {g M : ℕ} (a b : Fin (2 * g) → ZMod M) :
     labelSymp a b = Matrix.toBilin' (Matrix.of fun i j => ((stdSymp g i j : ℤ) : ZMod M)) a b := by
@@ -26,9 +26,9 @@ theorem labelSymp_eq {g M : ℕ} (a b : Fin (2 * g) → ZMod M) :
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by rw [Matrix.of_apply]; ring
 
 /- English proof (translation)
-Establish `h : ∀ i j, stdSymp g i j = -stdSymp g j i` using `fun i j => by`. Unfold `stdSymp`. Apply the tactic sequence `split_ifs <;> omega`. Rewrite using `[labelSymp, labelSymp, Finset.sum_comm, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[h j i]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem labelSymp_swap {g M : ℕ} (a b : Fin (2 * g) → ZMod M) : labelSymp a b = -labelSymp b a := by
   have h : ∀ i j, stdSymp g i j = -stdSymp g j i := fun i j => by
@@ -41,23 +41,21 @@ theorem labelSymp_swap {g M : ℕ} (a b : Fin (2 * g) → ZMod M) : labelSymp a 
   rw [h j i]; push_cast; ring
 
 /- English proof (translation)
-Establish `ho : Odd N'` using `hN ▸ hn.pow`. Establish `: NeZero (N' ^ 2)` using `⟨ho.pow.pos.ne'⟩`. Set `ω` to `Matrix.toBilin' (Matrix.of fun i j => ((stdSymp g i j : ℤ) : ZMod (N' ^ 2)))`. Set `S` to `σ - LinearMap.id`. Establish `hb : ∀ a, ∃ b, S a = N' • b` using `fun a => by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h : N' • S a = 0`. Rewrite using `[LinearMap.sub_apply, LinearMap.id_apply, smul_sub, hm, sub_self]`. Use `choose b hb using fun i => exists_eq_nsmul_of_nsmul_eq_zero_zmod ho.pos.ne' le_rfl (S a i) (congrFun h i)`. Conclude with `⟨b, funext hb⟩`. Establish `e : ∀ a, σ a = a + S a` using `fun a => by simp [S]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sw : ∀ a b, ω a b = -ω b a` using `fun a b => by`. Rewrite using `[← labelSymp_eq, ← labelSymp_eq, labelSymp_swap]`. Establish `hS : ∀ a b, ω (S a) b = ω (S b) a` using `fun a b => by`. Establish `h` using `hσ a b`. Rewrite `h` using `[labelSymp_eq, labelSymp_eq, e, e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h₀ : ω (S a) (S b) = 0`. Take `⟨x, hx⟩` from `hb a`. Take `⟨y, hy⟩` from `hb b`. Rewrite using `[hx, hy, map_nsmul, map_nsmul, LinearMap.smul_apply, ← mul_smul, ← sq, nsmul_eq_mul, ZMod.natCast_self, zero_mul]`. Express the relevant statement in the definitionally equal form `ω _ _ = ω _ _ at h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, LinearMap.add_apply] at h`. Rewrite using `[sw (S b)]`. Take the linear combination `h - h₀`. Set `q : (Fin (2 * g) → ZMod (N' ^ 2)) → ZMod (N' ^ 2)` to `fun a => (((N' ^ 2 + 1) / 2 : ℕ) : ZMod (N' ^ 2)) * ω a (S a)`. Establish `h₁ : ∀ a, v a ≠ 0 → ζ ^ (q a).val * u' = u` using `fun a ha => by`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `hb a`. Establish `h` using `hr a b`. Rewrite `h` using `[thetaRelExp, one_pow, Nat.one_mul, ← hb, ← e, labelSymp_eq]`. Use `Units.ext (mul_right_cancel₀ ha ?_)` and prove the remaining obligations. Rewrite using `[Units.val_mul, _root_.mul_assoc, ← hu, mul_left_comm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `congrArg _ h.symm`. Take `⟨d₀, hd₀⟩` from `hs 0`. Establish `h0 : S = 0` using `end_eq_zero_of_quad_const_on_cosets (isUnit_two_zmod_pow ho 2) (r := (n : ZMod (N' ^ 2))) ⟨j * 2, by rw [← Nat.cast_pow, pow_mul, ← hN, ZMod.natCast_self]⟩ ω (injective_toBilin'_stdSymp g) S hS (-1) q (fun x => by`. Establish `: (2 : ZMod (N' ^ 2)) * (((N' ^ 2 + 1) / 2 : ℕ) : ZMod (N' ^ 2)) = 1`. Rewrite using `[show (2 : ZMod (N' ^ 2)) = ((2 : ℕ) : ZMod (N' ^ 2)) from Nat.cast_ofNat.symm, ← Nat.cast_mul, Nat.mul_div_cancel' ho.pow.add_one.two_dvd, Nat.cast_add, ZMod.natCast_self, zero_add, Nat.cast_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← _root_.mul_assoc, this, sw x]`. Use the proof step `simp)`. Use the proof step `{t | v t ≠ 0}`. Use the proof step `(fun x => by`. Take `⟨d, hd⟩` from `hs x`.
-
-Conclude with `⟨_, hd, -d, by rw [Nat.cast_smul_eq_nsmul, smul_neg, add_neg_cancel_right]⟩)`. Use the proof step `(q (0 + n • d₀))`. Use the proof step `(fun t ht => ZMod.val_injective _ (hζ.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) (mul_right_cancel ((h₁ t ht).trans (h₁ _ hd₀).symm))))`. Rewrite using `[e, h0, LinearMap.zero_apply, add_zero]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_proportional {R : Type} [CommRing R] [IsDomain R] {g n j N' : ℕ} (hn : Odd n) (hN : N' = n ^ j)
     {ζ : Rˣ} (hζ : IsPrimitiveRoot ζ (N' ^ 2))
@@ -117,11 +115,9 @@ theorem eq_of_proportional {R : Type} [CommRing R] [IsDomain R] {g n j N' : ℕ}
   rw [e, h0, LinearMap.zero_apply, add_zero]
 
 /- English proof (translation)
-Use `fn_ext fun z _ => ?_` and prove the remaining obligations. Use `choose J hJ using fun χ : T.left ⟶ A.left => exists_chart hL (χ z)`. Establish `a` using `sv_of_isValueAt H (𝟙 T) hJ`. Establish `b` using `sv_of_isValueAt H' (𝟙 T) hJ`. Establish `c : sv A s (lift (𝟙 T) (𝟙 T ≫ w)).left z J = gs (𝟙 T.left) z ⊤ r * sv A s' (lift (𝟙 T) (𝟙 T ≫ w)).left z J`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ThetaAct.sv_smul r (SecM.ofSec A s') (lift (𝟙 T) (𝟙 T ≫ w)).left z hJ` as an intermediate fact. Rewrite `this` using `[← h, lift_fst_left]`. Conclude with `this`. Rewrite `c` using `[a, b, ← _root_.mul_assoc]`. Rewrite using `[gs_mul _ _ ⊤ trivial]`.
-
-Conclude with `(Units.mul_left_inj _).1 c`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem value_eq_mul {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left} (hL : L.IsLB) {T : Over S} {k : ℤ}
     {s s' : LB.Sec (LPow A L k T)} {r x y : Γ(T.left, ⊤)} (h : SecM.ofSec A s = r • SecM.ofSec A s') {w : T ⟶ A}
@@ -141,7 +137,7 @@ theorem value_eq_mul {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left} (h
   exact (Units.mul_left_inj _).1 c
 
 /- English proof (translation)
-Substitute `hg` using the available equality. Establish `E : ∀ c : Fin (2 * P.g) → ℕ, linComb (fun i => (Over.homMk (𝟙 _) (by simp) : Over.mk (𝟙 _) ⟶ baseOver _) ≫ lev.pt i) c = linComb lev.pt c` using `fun c => congrArg (linComb · _) (funext fun i => Category.id_comp (lev.pt i))`. Introduce `a b h`. Establish `h₀` using `lev.indep K (𝟙 _) (fun i => ⟨(a i).val, ZMod.val_lt _⟩) (fun i => ⟨(b i).val, ZMod.val_lt _⟩) ((E _).trans (h.trans (E _).symm))`. Conclude with `funext fun i => ZMod.val_injective M (congrArg Fin.val (congrFun h₀ i))`.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem levelPoint_injective {K : Type} [Field K] [IsAlgClosed K] {P : PolAV (Spec (CommRingCat.of K))} {M : ℕ}
     [NeZero M] {ze : Γ(Spec (CommRingCat.of K), ⊤)ˣ} (lev : Level P M ze) {g : ℕ} (hg : P.g = g) :
@@ -162,25 +158,23 @@ namespace GlobalTheory
 open TwoLevels ThetaCoord in
 
 /- English proof (translation)
-Introduce `hLaw g n j N' hn hN K _ _ P hg ze lev lev' v hv hv' hm hs`. Establish `hG` using `hLaw.globalFns`. Use `P.isAb.comm` as an intermediate fact. Establish `ho : Odd N'` using `hv.1`. Establish `: NeZero (N' ^ 2)` using `⟨ho.pow.pos.ne'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp` using `levelBasis_pow lev hg`. Establish `hp'` using `levelBasis_pow lev' hg`. Establish `inj` using `levelPoint_injective lev hg`. Use `choose s hs' using fun i => (pow_eq_one_iff (Nat.mul_one (N' ^ 2)).symm lev hg _).1 (hp' i)`. Set `σ` to `Fintype.linearCombination (ZMod (N' ^ 2)) s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e : ∀ a, levelPoint lev' hg a = levelPoint lev hg (σ a)` using `fun a => by`. Rewrite using `[levelPoint_eq_lab, levelPoint_eq_lab]`. Use `char_ext (lab (levelBasis lev' hg)) (fun a => lab (levelBasis lev hg) (σ a)) (lab_add hp') (fun a b => by rw [map_add, lab_add hp]) (fun i => ?_) a` and prove the remaining obligations. Rewrite using `[lab_single hp', ← hs' i, pow_one, levelPoint_eq_lab, Fintype.linearCombination_apply_single, one_smul]`. Establish `hw : ∀ (l : Out.Level P (N' ^ 2) ze) a b, Out.WeilIs P.A P.L (N' ^ 2 : ℕ) (levelPoint l hg a) (levelPoint l hg b) (ze ^ (labelSymp a b).val)` using `fun l a b => by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[levelPoint_eq_lab]`. Conclude with `weilIs_lab hG P (levelBasis_pow l hg) (ze := ze) l.prim.pow_eq_one (weilIs_levelBasis l hg) (fun a b => ((hLaw.weil _ P _ _).1 _ _ (lab_pow (levelBasis_pow l hg) a) (lab_pow (levelBasis_pow l hg) b)).exists) a b`. Establish `hσ : ∀ a b, labelSymp (σ a) (σ b) = labelSymp a b` using `fun a b => by`. Establish `h` using `hw lev' a b`. Rewrite `h` using `[e, e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ZMod.val_injective _ (lev.prim.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) (CommutatorPairing.weilIs_unique hG P.isAb P.isLB (hw lev _ _) h))`. Establish `hN' : ∀ a, N' • σ a = N' • a` using `fun a => inj (by`. Establish `h` using `e a`. Rewrite `h` using `[levelPoint_eq_lab, levelPoint_eq_lab]`. Rewrite using `[levelPoint_eq_lab, lab_nsmul hp, lab_nsmul hp, ← h]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `char_ext (fun a => lab (levelBasis lev' hg) a ^ N') (fun a => lab (levelBasis lev hg) a ^ N') (fun a b => by rw [lab_add hp', mul_pow]) (fun a b => by rw [lab_add hp, mul_pow]) (fun i => by rw [lab_single hp', lab_single hp, hm]) a)`. Establish `C` using `(theta_coordinates hLaw g N' 1 (N' ^ 2) N' rfl (Nat.one_mul _).symm).1 (Sp K) P hg ze`. Take `⟨⟨th, t, hth, ht⟩, H⟩` from `C lev v hv`. Take `⟨H, hr⟩` from `H th t hth ht`. Establish `H'` using `((C lev' v hv').2 th (fun a => t (σ a)) hth (by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨s₁, α, U, hα, h₁, hU, h₂⟩` from `ht`. Conclude with `⟨s₁, α, fun a => U (σ a), hα, h₁, fun a => by beta_reduce; rw [e]; exact hU _, fun a => h₂ _⟩)).1 0`. Use `replace H := H 0`. Establish `z : ∀ l : Out.Level P (N' ^ 2) ze, levelPoint l hg 0 ^ N' = 1` using `fun l => by`. Rewrite using `[levelPoint_eq_lab, lab_zero, one_pow]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `H`, `H'` using `[z]`. Take `⟨τ, hτ⟩` from `DVR.exists_gen_of_local P.L P.isLB (K := Fin 1) (fun _ => (1 : Out.baseOver (Sp K) ⟶ P.A).left) (fun _ => ((N' ^ 2 : ℕ) : ℤ))`. Take `⟨u, hu⟩` from `H τ hτ`. Take `⟨u', hu'⟩` from `H' τ hτ`. Establish `z₁ : ∀ a : Fin (2 * g) → ZMod (N' ^ 2), thetaCoordExp N' 1 a 0 = 0` using `fun a => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[thetaCoordExp, labelSymp]`. Establish `z₂ : ∀ a : Fin (2 * g) → ZMod (N' ^ 2), thetaCoordIdx N' 1 a 0 = a` using `fun a => by`. Simplify using `[thetaCoordIdx]`. Simplify using `only [z₁, z₂, pow_zero, _root_.mul_one] at hu hu'`. Establish `: IsDomain Γ((Out.baseOver (Sp K)).left, ⊤)` using `(Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv.toMulEquiv.isDomain _`.
-
-Establish `key` using `eq_of_proportional (R := Γ((Out.baseOver (Sp K)).left, ⊤)) hn hN (ζ := ze) lev.prim σ hσ hN' v u u' (fun a => (value_eq_mul P.isLB (one_smul _ _).symm (hu (σ a)) (hu' a)).trans (_root_.one_mul _)) (fun a b => (Units.mul_right_inj u).1 ((value_eq_mul P.isLB (hr a b) (hu a) (hu _)) …`. Introduce `i`. Establish `h` using `e (Pi.single i 1)`. Rewrite `h` using `[key, levelPoint_eq_lab, levelPoint_eq_lab, lab_single hp', lab_single hp]`. Conclude with `h.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levelBasis_eq_of_isThetaPt : Out.Laws → ∀ (g n j N' : ℕ), Odd n → N' = n ^ j → ∀ (K : Type) [Field K] [IsAlgClosed K] (P : Out.PolAV (Sp K)) (hg : P.g = g) (ze : Γ(Sp K, ⊤)ˣ) (lev lev' : Out.Level P (N' ^ 2) ze) (v : (Fin (2 * g) → ZMod (N' ^ 2)) → Γ((Out.baseOver (Sp K)).left, ⊤)), Out.IsThetaPt P N' (levelPoint lev hg) v → Out.IsThetaPt P N' (levelPoint lev' hg) v → (∀ i, levelBasis lev hg i ^ N' = levelBasis lev' hg i ^ N') → (∀ c : Fin (2 * g) → ZMod (N' ^ 2), ∃ d : Fin (2 * g) → ZMod (N' ^ 2), v (c + n • d) ≠ 0) → ∀ i, levelBasis lev hg i = levelBasis lev' hg i := by
   intro hLaw g n j N' hn hN K _ _ P hg ze lev lev' v hv hv' hm hs

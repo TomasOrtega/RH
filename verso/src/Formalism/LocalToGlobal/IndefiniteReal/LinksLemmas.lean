@@ -18,7 +18,7 @@ namespace Tw
 variable {s : Bool} {E F : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [NormedAddCommGroup F] [InnerProductSpace ℂ F]
 
 /- English proof (translation)
-Use `symm`. Rewrite using `[LinearMap.eq_adjoint_iff]`. Introduce `x y`. Use `show cj s (inner ℂ (LinearMap.adjoint f (out x)) (out y)) = cj s (inner ℂ (out x) (f (out y)))`. Rewrite using `[LinearMap.adjoint_inner_left]`.
+Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjoint_map [FiniteDimensional ℂ E] [FiniteDimensional ℂ F] (f : E →ₗ[ℂ] F) :
     LinearMap.adjoint (Tw.map s f) = Tw.map s (LinearMap.adjoint f) := by
@@ -29,7 +29,7 @@ theorem adjoint_map [FiniteDimensional ℂ E] [FiniteDimensional ℂ F] (f : E �
   rw [LinearMap.adjoint_inner_left]
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[linearIndependent_iff']`. Introduce `u g hg i hi`. Establish `h1 : ∑ i ∈ u, cj s (g i) • v i = 0` using `hg`. Use `congrArg (cj s) (h u (fun i => cj s (g i)) h1 i hi)` as an intermediate fact. Rewrite `this` using `[cj_cj, map_zero]`. Then use the resulting hypothesis.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem linInd' (s : Bool) {ι : Type} {v : ι → E} (h : LinearIndependent ℂ v) :
     LinearIndependent ℂ fun i => mk s (v i) := by
@@ -40,18 +40,18 @@ theorem linInd' (s : Bool) {ι : Type} {v : ι → E} (h : LinearIndependent ℂ
   rwa [cj_cj, map_zero] at this
 
 /- English proof (translation)
-Use `show c • y = cj s (cj s c) • y`. Rewrite using `[cj_cj]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mk_smul (s : Bool) (c : ℂ) (y : E) : mk s (c • y) = cj s c • mk s y := by
   show c • y = cj s (cj s c) • y
   rw [cj_cj]
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `hx : out x ∈ Submodule.span ℂ (Set.range v)` using `h ▸ Submodule.mem_top`. Express the relevant statement in the definitionally equal form `mk s (out x) ∈ _`. Generalize the expression as in `out x = y at hx ⊢`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Replace the chosen expression with an arbitrary variable.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨i, rfl⟩` from `hy`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Consider the case `zero => exact Submodule.zero_mem _`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add y z _ _ hy hz => exact Submodule.add_mem _ hy hz`. Consider the case `smul c y _ hy`. Rewrite using `[mk_smul]`. Conclude with `Submodule.smul_mem _ _ hy`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_top' (s : Bool) {ι : Type} {v : ι → E} (h : Submodule.span ℂ (Set.range v) = ⊤) :
     Submodule.span ℂ (Set.range fun i => mk s (v i)) = ⊤ := by
@@ -77,11 +77,11 @@ section Semi
 variable {K V W : Type} [Field K] [AddCommGroup V] [Module K V] [AddCommGroup W] [Module ℂ W] {σ : K →+* ℂ}
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Conclude with `Submodule.span_mono (by rintro _ ⟨i, rfl⟩; exact ⟨c i, rfl⟩)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`. Establish `hx : x ∈ Submodule.span K (Set.range c)` using `c.span_eq ▸ Submodule.mem_top`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Proceed by induction.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨i, rfl⟩` from `hy`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Consider the case `zero => rw [map_zero]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul a y _ hy => rw [map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ hy`.
+A detailed English derivation is pending.
 -/
 theorem span_semi (f : V →ₛₗ[σ] W) {κ : Type} (c : Module.Basis κ K V) :
     Submodule.span ℂ (Set.range fun i => f (c i)) = Submodule.span ℂ (Set.range f) := by
@@ -99,9 +99,9 @@ theorem span_semi (f : V →ₛₗ[σ] W) {κ : Type} (c : Module.Basis κ K V) 
     | smul a y _ hy => rw [map_smulₛₗ]; exact Submodule.smul_mem _ _ hy
 
 /- English proof (translation)
-Establish `: Fintype ι` using `Fintype.ofFinite ι`. Establish `: FiniteDimensional K V` using `Module.Finite.of_basis b`. Establish `: Finite ι'` using `Module.Finite.finite_basis b'`. Establish `: Fintype ι'` using `Fintype.ofFinite ι'`. Rewrite `h`, the goal using `[linearIndependent_iff_card_eq_finrank_span]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Unfold `Set.finrank at h ⊢`. Rewrite using `[span_semi f b']`. Rewrite `h` using `[span_semi f b]`. Rewrite using `[← h]`. Conclude with `(Module.finrank_eq_card_basis b').symm.trans (Module.finrank_eq_card_basis b)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linInd_semi (f : V →ₛₗ[σ] W) {ι ι' : Type} [Finite ι] (b : Module.Basis ι K V) (b' : Module.Basis ι' K V)
     (h : LinearIndependent ℂ fun i => f (b i)) : LinearIndependent ℂ fun i => f (b' i) := by
@@ -118,9 +118,9 @@ theorem linInd_semi (f : V →ₛₗ[σ] W) {ι ι' : Type} [Finite ι] (b : Mod
   exact (Module.finrank_eq_card_basis b').symm.trans (Module.finrank_eq_card_basis b)
 
 /- English proof (translation)
-Use `⟨LinearIndependent.of_comp e ?_, ?_⟩` and prove the remaining obligations. Establish `e1 : (e ∘ fun i => g (b' i)) = fun i => f (b' i)` using `funext fun i => hj _`. Rewrite using `[e1]`. Conclude with `linInd_semi f b b' h`. Apply `Submodule.map_injective_of_injective hinj` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.map_span, ← Set.range_comp, Submodule.map_top, hrange]`. Establish `e1 : (e ∘ fun i => g (b' i)) = fun i => f (b' i)` using `funext fun i => hj _`. Rewrite using `[e1, span_semi f b']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kForm_semi {H X : Type} [AddCommGroup H] [Module ℂ H] [AddCommGroup X] [Module ℂ X] (g : V →ₛₗ[σ] H)
     (e : H →ₗ[ℂ] X) (f : V →ₛₗ[σ] X) (hj : ∀ x, e (g x) = f x) (hinj : Function.Injective e)
@@ -139,7 +139,7 @@ theorem kForm_semi {H X : Type} [AddCommGroup H] [Module ℂ H] [AddCommGroup X]
 end Semi
 
 /- English proof (translation)
-Set `core : InnerProductSpace.Core ℂ V` to `{ inner := fun x y => ip x y conj_inner_symm := fun x y => hsym x x.2 y y.2 re_inner_nonneg := fun x => hpos x x.2 add_left := fun x y z => hadd x x.2 y y.2 z z.2 smul_left := fun x y r => hsm r x x.2 y y.2 definite := fun x h => Subtype.ext (hdef x x.2 h) }`. Use `letI : NormedAddCommGroup V := core.toNormedAddCommGroup`. Use `letI : InnerProductSpace ℂ V := InnerProductSpace.ofCore core.toCore`. Conclude with `⟨{ H := V, fH := ‹FiniteDimensional ℂ V›, e := V.subtype }, V.injective_subtype, V.range_subtype, fun _ _ => rfl⟩`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure. Supply the required witnesses or components.
 -/
 theorem hMod_exists {X : Type} [AddCommGroup X] [Module ℂ X] (V : Submodule ℂ X) [FiniteDimensional ℂ V]
     (ip : X → X → ℂ) (hadd : ∀ x ∈ V, ∀ y ∈ V, ∀ z ∈ V, ip (x + y) z = ip x z + ip y z)
@@ -158,7 +158,7 @@ theorem hMod_exists {X : Type} [AddCommGroup X] [Module ℂ X] (V : Submodule �
   exact ⟨{ H := V, fH := ‹FiniteDimensional ℂ V›, e := V.subtype }, V.injective_subtype, V.range_subtype, fun _ _ => rfl⟩
 
 /- English proof (translation)
-Establish `h1 : (n : ℤ) * Formalism.DivisionValues.vw w a = 0`. Unfold `Formalism.DivisionValues.vw`. Rewrite using `[← FractionalIdeal.count_pow, FractionalIdeal.spanSingleton_pow, h, FractionalIdeal.spanSingleton_one, FractionalIdeal.count_one]`. Conclude with `(mul_eq_zero.1 h1).resolve_left (by exact_mod_cast hn.ne')`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vw_root {K : Type} [Field K] [NumberField K] [StarRing K] (w : HeightOneSpectrum (𝓞 K)) (a : K) (n : ℕ) (hn : 0 < n)
     (h : a ^ n = 1) : Formalism.DivisionValues.vw w a = 0 := by
@@ -185,7 +185,7 @@ variable {R : RealDat D A Ks} {F : Face D A}
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `t`. Establish `hB` using `Formalism.IndefR.Bridge.ClassPres.extBij_holds (R.B.R t).pres`. Take `⟨hinj, hrange, -⟩` from `hM.HX t`. Establish `h` using `kForm_semi (R.jX t) (R.HX t).e (R.B.R t).pres.extL (fun x => hM.jX t x) hinj (hrange.trans hB.2.symm) (Formalism.L2.DIV.CSD.basis _) (Module.Basis.ofVectorSpace _ _) hB.1`. Conclude with `⟨Tw.linInd' (E := (R.HX t).H) _ h.1, Tw.span_top' (E := (R.HX t).H) _ h.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem kFormR_of (hM : R.IsModels) : (R.toCx F).KFormR := by
   intro t
@@ -197,7 +197,7 @@ theorem kFormR_of (hM : R.IsModels) : (R.toCx F).KFormR := by
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `i t`. Establish `hB` using `Formalism.IndefR.Bridge.ClassPres.extBij_holds (R.B.L i t).pres`. Take `⟨hinj, hrange, -⟩` from `hM.HV i t`. Establish `h` using `kForm_semi (R.jV i t) (R.HV i t).e (R.B.L i t).pres.extL (fun x => hM.jV i t x) hinj (hrange.trans hB.2.symm) (Formalism.L2.DIV.CSD.basis _) (Module.Basis.ofVectorSpace _ _) hB.1`. Conclude with `⟨Tw.linInd' (E := (R.HV i t).H) _ h.1, Tw.span_top' (E := (R.HV i t).H) _ h.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem kFormL_of (hM : R.IsModels) : (R.toCx F).KFormL := by
   intro i t
@@ -210,9 +210,9 @@ theorem kFormL_of (hM : R.IsModels) : (R.toCx F).KFormL := by
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `t x y`. Establish `key : cj (twAt D.what₂.embLL A.v0) (inner ℂ (R.jX t x) (R.jX t y)) = A.v0.embedding ((A.fam.R t).S.csum ((x : (A.fam.R t).S.Forms) : (A.fam.R t).S.Cl → (A.fam.R t).S.V) ((y : (A.fam.R t).S.Forms) : (A.fam.R t).S.Cl → (A.fam.R t).S.V))`. Rewrite using `[(hM.HX t).2.2, hM.jX, hM.jX, R.emb0]`. Use `congr 1`. Conclude with `Formalism.IndefR.Bridge.ClassPres.isom_holds (R.B.R t).pres x y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcv]`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem jIsoR_gen (hM : R.IsModels) (cv : CrdV A.fam.amb)
     (hcv : ∀ t x y, cv.hR t x y = (A.fam.R t).S.csum ((x : (A.fam.R t).S.Forms) : (A.fam.R t).S.Cl → (A.fam.R t).S.V) ((y : (A.fam.R t).S.Forms) : (A.fam.R t).S.Cl → (A.fam.R t).S.V)) :
@@ -227,7 +227,7 @@ theorem jIsoR_gen (hM : R.IsModels) (cv : CrdV A.fam.amb)
   exact key
 
 /- English proof (translation)
-The claim follows from `jIsoR_gen hM _ fun _ _ _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem jIsoR_of (hM : R.IsModels) : (R.toCx F).JIsoR (cvOf A F.P0 F.ψ0 F.P1 F.ψ1) :=
   jIsoR_gen hM _ fun _ _ _ => rfl
@@ -235,9 +235,9 @@ theorem jIsoR_of (hM : R.IsModels) : (R.toCx F).JIsoR (cvOf A F.P0 F.ψ0 F.P1 F.
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `i t x y`. Establish `key : cj (twAt D.what₂.embLL A.v0) (inner ℂ (R.jV i t x) (R.jV i t y)) = A.v0.embedding ((A.fam.L i t).S.csum ((x : (A.fam.L i t).S.Forms) : (A.fam.L i t).S.Cl → (A.fam.L i t).S.V) ((y : (A.fam.L i t).S.Forms) : (A.fam.L i t).S.Cl → (A.fam.L i t).S.V))`. Rewrite using `[(hM.HV i t).2.2, hM.jV, hM.jV, R.emb0]`. Use `congr 1`. Conclude with `Formalism.IndefR.Bridge.ClassPres.isom_holds (R.B.L i t).pres x y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcv]`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem jIsoL_gen (hM : R.IsModels) (cv : CrdV A.fam.amb)
     (hcv : ∀ i t x y, cv.hL i t x y = (A.fam.L i t).S.csum ((x : (A.fam.L i t).S.Forms) : (A.fam.L i t).S.Cl → (A.fam.L i t).S.V) ((y : (A.fam.L i t).S.Forms) : (A.fam.L i t).S.Cl → (A.fam.L i t).S.V)) :
@@ -252,15 +252,15 @@ theorem jIsoL_gen (hM : R.IsModels) (cv : CrdV A.fam.amb)
   exact key
 
 /- English proof (translation)
-The claim follows from `jIsoL_gen hM _ fun _ _ _ _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem jIsoL_of (hM : R.IsModels) : (R.toCx F).JIsoL (cvOf A F.P0 F.ψ0 F.P1 F.ψ1) :=
   jIsoL_gen hM _ fun _ _ _ _ => rfl
 
 /- English proof (translation)
-Establish `h1 : ∀ n : ℕ, ∀ g : ℕ → ℝ, ∏ j ∈ Finset.Icc 1 n, g j = ∏ j ∈ Finset.range n, g (j + 1)`. Introduce `n g`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [Finset.prod_Icc_succ_top (by omega), ih, Finset.prod_range_succ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[h1, ← Fin.prod_univ_eq_prod_range]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Unfold `lamN`. Rewrite using `[dif_pos (by simp)]`. Conclude with `congrArg (fun k => R.lam k t p A.v0) (Fin.ext (Nat.add_sub_cancel _ _))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_lamN (t : T) (p : A.fam.base.Ix) :
     ∏ j ∈ Finset.Icc 1 D.R.m, R.lamN t j p = ∏ j : Fin D.R.m, R.lam j t p A.v0 := by
@@ -277,9 +277,9 @@ theorem prod_lamN (t : T) (p : A.fam.base.Ix) :
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `j t p w hw`. Establish `hw1 : Tw.out (s` using `twAt D.what₂.embLL A.v0) (E := (R.HW j (sg0 D A)).H) w ∈ R.Wp j p := hw.1`. Establish `key : Tw.map (twAt D.what₂.embLL A.v0) (R.thG j t) (LinearMap.adjoint (Tw.map (twAt D.what₂.embLL A.v0) (R.thG j t)) w) = ((R.lam j t p A.v0 : ℝ) : ℂ) • w`. Rewrite using `[Tw.adjoint_map]`. Use `show Tw.mk _ (R.thG j t (LinearMap.adjoint (R.thG j t) (Tw.out (s := twAt D.what₂.embLL A.v0) (E := (R.HW j (sg0 D A)).H) w))) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h j t p _ hw1, Tw.mk_smul, cj_ofReal]`. Both sides reduce to the same expression. Conclude with `key`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem thmAop_of (h : ∀ i t, Lift.IsLamP (R.thG i t) (LinearMap.adjoint (R.thG i t)) (R.Wp i) fun p => R.lam i t p A.v0)
     (b : Bool) : (R.toCx F).ThmAop b := by
@@ -295,9 +295,9 @@ theorem thmAop_of (h : ∀ i t, Lift.IsLamP (R.thG i t) (LinearMap.adjoint (R.th
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `t p e he`. Establish `he1 : Tw.out (s` using `twAt D.what₂.embLL A.v0) (E := R.HE.H) e ∈ R.EEp p := he.1`. Establish `key : Tw.map (twAt D.what₂.embLL A.v0) (R.Th t) (LinearMap.adjoint (Tw.map (twAt D.what₂.embLL A.v0) (R.Th t)) e) = ((R.kap * ∏ j : Fin D.R.m, R.lam j t p A.v0 : ℝ) : ℂ) • e`. Rewrite using `[Tw.adjoint_map]`. Use `show Tw.mk _ (R.Th t (LinearMap.adjoint (R.Th t) (Tw.out (s := twAt D.what₂.embLL A.v0) (E := R.HE.H) e))) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `h t p (Tw.out (s := twAt D.what₂.embLL A.v0) (E := R.HE.H) e) he1`. Rewrite `h2` using `[LinearMap.comp_apply]`. Rewrite using `[h2, Tw.mk_smul, cj_ofReal, prod_lamN]`. Both sides reduce to the same expression. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem thmBop_of (h : Lift.IsKap D.R.m (fun t => R.Th t ∘ₗ LinearMap.adjoint (R.Th t)) R.EEp R.lamN R.kap) (b : Bool) :
     (R.toCx F).ThmBop b := by
@@ -314,9 +314,7 @@ theorem thmBop_of (h : Lift.IsKap D.R.m (fun t => R.Th t ∘ₗ LinearMap.adjoin
   exact key
 
 /- English proof (translation)
-Use `⟨hY.zeta0, fun u t h0 => ?_, fun u w => ?_⟩` and prove the remaining obligations. Take `⟨n, hn, h⟩` from `hY.zeta u t`. Rewrite `h` using `[h0, zero_pow hn.ne']`. Conclude with `zero_ne_one h`. Take `⟨n, hn, h⟩` from `hY.zeta u ((R.toCx F).μ w)`.
-
-Conclude with `vw_root w _ n hn h`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem zetaOK_of (Y : RealCol R F) (hY : Y.Char) : (R.toCx F).ZetaOK (fc := F.fc) Y.ζ := by
   refine ⟨hY.zeta0, fun u t h0 => ?_, fun u w => ?_⟩
@@ -375,15 +373,15 @@ def PLevW : Prop :=
 variable {R F}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w', hw | hw, i, h⟩`. Substitute `hw` using the available equality. Break down `h with h | h | h | h | h` into its components or cases. Conclude with `⟨i, Or.inl h⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨i, Or.inr (Or.inl h)⟩`. Conclude with `⟨i, Or.inr (Or.inr (Or.inl h))⟩`. Conclude with `⟨i, Or.inr (Or.inr (Or.inr (Or.inr (Or.inl h))))⟩`. Conclude with `⟨i, Or.inr (Or.inr (Or.inr (Or.inr (Or.inr h))))⟩`. Substitute `hw` using the available equality.
+Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components. Substitute using the available equality.
 
-Rewrite `h` using `[ValuationRepresentative.conjPl_conjPl]`. Break down `h with h | h | h | h | h` into its components or cases. Conclude with `⟨i, Or.inr (Or.inl h)⟩`. Conclude with `⟨i, Or.inl h⟩`. Conclude with `⟨i, Or.inr (Or.inr (Or.inr (Or.inl h)))⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨i, Or.inr (Or.inr (Or.inr (Or.inr (Or.inr h))))⟩`. Conclude with `⟨i, Or.inr (Or.inr (Or.inr (Or.inr (Or.inl h))))⟩`. Introduce and unpack `⟨i, h | h | h | h | h | h⟩`. Conclude with `⟨w, Or.inl rfl, i, Or.inl h⟩`. Conclude with `⟨w, Or.inl rfl, i, Or.inr (Or.inl h)⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨w, Or.inl rfl, i, Or.inr (Or.inr (Or.inl h))⟩`. Conclude with `⟨conjPl w, Or.inr rfl, i, Or.inr (Or.inr (Or.inl h))⟩`. Conclude with `⟨w, Or.inl rfl, i, Or.inr (Or.inr (Or.inr (Or.inl h)))⟩`. Conclude with `⟨w, Or.inl rfl, i, Or.inr (Or.inr (Or.inr (Or.inr h)))⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem inNonzeroPlaces_recursive_iff (C CH : ℝ) (w : HeightOneSpectrum (𝓞 D.what₂.LL)) : R.NonzeroIndexPlace F w ↔ (R.toCx F).W1 F.cr (R.num F C CH) w := by
   constructor
@@ -451,9 +449,9 @@ structure PrimLinks (R : RealDat D A Ks) (F : Face D A) (Y : RealDat.RealCol R F
   fun0 : R.LFun F C CH
 
 /- English proof (translation)
-Take `⟨C0, C1, e0, e1, t0, t1⟩` from `hP.eig`. Take `⟨⟨hE, hhE⟩, ⟨hW, hhW⟩⟩` from `hP.hecke`. Establish `kR` using `RealDat.kFormR_of (F := F) hC.models`. Establish `kL` using `RealDat.kFormL_of (F := F) hC.models`. Establish `jR` using `RealDat.jIsoR_of (F := F) hC.models`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `jL` using `RealDat.jIsoL_of (F := F) hC.models`. Conclude with `links_of_core (s := s) (C0 := C0) (C1 := C1) (hE := hE) (hW := hW) (gE := R.gEx F) (gW := R.gWx F) { kFormR := kR kFormL := kL jIsoR := jR jIsoL := jL npTie := ⟨rfl, rfl⟩ ok := hOk sep := hsep heckeR := hP.heckeR heckeL := hP.heckeL thetaR := hhE thetaL := hhW gUnit := hP.gUnit.1 …`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cxLinks_of_prims {s : ℕ} (hOk : A.fam.Ok s) (hsep : A.fam.TypesSep) {R : RealDat D A Ks} {F : Face D A}
     {Y : RealDat.RealCol R F} {C CH : ℝ} (hC : R.Char F) (hY : Y.Char) (hP : PrimLinks R F Y C CH) :
@@ -521,7 +519,7 @@ def primPkg {s : ℕ} (hOk : A.fam.Ok s) (hsep : A.fam.TypesSep) (R : RealDat D 
   cxPkgF A hOk hsep F.P0 F.ψ0 F.P1 F.ψ1 F.Dc F.Sp F.Zsc (R.toCx F) Y.toCol C CH (cxLinks_of_prims hOk hsep hC hY hP)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem primPkg_spec {s : ℕ} (hOk : A.fam.Ok s) (hsep : A.fam.TypesSep) (R : RealDat D A Ks) (F : Face D A)
     (Y : RealDat.RealCol R F) (C CH : ℝ) (hC : R.Char F) (hY : Y.Char) (hP : PrimLinks R F Y C CH) :

@@ -28,40 +28,40 @@ lemma shiftPoly_eq (b : κ → ι → K) (Q : MvPolynomial ι K) :
     shiftPoly b Q = MvPolynomial.aeval (shiftGen b) Q := rfl
 
 /- English proof (translation)
-Simplify using `only [shiftPoly_eq, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 lemma shiftPoly_mul (b : κ → ι → K) (f g : MvPolynomial ι K) :
     shiftPoly b (f * g) = shiftPoly b f * shiftPoly b g := by
   simp only [shiftPoly_eq, map_mul]
 
 /- English proof (translation)
-Simplify using `only [shiftPoly_eq, map_add]`.
+Simplify using the standard rewrite rules.
 -/
 lemma shiftPoly_add (b : κ → ι → K) (f g : MvPolynomial ι K) :
     shiftPoly b (f + g) = shiftPoly b f + shiftPoly b g := by
   simp only [shiftPoly_eq, map_add]
 
 /- English proof (translation)
-Simplify using `only [shiftPoly_eq, map_zero]`.
+Simplify using the standard rewrite rules.
 -/
 lemma shiftPoly_zero (b : κ → ι → K) : shiftPoly b (0 : MvPolynomial ι K) = 0 := by
   simp only [shiftPoly_eq, map_zero]
 
 /- English proof (translation)
-Simplify using `only [shiftPoly_eq, map_one]`.
+Simplify using the standard rewrite rules.
 -/
 lemma shiftPoly_one (b : κ → ι → K) : shiftPoly b (1 : MvPolynomial ι K) = 1 := by
   simp only [shiftPoly_eq, map_one]
 
 /- English proof (translation)
-Simplify using `only [shiftPoly_eq, MvPolynomial.aeval_X]`.
+Simplify using the standard rewrite rules.
 -/
 lemma shiftPoly_X (b : κ → ι → K) (x : ι) :
     shiftPoly b (MvPolynomial.X x) = shiftGen b x := by
   simp only [shiftPoly_eq, MvPolynomial.aeval_X]
 
 /- English proof (translation)
-Simplify using `only [shiftPoly_eq, MvPolynomial.aeval_C]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 lemma shiftPoly_C (b : κ → ι → K) (a : K) :
     shiftPoly b (MvPolynomial.C a) = MvPolynomial.C (MvPolynomial.C a) := by
@@ -69,21 +69,21 @@ lemma shiftPoly_C (b : κ → ι → K) (a : K) :
   rfl
 
 /- English proof (translation)
-Simplify using `only [shiftPoly_eq, map_sum]`.
+Simplify using the standard rewrite rules.
 -/
 lemma shiftPoly_sum {α : Type*} (b : κ → ι → K) (s : Finset α) (f : α → MvPolynomial ι K) :
     shiftPoly b (∑ a ∈ s, f a) = ∑ a ∈ s, shiftPoly b (f a) := by
   simp only [shiftPoly_eq, map_sum]
 
 /- English proof (translation)
-Simplify using `only [hasseDir, shiftPoly_zero, MvPolynomial.coeff_zero]`.
+Simplify using the standard rewrite rules.
 -/
 lemma hasseDir_zero_right (b : κ → ι → K) (β : κ →₀ ℕ) :
     hasseDir b β (0 : MvPolynomial ι K) = 0 := by
   simp only [hasseDir, shiftPoly_zero, MvPolynomial.coeff_zero]
 
 /- English proof (translation)
-Simplify using `only [hasseDir, shiftPoly_mul, MvPolynomial.coeff_mul]`.
+Simplify using the standard rewrite rules.
 -/
 lemma hasseDir_mul [DecidableEq κ] (b : κ → ι → K) (β : κ →₀ ℕ) (f g : MvPolynomial ι K) :
     hasseDir b β (f * g) =
@@ -91,9 +91,9 @@ lemma hasseDir_mul [DecidableEq κ] (b : κ → ι → K) (β : κ →₀ ℕ) (
   simp only [hasseDir, shiftPoly_mul, MvPolynomial.coeff_mul]
 
 /- English proof (translation)
-Unfold `hasseDir`. Rewrite using `[← MvPolynomial.constantCoeff_eq]`. Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C a => rw [shiftPoly_C, MvPolynomial.constantCoeff_C]`. Consider the case `add p q hp hq => rw [shiftPoly_add, map_add, hp, hq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `mul_X p x hp`. Rewrite using `[shiftPoly_mul, map_mul, hp, shiftPoly_X]`. Simplify using `[shiftGen]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma hasseDir_zero_left (b : κ → ι → K) (Q : MvPolynomial ι K) : hasseDir b 0 Q = Q := by
   unfold hasseDir
@@ -109,9 +109,9 @@ def dirD (c : ι → K) [Fintype ι] (Q : MvPolynomial ι K) : MvPolynomial ι K
   ∑ x, MvPolynomial.C (c x) * MvPolynomial.pderiv x Q
 
 /- English proof (translation)
-Unfold `shiftGen`. Rewrite using `[map_add, MvPolynomial.pderiv_C, zero_add, map_sum, Finset.sum_eq_single k]`. Rewrite using `[MvPolynomial.pderiv_C_mul, MvPolynomial.pderiv_X_self, mul_one]`. Introduce `k' _ hk'`. Rewrite using `[MvPolynomial.pderiv_C_mul, MvPolynomial.pderiv_X_of_ne hk', mul_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ k) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma pderiv_shiftGen (b : κ → ι → K) (x : ι) (k : κ) :
     MvPolynomial.pderiv k (shiftGen b x) = MvPolynomial.C (MvPolynomial.C (b k x)) := by
@@ -125,15 +125,15 @@ lemma pderiv_shiftGen (b : κ → ι → K) (x : ι) (k : κ) :
     exact absurd (Finset.mem_univ k) h
 
 /- English proof (translation)
-Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C a => simp [dirD, shiftPoly_C, shiftPoly_zero]`. Consider the case `add p q hp hq`. Establish `: dirD (b k) (p + q) = dirD (b k) p + dirD (b k) q`. Simplify using `only [dirD, map_add, mul_add, Finset.sum_add_distrib]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, shiftPoly_add, shiftPoly_add, map_add, hp, hq]`. Consider the case `mul_X p x hp`. Establish `: dirD (b k) (p * MvPolynomial.X x) = dirD (b k) p * MvPolynomial.X x + p * MvPolynomial.C (b k x)`. Simplify using `only [dirD, MvPolynomial.pderiv_mul, mul_add, Finset.sum_add_distrib]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_eq_single x]`. Rewrite using `[MvPolynomial.pderiv_X_self]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `j _ hj`. Rewrite using `[MvPolynomial.pderiv_X_of_ne hj.symm]`. Simplify using the standard rewrite rules. Introduce `h`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ x) h`. Rewrite using `[this, shiftPoly_add, shiftPoly_mul, shiftPoly_mul, shiftPoly_mul, hp, shiftPoly_X, shiftPoly_C, MvPolynomial.pderiv_mul, pderiv_shiftGen]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma shiftPoly_dirD [Fintype ι] (b : κ → ι → K) (k : κ) (Q : MvPolynomial ι K) :
     shiftPoly b (dirD (b k) Q) = MvPolynomial.pderiv k (shiftPoly b Q) := by
@@ -164,7 +164,7 @@ lemma shiftPoly_dirD [Fintype ι] (b : κ → ι → K) (k : κ) (Q : MvPolynomi
       shiftPoly_C, MvPolynomial.pderiv_mul, pderiv_shiftGen]
 
 /- English proof (translation)
-Unfold `hasseDir`. Rewrite using `[shiftPoly_dirD, MvPolynomial.coeff_pderiv]`. Simplify using `[mul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma hasseDir_dirD [Fintype ι] (b : κ → ι → K) (k : κ) (β : κ →₀ ℕ) (Q : MvPolynomial ι K) :
     hasseDir b β (dirD (b k) Q) =
@@ -180,7 +180,7 @@ section Jet
 variable {K ι : Type} [Field K]
 
 /- English proof (translation)
-Rewrite using `[Formalism.DworkPowerSeriesWeights.jetPair_eq_sum _ _ {κ} MvPolynomial.support_monomial_subset, Finset.sum_singleton, MvPolynomial.coeff_monomial, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma jetPair_monomial_left (κ : ι →₀ ℕ) (a : K) (F : MvPowerSeries ι K) :
     jetPair (MvPolynomial.monomial κ a) F =
@@ -190,15 +190,15 @@ lemma jetPair_monomial_left (κ : ι →₀ ℕ) (a : K) (F : MvPowerSeries ι K
     MvPolynomial.coeff_monomial, if_pos rfl]
 
 /- English proof (translation)
-Proceed by induction on `Q using MvPolynomial.induction_on' with`. Consider the case `add p q hp hq`. Rewrite using `[map_add, Formalism.DworkPowerSeriesWeights.jetPair_add_left, Formalism.DworkPowerSeriesWeights.jetPair_add_left, hp, hq]`. Consider the case `monomial κ a`. Rewrite using `[MvPolynomial.pderiv_monomial, jetPair_monomial_left, jetPair_monomial_left]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : κ x = 0`. Rewrite using `[h]`. Establish `: MvPowerSeries.coeff κ (MvPowerSeries.X x * G) = 0`. Rewrite using `[MvPowerSeries.X, MvPowerSeries.coeff_monomial_mul, if_neg]`. Introduce `hle`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hle x` as an intermediate fact. Simplify using `[h] at this`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Choose the witnesses or unpack the hypotheses as in `⟨μ, rfl⟩ : ∃ μ, κ = μ + Finsupp.single x 1 := by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `⟨κ - Finsupp.single x 1, ?_⟩` and prove the remaining obligations. Rewrite using `[tsub_add_cancel_of_le]`. Rewrite using `[Finsupp.single_le_iff]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[add_tsub_cancel_right, Formalism.DworkPowerSeriesWeights.mfact_add_single, add_comm μ, MvPowerSeries.X, MvPowerSeries.coeff_add_monomial_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finsupp.add_apply, Finsupp.single_eq_same, Nat.cast_mul, Nat.cast_add, Nat.cast_one, one_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma jetPair_X_mul (Q : MvPolynomial ι K) (x : ι) (G : MvPowerSeries ι K) :
     jetPair Q (MvPowerSeries.X x * G) = jetPair (MvPolynomial.pderiv x Q) G := by
@@ -229,7 +229,7 @@ lemma jetPair_X_mul (Q : MvPolynomial ι K) (x : ι) (G : MvPowerSeries ι K) :
       ring
 
 /- English proof (translation)
-Unfold `linS dirD`. Rewrite using `[Finset.sum_mul, Formalism.DworkPowerSeriesWeights.jetPair_sum_right, Formalism.DworkPowerSeriesWeights.jetPair_sum_left]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, Formalism.DworkPowerSeriesWeights.jetPair_C_mul_right, Formalism.DworkPowerSeriesWeights.jetPair_C_mul_left, jetPair_X_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma jetPair_linS_mul [Fintype ι] (c : ι → K) (Q : MvPolynomial ι K) (G : MvPowerSeries ι K) :
     jetPair Q (linS c * G) = jetPair (dirD c Q) G := by
@@ -241,11 +241,11 @@ lemma jetPair_linS_mul [Fintype ι] (c : ι → K) (Q : MvPolynomial ι K) (G : 
 end Jet
 
 /- English proof (translation)
-Introduce `β`. Proceed by induction on `β using Finsupp.induction with`. Consider the case `zero => exact h0`. Consider the case `single_add a n f _ _ ih => clear * - ih hs`. Proceed by induction on `n with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simpa using ih`. Consider the case `succ n ihn`. Establish `: Finsupp.single a (n + 1) + f = (Finsupp.single a n + f) + Finsupp.single a 1`. Rewrite using `[Finsupp.single_add]`. Normalize the expressions using the abelian group laws.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[this]`. Conclude with `hs _ _ ihn`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma finsupp_step_induction {κ : Type} (P : (κ →₀ ℕ) → Prop) (h0 : P 0)
     (hs : ∀ β k, P β → P (β + Finsupp.single k 1)) : ∀ β, P β := by
@@ -265,17 +265,17 @@ lemma finsupp_step_induction {κ : Type} (P : (κ →₀ ℕ) → Prop) (h0 : P 
       exact hs _ _ ihn
 
 /- English proof (translation)
-Introduce `K ι κ _ _ _ b β`. Proceed by induction on `β using finsupp_step_induction with`. Consider the case `h0`. Introduce `Q G`. Simplify using `[hasseDir_zero_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Consider the case `hs β k ih`. Introduce `Q G`. Establish `h1 : (∏ k', linS (b k') ^ (β + Finsupp.single k 1 : κ →₀ ℕ) k') = linS (b k) * ∏ k', linS (b k') ^ β k'`. Simplify using `only [Finsupp.add_apply, pow_add, Finset.prod_mul_distrib]`. Rewrite using `[mul_comm]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[Finset.prod_eq_single k]`. Simplify using the standard rewrite rules. Introduce `k' _ hk'`. Simplify using `[hk'.symm]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ k) h`. Establish `h2 : (∏ k', ((β + Finsupp.single k 1 : κ →₀ ℕ) k').factorial) = (β k + 1) * ∏ k', (β k').factorial`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ k), ← Finset.mul_prod_erase _ (fun k' => (β k').factorial) (Finset.mem_univ k)]`. Establish `: ∏ k' ∈ Finset.univ.erase k, ((β + Finsupp.single k 1 : κ →₀ ℕ) k').factorial = ∏ k' ∈ Finset.univ.erase k, (β k').factorial` using `Finset.prod_congr rfl fun j hj => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[(Finset.ne_of_mem_erase hj).symm]`. Rewrite using `[this]`. Simplify using `only [Finsupp.add_apply, Finsupp.single_eq_same, Nat.factorial_succ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, mul_assoc, jetPair_linS_mul, ih, hasseDir_dirD, Formalism.DworkPowerSeriesWeights.jetPair_C_mul_left, h2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem e_one_identity_of : JetPairingHasseIdentity := by
   classical
@@ -313,19 +313,19 @@ theorem e_one_identity_of : JetPairingHasseIdentity := by
     ring
 
 /- English proof (translation)
-The claim follows from `(DFunLike.congr_fun Finsupp.degree_eq_weight_one n).symm`.
+A detailed English derivation is pending.
 -/
 lemma weight_one_eq {ι : Type} (n : ι →₀ ℕ) : Finsupp.weight (1 : ι → ℕ) n = n.degree :=
   (DFunLike.congr_fun Finsupp.degree_eq_weight_one n).symm
 
 /- English proof (translation)
-Introduce `K ι κ _ _ b C`. Proceed by induction on `C with`. Consider the case `zero`. Introduce `f m S _ β hβ`. Establish `hne : (0 : κ →₀ ℕ) ≠ β`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Simplify using `at hβ`. Simplify using `only [Finset.univ_eq_empty, Finset.prod_empty, hasseDir, shiftPoly_one, MvPolynomial.coeff_one, if_neg hne]`. Consider the case `succ C ih`. Introduce `f m S h β hβ`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Fin.prod_univ_succ, hasseDir_mul]`. Use `Finset.sum_eq_zero fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Distinguish the cases in `h0 : m 0 < ∑ k ∈ S, x.1 k`. Rewrite using `[h 0 x.1 h0, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ih (fun c => f c.succ) (fun c => m c.succ) S (fun c => h c.succ) x.2, mul_zero]`. Rewrite `hβ` using `[Fin.sum_univ_succ, ← hx]`. Simplify using `only [Finsupp.add_apply, Finset.sum_add_distrib] at hβ`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem e_one_vanish_of : HasseDerivProdVanish := by
   classical
@@ -355,7 +355,7 @@ section Expand
 variable {K ι κ : Type} [Field K] [Fintype κ]
 
 /- English proof (translation)
-Rewrite using `[shiftPoly_eq, MvPolynomial.aeval_def, MvPolynomial.eval₂_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma shiftPoly_expand (b : κ → ι → K) (Q : MvPolynomial ι K) :
     shiftPoly b Q = ∑ d ∈ Q.support, MvPolynomial.C (MvPolynomial.C (MvPolynomial.coeff d Q)) *
@@ -367,9 +367,7 @@ def biHom (d : ℕ) (F : MvPolynomial κ (MvPolynomial ι K)) : Prop :=
   ∀ β n, MvPolynomial.coeff n (MvPolynomial.coeff β F) ≠ 0 → n.degree + β.degree = d
 
 /- English proof (translation)
-Introduce `β n h`. Rewrite `h` using `[MvPolynomial.coeff_add, MvPolynomial.coeff_add]`. Distinguish the cases in `h1 : MvPolynomial.coeff n (MvPolynomial.coeff β F) = 0`. Rewrite `h` using `[h1, zero_add]`. Conclude with `hG β n h`.
-
-Conclude with `hF β n h1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma biHom_add {d : ℕ} {F G : MvPolynomial κ (MvPolynomial ι K)} (hF : biHom d F)
     (hG : biHom d G) : biHom d (F + G) := by
@@ -381,16 +379,16 @@ lemma biHom_add {d : ℕ} {F G : MvPolynomial κ (MvPolynomial ι K)} (hF : biHo
   · exact hF β n h1
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact UpperTheory.Reformulated.B.Qf22.biHom_sum .. | (apply UpperTheory.Reformulated.B.Qf22.biHom_sum <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qf22.biHom_sum <;> assumption) | (apply @UpperTheory.Reformulated.B.Qf22.biHom_sum <;> assumption) | (intros; …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma biHom_sum {α : Type*} {d : ℕ} (s : Finset α) (F : α → MvPolynomial κ (MvPolynomial ι K))
     (h : ∀ a ∈ s, biHom d (F a)) : biHom d (∑ a ∈ s, F a) := by
   first | exact UpperTheory.Reformulated.B.Qf22.biHom_sum .. | (apply UpperTheory.Reformulated.B.Qf22.biHom_sum <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qf22.biHom_sum <;> assumption) | (apply @UpperTheory.Reformulated.B.Qf22.biHom_sum <;> assumption) | (intros; apply @UpperTheory.Reformulated.B.Qf22.biHom_sum <;> assumption) | (apply @UpperTheory.Reformulated.B.Qf22.biHom_sum <;> first | assumption | infer_instance) | exact @UpperTheory.Reformulated.B.Qf22.biHom_sum K ι κ ‹_› ‹_› α d s F h | exact @UpperTheory.Reformulated.B.Qf22.biHom_sum K ι κ ‹_› ‹_› α d s F | exact @UpperTheory.Reformulated.B.Qf22.biHom_sum K ι κ ‹_› ‹_› α d s | exact @UpperTheory.Reformulated.B.Qf22.biHom_sum K ι κ ‹_› ‹_› α d | exact @UpperTheory.Reformulated.B.Qf22.biHom_sum K ι κ ‹_› ‹_› α | exact @UpperTheory.Reformulated.B.Qf22.biHom_sum K ι κ ‹_› ‹_› | exact @UpperTheory.Reformulated.B.Qf22.biHom_sum K ι κ ‹_› | exact @UpperTheory.Reformulated.B.Qf22.biHom_sum K ι κ | exact @UpperTheory.Reformulated.B.Qf22.biHom_sum K ι | exact @UpperTheory.Reformulated.B.Qf22.biHom_sum K
 
 /- English proof (translation)
-Introduce `β n h`. Rewrite `h` using `[MvPolynomial.coeff_mul, MvPolynomial.coeff_sum]`. Take `⟨x, hx, h⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h`. Rewrite `h` using `[MvPolynomial.coeff_mul]`. Take `⟨y, hy, h⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hx`, `hy` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Establish `h1` using `hF x.1 y.1 (left_ne_zero_of_mul h)`. Establish `h2` using `hG x.2 y.2 (right_ne_zero_of_mul h)`. Rewrite using `[← hx, ← hy, map_add, map_add]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 lemma biHom_mul {d e : ℕ} {F G : MvPolynomial κ (MvPolynomial ι K)} (hF : biHom d F)
     (hG : biHom e G) : biHom (d + e) (F * G) := by
@@ -407,9 +405,9 @@ lemma biHom_mul {d e : ℕ} {F G : MvPolynomial κ (MvPolynomial ι K)} (hF : bi
   omega
 
 /- English proof (translation)
-Introduce `β n h`. Rewrite `h` using `[MvPolynomial.coeff_one]`. Use `split_ifs at h with h1`. Rewrite `h`, `with`, `h2` using `[MvPolynomial.coeff_one] at h split_ifs`. Rewrite using `[← h1, ← h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Conclude with `absurd rfl h`. Simplify using `at h`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma biHom_one : biHom 0 (1 : MvPolynomial κ (MvPolynomial ι K)) := by
   classical
@@ -424,7 +422,7 @@ lemma biHom_one : biHom 0 (1 : MvPolynomial κ (MvPolynomial ι K)) := by
   · simp at h
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simpa using biHom_one`. Consider the case `succ m ih`. Rewrite using `[pow_succ, Nat.succ_mul]`. Conclude with `biHom_mul ih hF`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma biHom_pow {d : ℕ} {F : MvPolynomial κ (MvPolynomial ι K)} (hF : biHom d F) (m : ℕ) :
     biHom (m * d) (F ^ m) := by
@@ -435,7 +433,7 @@ lemma biHom_pow {d : ℕ} {F : MvPolynomial κ (MvPolynomial ι K)} (hF : biHom 
     exact biHom_mul ih hF
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using biHom_one`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha]`. Conclude with `biHom_mul (h a (Finset.mem_insert_self _ _)) (ih fun a' ha' => h a' (Finset.mem_insert_of_mem ha'))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma biHom_prod {α : Type*} (s : Finset α) (d : α → ℕ)
     (F : α → MvPolynomial κ (MvPolynomial ι K)) (h : ∀ a ∈ s, biHom (d a) (F a)) :
@@ -449,9 +447,9 @@ lemma biHom_prod {α : Type*} (s : Finset α) (d : α → ℕ)
       (ih fun a' ha' => h a' (Finset.mem_insert_of_mem ha'))
 
 /- English proof (translation)
-Introduce `β n h`. Rewrite `h` using `[MvPolynomial.coeff_C]`. Use `split_ifs at h with h1`. Use `hp h` as an intermediate fact. Rewrite `this` using `[weight_one_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1, this]`. Simplify using the standard rewrite rules. Simplify using `at h`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma biHom_C {d : ℕ} {p : MvPolynomial ι K} (hp : p.IsHomogeneous d) :
     biHom d (MvPolynomial.C p : MvPolynomial κ (MvPolynomial ι K)) := by
@@ -466,9 +464,9 @@ lemma biHom_C {d : ℕ} {p : MvPolynomial ι K} (hp : p.IsHomogeneous d) :
   · simp at h
 
 /- English proof (translation)
-Introduce `β n h`. Rewrite `h` using `[MvPolynomial.coeff_X]`. Use `split_ifs at h with h1`. Rewrite `h`, `with`, `h2` using `[MvPolynomial.coeff_one] at h split_ifs`. Rewrite using `[← h1, ← h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Conclude with `absurd rfl h`. Simplify using `at h`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma biHom_X (k : κ) : biHom 1 (MvPolynomial.X k : MvPolynomial κ (MvPolynomial ι K)) := by
   classical
@@ -483,7 +481,7 @@ lemma biHom_X (k : κ) : biHom 1 (MvPolynomial.X k : MvPolynomial κ (MvPolynomi
   · simp at h
 
 /- English proof (translation)
-Unfold `shiftGen`. Use `biHom_add (biHom_C (MvPolynomial.isHomogeneous_X K x)) (biHom_sum _ _ fun k _ => ?_)` and prove the remaining obligations. Use `biHom_mul (biHom_C (κ := κ) (MvPolynomial.isHomogeneous_C ι (b k x))) (biHom_X (ι := ι) (K := K) k)` as an intermediate fact. Simplify using `using this`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma biHom_shiftGen (b : κ → ι → K) (x : ι) : biHom 1 (shiftGen b x) := by
   unfold shiftGen
@@ -493,9 +491,9 @@ lemma biHom_shiftGen (b : κ → ι → K) (x : ι) : biHom 1 (shiftGen b x) := 
   simpa using this
 
 /- English proof (translation)
-Rewrite using `[shiftPoly_expand]`. Use `biHom_sum _ _ fun n hn => ?_` and prove the remaining obligations. Establish `h1 : n.degree = d`. Rewrite using `[← weight_one_eq]`. Conclude with `hQ (MvPolynomial.mem_support_iff.mp hn)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `biHom_mul (biHom_C (κ := κ) (MvPolynomial.isHomogeneous_C ι (MvPolynomial.coeff n Q))) (biHom_prod n.support (fun i => n i * 1) (fun i => shiftGen b i ^ n i) fun i _ => biHom_pow (biHom_shiftGen b i) (n i))`. Simplify using `only [mul_one, zero_add] at h2`. Rewrite using `[← h1, Finsupp.degree_apply]`. Conclude with `h2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma biHom_shiftPoly (b : κ → ι → K) {d : ℕ} {Q : MvPolynomial ι K} (hQ : Q.IsHomogeneous d) :
     biHom d (shiftPoly b Q) := by
@@ -547,7 +545,7 @@ def biInt : Subring (MvPolynomial κ (MvPolynomial ι K)) where
 variable {K ι κ}
 
 /- English proof (translation)
-Introduce `β`. Rewrite using `[MvPolynomial.coeff_C]`. Use `split_ifs`. Conclude with `hp`. Conclude with `Subring.zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma C_mem_biInt {p : MvPolynomial ι K} (hp : p ∈ Formalism.DworkPowerSeriesWeights.opInt K ι) :
     (MvPolynomial.C p : MvPolynomial κ (MvPolynomial ι K)) ∈ biInt K ι κ := by
@@ -559,7 +557,7 @@ lemma C_mem_biInt {p : MvPolynomial ι K} (hp : p ∈ Formalism.DworkPowerSeries
   · exact Subring.zero_mem _
 
 /- English proof (translation)
-Introduce `β`. Rewrite using `[MvPolynomial.coeff_X]`. Use `split_ifs`. Conclude with `Subring.one_mem _`. Conclude with `Subring.zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma X_mem_biInt (k : κ) :
     (MvPolynomial.X k : MvPolynomial κ (MvPolynomial ι K)) ∈ biInt K ι κ := by
@@ -571,7 +569,7 @@ lemma X_mem_biInt (k : κ) :
   · exact Subring.zero_mem _
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[MvPolynomial.coeff_C]`. Use `split_ifs`. Conclude with `hc`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma C_mem_opInt {c : K} (hc : ‖c‖ ≤ 1) :
     (MvPolynomial.C c : MvPolynomial ι K) ∈ Formalism.DworkPowerSeriesWeights.opInt K ι := by
@@ -583,7 +581,7 @@ lemma C_mem_opInt {c : K} (hc : ‖c‖ ≤ 1) :
   · simp
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[MvPolynomial.coeff_X]`. Apply the tactic sequence `split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma X_mem_opInt (x : ι) : (MvPolynomial.X x : MvPolynomial ι K) ∈ Formalism.DworkPowerSeriesWeights.opInt K ι := by
   classical
@@ -592,7 +590,7 @@ lemma X_mem_opInt (x : ι) : (MvPolynomial.X x : MvPolynomial ι K) ∈ Formalis
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[shiftPoly_expand]`. Use `Subring.sum_mem _ fun n _ => Subring.mul_mem _ (C_mem_biInt (C_mem_opInt (hQ n))) (Subring.prod_mem _ fun x _ => Subring.pow_mem _ ?_ _)` and prove the remaining obligations. Unfold `shiftGen`. Conclude with `Subring.add_mem _ (C_mem_biInt (X_mem_opInt x)) (Subring.sum_mem _ fun k _ => Subring.mul_mem _ (C_mem_biInt (C_mem_opInt (hb k x))) (X_mem_biInt k))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma shiftPoly_mem_biInt [Fintype κ] (b : κ → ι → K) (Q : MvPolynomial ι K)
     (hQ : ∀ n, ‖MvPolynomial.coeff n Q‖ ≤ 1) (hb : ∀ k x, ‖b k x‖ ≤ 1) :
@@ -607,11 +605,11 @@ lemma shiftPoly_mem_biInt [Fintype κ] (b : κ → ι → K) (Q : MvPolynomial �
 end Integral
 
 /- English proof (translation)
-Introduce `K ι κ _ _ _ b β Q`. Use `⟨fun hQ hb n => shiftPoly_mem_biInt b Q hQ hb β n, fun d hQ => ?_, fun d hQ hd => ?_⟩` and prove the remaining obligations. Introduce `n hn`. Use `biHom_shiftPoly b hQ β n hn` as an intermediate fact. Rewrite `this` using `[Finsupp.degree_eq_sum β]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[weight_one_eq]`. Use linear arithmetic over natural numbers and integers. Use extensionality with `n`. Assume the negation of the conclusion as `hn`. Use `biHom_shiftPoly b hQ β n hn` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. By extensionality, compare the relevant components. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `this` using `[Finsupp.degree_eq_sum β]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem e_one_integral_of : HasseDerivIntegralHomogeneous := by
   intro K ι κ _ _ _ b β Q
@@ -635,22 +633,20 @@ def degLE (W : Finset κ) (n : ℕ) (F : MvPolynomial κ R) : Prop :=
   ∀ β, MvPolynomial.coeff β F ≠ 0 → ∑ k ∈ W, β k ≤ n
 
 /- English proof (translation)
-Introduce `β h`. Simplify using `at h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 lemma degLE_zero (W : Finset κ) (n : ℕ) : degLE W n (0 : MvPolynomial κ R) := by
   intro β h
   simp at h
 
 /- English proof (translation)
-Introduce `β hβ` and use `(h β hβ).trans hnm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma degLE_mono {W : Finset κ} {n m : ℕ} {F : MvPolynomial κ R} (h : degLE W n F)
     (hnm : n ≤ m) : degLE W m F := fun β hβ => (h β hβ).trans hnm
 
 /- English proof (translation)
-Introduce `β h`. Rewrite `h` using `[MvPolynomial.coeff_add]`. Distinguish the cases in `h1 : MvPolynomial.coeff β F = 0`. Rewrite `h` using `[h1, zero_add]`. Conclude with `hG β h`.
-
-Conclude with `hF β h1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma degLE_add {W : Finset κ} {n : ℕ} {F G : MvPolynomial κ R} (hF : degLE W n F)
     (hG : degLE W n G) : degLE W n (F + G) := by
@@ -662,16 +658,16 @@ lemma degLE_add {W : Finset κ} {n : ℕ} {F G : MvPolynomial κ R} (hF : degLE 
   · exact hF β h1
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact UpperTheory.Reformulated.B.Qf21.degLE_sum .. | (apply UpperTheory.Reformulated.B.Qf21.degLE_sum <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qf21.degLE_sum <;> assumption) | (apply @UpperTheory.Reformulated.B.Qf21.degLE_sum <;> assumption) | (intros; …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma degLE_sum {α : Type*} {W : Finset κ} {n : ℕ} (s : Finset α) (F : α → MvPolynomial κ R)
     (h : ∀ a ∈ s, degLE W n (F a)) : degLE W n (∑ a ∈ s, F a) := by
   first | exact UpperTheory.Reformulated.B.Qf21.degLE_sum .. | (apply UpperTheory.Reformulated.B.Qf21.degLE_sum <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qf21.degLE_sum <;> assumption) | (apply @UpperTheory.Reformulated.B.Qf21.degLE_sum <;> assumption) | (intros; apply @UpperTheory.Reformulated.B.Qf21.degLE_sum <;> assumption) | (apply @UpperTheory.Reformulated.B.Qf21.degLE_sum <;> first | assumption | infer_instance) | exact @UpperTheory.Reformulated.B.Qf21.degLE_sum κ R ‹_› α W n s F h | exact @UpperTheory.Reformulated.B.Qf21.degLE_sum κ R ‹_› α W n s F | exact @UpperTheory.Reformulated.B.Qf21.degLE_sum κ R ‹_› α W n s | exact @UpperTheory.Reformulated.B.Qf21.degLE_sum κ R ‹_› α W n | exact @UpperTheory.Reformulated.B.Qf21.degLE_sum κ R ‹_› α W | exact @UpperTheory.Reformulated.B.Qf21.degLE_sum κ R ‹_› α | exact @UpperTheory.Reformulated.B.Qf21.degLE_sum κ R ‹_› | exact @UpperTheory.Reformulated.B.Qf21.degLE_sum κ R | exact @UpperTheory.Reformulated.B.Qf21.degLE_sum κ
 
 /- English proof (translation)
-Introduce `β h`. Rewrite `h` using `[MvPolynomial.coeff_mul]`. Take `⟨x, hx, h⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h`. Rewrite `hx` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Establish `h1` using `hF x.1 (left_ne_zero_of_mul h)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `hG x.2 (right_ne_zero_of_mul h)`. Rewrite using `[← hx]`. Simplify using `only [Finsupp.add_apply, Finset.sum_add_distrib]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 lemma degLE_mul {W : Finset κ} {n m : ℕ} {F G : MvPolynomial κ R} (hF : degLE W n F)
     (hG : degLE W m G) : degLE W (n + m) (F * G) := by
@@ -687,9 +683,7 @@ lemma degLE_mul {W : Finset κ} {n m : ℕ} {F G : MvPolynomial κ R} (hF : degL
   omega
 
 /- English proof (translation)
-Introduce `β h`. Rewrite `h` using `[MvPolynomial.coeff_C]`. Use `split_ifs at h with h1`. Rewrite using `[← h1]`. Simplify using the standard rewrite rules.
-
-Conclude with `absurd rfl h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma degLE_C (W : Finset κ) (r : R) : degLE W 0 (MvPolynomial.C r : MvPolynomial κ R) := by
   classical
@@ -701,15 +695,15 @@ lemma degLE_C (W : Finset κ) (r : R) : degLE W 0 (MvPolynomial.C r : MvPolynomi
   · exact absurd rfl h
 
 /- English proof (translation)
-Simplify using `using degLE_C W (1 : R)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma degLE_one (W : Finset κ) : degLE W 0 (1 : MvPolynomial κ R) := by
   simpa using degLE_C W (1 : R)
 
 /- English proof (translation)
-Introduce `β h`. Rewrite `h` using `[MvPolynomial.coeff_X]`. Use `split_ifs at h with h1`. Rewrite using `[← h1]`. Simplify using `only [Finsupp.single_apply, Finset.sum_ite_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> omega`. Conclude with `absurd rfl h`.
+A detailed English derivation is pending.
 -/
 lemma degLE_X (W : Finset κ) (k : κ) : degLE W 1 (MvPolynomial.X k : MvPolynomial κ R) := by
   classical
@@ -722,9 +716,7 @@ lemma degLE_X (W : Finset κ) (k : κ) : degLE W 1 (MvPolynomial.X k : MvPolynom
   · exact absurd rfl h
 
 /- English proof (translation)
-Introduce `β h`. Rewrite `h` using `[MvPolynomial.coeff_X]`. Use `split_ifs at h with h1`. Rewrite using `[← h1]`. Simplify using `only [Finsupp.single_apply, Finset.sum_ite_eq, if_neg hk, le_refl]`.
-
-Conclude with `absurd rfl h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma degLE_X_of_notMem {W : Finset κ} {k : κ} (hk : k ∉ W) :
     degLE W 0 (MvPolynomial.X k : MvPolynomial κ R) := by
@@ -737,7 +729,7 @@ lemma degLE_X_of_notMem {W : Finset κ} {k : κ} (hk : k ∉ W) :
   · exact absurd rfl h
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using degLE_one W`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha]`. Conclude with `degLE_mul (h a (Finset.mem_insert_self _ _)) (ih fun a' ha' => h a' (Finset.mem_insert_of_mem ha'))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma degLE_prod {α : Type*} {W : Finset κ} (s : Finset α) (n : α → ℕ)
     (F : α → MvPolynomial κ R) (h : ∀ a ∈ s, degLE W (n a) (F a)) :
@@ -751,9 +743,9 @@ lemma degLE_prod {α : Type*} {W : Finset κ} (s : Finset α) (n : α → ℕ)
       (ih fun a' ha' => h a' (Finset.mem_insert_of_mem ha'))
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply']`. Use `degLE_sum _ _ fun σ _ => ?_` and prove the remaining obligations. Establish `h1 : degLE W 0 (((Equiv.Perm.sign σ : ℤ) : MvPolynomial κ R))`. Rewrite using `[← map_intCast (MvPolynomial.C : R →+* MvPolynomial κ R)]`. Conclude with `degLE_C W _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `degLE_mul h1 (degLE_prod Finset.univ n (fun c => N (σ c) c) fun c _ => h (σ c) c)` as an intermediate fact. Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 lemma degLE_det_col {l : ℕ} {W : Finset κ} (N : Matrix (Fin l) (Fin l) (MvPolynomial κ R))
     (n : Fin l → ℕ) (h : ∀ i c, degLE W (n c) (N i c)) : degLE W (∑ c, n c) N.det := by
@@ -766,7 +758,7 @@ lemma degLE_det_col {l : ℕ} {W : Finset κ} (N : Matrix (Fin l) (Fin l) (MvPol
   rwa [zero_add] at this
 
 /- English proof (translation)
-Rewrite using `[← Matrix.det_transpose]`. Conclude with `degLE_det_col N.transpose n fun i c => h c i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma degLE_det_row {l : ℕ} {W : Finset κ} (N : Matrix (Fin l) (Fin l) (MvPolynomial κ R))
     (n : Fin l → ℕ) (h : ∀ i c, degLE W (n i) (N i c)) : degLE W (∑ c, n c) N.det := by
@@ -774,19 +766,17 @@ lemma degLE_det_row {l : ℕ} {W : Finset κ} (N : Matrix (Fin l) (Fin l) (MvPol
   exact degLE_det_col N.transpose n fun i c => h c i
 
 /- English proof (translation)
-Distinguish the cases in `hv : ∀ i, v i = 0`. Establish `: (Matrix.of fun i c => M' i c + φ (v i) * η c) = M'`. Use extensionality with `i c`. Simplify using `[hv i]`. Rewrite using `[this]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `degLE_det_col M' (fun _ => 0) hM` as an intermediate fact. Conclude with `degLE_mono this (by simp)`. Use `push Not at hv`. Take `⟨i0, hi0⟩` from `hv`. Use `set N : Matrix (Fin l) (Fin l) (MvPolynomial κ R) := Matrix.of fun i c => M' i c + φ (v i) * η c with hN`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `set A : Matrix (Fin l) (Fin l) (MvPolynomial κ R) := Matrix.of fun i c => if i = i0 then N i0 c else M' i c + φ (-(v i / v i0)) * M' i0 c with hA`. Establish `hdet : A.det = N.det`. Use `Matrix.det_eq_of_forall_row_eq_smul_add_const (fun i => if i = i0 then 0 else φ (-(v i / v i0))) i0 (by simp) fun i c => ?_` and prove the remaining obligations. Distinguish the cases in `hi : i = i0`. Substitute `hi` using the available equality.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hA]`. Simplify using `only [hA, hN, Matrix.of_apply, if_neg hi]`. Establish `: φ (v i) = φ (v i / v i0) * φ (v i0)`. Rewrite using `[← map_mul, div_mul_cancel₀ _ hi0]`. Rewrite using `[this, map_neg]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hdet]`. Use `degLE_det_row (W := W) A (fun i => if i = i0 then 1 else 0) fun i c => by` as an intermediate fact. Distinguish the cases in `hi : i = i0`. Simplify using `only [hA, hN, Matrix.of_apply, if_pos hi]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `degLE_add (degLE_mono (hM _ _) (Nat.zero_le _)) ?_` and prove the remaining obligations. Simplify using `using degLE_mul (hφ (v i0)) (hη c)`. Simplify using `only [hA, Matrix.of_apply, if_neg hi]`. Use `degLE_add (hM _ _) ?_` and prove the remaining obligations. Simplify using `using degLE_mul (hφ (-(v i / v i0))) (hM i0 c)`.
-
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma degLE_det_rankOne {K : Type} [Field K] {l : ℕ} {W : Finset κ} (φ : K →+* MvPolynomial κ R)
     (hφ : ∀ a, degLE W 0 (φ a)) (M' : Matrix (Fin l) (Fin l) (MvPolynomial κ R)) (v : Fin l → K)
@@ -835,14 +825,14 @@ section Minor
 variable {K σ κ : Type} [Field K] [DecidableEq σ] [Fintype κ]
 
 /- English proof (translation)
-The claim follows from `degLE_C W _`.
+A detailed English derivation is pending.
 -/
 lemma degLE_CC (W : Finset κ) {ι : Type} (a : K) :
     degLE W 0 (MvPolynomial.C (MvPolynomial.C a) : MvPolynomial κ (MvPolynomial ι K)) :=
   degLE_C W _
 
 /- English proof (translation)
-Unfold `shiftGen`. Use `degLE_add (degLE_mono (degLE_C W _) (Nat.zero_le _)) (degLE_sum _ _ fun k _ => ?_)` and prove the remaining obligations. Simplify using `using degLE_mul (degLE_CC W (b k x)) (degLE_X W k)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma degLE_shiftGen {ι : Type} (W : Finset κ) (b : κ → ι → K) (x : ι) :
     degLE W 1 (shiftGen b x) := by
@@ -851,9 +841,9 @@ lemma degLE_shiftGen {ι : Type} (W : Finset κ) (b : κ → ι → K) (x : ι) 
   simpa using degLE_mul (degLE_CC W (b k x)) (degLE_X W k)
 
 /- English proof (translation)
-Unfold `shiftGen`. Use `degLE_add (degLE_C W _) (degLE_sum _ _ fun k _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hk : k ∈ W`. Rewrite using `[h k hk]`. Simplify using `using degLE_zero W 0`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using degLE_mul (degLE_CC W (b k x)) (degLE_X_of_notMem hk)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma degLE_shiftGen_zero {ι : Type} (W : Finset κ) (b : κ → ι → K) (x : ι)
     (h : ∀ k ∈ W, b k x = 0) : degLE W 0 (shiftGen b x) := by
@@ -865,9 +855,9 @@ lemma degLE_shiftGen_zero {ι : Type} (W : Finset κ) (b : κ → ι → K) (x :
   · simpa using degLE_mul (degLE_CC W (b k x)) (degLE_X_of_notMem hk)
 
 /- English proof (translation)
-Rewrite using `[shiftPoly_eq, minorAt, AlgHom.map_det]`. Use `congr 1`. Use `Matrix.ext fun i c => ?_` and prove the remaining obligations. Simplify using `only [AlgHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply]`. Rewrite using `[← shiftPoly_eq, shiftPoly_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[shiftPoly_mul, shiftPoly_C, shiftPoly_X]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma shiftPoly_minorAt {r0 r1 l : ℕ} (b : κ → σ × Fin r0 × Fin r1 → K) (s : σ)
     (T : Fin l → Fin r0 → K) (I : Fin l → Fin r1) :
@@ -885,17 +875,17 @@ variable {r0 r1 l : ℕ} (s : σ) (T : Fin l → Fin r0 → K) (I : Fin l → Fi
   (ξ : κ → Fin r0 → K) (col : κ → Fin r1)
 
 /- English proof (translation)
-Rewrite using `[shiftPoly_minorAt]`. Establish `hcard : ((univ.image I) ∩ J).card = ∑ c : Fin l, if I c ∈ J then 1 else 0`. Rewrite using `[← Finset.card_filter, ← Finset.card_image_of_injective _ hI]`. Use `congr 1`. Use extensionality with `y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `only [Finset.mem_inter, Finset.mem_image, Finset.mem_univ, true_and, Finset.mem_filter]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨c, rfl⟩, hc⟩`. Conclude with `⟨c, hc, rfl⟩`. Introduce and unpack `⟨c, hc, rfl⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨c, rfl⟩, hc⟩`. Rewrite using `[hcard]`. Use `degLE_det_col _ _ fun i c => ?_` and prove the remaining obligations. Simplify using `only [Matrix.of_apply]`. Use `degLE_sum _ _ fun a _ => ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hc : I c ∈ J`. Rewrite using `[if_pos hc]`. Simplify using `using degLE_mul (degLE_CC S (T i a)) (degLE_shiftGen S _ (s, a, I c))`. Rewrite using `[if_neg hc]`. Use `degLE_mul (degLE_CC S (T i a)) (degLE_shiftGen_zero S (fun k => colDir (pos k) (ξ k) (col k)) (s, a, I c) fun k hk => by` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `colDir`. Rewrite using `[if_neg]`. Introduce and unpack `⟨h1, h2⟩`. Simplify using `only at h1 h2`. Conclude with `hc (h2 ▸ hS k hk h1.symm))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 lemma degLE_minor_col (hI : Function.Injective I) (S : Finset κ) (J : Finset (Fin r1))
     (hS : ∀ k ∈ S, pos k = s → col k ∈ J) :
@@ -931,11 +921,9 @@ lemma degLE_minor_col (hI : Function.Injective I) (S : Finset κ) (J : Finset (F
     simpa using this
 
 /- English proof (translation)
-Distinguish the cases in `hI : Function.Injective I`. Assume the negation of the conclusion as `h`. Conclude with `absurd (degLE_minor_col s T I pos ξ col hI S J hS β h) (not_le.mpr hβ)`. Establish `: minorAt s T I = 0`. Unfold `Function.Injective at hI`.
+Consider separately whether the proposition holds or fails. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Use `push Not at hI`. Take `⟨c, c', hcc, hne⟩` from `hI`. Unfold `minorAt`. Use `Matrix.det_zero_of_column_eq hne fun i => ?_` and prove the remaining obligations. Simplify using `only [Matrix.of_apply, hcc]`.
-
-Rewrite using `[this, hasseDir_zero_right]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma hits_col (S : Finset κ) (J : Finset (Fin r1)) (hS : ∀ k ∈ S, pos k = s → col k ∈ J)
     (β : κ →₀ ℕ) (hβ : ((univ.image I) ∩ J).card < ∑ k ∈ S, β k) :
@@ -954,17 +942,15 @@ lemma hits_col (S : Finset κ) (J : Finset (Fin r1)) (hS : ∀ k ∈ S, pos k = 
     rw [this, hasseDir_zero_right]
 
 /- English proof (translation)
-Rewrite using `[shiftPoly_minorAt]`. Use `set φ : K →+* MvPolynomial κ (MvPolynomial (σ × Fin r0 × Fin r1) K) := (MvPolynomial.C).comp MvPolynomial.C with hφ`. Establish `key` using `degLE_det_rankOne (W := W) φ (fun a => degLE_CC W a) (Matrix.of fun (i c : Fin l) => ∑ a, MvPolynomial.C (MvPolynomial.C (T i a)) * (MvPolynomial.C (MvPolynomial.X (s, a, I c)) + ∑ k ∈ Wᶜ, MvPolynomial.C (MvPolynomial.C (colDir (pos k) (ξ k) (col k) (s, a, I c))) * MvPolynomial.X …`. Simplify using `only [Matrix.of_apply]`. Use `degLE_sum _ _ fun a _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `degLE_mul (degLE_CC W (ι := σ × Fin r0 × Fin r1) (T i a)) (degLE_add (degLE_C W (MvPolynomial.X (s, a, I c))) (degLE_sum Wᶜ (fun k => MvPolynomial.C (MvPolynomial.C (colDir (pos k) (ξ k) (col k) (s, a, I c))) * MvPolynomial.X k) fun k hk => by` as an intermediate fact. Simplify using `using degLE_mul (degLE_CC W (K := K) (ι := σ × Fin r0 × Fin r1) _) (degLE_X_of_notMem (Finset.mem_compl.mp hk))))`. Simplify using `using this)`. Use the proof step `(fun c => degLE_sum _ _ fun k _ => by`. Use `degLE_mul (degLE_CC W (K := K) (ι := σ × Fin r0 × Fin r1) (if s = pos k ∧ I c = col k then 1 else 0)) (degLE_X W k)` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[zero_add] at this)` and apply the resulting hypothesis. Use `key using 2` and compare the differences between its conclusion and the goal. Use `Matrix.ext fun i c => ?_` and prove the remaining obligations. Simplify using `only [Matrix.of_apply, shiftGen]`. Rewrite using `[hφ, RingHom.comp_apply, map_sum, map_sum, Finset.sum_mul, ← Finset.sum_add_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_sum_compl W, Finset.mul_sum, mul_add, mul_add, mul_add, Finset.mul_sum, Finset.mul_sum]`. Establish `: ∀ k ∈ W, MvPolynomial.C (MvPolynomial.C (T i a)) * (MvPolynomial.C (MvPolynomial.C (colDir (pos k) (ξ k) (col k) (s, a, I c))) * MvPolynomial.X k) = (MvPolynomial.C (MvPolynomial.C (T i a * ξ0 a)) * (MvPolynomial.C (MvPolynomial.C (if s = pos k ∧ I c = col k then 1 else 0)) * M …`. Introduce `k hk`. Unfold `colDir`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hW k hk]`. Use `split_ifs`. Simplify using `only [map_mul, map_one]`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
-
-Rewrite using `[Finset.sum_congr rfl this]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma degLE_minor_row (W : Finset κ) (ξ0 : Fin r0 → K) (hW : ∀ k ∈ W, ξ k = ξ0) :
     degLE W 1 (shiftPoly (fun k => colDir (pos k) (ξ k) (col k)) (minorAt s T I)) := by
@@ -1018,7 +1004,7 @@ lemma degLE_minor_row (W : Finset κ) (ξ0 : Fin r0 → K) (hW : ∀ k ∈ W, ξ
   ring
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Conclude with `absurd (degLE_minor_row s T I pos ξ col W ξ0 hW β h) (not_le.mpr hβ)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 lemma hits_row (W : Finset κ) (ξ0 : Fin r0 → K) (hW : ∀ k ∈ W, ξ k = ξ0) (β : κ →₀ ℕ)
     (hβ : 1 < ∑ k ∈ W, β k) :
@@ -1029,19 +1015,17 @@ lemma hits_row (W : Finset κ) (ξ0 : Fin r0 → K) (hW : ∀ k ∈ W, ξ k = ξ
 end Minor
 
 /- English proof (translation)
-Introduce `K σ κ _ _ _ r0 r1 l s T I pos ξ col β h`. Break down `h with ⟨k, hk⟩ | ⟨k, k', hne, hk, hk', -, h | h⟩ | ⟨k, hk, h | h⟩` into its components or cases. Use `hits_row s T I pos ξ col {k} (ξ k) (fun k' hk' => by rw [Finset.mem_singleton.mp hk']) β ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_singleton]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use `hits_row s T I pos ξ col {k, k'} (ξ k) (fun j hj => ?_) β ?_` and prove the remaining obligations. Break down `Finset.mem_insert.mp hj with rfl | hj` into its components or cases. Both sides reduce to the same expression. Rewrite using `[Finset.mem_singleton.mp hj, h]`. Rewrite using `[Finset.sum_pair hne]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Use `hits_col s T I pos ξ col {k, k'} {col k} (fun j hj _ => ?_) β ?_` and prove the remaining obligations. Break down `Finset.mem_insert.mp hj with rfl | hj` into its components or cases. Conclude with `Finset.mem_singleton_self _`. Rewrite using `[Finset.mem_singleton.mp hj, h]`.
+Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.mem_singleton_self _`. Rewrite using `[Finset.sum_pair hne]`. Establish `: ((univ.image I) ∩ {col k}).card ≤ 1` using `(Finset.card_le_card Finset.inter_subset_right).trans (by simp)`. Use linear arithmetic over natural numbers and integers. Use `hits_col s T I pos ξ col {k} ∅ (fun j hj hp => ?_) β ?_` and prove the remaining obligations.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hp` using `[Finset.mem_singleton.mp hj]`. Conclude with `absurd hp h`. Rewrite using `[Finset.sum_singleton, Finset.inter_empty, Finset.card_empty]`. Use linear arithmetic over natural numbers and integers. Use `hits_col s T I pos ξ col {k} {col k} (fun j hj _ => ?_) β ?_` and prove the remaining obligations.
+Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[Finset.mem_singleton.mp hj]`. Conclude with `Finset.mem_singleton_self _`. Establish `: (univ.image I) ∩ {col k} = ∅`. Use extensionality with `y`. Simplify using `only [Finset.mem_inter, Finset.mem_image, Finset.mem_univ, true_and, Finset.mem_singleton, Finset.notMem_empty, iff_false]`.
-
-Introduce and unpack `⟨⟨c, rfl⟩, hc⟩`. Conclude with `h ⟨c, hc⟩`. Rewrite using `[Finset.sum_singleton, this, Finset.card_empty]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem minor_hits : MinorHits := by
   classical

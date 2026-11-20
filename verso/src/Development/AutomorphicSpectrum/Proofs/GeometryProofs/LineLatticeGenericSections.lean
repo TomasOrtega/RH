@@ -6,7 +6,7 @@ open AlgebraicGeometry CategoryTheory Limits GlobalTheory.CompanionTheory.Ar Glo
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `h.bij.2 a`. Use `⟨g, ?_⟩` and prove the remaining obligations. Rewrite using `[← hg]`. Simplify using `only [genMap, genPt, TopCat.Presheaf.stalkSpecializes_refl, Category.id_comp]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mem_regAt_genPt_of_isCptGen {X : Scheme.{0}} {Ω : Type} [Field Ω]
     {ξ : Spec (CommRingCat.of Ω) ⟶ X} (h : IsCptGen ξ) (a : Ω) :
@@ -18,7 +18,7 @@ theorem mem_regAt_genPt_of_isCptGen {X : Scheme.{0}} {Ω : Type} [Field Ω]
   rfl
 
 /- English proof (translation)
-Introduce `o ho` and use `⟨fun h0 => ho (hi (by rw [h0, map_zero])), mem_regAt_genPt_of_isCptGen h _, mem_regAt_genPt_of_isCptGen h _⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem genPt_mem_genFibre_of_isCptGen {X : Scheme.{0}} {Ω : Type} [Field Ω]
     {ξ : Spec (CommRingCat.of Ω) ⟶ X} (h : IsCptGen ξ) (O : Type) [CommRing O] [Algebra O Ω]
@@ -28,17 +28,17 @@ theorem genPt_mem_genFibre_of_isCptGen {X : Scheme.{0}} {Ω : Type} [Field Ω]
     mem_regAt_genPt_of_isCptGen h _⟩
 
 /- English proof (translation)
-Introduce `X Ω _ ξ O _ _ _ s _ hs hi hξ hc L t ht u`. Establish `ht0 : t ≠ 0` using `(ht _ (genPt_mem_genFibre_of_isCptGen hξ O hi)).1`. Prove the components needed by the constructor for the conclusion. Introduce `hu`. Establish `hreg : ∀ p ∈ genFibre O ξ, u / t ∈ regAt ξ p`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `p hp`. Establish `h1` using `hu p hp`. Rewrite `h1` using `[(ht p hp).2]`. Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.1 h1`. Use `replace hc : (c : Ω) * t = u := hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hc, mul_div_cancel_right₀ _ ht0]`. Conclude with `c.2`. Take `⟨x, y, hy, e⟩` from `hc _ ((GlobalTheory.T.regular_everywhere_isIntegral X Ω ξ O s hs hi hξ (u / t)).2 hreg)`. Use `⟨x, y, hy, ?_⟩` and prove the remaining obligations. Rewrite using `[← e]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Assume the hypotheses and unpack their components.
 
-Clear the denominators using the available nonvanishing facts. Introduce and unpack `⟨x, y, hy, e⟩ p hp`. Rewrite using `[(ht p hp).2]`. Establish `hx : algebraMap O Ω x ∈ regAt ξ p`. Distinguish the cases in `h0 : x = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h0, map_zero]`. Conclude with `zero_mem _`. Conclude with `(hp x h0).2.1`. Establish `hyu` using `hp y hy`. Use `Submodule.mem_span_singleton.2 ⟨⟨_, mul_mem hx hyu.2.2⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Express the relevant statement in the definitionally equal form `algebraMap O Ω x * (algebraMap O Ω y)⁻¹ * t = u`. Use `hyu.1` as an intermediate fact. Rewrite using `[mul_right_comm, ← e]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem mem_lat_genFibre_iff_const_mul : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (O : Type) [CommRing O] [IsDomain O] [Algebra O Ω] (s : X ⟶ Spec (CommRingCat.of O)) [IsProper s], ξ ≫ s = Spec.map (CommRingCat.ofHom (algebraMap O Ω)) → Function.Injective (algebraMap O Ω) → IsCptGen ξ → ConstClosed O Ω → ∀ (L : Lat ξ Ω) (t : Ω), (∀ p ∈ genFibre O ξ, L.IsGenAt p t) → ∀ u : Ω, (∀ p ∈ genFibre O ξ, u ∈ L p) ↔ ∃ x y : O, y ≠ 0 ∧ u * algebraMap O Ω y = algebraMap O Ω x * t := by
   intro X Ω _ ξ O _ _ _ s _ hs hi hξ hc L t ht u

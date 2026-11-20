@@ -15,7 +15,7 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι] {n : ι → ℕ}
 omit [DecidableEq ι] in
 
 /- English proof (translation)
-Consider the cases of `A`. Consider the cases of `B`. Consider the cases of `hdeg`. Consider the cases of `hmet`. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem hermLine_eq_of {A B : HermLine n} (hdeg : A.deg = B.deg) (hmet : A.metric = B.metric) :
     A = B := by
@@ -28,9 +28,9 @@ theorem hermLine_eq_of {A B : HermLine n} (hdeg : A.deg = B.deg) (hmet : A.metri
 omit [DecidableEq ι] in
 
 /- English proof (translation)
-Use `hermLine_eq_of ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `b`. Express the relevant statement in the definitionally equal form `(k : ℤ) * M.deg b - 1 = k • M.deg b + -1`. Rewrite using `[nsmul_eq_mul, sub_eq_add_neg]`. Use function extensionality and compare the values at `z`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Express the relevant statement in the definitionally equal form `M.metric z ^ k / (HermLine.standard n).metric z = M.metric z ^ k * ((HermLine.standard n).metric z)⁻¹`. Rewrite using `[div_eq_mul_inv]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem powDivStd_eq (M : HermLine n) (k : ℕ) :
     powDivStd M k = (M.pow k).mul (HermLine.standard n).inv := by
@@ -46,7 +46,7 @@ theorem powDivStd_eq (M : HermLine n) (k : ℕ) :
 omit [DecidableEq ι] in
 
 /- English proof (translation)
-Use `hermLine_eq_of ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `b`. Express the relevant statement in the definitionally equal form `(a : ℤ) * (p * M.deg b + 1) = a • (p • M.deg b + 1)`. Simplify using `only [nsmul_eq_mul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem twistPow_eq (M : HermLine n) (p a : ℕ) (C : ℝ) :
     twistPow M p a C =
@@ -60,7 +60,7 @@ theorem twistPow_eq (M : HermLine n) (p a : ℕ) (C : ℝ) :
 omit [DecidableEq ι] in
 
 /- English proof (translation)
-Rewrite using `[twistPow_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem twistPow_deg (M : HermLine n) (p a : ℕ) (C : ℝ) :
     (twistPow M p a C).deg = a • (p • M.deg + (HermLine.standard n).deg) := by
@@ -70,7 +70,7 @@ theorem twistPow_deg (M : HermLine n) (p a : ℕ) (C : ℝ) :
 omit [DecidableEq ι] in
 
 /- English proof (translation)
-Rewrite using `[twistPow_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem twistPow_metric (M : HermLine n) (p a : ℕ) (C : ℝ) (z : Cone n ℂ) :
     (twistPow M p a C).metric z =
@@ -79,7 +79,7 @@ theorem twistPow_metric (M : HermLine n) (p a : ℕ) (C : ℝ) (z : Cone n ℂ) 
   rfl
 
 /- English proof (translation)
-Rewrite using `[IntegralSection.toFun, map_div₀, funFieldEquiv_mkF, funFieldEquiv_mkF]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem funFieldEquiv_toFun {P : ArithVariety n} {a : ι → ℤ} (e : IntegralSection P a) :
     funFieldEquiv P e.toFun = sectionVal e := by
@@ -87,7 +87,7 @@ theorem funFieldEquiv_toFun {P : ArithVariety n} {a : ι → ℤ} (e : IntegralS
   rfl
 
 /- English proof (translation)
-Rewrite using `[← funFieldEquiv_toFun, RingEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toFun_eq_symm_sectionVal {P : ArithVariety n} {a : ι → ℤ} (e : IntegralSection P a) :
     e.toFun = (funFieldEquiv P).symm (sectionVal e) := by
@@ -102,7 +102,7 @@ def blockCoordEquiv (k₀ : ι) : Fin (n k₀ + 1) ≃ Coord (fun _ : Unit ↦ n
 omit [Fintype ι] in
 
 /- English proof (translation)
-Use extensionality with `f`. Rewrite using `[oneBlockIdeal, ArithVariety.projIdeal, Ideal.mem_comap, Ideal.mem_comap, Ideal.mem_comap, rename_rename]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem oneBlockIdeal_eq_comap_projIdeal (P : ArithVariety n) (k₀ : ι) :
     oneBlockIdeal P k₀ = (P.projIdeal k₀).comap (rename (blockCoordEquiv (n := n) k₀)) := by
@@ -114,13 +114,13 @@ theorem oneBlockIdeal_eq_comap_projIdeal (P : ArithVariety n) (k₀ : ι) :
 omit [Fintype ι] in
 
 /- English proof (translation)
-Establish `heval : ∀ f : MvPolynomial (Coord (fun _ : Unit ↦ n k₀)) ℤ, evalCone (fun _ : Unit ↦ w) f = eval₂ (Int.castRingHom ℂ) w (rename (blockCoordEquiv (n` using `n) k₀).symm f) := by`. Introduce `f`. Rewrite using `[evalCone, eval₂_rename]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨hw, hf⟩`. Use `⟨fun _ ↦ hw, fun f hfI ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[heval]`. Use `hf _ ?_` and prove the remaining obligations. Rewrite using `[oneBlockIdeal_eq_comap_projIdeal, Ideal.mem_comap, rename_rename, Equiv.self_comp_symm, rename_id_apply]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hfI`. Introduce and unpack `⟨hw, hf⟩`. Use `⟨hw (), fun f hfI ↦ ?_⟩` and prove the remaining obligations. Rewrite `hfI` using `[oneBlockIdeal_eq_comap_projIdeal, Ideal.mem_comap]`. Establish `h` using `hf _ hfI`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[heval, rename_rename, Equiv.symm_comp_self, rename_id_apply]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem mem_oneBlockPoints_iff (P : ArithVariety n) (k₀ : ι) (w : Fin (n k₀ + 1) → ℂ) :
     w ∈ oneBlockPoints P k₀ ↔
@@ -158,7 +158,7 @@ theorem pullFS_metric (k₀ : ι) (z : Cone n ℂ) :
 omit [DecidableEq ι] in
 
 /- English proof (translation)
-Rewrite using `[pullFS_metric]`. Express the relevant statement in the definitionally equal form `∏ _u : Unit, l2Norm (z k₀) = _`. Rewrite using `[Fintype.prod_unique]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem pullFS_metric_eq_l2Norm (k₀ : ι) (z : Cone n ℂ) :
     (pullFS n k₀).metric z = l2Norm (z k₀) := by

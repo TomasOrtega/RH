@@ -55,7 +55,7 @@ def fourierPi (ψ : AddChar F Circle) (f : (ι → F) → ℂ) (y : ι → F) : 
 variable {ψ : AddChar F Circle}
 
 /- English proof (translation)
-The claim follows from `continuous_id.dotProduct continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem continuous_dotProduct_right (y : ι → F) : Continuous fun x : ι → F => x ⬝ᵥ y :=
   continuous_id.dotProduct continuous_const
@@ -64,14 +64,14 @@ variable (hψ : Continuous ψ) (hψ1 : ψ ≠ 1)
 include hψ
 
 /- English proof (translation)
-The claim follows from `(continuous_subtype_val.comp hψ).comp hg`.
+A detailed English derivation is pending.
 -/
 theorem continuous_char_comp {g : (ι → F) → F} (hg : Continuous g) :
     Continuous fun x => (ψ (g x) : ℂ) :=
   (continuous_subtype_val.comp hψ).comp hg
 
 /- English proof (translation)
-The claim follows from `(hf.1.continuous.mul (continuous_char_comp hψ (continuous_dotProduct_right y))).integrable_of_hasCompactSupport hf.2.mul_right`.
+A detailed English derivation is pending.
 -/
 theorem integrable_mul_char_of_mem_schwartzBruhatPi {f : (ι → F) → ℂ}
     (hf : f ∈ schwartzBruhatPi F ι) (y : ι → F) :

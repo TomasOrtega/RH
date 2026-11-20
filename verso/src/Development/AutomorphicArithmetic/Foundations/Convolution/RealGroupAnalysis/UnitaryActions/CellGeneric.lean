@@ -7,9 +7,9 @@ open scoped Classical
 open UpperTheory.ConvolutionTheory.R2
 
 /- English proof (translation)
-Establish `hu : IsUnit (a * d + (-(b * c)))`. Rewrite using `[← sub_eq_add_neg, h]`. Conclude with `isUnit_one`. Break down `IsLocalRing.isUnit_or_isUnit_of_isUnit_add hu with h1 | h1` into its components or cases. Conclude with `Or.inr (isUnit_of_mul_isUnit_right h1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[IsUnit.neg_iff]`. Conclude with `Or.inl (isUnit_of_mul_isUnit_right h1)`.
+Prove the first alternative. A detailed English derivation is pending.
 -/
 private theorem unit_or_unit {R : Type} [CommRing R] [IsLocalRing R] {a b c d : R}
     (h : a * d - b * c = 1) : IsUnit c ∨ IsUnit d := by
@@ -21,7 +21,7 @@ private theorem unit_or_unit {R : Type} [CommRing R] [IsLocalRing R] {a b c d : 
     exact Or.inl (isUnit_of_mul_isUnit_right h1)
 
 /- English proof (translation)
-Establish `h : ((j : ℕ) : A F) = algebraMap F (A F) (j : F)` using `(map_natCast _ j).symm`. Rewrite using `[h]`. Conclude with `(IsUnit.mk0 (j : F) (Nat.cast_ne_zero.2 hj.ne')).map _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem nat_isUnit {F : Type} [Field F] [NumberField F] (j : ℕ) (hj : 0 < j) :
     IsUnit ((j : ℕ) : A F) := by
@@ -30,7 +30,7 @@ private theorem nat_isUnit {F : Type} [Field F] [NumberField F] (j : ℕ) (hj : 
   exact (IsUnit.mk0 (j : F) (Nat.cast_ne_zero.2 hj.ne')).map _
 
 /- English proof (translation)
-Use `unit_or_unit (a := f (g 0 0)) (b := f (g 0 1)) ?_` and prove the remaining obligations. Rewrite using `[← map_mul, ← map_mul, ← map_sub, specialLinear_det_entries, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem map_unit_or_unit {F : Type} [Field F] [NumberField F] {R : Type} [CommRing R]
     [IsLocalRing R] (f : A F →+* R) (g : G1 F) : IsUnit (f (g 1 0)) ∨ IsUnit (f (g 1 1)) := by
@@ -38,7 +38,7 @@ private theorem map_unit_or_unit {F : Type} [Field F] [NumberField F] {R : Type}
   rw [← map_mul, ← map_mul, ← map_sub, specialLinear_det_entries, map_one]
 
 /- English proof (translation)
-Set `f : A F →+* w.Completion` to `(Pi.evalRingHom (fun w : InfinitePlace F => w.Completion) w).comp (p1 F)`. Take `⟨n, hn⟩` from `cellLocal w.Completion (G1 F) s (fun g => f (g 1 0)) (fun g => f (g 1 1)) (fun j h0 _ => by simpa using (nat_isUnit (F := F) j h0).map f) (fun g _ => map_unit_or_unit f g)`. Conclude with `⟨n, fun g hg => (hn g hg).ne_zero⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem inf_step {F : Type} [Field F] [NumberField F] (s : Finset (G1 F)) (w : InfinitePlace F) :
     ∃ n : ℕ, ∀ g ∈ s, (g 1 0).1 w + (g 1 1).1 w * (n : w.Completion) ≠ 0 := by
@@ -50,22 +50,22 @@ private theorem inf_step {F : Type} [Field F] [NumberField F] (s : Finset (G1 F)
   exact ⟨n, fun g hg => (hn g hg).ne_zero⟩
 
 /- English proof (translation)
-Conclude with `Valuation.Integers.isUnit_iff_valuation_eq_one (Valuation.integer.integers _)`.
+A detailed English derivation is pending.
 -/
 private theorem isUnit_int_iff {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
     (x : v.adicCompletionIntegers F) : IsUnit x ↔ Valued.v (x : v.adicCompletion F) = 1 := by
   exact Valuation.Integers.isUnit_iff_valuation_eq_one (Valuation.integer.integers _)
 
 /- English proof (translation)
-Distinguish the cases in `hgood : (∀ g ∈ s, IntAt v g) ∧ ∀ j : ℕ, 0 < j → j ≤ s.card → Valued.v (j : v.adicCompletion F) = 1`. Take `⟨hint, hval⟩` from `hgood`. Set `c : {g // g ∈ s} → v.adicCompletionIntegers F` to `fun g => ⟨pv v (g.1 1 0), hint g.1 g.2 1 0⟩`. Set `d : {g // g ∈ s} → v.adicCompletionIntegers F` to `fun g => ⟨pv v (g.1 1 1), hint g.1 g.2 1 1⟩`. Set `a : {g // g ∈ s} → v.adicCompletionIntegers F` to `fun g => ⟨pv v (g.1 0 0), hint g.1 g.2 0 0⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `b : {g // g ∈ s} → v.adicCompletionIntegers F` to `fun g => ⟨pv v (g.1 0 1), hint g.1 g.2 0 1⟩`. Take `⟨n, hn⟩` from `cellLocal (v.adicCompletionIntegers F) {g // g ∈ s} s.attach c d (fun j h0 hj => by`. Rewrite using `[isUnit_int_iff]`. Simplify `hj))` using `using hval j h0 (by simpa`. Use the proof step `(fun g _ => by`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `unit_or_unit (a := a g) (b := b g) (Subtype.ext ?_)` and prove the remaining obligations. Establish `h` using `congrArg (pv v) (specialLinear_det_entries g.1)`. Rewrite `h` using `[map_sub, map_mul, map_mul, map_one]`. Simplify `h)` using `[a, b, c, d]`. Establish `key : ∀ g ∈ s, Valued.v (pv v (g 1 0) + pv v (g 1 1) * (n : v.adicCompletion F)) = 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg`. Establish `h` using `(isUnit_int_iff v _).1 (hn ⟨g, hg⟩ (Finset.mem_attach _ _))`. Simplify `h` using `[c, d]`. Use `⟨n, fun g hg h0 => ?_, fun _ _ => key⟩` and prove the remaining obligations. Establish `h` using `key g hg`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[h0, map_zero]`. Conclude with `zero_ne_one h`. Take `⟨n, hn⟩` from `cellLocal (v.adicCompletion F) (G1 F) s (fun g => pv v (g 1 0)) (fun g => pv v (g 1 1)) (fun j h0 _ => by simpa using (nat_isUnit (F := F) j h0).map (pv v)) (fun g _ => map_unit_or_unit (pv v) g)`. Conclude with `⟨n, fun g hg => (hn g hg).ne_zero, fun h1 h2 => absurd ⟨h1, h2⟩ hgood⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem fin_step {F : Type} [Field F] [NumberField F] (s : Finset (G1 F))
     (v : HeightOneSpectrum (𝓞 F)) :
@@ -102,9 +102,9 @@ private theorem fin_step {F : Type} [Field F] [NumberField F] (s : Finset (G1 F)
     exact ⟨n, fun g hg => (hn g hg).ne_zero, fun h1 h2 => absurd ⟨h1, h2⟩ hgood⟩
 
 /- English proof (translation)
-Use `Filter.Eventually.and ((Filter.eventually_all_finset s).2 fun g _ => eventually_intAt g) ?_` and prove the remaining obligations. Establish `h : ∀ j ∈ Finset.Icc 1 s.card, ∀ᶠ v : HeightOneSpectrum (𝓞 F) in cofinite, Valued.v (j : v.adicCompletion F) = 1`. Introduce `j hj`. Establish `hu` using `((isUnit_adele_iff _).1 (nat_isUnit (F := F) j (Finset.mem_Icc.1 hj).1)).2.2`. Use `filter_upwards [hu] with v hv`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (((j : ℕ) : A F)).2 v = (j : v.adicCompletion F)` using `map_natCast (pv v) j`. Rewrite `hv` using `[e]`. Then use the resulting hypothesis. Use `filter_upwards [(Filter.eventually_all_finset _).2 h] with v hv j h0 hj`. Conclude with `hv j (Finset.mem_Icc.2 ⟨h0, hj⟩)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem eventually_good {F : Type} [Field F] [NumberField F] (s : Finset (G1 F)) :
     ∀ᶠ v : HeightOneSpectrum (𝓞 F) in cofinite, (∀ g ∈ s, IntAt v g) ∧
@@ -121,11 +121,9 @@ private theorem eventually_good {F : Type} [Field F] [NumberField F] (s : Finset
   exact hv j (Finset.mem_Icc.2 ⟨h0, hj⟩)
 
 /- English proof (translation)
-Introduce `F _ _ s`. Use `choose ni hi using inf_step s`. Use `choose nf hf hf' using fin_step s`. Set `x : A F` to `(fun w => (ni w : w.Completion), ⟨fun v => (nf v : v.adicCompletion F), Filter.Eventually.of_forall fun v => natCast_mem _ _⟩)`. Use `⟨x, fun g hg => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `IsUnit ((g * nL x) 1 0)`. Establish `h00 : (nL x) 0 0 = 1` using `rfl`. Establish `h10 : (nL x) 1 0 = x` using `rfl`. Rewrite using `[specialLinear_mul_entry, h00, h10, mul_one, isUnit_adele_iff]`. Use `⟨fun w => hi w g hg, fun v => hf v g hg, ?_⟩` and prove the remaining obligations.
-
-Use `filter_upwards [eventually_good s] with v hv`. Conclude with `hf' v hv.1 hv.2 g hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.cellGeneric :
     ∀ (F : Type) [Field F] [NumberField F] (s : Finset (G1 F)), ∃ x : A F, ∀ g ∈ s, g * nL x ∈ Cell F := by

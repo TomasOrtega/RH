@@ -7,7 +7,7 @@ import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.StatementK
 open PowerSeries GlobalTheory.Honda Formalism.L2.Th1.CM
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Honda.mulBy_coefLe_of_kernel_prime_to` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FFormalGroupMulByIntegralOfKernelPrimeToL.lean&line=18#L18)
 -/

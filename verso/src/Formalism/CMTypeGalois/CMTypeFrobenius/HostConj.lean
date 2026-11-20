@@ -12,18 +12,18 @@ namespace CMConjugation
 variable {q : Fin 3 → ℕ} {E : Type} [Field E] [NumberField E] {α : Fin 3 → E}
 
 /- English proof (translation)
-The claim follows from `(hq.1 i).1.pos`.
+A detailed English derivation is pending.
 -/
 lemma q_pos (hq : Hyp3 q) (i : Fin 3) : 0 < q i := (hq.1 i).1.pos
 
 /- English proof (translation)
-Rewrite using `[hα.1 i]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma alpha_sq (hα : IsHost q α) (i : Fin 3) : α i ^ 2 = -(q i : E) := by
   rw [hα.1 i]; push_cast; ring
 
 /- English proof (translation)
-Introduce `h0`. Establish `h1` using `alpha_sq hα i`. Rewrite `h1` using `[h0, zero_pow two_ne_zero, zero_eq_neg]`. Conclude with `(q_pos hq i).ne' (by exact_mod_cast h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma alpha_ne_zero (hq : Hyp3 q) (hα : IsHost q α) (i : Fin 3) : α i ≠ 0 := by
   intro h0
@@ -32,9 +32,9 @@ lemma alpha_ne_zero (hq : Hyp3 q) (hα : IsHost q α) (i : Fin 3) : α i ≠ 0 :
   exact (q_pos hq i).ne' (by exact_mod_cast h1)
 
 /- English proof (translation)
-Establish `hsq : σ (α i) ^ 2 = α i ^ 2`. Rewrite using `[← map_pow, hα.1 i, map_intCast]`. Unfold `galSign`. Use `split_ifs with hc`. Simplify using `[hc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `sq_eq_sq_iff_eq_or_eq_neg.1 hsq with h1 | h1` into its components or cases. Conclude with `absurd h1 hc`. Simplify using `[h1]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma sigma_alpha (hα : IsHost q α) (σ : Gal(E/ℚ)) (i : Fin 3) :
     σ (α i) = (((galSign α σ i : ℤˣ) : ℤ) : E) * α i := by
@@ -48,11 +48,11 @@ lemma sigma_alpha (hα : IsHost q α) (σ : Gal(E/ℚ)) (i : Fin 3) :
     · simp [h1]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i`. Rewrite using `[sigma_alpha hα σ i, h]`. Simplify using `[cc]`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `i`. Unfold `galSign cc`. Rewrite using `[if_neg]`. Rewrite using `[h i]`. Introduce `h2`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h3 : (2 : E) * α i = 0` using `by linear_combination -h2`. Break down `mul_eq_zero.1 h3 with h4 | h4` into its components or cases. Conclude with `two_ne_zero h4`. Conclude with `alpha_ne_zero hq hα i h4`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 lemma galSign_eq_cc_iff (hq : Hyp3 q) (hα : IsHost q α) (σ : Gal(E/ℚ)) :
     galSign α σ = cc ↔ ∀ i, σ (α i) = -α i := by
@@ -72,7 +72,7 @@ lemma galSign_eq_cc_iff (hq : Hyp3 q) (hα : IsHost q α) (σ : Gal(E/ℚ)) :
     · exact alpha_ne_zero hq hα i h4
 
 /- English proof (translation)
-Rewrite using `[← IntermediateField.adjoin_toSubalgebra_of_isAlgebraic (fun x _ => Algebra.IsAlgebraic.isAlgebraic x), hα.2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma algAdjoin_eq_top (hα : IsHost q α) : Algebra.adjoin ℚ (Set.range α) = ⊤ := by
   rw [← IntermediateField.adjoin_toSubalgebra_of_isAlgebraic
@@ -80,11 +80,11 @@ lemma algAdjoin_eq_top (hα : IsHost q α) : Algebra.adjoin ℚ (Set.range α) =
   rfl
 
 /- English proof (translation)
-Use `set z := φ (α i) with hzdef`. Establish `hz : z ^ 2 = -(q i : ℂ)`. Rewrite using `[hzdef, ← map_pow, alpha_sq hα i, map_neg, map_natCast]`. Establish `h1 : (starRingEnd ℂ z) ^ 2 = z ^ 2`. Rewrite using `[← map_pow, hz, map_neg, map_natCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `sq_eq_sq_iff_eq_or_eq_neg.1 h1 with h2 | h2` into its components or cases. It suffices to derive a contradiction. Establish `hre` using `Complex.conj_eq_iff_re.1 h2`. Establish `h3 : ((z.re ^ 2 : ℝ) : ℂ) = ((-(q i : ℝ) : ℝ) : ℂ)` using `by push_cast; rw [hre]; exact hz`. Establish `h4` using `Complex.ofReal_injective h3`.
+It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : (0 : ℝ) < q i` using `by exact_mod_cast q_pos hq i`. Use polynomial arithmetic with `[sq_nonneg z.re]`. Conclude with `h2`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 lemma phi_conj (hq : Hyp3 q) (hα : IsHost q α) (φ : E →+* ℂ) (i : Fin 3) :
     starRingEnd ℂ (φ (α i)) = -φ (α i) := by
@@ -104,18 +104,18 @@ lemma phi_conj (hq : Hyp3 q) (hα : IsHost q α) (φ : E →+* ℂ) (i : Fin 3) 
   · exact h2
 
 /- English proof (translation)
-Rewrite using `[map_ne_zero]`. Conclude with `alpha_ne_zero hq hα i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma phi_alpha_ne_zero (hq : Hyp3 q) (hα : IsHost q α) (φ : E →+* ℂ) (i : Fin 3) :
     φ (α i) ≠ 0 := by
   rw [map_ne_zero]; exact alpha_ne_zero hq hα i
 
 /- English proof (translation)
-Rewrite using `[galSign_eq_cc_iff hq hα]`. Prove the components needed by the constructor for the conclusion. Introduce `h i`. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[h, map_neg, phi_conj hq hα]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Establish `heq : (φ.comp (σ : E →+* E)).toRatAlgHom = ((starRingEnd ℂ).comp φ).toRatAlgHom`. Apply `AlgHom.ext_of_adjoin_eq_top (algAdjoin_eq_top hα)` to reduce the goal to its premises. Introduce and unpack `_ ⟨i, rfl⟩`. Simplify using `only [RingHom.toRatAlgHom_apply, RingHom.coe_comp, Function.comp_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `φ (σ (α i)) = starRingEnd ℂ (φ (α i))`. Rewrite using `[h i, map_neg, phi_conj hq hα]`. Introduce `x`. Use `congrArg (fun f => f x) heq` as an intermediate fact. Simplify using `using this`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma part1 (hq : Hyp3 q) (hα : IsHost q α) (φ : E →+* ℂ) (σ : Gal(E/ℚ)) :
     (∀ x, φ (σ x) = starRingEnd ℂ (φ x)) ↔ galSign α σ = cc := by
@@ -136,9 +136,9 @@ lemma part1 (hq : Hyp3 q) (hα : IsHost q α) (φ : E →+* ℂ) (σ : Gal(E/ℚ
     simpa using this
 
 /- English proof (translation)
-Introduce and unpack `⟨r, hr⟩`. Establish `h1 : p ∣ r * r` using `⟨m, hr.symm⟩`. Establish `h2 : p ∣ r` using `(hp.dvd_mul.1 h1).elim id id`. Take `⟨s, rfl⟩` from `h2`. Apply `hm` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h3 : p * m = p * (s * (p * s))` using `by rw [hr]; ring`. Rewrite using `[Nat.eq_of_mul_eq_mul_left hp.pos h3]`. Conclude with `Dvd.intro (s * s) (by ring)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma not_sq_mul (p m : ℕ) (hp : p.Prime) (hm : ¬ p ∣ m) : ¬ IsSquare (p * m) := by
   rintro ⟨r, hr⟩
@@ -155,51 +155,47 @@ end CMConjugation
 open CMConjugation
 
 /- English proof (translation)
-Introduce `q hq E _ _ α hα`. Take `⟨hGal, hfin, hbij, _hmul⟩` from `hH q hq E α hα`. Establish `h1 : ∀ (φ : E →+* ℂ) (σ : Gal(E/ℚ)), (∀ x, φ (σ x) = starRingEnd ℂ (φ x)) ↔ galSign α σ = cc` using `part1 hq hα`. Take `⟨σc, hσc⟩` from `hbij.2 cc`. Establish `hTC : IsTotallyComplex E`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[InfinitePlace.isComplex_iff, ComplexEmbedding.isReal_iff]`. Introduce `h`. Establish `h2` using `RingHom.congr_fun h (α 0)`. Rewrite `h2` using `[ComplexEmbedding.conjugate_coe_eq, phi_conj hq hα]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : (2 : ℂ) * w.embedding (α 0) = 0` using `by linear_combination -h2`. Break down `mul_eq_zero.1 h3 with h4 | h4` into its components or cases. Conclude with `two_ne_zero h4`. Conclude with `phi_alpha_ne_zero hq hα _ 0 h4`. Establish `hCM : IsCMField E`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `IsCMField.of_forall_isConj E (σ := σc) (fun φ => ?_)` and prove the remaining obligations. Use extensionality with `x`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq]`. Conclude with `((h1 φ σc).2 hσc x).symm`. Establish `h5 : ∀ x : E, x ∈ maximalRealSubfield E ↔ ∀ σ : Gal(E/ℚ), galSign α σ = cc → σ x = x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `x`. Rewrite using `[mem_maximalRealSubfield_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hx σ hσ`. Set `φ : E →+* ℂ` to `Classical.choice (inferInstance : Nonempty _)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[(h1 φ σ).2 hσ x]`. Conclude with `hx φ`. Introduce `h φ`. Use `(h1 φ σc).2 hσc x` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[h σc hσc]`. Conclude with `this.symm`. Establish `h4 : Module.finrank ℚ (maximalRealSubfield E) = 4`. Establish `h` using `Module.finrank_mul_finrank ℚ (maximalRealSubfield E) E`. Rewrite `h` using `[Algebra.IsQuadraticExtension.finrank_eq_two (maximalRealSubfield E) E, hfin]`.
+Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result.
 
-Use linear arithmetic over natural numbers and integers. Use `⟨h1, hCM, ?_, h4, h5, ?_⟩` and prove the remaining obligations. Introduce `_`. Set `φ : E →+* ℂ` to `Classical.choice (inferInstance : Nonempty _)`. Apply `(h1 φ _).1` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `x`. Rewrite using `[AlgEquiv.restrictScalars_apply, IsCMField.complexEmbedding_complexConj]`. Establish `hcc : ∀ σ : Gal(E/ℚ), galSign α σ = cc → ∀ i, σ (α i) = -α i` using `fun σ hσ => (galSign_eq_cc_iff hq hα σ).1 hσ set K := IntermediateField.adjoin ℚ ({α 0 * α 1, α 1 * α 2} : Set E) with hKdef`. Set `L : IntermediateField ℚ E` to `(maximalRealSubfield E).toIntermediateField (fun r => (h5 _).2 (fun σ _ => σ.commutes r))`. Establish `hKL : K ≤ L`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce `x hx`. Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff] at hx`. Use `show x ∈ maximalRealSubfield E`. Rewrite using `[h5]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `σ hσ`. Break down `hx with rfl | rfl` into its components or cases. Rewrite using `[map_mul, hcc σ hσ, hcc σ hσ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_mul, hcc σ hσ, hcc σ hσ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hp` using `fun i => (hq.1 i).1`. Establish `hndvd : ∀ i j, i ≠ j → ¬ q i ∣ q j` using `fun i j hij h => hq.2.ne hij ((Nat.prime_dvd_prime_iff_eq (hp i) (hp j)).1 h)`. Establish `key : ∀ n : ℕ, ¬ IsSquare n → ¬ IsSquare (n : ℚ)` using `fun n h => by`. Rewrite using `[Rat.isSquare_natCast_iff]` and apply the resulting hypothesis.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hKfin : Module.finrank ℚ K = 4`. Set `β : Fin 2 → K` to `![⟨α 0 * α 1, IntermediateField.subset_adjoin ℚ _ (by simp)⟩, ⟨α 1 * α 2, IntermediateField.subset_adjoin ℚ _ (by simp)⟩]`. Set `a : Fin 2 → ℤ` to `![((q 0 * q 1 : ℕ) : ℤ), ((q 1 * q 2 : ℕ) : ℤ)]`. Establish `hmq' : @IsMQ 2 K _ K.algebra' a β`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Apply `Subtype.ext` to reduce the goal to its premises. Use `fin_cases i`. Simplify using `[β, a, mul_pow, alpha_sq hα]`. Simplify using `[β, a, mul_pow, alpha_sq hα]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Apply `IntermediateField.map_injective K.val` to reduce the goal to its premises. Rewrite using `[IntermediateField.adjoin_map, ← AlgHom.fieldRange_eq_map, IntermediateField.fieldRange_val]`. Use `show _ = IntermediateField.adjoin ℚ ({α 0 * α 1, α 1 * α 2} : Set E)`. Use `congr 1`. Use extensionality with `x`.
+Both sides reduce to the same expression. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Simplify using `only [Set.mem_image, Set.mem_range, Set.mem_insert_iff, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨i, rfl⟩, rfl⟩ fin_cases i`. Use `left`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Use `right`. Both sides reduce to the same expression. Introduce and unpack `(rfl | rfl)`. Conclude with `⟨β 0, ⟨0, rfl⟩, rfl⟩`. Conclude with `⟨β 1, ⟨1, rfl⟩, rfl⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hmq : IsMQ a β` using `by convert hmq'; exact Subsingleton.elim _ _`. Establish `hns : ∀ S : Finset (Fin 2), S.Nonempty → ¬ IsSquare (∏ i ∈ S, (a i : ℚ))`. Introduce `S hS`. Establish `hS' : S = {0} ∨ S = {1} ∨ S = Finset.univ` using `by revert S; decide`. Break down `hS' with rfl | rfl | rfl` into its components or cases.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (∏ i ∈ ({0} : Finset (Fin 2)), (a i : ℚ)) = ((q 0 * q 1 : ℕ) : ℚ)`. Simplify using `[a]`. Rewrite using `[e]; exact key _ (not_sq_mul _ _ (hp 0) (hndvd 0 1 (by decide)))`. Establish `e : (∏ i ∈ ({1} : Finset (Fin 2)), (a i : ℚ)) = ((q 1 * q 2 : ℕ) : ℚ)`. Simplify using `[a]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite using `[e]; exact key _ (not_sq_mul _ _ (hp 1) (hndvd 1 2 (by decide)))`. Establish `e : (∏ i ∈ (Finset.univ : Finset (Fin 2)), (a i : ℚ)) = ((q 0 * (q 1 * q 1 * q 2) : ℕ) : ℚ)`. Simplify using `[a, Fin.prod_univ_two]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `key _ (not_sq_mul _ _ (hp 0) ?_)` and prove the remaining obligations. Introduce `h`. Break down `(hp 0).dvd_mul.1 h with h | h` into its components or cases. Break down `(hp 0).dvd_mul.1 h with h | h` into its components or cases. Conclude with `hndvd 0 1 (by decide) h`.
-
-Conclude with `hndvd 0 1 (by decide) h`. Conclude with `hndvd 0 2 (by decide) h`. Use `(hK 2 K a β hmq hns).1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Evaluate the numerical expressions.
-
-Establish `hLfin : Module.finrank ℚ L = 4` using `h4`. Establish `hKL'` using `IntermediateField.eq_of_le_of_finrank_eq hKL (hKfin.trans hLfin.symm)`. Rewrite using `[hKL']`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem hostConj_of (hH : HostGalois) (hK : MQKummer) : HostConj := by
   intro q hq E _ _ α hα

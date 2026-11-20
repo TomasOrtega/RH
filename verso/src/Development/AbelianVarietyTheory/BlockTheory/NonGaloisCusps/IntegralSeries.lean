@@ -119,7 +119,7 @@ section Checks
 variable {T σ} {j : ℕ} (C : Cover T j σ)
 
 /- English proof (translation)
-Introduce `P _ h`. Establish `e : RingOfIntegers.mapRingHom (RingHom.id K) = RingHom.id _` using `RingHom.ext fun _ => rfl`. Rewrite `h` using `[e, Ideal.comap_id, Ideal.map_id]`. Conclude with `(Ideal.pow_lt_self P.asIdeal P.ne_bot P.isPrime.ne_top 2 le_rfl).not_ge h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 example (K : Type) [Field K] [NumberField K] (l : ℕ) : UnramOver (RingHom.id K) l := by
   intro P _ h

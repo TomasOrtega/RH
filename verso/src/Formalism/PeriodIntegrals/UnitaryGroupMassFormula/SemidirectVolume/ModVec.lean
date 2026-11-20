@@ -18,7 +18,7 @@ def L (w : Fin r → n → A) (s : Fin r → Fin r → A) : (n → A) →ₗ[A] 
     ∑ a, ((D.hL (w a)).comp D.pW).smulRight (D.e a)
 
 /- English proof (translation)
-Simplify using `only [L, LinearMap.add_apply, LinearMap.sub_apply, LinearMap.id_apply, LinearMap.sum_apply, LinearMap.smulRight_apply, LinearMap.comp_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem L_apply (w : Fin r → n → A) (s : Fin r → Fin r → A) (v : n → A) :
     D.L w s v = v + ∑ b, D.h (D.e b) v • (w b + ∑ a, s a b • D.e a) -
@@ -33,9 +33,9 @@ def PerpX (S : (n → A) →ₗ[A] (n → A)) : Prop :=
 variable {D}
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨b, rfl⟩` from `hx`. Rewrite using `[pX_apply]`. Simplify using `[fe H]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy]`. Consider the case `smul c x _ hx => rw [map_smul, hx]`.
+Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem pX_of_span (H : D.Hyp) {x : n → A} (hx : x ∈ Submodule.span A (Set.range D.e)) :
     D.pX x = x := by
@@ -49,19 +49,19 @@ theorem pX_of_span (H : D.Hyp) {x : n → A} (hx : x ∈ Submodule.span A (Set.r
   | smul c x _ hx => rw [map_smul, hx]
 
 /- English proof (translation)
-Rewrite using `[h_symm H (D.e a) w, hw.1 a, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem h_W_e (H : D.Hyp) {w : n → A} (hw : IsW D w) (a : Fin r) : D.h w (D.e a) = 0 := by
   rw [h_symm H (D.e a) w, hw.1 a, map_zero]
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, rfl⟩` from `hx`. Conclude with `h_W_e H hw a`. Consider the case `zero`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `D.hL w 0 = 0`. Conclude with `map_zero _`. Consider the case `add x y _ _ hx hy`. Express the relevant statement in the definitionally equal form `D.hL w (x + y) = 0`. Rewrite using `[map_add]`.
+Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `D.h w x + D.h w y = 0`. Rewrite using `[hx, hy, add_zero]`. Consider the case `smul c x _ hx`. Express the relevant statement in the definitionally equal form `D.hL w (c • x) = 0`. Rewrite using `[map_smul]`.
+Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `c • D.h w x = 0`. Rewrite using `[hx, smul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem h_W_span (H : D.Hyp) {w : n → A} (hw : IsW D w) {x : n → A}
     (hx : x ∈ Submodule.span A (Set.range D.e)) : D.h w x = 0 := by
@@ -84,11 +84,11 @@ theorem h_W_span (H : D.Hyp) {w : n → A} (hw : IsW D w) {x : n → A}
     rw [hx, smul_zero]
 
 /- English proof (translation)
-Establish `hpW : D.pW (S (D.f b)) = S (D.f b) - D.pU (S (D.f b))` using `by simp [pW]`. Establish `hXv : D.pXv (S (D.f b)) = D.f b`. Rewrite using `[pXv_apply]`. Establish `he : ∀ a, D.h (D.e a) (S (D.f b)) = if a = b then 1 else 0` using `fun a => by`. Rewrite using `[← hS.1 a, hU, H.ef]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[he]`. Establish `hz0 : D.h D.z (S (D.f b)) = 0`. Rewrite using `[← hS.2, hU, h_symm H, H.fz, map_zero]`. Establish `hz : D.pz (S (D.f b)) = 0`. Rewrite using `[pz_apply, hz0, mul_zero, zero_smul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hpW, pU_apply, hXv, hz, pX_apply]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem N_f (H : D.Hyp) {S : (n → A) →ₗ[A] (n → A)} (hS : D.FixEZ S) (hU : D.Uni S) (b : Fin r) :
     S (D.f b) = D.f b + D.pW (S (D.f b)) + ∑ a, D.h (D.f a) (S (D.f b)) • D.e a := by

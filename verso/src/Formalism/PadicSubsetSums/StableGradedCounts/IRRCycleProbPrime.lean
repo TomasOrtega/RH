@@ -5,13 +5,11 @@ open Equiv Equiv.Perm Finset
 namespace Formalism.IrreducibleCountingLemmas.GaloisIrreducibility
 
 /- English proof (translation)
-Establish `hB' : B = Finset.univ.filter (fun τ => c.Disjoint τ)`. Use extensionality with `τ`. Simplify using `[hB]`. Rewrite using `[hB', ← Fintype.card_subtype]`. Establish `e : {τ : Perm α // c.Disjoint τ} ≃ {f : Perm α // ∀ a, ¬ (a ∉ c.support) → f a = a}` using `Equiv.subtypeEquivRight fun τ => by`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h a ha`. Break down `h a with h1 | h1` into its components or cases. Conclude with `absurd (Perm.mem_support.1 (not_not.1 ha)) (not_not.2 h1)`. Conclude with `h1`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `h a`. Distinguish the cases in `ha : a ∈ c.support`. Conclude with `Or.inr (h a (not_not.2 ha))`. Use `left`. Assume the negation of the conclusion as `h1`.
-
-Conclude with `ha (Perm.mem_support.2 h1)`. Rewrite using `[Fintype.card_congr (e.trans (Equiv.Perm.subtypeEquivSubtypePerm _).symm), Fintype.card_perm, Fintype.card_subtype_compl, Fintype.card_coe]`.
+Prove the second alternative. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_disjoint_perm {α : Type} [Fintype α] [DecidableEq α] (c : Perm α)
     (B : Finset (Perm α)) (hB : ∀ τ, τ ∈ B ↔ c.Disjoint τ) :
@@ -39,31 +37,29 @@ theorem card_disjoint_perm {α : Type} [Fintype α] [DecidableEq α] (c : Perm �
     Fintype.card_subtype_compl, Fintype.card_coe]
 
 /- English proof (translation)
-Establish `hp2 : 2 ≤ p` using `hp.two_le`. Take `⟨C, hCdef⟩ : ∃ C : Finset (Perm (Fin N)), C = Finset.univ.filter (fun g => g.cycleType = {p})` from `⟨_, rfl⟩`. Establish `hmemT : ∀ σ : Perm (Fin N), p ∈ σ.cycleType ↔ ∃ c ∈ σ.cycleFactorsFinset, c.support.card = p`. Introduce `σ`. Rewrite using `[Equiv.Perm.cycleType_def, Multiset.mem_map]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.mem_val, Function.comp_apply]`. Establish `hCsupp : ∀ c ∈ C, c.IsCycle ∧ c.support.card = p`. Introduce `c hc`. Rewrite `hc` using `[hCdef, Finset.mem_filter]`. Establish `h2 : c.support.card = p` using `by rw [← Equiv.Perm.sum_cycleType, hc.2, Multiset.sum_singleton]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨?_, h2⟩` and prove the remaining obligations. Rewrite using `[← Equiv.Perm.card_cycleType_eq_one, hc.2, Multiset.card_singleton]`. Establish `hmemC : ∀ c : Perm (Fin N), c.IsCycle → c.support.card = p → c ∈ C`. Introduce `c hc hs`. Rewrite using `[hCdef, Finset.mem_filter]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨Finset.mem_univ _, by rw [hc.cycleType, hs]⟩`. Establish `hSU : S = C.biUnion (fun c => S.filter (fun σ => c ∈ σ.cycleFactorsFinset))`. Use extensionality with `σ`. Prove the components needed by the constructor for the conclusion. Introduce `hσ`.
+Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c, hc, hcp⟩` from `(hmemT σ).1 ((hS σ).1 hσ)`. Conclude with `Finset.mem_biUnion.2 ⟨c, hmemC c (Equiv.Perm.mem_cycleFactorsFinset_iff.1 hc).1 hcp, Finset.mem_filter.2 ⟨hσ, hc⟩⟩`. Introduce `h`. Take `⟨c, _, hσ⟩` from `Finset.mem_biUnion.1 h`. Conclude with `(Finset.mem_filter.1 hσ).1`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hdisj : (C : Set (Perm (Fin N))).PairwiseDisjoint (fun c => S.filter (fun σ => c ∈ σ.cycleFactorsFinset))`. Introduce `c hc c' hc' hne`. Use `show _root_.Disjoint _ _`. Rewrite using `[Finset.disjoint_left]`. Introduce `σ h1 h2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hd` using `Equiv.Perm.cycleFactorsFinset_pairwise_disjoint σ (Finset.mem_coe.2 (Finset.mem_filter.1 h1).2) (Finset.mem_coe.2 (Finset.mem_filter.1 h2).2) hne`. Establish `hcard` using `Finset.card_le_univ (c.support ∪ c'.support)`. Rewrite `hcard` using `[Finset.card_union_of_disjoint hd.disjoint_support, (hCsupp c (Finset.mem_coe.1 hc)).2, (hCsupp c' (Finset.mem_coe.1 hc')).2, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers. Establish `hF : ∀ c ∈ C, (S.filter (fun σ => c ∈ σ.cycleFactorsFinset)).card = (N - p).factorial`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `c hc`. Take `⟨hcyc, hcs⟩` from `hCsupp c hc`. Establish `hB` using `card_disjoint_perm c (Finset.univ.filter fun τ => c.Disjoint τ) (fun τ => by simp)`. Rewrite `hB` using `[Fintype.card_fin, hcs]`. Rewrite using `[← hB]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `symm`. Use `Finset.card_bij (fun τ _ => c * τ) ?_ ?_ ?_` and prove the remaining obligations. Introduce `τ hτ`. Establish `hd : c.Disjoint τ` using `(Finset.mem_filter.1 hτ).2`. Establish `hmem : c ∈ (c * τ).cycleFactorsFinset`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hd.cycleFactorsFinset_mul_eq_union, hcyc.cycleFactorsFinset_eq_singleton]`. Conclude with `Finset.mem_union_left _ (Finset.mem_singleton_self _)`. Conclude with `Finset.mem_filter.2 ⟨(hS _).2 ((hmemT _).2 ⟨c, hmem, hcs⟩), hmem⟩`. Introduce `τ _ τ' _ h`. Conclude with `mul_left_cancel h`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `σ hσ`. Establish `hmem` using `(Finset.mem_filter.1 hσ).2`. Establish `hd : c.Disjoint (σ * c⁻¹)` using `(Equiv.Perm.disjoint_mul_inv_of_mem_cycleFactorsFinset hmem).symm`. Use `⟨σ * c⁻¹, Finset.mem_filter.2 ⟨Finset.mem_univ _, hd⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hd.commute.eq, inv_mul_cancel_right]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hcard : S.card = C.card * (N - p).factorial`. Rewrite using `[hSU, Finset.card_biUnion hdisj, Finset.sum_congr rfl hF, Finset.sum_const, smul_eq_mul]`. Establish `hC : C.card = (p - 1).factorial * N.choose p`. Establish `h` using `Equiv.Perm.card_of_cycleType_singleton (α := Fin N) hp2 (by rw [Fintype.card_fin]; exact hpN)`. Rewrite `h` using `[Fintype.card_fin]`.
-
-Rewrite using `[hCdef]`. Conclude with `h`. Rewrite using `[hcard, hC]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Nat.mul_factorial_pred hp.ne_zero, Nat.choose_mul_factorial_mul_factorial hpN]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prime_cycle_perm_count (N p : ℕ) (hp : p.Prime) (hpN : p ≤ N) (hN2 : N < 2 * p)
     (S : Finset (Perm (Fin N))) (hS : ∀ σ, σ ∈ S ↔ p ∈ σ.cycleType) :
@@ -147,7 +143,7 @@ theorem prime_cycle_perm_count (N p : ℕ) (hp : p.Prime) (hpN : p ≤ N) (hN2 :
       rw [Nat.mul_factorial_pred hp.ne_zero, Nat.choose_mul_factorial_mul_factorial hpN]
 
 /- English proof (translation)
-Introduce `N p hp hpN hN2`. Conclude with `prime_cycle_perm_count N p hp hpN hN2 _ (fun σ => by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem prime_cycle_probability : CycleProbPrime := by
   intro N p hp hpN hN2

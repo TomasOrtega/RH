@@ -37,11 +37,11 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ}
 
 /- English proof (translation)
-Establish `hne : (discr D.host.E : ℝ) ≠ 0` using `by exact_mod_cast NumberField.discr_ne_zero D.host.E`. Establish `h1 : (1 : ℝ) ≤ |(discr D.host.E : ℝ)|`. Rewrite using `[← Int.cast_abs]`. Conclude with `Int.one_le_abs (NumberField.discr_ne_zero D.host.E)` after adjusting the coercions. Establish `hlog0 : 0 ≤ Real.log |(discr D.host.E : ℝ)|` using `Real.log_nonneg h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : (0 : ℝ) < D.R.f` using `by have := hH.f8; positivity`. Establish `heq : GlobalTheory.IndefiniteRowSideFullHecke.DifferentConjugateDefects.lrd D.host.E = Real.log |(discr D.host.E : ℝ)| / (2 * D.R.f)`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.DifferentConjugateDefects.lrd, NumberField.rootDiscr_def, Int.cast_abs, Real.log_rpow (abs_pos.2 hne), hH.deg]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[heq]`. Use `⟨by positivity, ?_⟩` and prove the remaining obligations. Rewrite using `[div_le_iff₀ (by positivity)]`. Use polynomial arithmetic with `[hH.disc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem lrd_bounds {PP A M : ℝ} (hH : HostNum D L PP A M) :
     0 ≤ GlobalTheory.IndefiniteRowSideFullHecke.DifferentConjugateDefects.lrd D.host.E ∧ GlobalTheory.IndefiniteRowSideFullHecke.DifferentConjugateDefects.lrd D.host.E ≤ 2 * L.sc.L := by
@@ -60,7 +60,7 @@ theorem lrd_bounds {PP A M : ℝ} (hH : HostNum D L PP A M) :
   nlinarith [hH.disc]
 
 /- English proof (translation)
-The claim follows from `|GlobalTheory.FlatLine.flatDegVal (dat p i) (Formalism.L2.DIV.ofRecord D L p.Del p.h0).logOm| ≤ 9 * D.R.r * L.sc.L := by have hd : p.T.Q.H.d = D.host.d := p.fw.laws.pins.1.1 have hpq : ((dat p i).p : ℝ) + (dat p i).q = D.R.r := by exact_mod_cast hW.sig.2.2 have hom := hW.om have …`.
+A detailed English derivation is pending.
 -/
 theorem abs_flatDegVal_le (p : PtAt ex Csz) (i : Fin D.R.m) {PP A M : ℝ} (hH : HostNum D L PP A M) (hW : WtNum p i PP) :
     |GlobalTheory.FlatLine.flatDegVal (dat p i) (Formalism.L2.DIV.ofRecord D L p.Del p.h0).logOm| ≤ 9 * D.R.r * L.sc.L := by
@@ -98,7 +98,7 @@ end GlobalTheory.CovTop.FlatSz
 namespace GlobalTheory.CovTop.FlatSz
 
 /- English proof (translation)
-The claim follows from `|GlobalTheory.FlatLine.flatDegVal (dat p i) (Formalism.L2.DIV.ofRecord (Fm.D x ι) (Fm.L x ι) p.Del p.h0).logOm| ≤ 9 * (Fm.D x ι).R.r * (Fm.L x ι).sc.L := by intro _ have h1 := GlobalTheory.CovTop.CovSz.covers_of_lifts (Q := fun Fm x _ ι _ _ _ PP => ∃ A, HostNum (Fm.D x ι) (Fm.L x …`.
+A detailed English derivation is pending.
 -/
 theorem flatDegVal_covers : Size → Covers fun Fm x _ ι p i Y PP _ =>
     |GlobalTheory.FlatLine.flatDegVal (dat p i) (Formalism.L2.DIV.ofRecord (Fm.D x ι) (Fm.L x ι) p.Del p.h0).logOm| ≤

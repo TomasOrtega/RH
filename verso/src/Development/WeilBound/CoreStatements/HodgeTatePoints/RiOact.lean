@@ -24,9 +24,9 @@ open GlobalTheory.CompanionTheory.Ar.GR
 namespace PositivityTheory.HtPt.Ri
 
 /- English proof (translation)
-Introduce `O _ _ _ P`. Take `⟨R, P₀, φ, hft, -, h₁, h₂⟩` from `GlobalTheory.KeyTf.exists_polAV_finiteType_subring O P`. Establish `: IsNoetherianRing R` using `Algebra.FiniteType.isNoetherianRing ℤ R`. Take `⟨o, -⟩` from `GlobalTheory.exists_oAct_int GlobalTheory.allSixLaws.1.cube _ P₀`. Take `⟨o', -⟩` from `Geo.Tor.polOActPull _ _ _ P₀ P φ h₁ h₂.symm ℤ o`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨o'⟩`.
+Supply the required witnesses or components.
 -/
 theorem oact_int : ∀ (O : Type) [CommRing O] [IsDomain O] [IsLocalRing O] (P : Out.PolAV (Geo.Tor.Sp O)), Nonempty (P.OAct ℤ) := by
   intro O _ _ _ P

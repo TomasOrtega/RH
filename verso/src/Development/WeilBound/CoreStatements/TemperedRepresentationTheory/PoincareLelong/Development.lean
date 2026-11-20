@@ -38,7 +38,7 @@ namespace PositivityTheory.Tls2.Pl
 open GroundTheory.Heights₂.Heights
 
 /- English proof (translation)
-Establish `hDeep : TubeDeepMass.Statement` using `TubeDeepMass.proof TubeDeepRankOne.proof (TubeDeepAreaCount.proof AutoClose.IsolatedPointsCount) HilbertSamuel.Closed.TubeDeepWeightMass`. Conclude with `StokesOnVariety.of_open HilbertSamuel.Closed.SheetImageAreaSet (TubeEuclMass.proof HilbertSamuel.Closed.TubeCollarMass hDeep)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem stokesOnVariety : GroundTheory.Heights₂.Heights.StokesOnVariety.Statement := by
   have hDeep : TubeDeepMass.Statement :=
@@ -49,7 +49,7 @@ theorem stokesOnVariety : GroundTheory.Heights₂.Heights.StokesOnVariety.Statem
     (TubeEuclMass.proof HilbertSamuel.Closed.TubeCollarMass hDeep)
 
 /- English proof (translation)
-Establish `hGood : LelongLimitGoodPoints.Statement` using `LelongLimitGoodPoints.proof hBr hLim hOrd`. Establish `hMass : LelongMassNearSmall.Statement` using `LelongMassNearSmall.proof hReg AutoClose.VarMassNearSmall`. Conclude with `LelongLimit.proof AutoClose.LelongLimitOffZero (LelongLimitOnZero.proof AutoClose.LelongLimitOffZero hGood hMass AutoClose.VarIntAdd) AutoClose.VarIntAdd`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lelongLimit (hBr : GroundTheory.Heights₂.Heights.DivisorGeneralPointBranches.Statement)
     (hLim : GroundTheory.Heights₂.Heights.LelongLimitAtBranches.Statement)
@@ -64,7 +64,7 @@ theorem lelongLimit (hBr : GroundTheory.Heights₂.Heights.DivisorGeneralPointBr
     AutoClose.VarIntAdd
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Heights₂.Heights.Targets.LelongPolyLimit.of_mult_weight GroundTheory.Heights₂.Heights.Targets.LocalMultComap.proof (GroundTheory.Heights₂.Heights.Targets.LelongWeightLimit.proof hL stokesOnVariety GroundTheory.Heights₂.Heights.AutoClose.Targets_LelongWeightDiff)`.
+A detailed English derivation is pending.
 -/
 theorem lelongPolyLimit (hL : GroundTheory.Heights₂.Heights.LelongLimit.Statement) :
     GroundTheory.Heights₂.Heights.Targets.LelongPolyLimit.Statement :=
@@ -73,14 +73,14 @@ theorem lelongPolyLimit (hL : GroundTheory.Heights₂.Heights.LelongLimit.Statem
       GroundTheory.Heights₂.Heights.AutoClose.Targets_LelongWeightDiff)
 
 /- English proof (translation)
-Introduce `K _ ι _ P e Ψ L A s h1 h2 h3 h4 h5` and use `(hAbs K ι P e Ψ L A s h1 h2 h3 h4 h5).aestronglyMeasurable`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ptsAbsMeasurable (hAbs : GroundTheory.Heights₂.Heights.Inter.PtsAbsIntegrable.Statement) :
     GroundTheory.Heights₂.Heights.Inter.PtsAbsMeasurable.Statement :=
   fun K _ ι _ P e Ψ L A s h1 h2 h3 h4 h5 => (hAbs K ι P e Ψ L A s h1 h2 h3 h4 h5).aestronglyMeasurable
 
 /- English proof (translation)
-Establish `hPI : ReciprocityTheory.ChartRestriction.G.Geo.PtsIntegrableStatement` using `PtsIntegrable.of_found hAbs HilbertSamuel.Closed.PtsSumMeasurable`. Establish `hStk : ReciprocityTheory.ChartRestriction.G.Geo.StokesStatement` using `StokesStatement.of_found (PtsBilinear.proof hAbs HilbertSamuel.Closed.PtsSumMeasurable) HilbertSamuel.Closed.SegrePartition (SegreChart.proof HilbertSamuel.Closed.SegreChartDim hSCI) stokesOnVariety`. Establish `hChart : Targets.LelongChartLimit.Statement` using `Targets.LelongChartLimit.proof hSCI HilbertSamuel.Closed.SegreChartDim Targets.ChartSectionNotMem.proof hLPL hCDC`. Conclude with `Targets.PoincareLelongAlt.of_found hStk (Targets.PoincareLelongRegularised.proof hPI (ptsAbsMeasurable hAbs)) (Targets.PoincareLelongLimit.proof hPI (Targets.LelongSectionLimit.proof hPI hChart))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem poincareLelong_of (hAbs : GroundTheory.Heights₂.Heights.Inter.PtsAbsIntegrable.Statement)
     (hSCI : GroundTheory.Heights₂.Heights.SegreChartIntegral.Statement)
@@ -99,7 +99,7 @@ theorem poincareLelong_of (hAbs : GroundTheory.Heights₂.Heights.Inter.PtsAbsIn
     (Targets.PoincareLelongLimit.proof hPI (Targets.LelongSectionLimit.proof hPI hChart))
 
 /- English proof (translation)
-The claim follows from `poincareLelong_of hAbs hSCI hCDC (lelongPolyLimit (lelongLimit hBr hLim hOrd hReg))`.
+A detailed English derivation is pending.
 -/
 theorem poincareLelong_of_leaves (hAbs : GroundTheory.Heights₂.Heights.Inter.PtsAbsIntegrable.Statement)
     (hSCI : GroundTheory.Heights₂.Heights.SegreChartIntegral.Statement)
@@ -111,7 +111,7 @@ theorem poincareLelong_of_leaves (hAbs : GroundTheory.Heights₂.Heights.Inter.P
   poincareLelong_of hAbs hSCI hCDC (lelongPolyLimit (lelongLimit hBr hLim hOrd hReg))
 
 /- English proof (translation)
-Introduce `K _ ι _ P n L A B s hP hL hA hB _ _ _ hB0 hs`. Establish `h : ReciprocityTheory.ChartRestriction.G.Geo.ArithmeticPoincareLelongFormula` using `poincareLelong_of_leaves hAbs hSCI hCDC hBr hLim hOrd hReg`. Conclude with `h K ι P n L A B s hP hL hA hB hB0 hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem poincareLelongInv_of_leaves (hAbs : GroundTheory.Heights₂.Heights.Inter.PtsAbsIntegrable.Statement)
     (hSCI : GroundTheory.Heights₂.Heights.SegreChartIntegral.Statement)

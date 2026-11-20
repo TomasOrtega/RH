@@ -9,11 +9,11 @@ set_option synthInstance.maxHeartbeats 200000
 section
 open NumberField Matrix IsLocalRing Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.GalOfCusp UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.Aut UpperTheory.V.UnitaryThreeInertia
 /- English proof (translation)
-Rewrite using `[totallyDisconnectedSpace_iff_connectedComponent_one]`. Use `Set.eq_singleton_iff_unique_mem.2 ⟨mem_connectedComponent, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `QuotientGroup.mk_surjective y`. Assume the negation of the conclusion as `hx`. Establish `hx' : x ∉ N` using `fun h => hx ((QuotientGroup.eq_one_iff x).2 h)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `ho : IsOpen {g : G | g * x ∉ N}` using `hN.isOpen_compl.preimage (continuous_mul_const x)`. Take `⟨U, hU⟩` from `ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one ho (by simpa using hx')`. Set `V : Subgroup (G ⧸ N)` to `U.toSubgroup.map (QuotientGroup.mk' N)`. Establish `hVo : IsOpen (V : Set (G ⧸ N))` using `QuotientGroup.isOpenMap_coe _ U.isOpen'`. Establish `hV : IsClopen (V : Set (G ⧸ N))` using `⟨V.isClosed_of_isOpen hVo, hVo⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨u, hu, hux⟩` from `hV.connectedComponent_subset V.one_mem hy`. Conclude with `hU (U.toSubgroup.inv_mem hu) (QuotientGroup.eq.1 hux)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem totDisc_quot {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G]
     [TotallyDisconnectedSpace G] (N : Subgroup G) [N.Normal] (hN : IsClosed (N : Set G)) :
@@ -31,11 +31,9 @@ private theorem totDisc_quot {G : Type} [Group G] [TopologicalSpace G] [IsTopolo
   obtain ⟨u, hu, hux⟩ := hV.connectedComponent_subset V.one_mem hy
   exact hU (U.toSubgroup.inv_mem hu) (QuotientGroup.eq.1 hux)
 /- English proof (translation)
-Introduce `h K _ _ _ hK Ω _ _ _ l _ ι c N _ e ψ o₁ hd S A F hF`. Take `⟨g₁, hg, H⟩` from `h K hK Ω l ι c N e ψ o₁ hd S A F hF`. Use `⟨g₁, hg, fun R _ _ _ u hu => ⟨(H R u hu).1, fun ξ r h1 h2 => ?_⟩⟩` and prove the remaining obligations. Use `haveI : IsGalois ℚ Ω := IsAlgClosure.isGalois ℚ Ω`. Use `haveI hcl := isClosed_NS Ω (S : Set Pl)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : CompactSpace (Gam Ω S) := inferInstance`. Use `haveI : T2Space (Gam Ω S) := inferInstance`. Use `haveI : TotallyDisconnectedSpace (Gam Ω S) := totDisc_quot _ hcl`. Establish `hOk` using `hostFrame_ok Ω c e ψ o₁ hd S A F hF`. Establish `hz : F.IsCharZeroPt g₁ r` using `isCharZeroPt_of_isPtHom (l := l) F hOk g₁ hg u hu (H R u hu).1 ξ r h1`.
-
-Conclude with `⟨matIrr_open Ω c e ψ o₁ hd S A F hF g₁ hg r hz h2, matIrr_cyc Ω c e ψ o₁ hd S A F hF g₁ hg r hz h2, (H R u hu).2 ξ r h1 h2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.UnitaryThreeInertia.unitary_lift_of_reduced_core :
     _root_.UpperTheory.V.Aut.ThmS6Core_s → _root_.UpperTheory.V.Aut.ThmS6_s := by

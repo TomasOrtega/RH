@@ -33,15 +33,15 @@ theorem realPt_apply (p : Fin g ⊕ Fin g → ℝ) :
     realPt τ p = (fun i => (p (.inl i) : ℂ)) + τ *ᵥ fun i => (p (.inr i) : ℂ) := rfl
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `p hp0`. Rewrite `hp0` using `[realPt_apply]`. Establish `him : ∀ i, ∑ j, (τ i j).im * p (.inr j) = 0`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg (fun z => (z i).im) hp0` as an intermediate fact. Simplify `this` using `[mulVec, dotProduct]`. Establish `hu : (fun i => p (.inr i)) = 0`. Assume the negation of the conclusion as `hne`. Establish `hpos` using `hp.dotProduct_mulVec_pos hne`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hzero : (τ.map Complex.im) *ᵥ (fun i => p (.inr i)) = 0`. Use function extensionality and compare the values at `i`. Simplify `him i` using `[mulVec, dotProduct]`. Rewrite `hpos` using `[hzero]`. Simplify using `at hpos`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hu' : ∀ j, p (.inr j) = 0` using `fun j => congrFun hu j`. Establish `hre : ∀ i, p (.inl i) = 0`. Introduce `i`. Use `congrArg (fun z => (z i).re) hp0` as an intermediate fact. Simplify `this` using `[mulVec, dotProduct, hu']`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use function extensionality and compare the values at `j`. Break down `j with i | i` into its components or cases. Conclude with `hre i`. Conclude with `hu' i`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem realPt_injective (hs : τ.IsSymm) (hp : (τ.map Complex.im).PosDef) :
     Function.Injective (realPt τ) := by
@@ -71,13 +71,13 @@ theorem realPt_injective (hs : τ.IsSymm) (hp : (τ.map Complex.im).PosDef) :
   · exact hu' i
 
 /- English proof (translation)
-Establish `hQ : realPt τ p ⬝ᵥ imInv τ *ᵥ realPt τ p = hermForm (imInv τ) (realPt τ p) (realPt τ p) + 2 * I * (realPt τ p ⬝ᵥ fun i => (p (.inr i) : ℂ))`. Establish `h` using `dot_imInv_eq_hermForm_add hp (fun i => p (.inr i)) (fun i => p (.inl i)) (realPt τ p)`. Rewrite `h`, the goal using `[realPt_apply]`. Conclude with `h`. Establish `hIm : (realPt τ p ⬝ᵥ fun i => (p (.inr i) : ℂ)).im = (fun i => p (.inr i)) ⬝ᵥ (τ.map Complex.im) *ᵥ fun i => p (.inr i)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[realPt_apply]`. Simplify using `[dotProduct, mulVec, Complex.mul_im, Finset.mul_sum, mul_comm, mul_left_comm]`. Establish `hre : ((π : ℂ) / 2 * (hermForm (imInv τ) (realPt τ p) (realPt τ p) + 2 * I * (realPt τ p ⬝ᵥ fun i => (p (.inr i) : ℂ)))).re = π / 2 * (hermForm (imInv τ) (realPt τ p) (realPt τ p)).re - π * (realPt τ p ⬝ᵥ fun i => (p (.inr i) : ℂ)).im`. Simplify using `[Complex.mul_re]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `key : ∀ A B C T : ℝ, 2 * A + B = C → Real.exp A ^ 2 * T * Real.exp B = T * Real.exp C`. Introduce `A B C T h`. Rewrite using `[← h, Real.exp_add, sq, ← Real.exp_add A A, two_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[canTh, hQ, norm_mul, mul_pow, Complex.norm_exp, hre, hIm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `key` to reduce the goal to its premises. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem norm_canTh_realPt (hp : (τ.map Complex.im).PosDef) (a b : Fin g → ℝ)
     (p : Fin g ⊕ Fin g → ℝ) :
@@ -117,7 +117,7 @@ def realCoord : (Fin g ⊕ Fin g → ℝ) ≃ₗ[ℝ] EuclideanSpace ℂ (Fin g)
     simp [Module.finrank_pi_fintype, mul_two])).trans (φ.symm.restrictScalars ℝ)
 
 /- English proof (translation)
-Simplify using `[realCoord]`.
+Simplify using the standard rewrite rules.
 -/
 theorem apply_realCoord (p : Fin g ⊕ Fin g → ℝ) : φ (realCoord hs hp φ p) = realPt τ p := by
   simp [realCoord]
@@ -129,13 +129,13 @@ def perBasis : Module.Basis (Fin (2 * Fintype.card (Fin g))) ℝ (EuclideanSpace
   (sumBasis hs hp φ).reindex (finSumFinEquiv.trans (finCongr (by simp [two_mul])))
 
 /- English proof (translation)
-Establish `hsum : ∀ m : Fin g ⊕ Fin g → ℤ, ∑ j, m j • sumBasis hs hp φ j = realCoord hs hp φ fun j => (m j : ℝ)`. Introduce `m`. Establish `hm : (fun j => (m j : ℝ)) = ∑ j, (m j : ℝ) • Pi.single j (1 : ℝ)`. Use extensionality with `k`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [sumBasis, Module.Basis.map_apply, Pi.basisFun_apply]`. Rewrite using `[hm, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Int.cast_smul_eq_zsmul]`. Use `show y ∈ Submodule.span ℤ (Set.range (perBasis hs hp φ)) ↔ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[perBasis, Module.Basis.range_reindex, Submodule.mem_span_range_iff_exists_fun]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩`. Conclude with `⟨c, by rw [← hc, hsum]⟩`. Introduce and unpack `⟨m, hm⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨m, by rw [hsum, hm]⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_lat_perBasis (y : EuclideanSpace ℂ (Fin g)) :
     y ∈ lat (perBasis hs hp φ) ↔
@@ -163,7 +163,7 @@ variable (hφ : ∀ v w, Hf v w = hermForm (imInv τ) (φ v) (φ w))
 include hφ in
 
 /- English proof (translation)
-Rewrite using `[hφ, apply_realCoord, apply_realCoord, realPt_apply, realPt_apply, im_hermForm_imInv hs hp]`. Simplify using `[dotProduct]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem im_Hf_realCoord (p q : Fin g ⊕ Fin g → ℝ) :
     (Hf (realCoord hs hp φ p) (realCoord hs hp φ q)).im =
@@ -172,7 +172,7 @@ theorem im_Hf_realCoord (p q : Fin g ⊕ Fin g → ℝ) :
   simp [dotProduct]
 
 /- English proof (translation)
-Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[apply_realCoord, realPt_apply, h]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem eq_realCoord_of_eq_int_add_tau_mulVec {y : EuclideanSpace ℂ (Fin g)} {m n : Fin g → ℤ}
     (h : φ y = (fun i => (m i : ℂ)) + τ *ᵥ fun i => (n i : ℂ)) :
@@ -213,9 +213,9 @@ def torus (a b : Fin g → ℝ) : GT (Fin g) where
 variable (a b : Fin g → ℝ)
 
 /- English proof (translation)
-Use `show y ∈ lat (perBasis hs hp φ) ↔ _`. Rewrite using `[mem_lat_perBasis]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, rfl⟩`. Use `⟨fun i => k (.inl i), fun i => k (.inr i), ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[apply_realCoord, realPt_apply]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨m, n, h⟩`. Conclude with `⟨Sum.elim m n, eq_realCoord_of_eq_int_add_tau_mulVec hs hp φ h⟩`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_lat_torus (y : EuclideanSpace ℂ (Fin g)) :
     y ∈ lat (torus hs hp φ hφ a b).b ↔
@@ -231,7 +231,7 @@ theorem mem_lat_torus (y : EuclideanSpace ℂ (Fin g)) :
     exact ⟨Sum.elim m n, eq_realCoord_of_eq_int_add_tau_mulVec hs hp φ h⟩
 
 /- English proof (translation)
-Rewrite using `[eq_realCoord_of_eq_int_add_tau_mulVec hs hp φ h]`. Simplify using `only [torus, LinearEquiv.symm_apply_apply, canMult, Sum.elim_inl, Sum.elim_inr]`. Use `congr 1`. Simplify using `only [dotProduct]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -246,9 +246,9 @@ theorem torus_ka {y : EuclideanSpace ℂ (Fin g)} {m n : Fin g → ℤ}
   ring
 
 /- English proof (translation)
-Use `show _ ∧ _`. Use `⟨(differentiable_canTh hp a b).comp (LinearMap.toContinuousLinearMap φ.toLinearMap).differentiable, ?_⟩` and prove the remaining obligations. Introduce `γ hγ v`. Take `⟨m, n, h⟩` from `(mem_lat_torus hs hp φ hφ a b γ).1 hγ`. Use `beta_reduce`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_add, h, canTh_add_period hs hp a b m n rfl, torus_ka hs hp φ hφ a b h, hφ, hφ, h]`. Simplify using `only [Nat.cast_one, one_mul]`. Put the polynomial expressions in normal form.
+Put the polynomial expressions in normal form. A detailed English derivation is pending.
 -/
 theorem canTh_mem_Sec : (fun v => canTh τ a b (φ v)) ∈ (torus hs hp φ hφ a b).Sec 1 := by
   show _ ∧ _
@@ -262,7 +262,7 @@ theorem canTh_mem_Sec : (fun v => canTh τ a b (φ v)) ∈ (torus hs hp φ hφ a
   ring_nf
 
 /- English proof (translation)
-Rewrite using `[EuclideanSpace.norm_sq_eq, Hf, Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.mul_conj, Complex.ofReal_re, Complex.normSq_eq_norm_sq]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem norm_sq_eq_re_Hf (w : EuclideanSpace ℂ (Fin g)) : ‖w‖ ^ 2 = (Hf w w).re := by
   rw [EuclideanSpace.norm_sq_eq, Hf, Complex.re_sum]
@@ -270,9 +270,9 @@ private theorem norm_sq_eq_re_Hf (w : EuclideanSpace ℂ (Fin g)) : ‖w‖ ^ 2 
   rw [Complex.mul_conj, Complex.ofReal_re, Complex.normSq_eq_norm_sq]
 
 /- English proof (translation)
-Establish `hpt : ∀ x : Fin g ⊕ Fin g → ℝ, (torus hs hp φ hφ a b).ptN2 1 (fun v => canTh τ a b (φ v)) ((sumBasis hs hp φ).equivFun.symm x) = ‖thetaChar τ (fun i => (a i : ℂ)) (fun i => (b i : ℂ)) ((fun i => (x (.inl i) : ℂ)) + τ.mulVec (fun i => (x (.inr i) : ℂ)))‖ ^ 2 * Real.exp (-2 * Real. …`. Introduce `x`. Establish `hx : (sumBasis hs hp φ).equivFun.symm x = realCoord hs hp φ x`. Simplify using `[sumBasis, Module.Basis.map_equivFun]`. Simplify using `only [hx, GT.ptN2]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[norm_sq_eq_re_Hf, hφ, apply_realCoord, Nat.cast_one, one_mul, norm_canTh_realPt hp, realPt_apply]`. Establish `hfd : ZSpan.fundamentalDomain (torus hs hp φ hφ a b).b = ZSpan.fundamentalDomain (sumBasis hs hp φ)` using `ZSpan.fundamentalDomain_reindex (b := sumBasis hs hp φ) _`. Rewrite using `[GT.l2, hfd, avg_fd_cube, cubeIco_eq]`. Repeatedly rewrite using `[hpt]`. Conclude with `GlobalTheory.ThetaNorm.integral_norm_sq_thetaChar g τ a b hs hp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem l2_canTh_eq_inv_sqrt_two_pow_mul_det_im : (torus hs hp φ hφ a b).l2 1 (fun v => canTh τ a b (φ v)) =
     (Real.sqrt (2 ^ g * (τ.map Complex.im).det))⁻¹ := by

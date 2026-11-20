@@ -25,9 +25,9 @@ variable {K : Type} [CommRing K] {ρ : Type} {m : ℕ}
 def jetCoef (n : ρ →₀ ℕ) (j : Jet K ρ m) : K := (Ideal.Quotient.mk_surjective j).choose.coeff n
 
 /- English proof (translation)
-Establish `hs` using `Ideal.Quotient.mk_surjective (I := orig K ρ ^ (m + 1)) (Ideal.Quotient.mk (orig K ρ ^ (m + 1)) p)`. Use `show hs.choose.coeff n = _`. Establish `h2 : (Ideal.Quotient.mk (orig K ρ ^ (m + 1)) (hs.choose - p) : Jet K ρ m) = 0`. Rewrite using `[map_sub, hs.choose_spec, sub_self]`. Use `(GlobalTheory.JetTest.mk_eq_zero_iff _).1 h2 n hn` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[coeff_sub, sub_eq_zero]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem jetCoef_mk {n : ρ →₀ ℕ} (hn : n.degree ≤ m) (p : MvPolynomial ρ K) :
     jetCoef (m := m) n (Ideal.Quotient.mk _ p) = p.coeff n := by
@@ -39,7 +39,7 @@ theorem jetCoef_mk {n : ρ →₀ ℕ} (hn : n.degree ≤ m) (p : MvPolynomial �
   rwa [coeff_sub, sub_eq_zero] at this
 
 /- English proof (translation)
-Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Take `⟨q, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Rewrite using `[← map_add, jetCoef_mk hn, jetCoef_mk hn, jetCoef_mk hn, coeff_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem jetCoef_add {n : ρ →₀ ℕ} (hn : n.degree ≤ m) (a b : Jet K ρ m) :
     jetCoef n (a + b) = jetCoef n a + jetCoef n b := by
@@ -48,7 +48,7 @@ theorem jetCoef_add {n : ρ →₀ ℕ} (hn : n.degree ≤ m) (a b : Jet K ρ m)
   rw [← map_add, jetCoef_mk hn, jetCoef_mk hn, jetCoef_mk hn, coeff_add]
 
 /- English proof (translation)
-Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Establish `: algebraMap K (Jet K ρ m) c * Ideal.Quotient.mk _ p = Ideal.Quotient.mk _ (MvPolynomial.C c * p)`. Rewrite using `[map_mul, ← MvPolynomial.algebraMap_eq, Ideal.Quotient.mk_algebraMap]`. Rewrite using `[this, jetCoef_mk hn, jetCoef_mk hn, coeff_C_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem jetCoef_smul {n : ρ →₀ ℕ} (hn : n.degree ≤ m) (c : K) (a : Jet K ρ m) :
     jetCoef n (algebraMap K (Jet K ρ m) c * a) = c * jetCoef n a := by
@@ -58,14 +58,14 @@ theorem jetCoef_smul {n : ρ →₀ ℕ} (hn : n.degree ≤ m) (c : K) (a : Jet 
   rw [this, jetCoef_mk hn, jetCoef_mk hn, coeff_C_mul]
 
 /- English proof (translation)
-Rewrite using `[psJet, jetCoef_mk hn, GlobalTheory.JetTest.coeff_psTrunc, if_pos hn]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem jetCoef_psJet [Fintype ρ] [DecidableEq ρ] {n : ρ →₀ ℕ} (hn : n.degree ≤ m) (h : MvPowerSeries ρ K) :
     jetCoef n (psJet m h) = MvPowerSeries.coeff n h := by
   rw [psJet, jetCoef_mk hn, GlobalTheory.JetTest.coeff_psTrunc, if_pos hn]
 
 /- English proof (translation)
-Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Take `⟨q, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Rewrite using `[← sub_eq_zero, ← map_sub, GlobalTheory.JetTest.mk_eq_zero_iff]`. Introduce `e he`. Rewrite using `[coeff_sub, ← jetCoef_mk he, ← jetCoef_mk he, h e he, sub_self]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem jet_ext (a b : Jet K ρ m) (h : ∀ n : ρ →₀ ℕ, n.degree ≤ m → jetCoef n a = jetCoef n b) : a = b := by
   obtain ⟨p, rfl⟩ := Ideal.Quotient.mk_surjective a
@@ -77,9 +77,9 @@ theorem jet_ext (a b : Jet K ρ m) (h : ∀ n : ρ →₀ ℕ, n.degree ≤ m �
 end Coef
 
 /- English proof (translation)
-Establish `hne : (insert 0 (S.image φ)).Nonempty` using `⟨0, Finset.mem_insert_self _ _⟩`. Use `⟨(insert 0 (S.image φ)).max' hne, Finset.le_max' _ 0 (Finset.mem_insert_self _ _), fun x hx => Finset.le_max' _ _ (Finset.mem_insert_of_mem (Finset.mem_image_of_mem φ hx)), ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 (Finset.max'_mem _ hne) with h | h` into its components or cases. Conclude with `Or.inl h`. Take `⟨x, hx, hq⟩` from `Finset.mem_image.1 h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Extract witnesses or component facts from the available result.
 
-Conclude with `Or.inr ⟨x, hx, hq.symm⟩`.
+Prove the second alternative.
 -/
 theorem exists_bound {α : Type} (S : Finset α) (φ : α → ℝ) :
     ∃ q : ℝ, 0 ≤ q ∧ (∀ x ∈ S, φ x ≤ q) ∧ (q = 0 ∨ ∃ x ∈ S, q = φ x) := by
@@ -108,15 +108,13 @@ def normIdeal (hf : ∀ r, ‖f r‖ ≤ 1) (c : ℝ) (hc : 0 ≤ c) : Ideal R w
       _ = c := one_mul c
 
 /- English proof (translation)
-Take `⟨G, hG⟩` from `hI`. Take `⟨q, hq0, hqG, hq⟩` from `exists_bound G (fun x => ‖f x‖)`. Establish `hq1 : q < 1`. Break down `hq with h | ⟨x, hx, h⟩` into its components or cases. Rewrite using `[h]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_pos`. Rewrite using `[h]`. Conclude with `hfI x (hG ▸ Ideal.subset_span hx)`. Use `⟨q, hq0, hq1, fun k => ?_⟩` and prove the remaining obligations. It suffices to establish `h : I ^ k ≤ normIdeal f hf1 (q ^ k) (pow_nonneg hq0 k) from fun a ha => h ha`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the argument to an intermediate assertion. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `k with`. Consider the case `zero => intro a _`. Use `show ‖f a‖ ≤ q ^ 0`. Rewrite using `[pow_zero]`. Conclude with `hf1 a`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Consider the case `succ k ih`. Rewrite using `[pow_succ]`. Use `Ideal.mul_le.2 fun a ha b hb => ?_` and prove the remaining obligations. Establish `ha' : ‖f a‖ ≤ q ^ k` using `ih ha`. Establish `hspan : Ideal.span (G : Set R) ≤ normIdeal f hf1 (q ^ 1) (pow_nonneg hq0 1)` using `Ideal.span_le.2 fun x hx => by show ‖f x‖ ≤ q ^ 1; rw [pow_one]; exact hqG x hx`.
-
-Establish `hb' : ‖f b‖ ≤ q ^ 1` using `hspan (hG.symm ▸ hb)`. Use `show ‖f (a * b)‖ ≤ q ^ (k + 1)`. Rewrite using `[map_mul, norm_mul, pow_succ]`. Conclude with `mul_le_mul ha' (by simpa using hb') (norm_nonneg _) (pow_nonneg hq0 k)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_le_of_mem_pow {I : Ideal R} (hI : I.FG) (hf1 : ∀ r, ‖f r‖ ≤ 1) (hfI : ∀ r ∈ I, ‖f r‖ < 1) :
     ∃ q : ℝ, 0 ≤ q ∧ q < 1 ∧ ∀ k : ℕ, ∀ a ∈ I ^ k, ‖f a‖ ≤ q ^ k := by
@@ -158,7 +156,7 @@ def normSub (hf : ∀ r, ‖f r‖ ≤ 1) (Λ : W →+ C) (hΛ : ∀ (r : R) (w 
       _ = c := one_mul c
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `Module.Finite.fg_top (R := R) (M := W)`. Take `⟨B, hB0, hBT, -⟩` from `exists_bound T (fun w => ‖Λ w‖)`. Use `⟨B, hB0, fun w => ?_⟩` and prove the remaining obligations. Establish `h : (⊤ : Submodule R W) ≤ normSub f hf Λ hΛ B hB0` using `hT ▸ Submodule.span_le.2 (fun x hx => hBT x hx)`. Conclude with `h Submodule.mem_top`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bound_of_finite [Module.Finite R W] (hf : ∀ r, ‖f r‖ ≤ 1) (Λ : W →+ C)
     (hΛ : ∀ (r : R) (w : W), Λ (r • w) = f r * Λ w) : ∃ B : ℝ, 0 ≤ B ∧ ∀ w, ‖Λ w‖ ≤ B := by
@@ -170,9 +168,9 @@ theorem bound_of_finite [Module.Finite R W] (hf : ∀ r, ‖f r‖ ≤ 1) (Λ : 
   exact h Submodule.mem_top
 
 /- English proof (translation)
-Establish `hB0 : 0 ≤ B` using `(norm_nonneg _).trans (hB 0)`. Rewrite `hx` using `[← Ideal.map_pow]`. Establish `hx' : x ∈ (I ^ e) • (⊤ : Submodule R W)`. Rewrite using `[Ideal.smul_top_eq_map]`. Conclude with `hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : (I ^ e) • (⊤ : Submodule R W) ≤ normSub f hf Λ hΛ (q ^ e * B) (mul_nonneg (pow_nonneg hq0 e) hB0)` using `Submodule.smul_le.2 fun a ha w _ => by show ‖Λ (a • w)‖ ≤ q ^ e * B`. Rewrite using `[hΛ, norm_mul]`. Conclude with `mul_le_mul (hq e a ha) (hB w) (norm_nonneg _) (pow_nonneg hq0 e)`. Conclude with `hle hx'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bound_pow (hf : ∀ r, ‖f r‖ ≤ 1) (Λ : W →+ C) (hΛ : ∀ (r : R) (w : W), Λ (r • w) = f r * Λ w)
     {I : Ideal R} {q B : ℝ} (hq0 : 0 ≤ q) (hq : ∀ k : ℕ, ∀ a ∈ I ^ k, ‖f a‖ ≤ q ^ k) (hB : ∀ w, ‖Λ w‖ ≤ B)
@@ -189,11 +187,11 @@ theorem bound_pow (hf : ∀ r, ‖f r‖ ≤ 1) (Λ : W →+ C) (hΛ : ∀ (r : 
   exact hle hx'
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Filter.Tendsto (fun S : Finset X => ∑ b ∈ S, Λ (t b)) Filter.atTop (nhds (Λ s))`. Use `Metric.tendsto_atTop.2 ?_` and prove the remaining obligations. Introduce `ε hε`. Take `⟨e, he⟩` from `hbound ε hε`. Take `⟨S, hS1, hS2⟩` from `hst e`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨S, fun S' hS' => ?_⟩` and prove the remaining obligations. Establish `hmem : s - ∑ α ∈ S', t α ∈ J ^ (e + 1)`. Establish `h : s - ∑ α ∈ S', t α = (s - ∑ α ∈ S, t α) - ∑ α ∈ S' \ S, t α`. Rewrite using `[← Finset.sum_sdiff hS']`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[h]`. Conclude with `sub_mem hS2 (sum_mem fun α hα => hS1 α (Finset.mem_sdiff.1 hα).2)`. Rewrite using `[dist_eq_norm, ← map_sum, ← map_sub, ← norm_neg, ← map_neg, neg_sub]`. Conclude with `he _ hmem`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSum_of_adic (Λ : W →+ C) (J : Ideal W)
     (hbound : ∀ ε > 0, ∃ e : ℕ, ∀ x ∈ J ^ (e + 1), ‖Λ x‖ < ε) {X : Type} (s : W) (t : X → W)
@@ -217,17 +215,15 @@ theorem hasSum_of_adic (Λ : W →+ C) (J : Ideal W)
 end Norms
 
 /- English proof (translation)
-Introduce `C _ _ _ R _ I hI f hf1 hfI W _ _ _ ρ _ _ m κ hκ X s t hst u g hg`. Take `⟨q, hq0, hq1, hq⟩` from `norm_le_of_mem_pow f hI hf1 hfI`. Establish `key : ∀ n : ρ →₀ ℕ, n.degree ≤ m → HasSum (fun α => MvPowerSeries.coeff n (g α)) (jetCoef n (u * κ s))`. Introduce `n hn`. Set `Λ : W →+ C` to `AddMonoidHom.mk' (fun w => jetCoef n (u * κ w)) (fun a b => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Simplify using `only [map_add, mul_add]`. Conclude with `jetCoef_add hn _ _)`. Establish `hΛ : ∀ (r : R) (w : W), Λ (r • w) = f r * Λ w`. Introduce `r w`. Use `show jetCoef n (u * κ (r • w)) = f r * jetCoef n (u * κ w)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Algebra.smul_def, map_mul, hκ, mul_left_comm, jetCoef_smul hn]`. Take `⟨B, hB0, hB⟩` from `bound_of_finite f hf1 Λ hΛ`. Establish `hcoef : ∀ α, MvPowerSeries.coeff n (g α) = Λ (t α)` using `fun α => by`. Rewrite using `[← jetCoef_psJet hn, hg α]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hbound : ∀ ε > 0, ∃ e : ℕ, ∀ x ∈ I.map (algebraMap R W) ^ (e + 1), ‖Λ x‖ < ε`. Introduce `ε hε`. Establish `hB1 : (0 : ℝ) < B + 1` using `by linarith`. Take `⟨k, hk⟩` from `exists_pow_lt_of_lt_one (div_pos hε hB1) hq1`. Use `⟨k, fun x hx => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h` using `hasSum_of_adic Λ (I.map (algebraMap R W)) hbound s t hst`. Simplify using `only [← hcoef] at h`. Conclude with `h`. Use `⟨fun n hn => (key n hn).summable, fun g₀ hg₀ => jet_ext _ _ fun n hn => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[jetCoef_psJet hn]`. Conclude with `(hg₀ n hn).unique (key n hn)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem converge : ∀ (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C] [CompleteSpace C] (R : Type) [CommRing R] (I : Ideal R), I.FG → ∀ f : R →+* C, (∀ r, ‖f r‖ ≤ 1) → (∀ r ∈ I, ‖f r‖ < 1) → ∀ (W : Type) [CommRing W] [Algebra R W] [Module.Finite R W] (ρ : Type) [Fintype ρ] [DecidableEq ρ] (m : ℕ) (κ : W →+* Jet C ρ m), (∀ r, κ (algebraMap R W r) = algebraMap C (Jet C ρ m) (f r)) → ∀ (X : Type) (s : W) (t : X → W), (∀ e : ℕ, ∃ S : Finset X, (∀ α ∉ S, t α ∈ I.map (algebraMap R W) ^ (e + 1)) ∧ s - ∑ α ∈ S, t α ∈ I.map (algebraMap R W) ^ (e + 1)) → ∀ (u : Jet C ρ m) (g : X → MvPowerSeries ρ C), (∀ α, psJet m (g α) = u * κ (t α)) → (∀ n : ρ →₀ ℕ, (n.sum fun _ k => k) ≤ m → Summable fun α => MvPowerSeries.coeff n (g α)) ∧ ∀ g₀ : MvPowerSeries ρ C, (∀ n : ρ →₀ ℕ, (n.sum fun _ k => k) ≤ m → HasSum (fun α => MvPowerSeries.coeff n (g α)) (MvPowerSeries.coeff n g₀)) → psJet m g₀ = u * κ s := by
   intro C _ _ _ R _ I hI f hf1 hfI W _ _ _ ρ _ _ m κ hκ X s t hst u g hg

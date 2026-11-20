@@ -12,17 +12,17 @@ namespace GlobalTheory.Hk.RayForm
 open GlobalTheory.Mem.PartialZeta
 
 /- English proof (translation)
-Establish `hf : f₁ ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hA`. Establish `e1 : ((starRingEnd ℂ) f₁ * f₂).re = f₁.re * f₂.re + f₁.im * f₂.im`. Simplify using `[Complex.mul_re]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e2 : ((starRingEnd ℂ) f₁ * f₂).im = f₁.re * f₂.im - f₁.im * f₂.re`. Simplify using `[Complex.mul_im]`. Expand and normalize the polynomial expressions, which then agree. Establish `e3 : ((starRingEnd ℂ) f₁ * x₀).re = f₁.re * x₀.re + f₁.im * x₀.im`. Simplify using `[Complex.mul_re]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e4 : ((starRingEnd ℂ) f₁ * x₀).im = f₁.re * x₀.im - f₁.im * x₀.re`. Simplify using `[Complex.mul_im]`. Expand and normalize the polynomial expressions, which then agree. Establish `e5 : ‖f₁‖ ^ 2 = f₁.re ^ 2 + f₁.im ^ 2`. Rewrite using `[Complex.sq_norm, Complex.normSq_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hS : f₁.re ^ 2 + f₁.im ^ 2 ≠ 0`. Rewrite using `[← e5]`. Conclude with `pow_ne_zero 2 (norm_ne_zero_iff.mpr hf)`. Use `⟨((starRingEnd ℂ) f₁ * f₂).re / ‖f₁‖ ^ 2, ((starRingEnd ℂ) f₁ * x₀).re / ‖f₁‖ ^ 2, ((starRingEnd ℂ) f₁ * x₀).im / ((starRingEnd ℂ) f₁ * f₂).im, fun v => ?_⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e6 : ‖x₀ + ((v.1 : ℂ) * f₁ + (v.2 : ℂ) * f₂)‖ ^ 2 = (x₀.re + v.1 * f₁.re + v.2 * f₂.re) ^ 2 + (x₀.im + v.1 * f₁.im + v.2 * f₂.im) ^ 2`. Rewrite using `[Complex.sq_norm, Complex.normSq_apply]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite `hA` using `[e2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [qForm]`. Rewrite using `[e6, e1, e2, e3, e4, e5]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_qForm (f₁ f₂ x₀ : ℂ) (N : ℝ) (hN : N ≠ 0) (hA : ((starRingEnd ℂ) f₁ * f₂).im ≠ 0) :
     ∃ l θ₁ θ₂ : ℝ, ∀ v : ℤ × ℤ,
@@ -61,15 +61,13 @@ theorem exists_qForm (f₁ f₂ x₀ : ℂ) (N : ℝ) (hN : N ≠ 0) (hA : ((sta
   ring
 
 /- English proof (translation)
-Establish `hf : f₁ ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hA`. Establish `key : ∀ x y : ℤ, (x : ℂ) * f₁ + y * f₂ = 0 → x = 0 ∧ y = 0`. Introduce `x y h`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `him : ((starRingEnd ℂ) f₁ * ((x : ℂ) * f₁ + y * f₂)).im = y * ((starRingEnd ℂ) f₁ * f₂).im`. Simplify using `only [Complex.mul_im, Complex.mul_re, Complex.add_re, Complex.add_im, Complex.conj_re, Complex.conj_im, Complex.intCast_re, Complex.intCast_im]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `him` using `[h, mul_zero, Complex.zero_im]`. Establish `hy : y = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: (y : ℝ) = 0`. Break down `mul_eq_zero.mp him.symm with h' | h'` into its components or cases. Conclude with `h'`. Conclude with `absurd h' hA`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Substitute `hy` using the available equality. Use `⟨?_, rfl⟩` and prove the remaining obligations. Simplify using `only [Int.cast_zero, zero_mul, add_zero, mul_eq_zero, hf, or_false] at h`. Conclude with `h` after adjusting the coercions. Introduce `v w hvw`.
-
-Use `key (v.1 - w.1) (v.2 - w.2) (by push_cast; linear_combination hvw)` as an intermediate fact. Conclude with `Prod.ext (sub_eq_zero.mp this.1) (sub_eq_zero.mp this.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem comb_injective (f₁ f₂ : ℂ) (hA : ((starRingEnd ℂ) f₁ * f₂).im ≠ 0) :
     Function.Injective (fun v : ℤ × ℤ => (v.1 : ℂ) * f₁ + v.2 * f₂) := by
@@ -99,7 +97,7 @@ theorem comb_injective (f₁ f₂ : ℂ) (hA : ((starRingEnd ℂ) f₁ * f₂).i
   exact Prod.ext (sub_eq_zero.mp this.1) (sub_eq_zero.mp this.2)
 
 /- English proof (translation)
-Use extensionality with `z`. Simplify using `only [Set.mem_range, SetLike.mem_coe, Submodule.mem_span_pair, zsmul_eq_mul, Prod.exists]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem range_comb (f₁ f₂ : ℂ) :
     Set.range (fun v : ℤ × ℤ => (v.1 : ℂ) * f₁ + v.2 * f₂) = (Submodule.span ℤ {f₁, f₂} : Submodule ℤ ℂ) := by
@@ -107,9 +105,9 @@ theorem range_comb (f₁ f₂ : ℂ) :
   simp only [Set.mem_range, SetLike.mem_coe, Submodule.mem_span_pair, zsmul_eq_mul, Prod.exists]
 
 /- English proof (translation)
-Establish `hr : Set.range (fun v : ℤ × ℤ => (v.1 : ℂ) * f₁ + v.2 * f₂) = Set.range (fun v : ℤ × ℤ => (v.1 : ℂ) * e₁ + v.2 * e₂)`. Rewrite using `[range_comb, range_comb, h]`. Use `⟨(Equiv.ofInjective _ (comb_injective f₁ f₂ hf)).trans ((Equiv.setCongr hr).trans (Equiv.ofInjective _ (comb_injective e₁ e₂ he)).symm), fun v => ?_⟩` and prove the remaining obligations. Establish `key` using `Equiv.apply_ofInjective_symm (comb_injective e₁ e₂ he) (Equiv.setCongr hr (Equiv.ofInjective _ (comb_injective f₁ f₂ hf) v))`. Simplify using `only [Equiv.setCongr_apply, Equiv.ofInjective_apply] at key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Equiv.trans_apply, Equiv.setCongr_apply, Equiv.ofInjective_apply]`. Conclude with `key.symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_equiv (f₁ f₂ e₁ e₂ : ℂ) (hf : ((starRingEnd ℂ) f₁ * f₂).im ≠ 0)
     (he : ((starRingEnd ℂ) e₁ * e₂).im ≠ 0)
@@ -129,19 +127,17 @@ theorem exists_equiv (f₁ f₂ e₁ e₂ : ℂ) (hf : ((starRingEnd ℂ) f₁ *
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Set `φ : K →+* ℂ` to `(Classical.arbitrary (InfinitePlace K)).embedding`. Assume the negation of the conclusion as `hne`. Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.mp hu`. Establish `ht0 : t ≠ 0`. Introduce and unpack `rfl`.
+Introduce a local definition for the expression. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hne (Units.val_eq_one.mp (by linear_combination -ht))`. Establish `hu1 : ‖φ ((u : 𝓞 K) : K)‖ ^ 2 = 1`. Rewrite using `[normSq_eq h2 φ (u : 𝓞 K), Ideal.span_singleton_eq_top.mpr u.isUnit, Ideal.absNorm_top]`. Simplify using the standard rewrite rules. Establish `ht1 : 1 ≤ ‖φ ((t : 𝓞 K) : K)‖ ^ 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[normSq_eq h2 φ t]`. Establish `: Ideal.absNorm (Ideal.span {t}) ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `ht0`. Conclude with `Nat.one_le_iff_ne_zero.mpr this` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `he : φ ((u : 𝓞 K) : K) - 1 = φ ((t : 𝓞 K) : K) * M`. Use `congrArg (fun z : 𝓞 K => φ (z : K)) ht` as an intermediate fact. Simplify using `only [map_mul, map_sub, map_one, map_natCast] at this`. Simplify using `only [RingOfIntegers.coe_eq_algebraMap]`. Rewrite using `[← this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : ‖φ ((t : 𝓞 K) : K)‖ * M ≤ 2`. Establish `h1 : ‖φ ((u : 𝓞 K) : K)‖ = 1`. Use `norm_nonneg (φ ((u : 𝓞 K) : K))` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation.
+Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[he, norm_mul, Complex.norm_natCast]`. Use `_ ≤ ‖φ ((u : 𝓞 K) : K)‖ + ‖(1 : ℂ)‖ := norm_sub_le _ _`. Use `_ = 2 := by rw [h1, norm_one]; norm_num`. Establish `hM' : (3 : ℝ) ≤ M` using `by exact_mod_cast hM`. Establish `hn` using `norm_nonneg (φ ((t : 𝓞 K) : K))`.
-
-Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem unit_eq_one [IsTotallyComplex K] (h2 : Module.finrank ℚ K = 2) {M : ℕ} (hM : 3 ≤ M)
     (u : (𝓞 K)ˣ) (hu : (u : 𝓞 K) - 1 ∈ Ideal.span {(M : 𝓞 K)}) : u = 1 := by
@@ -178,23 +174,23 @@ theorem unit_eq_one [IsTotallyComplex K] (h2 : Module.finrank ℚ K = 2) {M : �
   nlinarith
 
 /- English proof (translation)
-Take `⟨w, hw, hall⟩` from `GlobalTheory.exists_integer_generator_of_sq_eq_neg h2 (Irreducible.squarefree hp) hd hx`. Establish `hφx : φ x ^ 2 = -(d : ℂ)` using `by rw [← map_pow, hx]; simp`. Establish `hφw : φ (w : K) = (1 + φ x) / 2`. Use `congrArg φ hw` as an intermediate fact. Simplify using `only [map_mul, map_add, map_one, map_ofNat] at this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take the linear combination `this / 2`. Establish `hsd : (0 : ℝ) < √(d : ℝ)` using `Real.sqrt_pos.mpr (by exact_mod_cast hp.pos)`. Establish `him : (φ (w : K)).im = √(d : ℝ) / 2 ∨ (φ (w : K)).im = -(√(d : ℝ) / 2)`. Break down `GlobalTheory.eq_I_mul_sqrt_or_of_sq_eq_neg hφx with h | h` into its components or cases. Use `left`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hφw, h]`. Simplify using the standard rewrite rules. Use `right`. Rewrite using `[hφw, h]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `himne : (φ (w : K)).im ≠ 0`. Apply the tactic sequence `rcases him with h | h <;> rw [h] <;> [exact (by positivity); exact neg_ne_zero.mpr (by positivity)]`. Establish `hli : LinearIndependent ℤ ![(1 : 𝓞 K), w]`. Rewrite using `[LinearIndependent.pair_iff]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `s t hst`. Establish `h1 : t = 0 ∨ (φ (w : K)).im = 0`. Use `congrArg (fun z : 𝓞 K => (φ (z : K)).im) hst` as an intermediate fact. Simplify `this` using `[zsmul_eq_mul]`. Establish `ht : t = 0` using `h1.resolve_right himne`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Substitute `ht` using the available equality. Use `⟨?_, rfl⟩` and prove the remaining obligations. Simplify using `using hst`. Establish `hsp : ⊤ ≤ Submodule.span ℤ (Set.range ![(1 : 𝓞 K), w])`. Introduce `c _`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨m, n, hc⟩` from `hall c`. Establish `h1 : (1 : 𝓞 K) ∈ Submodule.span ℤ (Set.range ![(1 : 𝓞 K), w])` using `Submodule.subset_span ⟨0, rfl⟩`. Establish `h2' : w ∈ Submodule.span ℤ (Set.range ![(1 : 𝓞 K), w])` using `Submodule.subset_span ⟨1, rfl⟩`. Use `Submodule.add_mem _ (Submodule.smul_mem _ m h1) (Submodule.smul_mem _ n h2')` as an intermediate fact. Rewrite using `[hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `this` using `[zsmul_eq_mul]`. Use `⟨Module.Basis.mk hli hsp, ?_⟩` and prove the remaining obligations. Establish `hbw : ((starRingEnd ℂ) (φ (((Module.Basis.mk hli hsp) 0 : 𝓞 K) : K)) * φ (((Module.Basis.mk hli hsp) 1 : 𝓞 K) : K)).im = (φ (w : K)).im`. Simplify using `[Module.Basis.mk_apply]`. Rewrite using `[hbw]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hsq : (√(d : ℝ)) ^ 2 = d` using `Real.sq_sqrt (Nat.cast_nonneg _)`. Apply the tactic sequence `rcases him with h | h <;> rw [h] <;> [skip; rw [neg_sq]] <;> rw [div_pow, hsq] <;> norm_num`.
+A detailed English derivation is pending.
 -/
 theorem exists_basis_im {d : ℕ} (hp : d.Prime) (hd : d % 4 = 3) {x : K} (hx : x ^ 2 = -(d : K))
     (h2 : Module.finrank ℚ K = 2) (φ : K →+* ℂ) :
@@ -247,65 +243,57 @@ theorem exists_basis_im {d : ℕ} (hp : d.Prime) (hd : d % 4 = 3) {x : K} (hx : 
   rcases him with h | h <;> rw [h] <;> [skip; rw [neg_sq]] <;> rw [div_pow, hsq] <;> norm_num
 
 /- English proof (translation)
-Introduce `K _ _ d M x hp hd hd100 hx h2 hM D g`. Take `⟨w, bar, hw, hwb, hall, hemb, φ, hφ⟩` from `GlobalTheory.ringOfIntegers_sqrt_neg_three_mod_four d (Irreducible.squarefree hp) hd K h2 x hx`. Establish `: IsTotallyComplex K` using `⟨fun v => InfinitePlace.isComplex_iff.mpr (hemb v.embedding).1⟩`. Take `⟨b, hb⟩` from `exists_basis_im hp hd hx h2 φ`. Establish `hNnorm : Ideal.absNorm (Ideal.span {(M : 𝓞 K)}) = M ^ 2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `normSq_eq h2 φ (M : 𝓞 K)` as an intermediate fact. Simplify using `only [map_natCast, Complex.norm_natCast] at this`. Conclude with `this.symm` after adjusting the coercions. Establish `hM9 : 9 ≤ M ^ 2` using `by nlinarith`. Establish `hNtop : Ideal.span {(M : 𝓞 K)} ≠ ⊤`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Rewrite `hNnorm` using `[h, Ideal.absNorm_top]`. Use linear arithmetic over natural numbers and integers. Establish `hN0 : Ideal.span {(M : 𝓞 K)} ≠ ⊥`. Introduce `h`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hNnorm` using `[h, Ideal.absNorm_bot]`. Use linear arithmetic over natural numbers and integers. Take `⟨B, hBc, hB0, hBg⟩` from `D.cls_surj g⁻¹`. Take `⟨E0', hE0'⟩` from `gen_bij hNtop D g B hBc hB0 hBg`. Use `haveI hU : Unique {u : (𝓞 K)ˣ // (u : 𝓞 K) - 1 ∈ Ideal.span {(M : 𝓞 K)}} := { default := ⟨1, by simp⟩ uniq := fun u => Subtype.ext (unit_eq_one h2 hM u.1 u.2) }`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨x₀, hx₀B, hx₀N⟩ : ∃ x₀ ∈ B, x₀ - 1 ∈ Ideal.span {(M : 𝓞 K)} := by`. Take `⟨i, hi, j, hj, hij⟩` from `Ideal.isCoprime_iff_exists.mp hBc`. Use `⟨i, hi, ?_⟩` and prove the remaining obligations. Rewrite using `[show i - 1 = -j by linear_combination hij]`. Conclude with `Submodule.neg_mem _ hj`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hNB0 : Ideal.span {(M : 𝓞 K)} * B ≠ ⊥`. Rewrite using `[Ne, Ideal.mul_eq_bot, not_or]`. Conclude with `⟨hN0, hB0⟩`. Take `⟨E1, hE1⟩` from `lattice_bij (Ideal.span {(M : 𝓞 K)}) B hBc (Ideal.selfBasis b _ hNB0) x₀ hx₀B hx₀N`. Establish `hIm` using `abs_im_eq φ b _ (Ideal.selfBasis b _ hNB0)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set e := Ideal.selfBasis b _ hNB0 with he_def`. Use `set e₁ : ℂ := φ (((e 0 : 𝓞 K)) : K) with he₁`. Use `set e₂ : ℂ := φ (((e 1 : 𝓞 K)) : K) with he₂`. Establish `hBn0 : Ideal.absNorm B ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hB0`. Use `set Nr : ℝ := (Ideal.absNorm B : ℝ) with hNr`. Establish `hNrpos : 0 < Nr`. Rewrite using `[hNr]`. Conclude with `Nat.pos_of_ne_zero hBn0` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsd10 : (10 : ℝ) ≤ √(d : ℝ)`. Rewrite using `[show (10 : ℝ) = √(100 : ℝ) by`. Rewrite using `[show (100 : ℝ) = 10 ^ 2 by norm_num, Real.sqrt_sq (by norm_num)]]`. Conclude with `Real.sqrt_le_sqrt (by exact_mod_cast hd100)`. Establish `hsq : (√(d : ℝ)) ^ 2 = d` using `Real.sq_sqrt (Nat.cast_nonneg _)`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hImb : |((starRingEnd ℂ) (φ ((b 0 : 𝓞 K) : K)) * φ ((b 1 : 𝓞 K) : K)).im| = √(d : ℝ) / 2`. Rewrite using `[← Real.sqrt_sq_eq_abs, hb, Real.sqrt_div' _ (by norm_num : (0 : ℝ) ≤ 4), show (4 : ℝ) = 2 ^ 2 by norm_num, Real.sqrt_sq (by norm_num)]`. Establish `hMr : (3 : ℝ) ≤ M` using `by exact_mod_cast hM`. Establish `hIme : |((starRingEnd ℂ) e₁ * e₂).im| = (M : ℝ) ^ 2 * Nr * (√(d : ℝ) / 2)`. Rewrite using `[hIm, map_mul, hNnorm, hImb, hNr]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hA : ((starRingEnd ℂ) e₁ * e₂).im ≠ 0`. Introduce `h`. Rewrite `hIme` using `[h, abs_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 0 < (M : ℝ) ^ 2 * Nr * (√(d : ℝ) / 2)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨f₁, f₂, hspan, hImf, hshort⟩` from `GlobalTheory.plane_lattice_short_basis e₁ e₂ hA`. Establish `hAf : ((starRingEnd ℂ) f₁ * f₂).im ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hImf` using `[h, abs_zero]`. Conclude with `hA (abs_eq_zero.mp hImf.symm)`. Take `⟨σ, hσ⟩` from `exists_equiv f₁ f₂ e₁ e₂ hAf hA hspan`. Take `⟨l, θ₁, θ₂, hq⟩` from `exists_qForm f₁ f₂ (φ (x₀ : K)) Nr hNrpos.ne' hAf`. Use `set Iv : ℝ := |((starRingEnd ℂ) f₁ * f₂).im| with hIv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hIv' : Iv = (M : ℝ) ^ 2 * Nr * (√(d : ℝ) / 2)` using `by rw [hImf, hIme]`. Establish `hIsq : ((starRingEnd ℂ) f₁ * f₂).im ^ 2 = Iv ^ 2` using `(sq_abs _).symm`. Establish `hf₁ : f₁ ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hAf`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hlow : (M : ℝ) ^ 2 * Nr ≤ ‖f₁‖ ^ 2`. Establish `hmem : f₁ ∈ Submodule.span ℤ {e₁, e₂}` using `hspan ▸ Submodule.subset_span (by simp)`. Take `⟨r, s, hrs⟩` from `Submodule.mem_span_pair.mp hmem`. Use `set y : 𝓞 K := r * (e 0 : 𝓞 K) + s * (e 1 : 𝓞 K) with hy`. Establish `hyf : φ (y : K) = f₁`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hrs, hy, he₁, he₂]`. Simplify using `[zsmul_eq_mul]`. Establish `hyB : y ∈ Ideal.span {(M : 𝓞 K)} * B`. Rewrite using `[hy]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ (e 0).2) (Ideal.mul_mem_left _ _ (e 1).2)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hy0 : y ≠ 0`. Introduce and unpack `h0`. Rewrite `hyf` using `[h0]`. Simplify using `at hyf`. Conclude with `hf₁ hyf.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdvd` using `Ideal.absNorm_dvd_absNorm_of_le ((Ideal.span_singleton_le_iff_mem _).mpr hyB)`. Establish `hne : Ideal.absNorm (Ideal.span {y}) ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `hy0`. Establish `hle` using `Nat.le_of_dvd (Nat.pos_of_ne_zero hne) hdvd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hle` using `[map_mul, hNnorm]`. Rewrite using `[← hyf, normSq_eq h2 φ y, hNr]`. Conclude with `hle` after adjusting the coercions. Set `E0` to `(Equiv.prodUnique _ {u : (𝓞 K)ˣ // (u : 𝓞 K) - 1 ∈ Ideal.span {(M : 𝓞 K)}}).symm.trans E0'`. Set `Φ` to `σ.trans (E1.trans E0.symm)`.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ v, qForm (‖f₁‖ ^ 2 / Nr) (((starRingEnd ℂ) f₁ * f₂).im ^ 2 / (‖f₁‖ ^ 2 * Nr)) l θ₁ θ₂ v = (Ideal.absNorm (Φ v).1 : ℝ)`. Introduce `v`. Rewrite using `[hq v, hσ v]`. Establish `hE : (E0 (Φ v) : 𝓞 K) = E1 (σ v)`. Simplify using `only [Φ, Equiv.trans_apply, Equiv.apply_symm_apply]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hspanv : Ideal.span {((E1 (σ v)) : 𝓞 K)} = (Φ v).1 * B`. Rewrite using `[← hE]`. Conclude with `hE0' _`. Establish `hval : φ (x₀ : K) + (((σ v).1 : ℂ) * e₁ + ((σ v).2 : ℂ) * e₂) = φ (((E1 (σ v) : 𝓞 K)) : K)`. Rewrite using `[hE1, he₁, he₂]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hval, normSq_eq h2 φ, hspanv, map_mul, hNr]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Use `⟨‖f₁‖ ^ 2 / Nr, ((starRingEnd ℂ) f₁ * f₂).im ^ 2 / (‖f₁‖ ^ 2 * Nr), l, θ₁, θ₂, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[le_div_iff₀ hNrpos, one_mul]`. Establish `hM2 : (1 : ℝ) ≤ (M : ℝ) ^ 2` using `by nlinarith`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hM2 hNrpos.le]`. Establish `hf2 : 0 < ‖f₁‖ ^ 2` using `by positivity`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[le_div_iff₀ (by positivity), hIsq, one_mul]`. Establish `h1 : ‖f₁‖ ^ 2 ≤ 2 * Iv` using `by rw [hImf]; exact hshort`. Establish `h2' : 2 * Nr ≤ Iv`. Establish `hM2 : (9 : ℝ) ≤ (M : ℝ) ^ 2` using `by nlinarith`. Establish `hk : (2 : ℝ) ≤ (M : ℝ) ^ 2 * (√(d : ℝ) / 2)` using `by nlinarith`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[hIv']`. Combine the equalities or inequalities in the displayed calculation. Establish `hIv0 : 0 ≤ Iv` using `abs_nonneg _`. Use the polynomial consequences of the given equalities and inequalities. Establish `hf2 : ‖f₁‖ ^ 2 ≠ 0` using `by positivity`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hIsq, hIv']`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hsq]`. Expand and normalize the polynomial expressions, which then agree. Introduce `v`.
-
-Use `⟨Ideal.absNorm (Φ v).1, ?_, key v⟩` and prove the remaining obligations. Apply `Nat.one_le_iff_ne_zero.mpr` to reduce the goal to its premises. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `ne_bot_of_coprime hNtop (Φ v).2.1`. Introduce `n`.
-
-Establish `hset : idealsIn D g n = (Subtype.val ∘ Φ) '' {v : ℤ × ℤ | qForm (‖f₁‖ ^ 2 / Nr) (((starRingEnd ℂ) f₁ * f₂).im ^ 2 / (‖f₁‖ ^ 2 * Nr)) l θ₁ θ₂ v = n}`. Use extensionality with `I`. Simplify using `only [idealsIn, Set.mem_setOf_eq, Set.mem_image, Function.comp_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, hIc, hIn, hIg⟩`.
-
-Use `⟨Φ.symm ⟨I, hIc, hIg⟩, ?_, by simp⟩` and prove the remaining obligations. Rewrite using `[key, Equiv.apply_symm_apply]`. Conclude with `hIn` after adjusting the coercions. Introduce and unpack `⟨v, hv, rfl⟩`. Rewrite `hv` using `[key]`.
-
-Conclude with `⟨ne_bot_of_coprime hNtop (Φ v).2.1, (Φ v).2.1, by exact_mod_cast hv, (Φ v).2.2⟩`. Rewrite using `[aRay, hset, Set.ncard_image_of_injective _ (Subtype.val_injective.comp Φ.injective)]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aRay_eq_ncard_qForm : ∀ (K : Type) [Field K] [NumberField K] (d M : ℕ) (x : K), d.Prime → d % 4 = 3 → 100 ≤ d → x ^ 2 = -(d : K) → Module.finrank ℚ K = 2 → 3 ≤ M → ∀ D : RayData K M, ∀ g : D.G, ∃ α γ l θ₁ θ₂ : ℝ, 1 ≤ α ∧ 1 ≤ γ ∧ α * γ = d * (M : ℝ) ^ 4 / 4 ∧ (∀ v : ℤ × ℤ, ∃ n : ℕ, 1 ≤ n ∧ qForm α γ l θ₁ θ₂ v = n) ∧ ∀ n : ℕ, aRay D g n = (({v : ℤ × ℤ | qForm α γ l θ₁ θ₂ v = n}.ncard : ℕ) : ℝ) := by
   intro K _ _ d M x hp hd hd100 hx h2 hM D g

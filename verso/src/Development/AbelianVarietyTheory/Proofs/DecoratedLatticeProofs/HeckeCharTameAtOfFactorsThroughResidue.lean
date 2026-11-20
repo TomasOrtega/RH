@@ -13,7 +13,7 @@ namespace GlobalTheory.ChainOnto.TameRes
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Establish `h` using `Valued.isOpen_ball (P.adicCompletion E) 1`. Simplify `h` using `only [Valuation.restrict_lt_iff_lt_embedding, map_one]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isOpen_ltOne (P : HeightOneSpectrum (𝓞 E)) :
     IsOpen {z : P.adicCompletion E | Valued.v z < 1} := by
@@ -21,37 +21,35 @@ theorem isOpen_ltOne (P : HeightOneSpectrum (𝓞 E)) :
   simpa only [Valuation.restrict_lt_iff_lt_embedding, map_one] using h
 
 /- English proof (translation)
-The claim follows from `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' P k`.
+A detailed English derivation is pending.
 -/
 theorem val_alg (P : HeightOneSpectrum (𝓞 E)) (k : E) :
     Valued.v (algebraMap E (P.adicCompletion E) k) = P.valuation E k :=
   HeightOneSpectrum.valuedAdicCompletion_eq_valuation' P k
 
 /- English proof (translation)
-The claim follows from `le_antisymm (P.valuation_le_one s) (not_lt.mp fun h => hs ((P.valuation_lt_one_iff_mem s).mp h))`.
+A detailed English derivation is pending.
 -/
 theorem valuation_eq_one_of_not_mem (P : HeightOneSpectrum (𝓞 E)) (s : 𝓞 E) (hs : s ∉ P.asIdeal) :
     P.valuation E (algebraMap (𝓞 E) E s) = 1 :=
   le_antisymm (P.valuation_le_one s) (not_lt.mp fun h => hs ((P.valuation_lt_one_iff_mem s).mp h))
 
 /- English proof (translation)
-Establish `hv1 : PP.valuation D.host.E (k : D.host.E) = 1`. Establish `e : (k : D.host.E) = 1 + ((k : D.host.E) - 1)` using `by ring`. Establish `h1 : PP.valuation D.host.E ((k : D.host.E) - 1) < PP.valuation D.host.E 1` using `by rwa [map_one]`. Rewrite using `[e]`. Use `first`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `rw [Valuation.map_add_eq_of_lt_right _ h1, map_one]`. Consider the case `rw [Valuation.map_add_eq_of_lt_left _ h1, map_one]`. Consider the case `rw [add_comm, Valuation.map_add_eq_of_lt_right _ h1, map_one]`. Consider the case `rw [add_comm, Valuation.map_add_eq_of_lt_left _ h1, map_one]`. Take `⟨a, s, h⟩` from `PP.exists_primeCompl_mul_eq_of_integer (k : D.host.E) hv1.le`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hs : (s : 𝓞 D.host.E) ∉ PP.asIdeal` using `s.2`. Establish `hsv` using `valuation_eq_one_of_not_mem PP _ hs`. Establish `hav : PP.valuation D.host.E (algebraMap (𝓞 D.host.E) D.host.E a) = 1`. Rewrite using `[← h, map_mul, hv1, hsv, one_mul]`. Establish `ha : a ∉ PP.asIdeal`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hm`. Establish `hlt : PP.valuation D.host.E (algebraMap (𝓞 D.host.E) D.host.E a) < 1` using `(PP.valuation_lt_one_iff_mem (K := D.host.E) a).mpr hm`. Conclude with `absurd hav (ne_of_lt hlt)`. Establish `hs0 : algebraMap (𝓞 D.host.E) D.host.E s ≠ 0` using `fun h0 => by`. Rewrite `hsv` using `[h0, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one hsv`. Establish `ha0 : algebraMap (𝓞 D.host.E) D.host.E a ≠ 0` using `fun h0 => by`. Rewrite `hav` using `[h0, map_zero]`. Conclude with `zero_ne_one hav`. Establish `hdiff : a - (s : 𝓞 D.host.E) ∈ PP.asIdeal`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `(PP.valuation_lt_one_iff_mem (K := D.host.E) _).mp` to reduce the goal to its premises. Use `show PP.valuation D.host.E (algebraMap (𝓞 D.host.E) D.host.E (a - (s : 𝓞 D.host.E))) < 1`. Rewrite using `[map_sub, ← h, ← sub_one_mul, map_mul, hsv, mul_one]`. Conclude with `hk`. Use `haveI : PP.asIdeal.IsMaximal := PP.isMaximal`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hms : (Ideal.Quotient.mk PP.asIdeal (s : 𝓞 D.host.E) : kP PP) ≠ 0`. Rewrite using `[Ne, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hs`. Take `⟨b, hb⟩` from `Ideal.Quotient.exists_inv hms`. Set `u : (kP PP)ˣ` to `Units.mkOfMulEqOne _ b hb`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Set `ka : D.host.Eˣ` to `Units.mk0 _ ha0`. Set `ks : D.host.Eˣ` to `Units.mk0 _ hs0`. Establish `e1 : c u = H.locK PP ks` using `hc (s : 𝓞 D.host.E) ks u rfl rfl`. Establish `e2 : c u = H.locK PP ka` using `hc a ka u rfl (Ideal.Quotient.eq.mpr hdiff).symm`. Establish `hk' : k = ka * ks⁻¹`.
-
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, Units.val_inv_eq_inv_val, Units.val_mk0, ka, ks]`. Rewrite using `[← h, mul_assoc, mul_inv_cancel₀ hs0, mul_one]`. Rewrite using `[hk', map_mul, map_inv, ← e1, ← e2, mul_inv_cancel]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locK_eq_one (D : D7) (H : Formalism.L2.Host.HChar D.host.E) (PP : Pl D.host.E) (c : (kP PP)ˣ →* ℂˣ)
     (hc : IsRes H PP c) (k : D.host.Eˣ) (hk : PP.valuation D.host.E ((k : D.host.E) - 1) < 1) :
@@ -100,15 +98,15 @@ theorem locK_eq_one (D : D7) (H : Formalism.L2.Host.HChar D.host.E) (PP : Pl D.h
   rw [hk', map_mul, map_inv, ← e1, ← e2, mul_inv_cancel]
 
 /- English proof (translation)
-Introduce `D H PP c hc`. Unfold `Formalism.L2.Host.HChar.TameAt Formalism.L2.Host.HChar.LevelLe`. Introduce `x _ hx1`. Assume the negation of the conclusion as `hne`. Establish `hcont : Continuous (H.loc PP)` using `H.2.1.comp (GlobalTheory.Mem.UnrAe.continuous_localIdele PP)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hW : IsOpen {y : (PP.adicCompletion D.host.E)ˣ | H.loc PP y ≠ 1}` using `isOpen_ne_fun hcont continuous_const`. Take `⟨T, hT, hTe⟩` from `Units.isEmbedding_val₀.isInducing.isOpen_iff.1 hW`. Establish `hlt : WithZero.exp (-((1 : ℕ) : ℤ)) < 1`. Rewrite using `[← WithZero.exp_zero]; exact WithZero.exp_lt_exp.mpr (by norm_num)`. Establish `hxT : (x : PP.adicCompletion D.host.E) ∈ T ∩ {z | Valued.v (z - 1) < 1}`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨?_, lt_of_le_of_lt hx1 hlt⟩` and prove the remaining obligations. Establish `: x ∈ (Units.val ⁻¹' T : Set (PP.adicCompletion D.host.E)ˣ)` using `by rw [hTe]; exact hne`. Conclude with `this`. Establish `hU : IsOpen (T ∩ {z : PP.adicCompletion D.host.E | Valued.v (z - 1) < 1})` using `hT.inter ((isOpen_ltOne PP).preimage (continuous_sub_right 1))`. Take `⟨k, hk⟩` from `(HeightOneSpectrum.denseRange_algebraMap D.host.E PP).exists_mem_open hU ⟨_, hxT⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hk1 : PP.valuation D.host.E (k - 1) < 1`. Rewrite using `[← val_alg, map_sub, map_one]`. Conclude with `hk.2`. Establish `hk0 : k ≠ 0`. Introduce and unpack `rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `at hk1`. Establish `hloc` using `locK_eq_one D H PP c hc (Units.mk0 k hk0) hk1`. Establish `hmem : Formalism.L2.Host.atFin PP (Units.mk0 k hk0) ∈ (Units.val ⁻¹' T : Set (PP.adicCompletion D.host.E)ˣ)` using `hk.1`. Rewrite `hmem` using `[hTe]`. Conclude with `hmem hloc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tameAt_of_isRes : ∀ (D : D7) (H : Formalism.L2.Host.HChar D.host.E) (PP : Pl D.host.E) (a : (kP PP)ˣ →* ℂˣ),
     IsRes H PP a → H.TameAt PP := by

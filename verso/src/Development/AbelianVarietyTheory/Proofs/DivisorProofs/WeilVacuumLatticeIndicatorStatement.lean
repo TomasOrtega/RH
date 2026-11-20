@@ -10,7 +10,7 @@ open Formalism.L2.Host (aboveF)
 open Formalism.UG (IsUnifV qV)
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.KSplit.vac_act_torus` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FWeilVacuumLatticeIndicator.lean&line=34#L34)
 -/

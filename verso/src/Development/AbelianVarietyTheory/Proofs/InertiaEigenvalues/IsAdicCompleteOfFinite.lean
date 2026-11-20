@@ -5,11 +5,11 @@ open IsLocalRing TensorProduct
 namespace GlobalTheory.AdicCompleteFinite
 
 /- English proof (translation)
-Rewrite using `[← AdicCompletion.of_surjective_iff]`. Introduce `y`. Take `⟨x, rfl⟩` from `AdicCompletion.ofTensorProduct_surjective_of_finite I M y`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul r m`. Take `⟨a, rfl⟩` from `AdicCompletion.of_surjective I R r`. Use `⟨a • m, ?_⟩` and prove the remaining obligations. Rewrite using `[AdicCompletion.ofTensorProduct_tmul, map_smul]`. Conclude with `(algebraMap_smul (AdicCompletion I R) a (AdicCompletion.of I M m)).symm`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add x y hx hy`. Take `⟨a, ha⟩` from `hx`. Take `⟨b, hb⟩` from `hy`. Conclude with `⟨a + b, by rw [map_add, map_add, ha, hb]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isPrecomplete_of_finite {R M : Type} [CommRing R] (I : Ideal R) [IsPrecomplete I R]
     [AddCommGroup M] [Module R M] [Module.Finite R M] : IsPrecomplete I M := by
@@ -29,11 +29,11 @@ theorem isPrecomplete_of_finite {R M : Type} [CommRing R] (I : Ideal R) [IsPreco
     exact ⟨a + b, by rw [map_add, map_add, ha, hb]⟩
 
 /- English proof (translation)
-Establish `hk' : J ^ (k + 1) ≤ I` using `(Ideal.pow_le_pow_right (Nat.le_succ k)).trans hk`. Use `⟨fun f hf => ?_⟩` and prove the remaining obligations. Establish `hg : ∀ {m n : ℕ}, m ≤ n → f ((k + 1) * m) ≡ f ((k + 1) * n) [SMOD (I ^ m • ⊤ : Submodule S S)]`. Introduce `m n hmn`. Use `(hf (Nat.mul_le_mul_left (k + 1) hmn)).mono ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.smul_mono_left ?_` and prove the remaining obligations. Rewrite using `[pow_mul]`. Conclude with `Ideal.pow_right_mono hk' m`. Take `⟨L, hL⟩` from `IsPrecomplete.prec h (f := fun n => f ((k + 1) * n)) hg`. Use `⟨L, fun n => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hf (Nat.le_mul_of_pos_left n (Nat.succ_pos k))).trans ?_` and prove the remaining obligations. Conclude with `(hL n).mono (Submodule.smul_mono_left (Ideal.pow_right_mono hIJ n))`.
+A detailed English derivation is pending.
 -/
 theorem isPrecomplete_of_pow_le {S : Type} [CommRing S] {I J : Ideal S} (hIJ : I ≤ J) {k : ℕ}
     (hk : J ^ k ≤ I) [h : IsPrecomplete I S] : IsPrecomplete J S := by
@@ -52,13 +52,11 @@ theorem isPrecomplete_of_pow_le {S : Type} [CommRing S] {I J : Ideal S} (hIJ : I
   exact (hL n).mono (Submodule.smul_mono_left (Ideal.pow_right_mono hIJ n))
 
 /- English proof (translation)
-Use `haveI : IsNoetherianRing S := IsNoetherianRing.of_finite R S`. Use `haveI : Algebra.IsIntegral R S := Algebra.IsIntegral.of_finite R S`. Establish `hcomap : (maximalIdeal S).comap (algebraMap R S) = maximalIdeal R` using `eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (maximalIdeal S))`. Establish `hle : (maximalIdeal R).map (algebraMap R S) ≤ maximalIdeal S` using `Ideal.map_le_iff_le_comap.mpr hcomap.ge`. Establish `hrad : maximalIdeal S ≤ ((maximalIdeal R).map (algebraMap R S)).radical`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Ideal.radical_eq_sInf]`. Use `le_sInf ?_` and prove the remaining obligations. Introduce and unpack `P ⟨hP, hprime⟩`. Establish `h1 : maximalIdeal R ≤ P.comap (algebraMap R S)` using `Ideal.map_le_iff_le_comap.mp hP`. Establish `h2 : P.comap (algebraMap R S) = maximalIdeal R` using `((maximalIdeal.isMaximal R).eq_of_le (Ideal.comap_ne_top _ hprime.ne_top) h1).symm`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h3 : P.IsMaximal` using `Ideal.isMaximal_of_isIntegral_of_isMaximal_comap (R := R) P (h2 ▸ maximalIdeal.isMaximal R)`. Conclude with `(eq_maximalIdeal h3).ge`. Take `⟨k, hk⟩` from `Ideal.exists_pow_le_of_le_radical_of_fg hrad (IsNoetherian.noetherian _)`. Use `haveI : IsPrecomplete (maximalIdeal R) S := isPrecomplete_of_finite _`. Use `haveI : IsPrecomplete ((maximalIdeal R).map (algebraMap R S)) S := IsPrecomplete.map_algebraMap_iff.mpr this`.
-
-Use `haveI : IsPrecomplete (maximalIdeal S) S := isPrecomplete_of_pow_le hle hk`. Conclude with `{}`.
+A detailed English derivation is pending.
 -/
 theorem isAdicComplete_of_finite (R S : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R]
     [IsAdicComplete (IsLocalRing.maximalIdeal R) R] [CommRing S] [IsLocalRing S] [Algebra R S]

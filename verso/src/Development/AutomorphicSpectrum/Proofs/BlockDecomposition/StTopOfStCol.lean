@@ -5,11 +5,11 @@ open CategoryTheory AlgebraicGeometry Opposite CrystallineSemistableComparison C
 namespace GlobalTheory.CompanionTheory.EdgeMap
 
 /- English proof (translation)
-Introduce `hCol R _ C _ F T hT j z hz s`. Take `⟨hι, hdv, -, hex0, hex⟩` from `hCol R C F T hT`. Proceed by induction on `s with`. Consider the case `zero`. Introduce `k x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨rfl, rfl⟩` from `hx`. Conclude with `⟨(hex0 j _).2 ⟨_, rfl⟩, by rw [hι, hz, map_zero]⟩`. Consider the case `succ s ih`. Introduce `k x hx`. Take `⟨a, rfl, ha⟩` from `hx`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `(ih (k + 1) _ ha).1`. Rewrite `h1` using `[map_zsmul]`. Establish `h2 : T.dvC s (k + 1) (d _ k a) = 0` using `(IsUnit.smul_eq_zero ((isUnit_neg_one (α := ℤ)).pow k)).1 h1`. Conclude with `⟨(hex s k _).2 ⟨a, rfl⟩, by rw [hdv]; exact h2⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem stTop_of_stCol : CrystallineSemistableComparison.E.StCol → CrystallineSemistableComparison.E.StTop := by
   intro hCol R _ C _ F T hT j z hz s

@@ -23,9 +23,9 @@ open GlobalTheory.RealFreq Matrix
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `hv : vecMulVec (incV F x) (∑ j, realAd F (t j) • incV F (q j)) = ∑ j, realAd F (t j) • vecMulVec (incV F x) (incV F (q j))`. Use extensionality with `i l`. Simplify using `[vecMulVec_apply, Matrix.sum_apply, Finset.mul_sum, mul_smul_comm]`. Unfold `symp`. Rewrite using `[hv]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Algebra.trace (AF F) (AE F E) (-1 * hTensR σ (incM F JX) (incM F JW) _ (∑ j, _)) = _`. Rewrite using `[map_sum]`. Simplify using `only [map_smul]`. Simplify using `only [hTensR, LinearMap.coe_mk, AddHom.coe_mk, hTens_rat, hyx, map_neg, mul_neg, Finset.sum_neg_distrib, neg_mul, one_mul, map_sum, map_smul, smul_eq_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem symp_freq_left (σ : E →ₐ[F] E) {n d : ℕ} (JX : Matrix (Fin n) (Fin n) E) (JW : Matrix (Fin d) (Fin d) E)
     (w : Fin d → E) (y x : Fin n → E) (hyx : form σ JX y x = 1) {N : ℕ} (q : Fin N → Fin d → E) (t : Fin N → ℝ) :
@@ -46,7 +46,7 @@ theorem symp_freq_left (σ : E →ₐ[F] E) {n d : ℕ} (JX : Matrix (Fin n) (Fi
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-Unfold `form`. Simplify using `only [dotProduct, mulVec, map_sum, map_mul, hσ, hherm, Finset.mul_sum]`. Conclude with `Finset.sum_comm.trans (Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun i _ => by ring)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem form_swap_herm (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) {d : ℕ} (J : Matrix (Fin d) (Fin d) E)
     (hherm : ∀ i j, σ (J j i) = J i j) (x y : Fin d → E) : form σ J y x = σ (form σ J x y) := by
@@ -55,27 +55,25 @@ theorem form_swap_herm (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) {d : �
   exact Finset.sum_comm.trans (Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun i _ => by ring)
 
 /- English proof (translation)
-Take `⟨r, s, r', s', hX, hW⟩` from `hsig`. Establish `hcm` using `hB.cm`. Establish `hne : Nonempty (NumberField.InfinitePlace F)` using `inferInstance`. Take `⟨v⟩` from `hne`. Establish `hσ : ∀ z : E, σ (σ z) = z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `z`. Apply `(B.emb v).1.injective` to reduce the goal to its premises. Rewrite using `[hcm.2.2.2, hcm.2.2.2, star_star]`. Establish `hyx : form σ X.J H.y H.x = 1`. Rewrite using `[form_swap_herm σ hσ X.J hX.herm, hH, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdet : W.J.det ≠ 0`. Introduce `h0`. Apply `det_ne_zero_of_sig _ r' s' (hW.sig v)` to reduce the goal to its premises. Rewrite using `[Matrix.det_smul, ← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero, mul_zero]`. Set `b` to `Module.finBasis ℚ (Fin d → E)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `⟨Module.finrank ℚ (Fin d → E), fun t => ∑ j, realAd F (t j) • incV F (b j), fun ξ j => -(realTr F (-form σ W.J ξ (b j))), ?_, ?_⟩` and prove the remaining obligations. Introduce `ξ ξ' hξ`. Assume the negation of the conclusion as `hne`. Establish `hz : ∀ j, realTr F (form σ W.J (ξ - ξ') (b j)) = 0`. Introduce `j`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrFun hξ j` as an intermediate fact. Simplify using `only [map_neg, neg_inj] at this`. Rewrite using `[form, sub_dotProduct, map_sub]`. Unfold `form at this`. Rewrite using `[this, sub_self]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Set `L : (Fin d → E) →+ ℝ` to `(realTr F).comp { toFun := form σ W.J (ξ - ξ') map_zero' := by`. Unfold `form`. Rewrite using `[show (fun i => σ ((0 : Fin d → E) i)) = 0 from funext fun i => map_zero σ, Matrix.mulVec_zero, dotProduct_zero]`. Use the proof step `map_add' := fun u v => by`. Unfold `form`.
+Introduce a local definition for the expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (fun i => σ ((u + v) i)) = (fun i => σ (u i)) + (fun i => σ (v i)) from funext fun i => map_add σ _ _, Matrix.mulVec_add, dotProduct_add] }`. Establish `hL : L.toRatLinearMap = 0` using `b.ext fun j => hz j`. Establish `hw : (ξ - ξ') ᵥ* W.J ≠ 0`. Introduce `h0`. Apply `hne` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `Matrix.vecMul_injective_of_isUnit ((Matrix.isUnit_iff_isUnit_det _).2 (Ne.isUnit hdet)) (h0.trans (Matrix.zero_vecMul _).symm)` as an intermediate fact. Conclude with `sub_eq_zero.1 this`. Take `⟨k, hk⟩` from `Function.ne_iff.1 hw`. Establish `h1 : form σ W.J (ξ - ξ') (Pi.single k (σ ((((ξ - ξ') ᵥ* W.J) k)⁻¹))) = 1`. Rewrite using `[form_single, hσ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `mul_inv_cancel₀ hk`. Establish `h2` using `LinearMap.congr_fun hL (Pi.single k (σ ((((ξ - ξ') ᵥ* W.J) k)⁻¹)))`. Express the relevant statement in the definitionally equal form `realTr F (form σ W.J (ξ - ξ') _) = 0 at h2`. Rewrite `h2` using `[h1]`. Conclude with `realTr_one_ne hcm.2.2.1 h2`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Introduce `ξ t`. Rewrite using `[← M.co.form, symp_freq_left σ X.J W.J ξ H.y H.x hyx b t, psi_freq B.ψ hB.std]`. Use `congr 1`. Simplify using `only [realTr_apply]`. Use `push_cast`.
-
-Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem injective_real_frequencies (σ : E →ₐ[F] E) (B : Base F E)
     {n n₁ d : ℕ} (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (H : Plane E n n₁)
@@ -152,23 +150,23 @@ namespace GlobalTheory.ThKExpandHypNz
 open GlobalTheory.ThetaQuasiRat
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP n₁ H hH X₁ M₂ e₀ hJ hM₂ he`. Establish `hB` using `hP.base`. Establish `hM` using `hP.good`. Establish `hXW : ∃ r s r' s' : ℕ, X.IsHerm σ B r s ∧ W.IsSkew σ B r' s'` using `⟨r, s, r', s', hP.herm, hP.skew⟩`. Establish `hstd : IsStd B.ψ` using `hB.std`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρ : ∀ w, ∀ Φ ∈ schA F (Fin n × Fin d), M.co.rho B.ψ w Φ ∈ schA F (Fin n × Fin d)` using `fun w Φ hΦ => GlobalTheory.SchrKeepsSchA.schr_mem_schA F B.ψ hstd _ _ Φ hΦ`. Establish `hth : ∀ (c : ℂ) (φ : Fn F n₁ d), thetaSum F (c • φ) = c * thetaSum F φ` using `fun c φ => by`. Simplify using `only [thetaSum, Pi.smul_apply, smul_eq_mul, tsum_mul_left]`. Establish `hswap : ∀ (a b : (Fin n × Fin d → AF F) × (Fin n × Fin d → AF F)) (φ : Fn F n d), schr B.ψ a (schr B.ψ b φ) = B.ψ (a.1 ⬝ᵥ b.2 - b.1 ⬝ᵥ a.2) • schr B.ψ b (schr B.ψ a φ)`. Introduce `a b φ`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[schr_schr, schr_schr, add_comm b a, smul_smul, ← AddChar.map_add_eq_mul]`. Use `congr 2`. Establish `h2 : ⅟(2 : AF F) * 2 = 1` using `invOf_mul_self 2`. Take the linear combination `(a.1 ⬝ᵥ b.2 - b.1 ⬝ᵥ a.2) * h2`. Assume the negation of the conclusion as `hcon`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hcon`. Establish `hA : ∀ Ψ ∈ schA F (Fin n × Fin d), ∀ w : Fin d → E, thetaSum F (e₀ (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.y) (incV F w)) Ψ)) = 0`. Introduce `Ψ hΨ`. Take `⟨N, emb, lam, hinj, hexp⟩` from `injective_real_frequencies σ B X W M H hH.2.2.2.1 hB hXW`. Use `GlobalTheory.ExpSumUniq.coeff_eq_zero N (Fin d → E) lam _ hinj (GlobalTheory.T.hyperbolic_plane_pair_decomposition hKP F E σ B n d X W M χX χW om r s r' s' hP n₁ H hH X₁ M₂ e₀ hJ hM₂ he Ψ hΨ) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t`. Establish `h0` using `hcon _ (hρ (Matrix.vecMulVec (incV F H.x) (emb t)) Ψ hΨ)`. Rewrite using `[← h0]`. Use `tsum_congr fun w => ?_` and prove the remaining obligations. Establish `hinv` using `he.inv (Matrix.vecMulVec (incV F H.x) (emb t)) ⟨emb t, rfl⟩ _ (hρ (Matrix.vecMulVec (incV F H.y) (incV F w)) Ψ hΨ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Darboux.rho] at hinv ⊢`. Rewrite using `[hswap, LinearMap.map_smul, hinv, hth, hexp, mul_comm]`. Establish `hB0 : ∀ Ψ ∈ schA F (Fin n × Fin d), thetaSum F (e₀ Ψ) = 0`. Introduce `Ψ hΨ`. Establish `h` using `hA Ψ hΨ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Matrix.vecMulVec (incV F H.y) (incV F (0 : Fin d → E)) = 0`. Use extensionality with `i j`. Simplify using `[incV, Matrix.vecMulVec_apply]`. Establish `h2 : M.co.rho B.ψ 0 Ψ = Ψ`. Use function extensionality and compare the values at `x`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[Darboux.rho, schr]`. Rewrite `h` using `[h1, h2]`. Then use the resulting hypothesis. Establish `hC : ∀ Ψ ∈ schA F (Fin n × Fin d), ∀ x y : Fin n₁ × Fin d → AF F, thetaSum F (schr B.ψ (x, y) (e₀ Ψ)) = 0`. Introduce `Ψ hΨ x y`. Establish `h` using `he.Heisenberg₂ (M₂.co.e.symm (x, y)) Ψ hΨ`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Darboux.rho, LinearEquiv.apply_symm_apply] at h`. Rewrite using `[← h]`. Conclude with `hB0 _ (hρ _ Ψ hΨ)`. Take `⟨Ψ, hΨ, hne⟩` from `GlobalTheory.EvNonzero.exists_mem_schA_ev_ne_zero F E σ B n d n₁ d X W X₁ W M M₂ H.ι 1 _ e₀ hM hM₂ he`. Conclude with `hne (GlobalTheory.ThetaSep.main F B.ψ hstd _ (e₀ Ψ) (he.maps Ψ hΨ) (hC Ψ hΨ))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ),

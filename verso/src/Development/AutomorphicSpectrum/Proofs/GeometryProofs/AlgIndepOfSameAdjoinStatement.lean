@@ -3,7 +3,7 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.AlgIndepOfSameAdjoi
 import Mathlib
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.FieldGen.algebraicIndependent_of_adjoin_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FGeometryProofs%2FAlgIndepOfSameAdjoin.lean&line=49#L49)
 -/

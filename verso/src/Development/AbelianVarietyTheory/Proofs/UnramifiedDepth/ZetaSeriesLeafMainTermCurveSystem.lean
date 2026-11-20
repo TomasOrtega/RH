@@ -14,13 +14,11 @@ namespace GlobalTheory.MainTerm
 open Formalism.BaseCaseIdentities (Data Kn s0)
 
 /- English proof (translation)
-Set `φ : I ≃ Fin (Fintype.card I)` to `Fintype.equivFin I`. Establish `hmem : ∀ s c, c ∈ (Gs s).map φ.toEmbedding ↔ φ.symm c ∈ Gs s` using `fun s c => Finset.mem_map_equiv`. Establish `key` using `GlobalTheory.zetaSeries_main_term C v l hl hv h3 (Fintype.card I) M s₀ {c | good (φ.symm c)} (fun s => (Gs s).map φ.toEmbedding) (fun c n e => al (φ.symm c) n (φ.symm e)) (fun s e j => π s (φ.symm e) j) (fun c => t (φ.symm c)) (fun s c hc => h1 s _ ((hmem s c).1 hc)) (fun s s' c …`. Use extensionality with `μ`. Rewrite using `[← h12 (φ.symm e) μ]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `∑ n ∈ Finset.range (μ.degree + 1), ∑ a, al (φ.symm a) n (φ.symm e) * MvPowerSeries.coeff μ (t (φ.symm a) ^ (l ^ n)) = _`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Conclude with `Equiv.sum_comp φ.symm (fun c => al c n (φ.symm e) * MvPowerSeries.coeff μ (t c ^ (l ^ n))))`. Use `1 (fun c n _ => be (φ.symm c) n) 0`. Use the proof step `(fun c => h13 _) (fun c n => h14 _ n) (fun c hc n hn => h15 _ hc n hn)`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(fun s hs c hc => h16 s hs _ ((hmem s c).1 hc)) ζ`. Use the proof step `(fun α => by`. Rewrite using `[h17 α]`. Use `congr 1`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations.
-
-Conclude with `(Equiv.sum_comp φ.symm (fun c => be c n * MvPowerSeries.coeff α (t c ^ (l ^ n)))).symm)`. Simplify `key` using `only [Finset.sum_map, Equiv.coe_toEmbedding, Equiv.symm_apply_apply]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem zetaSeries_main_term_fintype (C : Type) [Field C] [CharZero C] (v : AddValuation C (WithTop ℝ))
     (l : ℕ) (hl : l.Prime) (hv : v (l : C) = 1) (h3 : 3 ≤ l) (I : Type) [Fintype I] (M s₀ : ℕ)
@@ -84,41 +82,31 @@ theorem zetaSeries_main_term_fintype (C : Type) [Field C] [CharZero C] (v : AddV
   simpa only [Finset.sum_map, Equiv.coe_toEmbedding, Equiv.symm_apply_apply] using key
 
 /- English proof (translation)
-Introduce `C _ _ V d _ I J _ _ G S Z D a i h hid t ht N em hem κ hκ`. Establish `hDv : D.v = V.v` using `h.1`. Establish `hDl : D.l = V.l` using `h.2.1`. Establish `hDi : D.i = i` using `h.2.2.1`. Establish `hi : Odd i` using `hDi ▸ D.i_odd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : 3 ≤ V.l` using `hDl ▸ D.l_ge`. Establish `hK : Kn i = s0 i + 1` using `Kn_eq hi`. Establish `hs : 2 * s0 i + 1 = i` using `two_mul_chainStartIndex_add_one_of_odd hi`. Set `al : I → ℕ → I → C` to `fun c k b => if k = 0 then (if c = b then 1 else 0) else D.al c k b`. Establish `hal0 : ∀ c b, al c 0 b = if c = b then 1 else 0` using `fun c b => by simp [al]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `halk : ∀ c k b, 1 ≤ k → al c k b = D.al c k b` using `fun c k b hk => by`. Establish `: k ≠ 0` using `by omega`. Simplify using `[al, this]`. Take `⟨hc1, hc2, hc3⟩` from `GlobalTheory.MainTerm.linPull_coords C V d I J G S t ht (Fin N) (fun δ => S.tan (em δ)) (fun b j => chainMat D 0 b (em j)) al (fun j x => by simp [chainMat_zero]) (fun c b => by rw [hal0]) (fun c k x hk => by`. Rewrite using `[h.2.2.2.1 c k x hk]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun b _ => by rw [halk c k b hk])`. Establish `hGs : ∀ s c, c ∈ Finset.univ.filter (fun c => D.lev c = s ∧ s < Kn D.i) ↔ D.lev c = s ∧ s < Kn D.i` using `fun s c => by simp`. Establish `hl0 : (D.l : C) ≠ 0` using `by exact_mod_cast D.l_prime.ne_zero`. Establish `key` using `zetaSeries_main_term_fintype C V.v V.l V.l_prime V.v_l h3 I N (s0 i) D.good (fun s => Finset.univ.filter (fun c => D.lev c = s ∧ s < Kn D.i)) al (fun s e j => chainMat D s e (em j)) (fun c => linPull (fun δ => S.tan (em δ)) (t c)) (fun s c hc => by`. Take `⟨h1, h2⟩` from `(hGs s c).1 hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `D.pure_good c (h1 ▸ h2))`. Use the proof step `(fun s s' c hc hc' => ((hGs s c).1 hc).1.symm.trans ((hGs s' c).1 hc').1)`. Use `hal0`. Use the proof step `(fun c n e => by`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Apply the tactic sequence `rw [hal0] split_ifs <;> simp`. Rewrite using `[halk c n e hn, ← hDv]`. Conclude with `D.al_all c n e)`. Use the proof step `(fun c hc e => by rw [halk c 1 e le_rfl, D.al_one c hc])`. Use the proof step `(fun c hc n e hn => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[halk c n e hn, ← hDv]`. Use `D.al_good c hc n e hn` as an intermediate fact. Rewrite using `[neg_sub] at this)` and apply the resulting hypothesis. Use the proof step `(fun s hs' c hc e he => by`. Take `⟨h1, h2⟩` from `(hGs s c).1 hc`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : s + 1 < Kn D.i` using `by rw [hDi, hK]; omega`. Establish `h5 : D.lev e ≠ D.lev c + 1` using `fun h6 => he ((hGs _ e).2 ⟨by rw [h6, h1], h4⟩)`. Rewrite using `[halk c 2 e (by norm_num), D.al_two c (h1 ▸ h2), D.g_supp c (h1 ▸ h4) e h5, zero_add, inv_mul_cancel_left₀ hl0, ← hDv]`. Conclude with `D.lam_int c e)`. Use the proof step `(fun c j => by simpa [VF.Ge] using h.chainMat_int 0 c (em j))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `(fun c hc j => by`. Rewrite using `[chainMat_zero, if_neg]`. Introduce and unpack `rfl`. Conclude with `hc ((hGs _ _).2 ⟨hem j, by rw [hDi, hK]; omega⟩))`. Use the proof step `(fun s e j => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[chainMat_succ, hDl]`. Conclude with `Finset.sum_congr rfl fun c _ => by rw [halk c 2 e (by norm_num)])`. Use `hc1 hc2 (fun c n => S.be c n κ) (fun c => S.be_zero c κ)`. Use the proof step `(fun c n => G.bound0 n _ (S.mem c) (Sum.inr κ))`. Use the proof step `(fun c hc n hn => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨m, rfl⟩` from `Nat.exists_eq_add_of_le' hn`. Use `(h.good hc).bound m (Sum.inr κ)` as an intermediate fact. Establish `e : (1 - ((m + 2 : ℕ) : ℝ)) = -((m : ℝ) + 1)` using `by push_cast; ring`. Rewrite using `[e]`. Conclude with `this)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions.
 
-Use the proof step `(fun s hs' c hc => by`. Take `⟨h1, h2⟩` from `(hGs s c).1 hc`. Apply `S.pure c 1` to reduce the goal to its premises. Rewrite using `[hκ, h.2.2.2.2 c (by rw [h1, ← hDi]; exact h2), h1, add_assoc, ← Nat.cast_add]`. Introduce `h5`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h6` using `(ZMod.natCast_eq_natCast_iff' _ _ _).1 (add_left_cancel h5)`. Rewrite `h6` using `[Nat.mod_eq_of_lt hid, Nat.mod_eq_of_lt (by omega)]`. Use the proof step `omega)`. Use the proof step `(linPull (fun δ => S.tan (em δ)) (S.ze t κ)) (hc3 κ)`. Establish `hE : expE V.l i = 1 + V.l * (∑ u ∈ Finset.range (s0 i), (V.l ^ 2) ^ u)` using `rfl`.
-
-Establish `hmain : ((V.l : C) ^ expE V.l i)⁻¹ • ∑ δ : Fin N, mainVec S D (em δ) κ • (MvPowerSeries.X δ : MvPowerSeries (Fin N) C) ^ (V.l ^ i) = ∑ j, MvPowerSeries.C (R` using `C) (((V.l : C) ^ (1 + V.l * (∑ u ∈ Finset.range (s0 i), (V.l ^ 2) ^ u)))⁻¹ * ((-1) ^ (s0 i + 1) * ∑ c ∈ Finset.univ.filter (fun c => D.lev c = s0 i ∧ s0 i < Kn D.i), chainMat D (s0 i) c (em j) ^ V.l * ((V.l : C) * S.be c 1 κ))) * (MvPowerSeries.X j : MvPowerSeries (Fin N) C) ^ (V …`. Rewrite using `[Finset.smul_sum, hs, hE]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, MvPowerSeries.smul_eq_C_mul, mainVec, hDl, hDi]`. Rewrite using `[hmain]`.
-
-Introduce `μ`. Establish `hk` using `key μ`. Rewrite `hk` using `[hs]`. Establish `hr : ∑ m, (1 / ((V.l : ℝ) ^ 2 - 1) + 3 / (8 * (V.l : ℝ) ^ i)) * (μ m : ℝ) = (μ.degree : ℝ) * (r1 V.l i - del V.l i)`. Rewrite using `[← Finset.mul_sum, Finsupp.degree_eq_sum, Nat.cast_sum, mul_comm]`.
-
-Use `congr 1`. Unfold `r1 del rho`. Establish `: (V.l : ℝ) ≠ 0` using `by exact_mod_cast V.l_prime.ne_zero`. Rewrite using `[add_sub_assoc]`. Use `congr 1`.
-
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hr] at hk`. Rewrite using `[hs]`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[← WithTop.coe_add, sub_add_cancel]`. Use `_ ≤ _ := add_le_add_left hk _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zeta_leaf_main_term : ∀ (C : Type) [Field C] [CharZero C] (V : VF C) (d : ℕ) [NeZero d] (I J : Type) [Fintype I] [Fintype J] (G : Cart V d I J) (S : Sys G) (Z : Type) (D : Formalism.BaseCaseIdentities.Data C Z I) (a : ZMod d) (i : ℕ), Adapted S D a i → i < d → ∀ t : I → MvPowerSeries I C, S.IsT t → ∀ (N : ℕ) (em : Fin N → I), (∀ δ, D.lev (em δ) = 0) → ∀ κ : J, G.ty (Sum.inr κ) = a + (i : ZMod d) → WtGe1 V i 0 (linPull (fun δ => S.tan (em δ)) (S.ze t κ) - ((V.l : C) ^ expE V.l i)⁻¹ • ∑ δ : Fin N, mainVec S D (em δ) κ • (MvPowerSeries.X δ : MvPowerSeries (Fin N) C) ^ (V.l ^ i)) := by
   intro C _ _ V d _ I J _ _ G S Z D a i h hid t ht N em hem κ hκ

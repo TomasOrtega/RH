@@ -20,14 +20,14 @@ def thM (d : SD σ) {η : E} (hη : η ≠ 0) : UA σ d.A.J ≃ᵐ HeckeCharacte
   (Homeomorph.mk (thE d hη).toEquiv (thE_cont d hη) (thE_symm_cont d hη)).toMeasurableEquiv
 
 /- English proof (translation)
-Simplify using `[HeckeCharacterZeroLocus.SiegelWeilU.sigR, inclR, Algebra.TensorProduct.map_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem th_sigR_incl (x : E) :
     HeckeCharacterZeroLocus.SiegelWeilU.sigR (AF F) σ (inclR (F := F) (E := E) (AF F) x) = inclR (F := F) (E := E) (AF F) (σ x) := by
   simp [HeckeCharacterZeroLocus.SiegelWeilU.sigR, inclR, Algebra.TensorProduct.map_tmul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [HeckeCharacterZeroLocus.SiegelWeilU.cT, Matrix.map_apply, Matrix.transpose_apply]`. Conclude with `(th_sigR_incl _).symm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem th_cT_map {M : ℕ} (γ : Matrix (Fin M) (Fin M) E) :
     (HeckeCharacterZeroLocus.SiegelWeilU.cT (σ : E →+* E) γ).map (inclR (F := F) (E := E) (AF F)) =
@@ -39,11 +39,11 @@ theorem th_cT_map {M : ℕ} (γ : Matrix (Fin M) (Fin M) E) :
 def thE' (d : SD σ) {η : E} (hη : η ≠ 0) (g : UA σ d.A.J) : HeckeCharacterZeroLocus.SiegelWeilU.HR (AF F) σ (Jd d η) := thE d hη g
 
 /- English proof (translation)
-Rewrite using `[ratU, Subgroup.mem_subgroupOf, MonoidHom.mem_range, HeckeCharacterZeroLocus.SiegelWeilU.HFinIn, Subgroup.mem_subgroupOf, HeckeCharacterZeroLocus.SiegelWeilU.HFin, Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, hγ⟩`. Use `⟨γ, ?_, hγ⟩` and prove the remaining obligations. Establish `hg : (g.1 : GL (Fin d.m) (AE F E)) ∈ HeckeCharacterZeroLocus.SiegelWeilU.HR (AF F) σ (Jd d η)` using `(th_mem_iff d hη g.1).1 g.2`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hg` using `[← hγ]`. Express the relevant statement in the definitionally equal form `HeckeCharacterZeroLocus.SiegelWeilU.cT (σ : E →+* E) (γ : Matrix (Fin d.m) (Fin d.m) E) * Jd d η * (γ : Matrix (Fin d.m) (Fin d.m) E) = Jd d η`. Apply `Matrix.map_injective (th_inclR_injective (F := F) (E := E))` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `HeckeCharacterZeroLocus.SiegelWeilU.cT (HeckeCharacterZeroLocus.SiegelWeilU.sigR (AF F) σ) ((γ : Matrix (Fin d.m) (Fin d.m) E).map (inclR (F := F) (E := E) (AF F))) * HeckeCharacterZeroLocus.SiegelWeilU.JR (AF F) (Jd d η) * (γ : Matrix (Fin d.m) (Fin d.m) E).map (inclR (F := F) ( …`. Simplify using `only`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Simplify by unfolding definitions.
 
-Rewrite using `[Matrix.map_mul, Matrix.map_mul, th_cT_map]`. Conclude with `hg`. Introduce and unpack `⟨γ, -, hγ⟩`. Conclude with `⟨γ, hγ⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem th_rat_iff (d : SD σ) {η : E} (hη : η ≠ 0) (g : UA σ d.A.J) :
     g ∈ ratU σ d.A.J ↔ thE' d hη g ∈ HeckeCharacterZeroLocus.SiegelWeilU.HFinIn (AF F) σ (Jd d η) := by
@@ -75,7 +75,7 @@ def thR (d : SD σ) {η : E} (hη : η ≠ 0) : HeckeCharacterZeroLocus.SiegelWe
   right_inv g := Subtype.ext ((thE d hη).symm_apply_apply g.1)
 
 /- English proof (translation)
-Use `d.ok.haar` as an intermediate fact. Conclude with `th_haar_map d.μ (thE d hη) (thE_cont d hη) (thE_symm_cont d hη)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem th_haar (d : SD σ) {η : E} (hη : η ≠ 0) :
     HeckeCharacterZeroLocus.SiegelWeilU.IsHaarH F E σ d.m (Jd d η) (d.μ.map (thM d hη)) := by
@@ -83,7 +83,7 @@ theorem th_haar (d : SD σ) {η : E} (hη : η ≠ 0) :
   exact th_haar_map d.μ (thE d hη) (thE_cont d hη) (thE_symm_cont d hη)
 
 /- English proof (translation)
-Use `d.ok.dom.image_of_equiv (thM d hη).toEquiv ⟨(thM d hη).symm.measurable, ?_⟩ (thR d hη) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Measure.map (thM d hη).symm (Measure.map (thM d hη) d.μ) ≪ d.μ`. Rewrite using `[MeasurableEquiv.map_symm_map]`. Introduce `h x`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 -/
 theorem th_fd (d : SD σ) {η : E} (hη : η ≠ 0) :
     HeckeCharacterZeroLocus.SiegelWeilU.IsFDH F E σ d.m (Jd d η) (d.μ.map (thM d hη)) (thM d hη '' d.D) := by

@@ -4,13 +4,13 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleCohomologyEqui
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 
 /- English proof (translation)
-Introduce `hE q _ T _ _ _ hA hq L _ _ _ X p _ i`. Set `e : FractionRing T ≃ₐ[T] L` to `IsLocalization.algEquiv (nonZeroDivisors T) (FractionRing T) L`. Set `gF` to `Spec.map (CommRingCat.ofHom (algebraMap T (FractionRing T)))`. Set `u` to `Spec.map (CommRingCat.ofHom ((e : FractionRing T ≃+* L) : FractionRing T →+* L))`. Establish `hcomp : Spec.map (CommRingCat.ofHom (algebraMap T L)) = u ≫ gF`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [u, gF, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Use extensionality with `t`. Simplify using `[e]`. Use `haveI : IsIso u := by`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: IsIso (CommRingCat.ofHom ((e : FractionRing T ≃+* L) : FractionRing T →+* L))` using `(RingEquiv.toCommRingCatIso (e : FractionRing T ≃+* L)).isIso_hom`. Use `infer_instance`. Set `Φ` to `pullback.map p (Spec.map (CommRingCat.ofHom (algebraMap T L))) p gF (𝟙 _) u (𝟙 _) (by simp) (by rw [hcomp, Category.comp_id])`. Establish `hfst : Φ ≫ pullback.fst p gF = pullback.fst p (Spec.map (CommRingCat.ofHom (algebraMap T L)))` using `(pullback.lift_fst _ _ _).trans (Category.comp_id _)`. Take `⟨hiso, hc, -, -⟩` from `eqv_basic (ZMod q) (tw q i)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Eqv (ZMod q) (sch.map Φ) (tw q i)` using `hiso _ _ _ inferInstance`. Establish `h2 : Eqv (ZMod q) (sch.map (pullback.fst p gF)) (tw q i)` using `hE q T hA hq p i`. Rewrite using `[← hfst, Functor.map_comp]`. Conclude with `(hc _ _ _ _ _).1 h1 h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Mod.generic_fibre_eqv_of_smooth_of_normal_local_domain : GlobalTheory.EtC.E3 → ∀ (q : ℕ) [NeZero q] (T : Type) [CommRing T] [IsDomain T] [IsLocalRing T], AIC T → IsUnit (q : T) → ∀ (L : Type) [Field L] [Algebra T L] [IsFractionRing T L] {X : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of T)) [Smooth p] (i : ℤ), Eqv _ (sch.map (pullback.fst p (Spec.map (CommRingCat.ofHom (algebraMap T L))))) (tw q i) := by
   intro hE q _ T _ _ _ hA hq L _ _ _ X p _ i

@@ -10,7 +10,7 @@ open MeasureTheory Matrix
 open GlobalTheory.CompanionTheory.SiegelND.Integ.Arch
 
 /- English proof (translation)
-Establish `h : ∀ k : Fin n, finSumFinEquiv.symm k.castSucc = (Sum.inl k : Fin n ⊕ Fin 1)` using `fun k => finSumFinEquiv_symm_apply_castAdd k`. Simplify using `[blkM, Matrix.reindex_apply, Matrix.submatrix_apply, h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem blkM_castSucc_castSucc {n : ℕ} (b : Matrix (Fin n) (Fin n) ℂ) (u : Fin n → ℂ) (d : ℝ)
     (i j : Fin n) : blkM b u d i.castSucc j.castSucc = b i j := by
@@ -19,7 +19,7 @@ theorem blkM_castSucc_castSucc {n : ℕ} (b : Matrix (Fin n) (Fin n) ℂ) (u : F
   simp [blkM, Matrix.reindex_apply, Matrix.submatrix_apply, h]
 
 /- English proof (translation)
-Establish `h : ∀ k : Fin n, finSumFinEquiv.symm k.castSucc = (Sum.inl k : Fin n ⊕ Fin 1)` using `fun k => finSumFinEquiv_symm_apply_castAdd k`. Simplify using `[blkM, Matrix.reindex_apply, Matrix.submatrix_apply, h, finSumFinEquiv_symm_last]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem blkM_castSucc_last {n : ℕ} (b : Matrix (Fin n) (Fin n) ℂ) (u : Fin n → ℂ) (d : ℝ)
     (i : Fin n) : blkM b u d i.castSucc (Fin.last n) = u i := by
@@ -28,14 +28,14 @@ theorem blkM_castSucc_last {n : ℕ} (b : Matrix (Fin n) (Fin n) ℂ) (u : Fin n
   simp [blkM, Matrix.reindex_apply, Matrix.submatrix_apply, h, finSumFinEquiv_symm_last]
 
 /- English proof (translation)
-Simplify using `[blkM, Matrix.reindex_apply, Matrix.submatrix_apply, finSumFinEquiv_symm_last]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blkM_last_last {n : ℕ} (b : Matrix (Fin n) (Fin n) ℂ) (u : Fin n → ℂ) (d : ℝ) :
     blkM b u d (Fin.last n) (Fin.last n) = d := by
   simp [blkM, Matrix.reindex_apply, Matrix.submatrix_apply, finSumFinEquiv_symm_last]
 
 /- English proof (translation)
-Establish `h : ∀ k : Fin n, finSumFinEquiv.symm k.castSucc = (Sum.inl k : Fin n ⊕ Fin 1)` using `fun k => finSumFinEquiv_symm_apply_castAdd k`. Simplify using `[blkM, Matrix.reindex_apply, Matrix.submatrix_apply, h, finSumFinEquiv_symm_last]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem blkM_last_castSucc {n : ℕ} (b : Matrix (Fin n) (Fin n) ℂ) (u : Fin n → ℂ) (d : ℝ)
     (j : Fin n) : blkM b u d (Fin.last n) j.castSucc = star (u j) := by
@@ -44,9 +44,9 @@ theorem blkM_last_castSucc {n : ℕ} (b : Matrix (Fin n) (Fin n) ℂ) (u : Fin n
   simp [blkM, Matrix.reindex_apply, Matrix.submatrix_apply, h, finSumFinEquiv_symm_last]
 
 /- English proof (translation)
-Use extensionality with `i j`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => simp [blkM_last_last]`.
+By extensionality, compare the relevant components. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `cast j => simp [blkM_last_castSucc]`. Consider the case `cast i`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => simp [blkM_castSucc_last]`. Consider the case `cast j => simp [blkM_castSucc_castSucc]`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem blkM_add {n : ℕ} (b b' : Matrix (Fin n) (Fin n) ℂ) (u u' : Fin n → ℂ) (d d' : ℝ) :
     blkM (b + b') (u + u') (d + d') = blkM b u d + blkM b' u' d' := by
@@ -100,7 +100,7 @@ def blkEquiv (n : ℕ) : (hermC n × (Fin n → ℂ) × ℝ) ≃+ hermC (n + 1) 
     simp [blk, blkM_add]
 
 /- English proof (translation)
-Use `Continuous.subtype_mk (f := fun x : hermC n × (Fin n → ℂ) × ℝ => blkM (x.1 : Matrix (Fin n) (Fin n) ℂ) x.2.1 x.2.2) ?_ _` and prove the remaining obligations. Conclude with `continuous_blkM.comp ((continuous_subtype_val.comp continuous_fst).prodMk continuous_snd)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_blkEquiv (n : ℕ) : Continuous (blkEquiv n) := by
   refine Continuous.subtype_mk (f := fun x : hermC n × (Fin n → ℂ) × ℝ =>
@@ -108,9 +108,7 @@ theorem continuous_blkEquiv (n : ℕ) : Continuous (blkEquiv n) := by
   exact continuous_blkM.comp ((continuous_subtype_val.comp continuous_fst).prodMk continuous_snd)
 
 /- English proof (translation)
-Establish `h : ∀ i j : Fin (n + 1), Continuous fun b : hermC (n + 1) => (b : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) i j` using `fun i j => (continuous_apply_apply i j).comp continuous_subtype_val`. Use `Continuous.prodMk ?_ (Continuous.prodMk ?_ ?_)` and prove the remaining obligations. Use `Continuous.subtype_mk (continuous_matrix fun i j => ?_) _` and prove the remaining obligations. Conclude with `h _ _`. Conclude with `continuous_pi fun i => h _ _`.
-
-Conclude with `Complex.continuous_re.comp (h _ _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_blkEquiv_symm (n : ℕ) : Continuous (blkEquiv n).symm := by
   have h : ∀ i j : Fin (n + 1), Continuous fun b : hermC (n + 1) =>
@@ -123,11 +121,11 @@ theorem continuous_blkEquiv_symm (n : ℕ) : Continuous (blkEquiv n).symm := by
   · exact Complex.continuous_re.comp (h _ _)
 
 /- English proof (translation)
-Use `haveI := hν`. Use `haveI := hν'`. Use `haveI : (volume : Measure (Fin n → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Establish `hp : (ν'.prod ((volume : Measure (Fin n → ℂ)).prod (volume : Measure ℝ))).IsAddHaarMeasure` using `Measure.prod.instIsAddHaarMeasure _ _`. Establish `hm : (Measure.map (blkEquiv n) (ν'.prod ((volume : Measure (Fin n → ℂ)).prod (volume : Measure ℝ)))).IsAddHaarMeasure` using `(blkEquiv n).isAddHaarMeasure_map _ (continuous_blkEquiv n) (continuous_blkEquiv_symm n)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `he : Measurable (blkEquiv n)` using `(continuous_blkEquiv n).measurable`. Use `⟨(Measure.addHaarScalarFactor ν (Measure.map (blkEquiv n) (ν'.prod ((volume : Measure (Fin n → ℂ)).prod (volume : Measure ℝ)))) : ENNReal), ENNReal.coe_ne_top, fun F hF => ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [Measure.isAddLeftInvariant_eq_smul ν (Measure.map (blkEquiv n) (ν'.prod ((volume : Measure (Fin n → ℂ)).prod (volume : Measure ℝ))))]`. Rewrite using `[lintegral_smul_measure, lintegral_map hF he, lintegral_prod (fun a => F (blkEquiv n a)) (hF.comp he).aemeasurable]`. Simplify using `only [ENNReal.smul_def, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `congr 1`. Use `lintegral_congr fun b' => ?_` and prove the remaining obligations. Rewrite using `[lintegral_prod]`. Both sides reduce to the same expression. Conclude with `((hF.comp he).comp measurable_prodMk_left).aemeasurable`.
+A detailed English derivation is pending.
 -/
 theorem haar_blocks (n : ℕ) (ν : Measure (hermC (n + 1))) (ν' : Measure (hermC n))
     (hν : ν.IsAddHaarMeasure) (hν' : ν'.IsAddHaarMeasure) :

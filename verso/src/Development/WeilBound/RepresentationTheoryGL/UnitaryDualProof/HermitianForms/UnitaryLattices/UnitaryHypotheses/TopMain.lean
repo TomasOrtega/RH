@@ -15,11 +15,11 @@ section Factor
 variable {V D : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup D] [Module ℂ D]
 
 /- English proof (translation)
-Establish `h1 : v - v' ∈ LinearMap.ker q` using `by rw [LinearMap.mem_ker, map_sub, hv, sub_self]`. Establish `h2 : w - w' ∈ LinearMap.ker q` using `by rw [LinearMap.mem_ker, map_sub, hw, sub_self]`. Establish `e1 : C v w = C v' w`. Use `hk _ h1 w` as an intermediate fact. Rewrite `this` using `[map_sub, LinearMap.sub_apply, sub_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Establish `e2 : C v' w = C v' w'`. Use `hk _ h2 v'` as an intermediate fact. Rewrite `this` using `[map_sub, LinearMap.sub_apply, sub_eq_zero]`. Rewrite using `[hC w v', hC w' v', this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2]`.
+A detailed English derivation is pending.
 -/
 theorem factor {C : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ} (hC : ∀ v w, C w v = starRingEnd ℂ (C v w)) (q : V →ₗ[ℂ] D)
     (hk : ∀ v ∈ LinearMap.ker q, ∀ w, C v w = 0) {v v' w w' : V} (hv : q v = q v') (hw : q w = q w') :
@@ -39,7 +39,7 @@ theorem factor {C : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ} (hC : ∀ v w, C w v = s
 end Factor
 
 /- English proof (translation)
-Simplify using `only [dpow, detChar, MonoidHom.coe_comp, Function.comp_apply, absPow]`. Rewrite using `[MonoidHom.coe_toHomUnits]`. Simplify using `only [MonoidHom.coe_mk, OneHom.coe_mk]`. Rewrite using `[Complex.ofReal_cpow (nabs_pos k _).le]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem dpow_val (n : ℕ) (t : ℝ) (g : GL (Fin n) k) :
     ((dpow n t g : ℂˣ) : ℂ) = ((nabs k (GeneralLinearGroup.det g) ^ t : ℝ) : ℂ) := by
@@ -49,25 +49,23 @@ theorem dpow_val (n : ℕ) (t : ℝ) (g : GL (Fin n) k) :
   rw [Complex.ofReal_cpow (nabs_pos k _).le]
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `LinearMap.exists_rightInverse_of_surjective q (LinearMap.range_eq_top.2 hqs)`. Establish `hqr : ∀ x, q (r x) = x` using `fun x => LinearMap.congr_fun hr x`. Use `set Bt : D →ₗ[ℂ] D →ₗ⋆[ℂ] ℂ := (E ∘ₗ r).compl₂ r with hBt`. Establish `hBt_apply : ∀ x y, Bt x y = E (r x) (r y)` using `fun x y => rfl`. Establish `hdesc : ∀ v w, Bt (q v) (q w) = E v w` using `fun v w => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hBt_apply]`. Conclude with `factor hE1.1 q hE2 (hqr _) (hqr _)`. Establish `hBh : ∀ x y, Bt y x = starRingEnd ℂ (Bt x y)` using `fun x y => by`. Rewrite using `[hBt_apply, hBt_apply, hE1.1]`. Establish `hBp : ∀ x, x ≠ 0 → 0 < (Bt x x).re`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Rewrite using `[hBt_apply]`. Break down `(hE1.2 (r x)).lt_or_eq with hlt | heq` into its components or cases. Conclude with `hlt`. It suffices to derive a contradiction.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `hx` to reduce the goal to its premises. Establish `h0 : E (r x) (r x) = 0` using `Complex.ext heq.symm (diag_real hE1.1 _)`. Use `hE3 _ h0` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, hqr]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hBe : ∀ g x y, Bt (ρ g x) (ρ g y) = ((nabs k (GeneralLinearGroup.det g) ^ s : ℝ) : ℂ) * Bt x y`. Introduce `g x y`. Take `⟨v, rfl⟩` from `hqs x`. Take `⟨w, rfl⟩` from `hqs y`. Rewrite using `[← hqe, ← hqe, hdesc, hdesc, hE4]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ⟨Bt, hBh, hBp, fun g x y => ?_⟩⟩` and prove the remaining obligations. Apply `twist_irr` to reduce the goal to its premises. Take `⟨K₁, hK₁o, hK₁c, -⟩` from `GlobalTheory.T.compact_open_subgroups_basis k n Set.univ Filter.univ_mem`. Use `irr_of_forms ρ hadm K₁ hK₁o hK₁c (fun g => nabs k (GeneralLinearGroup.det g) ^ s) Bt hBh hBp hBe ?_` and prove the remaining obligations. Introduce `Ct hCh hCp hCle hCe`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `set C : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ := (Ct ∘ₗ q).compl₂ q with hC`. Establish `hC_apply : ∀ v w, C v w = Ct (q v) (q w)` using `fun v w => rfl`. Take `⟨c, hc⟩` from `hLift C ⟨fun v w => by rw [hC_apply, hC_apply, hCh], fun v => by rw [hC_apply]; exact hCp _⟩ (fun v hv w => by rw [hC_apply, LinearMap.mem_ker.1 hv, map_zero, LinearMap.zero_apply]) (fun g v w => by rw [hC_apply, hC_apply, hqe, hqe, hCe]) (fun v => by rw [hC_apply, ← hdesc]; exac …`. Use `⟨c, fun x y => ?_⟩` and prove the remaining obligations. Take `⟨v, rfl⟩` from `hqs x`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, rfl⟩` from `hqs y`. Rewrite using `[← hC_apply, hc, hdesc]`. Use `show Bt (((dpow n t g : ℂˣ) : ℂ) • ρ g x) (((dpow n t g : ℂˣ) : ℂ) • ρ g y) = Bt x y`. Establish `hsm : ∀ (c : ℂ) (X Y : D), Bt (c • X) (c • Y) = c * (starRingEnd ℂ c * Bt X Y)`. Introduce `c X Y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[LinearMap.map_smul, LinearMap.smul_apply, LinearMap.map_smulₛₗ, smul_eq_mul, smul_eq_mul]`. Rewrite using `[hsm, hBe, dpow_val, Complex.conj_ofReal]`. Establish `hpos` using `nabs_pos k (GeneralLinearGroup.det g)`. Establish `e : (nabs k (GeneralLinearGroup.det g) ^ t) * ((nabs k (GeneralLinearGroup.det g) ^ t) * (nabs k (GeneralLinearGroup.det g) ^ s)) = 1`. Rewrite using `[← Real.rpow_add hpos, ← Real.rpow_add hpos, show t + (t + s) = 0 by linarith, Real.rpow_zero]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem top_core {n N : ℕ} (h : n ≤ N) {V D : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup D] [Module ℂ D]
     [Nontrivial D] (π : Representation ℂ (GL (Fin N) k) V) (ρ : Representation ℂ (GL (Fin n) k) D)

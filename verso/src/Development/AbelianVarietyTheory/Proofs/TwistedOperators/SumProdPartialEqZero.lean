@@ -15,15 +15,15 @@ section Tensor
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {X Y : ι → Type} (T : ∀ i, (X i → ℂ) →ₗ[ℂ] (Y i → ℂ)) {δ : Type}
 
 /- English proof (translation)
-Proceed by induction on `A using Finset.induction_on generalizing x with`. Consider the case `empty => simpa using h x`. Consider the case `@insert b A hb ih => set c : δ → ℂ := fun d => a d * ((∏ i ∈ A, T i (F d i) (y i)) * ∏ i ∈ (insert b A)ᶜ, F d i (x i)) with hc`. Establish `hbA : b ∈ Aᶜ` using `Finset.mem_compl.2 hb`. Establish `hcompl : (insert b A)ᶜ = (Aᶜ).erase b`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `i`. Simplify using `[Finset.mem_erase, and_comm]`. Establish `hφ : (∑ d ∈ s, c d • F d b) = 0`. Use function extensionality and compare the values at `z`. Use `ih (Function.update x b z)` as an intermediate fact.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_apply, Pi.zero_apply, ← this]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, hc, ← Finset.mul_prod_erase _ _ hbA, Function.update_self, hcompl]`. Establish `: ∏ i ∈ (Aᶜ).erase b, F d i (Function.update x b z i) = ∏ i ∈ (Aᶜ).erase b, F d i (x i)` using `Finset.prod_congr rfl fun i hi => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hi)]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `congrArg (fun f => T b f (y b)) hφ`. Simplify using `only [map_sum, map_smul, map_zero, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at h2`. Rewrite using `[← h2]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.prod_insert hb, hc]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_prod_partial_eq_zero (s : Finset δ) (a : δ → ℂ) (F : δ → ∀ i, X i → ℂ)
     (h : ∀ x : ∀ i, X i, ∑ d ∈ s, a d * ∏ i, F d i (x i) = 0) (A : Finset ι) (x : ∀ i, X i) (y : ∀ i, Y i) :
@@ -51,11 +51,9 @@ theorem sum_prod_partial_eq_zero (s : Finset δ) (a : δ → ℂ) (F : δ → �
     rw [Finset.prod_insert hb, hc]; ring
 
 /- English proof (translation)
-Distinguish the cases in `hX : Nonempty (∀ i, X i)`. Take `⟨x⟩` from `hX`. Simplify using `using sum_prod_partial_eq_zero T s a F h Finset.univ x y`. Establish `hi : ∃ i, IsEmpty (X i)`. Assume the negation of the conclusion as `hn`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hn`. Conclude with `hX ⟨fun i => Classical.choice (hn i)⟩`. Take `⟨i, hi⟩` from `hi`. Establish `h0 : ∀ f : X i → ℂ, f = 0` using `fun f => funext fun z => hi.elim z`. Use `Finset.sum_eq_zero fun d _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ i) (by rw [h0 (F d i), map_zero]; rfl), mul_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_prod_map_eq_zero (s : Finset δ) (a : δ → ℂ) (F : δ → ∀ i, X i → ℂ)
     (h : ∀ x : ∀ i, X i, ∑ d ∈ s, a d * ∏ i, F d i (x i) = 0) (y : ∀ i, Y i) :
@@ -73,9 +71,9 @@ theorem sum_prod_map_eq_zero (s : Finset δ) (a : δ → ℂ) (F : δ → ∀ i,
     rw [Finset.prod_eq_zero (Finset.mem_univ i) (by rw [h0 (F d i), map_zero]; rfl), mul_zero]
 
 /- English proof (translation)
-Establish `key` using `sum_prod_map_eq_zero T (s'.disjSum s) (Sum.elim a' fun d => -a d) (Sum.elim F' F) (fun x => by`. Rewrite using `[Finset.sum_disjSum]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, neg_mul, Finset.sum_neg_distrib, h x, add_neg_cancel]) y`. Rewrite `key` using `[Finset.sum_disjSum]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, neg_mul, Finset.sum_neg_distrib] at key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `sub_eq_zero.1 (by rw [sub_eq_add_neg]; exact key)`.
+A detailed English derivation is pending.
 -/
 theorem sum_prod_map_congr {δ' : Type} (s : Finset δ) (s' : Finset δ') (a : δ → ℂ) (a' : δ' → ℂ) (F : δ → ∀ i, X i → ℂ)
     (F' : δ' → ∀ i, X i → ℂ)
@@ -103,7 +101,7 @@ def movedFn (_S : GridChoice W U) {t : T} (d : PureDat G t) (j : ℕ) (hj : j + 
     ⟨j + 1, hj⟩ fun x => (d.1 ⟨j + 1, hj⟩).fn (actO _ _ (g : GA D (G.V (.top (j + 1))))⁻¹ 1⁻¹ x)
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `hv`. Rewrite using `[Normal.vec, FinDatum.vec_eq W hf, hz, ← hf.2 Tm hTm]`. Rewrite using `[show ((1 : GA D (G.pS p)), (1 : GA D (G.pT p))) = 1 from rfl, map_one]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem vec_eq_model (S : GridChoice W U) {t : T} {p : Pair T} (d : FinDatum G t p) (hz : d.z = 1) (hv : S.Z.HasVec d)
     (Tm : (WO (G.pS p) (G.pT p) → ℂ) →ₗ[ℂ] (WO (G.pS p) (G.pT p) → ℂ))

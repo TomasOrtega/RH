@@ -17,9 +17,9 @@ namespace GlobalTheory.ChernWeilLine
 variable {F : Type} [Field F] [NumberField F] {Y : Var F}
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `Δ.exists_isEqn x`. Establish `h1` using `ht.generatesAt_iff.1 hf`. Establish `h2` using `ht.generatesAt_iff.1 hg`. Establish `e : f * g⁻¹ = (f * (t : Y.Fn)) * (g * (t : Y.Fn))⁻¹`. Rewrite using `[mul_inv, mul_mul_mul_comm, mul_inv_cancel₀ (Units.ne_zero t), mul_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `h1.mul h2.inv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitAt_mul_inv_of_generatesAt {Δ : Y.Dv} {x : Y.X} {f g : Y.Fn} (hf : Δ.GeneratesAt x f)
     (hg : Δ.GeneratesAt x g) : UnitAt x (f * g⁻¹) := by
@@ -34,9 +34,9 @@ theorem unitAt_mul_inv_of_generatesAt {Δ : Y.Dv} {x : Y.X} {f g : Y.Fn} (hf : �
 variable {e : ℕ} {M : Man e} (I : ManIs M Y) {Δ : Y.Dv} (a : Fin (M.n + 1))
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `hQ ((I.pt a).symm y)`. Establish `hp` using `(hg _ (Q.mem_U _)).2.1`. Rewrite `hp` using `[Homeomorph.apply_symm_apply]`. Take `⟨c, hc, e⟩` from `exists_pn_eq (C := cxSt F) hf`. Rewrite using `[e m]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_pos hc hp`.
+A detailed English derivation is pending.
 -/
 theorem pn_pos_of_isPot {m : (cxSt F).Met Y (I.ε a) Δ} {Q : LocPot (M.X a)} (hQ : IsPot (I.pt a) m Q)
     {y : Pts Y (I.ε a)} {f : Y.Fn} (hf : Δ.GeneratesAt (under y) f) :
@@ -49,9 +49,9 @@ theorem pn_pos_of_isPot {m : (cxSt F).Met Y (I.ε a) Δ} {Q : LocPot (M.X a)} (h
   exact mul_pos hc hp
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `(M.A a).cover ((I.pt a).symm y)`. Take `⟨c, hc⟩` from `I.alg a j`. Establish `h` using `hQ.1 x j`. Rewrite `h` using `[hc, Homeomorph.transOpenPartialHomeomorph_symm_apply, Homeomorph.transOpenPartialHomeomorph_target]`. Rewrite `hj` using `[hc, Homeomorph.transOpenPartialHomeomorph_source]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hS : IsOpen ((I.pt a).symm ⁻¹' Q.U x)` using `(Q.isOpen_U x).preimage (I.pt a).symm.continuous`. Establish `h' : ContDiffOn ℝ ∞ ((fun w => Q.φ x ((I.pt a).symm w)) ∘ c.finChart.symm) (c.finChart.target ∩ c.finChart.symm ⁻¹' ((I.pt a).symm ⁻¹' Q.U x))`. Conclude with `h`. Use `cInfAt_of_chart hS c ((c.contDiffOn_finChart_iff _ _ _).1 h') ?_ hy` and prove the remaining obligations. Simplify using `using hj`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem cInfAt_locPot {Q : LocPot (M.X a)} (hQ : IsPotential (M.A a) Q) (x : M.X a) {y : Pts Y (I.ε a)}
     (hy : (I.pt a).symm y ∈ Q.U x) : CInfAt (fun z => Q.φ x ((I.pt a).symm z)) y := by
@@ -68,17 +68,17 @@ theorem cInfAt_locPot {Q : LocPot (M.X a)} (hQ : IsPotential (M.A a) Q) (x : M.X
   simpa using hj
 
 /- English proof (translation)
-Use `set x := (I.pt a).symm y`. Take `⟨g, hg⟩` from `hQ x`. Establish `hgy : Δ.GeneratesAt (under y) g`. Use `(hg x (Q.mem_U x)).1` as an intermediate fact. Rewrite `this` using `[Homeomorph.apply_symm_apply]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Take `⟨V, hV, hVu⟩` from `(unitAt_mul_inv_of_generatesAt hf hgy).exists_nhds`. Establish `hW : IsOpen ((I.pt a).symm ⁻¹' Q.U x ∩ ptsIn Y.str (I.ε a) V)` using `((Q.isOpen_U x).preimage (I.pt a).symm.continuous).inter (isOpen_ptsIn V)`. Establish `hyW : y ∈ (I.pt a).symm ⁻¹' Q.U x ∩ ptsIn Y.str (I.ε a) V` using `⟨Q.mem_U x, mem_ptsIn.2 hV⟩`. Establish `h1 : CInfAt (fun z => ‖ratVal (f * g⁻¹) z‖ ^ 2) y` using `cInfAt_ratVal (κ := Unit) (f := fun _ => f * g⁻¹) (fun _ => (hVu _ hV).regAt) (G := fun w => ‖w ()‖ ^ 2) ((contDiff_norm_sq ℝ).comp (contDiff_apply ℝ ℂ ()))`. Establish `h2` using `cInfAt_locPot I a hQ' x (y := y) (Q.mem_U x)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(h1.comp₂ h2 (G := fun p => p.1 * Real.exp (-2 * p.2)) (contDiff_fst.mul (Real.contDiff_exp.comp (contDiff_const.mul contDiff_snd)))).congr ?_` and prove the remaining obligations. Use `filter_upwards [hW.mem_nhds hyW] with z hz`. Take `⟨hz1, hz2⟩` from `hz`. Establish `hgz` using `hg _ hz1`. Rewrite `hgz` using `[Homeomorph.apply_symm_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hgen, -, hφ⟩` from `hgz`. Establish `hpos` using `pn_pos_of_isPot I a hQ hgen`. Establish `ef : f = (f * g⁻¹) * g`. Rewrite using `[mul_assoc, inv_mul_cancel₀, mul_one]`. Take `⟨t, ht⟩` from `Δ.exists_isEqn (under z)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h0`. Use `(ht.generatesAt_iff.1 hgen).ne_zero` as an intermediate fact. Rewrite `this` using `[h0, zero_mul]`. Conclude with `this rfl`. Use `show (cxSt F).pn Y (I.ε a) Δ m ((cxSt F).cx Y (I.ε a) f) z = _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [ef]`. Rewrite using `[(cxSt F).pn_mul Y _ Δ m _ _ z (hVu _ (mem_ptsIn.1 hz2)).regAt hgen.regularAt, hφ]`. Simplify using `only [lnN]`. Use `congr 1`. Rewrite using `[show -2 * -(Real.log ((cxSt F).pn Y (I.ε a) Δ m ((cxSt F).cx Y (I.ε a) g) z) / 2) = Real.log ((cxSt F).pn Y (I.ε a) Δ m ((cxSt F).cx Y (I.ε a) g) z) by ring, Real.exp_log hpos]`.
+A detailed English derivation is pending.
 -/
 theorem cInfAt_pn_of_isPot {m : (cxSt F).Met Y (I.ε a) Δ} {Q : LocPot (M.X a)} (hQ : IsPot (I.pt a) m Q)
     (hQ' : IsPotential (M.A a) Q) {y : Pts Y (I.ε a)} {f : Y.Fn} (hf : Δ.GeneratesAt (under y) f) :
@@ -124,19 +124,19 @@ end GlobalTheory.ChernWeilLine
 namespace GlobalTheory.ChernWeilLine
 
 /- English proof (translation)
-Introduce `F _ _ Y e M I ι _ Δ m a Q hQ`. Use `⟨fun y _ A hA τ => ?_, fun y _ A hA τ i j => ?_, fun y _ A hA A' hA' τ => ?_⟩` and prove the remaining obligations. Establish `hp` using `pn_pos_of_isPot I a (hQ τ).1 (hA τ)`. Establish `e : lineGram (cxSt F) (fun i => m i (I.ε a)) A y τ = Matrix.diagonal fun _ => (((cxSt F).pn Y (I.ε a) (Δ τ) (m τ (I.ε a)) ((cxSt F).cx Y (I.ε a) (A τ 0 0)) y : ℝ) : ℂ)`. Use extensionality with `u v`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[Subsingleton.elim u 0, Subsingleton.elim v 0]`. Simplify using `[lineGram]`. Rewrite using `[e, Matrix.posDef_diagonal_iff]`. Introduce `_`. Conclude with `hp` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `cInfAt_pn_of_isPot I a (hQ τ).1 (hQ τ).2 (hA τ)`. Prove the components needed by the constructor for the conclusion. Conclude with `h.congr (Eventually.of_forall fun z => by simp [lineGram])`. Conclude with `(h.comp₂ h (G := fun _ => (0 : ℝ)) contDiff_const).congr (Eventually.of_forall fun z => by simp [lineGram])`. Establish `hr` using `unitAt_mul_inv_of_generatesAt (hA' τ) (hA τ)`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hne : A τ 0 0 ≠ 0`. Take `⟨t, ht⟩` from `(Δ τ).exists_isEqn (under y)`. Introduce `h0`. Use `(ht.generatesAt_iff.1 (hA τ)).ne_zero` as an intermediate fact. Rewrite `this` using `[h0, zero_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this rfl`. Establish `e1 : A' τ 0 0 = (A' τ 0 0 * (A τ 0 0)⁻¹) * A τ 0 0`. Rewrite using `[mul_assoc, inv_mul_cancel₀ hne, mul_one]`. Establish `e2` using `(cxSt F).pn_mul Y (I.ε a) (Δ τ) (m τ (I.ε a)) _ _ y hr.regAt (hA τ).regularAt`. Rewrite `e2` using `[← e1]`.
+Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `u v`. Rewrite using `[Subsingleton.elim u 0, Subsingleton.elim v 0]`. Simplify using `only [lineGram, Matrix.mul_apply, Fin.sum_univ_one, Matrix.of_apply, Matrix.conjTranspose_apply, Mat.map, Matrix.map_apply, e2]`. Establish `e3 : (A' * A⁻¹) τ 0 0 = A' τ 0 0 * (A τ 0 0)⁻¹` using `by simp [Matrix.mul_apply, Matrix.inv_def]`. Rewrite using `[e3]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `set w := ratVal (A' τ 0 0 * (A τ 0 0)⁻¹) y`. Use `push_cast`. Rewrite using `[mul_right_comm, Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem isMetricOn_lineGram_of_isPot : ∀ {F : Type} [Field F] [NumberField F] {Y : Var F} {e : ℕ} {M : Man e} (I : ManIs M Y) {ι : Type} [Fintype ι] {Δ : ι → Y.Dv} (m : ∀ i σ, (cxSt F).Met Y σ (Δ i)) (a : Fin (M.n + 1)) (Q : ι → LocPot (M.X a)), (∀ i, IsPot (I.pt a) (m i (I.ε a)) (Q i) ∧ IsPotential (M.A a) (Q i)) → IsMetricOn (ofDivisors Δ) ⊤ (lineGram (cxSt F) fun i => m i (I.ε a)) := by
   intro F _ _ Y e M I ι _ Δ m a Q hQ

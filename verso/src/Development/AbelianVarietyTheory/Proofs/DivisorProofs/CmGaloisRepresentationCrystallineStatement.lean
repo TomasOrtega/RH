@@ -25,7 +25,7 @@ open Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Gl
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CsdTwistGal.exists_galRep_csd_twist` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCmGaloisRepresentationCrystalline.lean&line=78#L78)
 -/

@@ -11,7 +11,7 @@ open scoped Classical
 namespace GlobalTheory.LatChain.StepG
 
 /- English proof (translation)
-Take `⟨a, ha, ha'⟩` from `he.mul h`. Use `⟨1 + a, ?_, ?_⟩` and prove the remaining obligations. Use `(IsLocalRing.isUnit_or_isUnit_one_sub_self _).resolve_right fun hu => ha ?_` and prove the remaining obligations. Rewrite `hu` using `[sub_add_cancel_left, IsUnit.neg_iff]`. Then use the resulting hypothesis. Rewrite using `[map_add, map_one, ha']`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
 Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -26,21 +26,21 @@ theorem unitAt_of_cong {X : Scheme.{0}} [IsIntegral X] {x : X} {e f : X.function
     ring
 
 /- English proof (translation)
-Introduce `hP k _ X _ q n hX num hnum _ G p hp M B E e b hM hV he hB hT`. Use `haveI : IsLocallyNoetherian X := hX.isLocallyNoetherian`. Take `⟨r, hr, rfl, hnorm⟩` from `hM`. Take `⟨ρ, hρ, hb⟩` from `hB`. Take `⟨t, ht⟩` from `hT`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hq (i : M.B.ι) (x : X) (hx : x ∈ M.B.U i) : (M.div hr).IsEqn x (r i)` using `(presents_divOfRatSec _ hr).isEqn i x hx`. Establish `hq' (j : B.B.ι) (x : X) (hx : x ∈ B.B.U j) : (B.div hρ).IsEqn x (ρ j)` using `(presents_divOfRatSec _ hρ).isEqn j x hx`. Establish `hoff (i : M.B.ι) (x : X) (hx : x ∈ M.B.U i) (h : ¬ Ov p x) : UnitAt x (r i : X.functionField)`. Simplify using `using (hV x h).iff_unitAt.1 (hq i x hx)`. Establish `hon (i : M.B.ι) (x : X) (hx : x ∈ M.B.U i) (h : Ov p x) : UnitAt x ((r i : X.functionField) / e x)` using `(he x h).1.iff_unitAt.1 (hq i x hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `choose U hU hUo hUa using fun a : {x : X // Ov p x} => eventually_nhds_iff.1 (ht a.1 a.2).2`. Rewrite using `[bil_apply]`. Use `GlobalTheory.T.rational_section_log_norm_prime hP k X q n hX num hnum M r hr (fun σ y _ => (hnorm σ y).2) p hp (fun i x hx => ⟨?_, fun hu => ?_⟩) B ρ hρ {x : X // Ov p x} (fun a => ⟨U a, hUo a⟩) (fun a => t a.1) (fun i x hx hn => ?_) G` and prove the remaining obligations. Distinguish the cases in `h : Ov p x`. Use `(hon i x hx h).regAt.mul (he x h).2` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[div_mul_cancel₀ _ (e x).ne_zero]`. Then use the resulting hypothesis. Conclude with `(hoff i x hx h).regAt`. Conclude with `hoff i x hx (not_not.2 hu)`. Establish `h : Ov p x` using `by_contra fun h => hn (hoff i x hx h)`. Establish `hne : ¬ UnitAt x (e x : X.functionField)` using `fun hu => hn (by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hon i x hx h).mul hu` as an intermediate fact. Rewrite using `[div_mul_cancel₀ _ (e x).ne_zero] at this)` and apply the resulting hypothesis. Establish `hz : ZeroAt x (e x : X.functionField)` using `zeroAt_iff.2 ⟨(he x h).2, hne⟩`. Establish `hunit (a : {x : X // Ov p x}) (ha : x ∈ U a) : UnitAt x ((t a.1 : X.functionField) / t x)` using `unitAt_of_cong (e x).ne_zero hz (hU a x ha h hne)`. Use `⟨⟨⟨x, h⟩, hUa _⟩, fun a j ha hj => ?_, fun a c ha hc => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `((hunit a ha).mul ((ht x h).1 hne)).mul ((hb x h).iff_unitAt.1 (hq' j x hj))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `(t x).ne_zero` as an intermediate fact. Use `(b x).ne_zero` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact.
 
-Establish `hneg : RegAt x (-1 : X.functionField)` using `⟨-1, by simp⟩`. Use `(((hU a x ha h hne).add (hneg.mul (hU c x hc h hne))).mul (hunit c hc).inv.regAt).mul (hon i x hx h).inv.regAt` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `(t x).ne_zero` as an intermediate fact. Use `(t c.1).ne_zero` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Use `(e x).ne_zero` as an intermediate fact. Use `(r i).ne_zero` as an intermediate fact. Rewrite using `[Units.val_div_eq_div_val]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem bil_eq_zero_of_trivOn : Hypotheses2 → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (q : X ⟶ Sp k) (n : ℕ), IsArithVar q (n + 1) → ∀ num : Form (Cl q) (n + 1), IsArForm (n + 1) num → IsSymm num → ∀ (G : Fin n → HermLB q) (p : ℕ), p.Prime → ∀ (M B : HermLB q) (E : CartierDiv X) (e b : X → X.functionFieldˣ), Can M E → Vert p E → (∀ x, Ov p x → E.IsEqn x (e x) ∧ RegAt x (e x : X.functionField)) → Rep p B b → TrivOn p (fun x => (e x : X.functionField)) (fun x => (b x : X.functionField)) → bil num (fun j => cl (G j)) (cl M) (cl B) = 0 := by
   intro hP k _ X _ q n hX num hnum _ G p hp M B E e b hM hV he hB hT

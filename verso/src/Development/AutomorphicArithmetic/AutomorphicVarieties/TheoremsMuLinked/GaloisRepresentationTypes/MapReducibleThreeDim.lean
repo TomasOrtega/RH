@@ -12,13 +12,13 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open UpperTheory.V UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.Alg UpperTheory.V.U3
 
 /- English proof (translation)
-Use `haveI := c.dvr`. Use `haveI := c.fin`. Distinguish the cases in `h0 : b = 0`. Substitute `h0` using the available equality. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv0 : IsDiscreteValuationRing.addVal c.O b ≠ 0` using `fun h => hb (IsDiscreteValuationRing.addVal_eq_zero_iff.mp h)`. Establish `hvt : IsDiscreteValuationRing.addVal c.O b ≠ ⊤` using `fun h => h0 (IsDiscreteValuationRing.addVal_eq_top_iff.mp h)`. Establish `hk : (IsDiscreteValuationRing.addVal c.O b).toNat ≠ 0`. Introduce `h`. Rewrite `h` using `[ENat.toNat_eq_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. The claim follows by propositional logic. Establish an intermediate fact.
 
-The claim follows by propositional logic. Establish `key` using `normO l c.O b h0`. Establish `hl : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Establish `hr : ((l : ℝ)⁻¹) ^ (IsDiscreteValuationRing.addVal c.O b).toNat < 1` using `pow_lt_one₀ (by positivity) (inv_lt_one_of_one_lt₀ hl) hk`. Assume the negation of the conclusion as `hge`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `push_neg at hge`. Establish `h1` using `one_le_pow₀ (n := (eO l c.O).toNat) hge`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 private theorem norm_lt_one_of_nonunit {l : ℕ} [Fact l.Prime] (c : Coef l) (b : c.O) (hb : ¬ IsUnit b) :
     ‖(b : PadicAlgCl l)‖ < 1 := by
@@ -45,9 +45,9 @@ private theorem norm_lt_one_of_nonunit {l : ℕ} [Fact l.Prime] (c : Coef l) (b 
   linarith
 
 /- English proof (translation)
-Introduce `y hy`. Establish `hsurj : Function.Surjective x` using `fun a => ⟨algebraMap c.O R a, x.commutes a⟩`. Establish `hmax : (Ideal.comap (x : R →+* c.O) (IsLocalRing.maximalIdeal c.O)).IsMaximal` using `Ideal.comap_isMaximal_of_surjective _ hsurj`. Establish `heq` using `IsLocalRing.eq_maximalIdeal hmax`. Establish `hy' : y ∈ Ideal.comap (x : R →+* c.O) (IsLocalRing.maximalIdeal c.O)` using `heq ▸ hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxy : x y ∈ IsLocalRing.maximalIdeal c.O` using `hy'`. Conclude with `norm_lt_one_of_nonunit c (x y) ((IsLocalRing.mem_maximalIdeal _).mp hxy)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isLocPt_toBar {l : ℕ} [Fact l.Prime] {c : Coef l} {R : Type} [CommRing R] [Algebra c.O R]
     [IsCO c.O R] (x : R →ₐ[c.O] c.O) : IsLocPt (toBar x) := by
@@ -61,11 +61,11 @@ private theorem isLocPt_toBar {l : ℕ} [Fact l.Prime] {c : Coef l} {R : Type} [
   exact norm_lt_one_of_nonunit c (x y) ((IsLocalRing.mem_maximalIdeal _).mp hxy)
 
 /- English proof (translation)
-Use extensionality with `g : 1`. Apply `SemidirectProduct.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Simplify using `only [MonoidHom.comp_apply, GG.map, r0, MonoidHom.coe_mk, OneHom.coe_mk, SemidirectProduct.map_left, GeneralLinearGroup.map_apply, tor_val, RingHom.mapMatrix_apply]`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `only [Matrix.map_apply, Matrix.diagonal_apply_eq]`. Conclude with `congrArg Units.val (map_zpow (Units.map (f : R →* S)) (Ψ g) (wt1 i))`. Simplify using `[Matrix.diagonal_apply_ne _ hij]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[GG.map, r0]`.
+A detailed English derivation is pending.
 -/
 private theorem map_reducible_three_dim {G R S : Type} [Group G] [CommRing R] [CommRing S] (f : R →+* S) (η : G →* ℤˣ)
     (Ψ : G →* Rˣ) : (GG.map f).comp (r0 η Ψ) = r0 η ((Units.map f.toMonoidHom).comp Ψ) := by
@@ -83,9 +83,9 @@ private theorem map_reducible_three_dim {G R S : Type} [Group G] [CommRing R] [C
   · simp [GG.map, r0]
 
 /- English proof (translation)
-Take `⟨X, hX⟩` from `LinearMap.mem_range.mp h`. Use `⟨-X, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Rewrite using `[← hX]`. Use `show adRep r g X - X = -X - adRep r g (-X)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_neg]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 private theorem coboundary_of_mem_B1 {Γ κ : Type} [Group Γ] [CommRing κ] (r : Γ →* GG 3 κ)
     (γ : Γ → Matrix (Fin 3) (Fin 3) κ) (h : γ ∈ ReciprocityTheory.Gal.B1 (adRep r)) : ∃ X, γ = cob r X := by
@@ -98,7 +98,7 @@ private theorem coboundary_of_mem_B1 {Γ κ : Type} [Group Γ] [CommRing κ] (r 
   abel
 
 /- English proof (translation)
-Introduce `g`. Use `⟨rfl, fun a b => ⟨?_, rfl⟩⟩` and prove the remaining obligations. Unfold `entAlg`. Conclude with `Algebra.subset_adjoin ⟨g, a, b, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem isPush_push {O Γ R κ : Type} [CommRing O] [Group Γ] [CommRing R] [Algebra O R] [CommRing κ]
     [Algebra O κ] (f : R →ₐ[O] κ) (r : Γ →* GG 3 R) : IsPush (f.comp (entAlg O r).val) r (push f r) := by
@@ -108,13 +108,13 @@ private theorem isPush_push {O Γ R κ : Type} [CommRing O] [Group Γ] [CommRing
   exact Algebra.subset_adjoin ⟨g, a, b, rfl⟩
 
 /- English proof (translation)
-Introduce `hI Ω _ _ _ K _ _ _ l _ c N _ e ψ D U g₁ hM S _ ι hB hW x₀ hx`. Establish `h0 : push (toBar x₀) S.r.hom = r0 D.η D.ΨQ`. Establish `e1 : push (toBar x₀) S.r.hom = (GG.map (algebraMap c.O (PadicAlgCl l))).comp (push x₀ S.r.hom)` using `rfl`. Rewrite using `[e1, show push x₀ S.r.hom = r0 D.η D.Ψ from hx, map_reducible_three_dim]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨fun f hf hU hL => ?_, fun j hj F hF hw => ?_, fun f hf F hF => ?_⟩` and prove the remaining obligations. Rewrite using `[h0]`. Conclude with `pt_fixed hI.toCohInp D hM (isPt_push D hM S f hf) hU hL`. Establish `h1` using `tanCoc_isBK hI.toCohInp D hM S F (hF ▸ isLocPt_toBar x₀)`. Rewrite `h1` using `[hF, h0]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0]`. Conclude with `coboundary_of_mem_B1 _ _ (bloch_kato_nonpositive_weight hI.toCohInp D j hj _ h1.1 hw h1.2)`. Establish `h1` using `tanCoc_isBK hI.toCohInp D hM S F (hF ▸ hf.1)`. Rewrite `h1` using `[hF]`. Establish `hp` using `isPt_push D hM S f hf.1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hz : Af.BlochKatoSelmerVanishes l (adRep (push f S.r.hom))`. Break down `(twoPt_shape S D.gd.l_odd hM f hf).1 with h | h` into its components or cases. Conclude with `hI.rigI D hM S f hf.1 hp.mult ι h (hB U S _ _ hp.mult (isPush_push f _) h)`. Conclude with `Th.blochKatoSelmer_adRep_vanishes_of_typeII_modular hI D hM S f hf.1 ι h (hW U S _ _ (isPush_push f _) h (typeII_facts hI.toCohInp D hM hp h).1)`. Conclude with `coboundary_of_mem_B1 _ _ (hz _ h1.1 h1.2)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Th.ptHyp_of :
     Th.InpU → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {K : Type} [Field K] [NumberField K] [Algebra K Ω]

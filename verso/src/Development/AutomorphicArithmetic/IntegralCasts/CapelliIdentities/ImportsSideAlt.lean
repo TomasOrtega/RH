@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `n U ι u f h`. Proceed by induction on `u using Finset.induction_on with`. Consider the case `empty => simp only [Finset.prod_empty]`. Conclude with `differentiableOn_const (1 : ℂ)`. Consider the case `insert a s ha ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `h1 : DifferentiableOn ℂ (f a) U` using `h a (Finset.mem_insert_self a s)`. Establish `h2` using `ih (fun i hi => h i (Finset.mem_insert_of_mem hi))`. Simplify using `only [Finset.prod_insert ha]`. Conclude with `h1.mul h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Yhd5.main :
     ∀ {n : ℕ} {U : Set (Fin n → ℂ)} {ι : Type} (u : Finset ι) {f : ι → (Fin n → ℂ) → ℂ},

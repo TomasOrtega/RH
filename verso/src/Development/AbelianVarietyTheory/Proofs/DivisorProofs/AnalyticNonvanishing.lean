@@ -21,13 +21,13 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `F E _ _ _ _ _ σ B a a' G X om om' h hp hq`. Conclude with `GlobalTheory.T.exists_nonzero_theta_lift_anisotropic hK F E σ B a a' G X om om' h hp hq`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Consider the case `succ n ih`. Introduce `F E _ _ _ _ _ σ B a a' G X om om' h hp hq`. Take `⟨b, rfl⟩ : ∃ b, a' = b + 2` from `⟨a' - 2, by have := h.geo.aBig; omega⟩`. Take `⟨-, hTB⟩` from `GlobalTheory.T.theta_tower_properties hK.base`. Take `⟨h0, -⟩` from `GlobalTheory.T.theta_evaluation_zero_cone hK.base`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨V, V', W, t, G₁, H, H', c, om₁, om₁', t₁⟩` from `hTB F E σ B a b G X om om' h (by omega)`. Establish `hp₁ : G₁.p = 0` using `c.ep.trans hp`. Establish `hq₁ : G₁.q = n` using `by have := c.eq; simp only [reG] at this; omega`. Take `⟨Φ₁, hΦ₁, hne⟩` from `ih F E σ B a b G₁ X om₁ om₁' t₁ hp₁ hq₁`. Establish `hev` using `h0 F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (GlobalTheory.ThK.Inhab.pairV t) _ _ _ H' _ _ G₁.M c.eV c.hH' t₁.geo.hM`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he⟩` from `hev.1`. Establish `hmap` using `hev.2 e he`. Establish `hm : Φ₁ ∈ (PolData B (reG G V V' W).M).map e` using `hmap ▸ hΦ₁`. Take `⟨Φ, hΦ, rfl⟩` from `Submodule.mem_map.1 hm`. Conclude with `GlobalTheory.T.nonzero_theta_lift_relevant_space hK F E σ B a (b + 2) G X om om' V V' W h t hp ⟨Φ, hΦ, fun hz => hne (GlobalTheory.T.config_b_triple_compatibility hK F E σ B a b (reG G V V' W) G₁ H H' X om om' om₁ om₁' c t t₁ hp e he Φ hΦ hz)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem partV (hK : KP) : ∀ n : ℕ, ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' → G.p = 0 → G.q = n → ∃ Φ ∈ PolData B G.M, G.M.I om Φ ≠ 0 := by
@@ -54,13 +54,13 @@ theorem partV (hK : KP) : ∀ n : ℕ, ∀ (F E : Type) [Field F] [NumberField F
       ⟨Φ, hΦ, fun hz => hne (GlobalTheory.T.config_b_triple_compatibility hK F E σ B a b (reG G V V' W) G₁ H H' X om om' om₁ om₁' c t t₁ hp e he Φ hΦ hz)⟩
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `F E _ _ _ _ _ σ B a a' G X om om' h hq hp`. Conclude with `GlobalTheory.T.exists_nonzero_dual_theta_lift hK F E σ B a a' G X om om' h hp hq`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Consider the case `succ n ih`. Introduce `F E _ _ _ _ _ σ B a a' G X om om' h hq hp`. Take `⟨b, rfl⟩ : ∃ b, a = b + 2` from `⟨a - 2, by have := h.geo.aBig; have := h.geo.lt; omega⟩`. Take `⟨hTA, -⟩` from `GlobalTheory.T.theta_tower_properties hK.base`. Take `⟨h0, -⟩` from `GlobalTheory.T.theta_evaluation_zero_cone hK.base`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨V, V', W, t, G₁, H, H', c, om₁, om₁', t₁⟩` from `hTA F E σ B b a' G X om om' h hq (by omega)`. Establish `hq₁ : G₁.q = 0` using `c.q1`. Establish `hp₁ : G₁.p = n` using `by have := c.ep; simp only [reG] at this; omega`. Take `⟨Φ₁, hΦ₁, hne⟩` from `ih F E σ B b a' G₁ X om₁ om₁' t₁ hq₁ hp₁`. Establish `hev` using `h0 F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (GlobalTheory.ThK.Inhab.pairV' t) _ _ _ H' _ _ G₁.M' c.eV c.hH' t₁.geo.hM'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he⟩` from `hev.1`. Establish `hmap` using `hev.2 e he`. Establish `hm : Φ₁ ∈ (PolData B (reG G V V' W).M').map e` using `hmap ▸ hΦ₁`. Take `⟨Φ, hΦ, rfl⟩` from `Submodule.mem_map.1 hm`. Conclude with `GlobalTheory.T.nonzero_dual_theta_lift_relevant hK F E σ B (b + 2) a' G X om om' V V' W h t hq ⟨Φ, hΦ, fun hz => hne (GlobalTheory.T.config_a_triple_compatibility hK F E σ B b a' (reG G V V' W) G₁ H H' X om om' om₁ om₁' c t t₁ e he Φ hΦ hz)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem partV' (hK : KP) : ∀ n : ℕ, ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' → G.q = 0 → G.p = n → ∃ Φ' ∈ PolData B G.M', G.M'.I om' Φ' ≠ 0 := by
@@ -87,7 +87,7 @@ theorem partV' (hK : KP) : ∀ n : ℕ, ∀ (F E : Type) [Field F] [NumberField 
       ⟨Φ, hΦ, fun hz => hne (GlobalTheory.T.config_a_triple_compatibility hK F E σ B b a' (reG G V V' W) G₁ H H' X om om' om₁ om₁' c t t₁ e he Φ hΦ hz)⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' h`. Use `⟨fun hp => partV hK _ F E σ B a a' G X om om' h hp rfl, fun hq => ?_⟩` and prove the remaining obligations. Take `⟨Φ', hΦ', hne⟩` from `partV' hK _ F E σ B a a' G X om om' h hq rfl`. Conclude with `GlobalTheory.T.exists_nonzero_theta_lift_so_type hK F E σ B a a' G X om om' h hq Φ' hΦ' hne`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem nonZeroAn (hK : KP) : NonZeroAn := by
   intro F E _ _ _ _ _ σ B a a' G X om om' h

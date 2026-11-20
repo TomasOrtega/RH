@@ -18,7 +18,7 @@ section Gen
 variable {Gg Γg : Type} [Group Gg] [Group Γg] {Wg : Type} [NormedAddCommGroup Wg] [InnerProductSpace ℂ Wg]
 
 /- English proof (translation)
-Establish `e` using `hF 1 h k`. Rewrite `e` using `[map_one, one_mul, map_one, Module.End.one_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem adForms_law (ι : Γg →* Gg) (ρ : Γg →* Module.End ℂ Wg) (J : Subgroup Gg) (χ : J →* ℂˣ) {F : Gg → Wg}
     (hF : F ∈ Bridge.AdForms ι ρ J χ) (h : Gg) (k : J) : F (h * k) = (χ k : ℂ) • F h := by
@@ -32,7 +32,7 @@ variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn 
   {G : GridData R.toLevCh sc} {W : G.Weil} {U : Set T}
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cast_mul_unitaryAdelicGroup_of_eq {X Y : LSp D} (h : X = Y) (a b : GA D X.sp) :
     cast (congrArg (fun X : LSp D => GA D X.sp) h) (a * b) =
@@ -40,7 +40,7 @@ theorem cast_mul_unitaryAdelicGroup_of_eq {X Y : LSp D} (h : X = Y) (a b : GA D 
   subst h; rfl
 
 /- English proof (translation)
-Unfold `toXf`. Rewrite using `[← map_mul, Subgroup.coe_mul]`. Conclude with `congrArg _ (cast_mul_unitaryAdelicGroup_of_eq (colY_m R.toLevCh) _ _)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toXf_mul (y k : FinPt G (.grid 0 D.R.m)) : toXf (y * k) = toXf y * toXf k := by
   unfold toXf
@@ -54,7 +54,7 @@ theorem formC_apply (S : SumChoice W U) (t : T) (u : (R.HX t).H) (y : FinPt G (.
     S.formC t u y = S.co ((R.HX t).e u (toXf y)) := rfl
 
 /- English proof (translation)
-Establish `h : ∀ F, F ∈ LinearMap.range (R.HX t).e → F ∈ Bridge.AdForms (Bridge.ratF D.sp.X') R.cX.coef.ρ (levEnv D.sp.X' R.βX (R.datXt t)).J (levEnv D.sp.X' R.βX (R.datXt t)).χ` using `fun F hF => (hHX t).2.1 ▸ hF`. Establish `e : (R.HX t).e u (toXf y * toXf k) = (((levEnv D.sp.X' R.βX (R.datXt t)).χ ⟨toXf k, hk⟩ : ℂˣ) : ℂ) • (R.HX t).e u (toXf y)` using `adForms_law (Bridge.ratF D.sp.X') _ _ _ (h _ (LinearMap.mem_range_self (R.HX t).e u)) (toXf y) ⟨toXf k, hk⟩`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem formC_mul (S : SumChoice W U) (hHX : R.models_HX) (t : T) (u : (R.HX t).H) (y k : FinPt G (.grid 0 D.R.m))
     (hk : toXf k ∈ (levEnv D.sp.X' R.βX (R.datXt t)).J) :
@@ -71,11 +71,11 @@ theorem formC_mul (S : SumChoice W U) (hHX : R.models_HX) (t : T) (u : (R.HX t).
     _ = _ := congrArg _ (formC_apply S t u y).symm
 
 /- English proof (translation)
-Introduce `hP hS`. Take `⟨a, h1⟩` from `GlobalTheory.T.gridBottomLevel_le_formLevel_largeDepth`. Take `⟨b, h2⟩` from `GlobalTheory.T.paired_points_first_level_law_statement hP hS`. Use `⟨max a b, fun ε CF hC => ?_⟩` and prove the remaining obligations. Take `⟨x₁, h1⟩` from `h1 ε CF (le_of_max_le_left hC)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨x₂, h2⟩` from `h2 ε CF (le_of_max_le_right hC)`. Use `⟨max x₁ x₂, fun D large₂ e hx Γ _ _ Pl0 T A Ks _ _ _ R F s ch hi hsc => ?_⟩` and prove the remaining obligations. Introduce `t a β hβ τ hτ u v x y k hk0`. Establish `hk` using `h1 D large₂ e (le_of_max_le_left hx) Γ Pl0 T A Ks R F s ch hi hsc t k hk0`. Establish `hC` using `h2 D large₂ e (le_of_max_le_right hx) Γ Pl0 T A Ks R F s ch hi hsc t a β hβ τ hτ x y k hk0 hk v`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[formC_mul ch.S s.core.models.HX t u (y 0) k hk]`. Conclude with `hC _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem first_level_invariance : GlobalTheory.FunPr.Hypotheses₂ → SumOKK → Big fun {D} {_Γ} _ _ {_Pl0} {T} {_A} {_Ks} _ _ _ {R} ch =>
     ∀ (t : T) a, ∀ β ∈ ch.S.supp t (ch.Phi a), ∀ τ, ch.S.IsExpansion t (ch.Phi a) β τ →

@@ -9,7 +9,7 @@ namespace GlobalTheory.SkewSpan
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Unfold `herm`. Rewrite using `[Finset.sum_comm]`. Simplify using `[dotProduct, vecMul, Finset.sum_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem herm_eq_dot (G : Matrix (Fin r) (Fin r) E) (x y : Fin r → E) :
     herm G x y = (x ᵥ* G) ⬝ᵥ (fun b => cc (y b)) := by
@@ -18,7 +18,7 @@ theorem herm_eq_dot (G : Matrix (Fin r) (Fin r) E) (x y : Fin r → E) :
   simp [dotProduct, vecMul, Finset.sum_mul]
 
 /- English proof (translation)
-Simplify using `only [herm_eq_dot, Matrix.sum_mulVec, Matrix.smul_mulVec, Matrix.sum_vecMul, Matrix.smul_vecMul, sum_dotProduct, smul_dotProduct, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_sum_left {ι : Type} [Fintype ι] (G : Matrix (Fin r) (Fin r) E) (c : ι → E)
     (v : ι → Matrix (Fin r) (Fin r) E) (u w : Fin r → E) :
@@ -27,7 +27,7 @@ theorem herm_sum_left {ι : Type} [Fintype ι] (G : Matrix (Fin r) (Fin r) E) (c
     Matrix.smul_vecMul, sum_dotProduct, smul_dotProduct, smul_eq_mul]
 
 /- English proof (translation)
-Establish `: (fun b => cc (((∑ i, c i • v i) *ᵥ w) b)) = ∑ i, cc (c i) • (fun b => cc ((v i *ᵥ w) b))`. Use function extensionality and compare the values at `b`. Simplify using `[cc, Matrix.sum_mulVec, Matrix.smul_mulVec, Finset.sum_apply]`. Simplify using `only [herm_eq_dot, this, dotProduct_sum, dotProduct_smul, smul_eq_mul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem herm_sum_right {ι : Type} [Fintype ι] (G : Matrix (Fin r) (Fin r) E) (c : ι → E)
     (v : ι → Matrix (Fin r) (Fin r) E) (u w : Fin r → E) :
@@ -39,13 +39,13 @@ theorem herm_sum_right {ι : Type} [Fintype ι] (G : Matrix (Fin r) (Fin r) E) (
   simp only [herm_eq_dot, this, dotProduct_sum, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Establish `key : ∀ u, Y *ᵥ u = 0`. Introduce `u`. Apply `Matrix.eq_zero_of_vecMul_eq_zero hG` to reduce the goal to its premises. Use function extensionality and compare the values at `b`. Use `h u (Pi.single b 1)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite `this` using `[herm_eq_dot]`. Establish `h2 : (fun b' => cc ((Pi.single b (1 : E) : Fin r → E) b')) = Pi.single b 1`. Use function extensionality and compare the values at `b'`. Distinguish the cases in `hb : b' = b`. Substitute `hb` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[cc]`. Simplify using `[cc, hb]`. Rewrite `this` using `[h2]`. Simplify using `using this`. Use extensionality with `a b`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components.
 
-Use `congrFun (key (Pi.single b 1)) a` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_zero_of_herm (G : Matrix (Fin r) (Fin r) E) (hG : G.det ≠ 0)
     (Y : Matrix (Fin r) (Fin r) E) (h : ∀ u w, herm G (Y *ᵥ u) w = 0) : Y = 0 := by
@@ -67,19 +67,19 @@ theorem eq_zero_of_herm (G : Matrix (Fin r) (Fin r) E) (hG : G.det ≠ 0)
   simpa using this
 
 /- English proof (translation)
-Rewrite `hli`, the goal using `[Fintype.linearIndependent_iff]`. Establish `step : ∀ c : ι → E, ∑ i, c i • v i = 0 → ∀ i, c i + cc (c i) = 0`. Introduce `c hc`. Establish `h1 : ∑ i, cc (c i) • v i = 0`. Apply `eq_zero_of_herm G hG` to reduce the goal to its premises.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `u w`. Establish `h` using `herm_sum_right G c v u w`. Rewrite `h` using `[hc]`. Establish `h0 : herm G u ((0 : Matrix (Fin r) (Fin r) E) *ᵥ w) = 0` using `by simp [herm, cc]`. Rewrite `h` using `[h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[herm_sum_left, ← neg_eq_zero, ← Finset.sum_neg_distrib, h]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[eq_neg_of_add_eq_zero_right (hv i u w)]`. Expand and normalize the polynomial expressions, which then agree. Establish `hm : ∀ i, c i + cc (c i) ∈ maximalRealSubfield E`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Introduce `i`. Rewrite using `[← IsCMField.complexConj_eq_self_iff]`. Simplify using `[cc, add_comm]`. Introduce `i`. Use `hli (fun i => ⟨c i + cc (c i), hm i⟩) (by` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: ∑ i, (c i + cc (c i)) • v i = 0`. Simplify using `only [add_smul, Finset.sum_add_distrib, hc, h1, add_zero]`. Conclude with `this) i`. Conclude with `congrArg Subtype.val this`. Introduce `c hc j`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h` using `step (fun i => cc (c j) * c i) (by`. Simplify using `only [mul_smul, ← Finset.smul_sum, hc, smul_zero]) j`. Establish `h2 : 2 * (cc (c j) * c j) = 0`. Rewrite using `[← h]`. Simplify using `[cc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `[cc] at h2`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem linearIndependent_of_skew {ι : Type} [Fintype ι] (G : Matrix (Fin r) (Fin r) E)
     (hG : G.det ≠ 0) (v : ι → Matrix (Fin r) (Fin r) E)
@@ -117,9 +117,9 @@ theorem linearIndependent_of_skew {ι : Type} [Fintype ι] (G : Matrix (Fin r) (
   exact h2
 
 /- English proof (translation)
-Establish `h` using `LinearMap.finrank_range_add_finrank_ker (Matrix.traceLinearMap (Fin (r + 1)) K K)`. Establish `hs : LinearMap.range (Matrix.traceLinearMap (Fin (r + 1)) K K) = ⊤`. Rewrite using `[LinearMap.range_eq_top]`. Introduce `a`. Conclude with `⟨Matrix.single 0 0 a, by simp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Rewrite `h` using `[hs, finrank_top, Module.finrank_self, Module.finrank_matrix]`. Simplify using `only [Fintype.card_fin, Module.finrank_self, mul_one] at h`. Rewrite using `[sq]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem finrank_ker_trace (K : Type) [Field K] (r : ℕ) :
     Module.finrank K (LinearMap.ker (Matrix.traceLinearMap (Fin (r + 1)) K K)) = (r + 1) ^ 2 - 1 := by
@@ -133,13 +133,11 @@ theorem finrank_ker_trace (K : Type) [Field K] (r : ℕ) :
   rw [sq]; omega
 
 /- English proof (translation)
-Introduce `E _ _ _ r G e _ hG he hli X hX hXs`. Break down `r with _ | r` into its components or cases. Establish `: X = 0` using `Subsingleton.elim _ _`. Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hn`. Establish `h1 : LinearIndependent (maximalRealSubfield E) (fun o : Option _ => Option.casesOn' o X e)` using `hli.option hn`. Establish `h2` using `linearIndependent_of_skew G hG _ (by`. Introduce and unpack `(_ | i)`. Conclude with `hXs`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `(he i).2) h1`. Set `f : Option (Fin ((r + 1) ^ 2 - 1)) → LinearMap.ker (Matrix.traceLinearMap (Fin (r + 1)) E E)` to `fun o => ⟨Option.casesOn' o X e, by`. Break down `o with _ | i` into its components or cases. Conclude with `hX`. Conclude with `(he i).1⟩`.
-
-Establish `h3 : LinearIndependent E f` using `LinearIndependent.of_comp (Submodule.subtype _) h2`. Establish `h4` using `h3.fintype_card_le_finrank`. Rewrite `h4` using `[finrank_ker_trace]`. Simplify using `at h4`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_span_of_skew : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (G : Matrix (Fin r) (Fin r) E) (e : Fin (r ^ 2 - 1) → Matrix (Fin r) (Fin r) E), (∀ a b, cc (G a b) = G b a) → G.det ≠ 0 → (∀ i, (e i).trace = 0 ∧ ∀ u w, herm G (e i *ᵥ u) w + herm G u (e i *ᵥ w) = 0) → LinearIndependent (maximalRealSubfield E) e → ∀ X : Matrix (Fin r) (Fin r) E, X.trace = 0 → (∀ u w, herm G (X *ᵥ u) w + herm G u (X *ᵥ w) = 0) → X ∈ Submodule.span (maximalRealSubfield E) (Set.range e) := by
   intro E _ _ _ r G e _ hG he hli X hX hXs

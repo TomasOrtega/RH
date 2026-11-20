@@ -5,9 +5,9 @@ open CategoryTheory AlgebraicGeometry TensorProduct
 open UpperTheory.Gal.crystallineComparison
 
 /- English proof (translation)
-Simplify using `only [MvPolynomial.coeff_sum, MvPolynomial.coeff_C_mul]`. Rewrite using `[Finset.sum_eq_single k₀]`. Simplify using the standard rewrite rules. Introduce `k _ hk`. Rewrite using `[MvPolynomial.coeff_X', if_neg, mul_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `hk (Finsupp.single_left_injective one_ne_zero h)`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma coeff_lin_form {A ι : Type} [CommRing A] [Fintype ι] (a : ι → A) (k₀ : ι) :
     MvPolynomial.coeff (Finsupp.single k₀ 1) (∑ k, MvPolynomial.C (a k) * MvPolynomial.X k : MvPolynomial ι A) = a k₀ := by
@@ -22,27 +22,25 @@ private lemma coeff_lin_form {A ι : Type} [CommRing A] [Fintype ι] (a : ι →
   · simp
 
 /- English proof (translation)
-Introduce `hG hS hL B _ ϖ hϖ hnu ι _ N m hm u u' hcard hsame x hx hchain hdich`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hex : ∀ y : ι → B, ∃ c : B, ∃ e : ι → B, y ∈ u' → c ∣ ϖ ^ m ∧ (∃ k₀, e k₀ = 1) ∧ ∀ k, x k - y k = c * e k`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hy : y ∈ u'`. Take `⟨k, hk⟩` from `hcon y hy`. Establish `hdk : x k - y k ∣ ϖ ^ m` using `(hdich y hy k).resolve_right hk`. Take `⟨c, e, k₀, hc, he, hd⟩` from `hL B ι (ϖ ^ m) (fun k => x k - y k) ⟨k, hdk⟩ (hchain y hy)`. Conclude with `⟨c, e, fun _ => ⟨hc, ⟨k₀, he⟩, hd⟩⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨0, 0, fun h => absurd h hy⟩`. Use `choose c e hce using hex`. Use `set M := ϖ ^ (m * (N + 1)) with hM`. Establish `h4` using `(hS (B ⧸ Ideal.span {M}) ι).2.2.2 (fun k => Ideal.Quotient.mk (Ideal.span {M}) (x k)) (redMod M u) (redMod M u') hsame (Multiset.mem_map_of_mem _ hx)`. Set `L : (ι → B) → MvPolynomial ι (B ⧸ Ideal.span {M})` to `fun y => ∑ k, MvPolynomial.C (Ideal.Quotient.mk (Ideal.span {M}) (e y k)) * MvPolynomial.X k`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h4' : (u'.map (fun y => MvPolynomial.C (Ideal.Quotient.mk (Ideal.span {M}) (c y)) * L y)).prod = 0`. Rewrite using `[← h4]`. Use `congr 1`. Unfold `redMod`. Rewrite using `[Multiset.map_map]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Multiset.map_congr rfl fun y hy => ?_` and prove the remaining obligations. Simplify using `only [Function.comp, L, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← map_sub, (hce y hy).2.2 k, map_mul, map_mul, mul_assoc]`. Rewrite `h4'` using `[Multiset.prod_map_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hC : (u'.map fun y => (MvPolynomial.C (Ideal.Quotient.mk (Ideal.span {M}) (c y)) : MvPolynomial ι (B ⧸ Ideal.span {M}))).prod = (MvPolynomial.C (Ideal.Quotient.mk (Ideal.span {M}) (u'.map c).prod) : MvPolynomial ι (B ⧸ Ideal.span {M}))`. Rewrite using `[map_multiset_prod, map_multiset_prod, Multiset.map_map, Multiset.map_map]`. Both sides reduce to the same expression. Rewrite `h4'` using `[hC]`. Establish `hz : Ideal.Quotient.mk (Ideal.span {M}) (u'.map c).prod = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `hG _ ι _ (u'.map L) ?_ h4'` and prove the remaining obligations. Introduce `p hp`. Take `⟨y, hy, rfl⟩` from `Multiset.mem_map.mp hp`. Take `⟨k₀, hk₀⟩` from `(hce y hy).2.1`. Conclude with `⟨Finsupp.single k₀ 1, by simp only [L]; rw [coeff_lin_form, hk₀, map_one]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdvd : M ∣ (u'.map c).prod` using `Ideal.mem_span_singleton.mp (Ideal.Quotient.eq_zero_iff_mem.mp hz)`. Establish `hdvd2 : (u'.map c).prod ∣ (ϖ ^ m) ^ Multiset.card u'`. Establish `hh` using `Multiset.prod_dvd_prod_of_dvd (S := u') c (fun _ => ϖ ^ m) (fun y hy => (hce y hy).1)`. Simplify `hh` using `[Multiset.map_const', Multiset.prod_replicate]`. Take `⟨t, ht⟩` from `hdvd.trans hdvd2`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hr : M = (ϖ ^ m) ^ Multiset.card u' * ϖ ^ (m * (N + 1 - Multiset.card u'))`. Rewrite using `[hM, ← pow_mul, ← pow_add, ← Nat.mul_add]`. Use `congr 2`. Use linear arithmetic over natural numbers and integers. Rewrite `ht` using `[hr, mul_assoc]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hpa : (ϖ ^ m) ^ Multiset.card u' ∈ nonZeroDivisors B` using `pow_mem (pow_mem hϖ m) _`. Establish `h0 : (ϖ ^ (m * (N + 1 - Multiset.card u')) * t - 1) * (ϖ ^ m) ^ Multiset.card u' = 0`. Take the linear combination `-ht`. Establish `h1 : ϖ ^ (m * (N + 1 - Multiset.card u')) * t = 1` using `sub_eq_zero.mp ((mem_nonZeroDivisors_iff.mp hpa).2 _ h0)`. Establish `hu : IsUnit (ϖ ^ (m * (N + 1 - Multiset.card u')))` using `isUnit_iff_exists_inv.mpr ⟨t, h1⟩`.
-
-Conclude with `hnu ((isUnit_pow_iff (Nat.mul_ne_zero (by omega) (by omega))).mp hu)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.matchStep_of :
     GaussLin → SameNormBasic → LinFactor → MatchStep := by

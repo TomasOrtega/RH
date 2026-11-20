@@ -18,7 +18,7 @@ def Mx (w : InfinitePlace L) : Matrix (Fin n) (Fin n) (MvPolynomial (InfinitePla
   Matrix.of fun i j => X (w, i, j)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Mx, coords]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem eval_Mx (Y : InfinitePlace L → Matrix (Fin n) (Fin n) ℂ) (w : InfinitePlace L) :
     (eval (coords Y)).mapMatrix (Mx w) = Y w := by
@@ -26,21 +26,21 @@ theorem eval_Mx (Y : InfinitePlace L → Matrix (Fin n) (Fin n) ℂ) (w : Infini
   simp [Mx, coords]
 
 /- English proof (translation)
-Rewrite using `[RingHom.map_det, eval_Mx]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eval_det_Mx (Y : InfinitePlace L → Matrix (Fin n) (Fin n) ℂ) (w : InfinitePlace L) :
     eval (coords Y) (Mx w).det = (Y w).det := by
   rw [RingHom.map_det, eval_Mx]
 
 /- English proof (translation)
-Rewrite using `[RingHom.map_det, map_add, map_one, eval_Mx]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eval_det_one_add_Mx (Y : InfinitePlace L → Matrix (Fin n) (Fin n) ℂ) (w : InfinitePlace L) :
     eval (coords Y) (1 + Mx w).det = (1 + Y w).det := by
   rw [RingHom.map_det, map_add, map_one, eval_Mx]
 
 /- English proof (translation)
-Establish `h` using `congrFun (congrFun (RingHom.map_adjugate (eval (coords Y)) (Mx w)) i) j`. Rewrite `h` using `[eval_Mx]`. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eval_adj_Mx (Y : InfinitePlace L → Matrix (Fin n) (Fin n) ℂ) (w : InfinitePlace L) (i j : Fin n) :
     eval (coords Y) ((Mx w).adjugate i j) = (Y w).adjugate i j := by
@@ -53,15 +53,15 @@ def Dl (Y : InfinitePlace L → Matrix (Fin n) (Fin n) ℂ) : ℂ := ∏ w, (Y w
 def DlP : MvPolynomial (InfinitePlace L × Fin n × Fin n) ℂ := ∏ w, (Mx w).det
 
 /- English proof (translation)
-Simplify using `[DlP, Dl, map_prod, eval_det_Mx]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eval_DlP (Y : InfinitePlace L → Matrix (Fin n) (Fin n) ℂ) : eval (coords Y) (DlP (L := L) (n := n)) = Dl Y := by
   simp [DlP, Dl, map_prod, eval_det_Mx]
 
 /- English proof (translation)
-Take `⟨σ, i, j⟩` from `v`. Distinguish the cases in `h : σ = (InfinitePlace.mk σ).embedding`. Use `⟨X (InfinitePlace.mk σ, i, j) * DlP, fun Y _ => ?_⟩` and prove the remaining obligations. Simplify using `only [repPt, if_pos h, map_mul, eval_X, eval_DlP, coords]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `⟨(Mx (InfinitePlace.mk σ)).adjugate j i * ∏ w ∈ Finset.univ.erase (InfinitePlace.mk σ), (Mx w).det, fun Y hY => ?_⟩` and prove the remaining obligations. Simplify using `only [repPt, if_neg h, map_mul, map_prod, eval_adj_Mx, eval_det_Mx]`. Rewrite using `[Matrix.inv_def, Matrix.smul_apply, Dl, ← Finset.mul_prod_erase Finset.univ (fun w => (Y w).det) (Finset.mem_univ (InfinitePlace.mk σ)), Ring.inverse_eq_inv', smul_eq_mul]`. Use `hY (InfinitePlace.mk σ)` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 theorem var_hom (v : (L →+* ℂ) × Fin n × Fin n) :
     ∃ N : MvPolynomial (InfinitePlace L × Fin n × Fin n) ℂ, ∀ Y : InfinitePlace L → Matrix (Fin n) (Fin n) ℂ,
@@ -81,11 +81,11 @@ theorem var_hom (v : (L →+* ℂ) × Fin n × Fin n) :
     field_simp
 
 /- English proof (translation)
-Proceed by induction on `F using MvPolynomial.induction_on with`. Consider the case `C a => exact ⟨0, C a, fun Y _ => by simp⟩`. Consider the case `add p q hp hq`. Take `⟨K1, P1, h1⟩` from `hp`. Take `⟨K2, P2, h2⟩` from `hq`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨K1 + K2, P1 * DlP ^ K2 + P2 * DlP ^ K1, fun Y hY => ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_mul, map_pow, eval_DlP, ← h1 Y hY, ← h2 Y hY]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul_X p v hp`. Take `⟨K, P, h⟩` from `hp`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hN⟩` from `var_hom (L := L) v`. Use `⟨K + 1, P * N, fun Y hY => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, ← h Y hY, ← hN Y hY, eval_X]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hom_exists (F : MvPolynomial ((L →+* ℂ) × Fin n × Fin n) ℂ) :
     ∃ (K : ℕ) (P : MvPolynomial (InfinitePlace L × Fin n × Fin n) ℂ), ∀ Y : InfinitePlace L → Matrix (Fin n) (Fin n) ℂ,
@@ -106,15 +106,13 @@ theorem hom_exists (F : MvPolynomial ((L →+* ℂ) × Fin n × Fin n) ℂ) :
     ring
 
 /- English proof (translation)
-Use `⟨?_, fun w => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Take `⟨σ, i, j⟩` from `p`. Simplify using `only [repPt]`. Use `split_ifs with h`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `congrArg (fun s => y (s, i, j)) h.symm`. Establish `hc : σ = ComplexEmbedding.conjugate (InfinitePlace.mk σ).embedding`. Break down `InfinitePlace.embedding_mk_eq σ with h' | h'` into its components or cases. Conclude with `absurd h'.symm h`. Rewrite using `[h']`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `(star_star σ).symm`. Take `⟨B, hB⟩` from `hy (InfinitePlace.mk σ).embedding`. Establish `hYB : (Matrix.of fun i j => y ((InfinitePlace.mk σ).embedding, i, j)) = (B : Matrix (Fin n) (Fin n) ℂ)`. Use extensionality with `a b`. Conclude with `(hB a b).1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hYB, ← Matrix.coe_units_inv]`. Use `conv_rhs => rw [hc]`. Conclude with `((hB i j).2).symm`. Take `⟨B, hB⟩` from `hy w.embedding`. Establish `hYB : (Matrix.of fun i j => y (w.embedding, i, j)) = (B : Matrix (Fin n) (Fin n) ℂ)`.
-
-Use extensionality with `a b`. Conclude with `(hB a b).1`. Rewrite using `[hYB]`. Conclude with `(Matrix.isUnits_det_units B).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem repPt_of_InV [IsCMField L] (y : (L →+* ℂ) × Fin n × Fin n → ℂ) (hy : InV y) :
     repPt (fun w => Matrix.of fun i j => y (w.embedding, i, j)) = y ∧
@@ -142,17 +140,17 @@ theorem repPt_of_InV [IsCMField L] (y : (L →+* ℂ) × Fin n × Fin n → ℂ)
     exact (Matrix.isUnits_det_units B).ne_zero
 
 /- English proof (translation)
-Introduce `L _ _ _ n F hF y hy`. Take `⟨K, P, hP⟩` from `hom_exists (L := L) F`. Establish `hG : (∏ w, (1 + Mx (L` using `L) (n := n) w).det) * P = 0 := by`. Apply `productFramesDense_holds (InfinitePlace L) n (fun _ => 1) (fun _ => Matrix.PosDef.one)` to reduce the goal to its premises. Introduce `Y hY`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hY' : ∀ w, (Y w)ᴴ * Y w = 1` using `fun w => by simpa using hY w`. Establish `hdet : ∀ w, (Y w).det ≠ 0` using `fun w h0 => by`. Use `congrArg Matrix.det (hY' w)` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h0, mul_zero, Matrix.det_one]`. Conclude with `zero_ne_one this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `eval (coords Y) _ = 0`. Rewrite using `[map_mul, map_prod]`. Simplify using `only [eval_det_one_add_Mx]`. Distinguish the cases in `h1 : ∀ w, (1 + Y w).det ≠ 0`. Rewrite using `[← hP Y hdet, hF Y hY' h1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `push Not at h1`. Take `⟨w, hw⟩` from `h1`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ w) hw, zero_mul]`. Establish `hne : (∏ w, (1 + Mx (L` using `L) (n := n) w).det) ≠ 0 := by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h0`. Use `congrArg (eval (coords (fun _ : InfinitePlace L => (0 : Matrix (Fin n) (Fin n) ℂ)))) h0` as an intermediate fact. Rewrite `this` using `[map_prod]`. Simplify using `only [eval_det_one_add_Mx, add_zero, Matrix.det_one, Finset.prod_const_one, map_zero] at this`. Conclude with `one_ne_zero this`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hP0 : P = 0` using `(mul_eq_zero.mp hG).resolve_left hne`. Take `⟨hYy, hYdet⟩` from `repPt_of_InV y hy`. Use `hP _ hYdet` as an intermediate fact. Rewrite `this` using `[hP0, map_zero, hYy]`. Conclude with `(mul_eq_zero.mp this).resolve_left (pow_ne_zero _ (Finset.prod_ne_zero_iff.mpr fun w _ => hYdet w))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem density_second_bound : DensB := by
   intro L _ _ _ n F hF y hy

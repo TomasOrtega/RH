@@ -33,7 +33,7 @@ def joinC {R : Type} {m n : ℕ} (Z : Matrix (Fin m) (Fin n) R × Matrix (Fin m)
   fun i => Fin.append (Z.1 i) (Z.2 i)
 
 /- English proof (translation)
-Break down `Z with ⟨Z₁, Z₂⟩` into its components or cases. Simplify using `only [splitC, joinC, Fin.append_left, Fin.append_right]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 -/
 theorem splitC_joinC {R : Type} {m n : ℕ} (Z : Matrix (Fin m) (Fin n) R × Matrix (Fin m) (Fin n) R) :
     splitC (joinC Z) = Z := by
@@ -41,7 +41,7 @@ theorem splitC_joinC {R : Type} {m n : ℕ} (Z : Matrix (Fin m) (Fin n) R × Mat
   simp only [splitC, joinC, Fin.append_left, Fin.append_right]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `Fin.append_castAdd_natAdd`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem joinC_splitC {R : Type} {m n : ℕ} (Y : Matrix (Fin m) (Fin (n + n)) R) : joinC (splitC Y) = Y := by
   funext i
@@ -54,7 +54,7 @@ theorem splitC_add {R : Type} [Add R] {m n : ℕ} (Y C : Matrix (Fin m) (Fin (n 
     splitC (Y + C) = splitC Y + splitC C := rfl
 
 /- English proof (translation)
-Simplify using `[swapNeg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem swapNeg_swapNeg {Y : Type} [InvolutiveNeg Y] (Z : Y × Y) : swapNeg (swapNeg Z) = Z := by
   simp [swapNeg]
@@ -86,14 +86,14 @@ def swapH {k : Type} [TopologicalSpace k] [AddGroup k] [IsTopologicalAddGroup k]
       exact (continuous_fst.matrix_elem i j).neg
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hg.1.comp_continuous e.continuous, hg.2.comp_homeomorph e⟩`.
+Supply the required witnesses or components.
 -/
 theorem comp_mem_SB {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] (e : X ≃ₜ Y) {g : Y → ℂ}
     (hg : g ∈ SB Y) : g ∘ e ∈ SB X :=
   ⟨hg.1.comp_continuous e.continuous, hg.2.comp_homeomorph e⟩
 
 /- English proof (translation)
-Use `⟨fun g hg => comp_mem_SB e hg, fun g _ g' _ h => funext fun y => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Use `congrFun h (e.symm y)` as an intermediate fact. Simplify using `using this`. Use `⟨f ∘ e.symm, comp_mem_SB e.symm hf, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
 Simplify using the standard rewrite rules.
 -/
@@ -107,21 +107,21 @@ theorem bijOn_comp {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] (e : X
     simp
 
 /- English proof (translation)
-Simplify using `[GlobalTheory.FlipMatch.pairM, Finset.sum_neg_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pairM_neg_left {k A C : Type} [CommRing k] [Fintype A] [Fintype C] (X Y : Matrix A C k) :
     GlobalTheory.FlipMatch.pairM (-X) Y = -GlobalTheory.FlipMatch.pairM X Y := by
   simp [GlobalTheory.FlipMatch.pairM, Finset.sum_neg_distrib]
 
 /- English proof (translation)
-Simplify using `[GlobalTheory.FlipMatch.pairM]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pairM_zero_right {k A C : Type} [CommRing k] [Fintype A] [Fintype C] (X : Matrix A C k) :
     GlobalTheory.FlipMatch.pairM X 0 = 0 := by
   simp [GlobalTheory.FlipMatch.pairM]
 
 /- English proof (translation)
-Simplify using `[GlobalTheory.FlipMatch.pairM]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pairM_zero_left {k A C : Type} [CommRing k] [Fintype A] [Fintype C] (Y : Matrix A C k) :
     GlobalTheory.FlipMatch.pairM 0 Y = 0 := by
@@ -134,9 +134,9 @@ def formL {k : Type} [CommRing k] {m n : ℕ} (l : Matrix (Fin m) (Fin (n + n)) 
   fun i j => -l (Matrix.single i (Fin.castAdd n j) 1)
 
 /- English proof (translation)
-Establish `e : ∀ i j, l (Matrix.single i j (Y i j)) = Y i j * l (Matrix.single i j 1)` using `fun i j => by`. Rewrite using `[← smul_eq_mul, ← map_smul, Matrix.smul_single, smul_eq_mul, mul_one]`. Use `conv_lhs => rw [Matrix.matrix_eq_sum_single Y, map_sum]`. Simplify using `only [map_sum, e]`. Simplify using `only [GlobalTheory.FlipMatch.pairM, splitC, formR, formL, Fin.sum_univ_add, mul_neg, Finset.sum_neg_distrib, sub_neg_eq_add, Finset.sum_add_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem linForm_eq {k : Type} [CommRing k] {m n : ℕ} (l : Matrix (Fin m) (Fin (n + n)) k →ₗ[k] k)
     (Y : Matrix (Fin m) (Fin (n + n)) k) :
@@ -155,43 +155,41 @@ end GlobalTheory.SwapSchur
 open GlobalTheory.SwapSchur in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v t ι hι d' hd' dd hdd f hf1 hf2 hf3 hf4 hf5 w hw S hSB hSlin hS`. Take `⟨hdV', hdW⟩` from `GlobalTheory.GramDet.gram_det_ne_zero F E σ B a a' G X om om' hT`. Establish `hcm : IsCMExt F E σ` using `hT.base.cm`. Establish `hstd : IsStd B.ψ` using `hT.base.std`. Establish `hψc : Continuous B.ψ` using `hstd.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont : Continuous (GlobalTheory.LatVac.psiAt B.ψ v)` using `GlobalTheory.SchrSB.continuous_psiAt B.ψ hψc v`. Establish `hne : GlobalTheory.LatVac.psiAt B.ψ v ≠ 1` using `GlobalTheory.PsiNontriv.psiAt_ne_one B.ψ hstd v`. Establish `hι' : G.M'.IsLin B.ψ (piW (t.comp σ)) (piW t) (fun u => -((1 : GL (Fin a') (Fv F v)).1ᵀ * G.V'.J.map t * u.map (piW (t.comp σ)) * (G.W.J.map t)ᵀ * (1 : GL (Fin (a + a')) (Fv F v)).1)) ι` using `hι`. Establish `hbij` using `GlobalTheory.SwapSliceBij.sliceT_bijOn ι hι'.bij`. Take `⟨-, hw2⟩` from `GlobalTheory.SwapAtPlace.swap_at_acts σ hcm (d := a + a') (incM F G.V'.J) v t f hf1 hf2 hf3 hf4 hf5 w hw`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hheis` using `GlobalTheory.SwapHeis.heis_sliceT F E σ B a a' G X om om' hT hdV' hdW v t ι hι d' hd' dd hdd`. Use `choose xY hxYat hxY0 hxY using fun Z => (GlobalTheory.SplitCoord.exists_at_coord σ hcm G.V' G.W hdV' hdW v t Z).1`. Use `choose xX hxXat hxX0 hxX using fun Z => (GlobalTheory.SplitCoord.exists_at_coord σ hcm G.V' G.W hdV' hdW v t Z).2`. Establish `atT : ∀ x : Matrix (Fin a') (Fin (a + a')) (AE F E), At (evFin F v) x → At (evFin F v) xᵀ` using `fun x hx r hr => by rw [← Matrix.transpose_smul, hx r hr, Matrix.transpose_zero]`. Establish `atNeg : ∀ x : Matrix (Fin (a + a')) (Fin a') (AE F E), At (evFin F v) x → At (evFin F v) (-x)` using `fun x hx r hr => by rw [smul_neg, hx r hr, neg_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `atCols : ∀ u₁ u₂ : Matrix (Fin (a + a')) (Fin a') (AE F E), At (evFin F v) u₁ → At (evFin F v) u₂ → At (evFin F v) (Matrix.fromCols u₁ u₂)`. Introduce `u₁ u₂ h1 h2 r hr`. Use extensionality with `i j`. Consider the cases of `j with`. Consider the case `inl j => simpa using congrFun (congrFun (h1 r hr) i) j`.
+By extensionality, compare the relevant components. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `inr j => simpa using congrFun (congrFun (h2 r hr) i) j`. Establish `coX0 : ∀ x : Matrix (Fin a') (Fin (a + a')) (AE F E), x.map (piW t) = 0 → GlobalTheory.FlipMatch.coX t 1 1 x = 0`. Introduce `x hx`. Simplify using `[GlobalTheory.FlipMatch.coX, hx]`. Establish `coY0 : ∀ x : Matrix (Fin a') (Fin (a + a')) (AE F E), x.map (piW (t.comp σ)) = 0 → GlobalTheory.FlipMatch.coY σ G.V' G.W t 1 1 x = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `x hx`. Simplify using `[GlobalTheory.FlipMatch.coY, hx]`. Establish `mapNeg : ∀ (π : AE F E →+* Fv F v) (x : Matrix (Fin a') (Fin (a + a')) (AE F E)), (-x).map π = -x.map π`. Introduce `π x`. Use extensionality with `i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `coXneg : ∀ x : Matrix (Fin a') (Fin (a + a')) (AE F E), GlobalTheory.FlipMatch.coX t 1 1 (-x) = -GlobalTheory.FlipMatch.coX t 1 1 x`. Introduce `x`. Simplify using `only [GlobalTheory.FlipMatch.coX, mapNeg]`. Simplify using `[Matrix.mul_neg, Matrix.neg_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `coYneg : ∀ x : Matrix (Fin a') (Fin (a + a')) (AE F E), GlobalTheory.FlipMatch.coY σ G.V' G.W t 1 1 (-x) = -GlobalTheory.FlipMatch.coY σ G.V' G.W t 1 1 x`. Introduce `x`. Simplify using `only [GlobalTheory.FlipMatch.coY, mapNeg]`. Simplify using `[Matrix.mul_neg, Matrix.neg_mul]`. Set `hH : Matrix (Fin a') (Fin ((a + a') + (a + a'))) (Fv F v) ≃ₜ (Matrix (Fin a') (Fin (a + a')) (Fv F v) × Matrix (Fin a') (Fin (a + a')) (Fv F v))` to `swapH`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ι₁` to `(LinearMap.funLeft ℂ ℂ hH) ∘ₗ GlobalTheory.SwapSlice.sliceT ι`. Establish `hι₁ : ∀ Φ Y, ι₁ Φ Y = GlobalTheory.SwapSlice.sliceT ι Φ (GlobalTheory.SwapSlice.swapNeg (splitC Y))` using `fun _ _ => rfl`. Set `ι₂ : ((Fin a' × Fin (a + a') ⊕ Fin a' × Fin (a + a') → Fv F v) → ℂ) → Matrix (Fin a') (Fin ((a + a') + (a + a'))) (Fv F v) → ℂ` to `fun Φ Y => GlobalTheory.SwapSlice.sliceT ι (S Φ) (splitC Y)`. Establish `hbij₁ : Set.BijOn ι₁ (SB (Fin a' × Fin (a + a') ⊕ Fin a' × Fin (a + a') → Fv F v) : Set _) (SB (Matrix (Fin a') (Fin ((a + a') + (a + a'))) (Fv F v)) : Set _)` using `(bijOn_comp hH).comp hbij`. Establish `hlin₂ : ∀ x ∈ SB (Fin a' × Fin (a + a') ⊕ Fin a' × Fin (a + a') → Fv F v), ∀ y ∈ SB (Fin a' × Fin (a + a') ⊕ Fin a' × Fin (a + a') → Fv F v), ∀ c : ℂ, ι₂ (c • x + y) = c • ι₂ x + ι₂ y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `x hx y hy c`. Use function extensionality and compare the values at `Y`. Simplify using `only [ι₂, hSlin x hx y hy c, map_add, map_smul, Pi.add_apply, Pi.smul_apply]`. Establish `tMap : ∀ (π : AE F E →+* Fv F v) (x : Matrix (Fin a') (Fin (a + a')) (AE F E)), x.map π = 0 → xᵀ.map π = 0`. Introduce `π x hx`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.transpose_map, hx, Matrix.transpose_zero]`. Establish `tNeg : ∀ x : Matrix (Fin a') (Fin (a + a')) (AE F E), (-xᵀ)ᵀ = -x`. Introduce `x`. Rewrite using `[Matrix.transpose_neg, Matrix.transpose_transpose]`. Establish `tr1 : ∀ x₁ x₂ : Matrix (Fin a') (Fin (a + a')) (AE F E), At (evFin F v) x₁ → At (evFin F v) x₂ → x₁.map (piW t) = 0 → x₂.map (piW t) = 0 → ∀ x ∈ SB (Fin a' × Fin (a + a') ⊕ Fin a' × Fin (a + a') → Fv F v), ∀ Z, GlobalTheory.SwapSlice.sliceT ι (schr (GlobalTheory.LatVac.psiAt B.ψ …`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x₁ x₂ a1 a2 m1 m2 x hx Z`. Establish `c1 : GlobalTheory.FlipMatch.coX t 1 1 x₁ᵀᵀ = 0` using `by rw [Matrix.transpose_transpose]; exact coX0 _ m1`. Establish `c2 : GlobalTheory.FlipMatch.coX t 1 1 x₂ᵀᵀ = 0` using `by rw [Matrix.transpose_transpose]; exact coX0 _ m2`. Rewrite using `[hheis x₁ᵀ x₂ᵀ (atT _ a1) (atT _ a2) (by rw [c1, pairM_zero_left]) (by rw [c2, pairM_zero_left]) x hx, c1, c2, Matrix.transpose_transpose, Matrix.transpose_transpose]`. Simplify using `only [pairM_zero_right, neg_zero, add_zero, AddChar.map_zero_eq_one, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `tr2 : ∀ x₁ x₂ : Matrix (Fin a') (Fin (a + a')) (AE F E), At (evFin F v) x₁ → At (evFin F v) x₂ → x₁.map (piW t) = 0 → x₂.map (piW t) = 0 → ∀ x ∈ SB (Fin a' × Fin (a + a') ⊕ Fin a' × Fin (a + a') → Fv F v), ∀ Z, GlobalTheory.SwapSlice.sliceT ι (S (schr (GlobalTheory.LatVac.psiAt B …`. Introduce `x₁ x₂ a1 a2 m1 m2 x hx Z`. Establish `c1 : GlobalTheory.FlipMatch.coX t 1 1 (-x₁ᵀ)ᵀ = 0` using `by rw [tNeg, coXneg, coX0 _ m1, neg_zero]`. Establish `c2 : GlobalTheory.FlipMatch.coX t 1 1 (-x₂ᵀ)ᵀ = 0` using `by rw [tNeg, coXneg, coX0 _ m2, neg_zero]`. Rewrite using `[hS _ (atCols _ _ (atT _ a1) (atT _ a2)) x hx, (hw2 _ _ (atT _ a1) (atT _ a2)).1 (tMap _ _ m1) (tMap _ _ m2), hheis (-x₂ᵀ) (-x₁ᵀ) (atNeg _ (atT _ a2)) (atNeg _ (atT _ a1)) (by rw [c2, pairM_zero_left]) (by rw [c1, pairM_zero_left]) (S x) (hSB x hx), c1, c2, tNeg, tNeg, coYneg, co …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [pairM_zero_right, neg_zero, add_zero, AddChar.map_zero_eq_one, one_mul, sub_eq_add_neg]`. Establish `mu1 : ∀ x₁ x₂ : Matrix (Fin a') (Fin (a + a')) (AE F E), At (evFin F v) x₁ → At (evFin F v) x₂ → x₁.map (piW (t.comp σ)) = 0 → x₂.map (piW (t.comp σ)) = 0 → ∀ x ∈ SB (Fin a' × Fin (a + a') ⊕ Fin a' × Fin (a + a') → Fv F v), ∀ Z, GlobalTheory.SwapSlice.sliceT ι (schr (GlobalTheory …`. Introduce `x₁ x₂ a1 a2 m1 m2 x hx Z`. Establish `c1 : GlobalTheory.FlipMatch.coY σ G.V' G.W t 1 1 x₁ᵀᵀ = 0` using `by rw [Matrix.transpose_transpose]; exact coY0 _ m1`. Establish `c2 : GlobalTheory.FlipMatch.coY σ G.V' G.W t 1 1 x₂ᵀᵀ = 0` using `by rw [Matrix.transpose_transpose]; exact coY0 _ m2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hheis x₁ᵀ x₂ᵀ (atT _ a1) (atT _ a2) (by rw [c1, pairM_zero_right]) (by rw [c2, pairM_zero_right]) x hx, c1, c2, Matrix.transpose_transpose, Matrix.transpose_transpose, add_zero, add_zero]`. Establish `mu2 : ∀ x₁ x₂ : Matrix (Fin a') (Fin (a + a')) (AE F E), At (evFin F v) x₁ → At (evFin F v) x₂ → x₁.map (piW (t.comp σ)) = 0 → x₂.map (piW (t.comp σ)) = 0 → ∀ x ∈ SB (Fin a' × Fin (a + a') ⊕ Fin a' × Fin (a + a') → Fv F v), ∀ Z, GlobalTheory.SwapSlice.sliceT ι (S (schr (GlobalThe …`. Introduce `x₁ x₂ a1 a2 m1 m2 x hx Z`. Rewrite using `[hS _ (atCols _ _ (atT _ a1) (atT _ a2)) x hx, (hw2 _ _ (atT _ a1) (atT _ a2)).2 (tMap _ _ m1) (tMap _ _ m2)]`. Conclude with `mu1 x₂ x₁ a2 a1 m2 m1 (S x) (hSB x hx) Z`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨c, hc⟩` from `GlobalTheory.LinSchur.eq_smul_of_commute (SB _) (GlobalTheory.LatVac.psiAt B.ψ v) hcont hne ι₁ ι₂ hbij₁ hlin₂ (fun C x => schr (GlobalTheory.LatVac.psiAt B.ψ v) (GlobalTheory.LatVac.locCo dd v (Matrix.fromCols (xY (-(splitC C).2))ᵀ (xY (-(splitC C).1))ᵀ)) x) (fun l x => schr (Glo …`. Rewrite using `[hι₁, tr1 _ _ (hxYat _) (hxYat _) (hxY0 _) (hxY0 _) x hx, hxY, hxY, hι₁]`. Simplify using `only [GlobalTheory.SwapSlice.swapNeg, splitC_add, Prod.fst_add, Prod.snd_add, neg_add],`. Use function extensionality and compare the values at `fun Y => by beta_reduce show GlobalTheory.SwapSlice.sliceT ι (S _) (splitC Y) = GlobalTheory.SwapSlice.sliceT ι (S x) (splitC (Y + C))`. Rewrite using `[tr2 _ _ (hxYat _) (hxYat _) (hxY0 _) (hxY0 _) x hx, hxY, hxY]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [splitC_add, sub_neg_eq_add]`. Use the proof step `rfl⟩)`. Use the proof step `(fun l x hx => ⟨GlobalTheory.SchrSB.schr_mem_SB B.ψ hψc v _ x hx, funext fun Y => by beta_reduce`. Rewrite using `[hι₁, mu1 _ _ (hxXat _) (hxXat _) (hxX0 _) (hxX0 _) x hx, hxX, hxX, hι₁, linForm_eq l Y]`. Use `congr 2`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [GlobalTheory.SwapSlice.swapNeg, pairM_neg_left]`. Use the proof step `ring,`. Use function extensionality and compare the values at `fun Y => by beta_reduce show GlobalTheory.SwapSlice.sliceT ι (S _) (splitC Y) = _ * GlobalTheory.SwapSlice.sliceT ι (S x) (splitC Y)`. Rewrite using `[mu2 _ _ (hxXat _) (hxXat _) (hxX0 _) (hxX0 _) x hx, hxX, hxX, linForm_eq l Y]`. Use `congr 2`.
-
-Use the proof step `ring⟩)`. Use `⟨c, fun Φ hΦ => funext fun Z => ?_⟩` and prove the remaining obligations. Establish `e : GlobalTheory.SwapSlice.sliceT ι (S Φ) (splitC (joinC Z)) = c * GlobalTheory.SwapSlice.sliceT ι Φ (GlobalTheory.SwapSlice.swapNeg (splitC (joinC Z)))` using `congrFun (hc Φ hΦ) (joinC Z)`. Rewrite `e` using `[splitC_joinC]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SwapSchur.sliceT_swap_eq_smul : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

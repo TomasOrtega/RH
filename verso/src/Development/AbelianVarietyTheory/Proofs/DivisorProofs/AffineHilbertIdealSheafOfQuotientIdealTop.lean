@@ -6,23 +6,21 @@ open scoped TensorProduct
 namespace GlobalTheory.HilbAff
 
 /- English proof (translation)
-Use `set X := pullback (str A B) (Spec.map (CommRingCat.ofHom (algebraMap A C))) with hX`. Use `set e := pullbackSpecIso A B C`. Use `set q : CommRingCat.of (B ⊗[A] C) ⟶ CommRingCat.of ((C ⊗[A] B) ⧸ J) := CommRingCat.ofHom ((Ideal.Quotient.mk J).comp (Algebra.TensorProduct.comm A B C).toRingHom) with hq`. Use `set f : Spec (CommRingCat.of ((C ⊗[A] B) ⧸ J)) ⟶ X := Spec.map q ≫ e.inv with hf`. Establish `hxI : xI A B C J = f.ker` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : e.hom.appTop ≫ f.appTop = (Spec.map q).appTop`. Rewrite using `[hf, Scheme.Hom.comp_appTop, ← Category.assoc, ← Scheme.Hom.comp_appTop, e.inv_hom_id]`. Simplify using the standard rewrite rules. Establish `h2` using `Scheme.ΓSpecIso_inv_naturality q`. Establish `hcomp : f.appTop.hom.comp (psi A B C) = (Scheme.ΓSpecIso (CommRingCat.of ((C ⊗[A] B) ⧸ J))).inv.hom.comp (Ideal.Quotient.mk J)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Simplify using `only [psi, RingHom.comp_apply]`. Rewrite using `[← CommRingCat.comp_apply, ← CommRingCat.comp_apply, h1, ← h2, CommRingCat.comp_apply]`. Use `congr 1`. Simplify using `only [hq, CommRingCat.hom_ofHom, RingHom.comp_apply]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congr 1`. Rewrite using `[← Algebra.TensorProduct.comm_symm]`. Conclude with `(Algebra.TensorProduct.comm A B C).apply_symm_apply x`. Establish `hsurj : Function.Surjective (psi A B C)`. Introduce `y`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨(Algebra.TensorProduct.comm A C B).symm ((Scheme.ΓSpecIso (CommRingCat.of (B ⊗[A] C))).hom.hom ((pullbackSpecIso A B C).inv.appTop.hom y)), ?_⟩` and prove the remaining obligations. Simplify using `only [psi, RingHom.comp_apply]`. Establish `h3 : (pullbackSpecIso A B C).inv.appTop ≫ (pullbackSpecIso A B C).hom.appTop = 𝟙 _`. Rewrite using `[← Scheme.Hom.comp_appTop, Iso.hom_inv_id]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h5 : ∀ z, (Algebra.TensorProduct.comm A C B).toRingEquiv.toRingHom ((Algebra.TensorProduct.comm A C B).symm z) = z` using `fun z => (Algebra.TensorProduct.comm A C B).apply_symm_apply z`. Establish `h6 : ∀ z, (Scheme.ΓSpecIso (CommRingCat.of (B ⊗[A] C))).inv.hom ((Scheme.ΓSpecIso (CommRingCat.of (B ⊗[A] C))).hom.hom z) = z` using `fun z => by`. Rewrite using `[← CommRingCat.comp_apply, Iso.hom_inv_id, CommRingCat.id_apply]`. Rewrite using `[h5, h6, ← CommRingCat.comp_apply, h3, CommRingCat.id_apply]`. Establish `hinj : Function.Injective (Scheme.ΓSpecIso (CommRingCat.of ((C ⊗[A] B) ⧸ J))).inv.hom`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b h`. Use `congrArg (Scheme.ΓSpecIso (CommRingCat.of ((C ⊗[A] B) ⧸ J))).hom.hom h` as an intermediate fact. Simplify using `using this`. Establish `hker : RingHom.ker f.appTop.hom = J.map (psi A B C)`. Rewrite using `[← Ideal.map_comap_of_surjective _ hsurj (RingHom.ker f.appTop.hom), RingHom.comap_ker, hcomp]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `congr 1`. Use extensionality with `x`. Rewrite using `[RingHom.mem_ker, RingHom.comp_apply, map_eq_zero_iff _ hinj, Ideal.Quotient.eq_zero_iff_mem]`. Rewrite using `[hxI, Scheme.ker_of_isAffine, Scheme.IdealSheafData.ofIdealTop_ideal, hker]`. Use `Ideal.map_id _` and compare the differences between its conclusion and the goal.
-
-Rewrite using `[show ∀ h : (⊤ : X.Opens) ≤ ⊤, homOfLE h = 𝟙 _ from fun _ => Subsingleton.elim _ _, op_id, CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem xI_ideal_top (A B C : Type) [CommRing A] [CommRing B] [Algebra A B] [CommRing C] [Algebra A C]
     (J : Ideal (C ⊗[A] B)) :

@@ -22,11 +22,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Unfold `I2.polyDeriv`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `h` using `ContinuousLinearMap.iteratedFDeriv_comp_right g hG 0 (i := Multiset.card (Finsupp.toMultiset m)) le_top`. Rewrite using `[h, map_zero, ContinuousMultilinearMap.compContinuousLinearMap_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hg]`. Rewrite using `[ContinuousMultilinearMap.map_smul_univ, ← hκ m hm, smul_eq_mul]`. Establish `: (∏ k : Fin (Multiset.card (Finsupp.toMultiset m)), c ((Finsupp.toMultiset m).toList.get (k.cast (Multiset.length_toList _).symm))) = m.prod fun l k => c l ^ k`. Establish `e1 : (∏ k : Fin (Multiset.card (Finsupp.toMultiset m)), c ((Finsupp.toMultiset m).toList.get (k.cast (Multiset.length_toList _).symm))) = ∏ k : Fin (Finsupp.toMultiset m).toList.length, c ((Finsupp.toMultiset m).toList.get k)` using `Fintype.prod_equiv (finCongr (Multiset.length_toList _).symm) _ _ (fun _ => rfl)`. Rewrite using `[e1, ← List.prod_ofFn]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (List.ofFn fun k => c ((Finsupp.toMultiset m).toList.get k)) = (Finsupp.toMultiset m).toList.map c`. Rewrite using `[List.ofFn_comp' , List.ofFn_get]`. Rewrite using `[e2, Multiset.prod_map_toList]`. Rewrite using `[Finsupp.toMultiset_map, Finsupp.prod_toMultiset, Finsupp.prod_mapDomain_index (by simp) (by intros; rw [pow_add])]`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -58,7 +58,7 @@ theorem polyDeriv_comp_clm {J V : Type} [NormedAddCommGroup V] [NormedSpace ℂ 
   rw [this]; ring
 
 /- English proof (translation)
-Unfold `I2.Hf I2.act`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [map_mul]`. Rewrite using `[← h i.1]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -72,11 +72,11 @@ theorem hf_act_act {E : Type} [Field E] [NumberField E] {dim : (E →+* ℂ) →
   rw [← h i.1]; ring
 
 /- English proof (translation)
-Unfold `I2.PT.U I2.HC I2.s0`. Simplify using `only [hf_act_act β M h, ← Finset.mul_sum]`. Use `congr 1`. Use `congr 1`. Use `push_cast`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `_`. Use extensionality with `i`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components.
 
-Simplify using `[PullbackSections.vspActL, I2.act]`. Rewrite using `[← h' i.1]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem translate_eq_comp {E : Type} [Field E] [NumberField E] [IsCMField E] (X : I2.PT E) (α β : 𝓞 E) (M n : ℕ)
     (h : ∀ τ : E →+* ℂ, τ (β : E) * (starRingEnd ℂ) (τ (β : E)) = M)
@@ -100,11 +100,9 @@ def colMap {E : Type} [Field E] [NumberField E] [IsCMField E] {dim : (E →+* �
   LinearMap.toContinuousLinearMap (LinearMap.pi fun b => (vspActL β).comp (LinearMap.proj b))
 
 /- English proof (translation)
-Establish `hp : Differentiable ℂ p` using `(LinearMap.toContinuousLinearMap p).differentiable`. Establish `h1 : Differentiable ℂ (I2.s0 X (n` using `n) p s) := by`. Unfold `I2.s0`. Establish `hk : ∀ k : Fin n, Differentiable ℂ fun v : Fin n → I2.Vsp X.dim => s fun _ => p (v k)` using `fun k => hs.comp (differentiable_pi.2 fun _ => hp.comp (differentiable_apply k))`. Conclude with `fun v => (HasFDerivAt.finsetProd (u := Finset.univ) fun k _ => (hk k v).hasFDerivAt).differentiableAt`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `h2 : Differentiable ℂ fun v : Fin n → I2.Vsp X.dim => I2.HC v a`. Unfold `I2.HC I2.Hf`. Use `Differentiable.fun_sum fun k _ => Differentiable.fun_sum fun i _ => Differentiable.mul_const ?_ _` and prove the remaining obligations. Conclude with `(EuclideanSpace.proj (𝕜 := ℂ) i).differentiable.comp (differentiable_apply k)`. Unfold `I2.PT.U`.
-
-Conclude with `(((h2.const_mul _).sub_const _).cexp).mul (h1.comp (differentiable_id.sub_const a))`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem differentiable_translate {E : Type} [Field E] [NumberField E] (X : I2.PT E) (q n : ℕ)
     (p : I2.Vsp X.dim →ₗ[ℂ] I2.Vsp X.dim) (s : (Fin 1 → I2.Vsp X.dim) → ℂ) (hs : Differentiable ℂ s)
@@ -123,13 +121,13 @@ theorem differentiable_translate {E : Type} [Field E] [NumberField E] (X : I2.PT
   exact (((h2.const_mul _).sub_const _).cexp).mul (h1.comp (differentiable_id.sub_const a))
 
 /- English proof (translation)
-Introduce `E _ _ _ X α β M n hβ hα s hs a Io P u sc κ hu hκ`. Establish `hbar : ∀ τ : E →+* ℂ, τ (β : E) = (starRingEnd ℂ) (τ (α : E))` using `fun τ => by`. Rewrite using `[hβ, IsCMField.complexEmbedding_complexConj]`. Establish `h' : ∀ τ : E →+* ℂ, τ (α : E) * τ (β : E) = M`. Introduce `τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg (fun a : 𝓞 E => τ (a : E)) hα` as an intermediate fact. Simplify using `using this`. Establish `h'' : ∀ τ : E →+* ℂ, τ (β : E) * (starRingEnd ℂ) (τ (β : E)) = M`. Introduce `τ`. Rewrite using `[← h' τ, hbar, Complex.conj_conj, mul_comm]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hfun : X.U (M ^ 2) a (I2.s0 X ((M : ℂ) • LinearMap.id) s) = (X.U M (fun b => I2.act β (a b)) (I2.s0 X (vspActL α) s)) ∘ colMap β n`. Use function extensionality and compare the values at `v`. Rewrite using `[translate_eq_comp X α β M n h'' h']`. Both sides reduce to the same expression. Rewrite using `[hfun]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `polyDeriv_comp_clm P u _ ?_ (colMap β n) sc (fun l => funext fun b => hu l b) κ hκ` and prove the remaining obligations. Conclude with `GlobalTheory.SCV.contDiff_of_differentiable (differentiable_translate X M n (vspActL α) s hs _) ⊤`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem polyDeriv_levelSq_eq_alpha : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (X : I2.PT E) (α β : 𝓞 E) (M n : ℕ), (β : E) = IsCMField.complexConj E (α : E) → α * β = (M : 𝓞 E) → ∀ s : (Fin 1 → I2.Vsp X.dim) → ℂ, Differentiable ℂ s → ∀ (a : Fin n → I2.Vsp X.dim) (Io : Type) (P : MvPolynomial Io ℂ) (u : Io → Fin n → I2.Vsp X.dim) (sc : Io → ℂ) (κ : ℂ), (∀ ℓ b, I2.act β (u ℓ b) = sc ℓ • u ℓ b) → (∀ m ∈ P.support, (m.prod fun ℓ e => sc ℓ ^ e) = κ) → I2.polyDeriv P u (X.U (M ^ 2) a (I2.s0 X ((M : ℂ) • LinearMap.id) s)) 0 = κ * I2.polyDeriv P u (X.U M (fun b => I2.act β (a b)) (I2.s0 X (vspActL α) s)) 0 := by
   intro E _ _ _ X α β M n hβ hα s hs a Io P u sc κ hu hκ

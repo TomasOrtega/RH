@@ -29,19 +29,19 @@ variable {A : Type*} [CommRing A] {M N : Type*} [AddCommGroup M] [Module A M] [A
 def submodulePowSat (g : A) (K : Submodule A M) : Submodule A M := GlobalTheory.SubmoduleSaturation.saturation g K
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_submodulePowSat {g : A} {K : Submodule A M} {m : M} :
     m ∈ submodulePowSat g K ↔ ∃ k : ℕ, g ^ k • m ∈ K := Iff.rfl
 
 /- English proof (translation)
-Introduce `m hm` and use `⟨0, by rwa [pow_zero, one_smul]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem le_submodulePowSat (g : A) (K : Submodule A M) : K ≤ submodulePowSat g K :=
   fun m hm => ⟨0, by rwa [pow_zero, one_smul]⟩
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `h`. Conclude with `⟨k + l, by rwa [pow_add, mul_smul]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mem_submodulePowSat_of_pow_smul_mem {g : A} {K : Submodule A M} {m : M} {l : ℕ}
     (h : g ^ l • m ∈ submodulePowSat g K) : m ∈ submodulePowSat g K := by
@@ -49,11 +49,9 @@ theorem mem_submodulePowSat_of_pow_smul_mem {g : A} {K : Submodule A M} {m : M} 
   exact ⟨k + l, by rwa [pow_add, mul_smul]⟩
 
 /- English proof (translation)
-Take `⟨T, hT, rfl⟩` from `Submodule.fg_def.1 hK`. Use `choose k y hy using h₂`. Use `⟨Submodule.span A (y '' T), Submodule.fg_span (hT.image y), eq_top_iff.2 fun m _ => ?_⟩` and prove the remaining obligations. Establish `h₃ : Submodule.span A T ≤ submodulePowSat g ((Submodule.span A (y '' T)).map f)` using `Submodule.span_le.2 fun t ht => ⟨k t, y t, Submodule.subset_span (Set.mem_image_of_mem y ht), hy t⟩`. Take `⟨a, ha⟩ : f m ∈ submodulePowSat g (Submodule.span A T)` from `h ▸ Submodule.mem_top`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, m', hm', e⟩` from `mem_submodulePowSat_of_pow_smul_mem (h₃ ha)`. Take `⟨c, hc⟩` from `h₁ (g ^ b • m - m') (by rw [map_sub, map_smul, e, sub_self])`. Use `⟨c + b, ?_⟩` and prove the remaining obligations. Rewrite `hc` using `[smul_sub, sub_eq_zero]`. Rewrite using `[pow_add, mul_smul, hc]`.
-
-Conclude with `Submodule.smul_mem _ _ hm'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fg_submodulePowSat_eq_top {g : A} (f : M →ₗ[A] N)
     (h₁ : ∀ m, f m = 0 → ∃ k : ℕ, g ^ k • m = 0) (h₂ : ∀ z, ∃ (k : ℕ) (m : M), f m = g ^ k • z)
@@ -76,9 +74,9 @@ theorem exists_fg_submodulePowSat_eq_top {g : A} (f : M →ₗ[A] N)
 end Algebra
 
 /- English proof (translation)
-Take `⟨T, hT, rfl⟩` from `Submodule.fg_def.1 hK`. Use `choose D hD using exists_sum_grProj ℳ`. Use `⟨Submodule.span _ (⋃ t ∈ T, (fun j => GradedHilbert.proj ℳ j t) '' D t), Submodule.fg_span (hT.biUnion fun t _ => (D t).finite_toSet.image _), isHomogeneous_span_gr ℳ fun g hg => ?_, Submodule.span_le.2 fun t ht => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_iUnion] at hg`. Take `⟨t, -, j, -, rfl⟩` from `hg`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨j, GradedHilbert.proj_mem ℳ j t⟩`. Rewrite using `[← hD t]`. Conclude with `Submodule.sum_mem _ fun j hj => Submodule.subset_span (Set.mem_biUnion ht ⟨j, hj, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fg_isHomogeneous_ge {ι R : Type*} [CommRing R] {M : Type*} [AddCommGroup M]
     [Module R M] [Module (MvPolynomial ι R) M] [IsScalarTower R (MvPolynomial ι R) M]
@@ -108,19 +106,19 @@ def ratioEval (i : ι) : MvPolynomial ι R →+* Γ(X, nonzeroLocus (x i)) :=
   eval₂Hom ((resG X le_top).comp (algebraMap R Γ(X, ⊤))) fun j => secRatio (x i) (x j)
 
 /- English proof (translation)
-The claim follows from `eval₂Hom_C _ _ r`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem ratioEval_C (i : ι) (r : R) :
     ratioEval R x i (C r) = resG X le_top (algebraMap R Γ(X, ⊤) r) := eval₂Hom_C _ _ r
 
 /- English proof (translation)
-The claim follows from `eval₂Hom_X' _ _ j`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem ratioEval_X (i j : ι) :
     ratioEval R x i (MvPolynomial.X j) = secRatio (x i) (x j) := eval₂Hom_X' _ _ j
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => RingHom.Finite.of_comp_finite (f := (ratioEval R x i).rangeRestrict) (g := (ratioEval R x i).range.subtype) h, fun h => RingHom.Finite.comp (g := (ratioEval R x i).range.subtype) h (RingHom.Finite.of_surjective _ (ratioEval R x i).rangeRestrict_surjective)⟩`.
+Supply the required witnesses or components.
 -/
 theorem finite_ratioEval_iff (i : ι) : (ratioEval R x i).Finite ↔
     Module.Finite (ratioEval R x i).range Γ(X, nonzeroLocus (x i)) :=
@@ -132,7 +130,7 @@ theorem finite_ratioEval_iff (i : ι) : (ratioEval R x i).Finite ↔
 variable (F : X.Modules)
 
 /- English proof (translation)
-Rewrite using `[GrSum.X_smul_of, GrSum.X_smul_of]`. Use `congrArg _ (zsec_ext (F := F) fun k => ?_)` and prove the remaining obligations. Use `(zcoord_mulSecOfEq_app (zofSec (x i)) rfl (secRatio (x i) (x j) • b) k).trans (Eq.trans ?_ (zcoord_mulSecOfEq_app (zofSec (x j)) rfl b k).symm)` and prove the remaining obligations. Rewrite using `[zcoord_smul, zfun_zofSec, zfun_zofSec, smul_smul, mul_comm, ← ProjSpace.secRatio_spec]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem X_smul_gammaOf_secRatio_smul (i j : ι) (n : ℤ)
     (b : Γ(twistZ F L n, nonzeroLocus (x i))) :
@@ -146,27 +144,25 @@ theorem X_smul_gammaOf_secRatio_smul (i j : ι) (n : ℤ)
   rw [zcoord_smul, zfun_zofSec, zfun_zofSec, smul_smul, mul_comm, ← ProjSpace.secRatio_spec]
 
 /- English proof (translation)
-Use `isFiniteQC_twist (F := F) (isLB_lbZPow hL 0)` as an intermediate fact. Use `QCoh.finite_sections (twistZ F L 0) ha` as an intermediate fact. Use `letI := (ratioEval R x i).toAlgebra`. Use `letI : Module (MvPolynomial ι R) Γ(twistZ F L 0, nonzeroLocus (x i)) := Module.compHom _ (ratioEval R x i)`. Establish `: IsScalarTower (MvPolynomial ι R) Γ(X, nonzeroLocus (x i)) Γ(twistZ F L 0, nonzeroLocus (x i))` using `⟨fun p a b => mul_smul _ a b⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `: Module.Finite (MvPolynomial ι R) Γ(X, nonzeroLocus (x i))` using `hf`. Take `⟨T, hT, hs⟩` from `Submodule.fg_def.1 (Module.Finite.trans (R := MvPolynomial ι R) Γ(X, nonzeroLocus (x i)) Γ(twistZ F L 0, nonzeroLocus (x i))).fg_top`. Set `o : Γ(twistZ F L 0, nonzeroLocus (x i)) →+ GammaStar R x F (nonzeroLocus (x i))` to `(gammaOf R x F _ 0).toAddMonoidHom.comp (sectionsOn.toΓ _ _).symm.toAddMonoidHom`. Use `⟨Submodule.span _ (o '' T), Submodule.fg_span (hT.image o), ?_⟩` and prove the remaining obligations. Use `set P := submodulePowSat (MvPolynomial.X i : MvPolynomial ι R) (Submodule.span _ (o '' T))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `sat : ∀ z, (MvPolynomial.X i : MvPolynomial ι R) • z ∈ P → z ∈ P` using `fun z hz => mem_submodulePowSat_of_pow_smul_mem (l := 1) (by rwa [pow_one])`. Establish `hsmul : ∀ (p : MvPolynomial ι R) b, o b ∈ P → o (ratioEval R x i p • b) ∈ P`. Introduce `p`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C r`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b hb`. Establish `e : o (ratioEval R x i (C r) • b) = r • o b`. Rewrite using `[ratioEval_C]`. Conclude with `(gammaOf R x F _ 0).map_smul r ((sectionsOn.toΓ _ _).symm b)`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `P.smul_of_tower_mem r hb`. Consider the case `add p q hp hq`. Introduce `b hb`. Rewrite using `[map_add, add_smul, map_add]`. Conclude with `P.add_mem (hp b hb) (hq b hb)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `mul_X p j hp`. Introduce `b hb`. Rewrite using `[map_mul, mul_smul, ratioEval_X]`. Use `hp _ (sat _ ?_)` and prove the remaining obligations. Conclude with `(X_smul_gammaOf_secRatio_smul R x F i j 0 b).symm ▸ P.smul_mem _ hb`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `h₀ : ∀ b, o b ∈ P` using `fun b => by`. Establish `hb : b ∈ Submodule.span (MvPolynomial ι R) T` using `hs ▸ Submodule.mem_top`. Proceed by induction on `hb using Submodule.span_induction with`. Consider the case `mem t ht => exact le_submodulePowSat _ _ (Submodule.subset_span ⟨t, ht, rfl⟩)`. Consider the case `zero => rw [map_zero]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `P.zero_mem`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `P.add_mem ha hb`. Consider the case `smul p b _ hb => exact hsmul p b hb`. Establish `step : ∀ n : ℤ, (∀ b, gammaOf R x F _ n b ∈ P) ↔ ∀ b, gammaOf R x F _ (n + 1) b ∈ P` using `fun n => ⟨fun h b => by`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨a, rfl⟩` from `(gammaOp_bijective R x F hL (j := i) le_rfl n).2 b`. Rewrite using `[← GrSum.X_smul_of]`. Conclude with `P.smul_mem _ (h a), fun h b => sat _ (by rw [GrSum.X_smul_of]; exact h _)⟩`. Establish `hn : ∀ (n : ℤ) b, gammaOf R x F _ n b ∈ P` using `fun n => by`. Proceed by induction on `n using Int.induction_on with`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => exact fun b => h₀ (sectionsOn.toΓ _ _ b)`. Consider the case `succ n ih => exact (step n).1 ih`. Consider the case `pred n ih => exact (step _).2 (by rwa [sub_add_cancel])`. Use `eq_top_iff.2 fun z _ => ?_` and prove the remaining obligations. Proceed by induction on `z using Decomposition.inductionOn (gammaGrading R x F (nonzeroLocus (x i))) with`.
-
-Consider the case `zero => exact P.zero_mem`. Consider the case `@homogeneous n m => obtain ⟨_, b, rfl⟩ := m`. Conclude with `hn n b`. Consider the case `add a b ha hb => exact P.add_mem (ha trivial) (hb trivial)`.
+A detailed English derivation is pending.
 -/
 theorem exists_fg_submodulePowSat_gammaStar_locus [QCoh.IsFiniteQC F] (hL : L.IsLB) {i : ι}
     (ha : IsAffineOpen (nonzeroLocus (x i))) (hf : (ratioEval R x i).Finite) :
@@ -237,11 +233,11 @@ variable [Finite ι] [QCoh.IsFiniteQC F] (hL : L.IsLB) (hc : ⨆ i, nonzeroLocus
 include hL hc ha hf
 
 /- English proof (translation)
-Use `VeryAmpleCharts.compactSpace_of_finite_cover _ hc ha` as an intermediate fact. Use `VeryAmpleCharts.quasiSeparatedSpace_of_cover hL x hc ha` as an intermediate fact. Use `Fintype.ofFinite ι` as an intermediate fact. Establish `H (i : ι) : ∃ K : Submodule (MvPolynomial ι R) (GammaStar R x F ⊤), K.FG ∧ submodulePowSat (MvPolynomial.X i) K = ⊤`. Take `⟨K, hK, e⟩` from `exists_fg_submodulePowSat_gammaStar_locus R x F hL (ha i) (hf i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hV : nonzeroLocus (x i) = ⊤ ⊓ ⨅ j ∈ ({i} : Finset ι), nonzeroLocus (x j)` using `by simp`. Use `exists_fg_submodulePowSat_eq_top (gammaRes R x F le_top) (fun m hm => ?_) (fun z => ?_) hK e` and prove the remaining obligations. Simplify using `using (eventually_xProd_pow_smul_eq_zero R x F hL isCompact_univ le_top hV.ge m hm).exists`. Simplify using `using (eventually_exists_gammaRes_eq R x F hL isCompact_univ isQuasiSeparated_univ le_top hV z).exists`. Use `choose K hK e using H`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨M, hM, hM', hle⟩` from `exists_fg_isHomogeneous_ge (gammaGrading R x F ⊤) (Submodule.fg_iSup K hK)`. Use `⟨M, hM, hM', fun i => eq_top_iff.2 fun m _ => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩ : m ∈ submodulePowSat (MvPolynomial.X i) (K i)` from `e i ▸ Submodule.mem_top`. Conclude with `⟨k, hle (le_iSup K i hk)⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_fg_isHomogeneous_submodulePowSat :
     ∃ M : Submodule (MvPolynomial ι R) (GammaStar R x F ⊤), M.FG ∧
@@ -268,11 +264,11 @@ theorem exists_fg_isHomogeneous_submodulePowSat :
   exact ⟨k, hle (le_iSup K i hk)⟩
 
 /- English proof (translation)
-Use `VeryAmpleCharts.compactSpace_of_finite_cover _ hc ha` as an intermediate fact. Use `VeryAmpleCharts.quasiSeparatedSpace_of_cover hL x hc ha` as an intermediate fact. Take `⟨M, hM, hM', e⟩` from `exists_fg_isHomogeneous_submodulePowSat R x F hL hc ha hf`. Use `letI := grSubDecomposition _ hM'`. Establish `h₁ (i : ι) (m : M) (hm : M.subtype m = 0) : ∃ k : ℕ, (MvPolynomial.X i : MvPolynomial ι R) ^ k • m = 0` using `⟨0, by rw [show m = 0 from Subtype.ext hm, smul_zero]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `h₂ (i : ι) (y : GammaStar R x F ⊤) : ∃ k : ℕ, (MvPolynomial.X i : MvPolynomial ι R) ^ k • y ∈ LinearMap.range M.subtype`. Rewrite using `[Submodule.range_subtype]`. Conclude with `mem_submodulePowSat.1 (e i ▸ Submodule.mem_top)`. Use `⟨M, hM, hM', fun s ⟨i, hi⟩ n => homLocMap_bijective_of_X _ hi (h₁ i) (h₂ i) n, fun n => ?_⟩` and prove the remaining obligations. Use `isIso_grCechMap (isGradedMap_subtype (gammaGrading R x F ⊤) M) h₁ h₂ n` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨(asIso (grCechMap (isGradedMap_subtype (gammaGrading R x F ⊤) M) n) ≪≫ gammaCechIso R x F hL isCompact_univ isQuasiSeparated_univ n).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_fg_cech_iso_grCech :
     ∃ M : Submodule (MvPolynomial ι R) (GammaStar R x F ⊤), M.FG ∧
@@ -299,7 +295,7 @@ theorem exists_fg_cech_iso_grCech :
     gammaCechIso R x F hL isCompact_univ isQuasiSeparated_univ n).symm⟩
 
 /- English proof (translation)
-Take `⟨M, hM, hM', -, e⟩` from `exists_fg_cech_iso_grCech R x F hL hc ha hf`. Use `⟨M, hM, hM', fun n p => (e n).elim fun e => ?_⟩` and prove the remaining obligations. Use `isQuasicoherent_twist (F := F) (isLB_lbZPow hL n)` as an intermediate fact. Conclude with `⟨(HomologicalComplex.homologyMapIso e p).toLinearEquiv.symm.trans (cechHEquivCoh R hc (VeryAmpleCharts.isAffineOpen_biInf_nonzeroLocus hL x ha) _ p)⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_fg_coh_equiv_grH [LinearOrder ι] :
     ∃ M : Submodule (MvPolynomial ι R) (GammaStar R x F ⊤), M.FG ∧
@@ -314,9 +310,9 @@ theorem exists_fg_coh_equiv_grH [LinearOrder ι] :
 variable [IsNoetherianRing R]
 
 /- English proof (translation)
-Use `Fintype.ofFinite ι` as an intermediate fact. Use `letI := linearOrderOfSTO (WellOrderingRel (α := ι))`. Take `⟨M, hM, hM', e⟩` from `exists_fg_coh_equiv_grH R x F hL hc ha hf`. Use `letI := grSubDecomposition _ hM'`. Establish `: Module.Finite R (grH ι (grSub (gammaGrading R x F ⊤) M) n p)` using `finite_grCech_homology ι R M _ (Module.Finite.iff_fg.2 hM) n p`.
+Establish an intermediate fact. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Conclude with `(e n p).elim Module.Finite.equiv`.
+A detailed English derivation is pending.
 -/
 theorem finite_coh_twistZ (n : ℤ) (p : ℕ) : Module.Finite R (coh (twistZ F L n) p) := by
   classical
@@ -329,9 +325,9 @@ theorem finite_coh_twistZ (n : ℤ) (p : ℕ) : Module.Finite R (coh (twistZ F L
   exact (e n p).elim Module.Finite.equiv
 
 /- English proof (translation)
-Use `Fintype.ofFinite ι` as an intermediate fact. Use `letI := linearOrderOfSTO (WellOrderingRel (α := ι))`. Take `⟨M, hM, hM', e⟩` from `exists_fg_coh_equiv_grH R x F hL hc ha hf`. Use `letI := grSubDecomposition _ hM'`. Take `⟨n₀, h⟩` from `cubeComplex_grCube_exactAt_of_finite ι R M (grSub (gammaGrading R x F ⊤) M) (Module.Finite.iff_fg.2 hM)`.
+Establish an intermediate fact. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Use `eventually_atTop.2 ⟨n₀, fun n hn p hp => ?_⟩` and prove the remaining obligations. Take `⟨p, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hp.ne'`. Establish `: Subsingleton (grH ι (grSub (gammaGrading R x F ⊤) M) n (p + 1))` using `ModuleCat.isZero_iff_subsingleton.1 ((HomologicalComplex.exactAt_iff_isZero_homology _ _).1 ((cechComplex_exactAt_succ_iff_cube _ p).2 (h n hn (p + 2))))`. Conclude with `(e n (p + 1)).elim fun e => e.symm.injective.subsingleton`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eventually_subsingleton_coh_twistZ :
     ∀ᶠ n : ℤ in atTop, ∀ p, 0 < p → Subsingleton (coh (twistZ F L n) p) := by
@@ -350,7 +346,7 @@ theorem eventually_subsingleton_coh_twistZ :
   exact (e n (p + 1)).elim fun e => e.symm.injective.subsingleton
 
 /- English proof (translation)
-The claim follows from `have := finite_coh_twistZ R x F hL hc ha hf 0 p Module.Finite.equiv (cohOn.mapIso R ⊤ p (twistZZeroIso F hL)).symm`.
+A detailed English derivation is pending.
 -/
 theorem finite_coh (p : ℕ) : Module.Finite R (coh F p) :=
   have := finite_coh_twistZ R x F hL hc ha hf 0 p
@@ -369,9 +365,9 @@ variable {R : Type} [CommRing R] {N : ℕ} {X : Scheme.{0}} {L : LB X}
 set_option backward.isDefEq.respectTransparency.types false in
 
 /- English proof (translation)
-Take `rfl : (fun i => φ ⁻¹ᵁ chart R N i) = U` from `funext hU`. Establish `key : ∀ i, RingHom.Finite (eval₂Hom (baseRingHom (φ ≫ PSpace.str R N) (φ ⁻¹ᵁ chart R N i)).hom (pullRatio φ (φ ⁻¹ᵁ chart R N i) i (hU i).ge)) ↔ (φ.app (chart R N i)).hom.Finite` using `fun i => by`. Rewrite using `[← appLE_comp_aeval_ratio, Scheme.Hom.app_eq_appLE]`. Conclude with `⟨RingHom.Finite.of_comp_finite, fun h => h.comp (RingHom.Finite.of_surjective _ (aeval_ratio_surjective R N i))⟩`. Simplify using `only [key]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 
-Use `⟨fun _ i => ⟨(isAffineOpen_chart R N i).preimage φ, φ.finite_app _ (isAffineOpen_chart R N i)⟩, fun h => ?_⟩` and prove the remaining obligations. Use `(IsZariskiLocalAtTarget.iff_of_iSup_eq_top (P := @IsFinite) _ (iSup_chart R N)).2 fun i => ?_` and prove the remaining obligations. Rewrite using `[MorphismProperty.arrow_mk_iso_iff @IsFinite (Arrow.isoMk (h i).1.isoSpec (isAffineOpen_chart R N i).isoSpec (Scheme.Opens.toSpecΓ_naturality φ _) : Arrow.mk (φ ∣_ chart R N i) ≅ Arrow.mk (Spec.map (φ.app (chart R N i))))]`. Conclude with `(IsFinite.SpecMap_iff _).2 (h i).2`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFinite_iff_pullRatio (φ : X ⟶ PSpace R N) {U : Fin (N + 1) → X.Opens}
     (hU : ∀ i, φ ⁻¹ᵁ chart R N i = U i) :
@@ -397,7 +393,7 @@ theorem isFinite_iff_pullRatio (φ : X ⟶ PSpace R N) {U : Fin (N + 1) → X.Op
   exact (IsFinite.SpecMap_iff _).2 (h i).2
 
 /- English proof (translation)
-The claim follows from `isAffineHom_of_forall_exists_isAffineOpen φ fun y => (exists_mem_chart R N y).elim fun i hi => ⟨_, hi, isAffineOpen_chart R N i, h i⟩`.
+A detailed English derivation is pending.
 -/
 theorem isAffineHom_of_isAffineOpen_preimage_chart (φ : X ⟶ PSpace R N)
     (h : ∀ i, IsAffineOpen (φ ⁻¹ᵁ chart R N i)) : IsAffineHom φ :=
@@ -407,7 +403,7 @@ theorem isAffineHom_of_isAffineOpen_preimage_chart (φ : X ⟶ PSpace R N)
 variable (f : X ⟶ Sp R) (s : Fin (N + 1) → L.Sec) (hs : ⨆ i, nonzeroLocus (s i) = ⊤)
 
 /- English proof (translation)
-Use `isProper_str R N` as an intermediate fact. Establish `: IsProper (toProj f s hs ≫ PSpace.str R N)` using `by rwa [toProj_str]`. Conclude with `IsFinite.iff_isProper_and_isAffineHom.2 ⟨IsProper.of_comp _ (PSpace.str R N), isAffineHom_of_isAffineOpen_preimage_chart _ fun i => by`. Rewrite using `[toProj_preimage_chart]`. Conclude with `ha i⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFinite_toProj_of_isProper [IsProper f] (ha : ∀ i, IsAffineOpen (nonzeroLocus (s i))) :
     IsFinite (toProj f s hs) := by
@@ -422,9 +418,9 @@ variable [Algebra R Γ(X, ⊤)]
 include hf
 
 /- English proof (translation)
-Rewrite using `[isFinite_iff_pullRatio _ (toProj_preimage_chart f s hs), toProj_str]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations. Establish `e : (baseRingHom f (nonzeroLocus (s i))).hom = (resG X le_top).comp (algebraMap R Γ(X, ⊤))` using `RingHom.ext fun r => by`. Rewrite using `[RingHom.comp_apply, hf]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[funext (pullRatio_toProj f s hs i), e]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isFinite_toProj_iff : IsFinite (toProj f s hs) ↔
     ∀ i, IsAffineOpen (nonzeroLocus (s i)) ∧ (Twist.ratioEval R s i).Finite := by
@@ -448,7 +444,7 @@ variable {R : Type} [CommRing R] {X : Scheme.{0}} [Algebra R Γ(X, ⊤)] {f : X 
 include hf
 
 /- English proof (translation)
-Substitute `hφ` using the available equality. Establish `hs` using `iSup_nonzeroLocus_secPull (iSup_nonzeroLocus_coord R N) φ`. Conclude with `⟨hs, (isFinite_toProj_iff _ _ hs hf).1 (by rwa [toProj_secPull_coord])⟩`.
+Substitute using the available equality. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem ProjSpace.secPull_coord_of_isFinite {N : ℕ} (φ : X ⟶ PSpace R N) [IsFinite φ]
     (hφ : φ ≫ PSpace.str R N = f) :
@@ -460,7 +456,7 @@ theorem ProjSpace.secPull_coord_of_isFinite {N : ℕ} (φ : X ⟶ PSpace R N) [I
   exact ⟨hs, (isFinite_toProj_iff _ _ hs hf).1 (by rwa [toProj_secPull_coord])⟩
 
 /- English proof (translation)
-The claim follows from `((isFinite_toProj_iff f x hc hf).1 (isFinite_toProj_of_isProper f x hc ha) i).2`.
+A detailed English derivation is pending.
 -/
 theorem Twist.finite_ratioEval_of_isProper [IsProper f] {L : LB X} {N : ℕ}
     (x : Fin (N + 1) → L.Sec) (hc : ⨆ i, nonzeroLocus (x i) = ⊤)
@@ -471,7 +467,7 @@ theorem Twist.finite_ratioEval_of_isProper [IsProper f] {L : LB X} {N : ℕ}
 variable [IsNoetherianRing R] (F : X.Modules) [IsFiniteQC F]
 
 /- English proof (translation)
-The claim follows from `have h := secPull_coord_of_isFinite hf φ hφ have hL := Semi.LB.isLB_pull (O1_isLB R N) φ ⟨finite_coh_twistZ R _ F hL h.1 (fun i => (h.2 i).1) fun i => (h.2 i).2, eventually_subsingleton_coh_twistZ R _ F hL h.1 (fun i => (h.2 i).1) fun i => (h.2 i).2⟩`.
+A detailed English derivation is pending.
 -/
 theorem serre_of_isFinite {N : ℕ} (φ : X ⟶ PSpace R N) [IsFinite φ]
     (hφ : φ ≫ PSpace.str R N = f) :
@@ -483,7 +479,7 @@ theorem serre_of_isFinite {N : ℕ} (φ : X ⟶ PSpace R N) [IsFinite φ]
     eventually_subsingleton_coh_twistZ R _ F hL h.1 (fun i => (h.2 i).1) fun i => (h.2 i).2⟩
 
 /- English proof (translation)
-Take `⟨m, -, N, s, hs, ha⟩` from `h.exists_cover`. Conclude with `Twist.finite_coh R s F (isLB_lbZPow h.isLB m) hs ha (finite_ratioEval_of_isProper hf s hs ha) p`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsAmpleLB.finite_coh [IsProper f] {L : LB X} (h : IsAmpleLB L) (p : ℕ) :
     Module.Finite R (coh F p) := by
@@ -492,11 +488,11 @@ theorem IsAmpleLB.finite_coh [IsProper f] {L : LB X} (h : IsAmpleLB L) (p : ℕ)
     (finite_ratioEval_of_isProper hf s hs ha) p
 
 /- English proof (translation)
-Take `⟨m, hm, N, s, hs, ha⟩` from `h.exists_cover`. Establish `hL` using `h.isLB`. Establish `hm' : (0 : ℤ) < m` using `by exact_mod_cast hm`. Establish `H (r : Fin m) : ∃ q : ℤ, ∀ n ≥ q, ∀ p, 0 < p → Subsingleton (coh (twistZ (twistZ F L r) (lbZPow L m) n) p)`. Use `isFiniteQC_twist (F := F) (isLB_lbZPow hL r)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `eventually_atTop.1 (Twist.eventually_subsingleton_coh_twistZ R s (twistZ F L r) (isLB_lbZPow hL m) hs ha (finite_ratioEval_of_isProper hf s hs ha))`. Use `choose q hq using H`. Take `⟨Q, hQ⟩` from `Finite.exists_le q`. Use `eventually_atTop.2 ⟨Q * m, fun n hn p hp => ?_⟩` and prove the remaining obligations. Take `⟨r, hr⟩ : ∃ r : Fin m, ((r : ℕ) : ℤ) = n % m` from `⟨⟨(n % m).toNat, by have := Int.emod_lt_of_pos n hm'; omega⟩, Int.toNat_of_nonneg (Int.emod_nonneg n hm'.ne')⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `hq r (n / m) ((hQ r).trans ((Int.le_ediv_iff_mul_le hm').2 hn)) p hp` as an intermediate fact. Take `⟨e⟩` from `nonempty_twist_twist_iso_of_cls_eq F (isLB_lbZPow hL r) (isLB_lbZPow (isLB_lbZPow hL m) (n / m)) (isLB_lbZPow hL n) (by`. Rewrite using `[cls_lbZPow hL, cls_lbZPow hL, cls_lbZPow (isLB_lbZPow hL m), cls_lbZPow hL, smul_smul, ← add_smul, hr, Int.emod_add_ediv_mul])`. Conclude with `(cohOn.mapIso R ⊤ p e).symm.injective.subsingleton`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsAmpleLB.eventually_subsingleton_coh_twistZ [IsProper f] {L : LB X} (h : IsAmpleLB L) :
     ∀ᶠ n : ℤ in atTop, ∀ p, 0 < p → Subsingleton (coh (twistZ F L n) p) := by
@@ -522,7 +518,7 @@ theorem IsAmpleLB.eventually_subsingleton_coh_twistZ [IsProper f] {L : LB X} (h 
   exact (cohOn.mapIso R ⊤ p e).symm.injective.subsingleton
 
 /- English proof (translation)
-The claim follows from `tendsto_natCast_atTop_atTop.eventually (h.eventually_subsingleton_coh_twistZ hf F)`.
+A detailed English derivation is pending.
 -/
 theorem IsAmpleLB.eventually_subsingleton_coh_twist [IsProper f] {L : LB X} (h : IsAmpleLB L) :
     ∀ᶠ n : ℕ in atTop, ∀ p, 0 < p → Subsingleton (coh (twist F (lbPow L n)) p) :=
@@ -531,7 +527,7 @@ theorem IsAmpleLB.eventually_subsingleton_coh_twist [IsProper f] {L : LB X} (h :
 omit hf [IsNoetherianRing R] [Algebra R Γ(X, ⊤)] in
 
 /- English proof (translation)
-Take `⟨N, φ, _, rfl⟩` from `h`. Use `isProper_str R N` as an intermediate fact. Conclude with `⟨inferInstance, _, (isAmple_projective_O_one R N).pull_of_isAffineHom φ⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isProper_and_exists_isAmpleLB_of_isProjOver (h : IsProjOver f) :
     IsProper f ∧ ∃ L : LB X, IsAmpleLB L := by
@@ -540,14 +536,14 @@ theorem isProper_and_exists_isAmpleLB_of_isProjOver (h : IsProjOver f) :
   exact ⟨inferInstance, _, (isAmple_projective_O_one R N).pull_of_isAffineHom φ⟩
 
 /- English proof (translation)
-Take `⟨_, L, hL⟩` from `isProper_and_exists_isAmpleLB_of_isProjOver h`. Conclude with `hL.finite_coh hf F p`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem finite_coh_of_isProjOver (h : IsProjOver f) (p : ℕ) : Module.Finite R (coh F p) := by
   obtain ⟨_, L, hL⟩ := isProper_and_exists_isAmpleLB_of_isProjOver h
   exact hL.finite_coh hf F p
 
 /- English proof (translation)
-The claim follows from `have := isFiniteQC_twist (F := F) hM finite_coh_of_isProjOver hf _ h p`.
+A detailed English derivation is pending.
 -/
 theorem finite_coh_twist_of_isProjOver (h : IsProjOver f) {M : LB X} (hM : M.IsLB) (p : ℕ) :
     Module.Finite R (coh (twist F M) p) :=
@@ -555,7 +551,7 @@ theorem finite_coh_twist_of_isProjOver (h : IsProjOver f) {M : LB X} (hM : M.IsL
   finite_coh_of_isProjOver hf _ h p
 
 /- English proof (translation)
-The claim follows from `have := (isProper_and_exists_isAmpleLB_of_isProjOver h).1 hL.eventually_subsingleton_coh_twistZ hf F`.
+A detailed English derivation is pending.
 -/
 theorem eventually_subsingleton_coh_twistZ_of_isProjOver (h : IsProjOver f) {L : LB X}
     (hL : IsAmpleLB L) : ∀ᶠ n : ℤ in atTop, ∀ p, 0 < p → Subsingleton (coh (twistZ F L n) p) :=
@@ -574,7 +570,7 @@ variable {k : Type} [Field k] {X : Scheme.{0}} [Algebra k Γ(X, ⊤)] {f : X ⟶
 include hf
 
 /- English proof (translation)
-Take `⟨m, -, N, s, hs, ha⟩` from `h.exists_cover`. Conclude with `⟨h.finite_coh hf F, _, fun n hn => coh.subsingleton_of_card_le hs (VeryAmpleCharts.isAffineOpen_biInf_nonzeroLocus (Twist.isLB_lbZPow h.isLB m) s ha) F hn⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsAmpleLB.finiteCoh [IsProper f] {L : LB X} (h : IsAmpleLB L) : FiniteCoh k F := by
   obtain ⟨m, -, N, s, hs, ha⟩ := h.exists_cover
@@ -582,14 +578,14 @@ theorem IsAmpleLB.finiteCoh [IsProper f] {L : LB X} (h : IsAmpleLB L) : FiniteCo
     (VeryAmpleCharts.isAffineOpen_biInf_nonzeroLocus (Twist.isLB_lbZPow h.isLB m) s ha) F hn⟩
 
 /- English proof (translation)
-Take `⟨_, L, hL⟩` from `isProper_and_exists_isAmpleLB_of_isProjOver h`. Conclude with `hL.finiteCoh hf F`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem finiteCoh_of_isProjOver (h : IsProjOver f) : FiniteCoh k F := by
   obtain ⟨_, L, hL⟩ := isProper_and_exists_isAmpleLB_of_isProjOver h
   exact hL.finiteCoh hf F
 
 /- English proof (translation)
-Introduce `_ hM` and use `have := Twist.isFiniteQC_twist (F := F) hM finiteCoh_of_isProjOver hf _ h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem finiteCohTwists_of_isProjOver (h : IsProjOver f) : FiniteCohTwists k F := fun _ hM =>
   have := Twist.isFiniteQC_twist (F := F) hM
@@ -600,11 +596,11 @@ end Field
 open QCoh Twist ProjSpace in
 
 /- English proof (translation)
-Use `⟨fun L ι _ x hL hc ha h => ?_, fun f hf => ⟨fun N φ hφ e => ?_, fun h => ?_⟩⟩` and prove the remaining obligations. Establish `h'` using `fun i => (finite_ratioEval_iff R x i).2 (h i)`. Conclude with `⟨exists_fg_cech_iso_grCech R x F hL hc ha h', finite_coh_twistZ R x F hL hc ha h', eventually_subsingleton_coh_twistZ R x F hL hc ha h'⟩`. Establish `: IsFinite φ` using `hφ.elim id fun _ => inferInstance`. Establish `h` using `secPull_coord_of_isFinite hf φ e`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨h.1, fun i => (h.2 i).1, fun i => (finite_ratioEval_iff R (fun j => secPull (coord R N j) φ) i).1 (h.2 i).2, serre_of_isFinite hf F φ e⟩`. Take `⟨_, A, hA⟩` from `h.elim isProper_and_exists_isAmpleLB_of_isProjOver id`. Establish `H (M : LB X) (hM : M.IsLB) (p : ℕ) : Module.Finite R (coh (twist F M) p)`. Use `isFiniteQC_twist (F := F) hM` as an intermediate fact. Use the proof step `hA.finite_coh hf _ p`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨hA.finite_coh hf F, H, fun L hL => ⟨fun n => H _ (isLB_lbZPow hL.isLB n), hL.eventually_subsingleton_coh_twistZ hf F, hL.eventually_subsingleton_coh_twist hf F⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem serre_finiteness_vanishing (R : Type) [CommRing R] [IsNoetherianRing R] (X : Scheme.{0})
     [Algebra R Γ(X, ⊤)] (F : X.Modules) [IsFiniteQC F] :
@@ -654,7 +650,7 @@ theorem serre_finiteness_vanishing (R : Type) [CommRing R] [IsNoetherianRing R] 
       hL.eventually_subsingleton_coh_twistZ hf F, hL.eventually_subsingleton_coh_twist hf F⟩⟩
 
 /- English proof (translation)
-The claim follows from `letI := algebraΓOfHom (PSpace.str ℤ 2) eventually_subsingleton_coh_twistZ_of_isProjOver (f := PSpace.str ℤ 2) (fun _ => rfl) _ ⟨2, 𝟙 _, inferInstance, Category.id_comp _⟩ (isAmple_projective_O_one ℤ 2)`.
+A detailed English derivation is pending.
 -/
 example :
     letI := algebraΓOfHom (PSpace.str ℤ 2)
@@ -665,7 +661,7 @@ example :
     ⟨2, 𝟙 _, inferInstance, Category.id_comp _⟩ (isAmple_projective_O_one ℤ 2)
 
 /- English proof (translation)
-The claim follows from `letI := algebraΓOfHom (PSpace.str k N) finiteCohTwists_of_isProjOver (f := PSpace.str k N) (fun _ => rfl) _ ⟨N, 𝟙 _, inferInstance, Category.id_comp _⟩`.
+A detailed English derivation is pending.
 -/
 example (k : Type) [Field k] (N : ℕ) :
     letI := algebraΓOfHom (PSpace.str k N)

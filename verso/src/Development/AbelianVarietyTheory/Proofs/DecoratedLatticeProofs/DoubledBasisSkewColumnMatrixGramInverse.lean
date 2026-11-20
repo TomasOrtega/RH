@@ -16,7 +16,7 @@ section General
 variable {E : Type} [Field E] [StarRing E] {n : ℕ}
 
 /- English proof (translation)
-Establish `h : (Matrix.fromCols e (μ • e'))ᴴ * G * Matrix.fromCols e (μ • e') = μ • Matrix.fromBlocks 0 1 (-1) 0`. Rewrite using `[Matrix.conjTranspose_fromCols_eq_fromRows_conjTranspose, Matrix.fromRows_mul, Matrix.fromRows_mul_fromCols, Matrix.conjTranspose_smul, hμ, Matrix.fromBlocks_smul]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, h₁, h₂, h₃, h₄, smul_zero, smul_neg, neg_smul, Matrix.neg_mul, neg_zero]`. Use extensionality with `i j`. Conclude with `congrFun (congrFun h (finSumFinEquiv.symm i)) (finSumFinEquiv.symm j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem gram_fromCols_smul (G : Matrix (Fin (n + n)) (Fin (n + n)) E) (e e' : Matrix (Fin (n + n)) (Fin n) E) (μ : E)
     (hμ : star μ = -μ) (h₁ : eᴴ * G * e = 0) (h₂ : e'ᴴ * G * e' = 0) (h₃ : e'ᴴ * G * e = 1) (h₄ : eᴴ * G * e' = 1) :
@@ -30,7 +30,7 @@ theorem gram_fromCols_smul (G : Matrix (Fin (n + n)) (Fin (n + n)) E) (e e' : Ma
   exact congrFun (congrFun h (finSumFinEquiv.symm i)) (finSumFinEquiv.symm j)
 
 /- English proof (translation)
-Establish `h : Matrix.fromRows (e'ᴴ * G) (μ⁻¹ • (eᴴ * G)) * Matrix.fromCols e (μ • e') = 1`. Rewrite using `[Matrix.fromRows_mul_fromCols]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, h₁, h₂, h₃, h₄, smul_zero, smul_smul, mul_inv_cancel₀ hμ, one_smul, Matrix.fromBlocks_one]`. Rewrite using `[← Matrix.submatrix_one_equiv (finSumFinEquiv (m := n) (n := n)).symm, ← h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fromRows_mul_fromCols_smul (G : Matrix (Fin (n + n)) (Fin (n + n)) E) (e e' : Matrix (Fin (n + n)) (Fin n) E)
     (μ : E) (hμ : μ ≠ 0) (h₁ : eᴴ * G * e = 0) (h₂ : e'ᴴ * G * e' = 0) (h₃ : e'ᴴ * G * e = 1) (h₄ : eᴴ * G * e' = 1) :
@@ -46,9 +46,9 @@ theorem fromRows_mul_fromCols_smul (G : Matrix (Fin (n + n)) (Fin (n + n)) E) (e
 end General
 
 /- English proof (translation)
-Introduce `D A μ hμ`. Establish `h₄ : (dblDec A).eᴴ * (dblSp A).gram * (dblDec A).e' = 1`. Use `congrArg Matrix.conjTranspose (dblDec A).e'e` as an intermediate fact. Rewrite `this` using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, gram_conjTranspose, Matrix.conjTranspose_one, ← Matrix.mul_assoc]`. Then use the resulting hypothesis. Establish `hi` using `fromRows_mul_fromCols_smul (n := A.rank) (dblSp A).gram (dblDec A).e (dblDec A).e' μ hμ.1 (dblDec A).ee (dblDec A).e'e' (dblDec A).e'e h₄`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Conclude with `⟨gram_fromCols_smul (n := A.rank) (dblSp A).gram (dblDec A).e (dblDec A).e' μ hμ.2 (dblDec A).ee (dblDec A).e'e' (dblDec A).e'e h₄, Matrix.isUnit_det_of_left_inverse hi, Matrix.inv_eq_left_inv hi⟩`.
+Supply the required witnesses or components.
 -/
 theorem Tm_gram_inv : ∀ (D : D7) (A : HSp D) (μ : D.host.E), IsSkew μ → (Tm A μ)ᴴ * (dblSp A).gram * Tm A μ = μ • Jst D A.rank ∧ IsUnit (Tm A μ).det ∧ (Tm A μ)⁻¹ = (Matrix.fromRows (dblDec A).qX (μ⁻¹ • (dblDec A).qY)).submatrix finSumFinEquiv.symm id := by
   intro D A μ hμ

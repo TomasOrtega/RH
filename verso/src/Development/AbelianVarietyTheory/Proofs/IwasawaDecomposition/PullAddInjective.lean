@@ -16,7 +16,7 @@ Both sides reduce to the same expression.
 @[simp] theorem pullAdd_apply (f : X →+ Y) (u : LinearMap.BilinForm ℤ Y) (x y : X) : pullAdd f u x y = u (f x) (f y) := rfl
 
 /- English proof (translation)
-Introduce `u u' h` and use `LinearMap.ext₂ fun a b => by obtain ⟨a, rfl⟩ := hf a obtain ⟨b, rfl⟩ := hf b exact LinearMap.congr_fun₂ h a b`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pullAdd_injective {f : X →+ Y} (hf : Function.Surjective f) : Function.Injective (pullAdd f) :=
   fun u u' h => LinearMap.ext₂ fun a b => by

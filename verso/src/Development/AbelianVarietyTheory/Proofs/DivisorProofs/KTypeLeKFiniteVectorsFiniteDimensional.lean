@@ -13,17 +13,15 @@ open CompanionTheory.D.LK (IsKMod IsMin)
 open scoped InnerProductSpace
 
 /- English proof (translation)
-Introduce `n ε H _ _ σ D E hH hU hI hK μ S hS`. Establish `hSD : S ≤ D` using `fun v hv => (hK.mem v).2 ⟨S, hS.1, hv, hS.2.1⟩`. Use `haveI : FiniteDimensional ℂ S := hS.1`. Establish `hmap : (S.comap D.subtype).map D.subtype = S`. Rewrite using `[Submodule.map_comap_subtype]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `inf_eq_right.mpr hSD`. Use `haveI hFD : FiniteDimensional ℂ (S.comap D.subtype) := LinearEquiv.finiteDimensional (Submodule.comapSubtypeEquivOfLe hSD).symm`. Establish `hStab : KStab ε E (S.comap D.subtype)`. Rewrite using `[GlobalTheory.T.kStab_iff_isKStableOn_finite_vectors n ε H σ D E hH hU hI hK _ hFD, hmap]`. Conclude with `hS.2.1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hinj` using `Submodule.map_injective_of_injective (f := D.subtype) Subtype.val_injective`. Establish `hirr : ∀ L' ≤ S.comap D.subtype, KStab ε E L' → L' = ⊥ ∨ L' = S.comap D.subtype`. Introduce `L' hL' hst`. Use `haveI : FiniteDimensional ℂ L' := Submodule.finiteDimensional_of_le hL'`. Establish `hK'` using `(GlobalTheory.T.kStab_iff_isKStableOn_finite_vectors n ε H σ D E hH hU hI hK L' inferInstance).1 hst`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hle : L'.map D.subtype ≤ S` using `hmap ▸ Submodule.map_mono hL'`. Break down `hS.2.2.1 _ hle hK' with h | h` into its components or cases. Use `left`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[h, Submodule.map_bot]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `right`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[h, hmap]`. Take `⟨v, hv0, hvS, hvh⟩` from `hK.hw μ S hS`. Establish `hKR : KRel ε E` using `fun a b c d _ _ => hK.gl a b c d`.
-
-Establish `hKU : KUnit ε E` using `fun a b h x y => by rw [hK.unit a b x y]; simp [Formalism.REAL.sgn, h]`. Use `⟨hSD, hFD, hStab, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.compactHighestWeight_unique_of_irreducible n ε D E hKR hKU _ hFD hStab hirr μ v hvS hv0 hvh`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.kTypeInKFinite : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (D : Submodule ℂ H) (E : Fin n → Fin n → Module.End ℂ D), CompleteSpace H → IsURepOn (UJset ε) σ → IsIrredOn (UJset ε) σ → IsKMod ε σ D E → ∀ (μ : Fin n → ℝ) (S : Submodule ℂ H), IsKTypeOf ε σ μ S → S ≤ D ∧ FiniteDimensional ℂ (S.comap D.subtype) ∧ KStab ε E (S.comap D.subtype) ∧ (∀ ν : Fin n → ℝ, ∀ x ∈ S.comap D.subtype, x ≠ 0 → KHighest ε E ν x → ν = μ) := by
   intro n ε H _ _ σ D E hH hU hI hK μ S hS

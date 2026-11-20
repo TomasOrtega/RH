@@ -6,11 +6,11 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC GlobalTheory.Et Gl
 universe u v
 
 /- English proof (translation)
-Introduce `hG l _ K O _ _ φ Y W p d hs hp c _ _`. Use `haveI : SmoothOfRelativeDimension d p := hs`. Use `haveI : SmoothOfRelativeDimension 0 c := (Etale.iff_smoothOfRelativeDimension_zero c).1 inferInstance`. Establish `hcs : SmoothOfRelativeDimension d (c ≫ p)`. Establish `h : SmoothOfRelativeDimension (0 + d) (c ≫ p)` using `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `h` using `[Nat.zero_add]`. Then use the resulting hypothesis. Establish `hqs : SmoothOfRelativeDimension d (pullback.snd (c ≫ p) (Spec.map (CommRingCat.ofHom φ)))` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback (IsPullback.of_hasPullback _ _) hcs`. Establish `hcq : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsQProjOver (c ≫ p)` using `GlobalTheory.isQProjOver_comp_of_isFinite_general c (GlobalTheory.SchemeWords.isQProjOver_of_isProjOver hp)`. Use `haveI : IsProper p := GlobalTheory.SchemeWords.isProper_of_isProjOver hp`. Establish `hcp : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsProjOver (c ≫ p)` using `GlobalTheory.UPel.isProjOver_of_isQProjOver_of_isProper O W (c ≫ p) hcq inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hqp : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsProjOver (pullback.snd (c ≫ p) (Spec.map (CommRingCat.ofHom φ)))` using `GlobalTheory.ProjSpace.isProjOver_pullback_snd φ hcp`. Use `haveI : FiniteDimensional ℚ_[l] K.1 := K.2`. Establish `hsm : Smooth (pullback.snd (c ≫ p) (Spec.map (CommRingCat.ofHom φ)))` using `SmoothOfRelativeDimension.smooth d _`. Conclude with `⟨⟨hG l K.1 ⟨_, _⟩ hsm hqp, hsm⟩, hqs⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G3.jModBc :
     UpperTheory.Gal.Seam.GoodOf → ModBc := by

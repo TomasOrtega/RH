@@ -12,19 +12,19 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D W M π f hf φ hφ φ' hφ' G c Y hP hG hD`. Take `⟨hinf, hPc⟩` from `UpperTheory.ConvolutionTheory.R2.Ff.parCont F`. Take `⟨hc0, hcc, hPn⟩` from `hPc c Y hP`. Establish `hGc : Continuous G` using `continuous_adelicSL2_of_continuous_entries fun i j => by`. Establish `e : (fun t => G t i j) = fun t => (TR.infGL F 2 (c t)).val i j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `t`. Rewrite using `[← hG t]`. Both sides reduce to the same expression. Rewrite using `[e]`. Establish `hv : Continuous fun t => (TR.infGL F 2 (c t)).val` using `Units.continuous_val.comp (hinf.comp hcc)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hv.matrix_elem i j`. Establish `hG0 : G 0 = 1` using `gl_injective (by rw [hG, hc0, map_one, gl_one])`. Establish `hL : LRat f.1` using `(π.cusp f hf).1.left`. Establish `hinv : ∀ t, (gl (G t))⁻¹ = TR.infGL F 2 (c (-t))` using `fun t => by`. Establish `h1 : c (-t) = (c t)⁻¹` using `eq_inv_of_mul_eq_one_left (by rw [← hP.1, neg_add_cancel, hc0])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hG, h1, map_inv]`. Use function extensionality and compare the values at `h`. Establish `d1` using `UpperTheory.ConvolutionTheory.R2.Ff.derOm F E D W M π f hf φ hφ φ' hφ' G hGc hG0 hD h`. Establish `d2` using `UpperTheory.ConvolutionTheory.R2.Ff.derF F E D W M π f hf φ hφ (fun t => c (-t)) (-Y) hPn h`. Establish `e : (fun t => lift W M (fun x => f.1 (x * TR.infGL F 2 (c (-t)))) φ h) = fun t => lift W M f.1 (W.Om (G t) φ) h`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `t`. Rewrite using `[UpperTheory.ConvolutionTheory.R2.Ff.movG F E D W M f.1 hL φ (G t) h, hinv]`. Rewrite `d2` using `[e]`. Establish `hu` using `d1.unique d2`. Establish `hl : (TR.lie F 2 (-Y) f).1 = (-1 : ℂ) • (TR.lie F 2 Y f).1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_neg]`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Establish `h4` using `(UpperTheory.ConvolutionTheory.R2.Ff.lin F E D W M π).2.2.2 (TR.lie F 2 Y f).1 (-1) φ`. Rewrite using `[hu, hl, h4]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.mov :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2), Mov W M π := by

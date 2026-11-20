@@ -6,17 +6,17 @@ open CategoryTheory Limits AlgebraicGeometry Opposite
 namespace LateralTheory.E.PiecesPf
 
 /- English proof (translation)
-Establish `w : CommRingCat.ofHom a ≫ CommRingCat.ofHom ρ = CommRingCat.ofHom π ≫ CommRingCat.ofHom b`. Use extensionality with `x`. Conclude with `congrArg (fun f : T →+* C => f x) hcomm`. Use `IsPushout.of_isColimit' ⟨w⟩ (PushoutCocone.IsColimit.mk w ?_ ?_ ?_ ?_)` and prove the remaining obligations. Introduce `s`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `CommRingCat.ofHom (ρ.liftOfSurjective hρ ⟨s.inl.hom, ?_⟩)` and prove the remaining obligations. Rewrite using `[hker, Ideal.map_le_iff_le_comap]`. Introduce `t ht`. Establish `h1` using `congrArg (fun f => f.hom t) s.condition`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at h1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Ideal.mem_comap, RingHom.mem_ker] at ht ⊢`. Rewrite using `[h1, ht, map_zero]`. Introduce `s`. Use extensionality with `x`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `RingHom.liftOfSurjective_comp_apply ρ hρ _ x`. Introduce `s`. Use extensionality with `x`. Take `⟨t, rfl⟩` from `hπ x`. Establish `h1` using `congrArg (fun f => f.hom t) s.condition`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at h1 ⊢`. Rewrite using `[← RingHom.comp_apply b π, ← hcomm, RingHom.comp_apply, RingHom.liftOfSurjective_comp_apply]`. Conclude with `h1`. Introduce `s m hm _`. Use extensionality with `x`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, rfl⟩` from `hρ x`. Simplify using `only [CommRingCat.hom_ofHom]`. Rewrite using `[RingHom.liftOfSurjective_comp_apply]`. Use `congrArg (fun f => f.hom y) hm` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma sq1 {T S C' C : Type} [CommRing T] [CommRing S] [CommRing C'] [CommRing C]
     (a : T →+* C') (π : T →+* S) (ρ : C' →+* C) (b : S →+* C) (hρ : Function.Surjective ρ) (hπ : Function.Surjective π)
@@ -53,13 +53,13 @@ lemma sq1 {T S C' C : Type} [CommRing T] [CommRing S] [CommRing C'] [CommRing C]
     simpa using this
 
 /- English proof (translation)
-Introduce `_ _ S C _ _ _ _ hQA`. Take `⟨T, _, _, π, hAIC, hπ⟩` from `hQA`. Take `⟨C', _, _, ρ, hEt, hρ, hcomm, hker⟩` from `hL T S C π hπ`. Use `hEt` as an intermediate fact. Take `⟨n, e', he', hoi⟩` from `hA T C' hAIC`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨n, ρ ∘ e', he'.map ρ, fun j => ?_⟩` and prove the remaining obligations. Set `fₘ : Localization.Away (e' j) →+* Localization.Away (ρ (e' j))` to `IsLocalization.Away.map _ _ ρ (e' j)`. Establish `: IsLocalization ((Submonoid.powers (e' j)).map ρ) (Localization.Away (ρ (e' j)))`. Rewrite using `[Submonoid.map_powers]`. Use `infer_instance`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `H : fₘ.comp (algebraMap C' _) = (algebraMap C _).comp ρ` using `IsLocalization.map_comp _`. Establish `sq2` using `CommRingCat.isPushout_of_isLocalization ρ fₘ H (Submonoid.powers (e' j))`. Establish `sq` using `(sq1 (algebraMap T C') π ρ (algebraMap S C) hρ hπ hcomm hker).paste_horiz sq2.flip`. Establish `pb` using `isPullback_SpecMap_of_isPushout _ _ _ _ sq`. Establish `hj` using `hoi j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hj` using `[CommRingCat.ofHom_comp]`. Use `MorphismProperty.of_isPullback (P := @IsOpenImmersion) pb hj` as an intermediate fact. Rewrite using `[CommRingCat.ofHom_comp]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Pieces_of (hL : LateralTheory.E.t_E1Cut.EtLift) (hA : LateralTheory.E.t_E1Cut.EtAIC) :
     LateralTheory.E.FinEtSectionPf.Pieces := by

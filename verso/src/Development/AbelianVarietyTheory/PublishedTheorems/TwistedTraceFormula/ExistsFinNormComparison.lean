@@ -16,9 +16,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (b : Module.Basis ι F E)
 
 /- English proof (translation)
-Rewrite using `[← (Algebra.TensorProduct.basis (Fv F v) b).sum_repr y]`. Use `GlobalTheory.AdelicU.absFin_sum_le F v _ _ fun k _ => ?_` and prove the remaining obligations. Establish `e : ∀ a : Fv F v, a • (Algebra.TensorProduct.basis (Fv F v) b) k = ((1 : Fv F v) ⊗ₜ[F] b k) * (a ⊗ₜ[F] (1 : E))` using `fun a => by`. Simplify using `[TensorProduct.smul_tmul']`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `(GlobalTheory.AdelicU.absFin_mul_le F v _ _).trans (mul_le_mul' (hK k) ?_)` and prove the remaining obligations. Rewrite using `[GlobalTheory.AdelicU.absFin_tmul_one]`. Conclude with `hc k`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absFin_le_coord (v : HeightOneSpectrum (𝓞 F)) (y : Fv F v ⊗[F] E) {K c : ℝ≥0}
     (hK : ∀ k, absFin F v ((1 : Fv F v) ⊗ₜ[F] b k) ≤ K)
@@ -34,7 +34,7 @@ theorem absFin_le_coord (v : HeightOneSpectrum (𝓞 F)) (y : Fv F v ⊗[F] E) {
   exact hc k
 
 /- English proof (translation)
-Establish `: Module.Finite F E` using `Module.Finite.of_restrictScalars_finite ℚ F E`. Use `⟨fun k => ((Algebra.traceForm F E).toDual (traceForm_nondegenerate F E)).symm (b.coord k), fun x k => ?_⟩` and prove the remaining obligations. Conclude with `LinearMap.BilinForm.apply_toDual_symm_apply (hB := traceForm_nondegenerate F E) (b.coord k) x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_trace_eq_repr : ∃ b' : ι → E, ∀ x k, Algebra.trace F E (b' k * x) = b.repr x k := by
   have : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
@@ -42,11 +42,11 @@ theorem exists_trace_eq_repr : ∃ b' : ι → E, ∀ x k, Algebra.trace F E (b'
   exact LinearMap.BilinForm.apply_toDual_symm_apply (hB := traceForm_nondegenerate F E) (b.coord k) x
 
 /- English proof (translation)
-Establish `: Module.Finite F E` using `Module.Finite.of_restrictScalars_finite ℚ F E`. Establish `e : algebraMap (Fv F v) (FvBar F v) ((Algebra.TensorProduct.basis (Fv F v) b).repr y k) = ∑ τ : E →ₐ[F] FvBar F v, finEmb F v τ (((1 : Fv F v) ⊗ₜ[F] b' k) * y)`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy, mul_add, Finset.sum_add_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul a x`. Simplify using `only [Algebra.TensorProduct.tmul_mul_tmul, one_mul, GlobalTheory.AdelicU.finEmb_tmul, ← Finset.mul_sum]`. Rewrite using `[← trace_eq_sum_embeddings (FvBar F v), hb, Algebra.TensorProduct.basis_repr_tmul, IsScalarTower.algebraMap_apply F (Fv F v) (FvBar F v), ← map_mul]`. Simplify using the standard rewrite rules. Rewrite using `[← GlobalTheory.AdelicU.absBar_algebraMap, e]`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Valuation.map_sum_le (GlobalTheory.AdelicU.valBar F v) fun τ _ => ?_` and prove the remaining obligations. Conclude with `(GlobalTheory.AdelicU.le_absFin F v τ _).trans (GlobalTheory.AdelicU.absFin_mul_le F v _ _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem coord_le_absFin {b' : ι → E} (hb : ∀ x k, Algebra.trace F E (b' k * x) = b.repr x k)
     (v : HeightOneSpectrum (𝓞 F)) (y : Fv F v ⊗[F] E) (k : ι) :
@@ -67,7 +67,7 @@ theorem coord_le_absFin {b' : ι → E} (hb : ∀ x k, Algebra.trace F E (b' k *
   exact (GlobalTheory.AdelicU.le_absFin F v τ _).trans (GlobalTheory.AdelicU.absFin_mul_le F v _ _)
 
 /- English proof (translation)
-Use `⟨fun v => max 1 (Finset.univ.sup fun k => absFin F v ((1 : Fv F v) ⊗ₜ[F] x k)), ?_, fun v => ⟨le_max_left _ _, fun k => le_max_of_le_right (Finset.le_sup (f := fun k => absFin F v ((1 : Fv F v) ⊗ₜ[F] x k)) (Finset.mem_univ k))⟩⟩` and prove the remaining obligations. Establish `h` using `eventually_all.2 fun k => GlobalTheory.AdelicU.eventually_absFin_le_one F ((1 : AF F) ⊗ₜ[F] x k)`. Use `(eventually_cofinite.1 h).subset fun v hv hv' => hv (max_eq_left (Finset.sup_le fun k _ => ?_))` and prove the remaining obligations. Simplify `hv' k` using `[compFin]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_absFin_bound (x : ι → E) : ∃ K : HeightOneSpectrum (𝓞 F) → ℝ≥0, (Function.mulSupport K).Finite ∧
     ∀ v, 1 ≤ K v ∧ ∀ k, absFin F v ((1 : Fv F v) ⊗ₜ[F] x k) ≤ K v := by
@@ -79,7 +79,7 @@ theorem exists_absFin_bound (x : ι → E) : ∃ K : HeightOneSpectrum (𝓞 F) 
   simpa [compFin] using hv' k
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]`. Consider the case `tmul a x => simp [compFin, GlobalTheory.AdelicU.evFin, Algebra.TensorProduct.basis_repr_tmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem evalV_repr (v : HeightOneSpectrum (𝓞 F)) (z : AF F ⊗[F] E) (k : ι) :
     Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v ((Algebra.TensorProduct.basis (Af F) b).repr
@@ -93,7 +93,7 @@ theorem evalV_repr (v : HeightOneSpectrum (𝓞 F)) (z : AF F ⊗[F] E) (k : ι)
 end Local
 
 /- English proof (translation)
-Rewrite using `[← finprod_mul_distrib hK hg]`. Conclude with `finprod_le_finprod' hf ((hK.union hg).subset (Function.mulSupport_mul _ _)) h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finprod_le_mul {α : Type} {f g K : α → ℝ≥0} (hf : (Function.mulSupport f).Finite)
     (hg : (Function.mulSupport g).Finite) (hK : (Function.mulSupport K).Finite) (h : ∀ a, f a ≤ K a * g a) :
@@ -106,7 +106,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)} (V : HSp D)
 
 /- English proof (translation)
-The claim follows from `evalV_repr (Module.finBasis D.host.F D.host.E) v ((Formalism.L2.Theta.matHom V g).1 i j) k`.
+A detailed English derivation is pending.
 -/
 theorem evalV_finCoord (v : HeightOneSpectrum (𝓞 D.host.F)) (g : GA D V) (i j : Fin V.rank)
     (k : Fin (Module.finrank D.host.F D.host.E)) :
@@ -116,7 +116,7 @@ theorem evalV_finCoord (v : HeightOneSpectrum (𝓞 D.host.F)) (g : GA D V) (i j
   evalV_repr (Module.finBasis D.host.F D.host.E) v ((Formalism.L2.Theta.matHom V g).1 i j) k
 
 /- English proof (translation)
-Simplify using `only [finNorm, Finset.sup_le_iff, Finset.mem_univ, true_imp_iff, Prod.forall, evalV_finCoord]`.
+Simplify using the standard rewrite rules.
 -/
 theorem finNorm_le_iff {v : HeightOneSpectrum (𝓞 D.host.F)} {g : GA D V} {c : ℝ≥0} : finNorm V v g ≤ c ↔
     ∀ i j k, ‖(Algebra.TensorProduct.basis (Fv D.host.F v) (Module.finBasis D.host.F D.host.E)).repr
@@ -124,7 +124,7 @@ theorem finNorm_le_iff {v : HeightOneSpectrum (𝓞 D.host.F)} {g : GA D V} {c :
   simp only [finNorm, Finset.sup_le_iff, Finset.mem_univ, true_imp_iff, Prod.forall, evalV_finCoord]
 
 /- English proof (translation)
-Take `⟨b', hb⟩` from `exists_trace_eq_repr (Module.finBasis D.host.F D.host.E)`. Take `⟨K, hK, h⟩` from `exists_absFin_bound (F := D.host.F) (Sum.elim (Module.finBasis D.host.F D.host.E) b')`. Use `⟨K, hK, fun v => ⟨(h v).1, fun g => ⟨(finNorm_le_iff V).2 fun i j k => ?_, (GlobalTheory.AdelicU.normFin_le_iff _ v).2 fun i j => ?_⟩⟩⟩` and prove the remaining obligations. Conclude with `(coord_le_absFin _ hb v _ _).trans (mul_le_mul' ((h v).2 (.inr _)) (GlobalTheory.AdelicU.absFin_le_normFin _ v (bc (compFin D.host.F D.host.E v) (Formalism.L2.Theta.matHom V g)).1 i j))`. Conclude with `absFin_le_coord (Module.finBasis D.host.F D.host.E) v (compFin D.host.F D.host.E v ((Formalism.L2.Theta.matHom V g).1 i j)) (fun k => (h v).2 (.inl k)) ((finNorm_le_iff V).1 le_rfl i j)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_finNorm_comparison : ∃ K : HeightOneSpectrum (𝓞 D.host.F) → ℝ≥0, (Function.mulSupport K).Finite ∧
     ∀ v, 1 ≤ K v ∧ ∀ g : GA D V,
@@ -141,13 +141,11 @@ theorem exists_finNorm_comparison : ∃ K : HeightOneSpectrum (𝓞 D.host.F) �
       ((finNorm_le_iff V).1 le_rfl i j)
 
 /- English proof (translation)
-Take `⟨K, hK, h⟩` from `exists_finNorm_comparison V`. Establish `key : ∀ {k a a' c c' : ℝ≥0}, 1 ≤ k → a ≤ k * c → a' ≤ k * c' → max 1 (max a a') ≤ k * max 1 (max c c')` using `fun hk h1 h2 => max_le (one_le_mul_of_one_le_of_one_le hk (le_max_left _ _)) (max_le (h1.trans (mul_le_mul_right (le_max_of_le_right (le_max_left _ _)) _)) (h2.trans (mul_le_mul_right (le_max_of_le_right (le_max_right _ _)) _)))`. Establish `h1 : (1 : ℝ≥0) ≤ ∏ᶠ v, K v` using `one_le_finprod' fun v => (h v).1`. Use `⟨(∏ᶠ v, K v : ℝ≥0), by exact_mod_cast zero_lt_one.trans_le h1, fun g => ?_⟩` and prove the remaining obligations. Establish `e : ∏ w, htInf D.host.F w (bc (compInf D.host.F D.host.E w) (Formalism.L2.Theta.matHom V g)) = ∏ τ, infHt θ V τ g` using `(Function.Bijective.prod_comp (GlobalTheory.CMTypePlaces.places_bijective D) _).symm.trans (Finset.prod_congr rfl fun τ _ => htInf_eq_infHt V hθ τ g)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hi` using `fun v => (h v).2 g⁻¹`. Simplify using `only [map_inv] at hi`. Establish `f1` using `GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.finHt_mulSupport_finite V g`. Establish `f2` using `GlobalTheory.AdelicU.finite_mulSupport_htFin D.host.F (Formalism.L2.Theta.matHom V g)`. Establish `a1` using `finprod_le_mul f1 f2 hK fun v => key (h v).1 ((h v).2 g).1 (hi v).1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2` using `finprod_le_mul f2 f1 hK fun v => key (h v).1 ((h v).2 g).2 (hi v).2`. Unfold `height GlobalTheory.AdelicU.heightGL GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.height`. Rewrite using `[e]`. Prove the components needed by the constructor for the conclusion. Conclude with `(mul_le_mul_right a1 _).trans_eq (mul_left_comm _ _ _)` after adjusting the coercions.
-
-Conclude with `(mul_le_mul_right a2 _).trans_eq (mul_left_comm _ _ _)` after adjusting the coercions.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. A detailed English derivation is pending.
 -/
 theorem height_comparison (hθ : IsInfFam θ) : ∃ C : ℝ, 0 < C ∧ ∀ g : GA D V,
     (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.height θ V g : ℝ) ≤ C * height V g ∧ height V g ≤ C * (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.height θ V g : ℝ) := by

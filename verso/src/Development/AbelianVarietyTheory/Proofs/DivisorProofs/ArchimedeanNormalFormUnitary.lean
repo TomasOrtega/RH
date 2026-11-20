@@ -10,9 +10,9 @@ namespace GlobalTheory.ThKUTrUnit
 open Matrix
 
 /- English proof (translation)
-Establish `e1 : (Q * X * Qi)ᴴ * A * (Q * X * Qi) = Qiᴴ * (Xᴴ * (Qᴴ * A * Q) * X) * Qi`. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Rewrite using `[e1, h, hX, ← h]`. Establish `e2 : Qiᴴ * (Qᴴ * A * Q) * Qi = (Q * Qi)ᴴ * A * (Q * Qi)`. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e2, hQ]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conj_frame_unitary {n : ℕ} (A Jd X Q Qi : Matrix (Fin n) (Fin n) ℂ) (hQ : Q * Qi = 1)
     (h : Qᴴ * A * Q = Jd) (hX : Xᴴ * Jd * X = Jd) :
@@ -26,9 +26,9 @@ theorem conj_frame_unitary {n : ℕ} (A Jd X Q Qi : Matrix (Fin n) (Fin n) ℂ) 
   simp
 
 /- English proof (translation)
-Rewrite `h` using `[Matrix.mul_smul, Matrix.smul_mul]`. Establish `h' : gᴴ * K.map star * g = K.map star` using `smul_right_injective _ hc h`. Establish `h2` using `congrArg (fun M => M.map (starRingEnd ℂ)) h'`. Simplify using `only [Matrix.map_mul] at h2`. Establish `e1 : (gᴴ).map (starRingEnd ℂ) = gᵀ` using `by ext i j; simp`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e2 : (K.map star).map (starRingEnd ℂ) = K` using `by ext i j; simp`. Establish `e3 : g.map (starRingEnd ℂ) = g.map star` using `by ext i j; simp`. Rewrite `h2` using `[e1, e2, e3]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transpose_form_of_conj {n : ℕ} (K g : Matrix (Fin n) (Fin n) ℂ) (c : ℂ) (hc : c ≠ 0)
     (h : gᴴ * (c • K.map star) * g = c • K.map star) :
@@ -44,9 +44,7 @@ theorem transpose_form_of_conj {n : ℕ} (K g : Matrix (Fin n) (Fin n) ℂ) (c :
   exact h2
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply `Φ.injective` to reduce the goal to its premises. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `w`. Conclude with `congrFun (congrFun (hre w) i) j`.
-
-Conclude with `congrFun (congrFun hfi i) j`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem mat_ext_of_coord {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {R : Type} [CommRing R]
     (Φ : AE F E ≃+* (InfinitePlace F → ℂ) × R) {n : ℕ} (M N : Matrix (Fin n) (Fin n) (AE F E))
@@ -60,7 +58,7 @@ theorem mat_ext_of_coord {F E : Type} [Field F] [NumberField F] [Field E] [Algeb
   · exact congrFun (congrFun hfi i) j
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [Formalism.UG.sigR, hσ]`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sigR_invol {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x)
     (R : Type) [CommRing R] [Algebra F R] (z : E ⊗[F] R) : Formalism.UG.sigR σ R (Formalism.UG.sigR σ R z) = z := by
@@ -70,7 +68,7 @@ theorem sigR_invol {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ
   | add a b ha hb => rw [map_add, map_add, ha, hb]
 
 /- English proof (translation)
-Simplify using `[Formalism.UG.sigR, Formalism.UG.inclE]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sigR_inclE {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E)
     (R : Type) [CommRing R] [Algebra F R] (e : E) :
@@ -78,31 +76,27 @@ theorem sigR_inclE {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ
   simp [Formalism.UG.sigR, Formalism.UG.inclE]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n J δ Φ ε P hcm hδ hδ0 _ hinc hcA hP x`. Establish `hσ : ∀ e, σ (σ e) = e` using `fun e => by`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Conclude with `τ.injective (by rw [hcm.2.2.2, hcm.2.2.2, star_star])`. Use `set g : Matrix (Fin n) (Fin n) (AE F E) := ((GlobalTheory.ThKUTr.rawT Φ ε P (Formalism.UG.UPts σ (δ • J.map σ) (Formalism.MainNotions.S.Af F)) x : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E)) with hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show gᵀ * incM F J * g.map (cA σ) = incM F J`. Apply `mat_ext_of_coord Φ` to reduce the goal to its premises. Introduce `w`. Set `fw : AE F E →+* ℂ` to `(Pi.evalRingHom (fun _ : InfinitePlace F => ℂ) w).comp ((RingHom.fst _ _).comp Φ.toRingHom)`. Express the relevant statement in the definitionally equal form `(gᵀ * incM F J * g.map (cA σ)).map fw = (incM F J).map fw`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map]`. Establish `gw : g.map fw = (P w : Matrix (Fin n) (Fin n) ℂ) * Formalism.MainNotions.S.uMat (x.1 w) * ((P w)⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ)`. Use extensionality with `i j`. Simplify using `[fw, hg, GlobalTheory.ThKUTr.rawT_val, GlobalTheory.ThKUTr.glueM_apply]`. Establish `Jw : (incM F J).map fw = J.map (B.emb w).1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `[fw, incM, hinc]`. Establish `cw : (g.map (cA σ)).map fw = (g.map fw).map star`. Use extensionality with `i j`. Simplify using `[fw, hcA]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[cw, gw, Jw]`. Establish `hA : (δ • J.map σ).map (B.emb w).1 = ((B.emb w).1 δ) • (J.map (B.emb w).1).map star`. Use extensionality with `i j`. Simplify using `[hcm.2.2.2]`. Establish `hc : (B.emb w).1 δ ≠ 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `h0`. Conclude with `hδ0 ((B.emb w).1.injective (by rw [h0, map_zero]))`. Apply `transpose_form_of_conj _ _ _ hc` to reduce the goal to its premises. Rewrite using `[← hA]`. Conclude with `conj_frame_unitary _ _ _ _ _ (P w).mul_inv (hP w) (x.1 w).2`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Set `ff : AE F E →+* E ⊗[F] Formalism.MainNotions.S.Af F` to `(RingHom.snd _ _).comp Φ.toRingHom`. Express the relevant statement in the definitionally equal form `(gᵀ * incM F J * g.map (cA σ)).map ff = (incM F J).map ff`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map]`. Use `set s := Formalism.UG.sigR σ (Formalism.MainNotions.S.Af F) with hs`. Use `set Y : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.MainNotions.S.Af F) := ((x.2 : GL (Fin n) (E ⊗[F] Formalism.MainNotions.S.Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.MainNotions.S.Af F)) with hY`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `gf : g.map ff = Y`. Use extensionality with `i j`. Simplify using `[ff, hg, hY, GlobalTheory.ThKUTr.rawT_val, GlobalTheory.ThKUTr.glueM_apply]`. Establish `Jf : (incM F J).map ff = J.map (Formalism.UG.inclE (F` using `F) (Formalism.MainNotions.S.Af F)) := by`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[ff, incM, hinc]`. Establish `cf : (g.map (cA σ)).map ff = (g.map ff).map s`. Use extensionality with `i j`. Simplify using `[ff, hcA, hs]`. Rewrite using `[cf, gf, Jf]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set D := (δ • J.map σ).map (Formalism.UG.inclE (F := F) (Formalism.MainNotions.S.Af F)) with hD`. Establish `hy : Formalism.UG.cT s Y * D * Y = D` using `x.2.2`. Establish `hy2` using `congrArg (fun M => M.map s) hy`. Simplify using `only [Matrix.map_mul] at hy2`. Establish `e1 : (Formalism.UG.cT s Y).map s = Yᵀ`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, hs, sigR_invol σ hσ]`. Use `set d := Formalism.UG.inclE (F := F) (Formalism.MainNotions.S.Af F) δ with hd`. Establish `e2 : D.map s = (-d) • J.map (Formalism.UG.inclE (F` using `F) (Formalism.MainNotions.S.Af F)) := by`. Use extensionality with `i j`.
-
-Simplify using `only [hD, hd, hs, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, sigR_inclE, map_mul, hδ, hσ, map_neg, neg_mul]`. Rewrite `hy2` using `[e1, e2, Matrix.mul_smul, Matrix.smul_mul]`. Establish `hu : Formalism.UG.inclE (F` using `F) (Formalism.MainNotions.S.Af F) (-δ)⁻¹ * (-d) = 1 := by`. Rewrite using `[hd, ← map_neg, ← map_mul, inv_mul_cancel₀ (neg_ne_zero.mpr hδ0), map_one]`. Establish `hy3` using `congrArg (fun M => Formalism.UG.inclE (F := F) (Formalism.MainNotions.S.Af F) (-δ)⁻¹ • M) hy2`.
-
-Simplify using `only [smul_smul, hu, one_smul] at hy3`. Conclude with `hy3`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rawT_mem_UG : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (δ : E) (Φ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E ≃+* (InfinitePlace F → ℂ) × (E ⊗[F] Formalism.MainNotions.S.Af F)) (ε : InfinitePlace F → Fin n → Bool) (P : InfinitePlace F → (Matrix (Fin n) (Fin n) ℂ)ˣ), IsCMExt F E σ → σ δ = -δ → δ ≠ 0 → (∀ i j, σ (J j i) = -J i j) → (∀ x : E, Φ (inclR (F := F) (AF F) x) = (fun w => (B.emb w).1 x, Formalism.UG.inclE (F := F) (Formalism.MainNotions.S.Af F) x)) → (∀ z, Φ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ z) = (fun w => star ((Φ z).1 w), Formalism.UG.sigR σ (Formalism.MainNotions.S.Af F) (Φ z).2)) → (∀ w, ((P w : Matrix (Fin n) (Fin n) ℂ))ᴴ * (δ • J.map σ).map (B.emb w).1 * (P w : Matrix (Fin n) (Fin n) ℂ) = Formalism.REAL.Jm (ε w)) → ∀ x, GlobalTheory.ThKUTr.rawT Φ ε P (Formalism.UG.UPts σ (δ • J.map σ) (Formalism.MainNotions.S.Af F)) x ∈ UG (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F J) := by
   intro F E _ _ _ _ _ σ B n J δ Φ ε P hcm hδ hδ0 _ hinc hcA hP x

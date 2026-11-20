@@ -7,7 +7,7 @@ open MvPolynomial Finset
 namespace Formalism.MainNotions.PlaneGram
 
 /- English proof (translation)
-Simplify using `[initSet]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_initSet (N i : ℕ) (k : Fin N) : k ∈ initSet N i ↔ k.val < i := by
   simp [initSet]
@@ -21,7 +21,7 @@ def nB : ℕ := (D.LLj j).card
 def eB (a : Fin (D.nB j)) : D.Lb := ((D.LLj j).equivFin.symm a).1
 
 /- English proof (translation)
-Unfold `eB`. Establish `h : ((D.LLj j).equivFin.symm a).1 ∈ D.LLj j` using `((D.LLj j).equivFin.symm a).2`. Unfold `LLj at h`. Conclude with `(Finset.mem_filter.1 h).2`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem seg_eB (a : Fin (D.nB j)) : D.seg (D.eB j a) = j := by
   unfold eB
@@ -30,7 +30,7 @@ theorem seg_eB (a : Fin (D.nB j)) : D.seg (D.eB j a) = j := by
   exact (Finset.mem_filter.1 h).2
 
 /- English proof (translation)
-Introduce `a b h`. Unfold `eB at h`. Conclude with `(D.LLj j).equivFin.symm.injective (Subtype.ext h)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem eB_inj : Function.Injective (D.eB j) := by
   intro a b h
@@ -38,14 +38,14 @@ theorem eB_inj : Function.Injective (D.eB j) := by
   exact (D.LLj j).equivFin.symm.injective (Subtype.ext h)
 
 /- English proof (translation)
-Use `⟨(D.LLj j).equivFin ⟨b, by simp [LLj, hb]⟩, ?_⟩` and prove the remaining obligations. Simplify using `[eB]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem eB_surj (b : D.Lb) (hb : D.seg b = j) : ∃ a, D.eB j a = b := by
   refine ⟨(D.LLj j).equivFin ⟨b, by simp [LLj, hb]⟩, ?_⟩
   simp [eB]
 
 /- English proof (translation)
-Unfold `dLL`. Rewrite using `[← Finset.sum_coe_sort (D.LLj j)]`. Conclude with `(Equiv.sum_comp (D.LLj j).equivFin.symm (fun x => D.dB x.1)).symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dLL_eq_sum : D.dLL j = ∑ a, D.dB (D.eB j a) := by
   unfold dLL
@@ -63,43 +63,43 @@ def e1 : Fin (D.nB j + D.r) → D.ML :=
     (fun m => if (Fin.rev m).val = 0 then D.mlab (j, Fin.rev m) else D.mtp (j, Fin.rev m))
 
 /- English proof (translation)
-Simplify using `[eA]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem eA_castAdd (a : Fin (D.nB j)) : D.eA j (Fin.castAdd D.r a) = Sum.inl (D.eB j a) := by
   simp [eA]
 /- English proof (translation)
-Simplify using `[eA]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem eA_natAdd (m : Fin D.r) : D.eA j (Fin.natAdd (D.nB j) m) = Sum.inr (j, Fin.rev m) := by
   simp [eA]
 /- English proof (translation)
-Simplify using `[e0]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem first_embedding_castAdd (a : Fin (D.nB j)) : D.e0 j (Fin.castAdd D.r a) = D.mb (D.eB j a) := by
   simp [e0]
 /- English proof (translation)
-Simplify using `[e0]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem first_embedding_natAdd (m : Fin D.r) : D.e0 j (Fin.natAdd (D.nB j) m) = D.mlab (j, Fin.rev m) := by
   simp [e0]
 /- English proof (translation)
-Simplify using `[e1]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem second_embedding_castAdd (a : Fin (D.nB j)) : D.e1 j (Fin.castAdd D.r a) = D.mb (D.eB j a) := by
   simp [e1]
 /- English proof (translation)
-Simplify using `[e1]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem second_embedding_natAdd (m : Fin D.r) : D.e1 j (Fin.natAdd (D.nB j) m) =
     if (Fin.rev m).val = 0 then D.mlab (j, Fin.rev m) else D.mtp (j, Fin.rev m) := by
   simp [e1]
 
 /- English proof (translation)
-Introduce `x y h`. Proceed by induction on `x using Fin.addCases with`. Consider the case `left a`. Proceed by induction on `y using Fin.addCases with`. Consider the case `left b`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Simplify using `only [first_embedding_castAdd, mb, Sum.inl.injEq] at h`. Rewrite using `[D.eB_inj j h]`. Consider the case `right m => simp [mb, mlab] at h`. Consider the case `right m`. Proceed by induction on `y using Fin.addCases with`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `left b => simp [mb, mlab] at h`. Consider the case `right m'`. Simplify using `only [first_embedding_natAdd, mlab, Sum.inr.injEq, Sum.inl.injEq, Prod.mk.injEq, true_and, Fin.rev_inj] at h`. Rewrite using `[h]`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem index_embedding_injective : Function.Injective (D.e0 j) := by
   intro x y h
@@ -118,13 +118,13 @@ theorem index_embedding_injective : Function.Injective (D.e0 j) := by
       rw [h]
 
 /- English proof (translation)
-Introduce `x y h`. Proceed by induction on `x using Fin.addCases with`. Consider the case `left a`. Proceed by induction on `y using Fin.addCases with`. Consider the case `left b`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Simplify using `only [second_embedding_castAdd, mb, Sum.inl.injEq] at h`. Rewrite using `[D.eB_inj j h]`. Consider the case `right m`. Simplify using `only [second_embedding_castAdd, second_embedding_natAdd] at h`. Apply the tactic sequence `split_ifs at h <;> simp [mb, mlab, mtp] at h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Consider the case `right m`. Proceed by induction on `y using Fin.addCases with`. Consider the case `left b`. Simplify using `only [second_embedding_castAdd, second_embedding_natAdd] at h`. Apply the tactic sequence `split_ifs at h <;> simp [mb, mlab, mtp] at h`.
+Treat this case separately. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Consider the case `right m'`. Simplify using `only [second_embedding_natAdd] at h`. Apply the tactic sequence `split_ifs at h <;> simp_all [mlab, mtp]`.
+Treat this case separately. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem second_embedding_injective : Function.Injective (D.e1 j) := by
   intro x y h
@@ -147,7 +147,7 @@ theorem second_embedding_injective : Function.Injective (D.e1 j) := by
       split_ifs at h <;> simp_all [mlab, mtp]
 
 /- English proof (translation)
-Proceed by induction on `k using Fin.addCases with`. Consider the case `left a => simp`. Consider the case `right m`. Simplify using `only [second_embedding_natAdd, first_embedding_natAdd]`. Apply the tactic sequence `split_ifs <;> simp [msg, mlab, mtp]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem second_embedding_mark_eq_first (k : Fin (D.nB j + D.r)) : D.msg (D.e1 j k) = D.msg (D.e0 j k) := by
   induction k using Fin.addCases with
@@ -157,9 +157,9 @@ theorem second_embedding_mark_eq_first (k : Fin (D.nB j + D.r)) : D.msg (D.e1 j 
     split_ifs <;> simp [msg, mlab, mtp]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, rfl⟩`. Proceed by induction on `k using Fin.addCases with`. Consider the case `left a => exact Or.inl ⟨D.eB j a, D.seg_eB j a, by simp⟩`. Consider the case `right m => exact Or.inr ⟨Fin.rev m, by simp⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce and unpack `(⟨b, hb, rfl⟩ | ⟨m, rfl⟩)`. Take `⟨a, rfl⟩` from `D.eB_surj j b hb`. Conclude with `⟨Fin.castAdd D.r a, by simp⟩`. Conclude with `⟨Fin.natAdd (D.nB j) (Fin.rev m), by simp⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem range_first_embedding (i : D.ML) : (∃ k, D.e0 j k = i) ↔
     (∃ b, D.seg b = j ∧ i = D.mb b) ∨ (∃ m, i = D.mlab (j, m)) := by
@@ -174,7 +174,7 @@ theorem range_first_embedding (i : D.ML) : (∃ k, D.e0 j k = i) ↔
     · exact ⟨Fin.natAdd (D.nB j) (Fin.rev m), by simp⟩
 
 /- English proof (translation)
-Break down `(D.range_first_embedding j _).1 ⟨k, rfl⟩ with h | h` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr (Or.inl h)`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 theorem segment_letter_first_embedding (k : Fin (D.nB j + D.r)) : D.SegL j (D.e0 j k) := by
   rcases (D.range_first_embedding j _).1 ⟨k, rfl⟩ with h | h
@@ -182,9 +182,9 @@ theorem segment_letter_first_embedding (k : Fin (D.nB j + D.r)) : D.SegL j (D.e0
   · exact Or.inr (Or.inl h)
 
 /- English proof (translation)
-Proceed by induction on `k using Fin.addCases with`. Consider the case `left a => exact Or.inl ⟨D.eB j a, D.seg_eB j a, by simp⟩`. Consider the case `right m`. Rewrite using `[second_embedding_natAdd]`. Use `split_ifs`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Prove the second alternative.
 
-Conclude with `Or.inr (Or.inl ⟨Fin.rev m, rfl⟩)`. Conclude with `Or.inr (Or.inr ⟨Fin.rev m, rfl⟩)`.
+Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem segment_letter_second_embedding (k : Fin (D.nB j + D.r)) : D.SegL j (D.e1 j k) := by
   induction k using Fin.addCases with
@@ -198,13 +198,13 @@ theorem segment_letter_second_embedding (k : Fin (D.nB j + D.r)) : D.SegL j (D.e
 def stg (m : Fin D.r) : ℕ := D.nB j + (D.r - 1 - m.val)
 
 /- English proof (translation)
-Use extensionality with `k`. Simplify using `only [Finset.mem_preimage, mem_initSet]`. Proceed by induction on `k using Fin.addCases with`. Consider the case `left a`. Establish `h1 : D.e0 j (Fin.castAdd D.r a) ∈ D.TLset j m`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[first_embedding_castAdd]`. Unfold `TLset`. Conclude with `Finset.mem_union_left _ (Finset.mem_image_of_mem _ (by simp [LLj, seg_eB]))`. Establish `h2 : (Fin.castAdd D.r a).val < D.stg j m`. Simplify using `only [Fin.coe_castAdd, stg]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `a.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `iff_of_true h1 h2`. Consider the case `right m'`. Rewrite using `[first_embedding_natAdd]`.
+Use linear arithmetic over natural numbers and integers. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm` using `m.2`. Establish `hm'` using `m'.2`. Simplify using `only [TLset, Finset.mem_union, Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and, mb, mlab, mtp, reduceCtorEq, and_false, exists_false, false_or, or_false, Sum.inr.injEq, Sum.inl.injEq, Prod.mk.injEq, exists_eq_right, Fin.coe_natAdd, stg]`. Rewrite using `[Fin.lt_iff_val_lt_val, Fin.val_rev]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem TL_preimage (m : Fin D.r) :
     (D.TLset j m).preimage (D.e0 j) (D.index_embedding_injective j).injOn = initSet (D.nB j + D.r) (D.stg j m) := by
@@ -232,17 +232,17 @@ theorem TL_preimage (m : Fin D.r) :
     omega
 
 /- English proof (translation)
-Use extensionality with `k`. Simplify using `only [Finset.mem_preimage, mem_initSet]`. Proceed by induction on `k using Fin.addCases with`. Consider the case `left a`. Establish `h1 : D.e1 j (Fin.castAdd D.r a) ∈ D.YPset j m`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[second_embedding_castAdd]`. Unfold `YPset`. Conclude with `Finset.mem_union_left _ (Finset.mem_image_of_mem _ (by simp [LLj, seg_eB]))`. Establish `h2 : (Fin.castAdd D.r a).val < D.stg j m`. Simplify using `only [Fin.coe_castAdd, stg]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `a.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `iff_of_true h1 h2`. Consider the case `right m'`. Rewrite using `[second_embedding_natAdd]`.
+Use linear arithmetic over natural numbers and integers. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm` using `m.2`. Establish `hm'` using `m'.2`. Use `split_ifs with h0`. Simplify using `only [YPset, Finset.mem_union, Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and, mb, mlab, mtp, reduceCtorEq, and_false, exists_false, false_or, or_false, Sum.inr.injEq, Sum.inl.injEq, Prod.mk.injEq, exists_eq_right, Fin.coe_natAdd, stg]`. Rewrite `h0` using `[Fin.val_rev]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `h.elim`. Introduce `h`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [YPset, Finset.mem_union, Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and, mb, mlab, mtp, reduceCtorEq, and_false, exists_false, false_or, or_false, Sum.inr.injEq, Sum.inl.injEq, Prod.mk.injEq, exists_eq_right, Fin.coe_natAdd, stg]`. Rewrite `h0` using `[Fin.val_rev]`. Rewrite using `[Fin.lt_iff_val_lt_val, Fin.val_rev]`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem YP_preimage1 (m : Fin D.r) :
     (D.YPset j m).preimage (D.e1 j) (D.second_embedding_injective j).injOn = initSet (D.nB j + D.r) (D.stg j m) := by
@@ -281,9 +281,9 @@ theorem YP_preimage1 (m : Fin D.r) :
       omega
 
 /- English proof (translation)
-Rewrite `hk` using `[Finset.mem_preimage]`. Proceed by induction on `k using Fin.addCases with`. Consider the case `left a => simp`. Consider the case `right m'`. Rewrite `hk` using `[first_embedding_natAdd]`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[YPset, mb, mlab, mtp] at hk`.
+Simplify using the standard rewrite rules.
 -/
 theorem YP_preimage0 (m : Fin D.r) (k : Fin (D.nB j + D.r))
     (hk : k ∈ (D.YPset j m).preimage (D.e0 j) (D.index_embedding_injective j).injOn) : k.val < D.nB j := by

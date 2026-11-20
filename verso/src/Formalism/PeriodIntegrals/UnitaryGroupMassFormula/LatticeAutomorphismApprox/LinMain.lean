@@ -12,7 +12,7 @@ section Main
 variable {K : Type} [Field K] (O : ValuationSubring K)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact (O.valuation_le_one_iff x).mpr hx`. Consider the case `exact O.valuation_le_one ⟨x, hx⟩`. Consider the case `exact (ValuationSubring.valuation_le_one_iff O x).2 hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem valuationSubring_valuation_le_one_of_mem {K : Type} [Field K] (O : ValuationSubring K) {x : K}
     (hx : x ∈ O) : O.valuation x ≤ 1 := by
@@ -22,9 +22,9 @@ private theorem valuationSubring_valuation_le_one_of_mem {K : Type} [Field K] (O
   | exact (ValuationSubring.valuation_le_one_iff O x).2 hx
 
 /- English proof (translation)
-Rewrite using `[map_mul]`. Establish `h1 : O.valuation y ≤ 1` using `valuationSubring_valuation_le_one_of_mem O hy`. Combine the equalities or inequalities in the displayed calculation. Consider the case `exact mul_le_mul_left' h1 _`. Consider the case `exact mul_le_mul_of_nonneg_left h1 zero_le'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Treat this case separately. Treat this case separately.
 
-Consider the case `gcongr`. Use `_ = O.valuation g := mul_one _`. Use `_ < 1 := hg`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem v_small {g y : K} (hg : O.valuation g < 1) (hy : y ∈ O) : O.valuation (g * y) < 1 := by
   rw [map_mul]
@@ -38,9 +38,9 @@ theorem v_small {g y : K} (hg : O.valuation g < 1) (hy : y ∈ O) : O.valuation 
     _ < 1 := hg
 
 /- English proof (translation)
-Establish `h : O.valuation m < O.valuation e` using `by rw [he]; exact hm`. Use `first`. Consider the case `exact (Valuation.map_add_eq_of_lt_left _ h).trans he`. Consider the case `exact (O.valuation.map_add_eq_of_lt_left h).trans he`. Consider the case `(rw [add_comm]; exact (Valuation.map_add_eq_of_lt_right _ h).trans he)`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(rw [add_comm]; exact (O.valuation.map_add_eq_of_lt_right h).trans he)`.
+A detailed English derivation is pending.
 -/
 theorem v_add_small {e m : K} (he : O.valuation e = 1) (hm : O.valuation m < 1) :
     O.valuation (e + m) = 1 := by
@@ -52,7 +52,7 @@ theorem v_add_small {e m : K} (he : O.valuation e = 1) (hm : O.valuation m < 1) 
   | (rw [add_comm]; exact (O.valuation.map_add_eq_of_lt_right h).trans he)
 
 /- English proof (translation)
-Use `first`. Consider the case `simp`. Consider the case `exact (Valuation.map_neg _ 1).trans (map_one _)`. Consider the case `rw [Valuation.map_neg, map_one]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem v_neg_one : O.valuation (-1 : K) = 1 := by
   first
@@ -63,7 +63,7 @@ theorem v_neg_one : O.valuation (-1 : K) = 1 := by
 end Main
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Matrix.sub_vecMul M x y`. Consider the case `(funext j; simp [Matrix.vecMul, dotProduct, sub_mul, Finset.sum_sub_distrib])`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem sub_vecMul_field {K : Type} [Field K] {n : ℕ} (M : Matrix (Fin n) (Fin n) K)
     (x y : Fin n → K) : (x - y) ᵥ* M = x ᵥ* M - y ᵥ* M := by
@@ -72,7 +72,7 @@ private theorem sub_vecMul_field {K : Type} [Field K] {n : ℕ} (M : Matrix (Fin
   | (funext j; simp [Matrix.vecMul, dotProduct, sub_mul, Finset.sum_sub_distrib])
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Matrix.add_vecMul M x y`. Consider the case `(funext j; simp [Matrix.vecMul, dotProduct, add_mul, Finset.sum_add_distrib])`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem add_vecMul_field {K : Type} [Field K] {n : ℕ} (M : Matrix (Fin n) (Fin n) K)
     (x y : Fin n → K) : (x + y) ᵥ* M = x ᵥ* M + y ᵥ* M := by
@@ -81,7 +81,7 @@ private theorem add_vecMul_field {K : Type} [Field K] {n : ℕ} (M : Matrix (Fin
   | (funext j; simp [Matrix.vecMul, dotProduct, add_mul, Finset.sum_add_distrib])
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Matrix.vecMul_smul M c x`. Consider the case `(funext j; simp [Matrix.vecMul, dotProduct, Finset.mul_sum, mul_assoc])`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem smul_vecMul_field {K : Type} [Field K] {n : ℕ} (M : Matrix (Fin n) (Fin n) K)
     (c : K) (x : Fin n → K) : (c • x) ᵥ* M = c • (x ᵥ* M) := by
@@ -90,9 +90,7 @@ private theorem smul_vecMul_field {K : Type} [Field K] {n : ℕ} (M : Matrix (Fi
   | (funext j; simp [Matrix.vecMul, dotProduct, Finset.mul_sum, mul_assoc])
 
 /- English proof (translation)
-Use `choose s hs hse using hf`. Use `choose s' hs' hse' using hf'`. Use `⟨∑ i, (s i • v i + s' i • v' i), M.sum_mem fun i _ => M.add_mem (smem O (hs i) (hv i)) (smem O (hs' i) (hv' i)), ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[hse i, hse' i, smul_add, mul_smul, mul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_mem_sum_smul_eq_smul_of_divisible {K : Type} [Field K] (O : ValuationSubring K) {n r : ℕ}
     (M : Submodule O (Fin n → K)) (g : K) (f f' : Fin r → K) (v v' : Fin r → Fin n → K)
@@ -109,9 +107,9 @@ private theorem exists_mem_sum_smul_eq_smul_of_divisible {K : Type} [Field K] (O
   rw [hse i, hse' i, smul_add, mul_smul, mul_smul]
 
 /- English proof (translation)
-Establish `e1 : ∀ i j, pr P (α i) (a j) = 0` using `fun i j => (hpair i j).1`. Establish `e2 : ∀ i j, pr P (α' i) (a' j) = 0` using `fun i j => (hpair i j).2.1`. Establish `e3 : ∀ i j, pr P (α i) (a' j) = if i = j then 1 else 0` using `fun i j => (hpair i j).2.2.1`. Establish `e4 : ∀ i j, pr P (α' i) (a j) = if i = j then 1 else 0` using `fun i j => (hpair i j).2.2.2`. Take `⟨w, hw, hS⟩` from `exists_mem_sum_smul_eq_smul_of_divisible O Λ1 g (fun i => pr P (α i) u0) (fun i => pr P (α' i) u0) a' a ha' ha h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨u0 - g • w, Λ1.sub_mem hu0 (smem O hg hw), fun j => ?_, w, hw, rfl⟩` and prove the remaining obligations. Rewrite using `[← hS]`. Prove the components needed by the constructor for the conclusion. Simplify using `[pr_sub_right, pr_sum_right, pr_add_right, pr_smul_right, e1, e2, e3, e4]`. Simplify using `[pr_sub_right, pr_sum_right, pr_add_right, pr_smul_right, e1, e2, e3, e4]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem exists_pr_orthogonal_left_sub_smul_mem {K : Type} [Field K] (O : ValuationSubring K) {n r : ℕ}
     (P : Matrix (Fin n) (Fin n) K) (Λ1 : Submodule O (Fin n → K)) (a a' α α' : Fin r → Fin n → K)
@@ -135,9 +133,9 @@ private theorem exists_pr_orthogonal_left_sub_smul_mem {K : Type} [Field K] (O :
   · simp [pr_sub_right, pr_sum_right, pr_add_right, pr_smul_right, e1, e2, e3, e4]
 
 /- English proof (translation)
-Establish `e1 : ∀ i j, pr P (α i) (a j) = 0` using `fun i j => (hpair i j).1`. Establish `e2 : ∀ i j, pr P (α' i) (a' j) = 0` using `fun i j => (hpair i j).2.1`. Establish `e3 : ∀ i j, pr P (α i) (a' j) = if i = j then 1 else 0` using `fun i j => (hpair i j).2.2.1`. Establish `e4 : ∀ i j, pr P (α' i) (a j) = if i = j then 1 else 0` using `fun i j => (hpair i j).2.2.2`. Take `⟨w, hw, hS⟩` from `exists_mem_sum_smul_eq_smul_of_divisible O Λ2 g (fun i => pr P φ0 (a i)) (fun i => pr P φ0 (a' i)) α' α hα' hα h3 h4`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨φ0 - g • w, Λ2.sub_mem hφ0 (smem O hg hw), fun j => ?_, w, hw, rfl⟩` and prove the remaining obligations. Rewrite using `[← hS]`. Prove the components needed by the constructor for the conclusion. Simplify using `[pr_sub_left, pr_sum_left, pr_add_left, pr_smul_left, e1, e2, e3, e4]`. Simplify using `[pr_sub_left, pr_sum_left, pr_add_left, pr_smul_left, e1, e2, e3, e4]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem exists_pr_orthogonal_right_sub_smul_mem {K : Type} [Field K] (O : ValuationSubring K) {n r : ℕ}
     (P : Matrix (Fin n) (Fin n) K) (Λ2 : Submodule O (Fin n → K)) (a a' α α' : Fin r → Fin n → K)
@@ -161,11 +159,11 @@ private theorem exists_pr_orthogonal_right_sub_smul_mem {K : Type} [Field K] (O 
   · simp [pr_sub_left, pr_sum_left, pr_add_left, pr_smul_left, e1, e2, e3, e4]
 
 /- English proof (translation)
-Take `⟨T1, hT1, hT1u, hT1φ⟩` from `leg hP hp hm hcp hcm hd1`. Take `⟨T2, hT2, hT2u, hT2φ⟩` from `leg hP hm hq hcm hcq hd2`. Establish `hm0 : pr P φm um ≠ 0` using `ne_zero_of_v O hcm`. Establish `hp0 : pr P φp up ≠ 0` using `ne_zero_of_v O hcp`. Establish `hcoe : ((T2 * T1 : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) = (T2 : Matrix (Fin n) (Fin n) K) * (T1 : Matrix (Fin n) (Fin n) K)` using `by first`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `exact Units.val_mul T2 T1`. Consider the case `rfl`. Consider the case `simp`. Use `⟨T2 * T1, good_mul _ _ _ _ _ _ _ _ hT2 hT1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hcoe, ← Matrix.mulVec_mulVec, hT1u, hT2u]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcoe, ← Matrix.vecMul_vecMul, hT2φ, smul_vecMul_field, hT1φ, smul_smul]`. Use `congr 1`. Use `first`. Consider the case `rw [div_mul_div_comm, mul_comm (pr P φm um) (pr P φp up), mul_div_mul_right _ _ hm0]`. Consider the case `(field_simp; try ring)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem exists_isAdmissible_of_chain_lemma_8 {K : Type} [Field K] {O : ValuationSubring K} {n r : ℕ}
     {P : Matrix (Fin n) (Fin n) K} {Λ1 Λ2 : Submodule O (Fin n → K)} {a a' α α' : Fin r → Fin n → K}
@@ -196,33 +194,31 @@ private theorem exists_isAdmissible_of_chain_lemma_8 {K : Type} [Field K] {O : V
     | (field_simp; try ring)
 
 /- English proof (translation)
-Unfold `LocLin`. Introduce `K _ O n r P g Λ1 Λ2 a a' α α' u φ u0 φ0 t hg hginv hP hfam hpair hu hφ hu0 hφ0 horth ht htg hφu hcong hc0`. Take `⟨st, hst, hts⟩` from `htg`. Take `⟨s0, hs0, hs0e⟩` from `hc0`. Establish `hvg : O.valuation g < 1` using `lt_of_le_of_ne (valuationSubring_valuation_le_one_of_mem O hg) (fun h => hginv (inv_memO_of_v O h))`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u1, hu1, hu1o, w1, hw1, hu1e⟩` from `exists_pr_orthogonal_left_sub_smul_mem O P Λ1 a a' α α' g hg hpair (fun i => (hfam i).1) (fun i => (hfam i).2.1) hu0 (fun i => (hcong i).1) (fun i => (hcong i).2.1)`. Take `⟨φ1, hφ1, hφ1o, w2, hw2, hφ1e⟩` from `exists_pr_orthogonal_right_sub_smul_mem O P Λ2 a a' α α' g hg hpair (fun i => (hfam i).2.2.1) (fun i => (hfam i).2.2.2) hφ0 (fun i => (hcong i).2.2.1) (fun i => (hcong i).2.2.2)`. Establish `hp1 : Pair O P Λ1 Λ2 a a' α α' u1 φ1`. Unfold `Pair`. Conclude with `⟨hu1, hφ1, hu1o, hφ1o⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Supply the required witnesses or components.
 
-Establish `hq : Pair O P Λ1 Λ2 a a' α α' u φ`. Unfold `Pair`. Conclude with `⟨hu, hφ, fun i => ⟨(horth i).1, (horth i).2.1⟩, fun i => ⟨(horth i).2.2.1, (horth i).2.2.2⟩⟩`. Establish `hk : s0 - pr P φ0 w1 - pr P w2 u0 + g * pr P w2 w1 ∈ O` using `add_mem (sub_mem (sub_mem hs0 (hP φ0 hφ0 w1 hw1)) (hP w2 hw2 u0 hu0)) (mul_mem hg (hP w2 hw2 w1 hw1))`. Establish `hBe : pr P φ1 u1 = -1 + g * (s0 - pr P φ0 w1 - pr P w2 u0 + g * pr P w2 w1)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hφ1e, hu1e]`. Simplify using `only [pr_sub_left, pr_sub_right, pr_smul_left, pr_smul_right]`. Take the linear combination `hs0e`. Establish `hB : O.valuation (pr P φ1 u1) = 1`. Rewrite using `[hBe]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `v_add_small O (v_neg_one O) (v_small O hvg hk)`. Establish `hAe : pr P φ u = -1 + g * (-st)`. Rewrite using `[hφu]`. Take the linear combination `-hts`. Establish `hA : O.valuation (pr P φ u) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hAe]`. Conclude with `v_add_small O (v_neg_one O) (v_small O hvg (neg_mem hst))`. Establish `hmid : ∃ um φm, Pair O P Λ1 Λ2 a a' α α' um φm ∧ O.valuation (pr P φm um) = 1 ∧ O.valuation (pr P φ1 um) = 1 ∧ O.valuation (pr P φm u) = 1`. Break down `(valuationSubring_valuation_le_one_of_mem O (hP φ1 hφ1 u hu)).lt_or_eq with hx | hx` into its components or cases. Break down `(valuationSubring_valuation_le_one_of_mem O (hP φ hφ u1 hu1)).lt_or_eq with hy | hy` into its components or cases.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `⟨u + u1, φ, ?_, ?_, ?_, hA⟩` and prove the remaining obligations. Unfold `Pair`. Use `⟨Λ1.add_mem hu hu1, hφ, fun i => ⟨?_, ?_⟩, fun i => ⟨(horth i).2.2.1, (horth i).2.2.2⟩⟩` and prove the remaining obligations. Rewrite using `[pr_add_right, (horth i).1, (hu1o i).1, add_zero]`. Rewrite using `[pr_add_right, (horth i).2.1, (hu1o i).2, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pr_add_right]`. Conclude with `v_add_small O hA hy`. Rewrite using `[pr_add_right, add_comm]`. Conclude with `v_add_small O hB hx`. Use `⟨u1, φ, ?_, hy, hB, hA⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Unfold `Pair`. Conclude with `⟨hu1, hφ, hu1o, fun i => ⟨(horth i).2.2.1, (horth i).2.2.2⟩⟩`. Conclude with `⟨u, φ, hq, hA, hx, hA⟩`. Take `⟨um, φm, hm, hcm, hd1, hd2⟩` from `hmid`. Take `⟨T, hT, hTu, hTφ⟩` from `exists_isAdmissible_of_chain_lemma_8 hP hp1 hm hq hB hcm hA hd1 hd2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hB0 : pr P φ1 u1 ≠ 0` using `ne_zero_of_v O hB`. Choose the witnesses or unpack the hypotheses as in `⟨kc, hkc, hc⟩ : ∃ kc ∈ O, pr P φ u / pr P φ1 u1 = 1 + g * kc := by`. Use `⟨(-st - (s0 - pr P φ0 w1 - pr P w2 u0 + g * pr P w2 w1)) * (pr P φ1 u1)⁻¹, mul_mem (sub_mem (neg_mem hst) hk) (inv_memO_of_v O hB), ?_⟩` and prove the remaining obligations. Rewrite using `[div_eq_iff hB0]`. Establish `hinv : (pr P φ1 u1)⁻¹ * pr P φ1 u1 = 1` using `inv_mul_cancel₀ hB0`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Take the linear combination `hAe - hBe + g * (st + (s0 - pr P φ0 w1 - pr P w2 u0 + g * pr P w2 w1)) * hinv`. Establish `hTinv : ((T⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ u = u1`. Rewrite using `[← hTu, Matrix.mulVec_mulVec]`. Use `first`. Consider the case `simp`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Replace the relevant objects with their definitions.
 
-Consider the case `rw [← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Establish `hφ0e : φ0 = φ1 + g • w2`. Rewrite using `[hφ1e]`. Normalize the expressions using the abelian group laws. Unfold `Good at hT`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h1, h2, h3⟩` from `hT`. Use `⟨T, h1, h2, h3, ⟨-w1, Λ1.neg_mem hw1, ?_⟩, ⟨kc • φ1 - w2, Λ2.sub_mem (smem O hkc hφ1) hw2, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hTinv, hu1e, smul_neg]`. Normalize the expressions using the abelian group laws. Rewrite using `[hTφ, hc, hφ0e, add_vecMul_field, sub_vecMul_field, smul_vecMul_field, smul_vecMul_field] first`.
-
-Consider the case `module`. Consider the case `(simp only [add_smul, one_smul, smul_sub, mul_smul]; abel)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem existsLatticeAutomorphismApprox : LocLin := by
   unfold LocLin

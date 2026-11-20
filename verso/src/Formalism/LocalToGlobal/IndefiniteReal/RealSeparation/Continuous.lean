@@ -18,7 +18,7 @@ variable {D : D7} {A T : HSp D} {ι : A.V →ₗ[D.host.E] T.V} {s : GA D A →*
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `e : ((frameMat T A ι).map (incA D) * mt A h * (embP' A T ι).map (incA D)).map φ = ((frameMat T A ι * embP' A T ι).map (incA D)).map φ`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hh, Matrix.mul_one, Matrix.map_mul (f := incA D), Matrix.map_mul]`. Rewrite using `[Matrix.map_add _ (map_add φ), e, Matrix.map_sub _ (map_sub φ), Matrix.map_one _ (map_zero φ) (map_one φ), add_sub_cancel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_formula_one {R : Type*} [CommRing R] (φ : AE D →+* R) (hι : HSpace.IsIsomEmb A T ι) (h : GA D A)
     (hh : (mt A h).map φ = 1) :
@@ -31,9 +31,9 @@ theorem map_formula_one {R : Type*} [CommRing R] (φ : AE D →+* R) (hι : HSpa
     add_sub_cancel]
 
 /- English proof (translation)
-Establish `key : ∀ (V : HSp D) (g : GA D V), ((finHom V g : GL (Fin V.rank) _) : Matrix _ _ _) = (mt V g).map (Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E)).toRingHom` using `fun V g => rfl`. Establish `ha' : finHom A a = 1` using `ha`. Establish `hh : (mt A a).map (Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E)).toRingHom = 1`. Rewrite using `[← key, ha', Units.val_one]`. Use `show finHom T (s a) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[key, Units.val_one, mt_of_embRel hι (hemb a)]`. Conclude with `map_formula_one _ hι a hh`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem s_mem_GinfC (hι : HSpace.IsIsomEmb A T ι) (hemb : IsEmbHom ι s) {a : GA D A} (ha : a ∈ GinfC A) :
     s a ∈ GinfC T := by

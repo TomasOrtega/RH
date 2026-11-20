@@ -9,21 +9,19 @@ open scoped TensorProduct Matrix
 open GlobalTheory.UnRep.SmallMat in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n L hL hsp φ hφ M D hD`. Take `⟨-, hS, -, -, hint⟩` from `GlobalTheory.UnRep.idempotent_adeles_small_matrices F E n L hL hsp`. Set `P : Matrix (Fin n) (Fin n) (RA F E) → Prop` to `fun M => ∃ M₀ : Matrix (Fin n) (Fin n) E, ∀ z ∈ hat F (L : Set (Fin n → E)), ∃ w ∈ hat F (L : Set (Fin n → E)), φ (M - fm F M₀) *ᵥ z = D • w`. Establish `hadd : ∀ A B, P A → P B → P (A + B)`. Introduce and unpack `A B ⟨A₀, hA⟩ ⟨B₀, hB⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `⟨A₀ + B₀, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, hu'⟩` from `hA z hz`. Take `⟨w, hw, hw'⟩` from `hB z hz`. Use `⟨u + w, add_mem hu hw, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, ← hu', ← hw', ← Matrix.add_mulVec, fm_add, ← map_add, add_sub_add_comm]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hzero : P 0` using `⟨0, fun z _ => ⟨0, zero_mem _, by simp [fm_zero]⟩⟩`. Establish `hgen : ∀ (a : FiniteAdeleRing (𝓞 F) F) (B : Matrix (Fin n) (Fin n) E), P ((a ⊗ₜ[F] (1 : E) : RA F E) • fm F B)`. Introduce `a B`. Take `⟨d, hd, hB⟩` from `hS (φ (fm F B))`. Take `⟨r, a', ha', rfl⟩` from `exists_eq_algebraMap_add_nsmul F (D * d) (Nat.mul_pos hD hd) a`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨r • B, fun z hz => ⟨_, hint a' ha' _ (hB z hz), ?_⟩⟩` and prove the remaining obligations. Establish `h1 : fm F (r • B) = (algebraMap F (FiniteAdeleRing (𝓞 F) F) r ⊗ₜ[F] (1 : E) : RA F E) • fm F B`. Use extensionality with `i j`. Simplify using `only [fm, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one]`. Rewrite using `[Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, TensorProduct.add_tmul, add_smul, add_sub_cancel_left, hφ, Matrix.smul_mulVec, nsmul_tmul_one, smul_assoc, mul_smul, smul_comm d]`. Establish `hsingle : ∀ i j (t : RA F E), P (Matrix.single i j t)`. Introduce `i j t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => rw [Matrix.single_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `hzero`. Consider the case `tmul a y`. Use `hgen a (Matrix.single i j y)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `k l`.
+Treat this case separately. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [fm, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one, Matrix.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Consider the case `add s t hs ht => rw [Matrix.single_add]`. Conclude with `hadd _ _ hs ht`. Express the relevant statement in the definitionally equal form `P M`.
-
-Rewrite using `[Matrix.matrix_eq_sum_single M]`. Conclude with `Finset.sum_induction _ P hadd hzero fun i _ => Finset.sum_induction _ P hadd hzero fun j _ => hsingle i j _`.
+Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.UnRep.exists_rational_approx_after_adele_linear : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ) (L : Submodule (𝓞 E) (Fin n → E)), L.FG → Submodule.span E (L : Set (Fin n → E)) = ⊤ → ∀ (φ : Matrix (Fin n) (Fin n) (RA F E) →+ Matrix (Fin n) (Fin n) (RA F E)), (∀ (a : FiniteAdeleRing (𝓞 F) F) (M : Matrix (Fin n) (Fin n) (RA F E)), φ ((a ⊗ₜ[F] (1 : E) : RA F E) • M) = (a ⊗ₜ[F] (1 : E) : RA F E) • φ M) → ∀ (M : Matrix (Fin n) (Fin n) (RA F E)) (D : ℕ), 0 < D → ∃ M₀ : Matrix (Fin n) (Fin n) E, ∀ z ∈ hat F (L : Set (Fin n → E)), ∃ w ∈ hat F (L : Set (Fin n → E)), φ (M - fm F M₀) *ᵥ z = D • w := by
   intro F E _ _ _ _ _ n L hL hsp φ hφ M D hD

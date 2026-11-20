@@ -10,7 +10,7 @@ open CategoryTheory AlgebraicGeometry
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨n, hn⟩` from `hx`. Rewrite `hn` using `[RingHom.mem_ker, map_pow]`. Rewrite using `[RingHom.mem_ker]`. Conclude with `IsNilpotent.eq_zero ⟨n, hn⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem radical_ker_le_ker_of_isReduced {R S : Type*} [CommRing R] [CommRing S] [IsReduced S]
     (f : R →+* S) : (RingHom.ker f).radical ≤ RingHom.ker f := by
@@ -21,15 +21,13 @@ private theorem radical_ker_le_ker_of_isReduced {R S : Type*} [CommRing R] [Comm
   exact IsNilpotent.eq_zero ⟨n, hn⟩
 
 /- English proof (translation)
-Introduce `k ik X p Z ism J hsub`. Establish `hstalk : ∀ x : ↥Z.subscheme, _root_.IsReduced ↑(Z.subscheme.presheaf.stalk x)`. Introduce `x`. Use `isDomain_stalk_of_smooth (Z.subschemeι ≫ p) x` as an intermediate fact. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hred : AlgebraicGeometry.IsReduced Z.subscheme` using `isReduced_of_isReduced_stalk Z.subscheme`. Establish `hcomp : ∀ U : Z.subscheme.Opens, _root_.IsReduced ↑(Z.subscheme.presheaf.obj (Opposite.op U))` using `fun U => AlgebraicGeometry.IsReduced.component_reduced U`. Establish `hZrad : ∀ U : X.affineOpens, (Z.ideal U).radical ≤ Z.ideal U`. Introduce `U`. Rewrite using `[← Z.ker_subschemeι_app U]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `radical_ker_le_ker_of_isReduced _`. Establish `hle : Z.support ≤ J.support` using `SetLike.coe_subset_coe.mp hsub`. Establish `hJv : J ≤ Scheme.IdealSheafData.vanishingIdeal Z.support`. Apply `(Scheme.IdealSheafData.gc J Z.support).mp` to reduce the goal to its premises. Conclude with `hle`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hJv` using `[Scheme.IdealSheafData.vanishingIdeal_support]`. Establish `hrad : Z.radical ≤ Z`. Rewrite using `[Scheme.IdealSheafData.le_def]`. Introduce `U`. Rewrite using `[Scheme.IdealSheafData.radical_ideal]`.
-
-Conclude with `hZrad U`. Conclude with `le_trans hJv hrad`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smoothSubschemeIdealIsRadical : SmoothSubschemeIdealIsRadical.{u} := by
   intro k ik X p Z ism J hsub

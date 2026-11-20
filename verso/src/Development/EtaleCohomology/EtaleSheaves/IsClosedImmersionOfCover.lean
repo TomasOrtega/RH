@@ -6,11 +6,11 @@ open CategoryTheory Limits AlgebraicGeometry
 namespace LateralTheory.E.CorePf2
 
 /- English proof (translation)
-Set `O' : Option ι → Y.Opens` to `fun o => o.elim ⟨(Set.range f)ᶜ, hcl.isOpen_compl⟩ O`. Use `IsZariskiLocalAtTarget.of_iSup_eq_top O' ?_ ?_` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `y _`. Rewrite using `[TopologicalSpace.Opens.mem_iSup]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hy : y ∈ Set.range f`. Take `⟨i, hi⟩` from `Set.mem_iUnion.mp (hcov hy)`. Conclude with `⟨some i, hi⟩`. Conclude with `⟨none, hy⟩`. Introduce `o`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the cases of `o with`. Consider the case `none`. Establish `: IsEmpty (f ⁻¹ᵁ O' none).toScheme` using `⟨fun x => x.2 ⟨x.1, rfl⟩⟩`. Use `infer_instance`. Consider the case `some i => exact hloc i`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isClosedImmersion_of_cover {X Y : Scheme.{0}} (f : X ⟶ Y) {ι : Type} (O : ι → Y.Opens)
     (hcl : IsClosed (Set.range f)) (hcov : Set.range f ⊆ ⋃ i, (O i : Set Y))
@@ -32,7 +32,7 @@ theorem isClosedImmersion_of_cover {X Y : Scheme.{0}} (f : X ⟶ Y) {ι : Type} 
     | some i => exact hloc i
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.comp_base, TopCat.coe_comp, Set.range_comp]`. Conclude with `(pullback.snd p₁ q).isClosedMap _ γ.imageι.isClosedEmbedding.isClosed_range`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem range_closed {S X₁ P : Scheme.{0}} (p₁ : X₁ ⟶ S) [IsProper p₁] (q : P ⟶ S) {V : Scheme.{0}}
     (γ : V ⟶ pullback p₁ q) : IsClosed (Set.range (γ.imageι ≫ pullback.snd p₁ q)) := by
@@ -58,13 +58,13 @@ def Piece : Prop := ∀ {S X₁ : Scheme.{0}} (p₁ : X₁ ⟶ S) [IsProper p₁
       ∀ j, IsClosedImmersion ((γ.imageι ≫ pullback.snd p₁ q) ∣_ (π j ⁻¹ᵁ W j))
 
 /- English proof (translation)
-Introduce `S X₁ p₁ _ hX n U Pj qj W e P q π hUn hUc hsep he hc hπ hUP`. Take `⟨x₀⟩ : Nonempty X₁` from `inferInstance`. Take `⟨j₀, -⟩` from `hUc x₀`. Set `V₀ : X₁.Opens` to `Finset.univ.inf U`. Establish `hV₀ : ∀ j, V₀ ≤ U j` using `fun j => Finset.inf_le (Finset.mem_univ j)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨x, hx⟩` from `LateralTheory.E.CorePf.inf_nonempty U hUn _ ⟨j₀, Finset.mem_univ _⟩`. Take `⟨V', hVa, hxV, hVle⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.mp X₁.isBasis_affineOpens (U := V₀) hx`. Take `⟨V, rfl⟩ : ∃ V : X₁.Opens, V = V'` from `⟨V', rfl⟩`. Use `replace hVa : IsAffineOpen V := hVa`. Establish `hV : ∀ j, (V : X₁.Opens) ≤ U j` using `fun j => hVle.trans (hV₀ j)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨g, ⟨hg1, hg2⟩, -⟩` from `hUP ((V : X₁.Opens).ι ≫ p₁) (fun j => X₁.homOfLE (hV j) ≫ e j ≫ (W j).ι) (by`. Introduce `j`. Simplify using `only [Category.assoc, hc j, Scheme.homOfLE_ι_assoc])`. Set `γ : (V : X₁.Opens).toScheme ⟶ pullback p₁ q` to `pullback.lift (V : X₁.Opens).ι g hg1.symm`. Establish `hγ1 : γ ≫ pullback.fst p₁ q = (V : X₁.Opens).ι` using `pullback.lift_fst _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hγ2 : ∀ j, γ ≫ pullback.snd p₁ q ≫ π j = X₁.homOfLE (hV j) ≫ e j ≫ (W j).ι`. Introduce `j`. Rewrite using `[pullback.lift_snd_assoc, hg2 j]`. Use `⟨γ.image, γ.imageι, V, γ.toImage, inferInstance, isClosedImmersion_of_cover _ (fun j => π j ⁻¹ᵁ W j) (range_closed p₁ q γ) (hC p₁ n U Pj qj W e P q π hUc hsep he hc hπ V hVa hV γ hγ1 hγ2) (hP p₁ n U Pj qj W e P q π hUc hsep he hc hπ V hVa hV γ hγ1 hγ2), ⟨x, hxV⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.Hom.toImage_imageι_assoc, hγ1]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Core_of (hC : Covered) (hP : Piece) : LateralTheory.E.ChowGraphCut.Core := by
   intro S X₁ p₁ _ hX n U Pj qj W e P q π hUn hUc hsep he hc hπ hUP

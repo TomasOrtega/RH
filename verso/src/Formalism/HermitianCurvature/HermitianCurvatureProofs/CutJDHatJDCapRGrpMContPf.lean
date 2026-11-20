@@ -29,9 +29,7 @@ def tds (r : ℕ) : ℕ → Fin 2 → R
 variable {a c d}
 
 /- English proof (translation)
-Unfold `prodM`. Rewrite using `[List.range_succ_eq_map, List.map_cons, List.prod_cons, List.map_map]`. Use `congr 2`. Conclude with `List.map_congr_left (fun j _ => by show Mi a c d (lo + (j + 1)) = Mi a c d (lo + 1 + j)`. Use `congr 1`.
-
-Use the proof step `omega)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem prodM_succ_left (lo n : ℕ) : prodM a c d lo (n + 1) = Mi a c d lo * prodM a c d (lo + 1) n := by
   unfold prodM
@@ -43,7 +41,7 @@ theorem prodM_succ_left (lo n : ℕ) : prodM a c d lo (n + 1) = Mi a c d lo * pr
     omega)
 
 /- English proof (translation)
-Unfold `prodM`. Rewrite using `[List.range_succ, List.map_append, List.prod_append]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prodM_succ_right (lo n : ℕ) : prodM a c d lo (n + 1) = prodM a c d lo n * Mi a c d (lo + n) := by
   unfold prodM
@@ -51,7 +49,7 @@ theorem prodM_succ_right (lo n : ℕ) : prodM a c d lo (n + 1) = prodM a c d lo 
   simp
 
 /- English proof (translation)
-The claim follows from `| 0 => by simp [bus, prodM] | i + 1 => by obtain ⟨h1, h2⟩ := bus_eq i rw [prodM_succ_right] simp only [bus, h1, h2, Matrix.mul_apply, Fin.sum_univ_two, Mi, zero_add] simp [sub_eq_add_neg]`.
+A detailed English derivation is pending.
 -/
 theorem bus_eq : ∀ i, (bus a c d i).1 = prodM a c d 0 i 0 0 ∧ (bus a c d i).2 = prodM a c d 0 i 0 1
   | 0 => by simp [bus, prodM]
@@ -62,7 +60,7 @@ theorem bus_eq : ∀ i, (bus a c d i).1 = prodM a c d 0 i 0 0 ∧ (bus a c d i).
     simp [sub_eq_add_neg]
 
 /- English proof (translation)
-The claim follows from `| 0, _, b => by fin_cases b <;> simp [tds, prodM] | 1, hm, b => by rw [prodM_succ_left] fin_cases b <;> simp [tds, hm, prodM, Mi] | m + 2, hm, b => by have ih1 := tds_eq hcd r (m + 1) (by omega) b have ih0 := tds_eq hcd r m (by omega) b have e1 : r - (m + 2) + 1 = r - (m + 1) := …`.
+A detailed English derivation is pending.
 -/
 theorem tds_eq (hcd : ∀ i, Commute (c (i + 1)) (d i)) (r : ℕ) :
     ∀ m, m ≤ r → ∀ b, tds a c d r m b = prodM a c d (r - m) m 0 b
@@ -91,7 +89,7 @@ theorem tds_eq (hcd : ∀ i, Commute (c (i + 1)) (d i)) (r : ℕ) :
     simp only [hc, mul_neg, mul_assoc, sub_eq_add_neg]
 
 /- English proof (translation)
-Rewrite using `[tds_eq hcd r r le_rfl, tds_eq hcd r r le_rfl, (bus_eq r).1, (bus_eq r).2, Nat.sub_self]`. Conclude with `⟨rfl, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem tds_bus (hcd : ∀ i, Commute (c (i + 1)) (d i)) (r : ℕ) :
     tds a c d r r 0 = (bus a c d r).1 ∧ tds a c d r r 1 = (bus a c d r).2 := by
@@ -111,7 +109,7 @@ variable (X) in
 def aSv (Y : ℂ) (i : ℕ) : Module.End ℂ (WSm r X) := algebraMap ℂ _ Y - eS X i 3
 
 /- English proof (translation)
-The claim follows from `| 0, _, f => ⟨rfl, rfl⟩ | i + 1, hi, f => by have hir : i < r := by omega have ih := cp_vABs Y i (by omega) simp only [Q.vABs, dif_pos hir, bus] refine ⟨?_, ?_⟩ · have e1 : Y • (f : (Fin r → ℂ) → X) - pbOp ⟨i, hir⟩ (f : (Fin r → ℂ) → X) = ((aSv X Y i f : WSm r X) : (Fin r → ℂ) → …`.
+A detailed English derivation is pending.
 -/
 theorem cp_vABs (Y : ℂ) : ∀ i, i ≤ r → ∀ f : WSm r X,
     (Q.vABs r Y i).1 (f : (Fin r → ℂ) → X) = (((bus (aSv X Y) (eS X · 4) (eS X · 5) i).1 f : WSm r X) : (Fin r → ℂ) → X) ∧
@@ -138,7 +136,7 @@ theorem cp_vABs (Y : ℂ) : ∀ i, i ≤ r → ∀ f : WSm r X,
       rfl
 
 /- English proof (translation)
-The claim follows from `| 0, f => by fin_cases b <;> simp [tdUv, tds] | 1, f => by by_cases h1 : 1 ≤ r · have hr : r - 1 < r := by omega fin_cases b · simp only [tdUv, tds, dif_pos h1, if_pos h1, Fin.zero_eta, if_true, aSv, eS, dif_pos hr] rfl · simp only [tdUv, tds, dif_pos h1, if_pos h1, Fin.mk_one, o …`.
+A detailed English derivation is pending.
 -/
 theorem cp_tdUv (Y : ℂ) (b : Fin 2) : ∀ m, ∀ f : WSm r X,
     tdUv r Y m b (f : (Fin r → ℂ) → X) = ((tds (aSv X Y) (eS X · 4) (eS X · 5) r m b f : WSm r X) : (Fin r → ℂ) → X)
@@ -176,7 +174,7 @@ open ContPf
 variable {r : ℕ} {X : Type} [NormedAddCommGroup X] [NormedSpace ℂ X]
 
 /- English proof (translation)
-Introduce `f₁ f₂ x h`. Use `filter_upwards [h.eventuallyEq_nhds] with y hy`. Simplify using `only [pbOp, wirtBar, hy.fderiv_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem loc_pbOp (l : Fin r) : Loc (X := X) (pbOp l) := by
   intro f₁ f₂ x h
@@ -184,7 +182,7 @@ theorem loc_pbOp (l : Fin r) : Loc (X := X) (pbOp l) := by
   simp only [pbOp, wirtBar, hy.fderiv_eq]
 
 /- English proof (translation)
-Introduce `f₁ f₂ x h`. Use `filter_upwards [h] with y hy`. Simplify using `only [cbOp, hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem loc_cbOp (l : Fin r) : Loc (X := X) (cbOp l) := by
   intro f₁ f₂ x h
@@ -192,7 +190,7 @@ theorem loc_cbOp (l : Fin r) : Loc (X := X) (cbOp l) := by
   simp only [cbOp, hy]
 
 /- English proof (translation)
-Introduce `f₁ f₂ x h`. Use `filter_upwards [h] with y hy`. Simplify using `only [cbiOp, hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem loc_cbiOp (l : Fin r) : Loc (X := X) (cbiOp l) := by
   intro f₁ f₂ x h
@@ -200,7 +198,7 @@ theorem loc_cbiOp (l : Fin r) : Loc (X := X) (cbiOp l) := by
   simp only [cbiOp, hy]
 
 /- English proof (translation)
-The claim follows from `| 0 => by unfold tdUv split_ifs · exact loc_id · exact loc_zero | 1 => by unfold tdUv split_ifs · exact loc_sub (loc_smul Y loc_id) (loc_pbOp _) · exact loc_cbiOp _ · exact loc_zero | m + 2 => by have ih1 := loc_tdUv Y b (m + 1) have ih0 := loc_tdUv Y b m unfold tdUv split_ifs · …`.
+A detailed English derivation is pending.
 -/
 theorem loc_tdUv (Y : ℂ) (b : Fin 2) : ∀ m, Loc (tdUv (X := X) r Y m b)
   | 0 => by
@@ -224,7 +222,7 @@ theorem loc_tdUv (Y : ℂ) (b : Fin 2) : ∀ m, Loc (tdUv (X := X) r Y m b)
     · exact loc_zero
 
 /- English proof (translation)
-The claim follows from `| 0 => ⟨loc_id, loc_zero⟩ | i + 1 => by obtain ⟨h1, h2⟩ := loc_vABs Y i by_cases hi : i < r · simp only [Q.vABs, dif_pos hi] exact ⟨loc_sub (loc_comp h1 (loc_sub (loc_smul Y loc_id) (loc_pbOp _))) (loc_comp h2 (loc_cbOp _)), loc_comp h1 (loc_cbiOp _)⟩ · simp only [Q.vABs, dif_neg …`.
+A detailed English derivation is pending.
 -/
 theorem loc_vABs (Y : ℂ) : ∀ i, Loc (X := X) (Q.vABs r Y i).1 ∧ Loc (X := X) (Q.vABs r Y i).2
   | 0 => ⟨loc_id, loc_zero⟩
@@ -243,13 +241,13 @@ end ContPfM
 
 open ContPf ContPfM in
 /- English proof (translation)
-Introduce `X _ _ r Y O hO hOm f hf c hc b`. Take `⟨f', hf'm, hf'e⟩` from `cp_cutoff O hO hOm f hf c hc`. Establish `e1 : tdUv r Y r b f c = tdUv r Y r b f' c` using `((loc_tdUv Y b r) f f' c hf'e.symm).eq_of_nhds`. Establish `ev` using `loc_vABs (X := X) (r := r) Y r`. Establish `h3` using `cp_tdUv Y b r ⟨f', hf'm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `cp_vABs Y r le_rfl ⟨f', hf'm⟩`. Establish `h5` using `tds_bus (a := aSv (r := r) X Y) (c := (eS X · 4)) (d := (eS X · 5)) (fun i => eS_comm (i + 1) i (by omega) 4 5) r`. Apply the tactic sequence `have hb : b = 0 ∨ b = 1 := by fin_cases b <;> simp`. Break down `hb with rfl | rfl` into its components or cases. Establish `e2 : (Q.vABs r Y r).1 f c = (Q.vABs r Y r).1 f' c` using `(ev.1 f f' c hf'e.symm).eq_of_nhds`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Simplify using `only [Q.cmp, if_true]`. Rewrite using `[e1, e2]`. Express the relevant statement in the definitionally equal form `tdUv r Y r 0 ((⟨f', hf'm⟩ : WSm r X) : (Fin r → ℂ) → X) c = (Q.vABs r Y r).1 ((⟨f', hf'm⟩ : WSm r X) : (Fin r → ℂ) → X) c`. Rewrite using `[h3, h4.1, h5.1]`. Establish `e2 : (Q.vABs r Y r).2 f c = (Q.vABs r Y r).2 f' c` using `(ev.2 f f' c hf'e.symm).eq_of_nhds`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Q.cmp, show ¬ ((1 : Fin 2) = 0) by decide, if_false]`. Rewrite using `[e1, e2]`. Express the relevant statement in the definitionally equal form `tdUv r Y r 1 ((⟨f', hf'm⟩ : WSm r X) : (Fin r → ℂ) → X) c = (Q.vABs r Y r).2 ((⟨f', hf'm⟩ : WSm r X) : (Fin r → ℂ) → X) c`. Rewrite using `[h3, h4.2, h5.2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem mirror_residue_continuity : JDRvCont := by
   intro X _ _ r Y O hO hOm f hf c hc b

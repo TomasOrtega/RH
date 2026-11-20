@@ -18,7 +18,7 @@ def ActsAs (e : (Fin n → FractionRing O) ≃ₗ[FractionRing O] ((Fin r → Fr
     ((P.map (toFr O)).mulVec (e u).1, fun c : Fin t => toFr O (d c) * (e u).2 c)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[smul_eq_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_smul_toFr {k : ℕ} (c : O) (M : Matrix (Fin k) (Fin k) O) :
     (c • M).map (toFr O) = toFr O c • M.map (toFr O) := by
@@ -26,7 +26,7 @@ theorem map_smul_toFr {k : ℕ} (c : O) (M : Matrix (Fin k) (Fin k) O) :
   simp [smul_eq_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.sum_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_sum_toFr {k m : ℕ} (M : Fin m → Matrix (Fin k) (Fin k) O) :
     (∑ i, M i).map (toFr O) = ∑ i, (M i).map (toFr O) := by
@@ -34,7 +34,7 @@ theorem map_sum_toFr {k m : ℕ} (M : Fin m → Matrix (Fin k) (Fin k) O) :
   simp [Matrix.sum_apply]
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.sum_apply, Finset.sum_apply, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem sum_mulVec_eq {K : Type} [CommRing K] {k m : ℕ} (A : Fin m → Matrix (Fin k) (Fin k) K)
     (v : Fin k → K) : (∑ i, A i).mulVec v = ∑ i, (A i).mulVec v := by
@@ -43,7 +43,7 @@ private theorem sum_mulVec_eq {K : Type} [CommRing K] {k m : ℕ} (A : Fin m →
   exact Finset.sum_comm
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, Finset.mul_sum, mul_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem smul_mulVec_eq' {K : Type} [CommRing K] {k : ℕ} (a : K) (A : Matrix (Fin k) (Fin k) K)
     (v : Fin k → K) : (a • A).mulVec v = a • A.mulVec v := by
@@ -51,9 +51,9 @@ private theorem smul_mulVec_eq' {K : Type} [CommRing K] {k : ℕ} (a : K) (A : M
   simp [Matrix.mulVec, dotProduct, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Unfold `ActsAs at h ⊢`. Introduce `u`. Rewrite using `[map_sum_toFr, map_sum_toFr]`. Simplify using `only [map_smul_toFr, sum_mulVec_eq, smul_mulVec_eq', map_sum, map_smul, h]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Prod.fst_sum]`. Use function extensionality and compare the values at `j`. Simplify using `[Prod.snd_sum, Finset.sum_apply, Finset.sum_mul, mul_assoc]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem actsAs_sum
     (e : (Fin n → FractionRing O) ≃ₗ[FractionRing O] ((Fin r → FractionRing O) × (Fin t → FractionRing O)))
@@ -72,11 +72,11 @@ theorem actsAs_sum
     rw [Algebra.smul_def]
 
 /- English proof (translation)
-Establish `hv : ∀ v : Fin r → FractionRing O, (P.map (toFr O)).mulVec v = (P'.map (toFr O)).mulVec v`. Introduce `v`. Establish `h1` using `h (e.symm (v, 0))`. Establish `h2` using `h' (e.symm (v, 0))`. Rewrite `h2` using `[h1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using congrArg Prod.fst h2`. Establish `hm : P.map (toFr O) = P'.map (toFr O)`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Conclude with `LinearMap.ext fun v => by simpa [Matrix.toLin'_apply] using hv v`. Use extensionality with `i j`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `IsFractionRing.injective O (FractionRing O)` to reduce the goal to its premises. Use `congrFun (congrFun hm i) j` as an intermediate fact. Simplify `this` using `[toFr]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ActsAs.unique
     {e : (Fin n → FractionRing O) ≃ₗ[FractionRing O] ((Fin r → FractionRing O) × (Fin t → FractionRing O))}
@@ -99,7 +99,7 @@ theorem ActsAs.unique
 end
 
 /- English proof (translation)
-Unfold `ActsAs`. Introduce `u`. Simplify `h g u` using `[overK, matRep, mapM, mat]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem actsAs_mat {Γ O : Type} [Group Γ] [CommRing O] [IsDomain O] {n r t : ℕ}
     {σ : Γ →* GL (Fin n) O} {ρ : Γ →* GL (Fin r) O} {χ : ℕ → (Γ →* Oˣ)}
@@ -111,17 +111,15 @@ theorem actsAs_mat {Γ O : Type} [Group Γ] [CommRing O] [IsDomain O] {n r t : �
   simpa [overK, matRep, mapM, mat] using h g u
 
 /- English proof (translation)
-Establish `hact : ∀ M ∈ Submodule.span O (Set.range (mat (rep π))), ∃ p : Matrix (Fin r) (Fin r) O × (Fin t → O), ActsAs e M p.1 p.2`. Introduce `M hM`. Take `⟨m, c, g, rfl⟩` from `Submodule.mem_span_set'.mp hM`. Establish `hg : ∀ k, ∃ γ, mat (rep π) γ = (g k : Matrix (Fin n) (Fin n) O)` using `fun k => (g k).2`. Use `choose γ hγ using hg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(∑ k, c k • mat ρ (γ k), fun j => ∑ k, c k * ((χ ((j : ℕ) + 1) (γ k) : Oˣ) : O)), ?_⟩` and prove the remaining obligations. Use `actsAs_sum e c (fun k => mat (rep π) (γ k)) (fun k => mat ρ (γ k)) (fun k j => ((χ ((j : ℕ) + 1) (γ k) : Oˣ) : O)) (fun k => actsAs_mat hdec (γ k))` as an intermediate fact. Simplify `this` using `only [hγ]`. Use `⟨fun a => if h : ∃ p : Matrix (Fin r) (Fin r) O × (Fin t → O), ActsAs e (a π) p.1 p.2 then h.choose.1 else 0, fun j a => if h : ∃ p : Matrix (Fin r) (Fin r) O × (Fin t → O), ActsAs e (a π) p.1 p.2 then h.choose.2 j else 0, ?_, ?_⟩` and prove the remaining obligations. Introduce `a ha u`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hex` using `hact (a π) (eval_mem_span ha π)`. Simplify using `only [dif_pos hex]`. Conclude with `hex.choose_spec u`. Introduce `P`. Establish `hP : P ∈ Submodule.span O (Set.range (mat ρ))` using `hspan ▸ Submodule.mem_top`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨m, c, g, hsum⟩` from `Submodule.mem_span_set'.mp hP`. Establish `hg : ∀ k, ∃ γ, mat ρ γ = (g k : Matrix (Fin r) (Fin r) O)` using `fun k => (g k).2`. Use `choose γ hγ using hg`. Use `⟨∑ k, c k • (fun x => mat (rep x) (γ k)), ?_, ?_⟩` and prove the remaining obligations. Conclude with `inRing_sum _ fun k _ => inRing_smul (c k) (inRing_mat (γ k))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hev : (∑ k, c k • (fun x => mat (rep x) (γ k))) π = ∑ k, c k • mat (rep π) (γ k)`. Simplify using `[Finset.sum_apply]`. Establish `hA : ActsAs e ((∑ k, c k • (fun x => mat (rep x) (γ k))) π) (∑ k, c k • mat ρ (γ k)) (fun j => ∑ k, c k * ((χ ((j : ℕ) + 1) (γ k) : Oˣ) : O))`. Rewrite using `[hev]`. Conclude with `actsAs_sum e c (fun k => mat (rep π) (γ k)) (fun k => mat ρ (γ k)) (fun k j => ((χ ((j : ℕ) + 1) (γ k) : Oˣ) : O)) (fun k => actsAs_mat hdec (γ k))`.
-
-Establish `hex : ∃ p : Matrix (Fin r) (Fin r) O × (Fin t → O), ActsAs e ((∑ k, c k • (fun x => mat (rep x) (γ k))) π) p.1 p.2` using `⟨(∑ k, c k • mat ρ (γ k), fun j => ∑ k, c k * ((χ ((j : ℕ) + 1) (γ k) : Oˣ) : O)), hA⟩`. Simplify using `only [dif_pos hex]`. Rewrite using `[ActsAs.unique hex.choose_spec hA, ← hsum]`. Simplify using `only [hγ]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_block_action {Γ X O : Type} [Group Γ] [CommRing O] [IsDomain O] {n r t : ℕ}
     (T : Subalgebra O (X → O)) (rep : X → (Γ →* GL (Fin n) O)) (ρ : Γ →* GL (Fin r) O) (χ : ℕ → (Γ →* Oˣ))

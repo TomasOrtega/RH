@@ -14,9 +14,9 @@ noncomputable section
 section ChartLength
 
 /- English proof (translation)
-Set `g` to `Submodule.toLocalizedQuotient' (Localization.AtPrime W) W.primeCompl (Algebra.linearMap A (Localization.AtPrime W)) K`. Set `e` to `(IsLocalizedModule.linearEquiv W.primeCompl g (LocalizedModule.mkLinearMap W.primeCompl (A ⧸ K))).restrictScalars (Localization.AtPrime W)`. Establish `hK : Submodule.localized' (Localization.AtPrime W) W.primeCompl (Algebra.linearMap A (Localization.AtPrime W)) K = K.map (algebraMap A (Localization.AtPrime W))`. Rewrite using `[Submodule.localized'_eq_span]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← e.length_eq]`. Conclude with `(Submodule.quotEquivOfEq _ _ hK).length_eq`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chartLength_localizedModule_quotient {A : Type*} [CommRing A] (K W : Ideal A) [W.IsPrime] :
     Module.length (Localization.AtPrime W) (LocalizedModule W.primeCompl (A ⧸ K)) =
@@ -34,7 +34,7 @@ theorem chartLength_localizedModule_quotient {A : Type*} [CommRing A] (K W : Ide
   exact (Submodule.quotEquivOfEq _ _ hK).length_eq
 
 /- English proof (translation)
-Set `_` to `RingHomInvPair.of_ringEquiv τ`. Set `_` to `RingHomInvPair.symm (↑τ : Q →+* Q') (τ.symm : Q' →+* Q)`. Apply `WithBot.coe_injective` to reduce the goal to its premises. Rewrite using `[Module.coe_length, Module.coe_length, Order.krullDim_eq_of_orderIso (Submodule.orderIsoMapComap τ.toSemilinearEquiv)]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem chartLength_self_eq_of_ringEquiv {Q Q' : Type*} [CommRing Q] [CommRing Q'] (τ : Q ≃+* Q') :
     Module.length Q Q = Module.length Q' Q' := by
@@ -45,7 +45,7 @@ theorem chartLength_self_eq_of_ringEquiv {Q Q' : Type*} [CommRing Q] [CommRing Q
     Order.krullDim_eq_of_orderIso (Submodule.orderIsoMapComap τ.toSemilinearEquiv)]
 
 /- English proof (translation)
-The claim follows from `Module.length_eq_of_surjective Ideal.Quotient.mk_surjective`.
+A detailed English derivation is pending.
 -/
 theorem chartLength_quotient_self {A : Type*} [CommRing A] (I : Ideal A) :
     Module.length A (A ⧸ I) = Module.length (A ⧸ I) (A ⧸ I) :=
@@ -54,9 +54,9 @@ theorem chartLength_quotient_self {A : Type*} [CommRing A] (I : Ideal A) :
 variable {K : Type*} {ι : K → Type} {J : Type} {R : Type*} [CommRing R]
 
 /- English proof (translation)
-Use `⟨h.natDegree, ∑ k ∈ Finset.range (h.natDegree + 1), liftForm (h.coeff k * a j₀ ^ (h.natDegree - k)) * newVar j₀ ^ k, ?_⟩` and prove the remaining obligations. Establish `hs : Polynomial.C (a j₀ ^ h.natDegree) * h = ∑ k ∈ Finset.range (h.natDegree + 1), Polynomial.C (a j₀ ^ h.natDegree) * (Polynomial.C (h.coeff k) * Polynomial.X ^ k)`. Rewrite using `[← Finset.mul_sum, ← h.as_sum_range_C_mul_X_pow]`. Rewrite using `[hs, map_sum]`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hk' : k ≤ h.natDegree` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hk)`. Establish `e : a j₀ ^ h.natDegree = a j₀ ^ (h.natDegree - k) * a j₀ ^ k`. Rewrite using `[← pow_add, Nat.sub_add_cancel hk']`. Rewrite using `[map_mul, map_pow, aeval_chartSubst_liftForm, e]`. Simplify using `only [newVar, aeval_X, chartSubst, map_mul, map_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -80,61 +80,51 @@ theorem exists_aeval_chartSubst_eq_C_pow_mul (a : J → MRing ι R) (j₀ : J) (
 end ChartLength
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ K _ _ ι _ J _ P n hP N u hu hex hloc c x hx hxP W hW hϖW hWp`. Establish `hPp : P.IsPrime` using `hP.multiProj.isPrime`. Establish `hmin : W ∈ (blowUpOf P u ⊔ Ideal.span {liftForm x}).minimalPrimes`. Unfold `divCycle at hW`. Use `split_ifs at hW with h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Conclude with `h.1`. Conclude with `absurd rfl hW`. Take `⟨-, hBW, hWrel⟩` from `le_and_isRelevant_of_divCycle_ne_zero hW`. Use `set W₀ := W.comap (liftForm (ι := ι) (J := J) (R := O)) with hW₀`. Take `⟨hW₀p, hPW₀, hrel₀, -⟩` from `comap_liftForm_facts hWp hBW hWrel`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hϖW₀ : (C ϖ : MRing ι O) ∉ W₀` using `by rw [Ideal.mem_comap, liftForm_C]; exact hϖW`. Take `⟨j₀, hj₀⟩` from `hloc W₀ hW₀p hPW₀ hrel₀ hϖW₀`. Use `choose v w hv hvw using hj₀`. Establish `huj₀ : u j₀ ∉ P`. Introduce `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hj⟩` from `hex`. Establish `h1 : v j * u j ∈ P`. Use `P.add_mem (hvw j) (P.mul_mem_left (w j) h)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Conclude with `hj ((hPp.mem_or_mem h1).resolve_left fun h' => hv j (hPW₀ h'))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Choose the witnesses or unpack the hypotheses as in `⟨u₀, a, hu₀W, hrelP⟩ : ∃ (u₀ : MRing ι O) (a : J → MRing ι O), u₀ ∉ W₀ ∧ ∀ j, u₀ * u j - u j₀ * a j ∈ P := by`. Use `hW₀p` as an intermediate fact. Use `⟨∏ j, v j, fun j => w j * ∏ j' ∈ Finset.univ.erase j, v j', fun h => W₀.primeCompl.prod_mem (fun j _ => hv j) h, fun j => ?_⟩` and prove the remaining obligations. Establish `e : (∏ j, v j) * u j - u j₀ * (w j * ∏ j' ∈ Finset.univ.erase j, v j') = (∏ j' ∈ Finset.univ.erase j, v j') * (v j * u j - w j * u j₀)`. Rewrite using `[← Finset.mul_prod_erase Finset.univ v (Finset.mem_univ j)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `P.mul_mem_left _ (hvw j)`. Establish `hu₀P : u₀ ∉ P` using `fun h => hu₀W (hPW₀ h)`. Establish `ha₀ : a j₀ ∉ W₀`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `h1 : u j₀ * (u₀ - a j₀) ∈ P`. Use `hrelP j₀` as an intermediate fact. Rewrite `this` using `[show u₀ * u j₀ - u j₀ * a j₀ = u j₀ * (u₀ - a j₀) by ring]`. Then use the resulting hypothesis. Establish `h2 : u₀ - a j₀ ∈ W₀` using `hPW₀ ((hPp.mem_or_mem h1).resolve_left huj₀)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hu₀W (by simpa using W₀.add_mem h2 h)`. Establish `hrelB : ∀ j, newVar j * liftForm (a j₀) - newVar j₀ * liftForm (a j) ∈ blowUpOf P u`. Introduce `j`. Apply `mem_blowUpOf_of_sub` to reduce the goal to its premises. Establish `e : u₀ * (u j * a j₀ - u j₀ * a j) = a j₀ * (u₀ * u j - u j₀ * a j) - a j * (u₀ * u j₀ - u j₀ * a j₀)` using `by ring`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : u₀ * (u j * a j₀ - u j₀ * a j) ∈ P`. Rewrite using `[e]`. Conclude with `P.sub_mem (P.mul_mem_left _ (hrelP j)) (P.mul_mem_left _ (hrelP j₀))`. Conclude with `(hPp.mem_or_mem h1).resolve_left hu₀P`. Use `hW₀p` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set 𝔮 := W₀.map (Polynomial.C : MRing ι O →+* Polynomial (MRing ι O)) with h𝔮`. Use `set Jx := (P ⊔ Ideal.span {x}).map (Polynomial.C : MRing ι O →+* Polynomial (MRing ι O)) with hJx`. Use `set I := blowUpOf P u ⊔ Ideal.span {liftForm x} with hI`. Set `φ : MRing (extIdx ι J) O →+* Polynomial (MRing ι O)` to `(aeval (R := O) (chartSubst a)).toRingHom`. Establish `hφ : ∀ F, φ F = aeval (chartSubst a) F` using `fun _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxW : liftForm x ∈ W` using `hmin.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`. Establish `hW𝔮 : W = 𝔮.comap φ`. Use `le_antisymm ?_ ?_` and prove the remaining obligations. Use `hmin.2 ⟨Ideal.comap_isPrime _ _, sup_le (fun G hG => ?_) ((Ideal.span_singleton_le_iff_mem _).mpr ?_)⟩ (fun G hG => ?_)` and prove the remaining obligations. Conclude with `Ideal.map_mono hPW₀ (aeval_chartSubst_mem_of_mem_blowUpOf hPp huj₀ hrelP hG)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Ideal.mem_comap, hφ, aeval_chartSubst_liftForm]`. Conclude with `Ideal.mem_map_of_mem _ hxW`. Conclude with `mem_of_aeval_chartSubst_mem hWp le_rfl j₀ ha₀ (fun j => hBW (hrelB j)) hG`. Introduce `G hG`. Conclude with `mem_of_aeval_chartSubst_mem hWp le_rfl j₀ ha₀ (fun j => hBW (hrelB j)) hG`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hlfa : ∀ m : ℕ, liftForm (a j₀ ^ m) ∉ W` using `fun m h => ha₀ (hW₀p.mem_of_pow_mem m (show a j₀ ^ m ∈ W₀ from h))`. Establish `hCa : ∀ e : ℕ, Polynomial.C (a j₀ ^ e) ∉ 𝔮`. Introduce `e h`. Establish `h1` using `Ideal.mem_map_C_iff.mp h 0`. Rewrite `h1` using `[Polynomial.coeff_C_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `ha₀ (hW₀p.mem_of_pow_mem _ h1)`. Establish `hq : 𝔮.IsPrime` using `inferInstance`. Establish `hlift : ∀ t, t ∉ 𝔮 → ∃ (e : ℕ) (T : MRing (extIdx ι J) O), φ T = Polynomial.C (a j₀ ^ e) * t ∧ T ∉ W`. Introduce `t ht`. Take `⟨e, T, hT⟩` from `exists_aeval_chartSubst_eq_C_pow_mul a j₀ t`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨e, T, hT, fun hTW => ?_⟩` and prove the remaining obligations. Establish `h1 : φ T ∈ 𝔮` using `by rw [hW𝔮] at hTW; exact hTW`. Rewrite `h1` using `[hφ, hT]`. Conclude with `(hq.mem_or_mem h1).elim (hCa e) ht`. Establish `hIJ : I ≤ Jx.comap φ`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `sup_le (fun G hG => ?_) ((Ideal.span_singleton_le_iff_mem _).mpr ?_)` and prove the remaining obligations. Conclude with `Ideal.map_mono le_sup_left (aeval_chartSubst_mem_of_mem_blowUpOf hPp huj₀ hrelP hG)`. Rewrite using `[Ideal.mem_comap, hφ, aeval_chartSubst_liftForm]`. Conclude with `Ideal.mem_map_of_mem _ (Ideal.mem_sup_right (Ideal.mem_span_singleton_self x))`. Establish `memI : ∀ G, φ G ∈ Jx → ∃ m : ℕ, liftForm (a j₀ ^ m) * G ∈ I`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `G hG`. Rewrite `hG` using `[hJx, Ideal.map_sup, Ideal.map_span, Set.image_singleton, Submodule.mem_sup]`. Take `⟨y, hy, z, hz, hyz⟩` from `hG`. Take `⟨h, rfl⟩` from `Ideal.mem_span_singleton'.mp hz`. Take `⟨d, H, hH⟩` from `exists_aeval_chartSubst_eq_C_pow_mul a j₀ h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : aeval (chartSubst a) (liftForm (a j₀ ^ d) * G - H * liftForm x) ∈ Ideal.map (Polynomial.C : MRing ι O →+* Polynomial (MRing ι O)) P`. Establish `e : aeval (chartSubst a) (liftForm (a j₀ ^ d) * G - H * liftForm x) = Polynomial.C (a j₀ ^ d) * y`. Rewrite using `[map_sub, map_mul, map_mul, aeval_chartSubst_liftForm, aeval_chartSubst_liftForm, hH, ← hφ G, ← hyz]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Ideal.mul_mem_left _ _ hy`. Take `⟨m, hm⟩` from `exists_pow_mul_mem_of_aeval_chartSubst_mem (P := P) (u := u) j₀ hrelB h1`. Establish `hPB : Ideal.map (liftForm (J` using `J) : MRing ι O →ₐ[O] MRing (extIdx ι J) O) P ≤ blowUpOf P u := Ideal.map_le_iff_le_comap.mpr fun p hp => liftForm_mem_blowUpOf hp`. Establish `hm'` using `sup_le le_rfl hPB hm`. Use `⟨m + d, ?_⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `e : liftForm (a j₀ ^ (m + d)) * G = liftForm (a j₀ ^ m) * (liftForm (a j₀ ^ d) * G - H * liftForm x) + (liftForm (a j₀ ^ m) * H) * liftForm x`. Rewrite using `[pow_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Ideal.add_mem _ (Ideal.mem_sup_left hm') (Ideal.mem_sup_right (Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)))`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Set `Φ` to `Localization.localRingHom W 𝔮 φ hW𝔮`. Establish `hsurj : Function.Surjective Φ`. Introduce `z`. Take `⟨⟨h, t⟩, rfl⟩` from `IsLocalization.mk'_surjective 𝔮.primeCompl z`. Take `⟨d, H, hH⟩` from `exists_aeval_chartSubst_eq_C_pow_mul a j₀ h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨e, T, hT, hTW⟩` from `hlift t t.2`. Establish `hs : T * liftForm (a j₀ ^ d) ∈ W.primeCompl` using `W.primeCompl.mul_mem hTW (hlfa d)`. Use `⟨IsLocalization.mk' _ (H * liftForm (a j₀ ^ e)) ⟨_, hs⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Localization.localRingHom_mk', IsLocalization.mk'_eq_iff_eq]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(t : Polynomial (MRing ι O)) * φ (H * liftForm (a j₀ ^ e)) = φ (T * liftForm (a j₀ ^ d)) * h`. Rewrite using `[map_mul, map_mul, hT]`. Simplify using `only [hφ, aeval_chartSubst_liftForm, hH]`. Expand and normalize the polynomial expressions, which then agree. Establish `hker : I.map (algebraMap _ (Localization.AtPrime W)) = (Jx.map (algebraMap _ (Localization.AtPrime 𝔮))).comap Φ`.
-
-Use extensionality with `z`. Take `⟨⟨F, T⟩, rfl⟩` from `IsLocalization.mk'_surjective W.primeCompl z`. Rewrite using `[Ideal.mem_comap, Localization.localRingHom_mk', IsLocalization.mk'_mem_map_algebraMap_iff, IsLocalization.mk'_mem_map_algebraMap_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hsF⟩`.
-
-Use `⟨φ s, fun h => hs (by rw [hW𝔮]; exact h), ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul]`. Conclude with `hIJ hsF`. Introduce and unpack `⟨t, ht, htF⟩`. Take `⟨e, T', hT', hT'W⟩` from `hlift t ht`.
-
-Take `⟨m, hm⟩` from `memI (T' * F) (by`. Rewrite using `[map_mul, hT', mul_assoc]`. Conclude with `Ideal.mul_mem_left _ _ htF)`. Conclude with `⟨liftForm (a j₀ ^ m) * T', W.primeCompl.mul_mem (hlfa m) hT'W, by rw [mul_assoc]; exact hm⟩`. Establish `hsurj' : Function.Surjective ((Ideal.Quotient.mk (Jx.map (algebraMap _ (Localization.AtPrime 𝔮)))).comp Φ)` using `Ideal.Quotient.mk_surjective.comp hsurj`.
-
-Establish `hker' : I.map (algebraMap _ (Localization.AtPrime W)) = RingHom.ker ((Ideal.Quotient.mk (Jx.map (algebraMap _ (Localization.AtPrime 𝔮)))).comp Φ)`. Rewrite using `[← RingHom.comap_ker, Ideal.mk_ker]`. Conclude with `hker`. Set `τ` to `(Ideal.quotEquivOfEq hker').trans (RingHom.quotientKerEquivOfSurjective hsurj')`. Unfold `multAt`.
-
-Rewrite using `[chartLength_localizedModule_quotient, chartLength_localizedModule_quotient, chartLength_quotient_self, chartLength_quotient_self]`. Conclude with `chartLength_self_eq_of_ringEquiv τ`.
+A detailed English derivation is pending.
 -/
 theorem BlowUpHorizontalChartLength.full : BlowUpHorizontalChartLength.Statement.{u} := by
   intro O _ _ _ ϖ hϖ K _ _ ι _ J _ P n hP N u hu hex hloc c x hx hxP W hW hϖW hWp

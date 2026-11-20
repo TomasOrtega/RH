@@ -9,37 +9,37 @@ def multiples (n : ℕ) : AddSubgroup ℤ̂ :=
   (AddMonoidHom.mulLeft (n : ℤ̂)).range
 
 /- English proof (translation)
-Simplify using `only [multiples, AddMonoidHom.mem_range, AddMonoidHom.coe_mulLeft, nsmul_eq_mul]`. Conclude with `⟨fun ⟨y, hy⟩ => ⟨y, hy.symm⟩, fun ⟨y, hy⟩ => ⟨y, hy.symm⟩⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem mem_multiples {n : ℕ} {x : ℤ̂} : x ∈ multiples n ↔ ∃ y : ℤ̂, x = n • y := by
   simp only [multiples, AddMonoidHom.mem_range, AddMonoidHom.coe_mulLeft, nsmul_eq_mul]
   exact ⟨fun ⟨y, hy⟩ => ⟨y, hy.symm⟩, fun ⟨y, hy⟩ => ⟨y, hy.symm⟩⟩
 
 /- English proof (translation)
-Rewrite using `[← castHom_proj h x, ZMod.castHom_apply, ZMod.cast_eq_val]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem proj_eq_val_cast {n k : ℕ+} (h : (n : ℕ) ∣ k) (x : ℤ̂) :
     proj n x = ((proj k x).val : ZMod n) := by
   rw [← castHom_proj h x, ZMod.castHom_apply, ZMod.cast_eq_val]
 
 /- English proof (translation)
-Introduce `z` and use `⟨((z.val : ℕ) : ℤ̂), by rw [map_natCast, ZMod.natCast_zmod_val]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem proj_surjective (n : ℕ+) : Function.Surjective (proj n) := fun z =>
   ⟨((z.val : ℕ) : ℤ̂), by rw [map_natCast, ZMod.natCast_zmod_val]⟩
 
 /- English proof (translation)
-Set `v : ℕ+ → ℕ` to `fun m => (proj (n * m) x).val`. Establish `hdvd : ∀ m : ℕ+, (n : ℕ) ∣ v m`. Introduce `m`. Establish `h` using `proj_eq_val_cast (n := n) (k := n * m) (by simp) x`. Rewrite `h` using `[hx, eq_comm, ZMod.natCast_eq_zero_iff]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Establish `hmod : ∀ m k : ℕ+, (m : ℕ) ∣ (k : ℕ) → v k ≡ v m [MOD (n : ℕ) * m]`. Introduce `m k hmk`. Establish `h` using `proj_eq_val_cast (n := n * m) (k := n * k) (by simpa using Nat.mul_dvd_mul_left _ hmk) x`. Establish `h2 : ((v m : ℕ) : ZMod ((n * m : ℕ+) : ℕ)) = proj (n * m) x` using `ZMod.natCast_zmod_val _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[← h2, ZMod.natCast_eq_natCast_iff, PNat.mul_coe]`. Conclude with `h.symm`. Set `yf : ∀ m : ℕ+, ZMod m` to `fun m => ((v m / n : ℕ) : ZMod m)`. Establish `hy : yf ∈ profiniteIntegers`. Rewrite using `[mem_profiniteIntegers]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `m k hmk`. Simplify using `only [yf, map_natCast]`. Rewrite using `[ZMod.natCast_eq_natCast_iff]`. Establish `h` using `hmod m k hmk`. Take `⟨a, ha⟩` from `hdvd k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨b, hb⟩` from `hdvd m`. Rewrite `h`, the goal using `[ha, hb]`. Rewrite using `[Nat.mul_div_cancel_left _ n.pos, Nat.mul_div_cancel_left _ n.pos]`. Conclude with `Nat.ModEq.mul_left_cancel' n.ne_zero h`. Use `⟨⟨yf, hy⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use extensionality with `m`. Rewrite using `[map_nsmul, nsmul_eq_mul]`. Express the relevant statement in the definitionally equal form `proj m x = (n : ZMod m) * ((v m / n : ℕ) : ZMod m)`. Rewrite using `[← Nat.cast_mul, Nat.mul_div_cancel' (hdvd m)]`. Conclude with `proj_eq_val_cast (n := m) (k := n * m) (by simp) x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_nsmul_of_proj_eq_zero {n : ℕ+} {x : ℤ̂} (hx : proj n x = 0) :
     ∃ y : ℤ̂, x = (n : ℕ) • y := by
@@ -76,7 +76,7 @@ theorem exists_eq_nsmul_of_proj_eq_zero {n : ℕ+} {x : ℤ̂} (hx : proj n x = 
   exact proj_eq_val_cast (n := m) (k := n * m) (by simp) x
 
 /- English proof (translation)
-Rewrite using `[mem_multiples]`. Use `⟨exists_eq_nsmul_of_proj_eq_zero, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨y, rfl⟩`. Rewrite using `[map_nsmul, nsmul_eq_mul, ZMod.natCast_self, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 -/
 theorem proj_eq_zero_iff {n : ℕ+} {x : ℤ̂} : proj n x = 0 ↔ x ∈ multiples n := by
   rw [mem_multiples]
@@ -85,18 +85,18 @@ theorem proj_eq_zero_iff {n : ℕ+} {x : ℤ̂} : proj n x = 0 ↔ x ∈ multipl
   rw [map_nsmul, nsmul_eq_mul, ZMod.natCast_self, zero_mul]
 
 /- English proof (translation)
-Use extensionality with `x`. Conclude with `proj_eq_zero_iff`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem ker_proj (n : ℕ+) : (proj n).toAddMonoidHom.ker = multiples n := by
   ext x
   exact proj_eq_zero_iff
 
 /- English proof (translation)
-Take `⟨N, rfl⟩ : ∃ N : ℕ+, (N : ℕ) = n` from `⟨⟨n, Nat.pos_of_ne_zero hn⟩, rfl⟩`. Use extensionality with `m`. Rewrite using `[map_zero, proj_eq_val_cast (n := m) (k := N * m) (by simp) x, ZMod.natCast_eq_zero_iff]`. Establish `h'` using `congrArg (proj (N * m)) h`. Rewrite `h'` using `[map_nsmul, map_zero, nsmul_eq_mul]`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h'' : (((N : ℕ) * (proj (N * m) x).val : ℕ) : ZMod ((N * m : ℕ+) : ℕ)) = 0`. Rewrite using `[Nat.cast_mul, ZMod.natCast_zmod_val]`. Conclude with `h'`. Rewrite `h''` using `[ZMod.natCast_eq_zero_iff]`. Establish `h3 : (N : ℕ) * m ∣ (N : ℕ) * (proj (N * m) x).val`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← PNat.mul_coe]`. Conclude with `h''`. Conclude with `Nat.dvd_of_mul_dvd_mul_left N.pos h3`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_nsmul_eq_zero {n : ℕ} (hn : n ≠ 0) {x : ℤ̂} (h : n • x = 0) : x = 0 := by
   obtain ⟨N, rfl⟩ : ∃ N : ℕ+, (N : ℕ) = n := ⟨⟨n, Nat.pos_of_ne_zero hn⟩, rfl⟩
@@ -121,16 +121,16 @@ instance : IsAddTorsionFree ℤ̂ where
     rw [nsmul_sub, h, sub_self]
 
 /- English proof (translation)
-Rewrite using `[← ker_proj, AddSubgroup.index_ker, AddMonoidHom.range_eq_top.2 (proj_surjective n)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem index_multiples (n : ℕ+) : (multiples n).index = n := by
   rw [← ker_proj, AddSubgroup.index_ker, AddMonoidHom.range_eq_top.2 (proj_surjective n)]
   simp
 
 /- English proof (translation)
-Establish `hle : multiples H.index ≤ H`. Introduce `x hx`. Take `⟨y, rfl⟩` from `mem_multiples.1 hx`. Conclude with `H.nsmul_index_mem y`. Establish `hidx` using `AddSubgroup.relIndex_mul_index hle`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm` using `index_multiples ⟨H.index, Nat.pos_of_ne_zero hH⟩`. Simplify using `only [PNat.mk_coe] at hm`. Rewrite `hidx` using `[hm]`. Establish `h1 : (multiples H.index).relIndex H = 1` using `(Nat.mul_eq_right hH).1 hidx`. Conclude with `le_antisymm (AddSubgroup.relIndex_eq_one.1 h1) hle`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_multiples_index {H : AddSubgroup ℤ̂} (hH : H.index ≠ 0) : H = multiples H.index := by
   have hle : multiples H.index ≤ H := by
@@ -145,7 +145,7 @@ theorem eq_multiples_index {H : AddSubgroup ℤ̂} (hH : H.index ≠ 0) : H = mu
   exact le_antisymm (AddSubgroup.relIndex_eq_one.1 h1) hle
 
 /- English proof (translation)
-Rewrite using `[mem_multiples]`. Use `⟨fun ⟨w, hw⟩ => dvd_of_intCast_eq_nsmul hn hw, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨c, rfl⟩`. Conclude with `⟨(c : ℤ̂), by push_cast; rw [nsmul_eq_mul]⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem intCast_mem_multiples_iff {n : ℕ} (hn : 0 < n) {k : ℤ} :
     (k : ℤ̂) ∈ multiples n ↔ (n : ℤ) ∣ k := by

@@ -8,15 +8,15 @@ open scoped TensorProduct Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `hS hA hD hSh hLB _ E _ _ _ A n p _ S F x U w₀ Up V hodd hsc hgen hoff hq r W haux N hrN hst L hw Ty hTy g θ hseen`. Establish `hK : g.K ≤ Ty.kerK` using `(hSh E A n p S F x U w₀ Up V hodd hsc hgen hoff hq r W haux N hrN hst L hw Ty hTy g θ hseen).1`. Establish `hK₀ : Ty.K₀ = S.L.KN N.1` using `hTy.K₀_eq`. Establish `hker : Ty.kerK ≤ Ty.K` using `fun k hk => ((Ty.mem_kerK k).1 hk).1`. Establish `hnorm : ∀ M : ℕ, ∀ k ∈ S.L.KN 1, ∀ u ∈ S.L.KN M, k * u * k⁻¹ ∈ S.L.KN M` using `fun M k hk u hu => (hLB p S.D S.G S.L).2.2.2.2.1 _ _ ((hLB p S.D S.G S.L).2.2.1 M) k hk u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnormK : ∀ k ∈ g.K, ∀ u ∈ S.L.KN g.M.1, k * u * k⁻¹ ∈ S.L.KN g.M.1` using `fun k hk => hnorm _ k (g.le_one hk)`. Establish `hidx : (S.L.KN g.M.1).relIndex g.K ≠ 0` using `fun h0 => GlobalTheory.W2.relIndex_KN_ne_zero S.L one_pos (by have := g.M.2.1; omega) (Subgroup.relIndex_eq_zero_of_le_right g.le_one h0)`. Use `⟨fun a ha => ?_, fun hd hh => ?_, fun M' _ L' Kw t z hf hf' hap hz he => ?_⟩` and prove the remaining obligations. Take `⟨k, hk, hka⟩` from `(hS _ g.K (S.L.KN g.M.1) (S.L.KN N.1) g.h g.le hidx hnormK g.adm).2.1 a ha`. Conclude with `⟨k, hker (hK hk), Ty.le (hK₀ ▸ hka)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨h1, h2, h3⟩` from `hd`. Use `hD _ _ Ty Ty.kerK (Ty.triv_of_le le_rfl) g.h hh (fun u hu => by` as an intermediate fact. Rewrite `hu`, the goal using `[hK₀]`. Conclude with `hnorm _ _ h3 u hu)`. Rewrite `this` using `[hK₀]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e : g.fn = memFn (S.L.KN N.1) (S.L.KN N.1) (S.L.KN N.1) g.h`. Establish `: g.fn = memFn g.K (S.L.KN g.M.1) (S.L.KN N.1) g.h` using `rfl`. Rewrite using `[this, h1, h2]`. Rewrite using `[e]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hA _ _ _ Ty L' Kw hf hap g.K (S.L.KN g.M.1) (Ty.triv_of_le hK) hf' (hK₀ ▸ g.le) (hK₀ ▸ KN_anti g.dvd) hidx hnormK t z g.h hz he (hK₀ ▸ g.adm)` as an intermediate fact. Rewrite `this` using `[hK₀, ← he]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.Seed.pSeenActs :
     MemSum → MemAct → MemDeck → SeenShape → LevBasic → KNIdx → SeenActs := by

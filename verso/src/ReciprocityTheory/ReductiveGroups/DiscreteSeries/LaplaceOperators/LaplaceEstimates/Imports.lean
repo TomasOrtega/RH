@@ -3,7 +3,7 @@ import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.Laplace
 namespace ReciprocityTheory.ChartRestriction.DS.Lap
 
 /- English proof (translation)
-Introduce `M _ _ n E`. Conclude with `⟨rfl, rfl, rfl, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem conv : ConvStatement := by
   intro M _ _ n E

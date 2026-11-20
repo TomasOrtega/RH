@@ -23,9 +23,9 @@ lemma TrPow_m_succ {n : ℕ} (l : Fin n → ℂ) (k : ℕ) (a : Fin n) :
   rfl
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro a`. Simplify using `[epow, TrPow_m_zero]`. Consider the case `succ k ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `a`. Rewrite using `[h V n E ν v hE hv k a, TrPow_m_succ, ih a]`. Simplify using `only [ih]`. Rewrite using `[← Finset.sum_smul, sub_smul, mul_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma TrPow_diag (h : HWDiag) {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ}
     (E : Fin n → Fin n → Module.End ℂ V) (ν : Fin n → ℂ) (v : V) (hE : GlRel E)

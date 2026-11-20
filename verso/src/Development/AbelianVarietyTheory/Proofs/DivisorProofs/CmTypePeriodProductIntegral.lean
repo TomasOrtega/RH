@@ -12,16 +12,16 @@ variable {O : Type} [CommRing O] [IsDomain O] {K : Type} [Field K] [Algebra O K]
 variable {H : Type} [AddCommGroup H] [Module O H] {c : Ideal (OF E)}
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[bar, IsCMField.complexConj_apply_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem bar_bar (σ : E →+* K) : bar (bar σ) = σ := by
   ext x
   simp [bar, IsCMField.complexConj_apply_apply]
 
 /- English proof (translation)
-Establish `hloc : IsLocalizedModule (nonZeroDivisors O) (TensorProduct.mk O K H 1)` using `(isLocalizedModule_iff_isBaseChange (nonZeroDivisors O) K _).2 (TensorProduct.isBaseChange O H K)`. Introduce `h0`. Establish `h0' : TensorProduct.mk O K H 1 h = 0` using `h0`. Take `⟨t, ht⟩` from `(IsLocalizedModule.eq_zero_iff (nonZeroDivisors O) _).1 h0'`. Rewrite `ht` using `[Submonoid.smul_def]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hh ((smul_eq_zero.1 ht).resolve_left (nonZeroDivisors.ne_zero t.2))`.
+A detailed English derivation is pending.
 -/
 theorem inK_ne_zero (hfree : Module.Free O H) {h : H} (hh : h ≠ 0) : inK (O := O) K H h ≠ 0 := by
   have hloc : IsLocalizedModule (nonZeroDivisors O) (TensorProduct.mk O K H 1) :=
@@ -33,7 +33,7 @@ theorem inK_ne_zero (hfree : Module.Free O H) {h : H} (hh : h ≠ 0) : inK (O :=
   exact hh ((smul_eq_zero.1 ht).resolve_left (nonZeroDivisors.ne_zero t.2))
 
 /- English proof (translation)
-Establish `hne : (⟨v, hv⟩ : eigK ρ τ) ≠ 0` using `fun h => hv0 (congrArg Subtype.val h)`. Take `⟨a, ha⟩` from `(finrank_eq_one_iff_of_nonzero' _ hne).1 hline ⟨x, hx⟩`. Conclude with `⟨a, (congrArg Subtype.val ha).symm⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem eq_smul_of_line {ρ : orderC c →+* Module.End O H} {τ : E →+* K} (hline : Module.finrank K (eigK ρ τ) = 1)
     {v : K ⊗[O] H} (hv : v ∈ eigK ρ τ) (hv0 : v ≠ 0) {x : K ⊗[O] H} (hx : x ∈ eigK ρ τ) : ∃ a : K, x = a • v := by
@@ -42,11 +42,11 @@ theorem eq_smul_of_line {ρ : orderC c →+* Module.End O H} {τ : E →+* K} (h
   exact ⟨a, (congrArg Subtype.val ha).symm⟩
 
 /- English proof (translation)
-Establish `hx : x ∈ ⨆ σ : E →+* K, eigK ρ σ`. Rewrite using `[hdir.submodule_iSup_eq_top]`. Conclude with `Submodule.mem_top`. Use `Submodule.iSup_induction (fun σ : E →+* K => eigK ρ σ) (motive := fun x => ∃ a : K, N x = a • inK (O := O) K H f) hx ?_ ⟨0, by simp⟩ ?_` and prove the remaining obligations. Introduce `σ y hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hσ : σ = τ`. Substitute `hσ` using the available equality. Take `⟨a, rfl⟩` from `eq_smul_of_line hline he he0 hy`. Conclude with `⟨a, by rw [map_smul, hN.1]⟩`. Conclude with `⟨0, by rw [hN.2 σ hσ y hy, zero_smul]⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `x y ⟨a, ha⟩ ⟨b, hb⟩`. Conclude with `⟨a + b, by rw [map_add, ha, hb, add_smul]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lower_apply {ρ : orderC c →+* Module.End O H} {τ : E →+* K} {e f : H} {N : Module.End K (K ⊗[O] H)}
     (hdir : DirectSum.IsInternal (fun σ : E →+* K => eigK ρ σ)) (hline : Module.finrank K (eigK ρ τ) = 1)
@@ -66,9 +66,9 @@ theorem lower_apply {ρ : orderC c →+* Module.End O H} {τ : E →+* K} {e f :
     exact ⟨a + b, by rw [map_add, ha, hb, add_smul]⟩
 
 /- English proof (translation)
-Establish `hmem : ∀ z : K ⊗[O] H, z ∈ ⨆ σ : E →+* K, eigK ρ σ` using `fun z => by`. Rewrite using `[hdir.submodule_iSup_eq_top]`. Conclude with `Submodule.mem_top`. Use `Submodule.iSup_induction (fun σ : E →+* K => eigK ρ σ) (motive := fun x => ∀ y, S x y = 0) (hmem x) ?_ (fun y => by simp) ?_ y` and prove the remaining obligations. Introduce `σ x hx y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.iSup_induction (fun σ : E →+* K => eigK ρ σ) (motive := fun y => S x y = 0) (hmem y) (fun σ' y hy => h σ σ' x hx y hy) (by simp) ?_` and prove the remaining obligations. Introduce `y y' h1 h2`. Rewrite using `[map_add, h1, h2, add_zero]`. Introduce `x x' h1 h2 y`. Rewrite using `[map_add, LinearMap.add_apply, h1, h2, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bilin_zero_of_eig {ρ : orderC c →+* Module.End O H}
     (hdir : DirectSum.IsInternal (fun σ : E →+* K => eigK ρ σ)) (S : LinearMap.BilinForm K (K ⊗[O] H))
@@ -88,29 +88,27 @@ theorem bilin_zero_of_eig {ρ : orderC c →+* Module.End O H}
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `E _ _ _ c _ l _ O _ _ _ _ K _ _ _ _ _ D _ _ I _ φ hCM H _ _ ρ Fil B hL hEC e f hG N hN`. Take `⟨hfree, -, -, hlines, -, -, -, halt, -⟩` from `hL`. Take `⟨hdir, hlat, -, -, horth⟩` from `hEC`. Establish `he_mem : ∀ i, inK (O` using `O) K H (e i) ∈ eigK ρ (φ i) := fun i => by`. Establish `hm : e i ∈ eigLat ρ (φ i)` using `by rw [(hG i).1]; exact Submodule.mem_span_singleton_self _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hm`. Establish `hf_mem : ∀ i, inK (O` using `O) K H (f i) ∈ eigK ρ (bar (φ i)) := fun i => by`. Establish `hm : f i ∈ eigLat ρ (bar (φ i))` using `by rw [(hG i).2]; exact Submodule.mem_span_singleton_self _`. Conclude with `hm`. Establish `he0 : ∀ i, inK (O` using `O) K H (e i) ≠ 0 := fun i => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `inK_ne_zero hfree fun he => ?_` and prove the remaining obligations. Take `⟨-, ⟨g, hg0, hg⟩, -⟩` from `hlat (φ i)`. Establish `hgm : g ∈ O ∙ e i` using `by rw [← (hG i).1, hg]; exact Submodule.mem_span_singleton_self g`. Rewrite `hgm` using `[he, Submodule.span_singleton_eq_bot.2 rfl, Submodule.mem_bot]`. Conclude with `hg0 hgm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hlow : ∀ i z, ∃ a : K, N i z = a • inK (O` using `O) K H (f i) := fun i z => lower_apply hdir (hlines (φ i)) (he_mem i) (he0 i) (hN i) z`. Establish `himg : ∀ i z, N i z ∈ eigK ρ (bar (φ i))` using `fun i z => by`. Take `⟨a, ha⟩` from `hlow i z`. Rewrite using `[ha]`. Conclude with `Submodule.smul_mem _ a (hf_mem i)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun i x y => ?_, fun i j x y => ?_⟩` and prove the remaining obligations. Set `S : LinearMap.BilinForm K (K ⊗[O] H)` to `(B.baseChange K).compl₁₂ (N i) LinearMap.id + (B.baseChange K).compl₁₂ LinearMap.id (N i)`. Establish `hS : ∀ x y, S x y = B.baseChange K (N i x) y + B.baseChange K x (N i y)` using `fun x y => rfl`. Rewrite using `[← hS]`. Use `bilin_zero_of_eig hdir S (fun σ σ' x hx y hy => ?_) x y` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hS]`. Establish `t1 : σ' ≠ φ i → B.baseChange K (N i x) y = 0` using `fun h => horth (bar (φ i)) σ' (by rwa [bar_bar]) _ (himg i x) y hy`. Establish `t2 : σ ≠ φ i → B.baseChange K x (N i y) = 0` using `fun h => by`. Use `horth σ (bar (φ i)) (fun h' => h ?_) x hx _ (himg i y)` and prove the remaining obligations. Use `congrArg bar h'` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite `this` using `[bar_bar, bar_bar, eq_comm]`. Then use the resulting hypothesis. Distinguish the cases in `h1 : σ = φ i`. Distinguish the cases in `h2 : σ' = φ i`. Substitute `h1` using the available equality. Rewrite `hy` using `[h2]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨a, rfl⟩` from `eq_smul_of_line (hlines _) (he_mem i) (he0 i) hx`. Take `⟨b, rfl⟩` from `eq_smul_of_line (hlines _) (he_mem i) (he0 i) hy`. Establish `key : B.baseChange K (inK (O` using `O) K H (f i)) (inK (O := O) K H (e i)) + B.baseChange K (inK (O := O) K H (e i)) (inK (O := O) K H (f i)) = 0 := by`. Simplify using `only [inK, TensorProduct.mk_apply, LinearMap.BilinForm.baseChange_tmul, mul_one]`. Rewrite using `[← add_smul, ← LinearMap.IsAlt.neg halt (e i) (f i), neg_add_cancel, zero_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_smul, (hN i).1, LinearMap.smul_apply, smul_eq_mul]`. Take the linear combination `(a * b) * key`. Rewrite using `[t1 h2, (hN i).2 σ' h2 y hy, map_zero, add_zero]`. Rewrite using `[t2 h1, (hN i).2 σ h1 x hx, map_zero, LinearMap.zero_apply, add_zero]`. Take `⟨a, ha⟩` from `hlow i x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Take `⟨b, hb⟩` from `hlow j y`. Rewrite using `[ha, hb]`. Simplify using `only [map_smul, LinearMap.smul_apply, smul_eq_mul]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: B.baseChange K (inK (O` using `O) K H (f i)) (inK (O := O) K H (f i)) = 0 := by`. Simplify using `only [inK, TensorProduct.mk_apply, LinearMap.BilinForm.baseChange_tmul, halt (f i), zero_smul]`. Rewrite using `[this, mul_zero, mul_zero]`. Establish `hne : bar (φ j) ≠ bar (bar (φ i))`. Rewrite using `[bar_bar]`.
-
-Introduce `h`. Take `⟨k, -, hk⟩` from `hCM (φ i)`. Conclude with `hij ((hk i (Or.inl rfl)).trans (hk j (Or.inr h.symm)).symm)`. Rewrite using `[horth (bar (φ i)) (bar (φ j)) hne _ (hf_mem i) _ (hf_mem j), mul_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lower_skew_orth : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (c : Ideal (OF E)), c ≠ ⊥ → ∀ (l : ℕ), l.Prime → ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] (K : Type) [Field K] [Algebra O K] [IsFractionRing O K], (l : O) ∈ IsLocalRing.maximalIdeal O → Nat.card (E →+* K) = Module.finrank ℚ E → ∀ (D : O), D ≠ 0 → ClearsIdem K c D → ∀ (I : Type) [Fintype I] (φ : I → E →+* K), IsCMTypeIn φ → ∀ (H : Type) [AddCommGroup H] [Module O H] (ρ : orderC c →+* Module.End O H) (Fil : Submodule O H) (B : LinearMap.BilinForm O H), IsCMLattice φ ρ Fil B → EigenClaims φ ρ Fil B D → ∀ e f : I → H, IsGens φ ρ e f → ∀ N : I → Module.End K (K ⊗[O] H), (∀ i, IsLower ρ (φ i) (e i) (f i) (N i)) → (∀ i x y, B.baseChange K (N i x) y + B.baseChange K x (N i y) = 0) ∧ ∀ i j x y, B.baseChange K (N i x) (N j y) = 0 := by
   intro E _ _ _ c _ l _ O _ _ _ _ K _ _ _ _ _ D _ _ I _ φ hCM H _ _ ρ Fil B hL hEC e f hG N hN

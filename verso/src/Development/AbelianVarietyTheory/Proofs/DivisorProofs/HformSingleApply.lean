@@ -9,28 +9,26 @@ namespace GlobalTheory.DualFinitelyGenerated
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {d : ℕ}
 
 /- English proof (translation)
-Simplify using `[Formalism.DivisionValues.hform, Matrix.toLinearMapₛₗ₂'_apply, Matrix.mulVec, dotProduct, Pi.single_apply, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_single_apply (H : Matrix (Fin d) (Fin d) K) (i : Fin d) (x : Fin d → K) :
     Formalism.DivisionValues.hform H (Pi.single i 1) x = (H.mulVec x) i := by
   simp [Formalism.DivisionValues.hform, Matrix.toLinearMapₛₗ₂'_apply, Matrix.mulVec, dotProduct, Pi.single_apply, mul_comm]
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `hT.fg`. Set `φ : (Fin d → K) →ₗ[𝓞 K] (s → K)` to `(LinearMap.pi fun t : s => Formalism.DivisionValues.hform H t.1).restrictScalars (𝓞 K)`. Set `ψ : (s → 𝓞 K) →ₗ[𝓞 K] (s → K)` to `LinearMap.pi fun t : s => (Algebra.linearMap (𝓞 K) K).comp (LinearMap.proj t)`. Establish `hspan : Submodule.span K (s : Set (Fin d → K)) = ⊤`. Use `hT.span_eq_top` as an intermediate fact.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[← hs, Submodule.span_span_of_tower]`. Conclude with `this`. Establish `hinj : Function.Injective φ`. Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`. Introduce `x hx`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[LinearMap.mem_ker]`. Establish `h0 : ∀ t ∈ s, Formalism.DivisionValues.hform H t x = 0` using `fun t ht => congrFun hx ⟨t, ht⟩`. Establish `hle : Submodule.span K (s : Set (Fin d → K)) ≤ LinearMap.ker ((Formalism.DivisionValues.hform H).flip x)`. Rewrite using `[Submodule.span_le]`. Introduce `t ht`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h0 t ht`. Rewrite `hle` using `[hspan]`. Establish `hv : H.mulVec x = 0`. Use function extensionality and compare the values at `i`. Rewrite using `[← hform_single_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hle (Submodule.mem_top (x := Pi.single i 1))` as an intermediate fact. Simplify using `using this`. Simplify using `using Matrix.eq_zero_of_mulVec_eq_zero hH hv`. Establish `hψ : (LinearMap.range ψ).FG`. Rewrite using `[LinearMap.range_eq_map]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.FG.map _ Module.Finite.fg_top`. Establish `hle : (Formalism.HermitianLatticesTheory.dual (Formalism.DivisionValues.hform H) T).map φ ≤ LinearMap.range ψ`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Rewrite `hx` using `[SetLike.mem_coe, Formalism.HermitianLatticesTheory.dualBasic_mem_dual]`. Establish `hr : ∀ t : s, ∃ r : 𝓞 K, algebraMap (𝓞 K) K r = Formalism.DivisionValues.hform H t.1 x`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `t`. Use `hx t.1 (hs ▸ Submodule.subset_span t.2)` as an intermediate fact. Rewrite `this` using `[Submodule.mem_one]`. Conclude with `this`. Use `choose r hr using hr`.
-
-Use `⟨r, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `t`. Simplify using `[ψ, φ, hr t]`. Use `haveI : IsNoetherian (𝓞 K) (LinearMap.range ψ) := isNoetherian_of_fg_of_noetherian _ hψ`. Conclude with `Submodule.fg_of_fg_map_injective φ hinj (Submodule.FG.of_le_of_isNoetherian hle)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dual_fg (H : Matrix (Fin d) (Fin d) K) (hH : H.det ≠ 0)
     (T : Submodule (𝓞 K) (Fin d → K)) (hT : Submodule.IsLattice K T) :
@@ -79,7 +77,7 @@ theorem dual_fg (H : Matrix (Fin d) (Fin d) K) (hH : H.det ≠ 0)
   exact Submodule.fg_of_fg_map_injective φ hinj (Submodule.FG.of_le_of_isNoetherian hle)
 
 /- English proof (translation)
-Introduce `H hH T hT` and use `dual_fg H hH T hT`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ {K : Type} [inst : Field K] [NumberField K] [inst_2 : StarRing K] {d : ℕ}
     (H : Matrix (Fin d) (Fin d) K), Matrix.det H ≠ (0 : K) →

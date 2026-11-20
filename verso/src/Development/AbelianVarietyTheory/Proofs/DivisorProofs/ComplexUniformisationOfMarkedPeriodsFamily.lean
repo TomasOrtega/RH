@@ -15,15 +15,15 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped Matrix
 
 /- English proof (translation)
-Take `⟨hlin, hinj, hdisc, hspan, Hm, hH, hpos, him⟩` from `hP`. Establish `hrange : (P.comp w.symm.toLinearMap.toAddMonoidHom).range = P.range`. Use extensionality with `v`. Simplify using `only [AddMonoidHom.mem_range, AddMonoidHom.comp_apply]`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨_, rfl⟩`. Introduce and unpack `⟨x, rfl⟩; exact ⟨w x, by simp⟩`. Establish `hrange' : Set.range (P.comp w.symm.toLinearMap.toAddMonoidHom) = Set.range P`. Use `congrArg (fun S : AddSubgroup (Fin g → ℂ) => (S : Set (Fin g → ℂ))) hrange` as an intermediate fact.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[AddMonoidHom.coe_range]`. Use `⟨fun a x => ?_, ?_, ?_, ?_, Hm, hH, hpos, fun x y => ?_⟩` and prove the remaining obligations. Simplify using `[hlin]`. Introduce `x y hxy`. Use `hinj hxy` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `using this`. Rewrite using `[hrange]`. Conclude with `hdisc`. Rewrite using `[hrange']`. Conclude with `hspan`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `hw (w.symm x) (w.symm y)` as an intermediate fact. Simplify using `only [LinearEquiv.apply_symm_apply] at this`. Simplify using `[him, this]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isPeriod_comp_isometry_symm {O : Type} [Ring O] {bar : O → O} {g : ℕ} {ρ : O →+* Matrix (Fin g) (Fin g) ℂ}
     (D D' : PLat O bar) (w : D.La ≃ₗ[O] D'.La) (hw : IsIsom D D' w) (P : D.La →+ (Fin g → ℂ))
@@ -50,25 +50,23 @@ theorem isPeriod_comp_isometry_symm {O : Type} [Ring O] {bar : O → O} {g : ℕ
     simp [him, this]
 
 /- English proof (translation)
-Introduce `O _ bar g ρ Λ F N C d hN heta hsm hqc hfull hF`. Establish `hN0 : 0 < N` using `by omega`. Establish `hlft : LocallyOfFiniteType F.s` using `by haveI := hsm haveI : Smooth F.s := SmoothOfRelativeDimension.smooth d F.s infer_instance`. Take `⟨n, Di, t, hmem, hall, hdist⟩` from `GlobalTheory.T.exists_finite_markedLattice_period_representatives O bar g ρ Λ F N C d hN0 heta hsm hqc hF`. Establish `hQ : ∀ i (P : (Di i).La →+ (Fin g → ℂ)), ∃ Q, IsPeriod (Di i) ρ Q ∧ (IsPeriod (Di i) ρ P → Q = P)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `i P`. Distinguish the cases in `hP : IsPeriod (Di i) ρ P`. Conclude with `⟨P, hP, fun _ => rfl⟩`. Take `⟨Q, hQ⟩` from `(hmem i).2`. Conclude with `⟨Q, hQ, fun h => absurd h hP⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose Q hQp hQe using hQ`. Establish `hex : ∀ i P, ∃ y e, UnifAt F (RingHom.id ℂ) ρ N (Di i) (t i) (Q i P) y e` using `fun i P => hF.occ _ _ _ (hmem i).1 (hQp i P)`. Use `choose u ex hu using hex`. Establish `hunif : ∀ i P, IsPeriod (Di i) ρ P → UnifAt F (RingHom.id ℂ) ρ N (Di i) (t i) P (u i P) (ex i P)`. Introduce `i P hP`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `hu i P` as an intermediate fact. Rewrite `this` using `[hQe i P hP]`. Then use the resulting hypothesis. Establish `hrefl : ∀ i, IsMarkedIsom N (Di i) (Di i) (t i) (t i) (LinearEquiv.refl O _)` using `fun i => ⟨fun x y => rfl, fun a => ⟨0, by simp⟩⟩`. Establish `cmpEq : ∀ (D' D'' : PLat O bar) (t' : Λ → D'.La) (t'' : Λ → D''.La) (P : D'.La →+ (Fin g → ℂ)) (P' : D''.La →+ (Fin g → ℂ)) (y y' : Sp ℂ ⟶ F.X) (e : (Fin g → ℂ) → (Over.mk y ⟶ F.A)) (e' : (Fin g → ℂ) → (Over.mk y' ⟶ F.A)), y = y' → UnifAt F (RingHom.id ℂ) ρ N D' t' P y e → UnifAt …`. Introduce `D' D'' t' t'' P P' y y' e e' hy h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Substitute `hy` using the available equality. Apply the tactic sequence `obtain ⟨w, h, hw, hP, -⟩ := GlobalTheory.T.complexUniformisations_same_point_differ_by_isometry O bar g ρ ℂ (RingHom.id ℂ) Λ F N D' D'' t' t'' P P' y e e' hN0 h1 h2`. Conclude with `⟨w, h, hw, hP⟩`. Use `⟨{ n := n Di := Di t := t mem := fun i => (hmem i).1 ne := fun i => (hmem i).2 all := hall distinct := hdist u := u ex := ex unif := hunif onto := ?_ disj := ?_ fibre := ?_ hol := ?_ lift := ?_ }⟩` and prove the remaining obligations. Introduce `y hy`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨D', t', P, e, hC, hU⟩` from `hF.pts y hy`. Take `⟨i, w, hw⟩` from `hall D' t' hC ⟨P, hU.2.1⟩`. Establish `hP'` using `isPeriod_comp_isometry_symm D' (Di i) w hw.1 P hU.2.1`. Use `⟨i, _, hP', ?_⟩` and prove the remaining obligations. Conclude with `(hF.sep D' (Di i) t' (t i) P _ y _ e (ex i _) hU (hunif i _ hP') w (LinearEquiv.refl ℂ _) hw (fun x => by simp)).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j P P' hP hP' huu`. Take `⟨w, h, hw, -⟩` from `cmpEq _ _ _ _ _ _ _ _ _ _ huu (hunif i P hP) (hunif j P' hP')`. Conclude with `hdist i j w hw`. Introduce `i P P' hP hP'`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `huu`. Conclude with `cmpEq _ _ _ _ _ _ _ _ _ _ huu (hunif i P hP) (hunif i P' hP')`. Introduce and unpack `⟨w, h, hw, hPw⟩`. Conclude with `hF.sep _ _ _ _ _ _ _ _ _ _ (hunif i P hP) (hunif i P' hP') w h hw hPw`. Introduce `i m B P hB hHol`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `GlobalTheory.T.basePoint_and_exponential_holomorphic_in_periods O bar g ρ Λ F N C d (Di i) (t i) m B P (fun b => u i (P b)) (fun b => ex i (P b)) hN heta hsm hqc hF (hmem i).1 (hfull _ _ (hmem i).1) hB hHol (fun b hb => hunif i (P b) (hHol.1 b hb))`. Introduce `m B y hB hy hhol b₀ hb₀`. Take `⟨D', t', P, e, hC, hU⟩` from `hF.pts (y b₀) (hy b₀ hb₀)`. Take `⟨i, w, hw⟩` from `hall D' t' hC ⟨P, hU.2.1⟩`. Establish `hP'` using `isPeriod_comp_isometry_symm D' (Di i) w hw.1 P hU.2.1`.
-
-Apply the tactic sequence `have hU' := GlobalTheory.T.uniformisationAt_transport_isometry O bar g ρ ℂ (RingHom.id ℂ) Λ F N D' (Di i) t' (t i) P _ (y b₀) e w (LinearEquiv.refl ℂ _) hN0 hU hw (fun x => by simp) hP'`. Take `⟨B', P₁, e₁, hB', hb₀', hBB, -, hHol, -, hU₁⟩` from `GlobalTheory.T.holomorphicMap_lifts_locally_to_periodFamilies O bar g ρ Λ F N (Di i) (t i) m B y b₀ _ _ hN0 heta hlft hB hb₀ hy hhol hU'`. Use `⟨B', i, P₁, hB', hb₀', hBB, hHol, fun b hb => ?_⟩` and prove the remaining obligations. Conclude with `hF.sep _ _ _ _ _ _ _ _ _ _ (hunif i (P₁ b) (hHol.1 b hb)) (hU₁ b hb) (LinearEquiv.refl O _) (LinearEquiv.refl ℂ _) (hrefl i) (fun x => rfl)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem unif_of_fineAt : ∀ (O : Type) [Ring O] (bar : O → O) (g : ℕ) (ρ : O →+* Matrix (Fin g) (Fin g) ℂ) (Λ : Type)
     (F : Fam ℂ O Λ g) (N : ℕ) (C : ∀ D' : PLat O bar, (Λ → D'.La) → Prop) (d : ℕ), 3 ≤ N → (∀ a, F.eta a ^ N = 1) →

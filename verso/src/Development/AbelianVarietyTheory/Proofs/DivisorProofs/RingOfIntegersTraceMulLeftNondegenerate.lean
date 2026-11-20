@@ -5,17 +5,15 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K _ _ x hx`. Assume the negation of the conclusion as `hne`. Establish `hxK : (x : K) ≠ 0`. Introduce `h`. Conclude with `hne (RingOfIntegers.coe_eq_zero_iff.mp h)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `halg : IsAlgebraic ℤ ((x : K)⁻¹)` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ K).2 (Algebra.IsAlgebraic.isAlgebraic _)`. Take `⟨d, hd0, hdi⟩` from `halg.exists_integral_multiple`. Set `y : 𝓞 K` to `⟨d • (x : K)⁻¹, hdi⟩`. Establish `hxy : x * y = algebraMap ℤ (𝓞 K) d`. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `show (x : K) * (d • (x : K)⁻¹) = ((algebraMap ℤ (𝓞 K) d : 𝓞 K) : K)`. Rewrite using `[eq_intCast, zsmul_eq_mul]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `first | exact (map_intCast (algebraMap (𝓞 K) K) d).symm | norm_cast | simp`.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `hx y`. Rewrite `h` using `[hxy]`. Establish `h2 : LinearMap.trace ℤ (𝓞 K) (LinearMap.mulLeft ℤ (algebraMap ℤ (𝓞 K) d)) = Algebra.trace ℤ (𝓞 K) (algebraMap ℤ (𝓞 K) d)`. Rewrite using `[Algebra.trace_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[h2, Algebra.trace_algebraMap]`. Establish `hpos : 0 < Module.finrank ℤ (𝓞 K)` using `Module.finrank_pos`. Rewrite `h` using `[nsmul_eq_mul]`. Break down `mul_eq_zero.mp h with h | h` into its components or cases. Conclude with `absurd (by exact_mod_cast h) hpos.ne'`.
-
-Conclude with `hd0 h`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem ringOfIntegers_trace_mulLeft_nondegenerate :
     ∀ (K : Type) [Field K] [NumberField K] (x : 𝓞 K),

@@ -8,7 +8,7 @@ open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris Divided
 namespace GlobalTheory.CompanionTheory.GrPiece
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => rfl`. Consider the case `tmul n x => rw [Subsingleton.elim x 0, TensorProduct.tmul_zero]`. Consider the case `add a b ha hb => rw [ha, hb, add_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem subsingleton_tmul {O N M : Type} [CommRing O] [AddCommGroup N] [Module O N] [AddCommGroup M] [Module O M]
     [Subsingleton M] (y : N ⊗[O] M) : y = 0 := by
@@ -19,37 +19,33 @@ theorem subsingleton_tmul {O N M : Type} [CommRing O] [AddCommGroup N] [Module O
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `O A G _ _ _ _ _ _ I γ m S u v M _ _ M' _ θ h0 π hπ hker f hf0 hf`. Take `⟨g₀, hs, hm⟩` from `GlobalTheory.T.graded_splitting_tensor_filtration (Γ := G) γ m S`. Set `t : ∀ i : Fin m, S.N i ⊗[O] M i →+ S.N i ⊗[O] G` to `fun i => if h : u ≤ (i : ℕ) ∧ (i : ℕ) < v then ((LinearEquiv.lTensor (S.N i) (θ i h.1 h.2)).symm : S.N i ⊗[O] M i ≃ₗ[O] S.N i ⊗[O] G).toLinearMap.toAddMonoidHom else 0`. Establish `t_act : ∀ (i : Fin m) (h : u ≤ (i : ℕ) ∧ (i : ℕ) < v) (a : S.N i ⊗[O] G), t i (LinearEquiv.lTensor (S.N i) (θ i h.1 h.2) a) = a`. Introduce `i h a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [t, dif_pos h]`. Conclude with `(LinearEquiv.lTensor (S.N i) (θ i h.1 h.2)).symm_apply_apply a`. Establish `t_inact : ∀ (i : Fin m), ¬ (u ≤ (i : ℕ) ∧ (i : ℕ) < v) → t i = 0`. Introduce `i h`. Simplify using `only [t, dif_neg h]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `T : (∀ i, S.N i ⊗[O] M i) →+ (∀ i, S.N i ⊗[O] G)` to `{ toFun := fun w i => t i (w i) map_zero' := by funext i; simp map_add' := fun a b => by funext i; simp }`. Establish `T_apply : ∀ w i, T w i = t i (w i)` using `fun _ _ => rfl`. Establish `hT : ∀ w, g₀ (T w) ∈ (pdP γ u).map (Algebra.TensorProduct.includeLeftRingHom (R` using `O) (A := A) (B := G)) := by`. Introduce `w`. Use `(hm u _).2 fun i hi => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[T_apply, t_inact i (by omega)]`. Both sides reduce to the same expression. Set `φ : (∀ i, S.N i ⊗[O] M i) →+ M'` to `{ toFun := fun w => π ⟨g₀ (T w), hT w⟩ map_zero' := by`. Establish `: (⟨g₀ (T 0), hT 0⟩ : ((pdP γ u).map (Algebra.TensorProduct.includeLeftRingHom (R` using `O) (A := A) (B := G)) : Ideal (A ⊗[O] G))) = 0 := Subtype.ext (by simp)`. Rewrite using `[this, map_zero]`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `map_add' := fun a b => by`. Rewrite using `[← map_add]`. Conclude with `congrArg π (Subtype.ext (by simp)) }`. Establish `φ_apply : ∀ w, φ w = π ⟨g₀ (T w), hT w⟩` using `fun _ => rfl`. Establish `inj : Function.Injective φ`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `(injective_iff_map_eq_zero φ).2 fun w hw => ?_` and prove the remaining obligations. Rewrite `hw` using `[φ_apply]`. Establish `h1` using `(hm v _).1 ((hker _).1 hw)`. Use function extensionality and compare the values at `i`. Distinguish the cases in `h : u ≤ (i : ℕ) ∧ (i : ℕ) < v`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h2` using `h1 i h.2`. Rewrite `h2` using `[T_apply]`. Take `⟨a, ha⟩` from `(LinearEquiv.lTensor (S.N i) (θ i h.1 h.2)).surjective (w i)`. Rewrite `h2` using `[← ha, t_act i h]`. Rewrite using `[← ha, h2, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Use `haveI := h0 i h`. Conclude with `subsingleton_tmul _`. Establish `surj : Function.Surjective φ`. Introduce `y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, rfl⟩` from `hπ y`. Take `⟨z, hz⟩` from `g₀.surjective x.1`. Establish `hzu` using `(hm u z).1 (by rw [hz]; exact x.2)`. Set `w : ∀ i, S.N i ⊗[O] M i` to `fun i => if h : u ≤ (i : ℕ) ∧ (i : ℕ) < v then LinearEquiv.lTensor (S.N i) (θ i h.1 h.2) (z i) else 0`. Use `⟨w, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[φ_apply, ← sub_eq_zero, ← map_sub, hker]`. Establish `: ((⟨g₀ (T w), hT w⟩ - x : ((pdP γ u).map (Algebra.TensorProduct.includeLeftRingHom (R` using `O) (A := A) (B := G)) : Ideal (A ⊗[O] G))) : A ⊗[O] G) = g₀ (T w - z) := by`. Rewrite using `[map_sub, hz]`. Both sides reduce to the same expression. Rewrite using `[this, hm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `i hi`. Rewrite using `[Pi.sub_apply, T_apply, sub_eq_zero]`. Distinguish the cases in `h : u ≤ (i : ℕ)`. Establish `h' : u ≤ (i : ℕ) ∧ (i : ℕ) < v` using `⟨h, hi⟩`. Simplify using `only [w, dif_pos h']`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `t_act i h' _`. Rewrite using `[t_inact i (by omega), hzu i (by omega)]`. Both sides reduce to the same expression. Use `⟨AddEquiv.ofBijective φ ⟨inj, surj⟩, fun i n x => ?_⟩` and prove the remaining obligations. Rewrite using `[AddEquiv.ofBijective_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `h : u ≤ (i : ℕ) ∧ (i : ℕ) < v`. Take `⟨y, rfl⟩` from `(θ i h.1 h.2).surjective x`. Establish `hTs : T (Pi.single i (n ⊗ₜ[O] θ i h.1 h.2 y)) = Pi.single i (n ⊗ₜ[O] y)`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Substitute `hj` using the available equality. Rewrite using `[T_apply, Pi.single_eq_same, Pi.single_eq_same]`. Conclude with `t_act j h (n ⊗ₜ[O] y)`. Rewrite using `[T_apply, Pi.single_eq_of_ne hj, Pi.single_eq_of_ne hj, map_zero]`. Establish `hx : S.ν i n ⊗ₜ[O] y ∈ (pdP γ u).map (Algebra.TensorProduct.includeLeftRingHom (R` using `O) (A := A) (B := G)) := by`.
-
-Rewrite using `[← hs, ← hTs]`. Conclude with `hT _`. Rewrite using `[hf i n y h.1 h.2 hx, φ_apply]`. Conclude with `congrArg π (Subtype.ext (by simp only [hTs, hs]))`. Use `haveI := h0 i h`.
-
-Rewrite using `[Subsingleton.elim x 0, TensorProduct.tmul_zero, Pi.single_zero, map_zero, hf0]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ {O A G : Type} [CommRing O] [CommRing A] [Algebra O A] [CommRing G] [Algebra O G] [Module.Flat O G]
     {I : Ideal A} (γ : DividedPowers I) (m : ℕ) (S : GrSplit O γ m) (u v : ℕ)

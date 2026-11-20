@@ -4,25 +4,25 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open Formalism.ConjugateSelfDual ReciprocityTheory.Gal Module UpperTheory.V.Loc UpperTheory.V.Alg UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.HV UpperTheory.V.Base IsLocalRing
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ _ _ _ E _ _ _ _ _ _ _ _ Γ ι _ _ _ _ rbar Pc R _ _ _ ρ hR x P n φ hc hy0 C _ _ _ f`. Establish `hcomp : ∀ {A B D : Type} [CommRing A] [Algebra O A] [IsCO O A] [CommRing B] [Algebra O B] [IsCO O B] [CommRing D] [Algebra O D] [IsCO O D] (u : A →ₐ[O] B) (v : B →ₐ[O] D) (r : Lift O rbar A), Lift.map v (Lift.map u r) = Lift.map (v.comp u) r`. Introduce `A B D _ _ _ _ _ _ _ _ _ u v r`. Apply `Lift.ext` to reduce the goal to its premises. Use extensionality with `γ a b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨B, _, _, _, _, ρB, hPB, ⟨x4, hx4⟩, y, hy⟩`. Take `⟨g, hg, -⟩` from `(hR B).2 ρB hPB`. Substitute `hg` using the available equality.
+Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Establish `hf : y.comp g = f`. Take `⟨h, -, huniq⟩` from `(hR C).2 (Lift.map f ρ) ((hR C).1 f)`. Rewrite using `[huniq (y.comp g) (by show Lift.map (y.comp g) ρ = _; rw [← hcomp]; exact hy), huniq f rfl]`. Establish `hx : x4.comp g = x`. Take `⟨h, -, huniq⟩` from `(hR O).2 (Lift.map x ρ) ((hR O).1 x)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `(huniq (x4.comp g) ?_).trans (huniq x rfl).symm` and prove the remaining obligations. Use `show Lift.map (x4.comp g) ρ = _`. Rewrite using `[← hcomp]`. Apply `Lift.ext` to reduce the goal to its premises. Use extensionality with `γ a b`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Conclude with `hx4 γ a b`. Take `⟨y0, hy0ne, hann⟩` from `hy0`. Introduce `a ha`. Rewrite using `[RingHom.mem_ker, ← hf]`. Establish `hprod : g y0 * g a = 0` using `by rw [← map_mul, hann a ha, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Break down `mul_eq_zero.1 hprod with h0 | h0` into its components or cases. It suffices to derive a contradiction. Apply `hy0ne` to reduce the goal to its premises. Rewrite using `[← hx]`. Simplify using `[h0]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[h0]`. Introduce `hPf haveI : IsDomain (MvPowerSeries (Fin n) E) := NoZeroDivisors.to_isDomain _`. Establish `hker : RingHom.ker φ = P` using `hc.ker`. Use `haveI hprime : P.IsPrime := hker ▸ RingHom.ker_isPrime φ`. Establish `hxP : ∀ a ∈ P, x a = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `a ha`. Establish `h1` using `hc.const a`. Rewrite `ha` using `[← hker, RingHom.mem_ker]`. Rewrite `h1` using `[ha, map_zero]`. Conclude with `(IsFractionRing.injective O E) (by rw [← h1, map_zero])`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfP : ∀ a ∈ P, f a = 0` using `fun a ha => (RingHom.mem_ker).1 (hPf ha)`. Use `letI hco : IsCO O (R ⧸ P) := co_quot O R (R ⧸ P) (Ideal.Quotient.mkₐ O P) (Ideal.Quotient.mkₐ_surjective O P)`. Use `⟨R ⧸ P, inferInstance, inferInstance, hco, inferInstance, Lift.map (Ideal.Quotient.mkₐ O P) ρ, (hR _).1 _, ⟨Ideal.Quotient.liftₐ P x hxP, ?_⟩, ⟨Ideal.Quotient.liftₐ P f hfP, ?_⟩⟩` and prove the remaining obligations. Introduce `γ a b`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Rewrite using `[hcomp]`. Apply `Lift.ext` to reduce the goal to its premises. Use extensionality with `γ a b`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Loc.compKer :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] [IsAdicComplete (maximalIdeal O) O] (E : Type) [Field E] [Algebra ℚ_[l] E] [Module.Finite ℚ_[l] E] [Algebra O E] [Algebra ℤ_[l] E] [IsScalarTower ℤ_[l] O E] [IsScalarTower ℤ_[l] ℚ_[l] E] [IsFractionRing O E] {Γ ι : Type} [Group Γ] [TopologicalSpace Γ] [Fintype ι] [DecidableEq ι] (rbar : Γ →* Matrix ι ι (ResidueField O)) (Pc : Cond O rbar) (R : Type) [CommRing R] [Algebra O R] [IsCO O R] (ρ : Lift O rbar R), Represents Pc ρ → ∀ (x : R →ₐ[O] O) (P : Ideal R) {n : ℕ} (φ : R →ₐ[O] MvPowerSeries (Fin n) E), UpperTheory.V.Loc.IsCompl P x φ → (∃ y, x y ≠ 0 ∧ ∀ a ∈ P, y * a = 0) → ∀ (C : Type) [CommRing C] [Algebra O C] [IsCO O C] (f : R →ₐ[O] C), OnComp Pc (ρ.map x).hom (ρ.map f) ↔ P ≤ RingHom.ker f := by

@@ -18,7 +18,7 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
 
 /- English proof (translation)
-Use `letI := H.starRing`. Conclude with `cross_global_of hLaws P a N hN hN0 (fun e X hX uR huR huR0 hinj σ'' τ f'' f h'' hf hrel hoff => cross_vanish hL4 P a k N e X hX uR huR huR0 hinj σ'' τ f'' f h'' hf hrel hoff) s F hs s'' F'' hs'' hPA`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem cross_global (hLaws : Laws) (hL4 : Laws4) {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E]
     {H : Geo.Tor.Host E} {t : Geo.Tor.SAB H (Spec (CommRingCat.of V))} (P : Geo.Tor.PELUnif (maximalIdeal V) t)

@@ -8,7 +8,7 @@ namespace GroundTheory.Global
 namespace Elliptic
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `{z | f z = (0 : ℂ → ℂ) z} ∈ codiscreteWithin univ ↔ _`. Rewrite using `[mem_codiscreteWithin_iff_forall_mem_nhdsNE]`. Simplify using `only [compl_univ, union_empty, mem_univ, true_implies, Pi.zero_apply]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem eventuallyEq_zero_codiscrete_iff {f : ℂ → ℂ} :
     f =ᶠ[codiscrete ℂ] 0 ↔ ∀ x, ∀ᶠ z in 𝓝[≠] x, f z = 0 := by
@@ -18,9 +18,9 @@ theorem eventuallyEq_zero_codiscrete_iff {f : ℂ → ℂ} :
   rfl
 
 /- English proof (translation)
-Rewrite using `[eventuallyEq_zero_codiscrete_iff]`. Introduce `u`. Establish `hx : meromorphicOrderAt f x = ⊤` using `meromorphicOrderAt_eq_top_iff.2 h`. Assume the negation of the conclusion as `hu`. Establish `hu' : meromorphicOrderAt f u ≠ ⊤` using `fun ht ↦ hu (meromorphicOrderAt_eq_top_iff.1 ht)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `(hf.meromorphicOn (s := univ)).meromorphicOrderAt_ne_top_of_isPreconnected isPreconnected_univ (mem_univ u) (mem_univ x) hu' hx`.
+A detailed English derivation is pending.
 -/
 theorem eventuallyEq_zero_codiscrete_of_nhdsNE {f : ℂ → ℂ} (hf : Meromorphic f) {x : ℂ}
     (h : ∀ᶠ z in 𝓝[≠] x, f z = 0) : f =ᶠ[codiscrete ℂ] 0 := by
@@ -33,7 +33,7 @@ theorem eventuallyEq_zero_codiscrete_of_nhdsNE {f : ℂ → ℂ} (hf : Meromorph
     isPreconnected_univ (mem_univ u) (mem_univ x) hu' hx
 
 /- English proof (translation)
-Establish `hall : ∀ u ∈ (univ : Set ℂ), meromorphicOrderAt f u ≠ ⊤` using `fun u _ ht ↦ h (eventuallyEq_zero_codiscrete_of_nhdsNE hf (meromorphicOrderAt_eq_top_iff.1 ht))`. Conclude with `MeromorphicAt.MeromorphicOn.codiscreteWithin_setOfPred_ne_zero (hf.meromorphicOn (s := univ)) hall`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eventually_ne_zero_codiscrete {f : ℂ → ℂ} (hf : Meromorphic f)
     (h : ¬ f =ᶠ[codiscrete ℂ] 0) : ∀ᶠ z in codiscrete ℂ, f z ≠ 0 := by
@@ -43,7 +43,7 @@ theorem eventually_ne_zero_codiscrete {f : ℂ → ℂ} (hf : Meromorphic f)
     (hf.meromorphicOn (s := univ)) hall
 
 /- English proof (translation)
-Establish `h` using `(mem_codiscreteWithin_iff_forall_mem_nhdsNE.1 hS) 0 (mem_univ 0)`. Rewrite `h` using `[compl_univ, union_empty]`. Conclude with `Filter.nonempty_of_mem h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_of_mem_codiscrete {S : Set ℂ} (hS : S ∈ codiscrete ℂ) : S.Nonempty := by
   have h := (mem_codiscreteWithin_iff_forall_mem_nhdsNE.1 hS) 0 (mem_univ 0)
@@ -51,20 +51,20 @@ theorem nonempty_of_mem_codiscrete {S : Set ℂ} (hS : S ∈ codiscrete ℂ) : S
   exact Filter.nonempty_of_mem h
 
 /- English proof (translation)
-The claim follows from `(mem_codiscrete'.1 hS).1`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_of_mem_codiscrete {S : Set ℂ} (hS : S ∈ codiscrete ℂ) : IsOpen S :=
   (mem_codiscrete'.1 hS).1
 
 /- English proof (translation)
-The claim follows from `(hf.meromorphicOn (s := univ)).analyticAt_mem_codiscreteWithin`.
+A detailed English derivation is pending.
 -/
 theorem eventually_analyticAt {f : ℂ → ℂ} (hf : Meromorphic f) :
     ∀ᶠ z in codiscrete ℂ, AnalyticAt ℂ f z :=
   (hf.meromorphicOn (s := univ)).analyticAt_mem_codiscreteWithin
 
 /- English proof (translation)
-Establish `hS` using `isOpen_of_mem_codiscrete h`. Use `filter_upwards [h] with z hz`. Conclude with `Filter.EventuallyEq.deriv_eq (Filter.mem_of_superset (hS.mem_nhds hz) fun w hw ↦ hw)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem deriv_eventuallyEq_codiscrete {f g : ℂ → ℂ} (h : f =ᶠ[codiscrete ℂ] g) :
     deriv f =ᶠ[codiscrete ℂ] deriv g := by
@@ -95,7 +95,7 @@ def meroNull : Ideal meroSubalgebra where
     rw [h, mul_zero]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_meroNull {f : meroSubalgebra} : f ∈ meroNull ↔ (f : ℂ → ℂ) =ᶠ[codiscrete ℂ] 0 :=
   Iff.rfl
@@ -131,20 +131,20 @@ def germ (f : ℂ → ℂ) : MeroField :=
   if h : Meromorphic f then Ideal.Quotient.mk meroNull ⟨f, h⟩ else 0
 
 /- English proof (translation)
-The claim follows from `dif_pos hf`.
+A detailed English derivation is pending.
 -/
 theorem germ_of {f : ℂ → ℂ} (hf : Meromorphic f) : germ f = Ideal.Quotient.mk meroNull ⟨f, hf⟩ :=
   dif_pos hf
 
 /- English proof (translation)
-Take `⟨⟨f, hf⟩, rfl⟩` from `Ideal.Quotient.mk_surjective u`. Conclude with `⟨f, hf, germ_of hf⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem germ_surjective (u : MeroField) : ∃ f : ℂ → ℂ, Meromorphic f ∧ germ f = u := by
   obtain ⟨⟨f, hf⟩, rfl⟩ := Ideal.Quotient.mk_surjective u
   exact ⟨f, hf, germ_of hf⟩
 
 /- English proof (translation)
-Rewrite using `[germ_of hf, germ_of hg, Ideal.Quotient.eq, mem_meroNull]`. Express the relevant statement in the definitionally equal form `(f - g) =ᶠ[codiscrete ℂ] 0 ↔ _`. Conclude with `Filter.eventuallyEq_iff_sub.symm`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem germ_eq_germ_iff {f g : ℂ → ℂ} (hf : Meromorphic f) (hg : Meromorphic g) :
     germ f = germ g ↔ f =ᶠ[codiscrete ℂ] g := by
@@ -153,20 +153,20 @@ theorem germ_eq_germ_iff {f g : ℂ → ℂ} (hf : Meromorphic f) (hg : Meromorp
   exact Filter.eventuallyEq_iff_sub.symm
 
 /- English proof (translation)
-The claim follows from `(germ_eq_germ_iff hf (hf.congr_codiscrete h)).2 h`.
+A detailed English derivation is pending.
 -/
 theorem germ_congr {f g : ℂ → ℂ} (hf : Meromorphic f) (h : f =ᶠ[codiscrete ℂ] g) :
     germ f = germ g :=
   (germ_eq_germ_iff hf (hf.congr_codiscrete h)).2 h
 
 /- English proof (translation)
-Rewrite using `[germ_of hf, Ideal.Quotient.eq_zero_iff_mem, mem_meroNull]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem germ_eq_zero_iff {f : ℂ → ℂ} (hf : Meromorphic f) : germ f = 0 ↔ f =ᶠ[codiscrete ℂ] 0 := by
   rw [germ_of hf, Ideal.Quotient.eq_zero_iff_mem, mem_meroNull]
 
 /- English proof (translation)
-Rewrite using `[germ_of hf, germ_of hg, germ_of (hf.add hg), ← map_add]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem germ_add {f g : ℂ → ℂ} (hf : Meromorphic f) (hg : Meromorphic g) :
     germ (f + g) = germ f + germ g := by
@@ -174,7 +174,7 @@ theorem germ_add {f g : ℂ → ℂ} (hf : Meromorphic f) (hg : Meromorphic g) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[germ_of hf, germ_of hg, germ_of (hf.mul hg), ← map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem germ_mul {f g : ℂ → ℂ} (hf : Meromorphic f) (hg : Meromorphic g) :
     germ (f * g) = germ f * germ g := by
@@ -182,28 +182,28 @@ theorem germ_mul {f g : ℂ → ℂ} (hf : Meromorphic f) (hg : Meromorphic g) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[germ_of hf, germ_of hf.neg, ← map_neg]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem germ_neg {f : ℂ → ℂ} (hf : Meromorphic f) : germ (-f) = -germ f := by
   rw [germ_of hf, germ_of hf.neg, ← map_neg]
   rfl
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, germ_add hf hg.neg, germ_neg hg, ← sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem germ_sub {f g : ℂ → ℂ} (hf : Meromorphic f) (hg : Meromorphic g) :
     germ (f - g) = germ f - germ g := by
   rw [sub_eq_add_neg, germ_add hf hg.neg, germ_neg hg, ← sub_eq_add_neg]
 
 /- English proof (translation)
-Rewrite using `[germ_of (Meromorphic.const c)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem germ_const (c : ℂ) : germ (fun _ ↦ c) = algebraMap ℂ MeroField c := by
   rw [germ_of (Meromorphic.const c)]
   rfl
 
 /- English proof (translation)
-Use `germ_const 0` as an intermediate fact. Rewrite `this` using `[map_zero]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem germ_zero : germ (0 : ℂ → ℂ) = 0 := by
   have := germ_const 0
@@ -211,7 +211,7 @@ theorem germ_zero : germ (0 : ℂ → ℂ) = 0 := by
   exact this
 
 /- English proof (translation)
-Use `germ_const 1` as an intermediate fact. Rewrite `this` using `[map_one]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem germ_one : germ (1 : ℂ → ℂ) = 1 := by
   have := germ_const 1
@@ -219,18 +219,16 @@ theorem germ_one : germ (1 : ℂ → ℂ) = 1 := by
   exact this
 
 /- English proof (translation)
-Rewrite using `[germ_of hf, germ_of (hf.pow (n := n)), ← map_pow]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem germ_pow {f : ℂ → ℂ} (hf : Meromorphic f) (n : ℕ) : germ (f ^ n) = germ f ^ n := by
   rw [germ_of hf, germ_of (hf.pow (n := n)), ← map_pow]
   rfl
 
 /- English proof (translation)
-Distinguish the cases in `h0 : f =ᶠ[codiscrete ℂ] 0`. Rewrite using `[(germ_eq_zero_iff hf).2 h0, inv_zero, germ_eq_zero_iff hf.inv] filter_upwards [h0] with z hz`. Simplify using `only [Pi.inv_apply, Pi.zero_apply] at hz ⊢`. Rewrite using `[hz, inv_zero]`. Establish `hne` using `eventually_ne_zero_codiscrete hf h0`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : germ f * germ f⁻¹ = 1`. Rewrite using `[← germ_mul hf hf.inv, ← germ_one]`. Apply `germ_congr (hf.mul hf.inv)` to reduce the goal to its premises. Use `filter_upwards [hne] with z hz`. Simplify using `only [Pi.mul_apply, Pi.inv_apply, Pi.one_apply]`.
-
-Conclude with `mul_inv_cancel₀ hz`. Conclude with `(eq_inv_of_mul_eq_one_right h1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem germ_inv {f : ℂ → ℂ} (hf : Meromorphic f) : germ f⁻¹ = (germ f)⁻¹ := by
   by_cases h0 : f =ᶠ[codiscrete ℂ] 0
@@ -248,16 +246,16 @@ theorem germ_inv {f : ℂ → ℂ} (hf : Meromorphic f) : germ f⁻¹ = (germ f)
     exact (eq_inv_of_mul_eq_one_right h1)
 
 /- English proof (translation)
-Rewrite using `[div_eq_mul_inv, germ_mul hf hg.inv, germ_inv hg, ← div_eq_mul_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem germ_div {f g : ℂ → ℂ} (hf : Meromorphic f) (hg : Meromorphic g) :
     germ (f / g) = germ f / germ g := by
   rw [div_eq_mul_inv, germ_mul hf hg.inv, germ_inv hg, ← div_eq_mul_inv]
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[eventuallyEq_zero_codiscrete_iff]`. Introduce `x`. Establish `hc : Continuous fun z : ℂ ↦ t * z + s` using `by fun_prop`. Establish `hmaps : MapsTo (fun z : ℂ ↦ t * z + s) {x}ᶜ {t * x + s}ᶜ` using `fun z hz hz' ↦ hz (by`. Simplify using `only [mem_singleton_iff, add_left_inj] at hz' ⊢`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `mul_left_cancel₀ ht hz')`. Conclude with `(hc.continuousAt.continuousWithinAt.tendsto_nhdsWithin hmaps).eventually (h _)`.
+A detailed English derivation is pending.
 -/
 theorem comp_affine_eventuallyEq_zero {f : ℂ → ℂ} (h : f =ᶠ[codiscrete ℂ] 0) {t : ℂ} (ht : t ≠ 0)
     (s : ℂ) : (fun z ↦ f (t * z + s)) =ᶠ[codiscrete ℂ] 0 := by
@@ -270,7 +268,7 @@ theorem comp_affine_eventuallyEq_zero {f : ℂ → ℂ} (h : f =ᶠ[codiscrete �
   exact (hc.continuousAt.continuousWithinAt.tendsto_nhdsWithin hmaps).eventually (h _)
 
 /- English proof (translation)
-The claim follows from `fun x ↦ (hf (t * x + s)).comp_analyticAt (g := fun z ↦ t * z + s) (by fun_prop)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem meromorphic_comp_affine {f : ℂ → ℂ} (hf : Meromorphic f) (t s : ℂ) :
     Meromorphic fun z ↦ f (t * z + s) := fun x ↦
@@ -291,7 +289,7 @@ def affineComp (t s : ℂ) (ht : t ≠ 0) : MeroField →ₐ[ℂ] MeroField :=
       exact comp_affine_eventuallyEq_zero hf ht s
 
 /- English proof (translation)
-Rewrite using `[germ_of hf, germ_of (meromorphic_comp_affine hf t s)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem affineComp_germ (t s : ℂ) (ht : t ≠ 0) {f : ℂ → ℂ} (hf : Meromorphic f) :
     affineComp t s ht (germ f) = germ fun z ↦ f (t * z + s) := by
@@ -301,17 +299,17 @@ theorem affineComp_germ (t s : ℂ) (ht : t ≠ 0) {f : ℂ → ℂ} (hf : Merom
 def rep (u : MeroField) : ℂ → ℂ := (germ_surjective u).choose
 
 /- English proof (translation)
-The claim follows from `(germ_surjective u).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem meromorphic_rep (u : MeroField) : Meromorphic (rep u) := (germ_surjective u).choose_spec.1
 
 /- English proof (translation)
-The claim follows from `(germ_surjective u).choose_spec.2`.
+A detailed English derivation is pending.
 -/
 theorem germ_rep (u : MeroField) : germ (rep u) = u := (germ_surjective u).choose_spec.2
 
 /- English proof (translation)
-The claim follows from `(germ_eq_germ_iff (meromorphic_rep _) hf).1 (germ_rep _)`.
+A detailed English derivation is pending.
 -/
 theorem rep_germ {f : ℂ → ℂ} (hf : Meromorphic f) : rep (germ f) =ᶠ[codiscrete ℂ] f :=
   (germ_eq_germ_iff (meromorphic_rep _) hf).1 (germ_rep _)
@@ -319,15 +317,13 @@ theorem rep_germ {f : ℂ → ℂ} (hf : Meromorphic f) : rep (germ f) =ᶠ[codi
 def derivFun (u : MeroField) : MeroField := germ (deriv (rep u))
 
 /- English proof (translation)
-The claim follows from `germ_congr (meromorphic_rep _).deriv (deriv_eventuallyEq_codiscrete (rep_germ hf))`.
+A detailed English derivation is pending.
 -/
 theorem derivFun_germ {f : ℂ → ℂ} (hf : Meromorphic f) : derivFun (germ f) = germ (deriv f) :=
   germ_congr (meromorphic_rep _).deriv (deriv_eventuallyEq_codiscrete (rep_germ hf))
 
 /- English proof (translation)
-Take `⟨f, hf, rfl⟩` from `germ_surjective u`. Take `⟨g, hg, rfl⟩` from `germ_surjective v`. Rewrite using `[← germ_add hf hg, derivFun_germ (hf.add hg), derivFun_germ hf, derivFun_germ hg, ← germ_add hf.deriv hg.deriv]`. Apply `germ_congr (hf.add hg).deriv` to reduce the goal to its premises. Use `filter_upwards [eventually_analyticAt hf, eventually_analyticAt hg] with z h1 h2`.
-
-Conclude with `deriv_add h1.differentiableAt h2.differentiableAt`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem derivFun_add (u v : MeroField) : derivFun (u + v) = derivFun u + derivFun v := by
   obtain ⟨f, hf, rfl⟩ := germ_surjective u
@@ -339,9 +335,9 @@ theorem derivFun_add (u v : MeroField) : derivFun (u + v) = derivFun u + derivFu
   exact deriv_add h1.differentiableAt h2.differentiableAt
 
 /- English proof (translation)
-Take `⟨f, hf, rfl⟩` from `germ_surjective u`. Take `⟨g, hg, rfl⟩` from `germ_surjective v`. Rewrite using `[← germ_mul hf hg, derivFun_germ (hf.mul hg), derivFun_germ hf, derivFun_germ hg, ← germ_mul hf hg.deriv, ← germ_mul hg hf.deriv, ← germ_add (hf.mul hg.deriv) (hg.mul hf.deriv)]`. Apply `germ_congr (hf.mul hg).deriv` to reduce the goal to its premises. Use `filter_upwards [eventually_analyticAt hf, eventually_analyticAt hg] with z h1 h2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[deriv_mul h1.differentiableAt h2.differentiableAt]`. Simplify using `only [Pi.add_apply, Pi.mul_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem derivFun_mul (u v : MeroField) :
     derivFun (u * v) = u * derivFun v + v * derivFun u := by
@@ -356,7 +352,7 @@ theorem derivFun_mul (u v : MeroField) :
   ring
 
 /- English proof (translation)
-Rewrite using `[← germ_const, derivFun_germ (Meromorphic.const c)]`. Establish `: deriv (fun _ : ℂ ↦ c) = 0`. Use function extensionality and compare the values at `z`. Simplify using the standard rewrite rules. Rewrite using `[this, germ_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem derivFun_algebraMap (c : ℂ) : derivFun (algebraMap ℂ MeroField c) = 0 := by
   rw [← germ_const, derivFun_germ (Meromorphic.const c)]
@@ -366,7 +362,7 @@ theorem derivFun_algebraMap (c : ℂ) : derivFun (algebraMap ℂ MeroField c) = 
   rw [this, germ_zero]
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def, derivFun_mul, derivFun_algebraMap, mul_zero, add_zero, Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem derivFun_smul (c : ℂ) (u : MeroField) : derivFun (c • u) = c • derivFun u := by
   rw [Algebra.smul_def, derivFun_mul, derivFun_algebraMap, mul_zero, add_zero, Algebra.smul_def]
@@ -378,19 +374,19 @@ def germDeriv : Derivation ℂ MeroField MeroField :=
       rw [derivFun_mul, smul_eq_mul, smul_eq_mul]
 
 /- English proof (translation)
-The claim follows from `derivFun_germ hf`.
+A detailed English derivation is pending.
 -/
 theorem germDeriv_germ {f : ℂ → ℂ} (hf : Meromorphic f) : germDeriv (germ f) = germ (deriv f) :=
   derivFun_germ hf
 
 /- English proof (translation)
-Take `⟨f, hf, rfl⟩` from `germ_surjective u`. Rewrite `hu` using `[germDeriv_germ hf, germ_eq_zero_iff hf.deriv]`. Take `⟨x₀, hx₀⟩` from `nonempty_of_mem_codiscrete (eventually_analyticAt hf)`. Establish `hd : deriv f =ᶠ[𝓝 x₀] 0`. Establish `hne : ∀ᶠ z in 𝓝[≠] x₀, deriv f z = 0` using `eventuallyEq_zero_codiscrete_iff.1 hu x₀`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont : ContinuousAt (deriv f) x₀` using `hx₀.deriv.continuousAt`. Establish `h0 : deriv f x₀ = 0`. Establish `ht : Tendsto (deriv f) (𝓝[≠] x₀) (𝓝 (deriv f x₀))` using `hcont.tendsto.mono_left nhdsWithin_le_nhds`. Establish `hne' : deriv f =ᶠ[𝓝[≠] x₀] fun _ ↦ 0` using `hne`. Conclude with `tendsto_nhds_unique ht (tendsto_const_nhds.congr' hne'.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← nhdsNE_sup_pure x₀]`. Conclude with `⟨hne, h0⟩`. Take `⟨ε, hε, hball⟩` from `Metric.eventually_nhds_iff_ball.1 ((hx₀.eventually_analyticAt).and hd)`. Establish `hconst : ∀ y ∈ Metric.ball x₀ ε, f x₀ = f y` using `fun y hy ↦ (Metric.isOpen_ball).is_const_of_deriv_eq_zero (convex_ball x₀ ε).isPreconnected (fun z hz ↦ (hball z hz).1.differentiableAt.differentiableWithinAt) (fun z hz ↦ (hball z hz).2) (Metric.mem_ball_self hε) hy`. Use `⟨f x₀, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← germ_const, germ_eq_germ_iff hf (Meromorphic.const _), Filter.eventuallyEq_iff_sub]`. Apply `eventuallyEq_zero_codiscrete_of_nhdsNE (hf.sub (Meromorphic.const _)) (x := x₀)` to reduce the goal to its premises. Use `filter_upwards [nhdsWithin_le_nhds (Metric.ball_mem_nhds x₀ hε)] with z hz`. Simplify using `only [Pi.sub_apply]`. Rewrite using `[← hconst z hz, sub_self]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_algebraMap_of_germDeriv_eq_zero {u : MeroField} (hu : germDeriv u = 0) :
     ∃ c : ℂ, u = algebraMap ℂ MeroField c := by

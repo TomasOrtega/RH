@@ -10,7 +10,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.cm_finrank_eq_two_mul | exact GlobalTheory.cm_finrank_eq_two_mul | (intros; apply GlobalTheory.cm_finrank_eq_two_mul <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.finrank_cmField_eq_two_mul_totallyRealSubfield : ∀ D : D7, Module.finrank ℚ D.host.E = Module.finrank ℚ D.host.F * 2 := by
   first | exact @GlobalTheory.cm_finrank_eq_two_mul | exact GlobalTheory.cm_finrank_eq_two_mul | (intros; apply GlobalTheory.cm_finrank_eq_two_mul <;> assumption)

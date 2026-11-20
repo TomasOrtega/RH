@@ -7,9 +7,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.Top UpperTheory.V.HV
 
 /- English proof (translation)
-Take `⟨hd, χ₀, e⟩` from `χ.factorsThrough_conductor`. Establish `h0 : χ₀ ^ Nat.totient χ.conductor = 1`. Use `MulChar.ext (fun a => ?_)` and prove the remaining obligations. Rewrite using `[MulChar.pow_apply_coe, MulChar.one_apply_coe, ← map_pow, ← Units.val_pow_eq_pow_val, ZMod.pow_totient, Units.val_one, map_one]`. Establish `h1 : DirichletCharacter.changeLevel hd χ₀ ^ Nat.totient χ.conductor = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_pow, h0, map_one]`. Rewrite `h1` using `[← e]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem pow_totient_conductor {O : Type} [CommRing O] {N : ℕ} [NeZero N] (χ : DirichletCharacter O N) :
     χ ^ Nat.totient χ.conductor = 1 := by
@@ -23,7 +23,7 @@ private theorem pow_totient_conductor {O : Type} [CommRing O] {N : ℕ} [NeZero 
   rwa [← e] at h1
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos c with rfl | hc` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[Nat.totient_prime_pow Nat.prime_two hc]`. Simplify using `using Nat.pow_dvd_pow 2 (Nat.sub_le c 1)`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem totient_two_pow_dvd (c : ℕ) : Nat.totient (2 ^ c) ∣ 2 ^ c := by
   rcases Nat.eq_zero_or_pos c with rfl | hc
@@ -32,13 +32,13 @@ private theorem totient_two_pow_dvd (c : ℕ) : Nat.totient (2 ^ c) ∣ 2 ^ c :=
     simpa using Nat.pow_dvd_pow 2 (Nat.sub_le c 1)
 
 /- English proof (translation)
-Introduce `h O _ _ ψ hψ l hl hl2 hlt`. Take `⟨-, -, -, hR1, -⟩` from `cmDatum_char_two_adic_order_bounds h O ψ hψ l hl hl2`. Take `⟨-, -, -, hopos, -⟩` from `hostIndex h`. Establish `hc2 : comp 2 ψ ^ (2 ^ c2 ψ) = 1`. Take `⟨-, -, -, hpow2, -⟩` from `compCond O h.N ψ 2 Nat.prime_two`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `ht` using `pow_totient_conductor (comp 2 ψ)`. Rewrite `ht` using `[show (comp 2 ψ).conductor = 2 ^ c2 ψ from hpow2.symm]`. Conclude with `orderOf_dvd_iff_pow_eq_one.mp ((orderOf_dvd_of_pow_eq_one ht).trans (totient_two_pow_dvd _))`. Establish `hall : ψ ^ (2 * h.o * 2 ^ c2 ψ) = 1`. Apply `(compAlg O h.N 2 Nat.prime_two).2.2.2.2.2.2.2 ψ` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p hp`. Establish `hpp` using `Nat.prime_of_mem_primeFactors hp`. Distinguish the cases in `h2p : p = 2`. Substitute `h2p` using the available equality. Rewrite using `[mul_comm, pow_mul, hc2, one_pow]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd` using `((hostComp h O ψ hψ).2.2 p hpp h2p).1`. Rewrite using `[pow_mul, orderOf_dvd_iff_pow_eq_one.mp hd, one_pow]`. Establish `hmpos : 0 < 2 * h.o * 2 ^ c2 ψ` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.HV.vsOrd :
     ∀ (h : Host) (O : Type) [CommRing O] [IsDomain O] (ψ : DirichletCharacter O h.N), h.IsChar ψ → ∀ l, l.Prime → l ≠ 2 → 2 ^ c2 ψ < h.R1 l ψ →

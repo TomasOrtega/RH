@@ -28,9 +28,7 @@ namespace GlobalTheory.ConeSmallMero
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`.
-
-Use `haveI : SecondCountableTopology (AE F E) := e.secondCountableTopology`. Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) (AE F E)) := inferInstanceAs (SecondCountableTopology (Fin n → Fin n → AE F E))`. Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) (AE F E))ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology`. Use `haveI : SecondCountableTopology (GL (Fin n) (AE F E)) := Units.isEmbedding_embedProduct.secondCountableTopology`. Conclude with `⟨inferInstance, inferInstanceAs (SecondCountableTopology (UG (cA σ) (incM F J)))⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem topUA (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) :
     IsTopologicalGroup (UA σ J) ∧ SecondCountableTopology (UA σ J) := by
@@ -48,7 +46,7 @@ theorem topUA (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) :
   exact ⟨inferInstance, inferInstanceAs (SecondCountableTopology (UG (cA σ) (incM F J)))⟩
 
 /- English proof (translation)
-Establish `h1 : Continuous fun g : UA σ J => heightGL F g.1` using `(GlobalTheory.Grow.continuous_heightGL F).comp continuous_subtype_val`. Conclude with `NNReal.continuous_coe.comp h1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_ht (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) :
     Continuous fun g : UA σ J => (ht g : ℝ) := by
@@ -56,35 +54,31 @@ theorem continuous_ht (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n)
   exact NNReal.continuous_coe.comp h1
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a b G G₁ H H' hC X om om' hT K hK Φ' hΦ' Eis hES hEG μ₁ 𝓕 hμ₁ h𝓕 h1 h`. Establish `hV' : IsPair B G.M' X.α (X.α / X.β) om' G.q (b + 2 - G.q) (a + (b + 2) - (G.p + G.q)) (G.p + G.q)` using `{ base := hT.base, herm := hT.geo.hV', skew := hT.geo.hW, good := hT.geo.hM', hX := hT.chars.heckeα, hW := GlobalTheory.ThKRatInv.isHecke_div hT.chars.heckeα hT.chars.heckeβ, resX := hT.chars.resα, resW := by rw [add_comm a (b + 2)]; exact GlobalTheory.ThKRatInv.resEtaPow_div hT. …`. Establish `hΦs : Φ' ∈ schA F (Fin (b + 2) × Fin (a + (b + 2)))` using `GlobalTheory.ThKRatInv.polData_le_schA B G.M' hT.geo.hM' (Submodule.mem_inf.1 hΦ').1`. Take `⟨hcont, hinv, -⟩` from `(GlobalTheory.T.theta_basic_properties hKP.base F E σ B (b + 2) (a + (b + 2)) G.V' G.W G.M' X.α (X.α / X.β) om' _ _ _ _ hV').1 Φ' hΦs`. Establish `hdec` using `GlobalTheory.T.schwartz_orbit_decay hKP F E σ B (b + 2) (a + (b + 2)) G.V' G.W G.M' X.α (X.α / X.β) om' _ _ _ _ hV' Φ' (Submodule.mem_inf.1 hΦ').2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Kc, hKc, hKcov⟩` from `GlobalTheory.UnipCocompact.cocompact_unip F E σ B a (b + 2) G X om om' hT (a + b) G₁.W H' a (a + b + 1) hC.hH'`. Take `⟨hTGV, hSCV⟩` from `topUA σ G.V'.J`. Take `⟨hTGW, hSCW⟩` from `topUA σ G.W.J`. Use `haveI := hTGV`. Use `haveI := hSCV`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := hTGW`. Use `haveI := hSCW`. Use `haveI : BorelSpace (UA σ G.V'.J) := ⟨rfl⟩`. Use `haveI : BorelSpace (UA σ G.W.J) := ⟨rfl⟩`. Establish `hfin : G.M'.μ G.M'.dom < ⊤` using `GlobalTheory.UnitaryVol.measure_dom_lt_top F E σ B a (b + 2) G X om om' hKP.siegelSetUnitary hT`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : IsFiniteMeasure (μ₁.restrict 𝓕) := isFiniteMeasure_restrict.2 (by rw [h1]; exact ENNReal.one_ne_top)`. Use `haveI : IsFiniteMeasure (G.M'.μ.restrict G.M'.dom) := isFiniteMeasure_restrict.2 hfin.ne`. Establish `hθ : ∀ N : ℕ, ∃ M : ℝ, ∀ g (u : unip σ G.W H'), ‖theta om' Φ' g (u.1 * h)‖ * (qht g : ℝ) ^ N ≤ M`. Introduce `N`. Take `⟨C, k, hCk⟩` from `hdec N`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : Continuous fun u : unip σ G.W H' => (ht (u.1 * h) : ℝ)` using `(continuous_ht σ G.W.J).comp (continuous_subtype_val.mul continuous_const)`. Take `⟨Cw, hCw⟩` from `hKc.exists_bound_of_continuousOn hc.continuousOn`. Use `⟨max C 0 * Cw ^ k, fun g u => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, hγu⟩` from `hKcov u`. Establish `e1` using `hinv 1 (one_mem _) γ.1 (Subgroup.mem_subgroupOf.1 hγ) g (u.1 * h)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite `e1` using `[one_mul]`. Rewrite using `[← e1]`. Use `(hCk g _).trans ?_` and prove the remaining obligations. Establish `hb` using `hCw _ hγu`. Rewrite `hb` using `[Real.norm_eq_abs, abs_of_nonneg (NNReal.coe_nonneg _)]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hb' : (ht (γ.1 * (u.1 * h)) : ℝ) ≤ Cw` using `by simpa [mul_assoc] using hb`. Combine the equalities or inequalities in the displayed calculation. Establish `KC : ∀ (s₀ : ℂ) (r : ℝ) (Hol : ℂ → UA σ G.V'.J → ℂ) (C : ℝ) (N : ℕ), (∀ g, DifferentiableOn ℂ (Hol · g) (Metric.ball s₀ r)) → (∀ s ∈ Metric.ball s₀ r, ∀ g, ‖Hol s g‖ ≤ C * (qht g : ℝ) ^ N) → (∀ s ∈ Metric.ball s₀ r, Measurable (Hol s)) → DifferentiableOn ℂ (fun s => ∫ u in 𝓕, ∫ g …`. Introduce `s₀ r Hol C N hd hb hm`. Take `⟨M, hM⟩` from `hθ N`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `GlobalTheory.T.holomorphic_param_integral (G.M'.μ.restrict G.M'.dom) (μ₁.restrict 𝓕) (fun u g => theta om' Φ' g (u.1 * h)) Hol s₀ r (max C 0 * M) ?_ hd ?_` and prove the remaining obligations. Introduce `s hs`. Establish `hc : Continuous fun p : unip σ G.W H' × UA σ G.V'.J => theta om' Φ' p.2 (p.1.1 * h)` using `hcont.comp (continuous_snd.prodMk ((continuous_subtype_val.comp continuous_fst).mul continuous_const))`. Conclude with `hc.aestronglyMeasurable.mul ((hm s hs).comp measurable_snd).aestronglyMeasurable`. Introduce `s hs u g`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hloc1 : ∀ g, ∀ s₀ : ℂ, ∃ (k : ℕ) (U : Set ℂ) (Hl : ℂ → ℂ), U ∈ 𝓝 s₀ ∧ (∀ s ∈ U, s ≠ s₀ → Hl s = (s - s₀) ^ k * Eis s g) ∧ DifferentiableOn ℂ Hl U`. Introduce `g s₀`. Take `⟨k, U, Hl, C, N, hU, heq, hd, -⟩` from `hEG.1 s₀`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨k, U, fun s => Hl s g, hU, fun s hs hne => heq s hs hne g, hd g⟩`. Establish `hinvE : ∀ s₀ : ℂ, ∀ γ ∈ ratU σ G.V'.J, ∀ g, ∀ᶠ s in 𝓝[≠] s₀, Eis s (γ * g) = Eis s g` using `fun s₀ γ hγ g => GlobalTheory.T.meromorphic_identity_continuation (fun s => Eis s (γ * g)) (fun s => Eis s g) ((((b + 2 : ℕ) : ℝ) - 1) / 2) (hloc1 (γ * g)) (hloc1 g) (fun s hs => GlobalTheory.T.eisenstein_series_rational_invariant K H.x Eis hES s hs γ hγ g) s₀`. Establish `hmE : ∀ s₀ : ℂ, ∀ᶠ s in 𝓝[≠] s₀, Measurable (Eis s)` using `GlobalTheory.T.measurable_meromorphic_continuation Eis ((((b + 2 : ℕ) : ℝ) - 1) / 2) (fun s₀ => by`. Take `⟨k, U, Hl, C, N, hU, heq, hd, -⟩` from `hEG.1 s₀`. Conclude with `⟨k, U, Hl, hU, heq, hd⟩)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use the proof step `(GlobalTheory.T.eisenstein_series_measurable hKP B G.V' G.q (b + 2 - G.q) hT.base hT.geo.hV' K hK H.x Eis hES)`. Take `⟨hlocal, r₀, C₀, N₀, hr₀, hd₀, hb₀, hm₀⟩` from `GlobalTheory.T.eisenstein_meromorphic_continuation b Eis hEG hinvE hmE`. Use `⟨fun s₀ => ?_, ?_⟩` and prove the remaining obligations. Take `⟨k, r, Hol, C, N, hr, heq, hd, hb, hm⟩` from `hlocal s₀`. Establish `hD` using `KC s₀ r Hol C N hd hb hm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `⟨k + 1, ?_⟩` and prove the remaining obligations. Establish `han : AnalyticAt ℂ (fun z => (z - s₀) * ∫ u in 𝓕, ∫ g in G.M'.dom, theta om' Φ' g (u.1 * h) * Hol z g ∂G.M'.μ ∂μ₁) s₀` using `(analyticAt_id.sub analyticAt_const).mul (hD.analyticAt (Metric.ball_mem_nhds s₀ hr))`. Use `han.congr ?_` and prove the remaining obligations. Use `filter_upwards [Metric.ball_mem_nhds s₀ hr] with z hz`. Distinguish the cases in `hzs : z = s₀`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Substitute `hzs` using the available equality. Simplify using the standard rewrite rules. Establish `e : ∀ u : unip σ G.W H', ∫ g in G.M'.dom, theta om' Φ' g (u.1 * h) * Hol z g ∂G.M'.μ = (z - s₀) ^ k * GlobalTheory.ConeSmallCT.Bint G.M' om' Φ' Eis z (u.1 * h)`. Introduce `u`. Rewrite using `[GlobalTheory.ConeSmallCT.Bint, ← integral_const_mul]`.
-
-Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[heq z hz hzs g]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e, integral_const_mul, smul_eq_mul]`.
-
-Expand and normalize the polynomial expressions, which then agree. Conclude with `(KC _ r₀ Eis C₀ N₀ hd₀ hb₀ hm₀).analyticAt (Metric.ball_mem_nhds _ hr₀)`.
+A detailed English derivation is pending.
 -/
 theorem ct_mero : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ)
     (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →

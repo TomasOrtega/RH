@@ -26,7 +26,7 @@ namespace GlobalTheory.LTPeriod
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Proceed by induction on `k generalizing y with`. Consider the case `zero => rfl`. Consider the case `succ k ih`. Rewrite using `[Function.iterate_succ_apply, Function.iterate_succ_apply, GlobalTheory.MemLoc.fund_phiB_alg, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem iter_φB_alg (k : ℕ) (y : Per.Acris l) :
     (⇑(Per.φB l))^[k] (algebraMap (Per.Acris l) (Per.Bcris l) y) =
@@ -37,7 +37,7 @@ theorem iter_φB_alg (k : ℕ) (y : Per.Acris l) :
     rw [Function.iterate_succ_apply, Function.iterate_succ_apply, GlobalTheory.MemLoc.fund_phiB_alg, ih]
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.CrisMaps.phiA_extends l).alg a`.
+A detailed English derivation is pending.
 -/
 theorem phiA_alg (a : Per.Ainf l) :
     GlobalTheory.MemLoc.phiA l (algebraMap (Per.Ainf l) (Per.Acris l) a) =
@@ -45,7 +45,7 @@ theorem phiA_alg (a : Per.Ainf l) :
   (GlobalTheory.CrisMaps.phiA_extends l).alg a
 
 /- English proof (translation)
-Proceed by induction on `k generalizing a with`. Consider the case `zero => rfl`. Consider the case `succ k ih`. Rewrite using `[Function.iterate_succ_apply, Function.iterate_succ_apply, phiA_alg, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem iter_phiA_alg (k : ℕ) (a : Per.Ainf l) :
     (⇑(GlobalTheory.MemLoc.phiA l))^[k] (algebraMap (Per.Ainf l) (Per.Acris l) a) =
@@ -56,35 +56,33 @@ theorem iter_phiA_alg (k : ℕ) (a : Per.Ainf l) :
     rw [Function.iterate_succ_apply, Function.iterate_succ_apply, phiA_alg, ih]
 
 /- English proof (translation)
-Rewrite using `[← RingHom.coe_pow, map_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem iter_mul {A : Type} [CommRing A] (f : A →+* A) (k : ℕ) (a b : A) :
     (⇑f)^[k] (a * b) = (⇑f)^[k] a * (⇑f)^[k] b := by
   rw [← RingHom.coe_pow, map_mul]
 
 /- English proof (translation)
-Rewrite using `[← RingHom.coe_pow, map_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem iter_natCast {A : Type} [CommRing A] (f : A →+* A) (k m : ℕ) :
     (⇑f)^[k] (m : A) = m := by
   rw [← RingHom.coe_pow, map_natCast]
 
 /- English proof (translation)
-Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by omega⟩`. Establish `he` using `GlobalTheory.MemLoc.core_isEps l C`. Take `⟨w, hw0, hw⟩` from `GlobalTheory.T.exists_ainf_frobenius_iterate_eq_xi_mul l C.ε he (m + 1) hn`. Take `⟨u, hu, hlu, hconv⟩` from `GlobalTheory.T.frobXi_div_prime_unit_tendsto_one l C`. Take `⟨c, hc, hcφ⟩` from `GlobalTheory.T.exists_unit_frobenius_iterate_product_eq (Per.Acris l) l (GlobalTheory.MemLoc.acris_basic l).1 (GlobalTheory.MemLoc.phiA l) u hu hconv (m + 1) hn`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hcφ` using `[Nat.add_sub_cancel]`. Use `set ξ := GlobalTheory.MemLoc.xi C.ε with hξ`. Establish `h1 : (l : Per.Acris l) * (⇑(GlobalTheory.MemLoc.phiA l))^[m] u = algebraMap (Per.Ainf l) (Per.Acris l) ((⇑(Per.φA l))^[m + 1] ξ)`. Rewrite using `[← iter_natCast (GlobalTheory.MemLoc.phiA l) m l, ← iter_mul, hlu, iter_phiA_alg, ← Function.iterate_succ_apply]`. Establish `hkey : algebraMap (Per.Ainf l) (Per.Acris l) ((⇑(Per.φA l))^[m + 1] ξ) * (⇑(GlobalTheory.MemLoc.phiA l))^[m + 1] c = (l : Per.Acris l) * c`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1]`. Take the linear combination `(l : Per.Acris l) * hcφ`. Use `set a : Per.Acris l := algebraMap (Per.Ainf l) (Per.Acris l) (ξ * w) * c with ha`. Establish `hA : (⇑(GlobalTheory.MemLoc.phiA l))^[m + 1] a = (l : Per.Acris l) * a`. Rewrite using `[ha, iter_mul, iter_phiA_alg, iter_mul, hw, map_mul, map_mul]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `(algebraMap (Per.Ainf l) (Per.Acris l) ξ * algebraMap (Per.Ainf l) (Per.Acris l) w) * hkey`. Use `set x : Per.Bcris l := algebraMap (Per.Acris l) (Per.Bcris l) a with hx`. Establish `hxφ : (⇑(Per.φB l))^[m + 1] x = (l : Per.Bcris l) * x`. Rewrite using `[hx, iter_φB_alg, hA, map_mul, map_natCast]`. Establish `hxa : x = Per.aB l (ξ * w) * algebraMap (Per.Acris l) (Per.Bcris l) c`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `e : algebraMap (Per.Acris l) (Per.Bcris l) (algebraMap (Per.Ainf l) (Per.Acris l) (ξ * w)) = Per.aB l (ξ * w)`. Apply `(GlobalTheory.T.localPeriodRingsData_unramified_laws l C).2.2.2.1` to reduce the goal to its premises. Rewrite using `[GlobalTheory.MemLoc.PrimeEx.iota_aB, C.ι_j, GlobalTheory.MemLoc.TFil.j_alg C.j_cris]`. Rewrite using `[hx, ha, map_mul, e]`. Establish `hx0 : x ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `h0`. Rewrite `h0` using `[hxa, (hc.map (algebraMap (Per.Acris l) (Per.Bcris l))).mul_left_eq_zero]`. Conclude with `hw0 (GlobalTheory.MemLoc.PrimeEx.aB_inj C (h0.trans (map_zero _).symm))`. Establish `hx1 : C.ι x ∈ Per.FilD l 1`. Rewrite using `[hxa, map_mul, C.ι_j, mul_comm, ← Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.smul_mem _ _ ((GlobalTheory.MemLoc.PrimeEx.fil1 C _).2 ⟨w, rfl⟩)`. Establish `hx0' : ∀ j : ℕ, j < m + 1 → C.ι ((⇑(Per.φB l))^[j] x) ∈ Per.FilD l 0`. Introduce `j _`. Rewrite using `[hx, iter_φB_alg, C.ι_j]`. Conclude with `GlobalTheory.MemLoc.TiedUnif.alg_mem_FilD_zero _`.
-
-Take `⟨hunit, h2, hj⟩` from `GlobalTheory.T.frobeniusEigen_fil_one_isUnit_exact_degree l C (m + 1) hn x hxφ hx0 hx1 hx0'`. Conclude with `⟨x, hunit, hxφ, hx1, h2, fun j hj0 hjn => ⟨hx0' j hjn, hj j hj0 hjn⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem concrete (C : GlobalTheory.MemLoc.Core l) (n : ℕ) (hn : 0 < n) :
     ∃ x : Per.Bcris l, IsUnit x ∧ (⇑(Per.φB l))^[n] x = (l : Per.Bcris l) * x ∧ C.ι x ∈ Per.FilD l 1 ∧
@@ -137,15 +135,13 @@ theorem concrete (C : GlobalTheory.MemLoc.Core l) (n : ℕ) (hn : 0 < n) :
 end GlobalTheory.LTPeriod
 
 /- English proof (translation)
-Introduce `l _ P AI T K n hn`. Take `⟨C, hC⟩` from `GlobalTheory.MemLoc.FitsEx.exists_fits l P AI T`. Take `⟨x, hu, hφ, h1, h2, hj⟩` from `GlobalTheory.LTPeriod.concrete C n hn`. Establish `hit : ∀ (k : ℕ) (b : P.R.B), T.eB ((⇑P.φB)^[k] b) = (⇑(Per.φB l))^[k] (T.eB b)`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `k with`. Consider the case `zero => intro b`. Both sides reduce to the same expression. Consider the case `succ k ih`. Introduce `b`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply', T.frob, ih]`. Establish `hfil : ∀ (a : ℤ) (b : P.R.B), P.ιB b ∈ (P.PD K).Fil a ↔ C.ι (T.eB b) ∈ Per.FilD l a`. Introduce `a b`. Rewrite using `[T.fil, hC.ι]`. Use `⟨T.eB.symm x, hu.map T.eB.symm, T.eB.injective ?_, ?_, ?_, fun j hj0 hjn => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hit, RingEquiv.apply_symm_apply, hφ, map_mul, map_natCast, RingEquiv.apply_symm_apply]`. Rewrite using `[hfil, RingEquiv.apply_symm_apply]`. Conclude with `h1`. Rewrite using `[hfil, RingEquiv.apply_symm_apply]`. Conclude with `h2`.
-
-Rewrite using `[hfil, hfil, hit, RingEquiv.apply_symm_apply]`. Conclude with `hj j hj0 hjn`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LTPeriod.main : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI →
     ∀ (K : FinExt l) (n : ℕ), 0 < n → ∃ x : P.R.B, IsUnit x ∧ (⇑P.φB)^[n] x = (l : P.R.B) * x ∧

@@ -12,15 +12,15 @@ namespace GlobalTheory.FockBaseChange
 open GlobalTheory.FockCompare GlobalTheory.OrientedHeis GlobalTheory.FockIndep
 
 /- English proof (translation)
-Rewrite using `[cplxO, Matrix.one_mul, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cplxO_one {m n : ℕ} (z : Matrix (Fin m) (Fin n) ℂ) : cplxO 1 1 z = I • z := by
   rw [cplxO, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `e : h * Matrix.single i j (1 : ℂ) * g⁻¹ = ∑ k, ∑ l, (h k i * g⁻¹ j l) • Matrix.single k l (1 : ℂ)` using `by conv_lhs => rw [Matrix.matrix_eq_sum_single (h * Matrix.single i j (1 : ℂ) * g⁻¹)]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_single, smul_eq_mul, mul_one]`. Use `congr 1`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single j (fun b _ hb => by rw [Matrix.mul_single_apply_of_ne _ _ _ _ _ hb, zero_mul]) (by simp), Matrix.mul_single_apply_same, mul_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Unfold `unitMap`. Rewrite using `[Matrix.mul_inv_rev]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by simp only [e, Matrix.mul_sum, Matrix.sum_mul, Matrix.mul_smul, Matrix.smul_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unitMap_mul {m n : ℕ} (B g : Matrix (Fin n) (Fin n) ℂ) (B' h : Matrix (Fin m) (Fin m) ℂ) (i : Fin m)
     (j : Fin n) : unitMap (B * g) (B' * h) i j = ∑ k, ∑ l, (h k i * g⁻¹ j l) • unitMap B B' k l := by
@@ -40,9 +40,9 @@ theorem unitMap_mul {m n : ℕ} (B g : Matrix (Fin n) (Fin n) ℂ) (B' h : Matri
 variable {D : D7} {S T : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D}
 
 /- English proof (translation)
-Unfold `omDir`. Use `split_ifs with h`. Simplify using `only [cplxO_one, Matrix.conjTranspose_smul, Matrix.mul_smul, Matrix.smul_mul, Matrix.trace_smul, smul_eq_mul, RCLike.star_def, conj_I]`. Prove the components needed by the constructor for the conclusion. Use `congr 3`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc]`. Simplify using the standard rewrite rules. Simplify using `only [neg_mul, mul_neg, Complex.neg_re]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem omDir_I (τ : D.what₂.Tau) (z : Matrix (Fin T.rank) (Fin S.rank) ℂ) (τ' : D.what₂.Tau)
     (z' : Matrix (Fin T.rank) (Fin S.rank) ℂ) :
@@ -62,9 +62,9 @@ variable (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
 include hψ hθ
 
 /- English proof (translation)
-Take `⟨σ, h⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Establish `hE : ∀ z g, Formalism.IndefR.Datum.dRho (heisO ψ S T) θ τ z g = FockCompare.hD (iotaW σ T S) (piW θ T S) (omO S T) (piW θ T S (lineAt θ τ z 1)) g` using `fun z g => dLine_eq_hD h hψ (isRealDir_lineAt hθ τ z) g`. Establish `hs` using `theta_sm h hf`. Establish `e : piW θ T S (lineAt θ τ (z + z') 1) = piW θ T S (lineAt θ τ z 1) + piW θ T S (lineAt θ τ z' 1)`. Rewrite using `[piW_lineAt hθ, piW_lineAt hθ, piW_lineAt hθ, Pi.single_add]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use function extensionality and compare the values at `w`. Rewrite using `[Pi.add_apply, hE, hE, hE, e, hD_eq_fderiv _ _ _ _ hs, hD_eq_fderiv _ _ _ _ hs, hD_eq_fderiv _ _ _ _ hs, LinearMap.map_add, ContinuousLinearMap.map_add]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dRho_dir_add (τ : D.what₂.Tau) (z z' : Matrix (Fin T.rank) (Fin S.rank) ℂ) {f : WO S T → ℂ}
     (hf : IsThetaFunO ψ S T f) :
@@ -84,9 +84,9 @@ theorem dRho_dir_add (τ : D.what₂.Tau) (z z' : Matrix (Fin T.rank) (Fin S.ran
   ring
 
 /- English proof (translation)
-Take `⟨σ, h⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Establish `hE : ∀ z g, Formalism.IndefR.Datum.dRho (heisO ψ S T) θ τ z g = FockCompare.hD (iotaW σ T S) (piW θ T S) (omO S T) (piW θ T S (lineAt θ τ z 1)) g` using `fun z g => dLine_eq_hD h hψ (isRealDir_lineAt hθ τ z) g`. Establish `hs` using `theta_sm h hf`. Establish `e : piW θ T S (lineAt θ τ ((t : ℂ) • z) 1) = t • piW θ T S (lineAt θ τ z 1)`. Rewrite using `[piW_lineAt hθ, piW_lineAt hθ, Pi.single_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use function extensionality and compare the values at `w`. Rewrite using `[Pi.smul_apply, hE, hE, e, hD_eq_fderiv _ _ _ _ hs, hD_eq_fderiv _ _ _ _ hs, LinearMap.map_smul, ContinuousLinearMap.map_smul, smul_eq_mul, smul_eq_mul, Complex.real_smul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dRho_dir_smul (τ : D.what₂.Tau) (t : ℝ) (z : Matrix (Fin T.rank) (Fin S.rank) ℂ) {f : WO S T → ℂ}
     (hf : IsThetaFunO ψ S T f) :
@@ -106,7 +106,7 @@ theorem dRho_dir_smul (τ : D.what₂.Tau) (t : ℝ) (z : Matrix (Fin T.rank) (F
   ring
 
 /- English proof (translation)
-Simplify using `only [aPlus_eq, cplxO_one, smul_add, fun z z' => dRho_dir_add hψ hθ τ z z' hf]`. Use `module`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem aPlus_dir_add (τ : D.what₂.Tau) (z z' : Matrix (Fin T.rank) (Fin S.rank) ℂ) {f : WO S T → ℂ}
     (hf : IsThetaFunO ψ S T f) :
@@ -116,11 +116,11 @@ theorem aPlus_dir_add (τ : D.what₂.Tau) (z z' : Matrix (Fin T.rank) (Fin S.ra
   module
 
 /- English proof (translation)
-Establish `e1 : c • z = (c.re : ℂ) • z + (c.im : ℂ) • (I • z)`. Rewrite using `[smul_smul, ← add_smul, re_add_im]`. Establish `e2 : I • c • z = ((-c.im : ℝ) : ℂ) • z + (c.re : ℂ) • (I • z)`. Rewrite using `[smul_smul, smul_smul, ← add_smul]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Apply the tactic sequence `apply Complex.ext <;> simp`. Simplify using `only [aPlus_eq, cplxO_one]`. Rewrite using `[e2, e1, dRho_dir_add hψ hθ τ _ _ hf, dRho_dir_add hψ hθ τ _ _ hf, dRho_dir_smul hψ hθ τ _ _ hf, dRho_dir_smul hψ hθ τ _ _ hf, dRho_dir_smul hψ hθ τ _ _ hf, dRho_dir_smul hψ hθ τ _ _ hf]`. Generalize the expression as in `((fockScale D τ : ℂ)⁻¹) = a`. Use `match_scalars`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `a * re_add_im c`. Take the linear combination `(-I) * a * re_add_im c + a * (c.im : ℂ) * I_mul_I`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem aPlus_dir_smul (τ : D.what₂.Tau) (c : ℂ) (z : Matrix (Fin T.rank) (Fin S.rank) ℂ) {f : WO S T → ℂ}
     (hf : IsThetaFunO ψ S T f) :
@@ -140,7 +140,7 @@ theorem aPlus_dir_smul (τ : D.what₂.Tau) (c : ℂ) (z : Matrix (Fin T.rank) (
   · linear_combination (-I) * a * re_add_im c + a * (c.im : ℂ) * I_mul_I
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `aPlus_dir_smul hψ hθ τ 0 0 hf` as an intermediate fact. Rewrite `this` using `[zero_smul, zero_smul]`. Then use the resulting hypothesis. Consider the case `insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, aPlus_dir_add hψ hθ τ _ _ hf, ih]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Treat this case separately.
 -/
 theorem aPlus_dir_sum {ι : Type} (τ : D.what₂.Tau) (s : Finset ι) (z : ι → Matrix (Fin T.rank) (Fin S.rank) ℂ)
     {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
@@ -153,9 +153,9 @@ theorem aPlus_dir_sum {ι : Type} (τ : D.what₂.Tau) (s : Finset ι) (z : ι �
   | insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, aPlus_dir_add hψ hθ τ _ _ hf, ih]
 
 /- English proof (translation)
-Establish `ht` using `fun τ z => theta_dRho hθ hψ τ z hf`. Establish `hc` using `fun τ z τ' z' => dRho_comm hψ hθ τ z τ' z' hf`. Take `⟨h1, h2⟩` from `omDir_I τ z τ' z'`. Rewrite using `[aPlus_eq τ' _ z' f, aPlus_eq τ _ z f, aPlus_smul hψ hθ _ _ _ _ (theta_add (ht _ _) (theta_smul _ (ht _ _))), aPlus_smul hψ hθ _ _ _ _ (theta_add (ht _ _) (theta_smul _ (ht _ _))), aPlus_add hψ hθ _ _ _ (ht _ _) (theta_smul _ (ht _ _)), aPlus_add hψ hθ _ _ _ (ht _ _) (theta_smul …`. Simplify using `only [aPlus_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hc τ z τ' z', hc τ z τ' (cplxO 1 1 z'), hc τ (cplxO 1 1 z) τ' z', hc τ (cplxO 1 1 z) τ' (cplxO 1 1 z')]`. Rewrite using `[h1, h2]`. Use `match_scalars`. Apply the tactic sequence `all_goals first | ring1 | (ring_nf; simp only [I_pow_three]; ring1)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aPlus_comm_one (τ : D.what₂.Tau) (z : Matrix (Fin T.rank) (Fin S.rank) ℂ) (τ' : D.what₂.Tau)
     (z' : Matrix (Fin T.rank) (Fin S.rank) ℂ) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
@@ -175,7 +175,7 @@ theorem aPlus_comm_one (τ : D.what₂.Tau) (z : Matrix (Fin T.rank) (Fin S.rank
   all_goals first | ring1 | (ring_nf; simp only [I_pow_three]; ring1)
 
 /- English proof (translation)
-Unfold `pureTensorO`. Conclude with `pure_X_mul (A := aPlusAll (heisO ψ S T) θ (fun _ => cplxO 1 1) BS BT) (P := IsThetaFunO ψ S T) (fun _ _ => theta_add) (fun a _ => theta_smul a) (fun _ _ h => aPlus_theta hψ hθ _ _ _ h) (fun i j _ h => aPlus_comm_one hψ hθ i.1 _ j.1 _ h) (fun i _ _ h h' => aPlus_add hψ hθ i.1 _ _ …`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem pureTensorO_X_mul (BS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ)
     (BT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f)
@@ -192,11 +192,11 @@ theorem pureTensorO_X_mul (BS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.ran
 omit hψ hθ in
 
 /- English proof (translation)
-Introduce `D ψ θ S T hψ hθ BS g BT h f hf P`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a`. Rewrite using `[← mul_one (MvPolynomial.C a), MvPolynomial.C_mul', map_smul, map_smul, map_smul, map_one (substF _ _)]`. Unfold `pureTensorO`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[pure_one, pure_one]`. Consider the case `add p q hp hq => rw [map_add, map_add, map_add, hp, hq]`. Consider the case `mul_X p v hp`. Establish `hm : IsThetaFunO ψ S T (pureTensorO ψ θ S T (fun _ => 1) (fun _ => 1) BS BT f (substF h (fun τ => ((g τ)⁻¹)ᵀ) p))` using `pure_mem (P := IsThetaFunO ψ S T) (fun _ _ => theta_add) (fun a _ => theta_smul a) (fun _ _ h => aPlus_theta hψ hθ _ _ _ h) hf _`. Rewrite using `[mul_comm, pureTensorO_X_mul hψ hθ _ _ hf, hp, map_mul, substF_X, unitMap_mul, aPlus_dir_sum hψ hθ _ _ _ hm, Finset.sum_mul, map_sum]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[aPlus_dir_sum hψ hθ _ _ _ hm, Finset.sum_mul, map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[aPlus_dir_smul hψ hθ _ _ _ hm, mul_assoc, MvPolynomial.C_mul', map_smul, pureTensorO_X_mul hψ hθ _ _ hf]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pureTensorO_subst : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D), IsStdChar D ψ (-1) → IsInfFam θ → ∀ (BS g : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (BT h : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) (f : WO S T → ℂ), IsThetaFunO ψ S T f → ∀ P, pureTensorO ψ θ S T (fun _ => 1) (fun _ => 1) (fun τ => BS τ * g τ) (fun τ => BT τ * h τ) f P = pureTensorO ψ θ S T (fun _ => 1) (fun _ => 1) BS BT f (substF h (fun τ => ((g τ)⁻¹)ᵀ) P) := by
   intro D ψ θ S T hψ hθ BS g BT h f hf P

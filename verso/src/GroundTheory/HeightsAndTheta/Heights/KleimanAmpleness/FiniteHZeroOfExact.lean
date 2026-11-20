@@ -21,31 +21,29 @@ variable {n : ℕ} {U : Finset (Fin n)} {R : Type u} [CommRing R]
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `hA` as an intermediate fact. Establish `hιd` using `mapC_d (R := R) (G := A) (G' := B) ι hι`. Establish `hqd` using `mapC_d (R := R) (G := B) (G' := C) q hq`. Establish `hιinj : ∀ i, Function.Injective (mapC (R` using `R) (G := A) (G' := B) ι i) := fun i a b hab => _root_.funext fun I => hinj I.1 (congrFun hab I)`. Establish `hq0 : ∀ i (c : Cochain B i), mapC (R` using `R) (G := B) (G' := C) q i c = 0 ↔ ∃ a, mapC (R := R) (G := A) (G' := B) ι i a = c := fun i c => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h choose a ha using fun I => (hex I.1 (c I)).mp (congrFun h I)`. Conclude with `⟨a, _root_.funext ha⟩`. Introduce and unpack `⟨a, rfl⟩`. Conclude with `_root_.funext fun I => (hex I.1 _).mpr ⟨a I, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨P, hP⟩ : ∃ P : Submodule R (Cochain B 0), ∀ w, w ∈ P ↔ mapC (R` from `R) (G := B) (G' := C) q 1 (d B ρB 0 w) = 0 := ⟨LinearMap.ker ((mapC (R := R) (G := B) (G' := C) q 1).comp (d B ρB 0)), fun _ => LinearMap.mem_ker⟩`. Take `⟨θ, hθ0, hθs⟩ : ∃ θ : P →ₗ[R] H C ρC 0, (∀ p, θ p = 0 ↔ mapC (R` from `R) (G := B) (G' := C) q 0 p.1 = 0) ∧ Function.Surjective θ := by`. Establish `hk : ∀ p : P, mapC (R` using `R) (G := B) (G' := C) q 0 p.1 ∈ LinearMap.ker (d C ρC 0) := fun p => by`. Rewrite using `[LinearMap.mem_ker, ← hqd 0]`. Conclude with `(hP p.1).mp p.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨(Submodule.mkQ _).comp (LinearMap.codRestrict _ ((mapC (R := R) (G := B) (G' := C) q 0).comp P.subtype) hk), fun p => ?_, fun h => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk _ = 0 ↔ _`. Rewrite using `[Submodule.Quotient.mk_eq_zero, Submodule.mem_comap]`. Conclude with `Submodule.mem_bot R`. Take `⟨c, rfl⟩` from `Submodule.Quotient.mk_surjective _ h choose w hw using fun I : Idx U 0 => hsurj I.1 (c.1 I)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hmw : mapC (R` using `R) (G := B) (G' := C) q 0 w = c.1 := _root_.funext hw`. Use `⟨⟨w, (hP w).mpr (by rw [hqd 0, hmw]; exact c.2)⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk _ = Submodule.Quotient.mk c`. Use `congr 1`. Conclude with `Subtype.ext hmw`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdP : ∀ p : P, d B ρB 0 p.1 ∈ LinearMap.range (mapC (R` using `R) (G := A) (G' := B) ι 1) := fun p => LinearMap.mem_range.mpr ((hq0 1 _).mp ((hP p.1).mp p.2))`. Take `⟨g, hg⟩ : ∃ g : P →ₗ[R] Cochain A 1, ∀ p, mapC (R` from `R) (G := A) (G' := B) ι 1 (g p) = d B ρB 0 p.1 := ⟨(LinearEquiv.ofInjective _ (hιinj 1)).symm.toLinearMap.comp (LinearMap.codRestrict _ ((d B ρB 0).comp P.subtype) hdP), fun p => congrArg Subtype.val ((LinearEquiv.ofInjective _ (hιinj 1)).apply_symm_apply _)⟩`. Establish `hgk : ∀ p : P, g p ∈ LinearMap.ker (d A ρA 1)` using `fun p => LinearMap.mem_ker.mpr (hιinj (1 + 1) ((hιd 1 (g p)).trans (by`. Rewrite using `[hg, d_one_d_zero hρB, map_zero])))`. Take `⟨ψ, hψ0⟩ : ∃ ψ : P →ₗ[R] H A ρA 1, ∀ p, ψ p = 0 ↔ ∃ g', d A ρA 0 g' = g p` from `⟨(Submodule.mkQ _).comp (LinearMap.codRestrict _ g hgk), fun p => by`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk _ = 0 ↔ _`. Rewrite using `[Submodule.Quotient.mk_eq_zero, Submodule.mem_comap]`. Conclude with `LinearMap.mem_range⟩`. Establish `hle : LinearMap.ker θ ≤ LinearMap.ker ψ` using `fun p hp => by`. Take `⟨a, ha⟩` from `(hq0 0 _).mp ((hθ0 p).mp hp)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `(hψ0 p).mpr ⟨a, hιinj 1 ?_⟩` and prove the remaining obligations. Rewrite using `[hg, hιd 0, ha]`. Set `f` to `(LinearMap.ker θ).liftQ ψ hle`. Establish `hZP : LinearMap.ker (d B ρB 0) ≤ P` using `fun z hz => (hP z).mpr (by rw [LinearMap.mem_ker.mp hz, map_zero])`. Set `j` to `(LinearMap.ker θ).mkQ.comp (Submodule.inclusion hZP)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hker : LinearMap.ker f = LinearMap.range j`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `m hm`. Take `⟨p, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`. Establish `hm' : ψ p = 0` using `hm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨g', hg'⟩` from `(hψ0 p).mp hm'`. Establish `hz : p.1 - mapC (R` using `R) (G := A) (G' := B) ι 0 g' ∈ LinearMap.ker (d B ρB 0) := by`. Rewrite using `[LinearMap.mem_ker, map_sub, ← hιd 0, hg', hg, sub_self]`. Establish `hqι : mapC (R` using `R) (G := B) (G' := C) q 0 (mapC (R := R) (G := A) (G' := B) ι 0 g') = 0 := (hq0 0 _).mpr ⟨g', rfl⟩`. Use `⟨⟨_, hz⟩, (Submodule.Quotient.eq _).mpr ((hθ0 _).mpr ?_)⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `mapC (R := R) (G := B) (G' := C) q 0 (p.1 - mapC (R := R) (G := A) (G' := B) ι 0 g' - p.1) = 0`. Rewrite using `[sub_sub_cancel_left, map_neg, hqι, neg_zero]`. Introduce and unpack `_ ⟨z, rfl⟩ show ψ (Submodule.inclusion hZP z) = 0`. Use `(hψ0 _).mpr ⟨0, hιinj 1 ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero, map_zero, hg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(LinearMap.mem_ker.mp z.2).symm`. Establish `hZfin : Module.Finite R (LinearMap.ker (d B ρB 0))`. Establish `: Module.Finite R (LinearMap.ker (d B ρB 0) ⧸ (bdry B ρB 0).comap (LinearMap.ker (d B ρB 0)).subtype)` using `hB`. Conclude with `Module.Finite.equiv (Submodule.quotEquivOfEqBot ((bdry B ρB 0).comap (LinearMap.ker (d B ρB 0)).subtype) (eq_bot_iff.mpr fun z hz => (Submodule.mem_bot R).mpr (Subtype.ext ((Submodule.mem_bot R).mp (show (z : Cochain B 0) ∈ (⊥ : Submodule R (Cochain B 0)) from hz)))))`. Establish `hM : Module.Finite R (P ⧸ LinearMap.ker θ)`.
-
-Use `⟨Submodule.fg_of_fg_map_of_fg_inf_ker f (IsNoetherian.noetherian _) ?_⟩` and prove the remaining obligations. Rewrite using `[top_inf_eq, hker, LinearMap.range_eq_map]`. Conclude with `(Module.Finite.fg_top).map j`. Conclude with `Module.Finite.equiv (θ.quotKerEquivOfSurjective hθs)`.
+A detailed English derivation is pending.
 -/
 theorem finite_H_zero_of_exact [IsNoetherianRing R]
     (ρA : ∀ I J : Cell U, I.1 ⊆ J.1 → A I →ₗ[R] A J) (ρB : ∀ I J : Cell U, I.1 ⊆ J.1 → B I →ₗ[R] B J)
@@ -154,7 +152,7 @@ theorem finite_H_zero_of_exact [IsNoetherianRing R]
 end Cech
 
 /- English proof (translation)
-Introduce `S _ _ Ω _ _ N x E _ _ _ _ F G hGF hF hG`. Establish `key` using `Cech.finite_H_zero_of_exact (A := fun I => ↥(G.sub I)) (B := fun I => ↥(F.sub I)) (C := fun I => ↥(F.sub I) ⧸ SubSystem.quotSub F G I) G.res F.res (SubSystem.quotRes F G) (fun _ _ _ _ _ _ => rfl) (fun I => { toFun := fun y => ⟨y, hGF I y.2⟩, map_add' := fun _ _ => rfl, map_smul' …`. Conclude with `key`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem QuotientH0Finite.proof : QuotientH0Finite.Statement.{u, v, w} := by
   intro S _ _ Ω _ _ N x E _ _ _ _ F G hGF hF hG

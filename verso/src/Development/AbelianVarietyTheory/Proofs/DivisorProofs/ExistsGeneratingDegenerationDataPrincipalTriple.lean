@@ -19,15 +19,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.UBaseData
 
 /- English proof (translation)
-Introduce `E _ _ _ H W _ _ _ t hp hA hK ⟨g, hg⟩ X _ _ _ _ x₀ hadd hlin`. Use `letI := H.starRing`. Set `P` to `GlobalTheory.GenericPol.toPolAV t g hg hp hA hK`. Take `⟨sym, hsym, hsym'⟩` from `(GlobalTheory.isSymmetric_iff_exists_gen _ _ t.PP).1 t.sym`. Establish `hψ0 : ∀ y : X, ∃ ψ : LB.Gen (LB.LinComb P.L (K` using `PUnit) (fun _ => ptK (x₀ y)) (fun _ => -1)), ψ.IsGen := fun y => ReciprocityTheory.ChartRestriction.G.DVR.exists_gen_of_local (V := FractionRing W) P.L P.isLB _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose ψ hψ using hψ0`. Set `D₀ : DegPre W` to `{ P := P, rig := t.PP.rig, rig_gen := t.PP.rigGen, cub := t.cub, sym := sym, sym_gen := hsym, sym_rig := hsym', X := X, c := x₀, c_add := hadd, psi := ψ, psi_gen := hψ }`. Use `letI : Module (𝓞 E) D₀.X := ‹Module (𝓞 E) X›`. Use `haveI : Module.Projective (𝓞 E) D₀.X := GlobalTheory.PointStepCompare.projective_of_free E (X := X)`. Use `haveI : Module.Finite (𝓞 E) D₀.X := Module.Finite.of_restrictScalars_finite ℤ (𝓞 E) X`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use `t.act.hom H.w0` as an intermediate fact. Set `onB : D₀.P.OAct (𝓞 E)` to `⟨t.act.toRingAct, GlobalTheory.GenericPol.rosatiAdj t⟩`. Take `⟨u, hu, hu0⟩` from `GlobalTheory.ArcCM.CxFibre.exists_primGen t.PP (t.act.act H.w0) t.prim`. Take `⟨ψ', hψ', oa, hoa, he, hb, hw, hU⟩` from `GlobalTheory.UTau0.exists_symmetric_balanced_generator_psi_zero_localRing W D₀ (𝓞 E) onB hlin H.w0 (ReciprocityTheory.ChartRestriction.G.PullbackSections.CVA.cmHostUnit_add_conj_eq_one H) ⟨u, hu, hu0⟩`. Use `⟨{ D₀ with psi := ψ', psi_gen := hψ' }, ‹Module (𝓞 E) X›, oa, 𝟙 _, LinearEquiv.refl _ _, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `he`. Conclude with `hb`. Conclude with `hU`. Conclude with `hw`. Use `⟨GlobalTheory.PolDeg.Wit.grpPullback_id t.G, fun a => ?_, GlobalTheory.PolDeg.Wit.idPull _, GlobalTheory.PolDeg.Wit.idPull_isGen t.PP.isLB⟩` and prove the remaining obligations.
-
-Rewrite using `[hoa]`. Conclude with `(Category.comp_id _).trans (Category.id_comp _).symm`. Introduce `y`. Conclude with `Category.comp_id _`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W] (t : SAB H (Sp W)), IsProper t.G.hom → Out.RelAmple t.G t.PP.L → Out.KTriv t.G t.PP.L → (∃ g, SmoothOfRelativeDimension g t.G.hom) → ∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Free ℤ X] [Module.Finite ℤ X] (x₀ : X → (𝟙_ (Over (Sp W)) ⟶ t.G)), (∀ y z, x₀ (y + z) = x₀ y * x₀ z) → (∀ (a : 𝓞 E) y, x₀ (a • y) = x₀ y ≫ t.act.act a) → ∃ (D : DegPre W) (_ : Module (𝓞 E) D.X) (oa : letI := H.starRing; D.OAct (𝓞 E)) (φB : t.G.left ⟶ D.P.A.left) (e : X ≃ₗ[𝓞 E] D.X), D.PsiEven ∧ D.TauBimult ∧ (∀ y, PsiUnitOn D y Set.univ) ∧ (letI := H.starRing; TraceFormTwistIso D oa H.w0) ∧ IsAbPart t D oa φB ∧ ∀ y, (x₀ y).left ≫ φB = (D.c (e y)).left := by
   intro E _ _ _ H W _ _ _ t hp hA hK ⟨g, hg⟩ X _ _ _ _ x₀ hadd hlin

@@ -5,7 +5,7 @@ open NumberField IsDedekindDomain Formalism Formalism.BasicNotions Formalism.Bas
 namespace GlobalTheory.JumpStatement
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.JumpSets.stmtJ_holds`.
+A detailed English derivation is pending.
 -/
 theorem holds_all : ∀ D : D7, AdmissibleParameterJ.JumpBoundClosedForm D := GlobalTheory.JumpSets.stmtJ_holds
 

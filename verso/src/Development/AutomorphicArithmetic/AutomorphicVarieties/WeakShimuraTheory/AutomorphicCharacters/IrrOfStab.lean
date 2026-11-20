@@ -3,21 +3,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Use `⟨top_ne_bot, fun _ _ _ => Submodule.mem_top, fun W _ hW => ?_⟩` and prove the remaining obligations. Establish `key : ∀ M : Matrix (Fin 4) (Fin 4) k, ∀ v ∈ W, M.mulVec v ∈ W`. Introduce `M`. Establish `hM : M ∈ Submodule.span k (Set.range r)`. Establish `h1 : Submodule.span k (Set.range r) = ⊤` using `hr`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1]`. Conclude with `Submodule.mem_top`. Proceed by induction on `hM using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨g, rfl⟩` from `hx`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, t, hs⟩` from `h g`. Introduce `v hv`. Rewrite using `[hs, Matrix.smul_mulVec]`. Conclude with `W.smul_mem _ (hW s v hv)`. Consider the case `zero => intro v _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[Matrix.zero_mulVec]`. Conclude with `W.zero_mem`. Consider the case `add x y _ _ hx hy => intro v hv`. Rewrite using `[Matrix.add_mulVec]`. Conclude with `W.add_mem (hx v hv) (hy v hv)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Consider the case `smul a x _ hx => intro v hv`. Rewrite using `[Matrix.smul_mulVec]`. Conclude with `W.smul_mem _ (hx v hv)`. Distinguish the cases in `hb : W = ⊥`. Conclude with `Or.inl hb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `right`. Take `⟨v, hv, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hb`. Take `⟨i, hi⟩` from `Function.ne_iff.1 hv0`. Establish `hi' : v i ≠ 0` using `hi`. Use `eq_top_iff.2 fun w _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h2` using `key (Matrix.of fun a b => if b = i then w a * (v i)⁻¹ else 0) v hv`. Establish `h3 : (Matrix.of fun a b => if b = i then w a * (v i)⁻¹ else 0 : Matrix (Fin 4) (Fin 4) k).mulVec v = w`. Use function extensionality and compare the values at `a`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[mul_assoc, inv_mul_cancel₀ hi', mul_one]`.
-
-Rewrite `h2` using `[h3]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 private theorem irr_of_stab {k Γ H : Type} [Field k] [Group Γ] [Group H] (r : Γ →* M4 k) (hr : Irr r)
     (ρ : H →* GL (Fin 4) k)
@@ -53,9 +51,9 @@ private theorem irr_of_stab {k Γ H : Type} [Field k] [Group Γ] [Group H] (r : 
   rwa [h3] at h2
 
 /- English proof (translation)
-Introduce `k Γ Γ' _ _ _ r r' hr h`. Use `⟨irr_of_stab r hr _ fun g => ?_, fun χ => irr_of_stab r hr _ fun g => ?_⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `h g`. Conclude with `⟨s, 1, by rw [one_smul, ← hs]; rfl⟩`. Take `⟨s, hs⟩` from `h g`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `⟨s, ((χ s : k))⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[Af.tw_val, smul_smul, inv_mul_cancel₀ (Units.ne_zero _), one_smul, ← hs]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem UpperTheory.V.Ws.auIrr :
     ∀ {k Γ Γ' : Type} [Field k] [Group Γ] [Group Γ'] (r : Γ →* M4 k) (r' : Γ' →* M4 k), Irr r → (∀ g, ∃ g', r' g' = r g) → Af.IsIrr r'.toHomUnits ∧ ∀ χ : Γ' →* kˣ, Af.IsIrr (Af.tw r'.toHomUnits χ) := by

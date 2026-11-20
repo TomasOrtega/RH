@@ -5,17 +5,17 @@ import Development.AbelianVarietyTheory.Definitions.TwistedInnerProducts.IsUnita
 namespace GlobalTheory.CompanionTheory.ProdQuotient
 
 /- English proof (translation)
-Set `φ : (G₁ × G₂) ⧸ K₁.prod K₂ → (G₁ ⧸ K₁) × (G₂ ⧸ K₂)` to `fun q => ((q.out.1 : G₁ ⧸ K₁), (q.out.2 : G₂ ⧸ K₂))`. Establish `hinj : Function.Injective φ`. Introduce `a b hab`. Establish `e₁ : ((a.out.1 : G₁ ⧸ K₁)) = (b.out.1 : G₁ ⧸ K₁)` using `congrArg Prod.fst hab`. Establish `e₂ : ((a.out.2 : G₂ ⧸ K₂)) = (b.out.2 : G₂ ⧸ K₂)` using `congrArg Prod.snd hab`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e₁`, `e₂` using `[QuotientGroup.eq]`. Establish `key : ((a.out : G₁ × G₂) : (G₁ × G₂) ⧸ K₁.prod K₂) = (b.out : G₁ × G₂)`. Rewrite using `[QuotientGroup.eq]`. Conclude with `Subgroup.mem_prod.mpr ⟨e₁, e₂⟩`. Simplify using `using key`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `inv₁ : ∀ g : G₁, f₁ (g : G₁ ⧸ K₁).out = f₁ g`. Introduce `g`. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul K₁ g`. Rewrite using `[hk]`. Conclude with `i₁ k k.2 g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `inv₂ : ∀ g : G₂, f₂ (g : G₂ ⧸ K₂).out = f₂ g`. Introduce `g`. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul K₂ g`. Rewrite using `[hk]`. Conclude with `i₂ k k.2 g`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `((h₁.prod h₂).preimage hinj.injOn).subset ?_` and prove the remaining obligations. Introduce `q hq`. Establish `hq' : f₁ q.out.1 * f₂ q.out.2 ≠ 0` using `hq`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f₁ (q.out.1 : G₁ ⧸ K₁).out ≠ 0`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv₁]`. Conclude with `left_ne_zero_of_mul hq'`. Express the relevant statement in the definitionally equal form `f₂ (q.out.2 : G₂ ⧸ K₂).out ≠ 0`. Rewrite using `[inv₂]`. Conclude with `right_ne_zero_of_mul hq'`.
+A detailed English derivation is pending.
 -/
 theorem support_mul_out_finite (G₁ G₂ : Type) [Group G₁] [Group G₂] (K₁ : Subgroup G₁)
     (K₂ : Subgroup G₂) (f₁ : G₁ → ℂ) (f₂ : G₂ → ℂ)

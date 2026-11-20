@@ -11,7 +11,7 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibl
 namespace GlobalTheory.RegularRing
 
 /- English proof (translation)
-Introduce `l _ P AI hs`. Establish `h` using `fontaineFormalism_of_regular l P AI (fun C => ⟨GlobalTheory.T.algClosure_tensor_bcris_to_bdR_injective l C, GlobalTheory.T.bcris_regular_of_tensorInj l C (GlobalTheory.T.algClosure_tensor_bcris_to_bdR_injective l C)⟩) hs`. Conclude with `⟨h.2.2.2.2.1, h.2.2.2.2.2.2.1, h.2.2.2.2.2.2.2.1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem quot_tensor_dual_crys : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P),
     GlobalTheory.Per.IsStd P AI → GlobalTheory.IndefiniteRowSideFullHecke.CrystallineSubrepresentation.LocQuotCrys l P ∧ GlobalTheory.IndefiniteRowSideFullHecke.CrystallineSubrepresentation.LocTensorCrys l P ∧

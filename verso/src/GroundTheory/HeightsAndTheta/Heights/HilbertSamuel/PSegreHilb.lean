@@ -12,7 +12,7 @@ variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintyp
   (F : Type) [Field F]
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Finset.sum_apply, Fintype.sum_sigma]`. Simplify using `[blockWeight, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem weight_blockWeight_apply (e : (Σ k, ι k) →₀ ℕ) (k : K) :
     Finsupp.weight (blockWeight ι) e k = ∑ i, e ⟨k, i⟩ := by
@@ -24,7 +24,7 @@ theorem weight_blockWeight_apply (e : (Σ k, ι k) →₀ ℕ) (k : K) :
 omit [Fintype K] [DecidableEq K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Simplify using `[blockWeight]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem blockWeight_unit (v : Σ _ : Unit, ∀ k, ι k) :
     blockWeight (fun _ : Unit => ∀ k, ι k) v = fun _ => 1 := by
@@ -34,15 +34,15 @@ theorem blockWeight_unit (v : Σ _ : Unit, ∀ k, ι k) :
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Proceed by induction on `hp using IsWeightedHomogeneous.induction_on with`. Consider the case `zero => rw [map_zero]`. Conclude with `isWeightedHomogeneous_zero _ _ _`. Consider the case `add p q _ _ hp hq => rw [map_add]`. Conclude with `hp.add hq`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `monomial d r hr`. Establish `hX : ∀ v : Σ _ : Unit, ∀ k, ι k, IsWeightedHomogeneous (blockWeight ι) (∏ k, (X ⟨k, v.2 k⟩ : MRing ι F)) (fun _ => 1)`. Introduce `v`. Establish `h` using `IsWeightedHomogeneous.prod (R := F) (w := blockWeight ι) Finset.univ (fun k => (X ⟨k, v.2 k⟩ : MRing ι F)) (fun k => blockWeight ι ⟨k, v.2 k⟩) (fun k _ => isWeightedHomogeneous_X _ _ _)`. Use `h using 1` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `j`. Simplify using `[blockWeight, Finset.sum_apply, Pi.single_apply]`. Establish `hsum : ∑ v ∈ d.support, d v = m`. Establish `h` using `congrFun hr ()`. Rewrite `h` using `[Finsupp.weight_apply, Finsupp.sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `h` using `[blockWeight_unit, Finset.sum_apply]`. Establish `hdeg : (∑ v ∈ d.support, d v • (fun _ : K => 1) : K → ℕ) = fun _ => m`. Use function extensionality and compare the values at `k`. Simplify using `[Finset.sum_apply, hsum]`. Unfold `segreMap`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[aeval_monomial, algebraMap_eq, Finsupp.prod]`. Use `IsWeightedHomogeneous.C_mul ?_ r` and prove the remaining obligations. Rewrite using `[← hdeg]`. Conclude with `IsWeightedHomogeneous.prod _ _ _ fun v _ => (hX v).pow _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem segreMap_isMultiHomog {m : ℕ} {p : MRing (fun _ : Unit => ∀ k, ι k) F}
     (hp : IsWeightedHomogeneous (blockWeight (fun _ : Unit => ∀ k, ι k)) p (fun _ => m)) :
@@ -77,23 +77,21 @@ theorem segreMap_isMultiHomog {m : ℕ} {p : MRing (fun _ : Unit => ∀ k, ι k)
 omit [DecidableEq K] in
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Introduce `e he`. Establish `he0 : e = 0`. Use extensionality with `⟨k, i⟩`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `(Finset.sum_eq_zero_iff.mp (he k)) i (Finset.mem_univ _)`. Substitute `he0` using the available equality. Use `⟨1, ?_, ?_⟩` and prove the remaining obligations. Conclude with `isWeightedHomogeneous_one _ _`. Simplify using the standard rewrite rules.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `succ m ih`. Introduce `e he`. Establish `hne : ∀ k, ∃ i, e ⟨k, i⟩ ≠ 0` using `fun k => by`. Take `⟨i, -, hi⟩` from `Finset.exists_ne_zero_of_sum_ne_zero (s := Finset.univ) (f := fun i => e ⟨k, i⟩) (by rw [he k]; omega)`. Conclude with `⟨i, hi⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose f hf using hne`. Use `set s : (Σ k, ι k) →₀ ℕ := Finsupp.equivFunOnFinite.symm (fun v => if v.2 = f v.1 then 1 else 0) with hs_def`. Establish `hs : ∀ k i, s ⟨k, i⟩ = if i = f k then 1 else 0` using `fun k i => by simp [hs_def]`. Establish `hse : s ≤ e`. Rewrite using `[Finsupp.le_def]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Introduce and unpack `⟨k, i⟩`. Rewrite using `[hs]`. Use `split_ifs with h`. Substitute `h` using the available equality. Conclude with `Nat.one_le_iff_ne_zero.mpr (hf k)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `Nat.zero_le _`. Establish `hadd : e - s + s = e` using `tsub_add_cancel_of_le hse`. Establish `he' : ∀ k, ∑ i, (e - s) ⟨k, i⟩ = m` using `fun k => by`. Establish `h1 : ∑ i, (e - s) ⟨k, i⟩ + ∑ i, s ⟨k, i⟩ = m + 1`. Rewrite using `[← Finset.sum_add_distrib, ← he k]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_congr rfl fun i _ => by rw [← Finsupp.add_apply, hadd]`. Establish `h2 : ∑ i, s ⟨k, i⟩ = 1` using `by simp [hs]`. Use linear arithmetic over natural numbers and integers. Take `⟨g, hg, hge⟩` from `ih (e - s) he'`. Establish `hsX : monomial s (1 : F) = ∏ k, (X ⟨k, f k⟩ : MRing ι F)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[monomial_eq, C_1, one_mul, Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `[hs]`. Use `⟨g * X ⟨(), f⟩, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `(show IsWeightedHomogeneous _ g _ from hg).mul (isWeightedHomogeneous_X F (blockWeight (fun _ : Unit => ∀ k, ι k)) ⟨(), f⟩)`.
-
-Rewrite `h` using `[blockWeight_unit]`. Conclude with `h`. Simplify using `only [AlgHom.toLinearMap_apply, map_mul] at hge ⊢`. Rewrite using `[hge, segreMap_X, ← hsX, monomial_mul, one_mul, hadd]`.
+A detailed English derivation is pending.
 -/
 theorem monomial_mem_map_segreMap (m : ℕ) :
     ∀ e : (Σ k, ι k) →₀ ℕ, (∀ k, ∑ i, e ⟨k, i⟩ = m) →
@@ -149,11 +147,11 @@ theorem monomial_mem_map_segreMap (m : ℕ) :
       rw [hge, segreMap_X, ← hsX, monomial_mul, one_mul, hadd]
 
 /- English proof (translation)
-Use `le_antisymm ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨p, hp, rfl⟩`. Conclude with `segreMap_isMultiHomog F hp`. Introduce `p hp`. Establish `hp' : IsWeightedHomogeneous (blockWeight ι) p (fun _ => m)` using `hp`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction.
 
-Use `clear hp`. Proceed by induction on `hp' using IsWeightedHomogeneous.induction_on with`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add p q _ _ hp hq => exact Submodule.add_mem _ hp hq`. Consider the case `monomial d r hr`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : ∀ k, ∑ i, d ⟨k, i⟩ = m` using `fun k => by`. Rewrite using `[← weight_blockWeight_apply, hr]`. Establish `h` using `Submodule.smul_mem _ r (monomial_mem_map_segreMap F m d hd)`. Rewrite `h` using `[smul_monomial, smul_eq_mul, mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem map_segreMap_weightedHomogeneousSubmodule (m : ℕ) :
     (weightedHomogeneousSubmodule F (blockWeight (fun _ : Unit => ∀ k, ι k)) (fun _ => m)).map
@@ -181,7 +179,7 @@ def segreQuotMap (q : Ideal (MRing ι F)) :
 omit [DecidableEq K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk q (segreMap F x) = 0 at ha`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_comap.mpr (Ideal.Quotient.eq_zero_iff_mem.mp ha))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem segreQuotMap_injective (q : Ideal (MRing ι F)) : Function.Injective (segreQuotMap F q) := by
   rw [injective_iff_map_eq_zero]
@@ -203,9 +201,9 @@ def segreGradedPieceEquiv (q : Ideal (MRing ι F)) (m : ℕ) :
   (Submodule.equivMapOfInjective _ hinj _).trans (LinearEquiv.ofEq _ _ hmap)
 
 /- English proof (translation)
-Introduce `F _ K _ _ _ ι _ q n`. Unfold `hilbFn`. Distinguish the cases in `hn : 0 ≤ n`. Rewrite using `[if_pos (fun _ => hn), if_pos (fun _ => hn)]`. Conclude with `congrArg (fun x : ℕ => (x : ℤ)) (segreGradedPieceEquiv F q n.toNat).finrank_eq`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (fun h => hn (h ())), if_neg (fun h => hn (h (Classical.arbitrary K)))]`.
+A detailed English derivation is pending.
 -/
 theorem SegreHilb.proof : SegreHilb.Statement := by
   intro F _ K _ _ _ ι _ q n

@@ -26,7 +26,7 @@ Both sides reduce to the same expression.
 theorem lmul_apply (a b y : Mat n) : lmul a b y = a * y * b := rfl
 
 /- English proof (translation)
-Use `show (a * y * b).det ≠ 0`. Rewrite using `[Matrix.det_mul, Matrix.det_mul]`. Conclude with `mul_ne_zero (mul_ne_zero ha hy) hb`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_GLs {a y b : Mat n} (ha : a ∈ GLs n) (hy : y ∈ GLs n) (hb : b ∈ GLs n) : a * y * b ∈ GLs n := by
   show (a * y * b).det ≠ 0
@@ -34,18 +34,18 @@ theorem mul_mem_GLs {a y b : Mat n} (ha : a ∈ GLs n) (hy : y ∈ GLs n) (hb : 
   exact mul_ne_zero (mul_ne_zero ha hy) hb
 
 /- English proof (translation)
-The claim follows from `hF.comp (lmul a b).contDiff.contDiffOn fun _ hy => mul_mem_GLs ha hy hb`.
+A detailed English derivation is pending.
 -/
 theorem comp_lmul {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {F : Mat n → V} (hF : ContDiffOn ℝ ∞ F (GLs n))
     {a b : Mat n} (ha : a ∈ GLs n) (hb : b ∈ GLs n) : ContDiffOn ℝ ∞ (fun y => F (a * y * b)) (GLs n) :=
   hF.comp (lmul a b).contDiff.contDiffOn fun _ hy => mul_mem_GLs ha hy hb
 
 /- English proof (translation)
-Establish `hP : ContDiffOn ℝ ∞ (fun y => (F₁ y, F₂ y)) (GLs n)` using `h₁.prodMk h₂`. Establish `hc` using `(hGC n (V × V) V s m _ hP).2 g₀ hg₀`. Establish `c1` using `hc.2.2 (ContinuousLinearMap.fst ℂ V V - ContinuousLinearMap.snd ℂ V V)`. Establish `c2` using `hc.2.2 (ContinuousLinearMap.fst ℂ V V)`. Establish `c3` using `hc.2.2 (ContinuousLinearMap.snd ℂ V V)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (fun y => (ContinuousLinearMap.fst ℂ V V - ContinuousLinearMap.snd ℂ V V) (F₁ y, F₂ y)) = fun y => F₁ y - F₂ y` using `by funext y; simp`. Establish `e2 : (fun y => (ContinuousLinearMap.fst ℂ V V) (F₁ y, F₂ y)) = F₁` using `by funext y; simp`. Establish `e3 : (fun y => (ContinuousLinearMap.snd ℂ V V) (F₁ y, F₂ y)) = F₂` using `by funext y; simp`. Rewrite `c1` using `[e1]`. Rewrite `c2` using `[e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `c3` using `[e3]`. Rewrite using `[c1, c2, c3]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gel_sub (hGC : GelComm) {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (s : Bool) (m : ℕ)
     {F₁ F₂ : Mat n → V} (h₁ : ContDiffOn ℝ ∞ F₁ (GLs n)) (h₂ : ContDiffOn ℝ ∞ F₂ (GLs n)) {g₀ : Mat n} (hg₀ : g₀ ∈ GLs n) :
@@ -63,9 +63,9 @@ theorem gel_sub (hGC : GelComm) {V : Type} [NormedAddCommGroup V] [NormedSpace �
   rw [c1, c2, c3]; simp
 
 /- English proof (translation)
-Establish `hF' : ContDiffOn ℝ ∞ (fun y => F (a * y)) (GLs n)`. Simplify using `using comp_lmul hF ha (show (1 : Mat n) ∈ GLs n by show (1 : Mat n).det ≠ 0; simp)`. Establish `h1` using `((hGC n V V s m _ hF').2 1 (show (1 : Mat n) ∈ GLs n by show (1 : Mat n).det ≠ 0; simp)).2.1 b hb`. Establish `h2` using `((hGC n V V s m _ hF).2 b hb).2.1 a ha`. Establish `e : (fun y => F (a * y * b)) = fun y => (fun y' => F (a * y')) (y * b)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `y`. Simplify using `[Matrix.mul_assoc]`. Rewrite using `[e, h1.2, one_mul, h2.1]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem gel_transport (hGC : GelComm) {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (s : Bool) (m : ℕ)
     {F : Mat n → V} (hF : ContDiffOn ℝ ∞ F (GLs n)) {a b : Mat n} (ha : a ∈ GLs n) (hb : b ∈ GLs n) :
@@ -79,7 +79,7 @@ theorem gel_transport (hGC : GelComm) {V : Type} [NormedAddCommGroup V] [NormedS
   rw [e, h1.2, one_mul, h2.1]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (Matrix.mulVecLin q)` using `Matrix.mulVec_injective_iff_isUnit.2 hq`. Use `Submodule.eq_of_le_of_finrank_eq ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Conclude with `h v hv`. Conclude with `(LinearEquiv.finrank_eq (Submodule.equivMapOfInjective _ hinj W)).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem map_eq_of_le {W : Submodule ℂ (Fin n → ℂ)} {q : Mat n} (hq : IsUnit q) (h : ∀ v ∈ W, q *ᵥ v ∈ W) :
     W.map (Matrix.mulVecLin q) = W := by

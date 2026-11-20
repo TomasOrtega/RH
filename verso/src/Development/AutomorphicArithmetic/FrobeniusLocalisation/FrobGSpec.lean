@@ -6,23 +6,21 @@ open NumberField IntermediateField Ideal Formalism.FrobeniusOrbits Formalism.HC
 open scoped Pointwise
 
 /- English proof (translation)
-Introduce `φ H p hpr hnd`. Establish `hp : Nat.Coprime p H.condN` using `(Nat.Prime.coprime_iff_not_dvd hpr.out).2 hnd`. Establish `hodd : p % 2 = 1` using `H.odd_of_coprime hp`. Use `set u := ZMod.unitOfCoprime p hp with hu`. Establish `hval : (u : ZMod H.condN).val ≡ p [MOD H.condN]` using `H.val_unitOfCoprime hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF : H.frobG p = H.art u` using `H.frobG_of_coprime hp`. Establish `hjac : (((H.frobG p).1.2 : ℤˣ) : ℤ) = jacobiSym (-(H.d : ℤ)) p`. Rewrite using `[hF, H.der.art_ch u, jacobi_neg_recip H.d_mod_four hodd]`. Conclude with `jacobi_congr (hval.of_dvd H.d_dvd_condN)`. Establish `hne : jacobiSym (-(H.d : ℤ)) p = 1 ∨ jacobiSym (-(H.d : ℤ)) p = -1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[← hjac]`. Apply the tactic sequence `rcases Int.units_eq_one_or ((H.frobG p).1.2) with h | h <;> simp [h]`. Establish `hpsi : H.frobG p ∈ φ.Psi ↔ jacobiSym (-(H.d : ℤ)) p = 1`. Rewrite using `[Frame.mem_Psi_iff, ← hjac]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Rewrite using `[h]`. Both sides reduce to the same expression. Introduce `h`. Conclude with `Units.ext h`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, hjac, ?_, ?_, hpsi, ?_⟩` and prove the remaining obligations. Introduce `P _ _ σ`. Rewrite using `[hF]`. Conclude with `H.frob_iff p hp P σ`. Rewrite using `[hF, H.psAt_of_coprime hp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hpsi]`. Unfold `UpperTheory.HF.Formalism.HC.HostRaw.Inert`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨hpr.out, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition.
 
-Break down `hne with h1 | h1` into its components or cases. Conclude with `absurd h1 h`. Conclude with `h1`. Introduce and unpack `⟨-, h⟩`. Rewrite using `[h]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Evaluate the decidable proposition. Establish `hc2 : Nat.Coprime p (2 ^ (φ.e + 2))` using `Nat.Coprime.coprime_dvd_right H.tower_dvd_condN hp`. Use `⟨ZMod.unitOfCoprime p hc2, by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[hF]`. Apply `H.art_h` to reduce the goal to its premises.
-
-Rewrite using `[ZMod.coe_unitOfCoprime]`. Conclude with `((ZMod.natCast_eq_natCast_iff _ _ _).2 (hval.of_dvd H.tower_dvd_condN)).symm`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.HF.frobG_spec :
     ∀ (φ : Frame) (H : HostAx φ) (p : ℕ) [Fact p.Prime], ¬ p ∣ H.condN →

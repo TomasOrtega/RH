@@ -9,7 +9,7 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Close
 open MvPolynomial
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h ι _ _ n P D G z hz c`. Conclude with `h ι n P (AddBlockData.toObjects D) G.d G.g G.isFormSystem z hz c`. Introduce `h ι _ _ n P D d g hg z hz c`. Conclude with `h ι n P (AddBlockData.ofObjects D) (ChartForms.ofFormSystem hg) z hz c`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ChartVanishing.equiv :
     GroundTheory.Heights₂.Heights.ChartVanishing.Statement ↔ GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Close.ChartVanishing.Statement := by

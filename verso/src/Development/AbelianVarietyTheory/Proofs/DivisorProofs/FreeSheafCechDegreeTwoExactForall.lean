@@ -63,7 +63,7 @@ def e2 : L f 2 ≅ Tr f where
     · simp only [Category.assoc]; erw [pullback.lift_snd_assoc, pullback.lift_snd]; simp [WidePullback.lift_π]
 
 /- English proof (translation)
-Simplify using `only [SimplicialObject.δ, Arrow.cechNerve_map]`. Use `erw [WidePullback.lift_π]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem face_π {n : ℕ} (i : Fin (n + 2)) (j : Fin (n + 1)) :
     (Arrow.mk f).cechNerve.δ i ≫ WidePullback.π (fun _ => f) j = WidePullback.π (fun _ => f) (i.succAbove j) := by
@@ -72,38 +72,32 @@ theorem face_π {n : ℕ} (i : Fin (n + 2)) (j : Fin (n + 1)) :
   rfl
 
 /- English proof (translation)
-Use `erw [pullback.lift_snd]`. Conclude with `face_π f 0 0`.
+A detailed English derivation is pending.
 -/
 theorem cech_nerve_face_one_zero : (Arrow.mk f).cechNerve.δ (0 : Fin 2) ≫ (e0 f).hom = (e1 f).hom ≫ pullback.snd f f := by
   erw [pullback.lift_snd]; exact face_π f 0 0
 /- English proof (translation)
-Use `erw [pullback.lift_fst]`. Conclude with `face_π f 1 0`.
+A detailed English derivation is pending.
 -/
 theorem cech_nerve_face_one_one : (Arrow.mk f).cechNerve.δ (1 : Fin 2) ≫ (e0 f).hom = (e1 f).hom ≫ pullback.fst f f := by
   erw [pullback.lift_fst]; exact face_π f 1 0
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc]`. Use `erw [pullback.lift_fst, pullback.lift_snd_assoc, pullback.lift_fst]`. Conclude with `face_π f 0 0`. Simplify using `only [Category.assoc]`.
-
-Use `erw [pullback.lift_snd, pullback.lift_snd_assoc, pullback.lift_snd]`. Conclude with `face_π f 0 1`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cech_nerve_face_two_zero : (Arrow.mk f).cechNerve.δ (0 : Fin 3) ≫ (e1 f).hom = (e2 f).hom ≫ pullback.snd _ _ := by
   apply pullback.hom_ext
   · simp only [Category.assoc]; erw [pullback.lift_fst, pullback.lift_snd_assoc, pullback.lift_fst]; exact face_π f 0 0
   · simp only [Category.assoc]; erw [pullback.lift_snd, pullback.lift_snd_assoc, pullback.lift_snd]; exact face_π f 0 1
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, pr13_fst]`. Use `erw [pullback.lift_fst, pullback.lift_fst_assoc, pullback.lift_fst]`. Conclude with `face_π f 1 0`. Simplify using `only [Category.assoc, pr13_snd]`.
-
-Use `erw [pullback.lift_snd, pullback.lift_snd_assoc, pullback.lift_snd]`. Conclude with `face_π f 1 1`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cech_nerve_face_two_one : (Arrow.mk f).cechNerve.δ (1 : Fin 3) ≫ (e1 f).hom = (e2 f).hom ≫ pr13 f := by
   apply pullback.hom_ext
   · simp only [Category.assoc, pr13_fst]; erw [pullback.lift_fst, pullback.lift_fst_assoc, pullback.lift_fst]; exact face_π f 1 0
   · simp only [Category.assoc, pr13_snd]; erw [pullback.lift_snd, pullback.lift_snd_assoc, pullback.lift_snd]; exact face_π f 1 1
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc]`. Use `erw [pullback.lift_fst, pullback.lift_fst_assoc, pullback.lift_fst]`. Conclude with `face_π f 2 0`. Simplify using `only [Category.assoc]`.
-
-Use `erw [pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd]`. Conclude with `face_π f 2 1`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cech_nerve_face_two_two : (Arrow.mk f).cechNerve.δ (2 : Fin 3) ≫ (e1 f).hom = (e2 f).hom ≫ pullback.fst _ _ := by
   apply pullback.hom_ext
@@ -116,13 +110,13 @@ namespace GlobalTheory.Et.CovChar.Trip
 open CechLevels in
 
 /- English proof (translation)
-Establish `h` using `freeOn_cechNerve_exactAt (R := R) f 0`. Rewrite `h` using `[HomologicalComplex.exactAt_iff' _ 2 1 0 (by simp) (by simp)]`. Use `(ShortComplex.exact_iff_of_iso ?_).1 h` and prove the remaining obligations. Use `ShortComplex.isoMk ((freeOn R).mapIso (e2 f)) ((freeOn R).mapIso (e1 f)) ((freeOn R).mapIso (e0 f)) ?_ ?_` and prove the remaining obligations. Establish `hd : ((AlgebraicTopology.alternatingFaceMapComplex (Shv R)).obj ((Arrow.mk f).cechNerve ⋙ freeOn R)).d 2 1 = (freeOn R).map ((Arrow.mk f).cechNerve.δ (0 : Fin 3)) - (freeOn R).map ((Arrow.mk f).cechNerve.δ (1 : Fin 3)) + (freeOn R).map ((Arrow.mk f).cechNerve.δ (2 : Fin 3))` using `by erw [AlgebraicTopology.AlternatingFaceMapComplex.obj_d_eq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[Fin.sum_univ_three, SimplicialObject.δ, sub_eq_add_neg]`. Express the relevant statement in the definitionally equal form `_ = ((AlgebraicTopology.alternatingFaceMapComplex (Shv R)).obj ((Arrow.mk f).cechNerve ⋙ freeOn R)).d 2 1 ≫ _`. Rewrite using `[hd]`. Simplify using `only [d2, Functor.mapIso_hom, Preadditive.comp_add, Preadditive.comp_sub, Preadditive.add_comp, Preadditive.sub_comp, ← Functor.map_comp, cech_nerve_face_two_zero, cech_nerve_face_two_one, cech_nerve_face_two_two]`. Simplify using `only [Functor.map_comp]`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `erw [Preadditive.comp_add, Preadditive.comp_sub]`. Both sides reduce to the same expression. Establish `hd : ((AlgebraicTopology.alternatingFaceMapComplex (Shv R)).obj ((Arrow.mk f).cechNerve ⋙ freeOn R)).d 1 0 = (freeOn R).map ((Arrow.mk f).cechNerve.δ (0 : Fin 2)) - (freeOn R).map ((Arrow.mk f).cechNerve.δ (1 : Fin 2))` using `by erw [AlgebraicTopology.AlternatingFaceMapComplex.obj_d_eq]`. Simplify using `[Fin.sum_univ_two, SimplicialObject.δ, sub_eq_add_neg]`. Express the relevant statement in the definitionally equal form `_ = ((AlgebraicTopology.alternatingFaceMapComplex (Shv R)).obj ((Arrow.mk f).cechNerve ⋙ freeOn R)).d 1 0 ≫ _`.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hd]`. Simplify using `only [d1, Functor.mapIso_hom, Preadditive.comp_sub, Preadditive.sub_comp, ← Functor.map_comp, cech_nerve_face_one_zero, cech_nerve_face_one_one]`. Simplify using `only [Functor.map_comp]`. Use `erw [Preadditive.comp_sub]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem free_sheaf_cech_degree_two_exact (R : Type) [CommRing R] {X Y : Scheme.{0}} (f : Y ⟶ X) :
     (ShortComplex.mk (d2 f R) (d1 f R) (d2_comp f R)).Exact := by
@@ -160,7 +154,7 @@ theorem free_sheaf_cech_degree_two_exact (R : Type) [CommRing R] {X Y : Scheme.{
 end GlobalTheory.Et.CovChar.Trip
 
 /- English proof (translation)
-Introduce `R _ _ _ f` and use `GlobalTheory.Et.CovChar.Trip.free_sheaf_cech_degree_two_exact R f`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : ∀ (R : Type) [CommRing R] {X Y : Scheme.{0}} (f : Y ⟶ X), (ShortComplex.mk (d2 f R) (d1 f R) (d2_comp f R)).Exact :=
   fun R _ _ _ f => GlobalTheory.Et.CovChar.Trip.free_sheaf_cech_degree_two_exact R f

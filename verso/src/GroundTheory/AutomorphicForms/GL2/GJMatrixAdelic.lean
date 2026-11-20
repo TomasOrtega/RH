@@ -34,7 +34,7 @@ def finPartPi (x : ι → 𝔸[K]) : ι → 𝔸ᶠ[K] :=
 
 omit [Fintype ι] in
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [infPartPi, Pi.neg_apply, homeomorphMixedSpace_apply]`. Conclude with `map_neg (InfiniteAdeleRing.ringEquiv_mixedSpace K) (x i).1`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem infPartPi_neg (x : ι → 𝔸[K]) : infPartPi (-x) = -infPartPi x := by
   funext i
@@ -49,7 +49,7 @@ theorem finPartPi_neg (x : ι → 𝔸[K]) : finPartPi (-x) = -finPartPi x := rf
 
 omit [Fintype ι] in
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [infPartPi, embPi, adeleRing_algebraMap_fst, homeomorphMixedSpace_algebraMap]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem infPartPi_algebraMap (ξ : ι → K) :
     infPartPi (fun i ↦ algebraMap K 𝔸[K] (ξ i)) = embPi K ξ := by
@@ -58,7 +58,7 @@ theorem infPartPi_algebraMap (ξ : ι → K) :
 
 omit [Fintype ι] in
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [finPartPi, adeleRing_algebraMap_snd]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem finPartPi_algebraMap (ξ : ι → K) :
     finPartPi (fun i ↦ algebraMap K 𝔸[K] (ξ i)) = fun i ↦ algebraMap K 𝔸ᶠ[K] (ξ i) := by
@@ -79,7 +79,7 @@ Both sides reduce to the same expression.
 theorem splitEquivPi_apply (x : ι → 𝔸[K]) : splitEquivPi K ι x = (infPartPi x, finPartPi x) := rfl
 
 /- English proof (translation)
-The claim follows from `(measurePreserving_arrowProdEquivProdArrow _ _ _ (fun _ ↦ infiniteAdeleMeasure K) (fun _ ↦ finiteAdeleMeasure K)).trans ((measurePreserving_pi _ _ fun _ ↦ measurePreserving_measurableEquivMixedSpace K).prod (MeasurePreserving.id _))`.
+A detailed English derivation is pending.
 -/
 theorem measurePreserving_splitEquivPi :
     MeasurePreserving (splitEquivPi K ι) (adeleMeasurePi K)
@@ -90,7 +90,7 @@ theorem measurePreserving_splitEquivPi :
       (MeasurePreserving.id _))
 
 /- English proof (translation)
-Rewrite using `[addChar_sum, mixedPairingPi, ← Finset.sum_neg_distrib, addChar_sum (𝐞), addChar_sum (finiteAdelicChar K), ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[adelicChar_mul_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem adelicChar_sum_mul_eq_pi (x y : ι → 𝔸[K]) :
     (adelicChar K (∑ i, x i * y i) : ℂ) =
@@ -113,7 +113,7 @@ def schwartzBruhatPi : Submodule ℂ ((ι → 𝔸[K]) → ℂ) :=
     F = schwartzBruhatTensorPi φ g}
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨φ, g, hg, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem schwartzBruhatTensorPi_mem (φ : 𝓢(ι → mixedSpace K, ℂ)) {g : (ι → 𝔸ᶠ[K]) → ℂ}
     (hg : g ∈ finiteSchwartzBruhatPi K) : schwartzBruhatTensorPi φ g ∈ schwartzBruhatPi K ι :=
@@ -126,7 +126,7 @@ theorem schwartzBruhatTensorPi_eq (φ : 𝓢(ι → mixedSpace K, ℂ)) (g : (ι
     schwartzBruhatTensorPi φ g = (fun p ↦ φ p.1 * g p.2) ∘ splitEquivPi K ι := rfl
 
 /- English proof (translation)
-Rewrite using `[schwartzBruhatTensorPi_eq, measurePreserving_splitEquivPi.integrable_comp_emb (splitEquivPi K ι).measurableEmbedding]`. Conclude with `(φ.integrable (μ := mixedMeasurePi K)).mul_prod (integrable_of_mem_finiteSchwartzBruhatPi hg)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_schwartzBruhatTensorPi (φ : 𝓢(ι → mixedSpace K, ℂ))
     {g : (ι → 𝔸ᶠ[K]) → ℂ} (hg : g ∈ finiteSchwartzBruhatPi K) :
@@ -137,9 +137,9 @@ theorem integrable_schwartzBruhatTensorPi (φ : 𝓢(ι → mixedSpace K, ℂ))
     (integrable_of_mem_finiteSchwartzBruhatPi hg)
 
 /- English proof (translation)
-Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem G hG`. Take `⟨φ, g, hg, rfl⟩` from `hG`. Conclude with `integrable_schwartzBruhatTensorPi φ hg`. Consider the case `zero => exact integrable_zero _ _ _`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add G H _ _ hG hH => exact hG.add hH`. Consider the case `smul c G _ hG => exact hG.smul c`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem integrable_of_mem_schwartzBruhatPi {F : (ι → 𝔸[K]) → ℂ} (hF : F ∈ schwartzBruhatPi K ι) :
     Integrable F (adeleMeasurePi K) := by
@@ -153,7 +153,7 @@ theorem integrable_of_mem_schwartzBruhatPi {F : (ι → 𝔸[K]) → ℂ} (hF : 
 
 omit [Fintype ι] in
 /- English proof (translation)
-The claim follows from `continuous_pi fun i ↦ (homeomorphMixedSpace K).continuous.comp (continuous_fst.comp (continuous_apply i))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_infPartPi : Continuous (infPartPi (K := K) (ι := ι)) :=
   continuous_pi fun i ↦ (homeomorphMixedSpace K).continuous.comp
@@ -161,15 +161,15 @@ theorem continuous_infPartPi : Continuous (infPartPi (K := K) (ι := ι)) :=
 
 omit [Fintype ι] in
 /- English proof (translation)
-The claim follows from `continuous_pi fun i ↦ continuous_snd.comp (continuous_apply i)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_finPartPi : Continuous (finPartPi (K := K) (ι := ι)) :=
   continuous_pi fun i ↦ continuous_snd.comp (continuous_apply i)
 
 /- English proof (translation)
-Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem G hG`. Take `⟨φ, g, hg, rfl⟩` from `hG`. Conclude with `(φ.continuous.comp continuous_infPartPi).mul (((mem_finiteSchwartzBruhatPi K).mp hg).1.continuous.comp continuous_finPartPi)`. Consider the case `zero => exact continuous_zero`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add G H _ _ hG hH => exact hG.add hH`. Consider the case `smul c G _ hG => exact hG.const_smul c`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem continuous_of_mem_schwartzBruhatPi {F : (ι → 𝔸[K]) → ℂ} (hF : F ∈ schwartzBruhatPi K ι) :
     Continuous F := by
@@ -188,7 +188,7 @@ def adelicFourierPi (F : (ι → 𝔸[K]) → ℂ) (y : ι → 𝔸[K]) : ℂ :=
   ∫ x, F x * (adelicChar K (∑ i, x i * y i) : ℂ) ∂adeleMeasurePi K
 
 /- English proof (translation)
-The claim follows from `continuous_subtype_val.comp ((continuous_adelicChar (K := K)).comp (continuous_finsetSum _ fun i _ ↦ (continuous_apply i).mul continuous_const))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_adelicChar_sum_mul_pi (y : ι → 𝔸[K]) :
     Continuous fun x : ι → 𝔸[K] ↦ (adelicChar K (∑ i, x i * y i) : ℂ) :=
@@ -196,7 +196,7 @@ theorem continuous_adelicChar_sum_mul_pi (y : ι → 𝔸[K]) :
     (continuous_finsetSum _ fun i _ ↦ (continuous_apply i).mul continuous_const))
 
 /- English proof (translation)
-The claim follows from `hF.mono (hF.1.mul (continuous_adelicChar_sum_mul_pi y).aestronglyMeasurable) (Eventually.of_forall fun x ↦ by rw [norm_mul, Circle.norm_coe, mul_one])`.
+A detailed English derivation is pending.
 -/
 theorem integrable_mul_adelicChar_pi {F : (ι → 𝔸[K]) → ℂ} (hF : Integrable F (adeleMeasurePi K))
     (y : ι → 𝔸[K]) :
@@ -205,7 +205,7 @@ theorem integrable_mul_adelicChar_pi {F : (ι → 𝔸[K]) → ℂ} (hF : Integr
     (Eventually.of_forall fun x ↦ by rw [norm_mul, Circle.norm_coe, mul_one])
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `only [adelicFourierPi, Pi.add_apply, add_mul]`. Conclude with `integral_add (integrable_mul_adelicChar_pi hF y) (integrable_mul_adelicChar_pi hG y)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem adelicFourierPi_add {F G : (ι → 𝔸[K]) → ℂ} (hF : Integrable F (adeleMeasurePi K))
     (hG : Integrable G (adeleMeasurePi K)) :
@@ -215,7 +215,7 @@ theorem adelicFourierPi_add {F G : (ι → 𝔸[K]) → ℂ} (hF : Integrable F 
   exact integral_add (integrable_mul_adelicChar_pi hF y) (integrable_mul_adelicChar_pi hG y)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `only [adelicFourierPi, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Conclude with `integral_const_mul c _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem adelicFourierPi_smul (c : ℂ) (F : (ι → 𝔸[K]) → ℂ) :
     adelicFourierPi K (c • F) = c • adelicFourierPi K F := by
@@ -224,16 +224,16 @@ theorem adelicFourierPi_smul (c : ℂ) (F : (ι → 𝔸[K]) → ℂ) :
   exact integral_const_mul c _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `[adelicFourierPi]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem adelicFourierPi_zero : adelicFourierPi K (0 : (ι → 𝔸[K]) → ℂ) = 0 := by
   funext y
   simp [adelicFourierPi]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Establish `h` using `integral_prod_mul (μ := mixedMeasurePi K) (ν := finiteMeasurePi K) (fun u ↦ 𝐞 (-mixedPairingPi K u (infPartPi y)) • φ u) (fun v ↦ g v * (finiteAdelicChar K (∑ i, v i * finPartPi y i) : ℂ))`. Establish `e` using `measurePreserving_splitEquivPi.integral_comp' (μ := adeleMeasurePi K) (f := splitEquivPi K ι) (fun p : (ι → mixedSpace K) × (ι → 𝔸ᶠ[K]) ↦ (𝐞 (-mixedPairingPi K p.1 (infPartPi y)) • φ p.1) * (g p.2 * (finiteAdelicChar K (∑ i, p.2 i * finPartPi y i) : ℂ)))`. Rewrite using `[schwartzBruhatTensorPi, mixedFourierPiSchwartz_apply, mixedFourierPi, finiteFourierPi, ← h, ← e, adelicFourierPi]`. Use `integral_congr_ae (Eventually.of_forall fun x ↦ ?_)` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [schwartzBruhatTensorPi, splitEquivPi_apply, adelicChar_sum_mul_eq_pi, Circle.smul_def, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem adelicFourierPi_schwartzBruhatTensorPi (φ : 𝓢(ι → mixedSpace K, ℂ))
     (g : (ι → 𝔸ᶠ[K]) → ℂ) :
@@ -255,11 +255,9 @@ theorem adelicFourierPi_schwartzBruhatTensorPi (φ : 𝓢(ι → mixedSpace K, �
   ring
 
 /- English proof (translation)
-Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem G hG`. Take `⟨φ, g, hg, rfl⟩` from `hG`. Rewrite using `[adelicFourierPi_schwartzBruhatTensorPi]`. Conclude with `schwartzBruhatTensorPi_mem _ (finiteFourierPi_mem hg)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => rw [adelicFourierPi_zero]`. Conclude with `zero_mem _`. Consider the case `add G H hG hH ihG ihH`. Rewrite using `[adelicFourierPi_add (integrable_of_mem_schwartzBruhatPi hG) (integrable_of_mem_schwartzBruhatPi hH)]`. Conclude with `add_mem ihG ihH`.
-
-Consider the case `smul c G _ ih`. Rewrite using `[adelicFourierPi_smul]`. Conclude with `Submodule.smul_mem _ c ih`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adelicFourierPi_mem_schwartzBruhatPi {F : (ι → 𝔸[K]) → ℂ}
     (hF : F ∈ schwartzBruhatPi K ι) : adelicFourierPi K F ∈ schwartzBruhatPi K ι := by
@@ -278,11 +276,11 @@ theorem adelicFourierPi_mem_schwartzBruhatPi {F : (ι → 𝔸[K]) → ℂ}
     exact Submodule.smul_mem _ c ih
 
 /- English proof (translation)
-Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem G hG`. Take `⟨φ, g, hg, rfl⟩` from `hG`. Rewrite using `[adelicFourierPi_schwartzBruhatTensorPi, adelicFourierPi_schwartzBruhatTensorPi, finiteFourierPi_finiteFourierPi hg]`. Use function extensionality and compare the values at `x`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [schwartzBruhatTensorPi, mixedFourierPiSchwartz_apply]`. Rewrite using `[mixedFourierPi_mixedFourierPi, infPartPi_neg, finPartPi_neg]`. Consider the case `zero => funext x`. Simplify using `[adelicFourierPi_zero]`. Consider the case `add G H hG hH ihG ihH`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[adelicFourierPi_add (integrable_of_mem_schwartzBruhatPi hG) (integrable_of_mem_schwartzBruhatPi hH), adelicFourierPi_add (integrable_of_mem_schwartzBruhatPi (adelicFourierPi_mem_schwartzBruhatPi hG)) (integrable_of_mem_schwartzBruhatPi (adelicFourierPi_mem_schwartzBruhatPi hH)), …`. Both sides reduce to the same expression. Consider the case `smul c G _ ih`. Rewrite using `[adelicFourierPi_smul, adelicFourierPi_smul, ih]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem adelicFourierPi_adelicFourierPi {F : (ι → 𝔸[K]) → ℂ} (hF : F ∈ schwartzBruhatPi K ι) :
     adelicFourierPi K (adelicFourierPi K F) = fun x ↦ F (-x) := by
@@ -307,7 +305,7 @@ theorem adelicFourierPi_adelicFourierPi {F : (ι → 𝔸[K]) → ℂ} (hF : F �
     rfl
 
 /- English proof (translation)
-Rewrite using `[schwartzBruhatTensorPi, infPartPi_algebraMap, finPartPi_algebraMap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem schwartzBruhatTensorPi_algebraMap (φ : 𝓢(ι → mixedSpace K, ℂ))
     (g : (ι → 𝔸ᶠ[K]) → ℂ) (ξ : ι → K) :
@@ -316,7 +314,7 @@ theorem schwartzBruhatTensorPi_algebraMap (φ : 𝓢(ι → mixedSpace K, ℂ))
   rw [schwartzBruhatTensorPi, infPartPi_algebraMap, finPartPi_algebraMap]
 
 /- English proof (translation)
-Simplify using `only [finiteTensor, cosetIndicator_apply, fun i ↦ algebraMap_sub_mem_idealFiniteAdeles_iff (hc i), Finset.prod_boole, Finset.mem_univ, true_implies, Set.indicator_apply, cosetPi, Set.mem_ofPred_eq, Pi.one_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem finiteTensor_cosetIndicator_algebraMap {J : (FractionalIdeal (𝓞 K)⁰ K)ˣ}
     {b : ι → 𝔸ᶠ[K]} {c : ι → K}
@@ -328,11 +326,11 @@ theorem finiteTensor_cosetIndicator_algebraMap {J : (FractionalIdeal (𝓞 K)⁰
     Set.mem_ofPred_eq, Pi.one_apply]
 
 /- English proof (translation)
-Rewrite using `[adelicFourierPi_schwartzBruhatTensorPi, schwartzBruhatTensorPi_algebraMap, mixedFourierPiSchwartz_apply, finiteFourierPi_finiteTensor]`. Simplify using `only [finiteTensor, Adele2.finiteFourier_cosetIndicator_algebraMap (hc _)]`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ]`. Distinguish the cases in `hη : ∀ i, η i ∈ (traceDualIdeal K J : FractionalIdeal (𝓞 K)⁰ K)`. Establish `hmem : η ∈ cosetPi K (fun _ ↦ traceDualIdeal K J) 0` using `fun i ↦ by simpa using hη i`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[Set.indicator_of_mem hmem]`. Simplify using `only [if_pos (hη _)]`. Simplify using `only [mixedPairingPi, embPi]`. Rewrite using `[addChar_sum Real.fourierChar Finset.univ]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hmem : η ∉ cosetPi K (fun _ ↦ traceDualIdeal K J) 0` using `fun h ↦ hη fun i ↦ by`. Simplify using `using h i`. Take `⟨i, hi⟩` from `not_forall.mp hη`. Rewrite using `[Set.indicator_of_notMem hmem, Finset.prod_eq_zero (Finset.mem_univ i) (if_neg hi)]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem adelicFourierPi_tensor_cosetIndicator_algebraMap (φ : 𝓢(ι → mixedSpace K, ℂ))
     {J : (FractionalIdeal (𝓞 K)⁰ K)ˣ} {b : ι → 𝔸ᶠ[K]} {c : ι → K}
@@ -361,7 +359,7 @@ theorem adelicFourierPi_tensor_cosetIndicator_algebraMap (φ : 𝓢(ι → mixed
     ring
 
 /- English proof (translation)
-Rewrite using `[finiteAdeleMeasure_idealFiniteAdeles_toReal, Finset.prod_const, Finset.card_univ, Real.coe_sqrt, coe_nnnorm, Int.norm_eq_abs]`. Use `push_cast`. Rewrite using `[← mul_inv, inv_pow]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 theorem finiteAdeleMeasure_idealFiniteAdeles_pow (J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
     ((finiteAdeleMeasure K (idealFiniteAdeles J)).toReal : ℂ) ^ Fintype.card ι =
@@ -373,9 +371,9 @@ theorem finiteAdeleMeasure_idealFiniteAdeles_pow (J : (FractionalIdeal (𝓞 K)�
   rw [← mul_inv, inv_pow]
 
 /- English proof (translation)
-Use `choose c hc using fun i ↦ exists_sub_mem_idealFiniteAdeles J (b i)`. Establish `hF : ∀ ξ : ι → K, schwartzBruhatTensorPi φ (finiteTensor fun i ↦ cosetIndicator J (b i)) (fun i ↦ algebraMap K 𝔸[K] (ξ i)) = (cosetPi K (fun _ ↦ J) c).indicator (fun ξ ↦ φ (embPi K ξ)) ξ`. Introduce `ξ`. Rewrite using `[schwartzBruhatTensorPi_algebraMap, finiteTensor_cosetIndicator_algebraMap hc, Set.indicator_apply, Set.indicator_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2, h3⟩` from `poissonPi_coset (fun _ ↦ J) c φ`. Simplify using `only [hF, adelicFourierPi_tensor_cosetIndicator_algebraMap φ hc, norm_mul]`. Use `⟨h1, h2.mul_left _, ?_⟩` and prove the remaining obligations. Rewrite using `[tsum_mul_left, h3, finiteAdeleMeasure_idealFiniteAdeles_pow]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem poissonPi_tensor_cosetIndicator (φ : 𝓢(ι → mixedSpace K, ℂ))
     (J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (b : ι → 𝔸ᶠ[K]) :
@@ -401,7 +399,7 @@ theorem poissonPi_tensor_cosetIndicator (φ : 𝓢(ι → mixedSpace K, ℂ))
   rw [tsum_mul_left, h3, finiteAdeleMeasure_idealFiniteAdeles_pow]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [schwartzBruhatTensorPi, Pi.add_apply, mul_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem schwartzBruhatTensorPi_add (φ : 𝓢(ι → mixedSpace K, ℂ)) (g h : (ι → 𝔸ᶠ[K]) → ℂ) :
     schwartzBruhatTensorPi φ (g + h) = schwartzBruhatTensorPi φ g + schwartzBruhatTensorPi φ h := by
@@ -409,7 +407,7 @@ theorem schwartzBruhatTensorPi_add (φ : 𝓢(ι → mixedSpace K, ℂ)) (g h : 
   simp only [schwartzBruhatTensorPi, Pi.add_apply, mul_add]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [schwartzBruhatTensorPi, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem schwartzBruhatTensorPi_smul (φ : 𝓢(ι → mixedSpace K, ℂ)) (a : ℂ)
     (g : (ι → 𝔸ᶠ[K]) → ℂ) :
@@ -419,7 +417,7 @@ theorem schwartzBruhatTensorPi_smul (φ : 𝓢(ι → mixedSpace K, ℂ)) (a : �
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[schwartzBruhatTensorPi]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem schwartzBruhatTensorPi_zero (φ : 𝓢(ι → mixedSpace K, ℂ)) :
     schwartzBruhatTensorPi φ (0 : (ι → 𝔸ᶠ[K]) → ℂ) = 0 := by
@@ -433,11 +431,11 @@ def cosetSpanPi : Submodule ℂ ((ι → 𝔸[K]) → ℂ) :=
     (b : ι → 𝔸ᶠ[K]), F = schwartzBruhatTensorPi φ (finiteTensor fun i ↦ cosetIndicator J (b i))}
 
 /- English proof (translation)
-Use `le_antisymm (Submodule.span_le.mpr ?_) (Submodule.span_le.mpr ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨φ, g, hg, rfl⟩`. Rewrite `hg` using `[finiteSchwartzBruhatPi_eq_span]`. Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem h hh`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately.
 
-Take `⟨⟨J, b⟩, rfl⟩` from `hh`. Conclude with `Submodule.subset_span ⟨φ, J, b, rfl⟩`. Consider the case `zero => rw [schwartzBruhatTensorPi_zero]`. Conclude with `zero_mem _`. Consider the case `add g h _ _ ihg ihh => rw [schwartzBruhatTensorPi_add]`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately. Assume the hypotheses and unpack their components.
 
-Conclude with `add_mem ihg ihh`. Consider the case `smul a g _ ih => rw [schwartzBruhatTensorPi_smul]`. Conclude with `Submodule.smul_mem _ a ih`. Introduce and unpack `_ ⟨φ, J, b, rfl⟩`. Conclude with `schwartzBruhatTensorPi_mem φ (finiteTensor_mem fun i ↦ cosetIndicator_mem_finiteSchwartzBruhat J (b i))`.
+A detailed English derivation is pending.
 -/
 theorem schwartzBruhatPi_eq_cosetSpanPi : schwartzBruhatPi K ι = cosetSpanPi K ι := by
   refine le_antisymm (Submodule.span_le.mpr ?_) (Submodule.span_le.mpr ?_)
@@ -455,13 +453,13 @@ theorem schwartzBruhatPi_eq_cosetSpanPi : schwartzBruhatPi K ι = cosetSpanPi K 
       (finiteTensor_mem fun i ↦ cosetIndicator_mem_finiteSchwartzBruhat J (b i))
 
 /- English proof (translation)
-Establish `hsub : cosetSpanPi K ι ≤ schwartzBruhatPi K ι` using `schwartzBruhatPi_eq_cosetSpanPi.ge`. Rewrite `hF` using `[schwartzBruhatPi_eq_cosetSpanPi]`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem G hG`. Take `⟨φ, J, b, rfl⟩` from `hG`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `poissonPi_tensor_cosetIndicator φ J b`. Consider the case `zero => simp [adelicFourierPi_zero]`. Consider the case `add G H hG hH ihG ihH`. Rewrite using `[adelicFourierPi_add (integrable_of_mem_schwartzBruhatPi (hsub hG)) (integrable_of_mem_schwartzBruhatPi (hsub hH))]`. Use `⟨(ihG.1.add ihH.1).of_nonneg_of_le (fun _ ↦ norm_nonneg _) fun ξ ↦ norm_add_le _ _, (ihG.2.1.add ihH.2.1).of_nonneg_of_le (fun _ ↦ norm_nonneg _) fun ξ ↦ norm_add_le _ _, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.add_apply]`. Rewrite using `[ihG.1.of_norm.tsum_add ihH.1.of_norm, ihG.2.1.of_norm.tsum_add ihH.2.1.of_norm, ihG.2.2, ihH.2.2]`. Consider the case `smul a G hG ih`. Rewrite using `[adelicFourierPi_smul]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, norm_mul]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨ih.1.mul_left _, ih.2.1.mul_left _, by rw [tsum_mul_left, tsum_mul_left, ih.2.2]⟩`.
+A detailed English derivation is pending.
 -/
 theorem poisson_of_mem_schwartzBruhatPi {F : (ι → 𝔸[K]) → ℂ} (hF : F ∈ schwartzBruhatPi K ι) :
     Summable (fun ξ : ι → K ↦ ‖F (fun i ↦ algebraMap K 𝔸[K] (ξ i))‖) ∧
@@ -489,7 +487,7 @@ theorem poisson_of_mem_schwartzBruhatPi {F : (ι → 𝔸[K]) → ℂ} (hF : F �
     exact ⟨ih.1.mul_left _, ih.2.1.mul_left _, by rw [tsum_mul_left, tsum_mul_left, ih.2.2]⟩
 
 /- English proof (translation)
-The claim follows from `(poisson_of_mem_schwartzBruhatPi hF).2.2`.
+A detailed English derivation is pending.
 -/
 theorem tsum_algebraMap_eq_tsum_adelicFourierPi {F : (ι → 𝔸[K]) → ℂ}
     (hF : F ∈ schwartzBruhatPi K ι) :

@@ -8,7 +8,7 @@ namespace GlobalTheory.CompanionTheory.Ar.RegAtMono
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Establish `e` using `X.presheaf.stalkSpecializes_comp q.2 h`. Conclude with `congrArg (Scheme.stalkClosedPointTo ξ).hom (congrArg (fun φ => φ.hom x) e)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem genMap_stalkSpecializes (ξ : Spec (CommRingCat.of Ω) ⟶ X) (p q : Cpt ξ) (h : q.1 ⤳ p.1)
     (x : X.presheaf.stalk p.1) :
@@ -17,7 +17,7 @@ theorem genMap_stalkSpecializes (ξ : Spec (CommRingCat.of Ω) ⟶ X) (p q : Cpt
   exact congrArg (Scheme.stalkClosedPointTo ξ).hom (congrArg (fun φ => φ.hom x) e)
 
 /- English proof (translation)
-Rewrite using `[← genMap_stalkSpecializes ξ p q h, ← CommRingCat.comp_apply, TopCat.Presheaf.germ_stalkSpecializes]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem genMap_germ_eq (ξ : Spec (CommRingCat.of Ω) ⟶ X) (p q : Cpt ξ) (h : q.1 ⤳ p.1)
     (U : X.Opens) (hp : p.1 ∈ U) (hq : q.1 ∈ U) (t : Γ(X, U)) :
@@ -26,7 +26,7 @@ theorem genMap_germ_eq (ξ : Spec (CommRingCat.of Ω) ⟶ X) (p q : Cpt ξ) (h :
     TopCat.Presheaf.germ_stalkSpecializes]
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `hx`. Use `⟨(u.isUnit.map (genMap ξ q)).ne_zero, ⟨_, rfl⟩, ⟨(u⁻¹ : (X.presheaf.stalk q.1)ˣ), ?_⟩⟩` and prove the remaining obligations. Conclude with `map_units_inv (genMap ξ q) u`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem unitAt_of_isUnit (ξ : Spec (CommRingCat.of Ω) ⟶ X) (q : Cpt ξ) {x : X.presheaf.stalk q.1}
     (hx : IsUnit x) : unitAt ξ q (genMap ξ q x) := by
@@ -35,13 +35,13 @@ theorem unitAt_of_isUnit (ξ : Spec (CommRingCat.of Ω) ⟶ X) (q : Cpt ξ) {x :
   exact map_units_inv (genMap ξ q) u
 
 /- English proof (translation)
-Introduce `X Ω _ ξ p q h`. Use `⟨?_, fun _ => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨_, genMap_stalkSpecializes ξ p q h x⟩`. Introduce and unpack `_ ⟨x, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `⟨_, ⟨U, hU, rfl⟩, hp, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ p.1) isOpen_univ`. Establish `hU : IsAffineOpen U` using `hU`. Establish `hq : q.1 ∈ U` using `h.mem_open U.2 hp`. Use `letI := TopCat.Presheaf.algebra_section_stalk X.presheaf (⟨q.1, hq⟩ : U)`. Establish `hloc` using `hU.isLocalization_stalk ⟨q.1, hq⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Take `⟨⟨r, t⟩, e⟩` from `IsLocalization.surj (hU.primeIdealOf ⟨q.1, hq⟩).asIdeal.primeCompl (S := X.presheaf.stalk q.1) x`. Establish `hu : IsUnit ((X.presheaf.germ U q.1 hq).hom t.1)` using `IsLocalization.map_units (X.presheaf.stalk q.1) t`. Establish `e' : x * (X.presheaf.germ U q.1 hq).hom t.1 = (X.presheaf.germ U q.1 hq).hom r` using `e`. Use `⟨genMap ξ q ((X.presheaf.germ U q.1 hq).hom t.1), ?_, unitAt_of_isUnit ξ q hu, ?_⟩` and prove the remaining obligations. Conclude with `⟨_, (genMap_germ_eq ξ p q h U hp hq _).symm⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Rewrite using `[mul_comm, ← map_mul, e']`. Conclude with `⟨_, (genMap_germ_eq ξ p q h U hp hq _).symm⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem regAt_mono :
     ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (p q : Cpt ξ), q.1 ⤳ p.1 →

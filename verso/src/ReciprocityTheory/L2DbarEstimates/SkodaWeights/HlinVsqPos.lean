@@ -6,20 +6,20 @@ open MeasureTheory ReciprocityTheory.L2DbarEstimates ComplexConjugate
 open scoped ENNReal InnerProductSpace
 
 /- English proof (translation)
-Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma hlin_sqC (a : ℂ) : ((‖a‖ ^ 2 : ℝ) : ℂ) = a * conj a := by
   rw [Complex.mul_conj, Complex.normSq_eq_norm_sq]
 
 /- English proof (translation)
-Rewrite using `[vsq, Complex.ofReal_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => hlin_sqC (w i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma hlin_vsqC {p : ℕ} (w : Fin p → ℂ) : ((vsq w : ℝ) : ℂ) = ∑ i, w i * conj (w i) := by
   rw [vsq, Complex.ofReal_sum]
   exact Finset.sum_congr rfl fun i _ => hlin_sqC (w i)
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `Function.ne_iff.mp hg`. Conclude with `lt_of_lt_of_le (pow_pos (norm_pos_iff.mpr hi) 2) (Finset.single_le_sum (fun j _ => sq_nonneg ‖g j‖) (Finset.mem_univ i))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 lemma hlin_vsq_pos {p : ℕ} {g : Fin p → ℂ} (hg : g ≠ 0) : 0 < vsq g := by
   obtain ⟨i, hi⟩ := Function.ne_iff.mp hg
@@ -27,13 +27,13 @@ lemma hlin_vsq_pos {p : ℕ} {g : Fin p → ℂ} (hg : g ≠ 0) : 0 < vsq g := b
     (Finset.single_le_sum (fun j _ => sq_nonneg ‖g j‖) (Finset.mem_univ i))
 
 /- English proof (translation)
-Introduce `p g w hg`. Establish `hs : ((vsq g : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (hlin_vsq_pos hg).ne'`. Take `⟨c, hc⟩ : ∃ c, c = ∑ j, (starRingEnd ℂ) (g j) * w j` from `⟨_, rfl⟩`. Establish `hc' : ∑ i, g i * conj (w i) = conj c`. Rewrite using `[hc, map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, Complex.conj_conj, mul_comm]`. Establish `key : ((vsq (perp g w) : ℝ) : ℂ) = ((vsq w : ℝ) : ℂ) - ((‖c‖ ^ 2 : ℝ) : ℂ) / ((vsq g : ℝ) : ℂ)`. Rewrite using `[hlin_vsqC (perp g w), hlin_vsqC w, hlin_sqC]`. Simplify using `only [perp, ← hc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e : ∀ i, (w i - g i * (c / ((vsq g : ℝ) : ℂ))) * conj (w i - g i * (c / ((vsq g : ℝ) : ℂ))) = w i * conj (w i) - conj c / ((vsq g : ℝ) : ℂ) * (conj (g i) * w i) - c / ((vsq g : ℝ) : ℂ) * (g i * conj (w i)) + c * conj c / ((vsq g : ℝ) : ℂ) ^ 2 * (g i * conj (g i))`. Introduce `i`. Simplify using `only [map_sub, map_mul, map_div₀, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl (fun i _ => e i)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.sum_add_distrib, Finset.sum_sub_distrib, ← Finset.mul_sum]`. Rewrite using `[← hc, hc', ← hlin_vsqC g]`. Apply the tactic sequence `field_simp <;> ring`. Rewrite `key` using `[hc]`. Conclude with `key` after adjusting the coercions.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem perpNorm : PerpNormStatement := by
   intro p g w hg
@@ -63,9 +63,9 @@ theorem perpNorm : PerpNormStatement := by
   exact_mod_cast key
 
 /- English proof (translation)
-Introduce `p g hg`. Establish `hs` using `hlin_vsq_pos hg`. Use `⟨fun i => sub_nonneg.mpr ((div_le_one hs).mpr (Finset.single_le_sum (fun j _ => sq_nonneg ‖g j‖) (Finset.mem_univ i))), ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_sub_distrib, ← Finset.sum_div]`. Express the relevant statement in the definitionally equal form `_ - vsq g / vsq g = _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[div_self hs.ne']`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem perpTrace : PerpTraceStatement := by
   intro p g hg
@@ -78,9 +78,9 @@ theorem perpTrace : PerpTraceStatement := by
   simp
 
 /- English proof (translation)
-Establish `hs : ((vsq g : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (hlin_vsq_pos hg).ne'`. Simplify using `only [perp, mul_sub, Finset.sum_sub_distrib]`. Establish `h2 : ∑ j, conj (g j) * (g j * ((∑ j, conj (g j) * w j) / ((vsq g : ℝ) : ℂ))) = ((vsq g : ℝ) : ℂ) * ((∑ j, conj (g j) * w j) / ((vsq g : ℝ) : ℂ))`. Generalize the expression as in `(∑ j, conj (g j) * w j) / ((vsq g : ℝ) : ℂ) = X`. Rewrite using `[hlin_vsqC g, Finset.sum_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Rewrite using `[h2, mul_div_assoc', mul_div_cancel_left₀ _ hs, sub_self]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma hlin_orth {p : ℕ} (g w : Fin p → ℂ) (hg : g ≠ 0) :
     ∑ j, conj (g j) * perp g w j = 0 := by
@@ -94,7 +94,7 @@ lemma hlin_orth {p : ℕ} (g w : Fin p → ℂ) (hg : g ≠ 0) :
   rw [h2, mul_div_assoc', mul_div_cancel_left₀ _ hs, sub_self]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Conclude with `(norm_sum_le _ _).trans (le_of_eq (Finset.sum_congr rfl fun q _ => norm_mul _ _))`. Use `_ ≤ _ := Finset.sum_mul_sq_le_sq_mul_sq s _ _`.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private lemma norm_sum_mul_sq_le_sum_sq_mul_sum_sq {ι : Type*} (s : Finset ι) (a b : ι → ℂ) :
     ‖∑ q ∈ s, a q * b q‖ ^ 2 ≤ (∑ q ∈ s, ‖a q‖ ^ 2) * ∑ q ∈ s, ‖b q‖ ^ 2 := by
@@ -104,11 +104,11 @@ private lemma norm_sum_mul_sq_le_sum_sq_mul_sum_sq {ι : Type*} (s : Finset ι) 
     _ ≤ _ := Finset.sum_mul_sq_le_sq_mul_sq s _ _
 
 /- English proof (translation)
-Introduce `p g w i hg`. Establish `hs` using `hlin_vsq_pos hg`. Establish `horth` using `hlin_orth g w hg`. Establish `hsplit : conj (g i) * perp g w i = -∑ j ∈ Finset.univ.erase i, conj (g j) * perp g w j`. Rewrite `horth` using `[← Finset.add_sum_erase _ _ (Finset.mem_univ i)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take the linear combination `horth`. Establish `hcs` using `norm_sum_mul_sq_le_sum_sq_mul_sum_sq (Finset.univ.erase i) (fun j => conj (g j)) (perp g w)`. Establish `h0 : ‖conj (g i) * perp g w i‖ ^ 2 ≤ (∑ j ∈ Finset.univ.erase i, ‖conj (g j)‖ ^ 2) * ∑ j ∈ Finset.univ.erase i, ‖perp g w j‖ ^ 2`. Rewrite using `[hsplit, norm_neg]`. Conclude with `hcs`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [norm_mul, Complex.norm_conj, mul_pow] at h0`. Rewrite `h0` using `[Finset.sum_erase_eq_sub (Finset.mem_univ i), Finset.sum_erase_eq_sub (Finset.mem_univ i)]`. Express the relevant statement in the definitionally equal form `‖g i‖ ^ 2 * ‖perp g w i‖ ^ 2 ≤ (vsq g - ‖g i‖ ^ 2) * (vsq (perp g w) - ‖perp g w i‖ ^ 2) at h0`. Rewrite using `[one_sub_div hs.ne', div_mul_eq_mul_div, le_div_iff₀ hs]`. Use polynomial arithmetic with `[h0]`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem perpEntry : PerpEntryStatement := by
   intro p g w i hg

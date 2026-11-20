@@ -23,29 +23,25 @@ namespace GlobalTheory.HeckeUnif
 open GlobalTheory.TangentOrigin
 
 /- English proof (translation)
-Introduce `X G _ _ g hab hsm y e' β he' hβ hholG`. Take `⟨Λ, hdisc, -, hker⟩` from `GlobalTheory.T.complexFibreExponential_kernel_full_lattice X G g hab hsm y e' he'`. Use `letI : CommGroup (Over.mk y ⟶ G) := inferInstance`. Set `ex : (Fin g → ℂ) →+ Additive (Over.mk y ⟶ G)` to `AddMonoidHom.mk' (fun z ↦ Additive.ofMul (e' z)) he'.1`. Set `G' : (Fin g → ℂ) →+ Additive (Over.mk y ⟶ G)` to `AddMonoidHom.mk' (fun z ↦ Additive.ofMul (β z)) hβ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `pt : (Over.mk y).left` to `(default : PrimeSpectrum ℂ)`. Establish `hsub : ∀ q : (Over.mk y).left, q = pt` using `fun q ↦ Subsingleton.elim (α := PrimeSpectrum ℂ) q pt`. Take `⟨U, hU, hpU, -⟩` from `exists_isAffineOpen_mem_and_subset (x := (e' 0).left pt) (U := ⊤) (Set.mem_univ _)`. Establish `h0 : ⊤ ≤ (e' 0).left ⁻¹ᵁ U`. Introduce `q _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hsub q]`. Conclude with `hpU`. Establish `hker' : (ex.ker : Set (Fin g → ℂ)) = Λ` using `Set.ext fun z ↦ hker z`. Establish `hS0 : (0 : Additive (Over.mk y ⟶ G)) ∈ {a : Additive (Over.mk y ⟶ G) | ⊤ ≤ (Additive.toMul a).left ⁻¹ᵁ U}`. Rewrite using `[← map_zero ex]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h0`. Establish `hsep : ∀ a ∈ {a : Additive (Over.mk y ⟶ G) | ⊤ ≤ (Additive.toMul a).left ⁻¹ᵁ U}, ∀ b ∈ {a : Additive (Over.mk y ⟶ G) | ⊤ ≤ (Additive.toMul a).left ⁻¹ᵁ U}, (∀ s : Γ(G.left, U), valAt' (Additive.toMul a).left U s = valAt' (Additive.toMul b).left U s) → a = b`. Introduce `a ha b hb h`. Conclude with `Over.OverMorphism.ext (f := Additive.toMul a) (g := Additive.toMul b) (ext_evalPt (R := ℂ) hU ha hb (RingHom.ext fun s ↦ (valAt'_eq_evalPt _ U ha s).symm.trans ((h s).trans (valAt'_eq_evalPt _ U hb s))))`. Establish `hSe : IsOpen {z : Fin g → ℂ | ⊤ ≤ (e' z).left ⁻¹ᵁ U}`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `(he'.2.2.1 U 0).1` as an intermediate fact. Simplify using `only [Set.mem_univ, true_and] at this`. Conclude with `this`. Establish `hSG : IsOpen {z : Fin g → ℂ | ⊤ ≤ (β z).left ⁻¹ᵁ U}`. Use `(hholG U 0).1` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_univ, true_and] at this`. Conclude with `this`. Establish `hfe : ∀ s : Γ(G.left, U), DifferentiableOn ℂ (fun z ↦ valAt' (e' z).left U s) {z | ⊤ ≤ (e' z).left ⁻¹ᵁ U}`. Introduce `s`. Use `(he'.2.2.1 U s).2` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_univ, true_and] at this`. Conclude with `this`. Establish `hfG : ∀ s : Γ(G.left, U), DifferentiableOn ℂ (fun z ↦ valAt' (β z).left U s) {z | ⊤ ≤ (β z).left ⁻¹ᵁ U}`. Introduce `s`. Use `(hholG U s).2` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_univ, true_and] at this`. Conclude with `this`. Establish `hD : ∀ w : Fin g → ℂ, (∀ s : Γ(G.left, U), fderiv ℂ (fun z ↦ valAt' (e' z).left U s) 0 w = 0) → w = 0`. Introduce `w hw`. Take `⟨v, hv, -⟩` from `he'.2.2.2.1 w`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨v0, hv0, -⟩` from `he'.2.2.2.1 0`. Establish `hvU : ⊤ ≤ v.left ⁻¹ᵁ U` using `(top_le_preimage_iff v.left U).2 (hv.1 ▸ h0)`. Establish `hv0U : ⊤ ≤ v0.left ⁻¹ᵁ U` using `(top_le_preimage_iff v0.left U).2 (hv0.1 ▸ h0)`. Establish `key : ∀ (u : Sp (DualNumber ℂ) ⟶ G.left) (hu : ⊤ ≤ u ⁻¹ᵁ U) (x : Sp ℂ ⟶ G.left) (hx : ⊤ ≤ x ⁻¹ᵁ U) (s : Γ(G.left, U)), spMap fstC ≫ u = x → (evalPt u U hu s).fst = evalPt x U hx s`. Introduce and unpack `u hu x hx s rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `(evalPt_spMap_comp fstC u U hu hx s).symm`. Establish `heq : v.left = v0.left`. Use `ext_evalPt (R := DualNumber ℂ) hU hvU hv0U (RingHom.ext fun s ↦ TrivSqZeroExt.ext ?_ ?_)` and prove the remaining obligations. Conclude with `(key _ hvU _ h0 s hv.1).trans (key _ hv0U _ h0 s hv0.1).symm`. Establish `a` using `hv.2 U hvU s`.
-
-Establish `b` using `hv0.2 U hv0U s`. Rewrite `b` using `[map_zero]`. Conclude with `a.trans ((hw s).trans b.symm)`. Establish `hv0' : IsDerivAt0 (fun z ↦ (e' z).left) w v0.left` using `heq ▸ hv`. Conclude with `(he'.2.2.2.2 v0 hv0.1).unique hv0' hv0`.
-
-Take `⟨F, hF, hu⟩` from `GlobalTheory.existsUnique_linear_lift_of_separating (ex := ex) (G := G') he'.2.1 (hker' ▸ isDiscrete_iff_discreteTopology.2 hdisc) (S := {a | ⊤ ≤ (Additive.toMul a).left ⁻¹ᵁ U}) (f := fun (s : Γ(G.left, U)) a ↦ valAt' (Additive.toMul a).left U s) hS0 hsep hSe hSG hfe hfG hD`. Conclude with `⟨F, hF, fun M hM ↦ hu M hM⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem existsUnique_linear_lift_of_hom :
     ∀ (X : Scheme.{0}) (G : Over X) [GrpObj G] [IsCommMonObj G] (g : ℕ), IsAbelianScheme G →
@@ -123,13 +119,13 @@ theorem existsUnique_linear_lift_of_hom :
   exact ⟨F, hF, fun M hM ↦ hu M hM⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hopen : IsOpen ({⟨0, A.zero_mem⟩} : Set A)` using `isOpen_discrete _`. Take `⟨U, hU, hUe⟩` from `isOpen_induced_iff.mp hopen`. Establish `h0U : (0 : Fin g → ℂ) ∈ U`. Establish `: (⟨0, A.zero_mem⟩ : A) ∈ Subtype.val ⁻¹' U` using `by rw [hUe]; rfl`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hc : Continuous (fun r : ℝ => (r : ℂ) • z)` using `by fun_prop`. Establish `hV : IsOpen ((fun r : ℝ => (r : ℂ) • z) ⁻¹' U)` using `hU.preimage hc`. Establish `h0 : (0 : ℝ) ∈ (fun r : ℝ => (r : ℂ) • z) ⁻¹' U` using `by simpa using h0U`. Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.mp hV 0 h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hr : ε / 2 ∈ Metric.ball (0 : ℝ) ε`. Rewrite using `[Metric.mem_ball, dist_zero_right, Real.norm_eq_abs, abs_of_pos (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmem : (⟨((ε / 2 : ℝ) : ℂ) • z, hz _⟩ : A) ∈ Subtype.val ⁻¹' U` using `hball hr`. Rewrite `hmem` using `[hUe]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ((ε / 2 : ℝ) : ℂ) • z = 0` using `congrArg Subtype.val hmem`. Break down `smul_eq_zero.mp h2 with h | h` into its components or cases. Establish `: (ε / 2 : ℝ) = 0` using `by exact_mod_cast h`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `hne h`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_real_smul_mem {g : ℕ} (A : AddSubgroup (Fin g → ℂ)) (hA : DiscreteTopology A) (z : Fin g → ℂ)
     (hz : ∀ r : ℝ, (r : ℂ) • z ∈ A) : z = 0 := by

@@ -18,7 +18,7 @@ def PartB : Prop :=
         ∑ᶠ w, lw K w * (γ w : ℝ)
 
 /- English proof (translation)
-Introduce `K _ _ _ _ _ A e n h hS hP hH hC hD U hU`. Conclude with `⟨fun w k hk => partA A e n h hP hH hD U hU w k hk, fun γ hγ => hB K A e n h hS hP hH hC hD U hU γ hγ, partC A e U⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem dvProjRows_of (hB : PartB) : PI.Dv.division_rows_base_level := by
   intro K _ _ _ _ _ A e n h hS hP hH hC hD U hU

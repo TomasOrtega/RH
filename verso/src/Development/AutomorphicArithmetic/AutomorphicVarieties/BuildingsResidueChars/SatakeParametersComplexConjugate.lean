@@ -5,9 +5,9 @@ open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory
 open UpperTheory.V.Af UpperTheory.V.Af.Gu
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `h`. Set `L` to `(GlobalTheory.ThetaPull.pull E a).submoduleMap P.V`. Use `⟨L.symm.trans T, fun o φ => ?_⟩` and prove the remaining obligations. Take `⟨φ, rfl⟩` from `L.surjective φ`. Establish `e : (GlobalTheory.ThetaPull.thetaSub P).op o (L φ) = L (P.op (thetaOp o) φ)` using `Subtype.ext (GlobalTheory.ThetaPull.act_pull o φ.1)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `(congrArg T (L.symm_apply_apply _)).trans ((hT o φ).trans (congrArg (P.op o) (congrArg T (L.symm_apply_apply φ)).symm))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem theta_iso {E : Type} [Field E] [NumberField E] [IsCMField E] {a : ℕ} {P : CuspSub E a} (h : P.IsCsd) :
     (GlobalTheory.ThetaPull.thetaSub P).Iso P := by
@@ -22,7 +22,7 @@ private theorem theta_iso {E : Type} [Field E] [NumberField E] [IsCMField E] {a 
     ((hT o φ).trans (congrArg (P.op o) (congrArg T (L.symm_apply_apply φ)).symm))
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Nat.card (𝓞 E ⧸ (Bc.cPl w).asIdeal) = Nat.card (𝓞 E ⧸ w.asIdeal)`. Rewrite using `[(GlobalTheory.Mem.Chr.conjPl_iff_comap _ _ _).1 (conjPl_conjSrc (IsCMField.complexConj E).toRingEquiv w)]`. Conclude with `Nat.card_congr (Ideal.quotientEquiv _ _ (RingOfIntegers.mapRingEquiv _) (Ideal.map_comap_of_surjective _ (RingEquiv.surjective _) _).symm).toEquiv`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem normV_cPl {E : Type} [Field E] [NumberField E] [IsCMField E] (w : HeightOneSpectrum (𝓞 E)) :
     normV (Bc.cPl w) = normV w := by
@@ -32,7 +32,7 @@ private theorem normV_cPl {E : Type} [Field E] [NumberField E] [IsCMField E] (w 
     (Ideal.map_comap_of_surjective _ (RingEquiv.surjective _) _).symm).toEquiv
 
 /- English proof (translation)
-Establish `e : qPow (Bc.cPl w) s = qPow w s` using `Units.ext (by rw [coe_qPow, coe_qPow, normV_cPl])`. Rewrite using `[e, inv_eq_iff_mul_eq_one, ← qPow_add, add_neg_cancel, qPow_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem qPow_cPl {E : Type} [Field E] [NumberField E] [IsCMField E] (w : HeightOneSpectrum (𝓞 E)) (s : ℝ) :
     (qPow (Bc.cPl w) s)⁻¹ = qPow w (-s) := by
@@ -40,13 +40,13 @@ private theorem qPow_cPl {E : Type} [Field E] [NumberField E] [IsCMField E] (w :
   rw [e, inv_eq_iff_mul_eq_one, ← qPow_add, add_neg_cancel, qPow_zero]
 
 /- English proof (translation)
-Introduce `E _ _ _ w`. Use `⟨fun a P hP B hB => ?_, fun c d S => ?_⟩` and prove the remaining obligations. Establish `e : CG.mk (GlobalTheory.ThetaPull.thetaSub P) = CG.mk P` using `Quotient.sound (theta_iso hP)`. Conclude with `e ▸ UpperTheory.theta_satake_parameters_inverse E a P w B hB`. Unfold `satTot`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Multiset.coe_mapAddMonoidHom (fun x : ℂˣ => x⁻¹), map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum, ← Equiv.sum_comp Fin.revPerm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Multiset.coe_mapAddMonoidHom, Multiset.map_map, Multiset.map_map]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Multiset.map_congr rfl fun x _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, mul_inv, qPow_cPl, Fin.revPerm_apply, Fin.val_rev]`. Use `congr 2`. Rewrite using `[Nat.cast_sub k.2]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.satake_parameters_complex_conjugate :
     SatConj := by

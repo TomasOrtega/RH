@@ -29,13 +29,13 @@ Both sides reduce to the same expression.
 theorem idc {Λ S : Type} [CommRing Λ] [CommRing S] (c : Λ →+* S) (a : Λ) : RingHom.id S (c a) = c (RingHom.id Λ a) := rfl
 
 /- English proof (translation)
-Rewrite using `[← map_natCast ψ, h, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cast_zero {l : ℕ} {k₀ B₀ : Type} [CommRing k₀] [CommRing B₀] (h : (l : k₀) = 0) (ψ : k₀ →+* B₀) : (l : B₀) = 0 := by
   rw [← map_natCast ψ, h, map_zero]
 
 /- English proof (translation)
-Establish `e : φ ≫ CommRingCat.ofHom (frb h') = CommRingCat.ofHom (frb h) ≫ φ` using `CommRingCat.hom_ext (RingHom.ext fun x => (map_pow φ.hom x l).symm)`. Conclude with `(F.Pt.map_comp_apply φ (CommRingCat.ofHom (frb h')) y).symm.trans ((congrArg (fun t : B₀ ⟶ B' => F.Pt.map t y) e).trans (F.Pt.map_comp_apply (CommRingCat.ofHom (frb h)) φ y))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem frb_nat {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] (F : B.Fn O) {B₀ B' : CommRingCat.{0}} (φ : B₀ ⟶ B') (h : (l : B₀) = 0)
     (h' : (l : B') = 0) (y : F.Pt.obj B₀) :
@@ -77,7 +77,7 @@ abbrev Im (m : ℕ) : Ideal (Wm l k m) := (Ideal.span {(l : WittVector l k)}).ma
 def pd (m : ℕ) : DividedPowers (Im l k m) := (exists_pd_l l (witt_unit l k) (witt_tf l k) m).choose
 
 /- English proof (translation)
-The claim follows from `(exists_pd_l l (witt_unit l k) (witt_tf l k) m).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem isPd (m : ℕ) : R.IsPd (Ideal.Quotient.mk _) (Ideal.span {(l : WittVector l k)}) (pd l k m) :=
   (exists_pd_l l (witt_unit l k) (witt_tf l k) m).choose_spec
@@ -95,7 +95,7 @@ def res (m : ℕ) : k →+* Wm l k m ⧸ Im l k m :=
       (Ideal.mem_map_of_mem _ ((WittVector.mem_span_p_iff_coeff_zero_eq_zero x).2 hx))⟩
 
 /- English proof (translation)
-The claim follows from `RingHom.liftOfSurjective_comp_apply _ _ _ x`.
+A detailed English derivation is pending.
 -/
 theorem res_coeff (m : ℕ) (x : WittVector l k) :
     res l k m (WittVector.constantCoeff x) = Ideal.Quotient.mk _ (Ideal.Quotient.mk _ x) :=
@@ -106,13 +106,13 @@ def red (m : ℕ) : Wm l k (m + 1) →+* Wm l k m :=
 
 omit [CharP k l] [PerfectRing k l] in
 /- English proof (translation)
-The claim follows from `Ideal.Quotient.factor_mk _ x`.
+A detailed English derivation is pending.
 -/
 theorem red_mk (m : ℕ) (x : WittVector l k) : red l k m (Ideal.Quotient.mk _ x) = Ideal.Quotient.mk _ (RingHom.id _ x) :=
   Ideal.Quotient.factor_mk _ x
 
 /- English proof (translation)
-The claim follows from `RL.pd_mor _ _ _ _ _ _ (RingHom.id _) _ Ideal.Quotient.mk_surjective (pdI_l l (witt_unit l k)) (isPd l k _) (isPd l k _) (fun _ hx => hx) fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem dp_red (m : ℕ) : IsDPMorphism (pd l k (m + 1)) (pd l k m) (red l k m) :=
   RL.pd_mor _ _ _ _ _ _ (RingHom.id _) _ Ideal.Quotient.mk_surjective (pdI_l l (witt_unit l k)) (isPd l k _) (isPd l k _)
@@ -125,21 +125,21 @@ def frob (m : ℕ) : Wm l k m →+* Wm l k m :=
 
 omit [CharP k l] [PerfectRing k l] in
 /- English proof (translation)
-The claim follows from `Ideal.quotientMap_mk`.
+A detailed English derivation is pending.
 -/
 theorem frob_mk' (m : ℕ) (x : WittVector l k) : frob l k m (Ideal.Quotient.mk _ x) = Ideal.Quotient.mk _ (WittVector.frobenius x) :=
   Ideal.quotientMap_mk
 
 omit [CharP k l] [PerfectRing k l] in
 /- English proof (translation)
-Take `⟨w, rfl⟩` from `Ideal.Quotient.mk_surjective r`. Rewrite using `[frob_mk', red_mk, red_mk, frob_mk', RingHom.id_apply, RingHom.id_apply]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem red_frob (m : ℕ) (r : Wm l k (m + 1)) : red l k m (frob l k (m + 1) r) = frob l k m (red l k m r) := by
   obtain ⟨w, rfl⟩ := Ideal.Quotient.mk_surjective r
   rw [frob_mk', red_mk, red_mk, frob_mk', RingHom.id_apply, RingHom.id_apply]
 
 /- English proof (translation)
-The claim follows from `RL.pd_mor _ _ _ _ _ _ WittVector.frobenius _ Ideal.Quotient.mk_surjective (pdI_l l (witt_unit l k)) (isPd l k _) (isPd l k _) (fun x hx => by obtain ⟨c, rfl⟩ := Ideal.mem_span_singleton'.1 hx rw [map_mul, map_natCast] exact Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _) …`.
+A detailed English derivation is pending.
 -/
 theorem dp_frob (m : ℕ) : IsDPMorphism (pd l k m) (pd l k m) (frob l k m) :=
   RL.pd_mor _ _ _ _ _ _ WittVector.frobenius _ Ideal.Quotient.mk_surjective (pdI_l l (witt_unit l k)) (isPd l k _) (isPd l k _)
@@ -149,7 +149,7 @@ theorem dp_frob (m : ℕ) : IsDPMorphism (pd l k m) (pd l k m) (frob l k m) :=
       exact Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)) fun _ => rfl
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective r`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (Ideal.Quotient.mk _ (WittVector.frobenius x)) = _`. Rewrite using `[← res_coeff, ← res_coeff, ← map_pow, WittVector.constantCoeff_apply, WittVector.constantCoeff_apply, WittVector.coeff_frobenius_charP]`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem frob_mk (m : ℕ) (r : Wm l k m) : Ideal.Quotient.mk (Im l k m) (frob l k m r) = Ideal.Quotient.mk (Im l k m) r ^ l := by
   obtain ⟨x, rfl⟩ := Ideal.Quotient.mk_surjective r
@@ -166,7 +166,7 @@ abbrev OA (m : ℕ) : Thick (L l F ρ m) ⥤ CommAlgCat.{0} (WittVector l k) := 
 abbrev OM (m : ℕ) : Thick (L l F ρ m) ⥤ ModuleCat.{0} (WittVector l k) := B.OM (L l F ρ m) (Ideal.Quotient.mk _)
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun x => by obtain ⟨w, hw⟩ := WittVector.constantCoeff_surjective l (ρ x) rw [RingHom.comp_apply, RingHom.comp_apply, RingHom.comp_apply, ← hw, res_coeff, res_coeff]; rfl`.
+A detailed English derivation is pending.
 -/
 theorem red_res (m : ℕ) : (Ideal.quotientMap _ (red l k m) (Ideal.map_le_iff_le_comap.1 (dp_red l k m).1)).comp
     ((res l k (m + 1)).comp ρ) = (res l k m).comp ρ := RingHom.ext fun x => by
@@ -186,7 +186,7 @@ def HS (j : ℕ) : Sys.{1} (WittVector l k) where
 omit [PerfectRing k l] [CharP k l] in
 variable (k) in
 /- English proof (translation)
-Rewrite using `[← map_natCast (Ideal.Quotient.mk _), ← map_natCast (Ideal.Quotient.mk _)]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_map_of_mem _ (Ideal.mem_span_singleton_self _))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem l_zero (m : ℕ) : (l : Wm l k m ⧸ Im l k m) = 0 := by
   rw [← map_natCast (Ideal.Quotient.mk _), ← map_natCast (Ideal.Quotient.mk _)]
@@ -200,7 +200,7 @@ def phiMor (m : ℕ) : CH.Mor (OM l F ρ m) (OM l F ρ m) WittVector.frobenius :
   B.omMor (phiM l F ρ m) WittVector.frobenius (frob_mk' l k m)
 
 /- English proof (translation)
-Unfold `redMor phiMor`. Conclude with `cr_square (phiM l F ρ (m + 1)) (redM l F ρ m) (redM l F ρ m) (phiM l F ρ m) (frob_mk' l k _) (red_mk l k m) (red_mk l k m) (frob_mk' l k _) (red_frob l k m) (base_frb F _ (red_res l ρ m) (l_zero l k _) (l_zero l k _)) j x`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem red_phi (m j : ℕ) (x : CH.H (OM l F ρ (m + 1)) j) :
     (redMor l F ρ m).pull j ((phiMor l F ρ (m + 1)).pull j x) = (phiMor l F ρ m).pull j ((redMor l F ρ m).pull j x) := by
@@ -222,7 +222,7 @@ def pullMor (u : B.Fn.Map F F') (m : ℕ) : CH.Mor (OM l F' ρ m) (OM l F ρ m) 
   B.omMor (pullM l ρ u m) (RingHom.id _) (idc _)
 
 /- English proof (translation)
-Unfold `redMor pullMor`. Conclude with `cr_square (pullM l ρ u (m + 1)) (redM l F ρ m) (redM l F' ρ m) (pullM l ρ u m) (idc _) (red_mk l k m) (red_mk l k m) (idc _) (fun r => (idc (red l k m) r).symm) (base_map u _ (red_res l ρ m)) j x`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem red_pull (u : B.Fn.Map F F') (m j : ℕ) (x : CH.H (OM l F' ρ (m + 1)) j) :
     (redMor l F ρ m).pull j ((pullMor l ρ u (m + 1)).pull j x) = (pullMor l ρ u m).pull j ((redMor l F' ρ m).pull j x) := by

@@ -3,11 +3,11 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨s0, hs0s, hs0⟩` from `(Ideal.span_eq_top_iff_finite s).1 hs`. Use `choose! E hEm using hE`. Set `T : Set A` to `⋃ g ∈ (s0 : Set R), (E g : Set A)`. Establish `hT : T.Finite` using `Set.Finite.biUnion s0.finite_toSet fun g _ => (E g).finite_toSet`. Use `Submodule.FG.of_le (Submodule.fg_span hT) ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b hb`. Use `Submodule.mem_of_span_eq_top_of_smul_pow_mem _ (s0 : Set R) hs0 b ?_` and prove the remaining obligations. Introduce `g`. Take `⟨m, hm⟩` from `hEm g.1 (hs0s g.2) b hb`. Use `⟨m, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hle : Submodule.span R (E g.1 : Set A) ≤ Submodule.span R T` using `Submodule.span_mono (Set.subset_biUnion_of_mem (u := fun g => (E g : Set A)) g.2)`. Establish `: (g.1 ^ m) • b = algebraMap R A g.1 ^ m * b`. Rewrite using `[Algebra.smul_def, map_pow]`. Rewrite using `[this]`. Conclude with `hle hm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem submodule_fg_of_locally_le_fg {R A : Type} [CommRing R] [CommRing A] [Algebra R A]
     [IsNoetherianRing R] (M : Submodule R A) (s : Set R) (hs : Ideal.span s = ⊤)

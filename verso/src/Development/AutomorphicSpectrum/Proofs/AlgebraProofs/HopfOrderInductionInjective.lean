@@ -6,69 +6,59 @@ open GlobalTheory.CompanionTheory.Ar.BT TensorProduct
 namespace GlobalTheory.CompanionTheory.Ar.BT.Induced
 
 /- English proof (translation)
-Introduce `R _ _ T _ _ H _ ι hι A hA`. Take `⟨hfin, hproj, hfull, hcomul, hinv⟩` from `hA`. Unfold `prodSpan at hcomul`. Establish `hmemInd : ∀ f : T → R, f ∈ indOrder ι A ↔ ∀ t : T, (fun h => f (t * ι h)) ∈ A`. Introduce `f`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `indOrder`. Conclude with `Iff.rfl`. Establish `hTr : ∀ g ∈ A, ∀ h0 : H, (fun h => g (h * h0)) ∈ A`. Introduce `g hg h0`. Take `⟨E, hE⟩ : ∃ E : (H × H → R) →ₗ[R] (H → R), ∀ φ h, E φ h = φ (h, h0)` from `⟨{ toFun := fun φ h => φ (h, h0) map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }, fun _ _ => rfl⟩`.
+Replace the relevant objects with their definitions. Unfold both sides to obtain the same proposition, which implies itself. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hle : Submodule.span R {g | ∃ a ∈ A, ∃ b ∈ A, g = fun z : H × H => a z.1 * b z.2} ≤ (Subalgebra.toSubmodule A).comap E`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, ha, b, hb, rfl⟩`. Establish `hEab : E (fun z : H × H => a z.1 * b z.2) = b h0 • a`. Use function extensionality and compare the values at `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hE]`. Simplify using `[mul_comm]`. Use `show E _ ∈ Subalgebra.toSubmodule A`. Rewrite using `[hEab]`. Conclude with `A.smul_mem ha _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hle (hcomul g hg)`. Establish `h2 : E (fun z : H × H => g (z.1 * z.2)) = fun h => g (h * h0)` using `funext fun h => hE _ h`. Rewrite `h1` using `[Submodule.mem_comap, h2]`. Simplify using `using h1`. Establish `hs : Function.Surjective (QuotientGroup.mk : T → T ⧸ ι.range)` using `QuotientGroup.mk_surjective`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hQfin : Finite (T ⧸ ι.range)` using `Finite.of_surjective _ hs`. Set `_ : Fintype (T ⧸ ι.range)` to `Fintype.ofFinite _`. Take `⟨σ, hσ⟩ : ∃ σ : T ⧸ ι.range → T, ∀ c, (σ c : T ⧸ ι.range) = c` from `⟨Function.surjInv hs, Function.surjInv_eq hs⟩`. Establish `hmem : ∀ t : T, (σ (t : T ⧸ ι.range))⁻¹ * t ∈ ι.range` using `fun t => QuotientGroup.eq.mp (hσ _)`. Use `choose δ hδ using fun t : T => MonoidHom.mem_range.mp (hmem t)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdec : ∀ t : T, σ (t : T ⧸ ι.range) * ι (δ t) = t` using `fun t => by`. Rewrite using `[hδ, mul_inv_cancel_left]`. Establish `hmk : ∀ (t : T) (h : H), ((t * ι h : T) : T ⧸ ι.range) = (t : T ⧸ ι.range)`. Introduce `t h`. Apply `QuotientGroup.eq.mpr` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mul_inv_rev, inv_mul_cancel_right]`. Conclude with `inv_mem (MonoidHom.mem_range.mpr ⟨h, rfl⟩)`. Establish `hδmul : ∀ (t : T) (h : H), δ (t * ι h) = δ t * h`. Introduce `t h`. Apply `hι` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hδ, map_mul, hδ, hmk, mul_assoc]`. Take `⟨e, he⟩ : ∃ e : T ⧸ ι.range → T → R, ∀ c t, e c t = if (t : T ⧸ ι.range) = c then 1 else 0` from `⟨fun c t => if (t : T ⧸ ι.range) = c then 1 else 0, fun _ _ => rfl⟩`. Establish `he_self : ∀ t : T, e (t : T ⧸ ι.range) t = 1` using `fun t => by rw [he, if_pos rfl]`. Establish `he_ne : ∀ (c : T ⧸ ι.range) (t : T), c ≠ (t : T ⧸ ι.range) → e c t = 0` using `fun c t hc => by rw [he, if_neg (fun h => hc h.symm)]`. Establish `he_mk : ∀ (c : T ⧸ ι.range) (t : T) (h : H), e c (t * ι h) = e c t` using `fun c t h => by rw [he, he, hmk]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression.
 
-Set `i : (indOrder ι A) →ₗ[R] (T ⧸ ι.range → A)` to `{ toFun := fun f c => ⟨fun h => (f : T → R) (σ c * ι h), (hmemInd _).mp f.2 (σ c)⟩ map_add' := fun f g => by`. Use function extensionality and compare the values at `c`. Apply `Subtype.ext` to reduce the goal to its premises. Both sides reduce to the same expression. Use the proof step `map_smul' := fun r f => by`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `c`. Apply `Subtype.ext` to reduce the goal to its premises. Use `rfl }`. Establish `hp : ∀ a : T ⧸ ι.range → A, (fun t : T => ((a (t : T ⧸ ι.range) : A) : H → R) (δ t)) ∈ indOrder ι A`. Introduce `a`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmemInd]`. Introduce `t`. Establish `heq : (fun h => ((a ((t * ι h : T) : T ⧸ ι.range) : A) : H → R) (δ (t * ι h))) = fun h => ((a (t : T ⧸ ι.range) : A) : H → R) (h * δ t)`. Use function extensionality and compare the values at `h`. Rewrite using `[hmk, hδmul, mul_comm (δ t) h]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show (fun h => ((a ((t * ι h : T) : T ⧸ ι.range) : A) : H → R) (δ (t * ι h))) ∈ A`. Rewrite using `[heq]`. Conclude with `hTr _ (a _).2 _`. Set `p : (T ⧸ ι.range → A) →ₗ[R] (indOrder ι A)` to `{ toFun := fun a => ⟨fun t : T => ((a (t : T ⧸ ι.range) : A) : H → R) (δ t), hp a⟩ map_add' := fun a b => by`. Apply `Subtype.ext` to reduce the goal to its premises.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Both sides reduce to the same expression. Use the proof step `map_smul' := fun r a => by`. Apply `Subtype.ext` to reduce the goal to its premises. Use `rfl }`. Establish `hpi' : ∀ f, p (i f) = f`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `f`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `t`. Use `show (f : T → R) (σ (t : T ⧸ ι.range) * ι (δ t)) = (f : T → R) t`. Rewrite using `[hdec]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hpi : p.comp i = LinearMap.id` using `LinearMap.ext hpi'`. Use `hfin` as an intermediate fact. Use `hproj` as an intermediate fact. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Module.Finite.of_surjective p (fun f => ⟨i f, hpi' f⟩)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hQM : Module.Projective R (T ⧸ ι.range → A)`. Take `⟨M, _, _, _, i0, s0, hs0⟩` from `Module.Projective.iff_split.mp hproj`. Use `Module.Projective.of_split ({ toFun := fun g c => i0 (g c) map_add' := fun g g' => by` and prove the remaining obligations. Use function extensionality and compare the values at `c`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Use the proof step `map_smul' := fun r g => by`. Use function extensionality and compare the values at `c`. Simplify using `} : (T ⧸ ι.range → A) →ₗ[R] (T ⧸ ι.range → M))`. Use the proof step `({ toFun := fun g c => s0 (g c) map_add' := fun g g' => by`. Use function extensionality and compare the values at `c`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Use the proof step `map_smul' := fun r g => by`. Use function extensionality and compare the values at `c`. Simplify using `} : (T ⧸ ι.range → M) →ₗ[R] (T ⧸ ι.range → A)) ?_`. Apply `LinearMap.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Introduce `g`. Use function extensionality and compare the values at `c`. Use `show s0 (i0 (g c)) = g c`. Conclude with `LinearMap.congr_fun hs0 (g c)`. Conclude with `Module.Projective.of_split i p hpi`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨d, hd0, hd⟩` from `hfull`. Conclude with `⟨d, hd0, fun f => (hmemInd _).mpr fun t => hd (fun h => f (t * ι h))⟩`. Introduce `f hf`. Unfold `prodSpan`. Establish `hind : ∀ (c : T ⧸ ι.range), ∀ a ∈ A, (fun t => e c t * a (δ t)) ∈ indOrder ι A`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `c a ha`. Rewrite using `[hmemInd]`. Introduce `t`. Establish `heq : (fun h => e c (t * ι h) * a (δ (t * ι h))) = fun h => e c t * a (h * δ t)`. Use function extensionality and compare the values at `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[he_mk, hδmul, mul_comm (δ t) h]`. Use `show (fun h => e c (t * ι h) * a (δ (t * ι h))) ∈ A`. Rewrite using `[heq]`. Conclude with `A.smul_mem (hTr a ha (δ t)) (e c t)`. Take `⟨L, hL⟩ : ∃ L : T ⧸ ι.range → T ⧸ ι.range → (H × H → R) →ₗ[R] (T × T → R), ∀ c1 c2 φ z, L c1 c2 φ z = e c1 z.1 * e c2 z.2 * φ (δ z.1, δ z.2)` from `⟨fun c1 c2 => { toFun := fun φ z => e c1 z.1 * e c2 z.2 * φ (δ z.1, δ z.2) map_add' := fun φ ψ => by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `z`. Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Use the proof step `map_smul' := fun r φ => by`. Use function extensionality and compare the values at `z`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply]`. Use `ring },`. Use `fun _ _ _ _ => rfl⟩`. Establish `hsum : (fun z : T × T => f (z.1 * z.2)) = ∑ c1 : T ⧸ ι.range, ∑ c2 : T ⧸ ι.range, L c1 c2 (fun z : H × H => f (σ c1 * σ c2 * ι (z.1 * z.2)))`. Use function extensionality and compare the values at `z`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_apply, Fintype.sum_eq_single (z.1 : T ⧸ ι.range)]`. Rewrite using `[Finset.sum_apply, Fintype.sum_eq_single (z.2 : T ⧸ ι.range)]`. Apply the tactic sequence `rw [hL] try dsimp only`. Rewrite using `[he_self, he_self, one_mul, one_mul, map_mul, mul_mul_mul_comm, hdec, hdec]`. Introduce `c2 hc2`.
+Simplify by unfolding definitions. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hL, he_ne _ _ hc2, mul_zero, zero_mul]`. Introduce `c1 hc1`. Rewrite using `[Finset.sum_apply]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `c2 _`.
-
-Rewrite using `[hL, he_ne _ _ hc1, zero_mul, zero_mul]`. Rewrite using `[hsum]`. Use `sum_mem fun c1 _ => sum_mem fun c2 _ => ?_` and prove the remaining obligations. Establish `hle : Submodule.span R {g | ∃ a ∈ A, ∃ b ∈ A, g = fun z : H × H => a z.1 * b z.2} ≤ (Submodule.span R {g | ∃ a ∈ indOrder ι A, ∃ b ∈ indOrder ι A, g = fun z : T × T => a z.1 * b z.2}).comap (L c1 c2)`. Rewrite using `[Submodule.span_le]`.
-
-Introduce and unpack `_ ⟨a, ha, b, hb, rfl⟩`. Use `show L c1 c2 _ ∈ Submodule.span R _`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨_, hind c1 a ha, _, hind c2 b hb, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `z`.
-
-Rewrite using `[hL]`. Simplify using `only`. Expand and normalize the polynomial expressions, which then agree. Conclude with `hle (hcomul _ ((hmemInd f).mp hf (σ c1 * σ c2)))`. Introduce `f hf`.
-
-Rewrite `hf`, the goal using `[hmemInd]`. Introduce `t`. Establish `heq : (fun h => f ((t * ι h)⁻¹)) = fun h => f (t⁻¹ * ι h⁻¹)`. Use function extensionality and compare the values at `h`. Rewrite using `[map_inv, mul_inv]`.
-
-Use `show (fun h => f ((t * ι h)⁻¹)) ∈ A`. Rewrite using `[heq]`. Conclude with `hinv _ (hf t⁻¹)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHopfOrder_indOrder : ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [CommGroup T] [Finite T] (H : Type) [CommGroup H] (ι : H →* T), Function.Injective ι → ∀ A : Subalgebra R (H → R), IsHopfOrder A → IsHopfOrder (indOrder ι A) := by
   classical

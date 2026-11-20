@@ -10,23 +10,21 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CrtG
 
 /- English proof (translation)
-Unfold `gS`. Conclude with `Nat.mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem gS_ne_zero (D : D7) : gS D ≠ 0 := by
   unfold gS; exact Nat.mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero
 
 /- English proof (translation)
-Use `set G : Ideal (𝓞 D.host.F) := Ideal.span {((gS D : ℕ) : 𝓞 D.host.F)} with hGdef`. Establish `hG : G ≠ 0`. Rewrite using `[Ideal.zero_eq_bot, Ne, hGdef, Ideal.span_singleton_eq_bot]`. Conclude with `gS_ne_zero D` after adjusting the coercions. Establish `hirr : Irreducible p.asIdeal` using `(Ideal.prime_of_isPrime p.ne_bot p.isPrime).irreducible`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, A, hA, hGA⟩` from `WfDvdMonoid.max_power_factor hG hirr`. Establish `hAp : ¬ A ≤ p.asIdeal` using `fun h => hA (Ideal.dvd_iff_le.2 h)`. Establish `hsup : p.asIdeal ⊔ A = ⊤` using `p.isMaximal.out.2 _ (left_lt_sup.2 hAp)`. Establish `hcop : IsCoprime (p.asIdeal ^ k) A` using `IsCoprime.pow_left ((Ideal.isCoprime_iff_sup_eq).2 hsup)`. Take `⟨j, hj, a₀, ha₀, hja⟩` from `(Ideal.isCoprime_iff_exists).1 hcop`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨a₀, ?_, ?_⟩` and prove the remaining obligations. Take `⟨s, hsA, hsp⟩` from `Set.not_subset.1 hAp`. Use `⟨s, hsp, ?_⟩` and prove the remaining obligations. Establish `h1 : s * (a₀ - 1) = -(j * s)`. Establish `: a₀ - 1 = -j` using `by rw [← hja]; ring`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, hGA]`. Conclude with `neg_mem (Ideal.mul_mem_mul hj hsA)`. Introduce `p' hp'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hnot : ¬ p.asIdeal ^ k ≤ p'.asIdeal`. Introduce `h`. Establish `hle : p.asIdeal ≤ p'.asIdeal` using `p'.isPrime.le_of_pow_le h`. Conclude with `hp' (IsDedekindDomain.HeightOneSpectrum.ext (p.isMaximal.eq_of_le p'.isPrime.ne_top hle).symm)`. Take `⟨s, hsk, hsp'⟩` from `Set.not_subset.1 hnot`.
-
-Use `⟨s, hsp', ?_⟩` and prove the remaining obligations. Rewrite using `[hGA]`. Conclude with `Ideal.mul_mem_mul hsk ha₀`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_crt (D : D7) (p : PlF D) :
     ∃ a₀ : 𝓞 D.host.F,
@@ -68,11 +66,11 @@ end GlobalTheory.CrtG
 namespace GlobalTheory.CrtG
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 hy`. Establish `hg : ((gS D : ℕ) : D.host.E) ≠ 0` using `by exact_mod_cast gS_ne_zero D`. Use `set x : D.host.E := algebraMap D.host.F D.host.E (y : D.host.F) / ((gS D : ℕ) : D.host.E) with hx`. Establish `hcx : algebraMap D.host.F D.host.E (s : D.host.F) * x = algebraMap D.host.F D.host.E (c : D.host.F)`. Establish `h2 : ((c * ((gS D : ℕ) : 𝓞 D.host.F) : 𝓞 D.host.F) : D.host.F) = ((s * y : 𝓞 D.host.F) : D.host.F)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`. Move the coercions through the operations in `at h2`. Establish `h3` using `congrArg (algebraMap D.host.F D.host.E) h2`. Simplify using `only [map_mul, map_natCast] at h3`. Rewrite using `[hx, mul_div_assoc', div_eq_iff hg, ← h3]`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hint : IsIntegral ℤ (algebraMap D.host.F D.host.E (s : D.host.F) * x)`. Rewrite using `[hcx]`. Conclude with `(RingOfIntegers.isIntegral_coe c).map (IsScalarTower.toAlgHom ℤ D.host.F D.host.E)`. Use `⟨(D.s.atP p).ιE x, (Formalism.L2.SG.Pf.LocalDenominators.iE_mem_O_iff_D p x).2 ⟨s, hs, hint⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul, hx, mul_div_cancel₀ _ hg]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iE_div_g (D : D7) (p : PlF D) (y : 𝓞 D.host.F) (s : 𝓞 D.host.F) (hs : s ∉ p.asIdeal)
     (hy : s * y ∈ Ideal.span {((gS D : ℕ) : 𝓞 D.host.F)}) :
@@ -95,11 +93,11 @@ theorem iE_div_g (D : D7) (p : PlF D) (y : 𝓞 D.host.F) (s : 𝓞 D.host.F) (h
   rw [← map_mul, hx, mul_div_cancel₀ _ hg]
 
 /- English proof (translation)
-Introduce `D p`. Take `⟨a₀, ⟨s, hs, h1⟩, h2⟩` from `exists_crt D p`. Establish `hint : IsIntegral ℤ (algebraMap D.host.F D.host.E (a₀ : D.host.F))` using `(RingOfIntegers.isIntegral_coe a₀).map (IsScalarTower.toAlgHom ℤ D.host.F D.host.E)`. Use `⟨⟨algebraMap D.host.F D.host.E (a₀ : D.host.F), hint⟩, ?_, ?_⟩` and prove the remaining obligations. Take `⟨o, ho, he⟩` from `iE_div_g D p (a₀ - 1) s hs h1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨o, ho, ?_⟩` and prove the remaining obligations. Rewrite using `[← he]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Introduce `p' hp'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨s', hs', h'⟩` from `h2 p' hp'`. Conclude with `iE_div_g D p' a₀ s' hs' h'`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_one_here_zero_elsewhere : ∀ (D : D7) (p : PlF D), ∃ a : 𝓞 D.host.E, (∃ o ∈ (D.s.atP p).O, (D.s.atP p).ιE (a : D.host.E) - 1 = (D.s.atP p).ιE ((gS D : ℕ) : D.host.E) * o) ∧ ∀ p' : PlF D, p' ≠ p → ∃ o ∈ (D.s.atP p').O, (D.s.atP p').ιE (a : D.host.E) = (D.s.atP p').ιE ((gS D : ℕ) : D.host.E) * o := by
   intro D p

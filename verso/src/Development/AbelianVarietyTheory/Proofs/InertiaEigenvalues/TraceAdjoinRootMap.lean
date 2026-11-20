@@ -4,7 +4,7 @@ open Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `: (AdjoinRoot.map g h (h.map g) dvd_rfl).comp (AdjoinRoot.mk h) = (AdjoinRoot.mk (h.map g)).comp (Polynomial.mapRingHom g)`. Apply the tactic sequence `ext <;> simp`. Conclude with `DFunLike.congr_fun this f`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem adjoinRoot_map_mk_map {R S : Type} [CommRing R] [CommRing S] (g : R →+* S) (h f : R[X]) :
     AdjoinRoot.map g h (h.map g) dvd_rfl (AdjoinRoot.mk h f) = AdjoinRoot.mk (h.map g) (f.map g) := by
@@ -14,17 +14,17 @@ theorem adjoinRoot_map_mk_map {R S : Type} [CommRing R] [CommRing S] (g : R →+
   exact DFunLike.congr_fun this f
 
 /- English proof (translation)
-Introduce `R S _ _ g h hm x`. Break down `subsingleton_or_nontrivial S with hS | hS` into its components or cases. Conclude with `Subsingleton.elim _ _`. Establish `hm' : (h.map g).Monic` using `hm.map g`. Establish `hn : (h.map g).natDegree = h.natDegree` using `hm.natDegree_map g`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ (y : AdjoinRoot h) (k : ℕ), (AdjoinRoot.modByMonicHom hm' (AdjoinRoot.map g h (h.map g) dvd_rfl y)).coeff k = g ((AdjoinRoot.modByMonicHom hm y).coeff k)`. Introduce `y k`. Proceed by induction on `y using AdjoinRoot.induction_on with`. Consider the case `ih f`. Rewrite using `[adjoinRoot_map_mk_map, AdjoinRoot.modByMonicHom_mk, AdjoinRoot.modByMonicHom_mk, ← Polynomial.map_modByMonic g hm, Polynomial.coeff_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `b : Module.Basis (Fin h.natDegree) R (AdjoinRoot h)` to `(AdjoinRoot.powerBasis' hm).basis`. Set `b' : Module.Basis (Fin h.natDegree) S (AdjoinRoot (h.map g))` to `(AdjoinRoot.powerBasis' hm').basis.reindex (finCongr hn)`. Establish `hb : ∀ i, b i = AdjoinRoot.root h ^ (i : ℕ)` using `fun i => (AdjoinRoot.powerBasis' hm).basis_eq_pow i`. Establish `hb' : ∀ i, b' i = AdjoinRoot.root (h.map g) ^ (i : ℕ)` using `fun i => by`. Simplify using `only [b', Module.Basis.reindex_apply, PowerBasis.coe_basis, AdjoinRoot.powerBasis'_gen]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hr : ∀ (z : AdjoinRoot h) (i : Fin h.natDegree), b.repr z i = (AdjoinRoot.modByMonicHom hm z).coeff i` using `fun _ _ => rfl`. Establish `hr' : ∀ (z : AdjoinRoot (h.map g)) (i : Fin h.natDegree), b'.repr z i = (AdjoinRoot.modByMonicHom hm' z).coeff i` using `fun z i => by`. Simplify using `only [b', Module.Basis.repr_reindex_apply]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.trace_eq_matrix_trace b, Algebra.trace_eq_matrix_trace b', Matrix.trace, Matrix.trace, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.diag]`. Rewrite using `[Algebra.leftMulMatrix_eq_repr_mul, Algebra.leftMulMatrix_eq_repr_mul]`. Establish `hbi : b' i = AdjoinRoot.map g h (h.map g) dvd_rfl (b i)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb, hb', map_pow, AdjoinRoot.map_root]`. Rewrite using `[hbi, ← map_mul, hr', hr, key]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_adjoinRoot_map : ∀ (R S : Type) [CommRing R] [CommRing S] (g : R →+* S) (h : R[X]),
     h.Monic → ∀ x : AdjoinRoot h, g (Algebra.trace R (AdjoinRoot h) x) =

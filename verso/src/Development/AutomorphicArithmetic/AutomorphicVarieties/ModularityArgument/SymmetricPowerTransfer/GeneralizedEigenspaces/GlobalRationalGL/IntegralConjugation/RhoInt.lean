@@ -13,7 +13,7 @@ namespace UpperTheory.V.Z.Sym.Dict.Br
 variable {L : Type} [Field L] [NumberField L] [IsCMField L]
 
 /- English proof (translation)
-Use `show P.φ v w h a + P.φ v w h 0 * P.rt w = _`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem rho_coe (P : Pre L) (v : Pl (Lp L)) (w : Plc L) (h : un w = v) (a : Kv v) :
     P.rho v w h ⟨a, 0⟩ = P.φ v w h a := by
@@ -21,7 +21,7 @@ private theorem rho_coe (P : Pre L) (v : Pl (Lp L)) (w : Plc L) (h : un w = v) (
   simp
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hE : IsEmpty {w : Plc L // un w = v}` using `⟨fun w => hne w.1 w.2⟩`. Establish `h01` using `(rhoBij L P v).1 (a₁ := 0) (a₂ := 1) (funext fun w => (hE.false w).elim)`. Conclude with `zero_ne_one h01`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem exists_over (P : Pre L) (v : Pl (Lp L)) : ∃ w : Plc L, un w = v := by
   by_contra hne
@@ -31,7 +31,7 @@ private theorem exists_over (P : Pre L) (v : Pl (Lp L)) : ∃ w : Plc L, un w = 
   exact zero_ne_one h01
 
 /- English proof (translation)
-Rewrite using `[pLoc_conjFin, HeightOneSpectrum.mem_adicCompletionIntegers, (conjLoc_spec _ w).2.2]`. Conclude with `hA _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem conj_int (a : Af L) (hA : ∀ u : Plc L, pLoc L u a ∈ u.adicCompletionIntegers L) (w : Plc L) :
     pLoc L w (cjF a) ∈ w.adicCompletionIntegers L := by
@@ -39,11 +39,9 @@ private theorem conj_int (a : Af L) (hA : ∀ u : Plc L, pLoc L u a ∈ u.adicCo
   exact hA _
 
 /- English proof (translation)
-Establish `hf : ∀ u : Plc L, (if h : un u = v then P.rho v u h x else 0) ∈ u.adicCompletionIntegers L` using `fun u => by`. Distinguish the cases in `hu : un u = v`. Rewrite using `[dif_pos hu]`. Conclude with `hx u hu`. Rewrite using `[dif_neg hu]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `zero_mem _`. Set `a : Af L` to `⟨fun u => if h : un u = v then P.rho v u h x else 0, Filter.Eventually.of_forall hf⟩`. Establish `ha : ∀ w h, P.rho v w h x = pLoc L w a` using `fun w h => by show _ = dite _ _ _`. Rewrite using `[dif_pos h]`. Rewrite using `[rhoStar L P v x a ha w h]`.
-
-Conclude with `conj_int a hf w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem star_int (P : Pre L) (v : Pl (Lp L)) (x : Lsq (Kv v) (cv v P.Δ))
     (hx : ∀ w h, P.rho v w h x ∈ w.adicCompletionIntegers L) (w : Plc L) (h : un w = v) :
@@ -63,21 +61,19 @@ private theorem star_int (P : Pre L) (v : Pl (Lp L)) (x : Lsq (Kv v) (cv v P.Δ)
 end UpperTheory.V.Z.Sym.Dict.Br
 
 /- English proof (translation)
-Introduce `L _ _ _ P v x`. Prove the components needed by the constructor for the conclusion. Introduce `hx w h`. Take `⟨p, hp, he⟩` from `hx`. Set `f : Ov v →+* w.adicCompletionIntegers L` to `((P.φ v w h).comp (algebraMap (Ov v) (Kv v))).codRestrict (w.adicCompletionIntegers L) fun a => (rhoDiv L P v w h _).2 a.2`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hc : (P.rho v w h).comp (algebraMap (Ov v) (Lsq (Kv v) (cv v P.Δ))) = (algebraMap (w.adicCompletionIntegers L) (Kw w)).comp f`. Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Conclude with `rho_coe P v w h _`. Establish `hi : IsIntegral (w.adicCompletionIntegers L) (P.rho v w h x)`. Use `⟨p.map f, hp.map f, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.eval₂_map, ← hc, ← Polynomial.hom_eval₂, he, map_zero]`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hi`. Rewrite using `[← hy]`. Conclude with `y.2`. Introduce `hx`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w, h⟩` from `exists_over P v`. Establish `hs` using `star_int P v x hx w h`. Establish `ht : 2 * x.re ∈ v.adicCompletionIntegers (Lp L)`. Rewrite using `[← rhoDiv L P v w h, ← rho_coe P v w h]`. Establish `: (⟨2 * x.re, 0⟩ : Lsq (Kv v) (cv v P.Δ)) = x + star x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `apply QuadraticAlgebra.ext <;> simp [two_mul]`. Rewrite using `[this, map_add]`. Conclude with `add_mem (hx w h) hs`. Establish `hn : x.re * x.re - cv v P.Δ * (x.im * x.im) ∈ v.adicCompletionIntegers (Lp L)`. Rewrite using `[← rhoDiv L P v w h, ← rho_coe P v w h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Establish `: (⟨x.re * x.re - cv v P.Δ * (x.im * x.im), 0⟩ : Lsq (Kv v) (cv v P.Δ)) = x * star x`. Apply the tactic sequence `apply QuadraticAlgebra.ext <;> simp <;> ring`. Rewrite using `[this, map_mul]`. Conclude with `mul_mem (hx w h) hs`. Set `t : Ov v` to `⟨_, ht⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `n : Ov v` to `⟨_, hn⟩`. Use `⟨Polynomial.X ^ 2 - (Polynomial.C t * Polynomial.X + Polynomial.C (-n)), Polynomial.monic_X_pow_sub (Polynomial.degree_linear_le.trans_lt (by norm_num)), ?_⟩` and prove the remaining obligations. Establish `e1 : algebraMap (Ov v) (Lsq (Kv v) (cv v P.Δ)) t = ⟨2 * x.re, 0⟩` using `rfl`. Establish `e2 : algebraMap (Ov v) (Lsq (Kv v) (cv v P.Δ)) (-n) = ⟨-(x.re * x.re - cv v P.Δ * (x.im * x.im)), 0⟩` using `rfl`. Simplify using `only [Polynomial.eval₂_sub, Polynomial.eval₂_add, Polynomial.eval₂_mul, Polynomial.eval₂_pow, Polynomial.eval₂_X, Polynomial.eval₂_C, e1, e2]`.
-
-Apply the tactic sequence `apply QuadraticAlgebra.ext <;> simp [pow_two] <;> ring`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Dict.Br.rhoInt :
     ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (P : Pre L), ∀ v (x : Lsq (Kv v) (cv v P.Δ)), IsIntegral (Ov v) x ↔ ∀ w h, P.rho v w h x ∈ w.adicCompletionIntegers L := by

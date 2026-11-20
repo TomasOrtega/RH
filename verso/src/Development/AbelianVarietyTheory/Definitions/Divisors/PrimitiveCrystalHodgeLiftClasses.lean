@@ -24,15 +24,13 @@ def schemeFil (κ : DividedPowers I) {S : Scheme.{0}} {t : S ⟶ Sp R} (A₀ : O
   (primitiveCrystalHodgeLiftClasses κ A₀ X i w).dualAnnihilator
 
 /- English proof (translation)
-Use extensionality with `d`. Express the relevant statement in the definitionally equal form `d ∈ (primitiveCrystalHodgeLiftClasses κ A₀ A i h.1.w).dualAnnihilator ↔ crysToDR κ h d ∈ (PrimitiveSubmodule A).dualAnnihilator`. Rewrite using `[Submodule.mem_dualAnnihilator, Submodule.mem_dualAnnihilator]`. Prove the components needed by the constructor for the conclusion. Introduce `hd x hx`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[crysToDR_apply]`. Apply `hd` to reduce the goal to its premises. Use `show (((liftMor κ h).pull x : prim κ t A₀) : Cris.H1 κ (A₀.hom ≫ t)) ∈ (F1 (A.hom ≫ 𝟙 _)).map (IsMor.of_dividedPowersZeroIdeal (s := A.hom ≫ 𝟙 _) κ (s' := A₀.hom ≫ t) (σ := RingHom.id R) (φ := i) (by rw [Cris.spMap_id, Category.comp_id, Category.comp_id, h.1.w])).pull1`. Rewrite using `[GrpMor.coe_pull]`. Conclude with `Submodule.mem_map_of_mem hx`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hd y hy`. Establish `hy' : (y : Cris.H1 κ (A₀.hom ≫ t)) ∈ (F1 (A.hom ≫ 𝟙 _)).map (IsMor.of_dividedPowersZeroIdeal (s` using `A.hom ≫ 𝟙 _) κ (s' := A₀.hom ≫ t) (σ := RingHom.id R) (φ := i) (by rw [Cris.spMap_id, Category.comp_id, Category.comp_id, h.1.w])).pull1 := hy`. Take `⟨c, hc, hcy⟩` from `Submodule.mem_map.mp hy'`. Establish `hcp : c ∈ primDR A`. Rewrite using `[show primDR A = ⊤ from hp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Submodule.mem_top`. Establish `key` using `hd ⟨c, hcp⟩ hc`. Rewrite `key` using `[crysToDR_apply]`. Establish `hpy : (liftMor κ h).pull ⟨c, hcp⟩ = y`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Rewrite using `[GrpMor.coe_pull]`. Conclude with `hcy`. Rewrite `key` using `[hpy]`. Conclude with `key`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem schemeFil_eq_liftFil (κ : DividedPowers I) {S : Scheme.{0}} {t : S ⟶ Sp R} {A₀ : Over S} [GrpObj A₀]
     {A : Over (Sp R)} [GrpObj A] {i : A₀.left ⟶ A.left} (h : IsGrpPullback A₀ A t i) (hp : AllPrim (dp0 R) (𝟙 _) A) :
@@ -71,7 +69,7 @@ def NilExp (κ : DividedPowers I) (N : ℕ) : Prop :=
   ∀ l : List (ℕ × R), (∀ p ∈ l, p.2 ∈ I) → N ≤ (l.map Prod.fst).sum → (l.map fun p ↦ κ.dpow p.1 p.2).prod = 0
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isPDNilpotent_iff (κ : DividedPowers I) : IsNilDP κ ↔ ∃ N, NilExp κ N := Iff.rfl
 

@@ -13,9 +13,9 @@ open GlobalTheory.Cusp GlobalTheory.IndefiniteRowSideFullHecke.CuspidalNoRadical
 namespace GlobalTheory.RopCusp
 
 /- English proof (translation)
-Introduce `D V μ _ _ f hf hR F`. Take `⟨hfc, hfs⟩` from `continuous_of_mem_ccAd hf`. Take `⟨-, hc, hl, he⟩` from `GlobalTheory.T.rightRegularOperator_represented_continuous D V μ f hf F`. Use `mem_L2cusp_of_ae_eq ⟨hc, hl, (isCuspFun_iff hl).2 fun W hW => funext fun x => ?_⟩ he` and prove the remaining obligations. Take `⟨hw1, hw2, hw3⟩` from `GlobalTheory.T.constant_term_locally_integrable D V μ W hW F`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hw3 f hfc hfs x, Pi.zero_apply]`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField D.host.F`. Establish `hcl : IsClosed ((NA (.single hW) : Subgroup (GA D V)) : Set (GA D V))` using `IsoFlag.isClosed_unip (IsoFlag.single hW) D.sp.cm _`. Conclude with `GlobalTheory.T.integral_mul_eq_zero_of_coset_integral_eq_zero_alt (GA D V) (NA (.single hW)) hcl (Measure.haar) μ (fun y => f (x⁻¹ * y)) _ (hfc.comp (continuous_mul_left x⁻¹)) (hfs.comp_homeomorph (Homeomorph.mulLeft x⁻¹)) hw1 hw2 fun g => by simpa only [mul_assoc] using hR _ (Is …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ropG_mem_L2cusp : ∀ (D : D7) (V : HSp D) (μ : Measure (GA D V)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant],
     ∀ f ∈ CcGA V, RadicalIntegralsVanish V f → ∀ F : DividedPowerChartLift V μ, RopG V μ f F ∈ L2cusp V μ := by

@@ -26,7 +26,7 @@ noncomputable section
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Rewrite using `[Blowup.exceptionalIdeal_eq_comap, Blowup.exceptionalIdeal_eq_comap, ← Scheme.IdealSheafData.comap_comp, hsq, Scheme.IdealSheafData.comap_comp, Blowup.comap_map_of_isClosedImmersion]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comap_exceptionalIdeal_of_closedImmersionSquare
     {S S' X X' : Scheme.{u}} (i : S ⟶ X) [AlgebraicGeometry.IsClosedImmersion i]
@@ -37,9 +37,9 @@ theorem comap_exceptionalIdeal_of_closedImmersionSquare
     Scheme.IdealSheafData.comap_comp, Blowup.comap_map_of_isClosedImmersion]
 
 /- English proof (translation)
-Establish `h1 : (Blowup.exceptionalIdeal p (Z.map i) ^ m * A').comap i' = (A.comap p).comap i'`. Rewrite using `[hA]`. Rewrite `h1` using `[Scheme.IdealSheafData.comap_mul, Scheme.IdealSheafData.comap_pow, comap_exceptionalIdeal_of_closedImmersionSquare i i' p q hsq Z, ← Scheme.IdealSheafData.comap_comp, hsq, Scheme.IdealSheafData.comap_comp]`. Establish `h2 : Blowup.exceptionalIdeal q Z ^ m * A'.comap i' = Blowup.exceptionalIdeal q Z ^ m * J'`. Rewrite using `[h1, hJ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hcart.pow m).eq_of_mul_eq_mul h2`.
+A detailed English derivation is pending.
 -/
 theorem comap_controlledTransform_of_closedImmersionSquare
     {S S' X X' : Scheme.{u}} (i : S ⟶ X) [AlgebraicGeometry.IsClosedImmersion i]
@@ -67,7 +67,7 @@ variable (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubs
     (hpr : (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData.CentersContainNoComponent)
 
 /- English proof (translation)
-The claim follows from `embeddingIntoAmbientBlowupSequence_succ_comp_map (T.boundary.get ⟨j, hj⟩).subschemeι (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData hres hno hpr t`.
+A detailed English derivation is pending.
 -/
 theorem embeddingIntoAmbient_comp_blowupMorphism (t : ℕ) :
     embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr (t + 1) ≫
@@ -82,7 +82,7 @@ instance instIsClosedImmersionPushedEmb (t : ℕ) :
     (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData hres hno hpr t
 
 /- English proof (translation)
-The claim follows from `embeddingIntoAmbientBlowupSequence_zero (T.boundary.get ⟨j, hj⟩).subschemeι (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData hres hno hpr`.
+A detailed English derivation is pending.
 -/
 theorem embeddingIntoAmbient_zero :
     embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr 0 =
@@ -91,7 +91,7 @@ theorem embeddingIntoAmbient_zero :
     (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData hres hno hpr
 
 /- English proof (translation)
-The claim follows from `congrArg Iso.hom (ambientBlowupSequence_isoObjZero (T.boundary.get ⟨j, hj⟩).subschemeι (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData hres hno hpr)`.
+A detailed English derivation is pending.
 -/
 private theorem ambientBlowupSeq_isoObjZero_hom :
     (ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).isoZero.hom = 𝟙 T.scheme :=
@@ -99,15 +99,13 @@ private theorem ambientBlowupSeq_isoObjZero_hom :
     (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData hres hno hpr)
 
 /- English proof (translation)
-Use `revert ht hdiv`. Proceed by induction on `t with`. Consider the case `zero`. Introduce `ht hdiv`. Establish `e1 : ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).controlledTransform I₀ T.mult 0).comap (embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr 0) = I₀.comap (embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr 0 ≫ (ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).isoZero.hom)`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[BlowupSequenceData.controlledTransform_zero]`. Conclude with `(Scheme.IdealSheafData.comap_comp ..).symm`. Establish `e2 : embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr 0 ≫ (ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).isoZero.hom = s.isoZero.hom ≫ (T.boundary.get ⟨j, hj⟩).subschemeι`. Rewrite using `[ambientBlowupSeq_isoObjZero_hom hres hno T j hj I₀ E₀ s hpr, embeddingIntoAmbient_zero hres hno T j hj I₀ E₀ s hpr]`. Conclude with `Category.comp_id _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e3 : s.ideal 0 = I₀.comap (s.isoZero.hom ≫ (T.boundary.get ⟨j, hj⟩).subschemeι)` using `s.ideal_zero.trans (Scheme.IdealSheafData.comap_comp ..).symm`. Conclude with `e1.trans ((congrArg (fun f => I₀.comap f) e2).trans e3.symm)`. Consider the case `succ t IH`. Introduce `ht hdiv`. Establish `hts : t < s.length` using `ht`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hIH : ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).controlledTransform I₀ T.mult t).comap (embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t) = s.ideal t` using `IH (Nat.le_of_succ_le ht) (fun i hi => hdiv i (Nat.lt_succ_of_lt hi))`. Establish `h0` using `BlowupSequenceData.pow_exceptionalIdeal_mul_controlledTransform_succ (ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr) I₀ T.mult t (hdiv t (Nat.lt_succ_self t))`. Rewrite `h0` using `[ambientBlowupSeq_center_eq_imageIdealSheaf hres hno T j hj I₀ E₀ s hpr t]`. Establish `hJ : Blowup.exceptionalIdeal (s.transitionMapSucc t) (s.center t) ^ T.mult * s.ideal (t + 1) = (((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).controlledTransform I₀ T.mult t).comap (embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t)).comap (s.transitionMapSucc t)`. Rewrite using `[hIH]`.
-
-Conclude with `s.ideal_succ t hts`. Conclude with `comap_controlledTransform_of_closedImmersionSquare (embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t) (embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr (t + 1)) ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).map t) (s.transitionMapSucc t) (embeddingIntoAmbient_comp_blowupMorph …`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comap_controlledTransform_embeddingIntoAmbient (t : ℕ) (ht : t ≤ s.length)
     (hdiv : ∀ i < t, ∃ B : ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).obj (i + 1)).IdealSheafData,

@@ -13,7 +13,7 @@ open NumberField MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMas
 namespace GlobalTheory.TowU
 
 /- English proof (translation)
-Use `haveI : Nontrivial (AF F) := (NumberField.AdeleRing.algebraMap_injective (𝓞 F) F).nontrivial`. Use `haveI : FiniteDimensional F E := Module.Finite.right ℚ F E`. Establish `h1` using `d.e.finrank_eq`. Rewrite `h1` using `[Module.finrank_prod, Module.finrank_fintype_fun_eq_card, Module.finrank_matrix, Module.finrank_baseChange]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem card_two_eq (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {α β κ : Type} [Fintype α] [Fintype β] [Fintype κ]
@@ -54,17 +54,15 @@ theorem reindexD_e {F : Type} [Field F] [NumberField F] {W : Type} [AddCommGroup
     (reindexD d e).e w = ((d.e w).1 ∘ e.symm, (d.e w).2 ∘ e.symm) := rfl
 
 /- English proof (translation)
-Establish `hcl` using `GlobalTheory.sympGen F κ g hg`. Use `clear hg`. Proceed by induction on `hcl using Submonoid.closure_induction with`. Consider the case `mem x hx`. Break down `hx with (⟨A, hA, rfl⟩ | ⟨C, hC, rfl⟩) | hx` into its components or cases.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `GlobalTheory.T.exists_darbouxOperators_levi_and_double F ψ hψ κ A hA`. Conclude with `GlobalTheory.T.exists_darbouxChangeOperatorWithDouble_lowerUnipotent F ψ hψ κ C hC`. Rewrite `hx` using `[Set.mem_singleton_iff]`. Substitute `hx` using the available equality. Conclude with `GlobalTheory.T.weylElement_realised_by_fourierTransforms F ψ hψ κ`.
+Substitute using the available equality. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Consider the case `one`. Take `⟨S, S', h⟩` from `(GlobalTheory.T.darbouxChange_realised_comp_and_reindex F ψ hψ).2 κ κ (Equiv.refl κ)`. Use `⟨S, S', ?_⟩` and prove the remaining obligations. Establish `: GlobalTheory.AdelicSvN.act (1 : Matrix (κ ⊕ κ) (κ ⊕ κ) F) = fun w : (κ → AF F) × (κ → AF F) => (w.1 ∘ Equiv.refl κ, w.2 ∘ Equiv.refl κ)`. Use function extensionality and compare the values at `w`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[GlobalTheory.AdelicSvN.act_one]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `h`. Consider the case `mul x y _ _ hx hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Take `⟨S, S', hS⟩` from `hx`. Take `⟨T, T', hT⟩` from `hy`. Establish `: GlobalTheory.AdelicSvN.act (x * y) = GlobalTheory.AdelicSvN.act x ∘ GlobalTheory.AdelicSvN.act (R` using `AF F) y := by`. Use function extensionality and compare the values at `w`. Conclude with `GlobalTheory.AdelicSvN.act_mul x y w`.
-
-Rewrite using `[this]`. Conclude with `⟨S ∘ₗ T, T' ∘ₗ S', (GlobalTheory.T.darbouxChange_realised_comp_and_reindex F ψ hψ).1 κ κ κ _ _ T T' S S' hT hS⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem realised_of_sp {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) {κ : Type} [Fintype κ]
     [DecidableEq κ] (g : Matrix (κ ⊕ κ) (κ ⊕ κ) F)
@@ -96,15 +94,15 @@ theorem realised_of_sp {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F)
     exact ⟨S ∘ₗ T, T' ∘ₗ S', (GlobalTheory.T.darbouxChange_realised_comp_and_reindex F ψ hψ).1 κ κ κ _ _ T T' S S' hT hS⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ _ ψ hψ α β κ κ' _ _ _ _ B d d' hd hd'`. Establish `hc` using `card_two_eq F E d`. Establish `hc'` using `card_two_eq F E d'`. Establish `hκ : Fintype.card κ' = Fintype.card κ` using `by omega`. Set `e : κ' ≃ κ` to `Fintype.equivOfCardEq hκ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `d''` to `reindexD d' e`. Establish `hd'' : IsRat d''` using `fun x => by`. Take `⟨y, z, h⟩` from `hd' x`. Use `⟨y ∘ e.symm, z ∘ e.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[reindexD_e, h]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨g, hg, hgd⟩` from `GlobalTheory.RatDarboux.exists_rat_symplectic F E α β κ B d d'' hc hd hd''`. Take `⟨S, S', hS⟩` from `realised_of_sp ψ hψ g hg`. Take `⟨T, T', hT⟩` from `(GlobalTheory.T.darbouxChange_realised_comp_and_reindex F ψ hψ).2 κ κ' e`. Establish `hs : (fun w => d'.e (d.e.symm w)) = (fun w : (κ → AF F) × (κ → AF F) => (w.1 ∘ e, w.2 ∘ e)) ∘ GlobalTheory.AdelicSvN.act g`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `w`. Use `hgd (d.e.symm w)` as an intermediate fact. Simplify using `only [LinearEquiv.apply_symm_apply] at this`. Rewrite using `[Function.comp_apply, ← this, reindexD_e]`. Apply the tactic sequence `ext i <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[hs]`. Conclude with `⟨T ∘ₗ S, S' ∘ₗ T', (GlobalTheory.T.darbouxChange_realised_comp_and_reindex F ψ hψ).1 κ κ κ' _ _ S S' T T' hS hT⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem darboux_change : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ ψ : AddChar (AF F) ℂ, IsStd ψ → ∀ (α β κ κ' : Type) [Fintype α] [Fintype β] [Fintype κ] [Fintype κ'] (B : Matrix α β (AE F E) → Matrix α β (AE F E) → AF F) (d : Darboux B κ) (d' : Darboux B κ'), IsRat d → IsRat d' → ∃ (S : ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ' → AF F) → ℂ)) (S' : ((κ' → AF F) → ℂ) →ₗ[ℂ] ((κ → AF F) → ℂ)), IsOp2 ψ (fun w => d'.e (d.e.symm w)) S S' := by
   intro F E _ _ _ _ _ σ _ ψ hψ α β κ κ' _ _ _ _ B d d' hd hd'

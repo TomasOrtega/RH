@@ -6,17 +6,17 @@ open scoped TensorProduct NNReal ENNReal
 namespace GlobalTheory.CompanionTheory.SmallIntegral
 
 /- English proof (translation)
-Introduce `E _ _ d y hd hint ε hε hlt`. Assume the negation of the conclusion as `hy`. Establish `hd' : (d : E) ≠ 0` using `by exact_mod_cast hd.ne'`. Establish `hz : (d : E) * y ≠ 0` using `mul_ne_zero hd' hy`. Take `⟨n, hn⟩` from `IsIntegrallyClosed.isIntegral_iff.mp (Algebra.isIntegral_norm ℚ hint : IsIntegral ℤ (Algebra.norm ℚ ((d : E) * y)))`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hnorm0 : Algebra.norm ℚ ((d : E) * y) ≠ 0` using `Algebra.norm_ne_zero_iff.mpr hz`. Establish `hn0 : n ≠ 0`. Introduce and unpack `rfl`. Conclude with `hnorm0 (by simpa using hn.symm)`. Establish `hn1 : (1 : ℝ) ≤ |(n : ℝ)|` using `by exact_mod_cast Int.one_le_abs hn0`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hprod : ((Algebra.norm ℚ ((d : E) * y) : ℚ) : ℂ) = ∏ φ : E →+* ℂ, φ ((d : E) * y)`. Establish `h` using `Algebra.norm_eq_prod_embeddings ℚ ℂ ((d : E) * y)`. Establish `h2 : ∏ σ : E →ₐ[ℚ] ℂ, σ ((d : E) * y) = ∏ φ : E →+* ℂ, φ ((d : E) * y)` using `Fintype.prod_equiv (RingHom.equivRatAlgHom E ℂ).symm _ _ (fun σ => rfl)`. Rewrite using `[← h2, ← h]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hnC : ((n : ℂ)) = ∏ φ : E →+* ℂ, φ ((d : E) * y)`. Rewrite using `[← hprod, ← hn]`. Simplify using the standard rewrite rules. Establish `habs : |(n : ℝ)| = ∏ φ : E →+* ℂ, ‖φ ((d : E) * y)‖`. Use `congrArg norm hnC` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[norm_prod]`. Simplify using `using this`. Establish `hbound : ∏ φ : E →+* ℂ, ‖φ ((d : E) * y)‖ ≤ ((d : ℝ) * ε) ^ Module.finrank ℚ E`. Establish `hle : ∀ φ ∈ (Finset.univ : Finset (E →+* ℂ)), ‖φ ((d : E) * y)‖ ≤ (d : ℝ) * ε`. Introduce `φ _`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_natCast, norm_mul, Complex.norm_natCast]`. Conclude with `mul_le_mul_of_nonneg_left (hε φ) (Nat.cast_nonneg d)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_const, Finset.card_univ, NumberField.Embeddings.card E ℂ]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_isIntegral_mul_of_small :
     ∀ (E : Type) [Field E] [NumberField E] (d : ℕ) (y : E), 0 < d →

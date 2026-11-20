@@ -17,7 +17,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Introduce `h hh`. Use `mul_mem_ball hξ hh` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_right]`. Conclude with `hc.eq_one this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_triv {ψ : AddChar k Circle} {c : kˣ} (hc : HasConductor ψ c) {s : kˣ} {ξ : k}
     (hξ : ξ ∈ ball (c * s⁻¹)) : ∀ h ∈ ball s, ψ (ξ * h) = 1 := by
@@ -27,7 +27,7 @@ theorem psi_triv {ψ : AddChar k Circle} {c : kˣ} (hc : HasConductor ψ c) {s :
   exact hc.eq_one this
 
 /- English proof (translation)
-Use `mul_mem_ball hξ hh` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_right]`. Conclude with `hc.eq_one (neg_mem this)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_neg_triv {ψ : AddChar k Circle} {c : kˣ} (hc : HasConductor ψ c) {s : kˣ} {ξ : k}
     (hξ : ξ ∈ ball (c * s⁻¹)) {h : k} (hh : h ∈ ball s) : ψ (-(ξ * h)) = 1 := by
@@ -36,13 +36,13 @@ theorem psi_neg_triv {ψ : AddChar k Circle} {c : kˣ} (hc : HasConductor ψ c) 
   exact hc.eq_one (neg_mem this)
 
 /- English proof (translation)
-The claim follows from `Nat.cast_ne_zero.2 Fintype.card_ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem card_ne_zero (s t : kˣ) : ((Fintype.card (Q (k := k) s t) : ℕ) : ℂ) ≠ 0 :=
   Nat.cast_ne_zero.2 Fintype.card_ne_zero
 
 /- English proof (translation)
-Distinguish the cases in `h : a = 0`. Conclude with `⟨1, by rw [h]; exact (ball 1).zero_mem⟩`. Conclude with `⟨Units.mk0 a h, mem_ball.2 le_rfl⟩`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_ball_mem (a : k) : ∃ t : kˣ, a ∈ ball t := by
   by_cases h : a = 0
@@ -50,7 +50,7 @@ theorem exists_ball_mem (a : k) : ∃ t : kˣ, a ∈ ball t := by
   · exact ⟨Units.mk0 a h, mem_ball.2 le_rfl⟩
 
 /- English proof (translation)
-Break down `le_total (valuation k (s1 : k)) (valuation k (s2 : k)) with h | h` into its components or cases. Conclude with `⟨s1, le_rfl, h⟩`. Conclude with `⟨s2, h, le_rfl⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_min (s1 s2 : kˣ) : ∃ s : kˣ, valuation k (s : k) ≤ valuation k (s1 : k) ∧
     valuation k (s : k) ≤ valuation k (s2 : k) := by
@@ -59,7 +59,7 @@ theorem exists_min (s1 s2 : kˣ) : ∃ s : kˣ, valuation k (s : k) ≤ valuatio
   · exact ⟨s2, h, le_rfl⟩
 
 /- English proof (translation)
-Break down `le_total (valuation k (s1 : k)) (valuation k (s2 : k)) with h | h` into its components or cases. Conclude with `⟨s2, h, le_rfl⟩`. Conclude with `⟨s1, le_rfl, h⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_max (s1 s2 : kˣ) : ∃ s : kˣ, valuation k (s1 : k) ≤ valuation k (s : k) ∧
     valuation k (s2 : k) ≤ valuation k (s : k) := by
@@ -72,7 +72,7 @@ section Fourier
 variable (ψ : AddChar k Circle) (σ : k → V →ₗ[ℂ] V) (hadd : ∀ a b, σ (a + b) = σ a * σ b)
 
 /- English proof (translation)
-Establish `h1 : ∀ q : Q s t, ((ψ (-(ξ * ((Quotient.out q : ↥(ball t)) : k))) : Circle) : ℂ) • σ ((Quotient.out q : ↥(ball t)) : k) z = z` using `fun q => by`. Rewrite using `[hz _ (out_mem q), smul_smul, ch_neg_mul, one_smul]`. Simplify using `only [avg, LinearMap.sum_apply, LinearMap.smul_apply, h1, Finset.sum_const, Finset.card_univ]`. Conclude with `(Nat.cast_smul_eq_nsmul ℂ _ _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem avg_of_eigen {s t : kˣ} {ξ : k} {z : V}
     (hz : ∀ b ∈ ball t, σ b z = ((ψ (ξ * b) : Circle) : ℂ) • z) :
@@ -86,7 +86,7 @@ theorem avg_of_eigen {s t : kˣ} {ξ : k} {z : V}
 include hadd
 
 /- English proof (translation)
-Establish `hξs : ∀ h ∈ ball s, ψ (ξ * h) = 1` using `fun h hh => hξ h (ball_mono hss0 hh)`. Establish `hxs : ∀ h ∈ ball s, σ h x = x` using `fun h hh => hx h (ball_mono hss0 hh)`. Establish `e1 : avg ψ σ s0 t ξ (avg ψ σ s t ξ x) = ((Fintype.card (Q s0 t) : ℕ) : ℂ) • avg ψ σ s t ξ x` using `avg_of_eigen ψ σ (fun b hb => avg_eigen ψ σ hadd hξs hxs hb)`. Establish `e2 : avg ψ σ s t ξ (avg ψ σ s0 t ξ x) = ((Fintype.card (Q s t) : ℕ) : ℂ) • avg ψ σ s0 t ξ x` using `avg_of_eigen ψ σ (fun b hb => avg_eigen ψ σ hadd hξ hx hb)`. Rewrite using `[← e1, ← e2, ← Module.End.mul_apply, avg_comm_avg ψ σ hadd, Module.End.mul_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem avg_level {s s0 t : kˣ} {ξ : k} (hss0 : valuation k (s : k) ≤ valuation k (s0 : k))
     (hξ : ∀ h ∈ ball s0, ψ (ξ * h) = 1) {x : V} (hx : ∀ h ∈ ball s0, σ h x = x) :
@@ -100,9 +100,7 @@ theorem avg_level {s s0 t : kˣ} {ξ : k} (hss0 : valuation k (s : k) ≤ valuat
   rw [← e1, ← e2, ← Module.End.mul_apply, avg_comm_avg ψ σ hadd, Module.End.mul_apply]
 
 /- English proof (translation)
-Establish `e : avg ψ σ s t ξ (avg ψ σ s t' ξ x) = ((Fintype.card (Q s t) : ℕ) : ℂ) • avg ψ σ s t' ξ x` using `avg_of_eigen ψ σ (fun b hb => avg_eigen ψ σ hadd hξ hx (ball_mono htt' hb))`. Establish `hm : avg ψ σ s t ξ (avg ψ σ s t' ξ x) ∈ W`. Rewrite using `[← Module.End.mul_apply, avg_comm_avg ψ σ hadd, Module.End.mul_apply]`. Conclude with `avg_mem ψ σ W hW _ _ _ h`. Rewrite `hm` using `[e]`.
-
-Conclude with `(W.smul_mem_iff (card_ne_zero s t)).1 hm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem avg_mono_mem (W : Submodule ℂ V) (hW : ∀ a, ∀ w ∈ W, σ a w ∈ W) {s t t' : kˣ}
     (htt' : valuation k (t : k) ≤ valuation k (t' : k)) {ξ : k} (hξ : ∀ h ∈ ball s, ψ (ξ * h) = 1)

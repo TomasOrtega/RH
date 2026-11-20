@@ -16,9 +16,9 @@ open GroundTheory.Heights₂.Heights.RestTerms (RestInnerTsumBound.proof)
 open GroundTheory.Heights₂.Heights.RestTerms.Elem (primeWeight primeWeight_nonneg prime_partial_le)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => norm_num [Nat.factorial]`. Consider the case `succ n ih`. Rewrite using `[show n + 1 + 2 = (n + 2) + 1 by ring, Nat.factorial_succ]`. Use `push_cast`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `h3 : (0 : ℝ) ≤ 2 * 3 ^ n` using `by positivity`. Establish `hn : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Rewrite using `[pow_succ]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem two_mul_three_pow_le_factorial (n : ℕ) : (2 : ℝ) * 3 ^ n ≤ ((n + 2).factorial : ℝ) := by
   induction n with
@@ -32,11 +32,11 @@ theorem two_mul_three_pow_le_factorial (n : ℕ) : (2 : ℝ) * 3 ^ n ≤ ((n + 2
     nlinarith
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => norm_num`. Consider the case `succ n ih`. Rewrite using `[Finset.sum_Icc_succ_top (by omega), if_pos (by omega)]`. Establish `h1 : (1 / 2 : ℝ) ^ (n + 1 + 1 - 1) / ((n + 1 + 1).factorial : ℝ) ≤ 1 / 4 * (1 / 6) ^ n`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `two_mul_three_pow_le_factorial n`. Establish `h3 : (0 : ℝ) < 2 * 3 ^ n` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show (1 / 6 : ℝ) = 1 / 2 * (1 / 3) by norm_num, mul_pow, pow_succ, one_div_pow (3 : ℝ)]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Evaluate the numerical expressions. Rewrite using `[pow_succ (1 / 6 : ℝ)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem factorial_half_power_sum_le (n : ℕ) :
     ∑ k ∈ Finset.Icc 1 (n + 1), (if 2 ≤ k then (1 / 2 : ℝ) ^ (k - 1) / (k.factorial : ℝ) else 0) ≤
@@ -61,7 +61,7 @@ theorem factorial_half_power_sum_le (n : ℕ) :
 variable {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ}
 
 /- English proof (translation)
-The claim follows from `|restTerm j p fr k Q| ≤ Real.log p * (M * (2 * ((p : ℝ) ^ k)⁻¹)) := by have hp' : (2 : ℝ) ≤ p := by exact_mod_cast hp have h := (RestInnerTsumBound.proof p k (fun n => k * degFl (pLie j (k - 1) (fr n) * Q)) M hp' (by omega) (fun n => hM _)).2 unfold restTerm rw [if_pos hk, mul_as …`.
+A detailed English derivation is pending.
 -/
 theorem rest_term_prime_bound (j p : ℕ) (fr : ℕ → Ψ ⊕ Ψ) (k : ℕ) (Q : RP Ψ N) (M : ℝ) (hp : 2 ≤ p) (hk : 2 ≤ k)
     (hM : ∀ σ, |k * degFl (pLie j (k - 1) σ * Q)| ≤ M) :
@@ -79,7 +79,7 @@ theorem rest_term_prime_bound (j p : ℕ) (fr : ℕ → Ψ ⊕ Ψ) (k : ℕ) (Q 
   ring
 
 /- English proof (translation)
-The claim follows from `|restSum j bad frob B τ k Q| ≤ M * (5.56 / b ^ (k - 1)) := by have hM0 : 0 ≤ M := (abs_nonneg _).trans (hM (Sum.inl τ)) obtain ⟨m, rfl⟩ : ∃ m, k = m + 2 := ⟨k - 2, by omega⟩ set K : ℝ := M * 2 / b ^ m with hK have hK0 : 0 ≤ K := by positivity set w : ℕ → ℝ := fun i => K * (primeW …`.
+A detailed English derivation is pending.
 -/
 theorem rest_sum_primes_bound (j : ℕ) (bad : Finset ℕ) (frob : ℕ → Ψ → ℕ → Ψ ⊕ Ψ) (B : ℕ) (τ : Ψ) (k : ℕ) (Q : RP Ψ N)
     (M b : ℝ) (hb : 0 < b) (hB : b < B + 1) (hk : 2 ≤ k)
@@ -128,25 +128,21 @@ theorem rest_sum_primes_bound (j : ℕ) (bad : Finset ℕ) (frob : ℕ → Ψ �
         ring
 
 /- English proof (translation)
-Introduce `Ψ _ _ N j bad frob u g B Q hj hjN hW hB hQ`. Establish `hg : 0 < g` using `hW.1`. Establish `hD : 0 < flagDeg u` using `(GlobalTheory.T.flag_degree_weight_formula Ψ N u).2.1 hW.2.1`. Establish `hN2 : (2 : ℝ) ≤ N` using `by exact_mod_cast (show 2 ≤ N by omega)`. Establish `hH : 0 ≤ ‖u‖ / g` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set E : ℝ := ((dimFl Ψ N : ℝ) + 1) * flagDeg u with hE`. Establish `hE0 : 0 ≤ E` using `by positivity`. Use `set j' : ℝ := ((min j (N - j) : ℕ) : ℝ) with hj'`. Establish `hj0 : 0 ≤ j'` using `Nat.cast_nonneg _`. Establish `key : ∀ τ, |∑ k ∈ Finset.Icc 1 N, restSum j bad frob B τ k (Q τ k)| ≤ 2 * E * (j' * ((⨆ i, u τ i) - ⨅ i, u τ i))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `τ`. Establish `hf : (1 : ℝ) ≤ Fintype.card Ψ`. Conclude with `(Fintype.card_pos_iff.mpr ⟨τ⟩ : 0 < Fintype.card Ψ)` after adjusting the coercions. Use `set U : ℝ := (⨆ i, u τ i) - ⨅ i, u τ i with hU`. Establish `hU0 : 0 ≤ U`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `a : Fin N` using `⟨0, by omega⟩`. Establish `h1` using `le_ciSup (Set.finite_range (u τ)).bddAbove a`. Establish `h2` using `ciInf_le (Set.finite_range (u τ)).bddBelow a`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set A : ℝ := N * (1 + 2 * (‖u‖ / g)) with hA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `hA0 : 0 ≤ A` using `by positivity`. Establish `hb : 0 < bigB0 u g` using `by unfold bigB0; positivity`. Establish `hAb : 2 * A / bigB0 u g ≤ 1 / 2`. Rewrite using `[div_le_iff₀ hb, hA]`. Unfold `bigB0`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `set H := ‖u‖ / g`. Establish `h1 : 2 * (N : ℝ) ≤ Fintype.card Ψ * (N : ℝ) ^ 2` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities. Establish `hterm : ∀ k ∈ Finset.Icc 1 N, |restSum j bad frob B τ k (Q τ k)| ≤ 5.56 * (E * (j' * U)) * (if 2 ≤ k then (1 / 2 : ℝ) ^ (k - 1) / (k.factorial : ℝ) else 0)`. Introduce `k hk`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Use `split_ifs with h2`. Use `(rest_sum_primes_bound j bad frob B τ k (Q τ k) _ _ hb hB h2 (fun σ => GlobalTheory.T.lie_term_flag_bound Ψ N j u g Q hj hjN hW hQ τ σ k h2 (Finset.mem_Icc.mp hk).2)).trans ?_` and prove the remaining obligations. Establish `h3 : (2 * A / bigB0 u g) ^ (k - 1) ≤ (1 / 2 : ℝ) ^ (k - 1)` using `pow_le_pow_left₀ (by positivity) hAb _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_pow, mul_pow 2 A]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := by gcongr`. Simplify using `[restSum, restTerm, h2]`. Take `⟨n, rfl⟩ : ∃ n, N = n + 1` from `⟨N - 1, by omega⟩`. Establish `hs` using `factorial_half_power_sum_le n`.
-
-Establish `h6 : (0 : ℝ) ≤ (1 / 6 : ℝ) ^ n` using `by positivity`. Establish `hX : 0 ≤ E * (j' * U)` using `by positivity`. Use `(Finset.abs_sum_le_sum_abs _ _).trans ((Finset.sum_le_sum hterm).trans ?_)` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum]`. Use the polynomial consequences of the given equalities and inequalities.
-
-Use `(Finset.abs_sum_le_sum_abs _ _).trans ((Finset.sum_le_sum fun τ _ => key τ).trans (le_of_eq ?_))` and prove the remaining obligations. Rewrite using `[spread, Finset.mul_sum, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rest_sum_total_bound : ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (j : ℕ) (bad : Finset ℕ) (frob : ℕ → Ψ → ℕ → Ψ ⊕ Ψ) (u : Wt Ψ N) (g : ℝ) (B : ℕ) (Q : Ψ → ℕ → RP Ψ N), 1 ≤ j → j < N → WeightHyp j u g → bigB0 u g < B + 1 → IsDecomp (linRoot u ^ (dimFl Ψ N + 1)) Q → |∑ τ, ∑ k ∈ Finset.Icc 1 N, restSum j bad frob B τ k (Q τ k)| ≤ 2 * (((dimFl Ψ N : ℝ) + 1) * flagDeg u) * ((min j (N - j) : ℕ) * spread u) := by
   intro Ψ _ _ N j bad frob u g B Q hj hjN hW hB hQ

@@ -20,11 +20,11 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Set `u : Over.mk (T.hom ≫ f) ⟶ G` to `Over.homMk ((1 : T ⟶ G').left ≫ a) (by show ((1 : T ⟶ G').left ≫ a) ≫ G.hom = T.hom ≫ f`. Rewrite using `[Category.assoc, h.1.w, ← Category.assoc, Over.w])`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hm` using `h.2 T 1 1 u u rfl rfl`. Rewrite `hm` using `[_root_.mul_one]`. Establish `hu : u * u = u` using `Over.OverMorphism.ext hm`. Establish `hu1 : u = 1` using `mul_eq_left.1 hu`. Rewrite using `[pow_zero, pow_zero, ← hu1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Consider the case `succ n ih`. Rewrite using `[pow_succ, pow_succ]`. Conclude with `h.2 T (x ^ n) x (x₀ ^ n) x₀ ih hx`.
+Both sides reduce to the same expression. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem grpPullback_pow_left {S' S : Scheme.{0}} {G' : Over S'} [GrpObj G'] {G : Over S} [GrpObj G] {f : S' ⟶ S}
     {a : G'.left ⟶ G.left} (h : IsGrpPullback G' G f a) {T : Over S'} (x : T ⟶ G') (x₀ : Over.mk (T.hom ≫ f) ⟶ G)
@@ -50,31 +50,25 @@ end GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `R _ _ _ hR D A hU`. Take `⟨W, _, _, _, φ, G', _, _, D', A', U', hD, a, hW, hφ, hloc, hG', ga, hga, hpb, hLa⟩` from `hU`. Use `haveI : CharZero R := hR.2`. Use `haveI : CharZero W := charZero_of_injective_ringHom hφ`. Use `hW.1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Establish `hW' : AdmBase W (maximalIdeal W)` using `⟨inferInstance, inferInstance, inferInstance, hW.2.1⟩`. Use `letI iW : Algebra (FractionRing R) (Kb W) := ((algebraMap (FractionRing W) (Kb W)).comp ga).toAlgebra`. Establish `tf : ∀ (K M : Type) [Field K] [Field M] [Algebra K M], Module.IsTorsionFree K M` using `fun _ _ _ _ _ => inferInstance`. Use `haveI := tf (FractionRing R) (Kb W)`. Use `haveI := tf (FractionRing R) (Kb R)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `em : Kb R →ₐ[FractionRing R] Kb W` to `IsAlgClosed.lift`. Establish `hF : ∀ r, algebraMap (FractionRing R) (Kb W) (algebraMap R _ r) = algebraMap (FractionRing W) (Kb W) (algebraMap W _ (φ r))` using `fun r => congrArg (algebraMap (FractionRing W) (Kb W)) (hga r)`. Take `⟨hL, -⟩` from `GlobalTheory.firstFiveLaws`. Use `haveI : CharZero (FractionRing R) := charZero_of_injective_ringHom (IsFractionRing.injective R (FractionRing R))`. Use `haveI : CharZero (Kb R) := charZero_of_injective_ringHom (algebraMap (FractionRing R) (Kb R)).injective`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : CharZero (Kb W) := charZero_of_injective_ringHom em.toRingHom.injective`. Use `haveI := GlobalTheory.ArcExt.epi_spMap em.toRingHom`. Establish `hρ : spMap em.toRingHom ≫ jFK (R` using `R) (Kb R) = (TFK (R := W) (Kb W)).hom ≫ spMap ga := by show Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Use extensionality with `x`. Conclude with `em.commutes x`. Set `ρ : Over.mk ((TFK (R` to `W) (Kb W)).hom ≫ spMap ga) ⟶ TFK (R := R) (Kb R) := Over.homMk (spMap em.toRingHom) hρ`. Set `Φ : (TFK (R` to `R) (Kb R) ⟶ A.A) →* (Over.mk ((TFK (R := W) (Kb W)).hom ≫ spMap ga) ⟶ A.A) := MonoidHom.mk' (fun y => ρ ≫ y) fun x y => by rw [MonObj.comp_mul]`. Establish `hΦ : ∀ y, (Φ y).left = spMap em.toRingHom ≫ y.left` using `fun _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hΦinj : Function.Injective Φ` using `fun x y e => Over.OverMorphism.ext ((cancel_epi (spMap em.toRingHom)).1 ((hΦ x).symm.trans ((congrArg (fun q => q.left) e).trans (hΦ y))))`. Establish `desc : ∀ k : ℕ, 1 ≤ k → ∀ z : Over.mk ((TFK (R` using `W) (Kb W)).hom ≫ spMap ga) ⟶ A.A, z ^ k = 1 → ∃ y : TFK (R := R) (Kb R) ⟶ A.A, Φ y = z := by`. Introduce `k hk z hz`. Set `u : {y : TFK (R` to `R) (Kb R) ⟶ A.A // y ^ k = 1} → {z : Over.mk ((TFK (R := W) (Kb W)).hom ≫ spMap ga) ⟶ A.A // z ^ k = 1} := fun y => ⟨Φ y.1, by rw [← map_pow, y.2, map_one]⟩`. Establish `hu : Function.Injective u` using `fun y y' e => Subtype.ext (hΦinj (congrArg Subtype.val e))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `c` using `GlobalTheory.ArcExt.card_torsion hL A (jFK (R := R) (Kb R)) (n := k) (Nat.cast_ne_zero.2 (by omega))`. Establish `c'` using `GlobalTheory.ArcExt.card_torsion hL A ((TFK (R := W) (Kb W)).hom ≫ spMap ga) (n := k) (Nat.cast_ne_zero.2 (by omega))`. Use `haveI : Finite {z : Over.mk ((TFK (R := W) (Kb W)).hom ≫ spMap ga) ⟶ A.A // z ^ k = 1} := Nat.finite_of_card_ne_zero (by rw [c']; positivity)`. Take `⟨y, e⟩` from `(hu.bijective_of_nat_card_le (c'.trans c.symm).le).2 ⟨z, hz⟩`. Conclude with `⟨y.1, congrArg Subtype.val e⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Establish `toA : ∀ (k : ℕ) (x' : TFK (R` using `W) (Kb W) ⟶ A'.A), x' ^ k = 1 → ∃ z : Over.mk ((TFK (R := W) (Kb W)).hom ≫ spMap ga) ⟶ A.A, z.left = x'.left ≫ a ∧ z ^ k = 1 := by`. Introduce `k x' hx`. Set `z : Over.mk ((TFK (R` to `W) (Kb W)).hom ≫ spMap ga) ⟶ A.A := Over.homMk (x'.left ≫ a) (by show (x'.left ≫ a) ≫ A.A.hom = (TFK (R := W) (Kb W)).hom ≫ spMap ga`. Rewrite using `[Category.assoc, hpb.1.w, ← Category.assoc, Over.w])`. Use `⟨z, rfl, Over.OverMorphism.ext ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[grpPullback_pow_left hpb x' z rfl k, hx]`. Conclude with `((grpPullback_pow_left hpb x' z rfl 0).trans (by rw [pow_zero])).symm`. Establish `key : ∀ (k : ℕ) (p : QkPt D.toPre (Kb R) k), ∃ y : TFK (R` using `R) (Kb R) ⟶ A.A, 1 ≤ k → ∀ (p₁ : QkPt D.toPre (Kb W) k) (p' : QkPt D'.toPre (Kb W) k) (x' : TFK (R := W) (Kb W) ⟶ A'.A), QkExt em.toRingHom p p₁ → p'.y = hD.xe.symm p₁.y → IsPullGtF φ hD (Kb W) p₁.g p'.g → x'.left ≫ a = spMap em.toRingHom ≫ y.left → QkToAkU U'.toUnifPre (Kb W) k …`. Introduce `k p`. Distinguish the cases in `hk : 1 ≤ k`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `swap`. Conclude with `⟨1, fun h => absurd h hk⟩`. Distinguish the cases in `hex : ∃ (p₁ : QkPt D.toPre (Kb W) k) (p' : QkPt D'.toPre (Kb W) k), QkExt em.toRingHom p p₁ ∧ p'.y = hD.xe.symm p₁.y ∧ IsPullGtF φ hD (Kb W) p₁.g p'.g`. Use `swap`. Conclude with `⟨1, fun _ p₁ p' _ h₁ h₂ h₃ _ => absurd ⟨p₁, p', h₁, h₂, h₃⟩ hex⟩`.
-
-Take `⟨p₁, p', h₁, h₂, h₃⟩` from `hex`. Take `⟨f, hf, hfk⟩` from `GlobalTheory.TorsionIso.torsion_clause W (maximalIdeal W) hW' D' A' G' hG' U' (Kb W) k hk`. Take `⟨z, hz, hzk⟩` from `toA k (f p') (hfk p')`. Take `⟨y, hy⟩` from `desc k hk z hzk`. Use `⟨y, fun _ q₁ q' x' e₁ e₂ e₃ e₄ => ?_⟩` and prove the remaining obligations.
-
-Take `rfl : q₁ = p₁` from `GlobalTheory.DegActCompare.qkExt_unique e₁ h₁`. Take `rfl : q' = p'` from `GlobalTheory.TorusExt.qk_ext (e₂.trans h₂.symm) (GlobalTheory.ArcPull.pullGt_unique hD hF e₃ h₃)`. Rewrite using `[(hf.1 q' x')]`. Use `Over.OverMorphism.ext (hpb.1.hom_ext ?_ ?_)` and prove the remaining obligations. Rewrite using `[e₄, ← hz, ← hy]`.
-
-Conclude with `(hΦ y).symm`. Rewrite using `[Over.w x', Over.w (f q')]`. Use `choose lab hlab using key`. Conclude with `⟨lab, W, inferInstance, inferInstance, inferInstance, φ, G', inferInstance, inferInstance, D', A', U', hD, a, iW, em, hW, hφ, hloc, hG', ⟨ga, hga, hpb, hLa⟩, hF, fun k hk p p₁ p' x' h₁ h₂ h₃ h₄ => hlab k p hk p₁ p' x' h₁ h₂ h₃ h₄⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_oneTrait : ∀ (R₁ : Type) [CommRing R₁] [IsDomain R₁] [IsLocalRing R₁], Base R₁ →
     ∀ (D₁ : DegData R₁ (maximalIdeal R₁)) (A : PolAV (Sp (FractionRing R₁))), UniTrait D₁.toPre A →

@@ -3,21 +3,19 @@ import Mathlib
 namespace GlobalTheory.CompanionTheory.FieldGen
 
 /- English proof (translation)
-Use `set E' := IntermediateField.adjoin k (Set.range y) with hE'`. Use `set y' : σ → E' := fun j => ⟨y j, IntermediateField.subset_adjoin k _ ⟨j, rfl⟩⟩ with hy'`. Use `set A := Algebra.adjoin k (Set.range y') with hA`. Establish `hmap : ∀ p ∈ Algebra.adjoin k (Set.range y), ∃ p' ∈ A, (p' : E) = p`. Introduce `p hp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h1 : Algebra.adjoin k (Set.range y) = A.map (IntermediateField.val E')`. Rewrite using `[hA, AlgHom.map_adjoin, ← Set.range_comp]`. Both sides reduce to the same expression. Rewrite `hp` using `[h1]`. Take `⟨p', hp', rfl⟩` from `Subalgebra.mem_map.1 hp`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨p', hp', rfl⟩`. Prove the components needed by the constructor for the conclusion. Introduce `z`. Take `⟨v, hv⟩` from `z`. Take `⟨p, hp, q, hq, hpq⟩` from `IntermediateField.mem_adjoin_iff_div.1 hv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Distinguish the cases in `hq0 : q = 0`. Establish `hz : (⟨v, hv⟩ : E') = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[hpq, hq0]`. Rewrite using `[hz]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `isAlgebraic_zero`. Take `⟨p', hp', hpp⟩` from `hmap p hp`. Take `⟨q', hq', hqq⟩` from `hmap q hq`. Establish `hq'0 : q' ≠ 0`. Introduce and unpack `rfl`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hq0 (by rw [← hqq]; rfl)`. Use `⟨Polynomial.C (⟨q', hq'⟩ : A) * Polynomial.X - Polynomial.C ⟨p', hp'⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Establish `h2` using `congrArg (fun f => Polynomial.coeff f 1) h`. Simplify using `at h2`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Conclude with `hq'0 (congrArg Subtype.val h2 :)`. Rewrite using `[map_sub, map_mul, Polynomial.aeval_C, Polynomial.aeval_C, Polynomial.aeval_X, sub_eq_zero]`. Express the relevant statement in the definitionally equal form `q' * (⟨v, hv⟩ : E') = p'`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (q' : E) * v = p'`.
-
-Rewrite using `[hpp, hqq, hpq]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem isAlgebraic_adjoin_range_self {k E σ : Type} [Field k] [Field E] [Algebra k E] (y : σ → E) :
     Algebra.IsAlgebraic
@@ -64,11 +62,9 @@ theorem isAlgebraic_adjoin_range_self {k E σ : Type} [Field k] [Field E] [Algeb
     field_simp
 
 /- English proof (translation)
-Introduce `K L J _ _ _ _ x y hx hxy`. Use `set E := IntermediateField.adjoin K (Set.range y) with hE`. Establish `hal` using `isAlgebraic_adjoin_range_self (k := K) y`. Use `set y' : J → E := fun j => ⟨y j, IntermediateField.subset_adjoin K _ ⟨j, rfl⟩⟩ with hy'`. Establish `hxmem : ∀ j, x j ∈ E` using `fun j => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hxy]`. Conclude with `IntermediateField.subset_adjoin K _ ⟨j, rfl⟩`. Use `set x' : J → E := fun j => ⟨x j, hxmem j⟩ with hxd`. Establish `hx' : AlgebraicIndependent K x'` using `AlgebraicIndependent.of_comp E.val hx`. Establish `hle : Cardinal.mk J ≤ Algebra.trdeg K E` using `hx'.cardinalMk_le_trdeg`.
-
-Establish `htb` using `Algebra.IsAlgebraic.isTranscendenceBasis_of_le_trdeg_of_finite K y' hle`. Conclude with `htb.1.map' (f := E.val) E.val.injective`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem algebraicIndependent_of_adjoin_eq :
     ∀ (K L J : Type) [Field K] [Field L] [Algebra K L] [Finite J] (x y : J → L),

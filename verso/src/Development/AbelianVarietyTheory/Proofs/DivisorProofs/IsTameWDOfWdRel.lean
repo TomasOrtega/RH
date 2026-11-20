@@ -30,9 +30,9 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
   {A' : ValuationSubring Ω'} {φ : Ω ≃+* Ω'}
 
 /- English proof (translation)
-Establish `hb' : φ b ≠ 0` using `(map_ne_zero φ).mpr hb`. Establish `h1 : A'.valuation (φ b) ≠ 0` using `by simpa using hb'`. Establish `h2 : A.valuation b ≠ 0` using `by simpa using hb`. Establish `e1 : A'.valuation (φ a) < A'.valuation (φ b) ↔ A'.valuation (φ (a / b)) < 1`. Rewrite using `[map_div₀, map_div₀, div_lt_one₀ (zero_lt_iff.mpr h1)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : A.valuation a < A.valuation b ↔ A.valuation (a / b) < 1`. Rewrite using `[map_div₀, div_lt_one₀ (zero_lt_iff.mpr h2)]`. Rewrite using `[e1, e2, GlobalTheory.WeilTransport.val_lt_one_iff hm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_lt_val_iff (hm : ∀ z, φ z ∈ A' ↔ z ∈ A) (a b : Ω) (hb : b ≠ 0) :
     A'.valuation (φ a) < A'.valuation (φ b) ↔ A.valuation a < A.valuation b := by
@@ -46,9 +46,9 @@ theorem val_lt_val_iff (hm : ∀ z, φ z ∈ A' ↔ z ∈ A) (a b : Ω) (hb : b 
   rw [e1, e2, GlobalTheory.WeilTransport.val_lt_one_iff hm]
 
 /- English proof (translation)
-Take `⟨⟨hdec, hin⟩, hw⟩` from `hσ`. Use `⟨⟨(GlobalTheory.WeilTransport.mem_Dec_iff hm hrel).mpr hdec, fun x hx => ?_⟩, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `φ.surjective x`. Rewrite `hx` using `[GlobalTheory.WeilTransport.val_le_one_iff hm]`. Rewrite using `[← hrel, ← map_sub, GlobalTheory.WeilTransport.val_lt_one_iff hm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hin z hx`. Take `⟨z, rfl⟩` from `φ.surjective x`. Establish `hz : z ≠ 0` using `by rintro rfl; exact hx (map_zero φ)`. Rewrite using `[← hrel, ← map_sub, val_lt_val_iff hm _ _ hz]`. Conclude with `hw z hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isWild_of_rel (hm : ∀ z, φ z ∈ A' ↔ z ∈ A) {σ : G E Ω} {σ' : G E' Ω'}
     (hrel : ∀ z, φ (σ z) = σ' (φ z)) (hσ : Formalism.MainNotions.BlochKatoReduction.IsWild A σ) : Formalism.MainNotions.BlochKatoReduction.IsWild A' σ' := by

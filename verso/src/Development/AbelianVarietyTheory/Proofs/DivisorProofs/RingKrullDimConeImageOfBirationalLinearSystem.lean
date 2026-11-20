@@ -16,27 +16,23 @@ namespace GlobalTheory.Adelic.ConeDim
 variable {k Ω : Type} [Field k] [Field Ω] [Algebra k Ω] {N : ℕ}
 
 /- English proof (translation)
-Set `ι : Polynomial Ω →+* FractionRing (Polynomial Ω)` to `algebraMap _ _`. Establish `hι : Function.Injective ι` using `IsFractionRing.injective _ _`. Set `L : Subfield (FractionRing (Polynomial Ω))` to `Subfield.closure (ι '' (A : Set (Polynomial Ω)))`. Establish `hA : ∀ a ∈ A, ι a ∈ L` using `fun a ha => Subfield.subset_closure ⟨a, ha, rfl⟩`. Establish `hne : ∀ j, y j ≠ 0 → ι (Polynomial.X * Polynomial.C (y j)) ≠ 0` using `fun j hj => (map_ne_zero_iff ι hι).2 (mul_ne_zero Polynomial.X_ne_zero (Polynomial.C_ne_zero.2 hj))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `M : Subfield Ω` to `L.comap (ι.comp Polynomial.C)`. Establish `hM : M = ⊤`. Use `top_unique (hgen ▸ Subfield.closure_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ (⟨c, rfl⟩ | ⟨i, j, rfl⟩)`. Use `show ι (Polynomial.C (algebraMap k Ω c)) ∈ L`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Polynomial.algebraMap_apply]`. Conclude with `hA _ (A.algebraMap_mem c)`. Use `show ι (Polynomial.C (y i / y j)) ∈ L`. Distinguish the cases in `hj : y j = 0`. Rewrite using `[hj, div_zero, Polynomial.C_0, map_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `zero_mem L`. Establish `e : ι (Polynomial.C (y i / y j)) = ι (Polynomial.X * Polynomial.C (y i)) / ι (Polynomial.X * Polynomial.C (y j))`. Rewrite using `[eq_div_iff (hne j hj), ← map_mul]`. Use `congr 1`. Rewrite using `[mul_left_comm, ← Polynomial.C_mul, div_mul_cancel₀ _ hj]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e]`. Conclude with `div_mem (hA _ (hXy i)) (hA _ (hXy j))`. Establish `hC : ∀ c, ι (Polynomial.C c) ∈ L` using `fun c => by`. Establish `h : c ∈ M` using `hM ▸ Subfield.mem_top c`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨j, hj⟩` from `Function.ne_iff.1 hy`. Establish `hX : ι Polynomial.X ∈ L`. Establish `e : ι Polynomial.X = ι (Polynomial.X * Polynomial.C (y j)) * ι (Polynomial.C (y j)⁻¹)`. Rewrite using `[← map_mul, mul_assoc, ← Polynomial.C_mul, mul_inv_cancel₀ hj, Polynomial.C_1, mul_one]`. Rewrite using `[e]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_mem (hA _ (hXy j)) (hC _)`. Establish `hall : ∀ p, ι p ∈ L` using `fun p => by`. Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [map_add]`. Conclude with `add_mem hp hq`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Consider the case `monomial n c`. Rewrite using `[← Polynomial.C_mul_X_pow_eq_monomial, map_mul, map_pow]`. Conclude with `mul_mem (hC c) (pow_mem hX n)`. Establish `hcl : Subring.closure (ι '' (A : Set (Polynomial Ω))) ≤ (A.toSubring.map ι)` using `Subring.closure_le.2 (by rintro _ ⟨a, ha, rfl⟩; exact ⟨a, ha, rfl⟩)`. Use `⟨fun p => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨_, ha₀, _, hb₀, hab⟩` from `Subfield.mem_closure_iff.1 (hall p)`. Take `⟨a, ha, rfl⟩` from `hcl ha₀`. Take `⟨b, hb, rfl⟩` from `hcl hb₀`. Distinguish the cases in `hb0 : b = 0`. Rewrite `hab` using `[hb0, map_zero, div_zero, eq_comm, map_eq_zero_iff ι hι]`.
-
-Rewrite using `[hab]`. Conclude with `isAlgebraic_zero`. Establish `e : b * p = a`. Apply `hι` to reduce the goal to its premises. Rewrite using `[map_mul, ← hab, mul_div_cancel₀ _ ((map_ne_zero_iff ι hι).2 hb0)]`.
-
-Use `⟨Polynomial.C (⟨b, hb⟩ : A) * Polynomial.X - Polynomial.C (⟨a, ha⟩ : A), fun h => hb0 ?_, ?_⟩` and prove the remaining obligations. Use `congrArg (fun q => Polynomial.coeff q 1) h` as an intermediate fact. Simplify using `at this`. Conclude with `congrArg Subtype.val this`. Simplify using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isAlgebraic_of_closure_eq_top (y : Fin N → Ω) (hy : y ≠ 0)
     (hgen : Subfield.closure (Set.range (algebraMap k Ω) ∪ {r | ∃ i j, r = y i / y j}) = ⊤)
@@ -102,17 +98,15 @@ theorem isAlgebraic_of_closure_eq_top (y : Fin N → Ω) (hy : y ≠ 0)
     · simp [e]
 
 /- English proof (translation)
-Introduce `k _ S h hb ⟨η, hη, hr⟩`. Use `HeightExists.isIntegral h` as an intermediate fact. Set `Ω` to `S.Y.residueField η`. Use `letI : Algebra k Ω := (S.baseHom (resPt η)).toAlgebra`. Set `x : S.Pt Ω` to `⟨resPt η, S.comp_str _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use `set y : Fin S.N → Ω := S.coords (resPt η) with hy`. Establish `hI : S.imageIdeal = coneIdeal k y` using `imageIdeal_eq_coneIdeal_of_generic k Ω S x (by rw [ptOf_resPt]; exact hη) 1 y one_ne_zero (one_smul _ _).symm`. Establish `hD : Algebra.trdeg k Ω = S.D` using `(residueField_fg_trdeg_of_smoothOfRelativeDimension S.str S.D h.smooth η fun z hz => (hz.antisymm (hη.specializes trivial)).eq).2`. Rewrite using `[hI]`. Use `isPrime_coneIdeal (K := k) y` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `ringKrullDim_eq_of_trdeg_eq k _ ?_` and prove the remaining obligations. Set `f` to `Ideal.kerLiftAlg (coneMap k y)`. Establish `hf : Function.Injective f` using `Ideal.kerLiftAlg_injective _`. Set `A` to `f.range`. Set `e` to `AlgEquiv.ofInjective f hf`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hQA : Algebra.trdeg k (MvPolynomial (Fin S.N) k ⧸ coneIdeal k y) = Algebra.trdeg k A` using `le_antisymm (trdeg_le_of_injective e.toAlgHom e.injective) (trdeg_le_of_injective e.symm.toAlgHom e.symm.injective)`. Establish `hXy : ∀ i, Polynomial.X * Polynomial.C (y i) ∈ A` using `fun i => by`. Use `AlgHom.mem_range_self f (Ideal.Quotient.mk _ (X i))` as an intermediate fact. Rewrite `this` using `[Ideal.kerLiftAlg_mk]`. Simplify using `only [coneMap, aeval_X] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `this`. Use `ConeDim.isAlgebraic_of_closure_eq_top y (hb.coords_ne_zero _) hr A hXy` as an intermediate fact. Establish `: FaithfulSMul k A` using `(faithfulSMul_iff_algebraMap_injective _ _).2 (RingHom.injective _)`. Establish `: FaithfulSMul A (Polynomial Ω)` using `(faithfulSMul_iff_algebraMap_injective _ _).2 Subtype.val_injective`. Rewrite using `[hQA, ← GlobalTheory.trdeg_eq_of_isAlgebraic_top k A (Polynomial Ω), ← trdeg_add_eq k Ω (A := Polynomial Ω), Polynomial.trdeg_of_isDomain, hD]`.
-
-Use `norm_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. A detailed English derivation is pending.
 -/
 theorem ringKrullDim_imageIdeal_of_birational : ∀ (k : Type) [Field k] (S : LinSys k), S.IsVariety →
     S.BasePointFree → S.Birational →

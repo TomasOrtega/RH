@@ -21,7 +21,7 @@ private def stab (ψ : Sm E a) : Subgroup (GL (Fin a) (GlobalTheory.CuspRep.Af E
     rw [← Module.End.mul_apply, ← map_mul, ← map_mul, inv_mul_cancel, map_one, map_one, Module.End.one_apply]
 
 /- English proof (translation)
-Establish `hle : stab ψ ≤ stab (lie E a X ψ)` using `fun k hk => (LinearMap.congr_fun (lie_rt_fin X k) ψ).symm.trans (congrArg (lie E a X) hk)`. Conclude with `Subgroup.isOpen_mono hle h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem lev_lie (X : Lie E a) (ψ : Sm E a) (h : HasLev ψ) : HasLev (lie E a X ψ) := by
   have hle : stab ψ ≤ stab (lie E a X ψ) := fun k hk =>
@@ -29,11 +29,11 @@ private theorem lev_lie (X : Lie E a) (ψ : Sm E a) (h : HasLev ψ) : HasLev (li
   exact Subgroup.isOpen_mono hle h
 
 /- English proof (translation)
-Take `⟨y, l, rfl⟩ : ∃ y l, infGL E a y * finGL E a l = g` from `⟨_, _, infGL_mul_finGL g⟩`. Establish `hc : Continuous fun k : GL (Fin a) (GlobalTheory.CuspRep.Af E) => l⁻¹ * k * l` using `by fun_prop`. Establish `ho : IsOpen ((fun k : GL (Fin a) (GlobalTheory.CuspRep.Af E) => l⁻¹ * k * l) ⁻¹' (stab ψ : Set _))` using `IsOpen.preimage hc h`. Use `Subgroup.isOpen_of_mem_nhds (stab (rt E a (infGL E a y * finGL E a l) ψ)) (g := 1) (mem_of_superset (ho.mem_nhds ?_) fun k hk => ?_)` and prove the remaining obligations. Simplify using `using (stab ψ).one_mem`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hk' : rt E a (finGL E a (l⁻¹ * k * l)) ψ = ψ` using `hk`. Express the relevant statement in the definitionally equal form `rt E a (finGL E a k) (rt E a (infGL E a y * finGL E a l) ψ) = rt E a (infGL E a y * finGL E a l) ψ`. Establish `e : finGL E a k * (infGL E a y * finGL E a l) = infGL E a y * finGL E a l * finGL E a (l⁻¹ * k * l)`. Rewrite using `[← mul_assoc, ← infGL_comm, mul_assoc, mul_assoc (infGL E a y), ← map_mul, ← map_mul]`. Use `congr 2`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `group`. Rewrite using `[← Module.End.mul_apply, ← map_mul, e, map_mul, Module.End.mul_apply, hk']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lev_rt (g : GA E a) (ψ : Sm E a) (h : HasLev ψ) : HasLev (rt E a g ψ) := by
   obtain ⟨y, l, rfl⟩ : ∃ y l, infGL E a y * finGL E a l = g := ⟨_, _, infGL_mul_finGL g⟩
@@ -52,9 +52,9 @@ private theorem lev_rt (g : GA E a) (ψ : Sm E a) (h : HasLev ψ) : HasLev (rt E
     rw [← Module.End.mul_apply, ← map_mul, e, map_mul, Module.End.mul_apply, hk']
 
 /- English proof (translation)
-Take `⟨c, c0, -, ccont, cder, -⟩` from `UpperTheory.V.Lit.Bor.oneParam E a X`. Use `HasCompactSupport.intro h fun g hg => ?_` and prove the remaining obligations. Establish `hd` using `GlobalTheory.CuspRep.hasDerivAt_curve ψ g c X c0 cder`. Establish `hc : Continuous fun t : ℝ => g * infGL E a (c t)` using `continuous_const.mul ccont`. Establish `ht : Tendsto (fun t : ℝ => g * infGL E a (c t)) (𝓝 0) (𝓝 g)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `hc.tendsto 0` using `[c0]`. Establish `hz : (fun t : ℝ => ψ.1 (g * infGL E a (c t))) =ᶠ[𝓝 0] fun _ => (0 : ℂ)` using `ht.eventually (notMem_tsupport_iff_eventuallyEq.1 hg)`. Conclude with `hd.unique ((hasDerivAt_const (0 : ℝ) (0 : ℂ)).congr_of_eventuallyEq hz)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem supp_lie (X : Lie E a) (ψ : Sm E a) (h : HasCompactSupport ψ.1) :
     HasCompactSupport (lie E a X ψ).1 := by
@@ -69,7 +69,7 @@ private theorem supp_lie (X : Lie E a) (ψ : Sm E a) (h : HasCompactSupport ψ.1
   exact hd.unique ((hasDerivAt_const (0 : ℝ) (0 : ℂ)).congr_of_eventuallyEq hz)
 
 /- English proof (translation)
-The claim follows from `h.comp_homeomorph (Homeomorph.mulRight g)`.
+A detailed English derivation is pending.
 -/
 private theorem supp_rt (g : GA E a) (ψ : Sm E a) (h : HasCompactSupport ψ.1) :
     HasCompactSupport (rt E a g ψ).1 :=
@@ -78,7 +78,7 @@ private theorem supp_rt (g : GA E a) (ψ : Sm E a) (h : HasCompactSupport ψ.1) 
 end
 
 /- English proof (translation)
-Introduce `E _ _ _ a ψ`. Conclude with `⟨fun h => ⟨ContAut.continuous_of_isOpen_stab E a ψ h, fun X => lev_lie X ψ h, fun g => lev_rt g ψ h⟩, fun h => ⟨fun X => ⟨supp_lie X ψ h.1, lev_lie X ψ h.2⟩, fun g => ⟨supp_rt g ψ h.1, lev_rt g ψ h.2⟩⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Cj.H.testOps :
     UpperTheory.V.Cj.H.TestOps := by

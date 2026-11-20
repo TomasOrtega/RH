@@ -14,7 +14,7 @@ open GlobalTheory.Unf
 namespace GlobalTheory.Unf
 
 /- English proof (translation)
-Introduce `D ψ S T χS χT om hom f hf`. Conclude with `GlobalTheory.ThetaJointCont.continuous_om_oriented hom hf`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem jointCont_all : ∀ D : D7, JointCont D := by
   intro D ψ S T χS χT om hom f hf

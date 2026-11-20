@@ -8,13 +8,13 @@ open scoped nonZeroDivisors
 namespace GlobalTheory.DenomBound
 
 /- English proof (translation)
-Introduce `F _ _ z l a n _ ha hn h`. Unfold `cE`. Apply `Finset.sup_le` to reduce the goal to its premises. Introduce `C _`. Unfold `denomExp`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Distinguish the cases in `hz : z C = 0`. Simplify using `[hz]`. Establish `hpow : 2 ≤ a ^ n` using `le_trans ha (Nat.le_self_pow (by omega) a)`. Establish `hA : (a ^ n - 1 : ℕ) ≠ 0` using `by omega`. Establish `hAq : ((a ^ n - 1 : ℕ) : ℚ) ≠ 0` using `by exact_mod_cast hA`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `h C`. Rewrite `h1` using `[inZl_iff, padicValRat.mul hAq hz, padicValRat.of_nat]`. Establish `h2 : (2 : ℚ) ^ finrank ℚ F ≠ 0` using `pow_ne_zero _ two_ne_zero`. Establish `h3 : padicValRat l (z C / 2 ^ finrank ℚ F) = padicValRat l (z C) - (finrank ℚ F : ℤ) * (padicValNat l 2 : ℤ)`. Rewrite using `[padicValRat.div hz h2, padicValRat.pow (q := (2:ℚ))]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: padicValRat l (2 : ℚ) = padicValNat l 2`. Use `padicValRat.of_nat (p := l) (n := 2)` as an intermediate fact. Simplify using `using this`. Rewrite using `[this]`. Rewrite using `[h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/

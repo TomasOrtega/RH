@@ -10,9 +10,9 @@ namespace GlobalTheory.CompanionTheory.RgExhFin
 open CompanionTheory.RgExh ReciprocityTheory.ChartRestriction.DS
 
 /- English proof (translation)
-Introduce `n ε X hL hS`. Take `⟨hnt, hsub⟩` from `hS`. Take `⟨u, hu⟩` from `exists_ne (0 : X.V)`. Take `⟨c, hc, hcu⟩` from `hL u hu`. Establish `h0 : c ≠ 0` using `fun h => hcu (by simp [h])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨V, E', e, -, hgl, hU, he⟩` from `GlobalTheory.CompanionTheory.Unitarize.exists_unitary_image (rreg_isURepOn ε) hsub c hc h0`. Conclude with `⟨V, inferInstance, inferInstance, E', hgl, hU, e, he⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem unitarizable_of_separating_smooth_l2_maps : CompanionTheory.RgExh.Fin.UnitarizableOfL2Embedding := by
   intro n ε X hL hS

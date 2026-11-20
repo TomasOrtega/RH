@@ -25,9 +25,7 @@ def conjPer (W : UnfAt U k x) : Submodule ℂ ((W.F.Di (W.ik k)).La → ℂ) :=
   Submodule.span ℂ (Set.range fun (j : Fin W.g) a => star (W.Pm a j))
 
 /- English proof (translation)
-Establish `hF : GlobalTheory.EtaAn.AHFrame W.F (W.ik k) W.Pm Wu.Hm Wu.χl Wu.fr` using `⟨Wu.herm, Wu.pos, Wu.c1, Wu.c2, Wu.c3, Wu.c4, fun j hj => by rw [← W.pt]; exact Wu.c5 j hj, Wu.c6⟩`. Establish `key : ∀ y (_ : y = W.F.u (W.ik k) W.Pm) (s : Semi.LB.Sec (PPx y)), GlobalTheory.EtaAn.IsFnOf W.F (W.ik k) W.Pm Wu.fr y s Wu.θ → Differentiable ℂ Wu.θ`. Introduce `y hy s hs`. Substitute `hy` using the available equality. Conclude with `(GlobalTheory.EtaAn.isFnOf_entire_factor E H Dw l Xo _ _ _ W.F (W.ik k) W.Pm Wu.Hm Wu.χl Wu.fr W.per hF s Wu.θ hs).1`.
-
-Conclude with `key _ W.pt (U.un k x).s Wu.c7`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem theta_entire {W : UnfAt U k x} (Wu : UnitAt W) : Differentiable ℂ Wu.θ := by
   have hF : GlobalTheory.EtaAn.AHFrame W.F (W.ik k) W.Pm Wu.Hm Wu.χl Wu.fr :=

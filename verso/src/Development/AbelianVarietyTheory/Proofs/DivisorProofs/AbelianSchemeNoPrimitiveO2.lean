@@ -18,11 +18,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AbCoh.NoPrimNoeth
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨g, hg⟩ : ∃ g : N →ₗ[R] M, g ∘ₗ f = LinearMap.id := by`. Use `GlobalTheory.split_injective_of_forall_lTensor_residueField_injective f fun m hm => ?_` and prove the remaining obligations. Set `k` to `AlgebraicClosure m.ResidueField`. Establish `hinj` using `h k`. Establish `e : (AlgebraTensorModule.cancelBaseChange R m.ResidueField m.ResidueField k N) ∘ ((f.baseChange m.ResidueField).lTensor k) = (f.lTensor k) ∘ (AlgebraTensorModule.cancelBaseChange R m.ResidueField m.ResidueField k M)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Conclude with `(LinearMap.congr_fun (AlgebraTensorModule.lTensor_comp_cancelBaseChange R m.ResidueField m.ResidueField (M := k) f) x).symm`. Establish `h1 : Function.Injective ((f.baseChange m.ResidueField).lTensor k)` using `Function.Injective.of_comp (e ▸ (hinj.comp (LinearEquiv.injective _)))`. Use `haveI : Module.FaithfullyFlat m.ResidueField k := (fun (F L : Type) [Field F] [Field L] [Algebra F L] ↦ (inferInstance : Module.FaithfullyFlat F L)) _ _`. Conclude with `(Module.FaithfullyFlat.lTensor_injective_iff_injective m.ResidueField k _).1 h1`.
-
-Conclude with `Function.LeftInverse.injective (g := g) fun x ↦ LinearMap.congr_fun hg x`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem injective_of_algClosure (R : Type) [CommRing R] (M : Type) [AddCommGroup M] [Module R M]
     [Module.Finite R M] [Module.Projective R M] (N : Type) [AddCommGroup N] [Module R N] [Module.Finite R N]
@@ -48,9 +46,9 @@ theorem injective_of_algClosure (R : Type) [CommRing R] (M : Type) [AddCommGroup
   exact Function.LeftInverse.injective (g := g) fun x ↦ LinearMap.congr_fun hg x
 
 /- English proof (translation)
-Establish `hsm : Smooth A.hom` using `SmoothOfRelativeDimension.smooth g A.hom`. Establish `H` using `GlobalTheory.T.structure_cohomology_residue_field_fibre R A.left A.hom hA.proper inferInstance (GlobalTheory.T.globalFunctionsConstantAfterBaseChange_of_abelianScheme R A hA) (by`. Introduce `R' _ _ _ _ k _ _ α hα X' s' φ X₀ s₀ ψ hp w`. Take `⟨_, -, h1, h2⟩` from `GlobalTheory.T.exists_grpObj_isGrpPullback_of_isPullback' R R' (algebraMap R R') A X' s' φ hp`. Conclude with `GlobalTheory.T.abelianSchemeSpecialFibre_cohomology_lift_artinian R' (Over.mk s' : Over (Sp R')) g (h1 hA) (h2 g hg) k (α : R' →+* k) hα X₀ s₀ ψ w)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨H.2.1, H.2.2.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem abelian_scheme_second_cohomology_finite_projective (R : Type) [CommRing R] [IsNoetherianRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ)
     (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom) :
@@ -63,7 +61,7 @@ theorem abelian_scheme_second_cohomology_finite_projective (R : Type) [CommRing 
   exact ⟨H.2.1, H.2.2.2⟩
 
 /- English proof (translation)
-Establish `h'' : (pr' ≫ f.left) ≫ A.hom = B'.hom ≫ spMap σ` using `by rw [Category.assoc, Over.w f, h']`. Establish `a1` using `(GlobalTheory.T.structureSheafCohomology_pullback_comp_cup_id.1 R R _ _ A.hom A'.hom (RingHom.id R) f.left (ovw f) K _ B'.hom σ pr' h' σ _ h''`. Use `rfl (fun _ ↦ rfl)).2.1 c`. Establish `a2` using `(GlobalTheory.T.structureSheafCohomology_pullback_comp_cup_id.1 R K _ _ A.hom B.hom σ pr h K _ B'.hom (RingHom.id K) f'.left (ovw f') σ _ h'' e.symm (fun _ ↦ rfl)).2.1 c`. Conclude with `a1.trans a2.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Both sides reduce to the same expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pull_comm {R K : Type} [CommRing R] [CommRing K] {σ : R →+* K} {A A' : Over (Sp R)} {B B' : Over (Sp K)}
     {pr : B.left ⟶ A.left} {pr' : B'.left ⟶ A'.left} (h : pr ≫ A.hom = B.hom ≫ spMap σ)
@@ -77,21 +75,19 @@ theorem pull_comm {R K : Type} [CommRing R] [CommRing K] {σ : R →+* K} {A A' 
   exact a1.trans a2.symm
 
 /- English proof (translation)
-Introduce `R _ _ A _ g hA hg`. Take `⟨⟨_, _⟩, bc⟩` from `abelian_scheme_second_cohomology_finite_projective R A g hA hg`. Take `⟨hA2, hg2⟩` from `(GlobalTheory.T.abelian_square_affine_h1_vanish R).1 A g hA hg`. Take `⟨⟨_, _⟩, bc2⟩` from `abelian_scheme_second_cohomology_finite_projective R (A ⊗ A) (g + g) hA2 hg2`. Set `D : HO2 A.hom →ₗ[R] HO2 (A ⊗ A).hom` to `structureSheafH2Pullback μ[A] - structureSheafH2Pullback (fst A A) - structureSheafH2Pullback (snd A A)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hD : Function.Injective D`. Use `injective_of_algClosure R _ _ D fun K _ _ _ ↦ ?_` and prove the remaining obligations. Take `⟨B, _, pr, pr', hB, hgB, p1, p2, eμ, e1, e2, -, -⟩` from `GlobalTheory.T.exists_abelianScheme_baseChange_and_square R K A g hA hg`. Take `⟨e, he⟩` from `bc K _ _ _ p1`. Take `⟨e', he'⟩` from `bc2 K _ _ _ p2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hN` using `(GlobalTheory.T.abelian_variety_wedge_no_primitive_h2 K B g hB hgB).2`. Set `DB : HO2 B.hom →ₗ[K] HO2 (B ⊗ B).hom` to `structureSheafH2Pullback μ[B] - structureSheafH2Pullback (fst B B) - structureSheafH2Pullback (snd B B)`. Establish `key : ∀ x, e' (D.baseChange K x) = DB (e x)`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp only [map_zero]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a c`. Establish `: a ⊗ₜ[R] c = a • ((1 : K) ⊗ₜ[R] c)` using `by rw [TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`. Rewrite using `[this, map_smul, map_smul, map_smul, map_smul, LinearMap.baseChange_tmul, he, he']`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [D, DB, LinearMap.sub_apply, map_sub]`. Rewrite using `[pull_comm p1.w p2.w _ _ eμ, pull_comm p1.w p2.w _ _ e1, pull_comm p1.w p2.w _ _ e2]`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : DB (e x) = 0` using `by rw [← key, hx, map_zero]`. Establish `h1 : e x = 0` using `hN _ (by`. Simplify using `only [DB, LinearMap.sub_apply] at h0`. Rewrite `h0` using `[sub_sub, sub_eq_zero]`. Conclude with `h0)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `e.map_eq_zero_iff.1 h1`. Introduce `z hz`. Use `(injective_iff_map_eq_zero D).1 hD z ?_` and prove the remaining obligations. Simplify using `only [D, LinearMap.sub_apply]`. Rewrite using `[hz]`.
-
-Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem noPrimO2_of_isNoetherianRing : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → NoPrimitiveStructureSheafH2 A := by
   intro R _ _ A _ g hA hg

@@ -6,27 +6,27 @@ open GlobalTheory.UnitLemma GlobalTheory.UnitLemma.Unr Polynomial
 namespace GlobalTheory.UnitLemma.Unr
 
 /- English proof (translation)
-Introduce `K K' d φ hφ`. Use `letI : Algebra K.E K'.E := φ.toAlgebra`. Introduce `w hw`. Use `set C : Matrix (Fin d) (Fin d) K.E := Matrix.of fun m l => w.repr (K'.c (w l)) m with hC`. Establish `hsm : ∀ (e : K.E) (x : K'.E), e • x = φ e * x` using `fun e x => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : ∀ m l, ∃ a : K.O, algebraMap K.O K.E a = C m l`. Introduce `m l`. Establish `h1 : ∃ y : K'.O, algebraMap K'.O K'.E y = w l`. Rewrite using `[hw]`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[w.repr_self]`. Distinguish the cases in `h : l = k`. Substitute `h; exact ⟨1, by simp⟩` using the available equality. Conclude with `⟨0, by simp [Finsupp.single_apply, h]⟩`. Take `⟨y, hy⟩` from `h1`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y', hy'⟩` from `K'.c_int y`. Establish `h2 : ∃ y : K'.O, algebraMap K'.O K'.E y = K'.c (w l)` using `⟨y', by rw [← hy', hy]⟩`. Conclude with `(hw _).1 h2 m`. Use `choose A hA using hint`. Establish `hrep : ∀ (x : K'.E) (n : Fin d), w.repr (K'.c x) n = ∑ m, K.c (w.repr x m) * C n m`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x n`. Establish `hx : K'.c x = ∑ m, K.c (w.repr x m) • K'.c (w m)` using `by conv_lhs => rw [← w.sum_repr x]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[hsm, hsm, map_mul, ← hφ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx, map_sum, Finsupp.finset_sum_apply]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul]`. Both sides reduce to the same expression. Establish `hCC : C * (K.c : K.E →+* K.E).mapMatrix C = 1`.
+Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use extensionality with `n l`. Establish `h` using `hrep (K'.c (w l)) n`. Rewrite `h` using `[K'.c_c, w.repr_self, Finsupp.single_apply]`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, RingHom.coe_coe]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[eq_comm]`. Use `h using 1` and compare the differences between its conclusion and the goal. Conclude with `if_congr eq_comm rfl rfl`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hdet : C.det * K.c C.det = 1`. Establish `h` using `congrArg Matrix.det hCC`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_one, ← RingHom.map_det]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hdetA : algebraMap K.O K.E (Matrix.of A).det = C.det`. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `m l`. Simplify using `[hA]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(Matrix.of A).det, ?_, hdetA⟩` and prove the remaining obligations. Take `⟨β, hβ⟩` from `K.c_int (Matrix.of A).det`. Apply `IsUnit.of_mul_eq_one β` to reduce the goal to its premises. Apply `IsFractionRing.injective K.O K.E` to reduce the goal to its premises. Rewrite using `[map_mul, ← hβ, hdetA, hdet, map_one]`.
+A detailed English derivation is pending.
 -/
 theorem conj_matrix_det_isUnit : ∀ (K K' : UQ) (d : ℕ) (φ : K.E →+* K'.E), (∀ x, φ (K.c x) = K'.c (φ x)) → letI : Algebra K.E K'.E := φ.toAlgebra; ∀ w : Module.Basis (Fin d) K.E K'.E, (∀ z : K'.E, (∃ y : K'.O, algebraMap K'.O K'.E y = z) ↔ ∀ k, ∃ a : K.O, algebraMap K.O K.E a = w.repr z k) → ∃ u : K.O, IsUnit u ∧ algebraMap K.O K.E u = (Matrix.of fun m l => w.repr (K'.c (w l)) m).det := by
   intro K K' d φ hφ
